@@ -15714,7 +15714,7 @@
         "return:void *"
       ]
     },
-    "data_ov004_020bf3e8": {
+    "sMgBannerGfxSlotUsed": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:char []"
       ],
@@ -27563,12 +27563,12 @@
         "return:int"
       ]
     },
-    "Mg_LoseLives": {
+    "Mg_LoseCredits": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ]
     },
-    "Mg_GainLives": {
+    "Mg_GainCredits": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ],
@@ -27576,12 +27576,12 @@
         "param:#1 int"
       ]
     },
-    "Mg_SubLives": {
+    "Mg_SubCredits": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 void *"
       ]
     },
-    "Mg_AddLives": {
+    "Mg_AddCredits": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 void *"
       ]
@@ -27625,24 +27625,24 @@
         "return:void"
       ]
     },
-    "func_ov004_020b321c": {
+    "Banner_Update": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov004_020b3278": {
+    "Banner_Init": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 Elem *",
         "param:#3 int",
         "param:#4 int"
       ]
     },
-    "func_ov004_020b40c0": {
+    "Banner_IsPressFinished": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 Obj004 *"
       ]
     },
-    "func_ov004_020b422c": {
+    "Banner_Press": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 Obj004 *"
       ]

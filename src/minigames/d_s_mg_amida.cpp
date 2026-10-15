@@ -1474,9 +1474,9 @@ void dScMgAmida_c::SetupRound()
     }
     shuffle = 0;
 
-    level = unk_0bc;
+    level = mLevel;
     if (Unk36() != 0) {
-        if ((u32) unk_0bc >= 7) {
+        if ((u32) mLevel >= 7) {
             level = 7;
             shuffle = 1;
         }
@@ -1498,7 +1498,7 @@ void dScMgAmida_c::SetupRound()
     mScrollSpeed = ((*(int *)(data_ov006_0212e1b0 + mPatternIndex * 0x1c) - 1) * 5) + 0xb;
 
     {
-        u32 stage = unk_0bc;
+        u32 stage = mLevel;
         if (stage >= 0x13) {
             mScrollSpeed = (int)((stage / 10 - 1) * 5) + mScrollSpeed;
             if (mScrollSpeed > 0x64) {
@@ -2127,16 +2127,16 @@ s32 dScMgAmida_c::Behavior()
 void dScMgAmida_c::StartRound(int arg)
 {
     if (arg == 0) {
-        if (unk_0bc >= 0x7cf)
+        if (mLevel >= 0x7cf)
             goto final;
-        unk_0bc = unk_0bc + 1;
-        if (unk_0bc > 0x270e)
-            unk_0bc = 0x270e;
+        mLevel = mLevel + 1;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
     } else {
         mScore = 0;
-        unk_0bc = 0;
-        if (unk_0bc > 0x270e)
-            unk_0bc = 0x270e;
+        mLevel = 0;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
         Mg_SubmitScore(mScore);
         mHudScore = mScore;
     }
@@ -2265,7 +2265,7 @@ s32 dScMgAmida_c::InitResources()
     }
 
     mPatternIndex = 0;
-    mScore = unk_0bc * 5;
+    mScore = mLevel * 5;
     SetupRound();
     return 1;
 }

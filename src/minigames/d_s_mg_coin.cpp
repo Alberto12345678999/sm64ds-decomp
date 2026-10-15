@@ -132,7 +132,7 @@ extern int data_ov006_021341ec;
 extern int data_ov006_0212e364[];
 extern int *data_ov006_0213bf34[];
 extern int GetGameLanguage(void);
-extern void Mg_DrawLivesIcon(int r0, int r1, int r2, int r3);
+extern void Mg_DrawCreditsIcon(int r0, int r1, int r2, int r3);
 extern void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3);
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern void *data_ov006_02133f10[];
@@ -741,7 +741,7 @@ void dScMgCoin_c::func_ov006_020dccb8()
 
     lang = GetGameLanguage();
     RenderOamMainScreen(data_ov006_0213bf34[lang][8], 0x80, 0x18, -1, -1);
-    Mg_DrawLivesIcon(0x68, 0x28, 1, -1);
+    Mg_DrawCreditsIcon(0x68, 0x28, 1, -1);
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7a, 0x28, (void *)0);
     Mg_DrawBigNumber(0x8c, 0x28, scene->mPlayerScore, 1, -1, 2, 0);
@@ -759,7 +759,7 @@ void dScMgCoin_c::func_ov006_020dcd74()
 
     lang = GetGameLanguage();
     RenderOamMainScreen(data_ov006_0213bf34[lang][4], 0x80, 0x50, -1, -1);
-    Mg_DrawLivesIcon(0x6c, 0x60, 1, -1);
+    Mg_DrawCreditsIcon(0x6c, 0x60, 1, -1);
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7e, 0x60, (void *)0);
     if (gMgScene != 0)
@@ -1647,8 +1647,8 @@ void dScMgCoin_c::StartRound(int arg)
     } else {
         self->mWins = 0;
     }
-    self->unk_0a8 = 0;
-    *(s32 *)((char *)self + 0xac) = self->unk_0a8;
+    self->mCredits = 0;
+    *(s32 *)((char *)self + 0xac) = self->mCredits;
     this->func_ov006_020ddf9c();
     FreeGfxSlotsById(0x1d);
     this->func_ov006_020dd334();
@@ -1740,8 +1740,8 @@ int dScMgCoin_c::InitResources()
     Deallocate((void *)b);
     Deallocate((void *)a);
 
-    self->unk_0a8 = 0;
-    *(s32 *)(c + 0xac) = self->unk_0a8;
+    self->mCredits = 0;
+    *(s32 *)(c + 0xac) = self->mCredits;
     data_0208ee44 = 1;
     this->func_ov006_020ddf9c();
     this->func_ov006_020dd334();
@@ -1751,7 +1751,7 @@ int dScMgCoin_c::InitResources()
     self->unk_51dc = 2;
     Mg_SetTopScreenYOffset(0x20);
     self->mPlayerScore = Mg_GetTopRecord();
-    self->unk_0a4 = 1;
+    self->mRunDuringFade = 1;
     return 1;
 }
 

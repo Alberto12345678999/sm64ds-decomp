@@ -1572,12 +1572,12 @@ void dScMg3DEsp_c::StartRound(int a)
     ResetRound();
     mRoundState = 0;
     if (a == 0) {
-        unk_0bc++;
-        if (unk_0bc > 9998) unk_0bc = 9998;
+        mLevel++;
+        if (mLevel > 9998) mLevel = 9998;
     } else if (a == 0x12) {
         if (gMgScene != 0) ((dScMgBase_c*)gMgScene)->mHudScore = 0;
-        unk_0bc = 0;
-        if (unk_0bc > 9998) unk_0bc = 9998; /* the ROM keeps this clamp; 16 bytes */
+        mLevel = 0;
+        if (mLevel > 9998) mLevel = 9998; /* the ROM keeps this clamp; 16 bytes */
     }
     unk_51e4 = 0;
     ((dMg3DEspModel_c*)pad_4fd8)->Reset();
@@ -1706,13 +1706,13 @@ s32 dScMg3DEsp_c::InitResources()
 
     mTimer = 0x40;
 
-    unk_0a8 = 3;
-    unk_0ac = unk_0a8;
+    mCredits = 3;
+    mCreditsShown = mCredits;
     mRoundState = 1;
 
     ResetSlots();
 
-    unk_0a4 = 1;
+    mRunDuringFade = 1;
 
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 

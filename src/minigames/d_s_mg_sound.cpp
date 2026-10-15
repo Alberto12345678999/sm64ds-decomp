@@ -346,13 +346,13 @@ void dScMgSound_c::StartRound(int mode)
     mState = 0;
 
     if (mode == 0) {
-        unk_0bc = unk_0bc + 1;
-        if (unk_0bc > 0x270e)
-            unk_0bc = 0x270e;
+        mLevel = mLevel + 1;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
     } else {
-        unk_0bc = 0;
-        if (unk_0bc > 0x270e)
-            unk_0bc = 0x270e;
+        mLevel = 0;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
 
         active = (int *)gMgScene;
         if (active)
@@ -464,7 +464,7 @@ void dScMgSound_c::func_ov006_0211c080()
     int speed;
     int i;
 
-    sel = this->unk_0bc;
+    sel = this->mLevel;
     this->mPrevPattern = this->mPattern;
     if (sel >= 5) {
         sel = (u32)(RND * 5) >> 15;
@@ -517,7 +517,7 @@ void dScMgSound_c::func_ov006_0211c080()
     }
     k = this->mPattern;
     if (k == 1 || k == 4) {
-        this->mBank = data_ov006_0212efb0[((u32)this->unk_0bc >> 2) & 3];
+        this->mBank = data_ov006_0212efb0[((u32)this->mLevel >> 2) & 3];
     }
     half = count >> 1;
     for (i = 0; i < half; i++) {

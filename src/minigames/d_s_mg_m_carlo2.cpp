@@ -141,8 +141,8 @@ s32 dScMgMCarlo2_c::InitResources()
     func_ov004_020b682c();
     StartRound(-1);
     this->unk_592a = 0;
-    this->unk_0a8 = 0xa;
-    this->unk_0ac = this->unk_0a8;
+    this->mCredits = 0xa;
+    this->mCreditsShown = this->mCredits;
     return 1;
 }
 

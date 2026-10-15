@@ -1853,7 +1853,7 @@ s32 dScMgCurling2_c::InitResources()
     mState = 1;
     Mg_SetTopScreenYOffset(0x20);
     mStateTimer = 0x40;
-    unk_0a4 = 1;
+    mRunDuringFade = 1;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
     unk_55ac = Mg_GetTopRecord();

@@ -4,8 +4,8 @@
  * This is the unlabelled run between the end of dScMgBase_c's unit and the unit
  * that starts at 0x020b4aa4. No class label, RTTI record or vtable falls in it,
  * so the file keeps the unit<addr> name. What the functions do, from their
- * bodies: the first group manages a table of 29 loaded files (func_ov004_020b2c84
- * frees them, func_ov004_020b2cb8 loads them by language, func_ov004_020b3278
+ * bodies: the first group manages a table of 29 loaded files (Mg_FreeBannerFiles
+ * frees them, Mg_LoadBannerFiles loads them by language, Banner_Init
  * decompresses one into a graphics slot and sets up an Elem to show it), and
  * the rest are the behavior and render handlers of Elem, the 0x134-byte record
  * of which gMgBanners holds three. An Elem draws its graphic as a
@@ -21,12 +21,12 @@
  * __sinit_ov004_020b955c registers for this unit's static array at
  * gMgBanners; __arraydtor$954 runs __cxa_vec_cleanup over it.
  * The unit emits one data object of its own, the anonymous initializer template
- * of func_ov004_020b2cb8's local array at 0x020bc6e8 (0xe8 bytes), which this
+ * of Mg_LoadBannerFiles's local array at 0x020bc6e8 (0xe8 bytes), which this
  * file's .data claim covers. Everything else it touches is reached by extern.
  *
  * Emission order. `#pragma defer_codegen off` is load-bearing here: with codegen
- * deferred the opt_* pragmas around func_ov004_020b2cb8, func_ov004_020b3b38,
- * func_ov004_020b4360 and func_ov004_020b45c0 do not bind to the one function
+ * deferred the opt_* pragmas around Mg_LoadBannerFiles, Banner_DrawSqueeze,
+ * Banner_DrawZoomA and Banner_DrawZoomB do not bind to the one function
  * they bracket. Source is therefore ROM-ascending.
  *
  * The bodies were matched as one-function C or C++ sources and keep that
@@ -39,54 +39,54 @@
  * __arraydtor$954, so an edit here has to keep that count. The named
  * parameters on the ApproachLinear2 and __cxa_vec_cleanup prototypes stand
  * in for names removed elsewhere, and the
- * six record copies in func_ov004_020b37f0, func_ov004_020b39a4 and
- * func_ov004_020b422c stay W2 (int[2]) copies: assigning the records as
+ * six record copies in Banner_StartSpin, Banner_StartWaveBurst and
+ * Banner_Press stay W2 (int[2]) copies: assigning the records as
  * ElemFn emits the same code but moves the counter by 8 (measured).
- * func_ov004_020b3278's `b ? a : a` copies are a code shape, not a count:
+ * Banner_Init's `b ? a : a` copies are a code shape, not a count:
  * a plain record copy there changes 12 words of that function (measured).
  *
  * Retired one-function sources (ROM address order):
- *   0x020b2c84  func_ov004_020b2c84
- *   0x020b2cb8  func_ov004_020b2cb8
- *   0x020b3194  func_ov004_020b3194
- *   0x020b31b4  func_ov004_020b31b4
- *   0x020b321c  func_ov004_020b321c
- *   0x020b3278  func_ov004_020b3278
- *   0x020b35d8  func_ov004_020b35d8
- *   0x020b3698  func_ov004_020b3698
- *   0x020b369c  func_ov004_020b369c
- *   0x020b37c4  func_ov004_020b37c4
- *   0x020b37f0  func_ov004_020b37f0
- *   0x020b3834  func_ov004_020b3834
- *   0x020b3888  func_ov004_020b3888
- *   0x020b38ac  func_ov004_020b38ac
- *   0x020b3978  func_ov004_020b3978
- *   0x020b39a4  func_ov004_020b39a4
- *   0x020b3b38  func_ov004_020b3b38
- *   0x020b3c58  func_ov004_020b3c58
- *   0x020b3c9c  func_ov004_020b3c9c
- *   0x020b3cb8  func_ov004_020b3cb8
- *   0x020b3e9c  func_ov004_020b3e9c
- *   0x020b4080  func_ov004_020b4080
- *   0x020b40ac  func_ov004_020b40ac
- *   0x020b40c0  func_ov004_020b40c0
- *   0x020b410c  func_ov004_020b410c
- *   0x020b4214  func_ov004_020b4214
- *   0x020b422c  func_ov004_020b422c
- *   0x020b42c0  func_ov004_020b42c0
- *   0x020b433c  func_ov004_020b433c
- *   0x020b4360  func_ov004_020b4360
- *   0x020b45c0  func_ov004_020b45c0
- *   0x020b4820  func_ov004_020b4820
- *   0x020b484c  func_ov004_020b484c
- *   0x020b49b8  func_ov004_020b49b8
- *   0x020b49e4  func_ov004_020b49e4
- *   0x020b49f0  func_ov004_020b49f0
- *   0x020b4a1c  func_ov004_020b4a1c
- *   0x020b4a28  func_ov004_020b4a28
- *   0x020b4a40  func_ov004_020b4a40
- *   0x020b4a4c  func_ov004_020b4a4c
- *   0x020b4a64  func_ov004_020b4a64
+ *   0x020b2c84  Mg_FreeBannerFiles
+ *   0x020b2cb8  Mg_LoadBannerFiles
+ *   0x020b3194  Banner_Free
+ *   0x020b31b4  Banner_Draw
+ *   0x020b321c  Banner_Update
+ *   0x020b3278  Banner_Init
+ *   0x020b35d8  Banner_DrawLevelNumber
+ *   0x020b3698  Banner_SetupNone
+ *   0x020b369c  Banner_DrawSpin
+ *   0x020b37c4  Banner_UpdateSpin
+ *   0x020b37f0  Banner_StartSpin
+ *   0x020b3834  Banner_UpdateDrop
+ *   0x020b3888  Banner_SetupDrop
+ *   0x020b38ac  Banner_DrawWave
+ *   0x020b3978  Banner_UpdateWave
+ *   0x020b39a4  Banner_StartWaveBurst
+ *   0x020b3b38  Banner_DrawSqueeze
+ *   0x020b3c58  Banner_UpdateFall
+ *   0x020b3c9c  Banner_SetupFall
+ *   0x020b3cb8  Banner_DrawPopSpinA
+ *   0x020b3e9c  Banner_DrawPopSpinB
+ *   0x020b4080  Banner_UpdatePopSpin
+ *   0x020b40ac  Banner_SetupPopSpin
+ *   0x020b40c0  Banner_IsPressFinished
+ *   0x020b410c  Banner_DrawPressed
+ *   0x020b4214  Banner_UpdatePressed
+ *   0x020b422c  Banner_Press
+ *   0x020b42c0  Banner_DrawPlain
+ *   0x020b433c  Banner_SetupZoom
+ *   0x020b4360  Banner_DrawZoomA
+ *   0x020b45c0  Banner_DrawZoomB
+ *   0x020b4820  Banner_UpdateZoom
+ *   0x020b484c  Banner_SetupZoomBurst
+ *   0x020b49b8  Banner_UpdateSlideFromRight
+ *   0x020b49e4  Banner_SetupSlideFromRight
+ *   0x020b49f0  Banner_UpdateSlideFromLeft
+ *   0x020b4a1c  Banner_SetupSlideFromLeft
+ *   0x020b4a28  Banner_UpdateSlideFromBottom
+ *   0x020b4a40  Banner_SetupSlideFromBottom
+ *   0x020b4a4c  Banner_UpdateSlideFromTop
+ *   0x020b4a64  Banner_SetupSlideFromTop
  *   0x020b4a70  _ZN4ElemC1Ev
  *   0x020b4a7c  __arraydtor$954
  *   0x020b4aa0  _ZN4ElemD1Ev
@@ -128,8 +128,8 @@ struct Obj {
 struct Elem;
 typedef void (Elem::*ElemFn)();
 struct Elem {
-    ElemFn mBehavior;    /* 0x00 run by func_ov004_020b321c */
-    ElemFn mRender;      /* 0x08 run by func_ov004_020b31b4; 0 draws plainly */
+    ElemFn mBehavior;    /* 0x00 run by Banner_Update */
+    ElemFn mRender;      /* 0x08 run by Banner_Draw; 0 draws plainly */
     s16 mX, mY;          /* 0x10 screen position, pixels */
     s16 mTargetX;        /* 0x14 where the slide-in handlers stop */
     s16 mTargetY;        /* 0x16 */
@@ -137,13 +137,13 @@ struct Elem {
     int mScreen;         /* 0x1c -1 draws on both screens (Mg_RenderSpriteOn) */
     int mFileIndex;      /* 0x20 index into the file table; 29 when free */
     int mTimer;          /* 0x24 mostly stepped 0x1000 (1.0) per frame toward
-                            mTimerEnd; func_ov004_020b3834 counts it by 1 */
+                            mTimerEnd; Banner_UpdateDrop counts it by 1 */
     int mTimerEnd;       /* 0x28 */
     s16 mOamCount;       /* 0x2c records Mg_CopySpriteList copied */
     s16 mStyle;          /* 0x2e index into the three handler tables */
-    s16 mGfxSlot;        /* 0x30 0..2, see data_ov004_020bf3e8 */
+    s16 mGfxSlot;        /* 0x30 0..2, see sMgBannerGfxSlotUsed */
     s16 mArrived;        /* 0x32 set when mX reaches mTargetX
-                            (func_ov004_020b49b8, func_ov004_020b49f0) */
+                            (Banner_UpdateSlideFromRight, Banner_UpdateSlideFromLeft) */
     u8 mOam[0x100];      /* 0x34 8-byte OAM records; 0xffff at +6 ends the list */
     Elem();
     ~Elem() {}
@@ -170,11 +170,11 @@ void NullDestructor_0203d47c(void);
 void __cxa_vec_cleanup(void *array, unsigned int count, unsigned int size, void (*dtor)(void *));
 void Mg_RenderSpriteOnMtx(void *a0, int a1, int a2, int a3, int a4, M *a5);
 void Mg_RenderSpriteOn(int a, int b, int c, int d, int e);
-int Mg_GetRowWord12(void);
+int Mg_GetLevel(void);
 void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
-void func_ov004_020b42c0(Elem *e);
-void func_ov004_020b37f0(Elem *e);
-void func_ov004_020b39a4(Elem *e);
+void Banner_DrawPlain(Elem *e);
+void Banner_StartSpin(Elem *e);
+void Banner_StartWaveBurst(Elem *e);
 }
 
 extern s16 data_02082214[];
@@ -193,18 +193,18 @@ extern Pair data_ov004_020bc274;
 extern int data_ov004_020bc1b4[];
 extern int data_ov004_020bc20c[];
 extern int data_ov004_020bc254[];
-extern unsigned char data_ov004_020bf3e8[];
+extern unsigned char sMgBannerGfxSlotUsed[];
 extern int data_ov004_020bf3ec;
 extern int data_ov004_020bf3f0;
 extern int data_ov004_020bf3f4[2];
 extern int data_ov004_020bf3fc[2];
 extern void *data_ov004_020bf404[3];
 extern void *data_ov004_020bf410[3];
-extern PairW data_ov004_020bf428[];
-extern PairW data_ov004_020bf490[];
-extern PairW data_ov004_020bf4f8[];
-extern int data_ov004_020bf560[];
-extern int data_ov004_020bf5d4[];
+extern PairW sBannerUpdateTable[];
+extern PairW sBannerSetupTable[];
+extern PairW sBannerDrawTable[];
+extern int sMgBannerFiles[];
+extern int sMgBannerSprites[];
 
 extern int data_ov004_020bc42c[];
 extern int data_ov004_020bc65c[];
@@ -264,18 +264,18 @@ extern int data_ov004_020bc364[];
 extern int data_ov004_020bc56c[];
 
 
-// @symbol func_ov004_020b2c84
-extern "C" void func_ov004_020b2c84(void) {
+// @symbol Mg_FreeBannerFiles
+extern "C" void Mg_FreeBannerFiles(void) {
     int i;
     for (i = 0; i < 0x1d; i++) {
-        Deallocate((void *)data_ov004_020bf560[i]);
-        data_ov004_020bf560[i] = 0;
+        Deallocate((void *)sMgBannerFiles[i]);
+        sMgBannerFiles[i] = 0;
     }
 }
 
-// @symbol func_ov004_020b2cb8
+// @symbol Mg_LoadBannerFiles
 #pragma opt_strength_reduction off
-extern "C" void func_ov004_020b2cb8(void)
+extern "C" void Mg_LoadBannerFiles(void)
 {
     int i;
     /* The ROM's template for this array is at 0x020bc6e8 and is all zero except
@@ -349,42 +349,42 @@ extern "C" void func_ov004_020b2cb8(void)
     for (i = 0; i < 29; i++) {
         int t;
         t = LoadFile(entries.e[i].id);
-        ((volatile int *)data_ov004_020bf560)[i] = t;
+        ((volatile int *)sMgBannerFiles)[i] = t;
         t = (int)&entries.e[i];
         t = *(volatile int *)(t + 4);
         t = *(int *)t;
-        data_ov004_020bf5d4[i] = t;
+        sMgBannerSprites[i] = t;
     }
 }
 #pragma opt_strength_reduction on
 
-// @symbol func_ov004_020b3194
-extern "C" void func_ov004_020b3194(Elem *e)
+// @symbol Banner_Free
+extern "C" void Banner_Free(Elem *e)
 {
     e->mFileIndex = 0x1d;
     s16 idx = e->mGfxSlot;
-    data_ov004_020bf3e8[idx] = 0;
+    sMgBannerGfxSlotUsed[idx] = 0;
 }
 
-// @symbol func_ov004_020b31b4
-extern "C" void func_ov004_020b31b4(Elem *e) {
+// @symbol Banner_Draw
+extern "C" void Banner_Draw(Elem *e) {
     if (e->mFileIndex == 0x1d) return;
     if (e->mRender != 0) {
         (e->*(e->mRender))();
         return;
     }
-    func_ov004_020b42c0(e);
+    Banner_DrawPlain(e);
 }
 
-// @symbol func_ov004_020b321c
-extern "C" void func_ov004_020b321c(Elem *e) {
+// @symbol Banner_Update
+extern "C" void Banner_Update(Elem *e) {
     if (e->mFileIndex == 0x1d) return;
     if (e->mBehavior == 0) return;
     (e->*(e->mBehavior))();
 }
 
-// @symbol func_ov004_020b3278
-extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int screen, int priority, short style)
+// @symbol Banner_Init
+extern "C" void Banner_Init(Elem *e, int file, short x, short y, int screen, int priority, short style)
 {
     int a, b;
 
@@ -400,29 +400,29 @@ extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int scr
     case 3: case 4: case 5: case 6:
     case 8: case 9: case 10: case 11: case 12:
     case 14: case 16: case 17: case 18: case 19: case 20: case 21:
-        if (data_ov004_020bf3e8[0] != 0)
+        if (sMgBannerGfxSlotUsed[0] != 0)
             return;
-        DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(a + 0x7000));
+        DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + 0x7000));
         if (b != 0)
-            DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(b + 0x7000));
+            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + 0x7000));
         e->mGfxSlot = 0;
-        data_ov004_020bf3e8[0] = 1;
+        sMgBannerGfxSlotUsed[0] = 1;
         break;
     default:
-        if (data_ov004_020bf3e8[1] == 0) {
-            DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(a + 0x6000));
+        if (sMgBannerGfxSlotUsed[1] == 0) {
+            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + 0x6000));
             if (b != 0)
-                DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(b + 0x6000));
+                DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + 0x6000));
             e->mGfxSlot = 1;
-            data_ov004_020bf3e8[1] = 1;
+            sMgBannerGfxSlotUsed[1] = 1;
             break;
         }
-        if (data_ov004_020bf3e8[2] == 0) {
-            DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(a + 0x6800));
+        if (sMgBannerGfxSlotUsed[2] == 0) {
+            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + 0x6800));
             if (b != 0)
-                DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(b + 0x6800));
+                DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + 0x6800));
             e->mGfxSlot = 2;
-            data_ov004_020bf3e8[2] = 1;
+            sMgBannerGfxSlotUsed[2] = 1;
             break;
         }
         return;
@@ -468,7 +468,7 @@ extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int scr
     {
         S3 tmp = data_ov004_020bc27c;
         e->mOamCount = (short)Mg_CopySpriteList(
-            data_ov004_020bf5d4[e->mFileIndex],
+            sMgBannerSprites[e->mFileIndex],
             e->mOam,
             tmp.v[e->mGfxSlot],
             e->mFileIndex);
@@ -476,30 +476,30 @@ extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int scr
 
     {
         int st = e->mStyle;
-        if (((ElemFn *)data_ov004_020bf490)[st])
-            (e->*((ElemFn *)data_ov004_020bf490)[st])();
+        if (((ElemFn *)sBannerSetupTable)[st])
+            (e->*((ElemFn *)sBannerSetupTable)[st])();
     }
 
     {
         short st;
         PairW *r;
         st = e->mStyle;
-        r = &data_ov004_020bf428[st];
-        a = data_ov004_020bf428[st].w0;
+        r = &sBannerUpdateTable[st];
+        a = sBannerUpdateTable[st].w0;
         b = r->w1;
         ((int *)&e->mBehavior)[0] = b ? a : a;
         ((int *)&e->mBehavior)[1] = b;
         st = e->mStyle;
-        r = &data_ov004_020bf4f8[st];
-        a = data_ov004_020bf4f8[st].w0;
+        r = &sBannerDrawTable[st];
+        a = sBannerDrawTable[st].w0;
         b = r->w1;
         ((int *)&e->mRender)[0] = b ? a : a;
         ((int *)&e->mRender)[1] = b;
     }
 }
 
-// @symbol func_ov004_020b35d8
-extern "C" void func_ov004_020b35d8(Elem *e)
+// @symbol Banner_DrawLevelNumber
+extern "C" void Banner_DrawLevelNumber(Elem *e)
 {
   int x;
   int originX = e->mX;
@@ -509,7 +509,7 @@ extern "C" void func_ov004_020b35d8(Elem *e)
   int oamX = (int) (((unsigned int) (*(int *)e->mOam << 7)) >> 0x17);
   int w;
   unsigned long left;
-  n = Mg_GetRowWord12() + 1;
+  n = Mg_GetLevel() + 1;
   if (oamX > 0x100)
   {
     oamX -= 0x200;
@@ -538,13 +538,13 @@ extern "C" void func_ov004_020b35d8(Elem *e)
   Mg_DrawBigNumber(x, drawY, n, e->mScreen, e->mPriority, 2, 0);
 }
 
-// @symbol func_ov004_020b3698
-extern "C" void func_ov004_020b3698(void)
+// @symbol Banner_SetupNone
+extern "C" void Banner_SetupNone(void)
 {
 }
 
-// @symbol func_ov004_020b369c
-extern "C" void func_ov004_020b369c(Elem *e) {
+// @symbol Banner_DrawSpin
+extern "C" void Banner_DrawSpin(Elem *e) {
     u8* el = e->mOam;
     int angle = (u16)e->mTimer;
     M m;
@@ -569,40 +569,40 @@ extern "C" void func_ov004_020b369c(Elem *e) {
     } while (flag != 0xffff);
 }
 
-// @symbol func_ov004_020b37c4
-extern "C" void func_ov004_020b37c4(Elem *e) {
+// @symbol Banner_UpdateSpin
+extern "C" void Banner_UpdateSpin(Elem *e) {
     if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
         e->mTimer = 0;
     }
 }
 
-// @symbol func_ov004_020b37f0
-extern "C" void func_ov004_020b37f0(Elem *e){
+// @symbol Banner_StartSpin
+extern "C" void Banner_StartSpin(Elem *e){
   e->mTimer=0;
   e->mTimerEnd=0x27000;
   *(W2*)&e->mBehavior=*(W2*)data_ov004_020bc20c;
   *(W2*)&e->mRender=*(W2*)data_ov004_020bc1b4;
 }
 
-// @symbol func_ov004_020b3834
-extern "C" void func_ov004_020b3834(Elem *e){
+// @symbol Banner_UpdateDrop
+extern "C" void Banner_UpdateDrop(Elem *e){
     if (e->mTimer < 0x30){
         *(unsigned *)&e->mTimer += 1;
         return;
     }
     if (ApproachLinear2(e->mY, e->mTargetY, 0x10)){
-        func_ov004_020b37f0(e);
+        Banner_StartSpin(e);
     }
 }
 
-// @symbol func_ov004_020b3888
-extern "C" void func_ov004_020b3888(Elem *e) {
+// @symbol Banner_SetupDrop
+extern "C" void Banner_SetupDrop(Elem *e) {
     e->mTimer = 0;
     e->mY = -(sMgTopScreenYOffset + 0x60);
 }
 
-// @symbol func_ov004_020b38ac
-extern "C" void func_ov004_020b38ac(Elem *e) {
+// @symbol Banner_DrawWave
+extern "C" void Banner_DrawWave(Elem *e) {
     u8* el = e->mOam;
     int x = e->mTimer >> 2;
     int t = 0x1000;
@@ -628,15 +628,15 @@ extern "C" void func_ov004_020b38ac(Elem *e) {
     } while (flag != 0xffff);
 }
 
-// @symbol func_ov004_020b3978
-extern "C" void func_ov004_020b3978(Elem *e) {
+// @symbol Banner_UpdateWave
+extern "C" void Banner_UpdateWave(Elem *e) {
     if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
         e->mTimer = 0;
     }
 }
 
-// @symbol func_ov004_020b39a4
-extern "C" void func_ov004_020b39a4(Elem* e) {
+// @symbol Banner_StartWaveBurst
+extern "C" void Banner_StartWaveBurst(Elem* e) {
     int i;
     int angle;
     int boxA[2], boxB[2], boxC[2];
@@ -699,9 +699,9 @@ extern "C" void func_ov004_020b39a4(Elem* e) {
     }
 }
 
-// @symbol func_ov004_020b3b38
+// @symbol Banner_DrawSqueeze
 #pragma opt_propagation off
-extern "C" void func_ov004_020b3b38(Elem* e) {
+extern "C" void Banner_DrawSqueeze(Elem* e) {
     int m, fd, t, v;
     unsigned short term;
     if (e->mTimer == 0) return;
@@ -733,25 +733,25 @@ extern "C" void func_ov004_020b3b38(Elem* e) {
 }
 #pragma opt_propagation on
 
-// @symbol func_ov004_020b3c58
-extern "C" void func_ov004_020b3c58(Elem *e)
+// @symbol Banner_UpdateFall
+extern "C" void Banner_UpdateFall(Elem *e)
 {
     ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000);
     if (ApproachLinear2(e->mY, e->mTargetY, 0x10) == 0)
         return;
-    func_ov004_020b39a4(e);
+    Banner_StartWaveBurst(e);
 }
 
-// @symbol func_ov004_020b3c9c
-extern "C" void func_ov004_020b3c9c(Elem *e)
+// @symbol Banner_SetupFall
+extern "C" void Banner_SetupFall(Elem *e)
 {
     e->mTimer = 0;
     e->mTimerEnd = 81920;
     e->mY = 96;
 }
 
-// @symbol func_ov004_020b3cb8
-extern "C" void func_ov004_020b3cb8(Elem *e) {
+// @symbol Banner_DrawPopSpinA
+extern "C" void Banner_DrawPopSpinA(Elem *e) {
     u16 flag;
     if (e->mTimer == 0) return;
     {
@@ -801,8 +801,8 @@ extern "C" void func_ov004_020b3cb8(Elem *e) {
     }
 }
 
-// @symbol func_ov004_020b3e9c
-extern "C" void func_ov004_020b3e9c(Elem *e) {
+// @symbol Banner_DrawPopSpinB
+extern "C" void Banner_DrawPopSpinB(Elem *e) {
     u16 flag;
     if (e->mTimer == 0) return;
     {
@@ -852,22 +852,22 @@ extern "C" void func_ov004_020b3e9c(Elem *e) {
     }
 }
 
-// @symbol func_ov004_020b4080
-extern "C" void func_ov004_020b4080(Elem *e) {
+// @symbol Banner_UpdatePopSpin
+extern "C" void Banner_UpdatePopSpin(Elem *e) {
     if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
         e->mTimer = 98304;
     }
 }
 
-// @symbol func_ov004_020b40ac
-extern "C" void func_ov004_020b40ac(Elem *e)
+// @symbol Banner_SetupPopSpin
+extern "C" void Banner_SetupPopSpin(Elem *e)
 {
     e->mTimer = 0;
     e->mTimerEnd = 159744;
 }
 
-// @symbol func_ov004_020b40c0
-extern "C" int func_ov004_020b40c0(Elem* e){
+// @symbol Banner_IsPressFinished
+extern "C" int Banner_IsPressFinished(Elem* e){
   int* d = data_ov004_020bc254;
   int* o = (int*)&e->mBehavior;
   if(o[0] == d[0] && (o[1] == d[1] || o[0] == 0) && e->mTimer == e->mTimerEnd)
@@ -875,8 +875,8 @@ extern "C" int func_ov004_020b40c0(Elem* e){
   return 0;
 }
 
-// @symbol func_ov004_020b410c
-extern "C" void func_ov004_020b410c(Elem *e)
+// @symbol Banner_DrawPressed
+extern "C" void Banner_DrawPressed(Elem *e)
 {
     u8* el = e->mOam;
     int x = e->mTimer;
@@ -904,13 +904,13 @@ extern "C" void func_ov004_020b410c(Elem *e)
         e->mScreen, e->mPriority);
 }
 
-// @symbol func_ov004_020b4214
-extern "C" void func_ov004_020b4214(Elem *e) {
+// @symbol Banner_UpdatePressed
+extern "C" void Banner_UpdatePressed(Elem *e) {
     ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000);
 }
 
-// @symbol func_ov004_020b422c
-extern "C" void func_ov004_020b422c(Elem* e){
+// @symbol Banner_Press
+extern "C" void Banner_Press(Elem* e){
   data_ov004_020bc150 = 0;
   switch (e->mFileIndex) {
   case 0:
@@ -927,23 +927,23 @@ extern "C" void func_ov004_020b422c(Elem* e){
   *(W2*)&e->mRender = *(W2*)&data_ov004_020bc274;
 }
 
-// @symbol func_ov004_020b42c0
-extern "C" void func_ov004_020b42c0(Elem *e) {
+// @symbol Banner_DrawPlain
+extern "C" void Banner_DrawPlain(Elem *e) {
     Mg_RenderSpriteOn((int)e->mOam, e->mX, e->mY, e->mScreen, e->mPriority);
     if (e->mFileIndex != 0 && e->mFileIndex != 1 && e->mFileIndex != 2)
         return;
     Mg_RenderSpriteOn(data_ov006_021346bc, e->mX, e->mY, e->mScreen, e->mPriority);
 }
 
-// @symbol func_ov004_020b433c
-extern "C" void func_ov004_020b433c(Elem *e) {
+// @symbol Banner_SetupZoom
+extern "C" void Banner_SetupZoom(Elem *e) {
     e->mTimer = 0;
     e->mTimerEnd = ((e->mOamCount + 1) << 2) + 0x1e << 0xc;
 }
 
-// @symbol func_ov004_020b4360
+// @symbol Banner_DrawZoomA
 #pragma opt_propagation off
-extern "C" void func_ov004_020b4360(Elem *e) {
+extern "C" void Banner_DrawZoomA(Elem *e) {
     u16 flag;
     int val = e->mTimer;
     if (val == 0) return;
@@ -1010,9 +1010,9 @@ extern "C" void func_ov004_020b4360(Elem *e) {
 }
 #pragma opt_propagation on
 
-// @symbol func_ov004_020b45c0
+// @symbol Banner_DrawZoomB
 #pragma opt_propagation off
-extern "C" void func_ov004_020b45c0(Elem *e) {
+extern "C" void Banner_DrawZoomB(Elem *e) {
     u16 flag;
     int val = e->mTimer;
     if (val == 0) return;
@@ -1079,15 +1079,15 @@ extern "C" void func_ov004_020b45c0(Elem *e) {
 }
 #pragma opt_propagation on
 
-// @symbol func_ov004_020b4820
-extern "C" void func_ov004_020b4820(Elem *e) {
+// @symbol Banner_UpdateZoom
+extern "C" void Banner_UpdateZoom(Elem *e) {
     if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
         e->mTimer = 122880;
     }
 }
 
-// @symbol func_ov004_020b484c
-extern "C" void func_ov004_020b484c(Elem* e)
+// @symbol Banner_SetupZoomBurst
+extern "C" void Banner_SetupZoomBurst(Elem* e)
 {
     int i;
     int boxA[2], boxB[2], boxC[2];
@@ -1144,48 +1144,48 @@ extern "C" void func_ov004_020b484c(Elem* e)
     }
 }
 
-// @symbol func_ov004_020b49b8
-extern "C" void func_ov004_020b49b8(Elem *e) {
+// @symbol Banner_UpdateSlideFromRight
+extern "C" void Banner_UpdateSlideFromRight(Elem *e) {
     if (ApproachLinear2(e->mX, e->mTargetX, 0x10))
         e->mArrived = 1;
 }
 
-// @symbol func_ov004_020b49e4
-extern "C" void func_ov004_020b49e4(Elem *e)
+// @symbol Banner_SetupSlideFromRight
+extern "C" void Banner_SetupSlideFromRight(Elem *e)
 {
     e->mX = 320;
 }
 
-// @symbol func_ov004_020b49f0
-extern "C" void func_ov004_020b49f0(Elem *e) {
+// @symbol Banner_UpdateSlideFromLeft
+extern "C" void Banner_UpdateSlideFromLeft(Elem *e) {
     if (ApproachLinear2(e->mX, e->mTargetX, 0x10))
         e->mArrived = 1;
 }
 
-// @symbol func_ov004_020b4a1c
-extern "C" void func_ov004_020b4a1c(Elem *e)
+// @symbol Banner_SetupSlideFromLeft
+extern "C" void Banner_SetupSlideFromLeft(Elem *e)
 {
     e->mX = -0x40;
 }
 
-// @symbol func_ov004_020b4a28
-extern "C" void func_ov004_020b4a28(Elem *e) {
+// @symbol Banner_UpdateSlideFromBottom
+extern "C" void Banner_UpdateSlideFromBottom(Elem *e) {
     ApproachLinear2(e->mY, e->mTargetY, 4);
 }
 
-// @symbol func_ov004_020b4a40
-extern "C" void func_ov004_020b4a40(Elem *e)
+// @symbol Banner_SetupSlideFromBottom
+extern "C" void Banner_SetupSlideFromBottom(Elem *e)
 {
     e->mY = 200;
 }
 
-// @symbol func_ov004_020b4a4c
-extern "C" void func_ov004_020b4a4c(Elem *e) {
+// @symbol Banner_UpdateSlideFromTop
+extern "C" void Banner_UpdateSlideFromTop(Elem *e) {
     ApproachLinear2(e->mY, e->mTargetY, 4);
 }
 
-// @symbol func_ov004_020b4a64
-extern "C" void func_ov004_020b4a64(Elem *e)
+// @symbol Banner_SetupSlideFromTop
+extern "C" void Banner_SetupSlideFromTop(Elem *e)
 {
     e->mY = -8;
 }
@@ -1196,8 +1196,8 @@ Elem::Elem()
 }
 
 /* __sinit_ov004_020b955c sources: the member-pointer records the three
-   per-style tables copy (setup data_ov004_020bf490, behavior
-   data_ov004_020bf428, render data_ov004_020bf4f8), and the words the
+   per-style tables copy (setup sBannerSetupTable, behavior
+   sBannerUpdateTable, render sBannerDrawTable), and the words the
    29-entry file-id table copies. */
 extern "C" {
 extern PairW data_02086b58;  /* __ptmf_null's address: the null member pointer */
@@ -1226,7 +1226,7 @@ Elem gMgBanners[3];
 }
 
 extern "C" {
-int data_ov004_020bf5d4[29] = {
+int sMgBannerSprites[29] = {
     data_ov004_020b9e98, data_ov004_020b9f54, data_ov004_020b9e8c, data_ov004_020b9f2c,
     data_ov004_020b9ea4, data_ov004_020b9fd8, data_ov004_020b9eb8, data_ov004_020b9f5c,
     data_ov004_020ba010, data_ov004_020b9e90, data_ov004_020b9ed4, data_ov004_020b9ffc,
@@ -1236,22 +1236,22 @@ int data_ov004_020bf5d4[29] = {
     data_ov004_020b9efc, data_ov004_020b9f88, data_ov004_020b9e78, data_ov004_020b9fc8,
     data_ov004_020b9ee8
 };
-PairW data_ov004_020bf490[13] = {
+PairW sBannerSetupTable[13] = {
     data_02086b58, data_ov004_020bc234, data_ov004_020bc23c, data_ov004_020bc244,
     data_ov004_020bc16c, data_ov004_020bc1bc, data_ov004_020bc1ac, data_ov004_020bc25c,
     data_ov004_020bc264, data_ov004_020bc1c4, data_ov004_020bc164, data_ov004_020bc15c,
     data_ov004_020bc1d4
 };
-PairW data_ov004_020bf428[13] = {
+PairW sBannerUpdateTable[13] = {
     data_02086b58, data_ov004_020bc22c, data_ov004_020bc19c, data_ov004_020bc184,
     data_ov004_020bc204, data_ov004_020bc18c, data_ov004_020bc1fc, data_ov004_020bc1f4,
     data_ov004_020bc154, data_ov004_020bc1dc, data_ov004_020bc1e4, data_ov004_020bc214,
     data_02086b58
 };
-PairW data_ov004_020bf4f8[13] = {
+PairW sBannerDrawTable[13] = {
     data_02086b58, data_02086b58, data_02086b58, data_02086b58, data_02086b58,
     data_ov004_020bc1a4, data_ov004_020bc24c, data_ov004_020bc21c, data_ov004_020bc26c,
     data_ov004_020bc1cc, data_ov004_020bc174, data_02086b58, data_ov004_020bc194
 };
-int data_ov004_020bf560[29];
+int sMgBannerFiles[29];
 }

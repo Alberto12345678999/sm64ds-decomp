@@ -710,42 +710,42 @@
       "ordinal": 94
     },
     {
-      "symbol": "Mg_GetRowWord12",
+      "symbol": "Mg_GetLevel",
       "address": "0x020b1aec",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov004_020b1aec.c",
       "ordinal": 95
     },
     {
-      "symbol": "Mg_LoseLives",
+      "symbol": "Mg_LoseCredits",
       "address": "0x020b1b08",
       "size": "0x00000038",
       "legacy_source": "src/func_ov004_020b1b08.c",
       "ordinal": 96
     },
     {
-      "symbol": "Mg_GainLives",
+      "symbol": "Mg_GainCredits",
       "address": "0x020b1b40",
       "size": "0x00000038",
       "legacy_source": "src/func_ov004_020b1b40.c",
       "ordinal": 97
     },
     {
-      "symbol": "Mg_SubLives",
+      "symbol": "Mg_SubCredits",
       "address": "0x020b1b78",
       "size": "0x00000028",
       "legacy_source": "src/func_ov004_020b1b78.c",
       "ordinal": 98
     },
     {
-      "symbol": "Mg_AddLives",
+      "symbol": "Mg_AddCredits",
       "address": "0x020b1ba0",
       "size": "0x00000028",
       "legacy_source": "src/func_ov004_020b1ba0.c",
       "ordinal": 99
     },
     {
-      "symbol": "Mg_DrawLives",
+      "symbol": "Mg_DrawCredits",
       "address": "0x020b1bc8",
       "size": "0x000000a0",
       "legacy_source": "src/func_ov004_020b1bc8.c",
@@ -773,7 +773,7 @@
       "ordinal": 103
     },
     {
-      "symbol": "Mg_DrawLivesIcon",
+      "symbol": "Mg_DrawCreditsIcon",
       "address": "0x020b1de8",
       "size": "0x0000004c",
       "legacy_source": "src/func_ov004_020b1de8.c",

@@ -618,7 +618,7 @@ void dScMgLuigi_c::CurtainStart(int i) {
     else
         mCurtain[i].velX = 0x8000;
 
-    v = unk_0bc;
+    v = mLevel;
     while (v >= 5)
         v -= 5;
     if (v != 0) {
@@ -1140,7 +1140,7 @@ void dScMgLuigi_c::BeginCatch(int p1)
     mIconOn = 0x60;
     mState = 3;
     mCatchWait = 0xc8;
-    v = unk_0bc;
+    v = mLevel;
     while (v >= 5) v -= 5;
     if (v != 4)
         *(unsigned short *)&mCatchWait += 8;
@@ -1186,7 +1186,7 @@ void dScMgLuigi_c::CheckTouch()
             cur = mTarget;
             StartReward(cur - 1);
 
-            lvl = unk_0bc;
+            lvl = mLevel;
             cat = 0;
             if (lvl >= 0xa) cat = 2;
             else if (lvl >= 5) cat = 1;
@@ -1543,7 +1543,7 @@ void dScMgLuigi_c::ChooseBoard()
     extern int data_0209d4b8;
     int lvl;
     mPrevBoard = mBoard;
-    lvl = unk_0bc;
+    lvl = mLevel;
     if (lvl >= 0x14) {
         int pick = (int)(((((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0xa) >> 0xf);
         if (pick + 0xa == mPrevBoard) {
@@ -1663,7 +1663,7 @@ void dScMgLuigi_c::StateCatch()
     *(unsigned short *)&mIconOn = 0;
 
     if (mFound != 0) {
-        int v = unk_0bc;
+        int v = mLevel;
         while (v >= 5)
             v -= 5;
         if (v != 4)
@@ -1741,7 +1741,7 @@ extern int data_ov004_020bc864;
 
 // @symbol _ZN12dScMgLuigi_c10StartRoundEi
 /* Same signature as dScMgBase_c::StartRound, or this stops overriding it.
-   unk_0bc is re-read through an int* so the compare is not folded away. */
+   mLevel is re-read through an int* so the compare is not folded away. */
 void dScMgLuigi_c::StartRound(int arg1)
 {
     char *p;
@@ -1749,17 +1749,17 @@ void dScMgLuigi_c::StartRound(int arg1)
 
     if (mFound != 0) {
         mClears += 1;
-        q = (int *)&unk_0bc;
+        q = (int *)&mLevel;
         *q += 1;
-        if ((unsigned int)*(int *)&unk_0bc > 0x270e)
-            *(int *)&unk_0bc = 0x270e;
+        if ((unsigned int)*(int *)&mLevel > 0x270e)
+            *(int *)&mLevel = 0x270e;
     }
 
     if (arg1 == 0x12) {
         mTime = 0xa;
-        *(int *)&unk_0bc = 0;
-        if ((unsigned int)*(int *)&unk_0bc > 0x270e)
-            *(int *)&unk_0bc = 0x270e;
+        *(int *)&mLevel = 0;
+        if ((unsigned int)*(int *)&mLevel > 0x270e)
+            *(int *)&mLevel = 0x270e;
 
         if (gMgScene != 0)
             *(int *)((char *)gMgScene + 0xb4) = 0;

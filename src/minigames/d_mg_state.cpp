@@ -134,7 +134,7 @@ struct Base {
     virtual int CanEndState(int mode);  /* slot 19 */
     virtual void OnNewRecord();             /* slot 20 */
     char pad[0xa4];
-    s32 unk_0a8;                          /* 0x0a8 */
+    s32 mCredits;                          /* 0x0a8 */
 };
 /* The installed screen fader at data_0209f5bc (a dFader_c), under
    dFader_c.h's slot names. The ROM sets r2 = 0 at every SetBackwardTime and
@@ -555,7 +555,7 @@ void dMgState_c::func_ov004_020b7cd0() {
   if (state > 0x64)
     return;
   Base* p = gMgScene;
-  int a8 = (p != 0) ? p->unk_0a8 : 0;
+  int a8 = (p != 0) ? p->mCredits : 0;
   if (a8 == 0) {
     if (state != 0)
       return;
@@ -630,7 +630,7 @@ void dMgState_c::func_ov004_020b7b20() {
 // @symbol _ZN10dMgState_c19func_ov004_020b7a18Ev
 void dMgState_c::func_ov004_020b7a18() {
     Base *g = gMgScene;
-    int cond = g ? g->unk_0a8 : 0;
+    int cond = g ? g->mCredits : 0;
     if (cond == 0) {
         g = gMgScene;
         if (!g) return;

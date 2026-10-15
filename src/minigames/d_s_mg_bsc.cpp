@@ -8,7 +8,7 @@
  *
  * leftovers:
  *   - the func_ov004 and func_ov006 helpers and most data_ globals are
- *     unnamed in symbols.txt; unk_0a8 and unk_0b8 are unnamed in the
+ *     unnamed in symbols.txt; mCredits and mBestHudScore are unnamed in the
  *     header.
  *   - the factory builds the object by hand because the class has no
  *     constructor declared yet.
@@ -71,7 +71,7 @@ extern "C" void FreeGfxSlotsById(int arg);
 extern "C" void func_ov004_020b66d4(void);
 void func_ov006_020c0aa8(void *camera);
 void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
-void Mg_DrawLives(void *scene, int a1, int a2, int a3);
+void Mg_DrawCredits(void *scene, int a1, int a2, int a3);
 void Mg_DrawScoreTally(void *scene, int a1, int a2, int a3);
 void func_ov006_020c1804(void *table);
 void func_ov004_020b65e4(void);
@@ -142,8 +142,8 @@ s32 dScMgBSC_c::InitResources()
     Mg_SetTopScreenYOffset(0x20);
     func_ov004_020b682c();
     data_0208ee44[0] = 1;
-    unk_0a8 = Mg_GetSavedRecord0();
-    unk_0ac = unk_0a8;
+    mCredits = Mg_GetSavedRecord0();
+    mCreditsShown = mCredits;
     this->StartRound(3);
     return 1;
 }
@@ -181,7 +181,7 @@ s32 dScMgBSC_c::Render()
         }
     }
     func_ov004_020b6430();
-    Mg_DrawLives(this, 0xc, 0xc, 0);
+    Mg_DrawCredits(this, 0xc, 0xc, 0);
     Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
     func_ov006_020c1804(&mShared);
     return 1;
@@ -232,7 +232,7 @@ s32 dScMgBSC_c::CanEndState(int mode)
     return 0;
 settle:
     if (state == 0xc && gate == 1) {
-        Mg_SaveRecordPair(unk_0a8, mHudScore);
+        Mg_SaveRecordPair(mCredits, mHudScore);
     }
     return 1;
 }
@@ -400,7 +400,7 @@ void dScMgBSC_c::StateWaitMove()
 // @symbol _ZN10dScMgBSC_c16StateRevealCardsEv
 /* State 5: flips both cards, one frame every four ticks, until the other
  * card is face up. Then settles the stakes: the higher card wins, which
- * adds twice data_ov004_020bfa18 to unk_0a8 and one to the score; a loss
+ * adds twice data_ov004_020bfa18 to mCredits and one to the score; a loss
  * takes one away. */
 void dScMgBSC_c::StateRevealCards()
 {
@@ -419,7 +419,7 @@ void dScMgBSC_c::StateRevealCards()
     {
         u8 chosen = mCardValue[mChosenCard];
         u8 other = mCardValue[mOtherCard];
-        int base = unk_0a8;
+        int base = mCredits;
         int score = mHudScore;
         if (chosen > other) {
             base += data_ov004_020bfa18 * 2;
@@ -451,8 +451,8 @@ void dScMgBSC_c::StateJudgeCards()
             score = &mHudScore;
             *score = *score + 1;
         }
-        if (mHudScore > unk_0b8)
-            unk_0b8 = mHudScore;
+        if (mHudScore > mBestHudScore)
+            mBestHudScore = mHudScore;
         Mg_SubmitScore(mHudScore);
         Mg_SetSharedState(4);
         func_ov006_020c0c80(&mShared);
@@ -515,7 +515,7 @@ void dScMgBSC_c::StateReturnCards()
     {
         return;
     }
-    if (unk_0a8 <= 0)
+    if (mCredits <= 0)
     {
         done = 0;
         i = 0;

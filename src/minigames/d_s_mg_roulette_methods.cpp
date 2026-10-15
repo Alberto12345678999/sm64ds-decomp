@@ -204,9 +204,9 @@ void func_02012790(int a);
 void func_020731dc(void *object, void *destructor, void **node);
 void func_0203d680(Vec2_Fix12 *out, const Vec2_Fix12 *in, int scale);
 void *Ov004_LoadFile(int id);
-void Mg_LoseLives(int c);
-void Mg_GainLives(int c);
-void Mg_DrawLives(char *, int, int, int);
+void Mg_LoseCredits(int c);
+void Mg_GainCredits(int c);
+void Mg_DrawCredits(char *, int, int, int);
 void Mg_DrawNumberRotated(int, int, int, int, int, int, int);
 void func_ov004_020b56c8(void);
 void func_ov004_020b65e4(void);
@@ -333,8 +333,8 @@ s32 dScMgRoulette_c::InitResources()
     if (func_ov006_021085c0((char *)mSlider) == 0)
         return 0;
 
-    unk_0a8 = Mg_GetSavedRecord0();
-    unk_0ac = unk_0a8;
+    mCredits = Mg_GetSavedRecord0();
+    mCreditsShown = mCredits;
     func_ov004_020b682c();
     func_ov006_02107b70((char *)mMeter);
     StartRound(-1);
@@ -376,7 +376,7 @@ s32 dScMgRoulette_c::Behavior()
                     func_ov006_021095ac((int *)(mArray + I(0x53f8) * 0x34), dealPos);
                     mDealIndex += 1;
                     H(0x53e8) = 8;
-                    Mg_LoseLives(1);
+                    Mg_LoseCredits(1);
                     Sound::PlayBank2_2D(0x14d);
                 } else {
                     int i = 0;
@@ -579,7 +579,7 @@ void func_ov006_02109aa0(char *) {
 s32 dScMgRoulette_c::Render()
 {
     char *raw = (char *)this;
-    Mg_DrawLives(raw, 0xc, 0xc, 0);
+    Mg_DrawCredits(raw, 0xc, 0xc, 0);
     func_ov004_020b6430();
 
     {
@@ -929,7 +929,7 @@ void func_ov006_02108f2c(Thing* racer)
         if (out[1] != 0)
             return;
         racer->state = 6;
-        Mg_GainLives(1);
+        Mg_GainCredits(1);
     } else if (state == 4) {
         s32 out[2];
         ApproachLinear(racer->x, racer->targetX, racer->stepX);

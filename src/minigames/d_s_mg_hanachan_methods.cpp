@@ -2279,8 +2279,8 @@ void dScMgHanachan_c::func_ov006_020ed8a4()
 {
     dScMgHanachan_c *self = this;
     char *raw = (char *)this;
-    if ((s32)self->unk_0bc < 0xa) {
-        int bc = (s32)self->unk_0bc;
+    if ((s32)self->mLevel < 0xa) {
+        int bc = (s32)self->mLevel;
         data_ov006_02141fd8 = data_ov006_0212e80c[bc];
         data_ov006_0213c958 = data_ov006_0212e820[bc];
     } else {
@@ -2294,7 +2294,7 @@ void dScMgHanachan_c::func_ov006_020ed8a4()
         }
     }
 
-    if (self->unk_0bc < 0xa)
+    if (self->mLevel < 0xa)
         func_ov006_020ebd7c(2);
     else
         func_ov006_020ebd7c(3);
@@ -2304,7 +2304,7 @@ void dScMgHanachan_c::func_ov006_020ed8a4()
         if (data_ov006_0213c958 > 0) {
             Thing *p = (Thing *)((dScMgHanachan_c *)raw)->mWiggler;
             do {
-                func_ov006_020ecdb8((char *)p, i, (s32)self->unk_0bc);
+                func_ov006_020ecdb8((char *)p, i, (s32)self->mLevel);
                 i++;
                 p++;
             } while (i < data_ov006_0213c958);
@@ -2335,16 +2335,16 @@ void dScMgHanachan_c::StartRound(int state)
         /* `const` on the read is load-bearing: without it mwcc CSEs the +0xbc field
            address into its own register (add r2,r4,#0xbc / ldr [r2] / str [r2]) and the
            function grows a word; the cartridge re-issues ldr r1,[r4,#0xbc]. */
-        unk_0bc = *(const unsigned int*)(raw + 0xbc) + 1;
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        mLevel = *(const unsigned int*)(raw + 0xbc) + 1;
+        if (mLevel > 0x270e) mLevel = 0x270e;
     } else if (state == 0x12) {
-        unk_0bc = 0;
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        mLevel = 0;
+        if (mLevel > 0x270e) mLevel = 0x270e;
         if (gMgScene != 0) *(int*)((char *)gMgScene + 0xb4) = 0;
         Mg_SubmitScore(mHudScore);
         mTimeLeft = 0x14;
     } else {
-        int v = unk_0bc;
+        int v = mLevel;
         if (gMgScene != 0) *(int*)((char *)gMgScene + 0xb4) = v;
         mTimeLeft = 0x14;
     }

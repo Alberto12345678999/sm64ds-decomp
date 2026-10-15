@@ -99,8 +99,8 @@ void* func_02054ea8(void);
 unsigned int LoadCompressedFileAt(int fileID, void* target);
 extern unsigned char data_0209d45c;
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-void Mg_AddLives(void* c, int delta);
-void Mg_SubLives(void* c, int val);
+void Mg_AddCredits(void* c, int delta);
+void Mg_SubCredits(void* c, int val);
 extern unsigned int func_02012790(unsigned int arg);
 extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
@@ -111,7 +111,7 @@ extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
-void Mg_DrawLives(char *a0, int a1, int a2, int a3);
+void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
 void Mg_DrawScoreTally(char *a0, int a1, int a2, int a3);
 extern void **data_ov006_0213e5ec[];
 extern SlotState data_ov006_02142bdc[];
@@ -144,13 +144,13 @@ extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV12dScMgSlot3_c[];
 extern void RenderOamMainScreen(void*, int, int, int, int);
 extern void* data_ov006_0213e6a8;
-extern void Mg_LoseLives(void *c);
+extern void Mg_LoseCredits(void *c);
 extern void func_ov001_020ab3f0(void *c);
 void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
 extern void* data_ov006_0213e528[];
 int TouchArea_Update(void *c, int x);
 void func_ov006_0210c2d4(void *c);
-void Mg_GainLives(int x);
+void Mg_GainCredits(int x);
 extern void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
 extern int Mg_GetSavedRecord0(void);
 extern int data_ov006_0213e63c[][2];
@@ -347,7 +347,7 @@ extern "C" void func_ov006_0210ac3c(char* c)
         if (*(int*)(c + 0x5014) <= 0)
             return;
         *(int*)(((int)c + 0x5014)) -= 1;
-        Mg_AddLives(c, 1);
+        Mg_AddCredits(c, 1);
         Sound::PlayBank2_2D(0x149);
         *(unsigned char*)(((int)c + 0x503e)) += 5;
         return;
@@ -362,7 +362,7 @@ extern "C" void func_ov006_0210ac3c(char* c)
             return;
     }
 
-    Mg_SubLives(c, 1);
+    Mg_SubCredits(c, 1);
     Sound::PlayBank2_2D(0x14a);
 }
 
@@ -600,11 +600,11 @@ void dScMgSlot3_c::StartRound(int mode)
     char *c = (char *)this;
 
     if (mode == 3 || mode == 0x12) {
-        unk_0a8 = 0xc;
-        unk_0ac = unk_0a8;
-        unk_0bc = unk_5004;
-        if (unk_0bc > 0x270e) {
-            unk_0bc = 0x270e;
+        mCredits = 0xc;
+        mCreditsShown = mCredits;
+        mLevel = unk_5004;
+        if (mLevel > 0x270e) {
+            mLevel = 0x270e;
         }
         mHudScore = 0;
         Mg_SubmitScore(mHudScore);
@@ -614,8 +614,8 @@ void dScMgSlot3_c::StartRound(int mode)
             *(int *)(int)(c + 0x5004) += 1;
         }
         *(int *)(int)(c + 0xbc) += 1;
-        if (unk_0bc > 0x270e) {
-            unk_0bc = 0x270e;
+        if (mLevel > 0x270e) {
+            mLevel = 0x270e;
         }
     }
 
@@ -820,7 +820,7 @@ s32 dScMgSlot3_c::Render()
         }
     }
 
-    Mg_DrawLives(c, 0xc, 0xc, 0);
+    Mg_DrawCredits(c, 0xc, 0xc, 0);
     Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 
     if (self->mState == 3 && self->mWinColumn >= 0) {
@@ -955,7 +955,7 @@ s32 dScMgSlot3_c::InitResources()
     func_ov006_020c2154(c + 0x4f38);
     func_ov006_020c1eb4(c + 0x4660);
 
-    unk_5004 = (int)unk_0bc;
+    unk_5004 = (int)mLevel;
 
     ((dScMgSlot3_c *)c)->StartRound(3);
 
@@ -1129,7 +1129,7 @@ void func_ov006_0210c2d4(void *c_)
         return;
     }
     icon->unk_01c += 1;
-    Mg_LoseLives((void *)1);
+    Mg_LoseCredits((void *)1);
     func_ov001_020ab3f0(icon);
     sid = 0x163;
     Sound::PlayBank2_2D(sid);
@@ -1169,7 +1169,7 @@ void dScMgSlot1_c::betIcon_c::Behavior()
     val = unk_020;
     if (val != 0) {
         if ((val & 3) == 0) {
-            Mg_GainLives(1);
+            Mg_GainCredits(1);
             Sound::PlayBank2_2D(0x149);
         }
         unk_020 -= 1;
@@ -1253,8 +1253,8 @@ void func_ov006_0210c638(void *self)
     *(u8 *)(raw + 0x4707) = 1;
     *(u8 *)(raw + 0x4708) = 0;
     dScMgSlot1_c *scene = (dScMgSlot1_c *)self;
-    scene->unk_0a8 = Mg_GetSavedRecord0();
-    scene->unk_0ac = scene->unk_0a8;
+    scene->mCredits = Mg_GetSavedRecord0();
+    scene->mCreditsShown = scene->mCredits;
 }
 }
 
@@ -1302,7 +1302,7 @@ s32 dScMgSlot1_c::Render()
         cur += 0x15;
     }
     mBetIcon.Render();
-    Mg_DrawBigNumber(0x70, 0xb0, unk_0a8, 0, 1, 1, 0x14);
+    Mg_DrawBigNumber(0x70, 0xb0, mCredits, 0, 1, 1, 0x14);
     if (unk_46b4 >= 5 && (*(t + 0x470a) != 0 || (*(t + 0x470b) != 0 && *(t + 0x470b) < 3))) {
         b = *(t + 0x470b);
         if (b != 0 && b < 3) {
@@ -1419,7 +1419,7 @@ s32 dScMgSlot1_c::Behavior()
                             unk_4705++;
                             if (mBetIcon.unk_011 != 0) {
                                 mBetIcon.unk_011 = 0;
-                                Mg_SaveRecordPair(unk_0a8, mHudScore);
+                                Mg_SaveRecordPair(mCredits, mHudScore);
                             }
                             func_02012718(0x162, data_ov006_0213e63c[i][0] << 12);
                             break;
@@ -1444,7 +1444,7 @@ s32 dScMgSlot1_c::Behavior()
                 if (unk_470b != 0 && unk_470b < 3) {
                     unk_46b8 += unk_470b << 1;
                 }
-                Mg_SaveRecordPair(unk_0a8 + unk_46b8 * mBetIcon.unk_01c, mHudScore);
+                Mg_SaveRecordPair(mCredits + unk_46b8 * mBetIcon.unk_01c, mHudScore);
                 unk_46b4 = 4;
                 unk_470c = 0x3c;
             }
@@ -1482,7 +1482,7 @@ s32 dScMgSlot1_c::Behavior()
     case 6: {
         int done = (mBetIcon.unk_020 == 0) ? 1 : 0;
         if (done != 0) {
-            Mg_SubmitScore(unk_0a8);
+            Mg_SubmitScore(mCredits);
             if (DecIfAbove0_Byte(&unk_470c) == 0) {
                 StartRound(4);
             }
@@ -1491,7 +1491,7 @@ s32 dScMgSlot1_c::Behavior()
     }
     case 7:
         if (DecIfAbove0_Byte(&unk_470c) == 0) {
-            if (unk_0a8 > 0) {
+            if (mCredits > 0) {
                 StartRound(5);
             } else {
                 int j;

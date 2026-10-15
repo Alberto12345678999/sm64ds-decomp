@@ -4,7 +4,7 @@
  * dScMgBase_c's D2 directly; no members here need explicit destruction.
  *
  * Fields below 0x4660 (dScMgBase_c's own asserted size) are INHERITED, not
- * dScMgCurling_c's own -- the old flat header's `unk_0a4` at 0x0a4 is
+ * dScMgCurling_c's own -- the old flat header's `mRunDuringFade` at 0x0a4 is
  * really dScMgBase_c's own field at that offset, misattributed by
  * tools/deepen_rtti.py's flat-struct generation (it doesn't know about
  * inheritance). SIZE NOT ASSERTED: a leaf, so nothing needs the number

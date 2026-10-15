@@ -689,7 +689,7 @@ void dScMgPachinko2_c::func_ov006_02100058()
 void dScMgPachinko2_c::func_ov006_02100084()
 {
     unsigned int a, b;
-    if ((int)unk_0bc != 0) {
+    if ((int)mLevel != 0) {
         a = ((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 6) >> 0xf;
         if ((unsigned int)mLaneConfig == a) {
             b = (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5) >> 0xf) + 1;
@@ -2695,18 +2695,18 @@ void dScMgPachinko2_c::func_ov006_02103bfc()
    placeholder borrowed from dActor_c by slot index. */
 void dScMgPachinko2_c::StartRound(int n)
 {
-    /* Reading through `ro` keeps mwcc from holding &unk_0bc in a register,
+    /* Reading through `ro` keeps mwcc from holding &mLevel in a register,
        which costs a word. */
     const dScMgPachinko2_c *ro = this;
 
     unk_5660 = 0;
     if (n == 0x10) {
-        unk_0bc = ro->unk_0bc + 1;
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        mLevel = ro->mLevel + 1;
+        if (mLevel > 0x270e) mLevel = 0x270e;
     } else {
-        unk_0bc = 0;
+        mLevel = 0;
         /* dead clamp, kept: dropping it changes the code */
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        if (mLevel > 0x270e) mLevel = 0x270e;
     }
     FreeGfxSlotsById(0x1d);
     func_ov006_02103bfc();
@@ -2878,7 +2878,7 @@ s32 dScMgPachinko2_c::InitResources()
     func_ov006_020fffec();
     Mg_SetTopScreenYOffset(0x20);
 
-    unk_0a4 = 1;
+    mRunDuringFade = 1;
     unk_566c = 0x10;
     unk_5660 = 1;
     return 1;

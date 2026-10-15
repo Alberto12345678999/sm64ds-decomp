@@ -88,7 +88,7 @@ runtime. `Ov004_` marks a thunk that only forwards to an arm9 routine.
 | Name (old) | Why it is not high |
 |---|---|
 | `Mg_PlayJingle` (020ae274) | It starts sequence `id` on `Sound::PlaySub`'s player and sets the music volume target to 0x40. The callers pass 1, 3 and 4 when a banner goes up. "Jingle" is inferred; the IDs are not mapped to sounds. |
-| `Mg_LoseLives`, `Mg_GainLives`, `Mg_SubLives`, `Mg_AddLives`, `Mg_DrawLives`, `Mg_DrawLivesIcon` | They work on `unk_0a8`, clamped to 0..9999, which `BeforeBehavior` eases `unk_0ac` toward for display. Cup gives 2 and loses one per wrong pick before game over; Memory caps the value at 3. A wider "credits" reading is possible in the gambling games. |
+| `Mg_LoseCredits`, `Mg_GainCredits`, `Mg_SubCredits`, `Mg_AddCredits`, `Mg_DrawCredits`, `Mg_DrawCreditsIcon` | They work on `mCredits`, clamped to 0..9999, which `BeforeBehavior` eases `mCreditsShown` toward for display. Cup gives 2 and loses one per wrong pick before game over; Memory caps the value at 3. A wider "credits" reading is possible in the gambling games. |
 | `Mg_ResumeSharedState` (020b0a38) | It clears `mStateController.unk_024`, which lets `BeforeBehavior`/`BeforeRender` step and draw the controller again. What sets the flag (state 6's behaviour) reads as "hand control back to the game". |
 | `Mg_CheckBannerButton` (020b0b1c) | It hit-tests a touch against a shown banner whose graphic id is `arg` (0x40 x 0x13 box), or reports the banner's finish. States use ids 0, 1 and 2 as retry/quit buttons. |
 | `Mg_DrawBlinkSprite` (020b0d8c) | It alternates sprite words 0x11/0x12 on the 40-frame counter. Which graphic that is has not been seen. |
@@ -96,4 +96,34 @@ runtime. `Ov004_` marks a thunk that only forwards to an arm9 routine.
 | `Mg_RenderSub*`, `Mg_RenderMain*`, `Mg_RenderSpriteBoth*`, `Mg_RenderSpriteOn*` | OAM wrappers named by screen and arguments. `OAM::Render`'s first argument is read as main=0 / sub=1 from `RenderOamMainScreen` and `Hud_RenderSprite`; that reading has not been checked on hardware. |
 
 **Low confidence.**
-- `Mg_GetRowWord12` (020b1aec) returns `unk_0bc`, which the constructor copies from menu-row word 12. The name only describes where the value lives. Jump reads it `% 5`.
+- `Mg_GetLevel` (020b1aec) returns `mLevel`, which the constructor copies from menu-row word 12. The name only describes where the value lives. Jump reads it `% 5`.
+
+## dScMgBase_c fields (renamed 2026-10-14)
+
+The compiler located every use for these: each field was renamed in the header,
+and only the lines the compiler then rejected were changed.
+
+| Offset | Old | New | Confidence | Evidence |
+|---|---|---|---|---|
+| 0x050 | `unk_050` | `mTallyShown` | high | `Mg_DrawTally` keeps the last tally it drew here and compares the new count against it. |
+| 0x054 | `unk_054` | `mTallyAnimTimer` | high | It starts at 1 when the tally rises and drives the newest icon's blink and the close-up at five. |
+| 0x060 | `unk_060` | `mRecordRevealTimer` | high | `Mg_DrawRecordTable` reveals a row every 0x14 frames as it counts, then loops it over 0x64..0x8b. `Mg_SetSharedState` zeroes it. |
+| 0x064 | `unk_064` | `mLastRecordRank` | high | `Mg_RankSessionBest` stores the rank (0..4, or -1); `Mg_GetLastRecordRank` returns it. |
+| 0x0a0 | `unk_0a0` | `mSubBgBank` | medium | Only `dScMgD3DBase_c` uses it: it saves `func_02053eb0()` and passes the value to `GX::SetBankForSubBG`. |
+| 0x0a4 | `unk_0a4` | `mRunDuringFade` | high | `BeforeBehavior` skips the frame while it is 0 and the fader is busy. 3DEsp, Coin, Curling and Curling2 set it to 1. |
+| 0x0a8 | `unk_0a8` | `mCredits` | medium | It is clamped to 0..9999 by `Mg_Add/SubCredits`, and 0 sends the shared states to game over. Cup uses it as lives (2); Card calls it the coin counter. |
+| 0x0ac | `unk_0ac` | `mCreditsShown` | high | `BeforeBehavior` eases it toward `mCredits`, and `Mg_DrawCredits` draws it. |
+| 0x0b8 | `unk_0b8` | `mBestHudScore` | high | Cup, BSC and Card raise it to `mHudScore` whenever that is higher. `BeforeInitResources` zeroes it. |
+| 0x0bc | `unk_0bc` | `mLevel` | medium | The constructor seeds it from menu-row word 12. Wins increment it (capped at 9998) and a loss can reset it. Amida reads it as the level; the level banner (style 12) draws `mLevel + 1`. |
+| 0x0c8 | `unk_0c8` | `mMusicTrack` | high | `BeforeInitResources` copies menu-row word 10 into it; `Mg_GetMusicTrack` returns it. |
+| 0x462c | `unk_462c` | `mMenuScreenSaved` | high | `OnGraphCallback2` latches `mMenuOpen` into it after saving or restoring the screen. `BeforeBehavior` waits while it is set. |
+| 0x4630 | `unk_4630` | `mMenuDisabled` | high | `OpenMenu` does nothing while it is set. `Mg_CheckBannerButton` sets it when a quit button (1 or 2) is touched. |
+| 0x4648 | `unk_4648` | `mQuitFadeStarted` | high | The menu's quit item sets it once, after starting the fade and `func_02012dd0(0x3c)`. |
+| 0x464c | `unk_464c` | `mSubmittedScore` | high | `Mg_SubmitScore` writes it; `Mg_GetSubmittedScore` returns it. |
+| 0x4654 | `unk_4654` | `mSessionBest` | high | `Mg_SetSessionBest` and `Mg_GetSessionBest` write and read it. |
+| 0x4658 | `unk_4658` | `mRankedScore` | high | `Mg_RankSessionBest` moves the session best here before clearing it; the record table blinks it. |
+| 0x465c | `unk_465c` | `mNewRecord` | high | `Mg_SetSessionBest` sets it on beating the top record; `Mg_IsNewRecord` returns it. |
+
+Left unnamed:
+- `unk_0c2`: only the constructor writes it (1).
+- The top record at +0x4650: still header padding, read raw (see themes.md, theme 1).

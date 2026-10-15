@@ -93,7 +93,7 @@ extern int RandomIntInternal(int *seed);
 extern void Mg_SetSharedState(int c);
 extern void func_ov006_020def80(char *self, int i);
 extern void func_ov006_020c2594(void *c);
-extern void Mg_SubLives(void *c, int val);
+extern void Mg_SubCredits(void *c, int val);
 extern void func_ov006_020c2664(char *c);
 extern void func_ov006_020c2440(char *c);
 extern void func_02012790(int x);
@@ -461,11 +461,11 @@ void dScMgCup_c::StateFinish()
     if (mTimer > 0) return;
     if (mCorrect != 0) {
         if (mHudScore < 0x270f) mHudScore += 1;
-        if (mHudScore > unk_0b8) unk_0b8 = mHudScore;
+        if (mHudScore > mBestHudScore) mBestHudScore = mHudScore;
         Mg_SetSharedState(0);
         mState = 7;
     } else {
-        if (unk_0a8 > 0) {
+        if (mCredits > 0) {
             StartRound(-1);
         } else {
             Mg_SetSharedState(0x12);
@@ -496,8 +496,8 @@ void dScMgCup_c::StateResult()
         func_ov006_020c2594(&mModel);
         score++;
     } else {
-        Mg_SubLives(this, 1);
-        if (unk_0a8 > 0) {
+        Mg_SubCredits(this, 1);
+        if (mCredits > 0) {
             mTimer = 0x96;
             func_ov006_020c2664((char *)&mModel);
         } else {
@@ -847,8 +847,8 @@ void dScMgCup_c::StartRound(int msg)
             mHudScore = 0;
             Mg_SubmitScore(mHudScore);
         }
-        unk_0a8 = 2;
-        unk_0ac = unk_0a8;
+        mCredits = 2;
+        mCreditsShown = mCredits;
         mCupContents[0] = 1;
         mCupContents[1] = 0;
         if (mHudScore >= 3) {
@@ -858,8 +858,8 @@ void dScMgCup_c::StartRound(int msg)
         }
         mTargetContent = 1;
     } else if (msg == 0) {
-        unk_0a8 = 2;
-        unk_0ac = unk_0a8;
+        mCredits = 2;
+        mCreditsShown = mCredits;
         if (mHudScore == 3) {
             mCupContents[0] = 1;
             mCupContents[1] = 0;
@@ -882,9 +882,9 @@ void dScMgCup_c::StartRound(int msg)
     mTouchLock = 0;
     func_ov006_020c2924((char *)&mModel);
 
-    unk_0bc = mHudScore;
-    if (unk_0bc > 0x270e) {
-        unk_0bc = 0x270e;
+    mLevel = mHudScore;
+    if (mLevel > 0x270e) {
+        mLevel = 0x270e;
     }
     Mg_ShowBanner(0xd, 0x80, 0xa0, 1, -1, 0xd);
 }
@@ -935,7 +935,7 @@ s32 dScMgCup_c::Render()
             (mTargetContent == 2) ? 4 : -1, -1);
     }
 
-    Mg_DrawStockCounter(unk_0a8, 1);
+    Mg_DrawStockCounter(mCredits, 1);
     Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
     func_ov006_020c29dc((char *)&mModel);
     return 1;

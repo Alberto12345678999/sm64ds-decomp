@@ -461,22 +461,22 @@ void dScMgTrampoline_c::StartRound(int /* arg */)
     self->mTouchY = data_020a0dbc[1];
 
     data_ov006_02142f60 = 0;
-    self->unk_0bc = 0;
-    if ((unsigned int)self->unk_0bc > 0x270e)
-        self->unk_0bc = 0x270e;
-    /* unk_0bc is u32 on dScMgBase_c (dScMg3DEsp_c's evidence). This function
+    self->mLevel = 0;
+    if ((unsigned int)self->mLevel > 0x270e)
+        self->mLevel = 0x270e;
+    /* mLevel is u32 on dScMgBase_c (dScMg3DEsp_c's evidence). This function
        divides and takes a remainder of it, where signedness IS codegen -- it
        reads the field SIGNED, which is what this header used to declare
        locally. Cast at the use site rather than retype the shared base. */
-    q = ((((s32)self->unk_0bc % 5) << 12)) / 4;
+    q = ((((s32)self->mLevel % 5) << 12)) / 4;
     self->mScrollY =
         (int)(((long long)(0x1000 - q) * 0x20 + 0x800) >> 12) +
         (int)(((long long)q * 0x50 + 0x800) >> 12);
     self->mScrollTargetY = self->mScrollY;
     self->mScrollHoldTimer = 0;
-    func_ov006_020cd424(self->unk_0bc, self->mScrollY);
+    func_ov006_020cd424(self->mLevel, self->mScrollY);
 
-    func_ov006_020d0b04(self->unk_0bc);
+    func_ov006_020d0b04(self->mLevel);
     func_ov006_02120ca0();
     func_ov006_020c8a9c(0, data_ov006_0213fb18[GetGameLanguage()]);
 
@@ -599,13 +599,13 @@ int ApproachLinear(int&, int, int);
 void dScMgTrampoline_c::UpdateScroll()
 {
     int q = data_ov006_02140588 / 10;
-    int old = unk_0bc;
+    int old = mLevel;
     func_ov006_020cd62c(mScrollY);
     func_ov006_020cd510((q << 8) + 0x1000);
     if (old != q) {
-        unk_0bc = q;
-        if (unk_0bc > 0x270e)
-            unk_0bc = 0x270e;
+        mLevel = q;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
         if (mScrollTargetY < 0x50) {
             mScrollHoldTimer = 0x78;
             Sound::PlayBank2_2D(0x1b2);

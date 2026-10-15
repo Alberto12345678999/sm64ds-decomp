@@ -7,8 +7,8 @@
  * InitResources the key function that emits the vtable.
  *
  * leftovers:
- * - unk_0bc (dScMgBase_c) and unk_4664 (dScMgD3DBase_c) stay placeholders:
- *   they are read here as the `unk_0bc % 5` egg check and the Render flag
+ * - mLevel (dScMgBase_c) and unk_4664 (dScMgD3DBase_c) stay placeholders:
+ *   they are read here as the `mLevel % 5` egg check and the Render flag
  *   test, but naming them is the shared header's change -- every minigame
  *   scene reads them under the placeholder spellings.
  * - `base + 0x466c` / `base + 0x4728` still address the two per-minigame
@@ -134,8 +134,8 @@ short ApproachLinear2(short &value, short target, short step);
  * else just publishes the count. From the fifteenth egg on the next egg is
  * drawn at random, redrawn while it repeats the previous draw.
  *
- * The draw is written `if (unk_0bc < 15) idx = unk_0bc; else { redraw }`
- * rather than `idx = unk_0bc; if (idx >= 15) { redraw }`. The two are the
+ * The draw is written `if (mLevel < 15) idx = mLevel; else { redraw }`
+ * rather than `idx = mLevel; if (idx >= 15) { redraw }`. The two are the
  * same code to a reader, but only the first reproduces the ROM: with the
  * guard directly ahead of the loop mwccarm hoists the seed address, the
  * previous-draw address and the 10 into r6-r8 and the function comes out a
@@ -146,27 +146,27 @@ void dScMgJump_c::StartRound(int arg)
     u32 idx;
 
     if (arg == 0) {
-        unk_0bc = unk_0bc + 1;
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        mLevel = mLevel + 1;
+        if (mLevel > 0x270e) mLevel = 0x270e;
     } else if (arg == 0x12) {
-        unk_0bc = 0;
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        mLevel = 0;
+        if (mLevel > 0x270e) mLevel = 0x270e;
         if (gMgScene != 0)
             *(int *)((char *)gMgScene + 0xb4) = 0;
         Mg_SubmitScore(mHudScore);
     } else {
-        u32 count = unk_0bc;
+        u32 count = mLevel;
         if (gMgScene != 0)
             *(int *)((char *)gMgScene + 0xb4) = count;
     }
 
-    if (unk_0bc != 0)
+    if (mLevel != 0)
         func_ov006_020c72b4();
     else
         func_ov006_020c72c8();
 
-    if (unk_0bc < 0xf) {
-        idx = unk_0bc;
+    if (mLevel < 0xf) {
+        idx = mLevel;
     } else {
         do {
             idx = (int)((u32)(RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13) * 0xa >> 0xc;
@@ -174,18 +174,18 @@ void dScMgJump_c::StartRound(int arg)
         data_ov006_0213cb48 = idx;
     }
 
-    func_ov006_020c719c(unk_0bc, idx);
+    func_ov006_020c719c(mLevel, idx);
 
-    if (unk_0bc < 0xf)
+    if (mLevel < 0xf)
         data_ov006_02140328 = 3;
-    else if (unk_0bc < 0x14)
+    else if (mLevel < 0x14)
         data_ov006_02140328 = 4;
-    else if (unk_0bc < 0x19)
+    else if (mLevel < 0x19)
         data_ov006_02140328 = 5;
     else
         data_ov006_02140328 = 6;
 
-    func_ov006_020c44b4((void *)unk_0bc, idx);
+    func_ov006_020c44b4((void *)mLevel, idx);
     func_ov006_020ee658();
 }
 
@@ -194,7 +194,7 @@ void dScMgJump_c::StartRound(int arg)
 int dScMgJump_c::CanEndState(int sel)
 {
     if (sel == 0) {
-        if (unk_0bc % 5 == 4) {
+        if (mLevel % 5 == 4) {
             if (ApproachLinear2(mStateTimer, 0, 1) != 0) {
                 if (data_ov006_02140428 < 3) {
                     func_ov006_020c72dc();

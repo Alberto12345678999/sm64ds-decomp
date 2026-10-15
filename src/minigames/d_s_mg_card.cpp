@@ -68,7 +68,7 @@ extern int data_ov006_0213bd18[];
 extern int data_0209e650;
 extern "C" void func_ov006_020c0aa8(void *c);
 extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern "C" void Mg_DrawLives(char *a0, int a1, int a2, int a3);
+extern "C" void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
 extern "C" void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
 extern "C" void func_ov006_020c1804(void *c);
 extern int data_ov006_02134028;
@@ -228,8 +228,8 @@ s32 dScMgCard_c::InitResources()
 
     self->mState = 0;
     self->mStateTimer = 0;
-    unk_0a8 = Mg_GetSavedRecord0();
-    unk_0ac = unk_0a8;
+    mCredits = Mg_GetSavedRecord0();
+    mCreditsShown = mCredits;
     {
         int r = Mg_GetSavedRecord1();
         if (gMgScene != 0)
@@ -336,7 +336,7 @@ int dScMgCard_c::CanEndState(int mode)
         char* a;
         char* b;
         void* p = gMgScene;
-        if ((p != 0 ? ((dScMgBase_c *)p)->unk_0a8 : 0) != 0)
+        if ((p != 0 ? ((dScMgBase_c *)p)->mCredits : 0) != 0)
             return 1;
         a = (char *)mArray1;
         b = (char *)mArray2;
@@ -389,8 +389,8 @@ void dScMgCard_c::OnHostAnimCue() {
  * mStateTimer carries each step's countdown; the two highlight pairs
  * and the card states carry the rest. The singleton
  * gMgScene is the active dScMgBase_c (see its own note in
- * notes/minigame-provenance.md): unk_0a8 is the coin counter,
- * mHudScore the chip tally, unk_0b8 its high-water mark. Coined name;
+ * notes/minigame-provenance.md): mCredits is the coin counter,
+ * mHudScore the chip tally, mBestHudScore its high-water mark. Coined name;
  * the ROM's symbol is address-only. */
 void dScMgCard_c::UpdateState()
 {
@@ -473,7 +473,7 @@ void dScMgCard_c::UpdateState()
                         data_ov004_020bf9ec = 1;
                         Sound::PlayBank2_2D(0x151);
                         g = gMgScene;
-                        a0 = g ? ((dScMgBase_c *)g)->unk_0a8 : 0;
+                        a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
                         a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
                         Mg_SaveRecordPair(a0, a1);
                     }
@@ -493,7 +493,7 @@ void dScMgCard_c::UpdateState()
                         data_ov004_020bf9ec = 1;
                         Sound::PlayBank2_2D(0x151);
                         g = gMgScene;
-                        a0 = g ? ((dScMgBase_c *)g)->unk_0a8 : 0;
+                        a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
                         a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
                         Mg_SaveRecordPair(a0, a1);
                         cnt3 = 0;
@@ -623,7 +623,7 @@ void dScMgCard_c::UpdateState()
             r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
                 g = gMgScene;
-                a0 = g ? ((dScMgBase_c *)g)->unk_0a8 : 0;
+                a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
                 a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
                 Mg_SaveRecordPair(a0, a1 - 1);
                 mStateTimer = 0x5a;
@@ -633,7 +633,7 @@ void dScMgCard_c::UpdateState()
                     int *tbl = data_ov006_0213bd48;
                     int scale;
                     int prod;
-                    a0 = g ? ((dScMgBase_c *)g)->unk_0a8 : 0;
+                    a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
                     r = tbl[t5];
                     scale = data_ov004_020bfa18;
                     prod = r * scale + a0;
@@ -669,8 +669,8 @@ void dScMgCard_c::UpdateState()
                         *fld = *fld + 1;
                     }
                     a1 = ((dScMgBase_c *)g)->mHudScore;
-                    if (a1 > ((dScMgBase_c *)g)->unk_0b8)
-                        ((dScMgBase_c *)g)->unk_0b8 = a1;
+                    if (a1 > ((dScMgBase_c *)g)->mBestHudScore)
+                        ((dScMgBase_c *)g)->mBestHudScore = a1;
                 }
                 Mg_SubmitScore(mHudScore);
                 Mg_SetSharedState(4);
@@ -748,7 +748,7 @@ s32 dScMgCard_c::Render()
         RenderOamMainScreen(data_ov006_02134028, 0x28, 0x38, -1, -1);
     }
 
-    Mg_DrawLives(c, 0xc, 0xc, 0);
+    Mg_DrawCredits(c, 0xc, 0xc, 0);
     Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 
     if (this->mScore < this->mHudScore)

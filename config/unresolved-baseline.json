@@ -136,7 +136,7 @@
    ]
   },
   "ov004:0x020b2cb8": {
-   "name": "func_ov004_020b2cb8",
+   "name": "Mg_LoadBannerFiles",
    "missing": [
     "@7"
    ]

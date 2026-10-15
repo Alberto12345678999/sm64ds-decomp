@@ -367,7 +367,7 @@ void dScMgPanel_c::func_ov006_02104920(int index)
         SetSubBg0Offset(0, 0);
         data_0209d454 &= ~1;
         func_02012790(0x12f);
-        s->mLives -= 1;
+        s->mCredits -= 1;
         return;
     }
     *(int *)(scene + 0x468c + n) = data_ov006_0212ed00[cnt >> 3];
@@ -543,7 +543,7 @@ void dScMgPanel_c::func_ov006_02104d44()
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     extern void *data_ov006_02136d40[];
     if (*(u8 *)(scene + 0x4fe3) == 0) return;
-    Hud_RenderSprite(data_ov006_02136d40[s->mLives],
+    Hud_RenderSprite(data_ov006_02136d40[s->mCredits],
                         0xf0, 0x24, -1, -1);
 }
 
@@ -711,7 +711,7 @@ void dScMgPanel_c::func_ov006_02105134()
     func_02012790(0xe);
     func_ov006_021048e4();
 
-    if (s->mLives > 1) {
+    if (s->mCredits > 1) {
         *(int *)(scene + 0x4ca8) = 3;
         func_ov006_02105c1c();
     } else {
@@ -1479,7 +1479,7 @@ void dScMgPanel_c::func_ov006_021063a0()
     extern u8 data_ov006_0213de28[];
     extern u8 data_ov006_0213de44[];
     extern u8 data_ov006_0213de60[];
-    int t = (int)self->unk_0bc;
+    int t = (int)self->mLevel;
     if (((PanelO_3a0 *)scene)->m8c() != 0) {
         int nv;
         if (t >= 0xf) {
@@ -1616,7 +1616,7 @@ void dScMgPanel_c::func_ov006_021067a4()
     *(s16 *)(scene + 0x4ec2) = 0;
     *(char *)(scene + 0x4fde) = 0;
     *(char *)(scene + 0x4fe1) = 0;
-    ((dScMgPanel_c *)scene)->mLives = 0;
+    ((dScMgPanel_c *)scene)->mCredits = 0;
     for (i = 0; i < 0x20; i++) {
         *(u8 *)(scene + i + 0x4fae) = 0xff;
     }
@@ -2069,13 +2069,13 @@ void dScMgPanel_c::StartRound(int flag)
     if (flag == 0) {
         int *q = (int *)(self + 0xbc);
         *q += 1;
-        if (unk_0bc > 0x270e)
-            unk_0bc = 0x270e;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
     } else {
         unk_4fea = 0;
-        unk_0bc = 0;
-        if (unk_0bc > 0x270e)
-            unk_0bc = 0x270e;
+        mLevel = 0;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
 
         if (gMgScene != 0)
             *(int *)((char *)gMgScene + 0xb4) = 0;
@@ -2090,7 +2090,7 @@ void dScMgPanel_c::StartRound(int flag)
     func_ov006_02106168();
     func_ov006_02104b24();
 
-    mLives = 3;
+    mCredits = 3;
     mState = 0;
     Mg_ShowBanner(0xd, 0x80, 0x40, 0, -1, 0xd);
     SetSubBg0Offset(0, 0);
@@ -2262,7 +2262,7 @@ s32 dScMgPanel_c::InitResources()
 
     mState = 1;
     mIntro = 0;
-    mLives = 3;
+    mCredits = 3;
 
     Mg_SetTopScreenYOffset(0x20);
     Mg_ShowBanner(0xd, 0x80, 0x40, 0, -1, 0xd);

@@ -1521,7 +1521,7 @@ void cMgSmartball_slot_c::BeginStop()
   for (i = 0; i < 3; i++)
   {
     *((unsigned char *) ((c + i) + 0x70)) = z;
-    (&self->unk_064)[i] = ((((((unsigned) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 3) >> 15) + 3;
+    (&self->mLastRecordRank)[i] = ((((((unsigned) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 3) >> 15) + 3;
   }
 
 }
@@ -4927,17 +4927,17 @@ void dScMgSmartball_c::SpawnObjects()
     Mg_SetTopScreenYOffset(0x30);
 
     if (GetOwnerLanguage() == 5) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 4) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 3) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 2) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, (int)self->mLevel & 1);
     } else if (((int)self->param1 & 0xff) == 0) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, (int)self->mLevel & 1);
     } else {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f068, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f068, (int)self->mLevel & 1);
     }
     {
         void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
@@ -4945,13 +4945,13 @@ void dScMgSmartball_c::SpawnObjects()
         DecompressLZ16(d, (void *)0x6600000);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f090, (int)self->unk_0bc & 1);
+    func_02057d00(data_ov006_02142c40, data_ov006_0213f090, (int)self->mLevel & 1);
     {
         void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
         DecompressLZ16(d, c + 0x4954);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f0c0, (int)self->unk_0bc & 1);
+    func_02057d00(data_ov006_02142c40, data_ov006_0213f0c0, (int)self->mLevel & 1);
     {
         void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
         DecompressLZ16(d, c + 0x5154);
@@ -6156,10 +6156,10 @@ s32 dScMgSmartball_c::InitResources()
   s32 i;
   if ((*((s32 *) (c + 8))) & 0xff)
   {
-    unk_0bc = (u8) ((*((s32 *) (c + 8))) & 0xFF);
-    if ((unk_0bc) > 0x270e)
+    mLevel = (u8) ((*((s32 *) (c + 8))) & 0xFF);
+    if ((mLevel) > 0x270e)
     {
-      unk_0bc = 0x270e;
+      mLevel = 0x270e;
     }
   }
   data_0208ee44 = 1;

@@ -92,7 +92,7 @@ extern void *sMgWorkBuffer;
 extern void **data_0209d4a8;
 int func_ov004_020b8ee0(char *p);
 void Mg_UpdateMenu(char *c);
-void func_ov004_020b321c(char *c);
+void Banner_Update(char *c);
 void Mg_UpdateFx(char *c);
 extern SceneVCall6 *data_0209f5bc;
 extern unsigned short data_020a0e5a[];
@@ -185,12 +185,12 @@ s32 GetGameLanguage(void)
 // @symbol Mg_GetLastRecordRank
 namespace s20ad6f4 {
 extern "C" {
-/* Returns unk_064: the index (0..4) at which Mg_RankSessionBest last
+/* Returns mLastRecordRank: the index (0..4) at which Mg_RankSessionBest last
    inserted a score into the five saved records, or -1 if it placed nowhere
    (the constructor also seeds -1). */
 int Mg_GetLastRecordRank(dScMgBase_c *scene)
 {
-    return scene->unk_064;
+    return scene->mLastRecordRank;
 }
 }
 }
@@ -308,25 +308,25 @@ void Mg_SetSessionBest(int score);
 int Mg_GetSubmittedScore(void);
 extern unsigned char data_0209b300[];
 
-/* Ranks the session best (unk_4654, from Mg_GetSessionBest) among the
+/* Ranks the session best (mSessionBest, from Mg_GetSessionBest) among the
    five saved records with Mg_FindRecordRank and keeps that rank in
-   unk_064 (-1 when it placed nowhere). If it placed, the lower rows shift
-   down and the submitted score unk_464c (Mg_GetSubmittedScore) -- not the
+   mLastRecordRank (-1 when it placed nowhere). If it placed, the lower rows shift
+   down and the submitted score mSubmittedScore (Mg_GetSubmittedScore) -- not the
    ranked value -- is written into that row, and data_0209b300 is set to 1.
    Either way the new-record flag is cleared, the session best moves to
-   unk_4658 and is then reset to 0. */
+   mRankedScore and is then reset to 0. */
 void Mg_RankSessionBest(dScMgBase_c *scene)
 {
     int n = Mg_FindRecordRank(scene, Mg_GetSessionBest());
-    scene->unk_064 = n;
-    if (scene->unk_064 < 0) {
+    scene->mLastRecordRank = n;
+    if (scene->mLastRecordRank < 0) {
         Mg_ClearNewRecordFlag();
-        scene->unk_4658 = Mg_GetSessionBest();
+        scene->mRankedScore = Mg_GetSessionBest();
         Mg_SetSessionBest(0);
         return;
     }
     int i;
-    for (i = 4; i > scene->unk_064; i--) {
+    for (i = 4; i > scene->mLastRecordRank; i--) {
         int a = Mg_GetSaveTable(scene);
         int b = Mg_GetSaveTable(scene);
         int v = func_02013580(b, i-1);
@@ -334,10 +334,10 @@ void Mg_RankSessionBest(dScMgBase_c *scene)
     }
     int a = Mg_GetSaveTable(scene);
     int v = Mg_GetSubmittedScore();
-    func_02013568(a, scene->unk_064, v);
+    func_02013568(a, scene->mLastRecordRank, v);
     data_0209b300[0] = 1;
     Mg_ClearNewRecordFlag();
-    scene->unk_4658 = Mg_GetSessionBest();
+    scene->mRankedScore = Mg_GetSessionBest();
     Mg_SetSessionBest(0);
 }
 }
@@ -346,11 +346,11 @@ void Mg_RankSessionBest(dScMgBase_c *scene)
 // @symbol Mg_ClearNewRecordFlag
 namespace s20ada20 {
 extern "C" {
-/* Clears the new-record flag unk_465c. */
+/* Clears the new-record flag mNewRecord. */
 void Mg_ClearNewRecordFlag(void) {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
-        scene->unk_465c = 0;
+        scene->mNewRecord = 0;
     }
 }
 }
@@ -362,27 +362,27 @@ extern "C" {
 extern int gMgMenuRow[];
 extern int Mg_GetTopRecord(void);
 
-/* Stores `score` as the session best (unk_4654). If it beats the record
-   copy at +0x4650, it becomes the new copy and unk_465c is set. Beating
+/* Stores `score` as the session best (mSessionBest). If it beats the record
+   copy at +0x4650, it becomes the new copy and mNewRecord is set. Beating
    it means, compared unsigned: in scoring mode 5, nonzero and either lower
    or the copy is 0; otherwise higher. */
 void Mg_SetSessionBest(int score)
 {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
-    scene->unk_4654 = score;
+    scene->mSessionBest = score;
     if (gMgMenuRow[2] == 5) {
         if (score == 0) return;
         if (Mg_GetTopRecord() != 0) {
             if ((unsigned)score >= (unsigned)Mg_GetTopRecord()) return;
         }
         Mg_SetTopRecord(score);
-        ((dScMgBase_c *)gMgScene)->unk_465c = 1;
+        ((dScMgBase_c *)gMgScene)->mNewRecord = 1;
         return;
     }
     if ((unsigned)score <= (unsigned)Mg_GetTopRecord()) return;
     Mg_SetTopRecord(score);
-    ((dScMgBase_c *)gMgScene)->unk_465c = 1;
+    ((dScMgBase_c *)gMgScene)->mNewRecord = 1;
 }
 }
 }
@@ -390,11 +390,11 @@ void Mg_SetSessionBest(int score)
 // @symbol Mg_GetSessionBest
 namespace s20adafc {
 extern "C" {
-/* The session best, unk_4654; 0 with no scene. */
+/* The session best, mSessionBest; 0 with no scene. */
 int Mg_GetSessionBest(void) {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
-        return scene->unk_4654;
+        return scene->mSessionBest;
     }
     return 0;
 }
@@ -407,14 +407,14 @@ extern "C" {
 extern int Mg_GetSessionBest(void);
 extern int Mg_SetSessionBest(int);
 extern int gMgMenuRow[];
-/* Submits a score: stores it in unk_464c (outside scoring mode 5, capped
+/* Submits a score: stores it in mSubmittedScore (outside scoring mode 5, capped
    at the menu row's word 3 when that is nonzero) and passes it to
    Mg_SetSessionBest when it beats the session best. */
 void Mg_SubmitScore(int score) {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
     if (gMgMenuRow[2] == 5) {
-        scene->unk_464c = score;
+        scene->mSubmittedScore = score;
         if (Mg_GetSessionBest() != 0) {
             if ((unsigned)score >= (unsigned)Mg_GetSessionBest()) return;
         }
@@ -424,7 +424,7 @@ void Mg_SubmitScore(int score) {
         if (cap != 0) {
             if ((unsigned)score > (unsigned)cap) score = cap;
         }
-        scene->unk_464c = score;
+        scene->mSubmittedScore = score;
         if ((unsigned)score <= (unsigned)Mg_GetSessionBest()) return;
         Mg_SetSessionBest(score);
     }
@@ -435,11 +435,11 @@ void Mg_SubmitScore(int score) {
 // @symbol Mg_GetSubmittedScore
 namespace s20adbc0 {
 extern "C" {
-/* The submitted score, unk_464c; 0 with no scene. */
+/* The submitted score, mSubmittedScore; 0 with no scene. */
 int Mg_GetSubmittedScore(void) {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
-        return scene->unk_464c;
+        return scene->mSubmittedScore;
     }
     return 0;
 }
@@ -449,11 +449,11 @@ int Mg_GetSubmittedScore(void) {
 // @symbol Mg_IsNewRecord
 namespace s20adbe0 {
 extern "C" {
-/* The new-record flag, unk_465c; 0 with no scene. */
+/* The new-record flag, mNewRecord; 0 with no scene. */
 int Mg_IsNewRecord(void) {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
-        return scene->unk_465c;
+        return scene->mNewRecord;
     }
     return 0;
 }
@@ -603,14 +603,14 @@ extern "C" void Mg_DrawFx(Ent *c) {
 // @symbol _ZN3Ent19func_ov004_020addccEv
 namespace s20addcc {
 extern "C" {
-void Mg_GainLives(void *c);
+void Mg_GainCredits(void *c);
 inline long long inline_fn(int arg0)
 {
   return (long long) arg0;
 }
 }
 }
-/* State 1's update. Counts mTimer down, calling Mg_GainLives(1) on
+/* State 1's update. Counts mTimer down, calling Mg_GainCredits(1) on
    the frame it reaches 0, then places mPos between the two vectors by the
    remaining fraction s = mTimer / mDuration: x = mVecA.x * s + mVecB.x * (1 - s),
    y = mVecB.y + s * s * (mVecA.y - mVecB.y), all Fix12. */
@@ -621,7 +621,7 @@ void Ent::func_ov004_020addcc()
   {
   if (ApproachLinear2(mTimer, 0, 1))
   {
-    Mg_GainLives((void *) 1);
+    Mg_GainCredits((void *) 1);
   }
   int a = mTimer;
   int b = mDuration;
@@ -816,7 +816,7 @@ namespace s20ae140 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c16OnGraphCallback2Ev
 /* dScMgBase_c::OnGraphCallback2 - slot 24. When mMenuOpen differs from its latch
-   unk_462c, calls SaveScreenForMenu (slot 29) if the menu has opened or
+   mMenuScreenSaved, calls SaveScreenForMenu (slot 29) if the menu has opened or
    RestoreScreenFromMenu (slot 30) if it has closed, then latches it. */
 }
 }
@@ -824,14 +824,14 @@ extern "C" {
 int dScMgBase_c::OnGraphCallback2()
 {
     int v2 = mMenuOpen;
-    int v1 = unk_462c;
+    int v1 = mMenuScreenSaved;
     if (v1 == v2) goto done;
     if (v2 == 0) {
         RestoreScreenFromMenu();
     } else {
         SaveScreenForMenu();
     }
-    unk_462c = mMenuOpen;
+    mMenuScreenSaved = mMenuOpen;
 done:
     return 1;
 }
@@ -894,10 +894,10 @@ int Mg_GetMusicMode(void) {
 // @symbol Mg_GetMusicTrack
 namespace s20ae1f0 {
 extern "C" {
-/* The scene's music track, unk_0c8; 5 with no scene. */
+/* The scene's music track, mMusicTrack; 5 with no scene. */
 int Mg_GetMusicTrack(void) {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
-    if (scene != 0) return scene->unk_0c8;
+    if (scene != 0) return scene->mMusicTrack;
     return 5;
 }
 }
@@ -1450,9 +1450,9 @@ after:
         dScene_c::SetFaders(&data_0209f61c);
         data_0209f61c.func_0202ec9c(1);
         dScene_c::StartSceneFade(5, 0, 0);
-        if (self->unk_4648 != 0) return;
+        if (self->mQuitFadeStarted != 0) return;
         func_02012dd0(0x3c);
-        self->unk_4648 = 1;
+        self->mQuitFadeStarted = 1;
         return;
     case 2:
         func_ov004_020b9220((char *)&self->mTouchOptions);
@@ -1678,7 +1678,7 @@ int dScMgBase_c::SaveScreenForMenu()
 namespace s20af27c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c8OpenMenuEv
-/* dScMgBase_c::OpenMenu - slot 27. Unless unk_4630 is set, opens
+/* dScMgBase_c::OpenMenu - slot 27. Unless mMenuDisabled is set, opens
    the three-item overlay menu: items start at their slide-in positions,
    the prompt is disabled and nothing is highlighted. */
 }
@@ -1686,7 +1686,7 @@ extern "C" {
 
 void dScMgBase_c::OpenMenu()
 {
-    if (unk_4630 != 0) return;
+    if (mMenuDisabled != 0) return;
     func_02012e78();
     mMenuItem0X = -0x80;
     mMenuItem0Y = 0x30;
@@ -2284,13 +2284,13 @@ int dScMgBase_c::BeforeRender()
         for (i = 0; i < 3; i++, p += 0x134) {
             if (*(int *)(p + 0x20) == 0x1d) continue;
             if (*(s16 *)(p + 0x30) != 0) continue;
-            func_ov004_020b31b4(p);
+            Banner_Draw(p);
         }
         p2 = gMgBanners;
         for (i2 = 0; i2 < 3; i2++, p2 += 0x134) {
             if (*(int *)(p2 + 0x20) == 0x1d) continue;
             if (*(s16 *)(p2 + 0x30) == 0) continue;
-            func_ov004_020b31b4(p2);
+            Banner_Draw(p2);
         }
         mStateController.Render();
     }
@@ -2313,7 +2313,7 @@ s32 dScMgBase_c::Behavior()
 
 // @symbol _ZN11dScMgBase_c14BeforeBehaviorEv
 /* Handles input and the menu, runs the UI state controller and the shared
- * records, approaches unk_0ac toward unk_0a8, and advances the 40-frame
+ * records, approaches mCreditsShown toward mCredits, and advances the 40-frame
  * counter. Returns 0 to stop the derived scene's behavior this frame. */
 int dScMgBase_c::BeforeBehavior()
 {
@@ -2343,7 +2343,7 @@ int dScMgBase_c::BeforeBehavior()
         Mg_UpdateMenu((char *)this);
         return 0;
     }
-    if (unk_462c != 0)
+    if (mMenuScreenSaved != 0)
         return 0;
 
     if (mStateController.unk_024 == 0) {
@@ -2353,7 +2353,7 @@ int dScMgBase_c::BeforeBehavior()
         g = gMgBanners;
         for (i = 0; i < 3; i++) {
             if (*(int *)(g + 0x20) != 0x1d)
-                func_ov004_020b321c(g);
+                Banner_Update(g);
             g += 0x134;
         }
     }
@@ -2369,12 +2369,12 @@ int dScMgBase_c::BeforeBehavior()
         }
     }
 
-    if (unk_0a4 == 0) {
+    if (mRunDuringFade == 0) {
         if (data_0209f5bc->IsActive() == 0)
             return 0;
     }
 
-    ApproachLinear(unk_0ac, unk_0a8, data_0208ee44);
+    ApproachLinear(mCreditsShown, mCredits, data_0208ee44);
 
     mFrameCounter++;
     if (mFrameCounter >= 0x28)
@@ -2400,7 +2400,7 @@ void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
             func_02012e1c();
             Sound::StopLoadedMusic_Layer1(1);
         }
-        func_ov004_020b2c84();
+        Mg_FreeBannerFiles();
     }
     dScene_c::AfterCleanupResources(vfSuccess);
 }
@@ -2426,17 +2426,17 @@ bool dScMgBase_c::BeforeInitResources()
         func_02019028();
     else
         Enable3dEngines();
-    unk_0c8 = *(int*)(gMgMenuRow + 0x28);
+    mMusicTrack = *(int*)(gMgMenuRow + 0x28);
     if (sMgWorkBuffer == 0)
         sMgWorkBuffer = _ZN6Memory13operator_new2Ej(0x4000);
     if (gMgScene != 0)
         *(int*)((char*)gMgScene + 0xb0) = 0;
     mHudScore = 0;
-    unk_0b8 = 0;
-    unk_465c = 0;
+    mBestHudScore = 0;
+    mNewRecord = 0;
     func_ov004_020b8a8c((char *)this + 0x4000);
     InitEngines();
-    func_ov004_020b2cb8();
+    Mg_LoadBannerFiles();
     dScene_c::SetFaders(&data_0209f61c);
     data_0209f61c.func_0202ec9c(0);
     data_0209d460[0] = 0;
@@ -2462,7 +2462,7 @@ void Mg_ResumeSharedState(void)
 // @symbol Mg_SetSharedState
 namespace s20b0a54 {
 extern "C" {
-/* Sets the UI state controller's state and clears unk_060. The singleton
+/* Sets the UI state controller's state and clears mRecordRevealTimer. The singleton
    is read again after SetState, as the ROM does. */
 extern "C" void Mg_SetSharedState(s32 state)
 {
@@ -2470,7 +2470,7 @@ extern "C" void Mg_SetSharedState(s32 state)
     if (!scene)
         return;
     scene->mStateController.SetState(state);
-    ((dScMgBase_c *)gMgScene)->unk_060 = 0;
+    ((dScMgBase_c *)gMgScene)->mRecordRevealTimer = 0;
 }
 }
 }
@@ -2478,7 +2478,7 @@ extern "C" void Mg_SetSharedState(s32 state)
 // @symbol FreeGfxSlotsById
 namespace s20b0aa0 {
 extern "C" {
-extern void func_ov004_020b3194(void *c);
+extern void Banner_Free(void *c);
 struct E
 {
   char pad[0x20];
@@ -2486,7 +2486,7 @@ struct E
   char pad2[0x134 - 0x24];
 };
 extern struct E gMgBanners[];
-/* Calls func_ov004_020b3194 on each of the three 0x134-byte records at
+/* Calls Banner_Free on each of the three 0x134-byte records at
    gMgBanners whose word at +0x20 equals `arg` -- or, for 0x1d,
    on each whose word is not 0x1d. */
 void FreeGfxSlotsById(int arg)
@@ -2501,7 +2501,7 @@ void FreeGfxSlotsById(int arg)
     {
       if (p->f20 != 0x1d)
       {
-        func_ov004_020b3194(p);
+        Banner_Free(p);
       }
       p++;
     }
@@ -2514,7 +2514,7 @@ void FreeGfxSlotsById(int arg)
     {
       if (arg == p->f20)
       {
-        func_ov004_020b3194(p);
+        Banner_Free(p);
       }
       p++;
     }
@@ -2546,8 +2546,8 @@ struct Obj004 {
 extern struct Obj004 gMgBanners[3];
 extern int data_ov004_020bc150;
 
-extern void func_ov004_020b422c(struct Obj004 *o);
-extern int func_ov004_020b40c0(struct Obj004 *o);
+extern void Banner_Press(struct Obj004 *o);
+extern int Banner_IsPressFinished(struct Obj004 *o);
 
 // The ROM scales idx into the addressing mode here, which only the 4-byte-record view of the lane reproduces.
 #define TOUCH_REC(lane) ((unsigned char (*)[4])(lane))
@@ -2576,9 +2576,9 @@ int Mg_CheckBannerButton(int arg) {
                 dy = pos.y - cy;
                 if (dx <= 0x40 && dx >= -0x40 && dy <= 0x13 && dy >= -0x13) {
                     if (data_ov004_020bc150 != 0) {
-                        func_ov004_020b422c(o);
+                        Banner_Press(o);
                         if ((unsigned int)(arg - 1) <= 1) {
-                            ((dScMgBase_c *)gMgScene)->unk_4630 = 1;
+                            ((dScMgBase_c *)gMgScene)->mMenuDisabled = 1;
                         }
                     }
                 }
@@ -2589,7 +2589,7 @@ int Mg_CheckBannerButton(int arg) {
         struct Obj004 *o = gMgBanners;
         for (j = 0; j < 3; j++, o++) {
             if (arg == o->f20) {
-                if (func_ov004_020b40c0(o) != 0) {
+                if (Banner_IsPressFinished(o) != 0) {
                     if (arg == 1) {
                     } else if (arg == 2) {
                     } else {
@@ -2610,15 +2610,15 @@ namespace s20b0cac {
 extern "C" {
 struct Elem { char pad[0x134]; };
 extern struct Elem gMgBanners[];
-extern void func_ov004_020b3278(struct Elem *e, int c, int a1, int a2, int a3, int s1, short s2);
-/* Hands its arguments to func_ov004_020b3278 for the first of the three
+extern void Banner_Init(struct Elem *e, int c, int a1, int a2, int a3, int s1, short s2);
+/* Hands its arguments to Banner_Init for the first of the three
    records at gMgBanners whose word at +0x20 is 0x1d; does nothing
    when none is. */
 void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6) {
     int i;
     for (i = 0; i < 3; i++) {
         if (*(int*)((char*)&gMgBanners[i] + 0x20) == 0x1d) {
-            func_ov004_020b3278(&gMgBanners[i], c, a1, a2, a3, arg5, arg6);
+            Banner_Init(&gMgBanners[i], c, a1, a2, a3, arg5, arg6);
             return;
         }
     }
@@ -2629,7 +2629,7 @@ void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6) {
 // @symbol Mg_ResetOverlays
 namespace s20b0d30 {
 extern "C" {
-extern char data_ov004_020bf3e8[];
+extern char sMgBannerGfxSlotUsed[];
 
 void Mg_ResetOverlays(void) {
     FreeGfxSlotsById(0x1d);
@@ -2639,7 +2639,7 @@ void Mg_ResetOverlays(void) {
         i++;
     } while (i < 0x40);
     int j = 0;
-    char* p = data_ov004_020bf3e8;
+    char* p = sMgBannerGfxSlotUsed;
     do {
         j++;
         *p++ = 0;
@@ -2717,12 +2717,12 @@ static inline int sdiv2(int e) {
 /* Draws a tally of `sb` in a column at x 0xf0, upward from y 0xa8: one
    icon (per-language sprite word 9) per unit, and from five upward the
    whole fives as a number (Mg_DrawNumber) beside sprite word 11 with
-   only the remainder as icons. unk_050 holds the last tally. A rise plays
-   sound 0x1bb (func_02012790) and starts the unk_054 counter -- one step a
+   only the remainder as icons. mTallyShown holds the last tally. A rise plays
+   sound 0x1bb (func_02012790) and starts the mTallyAnimTimer counter -- one step a
    frame, two when slot 26 returns 2 -- while the newest icon blinks with a
-   period of 60 unk_054 steps (30 frames when slot 26 returns 2); a fall
+   period of 60 mTallyAnimTimer steps (30 frames when slot 26 returns 2); a fall
    stops it. When the tally reaches a multiple of
-   five, the icons close up as unk_054 runs from mTimeLimit to
+   five, the icons close up as mTallyAnimTimer runs from mTimeLimit to
    mTimeLimit + 0x20, with sound 0x1ba as they start. */
 extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
     int *r8;
@@ -2731,19 +2731,19 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
     int pin;
 
     {
-        int t = sl->unk_050;
+        int t = sl->mTallyShown;
         if (t < sb) {
-            sl->unk_054 = 1;
-            sl->unk_050 = sb;
+            sl->mTallyAnimTimer = 1;
+            sl->mTallyShown = sb;
             func_02012790(0x1bb);
         } else if (t > sb) {
-            sl->unk_054 = 0;
-            sl->unk_050 = sb;
-        } else if (sl->unk_054 > 0) {
+            sl->mTallyAnimTimer = 0;
+            sl->mTallyShown = sb;
+        } else if (sl->mTallyAnimTimer > 0) {
             if (sl->GetDisplayMode() == 2) {
-                sl->unk_054 += 2;
+                sl->mTallyAnimTimer += 2;
             } else {
-                sl->unk_054 += 1;
+                sl->mTallyAnimTimer += 1;
             }
         }
     }
@@ -2756,7 +2756,7 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
         i = 0;
         if (sb > 0) {
             do {
-                if (i == sb - 1 && sl->unk_054 > 0 && sl->unk_054 % 0x3c >= 0x1e) {
+                if (i == sb - 1 && sl->mTallyAnimTimer > 0 && sl->mTallyAnimTimer % 0x3c >= 0x1e) {
                     break;
                 }
                 RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
@@ -2764,14 +2764,14 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
                 r7 -= 0x10;
             } while (i < sb);
         }
-        if (sl->unk_054 >= sl->mTimeLimit) {
-            sl->unk_054 = 0;
+        if (sl->mTallyAnimTimer >= sl->mTimeLimit) {
+            sl->mTallyAnimTimer = 0;
         }
         return;
     }
 
     if (sb == 5) {
-        int u = sl->unk_054;
+        int u = sl->mTallyAnimTimer;
         if (u == 0) {
             Mg_DrawNumber(0xf0, r7, 5, 1, 0, 0, 0x14);
             RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
@@ -2783,17 +2783,17 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
                 i += 1;
                 r7 -= 0x10;
             } while (i < 4);
-            if (sl->unk_054 % 0x3c < 0x1e) {
+            if (sl->mTallyAnimTimer % 0x3c < 0x1e) {
                 RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
             }
         } else {
-            int d = (sl->mTimeLimit + 0x20) - sl->unk_054;
+            int d = (sl->mTimeLimit + 0x20) - sl->mTallyAnimTimer;
             r7 -= sdiv4(d);
             i = 0;
             do {
                 RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                 {
-                    unsigned e = (sl->mTimeLimit + 0x20) - sl->unk_054;
+                    unsigned e = (sl->mTimeLimit + 0x20) - sl->mTallyAnimTimer;
                     r7 -= sdiv2((int)e);
                 }
                 i += 1;
@@ -2801,15 +2801,15 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
         }
         if (sl->GetDisplayMode() == 2) {
             int b = sl->mTimeLimit;
-            int c = sl->unk_054;
+            int c = sl->mTallyAnimTimer;
             if (c == b || c == b + 1) {
                 func_02012790(0x1ba);
             }
-        } else if (sl->unk_054 == sl->mTimeLimit) {
+        } else if (sl->mTallyAnimTimer == sl->mTimeLimit) {
             func_02012790(0x1ba);
         }
-        if (sl->unk_054 >= sl->mTimeLimit + 0x20) {
-            sl->unk_054 = 0;
+        if (sl->mTallyAnimTimer >= sl->mTimeLimit + 0x20) {
+            sl->mTallyAnimTimer = 0;
         }
         return;
     }
@@ -2817,7 +2817,7 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
     {
         int rem = sb % 5;
         if (rem == 0) {
-            int u = sl->unk_054;
+            int u = sl->mTallyAnimTimer;
             if (u == 0) {
                 Mg_DrawNumber(0xf0, r7, sb, 1, 0, 0, 0x14);
                 RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
@@ -2827,7 +2827,7 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
                 r7 -= 0x18;
                 i = 0;
                 do {
-                    if (i == 4 && sl->unk_054 > 0 && sl->unk_054 % 0x3c >= 0x1e) {
+                    if (i == 4 && sl->mTallyAnimTimer > 0 && sl->mTallyAnimTimer % 0x3c >= 0x1e) {
                         break;
                     }
                     RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
@@ -2838,11 +2838,11 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
                 int d;
                 Mg_DrawNumber(0xf0, r7, sb - 5, 1, 0, 0, 0x14);
                 RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
-                d = (sl->mTimeLimit + 0x20) - sl->unk_054;
+                d = (sl->mTimeLimit + 0x20) - sl->mTallyAnimTimer;
                 r7 -= sdiv4(d);
                 i = 0;
                 do {
-                    unsigned e = (sl->mTimeLimit + 0x20) - sl->unk_054;
+                    unsigned e = (sl->mTimeLimit + 0x20) - sl->mTallyAnimTimer;
                     r7 -= sdiv2((int)e);
                     RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                     i += 1;
@@ -2850,15 +2850,15 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
             }
             if (sl->GetDisplayMode() == 2) {
                 int b = sl->mTimeLimit;
-                int c = sl->unk_054;
+                int c = sl->mTallyAnimTimer;
                 if (c == b || c == b + 1) {
                     func_02012790(0x1ba);
                 }
-            } else if (sl->unk_054 == sl->mTimeLimit) {
+            } else if (sl->mTallyAnimTimer == sl->mTimeLimit) {
                 func_02012790(0x1ba);
             }
-            if (sl->unk_054 >= sl->mTimeLimit + 0x20) {
-                sl->unk_054 = 0;
+            if (sl->mTallyAnimTimer >= sl->mTimeLimit + 0x20) {
+                sl->mTallyAnimTimer = 0;
             }
             return;
         }
@@ -2873,7 +2873,7 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
         if (rem > 0) {
             pin = rem - 1;
             do {
-                if (sb == pin && sl->unk_054 > 0 && sl->unk_054 % 0x3c >= 0x1e) {
+                if (sb == pin && sl->mTallyAnimTimer > 0 && sl->mTallyAnimTimer % 0x3c >= 0x1e) {
                     break;
                 }
                 RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
@@ -2881,8 +2881,8 @@ extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
                 r7 -= 0x10;
             } while (sb < rem);
         }
-        if (sl->unk_054 >= sl->mTimeLimit) {
-            sl->unk_054 = 0;
+        if (sl->mTallyAnimTimer >= sl->mTimeLimit) {
+            sl->mTallyAnimTimer = 0;
         }
     }
 }
@@ -2898,9 +2898,9 @@ extern int func_02013580(int a, int b);
 extern void Mg_DrawRecordRow(void* self, int a1, int a2, int a3);
 
 /* Draws the five saved records in rows 0x18 apart from (0xa8, 0x28),
-   revealing one more row every 0x14 frames as unk_060 counts up. unk_060
-   then loops over 0x64..0x8b, and the session best (unk_4658) blinks on
-   that 40-frame loop: in the row of the rank it took (unk_064, read
+   revealing one more row every 0x14 frames as mRecordRevealTimer counts up. mRecordRevealTimer
+   then loops over 0x64..0x8b, and the session best (mRankedScore) blinks on
+   that 40-frame loop: in the row of the rank it took (mLastRecordRank, read
    through Mg_GetLastRecordRank), or in a row below the five when it placed
    nowhere. Mg_GetLastRecordRank takes only the scene; the second argument
    passed here is unused. */
@@ -2913,11 +2913,11 @@ void Mg_DrawRecordTable(char* self)
     int j;
     int k;
 
-    scene->unk_060 += 1;
-    if (scene->unk_060 >= 0x8c)
-        scene->unk_060 = 0x64;
+    scene->mRecordRevealTimer += 1;
+    if (scene->mRecordRevealTimer >= 0x8c)
+        scene->mRecordRevealTimer = 0x64;
 
-    n = Mg_GetLastRecordRank(self, scene->unk_4658);
+    n = Mg_GetLastRecordRank(self, scene->mRankedScore);
     if (n < 0)
         goto neg;
 
@@ -2926,17 +2926,17 @@ void Mg_DrawRecordTable(char* self)
     {
         do
         {
-            if (scene->unk_060 >= i * 0x14)
+            if (scene->mRecordRevealTimer >= i * 0x14)
                 Mg_DrawRecordRow(self, 0xa8, a2, func_02013580(Mg_GetSaveTable(self), i));
             a2 += 0x18;
             i++;
         } while (i < n);
     }
 
-    if (scene->unk_060 >= n * 0x14)
+    if (scene->mRecordRevealTimer >= n * 0x14)
     {
-        if (scene->unk_060 < 0x64 || scene->unk_060 - 0x64 < 0x14)
-            Mg_DrawRecordRow(self, 0xa8, a2, scene->unk_4658);
+        if (scene->mRecordRevealTimer < 0x64 || scene->mRecordRevealTimer - 0x64 < 0x14)
+            Mg_DrawRecordRow(self, 0xa8, a2, scene->mRankedScore);
         else
             Mg_DrawRecordRow(self, 0xa8, a2, -1);
     }
@@ -2947,7 +2947,7 @@ void Mg_DrawRecordTable(char* self)
         return;
     do
     {
-        if (scene->unk_060 >= j * 0x14)
+        if (scene->mRecordRevealTimer >= j * 0x14)
             Mg_DrawRecordRow(self, 0xa8, a2, func_02013580(Mg_GetSaveTable(self), j));
         a2 += 0x18;
         j++;
@@ -2958,17 +2958,17 @@ neg:
     k = 0;
     do
     {
-        if (scene->unk_060 >= k * 0x14)
+        if (scene->mRecordRevealTimer >= k * 0x14)
             Mg_DrawRecordRow(self, 0xa8, a2, func_02013580(Mg_GetSaveTable(self), k));
         a2 += 0x18;
         k++;
     } while (k < 5);
 
-    if (scene->unk_060 < 0x64)
+    if (scene->mRecordRevealTimer < 0x64)
         return;
 
-    if (scene->unk_060 - 0x64 < 0x14)
-        Mg_DrawRecordRow(self, 0xa8, a2 + 0x10, scene->unk_4658);
+    if (scene->mRecordRevealTimer - 0x64 < 0x14)
+        Mg_DrawRecordRow(self, 0xa8, a2 + 0x10, scene->mRankedScore);
     else
         Mg_DrawRecordRow(self, 0xa8, a2 + 0x10, -1);
 }
@@ -3089,86 +3089,86 @@ void Mg_DrawTopRightCounter(int a0, int a1){
 }
 }
 
-// @symbol Mg_GetRowWord12
+// @symbol Mg_GetLevel
 namespace s20b1aec {
 extern "C" {
-/* The scene's unk_0bc; 0 with no scene. */
-int Mg_GetRowWord12(void) {
+/* The scene's mLevel; 0 with no scene. */
+int Mg_GetLevel(void) {
     dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
-    if (scene != 0) return scene->unk_0bc;
+    if (scene != 0) return scene->mLevel;
     return 0;
 }
 }
 }
 
-// @symbol Mg_LoseLives
+// @symbol Mg_LoseCredits
 namespace s20b1b08 {
 extern "C" {
-extern void Mg_SubLives(void *c, int val);
-/* Subtracts `amount` from the scene's unk_0a8 (Mg_SubLives). Most
+extern void Mg_SubCredits(void *c, int val);
+/* Subtracts `amount` from the scene's mCredits (Mg_SubCredits). Most
    callers declare the amount as a void *, so it stays one here. */
-void Mg_LoseLives(void *amount) {
+void Mg_LoseCredits(void *amount) {
     void *v = gMgScene;
     if (v == 0) return;
-    Mg_SubLives(v, (int)amount);
+    Mg_SubCredits(v, (int)amount);
 }
 }
 }
 
-// @symbol Mg_GainLives
+// @symbol Mg_GainCredits
 namespace s20b1b40 {
 extern "C" {
-extern void Mg_AddLives(void *c, s32 delta);
-/* Adds `amount` to the scene's unk_0a8 (Mg_AddLives). */
-void Mg_GainLives(void *amount) {
+extern void Mg_AddCredits(void *c, s32 delta);
+/* Adds `amount` to the scene's mCredits (Mg_AddCredits). */
+void Mg_GainCredits(void *amount) {
     void *v = gMgScene;
     if (v == 0) return;
-    Mg_AddLives(v, (s32)amount);
+    Mg_AddCredits(v, (s32)amount);
 }
 }
 }
 
-// @symbol Mg_SubLives
+// @symbol Mg_SubCredits
 namespace s20b1b78 {
 extern "C" {
-/* unk_0a8 -= val, clamped to 0..9999. */
-void Mg_SubLives(void* c, int val) {
+/* mCredits -= val, clamped to 0..9999. */
+void Mg_SubCredits(void* c, int val) {
     dScMgBase_c *scene = (dScMgBase_c *)c;
-    int r2 = scene->unk_0a8;
+    int r2 = scene->mCredits;
     r2 -= val;
     if (r2 < 0) r2 = 0;
     else if (r2 > 0x270f) r2 = 0x270f;
-    scene->unk_0a8 = r2;
+    scene->mCredits = r2;
 }
 }
 }
 
-// @symbol Mg_AddLives
+// @symbol Mg_AddCredits
 namespace s20b1ba0 {
 extern "C" {
-/* unk_0a8 += delta, clamped to 0..9999. */
-void Mg_AddLives(void *c, s32 delta)
+/* mCredits += delta, clamped to 0..9999. */
+void Mg_AddCredits(void *c, s32 delta)
 {
     dScMgBase_c *scene = (dScMgBase_c *)c;
-    s32 v = scene->unk_0a8 + delta;
+    s32 v = scene->mCredits + delta;
     if (v < 0) v = 0;
     else if (v > 0x270f) v = 0x270f;
-    scene->unk_0a8 = v;
+    scene->mCredits = v;
 }
 }
 }
 
-// @symbol Mg_DrawLives
+// @symbol Mg_DrawCredits
 namespace s20b1bc8 {
 extern "C" {
-extern void Mg_DrawLivesIcon(int r0, int r1, int r2, int r3);
-/* Draws sprite word 2 at (a1, a2) on wrapper a3 (Mg_DrawLivesIcon),
-   then the scene's unk_0ac beside it: below 100 through
+extern void Mg_DrawCreditsIcon(int r0, int r1, int r2, int r3);
+/* Draws sprite word 2 at (a1, a2) on wrapper a3 (Mg_DrawCreditsIcon),
+   then the scene's mCreditsShown beside it: below 100 through
    Mg_DrawBigNumber, otherwise through Mg_DrawNumber. */
-void Mg_DrawLives(char *a0, int a1, int a2, int a3)
+void Mg_DrawCredits(char *a0, int a1, int a2, int a3)
 {
-    Mg_DrawLivesIcon(a1, a2, a3, -1);
-    int v = ((dScMgBase_c *)a0)->unk_0ac;
+    Mg_DrawCreditsIcon(a1, a2, a3, -1);
+    int v = ((dScMgBase_c *)a0)->mCreditsShown;
     if (v < 0x64) {
         Mg_DrawBigNumber(a1+0x12, a2, v, a3, -1, 2, 0);
     } else {
@@ -3236,14 +3236,14 @@ void Mg_RenderSpriteOnNoMtx(void* a0, int a1, int a2, int a3, int a4){
 }
 }
 
-// @symbol Mg_DrawLivesIcon
+// @symbol Mg_DrawCreditsIcon
 namespace s20b1de8 {
 extern "C" {
 extern int GetGameLanguage(void);
 extern int Mg_RenderSpriteOnNoMtx(int, int, int, int, int);
 
 /* Draws sprite word 2 at (r0, r1) through Mg_RenderSpriteOnNoMtx. */
-void Mg_DrawLivesIcon(int r0, int r1, int r2, int r3) {
+void Mg_DrawCreditsIcon(int r0, int r1, int r2, int r3) {
     int idx = GetGameLanguage();
     int *t = sMgSpriteTables[idx];
     Mg_RenderSpriteOnNoMtx(t[2], r0, r1, r2, r3);
@@ -3779,15 +3779,15 @@ extern short data_ov004_020bc070[];
 }
 
 dScMgBase_c::dScMgBase_c()
-    : unk_0a4(0), unk_0c2(1)
+    : mRunDuringFade(0), unk_0c2(1)
 { using s20b2adc::data_ov004_020bc070;
     mMenuOpen = 0;
-    unk_462c = 0;
-    unk_4630 = 0;
-    unk_4648 = 0;
+    mMenuScreenSaved = 0;
+    mMenuDisabled = 0;
+    mQuitFadeStarted = 0;
 
     gMgScene = this;
-    unk_0bc = *(u32 *)(gMgMenuRow + 0x30);
+    mLevel = *(u32 *)(gMgMenuRow + 0x30);
 
     mSceneKind = data_ov004_020bc070[(param1 >> 16) & 0xff];
     /* param1 &= 0xffff, through a char *: spelled with the member, either
@@ -3795,8 +3795,8 @@ dScMgBase_c::dScMgBase_c()
        in ip first and the constructor grows by 4 bytes. */
     *(s32 *)((char *)this + 8) =
         *(u32 *)((char *)this + 8) & 0xffff;
-    unk_050 = 0;
-    unk_054 = 0;
+    mTallyShown = 0;
+    mTallyAnimTimer = 0;
 
     if (actorID == 0x16e || actorID == 0x185 ||
         actorID == 0x16d || actorID == 0x182)
@@ -3804,12 +3804,12 @@ dScMgBase_c::dScMgBase_c()
     else
         mTimeLimit = 0x78;
 
-    unk_060 = 0;
+    mRecordRevealTimer = 0;
     mFrameCounter = 0;
-    unk_464c = 0;
-    unk_4654 = 0;
-    unk_4658 = 0;
-    unk_064 = -1;
+    mSubmittedScore = 0;
+    mSessionBest = 0;
+    mRankedScore = 0;
+    mLastRecordRank = -1;
 
     Mg_SetTopRecord(func_02013580(Mg_GetSaveTable(this), 0));
 }

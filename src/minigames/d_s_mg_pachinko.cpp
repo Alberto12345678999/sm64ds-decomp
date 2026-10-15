@@ -2637,7 +2637,7 @@ void func_ov006_020feba8(char *self)
    declaration exactly, or mwcc appends a slot instead of overriding. */
 void dScMgPachinko_c::StartRound(int n)
 {
-    /* The score increment reads unk_0bc through a const view of `this`.
+    /* The score increment reads mLevel through a const view of `this`.
        Without it mwcc CSEs the +0xbc field address into its own register
        (add r2,r4,#0xbc / ldr [r2] / str [r2]) and the function grows a
        word; the cartridge re-issues ldr r1,[r4,#0xbc] / str r1,[r4,#0xbc].
@@ -2646,11 +2646,11 @@ void dScMgPachinko_c::StartRound(int n)
 
     unk_5c10 = 0;
     if (n == 9) {
-        unk_0bc = ro->unk_0bc + 1;
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        mLevel = ro->mLevel + 1;
+        if (mLevel > 0x270e) mLevel = 0x270e;
     } else {
-        unk_0bc = 0;
-        if (unk_0bc > 0x270e) unk_0bc = 0x270e;
+        mLevel = 0;
+        if (mLevel > 0x270e) mLevel = 0x270e;
     }
     func_ov006_020fadfc((char *)this);
     func_ov006_020fad90((char *)this);
@@ -2845,11 +2845,11 @@ s32 dScMgPachinko_c::InitResources()
     func_ov006_020fae90((u8 *)c);
     Mg_SetTopScreenYOffset(0x20);
 
-    unk_0a4 = 1;
+    mRunDuringFade = 1;
     unk_5c1c = 0x10;
     unk_5c24 = 0x60;
     unk_5c10 = 1;
-    unk_0a4 = 1;
+    mRunDuringFade = 1;
     return 1;
 }
 

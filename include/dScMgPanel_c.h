@@ -4,7 +4,7 @@
 
 /* Puzzle Panic, MG_PANEL in the profile registry. A square grid of panels,
  * each showing one of two faces. The deal flips mFlips of them; touch a
- * panel to flip it and its neighbours back. mLives starts at 3.
+ * panel to flip it and its neighbours back. mCredits starts at 3.
  *
  * A confirmed leaf: no RTTI record in the cartridge names it as a base
  * (tools/rtti_extract.py). Six vtable slots are its own: 0, 6, 9, the 16/17
@@ -123,7 +123,7 @@ struct dScMgPanel_c : dScMgBase_c {
     u8  mFlipCount;          /* 0x4fde */
     u8  mClear;              /* 0x4fdf set once every mKind is back to 0 */
     u8  pad_4fe0[0x2];
-    u8  mLives;              /* 0x4fe2 starts at 3; a miss takes one */
+    u8  mCredits;              /* 0x4fe2 starts at 3; a miss takes one */
     u8  pad_4fe3[0x6];
     u8  mBusy;               /* 0x4fe9 a flip is still playing */
     u8  unk_4fea;            /* 0x4fea only ever written 0 */

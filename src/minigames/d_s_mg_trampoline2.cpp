@@ -466,15 +466,15 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
     mTouchX = data_020a0dbc[0];
     mTouchY = data_020a0dbc[1];
 
-    unk_0bc = 0;
-    if (unk_0bc > 0x270e)
-        unk_0bc = 0x270e;
+    mLevel = 0;
+    if (mLevel > 0x270e)
+        mLevel = 0x270e;
 
     func_ov006_020cad3c(0x1000);
-    func_ov006_020cac9c(unk_0bc);
+    func_ov006_020cac9c(mLevel);
     data_ov006_021405bc = 1;
-    func_ov006_020d0b04(unk_0bc);
-    func_ov006_020cee5c(unk_0bc);
+    func_ov006_020d0b04(mLevel);
+    func_ov006_020cee5c(mLevel);
     func_ov006_020eeff0();
     func_ov006_02122b24();
     func_ov006_02120ca0();

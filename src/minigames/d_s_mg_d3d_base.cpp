@@ -201,7 +201,7 @@ int dScMgD3DBase_c::InitSubScreenBg()
         DecompressLZ16((void*)data_ov006_0213c5e8[GetGameLanguage()], dst);
     }
     _ZN2GX16SetBankForSubOBJEt(unk_4660);
-    unk_0a0 = func_02053eb0();
+    mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);
     {
         volatile u16 *p = (volatile u16*)0x400100a;
@@ -216,7 +216,7 @@ int dScMgD3DBase_c::InitSubScreenBg()
         LoadCompressedFileAt(data_ov006_0213c610[language], (void*)G2S::GetBG1CharPtr());
     }
     LoadCompressedFileAt(0x5b, (void*)G2S::GetBG1ScrPtr());
-    _ZN2GX15SetBankForSubBGEt(unk_0a0);
+    _ZN2GX15SetBankForSubBGEt(mSubBgBank);
 }
 
 // @symbol _ZN14dScMgD3DBase_c11InitEnginesEv
@@ -435,7 +435,7 @@ int dScMgD3DBase_c::SaveScreenForMenu()
     func_ov006_020e73c4();
     GXS::LoadOBJPltt(data_ov006_02141a48, 0x100, 0x100);
     data_0209e660 = 0;
-    unk_0a0 = func_02053eb0();
+    mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);
     unk_4660 = func_02053ea0();
     GX::SetBankForSubOBJ(0x100);
@@ -446,7 +446,7 @@ int dScMgD3DBase_c::SaveScreenForMenu()
 /* Slot 30: gives the banks back around the base's menu teardown. */
 void dScMgD3DBase_c::RestoreScreenFromMenu()
 {
-    _ZN2GX15SetBankForSubBGEt(unk_0a0);
+    _ZN2GX15SetBankForSubBGEt(mSubBgBank);
     _ZN2GX16SetBankForSubOBJEt(unk_4660);
     data_0209e660 = 1;
     func_ov006_020e740c();

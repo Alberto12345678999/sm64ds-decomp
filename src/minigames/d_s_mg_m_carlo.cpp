@@ -73,7 +73,7 @@ extern int data_ov006_02133f18;
 extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 void func_ov006_020c0aa8(void* p);
-void Mg_DrawLives(char* a0, int a1, int a2, int a3);
+void Mg_DrawCredits(char* a0, int a1, int a2, int a3);
 void func_ov004_020b6430(void);
 void Mg_DrawScoreTally(char* a0, int a1, int a2, int a3);
 void func_ov006_020c1804(void* p);
@@ -150,8 +150,8 @@ s32 dScMgMCarlo_c::InitResources()
     if (func_ov006_020c1a88((char *)&mShared) == 0) return 0;
 
     func_ov004_020b682c();
-    unk_0a8 = Mg_GetSavedRecord0();
-    unk_0ac = unk_0a8;
+    mCredits = Mg_GetSavedRecord0();
+    mCreditsShown = mCredits;
     {
         int score = Mg_GetSavedRecord1();
         if (gMgScene != 0) ((dScMgBase_c *)gMgScene)->mHudScore = score;
@@ -234,7 +234,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
     }
     case 7: {
         dScMgBase_c *active = (dScMgBase_c *)gMgScene;
-        if ((active != 0 ? active->unk_0a8 : 0) != 0)
+        if ((active != 0 ? active->mCredits : 0) != 0)
             return 1;
         dScMgMCarlo_c::FlipDealtCards();
         unk_60aa = 0x1e;
@@ -316,7 +316,7 @@ s32 dScMgMCarlo_c::Behavior()
                             {
                                 int dealt = data_ov006_0213d570;
                                 dScMgBase_c *active = (dScMgBase_c *)gMgScene;
-                                int left = ((active != 0) ? active->unk_0a8 : 0) - dealt;
+                                int left = ((active != 0) ? active->mCredits : 0) - dealt;
                                 int score = (active != 0) ? active->mHudScore : 0;
                                 Mg_SaveRecordPair(left, score);
                             }
@@ -329,8 +329,8 @@ s32 dScMgMCarlo_c::Behavior()
                             if (active != 0) {
                                 if (active->mHudScore < 0x270f)
                                     active->mHudScore = active->mHudScore + 1;
-                                if (active->mHudScore > active->unk_0b8)
-                                    active->unk_0b8 = active->mHudScore;
+                                if (active->mHudScore > active->mBestHudScore)
+                                    active->mBestHudScore = active->mHudScore;
                             }
                         }
                         Mg_SubmitScore(mHudScore);
@@ -338,7 +338,7 @@ s32 dScMgMCarlo_c::Behavior()
                         Mg_SetSharedState(4);
                         {
                             dScMgBase_c *active = (dScMgBase_c *)gMgScene;
-                            int base = (active != 0) ? active->unk_0a8 : 0;
+                            int base = (active != 0) ? active->mCredits : 0;
                             Mg_SaveRecordPair(data_ov006_0213d568 + base,
                                                 (active != 0) ? active->mHudScore : 0);
                         }
@@ -364,7 +364,7 @@ s32 dScMgMCarlo_c::Behavior()
 s32 dScMgMCarlo_c::Render()
 {
     func_ov006_020c0aa8(pad_4660);
-    Mg_DrawLives((char *)this, 0xc, 0xc, 0);
+    Mg_DrawCredits((char *)this, 0xc, 0xc, 0);
     func_ov004_020b6430();
     Mg_DrawScoreTally((char *)this, 0xe0, 0x14, 1);
 

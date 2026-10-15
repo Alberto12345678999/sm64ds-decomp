@@ -117,9 +117,9 @@ extern unsigned int func_02012790(unsigned int a);
 extern int GetGameLanguage(void);
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 
-extern void Mg_GainLives(void* c);
-extern void Mg_LoseLives(void* x);
-extern void Mg_DrawLivesIcon(int a, int b, int c, int d);
+extern void Mg_GainCredits(void* c);
+extern void Mg_LoseCredits(void* x);
+extern void Mg_DrawCreditsIcon(int a, int b, int c, int d);
 extern int Mg_GetTopScreenYOffset(void);
 extern int Mg_GetScoringMode(void);
 extern void Mg_SubmitScore(int self);
@@ -188,7 +188,7 @@ extern struct Sprite data_ov004_020bfa34[];
 /* The address of data_ov004_020bfa34[0].mVisible; the ROM indexes the
    array's visible bytes from it. */
 extern unsigned char data_ov004_020bfa56[];
-extern char* gMgScene;  /* local extern: a char * base keeps the ROM's add #0x4000 splits; +0xa8 is dScMgBase_c::unk_0a8 */
+extern char* gMgScene;  /* local extern: a char * base keeps the ROM's add #0x4000 splits; +0xa8 is dScMgBase_c::mCredits */
 extern int data_020a0db0;
 }
 
@@ -262,7 +262,7 @@ extern "C" void func_ov004_020b65e4(void) {
 }
 
 // @symbol func_ov004_020b653c
-/* Draw the signed count on row 0x60: the sprite icon (Mg_DrawLivesIcon)
+/* Draw the signed count on row 0x60: the sprite icon (Mg_DrawCreditsIcon)
    at x 0x6e, the per-language +0x34 graphic for arg >= 0 or +0x38 for
    arg < 0 at x 0x80, then |arg| at x 0x92. */
 extern "C" void func_ov004_020b653c(int arg)
@@ -283,7 +283,7 @@ extern "C" void func_ov004_020b653c(int arg)
         gfx = *(int *)(data_ov004_020bc83c[idx] + 0x38);
     }
 
-    Mg_DrawLivesIcon(0x6e, 0x60, 0, -1);
+    Mg_DrawCreditsIcon(0x6e, 0x60, 0, -1);
     Mg_RenderSubSpriteMtx((void *)gfx, 0x80, 0x60, 0);
     Mg_DrawBigNumber(0x92, 0x60, absv, 0, -1, 2, r4);
 }
@@ -313,7 +313,7 @@ extern "C" void func_ov004_020b6430(void) {
 }
 
 // @symbol func_ov004_020b63a0
-/* Once: add up to n sprites, capped by the scene's unk_0a8, and start
+/* Once: add up to n sprites, capped by the scene's mCredits, and start
    launching them (func_ov004_020b612c). */
 extern "C" void func_ov004_020b63a0(int n){
   char* p;
@@ -341,7 +341,7 @@ extern "C" void func_ov004_020b6324(int c) {
 }
 
 // @symbol func_ov004_020b6234
-/* Add one sprite and launch it, or play sound 0xe when the scene's unk_0a8
+/* Add one sprite and launch it, or play sound 0xe when the scene's mCredits
    is 0, the count is at its cap, or func_ov004_020b63a0 has run. Does
    nothing while a launch is pending (data_ov004_020bfa10). */
 extern "C" void func_ov004_020b6234(void) {
@@ -564,7 +564,7 @@ extern "C" void func_ov004_020b5a54(void) {
 
 // @symbol func_ov004_020b58c4
 /* Step: every 0x10 frames bring a sprite in with func_ov004_020b4e78,
-   walking the index up and wrapping at 0x14, while the scene's unk_0a8 is
+   walking the index up and wrapping at 0x14, while the scene's mCredits is
    nonzero; then wait until the last one is hidden (mVisible 0) and hold
    0x3c frames (func_ov004_020b586c). */
 extern "C" void func_ov004_020b58c4(void)
@@ -760,7 +760,7 @@ extern "C" void func_ov004_020b53f0(void)
 }
 
 // @symbol func_ov004_020b5368
-/* Step: after data_ov004_020bfa04 frames, report the scene's unk_0a8
+/* Step: after data_ov004_020bfa04 frames, report the scene's mCredits
    through Mg_SubmitScore when Mg_GetScoringMode returns 2, then
    finish. */
 extern "C" void func_ov004_020b5368(void){
@@ -792,7 +792,7 @@ extern "C" void func_ov004_020b52b8(Sprite *s)
 {
     if (s->mVisible == 0)
         return;
-    Mg_DrawLivesIcon(s->mPos.x >> 12, s->mPos.y >> 12, -1, -1);
+    Mg_DrawCreditsIcon(s->mPos.x >> 12, s->mPos.y >> 12, -1, -1);
 }
 
 // @symbol func_ov004_020b5288
@@ -804,7 +804,7 @@ extern "C" void func_ov004_020b5288(Sprite *s)
 }
 
 // @symbol func_ov004_020b51f0
-/* State: move; on arrival call Mg_GainLives(1), hide, and stop. */
+/* State: move; on arrival call Mg_GainCredits(1), hide, and stop. */
 extern "C" void func_ov004_020b51f0(Sprite* s) {
   int out[2];
   ApproachLinear(s->mPos.x, s->mTarget.x, s->mStep.x);
@@ -812,7 +812,7 @@ extern "C" void func_ov004_020b51f0(Sprite* s) {
   Vec2_Sub(out, &s->mTarget, &s->mPos);
   if (out[0] != 0) return;
   if (out[1] != 0) return;
-  Mg_GainLives((void*)1);
+  Mg_GainCredits((void*)1);
   func_ov004_020b51e4(s);
   s->mState = data_ov004_020bc7f0;
 }
@@ -826,7 +826,7 @@ extern "C" void func_ov004_020b51e4(Sprite *s)
 // @symbol func_ov004_020b5108
 /* Launch from the corner (12, 12) to `in`, at 1/16 of the distance per
    frame. Unless the sprite is already in func_ov004_020b51f0, call
-   Mg_LoseLives(1). */
+   Mg_LoseCredits(1). */
 extern "C" void func_ov004_020b5108(Sprite* s, int* in)
 {
     int loc0[2];
@@ -851,7 +851,7 @@ extern "C" void func_ov004_020b5108(Sprite* s, int* in)
         s->mStep.y = v;
     }
     if (s->mState != data_ov004_020bc800)
-        Mg_LoseLives((void*)1);
+        Mg_LoseCredits((void*)1);
     s->mState = data_ov004_020bc820;
 }
 
@@ -922,7 +922,7 @@ extern "C" void func_ov004_020b4e78(Sprite *s)
 {
     Vec2i a;
     Vec2i b;
-    Mg_LoseLives((void*)1);
+    Mg_LoseCredits((void*)1);
     s->mVisible = 1;
     s->mPos.x = 0xc000;
     s->mPos.y = 0xc000;
@@ -996,7 +996,7 @@ extern "C" void func_ov004_020b4cc4(Sprite* s){
 }
 
 // @symbol func_ov004_020b4c30
-/* State: move; on arrival leave play, call Mg_GainLives(1), reset. */
+/* State: move; on arrival leave play, call Mg_GainCredits(1), reset. */
 extern "C" void func_ov004_020b4c30(Sprite* s){
   int v[2];
   ApproachLinear(s->mPos.x, s->mTarget.x, s->mStep.x);
@@ -1005,7 +1005,7 @@ extern "C" void func_ov004_020b4c30(Sprite* s){
   if (v[0] != 0) return;
   if (v[1] != 0) return;
   ApproachLinear(data_ov004_020bfa18, 0, 1);
-  Mg_GainLives((void*)1);
+  Mg_GainCredits((void*)1);
   func_ov004_020b5334(s);
 }
 
@@ -1040,7 +1040,7 @@ extern "C" void func_ov004_020b4b84(Sprite* s, int* in){
 
 // @symbol func_ov004_020b4aa4
 /* State: wait out mDelay, then move; on arrival play sound 0x149, call
-   Mg_GainLives(1), take one from the layout count, and reset. */
+   Mg_GainCredits(1), take one from the layout count, and reset. */
 extern "C" void func_ov004_020b4aa4(Sprite* s) {
     Vec2i t;
     if (ApproachLinear2(s->mDelay, 0, 1) == 0) return;
@@ -1051,7 +1051,7 @@ extern "C" void func_ov004_020b4aa4(Sprite* s) {
     if (t.y != 0) return;
     if (ApproachLinear2(s->mDelay, 0, 1) == 0) return;
     Sound::PlayBank2_2D(0x149);
-    Mg_GainLives((void*)1);
+    Mg_GainCredits((void*)1);
     ApproachLinear(data_ov004_020bf9f8, 0, 1);
     func_ov004_020b5334(s);
 }

@@ -438,7 +438,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            same witness reached twice.  Until now that cost nothing.  Here the
            ROM contradicts the transplant outright.  The sole ov004 dispatch
            site is guarded on an EDGE of mMenuOpen (+0x4628): OnGraphCallback2 compares
-           mMenuOpen against unk_462c and, only when they differ, calls slot 30
+           mMenuOpen against mMenuScreenSaved and, only when they differ, calls slot 30
            if mMenuOpen is zero and THIS slot if it is not, then copies one
            into the other.  And this body does exactly what that guard implies.
            It saves POWCNT1's screen-swap bit and the two BG-enable bytes into
@@ -540,10 +540,10 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            two BG-enable bytes back out of mSavedMainBgBits / mSavedSubBgBits
            and into both DISPCNTs' 0x1f00 fields.  Save-then-draw at 29,
            restore at 30.  OnGraphCallback2 picks between them on an EDGE: it compares
-           mMenuOpen (+0x4628) against unk_462c (+0x462c), does nothing when
+           mMenuOpen (+0x4628) against mMenuScreenSaved (+0x462c), does nothing when
            they agree, calls THIS slot when mMenuOpen has fallen to zero and
-           slot 29 when it has risen, then latches mMenuOpen into unk_462c.
-           unk_462c is that edge latch and nothing else.  Slot 29 is the
+           slot 29 when it has risen, then latches mMenuOpen into mMenuScreenSaved.
+           mMenuScreenSaved is that edge latch and nothing else.  Slot 29 is the
            three-item overlay menu going up and slot 30 is it coming back down;
            neither has anything to do with a Yoshi egg or with a vector. */
     virtual void RestoreScreenFromMenu();          /* slot 30 */
@@ -588,7 +588,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            other thirty-eight sites are in ov002, ov015, ov018, ov027, ov064,
            ov079, ov081 and ov098 -- dBgActor_c's Kill, on the other branch.
            The base body does not even read `this`; dScMgD3DBase_c's override
-           does (unk_4660, unk_0a0), which is what fixes r0 as the object.
+           does (unk_4660, mSubBgBank), which is what fixes r0 as the object.
          WHAT IT DOES.  All four bodies are one shape.  Three read-modify-writes
            on the sub engine's BG1CNT at 0x0400100a (`& 0x43`, `| X`, `& ~0x40`,
            `& ~3`) leave the register holding exactly X: priority 0, no mosaic,
@@ -869,25 +869,25 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        config/converted-baseline.json (the ratchet has no rename detection) and
        any prose path that names the file. */
 
-    s32 unk_050;            /* 0x050 */
-    s32 unk_054;            /* 0x054 */
+    s32 mTallyShown;            /* 0x050 */
+    s32 mTallyAnimTimer;            /* 0x054 */
     s32 mTimeLimit;         /* 0x058 -- 60 or 120 from the scene ID */
     s32 mFrameCounter;      /* 0x05c -- wraps every 40 frames */
-    s32 unk_060;            /* 0x060 */
-    s32 unk_064;            /* 0x064 */
+    s32 mRecordRevealTimer;            /* 0x060 */
+    s32 mLastRecordRank;            /* 0x064 */
     u8  pad_068[0x38];
-    s32 unk_0a0;            /* 0x0a0 */
-    s32 unk_0a4;            /* 0x0a4 */
-    s32 unk_0a8;            /* 0x0a8 */
-    s32 unk_0ac;            /* 0x0ac */
+    s32 mSubBgBank;            /* 0x0a0 */
+    s32 mRunDuringFade;            /* 0x0a4 */
+    s32 mCredits;            /* 0x0a8 */
+    s32 mCreditsShown;            /* 0x0ac */
     u8  pad_0b0[0x4];
     s32 mHudScore;          /* 0x0b4 -- zeroed by BeforeInitResources. Leaves
                                 count into it or copy their own tally here, and
                                 the value leaves submit through
                                 Mg_SubmitScore, which stores it at
-                                unk_464c */
-    s32 unk_0b8;            /* 0x0b8 */
-    u32 unk_0bc;            /* 0x0bc */
+                                mSubmittedScore */
+    s32 mBestHudScore;            /* 0x0b8 */
+    u32 mLevel;            /* 0x0bc */
     u16 mPromptBlinkTimer;  /* 0x0c0 -- free-runs 0..0x2f; the prompt shows
                                 during the first 0x18 frames of each cycle */
     u8  unk_0c2;            /* 0x0c2 -- constructor seeds this to 1 */
@@ -895,7 +895,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     u8  mPromptBlinkCount;  /* 0x0c4 -- after 4 blink cycles the per-language
                                 prompt sprite stays up every frame */
     u8  pad_0c5[0x3];
-    s32 unk_0c8;            /* 0x0c8 */
+    s32 mMusicTrack;            /* 0x0c8 */
     dMgState_c mStateController; /* 0x0cc -- minigame UI state controller */
     dMgPsOpt_c mTouchOptions; /* 0x0f4 -- eight polymorphic touch icons */
     u32 mSavedMainBgBits;   /* 0x21c -- SaveScreenForMenu saves data_0209d45c
@@ -907,8 +907,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     s32 mMenuOpen;          /* 0x4628 -- the three-item overlay menu is up;
                                 BeforeRender skips the normal render pass and
                                 draws that instead */
-    s32 unk_462c;           /* 0x462c */
-    s32 unk_4630;           /* 0x4630 */
+    s32 mMenuScreenSaved;           /* 0x462c */
+    s32 mMenuDisabled;           /* 0x4630 */
     s16 mMenuItem0X;        /* 0x4634 */
     s16 mMenuItem0Y;        /* 0x4636 */
     s16 mMenuItem1X;        /* 0x4638 */
@@ -918,12 +918,12 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     s32 mMenuCursorPhase;   /* 0x4640 -- drives the highlighted item's pulse */
     u8  pad_4644[0x2];
     s16 mMenuCursor;        /* 0x4646 -- highlighted item, -1 for none */
-    s32 unk_4648;           /* 0x4648 */
-    s32 unk_464c;           /* 0x464c */
+    s32 mQuitFadeStarted;           /* 0x4648 */
+    s32 mSubmittedScore;           /* 0x464c */
     u8  pad_4650[0x4];
-    s32 unk_4654;           /* 0x4654 */
-    s32 unk_4658;           /* 0x4658 */
-    u8  unk_465c;           /* 0x465c */
+    s32 mSessionBest;           /* 0x4654 */
+    s32 mRankedScore;           /* 0x4658 */
+    u8  mNewRecord;           /* 0x465c */
     u8  pad_465d[0x1];
     s16 mSceneKind;         /* 0x465e -- table-selected from param1's high byte */
 };

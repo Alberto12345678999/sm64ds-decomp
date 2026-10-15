@@ -4,7 +4,7 @@
  *
  * leftovers:
  *   - func_ and data_ helpers are still the linker names.
- *   - CheckFinished reads unk_0a8 through WordAt. As a plain member the
+ *   - CheckFinished reads mCredits through WordAt. As a plain member the
  *     multiply-add takes its registers the other way round.
  *   - ShuffleCards: mValueCounts[slot] hoists the base; adding the slot
  *     to 0x5330 matches.
@@ -87,7 +87,7 @@ extern int data_0209d4b8;
 extern int RandomIntInternal(int *seed);
 extern void FreeGfxSlotsById(int x);
 void func_ov006_020c0aa8(char *p);
-void Mg_DrawLives(char *c, int a, int b, int d);
+void Mg_DrawCredits(char *c, int a, int b, int d);
 void func_ov006_020c1804(char *p);
 void func_ov004_020b65e4(void);
 int func_ov006_020c19d0(void *p);
@@ -268,16 +268,16 @@ void dScMgMemory_c::CheckFinished()
     mResultTimer = 0x40;
     mState = 3;
     mSubstate = 0;
-    /* Read unk_0a8 through WordAt: as a plain member the multiply-add takes
+    /* Read mCredits through WordAt: as a plain member the multiply-add takes
        its registers the other way round. */
-    Mg_SaveRecordPair(*WordAt((char *)&unk_0a8) + (3 - mMisses) * 6, mHudScore + 1);
+    Mg_SaveRecordPair(*WordAt((char *)&mCredits) + (3 - mMisses) * 6, mHudScore + 1);
   }
   if (mMisses >= mMaxMisses)
   {
     mResultTimer = 0x40;
     mState = 3;
     mSubstate = 0;
-    Mg_SaveRecordPair(unk_0a8, mHudScore - 1);
+    Mg_SaveRecordPair(mCredits, mHudScore - 1);
   }
 }
 
@@ -498,7 +498,7 @@ void dScMgMemory_c::CardSelect(int card)
         return;
     }
     ++mInputSeen;
-    Mg_SaveRecordPair(unk_0a8, mHudScore);
+    Mg_SaveRecordPair(mCredits, mHudScore);
 }
 
 void dScMgMemory_c::CardIdle(int /* card */)
@@ -576,7 +576,7 @@ void dScMgMemory_c::ResultFinish()
 
     func_02012790(0x62);
 
-    if (unk_0a8 == 0)
+    if (mCredits == 0)
     {
         if (mDifficulty == 1)
         {
@@ -676,8 +676,8 @@ void dScMgMemory_c::ResultWait()
                     int *score = &mHudScore;
                     *score += 1;
                 }
-                if (mHudScore > unk_0b8)
-                    unk_0b8 = mHudScore;
+                if (mHudScore > mBestHudScore)
+                    mBestHudScore = mHudScore;
                 Mg_SubmitScore(gMgScene ? *(int *)((char *)gMgScene + 0xb4) : 0);
                 func_ov006_020c0c80(&mShared);
             } else {
@@ -1043,7 +1043,7 @@ void dScMgMemory_c::StartRound(int /* arg */)
 s32 dScMgMemory_c::Render()
 {
     func_ov006_020c0aa8((char *)pad_4660);
-    Mg_DrawLives((char *)this, 0xc, 0xc, 0);
+    Mg_DrawCredits((char *)this, 0xc, 0xc, 0);
     func_ov004_020b6430();
     DrawMessage();
     DrawCursor();
@@ -1084,8 +1084,8 @@ s32 dScMgMemory_c::InitResources()
     func_ov006_020c0aa8((char *)pad_4660);
     if (func_ov006_020c1a88(&mShared) == 0)
         return 0;
-    unk_0a8 = Mg_GetSavedRecord0();
-    unk_0ac = unk_0a8;
+    mCredits = Mg_GetSavedRecord0();
+    mCreditsShown = mCredits;
     mHudScore = Mg_GetSavedRecord1();
     func_ov004_020b66d4();
     data_ov004_020bc7d4 = 1;
