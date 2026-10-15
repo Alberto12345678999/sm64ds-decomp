@@ -1119,8 +1119,8 @@ extern int func_ov006_020f7b90(void);
 /* The former func_ov006_020f9000..020f9f40 range is owned by the real
    dScMgMCarlo2_c / dMgMCarlo2CardObj_c classes. Every caller is in that
    original TU, so none of those private members belongs in this header. */
-extern int func_ov006_02107a6c(void);
-extern int func_ov006_021085c0(char*);
+extern int RouletteResults_Tick(void);
+extern int RouletteBoard_LoadModels(char*);
 extern int func_ov007_020b6f4c(void);
 extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3df4(int, int);
@@ -1931,19 +1931,19 @@ extern void func_ov006_020f7740(void);
 extern void func_ov006_020f7994(void);
 extern void PachinkoBg_Start(char*);
 extern void PachinkoBg_Stop(char*);
-extern void func_ov006_021079c8();
-extern void func_ov006_02107b14(void);
-extern void func_ov006_02107b70(char*);
-extern void func_ov006_02107d80(char*);
-extern void func_ov006_02108524(char*);
-/* func_ov006_0210858c is deliberately NOT declared here. Its recorded return
+extern void Roulette_Nothing();
+extern void RouletteStrip_ResetAll(void);
+extern void RouletteStrip_LinkAll(char*);
+extern void RouletteBoard_Draw(char*);
+extern void RouletteBoard_StartSpin(char*);
+/* RouletteBoard_FreeModels is deliberately NOT declared here. Its recorded return
    type was void; the cartridge's own bytes at 0x0210858c end `mov r0, #1`,
    so it returns int. Nothing outside src/minigames/d_s_mg_roulette_methods.cpp, which
    now defines it, references the symbol, so the wrong declaration is
    dropped rather than corrected. */
-extern void func_ov006_02108cc0(char*);
-extern void func_ov006_021092a0(int*);
-extern void func_ov006_02109aa0(char*);
+extern void RouletteRacer_Draw(char*);
+extern void RouletteRacer_PlaceAtStart(int*);
+extern void Roulette_DrawResultsThunk(char*);
 extern void func_ov006_0210c234(unsigned char*);
 extern void func_ov006_0210c354(void*);
 extern void func_ov006_0210c478(char*);

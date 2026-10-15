@@ -25419,127 +25419,127 @@
     },
     "ov006:0x021079c8": {
       "author": "tangosdev",
-      "name": "func_ov006_021079c8"
+      "name": "Roulette_Nothing"
     },
     "ov006:0x021079cc": {
       "author": "tangosdev",
-      "name": "func_ov006_021079cc"
+      "name": "RouletteResults_Draw"
     },
     "ov006:0x02107a6c": {
       "author": "tangosdev",
-      "name": "func_ov006_02107a6c"
+      "name": "RouletteResults_Tick"
     },
     "ov006:0x02107b14": {
       "author": "tangosdev",
-      "name": "func_ov006_02107b14"
+      "name": "RouletteStrip_ResetAll"
     },
     "ov006:0x02107b70": {
       "author": "tangosdev",
-      "name": "func_ov006_02107b70"
+      "name": "RouletteStrip_LinkAll"
     },
     "ov006:0x02107b94": {
       "author": "tangosdev",
-      "name": "func_ov006_02107b94"
+      "name": "RouletteStrip_DrawRacers"
     },
     "ov006:0x02107c50": {
       "author": "andrewboudreau",
-      "name": "func_ov006_02107c50"
+      "name": "RouletteStrip_Draw"
     },
     "ov006:0x02107d20": {
       "author": "ruspecial",
-      "name": "func_ov006_02107d20"
+      "name": "RouletteStrip_AddRacer"
     },
     "ov006:0x02107d58": {
       "author": "tangosdev",
-      "name": "func_ov006_02107d58"
+      "name": "RouletteStrip_Reset"
     },
     "ov006:0x02107d80": {
       "author": "tangosdev",
-      "name": "func_ov006_02107d80"
+      "name": "RouletteBoard_Draw"
     },
     "ov006:0x02107db8": {
       "author": "tangosdev",
-      "name": "func_ov006_02107db8"
+      "name": "RouletteBoard_Update"
     },
     "ov006:0x02107ea8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_02107ea8"
+      "name": "RouletteBoard_StateSlow"
     },
     "ov006:0x021082c4": {
       "author": "ruspecial",
-      "name": "func_ov006_021082c4"
+      "name": "RouletteBoard_StartSlowdown"
     },
     "ov006:0x021082fc": {
       "author": "andrewboudreau",
-      "name": "func_ov006_021082fc"
+      "name": "RouletteBoard_StateSpin"
     },
     "ov006:0x02108508": {
       "author": "tangosdev",
-      "name": "func_ov006_02108508"
+      "name": "RouletteBoard_SetStateSpin"
     },
     "ov006:0x02108524": {
       "author": "tangosdev",
-      "name": "func_ov006_02108524"
+      "name": "RouletteBoard_StartSpin"
     },
     "ov006:0x0210858c": {
       "author": "tangosdev",
-      "name": "func_ov006_0210858c"
+      "name": "RouletteBoard_FreeModels"
     },
     "ov006:0x021085c0": {
       "author": "tangosdev",
-      "name": "func_ov006_021085c0"
+      "name": "RouletteBoard_LoadModels"
     },
     "ov006:0x02108650": {
       "author": "andrewboudreau",
-      "name": "func_ov006_02108650"
+      "name": "Roulette_TileAt"
     },
     "ov006:0x02108b90": {
       "author": "tangosdev",
-      "name": "func_ov006_02108b90"
+      "name": "RouletteRacer_GetPayout"
     },
     "ov006:0x02108cc0": {
       "author": "tangosdev",
-      "name": "func_ov006_02108cc0"
+      "name": "RouletteRacer_Draw"
     },
     "ov006:0x02108d28": {
       "author": "lunavyqo",
-      "name": "func_ov006_02108d28"
+      "name": "RouletteRacer_CheckLandingB"
     },
     "ov006:0x02108e24": {
       "author": "tangosdev",
-      "name": "func_ov006_02108e24"
+      "name": "RouletteRacer_CheckLandingA"
     },
     "ov006:0x02108f2c": {
       "author": "tangosdev",
-      "name": "func_ov006_02108f2c"
+      "name": "RouletteRacer_Update"
     },
     "ov006:0x0210927c": {
       "author": "ruspecial",
-      "name": "func_ov006_0210927c"
+      "name": "RouletteRacer_Release"
     },
     "ov006:0x021092a0": {
       "author": "tangosdev",
-      "name": "func_ov006_021092a0"
+      "name": "RouletteRacer_PlaceAtStart"
     },
     "ov006:0x021092e8": {
       "author": "tangosdev",
-      "name": "func_ov006_021092e8"
+      "name": "RouletteRacer_Init"
     },
     "ov006:0x0210935c": {
       "author": "aitddlabs",
-      "name": "func_ov006_0210935c"
+      "name": "RouletteRacer_MoveToTile"
     },
     "ov006:0x021094ac": {
       "author": "tangosdev",
-      "name": "func_ov006_021094ac"
+      "name": "RouletteRacer_SetTarget"
     },
     "ov006:0x02109530": {
       "author": "tangosdev",
-      "name": "func_ov006_02109530"
+      "name": "RouletteRacer_SetVelocityToward"
     },
     "ov006:0x021095ac": {
       "author": "ruspecial",
-      "name": "func_ov006_021095ac"
+      "name": "RouletteRacer_AimAt"
     },
     "ov006:0x021095cc": {
       "author": "tangosdev",
@@ -25559,7 +25559,7 @@
     },
     "ov006:0x02109aa0": {
       "author": "ruspecial",
-      "name": "func_ov006_02109aa0"
+      "name": "Roulette_DrawResultsThunk"
     },
     "ov006:0x02109aac": {
       "author": "andrewboudreau",
@@ -25575,7 +25575,7 @@
     },
     "ov006:0x0210a4ac": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_0210a4ac"
+      "name": "Roulette_ConstructElement"
     },
     "ov006:0x0210a4b0": {
       "author": "tangosdev",

@@ -7,7 +7,7 @@
     "start": "0x0210788c",
     "end": "0x0210a400",
     "size": "0x2b74",
-    "partition": "40 functions, all with a legacy src/ file and a delinks.txt entry. 7 are vtable-targeted dScMgRoulette_c methods (slots 0, 3, 6, 9, 16, 17, 18, 19 -- eight slots, D1 and D0 being two of them); the other 32 are file-local helpers reached only from inside the run, plus the 0xc-byte veneer func_ov006_02109aa0."
+    "partition": "40 functions, all with a legacy src/ file and a delinks.txt entry. 7 are vtable-targeted dScMgRoulette_c methods (slots 0, 3, 6, 9, 16, 17, 18, 19 -- eight slots, D1 and D0 being two of them); the other 32 are file-local helpers reached only from inside the run, plus the 0xc-byte veneer Roulette_DrawResultsThunk."
   },
   "rtti_name": "15dScMgRoulette_c",
   "rtti": {
@@ -386,11 +386,11 @@
     "note": "notes/data/tu-promotion-queue.tsv estimated ~11 by copying the sibling oracle dScMgSingle3DBase_c, which sits ONE level shallower. The measured figure is 13. Every one of the 13 has a configured ROM home in some module's own symbols.txt, so all 13 are deadstrip-data and externalized_output is empty."
   },
   "unproven": [
-    "Element type of the 5 x 0x34 array at 0x51a8: __destroy_arr is called with func_ov006_021079c8 as the element destructor and that body is empty, so the elements have no ROM RTTI identity. The header keeps them as raw bytes.",
+    "Element type of the 5 x 0x34 array at 0x51a8: __destroy_arr is called with Roulette_Nothing as the element destructor and that body is empty, so the elements have no ROM RTTI identity. The header keeps them as raw bytes.",
     "Identity of the 0x270-byte subobject at 0x4f38: it is constructed by Dealer_Construct and destroyed by Dealer_Destruct, both shared with five sibling minigame scenes, but neither carries a class name.",
     "The two 0x50-byte spans at 0x531c and 0x536c are Models by construction (_ZN5ModelC1Ev in the factory) and destruction (_ZN5ModelD1Ev in the destructor), but they are still spelled as raw bytes because the ROM destructor interleaves the array and table teardown between them, which Itanium auto-destruction of typed members cannot reproduce.",
-    "0x52ac..0x531c (0x70 bytes) is reached only through raw-offset helper calls (func_ov006_02107b70, func_ov006_02108524, func_ov006_02107d80, func_ov006_021085c0) and has no named field.",
-    "Whether any of the 32 non-virtual functions in this run had external linkage in the original source: none is referenced from outside 0x0210788c..0x0210a400, and func_ov006_0210858c and func_ov006_02109aa0 were referenced ONLY by their sibling shards, but adjacency does not prove static versus external linkage.",
+    "0x52ac..0x531c (0x70 bytes) is reached only through raw-offset helper calls (RouletteStrip_LinkAll, RouletteBoard_StartSpin, RouletteBoard_Draw, RouletteBoard_LoadModels) and has no named field.",
+    "Whether any of the 32 non-virtual functions in this run had external linkage in the original source: none is referenced from outside 0x0210788c..0x0210a400, and RouletteBoard_FreeModels and Roulette_DrawResultsThunk were referenced ONLY by their sibling shards, but adjacency does not prove static versus external linkage.",
     "Source-style names for the inherited placeholder slots Virtual34, Virtual38, Virtual50, Virtual7C, Virtual80, Virtual84, Virtual88 and Virtual8C; their indices and targets are proved by the linked table, their names are this tree's coinage.",
     "Any vtable slot after 35: the linked bytes end the table at 0x0213e42c and there is no trailing null slot to preserve an otherwise unobservable declaration."
   ]

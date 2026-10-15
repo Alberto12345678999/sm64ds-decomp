@@ -391,3 +391,8 @@ Medium confidence:
 - **Aim:** `Aim_WaitTouch` and `Aim_Swing`.
 - **Houses:** `PickHouse` and `ResetHouse`.
 - **The falling bits (50 records):** `Bit_PickKind`, `Bit_RunKindA/B`, `Bit_State0..2`, `BitA_State0..3`, `BitB_State0..3`. These are named by index; what the bits are (snow?) is not observed.
+
+**Roulette (`dScMgRoulette_c`, Mushroom Roulette).** These are C-linkage free helpers with a `Roulette` prefix.
+- **`RouletteRacer_*`, high confidence:** the racers dealt onto the board, how they move to a tile, and the payout.
+- **`RouletteBoard_*`, high confidence:** the spinning board. Its two states are confirmed by the records their setters store (`RouletteBoard_StateSpin`, `RouletteBoard_StateSlow`).
+- **`RouletteStrip_*`, `RouletteResults_*`, medium confidence:** the per-player result strips.

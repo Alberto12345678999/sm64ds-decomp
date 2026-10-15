@@ -3,7 +3,7 @@
  * element constructor. The scene's methods live in d_s_mg_roulette_methods.cpp.
  *
  * ROM: .text 0x0210a400..0x0210a4b0 — dScMgRoulette_c_classInit (the
- * registry factory) and func_ov006_0210a4ac (the mArray element
+ * registry factory) and Roulette_ConstructElement (the mArray element
  * constructor).
  *
  * leftovers:
@@ -29,13 +29,13 @@ extern "C" void __cxa_vec_ctor(void* p, int a, int b, void* d, void* e);
 extern "C" void *_ZN5ModelC1Ev(char* p);
 extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV15dScMgRoulette_c[];
-extern "C" void func_ov006_0210a4ac(void);
+extern "C" void Roulette_ConstructElement(void);
 }
 
-// @symbol func_ov006_0210a4ac
+// @symbol Roulette_ConstructElement
 /* Element constructor for mArray; the entries need no setup. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210a4ac(void)
+void Roulette_ConstructElement(void)
 {
 }
 }
@@ -53,7 +53,7 @@ extern "C" void* dScMgRoulette_c_classInit(void){
     _ZN8Particle10SysTrackerC1Ev((char *)&scene->mSysTracker);
     *(int*)raw = (int)_ZTV15dScMgRoulette_c;
     Dealer_Construct((char *)scene->mTable);
-    __cxa_vec_ctor(scene->mArray, 5, 0x34, func_ov006_0210a4ac, func_ov006_021079c8);
+    __cxa_vec_ctor(scene->mArray, 5, 0x34, Roulette_ConstructElement, Roulette_Nothing);
     char *models = (char *)scene->mSlider;
     _ZN5ModelC1Ev(models + 0x10);   /* mModel1 */
     _ZN5ModelC1Ev(models + 0x60);   /* mModel2 */

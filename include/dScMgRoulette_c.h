@@ -21,7 +21,7 @@
 
 extern "C" int  Dealer_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
-extern "C" void func_ov006_021079c8(void);
+extern "C" void Roulette_Nothing(void);
 extern "C" void _ZN5ModelD1Ev(void *);
 
 struct dScMgRoulette_c : dScMgSingle3DBase_c {
@@ -31,7 +31,7 @@ struct dScMgRoulette_c : dScMgSingle3DBase_c {
     virtual ~dScMgRoulette_c() {
         _ZN5ModelD1Ev(mModel2);
         _ZN5ModelD1Ev(mModel1);
-        __cxa_vec_cleanup(mArray, 5, 0x34, (void *)func_ov006_021079c8);
+        __cxa_vec_cleanup(mArray, 5, 0x34, (void *)Roulette_Nothing);
         Dealer_Destruct((char *)mTable);
     }
 
