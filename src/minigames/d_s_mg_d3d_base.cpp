@@ -41,7 +41,7 @@ extern unsigned char data_0209f5f8;
 extern void *data_0209d4a8;
 extern unsigned int data_020a0db0;
 extern int data_0208ee44;
-extern int data_ov004_020beb74[];
+extern int sMgGraphCallback[];
 
 /* arm9 / ov004 helpers with no project header. */
 int   func_02053ea0(void);
@@ -54,13 +54,13 @@ void  func_02056674(const void *src, unsigned int offset, unsigned int count);
 int   func_020126e8(int a);
 void  func_020126ac(int a0, int a1, int a2, int a3, int s0);
 void  func_020127ec(int a0, int a1, int a2, int a3, int a4, int a5);
-void *func_ov004_020adc68(int id);
-void  func_ov004_020b0d30(void);
-void  func_ov004_020b290c(void);
-void  func_ov004_020b2980(void);
+void *Ov004_LoadFile(int id);
+void  Mg_ResetOverlays(void);
+void  Mg_ResetBgOffsets(void);
+void  Mg_DisableAllBanks(void);
 int   GetGameLanguage(void);
 void  DecompressLZ16(void *src, void *dst);
-/* The file ID is really u16, but passing it narrowed grows Virtual7C by
+/* The file ID is really u16, but passing it narrowed grows InitSubScreenBg by
  * 16 bytes. Keep it wide. */
 u32   LoadCompressedFileAt(unsigned int fileID, void *target);
 void  Ov004_Deallocate(void *x);
@@ -68,19 +68,19 @@ struct dCamera_c;
 void  Camera_UpdateMatrices(dCamera_c *camera);
 
 /* The same for the saved-bank restores: GX takes u16, and passing the saved
- * s32 through the real declaration adds 16 bytes each to Virtual7C and
- * OnAimedAtWithEggReturnVec. Constant banks use the GX namespace below. */
+ * s32 through the real declaration adds 16 bytes each to InitSubScreenBg and
+ * RestoreScreenFromMenu. Constant banks use the GX namespace below. */
 void  _ZN2GX15SetBankForSubBGEt(unsigned int x);
 void  _ZN2GX16SetBankForSubOBJEt(unsigned int x);
 
 /* Defined below. */
-void func_ov006_020e73c4(void);
-void func_ov006_020e740c(void);
-void func_ov006_020e7428(void);
-void func_ov006_020e7508(void);
-void func_ov006_020e759c(void);
-void func_ov006_020e7110(void *self);
-int  func_ov006_020e6da4(int a);
+void D3D_InitDualScreen(void);
+void D3D_ClearCaptureTable(void);
+void D3D_DrawSpriteTable(void);
+void D3D_CaptureToSub(void);
+void D3D_CaptureToMain(void);
+void D3D_ReleaseSubBg1(void *self);
+int  D3D_PanForX(int a);
 
 }
 
@@ -100,8 +100,8 @@ namespace G2S { u32 GetBG1CharPtr(); u32 GetBG1ScrPtr(); }
 namespace CP15 { void FlushAndInvalidateDataCache(u32, u32); }
 namespace Particle { void RenderAll(); }
 
-// @symbol func_ov006_020e759c
-extern "C" void func_ov006_020e759c(void) {
+// @symbol D3D_CaptureToMain
+extern "C" void D3D_CaptureToMain(void) {
     *(volatile unsigned short *)0x4000304 |= 0x8000;
     func_02054140();
     GX::SetBankForSubBG(4);
@@ -117,8 +117,8 @@ extern "C" void func_ov006_020e759c(void) {
     *(volatile unsigned short *)0x400100c &= ~0x40;
 }
 
-// @symbol func_ov006_020e7508
-extern "C" void func_ov006_020e7508(void)
+// @symbol D3D_CaptureToSub
+extern "C" void D3D_CaptureToSub(void)
 {
     *(volatile unsigned short *)0x4000304 &= ~0x8000;
     func_02054154();
@@ -131,8 +131,8 @@ extern "C" void func_ov006_020e7508(void)
     *(volatile int *)0x4001000 = (*(volatile int *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
 }
 
-// @symbol func_ov006_020e7428
-extern "C" void func_ov006_020e7428(void)
+// @symbol D3D_DrawSpriteTable
+extern "C" void D3D_DrawSpriteTable(void)
 {
     int entry;
     int x;
@@ -171,14 +171,14 @@ extern "C" void func_ov006_020e7428(void)
     func_02056674(data_ov006_02141a54, 0, 0x400);
 }
 
-// @symbol func_ov006_020e740c
-extern "C" void func_ov006_020e740c(void)
+// @symbol D3D_ClearCaptureTable
+extern "C" void D3D_ClearCaptureTable(void)
 {
     func_02056674(data_ov006_02141a54, 0, 0x400u);
 }
 
-// @symbol func_ov006_020e73c4
-extern "C" void func_ov006_020e73c4(void)
+// @symbol D3D_InitDualScreen
+extern "C" void D3D_InitDualScreen(void)
 {
     func_02054154();
     func_02054140();
@@ -187,11 +187,11 @@ extern "C" void func_ov006_020e73c4(void)
     *(unsigned int *)0x4001000 &= ~0x300010;
 }
 
-// @symbol _ZN14dScMgD3DBase_c9Virtual7CEv
+// @symbol _ZN14dScMgD3DBase_c15InitSubScreenBgEv
 /* Slot 31: loads the sub-screen BG and OBJ graphics, then restores the
  * banks it borrowed. Keep the destinations as base plus offset; one folded
  * constant changes the code. */
-int dScMgD3DBase_c::Virtual7C()
+int dScMgD3DBase_c::InitSubScreenBg()
 {
     unk_4660 = func_02053ea0();
     GX::SetBankForSubOBJ(0x100);
@@ -201,7 +201,7 @@ int dScMgD3DBase_c::Virtual7C()
         DecompressLZ16((void*)data_ov006_0213c5e8[GetGameLanguage()], dst);
     }
     _ZN2GX16SetBankForSubOBJEt(unk_4660);
-    unk_0a0 = func_02053eb0();
+    mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);
     {
         volatile u16 *p = (volatile u16*)0x400100a;
@@ -216,15 +216,15 @@ int dScMgD3DBase_c::Virtual7C()
         LoadCompressedFileAt(data_ov006_0213c610[language], (void*)G2S::GetBG1CharPtr());
     }
     LoadCompressedFileAt(0x5b, (void*)G2S::GetBG1ScrPtr());
-    _ZN2GX15SetBankForSubBGEt(unk_0a0);
+    _ZN2GX15SetBankForSubBGEt(mSubBgBank);
 }
 
-// @symbol _ZN14dScMgD3DBase_c9Virtual84Ev
+// @symbol _ZN14dScMgD3DBase_c11InitEnginesEv
 /* Slot 33: sets up the 3D display and VRAM banks, keeps the loaded
  * buffers for later palette and menu work, and publishes the two camera
  * blocks at 0x466c and 0x4728 (untyped padding in the header, so still by
  * offset). */
-void dScMgD3DBase_c::Virtual84()
+void dScMgD3DBase_c::InitEngines()
 {
     char *raw = (char *)this;
     void *file;
@@ -232,8 +232,8 @@ void dScMgD3DBase_c::Virtual84()
     *(vu32 *)0x4001000u |= 0x10000u;
     data_0209d45c = 0x10;
     data_0209d454 = 0x10;
-    func_ov004_020b290c();
-    func_ov004_020b2980();
+    Mg_ResetBgOffsets();
+    Mg_DisableAllBanks();
     data_0209e660 = 1;
     GX::DisableAllBanks();
     GX::SetBankForTex(1);
@@ -243,20 +243,20 @@ void dScMgD3DBase_c::Virtual84()
     func_02054748(0);
     GX::SetBankForOBJ(0x10);
     GX::SetBankForBG(2);
-    file = func_ov004_020adc68(data_ov006_0213c5fc[GetGameLanguage()]);
+    file = Ov004_LoadFile(data_ov006_0213c5fc[GetGameLanguage()]);
     data_ov006_02141a4c = file;
     {
         char *dst = (char *)0x6400000;
         dst += 0x4000;
         DecompressLZ16(file, dst);
     }
-    file = func_ov004_020adc68(0xc3);
+    file = Ov004_LoadFile(0xc3);
     data_ov006_02141a48 = file;
     GX::LoadOBJPltt(file, 0x100u, 0x100u);
     GXS::LoadOBJPltt(data_ov006_02141a48, 0x100u, 0x100u);
     InitialiseVramGlobals();
-    func_ov004_020b0d30();
-    func_ov006_020e7428();
+    Mg_ResetOverlays();
+    D3D_DrawSpriteTable();
     data_0208ee44 = 1;
     GX::SetGraphicsMode(1, 0, 1);
     GXS::SetGraphicsMode(5);
@@ -264,14 +264,14 @@ void dScMgD3DBase_c::Virtual84()
     data_ov006_02141a44 = (int)(raw + 0x466c);
     data_ov006_02141a40 = raw + 0x466c;
     data_ov006_02141a50 = raw + 0x4728;
-    data_ov004_020beb74[1] = (int)raw;
-    data_0209d4a8 = (void *)data_ov004_020beb74;
+    sMgGraphCallback[1] = (int)raw;
+    data_0209d4a8 = (void *)sMgGraphCallback;
 }
 
-// @symbol func_ov006_020e7110
+// @symbol D3D_ReleaseSubBg1
 /* Clears the sub-screen BG1 claim. The caller passes this, which is
  * unused. */
-extern "C" void func_ov006_020e7110(void *) { data_0209e660 = 0; }
+extern "C" void D3D_ReleaseSubBg1(void *) { data_0209e660 = 0; }
 
 // @symbol _ZN14dScMgD3DBase_c19BeforeInitResourcesEv
 /* The key function: the first virtual declared but not defined inline, so
@@ -333,7 +333,7 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
         *(int*)0x40004cc = 0x7fff;
         *(int*)0x40004c8 = 0x696a5800;
         *(int*)0x40004cc = 0x40007fff;
-        func_ov006_020e7110(this);
+        D3D_ReleaseSubBg1(this);
         Ov004_Deallocate(data_ov006_02141a4c);
         Ov004_Deallocate(data_ov006_02141a48);
     }
@@ -341,15 +341,15 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-// @symbol _ZN14dScMgD3DBase_c8OnKickedEv
+// @symbol _ZN14dScMgD3DBase_c16OnGraphCallback2Ev
 /* Slot 24, inherited by Jump and Jump2: switches between the two
  * 0xbc-byte cameras. Keep the if/else toggle; `unk_4664 = unk_4664 == 0`
  * compiles differently. */
-int dScMgD3DBase_c::OnKicked()
+int dScMgD3DBase_c::OnGraphCallback2()
 {
     char *raw = (char *)this;
 
-    if (dScMgBase_c::OnKicked() == 0) return 0;
+    if (dScMgBase_c::OnGraphCallback2() == 0) return 0;
     if (mMenuOpen == 0) {
         if (data_0209d464 == 0) return 0;
         if (unk_4664 == 0)
@@ -360,9 +360,9 @@ int dScMgD3DBase_c::OnKicked()
         data_ov006_02141a44 = cameraAddress;
         Camera_UpdateMatrices((dCamera_c *)cameraAddress);
         if (unk_4664 == 1) {
-            func_ov006_020e7508();
+            D3D_CaptureToSub();
         } else {
-            func_ov006_020e759c();
+            D3D_CaptureToMain();
             if (data_0209f5f8 == 0) {
                 *(int*)0x4001000 &= ~0xe000;
                 data_0209f5f8 = 1;
@@ -372,24 +372,24 @@ int dScMgD3DBase_c::OnKicked()
     return 1;
 }
 
-// @symbol _ZN14dScMgD3DBase_c8OnPushedEv
+// @symbol _ZN14dScMgD3DBase_c16OnGraphCallback3Ev
 /* Slot 25. */
-int dScMgD3DBase_c::OnPushed()
+int dScMgD3DBase_c::OnGraphCallback3()
 {
-    return dScMgBase_c::OnPushed() != 0;
+    return dScMgBase_c::OnGraphCallback3() != 0;
 }
 
-// @symbol _ZN14dScMgD3DBase_c24OnHitByCannonBlastedCharEv
+// @symbol _ZN14dScMgD3DBase_c14GetDisplayModeEv
 /* Slot 26: marks the 3D scenes with 2. */
-int dScMgD3DBase_c::OnHitByCannonBlastedChar()
+int dScMgD3DBase_c::GetDisplayMode()
 {
     return 2;
 }
 
-// @symbol func_ov006_020e6e3c
+// @symbol D3D_PlaySeAtX
 /* Returns whatever func_02012718 leaves in r0; decl_common.h declares it
    void, so there is no return statement. */
-extern "C" int func_ov006_020e6e3c(int a, int b)
+extern "C" int D3D_PlaySeAtX(int a, int b)
 {
     func_02012718(a, b + 0x80000);
 }
@@ -397,64 +397,64 @@ extern "C" int func_ov006_020e6e3c(int a, int b)
 // @symbol Sound_PlayBank1Panned
 extern "C" void Sound_PlayBank1Panned(int a0, char *a1, void *a2) {
     a1 += data_ov006_0212e574[a0];
-    int pan = func_ov006_020e6da4((int)a2);
+    int pan = D3D_PanForX((int)a2);
     func_020127ec(1, (int)a1, 4, 0, 0, pan);
 }
 
-// @symbol func_ov006_020e6db4
-extern "C" void func_ov006_020e6db4(int a0, int a1, int a2) {
+// @symbol D3D_PlaySePannedLoop
+extern "C" void D3D_PlaySePannedLoop(int a0, int a1, int a2) {
     int pan = func_020126e8(a1 + 0x80000);
     func_020126ac(a0, 6, 0, a2, pan);
 }
 
-// @symbol func_ov006_020e6da4
+// @symbol D3D_PanForX
 /* Thunk: func_020126e8(a + 0x80000). */
-extern "C" int func_ov006_020e6da4(int a)
+extern "C" int D3D_PanForX(int a)
 {
     return func_020126e8(a + 0x80000);
 }
 
-// @symbol _ZN14dScMgD3DBase_c15OnHitByMegaCharEv
+// @symbol _ZN14dScMgD3DBase_c8OpenMenuEv
 /* Slot 27: a long-branch veneer to the base. */
-void dScMgD3DBase_c::OnHitByMegaChar()
+void dScMgD3DBase_c::OpenMenu()
 {
-    dScMgBase_c::OnHitByMegaChar();
+    dScMgBase_c::OpenMenu();
 }
 
-// @symbol _ZN14dScMgD3DBase_c19OnHitFromUnderneathEv
+// @symbol _ZN14dScMgD3DBase_c9CloseMenuEv
 /* Slot 28. */
-int dScMgD3DBase_c::OnHitFromUnderneath()
+int dScMgD3DBase_c::CloseMenu()
 {
-    return dScMgBase_c::OnHitFromUnderneath();
+    return dScMgBase_c::CloseMenu();
 }
 
-// @symbol _ZN14dScMgD3DBase_c16OnAimedAtWithEggEv
+// @symbol _ZN14dScMgD3DBase_c17SaveScreenForMenuEv
 /* Slot 29: claims the sub-screen banks before the base opens the menu. */
-int dScMgD3DBase_c::OnAimedAtWithEgg()
+int dScMgD3DBase_c::SaveScreenForMenu()
 {
-    func_ov006_020e73c4();
+    D3D_InitDualScreen();
     GXS::LoadOBJPltt(data_ov006_02141a48, 0x100, 0x100);
     data_0209e660 = 0;
-    unk_0a0 = func_02053eb0();
+    mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);
     unk_4660 = func_02053ea0();
     GX::SetBankForSubOBJ(0x100);
-    return dScMgBase_c::OnAimedAtWithEgg();
+    return dScMgBase_c::SaveScreenForMenu();
 }
 
-// @symbol _ZN14dScMgD3DBase_c25OnAimedAtWithEggReturnVecEv
+// @symbol _ZN14dScMgD3DBase_c21RestoreScreenFromMenuEv
 /* Slot 30: gives the banks back around the base's menu teardown. */
-void dScMgD3DBase_c::OnAimedAtWithEggReturnVec()
+void dScMgD3DBase_c::RestoreScreenFromMenu()
 {
-    _ZN2GX15SetBankForSubBGEt(unk_0a0);
+    _ZN2GX15SetBankForSubBGEt(mSubBgBank);
     _ZN2GX16SetBankForSubOBJEt(unk_4660);
     data_0209e660 = 1;
-    func_ov006_020e740c();
-    dScMgBase_c::OnAimedAtWithEggReturnVec();
+    D3D_ClearCaptureTable();
+    dScMgBase_c::RestoreScreenFromMenu();
     if (unk_4664 == 1) {
-        func_ov006_020e7508();
+        D3D_CaptureToSub();
     } else {
-        func_ov006_020e759c();
+        D3D_CaptureToMain();
         if (data_0209f5f8 == 0) data_0209f5f8 = 1;
     }
 }

@@ -11,12 +11,12 @@
  * the registry factory dScMgCoin_c_classInit. The destructor is the key
  * function, so the vtable and RTTI are emitted here too.
  *
- * The functions from func_ov006_020dd0e0 up, and the three below
- * func_ov006_020dbf7c, came from one-function files. Their bodies are
+ * The functions from Coin_State0 up, and the three below
+ * Bag_State3, came from one-function files. Their bodies are
  * kept as they matched there. Where two of them spelled a type or a
  * declaration differently, the tag is renamed per function and the
- * call casts. func_ov006_020dd880 and func_ov006_020ddeb0 called
- * slot 35 through a stand-in vtable; they now call Virtual8C.
+ * call casts. Block_State2 and SpawnBlocks called
+ * slot 35 through a stand-in vtable; they now call IsAltVariant.
  *
  * The five state tables (the coin handlers at data_ov006_021417b0, the
  * moneybag's at 021417c8, the caption's at 021417e8, the phases' at
@@ -26,19 +26,19 @@
  *
  */
 
-// leftovers: func_ov006_020dd594 and func_ov006_020dde28 still use local
+// leftovers: DrawBlocks and Block_Animate still use local
 // layout structs instead of the class members. The address-named helpers
-// keep ROM names (no symbol table: func_ov006_020ddeb0, func_ov006_020dd4b0
+// keep ROM names (no symbol table: SpawnBlocks, KickBlockUnderCoin
 // and the func_ov006_020dc* family). RenderOamMainScreen and
-// func_ov004_020b0380 are redeclared extern "C" at the call -- the ROM symbols
-// are unmangled and the sites disagree on the types. func_ov006_020dcd74
-// reads the other score at data_ov004_020beb68 + 0xac (not a dScMgBase_c
-// field). func_ov006_020dc6d0 casts the scene through unsigned long long
+// Mg_RenderSpriteBothMtx are redeclared extern "C" at the call -- the ROM symbols
+// are unmangled and the sites disagree on the types. DrawScoreRival
+// reads the other score at gMgScene + 0xac (not a dScMgBase_c
+// field). Caption_State0 casts the scene through unsigned long long
 // before clearing the caption frameTime (five words without it).
-// func_ov006_020dc900/_020dc960/_020dcb1c stay on byte offsets (popup and
+// Popup_UpdateAll/_020dc960/_020dcb1c stay on byte offsets (popup and
 // sparkle structs miss: timer address reused, 0x18 kept as stride and timer,
 // literal pool swapped). GetGameLanguage is called twice in
-// func_ov006_020dccb8 and again in func_ov006_020dcd74 (hoisting misses).
+// DrawScorePlayer and again in DrawScoreRival (hoisting misses).
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum dScMgCoin_c_AssetId {
@@ -123,8 +123,8 @@ extern unsigned char data_ov006_0212e308[];
 extern unsigned char data_ov006_0212e30c[];
 extern u16 data_ov006_0212e33c[];
 extern u8 data_ov006_0212e310[];
-extern void func_ov004_020b0d8c(void *c, int arg1, int arg2);
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
+extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
+extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern int data_ov006_0212e430[];
 extern u16 data_ov006_0212e334[];
 extern s16 data_02082214[];
@@ -132,13 +132,13 @@ extern int data_ov006_021341ec;
 extern int data_ov006_0212e364[];
 extern int *data_ov006_0213bf34[];
 extern int GetGameLanguage(void);
-extern void func_ov004_020b1de8(int r0, int r1, int r2, int r3);
+extern void Mg_DrawCreditsIcon(int r0, int r1, int r2, int r3);
 extern void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3);
-extern void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4);
+extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern void *data_ov006_02133f10[];
 extern void *data_ov006_02136e24[];
 extern void *data_ov006_02134b4c[];
-extern void func_ov004_020b023c(void *obj, int x, int y, int w, int *vec);
+extern void Mg_RenderSpriteBothPalMtx(void *obj, int x, int y, int w, int *vec);
 extern void func_020127a4(int a, int b, int c, int d);
 extern int data_ov006_0212e358[];
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
@@ -154,8 +154,8 @@ extern int data_ov006_0212e3b8[];
 extern int data_ov006_0212e34c[];
 extern u16 data_ov006_0212e32c[];
 extern void FreeGfxSlotsById(int n);
-extern void func_ov004_020ae274(void *c);
-extern int func_ov004_020adc1c(void);
+extern void Mg_PlayJingle(void *c);
+extern int Mg_GetTopRecord(void);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -178,57 +178,57 @@ struct CoinPmfEntry { CoinPmf pmf; };
 typedef void (dScMgCoin_c::*PMF_Behavior)();
 struct Entry_Behavior { PMF_Behavior pmf; };
 extern "C" {
-extern const Entry_Behavior data_ov006_0213bee4, data_ov006_0213be6c,
-    data_ov006_0213be7c, data_ov006_0213bea4, data_ov006_0213be54,
-    data_ov006_0213be5c;
-extern const CoinPmfEntry data_ov006_0213beec, data_ov006_0213be74,
-    data_ov006_0213be64, data_ov006_0213be84, data_ov006_0213beb4,
-    data_ov006_0213be9c;
-extern const CoinPmfEntry data_ov006_0213befc, data_ov006_0213bf04,
-    data_ov006_0213be94;
-extern const CoinPmfEntry data_ov006_0213bec4, data_ov006_0213bed4,
-    data_ov006_0213becc, data_ov006_0213beac, data_ov006_0213bebc;
-extern const CoinPmfEntry data_ov006_0213be44, data_ov006_0213be4c,
-    data_ov006_0213bef4, data_ov006_0213be8c;
+extern const Entry_Behavior pmf_dScMgCoin_c_Phase_State0, pmf_dScMgCoin_c_Phase_State1,
+    pmf_dScMgCoin_c_Phase_State2, pmf_dScMgCoin_c_Phase_State3, pmf_dScMgCoin_c_Phase_State4,
+    pmf_dScMgCoin_c_Phase_State5;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Block_State0, pmf_dScMgCoin_c_Block_State1,
+    pmf_dScMgCoin_c_Block_State2, pmf_dScMgCoin_c_Block_State3, pmf_dScMgCoin_c_Block_State4,
+    pmf_dScMgCoin_c_Block_State5;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Coin_State0, pmf_dScMgCoin_c_Coin_State1,
+    pmf_dScMgCoin_c_Coin_State2;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Caption_State0, pmf_dScMgCoin_c_Caption_State1,
+    pmf_dScMgCoin_c_Caption_State2, pmf_dScMgCoin_c_Caption_State3, pmf_dScMgCoin_c_Caption_State4;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Bag_State0, pmf_dScMgCoin_c_Bag_State1,
+    pmf_dScMgCoin_c_Bag_State2, pmf_dScMgCoin_c_Bag_State3;
 
 /* the phases (Behavior) */
 Entry_Behavior data_ov006_02141810[6] = {
-    { data_ov006_0213bee4 },
-    { data_ov006_0213be6c },
-    { data_ov006_0213be7c },
-    { data_ov006_0213bea4 },
-    { data_ov006_0213be54 },
-    { data_ov006_0213be5c }
+    { pmf_dScMgCoin_c_Phase_State0 },
+    { pmf_dScMgCoin_c_Phase_State1 },
+    { pmf_dScMgCoin_c_Phase_State2 },
+    { pmf_dScMgCoin_c_Phase_State3 },
+    { pmf_dScMgCoin_c_Phase_State4 },
+    { pmf_dScMgCoin_c_Phase_State5 }
 };
 /* the blocks */
 CoinPmfEntry data_ov006_02141840[6] = {
-    { data_ov006_0213beec },
-    { data_ov006_0213be74 },
-    { data_ov006_0213be64 },
-    { data_ov006_0213be84 },
-    { data_ov006_0213beb4 },
-    { data_ov006_0213be9c }
+    { pmf_dScMgCoin_c_Block_State0 },
+    { pmf_dScMgCoin_c_Block_State1 },
+    { pmf_dScMgCoin_c_Block_State2 },
+    { pmf_dScMgCoin_c_Block_State3 },
+    { pmf_dScMgCoin_c_Block_State4 },
+    { pmf_dScMgCoin_c_Block_State5 }
 };
 /* the coins */
 CoinPmfEntry data_ov006_021417b0[3] = {
-    { data_ov006_0213befc },
-    { data_ov006_0213bf04 },
-    { data_ov006_0213be94 }
+    { pmf_dScMgCoin_c_Coin_State0 },
+    { pmf_dScMgCoin_c_Coin_State1 },
+    { pmf_dScMgCoin_c_Coin_State2 }
 };
 /* the caption */
 CoinPmfEntry data_ov006_021417e8[5] = {
-    { data_ov006_0213bec4 },
-    { data_ov006_0213bed4 },
-    { data_ov006_0213becc },
-    { data_ov006_0213beac },
-    { data_ov006_0213bebc }
+    { pmf_dScMgCoin_c_Caption_State0 },
+    { pmf_dScMgCoin_c_Caption_State1 },
+    { pmf_dScMgCoin_c_Caption_State2 },
+    { pmf_dScMgCoin_c_Caption_State3 },
+    { pmf_dScMgCoin_c_Caption_State4 }
 };
 /* the moneybag */
 CoinPmfEntry data_ov006_021417c8[4] = {
-    { data_ov006_0213be44 },
-    { data_ov006_0213be4c },
-    { data_ov006_0213bef4 },
-    { data_ov006_0213be8c }
+    { pmf_dScMgCoin_c_Bag_State0 },
+    { pmf_dScMgCoin_c_Bag_State1 },
+    { pmf_dScMgCoin_c_Bag_State2 },
+    { pmf_dScMgCoin_c_Bag_State3 }
 };
 }
 
@@ -257,7 +257,7 @@ extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz)
 
 #define FX_MUL(a, b) ((int)(((s64)(a) * (b) + 0x800) >> 12))
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dbe9cEv
+// @symbol _ZN11dScMgCoin_c8Bag_DrawEv
 /* The hand cursor while the stylus is down: the sine table entry for the
    scene's angle becomes a unit-scale 2x2 rotation matrix [cos, sin; -sin,
    cos] for the shared sprite call. The four matrix words are written
@@ -267,7 +267,7 @@ extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz)
    fifteen words. The pragma is part of that match. */
 #pragma push
 #pragma opt_propagation off
-void dScMgCoin_c::func_ov006_020dbe9c()
+void dScMgCoin_c::Bag_Draw()
 {
 
     if (mBouncer.shown == 0)
@@ -284,13 +284,13 @@ void dScMgCoin_c::func_ov006_020dbe9c()
         vec[1] = FX_MUL(data_02082214[i], 0x1000);
         vec[2] = -FX_MUL(data_02082214[i], 0x1000);
         vec[3] = FX_MUL(data_02082214[i + 1], 0x1000);
-        func_ov004_020b023c(data_ov006_02134b4c[idx_l], xr >> 12, yr >> 12, -1, vec);
+        Mg_RenderSpriteBothPalMtx(data_ov006_02134b4c[idx_l], xr >> 12, yr >> 12, -1, vec);
     }
 }
 #pragma pop
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dbf7cEi
-void dScMgCoin_c::func_ov006_020dbf7c(int i)
+// @symbol _ZN11dScMgCoin_c10Bag_State3Ei
+void dScMgCoin_c::Bag_State3(int i)
 {
     BagView *scene = (BagView *)this;
     int height;
@@ -331,8 +331,8 @@ void dScMgCoin_c::func_ov006_020dbf7c(int i)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc154Ei
-void dScMgCoin_c::func_ov006_020dc154(int index)
+// @symbol _ZN11dScMgCoin_c10Bag_State2Ei
+void dScMgCoin_c::Bag_State2(int index)
 {
     BagView *scene = (BagView *)this;
     if (scene->bag[index].countdown != 0) {
@@ -343,11 +343,11 @@ void dScMgCoin_c::func_ov006_020dc154(int index)
     scene->bag[index].vy = 0;
     scene->bag[index].bouncesLeft = 1;
     scene->bag[index].stage = 0;
-    this->func_ov006_020ddeb0();
+    this->SpawnBlocks();
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc1c4Ei
-void dScMgCoin_c::func_ov006_020dc1c4(int index)
+// @symbol _ZN11dScMgCoin_c10Bag_State1Ei
+void dScMgCoin_c::Bag_State1(int index)
 {
     BagView *scene = (BagView *)this;
     scene->bag[index].y = scene->bag[index].y + scene->bag[index].vy;
@@ -358,11 +358,11 @@ void dScMgCoin_c::func_ov006_020dc1c4(int index)
     scene->bag[index].y = kParkedY;
     scene->bag[index].state = 2;
     scene->bag[index].countdown = 0x30;
-    this->func_ov006_020ddeb0();
+    this->SpawnBlocks();
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc26cEv
-void dScMgCoin_c::func_ov006_020dc26c()
+// @symbol _ZN11dScMgCoin_c11Bag_ReleaseEv
+void dScMgCoin_c::Bag_Release()
 {
     dScMgCoin_c *scene = this;
     scene->mBouncer.state = 1;
@@ -371,15 +371,15 @@ void dScMgCoin_c::func_ov006_020dc26c()
     scene->mBouncer.vy = kKickVy;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc294Ev
-void dScMgCoin_c::func_ov006_020dc294()
+// @symbol _ZN11dScMgCoin_c10Bag_State0Ev
+void dScMgCoin_c::Bag_State0()
 {
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc298Ev
+// @symbol _ZN11dScMgCoin_c10Bag_UpdateEv
 /* Dispatch the moneybag while mBouncer.active is set. Not a vtable:
    the records live in data_ov006_021417c8. */
-void dScMgCoin_c::func_ov006_020dc298()
+void dScMgCoin_c::Bag_Update()
 {
     if (this->mBouncer.active == 0)
         return;
@@ -388,8 +388,8 @@ void dScMgCoin_c::func_ov006_020dc298()
     (this->*data_ov006_021417c8[state].pmf)(0);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc2f8Ev
-void dScMgCoin_c::func_ov006_020dc2f8()
+// @symbol _ZN11dScMgCoin_c8Bag_ShowEv
+void dScMgCoin_c::Bag_Show()
 {
     dScMgCoin_c *scene = this;
     scene->mBouncer.active = 1;
@@ -401,16 +401,16 @@ void dScMgCoin_c::func_ov006_020dc2f8()
     scene->mBouncer.y = kBagRestY;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc334Ev
-void dScMgCoin_c::func_ov006_020dc334()
+// @symbol _ZN11dScMgCoin_c8Bag_HideEv
+void dScMgCoin_c::Bag_Hide()
 {
     dScMgCoin_c *scene = this;
     scene->mBouncer.active = 0;
     scene->mBouncer.shown = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc348Ev
-void dScMgCoin_c::func_ov006_020dc348()
+// @symbol _ZN11dScMgCoin_c14Caption_FinishEv
+void dScMgCoin_c::Caption_Finish()
 {
     dScMgCoin_c *scene = this;
     scene->mCaption.state = 4;
@@ -419,8 +419,8 @@ void dScMgCoin_c::func_ov006_020dc348()
     scene->mCaptionLatch = 1;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc370Ev
-void dScMgCoin_c::func_ov006_020dc370()
+// @symbol _ZN11dScMgCoin_c15Caption_TriggerEv
+void dScMgCoin_c::Caption_Trigger()
 {
     dScMgCoin_c *scene = this;
     if (scene->mCaptionLatch != 0)
@@ -437,8 +437,8 @@ void dScMgCoin_c::func_ov006_020dc370()
     scene->mCaption.frameTime = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc3bcEv
-void dScMgCoin_c::func_ov006_020dc3bc()
+// @symbol _ZN11dScMgCoin_c12Caption_DrawEv
+void dScMgCoin_c::Caption_Draw()
 {
     dScMgCoin_c *scene = this;
 
@@ -449,8 +449,8 @@ void dScMgCoin_c::func_ov006_020dc3bc()
         scene->mCaption.x >> 12, scene->mCaption.y >> 12, -1, -1);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc414Ei
-void dScMgCoin_c::func_ov006_020dc414(int index)
+// @symbol _ZN11dScMgCoin_c14Caption_State4Ei
+void dScMgCoin_c::Caption_State4(int index)
 {
     CapView *scene = (CapView *)this;
     u16 *frameTime = &scene->cap[index].frameTime;
@@ -468,15 +468,15 @@ void dScMgCoin_c::func_ov006_020dc414(int index)
         scene->cap[index].sprite = data_ov006_0212e31c[*frame];
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc4b0Ei
-void dScMgCoin_c::func_ov006_020dc4b0(int index)
+// @symbol _ZN11dScMgCoin_c14Caption_State3Ei
+void dScMgCoin_c::Caption_State3(int index)
 {
     dScMgCoin_c *scene = this;
     (&scene->mCaption)[index].sprite = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc4c8Ei
-void dScMgCoin_c::func_ov006_020dc4c8(int index)
+// @symbol _ZN11dScMgCoin_c14Caption_State2Ei
+void dScMgCoin_c::Caption_State2(int index)
 {
     CapView *scene = (CapView *)this;
     u16 frameTime = scene->cap[index].frameTime;
@@ -501,8 +501,8 @@ void dScMgCoin_c::func_ov006_020dc4c8(int index)
     scene->cap[index].delay = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc5c4Ei
-void dScMgCoin_c::func_ov006_020dc5c4(int index)
+// @symbol _ZN11dScMgCoin_c14Caption_State1Ei
+void dScMgCoin_c::Caption_State1(int index)
 {
     CapView *scene = (CapView *)this;
 
@@ -515,7 +515,7 @@ void dScMgCoin_c::func_ov006_020dc5c4(int index)
     *frameTime = 0;
     *frame = (u8)(*frame + 1);
     if (*frame == 2) {
-        this->func_ov006_020dc26c();
+        this->Bag_Release();
         Sound::PlayBank2_2D(kSndReady);
     }
     if (*frame >= 4) {
@@ -532,8 +532,8 @@ void dScMgCoin_c::func_ov006_020dc5c4(int index)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc6d0Ei
-void dScMgCoin_c::func_ov006_020dc6d0(int index)
+// @symbol _ZN11dScMgCoin_c14Caption_State0Ei
+void dScMgCoin_c::Caption_State0(int index)
 {
     int raw = (int)this;
     CapView *scene = (CapView *)raw;
@@ -548,9 +548,9 @@ void dScMgCoin_c::func_ov006_020dc6d0(int index)
     ((CapView *)(unsigned long long)raw)->cap[index].frameTime = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc754Ev
+// @symbol _ZN11dScMgCoin_c14Caption_UpdateEv
 /* Same dispatch as the moneybag, for the caption. */
-void dScMgCoin_c::func_ov006_020dc754()
+void dScMgCoin_c::Caption_Update()
 {
     if (this->mCaption.active == 0)
         return;
@@ -559,8 +559,8 @@ void dScMgCoin_c::func_ov006_020dc754()
     (this->*data_ov006_021417e8[state].pmf)(0);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc7b4Ev
-void dScMgCoin_c::func_ov006_020dc7b4()
+// @symbol _ZN11dScMgCoin_c12Caption_ShowEv
+void dScMgCoin_c::Caption_Show()
 {
     dScMgCoin_c *scene = this;
     scene->mCaption.active = 1;
@@ -574,16 +574,16 @@ void dScMgCoin_c::func_ov006_020dc7b4()
     scene->mCaption.y = kCaptionY;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc7fcEv
-void dScMgCoin_c::func_ov006_020dc7fc()
+// @symbol _ZN11dScMgCoin_c13Caption_ResetEv
+void dScMgCoin_c::Caption_Reset()
 {
     dScMgCoin_c *scene = this;
     scene->mCaption.active = 0;
     scene->mCaption.visible = 1;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc814Ev
-void dScMgCoin_c::func_ov006_020dc814()
+// @symbol _ZN11dScMgCoin_c16DrawResultPromptEv
+void dScMgCoin_c::DrawResultPrompt()
 {
     dScMgCoin_c *scene = this;
     if (scene->mPhase != kResultPhase)
@@ -595,11 +595,11 @@ void dScMgCoin_c::func_ov006_020dc814()
     if (left == 0)
         return;
 
-    func_ov004_020b0d8c(scene, 0xe0, 0xa0);
+    Mg_DrawBlinkSprite(scene, 0xe0, 0xa0);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc870Ev
-void dScMgCoin_c::func_ov006_020dc870()
+// @symbol _ZN11dScMgCoin_c17DrawResultNumbersEv
+void dScMgCoin_c::DrawResultNumbers()
 {
     dScMgCoin_c *scene = this;
     int i;
@@ -609,14 +609,14 @@ void dScMgCoin_c::func_ov006_020dc870()
     }
     for (i = 0; i < kPopupCount; i++) {
         if (scene->mPopups[i].flag != 0) {
-            func_ov004_020b2444(scene->mPopups[i].x >> 12, scene->mPopups[i].y >> 12,
+            Mg_DrawBigNumber(scene->mPopups[i].x >> 12, scene->mPopups[i].y >> 12,
                 scene->mPopups[i].value, 0, -1, 0, 0);
         }
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc900Ev
-void dScMgCoin_c::func_ov006_020dc900()
+// @symbol _ZN11dScMgCoin_c15Popup_UpdateAllEv
+void dScMgCoin_c::Popup_UpdateAll()
 {
     char *raw = (char *)this;
     /* Popup struct misses: the (int) cast is what makes the timer
@@ -632,8 +632,8 @@ void dScMgCoin_c::func_ov006_020dc900()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc960Ei
-void dScMgCoin_c::func_ov006_020dc960(int index)
+// @symbol _ZN11dScMgCoin_c11Popup_SpawnEi
+void dScMgCoin_c::Popup_Spawn(int index)
 {
     char *raw = (char *)this;
     /* Two strides, 0x18 and 0x10. The struct form keeps 0x18 alive
@@ -646,8 +646,8 @@ void dScMgCoin_c::func_ov006_020dc960(int index)
     mPopups[index].timer = 0x18;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dc99cEv
-void dScMgCoin_c::func_ov006_020dc99c()
+// @symbol _ZN11dScMgCoin_c15Sparkle_DrawAllEv
+void dScMgCoin_c::Sparkle_DrawAll()
 {
     SparkView *scene = (SparkView *)this;
 
@@ -657,13 +657,13 @@ void dScMgCoin_c::func_ov006_020dc99c()
             int sprite = scene->spark[i].sprite;
             int x = scene->spark[i].x;
             int y = scene->spark[i].y;
-            func_ov004_020b0380(data_ov006_02136e24[sprite], x >> 12, y >> 12, 0);
+            Mg_RenderSpriteBothMtx(data_ov006_02136e24[sprite], x >> 12, y >> 12, 0);
         }
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dca04Ev
-void dScMgCoin_c::func_ov006_020dca04()
+// @symbol _ZN11dScMgCoin_c17Sparkle_UpdateAllEv
+void dScMgCoin_c::Sparkle_UpdateAll()
 {
     SparkView *scene = (SparkView *)this;
     int i;
@@ -687,8 +687,8 @@ void dScMgCoin_c::func_ov006_020dca04()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dcb1cEi
-void dScMgCoin_c::func_ov006_020dcb1c(int coinIndex)
+// @symbol _ZN11dScMgCoin_c13Sparkle_BurstEi
+void dScMgCoin_c::Sparkle_Burst(int coinIndex)
 {
     char *raw = (char *)this;
     /* Sparkle struct reorders the literal pool (0212e430 before 0212e334). */
@@ -713,8 +713,8 @@ void dScMgCoin_c::func_ov006_020dcb1c(int coinIndex)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dcc48Ev
-void dScMgCoin_c::func_ov006_020dcc48()
+// @symbol _ZN11dScMgCoin_c13Popup_DrawAllEv
+void dScMgCoin_c::Popup_DrawAll()
 {
     dScMgCoin_c *scene = this;
 
@@ -724,14 +724,14 @@ void dScMgCoin_c::func_ov006_020dcc48()
         y = data_ov006_0212e364[i];
         x = 0x10;
         for (j = 0; j < kTileCols; j++) {
-            func_ov004_020b0380((void *)data_ov006_021341ec, x, y, (void *)0);
+            Mg_RenderSpriteBothMtx((void *)data_ov006_021341ec, x, y, (void *)0);
             x += kTileStep;
         }
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dccb8Ev
-void dScMgCoin_c::func_ov006_020dccb8()
+// @symbol _ZN11dScMgCoin_c15DrawScorePlayerEv
+void dScMgCoin_c::DrawScorePlayer()
 {
     dScMgCoin_c *scene = this;
 
@@ -741,14 +741,14 @@ void dScMgCoin_c::func_ov006_020dccb8()
 
     lang = GetGameLanguage();
     RenderOamMainScreen(data_ov006_0213bf34[lang][8], 0x80, 0x18, -1, -1);
-    func_ov004_020b1de8(0x68, 0x28, 1, -1);
+    Mg_DrawCreditsIcon(0x68, 0x28, 1, -1);
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7a, 0x28, (void *)0);
-    func_ov004_020b2444(0x8c, 0x28, scene->mPlayerScore, 1, -1, 2, 0);
+    Mg_DrawBigNumber(0x8c, 0x28, scene->mPlayerScore, 1, -1, 2, 0);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dcd74Ev
-void dScMgCoin_c::func_ov006_020dcd74()
+// @symbol _ZN11dScMgCoin_c14DrawScoreRivalEv
+void dScMgCoin_c::DrawScoreRival()
 {
     dScMgCoin_c *scene = this;
 
@@ -759,18 +759,18 @@ void dScMgCoin_c::func_ov006_020dcd74()
 
     lang = GetGameLanguage();
     RenderOamMainScreen(data_ov006_0213bf34[lang][4], 0x80, 0x50, -1, -1);
-    func_ov004_020b1de8(0x6c, 0x60, 1, -1);
+    Mg_DrawCreditsIcon(0x6c, 0x60, 1, -1);
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7e, 0x60, (void *)0);
-    if (data_ov004_020beb68 != 0)
-        count = *(int *)((char *)data_ov004_020beb68 + 0xac);
+    if (gMgScene != 0)
+        count = gMgScene->mCreditsShown;
     else
         count = 0;
-    func_ov004_020b2444(0x90, 0x60, count, 1, -1, 2, 0);
+    Mg_DrawBigNumber(0x90, 0x60, count, 1, -1, 2, 0);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dce3cEv
-void dScMgCoin_c::func_ov006_020dce3c()
+// @symbol _ZN11dScMgCoin_c12Score_UpdateEv
+void dScMgCoin_c::Score_Update()
 {
     dScMgCoin_c *scene = this;
     if (scene->mScore.running == 0)
@@ -790,8 +790,8 @@ void dScMgCoin_c::func_ov006_020dce3c()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dcea8Ev
-void dScMgCoin_c::func_ov006_020dcea8()
+// @symbol _ZN11dScMgCoin_c14DrawCoinValuesEv
+void dScMgCoin_c::DrawCoinValues()
 {
     dScMgCoin_c *scene = this;
     int i;
@@ -811,23 +811,23 @@ void dScMgCoin_c::func_ov006_020dcea8()
             highlight = 1;
         if (scene->mPhase != kResultPhase) {
             if (scene->mCoins[i].visible != 0)
-                func_ov004_020afdd0(data_ov006_02133f10[sprite], x, y, -1, highlight);
+                Mg_RenderSpriteBoth(data_ov006_02133f10[sprite], x, y, -1, highlight);
         } else {
             if (sprite != 0 && scene->mCoins[i].value != 0)
-                func_ov004_020afdd0(data_ov006_02133f10[sprite], x, y, -1, highlight);
+                Mg_RenderSpriteBoth(data_ov006_02133f10[sprite], x, y, -1, highlight);
             if (scene->mCoins[i].collected == 0 && scene->mCoins[i].value != 0)
-                func_ov004_020b2444(x, y, scene->mCoins[i].value, 0, -1, 0, 0);
+                Mg_DrawBigNumber(x, y, scene->mCoins[i].value, 0, -1, 0, 0);
         }
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dcffcEv
-void dScMgCoin_c::func_ov006_020dcffc()
+// @symbol _ZN11dScMgCoin_c11Coin_State2Ev
+void dScMgCoin_c::Coin_State2()
 {
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd000Ei
-void dScMgCoin_c::func_ov006_020dd000(int index)
+// @symbol _ZN11dScMgCoin_c11Coin_State1Ei
+void dScMgCoin_c::Coin_State1(int index)
 {
     CoinView *scene = (CoinView *)this;
 
@@ -837,17 +837,17 @@ void dScMgCoin_c::func_ov006_020dd000(int index)
         return;
     scene->coin[index].y = scene->coin[index].landY;
     scene->coin[index].bounces = scene->coin[index].bounces + 1;
-    this->func_ov006_020dc370();
+    this->Caption_Trigger();
     if (scene->coin[index].value == scene->coin[index].bounces) {
         scene->coin[index].state = kCoinSettled;
-        this->func_ov006_020dc960(index);
+        this->Popup_Spawn(index);
         return;
     }
     scene->coin[index].vy = kHopVy;
-    this->func_ov006_020dd4b0(index);
+    this->KickBlockUnderCoin(index);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd0e0Ei
+// @symbol _ZN11dScMgCoin_c11Coin_State0Ei
 /* The touch test for one coin. In phase 2, with the stylus down and newly
    pressed, a touch within 0x10 of the coin takes it: a coin still worth
    something starts its hop, otherwise the round ends (phase 3, a 0x40 timer,
@@ -856,7 +856,7 @@ void dScMgCoin_c::func_ov006_020dd000(int index)
    is re-read through gActivePlayerSlot rather than the i already in hand; each
    of the five coin stores spells its own self + n + 0x4000 + ... with no
    hoisted base; and the hop target re-reads its address instead of *p1. */
-void dScMgCoin_c::func_ov006_020dd0e0(int idx)
+void dScMgCoin_c::Coin_State0(int idx)
 {
     char *self = (char *)this;
     int i;
@@ -909,11 +909,11 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
         *(int *)(self + n + 0x4000 + 0xac8) = *(int *)(self + 0x4ac4 + n);
         *(int *)(self + n + 0x4000 + 0xacc) = -0x3000;
         *(u8 *)(self + n + 0x4000 + 0xad6) = 0;
-        this->func_ov006_020dd4b0(idx);
+        this->KickBlockUnderCoin(idx);
         return;
     }
 
-    this->func_ov006_020dcb1c(idx);
+    this->Sparkle_Burst(idx);
     *(u8 *)(self + idx * 0x18 + 0x4000 + 0xad2) = 0;
     mPhase = 3;
     mCountdown = 0x40;
@@ -928,7 +928,7 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
     Sound::PlayBank2_2D(0xf2);
 
     *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
-    stars = (data_ov004_020beb68 != 0) ? *(int *)((char *)data_ov004_020beb68 + 0xa8) : 0;
+    stars = (gMgScene != 0) ? gMgScene->mCredits : 0;
     need = mPlayerScore;
     if (stars > need)
         mWonLast = 1;
@@ -936,9 +936,9 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
         mWonLast = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd2ccEv
+// @symbol _ZN11dScMgCoin_c14Coin_UpdateAllEv
 /* Runs each coin's state handler from data_ov006_021417b0. */
-void dScMgCoin_c::func_ov006_020dd2cc()
+void dScMgCoin_c::Coin_UpdateAll()
 {
     int i;
     for (i = 0; i < 0x18; i++) {
@@ -947,10 +947,10 @@ void dScMgCoin_c::func_ov006_020dd2cc()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd334Ev
+// @symbol _ZN11dScMgCoin_c11LayOutCoinsEv
 /* Lays the 24 coins out in three rows of eight and marks two coins in each
    row, picked at random, at +0x14. */
-void dScMgCoin_c::func_ov006_020dd334()
+void dScMgCoin_c::LayOutCoins()
 {
     char *c = (char *)this;
     int a[3];
@@ -988,10 +988,10 @@ void dScMgCoin_c::func_ov006_020dd334()
     *(unsigned char *)(c + (b[2] + 0x10) * 0x18 + 0x4ad4) = 1;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd4b0Ei
+// @symbol _ZN11dScMgCoin_c18KickBlockUnderCoinEi
 /* Finds the first resting block (state 4) that belongs to coin id, kicks it
    up from under the coin (state 5) and plays the panned hop sound. */
-void dScMgCoin_c::func_ov006_020dd4b0(int id)
+void dScMgCoin_c::KickBlockUnderCoin(int id)
 {
     char *base = (char *)this;
     int i;
@@ -1017,7 +1017,7 @@ void dScMgCoin_c::func_ov006_020dd4b0(int id)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd594Ev
+// @symbol _ZN11dScMgCoin_c10DrawBlocksEv
 /* Draws the 40 blocks on both screens. */
 typedef struct {
     int f0;
@@ -1038,7 +1038,7 @@ typedef struct {
     int f51cc;
 } Self_dd594;
 
-void dScMgCoin_c::func_ov006_020dd594()
+void dScMgCoin_c::DrawBlocks()
 {
     Self_dd594 *self = (Self_dd594 *)this;
     int i;
@@ -1060,15 +1060,15 @@ void dScMgCoin_c::func_ov006_020dd594()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd658Ei
+// @symbol _ZN11dScMgCoin_c12Block_State5Ei
 /* A block falling into place. The panned landing sound plays on the frame
    vy turns from rising to falling; once it passes its row it rests (state
    4), bumps the running total and bursts an effect. */
 struct Pair_dd658 { int a; int b; };
-extern "C" void func_ov004_020adfc4(int a, int b, struct Pair_dd658 *p2, struct Pair_dd658 *p3,
+extern "C" void Mg_SpawnFx(int a, int b, struct Pair_dd658 *p2, struct Pair_dd658 *p3,
                                     struct Pair_dd658 *p4);
 
-void dScMgCoin_c::func_ov006_020dd658(int i)
+void dScMgCoin_c::Block_State5(int i)
 {
     int n = i * 0x1c;
     int oldVy;
@@ -1109,19 +1109,19 @@ void dScMgCoin_c::func_ov006_020dd658(int i)
             pa.a = v0;
             pa.b = v1;
         }
-        func_ov004_020adfc4(1, 0x20, &pa, &pa, &pb);
+        Mg_SpawnFx(1, 0x20, &pa, &pa, &pb);
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd7bcEv
-void dScMgCoin_c::func_ov006_020dd7bc()
+// @symbol _ZN11dScMgCoin_c12Block_State4Ev
+void dScMgCoin_c::Block_State4()
 {
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd7c0Ei
+// @symbol _ZN11dScMgCoin_c12Block_State3Ei
 /* A block dropping onto its coin's row. It stops at the row height from
    data_ov006_0212e400, takes the coin's x and rests (state 4). */
-void dScMgCoin_c::func_ov006_020dd7c0(int index)
+void dScMgCoin_c::Block_State3(int index)
 {
     char *thiz = (char *)this;
     int off = index * 0x1c;
@@ -1146,14 +1146,14 @@ void dScMgCoin_c::func_ov006_020dd7c0(int index)
     *((unsigned char *)(((thiz + off) + 0x4000) + 0x676)) = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dd880Ei
+// @symbol _ZN11dScMgCoin_c12Block_State2Ei
 /* A block wandering along its row. When it reaches the row it picks a
    random direction, and over a coin of that row still worth at most two
-   (five when Virtual8C says so) it claims the coin, adds one to its value
+   (five when IsAltVariant says so) it claims the coin, adds one to its value
    and starts to rise (state 3). */
 #define LB(a) (*(unsigned char *)(((long long)(int)(a))))
 
-void dScMgCoin_c::func_ov006_020dd880(int i)
+void dScMgCoin_c::Block_State2(int i)
 {
     char *c = (char *)this;
     int n = i * 0x1c;
@@ -1167,7 +1167,7 @@ void dScMgCoin_c::func_ov006_020dd880(int i)
     *(int *)(c + 0x4660 + n) += *(int *)(c + 0x4668 + n);
     *(int *)(c + 0x4664 + n) += *(int *)(c + 0x466c + n);
     *(int *)(c + 0x466c + n) += 0x400;
-    this->func_ov006_020ddcf8(i);
+    this->Block_ClampToWalls(i);
 
     pD = (int *)(c + 0x466c + n);
     idxb = *(u8 *)(c + n + 0x4674);
@@ -1196,7 +1196,7 @@ void dScMgCoin_c::func_ov006_020dd880(int i)
         int d = (*(int *)((c + idx * 0x18) + 0x4ac0) >> 12) - fp;
         int limit = 2;
         char *e = c + idx * 0x18;
-        int res = this->Virtual8C();
+        int res = this->IsAltVariant();
         if (res != 0) limit = 5;
         if (d <= -6 || d >= 6) continue;
         if (*(u8 *)(e + 0x4ad4) != 0) continue;
@@ -1211,11 +1211,11 @@ void dScMgCoin_c::func_ov006_020dd880(int i)
 
 #undef LB
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dda94Ei
+// @symbol _ZN11dScMgCoin_c12Block_State1Ei
 /* A block hopping down the stages. Each landing picks a new random vx and
    plays the panned hop; when its hops for a stage run out it moves down a
    stage, and past its own row it switches to state 2. */
-void dScMgCoin_c::func_ov006_020dda94(int i)
+void dScMgCoin_c::Block_State1(int i)
 {
     char *self = (char *)this;
     int n = i * 0x1c;
@@ -1225,7 +1225,7 @@ void dScMgCoin_c::func_ov006_020dda94(int i)
     mBlocks[i].y += mBlocks[i].vy;
     mBlocks[i].vy += 0x400;
 
-    this->func_ov006_020ddcf8(i);
+    this->Block_ClampToWalls(i);
 
     {
         u8 g = mBlocks[i].hops;
@@ -1274,9 +1274,9 @@ void dScMgCoin_c::func_ov006_020dda94(int i)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020ddca0Ei
+// @symbol _ZN11dScMgCoin_c12Block_State0Ei
 /* A block waiting to drop: counts its delay down, then starts it (state 1). */
-void dScMgCoin_c::func_ov006_020ddca0(int i)
+void dScMgCoin_c::Block_State0(int i)
 {
     char *c = (char *)this;
     int idx = i * 0x1c;
@@ -1292,9 +1292,9 @@ void dScMgCoin_c::func_ov006_020ddca0(int i)
     *(char *)(r0 + 0x4000 + 0x679) = 1;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020ddcf8Ei
+// @symbol _ZN11dScMgCoin_c18Block_ClampToWallsEi
 /* Keeps a block between x 8 and 0xf8, reversing vx at either wall. */
-void dScMgCoin_c::func_ov006_020ddcf8(int idx)
+void dScMgCoin_c::Block_ClampToWalls(int idx)
 {
     int *f60 = &mBlocks[idx].x;
     int v = *f60 >> 12;
@@ -1309,11 +1309,11 @@ void dScMgCoin_c::func_ov006_020ddcf8(int idx)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020ddd6cEv
+// @symbol _ZN11dScMgCoin_c15Block_UpdateAllEv
 /* Runs every live block's state handler and animation. When none is left
    moving the scene goes to phase 2, the score starts running and the start
    sound plays. */
-void dScMgCoin_c::func_ov006_020ddd6c()
+void dScMgCoin_c::Block_UpdateAll()
 {
     char *thiz = (char *)this;
     int n = 0;
@@ -1324,7 +1324,7 @@ void dScMgCoin_c::func_ov006_020ddd6c()
             (this->*data_ov006_02141840[*(unsigned char *)(p + 0x4000 + 0x675)].pmf)(i);
             if (*(unsigned char *)(p + 0x4000 + 0x675) != 4)
                 n++;
-            this->func_ov006_020dde28(i);
+            this->Block_Animate(i);
         }
         p += 0x1c;
     }
@@ -1335,7 +1335,7 @@ void dScMgCoin_c::func_ov006_020ddd6c()
     Sound::PlayBank2_2D(0x151);
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020dde28Ei
+// @symbol _ZN11dScMgCoin_c13Block_AnimateEi
 /* Steps one block's four-frame animation; data_ov006_0212e32c holds each
    frame's length. */
 typedef struct {
@@ -1351,7 +1351,7 @@ typedef struct {
     Entry_dde28 entries[16];
 } Work_dde28;
 
-void dScMgCoin_c::func_ov006_020dde28(int index)
+void dScMgCoin_c::Block_Animate(int index)
 {
     char *c = (char *)this;
     Work_dde28 *w = (Work_dde28 *)c;
@@ -1363,16 +1363,16 @@ void dScMgCoin_c::func_ov006_020dde28(int index)
     w->entries[index].timer = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020ddeb0Ev
+// @symbol _ZN11dScMgCoin_c11SpawnBlocksEv
 /* Parks the blocks above the top of the screen at random x with staggered
-   delays, cycling their rows 3, 4, 5. Sixteen when Virtual8C says so,
+   delays, cycling their rows 3, 4, 5. Sixteen when IsAltVariant says so,
    otherwise forty. */
-void dScMgCoin_c::func_ov006_020ddeb0()
+void dScMgCoin_c::SpawnBlocks()
 {
     int n;
     unsigned int row = 0;
     int i;
-    n = this->Virtual8C() != 0 ? 0x10 : 0x28;
+    n = this->IsAltVariant() != 0 ? 0x10 : 0x28;
     for (i = 0; i < n; i++) {
         unsigned int v = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
         mBlocks[i].x = ((((v << 3) >> 0xf) << 5) + 0x10) << 0xc;
@@ -1389,10 +1389,10 @@ void dScMgCoin_c::func_ov006_020ddeb0()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020ddf9cEv
+// @symbol _ZN11dScMgCoin_c10ResetRoundEv
 /* Clears the blocks, coins, score, sparkles, popups and phase, then resets
    the caption and the moneybag. */
-void dScMgCoin_c::func_ov006_020ddf9c()
+void dScMgCoin_c::ResetRound()
 {
     char *c = (char *)this;
     int i, k, j, i2, i3, i4;
@@ -1456,16 +1456,16 @@ void dScMgCoin_c::func_ov006_020ddf9c()
     *((u8 *)(c + 0x51dd)) = 0;
     *((u32 *)(c + 0x51d0)) = 0;
     *((u8 *)(c + 0x51de)) = 0;
-    this->func_ov006_020dc7fc();
-    this->func_ov006_020dc334();
+    this->Caption_Reset();
+    this->Bag_Hide();
     *((u8 *)(c + 0x51df)) = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020de0e0Ev
+// @symbol _ZN11dScMgCoin_c12Phase_State5Ev
 /* The result countdown. While the stylus is held it speeds to zero with a
    sound; otherwise it holds at 0x80. At zero the scene frees its graphics
    if it loaded them and starts the fade out. */
-void dScMgCoin_c::func_ov006_020de0e0()
+void dScMgCoin_c::Phase_State5()
 {
     char *self = (char *)this;
     if (mCountdown == 0) return;
@@ -1485,16 +1485,16 @@ void dScMgCoin_c::func_ov006_020de0e0()
     mCountdown = 0;
     if (*(unsigned char *)(self + 0x51df) != 0) {
         FreeGfxSlotsById(6);
-        func_ov004_020ae20c();
+        Mg_RestoreMusic();
     }
-    func_ov004_020b0a54(0x10);
+    Mg_SetSharedState(MG_STATE_RESULTS);
     mPromptEnabled = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020de1d4Ev
+// @symbol _ZN11dScMgCoin_c12Phase_State4Ev
 /* Counts the countdown at 0x51cc down; at zero, re-arms the caption if the
    other player scored, then enters the result phase with 0xc0 frames. */
-void dScMgCoin_c::func_ov006_020de1d4()
+void dScMgCoin_c::Phase_State4()
 {
     char *c = (char *)this;
     if (*(int *)((c + 0x5000) + 0x1cc) != 0) {
@@ -1505,28 +1505,28 @@ void dScMgCoin_c::func_ov006_020de1d4()
         return;
     }
     {
-        char *o = (char *)data_ov004_020beb68;
-        int v = o != 0 ? *(int *)(o + 0xa8) : 0;
+        dScMgBase_c *o = gMgScene;
+        int v = o != 0 ? o->mCredits : 0;
         if (v != 0) {
             mCaptionLatch = 0;
-            this->func_ov006_020dc370();
+            this->Caption_Trigger();
         }
     }
     mCountdown = 0xc0;
     mPhase = 5;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020de26cEv
+// @symbol _ZN11dScMgCoin_c12Phase_State3Ev
 /* Phase 4 on the way to the result: runs the blocks, coins and sparkles,
    and once nothing moves counts 0x51cc down, bringing in the caption or
    the other screen at 0x20, then hands the score over and sets phase 4. */
-void dScMgCoin_c::func_ov006_020de26c()
+void dScMgCoin_c::Phase_State3()
 {
     char *self = (char *)this;
     int count;
     int i;
     int j;
-    char *g;
+    dScMgBase_c *g;
 
     count = 0;
     for (i = 0; i < 0x28; i++) {
@@ -1534,50 +1534,50 @@ void dScMgCoin_c::func_ov006_020de26c()
             int idx = mBlocks[i].state;
             (this->*data_ov006_02141840[idx].pmf)(i);
             if (mBlocks[i].state != 4) count++;
-            if (mBlocks[i].unk16 != 0) this->func_ov006_020dde28(i);
+            if (mBlocks[i].unk16 != 0) this->Block_Animate(i);
         }
     }
     for (j = 0; j < 0x18; j++) {
         if (mCoins[j].state == 1 && mCoins[j].pad11 != 0)
             count++;
     }
-    this->func_ov006_020dd2cc();
-    this->func_ov006_020dca04();
+    this->Coin_UpdateAll();
+    this->Sparkle_UpdateAll();
     if (count != 0) return;
 
     if ((&mSparkles[31].y)[0x73] != 0) {
         *(int *)(((long long)(int)(self + 0x51cc))) -= 1;
         if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] == 0)
-            this->func_ov006_020dc348();
+            this->Caption_Finish();
         if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] != 0) {
-            func_ov004_020b0cac(6, 0x80, -0x80, -1, -1, 0xd);
-            func_ov004_020ae274(0);
+            Mg_ShowBanner(6, 0x80, -0x80, -1, -1, 0xd);
+            Mg_PlayJingle(0);
         }
         if ((&mSparkles[31].y)[0x73] <= 0) (&mSparkles[31].y)[0x73] = 0;
         return;
     }
-    g = (char *)data_ov004_020beb68;
-    func_ov004_020adb1c(g != 0 ? *(int *)(g + 0xa8) : 0);
+    g = gMgScene;
+    Mg_SubmitScore(g != 0 ? g->mCredits : 0);
     (&mSparkles[31].y)[0x73] = 0x70;
     (&mSparkles[31].y)[0x72] = 4;
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020de440Ev
+// @symbol _ZN11dScMgCoin_c12Phase_State2Ev
 /* Phase 2, play: runs the blocks, coins and sparkles. Once every coin worth
    something has been touched the round ends (phase 3, 0x40 frames) and the
    win flag is set from the other score. */
-void dScMgCoin_c::func_ov006_020de440()
+void dScMgCoin_c::Phase_State2()
 {
     char *c = (char *)this;
     int i;
     for (i = 0; i < 0x28; i++) {
         if (mBlocks[i].unk17 != 0) {
             (this->*data_ov006_02141840[mBlocks[i].state].pmf)(i);
-            this->func_ov006_020dde28(i);
+            this->Block_Animate(i);
         }
     }
-    this->func_ov006_020dd2cc();
-    this->func_ov006_020dca04();
+    this->Coin_UpdateAll();
+    this->Sparkle_UpdateAll();
     if (mPhase == 3) {
         return;
     }
@@ -1601,9 +1601,9 @@ void dScMgCoin_c::func_ov006_020de440()
     *(u8 *)(c + 0x51df) = 1;
     {
         int t;
-        void *g = data_ov004_020beb68;
+        dScMgBase_c *g = gMgScene;
         if (g != 0) {
-            t = *(s32 *)((char *)g + 0xa8);
+            t = g->mCredits;
         } else {
             t = 0;
         }
@@ -1615,30 +1615,29 @@ void dScMgCoin_c::func_ov006_020de440()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020de584Ev
+// @symbol _ZN11dScMgCoin_c12Phase_State1Ev
 /* Phase 1: on the first frame, flags the scene and clears its timer, then
    runs the blocks. */
-void dScMgCoin_c::func_ov006_020de584()
+void dScMgCoin_c::Phase_State1()
 {
-    char *p = (char *)this;
-    if ((*((unsigned char *)(p + 0xc4))) == 0) {
-        *((unsigned char *)(p + 0xc3)) = 1;
-        *((unsigned char *)(p + 0xc4)) = 1;
-        *((short *)(p + 0xc0)) = 0;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
     }
-    this->func_ov006_020ddd6c();
+    Block_UpdateAll();
 }
 
-// @symbol _ZN11dScMgCoin_c19func_ov006_020de5acEv
-void dScMgCoin_c::func_ov006_020de5ac()
+// @symbol _ZN11dScMgCoin_c12Phase_State0Ev
+void dScMgCoin_c::Phase_State0()
 {
 }
 
-// @symbol _ZN11dScMgCoin_c13OnYoshiTryEatEi
+// @symbol _ZN11dScMgCoin_c10StartRoundEi
 /* Slot 18. Starts the next round: counts a win if the last one was won,
    clears the scene, frees its graphics and lays the coins out again. It is
    void; the mov r0,#0 at the end is the source of the mPhase store. */
-void dScMgCoin_c::OnYoshiTryEat(int arg)
+void dScMgCoin_c::StartRound(int arg)
 {
     dScMgCoin_c *self = this;
 
@@ -1647,30 +1646,30 @@ void dScMgCoin_c::OnYoshiTryEat(int arg)
     } else {
         self->mWins = 0;
     }
-    self->unk_0a8 = 0;
-    *(s32 *)((char *)self + 0xac) = self->unk_0a8;
-    this->func_ov006_020ddf9c();
+    self->mCredits = 0;
+    self->mCreditsShown = self->mCredits;
+    this->ResetRound();
     FreeGfxSlotsById(0x1d);
-    this->func_ov006_020dd334();
-    this->func_ov006_020dc7b4();
-    this->func_ov006_020dc2f8();
-    self->mPlayerScore = func_ov004_020adc1c();
+    this->LayOutCoins();
+    this->Caption_Show();
+    this->Bag_Show();
+    self->mPlayerScore = Mg_GetTopRecord();
     self->mPhase = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c6RenderEv
 int dScMgCoin_c::Render()
 {
-    this->func_ov006_020dccb8();
-    this->func_ov006_020dcd74();
-    this->func_ov006_020dc814();
-    this->func_ov006_020dd594();
-    this->func_ov006_020dc3bc();
-    this->func_ov006_020dbe9c();
-    this->func_ov006_020dc99c();
-    this->func_ov006_020dc870();
-    this->func_ov006_020dcea8();
-    this->func_ov006_020dcc48();
+    this->DrawScorePlayer();
+    this->DrawScoreRival();
+    this->DrawResultPrompt();
+    this->DrawBlocks();
+    this->Caption_Draw();
+    this->Bag_Draw();
+    this->Sparkle_DrawAll();
+    this->DrawResultNumbers();
+    this->DrawCoinValues();
+    this->Popup_DrawAll();
     return 1;
 }
 
@@ -1682,10 +1681,10 @@ int dScMgCoin_c::Behavior()
 {
     int idx = mPhase;
     (this->*data_ov006_02141810[idx].pmf)();
-    this->func_ov006_020dc754();
-    this->func_ov006_020dc298();
-    this->func_ov006_020dc900();
-    this->func_ov006_020dce3c();
+    this->Caption_Update();
+    this->Bag_Update();
+    this->Popup_UpdateAll();
+    this->Score_Update();
     return 1;
 }
 
@@ -1740,18 +1739,18 @@ int dScMgCoin_c::InitResources()
     Deallocate((void *)b);
     Deallocate((void *)a);
 
-    self->unk_0a8 = 0;
-    *(s32 *)(c + 0xac) = self->unk_0a8;
+    self->mCredits = 0;
+    self->mCreditsShown = self->mCredits;
     data_0208ee44 = 1;
-    this->func_ov006_020ddf9c();
-    this->func_ov006_020dd334();
-    this->func_ov006_020dc7b4();
-    this->func_ov006_020dc2f8();
+    this->ResetRound();
+    this->LayOutCoins();
+    this->Caption_Show();
+    this->Bag_Show();
     self->mWins = 0;
     self->unk_51dc = 2;
-    func_ov004_020b04d0(0x20);
-    self->mPlayerScore = func_ov004_020adc1c();
-    self->unk_0a4 = 1;
+    Mg_SetTopScreenYOffset(0x20);
+    self->mPlayerScore = Mg_GetTopRecord();
+    self->mRunDuringFade = 1;
     return 1;
 }
 

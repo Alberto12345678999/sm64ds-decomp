@@ -8,9 +8,9 @@ enum sinit_ov006_0212fc7c_AssetId {
 extern void __cxa_vec_ctor(void* a, int b, int c, void* d, void* e);
 extern void func_020731dc(void *object, void* b, void* node);
 extern int func_02017acc(void* a, int b);
-extern int func_ov006_020d1008(void);
-extern int func_ov006_020d100c(void);
-extern int func_ov006_020d0fe4(void);
+extern int TrmpLine_Destroy(void);
+extern int TrmpLine_Reset(void);
+extern int TrmpLine_CleanupAll(void);
 extern int func_02017ab4(void);
 extern int data_ov006_02140990[];
 extern int data_ov006_021408cc[];
@@ -22,8 +22,8 @@ extern int data_ov006_02140848[];
 extern int data_ov006_02140950[];
 
 void __sinit_ov006_0212fc7c(void){
-  __cxa_vec_ctor(data_ov006_02140990, 4, 0x32c, (void*)func_ov006_020d100c, (void*)func_ov006_020d1008);
-  func_020731dc(0, (void*)func_ov006_020d0fe4, data_ov006_021408cc);
+  __cxa_vec_ctor(data_ov006_02140990, 4, 0x32c, (void*)TrmpLine_Reset, (void*)TrmpLine_Destroy);
+  func_020731dc(0, (void*)TrmpLine_CleanupAll, data_ov006_021408cc);
   func_02017acc(data_ov006_02140850, ASSET_RINGA_BMD);
   func_020731dc(data_ov006_02140850, (void*)func_02017ab4, data_ov006_0214092c);
   func_02017acc(data_ov006_02140858, ASSET_RINGB_BMD);

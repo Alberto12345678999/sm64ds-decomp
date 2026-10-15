@@ -33,7 +33,7 @@
  * only member it has past mSysTracker and the reason this file does not
  * stop at 0x5000 (the first draft of it did; the write is what caught it).
  *
- * From above, the bound is dScMgJump_c's: a Jump helper (func_ov006_020ee2c4,
+ * From above, the bound is dScMgJump_c's: a Jump helper (State_Final,
  * once a one-function source directly under src/ that no longer exists --
  * it is now a member of src/minigames/d_s_mg_jump_methods.cpp, whose manifest entry
  * config/tu_manifest.d/ov006/dScMgJump_c.json keeps the old full path in its
@@ -82,7 +82,7 @@ struct dScMgD3DBase_c : dScMgBase_c {
 
     /* Own copy, same reason dScMgBase_c has one -- unlocks D0 for the four
        descendants. */
-    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvP4Heap(ptr, data_020a0eac); }
+    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(ptr, data_020a0eac); }
 
     /* --- overrides. 1, 2, 5, 7, 10 re-override slots dScMgBase_c already
            gave a body; 11 (AfterRender) is the first override below dScene_c's
@@ -93,15 +93,15 @@ struct dScMgD3DBase_c : dScMgBase_c {
     virtual int  BeforeBehavior();                     /* slot  7 */
     virtual int  BeforeRender();                       /* slot 10 */
     virtual void AfterRender(u32 vfSuccess);           /* slot 11 */
-    virtual int  OnKicked();                           /* slot 24 */
-    virtual int  OnPushed();                           /* slot 25 */
-    virtual int  OnHitByCannonBlastedChar();           /* slot 26 */
-    virtual void OnHitByMegaChar();                    /* slot 27 */
-    virtual int  OnHitFromUnderneath();                /* slot 28 */
-    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
-    virtual void OnAimedAtWithEggReturnVec();          /* slot 30 */
-    virtual int  Virtual7C();                          /* slot 31 */
-    virtual void Virtual84();                          /* slot 33 */
+    virtual int  OnGraphCallback2();                           /* slot 24 */
+    virtual int  OnGraphCallback3();                           /* slot 25 */
+    virtual int  GetDisplayMode();           /* slot 26 */
+    virtual void OpenMenu();                    /* slot 27 */
+    virtual int  CloseMenu();                /* slot 28 */
+    virtual int  SaveScreenForMenu();                   /* slot 29 */
+    virtual void RestoreScreenFromMenu();          /* slot 30 */
+    virtual int  InitSubScreenBg();                          /* slot 31 */
+    virtual void InitEngines();                          /* slot 33 */
 
     /* THAT LIST IS EMPTY NOW.  This class overrides nine of dScMgBase_c's own
        18 new slots (18-35) -- 24 through 31, and 33 -- per

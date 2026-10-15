@@ -171,7 +171,7 @@ extern "C" void func_ov002_020bc488(daObjWakame_c *t)
 /* _ZN13daObjWakame_cD0Ev (vtable slot 17, the deleting destructor) is NOT
  * hand-written here. A hand-written mangled D0 next to a real out-of-line D1
  * ICEs mwccarm 2004/b56 (ELFgen.c:483); the compiler synthesizes D0 itself from
- * D1, and its tail -- `bl _ZN6Memory10DeallocateEPvP4Heap` at 0x020bc470 -- is
+ * D1, and its tail -- `bl _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE` at 0x020bc470 -- is
  * the inline operator delete, which is why nothing here mentions a heap. */
 
 /* -------------------------------------------------------------------------- */

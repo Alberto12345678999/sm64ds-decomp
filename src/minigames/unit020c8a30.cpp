@@ -47,29 +47,29 @@ extern void **data_ov006_021404c8;
 extern struct Ent_ov006 data_ov006_021404d8[3];
 extern int data_ov006_02140518[];
 
-void func_ov006_020c8af4(char *c);
-void func_ov006_020c8ba8(char *c);
-void func_ov006_020c8c6c(short *p);
-void func_ov006_020c8dcc(void);
+void Puff_Draw(char *c);
+void Puff_Update(char *c);
+void Puff_Clear(short *p);
+void Puff_ElemDtor(void);
 
-// @symbol func_ov006_020c8dd0
-void func_ov006_020c8dd0(void)
+// @symbol Puff_Nothing
+void Puff_Nothing(void)
 {
 }
 
-// @symbol func_ov006_020c8dcc
-void func_ov006_020c8dcc(void)
+// @symbol Puff_ElemDtor
+void Puff_ElemDtor(void)
 {
 }
 
-// @symbol func_ov006_020c8da8
-void func_ov006_020c8da8(void)
+// @symbol Puff_CleanupAll
+void Puff_CleanupAll(void)
 {
-    __cxa_vec_cleanup(data_ov006_021404d8, 3, 0x20, (dtor_t)func_ov006_020c8dcc);
+    __cxa_vec_cleanup(data_ov006_021404d8, 3, 0x20, (dtor_t)Puff_ElemDtor);
 }
 
-// @symbol func_ov006_020c8c78
-void func_ov006_020c8c78(int x, int y)
+// @symbol Puff_Spawn
+void Puff_Spawn(int x, int y)
 {
     int i;
     int v;
@@ -103,14 +103,14 @@ void func_ov006_020c8c78(int x, int y)
     }
 }
 
-// @symbol func_ov006_020c8c6c
-void func_ov006_020c8c6c(short *p)
+// @symbol Puff_Clear
+void Puff_Clear(short *p)
 {
     p[12] = 0;
 }
 
-// @symbol func_ov006_020c8ba8
-void func_ov006_020c8ba8(char* c)
+// @symbol Puff_Update
+void Puff_Update(char* c)
 {
     if (*(short*)(c+0x18) == 0) return;
     *(short*)(((int)c + 0x1c)) += 0x200;
@@ -126,8 +126,8 @@ void func_ov006_020c8ba8(char* c)
     }
 }
 
-// @symbol func_ov006_020c8af4
-void func_ov006_020c8af4(char *c)
+// @symbol Puff_Draw
+void Puff_Draw(char *c)
 {
     void *x;
     int t;
@@ -146,36 +146,36 @@ void func_ov006_020c8af4(char *c)
     Hud_RenderSprite(x, pos >> 12, *(int*)(c + 4) >> 12, -1, -1);
 }
 
-// @symbol func_ov006_020c8a9c
-void func_ov006_020c8a9c(int a0,int a1){
+// @symbol Puff_ClearAll
+void Puff_ClearAll(int a0,int a1){
   int i;
   short* p=(short*)data_ov006_021404d8;
   for(i=0;i<3;i++){
-    func_ov006_020c8c6c(p);
+    Puff_Clear(p);
     p=(short*)((char*)p+0x20);
   }
   data_ov006_021404c4=a0;
   data_ov006_021404c8=(void**)a1;
 }
 
-// @symbol func_ov006_020c8a64
-void func_ov006_020c8a64(void){
+// @symbol Puff_UpdateAll
+void Puff_UpdateAll(void){
   int i = 0;
   char *p = (char*)data_ov006_021404d8;
   for(;;){
-    func_ov006_020c8ba8(p);
+    Puff_Update(p);
     i++;
     p += 0x20;
     if(i >= 3) break;
   }
 }
 
-// @symbol func_ov006_020c8a30
-void func_ov006_020c8a30(void){
+// @symbol Puff_DrawAll
+void Puff_DrawAll(void){
   int i;
   char *p=(char*)data_ov006_02140518;
   for(i=2;i>=0;i--){
-    func_ov006_020c8af4(p);
+    Puff_Draw(p);
     p-=0x20;
   }
 }

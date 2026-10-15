@@ -110,7 +110,7 @@
     "D2_evidence": "No D2 exists. Three independent checks. (1) A case-sensitive grep for both `daPkn_c` and `PiranhaPlant` across all 106 config/**/symbols.txt files returns 23 rows and none is a D2, C1 or C2. (2) Every one of the 24 functions in the class's .text run is accounted for -- 8 by a vtable slot, 9 by a pointer-to-member record, 6 by an intra-overlay BL, 1 by the profile descriptor -- so no unnamed function is available to be a D2. (3) Nothing derives from daPkn_c (0 edges in build/rtti.json), so no derived class could need one.",
     "shape": "D0 is NOT a thunk that calls D1. It is a full inline duplicate of D1's body -- same vptr store, same six member destructor calls in the same order, same dEnemyBase_c::~dEnemyBase_c call -- followed by Memory::Deallocate. Both are 0x58/0x6c bytes of real code.",
     "order": "Both store the vptr (0x02130c28) into [this] first, then destroy members in REVERSE declaration order: +0x3e8 dCcAcPos_c::~dCcAcPos_c, +0x3b4 dCcAc_c::~dCcAc_c, +0x380 dCcAc_c::~dCcAc_c, +0x1c4 dBgCh_Actr::~dBgCh_Actr, +0x174 Model::~Model, +0x110 ModelAnim::~ModelAnim, then _ZN12dEnemyBase_cD2Ev (ov002:0x020aed18) on this.",
-    "D0_delete": "D0 tail: `ldr r1,[0x020a0eac]; ldr r1,[r1]` then bl 0x0203c1e8 = _ZN6Memory10DeallocateEPvP4Heap, with the heap taken from arm9's GAME_HEAP_PTR (data_020a0eac)."
+    "D0_delete": "D0 tail: `ldr r1,[0x020a0eac]; ldr r1,[r1]` then bl 0x0203c1e8 = _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE, with the heap taken from arm9's GAME_HEAP_PTR (data_020a0eac)."
   },
 
   "size": "0x47c",

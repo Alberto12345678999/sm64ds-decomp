@@ -24,7 +24,7 @@
 //   state-table handlers dispatching through data_ov006_02142bdc).
 // - The ROM PMF constants the Slot3 state table copies (data_ov006_0213e5xx)
 //   come from unlicensed .data, in retail copy order.
-// - OnAimedAtWithEgg/OnAimedAtWithEggReturnVec keep slot-identity names from
+// - SaveScreenForMenu/RestoreScreenFromMenu keep slot-identity names from
 //   the vtable; the OAM SECONDSE symbol read at Render is a link artifact of
 //   the address, not a proven field.
 
@@ -95,36 +95,36 @@ extern int data_ov004_020bc8b4;
 void SetBg1Offset(int a, int b);
 int GetGameLanguage(void);
 void* func_02054ea8(void);
-// Retained caller ABI: narrowing to the definition's u16 adds a mask in Virtual80.
+// Retained caller ABI: narrowing to the definition's u16 adds a mask in InitMainScreenBg.
 unsigned int LoadCompressedFileAt(int fileID, void* target);
 extern unsigned char data_0209d45c;
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-void func_ov004_020b1ba0(void* c, int delta);
-void func_ov004_020b1b78(void* c, int val);
+void Mg_AddCredits(void* c, int delta);
+void Mg_SubCredits(void* c, int val);
 extern unsigned int func_02012790(unsigned int arg);
-extern void func_ov004_020adb1c(int self);
+extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
-extern void func_ov006_0210ab08(char *c, int i);
+extern void Slot3_ReelDigits(char *c, int i);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 extern int Sound_PlayIfNotActive(int, int, int, int);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
-void func_ov004_020b1bc8(char *a0, int a1, int a2, int a3);
-void func_ov004_020b1e34(char *a0, int a1, int a2, int a3);
+void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
+void Mg_DrawScoreTally(char *a0, int a1, int a2, int a3);
 extern void **data_ov006_0213e5ec[];
 extern SlotState data_ov006_02142bdc[];
 /* The ROM PMF constants the Slot3 state table copies from (unlicensed
  * .data), in retail copy order. */
-extern SlotState data_ov006_0213e520;
-extern SlotState data_ov006_0213e530;
-extern SlotState data_ov006_0213e4e0;
-extern SlotState data_ov006_0213e538;
-extern SlotState data_ov006_0213e550;
-extern SlotState data_ov006_0213e548;
-extern SlotState data_ov006_0213e580;
-extern SlotState data_ov006_0213e578;
+extern SlotState pmf_Slot3_State0;
+extern SlotState pmf_Slot3_State1;
+extern SlotState pmf_Slot3_State2;
+extern SlotState pmf_Slot3_State3and4;
+extern SlotState pmf_Slot3_State3and4_2;
+extern SlotState pmf_Slot3_State5;
+extern SlotState pmf_Slot3_State6;
+extern SlotState pmf_Slot3_State7;
 extern int LoadFile(int handle);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -139,34 +139,34 @@ extern u8 data_0209d454;
 extern int data_0208ee44;
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern int func_ov006_020c221c(char *t);
+extern int Mascot_Construct(char *t);
 extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV12dScMgSlot3_c[];
 extern void RenderOamMainScreen(void*, int, int, int, int);
 extern void* data_ov006_0213e6a8;
-extern void func_ov004_020b1b08(void *c);
+extern void Mg_LoseCredits(void *c);
 extern void func_ov001_020ab3f0(void *c);
-void func_ov004_020af948(void* a, int b, int c, void* m);
+void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
 extern void* data_ov006_0213e528[];
 int TouchArea_Update(void *c, int x);
-void func_ov006_0210c2d4(void *c);
-void func_ov004_020b1b40(int x);
+void SlotBet_OnTouch(void *c);
+void Mg_GainCredits(int x);
 extern void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
-extern int func_ov004_020ad8b8(void);
+extern int Mg_GetSavedRecord0(void);
 extern int data_ov006_0213e63c[][2];
 extern void* data_ov006_0213e96c[];
 extern unsigned char data_ov006_0213e4d8[];
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
-extern void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5);
-extern void func_ov006_0210c234(unsigned char* o);
-extern void func_ov004_020ad79c(int a, int b);
-extern void func_ov004_020ae274(void *c);
-extern void func_ov006_0210c180(void *o);
-extern void func_ov006_0210c1a8(void *o);
-extern void func_ov006_0210c218(void *o, s16 x, s16 y);
-extern void func_ov006_0210c278(void *o);
-extern void func_ov006_0210c2c0(void *o, int v);
-extern int func_ov006_0210c500(void *self);
+extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
+extern void Mg_RenderSubSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5);
+extern void SlotBlink_Draw(unsigned char* o);
+extern void Mg_SaveRecordPair(int a, int b);
+extern void Mg_PlayJingle(void *c);
+extern void SlotLamp_Start(void *o);
+extern void SlotLamp_Tick(void *o);
+extern void SlotBlink_Start(void *o, s16 x, s16 y);
+extern void SlotBlink_Tick(void *o);
+extern void SlotReel_SetSpeed(void *o, int v);
+extern int SlotReels_CheckStopped(void *self);
 extern int data_ov006_0213e600[];
 extern u8 data_ov006_0213e4d8[];
 extern s16 data_ov006_0213e654[][2];
@@ -183,7 +183,7 @@ extern char *_ZN3G2S13GetBG0CharPtrEv(void);
 extern char *_ZN3G2S12GetBG0ScrPtrEv(void);
 extern char *_ZN3G2S12GetBG1ScrPtrEv(void);
 extern char *_ZN3G2S12GetBG3ScrPtrEv(void);
-extern void func_ov004_020af770(void* a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
+extern void Mg_RenderSubSpriteScaled(void* a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 }
 
@@ -202,45 +202,44 @@ dScMgSlot1_c::~dScMgSlot1_c()
 // @symbol _ZN12dScMgSlot3_cD1Ev
 dScMgSlot3_c::~dScMgSlot3_c()
 {
-    func_ov006_020c21e4((char *)this + 0x4f38);
+    Mascot_Destruct((char *)this + 0x4f38);
 }
 
 // @symbol _ZN12dScMgSlot3_cD0Ev
 /* The compiler emits D0 from the complete-object destructor above. */
 
-// @symbol _ZN12dScMgSlot3_c25OnAimedAtWithEggReturnVecEv
-/* dScMgSlot3_c::OnAimedAtWithEggReturnVec - recovered from vtable slot identity.
-   The name is dScMgBase_c's, transplanted down the hierarchy; the `ReturnVec`
-   half of it is refuted in include/dScMgBase_c.h's slot-30 block, and this
-   body is the arity witness cited there.  The read-modify-write below clobbers
+// @symbol _ZN12dScMgSlot3_c21RestoreScreenFromMenuEv
+/* dScMgSlot3_c::RestoreScreenFromMenu - slot 30 override: puts BG1CNT
+   back, then runs the base restore. This body is the arity witness cited
+   in include/dScMgBase_c.h's slot-30 block.  The read-modify-write below clobbers
    r1 before the tail call, so the base cannot be taking a second argument. */
-void dScMgSlot3_c::OnAimedAtWithEggReturnVec()
+void dScMgSlot3_c::RestoreScreenFromMenu()
 {
     void *a = (void *)this;
 
     *(volatile unsigned short*)0x400000A = (*(volatile unsigned short*)0x400000A & 0x43) | 0x1118;
-    ((dScMgBase_c *)a)->dScMgBase_c::OnAimedAtWithEggReturnVec();
+    ((dScMgBase_c *)a)->dScMgBase_c::RestoreScreenFromMenu();
 }
 
-// @symbol _ZN12dScMgSlot3_c16OnAimedAtWithEggEv
-/* dScMgSlot3_c::OnAimedAtWithEgg - recovered from vtable slot identity.
+// @symbol _ZN12dScMgSlot3_c17SaveScreenForMenuEv
+/* dScMgSlot3_c::SaveScreenForMenu - slot 29 override.
 
    This body is the third and strongest witness that slot 29 takes no
    explicit parameter.  It CLOBBERS r1 -- the masked read-modify-write of the
    sub display-control register below compiles to `ldrh r1,[r2]; and; orr;
    strh` -- and only then tail-branches into the base with `bx ip`.  A second
-   argument passed in r1 would reach dScMgBase_c::OnAimedAtWithEgg as a
+   argument passed in r1 would reach dScMgBase_c::SaveScreenForMenu as a
    display-control word, so the base cannot be reading one. */
-int dScMgSlot3_c::OnAimedAtWithEgg()
+int dScMgSlot3_c::SaveScreenForMenu()
 {
     void *a = (void *)this;
 
     *(volatile unsigned short*)0x400000A = (*(volatile unsigned short*)0x400000A & 0x43) | 0x1000;
-    return ((dScMgBase_c *)a)->dScMgBase_c::OnAimedAtWithEgg();
+    return ((dScMgBase_c *)a)->dScMgBase_c::SaveScreenForMenu();
 }
 
-// @symbol _ZN12dScMgSlot3_c9Virtual80Ev
-/* dScMgSlot3_c::Virtual80 - slot 32, the only override of it in the family.
+// @symbol _ZN12dScMgSlot3_c16InitMainScreenBgEv
+/* dScMgSlot3_c::InitMainScreenBg - slot 32, the only override of it in the family.
 
    Not an AfterClsn: the base slot has no ROM name at all, and the one the
    recovery pass borrowed belongs to dPathLiftActor_c, two forks away.  See the
@@ -251,7 +250,7 @@ int dScMgSlot3_c::OnAimedAtWithEgg()
    the shared screen map -- and then one more write, leaving BG1CNT at 0x1118
    instead of 0x1000: the same layer, pointed at this minigame's own character
    and screen base blocks. */
-void dScMgSlot3_c::Virtual80()
+void dScMgSlot3_c::InitMainScreenBg()
 {
     int idx;
 
@@ -270,10 +269,10 @@ void dScMgSlot3_c::Virtual80()
     *(volatile unsigned short*)0x400000a = (*(volatile unsigned short*)0x400000a & 0x43) | 0x1118;
 }
 
-// @symbol func_ov006_0210ab08
+// @symbol Slot3_ReelDigits
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210ab08(char *c, int idx);
-void func_ov006_0210ab08(char *c, int idx){
+void Slot3_ReelDigits(char *c, int idx);
+void Slot3_ReelDigits(char *c, int idx){
     int d = (*(int*)(c + idx*4 + 0x4fe4) >> 12) / 80;
     int i;
     char *dst = c + idx*3;
@@ -286,21 +285,21 @@ void func_ov006_0210ab08(char *c, int idx){
 }
 }
 
-// @symbol func_ov006_0210ab90
+// @symbol Slot3_State7
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210ab90(void)
+void Slot3_State7(void)
 {
 }
 }
 
-// @symbol func_ov006_0210ab94
+// @symbol Slot3_State6
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 
-void func_ov006_0210ab94(char* c){
+void Slot3_State6(char* c){
     dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         self->mState = 7;
-        func_ov004_020b0a54(0x12);
+        Mg_SetSharedState(MG_STATE_GAME_OVER);
         self->unk_5004 = 0;
     }
     if (self->unk_503e >= 0x3c) return;
@@ -315,15 +314,15 @@ void func_ov006_0210ab94(char* c){
 }
 }
 
-// @symbol func_ov006_0210ac38
+// @symbol Slot3_State5
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210ac38(void)
+void Slot3_State5(void)
 {
 }
 }
 
-// @symbol func_ov006_0210ac3c
-extern "C" void func_ov006_0210ac3c(char* c)
+// @symbol Slot3_State3and4
+extern "C" void Slot3_State3and4(char* c)
 {
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         if (*(int*)(c + 0x5000) == 3) {
@@ -331,13 +330,13 @@ extern "C" void func_ov006_0210ac3c(char* c)
                 *(int*)(((int)c + 0xb4)) += 1;
             if (*(int*)(c + 0xb4) > *(int*)(c + 0xb8))
                 *(int*)(c + 0xb8) = *(int*)(c + 0xb4);
-            ((dScMgSlot3_c*)c)->OnYoshiTryEat(4);
+            ((dScMgSlot3_c*)c)->StartRound(4);
         } else {
             if (*(int*)(c + 0xa8) <= 0) {
                 *(unsigned char*)(c + 0x503e) = 0x78;
                 *(int*)(c + 0x5000) = 6;
             } else {
-                ((dScMgSlot3_c*)c)->OnYoshiTryEat(5);
+                ((dScMgSlot3_c*)c)->StartRound(5);
             }
         }
     }
@@ -348,7 +347,7 @@ extern "C" void func_ov006_0210ac3c(char* c)
         if (*(int*)(c + 0x5014) <= 0)
             return;
         *(int*)(((int)c + 0x5014)) -= 1;
-        func_ov004_020b1ba0(c, 1);
+        Mg_AddCredits(c, 1);
         Sound::PlayBank2_2D(0x149);
         *(unsigned char*)(((int)c + 0x503e)) += 5;
         return;
@@ -363,13 +362,13 @@ extern "C" void func_ov006_0210ac3c(char* c)
             return;
     }
 
-    func_ov004_020b1b78(c, 1);
+    Mg_SubCredits(c, 1);
     Sound::PlayBank2_2D(0x14a);
 }
 
-// @symbol func_ov006_0210adac
+// @symbol Slot3_State2
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210adac(char *c)
+void Slot3_State2(char *c)
 {
     unsigned char buf[3];
     int i;
@@ -425,7 +424,7 @@ void func_ov006_0210adac(char *c)
         func_02012790(0xe);
         *(unsigned char *)(c + 0x503e) = 0x50;
     }
-    func_ov004_020adb1c(arg);
+    Mg_SubmitScore(arg);
 
     *(unsigned char *)(c + 0xc3) = 0;
 }
@@ -436,9 +435,9 @@ void func_ov006_0210adac(char *c)
 // the members outside them DIFF with them applied file-wide.
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
-// @symbol func_ov006_0210af64
+// @symbol Slot3_State1
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210af64(char *c)
+void Slot3_State1(char *c)
 {
   u8 idx;
   int ok;
@@ -528,7 +527,7 @@ void func_ov006_0210af64(char *c)
           {
             *p = (q2 * 0x50) << 12;
           }
-          func_ov006_0210ab08(c, i);
+          Slot3_ReelDigits(c, i);
           *((u8 *) ((int) (((long long) ((int) ((c + i) + 0x502e)))))) = 1;
           *((u8 *) ((int) (((long long) ((int) (c + 0x503d)))))) += new_var;
           *((u8 *) (c + 0x503f)) = 0;
@@ -550,18 +549,18 @@ void func_ov006_0210af64(char *c)
 #pragma opt_loop_invariants on
 #pragma opt_strength_reduction on
 
-// @symbol func_ov006_0210b1fc
+// @symbol Slot3_State0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020c1f04(char *c, int *src);
-void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6);
-void func_ov006_020c1ef8(int *p);
+void Mascot_LookAt(char *c, int *src);
+void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
+void Mascot_StopLooking(int *p);
 void FreeGfxSlotsById(int arg);
 
-void func_ov006_0210b1fc(char *p)
+void Slot3_State0(char *p)
 {
     if (*(int *)(p + 0x500c) == 0x50) {
-        func_ov006_020c1f04(p + 0x4f38, 0);
-        func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+        Mascot_LookAt(p + 0x4f38, 0);
+        Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
     if (*(int *)(p + 0x500c) > 0) {
@@ -569,7 +568,7 @@ void func_ov006_0210b1fc(char *p)
         if (*(int *)(p + 0x500c) != 0)
             return;
         *(unsigned char *)(p + 0x503b) = *(unsigned char *)(p + 0x503c);
-        func_ov006_020c1ef8((int *)(p + 0x4f38));
+        Mascot_StopLooking((int *)(p + 0x4f38));
         return;
     }
 
@@ -595,28 +594,28 @@ void func_ov006_0210b1fc(char *p)
 // the functions between them. Measured -- this member DIFFs without them and
 // the members outside them DIFF with them applied file-wide.
 #pragma opt_strength_reduction off
-// @symbol _ZN12dScMgSlot3_c13OnYoshiTryEatEi
-void dScMgSlot3_c::OnYoshiTryEat(int mode)
+// @symbol _ZN12dScMgSlot3_c10StartRoundEi
+void dScMgSlot3_c::StartRound(int mode)
 {
     char *c = (char *)this;
 
     if (mode == 3 || mode == 0x12) {
-        unk_0a8 = 0xc;
-        unk_0ac = unk_0a8;
-        unk_0bc = unk_5004;
-        if (unk_0bc > 0x270e) {
-            unk_0bc = 0x270e;
+        mCredits = 0xc;
+        mCreditsShown = mCredits;
+        mLevel = unk_5004;
+        if (mLevel > 0x270e) {
+            mLevel = 0x270e;
         }
         mHudScore = 0;
-        func_ov004_020adb1c(mHudScore);
-        func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+        Mg_SubmitScore(mHudScore);
+        Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     } else if (mode == 4) {
         if (unk_5004 < 5) {
             *(int *)(int)(c + 0x5004) += 1;
         }
         *(int *)(int)(c + 0xbc) += 1;
-        if (unk_0bc > 0x270e) {
-            unk_0bc = 0x270e;
+        if (mLevel > 0x270e) {
+            mLevel = 0x270e;
         }
     }
 
@@ -729,8 +728,8 @@ s32 dScMgSlot3_c::Render()
     struct dScMgSlot3_c *self = this;
     int i, j;
 
-    func_ov006_020c1eb4(c + 0x4660);
-    func_ov006_020c201c(c + 0x4f38);
+    Camera_InitSlotsView(c + 0x4660);
+    Mascot_Draw(c + 0x4f38);
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
@@ -821,25 +820,25 @@ s32 dScMgSlot3_c::Render()
         }
     }
 
-    func_ov004_020b1bc8(c, 0xc, 0xc, 0);
-    func_ov004_020b1e34(c, 0xe0, 0x14, 1);
+    Mg_DrawCredits(c, 0xc, 0xc, 0);
+    Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 
     if (self->mState == 3 && self->mWinColumn >= 0) {
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][2], self->mWinColumn * 0x50 + 0x20, 0x28, 0);
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][13], self->mWinColumn * 0x50 + 0x30, 0x28, 0);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], self->mWinColumn * 0x50 + 0x20, 0x28, 0);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][13], self->mWinColumn * 0x50 + 0x30, 0x28, 0);
         if (self->mWinColumn == 1) {
-            func_ov004_020b2444(self->mWinColumn * 0x50 + 0x40, 0x28, 6, 0, 0, 0, 0x14);
+            Mg_DrawBigNumber(self->mWinColumn * 0x50 + 0x40, 0x28, 6, 0, 0, 0, 0x14);
         } else {
-            func_ov004_020b2444(self->mWinColumn * 0x50 + 0x40, 0x28, 3, 0, 0, 0, 0x14);
+            Mg_DrawBigNumber(self->mWinColumn * 0x50 + 0x40, 0x28, 3, 0, 0, 0, 0x14);
         }
     } else if (self->mState == 4 && self->mWinColumn < 0) {
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][2], 0x70, 0x28, 0);
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][14], 0x80, 0x28, 0);
-        func_ov004_020b2444(0x90, 0x28, 3, 0, 0, 0, 0x28);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], 0x70, 0x28, 0);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][14], 0x80, 0x28, 0);
+        Mg_DrawBigNumber(0x90, 0x28, 3, 0, 0, 0, 0x28);
     }
 
-    func_ov004_020afb20(data_ov006_0213ac30, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
-    func_ov004_020afb20(data_ov006_0213ac3c, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
+    Mg_RenderMainSpriteScaled(data_ov006_0213ac30, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
+    Mg_RenderMainSpriteScaled(data_ov006_0213ac3c, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
 
     return 1;
 }
@@ -874,7 +873,7 @@ s32 dScMgSlot3_c::Behavior()
 
     pc = (unsigned char *)((char *)self + 0x503f);
     *pc = *pc + 1;
-    func_ov006_020c2144((char *)self + 0x4f38);
+    Mascot_Update((char *)self + 0x4f38);
 
     for (i = 0; i < 3; i++) {
         if (self->mState == 1) {
@@ -953,12 +952,12 @@ s32 dScMgSlot3_c::InitResources()
     data_0209d454 = 0x14;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
 
-    func_ov006_020c2154(c + 0x4f38);
-    func_ov006_020c1eb4(c + 0x4660);
+    Mascot_Load(c + 0x4f38);
+    Camera_InitSlotsView(c + 0x4660);
 
-    unk_5004 = (int)unk_0bc;
+    unk_5004 = (int)mLevel;
 
-    ((dScMgSlot3_c *)c)->OnYoshiTryEat(3);
+    ((dScMgSlot3_c *)c)->StartRound(3);
 
     mWinSymbol = unk_503c;
     mReelDrawY = 0;
@@ -979,7 +978,7 @@ s32 dScMgSlot3_c::InitResources()
     data_ov004_020bc888 = 0x80;
     data_ov004_020bc864 = ~0x1b;
 
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
 
     data_0208ee44 = 1;
 
@@ -1010,15 +1009,15 @@ int *dScMgSlot3_c_classInit(void)
         _ZN8Particle10SysTrackerC1Ev((char *)p + 0x471c);
 
         p[0] = (int)&_ZTV12dScMgSlot3_c[2];
-        func_ov006_020c221c((char *)p + 0x4f38);
+        Mascot_Construct((char *)p + 0x4f38);
     }
     return p;
 }
 }
 
-// @symbol func_ov006_0210c180
+// @symbol SlotLamp_Start
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c180(void *raw){
+void SlotLamp_Start(void *raw){
     char *blink = (char *)raw;
     *(int *)blink = 0x48;
     *(u8 *)(blink + 4) = 1;
@@ -1026,9 +1025,9 @@ void func_ov006_0210c180(void *raw){
 }
 }
 
-// @symbol func_ov006_0210c1a8
+// @symbol SlotLamp_Tick
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c1a8(void *o_)
+void SlotLamp_Tick(void *o_)
 {
     int *timer = (int *)o_;
     if (*timer <= 0)
@@ -1044,20 +1043,20 @@ void func_ov006_0210c1a8(void *o_)
 }
 }
 
-// @symbol func_ov006_0210c208
+// @symbol SlotLamp_Clear
 /* 0x469c blinks bit 1 of data_0209d454 the same way: a timer and an on
  * flag. This clears it, 0210c180 starts it and 0210c1a8 ticks it. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c208(char *blink)
+void SlotLamp_Clear(char *blink)
 {
     *(int *)(blink + 0x0) = 0;
     *(char *)(blink + 0x4) = 0;
 }
 }
 
-// @symbol func_ov006_0210c218
+// @symbol SlotBlink_Start
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c218(void *raw, s16 x, s16 y)
+void SlotBlink_Start(void *raw, s16 x, s16 y)
 {
     u8 *sprite = (u8 *)raw;
     *(u16 *)(sprite + 0) = x;
@@ -1067,17 +1066,17 @@ void func_ov006_0210c218(void *raw, s16 x, s16 y)
 }
 }
 
-// @symbol func_ov006_0210c234
+// @symbol SlotBlink_Draw
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c234(unsigned char* raw){
+void SlotBlink_Draw(unsigned char* raw){
     if (*(u8 *)(raw + 8) == 0) return;
     RenderOamMainScreen(&data_ov006_0213e6a8, *(short *)raw, *(short *)(raw + 2), -1, -1);
 }
 }
 
-// @symbol func_ov006_0210c278
+// @symbol SlotBlink_Tick
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c278(void *o_)
+void SlotBlink_Tick(void *o_)
 {
     u8 *raw = (u8 *)o_;
     if (*(int *)(raw + 4) <= 0) return;
@@ -1089,29 +1088,29 @@ void func_ov006_0210c278(void *o_)
 }
 }
 
-// @symbol func_ov006_0210c2b0
+// @symbol SlotBlink_Clear
 /* 0x4684 and 0x4690 each hold a blinking sprite: s16 x and y, a timer at
  * +4 and a visible flag at +8. This clears one, 0210c218 starts one, 0210c278
  * ticks it and 0210c234 draws it. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c2b0(char *sprite)
+void SlotBlink_Clear(char *sprite)
 {
     *(int *)(sprite + 0x4) = 0;
     *(char *)(sprite + 0x8) = 0;
 }
 }
 
-// @symbol func_ov006_0210c2c0
+// @symbol SlotReel_SetSpeed
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c2c0(void *raw, int value) {
+void SlotReel_SetSpeed(void *raw, int value) {
     int *words = (int *)raw;
     words[8] = (words[7] * value) << 2;
 }
 }
 
-// @symbol func_ov006_0210c2d4
+// @symbol SlotBet_OnTouch
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c2d4(void *c_)
+void SlotBet_OnTouch(void *c_)
 {
     dThIcon_c *icon = (dThIcon_c *)c_;
     void *scene;
@@ -1124,22 +1123,22 @@ void func_ov006_0210c2d4(void *c_)
     if (icon->unk_010 != 0) {
         return;
     }
-    scene = data_ov004_020beb68;
-    count = (scene != 0) ? *(int *)((char *)scene + 0xa8) : 0;
+    scene = gMgScene;
+    count = (scene != 0) ? ((dScMgBase_c *)scene)->mCredits : 0;
     if (count <= 0) {
         return;
     }
     icon->unk_01c += 1;
-    func_ov004_020b1b08((void *)1);
+    Mg_LoseCredits((void *)1);
     func_ov001_020ab3f0(icon);
     sid = 0x163;
     Sound::PlayBank2_2D(sid);
 }
 }
 
-// @symbol func_ov006_0210c354
+// @symbol SlotBet_Reset
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c354(void *raw)
+void SlotBet_Reset(void *raw)
 {
     dThIcon_c *icon = (dThIcon_c *)raw;
     icon->unk_01c = 0;
@@ -1157,7 +1156,7 @@ void dScMgSlot1_c::betIcon_c::Render()
     int y = 0xb0;
     int zero = 0;
     for (i = 0; i < unk_01c; i++) {
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][2], 0xb0 + i * 0x10, y, (void *)zero);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], 0xb0 + i * 0x10, y, (void *)zero);
     }
 }
 
@@ -1166,11 +1165,11 @@ void dScMgSlot1_c::betIcon_c::Behavior()
 {
     int val;
     if (TouchArea_Update(this, -1))
-        func_ov006_0210c2d4(this);
+        SlotBet_OnTouch(this);
     val = unk_020;
     if (val != 0) {
         if ((val & 3) == 0) {
-            func_ov004_020b1b40(1);
+            Mg_GainCredits(1);
             Sound::PlayBank2_2D(0x149);
         }
         unk_020 -= 1;
@@ -1178,34 +1177,34 @@ void dScMgSlot1_c::betIcon_c::Behavior()
     dThIcon_c::Behavior();
 }
 
-// @symbol func_ov006_0210c478
+// @symbol SlotBet_Place
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c478(char *icon) {
+void SlotBet_Place(char *icon) {
     func_ov001_020ab5b0(icon, 1, 0x90, 0xb0, 0x10, 8);
     *(int *)(icon + 0x18) = 6;
 }
 }
 
-// @symbol _ZN12dScMgSlot1_c19OnHitFromUnderneathEv
+// @symbol _ZN12dScMgSlot1_c9CloseMenuEv
 
-int dScMgSlot1_c::OnHitFromUnderneath()
+int dScMgSlot1_c::CloseMenu()
 {
-    dScMgBase_c::OnHitFromUnderneath();
+    dScMgBase_c::CloseMenu();
     SetSubBg1Offset(0x100, 0);
 }
 
-// @symbol _ZN12dScMgSlot1_c15OnHitByMegaCharEv
+// @symbol _ZN12dScMgSlot1_c8OpenMenuEv
 /* Slot 27. Takes no argument: the ROM body never reads r1. The qualified
  * base call is the ROM's direct branch. */
-void dScMgSlot1_c::OnHitByMegaChar()
+void dScMgSlot1_c::OpenMenu()
 {
     SetSubBg1Offset(0, 0);
-    dScMgBase_c::OnHitByMegaChar();
+    dScMgBase_c::OpenMenu();
 }
 
-// @symbol func_ov006_0210c500
+// @symbol SlotReels_CheckStopped
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0210c500(void *self)
+int SlotReels_CheckStopped(void *self)
 {
     struct SlotReels *p = (struct SlotReels *)self;
     int ok;
@@ -1245,32 +1244,32 @@ int func_ov006_0210c500(void *self)
 }
 }
 
-// @symbol func_ov006_0210c638
+// @symbol Slot1_InitHud
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c638(void *self)
+void Slot1_InitHud(void *self)
 {
     char *raw = (char *)self;
     *(s8 *)(raw + 0x4706) = -1;
     *(u8 *)(raw + 0x4707) = 1;
     *(u8 *)(raw + 0x4708) = 0;
     dScMgSlot1_c *scene = (dScMgSlot1_c *)self;
-    scene->unk_0a8 = func_ov004_020ad8b8();
-    scene->unk_0ac = scene->unk_0a8;
+    scene->mCredits = Mg_GetSavedRecord0();
+    scene->mCreditsShown = scene->mCredits;
 }
 }
 
-// @symbol _ZN12dScMgSlot1_c13OnYoshiTryEatEi
+// @symbol _ZN12dScMgSlot1_c10StartRoundEi
 /* Slot 18. 0x4706 is padding in the header, so it is written by offset. */
-void dScMgSlot1_c::OnYoshiTryEat(int i)
+void dScMgSlot1_c::StartRound(int i)
 {
     char *raw = (char *)this;
 
     if (i == 4) {
         *(u8 *)(raw + 0x4706) = unk_4709;
     } else if (i == 3) {
-        func_ov006_0210c638(raw);
+        Slot1_InitHud(raw);
     }
-    func_ov006_0210c354(&mBetIcon);
+    SlotBet_Reset(&mBetIcon);
     unk_46b4 = 0;
 }
 
@@ -1303,7 +1302,7 @@ s32 dScMgSlot1_c::Render()
         cur += 0x15;
     }
     mBetIcon.Render();
-    func_ov004_020b2444(0x70, 0xb0, unk_0a8, 0, 1, 1, 0x14);
+    Mg_DrawBigNumber(0x70, 0xb0, mCredits, 0, 1, 1, 0x14);
     if (unk_46b4 >= 5 && (*(t + 0x470a) != 0 || (*(t + 0x470b) != 0 && *(t + 0x470b) < 3))) {
         b = *(t + 0x470b);
         if (b != 0 && b < 3) {
@@ -1311,27 +1310,27 @@ s32 dScMgSlot1_c::Render()
             if ((int)b > 0) {
                 pos = 0x18;
                 do {
-                    func_ov004_020af770(data_ov006_0213e96c[0xb], pos, 0x30, -1, 2, 0x1000, 0);
+                    Mg_RenderSubSpriteScaled(data_ov006_0213e96c[0xb], pos, 0x30, -1, 2, 0x1000, 0);
                     pos += 0x10;
                     i++;
                 } while (i < *(t + 0x470b));
             }
-            func_ov004_020af868(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x30, -1, 2, 0);
-            func_ov004_020b2444(0x60, 0x30, *(t + 0x470b) * 2, 0, 2, 2, 0x14);
+            Mg_RenderSubSpritePalMtx(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x30, -1, 2, 0);
+            Mg_DrawBigNumber(0x60, 0x30, *(t + 0x470b) * 2, 0, 2, 2, 0x14);
         }
         if (*(t + 0x470a) != 0) {
             i = 0;
             pos = 0x18;
             for (; i < 3; i++) {
-                func_ov004_020af770(data_ov006_0213e96c[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000, 0);
+                Mg_RenderSubSpriteScaled(data_ov006_0213e96c[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000, 0);
                 pos += 0x10;
             }
-            func_ov004_020af868(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
-            func_ov004_020b2444(0x60, 0x40, data_ov006_0213e4d8[*(t + 0x4709)], 0, 2, 2, 0x14);
+            Mg_RenderSubSpritePalMtx(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
+            Mg_DrawBigNumber(0x60, 0x40, data_ov006_0213e4d8[*(t + 0x4709)], 0, 2, 2, 0x14);
         }
     }
-    func_ov006_0210c234(t + 0x4684);
-    func_ov006_0210c234(t + 0x4690);
+    SlotBlink_Draw(t + 0x4684);
+    SlotBlink_Draw(t + 0x4690);
     return 1;
 }
 
@@ -1362,7 +1361,7 @@ s32 dScMgSlot1_c::Behavior()
         unk_470a = 0;
         unk_470b = 0;
         unk_46b4 = 1;
-        func_ov006_0210c2d4(&mBetIcon);
+        SlotBet_OnTouch(&mBetIcon);
         if (mPromptBlinkCount == 0) {
             mPromptEnabled = 1;
             mPromptBlinkCount = 1;
@@ -1420,7 +1419,7 @@ s32 dScMgSlot1_c::Behavior()
                             unk_4705++;
                             if (mBetIcon.unk_011 != 0) {
                                 mBetIcon.unk_011 = 0;
-                                func_ov004_020ad79c(unk_0a8, mHudScore);
+                                Mg_SaveRecordPair(mCredits, mHudScore);
                             }
                             func_02012718(0x162, data_ov006_0213e63c[i][0] << 12);
                             break;
@@ -1437,7 +1436,7 @@ s32 dScMgSlot1_c::Behavior()
                 }
             }
             if (stopped == 1) {
-                unk_470a = func_ov006_0210c500(this);
+                unk_470a = SlotReels_CheckStopped(this);
                 unk_46b8 = 0;
                 if (unk_470a != 0) {
                     unk_46b8 += data_ov006_0213e4d8[unk_4709];
@@ -1445,7 +1444,7 @@ s32 dScMgSlot1_c::Behavior()
                 if (unk_470b != 0 && unk_470b < 3) {
                     unk_46b8 += unk_470b << 1;
                 }
-                func_ov004_020ad79c(unk_0a8 + unk_46b8 * mBetIcon.unk_01c, mHudScore);
+                Mg_SaveRecordPair(mCredits + unk_46b8 * mBetIcon.unk_01c, mHudScore);
                 unk_46b4 = 4;
                 unk_470c = 0x3c;
             }
@@ -1455,15 +1454,15 @@ s32 dScMgSlot1_c::Behavior()
     case 4:
         if (DecIfAbove0_Byte(&unk_470c) == 0) {
             if (unk_470a != 0) {
-                func_ov006_0210c218(pad_4684, data_ov006_0213e654[unk_4709][0], data_ov006_0213e656[unk_4709][0]);
+                SlotBlink_Start(pad_4684, data_ov006_0213e654[unk_4709][0], data_ov006_0213e656[unk_4709][0]);
             }
             if (unk_470b != 0 && unk_470b < 3) {
-                func_ov006_0210c218(pad_4690, data_ov006_0213e4f8[unk_470b - 1][0], data_ov006_0213e4fa[unk_470b - 1][0]);
+                SlotBlink_Start(pad_4690, data_ov006_0213e4f8[unk_470b - 1][0], data_ov006_0213e4fa[unk_470b - 1][0]);
             }
             if (unk_46b8 != 0) {
                 unk_46b4 = 5;
                 unk_470c = 0x64;
-                func_ov006_0210c180(pad_469c);
+                SlotLamp_Start(pad_469c);
                 func_02012790(0x26);
             } else {
                 unk_46b4 = 7;
@@ -1475,7 +1474,7 @@ s32 dScMgSlot1_c::Behavior()
         break;
     case 5:
         if (DecIfAbove0_Byte(&unk_470c) == 0) {
-            func_ov006_0210c2c0(&mBetIcon, unk_46b8);
+            SlotReel_SetSpeed(&mBetIcon, unk_46b8);
             unk_470c = 0x3c;
             unk_46b4 = 6;
         }
@@ -1483,17 +1482,17 @@ s32 dScMgSlot1_c::Behavior()
     case 6: {
         int done = (mBetIcon.unk_020 == 0) ? 1 : 0;
         if (done != 0) {
-            func_ov004_020adb1c(unk_0a8);
+            Mg_SubmitScore(mCredits);
             if (DecIfAbove0_Byte(&unk_470c) == 0) {
-                OnYoshiTryEat(4);
+                StartRound(4);
             }
         }
         break;
     }
     case 7:
         if (DecIfAbove0_Byte(&unk_470c) == 0) {
-            if (unk_0a8 > 0) {
-                OnYoshiTryEat(5);
+            if (mCredits > 0) {
+                StartRound(5);
             } else {
                 int j;
                 char *p = (char *)this;
@@ -1518,7 +1517,7 @@ s32 dScMgSlot1_c::Behavior()
             unk_46b4++;
             func_02012718(0x164, data_ov006_0213e63c[idx][0] << 12);
             if (idx == 0) {
-                func_ov004_020ae274((void *) 2);
+                Mg_PlayJingle((void *) 2);
             }
         }
         break;
@@ -1547,9 +1546,9 @@ s32 dScMgSlot1_c::Behavior()
         break;
     }
     mBetIcon.Behavior();
-    func_ov006_0210c278(pad_4684);
-    func_ov006_0210c278(pad_4690);
-    func_ov006_0210c1a8(pad_469c);
+    SlotBlink_Tick(pad_4684);
+    SlotBlink_Tick(pad_4690);
+    SlotLamp_Tick(pad_469c);
     return 1;
 }
 
@@ -1666,10 +1665,10 @@ s32 dScMgSlot1_c::InitResources()
 
     unk_4709 = 5;
     unk_46bc = 0xa;
-    func_ov004_020adb1c(unk_46bc);
-    func_ov006_0210c478((char *)&mBetIcon);
-    OnYoshiTryEat(3);
-    func_ov004_020b04d0(0x20);
+    Mg_SubmitScore(unk_46bc);
+    SlotBet_Place((char *)&mBetIcon);
+    StartRound(3);
+    Mg_SetTopScreenYOffset(0x20);
     data_0208ee44 = 1;
     return 1;
 }
@@ -1692,9 +1691,9 @@ void *dScMgSlot1_c_classInit(void)
         dScMgSlot1_c::betIcon_c *icon = &scene->mBetIcon;
         *(int *)icon = (int)_ZTV9dThIcon_c;
         *(int *)icon = (int)&_ZTVN12dScMgSlot1_c9betIcon_cE[2];
-        func_ov006_0210c2b0((char *)scene->pad_4684);
-        func_ov006_0210c2b0((char *)scene->pad_4690);
-        func_ov006_0210c208((char *)scene->pad_469c);
+        SlotBlink_Clear((char *)scene->pad_4684);
+        SlotBlink_Clear((char *)scene->pad_4690);
+        SlotLamp_Clear((char *)scene->pad_469c);
     }
     return scene;
 }
@@ -1704,12 +1703,12 @@ void *dScMgSlot1_c_classInit(void)
  * The Slot3 state table plain-copied from the ROM PMF constants, in
  * retail copy order. */
 SlotState data_ov006_02142bdc[8] = {
-    data_ov006_0213e520,
-    data_ov006_0213e530,
-    data_ov006_0213e4e0,
-    data_ov006_0213e538,
-    data_ov006_0213e550,
-    data_ov006_0213e548,
-    data_ov006_0213e580,
-    data_ov006_0213e578,
+    pmf_Slot3_State0,
+    pmf_Slot3_State1,
+    pmf_Slot3_State2,
+    pmf_Slot3_State3and4,
+    pmf_Slot3_State3and4_2,
+    pmf_Slot3_State5,
+    pmf_Slot3_State6,
+    pmf_Slot3_State7,
 };
