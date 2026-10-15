@@ -454,7 +454,7 @@ void dScMgJump2_c::State_Result(){
         obj = Heyho_AllIdle(obj);
         if(obj){
             Mg_SubmitScore(data_ov006_02140308);
-            Mg_SetSharedState(0x12);
+            Mg_SetSharedState(MG_STATE_GAME_OVER);
             mPromptEnabled = 0;
             *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Idle;
         }

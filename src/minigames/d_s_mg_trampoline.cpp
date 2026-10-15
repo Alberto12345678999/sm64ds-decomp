@@ -719,7 +719,7 @@ void dScMgTrampoline_c::StateResults()
   Trmp3DMario_UpdateAll(c);
   if(_Z14ApproachLinearRiii(&mTimer,0,1)==0) return;
   if(Trmp3DMario_CountFinished()==0) return;
-  Mg_SetSharedState(0x12);
+  Mg_SetSharedState(MG_STATE_GAME_OVER);
   mPromptEnabled = 0;
   mTimer = 0xb4;
   *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StateWaitExit;

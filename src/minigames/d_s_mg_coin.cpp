@@ -1487,7 +1487,7 @@ void dScMgCoin_c::Phase_State5()
         FreeGfxSlotsById(6);
         Mg_RestoreMusic();
     }
-    Mg_SetSharedState(0x10);
+    Mg_SetSharedState(MG_STATE_RESULTS);
     mPromptEnabled = 0;
 }
 

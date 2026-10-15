@@ -299,7 +299,7 @@ void Slot3_State6(char* c){
     dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         self->mState = 7;
-        Mg_SetSharedState(0x12);
+        Mg_SetSharedState(MG_STATE_GAME_OVER);
         self->unk_5004 = 0;
     }
     if (self->unk_503e >= 0x3c) return;

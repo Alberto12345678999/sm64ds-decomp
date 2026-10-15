@@ -269,7 +269,7 @@ s32 dScMgSound_c::Behavior()
                     Presenter_PlayAnim7((char *)&mTable);
                     if (mTries == 3)
                         Mg_SetPerfectBanner();
-                    Mg_SetSharedState(0);
+                    Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
                     {
                         dScMgBase_c *active = gMgScene;
                         if (active != 0) {
@@ -303,7 +303,7 @@ s32 dScMgSound_c::Behavior()
             if (*(s16 *)&mResultTimer <= 0) {
                 mTable.mSuppressSound = 0;
                 Presenter_PlayAnim4((char *)&mTable);
-                Mg_SetSharedState(0x12);
+                Mg_SetSharedState(MG_STATE_GAME_OVER);
                 mPromptEnabled = 0;
                 mResultTimer = 0;
             }

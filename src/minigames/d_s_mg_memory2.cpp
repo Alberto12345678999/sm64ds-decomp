@@ -663,7 +663,7 @@ void dScMgMemory2_c::ResultWait()
     if (mPairsFound >= mTargetPairs) {
         if (mMisses == 0)
             Mg_SetPerfectBanner();
-        Mg_SetSharedState(4);
+        Mg_SetSharedState(MG_STATE_WIN);
         p = (struct B *)gMgScene;
         if (p != 0) {
             if (p->b4 < 0x270f)
@@ -676,7 +676,7 @@ void dScMgMemory2_c::ResultWait()
         return;
     }
 
-    Mg_SetSharedState(5);
+    Mg_SetSharedState(MG_STATE_LOSE);
     p = (struct B *)gMgScene;
     if (p != 0) {
         if (p->b4 > 0)

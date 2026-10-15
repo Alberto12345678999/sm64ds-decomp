@@ -1491,7 +1491,7 @@ void dScMg3DEsp_c::Results()
                     Mg_SetNextBanner(0x14);
                 else
                     Mg_SetNextBanner(0x15);
-                Mg_SetSharedState(0);
+                Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
             } else {
                 (*(int *)(int)(((long long)(int)(c + 0xbc))))++;
                 if (mLevel > 0x270e)
@@ -1502,7 +1502,7 @@ void dScMg3DEsp_c::Results()
             *(u16 *)(c + 0x554c) = 0;
             *(u8 *)(c + 0x5555) = 0;
             Mg_ShowBanner(8, 0x80, 0xa0, 1, -1, 0xd);
-            Mg_SetSharedState(0x12);
+            Mg_SetSharedState(MG_STATE_GAME_OVER);
             *(int *)(c + 0x51e4) = 1;
         }
         mPromptEnabled = 0;

@@ -1943,7 +1943,7 @@ void dScMgTeresa_c::Scene_State4()
     *(unsigned short *)(c + 0x4c0c) = 0;
     if (*(unsigned char *)(c + 0x4000 + 0xc1f) != 0) {
         struct ScoreView *p;
-        Mg_SetSharedState(0);
+        Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
         p = (struct ScoreView *)gMgScene;
         if (p != 0) {
             if (p->b4 < 0x270f) {
@@ -1959,7 +1959,7 @@ void dScMgTeresa_c::Scene_State4()
             *(unsigned char *)(c + 0x4000 + 0xc1b) = 0;
         }
         Mg_ShowBanner(8, 0x80, 0x60, 1, -1, 0xd);
-        Mg_SetSharedState(0x12);
+        Mg_SetSharedState(MG_STATE_GAME_OVER);
     }
     mPromptEnabled = 0;
 }

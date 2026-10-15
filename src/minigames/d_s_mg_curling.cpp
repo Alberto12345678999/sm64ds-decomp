@@ -1380,10 +1380,10 @@ void dScMgCurling_c::Scene_End()
     if (Mg_IsNewRecord() != 0) {
         mRoundOver = 0;
         mState = 4;
-        Mg_SetSharedState(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     } else {
         mState = 4;
-        Mg_SetSharedState(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     }
     mPromptEnabled = 0;
     mAimShown = 0;

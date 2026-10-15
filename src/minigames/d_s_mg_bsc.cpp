@@ -454,7 +454,7 @@ void dScMgBSC_c::StateJudgeCards()
         if (mHudScore > mBestHudScore)
             mBestHudScore = mHudScore;
         Mg_SubmitScore(mHudScore);
-        Mg_SetSharedState(4);
+        Mg_SetSharedState(MG_STATE_WIN);
         Dealer_PlayWin(&mShared);
         mState = 0xd;
     }
@@ -465,7 +465,7 @@ void dScMgBSC_c::StateJudgeCards()
             score = &mHudScore;
             *score = *score - 1;
         }
-        Mg_SetSharedState(5);
+        Mg_SetSharedState(MG_STATE_LOSE);
         Dealer_PlayLose(&mShared);
         mState = 0xd;
     }

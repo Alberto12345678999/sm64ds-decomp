@@ -671,7 +671,7 @@ void dScMgMemory_c::ResultWait()
             if (mPairsFound >= mTargetPairs) {
                 if (mMisses == 0)
                     Mg_SetPerfectBanner();
-                Mg_SetSharedState(4);
+                Mg_SetSharedState(MG_STATE_WIN);
                 if (mHudScore < 0x270f) {
                     int *score = &mHudScore;
                     *score += 1;
@@ -681,7 +681,7 @@ void dScMgMemory_c::ResultWait()
                 Mg_SubmitScore(gMgScene ? gMgScene->mHudScore : 0);
                 Dealer_PlayWin(&mShared);
             } else {
-                Mg_SetSharedState(5);
+                Mg_SetSharedState(MG_STATE_LOSE);
                 if (mHudScore > 0) {
                     int *score = &mHudScore;
                     *score -= 1;

@@ -312,7 +312,7 @@ s32 dScMgMCarlo_c::Behavior()
                                 }
                             }
                             Dealer_PlayLose(&mShared);
-                            Mg_SetSharedState(5);
+                            Mg_SetSharedState(MG_STATE_LOSE);
                             {
                                 int dealt = data_ov006_0213d570;
                                 dScMgBase_c *active = (dScMgBase_c *)gMgScene;
@@ -335,7 +335,7 @@ s32 dScMgMCarlo_c::Behavior()
                         }
                         Mg_SubmitScore(mHudScore);
                         Dealer_PlayWin(&mShared);
-                        Mg_SetSharedState(4);
+                        Mg_SetSharedState(MG_STATE_WIN);
                         {
                             dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                             int base = (active != 0) ? active->mCredits : 0;

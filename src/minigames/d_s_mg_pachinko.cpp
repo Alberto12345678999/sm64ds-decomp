@@ -2721,7 +2721,7 @@ s32 dScMgPachinko_c::Behavior()
         if (unk_5c18 != 0) {
             unk_5c18--;
             if ((s16)unk_5c18 <= 0) {
-                Mg_SetSharedState(0x10);
+                Mg_SetSharedState(MG_STATE_RESULTS);
                 mPromptEnabled = 0;
             }
         }

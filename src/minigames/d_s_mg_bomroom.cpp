@@ -2195,7 +2195,7 @@ void dScMgBomroom_c::Round_State4() {
     if ((s16)mStateTimer > 0)
         return;
     mStateTimer = 0;
-    Mg_SetSharedState(0x10);
+    Mg_SetSharedState(MG_STATE_RESULTS);
     mPromptEnabled = 0;
 }
 

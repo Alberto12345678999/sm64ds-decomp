@@ -1821,7 +1821,7 @@ void dScMgPanel_c::Scene_State7()
     *(u16 *)(scene + 0x4ec0) -= 1;
     if (*(s16 *)(scene + 0x4ec0) > 0) return;
     *(u16 *)(scene + 0x4ec0) = 0;
-    Mg_SetSharedState(0x12);
+    Mg_SetSharedState(MG_STATE_GAME_OVER);
     mPromptEnabled = 0;
     *(u8 *)(scene + 0x4fe3) = 0;
     ClearSlideFlag();
@@ -1890,7 +1890,7 @@ void dScMgPanel_c::Scene_State6()
         if (*(u8 *)(scene + 0x4000 + 0xfe6) != 0) {
             char *g;
             Scroll_Start();
-            Mg_SetSharedState(0);
+            Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
             ClearSlideFlag();
             *(u8 *)(scene + 0x4000 + 0xfe3) = 0;
             mPromptEnabled = 0;

@@ -171,6 +171,18 @@ and a guess (unconfirmed):
 | 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over |
 | 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
 
+**The `MgSharedState` enum** (`include/dMgState_c.h`, 2026-10-15). Every
+`Mg_SetSharedState(n)` call now passes a name. Each name describes the state's
+mechanics from the table above, and the enum marks the confidence of its
+meaning word per entry:
+- **high:** `RETRY_PROMPT`, `LOSE`, `RESULTS`, `RESULTS_NEW_RECORD`.
+- **medium:** `ROUND_CLEAR`, `NEXT_ROUND`, `WIN`, `TIE`, `CONTINUE_PROMPT`,
+  `GAME_OVER`, `FINISHED`.
+- **low:** the rest, which no caller enters or one game enters.
+
+The runtime check on `Mg_SetSharedState` settles the medium and low words. A
+corrected name is a plain enumerator rename; the values are fixed.
+
 Medium-confidence helpers:
 - `Mg_SetNextBanner` (020b67e8) sets the one-shot override `sMgNextBanner` (0x1d means none).
 - `Mg_SetPerfectBanner` (020b67f8) is `Mg_SetNextBanner(6)`. Memory calls it before state 4 when there were no misses.

@@ -2032,10 +2032,10 @@ s32 dScMgAmida_c::Behavior()
         mPromptEnabled = 0;
         if (mFinished == 1) {
             mState = 3;
-            Mg_SetSharedState(0);
+            Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
         } else {
             mState = 3;
-            Mg_SetSharedState(0x12);
+            Mg_SetSharedState(MG_STATE_GAME_OVER);
             mEndDelayTimer = 0xb4;
             mFinaleTimer = 0;
         }

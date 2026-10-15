@@ -268,7 +268,7 @@ s32 dScMgMCarlo2_c::Behavior()
                             mShared.unk_01a = 0;
                         } else if (Dealer_IsIdleAtRest(raw + 0x4f38) != 0) {
                             Dealer_PlayLose(raw + 0x4f38);
-                            Mg_SetSharedState(0x12);
+                            Mg_SetSharedState(MG_STATE_GAME_OVER);
                             mPromptEnabled = 0;
                             {
                                 s16 *p = &unk_5928;

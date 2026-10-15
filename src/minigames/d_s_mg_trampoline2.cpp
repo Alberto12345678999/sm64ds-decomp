@@ -672,7 +672,7 @@ void dScMgTrampoline2_c::StateResults()
         return;
     if (Trmp2Mario_Hide() == 0)
         return;
-    Mg_SetSharedState(0x12);
+    Mg_SetSharedState(MG_STATE_GAME_OVER);
     mPromptEnabled = 0;
     mTimer = 0xb4;
     *(double *)mState = pmf_dScMgTrampoline2_c_StateWaitExit.asDouble;

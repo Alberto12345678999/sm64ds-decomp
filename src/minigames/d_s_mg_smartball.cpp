@@ -6044,7 +6044,7 @@ s32 dScMgSmartball_c::Behavior()
                         data_ov004_020bc888 = 0x80;
                         data_ov004_020bc864 = -0x30;
                     }
-                    Mg_SetSharedState(0x10);
+                    Mg_SetSharedState(MG_STATE_RESULTS);
                     *(int*)(c + 0x4660) = 2;
                     func_02012790(0x62);
                 }

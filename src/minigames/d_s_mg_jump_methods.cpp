@@ -377,7 +377,7 @@ void dScMgJump_c::State_Result()
     if (ready) {
         ready = Heyho_AllIdle();
         if (ready) {
-            Mg_SetSharedState(0x12);
+            Mg_SetSharedState(MG_STATE_GAME_OVER);
             mPromptEnabled = 0;
             mStateTimer = 0;
             mState = pmf_dScMgJump_c_State_Idle;
@@ -414,7 +414,7 @@ void dScMgJump_c::State_Final()
     }
   }
   Mg_SubmitScore(mHudScore);
-  Mg_SetSharedState(0);
+  Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
   mPromptEnabled = 0;
   mStateTimer = 0;
   mState = pmf_dScMgJump_c_State_Idle_2;

@@ -2063,13 +2063,13 @@ void dScMgHanachan_c::Phase_Result()
     {
         if (s->mHit != 0)
         {
-            Mg_SetSharedState(1);
+            Mg_SetSharedState(MG_STATE_NEXT_ROUND);
             SetPhaseIdle();
         }
         else
         {
             ((C *)s->mTarget)->decoy = 1;
-            Mg_SetSharedState(0x12);
+            Mg_SetSharedState(MG_STATE_GAME_OVER);
             BeginResultWait();
         }
         s->mPromptEnabled = 0;

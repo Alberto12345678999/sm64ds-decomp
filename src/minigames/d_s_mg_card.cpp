@@ -659,7 +659,7 @@ void dScMgCard_c::UpdateState()
                         g->mHudScore = g->mHudScore - 1;
                     }
                 }
-                Mg_SetSharedState(5);
+                Mg_SetSharedState(MG_STATE_LOSE);
             } else if (r == 1) {
                 Dealer_PlayWin(&mShared);
                 g = gMgScene;
@@ -673,9 +673,9 @@ void dScMgCard_c::UpdateState()
                         g->mBestHudScore = a1;
                 }
                 Mg_SubmitScore(mHudScore);
-                Mg_SetSharedState(4);
+                Mg_SetSharedState(MG_STATE_WIN);
             } else {
-                Mg_SetSharedState(7);
+                Mg_SetSharedState(MG_STATE_DRAW);
                 Sound::PlayBank2_2D(0x140);
                 Sound::PlayBank2_2D(0x138);
             }

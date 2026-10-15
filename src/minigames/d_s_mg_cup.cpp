@@ -462,13 +462,13 @@ void dScMgCup_c::StateFinish()
     if (mCorrect != 0) {
         if (mHudScore < 0x270f) mHudScore += 1;
         if (mHudScore > mBestHudScore) mBestHudScore = mHudScore;
-        Mg_SetSharedState(0);
+        Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
         mState = 7;
     } else {
         if (mCredits > 0) {
             StartRound(-1);
         } else {
-            Mg_SetSharedState(0x12);
+            Mg_SetSharedState(MG_STATE_GAME_OVER);
             mState = 7;
         }
     }

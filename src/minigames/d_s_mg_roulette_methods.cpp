@@ -522,12 +522,12 @@ s32 dScMgRoulette_c::Behavior()
             short score = mScore;
             if (score > target) {
                 Dealer_PlayWin(mTable);
-                Mg_SetSharedState(4);
+                Mg_SetSharedState(MG_STATE_WIN);
             } else if (score < target) {
                 Dealer_PlayLose(mTable);
-                Mg_SetSharedState(5);
+                Mg_SetSharedState(MG_STATE_LOSE);
             } else {
-                Mg_SetSharedState(8);
+                Mg_SetSharedState(MG_STATE_TIE);
             }
             mCameraPreset = 0;
             HA(0x53e6) += 1;

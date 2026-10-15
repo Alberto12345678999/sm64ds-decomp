@@ -1668,9 +1668,9 @@ void dScMgLuigi_c::StateCatch()
         if (v != 4)
             StartRound(-1);
         else
-            Mg_SetSharedState(1);
+            Mg_SetSharedState(MG_STATE_NEXT_ROUND);
     } else {
-        Mg_SetSharedState(0x12);
+        Mg_SetSharedState(MG_STATE_GAME_OVER);
     }
     mPromptEnabled = 0;
 }

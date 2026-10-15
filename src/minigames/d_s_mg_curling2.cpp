@@ -1512,10 +1512,10 @@ void dScMgCurling2_c::EndRound()
     if (Mg_IsNewRecord() != 0) {
         gameOver = 0;
         mState = 4;
-        Mg_SetSharedState(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     } else {
         mState = 4;
-        Mg_SetSharedState(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     }
     mPromptEnabled = 0;
     unk_55b9 = 0;
