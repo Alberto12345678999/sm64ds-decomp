@@ -6,7 +6,7 @@ This document describes this commit. The queue records its immutable output SHA.
 
 - Issue: https://github.com/tangosdev/sm64ds-decomp/issues/2410
 - Stage/session/harness: implement / codex-mky-bss-tool1015-producer / Codex.
-- Branch: tools/mky-terminal-bss1015.
+- Branch: [BSS tooling branch](https://github.com/tangosdev/sm64ds-decomp/tree/tools/mky-terminal-bss1015).
 - Accepted input, source base and workflow tools: e209dacfaaa95cb5490637ff053d62182689bebe.
 - Reserved edits: tools/tubuild.py, tools/test_tubuild_terminal_bss.py, and this handoff.
 - Status: locally verified tooling candidate; independent review belongs to the next stage.
