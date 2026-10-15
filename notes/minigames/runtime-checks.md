@@ -1,0 +1,55 @@
+# Minigame names: runtime checks
+
+[names.md](names.md) marks some names **medium** or **low** confidence. The code
+settles their mechanics but not their game-facing meaning: which graphic a banner
+id shows, what an animation looks like, or what a flag means to the player. This
+page lists what to watch, in melonDS, to settle each one. None of it changes code.
+A confirmed or corrected name is then a plain in-place symbol rename, like the
+ones this pass made.
+
+## Setup
+
+The repo already drives the melonDS GDB stub from Python (`tools/trace/rsp.py`).
+`tools/trace/README.md` has the exact `melonDS.toml` keys and the stub's quirks:
+one client per launch, detach before closing, never send a break.
+1. Start melonDS with JIT off and the GDB stub on (port 3333), then load the EU ROM.
+2. Enter the minigame menu: the title screen's minigame option, or the rec-room
+   objects in the castle.
+3. Attach with a short script built on `rsp.py`. It sets the breakpoints below,
+   and on each hit logs `pc`, `r0`-`r3` and `lr` (resolve the caller with
+   `tools/trace/symindex.py`), then continues.
+   - `tools/trace/gdb_harness.py --names <symbol,...>` does this for symbols it can resolve.
+   - `tools/trace/behavior.py` records inputs and outputs per call.
+4. Play the game named in each row and note what is on screen when the breakpoint fires.
+
+All addresses are EU (ASMP). ov004, ov005 and ov006 are resident only while a
+minigame or the menu runs. ov005 and ov006 share 0x020bfec0, so a breakpoint in
+one is meaningless while the other is loaded.
+
+## What to watch
+
+| Question | Breakpoint (symbol, address) | Log | Play |
+|---|---|---|---|
+| What each shared state (0..19) shows | `Mg_SetSharedState` 0x020b0a54 | r0 = state | Win and lose a round each in Cup, Memory, Card, Roulette, Snowball, and one timed game (Bomroom or Coin). Note the banner and the jingle. |
+| Which graphic each banner id is | `Mg_ShowBanner` 0x020b0cac | r0 = file id, r1/r2 = x/y | The same plays. Fill in the "Guess" column of names.md's state table. |
+| One-shot banner override (e.g. "Perfect") | `Mg_SetNextBanner` 0x020b67e8 | r0 = id | Memory with no misses (expect 6); Snowball (4, 0xe). |
+| What jingle ids 1, 3 and 4 sound like | `Mg_PlayJingle` 0x020ae274 | r0 = id | Any game; listen at the hit. |
+| `StartRound(state)` is really "start or restart a round" | `Mg_CallStartRound` (see symbols.txt) | r1 = finished state | Cup: lose a life (the game calls slot 18 with -1 itself) versus clear a round. |
+| `OnNewRecord` fires as the record banner goes up | `dScMgBase_c::OnNewRecord` 0x020b2990, plus the Cup/Sound/Teresa/3DEsp overrides | hit or not | Beat a saved record in Cup or Sound. |
+| `OnDealDone` fires when the dealer finishes dealing | `dScMgBase_c::OnDealDone` 0x020b298c, plus the BSC/Card/Memory/Memory2 overrides | hit timing | Memory or Card: watch the dealer deal. |
+| What Presenter animations 1, 2, 4 and 7 look like | `Presenter_PlayAnim1/2/4/7` 0x020c2664 / 0x020c271c / 0x020c2440 / 0x020c2594 | hit | Sound: a match (2), a mismatch (1), a loss (4), a win (7). Cup: a win. |
+| `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | Cup (lives), Card (coins). |
+| Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | Card, BSC and MCarlo: tap the top-left box. Memory: start of round. |
+| The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | Open a never-played game's page, play it once, and come back. |
+| `IsAltVariant` = the second menu row of a game | `dScMgBase_c::IsAltVariant` 0x020ad660 (Amida overrides) | r0 on return | Play both menu entries of a duplicated game (Coin, Panel, Sound, Snowball). |
+| Wiggler draw passes A and B | `Wiggler_DrawPassA` 0x020ea914, `Wiggler_DrawPassB` 0x020eac38 | which runs for which part | Hanachan; freeze a frame after each pass. |
+| Trampoline2 item kinds 0..8 | `TrmpItem_SetMotion0..8` (0x020cdf20 is kind 0) | hit and kind | Trampoline2; note which item moves which way. |
+| The graph-callback hooks (slots 22-25) | `dScMgBase_c::OnGraphCallback0..3`, or the arm9 dispatchers `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | Any game. Name the callbacks by frame phase: before draw, after the OAM flush, and so on. |
+
+## Recording the answer
+
+For each row, put the observed meaning in names.md's row and raise or lower the
+confidence. A changed name goes through the same in-place rename the pass used:
+- symbols.txt, the manifests, attribution and `symbols/actor_renames.tsv` lineage
+  rows for mangled members
+- then a TU object compare (identical modulo the rename) and the usual gates
