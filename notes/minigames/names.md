@@ -53,13 +53,15 @@ which declares no virtual, so a slot number means nothing between them.
 | 32 | `Virtual80` (was `AfterClsn`) | `InitMainScreenBg` | high | It does the same for main-engine BG1 with screen map 0x67. |
 | 33 | `Virtual84` | `InitEngines` | high | It sets graphics modes, VRAM banks, the BG/OBJ character files and palettes, and registers the graph callback. (`InitDisplay` was already taken by Trampoline's own method.) |
 | 34 | `Virtual88(int,int,int,int)` | `PaintSquare` | high | It paints a size x size square of one 4bpp palette index into the brush's BG layer. The line rasteriser `Mg_DrawLine` calls it once per point. |
-| 35 | `Virtual8C` | `IsAltVariant` | medium | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. Which menu rows set that byte has not been checked against the menu table. |
+| 35 | `Virtual8C` | `IsAltVariant` | high (seen) | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. `param1` is the menu row's second word, whose low byte is 1 on each duplicated game's second row (2 on Amida's), so the name holds. Seen on Panel's row 35 (runtime-checks.md). Sound has only one row, so its branch never runs from the menu, and no Amida row is variant 1; Amida's own slot 36 (`Unk36`, `== 2`) is its second-row test. |
 
-Still open for the graph callbacks: what the engine's four `dGraph_c::callback_c`
-slots are for. The arm9 dispatchers are `func_02019390` (slot 0),
-`func_02019404` (slot 1), `func_02019144` (slot 2) and `func_02019100` (slot 3).
-They are named from their call order by the frame loop once the dispatchers are
-named, and not before.
+The graph callbacks' frame phases are seen (runtime-checks.md, 2026-10-15). Each
+frame runs 0 at the start, before the scene update (`func_02019390`), then the
+scene's `BeforeBehavior`, then 1 after the scene update (`func_02019404`). In the
+VBlank IRQ, 2 runs before the OAM flush and display-register writes, which it
+can veto (`func_02019144`), and 3 runs at the end (`func_02019100`). The callback
+names stay as they are until the arm9 dispatchers are renamed to match, which
+needs the usual gates.
 
 ## ov004 runtime helpers and globals (renamed 2026-10-14)
 
@@ -233,6 +235,7 @@ Games watch `gMgCoinsStatus`: 1 when a sequence is done, 2-4 while one runs.
 **"Bet" is right; seen 2026-10-15.**
 - **Memory.** `MgCoins_PlaceBet(3)` stakes three coins on the table. Each miss slides one coin over to Luigi, and clearing the board pays the coins still on the table ×6. The misses allowed are the stake.
 - **Card (Picture Poker).** The BET! button runs `MgCoins_AddBetCoin` and adds one coin to the stake.
+- **Memory_J.** `dScMgMemory2_c::OnDealDone` stakes five coins each deal (`MgCoins_PlaceBet(5)`). A lost round forfeits them, and with the purse empty the game ends at `UpdateGameOverToMenu`.
 - **Coin moves.** Each staked coin is one `Coin_Launch` → `Mg_LoseCredits(1)` → `Mg_SubCredits(1)`. Each paid or refunded coin is one `Mg_GainCredits(1)` → `Mg_AddCredits(1)`.
 
 **The options panel, high confidence.** Pass 2 (2026-10-15) made the
@@ -315,7 +318,7 @@ Descriptive names, high confidence:
 - **The clock:** `StartCountdown` (3 seconds, or 2 from level 15), `UpdateCountdown`, `DrawCountdown`.
 - **Round flow:** `CheckRoundEnd`, `CheckRevealDone`, `ResetRound`.
 
-Medium confidence: the three popup pools above found Boos, whose looks are not observed.
+Medium confidence: the three popup pools above found Boos, whose looks are not observed. Their order on a find is seen: `Exclaim_Spawn`, then `RisingIcon_Spawn`, then `FoundMark_Spawn`, then state 0 (runtime-checks.md).
 - `RisingIcon_*` (+0x4a60): a delayed icon that rises, with sound 0x1bc.
 - `FoundMark_*` (+0x4960).
 - `Exclaim_*` (+0x48a0): spawned by the rub test, 0x18 px above the Boo.
@@ -358,8 +361,9 @@ The other subsystems are named by what they draw and update:
 - `PachinkoDeco_*` (3 records that scroll with the board)
 - the aim line on sub BG2 (`Pachinko_DrawAimLine`, `Pachinko_ClearAimLine`, `Pachinko_PlotSubBg2Pixels`)
 
-Medium confidence: "Flyer", "Deco" and "Ball" are role words from code alone; the
-actors' looks are not observed.
+Medium confidence: "Ball" is a role word from code alone. The others are seen
+(runtime-checks.md): the flyer is Lakitu, the board scroll (`PachinkoBg_*`) is the
+airship that drops the Para-Bombs, and `PachinkoDeco_*` are its wings.
 
 Left unnamed: `func_ov006_020fea70`.
 
@@ -416,7 +420,7 @@ High confidence:
 
 Medium confidence:
 - The movement modes: `Wiggler_StartPathA/B/C`, `Wiggler_StepSegmentsA/B/C`, `Wiggler_StartBounce`/`Wiggler_MoveBounce`, `Wiggler_StateMoveA/B`, `Wiggler_StateHold`, `Wiggler_StateWait`, `Wiggler_Retarget`, `Wiggler_OnTouched`, `Wiggler_StopIfIdle`, `Wiggler_UpdateSway` (sounds 0x1e7/0x1e8 as the sway crosses zero).
-- `Wiggler_DrawPassA/B`: two draw passes; which part of the wiggler each draws is not observed.
+- `Wiggler_DrawPassA/B`: two draw passes. **Seen** by stubbing each one: A draws the reference wiggler on the top screen (main engine, once a frame) and B draws each playfield wiggler on the bottom screen (sub engine, once per wiggler). Candidate names: `DrawReference` and `DrawPlayfield`.
 - `Wiggler_IsStarVisible`.
 
 **unit020cd744: the stylus-drawn trampolines.**
@@ -428,7 +432,8 @@ Medium confidence:
   - **Setup:** `TrmpLine_CreateStartLineT1/T2`, the line each game starts with.
 - **`TrmpItem_*`, medium confidence.** The bouncing items of Trampoline2.
   - `TrmpItem_SetMotionN` / `TrmpItem_MotionN` are indexed by the item's kind byte (+0x98), which is certain.
-  - What each kind looks like is not observed.
+  - **Seen** (each kind forced, then tracked; runtime-checks.md): 0 still, 1 slides side to side, 2 rises and falls, 3 spins in place, 4 sways on a timer, 5 sways and spins, 6 bobs on a timer, 7 bobs and spins, 8 spins in place on fixed axes. The items are rainbow rings.
+  - In `dScMgTrampoline2_c::SpawnWave`, the local `faces[i]` holds the motion kind and `kinds[i]` the position index, so the locals and `Trmp2_PickFaceA/B` / `Trmp2_ColumnForKind` read backwards. Renaming them is a candidate for the next pass.
 
 **Curling (`dScMgCurling_c`).** Named mostly from the bodies' own comments, high confidence.
 - **Scene:** `Scene_StartRound`, `Scene_Play`, `Scene_Score`, `Scene_End`, `Scene_Idle`.
@@ -552,5 +557,5 @@ compare (all 45 TUs identical).
 - **`mFlyer[1]` and `mBg[1]`:**
   - **medium:** the fields. `vy` is high: `Flyer_State0` seeds it and `State1` adds it to y.
   - **low:** the one-element arrays, inferred the same way as Teresa's `mReveal`.
-  - **seen:** the flyer is Lakitu and the targets are the four flowers (runtime-checks.md, 2026-10-15). "background" is still medium.
+  - **seen:** the flyer is Lakitu and the targets are the four flowers (runtime-checks.md, 2026-10-15). The background is seen too: `mBg` scrolls the airship across the top screen, and `PachinkoDeco` is its wings.
 - **0x5418..0x5958:** no reconstructed function touches it.

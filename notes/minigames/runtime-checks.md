@@ -41,12 +41,12 @@ one is meaningless while the other is loaded.
 | `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | **Done:** coins in Slot3, Memory, Card and Roulette. |
 | Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | **Done:** yes. Memory stakes 3 coins, and Card's BET! button runs `AddBetCoin`. |
 | The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | **Done:** `ClearNew(row)` fires on opening a game. Rows map as tab + 4 × position. |
-| `IsAltVariant` = the second menu row of a game | `dScMgBase_c::IsAltVariant` 0x020ad660 (Amida overrides) | r0 on return | Play both menu entries of a duplicated game (Coin, Panel, Sound, Snowball). |
-| Wiggler draw passes A and B | `Wiggler_DrawPassA` 0x020ea914, `Wiggler_DrawPassB` 0x020eac38 | which runs for which part | Hanachan; freeze a frame after each pass. |
-| Trampoline2 item kinds 0..8 | `TrmpItem_SetMotion0..8` (0x020cdf20 is kind 0) | hit and kind | Trampoline2; note which item moves which way. |
-| Pachinko's flyer, background scroller and hit bursts | `PachinkoFlyer_State0`, `PachinkoBg_Start`, `PachinkoFx_Spawn` (see ov006 symbols.txt) | hit timing | Pachinko: note what crosses the top of the board when the flyer starts, and what scrolls when the background starts. |
-| Teresa's exclaim, found mark, rising icon and reveal sprites | `dScMgTeresa_c::Exclaim_Spawn`, `FoundMark_Spawn`, `RisingIcon_Spawn`, `Reveal_State0` (see ov006 symbols.txt) | hit timing | Teresa: find a Boo and note each sprite as it appears. |
-| The graph-callback hooks (slots 22-25) | `dScMgBase_c::OnGraphCallback0..3`, or the arm9 dispatchers `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | Any game. Name the callbacks by frame phase: before draw, after the OAM flush, and so on. |
+| `IsAltVariant` = the second menu row of a game | `dScMgBase_c::IsAltVariant` 0x020ad660 (Amida overrides) | r0 on return | **Done:** yes. The menu row's second word is `param1`, and its low byte is the variant (see below). |
+| Wiggler draw passes A and B | `Wiggler_DrawPassA` 0x020ea914, `Wiggler_DrawPassB` 0x020eac38 | which runs for which part | **Done:** A is the reference wiggler on the top screen, B the three on the bottom screen. |
+| Trampoline2 item kinds 0..8 | `TrmpItem_SetMotion0..8` (0x020cdf20 is kind 0) | hit and kind | **Done:** all nine kinds were forced and tracked (see below). |
+| Pachinko's flyer, background scroller and hit bursts | `PachinkoFlyer_State0`, `PachinkoBg_Start`, `PachinkoFx_Spawn` (see ov006 symbols.txt) | hit timing | **Done:** the background is the airship that drops the Para-Bombs. |
+| Teresa's exclaim, found mark, rising icon and reveal sprites | `dScMgTeresa_c::Exclaim_Spawn`, `FoundMark_Spawn`, `RisingIcon_Spawn`, `Reveal_State0` (see ov006 symbols.txt) | hit timing | **Order seen:** exclaim, rising icon, found mark, then CLEAR (see below). |
+| The graph-callback hooks (slots 22-25) | `dScMgBase_c::OnGraphCallback0..3`, or the arm9 dispatchers `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | **Done:** 0, the scene update, 1, then 2 and 3 in the VBlank IRQ (see below). |
 
 ## Observed so far (melonDS 1.1, EU ROM, 2026-10-15)
 
@@ -100,6 +100,63 @@ screenshots, over two games of Wanted! (Luigi):
   - From memory reads: `mIds` stayed 0, 1, 2 across shuffles, since the shuffle moves `mCup[mIds[i]]` and swaps them back. Yoshi sat in the left cup with `mCupContents` = {1, 0, 0}, `mTargetContent` = 1 and `mRevealCup` = 0 after a miss. Later levels hide a blue Yoshi as a decoy in another box, so `mCupContents` is the Yoshi colour in each cup and `mTargetContent` is the one asked for.
 - Jingles by context: 4 = round CLEAR (state 0); 3 = GAME OVER (state 0x12); 1 = new HIGH SCORE (state 17). The audio itself was not heard.
 - The GDB stub on the second CPU (ARM7, port 3346) can read main RAM while `mgwatch.py` holds the ARM9 port, but only once per launch, the same limit as the ARM9 stub.
+
+### Bottom-up pass (2026-10-15, a second watcher)
+
+A second melonDS ran alongside the first, taking the table from the bottom row up.
+Input was stylus only (posted mouse messages), and memory was read and written
+through the watcher's command queue.
+
+- **The graph callbacks, by frame phase.** The arm9 main loop `func_020197b8` steps a phase word, `data_0209d50c`:
+  - 2 calls `func_02019390` (callback 0). It returns before the OAM reset and the frame setup when the callback returns 0.
+  - 3 calls `SpawnIfNecessary`, and 4 calls `func_02044120`, the scene update that runs `BeforeBehavior`.
+  - 5 calls `func_02019404` (callback 1), 6 submits the frame (`data_0209d4f0 = 1`) and 7 waits for VBlank (`func_0201a4bc`).
+  - `IRQ::VBlankHandler` calls `func_02019144` (callback 2) only when a frame was submitted and is due. It runs before `OAM::Flush` and the display-register writes, which are skipped when it returns 0. `func_02019100` (callback 3) runs at the end of every VBlank.
+  - **Logged order, every frame:** `GraphCallback0` (lr 0x020193b4), `BeforeBehavior`, `GraphCallback1` (lr 0x02019430), `GraphCallback2` (lr 0x02019168), `GraphCallback3` (lr 0x02019124). A scene's first frame ran only callback 3.
+  - **Candidate names, not applied:** 0 = frame start, 1 = after the scene update, 2 = VBlank before the OAM flush, 3 = VBlank end.
+- **Teresa** (`dScMgTeresa_c`, Yoshi's page, top-right card, row 11). The top screen is Luigi with a flashlight. The bottom screen is dark until the stylus rubs it, and a 3-second clock starts at banner 0xc START. A bot scribbled over each unfound Boo, reading `mBoos` (4 × 0x90), and found one.
+  - **A find:** `Exclaim_Spawn` (r1 0, r2 1, lr 0x0211ea20), then `RisingIcon_Spawn` (lr 0x0211e100), then `FoundMark_Spawn` (lr 0x0211f090). Then `Mg_SetSharedState(0, 1)` (r1 is the score), banner 3 "CLEAR" at (0x80, −0x80) and jingle 4.
+  - **Next level:** `StartRound(0)`, banner 0xd "LEVEL 2", `Reveal_State0` and START again. Level 2 has two Boos flying, and a star at the top right counts finds.
+  - **A missed clock:** banner 8 from Teresa itself (lr 0x0211fe50), state 0x12 (GAME OVER, jingle 3), banner 7, then `dScMgTeresa_c::OnNewRecord` (lr 0x020b6e88), and banner 5, the rainbow "HIGH SCORE", across the top screen (y −0x80), with jingle 1.
+  - The three sprites' looks were not captured, only their order.
+- **Pachinko's background** is the airship. `PachinkoBg_*` scrolls main-engine BG1 (0x04000018), and `PachinkoDeco_ShowAll`/`HideAll` bracket each pass:
+  - It starts at x 0x100, y 0x40. State 1 moves it left and up to y 0, and state 2 carries it on left to x ≤ −0x90.
+  - State 3 drops it to y ≥ 0x40, hides it, and waits 0x258 frames (10 s) before the next pass.
+  - **On screen:** a dark winged airship hull crossing the top of the top screen. The `PachinkoDeco` sprites are its white wings, and it drops the Para-Bombs (parachute Bob-ombs).
+  - `PachinkoBg_Start` fires after `Mg_CallStartRound(0x10)` at each round start (twice on a replay: lr 0x020fedb8 and 0x020fed50). The game starts on the card tap; "A RULES" is only an overlay.
+  - With no input the flowers were all lost in about 10 s, then state 16.
+- **Trampoline2** (`dScMgTrampoline2_c`, Mario's page 2, right card, menu row 0x20). Mario drops between castle towers onto an "M" pad, and the player draws trampolines with the stylus. The items are rainbow rings; there are 3 lives (Mario heads).
+  - **Natural play** (a bot redrawing a full-width line) only showed kind 0, up to a score of 600.
+  - **A new record** runs the base `dScMgBase_c::OnNewRecord` (no override): banner 5 at y −0x70, jingle 1. Game over is state 0x12 from lr 0x02123c3c.
+  - **Item records:** the pool is `data_ov006_0214082c` (stride 0x1d0, 10 slots, `data_ov006_02140838`), and the live count is `data_ov006_02140828`. The fields:
+    - +8/+0xc/+0x10 position; +0x2c/+0x30 velocity; +0x38 an orientation vector;
+    - +0x96 size (model 0/1/2); +0x98 the motion kind.
+  - **In `SpawnWave`,** `faces[i]` is the motion kind and `kinds[i]` is the position index; the local names read backwards.
+  - **Each kind was forced:** write +0x98, zero the velocity, and send the item back through `TrmpItem_StateAppear` (the PMF at +0). Then its position was tracked:
+    - 0 stays still; 1 slides side to side between ± a bound from the size table (`data_ov006_0212e07c`/`088`); 2 rises and falls (y −0x60..0x80, vy ±0x1000).
+    - 3 spins in place in the screen plane (0x100 a frame); 4 sways side to side, reversing on a phase timer (+0x9a += 0x40), faster the further it is from y 0x74; 5 is 4's sway plus the spin.
+    - 6 bobs up and down on a timer (vy ±0xc00); 7 is 6's bob plus the spin; 8 spins in place like 3, on its own fixed axes (`SetMotion3` also zeroes vy).
+  - **`SetMotionN` does not clear the velocity.** A forced ring kept its old one and flew off-screen, which held the live count at 1 and blocked respawns. It was retired through `TrmpItem_GrowScale`, which decrements the live count.
+- **Hanachan's draw passes** (`dScMgHanachan_c`, Yoshi's page 2, left card, row 27). The top screen shows one straight reference wiggler, and the bottom screen three wandering wigglers.
+  - **Calls per frame:** `Wiggler_DrawPassA` once (r0 0x21893b8, r1 0x12, lr 0x020ed0cc), and `Wiggler_DrawPassB` once per wiggler (r1 0, 6 and 0xc, lr 0x020ecf68).
+  - **Placement:** A draws at fixed points with `OAM::Render(0, ...)`. B draws at each wiggler's own segment positions (+0x18 + i × 8) with `OAM::Render(1, ...)`.
+  - **Stubbing each one** (a `bx lr` written at its entry, then the original word restored) removed the top-screen reference for A and all three bottom-screen wigglers for B. **A is the reference wiggler (main engine), B the playfield wigglers (sub engine).**
+  - The clock ran out to GAME OVER.
+- **`IsAltVariant` and the menu rows.** `dScene_c::StartSceneFade(sMiniGmRows[sel].id, sMiniGmRows[sel].unk4, 0)` hands a row's second word to the scene as `param1`.
+  - **The table** is `sMiniGmRows` (ov005 0x020c24d8, 36 rows of 0x34). Byte 0 of that word is the variant: 2 on row 24, 1 on rows 20, 22, 25, 26, 28-30 and 32-35, and 0 on the rest.
+  - **The six duplicated scenes are one game in two variants:** Amida (rows 0 and 24), Smartball (10, 22), Snowball (6, 34), Coin (14, 30), Panel (15, 35) and Slot1 (17, 33). Each second row is variant 1, except Amida's, which is 2.
+  - **Variant 1 also marks the single-row second classes:** Jump2 (20), MCarlo2 (25), Tamaire (26), Curling_J (28), Memory_J (29) and Trampoline2 (32).
+  - **Sound** has one row (19, variant 0), so its `IsAltVariant` is always false from the menu.
+  - **Amida's override asks `== 1`,** which neither Amida row sets. Its own slot 36 (`Unk36`, `== 2`) is what tells row 24 apart.
+  - **Seen:** Panel's second row (35) gave `param1` a low byte of 1, and `IsAltVariant` was polled every frame (lr 0x021063bc and 0x021061f4).
+    - That board is a tall six-column grid of gold mushroom and brown leaf tiles spanning both screens, with golden statues at the sides.
+    - Tapping every tile gave state 0 (r1 2), CLEAR and "LEVEL 2". A timeout then went to GAME OVER and the base `OnNewRecord`.
+- **Memory_J** (`dScMgMemory2_c`, Luigi's page 2, middle card, row 0x1d) has 16 cards and a 15-coin purse.
+  - **The bet:** after the deal, `dScMgMemory2_c::OnDealDone` calls `MgCoins_PlaceBet(5)`. Five coins go onto the table by five `Mg_LoseCredits(1)` + `Mg_SubCredits(1)` pairs (15 → 10), and each miss takes one away.
+  - **A lost round** is state 5 (r1 8; banner 0xa at y −0x3c, off screen). `StartRound(5)` then deals and bets 5 again.
+  - **With the purse empty,** losing the round sends `State05_Update` to `dMgState_c::UpdateGameOverToMenu`: banner 8 and jingle 3, then straight back to the menu with no record table.
+  - **The NEW! badge:** the card had it before this one play and not after.
+- **MCarlo2** (`dScMgMCarlo2_c`, Luigi's page 2, left card, row 0x19) keeps the base `OnDealDone` and stakes nothing; its card shows no coin count. Luigi deals a 5 × 4 grid face up. Tapping two adjacent matching faces removes them, and the deck refills the gaps; the counter at the top right counts the cards taken (2 after one pair).
 
 ## Recording the answer
 
