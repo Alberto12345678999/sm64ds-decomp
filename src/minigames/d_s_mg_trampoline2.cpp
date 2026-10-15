@@ -590,7 +590,7 @@ void dScMgTrampoline2_c::StatePlay()
         for (i = 0; i < n; i++)
             ApproachLinear(mRamp, 0x7000, -0x800);
         if (data_ov006_02140818 == 3)
-            *(u8 *)(raw + 0xc3) = 0;
+            mPromptEnabled = 0;
     }
     Trmp2Mario_SetTuning((data_ov006_02140818 / 10) * 64 + 0x1000);
     if (data_ov006_0213b0f0 == 0) {
@@ -605,9 +605,9 @@ void dScMgTrampoline2_c::StatePlay()
             int *p = (int *)((int)raw + 0xbc);
             *p = *p + 1;
         }
-        if (*(unsigned int *)(raw + 0xbc) > 0x270e)
-            *(unsigned int *)(raw + 0xbc) = 0x270e;
-        v = *(unsigned int *)(raw + 0xbc);
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
+        v = mLevel;
         if (v < 4)
             *(int *)(raw + 0x7b90) = data_ov006_0213fc10[v];
         else

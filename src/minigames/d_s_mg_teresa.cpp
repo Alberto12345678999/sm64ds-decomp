@@ -1154,7 +1154,7 @@ void dScMgTeresa_c::StartCountdown()
     char *raw = (char *)this;
     if (*(unsigned char *)(raw + 0x4c20) == 0) return;
     if (*(unsigned char *)(raw + 0x4c1c) != 0) return;
-    if (*(unsigned int *)(raw + 0xbc) >= 0xf)
+    if (mLevel >= 0xf)
         *(unsigned short *)(raw + 0x4c14) = 2;
     else
         *(unsigned short *)(raw + 0x4c14) = 3;
@@ -2118,7 +2118,7 @@ void dScMgTeresa_c::Scene_State4()
         Mg_ShowBanner(8, 0x80, 0x60, 1, -1, 0xd);
         Mg_SetSharedState(0x12);
     }
-    *(unsigned char *)(c + 0xc3) = 0;
+    mPromptEnabled = 0;
 }
 
 
@@ -2295,14 +2295,14 @@ void dScMgTeresa_c::StartRound(int reset)
            field address into its own register (add r2,r4,#0xbc / ldr [r2] /
            str [r2]) and the function grows a word; the cartridge re-issues
            ldr r1,[r4,#0xbc]. Same lever as dScMgHanachan_c::StartRound. */
-        *(unsigned int*)(self + 0xbc) = *(const unsigned int*)(self + 0xbc) + 1;
-        if (*(unsigned int*)(self + 0xbc) > 0x270e)
-            *(unsigned int*)(self + 0xbc) = 0x270e;
+        mLevel = *(const unsigned int*)(self + 0xbc) + 1;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
     } else {
         mHudScore = 0;
-        *(unsigned int*)(self + 0xbc) = 0;
-        if (*(unsigned int*)(self + 0xbc) > 0x270e)
-            *(unsigned int*)(self + 0xbc) = 0x270e;
+        mLevel = 0;
+        if (mLevel > 0x270e)
+            mLevel = 0x270e;
     }
     ResetRound();
     Reveal_Start();

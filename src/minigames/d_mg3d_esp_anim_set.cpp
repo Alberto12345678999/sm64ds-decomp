@@ -1422,9 +1422,9 @@ void dScMg3DEsp_c::Deal()
     DealCards();
     *(int*)(c + 0x5540) = 1;
     FreeGfxSlotsById(0x1d);
-    if (*(unsigned char*)(c + 0xc4) == 0) {
-        *(unsigned char*)(c + 0xc3) = 1;
-        *(unsigned char*)(c + 0xc4) = 1;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
         *(short*)(c + 0xc0) = 0;
     }
 }
@@ -1496,8 +1496,8 @@ void dScMg3DEsp_c::Results()
                 Mg_SetSharedState(0);
             } else {
                 (*(int *)(int)(((long long)(int)(c + 0xbc))))++;
-                if (*(u32 *)(c + 0xbc) > 0x270e)
-                    *(u32 *)(c + 0xbc) = 0x270e;
+                if (mLevel > 0x270e)
+                    mLevel = 0x270e;
                 StartRound(-1);
             }
         } else {
@@ -1507,7 +1507,7 @@ void dScMg3DEsp_c::Results()
             Mg_SetSharedState(0x12);
             *(int *)(c + 0x51e4) = 1;
         }
-        *(u8 *)(c + 0xc3) = 0;
+        mPromptEnabled = 0;
         *(u16 *)(c + 0x5548) = 0;
     } else {
         int b;

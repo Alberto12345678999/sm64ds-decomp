@@ -718,8 +718,8 @@ void dScMgBomroom_c::CountSortedBombs() {
         mSubState = 0;
         mBlastPen = 0;
         mWinColor = 0;
-        *(volatile unsigned int *)(raw + 0xbc) = *(unsigned int *)(raw + 0xbc) + 1;
-        if (*(unsigned int *)(raw + 0xbc) > 0x270e) *(unsigned int *)(raw + 0xbc) = 0x270e;
+        *(volatile unsigned int *)(raw + 0xbc) = mLevel + 1;
+        if (mLevel > 0x270e) mLevel = 0x270e;
         unk_62fb = 1;
         Sound::PlayBank2_2D(0x1e6);
     } else if (colored >= 0x28) {
@@ -727,8 +727,8 @@ void dScMgBomroom_c::CountSortedBombs() {
         mSubState = 0;
         mBlastPen = 0;
         mWinColor = 1;
-        *(volatile unsigned int *)(raw + 0xbc) = *(unsigned int *)(raw + 0xbc) + 1;
-        if (*(unsigned int *)(raw + 0xbc) > 0x270e) *(unsigned int *)(raw + 0xbc) = 0x270e;
+        *(volatile unsigned int *)(raw + 0xbc) = mLevel + 1;
+        if (mLevel > 0x270e) mLevel = 0x270e;
         unk_62fb = 1;
         Sound::PlayBank2_2D(0x1e6);
     }
@@ -2196,7 +2196,7 @@ void dScMgBomroom_c::Round_State4() {
         return;
     mStateTimer = 0;
     Mg_SetSharedState(0x10);
-    *(u8 *)(c + 0xc3) = 0;
+    mPromptEnabled = 0;
 }
 
 
