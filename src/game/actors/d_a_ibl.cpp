@@ -18,7 +18,12 @@
  *   code fills with two-word pointer-to-member records.
  * - Particle::System::NewSimple, dCcAc_c::Init, dBgCh_Actr::Init,
  *   DropShadowRadHeight and Player::Hurt stay mangled. Each takes
- *   Fix12<int> by value and the member call changes the caller's size.
+ *   Fix12<int> by value; their native call reconstruction remains pending.
+ *   The local Hurt declaration agrees with the current scalar definition.
+ * - The spawner copies Player position through a byte view of the whole object
+ *   into a real Vector3. The inherited position fields remain separate scalars.
+ * - Spawn still borrows this actor's flat position and angle fields through
+ *   the existing reference interface; those base fields are not vector objects.
  * - data_0209f2f8 is the level id (a signed byte). The tests 6, 0x16,
  *   0x18 and 0x19 have no level names here, and neither do the distances,
  *   speeds and kill heights chosen from them.
@@ -68,10 +73,6 @@ enum {
 /* Particle played at the ball's position where it breaks up. */
 enum { daIbl_PTCL_BREAK = 0xf };
 
-/* Three plain words: the stack vector func_ov100_02142b90 builds, which
-   carries none of Vector3's empty destructor. */
-struct Vec3i { s32 x, y, z; };
-
 /* The model and shadow matrices, as twelve words: a copy through the C++
    Matrix4x3 DIFFs. */
 struct M48 { int w[12]; };
@@ -85,17 +86,6 @@ struct VtEntry {
 };
 typedef void (*FnPtr)(void *);
 
-/* Render draws the model through its vtable slot 5 with the class's own
-   draw scale. */
-struct EmbeddedClass {
-    virtual void method(void *a);
-    virtual void dummy1();
-    virtual void dummy2();
-    virtual void dummy3();
-    virtual void dummy4();
-    virtual void virtualMethod(char *a);
-};
-
 extern "C" {
 /* Defined below. */
 
@@ -108,7 +98,9 @@ void _ZN7fBase_c18MarkForDestructionEv(void *a);
 int func_02012694(int a, void *p);
 void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, void *pos);
 int _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 d);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
+/* local extern: retain the matched scalar ABI for the by-value Fix12 argument.
+   Return and flag widths agree with the current Player definition. */
+int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_020383f0(void *p);
 void func_02038414(void *p);
 int _ZNK10dBgCh_Actr8IsOnWallEv(void *w);
@@ -279,7 +271,7 @@ void daIbl_c::func_ov100_02142130()
    (50 units * scale + mPosY) >> 3 -- 50 units times the draw scale above the
    ball's position -- and the drop shadow is cast with radius 200 units * scale,
    depth 90 units * scale on the ground (0x32 + 0x28) or 450 units * scale in
-   the air (0x32 + 0x190), and opacity 0xf. "Scale" is mDrawScaleX, 0x1000
+   the air (0x32 + 0x190), and opacity 0xf. "Scale" is mDrawScale.x, 0x1000
    being 1.0. */
 void daIbl_c::func_ov100_02142264()
 {
@@ -289,13 +281,13 @@ void daIbl_c::func_ov100_02142264()
     mModel.mat4x3.t.z = mPosZ >> 3;
     *(M48 *)mShadowMtx = *(M48 *)&mModel.mat4x3;
     int k = 0x32;
-    mShadowMtx[10] = (mDrawScaleX * k + mPosY) >> 3;
+    mShadowMtx[10] = (mDrawScale.x * k + mPosY) >> 3;
     if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0)
         k += 0x28;
     else
         k += 0x190;
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, mShadowMtx, mDrawScaleX * 0xc8, k * mDrawScaleX, 0xf);
+        this, &mShadowModel, mShadowMtx, mDrawScale.x * 0xc8, k * mDrawScale.x, 0xf);
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_0214233cEv
@@ -700,7 +692,7 @@ Lend:
    mDispenser, and mLiveBalls counts it. */
 void daIbl_c::func_ov100_02142b90()
 {
-    struct Vec3i pos;
+    Vector3 pos;
     u16 *timer = (u16 *)&mStateTimer;
     Player *pl;
     int r1;
@@ -717,10 +709,14 @@ void daIbl_c::func_ov100_02142b90()
     if (pl == 0) return;
 
     {
-        struct Vec3i *pp = (struct Vec3i *)&pl->mPosX;
-        pos.x = pp->x;
-        pos.y = pp->y;
-        pos.z = pp->z;
+        /* dActor_c still declares these as separate s32 subobjects at
+           0x5c/0x60/0x64. Read them through the whole Player representation;
+           this creates neither a vector view nor an array over those fields.
+           Direct named loads lose the shared address under 2004/b56. */
+        const unsigned char *coords = reinterpret_cast<const unsigned char *>(pl) + 0x5c;
+        pos.x = *reinterpret_cast<const s32 *>(coords);
+        pos.y = *reinterpret_cast<const s32 *>(coords + 4);
+        pos.z = *reinterpret_cast<const s32 *>(coords + 8);
     }
 
     if ((param1 & 0xf) != daIbl_KIND_PATH_RAMP) {
@@ -728,7 +724,7 @@ void daIbl_c::func_ov100_02142b90()
     }
 
     {
-        int d = Vec3_HorzDist((struct Vec3i *)&mPosX, &pos);
+        int d = Vec3_HorzDist(&mPosX, &pos);
         if (d < mMinSpawnDist) return;
         if (d > mMaxSpawnDist) return;
     }
@@ -777,8 +773,7 @@ int daIbl_c::Render()
 {
     unsigned char b = mVariant;
     if (b) {
-        EmbeddedClass *e = (EmbeddedClass *)((char *)&mModel);
-        e->virtualMethod((char *)&mDrawScaleX);
+        mModel.Render(&mDrawScale);
     }
     return 1;
 }
@@ -870,16 +865,16 @@ int daIbl_c::InitResources()
            0.5 (0x800), collider radius and height 30 units. */
         if (d == 0x19) {
             mHorzSpeed = 0xa000;
-            mDrawScaleX = 0x800;
-            mDrawScaleY = 0x800;
-            mDrawScaleZ = 0x800;
+            mDrawScale.x = 0x800;
+            mDrawScale.y = 0x800;
+            mDrawScale.z = 0x800;
             _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x200004, 0x3c0);
             _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x1e000, 0x1e000, 0, 0);
             mKillY = -0x640000;        /* -1600 units */
         } else {
-            mDrawScaleX = 0x1000;
-            mDrawScaleY = 0x1000;
-            mDrawScaleZ = 0x1000;
+            mDrawScale.x = 0x1000;
+            mDrawScale.y = 0x1000;
+            mDrawScale.z = 0x1000;
             _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
             _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
             /* Full size: scale 1.0, collider radius and height 100 units.
@@ -907,9 +902,9 @@ int daIbl_c::InitResources()
        its Behavior is skipped while it is off screen. */
     if (kind == daIbl_KIND_FREE_ROLL) {
         mFlags |= 1;
-        mDrawScaleX = 0x1000;
-        mDrawScaleY = 0x1000;
-        mDrawScaleZ = 0x1000;
+        mDrawScale.x = 0x1000;
+        mDrawScale.y = 0x1000;
+        mDrawScale.z = 0x1000;
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
         _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
         _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);

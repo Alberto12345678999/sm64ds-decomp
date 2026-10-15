@@ -121,7 +121,7 @@ pools, **not** from `relocs.txt` — `match.py` wildcards every relocated word.
 | `classInit` calls | `BL` at `0x02111bfc` / `0x02111c08` | `0x02043444` = `_ZN7fBase_cnwEj`, `0x020eea50` = `_ZN10dBgActor_cC2Ev` |
 | `classInit`, 2 vptr stores | pool `0x02111c28`/`0x02111c2c` | `0x0210912c` (`_ZTV14daObjUkiyuka_c`), then `0x02112f50` (own) |
 | both destructors, 3 vptrs | pools at `0x02111b58`, `0x02111bb8` | `0x02112f50` (own), `0x0210912c`, `0x0210ae38` (`_ZTV10dBgActor_c`) |
-| `D0` deallocation | `0x02111bc4` = `0x020a0eac` | `GAME_HEAP_PTR`, then `_ZN6Memory10DeallocateEPvP4Heap` — the inherited inline `operator delete` |
+| `D0` deallocation | `0x02111bc4` = `0x020a0eac` | `GAME_HEAP_PTR`, then `_ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE` — the inherited inline `operator delete` |
 
 ### The vtable claims are measured, not hypothesised
 

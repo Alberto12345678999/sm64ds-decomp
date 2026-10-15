@@ -2594,55 +2594,8 @@ src/Matrix4x3_ApplyInPlaceToTranslation.c:
 
 src/engine/heap/Heap.cpp:
     complete
-    .text start:0x0203c1b4 end:0x0203c970
-
-src/_ZN9SolidHeapD0Ev.cpp:
-    complete
-    .text start:0x0203c970 end:0x0203c99c
-
-src/_ZN9SolidHeapD1Ev.cpp:
-    complete
-    .text start:0x0203c99c end:0x0203c9c0
-
-src/_ZN13ExpandingHeapD0Ev.cpp:
-    complete
-    .text start:0x0203c9c0 end:0x0203c9ec
-
-src/_ZN13ExpandingHeapD1Ev.cpp:
-    complete
-    .text start:0x0203c9ec end:0x0203ca10
-
-src/_ZN4HeapD2Ev.cpp:
-    complete
-    .text start:0x0203ca10 end:0x0203ca20
-
-src/_ZN4HeapD0Ev.cpp:
-    complete
-    .text start:0x0203ca20 end:0x0203ca44
-
-src/_ZN4HeapD1Ev.cpp:
-    complete
-    .text start:0x0203ca44 end:0x0203ca54
-
-src/_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator.cpp:
-    complete
-    .text start:0x0203ca54 end:0x0203ca80
-
-src/_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator.cpp:
-    complete
-    .text start:0x0203ca80 end:0x0203caac
-
-src/_ZN4HeapC2EPvjPS_.cpp:
-    complete
-    .text start:0x0203caac end:0x0203cae8
-
-src/_ZN4Heap18InitializeRootHeapEv.cpp:
-    complete
-    .text start:0x0203cae8 end:0x0203cb04
-
-src/_ZN4Heap13SetupRootHeapEv.cpp:
-    complete
-    .text start:0x0203cb04 end:0x0203cbc0
+    .text start:0x0203c1b4 end:0x0203cbc0
+    .data start:0x02099d28 end:0x02099e18
 
 src/func_0203cbc0.c:
     complete
@@ -4506,8 +4459,28 @@ src/unnamed/arm9/0205/func_02058b9c.c:
     .text start:0x02058b9c end:0x02058bb0
 
 src/engine/cp15/CP15.cpp:
+    .text start:0x02058bb0 end:0x02058c84
     complete
-    .text start:0x02058bb0 end:0x02058df4
+
+src/unnamed/arm9/0205/func_02058c84.cpp:
+    .text start:0x02058c84 end:0x02058cd0
+    complete
+
+src/unnamed/arm9/0205/func_02058cd0.cpp:
+    .text start:0x02058cd0 end:0x02058d58
+    complete
+
+src/unnamed/arm9/0205/func_02058d58.cpp:
+    .text start:0x02058d58 end:0x02058d6c
+    complete
+
+src/unnamed/arm9/0205/func_02058d6c.cpp:
+    .text start:0x02058d6c end:0x02058d80
+    complete
+
+src/OS_GetInitArenaLo.cpp:
+    .text start:0x02058d80 end:0x02058df4
+    complete
 
 src/unnamed/arm9/0205/func_02058df4.c:
     complete
@@ -4645,9 +4618,13 @@ src/unnamed/arm9/0205/func_02059c18.c:
     complete
     .text start:0x02059c18 end:0x02059cb4
 
-src/IRQ3.cpp:
+src/unnamed/arm9/0205/func_02059cb4.cpp:
+    .text start:0x02059cb4 end:0x02059d08
     complete
-    .text start:0x02059cb4 end:0x02059d74
+
+src/IRQ3.cpp:
+    .text start:0x02059d08 end:0x02059d74
+    complete
 
 src/ARMProcessorMode.c:
     complete
