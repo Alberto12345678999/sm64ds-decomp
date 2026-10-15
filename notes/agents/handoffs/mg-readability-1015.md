@@ -25,7 +25,7 @@ plan to confirm it by playing under melonDS and the GDB stub.
 - **`gMgScene`.** It is declared `dScMgBase_c *`, its casts are dropped, and its `char *` aliases and local externs are retired where the code stays identical.
 - **Base fields.** Raw base-field reads through `this` aliases and the scene pointer became members. `+0x4650` is named `mTopRecord`.
 - **`dMgPsOpt_c`.** `Open`/`Close`/`Update`/`Draw`/`IsIdle` are real members.
-- **Teresa.** `SmallBoo mBoos[16]` is typed at 0x4660 and 13 Boo handlers read it by field. Teresa 0x48a0..0x4be8 and the Pachinko 0x5418..0x5c10 block are still padding.
+- **Teresa.** `SmallBoo mBoos[16]` is typed at 0x4660 and 13 Boo handlers read it by field. Pachinko's mFx/mFlyer/mTarget/mBg are typed (0x5958..0x5c10), with four readers converted. Still padding: Teresa 0x48a0..0x4be8 and Pachinko 0x5418..0x5958.
 - **Not done.** The 13 capped score bumps stay spelled out, because a header inline renumbers the pinned labels.
 - **Compare.** The object compare must match the compiler-local `@N`/`$N` names exactly. The manifests pin them.
 
@@ -66,7 +66,7 @@ the baseline objects, is in `build/mgnames-tools/` (gitignored):
 
 1. **Pass 2 (shape), suggested order.** Each step is measured with `trykeep.py`, and anything that changes bytes goes into themes.md as a measured negative.
    - A `SharedState` enum for `Mg_SetSharedState` arguments, once runtime-checks.md has named the states.
-   - Type the rest of the padding that code reaches by offset (Teresa 0x48a0..0x4be8; Pachinko 0x5958/0x5bb0..0x5bfc), one function at a time with `tryrepl.py`.
+   - Type the rest of the padding that code reaches by offset (Teresa 0x48a0..0x4be8; Pachinko 0x5418..0x5958), and convert the remaining Boo/Pachinko handlers to the typed records, one function at a time with `tryrepl.py`.
 2. **Pass 3.** Run runtime-checks.md in melonDS and fold the answers into names.md as renames. Then do the read-through for comment drift.
 
 There is also one unrelated defect, found while investigating the transplanted
