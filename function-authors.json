@@ -21627,263 +21627,263 @@
     },
     "ov006:0x020d5ab0": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5ab0"
+      "name": "DrawRoundOver"
     },
     "ov006:0x020d5b00": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5b00"
+      "name": "SetRoundOver"
     },
     "ov006:0x020d5b10": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d5b10"
+      "name": "UpdateBg2Lift"
     },
     "ov006:0x020d5c60": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5c60"
+      "name": "ResetBg2Lift"
     },
     "ov006:0x020d5c88": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d5c88"
+      "name": "Marker_DrawAll"
     },
     "ov006:0x020d5d08": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5d08"
+      "name": "Marker_UpdateAll"
     },
     "ov006:0x020d5d90": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5d90"
+      "name": "Marker_Show"
     },
     "ov006:0x020d5dd4": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5dd4"
+      "name": "Marker_HideAll"
     },
     "ov006:0x020d5dfc": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5dfc"
+      "name": "Bomroom_DrawScore"
     },
     "ov006:0x020d5e1c": {
       "author": "ruspecial",
-      "name": "func_ov006_020d5e1c"
+      "name": "SlotB2_Finish"
     },
     "ov006:0x020d5e3c": {
       "author": "ruspecial",
-      "name": "func_ov006_020d5e3c"
+      "name": "SlotB2_Start"
     },
     "ov006:0x020d5e5c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5e5c"
+      "name": "SlotB2_Draw"
     },
     "ov006:0x020d5eb8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d5eb8"
+      "name": "SlotB2_State3"
     },
     "ov006:0x020d5f28": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5f28"
+      "name": "SlotB2_State2"
     },
     "ov006:0x020d5f2c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d5f2c"
+      "name": "SlotB2_State1"
     },
     "ov006:0x020d5fd8": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5fd8"
+      "name": "SlotB2_State0"
     },
     "ov006:0x020d5fec": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5fec"
+      "name": "SlotB2_Update"
     },
     "ov006:0x020d604c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d604c"
+      "name": "SlotB2_Show"
     },
     "ov006:0x020d6084": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6084"
+      "name": "SlotB2_Hide"
     },
     "ov006:0x020d6098": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6098"
+      "name": "SlotB_DrawAll"
     },
     "ov006:0x020d6100": {
       "author": "tangosdev",
-      "name": "func_ov006_020d6100"
+      "name": "SlotB_State3"
     },
     "ov006:0x020d6170": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6170"
+      "name": "SlotB_State2"
     },
     "ov006:0x020d61dc": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d61dc"
+      "name": "SlotB_State1"
     },
     "ov006:0x020d6264": {
       "author": "tangosdev",
-      "name": "func_ov006_020d6264"
+      "name": "SlotB_State0"
     },
     "ov006:0x020d6278": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6278"
+      "name": "SlotB_UpdateAll"
     },
     "ov006:0x020d62e0": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d62e0"
+      "name": "SlotB_ShowAll"
     },
     "ov006:0x020d634c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d634c"
+      "name": "SlotB_Hit"
     },
     "ov006:0x020d63ac": {
       "author": "tangosdev",
-      "name": "func_ov006_020d63ac"
+      "name": "SlotB_HideAll"
     },
     "ov006:0x020d63d4": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d63d4"
+      "name": "SlotA_DrawAll"
     },
     "ov006:0x020d6454": {
       "author": "tangosdev",
-      "name": "func_ov006_020d6454"
+      "name": "SlotA_State3"
     },
     "ov006:0x020d64c4": {
       "author": "tangosdev",
-      "name": "func_ov006_020d64c4"
+      "name": "SlotA_State2"
     },
     "ov006:0x020d64c8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d64c8"
+      "name": "SlotA_State1"
     },
     "ov006:0x020d65b4": {
       "author": "tangosdev",
-      "name": "func_ov006_020d65b4"
+      "name": "SlotA_State0"
     },
     "ov006:0x020d65c8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d65c8"
+      "name": "SlotA_UpdateAll"
     },
     "ov006:0x020d6630": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6630"
+      "name": "SlotA_ShowAll"
     },
     "ov006:0x020d669c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d669c"
+      "name": "SlotA_HideAll"
     },
     "ov006:0x020d66c4": {
       "author": "tangosdev",
-      "name": "func_ov006_020d66c4"
+      "name": "SlotA_Trigger"
     },
     "ov006:0x020d672c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d672c"
+      "name": "DrawRemaining"
     },
     "ov006:0x020d6784": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6784"
+      "name": "CountSortedBombs"
     },
     "ov006:0x020d68a8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d68a8"
+      "name": "OnBombExploded"
     },
     "ov006:0x020d69b8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d69b8"
+      "name": "Bomb_Animate"
     },
     "ov006:0x020d6b88": {
       "author": "tangosdev",
-      "name": "func_ov006_020d6b88"
+      "name": "Bomb_CheckSorted"
     },
     "ov006:0x020d6c90": {
       "author": "tangosdev",
-      "name": "func_ov006_020d6c90"
+      "name": "Bomb_CheckWrongPen"
     },
     "ov006:0x020d6d7c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6d7c"
+      "name": "Bomb_CheckGrab"
     },
     "ov006:0x020d6e8c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d6e8c"
+      "name": "Bomb_PushApart"
     },
     "ov006:0x020d7524": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d7524"
+      "name": "DrawBombs"
     },
     "ov006:0x020d7604": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d7604"
+      "name": "CheckColorComplete"
     },
     "ov006:0x020d7778": {
       "author": "tangosdev",
-      "name": "func_ov006_020d7778"
+      "name": "Bomb_Roam4"
     },
     "ov006:0x020d777c": {
       "author": "ruspecial",
-      "name": "func_ov006_020d777c"
+      "name": "Bomb_Roam3"
     },
     "ov006:0x020d7958": {
       "author": "tangosdev",
-      "name": "func_ov006_020d7958"
+      "name": "Bomb_Roam2"
     },
     "ov006:0x020d795c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d795c"
+      "name": "Bomb_Roam1"
     },
     "ov006:0x020d7a84": {
       "author": "tangosdev",
-      "name": "func_ov006_020d7a84"
+      "name": "Bomb_Roam0"
     },
     "ov006:0x020d7c00": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d7c00"
+      "name": "Bomb_State6"
     },
     "ov006:0x020d7c4c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d7c4c"
+      "name": "Bomb_State5"
     },
     "ov006:0x020d7e7c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d7e7c"
+      "name": "Bomb_State4"
     },
     "ov006:0x020d7edc": {
       "author": "tangosdev",
-      "name": "func_ov006_020d7edc"
+      "name": "Bomb_State3"
     },
     "ov006:0x020d7f5c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d7f5c"
+      "name": "Bomb_State2"
     },
     "ov006:0x020d816c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d816c"
+      "name": "Bomb_State1"
     },
     "ov006:0x020d8324": {
       "author": "tangosdev",
-      "name": "func_ov006_020d8324"
+      "name": "Bomb_State0"
     },
     "ov006:0x020d836c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d836c"
+      "name": "UpdateBombs"
     },
     "ov006:0x020d8408": {
       "author": "lunavyqo",
-      "name": "func_ov006_020d8408"
+      "name": "SpawnBombs"
     },
     "ov006:0x020d8904": {
       "author": "tangosdev",
-      "name": "func_ov006_020d8904"
+      "name": "HideExplodedBombs"
     },
     "ov006:0x020d893c": {
       "author": "ruspecial",
-      "name": "func_ov006_020d893c"
+      "name": "ClearBombs"
     },
     "ov006:0x020d89c4": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d89c4"
+      "name": "Round_SubState3"
     },
     "ov006:0x020d8af8": {
       "author": "ruspecial",
-      "name": "func_ov006_020d8af8"
+      "name": "Round_SubState2"
     },
     "ov006:0x020d8c88": {
       "author": "tangosdev",
@@ -21891,35 +21891,35 @@
     },
     "ov006:0x020d8cc4": {
       "author": "tangosdev",
-      "name": "func_ov006_020d8cc4"
+      "name": "Round_SubState1"
     },
     "ov006:0x020d8d84": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020d8d84"
+      "name": "Round_SubState0"
     },
     "ov006:0x020d8f34": {
       "author": "ruspecial",
-      "name": "func_ov006_020d8f34"
+      "name": "Round_State4"
     },
     "ov006:0x020d8f98": {
       "author": "tangosdev",
-      "name": "func_ov006_020d8f98"
+      "name": "Round_State3"
     },
     "ov006:0x020d8ff4": {
       "author": "tangosdev",
-      "name": "func_ov006_020d8ff4"
+      "name": "Round_State2"
     },
     "ov006:0x020d9020": {
       "author": "tangosdev",
-      "name": "func_ov006_020d9020"
+      "name": "Round_State1"
     },
     "ov006:0x020d904c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d904c"
+      "name": "Round_State0"
     },
     "ov006:0x020d907c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d907c"
+      "name": "ResetRound"
     },
     "ov006:0x020d9104": {
       "author": "tangosdev",

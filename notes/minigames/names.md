@@ -277,3 +277,20 @@ Medium confidence: the three popup pools above found Boos, whose looks are not o
 - Also `Marker_*` (one sprite) and `StepBg3Scroll`.
 
 Left unnamed: `func_ov006_0211cc90`. Both round endings call it, and it sets +0x4be5 when +0x4be0 is set; its role is unknown.
+
+**Bomroom (`dScMgBomroom_c`, Bob-omb sorting).**
+
+The seven member-pointer tables are named by index:
+- `Round_State0..4` and `Round_SubState0..3`
+- `Bomb_State0..6` and `Bomb_Roam0..4`
+- `SlotA_State0..3`, `SlotB_State0..3` and `SlotB2_State0..3`
+
+Descriptive names, high confidence:
+- **Bombs:** `SpawnBombs`, `UpdateBombs`, `DrawBombs`, `ClearBombs`, `Bomb_Animate`, `Bomb_CheckGrab`, `Bomb_CheckSorted`, `Bomb_CheckWrongPen`, `Bomb_PushApart`, `OnBombExploded`, `HideExplodedBombs`.
+- **Round flow:** `CountSortedBombs`, `CheckColorComplete`, `ResetRound`, `UpdateBg2Lift`.
+
+Medium confidence:
+- `SlotA_*`, `SlotB_*`, `SlotB2_*` and `Marker_*` keep the header's names for the UI slot records at +0x6260, +0x6280 and +0x62b0. What they show is not observed. `SlotB_Hit` bounces BG0 and `SlotA_Trigger` plays sound 0x1e2, which suggests the pen doors and their lamps.
+- `DrawRemaining`.
+
+Left unnamed: `func_ov006_020d8c88`.

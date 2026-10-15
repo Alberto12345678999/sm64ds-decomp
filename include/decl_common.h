@@ -1107,7 +1107,7 @@ extern int Presenter_Destruct(char*);
 extern int FlowerFace_IsIdle(char*);
 extern int func_ov006_020cae9c(void*, int);
 extern int func_ov006_020cd658(unsigned char*, int);
-extern void func_ov006_020d5dfc();
+extern void Bomroom_DrawScore();
 extern int func_ov006_020da4ac(char*, s16*);
 extern int func_ov006_020da5e8(char*, char*);
 extern int func_ov006_020e6e3c(int, int);

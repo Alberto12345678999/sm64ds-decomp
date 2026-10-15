@@ -1291,7 +1291,7 @@ namespace ns__ZN6Player29TryExitCharacterDoorWithIntroEv {
  * The vptr it stores is the invented symbol data_ov006_0213b2e0, which carries no address --
  * a separate problem, left alone here.
  *
- * Detached from Player.h; see func_ov006_020d6084.cpp.
+ * Detached from Player.h; see SlotB2_Hide.cpp.
  */
 extern "C" int data_ov006_0213b2e0[];
 
