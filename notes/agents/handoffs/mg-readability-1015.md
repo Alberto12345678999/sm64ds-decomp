@@ -11,7 +11,7 @@ plan to confirm it by playing under melonDS and the GDB stub.
 | Pass | Scope | State |
 |---|---|---|
 | 1 Names | every unnamed function, virtual, base field and global in ov004/ov005/ov006 | **done** |
-| 2 Shape | structural rewrites, each proven by object compare | **started** |
+| 2 Shape | structural rewrites, each proven by object compare | **base-field and PsOpt sweeps done**; padding typing and the SharedState enum left |
 | 3 Review and runtime | top-to-bottom read; runtime confirmation of the medium/low names | **plan written, not run** |
 
 **Pass 1, as committed:**
@@ -21,8 +21,12 @@ plan to confirm it by playing under melonDS and the GDB stub.
 - **Globals.** The minigame globals are renamed: `gMgScene`, `gMgMenuRow`, `gMgSaveDirty`, the banner, coin and fx pools.
 - **Member-pointer records.** The 630 `{fn, adj}` records are now `pmf_<target>`.
 
-**Pass 2 so far:** raw `*(int *)((char *)gMgScene + 0xb4/0xa8)` reads in 10 files
-became `((dScMgBase_c *)gMgScene)->mHudScore` / `->mCredits`.
+**Pass 2 so far** (details and measured negatives in themes.md, themes 1, 7 and 16):
+- **`gMgScene`.** It is declared `dScMgBase_c *`, its casts are dropped, and its `char *` aliases and local externs are retired where the code stays identical.
+- **Base fields.** Raw base-field reads through `this` aliases and the scene pointer became members. `+0x4650` is named `mTopRecord`.
+- **`dMgPsOpt_c`.** `Open`/`Close`/`Update`/`Draw`/`IsIdle` are real members.
+- **Not done.** The 13 capped score bumps stay spelled out, because a header inline renumbers the pinned labels.
+- **Compare.** The object compare must match the compiler-local `@N`/`$N` names exactly. The manifests pin them.
 
 **Evidence:**
 - [notes/minigames/names.md](../../minigames/names.md): every renamed name with its evidence and confidence.
@@ -60,8 +64,6 @@ the baseline objects, is in `build/mgnames-tools/` (gitignored):
 ## Next steps
 
 1. **Pass 2 (shape), suggested order.** Each step is measured with `trykeep.py`, and anything that changes bytes goes into themes.md as a measured negative.
-   - Raw base-field reads through `char *` views in game methods (`*(u8 *)(c + 0xc3)` → `mPromptEnabled`, and so on); widths must match.
-   - Make `PsOpt_*` real `dMgPsOpt_c` members; the call sites pass `&mTouchOptions`.
    - A `SharedState` enum for `Mg_SetSharedState` arguments, once runtime-checks.md has named the states.
    - Type the game headers' padding ranges that the code reaches by offset (Teresa 0x4660..0x4be8, Pachinko 0x5958/0x5bcc/0x5bfc), one function at a time.
 2. **Pass 3.** Run runtime-checks.md in melonDS and fold the answers into names.md as renames. Then do the read-through for comment drift.
