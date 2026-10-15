@@ -1,3 +1,27 @@
+# Monkey native query lifetime and attachment matrices
+
+This source slice continues #2410 and merged PR #3882. Class reconstruction remains partial. It is separate from the conditional grouped Actor caller checkpoint `845382a394395a8420483fe56c20fdaa5c52635a`, which remains preserved on its own branch.
+
+The saved input is `a67bb58e8bee6fb75224a3ca8fce4cbe3585f75f`. Remote main `53dc648eaf7d24847f461a193a3f81203cf4d098` was fetched and merged normally, retaining the published source history. The final production-source freeze is `079bbca6ea017a311c4a97d8ea91d9e2e82e34bb`; subsequent updates to this record do not change production inputs. Task `issue2410-finish1015-cont2` retains the original producer session, inherited findings and prior checkpoints.
+
+## Source and evidence boundary
+
+The automatic `dBgCh_Lin` local now begins after the countdown early return. Its ordinary construction, calls and destruction reproduce the retail lifetime. Model and cap matrices use the existing shared flat `Matrix4x3` representation and ordinary assignment, eliminating the private 12-word matrix view. The cap matrix member is typed accordingly. The attachment pointer at Actor offset `0xc8` occupies the existing alignment gap in both C and C++ layouts; no padding object or class-size change is introduced. Its original frozen field layer is also retained by the separate grouped Actor owner. The cage-push accumulator has a use-derived name, without an asserted physical unit. Angle interpolation and fixed division use ordinary C++ calls.
+
+Independent Astra inspection caught an undefined identifier introduced while removing a zero temporary from the cap reset. The final source uses explicit zero for both attachment and cap-ID resets. It independently compiles, preserves the entire saved Monkey raw ELF literally, and matches the latest-main control after only the exact Bundle945/950 compiler-local name correspondence. All 46 Monkey functions are strict VERIFIED, blind 0, diffs empty. The exact compiler-only helper policy remains bounded; no new ROM aliases or objects are admitted.
+
+The fresh full-ROM gate passes on this corrected source: 106/106 modules exact, 11,334/11,334 functions reproduced, 334/334 source-owned data claims reproduced, 241 BSS claims checked, and intact TU storage/alias gates pass with no new symbol errors. A separate current-main control comparison rebuilds all 306 non-Monkey consumers and proves their complete raw ELF objects literally identical, without normalization. All source/control files and both old headers are pinned to the actual base. Thus their payloads, symbol attributes and typed relocations are unchanged. The generic 307-consumer pre-push sweep is still running; its inherited blind initializer warnings are retained rather than presented as verified. The initial draft PR can expose this validated source while that sweep and final independent exact-head review finish.
+
+Global advisory ROM-data results are separate: 974 verified, 1,537 partial, one differing symbol and 15 unnamed. The differing dCcAcPos vtable is in unchanged consumers covered by the complete-object equality proof. These are not converted into a blanket metadata pass. The earlier preliminary full-ROM run failed on the undefined identifier and is not acceptance evidence. Historical full-ROM results below do not stand in for current validation.
+
+## Remaining reconstruction
+
+The seven canonical scalar API migrations, genuine shared asset handles/lifecycles, meaningful helper names, and native Monkey globals/initializer/profiles and metadata ownership remain unfinished. The common.h and math/Matrix.h definitions of Matrix4x3 remain incompatible C++ types selected by include order. Native scalar and shared-handle experiments disprove several earlier compiler-impossibility claims, but their canonical migrations are separate changes requiring complete consumer proof.
+
+The four-file reservation recovery is now explicitly authorized and applied, preserving the stopped tasks' other resources, ownership, history and evidence. It does not complete their source work or this issue. The next bounded interface slice is dClipper's scalar projection method; its private proposal is being checked without editing the active Tree owner's source. Keep #2410 open and leave #2412 untouched.
+
+## Preserved earlier checkpoint history
+
 # daMky_c finishing checkpoint
 
 WIP continuation of issue2410 and merged PR3882; this checkpoint does not complete the issue or accept production integration.
