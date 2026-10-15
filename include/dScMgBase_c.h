@@ -25,7 +25,7 @@ struct dScMgBase_c : dScene_c {
     /* Own copy, deliberately: mwcc only inlines a D0 route through the class
        itself or its immediate base, so descendants cannot reach dScene_c's.
        Removing this breaks D0 for all 32 of them. */
-    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvP4Heap(ptr, data_020a0eac); }
+    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(ptr, data_020a0eac); }
 
     /* --- overrides of dScene_c's own virtuals, same signature, in _ZTV order.
            1, 2, 5, 7, 10 re-override slots dScene_c already gave a body;

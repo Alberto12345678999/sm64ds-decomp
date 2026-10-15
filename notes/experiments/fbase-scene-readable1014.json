@@ -418,7 +418,7 @@
             {
               "off": 24,
               "type": 1,
-              "sym": "_ZN6Memory8AllocateEjiP4Heap",
+              "sym": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE",
               "addr": 33800720,
               "add": -8
             },
@@ -454,42 +454,42 @@
             {
               "off": 56,
               "type": 1,
-              "sym": "_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i",
+              "sym": "_ZN5mHeap6Heap_t28InitializeSolidHeapAsDefaultEjPS0_i",
               "addr": 33800920,
               "add": -8
             },
             {
               "off": 92,
               "type": 1,
-              "sym": "_ZN6Memory8AllocateEjiP4Heap",
+              "sym": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE",
               "addr": 33800720,
               "add": -8
             },
             {
               "off": 136,
               "type": 1,
-              "sym": "_ZN6Memory8AllocateEjiP4Heap",
+              "sym": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE",
               "addr": 33800720,
               "add": -8
             },
             {
               "off": 152,
               "type": 1,
-              "sym": "_ZN4Heap21MaxAllocationUnitSizeEv",
+              "sym": "_ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv",
               "addr": 33801740,
               "add": -8
             },
             {
               "off": 156,
               "type": 1,
-              "sym": "_ZN4Heap20RestoreFromTemporaryEv",
+              "sym": "_ZN5mHeap6Heap_t20RestoreFromTemporaryEv",
               "addr": 33800872,
               "add": -8
             },
             {
               "off": 172,
               "type": 1,
-              "sym": "_ZN4Heap8_DestroyEv",
+              "sym": "_ZN5mHeap6Heap_t8_DestroyEv",
               "addr": 33802060,
               "add": -8
             },
@@ -511,84 +511,84 @@
             {
               "off": 60,
               "type": 1,
-              "sym": "_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i",
+              "sym": "_ZN5mHeap6Heap_t28InitializeSolidHeapAsDefaultEjPS0_i",
               "addr": 33800920,
               "add": -8
             },
             {
               "off": 96,
               "type": 1,
-              "sym": "_ZN6Memory8AllocateEjiP4Heap",
+              "sym": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE",
               "addr": 33800720,
               "add": -8
             },
             {
               "off": 140,
               "type": 1,
-              "sym": "_ZN6Memory8AllocateEjiP4Heap",
+              "sym": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE",
               "addr": 33800720,
               "add": -8
             },
             {
               "off": 152,
               "type": 1,
-              "sym": "_ZN4Heap20RestoreFromTemporaryEv",
+              "sym": "_ZN5mHeap6Heap_t20RestoreFromTemporaryEv",
               "addr": 33800872,
               "add": -8
             },
             {
               "off": 168,
               "type": 1,
-              "sym": "_ZN4Heap8_DestroyEv",
+              "sym": "_ZN5mHeap6Heap_t8_DestroyEv",
               "addr": 33802060,
               "add": -8
             },
             {
               "off": 188,
               "type": 1,
-              "sym": "_ZN4Heap21MaxAllocationUnitSizeEv",
+              "sym": "_ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv",
               "addr": 33801740,
               "add": -8
             },
             {
               "off": 216,
               "type": 1,
-              "sym": "_ZN4Heap11ResizeToFitEv",
+              "sym": "_ZN5mHeap6Heap_t11ResizeToFitEv",
               "addr": 33801104,
               "add": -8
             },
             {
               "off": 256,
               "type": 1,
-              "sym": "_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i",
+              "sym": "_ZN5mHeap6Heap_t28InitializeSolidHeapAsDefaultEjPS0_i",
               "addr": 33800920,
               "add": -8
             },
             {
               "off": 288,
               "type": 1,
-              "sym": "_ZN6Memory8AllocateEjiP4Heap",
+              "sym": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE",
               "addr": 33800720,
               "add": -8
             },
             {
               "off": 332,
               "type": 1,
-              "sym": "_ZN6Memory8AllocateEjiP4Heap",
+              "sym": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE",
               "addr": 33800720,
               "add": -8
             },
             {
               "off": 344,
               "type": 1,
-              "sym": "_ZN4Heap20RestoreFromTemporaryEv",
+              "sym": "_ZN5mHeap6Heap_t20RestoreFromTemporaryEv",
               "addr": 33800872,
               "add": -8
             },
             {
               "off": 360,
               "type": 1,
-              "sym": "_ZN4Heap8_DestroyEv",
+              "sym": "_ZN5mHeap6Heap_t8_DestroyEv",
               "addr": 33802060,
               "add": -8
             },
@@ -602,77 +602,77 @@
             {
               "off": 392,
               "type": 1,
-              "sym": "_ZN4Heap21MaxAllocationUnitSizeEv",
+              "sym": "_ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv",
               "addr": 33801740,
               "add": -8
             },
             {
               "off": 428,
               "type": 1,
-              "sym": "_ZN4Heap21MaxAllocationUnitSizeEv",
+              "sym": "_ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv",
               "addr": 33801740,
               "add": -8
             },
             {
               "off": 440,
               "type": 1,
-              "sym": "_ZN4Heap21MaxAllocationUnitSizeEv",
+              "sym": "_ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv",
               "addr": 33801740,
               "add": -8
             },
             {
               "off": 476,
               "type": 1,
-              "sym": "_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i",
+              "sym": "_ZN5mHeap6Heap_t28InitializeSolidHeapAsDefaultEjPS0_i",
               "addr": 33800920,
               "add": -8
             },
             {
               "off": 504,
               "type": 1,
-              "sym": "_ZN4Heap8_DestroyEv",
+              "sym": "_ZN5mHeap6Heap_t8_DestroyEv",
               "addr": 33802060,
               "add": -8
             },
             {
               "off": 532,
               "type": 1,
-              "sym": "_ZN4Heap20RestoreFromTemporaryEv",
+              "sym": "_ZN5mHeap6Heap_t20RestoreFromTemporaryEv",
               "addr": 33800872,
               "add": -8
             },
             {
               "off": 548,
               "type": 1,
-              "sym": "_ZN4Heap8_DestroyEv",
+              "sym": "_ZN5mHeap6Heap_t8_DestroyEv",
               "addr": 33802060,
               "add": -8
             },
             {
               "off": 560,
               "type": 1,
-              "sym": "_ZN4Heap20RestoreFromTemporaryEv",
+              "sym": "_ZN5mHeap6Heap_t20RestoreFromTemporaryEv",
               "addr": 33800872,
               "add": -8
             },
             {
               "off": 568,
               "type": 1,
-              "sym": "_ZN4Heap8_DestroyEv",
+              "sym": "_ZN5mHeap6Heap_t8_DestroyEv",
               "addr": 33802060,
               "add": -8
             },
             {
               "off": 588,
               "type": 1,
-              "sym": "_ZN4Heap11ResizeToFitEv",
+              "sym": "_ZN5mHeap6Heap_t11ResizeToFitEv",
               "addr": 33801104,
               "add": -8
             },
             {
               "off": 620,
               "type": 1,
-              "sym": "_ZN4Heap11ResizeToFitEv",
+              "sym": "_ZN5mHeap6Heap_t11ResizeToFitEv",
               "addr": 33801104,
               "add": -8
             },
@@ -898,7 +898,7 @@
             {
               "off": 56,
               "type": 1,
-              "sym": "_ZN4Heap8_DestroyEv",
+              "sym": "_ZN5mHeap6Heap_t8_DestroyEv",
               "addr": 33802060,
               "add": -8
             },
@@ -912,7 +912,7 @@
             {
               "off": 104,
               "type": 1,
-              "sym": "_ZN6Memory10DeallocateEPvP4Heap",
+              "sym": "_ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE",
               "addr": 33800680,
               "add": -8
             },
@@ -1091,7 +1091,7 @@
             {
               "off": 44,
               "type": 1,
-              "sym": "_ZN6Memory10DeallocateEPvP4Heap",
+              "sym": "_ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE",
               "addr": 33800680,
               "add": -8
             },
