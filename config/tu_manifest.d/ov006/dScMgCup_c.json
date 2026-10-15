@@ -49,105 +49,105 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov006_020deac4",
+      "symbol": "CupFx_ElemDtor",
       "address": "0x020deac4",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020deac4.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov006_020deac8",
+      "symbol": "CupFx_FindFree",
       "address": "0x020deac8",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020deac8.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov006_020deaf0",
+      "symbol": "CupFx_MoveForCup",
       "address": "0x020deaf0",
       "size": "0x00000058",
       "legacy_source": "src/func_ov006_020deaf0.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov006_020deb48",
+      "symbol": "CupFx_Spawn",
       "address": "0x020deb48",
       "size": "0x0000006c",
       "legacy_source": "src/func_ov006_020deb48.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov006_020debb4",
+      "symbol": "CupFx_DrawForCup",
       "address": "0x020debb4",
       "size": "0x00000048",
       "legacy_source": "src/func_ov006_020debb4.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov006_020debfc",
+      "symbol": "CupFx_UpdateAll",
       "address": "0x020debfc",
       "size": "0x00000040",
       "legacy_source": "src/func_ov006_020debfc.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov006_020dec3c",
+      "symbol": "CupFx_ClearAll",
       "address": "0x020dec3c",
       "size": "0x00000020",
       "legacy_source": "src/func_ov006_020dec3c.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov006_020dec5c",
+      "symbol": "CupFx_Move",
       "address": "0x020dec5c",
       "size": "0x0000002c",
       "legacy_source": "src/func_ov006_020dec5c.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov006_020dec88",
+      "symbol": "CupFx_Draw",
       "address": "0x020dec88",
       "size": "0x00000078",
       "legacy_source": "src/func_ov006_020dec88.cpp",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov006_020ded00",
+      "symbol": "CupFx_Update",
       "address": "0x020ded00",
       "size": "0x00000084",
       "legacy_source": "src/func_ov006_020ded00.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov006_020ded84",
+      "symbol": "CupFx_Init",
       "address": "0x020ded84",
       "size": "0x00000078",
       "legacy_source": "src/func_ov006_020ded84.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov006_020dedfc",
+      "symbol": "Cup_PlayAnimSound",
       "address": "0x020dedfc",
       "size": "0x000000dc",
       "legacy_source": "src/func_ov006_020dedfc.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov006_020deed8",
+      "symbol": "Cup_DrawOamList",
       "address": "0x020deed8",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov006_020deed8.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_ov006_020def80",
+      "symbol": "Cup_UpdateAnim",
       "address": "0x020def80",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov006_020def80.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_ov006_020df024",
+      "symbol": "Cup_PickShuffleSpeed",
       "address": "0x020df024",
       "size": "0x00000198",
       "legacy_source": "src/func_ov006_020df024.c",
@@ -210,14 +210,14 @@
       "ordinal": 24
     },
     {
-      "symbol": "_ZN10dScMgCup_c9Virtual50Ev",
+      "symbol": "_ZN10dScMgCup_c11OnNewRecordEv",
       "address": "0x020dfed4",
       "size": "0x00000018",
       "legacy_source": "src/_ZN10dScMgCup_c9Virtual50Ev.cpp",
       "ordinal": 25
     },
     {
-      "symbol": "_ZN10dScMgCup_c13OnYoshiTryEatEi",
+      "symbol": "_ZN10dScMgCup_c10StartRoundEi",
       "address": "0x020dfeec",
       "size": "0x0000017c",
       "legacy_source": "src/_ZN10dScMgCup_c13OnYoshiTryEatEi.cpp",
@@ -252,7 +252,7 @@
       "ordinal": 30
     },
     {
-      "symbol": "func_ov006_020e0634",
+      "symbol": "Cup_Nothing",
       "address": "0x020e0634",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020e0634.c",
@@ -484,7 +484,7 @@
       "sourceBuiltFunctions": "11,142 reproducing / 0 mismatching (2,108,236 of 2,211,124 code bytes, 95.35%)",
       "intactTuGates": "dsd modules PASS, zero new symbol errors, storage aliases exact",
       "checkSymbols": "the 9 pre-existing baseline error lines only (overlay_100, overlay_102, data_020ad524, data_020ad560 and five ITCM symbols); the promotion adds none",
-      "symbolRename": "config/arm9/overlays/ov006/symbols.txt renames eight addresses from func_ov006_* to the class-anchored mangled member names this TU defines: 0x020df1bc _ZN10dScMgCup_c9StateIdleEv, 0x020df1c0 StateFinish, 0x020df28c StateResult, 0x020df3bc StateSelect, 0x020df540 StateWaitForInput, 0x020df5b8 StateShuffle, 0x020dfcd8 StatePrepareShuffle, 0x020dfd48 StateSetup. THE RENAME IS LOAD-BEARING, NOT COSMETIC: the eight 8-byte pointer-to-member records in ov006 .data at 0x0213bfe8..0x0213c040 relocate to these addresses, and dsd resolves those relocations BY SYMBOL NAME. Without the rename the delinked .data gap object cannot resolve them and all eight code words link as 0x00000000 -- measured, 32 differing bytes in ov006, the only module fidelity failure of the whole promotion. The names themselves are class-anchored inferences from PMF order and behaviour, not cartridge-proved spellings; the tree already carried the same kind of coined member symbol for this class (_ZN10dScMgCup_c9Virtual50Ev, and Virtual50 is coined) before this change. dsd check symbols reports zero new errors after the rename."
+      "symbolRename": "config/arm9/overlays/ov006/symbols.txt renames eight addresses from func_ov006_* to the class-anchored mangled member names this TU defines: 0x020df1bc _ZN10dScMgCup_c9StateIdleEv, 0x020df1c0 StateFinish, 0x020df28c StateResult, 0x020df3bc StateSelect, 0x020df540 StateWaitForInput, 0x020df5b8 StateShuffle, 0x020dfcd8 StatePrepareShuffle, 0x020dfd48 StateSetup. THE RENAME IS LOAD-BEARING, NOT COSMETIC: the eight 8-byte pointer-to-member records in ov006 .data at 0x0213bfe8..0x0213c040 relocate to these addresses, and dsd resolves those relocations BY SYMBOL NAME. Without the rename the delinked .data gap object cannot resolve them and all eight code words link as 0x00000000 -- measured, 32 differing bytes in ov006, the only module fidelity failure of the whole promotion. The names themselves are class-anchored inferences from PMF order and behaviour, not cartridge-proved spellings; the tree already carried the same kind of coined member symbol for this class (_ZN10dScMgCup_c11OnNewRecordEv, and Virtual50 is coined) before this change. dsd check symbols reports zero new errors after the rename."
     }
   },
   "compiler_only_output": [
@@ -633,7 +633,7 @@
       "source": "0x02130488",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c030",
+      "symbol": "pmf_dScMgCup_c_StateSetup",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c030"
@@ -643,7 +643,7 @@
       "source": "0x0213048c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c000",
+      "symbol": "pmf_dScMgCup_c_StatePrepareShuffle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c000"
@@ -653,7 +653,7 @@
       "source": "0x02130490",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c028",
+      "symbol": "pmf_dScMgCup_c_StateShuffle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c028"
@@ -663,7 +663,7 @@
       "source": "0x02130494",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bff8",
+      "symbol": "pmf_dScMgCup_c_StateWaitForInput",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bff8"
@@ -673,7 +673,7 @@
       "source": "0x02130498",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c010",
+      "symbol": "pmf_dScMgCup_c_StateSelect",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c010"
@@ -683,7 +683,7 @@
       "source": "0x0213049c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c040",
+      "symbol": "pmf_dScMgCup_c_StateResult",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c040"
@@ -693,7 +693,7 @@
       "source": "0x021304a0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c008",
+      "symbol": "pmf_dScMgCup_c_StateFinish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c008"
@@ -703,7 +703,7 @@
       "source": "0x021304a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bfe8",
+      "symbol": "pmf_dScMgCup_c_StateIdle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bfe8"

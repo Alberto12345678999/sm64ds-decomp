@@ -10,11 +10,11 @@
  * leftovers:
  * - The GX/GXS/G2S/CP15/G3X engine calls stay file-local namespace
  *   declarations: no shared header declares them.
- * - func_ov004_020adc68 keeps its local declaration: its own definition
+ * - Ov004_LoadFile keeps its local declaration: its own definition
  *   is still declared without the argument and result.
- * - The ov004 registry words stay raw: data_ov004_020beb6c and the
+ * - The ov004 registry words stay raw: sMgTopScreenYOffset and the
  *   file-id table data_ov006_0213e42c name no struct this TU can see.
- *   data_ov004_020beb74 keeps the int[] spelling: the typed
+ *   sMgGraphCallback keeps the int[] spelling: the typed
  *   dScMgBase_c::graphCallback_c form matches (9/9 still MATCH) but trips
  *   the decl ratchet against src/minigames/d_s_mg_d3d_base.cpp's banked int[],
  *   and that file is outside this job's area.
@@ -55,37 +55,37 @@ extern "C" {
 int LoadFile(int fileId);
 void DecompressLZ16(void *src, void *dst);
 void Ov004_Deallocate(void *p);
-void func_ov004_020b290c(void);
-void func_ov004_020b2980(void);
+void Mg_ResetBgOffsets(void);
+void Mg_DisableAllBanks(void);
 s32 GetGameLanguage(void);
 /* Forwards to LoadFile. Its own definition is still declared without the
  * argument and result, so this file keeps a local declaration. */
-void *func_ov004_020adc68(int fileId);
-void func_ov004_020b0d30(void);
+void *Ov004_LoadFile(int fileId);
+void Mg_ResetOverlays(void);
 void FreeGfxSlotsById(int id);
 extern u8 data_0209d454;
 extern u8 data_0209d45c;
 extern u32 data_020a0db0;
-extern int data_ov004_020beb6c;
-extern int data_ov004_020beb74[];
+extern int sMgTopScreenYOffset;
+extern int sMgGraphCallback[];
 extern int data_ov006_0213e42c[];
 extern int data_0208ee44;
 extern void **data_0209d4a8;
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c9Virtual84Ev
+// @symbol _ZN19dScMgSingle3DBase_c11InitEnginesEv
 /* Slot 33 brings up both graphics engines, assigns VRAM banks and loads
  * the language's OBJ characters and the OBJ palettes into both engines
  * before publishing this scene, then sets lights 0 and 1 to white. All
  * thirteen children inherit this override. */
-void dScMgSingle3DBase_c::Virtual84()
+void dScMgSingle3DBase_c::InitEngines()
 {
     void *fileData;
 
     REG_DISPCNT_SUB |= 0x10000u;
-    data_ov004_020beb6c = 0;
-    func_ov004_020b290c(); /* zero all eight BG scroll offsets */
-    func_ov004_020b2980(); /* GX::DisableAllBanks */
+    sMgTopScreenYOffset = 0;
+    Mg_ResetBgOffsets(); /* zero all eight BG scroll offsets */
+    Mg_DisableAllBanks(); /* GX::DisableAllBanks */
     data_0209d45c = 0x10;
     data_0209d454 = 0x10;
     REG_DISPCNT &= ~0x7000000u;
@@ -98,7 +98,7 @@ void dScMgSingle3DBase_c::Virtual84()
     REG_DISPCNT &= ~0x300010u;
     GX::SetBankForSubBG(4);
     GX::SetBankForSubOBJ(8);
-    fileData = func_ov004_020adc68(data_ov006_0213e42c[GetGameLanguage()]);
+    fileData = Ov004_LoadFile(data_ov006_0213e42c[GetGameLanguage()]);
     /* Each split `dst += 0x4000` keeps the ROM's mov and add pair; a single
      * constant becomes a literal-pool load. */
     {
@@ -110,18 +110,18 @@ void dScMgSingle3DBase_c::Virtual84()
         DecompressLZ16(fileData, dst);
     }
     Ov004_Deallocate(fileData);
-    fileData = func_ov004_020adc68(0xc3);
+    fileData = Ov004_LoadFile(0xc3);
     CP15::FlushAndInvalidateDataCache((u32)fileData, 0x100u);
     GX::LoadOBJPltt(fileData, 0x100u, 0x100u);
     GXS::LoadOBJPltt(fileData, 0x100u, 0x100u);
     Ov004_Deallocate(fileData);
-    func_ov004_020b0d30();
+    Mg_ResetOverlays();
     data_0208ee44 = 1;
     G3X::SetFog(false, 0, 2, 0x1000);
     InitialiseVramGlobals();
     FreeGfxSlotsById(0x1d);
-    data_ov004_020beb74[1] = (int)this;
-    data_0209d4a8 = (void **)data_ov004_020beb74;
+    sMgGraphCallback[1] = (int)this;
+    data_0209d4a8 = (void **)sMgGraphCallback;
     *(vu32 *)0x40004ccu = 0x7fff;
     *(vu32 *)0x40004ccu = 0x40007fff;
 }
@@ -169,17 +169,17 @@ void dScMgSingle3DBase_c::AfterCleanupResources(u32 vfSuccess)
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv
+// @symbol _ZN19dScMgSingle3DBase_c14GetDisplayModeEv
 /* Slot 26 identifies this branch of minigame scenes with the value 1. */
-int dScMgSingle3DBase_c::OnHitByCannonBlastedChar()
+int dScMgSingle3DBase_c::GetDisplayMode()
 {
     return 1;
 }
 
-// @symbol func_ov006_0210a534
+// @symbol LoadCard2SubBg3
 /* Load the sub screen's BG3 characters, palette and map, releasing each
  * buffer. */
-extern "C" void func_ov006_0210a534(void)
+extern "C" void LoadCard2SubBg3(void)
 {
     void *fileData = (void *)LoadFile(ASSET_D_2D_MG_BG_CARD2_NCG_BIN);
     data_0209d454 |= 8;

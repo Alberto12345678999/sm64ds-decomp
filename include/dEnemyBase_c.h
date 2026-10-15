@@ -151,7 +151,7 @@ struct dEnemyBase_c : dActor_c {
            (enemy, Vector3_16 &, Player &) -- Vec3_HorzAngle(player + 0x5c,
            &this->pos), then Player::IncMegaKillCount(player) -- while ov004's
            only unambiguous callers are inside ov004 itself. The name moved to
-           ov002 0x020ada40; ov004's function is `func_ov004_020ada40` again.
+           ov002 0x020ada40; ov004's function is `Mg_SetSessionBest` again.
 
        (2) ARITY. Every `bl` to this address in the whole image was disassembled:
            19 of them, and the split is itself the proof of (1). The four inside

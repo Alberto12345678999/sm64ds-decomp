@@ -4,9 +4,9 @@
  */
 
 // leftovers:
-// func_ov006_020dec88 calls the mangled Fix12 OAM::Render. include/OAM.h will not declare that overload.
-// func_ov006_020ded00 keeps two spellings of frame. One shared spelling reuses the address and the body shrinks.
-// func_ov006_020def80 keeps the 0x5000 bases. mFlags[i] / mAnim[i] come out 0xa0 bytes instead of 0xa4.
+// CupFx_Draw calls the mangled Fix12 OAM::Render. include/OAM.h will not declare that overload.
+// CupFx_Update keeps two spellings of frame. One shared spelling reuses the address and the body shrinks.
+// Cup_UpdateAnim keeps the 0x5000 bases. mFlags[i] / mAnim[i] come out 0xa0 bytes instead of 0xa4.
 // StatePrepareShuffle re-reads mTimer as raw+0x5000+0x41c and decrements mSparkleShuffles through a byte pointer. The member form misses.
 // StateShuffle's angle read-modify-write stays on raw+0x5400. mShuffleAngle += folds the address.
 // Render's cup x/y arguments retain two different spellings.
@@ -47,7 +47,7 @@ struct IdxPair { s32 a, b; };
 typedef void (dScMgCup_c::*PMF)();
 
 /* One step of data_ov006_0213c0d8. list is an OamAttr run ending at attr3
-   0xffff (func_ov006_020deed8). ticks == 0 means Behavior does not advance. */
+   0xffff (Cup_DrawOamList). ticks == 0 means Behavior does not advance. */
 struct AnimStep {
     OamAttr *list;
     int ticks;
@@ -69,11 +69,11 @@ namespace GXS {
 }
 
 extern "C" {
-extern void func_ov006_020dec5c(char *p, int a, int b);
-extern int func_ov006_020deac8(char *p, int a, int b, int c);
-extern void func_ov006_020ded84(char *p, int a, int b, int c, signed char e);
-extern void func_ov006_020dec88(char *a);
-extern void func_ov006_020ded00(int p);
+extern void CupFx_Move(char *p, int a, int b);
+extern int CupFx_FindFree(char *p, int a, int b, int c);
+extern void CupFx_Init(char *p, int a, int b, int c, signed char e);
+extern void CupFx_Draw(char *a);
+extern void CupFx_Update(int p);
 struct OamAttr;
 extern int data_ov006_0213c114[];
 extern unsigned char data_ov006_0213c064[];
@@ -81,7 +81,7 @@ extern int data_ov006_0213c074[];
 extern int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int show, struct OamAttr* attr, int a, int b, int c, int d, int e, int f);
 extern unsigned char DecIfAbove0_Byte(unsigned char *counter);
 extern int func_02053200(int x);
-extern int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
+extern int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
 extern int data_0209e650;
 extern RoundRow data_ov006_0213c094[];
 extern s16 data_ov006_0213c0f4[];
@@ -90,53 +90,53 @@ extern IdxPair data_ov006_0213c0c4[];
 extern RestPos data_ov006_0213c0a8[];
 extern RestPos data_ov006_0213c0ac[];
 extern int RandomIntInternal(int *seed);
-extern void func_ov004_020b0a54(int c);
-extern void func_ov006_020def80(char *self, int i);
-extern void func_ov006_020c2594(void *c);
-extern void func_ov004_020b1b78(void *c, int val);
-extern void func_ov006_020c2664(char *c);
-extern void func_ov006_020c2440(char *c);
+extern void Mg_SetSharedState(int c);
+extern void Cup_UpdateAnim(char *self, int i);
+extern void Presenter_PlayAnim7(void *c);
+extern void Mg_SubCredits(void *c, int val);
+extern void Presenter_PlayAnim1(char *c);
+extern void Presenter_PlayAnim4(char *c);
 extern void func_02012790(int x);
-extern void func_ov004_020adb1c(int self);
+extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int arg);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-extern void func_ov006_020deaf0(char* p, int key, int a, int b);
-extern int func_ov006_020deb48(char *c, int a, int b, int d, signed char e);
+extern void CupFx_MoveForCup(char* p, int key, int a, int b);
+extern int CupFx_Spawn(char *c, int a, int b, int d, signed char e);
 extern short data_02082214[];
 extern signed char data_ov006_0213c084[];
 extern signed char data_ov006_0213c085[];
-extern void func_ov006_020df024(char *o);
-extern void func_ov006_020c2924(char *c);
+extern void Cup_PickShuffleSpeed(char *o);
+extern void Presenter_ResetPose(char *c);
 /* Render spells cup y as this view. mCup[cup].y changes that call. */
 struct P8 { int a; int b; };
-void func_ov006_020debb4(char *a, int b);
-void func_ov006_020deed8(int a0, void *a1, int a2, int a3, int a4, int a5);
+void CupFx_DrawForCup(char *a, int b);
+void Cup_DrawOamList(int a0, void *a1, int a2, int a3, int a4, int a5);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
-void func_ov004_020b2574(int arg0, int arg1);
-void func_ov004_020b1e34(void *a, int b, int c, int d);
+void Mg_DrawStockCounter(int arg0, int arg1);
+void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern char data_ov006_02139df4[];
 extern PMF data_ov006_02141870[];
 /* The ROM PMF constants the table copies from (unlicensed .data). */
-extern PMF data_ov006_0213c030;
-extern PMF data_ov006_0213c000;
-extern PMF data_ov006_0213c028;
-extern PMF data_ov006_0213bff8;
-extern PMF data_ov006_0213c010;
-extern PMF data_ov006_0213c040;
-extern PMF data_ov006_0213c008;
-extern PMF data_ov006_0213bfe8;
+extern PMF pmf_dScMgCup_c_StateSetup;
+extern PMF pmf_dScMgCup_c_StatePrepareShuffle;
+extern PMF pmf_dScMgCup_c_StateShuffle;
+extern PMF pmf_dScMgCup_c_StateWaitForInput;
+extern PMF pmf_dScMgCup_c_StateSelect;
+extern PMF pmf_dScMgCup_c_StateResult;
+extern PMF pmf_dScMgCup_c_StateFinish;
+extern PMF pmf_dScMgCup_c_StateIdle;
 extern AnimStep *data_ov006_0213c0d8[];
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern int data_0208ee44;
-extern void func_ov006_020c225c(char *);
-extern int func_ov006_020c3050(char *);
+extern void Camera_InitPresenterView(char *);
+extern int Presenter_Load(char *);
 extern void LoadCompressedFileAt(int, int);
 extern void *LoadFile(int);
 void _ZN8Particle10SysTrackerC1Ev(void *tracker);
-void func_ov006_020c33dc(void *table);
+void Presenter_Construct(void *table);
 void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
-void func_ov006_020e0634(void);
+void Cup_Nothing(void);
 void func_0203d738(void);
 extern void *_ZTV19dScMgSingle3DBase_c[];
 extern void *_ZTV10dScMgCup_c[];
@@ -151,15 +151,15 @@ extern void *_ZTV10dScMgCup_c[];
 dScMgCup_c::~dScMgCup_c()
 {
     __cxa_vec_cleanup(mCup, 3, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mFx, 0x20, 0x18, (void *)func_ov006_020deac4);
-    func_ov006_020c3288((char *)&mModel);
+    __cxa_vec_cleanup(mFx, 0x20, 0x18, (void *)CupFx_ElemDtor);
+    Presenter_Destruct((char *)&mModel);
 }
 
-extern "C" void func_ov006_020deac4(void)
+extern "C" void CupFx_ElemDtor(void)
 {
 }
 
-extern "C" int func_ov006_020deac8(char *sprite, int, int, int)
+extern "C" int CupFx_FindFree(char *sprite, int, int, int)
 {
     CupFx *fx = (CupFx *)sprite;
     int slot = 0;
@@ -172,52 +172,52 @@ extern "C" int func_ov006_020deac8(char *sprite, int, int, int)
     return slot;
 }
 
-extern "C" void func_ov006_020deaf0(char *sprite, int cup, int dx, int dy)
+extern "C" void CupFx_MoveForCup(char *sprite, int cup, int dx, int dy)
 {
     CupFx *fx = (CupFx *)sprite;
     int i;
     for (i = 0; i < 0x20; i++) {
         if (fx->active != 0) {
             if (cup == fx->cup) {
-                func_ov006_020dec5c((char *)fx, dx, dy);
+                CupFx_Move((char *)fx, dx, dy);
             }
         }
         fx++;
     }
 }
 
-extern "C" int func_ov006_020deb48(char *sprites, int kind, int x, int y, signed char cup) {
-    int slot = func_ov006_020deac8(sprites, kind, x, y);
+extern "C" int CupFx_Spawn(char *sprites, int kind, int x, int y, signed char cup) {
+    int slot = CupFx_FindFree(sprites, kind, x, y);
     if (slot >= 0 && slot < 0x20) {
-        func_ov006_020ded84((char *)((CupFx *)sprites + slot), kind, x, y, cup);
+        CupFx_Init((char *)((CupFx *)sprites + slot), kind, x, y, cup);
         return slot;
     }
     return -1;
 }
 
-extern "C" void func_ov006_020debb4(char *sprite, int cup)
+extern "C" void CupFx_DrawForCup(char *sprite, int cup)
 {
     CupFx *fx = (CupFx *)sprite;
     int i = 0;
     do {
         if (fx->active != 0 && cup == fx->cup)
-            func_ov006_020dec88((char *)fx);
+            CupFx_Draw((char *)fx);
         i++;
         fx++;
     } while (i < 0x20);
 }
 
-extern "C" void func_ov006_020debfc(char *sprites)
+extern "C" void CupFx_UpdateAll(char *sprites)
 {
     CupFx *fx = (CupFx *)sprites;
     int i;
     for (i = 0; i < 0x20; i++) {
-        if (fx->active) func_ov006_020ded00((int)fx);
+        if (fx->active) CupFx_Update((int)fx);
         fx++;
     }
 }
 
-extern "C" void func_ov006_020dec3c(char *sprite) {
+extern "C" void CupFx_ClearAll(char *sprite) {
     CupFx *fx = (CupFx *)sprite;
     int i;
     for (i = 0; i < 0x20; i++) {
@@ -226,7 +226,7 @@ extern "C" void func_ov006_020dec3c(char *sprite) {
     }
 }
 
-extern "C" void func_ov006_020dec5c(char* sprite, int dx, int dy)
+extern "C" void CupFx_Move(char* sprite, int dx, int dy)
 {
     CupFx *fx = (CupFx *)sprite;
     if (fx->kind != 1)
@@ -235,7 +235,7 @@ extern "C" void func_ov006_020dec5c(char* sprite, int dx, int dy)
     fx->y += dy;
 }
 
-extern "C" void func_ov006_020dec88(char* sprite)
+extern "C" void CupFx_Draw(char* sprite)
 {
     CupFx *fx = (CupFx *)sprite;
     int idx = fx->frame + fx->row * 6;
@@ -252,7 +252,7 @@ extern "C" void func_ov006_020dec88(char* sprite)
         0);
 }
 
-extern "C" void func_ov006_020ded00(int sprite)
+extern "C" void CupFx_Update(int sprite)
 {
     CupFx *fx = (CupFx *)sprite;
     fx->x += fx->vx;
@@ -269,7 +269,7 @@ extern "C" void func_ov006_020ded00(int sprite)
         fx->active = 0;
 }
 
-extern "C" void func_ov006_020ded84(char* sprite, int kind, int x, int y, signed char cup)
+extern "C" void CupFx_Init(char* sprite, int kind, int x, int y, signed char cup)
 {
     CupFx *fx = (CupFx *)sprite;
     if (kind == 2) {
@@ -292,7 +292,7 @@ extern "C" void func_ov006_020ded84(char* sprite, int kind, int x, int y, signed
     fx->delay = 3;
 }
 
-extern "C" void func_ov006_020dedfc(char *raw, int anim, int frame, int cup)
+extern "C" void Cup_PlayAnimSound(char *raw, int anim, int frame, int cup)
 {
     dScMgCup_c *self = (dScMgCup_c *)raw;
     if (anim == 6) {
@@ -310,7 +310,7 @@ extern "C" void func_ov006_020dedfc(char *raw, int anim, int frame, int cup)
     Sound::PlayBank2_2D(0x1cc);
 }
 
-extern "C" void func_ov006_020deed8(int scene, void *list, int x, int y, int scale, int modeArg)
+extern "C" void Cup_DrawOamList(int scene, void *list, int x, int y, int scale, int modeArg)
 {
     OamAttr *entry;
     int mode;
@@ -324,7 +324,7 @@ extern "C" void func_ov006_020deed8(int scene, void *list, int x, int y, int sca
     scale = func_02053200(scale);
 
     for (;;) {
-        int oam = func_ov004_020af770((int)entry, sx, sy, -1, -1, scale, 0);
+        int oam = Mg_RenderSubSpriteScaled((int)entry, sx, sy, -1, -1, scale, 0);
         if (oam != 0) {
             if (mode == 2) {
                 /* Loaded as one word; the shifts keep attr2 bits 12..15, the palette. */
@@ -340,7 +340,7 @@ extern "C" void func_ov006_020deed8(int scene, void *list, int x, int y, int sca
     }
 }
 
-extern "C" void func_ov006_020def80(char *raw, int i)
+extern "C" void Cup_UpdateAnim(char *raw, int i)
 {
     unsigned char flag;
     char *row = raw + i;
@@ -392,7 +392,7 @@ epilogue:
     }
 }
 
-extern "C" void func_ov006_020df024(char *raw)
+extern "C" void Cup_PickShuffleSpeed(char *raw)
 {
     dScMgCup_c *self = (dScMgCup_c *)raw;
     u32 rnd = (u32)RandomIntInternal(&data_0209e650);
@@ -461,14 +461,14 @@ void dScMgCup_c::StateFinish()
     if (mTimer > 0) return;
     if (mCorrect != 0) {
         if (mHudScore < 0x270f) mHudScore += 1;
-        if (mHudScore > unk_0b8) unk_0b8 = mHudScore;
-        func_ov004_020b0a54(0);
+        if (mHudScore > mBestHudScore) mBestHudScore = mHudScore;
+        Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
         mState = 7;
     } else {
-        if (unk_0a8 > 0) {
-            OnYoshiTryEat(-1);
+        if (mCredits > 0) {
+            StartRound(-1);
         } else {
-            func_ov004_020b0a54(0x12);
+            Mg_SetSharedState(MG_STATE_GAME_OVER);
             mState = 7;
         }
     }
@@ -487,26 +487,26 @@ void dScMgCup_c::StateResult()
     for (i = 0; i < 3; i++) {
         if (mFlags[i] == 0) {
             mFlags[i] = 1;
-            func_ov006_020def80((char *)this, i);
+            Cup_UpdateAnim((char *)this, i);
         }
     }
     score = mHudScore;
     if (mCorrect != 0) {
         mTimer = 0x3c;
-        func_ov006_020c2594(&mModel);
+        Presenter_PlayAnim7(&mModel);
         score++;
     } else {
-        func_ov004_020b1b78(this, 1);
-        if (unk_0a8 > 0) {
+        Mg_SubCredits(this, 1);
+        if (mCredits > 0) {
             mTimer = 0x96;
-            func_ov006_020c2664((char *)&mModel);
+            Presenter_PlayAnim1((char *)&mModel);
         } else {
             mTimer = 0x1e;
-            func_ov006_020c2440((char *)&mModel);
+            Presenter_PlayAnim4((char *)&mModel);
         }
         func_02012790(0x12f);
     }
-    func_ov004_020adb1c(score);
+    Mg_SubmitScore(score);
     mState = 6;
     mPromptEnabled = 0;
 }
@@ -540,7 +540,7 @@ void dScMgCup_c::StateSelect()
         if (dx > 0x10 || dx < -0x28 || dy > 0x18 || dy < -0x20) continue;
 
         mFlags[cup] = 1;
-        func_ov006_020def80(raw, cup);
+        Cup_UpdateAnim(raw, cup);
 
         if (mTargetContent == mCupContents[cup]) {
             mCorrect = 1;
@@ -573,7 +573,7 @@ void dScMgCup_c::StateWaitForInput()
     mTimer -= 1;
     if (mTimer > 0)
         return;
-    func_ov004_020b0cac(0xf, 0x80, 0x38, 0, -1, 0xd);
+    Mg_ShowBanner(0xf, 0x80, 0x38, 0, -1, 0xd);
     mState = 4;
 }
 
@@ -622,7 +622,7 @@ void dScMgCup_c::StateShuffle()
     }
     {
         int slot = mIds[mSwap0];
-        func_ov006_020deaf0((char *)mFx, (u8)(s8)slot,
+        CupFx_MoveForCup((char *)mFx, (u8)(s8)slot,
             mCup[slot].x - oldX,
             mCup[slot].y - oldY);
     }
@@ -645,7 +645,7 @@ void dScMgCup_c::StateShuffle()
     }
     {
         int slot = mIds[mSwap1];
-        func_ov006_020deaf0((char *)mFx, (u8)(s8)slot,
+        CupFx_MoveForCup((char *)mFx, (u8)(s8)slot,
             mCup[slot].x - oldX,
             mCup[slot].y - oldY);
     }
@@ -693,14 +693,14 @@ void dScMgCup_c::StateShuffle()
             {
                 int slot = mIds[mSwap0];
                 i = (cnt >> 2) & 7;
-                func_ov006_020deb48((char *)mFx, 2,
+                CupFx_Spawn((char *)mFx, 2,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
                     mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
             }
             {
                 int slot = mIds[mSwap1];
-                func_ov006_020deb48((char *)mFx, 2,
+                CupFx_Spawn((char *)mFx, 2,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
                     mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
@@ -713,14 +713,14 @@ void dScMgCup_c::StateShuffle()
             {
                 int slot = mIds[mSwap0];
                 i = (cnt >> 1) & 7;
-                func_ov006_020deb48((char *)mFx, 1,
+                CupFx_Spawn((char *)mFx, 1,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
                     mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
             }
             {
                 int slot = mIds[mSwap1];
-                func_ov006_020deb48((char *)mFx, 1,
+                CupFx_Spawn((char *)mFx, 1,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
                     mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
@@ -729,14 +729,14 @@ void dScMgCup_c::StateShuffle()
         if ((mTimer & 3) == 0) {
             {
                 int slot = mIds[mSwap0];
-                func_ov006_020deb48((char *)mFx, 0,
+                CupFx_Spawn((char *)mFx, 0,
                     mCup[slot].x - 0xe000,
                     mCup[slot].y + 0x1c000,
                     slot);
             }
             {
                 int slot = mIds[mSwap1];
-                func_ov006_020deb48((char *)mFx, 0,
+                CupFx_Spawn((char *)mFx, 0,
                     mCup[slot].x - 0xe000,
                     mCup[slot].y + 0x1c000,
                     slot);
@@ -756,7 +756,7 @@ void dScMgCup_c::StatePrepareShuffle()
     *countdown = *countdown - 1;
     /* Same word as mTimer. The 0x5000 split is a second load; mTimer > 0 misses. */
     if (mTimer > 0) return;
-    func_ov006_020df024(raw);
+    Cup_PickShuffleSpeed(raw);
     if (mSparkleShuffles != 0) {
         unsigned char *pending = (unsigned char *)(raw + 0x546b);
         *pending = *pending - 1;
@@ -781,7 +781,7 @@ void dScMgCup_c::StateSetup()
 
     for (i = 0; i < 3; i++) {
         mFlags[i] = 0;
-        func_ov006_020def80((char *)this, i);
+        Cup_UpdateAnim((char *)this, i);
     }
 
     score = mHudScore;
@@ -826,17 +826,17 @@ void dScMgCup_c::StateSetup()
     }
 }
 
-// @symbol _ZN10dScMgCup_c9Virtual50Ev
+// @symbol _ZN10dScMgCup_c11OnNewRecordEv
 /* Slot 20: the win animation on mModel. */
-void dScMgCup_c::Virtual50()
+void dScMgCup_c::OnNewRecord()
 {
-    func_ov006_020c2594(&mModel);
+    Presenter_PlayAnim7(&mModel);
 }
 
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-void dScMgCup_c::OnYoshiTryEat(int msg)
+void dScMgCup_c::StartRound(int msg)
 {
     int i;
 
@@ -845,10 +845,10 @@ void dScMgCup_c::OnYoshiTryEat(int msg)
             mHudScore = 0;
         } else {
             mHudScore = 0;
-            func_ov004_020adb1c(mHudScore);
+            Mg_SubmitScore(mHudScore);
         }
-        unk_0a8 = 2;
-        unk_0ac = unk_0a8;
+        mCredits = 2;
+        mCreditsShown = mCredits;
         mCupContents[0] = 1;
         mCupContents[1] = 0;
         if (mHudScore >= 3) {
@@ -858,8 +858,8 @@ void dScMgCup_c::OnYoshiTryEat(int msg)
         }
         mTargetContent = 1;
     } else if (msg == 0) {
-        unk_0a8 = 2;
-        unk_0ac = unk_0a8;
+        mCredits = 2;
+        mCreditsShown = mCredits;
         if (mHudScore == 3) {
             mCupContents[0] = 1;
             mCupContents[1] = 0;
@@ -880,13 +880,13 @@ void dScMgCup_c::OnYoshiTryEat(int msg)
     mTimer = 0x3c;
     mState = 0;
     mTouchLock = 0;
-    func_ov006_020c2924((char *)&mModel);
+    Presenter_ResetPose((char *)&mModel);
 
-    unk_0bc = mHudScore;
-    if (unk_0bc > 0x270e) {
-        unk_0bc = 0x270e;
+    mLevel = mHudScore;
+    if (mLevel > 0x270e) {
+        mLevel = 0x270e;
     }
-    func_ov004_020b0cac(0xd, 0x80, 0xa0, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa0, 1, -1, 0xd);
 }
 #pragma pop
 
@@ -921,8 +921,8 @@ s32 dScMgCup_c::Render()
 
     for (k = 0; k < 3; k++) {
         cup = order[k];
-        func_ov006_020debb4((char *)mFx, (char)cup);
-        func_ov006_020deed8((int)raw,
+        CupFx_DrawForCup((char *)mFx, (char)cup);
+        Cup_DrawOamList((int)raw,
             (void *)data_ov006_0213c0d8[mAnim[cup]][mFrame[k]].list,
             mCup[cup].x,
             ((struct P8*)raw + cup)[0xa7d].b,
@@ -935,9 +935,9 @@ s32 dScMgCup_c::Render()
             (mTargetContent == 2) ? 4 : -1, -1);
     }
 
-    func_ov004_020b2574(unk_0a8, 1);
-    func_ov004_020b1e34(raw, 0xe0, 0x14, 1);
-    func_ov006_020c29dc((char *)&mModel);
+    Mg_DrawStockCounter(mCredits, 1);
+    Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
+    Presenter_Draw((char *)&mModel);
     return 1;
 }
 
@@ -960,26 +960,26 @@ s32 dScMgCup_c::Behavior()
             if (mTick[i] >= length) {
                 mTick[i] = 0;
                 mFrame[i] += 1;
-                func_ov006_020dedfc(raw, mAnim[i], mFrame[i], i);
+                Cup_PlayAnimSound(raw, mAnim[i], mFrame[i], i);
             }
         }
     }
-    func_ov006_020debfc((char *)mFx);
-    func_ov006_020c2b8c((char *)&mModel);
+    CupFx_UpdateAll((char *)mFx);
+    Presenter_Update((char *)&mModel);
     return 1;
 }
 #pragma pop
 
 // @symbol _ZN10dScMgCup_c13InitResourcesEv
 /* Slot 0: sets up the sub-screen backgrounds, loads the board graphics,
-   places the three cups and starts a game through OnYoshiTryEat(3). */
+   places the three cups and starts a game through StartRound(3). */
 s32 dScMgCup_c::InitResources()
 {
     void *file;
 
     data_0209d45c = 0x11;
-    func_ov006_020c225c((char *)pad_4660);
-    if (func_ov006_020c3050((char *)&mModel) == 0)
+    Camera_InitPresenterView((char *)pad_4660);
+    if (Presenter_Load((char *)&mModel) == 0)
         return 0;
 
     {
@@ -1013,7 +1013,7 @@ s32 dScMgCup_c::InitResources()
     Deallocate(file);
 
     data_0208ee44 = 1;
-    func_ov004_020b6808();
+    Mg_ResetRecordBannerPos();
     data_ov004_020bc880 = 0x80;
     data_ov004_020bc884 = 0x88;
     data_ov004_020bc8a8 = 0x40;
@@ -1032,8 +1032,8 @@ s32 dScMgCup_c::InitResources()
         }
     }
 
-    OnYoshiTryEat(3);
-    func_ov006_020dec3c((char *)mFx);
+    StartRound(3);
+    CupFx_ClearAll((char *)mFx);
     return 1;
 }
 
@@ -1048,10 +1048,10 @@ extern "C" void *dScMgCup_c_classInit()
         *(void **)scene = _ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(&scene->mSysTracker);
         *(void **)scene = _ZTV10dScMgCup_c + 2;
-        func_ov006_020c33dc(&scene->mModel);
+        Presenter_Construct(&scene->mModel);
         __cxa_vec_ctor(scene->mFx, 0x20, 0x18,
-                      (void *)func_ov006_020e0634,
-                      (void *)func_ov006_020deac4);
+                      (void *)Cup_Nothing,
+                      (void *)CupFx_ElemDtor);
         __cxa_vec_ctor(scene->mCup, 3, 8,
                       (void *)func_0203d738,
                       (void *)NullDestructor_0203d47c);
@@ -1059,8 +1059,8 @@ extern "C" void *dScMgCup_c_classInit()
     return scene;
 }
 
-// @symbol func_ov006_020e0634
-extern "C" void func_ov006_020e0634()
+// @symbol Cup_Nothing
+extern "C" void Cup_Nothing()
 {
 }
 
@@ -1069,12 +1069,12 @@ extern "C" void func_ov006_020e0634()
  * Behavior indexes this table by mState. Definition order is the retail
  * initializer's copy order. */
 PMF data_ov006_02141870[8] = {
-    data_ov006_0213c030,
-    data_ov006_0213c000,
-    data_ov006_0213c028,
-    data_ov006_0213bff8,
-    data_ov006_0213c010,
-    data_ov006_0213c040,
-    data_ov006_0213c008,
-    data_ov006_0213bfe8,
+    pmf_dScMgCup_c_StateSetup,
+    pmf_dScMgCup_c_StatePrepareShuffle,
+    pmf_dScMgCup_c_StateShuffle,
+    pmf_dScMgCup_c_StateWaitForInput,
+    pmf_dScMgCup_c_StateSelect,
+    pmf_dScMgCup_c_StateResult,
+    pmf_dScMgCup_c_StateFinish,
+    pmf_dScMgCup_c_StateIdle,
 };

@@ -63,24 +63,24 @@ typedef void (C::*PMF1)(int);
  * Keep it above the first function. */
 extern "C" {
 
-extern int  func_ov004_020adbc0(void);
-extern void func_ov004_020adb1c(int self);
-extern int  func_ov004_020adbe0(void);
-extern int  func_ov004_020adc1c(void);
-extern void *func_ov004_020adc74(const char *p);
-extern void func_ov004_020af948(int a, int b, int c, int d);
-extern void func_ov004_020b04d0(int a);
-extern void func_ov004_020b0a54(s32 state);
-extern int  func_ov004_020b19f0(void *self);
-extern void func_ov004_020b1a5c(int a, int b);
-extern void func_ov004_020b1ea4(int a, int b, int c, int d, int e, int f, int g);
-extern void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
-extern int  func_ov004_020afdd0(int a, int b, int c, int d, int e);
+extern int  Mg_GetSubmittedScore(void);
+extern void Mg_SubmitScore(int self);
+extern int  Mg_IsNewRecord(void);
+extern int  Mg_GetTopRecord(void);
+extern void *Ov004_LoadFileByPath(const char *p);
+extern void Mg_RenderSubSpriteMtx(int a, int b, int c, int d);
+extern void Mg_SetTopScreenYOffset(int a);
+extern void Mg_SetSharedState(s32 state);
+extern int  Mg_DrawTopLeftCounter(void *self);
+extern void Mg_DrawTopRightCounter(int a, int b);
+extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
+extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
+extern int  Mg_RenderSpriteBoth(int a, int b, int c, int d, int e);
 extern void func_02012718(int id, int v);
 extern int  func_020126e8(int a);
 extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, s16 h);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
-extern void func_ov006_020e5450(dScMgCurling2_c *self, int idx);
+extern void Curling2_ResolveStoneCollision(dScMgCurling2_c *self, int idx);
 extern void DrawOamSprite(int a, int b, int c, int d);
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern int  RandomIntInternal(int *seed);
@@ -139,31 +139,31 @@ extern PMF  data_ov006_021419f8[];
 extern PMF0 data_ov006_02141a18[];
 /* The ROM PMF constants all seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
-extern PMF0 data_ov006_0213c47c;
-extern PMF0 data_ov006_0213c414;
-extern PMF0 data_ov006_0213c404;
-extern PMF0 data_ov006_0213c424;
-extern PMF0 data_ov006_0213c3f4;
-extern PMF1 data_ov006_0213c3e4;
-extern PMF1 data_ov006_0213c3dc;
-extern PMF1 data_ov006_0213c3d4;
-extern PMF1 data_ov006_0213c3ec;
-extern PMF0 data_ov006_0213c4b4;
-extern PMF0 data_ov006_0213c4ac;
-extern PMF data_ov006_0213c42c;
-extern PMF data_ov006_0213c494;
-extern PMF data_ov006_0213c48c;
-extern PMF data_ov006_0213c474;
-extern PMF data_ov006_0213c40c;
-extern PMF data_ov006_0213c464;
-extern PMF data_ov006_0213c45c;
-extern PMF data_ov006_0213c49c;
-extern PMF data_ov006_0213c444;
-extern PMF data_ov006_0213c43c;
-extern PMF data_ov006_0213c4a4;
-extern PMF data_ov006_0213c41c;
-extern PMF data_ov006_0213c484;
-extern PMF data_ov006_0213c46c;
+extern PMF0 pmf_dScMgCurling2_c_BeginRound;
+extern PMF0 pmf_dScMgCurling2_c_Play;
+extern PMF0 pmf_dScMgCurling2_c_NextThrow;
+extern PMF0 pmf_dScMgCurling2_c_EndRound;
+extern PMF0 pmf_dScMgCurling2_c_Idle;
+extern PMF1 pmf_dScMgCurling2_c_StoneWait;
+extern PMF1 pmf_dScMgCurling2_c_StoneSlide;
+extern PMF1 pmf_dScMgCurling2_c_StoneRest;
+extern PMF1 pmf_dScMgCurling2_c_StoneSteer;
+extern PMF0 pmf_dScMgCurling2_c_DragBegin;
+extern PMF0 pmf_dScMgCurling2_c_DragUpdate;
+extern PMF pmf_dScMgCurling2_c_PickStepMode;
+extern PMF pmf_dScMgCurling2_c_StepXOnly;
+extern PMF pmf_dScMgCurling2_c_StepXAndY;
+extern PMF pmf_dScMgCurling2_c_StepXPickFast;
+extern PMF pmf_dScMgCurling2_c_StepXPushPosFast;
+extern PMF pmf_dScMgCurling2_c_StepXPushNegFast;
+extern PMF pmf_dScMgCurling2_c_StepXSettleFast;
+extern PMF pmf_dScMgCurling2_c_StepXPick;
+extern PMF pmf_dScMgCurling2_c_StepXPushPos;
+extern PMF pmf_dScMgCurling2_c_StepXPushNeg;
+extern PMF pmf_dScMgCurling2_c_StepXSettle;
+extern PMF pmf_dScMgCurling2_c_StepYRestart;
+extern PMF pmf_dScMgCurling2_c_StepYRampUp;
+extern PMF pmf_dScMgCurling2_c_StepYRampDown;
 
 }  /* extern "C" */
 
@@ -193,9 +193,9 @@ void dScMgCurling2_c::DrawValues()
             int y = mValue[i].y >> 0xc;
             int value = mValue[i].value;
             if (mode == 1) {
-                func_ov004_020b1ea4(x, y, value, -1, -1, 0, 0);
+                Mg_DrawNumber(x, y, value, -1, -1, 0, 0);
             } else {
-                func_ov004_020b1ea4(x, y, value, -1, -1, 0, 0x32);
+                Mg_DrawNumber(x, y, value, -1, -1, 0, 0x32);
             }
         }
     }
@@ -274,7 +274,7 @@ void dScMgCurling2_c::SpawnValue(int stone, int other)
         count = (unsigned char *)(raw + 0x55bf);
         *count = *count + 1;
         if (combo >= 0x17) combo = 0x17;
-        func_ov004_020adb1c(mValue[i].value + func_ov004_020adbc0());
+        Mg_SubmitScore(mValue[i].value + Mg_GetSubmittedScore());
         return;
     }
 }
@@ -302,7 +302,7 @@ void dScMgCurling2_c::DrawPieces()
         if (mPiece[i].drawEnable) {
             int x = mPiece[i].x >> 0xc;
             int y = mPiece[i].y >> 0xc;
-            func_ov004_020af948(data_ov006_0213a5e0[mPiece[i].sprite0], x, y, 0);
+            Mg_RenderSubSpriteMtx(data_ov006_0213a5e0[mPiece[i].sprite0], x, y, 0);
             DrawOamSprite(data_ov006_0213a5e0[mPiece[i].sprite1], x, y, 0);
         }
     }
@@ -745,12 +745,12 @@ void dScMgCurling2_c::DrawMarks()
     int i;
     unsigned char *raw = (unsigned char *)this;
 
-    func_ov004_020b1a5c(func_ov004_020adbc0(), 6);
+    Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 6);
     for (i = 0; i < 5; i++) {
         unsigned char *rec = raw + (i & 0xFFFFFFFF) * 0x10;
         if (*(unsigned char *)(rec + 0x487d)) {
             x = *(int *)(rec + 0x4870) >> 12;
-            func_ov004_020b2444(x, *(int *)(rec + 0x4874) >> 12,
+            Mg_DrawBigNumber(x, *(int *)(rec + 0x4874) >> 12,
                                 *(unsigned short *)(rec + 0x4878), -1, -1, 0, 0);
         }
     }
@@ -794,7 +794,7 @@ void dScMgCurling2_c::DrawCursor()
 
     int x = unk_5584;
     int y = unk_5588;
-    func_ov004_020afdd0((int)data_ov006_0213c4f0, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
+    Mg_RenderSpriteBoth((int)data_ov006_0213c4f0, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
 }
 
 
@@ -818,7 +818,7 @@ void dScMgCurling2_c::DrawCursor()
  * local here (i4, bx/by, dy2, j-free ax/ay). opt_propagation off keeps the
  * stylus byte loads above the first store (the ROM loads both before it)
  * and puts i4 in r4. Loading by before bx, and ay before ax, colours the
- * two scratch pairs the ROM's way; the twin func_ov006_020e1854 in
+ * two scratch pairs the ROM's way; the twin Aim_Swing in
  * dScMgCurling_c reads the same. */
 #pragma push
 #pragma opt_common_subs off
@@ -971,9 +971,9 @@ void dScMgCurling2_c::DrawCounter()
     left = 5 - thrown;
     if (left < 0)
         left = 0;
-    func_ov004_020af948((int)&data_ov006_0213c3fc, 0xd0, 0xb4, 0);
-    func_ov004_020af948(data_ov006_0213c4dc[GetGameLanguage()][1], 0xe8, 0xb4, 0);
-    func_ov004_020b2444(0xf8, 0xb4, left, 0, 0, 0, 0);
+    Mg_RenderSubSpriteMtx((int)&data_ov006_0213c3fc, 0xd0, 0xb4, 0);
+    Mg_RenderSubSpriteMtx(data_ov006_0213c4dc[GetGameLanguage()][1], 0xe8, 0xb4, 0);
+    Mg_DrawBigNumber(0xf8, 0xb4, left, 0, 0, 0, 0);
 }
 
 
@@ -1000,7 +1000,7 @@ void dScMgCurling2_c::DrawStones()
 
 
 // @symbol _ZN15dScMgCurling2_c14SeparateStonesEi
-/* Stone separation. The two-player rink's twin of func_ov006_020e1dc8 in
+/* Stone separation. The two-player rink's twin of SeparateStones in
  * dScMgCurling_c: eleven stones at a 0x30 stride instead of five at 0x2c,
  * and after the bump sound the pushed pair gets a SpawnValue. Keep vx and
  * vy named and the inner scan's locals declared in the loop body; both
@@ -1074,7 +1074,7 @@ void dScMgCurling2_c::SeparateStones(int idx)
 
 #define FMUL(a, b) ((int)(((long long)(a) * (b) + 0x800) >> 12))
 
-// @symbol func_ov006_020e5450
+// @symbol Curling2_ResolveStoneCollision
 /* Stone collision: the first live, moving stone within 0x18 of stone idx
  * takes the hit. Both velocities are rotated into the contact frame, the
  * along-contact parts swapped, and the results become each stone's new
@@ -1091,7 +1091,7 @@ void dScMgCurling2_c::SeparateStones(int idx)
  * stone's chain. The rest (one rel/k/c/s set for both stones, pointer
  * locals for the fields written after a call, the hitAngle reference) are
  * described in notes/mwccarm-codegen.md 6cz. */
-extern "C" void func_ov006_020e5450(dScMgCurling2_c *self, int idx)
+extern "C" void Curling2_ResolveStoneCollision(dScMgCurling2_c *self, int idx)
 {
     long long sw;
     long long cw;
@@ -1248,10 +1248,10 @@ void dScMgCurling2_c::StoneSteer(int idx)
 
 // @symbol _ZN15dScMgCurling2_c9StoneRestEi
 /* Stone state 2: the resting handler veneers to the sourceless collision
- * step. See the file-top leftover for func_ov006_020e5450. */
+ * step. See the file-top leftover for Curling2_ResolveStoneCollision. */
 void dScMgCurling2_c::StoneRest(int i)
 {
-    func_ov006_020e5450(this, i);
+    Curling2_ResolveStoneCollision(this, i);
 }
 
 
@@ -1329,7 +1329,7 @@ void dScMgCurling2_c::StoneSlide(int idx)
         *(u8 *)(c + idx * 0x30 + 0x4688) = 2;
     }
 
-    func_ov006_020e5450((dScMgCurling2_c *)c, idx);
+    Curling2_ResolveStoneCollision((dScMgCurling2_c *)c, idx);
     StoneSpin(idx);
 
     v = *pd;
@@ -1498,7 +1498,7 @@ void dScMgCurling2_c::Idle()
 // @symbol _ZN15dScMgCurling2_c8EndRoundEv
 /* Behavior state 3: the last stone has settled. Wait out the state timer,
  * clear the round flags, hide the stones, drop the prompt, hand the scene
- * to func_ov004_020b0a54 and park in state 4. */
+ * to Mg_SetSharedState and park in state 4. */
 void dScMgCurling2_c::EndRound()
 {
     int i;
@@ -1509,13 +1509,13 @@ void dScMgCurling2_c::EndRound()
         return;
     }
 
-    if (func_ov004_020adbe0() != 0) {
+    if (Mg_IsNewRecord() != 0) {
         gameOver = 0;
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     } else {
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     }
     mPromptEnabled = 0;
     unk_55b9 = 0;
@@ -1719,22 +1719,22 @@ void dScMgCurling2_c::ResetGame()
     *((short *) (c + 0x55b6)) = 0;
     *((short *) (c + 0x55b0)) = 0;
     *((unsigned char *) (c + 0x55bd)) = 0;
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
     ClearValues();
 }
 
 
-// @symbol _ZN15dScMgCurling2_c13OnYoshiTryEatEi
+// @symbol _ZN15dScMgCurling2_c10StartRoundEi
 /* Slot 18. Yoshi ate the puck: restart the round and re-arm the screen
  * blend and the frame counter. */
-void dScMgCurling2_c::OnYoshiTryEat(int /* arg */)
+void dScMgCurling2_c::StartRound(int /* arg */)
 {
     mState = 0;
     ResetGame();
     Scroll();
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_55ac = func_ov004_020adc1c();
+    unk_55ac = Mg_GetTopRecord();
 }
 
 
@@ -1743,7 +1743,7 @@ void dScMgCurling2_c::OnYoshiTryEat(int /* arg */)
  * collision values, pieces and the drag cursor. */
 s32 dScMgCurling2_c::Render()
 {
-    func_ov004_020b19f0((void *)func_ov004_020adc1c());
+    Mg_DrawTopLeftCounter((void *)Mg_GetTopRecord());
     DrawMarks();
     DrawCounter();
     DrawStones();
@@ -1773,7 +1773,7 @@ s32 dScMgCurling2_c::Behavior()
  * with a 0x40 state delay. */
 s32 dScMgCurling2_c::InitResources()
 {
-    char *r6 = (char *)func_ov004_020adc74(&data_ov006_0213c5a0);
+    char *r6 = (char *)Ov004_LoadFileByPath(&data_ov006_0213c5a0);
     void *f;
     void *c7;
     void *c8;
@@ -1851,12 +1851,12 @@ s32 dScMgCurling2_c::InitResources()
     NextStone();
     SeedPieces();
     mState = 1;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     mStateTimer = 0x40;
-    unk_0a4 = 1;
+    mRunDuringFade = 1;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_55ac = func_ov004_020adc1c();
+    unk_55ac = Mg_GetTopRecord();
     return 1;
 }
 
@@ -1876,41 +1876,41 @@ extern "C" void *dScMgCurling2_c_classInit()
  * All seven PMF state tables plain-copied from the ROM PMF constants, in
  * retail copy order. */
 PMF0 data_ov006_02141a18[5] = {
-    data_ov006_0213c47c,
-    data_ov006_0213c414,
-    data_ov006_0213c404,
-    data_ov006_0213c424,
-    data_ov006_0213c3f4,
+    pmf_dScMgCurling2_c_BeginRound,
+    pmf_dScMgCurling2_c_Play,
+    pmf_dScMgCurling2_c_NextThrow,
+    pmf_dScMgCurling2_c_EndRound,
+    pmf_dScMgCurling2_c_Idle,
 };
 PMF1 data_ov006_021419d8[4] = {
-    data_ov006_0213c3e4,
-    data_ov006_0213c3dc,
-    data_ov006_0213c3d4,
-    data_ov006_0213c3ec,
+    pmf_dScMgCurling2_c_StoneWait,
+    pmf_dScMgCurling2_c_StoneSlide,
+    pmf_dScMgCurling2_c_StoneRest,
+    pmf_dScMgCurling2_c_StoneSteer,
 };
 PMF0 data_ov006_02141978[2] = {
-    data_ov006_0213c4b4,
-    data_ov006_0213c4ac,
+    pmf_dScMgCurling2_c_DragBegin,
+    pmf_dScMgCurling2_c_DragUpdate,
 };
 PMF data_ov006_02141988[3] = {
-    data_ov006_0213c42c,
-    data_ov006_0213c494,
-    data_ov006_0213c48c,
+    pmf_dScMgCurling2_c_PickStepMode,
+    pmf_dScMgCurling2_c_StepXOnly,
+    pmf_dScMgCurling2_c_StepXAndY,
 };
 PMF data_ov006_021419b8[4] = {
-    data_ov006_0213c474,
-    data_ov006_0213c40c,
-    data_ov006_0213c464,
-    data_ov006_0213c45c,
+    pmf_dScMgCurling2_c_StepXPickFast,
+    pmf_dScMgCurling2_c_StepXPushPosFast,
+    pmf_dScMgCurling2_c_StepXPushNegFast,
+    pmf_dScMgCurling2_c_StepXSettleFast,
 };
 PMF data_ov006_021419f8[4] = {
-    data_ov006_0213c49c,
-    data_ov006_0213c444,
-    data_ov006_0213c43c,
-    data_ov006_0213c4a4,
+    pmf_dScMgCurling2_c_StepXPick,
+    pmf_dScMgCurling2_c_StepXPushPos,
+    pmf_dScMgCurling2_c_StepXPushNeg,
+    pmf_dScMgCurling2_c_StepXSettle,
 };
 PMF data_ov006_021419a0[3] = {
-    data_ov006_0213c41c,
-    data_ov006_0213c484,
-    data_ov006_0213c46c,
+    pmf_dScMgCurling2_c_StepYRestart,
+    pmf_dScMgCurling2_c_StepYRampUp,
+    pmf_dScMgCurling2_c_StepYRampDown,
 };
