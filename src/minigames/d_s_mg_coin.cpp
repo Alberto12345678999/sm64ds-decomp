@@ -763,7 +763,7 @@ void dScMgCoin_c::DrawScoreRival()
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7e, 0x60, (void *)0);
     if (gMgScene != 0)
-        count = *(int *)((char *)gMgScene + 0xac);
+        count = gMgScene->mCreditsShown;
     else
         count = 0;
     Mg_DrawBigNumber(0x90, 0x60, count, 1, -1, 2, 0);
@@ -1601,9 +1601,9 @@ void dScMgCoin_c::Phase_State2()
     *(u8 *)(c + 0x51df) = 1;
     {
         int t;
-        void *g = gMgScene;
+        dScMgBase_c *g = gMgScene;
         if (g != 0) {
-            t = *(s32 *)((char *)g + 0xa8);
+            t = g->mCredits;
         } else {
             t = 0;
         }
@@ -1620,13 +1620,12 @@ void dScMgCoin_c::Phase_State2()
    runs the blocks. */
 void dScMgCoin_c::Phase_State1()
 {
-    char *p = (char *)this;
-    if ((*((unsigned char *)(p + 0xc4))) == 0) {
-        *((unsigned char *)(p + 0xc3)) = 1;
-        *((unsigned char *)(p + 0xc4)) = 1;
-        *((short *)(p + 0xc0)) = 0;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
     }
-    this->Block_UpdateAll();
+    Block_UpdateAll();
 }
 
 // @symbol _ZN11dScMgCoin_c12Phase_State0Ev
@@ -1648,7 +1647,7 @@ void dScMgCoin_c::StartRound(int arg)
         self->mWins = 0;
     }
     self->mCredits = 0;
-    *(s32 *)((char *)self + 0xac) = self->mCredits;
+    self->mCreditsShown = self->mCredits;
     this->ResetRound();
     FreeGfxSlotsById(0x1d);
     this->LayOutCoins();
@@ -1741,7 +1740,7 @@ int dScMgCoin_c::InitResources()
     Deallocate((void *)a);
 
     self->mCredits = 0;
-    *(s32 *)(c + 0xac) = self->mCredits;
+    self->mCreditsShown = self->mCredits;
     data_0208ee44 = 1;
     this->ResetRound();
     this->LayOutCoins();

@@ -1854,7 +1854,7 @@ void dScMgTeresa_c::SpawnBoos()
     int full;
     unsigned int r;
 
-    sel = *(int *)(c + 0xbc);
+    sel = mLevel;
     if (sel >= 0xf) {
         int k;
         r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
@@ -2185,11 +2185,11 @@ void dScMgTeresa_c::Scene_State2()
     if (((unsigned short *) (c + 0x4c00))[0xb] == 0)
     {
       FreeGfxSlotsById(0xd);
-      if ((*((unsigned char *) (c + 0xc4))) == 0)
+      if (mPromptBlinkCount == 0)
       {
-        *((unsigned char *) (c + 0xc3)) = 1;
-        *((unsigned char *) (c + 0xc4)) = 1;
-        *((short *) (c + 0xc0)) = 0;
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
       }
     }
   }

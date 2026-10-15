@@ -1124,7 +1124,7 @@ void SlotBet_OnTouch(void *c_)
         return;
     }
     scene = gMgScene;
-    count = (scene != 0) ? *(int *)((char *)scene + 0xa8) : 0;
+    count = (scene != 0) ? ((dScMgBase_c *)scene)->mCredits : 0;
     if (count <= 0) {
         return;
     }

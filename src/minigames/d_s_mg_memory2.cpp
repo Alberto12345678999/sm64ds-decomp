@@ -671,8 +671,7 @@ void dScMgMemory2_c::ResultWait()
             if (p->b4 > p->b8)
                 p->b8 = p->b4;
         }
-        Mg_SubmitScore(gMgScene != 0
-            ? ((struct B *)gMgScene)->b4 : 0);
+        Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
         Dealer_PlayWin(&mShared);
         return;
     }

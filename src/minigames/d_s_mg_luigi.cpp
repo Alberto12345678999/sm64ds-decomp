@@ -56,7 +56,6 @@ struct Px_efdf0 {
     u8 a, b, c2, d2;
 };
 
-#define BEB68_f0274 ((char *)gMgScene)
 
 /* C-linkage engine calls and the remaining local helpers. */
 extern "C" {
@@ -354,7 +353,7 @@ void dScMgLuigi_c::UpdateReward()
         mReward.shown = 0;
         mReward.phase += 1;
         {
-            char *g = BEB68_f0274;
+            char *g = (char *)gMgScene;
             if (g != 0) {
                 if (*(int *)(g + 0xb4) < 0x270f)
                     *(int *)(g + 0xb4) += 1;
@@ -362,7 +361,7 @@ void dScMgLuigi_c::UpdateReward()
                     *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
             }
         }
-        Mg_SubmitScore(BEB68_f0274 != 0 ? *(int *)(BEB68_f0274 + 0xb4) : 0);
+        Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
         return;
     }
 

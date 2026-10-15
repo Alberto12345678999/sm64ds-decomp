@@ -1025,13 +1025,13 @@ int dScMgMemory_c::CanEndState(int /* mode */)
 
 void dScMgMemory_c::StartRound(int /* arg */)
 {
-    char *meter;
+    dScMgBase_c *meter;
     int lives;
     ResetGame();
     mState = 0;
-    meter = (char *)gMgScene;
+    meter = gMgScene;
     lives = 0;
-    if (meter != 0) lives = *(int *)(meter + 0xa8);
+    if (meter != 0) lives = meter->mCredits;
     if (lives >= 3) lives = 3;
     ((void (*)(void *))MgCoins_Reset)(meter);
     gMgCoinsShowDelta = 1;

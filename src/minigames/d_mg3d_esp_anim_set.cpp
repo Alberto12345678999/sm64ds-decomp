@@ -1462,15 +1462,13 @@ void dScMg3DEsp_c::Results()
                 while (idx >= 5)
                     idx -= 5;
                 if (gMgScene != 0) {
-                    /* The ROM loads the pointer again here. The retired
-                       file declared it char * and got that load for free;
-                       dScMgBase_c.h declares it void *, and every non-
-                       volatile spelling of that reuses the earlier load. */
-                    char *g = *(char * volatile *)&gMgScene;
-                    if (*(int *)(g + 0xb4) < 9999)
-                        (*(int *)(int)(((long long)(int)(g + 0xb4))))++;
-                    if (*(int *)(g + 0xb4) > *(int *)(g + 0xb8))
-                        *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
+                    /* The ROM loads the pointer again here; a plain read
+                       reuses the earlier load. */
+                    dScMgBase_c *g = *(dScMgBase_c * volatile *)&gMgScene;
+                    if (g->mHudScore < 9999)
+                        g->mHudScore++;
+                    if (g->mHudScore > g->mBestHudScore)
+                        g->mBestHudScore = g->mHudScore;
                 }
                 Sound::PlayBank2_2D(data_ov006_0212e594[idx]);
             } else {

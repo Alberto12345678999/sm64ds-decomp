@@ -411,7 +411,7 @@ void dScMgCard_c::UpdateState()
     int b;
     int t4;
     int t5;
-    void *g;
+    dScMgBase_c *g;
     int a0;
     int a1;
     s16 cnt;
@@ -473,8 +473,8 @@ void dScMgCard_c::UpdateState()
                         sMgCoinsBetPlaced = 1;
                         Sound::PlayBank2_2D(0x151);
                         g = gMgScene;
-                        a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
-                        a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
+                        a0 = g ? g->mCredits : 0;
+                        a1 = g ? g->mHudScore : 0;
                         Mg_SaveRecordPair(a0, a1);
                     }
                 }
@@ -493,8 +493,8 @@ void dScMgCard_c::UpdateState()
                         sMgCoinsBetPlaced = 1;
                         Sound::PlayBank2_2D(0x151);
                         g = gMgScene;
-                        a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
-                        a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
+                        a0 = g ? g->mCredits : 0;
+                        a1 = g ? g->mHudScore : 0;
                         Mg_SaveRecordPair(a0, a1);
                         cnt3 = 0;
                         i = cnt3;
@@ -623,8 +623,8 @@ void dScMgCard_c::UpdateState()
             r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
                 g = gMgScene;
-                a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
-                a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
+                a0 = g ? g->mCredits : 0;
+                a1 = g ? g->mHudScore : 0;
                 Mg_SaveRecordPair(a0, a1 - 1);
                 mStateTimer = 0x5a;
             } else if (r == 1) {
@@ -633,11 +633,11 @@ void dScMgCard_c::UpdateState()
                     int *tbl = data_ov006_0213bd48;
                     int scale;
                     int prod;
-                    a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
+                    a0 = g ? g->mCredits : 0;
                     r = tbl[t5];
                     scale = gMgCoinsInPlay;
                     prod = r * scale + a0;
-                    r = g ? ((dScMgBase_c *)g)->mHudScore : 0;
+                    r = g ? g->mHudScore : 0;
                     Mg_SaveRecordPair(prod, r + 1);
                 }
                 mStateTimer = 0x1e;
@@ -655,8 +655,8 @@ void dScMgCard_c::UpdateState()
                 Dealer_PlayLose(&mShared);
                 g = gMgScene;
                 if (g != 0) {
-                    if (((dScMgBase_c *)g)->mHudScore > 0) {
-                        ((dScMgBase_c *)g)->mHudScore = ((dScMgBase_c *)g)->mHudScore - 1;
+                    if (g->mHudScore > 0) {
+                        g->mHudScore = g->mHudScore - 1;
                     }
                 }
                 Mg_SetSharedState(5);
@@ -664,13 +664,13 @@ void dScMgCard_c::UpdateState()
                 Dealer_PlayWin(&mShared);
                 g = gMgScene;
                 if (g != 0) {
-                    if (((dScMgBase_c *)g)->mHudScore < 0x270f) {
-                        int *fld = &((dScMgBase_c *)g)->mHudScore;
+                    if (g->mHudScore < 0x270f) {
+                        int *fld = &g->mHudScore;
                         *fld = *fld + 1;
                     }
-                    a1 = ((dScMgBase_c *)g)->mHudScore;
-                    if (a1 > ((dScMgBase_c *)g)->mBestHudScore)
-                        ((dScMgBase_c *)g)->mBestHudScore = a1;
+                    a1 = g->mHudScore;
+                    if (a1 > g->mBestHudScore)
+                        g->mBestHudScore = a1;
                 }
                 Mg_SubmitScore(mHudScore);
                 Mg_SetSharedState(4);

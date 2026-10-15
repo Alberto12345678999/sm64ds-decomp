@@ -2238,7 +2238,7 @@ void dScMgBomroom_c::Round_State2() {
 void dScMgBomroom_c::Round_State1() {
     void * c = (void *)this;
     unsigned char *p = (unsigned char *)c;
-    if (p[0xc4] == 0) { p[0xc3] = 1; p[0xc4] = 1; *(short *)(p + 0xc0) = 0; }
+    if (mPromptBlinkCount == 0) { mPromptEnabled = 1; mPromptBlinkCount = 1; mPromptBlinkTimer = 0; }
     *(int *)(p + 0x6000 + 0x2d0) = 2;
 }
 

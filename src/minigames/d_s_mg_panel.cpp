@@ -1831,9 +1831,6 @@ void dScMgPanel_c::Scene_State7()
 #pragma push
 #pragma opt_propagation off
 extern "C" {
-/* This function reads gMgScene as a char *; dScMgBase_c.h
-   declares it void *.  Reinterpret rather than redeclare. */
-#define PANEL_BEB68 (*(char **)&gMgScene)
 
 }
 void dScMgPanel_c::Scene_State6()
@@ -1897,14 +1894,14 @@ void dScMgPanel_c::Scene_State6()
             ClearSlideFlag();
             *(u8 *)(scene + 0x4000 + 0xfe3) = 0;
             mPromptEnabled = 0;
-            g = PANEL_BEB68;
+            g = (char *)gMgScene;
             if (g != 0) {
                 if (*(int *)(g + 0xb4) < 9999)
                     (*(int *)(int)(g + 0xb4))++;
                 if (*(int *)(g + 0xb4) > *(int *)(g + 0xb8))
                     *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
             }
-            Mg_SubmitScore(PANEL_BEB68 != 0 ? *(int *)(PANEL_BEB68 + 0xb4) : 0);
+            Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
             return;
         }
         *(u16 *)(scene + 0x4e00 + 0xc0) = 0x10;
@@ -1921,7 +1918,6 @@ void dScMgPanel_c::Scene_State6()
         *ip = *ip + 1;
     }
 }
-#undef PANEL_BEB68
 #pragma pop
 
 // @symbol _ZN12dScMgPanel_c12Scene_State5Ev

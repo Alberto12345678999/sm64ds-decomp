@@ -419,8 +419,8 @@ extern "C" void StarPopup_Draw(void)
 // @symbol StarPopup_Update
 /* Steps the single popup through three phases. Phase 0 moves it by its
    velocity until its timer runs out, phase 1 holds for 0x40 frames and then
-   adds one to the counter at +0xb4 of gMgScene (capped at 9999,
-   raising +0xb8 to match), and phase 2 counts the +0xf field down every
+   adds one to the scene's mHudScore (capped at 9999, raising
+   mBestHudScore to match), and phase 2 counts the +0xf field down every
    eighth frame, stepping the int behind arg toward 0x32 each time. */
 typedef struct {
     u8 t;
@@ -464,12 +464,12 @@ extern "C" void StarPopup_Update(char *arg)
             *(u8 *)(f + 0x10) = 0;
             *(u8 *)(((int)f + 0xe)) += 1;
             {
-                char *g = (char *)gMgScene;
+                dScMgBase_c *g = gMgScene;
                 if (g != 0) {
-                    if (*(int *)(g + 0xb4) < 0x270f)
-                        *(int *)(((int)g + 0xb4)) += 1;
-                    if (*(int *)(g + 0xb4) > *(int *)(g + 0xb8))
-                        *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
+                    if (g->mHudScore < 9999)
+                        g->mHudScore += 1;
+                    if (g->mHudScore > g->mBestHudScore)
+                        g->mBestHudScore = g->mHudScore;
                 }
             }
             Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);

@@ -340,7 +340,7 @@ void dScMgSound_c::StartRound(int mode)
 {
     char *raw = (char *)this;
 
-    int *active;
+    dScMgBase_c *active;
     int total;
 
     mState = 0;
@@ -354,13 +354,13 @@ void dScMgSound_c::StartRound(int mode)
         if (mLevel > 0x270e)
             mLevel = 0x270e;
 
-        active = (int *)gMgScene;
+        active = gMgScene;
         if (active)
-            *(int *)((char *)active + 0xb4) = 0;
+            active->mHudScore = 0;
 
-        active = (int *)gMgScene;
+        active = gMgScene;
         if (active)
-            total = *(int *)((char *)active + 0xb4);
+            total = active->mHudScore;
         else
             total = 0;
         Mg_SubmitScore(total);
