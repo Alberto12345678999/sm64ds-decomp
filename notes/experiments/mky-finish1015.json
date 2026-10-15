@@ -30,7 +30,16 @@
       "source_owned_bss_claims": 241,
       "intact_tu_gates": "PASS, no new symbol errors, exact storage aliases"
     },
-    "header_consumers": "307; unmodified prepush verifier checks still running with parallel file orchestration",
+    "header_consumers": {
+      "files": 307,
+      "functions": 5661,
+      "verified": 5449,
+      "inherited_blind_warnings": 212,
+      "blocking": 0,
+      "all_warning_consumers_complete_raw_elf_identical_to_main": true,
+      "inputs_stable": true,
+      "method": "306 files use unchanged prepush_linkcheck.verify; remaining 1 large file(s) execute that same unmodified function code partitioned by exact symbols_for enumeration. Resolver, linkcheck and ERROR retry unchanged."
+    },
     "other_header_consumers": {
       "total": 306,
       "complete_raw_elf_identical": 306,
@@ -59,7 +68,7 @@
   },
   "limits": [
     "No completed grouped Actor/header consumer migration is included.",
-    "No private CI or formal exact-candidate Source acceptance yet.",
+    "Producer evidence is separate from final exact-head Source judgment and terminal private CI.",
     "Shared scalar interfaces, genuine shared handle lifecycles and native metadata/global enrollment remain unfinished.",
     "The two shared Matrix4x3 definitions remain incompatible; this slice uses the existing flat form and does not assert a canonical type repair."
   ],
@@ -129,7 +138,14 @@
     "build/native-pr-whole-consumers/report.json": "8a4b16351e8071e6e569e32d47747e88980c69e433e9d14da92786940b02859f",
     "build/native-pr-final-tu.log": "8e2f8df213826f21e4a63847452e684055e69d41c814ac70a67d94c48bd498ac",
     "build/native-pr-declarations.log": "f7b9f4f2da82d16b98eb38a1c579d8bef254cf589093f79c034f2ffd9fd237d0",
-    "build/native-pr-style.json": "f2d493ecbef969da1e7ef29089d14084e94b08b245eaad67a94d1910ed87aee6"
+    "build/native-pr-style.json": "f2d493ecbef969da1e7ef29089d14084e94b08b245eaad67a94d1910ed87aee6",
+    "build/native-pr-parallel-linkcheck/report.json": "770a61ea6634f3a3e63981672b6926a9a4025c13d79407dc9e6e14c1d36a3796",
+    "build/native-pr-parallel-linkcheck/inputs.json": "448a691fc55014fdc4c4b760936f4f3832a865ddbf68ca3c702598f20763277f",
+    "build/native-pr-final-declarations.log": "74ad155dd7b2e83198ec74c1e3e888e5a639cad8688e656bc59455ea1861241c",
+    "build/native-pr-final-style.json": "f2d493ecbef969da1e7ef29089d14084e94b08b245eaad67a94d1910ed87aee6",
+    "build/run_native_pr_parallel_linkcheck.py": "910355e2bd72da594a6e2048db297fc904c968dbcd09e5d6f473a2d6ebacf2cd",
+    "build/finish_native_pr_parallel_linkcheck.py": "4cb3632deaeb1d3a97161aa089f455141ceee7d3fc3d7bbdbfd2d22a0a7139ed"
   },
-  "proof_scope": "Fresh producer full-ROM and 306 whole-object comparison; independent reviewer separately rebuilt Monkey and verified all46 functions. Final generic307 sweep and independent exact-head queue acceptance pending."
+  "proof_scope": "Fresh full-ROM, complete-object equality for306 other consumers, and full5661-function generic sweep on the immutable production source freeze. Independent reviewer rebuilt/strictly verified Monkey and separately audited producer broad inputs, methods and raw artifacts. Formal Source judgment/private CI recorded separately.",
+  "pr_url": "https://github.com/tangosdev/sm64ds-decomp/pull/3896"
 }
