@@ -29,6 +29,9 @@
 #include "Player.h"
 #include "SaveData.h"
 
+/* This scene owns the position used by the breath effect. */
+extern Vector3 data_ov027_02113d10;
+
 extern "C" {
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32, s32, s32, s32);
 u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -59,7 +62,6 @@ void InvMat4x3(Matrix4x3 *dst, const Matrix4x3 *src);
 int _ZN5Sound8PlayLongEjjjRK7Vector3s(int handle, unsigned int a,
                                      unsigned int b, void *pos,
                                      unsigned int c);
-extern Vector3 data_ov027_02113d10;
 extern Matrix4x3 data_020a0e68;
 extern s32 data_0209e650;
 extern u8 data_0209f2d8[];
@@ -388,3 +390,6 @@ extern "C" daSnmBth_c *daSnmBth_c_classInit()
 {
     return new daSnmBth_c();
 }
+
+/* Construction and destructor registration belong to this translation unit. */
+Vector3 data_ov027_02113d10(0x27a52b, 0xdf2000, 0x2626bb);
