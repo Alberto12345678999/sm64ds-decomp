@@ -300,10 +300,7 @@ extern "C" void Mg_ResetBannerLayout(void) {
 }
 
 // @symbol _ZN10dMgState_cC1Ev
-dMgState_c::dMgState_c()
-    : mState(-1), mTimer(0), unk_020(0), unk_024(0)
-{
-}
+dMgState_c::dMgState_c() : mState(-1), mTimer(0), unk_020(0), mSuspended(0) {}
 
 // @symbol _ZN10dMgState_c8SetStateEi
 void dMgState_c::SetState(s32 state)
@@ -383,7 +380,7 @@ void dMgState_c::State00_Update() {
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
-    unk_024 = 0;
+    mSuspended = 0;
   } else {
     if (mTimer != 0)
       return;
@@ -412,7 +409,7 @@ void dMgState_c::State01_Update() {
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
-    unk_024 = 0;
+    mSuspended = 0;
   } else {
     if (mTimer != 0) return;
     if (data_0209f5bc->IsBetweenStartAndEnd() != 0) return;
@@ -444,7 +441,7 @@ void dMgState_c::State02_Update() {
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
-    unk_024 = 0;
+    mSuspended = 0;
   } else {
     if (mTimer != 0)
       return;
@@ -505,7 +502,7 @@ void dMgState_c::UpdateRetryFadeOut() {
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
-  unk_024 = 0;
+  mSuspended = 0;
 }
 
 // @symbol _ZN10dMgState_c13State04_EnterEv
@@ -538,7 +535,7 @@ void dMgState_c::State04_Update() {
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
-  unk_024 = 0;
+  mSuspended = 0;
 }
 
 // @symbol _ZN10dMgState_c13State05_EnterEv
@@ -585,7 +582,7 @@ void dMgState_c::State05_Update() {
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
-    unk_024 = 0;
+    mSuspended = 0;
   }
 }
 
@@ -622,7 +619,7 @@ void dMgState_c::State06_Update() {
   if(v != 0) return;
   FreeGfxSlotsById(0x1d);
   mBehavior = pmf_dMgState_c_UpdateAfterHidden;
-  unk_024 = 1;
+  mSuspended = 1;
   gMgCoinsShowDelta = 0;
   sMgCoinsDeltaShown = 0;
 }
@@ -649,7 +646,7 @@ void dMgState_c::UpdateAfterHidden() {
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
-    unk_024 = 0;
+    mSuspended = 0;
 }
 
 // @symbol _ZN10dMgState_c13State07_EnterEv
@@ -674,7 +671,7 @@ void dMgState_c::UpdateWaitThenResume() {
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
-  unk_024 = 0;
+  mSuspended = 0;
 }
 
 // @symbol _ZN10dMgState_c13State09_EnterEv
@@ -704,7 +701,7 @@ void dMgState_c::State09_Update() {
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
-  unk_024 = 0;
+  mSuspended = 0;
 }
 
 // @symbol _ZN10dMgState_c13State10_EnterEv
@@ -764,7 +761,7 @@ void dMgState_c::State11_Update() {
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
-    unk_024 = 0;
+    mSuspended = 0;
   } else {
     if (mTimer != 0)
       return;
@@ -831,7 +828,7 @@ void dMgState_c::UpdateFadeThenResume() {
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
-    unk_024 = 0;
+    mSuspended = 0;
   } else {
     if (mTimer != 0)
       return;

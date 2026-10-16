@@ -61,6 +61,7 @@ enum dScMgSmartball_c_AssetId {
 #include "private/ov006_smartball_pair.h"
 #include "PlayerInput.h"
 #include "Memory.h"
+#include "nitro/fx/fx.h"
 
 /* Local shadow declarations carried from the legacy files. RECONCILED on
  * fold: where two files spelled one name for different memory, each keeps
@@ -2511,8 +2512,8 @@ void cMgSmartball_kinoko_c::Update()
             int vec[4];
             if (mRadius < 0x1000) return;
             d = _ZN4cstd4fdivEii(0x7000, mRadius);
-            b = (int)(((long long)data_02082214[1] * d + 0x800) >> 12);
-            a = (int)(((long long)data_02082214[0] * d + 0x800) >> 12);
+            b = FX_MUL(data_02082214[1], d);
+            a = FX_MUL(data_02082214[0], d);
             vec[0] = b;
             vec[1] = a;
             vec[2] = -a;
@@ -2995,8 +2996,8 @@ int cMgSmartball_ball_c::NeedsRespawn(int *pos) {
     if (*(unsigned char *)(self + 0x3a) == 1) {
         int dz = arg->b - *(int *)(self + 0x48);
         int dx = arg->a - *(int *)(self + 0x44);
-        int dxsq = (int)(((long long)dx * dx + 0x800) >> 12);
-        int dzsq = (int)(((long long)dz * dz + 0x800) >> 12);
+        int dxsq = FX_MUL(dx, dx);
+        int dzsq = FX_MUL(dz, dz);
         return dxsq + dzsq >= 0x100000;
     }
 
@@ -3038,8 +3039,8 @@ L1dc:
     {
         int u = x - 0x80000;
         int v = z2 + 0x70000;
-        int usq = (int)(((long long)u * u + 0x800) >> 12);
-        int vsq = (int)(((long long)v * v + 0x800) >> 12);
+        int usq = FX_MUL(u, u);
+        int vsq = FX_MUL(v, v);
         if (usq + vsq >= 0x3840000) return 1;
     }
 L238:
@@ -3094,8 +3095,7 @@ block1:
     *(int *)(c + 0x20) = 0;
     *(int *)(c + 0x24) = 0;
 
-    *(int *)(c + 0xc) = _ZN4cstd4fdivEii(
-        (int)(((long long)(int)self->param1 * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
+    *(int *)(c + 0xc) = _ZN4cstd4fdivEii(FX_MUL((int)self->param1, 0xa000), 0xd8000) + 0x90000;
 
     if (*(int *)(c + 0x2c) > *(int *)(*(char **)(c + 4) + 0x4664)) {
         *(int *)(c + 0x104) =
@@ -3110,8 +3110,7 @@ block2:
     *(int *)(c + 0x20) = 0;
     *(int *)(c + 0x24) = 0;
 
-    *(int *)(c + 0xc) = _ZN4cstd4fdivEii(
-        (int)(((long long)(int)self->param1 * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
+    *(int *)(c + 0xc) = _ZN4cstd4fdivEii(FX_MUL((int)self->param1, 0xa000), 0xd8000) + 0x90000;
 
     if (*(int *)(c + 0x2c) > *(int *)(*(char **)(c + 4) + 0x4664)) {
         *(int *)(c + 0x104) =
@@ -3692,7 +3691,7 @@ void cMgSmartball_ball_c::DrawMarker()
             if (y >= -0xb5000 && y < -0x85000) return;
         }
         v = c->field28 + 0x15000;
-        sq = (int)(((long long)v * v + 0x800) >> 12);
+        sq = FX_MUL(v, v);
         for (i = 0; i < c->mgr->count; i++) {
             if (((cMgSmartball_ana_c *)((unsigned char *)((i >= c->mgr->count) ? 0 : c->mgr->arr[i])))->HasBall() == 0) {
                 s[0] = c->x;
@@ -3990,7 +3989,7 @@ int cMgSmartball_object_c::PointInTriangle(int* p, int* q0, int* q1, int* q2){
 // @symbol _ZN21cMgSmartball_kinoko_c11HitRadiusSqEv
 int cMgSmartball_kinoko_c::HitRadiusSq() {
     struct S28 *p = (struct S28 *)this;
-    return (int)(((long long)p->field_0x28 * p->field_0x28 + 0x800) >> 12);
+    return FX_MUL(p->field_0x28, p->field_0x28);
 }
 
 // @symbol _ZN21cMgSmartball_object_c6SetVelEPi
@@ -5128,7 +5127,7 @@ void dScMgSmartball_c::SpawnObjects()
         for (j = 0; j < *(int *)(c + 0x4000 + 0x668); j++) {
             void *p;
             pos[j].x = ((1 - j) << 0x10) + 0xc0000;
-            pos[j].y = _ZN4cstd4fdivEii((int)(((long long)pos[j].x * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
+            pos[j].y = _ZN4cstd4fdivEii(FX_MUL(pos[j].x, 0xa000), 0xd8000) + 0x90000;
             p = _Znwj(0x12c);
             if (p != 0) {
                 V2 tmp = pos[j];

@@ -80,11 +80,11 @@ struct dScMgJump2_c : dScMgD3DBase_c {
     u8  mArray2[0x5a0];   /* 0x5234 -- 6 * 0xf0,  elem dtor Heyho_Destruct */
     u8  mArray3[0x240];   /* 0x57d4 -- 0x10 * 0x24, elem dtor Jump2Popup_ElemDtor */
     u8  mModel[0x50];     /* 0x5a14 -- a real Model, raw bytes; see banner */
-    s32 unk_5a64;         /* 0x5a64 -- scroll phase; feeds the model's anim clock */
-    s32 unk_5a68;         /* 0x5a68 -- phase advance rate, applied >> 12 */
-    u32 unk_5a6c;         /* 0x5a6c */
+    s32 mAnimPhase;       /* 0x5a64 -- scroll phase; feeds the model's anim clock */
+    s32 mAnimRate;        /* 0x5a68 -- phase advance rate, applied >> 12 */
+    u32 mParticleId;      /* 0x5a6c -- Particle::System unique ID */
     u8  pad_5a70[0x4];    /* 0x5a70 -- no matched access */
-    s16 unk_5a74;         /* 0x5a74 -- the state functions' countdown */
+    s16 mStateTimer;      /* 0x5a74 -- the state functions' countdown */
     u16 pad_5a76;         /* 0x5a76 */
 
     /* The PMF state machine. pmf_dScMgJump2_c_State_Idle..9c are the eight-byte

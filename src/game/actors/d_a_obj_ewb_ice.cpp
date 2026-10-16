@@ -40,6 +40,7 @@ enum daObjEwbIce_c_AssetId {
 #include "daKing_Donketu_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 struct CLPS_Block;
 
@@ -208,7 +209,7 @@ extern "C" int func_ov073_021220c0(daObjEwbIce_c *ice)
         angle = *(s16 *)((char *)((char *)ice + 0x300) + 0x32);
         amp = ice->mWobbleAmp;
         sine = data_02082214[(((int)((unsigned)(angle << 16) >> 16)) >> 4) * 2];
-        ice->mAngleX = (s16)(amp + (int)(((long long)amp * sine + 0x800) >> 12));
+        ice->mAngleX = (s16)(amp + FX_MUL(amp, sine));
         ApproachLinear(ice->mWobbleAmp, 0, kWobbleApproach);
         return 1;
     }

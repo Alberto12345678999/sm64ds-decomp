@@ -133,6 +133,7 @@ enum daKpa_c_AssetId {
 #include "dExtFrameCtrl_c.h"
 #include "Sound.h"
 #include "Message.h"
+#include "nitro/fx/fx.h"
 
 /* -------------------------------------------------------------------------- */
 /* Names for the numbers this file uses. The values are the ROM's; the names are
@@ -3179,10 +3180,10 @@ void daKpa_c::func_ov060_021128c0(){
             if (this->mVertSpeed >= 0x14000)
                 this->mVertSpeed = 0x14000;
         } else if (this->mGroundNormalY != 0) {
-            this->mVertSpeed = -(_ZN4cstd4fdivEii(
-                (int)(((s64)this->mGroundNormalX * this->unk_0a4 + 0x800) >> 12)
-              + (int)(((s64)this->mGroundNormalZ * this->unk_0ac + 0x800) >> 12),
-                this->mGroundNormalY) + 0x8000);
+            this->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(this->mGroundNormalX, this->unk_0a4) +
+                                                      FX_MUL(this->mGroundNormalZ, this->unk_0ac),
+                                                  this->mGroundNormalY) +
+                                 0x8000);
         }
     }
 
@@ -3497,10 +3498,10 @@ int daKpa_c::func_ov060_02111f08(){
         this->mCamLookAtZ = sp.z;
         dist = Vec3_HorzDist((struct Vector3*)(&this->mPosX), &sp);
         k = (unsigned short)(short)(Vec3_HorzAngle((struct Vector3*)(&this->mPosX), &sp) - 0x2000) >> 4;
-        v = (int)(((long long)dist * 0xA00 + 0x800) >> 12);
-        this->mCamPosX = this->mPosX + (int)(((long long)v * data_02082214[k * 2] + 0x800) >> 12);
+        v = FX_MUL(dist, 0xA00);
+        this->mCamPosX = this->mPosX + FX_MUL(v, data_02082214[k * 2]);
         this->mCamPosY = this->mPosY + 0xc8000;
-        this->mCamPosZ = this->mPosZ + (int)(((long long)v * data_02082214[k * 2 + 1] + 0x800) >> 12);
+        this->mCamPosZ = this->mPosZ + FX_MUL(v, data_02082214[k * 2 + 1]);
         cam->SetPos(*(const Vector3 *)(&this->mCamPosX));
         this->mCutsceneStep++;
         break;
@@ -3519,12 +3520,12 @@ int daKpa_c::func_ov060_02111f08(){
         sp.y = pv->y;
         sp.z = pv->z;
         dist = Vec3_HorzDist((struct Vector3*)(&this->mPosX), &sp);
-        d = (int)(((long long)dist * 0x600 + 0x800) >> 12);
+        d = FX_MUL(dist, 0x600);
         if (d < 0x1f4000)
             d = 0x1f4000;
         k = (unsigned short)(short)(Vec3_HorzAngle((struct Vector3*)(&this->mPosX), &sp) - 0x1000) >> 4;
-        sp.x = this->mPosX + (int)(((long long)d * data_02082214[k * 2] + 0x800) >> 12);
-        sp.z = this->mPosZ + (int)(((long long)d * data_02082214[k * 2 + 1] + 0x800) >> 12);
+        sp.x = this->mPosX + FX_MUL(d, data_02082214[k * 2]);
+        sp.z = this->mPosZ + FX_MUL(d, data_02082214[k * 2 + 1]);
         ApproachLinear(this->mCamPosX, sp.x, 0x4000);
         ApproachLinear(this->mCamPosZ, sp.z, 0x4000);
         ApproachLinear(this->mCamLookAtX, this->mPosX, 0x1e000);

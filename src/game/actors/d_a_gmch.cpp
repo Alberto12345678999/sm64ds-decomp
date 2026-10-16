@@ -60,6 +60,7 @@ enum daGmch_c_AssetId {
 #include "Model.h"
 #include "dExtFrameCtrl_c.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -505,11 +506,11 @@ int daGmch_c::EnterState7()
 
     angleIdx = ((u16)mAngleY >> 4);
     trig = data_02082214[angleIdx * 2];
-    mPosX = mPosX + (int)(((s64)trig * 0x50000 + 0x800) >> 12);
+    mPosX = mPosX + FX_MUL(trig, 0x50000);
     mPosY = mPosY + 0x50000;
     angleIdx = ((u16)mAngleY >> 4);
     trig = data_02082214[angleIdx * 2 + 1];
-    mPosZ = mPosZ + (int)(((s64)trig * 0x50000 + 0x800) >> 12);
+    mPosZ = mPosZ + FX_MUL(trig, 0x50000);
 
     holder = mHolder;
     {

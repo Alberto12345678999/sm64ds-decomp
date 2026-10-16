@@ -58,6 +58,7 @@ enum d_a_obj_ice_block_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
 
 struct KCL_File;
 struct CLPS_Block;
@@ -154,7 +155,7 @@ s32 daObjIceBlock_c::Behavior()
             pos.x = mPosX;
             pos.y = mPosY;
             pos.z = mPosZ;
-            pos.y += (int)(((long long)mScale * kShardHeight + 0x800) >> 12);
+            pos.y += FX_MUL(mScale, kShardHeight);
 
             mParticleHandle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                 mParticleHandle1, 0x77, pos.x, pos.y, pos.z, 0, 0);

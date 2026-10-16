@@ -51,6 +51,7 @@ enum daPgDfdr_c_AssetId {
 #include "SharedFilePtr.h"
 #include "TextureSequence.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -326,7 +327,7 @@ extern "C" void func_ov027_02111b2c(daPgDfdr_c *self)
         self->mModelAnim.speed = 0x1000;
     } else {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, ((FileRef *)&data_ov027_02113c74)->file, 0, 0x1000, 0);
-        self->mModelAnim.speed = (int)(((s64)data_ov027_02113a1c[self->mStepIndex].speed * 0x5000 + 0x800) >> 12);
+        self->mModelAnim.speed = FX_MUL(data_ov027_02113a1c[self->mStepIndex].speed, 0x5000);
     }
     self->unk_3d0 = 1;
 }

@@ -63,6 +63,7 @@
 #include "Player.h"
 #include "SaveData.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
 
 /* POD view of the 0x30-byte matrix. The single integer array preserves
  * the shadow update's block copy in C++ with Vector3's user-declared
@@ -920,8 +921,8 @@ void func_ov060_02116518(daKpaFire_c* self, u32 kind, int resize, int yOffset)
         if (self->mFireScale >= 0x8000) { sys->callbackScale = 0x7fff; } else { sys->callbackScale = (short)self->mFireScale; }
 
         if (kind == PARTICLE_SCALED_9A) {
-            *(int *)((char *)sys + 0x44) = (int)(((long long)(self->mFireScale) * 0x2800 + 0x800) >> 12);
-            sys->callbackVelocity = (short)(Fix12i)(((long long)(self->mFireScale) * 0xa66 + 0x800) >> 12);
+            *(int *)((char *)sys + 0x44) = FX_MUL((self->mFireScale), 0x2800);
+            sys->callbackVelocity = (short)FX_MUL((self->mFireScale), 0xa66);
         }
     }
 
@@ -938,8 +939,8 @@ void func_ov060_02116518(daKpaFire_c* self, u32 kind, int resize, int yOffset)
     if (kind != PARTICLE_SCALED_9A)
         return;
 
-    *(int *)((char *)sys + 0x44) = (int)(((long long)(self->mFireScale) * 0x2800 + 0x800) >> 12);
-    sys->callbackVelocity = (short)(Fix12i)(((long long)(self->mFireScale) * 0xa66 + 0x800) >> 12);
+    *(int *)((char *)sys + 0x44) = FX_MUL((self->mFireScale), 0x2800);
+    sys->callbackVelocity = (short)FX_MUL((self->mFireScale), 0xa66);
 }
 }
 

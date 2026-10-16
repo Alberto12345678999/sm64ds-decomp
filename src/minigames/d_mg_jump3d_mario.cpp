@@ -48,6 +48,7 @@
 #include "OAM.h"
 #include "fBase_c.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 static const int kWallX = 0x6c000;   /* mPos.x clamp: the arena walls */
 static const int kScreenYMax = 0xbc; /* past this mScreenY the Mario damps out */
@@ -192,12 +193,12 @@ extern "C" void Jump3D_SetTuning(int a)
     int b;
     if (a > 0x3000) a = 0x3000;
     b = func_020531a4(a);
-    data_ov006_0213b010 = (int)(((long long)b * -0x2400 + 0x800) >> 12);
-    data_ov006_0213b018 = (int)(((long long)a * 0xe0 + 0x800) >> 12);
-    data_ov006_0213b00c = (int)(((long long)b * 0x4c00 + 0x800) >> 12);
-    data_ov006_0213b01c = (int)(((long long)b * 0x200 + 0x800) >> 12);
-    data_ov006_0213b014 = (int)(((long long)b * 0x180 + 0x800) >> 12);
-    data_ov006_0213b008 = (int)(((long long)b * 0x5000 + 0x800) >> 12);
+    data_ov006_0213b010 = FX_MUL(b, -0x2400);
+    data_ov006_0213b018 = FX_MUL(a, 0xe0);
+    data_ov006_0213b00c = FX_MUL(b, 0x4c00);
+    data_ov006_0213b01c = FX_MUL(b, 0x200);
+    data_ov006_0213b014 = FX_MUL(b, 0x180);
+    data_ov006_0213b008 = FX_MUL(b, 0x5000);
 }
 
 // @symbol Jump3D_DrawAll
@@ -341,8 +342,7 @@ extern "C" void Jump3D_StartRoundLayout(void)
         {
             int s = data_ov006_0213b014;
             int c = *(int *)(e + 8);
-            *(int *)(data_ov006_02140420 + ooff + 0x20) =
-                (int)(((long long)s * c + 0x800) >> 12);
+            *(int *)(data_ov006_02140420 + ooff + 0x20) = FX_MUL(s, c);
         }
         ((dMgJump3DMario_c *)(data_ov006_02140420 + ooff))->UpdateModelMatrix();
         i++;
@@ -483,7 +483,7 @@ void dMgJump3DMario_c::StateDamp()
         EnterRespawn();
         return;
     }
-    mVel.x = (int)(((s64)mVel.x * 0xc00 + 0x800) >> 12);
+    mVel.x = FX_MUL(mVel.x, 0xc00);
     if (mPos.x < -kWallX) {
         mPos.x = -kWallX;
         return;
@@ -669,7 +669,7 @@ void dMgJump3DMario_c::StateMove()
     {
         int pos = mPos.x;
         if (pos < -kWallX && mVel.x < 0) {
-            mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
+            mVel.x = -FX_MUL(mVel.x, 0xd00);
             if (mVel.y > 0) {
                 mAnimIdx = 2;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
@@ -677,7 +677,7 @@ void dMgJump3DMario_c::StateMove()
                 Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
             }
         } else if (pos > kWallX && mVel.x > 0) {
-            mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
+            mVel.x = -FX_MUL(mVel.x, 0xd00);
             if (mVel.y > 0) {
                 mAnimIdx = 2;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
@@ -788,7 +788,7 @@ void dMgJump3DMario_c::StateBounce()
     }
 
     if (mPos.x < -kWallX && mVel.x < 0) {
-        mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
+        mVel.x = -FX_MUL(mVel.x, 0xd00);
         if (mVel.y > 0) {
             mAnimIdx = 2;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
@@ -796,7 +796,7 @@ void dMgJump3DMario_c::StateBounce()
             Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
         }
     } else if (mPos.x > kWallX && mVel.x > 0) {
-        mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
+        mVel.x = -FX_MUL(mVel.x, 0xd00);
         if (mVel.y > 0) {
             mAnimIdx = 2;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
@@ -884,7 +884,7 @@ void dMgJump3DMario_c::StateRespawn()
         mVel.y = 0;
         speed = data_ov006_0213b01c;
         rnd = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
-        mVel.x = (int)(((s64)(((int)rnd - 0x800) << 1) * speed + 0x800) >> 12);
+        mVel.x = FX_MUL((((int)rnd - 0x800) << 1), speed);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov006_02140424, 0x40000000, kAnimSpeed, 0);
         EnterMove();
         return;

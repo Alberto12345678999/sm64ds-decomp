@@ -14,7 +14,13 @@ shared minigame functions. Windows only (input and capture use user32/gdi32).
     shows as unlocked. Leave and re-enter the Rec Room after it applies.
   - `build/melonds/STOP` (create it) detaches cleanly.
   - `build/melonds/PEEK`: write lines of `addr len` (both hex) and the answer
-    lands in `PEEK.out`.
+    lands in `PEEK.out`. Reads of more than about 0xc8 bytes time out; split them.
+  - `build/melonds/POKE`: write lines of `addr hexbytes` to patch RAM; the old and
+    new bytes land in `POKE.out`. Writing `1eff2fe1` (`bx lr`) over a draw
+    function's first instruction for one screenshot shows what it draws.
+  - The loop polls for STOP, PEEK and POKE every 50 ms, so a bot can read the game
+    about ten times a second. A PEEK or POKE waits while a breakpoint stop is
+    pending, so the two stop replies cannot cross.
 - `input.ps1 -Action key|tap|drag|size` — keys and bottom-screen touches
   in DS coordinates (0..255, 0..191). `size` sets the window to 900x1180, the
   size the touch mapping was measured at.
@@ -22,6 +28,15 @@ shared minigame functions. Windows only (input and capture use user32/gdi32).
 - `ts.sh X Y [wait] [name]` — tap, wait, capture to `build/melonds/shots/`.
 - `slotbot.py probe|play` — times the taps in Toad's face-slot game
   (`dScMgSlot3_c`) by tracking piece colours.
+- `mgpeek.py [offset len] ...` — reads the live scene through `gMgScene` and
+  PEEK (offsets from the scene, hex). `mgpeek.py 0 10` shows the vtable and
+  `param1`, whose low byte is the variant `IsAltVariant` tests.
+- `teresabot.py <scene> [seconds]` — plays Hide and Boo Seek (`dScMgTeresa_c`):
+  reads the Boo records through PEEK and holds the stylus on the Boo while
+  rubbing is enabled, then screenshots the find.
+- `snowbot.py [seconds] [steer]` — pushes Snowball's ball up the course with
+  repeated upward swipes, reading the ball through PEEK. It gets most of the way
+  in 40 s; obstacles cost time, as it does not read the course.
 
 ## Setup
 Everything runtime lives in `build/melonds/` (gitignored): melonDS 1.1

@@ -47,6 +47,7 @@ enum daObjCtRotateBlock_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 /* Per-variant records are 0xc bytes. The first word is a SharedFilePtr. */
 extern char data_ov065_0211cfd0[];
@@ -122,7 +123,7 @@ int daObjCtRotateBlock_c::UpdateShadow()
         int idx = (unsigned short)(short)(mAngleZ << 1) >> 4;
         int s = data_02082214[idx << 1];
         int sa = s < 0 ? -s : s;
-        int depthAdd = (int)(((long long)sa * 0x64000 + 0x800) >> 12);
+        int depthAdd = FX_MUL(sa, 0x64000);
         return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             this, &mShadowModel, &mShadowMat, d + depthAdd, b, d, 0xf);
     }

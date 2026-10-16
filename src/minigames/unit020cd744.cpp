@@ -22,6 +22,7 @@
 #include "types.h"
 #include "decl_common.h"
 #include "common.h"
+#include "SharedFilePtr.h"
 
 #pragma defer_codegen off
 
@@ -963,15 +964,14 @@ extern "C" void TrmpItem_HideAll(void){
 }
 
 namespace s020ceedc {
-extern "C" extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern "C" {extern int data_ov006_02140850[];}
 extern "C" {extern int data_ov006_02140858[];}
 extern "C" {extern int data_ov006_02140848[];}
 extern "C" void TrmpItem_ReleaseFiles(void)
 {
-    _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140850);
-    _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140858);
-    _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140848);
+    ((SharedFilePtr *)data_ov006_02140850)->Release();
+    ((SharedFilePtr *)data_ov006_02140858)->Release();
+    ((SharedFilePtr *)data_ov006_02140848)->Release();
 }
 }
 

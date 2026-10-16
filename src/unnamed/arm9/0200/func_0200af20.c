@@ -3,6 +3,7 @@
 #include "decl_common.h"
 /* recovered: shared common types */
 #include "common.h"
+#include "nitro/fx/fx.h"
 typedef long long s64;
 
 
@@ -48,8 +49,8 @@ void func_0200af20(char *c, struct Vector3 *v1, struct Vector3 *v2, short *out)
     idx = (ang >> 4) * 2;
 
     v2->y = *(int *)(c + 0x9c) + 0x8f7690;
-    v2->x = *(int *)(c + 0x98) + (int)(((s64)data_02082214[idx] * 0x15a6f80 + 0x800) >> 12);
-    v2->z = *(int *)(c + 0xa0) + (int)(((s64)data_02082214[idx + 1] * 0x15a6f80 + 0x800) >> 12);
+    v2->x = *(int *)(c + 0x98) + FX_MUL(data_02082214[idx], 0x15a6f80);
+    v2->z = *(int *)(c + 0xa0) + FX_MUL(data_02082214[idx + 1], 0x15a6f80);
 
     if (b != 0) {
         {

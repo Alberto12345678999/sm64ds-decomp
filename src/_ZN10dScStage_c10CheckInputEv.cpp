@@ -2,6 +2,7 @@
 #include "dScStage_c.h"
 #include "types.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 struct TouchData { u8 held; u8 edge; u8 x; u8 y; };
 // The ROM reads this record table through one base pointer (gTouchHeld) plus
 // field offsets, not through the per-lane gTouchX/gTouchY/gTouchEdge symbols.
@@ -139,9 +140,9 @@ main_part:
                     else max = 0x24;
                     if (len > max) {
                         int quot = _ZN4cstd4fdivEii(max, len);
-                        dx = (int)(((s64)dx * quot + 0x800) >> 12);
+                        dx = FX_MUL(dx, quot);
                         p->tx = newx - dx;
-                        dy = (int)(((s64)dy * quot + 0x800) >> 12);
+                        dy = FX_MUL(dy, quot);
                         p->ty = newy - dy;
                         len = max;
                     } else if (len < 4) {

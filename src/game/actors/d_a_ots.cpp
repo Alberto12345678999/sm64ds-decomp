@@ -107,6 +107,7 @@
 #include "dBgCh_Gnd.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -432,7 +433,7 @@ void daOts_c::func_ov064_02116bac(){
   this->mModelAnim.mat4x3.t.z = this->mPosZ >> 3;
   int d = this->mPosY - tail().mFloorY;     /* height above the floor, at least 1 unit */
   if(d <= 0x1000) d = 0x1000;
-  int rad = (int)(((long long)d * 0x180 + 0x800) >> 12);    /* how much the shadow shrinks */
+  int rad = FX_MUL(d, 0x180); /* how much the shadow shrinks */
   int h = tail().mShadowRadius - rad;
   if(h < 0xa000) h = 0xa000;                /* shadow radius, at least 10 units */
   Matrix4x3_FromRotationY(&tail().mShadowMtx, this->mAngleY);

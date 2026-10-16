@@ -4319,42 +4319,6 @@
         "param:#2 const void *"
       ]
     },
-    "Vram__Map": {
-      "src/_ZN2GX12SetBankForBGEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN2GX13SetBankForOBJEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN2GX13SetBankForTexEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN2GX15SetBankForSubBGEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN2GX16SetBankForSubOBJEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN2GX17SetBankForTexPlttEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN2GX22SetBankForSubBGExtPlttEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN2GX23SetBankForSubOBJExtPlttEt.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/unnamed/arm9/0205/func_020541b8.c": [
-        "param:#1 unsigned short"
-      ],
-      "src/unnamed/arm9/0205/func_02054430.c": [
-        "arity:2",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02054748.c": [
-        "param:#1 unsigned short"
-      ]
-    },
     "WM_CheckStateEx": {
       "src/unnamed/arm9/0206/func_02061674.c": [
         "param:#2 int"
@@ -13916,29 +13880,8 @@
       ]
     },
     "data_020a6088": {
-      "src/_ZN2GX12SetBankForBGEt.cpp": [
-        "return:GXState"
-      ],
-      "src/_ZN2GX13SetBankForOBJEt.cpp": [
-        "return:GXState"
-      ],
-      "src/_ZN2GX13SetBankForTexEt.cpp": [
-        "return:GXState"
-      ],
-      "src/unnamed/arm9/0205/func_02053e1c.c": [
-        "return:unsigned short"
-      ],
-      "src/unnamed/arm9/0205/func_02053e34.c": [
-        "return:unsigned short"
-      ],
-      "src/unnamed/arm9/0205/func_02053f58.c": [
-        "return:unsigned short"
-      ],
-      "src/unnamed/arm9/0205/func_020541b8.c": [
-        "return:unsigned short"
-      ],
-      "src/unnamed/arm9/0205/func_02054430.c": [
-        "return:unsigned short"
+      "src/unnamed/arm9/0205/func_02053d9c.c": [
+        "return:unsigned short []"
       ]
     },
     "data_020a60c4": {
@@ -24700,16 +24643,6 @@
         "param:#2 Vec3s *"
       ]
     },
-    "func_02053e1c": {
-      "src/engine/model/Model4.cpp": [
-        "return:int"
-      ]
-    },
-    "func_02053e34": {
-      "src/engine/model/Model4.cpp": [
-        "return:int"
-      ]
-    },
     "func_02053ec0": {
       "src/engine/model/Model4.cpp": [
         "return:unsigned short"
@@ -24760,20 +24693,6 @@
       ]
     },
     "func_020541a4": {
-      "src/unnamed/ov007/func_ov007_020bd648.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov007/func_ov007_020bd960.c": [
-        "return:void"
-      ]
-    },
-    "func_02054430": {
-      "src/minigames/d_s_mg_d3d_base.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0201/func_02019440.c": [
-        "return:void"
-      ],
       "src/unnamed/ov007/func_ov007_020bd648.c": [
         "return:void"
       ],

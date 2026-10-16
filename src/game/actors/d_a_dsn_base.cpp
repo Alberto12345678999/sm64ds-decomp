@@ -47,6 +47,7 @@
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 /* Actor IDs this TU compares. No header vocabulary exists (cleaned callers
  * pass raw hex), so they live here, cited to the ROM's own debug table. */
@@ -312,7 +313,7 @@ void daDsnBase_c::func_ov091_02133098()
         heightAboveGround = 0x14000;
         shadowDrop = 0;
     }
-    int radius = (int)(((long long)heightAboveGround * 0x60 + 0x800) >> 12);
+    int radius = FX_MUL(heightAboveGround, 0x60);
     s32 *clipRadius = &mClipRadius;
     DsnBaseFileTable *files = (DsnBaseFileTable *)mFileTable;
     int scaleX = files->shadowExtentX - radius;

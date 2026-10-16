@@ -59,6 +59,7 @@ enum daObjRotateUpdownLift_c_AssetId {
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
 #include "decl_Platform.h"
+#include "nitro/fx/fx.h"
 
 /* Plain 12-byte point. Vector3's destructor is empty but the type is not
    POD, and the copies below are three-word ldm/stm with no cleanup. */
@@ -262,7 +263,7 @@ int daObjRotateUpdownLift_c::func_ov091_02131160()
     int sinIdx = (u16)mAngleX >> 4;
     int sine = data_02082214[sinIdx << 1];
     int sineAbs = sine < 0 ? -sine : sine;
-    int scaled = (int)(((long long)sineAbs * 0xa0000 + 0x800) >> 12);
+    int scaled = FX_MUL(sineAbs, 0xa0000);
     int variantA = mVariant;
     int base = shadowBaseY.v[variantA];
     int sum = base + scaled;
@@ -280,7 +281,7 @@ int daObjRotateUpdownLift_c::func_ov091_02131160()
     mClipOffsetY = -((int)(h + ((unsigned)h >> 31)) >> 1);
     mClipRadius = (int)(cap + ((unsigned)cap >> 31)) >> 4;
 
-    int shr = (int)(((long long)h * 32 + 0x800) >> 12);
+    int shr = FX_MUL(h, 32);
     int cosIdx = (u16)mAngleX >> 4;
     int variantC = mVariant;
     int sx = shadowSizeX.v[variantC] - shr;
@@ -289,8 +290,7 @@ int daObjRotateUpdownLift_c::func_ov091_02131160()
     if (cosine < 0)
         cosine = -cosine;
     return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        c, c + 0x320, c + 0x348, sx, h,
-        shadowSizeZ.v[variantC] + (int)(((long long)fac * cosine + 0x800) >> 12), 0xf);
+        c, c + 0x320, c + 0x348, sx, h, shadowSizeZ.v[variantC] + FX_MUL(fac, cosine), 0xf);
 }
 
 // 0x02131340 (0x48)

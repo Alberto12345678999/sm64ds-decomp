@@ -76,6 +76,7 @@ enum dScMgHanachan_c_AssetId {
 #include "dScMgHanachan_c.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 typedef struct V2 { int x, y; } V2;
 typedef struct { int x, y; } Vec2;
@@ -1571,8 +1572,8 @@ void Wiggler_StartPathA(Obj *self, int n)
         base.x = 0;
         base.y = 0;
         delta = 0;
-        base.x = (int)(((long long)cm * rC + 0x800) >> 12) + (int)(((long long)dm * rD + 0x800) >> 12);
-        base.y = (int)((((long long)rA << 16) + 0x800) >> 12) + (int)(((long long)rB * 0xb0000 + 0x800) >> 12);
+        base.x = FX_MUL(cm, rC) + FX_MUL(dm, rD);
+        base.y = (int)((((long long)rA << 16) + 0x800) >> 12) + FX_MUL(rB, 0xb0000);
 
         for (; i < 5; i++) {
             int bx = *(volatile int *)&base.x;
@@ -1710,8 +1711,7 @@ void Wiggler_StartPathB(char* raw, int idx)
     B = cstd::fdiv((n1 - idx) << 12, n1 << 12);
 
     p = (n1 - 2) << 3;
-    valY = (int)(((long long)((0x28 - p) << 12) * A + 0x800) >> 12)
-         + (int)(((long long)((p + 0x98) << 12) * B + 0x800) >> 12);
+    valY = FX_MUL(((0x28 - p) << 12), A) + FX_MUL(((p + 0x98) << 12), B);
 
     *(int*)((char*)pos + 4) = 0;
     *(int*)((char*)pos + 0) = 0;
@@ -1782,8 +1782,7 @@ void Wiggler_StartPathC(struct C* c, int param)
     k = (m - 2) * 8;
 
     vec0.y = 0;
-    vec0.y = (int)(((long long)((0x40 - k) << 12) * r1 + 0x800) >> 12)
-           + (int)(((long long)((k + 0x98) << 12) * r2 + 0x800) >> 12);
+    vec0.y = FX_MUL(((0x40 - k) << 12), r1) + FX_MUL(((k + 0x98) << 12), r2);
     vec0.x = 0;
     if (param & 1)
         vec0.x = 0xa8000;
