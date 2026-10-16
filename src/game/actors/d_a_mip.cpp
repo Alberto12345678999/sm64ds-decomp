@@ -644,7 +644,7 @@ int daMip_c::StateCaughtMain()
                 if (pl->ShowMessage(*this, (u32)msg, (::Vector3 *)&pos, zero, zero) == 1) {
                     mActionStep = 1;
                     if (soundId != 0)
-                        func_02012694(soundId, (const ::Vector3 *)&mCamSpacePosX);
+                        func_02012694(soundId, &mCamSpacePos);
                 }
             }
             return 1;
@@ -675,7 +675,8 @@ int daMip_c::StateCaughtMain()
         {
             s8 cc = mAreaId;
             int m1 = -1;
-            dActor_c *spawned = dActor_c::Spawn(0xe5, mRabbitId, *(::Vector3 *)&pos7, (Vector3_16 *)&mAngleX, cc, m1);
+            dActor_c *spawned =
+                dActor_c::Spawn(0xe5, mRabbitId, *(::Vector3 *)&pos7, &mAngle, cc, m1);
             if (spawned != 0)
                 ((daObj_Mip_Key_c *)spawned)->unk_190 = uniqueID;
         }
@@ -1265,7 +1266,7 @@ int daMip_c::Render()
         RenderMirrorImage();
     }
 
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -1286,7 +1287,7 @@ void daMip_c::RenderMirrorImage()
     MulMat3x3Mat3x3(&mModelAnim.mat4x3, &data_020a0e68, &mModelAnim.mat4x3);
     func_02016acc(&mModelAnim, 0x80);
     func_02016b24(&mModelAnim, 0x40);
-    mModelAnim.ModelAnim::Render((const Vector3 *)&mScaleX);
+    mModelAnim.ModelAnim::Render(&mScale);
     mModelAnim.ApplyOpacity(0xff, 0);
     func_02016b24(&mModelAnim, 0x80);
     func_02016acc(&mModelAnim, 0x40);
@@ -1408,7 +1409,7 @@ int daMip_c::Behavior()
                         }
                         pos.y += 0x64000;
                         if (((Player *)talker)->ShowMessage(*(fBase_c *)c, messageId, 0, 0, 0) == 1) {
-                            func_02012694(soundId, (const ::Vector3 *)(&mCamSpacePosX));
+                            func_02012694(soundId, &mCamSpacePos);
                             mTalkState = 1;
                         }
                     } else if (talkStep == 1 && ((Player *)talker)->GetTalkState() == -1) {
@@ -1569,7 +1570,7 @@ int daMip_c::InitResources()
         PathPtr path;
         path.FromID(mPathId);
         mPathNodeIndex = 1;
-        path.GetNode(*(Vector3 *)&mPosX, mPathNodeIndex);
+        path.GetNode(mPos, mPathNodeIndex);
         mNumPathNodes = path.NumNodes();
     }
     UpdateMatrixAndShadow();

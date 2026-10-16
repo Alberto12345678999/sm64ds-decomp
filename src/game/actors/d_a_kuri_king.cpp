@@ -338,7 +338,7 @@ void daKuriKing_c::func_ov074_0211f244()
             t->unk_0a4 = 0;
             t->mVertSpeed = ((rv & 0x1f) << 0xc) + 0x60000;
             t->unk_0ac = 0;
-            Vector3_16 pos = *(Vector3_16*)&t->mPrevAngleX;
+            Vector3_16 pos = t->mPrevAngle;
             rv &= 0x1000;
             pos.y = (short)(pos.y + rv);
             short x = pos.x + 0;
@@ -706,8 +706,7 @@ L90:;
         if (this->mSpawnedCount % 2 == 0) sid = 0xeeef;
     }
 
-    daKrb_c* sp2 = (daKrb_c*)dActor_c::Spawn(
-        0xc8, sid, pos, (const struct Vector3_16*)&this->mAngleX, this->mAreaId, -1);
+    daKrb_c *sp2 = (daKrb_c *)dActor_c::Spawn(0xc8, sid, pos, &this->mAngle, this->mAreaId, -1);
     sp2->mTargetUniqueID = this->uniqueID;
     Vector3 v2;
     v2.x = this->mSpawnPosX;
@@ -1152,7 +1151,7 @@ void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mo
     dst.y = this->mPosY;
     dst.z = this->mPosZ;
     {
-        Vector3 *pv = (Vector3*)&other->mPosX;
+        Vector3 *pv = &other->mPos;
         src.x = pv->x;
         src.y = pv->y;
         src.z = pv->z;
@@ -1277,7 +1276,7 @@ void daKuriKing_c::func_ov074_02120d74()
                     if (cur->hitFlags & 0x3c0) {
                         hit = 1;
                     } else {
-                        int ang = Vec3_HorzAngle((struct Vector3 *)&this->mPosX, (struct Vector3 *)&pl->mPosX);
+                        int ang = Vec3_HorzAngle(&this->mPos, &pl->mPos);
                         dir = 1;
                         if (AngleDiff(ang, this->mAngleY) > 0x4000)
                             dir = -1;
@@ -1362,7 +1361,7 @@ extern "C" void Matrix4x3_ApplyInPlaceToScale(void* m, int x, int y, int z);
 extern "C" struct Matrix4x3 data_020a0e68;
 void daKuriKing_c::func_ov074_02121300(){
   struct Vector3 v;
-  Vec3_Asr(&v, (struct Vector3*)&this->mPosX, 3);
+  Vec3_Asr(&v, &this->mPos, 3);
   Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
   Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
   Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, this->mScaleX, this->mScaleY, this->mScaleZ);
@@ -1605,7 +1604,7 @@ int daKuriKing_c::Render()
 {
     if (param1 == 0x1111) return func_ov074_021222e0();
     if (mShouldRender == 0) return 1;
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     mTextureSequence.Update(mModelAnim.data);
     mMaterialChanger.Update(mModelAnim.data);
     mTextureTransformer.Update(mModelAnim.data);
@@ -1848,7 +1847,7 @@ int daKuriKing_c::func_ov074_0212229c()
 int daKuriKing_c::func_ov074_021222e0()
 {
     Vector3 v;
-    Vec3_Asr(&v, (Vector3 *)&this->mPosX, 3);
+    Vec3_Asr(&v, &this->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x6400, 0);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);

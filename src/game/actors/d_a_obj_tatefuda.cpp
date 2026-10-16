@@ -835,7 +835,7 @@ void daObjTatefuda_c::Talk()
             }
             break;
         case 1:
-            if (Vec3_ApproachHorz((struct Vector3 *)&player->mPosX, &tgt, 0xa000) != 0) {
+            if (Vec3_ApproachHorz(&player->mPos, &tgt, 0xa000) != 0) {
                 talkStep = &mTalkStep;
                 *talkStep = (u8)(*talkStep + 1);
             }
@@ -923,7 +923,7 @@ int daObjTatefuda_c::TryStartTalk() {
     fail:
         return 0;
     success: {
-        int ang = Vec3_HorzAngle((struct Vector3 *)&mPosX, (struct Vector3 *)&other->mPosX);
+        int ang = Vec3_HorzAngle(&mPos, &other->mPos);
         if (AngleDiff(ang, mAngleY) > 0x4000)
             return 0;
         mTalkingPlayer = (Player *)other;
@@ -1019,7 +1019,7 @@ void daObjTatefuda_c::Kill()
     dustPos.y = pos.y;
     dustPos.z = pos.z;
     DisappearPoofDustAt(dustPos);
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     Reset();
 }
 
@@ -1071,7 +1071,7 @@ void daObjTatefuda_c::OnGroundPounded(dActor_c &other)
 {
     if (mPoundsLeft == 0) return;
     if (mPoundCooldown != 0) return;
-    Sound::PlayBank3(0x62, *(const Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x62, mCamSpacePos);
     if (other.param1 == 2 || ((Player &)other).mIsMega != 0) {
         mPosY -= (mPoundsLeft * 0x2d) << 12;
         mPoundsLeft = 0;
@@ -1185,7 +1185,7 @@ void AttachToHolder(struct daObjTatefuda_c *self)
  * Called by DROPPED's update, and by Behavior while the state is THROWN. */
 void RebuildModelMatrix(struct daObjTatefuda_c* self){
     struct Vector3 v;
-    Vec3_Asr(&v, (struct Vector3*)&self->mPosX, 3);
+    Vec3_Asr(&v, &self->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x8c00, 0);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68,

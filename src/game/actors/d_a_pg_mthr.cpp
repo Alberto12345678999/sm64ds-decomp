@@ -322,8 +322,7 @@ int daPgMthr_c::func_ov018_02111fac()
         }
         break;
     case 1:
-        if (ApproachLinear(mAngleY,
-                Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mPlayer->mPosX), 0x514)) {
+        if (ApproachLinear(mAngleY, Vec3_HorzAngle(&mPos, &mPlayer->mPos), 0x514)) {
             Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
             Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x300000, -0x480000);
@@ -350,7 +349,7 @@ int daPgMthr_c::func_ov018_02111fac()
                 mGaveStar = 1;
                 slot = (unsigned char)(param1 & 0xf);
                 starParam = (unsigned)slot | 0x40;
-                dActor_c::Spawn(ACTOR_POWER_STAR, starParam, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+                dActor_c::Spawn(ACTOR_POWER_STAR, starParam, mPos, 0, mAreaId, -1);
             }
             mPlayer->DropActor();
             {
@@ -389,8 +388,7 @@ int daPgMthr_c::func_ov018_02111f1c()
 // @symbol _ZN10daPgMthr_c19func_ov018_02111e28Ev
 int daPgMthr_c::func_ov018_02111e28()
 {
-    ApproachLinear(mAngleY,
-        Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mPlayer->mPosX), 0x514);
+    ApproachLinear(mAngleY, Vec3_HorzAngle(&mPos, &mPlayer->mPos), 0x514);
     mPrevAngleY = mAngleY;
     UpdatePos(&mdCcAc_c);
     func_ov018_02111bf0((char *)this, &mWithMeshClsn);
@@ -403,7 +401,7 @@ int daPgMthr_c::func_ov018_02111e28()
         holding = (mPlayer->mObjInMouth != 0);
     else
         holding = (mPlayer->mHeldObj != 0);
-    if (holding == 0 || Vec3_Dist((Vector3 *)&mHomePosX, (Vector3 *)&mPlayer->mPosX) > HOME_RANGE) {
+    if (holding == 0 || Vec3_Dist((Vector3 *)&mHomePosX, &mPlayer->mPos) > HOME_RANGE) {
         mPlayer = 0;
         func_ov018_021123d0(0);
     }
@@ -501,7 +499,7 @@ void daPgMthr_c::func_ov018_02111b3c()
 
     if (p == 0)
         return;
-    if (Vec3_Dist((Vector3 *)&mHomePosX, (Vector3 *)&p->mPosX) > HOME_RANGE)
+    if (Vec3_Dist((Vector3 *)&mHomePosX, &p->mPos) > HOME_RANGE)
         return;
     if (p->param1 == CHAR_YOSHI)
         held = (dActor_c *)p->mObjInMouth;
@@ -537,8 +535,8 @@ void daPgMthr_c::func_ov018_02111a48(char *b)
         return;
     who = (dActor_c *)b;
 
-    dist = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&who->mPosX);
-    horzAngle = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&who->mPosX);
+    dist = Vec3_HorzDist(&mPos, &who->mPos);
+    horzAngle = Vec3_HorzAngle(&mPos, &who->mPos);
 
     if (dist < LOOK_RANGE && AngleDiff(horzAngle, mAngleY) < 0x1400) {
         tz = who->mPosZ;

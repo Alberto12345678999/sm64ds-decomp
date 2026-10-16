@@ -334,15 +334,11 @@ int daBakubaku_c::func_ov032_02111e24()
     if (func_ov032_02111350() == 1) {
         mStateTimer = 0x28;
         mChaseCooldown = 0x28;
-        ang = Vec3_HorzAngle(
-            (const Vector3 *)&mPosX,
-            (const Vector3 *)&mSpawnPosX);
+        ang = Vec3_HorzAngle(&mPos, (const Vector3 *)&mSpawnPosX);
         mAngTarget = ang;
     }
     ApproachLinear(mPrevAngleY, mAngTarget, 0x100);
-    ang = Vec3_VertAngle(
-        (const Vector3 *)&mPosX,
-        (const Vector3 *)&mSpawnPosX);
+    ang = Vec3_VertAngle(&mPos, (const Vector3 *)&mSpawnPosX);
     ApproachLinear(mPrevAngleX, ang, 0x100);
     in.z = 0;
     in.z = 0x5000;
@@ -420,14 +416,14 @@ int daBakubaku_c::func_ov032_02111b9c()
         return 1;
     }
 
-    mAngTarget = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
+    mAngTarget = Vec3_HorzAngle(&mPos, (Vector3 *)&mTargetPosX);
     unsigned int r = (unsigned int)RandomIntInternal(data_0209e650);
     int s5 = (int)(((r >> 8) & 3) << 0x1c) >> 0x10;
     ApproachLinear(mPrevAngleY, mAngTarget, 0x200);
-    if (Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX) < 0x258000) {
+    if (Vec3_HorzDist(&mPos, (Vector3 *)&mTargetPosX) < 0x258000) {
         int d = AngleDiff(mAngleY, mAngTarget);
         if (d < (int)(short)(s5 + 0x200)) {
-            mAngTarget = Vec3_VertAngle((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
+            mAngTarget = Vec3_VertAngle(&mPos, (Vector3 *)&mTargetPosX);
             mFlags = 0;
             mModelAnim.speed = 0x1000;
             mDiveStartY = mPosY;
@@ -617,7 +613,7 @@ int daBakubaku_c::func_ov032_02111620()
         if (data_0209f32c > mPosY) {
             ApproachLinear(mPrevAngleX, 0, 0x200);
         } else {
-            ApproachLinear(mPrevAngleX, Vec3_VertAngle((const Vector3 *)&mPosX, &vec), 0x200);
+            ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, &vec), 0x200);
         }
         n = (unsigned int)(mModelAnim.currFrame << 4) >> 0x10;
         if (n > 0x14 && n < 0x3c)
@@ -701,9 +697,7 @@ int daBakubaku_c::func_ov032_02111350()
     if (mWithMeshClsn.IsOnWall() != 0
         || mWithMeshClsn.IsOnGround() != 0)
         return 1;
-    if (Vec3_HorzDist(
-            (struct Vector3 *)&mSpawnPosX,
-            (struct Vector3 *)&mPosX) > 0x4b0000)
+    if (Vec3_HorzDist((struct Vector3 *)&mSpawnPosX, &mPos) > 0x4b0000)
         return 1;
     if (mState != &data_ov032_02113abc) {
         if (data_0209f32c < mPosY) return 1;

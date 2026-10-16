@@ -231,7 +231,7 @@ void daObjWc_Obj03_c::CheckClsnWithPlayer()
         return;
     mActive = 1;
     water->mTargetPosY = mPosY;
-    Sound::PlayBank3(0x63, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x63, mCamSpacePos);
 }
 
 /* -------------------------------------------------------------------------- */

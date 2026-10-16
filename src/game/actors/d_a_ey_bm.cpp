@@ -233,7 +233,7 @@ void daEyBm_c::UpdateShadow()
     mMatrix.m[11] = mPosZ >> 3;
 
     dBgCh_Gnd ground;
-    ground.SetObjAndPos(*(Vector3 *)&mPosX, this);
+    ground.SetObjAndPos(mPos, this);
     Fix12i depth;
     if (ground.DetectClsn())
         depth = (mPosY - ground.clsnY) + 0x1e000;

@@ -632,10 +632,10 @@ int daObjMarioCap_c::Render()
     int t = mType;
     if (t == 4 || t == 17 || t == 5 || t == 18 || t == 16 || t == 11 || (unsigned)(t - 6) <= 3) {
         if (!(mBlinkHidden & 1) || mStateEntry == (int)&data_ov002_0210df54) {
-            mModelAnim.Model::Render((const Vector3 *)&mScaleX);
+            mModelAnim.Model::Render(&mScale);
         }
     } else {
-        mModelAnim.Model::Render((const Vector3 *)&mScaleX);
+        mModelAnim.Model::Render(&mScale);
     }
     return 1;
 }
@@ -840,7 +840,8 @@ int daObjMarioCap_c::InitWait()
 int daObjMarioCap_c::Wait() {
     if (CAP_OVERRIDE_MATRIX(this) == 0 && !SaveData::HasPlayerLostCap()) {
         if (CAP_TIMER(this) == 0 && mWithMeshClsn.IsOnGround()) {
-            if (dActor_c::Spawn(kActorMarioCap, param1 | 0x12, *(const Vector3 *)&mPosX, (const Vector3_16 *)0, mAreaId, -1)) {
+            if (dActor_c::Spawn(kActorMarioCap, param1 | 0x12, mPos, (const Vector3_16 *)0, mAreaId,
+                                -1)) {
                 CAP_TIMER(this) = 3;
             }
         }
@@ -1138,7 +1139,7 @@ int daObjMarioCap_c::InitTaken()
             if (p->mCharacter == 3) {
                 if (mModelIndex == (int)p->param1) {
                     struct Vector3 v;
-                    Sound::PlayBank3(kSfx1Up, *(Vector3 *)&mCamSpacePosX);
+                    Sound::PlayBank3(kSfx1Up, mCamSpacePos);
                     GiveLives(1);
                     v.x = mPosX;
                     v.y = mPosY;

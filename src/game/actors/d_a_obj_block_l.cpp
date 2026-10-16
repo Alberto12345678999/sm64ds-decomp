@@ -315,7 +315,7 @@ void daObjBlockL_c::Kill()
     dustPos.z = pos.z;
     PoofDustAt(dustPos);
 
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
 
     NotifyLinkedActor();
 
