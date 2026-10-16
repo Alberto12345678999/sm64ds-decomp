@@ -7,7 +7,7 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x0201cb7c..0x0201fcd4, 32 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
-    "TOP EDGE: src/ui/messages/func_0201cb2c.c (ParseMessageBankSections, 0x0201cb2c..0x0201cb7c) ends where dScStage_c::UpdateMessage begins. It is the message-bank parser, called from the bank loader past this file's bottom edge (func_0201fe08) and from func_0205947c, and nothing in this run calls it, so it stays out. It is also Message2.cpp's bottom edge. BOTTOM EDGE: src/LoadFont.cpp begins exactly at 0x0201fcd4, which is the end of the \"Message, menu and course text\" run in notes/mangled-fold-decisions.md (0x0201CE10..0x0201FCD4). Message::ResetAllGlobals at 0x0201fcac is the last function of this file.",
+    "TOP EDGE: src/ui/messages/func_0201cb2c.c (ParseMessageBankSections, 0x0201cb2c..0x0201cb7c) ends where dScStage_c::UpdateMessage begins. It is the message-bank parser, called from the bank loader past this file's bottom edge (func_0201fe08), and nothing in this run calls it, so it stays out. It is also Message2.cpp's bottom edge. BOTTOM EDGE: src/LoadFont.cpp begins exactly at 0x0201fcd4. Message::ResetAllGlobals at 0x0201fcac is the last function of this file.",
     "CLASS-LOCAL COMPLETE: the run is every Message::* display entry point plus the message-window helpers they call (star-entry table walk, tile fill, BG clear), ending at the shared state reset func_0201eaac's consumers. DisplayText/Display self-calls resolve inside the TU.",
     "UPPER EXTENSION (0x0201cb7c..0x0201ce10): func_0201cd08 is a display entry of the same shape as DisplaySaveStatusText, which follows it. It clears the BG0 message planes and draws two lines through func_0201d418 and Message_DrawCenteredLine, both members of this run, after the func_0201eaac reset. dScStage_c::UpdateMessage drives the window from the stage's frame: Message::UpdateWindow/Update, and Message::DisplaySaving for the 0x295 save prompt. It sits in the gap between the two Message runs and has no other home."
   ],
@@ -249,6 +249,7 @@
   "compiler_only_output": [],
   "notes": [
     "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the `main` module is unsegmentable, so there is no create candidate id.",
+    "dScStage_c::UpdateMessage (0x0201cb7c), the stage's per-frame message driver, and func_0201cd08 open the file by address; both were folded in from shards, so the TU is not only Message::* members.",
     "Message is the tree's existing class name (include/Message.h), per Juan's 2026-10-11 rule: fold onto the established name, never coin one.",
     "Message is NOT polymorphic -- no RTTI, no vtable, no ctor/dtor -- so no key-function partition; every member is static except Display and they migrate freely. The display entry points drive one shared render state around 0x0209d660 plus the star-entry table at data_0209d708.",
     "#pragma defer_codegen off gives source-order emission: src/Message.cpp lists definitions ROM-ascending and the emitted section order is ROM-ascending. Deferred codegen was unusable because the three optimization-pragma functions would read their offs last-wins at end of file.",
@@ -262,8 +263,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-Message/Message.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 30,
-    "functions_declared": 30,
+    "functions_matched": 32,
+    "functions_declared": 32,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

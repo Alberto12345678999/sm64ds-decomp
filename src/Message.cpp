@@ -19,6 +19,8 @@
  *   header method matches the unsigned return these calls use.
  * - Address-named helpers stay address-named. The ROM has no English name
  *   for them.
+ * - dScStage_c::UpdateMessage, the stage's per-frame message driver, opens
+ *   the file: it is first by address (0x0201cb7c).
  */
 
 #pragma defer_codegen off
@@ -192,7 +194,7 @@ void dScStage_c::UpdateMessage() {
 }
 
 // @symbol func_0201cd08
-void func_0201cd08(int arg) {
+extern "C" void func_0201cd08(int arg) {
     volatile int li;
     volatile unsigned short ls;
     int p, s;
