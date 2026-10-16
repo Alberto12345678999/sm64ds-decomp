@@ -4438,10 +4438,10 @@ sJump3DMarioDoubleJump1AnimFile kind:bss addr:0x02140468
 @875 kind:bss addr:0x021404a0
 @869 kind:bss addr:0x021404ac
 @870 kind:bss addr:0x021404b8
-data_ov006_021404c4 kind:bss addr:0x021404c4
-data_ov006_021404c8 kind:bss addr:0x021404c8
+sPuffNextIndex kind:bss addr:0x021404c4
+sPuffXTable kind:bss addr:0x021404c8
 data_ov006_021404cc kind:bss addr:0x021404cc
-data_ov006_021404d8 kind:bss addr:0x021404d8
+sPuffs kind:bss addr:0x021404d8
 data_ov006_021404dc kind:bss addr:0x021404dc
 data_ov006_021404e0 kind:bss addr:0x021404e0
 data_ov006_021404e4 kind:bss addr:0x021404e4
@@ -4481,7 +4481,7 @@ sTrmpAnimBounce kind:bss addr:0x0214059c
 sTrmpAnimDoubleJump2 kind:bss addr:0x021405a0
 sTrmp2DriftScale kind:bss addr:0x021405a4
 sTrmp2RiseSpeedMax kind:bss addr:0x021405a8
-data_ov006_021405ac kind:bss addr:0x021405ac
+sTrmpItemHitsOff kind:bss addr:0x021405ac
 sTrmp2GravityStep kind:bss addr:0x021405b0
 sTrmp2FallSpeed kind:bss addr:0x021405b4
 sTrmp2MarioTarget kind:bss addr:0x021405b8
@@ -4545,11 +4545,11 @@ data_ov006_02140808 kind:bss addr:0x02140808
 data_ov006_0214080c kind:bss addr:0x0214080c
 data_ov006_02140810 kind:bss addr:0x02140810
 data_ov006_02140814 kind:bss addr:0x02140814
-data_ov006_02140818 kind:bss addr:0x02140818
+sTrmpItemsHit kind:bss addr:0x02140818
 data_ov006_0214081c kind:bss addr:0x0214081c
 data_ov006_02140820 kind:bss addr:0x02140820
 data_ov006_02140824 kind:bss addr:0x02140824
-data_ov006_02140828 kind:bss addr:0x02140828
+sTrmpItemsActive kind:bss addr:0x02140828
 sTrmpItems kind:bss addr:0x0214082c
 sTrmp2Score kind:bss addr:0x02140830
 data_ov006_02140834 kind:bss addr:0x02140834
@@ -4601,8 +4601,8 @@ sBomroomPenGateStateTable kind:bss addr:0x021416c0
 data_ov006_021416e0 kind:bss addr:0x021416e0
 data_ov006_02141708 kind:bss addr:0x02141708
 data_ov006_02141730 kind:bss addr:0x02141730
-data_ov006_02141768 kind:bss addr:0x02141768
-data_ov006_0214176c kind:bss addr:0x0214176c
+sCardSelectLocked kind:bss addr:0x02141768
+sCardSwapRequested kind:bss addr:0x0214176c
 data_ov006_02141770 kind:bss addr:0x02141770
 data_ov006_02141774 kind:bss addr:0x02141774
 sCoinCoinStateTable kind:bss addr:0x021417b0
@@ -4630,7 +4630,7 @@ sMgCurCamera kind:bss addr:0x02141a44
 data_ov006_02141a48 kind:bss addr:0x02141a48
 data_ov006_02141a4c kind:bss addr:0x02141a4c
 sMgSubCamera kind:bss addr:0x02141a50
-data_ov006_02141a54 kind:bss addr:0x02141a54
+sD3DOamShadow kind:bss addr:0x02141a54
 gEspCardModelFile kind:bss addr:0x02141e54
 gEspCardStartAnimFile kind:bss addr:0x02141e5c
 gEspCardTexSeqFile kind:bss addr:0x02141e64
@@ -4711,7 +4711,7 @@ data_ov006_021424f4 kind:bss addr:0x021424f4
 data_ov006_021424f8 kind:bss addr:0x021424f8
 sMCarloFirstPick kind:bss addr:0x021424fc
 sMCarloCards kind:bss addr:0x02142500
-data_ov006_02142504 kind:bss addr:0x02142504
+sMCarloCardsTail kind:bss addr:0x02142504
 sMCarloSecondPick kind:bss addr:0x02142508
 data_ov006_0214250c kind:bss addr:0x0214250c
 data_ov006_02142558 kind:bss addr:0x02142558
@@ -4722,7 +4722,7 @@ sMCarlo2CardTail kind:bss addr:0x02142568
 sMCarlo2CardHead kind:bss addr:0x0214256c
 sMCarlo2FirstPick kind:bss addr:0x02142570
 sMCarlo2SecondPick kind:bss addr:0x02142574
-data_ov006_02142578 kind:bss addr:0x02142578
+sMCarlo2CardsTail kind:bss addr:0x02142578
 sMCarlo2Cards kind:bss addr:0x0214257c
 sMCarlo2FaceCounts kind:bss addr:0x02142580
 data_ov006_021425a8 kind:bss addr:0x021425a8

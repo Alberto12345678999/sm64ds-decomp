@@ -40,7 +40,9 @@ struct TextureTransformer { static void Prepare(BMD_File&, BTA_File&); void SetF
 namespace s020cd744 {
 extern "C" extern void _Z14ApproachLinearRiii(int* a, int b, int c);
 extern "C" extern int _Z15ApproachLinear2Riii(int* a, int b, int c);
-extern "C" {extern int data_ov006_02140828;}
+extern "C" {
+extern int sTrmpItemsActive;
+}
 
 extern "C" void TrmpItem_GrowScale(char* c) {
     _Z14ApproachLinearRiii((int*)(c + 0x68), 0x1200, 0x80);
@@ -48,7 +50,7 @@ extern "C" void TrmpItem_GrowScale(char* c) {
     _Z14ApproachLinearRiii((int*)(c + 0x6c), 0x20000, 0x400);
     if (_Z15ApproachLinear2Riii((int*)(c + 0x9c), 0, 1) == 0) return;
     TRMPITEM(c)->mActive = 0;
-    _Z14ApproachLinearRiii(&data_ov006_02140828, 0, 1);
+    _Z14ApproachLinearRiii(&sTrmpItemsActive, 0, 1);
 }
 }
 
@@ -485,11 +487,13 @@ namespace s020ce0ac {
 extern "C" {
 extern int sTrmpItemCount;
 }
-extern "C" {extern int data_ov006_02140828;}
+extern "C" {
+extern int sTrmpItemsActive;
+}
 struct S2 { int w[2]; };
 extern "C" {extern struct S2 pmf_TrmpItem_StateAppear_2;}
 extern "C" void TrmpItem_StartAppear(char *c) {
-    ApproachLinear(data_ov006_02140828, sTrmpItemCount, 1);
+    ApproachLinear(sTrmpItemsActive, sTrmpItemCount, 1);
     *(char *)(c + 0x9c) = 0x1f;
     *(int *)(c + 0x2c) = 0;
     *(int *)(c + 0x30) = 0;
@@ -636,14 +640,18 @@ extern "C" void TrmpItem_ReflectOffLine(char *a, Obj *o)
 }
 
 namespace s020ce46c {
-extern "C" {extern int data_ov006_021405ac;}
+extern "C" {
+extern int sTrmpItemHitsOff;
+}
 extern "C" {
 extern int sTrmpItemCount;
 }
 extern "C" {
 extern char *sTrmpItems;
 }
-extern "C" {extern int data_ov006_02140818;}
+extern "C" {
+extern int sTrmpItemsHit;
+}
 extern "C" {
 extern int sTrmp2Score;
 }
@@ -666,7 +674,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *thiz, int arg1)
     int v;
     int count7;
 
-    if (data_ov006_021405ac != 0)
+    if (sTrmpItemHitsOff != 0)
         return;
     *(unsigned short *)(sb + 0x22) = 0;
 
@@ -676,7 +684,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *thiz, int arg1)
         TrmpItem_ReflectOffLine(ELEM, sb);
         if (TrmpItem_HitTest2D(ELEM, sb, arg1) == 0)
             continue;
-        _Z14ApproachLinearRiii(&data_ov006_02140818, 0x270f, 1);
+        _Z14ApproachLinearRiii(&sTrmpItemsHit, 0x270f, 1);
         v = *(unsigned short *)(sb + 0x20);
         step = 100;
         count7 = (v > 6) ? 6 : v;
@@ -1043,8 +1051,12 @@ extern int sTrmpItemCount;
 extern "C" {
 extern unsigned char *sTrmpItems;
 }
-extern "C" {extern int data_ov006_02140828;}
-extern "C" {extern int data_ov006_02140818;}
+extern "C" {
+extern int sTrmpItemsActive;
+}
+extern "C" {
+extern int sTrmpItemsHit;
+}
 extern "C" {
 extern int sTrmp2Score;
 }
@@ -1060,8 +1072,8 @@ extern "C" void TrmpItem_HideAll(void){
           off += 0x1d0;
       } while (i < sTrmpItemCount);
   }
-  data_ov006_02140828=0;
-  data_ov006_02140818=0;
+  sTrmpItemsActive = 0;
+  sTrmpItemsHit = 0;
   sTrmp2Score = 0;
 }
 }

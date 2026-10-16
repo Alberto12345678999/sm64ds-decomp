@@ -25,7 +25,7 @@
  * 0x0213d5c8, build/rtti.json), and the member below carries that type, so
  * the board's list walks spell real member access. The board lives on ONE
  * intrusive doubly-linked list threaded through the elements' mPrev/mNext
- * (head sMCarloCards, tail data_ov006_02142504; sMCarloFirstPick /
+ * (head sMCarloCards, tail sMCarloCardsTail; sMCarloFirstPick /
  * _02142508 are the first/second pick).
  *
  * OWN TAIL, 0x60a8..0x60b0: three fields carried over verbatim from this

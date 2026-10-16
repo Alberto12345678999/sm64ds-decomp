@@ -30,7 +30,7 @@ extern "C" {
 /* ov006's own data. */
 extern void *data_ov006_02141a48;
 extern void *sMgSubCamera;
-extern Oam   data_ov006_02141a54[];
+extern Oam sD3DOamShadow[];
 extern unsigned char data_ov006_0212e574[];
 
 /* arm9 / ov004 globals with no project header. */
@@ -149,8 +149,8 @@ extern "C" void D3D_DrawSpriteTable(void)
      * function grows from 0xe0 to 0xe8 bytes. */
     sprite = 0;
     for (entry = 0; entry < 0x80; entry++) {
-        data_ov006_02141a54[entry].attr01 = 0;
-        *(u32 *)&data_ov006_02141a54[(int)(((long long)entry))].attr2 = 0;
+        sD3DOamShadow[entry].attr01 = 0;
+        *(u32 *)&sD3DOamShadow[(int)(((long long)entry))].attr2 = 0;
     }
 
     y = 0;
@@ -159,22 +159,23 @@ extern "C" void D3D_DrawSpriteTable(void)
         x = 0;
         tileX = 0;
         for (; x < 0x100; x += 0x40) {
-            data_ov006_02141a54[sprite].attr01 = ((y & 0xff) | 0xc0000c00) | ((x & 0x1ff) << 16);
-            data_ov006_02141a54[sprite].attr2 = (u16)(((int)(((long long)tileX)) + ((int)(((long long)tileY)) << 5)) | 0xf000);
+            sD3DOamShadow[sprite].attr01 = ((y & 0xff) | 0xc0000c00) | ((x & 0x1ff) << 16);
+            sD3DOamShadow[sprite].attr2 =
+                (u16)(((int)(((long long)tileX)) + ((int)(((long long)tileY)) << 5)) | 0xf000);
             tileX += 8;
             sprite++;
         }
         tileY += 8;
     }
 
-    CP15::FlushAndInvalidateDataCache((u32)data_ov006_02141a54, 0x400);
-    func_02056674(data_ov006_02141a54, 0, 0x400);
+    CP15::FlushAndInvalidateDataCache((u32)sD3DOamShadow, 0x400);
+    func_02056674(sD3DOamShadow, 0, 0x400);
 }
 
 // @symbol D3D_ClearCaptureTable
 extern "C" void D3D_ClearCaptureTable(void)
 {
-    func_02056674(data_ov006_02141a54, 0, 0x400u);
+    func_02056674(sD3DOamShadow, 0, 0x400u);
 }
 
 // @symbol D3D_InitDualScreen

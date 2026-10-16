@@ -34,7 +34,7 @@ extern dMgMCarlo2CardObj_c *sMCarlo2CardTail;
 extern dMgMCarlo2CardObj_c *sMCarlo2CardHead;
 extern dMgMCarlo2CardObj_c *sMCarlo2FirstPick;
 extern dMgMCarlo2CardObj_c *sMCarlo2SecondPick;
-extern dMgMCarlo2CardObj_c* data_ov006_02142578;
+extern dMgMCarlo2CardObj_c *sMCarlo2CardsTail;
 extern dMgMCarlo2CardObj_c *sMCarlo2Cards;
 extern s16 data_ov006_02142558;     /* frames left before the pair resolves  */
 extern s16 data_ov006_0214255c;     /* pieces still animating                */
@@ -290,7 +290,7 @@ s32 dScMgMCarlo2_c::Behavior()
 
 // @symbol _ZN14dScMgMCarlo2_c6RenderEv
 /* Slot 9. Draws the score, then the cards still moving, then the settled
- * ones. Both passes walk mPrev from data_ov006_02142578. */
+ * ones. Both passes walk mPrev from sMCarlo2CardsTail. */
 s32 dScMgMCarlo2_c::Render()
 {
     char *raw = (char *)this;
@@ -312,7 +312,7 @@ s32 dScMgMCarlo2_c::Render()
     if (this->mRoundState == 5)
         Mg_DrawBlinkSprite(raw, 0xe0, 0xa0);
 
-    lifted = data_ov006_02142578;
+    lifted = sMCarlo2CardsTail;
     for (i = 0; i < 0x14; i++) {
         if (lifted == 0)
             break;
@@ -321,7 +321,7 @@ s32 dScMgMCarlo2_c::Render()
         lifted = lifted->mPrev;
     }
 
-    flat = data_ov006_02142578;
+    flat = sMCarlo2CardsTail;
     for (j = 0; j < 0x14; j++) {
         if (flat == 0)
             break;
@@ -352,7 +352,8 @@ void dMgMCarlo2CardObj_c::Init(int slot){
         mDealDelay = (short)(((slot % 5) << 1) + 1);
     }
     mLift = 0;
-    if (slot == 0x13) data_ov006_02142578 = this;
+    if (slot == 0x13)
+        sMCarlo2CardsTail = this;
     mVisible = 1;
     mXStep = 0;
     mYStep = 0;
@@ -373,7 +374,7 @@ void dMgMCarlo2CardObj_c::DealIn(int slot)
     if (mSlot >= 0x14) {
         mX = (0x70 - ((data_ov006_0213d6f4 >> 2) << 1)) << 12;
         mY = -0x30000;
-        data_ov006_02142578 = this;
+        sMCarlo2CardsTail = this;
         mState = 1;
     } else if (mState == 0) {
         mX = (0x70 - ((data_ov006_0213d6f4 >> 2) << 1)) << 12;
@@ -711,7 +712,8 @@ void dScMgMCarlo2_c::UpdateBoard()
                 sMCarlo2Cards = first->mNext;
             if (sMCarlo2CardHead == first)
                 sMCarlo2CardHead = first->mNext;
-            if (data_ov006_02142578 == first) data_ov006_02142578 = first->mPrev;
+            if (sMCarlo2CardsTail == first)
+                sMCarlo2CardsTail = first->mPrev;
             if (sMCarlo2CardTail == first)
                 sMCarlo2CardTail = first->mPrev;
             if (first->mPrev != 0) first->mPrev->mNext = first->mNext;
@@ -724,7 +726,8 @@ void dScMgMCarlo2_c::UpdateBoard()
                 sMCarlo2Cards = second->mNext;
             if (sMCarlo2CardHead == second)
                 sMCarlo2CardHead = second->mNext;
-            if (data_ov006_02142578 == second) data_ov006_02142578 = second->mPrev;
+            if (sMCarlo2CardsTail == second)
+                sMCarlo2CardsTail = second->mPrev;
             if (sMCarlo2CardTail == second)
                 sMCarlo2CardTail = second->mPrev;
             if (second->mPrev != 0) second->mPrev->mNext = second->mNext;
@@ -785,7 +788,8 @@ void dScMgMCarlo2_c::UpdateBoard()
                                 sMCarlo2Cards = nxt;
                             if (sMCarlo2CardHead == p)
                                 sMCarlo2CardHead = p->mNext;
-                            if (data_ov006_02142578 == p) data_ov006_02142578 = p->mPrev;
+                            if (sMCarlo2CardsTail == p)
+                                sMCarlo2CardsTail = p->mPrev;
                             if (sMCarlo2CardTail == p)
                                 sMCarlo2CardTail = p->mPrev;
                             if (p->mPrev != 0) p->mPrev->mNext = p->mNext;

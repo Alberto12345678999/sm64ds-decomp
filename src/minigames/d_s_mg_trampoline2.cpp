@@ -181,11 +181,11 @@ extern int Trmp2Mario_Hide(void);
 extern union StateValue pmf_dScMgTrampoline2_c_StateWaitExit;
 extern void Trmp2Mario_EnterAll(void *c);
 extern struct P2 pmf_dScMgTrampoline2_c_StateResults;
-extern int data_ov006_02140818;
+extern int sTrmpItemsHit;
 extern int data_ov006_0213b0f0;
 extern int sTrmp2Score;
 extern int sTrmp2MarioCount;
-extern int data_ov006_02140828;
+extern int sTrmpItemsActive;
 extern int data_ov006_0213fc10[];
 extern SpawnDef data_ov006_0212f2b0[];
 extern void TrmpLine_UpdateAll(void);
@@ -580,19 +580,19 @@ void dScMgTrampoline2_c::StatePlay()
     char *raw = (char *)this;
     int old;
 
-    old = data_ov006_02140818;
+    old = sTrmpItemsHit;
     TrmpLine_UpdateAll();
     TrmpItem_UpdateAll();
     Trmp2Mario_UpdateAll();
-    if (old < data_ov006_02140818) {
-        int n = data_ov006_02140818 - old;
+    if (old < sTrmpItemsHit) {
+        int n = sTrmpItemsHit - old;
         int i;
         for (i = 0; i < n; i++)
             ApproachLinear(mRamp, 0x7000, -0x800);
-        if (data_ov006_02140818 == 3)
+        if (sTrmpItemsHit == 3)
             mPromptEnabled = 0;
     }
-    Trmp2Mario_SetTuning((data_ov006_02140818 / 10) * 64 + 0x1000);
+    Trmp2Mario_SetTuning((sTrmpItemsHit / 10) * 64 + 0x1000);
     if (data_ov006_0213b0f0 == 0) {
         mInputEnabled = 0;
         BeginResults();
@@ -614,7 +614,7 @@ void dScMgTrampoline2_c::StatePlay()
             mScoreGate = 0x7fffffff;
         return;
     }
-    if (data_ov006_02140828 != 0)
+    if (sTrmpItemsActive != 0)
         return;
     /* Member form DIFFs here (bytes, not relocations): these are mTimer,
        mScoreGate, mPattern, mScriptDone and mWaveStep. */

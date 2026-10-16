@@ -1375,7 +1375,7 @@ extern void Trmp2Mario_UpdateMatrix(char* o);
 extern "C" int sTrmp2MarioCount;
 extern "C" int sTrmp2FallSpeed;
 extern "C" int sTrmp2GravityStep;
-extern "C" int data_ov006_021405ac;
+extern "C" int sTrmpItemHitsOff;
 extern "C" char *sTrmp2Marios;
 
 // @symbol Trmp2Mario_EnterAll
@@ -1384,7 +1384,7 @@ void Trmp2Mario_EnterAll(void) {
     n = sTrmp2MarioCount;
     sTrmp2GravityStep = 0x100;
     sTrmp2FallSpeed = -0x4800;
-    data_ov006_021405ac = 1;
+    sTrmpItemHitsOff = 1;
 
     i = 0;
     if (n > 0) {
@@ -1557,7 +1557,7 @@ void Puff_ClearAll(int a0, int a1);
 extern "C" int sTrmp2MarioTarget;
 extern "C" int data_ov006_0213b0f0;
 extern "C" int data_ov006_02140598;
-extern "C" int data_ov006_021405ac;
+extern "C" int sTrmpItemHitsOff;
 extern "C" char *sTrmp2Marios;
 
 // @symbol Trmp2Mario_ResetAll
@@ -1567,7 +1567,7 @@ void Trmp2Mario_ResetAll(void){
     Trmp2Mario_SetTuning(0x1000);
     data_ov006_0213b0f0 = 3;
     data_ov006_02140598 = 0;
-    data_ov006_021405ac = 0;
+    sTrmpItemHitsOff = 0;
     if (sTrmp2MarioTarget > 0) {
         i = 0;
         off = 0;

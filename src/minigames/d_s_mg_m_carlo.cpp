@@ -45,10 +45,10 @@ int  ApproachLinear(int &value, int target, int step);
 int  ApproachLinear2(s16 &value, s16 target, s16 step);
 
 extern "C" {
-extern dMgMCarloCardObj_c *sMCarloFirstPick;    /* first pick */
-extern dMgMCarloCardObj_c *sMCarloCards;        /* board list head */
-extern dMgMCarloCardObj_c *data_ov006_02142504; /* board list tail */
-extern dMgMCarloCardObj_c *sMCarloSecondPick;   /* second pick */
+extern dMgMCarloCardObj_c *sMCarloFirstPick;  /* first pick */
+extern dMgMCarloCardObj_c *sMCarloCards;      /* board list head */
+extern dMgMCarloCardObj_c *sMCarloCardsTail;  /* board list tail */
+extern dMgMCarloCardObj_c *sMCarloSecondPick; /* second pick */
 extern short data_ov006_021424ec;
 extern int sMCarloCardTotal;
 extern int sMCarloDealProgress;
@@ -218,7 +218,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
                 int n;
                 mTimer = 0x10;
                 n = mDealCount;
-                card = data_ov006_02142504;
+                card = sMCarloCardsTail;
                 for (i = 0; i < n; i++) {
                     if (card == 0) break;
                     card = card->mPrev;
@@ -369,7 +369,7 @@ s32 dScMgMCarlo_c::Render()
     Mg_DrawScoreTally((char *)this, 0xe0, 0x14, 1);
 
     {
-        dMgMCarloCardObj_c *n = data_ov006_02142504;
+        dMgMCarloCardObj_c *n = sMCarloCardsTail;
         int i = 0;
         for (;;) {
             if (n == 0) break;
@@ -381,7 +381,7 @@ s32 dScMgMCarlo_c::Render()
     }
     {
         int i = 0;
-        dMgMCarloCardObj_c *n = data_ov006_02142504;
+        dMgMCarloCardObj_c *n = sMCarloCardsTail;
         for (;;) {
             if (n == 0) break;
             if (n->mYStep == 0) n->Render();
@@ -420,7 +420,8 @@ void dMgMCarloCardObj_c::Init(int slot) {
     mDealDelay = (short)((slot % 5) * 2 + 1);
   }
   mLift = 0;
-  if (slot == 0x13) data_ov006_02142504 = this;
+  if (slot == 0x13)
+      sMCarloCardsTail = this;
   mVisible = 1;
   mXStep = 0;
   mYStep = 0;
@@ -445,7 +446,7 @@ void dMgMCarloCardObj_c::DealIn(int slot)
     if (mSlot >= 0x14) {
         mX = (0x70 - ((data_ov006_0213d56c >> 2) << 1)) << 12;
         mY = -0x30000;
-        data_ov006_02142504 = this;
+        sMCarloCardsTail = this;
         mState = CARD_ENTERING;
     } else if (mState == CARD_WAITING) {
         mX = (0x70 - ((data_ov006_0213d56c >> 2) << 1)) << 12;
@@ -887,7 +888,8 @@ void dScMgMCarlo_c::UpdateBoard(void) {
                     dMgMCarloCardObj_c *first = sMCarloFirstPick;
                     if (sMCarloCards == first)
                         sMCarloCards = first->mNext;
-                    if (data_ov006_02142504 == first) data_ov006_02142504 = first->mPrev;
+                    if (sMCarloCardsTail == first)
+                        sMCarloCardsTail = first->mPrev;
                     if (first->mPrev != 0) first->mPrev->mNext = first->mNext;
                     if (first->mNext != 0) first->mNext->mPrev = first->mPrev;
                     first->mNext = 0;
@@ -897,7 +899,8 @@ void dScMgMCarlo_c::UpdateBoard(void) {
                     dMgMCarloCardObj_c *second = sMCarloSecondPick;
                     if (sMCarloCards == second)
                         sMCarloCards = second->mNext;
-                    if (data_ov006_02142504 == second) data_ov006_02142504 = second->mPrev;
+                    if (sMCarloCardsTail == second)
+                        sMCarloCardsTail = second->mPrev;
                     if (second->mPrev != 0) second->mPrev->mNext = second->mNext;
                     if (second->mNext != 0) second->mNext->mPrev = second->mPrev;
                     second->mNext = 0;
