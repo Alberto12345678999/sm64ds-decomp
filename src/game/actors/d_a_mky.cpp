@@ -13,26 +13,24 @@
  *   pointer-to-member records at 0x02115ac8, EnterState0..10 store
  *   mState. The other eleven are the ticks. Helpers those ticks call
  *   take the same Ukiki, so they are methods too.
- * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, IsTooFarAwayFromPlayer,
- *   dClipper::Func_02015560 and Sound::PlaySub pass Fix12<int> by
- *   value. dBgCh_Actr::Init's header is Fix12i, which mangles as int.
+ * - Shared animation/collision/scalar declarations retain their current
+ *   reconstructed Fix12<int> spellings. Genuine scalar definitions and
+ *   callers match in separate experiments; canonical shared migration
+ *   remains pending, rather than an inherent compiler limitation.
  * - func_0201267c and PlayBank3 are the bank-3 wrappers.
  *   func_02012790 is Sound::Play2D(2, id). func_020383f0 and
  *   dBgCh_Actr_UpdateContinuous_Veneer are the tail-call veneers the
  *   bl targets. func_0203567c returns its argument plus 0x30;
  *   GetFloorResult is the previous symbol, and this TU still calls
- *   func_0203567c. func_02038ea4 is not dBgCh_Gnd::DetectClsn.
+ *   func_0203567c. DetectClsnSlot0 only queries collider slot zero.
  *   func_02037f44 returns word 8 of the record it is handed. Real
  *   dBgPi copy construction avoids the unwanted default-constructor call.
- * - func_ov030_02112094 copies the model matrix through a 12-word
- *   POD. Matrix4x3 embeds Vector3; native Matrix4x3 copying still
- *   changes this function under 2004/b56. Bone 5 uses typed indexing.
- * - The carrier and the cap's word at +0xc8 sit in dActor_c::pad_0c5.
- *   The cap's word at +0xd0 uses its inherited mEatingPlayer field. The normal helper uses
- *   the existing polygon results and their SurfaceInfo member.
- *   PathPtr calls are ordinary methods. mPathNode uses the signed
- *   comparison and increment visible in the ROM.
+ * - Native Matrix4x3 copies use common.h's shared flat representation.
+ *   common.h and math/Matrix.h still define incompatible C++ forms under
+ *   one guard; this TU does not resolve that repository-wide type debt.
+ * - The carrier/cap attachment uses dActor_c::mCarryMatrix at +0xc8.
+ *   The cap's player pointer uses daObjMarioCap_c::mEatingPlayer.
+ *   PathPtr and line-query construction/cleanup are ordinary C++ calls.
  * - data_ov030_* handles stay address labels. decl_common.h types
  *   four of them as void*[] where this file's blocks say int[].
  *   g_profile is not this TU's data.
@@ -40,8 +38,8 @@
 #pragma defer_codegen off
 
 #include "types.h"
-#include "daMky_c.h"
 #include "common.h"
+#include "daMky_c.h"
 #include "SharedFilePtr.h"
 #include "decl_SaveData.h"
 #include "dBgCh_Gnd.h"
@@ -53,6 +51,7 @@
 #include "SurfaceInfo.h"
 #include "dBgCh_Lin.h"
 #include "dBgPi.h"
+#include "dClipper.h"
 
 /* The callees of this TU's members, spelled by their mangled or ROM names.
  * They cannot be declared inside a method body: a block-scope extern in a
@@ -67,19 +66,13 @@ void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int id
 short Vec3_HorzAngle(const void *a, const void *b);
 int   Vec3_Dist(const void *a, const void *b);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
-int   _ZN4cstd4fdivEii(int a, int b);
 void  func_020383f0(void *p);
 bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-void *_ZN9dBgCh_LinC1Ev(void *self);
-dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void *self);
 void  Vec3_Asr(void *d, void *s, int sh);
-int   _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-void  _Z11UpdateAngleRssis(short *p, short a, int b, short c);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
-int   func_02038ea4(void *self);
 int   func_0203567c(int self);
 int   func_02037f44(void *result);
 void  Matrix4x3_FromRotationY(void *m, int angle);
@@ -93,6 +86,10 @@ unsigned int func_02012790(unsigned int arg);
 }
 
 bool ApproachLinear(short &value, short target, short step);
+void UpdateAngle(short &angle, short target, int divisor, short maxStep);
+namespace cstd {
+int fdiv(int numerator, int denominator);
+}
 
 /* ~daMky_c is the first virtual DECLARED in include/daMky_c.h and it is
  * defined here, out of line, so it is this class's key function: this TU owns
@@ -126,15 +123,14 @@ s32 daMky_c::OnYoshiTryEat()
 void daMky_c::func_ov030_02111734()
 {
 
-    extern char data_0209f43c;
-    extern char data_0209b3ec;
+    extern dClipper data_0209f43c;
+    extern Matrix4x3 data_0209b3ec;
     struct Vector3 a, b, out, asr;
-    char rc[0x7c];
 
     if (DecIfAbove0_Byte(&this->mResetTimer))
         return;
 
-    _ZN9dBgCh_LinC1Ev(rc);
+    dBgCh_Lin rc;
 
     a.x = this->mPosX;
     a.y = this->mPosY;
@@ -144,16 +140,16 @@ void daMky_c::func_ov030_02111734()
     b.y = this->mPosY;
     b.z = this->mPosZ;
     b.y = b.y - 0x96000;
-    ((dBgCh_Lin *)rc)->SetObjAndLine(a, b, this);
+    rc.SetObjAndLine(a, b, this);
 
     if (this->mPerchPosY - this->mPosY <= 0x96000) {
-        if (!((dBgCh_Lin *)rc)->DetectClsn())
+        if (!rc.DetectClsn())
             goto done;
     }
 
     Vec3_Asr(&asr, (Vector3 *)&this->mPerchPosX, 3);
 
-    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
+    if (data_0209f43c.TransformAndClip(data_0209b3ec, asr, 0x1f400, out) <= 0xc350000)
         goto done;
 
     this->mPosX = this->mPerchPosX;
@@ -169,7 +165,7 @@ void daMky_c::func_ov030_02111734()
     this->mResetTimer = 0x96;
 
 done:
-    _ZN9dBgCh_LinD1Ev(rc);
+    return;
 }
 // @symbol _ZN7daMky_c19func_ov030_02111890Ev
 void daMky_c::func_ov030_02111890()
@@ -258,7 +254,7 @@ int daMky_c::func_ov030_02111b20()
   mPathPtr.GetNode(v, mPathNode);
   d = Vec3_HorzDist((struct Vector3*)&this->mPosX, &v);
   ang = Vec3_HorzAngle((struct Vector3*)&this->mPosX, &v);
-  _Z11UpdateAngleRssis(&this->mAngleY, ang, 2, 0x400);
+  UpdateAngle(this->mAngleY, ang, 2, 0x400);
   this->mPrevAngleY = this->mAngleY;
   if (d < this->mHorzSpeed) {
       n = mPathPtr.NumNodes();
@@ -343,7 +339,7 @@ int daMky_c::func_ov030_02111dd0()
         v.y = s;
         v.z = z;
         rg.SetObjAndPos(v, this);
-        if (func_02038ea4(&rg) == 0 || this->mPosY - rg.clsnY > 0x2000) {
+        if (rg.DetectClsnSlot0() == 0 || this->mPosY - rg.clsnY > 0x2000) {
             this->mPosX = this->mSpawnPosX;
             this->mPosY = this->mSpawnPosY;
             this->mPosZ = this->mSpawnPosZ;
@@ -399,7 +395,7 @@ void daMky_c::func_ov030_02111f6c(dBgCh_Actr* w)
     if (n.y != 0) {
       int s = (int)(((long long)n.x * this->unk_0a4 + 0x800) >> 0xc)
             + (int)(((long long)n.z * this->unk_0ac + 0x800) >> 0xc);
-      this->mVertSpeed = -(_ZN4cstd4fdivEii(s, n.y) + 0x8000);
+      this->mVertSpeed = -(cstd::fdiv(s, n.y) + 0x8000);
     }
   }
   if (w->IsOnWall() != 0) {
@@ -412,12 +408,10 @@ void daMky_c::func_ov030_02112094()
 {
     /* from include/decl_common.h:255, which this TU does not include. */
     extern char data_ov030_02115ddc[];
-    typedef struct M4x3 { int w[12]; } M4x3;
-
 
     struct Bundle { Vector3_16 rot; short _p; Vector3 trans; int _tail[2]; };
 
-    extern M4x3 data_020a0e68;
+    extern Matrix4x3 data_020a0e68;
     int idx;
     Matrix4x3 *res;
     dActor_c* obj;
@@ -425,7 +419,7 @@ void daMky_c::func_ov030_02112094()
     Bundle bnd;
 
     int a = (int)((this->mFlags & 0x100) != 0);
-    if (a && this->mPlayer && *(int *)((char *)this->mPlayer + 0xc8)) {
+    if (a && this->mPlayer && this->mPlayer->mCarryMatrix) {
         idx = 0;
         if (this->mPlayer->IsFrontSliding() || this->mPlayer->LostGrabbedObject()) {
             idx = 1;
@@ -434,12 +428,12 @@ void daMky_c::func_ov030_02112094()
             idx = (idx + 2) & 0xff;
         }
         res = UpdateCarry(*this->mPlayer, *(Vector3 *)(data_ov030_02115ddc + idx * 0xc));
-        *(M4x3*)(&this->mModelAnim.mat4x3) = *(M4x3*)res;
+        mModelAnim.mat4x3 = *res;
     } else {
         Matrix4x3_FromRotationY(&this->mModelAnim.mat4x3, this->mAngleY);
-        this->mModelAnim.mat4x3.t.x = this->mPosX >> 3;
-        this->mModelAnim.mat4x3.t.y = this->mPosY >> 3;
-        this->mModelAnim.mat4x3.t.z = this->mPosZ >> 3;
+        this->mModelAnim.mat4x3.m[9] = this->mPosX >> 3;
+        this->mModelAnim.mat4x3.m[10] = this->mPosY >> 3;
+        this->mModelAnim.mat4x3.m[11] = this->mPosZ >> 3;
     }
 
     int b = (int)((this->mFlags & 0x40000) != 0);
@@ -461,15 +455,15 @@ void daMky_c::func_ov030_02112094()
     bnd.rot.y = 0;
     bnd.rot.z = -0x4000;
 
-    data_020a0e68 = *(M4x3*)(&this->mModelAnim.mat4x3);
+    data_020a0e68 = mModelAnim.mat4x3;
     MulMat4x3Mat4x3(&mModelAnim.data.transforms[5], &data_020a0e68, &data_020a0e68);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68,
         *(volatile int*)&bnd.trans.x, *(volatile int*)&bnd.trans.y, *(volatile int*)&bnd.trans.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         *(volatile short*)&bnd.rot.x, *(volatile short*)&bnd.rot.y, *(volatile short*)&bnd.rot.z);
-    *(M4x3*)(this->mCapMtx) = data_020a0e68;
+    mCapMtx = data_020a0e68;
 
-    *(int *)((char *)obj + 0xc8) = (int)(this->mCapMtx);
+    obj->mCarryMatrix = &mCapMtx;
     obj->mPosX = this->mPosX;
     obj->mPosY = this->mPosY;
     obj->mPosZ = this->mPosZ;
@@ -653,9 +647,9 @@ int daMky_c::func_ov030_02112578()
         }
         /* fallthrough */
     case 7: {
-        s32 *pp = &this->unk_3bc;
+        s32 *pp = &this->mCagePushProgress;
         *pp = *pp + 0x400;
-        if (this->unk_3bc > 0x17ffd) {
+        if (this->mCagePushProgress > 0x17ffd) {
             {
                 u8 *p = &this->mSubState;
                 *p = *p + 1;
@@ -1002,7 +996,7 @@ int daMky_c::EnterState5() {
 int daMky_c::func_ov030_02113324()
 {
 
-    extern void* data_0209f318;
+    extern dCamera_c *data_0209f318;
     extern Matrix4x3 data_020a0e68;
     extern unsigned char data_0209d684;
 
@@ -1050,7 +1044,7 @@ skip_raycast:
             if (this->mPlayer->StartTalk(*this, 1) != 0) {
                 Vector3 camPos;
                 {
-                    Vector3 *src = &((dCamera_c *)data_0209f318)->pos;
+                    Vector3 *src = &data_0209f318->pos;
                     camPos.x = src->x;
                     camPos.y = src->y;
                     camPos.z = src->z;
@@ -1064,9 +1058,9 @@ skip_raycast:
                 Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0, -0x64000);
 
                 Vector3 msgPos;
-                msgPos.x = data_020a0e68.t.x;
-                msgPos.y = data_020a0e68.t.y;
-                msgPos.z = data_020a0e68.t.z;
+                msgPos.x = data_020a0e68.m[9];
+                msgPos.y = data_020a0e68.m[10];
+                msgPos.z = data_020a0e68.m[11];
                 msgPos.y = this->mPosY + 0x64000;
 
                 if (this->mPlayer->ShowMessage(*this, 0xc0, &msgPos, 0, 2) != 0) {
@@ -1131,7 +1125,7 @@ int daMky_c::func_ov030_021136b0()
 
     /* The arm9 symbols.txt row spells this Vector3_16 (not Vector3s) — a wrong mangling here left the reloc BLIND and broke mwldarm. */
 
-    extern void *data_0209f318;
+    extern dCamera_c *data_0209f318;
     extern Matrix4x3 data_020a0e68;
     int msg;
     s16 a = this->mPlayer->mAngleY;
@@ -1183,7 +1177,7 @@ int daMky_c::func_ov030_021136b0()
         {
             u8 fl = this->mHasSpawnedCap;
             msg = fl ? 0xbe : 0xbf;
-            dCamera_c *camBase = (dCamera_c *)data_0209f318;
+            dCamera_c *camBase = data_0209f318;
             Vector3 *src = &camBase->pos;
             camPos.x = src->x;
             camPos.y = src->y;
@@ -1198,9 +1192,9 @@ int daMky_c::func_ov030_021136b0()
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0, -0x64000);
         {
             int msgArg = ((int)msg << 16) >> 16;
-            int my = data_020a0e68.t.y;
-            int mx = data_020a0e68.t.x;
-            int mz = data_020a0e68.t.z;
+            int my = data_020a0e68.m[10];
+            int mx = data_020a0e68.m[9];
+            int mz = data_020a0e68.m[11];
             msgPos.x = mx;
             msgPos.y = my;
             msgPos.z = mz;
@@ -1242,15 +1236,14 @@ int daMky_c::func_ov030_021136b0()
                 func_ov030_021141a8(2);
             } else {
                 dActor_c *act = dActor_c::FindWithID(this->mCapUniqueID);
-                int z = 0;
-                *(int *)((char *)act + 0xc8) = z;
+                act->mCarryMatrix = 0;
                 {
                     int *src = &this->mPlayer->mPosX;
                     act->mPosX = src[0];
                     act->mPosY = src[1];
                     act->mPosZ = src[2];
                 }
-                this->mCapUniqueID = (u32)z;
+                this->mCapUniqueID = 0;
                 func_ov030_021141a8(0xa);
             }
             this->mPlayer = 0;

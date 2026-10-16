@@ -2595,7 +2595,7 @@ void dScMgPachinko2_c::UpdateNextBall() {
             mBalls[i].y = 0x28000;
             mBalls[i].px = 0;
             mBalls[i].py = 0;
-            mBalls[i].unk_3b = 0;
+            mBalls[i].spawnClear = 0;
             mBalls[i].vx = 0;
             mBalls[i].vy = 0;
             mBalls[i].timer = 0;

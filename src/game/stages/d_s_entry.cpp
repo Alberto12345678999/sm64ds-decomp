@@ -10,8 +10,9 @@
  * OAM.
  *
  * dScEntry_c_classInit_ENTRY / RESULT are reconstructed (RTTI dScEntry_c,
- * ENTRY/RESULT registry). They sit past the hole and are not in this TU.
- * Retail does not store those spellings.
+ * ENTRY/RESULT registry). Retail does not store those spellings. RESULT
+ * is in d_s_entry_methods.cpp, this unit's upper part past the hole.
+ * ENTRY (d_s_entry_entry.cpp) opens the next unit.
  *
  * deslop
  * Leftover: helpers stay func_ov075_*. This TU's GraphCallback2 calls
@@ -41,8 +42,7 @@
  * Leftover: data_0209b2e4 is still the linker name of the selected
  *   character. This TU's icon_c::Behavior. Naming belongs in arm9.
  * Leftover: g_profile_ENTRY / g_profile_RESULT live outside this TU
- *   (S14). leftover return new belongs with the factories past the
- *   hole.
+ *   (S14). leftover return new belongs with the factories.
  *
  * Source order IS the ROM's: `#pragma defer_codegen off` below makes
  * mwccarm emit .text in source order instead of reverse. Do not reorder.
@@ -53,10 +53,11 @@
  * function, so this file also emits the vtable and the typeinfo chain;
  * the cartridge's copies stay canonical.
  *
- * .text 0x02115ab8..0x02116128, 13 functions. The linker run goes on to
- * 0x0211a854 (82 functions, factories included), but the next function,
- * func_ov075_02116128, is a recorded register-allocation near-miss
- * (notes/mwccarm-codegen.md 6bo) and a licensed range cannot skip it.
+ * .text 0x02115ab8..0x02116128, 13 functions. The unit goes on to
+ * 0x0211a854 (82 functions): 69 func_ov075_* helpers, each still its own
+ * file, then d_s_entry_methods.cpp (0x0211a210..0x0211a854) with the six
+ * scene methods, the RESULT factory and the OamAnimation and icon_c
+ * constructors. A licensed range cannot step over the helpers.
  */
 
 #pragma defer_codegen off
