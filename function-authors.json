@@ -25647,31 +25647,31 @@
     },
     "ov006:0x0210ab90": {
       "author": "tangosdev",
-      "name": "Slot3_State7"
+      "name": "Slot3_StateDone"
     },
     "ov006:0x0210ab94": {
       "author": "tangosdev",
-      "name": "Slot3_State6"
+      "name": "Slot3_StateGameOver"
     },
     "ov006:0x0210ac38": {
       "author": "tangosdev",
-      "name": "Slot3_State5"
+      "name": "Slot3_StateWait"
     },
     "ov006:0x0210ac3c": {
       "author": "tangosdev",
-      "name": "Slot3_State3and4"
+      "name": "Slot3_StatePayout"
     },
     "ov006:0x0210adac": {
       "author": "lunavyqo",
-      "name": "Slot3_State2"
+      "name": "Slot3_StateJudge"
     },
     "ov006:0x0210af64": {
       "author": "tangosdev",
-      "name": "Slot3_State1"
+      "name": "Slot3_StateSpin"
     },
     "ov006:0x0210b1fc": {
       "author": "tangosdev",
-      "name": "Slot3_State0"
+      "name": "Slot3_StateIntro"
     },
     "ov006:0x0210b314": {
       "author": "ruspecial",

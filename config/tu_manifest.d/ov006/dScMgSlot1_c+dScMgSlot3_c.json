@@ -94,49 +94,49 @@
       "ordinal": 7
     },
     {
-      "symbol": "Slot3_State7",
+      "symbol": "Slot3_StateDone",
       "address": "0x0210ab90",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_0210ab90.c",
       "ordinal": 8
     },
     {
-      "symbol": "Slot3_State6",
+      "symbol": "Slot3_StateGameOver",
       "address": "0x0210ab94",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov006_0210ab94.c",
       "ordinal": 9
     },
     {
-      "symbol": "Slot3_State5",
+      "symbol": "Slot3_StateWait",
       "address": "0x0210ac38",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_0210ac38.c",
       "ordinal": 10
     },
     {
-      "symbol": "Slot3_State3and4",
+      "symbol": "Slot3_StatePayout",
       "address": "0x0210ac3c",
       "size": "0x00000170",
       "legacy_source": "src/func_ov006_0210ac3c.cpp",
       "ordinal": 11
     },
     {
-      "symbol": "Slot3_State2",
+      "symbol": "Slot3_StateJudge",
       "address": "0x0210adac",
       "size": "0x000001b8",
       "legacy_source": "src/func_ov006_0210adac.c",
       "ordinal": 12
     },
     {
-      "symbol": "Slot3_State1",
+      "symbol": "Slot3_StateSpin",
       "address": "0x0210af64",
       "size": "0x00000298",
       "legacy_source": "src/func_ov006_0210af64.c",
       "ordinal": 13
     },
     {
-      "symbol": "Slot3_State0",
+      "symbol": "Slot3_StateIntro",
       "address": "0x0210b1fc",
       "size": "0x00000118",
       "legacy_source": "src/func_ov006_0210b1fc.c",
