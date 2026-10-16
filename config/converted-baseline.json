@@ -283,7 +283,7 @@
     "src/IRQ3.cpp#_ZN3IRQ6EnableEv",
     "src/IRQ3.cpp#_ZN3IRQ7DisableEv",
     "src/IRQ3.cpp#_ZN3IRQ7RestoreEj",
-    "src/_ZN3IRQ20UserInterruptHandlerEv.cpp",
+    "src/IRQHandler.cpp#_ZN3IRQ20UserInterruptHandlerEv",
     "src/_ZN3IRQ21GameCardIREQMCHandlerEv.cpp",
     "src/_ZN3IRQ7SetIRQsEj.cpp",
     "src/_ZN4CP1510DisableMPUEv.cpp",
