@@ -143,7 +143,7 @@ struct dScMgPachinko_flyer {
     s32 x;          /* 0x00 -- 20.12 */
     s32 y;          /* 0x04 -- 20.12 */
     s32 vx;         /* 0x08 -- 20.12 */
-    s32 vy;         /* 0x0c -- 20.12; Flyer_State0 seeds 0x2000, State1 adds it to y */
+    s32 vy;         /* 0x0c -- 20.12; StateWaiting seeds 0x2000, StateDescend adds it to y */
     s32 sound;      /* 0x10 -- looping sound handle */
     u16 delay;      /* 0x14 */
     u8  active;     /* 0x16 */

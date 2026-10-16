@@ -942,7 +942,7 @@ end:
 }
 
 // @symbol daIbl_c_classInit
-/* return new builds the ball and its five members. */
+/* return new constructs the ball and its members. */
 extern "C" daIbl_c *daIbl_c_classInit(void)
 {
     return new daIbl_c;

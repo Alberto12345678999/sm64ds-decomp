@@ -51,6 +51,7 @@ struct Presenter {
 };
 
 #ifndef SM64DS_PLATFORM_PC
+typedef char PresenterFile_size_must_be_0x8[sizeof(PresenterFile) == 0x8 ? 1 : -1];
 typedef char Presenter_size_must_be_0x1ac[sizeof(Presenter) == 0x1ac ? 1 : -1];
 #endif
 

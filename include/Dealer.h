@@ -62,6 +62,7 @@ struct Dealer {
 };
 
 #ifndef SM64DS_PLATFORM_PC
+typedef char DealerFile_size_must_be_0x8[sizeof(DealerFile) == 0x8 ? 1 : -1];
 typedef char Dealer_size_must_be_0x270[sizeof(Dealer) == 0x270 ? 1 : -1];
 #endif
 
