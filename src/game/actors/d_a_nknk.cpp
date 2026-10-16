@@ -133,7 +133,6 @@ inline struct Matrix4x3 *inline_fn()
   return &data_020a0e68;
 }
 
-extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(struct dBgCh_Actr *self);
 extern int SurfaceInfo_TestFlag0x20(int *p); /* CLPS bit 0x20: water */
 }
 
@@ -1183,7 +1182,7 @@ void daNknk_c::func_ov062_021175c0()
 /* Standing on a water floor: drop a coin and die. */
 void daNknk_c::func_ov062_02117570() {
     if (!mWithMeshClsn.IsOnGround()) return;
-    dBgPi *floor = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+    dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
     if (!SurfaceInfo_TestFlag0x20((int *)&floor->surface)) return;
     SpawnCoin();
     KillAndTrackInDeathTable();

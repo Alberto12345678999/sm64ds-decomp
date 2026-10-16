@@ -576,8 +576,6 @@ extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
 extern void _ZN15TextureSequence6UpdateER15ModelComponents(void *thiz, void *mc);
-extern "C" BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr&);
-extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File*, int, int);
 extern void __cxa_vec_ctor(void* obj, int a, int b, void* cb1, void* cb2);
 extern void *_ZN7Vector3D1Ev(void *object);
 extern void func_0203d384(void);
@@ -3733,8 +3731,9 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     int i;
     void* ts;
     *(SharedFilePtr**)(self + 0x70) = mdl;
-    if (_ZN9ModelBase7SetFileEP8BMD_Fileii(self,
-            _ZN5Model8LoadFileER13SharedFilePtr(**(SharedFilePtr**)(self + 0x70)), 1, tsData) == 0)
+    if (((ModelBase *)self)
+            ->SetFile((BMD_File *)Model::LoadFile(**(SharedFilePtr **)(self + 0x70)), 1, tsData) ==
+        0)
         return 0;
     self[0x80] = (char)nAnims;
     *(SharedFilePtr***)(self + 0x74) = anims;
@@ -3824,8 +3823,8 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
 {
     char *self = (char *)this;
     *(SharedFilePtr**)(self + 0x5c) = fp;
-    BMD_File* f = _ZN5Model8LoadFileER13SharedFilePtr(*(*(SharedFilePtr**)(self + 0x5c)));
-    return _ZN9ModelBase7SetFileEP8BMD_Fileii(self, f, 1, n) != 0 ? 1 : 0;
+    BMD_File *f = (BMD_File *)Model::LoadFile(*(*(SharedFilePtr **)(self + 0x5c)));
+    return ((ModelBase *)self)->SetFile(f, 1, n) != 0 ? 1 : 0;
 }
 
 /* -------------------------------------------------------------------------- */

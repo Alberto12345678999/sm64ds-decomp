@@ -75,6 +75,7 @@ enum daObjFl_Coin_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "daCoin_c.h"
+#include "Model.h"
 
 /* State table at 0x0211c904. Each entry is a pointer-to-member that Behavior
  * calls. The targets are the piece methods below. */
@@ -110,8 +111,6 @@ extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int n, const struct Vector3
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern Entry data_ov064_0211c904[];
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void* c, Fix12i a, Fix12i b);
-BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr&);
-void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, BMD_File*, int, int);
 KCL_File* _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(SharedFilePtr&);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, KCL_File*, const Matrix4x3&, int fix, short s, CLPS_Block&);
 void func_020393c4(int* p, int v);
@@ -198,8 +197,7 @@ s32 daObjFl_Coin_c::InitResources() {
 int daObjFl_Puzzle_c::InitResources()
 {
     mType = param1 & 0xf;
-    _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel,
-        _ZN5Model8LoadFileER13SharedFilePtr(*data_ov064_0211adc8[mType]), 1, -1);
+    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov064_0211adc8[mType]), 1, -1);
     func_ov064_02119010();
     func_ov064_02118fa4();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

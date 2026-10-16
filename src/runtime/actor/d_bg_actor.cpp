@@ -93,10 +93,6 @@ extern Matrix4x3 data_020a0e68;
 extern "C" {
 int func_02035638(void *c);       /* ceiling hit */
 int func_0203567c(int c);         /* &mSphereClsn + 0x10: the hit record */
-int _ZNK10dBgCh_Actr8IsOnWallEv(void *c);
-int _ZNK10dBgCh_Actr10IsOnGroundEv(void *c);
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *c);
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *c);
 int _ZNK5dBgPi9GetClsnIDEv(void *r);
 void _ZN5dBgPiD1Ev(void *r);
 void func_ov002_020d8838(void *actor);
@@ -115,8 +111,8 @@ struct ClsnHitCopy {
 // @symbol func_ov002_020ef2a4
 extern "C" int func_ov002_020ef2a4(void *c, int arg)
 {
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(c)) {
-        void *res = _ZNK10dBgCh_Actr14GetFloorResultEv(c);
+    if (((dBgCh_Actr *)c)->IsOnGround()) {
+        void *res = ((dBgCh_Actr *)c)->GetFloorResult();
         if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
             dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
             if (a != 0) {
@@ -131,8 +127,8 @@ extern "C" int func_ov002_020ef2a4(void *c, int arg)
 // @symbol func_ov002_020ef228
 extern "C" int func_ov002_020ef228(void *c, int arg)
 {
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)) {
-        void *res = _ZNK10dBgCh_Actr13GetWallResultEv(c);
+    if (((dBgCh_Actr *)c)->IsOnWall()) {
+        void *res = ((dBgCh_Actr *)c)->GetWallResult();
         if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
             dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
             if (a != 0) {
@@ -280,8 +276,8 @@ extern "C" int func_ov002_020eeeb8(void *unused, char *actor)
 // @symbol func_ov002_020eee3c
 extern "C" int func_ov002_020eee3c(void *c, int arg)
 {
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)) {
-        void *res = _ZNK10dBgCh_Actr13GetWallResultEv(c);
+    if (((dBgCh_Actr *)c)->IsOnWall()) {
+        void *res = ((dBgCh_Actr *)c)->GetWallResult();
         if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
             dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
             if (a != 0) {
@@ -296,8 +292,8 @@ extern "C" int func_ov002_020eee3c(void *c, int arg)
 // @symbol func_ov002_020eedc0
 extern "C" int func_ov002_020eedc0(void *c, int arg)
 {
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)) {
-        void *res = _ZNK10dBgCh_Actr13GetWallResultEv(c);
+    if (((dBgCh_Actr *)c)->IsOnWall()) {
+        void *res = ((dBgCh_Actr *)c)->GetWallResult();
         if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
             dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
             if (a != 0) {
@@ -314,9 +310,7 @@ extern "C" int func_ov002_020eed24(void *c, void *arg)
 {
     void *r;
     dActor_c *a;
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)
-        || _ZNK10dBgCh_Actr10IsOnGroundEv(c)
-        || func_02035638(c)) {
+    if (((dBgCh_Actr *)c)->IsOnWall() || ((dBgCh_Actr *)c)->IsOnGround() || func_02035638(c)) {
         r = (void *)func_0203567c((int)c);
         if (_ZNK5dBgPi9GetClsnIDEv(r) != -1) {
             a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(r));

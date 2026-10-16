@@ -106,6 +106,8 @@ enum daDoor_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dCamera_c.h"
 #include "daObjKey_c.h"
+#include "Model.h"
+#include "dActor_c.h"
 
 /* Three plain words: the stack and static vectors of the helpers that were
    C, which carry none of Vector3's empty destructor. */
@@ -214,11 +216,6 @@ void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *fp);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
-void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-    u32 actorID, u32 param1, const Vector3 *pos, const Vector3_16 *rot,
-    s32 areaID, s32 deathTableID);
-void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int a, int fix, unsigned int j);
 void *_ZN5ModelC1Ev(void *self);
 void *_Znwj(unsigned int sz);
@@ -701,9 +698,8 @@ int daDoor_c::func_ov100_02144a38(Player *p)
     Vec3_RotateYAndTranslate(&pos, &p->mPosX, p->mAngleY, &data_ov100_021487f0);
 
     {
-        void *actor = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-            ACTOR_OBJ_KEY, (u32)e->keyIndex, (Vector3 *)&pos,
-            (Vector3_16 *)&p->mAngleX, p->mAreaId, -1);
+        void *actor = dActor_c::Spawn(ACTOR_OBJ_KEY, (u32)e->keyIndex, *(Vector3 *)&pos,
+                                      (Vector3_16 *)&p->mAngleX, p->mAreaId, -1);
         if (actor != 0) {
             ((daObjKey_c *)actor)->func_ov089_0213115c(2);
         }
@@ -1226,8 +1222,8 @@ s32 daDoor_c::InitResources()
 
     idx = param1;
     e = &data_ov100_02148204[idx];
-    f = _ZN5Model8LoadFileER13SharedFilePtr(e->file);
-    _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel, f, 1, 1);
+    f = Model::LoadFile(*e->file);
+    mModel.SetFile((BMD_File *)f, 1, 1);
 
     /* Only in game mode 0: pick the key-model file (mKeyFile) and load it. */
     b = data_0209f2d8;
@@ -1248,7 +1244,7 @@ s32 daDoor_c::InitResources()
             }
         }
         if (mKeyFile != 0)
-            _ZN5Model8LoadFileER13SharedFilePtr(mKeyFile);
+            Model::LoadFile(*(SharedFilePtr *)mKeyFile);
     }
 
     an = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov100_02148744);
@@ -1265,8 +1261,8 @@ s32 daDoor_c::InitResources()
         if (m != 0)
             m = _ZN5ModelC1Ev(m);
         mKeyModel = (Model *)m;
-        f = _ZN5Model8LoadFileER13SharedFilePtr(e->keyFile);
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(mKeyModel, f, 1, -1);
+        f = Model::LoadFile(*e->keyFile);
+        mKeyModel->SetFile((BMD_File *)f, 1, -1);
         *(M48 *)&mKeyModel->mat4x3 = data_020a0e68;
     }
 

@@ -54,6 +54,7 @@ enum daSlide_Box_c_AssetId {
 #include "SurfaceInfo.h"
 #include "Sound.h"
 #include "dBgPi.h"
+#include "dBgCh_Actr.h"
 
 namespace cstd { int fdiv(int a, int b); }
 
@@ -90,7 +91,6 @@ extern short data_02082214[];
 extern void Matrix4x3_FromRotationXYZExt(void *mtx, int angleX, int angleY, int angleZ);
 
 void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
-dBgPi *_ZNK10dBgCh_Actr14GetFloorResultEv(void *clsn);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int height);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *thiz, void *kcl, void *mtx, int scale, short angleY, void *clps);
@@ -232,7 +232,7 @@ int daSlide_Box_c::Behavior()
         UpdatePos(0);
         dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
         if (mWithMeshClsn.IsOnGround()) {
-            dBgPi *floor = _ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+            dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
             floor->surface.CopyNormalTo(normal);
             if (normal.y != 0) {
                 mVertSpeed = -(cstd::fdiv(
