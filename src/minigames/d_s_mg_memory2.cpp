@@ -27,6 +27,7 @@ enum dScMgMemory2_c_AssetId {
 #include "dScMgMemory2_c.h"
 #include "Sound.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
@@ -214,8 +215,10 @@ void dScMgMemory2_c::PlayerMove(int player)
   mPlayers[player].angle = _ZN4cstd5atan2E5Fix12IiES1_(dz, dx);
   mPlayers[player].speed = mPlayers[player].speed + 0x200;
   angle = (u16 *)&mPlayers[player].angle;
-  mPlayers[player].x = mPlayers[player].x + (int)((((s64)data_02082214[((*angle >> 4) << 1) + 1]) * mPlayers[player].speed + 0x800) >> 0xc);
-  mPlayers[player].y = mPlayers[player].y + (int)((((s64)data_02082214[(*angle >> 4) << 1]) * mPlayers[player].speed + 0x800) >> 0xc);
+  mPlayers[player].x =
+      mPlayers[player].x + FX_MUL(data_02082214[((*angle >> 4) << 1) + 1], mPlayers[player].speed);
+  mPlayers[player].y =
+      mPlayers[player].y + FX_MUL(data_02082214[(*angle >> 4) << 1], mPlayers[player].speed);
   dx = tx - (mPlayers[player].x >> 12);
   dz = tz - (mPlayers[player].y >> 12);
   if (dx < -3 || dx > 3)
@@ -512,11 +515,11 @@ void dScMgMemory2_c::CardMove(int i)
 
     {
         s16 tv = data_02082214[((static_cast<u16>(mCards[i].angle) >> 4) << 1) + 1];
-        mCards[i].x += (int)(((s64)tv * mCards[i].speed + 0x800) >> 0xc);
+        mCards[i].x += FX_MUL(tv, mCards[i].speed);
     }
     {
         s16 tv = data_02082214[(static_cast<u16>(mCards[i].angle) >> 4) << 1];
-        mCards[i].y += (int)(((s64)tv * mCards[i].speed + 0x800) >> 0xc);
+        mCards[i].y += FX_MUL(tv, mCards[i].speed);
     }
 
     if (dx < -6)

@@ -43,6 +43,7 @@
 #pragma defer_codegen off
 
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "dScMgPachinko_c.h"
 
 /* Two helpers dispatch through the ov006 pointer-to-member tables, each on
@@ -117,9 +118,6 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 /* Pachinko_DrawAimLine adds the field first, then the index. `&SHOT(p)->f`
  * shares one base and does not match. */
 #define SHOT_OFF(member) (SHOT_BASE + (int)&((dScMgPachinko_shot *)0)->member)
-
-/* 20.12 multiply with rounding, for Pachinko_SpawnWave. */
-#define FMUL(a, b) ((int)(((long long)(a) * (b) + 0x800) >> 12))
 
 namespace G2 {
     void *GetBG2CharPtr();
@@ -1601,12 +1599,12 @@ void PachinkoBall_AimAtTarget(char *base, int i)
         int angIdx = (angU >> 4) << 1;
         {
             s16 cosv = data_02082214[angIdx + 1];
-            *pVx = (int)(((s64)cosv * factor + 0x800) >> 12);
+            *pVx = FX_MUL(cosv, factor);
         }
         {
             u16 angU2 = *(u16*)(angBase + n);
             s16 sinv = data_02082214[(angU2 >> 4) << 1];
-            *pVy = (int)(((s64)sinv * factor + 0x800) >> 12);
+            *pVy = FX_MUL(sinv, factor);
         }
         int fieldByte = *(u8*)(base + n + 0x4000 + 0x696);
         int div40 = (fieldByte * 0x180) / 40;
@@ -1662,9 +1660,9 @@ void PachinkoBall_StateSpinAway(char *c, int i) {
         self->mBall[i].unk18 += 0x800;
     }
     sv = data_02082214[(self->mBall[i].unk24 >> 4) * 2 + 1];
-    self->mBall[i].unk10 = (int)(((long long)sv * self->mBall[i].unk18 + 0x800) >> 12);
+    self->mBall[i].unk10 = FX_MUL(sv, self->mBall[i].unk18);
     sv = data_02082214[(self->mBall[i].unk24 >> 4) * 2];
-    self->mBall[i].unk14 = (int)(((long long)sv * self->mBall[i].unk18 + 0x800) >> 12);
+    self->mBall[i].unk14 = FX_MUL(sv, self->mBall[i].unk18);
 
     x = (self->mBall[i].x + self->mBall[i].unk10) >> 12;
     y = (self->mBall[i].y + self->mBall[i].unk14) >> 12;
@@ -2176,8 +2174,8 @@ void Pachinko_SpawnWave(dScMgPachinko_c *self)
         self->mBall[i].unk14 = 0;
         self->mBall[i].unk24 = self->mBall[i].angle - 0x4000;
         self->mBall[i].y = -0x60000;
-        self->mBall[i].unk08 = FMUL(data_02082214[(self->mBall[i].angle >> 4) * 2 + 1], 0xe80);
-        self->mBall[i].unk0c = FMUL(data_02082214[(self->mBall[i].angle >> 4) * 2], 0xe80);
+        self->mBall[i].unk08 = FX_MUL(data_02082214[(self->mBall[i].angle >> 4) * 2 + 1], 0xe80);
+        self->mBall[i].unk0c = FX_MUL(data_02082214[(self->mBall[i].angle >> 4) * 2], 0xe80);
         self->mBall[i].state = 3;
         self->mBall[i].unk2d = 1;
         self->mBall[i].unk33 = 0;
@@ -2371,12 +2369,11 @@ void PachinkoBobOmb_StateAim(dScMgPachinko_c *self, int i) {
             *(u8 *)(c + 0x5c31) = 0;
             {
                 int ai = (*(u16 *)(c + 0x4f08 + off) >> 4) * 2 + 1;
-                *(s32 *)(c + 0x4ee0 + off) = (s32)(((s64)data_02082214[ai] *
-                    *(s32 *)(c + 0x4ef8 + off) + 0x800) >> 12);
+                *(s32 *)(c + 0x4ee0 + off) = FX_MUL(data_02082214[ai], *(s32 *)(c + 0x4ef8 + off));
             }
             {
                 const s16 *sp = &data_02082214[(*(u16 *)(c + 0x4f08 + off) >> 4) * 2];
-                *(s32 *)(c + 0x4ee4 + off) = (s32)(((s64)*sp * *(s32 *)(c + 0x4ef8 + off) + 0x800) >> 12);
+                *(s32 *)(c + 0x4ee4 + off) = FX_MUL(*sp, *(s32 *)(c + 0x4ef8 + off));
             }
             *(s16 *)(c + 0x4f0a + off) = 0;
             if (dist >= 0x40)
@@ -2444,11 +2441,10 @@ void PachinkoBobOmb_StateFallAway(char *base, int i) {
     u16 v;
     self->mShot[i].speed = self->mShot[i].speed + self->mShot[i].unk24;
     self->mShot[i].unk24 = self->mShot[i].unk24 + 0x10;
-    self->mShot[i].x = self->mShot[i].x
-        + (int)(((s64)data_02082214[((self->mShot[i].angle >> 4) << 1) + 1] * 0x800 + 0x800) >> 0xc);
+    self->mShot[i].x =
+        self->mShot[i].x + FX_MUL(data_02082214[((self->mShot[i].angle >> 4) << 1) + 1], 0x800);
     t = data_02082214[(self->mShot[i].angle >> 4) << 1];
-    self->mShot[i].y = self->mShot[i].y
-        + (int)(((s64)t * self->mShot[i].speed + 0x800) >> 0xc);
+    self->mShot[i].y = self->mShot[i].y + FX_MUL(t, self->mShot[i].speed);
     v = self->mShot[i].timer;
     if (v != 0) {
         self->mShot[i].timer = v - 1;

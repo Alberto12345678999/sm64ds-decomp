@@ -18,6 +18,8 @@
  */
 #include "nitro/fx/fx.h"
 
+#include "nitro/fx/fx.h"
+
 typedef long long s64;
 
 struct Ent_ov006 {

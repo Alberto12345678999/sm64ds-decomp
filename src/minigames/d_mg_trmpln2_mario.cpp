@@ -32,6 +32,7 @@
 // line writes.
 #pragma defer_codegen off
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "decl_common.h"
 #include "decl_ModelAnim.h"
@@ -194,7 +195,7 @@ extern "C" void Trmp2Mario_Update(char *o) {
         ((void(*)(void*))fn)(tobj);
     }
     Trmp2Mario_ApplyGravity(o);
-    Fix12 v = (Fix12)(((long long)MARIO2(o)->mBounceVy * 0xb4b + 0x800) >> 12);
+    Fix12 v = FX_MUL(MARIO2(o)->mBounceVy, 0xb4b);
     if (MARIO2(o)->mVel.y > v) {
         if (*(int *)(o + 0xd8) == sTrmpAnimBounce) {
             MARIO2(o)->mParticleId =
@@ -377,12 +378,12 @@ L70:
         *(int *)(c + 0xd0) = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
 
-        t = (int)(((long long)(-MARIO2(c)->mVel.x) * 0x1200 + 0x800) >> 12);
+        t = FX_MUL(-MARIO2(c)->mVel.x, 0x1200);
         if (t < -0x1400) t = -0x1400;
         else if (t > 0x1400) t = 0x1400;
         MARIO2(c)->mVel.x = t;
 
-        *(int *)(((int)c + 0x40)) += (int)(((long long)sTrmpSpeedScale * 0x400 + 0x800) >> 12);
+        *(int *)(((int)c + 0x40)) += FX_MUL(sTrmpSpeedScale, 0x400);
 
         {
             int v40 = sTrmp2RiseSpeedMax;
@@ -395,7 +396,7 @@ L70:
 
 L1a4:
     {
-    int t = (int)(((long long)(-MARIO2(c)->mVel.x) * 0xf00 + 0x800) >> 12);
+    int t = FX_MUL(-MARIO2(c)->mVel.x, 0xf00);
     int v40;
     int hi;
     int lo;
@@ -489,12 +490,12 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c)
     }
 
     dot = DotVec3(&MARIO2(c)->mVel, &tmp);
-    scale = (int)(((long long)dot * 0x1400 + 0x800) >> 12);
+    scale = FX_MUL(dot, 0x1400);
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO2(c)->mVel, &tmp2, &MARIO2(c)->mVel);
 
     fdivr = _ZN4cstd4fdivEii(r4v, r4v + r5v);
-    scale = (int)(((long long)sTrmp2RiseSpeedMax * fdivr + 0x800) >> 12);
+    scale = FX_MUL(sTrmp2RiseSpeedMax, fdivr);
     Vec3_MulScalar(&tmp3, &tmp, scale);
     AddVec3(&MARIO2(c)->mVel, &tmp3, &MARIO2(c)->mVel);
 
@@ -503,7 +504,7 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c)
     else if (v > 0x3000) v = 0x3000;
     MARIO2(c)->mVel.x = v;
 
-    fx = (int)(((long long)sTrmp2RiseSpeedMax * 0xc00 + 0x800) >> 12);
+    fx = FX_MUL(sTrmp2RiseSpeedMax, 0xc00);
     cur = MARIO2(c)->mVel.y;
     if (cur >= fx) fx = cur;
     MARIO2(c)->mVel.y = fx;
@@ -614,14 +615,14 @@ L70:
     if (*(s16 *)(c + 0x22) != 0) goto L1a4;
     if (_Z14ApproachLinearRiii((int *)(c + 0x64), 5, 1) != 0) goto L1a4;
     {
-        int t = (int)(((long long)(-MARIO2(c)->mVel.x) * 0x1200 + 0x800) >> 12);
+        int t = FX_MUL(-MARIO2(c)->mVel.x, 0x1200);
         int v40;
 
         if (t < -0x1400) t = -0x1400;
         else if (t > 0x1400) t = 0x1400;
         MARIO2(c)->mVel.x = t;
 
-        *(int *)(((int)c + 0x40)) += (int)(((long long)sTrmpSpeedScale * 0x400 + 0x800) >> 12);
+        *(int *)(((int)c + 0x40)) += FX_MUL(sTrmpSpeedScale, 0x400);
 
         v40 = sTrmp2RiseSpeedMax;
         if (MARIO2(c)->mVel.y <= v40)
@@ -640,7 +641,7 @@ L70:
 
 L1a4:
     {
-    int t = (int)(((long long)(-MARIO2(c)->mVel.x) * 0xf00 + 0x800) >> 12);
+    int t = FX_MUL(-MARIO2(c)->mVel.x, 0xf00);
     int pos;
     int hi;
     int lo;
@@ -738,12 +739,12 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c)
     }
 
     dot = DotVec3(&MARIO2(c)->mVel, &tmp);
-    scale = (int)(((long long)dot * 0x1200 + 0x800) >> 12);
+    scale = FX_MUL(dot, 0x1200);
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO2(c)->mVel, &tmp2, &MARIO2(c)->mVel);
 
     fdivr = _ZN4cstd4fdivEii(r4v, r4v + r5v);
-    scale = (int)(((long long)sTrmpSpeedScale * fdivr + 0x800) >> 12);
+    scale = FX_MUL(sTrmpSpeedScale, fdivr);
     Vec3_MulScalar(&tmp3, &tmp, scale);
     AddVec3(&MARIO2(c)->mVel, &tmp3, &MARIO2(c)->mVel);
 
@@ -753,7 +754,7 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c)
     MARIO2(c)->mVel.x = vx;
 
     {
-        int fx = (int)(((long long)sTrmpSpeedScale * 0x600 + 0x800) >> 12);
+        int fx = FX_MUL(sTrmpSpeedScale, 0x600);
         int cur = MARIO2(c)->mVel.y;
         if (cur >= fx) fx = cur;
         MARIO2(c)->mVel.y = fx;
@@ -822,7 +823,7 @@ extern "C" void Trmp2Mario_EnterBounce(char *c) {
     Obj *o = (Obj *)c;
     int a, b;
     MARIO2(c)->mGravityStep = sTrmp2GravityStep;
-    MARIO2(c)->mVel.y = (int)(((long long)sTrmpSpeedScale * 0xc00 + 0x800) >> 12);
+    MARIO2(c)->mVel.y = FX_MUL(sTrmpSpeedScale, 0xc00);
     MARIO2(c)->mBounceVy = MARIO2(c)->mVel.y;
     o->slot4();
     MARIO2(c)->mWallBumpTimer = 0;
@@ -863,7 +864,7 @@ void Trmp2Mario_StateRespawnWait(char *c) {
         MARIO2(c)->mVel.y = 0;
         tbl = sTrmp2DriftScale;
         r = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
-        MARIO2(c)->mVel.x = (int)(((long long)(((int)r - 0x800) << 1) * tbl + 0x800) >> 12);
+        MARIO2(c)->mVel.x = FX_MUL(((int)r - 0x800) << 1, tbl);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, sTrmpAnimWallJump, 0x40000000, 0x800,
                                                     0);
         MARIO2(c)->mPrevPos.x = MARIO2(c)->mPos.x;
@@ -931,7 +932,7 @@ extern "C" void Trmp2Mario_StateMissed(char *c) {
         Trmp2Mario_EnterRespawnWait(c);
     } else {
         int v = MARIO2(c)->mVel.x;
-        MARIO2(c)->mVel.x = (int)(((s64)v * 0xc00 + 0x800) >> 12);
+        MARIO2(c)->mVel.x = FX_MUL(v, 0xc00);
         int x = MARIO2(c)->mPos.x;
         if (x < -0x6c000)
             MARIO2(c)->mPos.x = -0x6c000;
@@ -1051,7 +1052,7 @@ L70:
 
 L1a4:
     {
-    int t = (int)(((long long)(-MARIO2(c)->mVel.x) * 0xf00 + 0x800) >> 12);
+    int t = FX_MUL(-MARIO2(c)->mVel.x, 0xf00);
     int pos;
 
     MARIO2(c)->mVel.x = t;
@@ -1439,8 +1440,7 @@ extern "C" void Trmp2Mario_MoveToStart(void) {
 
         Trmp2Mario_EnterAppearWait(base + i * 0xdc, (short)(i * 0x14));
         *(int *)(sTrmp2Marios + i * 0xdc + 0x24) = 0;
-        *(int *)(sTrmp2Marios + i * 0xdc + 0x3c) =
-            (int)(((long long)sTrmp2DriftScale * ((i << 11) - 0x1000) + 0x800) >> 12);
+        *(int *)(sTrmp2Marios + i * 0xdc + 0x3c) = FX_MUL(sTrmp2DriftScale, (i << 11) - 0x1000);
         Trmp2Mario_UpdateMatrix(sTrmp2Marios + i * 0xdc);
         return;
     }
@@ -1472,8 +1472,7 @@ void Trmp2Mario_PlaceAtStart(void)
     for (i = 0; i < n; i++) {
         Trmp2Mario_EnterAppearWait(sTrmp2Marios + i * 0xdc, (short)(i * 0x14));
         *(int *)(sTrmp2Marios + i * 0xdc + 0x24) = i * 0x10000 - 0x20000;
-        *(int *)(sTrmp2Marios + i * 0xdc + 0x3c) =
-            (int)(((long long)sTrmp2DriftScale * (i * 0x800 - 0x1000) + 0x800) >> 0xc);
+        *(int *)(sTrmp2Marios + i * 0xdc + 0x3c) = FX_MUL(sTrmp2DriftScale, i * 0x800 - 0x1000);
         Trmp2Mario_UpdateMatrix(sTrmp2Marios + i * 0xdc);
     }
 }
@@ -1602,12 +1601,12 @@ void Trmp2Mario_SetTuning(int a)
     int v;
     if (a > 0x2800) a = 0x2800;
     v = func_020531a4(a);
-    sTrmp2FallSpeed = (int)(((long long)v * -0x1c00 + 0x800) >> 12);
-    sTrmp2GravityStep = (int)(((long long)a * 0xc0 + 0x800) >> 12);
-    data_ov006_0214053c = (int)(((long long)v * 0xe00 + 0x800) >> 12);
-    sTrmpSpeedScale = (int)(((long long)v * 0x5800 + 0x800) >> 12);
-    sTrmp2RiseSpeedMax = (int)(((long long)v * 0x6000 + 0x800) >> 12);
-    sTrmp2DriftScale = (int)(((long long)v * 0x180 + 0x800) >> 12);
+    sTrmp2FallSpeed = FX_MUL(v, -0x1c00);
+    sTrmp2GravityStep = FX_MUL(a, 0xc0);
+    data_ov006_0214053c = FX_MUL(v, 0xe00);
+    sTrmpSpeedScale = FX_MUL(v, 0x5800);
+    sTrmp2RiseSpeedMax = FX_MUL(v, 0x6000);
+    sTrmp2DriftScale = FX_MUL(v, 0x180);
 }
 }
 }
@@ -1770,7 +1769,7 @@ extern "C" void Trmp3DMario_Update(char *o) {
         ((void(*)(void*))fn)(tobj);
     }
     Trmp3DMario_ApplyGravity(o);
-    Fix12 v = (Fix12)(((long long)MARIO3D(o)->mBounceVy * 0xb4b + 0x800) >> 12);
+    Fix12 v = FX_MUL(MARIO3D(o)->mBounceVy, 0xb4b);
     if (MARIO3D(o)->mVel.y > v) {
         if (*(int *)(o + 0xcc) == sTrmpAnimBounce) {
             MARIO3D(o)->mParticleId =
@@ -2324,7 +2323,7 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c)
     }
 
     dot = DotVec3(&MARIO3D(c)->mVel, &tmp);
-    scale = (int)(((long long)dot * 0x1400 + 0x800) >> 12);
+    scale = FX_MUL(dot, 0x1400);
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO3D(c)->mVel, &tmp2, &MARIO3D(c)->mVel);
 
@@ -2351,7 +2350,7 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c)
             *(unsigned int *)(c + 0x54), 0xf5, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
             MARIO3D(c)->mPos.z << 3, 0, 0);
 
-    scale = (int)(((long long)sTrmp3DHardBounceScale * fdivr + 0x800) >> 12);
+    scale = FX_MUL(sTrmp3DHardBounceScale, fdivr);
     Vec3_MulScalar(&tmp4, &tmp, scale);
     AddVec3(&MARIO3D(c)->mVel, &tmp4, &MARIO3D(c)->mVel);
 
@@ -2569,14 +2568,14 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c)
     }
 
     dot = DotVec3(&MARIO3D(c)->mVel, &tmp);
-    scale = (int)(((long long)dot * 0x1200 + 0x800) >> 12);
+    scale = FX_MUL(dot, 0x1200);
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO3D(c)->mVel, &tmp2, &MARIO3D(c)->mVel);
 
     fdivr = _ZN4cstd4fdivEii(r4v, r4v + r5v);
     MARIO3D(c)->mGravityStep = sTrmp3DGravityStep;
 
-    scale = (int)(((long long)sTrmp3DBounceScale * fdivr + 0x800) >> 12);
+    scale = FX_MUL(sTrmp3DBounceScale, fdivr);
     Vec3_MulScalar(&tmp3, &tmp, scale);
     AddVec3(&MARIO3D(c)->mVel, &tmp3, &MARIO3D(c)->mVel);
 
@@ -2705,7 +2704,7 @@ void Trmp3DMario_StateMissed(char *c) {
         Trmp3DMario_EnterOffstage(c);
         return;
     }
-    MARIO3D(c)->mVel.x = (int)(((long long)MARIO3D(c)->mVel.x * 0xc00 + 0x800) >> 12);
+    MARIO3D(c)->mVel.x = FX_MUL(MARIO3D(c)->mVel.x, 0xc00);
     {
         int v = MARIO3D(c)->mPos.x;
         if (v < -0x6c000) {
@@ -3526,11 +3525,11 @@ void Trmp3DMario_SetTuning(int a)
     int v;
     if (a > 0x2800) a = 0x2800;
     v = func_020531a4(a);
-    sTrmp3DFallSpeed = (int)(((long long)v * -0x2400 + 0x800) >> 12);
-    sTrmp3DGravityStep = (int)(((long long)a * 0xe0 + 0x800) >> 12);
-    sTrmp3DJumpOffSpeed = (int)(((long long)v * 0xc00 + 0x800) >> 12);
-    sTrmp3DBounceScale = (int)(((long long)v * 0x4800 + 0x800) >> 12);
-    sTrmp3DHardBounceScale = (int)(((long long)v * 0x5400 + 0x800) >> 12);
+    sTrmp3DFallSpeed = FX_MUL(v, -0x2400);
+    sTrmp3DGravityStep = FX_MUL(a, 0xe0);
+    sTrmp3DJumpOffSpeed = FX_MUL(v, 0xc00);
+    sTrmp3DBounceScale = FX_MUL(v, 0x4800);
+    sTrmp3DHardBounceScale = FX_MUL(v, 0x5400);
 }
 }
 }

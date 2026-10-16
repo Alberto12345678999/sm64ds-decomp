@@ -53,6 +53,7 @@
 #pragma defer_codegen off
 
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "OamAttr.h"
 #include "dScMgTeresa_c.h"
 #include "decl_common.h"
@@ -1526,13 +1527,13 @@ void dScMgTeresa_c::StepBoo(int i)
   int s = tbl[((angle >> 4) * 2) + 1];
   int mult = *((int *) (pm + n));
   char *p0 = c + 0x4660;
-  *((int *) (p0 + n)) = (*((int *) (p0 + n))) + ((int) (((((long long) (*(new_var = &s))) * mult) + 0x800) >> 12));
+  *((int *)(p0 + n)) = (*((int *)(p0 + n))) + FX_MUL(*(new_var = &s), mult);
   {
     int angle2 = *((unsigned short *) (pa + n));
     int mult2 = *((int *) (pm + n));
     int s2 = tbl[(angle2 >> 4) * 2];
     char *p1 = c + 0x4664;
-    *((int *) (p1 + n)) = (*((int *) (p1 + n))) + ((int) (((((long long) s2) * mult2) + 0x800) >> 12));
+    *((int *)(p1 + n)) = (*((int *)(p1 + n))) + FX_MUL(s2, mult2);
   }
 }
 
