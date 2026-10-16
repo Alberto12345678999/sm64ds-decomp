@@ -886,7 +886,7 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* th
 }
 s32 daCoin_c::InitResources()
 {
-/* Vtable slot 0. mBehaviorType is the low nibble of param1 (9..15 become 1)
+    /* Vtable slot 0. mBehaviorType is the low nibble of param1 (9..15 become 1)
      * and selects the physics (launch speed, gravity, terminal velocity), the
      * floor state and the flag bits in mCoinFlags. The actor ID picks the coin
      * type (0x121 red, 0x122 blue, else yellow), which decides the models
@@ -901,7 +901,7 @@ s32 daCoin_c::InitResources()
      *
      * `#pragma opt_common_subs off` is load-bearing: the ROM re-issues loads
      * this compiler would otherwise CSE. */
-#pragma opt_common_subs off
+    #pragma opt_common_subs off
 
     typedef struct { void* sfp; void* bmd; } FileEntry;
     extern Matrix4x3 IDENTITY_MATRIX4X3;
