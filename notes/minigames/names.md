@@ -503,8 +503,11 @@ The three left unnamed here were named in pass 5: `AnyBombMarching` (Bomroom), `
 **dMgTrmpln2Mario_c / dMgTrmpln3DMario_c (the trampoline Marios).** The two classes mirror each other, so their helpers carry parallel names.
 
 High confidence:
-- **States:** `Trmp2Mario_State0..7` and `Trmp3DMario_State0..12`, named in address order.
-- **Setters:** each `EnterStateN` stores the record of its state, checked through ov006 relocs.
+- **States** (pass 6; they were `Trmp2Mario_State0..7` and `Trmp3DMario_State0..12`, each with its `EnterStateN` setter), named from their bodies and their callers:
+  - Both Marios: `StateKnockedOut` (pops up and falls off the bottom, then hidden or offstage), `StateBounce` (rising after a line bounce), `StateMissed` (fell past the bottom: a puff, one life off, sound 0x130), `StateFall` (falling; a line contact calls `BounceOffLineA/B`).
+  - Trampoline2: `StateWallBounce` (bumped up off a side wall), `StateRespawnWait` (waits at the top, then drops in at a random x), `StateAppearWait`, `StateHidden`.
+  - Trampoline: `StateHardBounce` (from `BounceOffLineA`, contact kind 2), `StateLand` and `StateFallToLedge` (landing on a tower row or the ground), `StateGoal` (on the goal row: walks off the side and scores the combo), `StateOnLedge` / `StateWalkBack` (the tower ledge, right), `StateOnGround` / `StateWalkIn` (the ground, left), `StateOffstage`; `IsMissed` and `IsOffstage` were `IsInState6/12`.
+- **Setters:** each `Enter<State>` stores the record of its state, checked through ov006 relocs.
 - **Getters:** `GetPos`, `GetPrevPos` and `GetVelocity` return the +0x24/+0x30/+0x3c (2Mario) and +0x1c/+0x28/+0x34 (3DMario) vectors, which the Update/Matrix bodies read as position, previous position and velocity.
 - **Lifecycle:** the destructors and constructors the file banner identifies.
 - **Object adapters:** the `TrmpObjAdapter_*` and `TrmpRingObjAdapter_*` constructors, which store those classes' vtables.

@@ -27856,7 +27856,7 @@
         "return:void *"
       ]
     },
-    "Trmp2Mario_EnterState1": {
+    "Trmp2Mario_EnterBounce": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "arity:2"
       ]
@@ -27896,7 +27896,7 @@
         "param:#1 int *"
       ]
     },
-    "Trmp3DMario_EnterState12": {
+    "Trmp3DMario_EnterOffstage": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]

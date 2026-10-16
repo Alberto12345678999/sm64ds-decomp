@@ -192,8 +192,8 @@ extern int data_ov006_0214058c;
 extern int data_ov006_02142f60;
 extern int data_0209e650;
 extern void TrmpLine_UpdateAll(void);
-extern int Trmp3DMario_IsInState12(int *r0);
-extern void Trmp3DMario_EnterState10(char *c);
+extern int Trmp3DMario_IsOffstage(int *r0);
+extern void Trmp3DMario_EnterWalkIn(char *c);
 extern int RandomIntInternal(int *seed);
 extern "C" void Trmp3DMario_SetSpawnHeight(int n);
 extern "C" void Trmp3DMario_SetTuning(int a);
@@ -648,8 +648,8 @@ void dScMgTrampoline_c::StatePlay()
                 int i;
                 char *p = (char *)mArray1;
                 for (i = 0; i < 4; i++) {
-                    if (Trmp3DMario_IsInState12((int *)p)) {
-                        Trmp3DMario_EnterState10((char *)mArray1 + i * 0xd0);
+                    if (Trmp3DMario_IsOffstage((int *)p)) {
+                        Trmp3DMario_EnterWalkIn((char *)mArray1 + i * 0xd0);
                         break;
                     }
                     p += 0xd0;

@@ -20951,7 +20951,7 @@
     },
     "ov006:0x020c905c": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_State0"
+      "name": "Trmp2Mario_StateKnockedOut"
     },
     "ov006:0x020c9098": {
       "author": "lunavyqo",
@@ -20959,7 +20959,7 @@
     },
     "ov006:0x020c91ac": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_State1"
+      "name": "Trmp2Mario_StateBounce"
     },
     "ov006:0x020c94e0": {
       "author": "lunavyqo",
@@ -20967,7 +20967,7 @@
     },
     "ov006:0x020c97bc": {
       "author": "andrewboudreau",
-      "name": "Trmp2Mario_State2"
+      "name": "Trmp2Mario_StateWallBounce"
     },
     "ov006:0x020c9aa0": {
       "author": "tangosdev",
@@ -20975,47 +20975,47 @@
     },
     "ov006:0x020c9c8c": {
       "author": "lunavyqo",
-      "name": "Trmp2Mario_EnterState1"
+      "name": "Trmp2Mario_EnterBounce"
     },
     "ov006:0x020c9d7c": {
       "author": "andrewboudreau",
-      "name": "Trmp2Mario_State3"
+      "name": "Trmp2Mario_StateRespawnWait"
     },
     "ov006:0x020c9e7c": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_EnterState3"
+      "name": "Trmp2Mario_EnterRespawnWait"
     },
     "ov006:0x020c9efc": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_State4"
+      "name": "Trmp2Mario_StateMissed"
     },
     "ov006:0x020c9fe4": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_EnterState4"
+      "name": "Trmp2Mario_EnterMissed"
     },
     "ov006:0x020ca070": {
       "author": "andrewboudreau",
-      "name": "Trmp2Mario_State5"
+      "name": "Trmp2Mario_StateFall"
     },
     "ov006:0x020ca2ec": {
       "author": "ruspecial",
-      "name": "Trmp2Mario_EnterState5"
+      "name": "Trmp2Mario_EnterFall"
     },
     "ov006:0x020ca310": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_State6"
+      "name": "Trmp2Mario_StateAppearWait"
     },
     "ov006:0x020ca374": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_EnterState6"
+      "name": "Trmp2Mario_EnterAppearWait"
     },
     "ov006:0x020ca39c": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_State7"
+      "name": "Trmp2Mario_StateHidden"
     },
     "ov006:0x020ca3a8": {
       "author": "tangosdev",
-      "name": "Trmp2Mario_EnterState7"
+      "name": "Trmp2Mario_EnterHidden"
     },
     "ov006:0x020ca430": {
       "author": "tangosdev",
@@ -21071,7 +21071,7 @@
     },
     "ov006:0x020caf4c": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_IsInState6"
+      "name": "Trmp3DMario_IsMissed"
     },
     "ov006:0x020cafa4": {
       "author": "tangosdev",
@@ -21099,7 +21099,7 @@
     },
     "ov006:0x020cb16c": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State0"
+      "name": "Trmp3DMario_StateKnockedOut"
     },
     "ov006:0x020cb1a8": {
       "author": "lunavyqo",
@@ -21107,31 +21107,31 @@
     },
     "ov006:0x020cb2b4": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State1"
+      "name": "Trmp3DMario_StateGoal"
     },
     "ov006:0x020cb528": {
       "author": "lunavyqo",
-      "name": "Trmp3DMario_EnterState1"
+      "name": "Trmp3DMario_EnterGoal"
     },
     "ov006:0x020cb5c4": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State2"
+      "name": "Trmp3DMario_StateLand"
     },
     "ov006:0x020cb690": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_EnterState2"
+      "name": "Trmp3DMario_EnterLand"
     },
     "ov006:0x020cb72c": {
       "author": "lunavyqo",
-      "name": "Trmp3DMario_State3"
+      "name": "Trmp3DMario_StateFallToLedge"
     },
     "ov006:0x020cb814": {
       "author": "ruspecial",
-      "name": "Trmp3DMario_EnterState3"
+      "name": "Trmp3DMario_EnterFallToLedge"
     },
     "ov006:0x020cb838": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State4"
+      "name": "Trmp3DMario_StateHardBounce"
     },
     "ov006:0x020cbaec": {
       "author": "tangosdev",
@@ -21139,7 +21139,7 @@
     },
     "ov006:0x020cbd7c": {
       "author": "andrewboudreau",
-      "name": "Trmp3DMario_State5"
+      "name": "Trmp3DMario_StateBounce"
     },
     "ov006:0x020cbfd8": {
       "author": "tangosdev",
@@ -21151,63 +21151,63 @@
     },
     "ov006:0x020cc2ac": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State6"
+      "name": "Trmp3DMario_StateMissed"
     },
     "ov006:0x020cc37c": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_EnterState6"
+      "name": "Trmp3DMario_EnterMissed"
     },
     "ov006:0x020cc408": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State7"
+      "name": "Trmp3DMario_StateFall"
     },
     "ov006:0x020cc618": {
       "author": "ruspecial",
-      "name": "Trmp3DMario_EnterState7"
+      "name": "Trmp3DMario_EnterFall"
     },
     "ov006:0x020cc63c": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State8"
+      "name": "Trmp3DMario_StateWalkBack"
     },
     "ov006:0x020cc698": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_EnterState8"
+      "name": "Trmp3DMario_EnterWalkBack"
     },
     "ov006:0x020cc724": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State9"
+      "name": "Trmp3DMario_StateOnLedge"
     },
     "ov006:0x020cc8c8": {
       "author": "lunavyqo",
-      "name": "Trmp3DMario_EnterState9"
+      "name": "Trmp3DMario_EnterOnLedge"
     },
     "ov006:0x020cc9b8": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State10"
+      "name": "Trmp3DMario_StateWalkIn"
     },
     "ov006:0x020cc9fc": {
       "author": "ruspecial",
-      "name": "Trmp3DMario_EnterState10"
+      "name": "Trmp3DMario_EnterWalkIn"
     },
     "ov006:0x020ccae0": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State11"
+      "name": "Trmp3DMario_StateOnGround"
     },
     "ov006:0x020ccc8c": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_EnterState11"
+      "name": "Trmp3DMario_EnterOnGround"
     },
     "ov006:0x020ccd04": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_IsInState12"
+      "name": "Trmp3DMario_IsOffstage"
     },
     "ov006:0x020ccd64": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_State12"
+      "name": "Trmp3DMario_StateOffstage"
     },
     "ov006:0x020ccd78": {
       "author": "tangosdev",
-      "name": "Trmp3DMario_EnterState12"
+      "name": "Trmp3DMario_EnterOffstage"
     },
     "ov006:0x020cce0c": {
       "author": "tangosdev",

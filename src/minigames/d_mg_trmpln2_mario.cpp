@@ -61,8 +61,8 @@ int Trmp2Mario_GetVelocity(int p)
 // ---- Trmp2Mario_Reset
 namespace ns_020c8ddc {
 extern "C" {
-extern "C" int pmf_Trmp2Mario_State4[2];
-extern "C" int pmf_Trmp2Mario_State7_4[2];
+extern "C" int pmf_Trmp2Mario_StateMissed[2];
+extern "C" int pmf_Trmp2Mario_StateHidden_4[2];
 
 // @symbol Trmp2Mario_Reset
 int Trmp2Mario_Reset(char *c)
@@ -73,7 +73,7 @@ int Trmp2Mario_Reset(char *c)
     int flag;
 
     p = MARIO2(c)->mState;
-    d = pmf_Trmp2Mario_State4;
+    d = pmf_Trmp2Mario_StateMissed;
     result = 0;
     flag = 1;
     if (p[0] == d[0]) {
@@ -86,7 +86,7 @@ int Trmp2Mario_Reset(char *c)
 after1:
     if (flag != 0) {
         p = MARIO2(c)->mState;
-        d = pmf_Trmp2Mario_State7_4;
+        d = pmf_Trmp2Mario_StateHidden_4;
         flag = 1;
         if (p[0] == d[0]) {
             if (p[1] != d[1]) {
@@ -220,16 +220,16 @@ void Trmp2Mario_ApplyGravity(char *o) {
 }
 }
 }
-// ---- Trmp2Mario_State0
+// ---- Trmp2Mario_StateKnockedOut
 namespace ns_020c905c {
 extern "C" {
-extern void Trmp2Mario_EnterState7(char *o);
-// @symbol Trmp2Mario_State0
-void Trmp2Mario_State0(char *o){
+extern void Trmp2Mario_EnterHidden(char *o);
+// @symbol Trmp2Mario_StateKnockedOut
+void Trmp2Mario_StateKnockedOut(char *o) {
     if (MARIO2(o)->mPos.y >= -0x120000)
         return;
     MARIO2(o)->mVel.y = 0;
-    Trmp2Mario_EnterState7(o);
+    Trmp2Mario_EnterHidden(o);
 }
 }
 }
@@ -248,11 +248,11 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f,
 
 
 extern "C" {
-extern int pmf_Trmp2Mario_State7_5[2];
-extern int pmf_Trmp2Mario_State3[2];
+extern int pmf_Trmp2Mario_StateHidden_5[2];
+extern int pmf_Trmp2Mario_StateRespawnWait[2];
 extern int data_ov006_02140540[];
-extern int pmf_Trmp2Mario_State0[2];
-extern void Trmp2Mario_EnterState7(char *c);
+extern int pmf_Trmp2Mario_StateKnockedOut[2];
+extern void Trmp2Mario_EnterHidden(char *c);
 extern void D3D_PlaySeAtX(int a, int b);
 }
 
@@ -263,7 +263,7 @@ extern "C" void Trmp2Mario_EnterByKind(char *c)
     int *d;
 
     p = MARIO2(c)->mState;
-    d = pmf_Trmp2Mario_State7_5;
+    d = pmf_Trmp2Mario_StateHidden_5;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (MARIO2(c)->mState[0] != 0)
@@ -273,13 +273,13 @@ extern "C" void Trmp2Mario_EnterByKind(char *c)
     }
 check2:
     p = MARIO2(c)->mState;
-    d = pmf_Trmp2Mario_State3;
+    d = pmf_Trmp2Mario_StateRespawnWait;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (MARIO2(c)->mState[0] != 0)
                 goto body;
         }
-        Trmp2Mario_EnterState7(c);
+        Trmp2Mario_EnterHidden(c);
         return;
     }
 body:
@@ -290,18 +290,18 @@ body:
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78), (BCA_File *)data_ov006_02140540[0], 0, 0x800, 0);
     *(int *)(c + 0xd0) = 0;
     {
-        int a = pmf_Trmp2Mario_State0[0];
-        int b = pmf_Trmp2Mario_State0[1];
+        int a = pmf_Trmp2Mario_StateKnockedOut[0];
+        int b = pmf_Trmp2Mario_StateKnockedOut[1];
         MARIO2(c)->mState[0] = b ? a : a;
         MARIO2(c)->mState[1] = b;
     }
 }
 }
-// ---- Trmp2Mario_State1
+// ---- Trmp2Mario_StateBounce
 namespace ns_020c91ac {
 
 extern "C" {
-void Trmp2Mario_EnterState5(void *c);
+void Trmp2Mario_EnterFall(void *c);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *thisPtr, int frame);
 void D3D_PlaySeAtX(int a0, int a1);
@@ -326,13 +326,12 @@ struct VtObj {
     virtual void m4();
 };
 
-// @symbol Trmp2Mario_State1
-extern "C" void Trmp2Mario_State1(char *c)
-{
+// @symbol Trmp2Mario_StateBounce
+extern "C" void Trmp2Mario_StateBounce(char *c) {
     int v24;
 
     if (MARIO2(c)->mVel.y <= 0) {
-        Trmp2Mario_EnterState5(c);
+        Trmp2Mario_EnterFall(c);
         return;
     }
 
@@ -440,7 +439,7 @@ L260:
     } else {
         ApproachLinear(MARIO2(c)->mRotY, (short)v, 0xc00);
     }
-    }
+}
 }
 }
 // ---- Trmp2Mario_BounceOffLineA
@@ -457,14 +456,14 @@ void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
-void Trmp2Mario_State1(char *c);
+void Trmp2Mario_StateBounce(char *c);
 }
 
 extern "C" int sTrmp2RiseSpeedMax;
 extern "C" int sTrmp2GravityStep;
-extern "C" int pmf_Trmp2Mario_State6_2[2];
+extern "C" int pmf_Trmp2Mario_StateAppearWait_2[2];
 extern "C" void *sTrmpAnimBounce;
-extern "C" int pmf_Trmp2Mario_State1_2[2];
+extern "C" int pmf_Trmp2Mario_StateBounce_2[2];
 
 struct VtObj {
     virtual void d0();
@@ -522,7 +521,7 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c)
         int *s = (int *)(bp);
         vec16.z = (s16)(z + (int)((unsigned)bp - (unsigned)bp));
 
-        int *q = pmf_Trmp2Mario_State6_2;
+        int *q = pmf_Trmp2Mario_StateAppearWait_2;
         if (s[0] != q[0] || (s[1] != q[1] && MARIO2(c)->mState[0] != 0)) {
 
             _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -548,20 +547,20 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c)
     D3D_PlaySeAtX(0x1b5, MARIO2(c)->mPos.x);
     *(int *)(c + 0x68) = 0;
     {
-        int a = pmf_Trmp2Mario_State1_2[0];
-        int b = pmf_Trmp2Mario_State1_2[1];
+        int a = pmf_Trmp2Mario_StateBounce_2[0];
+        int b = pmf_Trmp2Mario_StateBounce_2[1];
         a = b ? a : a;
         MARIO2(c)->mState[0] = a;
         MARIO2(c)->mState[1] = b;
     }
-    Trmp2Mario_State1(c);
+    Trmp2Mario_StateBounce(c);
 }
 }
-// ---- Trmp2Mario_State2
+// ---- Trmp2Mario_StateWallBounce
 namespace ns_020c97bc {
 
 extern "C" {
-void Trmp2Mario_EnterState5(void *c);
+void Trmp2Mario_EnterFall(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
@@ -582,13 +581,12 @@ struct VtObj {
     virtual void m4();
 };
 
-// @symbol Trmp2Mario_State2
-extern "C" void Trmp2Mario_State2(char *c)
-{
+// @symbol Trmp2Mario_StateWallBounce
+extern "C" void Trmp2Mario_StateWallBounce(char *c) {
     int v24;
 
     if (MARIO2(c)->mVel.y <= 0) {
-        Trmp2Mario_EnterState5(c);
+        Trmp2Mario_EnterFall(c);
         return;
     }
 
@@ -688,7 +686,7 @@ L260:
     } else {
         ApproachLinear(MARIO2(c)->mRotY, (short)v, 0xc00);
     }
-    }
+}
 }
 }
 // ---- Trmp2Mario_BounceOffLineB
@@ -705,7 +703,7 @@ void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
-void Trmp2Mario_State2(char *c);
+void Trmp2Mario_StateWallBounce(char *c);
 }
 
 
@@ -779,16 +777,16 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c)
     Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
 
     {
-        int a = pmf_Trmp2Mario_State2_2[0];
-        int b = pmf_Trmp2Mario_State2_2[1];
+        int a = pmf_Trmp2Mario_StateWallBounce_2[0];
+        int b = pmf_Trmp2Mario_StateWallBounce_2[1];
         a = b ? a : a;
         MARIO2(c)->mState[0] = a;
         MARIO2(c)->mState[1] = b;
     }
-    Trmp2Mario_State2(c);
+    Trmp2Mario_StateWallBounce(c);
 }
 }
-// ---- Trmp2Mario_EnterState1
+// ---- Trmp2Mario_EnterBounce
 namespace ns_020c9c8c {
 typedef int Fix12;
 struct BCA_File;
@@ -815,14 +813,13 @@ extern "C" {
 extern int sTrmp2GravityStep;
 extern int data_ov006_02140574;
 extern BCA_File *sTrmpAnimBounce;
-extern Pair pmf_Trmp2Mario_State1;
+extern Pair pmf_Trmp2Mario_StateBounce;
 extern void D3D_PlaySeAtX(int a, int b);
-extern void Trmp2Mario_State1(char *c);
+extern void Trmp2Mario_StateBounce(char *c);
 }
 
-// @symbol Trmp2Mario_EnterState1
-extern "C" void Trmp2Mario_EnterState1(char *c)
-{
+// @symbol Trmp2Mario_EnterBounce
+extern "C" void Trmp2Mario_EnterBounce(char *c) {
     Obj *o = (Obj *)c;
     int a, b;
     MARIO2(c)->mGravityStep = sTrmp2GravityStep;
@@ -837,27 +834,26 @@ extern "C" void Trmp2Mario_EnterState1(char *c)
     D3D_PlaySeAtX(0x110, MARIO2(c)->mPos.x);
     D3D_PlaySeAtX(0x1b5, MARIO2(c)->mPos.x);
     *(int *)(c + 0x68) = 0;
-    a = pmf_Trmp2Mario_State1.a;
-    b = pmf_Trmp2Mario_State1.b;
+    a = pmf_Trmp2Mario_StateBounce.a;
+    b = pmf_Trmp2Mario_StateBounce.b;
     MARIO2(c)->mState[0] = b ? a : a;
     MARIO2(c)->mState[1] = b;
-    Trmp2Mario_State1(c);
+    Trmp2Mario_StateBounce(c);
 }
 }
-// ---- Trmp2Mario_State3
+// ---- Trmp2Mario_StateRespawnWait
 namespace ns_020c9d7c {
 extern "C" {
 /* best near-miss div=2 @ mwccarm 1.2/sp2p3 */
 extern int RandomIntInternal(int *seed);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int a, int fix, unsigned int b);
-extern void Trmp2Mario_EnterState5(void *c);
+extern void Trmp2Mario_EnterFall(void *c);
 extern "C" int data_0209e650;
 extern "C" int data_ov006_021405a4;
 extern "C" void *data_ov006_02140580;
 
-// @symbol Trmp2Mario_State3
-void Trmp2Mario_State3(char *c)
-{
+// @symbol Trmp2Mario_StateRespawnWait
+void Trmp2Mario_StateRespawnWait(char *c) {
     unsigned int r;
     int tbl;
     MARIO2(c)->mTimer -= 1;
@@ -874,7 +870,7 @@ void Trmp2Mario_State3(char *c)
         MARIO2(c)->mPrevPos.x = MARIO2(c)->mPos.x;
         MARIO2(c)->mPrevPos.y = MARIO2(c)->mPos.y;
         MARIO2(c)->mPrevPos.z = MARIO2(c)->mPos.z;
-        Trmp2Mario_EnterState5(c);
+        Trmp2Mario_EnterFall(c);
     } else {
         MARIO2(c)->mPos.y = 0x100000;
         MARIO2(c)->mVel.y = 0;
@@ -882,17 +878,16 @@ void Trmp2Mario_State3(char *c)
 }
 }
 }
-// ---- Trmp2Mario_EnterState3
+// ---- Trmp2Mario_EnterRespawnWait
 namespace ns_020c9e7c {
 extern "C" {
 
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, unsigned int, int);
 extern "C" void *data_ov006_02140580;
 struct Vec2i { int x; int y; };
-extern "C" struct Vec2i pmf_Trmp2Mario_State3_2;
-// @symbol Trmp2Mario_EnterState3
-void Trmp2Mario_EnterState3(unsigned char *c)
-{
+extern "C" struct Vec2i pmf_Trmp2Mario_StateRespawnWait_2;
+// @symbol Trmp2Mario_EnterRespawnWait
+void Trmp2Mario_EnterRespawnWait(unsigned char *c) {
     MARIO2(c)->mTimer = 0x3c;
     MARIO2(c)->mPos.y = 0x100000;
     MARIO2(c)->mPrevPos.x = MARIO2(c)->mPos.x;
@@ -901,18 +896,18 @@ void Trmp2Mario_EnterState3(unsigned char *c)
     MARIO2(c)->mVel.y = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, data_ov006_02140580, 0x40000000, 0x800,
                                                 0);
-    *(W2 *)(c + 0x70) = *(W2 *)&pmf_Trmp2Mario_State3_2;
+    *(W2 *)(c + 0x70) = *(W2 *)&pmf_Trmp2Mario_StateRespawnWait_2;
 }
 }
 }
-// ---- Trmp2Mario_State4
+// ---- Trmp2Mario_StateMissed
 namespace ns_020c9efc {
 typedef long long s64;
 extern "C" {
 extern void Puff_Spawn(int a, int b);
 }
 extern "C" {
-extern void Trmp2Mario_EnterState3(void* p);
+extern void Trmp2Mario_EnterRespawnWait(void *p);
 }
 extern "C" int data_ov006_02140598;
 extern "C" int data_ov006_0213b0f0;
@@ -925,29 +920,29 @@ struct Obj {
   virtual void v4();
 };
 
-// @symbol Trmp2Mario_State4
-extern "C" void Trmp2Mario_State4(char* c){
-  *(short*)(((int)c+0x6c)) = *(short*)(((int)c+0x6c)) - 1;
-  if (MARIO2(c)->mTimer == 0) {
-      Puff_Spawn(MARIO2(c)->mScreenPos[0], 0xc0);
-      data_ov006_02140598 = data_ov006_02140598 - 1;
-      ApproachLinear(data_ov006_0213b0f0, 0, 1);
-      Sound::PlayBank2_2D(0x130);
-      ((Obj *)c)->v4();
-      MARIO2(c)->mWallBumpTimer = 0;
-      Trmp2Mario_EnterState3(c);
-  } else {
-      int v = MARIO2(c)->mVel.x;
-      MARIO2(c)->mVel.x = (int)(((s64)v * 0xc00 + 0x800) >> 12);
-      int x = MARIO2(c)->mPos.x;
-      if (x < -0x6c000)
-          MARIO2(c)->mPos.x = -0x6c000;
-      else if (x > 0x6c000)
-          MARIO2(c)->mPos.x = 0x6c000;
-  }
+// @symbol Trmp2Mario_StateMissed
+extern "C" void Trmp2Mario_StateMissed(char *c) {
+    *(short *)(((int)c + 0x6c)) = *(short *)(((int)c + 0x6c)) - 1;
+    if (MARIO2(c)->mTimer == 0) {
+        Puff_Spawn(MARIO2(c)->mScreenPos[0], 0xc0);
+        data_ov006_02140598 = data_ov006_02140598 - 1;
+        ApproachLinear(data_ov006_0213b0f0, 0, 1);
+        Sound::PlayBank2_2D(0x130);
+        ((Obj *)c)->v4();
+        MARIO2(c)->mWallBumpTimer = 0;
+        Trmp2Mario_EnterRespawnWait(c);
+    } else {
+        int v = MARIO2(c)->mVel.x;
+        MARIO2(c)->mVel.x = (int)(((s64)v * 0xc00 + 0x800) >> 12);
+        int x = MARIO2(c)->mPos.x;
+        if (x < -0x6c000)
+            MARIO2(c)->mPos.x = -0x6c000;
+        else if (x > 0x6c000)
+            MARIO2(c)->mPos.x = 0x6c000;
+    }
 }
 }
-// ---- Trmp2Mario_EnterState4
+// ---- Trmp2Mario_EnterMissed
 namespace ns_020c9fe4 {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
@@ -955,21 +950,21 @@ extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_0213b0f0[];
 extern void *data_ov006_02140540;
-extern double pmf_Trmp2Mario_State4_2;
-void Trmp2Mario_EnterState4(char *c);
-// @symbol Trmp2Mario_EnterState4
-void Trmp2Mario_EnterState4(char *c) {
+extern double pmf_Trmp2Mario_StateMissed_2;
+void Trmp2Mario_EnterMissed(char *c);
+// @symbol Trmp2Mario_EnterMissed
+void Trmp2Mario_EnterMissed(char *c) {
     if (data_ov006_0213b0f0[0] > 1)
         D3D_PlaySeAtX(0x1ca, MARIO2(c)->mPos.x);
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, *(void**)&data_ov006_02140540, 0, 0x800, 0);
     MARIO2(c)->mTimer = 0x28;
-    *(double*)(c + 0x70) = pmf_Trmp2Mario_State4_2;
+    *(double *)(c + 0x70) = pmf_Trmp2Mario_StateMissed_2;
 }
 }
 }
-// ---- Trmp2Mario_State5
+// ---- Trmp2Mario_StateFall
 namespace ns_020ca070 {
 
 extern "C" {
@@ -979,14 +974,14 @@ void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
-void Trmp2Mario_EnterState4(char *c);
+void Trmp2Mario_EnterMissed(char *c);
 }
 
 extern "C" void *sMgMainCamera;
 extern "C" void *data_ov006_0213b22c[];
 
 struct S8 { int a, b; };
-extern "C" S8 pmf_Trmp2Mario_State2;
+extern "C" S8 pmf_Trmp2Mario_StateWallBounce;
 
 struct VtObj {
     virtual void d0();
@@ -996,9 +991,8 @@ struct VtObj {
     virtual void m4();
 };
 
-// @symbol Trmp2Mario_State5
-extern "C" void Trmp2Mario_State5(char *c)
-{
+// @symbol Trmp2Mario_StateFall
+extern "C" void Trmp2Mario_StateFall(char *c) {
     u16 state = MARIO2(c)->mContact;
     int v24;
 
@@ -1049,7 +1043,7 @@ L70:
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
 
         {
-            long long ll = *(long long *)&pmf_Trmp2Mario_State2;
+            long long ll = *(long long *)&pmf_Trmp2Mario_StateWallBounce;
             MARIO2(c)->mState[0] = (int)ll;
             MARIO2(c)->mState[1] = (int)((unsigned long long)ll >> 32);
         }
@@ -1093,29 +1087,29 @@ L260:
         if (MARIO2(c)->mPos.y >= -0xc8000)
             return;
 
-        Trmp2Mario_EnterState4(c);
+        Trmp2Mario_EnterMissed(c);
+    }
 }
-}
-// ---- Trmp2Mario_EnterState5
+// ---- Trmp2Mario_EnterFall
 namespace ns_020ca2ec {
 extern "C" {
 typedef struct { int a, b; } S8;
-extern "C" S8 pmf_Trmp2Mario_State5;
-extern void Trmp2Mario_State5(void *self);
+extern "C" S8 pmf_Trmp2Mario_StateFall;
+extern void Trmp2Mario_StateFall(void *self);
 
-// @symbol Trmp2Mario_EnterState5
-void Trmp2Mario_EnterState5(void *self) {
-    *(W2 *)((char *)self + 0x70) = *(W2 *)&pmf_Trmp2Mario_State5;
-    Trmp2Mario_State5(self);
+// @symbol Trmp2Mario_EnterFall
+void Trmp2Mario_EnterFall(void *self) {
+    *(W2 *)((char *)self + 0x70) = *(W2 *)&pmf_Trmp2Mario_StateFall;
+    Trmp2Mario_StateFall(self);
 }
 }
 }
-// ---- Trmp2Mario_State6
+// ---- Trmp2Mario_StateAppearWait
 namespace ns_020ca310 {
 extern "C" int _Z15ApproachLinear2Rsss(short&, short, short);
-extern "C" void Trmp2Mario_EnterState1(char*, int);
-// @symbol Trmp2Mario_State6
-extern "C" void Trmp2Mario_State6(char* c){
+extern "C" void Trmp2Mario_EnterBounce(char *, int);
+// @symbol Trmp2Mario_StateAppearWait
+extern "C" void Trmp2Mario_StateAppearWait(char *c) {
     if (_Z15ApproachLinear2Rsss(MARIO2(c)->mTimer, 0, 1) == 0) {
         MARIO2(c)->mPos.y = 0;
         return;
@@ -1125,33 +1119,32 @@ extern "C" void Trmp2Mario_State6(char* c){
     MARIO2(c)->mPrevPos.y = MARIO2(c)->mPos.y;
     MARIO2(c)->mPrevPos.z = MARIO2(c)->mPos.z;
     MARIO2(c)->mVisible = 1;
-    Trmp2Mario_EnterState1(c, 1);
+    Trmp2Mario_EnterBounce(c, 1);
 }
 }
-// ---- Trmp2Mario_EnterState6
+// ---- Trmp2Mario_EnterAppearWait
 namespace ns_020ca374 {
 extern "C" {
 struct S2{int w[2];};
-extern "C" struct S2 pmf_Trmp2Mario_State6;
-// @symbol Trmp2Mario_EnterState6
-void Trmp2Mario_EnterState6(char *o, short v){
+extern "C" struct S2 pmf_Trmp2Mario_StateAppearWait;
+// @symbol Trmp2Mario_EnterAppearWait
+void Trmp2Mario_EnterAppearWait(char *o, short v) {
     MARIO2(o)->mTimer = v;
     MARIO2(o)->mGravityStep = 0;
-    *(struct S2 *)(o + 0x70) = pmf_Trmp2Mario_State6;
+    *(struct S2 *)(o + 0x70) = pmf_Trmp2Mario_StateAppearWait;
 }
 }
 }
-// ---- Trmp2Mario_State7
+// ---- Trmp2Mario_StateHidden
 namespace ns_020ca39c {
 extern "C" {
-// @symbol Trmp2Mario_State7
-void Trmp2Mario_State7(int *p)
-{
+// @symbol Trmp2Mario_StateHidden
+void Trmp2Mario_StateHidden(int *p) {
     p[10] = 0;
 }
 }
 }
-// ---- Trmp2Mario_EnterState7
+// ---- Trmp2Mario_EnterHidden
 namespace ns_020ca3a8 {
 typedef int Fix12;
 struct BCA_File;
@@ -1165,12 +1158,11 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f,
 extern "C" {
 extern int data_020a0ebc[];
 extern int data_ov006_02140564[];
-extern double pmf_Trmp2Mario_State7_3;
+extern double pmf_Trmp2Mario_StateHidden_3;
 }
 
-// @symbol Trmp2Mario_EnterState7
-extern "C" void Trmp2Mario_EnterState7(char *c)
-{
+// @symbol Trmp2Mario_EnterHidden
+extern "C" void Trmp2Mario_EnterHidden(char *c) {
     MARIO2(c)->mVisible = 0;
     MARIO2(c)->mPos.y = 0;
     MARIO2(c)->mPos.x = 0;
@@ -1181,7 +1173,7 @@ extern "C" void Trmp2Mario_EnterState7(char *c)
     MARIO2(c)->mGravityStep = 0;
     MARIO2(c)->mWallBumpTimer = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78), (BCA_File *)data_ov006_02140564[0], 0, 0x800, 0);
-    *(double *)(c + 0x70) = pmf_Trmp2Mario_State7_3;
+    *(double *)(c + 0x70) = pmf_Trmp2Mario_StateHidden_3;
 }
 }
 // ---- Trmp2Mario_Load
@@ -1228,7 +1220,7 @@ extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, in
 extern void Camera_ProjectToScreen16(char* p, void* q, short* s);
 extern void func_02016a14(void* self, int a, int b);
 extern void func_02016a04(void* self, int a);
-extern void Trmp2Mario_EnterState7(char* c);
+extern void Trmp2Mario_EnterHidden(char *c);
 
 // @symbol Trmp2Mario_Load
 int Trmp2Mario_Load(char* c)
@@ -1257,7 +1249,7 @@ int Trmp2Mario_Load(char* c)
     MARIO2(c)->mGravityStep = 0;
     func_02016a14(c + 0x78, 0x73ff, 0);
     func_02016a04(c + 0x78, 0x3e52);
-    Trmp2Mario_EnterState7(c);
+    Trmp2Mario_EnterHidden(c);
     return ret;
 }
 }
@@ -1346,7 +1338,7 @@ extern "C" int *_ZN6Player29TryExitCharacterDoorWithIntroEv(int *self)
 namespace ns_020ca7b8 {
 extern "C" {
 // Scans sTrmp2MarioCount entries (stride 0xdc) from sTrmp2Marios:
-// returns 0 if any entry's pair at +0x70 mismatches pmf_Trmp2Mario_State7_2
+// returns 0 if any entry's pair at +0x70 mismatches pmf_Trmp2Mario_StateHidden_2
 // (y-mismatch tolerated when x is 0), else 1. Leaf, no callees.
 typedef struct Ent {
     char _pad0[0x70];  // 0x00
@@ -1357,15 +1349,15 @@ typedef struct Ent {
 
 extern "C" int sTrmp2MarioCount;
 extern "C" Ent *sTrmp2Marios;
-extern "C" int pmf_Trmp2Mario_State7_2[2];
+extern "C" int pmf_Trmp2Mario_StateHidden_2[2];
 
 // @symbol Trmp2Mario_Hide
 int Trmp2Mario_Hide(void) {
     int i;
     for (i = 0; i < sTrmp2MarioCount; i++) {
         int *v = (int *)(&sTrmp2Marios[i].x);
-        volatile int* q = (volatile int*)pmf_Trmp2Mario_State7_2;
-        if (v[0] != pmf_Trmp2Mario_State7_2[0] || (v[1] != q[1] && sTrmp2Marios[i].x != 0))
+        volatile int *q = (volatile int *)pmf_Trmp2Mario_StateHidden_2;
+        if (v[0] != pmf_Trmp2Mario_StateHidden_2[0] || (v[1] != q[1] && sTrmp2Marios[i].x != 0))
             return 0;
     }
     return 1;
@@ -1410,10 +1402,10 @@ namespace ns_020ca8e0 {
 extern "C" int sTrmp2MarioTarget;
 extern "C" int sTrmp2MarioCount;
 extern "C" char *sTrmp2Marios;
-extern "C" int pmf_Trmp2Mario_State7[2];
+extern "C" int pmf_Trmp2Mario_StateHidden[2];
 extern "C" int data_ov006_021405a4;
 extern "C" void _Z14ApproachLinearRiii(int& ref, int to, int step);
-extern "C" void Trmp2Mario_EnterState6(char* o, short v);
+extern "C" void Trmp2Mario_EnterAppearWait(char *o, short v);
 extern "C" void Trmp2Mario_UpdateMatrix(char* o);
 
 // @symbol Trmp2Mario_MoveToStart
@@ -1432,20 +1424,19 @@ extern "C" void Trmp2Mario_MoveToStart(void) {
 
   base = sTrmp2Marios;
   e = base;
-  q0 = pmf_Trmp2Mario_State7[0];
+  q0 = pmf_Trmp2Mario_StateHidden[0];
   for (;;) {
 
     int* v = (int*)(e + 0x70);
-    volatile int* q = (volatile int*)pmf_Trmp2Mario_State7;
+    volatile int *q = (volatile int *)pmf_Trmp2Mario_StateHidden;
     if (v[0] == q0 && (v[1] == q[1] || *(int*)(e + 0x70) == 0)) {
 
-      Trmp2Mario_EnterState6(base + i * 0xdc, (short)(i * 0x14));
-      *(int *)(sTrmp2Marios + i * 0xdc + 0x24) = 0;
-      *(int *)(sTrmp2Marios + i * 0xdc + 0x3c) =
-          (int)(((long long)data_ov006_021405a4 * ((i << 11) - 0x1000) + 0x800) >> 12);
-      Trmp2Mario_UpdateMatrix(sTrmp2Marios + i * 0xdc);
-      return;
-
+        Trmp2Mario_EnterAppearWait(base + i * 0xdc, (short)(i * 0x14));
+        *(int *)(sTrmp2Marios + i * 0xdc + 0x24) = 0;
+        *(int *)(sTrmp2Marios + i * 0xdc + 0x3c) =
+            (int)(((long long)data_ov006_021405a4 * ((i << 11) - 0x1000) + 0x800) >> 12);
+        Trmp2Mario_UpdateMatrix(sTrmp2Marios + i * 0xdc);
+        return;
     }
 
     i++;
@@ -1462,7 +1453,7 @@ extern "C" {
 extern "C" int sTrmp2MarioCount;
 extern "C" char *sTrmp2Marios;
 extern "C" int data_ov006_021405a4;
-extern void Trmp2Mario_EnterState6(char *o, short v);
+extern void Trmp2Mario_EnterAppearWait(char *o, short v);
 extern void Trmp2Mario_UpdateMatrix(char *o);
 
 // @symbol Trmp2Mario_PlaceAtStart
@@ -1473,7 +1464,7 @@ void Trmp2Mario_PlaceAtStart(void)
     n = sTrmp2MarioCount;
     if (n > 3) n = 3;
     for (i = 0; i < n; i++) {
-        Trmp2Mario_EnterState6(sTrmp2Marios + i * 0xdc, (short)(i * 0x14));
+        Trmp2Mario_EnterAppearWait(sTrmp2Marios + i * 0xdc, (short)(i * 0x14));
         *(int *)(sTrmp2Marios + i * 0xdc + 0x24) = i * 0x10000 - 0x20000;
         *(int *)(sTrmp2Marios + i * 0xdc + 0x3c) =
             (int)(((long long)data_ov006_021405a4 * (i * 0x800 - 0x1000) + 0x800) >> 0xc);
@@ -1557,7 +1548,7 @@ void Trmp2Mario_UpdateAll(void){
 namespace ns_020cac9c {
 extern "C" {
 void Trmp2Mario_SetTuning(int sz);
-void Trmp2Mario_EnterState7(char* c);
+void Trmp2Mario_EnterHidden(char *c);
 void Trmp2Mario_UpdateMatrix(char* o);
 void Puff_ClearAll(int a0, int a1);
 extern "C" int sTrmp2MarioTarget;
@@ -1578,7 +1569,7 @@ void Trmp2Mario_ResetAll(void){
         i = 0;
         off = 0;
         do {
-            Trmp2Mario_EnterState7(sTrmp2Marios + off);
+            Trmp2Mario_EnterHidden(sTrmp2Marios + off);
             Trmp2Mario_UpdateMatrix(sTrmp2Marios + off);
             i++;
             off += 0xdc;
@@ -1664,14 +1655,14 @@ int Trmp3DMario_GetVelocity(int p)
 }
 }
 }
-// ---- Trmp3DMario_IsInState6
+// ---- Trmp3DMario_IsMissed
 namespace ns_020caf4c {
 extern "C" {
-extern "C" int pmf_Trmp3DMario_State6[];
-// @symbol Trmp3DMario_IsInState6
-int Trmp3DMario_IsInState6(int* r0) {
+extern "C" int pmf_Trmp3DMario_StateMissed[];
+// @symbol Trmp3DMario_IsMissed
+int Trmp3DMario_IsMissed(int *r0) {
     int* p = (int*)(((int)r0 + 0x64));
-    int* g = pmf_Trmp3DMario_State6;
+    int *g = pmf_Trmp3DMario_StateMissed;
     int lr = 1;
     if (p[0] == g[0]) {
         if (p[1] == g[1] || r0[0x19] == 0) lr = 0;
@@ -1798,15 +1789,16 @@ void Trmp3DMario_ApplyGravity(char *o) {
 }
 }
 }
-// ---- Trmp3DMario_State0
+// ---- Trmp3DMario_StateKnockedOut
 namespace ns_020cb16c {
 extern "C" {
-extern int Trmp3DMario_EnterState12(void *c);
-// @symbol Trmp3DMario_State0
-void Trmp3DMario_State0(int *c){
-  if(*(int*)((char*)c+0x20) >= -0x120000) return;
-  *(int*)((char*)c+0x38)=0;
-  Trmp3DMario_EnterState12(c);
+extern int Trmp3DMario_EnterOffstage(void *c);
+// @symbol Trmp3DMario_StateKnockedOut
+void Trmp3DMario_StateKnockedOut(int *c) {
+    if (*(int *)((char *)c + 0x20) >= -0x120000)
+        return;
+    *(int *)((char *)c + 0x38) = 0;
+    Trmp3DMario_EnterOffstage(c);
 }
 }
 }
@@ -1825,10 +1817,10 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f,
 
 
 extern "C" {
-extern int pmf_Trmp3DMario_State12_4[2];
-extern int pmf_Trmp3DMario_State1_2[2];
+extern int pmf_Trmp3DMario_StateOffstage_4[2];
+extern int pmf_Trmp3DMario_StateGoal_2[2];
 extern int data_ov006_02140540[];
-extern int pmf_Trmp3DMario_State0[2];
+extern int pmf_Trmp3DMario_StateKnockedOut[2];
 }
 
 // @symbol Trmp3DMario_EnterByKind
@@ -1838,7 +1830,7 @@ extern "C" void Trmp3DMario_EnterByKind(char *c)
     int *d;
 
     p = MARIO3D(c)->mState;
-    d = pmf_Trmp3DMario_State12_4;
+    d = pmf_Trmp3DMario_StateOffstage_4;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (MARIO3D(c)->mState[0] != 0)
@@ -1848,7 +1840,7 @@ extern "C" void Trmp3DMario_EnterByKind(char *c)
     }
 check2:
     p = MARIO3D(c)->mState;
-    d = pmf_Trmp3DMario_State1_2;
+    d = pmf_Trmp3DMario_StateGoal_2;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (MARIO3D(c)->mState[0] != 0)
@@ -1864,14 +1856,14 @@ body:
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x6c), (BCA_File *)data_ov006_02140540[0], 0, 0x800, 0);
     *(int *)(c + 0xc4) = 0;
     {
-        int a = pmf_Trmp3DMario_State0[0];
-        int b = pmf_Trmp3DMario_State0[1];
+        int a = pmf_Trmp3DMario_StateKnockedOut[0];
+        int b = pmf_Trmp3DMario_StateKnockedOut[1];
         MARIO3D(c)->mState[0] = b ? a : a;
         MARIO3D(c)->mState[1] = b;
     }
 }
 }
-// ---- Trmp3DMario_State1
+// ---- Trmp3DMario_StateGoal
 namespace ns_020cb2b4 {
 extern "C" {
 typedef struct { int m0, m4, m8; } Triple;
@@ -1898,11 +1890,10 @@ extern void func_02012718(int, int);
 extern void Camera_ProjectToScreen(char *, void *, int *, int *);
 extern int Mg_GetTopScreenYOffset(void);
 extern void TrmpFx_Spawn(int, int);
-extern void Trmp3DMario_EnterState12(char *);
+extern void Trmp3DMario_EnterOffstage(char *);
 
-// @symbol Trmp3DMario_State1
-void Trmp3DMario_State1(void *self)
-{
+// @symbol Trmp3DMario_StateGoal
+void Trmp3DMario_StateGoal(void *self) {
     char *c = (char *)self;
     int va, vb;
     short idx;
@@ -1966,11 +1957,11 @@ void Trmp3DMario_State1(void *self)
     *(int *)(c + 0x38) = data_020a0ebc.m4;
     *(int *)(c + 0x3c) = data_020a0ebc.m8;
 
-    Trmp3DMario_EnterState12(c);
+    Trmp3DMario_EnterOffstage(c);
 }
 }
 }
-// ---- Trmp3DMario_EnterState1
+// ---- Trmp3DMario_EnterGoal
 namespace ns_020cb528 {
 typedef short s16;
 typedef int Fix12;
@@ -1983,15 +1974,14 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void* bca, i
 
 extern "C" {
 void Sound_PlayBank1Panned(int a0, char* a1, void* a2);
-void Trmp3DMario_State1(char* c);
+void Trmp3DMario_StateGoal(char *c);
 extern int data_ov006_021405c8[];
 extern void *data_ov006_0214054c;
-extern int pmf_Trmp3DMario_State1[];
+extern int pmf_Trmp3DMario_StateGoal[];
 extern int data_ov006_0214055c[];
 }
-// @symbol Trmp3DMario_EnterState1
-extern "C" void Trmp3DMario_EnterState1(char* c)
-{
+// @symbol Trmp3DMario_EnterGoal
+extern "C" void Trmp3DMario_EnterGoal(char *c) {
     int a, b;
     MARIO3D(c)->mPos.y = data_ov006_021405c8[MARIO3D(c)->mHeightRow];
     MARIO3D(c)->mVel.x = 0;
@@ -1999,14 +1989,14 @@ extern "C" void Trmp3DMario_EnterState1(char* c)
     Sound_PlayBank1Panned(0, (char*)0x10, *(void**)(c+0x1c));
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim*)(c+0x6c), data_ov006_0214054c, 0x40000000, 0x800, 0);
     data_ov006_0214055c[0] = data_ov006_0214055c[0] + 1;
-    a = pmf_Trmp3DMario_State1[0];
-    b = pmf_Trmp3DMario_State1[1];
+    a = pmf_Trmp3DMario_StateGoal[0];
+    b = pmf_Trmp3DMario_StateGoal[1];
     MARIO3D(c)->mState[0] = b ? a : a;
     MARIO3D(c)->mState[1] = b;
-    Trmp3DMario_State1(c);
+    Trmp3DMario_StateGoal(c);
 }
 }
-// ---- Trmp3DMario_State2
+// ---- Trmp3DMario_StateLand
 namespace ns_020cb5c4 {
 extern "C" {
 extern "C" int data_ov006_021405c8[];
@@ -2016,12 +2006,11 @@ extern void _Z14ApproachLinearRiii(int* p, int b, int c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
-extern void Trmp3DMario_EnterState1(char* c);
-extern void Trmp3DMario_EnterState9(char* c);
+extern void Trmp3DMario_EnterGoal(char *c);
+extern void Trmp3DMario_EnterOnLedge(char *c);
 
-// @symbol Trmp3DMario_State2
-void Trmp3DMario_State2(char* c)
-{
+// @symbol Trmp3DMario_StateLand
+void Trmp3DMario_StateLand(char *c) {
     _Z14ApproachLinearRiii((int *)(c + 0x20), data_ov006_021405c8[MARIO3D(c)->mHeightRow], 0x4000);
     if (MARIO3D(c)->mPos.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0x4a), 0x4000, 0x1000);
@@ -2032,13 +2021,13 @@ void Trmp3DMario_State2(char* c)
     if (*(int*)(c + 0xcc) != data_ov006_021405c0) return;
     if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) == 0) return;
     if (MARIO3D(c)->mHeightRow == data_ov006_02140538)
-        Trmp3DMario_EnterState1(c);
+        Trmp3DMario_EnterGoal(c);
     else
-        Trmp3DMario_EnterState9(c);
+        Trmp3DMario_EnterOnLedge(c);
 }
 }
 }
-// ---- Trmp3DMario_EnterState2
+// ---- Trmp3DMario_EnterLand
 namespace ns_020cb690 {
 struct ModelAnim { void SetAnim(void* bca, int b, int c, unsigned int d); };
 /* Signature deliberately copied from the local declaration above: the
@@ -2049,45 +2038,43 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void* bca, i
 
 extern "C" {
 void Sound_PlayBank1Panned(int a0, char* a1, void* a2);
-void Trmp3DMario_State2(char* c);
+void Trmp3DMario_StateLand(char *c);
 extern int data_020a0ebc[];
 extern int *data_ov006_021405c0;
 struct W2 { int a, b; };
-extern struct W2 pmf_Trmp3DMario_State2;
-void Trmp3DMario_EnterState2(char* c);
+extern struct W2 pmf_Trmp3DMario_StateLand;
+void Trmp3DMario_EnterLand(char *c);
 }
-// @symbol Trmp3DMario_EnterState2
-void Trmp3DMario_EnterState2(char* c)
-{
+// @symbol Trmp3DMario_EnterLand
+void Trmp3DMario_EnterLand(char *c) {
     MARIO3D(c)->mVel.x = data_020a0ebc[0];
     MARIO3D(c)->mVel.y = data_020a0ebc[1];
     MARIO3D(c)->mVel.z = data_020a0ebc[2];
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim*)(c+0x6c), (void*)data_ov006_021405c0, 0x40000000, 0x800, 0);
     Sound_PlayBank1Panned(0, (char*)0x17, *(void**)(c+0x1c));
     {
-        int a = pmf_Trmp3DMario_State2.a;
-        int b = pmf_Trmp3DMario_State2.b;
+        int a = pmf_Trmp3DMario_StateLand.a;
+        int b = pmf_Trmp3DMario_StateLand.b;
         MARIO3D(c)->mState[0] = b ? a : a;
         MARIO3D(c)->mState[1] = b;
     }
     int* p20 = (int*)(((int)c + 0x20));
     *p20 = *p20 + 0x20000;
-    Trmp3DMario_State2(c);
+    Trmp3DMario_StateLand(c);
 }
 }
-// ---- Trmp3DMario_State3
+// ---- Trmp3DMario_StateFallToLedge
 namespace ns_020cb72c {
 extern "C" {
 
-extern void Trmp3DMario_EnterState1(char *c);
-extern void Trmp3DMario_EnterState9(char *c);
+extern void Trmp3DMario_EnterGoal(char *c);
+extern void Trmp3DMario_EnterOnLedge(char *c);
 extern int D3D_PlaySeAtX(int a, int b);
-extern void Trmp3DMario_EnterState11(char *c);
+extern void Trmp3DMario_EnterOnGround(char *c);
 extern "C" int data_ov006_021405c8[];
 extern "C" short data_ov006_02140538;
-// @symbol Trmp3DMario_State3
-void Trmp3DMario_State3(char *c)
-{
+// @symbol Trmp3DMario_StateFallToLedge
+void Trmp3DMario_StateFallToLedge(char *c) {
     int v = MARIO3D(c)->mPos.x;
     if (v > 0) {
         short idx = MARIO3D(c)->mHeightRow;
@@ -2095,9 +2082,9 @@ void Trmp3DMario_State3(char *c)
         int *d = data_ov006_021405c8;
         if (cur <= d[idx]) {
             if (idx == data_ov006_02140538) {
-                Trmp3DMario_EnterState1(c);
+                Trmp3DMario_EnterGoal(c);
             } else {
-                Trmp3DMario_EnterState9(c);
+                Trmp3DMario_EnterOnLedge(c);
             }
             D3D_PlaySeAtX(0x1b4, MARIO3D(c)->mPos.x);
         } else {
@@ -2109,48 +2096,47 @@ void Trmp3DMario_State3(char *c)
     } else {
         if ((MARIO3D(c)->mPos.y) <= data_ov006_021405c8[0]) {
             D3D_PlaySeAtX(0x1b4, v);
-            Trmp3DMario_EnterState11(c);
+            Trmp3DMario_EnterOnGround(c);
             return;
         }
     }
-  {
-      int w = MARIO3D(c)->mPos.x;
-      if (w > 0x70000) {
-          MARIO3D(c)->mPos.x = 0x70000;
-          MARIO3D(c)->mVel.x = 0;
-          return;
-      }
-    if (w < (-0x70000))
     {
-        MARIO3D(c)->mPos.x = -0x70000;
-        MARIO3D(c)->mVel.x = 0;
+        int w = MARIO3D(c)->mPos.x;
+        if (w > 0x70000) {
+            MARIO3D(c)->mPos.x = 0x70000;
+            MARIO3D(c)->mVel.x = 0;
+            return;
+        }
+        if (w < (-0x70000)) {
+            MARIO3D(c)->mPos.x = -0x70000;
+            MARIO3D(c)->mVel.x = 0;
+        }
     }
-  }
 }
 }
 }
-// ---- Trmp3DMario_EnterState3
+// ---- Trmp3DMario_EnterFallToLedge
 namespace ns_020cb814 {
 extern "C" {
 typedef struct { int a, b; } Pair2;
-extern "C" Pair2 pmf_Trmp3DMario_State3;
-extern void Trmp3DMario_State3(char* c);
+extern "C" Pair2 pmf_Trmp3DMario_StateFallToLedge;
+extern void Trmp3DMario_StateFallToLedge(char *c);
 
-// @symbol Trmp3DMario_EnterState3
-void Trmp3DMario_EnterState3(char* c){
-    *(W2 *)(c + 0x64) = *(W2 *)&pmf_Trmp3DMario_State3;
-    Trmp3DMario_State3(c);
+// @symbol Trmp3DMario_EnterFallToLedge
+void Trmp3DMario_EnterFallToLedge(char *c) {
+    *(W2 *)(c + 0x64) = *(W2 *)&pmf_Trmp3DMario_StateFallToLedge;
+    Trmp3DMario_StateFallToLedge(c);
 }
 }
 }
-// ---- Trmp3DMario_State4
+// ---- Trmp3DMario_StateHardBounce
 namespace ns_020cb838 {
 
 extern "C" {
-void Trmp3DMario_EnterState7(void *c);
+void Trmp3DMario_EnterFall(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
-void Trmp3DMario_EnterState3(void *c);
-void Trmp3DMario_EnterState2(void *c);
+void Trmp3DMario_EnterFallToLedge(void *c);
+void Trmp3DMario_EnterLand(void *c);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void func_02012718(int a, int b);
@@ -2170,13 +2156,12 @@ struct VtObj {
     virtual void m4();
 };
 
-// @symbol Trmp3DMario_State4
-extern "C" void Trmp3DMario_State4(char *c)
-{
+// @symbol Trmp3DMario_StateHardBounce
+extern "C" void Trmp3DMario_StateHardBounce(char *c) {
     int v;
 
     if (MARIO3D(c)->mVel.y <= 0) {
-        Trmp3DMario_EnterState7(c);
+        Trmp3DMario_EnterFall(c);
         return;
     }
 
@@ -2207,7 +2192,7 @@ L70:
 
         if (p > f0) {
             MARIO3D(c)->mHeightRow = 0;
-            Trmp3DMario_EnterState3(c);
+            Trmp3DMario_EnterFallToLedge(c);
             return;
         }
 
@@ -2215,7 +2200,7 @@ L70:
         if (p <= f0) goto Ld0;
         if (v <= 0) goto L134;
         MARIO3D(c)->mHeightRow = 0;
-        Trmp3DMario_EnterState2(c);
+        Trmp3DMario_EnterLand(c);
         return;
 
     Ld0:
@@ -2227,14 +2212,14 @@ L70:
             if (p >= hi1) goto L134;
             if (p <= f1) goto L10c;
             MARIO3D(c)->mHeightRow = 1;
-            Trmp3DMario_EnterState3(c);
+            Trmp3DMario_EnterFallToLedge(c);
             return;
 
         L10c:
             f1 -= 0x20000;
             if (p <= f1) goto L134;
             MARIO3D(c)->mHeightRow = 1;
-            Trmp3DMario_EnterState2(c);
+            Trmp3DMario_EnterLand(c);
             return;
         }
     }
@@ -2270,7 +2255,7 @@ L1dc:
     } else {
         ApproachLinear(MARIO3D(c)->mRotY, (short)r, 0xc00);
     }
-    }
+}
 }
 }
 // ---- Trmp3DMario_BounceOffLineA
@@ -2301,7 +2286,7 @@ void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
-void Trmp3DMario_State4(char *c);
+void Trmp3DMario_StateHardBounce(char *c);
 }
 
 
@@ -2392,23 +2377,23 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c)
 
     *(int *)(c + 0x5c) = 0;
     {
-        int a = pmf_Trmp3DMario_State4[0];
-        int b = pmf_Trmp3DMario_State4[1];
+        int a = pmf_Trmp3DMario_StateHardBounce[0];
+        int b = pmf_Trmp3DMario_StateHardBounce[1];
         a = b ? a : a;
         MARIO3D(c)->mState[0] = a;
         MARIO3D(c)->mState[1] = b;
     }
-    Trmp3DMario_State4(c);
+    Trmp3DMario_StateHardBounce(c);
 }
 }
-// ---- Trmp3DMario_State5
+// ---- Trmp3DMario_StateBounce
 namespace ns_020cbd7c {
 
 extern "C" {
-void Trmp3DMario_EnterState7(void *c);
+void Trmp3DMario_EnterFall(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
-void Trmp3DMario_EnterState3(void *c);
-void Trmp3DMario_EnterState2(void *c);
+void Trmp3DMario_EnterFallToLedge(void *c);
+void Trmp3DMario_EnterLand(void *c);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void func_02012718(int a, int b);
@@ -2426,13 +2411,12 @@ struct VtObj {
     virtual void m4();
 };
 
-// @symbol Trmp3DMario_State5
-extern "C" void Trmp3DMario_State5(char *c)
-{
+// @symbol Trmp3DMario_StateBounce
+extern "C" void Trmp3DMario_StateBounce(char *c) {
     int v;
 
     if (MARIO3D(c)->mVel.y <= 0) {
-        Trmp3DMario_EnterState7(c);
+        Trmp3DMario_EnterFall(c);
         return;
     }
 
@@ -2456,7 +2440,7 @@ L70:
 
         if (p > f0) {
             MARIO3D(c)->mHeightRow = 0;
-            Trmp3DMario_EnterState3(c);
+            Trmp3DMario_EnterFallToLedge(c);
             return;
         }
 
@@ -2464,7 +2448,7 @@ L70:
         if (p <= f0) goto Ld0;
         if (v <= 0) goto L134;
         MARIO3D(c)->mHeightRow = 0;
-        Trmp3DMario_EnterState2(c);
+        Trmp3DMario_EnterLand(c);
         return;
 
     Ld0:
@@ -2476,14 +2460,14 @@ L70:
             if (p >= hi1) goto L134;
             if (p <= f1) goto L10c;
             MARIO3D(c)->mHeightRow = 1;
-            Trmp3DMario_EnterState3(c);
+            Trmp3DMario_EnterFallToLedge(c);
             return;
 
         L10c:
             f1 -= 0x20000;
             if (p <= f1) goto L134;
             MARIO3D(c)->mHeightRow = 1;
-            Trmp3DMario_EnterState2(c);
+            Trmp3DMario_EnterLand(c);
             return;
         }
     }
@@ -2519,7 +2503,7 @@ L1dc:
     } else {
         ApproachLinear(MARIO3D(c)->mRotY, (short)r, 0xc00);
     }
-    }
+}
 }
 }
 // ---- Trmp3DMario_BounceOffLineB
@@ -2537,7 +2521,7 @@ int _ZN4cstd4fdivEii(int a, int b);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
-void Trmp3DMario_State5(char *c);
+void Trmp3DMario_StateBounce(char *c);
 }
 
 
@@ -2612,14 +2596,14 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c)
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
 
     {
-        int a = pmf_Trmp3DMario_State5[0];
-        int b = pmf_Trmp3DMario_State5[1];
+        int a = pmf_Trmp3DMario_StateBounce[0];
+        int b = pmf_Trmp3DMario_StateBounce[1];
         a = b ? a : a;
         MARIO3D(c)->mState[0] = a;
         MARIO3D(c)->mState[1] = b;
     }
 
-    Trmp3DMario_State5(c);
+    Trmp3DMario_StateBounce(c);
 }
 }
 // ---- Trmp3DMario_PickIdleAnim
@@ -2629,7 +2613,7 @@ int RandomIntInternal(int *seed);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
-void Trmp3DMario_State5(char *c);
+void Trmp3DMario_StateBounce(char *c);
 }
 
 extern "C" int sTrmp3DGravityStep;
@@ -2637,7 +2621,7 @@ extern "C" int data_0209e650;
 extern "C" int data_ov006_02140558;
 extern "C" int data_ov006_02140578;
 extern "C" void *data_ov006_0213b22c[];
-extern "C" int pmf_Trmp3DMario_State5_2[2];
+extern "C" int pmf_Trmp3DMario_StateBounce_2[2];
 
 struct VtObj {
     virtual void d0();
@@ -2676,30 +2660,29 @@ extern "C" void Trmp3DMario_PickIdleAnim(char *c)
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
 
     {
-        int a = pmf_Trmp3DMario_State5_2[0];
-        int b2 = pmf_Trmp3DMario_State5_2[1];
+        int a = pmf_Trmp3DMario_StateBounce_2[0];
+        int b2 = pmf_Trmp3DMario_StateBounce_2[1];
         a = b2 ? a : a;
         MARIO3D(c)->mState[0] = a;
         MARIO3D(c)->mState[1] = b2;
     }
 
-    Trmp3DMario_State5(c);
+    Trmp3DMario_StateBounce(c);
 }
 }
-// ---- Trmp3DMario_State6
+// ---- Trmp3DMario_StateMissed
 namespace ns_020cc2ac {
 extern "C" {
 typedef short s16;
 extern void Puff_Spawn(int a, int b);
 extern void _Z14ApproachLinearRiii(int *ref, int target, int step);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int x);
-extern void Trmp3DMario_EnterState12(char *c);
+extern void Trmp3DMario_EnterOffstage(char *c);
 extern "C" int data_ov006_0214058c;
 extern "C" int data_ov006_0213b0ec;
 
-// @symbol Trmp3DMario_State6
-void Trmp3DMario_State6(char *c)
-{
+// @symbol Trmp3DMario_StateMissed
+void Trmp3DMario_StateMissed(char *c) {
     s16 *p = (s16 *)((int)c + 0x60);
     *p = *p - 1;
     if (MARIO3D(c)->mTimer == 0) {
@@ -2707,7 +2690,7 @@ void Trmp3DMario_State6(char *c)
         data_ov006_0214058c -= 1;
         _Z14ApproachLinearRiii(&data_ov006_0213b0ec, 0, 1);
         _ZN5Sound12PlayBank2_2DEj(0x130);
-        Trmp3DMario_EnterState12(c);
+        Trmp3DMario_EnterOffstage(c);
         return;
     }
     MARIO3D(c)->mVel.x = (int)(((long long)MARIO3D(c)->mVel.x * 0xc00 + 0x800) >> 12);
@@ -2723,7 +2706,7 @@ void Trmp3DMario_State6(char *c)
 }
 }
 }
-// ---- Trmp3DMario_EnterState6
+// ---- Trmp3DMario_EnterMissed
 namespace ns_020cc37c {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
@@ -2731,31 +2714,31 @@ extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_0213b0ec[];
 extern void *data_ov006_02140540;
-extern double pmf_Trmp3DMario_State6_2;
-void Trmp3DMario_EnterState6(char *c);
-// @symbol Trmp3DMario_EnterState6
-void Trmp3DMario_EnterState6(char *c) {
+extern double pmf_Trmp3DMario_StateMissed_2;
+void Trmp3DMario_EnterMissed(char *c);
+// @symbol Trmp3DMario_EnterMissed
+void Trmp3DMario_EnterMissed(char *c) {
     if (data_ov006_0213b0ec[0] > 1)
         D3D_PlaySeAtX(0x1ca, MARIO3D(c)->mPos.x);
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, *(void**)&data_ov006_02140540, 0, 0x800, 0);
     MARIO3D(c)->mTimer = 0x28;
-    *(double*)(c + 0x64) = pmf_Trmp3DMario_State6_2;
+    *(double *)(c + 0x64) = pmf_Trmp3DMario_StateMissed_2;
 }
 }
 }
-// ---- Trmp3DMario_State7
+// ---- Trmp3DMario_StateFall
 namespace ns_020cc408 {
 
 extern "C" {
 void Trmp3DMario_BounceOffLineB(void *c);
 void Trmp3DMario_BounceOffLineA(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
-void Trmp3DMario_EnterState3(void *c);
-void Trmp3DMario_EnterState2(void *c);
+void Trmp3DMario_EnterFallToLedge(void *c);
+void Trmp3DMario_EnterLand(void *c);
 int D3D_PlaySeAtX(int a, int b);
-void Trmp3DMario_EnterState6(void *c);
+void Trmp3DMario_EnterMissed(void *c);
 }
 
 extern "C" void *sMgMainCamera;
@@ -2769,9 +2752,8 @@ struct VtObj {
     virtual void m4();
 };
 
-// @symbol Trmp3DMario_State7
-extern "C" void Trmp3DMario_State7(char *c)
-{
+// @symbol Trmp3DMario_StateFall
+extern "C" void Trmp3DMario_StateFall(char *c) {
     int v;
     u16 state = MARIO3D(c)->mContact;
 
@@ -2804,7 +2786,7 @@ L70:
 
         if (p > f0) {
             MARIO3D(c)->mHeightRow = 0;
-            Trmp3DMario_EnterState3(c);
+            Trmp3DMario_EnterFallToLedge(c);
             return;
         }
 
@@ -2812,7 +2794,7 @@ L70:
         if (p <= f0) goto Ld0;
         if (v <= 0) goto L130;
         MARIO3D(c)->mHeightRow = 0;
-        Trmp3DMario_EnterState2(c);
+        Trmp3DMario_EnterLand(c);
         return;
 
     Ld0:
@@ -2824,14 +2806,14 @@ L70:
             if (p >= hi1) goto L130;
             if (p <= f1) goto L10c;
             MARIO3D(c)->mHeightRow = 1;
-            Trmp3DMario_EnterState3(c);
+            Trmp3DMario_EnterFallToLedge(c);
             return;
 
         L10c:
             f1 -= 0x20000;
             if (p <= f1) goto L130;
             MARIO3D(c)->mHeightRow = 1;
-            Trmp3DMario_EnterState2(c);
+            Trmp3DMario_EnterLand(c);
             return;
         }
     }
@@ -2862,50 +2844,51 @@ L180:
         if (MARIO3D(c)->mPos.y >= -0xc8000)
             return;
 
-        Trmp3DMario_EnterState6(c);
+        Trmp3DMario_EnterMissed(c);
+    }
 }
-}
-// ---- Trmp3DMario_EnterState7
+// ---- Trmp3DMario_EnterFall
 namespace ns_020cc618 {
 extern "C" {
 typedef struct { u32 a, b; } Pair;
 
-extern "C" Pair pmf_Trmp3DMario_State7;
-extern void Trmp3DMario_State7(void *self);
+extern "C" Pair pmf_Trmp3DMario_StateFall;
+extern void Trmp3DMario_StateFall(void *self);
 
-// @symbol Trmp3DMario_EnterState7
-void Trmp3DMario_EnterState7(void *self) {
-    *(W2 *)((char *)self + 0x64) = *(W2 *)&pmf_Trmp3DMario_State7;
-    Trmp3DMario_State7(self);
+// @symbol Trmp3DMario_EnterFall
+void Trmp3DMario_EnterFall(void *self) {
+    *(W2 *)((char *)self + 0x64) = *(W2 *)&pmf_Trmp3DMario_StateFall;
+    Trmp3DMario_StateFall(self);
 }
 }
 }
-// ---- Trmp3DMario_State8
+// ---- Trmp3DMario_StateWalkBack
 namespace ns_020cc63c {
 extern "C" {
 extern "C" int data_ov006_021405c8[];
 extern "C" int data_ov006_0214055c;
 extern void Trmp3DMario_PickIdleAnim(int *c);
-// @symbol Trmp3DMario_State8
-void Trmp3DMario_State8(int *c){
-  short idx=*(short*)((char*)c+0x52);
-  *(int*)((char*)c+0x20)=data_ov006_021405c8[idx];
-  if(*(int*)((char*)c+0x1c) >= 0x5bff8) return;
-  data_ov006_0214055c--;
-  Trmp3DMario_PickIdleAnim(c);
+// @symbol Trmp3DMario_StateWalkBack
+void Trmp3DMario_StateWalkBack(int *c) {
+    short idx = *(short *)((char *)c + 0x52);
+    *(int *)((char *)c + 0x20) = data_ov006_021405c8[idx];
+    if (*(int *)((char *)c + 0x1c) >= 0x5bff8)
+        return;
+    data_ov006_0214055c--;
+    Trmp3DMario_PickIdleAnim(c);
 }
 }
 }
-// ---- Trmp3DMario_EnterState8
+// ---- Trmp3DMario_EnterWalkBack
 namespace ns_020cc698 {
 extern "C" {
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_021405c8[];
 extern void *data_ov006_02140564;
-extern double pmf_Trmp3DMario_State8;
-void Trmp3DMario_EnterState8(char *c);
-// @symbol Trmp3DMario_EnterState8
-void Trmp3DMario_EnterState8(char *c) {
+extern double pmf_Trmp3DMario_StateWalkBack;
+void Trmp3DMario_EnterWalkBack(char *c);
+// @symbol Trmp3DMario_EnterWalkBack
+void Trmp3DMario_EnterWalkBack(char *c) {
     MARIO3D(c)->mGravityStep = 0;
     MARIO3D(c)->mPos.y = data_ov006_021405c8[MARIO3D(c)->mHeightRow];
     MARIO3D(c)->mPos.z = 0;
@@ -2914,18 +2897,18 @@ void Trmp3DMario_EnterState8(char *c) {
     MARIO3D(c)->mVel.z = 0;
     MARIO3D(c)->mRotY = -0x4000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, *(void**)&data_ov006_02140564, 0, 0x800, 0);
-    *(double*)(c + 0x64) = pmf_Trmp3DMario_State8;
+    *(double *)(c + 0x64) = pmf_Trmp3DMario_StateWalkBack;
 }
 }
 }
-// ---- Trmp3DMario_State9
+// ---- Trmp3DMario_StateOnLedge
 namespace ns_020cc724 {
 extern "C" {
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern void Trmp3DMario_EnterState8(char *c);
+extern void Trmp3DMario_EnterWalkBack(char *c);
 
 extern "C" void *data_ov006_021405c8[];
 extern "C" void *data_ov006_0214057c;
@@ -2933,9 +2916,8 @@ extern "C" void *data_ov006_02140564;
 extern "C" void *data_ov006_0214056c;
 extern "C" void *data_ov006_02140568;
 
-// @symbol Trmp3DMario_State9
-void Trmp3DMario_State9(char *c)
-{
+// @symbol Trmp3DMario_StateOnLedge
+void Trmp3DMario_StateOnLedge(char *c) {
     *(void **)(c + 0x20) = data_ov006_021405c8[MARIO3D(c)->mHeightRow];
 
     if (*(void **)(c + 0xcc) == data_ov006_0214057c) {
@@ -2968,27 +2950,27 @@ void Trmp3DMario_State9(char *c)
 
     if (*(void **)(c + 0xcc) == data_ov006_02140568) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0)
-            Trmp3DMario_EnterState8(c);
+            Trmp3DMario_EnterWalkBack(c);
     }
 }
 }
 }
-// ---- Trmp3DMario_EnterState9
+// ---- Trmp3DMario_EnterOnLedge
 namespace ns_020cc8c8 {
 extern "C" {
 
 typedef short s16;
 typedef struct { int x, y; } G2;
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int a, int b, unsigned int u);
-extern "C" int pmf_Trmp3DMario_State3_2[2];
-extern "C" G2 pmf_Trmp3DMario_State9;
+extern "C" int pmf_Trmp3DMario_StateFallToLedge_2[2];
+extern "C" G2 pmf_Trmp3DMario_StateOnLedge;
 extern "C" void *data_ov006_021405c8[];
 extern "C" void *data_ov006_0214057c;
 extern "C" void *data_ov006_02140564;
 extern "C" int data_ov006_0214055c;
 
-// @symbol Trmp3DMario_EnterState9
-void Trmp3DMario_EnterState9(char *p) {
+// @symbol Trmp3DMario_EnterOnLedge
+void Trmp3DMario_EnterOnLedge(char *p) {
     int *cur;
     int *want;
     int z = 0;
@@ -2999,7 +2981,7 @@ void Trmp3DMario_EnterState9(char *p) {
     MARIO3D(p)->mVel.y = z;
     MARIO3D(p)->mVel.z = z;
     cur = MARIO3D(p)->mState;
-    want = pmf_Trmp3DMario_State3_2;
+    want = pmf_Trmp3DMario_StateFallToLedge_2;
     if (cur[0] == want[0] && (cur[1] == want[1] || MARIO3D(p)->mState[0] == 0)) {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0x6c, data_ov006_0214057c, 0x40000000, 0x800, 0);
     } else {
@@ -3009,27 +2991,28 @@ void Trmp3DMario_EnterState9(char *p) {
         int *ctr = &data_ov006_0214055c;
         int c = *ctr;
         *ctr = c + 1;
-        *(W2 *)(p + 0x64) = *(W2 *)&pmf_Trmp3DMario_State9;
+        *(W2 *)(p + 0x64) = *(W2 *)&pmf_Trmp3DMario_StateOnLedge;
     }
 }
 }
 }
-// ---- Trmp3DMario_State10
+// ---- Trmp3DMario_StateWalkIn
 namespace ns_020cc9b8 {
 extern "C" {
 extern "C" int data_ov006_021405c8;
 extern void Trmp3DMario_PickIdleAnim(int *c);
-// @symbol Trmp3DMario_State10
-void Trmp3DMario_State10(int *c){
-  *(int*)((char*)c+0x20)=data_ov006_021405c8;
-  if(*(int*)((char*)c+0x1c) <= -0x5c008) return;
-  Trmp3DMario_PickIdleAnim(c);
+// @symbol Trmp3DMario_StateWalkIn
+void Trmp3DMario_StateWalkIn(int *c) {
+    *(int *)((char *)c + 0x20) = data_ov006_021405c8;
+    if (*(int *)((char *)c + 0x1c) <= -0x5c008)
+        return;
+    Trmp3DMario_PickIdleAnim(c);
 }
 }
 }
 #pragma push
 #pragma optimize_for_size on
-// ---- Trmp3DMario_EnterState10
+// ---- Trmp3DMario_EnterWalkIn
 namespace ns_020cc9fc {
 extern "C" {
 extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
@@ -3037,13 +3020,12 @@ extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, i
 struct G2 { int w[2]; };
 extern "C" int data_ov006_021405c8;
 extern "C" struct G2 data_ov006_02140564;
-extern "C" struct G2 pmf_Trmp3DMario_State11;
+extern "C" struct G2 pmf_Trmp3DMario_StateOnGround;
 extern "C" int data_ov006_0214058c;
-extern "C" struct G2 pmf_Trmp3DMario_State10;
+extern "C" struct G2 pmf_Trmp3DMario_StateWalkIn;
 
-// @symbol Trmp3DMario_EnterState10
-extern "C" void Trmp3DMario_EnterState10(char *c)
-{
+// @symbol Trmp3DMario_EnterWalkIn
+extern "C" void Trmp3DMario_EnterWalkIn(char *c) {
     MARIO3D(c)->mGravityStep = 0;
     MARIO3D(c)->mPos.y = data_ov006_021405c8;
     MARIO3D(c)->mPos.z = 0;
@@ -3056,22 +3038,22 @@ extern "C" void Trmp3DMario_EnterState10(char *c)
     MARIO3D(c)->mRotY = 0x4000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, (void *)data_ov006_02140564.w[0], 0, 0x800, 0);
     int *s = (int *)((unsigned int)(unsigned long long)(c + 0x64) & 0xffffffffu);
-    struct G2 *d = &pmf_Trmp3DMario_State11;
+    struct G2 *d = &pmf_Trmp3DMario_StateOnGround;
     if (s[0] != d->w[0] || (s[1] != d->w[1] && MARIO3D(c)->mState[0] != 0)) {
         data_ov006_0214058c += 1;
     }
-    *(struct G2 *)(c + 0x64) = pmf_Trmp3DMario_State10;
+    *(struct G2 *)(c + 0x64) = pmf_Trmp3DMario_StateWalkIn;
 }
 }
 #pragma pop
-// ---- Trmp3DMario_State11
+// ---- Trmp3DMario_StateOnGround
 namespace ns_020ccae0 {
 extern "C" {
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern void Trmp3DMario_EnterState10(char *c);
+extern void Trmp3DMario_EnterWalkIn(char *c);
 
 extern "C" void *data_ov006_021405c8;
 extern "C" void *data_ov006_0214057c;
@@ -3079,9 +3061,8 @@ extern "C" void *data_ov006_02140564;
 extern "C" void *data_ov006_0214056c;
 extern "C" void *data_ov006_02140568;
 
-// @symbol Trmp3DMario_State11
-void Trmp3DMario_State11(char *c)
-{
+// @symbol Trmp3DMario_StateOnGround
+void Trmp3DMario_StateOnGround(char *c) {
     *(void **)(c + 0x20) = data_ov006_021405c8;
 
     if (*(void **)(c + 0xcc) == data_ov006_0214057c) {
@@ -3114,23 +3095,22 @@ void Trmp3DMario_State11(char *c)
 
     if (*(void **)(c + 0xcc) == data_ov006_02140568) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0)
-            Trmp3DMario_EnterState10(c);
+            Trmp3DMario_EnterWalkIn(c);
     }
 }
 }
 }
-// ---- Trmp3DMario_EnterState11
+// ---- Trmp3DMario_EnterOnGround
 namespace ns_020ccc8c {
 extern "C" {
 struct BCA_File;
 extern int data_ov006_021405c8;
 extern struct BCA_File* data_ov006_0214057c;
-extern double pmf_Trmp3DMario_State11_2;
+extern double pmf_Trmp3DMario_StateOnGround_2;
 }
 extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, struct BCA_File* f, int frame, int speed, unsigned mode);
-// @symbol Trmp3DMario_EnterState11
-extern "C" void Trmp3DMario_EnterState11(char* c)
-{
+// @symbol Trmp3DMario_EnterOnGround
+extern "C" void Trmp3DMario_EnterOnGround(char *c) {
     MARIO3D(c)->mGravityStep = 0;
     MARIO3D(c)->mPos.y = data_ov006_021405c8;
     MARIO3D(c)->mPos.z = 0;
@@ -3138,17 +3118,17 @@ extern "C" void Trmp3DMario_EnterState11(char* c)
     MARIO3D(c)->mVel.y = 0;
     MARIO3D(c)->mVel.z = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_0214057c, 0x40000000, 0x800, 0);
-    *(double*)(c + 0x64) = pmf_Trmp3DMario_State11_2;
+    *(double *)(c + 0x64) = pmf_Trmp3DMario_StateOnGround_2;
 }
 }
-// ---- Trmp3DMario_IsInState12
+// ---- Trmp3DMario_IsOffstage
 namespace ns_020ccd04 {
 extern "C" {
-extern "C" int pmf_Trmp3DMario_State12_3[];
-// @symbol Trmp3DMario_IsInState12
-int Trmp3DMario_IsInState12(int* r0) {
+extern "C" int pmf_Trmp3DMario_StateOffstage_3[];
+// @symbol Trmp3DMario_IsOffstage
+int Trmp3DMario_IsOffstage(int *r0) {
     int* p = (int *)(((int)r0 + 0x64));
-    int* g = pmf_Trmp3DMario_State12_3;
+    int *g = pmf_Trmp3DMario_StateOffstage_3;
     int ret = 1;
     if (p[0] == g[0]) {
         if (p[1] == g[1]) goto zero;
@@ -3161,16 +3141,18 @@ out:
 }
 }
 }
-// ---- Trmp3DMario_State12
+// ---- Trmp3DMario_StateOffstage
 namespace ns_020ccd64 {
 extern "C" {
 struct S { int w[1]; };
 extern "C" struct S data_ov006_021405c8;
-// @symbol Trmp3DMario_State12
-void Trmp3DMario_State12(char *p) { *(struct S *)(p + 0x20) = data_ov006_021405c8; }
+// @symbol Trmp3DMario_StateOffstage
+void Trmp3DMario_StateOffstage(char *p) {
+    *(struct S *)(p + 0x20) = data_ov006_021405c8;
 }
 }
-// ---- Trmp3DMario_EnterState12
+}
+// ---- Trmp3DMario_EnterOffstage
 namespace ns_020ccd78 {
 extern "C" {
 extern int data_ov006_021405c8;
@@ -3178,11 +3160,10 @@ struct V3 { int a, b, c; };
 extern struct V3 data_020a0ebc;
 extern void *data_ov006_02140564;
 struct G2 { int w[2]; };
-extern struct G2 pmf_Trmp3DMario_State12_2;
+extern struct G2 pmf_Trmp3DMario_StateOffstage_2;
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int frame, int speed, unsigned int flags);
-// @symbol Trmp3DMario_EnterState12
-void Trmp3DMario_EnterState12(char *c)
-{
+// @symbol Trmp3DMario_EnterOffstage
+void Trmp3DMario_EnterOffstage(char *c) {
     MARIO3D(c)->mPos.y = data_ov006_021405c8;
     MARIO3D(c)->mPos.x = -0x90000;
     MARIO3D(c)->mPos.z = 0;
@@ -3191,7 +3172,7 @@ void Trmp3DMario_EnterState12(char *c)
     MARIO3D(c)->mVel.z = data_020a0ebc.c;
     MARIO3D(c)->mGravityStep = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_02140564, 0, 0x800, 0);
-    *(struct G2 *)(c + 0x64) = pmf_Trmp3DMario_State12_2;
+    *(struct G2 *)(c + 0x64) = pmf_Trmp3DMario_StateOffstage_2;
 }
 }
 }
@@ -3237,7 +3218,7 @@ extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, in
 extern void Camera_ProjectToScreen16(char* p, void* q, short* s);
 extern void func_02016a14(void* self, int a, int b);
 extern void func_02016a04(void* self, int a);
-extern void Trmp3DMario_EnterState12(char* c);
+extern void Trmp3DMario_EnterOffstage(char *c);
 
 // @symbol Trmp3DMario_Load
 int Trmp3DMario_Load(char* c)
@@ -3265,7 +3246,7 @@ int Trmp3DMario_Load(char* c)
     MARIO3D(c)->mGravityStep = 0;
     func_02016a14(c + 0x6c, 0x6bff, 0);
     func_02016a04(c + 0x6c, 0x21d);
-    Trmp3DMario_EnterState12(c);
+    Trmp3DMario_EnterOffstage(c);
     return ret;
 }
 }
@@ -3339,7 +3320,7 @@ namespace ns_020cd158 {
 extern "C" {
 extern "C" int sTrmp3DMarioCount;
 extern "C" char *sTrmp3DMarios;
-extern "C" int pmf_Trmp3DMario_State12[];
+extern "C" int pmf_Trmp3DMario_StateOffstage[];
 
 // @symbol Trmp3DMario_CountFinished
 int Trmp3DMario_CountFinished(void)
@@ -3352,7 +3333,7 @@ int Trmp3DMario_CountFinished(void)
     n = sTrmp3DMarioCount;
     if (n > 0) {
         e = sTrmp3DMarios;
-        b = pmf_Trmp3DMario_State12;
+        b = pmf_Trmp3DMario_StateOffstage;
         first = b[0];
         do {
             int *p = (int *)((unsigned int)e + 0x64);
@@ -3478,7 +3459,7 @@ namespace ns_020cd424 {
 extern "C" {
 extern int Trmp3DMario_SetTuning(int sz);
 extern void Trmp3DMario_SetSpawnHeight(int n);
-extern void Trmp3DMario_EnterState12(char *c);
+extern void Trmp3DMario_EnterOffstage(char *c);
 extern void Trmp3DMario_UpdateMatrix(char *o);
 extern void Puff_ClearAll(int a0, int a1);
 
@@ -3500,7 +3481,7 @@ void Trmp3DMario_ResetAll(unsigned int n, int arg1)
     data_ov006_0214058c = 0;
     data_ov006_0214055c = 0;
     for (i = 0; i < sTrmp3DMarioCount; i++) {
-        Trmp3DMario_EnterState12(sTrmp3DMarios + i * 0xd0);
+        Trmp3DMario_EnterOffstage(sTrmp3DMarios + i * 0xd0);
         Trmp3DMario_UpdateMatrix(sTrmp3DMarios + i * 0xd0);
     }
     Puff_ClearAll(0, 0);
