@@ -28,7 +28,7 @@
  * inherited flat-field layout is not reconstructed here.
  *
  * leftovers:
- * - func_ov060_02116740, 02117624 and 021172c8 stay free functions with
+ * - func_ov060_02116740, 02117624 stay free functions with
  *   the char * / unsigned char * decl_common.h declares. Their bodies
  *   compile as C++; 02117624 uses a POD matrix view for its block copy.
  * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
