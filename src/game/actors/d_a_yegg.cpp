@@ -141,7 +141,6 @@ extern int func_02035638(u8 *p);
 extern void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int c);
 extern char *data_ov002_021000a0[];
 extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-extern int _ZNK5dBgPi9GetClsnIDEv(struct dBgPi *thiz);
 /* Was spelled `func_02123804`, a name no symbols.txt defines. ov002's relocs
    record the call at 0x020ec718 as `overlays(77,78,79,80)`: four same-base
    overlays each put a function at 0x02123804. The call is gated on actor
@@ -162,7 +161,6 @@ extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
    destinations (measured). */
 extern int func_ov002_020d5f98(void *c, unsigned char *a, unsigned char *b);
 extern int func_ov002_020d6048(void *c);
-extern void _ZN7fBase_c18MarkForDestructionEv(void *c);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *self);
 extern s32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, s32 x, s32 y, s32 z, struct Vec3_16f *rot, void *cb);
@@ -185,7 +183,6 @@ extern void Math_Function_0203b14c(void *ptr, int target, int rate, int limit, i
 extern void ApproachAngle(void *cur, short target, int divisor, int band, int maxStep);
 extern void _Z11UpdateAngleRssis(short *a, int b, int c, short d);
 extern int func_02010844(void *unused, void *v, short angle);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, void *out);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_FromTranslation(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(M48 *m, int x, int y, int z);
@@ -294,9 +291,10 @@ void daYegg_c::func_ov002_020ec670(int arg)
     u16 type;
 
     cr = (struct dBgPi*)func_0203567c(arg);
-    if (_ZNK5dBgPi9GetClsnIDEv(cr) == -1) return;
+    if (cr->GetClsnID() == -1)
+        return;
 
-    actor = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(cr));
+    actor = dActor_c::FindWithID(cr->GetClsnID());
     if (actor == 0) return;
 
     type = actor->actorID;
@@ -473,7 +471,7 @@ void daYegg_c::func_ov002_020ec9c4(){
     }
   }
   if (!mPlayer->func_ov002_020d6048())
-    _ZN7fBase_c18MarkForDestructionEv(this);
+      MarkForDestruction();
   mdCcAc_c.Clear();
   mdCcAc_c.Update();
   if (!mWithMeshClsn.IsOnGround())
@@ -1010,7 +1008,7 @@ void daYegg_c::func_ov002_020ed738() {
     if (mWithMeshClsn.IsOnGround()) {
         struct Vector3 n;
         void *fr = mWithMeshClsn.GetFloorResult();
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char*)fr+4, &n);
+        ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(n);
         e4 = func_02010844(this, &n, mAngleY);
         e6 = func_02010844(this, &n, (short)(mAngleY - 0x4000));
     } else {
@@ -1249,7 +1247,7 @@ void func_ov002_020edca4(daYegg_c* self)
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x40, self->mPosX, self->mPosY, self->mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x41, self->mPosX, self->mPosY, self->mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x42, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN7fBase_c18MarkForDestructionEv((struct dActor_c*)self);
+    self->MarkForDestruction();
     _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, (const struct Vector3*)&self->mCamSpacePosX);
 
     self->mBurstDone = 1;

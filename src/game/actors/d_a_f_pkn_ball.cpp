@@ -33,6 +33,7 @@
 
 #include "common.h"
 #include "Player.h"
+#include "SaveData.h"
 #include "Sound.h"
 #include "daFPknBall_c.h"
 #include "dBgCh_Actr.h"
@@ -90,7 +91,6 @@ enum {
 extern "C" {
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
-extern int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
@@ -156,7 +156,7 @@ void daFPknBall_c::func_ov002_020f897c()
             int idx;
             int unlocked = 0;
             for (c = 0; c < 3; c++) {
-                if (_ZN8SaveData19IsCharacterUnlockedEj(c) != 0) {
+                if (SaveData::IsCharacterUnlocked(c) != 0) {
                     unlocked = (unlocked | (1 << c)) & 0xff;
                 }
             }

@@ -65,6 +65,8 @@ enum daStar_c_AssetId {
 #include "decl_dBgCh_Actr.h"
 #include "decl_Actor.h"
 #include "Player.h"
+#include "Message.h"
+#include "SaveData.h"
 #include "SharedFilePtr.h"
 #include "dCamera_c.h"
 #include "fBase_c.h"
@@ -201,11 +203,9 @@ extern Mtx IDENTITY_MATRIX4X3;
 extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(char *self, struct dExtShadowModel_c *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern void _ZN7fBase_c18MarkForDestructionEv(char* c);
 extern void _ZN5Event8ClearBitEj(unsigned int b);
 extern void *_ZN9dBgCh_GndC1Ev(void* r);
 extern void _ZN9dBgCh_GndD1Ev(void* r);
-extern void _ZN5dBgCh19StartDetectingWaterEv(void* r);
 extern int SurfaceInfo_TestFlag0x20(void* p);
 extern int data_0209f32c;
 extern int func_02037e38(void* p);
@@ -216,18 +216,16 @@ extern int IsStarCollectedInCurLevel(int starID);
 extern int data_0209f40c[];
 extern u8 data_0209f208;
 extern unsigned char data_0209f264;
-int _ZN6Player9IsOnShellEv(void* p);
 void func_02012790(int a);
+// local extern: Player.h's u8 parameters re-narrow the arguments (func_ov002_020e8ef0 differs).
 int _ZN6Player17SetNoControlStateEhih(void* p, int a, int b, int d);
-void _ZN7Message11PrepareTalkEv(void);
 void _ZN5Event6SetBitEj(u32 a);
 void GiveVsStars(int idx, int delta);
 void CollectStarInCurLevel(int i);
 int SublevelToLevel(int i);
-int _ZN8SaveData13GetCoinRecordEj(u32 i);
 s16 NumCoins(void);
+// local extern: SaveData.h's s8 level parameter re-narrows the argument (the caller differs).
 void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, u8 b);
-void _ZN6Player4HealEi(void* p, int a);
 extern u8 data_0209f228;
 extern u8 data_0209f2ac;
 extern s16 data_0209f358[];
@@ -239,12 +237,8 @@ extern int _ZN4cstd4sqrtEy(u64 v);
 extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
 extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
-extern void _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(void* c, void* wm, unsigned int n);
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void* c, Fix12i a, Fix12i b, short ang);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32, int);
-extern int _ZN6Player12GetTalkStateEv(void*);
-extern void _ZN7Message13DisplaySavingEt(u16);
-extern void _ZN7Message7EndTalkEv(void);
 extern int func_ov002_020c6e14(void*);
 extern u8 data_0209d660;
 extern void EndKuppaScript(void);
@@ -257,14 +251,12 @@ extern StarModelFilePtr data_ov002_0211093c;
 extern StarAnimationFileHandle data_ov002_02110924;
 extern StarAnimationFileHandle data_ov002_02110964;
 extern SharedFilePtr data_ov002_0210d9a8;
-extern int _ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr(char *c, char *clsn);
 /* Numbering pin: func_ov002_020d718c is now a Player member (see Player.h);
    no call in this TU uses the free spelling anymore. The declaration stays,
    spelled exactly as it was, because each named parameter advances mwccarm's
    @NNN counter: removing or un-naming it renumbers this TU's .data temps
    (measured on daYegg_c, same mechanism). */
 extern void func_ov002_020d718c(void *p);
-extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(char *c, const void *v);
 extern int data_ov002_0210aa0c[3];
 extern StateHandler data_ov002_021109d8[];
 extern u8 data_0209f220;
@@ -808,11 +800,11 @@ int daStarBase_c::InitResources()
     if (data_0209f2d8 == 1)
         r3 = 1;
     if (r3 == 0 && SublevelToLevel((s8)data_0209f2f8) == 0x1d && IsStarCollectedInCurLevel(mStarID) != 0) {
-        _ZN7fBase_c18MarkForDestructionEv((char *)this);
+        MarkForDestruction();
         return 0;
     }
     if (GetBitInDeathTable() != 0) {
-        _ZN7fBase_c18MarkForDestructionEv((char *)this);
+        MarkForDestruction();
         return 0;
     }
     return 1;
@@ -835,7 +827,7 @@ int daStar_c::Behavior()
     mCenterY = 0;
     mCenterZ = 0;
 
-    if (_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr((char *)this, (char *)&mWithMeshClsn) != 0) {
+    if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         int state = mState;
         if (state >= STATE_COLLECT_BEGIN && state <= STATE_COLLECT_TALK && mEatingPlayer != 0) {
             ((Player *)mEatingPlayer)->func_ov002_020d718c();
@@ -1396,6 +1388,7 @@ int daStar_c::func_ov002_020ea3a4() {
  * otherwise, in a VS match, it takes one star off the player's VS count
  * (GiveVsStars -1, when the count is not zero) and bounces away. */
 extern "C" {
+// local extern: Player.h's u8 parameter re-narrows the state (func_ov002_020e9d18 and 020ea100 differ).
 extern int _ZN6Player12Unk_020c9e5cEh(void *thisPtr, int state);
 extern int func_ov002_020ca0f4(void *player);
 
@@ -1672,15 +1665,15 @@ void daStar_c::func_ov002_020e9af4() {
     mPrevAngleY = mPlayer->mAngleY;
     switch (mTalkStep) {
     case 2:
-        if (_ZN6Player12GetTalkStateEv(mPlayer) == -1) {
+        if (mPlayer->GetTalkState() == -1) {
             u32 t = mBits.answer;
             if (t == 1) {
-                _ZN7Message13DisplaySavingEt(0x295);
+                Message::DisplaySaving(0x295);
                 mTalkStep++;
                 mPlayer->mStateFlags |= 0x800;
             } else if (t == 2) {
                 mTalkStep += 2;
-                _ZN7Message7EndTalkEv();
+                Message::EndTalk();
             }
         }
         break;
@@ -1698,7 +1691,7 @@ void daStar_c::func_ov002_020e9af4() {
         break;
     case 5:
         if (data_0209d660 == 0) {
-            _ZN7Message7EndTalkEv();
+            Message::EndTalk();
             mTalkStep++;
         }
         break;
@@ -1722,7 +1715,7 @@ void daStar_c::func_ov002_020e99e8() {
     char *c = (char *)this;
     func_ov002_020e8c34();
     mPrevPosY = mPosY;
-    _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(c, &mWithMeshClsn, 2);
+    UpdateWMClsn(mWithMeshClsn, 2);
     if (mWithMeshClsn.IsOnWall()) {
         mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(c, mWallNormalX, mWallNormalZ, mPrevAngleY);
     }
@@ -2032,7 +2025,7 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
     }
     mPlayer = (Player *)p;
 
-    if (_ZN6Player9IsOnShellEv(p) != 0) {
+    if (((Player *)p)->IsOnShell() != 0) {
         int b = (actorID == ACTOR_SILVER_STAR);
         if (b) {
             mState = STATE_SPIN_AND_END;
@@ -2060,11 +2053,11 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
                     if (mHomeState != STATE_WAIT_MARKER) {
                         if (mStarID == 0) {
                             sb = _ZN6Player17SetNoControlStateEhih(p, r4, 0x186, 0);
-                            _ZN7Message11PrepareTalkEv();
+                            Message::PrepareTalk();
                             r5 = 1;
                         } else if (func_ov002_020e9630() != 0) {
                             sb = _ZN6Player17SetNoControlStateEhih(p, r4, 0x187, 0);
-                            _ZN7Message11PrepareTalkEv();
+                            Message::PrepareTalk();
                             r5 = 1;
                         } else {
                             sb = _ZN6Player17SetNoControlStateEhih(p, r4, -1, 0);
@@ -2113,7 +2106,7 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
                 }
                 lvl = SublevelToLevel((signed char)data_0209f2f8);
                 if (lvl <= 0xe) {
-                    int rec = _ZN8SaveData13GetCoinRecordEj(lvl);
+                    int rec = SaveData::GetCoinRecord(lvl);
                     if (rec < NumCoins()) {
                         _ZN8SaveData21SetCoinRecordIfHigherEah(
                             lvl,
@@ -2144,7 +2137,7 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
     {
         int b5 = (actorID == ACTOR_STAR);
         if (b5 && r4 != 0) {
-            _ZN6Player4HealEi(p, 0x880);
+            ((Player *)p)->Heal(0x880);
         }
     }
     func_ov002_020e9464();
@@ -2463,7 +2456,7 @@ void daStar_c::func_ov002_020e86ec() {
             _ZN10dBgCh_Actr18StopDetectingWaterEv(&mWithMeshClsn);
         }
         _ZN9dBgCh_GndC1Ev(rc);
-        _ZN5dBgCh19StartDetectingWaterEv(rc);
+        ((dBgCh *)rc)->StartDetectingWater();
         ty = mPosY;
         tz = mPosZ;
         tx = mPosX;

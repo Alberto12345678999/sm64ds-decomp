@@ -101,6 +101,7 @@ enum daDoor_c_AssetId {
 
 #include "daDoor_c.h"
 #include "Player.h"
+#include "SaveData.h"
 #include "types.h"
 #include "common.h"
 #include "SharedFilePtr.h"
@@ -206,8 +207,6 @@ int func_ov100_02144fcc(void);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
 
-void _ZN8SaveData17SetCharacterIntroEi(int);
-int _ZN8SaveData22NumGlowingRabbitsFoundEv(void);
 void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
@@ -426,7 +425,7 @@ int daDoor_c::func_ov100_02144468(int p)
     if (!func_ov100_02145080((Player *)p)) {
         data_ov100_02148704 = 0;
         if (param1 != DOOR_LAST_KEY_MODEL) {
-            _ZN8SaveData17SetCharacterIntroEi(mKeyModelIdx - 1);
+            SaveData::SetCharacterIntro(mKeyModelIdx - 1);
         } else {
             _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0xcb33);
         }
@@ -823,7 +822,7 @@ int daDoor_c::func_ov100_02144cf8(Player *b)
             {
                 int msg;
                 if (entry->keyIndex == 6) {
-                    msg = _ZN8SaveData22NumGlowingRabbitsFoundEv() ? 0x28 : 0x23;
+                    msg = SaveData::NumGlowingRabbitsFound() ? 0x28 : 0x23;
                 } else {
                     int idx2 = param1;
                     int sel = 1;

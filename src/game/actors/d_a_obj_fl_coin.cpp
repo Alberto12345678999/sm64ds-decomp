@@ -111,14 +111,12 @@ extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int n, const struct Vector3
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern Entry data_ov064_0211c904[];
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void* c, Fix12i a, Fix12i b);
-KCL_File* _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(SharedFilePtr&);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, KCL_File*, const Matrix4x3&, int fix, short s, CLPS_Block&);
 void func_020393c4(int* p, int v);
 extern SharedFilePtr *data_ov064_0211adc8[];
 extern FlCoinCollisionFilePtr data_ov064_0211c800;
 extern CLPS_Block data_ov064_0211baac;
 extern Matrix4x3 data_020a0e68;
-void _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void* self, const Matrix4x3&, s16);
 /* Per-type step scripts, indexed by mType (ov064 .data). */
 extern int data_ov064_0211c198[];
 /* The collision callback piece InitResources installs, and the touch helper
@@ -201,9 +199,8 @@ int daObjFl_Puzzle_c::InitResources()
     func_ov064_02119010();
     func_ov064_02118fa4();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov064_0211c800),
-        mClsnMat, 0x1000, mAngleY, data_ov064_0211baac);
+        &mMeshCollider, (KCL_File *)dBgW_Kc::LoadFile(data_ov064_0211c800), mClsnMat, 0x1000,
+        mAngleY, data_ov064_0211baac);
     func_020393c4((int*)((char*)&mMeshCollider), (int)&func_ov064_021192bc);
     mStepScript = data_ov064_0211c198[mType];
     mStepIndex = 0;
@@ -296,7 +293,7 @@ void daObjFl_Puzzle_c::func_ov064_02119010() {
 void daObjFl_Puzzle_c::func_ov064_02118fa4() {
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY + mShakeOffsetY, mPosZ);
     mClsnMat = data_020a0e68;
-    _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(&mMeshCollider, mClsnMat, mAngleY);
+    mMeshCollider.Transform(mClsnMat, mAngleY);
 }
 
 // @symbol _ZN16daObjFl_Puzzle_c19func_ov064_02118ee4Ev
