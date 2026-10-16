@@ -22,18 +22,16 @@
  * reads low-address-first. Do not reorder.
  */
 
-// leftovers: Event::GetBit stays mangled (no Event header without a
-// shared-header campaign -- this TU's Behavior calls).
-// dBgW_KcMbg::SetFile stays ABI-exact (by-value Fix12<int> scale; the member
-// spelling grows InitResources by eight bytes). InitResources still addresses
-// the Model[5]/dBgW_KcMbg[5] arrays and the dBgActor_c transform words by raw
-// offset (C++ struct assignment scalarizes the ROM's ldm/stm matrix copies;
-// the 0x33c/0x360/0xdbc words belong to dBgActor_c). DecIfAbove0_Byte has no
-// shared header.
+// leftovers: dBgW_KcMbg::SetFile stays ABI-exact (by-value Fix12<int> scale;
+// the member spelling grows InitResources by eight bytes). InitResources'
+// two matrix copies stay Matrix4x3Copy block copies (C++ struct assignment
+// scalarizes the ROM's ldm/stm sequence). DecIfAbove0_Byte has no shared
+// header.
 
 #pragma defer_codegen off
 
 #include "daObjDorifu_c.h"
+#include "Event.h"
 
 typedef struct { s32 words[12]; } Matrix4x3Copy;
 
@@ -48,7 +46,6 @@ enum {
 };
 
 extern "C" {
-int  _ZN5Event6GetBitEj(unsigned int bit);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void Matrix4x3_FromRotationY(void *mat, s32 angle);
 
@@ -140,7 +137,7 @@ s32 daObjDorifu_c::Behavior()
 
     switch (mState) {
     case STATE_AWAIT_EVENT_SET:
-        if (_ZN5Event6GetBitEj(mEventBit))
+        if (Event::GetBit(mEventBit))
             mState = STATE_STEP_DOWN;
         break;
     case STATE_STEP_DOWN:
@@ -155,7 +152,7 @@ s32 daObjDorifu_c::Behavior()
         }
         break;
     case STATE_AWAIT_EVENT_CLEAR:
-        if (_ZN5Event6GetBitEj(mEventBit) == 0)
+        if (Event::GetBit(mEventBit) == 0)
             mState = STATE_STEP_UP;
         break;
     case STATE_STEP_UP:
@@ -193,53 +190,49 @@ s32 daObjDorifu_c::Behavior()
 s32 daObjDorifu_c::InitResources(daObjDorifuResources *resources)
 {
     s32 i;
-    char *resourcePos;
-    char *modelPos;
+    daObjDorifuResources *resource;
+    Model *model;
     s32 j;
-    char *sourceMat;
+    Matrix4x3 *sourceMat;
     s32 scale = 0x1000;
-    char *modelDst;
-    char *clsnPos;
-    char *self = (char *)this;
-    char *resourceBytes = (char *)resources;
+    Model *modelDst;
+    dBgW_KcMbg *clsn;
+    daObjDorifuResources *clsnResource = resources;
 
-    resourcePos = resourceBytes;
-    modelPos = self + 0x320;
+    resource = clsnResource;
+    model = mPlankModels;
     for (i = 0; i < 5; ++i) {
-        ((Model *)modelPos)->SetFile(
-            (BMD_File *)Model::LoadFile(**(SharedFilePtr **)resourcePos), 1, -1);
-        resourcePos += 0xc;
-        modelPos += 0x50;
+        model->SetFile((BMD_File *)Model::LoadFile(*resource->modelFile), 1, -1);
+        resource++;
+        model++;
     }
 
     mActivePlank = 4;
     mStepTimer = 2;
     mEventBit = param1 & 0xf;
-    Matrix4x3_FromRotationY(self + 0x33c, mAngleY);
-    *(s32 *)(self + 0x360) = mPosX >> 3;
-    *(s32 *)(self + 0x364) = mPosY >> 3;
-    *(s32 *)(self + 0x368) = mPosZ >> 3;
-    *(Matrix4x3Copy *)&mPlatformMat = *(Matrix4x3Copy *)(self + 0x33c);
-    *(s32 *)(self + 0xdbc) = mPosX;
-    *(s32 *)(self + 0xdc0) = mPosY;
-    *(s32 *)(self + 0xdc4) = mPosZ;
+    Matrix4x3_FromRotationY(&mPlankModels[0].mat4x3, mAngleY);
+    mPlankModels[0].mat4x3.m[9] = mPosX >> 3;
+    mPlankModels[0].mat4x3.m[10] = mPosY >> 3;
+    mPlankModels[0].mat4x3.m[11] = mPosZ >> 3;
+    *(Matrix4x3Copy *)&mPlatformMat = *(Matrix4x3Copy *)&mPlankModels[0].mat4x3;
+    mPlatformMat.m[9] = mPosX;
+    mPlatformMat.m[10] = mPosY;
+    mPlatformMat.m[11] = mPosZ;
 
     j = 0;
-    sourceMat = self + 0x33c;
-    modelDst = self + 0x320;
-    clsnPos = self + 0x4b0;
+    sourceMat = &mPlankModels[0].mat4x3;
+    modelDst = mPlankModels;
+    clsn = mPlankClsn;
     for (; j < 5; ++j) {
-        *(Matrix4x3Copy *)(modelDst + 0x1c) = *(Matrix4x3Copy *)sourceMat;
+        *(Matrix4x3Copy *)&modelDst->mat4x3 = *(Matrix4x3Copy *)sourceMat;
         _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            clsnPos,
-            dBgW_Kc::LoadFile(**(SharedFilePtr **)(resourceBytes + 4)),
-            &mPlatformMat, scale, mAngleY,
-            *(void **)(resourceBytes + 8));
+            clsn, dBgW_Kc::LoadFile(*clsnResource->clsnFile), &mPlatformMat, scale, mAngleY,
+            clsnResource->clps);
         if (j == mActivePlank)
-            ((dBgW_KcMbg *)clsnPos)->Enable(this);
-        modelDst += 0x50;
-        resourceBytes += 0xc;
-        clsnPos += 0x1c8;
+            clsn->Enable(this);
+        modelDst++;
+        clsnResource++;
+        clsn++;
     }
     return 1;
 }

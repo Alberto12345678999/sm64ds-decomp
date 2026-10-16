@@ -7,18 +7,17 @@
    extern declarations, which disagree with one another, stay as they were.
 
    leftovers:
-   - The 49 func_ov006_* helpers keep their per-function n<addr> namespaces and
-     raw-offset spellings. The object they operate on is an unnamed Heyho-adapter
-     record (0xf0 stride, position at +0x9c, velocity at +0xa8); no class header
-     names its layout, and the per-file typedef/extern universes disagree, so a
-     shared Obj struct would change decl surface across all 49 call sites.
+   - The 49 Heyho_* helpers keep their per-function n<addr> namespaces. The
+     record they operate on (0xf0 stride) is laid out in include/Heyho.h and read
+     through the HEYHO() cast; the per-file typedef/extern universes disagree, so
+     the helpers keep their char* parameters rather than a shared typed one.
    - _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj keeps scalar parameter spellings:
      it takes Fix12<int> by value and a natural typed declaration homes the
      arguments differently under mwccarm (the Fix12 wall, notes/mwccarm-codegen.md 6az).
    - _ZN9ModelAnimC1Ev/_ZN9ModelAnimD1Ev/_ZN7Vector3D1Ev and
      __register_global_object are ctor/dtor/atexit ABI calls, spelled as free
      functions because the bodies are the compiler's own sinit glue.
-   - Volatile and long-long launders (e.g. Heyho_Motion12's const-view
+   - Volatile and long-long launders (e.g. Heyho_MotionHover's const-view
      re-reads, Heyho_SeparateAll's (long long)(int) cast) are codegen-pinned;
      the inline comments at each site say what the ROM does. */
 #include "common.h"
@@ -26,6 +25,9 @@
 #include "types.h"
 #include "SharedFilePtr.h"
 #include "dMgJump3DMario_c.h"
+#include "Heyho.h"
+/* Typed access to a Heyho record from the char* helpers below. */
+#define HEYHO(p) ((Heyho *)(p))
 
 /* File 0x217 / 0x218 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto
@@ -63,10 +65,11 @@ int Heyho_Construct(char *t)
 namespace n020c6f3c {
 extern "C" {
 extern int _ZN9ModelAnimD1Ev(void*);
-extern HeyhoAdapterModelFilePtr data_ov006_02140330; extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
+extern HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile;
+extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
 int Heyho_Destruct(int *c) {
-    data_ov006_02140330.Release();
-    data_ov006_02140338.Release();
+    gMgPHeyhoMiniModelFile.Release();
+    gMgPHeyhoWaitAnimFile.Release();
     _ZN9ModelAnimD1Ev((char *)c + 0x38);
     return (int)c;
 }
@@ -75,8 +78,8 @@ int Heyho_Destruct(int *c) {
 
 /* ---- Heyho_LoadResources ---- */
 struct BMD_File; struct BCA_File;
-extern HeyhoAdapterModelFilePtr data_ov006_02140330;
-extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
+extern HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile;
+extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
 struct GObj { int w[8]; };
 extern GObj *data_0209f5c0;
 namespace n020c6e4c {
@@ -97,8 +100,8 @@ extern "C" void Heyho_SetIdle(char *p);
 
 
 extern "C" int Heyho_LoadResources(char *c) {
-    BMD_File *m = (BMD_File *)Model::LoadFile(data_ov006_02140330);
-    BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140338);
+    BMD_File *m = (BMD_File *)Model::LoadFile(gMgPHeyhoMiniModelFile);
+    BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(gMgPHeyhoWaitAnimFile);
     if (((ModelBase *)(c + 0x38))->SetFile(m, 1, -1) == 0) {
         return 0;
     }
@@ -117,7 +120,7 @@ extern "C" int Heyho_LoadResources(char *c) {
 
 }
 
-/* ---- Heyho_StartMotion3 ---- */
+/* ---- Heyho_StartMotionFlyIn ---- */
 namespace n020c6ca4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -136,10 +139,9 @@ extern int data_ov006_02140318;
 extern Vec3 data_ov006_0214037c;
 extern int data_ov006_02140370;
 typedef struct { int w[2]; } Pair;
-extern Pair pmf_Heyho_Motion3;
+extern Pair pmf_Heyho_MotionFlyIn;
 
-void Heyho_StartMotion3(char* dst, char* src)
-{
+void Heyho_StartMotionFlyIn(char *dst, char *src) {
     if (!(data_ov006_0214032c & 1)) {
         data_ov006_02140364.x = -0x100000;
         data_ov006_02140364.y = 0;
@@ -159,85 +161,105 @@ void Heyho_StartMotion3(char* dst, char* src)
     *(Blk3*)(dst + 4) = *(Blk3*)(src + 4);
     *(Blk4*)(dst + 0x10) = *(Blk4*)(src + 0x10);
     *(Blk3*)(dst + 0x20) = *(Blk3*)(src + 0x20);
-    *(int*)(dst + 0x2c) = *(int*)(src + 0x2c);
+    HEYHO(dst)->mMoveKind = *(int *)(src + 0x2c);
 
     if (*(volatile int*)(dst + 0x20) > 0) {
         Vec3 *p = (Vec3*)(dst + 0x9c);
-        *(int*)(dst + 0x9c) = *(int*)(dst + 0x20);
-        *(int*)(dst + 0xa0) = *(int*)(dst + 0x24);
-        *(int*)(dst + 0xa4) = *(int*)(dst + 0x28);
+        HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
+        HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
+        HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
         AddVec3(p, &data_ov006_0214037c, p);
     } else {
         Vec3 *q = (Vec3*)(dst + 0x9c);
-        *(int*)(dst + 0x9c) = *(int*)(dst + 0x20);
-        *(int*)(dst + 0xa0) = *(int*)(dst + 0x24);
-        *(int*)(dst + 0xa4) = *(int*)(dst + 0x28);
+        HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
+        HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
+        HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
         AddVec3(q, &data_ov006_02140364, q);
     }
 
-    *(int*)(dst + 0xcc) = 0x1400;
-    *(int*)(dst + 0xd0) = 0x1400;
-    *(int*)(dst + 0xd4) = 0x1400;
+    HEYHO(dst)->mScale.x = 0x1400;
+    HEYHO(dst)->mScale.y = 0x1400;
+    HEYHO(dst)->mScale.z = 0x1400;
     *(int*)(dst + 0xd8) = *(int*)dst;
-    *(short*)(dst + 0xe6) = 0;
-    *(short*)(dst + 0xec) = 8;
+    HEYHO(dst)->mLean = 0;
+    HEYHO(dst)->mDelay = 8;
     *(int*)(dst + 0xe0) = 0;
-    *(Pair*)(dst + 0x30) = pmf_Heyho_Motion3;
+    *(Pair *)(dst + 0x30) = pmf_Heyho_MotionFlyIn;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion3 ---- */
+/* ---- Heyho_MotionFlyIn ---- */
 namespace n020c6a9c {
 extern "C" {
-// @symbol Heyho_Motion3
+// @symbol Heyho_MotionFlyIn
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z15ApproachLinear2Rsss(short *v, short target, short step);
 
-
-void Heyho_Motion3(char *c)
-{
+void Heyho_MotionFlyIn(char *c) {
     short *ang = (short *)(((int)c + 0xea));
     *ang = *ang + 0x200;
 
-    *(int *)(c + 0xa8) = (int)(((*(int *)(c + 0x20) - *(int *)(c + 0x9c)) * 0x100LL + 0x800) >> 12);
-    *(int *)(c + 0xac) = (int)(((*(int *)(c + 0x24) - *(int *)(c + 0xa0)) * 0x100LL + 0x800) >> 12);
-    *(int *)(c + 0xb0) = (int)(((*(int *)(c + 0x28) - *(int *)(c + 0xa4)) * 0x100LL + 0x800) >> 12);
+    HEYHO(c)->mVel.x = (int)(((HEYHO(c)->mGoal.x - HEYHO(c)->mPos.x) * 0x100LL + 0x800) >> 12);
+    HEYHO(c)->mVel.y = (int)(((HEYHO(c)->mGoal.y - HEYHO(c)->mPos.y) * 0x100LL + 0x800) >> 12);
+    HEYHO(c)->mVel.z = (int)(((HEYHO(c)->mGoal.z - HEYHO(c)->mPos.z) * 0x100LL + 0x800) >> 12);
     AddVec3((struct Vector3 *)(c + 0x9c), (struct Vector3 *)(c + 0xa8), (struct Vector3 *)(c + 0x9c));
 
-    if ((*(int *)(c + 0xa8) < 0 ? -*(int *)(c + 0xa8) : *(int *)(c + 0xa8)) < 0x10 &&
-        (*(int *)(c + 0xac) < 0 ? -*(int *)(c + 0xac) : *(int *)(c + 0xac)) < 0x10) {
-        *(int *)(c + 0x9c) = *(int *)(c + 0x20);
-        *(int *)(c + 0xa0) = *(int *)(c + 0x24);
-        *(int *)(c + 0xa4) = *(int *)(c + 0x28);
+    if ((HEYHO(c)->mVel.x < 0 ? -HEYHO(c)->mVel.x : HEYHO(c)->mVel.x) < 0x10 &&
+        (HEYHO(c)->mVel.y < 0 ? -HEYHO(c)->mVel.y : HEYHO(c)->mVel.y) < 0x10) {
+        HEYHO(c)->mPos.x = HEYHO(c)->mGoal.x;
+        HEYHO(c)->mPos.y = HEYHO(c)->mGoal.y;
+        HEYHO(c)->mPos.z = HEYHO(c)->mGoal.z;
 
-        switch (*(int *)(c + 0x2c)) {
-        case 0:  Heyho_StartMotion12(c); break;
-        case 1:  Heyho_StartMotion14(c); break;
-        case 2:  Heyho_StartMotion10(c); break;
-        case 3:  Heyho_StartMotion0(c); break;
-        case 4:  Heyho_StartMotion9(c); break;
-        case 5:  Heyho_StartMotion7(c); break;
-        case 6:  Heyho_StartMotion4(c); break;
-        case 7:  Heyho_StartMotion6(c); break;
-        case 8:  Heyho_StartMotion2(c); break;
-        case 9:  Heyho_StartMotion5(c); break;
-        case 10: Heyho_StartMotion1(c); break;
-        default: Heyho_StartMotion12(c); break;
+        switch (HEYHO(c)->mMoveKind) {
+        case 0:
+            Heyho_StartMotionHover(c);
+            break;
+        case 1:
+            Heyho_StartMotionPatrolBob(c);
+            break;
+        case 2:
+            Heyho_StartMotionBobVertical(c);
+            break;
+        case 3:
+            Heyho_StartMotionBounceNear(c);
+            break;
+        case 4:
+            Heyho_StartMotionVShape(c);
+            break;
+        case 5:
+            Heyho_StartMotionBounceInRange(c);
+            break;
+        case 6:
+            Heyho_StartMotionDiagonal(c);
+            break;
+        case 7:
+            Heyho_StartMotionDiagonalMirror(c);
+            break;
+        case 8:
+            Heyho_StartMotionCircleUpper(c);
+            break;
+        case 9:
+            Heyho_StartMotionCircleLower(c);
+            break;
+        case 10:
+            Heyho_StartMotionChase(c);
+            break;
+        default:
+            Heyho_StartMotionHover(c);
+            break;
         }
     }
 
     _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1);
-    if (*(s16 *)(c + 0xec) != 1)
+    if (HEYHO(c)->mDelay != 1)
         return;
-    D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
+    D3D_PlaySeAtX(0x1c5, HEYHO(c)->mPos.x);
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_StartMotion8 ---- */
+/* ---- Heyho_StartMotionRegroup ---- */
 namespace n020c68f4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -256,10 +278,9 @@ extern int data_ov006_02140320;
 extern Vec3 data_ov006_021403ac;
 extern int data_ov006_021403a0;
 typedef struct { int w[2]; } Pair;
-extern Pair pmf_Heyho_Motion8;
+extern Pair pmf_Heyho_MotionRegroup;
 
-void Heyho_StartMotion8(char* dst, char* src)
-{
+void Heyho_StartMotionRegroup(char *dst, char *src) {
     if (!(data_ov006_02140310 & 1)) {
         data_ov006_02140394.x = -0x100000;
         data_ov006_02140394.y = 0;
@@ -279,36 +300,35 @@ void Heyho_StartMotion8(char* dst, char* src)
     *(Blk3*)(dst + 4) = *(Blk3*)(src + 4);
     *(Blk4*)(dst + 0x10) = *(Blk4*)(src + 0x10);
     *(Blk3*)(dst + 0x20) = *(Blk3*)(src + 0x20);
-    *(int*)(dst + 0x2c) = *(int*)(src + 0x2c);
+    HEYHO(dst)->mMoveKind = *(int *)(src + 0x2c);
 
     if (*(volatile int*)(dst + 0x20) > 0) {
         Vec3 *p = (Vec3*)(dst + 0x9c);
-        *(int*)(dst + 0x9c) = *(int*)(dst + 0x20);
-        *(int*)(dst + 0xa0) = *(int*)(dst + 0x24);
-        *(int*)(dst + 0xa4) = *(int*)(dst + 0x28);
+        HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
+        HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
+        HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
         AddVec3(p, &data_ov006_021403ac, p);
     } else {
         Vec3 *q = (Vec3*)(dst + 0x9c);
-        *(int*)(dst + 0x9c) = *(int*)(dst + 0x20);
-        *(int*)(dst + 0xa0) = *(int*)(dst + 0x24);
-        *(int*)(dst + 0xa4) = *(int*)(dst + 0x28);
+        HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
+        HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
+        HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
         AddVec3(q, &data_ov006_02140394, q);
     }
 
-    *(short*)(dst + 0xec) = 8;
-    *(int*)(dst + 0xcc) = 0x1400;
-    *(int*)(dst + 0xd0) = 0x1400;
-    *(int*)(dst + 0xd4) = 0x1400;
+    HEYHO(dst)->mDelay = 8;
+    HEYHO(dst)->mScale.x = 0x1400;
+    HEYHO(dst)->mScale.y = 0x1400;
+    HEYHO(dst)->mScale.z = 0x1400;
     *(int*)(dst + 0xd8) = *(int*)dst;
-    *(short*)(dst + 0xe6) = 0;
+    HEYHO(dst)->mLean = 0;
     *(int*)(dst + 0xe0) = 0;
-    *(Pair*)(dst + 0x30) = pmf_Heyho_Motion8;
+    *(Pair *)(dst + 0x30) = pmf_Heyho_MotionRegroup;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion8 ---- */
+/* ---- Heyho_MotionRegroup ---- */
 namespace n020c66bc {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -319,69 +339,92 @@ extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern int LenVec3(Vec3 *v);
 extern void _Z15ApproachLinear2Rsss(short *v, short t, short s);
 extern int D3D_PlaySeAtX(int a, int b);
-extern void Heyho_StartMotion12(char *p);
-extern void Heyho_StartMotion14(int *c);
-extern void Heyho_StartMotion10(int *c);
-extern void Heyho_StartMotion0(void *c);
-extern void Heyho_StartMotion9(char *self);
-extern void Heyho_StartMotion7(int *c);
-extern void Heyho_StartMotion4(struct Obj *o);
-extern void Heyho_StartMotion6(struct Obj *o);
-extern void Heyho_StartMotion2(void *c);
-extern void Heyho_StartMotion5(void *c);
-extern void Heyho_StartMotion1(char *c);
+extern void Heyho_StartMotionHover(char *p);
+extern void Heyho_StartMotionPatrolBob(int *c);
+extern void Heyho_StartMotionBobVertical(int *c);
+extern void Heyho_StartMotionBounceNear(void *c);
+extern void Heyho_StartMotionVShape(char *self);
+extern void Heyho_StartMotionBounceInRange(int *c);
+extern void Heyho_StartMotionDiagonal(struct Obj *o);
+extern void Heyho_StartMotionDiagonalMirror(struct Obj *o);
+extern void Heyho_StartMotionCircleUpper(void *c);
+extern void Heyho_StartMotionCircleLower(void *c);
+extern void Heyho_StartMotionChase(char *c);
 extern void Heyho_CheckHitB(void *c);
 extern void Heyho_CheckHitA(void *c);
 
-void Heyho_Motion8(char *c)
-{
+void Heyho_MotionRegroup(char *c) {
     int dx, dy, dz;
     int vx, vy;
 
     *(short *)(((int)c + 0xea)) += 0x200;
 
-    dx = *(int *)(c + 0x20) - *(int *)(c + 0x9c);
-    *(int *)(c + 0xa8) = (int)((((long long)dx << 8) + 0x800) >> 12);
-    dy = *(int *)(c + 0x24) - *(int *)(c + 0xa0);
-    *(int *)(c + 0xac) = (int)((((long long)dy << 8) + 0x800) >> 12);
-    dz = *(int *)(c + 0x28) - *(int *)(c + 0xa4);
-    *(int *)(c + 0xb0) = (int)((((long long)dz << 8) + 0x800) >> 12);
+    dx = HEYHO(c)->mGoal.x - HEYHO(c)->mPos.x;
+    HEYHO(c)->mVel.x = (int)((((long long)dx << 8) + 0x800) >> 12);
+    dy = HEYHO(c)->mGoal.y - HEYHO(c)->mPos.y;
+    HEYHO(c)->mVel.y = (int)((((long long)dy << 8) + 0x800) >> 12);
+    dz = HEYHO(c)->mGoal.z - HEYHO(c)->mPos.z;
+    HEYHO(c)->mVel.z = (int)((((long long)dz << 8) + 0x800) >> 12);
 
     AddVec3((Vec3 *)(c + 0x9c), (Vec3 *)(c + 0xa8), (Vec3 *)(c + 0x9c));
 
-    vx = *(int *)(c + 0xa8);
+    vx = HEYHO(c)->mVel.x;
     if (vx < 0) vx = -vx;
     if (vx < 0x18) {
-        vy = *(int *)(c + 0xac);
+        vy = HEYHO(c)->mVel.y;
         if (vy < 0) vy = -vy;
         if (vy < 0x18) {
-            *(int *)(c + 0x9c) = *(int *)(c + 0x20);
-            *(int *)(c + 0xa0) = *(int *)(c + 0x24);
-            *(int *)(c + 0xa4) = *(int *)(c + 0x28);
+            HEYHO(c)->mPos.x = HEYHO(c)->mGoal.x;
+            HEYHO(c)->mPos.y = HEYHO(c)->mGoal.y;
+            HEYHO(c)->mPos.z = HEYHO(c)->mGoal.z;
 
-            switch (*(int *)(c + 0x2c)) {
-            case 0:  Heyho_StartMotion12(c); break;
-            case 1:  Heyho_StartMotion14((int *)c); break;
-            case 2:  Heyho_StartMotion10((int *)c); break;
-            case 3:  Heyho_StartMotion0(c); break;
-            case 4:  Heyho_StartMotion9(c); break;
-            case 5:  Heyho_StartMotion7((int *)c); break;
-            case 6:  Heyho_StartMotion4((struct Obj *)c); break;
-            case 7:  Heyho_StartMotion6((struct Obj *)c); break;
-            case 8:  Heyho_StartMotion2(c); break;
-            case 9:  Heyho_StartMotion5(c); break;
-            case 10: Heyho_StartMotion1(c); break;
-            default: Heyho_StartMotion12(c); break;
+            switch (HEYHO(c)->mMoveKind) {
+            case 0:
+                Heyho_StartMotionHover(c);
+                break;
+            case 1:
+                Heyho_StartMotionPatrolBob((int *)c);
+                break;
+            case 2:
+                Heyho_StartMotionBobVertical((int *)c);
+                break;
+            case 3:
+                Heyho_StartMotionBounceNear(c);
+                break;
+            case 4:
+                Heyho_StartMotionVShape(c);
+                break;
+            case 5:
+                Heyho_StartMotionBounceInRange((int *)c);
+                break;
+            case 6:
+                Heyho_StartMotionDiagonal((struct Obj *)c);
+                break;
+            case 7:
+                Heyho_StartMotionDiagonalMirror((struct Obj *)c);
+                break;
+            case 8:
+                Heyho_StartMotionCircleUpper(c);
+                break;
+            case 9:
+                Heyho_StartMotionCircleLower(c);
+                break;
+            case 10:
+                Heyho_StartMotionChase(c);
+                break;
+            default:
+                Heyho_StartMotionHover(c);
+                break;
             }
 
-            D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
+            D3D_PlaySeAtX(0x1c5, HEYHO(c)->mPos.x);
         }
     }
 
     _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1);
 
-    if (*(short *)(c + 0xec) == 1) {
-        D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
+    if (HEYHO(c)->mDelay == 1) {
+        D3D_PlaySeAtX(0x1c5, HEYHO(c)->mPos.x);
     }
 
     if (LenVec3((Vec3 *)(c + 0xa8)) < 0x1000) {
@@ -390,7 +433,6 @@ void Heyho_Motion8(char *c)
         Heyho_CheckHitA(c);
     }
 }
-
 }
 }
 
@@ -405,8 +447,8 @@ extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void *_ZN7Vector3D1Ev(void *object);
 
 extern int pmf_Heyho_StateIdle[2];
-extern int pmf_Heyho_Motion11_2[2];
-extern W2 pmf_Heyho_Motion13_2;
+extern int pmf_Heyho_MotionHitSpin_2[2];
+extern W2 pmf_Heyho_MotionLeave_2;
 extern int data_ov006_02140300;
 extern int data_ov006_0214030c;
 extern Vec3 data_ov006_021403d0;
@@ -421,17 +463,15 @@ void Heyho_React(char *c)
     volatile int *q;
     unsigned base;
 
-    v = (int *)(c + 0x30);
+    v = HEYHO(c)->mMotion;
     q = (volatile int *)pmf_Heyho_StateIdle;
-    if (v[0] == pmf_Heyho_StateIdle[0]
-        && (v[1] == q[1] || *(int *)(c + 0x30) == 0))
+    if (v[0] == pmf_Heyho_StateIdle[0] && (v[1] == q[1] || HEYHO(c)->mMotion[0] == 0))
         return;
 
     base = (unsigned)(int)c;
     v = (int *)(base + 0x30);
-    q = (volatile int *)pmf_Heyho_Motion11_2;
-    if (v[0] == pmf_Heyho_Motion11_2[0]
-        && (v[1] == q[1] || *(int *)(c + 0x30) == 0))
+    q = (volatile int *)pmf_Heyho_MotionHitSpin_2;
+    if (v[0] == pmf_Heyho_MotionHitSpin_2[0] && (v[1] == q[1] || HEYHO(c)->mMotion[0] == 0))
         return;
 
     if ((data_ov006_02140300 & 1) == 0) {
@@ -449,7 +489,7 @@ void Heyho_React(char *c)
         data_ov006_0214030c |= 1;
     }
 
-    if (*(int *)(c + 0x9c) > 0) {
+    if (HEYHO(c)->mPos.x > 0) {
         Vec3_Add(&locals[1], (Vec3 *)(c + 0x9c), &data_ov006_021403e8);
         *(int *)(c + 0xb4) = locals[1].x;
         *(int *)(c + 0xb8) = locals[1].y;
@@ -461,16 +501,16 @@ void Heyho_React(char *c)
         *(int *)(c + 0xbc) = locals[2].z;
     }
 
-    *(int *)(c + 0xcc) = 0x1400;
-    *(int *)(c + 0xd0) = 0x1400;
-    *(int *)(c + 0xd4) = 0x1400;
-    *(W2 *)(c + 0x30) = pmf_Heyho_Motion13_2;
+    HEYHO(c)->mScale.x = 0x1400;
+    HEYHO(c)->mScale.y = 0x1400;
+    HEYHO(c)->mScale.z = 0x1400;
+    *(W2 *)(c + 0x30) = pmf_Heyho_MotionLeave_2;
 }
 
 }
 }
 
-/* ---- Heyho_Motion13 ---- */
+/* ---- Heyho_MotionLeave ---- */
 namespace n020c6400 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -481,8 +521,7 @@ extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_SetIdle(char *self);
 
-void Heyho_Motion13(char *self)
-{
+void Heyho_MotionLeave(char *self) {
     Vec3 diff, scaled;
     int x, y;
     {
@@ -491,69 +530,75 @@ void Heyho_Motion13(char *self)
     }
     Vec3_Sub(&diff, (Vec3*)(self+0xb4), (Vec3*)(self+0x9c));
     Vec3_MulScalar(&scaled, &diff, 0x100);
-    *(int*)(self+0xa8) = scaled.x;
-    *(int*)(self+0xac) = scaled.y;
-    *(int*)(self+0xb0) = scaled.z;
+    HEYHO(self)->mVel.x = scaled.x;
+    HEYHO(self)->mVel.y = scaled.y;
+    HEYHO(self)->mVel.z = scaled.z;
     AddVec3((Vec3*)(self+0x9c), (Vec3*)(self+0xa8), (Vec3*)(self+0x9c));
-    if (*(int*)(self+0xa8) > 0)
+    if (HEYHO(self)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(self+0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(self+0xe6), -0x3000, 0x200);
-    x = *(int*)(self+0xa8);
+    x = HEYHO(self)->mVel.x;
     if (x < 0) x = -x;
     if (x >= 0x20) return;
-    y = *(int*)(self+0xac);
+    y = HEYHO(self)->mVel.y;
     if (y < 0) y = -y;
     if (y >= 0x20) return;
     Heyho_SetIdle(self);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion12 ---- */
+/* ---- Heyho_StartMotionHover ---- */
 namespace n020c63dc {
 extern "C" {
 struct S { int w[2]; };
-extern struct S pmf_Heyho_Motion12;
-void Heyho_StartMotion12(char *p) { *(short *)(p + 0xe6) = 0; *(struct S *)(p + 0x30) = pmf_Heyho_Motion12; }
-
+extern struct S pmf_Heyho_MotionHover;
+void Heyho_StartMotionHover(char *p) {
+    HEYHO(p)->mLean = 0;
+    *(struct S *)(p + 0x30) = pmf_Heyho_MotionHover;
 }
 }
+}
 
-/* ---- Heyho_Motion12 ---- */
+/* ---- Heyho_MotionHover ---- */
 namespace n020c6378 {
 extern "C" {
 extern s16 data_02082214[];
 extern void Heyho_CheckHitB(void* this_);
 
-void Heyho_Motion12(int this_)
-{
+void Heyho_MotionHover(int this_) {
     /* The two re-reads go through a const view of the object: without it
        mwcc 2004 CSEs the +0xea and +0xac field addresses into their own
        registers (ldrh ip,[ip] / add r1,r0,#0xac) and the function grows a
        word; the cartridge re-issues ldrh r2,[r0,#0xea] / ldr r1,[r0,#0xac]. */
     const char *ro = (const char*)this_;
-    *(s16*)(this_ + 0xea) += 0x200;
-    *(int*)(this_ + 0xa8) = 0;
-    *(int*)(this_ + 0xac) = data_02082214[(*(const u16*)(ro + 0xea) >> 4) * 2] >> 3;
-    *(int*)(this_ + 0xa0) += *(const int*)(ro + 0xac);
+    HEYHO(this_)->mPhase += 0x200;
+    HEYHO(this_)->mVel.x = 0;
+    HEYHO(this_)->mVel.y = data_02082214[(*(const u16 *)(ro + 0xea) >> 4) * 2] >> 3;
+    HEYHO(this_)->mPos.y += *(const int *)(ro + 0xac);
     Heyho_CheckHitB((void*)this_);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion14 ---- */
+/* ---- Heyho_StartMotionPatrolBob ---- */
 namespace n020c6348 {
 extern "C" {
-struct S{int w[2];}; extern struct S pmf_Heyho_Motion14;
-void Heyho_StartMotion14(int* c){ *(int*)((char*)c+0xa8)=0x800; *(int*)((char*)c+0xac)=0; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion14; }
-
+struct S {
+    int w[2];
+};
+extern struct S pmf_Heyho_MotionPatrolBob;
+void Heyho_StartMotionPatrolBob(int *c) {
+    *(int *)((char *)c + 0xa8) = 0x800;
+    *(int *)((char *)c + 0xac) = 0;
+    *(int *)((char *)c + 0xb0) = 0;
+    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionPatrolBob;
 }
 }
+}
 
-/* ---- Heyho_Motion14 ---- */
+/* ---- Heyho_MotionPatrolBob ---- */
 namespace n020c627c {
 extern "C" {
 extern void AddVec3(void* a, void* b, void* c);
@@ -561,8 +606,7 @@ extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 extern short data_02082214[];
 
-void Heyho_Motion14(char* c)
-{
+void Heyho_MotionPatrolBob(char *c) {
     int v, w;
     *(short*)(((int)c + 0xea)) += 0x200;
     {
@@ -570,136 +614,139 @@ void Heyho_Motion14(char* c)
         *(int*)(((int)c + 0xac)) = data_02082214[a * 2] >> 3;
     }
     AddVec3(c + 0x9c, c + 0xa8, c + 0x9c);
-    v = *(int*)(c + 0xa8);
+    v = HEYHO(c)->mVel.x;
     if (v < 0) {
-        if (*(int*)(c + 0x9c) < -0x68000) {
-            *(int*)(c + 0xa8) = -v;
+        if (HEYHO(c)->mPos.x < -0x68000) {
+            HEYHO(c)->mVel.x = -v;
             goto skip_else_if;
         }
     }
     if (v > 0) {
-        if (*(int*)(c + 0x9c) > 0x68000)
-            *(int*)(c + 0xa8) = -v;
+        if (HEYHO(c)->mPos.x > 0x68000)
+            HEYHO(c)->mVel.x = -v;
     }
 skip_else_if:
-    w = *(int*)(c + 0xa8);
+    w = HEYHO(c)->mVel.x;
     if (w > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion10 ---- */
+/* ---- Heyho_StartMotionBobVertical ---- */
 namespace n020c6248 {
 extern "C" {
-struct S{int w[2];}; extern struct S pmf_Heyho_Motion10;
-void Heyho_StartMotion10(int* c){ *(int*)((char*)c+0xa8)=0; *(int*)((char*)c+0xac)=0x800; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion10; *(short*)((char*)c+0xe6)=0; }
-
+struct S {
+    int w[2];
+};
+extern struct S pmf_Heyho_MotionBobVertical;
+void Heyho_StartMotionBobVertical(int *c) {
+    *(int *)((char *)c + 0xa8) = 0;
+    *(int *)((char *)c + 0xac) = 0x800;
+    *(int *)((char *)c + 0xb0) = 0;
+    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionBobVertical;
+    *(short *)((char *)c + 0xe6) = 0;
 }
 }
+}
 
-/* ---- Heyho_Motion10 ---- */
+/* ---- Heyho_MotionBobVertical ---- */
 namespace n020c61c4 {
 extern "C" {
-// @symbol Heyho_Motion10
+// @symbol Heyho_MotionBobVertical
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *out);
-void Heyho_Motion10(int this_) {
-    int f24 = *(int*)(this_ + 0x24);
-    int a0  = *(int*)(this_ + 0xa0);
-    if (a0 < f24 + *(int*)(this_ + 0x18) && ((int*)this_)[43] < 0) {
+void Heyho_MotionBobVertical(int this_) {
+    int f24 = HEYHO(this_)->mGoal.y;
+    int a0 = HEYHO(this_)->mPos.y;
+    if (a0 < f24 + HEYHO(this_)->mRangeBottom && ((int *)this_)[43] < 0) {
         ((int*)this_)[43] = -((int*)this_)[43];
         ((short*)this_)[117] = 0;
-    } else if (a0 > f24 + *(int*)(this_ + 0x1c) && ((int*)this_)[43] > 0) {
+    } else if (a0 > f24 + HEYHO(this_)->mRangeTop && ((int *)this_)[43] > 0) {
         ((int*)this_)[43] = -((int*)this_)[43];
         ((short*)this_)[117] = 0;
     }
     AddVec3((struct Vector3*)(this_ + 0x9c), (struct Vector3*)(this_ + 0xa8), (struct Vector3*)(this_ + 0x9c));
     Heyho_CheckHitB((void*)this_);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion0 ---- */
+/* ---- Heyho_StartMotionBounceNear ---- */
 namespace n020c6188 {
 extern "C" {
 struct S{int w[2];};
-extern struct S pmf_Heyho_Motion0;
-void Heyho_StartMotion0(void *c){
-  *(short*)((char*)c+0xe6)=0;
-  *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
-  *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
-  *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion0;
+extern struct S pmf_Heyho_MotionBounceNear;
+void Heyho_StartMotionBounceNear(void *c) {
+    *(short *)((char *)c + 0xe6) = 0;
+    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
+    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
+    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
+    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionBounceNear;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion0 ---- */
+/* ---- Heyho_MotionBounceNear ---- */
 namespace n020c6088 {
 extern "C" {
-// @symbol Heyho_Motion0
+// @symbol Heyho_MotionBounceNear
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void Heyho_Motion0(char *c)
-{
-    int base_y = *(int*)(c + 0x24);
-    int pos_y = *(int*)(c + 0xa0);
+void Heyho_MotionBounceNear(char *c) {
+    int base_y = HEYHO(c)->mGoal.y;
+    int pos_y = HEYHO(c)->mPos.y;
     if (pos_y < base_y) {
-        int vel = *(int*)(c + 0xac);
+        int vel = HEYHO(c)->mVel.y;
         if (vel < 0) {
-            *(int*)(c + 0xac) = -vel;
-            *(short*)(c + 0xea) = 0;
+            HEYHO(c)->mVel.y = -vel;
+            HEYHO(c)->mPhase = 0;
             goto after_y;
         }
     }
     if (pos_y > base_y + 0x60000) {
-        int vel = *(int*)(c + 0xac);
+        int vel = HEYHO(c)->mVel.y;
         if (vel > 0) {
-            *(int*)(c + 0xac) = -vel;
-            *(short*)(c + 0xea) = 0;
+            HEYHO(c)->mVel.y = -vel;
+            HEYHO(c)->mPhase = 0;
         }
     }
 after_y:
     {
-    int base_x = *(int*)(c + 0x20);
-    int pos_x = *(int*)(c + 0x9c);
+    int base_x = HEYHO(c)->mGoal.x;
+    int pos_x = HEYHO(c)->mPos.x;
     if (pos_x < base_x - 0x60000) {
-        int vel = *(int*)(c + 0xa8);
+        int vel = HEYHO(c)->mVel.x;
         if (vel < 0) {
-            *(int*)(c + 0xa8) = -vel;
-            *(short*)(c + 0xea) = 0;
+            HEYHO(c)->mVel.x = -vel;
+            HEYHO(c)->mPhase = 0;
             goto after_x;
         }
     }
     if (pos_x > base_x + 0x60000) {
-        int vel = *(int*)(c + 0xa8);
+        int vel = HEYHO(c)->mVel.x;
         if (vel > 0) {
-            *(int*)(c + 0xa8) = -vel;
-            *(short*)(c + 0xea) = 0;
+            HEYHO(c)->mVel.x = -vel;
+            HEYHO(c)->mPhase = 0;
         }
     }
 after_x:;
     }
 
     AddVec3((struct Vector3*)(c + 0x9c), (struct Vector3*)(c + 0xa8), (struct Vector3*)(c + 0x9c));
-    if (*(int*)(c + 0xa8) > 0)
+    if (HEYHO(c)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
     Heyho_CheckHitB(c);
+    }
+}
 }
 
-}
-}
-
-/* ---- Heyho_StartMotion9 ---- */
+/* ---- Heyho_StartMotionVShape ---- */
 namespace n020c5ec8 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -709,37 +756,36 @@ extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern int NormalizeVec3IfNonZero(Vec3* v);
 extern void Vec3_MulScalarInPlace(int* v, int s);
 typedef struct { int w[2]; } S2;
-extern S2 pmf_Heyho_Motion9;
+extern S2 pmf_Heyho_MotionVShape;
 
-void Heyho_StartMotion9(char* self)
-{
+void Heyho_StartMotionVShape(char *self) {
     Vec3 v0, v1, v2, d0, d1, d2, diff;
     int len0, len1, len2;
 
-    *(short*)(self + 0xe6) = 0;
-    *(int*)(self + 0xa8) = *(int*)(self + 4);
-    *(int*)(self + 0xac) = *(int*)(self + 8);
-    *(int*)(self + 0xb0) = *(int*)(self + 0xc);
-    *(int*)(self + 0xdc) = LenVec3((Vec3*)(self + 0xa8));
+    HEYHO(self)->mLean = 0;
+    HEYHO(self)->mVel.x = *(int *)(self + 4);
+    HEYHO(self)->mVel.y = *(int *)(self + 8);
+    HEYHO(self)->mVel.z = HEYHO(self)->mStartVel.z;
+    HEYHO(self)->mSpeed = LenVec3((Vec3 *)(self + 0xa8));
 
     {
-        int y = *(int*)(self + 0x1c);
-        int x = *(int*)(self + 0x10);
+        int y = HEYHO(self)->mRangeTop;
+        int x = HEYHO(self)->mRangeLeft;
         v0.x = x;
         v0.y = y;
         v0.z = 0;
     }
     {
-        int y = *(int*)(self + 0x1c);
-        int x = *(int*)(self + 0x14);
+        int y = HEYHO(self)->mRangeTop;
+        int x = HEYHO(self)->mRangeRight;
         v1.x = x;
         v1.y = y;
         v1.z = 0;
     }
     {
-        int a = *(int*)(self + 0x10);
-        int b = *(int*)(self + 0x14);
-        int c = *(int*)(self + 0x18);
+        int a = HEYHO(self)->mRangeLeft;
+        int b = HEYHO(self)->mRangeRight;
+        int c = HEYHO(self)->mRangeBottom;
         v2.x = (a + b) >> 1;
         v2.y = c;
         v2.z = 0;
@@ -767,24 +813,23 @@ void Heyho_StartMotion9(char* self)
     }
 
     Vec3_Sub(&diff, (Vec3*)(self + 0xb4), (Vec3*)(self + 0x9c));
-    *(int*)(self + 0xa8) = diff.x;
-    *(int*)(self + 0xac) = diff.y;
-    *(int*)(self + 0xb0) = diff.z;
+    HEYHO(self)->mVel.x = diff.x;
+    HEYHO(self)->mVel.y = diff.y;
+    HEYHO(self)->mVel.z = diff.z;
     if (NormalizeVec3IfNonZero((Vec3*)(self + 0xa8)) == 0) {
-        *(int*)(self + 0xa8) = *(int*)(self + 4);
-        *(int*)(self + 0xac) = *(int*)(self + 8);
-        *(int*)(self + 0xb0) = *(int*)(self + 0xc);
+        HEYHO(self)->mVel.x = *(int *)(self + 4);
+        HEYHO(self)->mVel.y = *(int *)(self + 8);
+        HEYHO(self)->mVel.z = HEYHO(self)->mStartVel.z;
     } else {
-        Vec3_MulScalarInPlace((int*)(self + 0xa8), *(int*)(self + 0xdc));
+        Vec3_MulScalarInPlace((int *)(self + 0xa8), HEYHO(self)->mSpeed);
     }
 
-    *(S2*)(self + 0x30) = pmf_Heyho_Motion9;
+    *(S2 *)(self + 0x30) = pmf_Heyho_MotionVShape;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion9 ---- */
+/* ---- Heyho_MotionVShape ---- */
 namespace n020c5d28 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -795,98 +840,101 @@ extern void Vec3_MulScalarInPlace(int* v, int s);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 
-void Heyho_Motion9(char* c)
-{
+void Heyho_MotionVShape(char *c) {
     Vec3 sp0, spC, sp18, sp24;
     int r5, r0v;
     int t;
 
-    t = *(int*)(c + 0xa8);
+    t = HEYHO(c)->mVel.x;
     r5 = _Z14ApproachLinearRiii((int*)(c + 0x9c), *(int*)(c + 0xb4), t < 0 ? -t : t);
-    t = *(int*)(c + 0xac);
+    t = HEYHO(c)->mVel.y;
     r0v = _Z14ApproachLinearRiii((int*)(c + 0xa0), *(int*)(c + 0xb8), t < 0 ? -t : t);
 
-    if (r5 != 0 && r0v != 0 && *(int*)(c + 0xb8) == *(int*)(c + 0x18)) {
-        int c_a8 = *(int*)(c + 0xa8);
+    if (r5 != 0 && r0v != 0 && *(int *)(c + 0xb8) == HEYHO(c)->mRangeBottom) {
+        int c_a8 = HEYHO(c)->mVel.x;
         if (c_a8 > 0) {
-            *(int*)(c + 0xb4) = *(int*)(c + 0x14);
-            *(int*)(c + 0xb8) = *(int*)(c + 0x1c);
+            *(int *)(c + 0xb4) = HEYHO(c)->mRangeRight;
+            *(int *)(c + 0xb8) = HEYHO(c)->mRangeTop;
         } else {
-            *(int*)(c + 0xb4) = *(int*)(c + 0x10);
-            *(int*)(c + 0xb8) = *(int*)(c + 0x1c);
+            *(int *)(c + 0xb4) = HEYHO(c)->mRangeLeft;
+            *(int *)(c + 0xb8) = HEYHO(c)->mRangeTop;
         }
         Vec3_Sub(&sp0, (Vec3*)(c + 0xb4), (Vec3*)(c + 0x9c));
-        *(int*)(c + 0xa8) = sp0.x;
-        *(int*)(c + 0xac) = sp0.y;
-        *(int*)(c + 0xb0) = sp0.z;
+        HEYHO(c)->mVel.x = sp0.x;
+        HEYHO(c)->mVel.y = sp0.y;
+        HEYHO(c)->mVel.z = sp0.z;
         func_0203ce80(&spC, (Vec3*)(c + 0xa8));
-        Vec3_MulScalarInPlace((int*)(c + 0xa8), *(int*)(c + 0xdc));
-        *(short*)(c + 0xea) = 0;
-    } else if (r5 != 0 && r0v != 0 && *(int*)(c + 0xb8) == *(int*)(c + 0x1c)) {
-        *(int*)(c + 0xb4) = (*(int*)(c + 0x10) + *(int*)(c + 0x14)) >> 1;
-        *(int*)(c + 0xb8) = *(int*)(c + 0x18);
+        Vec3_MulScalarInPlace((int *)(c + 0xa8), HEYHO(c)->mSpeed);
+        HEYHO(c)->mPhase = 0;
+    } else if (r5 != 0 && r0v != 0 && *(int *)(c + 0xb8) == HEYHO(c)->mRangeTop) {
+        *(int *)(c + 0xb4) = (HEYHO(c)->mRangeLeft + HEYHO(c)->mRangeRight) >> 1;
+        *(int *)(c + 0xb8) = HEYHO(c)->mRangeBottom;
         Vec3_Sub(&sp18, (Vec3*)(c + 0xb4), (Vec3*)(c + 0x9c));
-        *(int*)(c + 0xa8) = sp18.x;
-        *(int*)(c + 0xac) = sp18.y;
-        *(int*)(c + 0xb0) = sp18.z;
+        HEYHO(c)->mVel.x = sp18.x;
+        HEYHO(c)->mVel.y = sp18.y;
+        HEYHO(c)->mVel.z = sp18.z;
         func_0203ce80(&sp24, (Vec3*)(c + 0xa8));
-        Vec3_MulScalarInPlace((int*)(c + 0xa8), *(int*)(c + 0xdc));
-        *(short*)(c + 0xea) = 0;
+        Vec3_MulScalarInPlace((int *)(c + 0xa8), HEYHO(c)->mSpeed);
+        HEYHO(c)->mPhase = 0;
     }
 
-    if (*(int*)(c + 0xa8) > 0)
+    if (HEYHO(c)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
 
     Heyho_CheckHitB(c);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion7 ---- */
+/* ---- Heyho_StartMotionBounceInRange ---- */
 namespace n020c5cf4 {
 extern "C" {
-struct S{int w[2];}; extern struct S pmf_Heyho_Motion7;
-void Heyho_StartMotion7(int* c){ *(int*)((char*)c+0xa8)=*(int*)((char*)c+4); *(int*)((char*)c+0xac)=*(int*)((char*)c+8); *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc); *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion7; }
-
+struct S {
+    int w[2];
+};
+extern struct S pmf_Heyho_MotionBounceInRange;
+void Heyho_StartMotionBounceInRange(int *c) {
+    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
+    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
+    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
+    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionBounceInRange;
 }
 }
+}
 
-/* ---- Heyho_Motion7 ---- */
+/* ---- Heyho_MotionBounceInRange ---- */
 namespace n020c5bf8 {
 extern "C" {
-// @symbol Heyho_Motion7
+// @symbol Heyho_MotionBounceInRange
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void Heyho_Motion7(char *c)
-{
-    int a8 = *(int*)(c + 0xa8);
-    if (a8 < 0 && *(int*)(c + 0x9c) < *(int*)(c + 0x20) + *(int*)(c + 0x10)) {
-        *(int*)(c + 0xa8) = -a8;
-    } else if (a8 > 0 && *(int*)(c + 0x9c) > *(int*)(c + 0x20) + *(int*)(c + 0x14)) {
-        *(int*)(c + 0xa8) = -a8;
+void Heyho_MotionBounceInRange(char *c) {
+    int a8 = HEYHO(c)->mVel.x;
+    if (a8 < 0 && HEYHO(c)->mPos.x < HEYHO(c)->mGoal.x + HEYHO(c)->mRangeLeft) {
+        HEYHO(c)->mVel.x = -a8;
+    } else if (a8 > 0 && HEYHO(c)->mPos.x > HEYHO(c)->mGoal.x + HEYHO(c)->mRangeRight) {
+        HEYHO(c)->mVel.x = -a8;
     }
-    int ac = *(int*)(c + 0xac);
-    if (ac < 0 && *(int*)(c + 0xa0) < *(int*)(c + 0x24) + *(int*)(c + 0x18)) {
-        *(int*)(c + 0xac) = -ac;
-    } else if (ac > 0 && *(int*)(c + 0xa0) > *(int*)(c + 0x24) + *(int*)(c + 0x1c)) {
-        *(int*)(c + 0xac) = -ac;
+    int ac = HEYHO(c)->mVel.y;
+    if (ac < 0 && HEYHO(c)->mPos.y < HEYHO(c)->mGoal.y + HEYHO(c)->mRangeBottom) {
+        HEYHO(c)->mVel.y = -ac;
+    } else if (ac > 0 && HEYHO(c)->mPos.y > HEYHO(c)->mGoal.y + HEYHO(c)->mRangeTop) {
+        HEYHO(c)->mVel.y = -ac;
     }
     AddVec3((struct Vector3*)(c + 0x9c), (struct Vector3*)(c + 0xa8), (struct Vector3*)(c + 0x9c));
-    if (*(int*)(c + 0xa8) > 0)
+    if (HEYHO(c)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion4 ---- */
+/* ---- Heyho_StartMotionDiagonal ---- */
 namespace n020c5aa4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -910,10 +958,9 @@ struct Obj {
     short fe6;
 };
 
-extern W2 pmf_Heyho_Motion4;
+extern W2 pmf_Heyho_MotionDiagonal;
 
-void Heyho_StartMotion4(struct Obj *o)
-{
+void Heyho_StartMotionDiagonal(struct Obj *o) {
     Vec3 a, b, da, db, t;
     int la;
     int ay, ax, by, bx;
@@ -955,13 +1002,12 @@ void Heyho_StartMotion4(struct Obj *o)
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = pmf_Heyho_Motion4;
+    *(W2 *)((char *)o + 0x30) = pmf_Heyho_MotionDiagonal;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion4 ---- */
+/* ---- Heyho_MotionDiagonal ---- */
 namespace n020c5928 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -972,51 +1018,49 @@ extern void Vec3_MulScalarInPlace(int* v, int s);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 
-void Heyho_Motion4(char* c)
-{
+void Heyho_MotionDiagonal(char *c) {
     Vec3 sp0, spC, sp18, sp24;
     int r5, r0v;
     int t;
 
-    t = *(int*)(c + 0xa8);
+    t = HEYHO(c)->mVel.x;
     r5 = _Z14ApproachLinearRiii((int*)(c + 0x9c), *(int*)(c + 0xb4), t < 0 ? -t : t);
-    t = *(int*)(c + 0xac);
+    t = HEYHO(c)->mVel.y;
     r0v = _Z14ApproachLinearRiii((int*)(c + 0xa0), *(int*)(c + 0xb8), t < 0 ? -t : t);
 
-    if (r5 != 0 && r0v != 0 && *(int*)(c + 0xb8) == *(int*)(c + 0x18)) {
-        *(int*)(c + 0xb4) = *(int*)(c + 0x10);
-        *(int*)(c + 0xb8) = *(int*)(c + 0x1c);
+    if (r5 != 0 && r0v != 0 && *(int *)(c + 0xb8) == HEYHO(c)->mRangeBottom) {
+        *(int *)(c + 0xb4) = HEYHO(c)->mRangeLeft;
+        *(int *)(c + 0xb8) = HEYHO(c)->mRangeTop;
         Vec3_Sub(&sp0, (Vec3*)(c + 0xb4), (Vec3*)(c + 0x9c));
-        *(int*)(c + 0xa8) = sp0.x;
-        *(int*)(c + 0xac) = sp0.y;
-        *(int*)(c + 0xb0) = sp0.z;
+        HEYHO(c)->mVel.x = sp0.x;
+        HEYHO(c)->mVel.y = sp0.y;
+        HEYHO(c)->mVel.z = sp0.z;
         func_0203ce80(&spC, (Vec3*)(c + 0xa8));
-        Vec3_MulScalarInPlace((int*)(c + 0xa8), *(int*)(c + 0xdc));
-        *(short*)(c + 0xea) = 0;
-    } else if (r5 != 0 && r0v != 0 && *(int*)(c + 0xb8) == *(int*)(c + 0x1c)) {
-        *(int*)(c + 0xb4) = *(int*)(c + 0x14);
-        *(int*)(c + 0xb8) = *(int*)(c + 0x18);
+        Vec3_MulScalarInPlace((int *)(c + 0xa8), HEYHO(c)->mSpeed);
+        HEYHO(c)->mPhase = 0;
+    } else if (r5 != 0 && r0v != 0 && *(int *)(c + 0xb8) == HEYHO(c)->mRangeTop) {
+        *(int *)(c + 0xb4) = HEYHO(c)->mRangeRight;
+        *(int *)(c + 0xb8) = HEYHO(c)->mRangeBottom;
         Vec3_Sub(&sp18, (Vec3*)(c + 0xb4), (Vec3*)(c + 0x9c));
-        *(int*)(c + 0xa8) = sp18.x;
-        *(int*)(c + 0xac) = sp18.y;
-        *(int*)(c + 0xb0) = sp18.z;
+        HEYHO(c)->mVel.x = sp18.x;
+        HEYHO(c)->mVel.y = sp18.y;
+        HEYHO(c)->mVel.z = sp18.z;
         func_0203ce80(&sp24, (Vec3*)(c + 0xa8));
-        Vec3_MulScalarInPlace((int*)(c + 0xa8), *(int*)(c + 0xdc));
-        *(short*)(c + 0xea) = 0;
+        Vec3_MulScalarInPlace((int *)(c + 0xa8), HEYHO(c)->mSpeed);
+        HEYHO(c)->mPhase = 0;
     }
 
-    if (*(int*)(c + 0xa8) > 0)
+    if (HEYHO(c)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
 
     Heyho_CheckHitB(c);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion6 ---- */
+/* ---- Heyho_StartMotionDiagonalMirror ---- */
 namespace n020c57d4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -1040,10 +1084,9 @@ struct Obj {
     short fe6;
 };
 
-extern W2 pmf_Heyho_Motion6;
+extern W2 pmf_Heyho_MotionDiagonalMirror;
 
-void Heyho_StartMotion6(struct Obj *o)
-{
+void Heyho_StartMotionDiagonalMirror(struct Obj *o) {
     Vec3 a, b, da, db, t;
     int la;
     int ay, ax, by, bx;
@@ -1085,13 +1128,12 @@ void Heyho_StartMotion6(struct Obj *o)
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = pmf_Heyho_Motion6;
+    *(W2 *)((char *)o + 0x30) = pmf_Heyho_MotionDiagonalMirror;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion6 ---- */
+/* ---- Heyho_MotionDiagonalMirror ---- */
 namespace n020c5658 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -1102,183 +1144,173 @@ extern void Vec3_MulScalarInPlace(int* v, int s);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 
-void Heyho_Motion6(char* c)
-{
+void Heyho_MotionDiagonalMirror(char *c) {
     Vec3 sp0, spC, sp18, sp24;
     int r5, r0v;
     int t;
 
-    t = *(int*)(c + 0xa8);
+    t = HEYHO(c)->mVel.x;
     r5 = _Z14ApproachLinearRiii((int*)(c + 0x9c), *(int*)(c + 0xb4), t < 0 ? -t : t);
-    t = *(int*)(c + 0xac);
+    t = HEYHO(c)->mVel.y;
     r0v = _Z14ApproachLinearRiii((int*)(c + 0xa0), *(int*)(c + 0xb8), t < 0 ? -t : t);
 
-    if (r5 != 0 && r0v != 0 && *(int*)(c + 0xb8) == *(int*)(c + 0x18)) {
-        *(int*)(c + 0xb4) = *(int*)(c + 0x14);
-        *(int*)(c + 0xb8) = *(int*)(c + 0x1c);
+    if (r5 != 0 && r0v != 0 && *(int *)(c + 0xb8) == HEYHO(c)->mRangeBottom) {
+        *(int *)(c + 0xb4) = HEYHO(c)->mRangeRight;
+        *(int *)(c + 0xb8) = HEYHO(c)->mRangeTop;
         Vec3_Sub(&sp0, (Vec3*)(c + 0xb4), (Vec3*)(c + 0x9c));
-        *(int*)(c + 0xa8) = sp0.x;
-        *(int*)(c + 0xac) = sp0.y;
-        *(int*)(c + 0xb0) = sp0.z;
+        HEYHO(c)->mVel.x = sp0.x;
+        HEYHO(c)->mVel.y = sp0.y;
+        HEYHO(c)->mVel.z = sp0.z;
         func_0203ce80(&spC, (Vec3*)(c + 0xa8));
-        Vec3_MulScalarInPlace((int*)(c + 0xa8), *(int*)(c + 0xdc));
-        *(short*)(c + 0xea) = 0;
-    } else if (r5 != 0 && r0v != 0 && *(int*)(c + 0xb8) == *(int*)(c + 0x1c)) {
-        *(int*)(c + 0xb4) = *(int*)(c + 0x10);
-        *(int*)(c + 0xb8) = *(int*)(c + 0x18);
+        Vec3_MulScalarInPlace((int *)(c + 0xa8), HEYHO(c)->mSpeed);
+        HEYHO(c)->mPhase = 0;
+    } else if (r5 != 0 && r0v != 0 && *(int *)(c + 0xb8) == HEYHO(c)->mRangeTop) {
+        *(int *)(c + 0xb4) = HEYHO(c)->mRangeLeft;
+        *(int *)(c + 0xb8) = HEYHO(c)->mRangeBottom;
         Vec3_Sub(&sp18, (Vec3*)(c + 0xb4), (Vec3*)(c + 0x9c));
-        *(int*)(c + 0xa8) = sp18.x;
-        *(int*)(c + 0xac) = sp18.y;
-        *(int*)(c + 0xb0) = sp18.z;
+        HEYHO(c)->mVel.x = sp18.x;
+        HEYHO(c)->mVel.y = sp18.y;
+        HEYHO(c)->mVel.z = sp18.z;
         func_0203ce80(&sp24, (Vec3*)(c + 0xa8));
-        Vec3_MulScalarInPlace((int*)(c + 0xa8), *(int*)(c + 0xdc));
-        *(short*)(c + 0xea) = 0;
+        Vec3_MulScalarInPlace((int *)(c + 0xa8), HEYHO(c)->mSpeed);
+        HEYHO(c)->mPhase = 0;
     }
 
-    if (*(int*)(c + 0xa8) > 0)
+    if (HEYHO(c)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
 
     Heyho_CheckHitB(c);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion2 ---- */
+/* ---- Heyho_StartMotionCircleUpper ---- */
 namespace n020c561c {
 extern "C" {
 struct S{int w[2];};
-extern struct S pmf_Heyho_Motion2;
-void Heyho_StartMotion2(void *c){
-  *(short*)((char*)c+0xe6)=0;
-  *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
-  *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
-  *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion2;
+extern struct S pmf_Heyho_MotionCircleUpper;
+void Heyho_StartMotionCircleUpper(void *c) {
+    *(short *)((char *)c + 0xe6) = 0;
+    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
+    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
+    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
+    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionCircleUpper;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion2 ---- */
+/* ---- Heyho_MotionCircleUpper ---- */
 namespace n020c5530 {
 extern "C" {
-// @symbol Heyho_Motion2
+// @symbol Heyho_MotionCircleUpper
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void Heyho_Motion2(char *c)
-{
-    int a8 = *(int*)(c + 0xa8);
-    if (a8 < 0 && *(int*)(c + 0x9c) < -0x68000) {
-        *(int*)(c + 0xac) = -a8;
-        *(int*)(c + 0xa8) = 0;
-    } else if (a8 > 0 && *(int*)(c + 0x9c) > 0x68000) {
-        *(int*)(c + 0xac) = -a8;
-        *(int*)(c + 0xa8) = 0;
+void Heyho_MotionCircleUpper(char *c) {
+    int a8 = HEYHO(c)->mVel.x;
+    if (a8 < 0 && HEYHO(c)->mPos.x < -0x68000) {
+        HEYHO(c)->mVel.y = -a8;
+        HEYHO(c)->mVel.x = 0;
+    } else if (a8 > 0 && HEYHO(c)->mPos.x > 0x68000) {
+        HEYHO(c)->mVel.y = -a8;
+        HEYHO(c)->mVel.x = 0;
     }
-    int ac = *(int*)(c + 0xac);
-    if (ac < 0 && *(int*)(c + 0xa0) < 0x20000) {
-        *(int*)(c + 0xa8) = ac;
-        *(int*)(c + 0xac) = 0;
-    } else if (ac > 0 && *(int*)(c + 0xa0) > 0xc0000) {
-        *(int*)(c + 0xa8) = ac;
-        *(int*)(c + 0xac) = 0;
+    int ac = HEYHO(c)->mVel.y;
+    if (ac < 0 && HEYHO(c)->mPos.y < 0x20000) {
+        HEYHO(c)->mVel.x = ac;
+        HEYHO(c)->mVel.y = 0;
+    } else if (ac > 0 && HEYHO(c)->mPos.y > 0xc0000) {
+        HEYHO(c)->mVel.x = ac;
+        HEYHO(c)->mVel.y = 0;
     }
     AddVec3((struct Vector3*)(c + 0x9c), (struct Vector3*)(c + 0xa8), (struct Vector3*)(c + 0x9c));
-    if (*(int*)(c + 0xa8) > 0)
+    if (HEYHO(c)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion5 ---- */
+/* ---- Heyho_StartMotionCircleLower ---- */
 namespace n020c54f4 {
 extern "C" {
 struct S{int w[2];};
-extern struct S pmf_Heyho_Motion5;
-void Heyho_StartMotion5(void *c){
-  *(short*)((char*)c+0xe6)=0;
-  *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
-  *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
-  *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion5;
+extern struct S pmf_Heyho_MotionCircleLower;
+void Heyho_StartMotionCircleLower(void *c) {
+    *(short *)((char *)c + 0xe6) = 0;
+    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
+    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
+    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
+    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionCircleLower;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion5 ---- */
+/* ---- Heyho_MotionCircleLower ---- */
 namespace n020c53f8 {
 extern "C" {
-// @symbol Heyho_Motion5
+// @symbol Heyho_MotionCircleLower
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void Heyho_Motion5(char *c)
-{
-    int a8 = *(int*)(c + 0xa8);
-    if (a8 < 0 && *(int*)(c + 0x9c) < -0x68000) {
-        *(int*)(c + 0xac) = a8;
-        *(int*)(c + 0xa8) = 0;
-    } else if (a8 > 0 && *(int*)(c + 0x9c) > 0x68000) {
-        *(int*)(c + 0xac) = a8;
-        *(int*)(c + 0xa8) = 0;
+void Heyho_MotionCircleLower(char *c) {
+    int a8 = HEYHO(c)->mVel.x;
+    if (a8 < 0 && HEYHO(c)->mPos.x < -0x68000) {
+        HEYHO(c)->mVel.y = a8;
+        HEYHO(c)->mVel.x = 0;
+    } else if (a8 > 0 && HEYHO(c)->mPos.x > 0x68000) {
+        HEYHO(c)->mVel.y = a8;
+        HEYHO(c)->mVel.x = 0;
     }
-    int ac = *(int*)(c + 0xac);
-    if (ac < 0 && *(int*)(c + 0xa0) < -0xc8000) {
-        *(int*)(c + 0xa8) = -ac;
-        *(int*)(c + 0xac) = 0;
-    } else if (ac > 0 && *(int*)(c + 0xa0) > -0x20000) {
-        *(int*)(c + 0xa8) = -ac;
-        *(int*)(c + 0xac) = 0;
+    int ac = HEYHO(c)->mVel.y;
+    if (ac < 0 && HEYHO(c)->mPos.y < -0xc8000) {
+        HEYHO(c)->mVel.x = -ac;
+        HEYHO(c)->mVel.y = 0;
+    } else if (ac > 0 && HEYHO(c)->mPos.y > -0x20000) {
+        HEYHO(c)->mVel.x = -ac;
+        HEYHO(c)->mVel.y = 0;
     }
     AddVec3((struct Vector3*)(c + 0x9c), (struct Vector3*)(c + 0xa8), (struct Vector3*)(c + 0x9c));
-    if (*(int*)(c + 0xa8) > 0)
+    if (HEYHO(c)->mVel.x > 0)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
-
 }
 }
 
-/* ---- Heyho_StartMotion1 ---- */
+/* ---- Heyho_StartMotionChase ---- */
 namespace n020c5370 {
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern int pmf_Heyho_Motion1[];
+extern int pmf_Heyho_MotionChase[];
 
 struct W2 { int w[2]; };
 
-void Heyho_StartMotion1(char *c)
-{
+void Heyho_StartMotionChase(char *c) {
     unsigned int r;
-    *(short *)(c + 0xe6) = 0;
+    HEYHO(c)->mLean = 0;
     r = (unsigned int)RandomIntInternal(&data_0209e650);
     r &= 0x7fffffff;
-    *(short *)(c + 0xec) = (short)(((int)((r >> 0x13) * 0x2d) >> 0xc) + 0xf);
-    *(int *)(c + 0xb4) = *(int *)(c + 0x9c);
-    *(int *)(c + 0xb8) = *(int *)(c + 0xa0);
-    *(int *)(c + 0xbc) = *(int *)(c + 0xa4);
-    *(int *)(c + 0xa8) = *(int *)(c + 0x4);
-    *(int *)(c + 0xac) = *(int *)(c + 0x8);
-    *(int *)(c + 0xb0) = *(int *)(c + 0xc);
-    *(struct W2 *)(c + 0x30) = *(struct W2 *)pmf_Heyho_Motion1;
+    HEYHO(c)->mDelay = (short)(((int)((r >> 0x13) * 0x2d) >> 0xc) + 0xf);
+    *(int *)(c + 0xb4) = HEYHO(c)->mPos.x;
+    *(int *)(c + 0xb8) = HEYHO(c)->mPos.y;
+    *(int *)(c + 0xbc) = HEYHO(c)->mPos.z;
+    HEYHO(c)->mVel.x = HEYHO(c)->mStartVel.x;
+    HEYHO(c)->mVel.y = HEYHO(c)->mStartVel.y;
+    HEYHO(c)->mVel.z = HEYHO(c)->mStartVel.z;
+    *(struct W2 *)(c + 0x30) = *(struct W2 *)pmf_Heyho_MotionChase;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion1 ---- */
+/* ---- Heyho_MotionChase ---- */
 bool ApproachLinear(short &value, short target, short step);
 namespace n020c4fa4 {
 
@@ -1303,11 +1335,10 @@ extern int LenVec3(Vec3 *v);
 extern int DotVec3(Vec3 *a, Vec3 *b);
 extern void Heyho_CheckHitB(char *c);
 extern int data_0209e650;
-extern VB *data_ov006_021403f4[];
+extern VB *sJumpAdapters[];
 }
 
-extern "C" void Heyho_Motion1(char *c)
-{
+extern "C" void Heyho_MotionChase(char *c) {
     VB *best;
     Vec3 bp;
     Vec3 op;
@@ -1324,34 +1355,35 @@ extern "C" void Heyho_Motion1(char *c)
     int bm, i, ra, rb;
 
     if (*(int *)(c + 0xe0) != 0) {
-        _Z14ApproachLinearRiii((int *)(c + 0xb4), *(int *)(c + 0x9c), 0x1000);
-        _Z14ApproachLinearRiii((int *)(c + 0xb8), *(int *)(c + 0xa0), 0x1000);
+        _Z14ApproachLinearRiii((int *)(c + 0xb4), HEYHO(c)->mPos.x, 0x1000);
+        _Z14ApproachLinearRiii((int *)(c + 0xb8), HEYHO(c)->mPos.y, 0x1000);
     }
     {
-        int t = *(int *)(c + 0xa8);
+        int t = HEYHO(c)->mVel.x;
         if (t < 0) t = -t;
         ra = _Z14ApproachLinearRiii((int *)(c + 0x9c), *(int *)(c + 0xb4), t);
     }
     {
-        int t = *(int *)(c + 0xac);
+        int t = HEYHO(c)->mVel.y;
         if (t < 0) t = -t;
         rb = _Z14ApproachLinearRiii((int *)(c + 0xa0), *(int *)(c + 0xb8), t);
     }
-    if (ra != 0) *(int *)(c + 0xa8) = 0;
-    if (rb != 0) *(int *)(c + 0xac) = 0;
-    if (ra != 0 && rb != 0
-        && ApproachLinear(*(short *)(c + 0xe6), 0, 0x200) != 0
-        && _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1) != 0) {
+    if (ra != 0)
+        HEYHO(c)->mVel.x = 0;
+    if (rb != 0)
+        HEYHO(c)->mVel.y = 0;
+    if (ra != 0 && rb != 0 && ApproachLinear(HEYHO(c)->mLean, 0, 0x200) != 0 &&
+        _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1) != 0) {
         best = 0;
         bm = 0x20000;
         for (i = 0; i < 3; i++) {
-            if (data_ov006_021403f4[i]->m2() != 0) {
+            if (sJumpAdapters[i]->m2() != 0) {
                 int *v;
                 int dot;
-                v = data_ov006_021403f4[i]->m0();
+                v = sJumpAdapters[i]->m0();
                 op.x = v[0]; op.y = v[1]; op.z = v[2];
                 Vec3_Sub(&delta, (Vec3 *)(c + 0x9c), &op);
-                v = data_ov006_021403f4[i]->m1();
+                v = sJumpAdapters[i]->m1();
                 nrm.x = v[0]; nrm.y = v[1]; nrm.z = v[2];
                 if (NormalizeVec3IfNonZero(&nrm) != 0) {
                     dot = DotVec3(&nrm, &delta);
@@ -1362,7 +1394,7 @@ extern "C" void Heyho_Motion1(char *c)
                         cand.x = proj.x; cand.y = proj.y; cand.z = proj.z;
                         d = Vec3_Dist((Vec3 *)(c + 0x9c), &cand);
                         if (d < bm) {
-                            best = data_ov006_021403f4[i];
+                            best = sJumpAdapters[i];
                             bp = cand;
                             bm = d;
                         }
@@ -1398,46 +1430,46 @@ extern "C" void Heyho_Motion1(char *c)
                 len = LenVec3((Vec3 *)(c + 4));
                 if (NormalizeVec3IfNonZero(&diff) != 0) {
                     Vec3_MulScalar(&vel, &diff, len);
-                    *(int *)(c + 0xa8) = vel.x;
-                    *(int *)(c + 0xac) = vel.y;
-                    *(int *)(c + 0xb0) = vel.z;
+                    HEYHO(c)->mVel.x = vel.x;
+                    HEYHO(c)->mVel.y = vel.y;
+                    HEYHO(c)->mVel.z = vel.z;
                 } else {
                     int w = (int)(((long long)len * 0xb50 + 0x800) >> 12);
-                    *(int *)(c + 0xa8) = w;
-                    *(int *)(c + 0xac) = w;
+                    HEYHO(c)->mVel.x = w;
+                    HEYHO(c)->mVel.y = w;
                 }
             }
             {
                 int rr = RandomIntInternal(&data_0209e650) & 0x7fffffff;
-                *(short *)(c + 0xec) = (short)(((int)((unsigned int)rr >> 0x13) * 0x2d >> 12) + 0xf);
+                HEYHO(c)->mDelay = (short)(((int)((unsigned int)rr >> 0x13) * 0x2d >> 12) + 0xf);
             }
         }
     } else {
-        int df = *(int *)(c + 0xb4) - *(int *)(c + 0x9c);
-        if (df > 0) ApproachLinear(*(short *)(c + 0xe6), 0x3000, 0x200);
-        else if (df < 0) ApproachLinear(*(short *)(c + 0xe6), -0x3000, 0x200);
+        int df = *(int *)(c + 0xb4) - HEYHO(c)->mPos.x;
+        if (df > 0)
+            ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
+        else if (df < 0)
+            ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
     }
     Heyho_CheckHitB(c);
 }
-
 }
 
-/* ---- Heyho_StartMotion11 ---- */
+/* ---- Heyho_StartMotionHitSpin ---- */
 namespace n020c4f68 {
 extern "C" {
 struct S{int w[2];};
-extern struct S pmf_Heyho_Motion11;
+extern struct S pmf_Heyho_MotionHitSpin;
 extern void D3D_PlaySeAtX(int a, int b);
-void Heyho_StartMotion11(int *c){
-  *(short*)((char*)c+0xea)=0;
-  D3D_PlaySeAtX(0x1c8, *(int*)((char*)c+0x9c));
-  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion11;
+void Heyho_StartMotionHitSpin(int *c) {
+    *(short *)((char *)c + 0xea) = 0;
+    D3D_PlaySeAtX(0x1c8, *(int *)((char *)c + 0x9c));
+    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionHitSpin;
+}
+}
 }
 
-}
-}
-
-/* ---- Heyho_Motion11 ---- */
+/* ---- Heyho_MotionHitSpin ---- */
 namespace n020c4e8c {
 extern "C" {
 #define AT(p, off) ((void*)(int)((char*)(p) + (off)))
@@ -1445,8 +1477,8 @@ int D3D_PlaySeAtX(int a, int b);
 void Heyho_Settle(char* c);
 extern short data_02082214[];
 
-void Heyho_Motion11(char* c) {
-    if (*(short*)(c + 0xea) < 0x4000) {
+void Heyho_MotionHitSpin(char *c) {
+    if (HEYHO(c)->mPhase < 0x4000) {
         short* p = (short*)AT(c, 0xea);
         short* tbl = data_02082214;
         int ang, idx, idx1, r0;
@@ -1455,15 +1487,15 @@ void Heyho_Motion11(char* c) {
         idx = ang * 2;
         idx1 = idx + 1;
         r0 = (int)(((long long)((tbl[idx] >> 1) + 0x1000) * (long long)0x1400 + 0x800) >> 0xc);
-        *(int*)(c + 0xcc) = r0;
-        *(int*)(c + 0xd0) = (int)(((long long)((tbl[idx1] >> 1) + 0x800) * (long long)0x1400 + 0x800) >> 0xc);
-        *(int*)(c + 0xd4) = r0;
+        HEYHO(c)->mScale.x = r0;
+        HEYHO(c)->mScale.y =
+            (int)(((long long)((tbl[idx1] >> 1) + 0x800) * (long long)0x1400 + 0x800) >> 0xc);
+        HEYHO(c)->mScale.z = r0;
         return;
     }
-    D3D_PlaySeAtX(0x1c7, *(int*)(c + 0x9c));
+    D3D_PlaySeAtX(0x1c7, HEYHO(c)->mPos.x);
     Heyho_Settle(c);
 }
-
 }
 }
 
@@ -1479,10 +1511,10 @@ extern void Jump2Popup_Spawn(int a, int b, int c);
 extern void Heyho_SetIdle(char* p);
 
 extern int data_ov006_02140304[];
-extern int data_ov006_02140308;
+extern int sJumpComboCount;
 extern int data_ov006_02140314;
-extern void* data_ov006_02141a50;
-extern void* data_ov006_02141a40;
+extern void *sMgSubCamera;
+extern void *sMgMainCamera;
 
 void Heyho_Settle(char* c)
 {
@@ -1491,26 +1523,26 @@ void Heyho_Settle(char* c)
     int v0, v1;
     int t;
 
-    a = _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x122,
-        *(int*)(c + 0x9c) << 3, *(int*)(c + 0xa0) << 3, *(int*)(c + 0xa4) << 3);
-    b = _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x123,
-        *(int*)(c + 0x9c) << 3, *(int*)(c + 0xa0) << 3, *(int*)(c + 0xa4) << 3);
+    a = _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+        0x122, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3, HEYHO(c)->mPos.z << 3);
+    b = _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+        0x123, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3, HEYHO(c)->mPos.z << 3);
     t = (int)(*(int*)(c + 0xd8) << 0x1c) >> 0x10;
     if (a) *(int*)((char*)a + 0x50) = t;
     if (b) *(int*)((char*)a + 0x50) = t;
 
     _Z14ApproachLinearRiii(data_ov006_02140304, 0, 1);
-    _Z14ApproachLinearRiii(&data_ov006_02140308, 0x270f, 1);
+    _Z14ApproachLinearRiii(&sJumpComboCount, 0x270f, 1);
 
     if (data_ov006_02140314 != 0) {
-        if (*(int*)(c + 0xa0) > 0) {
-            Camera_ProjectToScreen(data_ov006_02141a50, (void*)(c + 0x9c), &v0, &v1);
+        if (HEYHO(c)->mPos.y > 0) {
+            Camera_ProjectToScreen(sMgSubCamera, (void *)(c + 0x9c), &v0, &v1);
             v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
         } else {
-            Camera_ProjectToScreen(data_ov006_02141a40, (void*)(c + 0x9c), &v0, &v1);
+            Camera_ProjectToScreen(sMgMainCamera, (void *)(c + 0x9c), &v0, &v1);
         }
         v1 = v1 - 0x20;
-        Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)data_ov006_02140308);
+        Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)sJumpComboCount);
     }
 
     Heyho_SetIdle(c);
@@ -1581,7 +1613,7 @@ extern "C" void Heyho_Draw(int this_) {
         if (((volatile int*)this_)[0xc] == 0)
             return;
     }
-    Vec3_MulScalar(&v, (Vector3*)(this_ + 0xcc), *(int*)(this_ + 0xd8));
+    Vec3_MulScalar(&v, &HEYHO(this_)->mScale, *(int *)(this_ + 0xd8));
     Sub *s = (Sub*)(this_ + 0x38);
     s->m5(&v);
 }
@@ -1596,8 +1628,8 @@ extern struct Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3* m, short angY);
 void Heyho_UpdateMatrix(char* c) {
-    Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x9c), *(int*)(c+0xa0), *(int*)(c+0xa4));
-    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(short*)(c+0xe6));
+    Matrix4x3_FromTranslation(&data_020a0e68, HEYHO(c)->mPos.x, HEYHO(c)->mPos.y, HEYHO(c)->mPos.z);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, HEYHO(c)->mLean);
     *(struct Matrix4x3*)(c+0x54) = data_020a0e68;
 }
 
@@ -1623,11 +1655,11 @@ extern void Vec3_Add(Vec3* out, Vec3* a, Vec3* b);
 extern int LenVec3(Vec3* v);
 extern int DotVec3(Vec3* a, Vec3* b);
 extern int NormalizeVec3IfNonZero(Vec3* v);
-extern void Heyho_StartMotion11(struct Self* self);
-extern char* data_ov006_021403f4[];
+extern void Heyho_StartMotionHitSpin(struct Self *self);
+extern char *sJumpAdapters[];
 
-#define O  (data_ov006_021403f4[i])
-#define OM (((char* volatile*)data_ov006_021403f4)[i])
+#define O  (sJumpAdapters[i])
+#define OM (((char* volatile*)sJumpAdapters)[i])
 
 void Heyho_CheckHitB(struct Self* self)
 {
@@ -1663,7 +1695,7 @@ void Heyho_CheckHitB(struct Self* self)
             *(int*)(O + 4) = self->pos.x;
             *(int*)(O + 8) = self->pos.y;
             *(int*)(O + 0xc) = self->pos.z;
-            Heyho_StartMotion11(self);
+            Heyho_StartMotionHitSpin(self);
         }
 
         d.x = 0;
@@ -1674,7 +1706,7 @@ void Heyho_CheckHitB(struct Self* self)
             *(int*)(O + 4) = self->pos.x;
             *(int*)(O + 8) = self->pos.y;
             *(int*)(O + 0xc) = self->pos.z;
-            Heyho_StartMotion11(self);
+            Heyho_StartMotionHitSpin(self);
             return;
         } else {
             *(short*)(OM + 0x10) = 2;
@@ -1714,13 +1746,13 @@ typedef struct Self {
     int speed;      /* 0xd8 */
 } Self;
 
-extern Obj *data_ov006_021403f4[3];
+extern Obj *sJumpAdapters[3];
 extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern Fix12 DotVec3(const Vec3 *a, const Vec3 *b);
 extern int LenVec3(Vec3 *v);
 extern int NormalizeVec3IfNonZero(Vec3 *v);
-extern void Heyho_StartMotion11(Self *self);
+extern void Heyho_StartMotionHitSpin(Self *self);
 
 void Heyho_CheckHitA(Self *self)
 {
@@ -1732,10 +1764,10 @@ void Heyho_CheckHitA(Self *self)
         Vec3 *p, *q;
         Obj *o;
 
-        if (data_ov006_021403f4[i]->vt->f2(data_ov006_021403f4[i]) == 0)
+        if (sJumpAdapters[i]->vt->f2(sJumpAdapters[i]) == 0)
             continue;
 
-        p = data_ov006_021403f4[i]->vt->f0(data_ov006_021403f4[i]);
+        p = sJumpAdapters[i]->vt->f0(sJumpAdapters[i]);
         Vec3_Sub(&disp, p, &self->pos);
 
         disp.y -= thresh >> 1;
@@ -1753,7 +1785,7 @@ void Heyho_CheckHitA(Self *self)
                 disp.x = 0;
         }
 
-        q = data_ov006_021403f4[i]->vt->f1(data_ov006_021403f4[i]);
+        q = sJumpAdapters[i]->vt->f1(sJumpAdapters[i]);
         Vec3_Sub(&rel, q, &self->vel);
         Vec3_Add(&sum, &disp, &rel);
 
@@ -1761,12 +1793,12 @@ void Heyho_CheckHitA(Self *self)
             continue;
 
         if (NormalizeVec3IfNonZero(&disp) == 0) {
-            data_ov006_021403f4[i]->flag = 1;
-            o = data_ov006_021403f4[i];
+            sJumpAdapters[i]->flag = 1;
+            o = sJumpAdapters[i];
             o->vec.x = self->pos.x;
             o->vec.y = self->pos.y;
             o->vec.z = self->pos.z;
-            Heyho_StartMotion11(self);
+            Heyho_StartMotionHitSpin(self);
         }
 
         up.x = 0;
@@ -1778,12 +1810,12 @@ void Heyho_CheckHitA(Self *self)
         if (rel.y >= 0)
             continue;
 
-        data_ov006_021403f4[i]->flag = 1;
-        o = data_ov006_021403f4[i];
+        sJumpAdapters[i]->flag = 1;
+        o = sJumpAdapters[i];
         o->vec.x = self->pos.x;
         o->vec.y = self->pos.y;
         o->vec.z = self->pos.z;
-        Heyho_StartMotion11(self);
+        Heyho_StartMotionHitSpin(self);
         return;
     }
 }
@@ -1803,14 +1835,14 @@ typedef struct dActor_c {
     short fE6;                          /* 0xe6 */
 } dActor_c;
 
-extern UID pmf_Heyho_Motion13;
-extern UID pmf_Heyho_Motion1_2;
+extern UID pmf_Heyho_MotionLeave;
+extern UID pmf_Heyho_MotionChase_2;
 
 int Heyho_IsChasing(dActor_c *a)
 {
     int result = 0;
     UID *p = (UID *)(int)(&a->id);
-    UID *c = (UID *)(int)(&pmf_Heyho_Motion13);
+    UID *c = (UID *)(int)(&pmf_Heyho_MotionLeave);
     int neq = 1;
     if (p->low == c->low) {
         if (p->high == c->high || a->id.low == 0)
@@ -1820,7 +1852,7 @@ int Heyho_IsChasing(dActor_c *a)
         int flag = 1;
         int neq2 = flag;
         UID *q = (UID *)(int)((long long)(unsigned int)&a->id);
-        UID *c2 = (UID *)(int)(&pmf_Heyho_Motion1_2);
+        UID *c2 = (UID *)(int)(&pmf_Heyho_MotionChase_2);
         if (q->low == c2->low) {
             if (q->high == c2->high || a->id.low == 0)
                 neq2 = 0;
@@ -1842,27 +1874,27 @@ int Heyho_IsChasing(dActor_c *a)
 namespace n020c4684 {
 extern "C" {
 extern int Heyho_LoadResources(char *p);
-extern int data_ov006_02140328;
+extern int sHeyhoCount;
 extern int data_ov006_02140304;
-extern char *data_ov006_02140324;
+extern char *sHeyhos;
 extern int data_ov006_02140314;
 int Heyho_InitPool(char *ptr, int n);
 int Heyho_InitPool(char *ptr, int n){
     int i;
     int off;
     data_ov006_02140314 = 0;
-    data_ov006_02140328 = n;
+    sHeyhoCount = n;
     data_ov006_02140304 = n;
-    data_ov006_02140324 = ptr;
+    sHeyhos = ptr;
     if (n > 0) {
         i = 0;
         off = 0;
         do {
-            if (Heyho_LoadResources(data_ov006_02140324 + off) == 0)
+            if (Heyho_LoadResources(sHeyhos + off) == 0)
                 return 0;
             i++;
             off += 0xf0;
-        } while (i < data_ov006_02140328);
+        } while (i < sHeyhoCount);
     }
     return 1;
 }
@@ -1875,16 +1907,16 @@ namespace n020c44b4 {
 extern "C" {
 extern void *data_ov006_021402fc;
 extern int data_ov006_02140304;
-extern int data_ov006_02140308;
+extern int sJumpComboCount;
 extern int data_ov006_0214031c;
-extern char *data_ov006_02140324;
-extern int data_ov006_02140328;
+extern char *sHeyhos;
+extern int sHeyhoCount;
 extern int data_ov006_021403b8[];
 extern int data_0209e650;
 extern char data_ov006_0212d560[];
 extern char data_ov006_0212c9f0[];
 
-extern void Heyho_StartMotion3(char *dst, char *src);
+extern void Heyho_StartMotionFlyIn(char *dst, char *src);
 extern void Heyho_UpdateMatrix(char *c);
 extern int RandomIntInternal(int *seed);
 
@@ -1906,11 +1938,11 @@ void Heyho_SpawnAll(void *arg0, int arg1)
     char *base;
     int t;
 
-    count = data_ov006_02140328;
+    count = sHeyhoCount;
     data_ov006_0214031c = arg1;
     data_ov006_021402fc = arg0;
     data_ov006_02140304 = count;
-    data_ov006_02140308 = 0;
+    sJumpComboCount = 0;
     if (count <= 0)
         return;
 
@@ -1925,12 +1957,11 @@ void Heyho_SpawnAll(void *arg0, int arg1)
 
     do {
         if (sl < 3) {
-            base = data_ov006_02140324 + r8;
+            base = sHeyhos + r8;
             *(short *)(base + 0xea) = (short)sp8;
-            Heyho_StartMotion3(
-                data_ov006_02140324 + r8,
-                data_ov006_0212d560 + data_ov006_0214031c * 0x90 + sp4);
-            Heyho_UpdateMatrix(data_ov006_02140324 + r8);
+            Heyho_StartMotionFlyIn(sHeyhos + r8,
+                                   data_ov006_0212d560 + data_ov006_0214031c * 0x90 + sp4);
+            Heyho_UpdateMatrix(sHeyhos + r8);
         } else {
             t = RandomIntInternal(seed) & 0x7fffffff;
             t = (int)((unsigned)t >> 0x13);
@@ -1955,17 +1986,15 @@ void Heyho_SpawnAll(void *arg0, int arg1)
                 } while (r1 < r6);
             }
             data_ov006_021403b8[sl - 3] = sb;
-            base = data_ov006_02140324 + r8;
+            base = sHeyhos + r8;
             *(short *)(base + 0xea) = (short)sp10;
-            Heyho_StartMotion3(
-                data_ov006_02140324 + r8,
-                data_ov006_0212c9f0 + sb * 0xc0 + sp0 * 0x30);
-            Heyho_UpdateMatrix(data_ov006_02140324 + r8);
+            Heyho_StartMotionFlyIn(sHeyhos + r8, data_ov006_0212c9f0 + sb * 0xc0 + sp0 * 0x30);
+            Heyho_UpdateMatrix(sHeyhos + r8);
         }
         sp4 = sp4 + 0x30;
         r8 = r8 + 0xf0;
         sl = sl + 1;
-    } while (sl < data_ov006_02140328);
+    } while (sl < sHeyhoCount);
 }
 
 }
@@ -1985,8 +2014,8 @@ struct Obj {
     char pade4[0xf0 - 0xe4];
 };
 
-extern struct Obj* data_ov006_02140324;
-extern int data_ov006_02140328;
+extern struct Obj *sHeyhos;
+extern int sHeyhoCount;
 
 extern void Heyho_Update(struct Obj* o);
 extern int Heyho_IsChasing(struct Obj* o);
@@ -2007,20 +2036,20 @@ void Heyho_SeparateAll(void)
     int i, j, k, t;
     Vec3* ai;
 
-    for (i = 0; i < data_ov006_02140328; i++) {
-        Heyho_Update(&data_ov006_02140324[i]);
+    for (i = 0; i < sHeyhoCount; i++) {
+        Heyho_Update(&sHeyhos[i]);
     }
-    for (k = 0; k < data_ov006_02140328; k++) {
-        data_ov006_02140324[k].e0 = 0;
+    for (k = 0; k < sHeyhoCount; k++) {
+        sHeyhos[k].e0 = 0;
     }
-    for (t = 0; t < data_ov006_02140328; t++) {
-        if (Heyho_IsChasing(&data_ov006_02140324[t]) != 0) {
-            oi = &data_ov006_02140324[t];
+    for (t = 0; t < sHeyhoCount; t++) {
+        if (Heyho_IsChasing(&sHeyhos[t]) != 0) {
+            oi = &sHeyhos[t];
             pi = &oi->pos;
             ai = &oi->vel;
-            for (j = t + 1; j < data_ov006_02140328; j++) {
-                if (Heyho_IsChasing(&data_ov006_02140324[j]) != 0) {
-                    oj = (struct Obj*)((long long)(int)&data_ov006_02140324[j]);
+            for (j = t + 1; j < sHeyhoCount; j++) {
+                if (Heyho_IsChasing(&sHeyhos[j]) != 0) {
+                    oj = (struct Obj *)((long long)(int)&sHeyhos[j]);
                     pj = &oj->pos;
                     Vec3_Sub(&v1, pi, pj);
                     Vec3_Sub(&v2, ai, &oj->vel);
@@ -2029,8 +2058,8 @@ void Heyho_SeparateAll(void)
                     if (NormalizeVec3IfNonZero(&v1) == 0) continue;
                     AddVec3(pi, &v1, pi);
                     SubVec3(pj, &v1, pj);
-                    data_ov006_02140324[t].e0 = 1;
-                    data_ov006_02140324[j].e0 = 1;
+                    sHeyhos[t].e0 = 1;
+                    sHeyhos[j].e0 = 1;
                 }
             }
         }
@@ -2044,17 +2073,17 @@ void Heyho_SeparateAll(void)
 namespace n020c425c {
 extern "C" {
 extern void Heyho_Draw(int);
-extern int data_ov006_02140328;
-extern int data_ov006_02140324;
+extern int sHeyhoCount;
+extern int sHeyhos;
 void Heyho_DrawAll(void){
   int i = 0;
-  if(data_ov006_02140328 > 0){
-    int off = 0;
-    do {
-      Heyho_Draw(data_ov006_02140324 + off);
-      i++;
-      off += 0xf0;
-    } while(i < data_ov006_02140328);
+  if (sHeyhoCount > 0) {
+      int off = 0;
+      do {
+          Heyho_Draw(sHeyhos + off);
+          i++;
+          off += 0xf0;
+      } while (i < sHeyhoCount);
   }
 }
 
@@ -2071,37 +2100,34 @@ typedef struct Ent {
     char _pad38[0xb8];
 } Ent;
 
-extern int data_ov006_02140328;
-extern Ent *data_ov006_02140324;
+extern int sHeyhoCount;
+extern Ent *sHeyhos;
 extern int data_ov006_0213afc8[2];
 extern char data_ov006_0212ccf0;
 extern int data_ov006_02140304;
 extern int data_0209e650;
 
 extern int RandomIntInternal(int *seed);
-extern void Heyho_StartMotion8(char *a, char *b);
+extern void Heyho_StartMotionRegroup(char *a, char *b);
 extern void _Z14ApproachLinearRiii(int *x, int target, int step);
 
 void Heyho_SettleAll(void)
 {
     int i;
-    for (i = 0; i < data_ov006_02140328; i++) {
-        int *v = (int *)(&data_ov006_02140324[i].x);
+    for (i = 0; i < sHeyhoCount; i++) {
+        int *v = (int *)(&sHeyhos[i].x);
         volatile int *q = (volatile int *)data_ov006_0213afc8;
-        if (v[0] != data_ov006_0213afc8[0]
-            || (v[1] != q[1] && data_ov006_02140324[i].x != 0))
+        if (v[0] != data_ov006_0213afc8[0] || (v[1] != q[1] && sHeyhos[i].x != 0))
             continue;
         {
             int r1 = RandomIntInternal(&data_0209e650);
             int r2 = RandomIntInternal(&data_0209e650);
             unsigned v0 = (unsigned)(r1 & 0x7fffffff) >> 0x13;
             unsigned u0 = (unsigned)(r2 & 0x7fffffff) >> 0x13;
-            Heyho_StartMotion8(
-                (char *)data_ov006_02140324 + i * 0xf0,
-                &data_ov006_0212ccf0
-                    + (((int)(v0 * 9)) >> 0xc) * 0xf0
-                    + (((int)(u0 * 5)) >> 0xc) * 0x30);
-            _Z14ApproachLinearRiii(&data_ov006_02140304, data_ov006_02140328, 1);
+            Heyho_StartMotionRegroup((char *)sHeyhos + i * 0xf0,
+                                     &data_ov006_0212ccf0 + (((int)(v0 * 9)) >> 0xc) * 0xf0 +
+                                         (((int)(u0 * 5)) >> 0xc) * 0x30);
+            _Z14ApproachLinearRiii(&data_ov006_02140304, sHeyhoCount, 1);
             return;
         }
     }
@@ -2114,17 +2140,17 @@ void Heyho_SettleAll(void)
 namespace n020c40e8 {
 extern "C" {
 extern void Heyho_React(int);
-extern int data_ov006_02140328;
-extern int data_ov006_02140324;
+extern int sHeyhoCount;
+extern int sHeyhos;
 void Heyho_ReactAll(void){
   int i = 0;
-  if(data_ov006_02140328 > 0){
-    int off = 0;
-    do {
-      Heyho_React(data_ov006_02140324 + off);
-      i++;
-      off += 0xf0;
-    } while(i < data_ov006_02140328);
+  if (sHeyhoCount > 0) {
+      int off = 0;
+      do {
+          Heyho_React(sHeyhos + off);
+          i++;
+          off += 0xf0;
+      } while (i < sHeyhoCount);
   }
 }
 
@@ -2134,7 +2160,7 @@ void Heyho_ReactAll(void){
 /* ---- Heyho_AllIdle ---- */
 namespace n020c4060 {
 extern "C" {
-// Scans data_ov006_02140328 entries (stride 0xf0) from data_ov006_02140324:
+// Scans sHeyhoCount entries (stride 0xf0) from sHeyhos:
 // returns 0 if any entry's pair at +0x30 mismatches pmf_Heyho_StateIdle_4
 // (y-mismatch tolerated when x is 0), else 1. Leaf, no callees.
 typedef struct Ent {
@@ -2144,17 +2170,16 @@ typedef struct Ent {
     char _pad38[0xb8]; // 0x38 (stride 0xf0)
 } Ent;
 
-extern int data_ov006_02140328;
-extern Ent* data_ov006_02140324;
+extern int sHeyhoCount;
+extern Ent *sHeyhos;
 extern int pmf_Heyho_StateIdle_4[2];
 
 int Heyho_AllIdle(void) {
     int i;
-    for (i = 0; i < data_ov006_02140328; i++) {
-        int* v = (int*)(&data_ov006_02140324[i].x);
+    for (i = 0; i < sHeyhoCount; i++) {
+        int *v = (int *)(&sHeyhos[i].x);
         volatile int* q = (volatile int*)pmf_Heyho_StateIdle_4;
-        if (v[0] != pmf_Heyho_StateIdle_4[0]
-            || (v[1] != q[1] && data_ov006_02140324[i].x != 0))
+        if (v[0] != pmf_Heyho_StateIdle_4[0] || (v[1] != q[1] && sHeyhos[i].x != 0))
             return 0;
     }
     return 1;
@@ -2171,5 +2196,5 @@ dMg3DHeyhoObjAdapter_c::dMg3DHeyhoObjAdapter_c() : mCommand(0)
 /* Definitions stay after the last .text function so they do not insert
  * a function into the reverse-emitted .text run. Construction order is
  * the model handle, then the animation handle. */
-HeyhoAdapterModelFilePtr data_ov006_02140330(0x217);
-HeyhoAdapterAnimationFileHandle data_ov006_02140338(0x218);
+HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile(0x217);
+HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile(0x218);

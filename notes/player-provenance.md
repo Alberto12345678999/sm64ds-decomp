@@ -319,7 +319,7 @@ Still `unk_` in daKpa_c, with the reason:
 | 0x174 | `mHomePosX` | `InitResources` copies `mPosX/Y/Z` into 0x174/0x178/0x17c, then raises the Y copy by `unk_184 >> 3`. Saved-at-spawn position with a vertical offset. |
 | 0x178 | `mHomePosY` | as above; it is the one the `>> 3` term is added to. |
 | 0x17c | `mHomePosZ` | as above. |
-| 0x1a8 | `mSlotIndex` | `InitResources`: `mSlotIndex = AddSpikeBomb(this)`, and `src/AddSpikeBomb.c` returns the index of the first free slot in the eight-entry global [data_0209f3a4](../config/arm9/symbols.txt) (or -1). `src/ClearSpikeBomb.c` takes that index back. |
+| 0x1a8 | `mSlotIndex` | `InitResources`: `mSlotIndex = AddSpikeBomb(this)`, and `AddSpikeBomb` returns the index of the first free slot in the eight-entry global [data_0209f3a4](../config/arm9/symbols.txt) (or -1). `ClearSpikeBomb` takes that index back (both in `src/game/stages/d_s_stage_methods.cpp`). |
 | 0x1ae | `mOpacity` | `InitResources` sets 0xff; `daKirai_c::Render` returns early on `< 8`. Full alpha at spawn plus a "too faint to bother drawing" guard is an opacity byte, and 0xff is not a plausible state id or counter. |
 
 Left `unk_` in daKirai_c: **0x180** (`Vec3_HorzLen` of the spawn position, i.e. a

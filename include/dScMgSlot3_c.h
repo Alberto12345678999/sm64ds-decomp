@@ -17,7 +17,7 @@
  * this header claimed: a THREE-ELEMENT s32 array sits at 0x4fe4, indexed by
  * five of this class's methods (the legacy Render's local
  * `struct T4fe4 { char pad[0x4fe4]; int vals[3]; }` names it outright, and
- * InitResources, Slot3_State1, Slot3_State2 and
+ * InitResources, Slot3_StateSpin, Slot3_StateJudge and
  * Slot3_ReelDigits all index it as
  * `[i]` or `+ i*4`). It closes exactly on mStripSpan. Left opaque up to
  * there rather than guessed at, as dScMgCard_c.h leaves its own.
@@ -75,7 +75,7 @@ struct dScMgSlot3_c : dScMgSingle3DBase_c {
     s32 mReelWinPos[3];     /* 0x4ff4 -- read instead of mReelPos during the
                                state-6 win-line pass */
     s32 mState;             /* 0x5000 -- index into the pointer-to-member table
-                               data_ov006_02142bdc that Behavior dispatches */
+                               sSlot3StateTable that Behavior dispatches */
     s32 mDifficulty;        /* 0x5004 -- 0..5: +1 a win, 0 at game over;
                                sets the strip length and reel directions */
     u8  pad_5008[0x4];      /* 0x5008 */

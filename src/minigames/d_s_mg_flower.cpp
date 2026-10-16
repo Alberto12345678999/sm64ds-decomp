@@ -633,10 +633,10 @@ s32 dScMgFlower_c::InitResources()
     GXS::LoadOBJPltt((const void *)h, 0, 0x100);
     Ov004_Deallocate((void *)h);
 
-    data_ov004_020bc8a8 = 0x40;
-    data_ov004_020bc898 = 0xa0;
-    data_ov004_020bc86c = 0xc0;
-    data_ov004_020bc8a4 = 0xa0;
+    sMgPlayAgainX = 0x40;
+    sMgPlayAgainY = 0xa0;
+    sMgQuitX = 0xc0;
+    sMgQuitY = 0xa0;
 
     mWinStreak = 0;
     mLoseStreak = 0;

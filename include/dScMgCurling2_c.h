@@ -48,9 +48,9 @@ struct dScMgCurling2_piece {
     u16 countdown3;     /* 0x18 */
     u8  pad1a[2];       /* 0x1a */
     u8  updateEnable;   /* 0x1c */
-    u8  modeIndex;      /* 0x1d, into data_ov006_02141988 */
-    u8  xIndex;         /* 0x1e, into data_ov006_021419f8 or _021419b8 */
-    u8  yIndex;         /* 0x1f, into data_ov006_021419a0 */
+    u8 modeIndex;       /* 0x1d, into sCurling2StepModeTable */
+    u8 xIndex;          /* 0x1e, into sCurling2StepXTable or _021419b8 */
+    u8 yIndex;          /* 0x1f, into sCurling2StepYTable */
     u8  drawEnable;     /* 0x20 */
     u8  sprite0;        /* 0x21, into data_ov006_0213a5e0 */
     u8  sprite1;        /* 0x22 */
@@ -116,16 +116,16 @@ struct dScMgCurling2_c : dScMgBase_c {
      * Each name is derived from the byte the handler drives and from its index
      * in its own table, both read out of the cartridge:
      *
-     *   data_ov006_02141988 (+0x1d, the mode byte)
+     *   sCurling2StepModeTable (+0x1d, the mode byte)
      *     [0] PickStepMode   [1] StepXOnly   [2] StepXAndY
-     *   data_ov006_021419f8 (+0x1e, X increment, 8 a frame, +/-0x300)
+     *   sCurling2StepXTable (+0x1e, X increment, 8 a frame, +/-0x300)
      *     [0] StepXPick  [1] StepXPushPos  [2] StepXPushNeg  [3] StepXSettle
-     *   data_ov006_021419b8 (+0x1e, X increment, 0x20 a frame, +/-0x400)
+     *   sCurling2StepXFastTable (+0x1e, X increment, 0x20 a frame, +/-0x400)
      *     [0] StepXPickFast [1] StepXPushPosFast
      *     [2] StepXPushNegFast [3] StepXSettleFast
-     *   data_ov006_021419a0 (+0x1f, Y increment)
+     *   sCurling2StepYTable (+0x1f, Y increment)
      *     [0] StepYRestart   [1] StepYRampUp   [2] StepYRampDown
-     *   data_ov006_02141978 (the stylus drag)
+     *   sCurling2DragTable (the stylus drag)
      *     [0] DragBegin      [1] DragUpdate
      *
      * The index each handler writes back agrees with that layout in every case
@@ -161,8 +161,8 @@ struct dScMgCurling2_c : dScMgBase_c {
     void SpawnValue(int stone, int other);
 
     /* The rest of the class's members, proven the same way: the five
-     * Behavior-state handlers ride data_ov006_02141a18 on mState, the four
-     * stone-state handlers ride data_ov006_021419d8 on mStone[i].state, and
+     * Behavior-state handlers ride sCurling2BehaviorTable on mState, the four
+     * stone-state handlers ride sCurling2StoneTable on mStone[i].state, and
      * the remaining helpers take the object as their first argument. These
      * names are coined too; the ROM does not carry them. */
     void BeginRound();                 /* Behavior state 0 */
@@ -207,7 +207,7 @@ struct dScMgCurling2_c : dScMgBase_c {
     s32 bg0y;                         /* 0x4fd8 */
     u8 pad_4fdc[0x4];
     dScMgCurling2_value mValue[0x3c]; /* 0x4fe0 */
-    s32 mState;                       /* 0x5580, Behavior state, indexes data_ov006_02141a18 */
+    s32 mState;                       /* 0x5580, Behavior state, indexes sCurling2BehaviorTable */
     s32 mDragX;                       /* 0x5584, drag point x (fx32) */
     s32 mDragY;                       /* 0x5588, drag point y */
     s32 mGrabX;                       /* 0x558c, drag x + grab offset, latched at the grab */
@@ -223,7 +223,7 @@ struct dScMgCurling2_c : dScMgBase_c {
     u16 mThrowAngle;                  /* 0x55b2, throw angle, clamped to 0x9800..0xe800 */
     u16 mSpawnTimer;                  /* 0x55b4, counts down to the next stone */
     u16 mStateTimer;                  /* 0x55b6, state-entry countdown */
-    u8 mDragState;                    /* 0x55b8, drag-state index into data_ov006_02141978 */
+    u8 mDragState;                    /* 0x55b8, drag-state index into sCurling2DragTable */
     u8 mShowCursor;                   /* 0x55b9, DrawCursor draws while set */
     u8 thrown;                        /* 0x55ba, stones thrown this round (0..5) */
     u8 spawning;                      /* 0x55bb, a stone is queued to spawn */

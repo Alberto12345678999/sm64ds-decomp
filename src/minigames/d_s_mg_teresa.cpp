@@ -26,9 +26,9 @@
  * base chain.
  *
  * The four PMF state tables dispatch on this class: the big Boo's flight
- * at data_ov006_02142f18 (9 states by Boo::state), the reveal pair at
- * data_ov006_02142e88 (5 states by mReveal[0].state), the 16-Boo rows at
- * data_ov006_02142ed8 (8 states), and the scene table data_ov006_02142eb0
+ * at sTeresaBigBooStateTable (9 states by Boo::state), the reveal pair at
+ * sTeresaRevealStateTable (5 states by mReveal[0].state), the 16-Boo rows at
+ * sTeresaBooStateTable (8 states), and the scene table sTeresaSceneStateTable
  * (5 no-argument states by mSceneState). __sinit_ov006_02132f68 fills them
  * from the .data descriptor records at data_ov006_0213f8xx.
  *
@@ -38,14 +38,14 @@
 // leftovers:
 // - The 16 small Boos at 0x4660 are typed (dScMgTeresa_c::SmallBoo mBoos[16]).
 //   Their handlers use mBoos[i] where that measured identical; StepBoo,
-//   CountRubbedTiles, Boo_State7 and ResetRound's first loop keep their tuned
+//   CountRubbedTiles, Boo_StateFadeAway and ResetRound's first loop keep their tuned
 //   offset forms (the typed forms change code).
-// - mExclaims (0x48a0), mFoundMarks (0x4960) and mRisingIcons (0x4a60) are
+// - mExclaims (0x48a0), mVanishPuffs (0x4960) and mFoundNumbers (0x4a60) are
 //   typed; their Spawn/UpdateAll/DrawAll handlers read them by field.
 //   ResetRound still clears them by offset.
 // - mReveal[1] (0x4ba0) and mMarker (0x4bc0) are typed. The old 0x4bac
 //   "element pair" view started 0xc bytes into the reveal record, which is
-//   why its second element seemed to overlap the big Boo. Reveal_State1/4
+//   why its second element seemed to overlap the big Boo. Reveal_StateSlideIn/4
 //   keep their offset forms (typed forms change code). The big Boo at
 //   0x4bcc is typed through the local `struct Boo` below; the bytes at
 //   0x4c1b and 0x4c1f are still reached by offset.
@@ -91,18 +91,17 @@ typedef char Boo_size_must_be_0x1c[sizeof(struct Boo) == 0x1c ? 1 : -1];
 /* Each access is a fresh cast. A saved Boo* makes mwcc address every field
  * from 0x4bcc, and that is not the code in the ROM. */
 #define BOO(p) ((struct Boo *)((p) + 0x4bcc))
-/* BigBoo_State4's wait and BigBoo_State0's y/yVel are a raw
+/* BigBoo_StateOffscreen's wait and BigBoo_StateDropIn's y/yVel are a raw
  * base plus the field. Taking `&BOO(p)->member` shares one base and does
  * not match. */
 #define BOO_FIELD(p, member) ((p) + (0x4bcc + (int)&((struct Boo *)0)->member))
 
-
-/* Scene_State4's view of the ov004 score block at gMgScene
+/* Scene_StateResult's view of the ov004 score block at gMgScene
    (dScMgBase_c.h declares it void *): the current score at +0xb4 and the best
    at +0xb8. */
 struct ScoreView { unsigned char pad[0xb4]; int b4; int b8; };
 
-/* RisingIcon_SpawnForFound's `struct C`: a 0x24-stride row walk, no fields named. */
+/* FoundNumber_SpawnForFound's `struct C`: a 0x24-stride row walk, no fields named. */
 struct Row { char pad[0x24]; };
 struct RowArray { struct Row rows[1]; };
 
@@ -137,7 +136,7 @@ extern int   Mg_IsNewRecord(void);
 extern int   func_020126e8(int a);
 extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void  MultiStore16(u16 val, void *dst, int nbytes);
-/* Boo_State7 and 0211f224 pass `0x10 - alpha` as computed: the
+/* Boo_StateFadeAway and 0211f224 pass `0x10 - alpha` as computed: the
    cartridge does not narrow it to 16 bits at either call, which G2x.h's
    unsigned short parameters would. So those two call the mangled name. */
 extern void  _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *reg, int a, int b,
@@ -162,7 +161,7 @@ extern unsigned short data_ov006_0212efdc[];
 extern void          *data_ov006_02133a5c;
 extern void          *data_ov006_02134210[];
 extern int            data_ov006_02135fc8[];
-extern int            data_ov006_02137cd8[];
+extern int sMgDigitSprites[];
 extern void          *data_ov006_0213a5f4;
 extern struct OamAttr *data_ov006_0213a628[];
 extern int           *data_ov006_0213f9d0[];
@@ -176,44 +175,44 @@ extern short          data_02082214[];
 extern int            sMgTopScreenYOffset;
 
 /* The four pointer-to-member state tables. Pmf handlers take the Boo/slot
-   index; the scene table in data_ov006_02142eb0 takes none. */
+   index; the scene table in sTeresaSceneStateTable takes none. */
 typedef void (dScMgTeresa_c::*Pmf)(int);
 typedef void (dScMgTeresa_c::*Pmf0)();
 struct PmfEntry { Pmf0 pmf; };
 
-extern Pmf data_ov006_02142f18[];   /* big Boo flight states, by Boo::state */
-extern Pmf data_ov006_02142e88[];   /* reveal states, by mReveal[0].state */
-extern Pmf data_ov006_02142ed8[];   /* per-Boo states, one call per live row */
-extern PmfEntry data_ov006_02142eb0[]; /* scene states, by mSceneState */
+extern Pmf sTeresaBigBooStateTable[];     /* big Boo flight states, by Boo::state */
+extern Pmf sTeresaRevealStateTable[];     /* reveal states, by mReveal[0].state */
+extern Pmf sTeresaBooStateTable[];        /* per-Boo states, one call per live row */
+extern PmfEntry sTeresaSceneStateTable[]; /* scene states, by mSceneState */
 /* The ROM PMF constants the four state tables copy from (unlicensed .data),
  * grouped by destination table in retail copy order. */
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State0;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State1;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State2;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State3;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State4;
-extern Pmf pmf_dScMgTeresa_c_Boo_State0;
-extern Pmf pmf_dScMgTeresa_c_Boo_State1;
-extern Pmf pmf_dScMgTeresa_c_Boo_State2;
-extern Pmf pmf_dScMgTeresa_c_Boo_State3;
-extern Pmf pmf_dScMgTeresa_c_Boo_State4;
-extern Pmf pmf_dScMgTeresa_c_Boo_State5;
-extern Pmf pmf_dScMgTeresa_c_Boo_State6;
-extern Pmf pmf_dScMgTeresa_c_Boo_State7;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State0;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State1;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State2;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State3;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State4;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State0;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State1;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State2;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State3;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State4;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State5;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State6;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State7;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State8;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateInit;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateReveal;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StatePlay;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateRoundEnd;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateResult;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateAppear;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFly;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFadeOut;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateHidden;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateHiddenTimed;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFound;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFadeIn;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFadeAway;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateStart;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateSlideIn;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateAnimate;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateDipAndRise;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateFinish;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateDropIn;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateHover;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateFlyLeft;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateFlyRight;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateOffscreen;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateExit;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateRemove;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateGone;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateResult;
 
 }  /* extern "C" */
 
@@ -261,17 +260,14 @@ void dScMgTeresa_c::BigBoo_ShowResult()
     raw[0x4c1b] = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211cc90Ev
-void dScMgTeresa_c::func_ov006_0211cc90()
-{
+// @symbol _ZN13dScMgTeresa_c14BigBoo_SetDoneEv
+void dScMgTeresa_c::BigBoo_SetDone() {
     unsigned char *base = (unsigned char *)this;
     base += 0x4000;
     if (base[0xbe0] != 0) {
         base[0xbe5] = 1;
     }
 }
-
 
 // @symbol _ZN13dScMgTeresa_c11BigBoo_DrawEv
 /* decl_common.h declares this one with a `void *` parameter. */
@@ -292,9 +288,8 @@ void dScMgTeresa_c::BigBoo_Draw()
 
 
 #define FLAG  (*(u8*)((char*)raw + 0x4c1f))
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State8Ei
-void dScMgTeresa_c::BigBoo_State8(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c18BigBoo_StateResultEi
+void dScMgTeresa_c::BigBoo_StateResult(int idx) {
     void *raw = this;
     struct BooWalk *w = (struct BooWalk *)raw;
 
@@ -324,16 +319,11 @@ void dScMgTeresa_c::BigBoo_State8(int idx)
 }
 #undef FLAG
 
+// @symbol _ZN13dScMgTeresa_c16BigBoo_StateGoneEv
+void dScMgTeresa_c::BigBoo_StateGone() {}
 
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State7Ev
-void dScMgTeresa_c::BigBoo_State7()
-{
-}
-
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State6Ei
-void dScMgTeresa_c::BigBoo_State6(int index)
-{
+// @symbol _ZN13dScMgTeresa_c18BigBoo_StateRemoveEi
+void dScMgTeresa_c::BigBoo_StateRemove(int index) {
     struct BooWalk *base = (struct BooWalk *)this;
     void *data;
     base->boo[index].xVel = 0;
@@ -345,10 +335,8 @@ void dScMgTeresa_c::BigBoo_State6(int index)
     Deallocate(data);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State5Ei
-void dScMgTeresa_c::BigBoo_State5(int i)
-{
+// @symbol _ZN13dScMgTeresa_c16BigBoo_StateExitEi
+void dScMgTeresa_c::BigBoo_StateExit(int i) {
     char *c = (char *)this;
     struct BooWalk *w = (struct BooWalk *)c;
     unsigned short *p16 = &w->boo[i].frameTimer;
@@ -383,10 +371,8 @@ void dScMgTeresa_c::BigBoo_State5(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State4Ei
-void dScMgTeresa_c::BigBoo_State4(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c21BigBoo_StateOffscreenEi
+void dScMgTeresa_c::BigBoo_StateOffscreen(int idx) {
     char *raw = (char *)this;
   struct BooWalk *w = (struct BooWalk *)raw;
   int off = idx * 0x1c;
@@ -416,10 +402,8 @@ void dScMgTeresa_c::BigBoo_State4(int idx)
   w->boo[idx].state = 2;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State3Ei
-void dScMgTeresa_c::BigBoo_State3(int i)
-{
+// @symbol _ZN13dScMgTeresa_c20BigBoo_StateFlyRightEi
+void dScMgTeresa_c::BigBoo_StateFlyRight(int i) {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
     int v;
@@ -450,10 +434,8 @@ void dScMgTeresa_c::BigBoo_State3(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State2Ei
-void dScMgTeresa_c::BigBoo_State2(int i)
-{
+// @symbol _ZN13dScMgTeresa_c19BigBoo_StateFlyLeftEi
+void dScMgTeresa_c::BigBoo_StateFlyLeft(int i) {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
     int t;
@@ -491,10 +473,8 @@ void dScMgTeresa_c::BigBoo_State2(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State1Ei
-void dScMgTeresa_c::BigBoo_State1(int i)
-{
+// @symbol _ZN13dScMgTeresa_c17BigBoo_StateHoverEi
+void dScMgTeresa_c::BigBoo_StateHover(int i) {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
     unsigned char state = w->boo[i].frame;
@@ -539,10 +519,8 @@ void dScMgTeresa_c::BigBoo_State1(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State0Ei
-void dScMgTeresa_c::BigBoo_State0(int i)
-{
+// @symbol _ZN13dScMgTeresa_c18BigBoo_StateDropInEi
+void dScMgTeresa_c::BigBoo_StateDropIn(int i) {
     char *raw = (char *)this;
     int off = i * 0x1c;
     struct BooWalk *w = (struct BooWalk *)raw;
@@ -560,13 +538,12 @@ void dScMgTeresa_c::BigBoo_State0(int i)
     Mg_ShowBanner(0xc, 0x80, 0x40, 1, -1, 0xd);
 }
 
-
 // @symbol _ZN13dScMgTeresa_c13BigBoo_UpdateEv
 void dScMgTeresa_c::BigBoo_Update()
 {
     unsigned char *raw = (unsigned char *)this;
     if (BOO(raw)->active == 0) return;
-    (this->*data_ov006_02142f18[BOO(raw)->state])(0);
+    (this->*sTeresaBigBooStateTable[BOO(raw)->state])(0);
 }
 
 
@@ -602,26 +579,20 @@ void dScMgTeresa_c::BigBoo_Hide()
 void dScMgTeresa_c::StepBg3Scroll()
 {
     char *raw = (char *)this;
-    if (*(unsigned char *)(raw + 0x4c24) >= 8)
-    {
+    if (mBg3FlashStep >= 8) {
         return;
     }
     (*(unsigned short *)(raw + 0x4c18))++;
-    if (*(unsigned short *)(raw + 0x4c18) >= data_ov006_0212efdc[*(unsigned char *)(raw + 0x4c24)])
-    {
-        (*(unsigned char *)(raw + 0x4c24))++;
+    if (*(unsigned short *)(raw + 0x4c18) >= data_ov006_0212efdc[mBg3FlashStep]) {
+        (mBg3FlashStep)++;
         *(unsigned short *)(raw + 0x4c18) = 0;
-        if (*(unsigned char *)(raw + 0x4c24) & 1)
-        {
+        if (mBg3FlashStep & 1) {
             SetBg3Offset(0, 0);
-        }
-        else
-        {
+        } else {
             SetBg3Offset(0, 0x100);
         }
     }
-    if (*(unsigned char *)(raw + 0x4c24) >= 8)
-    {
+    if (mBg3FlashStep >= 8) {
         SetBg3Offset(0, 0);
     }
 }
@@ -640,7 +611,7 @@ void dScMgTeresa_c::Marker_Draw()
 
 
 // @symbol _ZN13dScMgTeresa_c13Marker_UpdateEv
-/* Empty. Scene_State1 calls it with the object. */
+/* Empty. Scene_StateReveal calls it with the object. */
 void dScMgTeresa_c::Marker_Update()
 {
 }
@@ -679,10 +650,8 @@ void dScMgTeresa_c::Reveal_Draw()
         mReveal[0].angle, -1);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13Reveal_State4Ei
-void dScMgTeresa_c::Reveal_State4(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c18Reveal_StateFinishEi
+void dScMgTeresa_c::Reveal_StateFinish(int idx) {
     char *raw = (char *)this;
     char *base = raw + (idx << 5);
     if (*(unsigned short*)(base + 0x4bb4) != 0) {
@@ -702,13 +671,11 @@ void dScMgTeresa_c::Reveal_State4(int idx)
     Sound::PlayBank2_2D(0x1f5);
 }
 
-
 #pragma push
 #pragma opt_common_subs off
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
-// @symbol _ZN13dScMgTeresa_c13Reveal_State3Ei
-void dScMgTeresa_c::Reveal_State3(int i)
-{
+// @symbol _ZN13dScMgTeresa_c22Reveal_StateDipAndRiseEi
+void dScMgTeresa_c::Reveal_StateDipAndRise(int i) {
     u8 flag;
 
     flag = mReveal[i].phase;
@@ -742,10 +709,8 @@ void dScMgTeresa_c::Reveal_State3(int i)
 #undef AT
 #pragma pop
 
-
-// @symbol _ZN13dScMgTeresa_c13Reveal_State2Ei
-void dScMgTeresa_c::Reveal_State2(int i)
-{
+// @symbol _ZN13dScMgTeresa_c19Reveal_StateAnimateEi
+void dScMgTeresa_c::Reveal_StateAnimate(int i) {
     mReveal[i].frameTimer++;
     if (mReveal[i].frameTimer < 8) return;
     mReveal[i].frameTimer = 0;
@@ -762,7 +727,6 @@ void dScMgTeresa_c::Reveal_State2(int i)
     }
 }
 
-
 #pragma push
 #pragma opt_common_subs off
 #define A16(off) (*(unsigned short *)(raw + (off) + i * 32))
@@ -771,9 +735,8 @@ void dScMgTeresa_c::Reveal_State2(int i)
 #define B16(off) (*(unsigned short *)(raw + i * 32 + (off)))
 #define B8(off)  (*(unsigned char  *)(raw + i * 32 + (off)))
 #define B32(off) (*(int            *)(raw + i * 32 + (off)))
-// @symbol _ZN13dScMgTeresa_c13Reveal_State1Ei
-void dScMgTeresa_c::Reveal_State1(int i)
-{
+// @symbol _ZN13dScMgTeresa_c19Reveal_StateSlideInEi
+void dScMgTeresa_c::Reveal_StateSlideIn(int i) {
     char *raw = (char *)this;
     A16(0x4bb2) += 1;
     if (B16(0x4bb2) >= 8) {
@@ -809,21 +772,18 @@ void dScMgTeresa_c::Reveal_State1(int i)
 #undef B32
 #pragma pop
 
-
-// @symbol _ZN13dScMgTeresa_c13Reveal_State0Ei
-void dScMgTeresa_c::Reveal_State0(int i)
-{
+// @symbol _ZN13dScMgTeresa_c17Reveal_StateStartEi
+void dScMgTeresa_c::Reveal_StateStart(int i) {
     mReveal[i].state = 1;
     mReveal[i].timer = 0x40;
     mReveal[i].vx = -0xb00;
 }
 
-
 // @symbol _ZN13dScMgTeresa_c13Reveal_UpdateEv
 void dScMgTeresa_c::Reveal_Update()
 {
     if (mReveal[0].active == 0) return;
-    (this->*data_ov006_02142e88[mReveal[0].state])(0);
+    (this->*sTeresaRevealStateTable[mReveal[0].state])(0);
 }
 
 
@@ -854,177 +814,160 @@ void dScMgTeresa_c::Reveal_Hide()
     *(char *)(raw + 0x4bbc) = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c18RisingIcon_DrawAllEv
+// @symbol _ZN13dScMgTeresa_c19FoundNumber_DrawAllEv
 /* decl_common.h declares this one with a `void *` parameter, and
    Mg_RenderSubSpriteMtx as `(void *, int, int, void *)`. */
-void dScMgTeresa_c::RisingIcon_DrawAll()
-{
+void dScMgTeresa_c::FoundNumber_DrawAll() {
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (mRisingIcons[i].visible) {
-            int b = mRisingIcons[i].y >> 12;
-            int a = mRisingIcons[i].x >> 12;
+        if (mFoundNumbers[i].visible) {
+            int b = mFoundNumbers[i].y >> 12;
+            int a = mFoundNumbers[i].x >> 12;
             if (b <= 8) b = 8;
             if (b >= 0xb8) b = 0xb8;
-            Mg_RenderSubSpriteMtx((void*)data_ov006_02137cd8[mRisingIcons[i].sprite + 1], a, b, (void*)0);
+            Mg_RenderSubSpriteMtx((void *)sMgDigitSprites[mFoundNumbers[i].sprite + 1], a, b,
+                                  (void *)0);
         }
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c19RisingIcon_ClearAllEv
-void dScMgTeresa_c::RisingIcon_ClearAll()
-{
+// @symbol _ZN13dScMgTeresa_c20FoundNumber_ClearAllEv
+void dScMgTeresa_c::FoundNumber_ClearAll() {
     int i;
     for (i = 0; i < 0x10; i++) {
-        mRisingIcons[i].active = 0;
-        mRisingIcons[i].visible = 0;
+        mFoundNumbers[i].active = 0;
+        mFoundNumbers[i].visible = 0;
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c20RisingIcon_CountBusyEv
-int dScMgTeresa_c::RisingIcon_CountBusy()
-{
+// @symbol _ZN13dScMgTeresa_c21FoundNumber_CountBusyEv
+int dScMgTeresa_c::FoundNumber_CountBusy() {
     int cnt = 0;
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (mRisingIcons[i].active != 0 && mRisingIcons[i].state != 2) {
+        if (mFoundNumbers[i].active != 0 && mFoundNumbers[i].state != 2) {
             cnt++;
         }
     }
     return cnt != 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c20RisingIcon_UpdateAllEv
-void dScMgTeresa_c::RisingIcon_UpdateAll()
-{
+// @symbol _ZN13dScMgTeresa_c21FoundNumber_UpdateAllEv
+void dScMgTeresa_c::FoundNumber_UpdateAll() {
     int i;
     for (i = 0; i < 16; i++) {
         unsigned char v;
-        if (mRisingIcons[i].active == 0) {
+        if (mFoundNumbers[i].active == 0) {
             continue;
         }
-        v = mRisingIcons[i].state;
+        v = mFoundNumbers[i].state;
         if (v == 0) {
-            if (mRisingIcons[i].timer != 0) {
-                mRisingIcons[i].timer -= 1;
-                if ((short)mRisingIcons[i].timer < 0) {
-                    mRisingIcons[i].timer = 0;
+            if (mFoundNumbers[i].timer != 0) {
+                mFoundNumbers[i].timer -= 1;
+                if ((short)mFoundNumbers[i].timer < 0) {
+                    mFoundNumbers[i].timer = 0;
                 }
             } else {
                 Sound::PlayBank2_2D(0x1bc);
-                mRisingIcons[i].vy = -0x400;
-                mRisingIcons[i].timer = 0x10;
-                mRisingIcons[i].state += 1;
-                mRisingIcons[i].visible = 1;
+                mFoundNumbers[i].vy = -0x400;
+                mFoundNumbers[i].timer = 0x10;
+                mFoundNumbers[i].state += 1;
+                mFoundNumbers[i].visible = 1;
             }
         } else if (v == 1) {
-            mRisingIcons[i].y += mRisingIcons[i].vy;
-            mRisingIcons[i].vy -= 0x80;
-            if (mRisingIcons[i].timer != 0) {
-                mRisingIcons[i].timer -= 1;
-                if ((short)mRisingIcons[i].timer < 0) {
-                    mRisingIcons[i].timer = 0;
+            mFoundNumbers[i].y += mFoundNumbers[i].vy;
+            mFoundNumbers[i].vy -= 0x80;
+            if (mFoundNumbers[i].timer != 0) {
+                mFoundNumbers[i].timer -= 1;
+                if ((short)mFoundNumbers[i].timer < 0) {
+                    mFoundNumbers[i].timer = 0;
                 }
             } else {
-                mRisingIcons[i].timer = 0x18;
-                mRisingIcons[i].state += 1;
+                mFoundNumbers[i].timer = 0x18;
+                mFoundNumbers[i].state += 1;
             }
         }
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c16RisingIcon_SpawnEi
-void dScMgTeresa_c::RisingIcon_Spawn(int i)
-{
-  int n;
-  for (n = 0; n < 0x10; n++)
-  {
-    if (mRisingIcons[n].active == 0)
-    {
-      mRisingIcons[n].active = 1;
-      mRisingIcons[n].visible = 0;
-      mRisingIcons[n].x = mBoos[i].mX;
-      mRisingIcons[n].y = mBoos[i].mY - 0x10000;
-      mRisingIcons[n].timer = (mBoos[i].mFoundOrder * 0x3c) + 0x10;
-      mRisingIcons[n].state = 0;
-      mRisingIcons[n].sprite = mBoos[i].mFoundOrder;
-      return;
+// @symbol _ZN13dScMgTeresa_c17FoundNumber_SpawnEi
+void dScMgTeresa_c::FoundNumber_Spawn(int i) {
+    int n;
+    for (n = 0; n < 0x10; n++) {
+        if (mFoundNumbers[n].active == 0) {
+            mFoundNumbers[n].active = 1;
+            mFoundNumbers[n].visible = 0;
+            mFoundNumbers[n].x = mBoos[i].mX;
+            mFoundNumbers[n].y = mBoos[i].mY - 0x10000;
+            mFoundNumbers[n].timer = (mBoos[i].mFoundOrder * 0x3c) + 0x10;
+            mFoundNumbers[n].state = 0;
+            mFoundNumbers[n].sprite = mBoos[i].mFoundOrder;
+            return;
+        }
     }
-  }
-
 }
 
-
-// @symbol _ZN13dScMgTeresa_c24RisingIcon_SpawnForFoundEv
-/* The call to RisingIcon_Spawn is cast because that function takes
+// @symbol _ZN13dScMgTeresa_c25FoundNumber_SpawnForFoundEv
+/* The call to FoundNumber_Spawn is cast because that function takes
    `char *`. */
-void dScMgTeresa_c::RisingIcon_SpawnForFound()
-{
+void dScMgTeresa_c::FoundNumber_SpawnForFound() {
     RowArray *c = (RowArray *)this;
     int i;
     struct Row* r = c->rows;
     for (i = 0; i < 0x10; i++) {
         if (((unsigned char*)r + 0x4000)[0x677] != 0 && ((unsigned char*)r + 0x4000)[0x678] == 5)
-            RisingIcon_Spawn(i);
+            FoundNumber_Spawn(i);
         r++;
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c17FoundMark_DrawAllEv
+// @symbol _ZN13dScMgTeresa_c18VanishPuff_DrawAllEv
 /* decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::FoundMark_DrawAll()
-{
+void dScMgTeresa_c::VanishPuff_DrawAll() {
     int i;
     for (i = 0; i < 16; i++) {
-        if (mFoundMarks[i].visible) {
-            Hud_RenderSprite(data_ov006_02134210[mFoundMarks[i].frame], mFoundMarks[i].x >> 12, mFoundMarks[i].y >> 12, -1, -1);
+        if (mVanishPuffs[i].visible) {
+            Hud_RenderSprite(data_ov006_02134210[mVanishPuffs[i].frame], mVanishPuffs[i].x >> 12,
+                             mVanishPuffs[i].y >> 12, -1, -1);
         }
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c19FoundMark_UpdateAllEv
-void dScMgTeresa_c::FoundMark_UpdateAll()
-{
+// @symbol _ZN13dScMgTeresa_c20VanishPuff_UpdateAllEv
+void dScMgTeresa_c::VanishPuff_UpdateAll() {
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (mFoundMarks[i].active == 0) continue;
-        mFoundMarks[i].timer += 1;
-        if (mFoundMarks[i].timer < 4) continue;
-        mFoundMarks[i].timer = 0;
-        mFoundMarks[i].frame += 1;
-        if (mFoundMarks[i].frame >= 5) {
-            mFoundMarks[i].frame = 0;
-            mFoundMarks[i].visible = 0;
-            mFoundMarks[i].active = 0;
+        if (mVanishPuffs[i].active == 0)
+            continue;
+        mVanishPuffs[i].timer += 1;
+        if (mVanishPuffs[i].timer < 4)
+            continue;
+        mVanishPuffs[i].timer = 0;
+        mVanishPuffs[i].frame += 1;
+        if (mVanishPuffs[i].frame >= 5) {
+            mVanishPuffs[i].frame = 0;
+            mVanishPuffs[i].visible = 0;
+            mVanishPuffs[i].active = 0;
         }
     }
 }
-
 
 #pragma push
 #pragma opt_strength_reduction off
-// @symbol _ZN13dScMgTeresa_c15FoundMark_SpawnEi
-void dScMgTeresa_c::FoundMark_Spawn(int param)
-{
-  int i;
-  for(i=0;i<16;i++){
-    if(mFoundMarks[i].active==0){
-      mFoundMarks[i].x = mBoos[param].mX;
-      mFoundMarks[i].y = mBoos[param].mY;
-      mFoundMarks[i].timer = 0;
-      mFoundMarks[i].frame = 0;
-      mFoundMarks[i].active = 1;
-      mFoundMarks[i].visible = 1;
-      return;
+// @symbol _ZN13dScMgTeresa_c16VanishPuff_SpawnEi
+void dScMgTeresa_c::VanishPuff_Spawn(int param) {
+    int i;
+    for (i = 0; i < 16; i++) {
+        if (mVanishPuffs[i].active == 0) {
+            mVanishPuffs[i].x = mBoos[param].mX;
+            mVanishPuffs[i].y = mBoos[param].mY;
+            mVanishPuffs[i].timer = 0;
+            mVanishPuffs[i].frame = 0;
+            mVanishPuffs[i].active = 1;
+            mVanishPuffs[i].visible = 1;
+            return;
+        }
     }
-  }
 }
 #pragma pop
 
@@ -1169,10 +1112,10 @@ void dScMgTeresa_c::CheckRoundEnd()
     unsigned char *raw = (unsigned char *)this;
     if (*(unsigned short*)(raw + 0x4c14) == 0 && *(unsigned char*)(raw + 0x4c20) != 0) {
         *(unsigned char*)(raw + 0x4c1f) = 0;
-        *(int*)(raw + 0x4be8) = 3;
+        mSceneState = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
-        func_ov006_0211cc90();
-        *(unsigned char*)(raw + 0x4c27) = 1;
+        BigBoo_SetDone();
+        mRubLocked = 1;
         return;
     }
     {
@@ -1191,9 +1134,9 @@ void dScMgTeresa_c::CheckRoundEnd()
         } while (i < 0x10);
         if (count != 0)
             return;
-        *(int*)(raw + 0x4be8) = 3;
+        mSceneState = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
-        func_ov006_0211cc90();
+        BigBoo_SetDone();
         *(unsigned char*)(raw + 0x4c1f) = 1;
     }
 }
@@ -1367,10 +1310,8 @@ void dScMgTeresa_c::MoveBoo(int i)
     BounceBooOffWalls(i);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State7Ei
-void dScMgTeresa_c::Boo_State7(int i)
-{
+// @symbol _ZN13dScMgTeresa_c17Boo_StateFadeAwayEi
+void dScMgTeresa_c::Boo_StateFadeAway(int i) {
     char *c = (char *)this;
     u8 *s;
     int o = i * 0x24;
@@ -1436,10 +1377,8 @@ void dScMgTeresa_c::Boo_State7(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State6Ei
-void dScMgTeresa_c::Boo_State6(int i)
-{
+// @symbol _ZN13dScMgTeresa_c15Boo_StateFadeInEi
+void dScMgTeresa_c::Boo_StateFadeIn(int i) {
 
     if (mBoos[i].mDelay != 0) {
         mBoos[i].mDelay--;
@@ -1490,17 +1429,15 @@ void dScMgTeresa_c::Boo_State6(int i)
     mBoos[i].mState = 7;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State5Ei
-void dScMgTeresa_c::Boo_State5(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c14Boo_StateFoundEi
+void dScMgTeresa_c::Boo_StateFound(int idx) {
     if (mSceneState != 4)
         return;
     if (mBoos[idx].mTimer != 0) {
         mBoos[idx].mTimer--;
         return;
     }
-    FoundMark_Spawn(idx);
+    VanishPuff_Spawn(idx);
     mBoos[idx].mVisible = 0;
     mBoos[idx].mInPlay = 0;
     if (mFirstFoundBoo != idx)
@@ -1508,10 +1445,8 @@ void dScMgTeresa_c::Boo_State5(int idx)
     Sound::PlayBank2_2D(0x1c7);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State4Ei
-void dScMgTeresa_c::Boo_State4(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c20Boo_StateHiddenTimedEi
+void dScMgTeresa_c::Boo_StateHiddenTimed(int idx) {
     if (mBoos[idx].mTimer != 0) {
         mBoos[idx].mTimer--;
         if ((s16)mBoos[idx].mTimer <= 0) {
@@ -1529,10 +1464,8 @@ void dScMgTeresa_c::Boo_State4(int idx)
     TouchTestBoo(idx);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State3Ei
-void dScMgTeresa_c::Boo_State3(int i)
-{
+// @symbol _ZN13dScMgTeresa_c15Boo_StateHiddenEi
+void dScMgTeresa_c::Boo_StateHidden(int i) {
     MoveBoo(i);
     CountRubbedTiles(i);
     TouchTestBoo(i);
@@ -1542,10 +1475,8 @@ void dScMgTeresa_c::Boo_State3(int i)
         mBoos[i].mAnim = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State2Ei
-void dScMgTeresa_c::Boo_State2(int i)
-{
+// @symbol _ZN13dScMgTeresa_c16Boo_StateFadeOutEi
+void dScMgTeresa_c::Boo_StateFadeOut(int i) {
     StepBoo(i);
     BounceBooOffWalls(i);
     if (data_02082214[2 * (mBoos[i].mHeading >> 4) + 1] >= 0)
@@ -1566,7 +1497,6 @@ void dScMgTeresa_c::Boo_State2(int i)
     mBoos[i].mState = 3;
     mBoos[i].mPriority = 1;
 }
-
 
 // @symbol _ZN13dScMgTeresa_c17BounceBooOffWallsEi
 void dScMgTeresa_c::BounceBooOffWalls(int i)
@@ -1624,10 +1554,8 @@ void dScMgTeresa_c::StartBoosHiding()
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State1Ei
-void dScMgTeresa_c::Boo_State1(int i)
-{
+// @symbol _ZN13dScMgTeresa_c12Boo_StateFlyEi
+void dScMgTeresa_c::Boo_StateFly(int i) {
     mBoos[i].mTimer = 0;
     StepBoo(i);
     BounceBooOffWalls(i);
@@ -1637,10 +1565,8 @@ void dScMgTeresa_c::Boo_State1(int i)
         mBoos[i].mAnim = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State0Ei
-void dScMgTeresa_c::Boo_State0(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c15Boo_StateAppearEi
+void dScMgTeresa_c::Boo_StateAppear(int idx) {
     unsigned char t;
     mBoos[idx].mVisible = 1;
     mBoos[idx].mTimer = 0x60;
@@ -1655,7 +1581,6 @@ void dScMgTeresa_c::Boo_State0(int idx)
     else
         mBoos[idx].mSpeed += (t - 1) << 9;
 }
-
 
 // @symbol _ZN13dScMgTeresa_c10AnimateBooEi
 void dScMgTeresa_c::AnimateBoo(int i)
@@ -1676,7 +1601,7 @@ void dScMgTeresa_c::UpdateBoos()
     int i;
     for (i = 0; i < 0x10; i++) {
         if (mBoos[i].mInPlay) {
-            (this->*data_ov006_02142ed8[mBoos[i].mState])(i);
+            (this->*sTeresaBooStateTable[mBoos[i].mState])(i);
             AnimateBoo(i);
         }
     }
@@ -1703,13 +1628,13 @@ void dScMgTeresa_c::SpawnBoos()
         int k;
         r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
         k = (r << 2) >> 15;
-        if (k + 0xa == *(unsigned char *)(c + 0x4c23)) {
+        if (k + 0xa == mBooPattern) {
             k += (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 3) >> 15) + 1;
             if (k >= 4) k -= 4;
         }
         sel = k + 0xa;
     }
-    *(unsigned char *)(c + 0x4c23) = sel;
+    mBooPattern = sel;
     count = data_ov006_0212f014[sel];
     mBooCount = count;
 
@@ -1929,14 +1854,12 @@ void dScMgTeresa_c::ResetRound()
 }
 #pragma pop
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State4Ev
-void dScMgTeresa_c::Scene_State4()
-{
+// @symbol _ZN13dScMgTeresa_c17Scene_StateResultEv
+void dScMgTeresa_c::Scene_StateResult() {
     char *c = (char *)this;
     BigBoo_Update();
     UpdateBoos();
-    FoundMark_UpdateAll();
+    VanishPuff_UpdateAll();
     if (*(unsigned short *)(c + 0x4c0c) == 0) return;
     *(unsigned short *)(((int)c + 0x4c0c)) -= 1;
     if (*(short *)(c + 0x4c0c) > 0) return;
@@ -1964,10 +1887,8 @@ void dScMgTeresa_c::Scene_State4()
     mPromptEnabled = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State3Ev
-void dScMgTeresa_c::Scene_State3()
-{
+// @symbol _ZN13dScMgTeresa_c19Scene_StateRoundEndEv
+void dScMgTeresa_c::Scene_StateRoundEnd() {
     char *c = (char *)this;
     BigBoo_Update();
     UpdateRubbing();
@@ -1979,18 +1900,18 @@ void dScMgTeresa_c::Scene_State3()
         if (*(s16 *)(c + 0x4c0c) > 0)
             return;
         if (*(u8 *)(c + 0x4c1f) != 0) {
-            RisingIcon_SpawnForFound();
+            FoundNumber_SpawnForFound();
             *(s16 *)(c + 0x4c0e) = 0x60;
             return;
         }
-        RisingIcon_SpawnForFound();
+        FoundNumber_SpawnForFound();
         AreBoosSettled();
         *(s16 *)(c + 0x4c0e) = 0x60;
         return;
     }
-    RisingIcon_UpdateAll();
+    FoundNumber_UpdateAll();
     UpdateBoos();
-    if (RisingIcon_CountBusy() != 0)
+    if (FoundNumber_CountBusy() != 0)
         return;
     if (*(u16 *)(c + 0x4c0e) != 0) {
         StepBg3Scroll();
@@ -2002,7 +1923,7 @@ void dScMgTeresa_c::Scene_State3()
             *(s16 *)(c + 0x4c0e) = 0;
         return;
     }
-    RisingIcon_ClearAll();
+    FoundNumber_ClearAll();
     mSceneState = 4;
     *(s16 *)(c + 0x4c0c) = 0x60;
     *(int *)0x4001000 = *(int *)0x4001000 & ~0xe000;
@@ -2014,10 +1935,8 @@ void dScMgTeresa_c::Scene_State3()
     Sound::PlayBank2_2D(0x1f2);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State2Ev
-void dScMgTeresa_c::Scene_State2()
-{
+// @symbol _ZN13dScMgTeresa_c15Scene_StatePlayEv
+void dScMgTeresa_c::Scene_StatePlay() {
     char *c = (char *)this;
   unsigned short *g = (unsigned short *) (c + 0x4c00);
   int new_var;
@@ -2045,23 +1964,18 @@ void dScMgTeresa_c::Scene_State2()
   CheckRoundEnd();
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State1Ev
-void dScMgTeresa_c::Scene_State1()
-{
+// @symbol _ZN13dScMgTeresa_c17Scene_StateRevealEv
+void dScMgTeresa_c::Scene_StateReveal() {
     Reveal_Update();
     Marker_Update();
     UpdateBoos();
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State0Ev
-void dScMgTeresa_c::Scene_State0()
-{
+// @symbol _ZN13dScMgTeresa_c15Scene_StateInitEv
+void dScMgTeresa_c::Scene_StateInit() {
     char *p = (char *)this;
-    *(int *)(p + 0x4be8) = 1;
+    mSceneState = 1;
 }
-
 
 #pragma push
 #pragma opt_loop_invariants off
@@ -2169,10 +2083,10 @@ void dScMgTeresa_c::StartRound(int reset)
 s32 dScMgTeresa_c::Render()
 {
     Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
-    RisingIcon_DrawAll();
+    FoundNumber_DrawAll();
     DrawCountdown();
     Exclaim_DrawAll();
-    FoundMark_DrawAll();
+    VanishPuff_DrawAll();
     DrawBoos();
     Reveal_Draw();
     Marker_Draw();
@@ -2183,10 +2097,10 @@ s32 dScMgTeresa_c::Render()
 
 // @symbol _ZN13dScMgTeresa_c8BehaviorEv
 /* Vtable slot 6: runs the current state's handler from the pointer-to-member
-   table data_ov006_02142eb0, indexed by mSceneState. */
+   table sTeresaSceneStateTable, indexed by mSceneState. */
 s32 dScMgTeresa_c::Behavior()
 {
-    (this->*data_ov006_02142eb0[mSceneState].pmf)();
+    (this->*sTeresaSceneStateTable[mSceneState].pmf)();
     Exclaim_UpdateAll();
     return 1;
 }
@@ -2268,15 +2182,15 @@ s32 dScMgTeresa_c::InitResources()
     Deallocate(f2);
     Mg_SetTopScreenYOffset(0x20);
     ResetRound();
-    *((u8 *) (self + 0x4c23)) = 0xff;
+    mBooPattern = 0xff;
     Marker_Show();
     Reveal_Start();
     SpawnBoos();
     mSceneState = 1;
     *((u16 *) (self + 0x4c16)) = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc884 = -128;
+    sMgClearBannerX = 0x80;
+    sMgClearBannerY = -128;
     mHudScore = 0;
     return 1;
 }
@@ -2295,38 +2209,26 @@ extern "C" void *dScMgTeresa_c_classInit()
  * The four PMF state tables plain-copied from the ROM PMF constants, in
  * retail copy order: the scene table, the per-Boo table, the reveal-pair
  * table, then the big-Boo flight table. */
-PmfEntry data_ov006_02142eb0[5] = {
-    {pmf_dScMgTeresa_c_Scene_State0},
-    {pmf_dScMgTeresa_c_Scene_State1},
-    {pmf_dScMgTeresa_c_Scene_State2},
-    {pmf_dScMgTeresa_c_Scene_State3},
-    {pmf_dScMgTeresa_c_Scene_State4},
+PmfEntry sTeresaSceneStateTable[5] = {
+    {pmf_dScMgTeresa_c_Scene_StateInit},   {pmf_dScMgTeresa_c_Scene_StateReveal},
+    {pmf_dScMgTeresa_c_Scene_StatePlay},   {pmf_dScMgTeresa_c_Scene_StateRoundEnd},
+    {pmf_dScMgTeresa_c_Scene_StateResult},
 };
-Pmf data_ov006_02142ed8[8] = {
-    pmf_dScMgTeresa_c_Boo_State0,
-    pmf_dScMgTeresa_c_Boo_State1,
-    pmf_dScMgTeresa_c_Boo_State2,
-    pmf_dScMgTeresa_c_Boo_State3,
-    pmf_dScMgTeresa_c_Boo_State4,
-    pmf_dScMgTeresa_c_Boo_State5,
-    pmf_dScMgTeresa_c_Boo_State6,
-    pmf_dScMgTeresa_c_Boo_State7,
+Pmf sTeresaBooStateTable[8] = {
+    pmf_dScMgTeresa_c_Boo_StateAppear,      pmf_dScMgTeresa_c_Boo_StateFly,
+    pmf_dScMgTeresa_c_Boo_StateFadeOut,     pmf_dScMgTeresa_c_Boo_StateHidden,
+    pmf_dScMgTeresa_c_Boo_StateHiddenTimed, pmf_dScMgTeresa_c_Boo_StateFound,
+    pmf_dScMgTeresa_c_Boo_StateFadeIn,      pmf_dScMgTeresa_c_Boo_StateFadeAway,
 };
-Pmf data_ov006_02142e88[5] = {
-    pmf_dScMgTeresa_c_Reveal_State0,
-    pmf_dScMgTeresa_c_Reveal_State1,
-    pmf_dScMgTeresa_c_Reveal_State2,
-    pmf_dScMgTeresa_c_Reveal_State3,
-    pmf_dScMgTeresa_c_Reveal_State4,
+Pmf sTeresaRevealStateTable[5] = {
+    pmf_dScMgTeresa_c_Reveal_StateStart,   pmf_dScMgTeresa_c_Reveal_StateSlideIn,
+    pmf_dScMgTeresa_c_Reveal_StateAnimate, pmf_dScMgTeresa_c_Reveal_StateDipAndRise,
+    pmf_dScMgTeresa_c_Reveal_StateFinish,
 };
-Pmf data_ov006_02142f18[9] = {
-    pmf_dScMgTeresa_c_BigBoo_State0,
-    pmf_dScMgTeresa_c_BigBoo_State1,
-    pmf_dScMgTeresa_c_BigBoo_State2,
-    pmf_dScMgTeresa_c_BigBoo_State3,
-    pmf_dScMgTeresa_c_BigBoo_State4,
-    pmf_dScMgTeresa_c_BigBoo_State5,
-    pmf_dScMgTeresa_c_BigBoo_State6,
-    pmf_dScMgTeresa_c_BigBoo_State7,
-    pmf_dScMgTeresa_c_BigBoo_State8,
+Pmf sTeresaBigBooStateTable[9] = {
+    pmf_dScMgTeresa_c_BigBoo_StateDropIn,    pmf_dScMgTeresa_c_BigBoo_StateHover,
+    pmf_dScMgTeresa_c_BigBoo_StateFlyLeft,   pmf_dScMgTeresa_c_BigBoo_StateFlyRight,
+    pmf_dScMgTeresa_c_BigBoo_StateOffscreen, pmf_dScMgTeresa_c_BigBoo_StateExit,
+    pmf_dScMgTeresa_c_BigBoo_StateRemove,    pmf_dScMgTeresa_c_BigBoo_StateGone,
+    pmf_dScMgTeresa_c_BigBoo_StateResult,
 };

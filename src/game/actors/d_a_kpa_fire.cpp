@@ -61,6 +61,7 @@
 #include "dActor_c.h"
 #include "daKpa_c.h"
 #include "Player.h"
+#include "SaveData.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
 
@@ -122,7 +123,6 @@ extern PMF data_ov060_0211af74[];
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
-int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
 /* local extern: the header method is not this symbol's spelling here. */
 extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32 d);
@@ -400,7 +400,7 @@ void daKpaFire_c::func_ov060_021172e0()
             int idx;
             int mask = 0;
             for (chr = 0; chr < 3; chr++) {
-                if (_ZN8SaveData19IsCharacterUnlockedEj(chr) != 0) {
+                if (SaveData::IsCharacterUnlocked(chr) != 0) {
                     mask = (mask | (1 << chr)) & 0xff;
                 }
             }

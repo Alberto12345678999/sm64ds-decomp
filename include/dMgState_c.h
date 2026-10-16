@@ -30,7 +30,7 @@ enum MgSharedState {
     MG_STATE_RESULTS = 16,             /* [high, seen] banner 7 "HIGH SCORE", record table */
     MG_STATE_RESULTS_NEW_RECORD = 17,  /* [high, seen] 16 + OnNewRecord, banner 5, jingle 1 */
     MG_STATE_GAME_OVER = 18,           /* [high, seen] banner 8 "GAME OVER", jingle 3 */
-    MG_STATE_FINISHED = 19             /* [medium] banner 3, then 16 or 17; Snowball */
+    MG_STATE_FINISHED = 19             /* [high, seen] banner 3 (Snowball: 4 "GOAL"), jingle 4 */
 };
 
 /* The shared minigame state machine, embedded in dScMgBase_c at 0xcc. It
@@ -61,46 +61,46 @@ struct dMgState_c {
     void DrawRecordTable();
     void DrawScoreDigits();
     void DrawScore();
-    void State19_Update();
-    void State19_Enter();
-    void State18_Update();
-    void State18_Enter();
-    void State17_Update();
-    void State17_Enter();
-    void State16_Update();
-    void State16_Enter();
-    void State15_Enter();
+    void Finished_Update();
+    void Finished_Enter();
+    void GameOver_Update();
+    void GameOver_Enter();
+    void ResultsNewRecord_Update();
+    void ResultsNewRecord_Enter();
+    void Results_Update();
+    void Results_Enter();
+    void BannerEThenRound_Enter();
     void UpdateFadeThenResume();
-    void State14_Enter();
+    void DigitsThenRound_Enter();
     void UpdateRetryPrompt();
-    void State13_Enter();
-    void State12_Enter();
-    void State11_Update();
-    void State11_Enter();
-    void State10_Update();
-    void State10_Enter();
-    void State09_Update();
-    void State09_Enter();
+    void RetryPromptWideB_Enter();
+    void RetryPromptWide_Enter();
+    void ScoreThenRound_Update();
+    void ScoreThenRound_Enter();
+    void RetryPromptB_Update();
+    void RetryPromptB_Enter();
+    void RoundClearTop_Update();
+    void RoundClearTop_Enter();
     void UpdateWaitThenResume();
-    void State08_Enter();
-    void State07_Enter();
+    void Tie_Enter();
+    void Draw_Enter();
     void UpdateAfterHidden();
-    void State06_Update();
-    void State06_Enter();
+    void LoseResume_Update();
+    void LoseResume_Enter();
     void UpdateGameOverToMenu();
-    void State05_Update();
-    void State05_Enter();
-    void State04_Update();
-    void State04_Enter();
+    void Lose_Update();
+    void Lose_Enter();
+    void Win_Update();
+    void Win_Enter();
     void UpdateRetryFadeOut();
-    void State03_Update();
-    void State03_Enter();
-    void State02_Update();
-    void State02_Enter();
-    void State01_Update();
-    void State01_Enter();
-    void State00_Update();
-    void State00_Enter();
+    void RetryPrompt_Update();
+    void RetryPrompt_Enter();
+    void RoundBanner5_Update();
+    void RoundBanner5_Enter();
+    void NextRound_Update();
+    void NextRound_Enter();
+    void RoundClear_Update();
+    void RoundClear_Enter();
 };
 
 #ifndef SM64DS_PLATFORM_PC

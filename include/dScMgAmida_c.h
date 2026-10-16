@@ -27,9 +27,9 @@ typedef char dScMgAmida_c_Piece_size_must_be_0x18[sizeof(dScMgAmida_c_Piece) == 
    Field evidence and the full vtable census live in
    notes/minigame-provenance.md.
 
-   Unk36 (slot 36) is called directly. That only lands on the right
+   IsVariant2 (slot 36) is called directly. That only lands on the right
    slot because dScMgBase_c declares every virtual from 18 to 35; with a
-   gap there, mwcc gives Unk36 an earlier slot and Render grows by 0xc.
+   gap there, mwcc gives IsVariant2 an earlier slot and Render grows by 0xc.
 
    AfterCleanupResources returns early when vfSuccess != 2, which skips
    the base-class call as well. That is what the ROM does. Keep it.
@@ -70,19 +70,19 @@ struct dScMgAmida_c : dScMgBase_c {
     virtual void AfterCleanupResources(u32 vfSuccess);   /* slot  5 */
     virtual s32  Behavior();                             /* slot  6 */
     virtual s32  Render();                               /* slot  9 */
-    /* Overrides dScMgBase_c's slot 18, so the base fixes its index.  Unk36
+    /* Overrides dScMgBase_c's slot 18, so the base fixes its index.  IsVariant2
        below is NOT an override: it is this class's own brand-new slot.
-       dScMgBase_c declares all eighteen of 18-35 now, so mwcc lands Unk36 on
+       dScMgBase_c declares all eighteen of 18-35 now, so mwcc lands IsVariant2 on
        36, which is where the ROM puts it.  That was the last DIFFERS in the
        minigame family and it is closed -- not by anything local to this
        header, but by the base finally spelling the slots underneath it.
-       Keep Unk36 LAST all the same: any further virtual added to dScMgBase_c
+       Keep IsVariant2 LAST all the same: any further virtual added to dScMgBase_c
        would take 36 and push it out again. */
     virtual void StartRound(int arg);                 /* slot 18 */
     virtual int  InitSubScreenBg();                            /* slot 31 */
     virtual void PaintSquare(int cx, int cy, int colour, int size); /* slot 34 */
     virtual int  IsAltVariant();                          /* slot 35 */
-    virtual int  Unk36();                                /* slot 36 */
+    virtual int IsVariant2();                             /* slot 36 */
 
     void ShuffleGoals(int count);
     void ClearStroke();

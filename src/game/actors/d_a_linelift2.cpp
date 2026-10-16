@@ -52,6 +52,7 @@ enum d_a_linelift2_AssetId {
 #include "daLinelift2_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "nitro/fx/fx.h"
 
 struct KCL_File;
 struct CLPS_Block;
@@ -342,14 +343,10 @@ extern "C" void func_ov091_02131cb0(dActor_c *self, const Vector3 *to, const Vec
     Vec3_Sub(&d, to, from);
     self->mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(d.x, d.z);
     self->mPrevAngleX = _ZN4cstd5atan2E5Fix12IiES1_(d.y, Vec3_HorzLen(&d));
-    s32 horz = (s32)(((long long)self->mHorzSpeed
-                      * data_02082214[((u16)self->mPrevAngleX >> 4) * 2 + 1] + 0x800) >> 12);
-    self->unk_0a4 = (s32)(((long long)horz
-                      * data_02082214[((u16)self->mPrevAngleY >> 4) * 2] + 0x800) >> 12);
-    self->mVertSpeed = (s32)(((long long)self->mHorzSpeed
-                      * data_02082214[((u16)self->mPrevAngleX >> 4) * 2] + 0x800) >> 12);
-    self->unk_0ac = (s32)(((long long)horz
-                      * data_02082214[((u16)self->mPrevAngleY >> 4) * 2 + 1] + 0x800) >> 12);
+    s32 horz = FX_MUL(self->mHorzSpeed, data_02082214[((u16)self->mPrevAngleX >> 4) * 2 + 1]);
+    self->unk_0a4 = FX_MUL(horz, data_02082214[((u16)self->mPrevAngleY >> 4) * 2]);
+    self->mVertSpeed = FX_MUL(self->mHorzSpeed, data_02082214[((u16)self->mPrevAngleX >> 4) * 2]);
+    self->unk_0ac = FX_MUL(horz, data_02082214[((u16)self->mPrevAngleY >> 4) * 2 + 1]);
 }
 
 // @symbol _ZN13daLinelift2_cD1Ev

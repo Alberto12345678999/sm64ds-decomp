@@ -190,6 +190,22 @@ void func_ov090_02131e50(daMenbo_c *c);
 #define MENBO_RIPPLES(c) ((MenboRipples *)(c)->pad_380)
 #define MENBO_LATCH(c)   ((MenboLatches *)(c)->pad_39d)
 
+/* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
+ * off screen. Actor ID 0xbf is PLAYER. data_0209f2d8 is the current game
+ * mode. These int-returning predicates are what make the ROM materialize
+ * 0/1 before testing it. */
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
+static inline int IsGameMode(int mode) {
+    return data_0209f2d8 == mode;
+}
+
 // @symbol _ZN9daMenbo_cD1Ev
 // @symbol _ZN9daMenbo_cD0Ev
 daMenbo_c::~daMenbo_c()
@@ -208,12 +224,11 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
     int i;
     Matrix4x3 *src;
     int idx;
-    int b;
     unsigned int id;
 
     c = c_;
-    b = (int)((c->mFlags & 8) != 0);
-    if (b != 0) return;
+    if (IsOffScreen(c))
+        return;
 
     src = &c->mModelAnim.mat4x3;
     i = 0;
@@ -244,8 +259,7 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
 
 // @symbol func_ov090_021310b4
 /* Contact response, in the order the tests run. A volatile read of the
- * cylinder offset keeps that copy as three loads. The 0xbf test is a
- * ternary widened through long long so it stays a moveq/movne pair. */
+ * cylinder offset keeps that copy as three loads. */
 void func_ov090_021310b4(daMenbo_c *c)
 {
     short hv[3];
@@ -313,10 +327,8 @@ void func_ov090_021310b4(daMenbo_c *c)
         func_ov002_020aea30(c, p, 0);
         return;
     }
-    {
-        int b = (p->actorID == 0xbf) ? 1 : 0;
-        if ((int)((long long)b) == 0) return;
-    }
+    if (!IsPlayerActor(p))
+        return;
     if (((Player *)p)->mIsMetal == 1 || ((Player *)p)->IsOnShell() == 1) {
         cv.x = c->mPosX;
         cv.y = c->mPosY;
@@ -340,12 +352,9 @@ void func_ov090_021310b4(daMenbo_c *c)
  * A higher floor is the line instead, and either way Y is clamped up to it. */
 void func_ov090_02131378(daMenbo_c *c)
 {
-    int b = (int)(data_0209f2d8 == 2);
-    if (b != 0) {
-        if (data_0209f2f8 == 0x12) {
-            func_ov090_02130f94(c);
-            return;
-        }
+    if (IsGameMode(2) && data_0209f2f8 == 0x12) {
+        func_ov090_02130f94(c);
+        return;
     }
     dBgCh_Gnd rg;
     Vector3 v;
@@ -383,24 +392,22 @@ void func_ov090_02131378(daMenbo_c *c)
 int func_ov090_021314a0(daMenbo_c *c)
 {
     Player *p = c->ClosestNonVanishPlayer();
-    if (p == 0) goto out;
-    if (AngleDiff(c->mPrevAngleY, c->HorzAngleToCPlayer()) >= 0x2000) goto out;
-    {
+    if (p != 0 && AngleDiff(c->mPrevAngleY, c->HorzAngleToCPlayer()) < 0x2000) {
         int *sv = &p->mPosX;
         int v[3];
         v[0] = sv[0];
         v[1] = sv[1];
         v[2] = sv[2];
-        if (Vec3_Dist((const Vector3 *)&c->mPosX, (const Vector3 *)v) >= 0x3ac000) goto out;
-        int w[3];
-        w[0] = v[0];
-        w[1] = v[1];
-        w[2] = v[2];
-        c->unk_39a = (u16)Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)w);
-        MENBO_LATCH(c)->chase = 1;
-        return 1;
+        if (Vec3_Dist((const Vector3 *)&c->mPosX, (const Vector3 *)v) < 0x3ac000) {
+            int w[3];
+            w[0] = v[0];
+            w[1] = v[1];
+            w[2] = v[2];
+            c->unk_39a = (u16)Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)w);
+            MENBO_LATCH(c)->chase = 1;
+            return 1;
+        }
     }
-out:
     if (MENBO_LATCH(c)->chase == 1) {
         c->mHorzSpeed = 0x9000;
         MENBO_LATCH(c)->chase = 0;
@@ -893,17 +900,13 @@ int daMenbo_c::InitResources()
     unk_10a = 2;
     mVertAccel = -0x3000;
 
-    {
-        int b = 1;
-        if (data_0209f2d8 != 2) b = 0;
-        if (b != 0 && data_0209f2f8 == 0x12) {
-            unk_3ac = mPosY;
-            unk_374 = mPosX;
-            unk_378 = mPosY;
-            unk_37c = mPosZ;
-            func_ov090_02131e00((MenboState *)this, data_ov090_021344f4);
-            return 1;
-        }
+    if (IsGameMode(2) && data_0209f2f8 == 0x12) {
+        unk_3ac = mPosY;
+        unk_374 = mPosX;
+        unk_378 = mPosY;
+        unk_37c = mPosZ;
+        func_ov090_02131e00((MenboState *)this, data_ov090_021344f4);
+        return 1;
     }
 
     {

@@ -1027,6 +1027,52 @@ class NestedEnumAndUnionTests(unittest.TestCase):
         self.assertEqual(rc, 1, out)
         self.assertIn("1 mismatched", out)
 
+    # dActor_c.h's shape: scalar names overlaid on a vector by an anonymous struct
+    # inside an anonymous union, the scalars declared as one comma list.
+    STRUCT_IN_UNION = """struct Widget {
+    u32 first;   /* 0x000 */
+    union {
+        struct {
+            s32 x, y, z;
+        };
+        u32 whole; /* 0x004 */
+    };
+    union {
+        struct {
+            s16 a, b, c;
+        };
+        u16 head;  /* 0x010 */
+    };
+    u32 last;    /* 0x018 */
+};
+"""
+
+    def test_an_anonymous_struct_inside_a_union_is_walked_from_the_union_start(self):
+        rc, out = self._run(self.STRUCT_IN_UNION)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("4 commented fields, 0 mismatched, 0 unparsed, struct spans 0x1c", out)
+        # the union takes its LARGEST member's size: one word too short is caught
+        rc, out = self._run(self.STRUCT_IN_UNION.replace("/* 0x018 */", "/* 0x014 */"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("1 mismatched", out)
+
+    def test_an_unsized_type_inside_the_anonymous_struct_is_unparsed(self):
+        # inside the struct every member advances the offset, so an unknown one
+        # cannot be waved through as "restating the first member"
+        rc, out = self._run(self.STRUCT_IN_UNION.replace(
+            "s16 a, b, c;", "s16 a, b, c;\n            Mystery m;"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("1 unparsed", out)
+
+    def test_a_declarator_list_occupies_one_slot_per_name(self):
+        rc, out = self._run("""struct Widget {
+    u32 a, b, c; /* 0x000 */
+    u32 d;       /* 0x00c */
+};
+""")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("2 commented fields, 0 mismatched, 0 unparsed, struct spans 0x10", out)
+
 
 # ------------------------- allocation methods do not occupy or end instance fields
 

@@ -55,7 +55,7 @@ struct dScMgBomroom_Slot {
     u8  state;        /* +0x0c -- PMF-table index (markers: animating flag) */
     u8  gate;         /* +0x0d -- dispatch gate (markers: drawn/active) */
     u8  idx;          /* +0x0e -- sprite/sub index */
-    u8  level;        /* +0x0f -- see SlotB_State1 */
+    u8 level;         /* +0x0f -- see PenGate_StateOpening */
 };
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
@@ -81,34 +81,34 @@ struct dScMgBomroom_c : dScMgBase_c {
     void Marker_UpdateAll();
     void Marker_Show(int idx);
     void Marker_HideAll();
-    void SlotB2_Finish();
-    void SlotB2_Start();
-    void SlotB2_Draw();
-    void SlotB2_State3(int index);
-    void SlotB2_State2();
-    void SlotB2_State1(int index);
-    void SlotB2_State0(int index);
-    void SlotB2_Update();
-    void SlotB2_Show();
-    void SlotB2_Hide();
-    void SlotB_DrawAll();
-    void SlotB_State3(int index);
-    void SlotB_State2(int index);
-    void SlotB_State1(int index);
-    void SlotB_State0(int index);
-    void SlotB_UpdateAll();
-    void SlotB_ShowAll();
-    void SlotB_Hit(int index);
-    void SlotB_HideAll();
-    void SlotA_DrawAll();
-    void SlotA_State3(int index);
-    void SlotA_State2();
-    void SlotA_State1(int index);
-    void SlotA_State0(int index);
-    void SlotA_UpdateAll();
-    void SlotA_ShowAll();
-    void SlotA_HideAll();
-    void SlotA_Trigger(int index);
+    void TopDoor_Close();
+    void TopDoor_Open();
+    void TopDoor_Draw();
+    void TopDoor_StateClosing(int index);
+    void TopDoor_StateOpen();
+    void TopDoor_StateOpening(int index);
+    void TopDoor_StateShut(int index);
+    void TopDoor_Update();
+    void TopDoor_Show();
+    void TopDoor_Hide();
+    void PenGate_DrawAll();
+    void PenGate_StateClosing(int index);
+    void PenGate_StateHold(int index);
+    void PenGate_StateOpening(int index);
+    void PenGate_StateShut(int index);
+    void PenGate_UpdateAll();
+    void PenGate_ShowAll();
+    void PenGate_Open(int index);
+    void PenGate_HideAll();
+    void HatchPanel_DrawAll();
+    void HatchPanel_StateRevert(int index);
+    void HatchPanel_StateHeld();
+    void HatchPanel_StateAnimate(int index);
+    void HatchPanel_StateIdle(int index);
+    void HatchPanel_UpdateAll();
+    void HatchPanel_ShowAll();
+    void HatchPanel_HideAll();
+    void HatchPanel_Activate(int index);
     void DrawRemaining();
     void CountSortedBombs();
     void OnBombExploded(int picked);
@@ -119,46 +119,49 @@ struct dScMgBomroom_c : dScMgBase_c {
     void Bomb_PushApart(int index);
     void DrawBombs();
     void CheckColorComplete();
-    void Bomb_Roam4();
-    void Bomb_Roam3(int index);
-    void Bomb_Roam2();
-    void Bomb_Roam1(int index);
-    void Bomb_Roam0(int index);
-    void Bomb_State6(int index);
-    void Bomb_State5(int idx);
-    void Bomb_State4(int i);
-    void Bomb_State3(int idx);
-    void Bomb_State2(int idx);
-    void Bomb_State1(int idx);
-    void Bomb_State0(int i);
+    void BombMarch_LinedUp();
+    void BombMarch_ToLine(int index);
+    void BombMarch_Offscreen();
+    void BombMarch_Exit(int index);
+    void BombMarch_ToGate(int index);
+    void Bomb_StateMarch(int index);
+    void Bomb_StateInPen(int idx);
+    void Bomb_StateExploding(int i);
+    void Bomb_StateChainDelay(int idx);
+    void Bomb_StateHeld(int idx);
+    void Bomb_StateWalk(int idx);
+    void Bomb_StateWaiting(int i);
     void UpdateBombs();
     void SpawnBombs();
     void HideExplodedBombs();
     void ClearBombs();
-    void Round_SubState3();
-    void Round_SubState2();
-    int func_ov006_020d8c88();
-    void Round_SubState1();
-    void Round_SubState0();
-    void Round_State4();
-    void Round_State3();
-    void Round_State2();
-    void Round_State1();
-    void Round_State0();
+    void RoundEnd_Finish();
+    void RoundEnd_Tally();
+    int AnyBombMarching();
+    void RoundEnd_WaitLinedUp();
+    void RoundEnd_StartMarch();
+    void Round_StateGameOver();
+    void Round_StateEnd();
+    void Round_StatePlay();
+    void Round_StateStart();
+    void Round_StateSetup();
     void ResetRound();
 
     dScMgBomroom_Bomb mBombs[0x70]; /* 0x4660 -- 0x70 x 0x40 */
-    /* three runs of 0x10-byte slot records; +0x0c/+0x0d are each run's
-       PMF-table index and dispatch gate:
-         mSlotsA    @0x6260 -- data_ov006_02141680 (SlotA_UpdateAll)
-         mSlotsB    @0x6280 -- data_ov006_021416c0 (SlotB_UpdateAll);
-                             [2] is the scene-level slot, dispatched through
-                             data_ov006_02141660 by SlotB2_Update
-         mMarkers   @0x62b0 -- the two HUD sprite markers */
-    dScMgBomroom_Slot mSlotsA[2];  /* 0x6260 */
-    dScMgBomroom_Slot mSlotsB[3];  /* 0x6280 */
-    dScMgBomroom_Slot mMarkers[2]; /* 0x62b0 */
-    s32 mSceneState;               /* 0x62d0 -- round state; 3 once a picked bomb has gone off */
+    /* the 0x10-byte sprite records of the room's animated fixtures (seen in
+       melonDS with each draw stubbed; notes/minigames/runtime-checks.md):
+         mHatchPanels @0x6260 -- the green panels either side of the bomb hatch
+                                 (sBomroomHatchPanelStateTable)
+         mPenGates    @0x6280 -- the gates at each pen's outer edge, indexed by
+                                 bomb colour (sBomroomPenGateStateTable)
+         mTopDoor     @0x62a0 -- the top screen's emblem door
+                                 (sBomroomTopDoorStateTable)
+         mMarkers     @0x62b0 -- two HUD sprite markers */
+    dScMgBomroom_Slot mHatchPanels[2]; /* 0x6260 */
+    dScMgBomroom_Slot mPenGates[2];    /* 0x6280 */
+    dScMgBomroom_Slot mTopDoor;        /* 0x62a0 */
+    dScMgBomroom_Slot mMarkers[2];     /* 0x62b0 */
+    s32 mSceneState;    /* 0x62d0 -- round state; 3 once a picked bomb has gone off */
     s32 mSubState;      /* 0x62d4 -- index into the data_ov006_021416a0 {fptr,adj} pairs */
     s32 mSpawnCount;    /* 0x62d8 -- bombs dropped so far; picks the spawn step */
     s32 mBg2Y;          /* 0x62dc -- BG2 scroll offset, Fix12 */

@@ -29,6 +29,7 @@
 
 #include "common.h"
 #include "daObjFl_London_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "dBgW.h"
@@ -76,27 +77,18 @@ extern "C" daObjFl_London_c *daObjFl_London_c_classInit()
     return new daObjFl_London_c();
 }
 
-/* The 0x1c actor descriptor the profile table points at. Word 0 relocates to
- * the factory above; the rest is the ROM's, read back at 0x02113f4c.
- * The fBase_c constructor passes +4/+6 to behavior/render priority setters.
- * These names describe that use; the retained s16 storage does not establish
- * the original signedness. */
-struct LondonSpawnInfo {
-    daObjFl_London_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    s32 clipOffsetY;
-    s32 clipRadius;
-    s32 clipDistance;
-    s32 farDistance;
-};
-typedef char LondonSpawnInfo_size_must_be_0x1c[sizeof(LondonSpawnInfo) == 0x1c ? 1 : -1];
-
+/* The actor profile the registry points at. Word 0 relocates to the
+ * factory above; the rest is the ROM's, read back at 0x02113f4c. */
 // @symbol g_profile_FL_LONDON
-extern "C" LondonSpawnInfo g_profile_FL_LONDON = {
-    daObjFl_London_c_classInit, 0x0049, 0x0119, 0x00000002,
-    0x00100000, 0x00300000, 0x02000000, 0x00000000
+extern "C" SpawnInfo<daObjFl_London_c> g_profile_FL_LONDON = {
+    daObjFl_London_c_classInit,
+    0x0049,
+    0x0119,
+    0x00000002,
+    0x00100000,
+    0x00300000,
+    0x02000000,
+    0x00000000,
 };
 
 // @symbol _ZN16daObjFl_London_c13InitResourcesEv

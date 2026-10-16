@@ -89,6 +89,15 @@ dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mat, int scale, s16 angY,
 CLPS_Block *clps);
 }
 
+/* One class, six actor IDs (see the banner), so most members branch on
+ * actorID. The ROM materializes each comparison into a register and then
+ * tests that (cmp/moveq #1/movne #0/cmp #0/b); this int-returning predicate
+ * is what asks for that shape -- a bare `if (actorID == 0x11)` folds the test
+ * into the branch and compiles shorter. */
+static inline int IsActorID(dActor_c *actor, int id) {
+    return actor->actorID == id;
+}
+
 /* Emission order is ROM order: functions must stay ROM-ascending.
  * Do not reorder. */
 #pragma defer_codegen off
@@ -160,18 +169,15 @@ void daObjBlockL_c::OnHitByMegaChar(Player &player)
  *
  * Every call is this class's own Kill (slot 31) through an unqualified
  * virtual call; the 0x2e branch calls Kill and falls through without
- * returning. `int b = (actorID == 0x2e);` / `b = (actorID == 0x11);`
- * materialize the bools the ROM materializes -- load-bearing
- * (cpp-bool-widening-cast). */
+ * returning. */
 void daObjBlockL_c::OnKicked(dActor_c &other)
 {
     int p1;
-    int b = (actorID == 0x2e);
-    if (b) Kill();
+    if (IsActorID(this, 0x2e))
+        Kill();
     p1 = other.param1;
     if (p1 == 3) return;
-    b = (actorID == 0x11);
-    if (b) {
+    if (IsActorID(this, 0x11)) {
         if (p1 != 2) return;
         Kill();
     } else {
@@ -181,13 +187,10 @@ void daObjBlockL_c::OnKicked(dActor_c &other)
 
 // @symbol _ZN13daObjBlockL_c11OnAttacked2ER8dActor_c
 /* Vtable slot 23. Both branches call this class's own Kill (slot 31)
- * through an unqualified virtual call. `int b = (actorID == 0x11);`
- * materializes the bool the ROM materializes -- load-bearing
- * (cpp-bool-widening-cast). */
+ * through an unqualified virtual call. */
 int daObjBlockL_c::OnAttacked2(dActor_c &other)
 {
-    int b = (actorID == 0x11);
-    if (b) {
+    if (IsActorID(this, 0x11)) {
         if (other.param1 != 2) return;
         Kill();
         return;
@@ -197,13 +200,11 @@ int daObjBlockL_c::OnAttacked2(dActor_c &other)
 
 // @symbol _ZN13daObjBlockL_c11OnAttacked1ER8dActor_c
 /* Vtable slot 22; `other` is never read. The single call is this class's
- * own Kill (slot 31) through an unqualified virtual call. `int b =
- * (actorID == 0x11);` materializes the bool the ROM materializes --
- * load-bearing (cpp-bool-widening-cast). */
+ * own Kill (slot 31) through an unqualified virtual call. */
 int daObjBlockL_c::OnAttacked1(dActor_c &other)
 {
-    int b = (actorID == 0x11);
-    if (b) return;
+    if (IsActorID(this, 0x11))
+        return;
     Kill();
 }
 
@@ -211,17 +212,11 @@ int daObjBlockL_c::OnAttacked1(dActor_c &other)
 /* Vtable slot 21. Both branches call this class's own Kill (slot 31)
  * through an unqualified virtual call. Neither branch sets r0, so the bare
  * `return;` in this `void` override compiles to the same bytes as the ROM's
- * stub, which never touches r0 either.
- *
- * `int b = (actorID == 0x11);` materializes the bool into a temporary
- * before branching on it -- load-bearing (cpp-bool-widening-cast): writing
- * the comparison directly as `if (actorID == 0x11)` compiles 3
- * instructions shorter than the ROM. */
+ * stub, which never touches r0 either. */
 void daObjBlockL_c::OnGroundPounded(dActor_c &other)
 {
     if (other.param1 == 3) return;
-    int b = (actorID == 0x11);
-    if (b) {
+    if (IsActorID(this, 0x11)) {
         if (other.param1 != 2) return;
         Kill();
     } else {
@@ -250,13 +245,11 @@ void daObjBlockL_c::OnGroundPounded(dActor_c &other)
  *         destroying itself, because Behavior re-enables it from the event bit.
  *         Every other id falls through to MarkForDestruction.
  *
- * THE COMPARISON INTERMEDIATES ARE LOAD-BEARING, all five of them. `if (actorID
- * == 0x11)` folds the test into the branch -- cmp/beq, two instructions. The ROM
- * materialises the comparison into a register first and then tests THAT:
- * cmp/moveq #1/movne #0/cmp #0/b, five. Writing the int is what asks for the
- * second shape. Argued in full in src/game/actors/d_a_obj_fall_block.cpp; here the
- * first one is doubly load-bearing, because the else-branch reuses the very
- * register it was materialised into for `isF || is11`.
+ * The ROM materialises every actorID comparison into a register first and
+ * then tests THAT (see IsActorID above; argued in full in
+ * src/game/actors/d_a_obj_fall_block.cpp). is11 and isF stay named locals:
+ * the else-branch reuses the very register is11 was materialised into for
+ * `isF || is11`, and spelling isF through IsActorID breaks that.
  *
  * The last Vector3 is memberwise on purpose: Vector3 declares a destructor
  * (types.h), so a whole-object assignment compiles to an ldm/stm pair, four
@@ -308,13 +301,11 @@ void daObjBlockL_c::Kill()
     }
 
     u32 kind = 0xa;
-    int f11 = (actorID == 0x11);
-    if (f11) {
+    if (IsActorID(this, 0x11)) {
         pos.y = mPosY + 0x96000;
         kind = 0xf;
     }
-    int f2e = (actorID == 0x2e);
-    if (f2e) {
+    if (IsActorID(this, 0x2e)) {
         kind = 0x48;
     }
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kind, pos.x, pos.y, pos.z);
@@ -328,8 +319,7 @@ void daObjBlockL_c::Kill()
 
     NotifyLinkedActor();
 
-    int f13 = (actorID == 0x13);
-    if (f13) {
+    if (IsActorID(this, 0x13)) {
         mBroken = 1;
         return;
     }
@@ -353,27 +343,26 @@ int daObjBlockL_c::CleanupResources()
 // @symbol _ZN13daObjBlockL_c6RenderEv
 int daObjBlockL_c::Render()
 {
-  int b = (actorID == 0x13);
-  if (b != 0) {
-    if (!(Event::GetBit(mEventID) != 0 && mBroken == 0)) {
-      return 1;
-    } else {
-      if (mSwitch != 0) {
-        unsigned short d = (unsigned short)(mSwitch->mTimeLimit - mSwitch->mTimer);
-        if (d < 0x2d) {
-          if ((d & 1) != 0) return 1;
+    if (IsActorID(this, 0x13)) {
+        if (!(Event::GetBit(mEventID) != 0 && mBroken == 0)) {
+            return 1;
+        } else {
+            if (mSwitch != 0) {
+                unsigned short d = (unsigned short)(mSwitch->mTimeLimit - mSwitch->mTimer);
+                if (d < 0x2d) {
+                    if ((d & 1) != 0)
+                        return 1;
+                }
+            }
         }
-      }
     }
-  }
-  int b2 = (actorID == 0x10);
-  if (b2 != 0) {
-    RawVector3 v = *(RawVector3 *)&data_ov002_021089e0;
-    mModel.Render((Vector3 *)&v);
-  } else {
-    mModel.Render(0);
-  }
-  return 1;
+    if (IsActorID(this, 0x10)) {
+        RawVector3 v = *(RawVector3 *)&data_ov002_021089e0;
+        mModel.Render((Vector3 *)&v);
+    } else {
+        mModel.Render(0);
+    }
+    return 1;
 }
 
 // @symbol _ZN13daObjBlockL_c8BehaviorEv
@@ -382,8 +371,7 @@ int daObjBlockL_c::Render()
    as raw ABI. */
 int daObjBlockL_c::Behavior()
 {
-    int is13 = (int)(actorID == 0x13);
-    if (is13 != 0) {
+    if (IsActorID(this, 0x13)) {
         if (mPrevEventBit != Event::GetBit(mEventID))
             mBroken = 0;
 
@@ -407,10 +395,7 @@ int daObjBlockL_c::Behavior()
     } else {
         int v1 = 0x15e000;
         int v5 = 0x64000;
-        int t;
-        if ((t = (int)(actorID == 0x10)) != 0 ||
-            (t = (int)(actorID == 0x11)) != 0 ||
-            (t = (int)(actorID == 0x2e)) != 0) {
+        if (IsActorID(this, 0x10) || IsActorID(this, 0x11) || IsActorID(this, 0x2e)) {
             v1 = 0x1c2000;
             v5 = 0x96000;
         }
@@ -433,10 +418,10 @@ int daObjBlockL_c::Behavior()
  *
  * The two tail cases return 0 -- refuse to spawn: a 0x11 block whose star is
  * already taken when the player is entering level 1, and a 0x2e block above
- * y 0xdac000 in level 7 once star 1 is collected.
+ * y 0xdac000 in level 7 until star 1 is collected (or when data_0209f220 is 1).
  *
- * The redundant compares and the reloaded actorID are the ROM's, not
- * tidiness lost in translation: folding them changes the compare shape.
+ * Each actorID test after the switch re-reads actorID through IsActorID; the
+ * switch's own copy is not reused, and folding them changes the compare shape.
  * dBgW_KcMbg::SetFile takes Fix12<int> by value (wall 6az) so it stays an
  * extern-C mangled free function.
  */
@@ -458,10 +443,7 @@ int daObjBlockL_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
-    {
-    int is11 = actorID;
-    is11 = is11 == 0x11;
-    if (is11 != 0) {
+    if (IsActorID(this, 0x11)) {
         int byte1;
         mStarID = param1;
         byte1 = (param1 >> 8) & 0xff;
@@ -470,13 +452,10 @@ int daObjBlockL_c::InitResources()
         if (mStarID != 0 && byte1 == 0xff)
             mTrackStarID = TrackStar(mStarID, 2);
     }
-    }
 
     idx = mVariant;
     if (idx <= 1) {
-        int is10 = actorID;
-        is10 = is10 == 0x10;
-        if (is10 != 0) {
+        if (IsActorID(this, 0x10)) {
             KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
             _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
                 &mMeshCollider, kcl, &mClsnMat, 0x1800, mAngleY,
@@ -494,40 +473,26 @@ int daObjBlockL_c::InitResources()
             data_ov002_02108ab8[idx].block);
     }
 
-    {
-    int is13 = actorID;
-    is13 = is13 == 0x13;
-    if (is13 != 0)
+    if (IsActorID(this, 0x13))
         mEventID = param1 & 0xf;
-    }
     mPrevEventBit = Event::GetBit(mEventID);
 
     {
     Player *pl = ClosestPlayer();
     if (pl != 0 && pl->IsEnteringLevel() != 0) {
-        int is11b = actorID;
-        is11b = is11b == 0x11;
-        if (is11b != false && HasNonzeroAngleX()) {
+        if (IsActorID(this, 0x11) && HasNonzeroAngleX()) {
             if (data_0209f2f8 == 1)
                 return 0;
         }
     }
     }
 
-    {
-    int is2e = actorID;
-    is2e = is2e == 0x2e;
-    if (is2e != false && data_0209f2f8 == 7) {
-        if (data_0209f220 != 1) {
-            if (IsStarCollectedInCurLevel(1) != 0)
-                goto ret1;
+    if (IsActorID(this, 0x2e) && data_0209f2f8 == 7) {
+        if (data_0209f220 == 1 || IsStarCollectedInCurLevel(1) == 0) {
+            if (mPosY >= 0xdac000)
+                return 0;
         }
-        if (mPosY >= 0xdac000)
-            return 0;
     }
-    }
-
-ret1:
     return 1;
 }
 

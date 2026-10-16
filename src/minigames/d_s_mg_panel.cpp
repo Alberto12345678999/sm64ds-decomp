@@ -16,8 +16,8 @@
  * (the address is the method name; no ROM spelling survives), declared in
  * dScMgPanel_c.h. Each body opens by re-viewing `this` under the type it used
  * to take, so the local struct views and raw-offset accesses are unchanged.
- * The three empty handlers Shake_State0, Banner_State2 and
- * IntroCard_State4 are members too: the state tables point at them. The
+ * The three empty handlers Shake_StateIdle, Banner_StateIdle and
+ * IntroCard_StateDone are members too: the state tables point at them. The
  * `_ac4`-style suffixes on the local struct tags only keep each helper's
  * view apart.
  *
@@ -27,16 +27,16 @@
  *   with p->x / p->show / p++ DIFFs. The 0x18 byte step stays.
  * - Scroll_Update, Scroll_Start: `PanelScroll *` at 0x4694
  *   DIFFs. Scroll_Stop's one `on` store matches.
- * - Input_State3, UpdateMoves: mWidth and mDelay stay raw;
+ * - Answer_StateFlipSolution, UpdateMoves: mWidth and mDelay stay raw;
  *   `(u16 *)(int)&mDelay` then an s16 compare DIFFs by 25 words.
- * - Input_State2, Input_State1, Scene_State7,
- *   Scene_State5, Scene_State4, Scene_State2: mKind
+ * - Answer_StateFindSolution, Answer_StateResetBoard, Scene_StateGameOver,
+ *   Scene_StateShowAnswer, Scene_StateRewind, Scene_StatePlay: mKind
  *   and mCount (and mFace, mDelay where used) DIFF as members.
  * - CheckSolved: the mFace / mGoal compare DIFFs as members.
  * - UpdateTouch, FlipAt, Panel_StartAll: mWidth
  *   DIFFs as a member; so does mKind in Panel_StartAll.
  * - DrawPanels, UpdateTouch keep their own local struct
- *   views; Scene_State6 and FlipAt's mFace flip go
+ *   views; Scene_StateResult and FlipAt's mFace flip go
  *   through a computed byte pointer. Not tried.
  */
 
@@ -349,9 +349,8 @@ void dScMgPanel_c::EnableOverlayLayer()
     data_0209d454[0] |= 1;
 }
 
-// @symbol _ZN12dScMgPanel_c12Shake_State2Ei
-void dScMgPanel_c::Shake_State2(int index)
-{
+// @symbol _ZN12dScMgPanel_c18Shake_StateLoseTryEi
+void dScMgPanel_c::Shake_StateLoseTry(int index) {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     extern u8 data_0209d454;
@@ -380,13 +379,12 @@ void dScMgPanel_c::Shake_State2(int index)
     SetSubBg0Offset(0, *(int *)(scene + 0x468c + n));
 }
 
-// @symbol _ZN12dScMgPanel_c12Shake_State1Ei
+// @symbol _ZN12dScMgPanel_c16Shake_StateShakeEi
 extern "C" {
 void SetSubBg0Offset(int a, int b);
 
 }
-void dScMgPanel_c::Shake_State1(int index)
-{
+void dScMgPanel_c::Shake_StateShake(int index) {
     char *scene = (char *)this;
     extern int data_ov006_0212ecec[];
     int m = index * 0xc;
@@ -411,10 +409,8 @@ void dScMgPanel_c::Shake_State1(int index)
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Shake_State0Ei
-void dScMgPanel_c::Shake_State0(int index)
-{
-}
+// @symbol _ZN12dScMgPanel_c15Shake_StateIdleEi
+void dScMgPanel_c::Shake_StateIdle(int index) {}
 
 // @symbol _ZN12dScMgPanel_c12Shake_UpdateEv
 extern "C" {
@@ -427,10 +423,10 @@ struct PanelC_ac4 {
 void dScMgPanel_c::Shake_Update()
 {
     PanelC_ac4 *c = (PanelC_ac4 *)this;
-    extern PanelStateFnI data_ov006_021427bc[];
+    extern PanelStateFnI sPanelShakeStateTable[];
     if (c->guard == 0) return;
     int j = c->idx;
-    (((dScMgPanel_c *)c)->*data_ov006_021427bc[j])(0);
+    (((dScMgPanel_c *)c)->*sPanelShakeStateTable[j])(0);
 }
 
 // @symbol _ZN12dScMgPanel_c11Shake_StartEv
@@ -464,14 +460,11 @@ void dScMgPanel_c::Banner_Draw()
                         self->mBanner.y >> 12, 0);
 }
 
-// @symbol _ZN12dScMgPanel_c13Banner_State2Ev
-void dScMgPanel_c::Banner_State2()
-{
-}
+// @symbol _ZN12dScMgPanel_c16Banner_StateIdleEv
+void dScMgPanel_c::Banner_StateIdle() {}
 
-// @symbol _ZN12dScMgPanel_c13Banner_State1Ev
-void dScMgPanel_c::Banner_State1()
-{
+// @symbol _ZN12dScMgPanel_c18Banner_StateSettleEv
+void dScMgPanel_c::Banner_StateSettle() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     u16 *p = &self->mBanner.hold;
@@ -485,9 +478,8 @@ void dScMgPanel_c::Banner_State1()
     self->mBanner.state = 2;
 }
 
-// @symbol _ZN12dScMgPanel_c13Banner_State0Ev
-void dScMgPanel_c::Banner_State0()
-{
+// @symbol _ZN12dScMgPanel_c17Banner_StatePopUpEv
+void dScMgPanel_c::Banner_StatePopUp() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     u16 *h = &self->mBanner.hold;
@@ -505,7 +497,7 @@ void dScMgPanel_c::Banner_State0()
 void dScMgPanel_c::Banner_Update()
 {
     char *scene = (char *)this;
-    extern PanelStateFn data_ov006_021427ec[];
+    extern PanelStateFn sPanelBannerStateTable[];
     u16 *ip;
     if (*(u8 *)(scene + 0x4000 + 0x684) == 0) return;
     ip = (u16 *)(scene + 0x4680);
@@ -518,7 +510,7 @@ void dScMgPanel_c::Banner_Update()
     }
     {
         dScMgPanel_c *cc = (dScMgPanel_c *)scene;
-        (cc->*data_ov006_021427ec[*(u8 *)(scene + 0x4000 + 0x686)])();
+        (cc->*sPanelBannerStateTable[*(u8 *)(scene + 0x4000 + 0x686)])();
     }
 }
 
@@ -608,14 +600,11 @@ void dScMgPanel_c::SetSlideFlag()
     s->mSlideFlag = 1;
 }
 
-// @symbol _ZN12dScMgPanel_c16IntroCard_State4Ev
-void dScMgPanel_c::IntroCard_State4()
-{
-}
+// @symbol _ZN12dScMgPanel_c19IntroCard_StateDoneEv
+void dScMgPanel_c::IntroCard_StateDone() {}
 
-// @symbol _ZN12dScMgPanel_c16IntroCard_State3Ev
-void dScMgPanel_c::IntroCard_State3()
-{
+// @symbol _ZN12dScMgPanel_c23IntroCard_StateSlideOutEv
+void dScMgPanel_c::IntroCard_StateSlideOut() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     s->mSlide += s->mSlideVel;
@@ -638,9 +627,8 @@ void dScMgPanel_c::IntroCard_State3()
     Sound::PlayBank2_2D(0x1fb);
 }
 
-// @symbol _ZN12dScMgPanel_c16IntroCard_State2Ev
-void dScMgPanel_c::IntroCard_State2()
-{
+// @symbol _ZN12dScMgPanel_c19IntroCard_StateHoldEv
+void dScMgPanel_c::IntroCard_StateHold() {
     u8 *scene = (u8 *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     if (s->mHold != 0) {
@@ -653,9 +641,8 @@ void dScMgPanel_c::IntroCard_State2()
     }
 }
 
-// @symbol _ZN12dScMgPanel_c16IntroCard_State1Ev
-void dScMgPanel_c::IntroCard_State1()
-{
+// @symbol _ZN12dScMgPanel_c22IntroCard_StateSlideInEv
+void dScMgPanel_c::IntroCard_StateSlideIn() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     s->mSlide += s->mSlideVel;
@@ -666,9 +653,8 @@ void dScMgPanel_c::IntroCard_State1()
     s->mHold = 0x80;
 }
 
-// @symbol _ZN12dScMgPanel_c16IntroCard_State0Ev
-void dScMgPanel_c::IntroCard_State0()
-{
+// @symbol _ZN12dScMgPanel_c20IntroCard_StateStartEv
+void dScMgPanel_c::IntroCard_StateStart() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     s->mSlide = 0x110000;
@@ -685,9 +671,9 @@ struct PanelC_0bc { char pad[0x4674]; u8 guard; u8 idx; };
 void dScMgPanel_c::IntroCard_Update()
 {
     PanelC_0bc *c = (PanelC_0bc *)this;
-    extern PanelStateFn data_ov006_02142860[];
+    extern PanelStateFn sPanelIntroCardStateTable[];
     if (!c->guard) return;
-    (((dScMgPanel_c *)c)->*data_ov006_02142860[c->idx])();
+    (((dScMgPanel_c *)c)->*sPanelIntroCardStateTable[c->idx])();
 }
 
 // @symbol _ZN12dScMgPanel_c15IntroCard_StartEv
@@ -704,27 +690,29 @@ void dScMgPanel_c::StartSolveCheck()
 {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
-    if (*(u8 *)(scene + 0x4fe9) != 0) return;
-    if (*(int *)(scene + 0x4ca8) == 6) return;
-    if (*(u8 *)(scene + 0x4fe1) < *(u8 *)(scene + 0x4fde)) return;
+    if (mBusy != 0)
+        return;
+    if (mState == 6)
+        return;
+    if (*(u8 *)(scene + 0x4fe1) < mFlipCount)
+        return;
 
     func_02012790(0xe);
     EnableOverlayLayer();
 
     if (s->mCredits > 1) {
-        *(int *)(scene + 0x4ca8) = 3;
+        mState = 3;
         CountMatches();
     } else {
         *(u8 *)(scene + 0x4fe6) = 0;
         CountMatches();
-        *(int *)(scene + 0x4ca8) = 6;
+        mState = 6;
         *(s16 *)(scene + 0x4ec0) = 0x50;
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Input_State3Ev
-void dScMgPanel_c::Input_State3()
-{
+// @symbol _ZN12dScMgPanel_c24Answer_StateFlipSolutionEv
+void dScMgPanel_c::Answer_StateFlipSolution() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     int index;
@@ -784,9 +772,8 @@ void dScMgPanel_c::Input_State3()
     (*(u8 *)(int)(scene + 0x4fe5))++;
 }
 
-// @symbol _ZN12dScMgPanel_c12Input_State2Ev
-void dScMgPanel_c::Input_State2()
-{
+// @symbol _ZN12dScMgPanel_c24Answer_StateFindSolutionEv
+void dScMgPanel_c::Answer_StateFindSolution() {
     Ov006M8c *scene = (Ov006M8c *)this;
     extern u8 *data_ov006_0213e070[];
     extern u8 *data_ov006_0213ded0[];
@@ -909,9 +896,8 @@ void dScMgPanel_c::Input_State2()
     *(u8 *)(c + 0x4fe5) = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c12Input_State1Ev
-void dScMgPanel_c::Input_State1()
-{
+// @symbol _ZN12dScMgPanel_c22Answer_StateResetBoardEv
+void dScMgPanel_c::Answer_StateResetBoard() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     if (((u16 *)(scene + 0x4e00))[0x62] != 0) {
@@ -932,7 +918,7 @@ void dScMgPanel_c::Input_State1()
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Input_State0Ev
+// @symbol _ZN12dScMgPanel_c22Answer_StateWaitButtonEv
 extern "C" {
 typedef struct WarpEntry_730 {
     u8 a;
@@ -942,8 +928,7 @@ typedef struct WarpEntry_730 {
 } WarpEntry_730;
 
 }
-void dScMgPanel_c::Input_State0()
-{
+void dScMgPanel_c::Answer_StateWaitButton() {
     char *c = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)c;
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
@@ -985,7 +970,7 @@ void dScMgPanel_c::Input_State0()
     s->mDelay = 0x20;
 }
 
-// @symbol _ZN12dScMgPanel_c12Input_UpdateEv
+// @symbol _ZN12dScMgPanel_c13Answer_UpdateEv
 extern "C" {
 struct PanelB_7f0 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -1001,12 +986,11 @@ struct PanelB_7f0 {
 };
 struct PanelC_7f0 : PanelB_7f0 { char pad[0x4fdc]; u8 idx; };
 }
-void dScMgPanel_c::Input_Update()
-{
+void dScMgPanel_c::Answer_Update() {
     PanelC_7f0 *c = (PanelC_7f0 *)this;
-    extern PanelStateFn data_ov006_02142820[];
+    extern PanelStateFn sPanelAnswerStateTable[];
     if (c->m() != 0) return;
-    (((dScMgPanel_c *)c)->*data_ov006_02142820[c->idx])();
+    (((dScMgPanel_c *)c)->*sPanelAnswerStateTable[c->idx])();
     Banner_Update();
 }
 
@@ -1017,7 +1001,7 @@ void dScMgPanel_c::UpdateMoves()
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     if (*(u16 *)(scene + 0x4ec4) != 0) {
         (*(u16 *)(int)(scene + 0x4ec4))--;
-        if (*(s16 *)(scene + 0x4ec4) < 0)
+        if (mDelay < 0)
             *(u16 *)(scene + 0x4ec4) = 0;
         return;
     }
@@ -1038,7 +1022,7 @@ void dScMgPanel_c::UpdateMoves()
 
     if (*(u8 *)(scene + 0x4fe4) == 0xff) {
         *(u8 *)(scene + 0x4fe4) = 0;
-        *(int *)(scene + 0x4ca8) = 2;
+        mState = 2;
         SetSlideFlag();
         ReloadSlideDelay();
         return;
@@ -1048,7 +1032,7 @@ void dScMgPanel_c::UpdateMoves()
 
     if (*(u8 *)(scene + 0x4fe4) == 0xff) {
         *(u8 *)(scene + 0x4fe4) = 0;
-        *(int *)(scene + 0x4ca8) = 2;
+        mState = 2;
         *(u8 *)(scene + 0x4fe1) = 0;
         SetSlideFlag();
         ReloadSlideDelay();
@@ -1059,7 +1043,7 @@ void dScMgPanel_c::UpdateMoves()
         u8 slot = *(u8 *)(scene + 0x4fe4);
         int hq = 3;
         int index = *(u8 *)(scene + slot + 0x4fce);
-        int w = *(int *)(scene + 0x4cbc);
+        int w = mWidth;
         int wq = 3;
         int col = index % w;
         int row = index / w;
@@ -1076,7 +1060,7 @@ void dScMgPanel_c::UpdateMoves()
 
         for (y = 0; y < hq; y++) {
             for (x = 0; x < wq; x++) {
-                int cell = *(int *)(scene + 0x4cbc) * (row + y) + (col + x);
+                int cell = mWidth * (row + y) + (col + x);
                 *(u8 *)(scene + cell + 0x4efa) = 1;
                 s->mFace[cell] ^= 1;
                 *(u16 *)(scene + cell * 2 + 0x4e78) = 8;
@@ -1202,7 +1186,8 @@ void dScMgPanel_c::CheckSolved()
     int i;
     int n;
     int tmp;
-    if (*(u8 *)(scene + 0x4fe9) == 0) return;
+    if (mBusy == 0)
+        return;
     if (*(u8 *)(scene + 0x4feb) == 0) return;
     /* Laundered volatile round trip: the `(int)` cast and the volatile are both
        load-bearing -- they are what turns this decrement into the ROM's
@@ -1255,7 +1240,7 @@ void dScMgPanel_c::UpdateTouch()
     int i;
     int tx, ty;
 
-    if (*(u8 *)(scene + 0x4fe9) != 0)
+    if (mBusy != 0)
         return;
 
     lvl = gActivePlayerSlot;
@@ -1286,7 +1271,7 @@ void dScMgPanel_c::UpdateTouch()
 
             *(u8 *)(scene + *(u8 *)(scene + 0x4fe4) + 0x4fce) = i;
             (*(u8 *)(int)(scene + 0x4fe4))++;
-            w = *(int *)(scene + 0x4cbc);
+            w = mWidth;
             col = i % w;
             row = i / w;
 
@@ -1305,7 +1290,7 @@ void dScMgPanel_c::UpdateTouch()
                 for (y = 0; y < hq; y++) {
                     int x;
                     for (x = 0; x < wq; x++) {
-                        int index = *(int *)(scene + 0x4cbc) * (row + y) + (col + x);
+                        int index = mWidth * (row + y) + (col + x);
                         ((dScMgPanel_c *)scene)->mKind[index] = 1;
                         ((dScMgPanel_c *)scene)->mFace[index] ^= 1;
                         *(u16 *)(scene + index * 2 + 0x4e78) = 8;
@@ -1338,14 +1323,14 @@ void dScMgPanel_c::ShowAllPanels()
 // @symbol _ZN12dScMgPanel_c6FlipAtEi
 extern "C" {
 /* Flip the faces in the 3x3 neighbourhood centred on panel `idx`, clipped at
-   the board edges.  The same walk appears in Input_State3,
+   the board edges.  The same walk appears in Answer_StateFlipSolution,
    UpdateMoves and UpdateTouch; only this one touches the face
    table alone. */
 }
 void dScMgPanel_c::FlipAt(int index)
 {
     char *scene = (char *)this;
-    int w = *(int *)(scene + 0x4cbc);
+    int w = mWidth;
     int wq = 3;
     int hq = 3;
     int col = index % w;
@@ -1359,7 +1344,7 @@ void dScMgPanel_c::FlipAt(int index)
     int y, x;
     for (y = 0; y < hq; y++) {
         for (x = 0; x < wq; x++) {
-            u8 *p = (u8 *)((((int)scene + ((*(int *)(scene + 0x4cbc)) * (row + y) + (col + x))) + 0x4f1e));
+            u8 *p = (u8 *)((((int)scene + ((mWidth) * (row + y) + (col + x))) + 0x4f1e));
             *p ^= 1;
         }
     }
@@ -1610,7 +1595,7 @@ void dScMgPanel_c::ResetRound()
         ((dScMgPanel_c *)scene)->mVisible[i] = 0;
         *(char *)(scene + i + 0x4f8a) = 0;
     }
-    *(int *)(scene + 0x4ca8) = 0;
+    mState = 0;
     *(char *)(scene + 0x4fe9) = 0;
     *(s16 *)(scene + 0x4ec0) = 0;
     *(s16 *)(scene + 0x4ec2) = 0;
@@ -1653,14 +1638,13 @@ void dScMgPanel_c::Panel_StartAll()
 {
     char *scene = (char *)this;
     int i;
-    for (i = 0; i < *(int *)(scene + 0x4cbc); i++) {
+    for (i = 0; i < mWidth; i++) {
         *(u8 *)(scene + i + 0x4efa) = 3;
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Panel_State3Ei
-void dScMgPanel_c::Panel_State3(int index)
-{
+// @symbol _ZN12dScMgPanel_c15Panel_StateFallEi
+void dScMgPanel_c::Panel_StateFall(int index) {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     int old = s->mY[index];
@@ -1701,9 +1685,8 @@ void dScMgPanel_c::Panel_State3(int index)
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Panel_State2Ei
-void dScMgPanel_c::Panel_State2(int idx)
-{
+// @symbol _ZN12dScMgPanel_c16Panel_StateBlinkEi
+void dScMgPanel_c::Panel_StateBlink(int idx) {
     char *c = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)c;
     u16 *timers = (u16 *)(int)(c + 0x4e30);
@@ -1729,7 +1712,7 @@ void dScMgPanel_c::Panel_State2(int idx)
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Panel_State1Ei
+// @symbol _ZN12dScMgPanel_c15Panel_StateFlipEi
 #pragma push
 #pragma opt_common_subs off
 /*
@@ -1749,8 +1732,7 @@ void dScMgPanel_c::Panel_State2(int idx)
  * byte is read, and the limit compare is unsigned.
  */
 
-void dScMgPanel_c::Panel_State1(int index)
-{
+void dScMgPanel_c::Panel_StateFlip(int index) {
     char *scene = (char *)this;
     u8 *cnt = (u8 *)(scene + 0x4fe9);
 
@@ -1785,28 +1767,26 @@ void dScMgPanel_c::Panel_State1(int index)
 }
 #pragma pop
 
-// @symbol _ZN12dScMgPanel_c12Panel_State0Ei
-void dScMgPanel_c::Panel_State0(int index)
-{
+// @symbol _ZN12dScMgPanel_c15Panel_StateIdleEi
+void dScMgPanel_c::Panel_StateIdle(int index) {
     char *scene = (char *)this;
     char *base = scene + index + 0x4000;
     base[0xf8a] = 0;
 }
 
-// @symbol _ZN12dScMgPanel_c12Scene_State7Ev
+// @symbol _ZN12dScMgPanel_c19Scene_StateGameOverEv
 extern "C" {
 struct PanelPmfRec_bc0 { int off; int adj; };
 typedef void (*PanelPmfFn_bc0)(void *, int);
 
 }
-void dScMgPanel_c::Scene_State7()
-{
+void dScMgPanel_c::Scene_StateGameOver() {
     char *scene = (char *)this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
-    for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
+    for (i = 0; i < mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        struct PanelPmfRec_bc0 *e = (struct PanelPmfRec_bc0 *)&data_ov006_02142840[index];
+        struct PanelPmfRec_bc0 *e = (struct PanelPmfRec_bc0 *)&sPanelPanelStateTable[index];
         int adj = e->adj;
         char *thisp = scene + (adj >> 1);
         PanelPmfFn_bc0 fn;
@@ -1827,17 +1807,16 @@ void dScMgPanel_c::Scene_State7()
     ClearSlideFlag();
 }
 
-// @symbol _ZN12dScMgPanel_c12Scene_State6Ev
+// @symbol _ZN12dScMgPanel_c17Scene_StateResultEv
 #pragma push
 #pragma opt_propagation off
 extern "C" {
 
 }
-void dScMgPanel_c::Scene_State6()
-{
+void dScMgPanel_c::Scene_StateResult() {
     char *scene = (char *)this;
-    extern PanelStateFnI data_ov006_02142840[];
-// local extern: see above.
+    extern PanelStateFnI sPanelPanelStateTable[];
+    // local extern: see above.
     extern u8 gActivePlayerSlot;
 // local extern: see above.
     extern u8 gTouchHeld[];
@@ -1850,15 +1829,15 @@ void dScMgPanel_c::Scene_State6()
     IntroCard_Update();
     found = 0;
     i = found;
-    n = *(int *)(scene + 0x4000 + 0xcb8);
+    n = mCount;
     if (n > 0) {
         do {
             u8 *p = (u8 *)(scene + i + 0x4efa);
-            (((dScMgPanel_c *)scene)->*data_ov006_02142840[*p])(i);
+            (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[*p])(i);
             i++;
             if (*p != 0)
                 found++;
-            n = *(int *)(scene + 0x4000 + 0xcb8);
+            n = mCount;
         } while (i < n);
     }
     if (found != 0)
@@ -1905,7 +1884,7 @@ void dScMgPanel_c::Scene_State6()
             return;
         }
         *(u16 *)(scene + 0x4e00 + 0xc0) = 0x10;
-        *(int *)(scene + 0x4000 + 0xca8) = 7;
+        mState = 7;
         Panel_StartAll();
         return;
     }
@@ -1920,41 +1899,38 @@ void dScMgPanel_c::Scene_State6()
 }
 #pragma pop
 
-// @symbol _ZN12dScMgPanel_c12Scene_State5Ev
-void dScMgPanel_c::Scene_State5()
-{
+// @symbol _ZN12dScMgPanel_c21Scene_StateShowAnswerEv
+void dScMgPanel_c::Scene_StateShowAnswer() {
     char *scene = (char *)this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
     IntroCard_Update();
-    Input_Update();
-    for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
+    Answer_Update();
+    for (i = 0; i < mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        (((dScMgPanel_c *)scene)->*data_ov006_02142840[index])(i);
+        (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[index])(i);
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Scene_State4Ev
-void dScMgPanel_c::Scene_State4()
-{
+// @symbol _ZN12dScMgPanel_c17Scene_StateRewindEv
+void dScMgPanel_c::Scene_StateRewind() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
     IntroCard_Update();
     self->mBusy = 1;
     UpdateMoves();
     for (i = 0; i < self->mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        (((dScMgPanel_c *)scene)->*data_ov006_02142840[index])(i);
+        (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[index])(i);
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Scene_State3Ev
-void dScMgPanel_c::Scene_State3()
-{
+// @symbol _ZN12dScMgPanel_c21Scene_StateShowMissesEv
+void dScMgPanel_c::Scene_StateShowMisses() {
     dScMgPanel_c *scene = this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     u8 index;
     int found;
     int i;
@@ -1963,7 +1939,7 @@ void dScMgPanel_c::Scene_State3()
     scene->mBusy = 1;
     for (i = 0; i < scene->mCount; i++) {
         index = scene->mKind[i];
-        (scene->*data_ov006_02142840[index])(i);
+        (scene->*sPanelPanelStateTable[index])(i);
         if (index != 0)
             found++;
     }
@@ -1974,11 +1950,10 @@ void dScMgPanel_c::Scene_State3()
     }
 }
 
-// @symbol _ZN12dScMgPanel_c12Scene_State2Ev
-void dScMgPanel_c::Scene_State2()
-{
+// @symbol _ZN12dScMgPanel_c15Scene_StatePlayEv
+void dScMgPanel_c::Scene_StatePlay() {
     dScMgPanel_c *scene = this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
     char *b = (char *)scene;
     UpdateTouch();
@@ -1986,16 +1961,15 @@ void dScMgPanel_c::Scene_State2()
     *(u8 *)(b + 0x4fe9) = 0;
     for (i = 0; i < *(int *)(b + 0x4cb8); i++) {
         u8 index = *(u8 *)(b + i + 0x4efa);
-        (scene->*data_ov006_02142840[index])(i);
+        (scene->*sPanelPanelStateTable[index])(i);
     }
     CheckSolved();
     CountFlipping();
     StartSolveCheck();
 }
 
-// @symbol _ZN12dScMgPanel_c12Scene_State1Ev
-void dScMgPanel_c::Scene_State1()
-{
+// @symbol _ZN12dScMgPanel_c16Scene_StateIntroEv
+void dScMgPanel_c::Scene_StateIntro() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     if (self->mIntro == 0) {
@@ -2013,9 +1987,8 @@ void dScMgPanel_c::Scene_State1()
     self->mState = 2;
 }
 
-// @symbol _ZN12dScMgPanel_c12Scene_State0Ev
-void dScMgPanel_c::Scene_State0()
-{
+// @symbol _ZN12dScMgPanel_c15Scene_StateInitEv
+void dScMgPanel_c::Scene_StateInit() {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     IntroCard_Start();
@@ -2109,16 +2082,16 @@ s32 dScMgPanel_c::Render()
 
 // @symbol _ZN12dScMgPanel_c8BehaviorEv
 /* Vtable slot 6.  One frame of the current state, dispatched through the
-   descriptor pair at data_ov006_02142888. */
-/* One row of the state-dispatch table at data_ov006_02142888: `a` is either a
+   descriptor pair at sPanelSceneStateTable. */
+/* One row of the state-dispatch table at sPanelSceneStateTable: `a` is either a
    function address or a vtable byte offset, and bit 0 of `b` says which. */
 struct Ent_358 { int a; int b; };
 s32 dScMgPanel_c::Behavior()
 {
-    extern PanelStateFn data_ov006_02142888[];
+    extern PanelStateFn sPanelSceneStateTable[];
     char *c = (char *)this;
     int idx = mState;
-    Ent_358 *e = (Ent_358 *)&data_ov006_02142888[idx];
+    Ent_358 *e = (Ent_358 *)&sPanelSceneStateTable[idx];
     int adj = e->b;
     char *obj = c + (adj >> 1);
     int fn;
@@ -2287,44 +2260,38 @@ void *data_ov006_021427d4[6] = {
     data_ov006_02136cf0[0], data_ov006_02136cf0[1], data_ov006_02136cf0[2],
     data_ov006_02136d1c[0], data_ov006_02136d1c[1], data_ov006_02136d1c[2],
 };
-PanelStateFn data_ov006_02142888[8] = {
-    &dScMgPanel_c::Scene_State0,
-    &dScMgPanel_c::Scene_State1,
-    &dScMgPanel_c::Scene_State2,
-    &dScMgPanel_c::Scene_State3,
-    &dScMgPanel_c::Scene_State4,
-    &dScMgPanel_c::Scene_State5,
-    &dScMgPanel_c::Scene_State6,
-    &dScMgPanel_c::Scene_State7,
+PanelStateFn sPanelSceneStateTable[8] = {
+    &dScMgPanel_c::Scene_StateInit,   &dScMgPanel_c::Scene_StateIntro,
+    &dScMgPanel_c::Scene_StatePlay,   &dScMgPanel_c::Scene_StateShowMisses,
+    &dScMgPanel_c::Scene_StateRewind, &dScMgPanel_c::Scene_StateShowAnswer,
+    &dScMgPanel_c::Scene_StateResult, &dScMgPanel_c::Scene_StateGameOver,
 };
-PanelStateFnI data_ov006_02142840[4] = {
-    &dScMgPanel_c::Panel_State0,
-    &dScMgPanel_c::Panel_State1,
-    &dScMgPanel_c::Panel_State2,
-    &dScMgPanel_c::Panel_State3,
+PanelStateFnI sPanelPanelStateTable[4] = {
+    &dScMgPanel_c::Panel_StateIdle,
+    &dScMgPanel_c::Panel_StateFlip,
+    &dScMgPanel_c::Panel_StateBlink,
+    &dScMgPanel_c::Panel_StateFall,
 };
-PanelStateFn data_ov006_02142820[4] = {
-    &dScMgPanel_c::Input_State0,
-    &dScMgPanel_c::Input_State1,
-    &dScMgPanel_c::Input_State2,
-    &dScMgPanel_c::Input_State3,
+PanelStateFn sPanelAnswerStateTable[4] = {
+    &dScMgPanel_c::Answer_StateWaitButton,
+    &dScMgPanel_c::Answer_StateResetBoard,
+    &dScMgPanel_c::Answer_StateFindSolution,
+    &dScMgPanel_c::Answer_StateFlipSolution,
 };
-PanelStateFn data_ov006_02142860[5] = {
-    &dScMgPanel_c::IntroCard_State0,
-    &dScMgPanel_c::IntroCard_State1,
-    &dScMgPanel_c::IntroCard_State2,
-    &dScMgPanel_c::IntroCard_State3,
-    &dScMgPanel_c::IntroCard_State4,
+PanelStateFn sPanelIntroCardStateTable[5] = {
+    &dScMgPanel_c::IntroCard_StateStart, &dScMgPanel_c::IntroCard_StateSlideIn,
+    &dScMgPanel_c::IntroCard_StateHold,  &dScMgPanel_c::IntroCard_StateSlideOut,
+    &dScMgPanel_c::IntroCard_StateDone,
 };
-PanelStateFn data_ov006_021427ec[3] = {
-    &dScMgPanel_c::Banner_State0,
-    &dScMgPanel_c::Banner_State1,
-    &dScMgPanel_c::Banner_State2,
+PanelStateFn sPanelBannerStateTable[3] = {
+    &dScMgPanel_c::Banner_StatePopUp,
+    &dScMgPanel_c::Banner_StateSettle,
+    &dScMgPanel_c::Banner_StateIdle,
 };
-PanelStateFnI data_ov006_021427bc[3] = {
-    &dScMgPanel_c::Shake_State0,
-    &dScMgPanel_c::Shake_State1,
-    &dScMgPanel_c::Shake_State2,
+PanelStateFnI sPanelShakeStateTable[3] = {
+    &dScMgPanel_c::Shake_StateIdle,
+    &dScMgPanel_c::Shake_StateShake,
+    &dScMgPanel_c::Shake_StateLoseTry,
 };
 
 /* MG_PANEL's registry profile: the factory, then the same priority in both
