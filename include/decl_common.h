@@ -1426,7 +1426,7 @@ extern void ApproachLinearI(int*, int, int);
 extern void CccArena_Kill(char*);
 extern void ChangeArea(int);
 extern void CleanCommonModelDataArr(void);
-extern void CopyTexPalFromLevelModel(void*);
+extern int CopyTexPalFromLevelModel(void *);
 extern void Crash();
 extern void CrazedCrate_OnTurnIntoEgg(char*, void*);
 extern void dCc_c_Clear(void*);
@@ -1539,7 +1539,7 @@ extern void data_ov054_02111238(void*);
 extern void func_01ffb098(void*);
 extern void func_01ffb0b0(void*);
 extern void func_01ffb0bc(void*);
-extern void func_01ffb0c8(void*);
+extern struct KCL_File *func_01ffb0c8(struct dBgW_Kc *);
 extern void func_01ffde98(int, int, int);
 /* func_02005348 removed: it is the member dScBoot_c::func_02005348(), declared in include/dScBoot_c.h */
 extern void func_02007c14(struct Vector3*, const struct Vector3*, int, short, short);
