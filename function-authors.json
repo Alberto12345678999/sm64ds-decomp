@@ -21279,75 +21279,75 @@
     },
     "ov006:0x020cd864": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion7"
+      "name": "TrmpItem_MotionSpinHover"
     },
     "ov006:0x020cd98c": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion7"
+      "name": "TrmpItem_SetMotionSpinHover"
     },
     "ov006:0x020cd9b0": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion8"
+      "name": "TrmpItem_MotionSpinDrift"
     },
     "ov006:0x020cdad0": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion8"
+      "name": "TrmpItem_SetMotionSpinDrift"
     },
     "ov006:0x020cdaec": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion5"
+      "name": "TrmpItem_MotionSpinSway"
     },
     "ov006:0x020cdc14": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion5"
+      "name": "TrmpItem_SetMotionSpinSway"
     },
     "ov006:0x020cdc38": {
       "author": "ruspecial",
-      "name": "TrmpItem_Motion6"
+      "name": "TrmpItem_MotionHover"
     },
     "ov006:0x020cdc68": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion6"
+      "name": "TrmpItem_SetMotionHover"
     },
     "ov006:0x020cdc8c": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion4"
+      "name": "TrmpItem_MotionSway"
     },
     "ov006:0x020cdce4": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion4"
+      "name": "TrmpItem_SetMotionSway"
     },
     "ov006:0x020cdd08": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion3"
+      "name": "TrmpItem_MotionSpin"
     },
     "ov006:0x020cde28": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion3"
+      "name": "TrmpItem_SetMotionSpin"
     },
     "ov006:0x020cde4c": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion2"
+      "name": "TrmpItem_MotionBob"
     },
     "ov006:0x020cde7c": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion2"
+      "name": "TrmpItem_SetMotionBob"
     },
     "ov006:0x020cdea0": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion1"
+      "name": "TrmpItem_MotionPatrol"
     },
     "ov006:0x020cdeec": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion1"
+      "name": "TrmpItem_SetMotionPatrol"
     },
     "ov006:0x020cdf1c": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion0"
+      "name": "TrmpItem_MotionStill"
     },
     "ov006:0x020cdf20": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion0"
+      "name": "TrmpItem_SetMotionStill"
     },
     "ov006:0x020cdf3c": {
       "author": "andrewboudreau",

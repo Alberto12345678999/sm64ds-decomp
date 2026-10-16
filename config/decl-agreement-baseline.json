@@ -27937,32 +27937,32 @@
         "param:#2 unsigned short"
       ]
     },
-    "TrmpItem_SetMotion7": {
+    "TrmpItem_SetMotionSpinHover": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion5": {
+    "TrmpItem_SetMotionSpinSway": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion6": {
+    "TrmpItem_SetMotionHover": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion4": {
+    "TrmpItem_SetMotionSway": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion3": {
+    "TrmpItem_SetMotionSpin": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion2": {
+    "TrmpItem_SetMotionBob": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]

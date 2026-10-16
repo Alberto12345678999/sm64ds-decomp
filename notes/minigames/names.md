@@ -424,7 +424,7 @@ Medium confidence:
   - **Behaviour:** the three states `StateFade`, `StateSettle` and `StateFlex`, each with its setter; `TrmpLine_PushJumper` applies the line's spring to the jumper.
   - **Setup:** `TrmpLine_CreateStartLineT1/T2`, the line each game starts with.
 - **`TrmpItem_*`, medium confidence.** The bouncing items of Trampoline2.
-  - `TrmpItem_SetMotionN` / `TrmpItem_MotionN` are indexed by the item's kind byte (+0x98), which is certain.
+  - The nine motions, indexed by the item's kind byte (+0x98, `mMotionKind`), are named from their code (pass 5): `MotionStill`, `MotionPatrol` (moves along x, reversing at a size-dependent range), `MotionBob` (moves along y between two heights), `MotionSpin` (turns its facing 0x100 a frame), `MotionSway` (x speed flips with a phase), `MotionSpinSway`, `MotionHover` (y speed flips with a faster phase), `MotionSpinHover` and `MotionSpinDrift` (spins like MotionSpin but keeps its vertical speed). Each has its `SetMotion*`. What each item looks like is still not observed.
   - What each kind looks like is not observed.
 
 **Curling (`dScMgCurling_c`).** Named mostly from the bodies' own comments, high confidence.
