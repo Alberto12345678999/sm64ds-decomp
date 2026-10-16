@@ -100,6 +100,12 @@ struct BrqSpawnInfo {
 typedef char BrqSpawnInfo_size_must_be_0x1c[
     sizeof(BrqSpawnInfo) == 0x1c ? 1 : -1];
 
+/* Actor ID 0xbf is PLAYER. This int-returning predicate is what makes the
+ * ROM materialize 0/1 before testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 // @symbol daBrq_c_classInit
 extern "C" daBrq_c *daBrq_c_classInit()
 {
@@ -421,14 +427,10 @@ s32 daBrq_c::UpdateDefeatedState()
     UpdatePos(&mdCcAcPos_c);
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
 
-    if (mWithMeshClsn.JustHitGround() == 0) {
-        if (DecIfAbove0_Byte(&mStateTimer) != 0)
-            goto done;
+    if (mWithMeshClsn.JustHitGround() != 0 || DecIfAbove0_Byte(&mStateTimer) == 0) {
+        PoofDust();
+        MarkForDestruction();
     }
-
-    PoofDust();
-    MarkForDestruction();
-done:
     return 1;
 }
 
@@ -497,19 +499,9 @@ s32 daBrq_c::HandlePlayerCollision()
         return 0;
 
     dActor_c *other = dActor_c::FindWithID(id);
-    if (other == 0)
-        goto notPlayer;
+    if (other == 0 || !IsPlayerActor(other))
+        return 0;
 
-    {
-        int isPlayer = (other->actorID == 0xbf);
-        if (isPlayer != 0)
-            goto foundPlayer;
-    }
-
-notPlayer:
-    return 0;
-
-foundPlayer:
     Player *player = (Player *)other;
     if (player->mIsVanish != 0)
         return 0;

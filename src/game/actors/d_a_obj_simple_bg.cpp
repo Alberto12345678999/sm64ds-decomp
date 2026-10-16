@@ -101,6 +101,17 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
 int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int a, int b);
 }
 
+/* Actor ID 0x31 is BK_TOWER; data_0209f2d8[0] is CURRENT_GAMEMODE
+ * (symbols/verified.tsv). These int-returning predicates are what make the
+ * ROM materialize 0/1 before testing it. */
+static inline int IsBkTower(dActor_c *actor) {
+    return actor->actorID == 0x31;
+}
+
+static inline int IsGameMode(int mode) {
+    return data_0209f2d8[0] == mode;
+}
+
 /* ROM order. Do not reorder. */
 #pragma defer_codegen off
 
@@ -139,8 +150,7 @@ int daObjSimpleBg_c::Behavior()
     case 0x154: range = 0x300000; break;
     case 0x155: range = 0x300000; break;
     }
-    int on = (data_0209f2d8[0] == 1);
-    if (on) {
+    if (IsGameMode(1)) {
         if (!mMeshCollider.IsEnabled())
             mMeshCollider.Enable(this);
     } else {
@@ -182,18 +192,12 @@ int daObjSimpleBg_c::InitResources()
             ((ClpsRow *)data_ov102_0214e190)[idx].block);
     }
 
-    {
-        int b31 = (int)(actorID == 0x31);
-        if (b31 != 0 && data_0209f2f8 == 7) {
-            if (data_0209f220 != 1) {
-                if (IsStarCollectedInCurLevel(1) != 0)
-                    goto ret1;
-            }
+    if (IsBkTower(this) && data_0209f2f8 == 7) {
+        if (data_0209f220 == 1 || IsStarCollectedInCurLevel(1) == 0) {
             if (mPosY >= 0xdac000)
                 return 0;
         }
     }
-ret1:
     return 1;
 }
 
