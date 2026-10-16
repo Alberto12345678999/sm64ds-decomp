@@ -12001,9 +12001,6 @@
       ]
     },
     "data_02099fd0": {
-      "src/func_02053c40.c": [
-        "return:int"
-      ],
       "src/engine/gx/G3X.cpp": [
         "return:int"
       ]
