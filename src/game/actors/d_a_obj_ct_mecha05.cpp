@@ -342,7 +342,7 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
 
     Matrix4x3_FromRotationY(&actor->mShadowMatrix, actor->mAngleY);
     MulVec3Mat4x3(&offset, &actor->mShadowMatrix, &shadowPos);
-    AddVec3(&shadowPos, (Vector3 *)&actor->mPosX, &shadowPos);
+    AddVec3(&shadowPos, &actor->mPos, &shadowPos);
 
     actor->mShadowMatrix.m[9] = shadowPos.x >> 3;
     actor->mShadowMatrix.m[10] = actor->mGroundY >> 3;

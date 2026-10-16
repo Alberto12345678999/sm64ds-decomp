@@ -227,12 +227,12 @@ int daObjDlPyramid_c::Behavior()
     case 1:
         Sound::PlaySecretSound(this, (u16 *)&mSoundTimer);
         if (mStateTimer == 0)
-            Sound::PlayBank3(0x4b, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x4b, mCamSpacePos);
         func_ov024_02111350(this);
         break;
     case 2:
         if (Sound::PlaySecretSound(this, (u16 *)&mSoundTimer)) {
-            Sound::PlayBank3(0x4c, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x4c, mCamSpacePos);
             func_ov024_021112c0(this);
         } else {
             func_ov024_02111350(this);

@@ -135,7 +135,7 @@ s32 daObjKi_Hasira_c::InitResources()
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, k, &mClsnMat, 0x199, mAngleY, data_ov016_02113cac);
 
-    Spawn(0x3b, 0, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+    Spawn(0x3b, 0, mPos, 0, mAreaId, -1);
     return 1;
 }
 
@@ -168,17 +168,17 @@ s32 daObjKi_Hasira_c::Behavior()
     case 0: /* wait for a player to come within 1300 units */
         mTarget = ClosestPlayer();
         if (mTarget != 0) {
-            if (Vec3_Dist((Vector3 *)&mPosX, &targetPos) < 0x514000) {
+            if (Vec3_Dist(&mPos, &targetPos) < 0x514000) {
                 mState++;
                 mTurnTimer = 10;
-                Sound::PlayBank3(0x56, *(Vector3 *)&mCamSpacePosX);
+                Sound::PlayBank3(0x56, mCamSpacePos);
             }
         }
         break;
 
     case 1: /* turn to face them for ten frames */
         if (mTarget != 0) {
-            s16 angle = Vec3_HorzAngle((Vector3 *)&mPosX, &targetPos);
+            s16 angle = Vec3_HorzAngle(&mPos, &targetPos);
             ApproachLinear(mAngleY, angle, 0x400);
             if (DecIfAbove0_Byte(&mTurnTimer) == 0)
                 mState++;
@@ -215,8 +215,8 @@ s32 daObjKi_Hasira_c::Behavior()
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(particleID, x, y, z);
             dustPos.x = crashPos.x; dustPos.y = crashPos.y; dustPos.z = crashPos.z;
             LandingDustAt(dustPos, true);
-            func_0200d8c8((dCamera_c *)data_0209f318, (Vector3 *)&mPosX, 0x5dc000);
-            Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+            func_0200d8c8((dCamera_c *)data_0209f318, &mPos, 0x5dc000);
+            Sound::PlayBank3(0x41, mCamSpacePos);
             MarkForDestruction();
         }
         break;
