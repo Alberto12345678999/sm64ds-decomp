@@ -23,6 +23,14 @@
 // Swapping either pair is byte-identical -- the literal-pool words are relocations and
 // therefore wildcards to the byte gate -- but sends each address to the wrong pool slot.
 // match.py --strict-relocs is what distinguishes them; keep this order.
+#include "Model.h"
+#include "dActor_c.h"
+#include "Event.h"
+#include "Heap.h"
+#include "Particle__SysTracker.h"
+#include "Sound.h"
+#include "dScene_c.h"
+
 typedef unsigned char u8;
 typedef signed char s8;
 typedef unsigned short u16;
@@ -52,7 +60,6 @@ extern s8 data_02092110;
 extern s8 data_0209f2c4;
 extern s8 data_0209f2f8;
 extern u8 data_0209f26c;
-extern s32 data_0209f34c;
 extern s32 data_0209f4f8[3][16];
 extern u8 data_0209f30c[16];
 extern u8 data_0209f310[16];
@@ -98,7 +105,6 @@ extern void *data_0209d4a8;
 extern s32 data_0209f3c4;
 extern u8 data_0209f204;
 extern s32 data_0209b454;
-extern void *data_020a0eac;
 extern s32 data_0209fc48;
 extern s32 data_0209fc68;
 extern s16 data_0209f300;
@@ -140,9 +146,6 @@ void func_ov001_020ab2e4(void);
 void *_ZN9dFdWipe_cC1Ev(void *thiz);
 void _ZN9dFdWipe_cD1Ev(void *thiz);
 
-void _ZN5Sound6Player19SetPlayableSeqCountEii(int a, int b);
-void _ZN8dScene_c20Initialise3dGraphicsEv(void);
-void *_ZN5mHeap6Heap_t10SetDefaultEv(void *self);
 void _ZN2GX15DisableAllBanksEv(void);
 // local extern: member form converts the e3d argument to bool; the ROM call passes the raw int
 void _ZN10dScStage_c14LoadGraphics2DEbi(int e3d, int level);
@@ -151,12 +154,10 @@ void _ZN3GXS15SetGraphicsModeEi(int a);
 void _ZN2GX6DispOnEv(void);
 void _Z17LoadLevelOverlaysi(int level);
 void _ZN5Sound19LoadGroupAndSetBankEii(int a, int b);
-void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
 // local extern: this file also passes &_ZN9dFdWipe_cC1Ev / &_ZN9dFdWipe_cD1Ev to func_02073470's ctor/dtor pair, which member syntax cannot express
 void _ZN9dFdWipe_c14LoadAndSetFileEt(int thiz, u16 fileID);
 void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int x);
 int _ZN5Sound8SetMusicEjj(u32 a, u32 b);
-void _ZN8Particle10SysTracker10InitialiseEv(void *thiz);
 void _ZN17dExtShadowModel_c8CleanAllEv(void); // local extern: include-free shard; every callee is declared locally by design
 }
 
@@ -168,11 +169,11 @@ int dScStage_c::InitResources()
         u8 modeByte = data_0209f2d8;
         int v0 = (modeByte == 1) ? 1 : 0;
         if (v0) {
-            _ZN5Sound6Player19SetPlayableSeqCountEii(2, 5);
+            Sound::Player::SetPlayableSeqCount(2, 5);
             int n = 3;
-            _ZN5Sound6Player19SetPlayableSeqCountEii(n, n);
+            Sound::Player::SetPlayableSeqCount(n, n);
         }
-        _ZN8dScene_c20Initialise3dGraphicsEv();
+        dScene_c::Initialise3dGraphics();
         Enable3dEngines();
         data_0209f21c = data_0208a0e0;
         data_0209f250 = (u8)func_0203da9c();
@@ -255,9 +256,9 @@ int dScStage_c::InitResources()
         LoadTextNarcs();
         LoadArchive(0);
         if (data_0209f2f8 == 1) {
-            void *saved = _ZN5mHeap6Heap_t10SetDefaultEv(data_020a0eac);
+            mHeap::Heap_t *saved = ((mHeap::Heap_t *)data_020a0eac)->SetDefault();
             LoadArchive(7);
-            _ZN5mHeap6Heap_t10SetDefaultEv(saved);
+            saved->SetDefault();
         }
         if (archiveIdx != 0xBF) {
             LoadArchive(archiveIdx);
@@ -358,7 +359,7 @@ L_after304:
         {
             u32 i;
             for (i = 0; i < 0xC; i++) {
-                _ZN5Model8LoadFileER13SharedFilePtr(data_020756f0[i]);
+                Model::LoadFile(*(SharedFilePtr *)data_020756f0[i]);
             }
         }
 
@@ -412,7 +413,7 @@ L_after304:
         thiz->LoadTextureTransformers();
         thiz->LoadSkybox();
         data_0209cef0 = 1;
-        _ZN8Particle10SysTracker10InitialiseEv((char*)thiz + 0x50);
+        ((Particle::SysTracker *)((char *)thiz + 0x50))->Initialise();
 
         u8 f2fc = data_0209f2fc;
         data_0209f294 = 0;

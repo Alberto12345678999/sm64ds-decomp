@@ -1652,12 +1652,12 @@ extern void func_0203d630(int*, int);
 extern void func_0203d930(void);
 extern void func_0203dafc(int);
 /* 0x020440e8 is NOT `func_020440e8`. config/arm9/symbols.txt:1842 exports it as
-   _ZN11fLiNdBaPr_cD1Ev, and src/_ZN11fLiNdBaPr_cD1Ev.cpp is its source. The row
+   _ZN11fLiNdBaPr_cD1Ev, and src/fListNode.cpp is its source. The row
    that used to sit here declared a name no module exports; anything that called
    it compiled and byte-matched and then failed the ROM link. Removed rather than
    corrected: fLiNdBaPr_c is a real class, so callers should include
-   include/fListNode.h and let the destructor be a destructor. */
-extern void func_02044104(int);
+   include/fListNode.h and let the destructor be a destructor. The same holds
+   for 0x02044104, which is _ZN9fLiNdBa_cD1Ev in the same file. */
 extern void func_02045e44(void*, unsigned int, int);
 extern void func_0204a17c(void*, void*);
 extern void func_0204ae2c(void*, void*, void*);
