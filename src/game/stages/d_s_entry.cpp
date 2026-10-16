@@ -174,6 +174,9 @@ void dScEntry_c::icon_c::Render()
     case 1:
     case 2:
         mask = (unk_010 != 0) ? 0x6000 : 0x5000;
+        /* The ROM's case 0..2 block branches into case 8..11's fill loop.
+         * A shared inline helper, one merged case and a fill tail after
+         * the switch all miss it, so the jump stays. */
         goto fill;
 
     case 8:
@@ -205,19 +208,19 @@ void dScEntry_c::icon_c::Render()
         if (unk_010 != 0)
             xy[0] = (s16)(xy[0] - 2);
         oam = data_ov075_0211c720;
-        goto renderSub;
+        break;
 
     case 4:
         if (unk_010 != 0)
             xy[0] = (s16)(xy[0] + 2);
         oam = data_ov075_0211c730;
-        goto renderSub;
+        break;
 
     case 13:
         if (func_0203d974() != 0 && unk_020 >= 4)
             return;
         oam = data_ov075_0211c954[unk_020];
-        goto renderSub;
+        break;
 
     case 5:
     case 6:
@@ -226,7 +229,6 @@ void dScEntry_c::icon_c::Render()
         return;
     }
 
-renderSub:
     OAM::RenderSub((OamAttr *)oam, xy[0], xy[1]);
 }
 

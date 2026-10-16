@@ -69,6 +69,12 @@ void func_ov001_020aaa54(void);
 void func_ov001_020aadac(void);
 void func_ov001_020aaf40(void);
 
+/* data_0209f2d8 is 1 in versus mode. This int-returning predicate is what
+ * makes the ROM materialize 0/1 before testing it. */
+static inline int IsVsMode(void) {
+    return data_0209f2d8 == 1;
+}
+
 /* Definitions emit in reverse source order. */
 
 void func_ov001_020aaf40(void)
@@ -98,14 +104,9 @@ void func_ov001_020aaf40(void)
             data_0209f284 = 0;
     }
 
-    {
-        int t;
-        t = data_0209f2d8;
-        t = t == 1;
-        if (t != 0) {
-            func_ov001_020aa420();
-            return;
-        }
+    if (IsVsMode()) {
+        func_ov001_020aa420();
+        return;
     }
 
     {
@@ -222,58 +223,53 @@ void func_ov001_020aaa54(void)
             sl = data_ov001_020ad634[r6];
             while (sl != 0) {
                 void* found = dActor_c::FindWithID(sl->mOwnerUniqueID);
-                if (found == 0 && found == sl->mOwner) goto do_ab110;
-                {
+                if (found != 0 || found != sl->mOwner) {
                     int b1b = sl->mFlags;
                     int bit0 = (unsigned)(b1b << 0x1f) >> 0x1f;
-                    if (bit0 == 0) {
-                        if ((unsigned)(b1b << 0x1e) >> 0x1f) {
-                            fp = 1;
-                            r8 = sl->unk_19;
-                            goto cont;
-                        }
-                    }
-                    {
+                    if (bit0 == 0 && (unsigned)(b1b << 0x1e) >> 0x1f) {
+                        fp = 1;
+                        r8 = sl->unk_19;
+                    } else {
                         int t = *flagp;
-                        if (!(t & 0x30)) {
-                            if (sl->unk_19 < 2) goto cont;
-                        }
-                        if (bit0) {
-                            if (sl->mSlot == -1) {
-                                sl->mSlot = func_0202a8e0((int)sl->mOwner, sl->mCharacter);
-                                FLAGS1B(sl) |= 2;
-                                func_ov001_020aa6b0((int *)sl, 1);
-                            } else {
-                                spc = 1;
-                            }
-                            r7 = 1;
-                            sp4 = sl->unk_19;
-                            if ((*flagp & 3) == 0) *flagp |= 1;
-                            if (sl->unk_19 >= 2) *flagp |= 0x20;
-                        } else {
-                            if (sl->unk_19 != 0) {
-                                if (r8 < sl->unk_19) {
-                                    r8 = sl->unk_19;
-                                    sb = sl;
+                        if ((t & 0x30) || sl->unk_19 >= 2) {
+                            if (bit0) {
+                                if (sl->mSlot == -1) {
+                                    sl->mSlot = func_0202a8e0((int)sl->mOwner, sl->mCharacter);
+                                    FLAGS1B(sl) |= 2;
+                                    func_ov001_020aa6b0((int *)sl, 1);
+                                } else {
+                                    spc = 1;
                                 }
-                                if ((t & 3) == 0) *flagp |= 1;
+                                r7 = 1;
+                                sp4 = sl->unk_19;
+                                if ((*flagp & 3) == 0)
+                                    *flagp |= 1;
                                 if (sl->unk_19 >= 2) *flagp |= 0x20;
                             } else {
-                                if ((t & 3) == 1 && r8 == 0) {
-                                    if ((unsigned)(((volatile u8*)sl)[0x1b] << 0x1c) >> 0x1f) {
+                                if (sl->unk_19 != 0) {
+                                    if (r8 < sl->unk_19) {
+                                        r8 = sl->unk_19;
                                         sb = sl;
-                                    } else {
-                                        FLAGS1B(sl) |= 8;
+                                    }
+                                    if ((t & 3) == 0)
+                                        *flagp |= 1;
+                                    if (sl->unk_19 >= 2)
+                                        *flagp |= 0x20;
+                                } else {
+                                    if ((t & 3) == 1 && r8 == 0) {
+                                        if ((unsigned)(((volatile u8 *)sl)[0x1b] << 0x1c) >> 0x1f) {
+                                            sb = sl;
+                                        } else {
+                                            FLAGS1B(sl) |= 8;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                } else {
+                    sl->Unlink();
                 }
-                goto cont;
-            do_ab110:
-                sl->Unlink();
-            cont:
                 sl = sl->mNext;
             }
 
@@ -328,13 +324,8 @@ int func_ov001_020aa960(int x, char* arg){
     return 0;
   if((data_ov001_020ad628[x] & 3) == 2)
     return 0;
-  if(((Player *)arg)->IsCollectingCap())
-    goto ret1;
-  if(x != *(int*)(arg+8))
-    goto ret1;
-  if(data_ov001_020ad628[x] & 3)
-    return 0;
-ret1:
+  if (!((Player *)arg)->IsCollectingCap() && x == *(int *)(arg + 8) && (data_ov001_020ad628[x] & 3))
+      return 0;
   return 1;
 }
 
