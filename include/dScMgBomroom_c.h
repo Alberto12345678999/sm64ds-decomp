@@ -33,11 +33,11 @@ struct dScMgBomroom_Bomb {
     u8 type;        /* +0x34 -- anim row; picks frame time/count and sfx */
     u8 frame;       /* +0x35 */
     u8 color;       /* +0x36 -- 0/1; also picks which pen box it bounces in */
-    u8 state;       /* +0x37 -- 5 = settled; indexes data_ov006_02141730 */
+    u8 state;       /* +0x37 -- 5 = settled; indexes sBomroomBombStateTable */
     u8 active;      /* +0x38 */
     u8 visible;     /* +0x39 -- DrawBombs skips the bomb while 0 */
     u8 pen;         /* +0x3a -- which blast marked it; 0 = was loose */
-    u8 substate;    /* +0x3b -- indexes data_ov006_02141708 */
+    u8 substate;    /* +0x3b -- indexes sBomroomBombMarchTable */
     u8 lineSlot;    /* +0x3c -- line-up slot: row = slot / 10, column = slot % 10 */
     u8 exploded;    /* +0x3d -- set when the bomb goes off */
     u8 overPen;     /* +0x3e -- held over its own pen; sound 0x1e4 on entry */
@@ -72,7 +72,7 @@ struct dScMgBomroom_c : dScMgBase_c {
 
     /* scene helpers -- the PMF targets of the seven sinit state tables
        (data_ov006_02141660/680/6c0/6e0/708/730 and the raw {fptr,adj} pairs at
-       data_ov006_021416a0) plus the per-frame and round bookkeeping they call. */
+       sBomroomRoundEndTable) plus the per-frame and round bookkeeping they call. */
     void DrawRoundOver();
     void SetRoundOver();
     void UpdateBg2Lift();
@@ -162,7 +162,7 @@ struct dScMgBomroom_c : dScMgBase_c {
     dScMgBomroom_Slot mTopDoor;        /* 0x62a0 */
     dScMgBomroom_Slot mMarkers[2];     /* 0x62b0 */
     s32 mSceneState;    /* 0x62d0 -- round state; 3 once a picked bomb has gone off */
-    s32 mSubState;      /* 0x62d4 -- index into the data_ov006_021416a0 {fptr,adj} pairs */
+    s32 mSubState;      /* 0x62d4 -- index into the sBomroomRoundEndTable {fptr,adj} pairs */
     s32 mSpawnCount;    /* 0x62d8 -- bombs dropped so far; picks the spawn step */
     s32 mBg2Y;          /* 0x62dc -- BG2 scroll offset, Fix12 */
     u16 mTallyDelay;    /* 0x62e0 -- 0x10 frames between mStateTimer and the tally */

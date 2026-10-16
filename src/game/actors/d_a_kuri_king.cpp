@@ -99,8 +99,6 @@ enum daKuriKing_c_AssetId {
 #include "Message.h"
 #include "nitro/fx/fx.h"
 
-#define FX(a, b) (int)(((long long)(a) * (long long)(b) + 0x800) >> 12)
-
 /* include/SharedFilePtr.h has no fields; filePtr is the word LoadFile stashes
  * and what SetFile/Prepare consume. daLuigi_c spells the same view. */
 struct LoadedSharedFile {
@@ -340,7 +338,7 @@ void daKuriKing_c::func_ov074_0211f244()
             t->unk_0a4 = 0;
             t->mVertSpeed = ((rv & 0x1f) << 0xc) + 0x60000;
             t->unk_0ac = 0;
-            Vector3_16 pos = *(Vector3_16*)&t->mPrevAngleX;
+            Vector3_16 pos = t->mPrevAngle;
             rv &= 0x1000;
             pos.y = (short)(pos.y + rv);
             short x = pos.x + 0;
@@ -411,8 +409,8 @@ int daKuriKing_c::func_ov074_0211f38c(){
         }
         {
             int sinIdx=((u16)spawnAngle.y>>4)<<1;
-            spawnPos.x += (int)(((s64)radius * data_02082214[sinIdx] + 0x800) >> 0xc);
-            spawnPos.z += (int)(((s64)radius * data_02082214[sinIdx+1] + 0x800) >> 0xc);
+            spawnPos.x += FX_MUL(radius, data_02082214[sinIdx]);
+            spawnPos.z += FX_MUL(radius, data_02082214[sinIdx + 1]);
         }
         spawnAngle.x=Vec3_VertAngle(&basePos, &spawnPos);
         dActor_c::Spawn(0xc7, 0x1111, spawnPos, &spawnAngle, this->mAreaId, -1);
@@ -708,8 +706,7 @@ L90:;
         if (this->mSpawnedCount % 2 == 0) sid = 0xeeef;
     }
 
-    daKrb_c* sp2 = (daKrb_c*)dActor_c::Spawn(
-        0xc8, sid, pos, (const struct Vector3_16*)&this->mAngleX, this->mAreaId, -1);
+    daKrb_c *sp2 = (daKrb_c *)dActor_c::Spawn(0xc8, sid, pos, &this->mAngle, this->mAreaId, -1);
     sp2->mTargetUniqueID = this->uniqueID;
     Vector3 v2;
     v2.x = this->mSpawnPosX;
@@ -1154,7 +1151,7 @@ void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mo
     dst.y = this->mPosY;
     dst.z = this->mPosZ;
     {
-        Vector3 *pv = (Vector3*)&other->mPosX;
+        Vector3 *pv = &other->mPos;
         src.x = pv->x;
         src.y = pv->y;
         src.z = pv->z;
@@ -1193,8 +1190,7 @@ void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mo
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02120d74Ev
-void daKuriKing_c::func_ov074_02120d74()
-{
+void daKuriKing_c::func_ov074_02120d74() {
     struct Vector3 v0;
     struct Vector3 v1;
     struct Vector3 v2;
@@ -1255,7 +1251,8 @@ void daKuriKing_c::func_ov074_02120d74()
                             v1.x = this->mPosX;
                             v1.y = this->mPosY;
                             v1.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v1, 1, 0x5000, 1, 0, 1);
+                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v1, 1, 0x5000, 1,
+                                                                    0, 1);
                         }
                     } else if (cur == &this->mdCc_cs[3]) {
                         if (this->mWalkSpeed != 0) {
@@ -1265,13 +1262,15 @@ void daKuriKing_c::func_ov074_02120d74()
                             v2.x = this->mPosX;
                             v2.y = this->mPosY;
                             v2.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v2, 1, 0x5000, 1, 0, 1);
+                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v2, 1, 0x5000, 1,
+                                                                    0, 1);
                         }
                     } else {
                         v3.x = this->mPosX;
                         v3.y = this->mPosY;
                         v3.z = this->mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v3, 1, 0x5000, 1, 0, 1);
+                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v3, 1, 0x5000, 1, 0,
+                                                                1);
                         this->mHurtTimer = 0x10;
                     }
                 }
@@ -1279,7 +1278,7 @@ void daKuriKing_c::func_ov074_02120d74()
                     if (cur->hitFlags & 0x3c0) {
                         hit = 1;
                     } else {
-                        int ang = Vec3_HorzAngle((struct Vector3 *)&this->mPosX, (struct Vector3 *)&pl->mPosX);
+                        int ang = Vec3_HorzAngle(&this->mPos, &pl->mPos);
                         dir = 1;
                         if (AngleDiff(ang, this->mAngleY) > 0x4000)
                             dir = -1;
@@ -1300,12 +1299,21 @@ void daKuriKing_c::func_ov074_02120d74()
                                 v0.x = this->mPosX;
                                 v0.y = this->mPosY;
                                 v0.z = this->mPosZ;
-                                if (this->mMegaMushroomID == 0 && dActor_c::FindWithID(this->mMegaMushroomID) == 0) {
-                                    int k = ((u16)(s16)(this->mDirection * ((s16)((this->mScaleX / 0x1000) * 0x350 + 0x500) + 0x600) + (this->mWalkAngle + this->mMaxWalkSpeed))) >> 4;
+                                if (this->mMegaMushroomID == 0 &&
+                                    dActor_c::FindWithID(this->mMegaMushroomID) == 0) {
+                                    int k =
+                                        ((u16)(s16)(this->mDirection *
+                                                        ((s16)((this->mScaleX / 0x1000) * 0x350 +
+                                                               0x500) +
+                                                         0x600) +
+                                                    (this->mWalkAngle + this->mMaxWalkSpeed))) >>
+                                        4;
                                     v0.x = FX_MUL(data_02082214[k * 2], 0x546000LL);
                                     v0.y += 0x32000;
                                     v0.z = FX_MUL(data_02082214[k * 2 + 1], 0x546000LL);
-                                    this->mMegaMushroomID = dActor_c::Spawn(0x115, 0, v0, 0, this->mAreaId, -1)->uniqueID;
+                                    this->mMegaMushroomID =
+                                        dActor_c::Spawn(0x115, 0, v0, 0, this->mAreaId, -1)
+                                            ->uniqueID;
                                 }
                             }
                         }
@@ -1324,14 +1332,14 @@ void daKuriKing_c::func_ov074_02120d74()
         return;
     func_02012694(0x15b, &this->mCamSpacePosX);
     {
-    int ang2 = Vec3_HorzAngle((struct Vector3 *)&this->mPosX, (struct Vector3 *)&player->mPosX);
-    dir2 = 1;
-    if (AngleDiff(ang2, this->mAngleY) > 0x4000) {
-        func_ov074_02121a4c((char *)this, dir2);
-        dir2 = -1;
-    } else {
-        func_ov074_02121a4c((char *)this, 2);
-    }
+        int ang2 = Vec3_HorzAngle(&this->mPos, &player->mPos);
+        dir2 = 1;
+        if (AngleDiff(ang2, this->mAngleY) > 0x4000) {
+            func_ov074_02121a4c((char *)this, dir2);
+            dir2 = -1;
+        } else {
+            func_ov074_02121a4c((char *)this, 2);
+        }
     }
     this->mWalkSpeed = dir2 * (this->mDirection * -0x190);
     func_ov074_021203e4(5);
@@ -1364,7 +1372,7 @@ extern "C" void Matrix4x3_ApplyInPlaceToScale(void* m, int x, int y, int z);
 extern "C" struct Matrix4x3 data_020a0e68;
 void daKuriKing_c::func_ov074_02121300(){
   struct Vector3 v;
-  Vec3_Asr(&v, (struct Vector3*)&this->mPosX, 3);
+  Vec3_Asr(&v, &this->mPos, 3);
   Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
   Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
   Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, this->mScaleX, this->mScaleY, this->mScaleZ);
@@ -1388,18 +1396,18 @@ void daKuriKing_c::func_ov074_02121380() {
     char* q;
     int tx, ty, tz;
 
-    y0 = FX(this->mScaleY, 0x40000);
-    rad[1] = FX(this->mScaleX, 0x50000);
-    hgt[1] = FX(this->mScaleY, 0x40000);
-    yoff[1] = FX(this->mScaleY, -0x10000);
-    rad[2] = FX(this->mScaleX, 0x50000);
-    hgt[2] = FX(this->mScaleY, 0x40000);
-    yoff[2] = FX(this->mScaleY, -0x10000);
-    h0 = FX(this->mScaleY, 0x96000);
-    r0 = FX(this->mScaleX, 0x5a000);
-    yoff[0] = FX(this->mScaleY, 0x14000);
-    rad[0] = FX(this->mScaleX, 0xb4000);
-    hgt[0] = FX(this->mScaleY, 0x104000);
+    y0 = FX_MUL(this->mScaleY, 0x40000);
+    rad[1] = FX_MUL(this->mScaleX, 0x50000);
+    hgt[1] = FX_MUL(this->mScaleY, 0x40000);
+    yoff[1] = FX_MUL(this->mScaleY, -0x10000);
+    rad[2] = FX_MUL(this->mScaleX, 0x50000);
+    hgt[2] = FX_MUL(this->mScaleY, 0x40000);
+    yoff[2] = FX_MUL(this->mScaleY, -0x10000);
+    h0 = FX_MUL(this->mScaleY, 0x96000);
+    r0 = FX_MUL(this->mScaleX, 0x5a000);
+    yoff[0] = FX_MUL(this->mScaleY, 0x14000);
+    rad[0] = FX_MUL(this->mScaleX, 0xb4000);
+    hgt[0] = FX_MUL(this->mScaleY, 0x104000);
     /* q walks mCylClsnPos[i] (+0x3ac) with the member offset left in each
      * load, the same walk func_ov074_02121800 keeps. */
     q = (char*)this;
@@ -1429,7 +1437,7 @@ void daKuriKing_c::func_ov074_02121380() {
     this->mdCc_cs[0].pos.y = ty;
     this->mdCc_cs[0].pos.z = tz;
 
-    d = FX(this->mScaleY, -0x4a000);
+    d = FX_MUL(this->mScaleY, -0x4a000);
     a = this->mCylClsnPos[2].y + d;
     b = this->mCylClsnPos[1].y + d;
     if (a < this->mPosY) {
@@ -1476,8 +1484,8 @@ int daKuriKing_c::func_ov074_021216f4()
 {
     if (this->mWithMeshClsn.IsOnGround()) {
         this->mWalkAngle += this->mWalkSpeed;
-        this->mPosX = (int)((((long long)data_02082214[(((u16)this->mWalkAngle) >> 4) * 2] * 0x546000) + 0x800) >> 12);
-        this->mPosZ = (int)((((long long)data_02082214[(((u16)this->mWalkAngle) >> 4) * 2 + 1] * 0x546000) + 0x800) >> 12);
+        this->mPosX = FX_MUL(data_02082214[(((u16)this->mWalkAngle) >> 4) * 2], 0x546000);
+        this->mPosZ = FX_MUL(data_02082214[(((u16)this->mWalkAngle) >> 4) * 2 + 1], 0x546000);
     }
     ApproachAngle(&this->mAngleY, (short)((this->mDirection * 0x4500) + this->mWalkAngle), 0xa, 0x800, 0x10);
 }
@@ -1607,7 +1615,7 @@ int daKuriKing_c::Render()
 {
     if (param1 == 0x1111) return func_ov074_021222e0();
     if (mShouldRender == 0) return 1;
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     mTextureSequence.Update(mModelAnim.data);
     mMaterialChanger.Update(mModelAnim.data);
     mTextureTransformer.Update(mModelAnim.data);
@@ -1625,8 +1633,8 @@ int daKuriKing_c::Behavior()
         return func_ov074_021223bc();
     }
 
-    t = ((s64)mWalkSpeed * 0x646 + 0x800) >> 12;
-    u = ((s64)t * 0x546000 + 0x800) >> 12;
+    t = FX_MUL(mWalkSpeed, 0x646);
+    u = FX_MUL(t, 0x546000);
     mGoombaTargetSpeed = u < 0 ? -u : u;
 
     /* Camera word +0x114 (still padding in dCamera_c.h) gets the boss every
@@ -1797,8 +1805,8 @@ int daKuriKing_c::InitResources()
     mWalkAngle = 0x1000;
     mWalkAngle += mWalkSpeed;
 
-    mPosX = (s32)(((s64)data_02082214[((u16)mWalkAngle >> 4) * 2] * 0x546000 + 0x800) >> 0xc);
-    mPosZ = (s32)(((s64)data_02082214[((u16)mWalkAngle >> 4) * 2 + 1] * 0x546000 + 0x800) >> 0xc);
+    mPosX = FX_MUL(data_02082214[((u16)mWalkAngle >> 4) * 2], 0x546000);
+    mPosZ = FX_MUL(data_02082214[((u16)mWalkAngle >> 4) * 2 + 1], 0x546000);
 
     {
         s32 a2;
@@ -1850,7 +1858,7 @@ int daKuriKing_c::func_ov074_0212229c()
 int daKuriKing_c::func_ov074_021222e0()
 {
     Vector3 v;
-    Vec3_Asr(&v, (Vector3 *)&this->mPosX, 3);
+    Vec3_Asr(&v, &this->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x6400, 0);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);

@@ -33,9 +33,8 @@
 //   take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
 // - func_020393d4 / func_020393c4 install dBgW's two callback words;
 //   dBgW carries no setter for them.
-// - (Vector3 *)&mPosX / &mTargetPosX / &unk_0a4: dActor_c and this class
-//   store the triples as scalars; the shared header has not named unk_0a4
-//   / unk_0ac yet.
+// - &mTargetPosX / &unk_0a4: this class and dActor_c store those triples
+//   as scalars; the shared header has not named unk_0a4 / unk_0ac yet.
 // - func_ov091_02131cb0 stays free: it is typed on dActor_c and its body
 //   only touches the base's velocity triples (unk_0a4 / unk_0ac).
 // - Behavior lowers mPosY by the sink offset and restores it before the
@@ -295,7 +294,7 @@ int daLinelift2_c::func_ov091_02131db8()
 {
     int result;
     AddVec3((Vec3 *)&mPosX, (Vec3 *)&unk_0a4, (Vec3 *)&mPosX);
-    if (Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)&mTargetPosX) < (mHorzSpeed >> 1)) {
+    if (Vec3_Dist(&mPos, (const Vector3 *)&mTargetPosX) < (mHorzSpeed >> 1)) {
         result = 1;
         mBasePosX = mTargetPosX;
         mBasePosY = mTargetPosY;

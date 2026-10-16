@@ -60,6 +60,7 @@ enum d_a_nknk_AssetId {
 #include "decl_ShadowModel.h"
 #include "Particle__System.h"
 #include "dBgPi.h"
+#include "nitro/fx/fx.h"
 
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
@@ -380,11 +381,11 @@ int daNknk_c::Render()
   saved.y = mScaleY;
   saved.z = mScaleZ;
   if (mDeathState == 1 && mKoopaVariant == 2) {
-    mScaleX = (int)(((long long)*(volatile int *)&mScaleX * 0x800 + 0x800) >> 12);
-    mScaleY = (int)(((long long)*(volatile int *)&mScaleY * 0x800 + 0x800) >> 12);
-    mScaleZ = (int)(((long long)*(volatile int *)&mScaleZ * 0x800 + 0x800) >> 12);
+      mScaleX = FX_MUL(*(volatile int *)&mScaleX, 0x800);
+      mScaleY = FX_MUL(*(volatile int *)&mScaleY, 0x800);
+      mScaleZ = FX_MUL(*(volatile int *)&mScaleZ, 0x800);
   }
-  mModelAnim.Render((const Vector3*)&mScaleX);
+  mModelAnim.Render(&mScale);
   mScaleX = saved.x;
   mScaleY = saved.y;
   mScaleZ = saved.z;
@@ -571,7 +572,7 @@ void daNknk_c::func_ov062_02118718()
         other = func_ov062_02117b9c();
         if (other) {
             dist = Vec3_Dist(&mPosX, &other->mPosX);
-            mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&other->mPosX);
+            mTargetAngle = Vec3_HorzAngle(&mPos, &other->mPos);
         } else {
             mTurning =
                 AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
@@ -689,7 +690,7 @@ void daNknk_c::func_ov062_021183e0()
         if (other) {
             dist = Vec3_Dist(&mPosX, &other->mPosX);
             if (dist < 0xc8000)
-                mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&other->mPosX);
+                mTargetAngle = Vec3_HorzAngle(&mPos, &other->mPos);
         }
         mTurning = AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
         ApproachLinear(mPrevAngleY, mTargetAngle, 0x200);
@@ -742,8 +743,8 @@ void daNknk_c::func_ov062_02118258(int lim)
 {
     mClosestPlayer = ClosestPlayer();
 
-    if (mClosestPlayer == 0 || Vec3_Dist((Vector3*)&mPosX, (Vector3*)&mHomePosX) > lim) {
-        mAimAngle = Vec3_HorzAngle((Vector3*)&mPosX, (Vector3*)&mHomePosX);
+    if (mClosestPlayer == 0 || Vec3_Dist(&mPos, (Vector3 *)&mHomePosX) > lim) {
+        mAimAngle = Vec3_HorzAngle(&mPos, (Vector3 *)&mHomePosX);
         mPlayerDist = 0x61a8000;
     } else {
         Vector3 v;
@@ -755,8 +756,8 @@ void daNknk_c::func_ov062_02118258(int lim)
             mPlayerDist = 0x4e20000;
             return;
         }
-        mPlayerDist = Vec3_Dist((Vector3*)&mPosX, &v);
-        mAimAngle = Vec3_HorzAngle((Vector3*)&mPosX, &v);
+        mPlayerDist = Vec3_Dist(&mPos, &v);
+        mAimAngle = Vec3_HorzAngle(&mPos, &v);
     }
 }
 
@@ -888,7 +889,7 @@ void daNknk_c::func_ov062_02117c98()
                 mDeathState = 6;
             else {
                 mDeathState = 1;
-                func_0201267c(0x113, (const Vector3*)&mCamSpacePosX);
+                func_0201267c(0x113, &mCamSpacePos);
                 mScaleX = 0x1000;
                 mScaleY = 0x1000;
                 mScaleZ = 0x1000;
@@ -932,7 +933,7 @@ void daNknk_c::func_ov062_02117c98()
                 mScaleX = 0x1000;
                 mScaleY = 0x1000;
                 mScaleZ = 0x1000;
-                func_0201267c(0x113, (const Vector3*)&mCamSpacePosX);
+                func_0201267c(0x113, &mCamSpacePos);
             }
             _ZN6Player6BounceE5Fix12IiE(found, 0x28000);
             return;
@@ -969,7 +970,7 @@ tail:
 
 // @symbol _ZN8daNknk_c19func_ov062_02117bf4Ev
 void daNknk_c::func_ov062_02117bf4(){
-    func_0201267c(0xed, (const Vector3*)&mCamSpacePosX);
+    func_0201267c(0xed, &mCamSpacePos);
     mKoopaVariant = 1;
     mState = 3;
     mHorzSpeed = 0x14000;
@@ -984,7 +985,7 @@ void daNknk_c::func_ov062_02117bf4(){
         dActor_c::Spawn(0x11d /* SHELL */, mModelIndex, v, 0, mAreaId, -1);
     }
     mInvincibleTimer = 0xa;
-    func_0201267c(1, (const Vector3*)&mCamSpacePosX);
+    func_0201267c(1, &mCamSpacePos);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02117b9cEv
@@ -995,7 +996,7 @@ dActor_c *daNknk_c::func_ov062_02117b9c() {
     while (1) {
         found = dActor_c::FindWithActorID(0x11d /* SHELL */, found);
         if (!found) break;
-        Fix12i d = Vec3_Dist((Vector3*)&mPosX, (Vector3*)&found->mPosX);
+        Fix12i d = Vec3_Dist(&mPos, &found->mPos);
         if (d < bestDist) {
             bestDist = d;
             best = found;
@@ -1080,7 +1081,7 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
         Particle::System *ps;
         if (mFootstep != 0) return;
         mFootstep = 1;
-        func_0201267c(0xe4, (const Vector3*)&mCamSpacePosX);
+        func_0201267c(0xe4, &mCamSpacePos);
         if (mAnimIndex == 1) return;
         ang = (short)(mAngleY + 0x4000);
         pos.x = mPosX;
@@ -1119,9 +1120,9 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
         if (ps == 0) return;
         iscb2 = actorID == 0xcb;
         if (iscb2)
-            ps->callbackScale = (short)(((long long)ps->callbackScale * 0x800 + 0x800) >> 12);
+            ps->callbackScale = (short)FX_MUL(ps->callbackScale, 0x800);
         else
-            ps->callbackScale = (short)(((long long)ps->callbackScale * 0x500 + 0x800) >> 12);
+            ps->callbackScale = (short)FX_MUL(ps->callbackScale, 0x500);
     } else {
         mFootstep = 0;
     }
@@ -1168,11 +1169,11 @@ void daNknk_c::func_ov062_021175c0()
         t2 = t2 == 0xcb;
         if (t2 != 0) {
             int v = particle->callbackScale;
-            int r = (int)((((s64)v) * 0x800 + 0x800) >> 12);
+            int r = FX_MUL(v, 0x800);
             particle->callbackScale = (short)r;
         } else {
             int v = particle->callbackScale;
-            int r = (int)((((s64)v) * 0x500 + 0x800) >> 12);
+            int r = FX_MUL(v, 0x500);
             particle->callbackScale = (short)r;
         }
     }

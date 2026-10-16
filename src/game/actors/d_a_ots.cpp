@@ -68,7 +68,6 @@
  * - daOts_c.h first: nested Matrix4x3 for mModelAnim.mat4x3.t (02116bac).
  *   common.h's flat m[12] would stand down if it came first.
  * - Vec3_Sub / HorzLen / atan2 take int*; 02115f98 keeps the int-array pos copy.
- * - (long long)/(s64) 20.12 muls in 02116bac / 02115f98.
  * - bool-widening `int isD8 = (int)(actorID == kBigBullyActorId)` / `isBf` in
  *   02116754 / 02116460: the temporary is load-bearing.
  * - CleanupResources and InitResourcesCommon read the config block through
@@ -604,7 +603,7 @@ void daOts_c::func_ov064_02116754()
 int daOts_c::func_ov064_021166f0()
 {
     Vector3 v;
-    tail().mHomeAngle = Vec3_HorzAngle((Vector3 *)&this->mPosX, (Vector3 *)&tail().mHomePosX);
+    tail().mHomeAngle = Vec3_HorzAngle(&this->mPos, (Vector3 *)&tail().mHomePosX);
     ApproachLinear(this->mPrevAngleY, tail().mHomeAngle, 0x140);
     v.x = tail().mHomePosX;
     v.y = tail().mHomePosY;
@@ -755,7 +754,7 @@ void daOts_c::PlayStepSound()
         if (mModelAnim.WillHitFrame(7) == 0)
             return;
     }
-    func_0201267c(kSfxStep, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(kSfxStep, &mCamSpacePos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -763,7 +762,7 @@ void daOts_c::PlayStepSound()
 /* Slot 34. Called when the actor is struck or enters STATE_KNOCKED_BACK. */
 void daOts_c::PlayHitSound()
 {
-    func_0201267c(kSfxHit, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(kSfxHit, &mCamSpacePos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -778,7 +777,7 @@ void daOts_c::PlayShellHitSound()
 /* Slot 36. Called when the actor enters STATE_DYING. */
 void daOts_c::PlayDeathSound()
 {
-    func_0201267c(kSfxDeath, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(kSfxDeath, &mCamSpacePos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -866,7 +865,7 @@ int daOts_c::func_ov064_0211616c() {
 int daOts_c::func_ov064_02116110(short step){
     dActor_c *p = (dActor_c *)this->ClosestPlayer();
     if(p != 0){
-        short ang = Vec3_HorzAngle((const Vector3*)&this->mPosX,(const Vector3*)&p->mPosX);
+        short ang = Vec3_HorzAngle(&this->mPos, &p->mPos);
         if(ApproachLinear(this->mPrevAngleY, ang, step)) return 1;
     }
     return 0;
@@ -933,22 +932,10 @@ void daOts_c::func_ov064_02115f98(char* a1)
     cosH = data_02082214[idxH * 2 + 1];
     sinH = data_02082214[idxH * 2];
 
-    {
-        s64 p = (s64)scale * cosV;
-        lenfix = (int)((p + 0x800) >> 12);
-    }
-    {
-        s64 p = (s64)scale * sinV;
-        ycomp = (int)((p + 0x800) >> 12);
-    }
-    {
-        s64 p = (s64)lenfix * sinH;
-        t0 = (int)((p + 0x800) >> 12);
-    }
-    {
-        s64 p = (s64)lenfix * cosH;
-        t1 = (int)((p + 0x800) >> 12);
-    }
+    lenfix = FX_MUL(scale, cosV);
+    ycomp = FX_MUL(scale, sinV);
+    t0 = FX_MUL(lenfix, sinH);
+    t1 = FX_MUL(lenfix, cosH);
 
     pos0[0] = pos0[0] + t0;
     pos0[1] = pos0[1] + ycomp;

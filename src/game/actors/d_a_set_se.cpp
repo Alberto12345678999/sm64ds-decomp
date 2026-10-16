@@ -24,9 +24,6 @@
  * Leftover: g_profile_SET_SE is ov002 gap data outside this TU (S14), as
  *   are the sound table and the WATERFALL_SOUNDS_DISABLED flag this TU
  *   reads and writes.
- * Leftover: the PlayLong position is *(Vector3 *)&mCamSpacePosX, the
- *   inherited cam-space triple at 0x74 read as one vector; daBmb_c
- *   passes (char *)this+0x74 the same way. No shared overlay exists.
  * Leftover: InitResources keeps the volatile param1 RMW (param1 &= 0xf
  *   materializes an extra base pointer) and the (int)-cast re-tests
  *   (direct tests come out six words short of the ROM).
@@ -35,9 +32,9 @@
 #include "daSetSE_c.h"
 #include "dCamera_c.h"
 
-/* Sound.h does not declare PlayLong yet, so this TU re-opens the namespace
-   the way daBmb_c, daBrq_c and daObjPushblock_c do. Additive only: it does
-   not restate anything the header already has. */
+/* local extern: Sound.h declares PlayLong (returning int), but this TU does
+   not include Sound.h, so it re-opens the namespace the way daBmb_c,
+   daBrq_c and daObjPushblock_c do. */
 namespace Sound {
 u32 PlayLong(u32 handle, u32 bank, u32 soundId, const Vector3 &pos, s16 pitch);
 }
@@ -107,8 +104,8 @@ int daSetSE_c::Behavior()
             return 1;
     }
 
-    mSoundHandle = Sound::PlayLong(mSoundHandle, 3,
-        (u32)data_ov002_0210b498[param1], *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle =
+        Sound::PlayLong(mSoundHandle, 3, (u32)data_ov002_0210b498[param1], mCamSpacePos, 0);
     return 1;
 }
 

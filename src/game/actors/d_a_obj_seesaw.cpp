@@ -259,7 +259,7 @@ int daObjSeesaw_c::Behavior()
         if (s < 0)
             s = (short)-s;
         if (s > 0xa) {
-            mTiltSound = Sound::PlayLong(mTiltSound, 3, kTiltSound, *(Vector3 *)&mCamSpacePosX, 0);
+            mTiltSound = Sound::PlayLong(mTiltSound, 3, kTiltSound, mCamSpacePos, 0);
         }
     }
     if (mAngleX > kMaxPitch)
@@ -317,9 +317,9 @@ int daObjSeesaw_c::InitResources()
 // @symbol func_ov095_02135cdc
 extern "C" void func_ov095_02135cdc(daObjSeesaw_c *self, dActor_c *other)
 {
-    Vector3 *op = (Vector3 *)&other->mPosX;
-    int dist = Vec3_Dist((Vector3 *)&self->mPosX, op);
-    int ang = Vec3_HorzAngle((Vector3 *)&self->mPosX, op);
+    Vector3 *op = &other->mPos;
+    int dist = Vec3_Dist(&self->mPos, op);
+    int ang = Vec3_HorzAngle(&self->mPos, op);
     self->mPoundedThisFrame = 1;
     int r = func_ov095_0213579c(self, other);
 

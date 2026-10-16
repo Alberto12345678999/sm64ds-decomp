@@ -145,7 +145,7 @@ extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
            zeroing them stops the horizontal motion; the vertical speed
            becomes 0x1e000 up with -0x4000 acceleration. */
         self->mDeflected = 1;
-        Sound::Play(0, 0xa5, *(Vector3 *)&self->mCamSpacePosX);
+        Sound::Play(0, 0xa5, self->mCamSpacePos);
         self->mPrevAngleY -= 0x8000;
         self->unk_0a4 = 0;
         self->mVertSpeed = 0x1e000;
@@ -155,7 +155,7 @@ extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
     }
     flags = self->mdCcAc_c.hitFlags;
     self->SmallPoofDust();
-    func_02012694(0x166, *(Vector3 *)&self->mCamSpacePosX);
+    func_02012694(0x166, self->mCamSpacePos);
     self->MarkForDestruction();
     if ((flags & 0x10) != 0) {
         return;
@@ -175,7 +175,7 @@ extern "C" int func_ov002_020fec94(daPropeller_Heyho_Fire_c *self)
         || self->mWithMeshClsn.IsOnGround()
         || self->mWithMeshClsn.IsOnWall()) {
         self->SmallPoofDust();
-        func_02012694(0x166, *(Vector3 *)&self->mCamSpacePosX);
+        func_02012694(0x166, self->mCamSpacePos);
         self->MarkForDestruction();
         return 1;
     }

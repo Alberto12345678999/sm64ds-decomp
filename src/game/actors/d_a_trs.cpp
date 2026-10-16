@@ -34,7 +34,6 @@
  *   setup instructions in 021166ac; that source-shape reconstruction remains open.
  * - func_02012694's `((char *)this + 0x500)` argument is an opaque state
  *   pointer into mShadowMtx2's tail word, not a field.
- * - `(Vector3 *)&mPosX` puns stay: no shared Pos() accessor exists (S18).
  * - `*(u16 *)&member` puns stay on mStateTimer and the angle fields: the
  *   header declares s16 but the retail code loads those sites unsigned
  *   (ldrh), and the signed member spelling emits ldrsh.
@@ -315,7 +314,8 @@ void daTrs_c::func_ov063_02116244() {
 
     if (this->mBooDefeatCount < 5) return;
     if (this->mSpawnedActorID != 0) return;
-    this->mFoundActor = (dActor_c *)dActor_c::Spawn(TRS_ID_ICON_TERESA, this->param1, *(const Vector3 *)(&this->mPosX), (const Vector3_16 *)(0), this->mAreaIdx, -1);
+    this->mFoundActor = (dActor_c *)dActor_c::Spawn(TRS_ID_ICON_TERESA, this->param1, this->mPos,
+                                                    (const Vector3_16 *)(0), this->mAreaIdx, -1);
     if (this->mFoundActor != 0) this->mSpawnedActorID = this->mFoundActor->uniqueID;
     this->mFoundActor = 0;
 }
@@ -462,7 +462,7 @@ void daTrs_c::func_ov063_021166ac() {
 
     if (t->mState == 3 || t->mState == 3 ||
         t->mState == 3 || t->mState == 3) {
-        Vec3_Asr(&t1, (Vector3 *)&this->mPosX, 3);
+        Vec3_Asr(&t1, &this->mPos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t1.x, t1.y, t1.z);
         this->mModelAnim.mat4x3 = data_020a0e68;
         this->mModelAnim.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
@@ -475,7 +475,7 @@ void daTrs_c::func_ov063_021166ac() {
         }
         this->mModelAnim.data.UpdateVertsUsingBones();
     } else {
-        Vec3_Asr(&t2, (Vector3 *)&this->mPosX, 3);
+        Vec3_Asr(&t2, &this->mPos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t2.x, t2.y, t2.z);
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
         this->mModelAnim.mat4x3 = data_020a0e68;
@@ -613,7 +613,8 @@ void daTrs_c::func_ov063_02116bf4() {
             if (this->mChildDeaths < 5) {
                 unsigned char cb = this->mSpawnCount;
                 if (cb != 5 && (int)cb - this->mChildDeaths < 2) {
-                    char* p = (char *)dActor_c::Spawn(TRS_ID_TERESA, 0xfff1, *(const Vector3 *)(&this->mPosX), (const Vector3_16 *)(&this->mPrevAngleX), this->mAreaIdx, -1);
+                    char *p = (char *)dActor_c::Spawn(TRS_ID_TERESA, 0xfff1, this->mPos,
+                                                      &this->mPrevAngle, this->mAreaIdx, -1);
                     if (p != 0) {
                         ((daTrs_c *)p)->mSpawnerID = this->uniqueID;
                         ((daTrs_c *)p)->mCachedActorID = this->mCachedActorID;
@@ -953,7 +954,7 @@ void daTrs_c::func_ov063_02117650() {
     this->mPosX = npos.x;
     this->mPosY = npos.y;
     this->mPosZ = npos.z;
-    this->mAngleY = Vec3_HorzAngle((struct Vector3 *)&this->mPosX, &ppos);
+    this->mAngleY = Vec3_HorzAngle(&this->mPos, &ppos);
     this->mPrevAngleY = this->mAngleY;
 }
 
@@ -1841,7 +1842,7 @@ void daTrs_c::func_ov063_02118f74() {
         return;
     }
     this->mState = 3;
-    func_0201267c(0xc7, (const struct Vector3 *)&this->mCamSpacePosX);
+    func_0201267c(0xc7, &this->mCamSpacePos);
 }
 
 
@@ -2009,9 +2010,9 @@ void daTrs_c::func_ov063_0211934c() {
         }
         found = (void *)this->mFoundActor;
         if (found != 0 && ((daTrs_c *)found)->mBooDefeatCount == 5) {
-            ((Player *)r4)->ShowMessage(*(fBase_c *)(this), 0xb5, (const Vector3 *)(&this->mPosX), 0, 2);
+            ((Player *)r4)->ShowMessage(*(fBase_c *)(this), 0xb5, &this->mPos, 0, 2);
         } else {
-            ((Player *)r4)->ShowMessage(*(fBase_c *)(this), 0xb4, (const Vector3 *)(&this->mPosX), 0, 2);
+            ((Player *)r4)->ShowMessage(*(fBase_c *)(this), 0xb4, &this->mPos, 0, 2);
         }
         this->mFoundActor = 0;
         {
@@ -3019,9 +3020,9 @@ int daTrs_c::Render()
          mState == 3 ||
          mState == 3 ||
          mState == 3)) {
-        mModelAnim.Model::Render((const Vector3 *)&mScaleX);
+        mModelAnim.Model::Render(&mScale);
     } else {
-        mModelAnim.Render((const Vector3 *)&mScaleX);
+        mModelAnim.Render(&mScale);
     }
 
     return 1;
@@ -3194,9 +3195,8 @@ block_39:
             pv.x = pp[0];
             pv.y = pp[1];
             pv.z = pp[2];
-            /* (Vector3 *)&mPosX pun: no shared overlay accessor exists. */
-            mAngleToPlayer = Vec3_HorzAngle((const Vector3 *)&mPosX, &pv);
-            mDistToPlayer = Vec3_HorzDist((const Vector3 *)&mPosX, &pv);
+            mAngleToPlayer = Vec3_HorzAngle(&mPos, &pv);
+            mDistToPlayer = Vec3_HorzDist(&mPos, &pv);
         } else {
             this->mAngleToPlayer = mAngleY;
             mDistToPlayer = 0x2710000;
@@ -3345,7 +3345,7 @@ int daTBasket_c::Behavior()
                 dActor_c *touched = dActor_c::FindWithID(id);
                 if (touched != 0) {
                     if ((mdCcAc_c.hitFlags & 0x400000) != 0)
-                        ((Player *)touched)->JumpIntoBooCage(*(Vector3 *)&mPosX);
+                        ((Player *)touched)->JumpIntoBooCage(mPos);
                 }
             }
         }
@@ -3388,7 +3388,7 @@ int daTrs_c::InitResources()
             dExtFrameCtrl_c::LoadFile(data_ov063_0211edd4);
             dExtFrameCtrl_c::LoadFile(data_ov063_0211edcc);
         } else if (mVariant == 0xc) {
-            mFoundActor = dActor_c::Spawn(TRS_ID_ICON_TERESA, param1, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
+            mFoundActor = dActor_c::Spawn(TRS_ID_ICON_TERESA, param1, mPos, 0, mAreaIdx, -1);
             if (mFoundActor != 0) {
                 mSpawnedActorID = mFoundActor->uniqueID;
             }
@@ -3546,7 +3546,7 @@ int daTrs_c::InitResources()
            is T_BASKET here) is spawned at once, muted; if that Spawn succeeds
            this Boo is removed. */
         if (data_0209f264 == 0) {
-            spawned = dActor_c::Spawn(mCarriedID, 0, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
+            spawned = dActor_c::Spawn(mCarriedID, 0, mPos, 0, mAreaIdx, -1);
             if (spawned != 0) {
                 ((daTBasket_c *)spawned)->mMuteSecretSound = 1;
                 MarkForDestruction();
@@ -3596,7 +3596,7 @@ int daTrs_c::InitResources()
     mClsnBaseX = data_020a0e68.m[9];
     mClsnBaseY = data_020a0e68.m[10];
     mClsnBaseZ = data_020a0e68.m[11];
-    SubVec3((Vector3 *)&mClsnBaseX, (Vector3 *)&mPosX, (Vector3 *)&mClsnBaseX);
+    SubVec3((Vector3 *)&mClsnBaseX, &mPos, (Vector3 *)&mClsnBaseX);
     mTalkStep = 0;
     mTargetAngleY = mPrevAngleY;
     mParticle1 = 0;

@@ -85,6 +85,7 @@ enum daObjBlockS_c_AssetId {
 };
 
 #include "decl_Actor.h"
+#include "nitro/fx/fx.h"
 #include "decl_common.h"
 #include "daObjBlockS_c.h"
 #include "dActor_c.h"
@@ -359,7 +360,7 @@ void daObjBlockS_c::func_ov098_02138344()
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
     if (mWithMeshClsn.IsOnGround() != 0) {
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x51, (struct Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
         DecIfAbove0_Byte(&mBounceCount);
         mVertSpeed = mBounceCount * 0xa000;
         mHorzSpeed = mBounceCount * 0x5000;
@@ -469,13 +470,13 @@ void daObjBlockS_c::func_ov098_021385e0()
 
     idx = (unsigned short)mAngleY >> 4;
     xw = data_02082214[idx * 2];
-    mPosX = mPosX + (int)(((long long)xw * 0x50000 + 0x800) >> 12);
+    mPosX = mPosX + FX_MUL(xw, 0x50000);
 
     mPosY = mPosY + 0x50000;
 
     idx = (unsigned short)mAngleY >> 4;
     zw = data_02082214[idx * 2 + 1];
-    mPosZ = mPosZ + (int)(((long long)zw * 0x50000 + 0x800) >> 12);
+    mPosZ = mPosZ + FX_MUL(zw, 0x50000);
 
     mFlags &= ~0x80000;
 
@@ -897,7 +898,7 @@ void daObjBlockS_c::Kill()
     ((int *)&vec2)[1] = ((int *)&vec)[1];
     ((int *)&vec2)[2] = ((int *)&vec)[2];
     _ZN8dActor_c19DisappearPoofDustAtERK7Vector3((char *)this, &vec2);
-    _ZN5Sound9PlayBank3EjRK7Vector3(0x41, (Vector3 *)&mCamSpacePosX);
+    _ZN5Sound9PlayBank3EjRK7Vector3(0x41, &mCamSpacePos);
     Crate_SetState(this, STATE_BROKEN);
 }
 
@@ -1049,12 +1050,12 @@ int daObjBlockS_c::func_ov098_02139228()
         s16 z94 = data_02082214[li94 + 1];
         a1.y = 0;
         a2.y = 0;
-        s32 a1x = (s32)(((s64)v98 * x94 + 0x800) >> 12);
-        a1.z = (s32)(((s64)v98 * z94 + 0x800) >> 12);
+        s32 a1x = FX_MUL(v98, x94);
+        a1.z = FX_MUL(v98, z94);
         s16 xa = data_02082214[sa * 2];
         s16 za = data_02082214[sa * 2 + 1];
-        a2.x = (s32)(((s64)hl * xa + 0x800) >> 12);
-        a2.z = (s32)(((s64)hl * za + 0x800) >> 12);
+        a2.x = FX_MUL(hl, xa);
+        a2.z = FX_MUL(hl, za);
         a1.x = a1x;
     }
     Vec3_MulScalarInPlace(&a2.x, Vec3_HorzLen((Vector3 *)&mFloorNormalX));
@@ -1067,8 +1068,8 @@ int daObjBlockS_c::func_ov098_02139228()
     AngleDiff(mPrevAngleY, mAngleY);
 
     {
-        s32 m0 = (s32)(((s64)mFloorNormalX * unk_0a4 + 0x800) >> 12);
-        s32 m1 = (s32)(((s64)mFloorNormalZ * unk_0ac + 0x800) >> 12);
+        s32 m0 = FX_MUL(mFloorNormalX, unk_0a4);
+        s32 m1 = FX_MUL(mFloorNormalZ, unk_0ac);
         mVertSpeed = -(_ZN4cstd4fdivEii(m0 + m1, mFloorNormalY) + 0x8000);
     }
 
@@ -1082,10 +1083,10 @@ int daObjBlockS_c::func_ov098_02139228()
             if (q1 < 0) q1 = ((-q1) << 16) >> 16;
             if (q1 < 0x10) {
                 s32 v = mHorzSpeed;
-                sd = _ZN4cstd4fdivEii((s32)(((s64)v * 8 + 0x800) >> 12), 0xa);
+                sd = _ZN4cstd4fdivEii(FX_MUL(v, 8), 0xa);
                 if (sd < 0) sd = -sd;
                 if (mVertSpeed > 0xa000)
-                    _ZN5Sound9PlayBank3EjRK7Vector3(0x51, (Vector3 *)&mCamSpacePosX);
+                    _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
                 if (mVertSpeed > sd)
                     mVertSpeed = sd;
             }
@@ -1096,7 +1097,8 @@ int daObjBlockS_c::func_ov098_02139228()
         && mClsnYOffsetTarget != 0xa0
         && mHorzSpeed > 0xa000) {
         _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
-        mSlideSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, (Vector3 *)&mCamSpacePosX, 0);
+        mSlideSoundHandle =
+            _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, &mCamSpacePos, 0);
     }
 
     {
@@ -1138,7 +1140,7 @@ void daObjBlockS_c::func_ov098_021396a4()
     }
     r5 = mPosY - mGroundY;
     if (r5 <= 0x1000) r5 = 0x1000;
-    r4 = 0x64000 - (int)(((long long)r5 * 0x180 + 0x800) >> 12);
+    r4 = 0x64000 - FX_MUL(r5, 0x180);
     if (r4 < 0xa000) r4 = 0xa000;
     Matrix4x3_FromRotationY(&mShadowMtx, mAngleY);
     mShadowMtx.m[9] = mPosX >> 3;
@@ -1303,9 +1305,8 @@ int daObjBlockS_c::Behavior()
     }
 
     b2 = (enum Bool)((mFlags & ACTOR_FLAG_OFF_SCREEN) != 0);
-    if (b2 != FALSE
-        && Vec3_HorzDist((struct Vector3 *)&mPosX, (const struct Vector3 *)&mHomePosX)
-        && DistToCPlayer() > 0x7d0000) {
+    if (b2 != FALSE && Vec3_HorzDist(&mPos, (const struct Vector3 *)&mHomePosX) &&
+        DistToCPlayer() > 0x7d0000) {
         Crate_SetState(this, STATE_BROKEN);
         return 1;
     }

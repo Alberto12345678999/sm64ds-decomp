@@ -28,8 +28,6 @@
  * there once, out of line: D1 0x02115fc4, D0 0x0211600c, homeless D2 licensed.
  *
  * deslop leftovers:
- * - (Vector3 *)&mPosX for the JumpIntoBooCage argument: dActor_c has no Pos()
- *   on this branch yet, so the leaf pun stays (S18; the header owns the fix).
  * - dCcAc_c::Init / dBgCh_Actr::Init stay TU-local mangled scalars: the
  *   header member forms take Fix12<int> BY VALUE but the tree's Fix12 has no
  *   int constructor (measured: neither a bare 0x64000 nor Fix12<int>(0x64000)

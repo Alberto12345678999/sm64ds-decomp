@@ -38,14 +38,13 @@
  *   Earthquake(const Vector3 &, Fix12<int>) and calling it sizes
  *   St_Wait_Main 0x200 against 0x1f4. The scalar extern stays.
  * - copying closest->mPosX..mPosZ by name sizes St_Wait_Main 0x1f0
- *   against 0x1f4. The Vector3 pointer through mPosX is the match.
+ *   against 0x1f4. The Vector3 pointer &closest->mPos is the match.
  * - a Vector3 built from mPosX..mPosZ sizes InitResources 0x12c against
  *   0x114 at Vec3_Add, and St_Wait_Main 0x224 against 0x1f4 at the two
- *   AddVec3 calls. (Vector3 *)&mPosX stays. dActor_c has no Vector3
- *   position member.
+ *   AddVec3 calls. &mPos is the match.
  * - a Vector3 built from mCamSpacePosX..Z for Sound::PlayBank3 sizes
  *   St_Wait_Main 0x20c against 0x1f4, St_StandUp_Init 0x4c against 0x28,
- *   and St_StandUp_Main 0xf8 against 0xcc. The in-place cast stays.
+ *   and St_StandUp_Main 0xf8 against 0xcc. mCamSpacePos is passed in place.
  * - mModel.mat4x3.t does not compile: common.h's flat Matrix4x3
  *   (s32 m[12]) is the one this TU sees, so the translation row is
  *   m[9], m[10] and m[11].
@@ -161,7 +160,7 @@ int daObjCasket_c::InitResources()
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldOffset);
     Vector3 newPos;
-    Vec3_Add(&newPos, (Vector3 *)&mPosX, &worldOffset);
+    Vec3_Add(&newPos, &mPos, &worldOffset);
     mPosX = newPos.x;
     mPosY = newPos.y;
     mPosZ = newPos.z;
@@ -266,19 +265,19 @@ void daObjCasket_c::St_Wait_Main()
         landWorld.z = 0;
         Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
         MulVec3Mat4x3(&landLocal, &data_020a0e68, &landWorld);
-        AddVec3(&landWorld, (Vector3 *)&mPosX, &landWorld);
+        AddVec3(&landWorld, &mPos, &landWorld);
         dustPos.x = landWorld.x;
         dustPos.y = landWorld.y;
         dustPos.z = landWorld.z;
         LandingDustAt(dustPos, true);
-        Sound::PlayBank3(0x5a, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(0x5a, mCamSpacePos);
     } else {
         Vector3 *playerPosPtr;
         Player *closest = ClosestPlayer();
         if (closest == 0)
             return;
         /* Through a pointer: copied straight off the player, it is one instruction short. */
-        playerPosPtr = (Vector3 *)&closest->mPosX;
+        playerPosPtr = &closest->mPos;
         playerPos.x = playerPosPtr->x;
         playerPos.y = playerPosPtr->y;
         playerPos.z = playerPosPtr->z;
@@ -290,7 +289,7 @@ void daObjCasket_c::St_Wait_Main()
         reachWorld.z = 0;
         Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
         MulVec3Mat4x3(&reachLocal, &data_020a0e68, &reachWorld);
-        AddVec3(&reachWorld, (Vector3 *)&mPosX, &reachWorld);
+        AddVec3(&reachWorld, &mPos, &reachWorld);
         if (Vec3_HorzDist(&reachWorld, &playerPos) >= 0x12c000)
             return;
         if (DecIfAbove0_Short(&mStateTimer) != 0)
@@ -305,7 +304,7 @@ void daObjCasket_c::St_StandUp_Init()
 {
     mAngleStep = 0;
     mStateTimer = 60;
-    Sound::PlayBank3(0x58, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x58, mCamSpacePos);
 }
 
 // @symbol _ZN13daObjCasket_c15St_StandUp_MainEv
@@ -329,7 +328,7 @@ void daObjCasket_c::St_StandUp_Main()
     if (mStateTimer > 30)
         return;
     if (mBehaviorTimer % 4 == 0)
-        Sound::PlayBank3(0x59, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(0x59, mCamSpacePos);
     mAngleZ = (mBehaviorTimer & 1) * 0x190 - 0xc8;
 }
 

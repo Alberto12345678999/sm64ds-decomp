@@ -186,7 +186,7 @@ int daObjCtRotateBlock_c::Behavior()
         case 0:
             if (DecIfAbove0_Short(&mWaitTimer) != 0)
                 break;
-            Sound::PlayBank3(0x5b, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x5b, mCamSpacePos);
             mState++;
             mVertSpeed = -0x5000;
             break;
@@ -204,7 +204,7 @@ int daObjCtRotateBlock_c::Behavior()
                 break;
             if (ApproachLinear(mAngleZ, mTargetAngleZ, 0x4b0) == 0)
                 break;
-            Sound::PlayBank3(0x40, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x40, mCamSpacePos);
             mState = 0;
             mWaitTimer = data_ov065_0211cfa4[data_0209f2c0];
             if (data_0209f2c0 == 2)

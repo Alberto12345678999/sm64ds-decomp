@@ -131,7 +131,7 @@ int daObjKanban_c::Behavior()
                 }
                 break;
             case 1:
-                if (Vec3_ApproachHorz((Vector3 *)&tgt->mPosX, &pos, 0xa000)) {
+                if (Vec3_ApproachHorz(&tgt->mPos, &pos, 0xa000)) {
                     func_ov002_020bec9c(tgt, 0, 0, 0x1000, 0);
                     mState += 1;
                 }
@@ -170,7 +170,7 @@ int daObjKanban_c::Behavior()
                     opos.x = pO[0];
                     opos.y = pO[1];
                     opos.z = pO[2];
-                    if (AngleDiff(Vec3_HorzAngle((Vector3 *)&mPosX, &opos), mAngleY) < 0x4000) {
+                    if (AngleDiff(Vec3_HorzAngle(&mPos, &opos), mAngleY) < 0x4000) {
                         if (((Player *)other)->StartTalk(*this, 0))
                             mTalkingPlayer = (Player *)other;
                     }

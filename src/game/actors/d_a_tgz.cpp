@@ -41,6 +41,7 @@
  *   overloading, so those four cast.
  */
 #include "decl_common.h"
+#include "nitro/fx/fx.h"
 #include "daTgz_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -202,7 +203,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
         if (rc.DetectClsn()) {
             if (func_02037e20((int *)&rc.surface) != 0 && self->mPosY < rc.clsnY) {
                 self->PoofDust();
-                func_02012694(0xc4, (const Vector3 *)&self->mCamSpacePosX);
+                func_02012694(0xc4, &self->mCamSpacePos);
                 self->MarkForDestruction();
                 return;
             }
@@ -211,10 +212,10 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
-                self->mVertSpeed = -(_ZN4cstd4fdivEii(
-                    (int)(((long long)normal.x * self->unk_0a4 + 0x800) >> 12)
-                  + (int)(((long long)normal.z * self->unk_0ac + 0x800) >> 12),
-                    normal.y) + 0x8000);
+                self->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(normal.x, self->unk_0a4) +
+                                                          FX_MUL(normal.z, self->unk_0ac),
+                                                      normal.y) +
+                                     0x8000);
             }
             self->mAngleX = func_02010844(self, &normal, self->mAngleY);
             self->mAngleZ = func_02010844(self, &normal, (s16)(self->mAngleY - 0x4000));
@@ -242,7 +243,7 @@ extern "C" void func_ov077_02124eb0(void *vc)
         v[2] = self->mPosZ;
         _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, (const Vector3 *)v, 1, 0x2000, 0);
         self->PoofDust();
-        func_02012694(0xc4, (const Vector3 *)&self->mCamSpacePosX);
+        func_02012694(0xc4, &self->mCamSpacePos);
         self->MarkForDestruction();
         return;
     }
@@ -272,7 +273,7 @@ extern "C" void func_ov077_02124eb0(void *vc)
         || player->mIsMetal != 0) {
         if (self->mState != 1)
             return;
-        Sound::PlayBank0(0xb5, *(const Vector3 *)&self->mCamSpacePosX);
+        Sound::PlayBank0(0xb5, self->mCamSpacePos);
         self->mChasePlayer = player;
         func_ov077_02125e94(self, 2);
         return;
@@ -408,7 +409,7 @@ extern "C" int func_ov077_021253a4(daTgz_c *self)
         v.z = self->mPosZ;
         _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &v, 1, 0x2000, 0);
         self->PoofDust();
-        func_02012694(0xc4, (const Vector3 *)&self->mCamSpacePosX);
+        func_02012694(0xc4, &self->mCamSpacePos);
         self->MarkForDestruction();
     }
     return 1;
@@ -418,7 +419,7 @@ extern "C" int func_ov077_021253a4(daTgz_c *self)
 /* State 5 entry: launch upward at 40.0 and arm the 45-frame tumble. */
 extern "C" int func_ov077_02125480(daTgz_c *self)
 {
-    Sound::PlayBank0(9, *(Vector3 *)&self->mCamSpacePosX);
+    Sound::PlayBank0(9, self->mCamSpacePos);
     self->mHorzSpeed = 0xa000;
     self->mVertSpeed = 0x28000;
     self->mAngleX = 0;
@@ -459,7 +460,7 @@ extern "C" int func_ov077_02125550(daTgz_c *self)
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, vec.x, vec.y, vec.z);
-            func_0201267c(0x109, (const Vector3 *)&self->mCamSpacePosX);
+            func_0201267c(0x109, &self->mCamSpacePos);
         } else {
             self->mVertSpeed = 0;
             self->mAngleX = 0;
@@ -471,7 +472,7 @@ extern "C" int func_ov077_02125550(daTgz_c *self)
     d = self->mWaterY ? self->mPosY - self->mWaterY : 0;
     if (d < -0xc8000) {
         self->PoofDust();
-        func_02012694(0x166, (const Vector3 *)&self->mCamSpacePosX);
+        func_02012694(0x166, &self->mCamSpacePos);
         self->MarkForDestruction();
     }
 
@@ -515,11 +516,11 @@ extern "C" int func_ov077_021256b4(daTgz_c *self)
 
     idx = ((int)(u16)self->mAngleY) >> 4;
     sinv = data_02082214[idx * 2];
-    self->mPosX = self->mPosX + (int)(((s64)sinv * 0x3c000 + 0x800) >> 12);
+    self->mPosX = self->mPosX + FX_MUL(sinv, 0x3c000);
     self->mPosY = self->mPosY + 0x85000;
     idx = ((int)(u16)self->mAngleY) >> 4;
     cosv = data_02082214[idx * 2 + 1];
-    self->mPosZ = self->mPosZ + (int)(((s64)cosv * 0x3c000 + 0x800) >> 12);
+    self->mPosZ = self->mPosZ + FX_MUL(cosv, 0x3c000);
 
     carrier = self->mCarrier;
     {
@@ -532,7 +533,7 @@ extern "C" int func_ov077_021256b4(daTgz_c *self)
         v.z = tz;
     }
 
-    self->DetectRaycastClsn(v, *(Vector3 *)&self->mPosX, one);
+    self->DetectRaycastClsn(v, self->mPos, one);
 
     self->mCarrier = 0;
     self->mWithMeshClsn.SetLimMovFlag();
@@ -600,7 +601,7 @@ extern "C" int func_ov077_02125908(daTgz_c *self)
 
     if (v < -0xc8000) {
         self->PoofDust();
-        func_02012694(0x166, (const Vector3 *)&self->mCamSpacePosX);
+        func_02012694(0x166, &self->mCamSpacePos);
         self->MarkForDestruction();
     }
 
@@ -640,7 +641,7 @@ extern "C" int func_ov077_02125a54(daTgz_c *self)
         d = 0;
     if (d < -0xc8000) {
         self->PoofDust();
-        func_02012694(0x166, (const Vector3 *)&self->mCamSpacePosX);
+        func_02012694(0x166, &self->mCamSpacePos);
         self->MarkForDestruction();
     }
     self->UpdatePos(&self->mdCcAc_c);
@@ -686,7 +687,7 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
     underwater = func_ov077_02124ce4(self);
     if (underwater) {
         if (self->mInWater == 0) {
-            func_02012694(0xe2, (const Vector3 *)&self->mCamSpacePosX);
+            func_02012694(0xe2, &self->mCamSpacePos);
             _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(
                 self->mPosX, data_0209f32c, self->mPosZ);
             self->mRippleId =
@@ -710,7 +711,7 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
         d = self->mWaterY ? self->mPosY - self->mWaterY : 0;
         if (d < -0xc8000) {
             self->PoofDust();
-            func_02012694(0x166, (const Vector3 *)&self->mCamSpacePosX);
+            func_02012694(0x166, &self->mCamSpacePos);
             self->MarkForDestruction();
         } else if (self->mVertSpeed < 0xa000) {
             self->mVertSpeed = 0;
@@ -728,7 +729,7 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, vec.x, vec.y, vec.z);
-            func_0201267c(0x109, (const Vector3 *)&self->mCamSpacePosX);
+            func_0201267c(0x109, &self->mCamSpacePos);
         }
     }
 
@@ -821,7 +822,7 @@ int daTgz_c::Behavior()
     func_ov077_02125304((char *)this);
     if (data_0209f2f8 == 0x1c && mPosY <= -0x1600000) {
         PoofDust();
-        func_02012694(0xc4, (const Vector3 *)&mCamSpacePosX);
+        func_02012694(0xc4, &mCamSpacePos);
         MarkForDestruction();
     }
 done:
@@ -841,8 +842,8 @@ int daTgz_c::InitResources()
     if (!mShadowModel.InitCylinder())
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x2d000, 0x3c000, 0x200000, 0x4a3d0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x2d000, 0, (Vector3_16 *)&mPrevAngleX, (Vector3_16 *)&mAngleX);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x2d000, 0,
+                                                                &mPrevAngle, &mAngle);
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;

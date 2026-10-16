@@ -29,6 +29,7 @@
 #pragma defer_codegen off
 
 #include "common.h"
+#include "nitro/fx/fx.h"
 #include "daCoin_c.h"
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
@@ -124,7 +125,7 @@ void daCoin_c::func_ov002_020b1008()
     if (mCoinType != COIN_RED) return;
     block = dActor_c::FindWithActorID(0xf, 0);
     while (block) {
-        if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&block->mPosX) < 0x96000) {
+        if (Vec3_Dist(&mPos, &block->mPos) < 0x96000) {
             mInBrickBlock = 1;
             ((daObjBlockL_c *)block)->mLinkedActor = this;
             break;
@@ -174,7 +175,7 @@ void daCoin_c::func_ov002_020b10e4()
                 if (type == 0x7e || type == 0x81 || type == 0x9c) {
                     int dy = mPosY - platform->mPosY;
                     int radius = platform->mClipRadius;
-                    int dist = Vec3_HorzDist((Vector3*)&mPosX, (Vector3*)&platform->mPosX);
+                    int dist = Vec3_HorzDist(&mPos, &platform->mPos);
                     if (dist < (radius << 3) && dy <= 0x1f4000 && dy >= 0) {
                         mFloorPosY = platform->mPosY + 0x32000;
                         ((CoinFlagBits*)((long long)&mCoinFlags))->floorState = FLOOR_FIXED;
@@ -298,7 +299,7 @@ void daCoin_c::func_ov002_020b13e0()
     if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0)
         return;
     if (mVertSpeed > 0) return;
-    func_02012694(0xe2, (const Vector3 *)&mCamSpacePosX);
+    func_02012694(0xe2, &mCamSpacePos);
     _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(mPosX, mPosY, mPosZ);
     mHorzSpeed = 0;
     mVertAccel = -0x800;
@@ -363,7 +364,7 @@ void daCoin_c::func_ov002_020b1674(Player *player)
 {
     mDisappearTimer = 0;
     KillAndTrackInDeathTable();
-    func_02012694(0x1c, (const Vector3 *)&mCamSpacePosX);
+    func_02012694(0x1c, &mCamSpacePos);
     GiveCoins(player->mPlayerNo, 5);
     player->Heal(0x500);
 }
@@ -389,9 +390,9 @@ void daCoin_c::func_ov002_020b16c4(Player *player)
     mDisappearTimer = 0;
     KillAndTrackInDeathTable();
     if (player->mIsUnderwater != 0)
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x12, *(const Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x12, mCamSpacePos);
     else
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x11, *(const Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x11, mCamSpacePos);
 
     filter = mSpawnFilter;
     if (filter != 0 && filter <= 7) {
@@ -445,9 +446,9 @@ void daCoin_c::func_ov002_020b1884(Player *player)
     mDisappearTimer = 0;
     KillAndTrackInDeathTable();
     if (player->mIsUnderwater)
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x12, *(const Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x12, mCamSpacePos);
     else
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x11, *(const Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x11, mCamSpacePos);
     GiveCoins(player->mPlayerNo, 1);
     player->Heal(0x100);
 }
@@ -474,7 +475,7 @@ void func_ov002_020b18f0(char* self)
     if (SublevelToLevel(data_0209f2f8) >= 0xf) return;
     if (player == 0) return;
     if (data_0209f358[player->mPlayerNo] < 0x64) return;
-    playerPos = (struct Vector3*)&player->mPosX;
+    playerPos = &player->mPos;
     spawnPos.x = playerPos->x;
     y = playerPos->y;
     spawnPos.y = y;
@@ -527,7 +528,7 @@ void daCoin_c::func_ov002_020b1a60()
         mPosZ = targetPos[2];
     }
     {
-        int *posY = (int *)((int)this + 0x60);
+        int *posY = &mPosY;
         *posY += 0xc8000;
     }
     if (mDisappearTimer < 0x41) return;
@@ -554,7 +555,8 @@ void daCoin_c::func_ov002_020b1ad4()
         player = ClosestPlayer();
         if (player == 0) return;
         range = (data_0209f2f8 == 0xb) ? 0x258000 : 0x4b0000;
-        if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&player->mPosX) > range) return;
+        if (Vec3_Dist(&mPos, &player->mPos) > range)
+            return;
         speed = player->mHorzSpeed;
         if (speed < 0x14000) speed = 0x14000;
         else if (speed > 0x28000) speed = 0x28000;
@@ -567,7 +569,7 @@ void daCoin_c::func_ov002_020b1ad4()
     }
     if (mWithMeshClsn.JustHitGround()) {
         if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
-            _ZN5Sound9PlayBank3EjRK7Vector3(0x52, *(const Vector3 *)&mCamSpacePosX);
+            _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
             mVertSpeed = 0x19000;
         }
     }
@@ -588,7 +590,7 @@ void daCoin_c::func_ov002_020b1bfc()
     if (!mWithMeshClsn.JustHitGround()) return;
     if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) != 0)
         return;
-    _ZN5Sound9PlayBank3EjRK7Vector3(0x52, *(const Vector3 *)&mCamSpacePosX);
+    _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
     if (mHorzSpeed == 0) {
         mHorzSpeed = 0x13000;
         mDisappearTimer = 0x12c;
@@ -634,7 +636,7 @@ void daCoin_c::func_ov002_020b1cc0()
         if (isFlCoin != 0) {
             if (mPosY <= flCoin->mPosY) {
                 mPosY = flCoin->mPosY;
-                _ZN5Sound9PlayBank3EjRK7Vector3(0x52, *(const Vector3 *)&mCamSpacePosX);
+                _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
                 bits = (CoinFlagBits *)((int)&mCoinFlags);
                 bits->bounces++;
                 bounces = ((CoinFlagBits *)&mCoinFlags)->bounces;
@@ -666,7 +668,7 @@ void daCoin_c::func_ov002_020b1cc0()
         if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
             if (mDisappearTimer > 0xf000)
                 mDisappearTimer = 0xf;
-            _ZN5Sound9PlayBank3EjRK7Vector3(0x52, *(const Vector3 *)&mCamSpacePosX);
+            _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
             bits = (CoinFlagBits *)((int)&mCoinFlags);
             bits->bounces++;
             bounces = ((CoinFlagBits *)&mCoinFlags)->bounces;
@@ -698,8 +700,8 @@ void daCoin_c::func_ov002_020b1cc0()
         return;
 
     if (normal.y != 0) {
-        int dotX = (int)(((long long)normal.x * unk_0a4 + 0x800) >> 12);
-        int dotZ = (int)(((long long)normal.z * unk_0ac + 0x800) >> 12);
+        int dotX = FX_MUL(normal.x, unk_0a4);
+        int dotZ = FX_MUL(normal.z, unk_0ac);
         mVertSpeed = -(_ZN4cstd4fdivEii(dotX + dotZ, normal.y) + 0x8000);
     }
 
@@ -841,15 +843,15 @@ int daCoin_c::Behavior()
     extern unsigned char data_0209f2d8;
 
     if ((unsigned int)(mCoinFlags << 0x1e) >> 0x1f) {
-        *(unsigned char *)((int)this + 0x3ae) &= ~2;
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x30, *(const Vector3 *)&mCamSpacePosX);
+        mCoinFlags &= ~2;
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x30, mCamSpacePos);
     }
     if ((int)(actorID == 0x122) != 0) {
         if ((unsigned int)(mCoinFlags << 0x1f) >> 0x1f)
             mAreaId = -1;
     }
     if (func_ov002_020b10a0() != 0) return 1;
-    *(short *)((int)this + 0x8e) += 0xc00;
+    mAngleY += 0xc00;
     if (func_ov002_020b12ec() != 0) {
         func_ov002_020b14d8();
         mdCc_c.Clear();
@@ -893,12 +895,10 @@ s32 daCoin_c::InitResources()
      * the two models, the shadow cylinder, the actor collider and the mesh
      * collider, then sets the disappear and no-collision timers.
      *
-     * Raw offsets kept:
-     *  - Every read-modify-write of mCoinFlags is spelled
-     *    `*(u8*)((int)this + 0x3ae)`; spelled as the member, InitResources
-     *    changes size (measured). The launder is per site, not per field.
-     *  - `*(s32*)((int)this + 0x190) |= 1` sets flags bit 0 of mdCc_c
-     *    (dCc_c::flags at +0x18 of the sub-object at 0x178).
+     * Launders kept: the three `mCoinFlags = (mCoinFlags & ~m) | v` stores
+     * go through `*(u8 *)((int)&mCoinFlags)`. Spelled as the plain member,
+     * each one changes the code (measured per site); the plain `&=`/`|=`
+     * sites take the member as is.
      *
      * `#pragma opt_common_subs off` is load-bearing: the ROM re-issues loads
      * this compiler would otherwise CSE. */
@@ -935,8 +935,7 @@ s32 daCoin_c::InitResources()
         mVertSpeed = 0x14000;
         mVertAccel = -0x4000;
         mTerminalVelocity = -0x37000;
-        *(u8*)((int)this + 0x3ae) =
-            (*(u8*)((int)this + 0x3ae) & ~0xe0) | (FLOOR_NO_SHADOW << 5);
+        *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~0xe0) | (FLOOR_NO_SHADOW << 5);
         goto common;
     }
     if (behavior == 1 || behavior == 7) {
@@ -947,7 +946,7 @@ s32 daCoin_c::InitResources()
     }
     /* default */
     mVertSpeed = 0x24000;
-    *(u8*)((int)this + 0x3ae) |= 2;
+    mCoinFlags |= 2;
     goto gravity;
 facing:
     {
@@ -961,11 +960,10 @@ facing:
 gravity:
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x37000;
-    *(u8*)((int)this + 0x3ae) &= ~0xe0;
+    mCoinFlags &= ~0xe0;
     goto common;
 unprobedFloor:
-    *(u8*)((int)this + 0x3ae) =
-        (*(u8*)((int)this + 0x3ae) & ~0xe0) | (FLOOR_UNPROBED << 5);
+    *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~0xe0) | (FLOOR_UNPROBED << 5);
     mFloorPosY = mPosY - 0x1f4000;
     if (mBehaviorType == 7) {
         ccRadius = 0x32000;
@@ -1044,7 +1042,7 @@ common:;
     behavior = mBehaviorType;
     if (behavior == 8) {
         mDisappearTimer = 0x2d;
-        *(s32*)((int)this + 0x190) |= 1;
+        mdCc_c.flags |= 1;
     } else {
         if (behavior == 6) {
             int inMode1;
@@ -1052,7 +1050,7 @@ common:;
             inMode1 = (inMode1 == 1);
             if (inMode1 == 0) {
                 mDisappearTimer = 0xffffu;
-                *(s32*)((int)this + 0x190) |= 1;
+                mdCc_c.flags |= 1;
                 goto timerSet;
             }
         }
@@ -1060,8 +1058,7 @@ common:;
     timerSet:;
     }
 
-    *(u8*)((int)this + 0x3ae) =
-        (*(u8*)((int)this + 0x3ae) & ~1) | 1;
+    *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~1) | 1;
 
     behavior = mBehaviorType;
     if (behavior == 1 || behavior == 7) {
@@ -1076,12 +1073,12 @@ common:;
 floorBound:
     mNoClsnTimer = 0;
     if (mCoinType == COIN_BLUE && (u32)mSpawnFilter < 8) {
-        *(u8*)((int)this + 0x3ae) &= ~1;
-        *(s32*)((int)this + 0x190) |= 1;
+        mCoinFlags &= ~1;
+        mdCc_c.flags |= 1;
     }
 flagsDone:;
 
-    *(u8*)((int)this + 0x3ae) &= ~0x1c;
+    mCoinFlags &= ~0x1c;
     mPuzzleManagerID = 0;
     return 1;
 }

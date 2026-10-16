@@ -22,6 +22,7 @@
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
 #include "dClipper.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -128,7 +129,7 @@ s32 daPgBby_c::Render()
     unsigned int f = mFlags;
     int b = ((f & 0x40000) != 0);
     if (b) return 1;
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -196,10 +197,10 @@ int daPgBby_c::func_ov072_02121a84()
     int frame;
 
     player = ClosestPlayer();
-    dist = Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
+    dist = Vec3_Dist(&mPos, &player->mPos);
     switch (mSubState) {
     case 0:
-        angle = (short)(Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX) + 0x8000);
+        angle = (short)(Vec3_HorzAngle(&mPos, &player->mPos) + 0x8000);
         ApproachLinear(mAngleY, angle, 0x514);
         mPrevAngleY = mAngleY;
         mHorzSpeed = 0x5000;
@@ -208,7 +209,7 @@ int daPgBby_c::func_ov072_02121a84()
         }
         break;
     case 1:
-        angle = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
+        angle = Vec3_HorzAngle(&mPos, &player->mPos);
         ApproachLinear(mAngleY, angle, 0x514);
         mPrevAngleY = mAngleY;
         mHorzSpeed = 0x5000;
@@ -247,7 +248,7 @@ int daPgBby_c::func_ov072_02121a84()
     if ((int)mModelAnim.file == data_ov072_02122cbc[1]) {
         frame = (int)(((u32)mModelAnim.currFrame << 4) >> 16);
         if (frame == 9 || frame == 0x15) {
-            func_0201267c(0xf3, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf3, &mCamSpacePos);
         }
     }
     return 1;
@@ -335,7 +336,7 @@ int daPgBby_c::func_ov072_021217ac()
         from.x = x;
         from.y = aboveY;
         from.z = z;
-        DetectRaycastClsn(from, *(Vector3 *)&mPosX, true);
+        DetectRaycastClsn(from, mPos, true);
         mCarrier = 0;
         func_ov072_02121d50(0);
     }
@@ -345,7 +346,7 @@ animate:
     if (param1 == 0) {
         u32 frame = (u32)(mModelAnim.currFrame << 4) >> 16;
         if (frame == 0x10 || frame == 0x25) {
-            func_0201267c(0xf2, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf2, &mCamSpacePos);
         }
     }
     return 1;
@@ -367,12 +368,12 @@ int daPgBby_c::func_ov072_02121758()
    units from her. */
 int daPgBby_c::func_ov072_02121670()
 {
-    int dist = Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&mMother->mPosX);
+    int dist = Vec3_Dist(&mPos, &mMother->mPos);
     short tgt = mAngleY;
     if (dist > 0xdc000) {
-        tgt = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mMother->mPosX);
+        tgt = Vec3_HorzAngle(&mPos, &mMother->mPos);
     } else if (dist < 0xc8000) {
-        tgt = (short)(Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mMother->mPosX) + 0x8000);
+        tgt = (short)(Vec3_HorzAngle(&mPos, &mMother->mPos) + 0x8000);
     }
     ApproachLinear(mAngleY, tgt, 0x2bc);
     mPrevAngleY = mAngleY;
@@ -386,7 +387,7 @@ int daPgBby_c::func_ov072_02121670()
     {
         int frame = (int)((unsigned)(mModelAnim.currFrame << 4) >> 16);
         if (frame == 9 || frame == 0x15) {
-            func_0201267c(0xf3, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf3, &mCamSpacePos);
         }
     }
     return 1;
@@ -427,7 +428,7 @@ int daPgBby_c::func_ov072_021214dc()
     case 1:
     {
         if (mCarrier->ShowMessage(*this, 0xb2, 0, 0, 0)) {
-            func_0201267c(0xf2, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf2, &mCamSpacePos);
             mSubState++;
         }
         int spat = (mFlags & 0x80000) != 0;
@@ -558,7 +559,6 @@ void daPgBby_c::func_ov072_021210c4()
     Vector3 v;
     int shadowHeight;
     int shadowRadius;
-    long long tmp;
 
     if (mCarrier && ((mFlags & 0x4000) ? 1 : 0) && *(int *)((char *)mCarrier + 0xc8)) {
         idx = 0;
@@ -593,8 +593,7 @@ void daPgBby_c::func_ov072_021210c4()
         if (ground.DetectClsn()) {
             shadowHeight = mPosY - ground.clsnY;
             if (shadowHeight < 0x1000) shadowHeight = 0x1000;
-            tmp = (long long)shadowHeight * 0x180 + 0x800;
-            shadowRadius = shadowRadius - (int)(tmp >> 12);
+            shadowRadius = shadowRadius - FX_MUL(shadowHeight, 0x180);
             if (shadowRadius < 0x1000) shadowRadius = 0x1000;
             if (shadowRadius > 0x5a000) shadowRadius = 0x5a000;
             shadowHeight = shadowHeight + 0x28000;
@@ -617,10 +616,8 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((SurfaceInfo *)((char *)clsn->GetFloorResult() + 4))->CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            long long a = (long long)floorNormal.x * (long long)unk_0a4;
-            long long bb = (long long)floorNormal.z * (long long)unk_0ac;
-            int x = (int)((a + 0x800) >> 12);
-            int y = (int)((bb + 0x800) >> 12);
+            int x = FX_MUL(floorNormal.x, unk_0a4);
+            int y = FX_MUL(floorNormal.z, unk_0ac);
             mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
         }
     }
@@ -699,7 +696,7 @@ void daPgBby_c::func_ov072_02120ddc()
     dActor_c *mother = mMother;
     if (mother == 0)
         return;
-    if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&mother->mPosX) >= 0x190000)
+    if (Vec3_Dist(&mPos, &mother->mPos) >= 0x190000)
         return;
     func_ov072_02121d50(3);
 }
@@ -713,7 +710,8 @@ void daPgBby_c::func_ov072_02120d04()
     Vector3 tmp;
     if (mStateId == 3) return;
     if ((unsigned)mPosY > (unsigned)(-0x1800000)) {
-        if (Vec3_Dist((Vector3 *)&mSpawnPosX, (Vector3 *)&mPosX) < 0x190000) return;
+        if (Vec3_Dist((Vector3 *)&mSpawnPosX, &mPos) < 0x190000)
+            return;
         if (DecIfAbove0_Short(&mRespawnTimer) != 0) return;
     }
     Vec3_Asr(&tmp, (Vector3 *)&mSpawnPosX, 3);
