@@ -12,36 +12,36 @@
 /* One bomb: 0x70 records at +0x4660, stride 0x40. grabX/grabY are the
    stylus offset at the grab; speed is the Fix12 step along angle. */
 struct dScMgBomroom_Bomb {
-    s32 x;            /* +0x00 -- Fix12 */
-    s32 y;            /* +0x04 -- Fix12 */
-    s32 grabX;        /* +0x08 -- stylus x minus bomb x, Fix12 */
-    s32 grabY;        /* +0x0c -- stylus y minus bomb y, Fix12 */
-    s32 speed;        /* +0x10 -- Fix12 per-frame step; scaled by sin/cos of
-                                   angle while roaming, added directly when
-                                   walking to its slot */
-    s32 unk_14;       /* +0x14 */
-    s32 unk_18;       /* +0x18 */
-    s32 prevX;        /* +0x1c -- position before this frame's move */
-    s32 prevY;        /* +0x20 */
-    s32 sound;        /* +0x24 -- sound handle; func_02012468 takes it back
-                                   and returns it each frame */
-    s32 unk_28;       /* +0x28 -- set to the spawn step base, see SpawnBombs */
-    u16 angle;        /* +0x2c -- 0..0xffff, sine-table index >> 4 */
-    u16 counter;      /* +0x2e -- frame counter, see Bomb_Animate */
-    u16 unk_30;       /* +0x30 */
-    u16 unk_32;       /* +0x32 -- second per-bomb timer; counts down on a held bomb */
-    u8  type;         /* +0x34 -- anim row; picks frame time/count and sfx */
-    u8  frame;        /* +0x35 */
-    u8  color;        /* +0x36 -- 0/1; also picks which pen box it bounces in */
-    u8  state;        /* +0x37 -- 5 = settled; indexes data_ov006_02141730 */
-    u8  active;       /* +0x38 */
-    u8  unk_39;       /* +0x39 -- sprite-drawn flag, see DrawBombs */
-    u8  pen;          /* +0x3a -- which blast marked it; 0 = was loose */
-    u8  substate;     /* +0x3b -- indexes data_ov006_02141708 */
-    u8  unk_3c;       /* +0x3c */
-    u8  unk_3d;       /* +0x3d */
-    u8  unk_3e;       /* +0x3e */
-    u8  pad_3f;
+    s32 x;          /* +0x00 -- Fix12 */
+    s32 y;          /* +0x04 -- Fix12 */
+    s32 grabX;      /* +0x08 -- stylus x minus bomb x, Fix12 */
+    s32 grabY;      /* +0x0c -- stylus y minus bomb y, Fix12 */
+    s32 speed;      /* +0x10 -- Fix12 per-frame step; scaled by sin/cos of
+                       angle while roaming, added directly when
+                       walking to its slot */
+    s32 unk_14;     /* +0x14 */
+    s32 unk_18;     /* +0x18 */
+    s32 prevX;      /* +0x1c -- position before this frame's move */
+    s32 prevY;      /* +0x20 */
+    s32 sound;      /* +0x24 -- sound handle; func_02012468 takes it back
+                       and returns it each frame */
+    s32 dragSound;  /* +0x28 -- sound 0x1e5 handle while the bomb is dragged */
+    u16 angle;      /* +0x2c -- 0..0xffff, sine-table index >> 4 */
+    u16 counter;    /* +0x2e -- frame counter, see Bomb_Animate */
+    u16 marchDelay; /* +0x30 -- frames before it walks to its line-up slot (8 per bomb) */
+    u16 fuse;       /* +0x32 -- fuse; at 0x40 the bomb flashes, at 0 it explodes */
+    u8 type;        /* +0x34 -- anim row; picks frame time/count and sfx */
+    u8 frame;       /* +0x35 */
+    u8 color;       /* +0x36 -- 0/1; also picks which pen box it bounces in */
+    u8 state;       /* +0x37 -- 5 = settled; indexes data_ov006_02141730 */
+    u8 active;      /* +0x38 */
+    u8 visible;     /* +0x39 -- DrawBombs skips the bomb while 0 */
+    u8 pen;         /* +0x3a -- which blast marked it; 0 = was loose */
+    u8 substate;    /* +0x3b -- indexes data_ov006_02141708 */
+    u8 lineSlot;    /* +0x3c -- line-up slot: row = slot / 10, column = slot % 10 */
+    u8 exploded;    /* +0x3d -- set when the bomb goes off */
+    u8 overPen;     /* +0x3e -- held over its own pen; sound 0x1e4 on entry */
+    u8 pad_3f;
 };
 
 /* A 0x10-byte per-slot record: the scene keeps three runs of them between
@@ -158,29 +158,29 @@ struct dScMgBomroom_c : dScMgBase_c {
     dScMgBomroom_Slot mSlotsA[2];  /* 0x6260 */
     dScMgBomroom_Slot mSlotsB[3];  /* 0x6280 */
     dScMgBomroom_Slot mMarkers[2]; /* 0x62b0 */
-    s32 mSceneState;         /* 0x62d0 -- round state; 3 once a picked bomb has gone off */
-    s32 mSubState;           /* 0x62d4 -- index into the data_ov006_021416a0 {fptr,adj} pairs */
-    s32 mSpawnCount;         /* 0x62d8 -- bombs dropped so far; picks the spawn step */
-    s32 mBg2Y;               /* 0x62dc -- BG2 scroll offset, Fix12 */
-    u16 unk_62e0;            /* 0x62e0 -- second countdown run after mStateTimer */
-    u16 mSpawnDelay;         /* 0x62e2 -- frames until the next spawn step */
-    u16 unk_62e4;            /* 0x62e4 */
-    u16 unk_62e6;            /* 0x62e6 */
-    u16 mStateTimer;         /* 0x62e8 -- per-state countdown; 0x60 after the first blast */
-    u16 unk_62ea;            /* 0x62ea -- mod-4 tick counter */
-    u8  pad_62ec[0x2];       /* 0x62ec */
-    u16 unk_62ee;            /* 0x62ee */
-    u16 unk_62f0;            /* 0x62f0 -- delay waited out before state dispatch */
-    u16 mBg2Hold;            /* 0x62f2 -- frames BG2 stays raised (state 2) */
-    u8  mBg2State;           /* 0x62f4 -- BG2: 0 idle, 1 raising, 2 holding/lowering */
-    u8  mWinColor;           /* 0x62f5 -- color that filled its pen */
-    u8  mHeldColor;          /* 0x62f6 -- held bomb's color, 0xff = nothing held */
-    u8  unk_62f7;            /* 0x62f7 */
-    u8  mBlastPen;           /* 0x62f8 -- first blast's pen + 1; 0 = none yet */
-    u8  unk_62f9;            /* 0x62f9 */
-    u8  mRoundOver;          /* 0x62fa -- gates the round-over sprite */
-    u8  unk_62fb;            /* 0x62fb -- freezes the bombs' +0x30 timers while set */
-    u8  unk_62fc[0x4];       /* 0x62fc -- trailing bytes, handed out as a small buffer */
+    s32 mSceneState;               /* 0x62d0 -- round state; 3 once a picked bomb has gone off */
+    s32 mSubState;      /* 0x62d4 -- index into the data_ov006_021416a0 {fptr,adj} pairs */
+    s32 mSpawnCount;    /* 0x62d8 -- bombs dropped so far; picks the spawn step */
+    s32 mBg2Y;          /* 0x62dc -- BG2 scroll offset, Fix12 */
+    u16 mTallyDelay;    /* 0x62e0 -- 0x10 frames between mStateTimer and the tally */
+    u16 mSpawnDelay;    /* 0x62e2 -- frames until the next spawn step */
+    u16 unk_62e4;       /* 0x62e4 */
+    u16 unk_62e6;       /* 0x62e6 */
+    u16 mStateTimer;    /* 0x62e8 -- per-state countdown; 0x60 after the first blast */
+    u16 mTallyTick;     /* 0x62ea -- counts 0..3; one sorted bomb is tallied every 4th frame */
+    u8 pad_62ec[0x2];   /* 0x62ec */
+    u16 mTallyCount;    /* 0x62ee -- bombs tallied so far; added to the score */
+    u16 mDispatchDelay; /* 0x62f0 -- delay waited out before state dispatch; 0x60 after a blast */
+    u16 mBg2Hold;       /* 0x62f2 -- frames BG2 stays raised (state 2) */
+    u8 mBg2State;       /* 0x62f4 -- BG2: 0 idle, 1 raising, 2 holding/lowering */
+    u8 mWinColor;       /* 0x62f5 -- color that filled its pen */
+    u8 mHeldColor;      /* 0x62f6 -- held bomb's color, 0xff = nothing held */
+    u8 unk_62f7;        /* 0x62f7 */
+    u8 mBlastPen;       /* 0x62f8 -- first blast's pen + 1; 0 = none yet */
+    u8 mShowTally;      /* 0x62f9 -- DrawRemaining draws mTallyCount while set */
+    u8 mRoundOver;      /* 0x62fa -- gates the round-over sprite */
+    u8 mFusesFrozen;    /* 0x62fb -- set when a pen fills; the fuses stop */
+    u8 unk_62fc[0x4];   /* 0x62fc -- trailing bytes, handed out as a small buffer */
 };
 
 #ifndef SM64DS_PLATFORM_PC
