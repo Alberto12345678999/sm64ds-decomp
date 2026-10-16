@@ -639,7 +639,7 @@
       "0x0213ce54"
     ],
     "bss_cluster": "0x021421ec..0x021422a4",
-    "bss_evidence": "5 bss symbols - data_ov006_021421ec / 02142204 / 0214221c / 02142234 / 02142254 - and this class's code carries module:overlay(6) load relocations to all five and to no other bss address. The next bss symbol, 0x021422a4, is claimed by dScMgMemory_c's manifest as the start of its own state.",
+    "bss_evidence": "5 bss symbols - sLuigiIrisTable / 02142204 / 0214221c / 02142234 / 02142254 - and this class's code carries module:overlay(6) load relocations to all five and to no other bss address. The next bss symbol, 0x021422a4, is claimed by dScMgMemory_c's manifest as the start of its own state.",
     "rodata_referenced": "0x0212e848..0x0212e8d8 (11 distinct addresses)",
     "static_initializer": "NONE. This class's 23 PMF records already contain their code pointers in the linked ROM image and carry kind:load relocations, i.e. they are link-time initialized data. No __sinit_ov006_* function references any address in this class's text or data cluster. Contrast dScMgMemory_c, whose manifest names __sinit_ov006_021311c8 as building its PMF tables."
   },

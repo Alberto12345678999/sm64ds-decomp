@@ -19,6 +19,7 @@
 #include "NestedHeapIterator.h"
 #include "HeapAllocator.h"
 #include "SolidHeapAllocator.h"
+#include "Heap.h"
 
 namespace IRQ {
     /* Defined at 0x02059d1c/0x02059d30 (the IRQ TU); namespace-scope externs
@@ -314,23 +315,12 @@ extern void MultiStore_Int(int val, int *dst, int len);
 extern struct NestedHeapIterator;
 extern struct Obj;
 extern struct Obj1;
-extern int _ZN18NestedHeapIterator4NextEP13HeapAllocator(NestedHeapIterator *iter, HeapAllocator *h);
-extern void _ZN18NestedHeapIterator5AddAtEP13HeapAllocatorS1_(NestedHeapIterator* iter, HeapAllocator* pos, HeapAllocator* node);
-extern void _ZN18NestedHeapIterator6RemoveEP13HeapAllocator(void *it, void *ha);
-extern void _ZN18NestedHeapIterator7AddLastEP13HeapAllocator(NestedHeapIterator *iter, HeapAllocator *heap);
-extern int _ZN18NestedHeapIterator8PreviousEP13HeapAllocator(NestedHeapIterator *iter, HeapAllocator *h);
 extern int _ZN18NestedHeapIteratorC1Ej(int a, int b);
-extern int _ZN18SolidHeapAllocator10MemoryLeftEi(SolidHeapAllocator *self, int align);
-extern void _ZN18SolidHeapAllocator5ResetEj(SolidHeapAllocator *self, u32 params);
-extern void *_ZN18SolidHeapAllocator8AllocateEji(HeapAllocator *heap, u32 size, s32 align);
-extern s32 _ZN18SolidHeapAllocator9LoadStateEj(void* alloc, u32 id);
-extern s32 _ZN18SolidHeapAllocator9SaveStateEj(void* alloc, u32 id);
 extern u32 _ZN3IRQ7DisableEv(void);
 extern u32 _ZN3IRQ7RestoreEj(u32 state);
 extern void _ZN4CP1514FlushDataCacheEjj(unsigned int a, unsigned int b);
 extern void _ZN4CP1519InvalidateDataCacheEjj(unsigned int addr, unsigned int n);
 extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
-extern SolidHeapAllocator *_ZN5mHeap6Heap_t24CreateSolidHeapAllocatorEPvjj(void *address, u32 size, u32 flags);
 extern unsigned int _ZN4cstd6strlenEPKc(const char *s);
 extern int __aeabi_idiv(int a, int b);
 extern unsigned int __aeabi_uidiv(unsigned int a, unsigned int b);
@@ -1154,7 +1144,7 @@ extern "C" void *func_0205130c(unsigned int addr, unsigned int size)
         return 0;
     if (end - aligned < 0x10)
         return 0;
-    alloc = ((void *(*)(void *p, unsigned int sz, unsigned int z))_ZN5mHeap6Heap_t24CreateSolidHeapAllocatorEPvjj)((void *)(aligned + 0x10),
+    alloc = mHeap::Heap_t::CreateSolidHeapAllocator((void *)(aligned + 0x10),
                                                     (end - aligned) - 0x10, 0);
     if (alloc == 0)
         return 0;

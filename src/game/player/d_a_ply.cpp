@@ -3,7 +3,6 @@
 #include "Player.h"
 
 extern "C" {
-void *_ZN7fBase_cnwEj(unsigned int size);
 Player *_ZN6PlayerC1Ev(Player *player);
 
 /* This address allocates and initializes a Player, but mwccarm cannot emit the

@@ -640,7 +640,7 @@ int daPgRcer_c::func_ov019_0211131c()
         mAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, &node);
     }
     mPathDist = mPathDist - mHorzSpeed;
-    return mPathDist < 0 ? 1 : 0;
+    return mPathDist < 0;
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_021112b8Ev
@@ -673,7 +673,7 @@ int daPgRcer_c::func_ov019_0211127c(Vector3 *pos, unsigned int nodeIndex)
     Vector3 node;
     mPath.GetNode(node, nodeIndex);
     Fix12i dist = Vec3_HorzDist(&node, pos);
-    return dist <= 0x320000 ? 1 : 0;
+    return dist <= 0x320000;
 }
 
 extern "C" {

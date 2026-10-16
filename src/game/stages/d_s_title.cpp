@@ -140,6 +140,17 @@ void *_ZN2G212GetBG0ScrPtrEv(void);
 extern void func_ov003_020ad6ec(void *self);
 }
 
+/* The stylus went down this frame: held, with the held state just changed
+ * (see PlayerInput.h). Int-returning, so the ROM materializes the 0/1 it
+ * ORs into the confirm test. */
+static inline int IsTouchStarted() {
+    int started = 0;
+    u8 slot = gActivePlayerSlot;
+    if (gTouchHeld[slot * 4] != 0)
+        started = gTouchEdge[slot * 4] != 0;
+    return started;
+}
+
 /* [10] 0x020adcbc -- prints one row of the level grid into the BG0 screen
  * map at (row, col): the level number in two digits (a blank for a leading
  * zero), a blank, the level's name from data_ov003_020b117c, then blanks out
@@ -264,74 +275,45 @@ s32 dScTitle_c::CleanupResources()
 // @symbol _ZN10dScTitle_c8BehaviorEv
 s32 dScTitle_c::Behavior()
 {
-    if (data_0209f5bc->v5()) {
-        int r3 = 0;
-        u8 idx = gActivePlayerSlot;
-        if (gTouchHeld[idx * 4] != 0)
-            r3 = gTouchEdge[idx * 4] != 0;
-        if (((data_020a0e58[1] & 9) | r3) == 0)
-            goto buttons;
-        {
-            u32 i;
-            s8 t;
-            int f;
-            func_02012790(1);
-            i = data_0209b2f4;
-            t = data_ov003_020b1180[i * 8];
-            if (t == -1)
-                goto fade5;
-            f = 0;
-            {
-                u8 j = gActivePlayerSlot;
-                if (gTouchHeld[j * 4] != 0)
-                    f = gTouchEdge[j * 4] != 0;
-            }
-            if (f == 0)
-                goto chk;
-        fade5:
+    if (data_0209f5bc->v5() && ((data_020a0e58[1] & 9) | IsTouchStarted()) != 0) {
+        u32 i;
+        s8 t;
+        func_02012790(1);
+        i = data_0209b2f4;
+        t = data_ov003_020b1180[i * 8];
+        if (t == -1 || IsTouchStarted()) {
             dScene_c::StartSceneFade(5, 0, 0);
             _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
-            goto tail;
-        chk:
-            if (t == -2) {
-                dScene_c::StartSceneFade(6, 0, 0);
-                _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
-            } else {
-                data_0209f2d8 = 0;
-                LoadLevelNoReturn(t, data_ov003_020b1181[i << 3], 1, 0);
-                SetPlayerGlobals();
-                SetNumPlayers(1);
-                dScene_c::StartSceneFade(4, 0, 0);
-                data_0209f5e8[6] = 0x7fff;
-            }
-            goto tail;
+        } else if (t == -2) {
+            dScene_c::StartSceneFade(6, 0, 0);
+            _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
+        } else {
+            data_0209f2d8 = 0;
+            LoadLevelNoReturn(t, data_ov003_020b1181[i << 3], 1, 0);
+            SetPlayerGlobals();
+            SetNumPlayers(1);
+            dScene_c::StartSceneFade(4, 0, 0);
+            data_0209f5e8[6] = 0x7fff;
         }
-    }
-    {
-    buttons:
+    } else {
         u16 v = data_020a0e58[0];
         if (v & 0x40) {
             int h = data_020a0e58[1] & 0x40;
-            if (h == 0) {
-                if (unk_050 != 0)
-                    goto tail;
+            if (h != 0 || unk_050 == 0) {
+                unk_050 = h ? 8 : 2;
+                data_0209b2f4 += 0x35;
+                func_02012790(0);
             }
-            unk_050 = h ? 8 : 2;
-            data_0209b2f4 += 0x35;
-            func_02012790(0);
         } else if (v & 0x80) {
             int h = data_020a0e58[1] & 0x80;
-            if (h == 0) {
-                if (unk_050 != 0)
-                    goto tail;
+            if (h != 0 || unk_050 == 0) {
+                unk_050 = h ? 8 : 2;
+                data_0209b2f4 += 1;
+                func_02012790(0);
             }
-            unk_050 = h ? 8 : 2;
-            data_0209b2f4 += 1;
-            func_02012790(0);
         }
     }
 
-tail:
     data_0209b2f4 = data_0209b2f4 % 0x36;
     DecIfAbove0_Short(&unk_050);
     func_ov003_020ad6ec(this);

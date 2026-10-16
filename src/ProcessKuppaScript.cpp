@@ -69,6 +69,16 @@ public:
     static int IsCharacterUnlocked(unsigned int a);
 };
 
+/* Stylus held this frame with its edge bit set: the touch just began. */
+static inline int IsTouchJustBegun(u32 off) {
+    return gTouchHeld[off] != 0 && *(gTouchHeld + off + 1) != 0;
+}
+
+/* data_0209f2d8 is the global mode byte; mode 2's meaning is unrecovered. */
+static inline int IsGameMode2(void) {
+    return data_0209f2d8 == 2;
+}
+
 #pragma opt_common_subs off
 
 extern "C" void ProcessKuppaScript(void)
@@ -92,8 +102,7 @@ extern "C" void ProcessKuppaScript(void)
                 if (data_0209f5bc->u7() == 0) {
                     u32 i = gActivePlayerSlot;
                     u32 off = i * 4;
-                    if (*(u16*)(data_020a0e58 + i * 4 + 2) != 0 ||
-                        ((gTouchHeld[off] != 0 && *(gTouchHeld + off + 1) != 0) ? 1 : 0)) {
+                    if (*(u16 *)(data_020a0e58 + i * 4 + 2) != 0 || IsTouchJustBegun(off)) {
                         dScene_c::StartSceneFade(1, 0, 0);
                         Sound::StopLoadedMusic_Layer1(0x3c);
                     }
@@ -119,7 +128,7 @@ extern "C" void ProcessKuppaScript(void)
             } else if (cmd == 0xb) {
                 LoadLevelNoReturn((s8)s[6], s[7], (s8)s[8], 0);
                 data_0209fc4c = ReadUnalignedInt(s + 9);
-                if (((data_0209f2d8 == 2) ? 1 : 0) == 0)
+                if (!IsGameMode2())
                     Sound::StopLoadedMusic_Layer1(0x3c);
                 dScene_c::SetAndStopColorFader();
                 data_0209d4b0 = 0;

@@ -16,6 +16,10 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "PlayerInput.h"
+#include "G3i.h"
+#include "MascotWalker.h"
+/* Typed access to a MascotWalker record from the char* helpers below. */
+#define WALKER(p) ((MascotWalker *)(p))
 
 struct Sound { static void PlayBank2_2D(unsigned int); };
 struct Model { int d; void HideMaterial(int, int); void ShowMaterial(int, int); void Render(const Vector3 *); };
@@ -82,7 +86,6 @@ void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void *, void *, int, 
 void *_ZN18TextureTransformerC1Ev(void *);
 void _ZN18TextureTransformerD1Ev(void *);
 int _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int, void *);
-int _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void *, void *, void *, int, void *);
 void _ZN5Model12HideMaterialEii(void *, int, int);
 void _ZN5Model12ShowMaterialEii(void *, int, int);
 void _ZN5Model12SetPolygonIDEi(void *, int);
@@ -2252,7 +2255,7 @@ int MascotWalker_Construct(char *t)
     _ZN13SharedFilePtr9ConstructEj(t + 0x10, 0x207);
     _ZN14BlendModelAnimC1Ev(t + 0x18);
     _ZN17dExtShadowModel_cC1Ev(t + 0x88);
-    *(int *)(t + 0xe4) = 0;
+    WALKER(t)->mPathIndex = 0;
     *(short *)(t + 0xf0) = 0;
     *(int *)(t + 0xf4) = 0;
     return (int)t;
@@ -2433,46 +2436,47 @@ extern int pmf_MascotWalker_StateWalk[];
 void MascotWalker_StartNextPath(char* c) {
     int sp8[3];
     int sp14[3];
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c+0x18, (void*)*(int*)(c+0x14), 0, 0, 0x800, 0);
-    if (*(int*)(c+0xe4) < 3) {
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x18, (void *)WALKER(c)->mWalkAnim, 0, 0,
+                                                       0x800, 0);
+    if (WALKER(c)->mPathIndex < 3) {
         *(int *)(((int)c + 0xe4)) += 1;
     } else {
-        *(int*)(c+0xe4) = 0;
+        WALKER(c)->mPathIndex = 0;
     }
-    *(int*)(c+0xb0) = (int)((char*)data_ov006_0213acc0 + (*(int*)(c+0xe4) << 3));
-    *(int*)(c+0xe0) = 0;
+    WALKER(c)->mPath = (int)((char *)data_ov006_0213acc0 + (WALKER(c)->mPathIndex << 3));
+    WALKER(c)->mPathPoint = 0;
     {
-        int t = *(int*)(c+0xe0) * 0xc;
-        int* arr = (int*)((int*)*(int*)(c+0xb0))[1];
+        int t = WALKER(c)->mPathPoint * 0xc;
+        int *arr = (int *)((int *)WALKER(c)->mPath)[1];
         int* el = (int*)((char*)arr + t);
-        *(int*)(c+0xc8) = el[0];
-        *(int*)(c+0xcc) = el[1];
-        *(int*)(c+0xd0) = el[2];
+        WALKER(c)->mPos.x = el[0];
+        WALKER(c)->mPos.y = el[1];
+        WALKER(c)->mPos.z = el[2];
     }
     *(int *)(((int)c + 0xe0)) += 1;
-    Vec3_Sub(sp8, c+0xc8, (char*)((int*)*(int*)(c+0xb0))[1] + *(int*)(c+0xe0) * 0xc);
-    *(int*)(c+0xd4) = sp8[0];
-    *(int*)(c+0xd8) = sp8[1];
-    *(int*)(c+0xdc) = sp8[2];
+    Vec3_Sub(sp8, c + 0xc8, (char *)((int *)WALKER(c)->mPath)[1] + WALKER(c)->mPathPoint * 0xc);
+    WALKER(c)->mDir.x = sp8[0];
+    WALKER(c)->mDir.y = sp8[1];
+    WALKER(c)->mDir.z = sp8[2];
     if (NormalizeVec3IfNonZero(c+0xd4) == 0) {
-        *(int*)(c+0xd4) = 0xb50;
-        *(int*)(c+0xd8) = 0xb50;
-        *(int*)(c+0xdc) = 0;
+        WALKER(c)->mDir.x = 0xb50;
+        WALKER(c)->mDir.y = 0xb50;
+        WALKER(c)->mDir.z = 0;
     }
     {
-        int t = *(int*)(c+0xe0) * 0xc;
-        int* arr = (int*)((int*)*(int*)(c+0xb0))[1];
+        int t = WALKER(c)->mPathPoint * 0xc;
+        int *arr = (int *)((int *)WALKER(c)->mPath)[1];
         int* el = (int*)((char*)arr + t);
         sp14[0] = el[0];
         sp14[1] = el[1];
         sp14[2] = el[2];
     }
-    *(short*)(c+0xee) = (short)Vec3_HorzAngle(c+0xc8, sp14);
+    WALKER(c)->mTargetAngle = (short)Vec3_HorzAngle(c + 0xc8, sp14);
     {
         int a = pmf_MascotWalker_StateWalk[0];
         int b = pmf_MascotWalker_StateWalk[1];
-        *(int*)(c+0xb4) = b ? a : a;
-        *(int*)(c+0xb8) = b;
+        WALKER(c)->mState[0] = b ? a : a;
+        WALKER(c)->mState[1] = b;
     }
 }
 }
@@ -2495,31 +2499,31 @@ void MascotWalker_StateWalk(char *c)
     int t1, t2;
     int r1, r2;
 
-    _Z11UpdateAngleRssis((short *)(c + 0xea), *(short *)(c + 0xee), 8, 0x100);
+    _Z11UpdateAngleRssis((short *)(c + 0xea), WALKER(c)->mTargetAngle, 8, 0x100);
 
-    a = *(int *)(c + 0xd4);
+    a = WALKER(c)->mDir.x;
     if (a < 0)
         a = -a;
     t1 = (int)(((s64)a * 0x1a9 + 0x800) >> 12);
 
-    b = *(int *)(c + 0xdc);
+    b = WALKER(c)->mDir.z;
     if (b < 0)
         b = -b;
 
-    idx = *(int *)(c + 0xe0) * 0xc;
+    idx = WALKER(c)->mPathPoint * 0xc;
     path = *(char **)(c + 0xb0);
     arr = *(char **)(path + 4);
     r1 = _Z14ApproachLinearRiii((int *)(c + 0xc8), *(int *)(arr + idx), t1);
 
     t2 = (int)(((s64)b * 0x1a9 + 0x800) >> 12);
 
-    idx = *(int *)(c + 0xe0) * 0xc;
+    idx = WALKER(c)->mPathPoint * 0xc;
     path = *(char **)(c + 0xb0);
     arr = *(char **)(path + 4);
     r2 = _Z14ApproachLinearRiii((int *)(c + 0xd0), *(int *)(arr + idx + 8), t2);
 
     if (r1 != 0 && r2 != 0) {
-        if (*(int *)(c + 0xe0) < *(int *)(*(char **)(c + 0xb0)) - 1) {
+        if (WALKER(c)->mPathPoint < *(int *)(*(char **)(c + 0xb0)) - 1) {
             Vector3 dir;
             Vector3 next;
             int *p;
@@ -2528,28 +2532,28 @@ void MascotWalker_StateWalk(char *c)
             *p = *p + 1;
 
             path = *(char **)(c + 0xb0);
-            idx = *(int *)(c + 0xe0) * 0xc;
+            idx = WALKER(c)->mPathPoint * 0xc;
             arr = *(char **)(path + 4);
-            Vec3_Sub(&dir, (Vector3 *)(c + 0xc8), (Vector3 *)(arr + idx));
+            Vec3_Sub(&dir, &WALKER(c)->mPos, (Vector3 *)(arr + idx));
 
-            *(int *)(c + 0xd4) = dir.x;
-            *(int *)(c + 0xd8) = dir.y;
-            *(int *)(c + 0xdc) = dir.z;
+            WALKER(c)->mDir.x = dir.x;
+            WALKER(c)->mDir.y = dir.y;
+            WALKER(c)->mDir.z = dir.z;
 
-            if (NormalizeVec3IfNonZero((Vector3 *)(c + 0xd4)) == 0) {
-                *(int *)(c + 0xd4) = 0xb50;
-                *(int *)(c + 0xd8) = 0xb50;
-                *(int *)(c + 0xdc) = 0;
+            if (NormalizeVec3IfNonZero(&WALKER(c)->mDir) == 0) {
+                WALKER(c)->mDir.x = 0xb50;
+                WALKER(c)->mDir.y = 0xb50;
+                WALKER(c)->mDir.z = 0;
             }
 
-            idx = *(int *)(c + 0xe0) * 0xc;
+            idx = WALKER(c)->mPathPoint * 0xc;
             path = *(char **)(c + 0xb0);
             arr = *(char **)(path + 4);
             next.x = *(int *)(arr + idx);
             next.y = *(int *)(arr + idx + 4);
             next.z = *(int *)(arr + idx + 8);
 
-            *(s16 *)(c + 0xee) = Vec3_HorzAngle((const Vector3 *)(c + 0xc8), &next);
+            WALKER(c)->mTargetAngle = Vec3_HorzAngle((const Vector3 *)(c + 0xc8), &next);
             return;
         }
 
@@ -2667,8 +2671,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self)
         data_02082214[idx], data_02082214[idx + 1],
         0x1555, 0x1000, 0x1388000, 0x1000, 1, &self->projMat);
 
-    _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(
-        &self->target, &up, &self->eye, 1, &self->viewMat);
+    G3i::LookAt_(&self->target, &up, &self->eye, true, (Matrix4x3 *)&self->viewMat);
 
     _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
 

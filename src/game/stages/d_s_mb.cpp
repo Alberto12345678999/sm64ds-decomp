@@ -24,6 +24,8 @@
 // constructor).
 #include "dScMB_c.h"
 #include "decl_common.h"
+#include "Heap.h"
+#include "OAM.h"
 
 extern "C" {
 void MultiStore16(u16 val, char *dst, int nbytes);
@@ -34,7 +36,6 @@ int func_0201a244(int a0, int a1, int a2, int a3, int a4);
 void func_020308b4(void);
 void func_02012790(int x);
 
-void *_ZN5mHeap6Heap_t10SetDefaultEv(void *h);
 void func_0201a5f8(int t);
 void *func_0201a3e4(void);
 extern u32 data_020a0c60;
@@ -43,12 +44,8 @@ extern void *data_020a0c5c;
 extern int OVERLAY_100_ID;
 extern int OVERLAY_102_ID;
 
-void _ZN3OAM5ResetEv(void);
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, void *attr, int x, int y, int a, int cc, int fx, int mode);
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc, int fx0, int fy0, int rot, int mode);
-void _ZN3OAM9RenderSubEP7OamAttrii(void *attr, int a, int b);
-void _ZN3OAM5FlushEv(void);
-void _ZN3OAM4LoadEv(void);
 extern struct OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
 
@@ -101,7 +98,7 @@ int dScMB_c::graphCallback_c::GraphCallback3()
     if (mOwner != 0) {
         ((dScMB_c *)mOwner)->func_02034d34();
     }
-    _ZN3OAM5ResetEv();
+    OAM::Reset();
 
     if (mEnabled != 0) {
         int id = func_0200f0bc();
@@ -145,15 +142,15 @@ int dScMB_c::graphCallback_c::GraphCallback3()
             }
         } else {
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, attr, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
-            _ZN3OAM9RenderSubEP7OamAttrii(attr, 0x80, 0x80);
+            OAM::RenderSub((OamAttr *)attr, 0x80, 0x80);
             mStillTimer -= data_0208ee44;
             mSpinAngle = 0;
         }
     }
 
     func_0203083c();
-    _ZN3OAM5FlushEv();
-    _ZN3OAM4LoadEv();
+    OAM::Flush();
+    OAM::Load();
     return 1;
 }
 
@@ -262,18 +259,18 @@ void func_02034fbc(void)
     LoadArchive(0);
     h = (void *)func_0201a458();
     if (!(data_020a0c60 & 1)) {
-        data_020a0c5c = _ZN5mHeap6Heap_t10SetDefaultEv(h);
+        data_020a0c5c = ((mHeap::Heap_t *)h)->SetDefault();
         data_020a0c60 |= 1;
     }
     LoadTextNarcs();
     LoadArchive(1);
-    _ZN5mHeap6Heap_t10SetDefaultEv(data_020a0c5c);
+    ((mHeap::Heap_t *)data_020a0c5c)->SetDefault();
     func_0201a5f8(6);
     LoadOverlay((int)&OVERLAY_100_ID);
     LoadOverlay((int)&OVERLAY_102_ID);
-    data_020a0c5c = _ZN5mHeap6Heap_t10SetDefaultEv(func_0201a3e4());
+    data_020a0c5c = ((mHeap::Heap_t *)func_0201a3e4())->SetDefault();
     LoadArchive(7);
-    _ZN5mHeap6Heap_t10SetDefaultEv(data_020a0c5c);
+    ((mHeap::Heap_t *)data_020a0c5c)->SetDefault();
 }
 
 // @symbol _ZN7dScMB_c13InitResourcesEv

@@ -26,7 +26,7 @@
  * claim is exactly what those byte helpers already encode.
  *
  * OWN TAIL, 0x51b8..0x51d0, all named: mState is the state number that
- * indexes the member-pointer state table data_ov006_02142f94 (filled at
+ * indexes the member-pointer state table sBSCStateTable (filled at
  * startup by __sinit_ov006_0213326c from the fourteen pair globals at
  * 0x0213fd0c..0x0213fd84); the state handlers below are that table's
  * entries. mStateTimer, mChosenCard, mOtherCard, mDealCount, mCardValue,
@@ -105,7 +105,7 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
     virtual void OnDealDone(); /* slot 21 -- ov006 0x02125248 */
 
     /* --- the state machine ---
-       Fourteen entries of the member-pointer table data_ov006_02142f94,
+       Fourteen entries of the member-pointer table sBSCStateTable,
        indexed by mState and dispatched from Behavior. The names are
        coined from what each state does: the ROM's own symbols here are
        address-only (func_ov006_02124a04 and friends), so no recovered
@@ -134,7 +134,7 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
 
     dMgBSCSharedState_c mShared; /* 0x4f38..0x51a8 */
     CardPos mCardPos[2];  /* 0x51a8 -- ctor __cxa_vec_ctor via func_0203d738, dtor NullDestructor_0203d47c */
-    s32 mState;          /* 0x51b8 -- index into data_ov006_02142f94 */
+    s32 mState;           /* 0x51b8 -- index into sBSCStateTable */
     s32 mStateTimer;     /* 0x51bc */
     s32 mChosenCard;     /* 0x51c0 */
     s32 mOtherCard;      /* 0x51c4 */

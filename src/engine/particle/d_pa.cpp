@@ -196,10 +196,7 @@ void dPa_c::level_c::checkYoganCallback_c::SpawnParticles(
         v.y = vy;
         v.z = sz << 3;
         rg.SetObjAndPos(v, 0);
-        if (rg.DetectClsn() == 0)
-            goto Lac;
-        if (func_02037e38((u32*)&rg.surface) != 1) {
-        Lac:
+        if (rg.DetectClsn() == 0 || func_02037e38((u32 *)&rg.surface) != 1) {
             particle->age = particle->lifetime;
         } else {
             particle->offsetAsr3.y =

@@ -62,7 +62,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c19func_ov006_0211cc90Ev",
+      "symbol": "_ZN13dScMgTeresa_c14BigBoo_SetDoneEv",
       "address": "0x0211cc90",
       "size": "0x00000018",
       "legacy_source": "src/func_ov006_0211cc90.c",
@@ -618,28 +618,28 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_02142e88",
+      "symbol": "sTeresaRevealStateTable",
       "address": "0x02142e88",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "reveal-pair PMF table (5 states by SlotElem::state), plain-copied from the ROM PMF constants"
     },
     {
-      "symbol": "data_ov006_02142eb0",
+      "symbol": "sTeresaSceneStateTable",
       "address": "0x02142eb0",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "scene PmfEntry table (5 states by unk_4be8), plain-copied from the ROM PMF constants"
     },
     {
-      "symbol": "data_ov006_02142ed8",
+      "symbol": "sTeresaBooStateTable",
       "address": "0x02142ed8",
       "size": "0x40",
       "binding": "STB_GLOBAL",
       "evidence": "per-Boo PMF table (8 states, one call per live row), plain-copied from the ROM PMF constants"
     },
     {
-      "symbol": "data_ov006_02142f18",
+      "symbol": "sTeresaBigBooStateTable",
       "address": "0x02142f18",
       "size": "0x48",
       "binding": "STB_GLOBAL",
@@ -1033,7 +1033,7 @@
       "source": "0x021331b8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142eb0",
+      "symbol": "sTeresaSceneStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142eb0"
@@ -1093,7 +1093,7 @@
       "source": "0x021331d0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142ed8",
+      "symbol": "sTeresaBooStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142ed8"
@@ -1183,7 +1183,7 @@
       "source": "0x021331f4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142e88",
+      "symbol": "sTeresaRevealStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142e88"
@@ -1233,7 +1233,7 @@
       "source": "0x02133208",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142f18",
+      "symbol": "sTeresaBigBooStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142f18"

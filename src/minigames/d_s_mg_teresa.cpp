@@ -26,9 +26,9 @@
  * base chain.
  *
  * The four PMF state tables dispatch on this class: the big Boo's flight
- * at data_ov006_02142f18 (9 states by Boo::state), the reveal pair at
- * data_ov006_02142e88 (5 states by mReveal[0].state), the 16-Boo rows at
- * data_ov006_02142ed8 (8 states), and the scene table data_ov006_02142eb0
+ * at sTeresaBigBooStateTable (9 states by Boo::state), the reveal pair at
+ * sTeresaRevealStateTable (5 states by mReveal[0].state), the 16-Boo rows at
+ * sTeresaBooStateTable (8 states), and the scene table sTeresaSceneStateTable
  * (5 no-argument states by mSceneState). __sinit_ov006_02132f68 fills them
  * from the .data descriptor records at data_ov006_0213f8xx.
  *
@@ -162,7 +162,7 @@ extern unsigned short data_ov006_0212efdc[];
 extern void          *data_ov006_02133a5c;
 extern void          *data_ov006_02134210[];
 extern int            data_ov006_02135fc8[];
-extern int            data_ov006_02137cd8[];
+extern int sMgDigitSprites[];
 extern void          *data_ov006_0213a5f4;
 extern struct OamAttr *data_ov006_0213a628[];
 extern int           *data_ov006_0213f9d0[];
@@ -176,15 +176,15 @@ extern short          data_02082214[];
 extern int            sMgTopScreenYOffset;
 
 /* The four pointer-to-member state tables. Pmf handlers take the Boo/slot
-   index; the scene table in data_ov006_02142eb0 takes none. */
+   index; the scene table in sTeresaSceneStateTable takes none. */
 typedef void (dScMgTeresa_c::*Pmf)(int);
 typedef void (dScMgTeresa_c::*Pmf0)();
 struct PmfEntry { Pmf0 pmf; };
 
-extern Pmf data_ov006_02142f18[];   /* big Boo flight states, by Boo::state */
-extern Pmf data_ov006_02142e88[];   /* reveal states, by mReveal[0].state */
-extern Pmf data_ov006_02142ed8[];   /* per-Boo states, one call per live row */
-extern PmfEntry data_ov006_02142eb0[]; /* scene states, by mSceneState */
+extern Pmf sTeresaBigBooStateTable[];     /* big Boo flight states, by Boo::state */
+extern Pmf sTeresaRevealStateTable[];     /* reveal states, by mReveal[0].state */
+extern Pmf sTeresaBooStateTable[];        /* per-Boo states, one call per live row */
+extern PmfEntry sTeresaSceneStateTable[]; /* scene states, by mSceneState */
 /* The ROM PMF constants the four state tables copy from (unlicensed .data),
  * grouped by destination table in retail copy order. */
 extern Pmf0 pmf_dScMgTeresa_c_Scene_State0;
@@ -261,17 +261,14 @@ void dScMgTeresa_c::BigBoo_ShowResult()
     raw[0x4c1b] = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211cc90Ev
-void dScMgTeresa_c::func_ov006_0211cc90()
-{
+// @symbol _ZN13dScMgTeresa_c14BigBoo_SetDoneEv
+void dScMgTeresa_c::BigBoo_SetDone() {
     unsigned char *base = (unsigned char *)this;
     base += 0x4000;
     if (base[0xbe0] != 0) {
         base[0xbe5] = 1;
     }
 }
-
 
 // @symbol _ZN13dScMgTeresa_c11BigBoo_DrawEv
 /* decl_common.h declares this one with a `void *` parameter. */
@@ -566,7 +563,7 @@ void dScMgTeresa_c::BigBoo_Update()
 {
     unsigned char *raw = (unsigned char *)this;
     if (BOO(raw)->active == 0) return;
-    (this->*data_ov006_02142f18[BOO(raw)->state])(0);
+    (this->*sTeresaBigBooStateTable[BOO(raw)->state])(0);
 }
 
 
@@ -602,26 +599,20 @@ void dScMgTeresa_c::BigBoo_Hide()
 void dScMgTeresa_c::StepBg3Scroll()
 {
     char *raw = (char *)this;
-    if (*(unsigned char *)(raw + 0x4c24) >= 8)
-    {
+    if (mBg3FlashStep >= 8) {
         return;
     }
     (*(unsigned short *)(raw + 0x4c18))++;
-    if (*(unsigned short *)(raw + 0x4c18) >= data_ov006_0212efdc[*(unsigned char *)(raw + 0x4c24)])
-    {
-        (*(unsigned char *)(raw + 0x4c24))++;
+    if (*(unsigned short *)(raw + 0x4c18) >= data_ov006_0212efdc[mBg3FlashStep]) {
+        (mBg3FlashStep)++;
         *(unsigned short *)(raw + 0x4c18) = 0;
-        if (*(unsigned char *)(raw + 0x4c24) & 1)
-        {
+        if (mBg3FlashStep & 1) {
             SetBg3Offset(0, 0);
-        }
-        else
-        {
+        } else {
             SetBg3Offset(0, 0x100);
         }
     }
-    if (*(unsigned char *)(raw + 0x4c24) >= 8)
-    {
+    if (mBg3FlashStep >= 8) {
         SetBg3Offset(0, 0);
     }
 }
@@ -823,7 +814,7 @@ void dScMgTeresa_c::Reveal_State0(int i)
 void dScMgTeresa_c::Reveal_Update()
 {
     if (mReveal[0].active == 0) return;
-    (this->*data_ov006_02142e88[mReveal[0].state])(0);
+    (this->*sTeresaRevealStateTable[mReveal[0].state])(0);
 }
 
 
@@ -865,7 +856,7 @@ void dScMgTeresa_c::FoundNumber_DrawAll() {
             int a = mFoundNumbers[i].x >> 12;
             if (b <= 8) b = 8;
             if (b >= 0xb8) b = 0xb8;
-            Mg_RenderSubSpriteMtx((void *)data_ov006_02137cd8[mFoundNumbers[i].sprite + 1], a, b,
+            Mg_RenderSubSpriteMtx((void *)sMgDigitSprites[mFoundNumbers[i].sprite + 1], a, b,
                                   (void *)0);
         }
     }
@@ -1152,10 +1143,10 @@ void dScMgTeresa_c::CheckRoundEnd()
     unsigned char *raw = (unsigned char *)this;
     if (*(unsigned short*)(raw + 0x4c14) == 0 && *(unsigned char*)(raw + 0x4c20) != 0) {
         *(unsigned char*)(raw + 0x4c1f) = 0;
-        *(int*)(raw + 0x4be8) = 3;
+        mSceneState = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
-        func_ov006_0211cc90();
-        *(unsigned char*)(raw + 0x4c27) = 1;
+        BigBoo_SetDone();
+        mRubLocked = 1;
         return;
     }
     {
@@ -1174,9 +1165,9 @@ void dScMgTeresa_c::CheckRoundEnd()
         } while (i < 0x10);
         if (count != 0)
             return;
-        *(int*)(raw + 0x4be8) = 3;
+        mSceneState = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
-        func_ov006_0211cc90();
+        BigBoo_SetDone();
         *(unsigned char*)(raw + 0x4c1f) = 1;
     }
 }
@@ -1659,7 +1650,7 @@ void dScMgTeresa_c::UpdateBoos()
     int i;
     for (i = 0; i < 0x10; i++) {
         if (mBoos[i].mInPlay) {
-            (this->*data_ov006_02142ed8[mBoos[i].mState])(i);
+            (this->*sTeresaBooStateTable[mBoos[i].mState])(i);
             AnimateBoo(i);
         }
     }
@@ -1686,13 +1677,13 @@ void dScMgTeresa_c::SpawnBoos()
         int k;
         r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
         k = (r << 2) >> 15;
-        if (k + 0xa == *(unsigned char *)(c + 0x4c23)) {
+        if (k + 0xa == mBooPattern) {
             k += (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 3) >> 15) + 1;
             if (k >= 4) k -= 4;
         }
         sel = k + 0xa;
     }
-    *(unsigned char *)(c + 0x4c23) = sel;
+    mBooPattern = sel;
     count = data_ov006_0212f014[sel];
     mBooCount = count;
 
@@ -2042,7 +2033,7 @@ void dScMgTeresa_c::Scene_State1()
 void dScMgTeresa_c::Scene_State0()
 {
     char *p = (char *)this;
-    *(int *)(p + 0x4be8) = 1;
+    mSceneState = 1;
 }
 
 
@@ -2166,10 +2157,10 @@ s32 dScMgTeresa_c::Render()
 
 // @symbol _ZN13dScMgTeresa_c8BehaviorEv
 /* Vtable slot 6: runs the current state's handler from the pointer-to-member
-   table data_ov006_02142eb0, indexed by mSceneState. */
+   table sTeresaSceneStateTable, indexed by mSceneState. */
 s32 dScMgTeresa_c::Behavior()
 {
-    (this->*data_ov006_02142eb0[mSceneState].pmf)();
+    (this->*sTeresaSceneStateTable[mSceneState].pmf)();
     Exclaim_UpdateAll();
     return 1;
 }
@@ -2251,15 +2242,15 @@ s32 dScMgTeresa_c::InitResources()
     Deallocate(f2);
     Mg_SetTopScreenYOffset(0x20);
     ResetRound();
-    *((u8 *) (self + 0x4c23)) = 0xff;
+    mBooPattern = 0xff;
     Marker_Show();
     Reveal_Start();
     SpawnBoos();
     mSceneState = 1;
     *((u16 *) (self + 0x4c16)) = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc884 = -128;
+    sMgClearBannerX = 0x80;
+    sMgClearBannerY = -128;
     mHudScore = 0;
     return 1;
 }
@@ -2278,38 +2269,25 @@ extern "C" void *dScMgTeresa_c_classInit()
  * The four PMF state tables plain-copied from the ROM PMF constants, in
  * retail copy order: the scene table, the per-Boo table, the reveal-pair
  * table, then the big-Boo flight table. */
-PmfEntry data_ov006_02142eb0[5] = {
-    {pmf_dScMgTeresa_c_Scene_State0},
-    {pmf_dScMgTeresa_c_Scene_State1},
-    {pmf_dScMgTeresa_c_Scene_State2},
-    {pmf_dScMgTeresa_c_Scene_State3},
+PmfEntry sTeresaSceneStateTable[5] = {
+    {pmf_dScMgTeresa_c_Scene_State0}, {pmf_dScMgTeresa_c_Scene_State1},
+    {pmf_dScMgTeresa_c_Scene_State2}, {pmf_dScMgTeresa_c_Scene_State3},
     {pmf_dScMgTeresa_c_Scene_State4},
 };
-Pmf data_ov006_02142ed8[8] = {
-    pmf_dScMgTeresa_c_Boo_State0,
-    pmf_dScMgTeresa_c_Boo_State1,
-    pmf_dScMgTeresa_c_Boo_State2,
-    pmf_dScMgTeresa_c_Boo_State3,
-    pmf_dScMgTeresa_c_Boo_State4,
-    pmf_dScMgTeresa_c_Boo_State5,
-    pmf_dScMgTeresa_c_Boo_State6,
-    pmf_dScMgTeresa_c_Boo_State7,
+Pmf sTeresaBooStateTable[8] = {
+    pmf_dScMgTeresa_c_Boo_State0, pmf_dScMgTeresa_c_Boo_State1, pmf_dScMgTeresa_c_Boo_State2,
+    pmf_dScMgTeresa_c_Boo_State3, pmf_dScMgTeresa_c_Boo_State4, pmf_dScMgTeresa_c_Boo_State5,
+    pmf_dScMgTeresa_c_Boo_State6, pmf_dScMgTeresa_c_Boo_State7,
 };
-Pmf data_ov006_02142e88[5] = {
-    pmf_dScMgTeresa_c_Reveal_State0,
-    pmf_dScMgTeresa_c_Reveal_State1,
-    pmf_dScMgTeresa_c_Reveal_State2,
-    pmf_dScMgTeresa_c_Reveal_State3,
+Pmf sTeresaRevealStateTable[5] = {
+    pmf_dScMgTeresa_c_Reveal_State0, pmf_dScMgTeresa_c_Reveal_State1,
+    pmf_dScMgTeresa_c_Reveal_State2, pmf_dScMgTeresa_c_Reveal_State3,
     pmf_dScMgTeresa_c_Reveal_State4,
 };
-Pmf data_ov006_02142f18[9] = {
-    pmf_dScMgTeresa_c_BigBoo_State0,
-    pmf_dScMgTeresa_c_BigBoo_State1,
-    pmf_dScMgTeresa_c_BigBoo_State2,
-    pmf_dScMgTeresa_c_BigBoo_State3,
-    pmf_dScMgTeresa_c_BigBoo_State4,
-    pmf_dScMgTeresa_c_BigBoo_State5,
-    pmf_dScMgTeresa_c_BigBoo_State6,
-    pmf_dScMgTeresa_c_BigBoo_State7,
+Pmf sTeresaBigBooStateTable[9] = {
+    pmf_dScMgTeresa_c_BigBoo_State0, pmf_dScMgTeresa_c_BigBoo_State1,
+    pmf_dScMgTeresa_c_BigBoo_State2, pmf_dScMgTeresa_c_BigBoo_State3,
+    pmf_dScMgTeresa_c_BigBoo_State4, pmf_dScMgTeresa_c_BigBoo_State5,
+    pmf_dScMgTeresa_c_BigBoo_State6, pmf_dScMgTeresa_c_BigBoo_State7,
     pmf_dScMgTeresa_c_BigBoo_State8,
 };

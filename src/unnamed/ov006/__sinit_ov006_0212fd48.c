@@ -24,26 +24,26 @@ extern struct Pair pmf_dScMgBomroom_c_Bomb_Roam1;
 extern struct Pair pmf_dScMgBomroom_c_Bomb_Roam2;
 extern struct Pair pmf_dScMgBomroom_c_Bomb_Roam3;
 extern struct Pair pmf_dScMgBomroom_c_Bomb_Roam4;
-extern struct Pair pmf_dScMgBomroom_c_SlotA_State0;
-extern struct Pair pmf_dScMgBomroom_c_SlotA_State1;
-extern struct Pair pmf_dScMgBomroom_c_SlotA_State2;
-extern struct Pair pmf_dScMgBomroom_c_SlotA_State3;
-extern struct Pair pmf_dScMgBomroom_c_SlotB_State0;
-extern struct Pair pmf_dScMgBomroom_c_SlotB_State1;
-extern struct Pair pmf_dScMgBomroom_c_SlotB_State2;
-extern struct Pair pmf_dScMgBomroom_c_SlotB_State3;
-extern struct Pair pmf_dScMgBomroom_c_SlotB2_State0;
-extern struct Pair pmf_dScMgBomroom_c_SlotB2_State1;
-extern struct Pair pmf_dScMgBomroom_c_SlotB2_State2;
-extern struct Pair pmf_dScMgBomroom_c_SlotB2_State3;
+extern struct Pair pmf_dScMgBomroom_c_HatchPanel_StateIdle;
+extern struct Pair pmf_dScMgBomroom_c_HatchPanel_StateAnimate;
+extern struct Pair pmf_dScMgBomroom_c_HatchPanel_StateHeld;
+extern struct Pair pmf_dScMgBomroom_c_HatchPanel_StateRevert;
+extern struct Pair pmf_dScMgBomroom_c_PenGate_StateShut;
+extern struct Pair pmf_dScMgBomroom_c_PenGate_StateOpening;
+extern struct Pair pmf_dScMgBomroom_c_PenGate_StateHold;
+extern struct Pair pmf_dScMgBomroom_c_PenGate_StateClosing;
+extern struct Pair pmf_dScMgBomroom_c_TopDoor_StateShut;
+extern struct Pair pmf_dScMgBomroom_c_TopDoor_StateOpening;
+extern struct Pair pmf_dScMgBomroom_c_TopDoor_StateOpen;
+extern struct Pair pmf_dScMgBomroom_c_TopDoor_StateClosing;
 
 extern struct Dst5 data_ov006_021416e0;
 extern struct Dst4 data_ov006_021416a0;
 extern struct Dst7 data_ov006_02141730;
 extern struct Dst5 data_ov006_02141708;
-extern struct Dst4 data_ov006_02141680;
-extern struct Dst4 data_ov006_021416c0;
-extern struct Dst4 data_ov006_02141660;
+extern struct Dst4 sBomroomHatchPanelStateTable;
+extern struct Dst4 sBomroomPenGateStateTable;
+extern struct Dst4 sBomroomTopDoorStateTable;
 
 void __sinit_ov006_0212fd48(void)
 {
@@ -72,18 +72,18 @@ void __sinit_ov006_0212fd48(void)
     data_ov006_02141708.p3 = pmf_dScMgBomroom_c_Bomb_Roam3;
     data_ov006_02141708.p4 = pmf_dScMgBomroom_c_Bomb_Roam4;
 
-    data_ov006_02141680.p0 = pmf_dScMgBomroom_c_SlotA_State0;
-    data_ov006_02141680.p1 = pmf_dScMgBomroom_c_SlotA_State1;
-    data_ov006_02141680.p2 = pmf_dScMgBomroom_c_SlotA_State2;
-    data_ov006_02141680.p3 = pmf_dScMgBomroom_c_SlotA_State3;
+    sBomroomHatchPanelStateTable.p0 = pmf_dScMgBomroom_c_HatchPanel_StateIdle;
+    sBomroomHatchPanelStateTable.p1 = pmf_dScMgBomroom_c_HatchPanel_StateAnimate;
+    sBomroomHatchPanelStateTable.p2 = pmf_dScMgBomroom_c_HatchPanel_StateHeld;
+    sBomroomHatchPanelStateTable.p3 = pmf_dScMgBomroom_c_HatchPanel_StateRevert;
 
-    data_ov006_021416c0.p0 = pmf_dScMgBomroom_c_SlotB_State0;
-    data_ov006_021416c0.p1 = pmf_dScMgBomroom_c_SlotB_State1;
-    data_ov006_021416c0.p2 = pmf_dScMgBomroom_c_SlotB_State2;
-    data_ov006_021416c0.p3 = pmf_dScMgBomroom_c_SlotB_State3;
+    sBomroomPenGateStateTable.p0 = pmf_dScMgBomroom_c_PenGate_StateShut;
+    sBomroomPenGateStateTable.p1 = pmf_dScMgBomroom_c_PenGate_StateOpening;
+    sBomroomPenGateStateTable.p2 = pmf_dScMgBomroom_c_PenGate_StateHold;
+    sBomroomPenGateStateTable.p3 = pmf_dScMgBomroom_c_PenGate_StateClosing;
 
-    data_ov006_02141660.p0 = pmf_dScMgBomroom_c_SlotB2_State0;
-    data_ov006_02141660.p1 = pmf_dScMgBomroom_c_SlotB2_State1;
-    data_ov006_02141660.p2 = pmf_dScMgBomroom_c_SlotB2_State2;
-    data_ov006_02141660.p3 = pmf_dScMgBomroom_c_SlotB2_State3;
+    sBomroomTopDoorStateTable.p0 = pmf_dScMgBomroom_c_TopDoor_StateShut;
+    sBomroomTopDoorStateTable.p1 = pmf_dScMgBomroom_c_TopDoor_StateOpening;
+    sBomroomTopDoorStateTable.p2 = pmf_dScMgBomroom_c_TopDoor_StateOpen;
+    sBomroomTopDoorStateTable.p3 = pmf_dScMgBomroom_c_TopDoor_StateClosing;
 }

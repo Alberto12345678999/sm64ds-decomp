@@ -45,13 +45,13 @@ int  ApproachLinear(int &value, int target, int step);
 int  ApproachLinear2(s16 &value, s16 target, s16 step);
 
 extern "C" {
-extern dMgMCarloCardObj_c *data_ov006_021424fc; /* first pick */
-extern dMgMCarloCardObj_c *data_ov006_02142500; /* board list head */
+extern dMgMCarloCardObj_c *sMCarloFirstPick;    /* first pick */
+extern dMgMCarloCardObj_c *sMCarloCards;        /* board list head */
 extern dMgMCarloCardObj_c *data_ov006_02142504; /* board list tail */
-extern dMgMCarloCardObj_c *data_ov006_02142508; /* second pick */
+extern dMgMCarloCardObj_c *sMCarloSecondPick;   /* second pick */
 extern short data_ov006_021424ec;
-extern int data_ov006_0213d570;
-extern int data_ov006_0213d574;
+extern int sMCarloCardTotal;
+extern int sMCarloDealProgress;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern int data_ov006_021424f4;
@@ -62,7 +62,7 @@ extern int data_ov006_0213d56c;
 extern int data_ov006_0213d5e0[8]; /* the eight face weights */
 extern int data_020a0db0;
 extern unsigned short data_ov006_0213d600[];
-extern int data_ov006_02133810[];
+extern int sMgCardSprites[];
 extern int data_ov006_0214250c[];
 extern void Vec2_Sub(int* o, int* a, int* b);
 extern void func_0203d630(int *p, int m);
@@ -198,7 +198,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
         break;
     case 5:
         if (Dealer_IsIdle(&mShared) != 0) {
-            int dealt = data_ov006_0213d570;
+            int dealt = sMCarloCardTotal;
             if (dealt != 0) {
                 MgCoins_StartSpend(dealt);
                 mTimer = -1;
@@ -210,7 +210,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
         }
         break;
     case 6: {
-        dMgMCarloCardObj_c *head = data_ov006_02142500;
+        dMgMCarloCardObj_c *head = sMCarloCards;
         if (head != 0 && head->mVisible != 0) {
             if (ApproachLinear2(mTimer, 0, 1) != 0) {
                 dMgMCarloCardObj_c *card;
@@ -266,7 +266,7 @@ s32 dScMgMCarlo_c::Behavior()
         }
         /* fall through */
     case 2:
-        data_ov006_0213d574 = mDealCount * 5 << 12;
+        sMCarloDealProgress = mDealCount * 5 << 12;
         if (mDealCount == 4) {
             if (dScMgMCarlo_c::BoardBusy() == 0) {
                 mDealCount = 0;
@@ -279,7 +279,7 @@ s32 dScMgMCarlo_c::Behavior()
             int shown;
             if (data_ov006_0213d564 == 1)
                 data_ov006_0213d564 = 0;
-            shown = data_ov006_0213d574 >> 12;
+            shown = sMCarloDealProgress >> 12;
             if (data_ov006_0213d56c != 0 && shown > 10 && shown <= 18
                 && Dealer_IsIdle(&mShared) != 0) {
                 mDealCount = 0;
@@ -290,9 +290,9 @@ s32 dScMgMCarlo_c::Behavior()
             } else {
                 int lim = mDealCount + 18;
                 if (shown >= lim) {
-                    int flag = (data_ov006_021424fc != 0 && data_ov006_02142508 != 0);
+                    int flag = (sMCarloFirstPick != 0 && sMCarloSecondPick != 0);
                     if (flag == 0)
-                        data_ov006_0213d574 = lim << 12;
+                        sMCarloDealProgress = lim << 12;
                 }
             }
         } else {
@@ -300,7 +300,7 @@ s32 dScMgMCarlo_c::Behavior()
                 if (dScMgMCarlo_c::HasRemovablePair() != 0) {
                     data_ov006_0213d564 = 1;
                 } else {
-                    if (data_ov006_0213d570 != 0) {
+                    if (sMCarloCardTotal != 0) {
                         if (mShared.unk_01a == 1) {
                             mShared.unk_01a = 0;
                         } else if (Dealer_IsIdleAtRest(&mShared) != 0) {
@@ -314,7 +314,7 @@ s32 dScMgMCarlo_c::Behavior()
                             Dealer_PlayLose(&mShared);
                             Mg_SetSharedState(MG_STATE_LOSE);
                             {
-                                int dealt = data_ov006_0213d570;
+                                int dealt = sMCarloCardTotal;
                                 dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                                 int left = ((active != 0) ? active->mCredits : 0) - dealt;
                                 int score = (active != 0) ? active->mHudScore : 0;
@@ -565,14 +565,14 @@ void dMgMCarloCardObj_c::Update(int slot)
         }
         if (HitTest() == 0)
             return;
-        if (data_ov006_021424fc == 0) {
-            data_ov006_021424fc = this;
+        if (sMCarloFirstPick == 0) {
+            sMCarloFirstPick = this;
             mState = CARD_SELECTED;
             Sound::PlayBank2_2D(0x153);
             return;
         }
-        if (IsPairWith(data_ov006_021424fc) != 0) {
-            data_ov006_02142508 = this;
+        if (IsPairWith(sMCarloFirstPick) != 0) {
+            sMCarloSecondPick = this;
             data_ov006_021424ec = 0x20;
             mState = CARD_SELECTED;
             Sound::PlayBank2_2D(0x154);
@@ -582,22 +582,22 @@ void dMgMCarloCardObj_c::Update(int slot)
         }
         func_02012790(0xe);
         {
-            dMgMCarloCardObj_c *first = data_ov006_021424fc;
+            dMgMCarloCardObj_c *first = sMCarloFirstPick;
             first->mState = CARD_IDLE;
         }
-        data_ov006_021424fc = 0;
+        sMCarloFirstPick = 0;
         return;
 
     case CARD_SELECTED:
         if (HitTest() == 0)
             return;
         mState = CARD_IDLE;
-        if (data_ov006_021424fc != this)
+        if (sMCarloFirstPick != this)
             return;
-        if (data_ov006_02142508 != 0)
+        if (sMCarloSecondPick != 0)
             return;
         Sound::PlayBank2_2D(0x155);
-        data_ov006_021424fc = 0;
+        sMCarloFirstPick = 0;
         return;
 
     case CARD_ENTERING:
@@ -700,7 +700,7 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
     }
 
     data_ov006_0213d56c = data_ov006_021424f0 * data_ov006_021424f8;
-    data_ov006_0213d570 = data_ov006_021424f0 * data_ov006_021424f8;
+    sMCarloCardTotal = data_ov006_021424f0 * data_ov006_021424f8;
 
     do
     {
@@ -717,23 +717,21 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
         for (; cardIndex < 0x50; cardIndex++)
         {
             card->Init(cardIndex);
-            if (cardIndex < data_ov006_0213d570)
-            {
+            if (cardIndex < sMCarloCardTotal) {
                 card->mFace = (unsigned char)dScMgMCarlo_c::DrawCardValue();
             }
             card++;
         }
 
         slot = 0;
-        data_ov006_021424fc = 0;
-        data_ov006_02142508 = 0;
+        sMCarloFirstPick = 0;
+        sMCarloSecondPick = 0;
         data_ov006_021424ec = 0;
         data_ov006_021424f4 = 0;
-        data_ov006_0213d574 = 0;
-        data_ov006_02142500 = cards;
+        sMCarloDealProgress = 0;
+        sMCarloCards = cards;
 
-        if (data_ov006_0213d570 - 1 > 0)
-        {
+        if (sMCarloCardTotal - 1 > 0) {
             previous = cards;
             do
             {
@@ -748,7 +746,7 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
                 linkTail->mNext = savedNext;
                 previous++;
                 slot++;
-            } while (slot < data_ov006_0213d570 - 1);
+            } while (slot < sMCarloCardTotal - 1);
         }
     } while (dScMgMCarlo_c::HasRemovablePair() == 0);
 }
@@ -763,7 +761,7 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
 int dScMgMCarlo_c::HasRemovablePair(void)
 {
     dMgMCarloCardObj_c *first, *second;
-    first = data_ov006_02142500;
+    first = sMCarloCards;
     while (first != 0 && first->mSlot < 0x14) {
         second = first->mNext;
         while (second != 0 && second->mSlot < 0x14) {
@@ -783,15 +781,15 @@ int dScMgMCarlo_c::BoardBusy(void)
     int busy = 1;
     short target;
     short shown;
-    shown = (short)(data_ov006_0213d574 >> 12);
-    target = (short)data_ov006_0213d570;
+    shown = (short)(sMCarloDealProgress >> 12);
+    target = (short)sMCarloCardTotal;
     if (target > 20)
         target = 20;
     if (shown == target)
     {
         if (data_ov006_021424f4 == 0)
         {
-            if (data_ov006_021424fc == 0 || data_ov006_02142508 == 0)
+            if (sMCarloFirstPick == 0 || sMCarloSecondPick == 0)
                 busy = 0;
         }
     }
@@ -806,15 +804,15 @@ int dScMgMCarlo_c::BoardReady(void)
     int ready = 0;
     short target;
     short shown;
-    shown = (short)(data_ov006_0213d574 >> 12);
-    target = (short)data_ov006_0213d570;
+    shown = (short)(sMCarloDealProgress >> 12);
+    target = (short)sMCarloCardTotal;
     if (target > 20)
         target = 20;
     if (shown == target)
     {
         if (data_ov006_021424f4 == 0)
         {
-            if (data_ov006_021424fc == 0 || data_ov006_02142508 == 0)
+            if (sMCarloFirstPick == 0 || sMCarloSecondPick == 0)
                 ready = 1;
         }
     }
@@ -855,15 +853,16 @@ int dScMgMCarlo_c::DrawCardValue(void)
  * tail and numbering the walk so FlipAway's flip stagger mirrors the deal
  * stagger card by card. */
 void dScMgMCarlo_c::FlipDealtCards(void) {
-    dMgMCarloCardObj_c* node = data_ov006_02142500;
+    dMgMCarloCardObj_c *node = sMCarloCards;
     short i = 0;
-    if((data_ov006_0213d574>>12) <= 0) return;
+    if ((sMCarloDealProgress >> 12) <= 0)
+        return;
     do {
         if(node == 0) return;
         node->FlipAway(i);
         i = i+1;
         node = node->mNext;
-    } while(i < (data_ov006_0213d574>>12));
+    } while (i < (sMCarloDealProgress >> 12));
 }
 
 // @symbol _ZN13dScMgMCarlo_c11UpdateBoardEv
@@ -872,21 +871,22 @@ void dScMgMCarlo_c::FlipDealtCards(void) {
  * While a pair is selected, update only cards entering from reserve. Otherwise
  * advance the visible-card count and update every card in that prefix. */
 void dScMgMCarlo_c::UpdateBoard(void) {
-    dMgMCarloCardObj_c* head = data_ov006_02142500;
+    dMgMCarloCardObj_c *head = sMCarloCards;
     dMgMCarloCardObj_c* card;
     short slot;
 
-    if (data_ov006_021424fc != 0) {
-        if (data_ov006_02142508 != 0) {
+    if (sMCarloFirstPick != 0) {
+        if (sMCarloSecondPick != 0) {
             if (--data_ov006_021424ec == 0) {
-                if (data_ov006_021424fc->mSlot > data_ov006_02142508->mSlot)
-                    data_ov006_0213d574 = data_ov006_02142508->mSlot << 12;
+                if (sMCarloFirstPick->mSlot > sMCarloSecondPick->mSlot)
+                    sMCarloDealProgress = sMCarloSecondPick->mSlot << 12;
                 else
-                    data_ov006_0213d574 = data_ov006_021424fc->mSlot << 12;
+                    sMCarloDealProgress = sMCarloFirstPick->mSlot << 12;
 
                 {
-                    dMgMCarloCardObj_c* first = data_ov006_021424fc;
-                    if (data_ov006_02142500 == first) data_ov006_02142500 = first->mNext;
+                    dMgMCarloCardObj_c *first = sMCarloFirstPick;
+                    if (sMCarloCards == first)
+                        sMCarloCards = first->mNext;
                     if (data_ov006_02142504 == first) data_ov006_02142504 = first->mPrev;
                     if (first->mPrev != 0) first->mPrev->mNext = first->mNext;
                     if (first->mNext != 0) first->mNext->mPrev = first->mPrev;
@@ -894,8 +894,9 @@ void dScMgMCarlo_c::UpdateBoard(void) {
                     first->mPrev = first->mNext;
                 }
                 {
-                    dMgMCarloCardObj_c* second = data_ov006_02142508;
-                    if (data_ov006_02142500 == second) data_ov006_02142500 = second->mNext;
+                    dMgMCarloCardObj_c *second = sMCarloSecondPick;
+                    if (sMCarloCards == second)
+                        sMCarloCards = second->mNext;
                     if (data_ov006_02142504 == second) data_ov006_02142504 = second->mPrev;
                     if (second->mPrev != 0) second->mPrev->mNext = second->mNext;
                     if (second->mNext != 0) second->mNext->mPrev = second->mPrev;
@@ -903,12 +904,12 @@ void dScMgMCarlo_c::UpdateBoard(void) {
                     second->mPrev = second->mNext;
                 }
 
-                data_ov006_02142508 = 0;
-                data_ov006_021424fc = 0;
-                ApproachLinear(data_ov006_0213d570, 0, 2);
+                sMCarloSecondPick = 0;
+                sMCarloFirstPick = 0;
+                ApproachLinear(sMCarloCardTotal, 0, 2);
             }
             card = head;
-            for (slot = 0; slot < (data_ov006_0213d574 >> 12); slot++) {
+            for (slot = 0; slot < (sMCarloDealProgress >> 12); slot++) {
                 if (card == 0) return;
                 if (card->mState == CARD_ENTERING) card->Update(slot);
                 card = card->mNext;
@@ -918,12 +919,12 @@ void dScMgMCarlo_c::UpdateBoard(void) {
     }
 
     {
-        int target = (short)data_ov006_0213d570;
+        int target = (short)sMCarloCardTotal;
         if (target > 0x14) target = 0x14;
-        ApproachLinear(data_ov006_0213d574, target << 12, 0x800);
+        ApproachLinear(sMCarloDealProgress, target << 12, 0x800);
     }
     card = head;
-    for (slot = 0; slot < (data_ov006_0213d574 >> 12); slot++) {
+    for (slot = 0; slot < (sMCarloDealProgress >> 12); slot++) {
         if (card == 0) return;
         card->Update(slot);
         card = card->mNext;
@@ -945,23 +946,9 @@ dMgMCarloCardObj_c::~dMgMCarloCardObj_c()
  * it is not a constant expression: the compiler emits
  * __sinit_d_s_mg_m_carlo.cpp to copy the 19 words at overlay load. */
 int data_ov006_0214250c[19] = {
-    data_ov006_02133810[0],
-    data_ov006_02133810[1],
-    data_ov006_02133810[2],
-    data_ov006_02133810[11],
-    data_ov006_02133810[12],
-    data_ov006_02133810[13],
-    data_ov006_02133810[14],
-    data_ov006_02133810[3],
-    data_ov006_02133810[4],
-    data_ov006_02133810[5],
-    data_ov006_02133810[6],
-    data_ov006_02133810[9],
-    data_ov006_02133810[10],
-    data_ov006_02133810[7],
-    data_ov006_02133810[8],
-    data_ov006_02133810[15],
-    data_ov006_02133810[16],
-    data_ov006_02133810[17],
-    data_ov006_02133810[18],
+    sMgCardSprites[0],  sMgCardSprites[1],  sMgCardSprites[2],  sMgCardSprites[11],
+    sMgCardSprites[12], sMgCardSprites[13], sMgCardSprites[14], sMgCardSprites[3],
+    sMgCardSprites[4],  sMgCardSprites[5],  sMgCardSprites[6],  sMgCardSprites[9],
+    sMgCardSprites[10], sMgCardSprites[7],  sMgCardSprites[8],  sMgCardSprites[15],
+    sMgCardSprites[16], sMgCardSprites[17], sMgCardSprites[18],
 };

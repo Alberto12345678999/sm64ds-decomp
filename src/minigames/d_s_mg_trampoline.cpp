@@ -154,9 +154,9 @@ extern int data_ov006_02134f24;
 extern int _Z15ApproachLinear2Rsss(s16 *dst, s16 a, s16 b);
 extern void Mg_DrawBigNumber(int,int,int,int,int,int,int);
 extern void TrmpFx_Link(int *self);
-extern struct Node* data_ov006_02142f64;
-extern int data_ov006_02142f70;
-extern int data_ov006_02142f68;
+extern struct Node *sTrmpFxList;
+extern int sTrmpFxCount;
+extern int sTrmpFxPool;
 
 extern int data_ov006_02142f6c[];
 extern void *func_02054efc(void);
@@ -187,7 +187,7 @@ extern int _Z14ApproachLinearRiii(int*,int,int);
 extern int Trmp3DMario_CountFinished(void);
 extern void Mg_SetSharedState(int);
 extern void Trmp3DMario_StartAll(void *c);
-extern int data_ov006_02140588;
+extern int sTrmpComboCount;
 extern int data_ov006_0213b0ec;
 extern int data_ov006_0214058c;
 extern int data_ov006_02142f60;
@@ -282,10 +282,10 @@ int data_ov006_0213fb18[] = {
     (int)data_ov006_02134d34,
     (int)data_ov006_02134d28
 };
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f64, from the legacy file for TrmpFx_Link, NOT applied: extern void *data_ov006_02142f64; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f64, from the legacy file for TrmpFx_DrawAll, NOT applied: extern void *data_ov006_02142f64; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f68, from the legacy file for TrmpFx_ClearAll, NOT applied: extern char* data_ov006_02142f68; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f64, from the legacy file for TrmpFx_ClearAll, NOT applied: extern int data_ov006_02142f64; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_Link, NOT applied: extern void *sTrmpFxList; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_DrawAll, NOT applied: extern void *sTrmpFxList; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpFxPool, from the legacy file for TrmpFx_ClearAll, NOT applied: extern char* sTrmpFxPool; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_ClearAll, NOT applied: extern int sTrmpFxList; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_02120f18, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054efc, from the legacy file for func_ov006_02120f18, NOT applied: extern char *func_02054efc(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054ea8, from the legacy file for func_ov006_02120f18, NOT applied: extern char *func_02054ea8(void); */
@@ -298,7 +298,7 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov006_021218fc, NOT applied: extern int _Z14ApproachLinearRiii(int *v, int step, int rate); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z15ApproachLinear2Rsss, from the legacy file for func_ov006_021218fc, NOT applied: extern int _Z15ApproachLinear2Rsss(short *v, short step, short rate); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound12PlayBank2_2DEj, from the legacy file for func_ov006_021218fc, NOT applied: extern void _ZN5Sound12PlayBank2_2DEj(unsigned int bank); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02140588, from the legacy file for func_ov006_02121bc8, NOT applied: extern "C" int data_ov006_02140588; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpComboCount, from the legacy file for func_ov006_02121bc8, NOT applied: extern "C" int sTrmpComboCount; */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_02120a18, from the legacy file for func_ov006_02121cf4, NOT applied: extern void func_ov006_02120a18(char* p, int v); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound12PlayBank2_2DEj, from the legacy file for func_ov006_02121cf4, NOT applied: extern void _ZN5Sound12PlayBank2_2DEj(unsigned int n); */
 /* TUBUILD CONFLICT -- alternate declaration of TrmpLine_UpdateAll, from the legacy file for func_ov006_02121d64, NOT applied: void TrmpLine_UpdateAll(void); */
@@ -597,7 +597,7 @@ int ApproachLinear(int&, int, int);
 
 void dScMgTrampoline_c::UpdateScroll()
 {
-    int q = data_ov006_02140588 / 10;
+    int q = sTrmpComboCount / 10;
     int old = mLevel;
     Trmp3DMario_SetSpawnHeight(mScrollY);
     Trmp3DMario_SetTuning((q << 8) + 0x1000);
@@ -629,11 +629,11 @@ void dScMgTrampoline_c::UpdateScroll()
 // @symbol _ZN17dScMgTrampoline_c9StatePlayEv
 void dScMgTrampoline_c::StatePlay()
 {
-    int old = data_ov006_02140588;
+    int old = sTrmpComboCount;
     TrmpLine_UpdateAll();
     Trmp3DMario_UpdateAll();
-    if (data_ov006_02140588 > old) {
-        if (data_ov006_02140588 == 3)
+    if (sTrmpComboCount > old) {
+        if (sTrmpComboCount == 3)
             mPromptEnabled = 0;
     }
     UpdateScroll();
@@ -643,7 +643,7 @@ void dScMgTrampoline_c::StatePlay()
         BeginResults();
     } else {
         if (_Z14ApproachLinearRiii(&mTimer, 0, 1)) {
-            if (data_ov006_02140588 >= 5 || data_ov006_0214058c < 3) {
+            if (sTrmpComboCount >= 5 || data_ov006_0214058c < 3) {
                 int i;
                 char *p = (char *)mArray1;
                 for (i = 0; i < 4; i++) {
@@ -656,7 +656,7 @@ void dScMgTrampoline_c::StatePlay()
             }
             mTimer = 0x168;
             {
-                int amt = data_ov006_02140588 * 2;
+                int amt = sTrmpComboCount * 2;
                 if (amt > 0xb4) amt = 0xb4;
                 mTimer -= amt;
             }
@@ -818,13 +818,13 @@ void dScMgTrampoline_c::UpdateTouchInput()
  * words, so it is cast to dScMgTrampoline_c::State here to dispatch. */
 s32 dScMgTrampoline_c::Behavior()
 {
-    int saved = data_ov006_02140588;
+    int saved = sTrmpComboCount;
     TrmpFx_UpdateAll();
     (this->*(*(State *)mState))();
     UpdateTouchInput();
     mDoorMark.Update();
-    if (saved != data_ov006_02140588)
-        Mg_SubmitScore(data_ov006_02140588);
+    if (saved != sTrmpComboCount)
+        Mg_SubmitScore(sTrmpComboCount);
     return 1;
 }
 
@@ -858,7 +858,7 @@ s32 dScMgTrampoline_c::Render()
         }
     }
 
-    Mg_DrawTopRightCounter(data_ov006_02140588, 4);
+    Mg_DrawTopRightCounter(sTrmpComboCount, 4);
 
     aa = mDoorSide;
     r6 = 1;
@@ -1095,7 +1095,10 @@ void dScMgTrampoline_c::PaintSquare(int x_base, int y, int val, int n)
 
 // @symbol TrmpFx_InitPool
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void TrmpFx_InitPool(void *records, int count) { data_ov006_02142f68 = (int)records; data_ov006_02142f70 = count; }
+void TrmpFx_InitPool(void *records, int count) {
+    sTrmpFxPool = (int)records;
+    sTrmpFxCount = count;
+}
 }
 
 // @symbol TrmpFx_Spawn
@@ -1103,11 +1106,11 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 /* Desc* index DIFFed (the scale folded the wrong register). */
 void TrmpFx_Spawn(int x, int y) {
   int i;
-  for (i = data_ov006_02142f70 - 1; i >= 0; i--) {
-    if (*(short *)(data_ov006_02142f68 + i * 0x24 + 0x20) == 0) {
-      ((Desc *)(data_ov006_02142f68 + i * 0x24))->Spawn(x, y);
-      return;
-    }
+  for (i = sTrmpFxCount - 1; i >= 0; i--) {
+      if (*(short *)(sTrmpFxPool + i * 0x24 + 0x20) == 0) {
+          ((Desc *)(sTrmpFxPool + i * 0x24))->Spawn(x, y);
+          return;
+      }
   }
 }
 }
@@ -1116,10 +1119,10 @@ void TrmpFx_Spawn(int x, int y) {
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void TrmpFx_ClearAll(void){
     int i;
-    for(i=0;i<data_ov006_02142f70;i++){
-        ((Desc *)(data_ov006_02142f68 + i * 0x24))->active = 0;
+    for (i = 0; i < sTrmpFxCount; i++) {
+        ((Desc *)(sTrmpFxPool + i * 0x24))->active = 0;
     }
-    data_ov006_02142f64=0;
+    sTrmpFxList = 0;
 }
 }
 
@@ -1127,13 +1130,13 @@ void TrmpFx_ClearAll(void){
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void TrmpFx_UpdateAll(void){
   int i = 0;
-  if(data_ov006_02142f70 > 0){
-    int off = 0;
-    do {
-      ((Desc *)(data_ov006_02142f68 + off))->Update();
-      i++;
-      off += 0x24;
-    } while(i < data_ov006_02142f70);
+  if (sTrmpFxCount > 0) {
+      int off = 0;
+      do {
+          ((Desc *)(sTrmpFxPool + off))->Update();
+          i++;
+          off += 0x24;
+      } while (i < sTrmpFxCount);
   }
 }
 }
@@ -1141,7 +1144,7 @@ void TrmpFx_UpdateAll(void){
 // @symbol TrmpFx_DrawAll
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void TrmpFx_DrawAll(void) {
-    void *node = data_ov006_02142f64;
+    void *node = sTrmpFxList;
     if (node == 0) return;
     do {
         ((Desc *)node)->Render();
@@ -1155,8 +1158,8 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void TrmpFx_Link(int *entryRaw) {
     Desc *entry = (Desc *)entryRaw;
     Desc *node;
-    entry->next = data_ov006_02142f64;
-    data_ov006_02142f64 = (Node *)entry;
+    entry->next = sTrmpFxList;
+    sTrmpFxList = (Node *)entry;
     node = (Desc *)entry->next;
     int v = entry->y - 0x10000;
     while (node) {
@@ -1170,9 +1173,9 @@ void TrmpFx_Link(int *entryRaw) {
 // @symbol TrmpFx_Unlink
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void TrmpFx_Unlink(struct Node* node) {
-    struct Node* prev = data_ov006_02142f64;
+    struct Node *prev = sTrmpFxList;
     if (prev == node) {
-        data_ov006_02142f64 = node->next;
+        sTrmpFxList = node->next;
         return;
     }
     struct Node* cur = prev->next;

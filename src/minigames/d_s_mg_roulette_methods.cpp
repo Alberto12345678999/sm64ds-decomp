@@ -56,7 +56,7 @@ typedef struct { short v[12]; } ShortTbl12;
 struct Pair   { int w[2]; };
 struct Pair2W { int w[2]; };
 
-/* The board's tile centres: data_ov006_02142ab4 holds x and
+/* The board's tile centres: sRouletteTiles holds x and
    data_ov006_02142ab8 the same array offset to y, stride 8. decl_common.h
    types both as `char[]`, so every read casts. */
 struct TileXY { int x, y; };
@@ -221,7 +221,7 @@ int  Dealer_Load(char *c);
 
 extern int   data_ov006_021428d0;
 extern int   data_ov006_0213e2dc;
-extern char *data_ov006_02142aa4[];
+extern char *sRouletteStrips[];
 extern int   data_020a0db0;
 extern s32   data_ov006_0212ed24[];
 extern void *data_ov006_021376ec[];
@@ -236,7 +236,7 @@ extern struct Pair   pmf_RouletteBoard_StateSlow;
 extern struct Pair2W pmf_RouletteBoard_StateSpin;
 extern int   data_0209e650[];
 extern int   data_ov006_0212ed4c[];
-extern int   data_ov006_0212ed68[];
+extern int sRouletteRowEdgesY[];
 extern short data_ov006_0212edb8[];
 extern short data_ov006_0212edba[];
 extern short data_ov006_0212ed88[];
@@ -427,7 +427,8 @@ s32 dScMgRoulette_c::Behavior()
                         if (onTile == 0)
                             goto landedElsewhere;
                     landedInRange:
-                        RouletteRacer_SetVelocityToward((int *)racer, (int *)&((TileXY *)data_ov006_02142ab4)[tileType].x, 0x100);
+                        RouletteRacer_SetVelocityToward(
+                            (int *)racer, (int *)&((TileXY *)sRouletteTiles)[tileType].x, 0x100);
                         goto nextRacer;
                     landedElsewhere:
                         RouletteRacer_MoveToTile((RacerPos *)racer, tileType);
@@ -598,9 +599,9 @@ s32 dScMgRoulette_c::Render()
                 if (data_020a0db0 & 8) {
                     s16 idx = mSelectedTile;
                     Hud_RenderSprite((void *)data_ov006_02138c18,
-                                        ((TileXY *)data_ov006_02142ab4)[idx].x >> 12,
-                                        ((TileXY *)data_ov006_02142ab8)[idx].x >> 12, /* = [idx].y */
-                                        -1, 1);
+                                     ((TileXY *)sRouletteTiles)[idx].x >> 12,
+                                     ((TileXY *)data_ov006_02142ab8)[idx].x >> 12, /* = [idx].y */
+                                     -1, 1);
                 }
             }
         }
@@ -800,7 +801,7 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile)
     buf[0] = f18;
     buf[1] = racer->f1c;
     if ((unsigned short)(short)(tile - 0x23) <= 1) {
-        a = ((TileXY *)data_ov006_02142ab4)[tile].x;
+        a = ((TileXY *)sRouletteTiles)[tile].x;
         b = ((TileXY *)data_ov006_02142ab8)[tile].x;
         buf[2] = a;
         buf[3] = b;
@@ -833,7 +834,7 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile)
         if (LNDR(early) == 0)
             return;
     }
-    a = ((TileXY *)data_ov006_02142ab4)[tile].x;
+    a = ((TileXY *)sRouletteTiles)[tile].x;
     b = ((TileXY *)data_ov006_02142ab8)[tile].x;
     buf[4] = a;
     buf[5] = b;
@@ -977,7 +978,8 @@ void RouletteRacer_Update(Thing* racer)
                 if (b == false)
                     goto no_table;
             use_table:
-                RouletteRacer_SetVelocityToward((int *)racer, (int *)&data_ov006_02142ab4[type * 8], 0x100);
+                RouletteRacer_SetVelocityToward((int *)racer, (int *)&sRouletteTiles[type * 8],
+                                                0x100);
                 goto snd;
             no_table:
                 RouletteRacer_MoveToTile((RacerPos *)racer, type);
@@ -1150,83 +1152,83 @@ short Roulette_TileAt(int x, int y)
             tile = 0x24;
         }
     } else if (x > data_ov006_0212ed4c[1] && x <= data_ov006_0212ed4c[2]) {
-        if (y > data_ov006_0212ed68[0] && y <= data_ov006_0212ed68[1]) {
+        if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 0;
-        } else if (y > data_ov006_0212ed68[1] && y <= data_ov006_0212ed68[2]) {
+        } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
             tile = 0x14;
-        } else if (y > data_ov006_0212ed68[2] && y <= data_ov006_0212ed68[3]) {
+        } else if (y > sRouletteRowEdgesY[2] && y <= sRouletteRowEdgesY[3]) {
             tile = 3;
-        } else if (y > data_ov006_0212ed68[3] && y <= data_ov006_0212ed68[4]) {
+        } else if (y > sRouletteRowEdgesY[3] && y <= sRouletteRowEdgesY[4]) {
             tile = 0x17;
-        } else if (y > data_ov006_0212ed68[4] && y <= data_ov006_0212ed68[5]) {
+        } else if (y > sRouletteRowEdgesY[4] && y <= sRouletteRowEdgesY[5]) {
             tile = 6;
-        } else if (y > data_ov006_0212ed68[5] && y <= data_ov006_0212ed68[6]) {
+        } else if (y > sRouletteRowEdgesY[5] && y <= sRouletteRowEdgesY[6]) {
             tile = 0x1a;
-        } else if (y > data_ov006_0212ed68[6] && y <= data_ov006_0212ed68[7]) {
+        } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 9;
         }
     } else if (x > data_ov006_0212ed4c[2] && x <= data_ov006_0212ed4c[3]) {
-        if (y > data_ov006_0212ed68[0] && y <= data_ov006_0212ed68[1]) {
+        if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 0xc;
-        } else if (y > data_ov006_0212ed68[1] && y <= data_ov006_0212ed68[2]) {
+        } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
             tile = 0x1d;
-        } else if (y > data_ov006_0212ed68[2] && y <= data_ov006_0212ed68[3]) {
+        } else if (y > sRouletteRowEdgesY[2] && y <= sRouletteRowEdgesY[3]) {
             tile = 0xe;
-        } else if (y > data_ov006_0212ed68[3] && y <= data_ov006_0212ed68[4]) {
+        } else if (y > sRouletteRowEdgesY[3] && y <= sRouletteRowEdgesY[4]) {
             tile = 0x1f;
-        } else if (y > data_ov006_0212ed68[4] && y <= data_ov006_0212ed68[5]) {
+        } else if (y > sRouletteRowEdgesY[4] && y <= sRouletteRowEdgesY[5]) {
             tile = 0x10;
-        } else if (y > data_ov006_0212ed68[5] && y <= data_ov006_0212ed68[6]) {
+        } else if (y > sRouletteRowEdgesY[5] && y <= sRouletteRowEdgesY[6]) {
             tile = 0x21;
-        } else if (y > data_ov006_0212ed68[6] && y <= data_ov006_0212ed68[7]) {
+        } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 0x12;
         }
     } else if (x > data_ov006_0212ed4c[3] && x <= data_ov006_0212ed4c[4]) {
-        if (y > data_ov006_0212ed68[0] && y <= data_ov006_0212ed68[1]) {
+        if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 1;
-        } else if (y > data_ov006_0212ed68[1] && y <= data_ov006_0212ed68[2]) {
+        } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
             tile = 0x15;
-        } else if (y > data_ov006_0212ed68[2] && y <= data_ov006_0212ed68[3]) {
+        } else if (y > sRouletteRowEdgesY[2] && y <= sRouletteRowEdgesY[3]) {
             tile = 4;
-        } else if (y > data_ov006_0212ed68[3] && y <= data_ov006_0212ed68[4]) {
+        } else if (y > sRouletteRowEdgesY[3] && y <= sRouletteRowEdgesY[4]) {
             tile = 0x18;
-        } else if (y > data_ov006_0212ed68[4] && y <= data_ov006_0212ed68[5]) {
+        } else if (y > sRouletteRowEdgesY[4] && y <= sRouletteRowEdgesY[5]) {
             tile = 7;
-        } else if (y > data_ov006_0212ed68[5] && y <= data_ov006_0212ed68[6]) {
+        } else if (y > sRouletteRowEdgesY[5] && y <= sRouletteRowEdgesY[6]) {
             tile = 0x1b;
-        } else if (y > data_ov006_0212ed68[6] && y <= data_ov006_0212ed68[7]) {
+        } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 0xa;
         }
     } else if (x > data_ov006_0212ed4c[4] && x <= data_ov006_0212ed4c[5]) {
-        if (y > data_ov006_0212ed68[0] && y <= data_ov006_0212ed68[1]) {
+        if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 0xd;
-        } else if (y > data_ov006_0212ed68[1] && y <= data_ov006_0212ed68[2]) {
+        } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
             tile = 0x1e;
-        } else if (y > data_ov006_0212ed68[2] && y <= data_ov006_0212ed68[3]) {
+        } else if (y > sRouletteRowEdgesY[2] && y <= sRouletteRowEdgesY[3]) {
             tile = 0xf;
-        } else if (y > data_ov006_0212ed68[3] && y <= data_ov006_0212ed68[4]) {
+        } else if (y > sRouletteRowEdgesY[3] && y <= sRouletteRowEdgesY[4]) {
             tile = 0x20;
-        } else if (y > data_ov006_0212ed68[4] && y <= data_ov006_0212ed68[5]) {
+        } else if (y > sRouletteRowEdgesY[4] && y <= sRouletteRowEdgesY[5]) {
             tile = 0x11;
-        } else if (y > data_ov006_0212ed68[5] && y <= data_ov006_0212ed68[6]) {
+        } else if (y > sRouletteRowEdgesY[5] && y <= sRouletteRowEdgesY[6]) {
             tile = 0x22;
-        } else if (y > data_ov006_0212ed68[6] && y <= data_ov006_0212ed68[7]) {
+        } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 0x13;
         }
     } else if (x > data_ov006_0212ed4c[5] && x <= data_ov006_0212ed4c[6]) {
-        if (y > data_ov006_0212ed68[0] && y <= data_ov006_0212ed68[1]) {
+        if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 2;
-        } else if (y > data_ov006_0212ed68[1] && y <= data_ov006_0212ed68[2]) {
+        } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
             tile = 0x16;
-        } else if (y > data_ov006_0212ed68[2] && y <= data_ov006_0212ed68[3]) {
+        } else if (y > sRouletteRowEdgesY[2] && y <= sRouletteRowEdgesY[3]) {
             tile = 5;
-        } else if (y > data_ov006_0212ed68[3] && y <= data_ov006_0212ed68[4]) {
+        } else if (y > sRouletteRowEdgesY[3] && y <= sRouletteRowEdgesY[4]) {
             tile = 0x19;
-        } else if (y > data_ov006_0212ed68[4] && y <= data_ov006_0212ed68[5]) {
+        } else if (y > sRouletteRowEdgesY[4] && y <= sRouletteRowEdgesY[5]) {
             tile = 8;
-        } else if (y > data_ov006_0212ed68[5] && y <= data_ov006_0212ed68[6]) {
+        } else if (y > sRouletteRowEdgesY[5] && y <= sRouletteRowEdgesY[6]) {
             tile = 0x1c;
-        } else if (y > data_ov006_0212ed68[6] && y <= data_ov006_0212ed68[7]) {
+        } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 0xb;
         }
     }
@@ -1533,8 +1535,8 @@ void RouletteStrip_DrawRacers(void **strip)
         idx = data_ov006_0212ed24[r0];
         if (data_020a0db0 & 8) idx++;
         if (m >= 0xc && m <= 0x13) idx += 2;
-        a1 = ((TileXY *)data_ov006_02142ab4)[m].x >> 12;
-        a2 = ((TileXY *)data_ov006_02142ab4)[m].y >> 12;
+        a1 = ((TileXY *)sRouletteTiles)[m].x >> 12;
+        a2 = ((TileXY *)sRouletteTiles)[m].y >> 12;
         if (r0 == 3) a1 += 0x58;
         Hud_RenderSprite(data_ov006_021376ec[idx], a1, a2, -1, -1);
     }
@@ -1546,7 +1548,7 @@ extern "C" {
 void RouletteStrip_LinkAll(char* p) {
     int i;
     for (i = 0; i < 4; i++) {
-        data_ov006_02142aa4[i] = p;
+        sRouletteStrips[i] = p;
         p += 0x18;
     }
 }
@@ -1557,8 +1559,8 @@ extern "C" {
 void RouletteStrip_ResetAll(void) {
     int i;
     for (i = 0; i < 4; i++) {
-        RouletteStrip_Reset((int *)data_ov006_02142aa4[i]);
-        *(short*)((char*)data_ov006_02142aa4[i] + 0x14) = (short)i;
+        RouletteStrip_Reset((int *)sRouletteStrips[i]);
+        *(short *)((char *)sRouletteStrips[i] + 0x14) = (short)i;
     }
     data_ov006_0213e2dc = -1;
     data_ov006_021428d0 = 0;
@@ -1574,7 +1576,8 @@ extern "C" int RouletteResults_Tick(void)
         idx = data_ov006_0213e2dc;
         data_ov006_021428d0 = 0x78;
         while (idx < 4) {
-            if (*(short*)(data_ov006_02142aa4[idx] + 0x16) != 0) break;
+            if (*(short *)(sRouletteStrips[idx] + 0x16) != 0)
+                break;
             data_ov006_0213e2dc = data_ov006_0213e2dc + 1;
             idx = data_ov006_0213e2dc;
         }
@@ -1596,14 +1599,14 @@ void RouletteResults_Draw(void){
     if (n > 4) n = 4;
     arg = 0x28;
     for (i = 0; i < n; i++) {
-        int* o = (int *)data_ov006_02142aa4[i];
+        int *o = (int *)sRouletteStrips[i];
         if (*(short*)((char*)o + 0x16) > 0) {
             RouletteStrip_Draw((short *)o, arg);
             arg += 0x24;
         }
     }
     if (data_ov006_0213e2dc >= 4) return;
-    RouletteStrip_DrawRacers((void **)data_ov006_02142aa4[data_ov006_0213e2dc]);
+    RouletteStrip_DrawRacers((void **)sRouletteStrips[data_ov006_0213e2dc]);
 }
 }
 

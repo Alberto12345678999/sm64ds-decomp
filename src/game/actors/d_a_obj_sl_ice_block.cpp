@@ -16,8 +16,7 @@
  *   const Vector3 &, which V3 is not.
  * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
  *   Fix12<int> parameters, wall 6az).
- * Leftover: +0x74 (Vector3) and +0x8c (rotation) have no named header
- *   fields; the data homes and the +4 loaded-file words stay
+ * Leftover: the data homes and the +4 loaded-file words stay
  *   address-named with casts at the use site.
  * Leftover: func_020393d4's second argument is the address of
  *   dBgW::UpdatePosWithVelocity, stored as a callback -- kept verbatim.
@@ -34,6 +33,7 @@ enum daObjSlIceBlock_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "dBgActor_c.h"
+#include "Sound.h"
 
 /* File-local POD triple (see above). */
 struct V3 { int x,y,z; };
@@ -42,7 +42,6 @@ extern "C" {
 extern int DecIfAbove0_Short(void*);
 extern int DecIfAbove0_Byte(void*);
 extern int _Z14ApproachLinearRiii(int*, int, int);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int, unsigned int, unsigned int, void*, unsigned int);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
 void *, int, void *, int, int, void *);
 void func_020393d4(int *p, int v);
@@ -128,7 +127,7 @@ int daObjSlIceBlock_c::Behavior()
       }
     }
     UpdatePos(0);
-    mSoundID = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundID, 3, 0x98, ((char *)this)+0x74, 0);
+    mSoundID = Sound::PlayLong(mSoundID, 3, 0x98, *(Vector3 *)&mCamSpacePosX, 0);
   } else {
     if(DecIfAbove0_Short(&mDelayTimer) == 0){
       V3 pos;
@@ -144,7 +143,7 @@ int daObjSlIceBlock_c::Behavior()
       }
       unsigned char cnt = mNumToBigIce;
       mDelayTimer = (cnt + 1) * 0x14;
-      dActor_c::Spawn(0x5d, spawnType, *(Vector3 *)&pos, (Vector3_16 *)(((char *)this)+0x8c), mAreaId, -1);
+      dActor_c::Spawn(0x5d, spawnType, *(Vector3 *)&pos, (Vector3_16 *)&mAngleX, mAreaId, -1);
     }
   }
   return 1;

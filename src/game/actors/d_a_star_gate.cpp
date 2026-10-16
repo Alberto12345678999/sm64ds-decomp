@@ -40,6 +40,7 @@ enum d_a_star_gate_AssetId {
 };
 
 #include "daStarGate_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Model.h"
@@ -126,23 +127,9 @@ extern "C" daStarGateInfo data_ov100_02148390[] = {
     { 80, 8, 31, 36 }
 };
 
-struct StarGateSpawnInfo {
-    daStarGate_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char StarGateSpawnInfo_size_must_be_0x1c[
-    sizeof(StarGateSpawnInfo) == 0x1c ? 1 : -1];
-
 extern "C" daStarGate_c *daStarGate_c_classInit();
 
-extern "C" StarGateSpawnInfo g_profile_STAR_GATE = {
+extern "C" SpawnInfo<daStarGate_c> g_profile_STAR_GATE = {
     daStarGate_c_classInit,
     0x0162,
     0x0162,
@@ -152,6 +139,11 @@ extern "C" StarGateSpawnInfo g_profile_STAR_GATE = {
     0x01f40000,
     0
 };
+
+/* |v| for the scale-space reach test in IsInFrontOfPlayer. */
+static inline int Abs(int v) {
+    return v < 0 ? -v : v;
+}
 
 // @symbol daStarGate_c_classInit
 extern "C" daStarGate_c *daStarGate_c_classInit()
@@ -258,17 +250,16 @@ Player *daStarGate_c::CalculateRelativePlayerPos()
 // @symbol _ZN12daStarGate_c17IsInFrontOfPlayerEP6Player
 bool daStarGate_c::IsInFrontOfPlayer(Player *player)
 {
-  int v, z, a;
-  v = mScaleX; if (v < 0) v = -v; if (v > 0x82000) goto fail;
-  v = mScaleY; if (v < 0) v = -v; if (v > 0x32000) goto fail;
-  z = mScaleZ;
-  v = (z < 0) ? -z : z; if (v > 0x78000) goto fail;
-  if (z < 0) a = mAngleY;
-  else a = mAngleY + 0x8000;
-  a = (short)a;
-  if (AngleDiff(a, player->mAngleY) < 0x2000) return true;
-fail:
-  return false;
+    int a;
+    if (Abs(mScaleX) <= 0x82000 && Abs(mScaleY) <= 0x32000 && Abs(mScaleZ) <= 0x78000) {
+        if (mScaleZ < 0)
+            a = mAngleY;
+        else
+            a = mAngleY + 0x8000;
+        if (AngleDiff((short)a, player->mAngleY) < 0x2000)
+            return true;
+    }
+    return false;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -300,44 +291,39 @@ bool daStarGate_c::St_Wait_Main(Player *player)
         notEnoughStars = (int)NumStars() < entry->numStars;
         isMario = ((unsigned char *)data_0209caa0)[0x41] == 0;
 
-        if (data_0209caa0[1] & (0x8000 << entry->saveFlag))
-            goto tryOpen;
-        if (isSpecial) {
-            if (mScaleZ <= 0)
-                goto tryOpen;
-            if (!notEnoughStars && isMario)
-                goto tryOpen;
+        /* A door already unlocked in the save just opens. So does the 80-star
+           door from behind (mScaleZ <= 0), or for Mario with enough stars.
+           Otherwise it shows its message (or, for Mario with enough stars,
+           starts the unlock talk) and falls back to TryOpenDoor when that
+           call returns 0. */
+        if (!(data_0209caa0[1] & (0x8000 << entry->saveFlag))) {
+            if (!isSpecial || (mScaleZ > 0 && (notEnoughStars || !isMario))) {
+                {
+                    int x = mPosX;
+                    int z = mPosZ;
+                    int y = mPosY + 0xb4000;
+                    messagePos.x = x;
+                    messagePos.y = y;
+                    messagePos.z = z;
+                }
+
+                if (!(isMario && !isSpecial && !notEnoughStars)) {
+                    if (func_ov100_02144f84() == 0)
+                        return true;
+                    messageID = isMario ? entry->notEnoughStarsMsgID : entry->notMarioMsgID;
+                    if (player->ShowMessage(*this, messageID, (Vector3 *)&messagePos, 0, 2) != 0) {
+                        if (isSpecial)
+                            player->OpenBigDoor();
+                        ChangeState(&ST_TALKING_TO_PLAYER, player);
+                        return true;
+                    }
+                } else if (player->TryTalkToDoor(1) != 0) {
+                    ChangeState(&ST_UNLOCKING, player);
+                    return true;
+                }
+            }
         }
 
-        {
-            int x = mPosX;
-            int z = mPosZ;
-            int y = mPosY + 0xb4000;
-            messagePos.x = x;
-            messagePos.y = y;
-            messagePos.z = z;
-        }
-
-        if (!(isMario && !isSpecial && !notEnoughStars)) {
-            if (func_ov100_02144f84() == 0)
-                return true;
-            messageID = isMario ? entry->notEnoughStarsMsgID
-                                : entry->notMarioMsgID;
-            if (player->ShowMessage(*this, messageID,
-                                    (Vector3 *)&messagePos, 0, 2) == 0)
-                goto tryOpen;
-            if (isSpecial)
-                player->OpenBigDoor();
-            ChangeState(&ST_TALKING_TO_PLAYER, player);
-            return true;
-        } else {
-            if (player->TryTalkToDoor(1) == 0)
-                goto tryOpen;
-            ChangeState(&ST_UNLOCKING, player);
-            return true;
-        }
-
-    tryOpen:
         TryOpenDoor(player);
     }
     return true;

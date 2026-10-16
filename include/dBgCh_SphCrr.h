@@ -65,11 +65,11 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
                                func_02037b5c clears it */
     s32 mScale;            /* 0x108 - dBgCh_Actr's Update* copy its tail word
                                (Actr +0x128) here each update */
-    s32 unk_10c;            /* 0x10c - named 2026-08-24 when the size pin
-                               landed: dBgCh_Actr::Init stores its fourth
+    s32 mMotionAngPtr;     /* 0x10c - dBgCh_Actr::Init stores its fourth
                                argument, a Vector3_16 *, at Actr +0x12c = this
-                               +0x10c, and UpdateContinuous forwards both it
-                               and the next word to func_02038324 */
+                               +0x10c, and the Update* bodies forward it and
+                               Actr +0x130 to func_02038324, which hands them
+                               to dBgW::BeforeClsn as `motionAng` and `ang` */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
     /* Defined as real C++ in separate D1/D0 source files. Dedicated TUs with
@@ -166,7 +166,7 @@ struct dBgCh_SphCrr {
     s32 unk_100;            /* 0x100 */
     s32 unk_104;            /* 0x104 */
     s32 mScale;            /* 0x108 */
-    s32 unk_10c;            /* 0x10c - see the C++ branch: Init's Vector3_16 * */
+    s32 mMotionAngPtr;     /* 0x10c - see the C++ branch: Init's Vector3_16 * */
 };
 
 typedef struct dBgCh_SphCrr dBgCh_SphCrr;

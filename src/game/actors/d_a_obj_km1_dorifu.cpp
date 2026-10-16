@@ -45,19 +45,7 @@ enum d_a_obj_km1_dorifu_AssetId {
 };
 
 #include "daObjKm1_Dorifu_c.h"
-
-struct DorifuSpawnInfo {
-    daObjKm1_Dorifu_c *(*classInit)();
-    s16 executePriority; /* +4: also KM1_DORIFU registry id 0x0086 = 134 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char DorifuSpawnInfo_size_must_be_0x1c[
-    sizeof(DorifuSpawnInfo) == 0x1c ? 1 : -1];
+#include "SpawnInfo.h"
 
 struct DorifuModelFilePtr : SharedFilePtr {
     u32 words[2];
@@ -98,9 +86,9 @@ extern "C" daObjKm1_Dorifu_c *daObjKm1_Dorifu_c_classInit()
 }
 
 // @symbol g_profile_KM1_DORIFU
-extern "C" DorifuSpawnInfo g_profile_KM1_DORIFU = {
+extern "C" SpawnInfo<daObjKm1_Dorifu_c> g_profile_KM1_DORIFU = {
     daObjKm1_Dorifu_c_classInit,
-    0x0086,
+    0x0086, /* KM1_DORIFU registry id 134 */
     0x00af,
     0,
     0x00500000,

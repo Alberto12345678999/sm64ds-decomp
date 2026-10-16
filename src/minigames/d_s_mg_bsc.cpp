@@ -29,7 +29,7 @@ enum d_s_mg_bsc_AssetId {
 /* The state table: one pointer-to-member per state, indexed by mState.
  * Declared outside extern "C" it still links by its plain name. */
 typedef void (dScMgBSC_c::*StateHandler)();
-extern StateHandler data_ov006_02142f94[];
+extern StateHandler sBSCStateTable[];
 /* The ROM PMF constants the state table copies from (unlicensed .data),
  * in retail copy order. */
 extern StateHandler pmf_dScMgBSC_c_StateDealCards;
@@ -152,7 +152,7 @@ s32 dScMgBSC_c::InitResources()
 /* Slot 6: runs the current state from the table. */
 s32 dScMgBSC_c::Behavior()
 {
-    (this->*data_ov006_02142f94[mState])();
+    (this->*sBSCStateTable[mState])();
     MgCoins_Update();
     Dealer_Update((char *)&mShared);
     return 1;
@@ -553,7 +553,7 @@ void dScMgBSC_c::StateDone()
 /* Static-init globals (was the handwritten __sinit_ov006_0213326c shard).
  * The state table plain-copied from the ROM PMF constants, in retail
  * copy order. */
-StateHandler data_ov006_02142f94[14] = {
+StateHandler sBSCStateTable[14] = {
     pmf_dScMgBSC_c_StateDealCards,
     pmf_dScMgBSC_c_StateWaitDeal,
     pmf_dScMgBSC_c_StateChooseCard,

@@ -211,6 +211,24 @@ void Deallocate(void* handle);
 void func_0203da4c(void);
 }
 
+/* Mode 1 is versus mode. This int-returning predicate is what makes the ROM
+   materialize 0/1 before testing it. */
+static inline int IsVsMode(void) {
+    return data_0209f2d8 == 1;
+}
+
+/* 0 on the off frames of the blink after a new star is collected
+   (data_0209f2ac is NEW_STAR_COLLECTED, data_020a0db0 is FRAME_TIMER).
+   Flattening the nested ifs into one && chain changes the ROM's code. */
+static inline int StarCountVisible(void) {
+    if (data_0209f2ac != 0) {
+        if (data_0209f2d4 == 3 && (data_020a0db0 & 0x18) == 0)
+            return 0;
+        return 1;
+    }
+    return 1;
+}
+
 /* ROM ordinal 19 -- dMeter_c_classInit, 0x020fe154, size 0x3c.
  * Reconstructed source-style name: SM64DS proves dMeter_c through RTTI,
  * allocation size, vtable identity, and the METER registry profile;
@@ -230,8 +248,7 @@ int dMeter_c::InitResources()
     /* Main and sub engine OBJ VRAM. */
     char* objVramMain = (char*)0x6400000;
     char* objVramSub = (char*)0x6600000;
-    int isVsMode = (data_0209f2d8 == 1);
-    if (isVsMode != 0) {
+    if (IsVsMode()) {
         void* h;
         if (GetOwnerLanguage() == 5) {
             h = LoadFile(0xB003);
@@ -323,12 +340,10 @@ int dMeter_c::InitResources()
         Deallocate(h);
     }
 
-    int isVsTimer = 0;
     unk62 = 0;
     unk64 = 0xB4;
     mVsTimerY = 0xA;
-    if (data_0209f2d8 == 1) isVsTimer = 1;
-    if (isVsTimer != 0) {
+    if (IsVsMode()) {
         if (data_0209f2f8 == 0x33) mVsTimer = 0x1E;
         else if (data_0209f2f8 == 0x2B) *(volatile u16 *)&mVsTimer = 0x1E;
         else mVsTimer = 0x1E;
@@ -353,18 +368,14 @@ int dMeter_c::InitResources()
 
     /* Nine pixels per digit of NumStars(). */
     int starDigitsWidth = 0;
-    int isVsStars;
-    if (data_0209f2d8 == 1) isVsStars = 1; else isVsStars = 0;
-    if (isVsStars == 0) {
+    if (!IsVsMode()) {
         int n = NumStars();
         if (n > 0x63) starDigitsWidth = 0x1B;
         else if (n > 9) starDigitsWidth = 0x12;
         else starDigitsWidth = 9;
     }
 
-    int isVsLayout;
-    if (data_0209f2d8 == 1) isVsLayout = 1; else isVsLayout = 0;
-    if (isVsLayout != 0) {
+    if (IsVsMode()) {
         data_ov002_02111178 = 0;
         mLifeCountX = 0x10;
         mStarCountX = 0xF0;
@@ -399,19 +410,12 @@ int dMeter_c::InitResources()
 // @symbol _ZN8dMeter_c8BehaviorEv
 int dMeter_c::Behavior()
 {
-    int t;
+    int vs;
 
-    if (data_0209f5bc->v5() == 0)
-        goto ret;
-    t = (data_0209f2d8 == 1);
-    if (t != false)
-        goto body;
-    if ((data_0209caa0[2] & 0x80) != 0)
-        goto body;
-ret:
-    return 1;
-body:
-    if (t != false) {
+    /* vs is computed only once the first test passes and is reused below. */
+    if (data_0209f5bc->v5() == 0 || ((vs = IsVsMode()) == 0 && (data_0209caa0[2] & 0x80) == 0))
+        return 1;
+    if (vs != 0) {
         UpdateVsTimer();
     } else {
         int flags;
@@ -502,21 +506,20 @@ body:
 // @symbol _ZN8dMeter_c6RenderEv
 int dMeter_c::Render()
 {
-    int b = (data_0209f2d8 == 1);
-    if (b) {
-        if (data_0209fc9c != 0) goto end;
-        if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) == 0) {
-            RenderVsTimer();
-            RenderStarCount();
-            RenderCoinCount();
-            RenderCameraButtons();
-        } else {
-            if (data_0209f204 != 0) {
+    if (IsVsMode()) {
+        if (data_0209fc9c == 0) {
+            if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) == 0) {
                 RenderVsTimer();
+                RenderStarCount();
+                RenderCoinCount();
+                RenderCameraButtons();
+            } else {
+                if (data_0209f204 != 0) {
+                    RenderVsTimer();
+                }
             }
         }
-    } else {
-        if ((data_0209caa0[2] & 0x80) == 0) goto end;
+    } else if ((data_0209caa0[2] & 0x80) != 0) {
         unsigned char v = data_0209f20c;
         if (((data_0209f2c4 | v | data_0209f294) & 0xff) == 0) {
             RenderHealthMeter();
@@ -536,15 +539,12 @@ int dMeter_c::Render()
             }
         }
         unsigned char v2 = data_0209f20c;
-        if ((data_0209f2c4 | v2 | data_0209f294) & 0xff) {
-            if (v2 == 0) goto end;
-            if (data_0209f2d4 >= 3) goto end;
+        if (((data_0209f2c4 | v2 | data_0209f294) & 0xff) == 0 || (v2 != 0 && data_0209f2d4 < 3)) {
+            RenderStarCount();
+            RenderCameraButtons();
+            RenderLifeCount();
         }
-        RenderStarCount();
-        RenderCameraButtons();
-        RenderLifeCount();
     }
-end:
     return 1;
 }
 
@@ -838,8 +838,7 @@ void dMeter_c::RenderVsTimer()
 // @symbol _ZN8dMeter_c15RenderCoinCountEv
 void dMeter_c::RenderCoinCount()
 {
-    int t = (data_0209f2d8 == 1);
-    if (t != false) {
+    if (IsVsMode()) {
         int sb = 0xf0;
         CalculateDigits(data_0209f358[data_0209f250]);
         for (int i = 2; i >= 0; i--) {
@@ -924,10 +923,9 @@ void dMeter_c::RenderRedCoins()
 void dMeter_c::RenderStarCount()
 {
     int x = mStarCountX;
-    int b = (data_0209f2d8 == 1);
     int i;
 
-    if (b) {
+    if (IsVsMode()) {
         CalculateDigits((unsigned short)data_0209f310[data_0209f250]);
         for (i = 2; i >= 0; i--) {
             if (mDigits[i] >= 0) {
@@ -946,17 +944,7 @@ void dMeter_c::RenderStarCount()
         unsigned char mode = data_0209f2fc;
         if ((mode != 2 && data_ov002_02111178 == 4) ||
             (mode == 1 && data_ov002_02111178 >= 3 && data_ov002_02111178 < 6)) {
-            int flag;
-            if (data_0209f2ac != 0) {
-                if (data_0209f2d4 == 3 && (data_020a0db0 & 0x18) == 0) {
-                    flag = 0;
-                } else {
-                    flag = 1;
-                }
-            } else {
-                flag = 1;
-            }
-            if (flag == 0) {
+            if (!StarCountVisible()) {
                 return;
             }
             for (i = 2; i >= 0; i--) {
