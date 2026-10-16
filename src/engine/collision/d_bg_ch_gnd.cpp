@@ -8,9 +8,10 @@
  * func_020353b0 stays a free extern: the shared dBgCh-side bind helper is
  * owned by its own shard and called by the Lin/SphCrr query code as well
  * (d_bg_ch_lin.cpp, d_bg_ch_sph_crr.cpp, d_bg_ch_sph_crr_query.cpp).
- * func_02037464 stays a free function taking the query as char *: its two
- * d_bg_ch_sph_crr_query.cpp call sites pass it as an untyped free symbol, so a
- * member spelling would rename linkage out from under that TU.
+ * func_02037464 stays a free extern "C" function taking the query: its two
+ * d_bg_ch_sph_crr_query.cpp call sites (dBgCh_Gnd::DetectClsn and
+ * DetectClsnSlot0) call it as a free symbol, so a member spelling would
+ * rename linkage out from under that TU.
  */
 #include "dBgCh_Gnd.h"
 
@@ -54,9 +55,7 @@ void dBgCh_Gnd::SetObjAndPos(const Vector3 &pos, dActor_c *actor)
 /* Hit-record reset at the run's left edge (reverse emission lands the last
  * definition lowest): clears the embedded dBgPi hit, flags "no floor"
  * (0x80000000) and clears the hit byte. */
-extern "C" void func_02037464(char *c)
-{
-    dBgCh_Gnd *query = (dBgCh_Gnd *)c;
+extern "C" void func_02037464(dBgCh_Gnd *query) {
     query->dBgPi::Reset();
     query->clsnY = 0x80000000;
     query->hasClsn = 0;
