@@ -524,7 +524,8 @@ void func_0200d954(char *c, short arg) {
     int j = i * 2;
     *(int *)(c + 0x104) = func_02053200(data_02082214[j]);
     *(int *)(c + 0x108) = func_02053200(data_02082214[j + 1]);
-    _ZN8dClipper13Func_020156DCEitii(&data_0209f43c, *(int *)(c + 0xf8), arg, *(int *)(c + 0xfc), *(int *)(c + 0x100));
+    _ZN8dClipper13Func_020156DCEitii(&data_0209f43c, *(int *)(c + 0xf8), arg, *(int *)(c + 0xfc),
+                                     *(int *)(c + 0x100));
 }
 
 // @symbol func_0200d8c8
