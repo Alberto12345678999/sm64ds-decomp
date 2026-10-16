@@ -22,6 +22,9 @@
 #include "types.h"
 #include "decl_common.h"
 #include "common.h"
+#include "TrmpLine.h"
+/* Typed access to a TrmpLine slot from the char* helpers below. */
+#define TRMPLINE(p) ((TrmpLine *)(p))
 
 #pragma defer_codegen off
 
@@ -1062,7 +1065,7 @@ extern "C" void TrmpLine_PointDistance(char *sl, void *arg1, struct Vec3 *r2)
     {
       struct Vec3 d;
       SubVec3((struct Vec3 *) vp, (struct Vec3 *) arg1, &d);
-      int r4 = (long long) (*((int *) (sl + 0x58)));
+      int r4 = (long long)(TRMPLINE(sl)->mHalfWidth);
       int len = LenVec3(&d);
       int f = _ZN4cstd4fdivEii(r4, r4 + len);
       int t = (int) (((((long long) n5) * (*dp)) + 0x800) >> 12);
@@ -1203,9 +1206,11 @@ extern "C" void TrmpLine_Draw(char *obj)
   int i;
   int m2[12];
   int m1[12];
-  Matrix4x3_FromTranslation(&data_020a0e68, *((int *) (obj + 8)), *((int *) (obj + 0xc)), *((int *) (obj + 0x10)));
+  Matrix4x3_FromTranslation(&data_020a0e68, *((int *)(obj + 8)), TRMPLINE(obj)->mCenter.y,
+                            TRMPLINE(obj)->mCenter.z);
   MulMat4x3Mat4x3((const int *) &data_020a0e68, (const int *) &data_0209b3ec, m1);
-  Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, *((int *) (obj + 0x2c)), *((int *) (obj + 0x30)), *((int *) (obj + 0x34)));
+  Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, TRMPLINE(obj)->mScale.x, TRMPLINE(obj)->mScale.y,
+                                TRMPLINE(obj)->mScale.z);
   MulMat4x3Mat4x3((const int *) &data_020a0e68, (const int *) &data_0209b3ec, m2);
   REG_MTX_MODE = 2;
   func_020553a4(m1);
@@ -1302,7 +1307,7 @@ extern "C" extern void TrmpLine_ComputeNormals(char* c);
 // @symbol TrmpLine_StateFade
 extern "C" void TrmpLine_StateFade(char* c) {
     if (_Z15ApproachLinear2Riii((int*)(c + 0x329), 0, 1) != 0) {
-        *(unsigned char*)(c + 0x328) = 0;
+        TRMPLINE(c)->mStatus = 0;
         return;
     }
     *(int*)(((int)c + 0x2C)) += 0x80;
@@ -1341,18 +1346,18 @@ extern "C" void TrmpLine_StateSettle(char *c)
 
     if ((data_020a0db0 & 1) != 0) {
         if (_Z15ApproachLinear2Riii((int *)(c + 0x329), 0, 1) != 0) {
-            *(u8 *)(c + 0x328) = 0;
+            TRMPLINE(c)->mStatus = 0;
         }
     }
 
     {
         u16 *fieldPtr = (u16 *)LA(c + 0x320);
-        *fieldPtr = *fieldPtr + *(u16 *)(c + 0x322);
-        ang = *(u16 *)(c + 0x320);
+        *fieldPtr = *fieldPtr + TRMPLINE(c)->mWobbleSpeed;
+        ang = TRMPLINE(c)->mWobblePhase;
     }
 
-    vx = *(int *)(c + 0x14);
-    vz = *(int *)(c + 0x18);
+    vx = TRMPLINE(c)->mNormal.x;
+    vz = TRMPLINE(c)->mNormal.y;
 
     negS = -(int)data_02082214[(ang >> 4) * 2];
 
@@ -1421,12 +1426,12 @@ extern "C" void TrmpLine_StateFlex(char *o)
     TrmpLine_PushJumper(o);
 
     p320 = (u16 *)LA(o + 0x320);
-    *p320 = *p320 + *(u16 *)(o + 0x322);
+    *p320 = *p320 + TRMPLINE(o)->mWobbleSpeed;
 
-    a14 = *(int *)(o + 0x14);
-    a18 = *(int *)(o + 0x18);
+    a14 = TRMPLINE(o)->mNormal.x;
+    a18 = TRMPLINE(o)->mNormal.y;
 
-    k = *(u16 *)(o + 0x320) >> 4;
+    k = TRMPLINE(o)->mWobblePhase >> 4;
     s = data_02082214[k * 2];
     ns = -(int)s;
 
@@ -1572,21 +1577,21 @@ extern "C" int TrmpLine_PushJumper(char *c)
         SubVec3(&pos0, (Vector3 *)(c + 8), &pos0);
         SubVec3(&pos1, (Vector3 *)(c + 8), &pos1);
 
-        a = DotVec3((Vector3 *)(c + 0x20), &pos0);
-        b = DotVec3((Vector3 *)(c + 0x14), &pos0);
-        cc = DotVec3((Vector3 *)(c + 0x20), &pos1);
-        dd = DotVec3((Vector3 *)(c + 0x14), &pos1);
-        DotVec3((Vector3 *)(c + 0x14), &diff);
-        DotVec3((Vector3 *)(c + 0x20), &diff);
+        a = DotVec3(&TRMPLINE(c)->mAxis, &pos0);
+        b = DotVec3(&TRMPLINE(c)->mNormal, &pos0);
+        cc = DotVec3(&TRMPLINE(c)->mAxis, &pos1);
+        dd = DotVec3(&TRMPLINE(c)->mNormal, &pos1);
+        DotVec3(&TRMPLINE(c)->mNormal, &diff);
+        DotVec3(&TRMPLINE(c)->mAxis, &diff);
 
         p0proj.y = b;
         p1proj.x = cc;
         p0proj.x = a;
         p1proj.y = dd;
 
-        negW.x = -(*(int *)(c + 0x58));
+        negW.x = -(TRMPLINE(c)->mHalfWidth);
         negW.y = 0;
-        posW.x = *(int *)(c + 0x58);
+        posW.x = TRMPLINE(c)->mHalfWidth;
         posW.y = 0;
 
         Vec2_Sub((int *)&gateDir, (int *)&negW, (int *)&posW);
@@ -1618,16 +1623,16 @@ extern "C" int TrmpLine_PushJumper(char *c)
 
         if (flag != 0) {
             int mag, t;
-            *(int *)(c + 0x38) = pos0.x;
-            *(int *)(c + 0x3c) = pos0.y;
-            *(int *)(c + 0x40) = pos0.z;
-            *(int *)(c + 0x44) = diff.x;
-            *(int *)(c + 0x48) = diff.y;
-            *(int *)(c + 0x4c) = diff.z;
+            TRMPLINE(c)->mContactPoint.x = pos0.x;
+            TRMPLINE(c)->mContactPoint.y = pos0.y;
+            TRMPLINE(c)->mContactPoint.z = pos0.z;
+            TRMPLINE(c)->mContactMotion.x = diff.x;
+            TRMPLINE(c)->mContactMotion.y = diff.y;
+            TRMPLINE(c)->mContactMotion.z = diff.z;
 
-            t = _ZN4cstd4fdivEii((a < 0) ? -a : a, *(int *)(c + 0x58));
+            t = _ZN4cstd4fdivEii((a < 0) ? -a : a, TRMPLINE(c)->mHalfWidth);
             {
-                int w = *(int *)(c + 0x58);
+                int w = TRMPLINE(c)->mHalfWidth;
                 int av = (a < 0) ? -a : a;
                 mag = (int)(((long long)av * w + 0x800) >> 12);
             }
@@ -1644,26 +1649,26 @@ extern "C" int TrmpLine_PushJumper(char *c)
 
             {
                 int *dst = (int *)((char *)arr[i] + 4);
-                dst[0] = *(int *)(c + 0x14);
-                dst[1] = *(int *)(c + 0x18);
-                dst[2] = *(int *)(c + 0x1c);
+                dst[0] = TRMPLINE(c)->mNormal.x;
+                dst[1] = TRMPLINE(c)->mNormal.y;
+                dst[2] = TRMPLINE(c)->mNormal.z;
                 arr[i]->f10 = a;
-                arr[i]->f14 = *(int *)(c + 0x58);
-                *(u16 *)(c + 0x320) = 0;
-                TrmpLine_PointDistance(c, (void *)(c + 0x38), (Vector3 *)(c + 0x44));
+                arr[i]->f14 = TRMPLINE(c)->mHalfWidth;
+                TRMPLINE(c)->mWobblePhase = 0;
+                TrmpLine_PointDistance(c, (void *)(c + 0x38), &TRMPLINE(c)->mContactMotion);
 
-                *(u16 *)(c + 0x324) -= 1;
-                if (*(u16 *)(c + 0x324) == 0) {
-                    *(u8 *)(c + 0x328) = 3;
+                TRMPLINE(c)->mBouncesLeft -= 1;
+                if (TRMPLINE(c)->mBouncesLeft == 0) {
+                    TRMPLINE(c)->mStatus = 3;
                     TrmpLine_SetStateSettle(c);
                     return 1;
                 }
-                *(u16 *)(c + 0x326) += 1;
+                TRMPLINE(c)->mBounceCount += 1;
             }
         } else {
-            Vec3_MulScalar(&farFwd, (Vector3 *)(c + 0x20), *(int *)(c + 0x58));
+            Vec3_MulScalar(&farFwd, &TRMPLINE(c)->mAxis, TRMPLINE(c)->mHalfWidth);
             Vec3_Add(&sumPt, &pos0, &farFwd);
-            Vec3_MulScalar(&farBack, (Vector3 *)(c + 0x20), *(int *)(c + 0x58));
+            Vec3_MulScalar(&farBack, &TRMPLINE(c)->mAxis, TRMPLINE(c)->mHalfWidth);
             Vec3_Sub(&diffPt, &pos0, &farBack);
 
             if (sumPt.y < 0 && sumPt.y > -0x30000) {
@@ -1762,10 +1767,10 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
     s32 halfLen;
     s32 absOff, blendVal, ratio;
 
-    *(s16 *)(c + 0x50) = p1[0];
-    *(s16 *)(c + 0x52) = p1[1];
-    *(s16 *)(c + 0x54) = p2[0];
-    *(s16 *)(c + 0x56) = p2[1];
+    TRMPLINE(c)->mStart[0] = p1[0];
+    TRMPLINE(c)->mStart[1] = p1[1];
+    TRMPLINE(c)->mEnd[0] = p2[0];
+    TRMPLINE(c)->mEnd[1] = p2[1];
 
     p1[0] = (s16)(p1[0] - 0x80);
     p1[1] = (s16)(0 - p1[1]);
@@ -1794,42 +1799,42 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
 
     Vec3_Add(&sumVec, &va, &vb);
     Vec3_MulScalar(&scaledVec, &sumVec, 0x800);
-    *(s32 *)(c + 0x8) = scaledVec.x;
-    *(s32 *)(c + 0xC) = scaledVec.y;
-    *(s32 *)(c + 0x10) = scaledVec.z;
+    TRMPLINE(c)->mCenter.x = scaledVec.x;
+    TRMPLINE(c)->mCenter.y = scaledVec.y;
+    TRMPLINE(c)->mCenter.z = scaledVec.z;
 
     Vec3_Sub(&diffVec, &vb, &va);
-    *(s32 *)(c + 0x20) = diffVec.x;
-    *(s32 *)(c + 0x24) = diffVec.y;
-    *(s32 *)(c + 0x28) = diffVec.z;
+    TRMPLINE(c)->mAxis.x = diffVec.x;
+    TRMPLINE(c)->mAxis.y = diffVec.y;
+    TRMPLINE(c)->mAxis.z = diffVec.z;
 
-    func_0203ce80(&tmpVec, (Vector3 *)(c + 0x20));
+    func_0203ce80(&tmpVec, &TRMPLINE(c)->mAxis);
 
     zAxis.x = 0;
     zAxis.y = 0;
     zAxis.z = 0x1000;
-    func_0203cf00(&crossVec, (Vector3 *)(c + 0x20), &zAxis);
-    *(s32 *)(c + 0x14) = crossVec.x;
-    *(s32 *)(c + 0x18) = crossVec.y;
-    *(s32 *)(c + 0x1C) = crossVec.z;
+    func_0203cf00(&crossVec, &TRMPLINE(c)->mAxis, &zAxis);
+    TRMPLINE(c)->mNormal.x = crossVec.x;
+    TRMPLINE(c)->mNormal.y = crossVec.y;
+    TRMPLINE(c)->mNormal.z = crossVec.z;
 
-    if (*(s32 *)(c + 0x18) < 0) {
-        *(s32 *)(c + 0x14) = 0 - *(s32 *)(c + 0x14);
-        *(s32 *)(c + 0x18) = 0 - *(s32 *)(c + 0x18);
+    if (TRMPLINE(c)->mNormal.y < 0) {
+        TRMPLINE(c)->mNormal.x = 0 - TRMPLINE(c)->mNormal.x;
+        TRMPLINE(c)->mNormal.y = 0 - TRMPLINE(c)->mNormal.y;
     }
 
-    *(s32 *)(c + 0x38) = 0;
-    *(s32 *)(c + 0x3C) = 0;
-    *(s32 *)(c + 0x40) = 0;
-    *(s32 *)(c + 0x44) = 0 - *(s32 *)(c + 0x14);
-    *(s32 *)(c + 0x48) = 0 - *(s32 *)(c + 0x18);
-    *(s32 *)(c + 0x4C) = 0 - *(s32 *)(c + 0x1C);
+    TRMPLINE(c)->mContactPoint.x = 0;
+    TRMPLINE(c)->mContactPoint.y = 0;
+    TRMPLINE(c)->mContactPoint.z = 0;
+    TRMPLINE(c)->mContactMotion.x = 0 - TRMPLINE(c)->mNormal.x;
+    TRMPLINE(c)->mContactMotion.y = 0 - TRMPLINE(c)->mNormal.y;
+    TRMPLINE(c)->mContactMotion.z = 0 - TRMPLINE(c)->mNormal.z;
     Vec3_MulScalarInPlace((s32 *)(c + 0x44), 0x800);
 
     SubVec3(&va, (Vector3 *)(c + 8), &va);
     SubVec3(&vb, (Vector3 *)(c + 8), &vb);
     dist = Vec3_Dist(&va, &vb);
-    *(s32 *)(c + 0x58) = dist >> 1;
+    TRMPLINE(c)->mHalfWidth = dist >> 1;
     rowStep = dist / 3;
 
     {
@@ -1867,7 +1872,7 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
                 cell->y = (s32)(((s64)vb.y * weightB + 0x800) >> 12);
                 cell->y += (s32)(((s64)va.y * weightA + 0x800) >> 12);
 
-                cell->z = accum - *(s32 *)(c + 0x58);
+                cell->z = accum - TRMPLINE(c)->mHalfWidth;
                 cell->z = (s32)(((s64)cell->z * weightSq + 0x800) >> 12);
 
                 mirror->x = cell->x;
@@ -1892,9 +1897,9 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
     TrmpLine_PointDistance(c, c + 0x38, c + 0x44);
     TrmpLine_ComputeNormals(c);
 
-    *(s32 *)(c + 0x2C) = 0x1000;
-    *(s32 *)(c + 0x30) = 0x1000;
-    *(s32 *)(c + 0x34) = 0x1000;
+    TRMPLINE(c)->mScale.x = 0x1000;
+    TRMPLINE(c)->mScale.y = 0x1000;
+    TRMPLINE(c)->mScale.z = 0x1000;
 
     bestObj = 0;
     bestVal = 0;
@@ -1923,13 +1928,13 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
                 rawDir.z = dir->z;
 
                 SubVec3(&relPos, (Vector3 *)(c + 8), &relPos);
-                alongDot = DotVec3((Vector3 *)(c + 0x20), &relPos);
-                crossDot = DotVec3((Vector3 *)(c + 0x14), &relPos);
-                sideDot = DotVec3((Vector3 *)(c + 0x14), &rawDir);
-                DotVec3((Vector3 *)(c + 0x20), &rawDir);
+                alongDot = DotVec3(&TRMPLINE(c)->mAxis, &relPos);
+                crossDot = DotVec3(&TRMPLINE(c)->mNormal, &relPos);
+                sideDot = DotVec3(&TRMPLINE(c)->mNormal, &rawDir);
+                DotVec3(&TRMPLINE(c)->mAxis, &rawDir);
 
                 if (sideDot < 0x100 && crossDot <= bestVal && crossDot > -0x24000) {
-                    s32 h = *(s32 *)(c + 0x58);
+                    s32 h = TRMPLINE(c)->mHalfWidth;
                     if (alongDot > -h && alongDot < h) {
                         bestRel = relPos;
                         bestDir = rawDir;
@@ -1944,16 +1949,16 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
     } while (k < 5);
 
     if (bestObj != 0) {
-        *(s32 *)(c + 0x38) = bestRel.x;
-        *(s32 *)(c + 0x3C) = bestRel.y;
-        *(s32 *)(c + 0x40) = bestRel.z;
-        *(s32 *)(c + 0x44) = bestDir.x;
-        *(s32 *)(c + 0x48) = bestDir.y;
-        *(s32 *)(c + 0x4C) = bestDir.z;
+        TRMPLINE(c)->mContactPoint.x = bestRel.x;
+        TRMPLINE(c)->mContactPoint.y = bestRel.y;
+        TRMPLINE(c)->mContactPoint.z = bestRel.z;
+        TRMPLINE(c)->mContactMotion.x = bestDir.x;
+        TRMPLINE(c)->mContactMotion.y = bestDir.y;
+        TRMPLINE(c)->mContactMotion.z = bestDir.z;
 
         absOff = (bestD1 < 0) ? (0 - bestD1) : bestD1;
-        ratio = _ZN4cstd4fdivEii(absOff, *(s32 *)(c + 0x58));
-        halfLen = *(s32 *)(c + 0x58);
+        ratio = _ZN4cstd4fdivEii(absOff, TRMPLINE(c)->mHalfWidth);
+        halfLen = TRMPLINE(c)->mHalfWidth;
         absOff = (bestD1 < 0) ? (0 - bestD1) : bestD1;
         blendVal = (s32)(((s64)absOff * halfLen + 0x800) >> 12);
         if (blendVal < 0x400000) {
@@ -1965,19 +1970,19 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
             D3D_PlaySePannedLoop(0x1AE, *(s32 *)(c + 8),
                 (s32)(data_ov006_0213b2f8 * ratio + data_ov006_0213b304 * (0x1000 - ratio)) >> 0xC);
         }
-        *(s32 *)((char *)bestObj + 0x4) = *(s32 *)(c + 0x14);
-        *(s32 *)((char *)bestObj + 0x8) = *(s32 *)(c + 0x18);
-        *(s32 *)((char *)bestObj + 0xC) = *(s32 *)(c + 0x1C);
+        *(s32 *)((char *)bestObj + 0x4) = TRMPLINE(c)->mNormal.x;
+        *(s32 *)((char *)bestObj + 0x8) = TRMPLINE(c)->mNormal.y;
+        *(s32 *)((char *)bestObj + 0xC) = TRMPLINE(c)->mNormal.z;
         *(s32 *)((char *)bestObj + 0x10) = bestD1;
-        *(s32 *)((char *)bestObj + 0x14) = *(s32 *)(c + 0x58);
-        *(u8 *)(c + 0x328) = 3;
+        *(s32 *)((char *)bestObj + 0x14) = TRMPLINE(c)->mHalfWidth;
+        TRMPLINE(c)->mStatus = 3;
         TrmpLine_PointDistance(c, c + 0x38, c + 0x44);
         TrmpLine_SetStateSettle(c);
         return;
     }
 
-    *(s16 *)(c + 0x31C) = 0x258;
-    *(u8 *)(c + 0x328) = 1;
+    TRMPLINE(c)->mLifeTimer = 0x258;
+    TRMPLINE(c)->mStatus = 1;
     TrmpLine_SetStateFlex(c);
 }
 }
