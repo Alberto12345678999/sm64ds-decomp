@@ -2,6 +2,14 @@
   "schema": 1,
   "exceptions": [
     {
+      "path": "src/engine/view/Graphics3D.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3",
+      "count": 2,
+      "reason": "G3i::PerspectiveW_ takes six Fix12<int> by value, and include/G3i.h deliberately leaves it undeclared for that reason (the by-value Fix12 ABI wall). Initialise3dGraphics calls it once to load the default perspective; the second occurrence is the extern \"C\" declaration. Follow-up: retire it with the other Fix12-by-value walls once a Fix12 spelling that passes in registers exists.",
+      "evidence": "include/G3i.h header comment (PerspectiveW_ is NOT declared here); carried verbatim from src/Initialise3dGraphics.cpp on main, which this PR folds; arm9/Graphics3D 4/4 TEXT-VERIFIED"
+    },
+    {
       "path": "src/game/stages/d_s_star_sel_methods.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2G212GetBG2ScrPtrEv",
