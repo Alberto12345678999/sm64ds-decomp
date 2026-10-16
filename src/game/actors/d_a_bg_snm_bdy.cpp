@@ -73,7 +73,6 @@
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "dBgPi.h"
-#include "nitro/fx/fx.h"
 
 /* Real C++ names. Declared here, not via decl_common.h: that header's
  * other spellings of these symbols collide with this TU. */
@@ -287,7 +286,7 @@ int daBgSnmBdy_c::InitState0()
     mScaleX = 0x800;
     mScaleY = 0x800;
     mScaleZ = 0x800;
-    mRadius = FX_MUL(mScaleX, 0x82000);
+    mRadius = (int)(((long long)mScaleX * 0x82000 + 0x800) >> 12);
     mCylinder.radius = mRadius;
     mCylinder.height = mRadius << 1;
     func_0203568c((int *)&mWithMeshClsn, mRadius);
@@ -377,7 +376,7 @@ int daBgSnmBdy_c::State2()
         mScaleX = newScale;
         mScaleY = newScale;
         mScaleZ = newScale;
-        mRadius = FX_MUL(growScale, 0x82000);
+        mRadius = (int)(((long long)growScale * 0x82000 + 0x800) >> 12);
         mCylinder.radius = mRadius;
         mCylinder.height = mRadius << 1;
         func_0203568c((int *)&mWithMeshClsn, mRadius);
@@ -555,8 +554,8 @@ void daBgSnmBdy_c::UpdateGroundCollision(dBgCh_Actr *mc)
     floorResult->surface.CopyNormalTo(normal);
     if (normal.y == 0) return;
     {
-        int alongX = FX_MUL(normal.x, unk_0a4);
-        int alongZ = FX_MUL(normal.z, unk_0ac);
+        int alongX = (int)(((long long)normal.x * unk_0a4 + 0x800) >> 12);
+        int alongZ = (int)(((long long)normal.z * unk_0ac + 0x800) >> 12);
         mVertSpeed = -(cstd::fdiv(alongX + alongZ, normal.y) + 0x8000);
     }
 }
@@ -615,7 +614,8 @@ void daBgSnmBdy_c::UpdateRollAngle()
     int circumference = (int)(((long long)(mRadius << 1) *
                        0x3243F6A89LL + 0x80000000LL) >> 32);
     Fix12i turns = cstd::fdiv(mHorzSpeed, circumference);
-    mAngleX = (short)(mAngleX + FX_MUL(turns, 0xffff));
+    mAngleX = (short)(mAngleX +
+        (int)(((long long)turns * 0xffff + 0x800) >> 12));
 }
 
 // @symbol _ZN12daBgSnmBdy_c18IsPlayerNearCenterEv
