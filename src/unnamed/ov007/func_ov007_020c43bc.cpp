@@ -23,12 +23,12 @@ extern "C" void func_ov007_020c43bc(A *a, B *b)
     s16 s = data_02082214[j];
     if (x < 0) x = -x;
     s16 c = data_02082214[i];
-    a->f20 = _ZN4cstd4fdivEii(FX_MUL((a->fc << 12), (int)(((s64)c * x + 0x800) >> 12)), s * 0x60);
+    a->f20 = _ZN4cstd4fdivEii(FX_MUL((a->fc << 12), FX_MUL(c, x)), s * 0x60);
     x = a->f10;
     i = (b->fd4 >> 4) << 1;
     j = i + 1;
     s = data_02082214[j];
     if (x < 0) x = -x;
     c = data_02082214[i];
-    a->f24 = _ZN4cstd4fdivEii(FX_MUL((a->fe << 12), (int)(((s64)c * x + 0x800) >> 12)), s * 0x60);
+    a->f24 = _ZN4cstd4fdivEii(FX_MUL((a->fe << 12), FX_MUL(c, x)), s * 0x60);
 }

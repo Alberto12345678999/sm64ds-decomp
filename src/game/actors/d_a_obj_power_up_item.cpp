@@ -44,6 +44,7 @@
 
 #include "common.h"
 #include "daObjPowerUpItem_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "SaveData.h"
 #include "fBase_c.h"
@@ -537,23 +538,16 @@ extern "C" daObjPowerUpItem_c *daObjPowerUpItem_c_classInit()
     return new daObjPowerUpItem_c();
 }
 
-struct PowerUpItemSpawnInfo {
-    daObjPowerUpItem_c *(*classInit)();
-    s16 executePriority; /* +4: also POWER_UP_ITEM registry id 0x0132 = 306 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char PowerUpItemSpawnInfo_size_must_be_0x1c[
-    sizeof(PowerUpItemSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_POWER_UP_ITEM
-extern "C" PowerUpItemSpawnInfo g_profile_POWER_UP_ITEM = {
-    daObjPowerUpItem_c_classInit, 0x0132, 0x0125, 2,
-    0x00060000, 0x00200000, 0x01000000, 0x01000000
+extern "C" SpawnInfo<daObjPowerUpItem_c> g_profile_POWER_UP_ITEM = {
+    daObjPowerUpItem_c_classInit,
+    0x0132, /* POWER_UP_ITEM registry id 306 */
+    0x0125,
+    2,
+    0x00060000,
+    0x00200000,
+    0x01000000,
+    0x01000000,
 };
 
 /* -------------------------------------------------------------------------- */

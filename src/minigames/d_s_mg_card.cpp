@@ -52,7 +52,7 @@ extern int pmf_Dealer_StateReveal[2];
    these names are already mangled, so C linkage means "use literally". */
 extern unsigned short data_ov006_0213bd64[];
 extern void *data_ov006_02141774[];
-extern int data_ov006_02133810[];
+extern int sMgCardSprites[];
 extern void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
 extern void **data_ov006_0213bd30[];
 extern void *data_ov006_0213406c[];
@@ -1730,14 +1730,10 @@ extern "C" void _ZN12dMgCardObj_cD1Ev(void *elem)
 
 /* The sprite-pointer table Render indexes by card kind: the elements are
  * not constant, so the cartridge fills it at load time from
- * data_ov006_02133810 in suit order. */
+ * sMgCardSprites in suit order. */
 void *data_ov006_02141774[15] = {
-    (void *)data_ov006_02133810[0], (void *)data_ov006_02133810[1],
-    (void *)data_ov006_02133810[2], (void *)data_ov006_02133810[5],
-    (void *)data_ov006_02133810[6], (void *)data_ov006_02133810[0xd],
-    (void *)data_ov006_02133810[0xe], (void *)data_ov006_02133810[0xb],
-    (void *)data_ov006_02133810[0xc], (void *)data_ov006_02133810[7],
-    (void *)data_ov006_02133810[8], (void *)data_ov006_02133810[9],
-    (void *)data_ov006_02133810[0xa], (void *)data_ov006_02133810[3],
-    (void *)data_ov006_02133810[4]
-};
+    (void *)sMgCardSprites[0],   (void *)sMgCardSprites[1],   (void *)sMgCardSprites[2],
+    (void *)sMgCardSprites[5],   (void *)sMgCardSprites[6],   (void *)sMgCardSprites[0xd],
+    (void *)sMgCardSprites[0xe], (void *)sMgCardSprites[0xb], (void *)sMgCardSprites[0xc],
+    (void *)sMgCardSprites[7],   (void *)sMgCardSprites[8],   (void *)sMgCardSprites[9],
+    (void *)sMgCardSprites[0xa], (void *)sMgCardSprites[3],   (void *)sMgCardSprites[4]};

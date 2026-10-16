@@ -125,6 +125,12 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
    folding into the surrounding expression; it is carried verbatim. */
 #define M(p) (p)
 
+/* Actor ID 0xbf is PLAYER. This int-returning predicate is what makes the
+ * ROM materialize 0/1 before testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 #pragma defer_codegen off
 
 // @symbol _ZN11daKinopio_cD1Ev
@@ -299,8 +305,7 @@ void daKinopio_c::St_Idle_Main()
     void *actor = dActor_c::FindWithID(*(u32 *)(self + 0xf8));
     if (actor == 0)
         return;
-    int isPlayer = (((dActor_c *)actor)->actorID == 0xbf) ? 1 : 0;
-    if (!isPlayer)
+    if (!IsPlayerActor((dActor_c *)actor))
         return;
 
     mTalkPlayer = (Player *)actor;
@@ -577,9 +582,7 @@ int daKinopio_c::InitResources()
         Model::LoadFile(data_ov002_0210d9c0);
         if (func_02013a44() != 0) {
             Player *player = ClosestPlayer();
-            if (player == 0)
-                goto after_spawn;
-            {
+            if (player != 0) {
                 u32 k = 0xd;
                 u8 character = *(u8 *)((char *)player + 0x6d9);
                 s8 area = mAreaId;
@@ -589,7 +592,6 @@ int daKinopio_c::InitResources()
                 if (spawned != 0)
                     mCapUniqueID = *(s32 *)((char *)spawned + 4);
             }
-        after_spawn: ;
         }
     }
     if (mStarID != 0xff) {
@@ -599,15 +601,11 @@ int daKinopio_c::InitResources()
         case 0xaf7: mStarReqIndex = 1; break;
         case 0xaf9: mStarReqIndex = 2; break;
         }
-        if (IsStarCollectedInCurLevel(mStarID) == 0) {
-            if (NumStars() >= data_ov085_0212f27c[mStarReqIndex])
-                goto after_inc;
-        }
-        {
+        if (IsStarCollectedInCurLevel(mStarID) != 0 ||
+            NumStars() < data_ov085_0212f27c[mStarReqIndex]) {
             u16 *pm = (u16 *)((char *)&mMessageID);
             *pm = (u16)(*pm + 1);
         }
-    after_inc: ;
     }
     SetState(0);
     objPos.x = mPosX;

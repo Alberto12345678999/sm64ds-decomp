@@ -484,35 +484,35 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_021417b0",
+      "symbol": "sCoinCoinStateTable",
       "address": "0x021417b0",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "the coins' 3-entry pointer-to-member state table; the initializer fills it from the data_ov006_0213be** constants, every one of which names a function in this TU's .text"
     },
     {
-      "symbol": "data_ov006_021417c8",
+      "symbol": "sCoinBagStateTable",
       "address": "0x021417c8",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "the moneybag's 4-entry pointer-to-member state table; the initializer fills it from the data_ov006_0213be** constants, every one of which names a function in this TU's .text"
     },
     {
-      "symbol": "data_ov006_021417e8",
+      "symbol": "sCoinCaptionStateTable",
       "address": "0x021417e8",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "the caption's 5-entry pointer-to-member state table; the initializer fills it from the data_ov006_0213be** constants, every one of which names a function in this TU's .text"
     },
     {
-      "symbol": "data_ov006_02141810",
+      "symbol": "sCoinPhaseStateTable",
       "address": "0x02141810",
       "size": "0x30",
       "binding": "STB_GLOBAL",
       "evidence": "the phases' 6-entry pointer-to-member state table; the initializer fills it from the data_ov006_0213be** constants, every one of which names a function in this TU's .text (read by Behavior)"
     },
     {
-      "symbol": "data_ov006_02141840",
+      "symbol": "sCoinBlockStateTable",
       "address": "0x02141840",
       "size": "0x30",
       "binding": "STB_GLOBAL",
@@ -880,7 +880,7 @@
       "source": "0x02130364",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141810",
+      "symbol": "sCoinPhaseStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141810"
@@ -940,7 +940,7 @@
       "source": "0x0213037c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141840",
+      "symbol": "sCoinBlockStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141840"
@@ -1010,7 +1010,7 @@
       "source": "0x02130398",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021417b0",
+      "symbol": "sCoinCoinStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021417b0"
@@ -1070,7 +1070,7 @@
       "source": "0x021303b0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021417e8",
+      "symbol": "sCoinCaptionStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021417e8"
@@ -1140,7 +1140,7 @@
       "source": "0x021303cc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021417c8",
+      "symbol": "sCoinBagStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021417c8"

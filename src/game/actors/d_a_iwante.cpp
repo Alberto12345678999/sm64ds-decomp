@@ -393,6 +393,17 @@ int ApproachLinear(int &value, int target, int step);
 
 typedef struct { int w[12]; } M48;
 
+/* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
+ * off screen. These int-returning predicates are what make the ROM
+ * materialize 0/1 before testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == ACTOR_PLAYER;
+}
+
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
 /* The cartridge spells this class daIwante_c, so the compiler-emitted
  * _ZTS6Eyerok / _ZTI6Eyerok records would be homeless under the project
  * spelling. RTTI off suppresses those records and emits a zero typeinfo
@@ -451,89 +462,82 @@ Eyerok::~Eyerok()
  * these apart. */
 int Eyerok::func_ov066_0211603c()
 {
-    enum Bool { FALSE, TRUE };
     dActor_c *actor;
     int flags;
     int hit;
     unsigned int id;
-    u16 type;
-    enum Bool is_player;
 
     id = mdCcAcPos_c.otherOwner;
-    if (id == 0)
-        goto fail;
+    if (id != 0) {
+        actor = dActor_c::FindWithID(id);
+        if (actor == 0)
+            return 0;
 
-    actor = dActor_c::FindWithID(id);
-    if (actor == 0)
-        return 0;
+        if (AngleDiff(mAngleY, HorzAngleToCPlayer()) >= 0x4000)
+            return 0;
 
-    if (AngleDiff(mAngleY, HorzAngleToCPlayer()) >= 0x4000)
-        return 0;
-
-    type = actor->actorID;
-    hit = 0;
-    flags = mdCcAcPos_c.hitFlags;
-    is_player = (enum Bool)(type == ACTOR_PLAYER);
-    if (is_player == FALSE)
-        goto other;
-
-    if (((Player *)actor)->mIsMetal == 1) {
-        (mHitPoints)--;
-        hit = 1;
-    }
-    if (flags & HIT_MEGA) {
-        (mHitPoints)--;
-        if (mHitPoints <= 0)
-            ((Player *)actor)->IncMegaKillCount();
-        hit = 1;
-    }
-
-other:
-    if (hit == 0) {
-        if (flags & HIT_HAND_VULNERABLE) {
-            if (flags & HIT_PUNCH) {
-                if (actor->param1 == 2)
-                    (mHitPoints)--;
+        hit = 0;
+        flags = mdCcAcPos_c.hitFlags;
+        if (IsPlayerActor(actor)) {
+            if (((Player *)actor)->mIsMetal == 1) {
+                (mHitPoints)--;
+                hit = 1;
             }
-            if (flags & HIT_FIRE)
-                mDustCounter = 1;
-            (mHitPoints)--;
-            hit = 1;
+            if (flags & HIT_MEGA) {
+                (mHitPoints)--;
+                if (mHitPoints <= 0)
+                    ((Player *)actor)->IncMegaKillCount();
+                hit = 1;
+            }
+        }
+
+        if (hit == 0) {
+            if (flags & HIT_HAND_VULNERABLE) {
+                if (flags & HIT_PUNCH) {
+                    if (actor->param1 == 2)
+                        (mHitPoints)--;
+                }
+                if (flags & HIT_FIRE)
+                    mDustCounter = 1;
+                (mHitPoints)--;
+                hit = 1;
+            }
+        }
+
+        if (hit != 0) {
+            if (mHitPoints > 0) {
+                if (mPartIdx == PART_HAND_2) {
+                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                        &mBlendModelAnim, (void *)data_ov066_0211ae5c.words[1], 4, 0x40000000,
+                        0x1000, 0);
+                    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+                        &mTextureSequence, (void *)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000,
+                        0);
+                } else {
+                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                        &mBlendModelAnim, (void *)data_ov066_0211ae84.words[1], 4, 0x40000000,
+                        0x1000, 0);
+                    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+                        &mTextureSequence, (void *)data_ov066_0211aebc.words[1], 0x40000000, 0x1000,
+                        0);
+                }
+                func_02012694(SE_HAND_HIT, &mCamSpacePosX);
+                return 1;
+            }
+
+            {
+                u8 x = data_ov066_0211ae08;
+                u8 y = data_ov066_0211abe0;
+                int side = mPartIdx;
+                data_ov066_0211abe0 = (u8)(y ^ side);
+                data_ov066_0211ae08 = (u8)(x + 1);
+                data_ov066_0211abe4 = -3;
+            }
+            func_02012694(SE_HAND_DEFEATED, &mCamSpacePosX);
+            func_ov066_02119454(&data_ov066_0211b07c);
+            return 2;
         }
     }
-
-    if (hit == 0)
-        goto fail;
-
-    if (mHitPoints > 0) {
-        if (mPartIdx == PART_HAND_2) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &mBlendModelAnim, (void *)data_ov066_0211ae5c.words[1], 4, 0x40000000, 0x1000, 0);
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, (void *)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000, 0);
-        } else {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &mBlendModelAnim, (void *)data_ov066_0211ae84.words[1], 4, 0x40000000, 0x1000, 0);
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, (void *)data_ov066_0211aebc.words[1], 0x40000000, 0x1000, 0);
-        }
-        func_02012694(SE_HAND_HIT, &mCamSpacePosX);
-        return 1;
-    }
-
-    {
-        u8 x = data_ov066_0211ae08;
-        u8 y = data_ov066_0211abe0;
-        int side = mPartIdx;
-        data_ov066_0211abe0 = (u8)(y ^ side);
-        data_ov066_0211ae08 = (u8)(x + 1);
-        data_ov066_0211abe4 = -3;
-    }
-    func_02012694(SE_HAND_DEFEATED, &mCamSpacePosX);
-    func_ov066_02119454(&data_ov066_0211b07c);
-    return 2;
-
-fail:
     return 0;
 }
 
@@ -2300,12 +2304,8 @@ int Eyerok::func_ov066_02119398()
         int v1 = playerPos[1];
         int v2 = playerPos[2];
         if (v1 < -0x300000) {
-            int f = (int)((mFlags & 8) != 0);
-            if (f == 0) {
-                if (v2 < -0xd70000) {
-                    data_ov066_0211ae08 += 1;
-                }
-            }
+            if (!IsOffScreen(this) && v2 < -0xd70000)
+                data_ov066_0211ae08 += 1;
         }
     }
     if (data_ov066_0211ae08 > 2) {

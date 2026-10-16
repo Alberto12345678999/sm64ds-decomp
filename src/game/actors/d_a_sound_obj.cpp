@@ -150,20 +150,17 @@ static const int kPoolDist = 0x8777;
 // @symbol func_ov002_020f9468
 extern "C" int func_ov002_020f9468(daSoundObj_c *self, u16 *counter)
 {
-    /* ret/goto done is this starter family's shape -- PlaySecretSound,
-       PlaySmallSecretSound and func_0200f7f0 all share it -- and early
-       returns un-match this function. */
-    int ret = 0;
+    /* The starter shape PlaySecretSound, PlaySmallSecretSound and
+       func_0200f7f0 share: the pool fallback is an else-if, so the
+       steady-state branch falls through to the one `return 0`. */
     if (*counter < self->mCounterLimit - 0xf) {
         int vol = self->mVolume;
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(self->mSoundID, vol, 0x7f, (0x7f - vol) << 0xc, self->mLoop);
         *counter += 1;
-        goto done;
-    }
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(self->mSoundID, 0x7f, 0, kPoolDist, self->mLoop))
+    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(self->mSoundID, 0x7f, 0, kPoolDist, self->mLoop)) {
         return 1;
-done:
-    return ret;
+    }
+    return 0;
 }
 
 // @symbol func_ov002_020f93a8

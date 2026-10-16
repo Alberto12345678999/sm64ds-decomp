@@ -30,7 +30,7 @@ enum MgSharedState {
     MG_STATE_RESULTS = 16,             /* [high, seen] banner 7 "HIGH SCORE", record table */
     MG_STATE_RESULTS_NEW_RECORD = 17,  /* [high, seen] 16 + OnNewRecord, banner 5, jingle 1 */
     MG_STATE_GAME_OVER = 18,           /* [high, seen] banner 8 "GAME OVER", jingle 3 */
-    MG_STATE_FINISHED = 19             /* [medium] banner 3, then 16 or 17; Snowball */
+    MG_STATE_FINISHED = 19             /* [high, seen] banner 3 (Snowball: 4 "GOAL"), jingle 4 */
 };
 
 /* The shared minigame state machine, embedded in dScMgBase_c at 0xcc. It

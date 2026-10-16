@@ -481,7 +481,7 @@ any matched body reads).
 | --- | --- | --- |
 | 0x4fe4 | `mReelPos[3]` | InitResources seeds each entry with `(random % mStripLength) * 0x50000`; Render divides `n >> 12` by 0x50 to get the top stop and the pixel remainder, i.e. 0x50 screen pixels per symbol. |
 | 0x4ff4 | `mReelWinPos[3]` | Read exactly the way `mReelPos` is, but only in the `mState == 6` win-line pass. Split out of the former `pad_4ff4[0xc]`, which was three words wide. |
-| 0x5000 | `mState` | Behavior's whole body is `(self->*`[data_ov006_02142bdc](../config/arm9/overlays/ov006/symbols.txt)`[n])()` -- it is the index into that pointer-to-member table. Render tests it against 3, 4, 6 and 7 to pick which pass to draw. |
+| 0x5000 | `mState` | Behavior's whole body is `(self->*`[sSlot3StateTable](../config/arm9/overlays/ov006/symbols.txt)`[n])()` -- it is the index into that pointer-to-member table. Render tests it against 3, 4, 6 and 7 to pick which pass to draw. |
 | 0x500c | `mReelDrawY` | While positive the two marker rows are drawn at `n + 0x10` and `n + 0x60`; at 0 or below a single row is drawn at 0x60. |
 | 0x5010 | `mWinColumn` | Used as `n * 0x50 + 0x20/0x30/0x40` for the payout caption's x, against the same 0x50 column pitch the reels use; a negative value selects the "no win" caption instead. |
 | 0x5018 | `mLamp1Angle` / `mLamp2Angle` (0x501a) | u16 each. Behavior subtracts 0x200 and 0x400 a tick while `mState == 1`; Render hands each to [Mg_RenderMainSpriteScaled](../src/minigames/d_s_mg_base.cpp) in its rotation argument. InitResources zeroes both. |
@@ -623,7 +623,7 @@ kind, but nothing in scope increments it), 0x0b8, 0x0c8, 0x0f0, 0x05c,
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x53d6 | `mSelectedTile` | Render draws the cursor sprite at [data_ov006_02142ab4](../config/arm9/overlays/ov006/symbols.txt)`[n]` / [_02142ab8](../config/arm9/overlays/ov006/symbols.txt)`[n]` (the tile coordinate tables, stride 8); Behavior hands the same value to `RouletteRacer_GetPayout` (part of:[d_s_mg_roulette_methods.cpp](../src/minigames/d_s_mg_roulette_methods.cpp), func 21 used to assemble TU) once per racer to score the board. |
+| 0x53d6 | `mSelectedTile` | Render draws the cursor sprite at [sRouletteTiles](../config/arm9/overlays/ov006/symbols.txt)`[n]` / [_02142ab8](../config/arm9/overlays/ov006/symbols.txt)`[n]` (the tile coordinate tables, stride 8); Behavior hands the same value to `RouletteRacer_GetPayout` (part of:[d_s_mg_roulette_methods.cpp](../src/minigames/d_s_mg_roulette_methods.cpp), func 21 used to assemble TU) once per racer to score the board. |
 | 0x53e4 | `mCameraPreset` | Render copies row `n` of [data_ov006_0213e34c](../config/arm9/overlays/ov006/symbols.txt) and [_0213e370](../config/arm9/overlays/ov006/symbols.txt) (stride 0xc) into the base's `mCameraTarget` and `mCameraEye`, takes the angle from [data_ov006_0213e2e0](../config/arm9/overlays/ov006/symbols.txt) + n*2, and then calls `Camera_UpdateMatrices`. 0 leaves the camera alone. Behavior sets it to 1 as the deal starts and clears it at the end. |
 | 0x53e6 | `mPhase` | Behavior's `switch`: 1 deals the racers out one at a time, 2 runs the countdown and reads the board, 3 pays out per landed tile, 4 announces win/lose/draw. _ZN15dScMgRoulette_c10StartRoundEi (in src/minigames/d_s_mg_roulette_methods.cpp) starts it at 1. |
 | 0x53e8 | `mPhaseTimer` | Counted down in every phase and reloaded on each transition (8, 0x258, 1, 0x5a); Render also renders the countdown digits from it while `mPhase == 2`. |

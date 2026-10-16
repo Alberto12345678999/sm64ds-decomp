@@ -223,11 +223,11 @@ extern u8    data_ov006_0213d974[];
    record tables PachinkoPipe_UpdateAll, PachinkoBobOmb_UpdateAll and
    PachinkoBall_UpdateAll walk. Static initialisers fill them from {code
    pointer, adjustment} records in ov006 .data. */
-extern Entry  data_ov006_02142604[];
-extern Ent7d0 data_ov006_02142624[];
-extern Ent7d0 data_ov006_02142644[];
-extern PMF2   data_ov006_0214266c[];
-extern Ent7d0 data_ov006_02142694[];
+extern Entry sPachinkoBgStateTable[];
+extern Ent7d0 sPachinkoPipeStateTable[];
+extern Ent7d0 sPachinkoBobOmbStateTable[];
+extern PMF2 sPachinkoFlyerStateTable[];
+extern Ent7d0 sPachinkoBallStateTable[];
 
 /* The ROM {code pointer, adjustment} records the five tables copy from
    (unlicensed .data), grouped by destination table in retail copy order. */
@@ -325,7 +325,7 @@ extern void PachinkoBobOmb_State1(dScMgPachinko_c *self, int i);
 extern void PachinkoBobOmb_State2(char *c, int idx);
 extern void PachinkoBobOmb_State3(char *base, int i);
 extern void PachinkoBobOmb_State4(char *p, int idx);
-extern void func_ov006_020fea70(char *o);
+extern void Pachinko_UpdateNextBall(char *o);
 extern void Pachinko_ResetRound(char *self);
 
 }  /* extern "C" */
@@ -530,7 +530,7 @@ void PachinkoBg_State0(char *raw, int idx)
 /* Dispatches through the ov006 pointer-to-member table at 0x02142604. */
 void PachinkoBg_Update(C* c) {
     if (c->guard) {
-        (c->*(data_ov006_02142604[c->idx].pmf))(0);
+        (c->*(sPachinkoBgStateTable[c->idx].pmf))(0);
     }
     PachinkoDeco_UpdateAll((char *)c);
 }
@@ -796,7 +796,7 @@ void PachinkoFlyer_State0(char* raw, int idx)
 /* Dispatches through the ov006 pointer-to-member table at 0x0214266c. */
 void PachinkoFlyer_Update(C2 *c){
   if (c->g == 0) return;
-  (c->*data_ov006_0214266c[c->idx])(0);
+  (c->*sPachinkoFlyerStateTable[c->idx])(0);
   PachinkoFlyer_CheckHits((char *)c, 0);
 }
 
@@ -1006,8 +1006,8 @@ void PachinkoPopup_SpawnScore(char *raw, int idx, unsigned short points)
     char *popup = raw + 0x15c;
     for (i = 0x1d; i >= 0; popup -= 0xc, i--) {
         if (*(unsigned short *)(popup + 0x4cfa) != 0) continue;
-        self->mPopup[i].x = *(int *)(raw + idx * 0x14 + 0x5958);
-        self->mPopup[i].y = *(int *)(raw + idx * 0x14 + 0x595c);
+        self->mPopup[i].x = self->mFx[idx].x;
+        self->mPopup[i].y = self->mFx[idx].y;
         self->mPopup[i].value = 0x30;
         self->mPopup[i].timer = points;
         Mg_SubmitScore(self->mPopup[i].timer + Mg_GetSubmittedScore());
@@ -1421,7 +1421,7 @@ void PachinkoPipe_UpdateAll(char* raw){
   do{
     if(*(unsigned char*)(row+0x4000+0xeb7)!=0){
       int idx=*(unsigned char*)(row+0x4000+0xeb3);
-      Ent7d0* rec=&data_ov006_02142624[idx];
+      Ent7d0 *rec = &sPachinkoPipeStateTable[idx];
       int adj=rec->b;
       char* obj=raw+(adj>>1);
       int fn;
@@ -2003,7 +2003,7 @@ void PachinkoBall_UpdateAll(char* c){
   do{
     if(*(unsigned char*)(r5+0x468c)!=0){
       int idx=*(unsigned char*)(r5+0x468f);
-      Ent7d0* e=&data_ov006_02142694[idx];
+      Ent7d0 *e = &sPachinkoBallStateTable[idx];
       int adj=e->b;
       char* obj=c+(adj>>1);
       int fn;
@@ -2250,7 +2250,7 @@ void PachinkoBobOmb_UpdateAll(char* c){
   do{
     if(*(unsigned char*)(r5+0x4f0c)!=0){
       int idx=*(unsigned char*)(r5+0x4f0d);
-      Ent7d0* e=&data_ov006_02142644[idx];
+      Ent7d0 *e = &sPachinkoBobOmbStateTable[idx];
       int adj=e->b;
       char* obj=c+(adj>>1);
       int fn;
@@ -2495,9 +2495,8 @@ void PachinkoBobOmb_State4(char *p, int idx) {
     *(p + idx * 0x38 + 0x4000 + 0xf0e) = 0;
 }
 
-// @symbol func_ov006_020fea70
-void func_ov006_020fea70(char *o)
-{
+// @symbol Pachinko_UpdateNextBall
+void Pachinko_UpdateNextBall(char *o) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)o;
     int i;
     char *p;
@@ -2709,7 +2708,7 @@ s32 dScMgPachinko_c::Behavior()
         } else {
             Pachinko_SpawnWave(this);
             Pachinko_CountLaunch(c);
-            func_ov006_020fea70(c);
+            Pachinko_UpdateNextBall(c);
             PachinkoBobOmb_UpdateAll(c);
             PachinkoBall_UpdateAll(c);
             PachinkoTarget_Choose(c);
@@ -2875,36 +2874,26 @@ extern "C" void *dScMgPachinko_c_classInit()
    and 7-row Ent7d0 tables, the 4-row Ent7d0 table, the 5-row PMF2 table,
    then the 4-row Entry table. mwcc emits __sinit_d_s_mg_pachinko.cpp from
    these definitions, copying the ROM .data records. */
-Ent7d0 data_ov006_02142644[5] = {
-    pmf_PachinkoBobOmb_State0,
-    pmf_PachinkoBobOmb_State1,
-    pmf_PachinkoBobOmb_State2,
-    pmf_PachinkoBobOmb_State3,
-    pmf_PachinkoBobOmb_State4,
+Ent7d0 sPachinkoBobOmbStateTable[5] = {
+    pmf_PachinkoBobOmb_State0, pmf_PachinkoBobOmb_State1, pmf_PachinkoBobOmb_State2,
+    pmf_PachinkoBobOmb_State3, pmf_PachinkoBobOmb_State4,
 };
-Ent7d0 data_ov006_02142694[7] = {
-    pmf_PachinkoBall_State0,
-    pmf_PachinkoBall_State1,
-    pmf_PachinkoBall_State2,
-    pmf_PachinkoBall_State3,
-    pmf_PachinkoBall_State4,
-    pmf_PachinkoBall_State5,
+Ent7d0 sPachinkoBallStateTable[7] = {
+    pmf_PachinkoBall_State0, pmf_PachinkoBall_State1, pmf_PachinkoBall_State2,
+    pmf_PachinkoBall_State3, pmf_PachinkoBall_State4, pmf_PachinkoBall_State5,
     pmf_PachinkoBall_State6,
 };
-Ent7d0 data_ov006_02142624[4] = {
+Ent7d0 sPachinkoPipeStateTable[4] = {
     pmf_PachinkoPipe_State0,
     pmf_PachinkoPipe_State1,
     pmf_PachinkoPipe_State2,
     pmf_PachinkoPipe_State3,
 };
-PMF2 data_ov006_0214266c[5] = {
-    pmf_PachinkoFlyer_State0,
-    pmf_PachinkoFlyer_State1,
-    pmf_PachinkoFlyer_State2,
-    pmf_PachinkoFlyer_State3,
-    pmf_PachinkoFlyer_State4,
+PMF2 sPachinkoFlyerStateTable[5] = {
+    pmf_PachinkoFlyer_State0, pmf_PachinkoFlyer_State1, pmf_PachinkoFlyer_State2,
+    pmf_PachinkoFlyer_State3, pmf_PachinkoFlyer_State4,
 };
-Entry data_ov006_02142604[4] = {
+Entry sPachinkoBgStateTable[4] = {
     {pmf_PachinkoBg_State0},
     {pmf_PachinkoBg_State1},
     {pmf_PachinkoBg_State2},

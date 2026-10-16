@@ -141,7 +141,7 @@ struct dScMgCoin_c : dScMgBase_c {
     virtual void StartRound(int arg);     /* slot 18 */
 
     /* The scene's helpers and the per-state handlers reached through the
-       .bss PMF tables (data_ov006_021417b0 / 021417c8 / 021417e8 /
+       .bss PMF tables (sCoinCoinStateTable / 021417c8 / 021417e8 /
        02141810 / 02141840), in ROM order. */
     void Bag_Draw();
     void Bag_State3(int i);

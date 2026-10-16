@@ -43,9 +43,9 @@ struct P2 { int a, b; };
 extern struct P2 data_ov006_0212e024;
 extern struct P2 data_ov006_021405c8;
 extern int data_ov006_0212e000;
-extern int data_ov006_02140548;
+extern int sTrmp3DFallSpeed;
 extern int data_ov006_0212e020;
-extern int data_ov006_02140544;
+extern int sTrmp3DGravityStep;
 extern int data_ov006_0212dffc;
 extern int data_ov006_02140558;
 extern int data_ov006_0212e008;
@@ -54,15 +54,15 @@ extern int data_ov006_0212e004;
 extern int data_ov006_02140570;
 
 extern int data_ov006_0212e010;
-extern int data_ov006_021405b4;
+extern int sTrmp2FallSpeed;
 extern int data_ov006_0212e00c;
-extern int data_ov006_021405b0;
+extern int sTrmp2GravityStep;
 extern int data_ov006_0212e018;
 extern int data_ov006_0214053c;
 extern int data_ov006_0212e014;
 extern int data_ov006_02140574;
 extern int data_ov006_0212dff8;
-extern int data_ov006_021405a8;
+extern int sTrmp2RiseSpeedMax;
 extern int data_ov006_0212e01c;
 extern int data_ov006_021405a4;
 
@@ -126,8 +126,8 @@ void __sinit_ov006_0212f6b4(void)
 
     data_ov006_021405c8.a = data_ov006_0212e024.a;
     data_ov006_021405c8.b = data_ov006_0212e024.b;
-    data_ov006_02140548 = data_ov006_0212e000;
-    data_ov006_02140544 = data_ov006_0212e020;
+    sTrmp3DFallSpeed = data_ov006_0212e000;
+    sTrmp3DGravityStep = data_ov006_0212e020;
     data_ov006_02140558 = data_ov006_0212dffc;
     data_ov006_02140578 = data_ov006_0212e008;
     data_ov006_02140570 = data_ov006_0212e004;
@@ -177,11 +177,11 @@ void __sinit_ov006_0212f6b4(void)
         func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_0214067c);
     }
 
-    data_ov006_021405b4 = data_ov006_0212e010;
-    data_ov006_021405b0 = data_ov006_0212e00c;
+    sTrmp2FallSpeed = data_ov006_0212e010;
+    sTrmp2GravityStep = data_ov006_0212e00c;
     data_ov006_0214053c = data_ov006_0212e018;
     data_ov006_02140574 = data_ov006_0212e014;
-    data_ov006_021405a8 = data_ov006_0212dff8;
+    sTrmp2RiseSpeedMax = data_ov006_0212dff8;
     data_ov006_021405a4 = data_ov006_0212e01c;
 
     data_ov006_021407c0.x = (unsigned int)-0x50000;

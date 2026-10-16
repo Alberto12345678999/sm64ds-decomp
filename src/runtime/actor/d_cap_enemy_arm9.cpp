@@ -21,8 +21,9 @@
  *  - The 0x17f flags byte (mCapIcon.mFlags high byte) and the 0xf4 shadow
  *    flags word have no member names; the measured ldrb/launder forms stay.
  *    AddCap's mFlags &= ~1 and its mCapId store also keep the laundered
- *    pointer forms -- plain member access there merges value-numbering
- *    classes and shortens the function by three words.
+ *    pointer forms (`(long long)(int)&member`) -- plain member access there
+ *    merges value-numbering classes and shortens the function by three
+ *    words.
  *  - UpdateCapPos keeps CapVec/CapMtx POD shadows: Vector3's empty
  *    destructor and Matrix4x3's embedded Vector3 change the frame.
  */
@@ -83,12 +84,12 @@ int dCapEnemy_c::AddCap(unsigned int param)
         return _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff028[mCapId]);
     }
 
-    *(int *)(((long long)(int)((char *)this + 0xb0))) &= ~1;
+    *(int *)(((long long)(int)&mFlags)) &= ~1;
     mCapIcon.func_ov001_020ab228((char *)this, mCapId, mHadBank1Cap, mCapBank != 0);
 
     int result = func_02005e28();
     if (result != 0) {
-        unsigned char *p = (unsigned char *)(((long long)(int)((char *)this + 0x113)));
+        unsigned char *p = (unsigned char *)(((long long)(int)&mCapId));
         result = *p | 0x80;
         *p = result;
     }
@@ -123,7 +124,7 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
     Vec3_Asr(&asr, &sum, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, rot.x, rot.y, rot.z);
-    *(CapMtx*)(self + 0x130) = data_020a0e68;
+    *(CapMtx *)&mModel.mat4x3 = data_020a0e68;
 }
 
 // @symbol _ZN11dCapEnemy_c14RenderCapModelEPK7Vector3

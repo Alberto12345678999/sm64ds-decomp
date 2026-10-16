@@ -190,17 +190,15 @@ void daObjC0_Switch_c::OnGroundPounded(dActor_c &other)
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     mPressed = 1;
-    dActor_c *p = dActor_c::FindWithActorID(0x22, 0);
-    if (p == 0) return;
-check:
-    if (p != (dActor_c *)this) {
-        if (((daObjC0_Switch_c *)p)->mPressed) {
-            data_0209caa0[2] |= 0x80000;
+    for (dActor_c *p = dActor_c::FindWithActorID(0x22, 0); p != 0;
+         p = dActor_c::FindWithActorID(0x22, p)) {
+        if (p != (dActor_c *)this) {
+            if (((daObjC0_Switch_c *)p)->mPressed) {
+                data_0209caa0[2] |= 0x80000;
+            }
+            return;
         }
-        return;
     }
-    p = dActor_c::FindWithActorID(0x22, p);
-    if (p != 0) goto check;
 }
 // @symbol _ZN16daObjC0_Switch_cD1Ev
 // @symbol _ZN16daObjC0_Switch_cD0Ev

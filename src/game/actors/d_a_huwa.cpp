@@ -18,13 +18,13 @@
  * deslop leftovers:
  * - func_ov081_021237ec SpawnCoins as dActor_c::SpawnCoins: 0x124 -> 0x130 (+12).
  *   Particle::System::NewSimple with Fix12<int> x/y/z: 0x124 -> 0x148 (+36).
- * - func_ov081_02123910 `actorID != 0xbf` instead of the int compare: 0x210 -> 0x200
- *   (-16). KillByInvincibleChar as the method: 0x210 -> 0x218 (+8). Player::Hurt
- *   with Fix12<int> knockback: 0x210 -> 0x21c (+12). SpinBounce with Fix12<int>:
- *   0x210 -> 0x21c (+12).
- * - func_ov081_02123b20 direct mFlags test instead of the int 0/1: 0xcc -> 0xc0
- *   (-12). Each DropShadowRadHeight method call: 0xcc -> 0xdc (+16).
- * - Render direct mFlags test instead of the ? 1 : 0: 0x50 -> 0x44 (-12).
+ * - func_ov081_02123910 KillByInvincibleChar as the method: 0x210 -> 0x218 (+8).
+ *   Player::Hurt with Fix12<int> knockback: 0x210 -> 0x21c (+12). SpinBounce
+ *   with Fix12<int>: 0x210 -> 0x21c (+12).
+ * - func_ov081_02123b20 each DropShadowRadHeight method call: 0xcc -> 0xdc (+16).
+ * - The 0/1 the ROM materializes in func_ov081_02123910, func_ov081_02123b20
+ *   and Render comes from the int-returning IsPlayerActor / IsInYoshiMouth
+ *   inlines. A direct `!=` or bit test is 16 / 12 / 12 bytes short.
  * - Behavior copying player->mPosX/Y/Z instead of int* at player+0x5c: 0x264 -> 0x260
  *   (-4).
  * - InitResources ModelAnim::SetAnim: 0x108 -> 0x114 (+12). dCcAc_c::Init:
@@ -122,6 +122,16 @@ enum {
     kRecoilFrames = 0x14
 };
 
+/* int-returning predicates: they are what make the ROM materialize 0/1
+ * before testing it. A direct test of the bit or the ID does not. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == kPlayerActorId;
+}
+
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & kFlagYoshiMouth) != 0;
+}
+
 // @symbol _ZN8daHuwa_cD1Ev
 // @symbol _ZN8daHuwa_cD0Ev
 daHuwa_c::~daHuwa_c()
@@ -208,23 +218,17 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
         return;
     }
 
-    int isPlayer = (int)(other->actorID == kPlayerActorId);
-    if (isPlayer == 0)
+    if (!IsPlayerActor(other))
         return;
 
     player = (Player *)other;
-    if (player->mIsMetal == 0) {
-        if (player->IsOnShell() == 0) {
-            flags = self->mdCcAc_c.hitFlags;
-            if ((flags & kHitFire) == 0)
-                goto cont;
-        }
+    if (player->mIsMetal != 0 || player->IsOnShell() != 0 ||
+        (self->mdCcAc_c.hitFlags & kHitFire) != 0) {
+        func_ov081_021237ec(self);
+        return;
     }
-    func_ov081_021237ec(self);
-    return;
 
-cont:
-    if ((flags & kHitAttack) != 0) {
+    if ((self->mdCcAc_c.hitFlags & kHitAttack) != 0) {
         if (func_ov002_020e10a8(player) == 0) {
             func_ov081_021237ec(self);
             return;
@@ -267,11 +271,8 @@ extern "C" void func_ov081_02123b20(daHuwa_c *self)
     self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
     self->mModelAnim.mat4x3.m[10] = self->mPosY >> 3;
     self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
-    {
-        int hidden = (int)((self->mFlags & kFlagYoshiMouth) != 0);
-        if (hidden != 0)
-            return;
-    }
+    if (IsInYoshiMouth(self))
+        return;
     if (self->mWithMeshClsn.IsOnGround() != 0) {
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             self, self->mShadowModel, self->mModelAnim.mat4x3, 0x50000, 0x1e000, 0xf);
@@ -292,8 +293,7 @@ int daHuwa_c::CleanupResources()
 // @symbol _ZN8daHuwa_c6RenderEv
 int daHuwa_c::Render()
 {
-    int hidden = (mFlags & kFlagYoshiMouth) ? 1 : 0;
-    if (hidden)
+    if (IsInYoshiMouth(this))
         return 1;
     mModelAnim.Render(0);
     return 1;
