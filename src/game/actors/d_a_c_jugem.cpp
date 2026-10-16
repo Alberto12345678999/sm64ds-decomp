@@ -621,10 +621,8 @@ int daC_Jugem_c::StateTalkMain()
     ApproachLinear(mAngleY, HorzAngleToCPlayer(), 0x800);
     switch (mTalkStep) {
     case 0:
-        {
-            mTalkPlayer->mStateFlags |= 0x400;
-        }
-        if (mTalkPlayer->ShowMessage(*this, 0x182, (Vector3 *)&mPosX, 1, 0) == 1) {
+        mTalkPlayer->mStateFlags |= 0x400;
+        if (mTalkPlayer->ShowMessage(*this, 0x182, &mPos, 1, 0) == 1) {
             mTalkStep += 1;
         }
         break;

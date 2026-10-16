@@ -778,7 +778,7 @@ void daJgm_c::UpdateFlight() {
     } else {
         target = &mSpawnPosX;
     }
-haveTarget: {
+haveTarget:
     int hd = Vec3_HorzDist(&mPos, (Vector3 *)target);
     short ha = Vec3_HorzAngle(&mPos, (Vector3 *)target);
     ApproachLinear(mAngleY, ha, 0x5e8);
@@ -789,7 +789,6 @@ haveTarget: {
     ApproachLinear(mPosY, target[1] + 0x12c000, 0x2000);
     UpdatePos(&mdCcAcPos_c);
     UpdateWallAndWater(mWithMeshClsn);
-}
 }
 
 // @symbol _ZN7daJgm_c18TurnOffsetFromDistEi
