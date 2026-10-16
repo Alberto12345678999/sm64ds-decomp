@@ -825,14 +825,14 @@ extern int sTrmp2Score;
 extern int data_ov006_02140840;
 extern int sMgCurCamera;
 extern int data_ov006_021421b4;
-/* data_ov006_021424fc / _02142500 / _02142504 / _02142508 are the four
+/* sMCarloFirstPick / _02142500 / _02142504 / _02142508 are the four
    globals of one intrusive doubly-linked Node list (two cursors, head,
    tail). The 19 one-function legacy files each declared them differently
    in isolation -- int, void*, char*, struct Node* -- and the scalar
    spellings below were the arbitrary winners. Every consumer lives in
    ov006/dScMgMCarlo_c, which now declares all four with the recovered
    pointer type, so no declaration belongs here. */
-/* data_ov006_02142570 / _02142574 are the two halves of the pair being
+/* sMCarlo2FirstPick / _02142574 are the two halves of the pair being
    matched in ov006/dScMgMCarlo2_c -- pointers into that minigame's own
    node list. The six one-function legacy files each declared them in
    isolation (int, char*, Node*) and a scalar spelling was the arbitrary
@@ -1240,7 +1240,7 @@ extern short data_ov002_0210c310[];
 extern short data_ov002_02110af4;
 extern short data_ov002_0211118c;
 extern short data_ov003_020b1764[];
-extern short data_ov006_02142564;
+extern short sMCarlo2Score;
 extern short data_ov013_021116ac[];
 extern short data_ov015_02114794;
 extern short data_ov029_02113fc4;

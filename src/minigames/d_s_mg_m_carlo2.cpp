@@ -22,7 +22,7 @@
 #include "decl_common.h"
 #include "PlayerInput.h"
 
-/* data_ov006_0214257c is the head of the live card list and _02142568 its
+/* sMCarlo2Cards is the head of the live card list and _02142568 its
  * tail (SetupBoard builds it); _0214256c heads the list of cleared cards,
  * which UpdateBoard deals back onto the tail. _02142570 and _02142574 are the
  * first and second card picked, and _02142578 is the card in slot 19, the
@@ -30,16 +30,16 @@
 
 /* Globals that decl_common.h does not already declare with these types. */
 extern "C" {
-extern dMgMCarlo2CardObj_c* data_ov006_02142568;
-extern dMgMCarlo2CardObj_c* data_ov006_0214256c;
-extern dMgMCarlo2CardObj_c* data_ov006_02142570;
-extern dMgMCarlo2CardObj_c* data_ov006_02142574;
+extern dMgMCarlo2CardObj_c *sMCarlo2CardTail;
+extern dMgMCarlo2CardObj_c *sMCarlo2CardHead;
+extern dMgMCarlo2CardObj_c *sMCarlo2FirstPick;
+extern dMgMCarlo2CardObj_c *sMCarlo2SecondPick;
 extern dMgMCarlo2CardObj_c* data_ov006_02142578;
-extern dMgMCarlo2CardObj_c* data_ov006_0214257c;
+extern dMgMCarlo2CardObj_c *sMCarlo2Cards;
 extern s16 data_ov006_02142558;     /* frames left before the pair resolves  */
 extern s16 data_ov006_0214255c;     /* pieces still animating                */
 extern s16 data_ov006_02142560;     /* difficulty row into data_ov006_0212e97c */
-extern int data_ov006_02142580[];   /* per-face weights the picker draws from  */
+extern int sMCarlo2FaceCounts[];    /* per-face weights the picker draws from  */
 /* Twenty-three sprite words. The static initializer copies them out of
  * data_ov006_02133810 in this order; an in-order copy does not. */
 struct Carlo2SpriteWords {
@@ -253,7 +253,7 @@ s32 dScMgMCarlo2_c::Behavior()
             } else {
                 int lim = mDealCount + 0x12;
                 if (dealt >= lim) {
-                    int flag = (data_ov006_02142570 != 0 && data_ov006_02142574 != 0);
+                    int flag = (sMCarlo2FirstPick != 0 && sMCarlo2SecondPick != 0);
                     if (flag == 0)
                         data_ov006_0213d700 = lim << 12;
                 }
@@ -302,7 +302,7 @@ s32 dScMgMCarlo2_c::Render()
 
     Camera_InitDealerView(raw + 0x4660);
 
-    score = data_ov006_02142564;
+    score = sMCarlo2Score;
     if (score > 0x270f)
         score = 0x270f;
     Mg_DrawNumber(0xe8, 0x28, score, 1, -1, 0, 0);
@@ -478,33 +478,33 @@ void dMgMCarlo2CardObj_c::Update(int slot)
         }
         if (HitTest() == 0)
             return;
-        if (data_ov006_02142570 == 0) {
-            data_ov006_02142570 = this;
+        if (sMCarlo2FirstPick == 0) {
+            sMCarlo2FirstPick = this;
             mState = 3;
             Sound::PlayBank2_2D(0x153);
             return;
         }
-        if (IsPairWith(data_ov006_02142570) != 0) {
-            data_ov006_02142574 = this;
+        if (IsPairWith(sMCarlo2FirstPick) != 0) {
+            sMCarlo2SecondPick = this;
             data_ov006_02142558 = 0x20;
             mState = 3;
             Sound::PlayBank2_2D(0x154);
             return;
         }
-        data_ov006_02142570->mState = 2;
-        data_ov006_02142570 = 0;
+        sMCarlo2FirstPick->mState = 2;
+        sMCarlo2FirstPick = 0;
         func_02012790(0xe);
         return;
     case 3:
         if (HitTest() == 0)
             return;
         mState = 2;
-        if (data_ov006_02142570 != this)
+        if (sMCarlo2FirstPick != this)
             return;
-        if (data_ov006_02142574 != 0)
+        if (sMCarlo2SecondPick != 0)
             return;
         Sound::PlayBank2_2D(0x155);
-        data_ov006_02142570 = 0;
+        sMCarlo2FirstPick = 0;
         return;
     case 1:
     case 4:
@@ -556,7 +556,7 @@ void dScMgMCarlo2_c::SetupBoard(dMgMCarlo2CardObj_c* base)
         {
             s16 i = 0;
             do {
-                data_ov006_02142580[i] = data_ov006_0212e954[i];
+                sMCarlo2FaceCounts[i] = data_ov006_0212e954[i];
                 i = i + 1;
             } while (i < 10);
         }
@@ -569,17 +569,17 @@ void dScMgMCarlo2_c::SetupBoard(dMgMCarlo2CardObj_c* base)
                 j = j + 1;
             } while (j < 0x28);
         }
-        data_ov006_02142568 = 0;
-        data_ov006_0214257c = base;
-        data_ov006_0214256c = 0;
-        data_ov006_02142570 = 0;
-        data_ov006_02142574 = 0;
+        sMCarlo2CardTail = 0;
+        sMCarlo2Cards = base;
+        sMCarlo2CardHead = 0;
+        sMCarlo2FirstPick = 0;
+        sMCarlo2SecondPick = 0;
         data_ov006_02142558 = 0;
         data_ov006_0214255c = 0;
         data_ov006_0213d6f8 = 0x28;
         data_ov006_0213d6f4 = 0x28;
         data_ov006_02142560 = 0;
-        data_ov006_02142564 = 0;
+        sMCarlo2Score = 0;
         data_ov006_0213d700 = 0;
         {
             s16 i = 0;
@@ -596,7 +596,8 @@ void dScMgMCarlo2_c::SetupBoard(dMgMCarlo2CardObj_c* base)
                     }
                 }
                 t->mNext = save;
-                if (t->mNext == 0) data_ov006_02142568 = t;
+                if (t->mNext == 0)
+                    sMCarlo2CardTail = t;
                 h = h + 1;
                 i++;
             } while (i < 0x27);
@@ -608,7 +609,7 @@ void dScMgMCarlo2_c::SetupBoard(dMgMCarlo2CardObj_c* base)
 int dScMgMCarlo2_c::HasRemovablePair()
 {
     dMgMCarlo2CardObj_c *p, *q;
-    p = data_ov006_0214257c;
+    p = sMCarlo2Cards;
     while (p != 0 && p->mSlot < 0x14) {
         q = p->mNext;
         while (q != 0 && q->mSlot < 0x14) {
@@ -627,7 +628,7 @@ int dScMgMCarlo2_c::BoardBusy() {
     int wanted = data_ov006_0213d6f8;
     if (wanted > 0x14) wanted = 0x14;
     if (dealt == wanted && data_ov006_0214255c == 0) {
-        if (data_ov006_02142570 == 0 || data_ov006_02142574 == 0) {
+        if (sMCarlo2FirstPick == 0 || sMCarlo2SecondPick == 0) {
             ret = 0;
         }
     }
@@ -644,8 +645,8 @@ int dScMgMCarlo2_c::BoardReady() {
     if (wanted > 0x14) {
         wanted = 0x14;
     }
-    if (dealt == wanted && data_ov006_0214255c == 0
-        && (data_ov006_02142570 == 0 || data_ov006_02142574 == 0)) {
+    if (dealt == wanted && data_ov006_0214255c == 0 &&
+        (sMCarlo2FirstPick == 0 || sMCarlo2SecondPick == 0)) {
         ready = 1;
     }
     return ready;
@@ -657,14 +658,15 @@ int dScMgMCarlo2_c::DrawCardValue(){
     int total = 0;
     int i;
     int roll;
-    for(i=0;i<0xa;i++) total += data_ov006_02142580[i];
+    for (i = 0; i < 0xa; i++)
+        total += sMCarlo2FaceCounts[i];
     roll = (int)(((unsigned int)RandomIntInternal(data_0209e650) & 0x7fffffff) >> 0x13);
     total = (total * roll) >> 0xc;
     for(i=0;i<0xa;i++){
-        total -= data_ov006_02142580[i];
+        total -= sMCarlo2FaceCounts[i];
         if(total < 0){
             pick = (unsigned char)i;
-            data_ov006_02142580[i]--;
+            sMCarlo2FaceCounts[i]--;
             break;
         }
     }
@@ -673,7 +675,7 @@ int dScMgMCarlo2_c::DrawCardValue(){
 
 // @symbol _ZN14dScMgMCarlo2_c14FlipDealtCardsEv
 void dScMgMCarlo2_c::FlipDealtCards(){
-    dMgMCarlo2CardObj_c* node = data_ov006_0214257c;
+    dMgMCarlo2CardObj_c *node = sMCarlo2Cards;
     short i = 0;
     if((data_ov006_0213d700>>12) <= 0) return;
     do {
@@ -687,46 +689,52 @@ void dScMgMCarlo2_c::FlipDealtCards(){
 // @symbol _ZN14dScMgMCarlo2_c11UpdateBoardEv
 void dScMgMCarlo2_c::UpdateBoard()
 {
-    dMgMCarlo2CardObj_c* head = data_ov006_0214257c;
+    dMgMCarlo2CardObj_c *head = sMCarlo2Cards;
 
-    if (data_ov006_02142570 != 0 && data_ov006_02142574 != 0) {
+    if (sMCarlo2FirstPick != 0 && sMCarlo2SecondPick != 0) {
         data_ov006_02142558 -= 1;
         if (data_ov006_02142558 == 0) {
             dMgMCarlo2CardObj_c* first;
             dMgMCarlo2CardObj_c* second;
             dMgMCarlo2CardObj_c* tail;
             dMgMCarlo2CardObj_c* next;
-            s16 secondSlot = data_ov006_02142574->mSlot;
-            s16 firstSlot = data_ov006_02142570->mSlot;
+            s16 secondSlot = sMCarlo2SecondPick->mSlot;
+            s16 firstSlot = sMCarlo2FirstPick->mSlot;
             if (firstSlot > secondSlot)
                 data_ov006_0213d700 = secondSlot << 12;
             else
                 data_ov006_0213d700 = firstSlot << 12;
 
-            first = data_ov006_02142570;
-            if (data_ov006_0214257c == first) data_ov006_0214257c = first->mNext;
-            if (data_ov006_0214256c == first) data_ov006_0214256c = first->mNext;
+            first = sMCarlo2FirstPick;
+            if (sMCarlo2Cards == first)
+                sMCarlo2Cards = first->mNext;
+            if (sMCarlo2CardHead == first)
+                sMCarlo2CardHead = first->mNext;
             if (data_ov006_02142578 == first) data_ov006_02142578 = first->mPrev;
-            if (data_ov006_02142568 == first) data_ov006_02142568 = first->mPrev;
+            if (sMCarlo2CardTail == first)
+                sMCarlo2CardTail = first->mPrev;
             if (first->mPrev != 0) first->mPrev->mNext = first->mNext;
             if (first->mNext != 0) first->mNext->mPrev = first->mPrev;
             first->mNext = 0;
             first->mPrev = first->mNext;
 
-            second = data_ov006_02142574;
-            if (data_ov006_0214257c == second) data_ov006_0214257c = second->mNext;
-            if (data_ov006_0214256c == second) data_ov006_0214256c = second->mNext;
+            second = sMCarlo2SecondPick;
+            if (sMCarlo2Cards == second)
+                sMCarlo2Cards = second->mNext;
+            if (sMCarlo2CardHead == second)
+                sMCarlo2CardHead = second->mNext;
             if (data_ov006_02142578 == second) data_ov006_02142578 = second->mPrev;
-            if (data_ov006_02142568 == second) data_ov006_02142568 = second->mPrev;
+            if (sMCarlo2CardTail == second)
+                sMCarlo2CardTail = second->mPrev;
             if (second->mPrev != 0) second->mPrev->mNext = second->mNext;
             if (second->mNext != 0) second->mNext->mPrev = second->mPrev;
             second->mNext = 0;
             second->mPrev = second->mNext;
 
-            first = data_ov006_02142570;
-            tail = data_ov006_0214256c;
+            first = sMCarlo2FirstPick;
+            tail = sMCarlo2CardHead;
             if (tail == 0) {
-                data_ov006_0214256c = first;
+                sMCarlo2CardHead = first;
             } else {
                 next = tail->mNext;
                 if (next != 0) {
@@ -737,10 +745,10 @@ void dScMgMCarlo2_c::UpdateBoard()
                 first->mNext = 0;
             }
 
-            second = data_ov006_02142574;
-            tail = data_ov006_0214256c;
+            second = sMCarlo2SecondPick;
+            tail = sMCarlo2CardHead;
             if (tail == 0) {
-                data_ov006_0214256c = second;
+                sMCarlo2CardHead = second;
             } else {
                 next = tail->mNext;
                 if (next != 0) {
@@ -751,11 +759,11 @@ void dScMgMCarlo2_c::UpdateBoard()
                 second->mNext = 0;
             }
 
-            data_ov006_02142574 = 0;
-            data_ov006_02142570 = 0;
-            ApproachLinear2(data_ov006_02142564, 0x270f, 2);
+            sMCarlo2SecondPick = 0;
+            sMCarlo2FirstPick = 0;
+            ApproachLinear2(sMCarlo2Score, 0x270f, 2);
             ApproachLinear2(data_ov006_0213d6f8, 0, 2);
-            Mg_SubmitScore(data_ov006_02142564);
+            Mg_SubmitScore(sMCarlo2Score);
 
             if (data_ov006_0213d6f8 <= 0x14) {
                 {
@@ -763,26 +771,29 @@ void dScMgMCarlo2_c::UpdateBoard()
                     s16 idx = *(volatile s16*)&data_ov006_02142560;
                     int* row = (int*)((char*)data_ov006_0212e97c + idx * 0x28);
                     do {
-                        data_ov006_02142580[i] = data_ov006_02142580[i] + row[i];
+                        sMCarlo2FaceCounts[i] = sMCarlo2FaceCounts[i] + row[i];
                         i += 1;
                     } while (i < 10);
                 }
                 {
-                    dMgMCarlo2CardObj_c* p = data_ov006_0214256c;
+                    dMgMCarlo2CardObj_c *p = sMCarlo2CardHead;
                     if (p != 0) {
                         do {
                             dMgMCarlo2CardObj_c* nxt = p->mNext;
-                            if (data_ov006_0214257c == p) data_ov006_0214257c = nxt;
-                            if (data_ov006_0214256c == p) data_ov006_0214256c = p->mNext;
+                            if (sMCarlo2Cards == p)
+                                sMCarlo2Cards = nxt;
+                            if (sMCarlo2CardHead == p)
+                                sMCarlo2CardHead = p->mNext;
                             if (data_ov006_02142578 == p) data_ov006_02142578 = p->mPrev;
-                            if (data_ov006_02142568 == p) data_ov006_02142568 = p->mPrev;
+                            if (sMCarlo2CardTail == p)
+                                sMCarlo2CardTail = p->mPrev;
                             if (p->mPrev != 0) p->mPrev->mNext = p->mNext;
                             if (p->mNext != 0) p->mNext->mPrev = p->mPrev;
                             p->mNext = 0;
                             p->mPrev = p->mNext;
-                            p->Init((s16)(data_ov006_02142568->mSlot + 1));
+                            p->Init((s16)(sMCarlo2CardTail->mSlot + 1));
                             {
-                                dMgMCarlo2CardObj_c* h = data_ov006_02142568;
+                                dMgMCarlo2CardObj_c *h = sMCarlo2CardTail;
                                 dMgMCarlo2CardObj_c* save = h->mNext;
                                 h->mNext = p;
                                 p->mPrev = h;
@@ -790,7 +801,8 @@ void dScMgMCarlo2_c::UpdateBoard()
                                     do { p = *(dMgMCarlo2CardObj_c* volatile*)&p->mNext; } while (p->mNext != 0);
                                 }
                                 p->mNext = save;
-                                if (p->mNext == 0) data_ov006_02142568 = p;
+                                if (p->mNext == 0)
+                                    sMCarlo2CardTail = p;
                             }
                             p = nxt;
                         } while (p != 0);
