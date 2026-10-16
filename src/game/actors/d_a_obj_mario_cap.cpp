@@ -74,7 +74,7 @@
  *   The PMF stand-ins (CapStateSelf / CapStateRec / CapEnterSelf). A PMF on
  *   the real dEnemyBase_c makes mwccarm ICE rather than give a diagnostic.
  *
- *   The (long long)(int) 20.12 multiplies in Slide and the
+ *   FX_MUL's 64-bit product in Slide's 20.12 multiplies and the
  *   (unsigned long long)&vulnFlags or-into-vulnFlags in InitSlide
  *   are the matching forms; plain member addressing does not match.
  *
@@ -131,6 +131,7 @@ enum daObjMarioCap_c_AssetId {
 };
 
 #include "common.h"
+#include "nitro/fx/fx.h"
 #include "daObjMarioCap_c.h"
 #include "decl_common.h"
 #include "Player.h"
@@ -1074,17 +1075,17 @@ int daObjMarioCap_c::Slide()
     s = data_02082214[j];
     co = data_02082214[j + 1];
     /* Velocity in the plane: speed times {sin, cos} of the angle, fix12 multiply
-       rounded to nearest. (long long)(int) is the MATCH form; a plain 32-bit
-       mul DIFFs. */
-    ownVel.x = (int)(((long long)spd * s + 0x800) >> 12);
+       rounded to nearest. FX_MUL's 64-bit product is the MATCH form; a plain
+       32-bit mul DIFFs. */
+    ownVel.x = FX_MUL(spd, s);
     ownVel.y = 0;
-    ownVel.z = (int)(((long long)spd * co + 0x800) >> 12);
+    ownVel.z = FX_MUL(spd, co);
     j = (CAP_ANGLE(mSlopeAngle) >> 4) * 2;
     s = data_02082214[j];
     co = data_02082214[j + 1];
-    slopeVel.x = (int)(((long long)slopePush * s + 0x800) >> 12);
+    slopeVel.x = FX_MUL(slopePush, s);
     slopeVel.y = 0;
-    slopeVel.z = (int)(((long long)slopePush * co + 0x800) >> 12);
+    slopeVel.z = FX_MUL(slopePush, co);
     Vec3_MulScalarInPlace(&slopeVel, Vec3_HorzLen(&mFloorNormalX));
     Vec3_Add(&out, &ownVel, &slopeVel);
     ang = _ZN4cstd5atan2E5Fix12IiES1_(out.x, out.z);
@@ -1092,10 +1093,9 @@ int daObjMarioCap_c::Slide()
     if (mHorzSpeed > 0xf000)
         mHorzSpeed = 0xf000;
     mPrevAngleY = ang;
-    mVertSpeed = -(_ZN4cstd4fdivEii(
-        (int)(((long long)mFloorNormalX * unk_0a4 + 0x800) >> 12)
-      + (int)(((long long)mFloorNormalZ * unk_0ac + 0x800) >> 12),
-        mFloorNormalY) + 0x8000);
+    mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(mFloorNormalX, unk_0a4) + FX_MUL(mFloorNormalZ, unk_0ac),
+                                    mFloorNormalY) +
+                   0x8000);
     pitch = func_02010844(this, &mFloorNormalX, mAngleY);
     roll = func_02010844(this, &mFloorNormalX, mAngleY - 0x4000);
     _Z11UpdateAngleRssis(&mAngleX, pitch, 4, 0x1000);

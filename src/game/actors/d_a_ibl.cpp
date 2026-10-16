@@ -39,6 +39,7 @@
 
 #include "daIbl_c.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "decl_dBgCh_Actr.h"
@@ -249,8 +250,7 @@ void daIbl_c::func_ov100_02142130()
     mPosX = mPrevPosX;
     mPosZ = mPrevPosZ;
     if (mFloorNormalY == 0) return;
-    int s = (int)(((long long)mFloorNormalX * unk_0a4 + 0x800) >> 0xc)
-          + (int)(((long long)mFloorNormalZ * unk_0ac + 0x800) >> 0xc);
+    int s = FX_MUL(mFloorNormalX, unk_0a4) + FX_MUL(mFloorNormalZ, unk_0ac);
     mVertSpeed = -(_ZN4cstd4fdivEii(s, mFloorNormalY) + 0x8000);
 }
 
@@ -614,9 +614,9 @@ void daIbl_c::func_ov100_02142918()
         int ang;
         mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
         ang = *(u16 *)&mPrevAngleY;
-        unk_0a4 = (int)(((long long)mHorzSpeed * data_02082214[(ang >> 4) << 1] + 0x800) >> 12);
+        unk_0a4 = FX_MUL(mHorzSpeed, data_02082214[(ang >> 4) << 1]);
         ang = *(u16 *)&mPrevAngleY;
-        unk_0ac = (int)(((long long)mHorzSpeed * data_02082214[((ang >> 4) << 1) + 1] + 0x800) >> 12);
+        unk_0ac = FX_MUL(mHorzSpeed, data_02082214[((ang >> 4) << 1) + 1]);
         {
             int *pa4 = &unk_0a4;
             int *pac = &unk_0ac;

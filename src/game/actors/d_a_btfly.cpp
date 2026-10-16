@@ -521,6 +521,7 @@ int daBtfly_c::Behavior()
         {
             int s = mHorzSpeed;
             int idx = ((unsigned short)mPrevAngleX >> 4) << 1;
+            /* Spelled out: FX_MUL drops p, which renumbers the TU's @NNN objects. */
             long long p;
             p = (long long)(-(int)data_02082214[idx]) * s;
             mVertSpeed = (int)((p + 0x800) >> 0xc);

@@ -80,6 +80,7 @@
 
 #include "daYegg_c.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
@@ -890,14 +891,14 @@ void daYegg_c::func_ov002_020ed0d4()
         a4 = unk_0a4;
         {
             int fd1 = _ZN4cstd4fdivEii(a4, 0x20000);
-            int r1 = (int)(((long long)fd1 * 0xe39 + 0x800) >> 12);
+            int r1 = FX_MUL(fd1, 0xe39);
             short a4ang = (short)(-r1);
             ac = unk_0ac;
             if (ac > 0x20000) { ac = 0x20000; unk_0ac = ac; }
             ac = unk_0ac;
             {
                 int fd2 = _ZN4cstd4fdivEii(ac, 0x20000);
-                int r2 = (int)(((long long)fd2 * 0xe39 + 0x800) >> 12);
+                int r2 = FX_MUL(fd2, 0xe39);
                 mAngleX = a4ang;
                 mAngleZ = (short)r2;
             }
@@ -1060,7 +1061,7 @@ void daYegg_c::func_ov002_020ed7f8()
         r4 = rg.clsnY;
     r5 = mPosY - r4;
     if (r5 <= 0x1000) r5 = 0x1000;
-    r4 = 0x50000 - (int)(((long long)r5 * 0x180 + 0x800) >> 12);
+    r4 = 0x50000 - FX_MUL(r5, 0x180);
     if (r4 < 0xa000) r4 = 0xa000;
     Matrix4x3_FromRotationY(mShadowMtx, mAngleY);
     mShadowMtx[9] = mPosX >> 3;
@@ -1119,10 +1120,9 @@ void daYegg_c::func_ov002_020ed998()
         mPosZ = v.z << 3;
         return;
     }
-    Matrix4x3_FromTranslation(&data_020a0e68,
-        (int)((((long long)mPosX << 9) + 0x800) >> 12),
-        (int)((((long long)(mPosY + 0x14000) * 0x200) + 0x800) >> 12),
-        (int)((((long long)mPosZ << 9) + 0x800) >> 12));
+    Matrix4x3_FromTranslation(&data_020a0e68, (int)((((long long)mPosX << 9) + 0x800) >> 12),
+                              FX_MUL(mPosY + 0x14000, 0x200),
+                              (int)((((long long)mPosZ << 9) + 0x800) >> 12));
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         mAngleX, mAngleY, mAngleZ);
     *(M48 *)&mModelAnim.mat4x3 = data_020a0e68;

@@ -26,6 +26,7 @@
 #include "decl_common.h"
 #include "decl_Particle.h"
 #include "dClipper.h"
+#include "nitro/fx/fx.h"
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
 
@@ -423,7 +424,7 @@ int dCamera_c::Render()
             s32 t = *(s32 *)((char *)self + 0x168);
             if (t != 0x1000) {
                 s32 d = 0xaaa - sp18;
-                sp18 = (s16)(sp18 + (s16)(((long long)d * t + 0x800) >> 12));
+                sp18 = (s16)(sp18 + (s16)FX_MUL(d, t));
             }
             if (data_0209f20c == 0 && data_0209f294 == 0 &&
                 (u8)(data_0209f294 | (data_0209f2c4 | data_0209f20c)) != 0) {
@@ -438,13 +439,13 @@ int dCamera_c::Render()
     s16 tr3 = *(s16 *)((char *)self + 0x18c);
     if (tr3 != 0) {
         s16 c = data_02082214[((s32)*(u16 *)((char *)self + 0x18a) >> 4) * 2];
-        var_r4 = (s16)(var_r4 + (s16)(((long long)tr3 * c + 0x800) >> 12));
+        var_r4 = (s16)(var_r4 + (s16)FX_MUL(tr3, c));
     }
 
     s16 tr0 = *(s16 *)((char *)self + 0x18e);
     if (tr0 != 0) {
         s16 c = data_02082214[((s32)*(u16 *)((char *)self + 0x192) >> 4) * 2 + 1];
-        s32 m = (int)(((long long)c * 0x360 + 0x800) >> 12);
+        s32 m = FX_MUL(c, 0x360);
         sp18 = (s16)(sp18 + ((tr0 * m) << 4 >> 16));
     }
 
@@ -529,26 +530,25 @@ void func_0200d954(char *c, short arg) {
 // @symbol func_0200d8c8
 /* Ground-pound jitter: if the target point is within range, accumulate a
  * jitter offset (unk134) scaled by 0x9000/distance, clamped to 0xc000. */
-void func_0200d8c8(struct dCamera_c *cam, const struct Vector3 *v, int strength)
-{
-	CamJitter *j;
-	Fix12i dist;
-	Fix12i offset;
+void func_0200d8c8(struct dCamera_c *cam, const struct Vector3 *v, int strength) {
+    CamJitter *j;
+    Fix12i dist;
+    Fix12i offset;
 
-	dist = Vec3_Dist(&cam->pos, v);
-	if (strength <= dist)
-		return;
+    dist = Vec3_Dist(&cam->pos, v);
+    if (strength <= dist)
+        return;
 
-	offset = (Fix12i)(((long long)_ZN4cstd4fdivEii(strength, dist) * 0x9000 + 0x800) >> 12);
+    offset = FX_MUL(_ZN4cstd4fdivEii(strength, dist), 0x9000);
 
-	j = (CamJitter *)cam;
-	if (offset <= j->unk134)
-		return;
+    j = (CamJitter *)cam;
+    if (offset <= j->unk134)
+        return;
 
-	if (offset > 0xc000)
-		offset = 0xc000;
+    if (offset > 0xc000)
+        offset = 0xc000;
 
-	j->unk134 = offset;
+    j->unk134 = offset;
 }
 
 // @symbol func_0200d8ac
@@ -1362,7 +1362,7 @@ body:
                     if (*(int *)(self + 0x12c) < 0x180000) *(int *)(self + 0x12c) = 0x180000;
                 }
                 if (*(int *)(self + 0x154) & 2) {
-                    *(int *)(self + 0x12c) = (int)(((long long)*(int *)(self + 0x12c) * 0x1800 + 0x800) >> 12);
+                    *(int *)(self + 0x12c) = FX_MUL(*(int *)(self + 0x12c), 0x1800);
                 }
                 if (g == 0x2f && *(int *)(self + 0x12c) > 0xc0000) {
                     int s = _ZN4cstd4fdivEii(0xc0000, *(int *)(self + 0x12c) << 1);
@@ -1466,7 +1466,7 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
     SubVec3(&sp8, arg1, &sp8);
     t = *(int*)(arg3 + 0x10);
     if (*(int*)(self + 0x154) & 0x20000) {
-        t = (int)(((long long)t * 0x3000 + 0x800) >> 12);
+        t = FX_MUL(t, 0x3000);
     }
     sp8.y += func_020093d4(self, t);
     sl = Vec3_HorzLen(&sp8);
@@ -1482,7 +1482,7 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
         if (*(unsigned short*)(arg3 + 0x26) & 0x40) {
             r5 = 0x10000;
         } else if (hl > 0) {
-            r5 += (int)(((long long)hl * 0x400 + 0x800) >> 12);
+            r5 += FX_MUL(hl, 0x400);
         }
         Vec3_Sub(&sp38, &sp8, self + 0xa4);
         sl = Vec3_HorzLen(&sp38);
@@ -1490,16 +1490,16 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             int f = sl;
             int fd;
             if (sl != 0) {
-                Math_Function_0203b14c(&f, 0, 0x100, (int)(((long long)r5 * 0x600 + 0x800) >> 12), 0x1000);
+                Math_Function_0203b14c(&f, 0, 0x100, FX_MUL(r5, 0x600), 0x1000);
                 fd = _ZN4cstd4fdivEii(f, sl);
-                *(int*)(self + 0xa4) = sp8.x - (int)(((long long)sp38.x * fd + 0x800) >> 12);
-                *(int*)(self + 0xac) = sp8.z - (int)(((long long)sp38.z * fd + 0x800) >> 12);
+                *(int *)(self + 0xa4) = sp8.x - FX_MUL(sp38.x, fd);
+                *(int *)(self + 0xac) = sp8.z - FX_MUL(sp38.z, fd);
             }
         }
         {
             int a8 = *(int*)(self + 0xa8);
             int diff = sp8.y - a8;
-            *(int*)(self + 0xa8) = sp8.y - (int)(((long long)diff * 0xf80 + 0x800) >> 12);
+            *(int *)(self + 0xa8) = sp8.y - FX_MUL(diff, 0xf80);
         }
         if (*(int*)(self + 0x154) & 0x400) {
             _ZN9dBgCh_GndD1Ev(spEC);
@@ -1526,7 +1526,7 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             {
                 int r2 = r6 + r5b;
                 if (r2 > 0) {
-                    *(int*)(self + 0x84) = sl2 - (r5b - (int)(((long long)r2 * 0x600 + 0x800) >> 12));
+                    *(int *)(self + 0x84) = sl2 - (r5b - FX_MUL(r2, 0x600));
                 }
             }
         }

@@ -34,6 +34,7 @@
  */
 
 #include "common.h"
+#include "nitro/fx/fx.h"
 #include "daBook_c.h"
 #include "daBookGen_c.h"
 #include "daTrsTrap_c.h"
@@ -87,9 +88,6 @@ typedef struct { int x, y, z; } Vec3;
 /* Index of an unsigned 16-bit angle into data_02082214, the sin/cos table:
  * one s16 sin, s16 cos pair per 16 angle units. */
 #define SINCOS_INDEX(angle) ((*(u16 *)&(angle) >> 4) * 2)
-
-/* A fix12 multiply, rounded to nearest. */
-#define FIX12_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
 short _ZN4cstd5atan2E5Fix12IiES1_(int, int);
@@ -590,10 +588,10 @@ void daBook_c::func_ov020_02111c30()
 
         {
             /* velocity = kFlightSpeed along (yaw, pitch) */
-            s32 r = FIX12_MUL(data_02082214[SINCOS_INDEX(mAngleX) + 1], 0x32000);
-            unk_0a4 = FIX12_MUL(r, data_02082214[SINCOS_INDEX(mAngleY)]);
-            mVertSpeed = FIX12_MUL(data_02082214[SINCOS_INDEX(mAngleX)], -0x32000);
-            unk_0ac = FIX12_MUL(r, data_02082214[SINCOS_INDEX(mAngleY) + 1]);
+            s32 r = FX_MUL(data_02082214[SINCOS_INDEX(mAngleX) + 1], 0x32000);
+            unk_0a4 = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY)]);
+            mVertSpeed = FX_MUL(data_02082214[SINCOS_INDEX(mAngleX)], -0x32000);
+            unk_0ac = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY) + 1]);
         }
         return;
     }

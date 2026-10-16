@@ -286,7 +286,7 @@ int daObjBk_Botaosi_c::Behavior()
         int s = data_02082214[idx * 2];
         int amp = mKnockDir;
         int prod = amp * s;
-        int d = (int)(((long long)prod * mWobbleTimer + 0x800) >> 0xc);
+        int d = FX_MUL(prod, mWobbleTimer);
         mAngleX = d;
         if (mWobbleTimer <= 0) {
             mAngleX = 0;

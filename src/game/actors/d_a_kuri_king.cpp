@@ -99,8 +99,6 @@ enum daKuriKing_c_AssetId {
 #include "Message.h"
 #include "nitro/fx/fx.h"
 
-#define FX(a, b) (int)(((long long)(a) * (long long)(b) + 0x800) >> 12)
-
 /* include/SharedFilePtr.h has no fields; filePtr is the word LoadFile stashes
  * and what SetFile/Prepare consume. daLuigi_c spells the same view. */
 struct LoadedSharedFile {
@@ -411,8 +409,8 @@ int daKuriKing_c::func_ov074_0211f38c(){
         }
         {
             int sinIdx=((u16)spawnAngle.y>>4)<<1;
-            spawnPos.x += (int)(((s64)radius * data_02082214[sinIdx] + 0x800) >> 0xc);
-            spawnPos.z += (int)(((s64)radius * data_02082214[sinIdx+1] + 0x800) >> 0xc);
+            spawnPos.x += FX_MUL(radius, data_02082214[sinIdx]);
+            spawnPos.z += FX_MUL(radius, data_02082214[sinIdx + 1]);
         }
         spawnAngle.x=Vec3_VertAngle(&basePos, &spawnPos);
         dActor_c::Spawn(0xc7, 0x1111, spawnPos, &spawnAngle, this->mAreaId, -1);
@@ -1388,18 +1386,18 @@ void daKuriKing_c::func_ov074_02121380() {
     char* q;
     int tx, ty, tz;
 
-    y0 = FX(this->mScaleY, 0x40000);
-    rad[1] = FX(this->mScaleX, 0x50000);
-    hgt[1] = FX(this->mScaleY, 0x40000);
-    yoff[1] = FX(this->mScaleY, -0x10000);
-    rad[2] = FX(this->mScaleX, 0x50000);
-    hgt[2] = FX(this->mScaleY, 0x40000);
-    yoff[2] = FX(this->mScaleY, -0x10000);
-    h0 = FX(this->mScaleY, 0x96000);
-    r0 = FX(this->mScaleX, 0x5a000);
-    yoff[0] = FX(this->mScaleY, 0x14000);
-    rad[0] = FX(this->mScaleX, 0xb4000);
-    hgt[0] = FX(this->mScaleY, 0x104000);
+    y0 = FX_MUL(this->mScaleY, 0x40000);
+    rad[1] = FX_MUL(this->mScaleX, 0x50000);
+    hgt[1] = FX_MUL(this->mScaleY, 0x40000);
+    yoff[1] = FX_MUL(this->mScaleY, -0x10000);
+    rad[2] = FX_MUL(this->mScaleX, 0x50000);
+    hgt[2] = FX_MUL(this->mScaleY, 0x40000);
+    yoff[2] = FX_MUL(this->mScaleY, -0x10000);
+    h0 = FX_MUL(this->mScaleY, 0x96000);
+    r0 = FX_MUL(this->mScaleX, 0x5a000);
+    yoff[0] = FX_MUL(this->mScaleY, 0x14000);
+    rad[0] = FX_MUL(this->mScaleX, 0xb4000);
+    hgt[0] = FX_MUL(this->mScaleY, 0x104000);
     /* q walks mCylClsnPos[i] (+0x3ac) with the member offset left in each
      * load, the same walk func_ov074_02121800 keeps. */
     q = (char*)this;
@@ -1429,7 +1427,7 @@ void daKuriKing_c::func_ov074_02121380() {
     this->mdCc_cs[0].pos.y = ty;
     this->mdCc_cs[0].pos.z = tz;
 
-    d = FX(this->mScaleY, -0x4a000);
+    d = FX_MUL(this->mScaleY, -0x4a000);
     a = this->mCylClsnPos[2].y + d;
     b = this->mCylClsnPos[1].y + d;
     if (a < this->mPosY) {
@@ -1476,8 +1474,8 @@ int daKuriKing_c::func_ov074_021216f4()
 {
     if (this->mWithMeshClsn.IsOnGround()) {
         this->mWalkAngle += this->mWalkSpeed;
-        this->mPosX = (int)((((long long)data_02082214[(((u16)this->mWalkAngle) >> 4) * 2] * 0x546000) + 0x800) >> 12);
-        this->mPosZ = (int)((((long long)data_02082214[(((u16)this->mWalkAngle) >> 4) * 2 + 1] * 0x546000) + 0x800) >> 12);
+        this->mPosX = FX_MUL(data_02082214[(((u16)this->mWalkAngle) >> 4) * 2], 0x546000);
+        this->mPosZ = FX_MUL(data_02082214[(((u16)this->mWalkAngle) >> 4) * 2 + 1], 0x546000);
     }
     ApproachAngle(&this->mAngleY, (short)((this->mDirection * 0x4500) + this->mWalkAngle), 0xa, 0x800, 0x10);
 }
@@ -1625,8 +1623,8 @@ int daKuriKing_c::Behavior()
         return func_ov074_021223bc();
     }
 
-    t = ((s64)mWalkSpeed * 0x646 + 0x800) >> 12;
-    u = ((s64)t * 0x546000 + 0x800) >> 12;
+    t = FX_MUL(mWalkSpeed, 0x646);
+    u = FX_MUL(t, 0x546000);
     mGoombaTargetSpeed = u < 0 ? -u : u;
 
     /* Camera word +0x114 (still padding in dCamera_c.h) gets the boss every
@@ -1797,8 +1795,8 @@ int daKuriKing_c::InitResources()
     mWalkAngle = 0x1000;
     mWalkAngle += mWalkSpeed;
 
-    mPosX = (s32)(((s64)data_02082214[((u16)mWalkAngle >> 4) * 2] * 0x546000 + 0x800) >> 0xc);
-    mPosZ = (s32)(((s64)data_02082214[((u16)mWalkAngle >> 4) * 2 + 1] * 0x546000 + 0x800) >> 0xc);
+    mPosX = FX_MUL(data_02082214[((u16)mWalkAngle >> 4) * 2], 0x546000);
+    mPosZ = FX_MUL(data_02082214[((u16)mWalkAngle >> 4) * 2 + 1], 0x546000);
 
     {
         s32 a2;

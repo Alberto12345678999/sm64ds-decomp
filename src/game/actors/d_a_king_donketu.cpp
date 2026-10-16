@@ -1272,7 +1272,7 @@ int daKing_Donketu_c::func_ov073_02120910()
     c->mPrevAngleY = c->mAngleY + 0x8000;
     c->mStateScratch += 0x500;
     ApproachLinear(c->mAngleX,
-        ((s64)c->unk_4d0 * data_02082214[((unsigned short)(short)c->mStateScratch >> 4) * 2] + 0x800) >> 12,
+        FX_MUL(c->unk_4d0, data_02082214[((unsigned short)(short)c->mStateScratch >> 4) * 2]),
         0x400);
     if (c->func_ov073_0211f61c()) {
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233f0);

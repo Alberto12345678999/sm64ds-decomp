@@ -58,6 +58,7 @@ enum daStar_c_AssetId {
 #include "daStarBase_c.h"
 #include "daObjIceBlock_c.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
@@ -2588,7 +2589,7 @@ void daStar_c::func_ov002_020e8398() {
     if (delta <= 0x1000)
         delta = 0x1000;
 
-    r8 = rad - (int)(((s64)delta * 0x180 + 0x800) >> 12);
+    r8 = rad - FX_MUL(delta, 0x180);
     if (r8 < 0xa000)
         r8 = 0xa000;
 
@@ -2680,9 +2681,9 @@ void daStar_c::func_ov002_020e8098() {
     if (mState != STATE_SPIN_AND_END)
         vc.y = v.y + 0x32000;
     SubVec3(&vc, (Vector3*)&mPosX, &vc);
-    vc.x = (int)(((s64)vc.x * mScaleX + 0x800) >> 0xc);
-    vc.y = (int)(((s64)vc.y * mScaleY + 0x800) >> 0xc);
-    vc.z = (int)(((s64)vc.z * mScaleZ + 0x800) >> 0xc);
+    vc.x = FX_MUL(vc.x, mScaleX);
+    vc.y = FX_MUL(vc.y, mScaleY);
+    vc.z = FX_MUL(vc.z, mScaleZ);
     AddVec3(&vc, (Vector3*)&mPosX, &vc);
     *(void**)&mParticle[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         mParticle[0], 0x115, vc.x, vc.y, vc.z, 0, 0);
@@ -2925,8 +2926,8 @@ void daStar_c::func_ov002_020e7934(void* cam) {
                 return;
             short ang = Vec3_HorzAngle(&vec[0], (Vector3*)&mCamPosX);
             int k = (unsigned short)(short)(ang + ((r6 & 3) << 14)) >> 4;
-            vec[0].x += (int)(((long long)dist * data_02082214[k * 2] + 0x800) >> 12);
-            vec[0].z += (int)(((long long)dist * data_02082214[k * 2 + 1] + 0x800) >> 12);
+            vec[0].x += FX_MUL(dist, data_02082214[k * 2]);
+            vec[0].z += FX_MUL(dist, data_02082214[k * 2 + 1]);
             ((dCamera_c *)cam)->SetPos(*(const Vector3 *)&vec[0]);
         }
 

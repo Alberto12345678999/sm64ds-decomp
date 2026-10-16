@@ -441,8 +441,7 @@ int daObjRotateUpdownLift_c::Behavior()
     dist = LenVec3(&remain);
     along = cstd::fdiv(span - dist, span);
     /* 0x3a2 is a halfword. mPitchBase in the header is only the low byte. */
-    mAngleX = (s16)(*(s16 *)((char *)this + 0x3a2)
-                    + (s16)(((long long)mPitchStep * along + 0x800) >> 12));
+    mAngleX = (s16)(*(s16 *)((char *)this + 0x3a2) + (s16)FX_MUL(mPitchStep, along));
 
     if (dist == 0 || dist <= stepLen) {
         Vec3_Add(&snapped, &mBasePosX, &cur);
