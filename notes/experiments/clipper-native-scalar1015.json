@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "issue": 2410,
+  "status": "owned API checkpoint; Tree contribution and production acceptance pending",
+  "base_commit": "fc20639c19766d05227360ee5617f5246f3887c1",
+  "remote_main": "53dc648eaf7d24847f461a193a3f81203cf4d098",
+  "method": {
+    "address": "0x02015560",
+    "size": "0x3c",
+    "old": "_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_",
+    "new": "_ZN8dClipper16TransformAndClipER9Matrix4x3R7Vector3iS3_",
+    "name_provenance": "inferred from observed transform then sphere/frustum clipping; not a recovered debug name"
+  },
+  "preview": {
+    "path": "build/clipper-native-preview",
+    "handoff_sha256": "83c50123cf3af76318b4b79e5d4e4bfc49c60afadf50ca6e22a5e93320860b90",
+    "strict_functions_per_control_and_candidate": 196,
+    "blind": 0,
+    "complete_tus": 7
+  },
+  "camera_probe": {
+    "source": "src/engine/view/d_camera.cpp",
+    "scope": "Declare the same singleton as real dClipper and pass its address from the retained C-linkage handler; no speculative native C++ handler conversion.",
+    "complete_raw_elf_identical": true,
+    "control_sha256": "e34605a2ae2da5882557b6c8b272702badbfe597fc28f4f5ed9f9c48e79f1d61",
+    "candidate_sha256": "e34605a2ae2da5882557b6c8b272702badbfe597fc28f4f5ed9f9c48e79f1d61"
+  },
+  "production_acceptance": null,
+  "new_findings": [
+    {
+      "id": "CLIPPER-RESULT-EXTENT-01",
+      "kind": "correctness",
+      "status": "fixed",
+      "detail": "Replace two-int result with real three-component Vector3; preserve exact complete TU and initializer."
+    },
+    {
+      "id": "CLIPPER-SINGLETON-DECL-01",
+      "kind": "declaration",
+      "status": "partial",
+      "detail": "Camera typed singleton/address fixed; Tree owned contribution pending."
+    }
+  ],
+  "deferred": [
+    "Other Fix12 template boundaries",
+    "Shared Matrix4x3 ODR representation debt",
+    "Native Monkey asset handles, initialization, metadata and complete class reconstruction",
+    "Grouped Actor API dependency closure"
+  ]
+}
