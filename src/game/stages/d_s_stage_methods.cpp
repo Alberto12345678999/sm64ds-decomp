@@ -57,6 +57,7 @@ enum dScStage_c_AssetId {
 #include "decl_common.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 #include "Player.h"
 #include "G2x.h"
 #include "nitro/hw/registers.h"
@@ -4573,9 +4574,9 @@ main_part: {
                     max = 0x24;
                 if (len > max) {
                     int quot = cstd::fdiv(max, len);
-                    dx = (int)(((s64)dx * quot + 0x800) >> 12);
+                    dx = FX_MUL(dx, quot);
                     p->tx = newx - dx;
-                    dy = (int)(((s64)dy * quot + 0x800) >> 12);
+                    dy = FX_MUL(dy, quot);
                     p->ty = newy - dy;
                     len = max;
                 } else if (len < 4) {

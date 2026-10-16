@@ -1,3 +1,4 @@
+#include "nitro/fx/fx.h"
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed short s16;
@@ -77,7 +78,7 @@ static inline int RandScale(void)
 
 static inline int FMul(int a, int b)
 {
-    return (int)(((s64)a * b + 0x800) >> 12);
+    return FX_MUL(a, b);
 }
 
 void func_0204c584(u8 *self, List *list)

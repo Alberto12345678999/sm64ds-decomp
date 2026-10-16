@@ -130,10 +130,11 @@ struct dScMgD3DBase_c : dScMgBase_c {
        dScMgTrampoline2_c point here too, where at 24 and 25 they had bodies of
        their own. */
 
-    s32  unk_4660;                    /* 0x4660 */
-    u16  unk_4664;                    /* 0x4664 -- both factories zero it right
-                                          after the base constructor */
-    u8   pad_4666[0x6];               /* 0x4666 */
+    s32 mSavedSubObjBank; /* 0x4660 -- sub-OBJ VRAM bank saved at init, restored after */
+    u16 mDrawSubScreen;   /* 0x4664 -- flips every frame: 1 draws the 3D for the sub
+                             screen (D3D_CaptureToSub), 0 for the main; both
+                             factories zero it after the base constructor */
+    u8 pad_4666[0x6];     /* 0x4666 */
     /* 0x466c..0x47e4 is TWO ELEMENTS OF 0xbc, not flat state, and all four
        factories say so: each runs `e = p + 0x466c; do { e += 0xbc; } while
        (e != p + 0x47e4);`, and 0x47e4 - 0x466c = 0x178 = 2 * 0xbc. The

@@ -14,6 +14,7 @@
 #include "dBgCh_Gnd.h"
 #include "dBgCh_SphCrr.h"
 #include "dBgPi.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 /* This TU's own free helpers, called from the members below. */
@@ -285,7 +286,6 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray)
 // @symbol _ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr
 #pragma opt_common_subs off
 
-#define FMUL(a, b) ((int)(((s64)(a) * (b) + 0x800) >> 12))
 
 int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere)
 {
@@ -295,20 +295,20 @@ int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere)
     int r;
 
     func_02039e48(this, &sphere.centre, &pos);
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&loc, &pos,
-        FMUL(sphere.radius, invScale), 0);
-    loc.unk_0ec = FMUL(sphere.unk_0ec, invScale);
+    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
+        &loc, &pos, FX_MUL(sphere.radius, invScale), 0);
+    loc.unk_0ec = FX_MUL(sphere.unk_0ec, invScale);
     loc.func_02037940(sphere.flags);
     func_02035394(&loc, &sphere);
     r = dBgW_Kc::DetectClsn(loc);
     if (r) {
         loc.func_02037a04((Vector3 *)d, (Vector3 *)(d + 3));
-        d[6] = FMUL(d[0], scale);
-        d[7] = FMUL(d[1], scale);
-        d[8] = FMUL(d[2], scale);
-        d[9] = FMUL(d[3], scale);
-        d[10] = FMUL(d[4], scale);
-        d[11] = FMUL(d[5], scale);
+        d[6] = FX_MUL(d[0], scale);
+        d[7] = FX_MUL(d[1], scale);
+        d[8] = FX_MUL(d[2], scale);
+        d[9] = FX_MUL(d[3], scale);
+        d[10] = FX_MUL(d[4], scale);
+        d[11] = FX_MUL(d[5], scale);
         sphere.func_02037a6c(d[6], d[7], d[8], d[9], d[10], d[11]);
         (dBgPi &)sphere = (dBgPi &)loc;
         sphere.flags |= 1;

@@ -142,6 +142,7 @@ enum daObjHatenaBlock_c_AssetId {
 #include "daSCoin_c.h"
 #include "dCamera_c.h"
 #include "daShl_c.h"
+#include "nitro/fx/fx.h"
 
 struct CLPS_Block;
 struct KCL_File;
@@ -722,14 +723,14 @@ void daObjHatenaBlock_c::func_ov102_02149ea4()
 skipcall:
     height = mPosY - mFloorY;
     if (height <= 0x1000) height = 0x1000;
-    shadowScale = (int)(((long long)height * 0x180 + 0x800) >> 12);
+    shadowScale = FX_MUL(height, 0x180);
     shadowScale = 0xb4000 - shadowScale;
     paddedHeight = height + 0x214000;
     if (shadowScale < 0xa000) shadowScale = 0xa000;
     if (paddedHeight < 0x200000) paddedHeight = 0x200000;
     mClipOffsetY = -((int)((height + 0x14000) + ((unsigned)(height + 0x14000) >> 31)) >> 1);
     mClipRadius = (int)(paddedHeight + ((unsigned)paddedHeight >> 31)) >> 4;
-    shadowScale = (int)(((long long)shadowScale * mScaleX + 0x800) >> 12);
+    shadowScale = FX_MUL(shadowScale, mScaleX);
     Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mPosY - 0x20000) >> 3;
@@ -859,12 +860,12 @@ void daObjHatenaBlock_c::func_ov102_021498e0()
         s16 s = data_02082214[(ang >> 4) * 2];
         int conf = 0x999;
         int t = (int)s + 0x1000;
-        int y = (int)(((s64)t * conf + 0x800) >> 12);
+        int y = FX_MUL(t, conf);
         mScaleY = y + 0x666;
         ang = mBounceAng;
         s = data_02082214[(ang >> 4) * 2];
         int u = 0x1000 - (int)s;
-        mScaleX = (int)(((s64)u * 0x1000 + 0x800) >> 12) + 0x1000;
+        mScaleX = FX_MUL(u, 0x1000) + 0x1000;
         mScaleZ = mScaleX;
         ang = mBounceAng;
         s = data_02082214[(ang >> 4) * 2];

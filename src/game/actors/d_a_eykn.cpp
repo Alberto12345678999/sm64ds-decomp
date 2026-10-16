@@ -73,6 +73,7 @@
 #include "Sound.h"
 #include "Particle__System.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 /* Twelve plain words: assigning a Matrix4x3 copies it member by member,
    0x1c bytes longer than the cartridge's block copy. */
@@ -434,7 +435,7 @@ int daEykn_c::St_Die_Main()
     switch (mSubState) {
     case 0: {
         s16 sinv = data_02082214[((int)mWobblePhase >> 4) * 2];
-        mAngleX = (s16)((int)(((s64)mWobbleAmp * sinv + 0x800) >> 12));
+        mAngleX = (s16)(FX_MUL(mWobbleAmp, sinv));
         mWobblePhase = (u16)((s16)mWobblePhase + 0xe000);
         ApproachLinear(mWobbleAmp, 0, 0x1b);
         if (DecIfAbove0_Byte(&mSubTimer) == 0) {

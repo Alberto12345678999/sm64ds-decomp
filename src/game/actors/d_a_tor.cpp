@@ -35,6 +35,7 @@ enum daTor_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "SurfaceInfo.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 /* The texture animation InitResources hands to mTextureTransformer lives in
@@ -106,15 +107,15 @@ void daTor_c::UpdateSpin(s32 scale)
     u16 idx = (u16)mSpinPhase;
     s16 wave = data_02082214[(idx >> 4) * 2 + 1];
     s32 radiusScale = (wave + 0x1000) >> 1;
-    s32 frameScale = (s32)(((long long)scale * 0x666 + 0x800) >> 12);
-    s32 radius = (s32)(((long long)radiusScale * 0x4cc + 0x800) >> 12);
+    s32 frameScale = FX_MUL(scale, 0x666);
+    s32 radius = FX_MUL(radiusScale, 0x4cc);
     radius += 0x1000;
-    mScaleX = (s32)(((long long)radius * frameScale + 0x800) >> 12);
+    mScaleX = FX_MUL(radius, frameScale);
 
     u16 idx2 = (u16)mSpinPhase;
     s16 wave2 = data_02082214[(idx2 >> 4) * 2 + 1];
     s32 heightScale = ((0x1000 - wave2) >> 2) + 0x800;
-    mScaleY = (s32)(((long long)heightScale * frameScale + 0x800) >> 12);
+    mScaleY = FX_MUL(heightScale, frameScale);
 
     mScaleZ = mScaleX;
     mSpinPhase += 0x200;

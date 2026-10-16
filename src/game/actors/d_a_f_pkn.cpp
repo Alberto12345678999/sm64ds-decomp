@@ -37,6 +37,7 @@
 #include "Player.h"
 #include "Sound.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off
 
@@ -182,7 +183,7 @@ void daFPkn_c::SpawnDeathSmoke()
     if (mParticleHandle1 != 0) {
         particle = Particle::System::FromUniqueID(mParticleHandle1);
         if (particle != 0) {
-            particle->callbackScale = (short)(Fix12i)(((long long)mMaxScale * 0x2800 + 0x800) >> 12);
+            particle->callbackScale = (short)FX_MUL(mMaxScale, 0x2800);
         }
     }
 
@@ -193,7 +194,7 @@ void daFPkn_c::SpawnDeathSmoke()
     particle = Particle::System::FromUniqueID(mParticleHandle2);
     if (particle == 0)
         return;
-    particle->callbackScale = (short)(Fix12i)(((long long)mMaxScale * 0x2800 + 0x800) >> 12);
+    particle->callbackScale = (short)FX_MUL(mMaxScale, 0x2800);
 }
 
 // @symbol _ZN8daFPkn_c15SpawnDeathBurstEv
@@ -213,9 +214,9 @@ void daFPkn_c::SpawnDeathBurst()
     pos.z = mPosZ;
     burstReach = data_ov084_0213029c[frame];
     product = burstReach * data_02082214[((u16)mAngleY >> 4) * 2];
-    pos.x = pos.x + (int)(((long long)product * mScale + 0x800) >> 12);
+    pos.x = pos.x + FX_MUL(product, mScale);
     product = burstReach * data_02082214[((u16)mAngleY >> 4) * 2 + 1];
-    pos.z = pos.z + (int)(((long long)product * mScale + 0x800) >> 12);
+    pos.z = pos.z + FX_MUL(product, mScale);
     pos.y = pos.y + mScale * data_ov084_021302c4[frame];
     mParticleHandle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         mParticleHandle1, 0xfb, pos.x, pos.y, pos.z, 0, 0);
@@ -276,7 +277,7 @@ void daFPkn_c::UpdateClsnOffset()
     scaledSinAcc0 = data_02082214[((u16)locals.acc[0] >> 4) * 2] * 0x32;
     sinAcc1 = data_02082214[((u16)locals.acc[1] >> 4) * 2];
 
-    mClsnOffset.x = mClsnOffset.x + (int)(((s64)scaledSinAcc0 * sinAcc1 + 0x800) >> 12);
+    mClsnOffset.x = mClsnOffset.x + FX_MUL(scaledSinAcc0, sinAcc1);
 
     /* The int isFirepakun keeps the ROM's compare; a direct test DIFFs. */
     isFirepakun = (actorID == ACTOR_FIREPAKUN);
@@ -289,11 +290,11 @@ void daFPkn_c::UpdateClsnOffset()
     }
 
     cosAcc1 = data_02082214[((u16)locals.acc[1] >> 4) * 2 + 1];
-    mClsnOffset.z = mClsnOffset.z + (int)(((s64)scaledSinAcc0 * cosAcc1 + 0x800) >> 12);
+    mClsnOffset.z = mClsnOffset.z + FX_MUL(scaledSinAcc0, cosAcc1);
 
-    mClsnOffset.x = (int)(((s64)mClsnOffset.x * mScale + 0x800) >> 12);
-    mClsnOffset.y = (int)(((s64)mClsnOffset.y * mScale + 0x800) >> 12);
-    mClsnOffset.z = (int)(((s64)mClsnOffset.z * mScale + 0x800) >> 12);
+    mClsnOffset.x = FX_MUL(mClsnOffset.x, mScale);
+    mClsnOffset.y = FX_MUL(mClsnOffset.y, mScale);
+    mClsnOffset.z = FX_MUL(mClsnOffset.z, mScale);
 }
 
 // @symbol _ZN8daFPkn_c13CheckClsnHitsEv
@@ -510,8 +511,8 @@ void daFPkn_c::StateSpit()
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
-    pos.x += (s32)(((s64)(mMaxScale * 0x3c) * data_02082214[((u16)mAngleY >> 4) * 2] + 0x800) >> 12);
-    pos.z += (s32)(((s64)(mMaxScale * 0x3c) * data_02082214[((u16)mAngleY >> 4) * 2 + 1] + 0x800) >> 12);
+    pos.x += FX_MUL((mMaxScale * 0x3c), data_02082214[((u16)mAngleY >> 4) * 2]);
+    pos.z += FX_MUL((mMaxScale * 0x3c), data_02082214[((u16)mAngleY >> 4) * 2 + 1]);
     pos.y += mMaxScale * 0x5a;
     mAngleX = 0x1000;
 

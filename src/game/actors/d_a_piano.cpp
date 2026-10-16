@@ -28,6 +28,7 @@
 #include "daPiano_c_resources.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -280,9 +281,9 @@ void daPiano_c::func_ov063_0211dbb8() {
         tmp.z = z;
         {
             int sinVal = data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2];
-            tmp.x = x + (int)(((s64)sinVal * 0x24000 + 0x800) >> 12);
+            tmp.x = x + FX_MUL(sinVal, 0x24000);
         }
-        tmp.z = z + (int)(((s64)data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2 + 1] * 0x24000 + 0x800) >> 12);
+        tmp.z = z + FX_MUL(data_02082214[(*(volatile u16 *)&this->mAngleY >> 4) * 2 + 1], 0x24000);
 
         this->mCylinderClsn[0].pos.x = *(volatile int*)&this->mPosX;
         this->mCylinderClsn[0].pos.y = *(volatile int*)&this->mPosY;
@@ -398,9 +399,9 @@ void daPiano_c::func_ov063_0211d8cc()
     proj.z = z;
     {
         int sinVal = data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2];
-        proj.x = x + (int)(((s64)sinVal * 0x24000 + 0x800) >> 12);
+        proj.x = x + FX_MUL(sinVal, 0x24000);
     }
-    proj.z = z + (int)(((s64)data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2 + 1] * 0x24000 + 0x800) >> 12);
+    proj.z = z + FX_MUL(data_02082214[(*(volatile u16 *)&this->mAngleY >> 4) * 2 + 1], 0x24000);
 
     this->mCylinderClsn[0].pos.x = *(volatile int*)&this->mPosX;
     this->mCylinderClsn[0].pos.y = *(volatile int*)&this->mPosY;

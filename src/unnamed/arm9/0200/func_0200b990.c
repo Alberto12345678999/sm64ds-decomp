@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/fx/fx.h"
 typedef struct V3 { int x, y, z; } V3;
 typedef struct dBgCh_Lin { char pad[0x14]; char surf[0x64]; } dBgCh_Lin;
 
@@ -77,7 +78,7 @@ void func_0200b990(char *self, char *arg1, int arg2)
     }
 
     {
-        int fixmul = (int)(((long long)arg2 * rate + 0x800) >> 12);
+        int fixmul = FX_MUL(arg2, rate);
         _Z14ApproachLinearRsss((s16 *)(self + 0x17c), angle, (s16)fixmul);
     }
 }

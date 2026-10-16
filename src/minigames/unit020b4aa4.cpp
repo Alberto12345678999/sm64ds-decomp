@@ -85,6 +85,7 @@
 #include "types.h"
 #include "PlayerInput.h"
 #include "dScMgBase_c.h"
+#include "nitro/fx/fx.h"
 
 struct Vec2i { int x, y; };
 
@@ -906,7 +907,7 @@ extern "C" void Coin_Rise(Sprite* s){
   int v;
   n = p ? n : n;  /* code shape: dropping it makes the function 12 bytes shorter */
   q = __aeabi_idiv(n, g);  /* `n / g` here compiles differently (measured) */
-  v = (int)(((long long)(q - 0x600) * 0x4000 + 0x800) >> 12);
+  v = FX_MUL((q - 0x600), 0x4000);
   *p += v;
   if (ApproachLinear2(s->mDelay, 0, 1) == 0)
     return;
@@ -965,7 +966,7 @@ extern "C" void Coin_RiseSpent(Sprite* s){
   int g = sMgCoinRiseFrames[0];
   int n = -(((short)s->mDelay - (g >> 1)) << 12);
   int q = n / g;
-  int v = (int)(((long long)(q - 0x600) * 0x4000 + 0x800) >> 12);
+  int v = FX_MUL((q - 0x600), 0x4000);
   *p = *p + v;
   if (ApproachLinear2(s->mDelay, 0, 1) == 0)
     return;

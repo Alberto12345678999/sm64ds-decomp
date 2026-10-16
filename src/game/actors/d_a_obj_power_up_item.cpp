@@ -52,6 +52,7 @@
 #include "decl_common.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 struct Vector3_16f;
 struct Callback;
@@ -179,16 +180,16 @@ void daObjPowerUpItem_c::StateOpening()
         unsigned short hw = mWobbleAngle;
         int idx = hw >> 4;
         signed short odd = data_02082214[idx * 2 + 1];
-        int t1 = (int)(((long long)odd * fdivResult + 0x800) >> 12);
-        int u1 = (int)(((long long)t1 * 0x332 + 0x800) >> 12);
+        int t1 = FX_MUL(odd, fdivResult);
+        int u1 = FX_MUL(t1, 0x332);
         int v1 = u1 + 0xffa;
-        int w1 = (int)(((long long)v1 * 0xfa0 + 0x800) >> 12);
+        int w1 = FX_MUL(v1, 0xfa0);
         mScaleY = w1;
         signed short even = data_02082214[idx * 2];
-        int t2 = (int)(((long long)even * fdivResult + 0x800) >> 12);
-        int u2 = (int)(((long long)t2 * 0x332 + 0x800) >> 12);
+        int t2 = FX_MUL(even, fdivResult);
+        int u2 = FX_MUL(t2, 0x332);
         int v2 = u2 + 0xffa;
-        int w2 = (int)(((long long)v2 * 0xfa0 + 0x800) >> 12);
+        int w2 = FX_MUL(v2, 0xfa0);
         mScaleX = w2;
         // materialized base for halfword at offset >= 0x100
         short* p = (short*)(((int)this + 0x3c8));
@@ -245,7 +246,7 @@ void daObjPowerUpItem_c::StateLaunched()
 
     a = mVertSpeed;
     mag = (a < 0) ? -a : a;
-    y = (int)(((s64)mag * 0x120000 + 0x800) >> 12);
+    y = FX_MUL(mag, 0x120000);
     X = (s16)(y / 4096);
     delta = 0x250;
     if (X > 0)
@@ -407,7 +408,7 @@ int daObjPowerUpItem_c::DropShadow()
     if (mState == FLOWER_STATE_LAUNCHED) {
         int d = mPosY - mGroundY;
         if (d <= 0x1000) d = 0x1000;
-        r3 = 0x64000 - (int)(((s64)d * 0x180 + 0x800) >> 12);
+        r3 = 0x64000 - FX_MUL(d, 0x180);
         if (r3 < 0x3c000) r3 = 0x3c000;
     }
     return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char*)this, &mShadowModel, &mShadowMat, r3, 0x3c000, 0xf);

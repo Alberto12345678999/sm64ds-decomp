@@ -34,6 +34,7 @@ enum d_s_mg_trampoline_AssetId {
 #include "G2x.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 /* local: the ROM re-reads the slot byte at each use here, so keep the read volatile. */
 #define ACTIVE_SLOT (*(volatile unsigned char *)&gActivePlayerSlot)
 /* local: these readers only reproduce through a 4-byte-record view of the lane. */
@@ -469,9 +470,7 @@ void dScMgTrampoline_c::StartRound(int /* arg */)
        reads the field SIGNED, which is what this header used to declare
        locally. Cast at the use site rather than retype the shared base. */
     q = ((((s32)self->mLevel % 5) << 12)) / 4;
-    self->mScrollY =
-        (int)(((long long)(0x1000 - q) * 0x20 + 0x800) >> 12) +
-        (int)(((long long)q * 0x50 + 0x800) >> 12);
+    self->mScrollY = FX_MUL((0x1000 - q), 0x20) + FX_MUL(q, 0x50);
     self->mScrollTargetY = self->mScrollY;
     self->mScrollHoldTimer = 0;
     Trmp3DMario_ResetAll(self->mLevel, self->mScrollY);
@@ -845,7 +844,7 @@ s32 dScMgTrampoline_c::Render()
     mDoorMark.Render(mScrollY);
     TrmpFx_DrawAll();
 
-    if (unk_4664 == 1) {
+    if (mDrawSubScreen == 1) {
         count = data_ov006_0213b0ec;
         a1v = 0x6e;
         for (i = 0; i < 3; i++) {
@@ -901,7 +900,7 @@ int dScMgTrampoline_c::OnGraphCallback2()
     if (!dScMgD3DBase_c::OnGraphCallback2())
         return 0;
     if (mMenuOpen == 0) {
-        if (unk_4664 == 0) {
+        if (mDrawSubScreen == 0) {
             data_0209d45c &= ~8;
             SetBg2Offset(0, mScrollY + mScrollOffsetY);
             *(volatile int*)0x4000018 = (mScrollY + mScrollOffsetY) << 16 & 0x1ff0000;

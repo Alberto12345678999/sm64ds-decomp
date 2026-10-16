@@ -251,12 +251,12 @@ void dScMgCard_c::StartRound(int mode)
     int i;
     char *p1, *p2;
 
-    unk_538c = 0;
-    unk_538e = 6;
-    unk_5390 = 6;
-    unk_5392 = 6;
-    unk_5394 = 6;
-    Dealer_StartDeal((char *)&mShared, 4, 5, (int)&unk_538c);
+    mDealCount = 0;
+    mPlayerHandFace = 6;
+    mPlayerHandFace2 = 6;
+    mDealerHandFace = 6;
+    mDealerHandFace2 = 6;
+    Dealer_StartDeal((char *)&mShared, 4, 5, (int)&mDealCount);
 
     mShared.unk_1e6 = 1;
     mShared.unk_01a = 2;
@@ -431,7 +431,7 @@ void dScMgCard_c::UpdateState()
             mStateTimer = 0x10;
             mState++;
         } else {
-            cnt = unk_538c;
+            cnt = mDealCount;
             if (cnt > 0) {
                 idx = cnt - 1;
                 if (cnt != 0) {
@@ -520,15 +520,15 @@ void dScMgCard_c::UpdateState()
         } else if (Dealer_IsIdle(&mShared) != 0) {
             r = dScMgCard_c::CountInState((const dMgCardObj_c *)mArray1, 6);
             if (r != 0) {
-                unk_538c = 0;
+                mDealCount = 0;
                 mShared.unk_1e6 = 0;
-                Dealer_StartCollect(&mShared, (s16)r, &unk_538c);
+                Dealer_StartCollect(&mShared, (s16)r, &mDealCount);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray1, 6);
-            if (r > -1 && unk_538c != 0) {
+            if (r > -1 && mDealCount != 0) {
                 ((dMgCardObj_c *)mArray1)[r].mState = 5;
-                unk_538c--;
+                mDealCount--;
             }
         }
         break;
@@ -551,15 +551,15 @@ void dScMgCard_c::UpdateState()
         } else if (Dealer_IsIdle(&mShared) != 0) {
             r = dScMgCard_c::CountInState((const dMgCardObj_c *)mArray2, 6);
             if (r != 0) {
-                unk_538c = 0;
+                mDealCount = 0;
                 mShared.unk_1e6 = 0;
-                Dealer_StartCollect(&mShared, (s16)r, &unk_538c);
+                Dealer_StartCollect(&mShared, (s16)r, &mDealCount);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray2, 6);
-            if (r > -1 && unk_538c != 0) {
+            if (r > -1 && mDealCount != 0) {
                 ((dMgCardObj_c *)mArray2)[r].mState = 5;
-                unk_538c--;
+                mDealCount--;
             }
         }
         break;
@@ -604,20 +604,20 @@ void dScMgCard_c::UpdateState()
     case 12:
         mStateTimer--;
         if (mStateTimer == 0) {
-            t4 = dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray2, &unk_5392);
-            t5 = dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray1, &unk_538e);
+            t4 = dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray2, &mDealerHandFace);
+            t5 = dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray1, &mPlayerHandFace);
             if (data_ov006_02141768 != 0 && data_ov006_02141768 != 0) {
                 /* the hand-value fanfares sit at sound bank 22 up */
                 Mg_ShowBanner(t4 + 22, 0x80, 0x48, 0, -1, 1);
                 Mg_ShowBanner(t5 + 22, 0x80, 0x78, 0, -1, 2);
                 if (t4 != t5) {
-                    unk_5392 = 6;
-                    unk_5394 = 6;
-                    unk_538e = 6;
-                    unk_5390 = 6;
-                } else if (unk_5392 != unk_538e) {
-                    unk_5394 = 6;
-                    unk_5390 = 6;
+                    mDealerHandFace = 6;
+                    mDealerHandFace2 = 6;
+                    mPlayerHandFace = 6;
+                    mPlayerHandFace2 = 6;
+                } else if (mDealerHandFace != mPlayerHandFace) {
+                    mDealerHandFace2 = 6;
+                    mPlayerHandFace2 = 6;
                 }
             }
             r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
@@ -771,9 +771,9 @@ s32 dScMgCard_c::Render()
         int k;
         for (k = 4; k >= 0; k--) {
             unsigned char face = mArray1[k].mValue;
-            if (this->unk_538e == face)
+            if (this->mPlayerHandFace == face)
                 goto chk1;
-            if (this->unk_5390 != face)
+            if (this->mPlayerHandFace2 != face)
                 goto docall1;
         chk1:
             if (!(this->mFrameCounter & 8))
@@ -789,9 +789,9 @@ s32 dScMgCard_c::Render()
         int k;
         for (k = 4; k >= 0; k--) {
             unsigned char face = mArray2[k].mValue;
-            if (this->unk_5392 == face)
+            if (this->mDealerHandFace == face)
                 goto chk2;
-            if (this->unk_5394 != face)
+            if (this->mDealerHandFace2 != face)
                 goto docall2;
         chk2:
             if (!(this->mFrameCounter & 8))
@@ -1539,8 +1539,8 @@ s32 dMgCardObj_c::GetOffscreenY()
 // @symbol _ZN11dScMgCard_c9RenderHudEv
 /* dScMgCard_c::RenderHud -- the hand-rank table and the hold prompt. States 4
  * through 0x10 stack six face sprites at x=0x14 from y=0xb0 down; the two
- * hands' highlight pairs (unk_538e/unk_5390 for the player's hand,
- * unk_5392/unk_5394 for the dealer's) name the rows drawn in a highlight
+ * hands' highlight pairs (mPlayerHandFace/mPlayerHandFace2 for the player's hand,
+ * mDealerHandFace/mDealerHandFace2 for the dealer's) name the rows drawn in a highlight
  * variant -- 1 for the player's values, 2 for the dealer's, and when both
  * hands name the same row the two variants alternate on mFrameCounter bit
  * 4. State 4, once the whole player hand is lifted, adds the prompt
@@ -1554,11 +1554,12 @@ void dScMgCard_c::RenderHud()
         int i;
         for (i = 0; i < 6; i++) {
             int highlight = 0;
-            if ((i == unk_5392 && i == unk_538e) || (i == unk_5394 && i == unk_5390)) {
+            if ((i == mDealerHandFace && i == mPlayerHandFace) ||
+                (i == mDealerHandFace2 && i == mPlayerHandFace2)) {
                 if (mFrameCounter & 0x10) highlight = 1; else highlight = 2;
-            } else if (i == unk_5392 || i == unk_5394) {
+            } else if (i == mDealerHandFace || i == mDealerHandFace2) {
                 if (mFrameCounter & 0x10) highlight = 2;
-            } else if (i == unk_538e || i == unk_5390) {
+            } else if (i == mPlayerHandFace || i == mPlayerHandFace2) {
                 if (mFrameCounter & 0x10) highlight = 1;
             }
             Hud_RenderSprite(data_ov006_0213bd30[i][highlight], 0x14, y, -1, -1);

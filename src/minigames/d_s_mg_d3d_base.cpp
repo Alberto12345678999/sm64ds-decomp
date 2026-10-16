@@ -193,14 +193,14 @@ extern "C" void D3D_InitDualScreen(void)
  * constant changes the code. */
 int dScMgD3DBase_c::InitSubScreenBg()
 {
-    unk_4660 = func_02053ea0();
+    mSavedSubObjBank = func_02053ea0();
     GX::SetBankForSubOBJ(0x100);
     LoadCompressedFileAt(data_ov006_0213c5fc[GetGameLanguage()], (void*)0x6600000);
     {
         char *dst = (char*)0x6600000; dst += 0x2000;
         DecompressLZ16((void*)data_ov006_0213c5e8[GetGameLanguage()], dst);
     }
-    _ZN2GX16SetBankForSubOBJEt(unk_4660);
+    _ZN2GX16SetBankForSubOBJEt(mSavedSubObjBank);
     mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);
     {
@@ -343,7 +343,7 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
 
 // @symbol _ZN14dScMgD3DBase_c16OnGraphCallback2Ev
 /* Slot 24, inherited by Jump and Jump2: switches between the two
- * 0xbc-byte cameras. Keep the if/else toggle; `unk_4664 = unk_4664 == 0`
+ * 0xbc-byte cameras. Keep the if/else toggle; `mDrawSubScreen = mDrawSubScreen == 0`
  * compiles differently. */
 int dScMgD3DBase_c::OnGraphCallback2()
 {
@@ -352,14 +352,14 @@ int dScMgD3DBase_c::OnGraphCallback2()
     if (dScMgBase_c::OnGraphCallback2() == 0) return 0;
     if (mMenuOpen == 0) {
         if (data_0209d464 == 0) return 0;
-        if (unk_4664 == 0)
-            unk_4664 = 1;
+        if (mDrawSubScreen == 0)
+            mDrawSubScreen = 1;
         else
-            unk_4664 = 0;
-        int cameraAddress = (int)(raw + 0x466c + unk_4664 * 0xbc);
+            mDrawSubScreen = 0;
+        int cameraAddress = (int)(raw + 0x466c + mDrawSubScreen * 0xbc);
         data_ov006_02141a44 = cameraAddress;
         Camera_UpdateMatrices((dCamera_c *)cameraAddress);
-        if (unk_4664 == 1) {
+        if (mDrawSubScreen == 1) {
             D3D_CaptureToSub();
         } else {
             D3D_CaptureToMain();
@@ -437,7 +437,7 @@ int dScMgD3DBase_c::SaveScreenForMenu()
     data_0209e660 = 0;
     mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);
-    unk_4660 = func_02053ea0();
+    mSavedSubObjBank = func_02053ea0();
     GX::SetBankForSubOBJ(0x100);
     return dScMgBase_c::SaveScreenForMenu();
 }
@@ -447,11 +447,11 @@ int dScMgD3DBase_c::SaveScreenForMenu()
 void dScMgD3DBase_c::RestoreScreenFromMenu()
 {
     _ZN2GX15SetBankForSubBGEt(mSubBgBank);
-    _ZN2GX16SetBankForSubOBJEt(unk_4660);
+    _ZN2GX16SetBankForSubOBJEt(mSavedSubObjBank);
     data_0209e660 = 1;
     D3D_ClearCaptureTable();
     dScMgBase_c::RestoreScreenFromMenu();
-    if (unk_4664 == 1) {
+    if (mDrawSubScreen == 1) {
         D3D_CaptureToSub();
     } else {
         D3D_CaptureToMain();

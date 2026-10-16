@@ -98,10 +98,10 @@ struct dScMgMCarlo2_c : dScMgSingle3DBase_c {
 
     dMgMCarlo2SharedState_c mShared; /* 0x4f38..0x51a8 */
     dMgMCarlo2CardObj_c mArray[0x28]; /* 0x51a8..0x5928 */
-    s16 unk_5928;           /* 0x5928 */
-    s16 unk_592a;           /* 0x592a */
+    s16 mRoundState;                  /* 0x5928 -- the round's step; Behavior switches on it */
+    s16 mTimer;                       /* 0x592a -- step timer (ApproachLinear2 to 0) */
     u8  pad_592c[0x2];      /* 0x592c */
-    s16 unk_592e;           /* 0x592e */
+    s16 mDealCount;         /* 0x592e -- cards dealt so far; Dealer_StartDeal counts it */
 
     /* --- this class's own vtable overrides, defined out of line under their
        own mangled names. Each re-uses a slot fBase_c already holds rather

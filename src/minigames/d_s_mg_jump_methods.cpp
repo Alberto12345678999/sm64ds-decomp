@@ -7,10 +7,8 @@
  * InitResources the key function that emits the vtable.
  *
  * leftovers:
- * - mLevel (dScMgBase_c) and unk_4664 (dScMgD3DBase_c) stay placeholders:
- *   they are read here as the `mLevel % 5` egg check and the Render flag
- *   test, but naming them is the shared header's change -- every minigame
- *   scene reads them under the placeholder spellings.
+ * - mLevel (dScMgBase_c) and mDrawSubScreen (dScMgD3DBase_c) are read here
+ *   as the `mLevel % 5` egg check and the Render flag test.
  * - `base + 0x466c` / `base + 0x4728` still address the two per-minigame
  *   cameras by offset: include/dScMgD3DBase_c.h already calls them camera
  *   elements and records "typing it as a real array is its own change".
@@ -436,14 +434,14 @@ s32 dScMgJump_c::Behavior()
 }
 
 // @symbol _ZN11dScMgJump_c6RenderEv
-/* Slot 9. Draws the instruction rows while unk_4664 == 1, then programs the
+/* Slot 9. Draws the instruction rows while mDrawSubScreen == 1, then programs the
  * light vector and light color registers at 0x040004c8 and 0x040004cc
  * (lights 0 and 1, hence volatile) and renders the model. The row
  * sprites and the ov006 draw helpers are unnamed in symbols.txt. */
 s32 dScMgJump_c::Render()
 {
 
-    if (unk_4664 == 1) {
+    if (mDrawSubScreen == 1) {
         int count;
         int y;
         int i;

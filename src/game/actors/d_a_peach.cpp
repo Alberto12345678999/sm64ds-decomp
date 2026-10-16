@@ -77,8 +77,7 @@ extern int data_ov085_021304c4[];
 extern void *data_ov085_021304d4[];
 extern int data_ov085_021304e4[];
 extern void *data_ov085_021304ec[];
-extern daPeach_c::StateFunc data_ov085_0213055c[];
-
+extern daPeach_c::StateEntry data_ov085_0213055c[];
 }
 
 #pragma defer_codegen off
@@ -338,25 +337,23 @@ int daPeach_c::State4()
 }
 
 // @symbol _ZN9daPeach_c17CallStateBehaviorEv
-/* The second member of the selected pair. mStateFuncs points at a pair of
+/* The behavior half of the selected row. The table rows are pairs of
  * pointers-to-member copied out of the ten ROM constants at 0x0212ff34. */
 void daPeach_c::CallStateBehavior()
 {
-    StateFunc *func = mStateFuncs + 1;
-    (this->**func)();
+    (this->*mState->behavior)();
 }
 
 // @symbol _ZN9daPeach_c13CallStateInitEv
 void daPeach_c::CallStateInit()
 {
-    StateFunc *func = mStateFuncs;
-    (this->**func)();
+    (this->*mState->init)();
 }
 
 // @symbol _ZN9daPeach_c8SetStateEi
 void daPeach_c::SetState(int state)
 {
-    mStateFuncs = data_ov085_0213055c + state * 2;
+    mState = &data_ov085_0213055c[state];
     CallStateInit();
 }
 
