@@ -114,8 +114,10 @@ extern void *func_02054ea8(void);
    parameter would emit a sign-extend of arg0 the ROM lacks. */
 extern int IsStarCollected(u32 a, u8 b);
 extern int SublevelToLevel(int a);
+/* local extern: byte-forced spelling -- calling Message::AddChar(char) makes
+   func_0201d850 narrow its arguments (4 words differ from the ROM).
+   Message2.cpp spells it the same way. */
 extern void _ZN7Message7AddCharEc(int c);
-extern void _ZN7Message6UpdateEv(void);
 extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, s32 b);
 /* local extern: byte-forced spelling -- the definition is
    (volatile u16*, u16, s16); u16/s16 parameters would emit an explicit narrow
@@ -1108,7 +1110,7 @@ void Message::DisplaySaving(unsigned short n)
     }
 
     while (data_0209d6bc < 4)
-        _ZN7Message6UpdateEv();
+        Message::Update();
 
     {
         int b = data_0209d45c | 0x20;
@@ -1249,7 +1251,7 @@ extern "C" void func_0201f138(void)
 
     bcPtr = &data_0209d6bc;
     while (*bcPtr < 4) {
-        _ZN7Message6UpdateEv();
+        Message::Update();
     }
     SetBg3Offset(-0x11, -0x3c);
     data_0209d45c |= 8;
@@ -1418,7 +1420,7 @@ extern "C" void func_0201f32c(int arg0)
     t = data_0209d6bc;
     if (t < 4) {
         do {
-            _ZN7Message6UpdateEv();
+            Message::Update();
             t = data_0209d6bc;
         } while (t < 4);
     }

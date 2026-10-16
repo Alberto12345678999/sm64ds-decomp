@@ -73,8 +73,9 @@ void func_02037eb0(SurfaceInfo *info, CLPS_Entry entry, Vector3 *normal);
 int _ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b(void *self, SurfaceInfo *info,
                                                     void *ray, int flag);
 
-/* dBgPc's real ctor/dtor (include/dBgPc.h), called explicitly against
-   SurfaceInfo-shaped storage the way the cartridge does it. */
+/* local extern: dBgPc's real ctor/dtor (include/dBgPc.h), called explicitly
+   against SurfaceInfo-shaped storage the way the cartridge does it. C++ can
+   only spell the constructor call as placement new, which adds a null test. */
 void _ZN5dBgPcC1Ev(dBgPc *info);
 void _ZN5dBgPcD1Ev(dBgPc *info);
 
