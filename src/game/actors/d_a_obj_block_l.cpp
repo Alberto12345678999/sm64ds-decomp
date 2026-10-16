@@ -362,7 +362,7 @@ int daObjBlockL_c::Render()
     } else {
         mModel.Render(0);
     }
-  return 1;
+    return 1;
 }
 
 // @symbol _ZN13daObjBlockL_c8BehaviorEv
@@ -418,7 +418,7 @@ int daObjBlockL_c::Behavior()
  *
  * The two tail cases return 0 -- refuse to spawn: a 0x11 block whose star is
  * already taken when the player is entering level 1, and a 0x2e block above
- * y 0xdac000 in level 7 once star 1 is collected.
+ * y 0xdac000 in level 7 until star 1 is collected (or when data_0209f220 is 1).
  *
  * Each actorID test after the switch re-reads actorID through IsActorID; the
  * switch's own copy is not reused, and folding them changes the compare shape.

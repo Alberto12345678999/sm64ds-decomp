@@ -383,7 +383,7 @@ int daRedBombhei_c::func_ov084_0212cae0()
             }
         }
     }
-    /* With no shutter, both flags are read unset; the ROM does the same. */
+    /* With no shutter, both flags are read uninitialized; the ROM does the same. */
     return lookAtDone != 0 && posDone != 0;
 }
 
