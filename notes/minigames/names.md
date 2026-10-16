@@ -386,13 +386,13 @@ record they touch; their looks are not observed.
 
 **Panel (`dScMgPanel_c`, Puzzle Panic).**
 
-Six tables, named by index:
-- `Scene_State0..7`
-- `Shake_State0..2`: the sub-BG0 shake.
-- `Banner_State0..2`
-- `IntroCard_State0..4`: the slide-in card on `mSlide`.
-- `Input_State0..3`
-- `Panel_State0..3`: one per panel.
+The six tables' handlers are named from their bodies and the scene's transitions (pass 6; they were `Scene_State0..7`, `Shake_State0..2`, `Banner_State0..2`, `IntroCard_State0..4`, `Input_State0..3` and `Panel_State0..3`):
+- **Scene (`mState`):** `Scene_StateInit`, `StateIntro`, `StatePlay`; once the flips are used up (`StartSolveCheck`), with a try left, `StateShowMisses` (the wrong panels blink) and `StateRewind` (`UpdateMoves` undoes the moves, back to play), otherwise `StateResult`; `StateShowAnswer` (the answer demonstration below); `StateResult` (solved: `MG_STATE_ROUND_CLEAR`, else the panels fall); `StateGameOver` (`MG_STATE_GAME_OVER` once they are down). Medium: `ShowMisses` reads from `CountMatches`, which marks the panels it blinks.
+- **The answer demonstration (was `Input_*`, now `Answer_*`):** `Answer_StateWaitButton` (a touch on the button at (0xe8, 0x10)), `StateResetBoard`, `StateFindSolution` (from the puzzle tables, the alternate set when `IsAltVariant`), `StateFlipSolution` (flips the answer cells one by one); `Answer_Update` runs them.
+- **Each panel:** `Panel_StateIdle`, `StateFlip`, `StateBlink`, `StateFall` (drops off the bottom and hands the fall to the panel below).
+- **Shake (sub BG0):** `Shake_StateIdle`, `StateShake`, `StateLoseTry` (shakes, plays 0x12f and takes a try).
+- **Banner:** `Banner_StatePopUp`, `StateSettle`, `StateIdle`.
+- **The intro card (`mSlide`):** `IntroCard_StateStart`, `StateSlideIn`, `StateHold` (0x80 frames), `StateSlideOut` (then shows the panels and the prompt), `StateDone`.
 
 High confidence: `FlipAt` (a panel and its neighbours), `DealPuzzle`, `CheckSolved`, `CountMatches`, `UpdateTouch`, `DrawPanels`, `Particle_*`, `Scroll_*`, `ResetRound`.
 
