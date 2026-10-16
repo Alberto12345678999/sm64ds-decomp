@@ -1006,8 +1006,8 @@ void PachinkoPopup_SpawnScore(char *raw, int idx, unsigned short points)
     char *popup = raw + 0x15c;
     for (i = 0x1d; i >= 0; popup -= 0xc, i--) {
         if (*(unsigned short *)(popup + 0x4cfa) != 0) continue;
-        self->mPopup[i].x = *(int *)(raw + idx * 0x14 + 0x5958);
-        self->mPopup[i].y = *(int *)(raw + idx * 0x14 + 0x595c);
+        self->mPopup[i].x = self->mFx[idx].x;
+        self->mPopup[i].y = self->mFx[idx].y;
         self->mPopup[i].value = 0x30;
         self->mPopup[i].timer = points;
         Mg_SubmitScore(self->mPopup[i].timer + Mg_GetSubmittedScore());

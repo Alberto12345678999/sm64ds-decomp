@@ -773,12 +773,14 @@ void dScMgCurling2_c::AgeMarks()
     for (i = 0; i < 5; i++) {
         char *rec = raw + (i << 4);
         unsigned short *timer;
-        if (*(unsigned char *)(rec + 0x487c) == 0) continue;
-        if (*(unsigned short *)(rec + 0x487a) == 0) continue;
+        if (mMark[i].enable == 0)
+            continue;
+        if (mMark[i].countdown == 0)
+            continue;
         timer = (unsigned short *)(rec + 0x487a);
         *timer = *timer - 1;
         if (*timer != 0) continue;
-        *(unsigned char *)(rec + 0x487d) = 1;
+        mMark[i].drawn = 1;
         Sound::PlayBank2_2D(0x1bc);
     }
 }

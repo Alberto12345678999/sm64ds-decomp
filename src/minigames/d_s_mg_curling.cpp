@@ -620,14 +620,16 @@ void dScMgCurling_c::Popup_UpdateAll()
     int i;
     for (i = 0; i < 5; i++) {
         char *popup = raw + (i << 4);
-        if (*(unsigned char*)(popup + 0x4748) == 0) continue;
-        if (*(unsigned short*)(popup + 0x4746) == 0) continue;
+        if (mPopup[i].live == 0)
+            continue;
+        if (mPopup[i].countdown == 0)
+            continue;
         {
             volatile unsigned short *timer = (volatile unsigned short*)((unsigned int)popup + 0x4746);
             *timer = *timer - 1;
             if (*timer != 0) continue;
         }
-        *(unsigned char*)(popup + 0x4749) = 1;
+        mPopup[i].shown = 1;
         Sound::PlayBank2_2D(0x1bc);
     }
 }

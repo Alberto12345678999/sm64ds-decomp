@@ -208,7 +208,7 @@ void dMg3DEspAnimSet_c::Render()
     i = 0;
     zero = (void*)i;
     do {
-        if (*(int*)(c + i*4 + 0x168) != 0) {
+        if (mActive[i] != 0) {
             *(Matrix4x3*)(r5 + 0x1c) = data_020a0e68;
             ((MaterialChanger*)r4)->Update(*(ModelComponents*)(r5 + 8));
             ((Obj_777c*)r5)->m(zero);
@@ -313,7 +313,7 @@ void dMg3DEspAnimSet_c::InitResources()
         _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &data_ov006_0213c7f4, 0x40000000,
                                                            mSpeed, z2);
         _ZN5Model12SetPolygonIDEi(w, (i + 1) & 0xff);
-        *(int *)(o + i * 4 + 0x168) = 0;
+        mActive[i] = 0;
         w += 0x64;
         w2 += 0x14;
     }

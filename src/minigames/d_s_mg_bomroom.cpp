@@ -457,7 +457,7 @@ void dScMgBomroom_c::SlotB_State2(int index) {
         return;
     }
 
-    *(unsigned char*)(rec + 0x628c) = 3;
+    mSlotsB[index].state = 3;
 }
 
 
@@ -772,7 +772,7 @@ void dScMgBomroom_c::OnBombExploded(int picked) {
                     }
                     if (*state <= 1) {
                         *state = 3;
-                        *(u16 *)(raw + i * 0x40 + 0x4690) = 0x20;
+                        mBombs[i].marchDelay = 0x20;
                     }
                 }
             }
@@ -1456,15 +1456,16 @@ void dScMgBomroom_c::Bomb_State4(int i) {
 void dScMgBomroom_c::Bomb_State3(int idx) {
     unsigned char * c = (unsigned char *)this;
     unsigned char *slot = c + idx * 0x40;
-    if (*(unsigned short *)(slot + 0x4690) != 0) {
+    if (mBombs[idx].marchDelay != 0) {
         unsigned short *p = (unsigned short *)(c + 0x4690 + idx * 0x40);
         *p = *p - 1;
-        if (*(short *)(slot + 0x4690) < 0) *(unsigned short *)(slot + 0x4690) = 0;
+        if (*(short *)(slot + 0x4690) < 0)
+            mBombs[idx].marchDelay = 0;
     } else {
-        *(unsigned char *)(slot + 0x4697) = 4;
-        *(unsigned char *)(slot + 0x4694) = 3;
-        *(unsigned char *)(slot + 0x4695) = 0;
-        *(unsigned short *)(slot + 0x468e) = 0;
+        mBombs[idx].state = 4;
+        mBombs[idx].type = 3;
+        mBombs[idx].frame = 0;
+        mBombs[idx].counter = 0;
     }
 }
 
@@ -1584,13 +1585,13 @@ void dScMgBomroom_c::Bomb_State1(int idx) {
 void dScMgBomroom_c::Bomb_State0(int i) {
     char * c = (char *)this;
     char *b = c + (i << 6);
-    if (*(unsigned short *)(b + 0x4690) != 0) {
+    if (mBombs[i].marchDelay != 0) {
         unsigned short *h = (unsigned short *)((c + 0x4690) + (i << 6));
         *h = *h - 1;
     } else {
-        *(unsigned char *)(b + 0x4699) = 1;
-        *(unsigned char *)(b + 0x4694) = 1;
-        *(unsigned char *)(b + 0x4697) = 1;
+        mBombs[i].visible = 1;
+        mBombs[i].type = 1;
+        mBombs[i].state = 1;
     }
 }
 

@@ -32,7 +32,7 @@ struct dScMgPachinko2_Ball {
     u8 unk_30[0x2]; /* +0x30 */
     s16 spin;       /* +0x32 -- rotation step (rotation at +0x30); vx / 4 at the throw */
     s16 angle;      /* +0x34 */
-    s16 unk_36;     /* +0x36 */
+    s16 timer;      /* +0x36 -- anim tick in state 5, countdown from 0x40 in state 7 */
     u8 active;      /* +0x38 -- Ball_UpdateAll runs the ball while set */
     u8 state;       /* +0x39 -- 2 while released, 0 when reset */
     u8 visible;     /* +0x3a -- Ball_DrawAll draws the ball while set */

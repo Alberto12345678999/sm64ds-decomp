@@ -1749,13 +1749,13 @@ void dScMgPachinko2_c::Paddle_State0(int idx)
     slot = c + (idx << 6);
     off = idx << 6;
 
-    if (*(unsigned short *)(slot + 0x5292) != 0) {
+    if (mPaddles[idx].timer != 0) {
         base = c + 0x5292;
         *(unsigned short *)(base + off) =
             (unsigned short)(*(unsigned short *)(base + off) - 1);
 
         if (*(short *)(slot + 0x5292) < 0)
-            *(unsigned short *)(slot + 0x5292) = 0;
+            mPaddles[idx].timer = 0;
 
         return;
     }
@@ -1847,15 +1847,15 @@ void dScMgPachinko2_c::Paddle_SpawnForLanes()
     if (n <= 0) return;
     do {
         char *b = c + i * 0x40;
-        *(unsigned char*)(b + 0x5294) = 1;
-        *(unsigned char*)(b + 0x5296) = 0;
-        *(unsigned char*)(b + 0x529b) = 0;
+        mPaddles[i].active = 1;
+        mPaddles[i].state = 0;
+        mPaddles[i].step = 0;
         *(short*)(b + 0x5292) = 0x20;
-        *(int*)(b + 0x528c) = 0;
+        mPaddles[i].sound = 0;
         *(int*)(b + 0x5274) = 0;
         *(int*)(b + 0x5278) = 0;
-        *(unsigned char*)(b + 0x529c) = 0;
-        *(unsigned char*)(b + 0x529d) = 0;
+        mPaddles[i].hits = 0;
+        mPaddles[i].flip = 0;
         i++;
     } while (i < n);
 }
@@ -2124,12 +2124,12 @@ void dScMgPachinko2_c::Ball_HitAt(int x, int z, int d)
     int i;
     for (i = 0; i < 0x30; i++) {
         char *q = o + i * 0x40;
-        if (*(u8 *)(q + 0x4698) == 0) {
-            *(u8 *)(q + 0x4698) = 1;
-            *(u8 *)(q + 0x4699) = 7;
+        if (mBalls[i].active == 0) {
+            mBalls[i].active = 1;
+            mBalls[i].state = 7;
             *(u16 *)(q + 0x4696) = 0x40;
-            *(u8 *)(q + 0x469a) = 1;
-            *(u8 *)(q + 0x469c) = 0;
+            mBalls[i].visible = 1;
+            mBalls[i].sprite = 0;
             if (d != 0)
                 *(u16 *)(q + 0x4694) = 0xd000;
             else
@@ -2347,7 +2347,7 @@ void dScMgPachinko2_c::Ball_State1(int i)
                 s16 s = data_02082214[((u16)this->mBalls[i].angle >> 4) * 2];
                 this->mBalls[i].vy = (s32)(((s64)s * this->mBalls[i].speed + 0x800) >> 12);
             }
-            this->mBalls[i].unk_36 = 0;
+            this->mBalls[i].timer = 0;
             this->mBalls[i].spin = this->mBalls[i].vx >> 2;
             if (sq >= 0x40) {
                 Sound::PlayBank2_2D(0x17e);
@@ -2616,26 +2616,26 @@ void dScMgPachinko2_c::UpdateNextBall() {
     mNextBallDelay = 0;
     for (i = 0; i < 0x30; i++) {
         char *b = c + (i << 6);
-        if (*(unsigned char *)(b + 0x4698) == 0) {
-            *(unsigned char *)(b + 0x4698) = 1;
-            *(unsigned char *)(b + 0x469a) = 1;
-            *(unsigned char *)(b + 0x4699) = 0;
+        if (mBalls[i].active == 0) {
+            mBalls[i].active = 1;
+            mBalls[i].visible = 1;
+            mBalls[i].state = 0;
             *(int *)(b + 0x4684) = 0;
-            *(int *)(b + 0x4660) = 0x80000;
-            *(int *)(b + 0x4664) = 0x28000;
-            *(int *)(b + 0x4670) = 0;
-            *(int *)(b + 0x4674) = 0;
-            *(unsigned char *)(b + 0x469b) = 0;
-            *(int *)(b + 0x4668) = 0;
-            *(int *)(b + 0x466c) = 0;
-            *(short *)(b + 0x4696) = 0;
+            mBalls[i].x = 0x80000;
+            mBalls[i].y = 0x28000;
+            mBalls[i].px = 0;
+            mBalls[i].py = 0;
+            mBalls[i].unk_3b = 0;
+            mBalls[i].vx = 0;
+            mBalls[i].vy = 0;
+            mBalls[i].timer = 0;
             *(short *)(b + 0x4690) = 0;
-            *(short *)(b + 0x4692) = 0;
-            *(unsigned char *)(b + 0x469c) = 0;
-            *(unsigned char *)(b + 0x469d) = 0;
-            *(unsigned char *)(b + 0x469e) = 0;
-            *(int *)(b + 0x4688) = 0;
-            *(int *)(b + 0x468c) = 4;
+            mBalls[i].spin = 0;
+            mBalls[i].sprite = 0;
+            mBalls[i].animStep = 0;
+            mBalls[i].facingRight = 0;
+            mBalls[i].sound = 0;
+            mBalls[i].prevDist = 4;
             mHeldBall = (unsigned char)(i + 1);
             if (mBallDealt != 0) {
                 Sound::PlayBank2_2D(0x19d);
@@ -2660,17 +2660,17 @@ void dScMgPachinko2_c::ResetRound()
     mPhase = 0;
     for (i = 0; i < 0x30; i++) {
         char *r = c + (i << 6);
-        *(int *)(r + 0x4660) = 0;
-        *(int *)(r + 0x4664) = 0;
+        mBalls[i].x = 0;
+        mBalls[i].y = 0;
         *(int *)(r + 0x4678) = 0;
         *(int *)(r + 0x467c) = 0;
-        *(int *)(r + 0x4680) = 0;
+        mBalls[i].speed = 0;
         *(int *)(r + 0x4684) = 0;
         *(unsigned short *)(r + 0x4694) = 0;
         *(unsigned short *)(r + 0x4696) = 0;
-        *(unsigned char *)(r + 0x4698) = 0;
-        *(unsigned char *)(r + 0x4699) = 0;
-        *(unsigned char *)(r + 0x469a) = 0;
+        mBalls[i].active = 0;
+        mBalls[i].state = 0;
+        mBalls[i].visible = 0;
     }
     p = c;
     for (j = 0; j < 0x10; j++) {
