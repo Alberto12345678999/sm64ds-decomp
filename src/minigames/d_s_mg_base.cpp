@@ -1231,9 +1231,9 @@ int GetGameLanguage(void);
 void Mg_DrawSpriteList(void *self, int a1, int a2, int a3);
 }
 
-extern int *data_ov004_020bc020[];
-extern int *data_ov004_020bbfbc[];
-extern int *data_ov004_020bbfd0[];
+extern int *sMgMenuItem0SpritesByLanguage[];
+extern int *sMgMenuItem1SpritesByLanguage[];
+extern int *sMgMenuItem2SpritesByLanguage[];
 extern s16 data_02082214[];
 extern int data_ov006_021346bc;
 
@@ -1256,9 +1256,9 @@ extern "C" void Mg_DrawMenu(dScMgBase_c *scene)
     if (scene->mTouchOptions.Draw() != 0)
         return;
 
-    extra[0] = *data_ov004_020bc020[GetGameLanguage()];
-    extra[1] = *data_ov004_020bbfbc[GetGameLanguage()];
-    extra[2] = *data_ov004_020bbfd0[GetGameLanguage()];
+    extra[0] = *sMgMenuItem0SpritesByLanguage[GetGameLanguage()];
+    extra[1] = *sMgMenuItem1SpritesByLanguage[GetGameLanguage()];
+    extra[2] = *sMgMenuItem2SpritesByLanguage[GetGameLanguage()];
 
     tbl[0] = &scene->mMenuItem0X;
     tbl[1] = &scene->mMenuItem1X;

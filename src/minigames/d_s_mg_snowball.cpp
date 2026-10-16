@@ -1398,9 +1398,9 @@ s32 dScMgSnowball_c::Render()
     {
         int base = self->mGoalY;
         int t = (((self->mPosY >> 0xc) - base) * 0x7c) / (self->mStartY - base);
-        Mg_RenderSpriteBoth(data_ov006_02139d24[0], 0xf0, t + 0x22, -1, 0);
+        Mg_RenderSpriteBoth(sSnowballCourseMeterSprites[0], 0xf0, t + 0x22, -1, 0);
     }
-    Mg_RenderSpriteBoth(data_ov006_02139d24[1], 0xf0, 0x60, -1, 0);
+    Mg_RenderSpriteBoth(sSnowballCourseMeterSprites[1], 0xf0, 0x60, -1, 0);
 
     m[2] = 0xfffff008;
     m[1] = 0;
@@ -1439,11 +1439,11 @@ s32 dScMgSnowball_c::Render()
                     if (*(u8*)(p + 0xb2d8) == 1) idx += 8;
                     int a1 = (*(int*)(c + i1 * 8 + 0xacd8) - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02138d64[idx], a1, a2, -1, -1);
+                    Mg_RenderSpriteBoth(sSnowballBreakableAnimSprites[idx], a1, a2, -1, -1);
                 } else {
                     int a1 = (*(int*)(c + i1 * 8 + 0xacd8) - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02139c24, a1, a2, -1, 2);
+                    Mg_RenderSpriteBoth(sSnowballBreakableSprite, a1, a2, -1, 2);
                 }
             }
         }
@@ -1460,7 +1460,7 @@ s32 dScMgSnowball_c::Render()
                 case 2: {
                     int a1 = (*(int*)(c + i2 * 8 + 0xb5d8) - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02139d18, a1, a2, -1, 1);
+                    Mg_RenderSpriteBoth(sSnowballObstacleSprite, a1, a2, -1, 1);
                     break;
                 }
                 case 3: {
@@ -1468,7 +1468,7 @@ s32 dScMgSnowball_c::Render()
                     int sel = (v < 0x80000) ? 1 : 0;
                     int a1 = (v - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02139c80[sel], a1, a2, -1, 1);
+                    Mg_RenderSpriteBoth(sSnowballObstacleSideSprites[sel], a1, a2, -1, 1);
                     break;
                 }
                 }
@@ -1479,7 +1479,7 @@ s32 dScMgSnowball_c::Render()
     {
         int a1 = (self->mDrawPosX - self->mScrollX) >> 0xc;
         int a2 = ((self->mDrawPosY - self->mScrollY) >> 0xc) - 0x110;
-        Mg_RenderSpriteBoth(data_ov006_02139c38, a1, a2, -1, 2);
+        Mg_RenderSpriteBoth(sSnowballBallSprite, a1, a2, -1, 2);
     }
 
     {

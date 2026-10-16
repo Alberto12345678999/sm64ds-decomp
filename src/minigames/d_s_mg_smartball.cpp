@@ -346,8 +346,8 @@ extern void func_0203d630(V2 *p, int scale);
 extern void func_0203d480(V2 *out, V2 *in);
 extern "C" int func_0203d524(V2 *a, V2 *b);
 extern int func_0203d4d0(void* p, int* a, int* b);
-extern OamAttr *data_ov006_021387a4[];
-extern OamAttr *data_ov006_02138364[];
+extern OamAttr *sSmartballSparkSpritesAlt[];
+extern OamAttr *sSmartballSparkSprites[];
 extern void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 extern void Mg_PlayJingle(void* c);
 extern "C" int Mg_GetSubmittedScore(void);
@@ -4263,16 +4263,14 @@ void dScMgSmartball_c::RenderSparks()
         int idx = *(int*)(p + 0x5000 + 0x9b4) / 4 + 8;
         int b = *(unsigned char*)(p + 0x5000 + 0x9bd);
         if (b != 0) idx += 4;
-        Mg_RenderSpriteBoth(data_ov006_02138364[idx],
-                            *(int*)(p + 0x5000 + 0x9a4) >> 12,
-                            *(int*)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
+        Mg_RenderSpriteBoth(sSmartballSparkSprites[idx], *(int *)(p + 0x5000 + 0x9a4) >> 12,
+                            *(int *)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
       } else {
         int idx = *(int*)(p + 0x5000 + 0x9b4) / 4 + 4;
         int b = *(unsigned char*)(p + 0x5000 + 0x9bd);
         if (b != 0) idx += 4;
-        Mg_RenderSpriteBoth(data_ov006_021387a4[idx],
-                            *(int*)(p + 0x5000 + 0x9a4) >> 12,
-                            *(int*)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
+        Mg_RenderSpriteBoth(sSmartballSparkSpritesAlt[idx], *(int *)(p + 0x5000 + 0x9a4) >> 12,
+                            *(int *)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
       }
     }
     p += 0x24;

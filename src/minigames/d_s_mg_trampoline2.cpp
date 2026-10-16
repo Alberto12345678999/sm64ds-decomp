@@ -991,7 +991,7 @@ s32 dScMgTrampoline2_c::Render()
                 DrawOamSprite((void *)sTrmp2TextSpritesByLanguage[idx][1], (void *)a1v, 0xc,
                               (void *)0);
             } else {
-                RenderOamMainScreen(data_ov006_02134ecc, a1v, 0xc, -1, -1);
+                RenderOamMainScreen(sTrmpLifeIconSprite, a1v, 0xc, -1, -1);
             }
             a1v += 0x12;
         }

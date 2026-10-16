@@ -564,7 +564,7 @@ s32 dScMgJump2_c::Render()
                 DrawOamSprite((void *)sJump2TextSpritesByLanguage[idx][1], (void *)x, 0xc,
                               (void *)0);
             } else {
-                RenderOamMainScreen(data_ov006_02134cf8, x, 0xc, -1, -1);
+                RenderOamMainScreen(sJumpLifeIconSprite, x, 0xc, -1, -1);
             }
             x += 0x12;
         }

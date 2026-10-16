@@ -440,7 +440,7 @@ the previous header held as four pads, and a run/dMeter_c block at 0xb9d8.
 | --- | --- | --- |
 | 0xab38 | `mPosX` / `mPosY` (0xab3c) | [ResetScene](../src/minigames/d_s_mg_snowball.cpp) seeds `mPosX = 0x80000` and `mPosY = mStartY << 12`; Behavior adds the velocity into both; Render's progress bar reads `mPosY >> 12`. |
 | 0xab40 | `mPrevPosX` / `mPrevPosY` (0xab44) | Behavior's first act each tick is to copy 0xab38/0xab3c here, and the climb term is `mPosY - mPrevPosY`. |
-| 0xab48 | `mDrawPosX` / `mDrawPosY` (0xab4c) | Render draws the ball sprite [data_ov006_02139c38](../config/arm9/overlays/ov006/symbols.txt) at `(n - mScrollX) >> 12`, the same transform every world object gets. |
+| 0xab48 | `mDrawPosX` / `mDrawPosY` (0xab4c) | Render draws the ball sprite [sSnowballBallSprite](../config/arm9/overlays/ov006/symbols.txt) at `(n - mScrollX) >> 12`, the same transform every world object gets. |
 | 0xab50 | `mSoundPosX` / `mSoundPosY` (0xab54) | Behavior fires a rolling sound whenever the position has moved 0x30000 from these two, then copies the position in. |
 | 0xab60 | `mVelX` / `mVelY` (0xab64) | `Vec2_Len` of the pair is the speed, `atan2` of it is the heading, and it is added into `mPos` each tick. Capped at 0x8000. |
 | 0xab68 | `mScrollX` | Subtracted from every world X before drawing; [ResetScene](../src/minigames/d_s_mg_snowball.cpp) zeroes it. |

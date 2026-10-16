@@ -581,12 +581,12 @@ _ZTIN11dScMgBase_c15graphCallback_cE kind:data(any) addr:0x020bbf78
 _ZTS11dScMgBase_c kind:data(any) addr:0x020bbf84
 sMgMenuScreenByLanguage kind:data(any) addr:0x020bbf94
 sMgSpriteTables kind:data(any) addr:0x020bbfa8
-data_ov004_020bbfbc kind:data(any) addr:0x020bbfbc
-data_ov004_020bbfd0 kind:data(any) addr:0x020bbfd0
+sMgMenuItem1SpritesByLanguage kind:data(any) addr:0x020bbfbc
+sMgMenuItem2SpritesByLanguage kind:data(any) addr:0x020bbfd0
 sMgStockCounterFiles kind:data(any) addr:0x020bbfe4
 sMgPauseBgNcgByLanguage kind:data(any) addr:0x020bbff8
 sMgOptionNcgByLanguage kind:data(any) addr:0x020bc00c
-data_ov004_020bc020 kind:data(any) addr:0x020bc020
+sMgMenuItem0SpritesByLanguage kind:data(any) addr:0x020bc020
 data_ov004_020bc03c kind:data(any) addr:0x020bc03c
 _ZTVN11dScMgBase_c15graphCallback_cE kind:data(any) addr:0x020bc03c
 _ZTSN11dScMgBase_c15graphCallback_cE kind:data(any) addr:0x020bc04c

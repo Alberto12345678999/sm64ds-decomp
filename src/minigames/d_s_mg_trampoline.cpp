@@ -221,9 +221,9 @@ extern void TrmpFx_UpdateAll(void);
 extern void Mg_SubmitScore(int);
 extern void TrmpFx_DrawAll(void);
 extern int *sTrmpTextSpritesByLanguage[];
-extern int data_ov006_02134ecc;
+extern int sTrmpLifeIconSprite;
 extern void Mg_DrawTopRightCounter(int, int);
-extern void *data_ov006_02134f00[];
+extern void *sTrmpDoorSignSprites[];
 extern void *sTrmpArrowSprite;
 extern void Trmp3DMario_DrawAll(void);
 extern void TrmpLine_DrawAll(void);
@@ -844,7 +844,7 @@ s32 dScMgTrampoline_c::Render()
                 DrawOamSprite((void *)sTrmpTextSpritesByLanguage[idx][1], (void *)a1v, 0xc,
                               (void *)0);
             } else {
-                RenderOamMainScreen(data_ov006_02134ecc, a1v, 0xc, -1, -1);
+                RenderOamMainScreen(sTrmpLifeIconSprite, a1v, 0xc, -1, -1);
             }
             a1v += 0x12;
         }
@@ -864,11 +864,11 @@ s32 dScMgTrampoline_c::Render()
 
     t = sTrmpRowScreenY[0] - (mScrollY + mScrollOffsetY);
     Mg_RenderSpriteBoth(sTrmpArrowSprite, mArrow1X + 0xf0, t, -1, 2);
-    Mg_RenderSpriteBoth(data_ov006_02134f00[r6], 0xf0, t - 0x20, -1, 2);
+    Mg_RenderSpriteBoth(sTrmpDoorSignSprites[r6], 0xf0, t - 0x20, -1, 2);
 
     t = sTrmpRowScreenY[1] - (mScrollY + mScrollOffsetY);
     Mg_RenderSpriteBoth(sTrmpArrowSprite, mArrow2X + 0xf0, t, -1, 2);
-    Mg_RenderSpriteBoth(data_ov006_02134f00[r5], 0xf0, t - 0x20, -1, 2);
+    Mg_RenderSpriteBoth(sTrmpDoorSignSprites[r5], 0xf0, t - 0x20, -1, 2);
 
     if (mRoundOver == 0) {
         Trmp3DMario_DrawAll();
