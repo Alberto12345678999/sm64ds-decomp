@@ -20,6 +20,7 @@
 #include "Presenter.h"
 #include "Dealer.h"
 #include "Mascot.h"
+#include "FlowerFace.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
 /* Typed access to a Presenter record from the char* helpers below. */
@@ -28,6 +29,9 @@
 #define DEALER(p) ((Dealer *)(p))
 /* Typed access to a Mascot record from the char* helpers below. */
 #define MASCOT(p) ((Mascot *)(p))
+/* Typed access to the flower game's Yoshi and petal records. */
+#define FLOWERFACE(p) ((FlowerFace *)(p))
+#define PETAL(p) ((FallingPetal *)(p))
 
 struct Sound { static void PlayBank2_2D(unsigned int); };
 struct Model { int d; void HideMaterial(int, int); void ShowMaterial(int, int); void Render(const Vector3 *); };
@@ -203,11 +207,11 @@ void FallingPetal_Draw(char* c);
 void FallingPetal_Update(char* self);
 void FallingPetal_Spawn(int *r6, int *r5, int *r4);
 void FallingPetal_SetModel(char *t, int a1);
-void FlowerFace_StateReactB(void);
-void FlowerFace_PlayReactB(char *p);
-void FlowerFace_StateReactA(void);
-void FlowerFace_PlayReactA(char *p);
-void FlowerFace_StateReact(int* c);
+void FlowerFace_StateHate(void);
+void FlowerFace_PlayHate(char *p);
+void FlowerFace_StateLike(void);
+void FlowerFace_PlayLike(char *p);
+void FlowerFace_StatePick(int *c);
 void FlowerFace_PlayPetalPulled(char *c);
 void FlowerFace_StateIdle(void);
 void FlowerFace_PlayIdle(char *p);
@@ -467,7 +471,8 @@ extern "C" {
 struct S { int w[2]; };
 extern "C" { extern struct S pmf_FlowerFace_StateIdle; }
 void FlowerFace_PlayIdle(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p+0xd18, *(void**)(p+0xd90), 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0xd18, ((void *)FLOWERFACE(p)->mWaitAnim.file),
+                                                0, 0x800, 0);
     *(struct S *)(p + 0x0) = pmf_FlowerFace_StateIdle;
 }
 }
@@ -488,7 +493,9 @@ struct S8 { int w[2]; };
 
 
 extern "C" { extern int data_0209e650; }
-extern "C" { extern int pmf_FlowerFace_StateReact[2]; }
+extern "C" {
+extern int pmf_FlowerFace_StatePick[2];
+}
 
 void FlowerFace_PlayPetalPulled(char *c)
 {
@@ -496,7 +503,8 @@ void FlowerFace_PlayPetalPulled(char *c)
     char *p;
     struct { Vec3 pos, vel, pos2, vel2; } b;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0xd18, *(void **)(c + 0xd98), 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0xd18, ((void *)FLOWERFACE(c)->mPickAnim.file),
+                                                0x40000000, 0x800, 0);
 
     *(int *)(c + 0xd70) = 0;
 
@@ -523,52 +531,58 @@ void FlowerFace_PlayPetalPulled(char *c)
         }
     }
 
-    *(S8 *)c = *(S8 *)&pmf_FlowerFace_StateReact[0];
+    *(S8 *)c = *(S8 *)&pmf_FlowerFace_StatePick[0];
 }
 }
 }
 
 namespace s020c395c {
 extern "C" {
-void FlowerFace_StateReact(int* c){ if(_ZN15dExtFrameCtrl_c8FinishedEv((char*)c+0xd68)==0) return; FlowerFace_PlayIdle((char *)c); }
+void FlowerFace_StatePick(int *c) {
+    if (_ZN15dExtFrameCtrl_c8FinishedEv((char *)c + 0xd68) == 0)
+        return;
+    FlowerFace_PlayIdle((char *)c);
+}
 }
 }
 
 namespace s020c3908 {
 extern "C" {
 struct S { int w[2]; };
-extern "C" { extern struct S pmf_FlowerFace_StateReactA; }
-void FlowerFace_PlayReactA(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p+0xd18, *(void**)(p+0xda0), 0x40000000, 0x800, 0);
-    *(struct S *)(p + 0x0) = pmf_FlowerFace_StateReactA;
+extern "C" {
+extern struct S pmf_FlowerFace_StateLike;
+}
+void FlowerFace_PlayLike(char *p) {
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0xd18, ((void *)FLOWERFACE(p)->mLikeAnim.file),
+                                                0x40000000, 0x800, 0);
+    *(struct S *)(p + 0x0) = pmf_FlowerFace_StateLike;
 }
 }
 }
 
 namespace s020c3904 {
 extern "C" {
-void FlowerFace_StateReactA(void)
-{
-}
+void FlowerFace_StateLike(void) {}
 }
 }
 
 namespace s020c38b0 {
 extern "C" {
 struct S { int w[2]; };
-extern "C" { extern struct S pmf_FlowerFace_StateReactB; }
-void FlowerFace_PlayReactB(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p+0xd18, *(void**)(p+0xda8), 0x40000000, 0x800, 0);
-    *(struct S *)(p + 0x0) = pmf_FlowerFace_StateReactB;
+extern "C" {
+extern struct S pmf_FlowerFace_StateHate;
+}
+void FlowerFace_PlayHate(char *p) {
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0xd18, ((void *)FLOWERFACE(p)->mHateAnim.file),
+                                                0x40000000, 0x800, 0);
+    *(struct S *)(p + 0x0) = pmf_FlowerFace_StateHate;
 }
 }
 }
 
 namespace s020c38ac {
 extern "C" {
-void FlowerFace_StateReactB(void)
-{
-}
+void FlowerFace_StateHate(void) {}
 }
 }
 
@@ -577,7 +591,7 @@ extern "C" {
 void FallingPetal_SetModel(char *t, int a1)
 {
     _ZN9ModelBase7SetFileEP8BMD_Fileii(t + 0x44, (void *)a1, 1, -1);
-    *(int *)(t + 0x40) = 0;
+    PETAL(t)->mActive = 0;
 }
 }
 }
@@ -653,11 +667,11 @@ void FallingPetal_Update(char* self)
     int dot;
 
     if (_Z15ApproachLinear2Rsss((short*)(self + 0x94), 0, 1) != 0) {
-        *(int*)(self + 0x40) = 0;
+        PETAL(self)->mActive = 0;
         return;
     }
     AddVec3(self, self + 0xc, self);
-    *(int*)(self + 0x1c) = -0x40;
+    PETAL(self)->mAccel.y = -0x40;
     AddVec3(self + 0xc, self + 0x18, self + 0xc);
     idx = ((*(int*)(self + 4) >> 1) << 16) >> 20;
     val = *(short*)&data_02082214[idx];

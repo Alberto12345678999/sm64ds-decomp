@@ -547,35 +547,35 @@
       "ordinal": 74
     },
     {
-      "symbol": "FlowerFace_StateReactB",
+      "symbol": "FlowerFace_StateHate",
       "address": "0x020c38ac",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020c38ac.c",
       "ordinal": 75
     },
     {
-      "symbol": "FlowerFace_PlayReactB",
+      "symbol": "FlowerFace_PlayHate",
       "address": "0x020c38b0",
       "size": "0x00000054",
       "legacy_source": "src/func_ov006_020c38b0.c",
       "ordinal": 76
     },
     {
-      "symbol": "FlowerFace_StateReactA",
+      "symbol": "FlowerFace_StateLike",
       "address": "0x020c3904",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020c3904.c",
       "ordinal": 77
     },
     {
-      "symbol": "FlowerFace_PlayReactA",
+      "symbol": "FlowerFace_PlayLike",
       "address": "0x020c3908",
       "size": "0x00000054",
       "legacy_source": "src/func_ov006_020c3908.c",
       "ordinal": 78
     },
     {
-      "symbol": "FlowerFace_StateReact",
+      "symbol": "FlowerFace_StatePick",
       "address": "0x020c395c",
       "size": "0x00000034",
       "legacy_source": "src/func_ov006_020c395c.c",
