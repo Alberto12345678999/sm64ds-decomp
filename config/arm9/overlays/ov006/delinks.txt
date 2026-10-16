@@ -201,6 +201,9 @@ src/minigames/d_s_mg_smartball.cpp:
 src/minigames/d_s_mg_sound.cpp:
     complete
     .text start:0x02119904 end:0x0211cbd0
+    .init start:0x02132970 end:0x02132f68
+    .ctor start:0x021335d4 end:0x021335d8
+    .bss start:0x02142cc0 end:0x02142e88
 
 src/minigames/d_s_mg_teresa.cpp:
     complete
@@ -264,7 +267,3 @@ src/unnamed/ov006/__sinit_ov006_02130a04.c:
 src/unnamed/ov006/__sinit_ov006_021322bc.c:
     complete
     .init start:0x021322bc end:0x02132894
-
-src/unnamed/ov006/__sinit_ov006_02132970.c:
-    complete
-    .init start:0x02132970 end:0x02132f68

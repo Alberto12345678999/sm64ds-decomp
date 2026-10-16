@@ -633,7 +633,7 @@
       ]
     },
     "DecompressLZ16": {
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#2 unsigned int"
       ],
       "src/game/actors/d_a_demo.cpp": [
@@ -1019,7 +1019,7 @@
       ]
     },
     "IsStarCollected": {
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#1 int"
       ],
       "src/ui/hud/d_map.cpp": [
@@ -1208,7 +1208,7 @@
       ]
     },
     "LoadFile": {
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void *"
       ],
       "src/_ZN5Model14LoadAndSetFileEtii.cpp": [
@@ -6181,6 +6181,11 @@
         "param:#1 void *"
       ]
     },
+    "_ZN15dExtFrameCtrl_c4CopyERKS_": {
+      "include/decl_Animation.h": [
+        "param:#2 const void *"
+      ]
+    },
     "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/game/actors/d_a_demo.cpp": [
         "return:int"
@@ -7804,7 +7809,7 @@
       "src/game/actors/d_a_obj_rc_carpet.cpp": [
         "return:void"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
@@ -11267,6 +11272,28 @@
         "param:#2 Vector3 *"
       ]
     },
+    "_ZNK15dExtFrameCtrl_c12WillHitFrameEi": {
+      "include/decl_Animation.h": [
+        "return:int"
+      ],
+      "src/minigames/d_mg3d_esp_anim_set.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int"
+      ],
+      "src/minigames/unit020bfec0.cpp": [
+        "return:int"
+      ]
+    },
+    "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
+      "include/decl_Animation.h": [
+        "return:int"
+      ],
+      "src/game/actors/d_a_kpa_fire.cpp": [
+        "return:int"
+      ]
+    },
     "_ZNK5dBgPi9GetClsnIDEv": {
       "include/decl_dBgPi.h": [
         "return:int"
@@ -11401,6 +11428,9 @@
       ],
       "src/game/stages/d_s_entry_result.cpp": [
         "return:char []"
+      ],
+      "src/game/stages/d_s_stage.cpp": [
+        "return:void * []"
       ]
     },
     "__aeabi_uidiv": {
@@ -11551,7 +11581,7 @@
         "param:#4 void *",
         "param:#5 void *"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#2 int",
         "param:#3 int"
       ],
@@ -11804,7 +11834,7 @@
       "src/game/stages/d_s_mb.cpp": [
         "return:int []"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ],
       "src/game/stages/d_s_entry_entry.cpp": [
@@ -11896,12 +11926,6 @@
     "data_02092128": {
       "src/StartFile.c": [
         "return:unsigned char []"
-      ],
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
-        "return:unsigned char"
-      ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
-        "return:unsigned char"
       ],
       "src/game/stages/LevelObjects.cpp": [
         "return:unsigned char []"
@@ -12033,13 +12057,13 @@
         "return:int"
       ]
     },
-    "data_0209b300": {
+    "gMgSaveDirty": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int []",
         "return:unsigned char []"
       ]
     },
-    "data_0209b308": {
+    "gMgMenuRow": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:char",
         "return:char []",
@@ -12135,12 +12159,6 @@
         "return:unsigned char []"
       ],
       "src/StartFile.c": [
-        "return:unsigned char []"
-      ],
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned char []"
       ],
       "src/_ZN6Player13InitResourcesEv.cpp": [
@@ -13247,7 +13265,7 @@
       "src/LoadLevel.c": [
         "return:unsigned short"
       ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:unsigned short []"
       ],
       "src/game/stages/d_s_title.cpp": [
@@ -15651,16 +15669,16 @@
       "include/decl_common.h": [
         "return:int []"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ]
     },
-    "data_ov004_020b9488": {
+    "sMgCoinRiseFrames": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "return:int"
       ]
     },
-    "data_ov004_020bbfa8": {
+    "sMgSpriteTables": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:char * []",
         "return:int *",
@@ -15668,12 +15686,12 @@
         "return:void * []"
       ]
     },
-    "data_ov004_020beb60": {
+    "sMgWorkBuffer": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int []"
       ]
     },
-    "data_ov004_020beb68": {
+    "gMgScene": {
       "include/dScMgBase_c.h": [
         "return:void *"
       ],
@@ -15696,17 +15714,17 @@
         "return:V *"
       ]
     },
-    "data_ov004_020beb6c": {
+    "sMgTopScreenYOffset": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int []"
       ]
     },
-    "data_ov004_020beb74": {
+    "sMgGraphCallback": {
       "src/unnamed/ov004/__sinit_ov004_020b948c.c": [
         "return:char []"
       ]
     },
-    "data_ov004_020bebe8": {
+    "sMgFxPool": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:Elem []"
       ],
@@ -15714,7 +15732,7 @@
         "return:void *"
       ]
     },
-    "data_ov004_020bf3e8": {
+    "sMgBannerGfxSlotUsed": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:char []"
       ],
@@ -15722,7 +15740,7 @@
         "return:unsigned char []"
       ]
     },
-    "data_ov004_020bf648": {
+    "gMgBanners": {
       "include/decl_common.h": [
         "return:char []"
       ],
@@ -15730,7 +15748,7 @@
         "return:void *"
       ]
     },
-    "data_ov004_020bf9e4": {
+    "gMgCoinsStatus": {
       "src/minigames/d_s_mg_m_carlo.cpp": [
         "return:unsigned short"
       ],
@@ -20740,10 +20758,6 @@
         "return:void"
       ],
       "src/_ZN10dScStage_c8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -27378,12 +27392,12 @@
         "param:#1 char *"
       ]
     },
-    "func_ov004_020ad6f4": {
+    "Mg_GetLastRecordRank": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:2"
       ]
     },
-    "func_ov004_020ad90c": {
+    "Mg_CommitRecords": {
       "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "arity:1"
       ],
@@ -27394,19 +27408,19 @@
         "arity:1"
       ]
     },
-    "func_ov004_020ada40": {
+    "Mg_SetSessionBest": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:1",
         "return:int"
       ]
     },
-    "func_ov004_020adc3c": {
+    "Mg_GetSaveTable": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:0",
         "return:unsigned int"
       ]
     },
-    "func_ov004_020adc68": {
+    "Ov004_LoadFile": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:1",
         "return:void *"
@@ -27424,23 +27438,23 @@
         "return:void *"
       ]
     },
-    "func_ov004_020adc74": {
+    "Ov004_LoadFileByPath": {
       "src/minigames/d_s_mg_curling.cpp": [
         "return:char *"
       ]
     },
-    "func_ov004_020adf2c": {
+    "Mg_UpdateFx": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov004_020adf70": {
+    "Mg_InitFx": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 char *",
         "param:#4 short"
       ]
     },
-    "func_ov004_020adfc4": {
+    "Mg_SpawnFx": {
       "src/minigames/d_s_mg_coin.cpp": [
         "arity:5"
       ],
@@ -27448,7 +27462,7 @@
         "arity:5"
       ]
     },
-    "func_ov004_020ae5c4": {
+    "Mg_DrawLine": {
       "src/minigames/d_s_mg_amida.cpp": [
         "return:int"
       ],
@@ -27460,14 +27474,14 @@
         "return:int"
       ]
     },
-    "func_ov004_020aea30": {
+    "Mg_DrawSpriteList": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 int"
       ]
     },
-    "func_ov004_020aea78": {
+    "Mg_DrawSpriteListEntry": {
       "include/decl_common.h": [
         "param:#2 void *",
         "param:#3 void *",
@@ -27479,17 +27493,17 @@
         "return:int"
       ]
     },
-    "func_ov004_020af2f8": {
+    "Mg_InitBrush": {
       "include/decl_common.h": [
         "param:#2 int"
       ]
     },
-    "func_ov004_020af5e0": {
+    "Mg_CopySpriteList": {
       "src/minigames/unit020b2c84.cpp": [
         "arity:4"
       ]
     },
-    "func_ov004_020af770": {
+    "Mg_RenderSubSpriteScaled": {
       "src/minigames/d_s_mg_flower.cpp": [
         "param:#1 void *",
         "return:void"
@@ -27499,7 +27513,7 @@
         "return:void"
       ]
     },
-    "func_ov004_020af948": {
+    "Mg_RenderSubSpriteMtx": {
       "src/minigames/d_s_mg_curling.cpp": [
         "param:#1 int",
         "param:#4 int"
@@ -27509,7 +27523,7 @@
         "param:#4 int"
       ]
     },
-    "func_ov004_020afb20": {
+    "Mg_RenderMainSpriteScaled": {
       "include/decl_common.h": [
         "param:#1 void *"
       ],
@@ -27517,7 +27531,7 @@
         "return:char *"
       ]
     },
-    "func_ov004_020afdd0": {
+    "Mg_RenderSpriteBoth": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int"
       ],
@@ -27530,23 +27544,23 @@
         "return:int"
       ]
     },
-    "func_ov004_020aff38": {
+    "Mg_RenderSpriteBothScaled": {
       "src/minigames/d_s_mg_pachinko2.cpp": [
         "param:#1 int",
         "return:void"
       ]
     },
-    "func_ov004_020b0e84": {
+    "Mg_DrawTally": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 unsigned int"
       ]
     },
-    "func_ov004_020b1710": {
+    "Mg_DrawRecordRow": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 void *"
       ]
     },
-    "func_ov004_020b19f0": {
+    "Mg_DrawTopLeftCounter": {
       "src/minigames/d_s_mg_curling.cpp": [
         "param:#1 int"
       ],
@@ -27558,17 +27572,17 @@
         "return:void"
       ]
     },
-    "func_ov004_020b1a5c": {
+    "Mg_DrawTopRightCounter": {
       "src/minigames/d_s_mg_pachinko.cpp": [
         "return:int"
       ]
     },
-    "func_ov004_020b1b08": {
+    "Mg_LoseCredits": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ]
     },
-    "func_ov004_020b1b40": {
+    "Mg_GainCredits": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ],
@@ -27576,30 +27590,30 @@
         "param:#1 int"
       ]
     },
-    "func_ov004_020b1b78": {
+    "Mg_SubCredits": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 void *"
       ]
     },
-    "func_ov004_020b1ba0": {
+    "Mg_AddCredits": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 void *"
       ]
     },
-    "func_ov004_020b1d60": {
+    "Mg_RenderSpriteOnNoMtx": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:4",
         "param:#1 int",
         "return:int"
       ]
     },
-    "func_ov004_020b1ea4": {
+    "Mg_DrawNumber": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#3 void *",
         "return:int"
       ]
     },
-    "func_ov004_020b2220": {
+    "Mg_DrawNumberRotated": {
       "src/minigames/d_s_mg_curling.cpp": [
         "param:#7 int"
       ],
@@ -27625,24 +27639,24 @@
         "return:void"
       ]
     },
-    "func_ov004_020b321c": {
+    "Banner_Update": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov004_020b3278": {
+    "Banner_Init": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 Elem *",
         "param:#3 int",
         "param:#4 int"
       ]
     },
-    "func_ov004_020b40c0": {
+    "Banner_IsPressFinished": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 Obj004 *"
       ]
     },
-    "func_ov004_020b422c": {
+    "Banner_Press": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 Obj004 *"
       ]
@@ -27662,7 +27676,7 @@
         "kind:data"
       ]
     },
-    "func_ov004_020b56c8": {
+    "MgCoins_StartPayout": {
       "src/minigames/d_s_mg_bsc.cpp": [
         "param:#1 int"
       ],
@@ -27677,22 +27691,22 @@
         "arity:0"
       ]
     },
-    "func_ov004_020b66d4": {
+    "MgCoins_Reset": {
       "src/minigames/d_s_mg_m_carlo.cpp": [
         "arity:1"
       ]
     },
-    "func_ov004_020b8a8c": {
+    "Mg_ResetBannerLayout": {
       "include/decl_common.h": [
         "arity:1"
       ]
     },
-    "func_ov004_020b8f78": {
+    "_ZN10dMgPsOpt_c6UpdateEv": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ]
     },
-    "func_ov006_020c0aa8": {
+    "Camera_InitDealerView": {
       "src/minigames/d_s_mg_memory.cpp": [
         "param:#1 char *"
       ],
@@ -27703,32 +27717,32 @@
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c1164": {
+    "Dealer_StartReveal": {
       "include/decl_common.h": [
         "param:#3 void *"
       ]
     },
-    "func_ov006_020c1420": {
+    "Dealer_StartCollect": {
       "src/minigames/d_s_mg_card.cpp": [
         "param:#3 void *"
       ]
     },
-    "func_ov006_020c1604": {
+    "Dealer_StartDeal": {
       "src/minigames/d_s_mg_m_carlo2.cpp": [
         "param:#4 void *"
       ]
     },
-    "func_ov006_020c1718": {
+    "Dealer_IsIdle": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c19d0": {
+    "Dealer_Update": {
       "src/minigames/d_s_mg_memory.cpp": [
         "return:int"
       ]
     },
-    "func_ov006_020c1d80": {
+    "Dealer_Construct": {
       "include/dScMgCard_c.h": [
         "return:void"
       ],
@@ -27736,27 +27750,27 @@
         "return:void"
       ]
     },
-    "func_ov006_020c1eb4": {
+    "Camera_InitSlotsView": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c201c": {
+    "Mascot_Draw": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c225c": {
+    "Camera_InitPresenterView": {
       "src/minigames/d_s_mg_cup.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c2b8c": {
+    "Presenter_Update": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c33dc": {
+    "Presenter_Construct": {
       "src/minigames/d_s_mg_cup.cpp": [
         "return:void"
       ],
@@ -27764,95 +27778,95 @@
         "return:void"
       ]
     },
-    "func_ov006_020c3b80": {
+    "FlowerFace_IsIdle": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c3f54": {
+    "FlowerFace_Construct": {
       "src/d_s_mg_flower.cpp": [
         "return:void"
       ]
     },
-    "func_ov006_020c4060": {
+    "Heyho_AllIdle": {
       "src/minigames/d_s_mg_jump2.cpp": [
         "arity:1",
         "return:void *"
       ]
     },
-    "func_ov006_020c4710": {
+    "Heyho_IsChasing": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 struct Obj *"
       ]
     },
-    "func_ov006_020c49d8": {
+    "Heyho_CheckHitB": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c4cd8": {
+    "Heyho_Update": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 struct Obj *"
       ]
     },
-    "func_ov006_020c4f68": {
+    "Heyho_StartMotion11": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 Self *"
       ]
     },
-    "func_ov006_020c57d4": {
+    "Heyho_StartMotion6": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c5aa4": {
+    "Heyho_StartMotion4": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c5cf4": {
+    "Heyho_StartMotion7": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c6248": {
+    "Heyho_StartMotion10": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c6348": {
+    "Heyho_StartMotion14": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c64e4": {
+    "Heyho_React": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 int"
       ]
     },
-    "func_ov006_020c719c": {
+    "Jump3D_Arrange": {
       "include/decl_common.h": [
         "param:#1 int",
         "param:#2 int"
       ]
     },
-    "func_ov006_020c7300": {
+    "Jump3D_AllIdle": {
       "src/minigames/d_s_mg_jump2.cpp": [
         "arity:1",
         "return:void *"
       ]
     },
-    "func_ov006_020c9c8c": {
+    "Trmp2Mario_EnterState1": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "arity:2"
       ]
     },
-    "func_ov006_020ca430": {
+    "Trmp2Mario_Load": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int"
       ]
     },
-    "func_ov006_020ca604": {
+    "Trmp2Mario_Destruct": {
       "include/dScMgTrampoline2_c.h": [
         "arity:0"
       ]
@@ -27862,109 +27876,109 @@
         "arity:1"
       ]
     },
-    "func_ov006_020caa08": {
+    "Trmp2Mario_PlaceAtStart": {
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "arity:1"
       ]
     },
-    "func_ov006_020cac9c": {
+    "Trmp2Mario_ResetAll": {
       "include/decl_common.h": [
         "arity:1"
       ]
     },
-    "func_ov006_020cae9c": {
+    "Trmp2Mario_InitPool": {
       "include/decl_common.h": [
         "param:#1 void *"
       ]
     },
-    "func_ov006_020cc198": {
+    "Trmp3DMario_PickIdleAnim": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int *"
       ]
     },
-    "func_ov006_020ccd78": {
+    "Trmp3DMario_EnterState12": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "func_ov006_020cce0c": {
+    "Trmp3DMario_Load": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 unsigned char *"
       ]
     },
-    "func_ov006_020ccfc8": {
+    "Trmp3DMario_Destruct": {
       "include/dScMgTrampoline_c.h": [
         "arity:0"
       ]
     },
-    "func_ov006_020cd12c": {
+    "Trmp3DMario_Construct": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:0",
         "return:void"
       ]
     },
-    "func_ov006_020cd1e0": {
+    "Trmp3DMario_StartAll": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:1"
       ]
     },
-    "func_ov006_020cd39c": {
+    "Trmp3DMario_UpdateAll": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:1"
       ]
     },
-    "func_ov006_020cd510": {
+    "Trmp3DMario_SetTuning": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "func_ov006_020cd7b8": {
+    "TrmpItem_ProjectToScreen": {
       "src/minigames/unit020cd744.cpp": [
         "param:#2 unsigned short"
       ]
     },
-    "func_ov006_020cd98c": {
+    "TrmpItem_SetMotion7": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020cdc14": {
+    "TrmpItem_SetMotion5": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020cdc68": {
+    "TrmpItem_SetMotion6": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020cdce4": {
+    "TrmpItem_SetMotion4": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020cde28": {
+    "TrmpItem_SetMotion3": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020cde7c": {
+    "TrmpItem_SetMotion2": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020ce674": {
+    "TrmpItem_HitTest2D": {
       "src/minigames/unit020cd744.cpp": [
         "arity:3"
       ]
     },
-    "func_ov006_020ce8a0": {
+    "TrmpItem_ProjectOnLine": {
       "src/minigames/unit020cd744.cpp": [
         "param:#3 V2 *",
         "param:#4 V2 *"
       ]
     },
-    "func_ov006_020ceabc": {
+    "TrmpItem_Init": {
       "src/minigames/unit020cd744.cpp": [
         "param:#2 int",
         "param:#3 int",
@@ -27972,27 +27986,27 @@
         "return:int"
       ]
     },
-    "func_ov006_020cee5c": {
+    "TrmpItem_HideAll": {
       "include/decl_common.h": [
         "arity:1"
       ]
     },
-    "func_ov006_020cefa4": {
+    "TrmpItem_Spawn": {
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "param:#2 int *"
       ]
     },
-    "func_ov006_020cf040": {
+    "TrmpLine_PointDistance": {
       "src/minigames/unit020cd744.cpp": [
         "param:#3 Vector3 *"
       ]
     },
-    "func_ov006_020d01e0": {
+    "TrmpLine_Build": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 short *"
       ]
     },
-    "func_ov006_020d0b04": {
+    "TrmpLine_ClearAll": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:1"
       ],
@@ -28000,7 +28014,7 @@
         "arity:1"
       ]
     },
-    "func_ov006_020d0c38": {
+    "TrmpLine_Create": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "param:#1 Vec2s *",
         "param:#2 Vec2s *"
@@ -28010,17 +28024,17 @@
         "param:#2 unsigned short *"
       ]
     },
-    "func_ov006_020d0fe4": {
+    "TrmpLine_CleanupAll": {
       "src/unnamed/ov006/__sinit_ov006_0212fc7c.c": [
         "return:int"
       ]
     },
-    "func_ov006_020d1008": {
+    "TrmpLine_Destroy": {
       "src/unnamed/ov006/__sinit_ov006_0212fc7c.c": [
         "return:int"
       ]
     },
-    "func_ov006_020d100c": {
+    "TrmpLine_Reset": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:0"
       ],
@@ -28032,7 +28046,7 @@
         "return:int"
       ]
     },
-    "func_ov006_020e6e3c": {
+    "D3D_PlaySeAtX": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:void"
       ],
@@ -28046,7 +28060,7 @@
         "return:void"
       ]
     },
-    "func_ov006_0210a534": {
+    "LoadCard2SubBg3": {
       "src/minigames/d_s_mg_card.cpp": [
         "arity:1"
       ],
@@ -28057,12 +28071,12 @@
         "arity:1"
       ]
     },
-    "func_ov006_02122b88": {
+    "Trmp2Spinner_InitAll": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 int"
       ]
     },
-    "func_ov006_02122c68": {
+    "Trmp2Spinner_Destruct": {
       "include/decl_common.h": [
         "return:void"
       ]

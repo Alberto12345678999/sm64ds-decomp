@@ -20,18 +20,18 @@ enum dScMgSmartball_c_AssetId {
  */
 
 // leftovers:
-// - func_ov006_02112ad8 (the ball per-frame physics) stays a free extern "C"
+// - SmartballBall_UpdatePhysics (the ball per-frame physics) stays a free extern "C"
 //   function. Compiled as C++ -- as a cMgSmartball_ball_c member or a plain
 //   free function -- mwccarm folds `angle / 0x20` into a `+= 0x800` induction
 //   accumulator in the two fan-response loops (53 words differ); the C front
 //   end keeps the divide sequence. Its callers call it by name.
-// - The twelve constructor-shaped helpers (func_ov006_0210e0d0,
-//   func_ov006_0210e480, func_ov006_0210f9f8, func_ov006_021101bc,
-//   func_ov006_02110874, func_ov006_02110bc0, func_ov006_02111220,
-//   func_ov006_0211157c, func_ov006_02111774, func_ov006_02111b40,
-//   func_ov006_02114548, func_ov006_0211474c) stay free: they placement-
-//   construct objects they do not own. func_ov006_0210d894 and
-//   func_ov006_02119900 are the manager array element destructor and the
+// - The twelve constructor-shaped helpers (cMgSmartball_wing_c_Construct,
+//   cMgSmartball_pushswitch_c_Construct, cMgSmartball_board_c_Construct, cMgSmartball_slot_c_Construct,
+//   cMgSmartball_pakkun_c_Construct, cMgSmartball_dokan_c_Construct, cMgSmartball_propeller_c_Construct,
+//   cMgSmartball_spring_c_Construct, cMgSmartball_ana_c_Construct, cMgSmartball_kinoko_c_Construct,
+//   cMgSmartball_ball_c_Construct, cMgSmartball_object_c_Construct) stay free: they placement-
+//   construct objects they do not own. SmartballObj_ElemDtor and
+//   SmartballObj_ElemCtor are the manager array element destructor and the
 //   empty final hook.
 // - The shadow structs below (Obj, Mgr, State2, S, A, Owl, C, SBoard,
 //   SArrays, ...) remain TU-local reconstructions; none has a proven
@@ -161,7 +161,7 @@ struct A { int f0; int f4; };
 typedef unsigned char u8;
 
 /* shadow 'Mgr2' (was 'Mgr') -- 1 member(s).
-   func_ov006_02113c14.c's coarser model of what func_ov006_02112ad8.c calls Mgr. */
+   func_ov006_02113c14.c's coarser model of what SmartballBall_UpdatePhysics.c calls Mgr. */
 struct Mgr2 {
     char pad0[8];
     int flags;                 /* 0x8 */
@@ -198,7 +198,7 @@ struct TVec2 { int x; int y; ~TVec2() {} };
 typedef void (*VFunc)(void*);
 
 /* shadow 'State2' (was 'State') -- 1 member(s).
-   func_ov006_02112ad8.c's search state. */
+   SmartballBall_UpdatePhysics.c's search state. */
 typedef struct State2 {
     int flags[7];
     int iteration;
@@ -300,7 +300,7 @@ extern long long func_0203d5bc(int* p);
    argument int and two spell it a pointer, and of its call sites in this file
    all but two pass an int. The int spelling is kept and those two sites read
    their table entry the same way the other eighty do. */
-extern "C" void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4);
+extern "C" void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern "C" struct OamAttr *data_ov006_02137684[];
 extern "C" void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii( int sub, struct OamAttr *data, s32 x, s32 y, s32 palette, s32 priority, Fix12i scaleX, Fix12i scaleY, s32 rotation, s32 mode);
 extern int Vec2_Len(Vec2 *v);
@@ -348,16 +348,16 @@ extern "C" int func_0203d524(V2 *a, V2 *b);
 extern int func_0203d4d0(void* p, int* a, int* b);
 extern OamAttr *data_ov006_021387a4[];
 extern OamAttr *data_ov006_02138364[];
-extern void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6);
-extern void func_ov004_020ae274(void* c);
-extern "C" int func_ov004_020adbc0(void);
-extern "C" void func_ov004_020adb1c(int self);
+extern void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
+extern void Mg_PlayJingle(void* c);
+extern "C" int Mg_GetSubmittedScore(void);
+extern "C" void Mg_SubmitScore(int self);
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern void _ZN6Memory16operator_delete2EPv(void *p);
 extern void __cxa_vec_cleanup(void *p, int a, int b, void *cb);
-extern void func_ov004_020b04d0(int a);
+extern void Mg_SetTopScreenYOffset(int a);
 extern void func_02057d00(void *dst, void *src, int flag);
-extern void *func_ov004_020adc74(void *p);
+extern void *Ov004_LoadFileByPath(void *p);
 extern void DecompressLZ16(void *src, void *dst);
 extern void Ov004_Deallocate(void *p);
 extern u16 *_ZN2G212GetBG2ScrPtrEv(void);
@@ -385,12 +385,12 @@ extern int data_ov006_0213f1a8[];
 extern int data_ov006_0213f1d8[];
 extern int data_ov006_0213f208[];
 extern int data_ov006_0213f234[];
-void func_ov004_020b1ea4(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
+void Mg_DrawNumber(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
 int GetGameLanguage(void);
-int func_ov004_020adc1c(void);
-void func_ov004_020b1a5c(int a0, int a1);
-int func_ov004_020b19f0(void *self);
-void func_ov004_020b0d8c(void *c, int a1, int a2);
+int Mg_GetTopRecord(void);
+void Mg_DrawTopRightCounter(int a0, int a1);
+int Mg_DrawTopLeftCounter(void *self);
+void Mg_DrawBlinkSprite(void *c, int a1, int a2);
 extern OamAttr *data_ov006_02138ae0[];
 extern char *data_ov006_0213ecb8[];
 extern int data_ov006_0212edfc[];
@@ -469,20 +469,20 @@ extern int _ZTV19cMgSmartball_wing_c[];
 /* Local helper declarations. */
 /* These declarations also cover helpers called before their ROM-ordered definition. */
 extern "C" {
-char *func_ov006_0210e0d0(char *self, int x, int y, struct V2ab *src);
-char *func_ov006_02111b40(char *self, int x, int y, struct V2ab *src);
-int func_ov006_0210e480(char* c, int b, int d, int* s);
-int func_ov006_0210f9f8(char* c, int b, int d, int* s);
-int func_ov006_02110874(char* c, int b, int d, int* s);
-int func_ov006_02110bc0(char* c, int b, int d, int* s);
-int func_ov006_02111220(char* c, int b, int d, int* s);
-int func_ov006_0211157c(char* c, int b, int d, int* s);
-int func_ov006_02111774(char* c, int b, int d, int* s);
-int func_ov006_02114548(char* c, int b, int d, int* s);
+char *cMgSmartball_wing_c_Construct(char *self, int x, int y, struct V2ab *src);
+char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, struct V2ab *src);
+int cMgSmartball_pushswitch_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_board_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_pakkun_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_dokan_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_propeller_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_spring_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_ana_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_ball_c_Construct(char* c, int b, int d, int* s);
 void CopyObjectVel(int *a, int *b);
 void CopyObjectPos(int *a, int *b);
-void func_ov006_02112ad8(Obj *self);
-void* func_ov006_021101bc(char* c, int a1, int a2, int* src);
+void SmartballBall_UpdatePhysics(Obj *self);
+void* cMgSmartball_slot_c_Construct(char* c, int a1, int a2, int* src);
 }
 
 /* Declarations this TU still needs from the shared common header, which is
@@ -497,13 +497,13 @@ extern int data_ov004_020bc888;
 extern int data_ov006_0213eccc[];
 extern int func_02054d88(void);
 extern void SetSubBg1Offset(int, int);
-extern void func_ov004_020ae20c(void);
-extern void func_ov004_020b0a54(int);
+extern void Mg_RestoreMusic(void);
+extern void Mg_SetSharedState(int);
 }
 
 extern "C" {
 void GetObjectDelta(void* a, char* b);
-void func_ov006_0211474c(char* c, int a1, int a2, int* a3);
+void cMgSmartball_object_c_Construct(char* c, int a1, int a2, int* a3);
 }
 
 #define LN(base, off) (*(int *)((((int)(base)) + (off))))
@@ -544,14 +544,14 @@ extern "C" {
    D0; declaring the destructor is enough. */
 dScMgSmartball_c::~dScMgSmartball_c()
 {
-    __cxa_vec_cleanup(mArray4, 0x40, 0x24, (void *)func_ov006_0210d894);
+    __cxa_vec_cleanup(mArray4, 0x40, 0x24, (void *)SmartballObj_ElemDtor);
     __cxa_vec_cleanup(mArray3, 0x10, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mArray2, 0x10, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mArray1, 5, 8, (void *)NullDestructor_0203d47c);
 }
-// @symbol func_ov006_0210d894
+// @symbol SmartballObj_ElemDtor
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210d894(void)
+void SmartballObj_ElemDtor(void)
 {
 }
 }
@@ -680,9 +680,9 @@ int cMgSmartball_wing_c::HitTest(int *p) {
 void cMgSmartball_wing_c::Update()
 {
     if (mTriggerCount <= 1) {
-        func_ov004_020afdd0(data_ov006_02137994[0],
+        Mg_RenderSpriteBoth(data_ov006_02137994[0],
             mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        func_ov004_020afdd0(data_ov006_02137994[1],
+        Mg_RenderSpriteBoth(data_ov006_02137994[1],
             mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
     }
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
@@ -750,13 +750,13 @@ void cMgSmartball_wing_c::RestoreInitial()
     RebuildVerts();
 }
 
-// @symbol func_ov006_0210e0d0
+// @symbol cMgSmartball_wing_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-char *func_ov006_0210e0d0(char *self, int x, int y, struct V2ab *src) {
+char *cMgSmartball_wing_c_Construct(char *self, int x, int y, struct V2ab *src) {
     struct V2ab v;
     v.a = src->a;
     v.b = src->b;
-    func_ov006_0211474c(self, x, y, (int *)&v);
+    cMgSmartball_object_c_Construct(self, x, y, (int *)&v);
     *(void**)(self) = (void *)&_ZTV19cMgSmartball_wing_c[2];
     *(int*)(self + 0x28) = 0x18000;
     *(short*)(self + 0x32) = 0;
@@ -862,13 +862,13 @@ void cMgSmartball_pushswitch_c::RestoreInitial()
     mReleaseDelay = 0;
 }
 
-// @symbol func_ov006_0210e480
+// @symbol cMgSmartball_pushswitch_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0210e480(char* c, int b, int d, int* s){
+int cMgSmartball_pushswitch_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV25cMgSmartball_pushswitch_c[2];
   *(int*)(c+0x28) = 0x8000;
   return (int)c;
@@ -923,15 +923,15 @@ void cMgSmartball_board_c::Update()
             case 1:
             case 2:
                 if (GetOwnerLanguage() == 5)
-                    func_ov004_020afdd0(data_ov006_02138260[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138260[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    func_ov004_020afdd0(data_ov006_021381f0[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021381f0[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    func_ov004_020afdd0(data_ov006_02138180[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138180[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    func_ov004_020afdd0(data_ov006_02138110[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138110[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else
-                    func_ov004_020afdd0(data_ov006_021380a0[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021380a0[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 mCellHighlight[i] = 1;
                 mCellHighlight[i + 3] = 1;
                 mCellHighlight[i + 6] = 1;
@@ -940,45 +940,45 @@ void cMgSmartball_board_c::Update()
             case 4:
             case 5:
                 if (GetOwnerLanguage() == 5)
-                    func_ov004_020afdd0(data_ov006_02138260[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138260[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    func_ov004_020afdd0(data_ov006_021381f0[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021381f0[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    func_ov004_020afdd0(data_ov006_02138180[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138180[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    func_ov004_020afdd0(data_ov006_02138110[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138110[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else
-                    func_ov004_020afdd0(data_ov006_021380a0[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021380a0[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 mCellHighlight[(i - 3) * 3] = 1;
                 mCellHighlight[(i - 3) * 3 + 1] = 1;
                 mCellHighlight[(i - 3) * 3 + 2] = 1;
                 break;
             case 6:
                 if (GetOwnerLanguage() == 5)
-                    func_ov004_020afdd0(data_ov006_02138260[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138260[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    func_ov004_020afdd0(data_ov006_021381f0[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021381f0[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    func_ov004_020afdd0(data_ov006_02138180[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138180[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    func_ov004_020afdd0(data_ov006_02138110[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138110[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else
-                    func_ov004_020afdd0(data_ov006_021380a0[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021380a0[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 mCellHighlight[0] = 1;
                 mCellHighlight[4] = 1;
                 mCellHighlight[8] = 1;
                 break;
             case 7:
                 if (GetOwnerLanguage() == 5)
-                    func_ov004_020afdd0(data_ov006_02138260[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138260[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    func_ov004_020afdd0(data_ov006_021381f0[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021381f0[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    func_ov004_020afdd0(data_ov006_02138180[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138180[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    func_ov004_020afdd0(data_ov006_02138110[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02138110[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 else
-                    func_ov004_020afdd0(data_ov006_021380a0[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_021380a0[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
                 mCellHighlight[2] = 1;
                 mCellHighlight[4] = 1;
                 mCellHighlight[6] = 1;
@@ -999,9 +999,9 @@ void cMgSmartball_board_c::Update()
             idx = j + 2;
 
         if (ang == 0 || ang == 0x8000) {
-            func_ov004_020afdd0(data_ov006_02137fb8[idx], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
+            Mg_RenderSpriteBoth(data_ov006_02137fb8[idx], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
         } else if ((ang >= 0x3c00 && ang <= 0x4400) || (ang >= -0x3c00 && ang <= -0x4400)) {
-            func_ov004_020afdd0(data_ov006_02137fb8[1], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
+            Mg_RenderSpriteBoth(data_ov006_02137fb8[1], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
         } else {
             s32 vec[4];
 
@@ -1018,7 +1018,7 @@ void cMgSmartball_board_c::Update()
     }
 
     for (k = 0; k < 9; k++) {
-        func_ov004_020afdd0(data_ov006_0213807c[data_ov006_02142c1c[k]], k * 0x18 + 0x10, 0x78, -1, 1);
+        Mg_RenderSpriteBoth(data_ov006_0213807c[data_ov006_02142c1c[k]], k * 0x18 + 0x10, 0x78, -1, 1);
     }
 }
 
@@ -1475,13 +1475,13 @@ void cMgSmartball_board_c::ShuffleCells(){
   }
 }
 
-// @symbol func_ov006_0210f9f8
+// @symbol cMgSmartball_board_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0210f9f8(char* c, int b, int d, int* s){
+int cMgSmartball_board_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV20cMgSmartball_board_c[2];
   *(int*)(c+0x28) = 0x18000;
   return (int)c;
@@ -1521,7 +1521,7 @@ void cMgSmartball_slot_c::BeginStop()
   for (i = 0; i < 3; i++)
   {
     *((unsigned char *) ((c + i) + 0x70)) = z;
-    (&self->unk_064)[i] = ((((((unsigned) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 3) >> 15) + 3;
+    (&self->mLastRecordRank)[i] = ((((((unsigned) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 3) >> 15) + 3;
   }
 
 }
@@ -1685,7 +1685,7 @@ void cMgSmartball_slot_c::Update()
     for (i = 0, x = 0; i < 3; i++, x += 0x18) {
         if (1) {
         }
-        func_ov004_020afdd0(data_ov006_021379dc, inline_fn(mCurrent0 >> 12, x - 0x18), mCurrent1 >> 12, -1, 2);
+        Mg_RenderSpriteBoth(data_ov006_021379dc, inline_fn(mCurrent0 >> 12, x - 0x18), mCurrent1 >> 12, -1, 2);
     }
 
     i = 0;
@@ -1693,10 +1693,10 @@ void cMgSmartball_slot_c::Update()
 second_loop:
     {
         xo = (x - 0x18) & 0xFFFFFFFFFFFFFFFF;
-        func_ov004_020afdd0(data_ov006_021379e8, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12), -1, 3);
-        func_ov004_020afdd0(data_ov006_02137a00, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x10, -1, 3);
-        func_ov004_020afdd0(data_ov006_021379f4, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x20, -1, 3);
-        func_ov004_020afdd0(data_ov006_021379e8, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x30, -1, 3);
+        Mg_RenderSpriteBoth(data_ov006_021379e8, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12), -1, 3);
+        Mg_RenderSpriteBoth(data_ov006_02137a00, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x10, -1, 3);
+        Mg_RenderSpriteBoth(data_ov006_021379f4, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x20, -1, 3);
+        Mg_RenderSpriteBoth(data_ov006_021379e8, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x30, -1, 3);
         x += 0x18;
         i++;
         if (i < 3)
@@ -1759,13 +1759,13 @@ void cMgSmartball_slot_c::RestoreInitial()
     mSoundHandle = 0;
 }
 
-// @symbol func_ov006_021101bc
+// @symbol cMgSmartball_slot_c_Construct
 extern "C" {
-void* func_ov006_021101bc(char* c, int a1, int a2, int* src){
+void* cMgSmartball_slot_c_Construct(char* c, int a1, int a2, int* src){
     int tmp[2];
     tmp[0] = src[0];
     tmp[1] = src[1];
-    func_ov006_0211474c(c, a1, a2, tmp);
+    cMgSmartball_object_c_Construct(c, a1, a2, tmp);
     *(void***)c = (void**)&_ZTV19cMgSmartball_slot_c[2];
     __cxa_vec_ctor(c + 0x34, 3, 8, func_0203d738, NullDestructor_0203d47c);
     __cxa_vec_ctor(c + 0x4c, 3, 8, func_0203d738, NullDestructor_0203d47c);
@@ -1888,11 +1888,11 @@ void cMgSmartball_pakkun_c::Update()
             RenderOamBothScreens(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2, &vec);
         } else {
             if (unk_031 != 0) {
-                func_ov004_020afdd0(data_ov006_02137630[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 0);
-                func_ov004_020afdd0(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+                Mg_RenderSpriteBoth(data_ov006_02137630[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 0);
+                Mg_RenderSpriteBoth(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
             } else {
-                func_ov004_020afdd0(data_ov006_02137630[1], mCurrent0 >> 12, mCurrent1 >> 12, -1, 0);
-                func_ov004_020afdd0(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+                Mg_RenderSpriteBoth(data_ov006_02137630[1], mCurrent0 >> 12, mCurrent1 >> 12, -1, 0);
+                Mg_RenderSpriteBoth(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
             }
         }
     }
@@ -1964,13 +1964,13 @@ void cMgSmartball_pakkun_c::RestoreInitial()
     mActionTimer = 0;
 }
 
-// @symbol func_ov006_02110874
+// @symbol cMgSmartball_pakkun_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02110874(char* c, int b, int d, int* s){
+int cMgSmartball_pakkun_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV21cMgSmartball_pakkun_c[2];
   *(int*)(c+0x28) = 0x14000;
   return (int)c;
@@ -2003,11 +2003,11 @@ void cMgSmartball_dokan_c::Update()
     int flag = 0;
     if (*(int *)((char *)mpManager + 0x4660))
         flag = 1;
-    func_ov004_020afdd0(data_ov006_0213ec04[0], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x40, -1, flag);
-    func_ov004_020afdd0(data_ov006_0213ec04[1], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x30, -1, flag);
-    func_ov004_020afdd0(data_ov006_0213ec04[1], mCurrent0 >> 12, mCurrent1 >> 12, -1, flag);
-    func_ov004_020afdd0(data_ov006_0213ec04[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x10, -1, flag);
-    func_ov004_020afdd0(data_ov006_0213ec04[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x20, -1, flag);
+    Mg_RenderSpriteBoth(data_ov006_0213ec04[0], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x40, -1, flag);
+    Mg_RenderSpriteBoth(data_ov006_0213ec04[1], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x30, -1, flag);
+    Mg_RenderSpriteBoth(data_ov006_0213ec04[1], mCurrent0 >> 12, mCurrent1 >> 12, -1, flag);
+    Mg_RenderSpriteBoth(data_ov006_0213ec04[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x10, -1, flag);
+    Mg_RenderSpriteBoth(data_ov006_0213ec04[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x20, -1, flag);
 }
 
 // @symbol _ZN20cMgSmartball_dokan_c12SaveSnapshotEv
@@ -2071,13 +2071,13 @@ void cMgSmartball_dokan_c::RestoreInitial()
     cMgSmartball_object_c::RestoreInitial();
 }
 
-// @symbol func_ov006_02110bc0
+// @symbol cMgSmartball_dokan_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02110bc0(char* c, int b, int d, int* s){
+int cMgSmartball_dokan_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV20cMgSmartball_dokan_c[2];
   *(int*)(c+0x28) = 0x20000;
   return (int)c;
@@ -2258,13 +2258,13 @@ void cMgSmartball_propeller_c::RestoreInitial()
     RebuildVerts();
 }
 
-// @symbol func_ov006_02111220
+// @symbol cMgSmartball_propeller_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02111220(char* c, int b, int d, int* s){
+int cMgSmartball_propeller_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV24cMgSmartball_propeller_c[2];
   *(int*)(c+0x28) = 0x20000;
   return (int)c;
@@ -2278,11 +2278,11 @@ int func_ov006_02111220(char* c, int b, int d, int* s){
 void cMgSmartball_spring_c::Update()
 {
     if ((*(int *)((char *)mpManager + 8) & 0xff) == 0) {
-        func_ov004_020afdd0(data_ov006_02138a20[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        func_ov004_020afdd0(data_ov006_02138a20[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+        Mg_RenderSpriteBoth(data_ov006_02138a20[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+        Mg_RenderSpriteBoth(data_ov006_02138a20[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
     } else {
-        func_ov004_020afdd0(data_ov006_02138a38[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        func_ov004_020afdd0(data_ov006_02138a38[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+        Mg_RenderSpriteBoth(data_ov006_02138a38[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+        Mg_RenderSpriteBoth(data_ov006_02138a38[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
     }
 }
 
@@ -2383,13 +2383,13 @@ void cMgSmartball_spring_c::RestoreInitial()
     mSoundHandle = 0;
 }
 
-// @symbol func_ov006_0211157c
+// @symbol cMgSmartball_spring_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0211157c(char* c, int b, int d, int* s){
+int cMgSmartball_spring_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV21cMgSmartball_spring_c[2];
   *(int*)(c+0x28) = 0x20000;
   return (int)c;
@@ -2435,10 +2435,10 @@ void cMgSmartball_ana_c::Update()
         else if (v < 0x28) idx = 1;
         else idx = 0;
         if (idx >= 1) {
-            func_ov004_020afdd0(data_ov006_02138318[idx], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 2);
+            Mg_RenderSpriteBoth(data_ov006_02138318[idx], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 2);
         }
     }
-    func_ov004_020afdd0(data_ov006_02138318[0], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 3);
+    Mg_RenderSpriteBoth(data_ov006_02138318[0], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 3);
 }
 
 // @symbol _ZN18cMgSmartball_ana_c12SaveSnapshotEv
@@ -2480,13 +2480,13 @@ void cMgSmartball_ana_c::RestoreInitial()
     mRespawnTimer = 0;
 }
 
-// @symbol func_ov006_02111774
+// @symbol cMgSmartball_ana_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02111774(char* c, int b, int d, int* s){
+int cMgSmartball_ana_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV18cMgSmartball_ana_c[2];
   *(int*)(c+0x28) = 0x10000;
   return (int)c;
@@ -2495,7 +2495,7 @@ int func_ov006_02111774(char* c, int b, int d, int* s){
 
 // @symbol _ZN21cMgSmartball_kinoko_c6UpdateEv
 /* Slot 1. Switches on mVariant (see the header): state 0 draws two base
- * sprites via func_ov004_020afdd0; state 1 computes an ease vector from the
+ * sprites via Mg_RenderSpriteBoth; state 1 computes an ease vector from the
  * base's mRadius (bails out once mRadius < 0x1000) and draws two mirrored
  * sprites via RenderOamBothScreens; there is no case for state 2, so
  * nothing renders. */
@@ -2503,8 +2503,8 @@ void cMgSmartball_kinoko_c::Update()
 {
     switch (mVariant) {
     case 0:
-        func_ov004_020afdd0(data_ov006_0213765c[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        func_ov004_020afdd0(data_ov006_0213765c[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+        Mg_RenderSpriteBoth(data_ov006_0213765c[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+        Mg_RenderSpriteBoth(data_ov006_0213765c[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
         break;
     case 1:
         {
@@ -2616,13 +2616,13 @@ void cMgSmartball_kinoko_c::RestoreInitial()
     mHitTimer = 0;
 }
 
-// @symbol func_ov006_02111b40
+// @symbol cMgSmartball_kinoko_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-char *func_ov006_02111b40(char *self, int x, int y, struct V2ab *src) {
+char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, struct V2ab *src) {
     struct V2ab v;
     v.a = src->a;
     v.b = src->b;
-    func_ov006_0211474c(self, x, y, (int *)&v);
+    cMgSmartball_object_c_Construct(self, x, y, (int *)&v);
     *(void**)(self) = (void *)&_ZTV21cMgSmartball_kinoko_c[2];
     *(int*)(self + 0x28) = 0x7000;
     *(int*)(self + 0x34) = 2;
@@ -3069,7 +3069,7 @@ void cMgSmartball_ball_c::QueueBehind()
 
     if (val == cur) {
         if (*(u8 *)(c + 0x121) != 0) {
-            func_ov006_02112ad8((Obj *)c);
+            SmartballBall_UpdatePhysics((Obj *)c);
             return;
         }
     }
@@ -3121,13 +3121,13 @@ block2:
     }
 }
 
-// @symbol func_ov006_02112ad8
+// @symbol SmartballBall_UpdatePhysics
 #pragma push
 #pragma opt_strength_reduction off
 /* The equal-arm owner selection below preserves mwccarm's address rematerialization. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 
-void func_ov006_02112ad8(Obj *self)
+void SmartballBall_UpdatePhysics(Obj *self)
 {
     State2 state;
     V2xz work;
@@ -3732,11 +3732,11 @@ void cMgSmartball_ball_c::Update()
     if ((*(int *)((char *)mpManager + 8) & 0xff) == 0) {
         int x = mCurrent0;
         int y = mCurrent1;
-        func_ov004_020afdd0(data_ov006_021382e0[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
+        Mg_RenderSpriteBoth(data_ov006_021382e0[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
     } else {
         int x = mCurrent0;
         int y = mCurrent1;
-        func_ov004_020afdd0(data_ov006_021382f8[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
+        Mg_RenderSpriteBoth(data_ov006_021382f8[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
     }
 }
 
@@ -3880,7 +3880,7 @@ bounce:
     if (mIsWaiting == 1) {
         QueueBehind();
     } else {
-        func_ov006_02112ad8((Obj *)(char *)this);
+        SmartballBall_UpdatePhysics((Obj *)(char *)this);
         if (mExitGateOpen == 0) {
             vc.x = 0x20000;
             vc.z = -0x8000;
@@ -3959,13 +3959,13 @@ void cMgSmartball_ball_c::RestoreInitial()
     mExitGateOpen = 0;
 }
 
-// @symbol func_ov006_02114548
+// @symbol cMgSmartball_ball_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02114548(char* c, int b, int d, int* s){
+int cMgSmartball_ball_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV19cMgSmartball_ball_c[2];
   *(int*)(c+0x28) = 0x8000;
   return (int)c;
@@ -4060,9 +4060,9 @@ void cMgSmartball_object_c::RestoreInitial()
     mCurrent1 = hi;
 }
 
-// @symbol func_ov006_0211474c
+// @symbol cMgSmartball_object_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0211474c(char* c, int a1, int a2, int* a3){
+void cMgSmartball_object_c_Construct(char* c, int a1, int a2, int* a3){
   int lo, hi;
   *(int*)(c) = (int)&_ZTV21cMgSmartball_object_c[2];
   *(int*)(c+4) = a1;
@@ -4080,12 +4080,12 @@ void func_ov006_0211474c(char* c, int a1, int a2, int* a3){
 }
 }
 
-// @symbol _ZN16dScMgSmartball_c8OnPushedEv
-/* dScMgSmartball_c::OnPushed - recovered from vtable slot identity */
-int dScMgSmartball_c::OnPushed()
+// @symbol _ZN16dScMgSmartball_c16OnGraphCallback3Ev
+/* dScMgSmartball_c::OnGraphCallback3 - slot 25 override */
+int dScMgSmartball_c::OnGraphCallback3()
 {
     void *t = (void *)this;
- return ((dScMgBase_c *)t)->dScMgBase_c::OnPushed() != 0; }
+ return ((dScMgBase_c *)t)->dScMgBase_c::OnGraphCallback3() != 0; }
 
 // @symbol _ZN16dScMgSmartball_c12SparksActiveEv
 int dScMgSmartball_c::SparksActive()
@@ -4209,14 +4209,14 @@ void dScMgSmartball_c::RenderSparks()
         int idx = *(int*)(p + 0x5000 + 0x9b4) / 4 + 8;
         int b = *(unsigned char*)(p + 0x5000 + 0x9bd);
         if (b != 0) idx += 4;
-        func_ov004_020afdd0(data_ov006_02138364[idx],
+        Mg_RenderSpriteBoth(data_ov006_02138364[idx],
                             *(int*)(p + 0x5000 + 0x9a4) >> 12,
                             *(int*)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
       } else {
         int idx = *(int*)(p + 0x5000 + 0x9b4) / 4 + 4;
         int b = *(unsigned char*)(p + 0x5000 + 0x9bd);
         if (b != 0) idx += 4;
-        func_ov004_020afdd0(data_ov006_021387a4[idx],
+        Mg_RenderSpriteBoth(data_ov006_021387a4[idx],
                             *(int*)(p + 0x5000 + 0x9a4) >> 12,
                             *(int*)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
       }
@@ -4292,8 +4292,8 @@ void dScMgSmartball_c::EndRound(){
   *(int*)(c + 0x5958) = 0;
   *(unsigned char*)(c + 0x595c) = 1;
   *(unsigned char*)(c + 0x595d) = 1;
-  func_ov004_020b0cac(6, 0x80, -0x60, -1, -1, 0xd);
-  func_ov004_020ae274(0);
+  Mg_ShowBanner(6, 0x80, -0x60, -1, -1, 0xd);
+  Mg_PlayJingle(0);
   for(i = 0; i < *(int*)(c + 0x4668); i++){
     if(*(unsigned char*)(((i >= 0xd) ? 0 : ((char**)(c + 0x4688))[i]) + 0x30))
       ((cMgSmartball_ball_c *)((i >= 0xd) ? 0 : ((char**)(c + 0x4688))[i]))->Freeze();
@@ -4562,9 +4562,9 @@ extern "C" void dScMgSmartball_c::EmitScore(int* src, int v2, int v3, int v5)
         if (v3 > 0) {
             c->E[i] = v3;
         } else {
-            func_ov004_020adb1c(v2 + func_ov004_020adbc0());
-            if ((unsigned int)func_ov004_020adbc0() > 0xf423f) {
-                func_ov004_020adb1c(0xf423f);
+            Mg_SubmitScore(v2 + Mg_GetSubmittedScore());
+            if ((unsigned int)Mg_GetSubmittedScore() > 0xf423f) {
+                Mg_SubmitScore(0xf423f);
             }
         }
         c->A[i] = v2;
@@ -4574,9 +4574,9 @@ extern "C" void dScMgSmartball_c::EmitScore(int* src, int v2, int v3, int v5)
         c->D[i][1] = src[1];
         return;
     }
-    func_ov004_020adb1c(v2 * v5 + func_ov004_020adbc0());
-    if ((unsigned int)func_ov004_020adbc0() > 0xf423f) {
-        func_ov004_020adb1c(0xf423f);
+    Mg_SubmitScore(v2 * v5 + Mg_GetSubmittedScore());
+    if ((unsigned int)Mg_GetSubmittedScore() > 0xf423f) {
+        Mg_SubmitScore(0xf423f);
     }
 }
 
@@ -4801,7 +4801,7 @@ void dScMgSmartball_c::SpawnObjects()
     dScMgSmartball_c *self = (dScMgSmartball_c *)c;
     V2 pos[25];
 
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
 
     for (int i = 0; i < 0xd; i++) {
         int **slot = (int **)(((long long)(int)(c + i * 4 + 0x4688)));
@@ -4924,63 +4924,63 @@ void dScMgSmartball_c::SpawnObjects()
         }
     }
 
-    func_ov004_020b04d0(0x30);
+    Mg_SetTopScreenYOffset(0x30);
 
     if (GetOwnerLanguage() == 5) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 4) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 3) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 2) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, (int)self->mLevel & 1);
     } else if (((int)self->param1 & 0xff) == 0) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, (int)self->mLevel & 1);
     } else {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f068, (int)self->unk_0bc & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f068, (int)self->mLevel & 1);
     }
     {
-        void *d = func_ov004_020adc74(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
         DecompressLZ16(d, (void *)0x6400000);
         DecompressLZ16(d, (void *)0x6600000);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f090, (int)self->unk_0bc & 1);
+    func_02057d00(data_ov006_02142c40, data_ov006_0213f090, (int)self->mLevel & 1);
     {
-        void *d = func_ov004_020adc74(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
         DecompressLZ16(d, c + 0x4954);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f0c0, (int)self->unk_0bc & 1);
+    func_02057d00(data_ov006_02142c40, data_ov006_0213f0c0, (int)self->mLevel & 1);
     {
-        void *d = func_ov004_020adc74(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
         DecompressLZ16(d, c + 0x5154);
         Ov004_Deallocate(d);
     }
     if (((int)self->param1 & 0xff) == 0) {
-        void *d = func_ov004_020adc74(data_ov006_0213f0f0);
+        void *d = Ov004_LoadFileByPath(data_ov006_0213f0f0);
         DecompressLZ16(d, _ZN2G212GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = func_ov004_020adc74(data_ov006_0213f120);
+        d = Ov004_LoadFileByPath(data_ov006_0213f120);
         DecompressLZ16(d, _ZN3G2S12GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = func_ov004_020adc74(data_ov006_0213f150);
+        d = Ov004_LoadFileByPath(data_ov006_0213f150);
         DecompressLZ16(d, _ZN2G212GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
-        d = func_ov004_020adc74(data_ov006_0213f17c);
+        d = Ov004_LoadFileByPath(data_ov006_0213f17c);
         DecompressLZ16(d, _ZN3G2S12GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
     } else {
-        void *d = func_ov004_020adc74(data_ov006_0213f1a8);
+        void *d = Ov004_LoadFileByPath(data_ov006_0213f1a8);
         DecompressLZ16(d, _ZN2G212GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = func_ov004_020adc74(data_ov006_0213f1d8);
+        d = Ov004_LoadFileByPath(data_ov006_0213f1d8);
         DecompressLZ16(d, _ZN3G2S12GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = func_ov004_020adc74(data_ov006_0213f208);
+        d = Ov004_LoadFileByPath(data_ov006_0213f208);
         DecompressLZ16(d, _ZN2G212GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
-        d = func_ov004_020adc74(data_ov006_0213f234);
+        d = Ov004_LoadFileByPath(data_ov006_0213f234);
         DecompressLZ16(d, _ZN3G2S12GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
     }
@@ -5027,7 +5027,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x40);
             if (p != 0) {
                 V2 tmp = pos[j];
-                p = func_ov006_02111b40((char *)p, (int)c, (int)j, (struct V2ab *)&tmp);
+                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, (int)j, (struct V2ab *)&tmp);
             }
             {
                 void **slot = (void **)(((long long)(int)(c + j * 4 + 0x46bc)));
@@ -5069,7 +5069,7 @@ void dScMgSmartball_c::SpawnObjects()
                 int tx = pos[n].x;
                 tmp.x = tx;
                 tmp.y = ty;
-                p = func_ov006_02111b40((char *)p, (int)c, n, (V2ab *)&tmp);
+                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, n, (V2ab *)&tmp);
             }
             {
                 void **slot = (void **)(((long long)(int)(c + n * 4 + 0x46bc)));
@@ -5112,7 +5112,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x38);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02111774((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_ana_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x720) = p;
                 n = *(int *)(c + 0x4000 + 0x66c);
@@ -5134,7 +5134,7 @@ void dScMgSmartball_c::SpawnObjects()
             p = _Znwj(0x12c);
             if (p != 0) {
                 V2 tmp = pos[j];
-                p = (void *)func_ov006_02114548((char *)p, (int)c, j, (int *)&tmp);
+                p = (void *)cMgSmartball_ball_c_Construct((char *)p, (int)c, j, (int *)&tmp);
             }
             *(void **)(c + j * 4 + 0x4000 + 0x688) = p;
         }
@@ -5177,7 +5177,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x34);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02110bc0((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_dokan_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x74c) = p;
                 n = *(int *)(c + 0x4000 + 0x678);
@@ -5217,7 +5217,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x3c);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02110874((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_pakkun_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x764) = p;
                 n = *(int *)(c + 0x4000 + 0x67c);
@@ -5256,7 +5256,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x78);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02111220((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_propeller_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x740) = p;
                 n = *(int *)(c + 0x4000 + 0x674);
@@ -5295,7 +5295,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x88);
             if (p != 0) {
                 V2 tmp = pos[0];
-                p = func_ov006_021101bc((char*)p, (int)c, (int)0, (int*)&tmp);
+                p = cMgSmartball_slot_c_Construct((char*)p, (int)c, (int)0, (int*)&tmp);
             }
             *(void **)(c + 0x4000 + 0x778) = p;
         }
@@ -5332,7 +5332,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x9c);
             if (p != 0) {
                 V2 tmp = pos[4];
-                p = (void *)func_ov006_0210f9f8((char *)p, (int)c, 0, (int *)&tmp);
+                p = (void *)cMgSmartball_board_c_Construct((char *)p, (int)c, 0, (int *)&tmp);
             }
             *(void **)(c + 0x4000 + 0x77c) = p;
         }
@@ -5369,7 +5369,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x38);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_0210e480((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_pushswitch_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x770) = p;
                 n = *(int *)(c + 0x4000 + 0x680);
@@ -5408,7 +5408,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x88);
             if (p != 0) {
                 V2 tmp = pos[0];
-                p = func_ov006_0210e0d0((char *)p, (int)c, (int)0, (struct V2ab *)&tmp);
+                p = cMgSmartball_wing_c_Construct((char *)p, (int)c, (int)0, (struct V2ab *)&tmp);
             }
             *(void **)(c + 0x4000 + 0x780) = p;
         }
@@ -5524,7 +5524,7 @@ void dScMgSmartball_c::SpawnObjects()
 // Loop2 digit-count still uses inner u64 mask form for pooled ldr form.
 //
 // TODO: shared ov006 meter/score object layout - this file and siblings
-// (func_ov006_020fd2d8, 02103ac0, 020fb7e0) re-spell the same base offsets:
+// (PachinkoBall_State2, 02103ac0, 020fb7e0) re-spell the same base offsets:
 //   0x4660-0x4770  display-object pointer arrays (DispObj* at k*4 stride)
 //   0x5958-0x5998  score/coin block
 // Name the base struct once so later edits do not invent a fifth spelling.
@@ -5565,12 +5565,12 @@ s32 dScMgSmartball_c::Render()
 
         /* Block B: row 0 */
         if (I(0x5964) > 0) {
-            func_ov004_020afdd0(data_ov006_02138ae0[0], 0x30, xpos, -1, -1);
-            func_ov004_020b1ea4(0x80, xpos, 0x64, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth(data_ov006_02138ae0[0], 0x30, xpos, -1, -1);
+            Mg_DrawNumber(0x80, xpos, 0x64, 0, 0, 1, 0);
             i = GetGameLanguage();
-            func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
-            func_ov004_020b1ea4(0xa0, xpos, I(0x5964), 0, 0, 1, 0);
-            func_ov004_020b1ea4(0xe0, xpos, I(0x5964) * 0x64, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_DrawNumber(0xa0, xpos, I(0x5964), 0, 0, 1, 0);
+            Mg_DrawNumber(0xe0, xpos, I(0x5964) * 0x64, 0, 0, 1, 0);
             xpos += 0x18;
             col++;
         }
@@ -5579,14 +5579,14 @@ s32 dScMgSmartball_c::Render()
         limit = col * 0x14;
         for (row = 0; row < 4; row++) {
             if (I(0x5960) >= limit && *(int *)(g + row * 4 + 0x5968) > 0) {
-                func_ov004_020afdd0(data_ov006_02138ae0[row + 1], 0x30, xpos, -1, -1);
+                Mg_RenderSpriteBoth(data_ov006_02138ae0[row + 1], 0x30, xpos, -1, -1);
                 val = data_ov006_0212edfc[row];
-                func_ov004_020b1ea4(0x80, xpos, val, 0, 0, 1, 0);
+                Mg_DrawNumber(0x80, xpos, val, 0, 0, 1, 0);
                 i = GetGameLanguage();
-                func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+                Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
                 pcnt = (int *)(g + row * 4 + 0x5968);
-                func_ov004_020b1ea4(0xa0, xpos, *pcnt, 0, 0, 0, 0);
-                func_ov004_020b1ea4(0xe0, xpos, val * *pcnt, 0, 0, 1, 0);
+                Mg_DrawNumber(0xa0, xpos, *pcnt, 0, 0, 0, 0);
+                Mg_DrawNumber(0xe0, xpos, val * *pcnt, 0, 0, 1, 0);
                 xpos += 0x18;
                 limit += 0x14;
                 col++;
@@ -5595,36 +5595,36 @@ s32 dScMgSmartball_c::Render()
 
         /* Block D */
         if (I(0x597c) > 0 && I(0x5960) >= col * 0x14) {
-            func_ov004_020afdd0(data_ov006_0213765c[0], 0x30, xpos, -1, -1);
-            func_ov004_020b1ea4(0x80, xpos, 0x12c, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth(data_ov006_0213765c[0], 0x30, xpos, -1, -1);
+            Mg_DrawNumber(0x80, xpos, 0x12c, 0, 0, 1, 0);
             i = GetGameLanguage();
-            func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
-            func_ov004_020b1ea4(0xa0, xpos, I(0x597c), 0, 0, 0, 0);
-            func_ov004_020b1ea4(0xe0, xpos, I(0x597c) * 0x12c, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_DrawNumber(0xa0, xpos, I(0x597c), 0, 0, 0, 0);
+            Mg_DrawNumber(0xe0, xpos, I(0x597c) * 0x12c, 0, 0, 1, 0);
             xpos += 0x18;
             col++;
         }
 
         /* Block E */
         if (I(0x5984) > 0 && I(0x5960) >= col * 0x14) {
-            func_ov004_020afdd0(data_ov006_02137a78[0], 0x30, xpos, -1, -1);
-            func_ov004_020b1ea4(0x80, xpos, 0xbb8, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth(data_ov006_02137a78[0], 0x30, xpos, -1, -1);
+            Mg_DrawNumber(0x80, xpos, 0xbb8, 0, 0, 1, 0);
             i = GetGameLanguage();
-            func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
-            func_ov004_020b1ea4(0xa0, xpos, I(0x5984), 0, 0, 0, 0);
-            func_ov004_020b1ea4(0xe0, xpos, I(0x5984) * 0xbb8, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_DrawNumber(0xa0, xpos, I(0x5984), 0, 0, 0, 0);
+            Mg_DrawNumber(0xe0, xpos, I(0x5984) * 0xbb8, 0, 0, 1, 0);
             xpos += 0x18;
             col++;
         }
 
         /* Block F */
         if (I(0x5980) > 0 && I(0x5960) >= col * 0x14) {
-            func_ov004_020afdd0(data_ov006_02137a6c[0], 0x30, xpos, -1, -1);
-            func_ov004_020b1ea4(0x80, xpos, 0x7d0, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth(data_ov006_02137a6c[0], 0x30, xpos, -1, -1);
+            Mg_DrawNumber(0x80, xpos, 0x7d0, 0, 0, 1, 0);
             i = GetGameLanguage();
-            func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
-            func_ov004_020b1ea4(0xa0, xpos, I(0x5980), 0, 0, 0, 0);
-            func_ov004_020b1ea4(0xe0, xpos, I(0x5980) * 0x7d0, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_DrawNumber(0xa0, xpos, I(0x5980), 0, 0, 0, 0);
+            Mg_DrawNumber(0xe0, xpos, I(0x5980) * 0x7d0, 0, 0, 1, 0);
             xpos += 0x18;
             col++;
         }
@@ -5637,29 +5637,29 @@ s32 dScMgSmartball_c::Render()
                 int mult;
                 switch (j) {
                 case 0:
-                    func_ov004_020afdd0(data_ov006_02137a0c[1], 0x20, xpos, -1, -1);
-                    func_ov004_020afdd0(data_ov006_02137a0c[1], 0x30, xpos, -1, -1);
-                    func_ov004_020afdd0(data_ov006_02137a0c[1], 0x40, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[1], 0x20, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[1], 0x30, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[1], 0x40, xpos, -1, -1);
                     mult = 5000;
                     break;
                 case 1:
-                    func_ov004_020afdd0(data_ov006_02137a0c[0], 0x20, xpos, -1, -1);
-                    func_ov004_020afdd0(data_ov006_02137a0c[0], 0x30, xpos, -1, -1);
-                    func_ov004_020afdd0(data_ov006_02137a0c[0], 0x40, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[0], 0x20, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[0], 0x30, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[0], 0x40, xpos, -1, -1);
                     mult = 8000;
                     break;
                 case 2:
-                    func_ov004_020afdd0(data_ov006_02137a0c[2], 0x20, xpos, -1, -1);
-                    func_ov004_020afdd0(data_ov006_02137a0c[2], 0x30, xpos, -1, -1);
-                    func_ov004_020afdd0(data_ov006_02137a0c[2], 0x40, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[2], 0x20, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[2], 0x30, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02137a0c[2], 0x40, xpos, -1, -1);
                     mult = 10000;
                     break;
                 }
-                func_ov004_020b1ea4(0x80, xpos, mult, 0, 0, 1, 0);
+                Mg_DrawNumber(0x80, xpos, mult, 0, 0, 1, 0);
                 i = GetGameLanguage();
-                func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
-                func_ov004_020b1ea4(0xa0, xpos, *slot[1], 0, 0, 0, 0);
-                func_ov004_020b1ea4(0xe0, xpos, mult * *slot[1], 0, 0, 1, 0);
+                Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+                Mg_DrawNumber(0xa0, xpos, *slot[1], 0, 0, 0, 0);
+                Mg_DrawNumber(0xe0, xpos, mult * *slot[1], 0, 0, 1, 0);
                 xpos += 0x18;
                 limG += 0x14;
                 col++;
@@ -5668,24 +5668,24 @@ s32 dScMgSmartball_c::Render()
 
         /* Block H */
         if (I(0x5978) > 0 && I(0x5960) >= col * 0x14) {
-            func_ov004_020afdd0(data_ov006_02138ae0[5], 0x30, xpos, -1, -1);
-            func_ov004_020b1ea4(0x80, xpos, 0x2710, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth(data_ov006_02138ae0[5], 0x30, xpos, -1, -1);
+            Mg_DrawNumber(0x80, xpos, 0x2710, 0, 0, 1, 0);
             i = GetGameLanguage();
-            func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
-            func_ov004_020b1ea4(0xa0, xpos, I(0x5978), 0, 0, 0, 0);
-            func_ov004_020b1ea4(0xe0, xpos, I(0x5978) * 0x2710, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_DrawNumber(0xa0, xpos, I(0x5978), 0, 0, 0, 0);
+            Mg_DrawNumber(0xe0, xpos, I(0x5978) * 0x2710, 0, 0, 1, 0);
             xpos += 0x18;
             col++;
         }
 
         /* Block I */
         if (I(0x5994) > 0 && I(0x5960) >= col * 0x14) {
-            func_ov004_020afdd0(data_ov006_021382e0[0], 0x30, xpos, -1, -1);
-            func_ov004_020b1ea4(0x80, xpos, 0x7d0, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth(data_ov006_021382e0[0], 0x30, xpos, -1, -1);
+            Mg_DrawNumber(0x80, xpos, 0x7d0, 0, 0, 1, 0);
             i = GetGameLanguage();
-            func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
-            func_ov004_020b1ea4(0xa0, xpos, I(0x5994), 0, 0, 0, 0);
-            func_ov004_020b1ea4(0xe0, xpos, I(0x5994) * 0x7d0, 0, 0, 1, 0);
+            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_DrawNumber(0xa0, xpos, I(0x5994), 0, 0, 0, 0);
+            Mg_DrawNumber(0xe0, xpos, I(0x5994) * 0x7d0, 0, 0, 1, 0);
             xpos += 0x18;
             col++;
         }
@@ -5693,10 +5693,10 @@ s32 dScMgSmartball_c::Render()
         /* Block J: timer */
         if (I(0x5960) >= col * 0x14) {
             if ((I(8) & 0xff) == 0)
-                func_ov004_020afdd0(data_ov006_02138bd0[0], 0x40, xpos, -1, -1);
+                Mg_RenderSpriteBoth(data_ov006_02138bd0[0], 0x40, xpos, -1, -1);
             else
-                func_ov004_020afdd0(data_ov006_02138bf4[0], 0x40, xpos, -1, -1);
-            func_ov004_020b1ea4(0xe0, xpos, func_ov004_020adbc0(), 0, 0, 1, 0);
+                Mg_RenderSpriteBoth(data_ov006_02138bf4[0], 0x40, xpos, -1, -1);
+            Mg_DrawNumber(0xe0, xpos, Mg_GetSubmittedScore(), 0, 0, 1, 0);
             col++;
             if (I(0x5960) < 0x118)
                 I(0x5960) = 0x118;
@@ -5705,11 +5705,11 @@ s32 dScMgSmartball_c::Render()
         /* Block K */
         if (I(0x4660) == 1 && I(0x5960) >= 0x12c) {
             if (col >= 7)
-                func_ov004_020b0d8c(g, 0x80, 0xa8);
+                Mg_DrawBlinkSprite(g, 0x80, 0xa8);
             else if (col == 6)
-                func_ov004_020b0d8c(g, 0xe0, 0xa8);
+                Mg_DrawBlinkSprite(g, 0xe0, 0xa8);
             else
-                func_ov004_020b0d8c(g, 0xe0, 0xa0);
+                Mg_DrawBlinkSprite(g, 0xe0, 0xa0);
         }
     }
 
@@ -5718,8 +5718,8 @@ s32 dScMgSmartball_c::Render()
         ((dScMgSmartball_c *)(g))->RenderSparks();
 
     /* Section 2 */
-    func_ov004_020b1a5c(func_ov004_020adbc0(), 6);
-    func_ov004_020b19f0((void *)func_ov004_020adc1c());
+    Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 6);
+    Mg_DrawTopLeftCounter((void *)Mg_GetTopRecord());
 
     /* Loop 2: item list (sb reused as index) */
     {
@@ -5735,7 +5735,7 @@ s32 dScMgSmartball_c::Render()
                     int nd;
                     int *py = LP(g + sb * 8 + 0x47cc);
                     int *px = LP(g + sb * 8 + 0x47c8);
-                    func_ov004_020b1ea4((*px >> 12) - 0x10, *py >> 12, cnt, -1, 0, 0, 0);
+                    Mg_DrawNumber((*px >> 12) - 0x10, *py >> 12, cnt, -1, 0, 0, 0);
                     nd = 0;
                     u = (unsigned int)*(int *)((int)g + sb * 4 + 0x478c);
                     if (u != 0) {
@@ -5745,7 +5745,7 @@ s32 dScMgSmartball_c::Render()
                         } while (u != 0);
                     }
                     i = GetGameLanguage();
-                    func_ov004_020afdd0((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54),
+                    Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54),
                                         (*px >> 12) + nd * 8 - 8, *py >> 12, -1, -1);
                     nd = 0;
                     u = (unsigned int)*pcnt;
@@ -5755,11 +5755,11 @@ s32 dScMgSmartball_c::Render()
                             nd++;
                         } while (u != 0);
                     }
-                    func_ov004_020b1ea4((*px >> 12) + nd * 8 + 8, *py >> 12, *slot[0], -1, 0, 0, 0);
+                    Mg_DrawNumber((*px >> 12) + nd * 8 + 8, *py >> 12, *slot[0], -1, 0, 0, 0);
                 } else {
                     int y = *(int *)(g + sb * 8 + 0x47cc);
                     int x = *(int *)(g + sb * 8 + 0x47c8);
-                    func_ov004_020b1ea4(x >> 12, y >> 12, cnt, -1, 0, 0, 0);
+                    Mg_DrawNumber(x >> 12, y >> 12, cnt, -1, 0, 0, 0);
                 }
             }
         }
@@ -5774,7 +5774,7 @@ s32 dScMgSmartball_c::Render()
                 int idx = *(int *)(g + slot * 4 + 0x4814) / 5;
                 if (idx > 3)
                     idx = two;
-                func_ov004_020afdd0(data_ov006_02137a60[idx],
+                Mg_RenderSpriteBoth(data_ov006_02137a60[idx],
                                     *(int *)(g + slot * 8 + 0x4854) >> 12,
                                     *(int *)(g + slot * 8 + 0x4858) >> 12, neg, zero);
             }
@@ -5793,9 +5793,9 @@ s32 dScMgSmartball_c::Render()
                 flag = 1;
         }
         if ((I(8) & 0xff) == 0)
-            func_ov004_020afdd0(data_ov006_02138a40[flag], 0x18, -0x90, -1, 0);
+            Mg_RenderSpriteBoth(data_ov006_02138a40[flag], 0x18, -0x90, -1, 0);
         else
-            func_ov004_020afdd0(data_ov006_02138a88[flag], 0x18, -0x90, -1, 0);
+            Mg_RenderSpriteBoth(data_ov006_02138a88[flag], 0x18, -0x90, -1, 0);
     }
 
     /* Block N */
@@ -5810,9 +5810,9 @@ s32 dScMgSmartball_c::Render()
                 flag = 1;
         }
         if ((I(8) & 0xff) == 0)
-            func_ov004_020afdd0(data_ov006_02138a40[flag], 0xe8, -0x90, -1, -1);
+            Mg_RenderSpriteBoth(data_ov006_02138a40[flag], 0xe8, -0x90, -1, -1);
         else
-            func_ov004_020afdd0(data_ov006_02138a88[flag], 0xe8, -0x90, -1, -1);
+            Mg_RenderSpriteBoth(data_ov006_02138a88[flag], 0xe8, -0x90, -1, -1);
     }
 
     /* Dispatch loops */
@@ -5992,7 +5992,7 @@ s32 dScMgSmartball_c::Behavior()
                     (*p)++;
                 }
                 if (*(int*)(c + 0x5958) == 0xb4) {
-                    func_ov004_020ae20c();
+                    Mg_RestoreMusic();
                     FreeGfxSlotsById(0x1d);
                 }
                 t = *(int*)(c + 0x5958);
@@ -6044,7 +6044,7 @@ s32 dScMgSmartball_c::Behavior()
                         data_ov004_020bc888 = 0x80;
                         data_ov004_020bc864 = -0x30;
                     }
-                    func_ov004_020b0a54(0x10);
+                    Mg_SetSharedState(MG_STATE_RESULTS);
                     *(int*)(c + 0x4660) = 2;
                     func_02012790(0x62);
                 }
@@ -6071,15 +6071,15 @@ s32 dScMgSmartball_c::Behavior()
 
 #pragma pop
 
-// @symbol _ZN16dScMgSmartball_c13OnYoshiTryEatEi
+// @symbol _ZN16dScMgSmartball_c10StartRoundEi
 #include "G2x.h"
 #include "types.h"
 #include "dScMgSmartball_c.h"
 /* vtable slot 18 -- an override of
-   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   dScMgBase_c::StartRound(int). The signature must repeat the base
    declaration exactly, or mwcc appends a slot instead of overriding. */
 extern "C" {
-void dScMgSmartball_c::OnYoshiTryEat(int /* arg */)
+void dScMgSmartball_c::StartRound(int /* arg */)
 {
   SpawnObjects();
   G2x::SetBlendAlpha((volatile unsigned short *)0x4000050, 0, 0x18, 4, 0xa);
@@ -6087,13 +6087,13 @@ void dScMgSmartball_c::OnYoshiTryEat(int /* arg */)
 }
 }
 
-// @symbol _ZN16dScMgSmartball_c9Virtual7CEv
-/* dScMgSmartball_c::Virtual7C - slot 31, this class's own override.
+// @symbol _ZN16dScMgSmartball_c15InitSubScreenBgEv
+/* dScMgSmartball_c::InitSubScreenBg - slot 31, this class's own override.
 
    Not a Kill: see the slot-31 block in include/dScMgBase_c.h. Same shape as
    dScMgAmida_c's -- BG1CNT base bits 4 -- differing only in the language
    table it indexes. */
-int dScMgSmartball_c::Virtual7C()
+int dScMgSmartball_c::InitSubScreenBg()
 {
     int f;
     *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 4;
@@ -6156,10 +6156,10 @@ s32 dScMgSmartball_c::InitResources()
   s32 i;
   if ((*((s32 *) (c + 8))) & 0xff)
   {
-    unk_0bc = (u8) ((*((s32 *) (c + 8))) & 0xFF);
-    if ((unk_0bc) > 0x270e)
+    mLevel = (u8) ((*((s32 *) (c + 8))) & 0xFF);
+    if ((mLevel) > 0x270e)
     {
-      unk_0bc = 0x270e;
+      mLevel = 0x270e;
     }
   }
   data_0208ee44 = 1;
@@ -6167,17 +6167,17 @@ s32 dScMgSmartball_c::InitResources()
   *((volatile u16 *) 0x4001008) &= ~0x40;
   *((volatile s32 *) 0x4001010) = 0x100;
   *((volatile u16 *) 0x4001008) &= ~3;
-  f = func_ov004_020adc74(&data_ov006_0213f260);
+  f = Ov004_LoadFileByPath(&data_ov006_0213f260);
   DecompressLZ16(f, _ZN3G2S13GetBG0CharPtrEv());
   Ov004_Deallocate(f);
   {
     volatile u16 v;
     MultiStore16((u16) (v = 0), _ZN3G2S12GetBG0ScrPtrEv(), 0x1000);
   }
-  f = func_ov004_020adc74(&data_ov006_0213f280);
+  f = Ov004_LoadFileByPath(&data_ov006_0213f280);
   DecompressLZ16(f, _ZN3G2S12GetBG0ScrPtrEv());
   Ov004_Deallocate(f);
-  f = func_ov004_020adc74(&data_ov006_0213f2a0);
+  f = Ov004_LoadFileByPath(&data_ov006_0213f2a0);
   _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x20);
   _ZN3GXS10LoadBGPlttEPKvjj(((char *) f) + 2, 2, 0x1e);
   Ov004_Deallocate(f);
@@ -6199,52 +6199,52 @@ s32 dScMgSmartball_c::InitResources()
   *((volatile u16 *) 0x400100e) = ((*((volatile u16 *) 0x400100e)) & (~3)) | 2;
   if (((u8) (*((s32 *) (c + 8)))) == 0)
   {
-    f = func_ov004_020adc74(&data_ov006_0213f2bc);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f2bc);
     DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f2ec);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f2ec);
     DecompressLZ16(f, _ZN3G2S13GetBG2CharPtrEv());
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f31c);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f31c);
     DecompressLZ16(f, (void *) func_02054d88());
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f348);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f348);
     DecompressLZ16(f, _ZN3G2S13GetBG3CharPtrEv());
     Ov004_Deallocate(f);
   }
   else
   {
-    f = func_ov004_020adc74(&data_ov006_0213f374);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f374);
     DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f3a4);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f3a4);
     DecompressLZ16(f, _ZN3G2S13GetBG2CharPtrEv());
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f3d4);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f3d4);
     DecompressLZ16(f, (void *) func_02054d88());
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f400);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f400);
     DecompressLZ16(f, _ZN3G2S13GetBG3CharPtrEv());
     Ov004_Deallocate(f);
   }
   if (((u8) (*((s32 *) (c + 8)))) == 0)
   {
-    f = func_ov004_020adc74(&data_ov006_0213f42c);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f42c);
     _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
     _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f458);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f458);
     _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
     _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
     Ov004_Deallocate(f);
   }
   else
   {
-    f = func_ov004_020adc74(&data_ov006_0213f484);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f484);
     _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
     _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
     Ov004_Deallocate(f);
-    f = func_ov004_020adc74(&data_ov006_0213f4b0);
+    f = Ov004_LoadFileByPath(&data_ov006_0213f4b0);
     _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
     _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
     Ov004_Deallocate(f);
@@ -6252,7 +6252,7 @@ s32 dScMgSmartball_c::InitResources()
   data_0209d45c &= ~1;
   data_0209d45c |= 0xc;
   data_0209d454[0] |= 0xd;
-  f = func_ov004_020adc74(&data_ov006_0213f4dc);
+  f = Ov004_LoadFileByPath(&data_ov006_0213f4dc);
   _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x100);
   _ZN2GX11LoadOBJPlttEPKvjj(f, 0, 0x100);
   _ZN3GXS11LoadOBJPlttEPKvjj(f, 0, 0x100);
@@ -6315,7 +6315,7 @@ s32 dScMgSmartball_c::InitResources()
     if (o != 0)
     {
       cMgSmartballPair r2 = r1;
-      o = (void *) func_ov006_0211157c((char *) o, (int) c, 0, &r2.v0);
+      o = (void *) cMgSmartball_spring_c_Construct((char *) o, (int) c, 0, &r2.v0);
     }
     *((void **) (c + 0x4684)) = o;
   }
@@ -6635,7 +6635,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
 /* The scene factory and its empty particle-element constructor share this unit. */
 extern int _ZTV16dScMgSmartball_c[];
 extern "C" void *_ZN11dScMgBase_cC2Ev(void *p);
-extern "C" void func_ov006_02119900(void);
+extern "C" void SmartballObj_ElemCtor(void);
 
 // @symbol dScMgSmartball_c_classInit
 /* Allocates and constructs the scene; returns null if allocation fails.
@@ -6648,12 +6648,12 @@ extern "C" void *dScMgSmartball_c_classInit(void) {
         __cxa_vec_ctor(scene->mArray1, 5, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene->mArray2, 0x10, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene->mArray3, 0x10, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mArray4, 0x40, 0x24, (void *)func_ov006_02119900, (void *)func_ov006_0210d894);
+        __cxa_vec_ctor(scene->mArray4, 0x40, 0x24, (void *)SmartballObj_ElemCtor, (void *)SmartballObj_ElemDtor);
     }
     return scene;
 }
 
-// @symbol func_ov006_02119900
-extern "C" void func_ov006_02119900(void)
+// @symbol SmartballObj_ElemCtor
+extern "C" void SmartballObj_ElemCtor(void)
 {
 }

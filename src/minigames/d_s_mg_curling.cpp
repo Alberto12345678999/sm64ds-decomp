@@ -11,18 +11,18 @@
  *
  * comment leftovers: a few spellings must stay raw because the typed form
  * changes codegen (each was measured -- the DIFF size is in parentheses):
- * - func_ov006_020e0edc / func_ov006_020e0ff0 keep the `bits + 0x47NN +
+ * - BitB_State2 / BitB_State1 keep the `bits + 0x47NN +
  *   off` spelling; mBit[index] reschedules them (0ff0 also sits under
  *   inline_depth(0)).
- * - func_ov006_020e1608 / 020e1680 / 020e3078 / 020e3388 sit under
+ * - Popup_UpdateAll / 020e1680 / 020e3078 / 020e3388 sit under
  *   opt_strength_reduction off: 1608's volatile countdown launder, 1680's
  *   M() popup-Y launder and stone walk, 3078's stone walk and base-field
  *   words, and 3388's clear loops all DIFF when typed (20-999 words).
- * - func_ov006_020e2868 keeps its pang/p668/p660/p664 pointer temps;
+ * - Stone_Slide keeps its pang/p668/p660/p664 pointer temps;
  *   &mStone[idx] form moves the address math (45 words).
- * - func_ov006_020e26f8 reads the dragged stone through DragView; the
+ * - Stone_Drag reads the dragged stone through DragView; the
  *   mStone[i] spelling costs one word.
- * - func_ov006_020e13a4's second init walk keeps `char *bit`; the
+ * - Bit_InitAll's second init walk keeps `char *bit`; the
  *   indexed form costs four words.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -51,7 +51,7 @@ typedef void (C::*PMF)(int);
 struct Entry { PMF pmf; };
 typedef void (C::*PMF0)();
 
-/* The dragged stone, as func_ov006_020e26f8 reads it: the stone row plus
+/* The dragged stone, as Stone_Drag reads it: the stone row plus
  * the aim point at 0x4eb0 past the five rows. */
 struct DragStone {
     int x;
@@ -85,11 +85,11 @@ struct B4 { unsigned char v; unsigned char pad[3]; };
  * `extern "C"` block, so the C-linkage names are collected here in one. */
 extern "C" {
 
-extern int  func_ov004_020adbc0(void);
-extern void func_ov004_020af948(int a, int b, int c, int d);
-extern int  func_ov004_020afdd0(int a, int b, int c, int d, int e);
-extern void func_ov004_020b2220(int a1, int a2, int a3, int a4, int a5, int a6, int a7);
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
+extern int  Mg_GetSubmittedScore(void);
+extern void Mg_RenderSubSpriteMtx(int a, int b, int c, int d);
+extern int  Mg_RenderSpriteBoth(int a, int b, int c, int d, int e);
+extern void Mg_DrawNumberRotated(int a1, int a2, int a3, int a4, int a5, int a6, int a7);
+extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern void func_02012718(int a, int b);
 extern void DrawOamSprite(int a, int b, int c, int d);
 extern void RenderOamBothScreens(void* a0, int a1, int a2, int a3, int a4, void* a5);
@@ -98,13 +98,13 @@ extern int  _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern int  func_020126e8(int a);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-extern int  func_ov004_020adbe0(void);
-extern void func_ov004_020b0a54(int state);
-extern void func_ov004_020adb1c(int score);
-extern int  func_ov004_020adc1c(void);
-extern int  func_ov004_020b19f0(int self);
-extern char *func_ov004_020adc74(void *p);
-extern void func_ov004_020b04d0(int a);
+extern int  Mg_IsNewRecord(void);
+extern void Mg_SetSharedState(int state);
+extern void Mg_SubmitScore(int score);
+extern int  Mg_GetTopRecord(void);
+extern int  Mg_DrawTopLeftCounter(int self);
+extern char *Ov004_LoadFileByPath(void *p);
+extern void Mg_SetTopScreenYOffset(int a);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 extern unsigned _ZN3G2S13GetBG2CharPtrEv(void);
 extern void DecompressLZ16(const void *src, void *dst);
@@ -151,31 +151,31 @@ extern PMF   data_ov006_02141930[];
 extern PMF0  data_ov006_02141950[];
 /* The ROM PMF constants the seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
-extern PMF0 data_ov006_0213c21c;
-extern PMF0 data_ov006_0213c20c;
-extern PMF0 data_ov006_0213c2b4;
-extern PMF0 data_ov006_0213c1fc;
-extern PMF0 data_ov006_0213c254;
-extern PMF data_ov006_0213c204;
-extern PMF data_ov006_0213c244;
-extern PMF data_ov006_0213c22c;
-extern PMF data_ov006_0213c25c;
-extern PMF0 data_ov006_0213c23c;
-extern PMF0 data_ov006_0213c2bc;
-extern PMF data_ov006_0213c234;
-extern PMF data_ov006_0213c29c;
-extern PMF data_ov006_0213c294;
-extern PMF data_ov006_0213c28c;
-extern PMF data_ov006_0213c274;
-extern PMF data_ov006_0213c26c;
-extern PMF data_ov006_0213c24c;
-extern PMF data_ov006_0213c2a4;
-extern PMF data_ov006_0213c1ec;
-extern PMF data_ov006_0213c1e4;
-extern PMF data_ov006_0213c1f4;
-extern PMF data_ov006_0213c224;
-extern PMF data_ov006_0213c284;
-extern PMF data_ov006_0213c27c;
+extern PMF0 pmf_dScMgCurling_c_Scene_StartRound;
+extern PMF0 pmf_dScMgCurling_c_Scene_Play;
+extern PMF0 pmf_dScMgCurling_c_Scene_Score;
+extern PMF0 pmf_dScMgCurling_c_Scene_End;
+extern PMF0 pmf_dScMgCurling_c_Scene_Idle;
+extern PMF pmf_dScMgCurling_c_Stone_WaitRelease;
+extern PMF pmf_dScMgCurling_c_Stone_Slide;
+extern PMF pmf_dScMgCurling_c_Stone_Collide;
+extern PMF pmf_dScMgCurling_c_Stone_Drag;
+extern PMF0 pmf_dScMgCurling_c_Aim_WaitTouch;
+extern PMF0 pmf_dScMgCurling_c_Aim_Swing;
+extern PMF pmf_dScMgCurling_c_Bit_PickKind;
+extern PMF pmf_dScMgCurling_c_Bit_RunKindB;
+extern PMF pmf_dScMgCurling_c_Bit_RunKindA;
+extern PMF pmf_dScMgCurling_c_BitB_State0;
+extern PMF pmf_dScMgCurling_c_BitB_State1;
+extern PMF pmf_dScMgCurling_c_BitB_State2;
+extern PMF pmf_dScMgCurling_c_BitB_State3;
+extern PMF pmf_dScMgCurling_c_BitA_State0;
+extern PMF pmf_dScMgCurling_c_BitA_State1;
+extern PMF pmf_dScMgCurling_c_BitA_State2;
+extern PMF pmf_dScMgCurling_c_BitA_State3;
+extern PMF pmf_dScMgCurling_c_Bit_State0;
+extern PMF pmf_dScMgCurling_c_Bit_State1;
+extern PMF pmf_dScMgCurling_c_Bit_State2;
 
 }  /* extern "C" */
 
@@ -187,24 +187,24 @@ namespace Sound { u32 PlayBank2_2D(u32 id); }
 dScMgCurling_c::~dScMgCurling_c()
 {
 }
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0694Ev
+// @symbol _ZN14dScMgCurling_c11Bit_DrawAllEv
 /* Draws the falling bits. The functions after this one are the bits'
  * states: each field is 0x24 * index past its base offset. */
-void dScMgCurling_c::func_ov006_020e0694()
+void dScMgCurling_c::Bit_DrawAll()
 {
     int i;
     for (i = 0; i < 0x32; i++) {
         if (mBit[i].shown) {
             int x = mBit[i].x >> 0xc;
             int y = mBit[i].y >> 0xc;
-            func_ov004_020af948(data_ov006_0213a5e0[mBit[i].texA], x, y, 0);
+            Mg_RenderSubSpriteMtx(data_ov006_0213a5e0[mBit[i].texA], x, y, 0);
             DrawOamSprite(data_ov006_0213a5e0[mBit[i].texB], x, y, 0);
         }
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e071cEi
-void dScMgCurling_c::func_ov006_020e071c(int index)
+// @symbol _ZN14dScMgCurling_c10Bit_State2Ei
+void dScMgCurling_c::Bit_State2(int index)
 {
     if (mBit[index].wait2 != 0) {
         short *p = (short *)&mBit[index].wait2;
@@ -221,8 +221,8 @@ void dScMgCurling_c::func_ov006_020e071c(int index)
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e07b0Ei
-void dScMgCurling_c::func_ov006_020e07b0(int index)
+// @symbol _ZN14dScMgCurling_c10Bit_State1Ei
+void dScMgCurling_c::Bit_State1(int index)
 {
     if (mBit[index].vyCap > mBit[index].vy) {
         mBit[index].vy += 0x10;
@@ -238,8 +238,8 @@ void dScMgCurling_c::func_ov006_020e07b0(int index)
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0884Ei
-void dScMgCurling_c::func_ov006_020e0884(int index)
+// @symbol _ZN14dScMgCurling_c10Bit_State0Ei
+void dScMgCurling_c::Bit_State0(int index)
 {
   unsigned int roll;
   mBit[index].vy = 0;
@@ -251,8 +251,8 @@ void dScMgCurling_c::func_ov006_020e0884(int index)
   (s16&)mBit[index].wait2 = (unsigned char)roll;
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e091cEi
-void dScMgCurling_c::func_ov006_020e091c(int index)
+// @symbol _ZN14dScMgCurling_c11BitA_State3Ei
+void dScMgCurling_c::BitA_State3(int index)
 {
     mBit[index].x = mBit[index].x + mBit[index].vx;
     mBit[index].y = mBit[index].y + mBit[index].vy;
@@ -274,8 +274,8 @@ void dScMgCurling_c::func_ov006_020e091c(int index)
     mBit[index].state = 0;
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0a24Ei
-void dScMgCurling_c::func_ov006_020e0a24(int index)
+// @symbol _ZN14dScMgCurling_c11BitA_State2Ei
+void dScMgCurling_c::BitA_State2(int index)
 {
     unsigned short timer;
 
@@ -307,8 +307,8 @@ void dScMgCurling_c::func_ov006_020e0a24(int index)
     mBit[index].timer = (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf) + 0x20);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0b64Ei
-void dScMgCurling_c::func_ov006_020e0b64(int index)
+// @symbol _ZN14dScMgCurling_c11BitA_State1Ei
+void dScMgCurling_c::BitA_State1(int index)
 {
     unsigned short timer;
 
@@ -341,8 +341,8 @@ void dScMgCurling_c::func_ov006_020e0b64(int index)
     (s16&)mBit[index].timer = (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) + 0x20 & 0xff;
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0ca0Ei
-void dScMgCurling_c::func_ov006_020e0ca0(int index)
+// @symbol _ZN14dScMgCurling_c11BitA_State0Ei
+void dScMgCurling_c::BitA_State0(int index)
 {
     if (mBit[index].wait != 0) {
         mBit[index].wait = mBit[index].wait - 1;
@@ -355,8 +355,8 @@ void dScMgCurling_c::func_ov006_020e0ca0(int index)
     mBit[index].timer = (short)(unsigned char)(((0x40 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf) + 0x60);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0d84Ei
-void dScMgCurling_c::func_ov006_020e0d84(int index)
+// @symbol _ZN14dScMgCurling_c12Bit_RunKindAEi
+void dScMgCurling_c::Bit_RunKindA(int index)
 {
     C *self = (C *)this;
     unsigned char state = mBit[index].state;
@@ -365,8 +365,8 @@ void dScMgCurling_c::func_ov006_020e0d84(int index)
     (self->*data_ov006_021418d8[state2])(index);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0e18Ei
-void dScMgCurling_c::func_ov006_020e0e18(int index)
+// @symbol _ZN14dScMgCurling_c11BitB_State3Ei
+void dScMgCurling_c::BitB_State3(int index)
 {
     int *x = &mBit[index].x;
     int *vx = &mBit[index].vx;
@@ -384,8 +384,8 @@ void dScMgCurling_c::func_ov006_020e0e18(int index)
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0edcEi
-void dScMgCurling_c::func_ov006_020e0edc(int index)
+// @symbol _ZN14dScMgCurling_c11BitB_State2Ei
+void dScMgCurling_c::BitB_State2(int index)
 {
     int off = index * 0x24;
 
@@ -425,8 +425,8 @@ void dScMgCurling_c::func_ov006_020e0edc(int index)
 
 #pragma push
 #pragma inline_depth(0)
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e0ff0Ei
-void dScMgCurling_c::func_ov006_020e0ff0(int index)
+// @symbol _ZN14dScMgCurling_c11BitB_State1Ei
+void dScMgCurling_c::BitB_State1(int index)
 {
     int off = index * 0x24;
 
@@ -465,8 +465,8 @@ void dScMgCurling_c::func_ov006_020e0ff0(int index)
 #pragma pop
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1100Ei
-void dScMgCurling_c::func_ov006_020e1100(int idx)
+// @symbol _ZN14dScMgCurling_c11BitB_State0Ei
+void dScMgCurling_c::BitB_State0(int idx)
 {
     unsigned short wait;
     short left;
@@ -489,8 +489,8 @@ void dScMgCurling_c::func_ov006_020e1100(int idx)
     (s16&)mBit[idx].timer = (unsigned char)(((roll * 0x30) >> 15) + 0x30);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1214Ei
-void dScMgCurling_c::func_ov006_020e1214(int idx)
+// @symbol _ZN14dScMgCurling_c12Bit_RunKindBEi
+void dScMgCurling_c::Bit_RunKindB(int idx)
 {
     unsigned char state = mBit[idx].state;
     (((C*)this)->*data_ov006_021418f0[state].pmf)(idx);
@@ -498,8 +498,8 @@ void dScMgCurling_c::func_ov006_020e1214(int idx)
 
 #pragma push
 #pragma opt_propagation off
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1264Ei
-void dScMgCurling_c::func_ov006_020e1264(int idx)
+// @symbol _ZN14dScMgCurling_c12Bit_PickKindEi
+void dScMgCurling_c::Bit_PickKind(int idx)
 {
     unsigned roll = (unsigned)RandomIntInternal(&data_0209d4b8);
     int k = 0;
@@ -510,8 +510,8 @@ void dScMgCurling_c::func_ov006_020e1264(int idx)
 }
 #pragma pop
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e12d0Ev
-void dScMgCurling_c::func_ov006_020e12d0()
+// @symbol _ZN14dScMgCurling_c13Bit_UpdateAllEv
+void dScMgCurling_c::Bit_UpdateAll()
 {
     int i;
     for (i = 0; i < 0x32; i++) {
@@ -529,8 +529,8 @@ void dScMgCurling_c::func_ov006_020e12d0()
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e13a4Ev
-void dScMgCurling_c::func_ov006_020e13a4()
+// @symbol _ZN14dScMgCurling_c11Bit_InitAllEv
+void dScMgCurling_c::Bit_InitAll()
 {
     int i;
     char *bit;
@@ -596,25 +596,25 @@ void dScMgCurling_c::func_ov006_020e13a4()
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1554Ev
-void dScMgCurling_c::func_ov006_020e1554()
+// @symbol _ZN14dScMgCurling_c13Popup_DrawAllEv
+void dScMgCurling_c::Popup_DrawAll()
 {
     int i;
     for (i = 0; i < 5; i++) {
         if (mPopup[i].shown != 0) {
-            func_ov004_020b2444(mPopup[i].x >> 12, mPopup[i].y >> 12, mPopup[i].points, -1, -1, 0, 0);
+            Mg_DrawBigNumber(mPopup[i].x >> 12, mPopup[i].y >> 12, mPopup[i].points, -1, -1, 0, 0);
         }
     }
     if (mRoundOver != 0) {
-        int r = func_ov004_020adbc0();
-        func_ov004_020b2220(0x80, 0x60, r, 1, 0, 0x800, 0);
+        int r = Mg_GetSubmittedScore();
+        Mg_DrawNumberRotated(0x80, 0x60, r, 1, 0, 0x800, 0);
     }
 }
 
 #pragma push
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1608Ev
+// @symbol _ZN14dScMgCurling_c15Popup_UpdateAllEv
 #pragma opt_strength_reduction off
-void dScMgCurling_c::func_ov006_020e1608()
+void dScMgCurling_c::Popup_UpdateAll()
 {
     char *raw = (char *)this;
     int i;
@@ -635,8 +635,8 @@ void dScMgCurling_c::func_ov006_020e1608()
 
 #pragma push
 #pragma opt_strength_reduction off
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1680Ev
-void dScMgCurling_c::func_ov006_020e1680()
+// @symbol _ZN14dScMgCurling_c11ScoreStonesEv
+void dScMgCurling_c::ScoreStones()
 {
     char *raw = (char *)this;
     int slot = 0;
@@ -691,20 +691,20 @@ void dScMgCurling_c::func_ov006_020e1680()
 }
 #pragma pop
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e17f8Ev
+// @symbol _ZN14dScMgCurling_c13DrawAimMarkerEv
 /* Draws a sprite at the aimed stone's position (0x4eb0) once the stylus
  * handler has set 0x4ee5. */
-void dScMgCurling_c::func_ov006_020e17f8()
+void dScMgCurling_c::DrawAimMarker()
 {
   if(mAimShown==0) return;
   int x=mAimX;
   int y=mAimY;
-  func_ov004_020afdd0((int)data_ov006_0213c2e4,(x>>12)-0x20,(y>>12)-8,-1,0);
+  Mg_RenderSpriteBoth((int)data_ov006_0213c2e4,(x>>12)-0x20,(y>>12)-8,-1,0);
 }
 
 #pragma push
 #pragma opt_common_subs off
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1854Ev
+// @symbol _ZN14dScMgCurling_c9Aim_SwingEv
 /* Stylus handler for the stone being aimed. While the stylus is down, the
  * touch point plus the grab offset becomes the new position, clamped to the
  * 0x20000..0xe0000 by 0x94000..0xb8000 box; a move under two units is undone.
@@ -717,7 +717,7 @@ void dScMgCurling_c::func_ov006_020e17f8()
  * dx is computed before dy with no temporaries; the tail's index `j` is
  * wider than a byte; and the pragma keeps the 0x4eb0 and 0x4eb4 re-reads
  * after the clamps. */
-void dScMgCurling_c::func_ov006_020e1854()
+void dScMgCurling_c::Aim_Swing()
 {
     u8 idx;
     int dx, oldx, oldy;
@@ -835,8 +835,8 @@ void dScMgCurling_c::func_ov006_020e1854()
 }
 #pragma pop
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1b54Ev
-void dScMgCurling_c::func_ov006_020e1b54()
+// @symbol _ZN14dScMgCurling_c13Aim_WaitTouchEv
+void dScMgCurling_c::Aim_WaitTouch()
 {
   int idx;
   int touching = 0;
@@ -873,8 +873,8 @@ void dScMgCurling_c::func_ov006_020e1b54()
   mSwingState = 0;
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1c68Ev
-void dScMgCurling_c::func_ov006_020e1c68()
+// @symbol _ZN14dScMgCurling_c14DrawStonesLeftEv
+void dScMgCurling_c::DrawStonesLeft()
 {
     int x, y;
     int i;
@@ -900,7 +900,7 @@ void dScMgCurling_c::func_ov006_020e1c68()
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e1dc8Ei
+// @symbol _ZN14dScMgCurling_c14SeparateStonesEi
 /* Stone separation. Stone idx has just moved: the first other active stone
  * within 24 units is pushed out to 26 units along the line between them,
  * then that stone gets the same check once against the rest (with a bump
@@ -908,7 +908,7 @@ void dScMgCurling_c::func_ov006_020e1c68()
  *
  * The rotated offsets must be named (vx, vy), and the inner scan needs its
  * own dx, dy, dist and ang; sharing the outer ones changes the registers. */
-void dScMgCurling_c::func_ov006_020e1dc8(int idx)
+void dScMgCurling_c::SeparateStones(int idx)
 {
     int i;
     int j;
@@ -974,7 +974,7 @@ void dScMgCurling_c::func_ov006_020e1dc8(int idx)
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e20bcEi
+// @symbol _ZN14dScMgCurling_c21ResolveStoneCollisionEi
 /* Stone idx has just moved, so find the first other stone it overlaps and
  * resolve the collision. The two exchange their velocity components along
  * the line between their centres and keep the components across it; the
@@ -988,7 +988,7 @@ void dScMgCurling_c::func_ov006_020e1dc8(int idx)
  * are reached through pointers taken beside each stone's reads, which puts
  * their addresses in the frame ahead of the temporaries; and the moving
  * stone's new x velocity reuses the outer dx. */
-void dScMgCurling_c::func_ov006_020e20bc(int idx)
+void dScMgCurling_c::ResolveStoneCollision(int idx)
 {
     int i;
     int dx;
@@ -1108,10 +1108,10 @@ void dScMgCurling_c::func_ov006_020e20bc(int idx)
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e269cEi
+// @symbol _ZN14dScMgCurling_c12SetStoneSpinEi
 /* Sets stone i's spin (0x4682) from the x component of its velocity:
  * -(cos(angle) * speed) / 4. */
-void dScMgCurling_c::func_ov006_020e269c(int i)
+void dScMgCurling_c::SetStoneSpin(int i)
 {
     int h = mStone[i].angle;
     int idx = (((h >> 4) << 1) + 1) << 1;
@@ -1122,13 +1122,13 @@ void dScMgCurling_c::func_ov006_020e269c(int i)
     mStone[i].spin = (short)((-hi) >> 2);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e26f8Ei
+// @symbol _ZN14dScMgCurling_c10Stone_DragEi
 /* Stone i while it is being dragged. With the stylus down the stone
  * follows the touch point plus the grab offset (0x4674/0x4678), its x kept
  * between 0xe and 0xf2 units, and the offset is recomputed; with the stylus
  * up the drag flag clears and, if the aimed stone (0x4eb0) overlaps it, the
  * aimed stone is moved just below it. */
-void dScMgCurling_c::func_ov006_020e26f8(int i)
+void dScMgCurling_c::Stone_Drag(int i)
 {
     DragView *w = (DragView *)this;
     unsigned char idx = gActivePlayerSlot;
@@ -1154,14 +1154,14 @@ void dScMgCurling_c::func_ov006_020e26f8(int i)
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e285cEi
-/* A tail-call veneer to func_ov006_020e20bc. */
-void dScMgCurling_c::func_ov006_020e285c(int idx)
+// @symbol _ZN14dScMgCurling_c13Stone_CollideEi
+/* A tail-call veneer to ResolveStoneCollision. */
+void dScMgCurling_c::Stone_Collide(int idx)
 {
-    func_ov006_020e20bc(idx);
+    ResolveStoneCollision(idx);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e2868Ei
+// @symbol _ZN14dScMgCurling_c11Stone_SlideEi
 /* Stone idx while it slides. Moves it by its velocity, adds the spin to
  * the angle, bounces it off the four walls (with a sound), then takes
  * friction off the speed: a base of speed/512 (at least 0x1c), more in the
@@ -1169,7 +1169,7 @@ void dScMgCurling_c::func_ov006_020e285c(int idx)
  * steeper rate while the stone still travels upward above -0x20. At zero
  * speed the stone stops (state 2). The collision and spin helpers run, and
  * the slide sound at 0x467c is retuned to the speed. */
-void dScMgCurling_c::func_ov006_020e2868(int idx)
+void dScMgCurling_c::Stone_Slide(int idx)
 {
     char *c = (char *)this;
     int m;
@@ -1265,8 +1265,8 @@ void dScMgCurling_c::func_ov006_020e2868(int idx)
         mStone[idx].state = 2;
     }
 
-    func_ov006_020e20bc(idx);
-    func_ov006_020e269c(idx);
+    ResolveStoneCollision(idx);
+    SetStoneSpin(idx);
 
     v = *pd;
     w = -0xfa - ((0xc0 - (v >> 8)) * -0xfa) / 0xc0;
@@ -1276,13 +1276,13 @@ void dScMgCurling_c::func_ov006_020e2868(int idx)
     mStone[idx].slideSnd = func_02012468(mStone[idx].slideSnd, 2, 0xe7, 7, p, w, func_020126e8(*p660), 0);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e2c08Ei
+// @symbol _ZN14dScMgCurling_c17Stone_WaitReleaseEi
 /* Releases stone idx if the aimed stone (0x4eb0) overlaps it: it takes the
  * aim angle (0x4ede, clamped to the lower half turn) and the swing speed
  * (0x4ec8), is flagged fast above 0x3800, and starts sliding. The aim is
  * then put away, the stones are separated, and the throw sound plays at a
  * volume that depends on the fast flag. */
-void dScMgCurling_c::func_ov006_020e2c08(int idx)
+void dScMgCurling_c::Stone_WaitRelease(int idx)
 {
     int v, w, vol;
 
@@ -1316,18 +1316,18 @@ void dScMgCurling_c::func_ov006_020e2c08(int idx)
 
     mNextStone = 1;
     mStoneDelay = 0;
-    func_ov006_020e1dc8(idx);
+    SeparateStones(idx);
 
     vol = 0x7f;
     if (mStone[idx].fast == 0) vol = 0x3f;
     func_020126ac(0x1d3, 5, vol, 0, func_020126e8(mStone[idx].x));
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e2dbcEv
+// @symbol _ZN14dScMgCurling_c17BringOutNextStoneEv
 /* Brings out the next stone once the 0x4ee0 delay has run down: it starts
  * active at (0x80000, 0x80000), the stone count at 0x4ee6 goes up (with a
  * sound from the second stone on), and the aim point resets. */
-void dScMgCurling_c::func_ov006_020e2dbc()
+void dScMgCurling_c::BringOutNextStone()
 {
     if (mNextStone == 0) return;
     if (mStoneDelay != 0)
@@ -1358,17 +1358,17 @@ void dScMgCurling_c::func_ov006_020e2dbc()
     mAimShown = 1;
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e2eb8Ev
+// @symbol _ZN14dScMgCurling_c10Scene_IdleEv
 /* The scene's idle state. */
-void dScMgCurling_c::func_ov006_020e2eb8()
+void dScMgCurling_c::Scene_Idle()
 {
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e2ebcEv
+// @symbol _ZN14dScMgCurling_c9Scene_EndEv
 /* The scene's end state. After the 0x4ee2 delay it asks the base whether
  * the game is over, moves to state 4 with the base's own end state, and
  * clears the stones' visible flags. */
-void dScMgCurling_c::func_ov006_020e2ebc()
+void dScMgCurling_c::Scene_End()
 {
     int i;
     if (mStateDelay != 0) {
@@ -1377,13 +1377,13 @@ void dScMgCurling_c::func_ov006_020e2ebc()
             mStateDelay = 0;
         return;
     }
-    if (func_ov004_020adbe0() != 0) {
+    if (Mg_IsNewRecord() != 0) {
         mRoundOver = 0;
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     } else {
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(MG_STATE_RESULTS);
     }
     mPromptEnabled = 0;
     mAimShown = 0;
@@ -1392,17 +1392,17 @@ void dScMgCurling_c::func_ov006_020e2ebc()
     }
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e2f78Ev
+// @symbol _ZN14dScMgCurling_c11Scene_ScoreEv
 /* The scoring state. Runs the popup countdowns, then after the 0x4ee2
  * delay either starts the next stone (state 1) or, once all five have been
  * thrown, ends the round (state 3) with the popups' points summed into the
  * score. The popups are cleared either way. */
-void dScMgCurling_c::func_ov006_020e2f78()
+void dScMgCurling_c::Scene_Score()
 {
     int i;
     int sum;
 
-    func_ov006_020e1608();
+    Popup_UpdateAll();
 
     if (mStateDelay != 0)
     {
@@ -1422,7 +1422,7 @@ void dScMgCurling_c::func_ov006_020e2f78()
         Sound::PlayBank2_2D(0x1bc);
         for (i = 0; i < 5; i++)
             sum += mPopup[i].points;
-        func_ov004_020adb1c(sum);
+        Mg_SubmitScore(sum);
     }
 
     for (i = 0; i < 5; i++)
@@ -1435,16 +1435,16 @@ void dScMgCurling_c::func_ov006_020e2f78()
         mPopup[i].live = 0;
     }
 
-    func_ov006_020e2dbc();
+    BringOutNextStone();
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e3078Ev
+// @symbol _ZN14dScMgCurling_c10Scene_PlayEv
 /* The playing state. After the 0x4ee2 delay it shows the HUD once, runs
  * the aim state (0x4ee4) through its table, then every active stone's own
  * state through the other table, remembering the last position of each.
  * When no stone is still moving, the popups are scored and the scene moves
  * to state 2 with a 0xc0 delay. */
-void dScMgCurling_c::func_ov006_020e3078()
+void dScMgCurling_c::Scene_Play()
 {
     char *c = (char *)this;
     if (mStateDelay != 0) {
@@ -1482,28 +1482,28 @@ void dScMgCurling_c::func_ov006_020e3078()
         if (count != 0) return;
     }
     mState = 2;
-    func_ov006_020e1680();
+    ScoreStones();
     mStateDelay = 0xc0;
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e3210Ev
+// @symbol _ZN14dScMgCurling_c16Scene_StartRoundEv
 /* Starts a round: clears the stones, brings out the first one and enters
  * the aiming state. */
-void dScMgCurling_c::func_ov006_020e3210()
+void dScMgCurling_c::Scene_StartRound()
 {
-    func_ov006_020e3388();
+    ClearStones();
     mNextStone = 1;
     (s16&)mStoneDelay = 0;
-    func_ov006_020e2dbc();
+    BringOutNextStone();
     mState = 1;
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e3250Ev
+// @symbol _ZN14dScMgCurling_c9PickHouseEv
 /* Picks the house (0x4e9c): a fresh random one of three that differs from
  * the last, or the first one when the slot still holds its 0xff reset.
  * The house centre comes from data_ov006_0212e4dc and its background from
  * one of three files. */
-void dScMgCurling_c::func_ov006_020e3250()
+void dScMgCurling_c::PickHouse()
 {
     int m;
     void *file;
@@ -1530,19 +1530,19 @@ void dScMgCurling_c::func_ov006_020e3250()
     Deallocate(file);
 }
 
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e3378Ev
+// @symbol _ZN14dScMgCurling_c10ResetHouseEv
 /* Marks the house as not chosen yet. */
-void dScMgCurling_c::func_ov006_020e3378()
+void dScMgCurling_c::ResetHouse()
 {
     mHouse = 255;
 }
 
 #pragma push
 #pragma opt_strength_reduction off
-// @symbol _ZN14dScMgCurling_c19func_ov006_020e3388Ev
+// @symbol _ZN14dScMgCurling_c11ClearStonesEv
 /* Zeroes the five stones, the five score popups and the aim fields, and
  * resets the score. */
-void dScMgCurling_c::func_ov006_020e3388()
+void dScMgCurling_c::ClearStones()
 {
     int i;
     char *c = (char *)this;
@@ -1585,23 +1585,23 @@ void dScMgCurling_c::func_ov006_020e3388()
     (s16&)mStateDelay = 0;
     (s16&)unk_4edc = 0;
     mSwingTimer = 0;
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
 }
 #pragma pop
 
-// @symbol _ZN14dScMgCurling_c13OnYoshiTryEatEi
+// @symbol _ZN14dScMgCurling_c10StartRoundEi
 /* Slot 18, one of dScMgBase_c's own undeclared slots; the inherited label
  * is the tree-wide mislabel and this is not a destructor. Restarts the
  * scene: state 0, the stones cleared, a house picked, the blend set up
  * again and the base's handle refreshed. */
-void dScMgCurling_c::OnYoshiTryEat(int /* arg */)
+void dScMgCurling_c::StartRound(int /* arg */)
 {
     mState = 0;
-    func_ov006_020e3388();
-    func_ov006_020e3250();
+    ClearStones();
+    PickHouse();
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_4ed8 = func_ov004_020adc1c();
+    unk_4ed8 = Mg_GetTopRecord();
 }
 
 // @symbol _ZN14dScMgCurling_c6RenderEv
@@ -1609,11 +1609,11 @@ void dScMgCurling_c::OnYoshiTryEat(int /* arg */)
  * and the falling bits. */
 s32 dScMgCurling_c::Render()
 {
-    func_ov004_020b19f0(func_ov004_020adc1c());
-    func_ov006_020e1554();
-    func_ov006_020e1c68();
-    func_ov006_020e17f8();
-    func_ov006_020e0694();
+    Mg_DrawTopLeftCounter(Mg_GetTopRecord());
+    Popup_DrawAll();
+    DrawStonesLeft();
+    DrawAimMarker();
+    Bit_DrawAll();
     return 1;
 }
 
@@ -1625,7 +1625,7 @@ s32 dScMgCurling_c::Behavior()
     C *c = (C *)this;
     int j = mState;
     (c->*data_ov006_02141950[j])();
-    func_ov006_020e12d0();
+    Bit_UpdateAll();
     return 1;
 }
 
@@ -1634,8 +1634,8 @@ s32 dScMgCurling_c::Behavior()
  * palettes and the house, then starts the first round with a 0x40 delay. */
 s32 dScMgCurling_c::InitResources()
 {
-    char *a = func_ov004_020adc74(&data_ov006_0213c394);
-    char *b = func_ov004_020adc74(&data_ov006_0213c3b4);
+    char *a = Ov004_LoadFileByPath(&data_ov006_0213c394);
+    char *b = Ov004_LoadFileByPath(&data_ov006_0213c3b4);
     void *f;
 
     if (a == 0 || b == 0) return 0;
@@ -1681,20 +1681,20 @@ s32 dScMgCurling_c::InitResources()
         Deallocate(c8);
     }
 
-    func_ov006_020e3388();
-    func_ov006_020e3378();
-    func_ov006_020e3250();
+    ClearStones();
+    ResetHouse();
+    PickHouse();
     mNextStone = 1;
     mStoneDelay = 0;
-    func_ov006_020e2dbc();
-    func_ov006_020e13a4();
+    BringOutNextStone();
+    Bit_InitAll();
     mState = 1;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     mStateDelay = 0x40;
-    unk_0a4 = 1;
+    mRunDuringFade = 1;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_4ed8 = func_ov004_020adc1c();
+    unk_4ed8 = Mg_GetTopRecord();
     return 1;
 }
 
@@ -1715,41 +1715,41 @@ extern "C" void *dScMgCurling_c_classInit()
  * tables, the two stylus states, the three kind states, the four Entry
  * states, the four reveal states, then the three state2 states. */
 PMF0 data_ov006_02141950[5] = {
-    data_ov006_0213c21c,
-    data_ov006_0213c20c,
-    data_ov006_0213c2b4,
-    data_ov006_0213c1fc,
-    data_ov006_0213c254,
+    pmf_dScMgCurling_c_Scene_StartRound,
+    pmf_dScMgCurling_c_Scene_Play,
+    pmf_dScMgCurling_c_Scene_Score,
+    pmf_dScMgCurling_c_Scene_End,
+    pmf_dScMgCurling_c_Scene_Idle,
 };
 PMF data_ov006_02141910[4] = {
-    data_ov006_0213c204,
-    data_ov006_0213c244,
-    data_ov006_0213c22c,
-    data_ov006_0213c25c,
+    pmf_dScMgCurling_c_Stone_WaitRelease,
+    pmf_dScMgCurling_c_Stone_Slide,
+    pmf_dScMgCurling_c_Stone_Collide,
+    pmf_dScMgCurling_c_Stone_Drag,
 };
 PMF0 data_ov006_021418b0[2] = {
-    data_ov006_0213c23c,
-    data_ov006_0213c2bc,
+    pmf_dScMgCurling_c_Aim_WaitTouch,
+    pmf_dScMgCurling_c_Aim_Swing,
 };
 PMF data_ov006_021418c0[3] = {
-    data_ov006_0213c234,
-    data_ov006_0213c29c,
-    data_ov006_0213c294,
+    pmf_dScMgCurling_c_Bit_PickKind,
+    pmf_dScMgCurling_c_Bit_RunKindB,
+    pmf_dScMgCurling_c_Bit_RunKindA,
 };
 Entry data_ov006_021418f0[4] = {
-    {data_ov006_0213c28c},
-    {data_ov006_0213c274},
-    {data_ov006_0213c26c},
-    {data_ov006_0213c24c},
+    {pmf_dScMgCurling_c_BitB_State0},
+    {pmf_dScMgCurling_c_BitB_State1},
+    {pmf_dScMgCurling_c_BitB_State2},
+    {pmf_dScMgCurling_c_BitB_State3},
 };
 PMF data_ov006_02141930[4] = {
-    data_ov006_0213c2a4,
-    data_ov006_0213c1ec,
-    data_ov006_0213c1e4,
-    data_ov006_0213c1f4,
+    pmf_dScMgCurling_c_BitA_State0,
+    pmf_dScMgCurling_c_BitA_State1,
+    pmf_dScMgCurling_c_BitA_State2,
+    pmf_dScMgCurling_c_BitA_State3,
 };
 PMF data_ov006_021418d8[3] = {
-    data_ov006_0213c224,
-    data_ov006_0213c284,
-    data_ov006_0213c27c,
+    pmf_dScMgCurling_c_Bit_State0,
+    pmf_dScMgCurling_c_Bit_State1,
+    pmf_dScMgCurling_c_Bit_State2,
 };

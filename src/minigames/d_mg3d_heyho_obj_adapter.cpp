@@ -18,8 +18,8 @@
    - _ZN9ModelAnimC1Ev/_ZN9ModelAnimD1Ev/_ZN7Vector3D1Ev and
      __register_global_object are ctor/dtor/atexit ABI calls, spelled as free
      functions because the bodies are the compiler's own sinit glue.
-   - Volatile and long-long launders (e.g. func_ov006_020c6378's const-view
-     re-reads, func_ov006_020c42bc's (long long)(int) cast) are codegen-pinned;
+   - Volatile and long-long launders (e.g. Heyho_Motion12's const-view
+     re-reads, Heyho_SeparateAll's (long long)(int) cast) are codegen-pinned;
      the inline comments at each site say what the ROM does. */
 #include "common.h"
 #include "decl_common.h"
@@ -45,12 +45,12 @@ struct HeyhoAdapterAnimationFileHandle : SharedFilePtr {
     ~HeyhoAdapterAnimationFileHandle();
 };
 
-/* ---- func_ov006_020c6f70 ---- */
+/* ---- Heyho_Construct ---- */
 namespace n020c6f70 {
 extern "C" {
 extern void *_ZN9ModelAnimC1Ev(void *object);
 
-int func_ov006_020c6f70(char *t)
+int Heyho_Construct(char *t)
 {
     _ZN9ModelAnimC1Ev(t + 0x38);
     return (int)t;
@@ -59,18 +59,18 @@ int func_ov006_020c6f70(char *t)
 }
 }
 
-/* ---- func_ov006_020c6f3c ---- */
+/* ---- Heyho_Destruct ---- */
 namespace n020c6f3c {
 extern "C" {
 extern int _ZN13SharedFilePtr7ReleaseEv(void*);
 extern int _ZN9ModelAnimD1Ev(void*);
 extern HeyhoAdapterModelFilePtr data_ov006_02140330; extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
-int func_ov006_020c6f3c(int* c){ _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140330); _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140338); _ZN9ModelAnimD1Ev((char*)c+0x38); return (int)c; }
+int Heyho_Destruct(int* c){ _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140330); _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140338); _ZN9ModelAnimD1Ev((char*)c+0x38); return (int)c; }
 
 }
 }
 
-/* ---- func_ov006_020c6e4c ---- */
+/* ---- Heyho_LoadResources ---- */
 struct BMD_File; struct BCA_File;
 extern HeyhoAdapterModelFilePtr data_ov006_02140330;
 extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
@@ -88,12 +88,12 @@ extern "C" void func_02016acc(char *m, int a);
 extern "C" void func_02016b24(char *m, int a);
 extern "C" void func_02016a14(char *m, int a);
 extern "C" void func_02016a04(char *m, int a);
-extern "C" void func_ov006_020c4c00(char *c);
-extern "C" void func_ov006_020c4d20(char *p);
+extern "C" void Heyho_UpdateMatrix(char *c);
+extern "C" void Heyho_SetIdle(char *p);
 
 
 
-extern "C" int func_ov006_020c6e4c(char *c) {
+extern "C" int Heyho_LoadResources(char *c) {
     BMD_File *m = (BMD_File *)Model::LoadFile(data_ov006_02140330);
     BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140338);
     if (((ModelBase *)(c + 0x38))->SetFile(m, 1, -1) == 0) {
@@ -107,14 +107,14 @@ extern "C" int func_ov006_020c6e4c(char *c) {
         func_02016a14(c + 0x38, 0x7fff);
         func_02016a04(c + 0x38, 0x7d40);
     }
-    func_ov006_020c4c00(c);
-    func_ov006_020c4d20(c);
+    Heyho_UpdateMatrix(c);
+    Heyho_SetIdle(c);
     return 1;
 }
 
 }
 
-/* ---- func_ov006_020c6ca4 ---- */
+/* ---- Heyho_StartMotion3 ---- */
 namespace n020c6ca4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -133,9 +133,9 @@ extern int data_ov006_02140318;
 extern Vec3 data_ov006_0214037c;
 extern int data_ov006_02140370;
 typedef struct { int w[2]; } Pair;
-extern Pair data_ov006_0213af38;
+extern Pair pmf_Heyho_Motion3;
 
-void func_ov006_020c6ca4(char* dst, char* src)
+void Heyho_StartMotion3(char* dst, char* src)
 {
     if (!(data_ov006_0214032c & 1)) {
         data_ov006_02140364.x = -0x100000;
@@ -179,21 +179,21 @@ void func_ov006_020c6ca4(char* dst, char* src)
     *(short*)(dst + 0xe6) = 0;
     *(short*)(dst + 0xec) = 8;
     *(int*)(dst + 0xe0) = 0;
-    *(Pair*)(dst + 0x30) = data_ov006_0213af38;
+    *(Pair*)(dst + 0x30) = pmf_Heyho_Motion3;
 }
 
 }
 }
 
-/* ---- func_ov006_020c6a9c ---- */
+/* ---- Heyho_Motion3 ---- */
 namespace n020c6a9c {
 extern "C" {
-// @symbol func_ov006_020c6a9c
+// @symbol Heyho_Motion3
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z15ApproachLinear2Rsss(short *v, short target, short step);
 
 
-void func_ov006_020c6a9c(char *c)
+void Heyho_Motion3(char *c)
 {
     short *ang = (short *)(((int)c + 0xea));
     *ang = *ang + 0x200;
@@ -210,31 +210,31 @@ void func_ov006_020c6a9c(char *c)
         *(int *)(c + 0xa4) = *(int *)(c + 0x28);
 
         switch (*(int *)(c + 0x2c)) {
-        case 0:  func_ov006_020c63dc(c); break;
-        case 1:  func_ov006_020c6348(c); break;
-        case 2:  func_ov006_020c6248(c); break;
-        case 3:  func_ov006_020c6188(c); break;
-        case 4:  func_ov006_020c5ec8(c); break;
-        case 5:  func_ov006_020c5cf4(c); break;
-        case 6:  func_ov006_020c5aa4(c); break;
-        case 7:  func_ov006_020c57d4(c); break;
-        case 8:  func_ov006_020c561c(c); break;
-        case 9:  func_ov006_020c54f4(c); break;
-        case 10: func_ov006_020c5370(c); break;
-        default: func_ov006_020c63dc(c); break;
+        case 0:  Heyho_StartMotion12(c); break;
+        case 1:  Heyho_StartMotion14(c); break;
+        case 2:  Heyho_StartMotion10(c); break;
+        case 3:  Heyho_StartMotion0(c); break;
+        case 4:  Heyho_StartMotion9(c); break;
+        case 5:  Heyho_StartMotion7(c); break;
+        case 6:  Heyho_StartMotion4(c); break;
+        case 7:  Heyho_StartMotion6(c); break;
+        case 8:  Heyho_StartMotion2(c); break;
+        case 9:  Heyho_StartMotion5(c); break;
+        case 10: Heyho_StartMotion1(c); break;
+        default: Heyho_StartMotion12(c); break;
         }
     }
 
     _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1);
     if (*(s16 *)(c + 0xec) != 1)
         return;
-    func_ov006_020e6e3c(0x1c5, *(int *)(c + 0x9c));
+    D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
 }
 
 }
 }
 
-/* ---- func_ov006_020c68f4 ---- */
+/* ---- Heyho_StartMotion8 ---- */
 namespace n020c68f4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -253,9 +253,9 @@ extern int data_ov006_02140320;
 extern Vec3 data_ov006_021403ac;
 extern int data_ov006_021403a0;
 typedef struct { int w[2]; } Pair;
-extern Pair data_ov006_0213af60;
+extern Pair pmf_Heyho_Motion8;
 
-void func_ov006_020c68f4(char* dst, char* src)
+void Heyho_StartMotion8(char* dst, char* src)
 {
     if (!(data_ov006_02140310 & 1)) {
         data_ov006_02140394.x = -0x100000;
@@ -299,13 +299,13 @@ void func_ov006_020c68f4(char* dst, char* src)
     *(int*)(dst + 0xd8) = *(int*)dst;
     *(short*)(dst + 0xe6) = 0;
     *(int*)(dst + 0xe0) = 0;
-    *(Pair*)(dst + 0x30) = data_ov006_0213af60;
+    *(Pair*)(dst + 0x30) = pmf_Heyho_Motion8;
 }
 
 }
 }
 
-/* ---- func_ov006_020c66bc ---- */
+/* ---- Heyho_Motion8 ---- */
 namespace n020c66bc {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -315,22 +315,22 @@ struct Obj;
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern int LenVec3(Vec3 *v);
 extern void _Z15ApproachLinear2Rsss(short *v, short t, short s);
-extern int func_ov006_020e6e3c(int a, int b);
-extern void func_ov006_020c63dc(char *p);
-extern void func_ov006_020c6348(int *c);
-extern void func_ov006_020c6248(int *c);
-extern void func_ov006_020c6188(void *c);
-extern void func_ov006_020c5ec8(char *self);
-extern void func_ov006_020c5cf4(int *c);
-extern void func_ov006_020c5aa4(struct Obj *o);
-extern void func_ov006_020c57d4(struct Obj *o);
-extern void func_ov006_020c561c(void *c);
-extern void func_ov006_020c54f4(void *c);
-extern void func_ov006_020c5370(char *c);
-extern void func_ov006_020c49d8(void *c);
-extern void func_ov006_020c47d4(void *c);
+extern int D3D_PlaySeAtX(int a, int b);
+extern void Heyho_StartMotion12(char *p);
+extern void Heyho_StartMotion14(int *c);
+extern void Heyho_StartMotion10(int *c);
+extern void Heyho_StartMotion0(void *c);
+extern void Heyho_StartMotion9(char *self);
+extern void Heyho_StartMotion7(int *c);
+extern void Heyho_StartMotion4(struct Obj *o);
+extern void Heyho_StartMotion6(struct Obj *o);
+extern void Heyho_StartMotion2(void *c);
+extern void Heyho_StartMotion5(void *c);
+extern void Heyho_StartMotion1(char *c);
+extern void Heyho_CheckHitB(void *c);
+extern void Heyho_CheckHitA(void *c);
 
-void func_ov006_020c66bc(char *c)
+void Heyho_Motion8(char *c)
 {
     int dx, dy, dz;
     int vx, vy;
@@ -357,41 +357,41 @@ void func_ov006_020c66bc(char *c)
             *(int *)(c + 0xa4) = *(int *)(c + 0x28);
 
             switch (*(int *)(c + 0x2c)) {
-            case 0:  func_ov006_020c63dc(c); break;
-            case 1:  func_ov006_020c6348((int *)c); break;
-            case 2:  func_ov006_020c6248((int *)c); break;
-            case 3:  func_ov006_020c6188(c); break;
-            case 4:  func_ov006_020c5ec8(c); break;
-            case 5:  func_ov006_020c5cf4((int *)c); break;
-            case 6:  func_ov006_020c5aa4((struct Obj *)c); break;
-            case 7:  func_ov006_020c57d4((struct Obj *)c); break;
-            case 8:  func_ov006_020c561c(c); break;
-            case 9:  func_ov006_020c54f4(c); break;
-            case 10: func_ov006_020c5370(c); break;
-            default: func_ov006_020c63dc(c); break;
+            case 0:  Heyho_StartMotion12(c); break;
+            case 1:  Heyho_StartMotion14((int *)c); break;
+            case 2:  Heyho_StartMotion10((int *)c); break;
+            case 3:  Heyho_StartMotion0(c); break;
+            case 4:  Heyho_StartMotion9(c); break;
+            case 5:  Heyho_StartMotion7((int *)c); break;
+            case 6:  Heyho_StartMotion4((struct Obj *)c); break;
+            case 7:  Heyho_StartMotion6((struct Obj *)c); break;
+            case 8:  Heyho_StartMotion2(c); break;
+            case 9:  Heyho_StartMotion5(c); break;
+            case 10: Heyho_StartMotion1(c); break;
+            default: Heyho_StartMotion12(c); break;
             }
 
-            func_ov006_020e6e3c(0x1c5, *(int *)(c + 0x9c));
+            D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
         }
     }
 
     _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1);
 
     if (*(short *)(c + 0xec) == 1) {
-        func_ov006_020e6e3c(0x1c5, *(int *)(c + 0x9c));
+        D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
     }
 
     if (LenVec3((Vec3 *)(c + 0xa8)) < 0x1000) {
-        func_ov006_020c49d8(c);
+        Heyho_CheckHitB(c);
     } else {
-        func_ov006_020c47d4(c);
+        Heyho_CheckHitA(c);
     }
 }
 
 }
 }
 
-/* ---- func_ov006_020c64e4 ---- */
+/* ---- Heyho_React ---- */
 namespace n020c64e4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -401,9 +401,9 @@ extern void __register_global_object(void *object, void *destructor, void **node
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void *_ZN7Vector3D1Ev(void *object);
 
-extern int data_ov006_0213af70[2];
-extern int data_ov006_0213afc0[2];
-extern W2 data_ov006_0213afb8;
+extern int pmf_Heyho_StateIdle[2];
+extern int pmf_Heyho_Motion11_2[2];
+extern W2 pmf_Heyho_Motion13_2;
 extern int data_ov006_02140300;
 extern int data_ov006_0214030c;
 extern Vec3 data_ov006_021403d0;
@@ -411,7 +411,7 @@ extern Vec3 data_ov006_021403e8;
 extern void *data_ov006_021403c4;
 extern void *data_ov006_021403dc;
 
-void func_ov006_020c64e4(char *c)
+void Heyho_React(char *c)
 {
     Vec3 locals[3];
     int *v;
@@ -419,15 +419,15 @@ void func_ov006_020c64e4(char *c)
     unsigned base;
 
     v = (int *)(c + 0x30);
-    q = (volatile int *)data_ov006_0213af70;
-    if (v[0] == data_ov006_0213af70[0]
+    q = (volatile int *)pmf_Heyho_StateIdle;
+    if (v[0] == pmf_Heyho_StateIdle[0]
         && (v[1] == q[1] || *(int *)(c + 0x30) == 0))
         return;
 
     base = (unsigned)(int)c;
     v = (int *)(base + 0x30);
-    q = (volatile int *)data_ov006_0213afc0;
-    if (v[0] == data_ov006_0213afc0[0]
+    q = (volatile int *)pmf_Heyho_Motion11_2;
+    if (v[0] == pmf_Heyho_Motion11_2[0]
         && (v[1] == q[1] || *(int *)(c + 0x30) == 0))
         return;
 
@@ -461,13 +461,13 @@ void func_ov006_020c64e4(char *c)
     *(int *)(c + 0xcc) = 0x1400;
     *(int *)(c + 0xd0) = 0x1400;
     *(int *)(c + 0xd4) = 0x1400;
-    *(W2 *)(c + 0x30) = data_ov006_0213afb8;
+    *(W2 *)(c + 0x30) = pmf_Heyho_Motion13_2;
 }
 
 }
 }
 
-/* ---- func_ov006_020c6400 ---- */
+/* ---- Heyho_Motion13 ---- */
 namespace n020c6400 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -476,9 +476,9 @@ extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void Vec3_MulScalar(Vec3 *out, const Vec3 *in, int scale);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern void func_ov006_020c4d20(char *self);
+extern void Heyho_SetIdle(char *self);
 
-void func_ov006_020c6400(char *self)
+void Heyho_Motion13(char *self)
 {
     Vec3 diff, scaled;
     int x, y;
@@ -502,29 +502,29 @@ void func_ov006_020c6400(char *self)
     y = *(int*)(self+0xac);
     if (y < 0) y = -y;
     if (y >= 0x20) return;
-    func_ov006_020c4d20(self);
+    Heyho_SetIdle(self);
 }
 
 }
 }
 
-/* ---- func_ov006_020c63dc ---- */
+/* ---- Heyho_StartMotion12 ---- */
 namespace n020c63dc {
 extern "C" {
 struct S { int w[2]; };
-extern struct S data_ov006_0213af88;
-void func_ov006_020c63dc(char *p) { *(short *)(p + 0xe6) = 0; *(struct S *)(p + 0x30) = data_ov006_0213af88; }
+extern struct S pmf_Heyho_Motion12;
+void Heyho_StartMotion12(char *p) { *(short *)(p + 0xe6) = 0; *(struct S *)(p + 0x30) = pmf_Heyho_Motion12; }
 
 }
 }
 
-/* ---- func_ov006_020c6378 ---- */
+/* ---- Heyho_Motion12 ---- */
 namespace n020c6378 {
 extern "C" {
 extern s16 data_02082214[];
-extern void func_ov006_020c49d8(void* this_);
+extern void Heyho_CheckHitB(void* this_);
 
-void func_ov006_020c6378(int this_)
+void Heyho_Motion12(int this_)
 {
     /* The two re-reads go through a const view of the object: without it
        mwcc 2004 CSEs the +0xea and +0xac field addresses into their own
@@ -535,30 +535,30 @@ void func_ov006_020c6378(int this_)
     *(int*)(this_ + 0xa8) = 0;
     *(int*)(this_ + 0xac) = data_02082214[(*(const u16*)(ro + 0xea) >> 4) * 2] >> 3;
     *(int*)(this_ + 0xa0) += *(const int*)(ro + 0xac);
-    func_ov006_020c49d8((void*)this_);
+    Heyho_CheckHitB((void*)this_);
 }
 
 }
 }
 
-/* ---- func_ov006_020c6348 ---- */
+/* ---- Heyho_StartMotion14 ---- */
 namespace n020c6348 {
 extern "C" {
-struct S{int w[2];}; extern struct S data_ov006_0213af18;
-void func_ov006_020c6348(int* c){ *(int*)((char*)c+0xa8)=0x800; *(int*)((char*)c+0xac)=0; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=data_ov006_0213af18; }
+struct S{int w[2];}; extern struct S pmf_Heyho_Motion14;
+void Heyho_StartMotion14(int* c){ *(int*)((char*)c+0xa8)=0x800; *(int*)((char*)c+0xac)=0; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion14; }
 
 }
 }
 
-/* ---- func_ov006_020c627c ---- */
+/* ---- Heyho_Motion14 ---- */
 namespace n020c627c {
 extern "C" {
 extern void AddVec3(void* a, void* b, void* c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern void func_ov006_020c49d8(void* c);
+extern void Heyho_CheckHitB(void* c);
 extern short data_02082214[];
 
-void func_ov006_020c627c(char* c)
+void Heyho_Motion14(char* c)
 {
     int v, w;
     *(short*)(((int)c + 0xea)) += 0x200;
@@ -584,27 +584,27 @@ skip_else_if:
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c6248 ---- */
+/* ---- Heyho_StartMotion10 ---- */
 namespace n020c6248 {
 extern "C" {
-struct S{int w[2];}; extern struct S data_ov006_0213af78;
-void func_ov006_020c6248(int* c){ *(int*)((char*)c+0xa8)=0; *(int*)((char*)c+0xac)=0x800; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=data_ov006_0213af78; *(short*)((char*)c+0xe6)=0; }
+struct S{int w[2];}; extern struct S pmf_Heyho_Motion10;
+void Heyho_StartMotion10(int* c){ *(int*)((char*)c+0xa8)=0; *(int*)((char*)c+0xac)=0x800; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion10; *(short*)((char*)c+0xe6)=0; }
 
 }
 }
 
-/* ---- func_ov006_020c61c4 ---- */
+/* ---- Heyho_Motion10 ---- */
 namespace n020c61c4 {
 extern "C" {
-// @symbol func_ov006_020c61c4
+// @symbol Heyho_Motion10
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *out);
-void func_ov006_020c61c4(int this_) {
+void Heyho_Motion10(int this_) {
     int f24 = *(int*)(this_ + 0x24);
     int a0  = *(int*)(this_ + 0xa0);
     if (a0 < f24 + *(int*)(this_ + 0x18) && ((int*)this_)[43] < 0) {
@@ -615,36 +615,36 @@ void func_ov006_020c61c4(int this_) {
         ((short*)this_)[117] = 0;
     }
     AddVec3((struct Vector3*)(this_ + 0x9c), (struct Vector3*)(this_ + 0xa8), (struct Vector3*)(this_ + 0x9c));
-    func_ov006_020c49d8((void*)this_);
+    Heyho_CheckHitB((void*)this_);
 }
 
 }
 }
 
-/* ---- func_ov006_020c6188 ---- */
+/* ---- Heyho_StartMotion0 ---- */
 namespace n020c6188 {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af20;
-void func_ov006_020c6188(void *c){
+extern struct S pmf_Heyho_Motion0;
+void Heyho_StartMotion0(void *c){
   *(short*)((char*)c+0xe6)=0;
   *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
   *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
   *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af20;
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion0;
 }
 
 }
 }
 
-/* ---- func_ov006_020c6088 ---- */
+/* ---- Heyho_Motion0 ---- */
 namespace n020c6088 {
 extern "C" {
-// @symbol func_ov006_020c6088
+// @symbol Heyho_Motion0
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void func_ov006_020c6088(char *c)
+void Heyho_Motion0(char *c)
 {
     int base_y = *(int*)(c + 0x24);
     int pos_y = *(int*)(c + 0xa0);
@@ -690,13 +690,13 @@ after_x:;
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c5ec8 ---- */
+/* ---- Heyho_StartMotion9 ---- */
 namespace n020c5ec8 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -706,9 +706,9 @@ extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern int NormalizeVec3IfNonZero(Vec3* v);
 extern void Vec3_MulScalarInPlace(int* v, int s);
 typedef struct { int w[2]; } S2;
-extern S2 data_ov006_0213af68;
+extern S2 pmf_Heyho_Motion9;
 
-void func_ov006_020c5ec8(char* self)
+void Heyho_StartMotion9(char* self)
 {
     Vec3 v0, v1, v2, d0, d1, d2, diff;
     int len0, len1, len2;
@@ -775,13 +775,13 @@ void func_ov006_020c5ec8(char* self)
         Vec3_MulScalarInPlace((int*)(self + 0xa8), *(int*)(self + 0xdc));
     }
 
-    *(S2*)(self + 0x30) = data_ov006_0213af68;
+    *(S2*)(self + 0x30) = pmf_Heyho_Motion9;
 }
 
 }
 }
 
-/* ---- func_ov006_020c5d28 ---- */
+/* ---- Heyho_Motion9 ---- */
 namespace n020c5d28 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -790,9 +790,9 @@ extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void func_0203ce80(Vec3* dst, Vec3* src);
 extern void Vec3_MulScalarInPlace(int* v, int s);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern void func_ov006_020c49d8(void* c);
+extern void Heyho_CheckHitB(void* c);
 
-void func_ov006_020c5d28(char* c)
+void Heyho_Motion9(char* c)
 {
     Vec3 sp0, spC, sp18, sp24;
     int r5, r0v;
@@ -836,29 +836,29 @@ void func_ov006_020c5d28(char* c)
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
 
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c5cf4 ---- */
+/* ---- Heyho_StartMotion7 ---- */
 namespace n020c5cf4 {
 extern "C" {
-struct S{int w[2];}; extern struct S data_ov006_0213af58;
-void func_ov006_020c5cf4(int* c){ *(int*)((char*)c+0xa8)=*(int*)((char*)c+4); *(int*)((char*)c+0xac)=*(int*)((char*)c+8); *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc); *(struct S*)((char*)c+0x30)=data_ov006_0213af58; }
+struct S{int w[2];}; extern struct S pmf_Heyho_Motion7;
+void Heyho_StartMotion7(int* c){ *(int*)((char*)c+0xa8)=*(int*)((char*)c+4); *(int*)((char*)c+0xac)=*(int*)((char*)c+8); *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc); *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion7; }
 
 }
 }
 
-/* ---- func_ov006_020c5bf8 ---- */
+/* ---- Heyho_Motion7 ---- */
 namespace n020c5bf8 {
 extern "C" {
-// @symbol func_ov006_020c5bf8
+// @symbol Heyho_Motion7
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void func_ov006_020c5bf8(char *c)
+void Heyho_Motion7(char *c)
 {
     int a8 = *(int*)(c + 0xa8);
     if (a8 < 0 && *(int*)(c + 0x9c) < *(int*)(c + 0x20) + *(int*)(c + 0x10)) {
@@ -877,13 +877,13 @@ void func_ov006_020c5bf8(char *c)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c5aa4 ---- */
+/* ---- Heyho_StartMotion4 ---- */
 namespace n020c5aa4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -907,9 +907,9 @@ struct Obj {
     short fe6;
 };
 
-extern W2 data_ov006_0213af40;
+extern W2 pmf_Heyho_Motion4;
 
-void func_ov006_020c5aa4(struct Obj *o)
+void Heyho_StartMotion4(struct Obj *o)
 {
     Vec3 a, b, da, db, t;
     int la;
@@ -952,13 +952,13 @@ void func_ov006_020c5aa4(struct Obj *o)
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = data_ov006_0213af40;
+    *(W2 *)((char *)o + 0x30) = pmf_Heyho_Motion4;
 }
 
 }
 }
 
-/* ---- func_ov006_020c5928 ---- */
+/* ---- Heyho_Motion4 ---- */
 namespace n020c5928 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -967,9 +967,9 @@ extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void func_0203ce80(Vec3* dst, Vec3* src);
 extern void Vec3_MulScalarInPlace(int* v, int s);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern void func_ov006_020c49d8(void* c);
+extern void Heyho_CheckHitB(void* c);
 
-void func_ov006_020c5928(char* c)
+void Heyho_Motion4(char* c)
 {
     Vec3 sp0, spC, sp18, sp24;
     int r5, r0v;
@@ -1007,13 +1007,13 @@ void func_ov006_020c5928(char* c)
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
 
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c57d4 ---- */
+/* ---- Heyho_StartMotion6 ---- */
 namespace n020c57d4 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -1037,9 +1037,9 @@ struct Obj {
     short fe6;
 };
 
-extern W2 data_ov006_0213af50;
+extern W2 pmf_Heyho_Motion6;
 
-void func_ov006_020c57d4(struct Obj *o)
+void Heyho_StartMotion6(struct Obj *o)
 {
     Vec3 a, b, da, db, t;
     int la;
@@ -1082,13 +1082,13 @@ void func_ov006_020c57d4(struct Obj *o)
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = data_ov006_0213af50;
+    *(W2 *)((char *)o + 0x30) = pmf_Heyho_Motion6;
 }
 
 }
 }
 
-/* ---- func_ov006_020c5658 ---- */
+/* ---- Heyho_Motion6 ---- */
 namespace n020c5658 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -1097,9 +1097,9 @@ extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void func_0203ce80(Vec3* dst, Vec3* src);
 extern void Vec3_MulScalarInPlace(int* v, int s);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern void func_ov006_020c49d8(void* c);
+extern void Heyho_CheckHitB(void* c);
 
-void func_ov006_020c5658(char* c)
+void Heyho_Motion6(char* c)
 {
     Vec3 sp0, spC, sp18, sp24;
     int r5, r0v;
@@ -1137,36 +1137,36 @@ void func_ov006_020c5658(char* c)
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
 
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c561c ---- */
+/* ---- Heyho_StartMotion2 ---- */
 namespace n020c561c {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af30;
-void func_ov006_020c561c(void *c){
+extern struct S pmf_Heyho_Motion2;
+void Heyho_StartMotion2(void *c){
   *(short*)((char*)c+0xe6)=0;
   *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
   *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
   *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af30;
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion2;
 }
 
 }
 }
 
-/* ---- func_ov006_020c5530 ---- */
+/* ---- Heyho_Motion2 ---- */
 namespace n020c5530 {
 extern "C" {
-// @symbol func_ov006_020c5530
+// @symbol Heyho_Motion2
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void func_ov006_020c5530(char *c)
+void Heyho_Motion2(char *c)
 {
     int a8 = *(int*)(c + 0xa8);
     if (a8 < 0 && *(int*)(c + 0x9c) < -0x68000) {
@@ -1189,36 +1189,36 @@ void func_ov006_020c5530(char *c)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c54f4 ---- */
+/* ---- Heyho_StartMotion5 ---- */
 namespace n020c54f4 {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af48;
-void func_ov006_020c54f4(void *c){
+extern struct S pmf_Heyho_Motion5;
+void Heyho_StartMotion5(void *c){
   *(short*)((char*)c+0xe6)=0;
   *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
   *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
   *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af48;
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion5;
 }
 
 }
 }
 
-/* ---- func_ov006_020c53f8 ---- */
+/* ---- Heyho_Motion5 ---- */
 namespace n020c53f8 {
 extern "C" {
-// @symbol func_ov006_020c53f8
+// @symbol Heyho_Motion5
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
-void func_ov006_020c53f8(char *c)
+void Heyho_Motion5(char *c)
 {
     int a8 = *(int*)(c + 0xa8);
     if (a8 < 0 && *(int*)(c + 0x9c) < -0x68000) {
@@ -1241,22 +1241,22 @@ void func_ov006_020c53f8(char *c)
         _Z14ApproachLinearRsss((short*)(c + 0xe6), 0x3000, 0x200);
     else
         _Z14ApproachLinearRsss((short*)(c + 0xe6), -0x3000, 0x200);
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c5370 ---- */
+/* ---- Heyho_StartMotion1 ---- */
 namespace n020c5370 {
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern int data_ov006_0213af28[];
+extern int pmf_Heyho_Motion1[];
 
 struct W2 { int w[2]; };
 
-void func_ov006_020c5370(char *c)
+void Heyho_StartMotion1(char *c)
 {
     unsigned int r;
     *(short *)(c + 0xe6) = 0;
@@ -1269,13 +1269,13 @@ void func_ov006_020c5370(char *c)
     *(int *)(c + 0xa8) = *(int *)(c + 0x4);
     *(int *)(c + 0xac) = *(int *)(c + 0x8);
     *(int *)(c + 0xb0) = *(int *)(c + 0xc);
-    *(struct W2 *)(c + 0x30) = *(struct W2 *)data_ov006_0213af28;
+    *(struct W2 *)(c + 0x30) = *(struct W2 *)pmf_Heyho_Motion1;
 }
 
 }
 }
 
-/* ---- func_ov006_020c4fa4 ---- */
+/* ---- Heyho_Motion1 ---- */
 bool ApproachLinear(short &value, short target, short step);
 namespace n020c4fa4 {
 
@@ -1298,12 +1298,12 @@ extern void Vec3_Sub(Vec3 *d, Vec3 *a, Vec3 *b);
 extern void Vec3_Add(Vec3 *d, Vec3 *a, Vec3 *b);
 extern int LenVec3(Vec3 *v);
 extern int DotVec3(Vec3 *a, Vec3 *b);
-extern void func_ov006_020c49d8(char *c);
+extern void Heyho_CheckHitB(char *c);
 extern int data_0209e650;
 extern VB *data_ov006_021403f4[];
 }
 
-extern "C" void func_ov006_020c4fa4(char *c)
+extern "C" void Heyho_Motion1(char *c)
 {
     VB *best;
     Vec3 bp;
@@ -1414,35 +1414,35 @@ extern "C" void func_ov006_020c4fa4(char *c)
         if (df > 0) ApproachLinear(*(short *)(c + 0xe6), 0x3000, 0x200);
         else if (df < 0) ApproachLinear(*(short *)(c + 0xe6), -0x3000, 0x200);
     }
-    func_ov006_020c49d8(c);
+    Heyho_CheckHitB(c);
 }
 
 }
 
-/* ---- func_ov006_020c4f68 ---- */
+/* ---- Heyho_StartMotion11 ---- */
 namespace n020c4f68 {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af80;
-extern void func_ov006_020e6e3c(int a, int b);
-void func_ov006_020c4f68(int *c){
+extern struct S pmf_Heyho_Motion11;
+extern void D3D_PlaySeAtX(int a, int b);
+void Heyho_StartMotion11(int *c){
   *(short*)((char*)c+0xea)=0;
-  func_ov006_020e6e3c(0x1c8, *(int*)((char*)c+0x9c));
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af80;
+  D3D_PlaySeAtX(0x1c8, *(int*)((char*)c+0x9c));
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion11;
 }
 
 }
 }
 
-/* ---- func_ov006_020c4e8c ---- */
+/* ---- Heyho_Motion11 ---- */
 namespace n020c4e8c {
 extern "C" {
 #define AT(p, off) ((void*)(int)((char*)(p) + (off)))
-int func_ov006_020e6e3c(int a, int b);
-void func_ov006_020c4d3c(char* c);
+int D3D_PlaySeAtX(int a, int b);
+void Heyho_Settle(char* c);
 extern short data_02082214[];
 
-void func_ov006_020c4e8c(char* c) {
+void Heyho_Motion11(char* c) {
     if (*(short*)(c + 0xea) < 0x4000) {
         short* p = (short*)AT(c, 0xea);
         short* tbl = data_02082214;
@@ -1457,23 +1457,23 @@ void func_ov006_020c4e8c(char* c) {
         *(int*)(c + 0xd4) = r0;
         return;
     }
-    func_ov006_020e6e3c(0x1c7, *(int*)(c + 0x9c));
-    func_ov006_020c4d3c(c);
+    D3D_PlaySeAtX(0x1c7, *(int*)(c + 0x9c));
+    Heyho_Settle(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c4d3c ---- */
+/* ---- Heyho_Settle ---- */
 namespace n020c4d3c {
 extern "C" {
 typedef int Fix12;
 extern void* _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12 x, Fix12 y, Fix12 z);
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
-extern void func_ov006_020bfff8(void* a, void* b, int* c, int* d);
-extern int func_ov004_020b04c0(void);
-extern void func_ov006_020ef05c(int a, int b, int c);
-extern void func_ov006_020c4d20(char* p);
+extern void Camera_ProjectToScreen(void* a, void* b, int* c, int* d);
+extern int Mg_GetTopScreenYOffset(void);
+extern void Jump2Popup_Spawn(int a, int b, int c);
+extern void Heyho_SetIdle(char* p);
 
 extern int data_ov006_02140304[];
 extern int data_ov006_02140308;
@@ -1481,7 +1481,7 @@ extern int data_ov006_02140314;
 extern void* data_ov006_02141a50;
 extern void* data_ov006_02141a40;
 
-void func_ov006_020c4d3c(char* c)
+void Heyho_Settle(char* c)
 {
     void* a;
     void* b;
@@ -1501,63 +1501,63 @@ void func_ov006_020c4d3c(char* c)
 
     if (data_ov006_02140314 != 0) {
         if (*(int*)(c + 0xa0) > 0) {
-            func_ov006_020bfff8(data_ov006_02141a50, (void*)(c + 0x9c), &v0, &v1);
-            v1 = v1 - (func_ov004_020b04c0() + 0xc0);
+            Camera_ProjectToScreen(data_ov006_02141a50, (void*)(c + 0x9c), &v0, &v1);
+            v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
         } else {
-            func_ov006_020bfff8(data_ov006_02141a40, (void*)(c + 0x9c), &v0, &v1);
+            Camera_ProjectToScreen(data_ov006_02141a40, (void*)(c + 0x9c), &v0, &v1);
         }
         v1 = v1 - 0x20;
-        func_ov006_020ef05c(v0 << 0xc, v1 << 0xc, (short)data_ov006_02140308);
+        Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)data_ov006_02140308);
     }
 
-    func_ov006_020c4d20(c);
+    Heyho_SetIdle(c);
 }
 
 }
 }
 
-/* ---- func_ov006_020c4d20 ---- */
+/* ---- Heyho_SetIdle ---- */
 namespace n020c4d20 {
 extern "C" {
 struct S { int w[2]; };
-extern struct S data_ov006_0213af90;
-void func_ov006_020c4d20(char *p) { *(struct S *)(p + 0x30) = data_ov006_0213af90; }
+extern struct S pmf_Heyho_StateIdle_2;
+void Heyho_SetIdle(char *p) { *(struct S *)(p + 0x30) = pmf_Heyho_StateIdle_2; }
 
 }
 }
 
-/* ---- func_ov006_020c4d1c ---- */
+/* ---- Heyho_StateIdle ---- */
 namespace n020c4d1c {
 extern "C" {
-void func_ov006_020c4d1c(void)
+void Heyho_StateIdle(void)
 {
 }
 
 }
 }
 
-/* ---- func_ov006_020c4cd8 ---- */
+/* ---- Heyho_Update ---- */
 namespace n020c4cd8 {
 extern "C" {
 /* local extern: byte-proved alias spelling for a call by mangled name on a member subobject, as in the original one-function source */
 void _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
-void func_ov006_020c4c00(void *c);
+void Heyho_UpdateMatrix(void *c);
 }
 struct Foo {
   char pad[0x30];
   void (Foo::*pmf)();
 };
-extern "C" void func_ov006_020c4cd8(struct Foo *c){
+extern "C" void Heyho_Update(struct Foo *c){
   (c->*(c->pmf))();
   _ZN15dExtFrameCtrl_c7AdvanceEv((char*)c+0x88);
-  func_ov006_020c4c00(c);
+  Heyho_UpdateMatrix(c);
 }
 
 }
 
-/* ---- func_ov006_020c4c54 ---- */
+/* ---- Heyho_Draw ---- */
 namespace n020c4c54 {
-// @symbol func_ov006_020c4c54
+// @symbol Heyho_Draw
 
 extern "C" void Vec3_MulScalar(Vector3 *res, Vector3 *v, int scalar);
 struct Sub {
@@ -1568,10 +1568,10 @@ struct Sub {
     virtual void v4();
     virtual void m5(Vector3 *p);
 };
-extern "C" void func_ov006_020c4c54(int this_) {
+extern "C" void Heyho_Draw(int this_) {
     Vector3 v;
     int *p = (int*)(((int)this_ + 0x30));
-    Vector3 *d = &data_ov006_0213af98;
+    Vector3 *d = &pmf_Heyho_StateIdle_3;
     if (p[0] == d->x) {
         if (p[1] == d->y)
             return;
@@ -1585,14 +1585,14 @@ extern "C" void func_ov006_020c4c54(int this_) {
 
 }
 
-/* ---- func_ov006_020c4c00 ---- */
+/* ---- Heyho_UpdateMatrix ---- */
 namespace n020c4c00 {
 extern "C" {
-// @symbol func_ov006_020c4c00
+// @symbol Heyho_UpdateMatrix
 extern struct Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3* m, short angY);
-void func_ov006_020c4c00(char* c) {
+void Heyho_UpdateMatrix(char* c) {
     Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x9c), *(int*)(c+0xa0), *(int*)(c+0xa4));
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(short*)(c+0xe6));
     *(struct Matrix4x3*)(c+0x54) = data_020a0e68;
@@ -1601,7 +1601,7 @@ void func_ov006_020c4c00(char* c) {
 }
 }
 
-/* ---- func_ov006_020c49d8 ---- */
+/* ---- Heyho_CheckHitB ---- */
 namespace n020c49d8 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -1620,13 +1620,13 @@ extern void Vec3_Add(Vec3* out, Vec3* a, Vec3* b);
 extern int LenVec3(Vec3* v);
 extern int DotVec3(Vec3* a, Vec3* b);
 extern int NormalizeVec3IfNonZero(Vec3* v);
-extern void func_ov006_020c4f68(struct Self* self);
+extern void Heyho_StartMotion11(struct Self* self);
 extern char* data_ov006_021403f4[];
 
 #define O  (data_ov006_021403f4[i])
 #define OM (((char* volatile*)data_ov006_021403f4)[i])
 
-void func_ov006_020c49d8(struct Self* self)
+void Heyho_CheckHitB(struct Self* self)
 {
     int i;
     int lim = (int)(((long long)self->d8 * 0x12000 + 0x800) >> 12);
@@ -1660,7 +1660,7 @@ void func_ov006_020c49d8(struct Self* self)
             *(int*)(O + 4) = self->pos.x;
             *(int*)(O + 8) = self->pos.y;
             *(int*)(O + 0xc) = self->pos.z;
-            func_ov006_020c4f68(self);
+            Heyho_StartMotion11(self);
         }
 
         d.x = 0;
@@ -1671,7 +1671,7 @@ void func_ov006_020c49d8(struct Self* self)
             *(int*)(O + 4) = self->pos.x;
             *(int*)(O + 8) = self->pos.y;
             *(int*)(O + 0xc) = self->pos.z;
-            func_ov006_020c4f68(self);
+            Heyho_StartMotion11(self);
             return;
         } else {
             *(short*)(OM + 0x10) = 2;
@@ -1685,7 +1685,7 @@ void func_ov006_020c49d8(struct Self* self)
 }
 }
 
-/* ---- func_ov006_020c47d4 ---- */
+/* ---- Heyho_CheckHitA ---- */
 namespace n020c47d4 {
 extern "C" {
 typedef int Fix12;
@@ -1717,9 +1717,9 @@ extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern Fix12 DotVec3(const Vec3 *a, const Vec3 *b);
 extern int LenVec3(Vec3 *v);
 extern int NormalizeVec3IfNonZero(Vec3 *v);
-extern void func_ov006_020c4f68(Self *self);
+extern void Heyho_StartMotion11(Self *self);
 
-void func_ov006_020c47d4(Self *self)
+void Heyho_CheckHitA(Self *self)
 {
     int i;
     int thresh = (int)(((long long)self->speed * 0x12000 + 0x800) >> 12);
@@ -1763,7 +1763,7 @@ void func_ov006_020c47d4(Self *self)
             o->vec.x = self->pos.x;
             o->vec.y = self->pos.y;
             o->vec.z = self->pos.z;
-            func_ov006_020c4f68(self);
+            Heyho_StartMotion11(self);
         }
 
         up.x = 0;
@@ -1780,7 +1780,7 @@ void func_ov006_020c47d4(Self *self)
         o->vec.x = self->pos.x;
         o->vec.y = self->pos.y;
         o->vec.z = self->pos.z;
-        func_ov006_020c4f68(self);
+        Heyho_StartMotion11(self);
         return;
     }
 }
@@ -1788,7 +1788,7 @@ void func_ov006_020c47d4(Self *self)
 }
 }
 
-/* ---- func_ov006_020c4710 ---- */
+/* ---- Heyho_IsChasing ---- */
 namespace n020c4710 {
 extern "C" {
 typedef struct UID { int low, high; } UID;
@@ -1800,14 +1800,14 @@ typedef struct dActor_c {
     short fE6;                          /* 0xe6 */
 } dActor_c;
 
-extern UID data_ov006_0213afa0;
-extern UID data_ov006_0213afb0;
+extern UID pmf_Heyho_Motion13;
+extern UID pmf_Heyho_Motion1_2;
 
-int func_ov006_020c4710(dActor_c *a)
+int Heyho_IsChasing(dActor_c *a)
 {
     int result = 0;
     UID *p = (UID *)(int)(&a->id);
-    UID *c = (UID *)(int)(&data_ov006_0213afa0);
+    UID *c = (UID *)(int)(&pmf_Heyho_Motion13);
     int neq = 1;
     if (p->low == c->low) {
         if (p->high == c->high || a->id.low == 0)
@@ -1817,7 +1817,7 @@ int func_ov006_020c4710(dActor_c *a)
         int flag = 1;
         int neq2 = flag;
         UID *q = (UID *)(int)((long long)(unsigned int)&a->id);
-        UID *c2 = (UID *)(int)(&data_ov006_0213afb0);
+        UID *c2 = (UID *)(int)(&pmf_Heyho_Motion1_2);
         if (q->low == c2->low) {
             if (q->high == c2->high || a->id.low == 0)
                 neq2 = 0;
@@ -1835,16 +1835,16 @@ int func_ov006_020c4710(dActor_c *a)
 }
 }
 
-/* ---- func_ov006_020c4684 ---- */
+/* ---- Heyho_InitPool ---- */
 namespace n020c4684 {
 extern "C" {
-extern int func_ov006_020c6e4c(char *p);
+extern int Heyho_LoadResources(char *p);
 extern int data_ov006_02140328;
 extern int data_ov006_02140304;
 extern char *data_ov006_02140324;
 extern int data_ov006_02140314;
-int func_ov006_020c4684(char *ptr, int n);
-int func_ov006_020c4684(char *ptr, int n){
+int Heyho_InitPool(char *ptr, int n);
+int Heyho_InitPool(char *ptr, int n){
     int i;
     int off;
     data_ov006_02140314 = 0;
@@ -1855,7 +1855,7 @@ int func_ov006_020c4684(char *ptr, int n){
         i = 0;
         off = 0;
         do {
-            if (func_ov006_020c6e4c(data_ov006_02140324 + off) == 0)
+            if (Heyho_LoadResources(data_ov006_02140324 + off) == 0)
                 return 0;
             i++;
             off += 0xf0;
@@ -1867,7 +1867,7 @@ int func_ov006_020c4684(char *ptr, int n){
 }
 }
 
-/* ---- func_ov006_020c44b4 ---- */
+/* ---- Heyho_SpawnAll ---- */
 namespace n020c44b4 {
 extern "C" {
 extern void *data_ov006_021402fc;
@@ -1881,11 +1881,11 @@ extern int data_0209e650;
 extern char data_ov006_0212d560[];
 extern char data_ov006_0212c9f0[];
 
-extern void func_ov006_020c6ca4(char *dst, char *src);
-extern void func_ov006_020c4c00(char *c);
+extern void Heyho_StartMotion3(char *dst, char *src);
+extern void Heyho_UpdateMatrix(char *c);
 extern int RandomIntInternal(int *seed);
 
-void func_ov006_020c44b4(void *arg0, int arg1)
+void Heyho_SpawnAll(void *arg0, int arg1)
 {
     int count;
     int sl;
@@ -1924,10 +1924,10 @@ void func_ov006_020c44b4(void *arg0, int arg1)
         if (sl < 3) {
             base = data_ov006_02140324 + r8;
             *(short *)(base + 0xea) = (short)sp8;
-            func_ov006_020c6ca4(
+            Heyho_StartMotion3(
                 data_ov006_02140324 + r8,
                 data_ov006_0212d560 + data_ov006_0214031c * 0x90 + sp4);
-            func_ov006_020c4c00(data_ov006_02140324 + r8);
+            Heyho_UpdateMatrix(data_ov006_02140324 + r8);
         } else {
             t = RandomIntInternal(seed) & 0x7fffffff;
             t = (int)((unsigned)t >> 0x13);
@@ -1954,10 +1954,10 @@ void func_ov006_020c44b4(void *arg0, int arg1)
             data_ov006_021403b8[sl - 3] = sb;
             base = data_ov006_02140324 + r8;
             *(short *)(base + 0xea) = (short)sp10;
-            func_ov006_020c6ca4(
+            Heyho_StartMotion3(
                 data_ov006_02140324 + r8,
                 data_ov006_0212c9f0 + sb * 0xc0 + sp0 * 0x30);
-            func_ov006_020c4c00(data_ov006_02140324 + r8);
+            Heyho_UpdateMatrix(data_ov006_02140324 + r8);
         }
         sp4 = sp4 + 0x30;
         r8 = r8 + 0xf0;
@@ -1968,7 +1968,7 @@ void func_ov006_020c44b4(void *arg0, int arg1)
 }
 }
 
-/* ---- func_ov006_020c42bc ---- */
+/* ---- Heyho_SeparateAll ---- */
 namespace n020c42bc {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -1985,15 +1985,15 @@ struct Obj {
 extern struct Obj* data_ov006_02140324;
 extern int data_ov006_02140328;
 
-extern void func_ov006_020c4cd8(struct Obj* o);
-extern int func_ov006_020c4710(struct Obj* o);
+extern void Heyho_Update(struct Obj* o);
+extern int Heyho_IsChasing(struct Obj* o);
 extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern int LenVec3(Vec3* v);
 extern int NormalizeVec3IfNonZero(Vec3* v);
 extern void AddVec3(Vec3* a, Vec3* b, Vec3* c);
 extern void SubVec3(Vec3* a, Vec3* b, Vec3* c);
 
-void func_ov006_020c42bc(void)
+void Heyho_SeparateAll(void)
 {
     Vec3 v1;
     Vec3 v2;
@@ -2005,18 +2005,18 @@ void func_ov006_020c42bc(void)
     Vec3* ai;
 
     for (i = 0; i < data_ov006_02140328; i++) {
-        func_ov006_020c4cd8(&data_ov006_02140324[i]);
+        Heyho_Update(&data_ov006_02140324[i]);
     }
     for (k = 0; k < data_ov006_02140328; k++) {
         data_ov006_02140324[k].e0 = 0;
     }
     for (t = 0; t < data_ov006_02140328; t++) {
-        if (func_ov006_020c4710(&data_ov006_02140324[t]) != 0) {
+        if (Heyho_IsChasing(&data_ov006_02140324[t]) != 0) {
             oi = &data_ov006_02140324[t];
             pi = &oi->pos;
             ai = &oi->vel;
             for (j = t + 1; j < data_ov006_02140328; j++) {
-                if (func_ov006_020c4710(&data_ov006_02140324[j]) != 0) {
+                if (Heyho_IsChasing(&data_ov006_02140324[j]) != 0) {
                     oj = (struct Obj*)((long long)(int)&data_ov006_02140324[j]);
                     pj = &oj->pos;
                     Vec3_Sub(&v1, pi, pj);
@@ -2037,18 +2037,18 @@ void func_ov006_020c42bc(void)
 }
 }
 
-/* ---- func_ov006_020c425c ---- */
+/* ---- Heyho_DrawAll ---- */
 namespace n020c425c {
 extern "C" {
-extern void func_ov006_020c4c54(int);
+extern void Heyho_Draw(int);
 extern int data_ov006_02140328;
 extern int data_ov006_02140324;
-void func_ov006_020c425c(void){
+void Heyho_DrawAll(void){
   int i = 0;
   if(data_ov006_02140328 > 0){
     int off = 0;
     do {
-      func_ov006_020c4c54(data_ov006_02140324 + off);
+      Heyho_Draw(data_ov006_02140324 + off);
       i++;
       off += 0xf0;
     } while(i < data_ov006_02140328);
@@ -2058,7 +2058,7 @@ void func_ov006_020c425c(void){
 }
 }
 
-/* ---- func_ov006_020c4148 ---- */
+/* ---- Heyho_SettleAll ---- */
 namespace n020c4148 {
 extern "C" {
 typedef struct Ent {
@@ -2076,10 +2076,10 @@ extern int data_ov006_02140304;
 extern int data_0209e650;
 
 extern int RandomIntInternal(int *seed);
-extern void func_ov006_020c68f4(char *a, char *b);
+extern void Heyho_StartMotion8(char *a, char *b);
 extern void _Z14ApproachLinearRiii(int *x, int target, int step);
 
-void func_ov006_020c4148(void)
+void Heyho_SettleAll(void)
 {
     int i;
     for (i = 0; i < data_ov006_02140328; i++) {
@@ -2093,7 +2093,7 @@ void func_ov006_020c4148(void)
             int r2 = RandomIntInternal(&data_0209e650);
             unsigned v0 = (unsigned)(r1 & 0x7fffffff) >> 0x13;
             unsigned u0 = (unsigned)(r2 & 0x7fffffff) >> 0x13;
-            func_ov006_020c68f4(
+            Heyho_StartMotion8(
                 (char *)data_ov006_02140324 + i * 0xf0,
                 &data_ov006_0212ccf0
                     + (((int)(v0 * 9)) >> 0xc) * 0xf0
@@ -2107,18 +2107,18 @@ void func_ov006_020c4148(void)
 }
 }
 
-/* ---- func_ov006_020c40e8 ---- */
+/* ---- Heyho_ReactAll ---- */
 namespace n020c40e8 {
 extern "C" {
-extern void func_ov006_020c64e4(int);
+extern void Heyho_React(int);
 extern int data_ov006_02140328;
 extern int data_ov006_02140324;
-void func_ov006_020c40e8(void){
+void Heyho_ReactAll(void){
   int i = 0;
   if(data_ov006_02140328 > 0){
     int off = 0;
     do {
-      func_ov006_020c64e4(data_ov006_02140324 + off);
+      Heyho_React(data_ov006_02140324 + off);
       i++;
       off += 0xf0;
     } while(i < data_ov006_02140328);
@@ -2128,11 +2128,11 @@ void func_ov006_020c40e8(void){
 }
 }
 
-/* ---- func_ov006_020c4060 ---- */
+/* ---- Heyho_AllIdle ---- */
 namespace n020c4060 {
 extern "C" {
 // Scans data_ov006_02140328 entries (stride 0xf0) from data_ov006_02140324:
-// returns 0 if any entry's pair at +0x30 mismatches data_ov006_0213afa8
+// returns 0 if any entry's pair at +0x30 mismatches pmf_Heyho_StateIdle_4
 // (y-mismatch tolerated when x is 0), else 1. Leaf, no callees.
 typedef struct Ent {
     char _pad0[0x30];  // 0x00
@@ -2143,14 +2143,14 @@ typedef struct Ent {
 
 extern int data_ov006_02140328;
 extern Ent* data_ov006_02140324;
-extern int data_ov006_0213afa8[2];
+extern int pmf_Heyho_StateIdle_4[2];
 
-int func_ov006_020c4060(void) {
+int Heyho_AllIdle(void) {
     int i;
     for (i = 0; i < data_ov006_02140328; i++) {
         int* v = (int*)(&data_ov006_02140324[i].x);
-        volatile int* q = (volatile int*)data_ov006_0213afa8;
-        if (v[0] != data_ov006_0213afa8[0]
+        volatile int* q = (volatile int*)pmf_Heyho_StateIdle_4;
+        if (v[0] != pmf_Heyho_StateIdle_4[0]
             || (v[1] != q[1] && data_ov006_02140324[i].x != 0))
             return 0;
     }

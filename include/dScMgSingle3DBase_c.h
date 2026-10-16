@@ -31,8 +31,8 @@ struct dScMgSingle3DBase_c : dScMgBase_c {
     virtual void AfterCleanupResources(u32 vfSuccess); /* slot  5 */
     virtual int  BeforeBehavior();                  /* slot  7 */
     virtual int  BeforeRender();                    /* slot 10 */
-    virtual int  OnHitByCannonBlastedChar();      /* slot 26 */
-    virtual void Virtual84();                          /* slot 33 */
+    virtual int  GetDisplayMode();      /* slot 26 */
+    virtual void InitEngines();                          /* slot 33 */
 
     /* DO NOT restyle the seven `offset 0xNN` comments below into this
      * tree's usual hex-comment form: check_header_offsets.py's DATA_SIZE

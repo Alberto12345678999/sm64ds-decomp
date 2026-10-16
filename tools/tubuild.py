@@ -3391,6 +3391,112 @@ def _configured_bss_boundaries(module, homes):
     return out
 
 
+def _configured_terminal_bss_end(module, claim, layout, owned_rows):
+    """Prove a sized final object end before configured module alignment padding.
+
+    This is an end-only alternative to the ordinary address anchors. Sizes must
+    be explicit in symbols.txt, independently reviewed from retail evidence.
+    Neither candidate object sizes nor the distance to module end invent one.
+    Returns (evidence, reasons); it never licenses ownership of the trailing gap.
+    """
+    directory = module_config_dir(RL.normalize_module(module))
+    delinks, symbols = directory / "delinks.txt", directory / "symbols.txt"
+    if not delinks.is_file() or not symbols.is_file():
+        return None, ["terminal BSS anchor needs module delinks.txt and symbols.txt"]
+    header, entries = parse_delinks_file(delinks)
+    declared = [(lo, hi) for name, lo, hi in EN.sections(header)
+                if name == ".bss" and lo <= claim["start"] < claim["end"] < hi]
+    if len(declared) != 1:
+        return None, ["terminal BSS anchor needs one containing section"]
+    containers = []
+    for line in header:
+        match = re.fullmatch(
+            r"\s*\.bss\s+start:(0x[0-9a-fA-F]+)\s+end:(0x[0-9a-fA-F]+)"
+            r"\s+kind:bss\s+align:(0x[0-9a-fA-F]+|[0-9]+)\s*",
+            line.split("//", 1)[0])
+        if match:
+            lo, hi, align = (int(value, 16 if value.startswith("0x") else 10)
+                             for value in match.groups())
+            if lo <= claim["start"] < claim["end"] < hi:
+                containers.append((lo, hi, align))
+    if len(containers) != 1:
+        return None, ["terminal BSS anchor needs one containing section with explicit alignment"]
+    _lo, module_end, align = containers[0]
+    end = claim["end"]
+    if align <= 0 or align & (align - 1) or not (0 < module_end - end < align) \
+            or _align_up(end, align) != module_end:
+        return None, ["terminal BSS remainder is not solely the configured alignment tail"]
+
+    records = []
+    for number, line in enumerate(symbols.read_text(encoding="utf-8").splitlines(), 1):
+        line = line.split("//", 1)[0].strip()
+        if not line:
+            continue
+        name = line.split()[0]
+        address = re.search(r"(?:^|\s)addr:(0x[0-9a-fA-F]+)(?=\s|$)", line)
+        if address is None:
+            return None, [f"terminal BSS anchor cannot parse symbols.txt:{number} address"]
+        address = int(address.group(1), 0)
+        if end <= address < module_end:
+            return None, [f"configured symbol {name} occupies the alleged BSS alignment tail"]
+        kind = re.search(r"(?:^|\s)kind:(\S+)", line)
+        kind = kind.group(1) if kind else ""
+        size = None
+        if kind.startswith("bss"):
+            match = re.fullmatch(r"bss(?:\(size=(0x[0-9a-fA-F]+|[0-9]+)\))?", kind)
+            if match is None:
+                return None, [f"terminal BSS anchor has malformed BSS kind at symbols.txt:{number}"]
+            if match.group(1) is not None:
+                size = int(match.group(1), 16 if match.group(1).startswith("0x") else 10)
+                if size <= 0 or address + size > 0x100000000:
+                    return None, [f"terminal BSS anchor has invalid size for {name}"]
+                if address < module_end and address + size > end:
+                    return None, [f"configured BSS object {name} crosses the proposed end"]
+        records.append((name, kind, address, size))
+
+    for owner, body in entries:
+        for section, lo, hi in entry_sections(body):
+            if max(lo, end) < min(hi, module_end):
+                return None, [f"existing {owner} {section} owns the alleged BSS alignment tail"]
+
+    terminal = [(name, row) for name, row in layout.get("symbols", {}).items()
+                if row.get("type") == "STT_OBJECT" and row.get("size", 0) > 0
+                and row["address"] + row["size"] == end
+                and claim["start"] <= row["address"]]
+    if len(terminal) != 1:
+        return None, ["terminal BSS anchor needs exactly one emitted final object"]
+    name, emitted = terminal[0]
+    configured = [record for record in records if record[0] == name]
+    if len(configured) != 1:
+        return None, [f"terminal BSS object {name} needs one configured symbol row"]
+    _name, kind, address, size = configured[0]
+    if not kind.startswith("bss(") or size is None:
+        return None, [f"terminal BSS object {name} needs an explicit configured BSS size"]
+    if address != emitted["address"] or size != emitted["size"]:
+        return None, [f"terminal BSS object {name} disagrees with its configured address/size"]
+    # A second configured label at the terminal address is ambiguous evidence.
+    if sum(record[2] == address for record in records) != 1:
+        return None, [f"terminal BSS object {name} has ambiguous configured aliases"]
+    if any(address < record[2] < end for record in records):
+        return None, [f"terminal BSS object {name} contains another configured symbol"]
+    declared = [row for section, row in owned_rows
+                if section == ".bss" and row.get("symbol") == name]
+    if len(declared) != 1:
+        return None, [f"terminal BSS object {name} needs one manifest row"]
+    try:
+        manifest_size = declared[0]["size"]
+        manifest_size = int(manifest_size, 0) if isinstance(manifest_size, str) else int(manifest_size)
+    except (KeyError, TypeError, ValueError):
+        return None, [f"terminal BSS object {name} needs a valid manifest size"]
+    emitted_address, address_error = _manifest_emitted_addr(declared[0])
+    if address_error or _manifest_addr(declared[0]) != address \
+            or emitted_address != address or manifest_size != size:
+        return None, [f"terminal BSS object {name} disagrees with its manifest address/size"]
+    return {"symbol": name, "address": hex(address), "size": hex(size),
+            "end": hex(end), "moduleEnd": hex(module_end), "alignment": align,
+            "unclaimedTailBytes": module_end - end}, []
+
+
 def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
                           config_relocs=None, sym_index=None, target_reader=None,
                           symbol_homes=None, bss_boundaries=None,
@@ -3534,7 +3640,18 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
                                    f"manifest says 0x{want_size:x}")
 
     for claim in (c for c in nontext if c["name"] == ".bss"):
-        if claim["start"] not in bss_boundaries or claim["end"] not in bss_boundaries:
+        end_anchored = claim["end"] in bss_boundaries
+        if claim["start"] in bss_boundaries and not end_anchored:
+            evidence, errors = _configured_terminal_bss_end(
+                owner_module, claim, layouts.get(".bss", {}), expected_rows)
+            if evidence is not None:
+                end_anchored = True
+                for row in rows:
+                    if row["section"] == ".bss":
+                        row["terminalBssAnchor"] = evidence
+            else:
+                reasons.extend(errors)
+        if claim["start"] not in bss_boundaries or not end_anchored:
             reasons.append(f".bss claim 0x{claim['start']:08x}..0x{claim['end']:08x} "
                            "does not have independently configured boundary anchors")
 
