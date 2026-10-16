@@ -13,10 +13,8 @@
  * destructor's variants in that order before the constructor is written.
  *
  * leftovers:
- * - Func_020150E8 and Func_02015560 stay mangled free definitions: the
- *   real signatures take Fix12<int> by value and wall 6az homes
- *   class-typed by-value parameters (the dClipper.h declarations are
- *   the real ones for callers).
+ * - Func_020150E8 retains its existing mangled free definition and
+ *   by-value Fix12 boundary; TransformAndClip is the inferred name for Func_02015560.
  * - Func_020150E8's opt_propagation off pair and goto-shaped body are
  *   the matched form; dClipper_EmitDeletingDestructor/EmitDestructor
  *   are uncalled stubs that force D0 then D1 out of the inline
@@ -127,16 +125,10 @@ extern "C" int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, 
 }
 #pragma opt_propagation on
 
-// @symbol _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_
-/* Stays a mangled free definition: the real signature carries Fix12<int> and
-   wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in dClipper.h is the real one and callers may use it. */
-extern "C" int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-    dClipper *thiz, Matrix4x3 *mat, Vector3 *srcVec, int scale, Vector3 *dstVec)
-{
-    MulVec3Mat4x3(srcVec, mat, dstVec);
-    return _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(
-        thiz, dstVec, scale, (u8 *)0);
+// @symbol _ZN8dClipper16TransformAndClipER9Matrix4x3R7Vector3iS3_
+int dClipper::TransformAndClip(Matrix4x3 &mat, Vector3 &srcVec, Fix12i radius, Vector3 &dstVec) {
+    MulVec3Mat4x3(&srcVec, &mat, &dstVec);
+    return _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(this, &dstVec, radius, (u8 *)0);
 }
 
 // @symbol _ZN8dClipper13Func_0201559CEv

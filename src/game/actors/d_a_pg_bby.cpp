@@ -1,7 +1,7 @@
 //cpp
 /* leftovers:
  * - SetAnim, DropShadowRadHeight, IsTooFarAwayFromPlayer,
- *   dCcAc_c::Init, dBgCh_Actr::Init and dClipper::Func_02015560 stay
+ *   dCcAc_c::Init and dBgCh_Actr::Init stay
  *   mangled. Each takes Fix12<int> by value.
  * - The state table data_ov072_02122d6c, the carry offsets
  *   data_ov072_02122d3c and the file handles are built by
@@ -21,6 +21,7 @@
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
+#include "dClipper.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -37,7 +38,6 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, voi
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int flags, int speed, unsigned int start);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int radius, int height, unsigned int flags);
-int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, Vector3 *a, int b, Vector3 *e);
 
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -53,7 +53,7 @@ void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *surface, Vector3 &out);
 int _ZN4cstd4fdivEii(int a, int b);
 
 extern short data_02082214[];   /* sine/cosine table */
-extern int data_0209f43c[];
+extern dClipper data_0209f43c;
 extern Matrix4x3 data_0209b3ec;
 
 /* Overlay file handles: the BMD, and the five BCA handles through the
@@ -718,7 +718,8 @@ void daPgBby_c::func_ov072_02120d04()
         if (DecIfAbove0_Short(&mRespawnTimer) != 0) return;
     }
     Vec3_Asr(&tmp, (Vector3 *)&mSpawnPosX, 3);
-    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_((void *)data_0209f43c, &data_0209b3ec, &tmp, 0x1f400, &out) <= 0xc350000) return;
+    if (data_0209f43c.TransformAndClip(data_0209b3ec, tmp, 0x1f400, out) <= 0xc350000)
+        return;
     mPosX = mSpawnPosX;
     mPosY = mSpawnPosY;
     mPosZ = mSpawnPosZ;
