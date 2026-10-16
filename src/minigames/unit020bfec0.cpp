@@ -18,10 +18,13 @@
 #include "PlayerInput.h"
 #include "MascotWalker.h"
 #include "Presenter.h"
+#include "Dealer.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
 /* Typed access to a Presenter record from the char* helpers below. */
 #define PRESENTER(p) ((Presenter *)(p))
+/* Typed access to a Dealer record from the char* helpers below. */
+#define DEALER(p) ((Dealer *)(p))
 
 struct Sound { static void PlayBank2_2D(unsigned int); };
 struct Model { int d; void HideMaterial(int, int); void ShowMaterial(int, int); void Render(const Vector3 *); };
@@ -1553,12 +1556,12 @@ namespace s020c1d80 {
 extern "C" {
 int Dealer_Construct(char *t)
 {
-    *(short *)(t + 0x1a) = 0;
+    DEALER(t)->mHand = 0;
     _ZN14BlendModelAnimC1Ev(t + 0x1c);
     _ZN5ModelC1Ev(t + 0x8c);
     MascotWalker_Construct(t + 0xdc);
-    *(short *)(t + 0x1dc) = 0;
-    *(short *)(t + 0x1e6) = 0;
+    DEALER(t)->mShuffleRound = 0;
+    DEALER(t)->mReserved = 0;
     func_02017acc(t + 0x1e8, 0x208);
     func_02017acc(t + 0x1f0, 0);
     _ZN13SharedFilePtr9ConstructEj(t + 0x1f8, 0x212);
@@ -1574,10 +1577,10 @@ int Dealer_Construct(char *t)
     _ZN13SharedFilePtr9ConstructEj(t + 0x248, 0x213);
     _ZN13SharedFilePtr9ConstructEj(t + 0x250, 0x214);
     _ZN13SharedFilePtr9ConstructEj(t + 0x258, 0x20e);
-    *(int *)(t + 0x260) = 0;
-    *(int *)(t + 0x264) = 0;
-    *(int *)(t + 0x268) = 0;
-    *(int *)(t + 0x26c) = 0;
+    DEALER(t)->mModelData = 0;
+    DEALER(t)->mTableData = 0;
+    DEALER(t)->mShuffleSoundPlayed = 0;
+    DEALER(t)->mDealSoundPlayed = 0;
     return (int)t;
 }
 }
@@ -1640,7 +1643,7 @@ int Dealer_Load(char *c)
     _ZN17dExtShadowModel_c8CleanAllEv();
     *(void **)(c + 0x260) = _ZN5Model8LoadFileER13SharedFilePtr(c + 0x1e8);
     *(void **)(c + 0x264) = _ZN5Model8LoadFileER13SharedFilePtr(c + 0x1f0);
-    f = *(void **)(c + 0x260);
+    f = ((void *)DEALER(c)->mModelData);
     if (f == 0 || _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x1c, f, 1, -1) == 0) {
         return 0;
     }
@@ -1657,18 +1660,19 @@ int Dealer_Load(char *c)
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(c + 0x248);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(c + 0x250);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(c + 0x258);
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x1fc), 0, 0, 0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        c + 0x1c, ((void *)DEALER(c)->mAnims[0].file), 0, 0, 0x800, 0);
     Dealer_ResetMatrices(c);
     *(int *)(c + 8) = data_020a0ebc.x;
-    *(int *)(c + 0xc) = data_020a0ebc.y;
-    *(int *)(c + 0x10) = data_020a0ebc.z;
-    *(short *)(c + 0x14) = data_020a0edc.x;
-    *(short *)(c + 0x16) = data_020a0edc.y;
-    *(short *)(c + 0x18) = data_020a0edc.z;
-    *(int *)(c + 0x1d4) = 0;
+    DEALER(c)->mPos.y = data_020a0ebc.y;
+    DEALER(c)->mPos.z = data_020a0ebc.z;
+    DEALER(c)->mRot[0] = data_020a0edc.x;
+    DEALER(c)->mRot[1] = data_020a0edc.y;
+    DEALER(c)->mRot[2] = data_020a0edc.z;
+    DEALER(c)->mDealtCount = 0;
     _ZN5Model12HideMaterialEii(c + 0x1c, 1, 0);
     Dealer_PlayIdle(c);
-    f = *(void **)(c + 0x264);
+    f = ((void *)DEALER(c)->mTableData);
     if (f == 0 || _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x8c, f, 1, -1) == 0) {
         return 0;
     }
@@ -1677,9 +1681,9 @@ int Dealer_Load(char *c)
     *(int *)((char *)ip + 0x114) &= ~1;
     *(int *)((char *)ip + 0xe4) |= 2;
     MascotWalker_Load(c + 0xdc);
-    *(short *)(c + 0x1e0) = 0;
-    *(short *)(c + 0x1e2) = 1;
-    *(short *)(c + 0x1e4) = 0;
+    DEALER(c)->mLampTimer = 0;
+    DEALER(c)->mLampPattern = 1;
+    DEALER(c)->mLightAngle = 0;
     return 1;
 }
 }
@@ -1748,7 +1752,7 @@ extern "C" void Dealer_Draw(void *self)
     func_0203cd80(&v1, -0x1000);
     func_0203ccd4(&v1, 0x1000);
 
-    ang = *(short*)(c + 0x1e4);
+    ang = DEALER(c)->mLightAngle;
     func_0203ccd4(&v2, ang);
 
     p1 = (((short)v1.x >> 3) & 0x3ff)
@@ -1764,7 +1768,7 @@ extern "C" void Dealer_Draw(void *self)
     func_02016a14(c + 0x1c, 0x7fff);
     func_02016a04(c + 0x1c, 0x4210);
 
-    ang = *(short*)(c + 0x1e2);
+    ang = DEALER(c)->mLampPattern;
     {
         unsigned char *p = b;
         for (i = 0; i < 3; i++) {
@@ -1804,14 +1808,16 @@ extern "C" { extern P2 pmf_Dealer_StateIdle; }
 
 extern "C" void Dealer_PlayIdle(char *c)
 {
-    if (*(short *)(c + 0x1a) == 1) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x234), 0, 0, 0x800, 0);
-        if (*(int *)(c + 0x26c) == 0) {
+    if (DEALER(c)->mHand == 1) {
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            (BlendModelAnim *)(c + 0x1c), ((void *)DEALER(c)->mAnims[7].file), 0, 0, 0x800, 0);
+        if (DEALER(c)->mDealSoundPlayed == 0) {
             Sound::PlayBank2_2D(0x13a);
-            *(int *)(c + 0x26c) = 1;
+            DEALER(c)->mDealSoundPlayed = 1;
         }
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x1fc), 0, 0, 0x800, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            (BlendModelAnim *)(c + 0x1c), ((void *)DEALER(c)->mAnims[0].file), 0, 0, 0x800, 0);
     }
     *(P2 *)c = pmf_Dealer_StateIdle;
 }
@@ -1851,7 +1857,7 @@ int Dealer_IsIdleAtRest(char *c)
     int lr = 1;
     if (r3 == G[0] && (*(int *)(c + 4) == G[1] || r3 == 0))
         lr = 0;
-    if (lr == 0 && *(int *)(c + 0x7c) == *(int *)(c + 0x1fc))
+    if (lr == 0 && DEALER(c)->mAnim == DEALER(c)->mAnims[0].file)
         r4 = 1;
     return r4;
 }
@@ -1866,21 +1872,21 @@ struct M8 { int w[2]; };
 extern char pmf_Dealer_StateShuffle[];
 
 void Dealer_StartShuffle(char *c, int unused, short a2, int a3) {
-    if (*(s16 *)(c + 0x1dc) == 0) {
-        *(s16 *)(c + 0x1d8) = 4;
-        *(s16 *)(c + 0x1da) = 3;
+    if (DEALER(c)->mShuffleRound == 0) {
+        DEALER(c)->mShuffleLeft = 4;
+        DEALER(c)->mDealDoneAt = 3;
     } else {
-        *(s16 *)(c + 0x1d8) = 1;
-        *(s16 *)(c + 0x1da) = 1;
+        DEALER(c)->mShuffleLeft = 1;
+        DEALER(c)->mDealDoneAt = 1;
     }
     if (_Z15ApproachLinear2Rsss((short *)(c + 0x1dc), 5, 1) != 0) {
-        *(s16 *)(c + 0x1dc) = 0;
+        DEALER(c)->mShuffleRound = 0;
     }
-    *(int *)(c + 0x26c) = 0;
-    *(s16 *)(c + 0x1de) = a2;
-    *(int *)(c + 0x1d4) = a3;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x204), 0,
-                                                       0x40000000, 0x800, 0);
+    DEALER(c)->mDealSoundPlayed = 0;
+    DEALER(c)->mDealLeft = a2;
+    DEALER(c)->mDealtCount = a3;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        c + 0x1c, ((void *)DEALER(c)->mAnims[1].file), 0, 0x40000000, 0x800, 0);
     *(struct M8 *)c = *(struct M8 *)pmf_Dealer_StateShuffle;
 }
 }
@@ -1901,14 +1907,15 @@ struct V {
 extern "C" { extern V* gMgScene; }
 
 extern "C" void Dealer_StateShuffle(char *c) {
-    if (*(int*)(c + 0x268) == 0) {
+    if (DEALER(c)->mShuffleSoundPlayed == 0) {
         _ZN5Sound12PlayBank2_2DEj(0x139);
-        *(int*)(c + 0x268) = 1;
+        DEALER(c)->mShuffleSoundPlayed = 1;
     }
 
-    if (*(int*)(c + 0x7c) == *(int*)(c + 0x204)) {
+    if (DEALER(c)->mAnim == DEALER(c)->mAnims[1].file) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x6c))
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void**)(c + 0x20c), 0, 0, 0x800, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                c + 0x1c, ((void *)DEALER(c)->mAnims[2].file), 0, 0, 0x800, 0);
         return;
     }
 
@@ -1918,7 +1925,7 @@ extern "C" void Dealer_StateShuffle(char *c) {
         short old = *p;
         *p = old - 1;
         if (cv <= 0) {
-            Dealer_StartDeal(c, *(short *)(c + 0x1de), *(int *)(c + 0x1d4));
+            Dealer_StartDeal(c, DEALER(c)->mDealLeft, DEALER(c)->mDealtCount);
             return;
         }
     }
@@ -1927,7 +1934,7 @@ extern "C" void Dealer_StateShuffle(char *c) {
         return;
 
     _ZN5Sound12PlayBank2_2DEj(0x141);
-    if (*(short*)(c + 0x1d8) == *(short*)(c + 0x1da)) {
+    if (DEALER(c)->mShuffleLeft == DEALER(c)->mDealDoneAt) {
         V* o = gMgScene;
         if (o)
             o->v21();
@@ -1952,12 +1959,16 @@ extern P2 pmf_Dealer_StateDeal;
 }
 
 extern "C" void Dealer_StartDeal(char *c, short arg1, int arg2) {
-    *(short *)(c + 0x1de) = arg1;
-    *(int *)(c + 0x1d4) = arg2;
-    if (Dealer_IsIdle((int *)c) && *(int *)(c + 0x7c) != *(int *)(c + 0x234)) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x204), 0, 0x40000000, 0x800, 0);
+    DEALER(c)->mDealLeft = arg1;
+    DEALER(c)->mDealtCount = arg2;
+    if (Dealer_IsIdle((int *)c) && DEALER(c)->mAnim != DEALER(c)->mAnims[7].file) {
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+                                                           ((void *)DEALER(c)->mAnims[1].file), 0,
+                                                           0x40000000, 0x800, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x214), 0, 0x40000000, 0x800, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+                                                           ((void *)DEALER(c)->mAnims[3].file), 0,
+                                                           0x40000000, 0x800, 0);
     }
     *(P2 *)c = pmf_Dealer_StateDeal;
 }
@@ -1967,44 +1978,47 @@ namespace s020c11c0 {
 extern "C" {
 
 void Dealer_StateDeal(char *c) {
-    void *f7c = *(void **)(c + 0x7c);
+    void *f7c = ((void *)DEALER(c)->mAnim);
 
-    if (f7c == *(void **)(c + 0x214)) {
+    if (f7c == ((void *)DEALER(c)->mAnims[3].file)) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x6c)) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x21c), 0, 0, 0x800, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                c + 0x1c, ((void *)DEALER(c)->mAnims[4].file), 0, 0, 0x800, 0);
         }
     }
 
-    f7c = *(void **)(c + 0x7c);
-    if (f7c == *(void **)(c + 0x224) || f7c == *(void **)(c + 0x22c)) {
+    f7c = ((void *)DEALER(c)->mAnim);
+    if (f7c == ((void *)DEALER(c)->mAnims[5].file) || f7c == ((void *)DEALER(c)->mAnims[6].file)) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x6c)) {
-            *(int *)(c + 0x1d4) = 0;
+            DEALER(c)->mDealtCount = 0;
             Dealer_PlayIdle(c);
         }
         return;
     }
 
-    if (f7c == *(void **)(c + 0x21c)) {
+    if (f7c == ((void *)DEALER(c)->mAnims[4].file)) {
         if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 0)) {
             short cv = *(short *)(c + 0x100 + 0xde);
             short *p = (short *)(((long)c + 0x1de));
             short old = *p;
             *p = old - 1;
             if (cv <= 0) {
-                short state = *(short *)(c + 0x1a);
+                short state = DEALER(c)->mHand;
                 if (state == 0) {
-                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x224), 0, 0x40000000, 0x800, 0);
-                    if (*(int *)(c + 0x26c) != 0)
+                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                        c + 0x1c, ((void *)DEALER(c)->mAnims[5].file), 0, 0x40000000, 0x800, 0);
+                    if (DEALER(c)->mDealSoundPlayed != 0)
                         return;
                     _ZN5Sound12PlayBank2_2DEj(0x13a);
-                    *(int *)(c + 0x26c) = 1;
+                    DEALER(c)->mDealSoundPlayed = 1;
                     return;
                 } else if (state == 2) {
-                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x22c), 0, 0x40000000, 0x800, 0);
-                    if (*(int *)(c + 0x26c) != 0)
+                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                        c + 0x1c, ((void *)DEALER(c)->mAnims[6].file), 0, 0x40000000, 0x800, 0);
+                    if (DEALER(c)->mDealSoundPlayed != 0)
                         return;
                     _ZN5Sound12PlayBank2_2DEj(0x13a);
-                    *(int *)(c + 0x26c) = 1;
+                    DEALER(c)->mDealSoundPlayed = 1;
                     return;
                 } else {
                     Dealer_PlayIdle(c);
@@ -2013,7 +2027,8 @@ void Dealer_StateDeal(char *c) {
             }
         }
 
-        if (*(int *)(c + 0x1d4) == 0) return;
+        if (DEALER(c)->mDealtCount == 0)
+            return;
         if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 5)) return;
         _ZN5Sound12PlayBank2_2DEj(0x142);
         {
@@ -2023,9 +2038,10 @@ void Dealer_StateDeal(char *c) {
         return;
     }
 
-    if (f7c == *(void **)(c + 0x204)) {
+    if (f7c == ((void *)DEALER(c)->mAnims[1].file)) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x6c)) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x214), 0, 0x40000000, 0x800, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                c + 0x1c, ((void *)DEALER(c)->mAnims[3].file), 0, 0x40000000, 0x800, 0);
         }
     }
 }
@@ -2055,7 +2071,7 @@ extern "C" void Dealer_StateReveal(void *cc)
 {
     char *c = (char*)cc;
 
-    if (*(int*)(c + 0x7c) != *(int*)(c + 0x21c))
+    if (DEALER(c)->mAnim != DEALER(c)->mAnims[4].file)
         goto other;
 
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 0)) {
@@ -2065,21 +2081,23 @@ extern "C" void Dealer_StateReveal(void *cc)
         *p = old - 1;
         if (cv <= 0) {
             int a;
-            *(int*)(c + 0x1d4) = 0;
-            a = *(short*)(c + 0x1a);
+            DEALER(c)->mDealtCount = 0;
+            a = DEALER(c)->mHand;
             if (a == 0) {
-                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void**)(c + 0x224), 0, 0x40000000, 0x800, 0);
-                if (*(int*)(c + 0x26c) != 0)
+                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                    c + 0x1c, ((void *)DEALER(c)->mAnims[5].file), 0, 0x40000000, 0x800, 0);
+                if (DEALER(c)->mDealSoundPlayed != 0)
                     return;
                 _ZN5Sound12PlayBank2_2DEj(0x13a);
-                *(int*)(c + 0x26c) = 1;
+                DEALER(c)->mDealSoundPlayed = 1;
                 return;
             } else if (a == 2) {
-                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void**)(c + 0x22c), 0, 0x40000000, 0x800, 0);
-                if (*(int*)(c + 0x26c) != 0)
+                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                    c + 0x1c, ((void *)DEALER(c)->mAnims[6].file), 0, 0x40000000, 0x800, 0);
+                if (DEALER(c)->mDealSoundPlayed != 0)
                     return;
                 _ZN5Sound12PlayBank2_2DEj(0x13a);
-                *(int*)(c + 0x26c) = 1;
+                DEALER(c)->mDealSoundPlayed = 1;
                 return;
             } else {
                 Dealer_PlayIdle(c);
@@ -2088,7 +2106,7 @@ extern "C" void Dealer_StateReveal(void *cc)
         }
     }
 
-    if (*(int*)(c + 0x1d4) == 0)
+    if (DEALER(c)->mDealtCount == 0)
         return;
     if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 5))
         return;
@@ -2097,7 +2115,8 @@ extern "C" void Dealer_StateReveal(void *cc)
     return;
 
 other:
-    if (*(int*)(c + 0x7c) == *(int*)(c + 0x224) || *(int*)(c + 0x7c) == *(int*)(c + 0x22c)) {
+    if (DEALER(c)->mAnim == DEALER(c)->mAnims[5].file ||
+        DEALER(c)->mAnim == DEALER(c)->mAnims[6].file) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x6c))
             Dealer_PlayIdle(c);
     }
@@ -2165,11 +2184,12 @@ namespace s020c0df0 {
 
 extern "C" void Dealer_StateSwap(char *c)
 {
-    if (*(int *)(c + 0x268) == 0) {
+    if (DEALER(c)->mShuffleSoundPlayed == 0) {
         Sound::PlayBank2_2D(0x139);
-        *(int *)(c + 0x268) = 1;
+        DEALER(c)->mShuffleSoundPlayed = 1;
     }
-    if (*(int *)(c + 0x7c) == *(int *)(c + 0x23c) && ((dExtFrameCtrl_c *)(c + 0x6c))->Finished()) {
+    if (DEALER(c)->mAnim == DEALER(c)->mAnims[8].file &&
+        ((dExtFrameCtrl_c *)(c + 0x6c))->Finished()) {
         ((Model *)(c + 0x1c))->HideMaterial(1, 0);
         ((Model *)(c + 0x1c))->ShowMaterial(2, 0);
         return;
@@ -2192,11 +2212,15 @@ extern "C" { extern double pmf_Dealer_StateLose; }
 
 extern "C" void Dealer_PlayLose(char *c)
 {
-    if (*(short *)(c + 0x1a) == 1) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), (void *)*(int *)(c + 0x224), 0, 0x40000000, 0x800, 0);
+    if (DEALER(c)->mHand == 1) {
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+                                                           (void *)DEALER(c)->mAnims[5].file, 0,
+                                                           0x40000000, 0x800, 0);
     } else {
         Sound::PlayBank2_2D(0x13c);
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), (void *)*(int *)(c + 0x25c), 0, 0x40000000, 0x800, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+                                                           (void *)DEALER(c)->mAnims[12].file, 0,
+                                                           0x40000000, 0x800, 0);
     }
     *(double *)c = pmf_Dealer_StateLose;
 }
@@ -2207,13 +2231,14 @@ extern "C" {
 typedef int Fix12;
 void Dealer_StateLose(char *c){
     if(!_ZN15dExtFrameCtrl_c8FinishedEv(c+0x6c)) return;
-    if(*(int*)(c+0x7c)==*(int*)(c+0x25c)){
+    if (DEALER(c)->mAnim == DEALER(c)->mAnims[12].file) {
         Dealer_PlayIdle(c);
         return;
     }
     _ZN5Sound12PlayBank2_2DEj(0x13c);
-    *(short*)(c+0x1a)=0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c+0x1c, *(void**)(c+0x25c), 0, 0x40000000, 0x800, 0);
+    DEALER(c)->mHand = 0;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        c + 0x1c, ((void *)DEALER(c)->mAnims[12].file), 0, 0x40000000, 0x800, 0);
 }
 }
 }
@@ -2226,8 +2251,9 @@ void Dealer_PlayWin(void *c)
 {
     char *r4 = (char *)c;
     _ZN5Sound12PlayBank2_2DEj(0x13b);
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 0x1c, *(void **)(r4 + 0x244), 0, 0x40000000, 0x800, 0);
-    *(short *)(r4 + 0x1d8) = 5;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        r4 + 0x1c, ((void *)DEALER(r4)->mAnims[9].file), 0, 0x40000000, 0x800, 0);
+    DEALER(r4)->mShuffleLeft = 5;
     *(struct G2 *)r4 = pmf_Dealer_StateWin;
 }
 }
@@ -2241,18 +2267,23 @@ typedef struct {
 } Obj;
 
 void Dealer_StateWin(char *p) {
-    if (*(void **)(p + 0x7c) == *(void **)(p + 0x244) && _ZN15dExtFrameCtrl_c8FinishedEv(p + 0x6c)) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(p + 0x1c, *(void **)(p + 0x24c), 0, 0, 0x800, 0);
+    if (((void *)DEALER(p)->mAnim) == ((void *)DEALER(p)->mAnims[9].file) &&
+        _ZN15dExtFrameCtrl_c8FinishedEv(p + 0x6c)) {
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            p + 0x1c, ((void *)DEALER(p)->mAnims[10].file), 0, 0, 0x800, 0);
         return;
     }
-    if (*(void **)(p + 0x7c) == *(void **)(p + 0x24c) && _ZNK15dExtFrameCtrl_c12WillHitFrameEi(p + 0x6c, 0)) {
-        *(short *)(p + 0x1d8) -= 1;
+    if (((void *)DEALER(p)->mAnim) == ((void *)DEALER(p)->mAnims[10].file) &&
+        _ZNK15dExtFrameCtrl_c12WillHitFrameEi(p + 0x6c, 0)) {
+        DEALER(p)->mShuffleLeft -= 1;
         if (((Obj *)p)->field_1d8 == 0) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(p + 0x1c, *(void **)(p + 0x254), 0, 0x40000000, 0x800, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                p + 0x1c, ((void *)DEALER(p)->mAnims[11].file), 0, 0x40000000, 0x800, 0);
             return;
         }
     }
-    if (*(void **)(p + 0x7c) == *(void **)(p + 0x254) && _ZN15dExtFrameCtrl_c8FinishedEv(p + 0x6c)) {
+    if (((void *)DEALER(p)->mAnim) == ((void *)DEALER(p)->mAnims[11].file) &&
+        _ZN15dExtFrameCtrl_c8FinishedEv(p + 0x6c)) {
         Dealer_PlayIdle(p);
     }
 }

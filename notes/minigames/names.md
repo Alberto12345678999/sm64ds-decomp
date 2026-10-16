@@ -658,3 +658,4 @@ The two Marios share their first five fields with the line code's jumper view (`
   - `Dealer_StartShuffle` / `StateShuffle` (were `StartDeal` / `StateDeal`) play shuffle_start, then loop shuffle;
   - `Dealer_StartDeal` / `StateDeal` (were `StartCollect` / `StateCollect`) play deal_start, then loop deal, counting each card dealt (sound 0x142), and end with deal_end or deal_end2;
   - `StateSwap` plays throw, `StateReveal` the deal ends, and `StateWin` / `StateLose` their animations.
+  `include/Dealer.h` holds the 0x270-byte layout (`DEALER()`, 108 sites in the `Dealer_*` helpers): the shuffle and deal counters, the lamp timer, pattern and light angle, the thirteen animation files, and the once-per-loop sound flags. The embedded BlendModelAnim, table Model and MascotWalker stay byte regions.
