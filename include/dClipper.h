@@ -63,8 +63,9 @@ struct dClipper {
     void Func_020156DC(Fix12i aspectRatio, u16 fovAngle,
                        Fix12i nearZ, Fix12i farZ);
 
-    /* Func_020150E8 retains its existing by-value Fix12 boundary. */
-    int Func_020150E8(Vector3 &v, Fix12<int> clip, u8 *hint);
+    /* Name inferred from the frustum-plane tests; no original name is known.
+       hint optionally caches the rejecting side plane. */
+    int ClipSphere(Vector3 &v, Fix12i radius, u8 *hint);
     /* Name inferred from use: transform the position, then test the frustum
        with a scalar fixed-point sphere radius. No original name is known. */
     int TransformAndClip(Matrix4x3 &mat, Vector3 &srcVec, Fix12i radius, Vector3 &dstVec);
