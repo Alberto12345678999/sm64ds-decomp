@@ -169,6 +169,11 @@ extern daSnowman_c::State data_ov081_02128ea4;   /* 02124f7c, 02124f20: rise */
 /* The loaded file behind a SharedFilePtr is its second word. */
 #define LOADED_FILE(ptr) ((void *)((int *)&(ptr))[1])
 
+/* The touch handler tests the toucher's actor id as a 0/1 value. */
+static inline int IsPlayer(dActor_c *a) {
+    return a->actorID == kPlayerId;
+}
+
 // @symbol _ZN11daSnowman_cD1Ev
 // @symbol _ZN11daSnowman_cD0Ev
 daSnowman_c::~daSnowman_c()
@@ -203,7 +208,7 @@ void daSnowman_c::func_ov081_02124134()
             a->mVertSpeed = 0x14000;
             a->unk_0ac = 0;
             a->mHorzSpeed = 0xa000;
-            *(int *)((char *)a + 0xc8) = 0;   /* the carry matrix; dActor_c pad */
+            a->mCarryMatrix = 0;
         }
         func_02012790(0xa);
         this->mCapUniqueID = 0;
@@ -305,10 +310,7 @@ void daSnowman_c::func_ov081_021243cc()
         hit = 1;
         func_ov081_02125488(&data_ov081_02128e24);
     }
-    /* The flag is materialised; testing actorID in the if directly
-       changes the compare. */
-    int isPlayer = (int)(found->actorID == kPlayerId);
-    if (isPlayer) {
+    if (IsPlayer(found)) {
         if (found->mIsVanish != 0) return;
         if (found->mIsMetal == 1) {
             this->mDeathState = 2;
@@ -422,7 +424,7 @@ int daSnowman_c::func_ov081_0212479c()
             a->unk_0a4 = 0;
             a->mVertSpeed = 0x14000;
             a->unk_0ac = 0;
-            *(int *)((char *)a + 0xc8) = 0;   /* the carry matrix; dActor_c pad */
+            a->mCarryMatrix = 0;
         }
         func_02012790(0xa);
         this->mCapUniqueID = 0;
@@ -876,7 +878,7 @@ void daSnowman_c::func_ov081_021254d8()
             Matrix4x3_FromTranslation(&data_020a0e68, 0, 0x4000, 0);
             Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, 0, 0x2000, 0);
             MulMat4x3Mat4x3(&data_020a0e68, &this->mCapMatrix, &this->mCapMatrix);
-            *(Matrix4x3 **)((char *)actor + 0xc8) = &this->mCapMatrix;   /* dActor_c pad */
+            actor->mCarryMatrix = &this->mCapMatrix;
         }
     }
 

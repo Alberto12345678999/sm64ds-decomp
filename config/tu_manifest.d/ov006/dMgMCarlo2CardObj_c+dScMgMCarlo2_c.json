@@ -227,7 +227,7 @@
       "address": "0x021425a8",
       "size": "0x5c",
       "binding": "STB_GLOBAL",
-      "evidence": "sprite-word table copied by __sinit_d_s_mg_m_carlo2.cpp from data_ov006_02133810"
+      "evidence": "sprite-word table copied by __sinit_d_s_mg_m_carlo2.cpp from sMgCardSprites"
     }
   ],
   "notes": [
@@ -236,7 +236,7 @@
     "The queue row predicted `compiler-only:>=16` from dScMgMCarlo2_c's ancestor chain (7 classes incl. self via build/rtti.json; floor 2x7+2). The measured output is recorded in verification.compilerOnlyOutput -- the compiler emits the two classes' own _ZTI/_ZTS/_ZTV records, the inherited vague-linkage RTTI of the dScMgSingle3DBase_c chain, and the compiler-generated D2 destructors; every one of them either has a configured ROM home (externalized after a cartridge compare) or is banked as a deadstrip policy. Nothing was widened or licensed to make the bytes reproduce.",
     "dMgMCarlo2CardObj_c's D0 and D2 are not in the ROM: the destructor is not virtual (the vtable's two slots are Render at 0x020f98dc and Update at 0x020f9994, read out of the overlay binary), so no vtable slot can target a deleting destructor, and the cartridge carries D1 (0x020f8ff0, size 0x10) only -- the next ROM function starts at 0x020f9000, exactly D1's end, leaving no room for either variant.",
     "No linkcheck key, by measurement rather than omission. Ordinary linkcheck forces the intact-object preparation for any already-enrolled TU, and that path requires a non-text claim this entry structurally cannot carry: every data byte the object emits is cartridge-owned (the 16 deadstrip-data policies above) and the delinks enrolment is .text-only. The --partial mode was also attempted and correctly reports 0/25: with a single enrolled TU object there are no N legacy objects to substitute per-function reductions for (those shards were absorbed by the f100-bank merge, PR #2652). The proof set for this shape is therefore the same one the sibling dScMgMCarlo_c TU carries: 25/25 text verify with clean objisolate and reloc-destinations, a whole-tree production compile with these exact policies (5102/5102 objects, 0 failed), the baseline control at 106/106 exact with 0 mismatching functions, and romdata_check on this file (16/16 records compared against the cartridge: 9 VERIFIED, 7 padding-only PARTIAL strings, 0 DIFFERS, 0 UNNAMED). This entry is not intact-object, so the intact-TU link control does not read it.",
-    "Folded __sinit_ov006_0213195c into this TU. mwcc emits __sinit_d_s_mg_m_carlo2.cpp, which copies the twenty-three words at data_ov006_02133810 into data_ov006_021425a8 in the retail permutation (not address order). No compiler temps. The handwritten src/unnamed/ov006/__sinit_ov006_0213195c.c is retired.",
+    "Folded __sinit_ov006_0213195c into this TU. mwcc emits __sinit_d_s_mg_m_carlo2.cpp, which copies the twenty-three words at sMgCardSprites into data_ov006_021425a8 in the retail permutation (not address order). No compiler temps. The handwritten src/unnamed/ov006/__sinit_ov006_0213195c.c is retired.",
     "LOCAL WORKER NOTE: this machine stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to this tree stock build and to the strict control, while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container fields outside every module range. The content proof is the same either way: moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, and the four owned ranges identical."
   ],
   "verification": {
@@ -704,7 +704,7 @@
       "source": "0x02131a30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02133810",
+      "symbol": "sMgCardSprites",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02133810"

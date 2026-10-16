@@ -68,6 +68,7 @@ enum d_a_obj_fm_battan_AssetId {
 };
 
 #include "daObjFm_Battan_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
@@ -75,20 +76,6 @@ enum d_a_obj_fm_battan_AssetId {
 /* A local Vector3 value would make mwccarm emit its vague-linkage destructor.
  * These calls only require the three-word ABI value, so keep that value POD. */
 struct BattanVector3 { s32 x, y, z; };
-
-struct BattanSpawnInfo {
-    daObjFm_Battan_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char BattanSpawnInfo_size_must_be_0x1c[
-    sizeof(BattanSpawnInfo) == 0x1c ? 1 : -1];
 
 extern "C" {
 extern char data_ov064_0211ba4c[];
@@ -152,7 +139,7 @@ extern "C" daObjFm_Battan_c *daObjFm_Battan_c_classInit()
     return new daObjFm_Battan_c();
 }
 
-extern "C" BattanSpawnInfo g_profile_FM_BATTAN = {
+extern "C" SpawnInfo<daObjFm_Battan_c> g_profile_FM_BATTAN = {
     daObjFm_Battan_c_classInit,
     0x0054,
     0x0124,

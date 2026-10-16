@@ -22,6 +22,7 @@
 #include "dScene_c.h"
 #include "dScStage_c.h"
 #include "dFdColor_c.h"
+#include "G2x.h"
 
 struct Matrix2x2 { int m[4]; };
 
@@ -47,7 +48,6 @@ extern "C" {
 extern int  func_02053c10(int enable);
 extern int  func_02053be0(int enable);
 extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
-extern void _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii(volatile u16* p, Matrix2x2* m, int a, int b, int c, int d);
 extern void func_02053a90(u16* out, int v);
 extern void _ZN3GXS15SetGraphicsModeEi(int a);
 extern Matrix2x2 data_02092668;
@@ -151,8 +151,8 @@ void dScene_c::ResetHardwareRegisters()
     *(volatile u32*)0x4000018 = 0;
     *(volatile u32*)0x400001c = 0;
 
-    _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii((volatile u16*)0x4000020, &m, 0, 0, 0, 0);
-    _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii((volatile u16*)0x4000030, &m, 0, 0, 0, 0);
+    G2x::SetBGyAffine((volatile u16 *)0x4000020, &m, 0, 0, 0, 0);
+    G2x::SetBGyAffine((volatile u16 *)0x4000030, &m, 0, 0, 0, 0);
 
     *(volatile u16*)0x4000048 &= ~0x3f;
     *(volatile u16*)0x4000048 &= ~0x3f00;
@@ -193,8 +193,8 @@ void dScene_c::ResetHardwareRegisters()
     *(volatile u32*)0x4001018 = 0;
     *(volatile u32*)0x400101c = 0;
 
-    _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii((volatile u16*)0x4001020, &m, 0, 0, 0, 0);
-    _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii((volatile u16*)0x4001030, &m, 0, 0, 0, 0);
+    G2x::SetBGyAffine((volatile u16 *)0x4001020, &m, 0, 0, 0, 0);
+    G2x::SetBGyAffine((volatile u16 *)0x4001030, &m, 0, 0, 0, 0);
 
     *(volatile u16*)0x4001048 &= ~0x3f;
     *(volatile u16*)0x4001048 &= ~0x3f00;

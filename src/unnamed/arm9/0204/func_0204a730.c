@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/fx/fx.h"
 /* func_0204a730 @ 0x0204a730 (arm9, size 0x6fc)   [mwccarm 1.2/sp2p3]
  * Levers that matched (notes 6ap): group B = u32 byte-hoist at function scope with
  * s32 k demoted into the loop block after var_r5; group A = flags declared plain u32
@@ -191,7 +192,7 @@ void func_0204a730(void *arg0, void *self)
                 u16 life = *(u16 *)(nodeC + 0x2e);
                 s32 a = (s32)(*(u16 *)(nodeC + 0x2c)) << 0xc;
                 s32 b = ((s32)(*(u8 *)(cfg + 0xd)) + 1) << 0xc;
-                s32 r1 = (s32)(((s64)a * b + 0x800) >> 0xc);
+                s32 r1 = FX_MUL(a, b);
                 s32 r0 = ((s32)life << 0xc) - (r1 >> 8);
                 if (life != 0 && r0 >= 0 && ((r0 >> 0xc) % (u8)(*(u8 *)(cfg + 0xe))) == 0) {
                     func_0204c304(var_r4, self, (char *)arg0 + 0x14);

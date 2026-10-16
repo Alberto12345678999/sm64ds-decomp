@@ -22,9 +22,9 @@
  *   declarations are vaguer than the definitions they name (banked in
  *   config/decl-agreement-baseline.json). Tightening one changes its call sites,
  *   which is matching work needing its own byte proof.
- * - StateFall keeps its this-relative casts for mFallAngle (0x44a), mFallStartY
- *   (0x444) and mPosY (0x60): naming the members makes mwcc reuse the signed
- *   load and drops 12 bytes.
+ * - StateFall keeps two views of mFallAngle: a signed read and an
+ *   (int)-laundered unsigned read-modify-write. Collapsing both into
+ *   mFallAngle makes mwcc reuse the signed load and drops 12 bytes.
  */
 
 #pragma defer_codegen off
@@ -131,7 +131,6 @@ void dPathLiftActor_c::StateWaitInit()
 // @symbol _ZN16dPathLiftActor_c9StateFallEv
 void dPathLiftActor_c::StateFall()
 {
-    char *c = (char *)this;
     s32 raw;
     s16 v;
 
@@ -150,12 +149,10 @@ void dPathLiftActor_c::StateFall()
     if (DecIfAbove0_Byte(&mFallBounceTimer) != 0) {
         /* Retain the mixed signed/unsigned access tree: collapsing both views
            into mFallAngle makes mwcc reuse the signed load and drops 12 bytes. */
-        raw = *(s16 *)(c + 0x44a);
+        raw = mFallAngle;
         v = data_02082214[((u16)(int)(long long)raw >> 4) * 2];
-        *(s32 *)(c + 0x60) = *(s32 *)(c + 0x444) +
-            (s32)(u32)((((long long)v << 15) + 0x800) >> 12);
-        *(u16 *)((int)(c + 0x44a)) =
-            (u16)(*(u16 *)((int)(c + 0x44a)) + 0x3000);
+        mPosY = mFallStartY + (s32)(u32)((((long long)v << 15) + 0x800) >> 12);
+        *(u16 *)((int)&mFallAngle) = (u16)(*(u16 *)((int)&mFallAngle) + 0x3000);
         return;
     }
     UpdatePos(0);

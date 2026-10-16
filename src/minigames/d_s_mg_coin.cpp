@@ -18,7 +18,7 @@
  * call casts. Block_State2 and SpawnBlocks called
  * slot 35 through a stand-in vtable; they now call IsAltVariant.
  *
- * The five state tables (the coin handlers at data_ov006_021417b0, the
+ * The five state tables (the coin handlers at sCoinCoinStateTable, the
  * moneybag's at 021417c8, the caption's at 021417e8, the phases' at
  * 02141810 and the blocks' at 02141840) are {pmf, delta} records on
  * dScMgCoin_c. They are defined here, and the TU's static initialiser
@@ -193,44 +193,27 @@ extern const CoinPmfEntry pmf_dScMgCoin_c_Bag_State0, pmf_dScMgCoin_c_Bag_State1
     pmf_dScMgCoin_c_Bag_State2, pmf_dScMgCoin_c_Bag_State3;
 
 /* the phases (Behavior) */
-Entry_Behavior data_ov006_02141810[6] = {
-    { pmf_dScMgCoin_c_Phase_State0 },
-    { pmf_dScMgCoin_c_Phase_State1 },
-    { pmf_dScMgCoin_c_Phase_State2 },
-    { pmf_dScMgCoin_c_Phase_State3 },
-    { pmf_dScMgCoin_c_Phase_State4 },
-    { pmf_dScMgCoin_c_Phase_State5 }
-};
+Entry_Behavior sCoinPhaseStateTable[6] = {
+    {pmf_dScMgCoin_c_Phase_State0}, {pmf_dScMgCoin_c_Phase_State1}, {pmf_dScMgCoin_c_Phase_State2},
+    {pmf_dScMgCoin_c_Phase_State3}, {pmf_dScMgCoin_c_Phase_State4}, {pmf_dScMgCoin_c_Phase_State5}};
 /* the blocks */
-CoinPmfEntry data_ov006_02141840[6] = {
-    { pmf_dScMgCoin_c_Block_State0 },
-    { pmf_dScMgCoin_c_Block_State1 },
-    { pmf_dScMgCoin_c_Block_State2 },
-    { pmf_dScMgCoin_c_Block_State3 },
-    { pmf_dScMgCoin_c_Block_State4 },
-    { pmf_dScMgCoin_c_Block_State5 }
-};
+CoinPmfEntry sCoinBlockStateTable[6] = {
+    {pmf_dScMgCoin_c_Block_State0}, {pmf_dScMgCoin_c_Block_State1}, {pmf_dScMgCoin_c_Block_State2},
+    {pmf_dScMgCoin_c_Block_State3}, {pmf_dScMgCoin_c_Block_State4}, {pmf_dScMgCoin_c_Block_State5}};
 /* the coins */
-CoinPmfEntry data_ov006_021417b0[3] = {
-    { pmf_dScMgCoin_c_Coin_State0 },
-    { pmf_dScMgCoin_c_Coin_State1 },
-    { pmf_dScMgCoin_c_Coin_State2 }
-};
+CoinPmfEntry sCoinCoinStateTable[3] = {
+    {pmf_dScMgCoin_c_Coin_State0}, {pmf_dScMgCoin_c_Coin_State1}, {pmf_dScMgCoin_c_Coin_State2}};
 /* the caption */
-CoinPmfEntry data_ov006_021417e8[5] = {
-    { pmf_dScMgCoin_c_Caption_State0 },
-    { pmf_dScMgCoin_c_Caption_State1 },
-    { pmf_dScMgCoin_c_Caption_State2 },
-    { pmf_dScMgCoin_c_Caption_State3 },
-    { pmf_dScMgCoin_c_Caption_State4 }
-};
+CoinPmfEntry sCoinCaptionStateTable[5] = {{pmf_dScMgCoin_c_Caption_State0},
+                                          {pmf_dScMgCoin_c_Caption_State1},
+                                          {pmf_dScMgCoin_c_Caption_State2},
+                                          {pmf_dScMgCoin_c_Caption_State3},
+                                          {pmf_dScMgCoin_c_Caption_State4}};
 /* the moneybag */
-CoinPmfEntry data_ov006_021417c8[4] = {
-    { pmf_dScMgCoin_c_Bag_State0 },
-    { pmf_dScMgCoin_c_Bag_State1 },
-    { pmf_dScMgCoin_c_Bag_State2 },
-    { pmf_dScMgCoin_c_Bag_State3 }
-};
+CoinPmfEntry sCoinBagStateTable[4] = {{pmf_dScMgCoin_c_Bag_State0},
+                                      {pmf_dScMgCoin_c_Bag_State1},
+                                      {pmf_dScMgCoin_c_Bag_State2},
+                                      {pmf_dScMgCoin_c_Bag_State3}};
 }
 
 // @symbol _ZN11dScMgCoin_cD1Ev
@@ -378,14 +361,14 @@ void dScMgCoin_c::Bag_State0()
 
 // @symbol _ZN11dScMgCoin_c10Bag_UpdateEv
 /* Dispatch the moneybag while mBouncer.active is set. Not a vtable:
-   the records live in data_ov006_021417c8. */
+   the records live in sCoinBagStateTable. */
 void dScMgCoin_c::Bag_Update()
 {
     if (this->mBouncer.active == 0)
         return;
 
     int state = this->mBouncer.state;
-    (this->*data_ov006_021417c8[state].pmf)(0);
+    (this->*sCoinBagStateTable[state].pmf)(0);
 }
 
 // @symbol _ZN11dScMgCoin_c8Bag_ShowEv
@@ -556,7 +539,7 @@ void dScMgCoin_c::Caption_Update()
         return;
 
     int state = this->mCaption.state;
-    (this->*data_ov006_021417e8[state].pmf)(0);
+    (this->*sCoinCaptionStateTable[state].pmf)(0);
 }
 
 // @symbol _ZN11dScMgCoin_c12Caption_ShowEv
@@ -937,13 +920,13 @@ void dScMgCoin_c::Coin_State0(int idx)
 }
 
 // @symbol _ZN11dScMgCoin_c14Coin_UpdateAllEv
-/* Runs each coin's state handler from data_ov006_021417b0. */
+/* Runs each coin's state handler from sCoinCoinStateTable. */
 void dScMgCoin_c::Coin_UpdateAll()
 {
     int i;
     for (i = 0; i < 0x18; i++) {
         unsigned char k = this->mCoins[i].state;
-        (this->*data_ov006_021417b0[k].pmf)(i);
+        (this->*sCoinCoinStateTable[k].pmf)(i);
     }
 }
 
@@ -1321,7 +1304,7 @@ void dScMgCoin_c::Block_UpdateAll()
     char *p = thiz;
     for (; i < 0x28; i++) {
         if (*(unsigned char *)(p + 0x4000 + 0x677) != 0) {
-            (this->*data_ov006_02141840[*(unsigned char *)(p + 0x4000 + 0x675)].pmf)(i);
+            (this->*sCoinBlockStateTable[*(unsigned char *)(p + 0x4000 + 0x675)].pmf)(i);
             if (*(unsigned char *)(p + 0x4000 + 0x675) != 4)
                 n++;
             this->Block_Animate(i);
@@ -1452,10 +1435,10 @@ void dScMgCoin_c::ResetRound()
 
     *((u32 *)(c + 0x51c8)) = 0;
     *((u32 *)(c + 0x51cc)) = 0;
-    *((u8 *)(c + 0x51db)) = 0;
+    mWonLast = 0;
     *((u8 *)(c + 0x51dd)) = 0;
     *((u32 *)(c + 0x51d0)) = 0;
-    *((u8 *)(c + 0x51de)) = 0;
+    mCaptionLatch = 0;
     this->Caption_Reset();
     this->Bag_Hide();
     *((u8 *)(c + 0x51df)) = 0;
@@ -1532,7 +1515,7 @@ void dScMgCoin_c::Phase_State3()
     for (i = 0; i < 0x28; i++) {
         if (mBlocks[i].unk17) {
             int idx = mBlocks[i].state;
-            (this->*data_ov006_02141840[idx].pmf)(i);
+            (this->*sCoinBlockStateTable[idx].pmf)(i);
             if (mBlocks[i].state != 4) count++;
             if (mBlocks[i].unk16 != 0) this->Block_Animate(i);
         }
@@ -1572,7 +1555,7 @@ void dScMgCoin_c::Phase_State2()
     int i;
     for (i = 0; i < 0x28; i++) {
         if (mBlocks[i].unk17 != 0) {
-            (this->*data_ov006_02141840[mBlocks[i].state].pmf)(i);
+            (this->*sCoinBlockStateTable[mBlocks[i].state].pmf)(i);
             this->Block_Animate(i);
         }
     }
@@ -1674,13 +1657,13 @@ int dScMgCoin_c::Render()
 }
 
 // @symbol _ZN11dScMgCoin_c8BehaviorEv
-/* Runs this phase's handler from data_ov006_02141810, then the caption,
+/* Runs this phase's handler from sCoinPhaseStateTable, then the caption,
    the moneybag, the popups and the score. */
 
 int dScMgCoin_c::Behavior()
 {
     int idx = mPhase;
-    (this->*data_ov006_02141810[idx].pmf)();
+    (this->*sCoinPhaseStateTable[idx].pmf)();
     this->Caption_Update();
     this->Bag_Update();
     this->Popup_UpdateAll();

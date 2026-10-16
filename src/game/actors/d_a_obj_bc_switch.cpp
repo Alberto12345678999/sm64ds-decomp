@@ -151,6 +151,12 @@ extern int func_ov002_020dd8b8(void* c);
 extern void func_ov002_020f1578(daObjBC_Switch_c *c, char *arg);
 }
 
+/* Actor ID 0xbf is PLAYER. This int-returning predicate is what makes the
+ * ROM materialize 0/1 before testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol daObjBC_Switch_c_classInit
@@ -182,10 +188,9 @@ void func_ov002_020f15b8(void* a, void* b, void* c) {
 // @symbol func_ov002_020f1578
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f1578(daObjBC_Switch_c *c, char *arg){
-    /* (int) on the comparison is load-bearing bool-widening. arg+0xc is the
-       colliding actor's actorID (PLAYER is 0xbf); Player.h is out of scope. */
-    int b = (int)(*(unsigned short*)(arg + 0xc) == 0xbf);
-    if (b == 0) return;
+    /* arg is the colliding actor; Player.h is out of scope. */
+    if (!IsPlayerActor((dActor_c *)arg))
+        return;
     if (func_ov002_020dd8b8(arg) != 0)
         c->mPressed = 1;
 }
@@ -248,7 +253,8 @@ int daObjBC_Switch_c::InitResources()
     mPressed = 0;
 
     /* Keep p out of the mid-block so y colors r1 and c+0x300 colors r0,
-       and so set_fa rematerializes add r0,r4,#0x300 after ldrh clobbers r0. */
+       and so the 0xfa store rematerializes add r0,r4,#0x300 after ldrh
+       clobbers r0. */
     y = mPosY;
     mStopPosY = y - 0x64000;
     x = param1;
@@ -257,22 +263,12 @@ int daObjBC_Switch_c::InitResources()
     val = mCoinTimerSeed;
     p = (unsigned short*)(c + 0x300);
 
-    /* ROM: if (val==0xff || val==0) store 0xfa; else *= 10 */
-    if (val == 0xff)
-        goto set_fa;
-    if (val != 0)
-        goto multiply;
-
-set_fa:
-    p = (unsigned short*)(c + 0x300);
-    p[0x15] = 0xfa;
-    goto done;
-
-multiply:
-    *(unsigned short*)((int)c + 0x32a) =
-        *(unsigned short*)((int)c + 0x32a) * 0xa;
-
-done:
+    if (val == 0xff || val == 0) {
+        p = (unsigned short *)(c + 0x300);
+        p[0x15] = 0xfa;
+    } else {
+        *(unsigned short *)((int)c + 0x32a) = *(unsigned short *)((int)c + 0x32a) * 0xa;
+    }
     return 1;
 }
 

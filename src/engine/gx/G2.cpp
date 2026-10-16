@@ -262,14 +262,8 @@ unsigned int GetBG3CharPtr() {
     int cfg = *(volatile int *)0x4001000;
     unsigned int v = *(volatile unsigned short *)0x400100e;
     int m = cfg & 7;
-    if (m >= 3) {
-        if (m >= 6)
-            goto zero;
-        if (v & 0x80)
-            goto zero;
-    }
-    return (((v & 0x3c) >> 2) << 0xe) + 0x6200000;
-zero:
+    if (m < 3 || (m < 6 && !(v & 0x80)))
+        return (((v & 0x3c) >> 2) << 0xe) + 0x6200000;
     return 0;
 }
 

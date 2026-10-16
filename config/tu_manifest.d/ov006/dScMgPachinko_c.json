@@ -524,7 +524,7 @@
       "ordinal": 68
     },
     {
-      "symbol": "func_ov006_020fea70",
+      "symbol": "Pachinko_UpdateNextBall",
       "address": "0x020fea70",
       "size": "0x00000138",
       "legacy_source": "src/func_ov006_020fea70.c",
@@ -576,35 +576,35 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_02142644",
+      "symbol": "sPachinkoBobOmbStateTable",
       "address": "0x02142644",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "five Ent7d0 {code pointer, adjustment} records, plain-copied from the ROM .data constants"
     },
     {
-      "symbol": "data_ov006_02142694",
+      "symbol": "sPachinkoBallStateTable",
       "address": "0x02142694",
       "size": "0x38",
       "binding": "STB_GLOBAL",
       "evidence": "seven Ent7d0 {code pointer, adjustment} records, plain-copied from the ROM .data constants"
     },
     {
-      "symbol": "data_ov006_02142624",
+      "symbol": "sPachinkoPipeStateTable",
       "address": "0x02142624",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "four Ent7d0 {code pointer, adjustment} records, plain-copied from the ROM .data constants"
     },
     {
-      "symbol": "data_ov006_0214266c",
+      "symbol": "sPachinkoFlyerStateTable",
       "address": "0x0214266c",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "five pointer-to-member entries, plain-copied from the ROM .data constants"
     },
     {
-      "symbol": "data_ov006_02142604",
+      "symbol": "sPachinkoBgStateTable",
       "address": "0x02142604",
       "size": "0x20",
       "binding": "STB_GLOBAL",
@@ -1001,7 +1001,7 @@
       "source": "0x2131c60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142644",
+      "symbol": "sPachinkoBobOmbStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142644"
@@ -1061,7 +1061,7 @@
       "source": "0x2131c78",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142694",
+      "symbol": "sPachinkoBallStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142694"
@@ -1161,7 +1161,7 @@
       "source": "0x2131ca0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142624",
+      "symbol": "sPachinkoPipeStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142624"
@@ -1191,7 +1191,7 @@
       "source": "0x2131cac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0214266c",
+      "symbol": "sPachinkoFlyerStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0214266c"
@@ -1271,7 +1271,7 @@
       "source": "0x2131ccc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142604",
+      "symbol": "sPachinkoBgStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142604"
