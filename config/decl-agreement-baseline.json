@@ -566,11 +566,6 @@
         "param:#3 void *"
       ]
     },
-    "Deallocate": {
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "arity:0"
-      ]
-    },
     "DeathTable_GetBit": {
       "src/runtime/actor/d_actor.cpp": [
         "return:int"
@@ -806,19 +801,8 @@
       ]
     },
     "GetLevelPart": {
-      "src/DeathTable_ClearBit.c": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:int"
-      ],
-      "src/DeathTable_GetBit.c": [
-        "return:int"
-      ],
-      "src/DeathTable_SetBit.c": [
-        "return:int"
-      ]
-    },
-    "GetMinimapID": {
-      "src/unnamed/arm9/0202/func_02029600.c": [
-        "param:#1 int"
       ]
     },
     "GetPlayerFlagByte": {
@@ -944,11 +928,6 @@
         "return:unsigned int"
       ]
     },
-    "InitControllerMode": {
-      "src/SetPlayerGlobals.c": [
-        "param:#2 int"
-      ]
-    },
     "InvMat4x3": {
       "src/_Z13CopyToViewMatPK9Matrix4x3.cpp": [
         "param:#1 Matrix4x3 *",
@@ -1026,9 +1005,6 @@
         "param:#1 int"
       ],
       "src/game/stages/d_s_dsmt.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ],
       "src/game/actors/d_a_moray.cpp": [
@@ -1272,33 +1248,22 @@
       ]
     },
     "LoadLevel": {
-      "src/EnterBigBoosHaunt.c": [
-        "param:#1 unsigned int",
-        "param:#2 unsigned int",
-        "param:#3 unsigned int",
-        "param:#4 unsigned int",
-        "param:#5 unsigned int"
-      ],
-      "src/LoadLevelNoReturn.c": [
-        "param:#1 unsigned int",
-        "param:#2 unsigned int",
-        "param:#3 unsigned int",
-        "param:#4 unsigned int",
-        "param:#5 unsigned int"
-      ],
       "src/game/actors/d_a_ch_scene.cpp": [
-        "param:#4 unsigned int"
+        "param:#4 unsigned int",
+        "param:#1 signed char",
+        "param:#2 unsigned char",
+        "param:#3 signed char"
       ]
     },
     "LoadLevelNoReturn": {
       "include/decl_common.h": [
         "param:#1 int"
       ],
-      "src/StartFile.c": [
-        "param:#1 signed char",
-        "param:#2 unsigned char",
-        "param:#3 signed char",
-        "param:#4 unsigned char"
+      "src/ProcessKuppaScript.cpp": [
+        "param:#1 unsigned int"
+      ],
+      "src/unnamed/ov075/func_ov075_02116c8c.c": [
+        "param:#1 unsigned int"
       ]
     },
     "Math_Function_0203b0fc": {
@@ -2215,16 +2180,6 @@
         "return:void"
       ]
     },
-    "SetNextLevel": {
-      "src/KillPlayer.c": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "SetNumPlayers": {
-      "src/StartFile.c": [
-        "param:#1 unsigned int"
-      ]
-    },
     "SetStarMarker": {
       "src/game/actors/d_a_coin.cpp": [
         "param:#2 void *"
@@ -3063,20 +3018,6 @@
     "Sound_PlayIfNotActive": {
       "src/unnamed/arm9/0200/func_02009e70.cpp": [
         "arity:3"
-      ]
-    },
-    "StartExitFaderWipe": {
-      "src/HitDeathPlane.c": [
-        "param:#1 unsigned int"
-      ],
-      "src/KillPlayer.c": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "StartFile": {
-      "src/unnamed/arm9/0202/func_0202ae74.c": [
-        "param:#1 int",
-        "param:#2 int"
       ]
     },
     "SubVec3": {
@@ -6356,17 +6297,13 @@
       ]
     },
     "_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File": {
-      "src/_ZN10dScStage_c23LoadTextureTransformersEv.cpp": [
-        "param:#1 void *",
-        "param:#2 void *"
-      ],
       "src/minigames/unit020bfec0.cpp": [
         "param:#1 void *",
         "param:#2 void *"
       ]
     },
     "_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": {
-      "src/_ZN10dScStage_c23LoadTextureTransformersEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_brq.cpp": [
@@ -6497,7 +6434,7 @@
       ]
     },
     "_ZN2G212GetBG2ScrPtrEv": {
-      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:char *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
@@ -6531,7 +6468,7 @@
       ]
     },
     "_ZN2G213GetBG2CharPtrEv": {
-      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:char *"
       ],
       "src/minigames/d_s_mg_flower.cpp": [
@@ -6595,9 +6532,6 @@
       ]
     },
     "_ZN3G2S12GetBG0ScrPtrEv": {
-      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
-        "return:char *"
-      ],
       "src/minigames/d_s_mg_smartball.cpp": [
         "return:void *"
       ],
@@ -6624,9 +6558,6 @@
       ]
     },
     "_ZN3G2S12GetBG1ScrPtrEv": {
-      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
-        "return:char *"
-      ],
       "src/game/stages/d_s_game_over.cpp": [
         "return:unsigned short *"
       ],
@@ -6648,9 +6579,6 @@
       ]
     },
     "_ZN3G2S12GetBG2ScrPtrEv": {
-      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
-        "return:char *"
-      ],
       "src/game/stages/d_s_game_over.cpp": [
         "return:void *"
       ],
@@ -6712,9 +6640,6 @@
       ]
     },
     "_ZN3G2S13GetBG0CharPtrEv": {
-      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
-        "return:char *"
-      ],
       "src/minigames/d_s_mg_smartball.cpp": [
         "return:void *"
       ],
@@ -6840,10 +6765,6 @@
       ]
     },
     "_ZN3G2x18SetBlendBrightnessEPVtts": {
-      "src/_ZN10dScStage_c7PS_InitEv.cpp": [
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#2 int"
       ],
@@ -6897,7 +6818,7 @@
       "include/decl_common.h": [
         "param:#1 int"
       ],
-      "src/_ZN10dScStage_c9RenderFogEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ],
       "src/minigames/d_mg3d_esp_anim_set.cpp": [
@@ -7398,9 +7319,6 @@
       ]
     },
     "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii": {
-      "src/_ZN10dScStage_c21RenderVsModeCountdownEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN7Message6UpdateEv.cpp": [
         "return:void *"
       ],
@@ -7545,9 +7463,6 @@
       ]
     },
     "_ZN5mHeap6Heap_t10SetDefaultEv": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
       "src/game/stages/d_s_mb.cpp": [
         "return:void *"
       ],
@@ -7729,9 +7644,6 @@
       ]
     },
     "_ZN5Model8LoadFileER13SharedFilePtr": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *"
       ],
@@ -8015,12 +7927,6 @@
       "include/decl_common.h": [
         "return:void"
       ],
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02048e74.c": [
         "return:void"
       ],
@@ -8174,11 +8080,6 @@
         "param:#4 Vector3 *",
         "param:#5 unsigned int",
         "return:unsigned int"
-      ]
-    },
-    "_ZN5Sound8SetMusicEjj": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:int"
       ]
     },
     "_ZN5Sound9PlayBank0EjRK7Vector3": {
@@ -11184,16 +11085,8 @@
         "return:int"
       ]
     },
-    "_ZN9dFdWipe_c14LoadAndSetFileEt": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "param:#1 int"
-      ]
-    },
     "_ZN9dFdWipe_cD1Ev": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:void"
       ]
     },
@@ -11414,9 +11307,6 @@
     "_ZTV7dBase_c": {
       "include/decl_common.h": [
         "return:int []"
-      ],
-      "src/game/stages/d_s_stage.cpp": [
-        "return:void * []"
       ]
     },
     "_ZTV8dScene_c": {
@@ -11428,9 +11318,6 @@
       ],
       "src/game/stages/d_s_entry_result.cpp": [
         "return:char []"
-      ],
-      "src/game/stages/d_s_stage.cpp": [
-        "return:void * []"
       ]
     },
     "__aeabi_uidiv": {
@@ -11898,9 +11785,6 @@
       ]
     },
     "data_02092110": {
-      "src/SetNextLevel.c": [
-        "return:unsigned char"
-      ],
       "src/game/actors/d_a_door.cpp": [
         "return:char"
       ],
@@ -11911,6 +11795,9 @@
     "data_02092114": {
       "include/decl_common.h": [
         "return:unsigned char"
+      ],
+      "src/ui/hud/CapIconMgr.cpp": [
+        "return:signed char"
       ]
     },
     "data_0209211c": {
@@ -11918,15 +11805,7 @@
         "return:unsigned char"
       ]
     },
-    "data_02092124": {
-      "src/StartFile.c": [
-        "return:unsigned char []"
-      ]
-    },
     "data_02092128": {
-      "src/StartFile.c": [
-        "return:unsigned char []"
-      ],
       "src/game/stages/LevelObjects.cpp": [
         "return:unsigned char []"
       ],
@@ -11935,13 +11814,8 @@
       ]
     },
     "data_02092134": {
-      "src/GetStarCameraSetting.c": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:unsigned int"
-      ]
-    },
-    "data_02092144": {
-      "src/SetPlayerGlobals.c": [
-        "return:unsigned short []"
       ]
     },
     "data_02092768": {
@@ -12098,9 +11972,6 @@
       "src/EndKuppaScript.cpp": [
         "return:int"
       ],
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/game/actors/d_a_obj_key.cpp": [
         "return:int"
       ],
@@ -12143,22 +12014,7 @@
       ]
     },
     "data_0209caa0": {
-      "src/IsButtonInputValid.c": [
-        "return:unsigned char []"
-      ],
-      "src/PrepareVsMode.c": [
-        "return:unsigned char []"
-      ],
-      "src/SetControllerMode.c": [
-        "return:unsigned char []"
-      ],
-      "src/SetPlayerGlobals.c": [
-        "return:unsigned char []"
-      ],
-      "src/StartExitCharacterWipe.c": [
-        "return:unsigned char []"
-      ],
-      "src/StartFile.c": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:unsigned char []"
       ],
       "src/_ZN6Player13InitResourcesEv.cpp": [
@@ -12221,9 +12077,6 @@
       ]
     },
     "data_0209cee8": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/engine/collision/d_cc.cpp": [
         "return:dCc_c *"
       ]
@@ -12386,9 +12239,6 @@
       ]
     },
     "data_0209d4a8": {
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:void * *"
       ],
@@ -12419,15 +12269,6 @@
       ],
       "src/unnamed/arm9/0201/func_02018ec0.c": [
         "return:void *"
-      ],
-      "src/unnamed/arm9/0202/FUN_02029980.cpp": [
-        "return:B *"
-      ],
-      "src/unnamed/arm9/0202/FUN_020299f4.cpp": [
-        "return:B *"
-      ],
-      "src/unnamed/arm9/0202/FUN_02029ab0.c": [
-        "return:WipeEntry *"
       ]
     },
     "data_0209d4b4": {
@@ -12619,11 +12460,6 @@
         "return:unsigned char []"
       ]
     },
-    "data_0209f1f8": {
-      "src/unnamed/arm9/0202/func_0202b0c4.c": [
-        "return:char []"
-      ]
-    },
     "data_0209f208": {
       "src/game/actors/d_a_krb.cpp": [
         "return:unsigned char []"
@@ -12651,40 +12487,12 @@
       ]
     },
     "data_0209f228": {
-      "src/StartFile.c": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_0209f258": {
-      "src/unnamed/arm9/0202/func_0202b060.c": [
-        "return:char []"
-      ]
-    },
-    "data_0209f25c": {
-      "src/unnamed/arm9/0202/func_0202af80.c": [
-        "return:char []"
-      ]
-    },
-    "data_0209f274": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:signed char"
-      ]
-    },
-    "data_0209f284": {
-      "src/_ZN6Player8BehaviorEv.cpp": [
-        "return:signed char"
-      ]
-    },
-    "data_0209f2a0": {
-      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
-        "return:unsigned char"
-      ],
       "src/game/stages/d_s_stage_methods.cpp": [
         "return:unsigned char []"
       ]
     },
-    "data_0209f2bc": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
+    "data_0209f284": {
+      "src/_ZN6Player8BehaviorEv.cpp": [
         "return:signed char"
       ]
     },
@@ -12702,25 +12510,9 @@
         "return:unsigned char []"
       ]
     },
-    "data_0209f2c4": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:signed char"
-      ]
-    },
-    "data_0209f2d0": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:unsigned char"
-      ]
-    },
     "data_0209f2d8": {
       "src/ContinueKuppaScriptIfNecessary.c": [
         "return:int"
-      ],
-      "src/PrepareVsMode.c": [
-        "return:unsigned char []"
-      ],
-      "src/StartFile.c": [
-        "return:unsigned char []"
       ],
       "src/_ZN6Player16InitWingFeathersEb.cpp": [
         "return:unsigned char []"
@@ -12744,26 +12536,15 @@
         "return:unsigned char []"
       ]
     },
-    "data_0209f2e8": {
-      "src/unnamed/arm9/0202/func_0202b044.c": [
-        "return:char []"
-      ]
-    },
     "data_0209f2f4": {
-      "src/GiveLives.c": [
-        "return:signed char"
-      ],
-      "src/SetPlayerGlobals.c": [
-        "return:unsigned char"
+      "src/game/stages/d_s_star_sel_methods.cpp": [
+        "return:signed char []"
       ],
       "src/ui/hud/d_meter.cpp": [
         "return:signed char"
       ]
     },
     "data_0209f2f8": {
-      "src/ExitMinigameMenu.c": [
-        "return:unsigned char"
-      ],
       "src/game/actors/d_a_brq.cpp": [
         "return:signed char []"
       ],
@@ -12771,36 +12552,7 @@
         "return:signed char []"
       ]
     },
-    "data_0209f300": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:short"
-      ]
-    },
-    "data_0209f304": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:short"
-      ]
-    },
-    "data_0209f308": {
-      "src/_ZN10dScStage_c19RenderVsModeNewStarEv.cpp": [
-        "return:unsigned short"
-      ]
-    },
-    "data_0209f30c": {
-      "src/NumRedCoins.c": [
-        "return:signed char"
-      ],
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:unsigned char []"
-      ]
-    },
     "data_0209f310": {
-      "src/NumVsStarsObtained.c": [
-        "return:signed char"
-      ],
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:unsigned char []"
-      ],
       "src/_ZN6Player19func_ov002_020d94ccEv.cpp": [
         "return:signed char"
       ]
@@ -12808,24 +12560,9 @@
     "data_0209f314": {
       "include/decl_common.h": [
         "return:int"
-      ],
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:int"
       ]
     },
     "data_0209f318": {
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN10dScStage_c6RenderEv.cpp": [
-        "return:char *"
-      ],
-      "src/_ZN10dScStage_c9RenderFogEv.cpp": [
-        "return:int []"
-      ],
       "src/_ZN6Player11St_Fly_InitEv.cpp": [
         "return:int []"
       ],
@@ -12905,102 +12642,17 @@
         "return:dCamera_c *"
       ]
     },
-    "data_0209f31c": {
-      "src/unnamed/arm9/0202/func_0202b060.c": [
-        "return:int []"
-      ]
-    },
-    "data_0209f324": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:int"
-      ],
-      "src/runtime/graphics/fader/StartEntranceFaderWipe.cpp": [
-        "return:dFdWipe_c *"
-      ],
-      "src/runtime/graphics/fader/StartExitFaderWipe.cpp": [
-        "return:dFdWipe_c *"
-      ],
-      "src/unnamed/arm9/0202/FUN_02029980.cpp": [
-        "return:char *"
-      ],
-      "src/unnamed/arm9/0202/FUN_020299f4.cpp": [
-        "return:char *"
-      ],
-      "src/unnamed/arm9/0202/FUN_02029a68.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0202/FUN_02029ab0.c": [
-        "return:WipeTable *"
-      ]
-    },
-    "data_0209f334": {
-      "src/unnamed/arm9/0202/func_0202b044.c": [
-        "return:int []"
-      ]
-    },
     "data_0209f338": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:int"
-      ]
-    },
-    "data_0209f340": {
-      "src/StartWithFarCamera.c": [
-        "return:unsigned char *"
-      ],
-      "src/_ZN10dScStage_c11GetSkyboxIDEv.cpp": [
-        "return:int []"
-      ],
-      "src/_ZN10dScStage_c11RenderModelEv.cpp": [
-        "return:Info *"
-      ],
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN10dScStage_c6RenderEv.cpp": [
-        "return:AnimMgr *"
-      ],
-      "src/_ZN10dScStage_c9LoadModelEv.cpp": [
-        "return:char []"
-      ],
-      "src/unnamed/arm9/0202/func_0202a958.c": [
-        "return:short *"
-      ],
-      "src/unnamed/arm9/0202/func_0202a96c.c": [
-        "return:unsigned short *"
-      ],
-      "src/unnamed/arm9/0202/func_0202a980.c": [
-        "return:unsigned short *"
       ]
     },
     "data_0209f344": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:int"
       ]
     },
-    "data_0209f348": {
-      "src/unnamed/arm9/0202/func_0202af80.c": [
-        "return:int []"
-      ]
-    },
     "data_0209f394": {
-      "src/GiveCoins.c": [
-        "return:int []"
-      ],
-      "src/_ZN10dScStage_c15IsPauseDisabledEv.cpp": [
-        "return:int []"
-      ],
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:int []"
-      ],
-      "src/_ZN10dScStage_c21RenderVsModeCountdownEv.cpp": [
-        "return:unsigned char * []"
-      ],
-      "src/_ZN10dScStage_c6RenderEv.cpp": [
-        "return:char * []"
-      ],
-      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
-        "return:char * []"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "return:Player * []"
       ],
@@ -13033,7 +12685,7 @@
       ]
     },
     "data_0209f3a4": {
-      "src/AddSpikeBomb.c": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:void * []"
       ],
       "src/ui/hud/d_map.cpp": [
@@ -13041,9 +12693,6 @@
       ]
     },
     "data_0209f3c4": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
         "return:void volatile *"
       ]
@@ -13187,19 +12836,11 @@
         "return:unsigned char"
       ]
     },
-    "data_0209f4f8": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:int [][]"
-      ]
-    },
     "data_0209f5bc": {
       "src/ProcessKuppaScript.cpp": [
         "return:UnkVis *"
       ],
-      "src/_ZN10dScStage_c21RenderVsModeCountdownEv.cpp": [
-        "return:Base *"
-      ],
-      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:UnkVis *"
       ],
       "src/game/actors/d_a_demo.cpp": [
@@ -13234,15 +12875,6 @@
       ],
       "src/ui/hud/d_map.cpp": [
         "return:VtblOwner *"
-      ],
-      "src/unnamed/arm9/0202/FUN_02029934.cpp": [
-        "return:Obj *"
-      ],
-      "src/unnamed/arm9/0202/FUN_02029980.cpp": [
-        "return:A *"
-      ],
-      "src/unnamed/arm9/0202/FUN_020299f4.cpp": [
-        "return:A *"
       ]
     },
     "data_0209f5c0": {
@@ -13262,7 +12894,7 @@
       ]
     },
     "data_0209f5e8": {
-      "src/LoadLevel.c": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:unsigned short"
       ],
       "src/game/stages/d_s_star_sel_methods.cpp": [
@@ -13455,6 +13087,9 @@
       "src/ProcessKuppaScript.cpp": [
         "return:unsigned char []"
       ],
+      "src/game/stages/d_s_stage_methods.cpp": [
+        "return:PadData []"
+      ],
       "src/unnamed/arm9/0203/func_0203bc50.c": [
         "return:short []"
       ],
@@ -13466,9 +13101,6 @@
       ]
     },
     "data_020a0e5a": {
-      "src/IsButtonInputValid.c": [
-        "return:unsigned short"
-      ],
       "src/_ZN7Message6UpdateEv.cpp": [
         "return:unsigned char"
       ],
@@ -15645,11 +15277,6 @@
     "data_ov002_02110f9c": {
       "src/unnamed/ov002/__sinit_ov002_02107370.c": [
         "return:S16 []"
-      ]
-    },
-    "data_ov002_02111148": {
-      "src/unnamed/arm9/0202/func_02029600.c": [
-        "return:unsigned char"
       ]
     },
     "data_ov002_0211117c": {
@@ -20168,9 +19795,6 @@
     "func_01ffb0c8": {
       "include/decl_common.h": [
         "return:void"
-      ],
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:void"
       ]
     },
     "func_01ffdd98": {
@@ -20750,17 +20374,6 @@
       ]
     },
     "func_02012790": {
-      "src/IsButtonInputValid.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/KillPlayer.c": [
-        "return:void"
-      ],
-      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/_ZN7Message6UpdateEv.cpp": [
         "param:#1 int",
         "return:void"
@@ -23181,7 +22794,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_021192bc.c": [
@@ -23822,7 +23435,7 @@
       ]
     },
     "func_0203dad4": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:unsigned int"
       ]
     },
@@ -25230,9 +24843,6 @@
       "include/decl_common.h": [
         "arity:3",
         "return:void *"
-      ],
-      "src/ResetInput.c": [
-        "arity:3"
       ],
       "src/engine/save/SaveData.cpp": [
         "arity:3"
@@ -26914,10 +26524,6 @@
       "include/decl_common.h": [
         "param:#1 void *",
         "param:#4 void (*)(void *)"
-      ],
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "param:#1 void *",
-        "param:#4 void (*)(void *)"
       ]
     },
     "func_02073300": {
@@ -26929,7 +26535,7 @@
       ]
     },
     "func_02073470": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",
@@ -26950,7 +26556,7 @@
       ]
     },
     "func_ov002_020b18f0": {
-      "src/GiveCoins.c": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
@@ -27375,7 +26981,7 @@
       ]
     },
     "func_ov002_020f1c20": {
-      "src/_ZN10dScStage_c9RenderFogEv.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "return:void *"
       ]
     },
