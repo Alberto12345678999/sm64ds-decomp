@@ -203,17 +203,15 @@ object and no other argument; `GraphCallback2` reads its fields (fixed-point mat
 `dScStage_c`; non-static because slot 2 needs `this`, non-virtual to keep their TUs from
 emitting a vtable the delink ranges do not own.
 
-**`PS_Init` is deliberately not declared in the header**, even though
-`src/_ZN10dScStage_c7PS_InitEv.cpp` defines `dScStage_c::PS_Init()` and is byte-verified and
-enrolled. It uses its own local shadow `class dScStage_c` (the same pattern
-`src/_ZN10dScStage_c8BehaviorEv.cpp` uses) on purpose: a real landmine lived at that exact
+**`PS_Init` is now declared in the header** (static, like the rest of the pause-screen
+family) and defined in `src/game/stages/d_s_stage_methods.cpp` with the rest of the class. Its old standalone
+shard used a local shadow `class dScStage_c` on purpose: a real landmine had lived at that
 filename — an untracked, un-enrolled second `.cpp` for the symbol whose private
 `struct G2x` declared `SetBlendBrightness`'s middle parameter as `int`, mangling to
 `_ZN3G2x18SetBlendBrightnessEPVtis`, which resolves to nothing and would silently *not*
-be what byte-matches. The surviving file never declares a `G2x` type at all — it calls
-the correctly-mangled `_ZN3G2x18SetBlendBrightnessEPVtts` symbol directly, as the `.c`
-file it replaced did — so the landmine cannot recur through it. Wiring `PS_Init` to the
-header is a separate, low-risk change.
+be what byte-matches. The TU still calls the correctly-mangled
+`_ZN3G2x18SetBlendBrightnessEPVtts` symbol directly (the ROM passes an unnarrowed int
+where `G2x.h` declares `unsigned short`), so the landmine cannot recur through it.
 
 ---
 
