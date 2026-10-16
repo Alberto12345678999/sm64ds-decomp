@@ -278,9 +278,6 @@ typedef struct
   s32 z;
 } Vec3;
 
-/* shadow typedef 's64' */
-typedef long long s64;
-
 /* shadow struct 'Callback' */
 struct Callback;
 

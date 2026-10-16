@@ -23208,7 +23208,6 @@ int func_ov002_020df840(struct Playerf840 *thiz, void *arg1, struct Vector3 *arg
 extern "C" {
 void func_ov002_020df8f0(char* c)
 {
-    typedef long long s64;
     typedef unsigned long long u64;
     extern int _ZN4cstd4sqrtEy(u64 v);
     extern void _Z15ApproachLinear2Rsss(s16* p, s16 target, s16 step);

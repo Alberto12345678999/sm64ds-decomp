@@ -68,7 +68,6 @@
  * - daOts_c.h first: nested Matrix4x3 for mModelAnim.mat4x3.t (02116bac).
  *   common.h's flat m[12] would stand down if it came first.
  * - Vec3_Sub / HorzLen / atan2 take int*; 02115f98 keeps the int-array pos copy.
- * - (long long)/(s64) 20.12 muls in 02116bac / 02115f98.
  * - bool-widening `int isD8 = (int)(actorID == kBigBullyActorId)` / `isBf` in
  *   02116754 / 02116460: the temporary is load-bearing.
  * - CleanupResources and InitResourcesCommon read the config block through

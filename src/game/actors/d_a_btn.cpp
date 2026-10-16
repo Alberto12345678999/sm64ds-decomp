@@ -1511,7 +1511,6 @@ void daBtn_c::func_ov079_02124188()
     return;
 }
 
-
 // @symbol _ZN7daBtn_c19func_ov079_02124008Ev
 /* Pose the collision mesh: the model's matrix turned by the body's bone
    rotation (yaw always; pitch and half the roll except while walking,

@@ -74,7 +74,7 @@
  *   The PMF stand-ins (CapStateSelf / CapStateRec / CapEnterSelf). A PMF on
  *   the real dEnemyBase_c makes mwccarm ICE rather than give a diagnostic.
  *
- *   The (long long)(int) 20.12 multiplies in Slide and the
+ *   FX_MUL's 64-bit product in Slide's 20.12 multiplies and the
  *   (unsigned long long)&vulnFlags or-into-vulnFlags in InitSlide
  *   are the matching forms; plain member addressing does not match.
  *
@@ -1077,8 +1077,8 @@ int daObjMarioCap_c::Slide()
     s = data_02082214[j];
     co = data_02082214[j + 1];
     /* Velocity in the plane: speed times {sin, cos} of the angle, fix12 multiply
-       rounded to nearest. (long long)(int) is the MATCH form; a plain 32-bit
-       mul DIFFs. */
+       rounded to nearest. FX_MUL's 64-bit product is the MATCH form; a plain
+       32-bit mul DIFFs. */
     ownVel.x = FX_MUL(spd, s);
     ownVel.y = 0;
     ownVel.z = FX_MUL(spd, co);
