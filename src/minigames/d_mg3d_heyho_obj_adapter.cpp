@@ -66,16 +66,21 @@ namespace n020c6f3c {
 extern "C" {
 extern int _ZN13SharedFilePtr7ReleaseEv(void*);
 extern int _ZN9ModelAnimD1Ev(void*);
-extern HeyhoAdapterModelFilePtr data_ov006_02140330; extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
-int Heyho_Destruct(int* c){ _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140330); _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140338); _ZN9ModelAnimD1Ev((char*)c+0x38); return (int)c; }
-
+extern HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile;
+extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
+int Heyho_Destruct(int *c) {
+    _ZN13SharedFilePtr7ReleaseEv(&gMgPHeyhoMiniModelFile);
+    _ZN13SharedFilePtr7ReleaseEv(&gMgPHeyhoWaitAnimFile);
+    _ZN9ModelAnimD1Ev((char *)c + 0x38);
+    return (int)c;
+}
 }
 }
 
 /* ---- Heyho_LoadResources ---- */
 struct BMD_File; struct BCA_File;
-extern HeyhoAdapterModelFilePtr data_ov006_02140330;
-extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
+extern HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile;
+extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
 struct GObj { int w[8]; };
 extern GObj *data_0209f5c0;
 namespace n020c6e4c {
@@ -96,8 +101,8 @@ extern "C" void Heyho_SetIdle(char *p);
 
 
 extern "C" int Heyho_LoadResources(char *c) {
-    BMD_File *m = (BMD_File *)Model::LoadFile(data_ov006_02140330);
-    BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140338);
+    BMD_File *m = (BMD_File *)Model::LoadFile(gMgPHeyhoMiniModelFile);
+    BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(gMgPHeyhoWaitAnimFile);
     if (((ModelBase *)(c + 0x38))->SetFile(m, 1, -1) == 0) {
         return 0;
     }
@@ -2167,5 +2172,5 @@ dMg3DHeyhoObjAdapter_c::dMg3DHeyhoObjAdapter_c() : mCommand(0)
 /* Definitions stay after the last .text function so they do not insert
  * a function into the reverse-emitted .text run. Construction order is
  * the model handle, then the animation handle. */
-HeyhoAdapterModelFilePtr data_ov006_02140330(0x217);
-HeyhoAdapterAnimationFileHandle data_ov006_02140338(0x218);
+HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile(0x217);
+HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile(0x218);

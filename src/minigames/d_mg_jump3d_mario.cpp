@@ -140,7 +140,7 @@ typedef char Jump3DModelFilePtr_size[sizeof(Jump3DModelFilePtr) == 8 ? 1 : -1];
 extern Jump3DMarioAnimFilePtr data_ov006_02140438;
 extern Jump3DMarioAnimFilePtr data_ov006_02140440;
 extern Jump3DMarioAnimFilePtr data_ov006_02140448;
-extern Jump3DModelFilePtr data_ov006_02140450;
+extern Jump3DModelFilePtr gMarioModelMgModelFile;
 extern Jump3DMarioAnimFilePtr data_ov006_02140458;
 extern Jump3DMarioAnimFilePtr data_ov006_02140460;
 extern Jump3DMarioAnimFilePtr data_ov006_02140468;
@@ -915,7 +915,7 @@ int dMgJump3DMario_c::LoadResources()
        (notes/experiments/jump3d-2711-87d0-int-temp.md). */
     int t;
 
-    if (func_020179b4(&data_ov006_02140450, &mModelAnim, 1) == 0)
+    if (func_020179b4(&gMarioModelMgModelFile, &mModelAnim, 1) == 0)
         return 0;
 
     data_ov006_02140430 = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140460);
@@ -944,7 +944,7 @@ int dMgJump3DMario_c::LoadResources()
 // @symbol _ZN16dMgJump3DMario_cD1Ev
 dMgJump3DMario_c::~dMgJump3DMario_c()
 {
-    data_ov006_02140450.Release();
+    gMarioModelMgModelFile.Release();
     data_ov006_02140460.Release();
     data_ov006_02140468.Release();
     data_ov006_02140458.Release();
@@ -972,4 +972,4 @@ Jump3DMarioAnimFilePtr data_ov006_02140458(32910);
 Jump3DMarioAnimFilePtr data_ov006_02140438(32958);
 Jump3DMarioAnimFilePtr data_ov006_02140440(32914);
 Jump3DMarioAnimFilePtr data_ov006_02140448(32932);
-Jump3DModelFilePtr data_ov006_02140450(534);
+Jump3DModelFilePtr gMarioModelMgModelFile(534);

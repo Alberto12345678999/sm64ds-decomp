@@ -15862,7 +15862,7 @@
         "return:int"
       ]
     },
-    "data_ov006_02140330": {
+    "gMgPHeyhoMiniModelFile": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:SharedFilePtr"
       ],
@@ -15870,7 +15870,7 @@
         "return:char []"
       ]
     },
-    "data_ov006_02140338": {
+    "gMgPHeyhoWaitAnimFile": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:SharedFilePtr"
       ],
@@ -15899,7 +15899,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140450": {
+    "gMarioModelMgModelFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]
