@@ -99,10 +99,9 @@ struct KaitendaiCollisionFilePtr : SharedFilePtr {
 };
 
 /* .bss proves each handle is one 0x8 word pair (ov065 0x0211d92c..0x0211d94c). */
-typedef char KaitendaiModelFile_size_must_be_0x08[
-    sizeof(KaitendaiModelFile) == 0x08 ? 1 : -1];
-typedef char KaitendaiCollisionFilePtr_size_must_be_0x08[
-    sizeof(KaitendaiCollisionFilePtr) == 0x08 ? 1 : -1];
+typedef char KaitendaiModelFile_size_must_be_0x08[sizeof(KaitendaiModelFile) == 0x08 ? 1 : -1];
+typedef char
+    KaitendaiCollisionFilePtr_size_must_be_0x08[sizeof(KaitendaiCollisionFilePtr) == 0x08 ? 1 : -1];
 
 /* Fix12-by-value calls keep the scalar argument the callee actually
  * reads. The class spelling homes it (see the leftover above). */
@@ -191,8 +190,7 @@ int daObjCtKaitendai_c::Behavior()
 
     case 2: /* random hand */
         if (ApproachLinear(mPrevAngleZ, mPrevAngleX, 50) != 0) {
-            u16 roll =
-                (u16)(RandomIntInternal(&data_0209e650) >> 16);
+            u16 roll = (u16)(RandomIntInternal(&data_0209e650) >> 16);
 
             mPrevAngleX = (s16)((roll % 7) * 200);
             if (roll >= 0x7fff) {
