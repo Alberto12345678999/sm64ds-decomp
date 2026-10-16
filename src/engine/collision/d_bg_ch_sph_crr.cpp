@@ -181,8 +181,7 @@ dBgPi *dBgCh_SphCrr::GetFloorResult()
    a u64 view: a plain struct assignment interleaves its two words with the
    stores, the ROM loads both first. */
 // @symbol _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi
-void dBgCh_SphCrr::SetFloorResult(const dBgPi &result)
-{
+void dBgCh_SphCrr::SetFloorResult(const dBgPi &result) {
     *reinterpret_cast<u64 *>(&mClsnResult1.surface.clps) =
         *reinterpret_cast<const u64 *>(&result.surface.clps);
     mClsnResult1.surface.normal.x = result.surface.normal.x;
@@ -202,8 +201,7 @@ dBgPi *dBgCh_SphCrr::GetWallResult()
 }
 
 // @symbol _ZN12dBgCh_SphCrr13SetWallResultERK5dBgPi
-void dBgCh_SphCrr::SetWallResult(const dBgPi &result)
-{
+void dBgCh_SphCrr::SetWallResult(const dBgPi &result) {
     *reinterpret_cast<u64 *>(&mClsnResult2.surface.clps) =
         *reinterpret_cast<const u64 *>(&result.surface.clps);
     mClsnResult2.surface.normal.x = result.surface.normal.x;
@@ -223,8 +221,7 @@ dBgPi *dBgCh_SphCrr::GetUnderResult()
 }
 
 // @symbol _ZN12dBgCh_SphCrr14SetUnderResultERK5dBgPi
-void dBgCh_SphCrr::SetUnderResult(const dBgPi &result)
-{
+void dBgCh_SphCrr::SetUnderResult(const dBgPi &result) {
     *reinterpret_cast<u64 *>(&mClsnResult3.surface.clps) =
         *reinterpret_cast<const u64 *>(&result.surface.clps);
     mClsnResult3.surface.normal.x = result.surface.normal.x;

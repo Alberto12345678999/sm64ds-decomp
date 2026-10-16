@@ -132,7 +132,7 @@ struct dBgCh {
     void **vtable;          /* 0x00 */
     u8 mDetectFlags;        /* 0x04 */
     u8 pad_005[0x3];
-    s32 mOwnerUniqueID;     /* 0x08 */
+    s32 mOwnerUniqueID;      /* 0x08 */
     struct dActor_c *mOwner; /* 0x0c */
 };
 
