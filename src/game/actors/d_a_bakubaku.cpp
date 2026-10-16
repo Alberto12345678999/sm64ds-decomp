@@ -643,13 +643,10 @@ at_player:
     {
     Vector3 vec;
     unsigned int n;
-    /* Scalar bridge within the actual Player object: mPosX/Y/Z occupy
-         * +0x5c/+0x60/+0x64. This does not claim a Vector3 member there. */
-    const char *playerBytes = reinterpret_cast<const char *>(r5);
-    const char *positionBytes = playerBytes + 0x5c;
-    vec.x = *reinterpret_cast<const s32 *>(positionBytes);
-    vec.y = *reinterpret_cast<const s32 *>(positionBytes + 4);
-    vec.z = *reinterpret_cast<const s32 *>(positionBytes + 8);
+    const s32 *playerPos = &r5->mPosX;
+    vec.x = playerPos[0];
+    vec.y = playerPos[1];
+    vec.z = playerPos[2];
     if (data_0209f32c > mPosY) {
         ApproachLinear(mPrevAngleX, 0, 0x200);
     } else {
