@@ -127,6 +127,13 @@ unsigned int GetBG0CharPtr();
 unsigned int GetBG1CharPtr();
 }
 
+/* data_0209f2d8 is 2 while a KuppaScript cutscene runs
+ * (ContinueKuppaScriptIfNecessary stores it). This int-returning predicate
+ * is what makes the ROM materialize 0/1 before testing it. */
+static inline int IsKuppaScriptRunning(void) {
+    return data_0209f2d8 == 2;
+}
+
 // @symbol _ZN7Message7EndTalkEv
 void Message::EndTalk() {
     /* Restore music to 0x7f. Slower ramp than PrepareTalk. */
@@ -559,30 +566,39 @@ void func_0201b7cc(void) {
         u8 c;
         cur = data_0209d6f4;
         c = *cur;
-        if (c == 0xfd)
-            goto Lfd;
-        if (c == 0xfe)
-            goto Lfe;
-        if (c != 0xff)
-            goto Ldefault;
-
-        /* 0xff */
-        if (added != 0) {
-            if (data_0209d69c == 0) {
-                data_0209d6bc = 2;
-            } else {
-                data_0209d6bc = 3;
-                data_0209d6a0 = 0;
-            }
-            data_0209d6b4 = data_0209d6b4 + 1;
-        } else {
-            if (data_0209d69c != 0) {
-                u8 *p = data_0209d6f0;
-                u8 v = data_0209d6b4;
-                if (v < p[6]) {
-                    data_0209d6b4 = v + 1;
-                    data_0209d6a0 = 0;
+        switch (c) {
+        case 0xff:
+            if (added != 0) {
+                if (data_0209d69c == 0) {
+                    data_0209d6bc = 2;
+                } else {
                     data_0209d6bc = 3;
+                    data_0209d6a0 = 0;
+                }
+                data_0209d6b4 = data_0209d6b4 + 1;
+            } else {
+                if (data_0209d69c != 0) {
+                    u8 *p = data_0209d6f0;
+                    u8 v = data_0209d6b4;
+                    if (v < p[6]) {
+                        data_0209d6b4 = v + 1;
+                        data_0209d6a0 = 0;
+                        data_0209d6bc = 3;
+                    } else {
+                        u8 m = data_0209d694;
+                        if (m == 1) {
+                            data_0209d6bc = 4;
+                            data_0209d68c = 0;
+                        } else if (m == 2) {
+                            data_0209d6bc = 6;
+                            data_0209d68c = 0;
+                        } else if (m == 3) {
+                            data_0209d6bc = 5;
+                            data_0209d68c = 0;
+                        } else {
+                            data_0209d6bc = 8;
+                        }
+                    }
                 } else {
                     u8 m = data_0209d694;
                     if (m == 1) {
@@ -598,68 +614,52 @@ void func_0201b7cc(void) {
                         data_0209d6bc = 8;
                     }
                 }
-            } else {
-                u8 m = data_0209d694;
-                if (m == 1) {
-                    data_0209d6bc = 4;
-                    data_0209d68c = 0;
-                } else if (m == 2) {
-                    data_0209d6bc = 6;
-                    data_0209d68c = 0;
-                } else if (m == 3) {
-                    data_0209d6bc = 5;
-                    data_0209d68c = 0;
-                } else {
-                    data_0209d6bc = 8;
+            }
+            return;
+
+        case 0xfe: {
+            u8 idx = cur[2];
+            data_0209d700 = idx;
+            (MSG_GEN_TEXT_FUNCS + idx)[-1]();
+            data_0209d6f4 = data_0209d6f4 + data_0209d6f4[1];
+            continue;
+        }
+
+        case 0xfd:
+            if (data_0209d69c != 0) {
+                u8 *p = data_0209d6f0;
+                u8 v = data_0209d6b4;
+                if (v != p[6]) {
+                    data_0209d6b4 = v + 1;
+                    data_0209d6bc = 3;
+                    data_0209d6a0 = 0;
+                    if (data_0209d6b4 != p[6]) {
+                        data_0209d6f4 = cur + 1;
+                    }
+                    return;
                 }
+                data_0209d6bc = 7;
+                return;
+            } else {
+                u8 *p = data_0209d6f0;
+                u8 v = data_0209d6b4;
+                if (v != p[6]) {
+                    data_0209d6b4 = v + 1;
+                    if (data_0209d6b4 != p[6]) {
+                        data_0209d6f4 = cur + 1;
+                    }
+                    data_0209d6bc = 2;
+                    return;
+                }
+                data_0209d6bc = 7;
+                return;
             }
+
+        default:
+            _ZN7Message7AddCharEc(c);
+            added = 1;
+            data_0209d6f4 = data_0209d6f4 + 1;
         }
-        return;
-
-    Lfe: {
-        u8 idx = cur[2];
-        data_0209d700 = idx;
-        (MSG_GEN_TEXT_FUNCS + idx)[-1]();
-        data_0209d6f4 = data_0209d6f4 + data_0209d6f4[1];
-    }
-        continue;
-
-    Lfd:
-        if (data_0209d69c != 0) {
-            u8 *p = data_0209d6f0;
-            u8 v = data_0209d6b4;
-            if (v == p[6])
-                goto Lset7a;
-            data_0209d6b4 = v + 1;
-            data_0209d6bc = 3;
-            data_0209d6a0 = 0;
-            if (data_0209d6b4 != p[6]) {
-                data_0209d6f4 = cur + 1;
-            }
-            return;
-        Lset7a:
-            data_0209d6bc = 7;
-            return;
-        } else {
-            u8 *p = data_0209d6f0;
-            u8 v = data_0209d6b4;
-            if (v == p[6])
-                goto Lset7b;
-            data_0209d6b4 = v + 1;
-            if (data_0209d6b4 != p[6]) {
-                data_0209d6f4 = cur + 1;
-            }
-            data_0209d6bc = 2;
-            return;
-        Lset7b:
-            data_0209d6bc = 7;
-            return;
-        }
-
-    Ldefault:
-        _ZN7Message7AddCharEc(c);
-        added = 1;
-        data_0209d6f4 = data_0209d6f4 + 1;
     }
 }
 }
@@ -768,8 +768,7 @@ int Message::UpdateWindow() {
 void Message::Update() {
     switch (data_0209d6bc) {
     case 1: {
-        int v = (data_0209f2d8 == 2) ? 1 : 0;
-        if (v == 0) {
+        if (!IsKuppaScriptRunning()) {
             data_0209d65c = 0;
         } else {
             func_0201b6f8(0);
@@ -868,7 +867,7 @@ void Message::Update() {
         }
     }
     case 6: {
-        int hasf1;
+        int touchBegan;
         int idx;
         u8 f0;
         if (IsButtonInputValid() != 0) {
@@ -877,14 +876,14 @@ void Message::Update() {
             return;
         }
         idx = gActivePlayerSlot;
-        hasf1 = 0;
+        /* Stylus down with the edge bit set: the touch began this frame.
+           The ROM keeps this 0/1 in a register; an inline predicate folds
+           it away. */
+        touchBegan = 0;
         f0 = gTouchHeld[idx * 4];
-        if (f0 != 0) {
-            if (gTouchEdge[idx * 4] != 0) {
-                hasf1 = 1;
-            }
-        }
-        if (hasf1 != 0) {
+        if (f0 != 0 && gTouchEdge[idx * 4] != 0)
+            touchBegan = 1;
+        if (touchBegan != 0) {
             data_0209d6d8 = ((u8(*)[4])gTouchY)[idx][0];
             data_0209d6d8 -= (s16)(data_0209d68c * 8);
         } else if (f0 != 0) {
@@ -950,17 +949,8 @@ void Message::Update() {
         }
     }
     case 7: {
-        int v;
-        if (data_0209caa0[2] & 0x80) {
-            v = (data_0209f2d8 == 2) ? 1 : 0;
-            if (v != 0 || IsButtonInputValid() == 0) {
-                goto block_101_7;
-            }
-            goto block_102_7;
-        }
-    block_101_7:
-        if (data_0209d66c != 0) {
-        block_102_7:
+        if (((data_0209caa0[2] & 0x80) && !IsKuppaScriptRunning() && IsButtonInputValid() != 0) ||
+            data_0209d66c != 0) {
             data_0209d6f4 += 1;
             data_0209d69c = 1;
             data_0209d6b4 = 0;
@@ -988,34 +978,21 @@ void Message::Update() {
         }
     }
     case 8: {
-        int v;
-        if (data_0209caa0[2] & 0x80) {
-            v = (data_0209f2d8 == 2) ? 1 : 0;
-            if (v != 0 || IsButtonInputValid() == 0) {
-                goto block_101_8;
+        if (((data_0209caa0[2] & 0x80) && !IsKuppaScriptRunning() && IsButtonInputValid() != 0) ||
+            data_0209d66c != 0) {
+            data_0209d670 = 1;
+            data_0209d66c = 0;
+            data_0209d6bc = 9;
+            if (IsKuppaScriptRunning()) {
+                return;
             }
-            goto block_102_8;
+            if (data_0209d6c4 != 0) {
+                func_02012790(0x21);
+                return;
+            }
+            func_02012790(5);
         }
-    block_101_8:
-        if (data_0209d66c == 0) {
-            return;
-        }
-    block_102_8: {
-        int trigger;
-        data_0209d670 = 1;
-        trigger = (data_0209f2d8 == 2);
-        data_0209d66c = 0;
-        data_0209d6bc = 9;
-        if (trigger != 0) {
-            return;
-        }
-        if (data_0209d6c4 != 0) {
-            func_02012790(0x21);
-            return;
-        }
-        func_02012790(5);
         return;
-    }
     }
     }
 }
