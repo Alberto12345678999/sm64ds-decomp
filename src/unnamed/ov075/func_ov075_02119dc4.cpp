@@ -13,6 +13,8 @@
  * See notes/mwccarm-codegen.md 6c and 6bg.
  */
 #include "types.h"
+#include "G2x.h"
+#include "Sound.h"
 
 extern "C" {
 
@@ -20,8 +22,6 @@ extern void func_ov075_02116028(int *p, int v);
 extern void func_02030a78(void);
 extern int GetOwnerLanguage(void);
 extern void func_020338b0(int a, int b, int c, int d);
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, u16 val, short amt);
-extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int n);
 extern void func_02012790(int x);
 extern int func_0203d974(void);
 extern int func_0203d9b4(void);
@@ -92,9 +92,9 @@ extern "C" void func_ov075_02119dc4(char *self, int arg)
             *(int *)(self + 0x64) = t0;
             *(int *)(self + 0x68) = t1;
         }
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4000050, 0x1f, -6);
+        G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
         *(volatile u16 *)0x4001050 = 0;
-        _ZN5Sound22StopLoadedMusic_Layer1Ej(4);
+        Sound::StopLoadedMusic_Layer1(4);
         func_02012790(0x123);
         *(u8 *)(*(char **)(self + 0x50) + 0xf44) = 1;
     } else {
@@ -110,7 +110,7 @@ extern "C" void func_ov075_02119dc4(char *self, int arg)
             data_0209d45c = data_0209d45c & ~*(u8 *)(self + 0x287);
             if (*(u8 *)(self + 0x287))
                 *(struct P2Copy *)(self + 0x64) = *(struct P2Copy *)data_02086b58;
-            _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4000050, 0x1f, -6);
+            G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
             func_02012790(0x12a);
         } else {
             for (i = 0; i < 4; i++) {
