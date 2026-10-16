@@ -493,8 +493,8 @@ void* cMgSmartball_slot_c_Construct(char* c, int a1, int a2, int* src);
    mangle them a second time. */
 extern "C" {
 extern char*_ZN3G2S13GetBG3CharPtrEv(void);
-extern int data_ov004_020bc864;
-extern int data_ov004_020bc888;
+extern int sMgResultsBannerY;
+extern int sMgResultsBannerX;
 extern int data_ov006_0213eccc[];
 extern int func_02054d88(void);
 extern void SetSubBg1Offset(int, int);
@@ -6040,8 +6040,8 @@ s32 dScMgSmartball_c::Behavior()
                 }
                 if (flag != 0) {
                     if (((int)param1 & 0xff) == 0) {
-                        data_ov004_020bc888 = 0x80;
-                        data_ov004_020bc864 = -0x30;
+                        sMgResultsBannerX = 0x80;
+                        sMgResultsBannerY = -0x30;
                     }
                     Mg_SetSharedState(MG_STATE_RESULTS);
                     *(int*)(c + 0x4660) = 2;

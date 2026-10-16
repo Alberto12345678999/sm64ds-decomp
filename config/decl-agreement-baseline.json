@@ -15304,7 +15304,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02137cd8": {
+    "sMgDigitSprites": {
       "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "return:char []"
       ]
@@ -15384,13 +15384,13 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140324": {
+    "sHeyhos": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:Ent *",
         "return:int"
       ]
     },
-    "data_ov006_02140330": {
+    "gMgPHeyhoMiniModelFile": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:SharedFilePtr"
       ],
@@ -15398,7 +15398,7 @@
         "return:char []"
       ]
     },
-    "data_ov006_02140338": {
+    "gMgPHeyhoWaitAnimFile": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:SharedFilePtr"
       ],
@@ -15406,7 +15406,7 @@
         "return:char []"
       ]
     },
-    "data_ov006_021403f4": {
+    "sJumpAdapters": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:VB * []",
         "return:struct Obj * []"
@@ -15427,7 +15427,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140450": {
+    "gMarioModelMgModelFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]
@@ -15453,12 +15453,12 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140544": {
+    "sTrmp3DGravityStep": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
-    "data_ov006_02140548": {
+    "sTrmp3DFallSpeed": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ],
@@ -15471,13 +15471,13 @@
         "return:int"
       ]
     },
-    "data_ov006_02140550": {
+    "sTrmp3DMarios": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char * []",
         "return:unsigned char *"
       ]
     },
-    "data_ov006_02140554": {
+    "sTrmp2Marios": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:Ent *",
         "return:int"
@@ -15524,12 +15524,12 @@
         "return:int"
       ]
     },
-    "data_ov006_02140594": {
+    "sTrmp3DMarioCount": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
-    "data_ov006_0214059c": {
+    "sTrmpAnimBounce": {
       "include/decl_common.h": [
         "return:void *"
       ],
@@ -15543,12 +15543,12 @@
         "return:int"
       ]
     },
-    "data_ov006_021405a8": {
+    "sTrmp2RiseSpeedMax": {
       "include/decl_common.h": [
         "return:int []"
       ]
     },
-    "data_ov006_021405b4": {
+    "sTrmp2FallSpeed": {
       "include/decl_common.h": [
         "return:int []"
       ],
@@ -15649,13 +15649,13 @@
         "return:V3"
       ]
     },
-    "data_ov006_0214082c": {
+    "sTrmpItems": {
       "src/minigames/unit020cd744.cpp": [
         "return:char * []",
         "return:unsigned char *"
       ]
     },
-    "data_ov006_02140838": {
+    "sTrmpItemCount": {
       "src/minigames/unit020cd744.cpp": [
         "return:int []"
       ]
@@ -15665,7 +15665,7 @@
         "return:data_t"
       ]
     },
-    "data_ov006_02140850": {
+    "sTrmpItemModelFile": {
       "src/minigames/unit020cd744.cpp": [
         "return:data_t"
       ]
@@ -15675,13 +15675,13 @@
         "return:data_t"
       ]
     },
-    "data_ov006_0214097c": {
+    "sTrmpJumpers": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []",
         "return:unsigned char * []"
       ]
     },
-    "data_ov006_02140990": {
+    "sTrmpLines": {
       "src/minigames/unit020cd744.cpp": [
         "return:char",
         "return:unsigned char []"
@@ -15690,42 +15690,42 @@
         "return:int []"
       ]
     },
-    "data_ov006_021417b0": {
+    "sCoinCoinStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_021417c8": {
+    "sCoinBagStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_021417e8": {
+    "sCoinCaptionStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_02141810": {
+    "sCoinPhaseStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_02141840": {
+    "sCoinBlockStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_02141a40": {
+    "sMgMainCamera": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char *"
       ]
     },
-    "data_ov006_02141a44": {
+    "sMgCurCamera": {
       "src/minigames/d_mg_jump3d_mario.cpp": [
         "return:void *"
       ]
     },
-    "data_ov006_02141a50": {
+    "sMgSubCamera": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char *"
       ]
@@ -15740,22 +15740,22 @@
         "return:int []"
       ]
     },
-    "data_ov006_021422bc": {
+    "sMemoryResultTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_021422dc": {
+    "sMemoryStateTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142304": {
+    "sMemoryRoundTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142334": {
+    "sMemoryCardTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
@@ -15765,22 +15765,22 @@
         "return:int []"
       ]
     },
-    "data_ov006_021423c0": {
+    "sMemory2ResultTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst4_21423c0"
       ]
     },
-    "data_ov006_021423e0": {
+    "sMemory2StateTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst5_21423e0"
       ]
     },
-    "data_ov006_02142408": {
+    "sMemory2CardTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst7_2142408"
       ]
     },
-    "data_ov006_02142440": {
+    "sMemory2RoundTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst10_2142440"
       ]
@@ -15790,72 +15790,72 @@
         "return:int []"
       ]
     },
-    "data_ov006_02142ab4": {
+    "sRouletteTiles": {
       "src/unnamed/ov006/__sinit_ov006_021322bc.c": [
         "return:S8"
       ]
     },
-    "data_ov006_02142cc0": {
+    "sSoundPop10Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142cd8": {
+    "sSoundPop05Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142cf0": {
+    "sSoundPop06Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d08": {
+    "sSoundPop11Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d20": {
+    "sSoundPop07Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d38": {
+    "sSoundPop00Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d50": {
+    "sSoundPop01Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d68": {
+    "sSoundPop08Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d80": {
+    "sSoundPop02Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d98": {
+    "sSoundPop09Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142db0": {
+    "sSoundPop12Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142dc8": {
+    "sSoundPop03Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142de0": {
+    "sSoundPop04Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
@@ -27305,7 +27305,7 @@
         "arity:0"
       ]
     },
-    "func_ov006_020ca840": {
+    "Trmp2Mario_EnterAll": {
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "arity:1"
       ]
@@ -27371,32 +27371,32 @@
         "param:#2 unsigned short"
       ]
     },
-    "TrmpItem_SetMotion7": {
+    "TrmpItem_SetMotionSpinHover": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion5": {
+    "TrmpItem_SetMotionSpinSway": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion6": {
+    "TrmpItem_SetMotionHover": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion4": {
+    "TrmpItem_SetMotionSway": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion3": {
+    "TrmpItem_SetMotionSpin": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]
     },
-    "TrmpItem_SetMotion2": {
+    "TrmpItem_SetMotionBob": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 char *"
       ]

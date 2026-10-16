@@ -133,8 +133,8 @@ extern Matrix4x3 data_020a0e68;
 extern "C" void Trmp2Spinner_UpdateMatrix(char *c);
 extern void AddVec3(struct Vector3* a, struct Vector3* b, struct Vector3* c);
 extern "C" Trampoline2ModelFilePtr data_ov006_02142f80;
-extern int data_ov006_02142f74;
-extern unsigned char *data_ov006_02142f7c;
+extern int sTrmp2SpinnerCount;
+extern unsigned char *sTrmp2Spinners;
 extern void Trmp2Spinner_Update(char *obj);
 extern void Trmp2Spinner_Init(void *obj, void *kind);
 extern void Trmp2Spinner_SetModel(void* self);
@@ -179,12 +179,12 @@ extern int pmf_dScMgTrampoline2_c_StateDone[];
 extern void TrmpItem_UpdateAll(void);
 extern int Trmp2Mario_Hide(void);
 extern union StateValue pmf_dScMgTrampoline2_c_StateWaitExit;
-extern void func_ov006_020ca840(void *c);
+extern void Trmp2Mario_EnterAll(void *c);
 extern struct P2 pmf_dScMgTrampoline2_c_StateResults;
 extern int data_ov006_02140818;
 extern int data_ov006_0213b0f0;
-extern int data_ov006_02140830;
-extern int data_ov006_021405bc;
+extern int sTrmp2Score;
+extern int sTrmp2MarioCount;
 extern int data_ov006_02140828;
 extern int data_ov006_0213fc10[];
 extern SpawnDef data_ov006_0212f2b0[];
@@ -234,9 +234,9 @@ extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
 extern int Trmp2Spinner_Construct(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of Trmp2Spinner_UpdateMatrix, from the legacy file for Trmp2Spinner_UpdateMatricesAll, NOT applied: extern void Trmp2Spinner_UpdateMatrix(char *obj); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int data_ov006_02142f7c; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *data_ov006_02142f7c; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_LoadAll, NOT applied: extern int data_ov006_02142f7c; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int sTrmp2Spinners; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *sTrmp2Spinners; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_LoadAll, NOT applied: extern int sTrmp2Spinners; */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f80, from the legacy file for Trmp2Spinner_Destruct, NOT applied: extern SharedFilePtr data_ov006_02142f80; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_02122e20, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054efc, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054efc(void); */
@@ -264,7 +264,7 @@ extern int Trmp2Spinner_Construct(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for func_ov006_021245a8, NOT applied: extern s32 GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_021245a8, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_021245a8, NOT applied: extern void MultiStore16(u16 val, char *dst, int nbytes); */
- /* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
 
 void *dScMgTrampoline2_c_classInit(void);
 /* Literal aliases used only to make the five ROM PMF relocations static data.
@@ -472,7 +472,7 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
 
     Trmp2Mario_SetTuning(0x1000);
     Trmp2Mario_ResetAll(mLevel);
-    data_ov006_021405bc = 1;
+    sTrmp2MarioCount = 1;
     TrmpLine_ClearAll(mLevel);
     TrmpItem_HideAll(mLevel);
     Jump2Popup_ClearAll();
@@ -598,7 +598,7 @@ void dScMgTrampoline2_c::StatePlay()
         BeginResults();
         return;
     }
-    if (data_ov006_02140830 >= *(int *)(raw + 0x7b90) && data_ov006_021405bc < 5) {
+    if (sTrmp2Score >= mScoreGate && sTrmp2MarioCount < 5) {
         unsigned int v;
         Trmp2Mario_MoveToStart();
         {
@@ -609,19 +609,19 @@ void dScMgTrampoline2_c::StatePlay()
             mLevel = 0x270e;
         v = mLevel;
         if (v < 4)
-            *(int *)(raw + 0x7b90) = data_ov006_0213fc10[v];
+            mScoreGate = data_ov006_0213fc10[v];
         else
-            *(int *)(raw + 0x7b90) = 0x7fffffff;
+            mScoreGate = 0x7fffffff;
         return;
     }
     if (data_ov006_02140828 != 0)
         return;
     /* Member form DIFFs here (bytes, not relocations): these are mTimer,
        mScoreGate, mPattern, mScriptDone and mWaveStep. */
-    if (ApproachLinear(*(int *)(raw + 0x7b84), 0, 1) == 0)
+    if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
-    if (*(int *)(raw + 0x7b94) == 0) {
-        SpawnDef *d = &data_ov006_0212f2b0[*(int *)(raw + 0x7b88)];
+    if (mScriptDone == 0) {
+        SpawnDef *d = &data_ov006_0212f2b0[mPattern];
         int i;
         Vec3i vecA;
         for (i = 0; i < d->count; i++) {
@@ -631,12 +631,12 @@ void dScMgTrampoline2_c::StatePlay()
             func_0203cc28((int *)&vecA, d->a[i]);
             TrmpItem_Spawn(d->base + i * 0xc, (int *)&vecA, d->b[i], d->c[i]);
         }
-        if (ApproachLinear(*(int *)(raw + 0x7b88), 6, 1)) {
-            *(int *)(raw + 0x7b94) = 1;
-            *(int *)(raw + 0x7b98) = 0;
+        if (ApproachLinear(mPattern, 6, 1)) {
+            mScriptDone = 1;
+            mWaveStep = 0;
         }
     } else {
-        if (ApproachLinear(*(int *)(raw + 0x7b98), 4, 1)) {
+        if (ApproachLinear(mWaveStep, 4, 1)) {
             unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff;
             SpawnDef *d = &data_ov006_0212f2b0[(int)((rnd >> 19) * 6) >> 12];
             int i;
@@ -648,17 +648,17 @@ void dScMgTrampoline2_c::StatePlay()
                 func_0203cc28((int *)&vecB, d->a[i]);
                 TrmpItem_Spawn(d->base + i * 0xc, (int *)&vecB, d->b[i], d->c[i]);
             }
-            *(int *)(raw + 0x7b98) = 0;
+            mWaveStep = 0;
         } else {
             SpawnWave();
         }
     }
-    *(int *)(raw + 0x7b84) = 0x78;
+    mTimer = 0x78;
 }
 
 // @symbol _ZN18dScMgTrampoline2_c12BeginResultsEv
 void dScMgTrampoline2_c::BeginResults() {
-    func_ov006_020ca840((char *)this);
+    Trmp2Mario_EnterAll((char *)this);
     mTimer = 0x5a;
     *(struct P2*)mState = pmf_dScMgTrampoline2_c_StateResults;
 }
@@ -942,7 +942,7 @@ void dScMgTrampoline2_c::SpawnWave()
    mRamp is written into the particle's byte at +0x58. */
 s32 dScMgTrampoline2_c::Behavior()
 {
-    int saved = data_ov006_02140830;
+    int saved = sTrmp2Score;
 
     TrmpFx_UpdateAll();
     Jump2Popup_UpdateAll();
@@ -960,8 +960,8 @@ s32 dScMgTrampoline2_c::Behavior()
         (this->**pp)();
     }
     UpdateTouchInput();
-    if (saved != data_ov006_02140830) {
-        Mg_SubmitScore(data_ov006_02140830);
+    if (saved != sTrmp2Score) {
+        Mg_SubmitScore(sTrmp2Score);
     }
     return 1;
 }
@@ -1007,7 +1007,7 @@ s32 dScMgTrampoline2_c::Render()
         }
     }
 
-    Mg_DrawTopRightCounter(data_ov006_02140830, 6);
+    Mg_DrawTopRightCounter(sTrmp2Score, 6);
 
     if (mRoundOver == 0) {
         Trmp2Mario_DrawAll();
@@ -1249,10 +1249,10 @@ extern "C" Model* Trmp2Spinner_Destruct(Model* m){
 extern "C" {
 void Trmp2Spinner_LoadAll(int x, int count) {
     int i;
-    data_ov006_02142f7c = (unsigned char *)x;
-    data_ov006_02142f74 = count;
-    for (i = 0; i < data_ov006_02142f74; i++) {
-        Trmp2Spinner_SetModel((void*)(data_ov006_02142f7c + i * 0x78));
+    sTrmp2Spinners = (unsigned char *)x;
+    sTrmp2SpinnerCount = count;
+    for (i = 0; i < sTrmp2SpinnerCount; i++) {
+        Trmp2Spinner_SetModel((void *)(sTrmp2Spinners + i * 0x78));
     }
 }
 }
@@ -1262,14 +1262,14 @@ extern "C" {
 void Trmp2Spinner_InitAll(unsigned char *c)
 {
   int i = 0;
-  int n = data_ov006_02142f74;
+  int n = sTrmp2SpinnerCount;
   unsigned char *base;
   unsigned char *p;
   if (n <= 0)
   {
     return;
   }
-  base = data_ov006_02142f7c;
+  base = sTrmp2Spinners;
   p = base;
   do
   {
@@ -1280,8 +1280,7 @@ void Trmp2Spinner_InitAll(unsigned char *c)
     }
     i++;
     p += 0x78;
-  }
-  while (i < data_ov006_02142f74);
+  } while (i < sTrmp2SpinnerCount);
 }
 }
 
@@ -1289,13 +1288,13 @@ void Trmp2Spinner_InitAll(unsigned char *c)
 extern "C" {
 void Trmp2Spinner_HideAll(void){
   int i = 0;
-  if(data_ov006_02142f74 > 0){
-    int off = 0;
-    do {
-      *(short*)(data_ov006_02142f7c + off + 0x76) = 0;
-      i++;
-      off += 0x78;
-    } while(i < data_ov006_02142f74);
+  if (sTrmp2SpinnerCount > 0) {
+      int off = 0;
+      do {
+          *(short *)(sTrmp2Spinners + off + 0x76) = 0;
+          i++;
+          off += 0x78;
+      } while (i < sTrmp2SpinnerCount);
   }
 }
 }
@@ -1305,8 +1304,8 @@ extern "C" {
 void Trmp2Spinner_UpdateAll(void)
 {
     int i;
-    for (i = 0; i < data_ov006_02142f74; i++) {
-        char *obj = (char *)data_ov006_02142f7c + i * 0x78;
+    for (i = 0; i < sTrmp2SpinnerCount; i++) {
+        char *obj = (char *)sTrmp2Spinners + i * 0x78;
         if (*(short *)(obj + 0x76) != 0) {
             Trmp2Spinner_Update(obj);
         }
@@ -1319,8 +1318,8 @@ extern "C" {
 void Trmp2Spinner_UpdateMatricesAll(void)
 {
     int i;
-    for (i = 0; i < data_ov006_02142f74; i++) {
-        char *obj = (char *)data_ov006_02142f7c + i * 0x78;
+    for (i = 0; i < sTrmp2SpinnerCount; i++) {
+        char *obj = (char *)sTrmp2Spinners + i * 0x78;
         if (*(short *)(obj + 0x76) != 0) {
             Trmp2Spinner_UpdateMatrix(obj);
         }

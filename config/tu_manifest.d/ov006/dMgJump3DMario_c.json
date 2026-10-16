@@ -347,7 +347,7 @@
       "evidence": "animation file handle, file ID 32932, constructed by SharedFilePtr::Construct"
     },
     {
-      "symbol": "data_ov006_02140450",
+      "symbol": "gMarioModelMgModelFile",
       "address": "0x02140450",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -1193,7 +1193,7 @@
       "source": "0x0212f650",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02140450",
+      "symbol": "gMarioModelMgModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02140450"

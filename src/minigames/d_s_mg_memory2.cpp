@@ -36,7 +36,7 @@ enum dScMgMemory2_c_AssetId {
 
 typedef void (dScMgMemory2_c::*dScMgMemory2_cState)();
 typedef void (dScMgMemory2_c::*dScMgMemory2_cCardState)(int);
-extern "C" dScMgMemory2_cCardState data_ov006_02142408[];
+extern "C" dScMgMemory2_cCardState sMemory2CardTable[];
 
 typedef struct Car {
     /* 0x00 */ s32 x;
@@ -82,9 +82,9 @@ typedef struct {
     u8 mode;          /* 0x540a */
 } Work;
 
-extern "C" dScMgMemory2_cState data_ov006_021423c0[];
-extern "C" dScMgMemory2_cState data_ov006_021423e0[];
-extern "C" dScMgMemory2_cState data_ov006_02142440[];
+extern "C" dScMgMemory2_cState sMemory2ResultTable[];
+extern "C" dScMgMemory2_cState sMemory2StateTable[];
+extern "C" dScMgMemory2_cState sMemory2RoundTable[];
 
 namespace GX { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
 
@@ -371,7 +371,7 @@ void dScMgMemory2_c::UpdateCards()
     int i;
     for (i = 0; i < 0x14; i++) {
         if (mCards[i].active)
-            (this->*data_ov006_02142408[mCards[i].state])(i);
+            (this->*sMemory2CardTable[mCards[i].state])(i);
     }
 }
 
@@ -1146,7 +1146,7 @@ void dScMgMemory2_c::StateExit()
 }
 
 void dScMgMemory2_c::StateResult(){
-  (this->*data_ov006_021423c0[mSubstate])();
+    (this->*sMemory2ResultTable[mSubstate])();
 }
 
 void dScMgMemory2_c::StateJudge() {
@@ -1157,7 +1157,7 @@ void dScMgMemory2_c::StateJudge() {
 
 void dScMgMemory2_c::StatePlay() {
     int j = mSubstate;
-    (this->*data_ov006_02142440[j])();
+    (this->*sMemory2RoundTable[j])();
     UpdateCards();
 }
 
@@ -1240,7 +1240,7 @@ s32 dScMgMemory2_c::Render()
  * with StateSetup, StatePlay, StateJudge, StateResult and StateExit. */
 s32 dScMgMemory2_c::Behavior()
 {
-    (this->*data_ov006_021423e0[mState])();
+    (this->*sMemory2StateTable[mState])();
     MgCoins_Update();
     Dealer_Update((char *)&mShared);
     return 1;
@@ -1293,7 +1293,7 @@ extern "C" void *dScMgMemory2_c_classInit()
  * from the ROM constants, in retail copy order: the permuted sprite
  * pointers, the five main states, the ten round states, the four result
  * states, the seven card states, then the three player states. */
-extern "C" int data_ov006_02133810[];
+extern "C" int sMgCardSprites[];
 extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateSetup;
 extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StatePlay;
 extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateJudge;
@@ -1325,65 +1325,38 @@ extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerMove;
 extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerWait;
 
 void *data_ov006_02142490[23] = {
-    (void *)data_ov006_02133810[0],
-    (void *)data_ov006_02133810[1],
-    (void *)data_ov006_02133810[2],
-    (void *)data_ov006_02133810[11],
-    (void *)data_ov006_02133810[12],
-    (void *)data_ov006_02133810[13],
-    (void *)data_ov006_02133810[14],
-    (void *)data_ov006_02133810[3],
-    (void *)data_ov006_02133810[4],
-    (void *)data_ov006_02133810[5],
-    (void *)data_ov006_02133810[6],
-    (void *)data_ov006_02133810[9],
-    (void *)data_ov006_02133810[10],
-    (void *)data_ov006_02133810[7],
-    (void *)data_ov006_02133810[8],
-    (void *)data_ov006_02133810[15],
-    (void *)data_ov006_02133810[16],
-    (void *)data_ov006_02133810[17],
-    (void *)data_ov006_02133810[18],
-    (void *)data_ov006_02133810[19],
-    (void *)data_ov006_02133810[20],
-    (void *)data_ov006_02133810[21],
-    (void *)data_ov006_02133810[22],
+    (void *)sMgCardSprites[0],  (void *)sMgCardSprites[1],  (void *)sMgCardSprites[2],
+    (void *)sMgCardSprites[11], (void *)sMgCardSprites[12], (void *)sMgCardSprites[13],
+    (void *)sMgCardSprites[14], (void *)sMgCardSprites[3],  (void *)sMgCardSprites[4],
+    (void *)sMgCardSprites[5],  (void *)sMgCardSprites[6],  (void *)sMgCardSprites[9],
+    (void *)sMgCardSprites[10], (void *)sMgCardSprites[7],  (void *)sMgCardSprites[8],
+    (void *)sMgCardSprites[15], (void *)sMgCardSprites[16], (void *)sMgCardSprites[17],
+    (void *)sMgCardSprites[18], (void *)sMgCardSprites[19], (void *)sMgCardSprites[20],
+    (void *)sMgCardSprites[21], (void *)sMgCardSprites[22],
 };
-dScMgMemory2_cState data_ov006_021423e0[5] = {
-    pmf_dScMgMemory2_c_StateSetup,
-    pmf_dScMgMemory2_c_StatePlay,
-    pmf_dScMgMemory2_c_StateJudge,
-    pmf_dScMgMemory2_c_StateResult,
-    pmf_dScMgMemory2_c_StateExit,
+dScMgMemory2_cState sMemory2StateTable[5] = {
+    pmf_dScMgMemory2_c_StateSetup,  pmf_dScMgMemory2_c_StatePlay, pmf_dScMgMemory2_c_StateJudge,
+    pmf_dScMgMemory2_c_StateResult, pmf_dScMgMemory2_c_StateExit,
 };
-dScMgMemory2_cState data_ov006_02142440[10] = {
-    pmf_dScMgMemory2_c_RoundStart,
-    pmf_dScMgMemory2_c_RoundDealEasy,
-    pmf_dScMgMemory2_c_RoundDealNormal,
-    pmf_dScMgMemory2_c_RoundDealHard,
-    pmf_dScMgMemory2_c_RoundDealFourth,
-    pmf_dScMgMemory2_c_RoundShowCards,
-    pmf_dScMgMemory2_c_RoundHideCards,
-    pmf_dScMgMemory2_c_RoundReadyCards,
-    pmf_dScMgMemory2_c_RoundWaitDeal,
-    pmf_dScMgMemory2_c_RoundReveal,
+dScMgMemory2_cState sMemory2RoundTable[10] = {
+    pmf_dScMgMemory2_c_RoundStart,      pmf_dScMgMemory2_c_RoundDealEasy,
+    pmf_dScMgMemory2_c_RoundDealNormal, pmf_dScMgMemory2_c_RoundDealHard,
+    pmf_dScMgMemory2_c_RoundDealFourth, pmf_dScMgMemory2_c_RoundShowCards,
+    pmf_dScMgMemory2_c_RoundHideCards,  pmf_dScMgMemory2_c_RoundReadyCards,
+    pmf_dScMgMemory2_c_RoundWaitDeal,   pmf_dScMgMemory2_c_RoundReveal,
 };
-dScMgMemory2_cState data_ov006_021423c0[4] = {
+dScMgMemory2_cState sMemory2ResultTable[4] = {
     pmf_dScMgMemory2_c_ResultWait,
     pmf_dScMgMemory2_c_ResultReward,
     pmf_dScMgMemory2_c_ResultTurnCards,
     pmf_dScMgMemory2_c_ResultFinish,
 };
-dScMgMemory2_cCardState data_ov006_02142408[7] = {
-    pmf_dScMgMemory2_c_CardMove,
-    pmf_dScMgMemory2_c_CardIdle,
-    pmf_dScMgMemory2_c_CardSelect,
-    pmf_dScMgMemory2_c_CardFlipUp,
-    pmf_dScMgMemory2_c_CardWait,
-    pmf_dScMgMemory2_c_CardFlipDown,
+dScMgMemory2_cCardState sMemory2CardTable[7] = {
+    pmf_dScMgMemory2_c_CardMove,    pmf_dScMgMemory2_c_CardIdle, pmf_dScMgMemory2_c_CardSelect,
+    pmf_dScMgMemory2_c_CardFlipUp,  pmf_dScMgMemory2_c_CardWait, pmf_dScMgMemory2_c_CardFlipDown,
     pmf_dScMgMemory2_c_CardFlyAway,
 };
-dScMgMemory2_cCardState data_ov006_021423a8[3] = {
+dScMgMemory2_cCardState sMemory2PlayerTable[3] = {
     pmf_dScMgMemory2_c_PlayerDrop,
     pmf_dScMgMemory2_c_PlayerMove,
     pmf_dScMgMemory2_c_PlayerWait,

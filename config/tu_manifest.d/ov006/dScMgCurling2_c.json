@@ -413,49 +413,49 @@
  "data": [],
  "bss": [
   {
-   "symbol": "data_ov006_02141978",
+   "symbol": "sCurling2DragTable",
    "address": "0x02141978",
    "size": "0x10",
    "binding": "STB_GLOBAL",
    "evidence": "two no-arg scene states (upper half dispatches through this), plain-copied from the ROM PMF constants"
   },
   {
-   "symbol": "data_ov006_02141988",
+   "symbol": "sCurling2StepModeTable",
    "address": "0x02141988",
    "size": "0x18",
    "binding": "STB_GLOBAL",
    "evidence": "three kind states, plain-copied from the ROM PMF constants"
   },
   {
-   "symbol": "data_ov006_021419a0",
+   "symbol": "sCurling2StepYTable",
    "address": "0x021419a0",
    "size": "0x18",
    "binding": "STB_GLOBAL",
    "evidence": "three state2 states, plain-copied from the ROM PMF constants"
   },
   {
-   "symbol": "data_ov006_021419b8",
+   "symbol": "sCurling2StepXFastTable",
    "address": "0x021419b8",
    "size": "0x20",
    "binding": "STB_GLOBAL",
    "evidence": "four Entry states, plain-copied from the ROM PMF constants"
   },
   {
-   "symbol": "data_ov006_021419d8",
+   "symbol": "sCurling2StoneTable",
    "address": "0x021419d8",
    "size": "0x20",
    "binding": "STB_GLOBAL",
    "evidence": "four per-state handlers (upper half dispatches through this), plain-copied from the ROM PMF constants"
   },
   {
-   "symbol": "data_ov006_021419f8",
+   "symbol": "sCurling2StepXTable",
    "address": "0x021419f8",
    "size": "0x20",
    "binding": "STB_GLOBAL",
    "evidence": "four reveal states, plain-copied from the ROM PMF constants"
   },
   {
-   "symbol": "data_ov006_02141a18",
+   "symbol": "sCurling2BehaviorTable",
    "address": "0x02141a18",
    "size": "0x28",
    "binding": "STB_GLOBAL",
@@ -883,7 +883,7 @@
    "source": "0x0213098c",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_02141a18",
+   "symbol": "sCurling2BehaviorTable",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x02141a18"
@@ -943,7 +943,7 @@
    "source": "0x021309a4",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_021419d8",
+   "symbol": "sCurling2StoneTable",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x021419d8"
@@ -983,7 +983,7 @@
    "source": "0x021309b4",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_02141978",
+   "symbol": "sCurling2DragTable",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x02141978"
@@ -1013,7 +1013,7 @@
    "source": "0x021309c0",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_02141988",
+   "symbol": "sCurling2StepModeTable",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x02141988"
@@ -1073,7 +1073,7 @@
    "source": "0x021309d8",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_021419b8",
+   "symbol": "sCurling2StepXFastTable",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x021419b8"
@@ -1123,7 +1123,7 @@
    "source": "0x021309ec",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_021419f8",
+   "symbol": "sCurling2StepXTable",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x021419f8"
@@ -1173,7 +1173,7 @@
    "source": "0x02130a00",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_021419a0",
+   "symbol": "sCurling2StepYTable",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x021419a0"

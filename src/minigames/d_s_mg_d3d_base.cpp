@@ -29,7 +29,7 @@ extern "C" {
 
 /* ov006's own data. */
 extern void *data_ov006_02141a48;
-extern void *data_ov006_02141a50;
+extern void *sMgSubCamera;
 extern Oam   data_ov006_02141a54[];
 extern unsigned char data_ov006_0212e574[];
 
@@ -261,9 +261,9 @@ void dScMgD3DBase_c::InitEngines()
     GX::SetGraphicsMode(1, 0, 1);
     GXS::SetGraphicsMode(5);
     *(vu32 *)0x4000000u &= 0xffcfffefu;
-    data_ov006_02141a44 = (int)(raw + 0x466c);
-    data_ov006_02141a40 = raw + 0x466c;
-    data_ov006_02141a50 = raw + 0x4728;
+    sMgCurCamera = (int)(raw + 0x466c);
+    sMgMainCamera = raw + 0x466c;
+    sMgSubCamera = raw + 0x4728;
     sMgGraphCallback[1] = (int)raw;
     data_0209d4a8 = (void *)sMgGraphCallback;
 }
@@ -357,7 +357,7 @@ int dScMgD3DBase_c::OnGraphCallback2()
         else
             mDrawSubScreen = 0;
         int cameraAddress = (int)(raw + 0x466c + mDrawSubScreen * 0xbc);
-        data_ov006_02141a44 = cameraAddress;
+        sMgCurCamera = cameraAddress;
         Camera_UpdateMatrices((dCamera_c *)cameraAddress);
         if (mDrawSubScreen == 1) {
             D3D_CaptureToSub();

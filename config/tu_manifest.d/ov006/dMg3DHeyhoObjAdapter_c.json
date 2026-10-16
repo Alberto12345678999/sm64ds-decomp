@@ -389,13 +389,13 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_02140330",
+      "symbol": "gMgPHeyhoMiniModelFile",
       "address": "0x02140330",
       "size": "0x8",
       "evidence": "model resource handle constructed with file ID 0x217"
     },
     {
-      "symbol": "data_ov006_02140338",
+      "symbol": "gMgPHeyhoWaitAnimFile",
       "address": "0x02140338",
       "size": "0x8",
       "evidence": "animation resource handle constructed with file ID 0x218"
@@ -782,7 +782,7 @@
       "source": "0x0212f510",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02140330",
+      "symbol": "gMgPHeyhoMiniModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02140330"
@@ -812,7 +812,7 @@
       "source": "0x0212f520",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02140338",
+      "symbol": "gMgPHeyhoWaitAnimFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02140338"
