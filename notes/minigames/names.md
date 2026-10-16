@@ -533,7 +533,7 @@ compare (all 45 TUs identical).
 - **`SmallBoo mBoos[16]`** (0x4660):
   - **high:** `mX`/`mY`, `mHeading` (indexes the sine table; its sign picks `mAnim`), `mFrame`/`mAnimTimer`, `mFade` (nonzero draws semi-transparent), `mVisible`, `mPriority` (passed as the OAM priority), `mState`.
   - **medium:** `mSpeed` (0xc00 adjusted by `mKind`), `mInPlay`, `mKind`, `mFound` (set by the touch test), `mFoundOrder`.
-  - **unknown:** `unk_12`, `unk_19`, `unk_21`.
+  - **unknown:** `unk_12`, `unk_19`. (`unk_21` is now `mPlaySettleSound`; see the pass 3 fields below.)
 - **`mExclaims`, `mFoundMarks`, `mRisingIcons`** (16 each): **medium**. The record names come from their Spawn/Update/Draw functions. What each sprite looks like on screen is not observed.
 - **`mReveal[1]`, `mMarker`** (0x4ba0, 0x4bc0):
   - **medium:** the field mechanics, including the bounce `phase` and `angle` (the `OAM::Render` rotation).
@@ -549,3 +549,34 @@ compare (all 45 TUs identical).
   - **low:** the one-element arrays, inferred the same way as Teresa's `mReveal`.
   - **seen:** the flyer is Lakitu and the targets are the four flowers (runtime-checks.md, 2026-10-15). "background" is still medium.
 - **0x5418..0x5958:** no reconstructed function touches it.
+
+## Pass 3 fields (2026-10-15)
+
+The `unk_` members that some code reads, named from that code. Each batch kept
+all 45 minigame objects byte-identical (`mgsnap`). Confidence is high unless the
+row says otherwise; "seen" marks a name checked in play.
+
+| Class | Names |
+|---|---|
+| `dScMgSlot1_c` | `mReelScroll[3]`, `mSpinSound`, `mStep`, `mPayout`, `mReelStrip`, `mReelStop[3]`, `mReelSpinning[3]`, `mReelsStopped`, `mSpeedLevel`, `mMatchSymbol`, `mLineMatched`, `mWilds`, `mTimer`; medium: `mStartCredits` |
+| `dScMgSlot3_c` | `mStripSpan`, `mDifficulty` (0..5, sets strip length and reel directions), `mPayoutLeft`, `mRowStopped[3]`, `mRowsStopped`, `mTimer`, `mReelReverse0..2`; seen: `mTargetFace`, the face Toad shows |
+| `dScMgCard_c` | `mPlayerHandFace`/`2` and `mDealerHandFace`/`2` (EvaluateHand's faces, which RenderHud highlights); medium: `mDealCount` |
+| `dScMgMCarlo_c`, `dScMgMCarlo2_c` | `mRoundState`, `mTimer`, `mDealCount` |
+| `dScMgCurling2_c` | the drag (`mDragX/Y`, `mDragOffsetX/Y`, `mGrabX`, `mTurnY`, `mLastDragDy`, `mDragState`, `mDragPhase`), the throw (`mThrowPower`, `mThrowAngle`), `mTopRecord`, `mShowCursor`, `mShowCounter` |
+| `dScMgBomroom_c` | bombs: `fuse`, `exploded`, `overPen`, `dragSound`, `marchDelay`, `lineSlot`, `visible`; scene: the round-end tally (`mTallyDelay`, `mTallyTick`, `mTallyCount`, `mShowTally`), `mFusesFrozen`, `mDispatchDelay` |
+| `dScMgPachinko_c` | `mPhase`, `mEndTimer`, `mNextBallDelay`, the enemy waves (`mWaveTimer`, `mWaveSpawns`, `mWaveLevel`), `mHitPause` |
+| `dScMgPachinko2_c` | balls: `spin`, `active`, `visible`, `sprite`, `animStep`, `facingRight`; paddles: `step`; scene: `mPhase`, `mNextBallDelay`, `mEndTimer`; medium: `mBallDealt` |
+| `dScMgJump2_c` | `mAnimPhase`, `mAnimRate`, `mParticleId`, `mStateTimer` |
+| `dScMgTeresa_c` | `mSceneState`; Boos: `mPlaySettleSound` (one Boo per settling group plays 0x1f1) |
+| `dScMgAmida_c` | `mLineColor` (the colour argument of every `Mg_DrawLine`) |
+| `dScMgSnowball_c` | `mBallBmd`, `mHitSoundX` |
+| `dScMgD3DBase_c` | `mDrawSubScreen` (flips every frame; picks which screen the 3D is captured to), `mSavedSubObjBank` |
+| `dMgState_c` | `mSuspended` (state 6 sets it, `Mg_ResumeSharedState` clears it) |
+
+**Corrections.**
+- Bomroom's bomb `+0x28` was commented "set to the spawn step base". Its only uses are a sound handle while the bomb is dragged and a reset, so it is `dragSound`.
+- Slot3's `mLineActive` ("which pay line is bet") is set when that row stops, and the row's step is skipped after that. It is now `mRowStopped`.
+
+**Found while reading, not renamed.** `dScMgPachinko2_c::UpdateRoundEnd` puts the next ball in the pen once `mNextBallDelay` runs out. It is not a round-end step. Renaming a member needs a lineage row, so it is left for a function pass.
+
+**Left as `unk_`.** The rest have no read in the reconstructed code (reset-only or written only), or only reads by offset whose meaning is not settled: Flower's `unk_5fcd`, Snowball's `unk_ab7a`, the card dealer's `unk_01a`, and `dMg3DEspModel_c`'s first three words. Most of Memory's, Memory2's and Roulette's are reset-only.
