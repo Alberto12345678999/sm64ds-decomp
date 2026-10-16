@@ -71,8 +71,8 @@ int daSetSE_c::InitResources()
 
     /* Volatile keeps CW from materializing an extra base pointer for this
        inherited-field RMW; the ROM loads and stores [this + 0x08] directly. */
-    u32 soundID = *(volatile u32 *)((char *)this + 0x8);
-    *(volatile u32 *)((char *)this + 0x8) = soundID & 0xf;
+    u32 soundID = *(volatile u32 *)&param1;
+    *(volatile u32 *)&param1 = soundID & 0xf;
 
     /* The (int) casts are load-bearing, not noise: each forces its boolean
        to materialize into a word before the re-test, and spelling the

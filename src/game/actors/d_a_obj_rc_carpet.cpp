@@ -21,10 +21,6 @@
  *   (beforeClsnCallback). This TU calls it; naming belongs with
  *   dBgW in arm9.
  * Leftover: func_ov036_021122c0 / 0211224c keep ROM labels.
- * Leftover: 021122c0 / 0211224c translation stores stay
- *   `(char *)self + 0x490/0x494/0x498` (mModelAnim.mat4x3.t) and
- *   `+ 0x310/0x314/0x318` (mClsnMat.t). Nested-member stores make
- *   b56 materialise a second 0x46c base and grow the function.
  * Leftover: SharedFilePtr +4 BCA load (layout unrecovered).
  * Leftover: data_ov002_0210d9f0 and data_ov036_02112b28 CLPS stay
  *   outside this TU. The three ov036 handles are file-scope objects
@@ -229,23 +225,18 @@ extern "C" void func_ov036_021122c0(daObjRcCarpet_c *self)
     Matrix4x3_FromRotationXYZExt(
         &self->mModelAnim.mat4x3,
         self->mAngleX, self->mAngleY, self->mAngleZ);
-    /* Direct nested-member stores make b56 materialise a second 0x46c base
-       and grow this function. The retail form keeps `this` as the base for
-       the three translation stores, so preserve that measured expression. */
-    *(s32 *)((char *)self + 0x490) = self->mPosX >> 3;
-    *(s32 *)((char *)self + 0x494) =
-        (self->mPosY + self->unk_4bc) >> 3;
-    *(s32 *)((char *)self + 0x498) = self->mPosZ >> 3;
+    self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
+    self->mModelAnim.mat4x3.m[10] = (self->mPosY + self->unk_4bc) >> 3;
+    self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
 }
 
 // @symbol func_ov036_0211224c
 extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self)
 {
     self->mClsnMat = self->mModelAnim.mat4x3;
-    /* As above, retail keeps `this` live as the base for these stores. */
-    *(s32 *)((char *)self + 0x310) = self->mPosX;
-    *(s32 *)((char *)self + 0x314) = self->mPosY + self->unk_4bc;
-    *(s32 *)((char *)self + 0x318) = self->mPosZ;
+    self->mClsnMat.m[9] = self->mPosX;
+    self->mClsnMat.m[10] = self->mPosY + self->unk_4bc;
+    self->mClsnMat.m[11] = self->mPosZ;
     self->mMeshCollider.Transform(self->mClsnMat, self->mAngleY);
 }
 /* ROM ordinals 0/1 are emitted by the inline virtual destructor:*/
