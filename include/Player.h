@@ -321,7 +321,11 @@ struct Player : dActor_c {
     u16 mCrouchTimer;            /* 0x6b0 */
     u16 unk_6b2;            /* 0x6b2 */
     u16 mHoldHeavyTimer;            /* 0x6b4 */
-    u16 unk_6b6;            /* 0x6b6 */
+    /* Climb re-grab cooldown: St_Climb_Cleanup sets it to 8 when the player
+       leaves the climb for a non-climb state, Behavior counts it down, and
+       func_ov002_020caf98 (the climb-start collider callback) refuses while
+       it is nonzero. */
+    u16 mClimbCooldown;        /* 0x6b6 */
     u16 mWalkTimer;            /* 0x6b8 */
     /* Luigi's run-over-liquid windows, both counted down in Behavior.
        func_ov002_020c2b08 arms the first (0x3c or 0x1e) on a water floor;
@@ -398,7 +402,10 @@ struct Player : dActor_c {
     u8  pad_705[0x1];
     u8  mIsUnderwater;            /* 0x706 */
     u8  mIsInShallowWater;            /* 0x707 */
-    s8  mIsTakingDamage;            /* 0x708 */
+    /* u8, not s8: every read of this slot is an ldrb (func_ov002_020d0580,
+       func_ov002_020d06c0, daKuriKing, and the raw +0x708 tests). Declared
+       signed, those two functions load it with ldrsb and miss. */
+    u8 mIsTakingDamage;          /* 0x708 */
     u8  mIsNoControl;            /* 0x709 */
     u8  mNoCtrlKind;            /* 0x70a */
     u8  mIsOpeningBigDoor;            /* 0x70b */
@@ -460,20 +467,30 @@ struct Player : dActor_c {
        0 off, 1 add, 2 set, 3 set swizzled (and mSpineRot to bone 8),
        4 ease back to the animated pose. func_ov002_020e6780 zeroes it. */
     u8 mHeadRotMode;        /* 0x742 */
-    u8  unk_743;            /* 0x743 */
-    /* 0x744..0x74c is a Vector3, not three bytes: five files cast it as one
-       -- ShowMessage2, TryEnterStarDoor, func_ov002_020c47f4 and
-       func_ov002_020c8a4c all spell (Vector3*)(this + 0x744), and
-       JumpIntoBooCage writes all three as int. Declared u8, any natural
-       access is an ldrb. Widths only; the names stay unk_ because what the
-       vector MEANS is not settled -- 0x750 is the anchor and 0x744 the point
-       Vec3_RotateYAndTranslate derives from it. */
-    s32 unk_744;            /* 0x744 */
-    s32 unk_748;            /* 0x748 */
-    s32 unk_74c;            /* 0x74c */
-    s32 unk_750;            /* 0x750 */
-    s32 unk_754;            /* 0x754 */
-    s32 unk_758;            /* 0x758 */
+    /* Root motion for body bone 1, run by func_ov002_020e640c: 0 off; an odd
+       value (1 horizontal, 3 with Y) latches the bone's translation into
+       mStateTarget and mStateAnchor and steps to the even value, which then
+       moves mPos by the bone's per-frame delta rotated by mAngleY and zeroes
+       the bone. Armed by scripted animations (event case 14 in
+       func_ov002_020bd06c, func_ov002_020c3bdc, func_ov002_020c9ac0,
+       func_ov002_020c9c4c) and cleared when they end. */
+    u8 mRootMotionMode; /* 0x743 */
+    /* A point the current state works with, written per state rather than
+       owned by one: the talk/look target (ShowMessage2, func_ov002_020c51d0,
+       func_ov002_020c47f4, St_Talk_Main's camera focus, daC_Jugem's position),
+       the walk-to point (func_ov002_020c8a4c, TryEnterStarDoor), and the
+       cage JumpIntoBooCage records. mRootMotionMode reuses it as last frame's
+       bone translation and func_ov002_020e3f90 as an eased carry offset.
+       Kept as three s32: a Vector3 overlay would draw @NNN numbers. */
+    s32 mStateTargetX; /* 0x744 */
+    s32 mStateTargetY; /* 0x748 */
+    s32 mStateTargetZ; /* 0x74c */
+    /* The fixed point mStateTarget is derived from: the door position
+       TryEnterStarDoor records (the approach point is rotated off it), or
+       the bone translation mRootMotionMode latches on its first frame. */
+    s32 mStateAnchorX; /* 0x750 */
+    s32 mStateAnchorY; /* 0x754 */
+    s32 mStateAnchorZ; /* 0x758 */
     /* Extra rotation for body bone 8 ("spin", the spine): func_ov002_020e640c
        adds [1]/[2] every frame and sets all three in mHeadRotMode 3. */
     s16 mSpineRot[3]; /* 0x75c */
