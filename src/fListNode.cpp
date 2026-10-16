@@ -41,7 +41,10 @@ fLiNdBa_c::~fLiNdBa_c() {
         data_020a4b68 = 0;
 }
 
-namespace Absorb020441cc {
+/* func_020441cc's own view of a tree node and the descriptor that names the
+ * callback. The namespace keeps this Obj apart from the pending-sequence Obj
+ * further down. */
+namespace ProcessTree {
 class Obj {
 public:
     int dummy;
@@ -74,7 +77,7 @@ extern "C" void func_02044120(void) {
     data_02099f24 = 5;
     func_02043fdc(data_020a4b98);
     data_02099f24 = 1;
-    Absorb020441cc::func_020441cc((Absorb020441cc::Thing *)data_020a4b6c);
+    ProcessTree::func_020441cc((ProcessTree::Thing *)data_020a4b6c);
     data_02099f24 = 0;
 }
 
@@ -85,7 +88,7 @@ extern "C" int func_020441bc(int i) {
     return data_02082178[i];
 }
 
-namespace Absorb020441cc {
+namespace ProcessTree {
 extern "C" void *func_0203b394(Node *n);
 
 /* Walk a tree list, calling the descriptor's callback on each owner.
