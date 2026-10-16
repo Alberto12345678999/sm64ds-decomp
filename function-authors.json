@@ -25095,7 +25095,7 @@
     },
     "ov006:0x02103ac0": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c14UpdateRoundEndEv"
+      "name": "_ZN16dScMgPachinko2_c14UpdateNextBallEv"
     },
     "ov006:0x02103bfc": {
       "author": "tangosdev",
@@ -26763,39 +26763,39 @@
     },
     "ov006:0x0211ddcc": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c18RisingIcon_DrawAllEv"
+      "name": "_ZN13dScMgTeresa_c19FoundNumber_DrawAllEv"
     },
     "ov006:0x0211de54": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19RisingIcon_ClearAllEv"
+      "name": "_ZN13dScMgTeresa_c20FoundNumber_ClearAllEv"
     },
     "ov006:0x0211de7c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c20RisingIcon_CountBusyEv"
+      "name": "_ZN13dScMgTeresa_c21FoundNumber_CountBusyEv"
     },
     "ov006:0x0211dec0": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c20RisingIcon_UpdateAllEv"
+      "name": "_ZN13dScMgTeresa_c21FoundNumber_UpdateAllEv"
     },
     "ov006:0x0211e020": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c16RisingIcon_SpawnEi"
+      "name": "_ZN13dScMgTeresa_c17FoundNumber_SpawnEi"
     },
     "ov006:0x0211e0c8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c24RisingIcon_SpawnForFoundEv"
+      "name": "_ZN13dScMgTeresa_c25FoundNumber_SpawnForFoundEv"
     },
     "ov006:0x0211e118": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c17FoundMark_DrawAllEv"
+      "name": "_ZN13dScMgTeresa_c18VanishPuff_DrawAllEv"
     },
     "ov006:0x0211e184": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19FoundMark_UpdateAllEv"
+      "name": "_ZN13dScMgTeresa_c20VanishPuff_UpdateAllEv"
     },
     "ov006:0x0211e220": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c15FoundMark_SpawnEi"
+      "name": "_ZN13dScMgTeresa_c16VanishPuff_SpawnEi"
     },
     "ov006:0x0211e29c": {
       "author": "tangosdev",

@@ -504,7 +504,7 @@
       "ordinal": 66
     },
     {
-      "symbol": "_ZN16dScMgPachinko2_c14UpdateRoundEndEv",
+      "symbol": "_ZN16dScMgPachinko2_c14UpdateNextBallEv",
       "address": "0x02103ac0",
       "size": "0x0000013c",
       "legacy_source": "src/func_ov006_02103ac0.c",

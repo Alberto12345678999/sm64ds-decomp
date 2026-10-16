@@ -2600,11 +2600,10 @@ void dScMgPachinko2_c::Ball_State7(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c14UpdateRoundEndEv
+// @symbol _ZN16dScMgPachinko2_c14UpdateNextBallEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::UpdateRoundEnd()
-{
+void dScMgPachinko2_c::UpdateNextBall() {
     char *c = (char *)this;
     int i;
     unsigned short *q;
@@ -2749,7 +2748,7 @@ s32 dScMgPachinko2_c::Behavior()
         }
         UpdateCountdown();
         StartCountdown();
-        UpdateRoundEnd();
+        UpdateNextBall();
         Ball_UpdateAll();
         Paddle_UpdateAll();
         Cup_DrawAll();

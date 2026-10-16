@@ -67,27 +67,29 @@ struct dScMgTeresa_c : dScMgBase_c {
         u8  pad0b;
     };
 
-    /* The five-frame mark left where a Boo was caught (FoundMark_Spawn). */
-    struct FoundMark {
+    /* The five-frame puff of smoke where a caught Boo vanishes (seen in
+       play; VanishPuff_Spawn). */
+    struct VanishPuff {
         s32 x;           /* 0x00 -- 20.12 */
         s32 y;           /* 0x04 -- 20.12 */
         u16 timer;       /* 0x08 -- the frame steps every 4 */
         u16 pad0a;
-        u8  frame;       /* 0x0c -- 0..4, then the mark ends */
+        u8 frame;        /* 0x0c -- 0..4, then the puff ends */
         u8  active;      /* 0x0d */
         u8  visible;     /* 0x0e */
         u8  pad0f;
     };
 
-    /* The score icon that rises off a found Boo (RisingIcon_Spawn). */
-    struct RisingIcon {
+    /* The digit that rises off a found Boo: 1 for the first found, 2 for the
+       second (seen in play; FoundNumber_Spawn). */
+    struct FoundNumber {
         s32 x;           /* 0x00 -- 20.12 */
         s32 y;           /* 0x04 -- 20.12 */
         s32 vy;          /* 0x08 */
         s32 timer;       /* 0x0c -- seeded from the Boo's mFoundOrder */
         u8  active;      /* 0x10 */
         u8  visible;     /* 0x11 */
-        u8  sprite;      /* 0x12 -- the Boo's mFoundOrder */
+        u8 sprite;       /* 0x12 -- the Boo's mFoundOrder; draws digit sprite + 1 */
         u8  state;       /* 0x13 */
     };
 
@@ -159,15 +161,15 @@ struct dScMgTeresa_c : dScMgBase_c {
     void Reveal_Update();
     void Reveal_Start();
     void Reveal_Hide();
-    void RisingIcon_DrawAll();
-    void RisingIcon_ClearAll();
-    int RisingIcon_CountBusy();
-    void RisingIcon_UpdateAll();
-    void RisingIcon_Spawn(int i);
-    void RisingIcon_SpawnForFound();
-    void FoundMark_DrawAll();
-    void FoundMark_UpdateAll();
-    void FoundMark_Spawn(int param);
+    void FoundNumber_DrawAll();
+    void FoundNumber_ClearAll();
+    int FoundNumber_CountBusy();
+    void FoundNumber_UpdateAll();
+    void FoundNumber_Spawn(int i);
+    void FoundNumber_SpawnForFound();
+    void VanishPuff_DrawAll();
+    void VanishPuff_UpdateAll();
+    void VanishPuff_Spawn(int param);
     void DrawCountdown();
     void UpdateCountdown();
     void StartCountdown();
@@ -206,8 +208,8 @@ struct dScMgTeresa_c : dScMgBase_c {
 
     SmallBoo   mBoos[16];        /* 0x4660 */
     Exclaim    mExclaims[16];    /* 0x48a0 */
-    FoundMark  mFoundMarks[16];  /* 0x4960 */
-    RisingIcon mRisingIcons[16]; /* 0x4a60 */
+    VanishPuff mVanishPuffs[16]; /* 0x4960 */
+    FoundNumber mFoundNumbers[16]; /* 0x4a60 */
     /* A one-element array: the Reveal_State handlers take an index and
        step it by 0x20, and the dispatcher passes 0. [inference from codegen] */
     Reveal     mReveal[1];       /* 0x4ba0 */
@@ -234,8 +236,11 @@ struct dScMgTeresa_c : dScMgBase_c {
 typedef char dScMgTeresa_c_Reveal_size_must_be_0x20[sizeof(dScMgTeresa_c::Reveal) == 0x20 ? 1 : -1];
 typedef char dScMgTeresa_c_Marker_size_must_be_0xc[sizeof(dScMgTeresa_c::Marker) == 0xc ? 1 : -1];
 typedef char dScMgTeresa_c_Exclaim_size_must_be_0xc[sizeof(dScMgTeresa_c::Exclaim) == 0xc ? 1 : -1];
-typedef char dScMgTeresa_c_FoundMark_size_must_be_0x10[sizeof(dScMgTeresa_c::FoundMark) == 0x10 ? 1 : -1];
-typedef char dScMgTeresa_c_RisingIcon_size_must_be_0x14[sizeof(dScMgTeresa_c::RisingIcon) == 0x14 ? 1 : -1];
+typedef char
+    dScMgTeresa_c_VanishPuff_size_must_be_0x10[sizeof(dScMgTeresa_c::VanishPuff) == 0x10 ? 1 : -1];
+typedef char dScMgTeresa_c_FoundNumber_size_must_be_0x14[sizeof(dScMgTeresa_c::FoundNumber) == 0x14
+                                                             ? 1
+                                                             : -1];
 typedef char dScMgTeresa_c_SmallBoo_size_must_be_0x24[sizeof(dScMgTeresa_c::SmallBoo) == 0x24 ? 1 : -1];
 typedef char dScMgTeresa_c_size_must_be_0x4c28[sizeof(struct dScMgTeresa_c) == 0x4c28 ? 1 : -1];
 #endif

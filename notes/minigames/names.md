@@ -310,11 +310,12 @@ Descriptive names, high confidence:
 - **The clock:** `StartCountdown` (3 seconds, or 2 from level 15), `UpdateCountdown`, `DrawCountdown`.
 - **Round flow:** `CheckRoundEnd`, `CheckRevealDone`, `ResetRound`.
 
-Medium confidence: the three popup pools above found Boos, whose looks are not observed.
-- `RisingIcon_*` (+0x4a60): a delayed icon that rises, with sound 0x1bc.
-- `FoundMark_*` (+0x4960).
-- `Exclaim_*` (+0x48a0): spawned by the rub test, 0x18 px above the Boo.
-- Also `Marker_*` (one sprite) and `StepBg3Scroll`.
+The three popup pools over found Boos, seen in play (2026-10-15, runtime-checks.md):
+- `Exclaim_*` (+0x48a0): the red "!" the rub test spawns 0x18 px above the Boo it finds.
+- `FoundNumber_*` (+0x4a60, was `RisingIcon_*`): the digit that rises off a found Boo, 1 for the first, 2 for the second. Its sprite is the Boo's found order + 1, its delay is staggered by that order, and it plays sound 0x1bc.
+- `VanishPuff_*` (+0x4960, was `FoundMark_*`): the five-frame puff of smoke where a caught Boo vanishes, while Luigi raises his flashlight on the top screen.
+
+Medium confidence: `Marker_*` (one sprite) and `StepBg3Scroll`.
 
 Left unnamed: `func_ov006_0211cc90`. Both round endings call it, and it sets +0x4be5 when +0x4be0 is set; its role is unknown.
 
@@ -369,7 +370,7 @@ Three tables, named by index:
 High confidence:
 - **The aim line:** `DrawAimLine`, `ClearAimLine`, `PlotSubBg2Pixels`.
 - **The clock:** `StartCountdown`, `UpdateCountdown`, `DrawCountdown`, `CheckCountdownEnd`.
-- **The round:** `CheckRoundOver`, `StartRoundEnd`, `UpdateRoundEnd`, `ResetRound`.
+- **The round:** `CheckRoundOver`, `StartRoundEnd`, `UpdateNextBall` (pens the next ball once `mNextBallDelay` runs out; was `UpdateRoundEnd`), `ResetRound`.
 - **Ball hits:** `Ball_HitAt`, `Ball_Bounce`.
 
 Medium confidence: `Popup_*`, `Spark_*`, `CupSlot_*` and `ChooseLaneConfig`, named from the
@@ -534,7 +535,7 @@ compare (all 45 TUs identical).
   - **high:** `mX`/`mY`, `mHeading` (indexes the sine table; its sign picks `mAnim`), `mFrame`/`mAnimTimer`, `mFade` (nonzero draws semi-transparent), `mVisible`, `mPriority` (passed as the OAM priority), `mState`.
   - **medium:** `mSpeed` (0xc00 adjusted by `mKind`), `mInPlay`, `mKind`, `mFound` (set by the touch test), `mFoundOrder`.
   - **unknown:** `unk_12`, `unk_19`. (`unk_21` is now `mPlaySettleSound`; see the pass 3 fields below.)
-- **`mExclaims`, `mFoundMarks`, `mRisingIcons`** (16 each): **medium**. The record names come from their Spawn/Update/Draw functions. What each sprite looks like on screen is not observed.
+- **`mExclaims`, `mVanishPuffs`, `mFoundNumbers`** (16 each): **high, seen** (the "!", the vanish puff and the found-order digit; see the Teresa section above).
 - **`mReveal[1]`, `mMarker`** (0x4ba0, 0x4bc0):
   - **medium:** the field mechanics, including the bounce `phase` and `angle` (the `OAM::Render` rotation).
   - **low:** the one-element array. It is inferred from handlers that take an index while the dispatcher passes 0.
@@ -577,6 +578,6 @@ row says otherwise; "seen" marks a name checked in play.
 - Bomroom's bomb `+0x28` was commented "set to the spawn step base". Its only uses are a sound handle while the bomb is dragged and a reset, so it is `dragSound`.
 - Slot3's `mLineActive` ("which pay line is bet") is set when that row stops, and the row's step is skipped after that. It is now `mRowStopped`.
 
-**Found while reading, not renamed.** `dScMgPachinko2_c::UpdateRoundEnd` puts the next ball in the pen once `mNextBallDelay` runs out. It is not a round-end step. Renaming a member needs a lineage row, so it is left for a function pass.
+**Renamed in pass 4.** `dScMgPachinko2_c::UpdateRoundEnd` puts the next ball in the pen once `mNextBallDelay` runs out; it is not a round-end step, so it is now `UpdateNextBall`.
 
 **Left as `unk_`.** The rest have no read in the reconstructed code (reset-only or written only), or only reads by offset whose meaning is not settled: Flower's `unk_5fcd`, Snowball's `unk_ab7a`, the card dealer's `unk_01a`, and `dMg3DEspModel_c`'s first three words. Most of Memory's, Memory2's and Roulette's are reset-only.
