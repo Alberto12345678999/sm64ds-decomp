@@ -138,13 +138,11 @@ extern Matrix4x3 IDENTITY_MATRIX4X3;
  * d_s_mg_base.cpp and d_s_mg_pachinko.cpp spell FX_Mul. FX_Mul is a 20.12
  * product rounded at bit 11; FX_Mul32x64c multiplies by a 32.32 constant
  * and rounds at bit 31. */
-static inline int FX_Mul(int v1, int v2)
-{
+static inline int FX_Mul(int v1, int v2) {
     return (int)(((s64)v1 * v2 + 0x800) >> 12);
 }
 
-static inline int FX_Mul32x64c(int v32, s64 v64c)
-{
+static inline int FX_Mul32x64c(int v32, s64 v64c) {
     return (int)(((s64)v32 * v64c + 0x80000000LL) >> 32);
 }
 
@@ -157,18 +155,15 @@ static inline int FX_Mul32x64c(int v32, s64 v64c)
 /* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
  * off screen. Actor ID 0xbf is PLAYER. These int-returning predicates are
  * what make the ROM materialize 0/1 before testing it. */
-static inline int IsOffScreen(dActor_c *actor)
-{
+static inline int IsOffScreen(dActor_c *actor) {
     return (actor->mFlags & 8) != 0;
 }
 
-static inline int IsPlayerActor(dActor_c *actor)
-{
+static inline int IsPlayerActor(dActor_c *actor) {
     return actor->actorID == 0xbf;
 }
 
-static inline short AbsAngle(short angle)
-{
+static inline short AbsAngle(short angle) {
     if (angle < 0)
         angle = -angle;
     return angle;
@@ -454,8 +449,8 @@ int daBgSnmBdy_c::State3()
                 mSoundID, 3, 0x8a,
                 *(const Vector3 *)&mCamSpacePosX, 0);
             if (distToLanding < 0x17c000) {
-                daBgSnmHed_c *head = (daBgSnmHed_c *)dActor_c::FindWithActorID(
-                    0x111, 0); /* BIG_SNOWMAN_HEAD */
+                daBgSnmHed_c *head =
+                    (daBgSnmHed_c *)dActor_c::FindWithActorID(0x111, 0); /* BIG_SNOWMAN_HEAD */
                 head->unk_336 = 1;
                 func_0201267c(0x114, (const Vector3 *)&mCamSpacePosX);
                 mVertSpeed = 0x1d000;
@@ -639,8 +634,8 @@ int daBgSnmBdy_c::IsPlayerNearCenter()
     int bodyAngle = Vec3_HorzAngle(&data_ov072_02122b58, &mPosX);
     int playerAngle = Vec3_HorzAngle(&data_ov072_02122b58, &mTalkPlayer->mPosX);
     int angleDiff = bodyAngle - playerAngle;
-    if ((playerDist < bodyDist && AbsAngle((short)angleDiff) < 0x700)
-        || Vec3_Dist(&data_ov072_02122b58, &mTalkPlayer->mPosX) < 0x300000)
+    if ((playerDist < bodyDist && AbsAngle((short)angleDiff) < 0x700) ||
+        Vec3_Dist(&data_ov072_02122b58, &mTalkPlayer->mPosX) < 0x300000)
         return 1;
     return 0;
 }
