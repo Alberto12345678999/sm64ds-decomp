@@ -107,7 +107,7 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
 
     /* methods */
-    void SetFloorResult(const dBgPi & src_);
+    void SetFloorResult(const dBgPi &result);
     void SetObjAndSphere(const Vector3 &pos, Fix12<int> radius, dActor_c *actor);
     int  DetectClsn();
 
@@ -119,8 +119,8 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     dBgPi *GetFloorResult();
     dBgPi *GetWallResult();
     dBgPi *GetUnderResult();
-    void SetWallResult(const dBgPi &src_);
-    void SetUnderResult(const dBgPi &src_);
+    void SetWallResult(const dBgPi &result);
+    void SetUnderResult(const dBgPi &result);
 
     /* Members the ROM keeps unnamed; each takes the SphCrr object as its
        first argument in the cartridge call graph and drives the evidenced

@@ -181,18 +181,18 @@ dBgPi *dBgCh_SphCrr::GetFloorResult()
    a u64 view: a plain struct assignment interleaves its two words with the
    stores, the ROM loads both first. */
 // @symbol _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi
-void dBgCh_SphCrr::SetFloorResult(const dBgPi &src_)
+void dBgCh_SphCrr::SetFloorResult(const dBgPi &result)
 {
     *reinterpret_cast<u64 *>(&mClsnResult1.surface.clps) =
-        *reinterpret_cast<const u64 *>(&src_.surface.clps);
-    mClsnResult1.surface.normal.x = src_.surface.normal.x;
-    mClsnResult1.surface.normal.y = src_.surface.normal.y;
-    mClsnResult1.surface.normal.z = src_.surface.normal.z;
-    mClsnResult1.triangleID = src_.triangleID;
-    mClsnResult1.colliderIdx = src_.colliderIdx;
-    mClsnResult1.clsnID = src_.clsnID;
-    mClsnResult1.owner = src_.owner;
-    mClsnResult1.collider = src_.collider;
+        *reinterpret_cast<const u64 *>(&result.surface.clps);
+    mClsnResult1.surface.normal.x = result.surface.normal.x;
+    mClsnResult1.surface.normal.y = result.surface.normal.y;
+    mClsnResult1.surface.normal.z = result.surface.normal.z;
+    mClsnResult1.triangleID = result.triangleID;
+    mClsnResult1.colliderIdx = result.colliderIdx;
+    mClsnResult1.clsnID = result.clsnID;
+    mClsnResult1.owner = result.owner;
+    mClsnResult1.collider = result.collider;
 }
 
 // @symbol _ZN12dBgCh_SphCrr13GetWallResultEv
@@ -202,18 +202,18 @@ dBgPi *dBgCh_SphCrr::GetWallResult()
 }
 
 // @symbol _ZN12dBgCh_SphCrr13SetWallResultERK5dBgPi
-void dBgCh_SphCrr::SetWallResult(const dBgPi &src_)
+void dBgCh_SphCrr::SetWallResult(const dBgPi &result)
 {
     *reinterpret_cast<u64 *>(&mClsnResult2.surface.clps) =
-        *reinterpret_cast<const u64 *>(&src_.surface.clps);
-    mClsnResult2.surface.normal.x = src_.surface.normal.x;
-    mClsnResult2.surface.normal.y = src_.surface.normal.y;
-    mClsnResult2.surface.normal.z = src_.surface.normal.z;
-    mClsnResult2.triangleID = src_.triangleID;
-    mClsnResult2.colliderIdx = src_.colliderIdx;
-    mClsnResult2.clsnID = src_.clsnID;
-    mClsnResult2.owner = src_.owner;
-    mClsnResult2.collider = src_.collider;
+        *reinterpret_cast<const u64 *>(&result.surface.clps);
+    mClsnResult2.surface.normal.x = result.surface.normal.x;
+    mClsnResult2.surface.normal.y = result.surface.normal.y;
+    mClsnResult2.surface.normal.z = result.surface.normal.z;
+    mClsnResult2.triangleID = result.triangleID;
+    mClsnResult2.colliderIdx = result.colliderIdx;
+    mClsnResult2.clsnID = result.clsnID;
+    mClsnResult2.owner = result.owner;
+    mClsnResult2.collider = result.collider;
 }
 
 // @symbol _ZN12dBgCh_SphCrr14GetUnderResultEv
@@ -223,16 +223,16 @@ dBgPi *dBgCh_SphCrr::GetUnderResult()
 }
 
 // @symbol _ZN12dBgCh_SphCrr14SetUnderResultERK5dBgPi
-void dBgCh_SphCrr::SetUnderResult(const dBgPi &src_)
+void dBgCh_SphCrr::SetUnderResult(const dBgPi &result)
 {
     *reinterpret_cast<u64 *>(&mClsnResult3.surface.clps) =
-        *reinterpret_cast<const u64 *>(&src_.surface.clps);
-    mClsnResult3.surface.normal.x = src_.surface.normal.x;
-    mClsnResult3.surface.normal.y = src_.surface.normal.y;
-    mClsnResult3.surface.normal.z = src_.surface.normal.z;
-    mClsnResult3.triangleID = src_.triangleID;
-    mClsnResult3.colliderIdx = src_.colliderIdx;
-    mClsnResult3.clsnID = src_.clsnID;
-    mClsnResult3.owner = src_.owner;
-    mClsnResult3.collider = src_.collider;
+        *reinterpret_cast<const u64 *>(&result.surface.clps);
+    mClsnResult3.surface.normal.x = result.surface.normal.x;
+    mClsnResult3.surface.normal.y = result.surface.normal.y;
+    mClsnResult3.surface.normal.z = result.surface.normal.z;
+    mClsnResult3.triangleID = result.triangleID;
+    mClsnResult3.colliderIdx = result.colliderIdx;
+    mClsnResult3.clsnID = result.clsnID;
+    mClsnResult3.owner = result.owner;
+    mClsnResult3.collider = result.collider;
 }

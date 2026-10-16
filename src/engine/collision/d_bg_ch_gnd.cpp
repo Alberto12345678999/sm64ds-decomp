@@ -3,7 +3,8 @@
  * the KCL collider registry, reporting the floor through the dBgPi hit record
  * the query embeds as its secondary base. pos is the search seed the
  * colliders read back through GetClsnPos; mProbeHeight is the default ray
- * length. DetectClsn at 0x02038f44 lives in its own TU in the query region. */
+ * length. DetectClsn (0x02038f44) and DetectClsnSlot0 live in
+ * d_bg_ch_sph_crr_query.cpp with the other registry scans. */
 /* leftovers:
  * func_020353b0 stays a free extern: the shared dBgCh-side bind helper is
  * owned by its own shard and called by the Lin/SphCrr query code as well
