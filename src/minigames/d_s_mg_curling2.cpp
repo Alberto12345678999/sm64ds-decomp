@@ -50,6 +50,7 @@ enum dScMgCurling2_c_AssetId {
 #include "types.h"
 #include "dScMgCurling2_c.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* The receiver for the pointer-to-member tables. It must stay incomplete:
  * mwccarm picks the pointer-to-member layout from whether the class is
@@ -1039,10 +1040,10 @@ void dScMgCurling2_c::SeparateStones(int idx)
 
             k = (ang >> 4) * 2;
             cs = data_02082214[k + 1];
-            vx = (int)(((long long)cs * 0x1a + 0x800) >> 12);
+            vx = FX_MUL(cs, 0x1a);
             mStone[i].x = mStone[idx].x + (vx << 12);
             sn = data_02082214[k];
-            vy = (int)(((long long)sn * 0x1a + 0x800) >> 12);
+            vy = FX_MUL(sn, 0x1a);
             mStone[i].y = mStone[idx].y + (vy << 12);
             for (j = 0; j < 11; j++) {
                 int dx2;
@@ -1065,10 +1066,10 @@ void dScMgCurling2_c::SeparateStones(int idx)
 
                     k = (ang2 >> 4) * 2;
                     cs2 = data_02082214[k + 1];
-                    vx2 = (int)(((long long)cs2 * 0x1a + 0x800) >> 12);
+                    vx2 = FX_MUL(cs2, 0x1a);
                     mStone[j].x = mStone[i].x + (vx2 << 12);
                     sn2 = data_02082214[k];
-                    vy2 = (int)(((long long)sn2 * 0x1a + 0x800) >> 12);
+                    vy2 = FX_MUL(sn2, 0x1a);
                     mStone[j].y = mStone[i].y + (vy2 << 12);
                     func_02012718(0xe8, mStone[idx].x);
                     SpawnValue(idx, i);
@@ -1080,7 +1081,6 @@ void dScMgCurling2_c::SeparateStones(int idx)
     }
 }
 
-#define FMUL(a, b) ((int)(((long long)(a) * (b) + 0x800) >> 12))
 
 // @symbol Curling2_ResolveStoneCollision
 /* Stone collision: the first live, moving stone within 0x18 of stone idx
@@ -1149,25 +1149,25 @@ extern "C" void Curling2_ResolveStoneCollision(dScMgCurling2_c *self, int idx)
             k = (rel >> 4) * 2;
             c = data_02082214[k + 1];
             s = data_02082214[k];
-            vmx = FMUL(c, self->mStone[idx].speed);
-            vmy = FMUL(s, self->mStone[idx].speed);
+            vmx = FX_MUL(c, self->mStone[idx].speed);
+            vmy = FX_MUL(s, self->mStone[idx].speed);
             rel = self->mStone[i].angle - ang;
             k = (rel >> 4) * 2;
             c = data_02082214[k + 1];
             s = data_02082214[k];
-            vex = FMUL(c, self->mStone[i].speed);
+            vex = FX_MUL(c, self->mStone[i].speed);
             sP = data_02082214[E];
             cP = data_02082214[E + 1];
-            vey = FMUL(s, self->mStone[i].speed);
+            vey = FX_MUL(s, self->mStone[i].speed);
             cw = (long long)cP;
-            dy = (int)((cw * vex + 0x800) >> 12) - FMUL(sP, vmy);
+            dy = (int)((cw * vex + 0x800) >> 12) - FX_MUL(sP, vmy);
             sw = (long long)sP;
-            dx = (int)((sw * vex + 0x800) >> 12) + FMUL(cP, vmy);
-            nex = FMUL(cP, vmx) - FMUL(sP, vey);
-            ney = (int)((sw * vmx + 0x800) >> 12) + FMUL(cP, vey);
+            dx = (int)((sw * vex + 0x800) >> 12) + FX_MUL(cP, vmy);
+            nex = FX_MUL(cP, vmx) - FX_MUL(sP, vey);
+            ney = (int)((sw * vmx + 0x800) >> 12) + FX_MUL(cP, vey);
             self->mStone[idx].angle = _ZN4cstd5atan2E5Fix12IiES1_(dx, dy);
             self->mStone[idx].speed = cstd::sqrt((u64)((long long)dy * dy + (long long)dx * dx));
-            self->mStone[idx].x = self->mStone[i].x - FMUL(cP, 0x1b000);
+            self->mStone[idx].x = self->mStone[i].x - FX_MUL(cP, 0x1b000);
             self->mStone[idx].y = self->mStone[i].y - (int)((sw * 0x1b000 + 0x800) >> 12);
             xi = self->mStone[idx].x >> 12;
             yi = self->mStone[idx].y >> 12;
@@ -1200,7 +1200,6 @@ extern "C" void Curling2_ResolveStoneCollision(dScMgCurling2_c *self, int idx)
     }
 }
 
-#undef FMUL
 
 // @symbol _ZN15dScMgCurling2_c9StoneSpinEi
 /* Spin-rate update for the stone sprite: -sin(heading) * speed, scaled.
@@ -1295,9 +1294,9 @@ void dScMgCurling2_c::StoneSlide(int idx)
     p664 = (int *)(c + 0x4664 + m);
 
     sn = data_02082214[((*pang) >> 4) * 2 + 1];
-    *p660 += (int)(((long long)sn * *p668 + 0x800) >> 12);
+    *p660 += FX_MUL(sn, *p668);
     cs = data_02082214[((*pang) >> 4) * 2];
-    *p664 += (int)(((long long)cs * *p668 + 0x800) >> 12);
+    *p664 += FX_MUL(cs, *p668);
     *(u16 *)(c + 0x4684 + m) += *(u16 *)(c + m + 0x4682);
 
     x = *p660;

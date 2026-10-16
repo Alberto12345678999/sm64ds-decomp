@@ -49,6 +49,7 @@
  */
 #include "ModelBase.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 
 struct Sub {
     unsigned char *bytes;
@@ -252,11 +253,11 @@ void func_02045178(int *out, int ax, int ay, int az, int tx, int ty, int tz) {
     out[0] = (int)(((s64)b1 * c1) >> 12);
     out[1] = (int)(((s64)b1 * c0) >> 12);
     out[2] = -b0;
-    out[3] = (int)(((s64)b0 * p01 + 0x800) >> 12) - p10;
-    out[4] = p11 + (int)(((s64)b0 * p00 + 0x800) >> 12);
+    out[3] = FX_MUL(b0, p01) - p10;
+    out[4] = p11 + FX_MUL(b0, p00);
     out[5] = (int)(((s64)b1 * a0) >> 12);
-    out[6] = p00 + (int)(((s64)b0 * p11 + 0x800) >> 12);
-    out[7] = (int)(((s64)b0 * p10 + 0x800) >> 12) - p01;
+    out[6] = p00 + FX_MUL(b0, p11);
+    out[7] = FX_MUL(b0, p10) - p01;
     out[8] = (int)(((s64)b1 * a1) >> 12);
     out[9] = tx;
     out[10] = ty;
@@ -575,7 +576,6 @@ void func_0204488c(char* self, int index, int* color)
 }
 }
 
-#define FIXMUL(a, b) ((int)(((long long)(a) * (b) + 0x800) >> 12))
 
 // @symbol func_02044534
 extern "C" {
@@ -662,11 +662,12 @@ void func_02044534(char* self, int index, Mtx43* mtx, Vec3* light)
                     m.r1.y = mp->r1.y;
                     m.r1.z = z18;
                     NormalizeVec3(&m.r1, &m.r1);
-                    t = FIXMUL(m.r1.x, dir->x);
+                    t = FX_MUL(m.r1.x, dir->x);
                     m.r1.x = t;
                     { int dy = dir->y; int ry = m.r1.y;
                     m.r0.y = -t;
-                    t = FIXMUL(ry, dy); }
+                    t = FX_MUL(ry, dy);
+                    }
                     { int zz = z1c;
                     m.r1.y = t;
                     m.r0.x = t;
@@ -676,8 +677,8 @@ void func_02044534(char* self, int index, Mtx43* mtx, Vec3* light)
                     m.r0.y = mp->r0.y;
                     m.r0.z = z20;
                     NormalizeVec3(&m.r0, &m.r0);
-                    m.r0.x = FIXMUL(m.r0.x, dir->x);
-                    t = FIXMUL(m.r0.y, dir->y);
+                    m.r0.x = FX_MUL(m.r0.x, dir->x);
+                    t = FX_MUL(m.r0.y, dir->y);
                     m.r1.y = m.r0.x;
                     m.r1.x = -t;
                     { int zz = z24;

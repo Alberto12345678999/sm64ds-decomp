@@ -95,6 +95,7 @@
 #pragma defer_codegen off
 
 #include "types.h"
+#include "nitro/fx/fx.h"
 
 struct M { int _00, _01, _10, _11; };
 struct Pair { int a, b; };
@@ -551,12 +552,12 @@ extern "C" void Banner_DrawSpin(Elem *e) {
     u16 flag;
     do {
         int s0 = data_02082214[(angle >> 4) * 2];
-        int mm = (int)(((s64)s0 * 0x800 + 0x800) >> 12);
+        int mm = FX_MUL(s0, 0x800);
         int idx = (u16)mm >> 4;
         int cos1 = data_02082214[idx * 2 + 1];
         int sin1 = data_02082214[idx * 2];
-        int fc = (int)(((s64)cos1 * 0x1000 + 0x800) >> 12);
-        int fs = (int)(((s64)sin1 * 0x1000 + 0x800) >> 12);
+        int fc = FX_MUL(cos1, 0x1000);
+        int fs = FX_MUL(sin1, 0x1000);
         m._00 = fc;
         m._11 = fc;
         m._01 = fs;
@@ -613,7 +614,8 @@ extern "C" void Banner_DrawWave(Elem *e) {
         int v = base;
         int d = x - t;
         if (d < 0) d = -d;
-        if (d < 0x1000) v += (int)(((s64)(0x1000 - d) * 0x400 + 0x800) >> 12);
+        if (d < 0x1000)
+            v += FX_MUL((0x1000 - d), 0x400);
         v = func_02053200(v);
         {
             M m = {0};
@@ -705,11 +707,11 @@ extern "C" void Banner_DrawSqueeze(Elem* e) {
     int m, fd, t, v;
     unsigned short term;
     if (e->mTimer == 0) return;
-    m = (int)(((s64)e->mTimer * 0xcc + 0x800) >> 12);
+    m = FX_MUL(e->mTimer, 0xcc);
     {
         u8* el = e->mOam;
         fd = _ZN4cstd4fdivEii(m, 0x1000);
-        t = (int)(((s64)fd * 0x1000 + 0x800) >> 12);
+        t = FX_MUL(fd, 0x1000);
         v = func_02053200(m);
         {
             M buf = {0};
@@ -762,7 +764,7 @@ extern "C" void Banner_DrawPopSpinA(Elem *e) {
                 v = 0x1000;
             } else {
                 int t = _ZN4cstd4fdivEii(0x1000, 0x18000);
-                v -= (int)(((s64)e->mTimer * t + 0x800) >> 12);
+                v -= FX_MUL(e->mTimer, t);
                 v = func_02053200(v);
             }
             {
@@ -781,12 +783,12 @@ extern "C" void Banner_DrawPopSpinA(Elem *e) {
             M m2;
             do {
                 int s0 = data_02082214[(angle >> 4) * 2];
-                int mm = (int)(((s64)s0 * 0x800 + 0x800) >> 12);
+                int mm = FX_MUL(s0, 0x800);
                 int idx = (u16)mm >> 4;
                 int cos1 = data_02082214[idx * 2 + 1];
                 int sin1 = data_02082214[idx * 2];
-                int fc = (int)(((s64)cos1 * 0x1000 + 0x800) >> 12);
-                int fs = (int)(((s64)sin1 * 0x1000 + 0x800) >> 12);
+                int fc = FX_MUL(cos1, 0x1000);
+                int fs = FX_MUL(sin1, 0x1000);
                 m2._00 = fc;
                 m2._11 = fc;
                 m2._01 = fs;
@@ -813,7 +815,7 @@ extern "C" void Banner_DrawPopSpinB(Elem *e) {
                 v = 0x1000;
             } else {
                 int t = _ZN4cstd4fdivEii(0x1000, 0x18000);
-                v -= (int)(((s64)e->mTimer * t + 0x800) >> 12);
+                v -= FX_MUL(e->mTimer, t);
                 v = func_02053200(v);
             }
             {
@@ -832,12 +834,12 @@ extern "C" void Banner_DrawPopSpinB(Elem *e) {
             M m2;
             do {
                 int s0 = data_02082214[(angle >> 4) * 2];
-                int mm = (int)(((s64)s0 * 0x800 + 0x800) >> 12);
+                int mm = FX_MUL(s0, 0x800);
                 int idx = (u16)mm >> 4;
                 int cos1 = data_02082214[idx * 2 + 1];
                 int sin1 = data_02082214[idx * 2];
-                int fc = (int)(((s64)cos1 * 0x1000 + 0x800) >> 12);
-                int fs = (int)(((s64)sin1 * 0x1000 + 0x800) >> 12);
+                int fc = FX_MUL(cos1, 0x1000);
+                int fs = FX_MUL(sin1, 0x1000);
                 m2._00 = fc;
                 m2._11 = fc;
                 m2._01 = fs;
@@ -954,14 +956,14 @@ extern "C" void Banner_DrawZoomA(Elem *e) {
             int scale;
             if (val < 0x14000) {
                 int t;
-                d = (int)(((s64)val * 0x100 + 0x800) >> 12);
+                d = FX_MUL(val, 0x100);
                 t = _ZN4cstd4fdivEii(d, 0x1400);
-                scale = (int)(((s64)t * 0x1400 + 0x800) >> 12);
+                scale = FX_MUL(t, 0x1400);
             } else {
-                int a = (int)(((s64)(val - 0x14000) * 0x66 + 0x800) >> 12);
+                int a = FX_MUL((val - 0x14000), 0x66);
                 int b = 0x1400 - a;
                 int t = _ZN4cstd4fdivEii(b - 0x1000, 0x400);
-                scale = (0x1000 - t) + (int)(((s64)t * 0x1400 + 0x800) >> 12);
+                scale = (0x1000 - t) + FX_MUL(t, 0x1400);
                 d = b;
             }
             d = func_02053200(d);
@@ -991,7 +993,7 @@ extern "C" void Banner_DrawZoomA(Elem *e) {
                 int r = 0x1000;
                 if (diff < 0) diff = -diff;
                 if (diff < 0x1000) {
-                    r += (int)(((s64)(0x1000 - diff) * 0x400 + 0x800) >> 12);
+                    r += FX_MUL((0x1000 - diff), 0x400);
                 }
                 r = func_02053200(r);
                 {
@@ -1023,14 +1025,14 @@ extern "C" void Banner_DrawZoomB(Elem *e) {
             int scale;
             if (val < 0x14000) {
                 int t;
-                d = (int)(((s64)val * 0x100 + 0x800) >> 12);
+                d = FX_MUL(val, 0x100);
                 t = _ZN4cstd4fdivEii(d, 0x1400);
-                scale = (int)(((s64)t * 0x1400 + 0x800) >> 12);
+                scale = FX_MUL(t, 0x1400);
             } else {
-                int a = (int)(((s64)(val - 0x14000) * 0x66 + 0x800) >> 12);
+                int a = FX_MUL((val - 0x14000), 0x66);
                 int b = 0x1400 - a;
                 int t = _ZN4cstd4fdivEii(b - 0x1000, 0x400);
-                scale = (0x1000 - t) + (int)(((s64)t * 0x1400 + 0x800) >> 12);
+                scale = (0x1000 - t) + FX_MUL(t, 0x1400);
                 d = b;
             }
             d = func_02053200(d);
@@ -1060,7 +1062,7 @@ extern "C" void Banner_DrawZoomB(Elem *e) {
                 int r = 0x1000;
                 if (diff < 0) diff = -diff;
                 if (diff < 0x1000) {
-                    r += (int)(((s64)(0x1000 - diff) * 0x400 + 0x800) >> 12);
+                    r += FX_MUL((0x1000 - diff), 0x400);
                 }
                 r = func_02053200(r);
                 {

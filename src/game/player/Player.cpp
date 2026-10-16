@@ -39,6 +39,7 @@
 #include "dBgCh_Actr.h"
 #include "decl_Animation.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -1871,7 +1872,7 @@ void Player::func_ov002_020bf2d8(Fix12i a){
     void*c = (void*)this;
     extern unsigned short data_ov002_020ff140[];
   unsigned int t = data_ov002_020ff140[*(int*)((char*)c+8)];
-  this->mVertSpeed = (Fix12i)(((long long)a * (int)t + 0x800) >> 12);
+  this->mVertSpeed = FX_MUL(a, (int)t);
 }
 }
 
@@ -1884,7 +1885,7 @@ Fix12i Player_ScaleByCharFactor(void*c, Fix12i a){
     extern unsigned short data_ov002_020ff170[];
   int idx = *(int*)((char*)c+8) & 0xff;
   unsigned int t = data_ov002_020ff170[idx];
-  return (Fix12i)(((long long)a * (int)t + 0x800) >> 12);
+  return FX_MUL(a, (int)t);
 }
 }
 
@@ -1921,7 +1922,7 @@ void Player::func_ov002_020bf36c(void* arg){
         return;
     saved = this->mHorzSpeed;
     if (this->mClsnFlags & 1)
-        this->mHorzSpeed = (Fix12i)(((long long)saved * this->mFloorNormalY + 0x800) >> 12);
+        this->mHorzSpeed = FX_MUL(saved, this->mFloorNormalY);
     _ZN8dActor_c9UpdatePosEP5dCc_c(self, arg);
     this->mHorzSpeed = saved;
     func_ov002_020ce798(self);
@@ -2035,7 +2036,7 @@ int func_ov002_020bf56c(void* a, int b){
     m = 0x1000;
     break;
   }
-  return (int)(((long long)b * m + 0x800) >> 12);
+  return FX_MUL(b, m);
 }
 }
 
@@ -2246,7 +2247,6 @@ void Player::func_ov002_020bf9d4(){
  * player along the path: grounded states get a position nudge scaled by
  * data_ov002_020ff210[def->unk_004], airborne states get their horizontal
  * velocity bent toward the path direction. Returns 1 when the push applied. */
-#define FX_MUL(a, b) ((s32)(((s64)(a) * (s64)(b) + 0x800) >> 12))
 #define SIN(a) data_02082214[((u16)(a) >> 4) * 2]
 #define COS(a) data_02082214[((u16)(a) >> 4) * 2 + 1]
 extern "C" {
@@ -2324,7 +2324,6 @@ int Player::func_ov002_020bfa74()
     return 0;
 }
 }
-#undef FX_MUL
 #undef SIN
 #undef COS
 
@@ -2475,10 +2474,10 @@ int Player::func_ov002_020c0108(int p1)
 
         w = data_ov002_020ff200[idx] << 12;
 
-        this->mPosY += (s32)(((long long)w * data_02082214[iY * 2] + 0x800) >> 12);
-        s = (s32)(((long long)w * data_02082214[iY * 2 + 1] + 0x800) >> 12);
-        this->mPosX += (s32)(((long long)s * data_02082214[iX * 2] + 0x800) >> 12);
-        this->mPosZ += (s32)(((long long)s * data_02082214[iX * 2 + 1] + 0x800) >> 12);
+        this->mPosY += FX_MUL(w, data_02082214[iY * 2]);
+        s = FX_MUL(w, data_02082214[iY * 2 + 1]);
+        this->mPosX += FX_MUL(s, data_02082214[iX * 2]);
+        this->mPosZ += FX_MUL(s, data_02082214[iX * 2 + 1]);
 
         return 1;
     }
@@ -2631,16 +2630,16 @@ int Player::func_ov002_020c04e0()
     if (speed >= 0x1800)
         speed = 0x1800;
 
-    accel = (int)(((long long)accelBase * speed + 0x800) >> 12);
+    accel = FX_MUL(accelBase, speed);
 
     if (angDiff < 0x4000) {
         int *p = &this->mHorzSpeed;
-        int v = *p + (int)(((long long)accel * horzLen + 0x800) >> 12);
+        int v = *p + FX_MUL(accel, horzLen);
         *p = v;
         return v;
     } else {
         int *p = &this->mHorzSpeed;
-        int v = *p - (int)(((long long)accel * horzLen + 0x800) >> 12);
+        int v = *p - FX_MUL(accel, horzLen);
         *p = v;
         return v;
     }
@@ -4333,7 +4332,7 @@ void Player::func_ov002_020c3148()
 // @symbol func_ov002_020c3160
 extern "C" {
 static inline int FX(int a, int b) {
-    return (int)(((s64)(a) * (b) + 0x800) >> 12);
+    return FX_MUL((a), (b));
 }
 
 void func_ov002_020c3160(Arg0 *self, Arg1 *out)
@@ -5756,9 +5755,9 @@ int Player::St_BowserEarthquake_Main()
         int sinVal = data_02082214[idx * 2];
 
         if (sinVal >= 0) {
-            mPosY = mGroundY + (int)(((long long)radius * sinVal + 0x800) >> 12);
+            mPosY = mGroundY + FX_MUL(radius, sinVal);
         } else {
-            mPosY = mGroundY - (int)(((long long)radius * sinVal + 0x800) >> 12);
+            mPosY = mGroundY - FX_MUL(radius, sinVal);
         }
 
         if (mStateTimer == 0) {
@@ -7296,8 +7295,8 @@ int Player::St_LevelEnter_Init()
         idx = ((s32)(u16)(s16)(mAngleY + 0x8000) >> 4) * 2;
         cosv = data_02082214[idx];
         sinv = data_02082214[idx + 1];
-        *(int*)((char*)&mPosX) += (int)(((s64)0xa0000 * cosv + 0x800) >> 12);
-        *(int*)((char*)&mPosZ) += (int)(((s64)0xa0000 * sinv + 0x800) >> 12);
+        *(int *)((char *)&mPosX) += FX_MUL(0xa0000, cosv);
+        *(int *)((char *)&mPosZ) += FX_MUL(0xa0000, sinv);
         mStateTimer = 0x20;
         mStateArg = 1;
         mVertAccel = 0;
@@ -8068,7 +8067,7 @@ int Player::func_ov002_020c8d14()
     v.x = this->mPosX;
     v.y = this->mPosY;
     v.z = this->mPosZ;
-    v.y = this->mPosY + (int)(((long long)this->mScaleY * 0x50000 + 0x800) >> 12);
+    v.y = this->mPosY + FX_MUL(this->mScaleY, 0x50000);
 
     id = this->GetBodyModelID(*(int *)((char *)this + 8) & 0xff, 0);
     anim = (char *)((int *)((char *)this + 0xdc))[id] + 0x50;
@@ -8660,7 +8659,7 @@ void Player::func_ov002_020c9a04()
     v.y = this->mPosY + 0x28000;
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5f, v.x, v.y, v.z);
 
-    v.y = this->mPosY + (int)(((long long)this->mScaleY * 0x50000 + 0x800) >> 12);
+    v.y = this->mPosY + FX_MUL(this->mScaleY, 0x50000);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x60, v.x, v.y, *(volatile int *)&v.z);
 }
 }
@@ -9656,8 +9655,8 @@ void func_ov002_020cae10(char* c)
     r8 = ang;
     if (r8 < (int)0xffffd556) r8 = (int)0xffffd556;
     if (r8 > 0x2aaa) r8 = 0x2aaa;
-    *(short*)(c + 0x764) = (short)(int)(((long long)r8 * 0xc00 + 0x800) >> 12);
-    self->unk_766 = (short)(int)(((long long)r4 * 0xc00 + 0x800) >> 12);
+    *(short *)(c + 0x764) = (short)FX_MUL(r8, 0xc00);
+    self->unk_766 = (short)FX_MUL(r4, 0xc00);
     self->unk_742 = 2;
 }
 }
@@ -10033,7 +10032,7 @@ int Player::St_Climb_Main()
         if (*(u32*)(*(char**)(c + 0x37c) + 0x18) & 0x1000000) {
             func_0200d5c0(cam, mPlayerNo);
         } else {
-            s32 v = (s32)(((s64)(*(s32*)(*(char**)(c + 0x37c) + 8)) * 0xb33 + 0x800) >> 12);
+            s32 v = FX_MUL((*(s32 *)(*(char **)(c + 0x37c) + 8)), 0xb33);
             if (v <= mAttachOffsetY) {
                 func_0200d5c0(cam, mPlayerNo);
             } else {
@@ -10061,9 +10060,9 @@ int Player::St_Climb_Main()
             s32 t = (u16)ang;
             s32 ti = (t >> 4) * 2;
             s16 cosv = data_02082214[ti];
-            mPosX += (s32)(((s64)cosv * 0x64000 + 0x800) >> 12);
+            mPosX += FX_MUL(cosv, 0x64000);
             s16 sinv = data_02082214[ti + 1];
-            mPosZ += (s32)(((s64)sinv * 0x64000 + 0x800) >> 12);
+            mPosZ += FX_MUL(sinv, 0x64000);
             this->ChangeState(data_ov002_021101b4);
             return 1;
         }
@@ -10090,10 +10089,10 @@ int Player::St_Climb_Main()
                     }
                     s16 av = *(s16*)((char*)data_0209f4a4 + idx2);
                     if (av < 0) av = -av;
-                    s32 fx = (s32)(((s64)mag * av + 0x800) >> 12);
+                    s32 fx = FX_MUL(mag, av);
                     func_ov002_020bf340(c, &this->mVertSpeed, 0x800, fx);
                     _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x24, 0, 0x1000, 0);
-                    s32 fx2 = (s32)(((s64)fx * 0x500 + 0x800) >> 12);
+                    s32 fx2 = FX_MUL(fx, 0x500);
                     if (fx2 >= 0x4000) fx2 = 0x4000;
                     {
                         s32 modelIdx = GetBodyModelID((u8)(*(s32*)(c + 8)), 0);
@@ -10115,7 +10114,7 @@ int Player::St_Climb_Main()
                         mag = 0x1e000;
                     }
                     s16 val = *(s16*)((char*)data_0209f4a4 + idx3);
-                    s32 fx = (s32)(((s64)mag * val + 0x800) >> 12);
+                    s32 fx = FX_MUL(mag, val);
                     func_ov002_020bf340(c, &this->mVertSpeed, -0x800, fx);
                 }
                 mAngleYSpeed -= 0x40;
@@ -10352,7 +10351,7 @@ void func_ov002_020cc05c(char *self)
         s16 av = tv2;
         if (av < 0) av = (s16)(-av);
         {
-            int mag32 = (int)(((s64)av * 0x480 + 0x800) >> 12);
+            int mag32 = FX_MUL(av, 0x480);
             s16 mag = (s16)mag32;
             s16 nmag = (s16)(-mag);
             s16 cur2 = player->mAngleYSpeed;
@@ -10997,8 +10996,8 @@ extern "C" {
 void func_ov002_020cd218(char* c, int v, int* out1, int* out2){
     extern short data_02082214[];
     extern void func_ov002_020cd218(void*, int, void*, void*);
-  *out1 = (int)(((long long)v * data_02082214[(*(unsigned short*)(c+0x92) >> 4)*2+1] + 0x800) >> 12);
-  *out2 = -(int)(((long long)v * data_02082214[(*(unsigned short*)(c+0x92) >> 4)*2] + 0x800) >> 12);
+    *out1 = FX_MUL(v, data_02082214[(*(unsigned short *)(c + 0x92) >> 4) * 2 + 1]);
+    *out2 = -FX_MUL(v, data_02082214[(*(unsigned short *)(c + 0x92) >> 4) * 2]);
 }
 }
 
@@ -11204,10 +11203,10 @@ void func_ov002_020cd71c(char *self)
     extern void _Z15ApproachLinear2Rsss(void*, short t, short s);
     extern void func_ov002_020cd71c(void*);
     int ip = data_ov002_020ff1f0[*(int *)(self + 8)];
-    int a = (int)(((long long)ip * 0x320 + 0x800) >> 12);
+    int a = FX_MUL(ip, 0x320);
     int c = (int)((((long long)ip << 7) + 0x800) >> 12);
     s16 step = (s16)((((long long)ip << 5) + 0x800) >> 12);
-    int b = (int)(((long long)ip * 0x240 + 0x800) >> 12);
+    int b = FX_MUL(ip, 0x240);
     int e = *(short *)((char *)data_0209f4a2 + gActivePlayerSlot * 0x18);
     s16 target = (s16)(((long long)(-b) * e + 0x800) >> 12);
 
@@ -12002,7 +12001,7 @@ Fix12i func_ov002_020cedb0(void *c, Fix12i a)
     extern unsigned short data_ov002_020ff158[];
     extern int func_ov002_020cedb0(void*, int);
     unsigned int t = data_ov002_020ff158[*(int*)((char*)c + 8)];
-    return (Fix12i)(((long long)a * (int)t + 0x800) >> 12);
+    return FX_MUL(a, (int)t);
 }
 }
 
@@ -12465,7 +12464,7 @@ int Player::St_OnWall_Main()
                 mPrevAngleY = ang - 0x4000;
                 anim = 0x5c;
             }
-            Fix12i spd = (Fix12i)(((s64)mHorzSpeed * 0x600 + 0x800) >> 12);
+            Fix12i spd = FX_MUL(mHorzSpeed, 0x600);
             if (spd < 0x400)
                 spd = 0x400;
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), anim, 0, spd, 0);
@@ -12834,8 +12833,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
         d <<= 12;
         s = data_02082214[i];
         csn = data_02082214[i + 1];
-        xoff = (int)(((long long)d * s + 0x800) >> 12);
-        zoff = (int)(((long long)d * csn + 0x800) >> 12);
+        xoff = FX_MUL(d, s);
+        zoff = FX_MUL(d, csn);
         h = 0xc8;
         if (b7 != 0)
             h = 0x1f4;
@@ -15372,7 +15371,7 @@ void func_ov002_020d413c(char *self, int arg)
         *(short *)(self + 0x760) = *(short *)(self + 0x75e);
         return;
     }
-    s = (short)((int)(((long long)((diff - v) / 12) * 0x1c71 + 0x800) >> 12));
+    s = (short)(FX_MUL(((diff - v) / 12), 0x1c71));
     {
         int t = s;
         if (t >= 0x2000) t = 0x2000;
@@ -15686,7 +15685,7 @@ void Player::func_ov002_020d4748()
             int f = (int)((((long long)t << 10) + 0x800) >> 12);
             int v;
             int diff = Player_ScaleByCharFactor(c, 0x1c000) - this->mHorzSpeed;
-            v = (int)(((long long)diff * f + 0x800) >> 12);
+            v = FX_MUL(diff, f);
             if (v < 0)
                 v = 0;
             _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x3f, 0, v + 0x2800, AnimSpeed(c));
@@ -16424,9 +16423,9 @@ int func_ov002_020d5ab4(char *self)
     pos.z = pp[2];
 
     a = (unsigned short)(short)(*(volatile short *)(self + 0x8e) + 0x8000) >> 4;
-    pos.x = pos.x + (int)(((s64)data_02082214[a * 2] * 0x64000 + 0x800) >> 12);
+    pos.x = pos.x + FX_MUL(data_02082214[a * 2], 0x64000);
     a = (unsigned short)(short)(*(volatile short *)(self + 0x8e) + 0x8000) >> 4;
-    pos.z = pos.z + (int)(((s64)data_02082214[a * 2 + 1] * 0x64000 + 0x800) >> 12);
+    pos.z = pos.z + FX_MUL(data_02082214[a * 2 + 1], 0x64000);
 
     *(int *)(self + 0x5c) = pos.x;
     *(int *)(self + 0x60) = pos.y;
@@ -16513,9 +16512,9 @@ extern "C" int func_ov002_020d5cec(char* c)
     v1.y = y1 + 0x32000;
 
     shifted = *(unsigned short*)(c + 0x8e) >> 4;
-    v2.x = v1.x + (int)(((long long)data_02082214[shifted * 2] * 0x50000 + 0x800) >> 12);
+    v2.x = v1.x + FX_MUL(data_02082214[shifted * 2], 0x50000);
     v2.y = v1.y;
-    v2.z = v1.z + (int)(((long long)data_02082214[shifted * 2 + 1] * 0x50000 + 0x800) >> 12);
+    v2.z = v1.z + FX_MUL(data_02082214[shifted * 2 + 1], 0x50000);
 
     dBgCh_Lin line;
     line.SetObjAndLine(v1, v2, (dActor_c*)c);
@@ -16837,10 +16836,10 @@ void func_ov002_020d6368(char *self)
     pos.z = *(int *)(self + 0x64);
 
     a = *(volatile unsigned short *)(self + 0x8e) >> 4;
-    pos.x = pos.x - (int)(((s64)data_02082214[a * 2] * 0x14000 + 0x800) >> 12);
+    pos.x = pos.x - FX_MUL(data_02082214[a * 2], 0x14000);
 
     a = *(volatile unsigned short *)(self + 0x8e) >> 4;
-    *(volatile int *)&pos.y = pos.y - (int)(((s64)data_02082214[a * 2 + 1] * 0x14000 + 0x800) >> 12);
+    *(volatile int *)&pos.y = pos.y - FX_MUL(data_02082214[a * 2 + 1], 0x14000);
 
     rotY = *(short *)(self + 0x8e);
     rot.x = zero;
@@ -19307,10 +19306,10 @@ void func_ov002_020d9c70(char *o)
     char *p;
 
     absv = (v < 0) ? (short)(-v) : v;
-    A = (int)(((long long)absv * 0x28000 + 0x800) >> 12);
+    A = FX_MUL(absv, 0x28000);
 
     absv = (v < 0) ? (short)(-v) : v;
-    Braw = (int)(((long long)absv * 0x1c71 + 0x800) >> 12);
+    Braw = FX_MUL(absv, 0x1c71);
     Bnarrow = (short)Braw;
 
     Bresult = (v < 0) ? (short)(*(short *)(o + 0x8e) - Bnarrow) : (short)(*(short *)(o + 0x8e) + Bnarrow);
@@ -20183,7 +20182,7 @@ int Player::St_Thrown_Main()
             }
         }
         mAngleY = mPrevAngleY;
-        mHorzSpeed = (int)(((long long)mHorzSpeed * 0xfae + 0x800) >> 12);
+        mHorzSpeed = FX_MUL(mHorzSpeed, 0xfae);
         if (mIsAirborne != 0) {
             int a = _ZN4cstd5atan2E5Fix12IiES1_(mHorzSpeed, mVertSpeed);
             s16 b = a - 0x4000;
@@ -21140,16 +21139,16 @@ void func_ov002_020dc560(char *self)
             int idx2 = ((unsigned short)diff >> 4) * 2;
             int r1 = func_01ffa344(0x48400000, (unsigned short)diff >> 4);
             int sinv = data_02082214[idx2 + 1];
-            int scaled = (int)(((long long)sinv * 0x1800 + 0x800) >> 12);
-            int combined = (int)(((long long)scaled * tblval + 0x800) >> 12);
+            int scaled = FX_MUL(sinv, 0x1800);
+            int combined = FX_MUL(scaled, tblval);
             _Z14ApproachLinearRiii((int *)(self + 0x98), r1, combined);
 
             {
                 short *p94 = (short *)ADDR(self + 0x94);
                 int cosv = data_02082214[idx2];
                 int tblval2 = *(short *)(data_0209f4a0 + gActivePlayerSlot * 0x18);
-                int scaled2 = (int)(((long long)cosv * 0x200 + 0x800) >> 12);
-                int combined2 = (int)(((long long)scaled2 * tblval2 + 0x800) >> 12);
+                int scaled2 = FX_MUL(cosv, 0x200);
+                int combined2 = FX_MUL(scaled2, tblval2);
                 *p94 = (short)(*p94 + combined2);
             }
         }
@@ -22235,8 +22234,10 @@ int Player::St_TornadoSpin_Main()
             int k = (u16)v >> 4;
             int sinv = data_02082214[k * 2 + 1];
             int cosv = data_02082214[k * 2];
-            ((int*)&pos)[0] = (int)(((s64)sz * cosv + 0x800) >> 12) + (((dActor_c*)mAttachedActor)->mPosX + (int)(((s64)sx * sinv + 0x800) >> 12));
-            ((int*)&pos)[2] = (int)(((s64)sz * sinv + 0x800) >> 12) + (((dActor_c*)mAttachedActor)->mPosZ - (int)(((s64)sx * cosv + 0x800) >> 12));
+            ((int *)&pos)[0] =
+                FX_MUL(sz, cosv) + (((dActor_c *)mAttachedActor)->mPosX + FX_MUL(sx, sinv));
+            ((int *)&pos)[2] =
+                FX_MUL(sz, sinv) + (((dActor_c *)mAttachedActor)->mPosZ - FX_MUL(sx, cosv));
             ((int*)&pos)[1] = mAttachOffsetY + ((dActor_c*)mAttachedActor)->mPosY;
         }
     }
@@ -22450,15 +22451,15 @@ s32 Player::St_Balloon_Main()
         if ((s32)diff > 0x4000) {
             func_ov002_020de428(this);
             mPrevAngleY = (s16)((ang * 2 + 0x8000) - mPrevAngleY);
-            mHorzSpeed = (s32)(((long long)mHorzSpeed * 0x1400 + 0x800) >> 12);
+            mHorzSpeed = FX_MUL(mHorzSpeed, 0x1400);
             if (mHorzSpeed > 0x14000)
                 mHorzSpeed = 0x14000;
             if (mHorzSpeed < 0x4000)
                 mHorzSpeed = 0x4000;
             s32 idx = ((s32)(u16)diff >> 4) * 2;
             s16 t0 = data_02082214[idx + 1];
-            s32 v1 = (s32)(((long long)mHorzSpeed * t0 + 0x800) >> 12);
-            s32 v = (s32)(((long long)v1 * 0xa0 + 0x800) >> 12);
+            s32 v1 = FX_MUL(mHorzSpeed, t0);
+            s32 v = FX_MUL(v1, 0xa0);
             s16 t1 = data_02082214[idx];
             mAngleYSpeed = (s16)(((long long)t1 * v + 0x800) >> 12);
             unk_69e = (s16)(((long long)t0 * v + 0x800) >> 12);
@@ -22469,7 +22470,7 @@ s32 Player::St_Balloon_Main()
     if (mode & 1) {
         s32 g = mPrevVertSpeed;
         if (g < 0) {
-            mVertSpeed = -(s32)(((long long)g * 0x2800 + 0x800) >> 12);
+            mVertSpeed = -FX_MUL(g, 0x2800);
             func_ov002_020de428(this);
         }
     } else if (mode & 4) {
@@ -22811,8 +22812,8 @@ int Player::St_Cannon_Main()
 
         int ang = *(u16*)(p + 0x17e);
         int j = ang >> 4;
-        mHorzSpeed = (int)(((long long)data_02082214[j * 2 + 1] * 0x64000 + 0x800) >> 12);
-        mVertSpeed = (int)(((long long)data_02082214[j * 2] * 0x64000 + 0x800) >> 12);
+        mHorzSpeed = FX_MUL(data_02082214[j * 2 + 1], 0x64000);
+        mVertSpeed = FX_MUL(data_02082214[j * 2], 0x64000);
         mAngleX = 0;
         mStateStep = 2;
         mOpacity = 0x1f;
@@ -23229,7 +23230,7 @@ void func_ov002_020df8f0(char* c)
         int idx = gActivePlayerSlot * 0x18;
         s16 tval = *(s16*)((char*)data_0209f4a4 + idx);
         int div5 = *(int*)(c + 0x640) / 5;
-        int v = (int)(((s64)(tval >> 6) * div5 + 0x800) >> 12);
+        int v = FX_MUL((tval >> 6), div5);
         if (v < -0x8000) v = -0x8000;
         if (v >= 0x8000) v = 0x7fff;
 
@@ -23261,7 +23262,7 @@ void func_ov002_020df8f0(char* c)
         int u2 = *(int*)(c + 0x640);
         s16 tval2 = *(s16*)((char*)data_0209f4a2 + idx);
         int quarter = u2 / 4;
-        int v2 = 0 - (int)(((s64)(tval2 >> 6) * quarter + 0x800) >> 12);
+        int v2 = 0 - FX_MUL((tval2 >> 6), quarter);
         if (v2 < -0x8000) v2 = -0x8000;
         if (v2 >= 0x8000) v2 = 0x7fff;
 
@@ -23323,7 +23324,7 @@ void func_ov002_020df8f0(char* c)
         int spd = *(int*)(c + 0x640);
         int t = spd >> 5;
         if (t >= 0x1000) t = 0x1000;
-        s16 P = (s16)(int)(((s64)t * 0x2aaaU + 0x800) >> 12);
+        s16 P = (s16)FX_MUL(t, 0x2aaaU);
         if (r > P) r = P;
         if (r < -P) r = (s16)(-P);
         *(s16*)(c + 0x8c) = r;
@@ -24249,7 +24250,7 @@ int Player::St_LongJump_Init()
     mVertSpeed = 0x1e000;
     func_ov002_020e2ad0(this);
     mVertAccel = -0x2000;
-    mHorzSpeed = (int)(((s64)mHorzSpeed * 0x1800 + 0x800) >> 12);
+    mHorzSpeed = FX_MUL(mHorzSpeed, 0x1800);
     if (mHorzSpeed >= 0x3c000) {
         mHorzSpeed = 0x3c000;
     }
@@ -24969,7 +24970,7 @@ skipclear:
     } else {
         int v = data_ov002_0210a59c[mJumpComboStage] + (mHorzSpeed >> 2);
         if (mIsMega != 0) {
-            func_ov002_020bf2d8((int)(((long long)v * 0x1400 + 0x800) >> 12));
+            func_ov002_020bf2d8(FX_MUL(v, 0x1400));
         } else {
             func_ov002_020bf2d8(v);
         }
@@ -24995,7 +24996,7 @@ skipclear:
     unk_6cc = 0;
     func_ov002_020e25f0(this, mJumpComboStage);
 
-    mHorzSpeed = (int)(((long long)mHorzSpeed * 0xccc + 0x800) >> 12);
+    mHorzSpeed = FX_MUL(mHorzSpeed, 0xccc);
 
     if (AngleDiff(mPrevAngleY, mAngleY) >= 0x4000) {
         mHorzSpeed >>= 2;
@@ -25184,7 +25185,7 @@ void func_ov002_020e28d4(char* c, int a, int b)
             s16 e = AngleDiff(*(s16*)(c + 0x6d2), *(s16*)(c + 0x8e));
             e = e + 0x4000;
             s16 tv = data_02082214[((u16)e >> 4) * 2];
-            r4 = (int)(((s64)r4 * tv + 0x800) >> 12);
+            r4 = FX_MUL(r4, tv);
             if (r4 < 0)
                 r4 = -r4;
             if (r4 < 0xa000)
@@ -26302,7 +26303,7 @@ void func_ov002_020e4374(char* c, int* p1, int* p2)
     } else if (*(u8*)(c+0x6fd) != 0) {
         m = 0xc8000;
     }
-    v = (int)(((s64)*p1 * 0x180 + 0x800) >> 12);
+    v = FX_MUL(*p1, 0x180);
     *p2 = m - v;
     if (*p2 < 0xa000) *p2 = 0xa000;
     *p1 += 0x28000;
@@ -26380,7 +26381,7 @@ void func_ov002_020e444c(char *c)
         }
 
         if (func_ov002_020d225c(c) != 0) {
-            int z = (int)(((long long)(*(int *)(c + 0x574)) * 0x2400 + 0x800) >> 12) + 0xc000;
+            int z = FX_MUL((*(int *)(c + 0x574)), 0x2400) + 0xc000;
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x7000, z);
             char *p = *(char **)(c + 0x1d8);
             *(struct Matrix4x3 *)(p + 0x1c) = data_020a0e68;
@@ -26703,7 +26704,7 @@ int Player::Behavior()
         scale = 0x1400;
         r2 = 0x2000;
     }
-    temp = (s32)(((s64)r2 * 0x32000 + 0x800) >> 12);
+    temp = FX_MUL(r2, 0x32000);
     func_0203568c(((char *)this) + 0x380, temp);
     func_02035684(((char *)this) + 0x380, temp);
     mdCcAcPos_c.radius = scale * 0x28;
