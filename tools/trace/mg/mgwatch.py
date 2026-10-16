@@ -5,11 +5,13 @@ each hit logs r0-r3/lr. A hit counts only when the 8 bytes at pc match the
 symbol's overlay image (ov005 and ov006 share 0x020bfec0). Each breakpoint is
 cleared after MAX_HITS hits so per-frame functions do not stall the game.
 Create build/melonds/STOP to detach cleanly. Write "addr len" lines (both hex) to
-build/melonds/PEEK to read memory: the answer lands in PEEK.out.
+build/melonds/PEEK to read memory: the answer lands in PEEK.out. Write "addr hexbytes"
+lines to build/melonds/POKE to patch RAM (for example `bx lr` over a draw call to see
+what it draws): the old and new bytes land in POKE.out.
 
 usage: python tools/trace/mg/mgwatch.py [--unlock] [--out build/melonds/pass3.jsonl]
 """
-import argparse, json, os, re, socket, sys, time
+import argparse, json, os, re, select, socket, sys, time
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'trace'))
 RUN = os.path.join(ROOT, 'build', 'melonds')  # melonDS, the ROM copy and run files (gitignored)
@@ -29,19 +31,19 @@ CHECKS = [
     ('start round',       r'^Mg_CallStartRound$'),
     ('new record',        r'^_ZN\d+dScM\w+_c11OnNewRecordEv$'),
     ('deal done',         r'^_ZN\d+dScM\w+_c10OnDealDoneEv$'),
-    ('presenter anim',    r'^Presenter_Play(Anim[1247]|Miss|Match|Lose|Cheer)$'),  # old and new names
+    ('presenter anim',    r'^Presenter_Play(Anim[1247]|Miss|Match|Lose|Cheer)$'),
     ('credits',           r'^Mg_(Lose|Gain|Add|Sub)Credits$'),
     ('bet',               r'^MgCoins_(PlaceBet|AddBetCoin)$'),
     ('new badge',         r'^MiniGm_(IsNew|ClearNew)$'),
     ('alt variant',       r'^_ZN\d+dScM\w+_c12IsAltVariantEv$'),
-    ('wiggler pass',      r'^Wiggler_DrawPass[AB]$'),
+    ('wiggler pass',      r'^Wiggler_Draw(Pass[AB]|Target|Field)$'),
     ('trampoline item',   r'^TrmpItem_SetMotion\d$'),
     ('pachinko flyer/bg', r'^Pachinko(Flyer_State0|Bg_Start|Fx_Spawn)$'),
-    ('teresa sprites',    r'^_ZN13dScMgTeresa_c\d+(Exclaim_Spawn|FoundMark_Spawn|RisingIcon_Spawn|Reveal_State0)Ei$'),
+    ('teresa sprites',    r'^_ZN13dScMgTeresa_c\d+(Exclaim_Spawn|FoundMark_Spawn|VanishPuff_Spawn|RisingIcon_Spawn|FoundNumber_Spawn|Reveal_State0)Ei$'),
 ]
 MAX_HITS = 400
 # per-frame pollers: a few hits are enough
-LOW_CAP = {'MiniGm_IsNew': 20, 'PachinkoFlyer_State0': 20, '_ZN11dScMgBase_c12IsAltVariantEv': 20}
+LOW_CAP = {'MiniGm_IsNew': 20, 'Wiggler_DrawPassA': 20, 'Wiggler_DrawPassB': 20, 'Wiggler_DrawTarget': 20, 'Wiggler_DrawField': 20, 'PachinkoFlyer_State0': 20, '_ZN11dScMgBase_c12IsAltVariantEv': 20}
 
 
 def load_targets():
@@ -71,6 +73,7 @@ def main():
     a = ap.parse_args()
     stop = os.path.join(RUN, 'STOP')
     peek = os.path.join(RUN, 'PEEK')
+    poke = os.path.join(RUN, 'POKE')
     if os.path.exists(stop):
         os.remove(stop)
     targets = load_targets()
@@ -98,13 +101,42 @@ def main():
             while True:
                 if os.path.exists(stop):
                     break
-                if os.path.exists(peek):
+                pending = bool(cli._buf) or bool(select.select([cli.sock], [], [], 0)[0])
+                if os.path.exists(poke) and not pending:
+                    # POKE holds "addr hexbytes" lines (RAM only); answers in POKE.out.
+                    reqs = [l.split() for l in open(poke) if l.strip()]
+                    os.remove(poke)
+                    cli.interrupt()
+                    cli.sock.settimeout(5.0)
+                    cli.wait_for_stop()
+                    while cli._buf or select.select([cli.sock], [], [], 0.02)[0]:
+                        cli.wait_for_stop()
+                    with open(poke + '.out', 'w') as po:
+                        for r_ in reqs:
+                            try:
+                                a_, data = int(r_[0], 16), r_[1]
+                                before = cli.read_mem(a_, len(data) // 2).hex()
+                                res = cli.send_packet('M%x,%x:%s' % (a_, len(data) // 2, data))
+                                after = cli.read_mem(a_, len(data) // 2).hex()
+                                po.write('%s %s was %s now %s\n' % (r_[0], res, before, after))
+                            except Exception as e:
+                                po.write('%s error %s\n' % (' '.join(r_), e))
+                    cli.sock.settimeout(2.0)
+                    cli.cont()
+                    continue
+                if os.path.exists(peek) and not pending:
                     # PEEK holds "addr len" lines; halt, read, answer in PEEK.out, resume.
+                    # Skipped while a stop packet is waiting: that stop is handled
+                    # first, or the interrupt's reply and it would cross.
                     reqs = [l.split() for l in open(peek) if l.strip()]
                     os.remove(peek)
                     cli.interrupt()
                     cli.sock.settimeout(5.0)
                     cli.wait_for_stop()
+                    # A breakpoint that fired just before the interrupt leaves a
+                    # second stop reply behind; drain it so replies stay paired.
+                    while cli._buf or select.select([cli.sock], [], [], 0.02)[0]:
+                        cli.wait_for_stop()
                     with open(peek + '.out', 'w') as po:
                         for r_ in reqs:
                             try:  # both words are hex, with or without 0x
@@ -113,6 +145,10 @@ def main():
                                 po.write('%s error %s\n' % (' '.join(r_), e))
                     cli.sock.settimeout(2.0)
                     cli.cont()
+                    continue
+                # Poll briefly so STOP and PEEK are seen within 50 ms; only read
+                # a stop packet once bytes are waiting, so none is cut in half.
+                if not cli._buf and not select.select([cli.sock], [], [], 0.05)[0]:
                     continue
                 try:
                     cli.wait_for_stop()
