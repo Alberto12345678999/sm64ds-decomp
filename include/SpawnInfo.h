@@ -38,6 +38,9 @@ template <class T> struct SpawnInfo {
     Fix12i farDistance;
 };
 
+/* 0x1c with 32-bit pointers; the PC port's 64-bit pointers widen classInit. */
+#ifndef SM64DS_PLATFORM_PC
 typedef char SpawnInfo_size_must_be_0x1c[sizeof(SpawnInfo<void>) == 0x1c ? 1 : -1];
+#endif
 
 #endif /* SPAWNINFO_H */
