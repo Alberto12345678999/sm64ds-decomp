@@ -277,7 +277,7 @@ _ZN10dMgPsOpt_cD1Ev kind:function(arm,size=0x28) addr:0x020b929c
 _ZN10dMgPsOpt_cC1Ev kind:function(arm,size=0x16c) addr:0x020b92c4
 _ZN10dMgPsOpt_c11TouchIcon_cC1Ev kind:function(arm,size=0x1c) addr:0x020b9430
 data_ov004_020b944c kind:data(any) addr:0x020b944c
-data_ov004_020b9468 kind:data(any) addr:0x020b9468
+sMgBrushPalette kind:data(any) addr:0x020b9468
 sMgCoinRiseFrames kind:data(any) addr:0x020b9488
 __sinit_d_s_mg_base.cpp kind:function(arm,size=0xd0) addr:0x020b948c
 __sinit_unit020b2c84.cpp kind:function(arm,size=0x574) addr:0x020b955c
@@ -583,7 +583,7 @@ data_ov004_020bbf94 kind:data(any) addr:0x020bbf94
 sMgSpriteTables kind:data(any) addr:0x020bbfa8
 data_ov004_020bbfbc kind:data(any) addr:0x020bbfbc
 data_ov004_020bbfd0 kind:data(any) addr:0x020bbfd0
-data_ov004_020bbfe4 kind:data(any) addr:0x020bbfe4
+sMgStockCounterFiles kind:data(any) addr:0x020bbfe4
 data_ov004_020bbff8 kind:data(any) addr:0x020bbff8
 data_ov004_020bc00c kind:data(any) addr:0x020bc00c
 data_ov004_020bc020 kind:data(any) addr:0x020bc020
@@ -703,7 +703,7 @@ pmf_Coin_MoveThenRefund kind:data(any) addr:0x020bc818
 pmf_Coin_Move_3 kind:data(any) addr:0x020bc820
 sMgCoinsButtonSprites kind:data(any) addr:0x020bc828
 sMgCoinsDeltaSprites kind:data(any) addr:0x020bc83c
-data_ov004_020bc850 kind:data(any) addr:0x020bc850
+sMgScoreX kind:data(any) addr:0x020bc850
 sMgRecordBannerX kind:data(any) addr:0x020bc854
 sMgDrawBannerY kind:data(any) addr:0x020bc858
 sMgScoreDigitsX kind:data(any) addr:0x020bc85c
@@ -722,7 +722,7 @@ sMgWinBannerX kind:data(any) addr:0x020bc88c
 sMgLoseBannerY kind:data(any) addr:0x020bc890
 sMgRetryBannerX kind:data(any) addr:0x020bc894
 sMgPlayAgainY kind:data(any) addr:0x020bc898
-data_ov004_020bc89c kind:data(any) addr:0x020bc89c
+sMgScoreY kind:data(any) addr:0x020bc89c
 sMgNextBanner kind:data(any) addr:0x020bc8a0
 sMgQuitY kind:data(any) addr:0x020bc8a4
 sMgPlayAgainX kind:data(any) addr:0x020bc8a8

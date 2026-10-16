@@ -15796,7 +15796,7 @@
         "return:void *"
       ]
     },
-    "data_ov006_0213ae48": {
+    "sPresenterIdleTexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:void *"
       ]
@@ -15806,7 +15806,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_0213ae90": {
+    "sPresenterCheerTexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:int"
       ]

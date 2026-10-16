@@ -700,16 +700,20 @@ s32 dScMgSlot3_c::Render()
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov006_0213e9a4[self->mWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x10, -1, 2, 0x1000, 0x1000, 0, 1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+                0, sSlot3FaceSprites[self->mWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x10, -1,
+                2, 0x1000, 0x1000, 0, 1);
         }
         for (i = 0; i < 3; i++) {
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-                0, data_ov006_0213e9a4[self->mTargetFace * 3 + i], 0x80, self->mReelDrawY + 0x60,
-                -1, 2, 0x1000, 0x1000, 0, 1);
+                0, sSlot3FaceSprites[self->mTargetFace * 3 + i], 0x80, self->mReelDrawY + 0x60, -1,
+                2, 0x1000, 0x1000, 0, 1);
         }
     } else {
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov006_0213e9a4[self->mWinSymbol * 3 + i], 0x80, 0x60, -1, 2, 0x1000, 0x1000, 0, 1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0,
+                                                        sSlot3FaceSprites[self->mWinSymbol * 3 + i],
+                                                        0x80, 0x60, -1, 2, 0x1000, 0x1000, 0, 1);
         }
     }
 
@@ -720,8 +724,8 @@ s32 dScMgSlot3_c::Render()
             for (i2 = 0; i2 < 3; i2++) {
                 int y;
                 for (j2 = 0, y = 0x30; j2 < 3; j2++) {
-                    Hud_RenderSprite(data_ov006_0213e9a4[*(u8 *)(p + j2 + 0x5031) * 3 + i2],
-                                        y - (*(int *)((int)c + i2 * 4 + 0x4ff4) >> 12), 0x60, -1, -1);
+                    Hud_RenderSprite(sSlot3FaceSprites[*(u8 *)(p + j2 + 0x5031) * 3 + i2],
+                                     y - (*(int *)((int)c + i2 * 4 + 0x4ff4) >> 12), 0x60, -1, -1);
                     y += 0x50;
                 }
                 p += 3;
@@ -736,8 +740,8 @@ s32 dScMgSlot3_c::Render()
                 row = a / 0x50;
                 rem = a % 0x50;
                 for (j2 = 0, y = 0x30; j2 < 4; j2++) {
-                    Hud_RenderSprite(data_ov006_0213e9a4[*(u8 *)(p + row + 0x501c) * 3 + i2],
-                                        y - rem, 0x60, -1, -1);
+                    Hud_RenderSprite(sSlot3FaceSprites[*(u8 *)(p + row + 0x501c) * 3 + i2], y - rem,
+                                     0x60, -1, -1);
                     row = (row + 1) % self->mStripLength;
                     y += 0x50;
                 }

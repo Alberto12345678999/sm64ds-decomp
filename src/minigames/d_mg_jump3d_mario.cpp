@@ -101,15 +101,15 @@ extern Jump3DState pmf_dMgJump3DMario_c_StateRespawn_2;
 extern Jump3DState pmf_dMgJump3DMario_c_StateFallOut;
 
 /* Slots the current mAnimIdx (0/1/2) picks the anim file from. */
-extern BCA_File **data_ov006_0213b098[];
+extern BCA_File **sJump3DAnimTable[];
 
 /* Tuning words, read as plain ints. */
-extern int data_ov006_0213b008;
-extern int data_ov006_0213b00c;
+extern int sJump3DBounceVy;
+extern int sJump3DRiseVy;
 extern int data_ov006_0213b014;
-extern int data_ov006_0213b010;
-extern int data_ov006_0213b018;
-extern int data_ov006_0213b01c;
+extern int sJump3DFallSpeed;
+extern int sJump3DGravityStep;
+extern int sJump3DMoveSpeed;
 extern int sJump3DMariosLeft;
 extern int sJump3DRisenOutCount;
 
@@ -192,12 +192,12 @@ extern "C" void Jump3D_SetTuning(int a)
     int b;
     if (a > 0x3000) a = 0x3000;
     b = func_020531a4(a);
-    data_ov006_0213b010 = (int)(((long long)b * -0x2400 + 0x800) >> 12);
-    data_ov006_0213b018 = (int)(((long long)a * 0xe0 + 0x800) >> 12);
-    data_ov006_0213b00c = (int)(((long long)b * 0x4c00 + 0x800) >> 12);
-    data_ov006_0213b01c = (int)(((long long)b * 0x200 + 0x800) >> 12);
+    sJump3DFallSpeed = (int)(((long long)b * -0x2400 + 0x800) >> 12);
+    sJump3DGravityStep = (int)(((long long)a * 0xe0 + 0x800) >> 12);
+    sJump3DRiseVy = (int)(((long long)b * 0x4c00 + 0x800) >> 12);
+    sJump3DMoveSpeed = (int)(((long long)b * 0x200 + 0x800) >> 12);
     data_ov006_0213b014 = (int)(((long long)b * 0x180 + 0x800) >> 12);
-    data_ov006_0213b008 = (int)(((long long)b * 0x5000 + 0x800) >> 12);
+    sJump3DBounceVy = (int)(((long long)b * 0x5000 + 0x800) >> 12);
 }
 
 // @symbol Jump3D_DrawAll
@@ -284,8 +284,8 @@ extern "C" void Jump3D_SetLowGravity(void)
     int i;
     int off;
     i = 0;
-    data_ov006_0213b018 = 0x100;
-    data_ov006_0213b010 = -0x4800;
+    sJump3DGravityStep = 0x100;
+    sJump3DFallSpeed = -0x4800;
     if (sJump3DMarioCount <= 0)
         return;
     off = 0;
@@ -303,7 +303,7 @@ extern "C" void Jump3D_StopGravity(void)
     int n = sJump3DMarioCount;
     int i = 0;
     int off;
-    data_ov006_0213b018 = 0;
+    sJump3DGravityStep = 0;
     if (n <= 0)
     {
         return;
@@ -374,7 +374,7 @@ extern "C" int Jump3D_InitPool(char *base, int count)
             off += 0xb8;
         } while (i < sJump3DMarioCount);
     }
-    data_ov006_0213b010 = -0x1e00;
+    sJump3DFallSpeed = -0x1e00;
     return 1;
 }
 
@@ -458,7 +458,7 @@ void dMgJump3DMario_c::Draw()
 /* The per-frame update: gravity, integrate, dispatch mState. */
 void dMgJump3DMario_c::Update()
 {
-    ApproachLinear(mVel.y, data_ov006_0213b010, data_ov006_0213b018);
+    ApproachLinear(mVel.y, sJump3DFallSpeed, sJump3DGravityStep);
     AddVec3(&mPos, &mVel, &mPos);
     (this->*mState)();
     Camera_ProjectToScreen16(sMgMainCamera, &mPos, &mScreenX);
@@ -542,7 +542,7 @@ void dMgJump3DMario_c::StateHold()
     }
     if (mCommand == 1) {
         mCommand = 0;
-        mVel.y = data_ov006_0213b008;
+        mVel.y = sJump3DBounceVy;
         EnterHit();
     } else if (ApproachLinear2(mTimer, 0, 1)) {
         mCommand = 0;
@@ -595,7 +595,7 @@ void dMgJump3DMario_c::StateMove()
 
     if (st == 1) {
         mCommand = 0;
-        mVel.y = data_ov006_0213b008;
+        mVel.y = sJump3DBounceVy;
         if (mAnimIdx != 0)
             mAnimIdx = 0;
         else
@@ -628,7 +628,7 @@ void dMgJump3DMario_c::StateMove()
                 if (t < 0) t = -t;
                 if (t < 0x26 && (int)y < kScreenYMax) {
                     int v[3];
-                    int *p = &data_ov006_0213b00c;
+                    int *p = &sJump3DRiseVy;
                     int t0 = (ax - 0x80) << 12;
                     int t1 = (-az) << 12;
                     v[0] = t0;
@@ -638,12 +638,13 @@ void dMgJump3DMario_c::StateMove()
                        (notes/experiments/jump3d-2711-statemove-volatile-store.md). */
                     *(volatile int *)&v[2] = 0;
                     mVel.y = *p;
-                    mVel.x = data_ov006_0213b01c * dx;
+                    mVel.x = sJump3DMoveSpeed * dx;
                     if (mAnimIdx != 0)
                         mAnimIdx = 0;
                     else
                         mAnimIdx = 1;
-                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
+                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                        &mModelAnim, *sJump3DAnimTable[mAnimIdx], 0x40000000, kAnimSpeed, 0);
                     mModelAnim.dExtFrameCtrl_c::currFrame = 0;
                     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xed, mPos.x << 3, mPos.y << 3, mPos.z << 3);
                     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xee, v[0] << 3, v[1] << 3, v[2] << 3);
@@ -667,7 +668,8 @@ void dMgJump3DMario_c::StateMove()
             mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
             if (mVel.y > 0) {
                 mAnimIdx = 2;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                    &mModelAnim, *sJump3DAnimTable[mAnimIdx], 0x40000000, kAnimSpeed, 0);
                 mModelAnim.dExtFrameCtrl_c::currFrame = 0;
                 Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
             }
@@ -675,7 +677,8 @@ void dMgJump3DMario_c::StateMove()
             mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
             if (mVel.y > 0) {
                 mAnimIdx = 2;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                    &mModelAnim, *sJump3DAnimTable[mAnimIdx], 0x40000000, kAnimSpeed, 0);
                 mModelAnim.dExtFrameCtrl_c::currFrame = 0;
                 Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
             }
@@ -744,7 +747,7 @@ void dMgJump3DMario_c::StateRiseOut()
 void dMgJump3DMario_c::StartRiseOut()
 {
     mVel.x = 0;
-    mVel.y = data_ov006_0213b00c;
+    mVel.y = sJump3DRiseVy;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, sJump3DAnimRollJump, 0x40000000,
                                                 kAnimSpeed, 0);
     mModelAnim.dExtFrameCtrl_c::currFrame = 0;
@@ -788,7 +791,8 @@ void dMgJump3DMario_c::StateBounce()
         mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
         if (mVel.y > 0) {
             mAnimIdx = 2;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *sJump3DAnimTable[mAnimIdx],
+                                                        0x40000000, kAnimSpeed, 0);
             mModelAnim.dExtFrameCtrl_c::currFrame = 0;
             Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
         }
@@ -796,7 +800,8 @@ void dMgJump3DMario_c::StateBounce()
         mVel.x = -(int)(((s64)mVel.x * 0xd00 + 0x800) >> 12);
         if (mVel.y > 0) {
             mAnimIdx = 2;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *sJump3DAnimTable[mAnimIdx],
+                                                        0x40000000, kAnimSpeed, 0);
             mModelAnim.dExtFrameCtrl_c::currFrame = 0;
             Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
         }
@@ -804,7 +809,7 @@ void dMgJump3DMario_c::StateBounce()
         u16 t = mCommand;
         if (t == 1) {
             mCommand = 0;
-            mVel.y = data_ov006_0213b008;
+            mVel.y = sJump3DBounceVy;
             EnterHit();
             return;
         }
@@ -839,7 +844,7 @@ void dMgJump3DMario_c::StateWindUp()
     mVisible = 1;
     mPos.y = 0;
     mVel.x = mVel.x << 1;
-    mVel.y = data_ov006_0213b00c;
+    mVel.y = sJump3DRiseVy;
     mCommand = 0;
     EnterHit();
 }
@@ -879,7 +884,7 @@ void dMgJump3DMario_c::StateRespawn()
         rnd = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
         mPos.x = ((int)rnd - 0x800) * 0xc0;
         mVel.y = 0;
-        speed = data_ov006_0213b01c;
+        speed = sJump3DMoveSpeed;
         rnd = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
         mVel.x = (int)(((s64)(((int)rnd - 0x800) << 1) * speed + 0x800) >> 12);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, sJump3DAnimWallJump, 0x40000000,

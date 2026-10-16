@@ -231,11 +231,11 @@ extern u8   data_ov006_0212ebc8[];
 extern unsigned char data_ov006_0212ebd8[];
 extern unsigned char data_ov006_0212ebe0[];
 extern int  data_ov006_0212ec08[];
-extern int  data_ov006_0212ec30[];
+extern int sPachinko2CrossRowY[];
 extern int  data_ov006_0212ec80[];
 extern unsigned short data_ov006_0212ecac[];
-extern s32  data_ov006_0212ecbc[];
-extern s32  data_ov006_0212ecd4[];
+extern s32 sPachinko2CupRightStops[];
+extern s32 sPachinko2CupLeftStops[];
 extern unsigned short *data_ov006_0213daa4[];
 extern int *data_ov006_0213db6c[];
 extern int *data_ov006_0213db84[];
@@ -486,9 +486,8 @@ void dScMgPachinko2_c::Cup_StateHopRight(int i) {
     v = mCups[i].x >> 0xc;
 
     if (mCups[i].phase == 2) {
-        if (v >= data_ov006_0212ecbc[i + 4]) {
-            mCups[i].x =
-                data_ov006_0212ecbc[i + 4] << 0xc;
+        if (v >= sPachinko2CupRightStops[i + 4]) {
+            mCups[i].x = sPachinko2CupRightStops[i + 4] << 0xc;
             mCups[i].vx = 0;
             mCups[i].phase = 0;
             mCups[i].state = 0;
@@ -496,7 +495,7 @@ void dScMgPachinko2_c::Cup_StateHopRight(int i) {
         }
     }
 
-    if (v >= data_ov006_0212ecbc[i + 2]) {
+    if (v >= sPachinko2CupRightStops[i + 2]) {
         if (mCups[i].vx >= 0x800) {
             mCups[i].vx = mCups[i].vx - 0x80;
         }
@@ -504,10 +503,10 @@ void dScMgPachinko2_c::Cup_StateHopRight(int i) {
         mCups[i].vx = mCups[i].vx + 0x80;
     }
 
-    if (v < data_ov006_0212ecbc[i])
+    if (v < sPachinko2CupRightStops[i])
         return;
 
-    mCups[i].x = data_ov006_0212ecbc[i] << 0xc;
+    mCups[i].x = sPachinko2CupRightStops[i] << 0xc;
     mCups[i].vx = -0x1000;
     mCups[i].phase++;
     mCups[i].timer = 0;
@@ -558,9 +557,8 @@ void dScMgPachinko2_c::Cup_StateHopLeft(int i) {
     v = mCups[i].x >> 0xc;
 
     if (mCups[i].phase == 2) {
-        if (v <= data_ov006_0212ecd4[i + 4]) {
-            mCups[i].x =
-                data_ov006_0212ecd4[i + 4] << 0xc;
+        if (v <= sPachinko2CupLeftStops[i + 4]) {
+            mCups[i].x = sPachinko2CupLeftStops[i + 4] << 0xc;
             mCups[i].vx = 0;
             mCups[i].phase = 0;
             mCups[i].state = 0;
@@ -568,7 +566,7 @@ void dScMgPachinko2_c::Cup_StateHopLeft(int i) {
         }
     }
 
-    if (v <= data_ov006_0212ecd4[i + 2]) {
+    if (v <= sPachinko2CupLeftStops[i + 2]) {
         if (mCups[i].vx <= -0x800) {
             mCups[i].vx = mCups[i].vx + 0x80;
         }
@@ -576,10 +574,10 @@ void dScMgPachinko2_c::Cup_StateHopLeft(int i) {
         mCups[i].vx = mCups[i].vx - 0x80;
     }
 
-    if (v > data_ov006_0212ecd4[i])
+    if (v > sPachinko2CupLeftStops[i])
         return;
 
-    mCups[i].x = data_ov006_0212ecd4[i] << 0xc;
+    mCups[i].x = sPachinko2CupLeftStops[i] << 0xc;
     mCups[i].vx = 0x1000;
     mCups[i].phase++;
     mCups[i].timer = 0;
@@ -1351,14 +1349,14 @@ void dScMgPachinko2_c::Paddle_StateCross(int i) {
             if (mPaddles[i].vx <= 0xc00)
                 mPaddles[i].vx += 0x20;
             if (i == 0) {
-                if (v2 != data_ov006_0212ec30[i]) {
+                if (v2 != sPachinko2CrossRowY[i]) {
                     if (mPaddles[i].vy >= -0xc00)
                         mPaddles[i].vy -= 0x30;
                 } else {
                     mPaddles[i].vy = 0;
                 }
             } else {
-                if (v2 != data_ov006_0212ec30[i]) {
+                if (v2 != sPachinko2CrossRowY[i]) {
                     if (mPaddles[i].vy <= 0xc00)
                         mPaddles[i].vy += 0x30;
                 } else {
@@ -1388,14 +1386,14 @@ void dScMgPachinko2_c::Paddle_StateCross(int i) {
             if (mPaddles[i].vx >= -0xc00)
                 mPaddles[i].vx -= 0x20;
             if (i == 0) {
-                if (v2 != data_ov006_0212ec30[i]) {
+                if (v2 != sPachinko2CrossRowY[i]) {
                     if (mPaddles[i].vy >= -0xc00)
                         mPaddles[i].vy -= 0x30;
                 } else {
                     mPaddles[i].vy = 0;
                 }
             } else {
-                if (v2 != data_ov006_0212ec30[i]) {
+                if (v2 != sPachinko2CrossRowY[i]) {
                     if (mPaddles[i].vy <= 0xc00)
                         mPaddles[i].vy += 0x30;
                 } else {

@@ -243,12 +243,12 @@ s32 dScMgMCarlo2_c::Behavior()
             if (data_ov006_0213d6fc == 1)
                 data_ov006_0213d6fc = 0;
             dealt = sMCarlo2DealProgress >> 12;
-            if (data_ov006_0213d6f4 != 0 && dealt > 10 && dealt <= 18
-                && Dealer_IsIdle(raw + 0x4f38) != 0) {
+            if (sMCarlo2DeckSize != 0 && dealt > 10 && dealt <= 18 &&
+                Dealer_IsIdle(raw + 0x4f38) != 0) {
                 mDealCount = 0;
                 mShared.unk_1e6 = 0;
                 Dealer_StartReveal(raw + 0x4f38, 2, &mDealCount);
-                if (data_ov006_0213d6f4 == 2)
+                if (sMCarlo2DeckSize == 2)
                     mShared.unk_01a = 0;
             } else {
                 int lim = mDealCount + 0x12;
@@ -263,7 +263,7 @@ s32 dScMgMCarlo2_c::Behavior()
                 if (dScMgMCarlo2_c::HasRemovablePair() != 0) {
                     data_ov006_0213d6fc = 1;
                 } else {
-                    if (data_ov006_0213d6f8 != 0) {
+                    if (sMCarlo2CardsWanted != 0) {
                         if (mShared.unk_01a == 1) {
                             mShared.unk_01a = 0;
                         } else if (Dealer_IsIdleAtRest(raw + 0x4f38) != 0) {
@@ -372,12 +372,12 @@ void dMgMCarlo2CardObj_c::DealIn(int slot)
         return;
 
     if (mSlot >= 0x14) {
-        mX = (0x70 - ((data_ov006_0213d6f4 >> 2) << 1)) << 12;
+        mX = (0x70 - ((sMCarlo2DeckSize >> 2) << 1)) << 12;
         mY = -0x30000;
         sMCarlo2CardsTail = this;
         mState = 1;
     } else if (mState == 0) {
-        mX = (0x70 - ((data_ov006_0213d6f4 >> 2) << 1)) << 12;
+        mX = (0x70 - ((sMCarlo2DeckSize >> 2) << 1)) << 12;
         mY = -0x30000;
         mState = 4;
         sMCarlo2CardsMoving++;
@@ -469,7 +469,7 @@ void dMgMCarlo2CardObj_c::Update(int slot)
         }
         if (mDealDelay != 0)
             return;
-        data_ov006_0213d6f4--;
+        sMCarlo2DeckSize--;
         DealIn(slot);
         return;
     case 2:
@@ -573,8 +573,8 @@ void dScMgMCarlo2_c::SetupBoard(dMgMCarlo2CardObj_c* base)
         sMCarlo2SecondPick = 0;
         sMCarlo2BoardDelay = 0;
         sMCarlo2CardsMoving = 0;
-        data_ov006_0213d6f8 = 0x28;
-        data_ov006_0213d6f4 = 0x28;
+        sMCarlo2CardsWanted = 0x28;
+        sMCarlo2DeckSize = 0x28;
         sMCarlo2BoardStep = 0;
         sMCarlo2Score = 0;
         sMCarlo2DealProgress = 0;
@@ -622,7 +622,7 @@ int dScMgMCarlo2_c::HasRemovablePair()
 int dScMgMCarlo2_c::BoardBusy() {
     int ret = 1;
     int dealt = (sMCarlo2DealProgress << 4) >> 0x10;
-    int wanted = data_ov006_0213d6f8;
+    int wanted = sMCarlo2CardsWanted;
     if (wanted > 0x14) wanted = 0x14;
     if (dealt == wanted && sMCarlo2CardsMoving == 0) {
         if (sMCarlo2FirstPick == 0 || sMCarlo2SecondPick == 0) {
@@ -637,7 +637,7 @@ int dScMgMCarlo2_c::BoardBusy() {
 int dScMgMCarlo2_c::BoardReady() {
     int dealt = (sMCarlo2DealProgress << 4) >> 16;
     int ready = 0;
-    int wanted = data_ov006_0213d6f8;
+    int wanted = sMCarlo2CardsWanted;
 
     if (wanted > 0x14) {
         wanted = 0x14;
@@ -762,10 +762,10 @@ void dScMgMCarlo2_c::UpdateBoard()
             sMCarlo2SecondPick = 0;
             sMCarlo2FirstPick = 0;
             ApproachLinear2(sMCarlo2Score, 0x270f, 2);
-            ApproachLinear2(data_ov006_0213d6f8, 0, 2);
+            ApproachLinear2(sMCarlo2CardsWanted, 0, 2);
             Mg_SubmitScore(sMCarlo2Score);
 
-            if (data_ov006_0213d6f8 <= 0x14) {
+            if (sMCarlo2CardsWanted <= 0x14) {
                 {
                     int i = 0;
                     s16 idx = *(volatile s16 *)&sMCarlo2BoardStep;
@@ -810,8 +810,8 @@ void dScMgMCarlo2_c::UpdateBoard()
                     }
                 }
                 ApproachLinear2(sMCarlo2BoardStep, 9, 1);
-                data_ov006_0213d6f4 += 0x14;
-                data_ov006_0213d6f8 += 0x14;
+                sMCarlo2DeckSize += 0x14;
+                sMCarlo2CardsWanted += 0x14;
             }
         }
         {
@@ -827,7 +827,7 @@ void dScMgMCarlo2_c::UpdateBoard()
             } while (i < (sMCarlo2DealProgress >> 12));
         }
     } else {
-        int v = data_ov006_0213d6f8;
+        int v = sMCarlo2CardsWanted;
         if (v > 0x14) v = 0x14;
         ApproachLinear(sMCarlo2DealProgress, v << 12, 0x800);
         {

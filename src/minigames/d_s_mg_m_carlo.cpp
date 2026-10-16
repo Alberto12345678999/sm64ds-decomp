@@ -57,9 +57,9 @@ extern int data_0209e650;
 extern int sMCarloCardsMoving;
 extern int sMCarloCols;
 extern int sMCarloRows;
-extern int data_ov006_0213d568;
+extern int sMCarloPayout;
 extern int sMCarloDeckSize;
-extern int data_ov006_0213d5e0[8]; /* the eight face weights */
+extern int sMCarloFaceCounts[8]; /* the eight face weights */
 extern int data_020a0db0;
 extern unsigned short data_ov006_0213d600[];
 extern int sMgCardSprites[];
@@ -203,7 +203,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
                 MgCoins_StartSpend(dealt);
                 mTimer = -1;
             } else {
-                MgCoins_StartPayout((char*)data_ov006_0213d568);
+                MgCoins_StartPayout((char *)sMCarloPayout);
             }
             mDealCount = 0;
             mRoundState += 1;
@@ -338,8 +338,8 @@ s32 dScMgMCarlo_c::Behavior()
                         {
                             dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                             int base = (active != 0) ? active->mCredits : 0;
-                            Mg_SaveRecordPair(data_ov006_0213d568 + base,
-                                                (active != 0) ? active->mHudScore : 0);
+                            Mg_SaveRecordPair(sMCarloPayout + base,
+                                              (active != 0) ? active->mHudScore : 0);
                         }
                         mPromptEnabled = 0;
                         mRoundState++;
@@ -684,15 +684,15 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
     if (stars < 5) {
         sMCarloCols = 6;
         sMCarloRows = 6;
-        data_ov006_0213d568 = 5;
+        sMCarloPayout = 5;
     } else if (stars < 0xa) {
         sMCarloCols = 8;
         sMCarloRows = 7;
-        data_ov006_0213d568 = 8;
+        sMCarloPayout = 8;
     } else {
         sMCarloCols = 0xa;
         sMCarloRows = 8;
-        data_ov006_0213d568 = 0xa;
+        sMCarloPayout = 0xa;
     }
 
     sMCarloDeckSize = sMCarloRows * sMCarloCols;
@@ -703,9 +703,9 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
         for (face = 0; face < 8; face++)
         {
             if (face < sMCarloRows)
-                data_ov006_0213d5e0[face] = sMCarloCols;
+                sMCarloFaceCounts[face] = sMCarloCols;
             else
-                data_ov006_0213d5e0[face] = 0;
+                sMCarloFaceCounts[face] = 0;
         }
 
         cardIndex = 0;
@@ -827,14 +827,14 @@ int dScMgMCarlo_c::DrawCardValue(void)
     int face;
     int roll;
     for (face = 0; face < 8; face++)
-        total += data_ov006_0213d5e0[face];
+        total += sMCarloFaceCounts[face];
     roll = (int)(((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13);
     total = (total * roll) >> 0xc;
     for (face = 0; face < 8; face++) {
-        total -= data_ov006_0213d5e0[face];
+        total -= sMCarloFaceCounts[face];
         if (total < 0) {
             drawnFace = (unsigned char)face;
-            data_ov006_0213d5e0[face]--;
+            sMCarloFaceCounts[face]--;
             break;
         }
     }

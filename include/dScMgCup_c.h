@@ -101,7 +101,7 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     s32 mIds[3];          /* 0x5420 -- which cup sits in each slot */
     s32 mSwap0;           /* 0x542c -- index into mIds, from data_ov006_0213c0c0 */
     s32 mSwap1;           /* 0x5430 -- the other index, from data_ov006_0213c0c4 */
-    s32 mAnim[3];         /* 0x5434 -- index into data_ov006_0213c0d8 */
+    s32 mAnim[3];         /* 0x5434 -- index into sCupAnimTable */
     s32 mFrame[3];        /* 0x5440 */
     s32 mTick[3];         /* 0x544c -- counts up to that frame's length */
     s32 mShuffleSound;    /* 0x5458 */
@@ -109,7 +109,7 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     s16 mShuffleSpeed;    /* 0x545e */
     /* Field names below describe their observed use; they are not ROM names. */
     u8  mSwapsRemaining;  /* 0x5460 -- swaps left this round */
-    u8  mRoundRow;        /* 0x5461 -- round row in data_ov006_0213c094 */
+    u8 mRoundRow;         /* 0x5461 -- round row in sCupRoundTable */
     u8  mCupContents[3];  /* 0x5462 -- per-cup value; deed8's mode argument */
     u8  mFlags[3];        /* 0x5465 */
     u8  mTargetContent;   /* 0x5468 -- the value the HUD is asking for */

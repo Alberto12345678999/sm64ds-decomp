@@ -2425,7 +2425,7 @@ void Hana_LoadBackground(void){
 }
 
 /* The OamAttr* table OAM::Render indexes: the five scalar attributes, the
- * two data_ov006_021375dc entries, then every third pointer out of the
+ * two sHanaBackgroundPartsB entries, then every third pointer out of the
  * vu32* ring sHanaBackgroundParts. Non-constant initializers, so the
  * compiler emits __sinit_d_s_mg_hanachan_methods.cpp to copy them at load. */
 extern void* data_ov006_021374b8;
@@ -2433,7 +2433,7 @@ extern void* data_ov006_021374c4;
 extern void* data_ov006_021374ac;
 extern void* data_ov006_021374e8;
 extern void* data_ov006_021374f4;
-extern void* data_ov006_021375dc[];
+extern void *sHanaBackgroundPartsB[];
 
 void *sWigglerSprites[11] = {
     data_ov006_021374b8,
@@ -2441,8 +2441,8 @@ void *sWigglerSprites[11] = {
     data_ov006_021374ac,
     data_ov006_021374e8,
     data_ov006_021374f4,
-    data_ov006_021375dc[0],
-    data_ov006_021375dc[1],
+    sHanaBackgroundPartsB[0],
+    sHanaBackgroundPartsB[1],
     (void *)sHanaBackgroundParts[0],
     (void *)sHanaBackgroundParts[3],
     (void *)sHanaBackgroundParts[6],

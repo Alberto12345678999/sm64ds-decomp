@@ -35,7 +35,7 @@
  *
  * Many states share one shape. The enter handler sets mTimer, shows a
  * graphic through Mg_ShowBanner (file index, x, y; the x/y words at
- * data_ov004_020bc850..0x020bc8b8, except 0x020bc8a0, the file-index
+ * sMgScoreX..0x020bc8b8, except 0x020bc8a0, the file-index
  * override, are set by Mg_ResetBannerLayout and patched by
  * Mg_ResetRecordBannerPos and Mg_PlaceBannersOnTopScreen) and installs a
  * behavior. sMgNextBanner replaces the next such file index once;
@@ -182,7 +182,7 @@ extern int sMgBannerButtonsArmed;
 extern int gMgCoinsShowDelta;
 extern int sMgCoinsDeltaShown;
 
-extern int data_ov004_020bc850;
+extern int sMgScoreX;
 extern int sMgRecordBannerX;
 extern int sMgDrawBannerY;
 extern int sMgScoreDigitsX;
@@ -201,7 +201,7 @@ extern int sMgWinBannerX;
 extern int sMgLoseBannerY;
 extern int sMgRetryBannerX;
 extern int sMgPlayAgainY;
-extern int data_ov004_020bc89c;
+extern int sMgScoreY;
 extern int sMgNextBanner;
 extern int sMgQuitY;
 extern int sMgPlayAgainX;
@@ -293,8 +293,8 @@ extern "C" void Mg_ResetBannerLayout(void) {
     sMgRetryBannerX = 0x80;
     sMgPlayAgainX = 0x80;
     sMgQuitX = 0x80;
-    data_ov004_020bc850 = 0x80;
-    data_ov004_020bc89c = 0x60;
+    sMgScoreX = 0x80;
+    sMgScoreY = 0x60;
     sMgScoreDigitsX = 0x80;
     sMgScoreDigitsY = 0x80;
 }
@@ -1038,7 +1038,7 @@ void dMgState_c::DrawScore() {
     int r;
     if (gMgScene == 0) return;
     r = Mg_GetSubmittedScore();
-    Mg_DrawBigNumber(data_ov004_020bc850, data_ov004_020bc89c, r, -1, -1, 0, 0);
+    Mg_DrawBigNumber(sMgScoreX, sMgScoreY, r, -1, -1, 0, 0);
 }
 
 // @symbol _ZN10dMgState_c15DrawScoreDigitsEv

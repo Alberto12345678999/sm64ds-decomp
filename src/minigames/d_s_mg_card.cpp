@@ -50,7 +50,7 @@ extern int pmf_Dealer_StateReveal[2];
 /* The two element vtables are emitted here by their key functions. The four
    measured array-construction ABI callbacks reference the ROM address points;
    these names are already mangled, so C linkage means "use literally". */
-extern unsigned short data_ov006_0213bd64[];
+extern unsigned short sCardFaceSprites[];
 extern void *sCardObjSprites[];
 extern int sMgCardSprites[];
 extern void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
@@ -64,7 +64,7 @@ extern "C" void Vec2_Sub(int* o, int* a, int* b);
 extern "C" void func_0203d680(int* out, int* in, int scale);
 extern const Five data_ov006_0213bcd8;
 extern int RandomIntInternal(int *seed);
-extern int data_ov006_0213bd18[];
+extern int sCardFaceWeights[];
 extern int data_0209e650;
 extern "C" void Camera_InitDealerView(void *c);
 extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
@@ -826,7 +826,7 @@ s32 dScMgCard_c::CleanupResources()
 void dScMgCard_c::FillWeights(int v) {
     int i;
     for (i = 0; i < 6; i++) {
-        data_ov006_0213bd18[i] = v;
+        sCardFaceWeights[i] = v;
     }
 }
 
@@ -842,19 +842,18 @@ int dScMgCard_c::DrawCardValue(void)
   int i;
   for (i = 0; i < 6; i++)
   {
-    sum += data_ov006_0213bd18[i];
+      sum += sCardFaceWeights[i];
   }
 
   sum = (sum * ((int) ((((unsigned int) RandomIntInternal(&data_0209e650)) & 0x7fffffff) >> 0x13))) >> 0xc;
   for (i = 0; i < 6; i++)
   {
-    sum -= data_ov006_0213bd18[i];
-    if (sum < 0)
-    {
-      value = i & 0xff;
-      data_ov006_0213bd18[i] -= 1;
-      break;
-    }
+      sum -= sCardFaceWeights[i];
+      if (sum < 0) {
+          value = i & 0xff;
+          sCardFaceWeights[i] -= 1;
+          break;
+      }
   }
 
   return value;
@@ -1521,7 +1520,7 @@ void dMgCardObj_c::Render()
     unsigned short e;
     if (mState == 0) return;
     idx = (mValue + 1) * 5 + (mLift >> 12);
-    e = data_ov006_0213bd64[idx];
+    e = sCardFaceSprites[idx];
     Hud_RenderSprite(sCardObjSprites[e], (mX >> 12) + 24, (mY >> 12) + 24, -1, -1);
 }
 
@@ -1682,7 +1681,7 @@ void dMgDilarCardObj_c::Update()
 
 // @symbol _ZN17dMgDilarCardObj_c6RenderEv
 /* dMgDilarCardObj_c::Render -- vtable slot 0, the dealer's card face down.
- * The sprite bank table data_ov006_0213bd64 is indexed by the card's face
+ * The sprite bank table sCardFaceSprites is indexed by the card's face
  * (mValue + 1, the +1 skipping the card-back row) and its flip frame
  * (mLift >> 12), and Hud_RenderSprite takes the 1:4096 fixed-point mX/mY
  * back down to pixels, plus the 24-pixel hand margin. Kept compact -- one index
@@ -1693,7 +1692,7 @@ void dMgDilarCardObj_c::Render()
 {
   int k;
   if(mState==0) return;
-  k=data_ov006_0213bd64[(mValue+1)*5+(mLift>>12)];
+  k = sCardFaceSprites[(mValue + 1) * 5 + (mLift >> 12)];
   Hud_RenderSprite(sCardObjSprites[k], (mX >> 12) + 24, (mY >> 12) + 24, -1, -1);
 }
 

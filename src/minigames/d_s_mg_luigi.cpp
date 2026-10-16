@@ -701,18 +701,14 @@ void dScMgLuigi_c::TickTimer()
 
 // @symbol _ZN12dScMgLuigi_c12DrawPicturesEv
 void dScMgLuigi_c::DrawPictures() {
-    extern void *data_ov006_0213abc8[];
+    extern void *sLuigiPictureSprites[];
     int i;
     if (mState == 0)
         return;
     for (i=0;i<0x78;i++) {
         if (mShown[i] == 1) {
-            Hud_RenderSprite(
-                data_ov006_0213abc8[mCharacter[i]],
-                mPosX[i] >> 12,
-                mPosY[i] >> 12,
-                -1,
-                0);
+            Hud_RenderSprite(sLuigiPictureSprites[mCharacter[i]], mPosX[i] >> 12, mPosY[i] >> 12,
+                             -1, 0);
         }
     }
 }
@@ -801,11 +797,10 @@ void dScMgLuigi_c::AddPenalty(int idx)
 
 // @symbol _ZN12dScMgLuigi_c14DrawWantedIconEv
 void dScMgLuigi_c::DrawWantedIcon() {
-    extern void *data_ov006_0213abc8[];
+    extern void *sLuigiPictureSprites[];
     if (mIconOn == 0) return;
-    Mg_RenderSubSpriteMtx(data_ov006_0213abc8[mWanted],
-                        (unsigned short)mIconX,
-                        (unsigned short)mIconY, 0);
+    Mg_RenderSubSpriteMtx(sLuigiPictureSprites[mWanted], (unsigned short)mIconX,
+                          (unsigned short)mIconY, 0);
 }
 
 // @symbol _ZN12dScMgLuigi_c16TickPictureFlashEi
@@ -926,16 +921,16 @@ void dScMgLuigi_c::MovePictureBounce(int i)
    coasts, flips at zero, and wraps at the screen edge. */
 void dScMgLuigi_c::MovePictureSway(int idx)
 {
-    extern int data_ov006_0212e888[];
+    extern int sLuigiSwaySpeed[];
     extern int data_ov006_0212e898[];
-    extern int data_ov006_0212e8a8[];
+    extern int sLuigiSwayAccel[];
     if (mStarted[idx] == 0) {
         mMovePhase[idx] = 0;
         mStarted[idx]++;
         if (mCharacter[idx] == 0) {
-            mVelX[idx] = data_ov006_0212e888[mCharacter[idx]];
+            mVelX[idx] = sLuigiSwaySpeed[mCharacter[idx]];
         } else {
-            mVelX[idx] = -data_ov006_0212e888[mCharacter[idx]];
+            mVelX[idx] = -sLuigiSwaySpeed[mCharacter[idx]];
         }
         mVelY[idx] = data_ov006_0212e898[mCharacter[idx]];
         return;
@@ -944,26 +939,26 @@ void dScMgLuigi_c::MovePictureSway(int idx)
     mPosY[idx] += mVelY[idx];
     if (mMovePhase[idx] == 0) {
         if (mVelX[idx] > 0) {
-            mVelX[idx] -= data_ov006_0212e8a8[mCharacter[idx]];
+            mVelX[idx] -= sLuigiSwayAccel[mCharacter[idx]];
             if (mVelX[idx] <= 0) {
                 mVelX[idx] = 0;
                 mMovePhase[idx] = 2;
             }
         } else if (mVelX[idx] < 0) {
-            mVelX[idx] += data_ov006_0212e8a8[mCharacter[idx]];
+            mVelX[idx] += sLuigiSwayAccel[mCharacter[idx]];
             if (mVelX[idx] >= 0) {
                 mVelX[idx] = 0;
                 mMovePhase[idx] = 1;
             }
         }
     } else if (mMovePhase[idx] == 1) {
-        mVelX[idx] += data_ov006_0212e8a8[mCharacter[idx]];
-        if (mVelX[idx] >= data_ov006_0212e888[mCharacter[idx]]) {
+        mVelX[idx] += sLuigiSwayAccel[mCharacter[idx]];
+        if (mVelX[idx] >= sLuigiSwaySpeed[mCharacter[idx]]) {
             mMovePhase[idx] = 0;
         }
     } else {
-        mVelX[idx] -= data_ov006_0212e8a8[mCharacter[idx]];
-        if (mVelX[idx] <= -data_ov006_0212e888[mCharacter[idx]]) {
+        mVelX[idx] -= sLuigiSwayAccel[mCharacter[idx]];
+        if (mVelX[idx] <= -sLuigiSwaySpeed[mCharacter[idx]]) {
             mMovePhase[idx] = 0;
         }
     }
@@ -1232,12 +1227,12 @@ void dScMgLuigi_c::CheckTouch()
 void dScMgLuigi_c::PlaceBoardLayout()
 {
     extern int data_0209d4b8;
-    extern u8 data_ov006_0213ce98[];
+    extern u8 sLuigiBoardModes[];
     int mode;
     int rnd;
     int i;
 
-    mode = data_ov006_0213ce98[mBoard];
+    mode = sLuigiBoardModes[mBoard];
     if (mode == 1) {
         int i;
         int n;
@@ -1357,8 +1352,8 @@ void dScMgLuigi_c::PlaceBoardLayout()
 void dScMgLuigi_c::PlaceNextPicture()
 {
     extern int data_0209d4b8;
-    extern u8 data_ov006_0213ce84[];
-    extern u8 data_ov006_0213ce98[];
+    extern u8 sLuigiBoardFlags[];
+    extern u8 sLuigiBoardModes[];
     extern u16 data_ov006_0213cee0[];
     int idx;
     int cur;
@@ -1372,7 +1367,7 @@ void dScMgLuigi_c::PlaceNextPicture()
         return;
 
     idx = mBoard;
-    if (data_ov006_0213ce98[idx] != 0) {
+    if (sLuigiBoardModes[idx] != 0) {
         PlaceBoardLayout();
         return;
     }
@@ -1404,7 +1399,7 @@ void dScMgLuigi_c::PlaceNextPicture()
         jx += (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5 >> 15;
         jy += (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5 >> 15;
 
-        if (data_ov006_0213ce84[idx] != 0) {
+        if (sLuigiBoardFlags[idx] != 0) {
             mPosX[0] = (col * 20 + (jx + 8)) << 12;
             mPosY[0] = (row * 20 + (jy + 16)) << 12;
             mActive[0] = 1;
@@ -1459,8 +1454,8 @@ void dScMgLuigi_c::PlaceNextPicture()
     mKind[cur] = 0;
     mTarget++;
 
-    const u8 *f = &data_ov006_0213ce84[idx];
-    if (mTarget >= (data_ov006_0213ce84[idx] != 0 ? lim : lim - 1)) {
+    const u8 *f = &sLuigiBoardFlags[idx];
+    if (mTarget >= (sLuigiBoardFlags[idx] != 0 ? lim : lim - 1)) {
         if (idx == 0xe || idx == 0x10 || idx == 0x11 || idx == 0x13) {
             mPosX[cur] = mPosX[lim - 1];
             mPosY[cur] = mPosY[lim - 1] - 0x14000;

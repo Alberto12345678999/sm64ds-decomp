@@ -1732,14 +1732,14 @@ extern int _ZN3G2S13GetBG3CharPtrEv(void);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 
-extern char data_ov004_020b9468;
+extern char sMgBrushPalette;
 
 /* Sets up the brush that PaintSquare paints with. Stores `en` at +0x68 and
    the layer `mode` (0..3) at +0x6c, fills the first 0x300 screen entries of
    that sub-screen BG layer (and of the main-screen one when `en` is set)
    with tile numbers 0..0x2ff under palette `base`, zeroes 0x6000 bytes of
    the layer's character data, and loads the 0x20-byte palette
-   data_ov004_020b9468 into palette slot `base` on both screens. Any other
+   sMgBrushPalette into palette slot `base` on both screens. Any other
    mode returns at once. */
 void Mg_InitBrush(char* sb, char en, int mode, int base)
 {
@@ -1849,8 +1849,8 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
         return;
     }
 
-    _ZN2GX10LoadBGPlttEPKvjj(&data_ov004_020b9468, base << 5, 0x20);
-    _ZN3GXS10LoadBGPlttEPKvjj(&data_ov004_020b9468, base << 5, 0x20);
+    _ZN2GX10LoadBGPlttEPKvjj(&sMgBrushPalette, base << 5, 0x20);
+    _ZN3GXS10LoadBGPlttEPKvjj(&sMgBrushPalette, base << 5, 0x20);
 }
 }
 }
@@ -3527,7 +3527,7 @@ extern "C" {
    shadows -- data_0209d45c for the main engine, data_0209d454 for the sub --
    initialised to 0x10, which is the value slots 30 and 31 later save, clear
    bits out of and restore.  A language-indexed character file (indexed by
-   GetGameLanguage into data_ov004_020bbfe4) is decompressed into BOTH engines'
+   GetGameLanguage into sMgStockCounterFiles) is decompressed into BOTH engines'
    BG char VRAM at 0x06404000 and 0x06604000, OBJ palette file 0xc3 is loaded
    into both, and the scene object is published into the global registry --
    sMgGraphCallback[1] = this, then data_0209d4a8 points at that registry.
@@ -3566,15 +3566,35 @@ extern void Mg_ResetOverlays(void);
 extern void FreeGfxSlotsById(int arg);
 extern int sMgTopScreenYOffset;
 extern u8 data_0209d45c;
-extern int data_ov004_020bbfe4[];
+extern int sMgStockCounterFiles[];
 extern u8 data_0209d454;
 extern void **data_0209d4a8;
 extern int data_0208ee44;
 }
 }
 
-void dScMgBase_c::InitEngines()
-{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::sMgTopScreenYOffset; using s20b265c::Ov004_LoadFile; using s20b265c::Mg_ResetOverlays; using s20b265c::Mg_ResetBgOffsets; using s20b265c::Mg_DisableAllBanks;
+void dScMgBase_c::InitEngines() {
+    using s20b265c::DecompressLZ16;
+    using s20b265c::FreeGfxSlotsById;
+    using s20b265c::GetGameLanguage;
+    using s20b265c::Ov004_Deallocate;
+    using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj;
+    using s20b265c::_ZN2GX12SetBankForBGEt;
+    using s20b265c::_ZN2GX13SetBankForOBJEt;
+    using s20b265c::_ZN2GX15SetBankForSubBGEt;
+    using s20b265c::_ZN2GX16SetBankForSubOBJEt;
+    using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj;
+    using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj;
+    using s20b265c::data_0208ee44;
+    using s20b265c::data_0209d454;
+    using s20b265c::data_0209d45c;
+    using s20b265c::data_0209d4a8;
+    using s20b265c::sMgStockCounterFiles;
+    using s20b265c::sMgTopScreenYOffset;
+    using s20b265c::Ov004_LoadFile;
+    using s20b265c::Mg_ResetOverlays;
+    using s20b265c::Mg_ResetBgOffsets;
+    using s20b265c::Mg_DisableAllBanks;
     char *obj = (char *)this;
 
     void *p;
@@ -3596,7 +3616,7 @@ void dScMgBase_c::InitEngines()
     data_0209d45c = 0x10;
     _ZN2GX15SetBankForSubBGEt(4);
     _ZN2GX16SetBankForSubOBJEt(8);
-    p = Ov004_LoadFile(data_ov004_020bbfe4[GetGameLanguage()]);
+    p = Ov004_LoadFile(sMgStockCounterFiles[GetGameLanguage()]);
     {
         char *dst = (char *)0x6400000; dst += 0x4000;
         DecompressLZ16(p, dst);

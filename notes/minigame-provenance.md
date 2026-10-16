@@ -489,7 +489,7 @@ any matched body reads).
 | 0x502e | `mLineActive[3]` | Three bytes gating both the payout-marker pass and the win chime. |
 | 0x5031 | `mResultSymbols[3][3]` | The same walk with `p` advancing 3 a reel, indexed 0..2 -- the 3x3 window the reels stopped on, compared against `mWinSymbol`. |
 | 0x503a | `mStripLength` | The modulus of that `row` walk, i.e. the number of stops per reel. |
-| 0x503b | `mWinSymbol` | Drawn as the marker row ([data_ov006_0213e9a4](../config/arm9/overlays/ov006/symbols.txt)`[n * 3 + i]`) and compared against `mResultSymbols` to decide a win. InitResources seeds it from 0x503c. |
+| 0x503b | `mWinSymbol` | Drawn as the marker row ([sSlot3FaceSprites](../config/arm9/overlays/ov006/symbols.txt)`[n * 3 + i]`) and compared against `mResultSymbols` to decide a win. InitResources seeds it from 0x503c. |
 | 0x503f | `mFrameCounter` | u8. Behavior increments it unconditionally; Render gates the marker pass on `n & 0x20` and fires the win chime exactly once per cycle on `(n & 0x3f) == 0x20`. |
 
 Left `unk_`: 0x4ff0, 0x5004 (copied out of dScMgBase_c's own 0xbc, but nothing

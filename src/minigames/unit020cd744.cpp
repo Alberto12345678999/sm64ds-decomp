@@ -420,28 +420,32 @@ extern "C" void TrmpItem_SetMotionBob(char *c) {
 
 namespace s020cdea0 {
 extern "C" {extern int data_ov006_0212e07c[];}
-extern "C" {extern int data_ov006_0212e088[];}
+extern "C" {
+extern int sTrmpItemPatrolSpeed[];
+}
 extern "C" void TrmpItem_MotionPatrol(char *c) {
     int idx = TRMPITEM(c)->mSizeIdx;
     if (*(int *)(c + 8) > data_ov006_0212e07c[idx]) {
-        TRMPITEM(c)->mVel.x = -data_ov006_0212e088[idx];
+        TRMPITEM(c)->mVel.x = -sTrmpItemPatrolSpeed[idx];
         return;
     }
     if (*(int *)(c + 8) < -data_ov006_0212e07c[idx]) {
-        TRMPITEM(c)->mVel.x = data_ov006_0212e088[idx];
+        TRMPITEM(c)->mVel.x = sTrmpItemPatrolSpeed[idx];
     }
 }
 }
 
 namespace s020cdeec {
-extern "C" {extern int data_ov006_0212e088[];}
+extern "C" {
+extern int sTrmpItemPatrolSpeed[];
+}
 struct S2 { int w[2]; };
 extern "C" {
 extern struct S2 pmf_TrmpItem_MotionPatrol;
 }
 extern "C" void TrmpItem_SetMotionPatrol(char *c) {
     int idx = *(short *)(c + 0x96);
-    *(int *)(c + 0x2c) = data_ov006_0212e088[idx];
+    *(int *)(c + 0x2c) = sTrmpItemPatrolSpeed[idx];
     *(struct S2 *)c = pmf_TrmpItem_MotionPatrol;
 }
 }
@@ -1339,7 +1343,7 @@ extern "C" extern struct Matrix4x3 data_020a0e68;
 extern "C" extern struct Matrix4x3 data_0209b3ec;
 extern "C" extern unsigned short data_ov006_0212e060[];
 extern "C" extern unsigned short data_ov006_0212e068[];
-extern "C" extern int data_ov006_0212e0b0[];
+extern "C" extern int sTrmpLineTexCoords[];
 extern "C" extern void *sTrmpLineTexAddr;
 extern "C" extern void *sTrmpLinePlttAddr;
 extern "C" extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
@@ -1426,16 +1430,16 @@ extern "C" void TrmpLine_Draw(char *obj)
     REG_BEGIN_VTXS = 2;
     for (k = 0; k < 4; k++)
     {
-      REG_TEXCOORD = data_ov006_0212e0b0[i * 4 + k];
-      REG_NORMAL = -*n0 & 0x3fffffff;
-      n0++;
-      SEND_VTX(v0);
-      v0++;
-      REG_TEXCOORD = data_ov006_0212e0b0[(i + 1) * 4 + k];
-      REG_NORMAL = -*n1 & 0x3fffffff;
-      n1++;
-      SEND_VTX(v1);
-      v1++;
+        REG_TEXCOORD = sTrmpLineTexCoords[i * 4 + k];
+        REG_NORMAL = -*n0 & 0x3fffffff;
+        n0++;
+        SEND_VTX(v0);
+        v0++;
+        REG_TEXCOORD = sTrmpLineTexCoords[(i + 1) * 4 + k];
+        REG_NORMAL = -*n1 & 0x3fffffff;
+        n1++;
+        SEND_VTX(v1);
+        v1++;
     }
     REG_END_VTXS = 0;
   }
@@ -1451,16 +1455,16 @@ extern "C" void TrmpLine_Draw(char *obj)
     REG_BEGIN_VTXS = 2;
     for (k = 0; k < 4; k++)
     {
-      REG_TEXCOORD = data_ov006_0212e0b0[(i + 1) * 4 + k];
-      REG_NORMAL = *n1;
-      n1++;
-      SEND_VTX(v1);
-      v1++;
-      REG_TEXCOORD = data_ov006_0212e0b0[i * 4 + k];
-      REG_NORMAL = *n0;
-      n0++;
-      SEND_VTX(v0);
-      v0++;
+        REG_TEXCOORD = sTrmpLineTexCoords[(i + 1) * 4 + k];
+        REG_NORMAL = *n1;
+        n1++;
+        SEND_VTX(v1);
+        v1++;
+        REG_TEXCOORD = sTrmpLineTexCoords[i * 4 + k];
+        REG_NORMAL = *n0;
+        n0++;
+        SEND_VTX(v0);
+        v0++;
     }
     REG_END_VTXS = 0;
   }
