@@ -483,7 +483,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@826",
+      "from": "@818",
       "to": "@930",
       "evidence": "The emitted 12-byte registration node at ov027:0x02113d04 is @826 in this TU, but that spelling is already owned by ov018. @930 has no other configured home and preserves the native storage/relocations."
     }

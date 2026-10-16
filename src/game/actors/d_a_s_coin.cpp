@@ -11,8 +11,8 @@
  *   the member form size-DIFFs (mwccarm-codegen wall 6az).
  * - SpawnStar reads the marker's position through int* at +0x5c: named
  *   mPosX/Y/Z on the daStarBase_c* size-DIFFs. dActor_c has no Pos().
- * - LinkToBlock keeps the goto + sequential isMatch stores: the plain
- *   for/else-if loop size-DIFFs.
+ * - LinkToBlock's ID tests go through the int-returning HasActorID: a
+ *   direct `actorID == id` in the for/else-if loop size-DIFFs.
  * - data_ov002_0210d9a8 (the ov002 SharedFilePtr handle) and func_02012790
  *   (the no-position jingle player, id 0x25 here) have no recovered names.
  */
@@ -51,6 +51,12 @@ struct SCoinSpawnInfo {
 };
 typedef char SCoinSpawnInfo_size_must_be_0x1c[
     sizeof(SCoinSpawnInfo) == 0x1c ? 1 : -1];
+
+/* int-returning, so the ROM materializes the 0/1 of each ID test before
+ * branching on it; a direct `actorID == id` does not. */
+static inline int HasActorID(dActor_c *actor, unsigned int id) {
+    return actor->actorID == id;
+}
 
 // @symbol daSCoin_c_classInit
 extern "C" daSCoin_c *daSCoin_c_classInit()
@@ -162,37 +168,22 @@ void daSCoin_c::SpawnStar()
  * it pops. */
 void daSCoin_c::LinkToBlock()
 {
-    dActor_c *other;
-    u32 otherID;
-    int isMatch;
     if (mBlockScanDone != 0) return;
-    other = dActor_c::Next(0);
-    if (other == 0) goto done;
-    do {
-        otherID = other->actorID;
-        isMatch = (otherID == 0x14);
-        if (isMatch == 0) {
-            isMatch = (otherID == 0x15);
-            if (isMatch == 0) goto chk2;
+    for (dActor_c *other = dActor_c::Next(0); other != 0; other = dActor_c::Next(other)) {
+        if (HasActorID(other, 0x14) || HasActorID(other, 0x15)) {
+            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+                mClsnDisabled = 1;
+                ((daObjHatenaBlock_c *)other)->mHeldActor = this;
+                break;
+            }
+        } else if (HasActorID(other, 0xc0)) {
+            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+                mClsnDisabled = 1;
+                ((daObjPushblock_c *)other)->mLinkedActor = this;
+                break;
+            }
         }
-        if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
-            mClsnDisabled = 1;
-            ((daObjHatenaBlock_c *)other)->mHeldActor = this;
-            goto done;
-        }
-        goto next;
-      chk2:
-        isMatch = (otherID == 0xc0);
-        if (isMatch == 0) goto next;
-        if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
-            mClsnDisabled = 1;
-            ((daObjPushblock_c *)other)->mLinkedActor = this;
-            goto done;
-        }
-      next:
-        other = dActor_c::Next(other);
-    } while (other != 0);
-  done:
+    }
     mBlockScanDone = 1;
 }
 
