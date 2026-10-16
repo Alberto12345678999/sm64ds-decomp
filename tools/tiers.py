@@ -473,7 +473,7 @@ def score_member(path, text, symbol, repo_root=None):
     return score
 
 
-def converted(src_root=None):
+def converted(src_root=None, per_symbol=False):
     """Score every source-owned function. Returns CONVERTED plus its breakdown.
 
     Reads committed source only - no ROM, no build, no local state - so it
@@ -481,6 +481,13 @@ def converted(src_root=None):
     retain file-wide scoring. Members of a promoted production TU are independently
     scored from explicit source markers or evidenced lifecycle definitions, with a
     conservative file-wide fallback when neither boundary is evidenced.
+
+    ``per_symbol=True`` adds ``by_symbol``: ``{repo-relative path: {symbol: bool}}``,
+    the same readings the headline count is made of, one boolean per source-owned
+    function (True = passes all five criteria). chaos_db_ci publishes it as the
+    per-function ``converted`` flag, so the Atlas and this tier can never disagree
+    about which functions were counted. Nothing else in the result changes, and
+    callers that do not ask for it get exactly what they got before.
     """
     root = pathlib.Path(src_root or SRC)
     files = sorted(str(p) for p in root.rglob("*")
@@ -493,6 +500,7 @@ def converted(src_root=None):
 
     source_readable = 0
     total = 0
+    by_symbol = {}
     for p in files:
         with open(p, errors="replace") as f:
             text = f.read()
@@ -514,6 +522,8 @@ def converted(src_root=None):
                 counts[k] += s[k]
             n_pass = sum(s[k] for k in CRITERIA)
             passes_hist[n_pass] = passes_hist.get(n_pass, 0) + 1
+            if per_symbol and rel is not None:
+                by_symbol.setdefault(rel, {})[sym] = n_pass == len(CRITERIA)
             if n_pass == len(CRITERIA):
                 readable += 1
             else:
@@ -525,7 +535,7 @@ def converted(src_root=None):
         if members and all_readable:
             source_readable += 1
 
-    return {
+    out = {
         "functions": total,
         "source_files": len(files),
         "converted_source_files": source_readable,
@@ -537,6 +547,9 @@ def converted(src_root=None):
         "alt_core_two": core,
         "alt_shared_header": counts["shared_header"],
     }
+    if per_symbol:
+        out["by_symbol"] = by_symbol
+    return out
 
 
 # ------------------------------------------------------------------- LINKED
