@@ -88,6 +88,7 @@ extern "C" daEyBm_c *daEyBm_c_classInit()
     return new daEyBm_c();
 }
 
+/* The actor-table descriptor, at ov071:0x02122dc4. */
 extern "C" SpawnInfo<daEyBm_c> g_profile_EYEKUN_BEAM = {
     daEyBm_c_classInit,
     0x0108,

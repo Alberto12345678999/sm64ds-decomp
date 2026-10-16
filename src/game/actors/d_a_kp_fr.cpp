@@ -22,7 +22,8 @@
  *   math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes it.
  *   Fix12i[3] locals instead of Vector3, which declares its own
  *   destructor.
- *   The (long long) smull in func_ov070_02121d50 is the matching form.
+ *   FX_MUL's 64-bit product (one smull) in func_ov070_02121d50 is the
+ *   matching form.
  *   func_ov070_02121d50 calls dBgCh_Actr_UpdateContinuous_Veneer, as the
  *   ROM does, not UpdateContinuous.
  *
@@ -253,7 +254,7 @@ void daKpFr_c::func_ov070_02121e14() {
 // @symbol _ZN8daKpFr_c19func_ov070_02121d50EPv
 /* GetFloorResult is not declared in the shared header yet; keep only that
  * proven typed ABI seam. ROM calls the UpdateContinuous veneer, not the
- * method. (long long) smull is the addressing form the ROM uses. */
+ * method. FX_MUL's 64-bit product is the smull the ROM uses. */
 namespace cstd { int fdiv(int a, int b); }
 
 extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* c);
