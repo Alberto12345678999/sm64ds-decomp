@@ -130,9 +130,14 @@ Left unnamed:
 
 ## dMgState_c: the shared banner states (renamed 2026-10-14)
 
-Handlers that serve one state are named by state number (`State05_Enter`,
-`State05_Update`). That much is certain from the enter table in `SetState` and
-from which behaviour each enter handler installs. Shared handlers are named by
+Handlers that serve one state are named after that state's `MG_STATE_*` name
+(pass 6; they were named by number, `State05_Enter` / `State05_Update`, and
+are now `Lose_Enter` / `Lose_Update`). Which handler serves which state is
+certain from the enter table in `SetState` and from which behaviour each enter
+handler installs; how sure each state's own name is stays with the enum's tags
+in `include/dMgState_c.h` (`RoundBanner5`, `LoseResume`, `RoundClearTop`,
+`RetryPromptB`, `ScoreThenRound`, `RetryPromptWideB`, `DigitsThenRound` and
+`BannerEThenRound` are low). Shared handlers are named by
 what they do:
 - `UpdateRetryFadeOut`: the retry button's fade-out.
 - `UpdateGameOverToMenu`: the Game Over banner, then a fade to the menu (scene 5).

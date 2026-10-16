@@ -144,7 +144,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        reconstructed as void: the base does nothing, Cup and Sound forward
        to a void component helper, and 3DEsp and Teresa call the void
        FreeGfxSlotsById function. The recorded caller in
-       State17_Update discards the result. These bodies reproduce under
+       ResultsNewRecord_Update discards the result. These bodies reproduce under
        the coherent void declarations with 2004/b56; this does not recover
        the original return-type spelling. The separate dActor_c slot 20
        remains int. See issue #2492 for caller coverage and proof limits. */

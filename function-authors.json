@@ -19803,39 +19803,39 @@
     },
     "ov004:0x020b6b40": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State19_UpdateEv"
+      "name": "_ZN10dMgState_c15Finished_UpdateEv"
     },
     "ov004:0x020b6c10": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State19_EnterEv"
+      "name": "_ZN10dMgState_c14Finished_EnterEv"
     },
     "ov004:0x020b6c9c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State18_UpdateEv"
+      "name": "_ZN10dMgState_c15GameOver_UpdateEv"
     },
     "ov004:0x020b6d6c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State18_EnterEv"
+      "name": "_ZN10dMgState_c14GameOver_EnterEv"
     },
     "ov004:0x020b6ddc": {
       "author": "lunavyqo",
-      "name": "_ZN10dMgState_c14State17_UpdateEv"
+      "name": "_ZN10dMgState_c23ResultsNewRecord_UpdateEv"
     },
     "ov004:0x020b6f14": {
       "author": "andrewboudreau",
-      "name": "_ZN10dMgState_c13State17_EnterEv"
+      "name": "_ZN10dMgState_c22ResultsNewRecord_EnterEv"
     },
     "ov004:0x020b6f88": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State16_UpdateEv"
+      "name": "_ZN10dMgState_c14Results_UpdateEv"
     },
     "ov004:0x020b7020": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State16_EnterEv"
+      "name": "_ZN10dMgState_c13Results_EnterEv"
     },
     "ov004:0x020b70b4": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State15_EnterEv"
+      "name": "_ZN10dMgState_c22BannerEThenRound_EnterEv"
     },
     "ov004:0x020b7124": {
       "author": "tangosdev",
@@ -19843,7 +19843,7 @@
     },
     "ov004:0x020b724c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State14_EnterEv"
+      "name": "_ZN10dMgState_c21DigitsThenRound_EnterEv"
     },
     "ov004:0x020b72d4": {
       "author": "tangosdev",
@@ -19851,35 +19851,35 @@
     },
     "ov004:0x020b743c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State13_EnterEv"
+      "name": "_ZN10dMgState_c22RetryPromptWideB_EnterEv"
     },
     "ov004:0x020b7460": {
       "author": "ruspecial",
-      "name": "_ZN10dMgState_c13State12_EnterEv"
+      "name": "_ZN10dMgState_c21RetryPromptWide_EnterEv"
     },
     "ov004:0x020b746c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State11_UpdateEv"
+      "name": "_ZN10dMgState_c21ScoreThenRound_UpdateEv"
     },
     "ov004:0x020b7594": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State11_EnterEv"
+      "name": "_ZN10dMgState_c20ScoreThenRound_EnterEv"
     },
     "ov004:0x020b75e4": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State10_UpdateEv"
+      "name": "_ZN10dMgState_c19RetryPromptB_UpdateEv"
     },
     "ov004:0x020b7744": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State10_EnterEv"
+      "name": "_ZN10dMgState_c18RetryPromptB_EnterEv"
     },
     "ov004:0x020b77b4": {
       "author": "andrewboudreau",
-      "name": "_ZN10dMgState_c14State09_UpdateEv"
+      "name": "_ZN10dMgState_c20RoundClearTop_UpdateEv"
     },
     "ov004:0x020b7854": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State09_EnterEv"
+      "name": "_ZN10dMgState_c19RoundClearTop_EnterEv"
     },
     "ov004:0x020b78f4": {
       "author": "tangosdev",
@@ -19887,11 +19887,11 @@
     },
     "ov004:0x020b798c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State08_EnterEv"
+      "name": "_ZN10dMgState_c9Tie_EnterEv"
     },
     "ov004:0x020b79b0": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State07_EnterEv"
+      "name": "_ZN10dMgState_c10Draw_EnterEv"
     },
     "ov004:0x020b7a18": {
       "author": "tangosdev",
@@ -19899,11 +19899,11 @@
     },
     "ov004:0x020b7b20": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State06_UpdateEv"
+      "name": "_ZN10dMgState_c17LoseResume_UpdateEv"
     },
     "ov004:0x020b7b90": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State06_EnterEv"
+      "name": "_ZN10dMgState_c16LoseResume_EnterEv"
     },
     "ov004:0x020b7c04": {
       "author": "tangosdev",
@@ -19911,19 +19911,19 @@
     },
     "ov004:0x020b7cd0": {
       "author": "ruspecial",
-      "name": "_ZN10dMgState_c14State05_UpdateEv"
+      "name": "_ZN10dMgState_c11Lose_UpdateEv"
     },
     "ov004:0x020b7e38": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State05_EnterEv"
+      "name": "_ZN10dMgState_c10Lose_EnterEv"
     },
     "ov004:0x020b7eac": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State04_UpdateEv"
+      "name": "_ZN10dMgState_c10Win_UpdateEv"
     },
     "ov004:0x020b7f5c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State04_EnterEv"
+      "name": "_ZN10dMgState_c9Win_EnterEv"
     },
     "ov004:0x020b7fec": {
       "author": "tangosdev",
@@ -19931,35 +19931,35 @@
     },
     "ov004:0x020b8098": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State03_UpdateEv"
+      "name": "_ZN10dMgState_c18RetryPrompt_UpdateEv"
     },
     "ov004:0x020b81f8": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State03_EnterEv"
+      "name": "_ZN10dMgState_c17RetryPrompt_EnterEv"
     },
     "ov004:0x020b8284": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State02_UpdateEv"
+      "name": "_ZN10dMgState_c19RoundBanner5_UpdateEv"
     },
     "ov004:0x020b83ac": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State02_EnterEv"
+      "name": "_ZN10dMgState_c18RoundBanner5_EnterEv"
     },
     "ov004:0x020b841c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State01_UpdateEv"
+      "name": "_ZN10dMgState_c16NextRound_UpdateEv"
     },
     "ov004:0x020b853c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State01_EnterEv"
+      "name": "_ZN10dMgState_c15NextRound_EnterEv"
     },
     "ov004:0x020b8560": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c14State00_UpdateEv"
+      "name": "_ZN10dMgState_c17RoundClear_UpdateEv"
     },
     "ov004:0x020b8688": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c13State00_EnterEv"
+      "name": "_ZN10dMgState_c16RoundClear_EnterEv"
     },
     "ov004:0x020b8714": {
       "author": "tangosdev",
