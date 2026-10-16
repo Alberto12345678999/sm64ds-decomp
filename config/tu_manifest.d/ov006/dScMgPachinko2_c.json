@@ -8,7 +8,7 @@
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x20ff420..0x210428c, 74 function(s), from build/tu_map.json (tools/tu_map.py)",
-    "class label: dScMgPachinko2_c. tu_map also lists dScMgPachinko_c for this run, but only because rtti_vtables.py over-reads dScMgPachinko_c's vtable into the neighbouring g_profile_MG_TAMAIRE descriptor, landing its spurious slots 36 and 38 on Paddle_State4 and dScMgPachinko2_c_classInit (include/dScMgPachinko_c.h records both as spurious). No dScMgPachinko_c symbol lies in the run, and this TU defines and emits nothing of dScMgPachinko_c.",
+    "class label: dScMgPachinko2_c. tu_map also lists dScMgPachinko_c for this run, but only because rtti_vtables.py over-reads dScMgPachinko_c's vtable into the neighbouring g_profile_MG_TAMAIRE descriptor, landing its spurious slots 36 and 38 on Paddle_StateOrbit and dScMgPachinko2_c_classInit (include/dScMgPachinko_c.h records both as spurious). No dScMgPachinko_c symbol lies in the run, and this TU defines and emits nothing of dScMgPachinko_c.",
     "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [

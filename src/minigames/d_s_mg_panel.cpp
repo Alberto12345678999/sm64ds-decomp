@@ -988,9 +988,9 @@ struct PanelC_7f0 : PanelB_7f0 { char pad[0x4fdc]; u8 idx; };
 }
 void dScMgPanel_c::Answer_Update() {
     PanelC_7f0 *c = (PanelC_7f0 *)this;
-    extern PanelStateFn sPanelInputStateTable[];
+    extern PanelStateFn sPanelAnswerStateTable[];
     if (c->m() != 0) return;
-    (((dScMgPanel_c *)c)->*sPanelInputStateTable[c->idx])();
+    (((dScMgPanel_c *)c)->*sPanelAnswerStateTable[c->idx])();
     Banner_Update();
 }
 
@@ -2272,7 +2272,7 @@ PanelStateFnI sPanelPanelStateTable[4] = {
     &dScMgPanel_c::Panel_StateBlink,
     &dScMgPanel_c::Panel_StateFall,
 };
-PanelStateFn sPanelInputStateTable[4] = {
+PanelStateFn sPanelAnswerStateTable[4] = {
     &dScMgPanel_c::Answer_StateWaitButton,
     &dScMgPanel_c::Answer_StateResetBoard,
     &dScMgPanel_c::Answer_StateFindSolution,
