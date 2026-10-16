@@ -412,7 +412,7 @@ High confidence:
 
 Medium confidence:
 - The movement modes: `Wiggler_StartPathA/B/C`, `Wiggler_StepSegmentsA/B/C`, `Wiggler_StartBounce`/`Wiggler_MoveBounce`, `Wiggler_StateMoveA/B`, `Wiggler_StateHold`, `Wiggler_StateWait`, `Wiggler_Retarget`, `Wiggler_OnTouched`, `Wiggler_StopIfIdle`, `Wiggler_UpdateSway` (sounds 0x1e7/0x1e8 as the sway crosses zero).
-- `Wiggler_DrawPassA/B`: two draw passes; which part of the wiggler each draws is not observed.
+- `Wiggler_DrawTarget` and `Wiggler_DrawField` (were `Wiggler_DrawPassA/B`): **high, seen**. With each stubbed to `bx lr` in RAM, A's absence removed the target Wiggler on the top screen and B's removed every Wiggler on the bottom play field; the scene calls A with `mTarget` and B for each entry of the field array.
 - `Wiggler_IsStarVisible`.
 
 **unit020cd744: the stylus-drawn trampolines.**
@@ -585,4 +585,4 @@ row says otherwise; "seen" marks a name checked in play.
 ## Pass 4 (2026-10-15)
 
 - **`MgEntry::sceneParam`** (`dScMiniGm_c`, was `unk4`): high. `StartSceneFade(id, sceneParam, 0)` opens the game with it as param1, and its low byte is what `IsAltVariant` tests (seen: the two Snowballs, runtime-checks.md).
-- **Teresa's `FoundNumber` and `VanishPuff`, and Pachinko2's `UpdateNextBall`:** see the Teresa and Pachinko2 entries above.
+- **Teresa's `FoundNumber` and `VanishPuff`, Pachinko2's `UpdateNextBall`, Hanachan's `Wiggler_DrawTarget`/`Wiggler_DrawField`:** see those games' entries above.

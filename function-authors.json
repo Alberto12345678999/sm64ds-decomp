@@ -23291,11 +23291,11 @@
     },
     "ov006:0x020ea914": {
       "author": "tangosdev",
-      "name": "Wiggler_DrawPassA"
+      "name": "Wiggler_DrawTarget"
     },
     "ov006:0x020eac38": {
       "author": "andrewboudreau",
-      "name": "Wiggler_DrawPassB"
+      "name": "Wiggler_DrawField"
     },
     "ov006:0x020eb018": {
       "author": "tangosdev",
