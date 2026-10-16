@@ -209,7 +209,7 @@ extern int sMgTopBannerY;
 extern int sMgTopBannerX;
 extern int sMgMainBannerY;
 extern int sMgMainBannerX;
-extern unsigned char *data_ov004_020bca44[];
+extern unsigned char *sMgStateTextSpritesByLanguage[];
 
 /* Behavior and render records. Each comment names the member the record
    points at (ov004 relocs.txt). */
@@ -1058,12 +1058,12 @@ void dMgState_c::DrawScoreDigits() {
     Mg_DrawBigNumber(sMgScoreDigitsX + 0x2c, sMgScoreDigitsY, r % 10, -1, -1, 1, 0);
 
     idx = GetGameLanguage();
-    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0xc), sMgScoreDigitsX - 0x24,
-                          sMgScoreDigitsY, 0);
+    Mg_RenderSubSpriteMtx((void *)*(int *)(sMgStateTextSpritesByLanguage[idx] + 0xc),
+                          sMgScoreDigitsX - 0x24, sMgScoreDigitsY, 0);
 
     idx = GetGameLanguage();
-    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0x1c), sMgScoreDigitsX + 0x10,
-                          sMgScoreDigitsY, 0);
+    Mg_RenderSubSpriteMtx((void *)*(int *)(sMgStateTextSpritesByLanguage[idx] + 0x1c),
+                          sMgScoreDigitsX + 0x10, sMgScoreDigitsY, 0);
 }
 
 // @symbol _ZN10dMgState_c15DrawRecordTableEv

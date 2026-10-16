@@ -276,7 +276,7 @@ _ZN10dMgPsOpt_c11TouchIcon_cD1Ev kind:function(arm,size=0x1c) addr:0x020b9280
 _ZN10dMgPsOpt_cD1Ev kind:function(arm,size=0x28) addr:0x020b929c
 _ZN10dMgPsOpt_cC1Ev kind:function(arm,size=0x16c) addr:0x020b92c4
 _ZN10dMgPsOpt_c11TouchIcon_cC1Ev kind:function(arm,size=0x1c) addr:0x020b9430
-data_ov004_020b944c kind:data(any) addr:0x020b944c
+sMgCounterMaxByDigits kind:data(any) addr:0x020b944c
 sMgBrushPalette kind:data(any) addr:0x020b9468
 sMgCoinRiseFrames kind:data(any) addr:0x020b9488
 __sinit_d_s_mg_base.cpp kind:function(arm,size=0xd0) addr:0x020b948c
@@ -579,7 +579,7 @@ data_ov004_020bbecc kind:data(any) addr:0x020bbecc
 _ZTI11dScMgBase_c kind:data(any) addr:0x020bbf6c
 _ZTIN11dScMgBase_c15graphCallback_cE kind:data(any) addr:0x020bbf78
 _ZTS11dScMgBase_c kind:data(any) addr:0x020bbf84
-data_ov004_020bbf94 kind:data(any) addr:0x020bbf94
+sMgMenuScreenByLanguage kind:data(any) addr:0x020bbf94
 sMgSpriteTables kind:data(any) addr:0x020bbfa8
 data_ov004_020bbfbc kind:data(any) addr:0x020bbfbc
 data_ov004_020bbfd0 kind:data(any) addr:0x020bbfd0
@@ -590,7 +590,7 @@ data_ov004_020bc020 kind:data(any) addr:0x020bc020
 data_ov004_020bc03c kind:data(any) addr:0x020bc03c
 _ZTVN11dScMgBase_c15graphCallback_cE kind:data(any) addr:0x020bc03c
 _ZTSN11dScMgBase_c15graphCallback_cE kind:data(any) addr:0x020bc04c
-data_ov004_020bc070 kind:data(any) addr:0x020bc070
+sMgSceneKindByGame kind:data(any) addr:0x020bc070
 data_ov004_020bc0c0 kind:data(any) addr:0x020bc0c0
 _ZTV11dScMgBase_c kind:data(any) addr:0x020bc0c0
 sMgBannerButtonsArmed kind:data(any) addr:0x020bc150
@@ -779,7 +779,7 @@ pmf_dMgState_c_ScoreThenRound_Update kind:data(any) addr:0x020bca24
 pmf_dMgState_c_DrawRecordTable_2 kind:data(any) addr:0x020bca2c
 pmf_dMgState_c_Finished_Update kind:data(any) addr:0x020bca34
 pmf_dMgState_c_RetryPromptWideB_Enter kind:data(any) addr:0x020bca3c
-data_ov004_020bca44 kind:data(any) addr:0x020bca44
+sMgStateTextSpritesByLanguage kind:data(any) addr:0x020bca44
 data_ov004_020bca58 kind:data(any) addr:0x020bca58
 data_ov004_020bca60 kind:data(any) addr:0x020bca60
 _ZTIN10dMgPsOpt_c11TouchIcon_cE kind:data(any) addr:0x020bca68
@@ -797,8 +797,8 @@ data_ov004_020be9fc kind:data(any) addr:0x020be9fc
 data_ov004_020bea04 kind:data(any) addr:0x020bea04
 data_ov004_020bea0c kind:data(any) addr:0x020bea0c
 data_ov004_020bea14 kind:data(any) addr:0x020bea14
-data_ov004_020bea28 kind:data(any) addr:0x020bea28
-data_ov004_020beac8 kind:data(any) addr:0x020beac8
+sMgMenuBgPltt kind:data(any) addr:0x020bea28
+sMgMenuSubBgPltt kind:data(any) addr:0x020beac8
 sMgWorkBuffer kind:bss addr:0x020beb60
 sMgPaintWord kind:bss addr:0x020beb64
 gMgScene kind:bss addr:0x020beb68

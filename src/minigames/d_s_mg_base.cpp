@@ -1657,8 +1657,8 @@ int dScMgBase_c::SaveScreenForMenu()
     }
     _ZN4CP1527FlushAndInvalidateDataCacheEjj((void *)(c + 0x4228), 0x400);
 
-    _ZN2GX10LoadBGPlttEPKvjj((const void *)data_ov004_020bea28, 0x20, 0xa0);
-    _ZN3GXS10LoadBGPlttEPKvjj((const void *)data_ov004_020beac8, 0, 0x80);
+    _ZN2GX10LoadBGPlttEPKvjj((const void *)sMgMenuBgPltt, 0x20, 0xa0);
+    _ZN3GXS10LoadBGPlttEPKvjj((const void *)sMgMenuSubBgPltt, 0, 0x80);
 
     {
         volatile unsigned short tmp = 0;
@@ -1679,7 +1679,7 @@ int dScMgBase_c::SaveScreenForMenu()
         int *vram = vbase + 0x1800;
         MultiCopy_Int(vram, (int *)(c + 0x2228), 0x2000);
         int idx = GetGameLanguage();
-        DecompressLZ16(data_ov004_020bbf94[idx], vram);
+        DecompressLZ16(sMgMenuScreenByLanguage[idx], vram);
         _ZN4CP1527FlushAndInvalidateDataCacheEjj((void *)(c + 0x2228), 0x2000);
     }
 }
@@ -3081,19 +3081,20 @@ extern "C" {
 s32 GetGameLanguage(void);
 int RenderOamMainScreen(int a, int b, int c, int d, int e);
 int Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
-extern int data_ov004_020b944c[];
-/* Draws a0, capped at data_ov004_020b944c[a1], right-aligned at (0xf4,
+extern int sMgCounterMaxByDigits[];
+/* Draws a0, capped at sMgCounterMaxByDigits[a1], right-aligned at (0xf4,
    0xc), and sprite word 4 to its left at an x that a1 sets. */
 void Mg_DrawTopRightCounter(int a0, int a1){
-  int lim = data_ov004_020b944c[a1];
-  int c = a0;
-  int r4 = 0xf4;
-  int i;
-  if (c >= lim) c = lim;
-  Mg_DrawNumber(0xf4, 0xc, c, 1, -1, 1, 0xa);
-  r4 = r4 - (0x44 - (6 - a1) * 8);
-  i = GetGameLanguage();
-  RenderOamMainScreen(sMgSpriteTables[i][4], r4, 0xc, -1, -1);
+    int lim = sMgCounterMaxByDigits[a1];
+    int c = a0;
+    int r4 = 0xf4;
+    int i;
+    if (c >= lim)
+        c = lim;
+    Mg_DrawNumber(0xf4, 0xc, c, 1, -1, 1, 0xa);
+    r4 = r4 - (0x44 - (6 - a1) * 8);
+    i = GetGameLanguage();
+    RenderOamMainScreen(sMgSpriteTables[i][4], r4, 0xc, -1, -1);
 }
 }
 }
@@ -3803,13 +3804,12 @@ extern "C" void Mg_CallStartRound(dScMgBase_c *scene, void *state)
 namespace s20b2adc {
 extern "C" {
 // @symbol _ZN11dScMgBase_cC2Ev
-extern short data_ov004_020bc070[];
+extern short sMgSceneKindByGame[];
 }
 }
 
-dScMgBase_c::dScMgBase_c()
-    : mRunDuringFade(0), unk_0c2(1)
-{ using s20b2adc::data_ov004_020bc070;
+dScMgBase_c::dScMgBase_c() : mRunDuringFade(0), unk_0c2(1) {
+    using s20b2adc::sMgSceneKindByGame;
     mMenuOpen = 0;
     mMenuScreenSaved = 0;
     mMenuDisabled = 0;
@@ -3818,7 +3818,7 @@ dScMgBase_c::dScMgBase_c()
     gMgScene = this;
     mLevel = *(u32 *)(gMgMenuRow + 0x30);
 
-    mSceneKind = data_ov004_020bc070[(param1 >> 16) & 0xff];
+    mSceneKind = sMgSceneKindByGame[(param1 >> 16) & 0xff];
     /* param1 &= 0xffff, through a char *: spelled with the member, either
        as &= or as a plain assignment, mwccarm forms the address this + 8
        in ip first and the constructor grows by 4 bytes. */
