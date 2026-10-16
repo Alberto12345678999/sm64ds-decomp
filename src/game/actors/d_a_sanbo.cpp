@@ -41,8 +41,6 @@
  *   choose a 0 or 0x5a regrowth delay. func_ov096_021365d4 clears it
  *   once three segments exist. It stays unk_ until that role is
  *   measured past those two stores.
- *   - dActor_c has no Pos(). Spawn and PlayBank0 take the
- *   mPosX and mCamSpacePosX triples through a Vector3 pun.
  *   - unk_0a4 and unk_0ac keep dActor_c's names.
  *   func_ov096_02135e2c multiplies them by the floor normal.
  *   - func_ov096_02135948 keeps five int[3] positions. One
@@ -220,7 +218,7 @@ int daSanbo_c::Render()
     int b = ((f & 0x40000) != 0);
     if(b) return 1;
     Model *model = &mModel;
-    model->Render((const Vector3 *)&mScaleX);
+    model->Render(&mScale);
     return 1;
 }
 
@@ -395,9 +393,7 @@ int daSanbo_c::func_ov096_021365d4()
     func_ov096_021358c8();
     if (func_ov096_02135838() < 4) {
         if (DecIfAbove0_Byte(&mTimer) == 0) {
-            dActor_c *spawned = dActor_c::Spawn(SANBO_BODY, uniqueID,
-                *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX,
-                mAreaId, -1);
+            dActor_c *spawned = dActor_c::Spawn(SANBO_BODY, uniqueID, mPos, &mAngle, mAreaId, -1);
             if (spawned != 0) {
                 mNextSegment = (daSanbo_c *)spawned;
                 func_ov096_02136928(4);
@@ -424,8 +420,7 @@ int daSanbo_c::func_ov096_02136534()
     int head = (actorID == SANBO_HEAD);
 
     if (head != 0) {
-        dActor_c::Spawn(0x122, 2, *(Vector3 *)&mPosX, (Vector3_16 *)0,
-            mAreaId, -1);
+        dActor_c::Spawn(0x122, 2, mPos, (Vector3_16 *)0, mAreaId, -1);
     }
     func_ov096_02135800();
     mPrevAngleY = Vec3_HorzAngle(&mHitActor->mPosX, &mPosX);
@@ -559,9 +554,9 @@ int daSanbo_c::func_ov096_02136134()
     int rnd;
 
     if (head) {
-        dActor_c::Spawn(0x122, 2, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+        dActor_c::Spawn(0x122, 2, mPos, 0, mAreaId, -1);
     }
-    Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank0(9, mCamSpacePos);
     func_ov096_02135800();
     mPrevAngleY = Vec3_HorzAngle(&mHitActor->mPosX, &mPosX);
     rnd = RandomIntInternal(data_0209e650);
@@ -603,7 +598,7 @@ void daSanbo_c::func_ov096_02135efc()
         if (head) {
             int y;
 
-            Vec3_Asr(&cam, (struct Vector3 *)&mPosX, 3);
+            Vec3_Asr(&cam, &mPos, 3);
             Matrix4x3_FromTranslation(&data_020a0e68, cam.x, cam.y, cam.z);
 
             y = OnAimedAtWithEgg() >> 3;
@@ -690,12 +685,12 @@ void daSanbo_c::func_ov096_02135948()
 
     if (FindEgg(mdCcAc_c) != 0 ||
         FindExplosionActor(mdCcAc_c) != 0) {
-        Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         func_ov096_02135800();
         {
             int head = (actorID == SANBO_HEAD);
             if (head)
-                dActor_c::Spawn(0x122, 2, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+                dActor_c::Spawn(0x122, 2, mPos, 0, mAreaId, -1);
         }
         func_ov096_0213585c();
         return;
@@ -747,12 +742,12 @@ void daSanbo_c::func_ov096_02135948()
                 mParticle0, 0x13a, pos.x, pos.y, pos.z, 0, 0);
             mParticle1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
                 mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);
-            Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank0(9, mCamSpacePos);
             mHitActor = player;
             func_ov096_02136928(2);
         } else if ((flags & 0x26fe0) || player->IsOnShell() != 0 ||
                    player->mIsMetal != 0) {
-            Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank0(9, mCamSpacePos);
             mHitActor = player;
             func_ov096_02136928(2);
         } else if (mdCcAc_c.hitFlags & 0x10) {

@@ -267,7 +267,7 @@ void func_ov002_020bcdf0(char *self)
                 vv[0].z = z0;
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x37, vv[0].x, vv[0].y, vv[0].z);
 
-                Sound::PlayCharVoice(player->mCharacter, 0x33, *(Vector3 *)&player->mCamSpacePosX);
+                Sound::PlayCharVoice(player->mCharacter, 0x33, player->mCamSpacePos);
             }
         }
     }
@@ -9093,7 +9093,7 @@ int Player::JumpIntoBooCage(Vector3 & v_)
     unk_744 = v->x;
     unk_748 = v->y;
     unk_74c = v->z;
-    mAngleY = Vec3_HorzAngle(v, (const Vector3 *)&mPosX) + 0x8000;
+    mAngleY = Vec3_HorzAngle(v, &mPos) + 0x8000;
     return 1;
 }
 }
@@ -9264,7 +9264,7 @@ void Player::PlayMammaMiaSound()
     extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, const Vector3 *v);
     /* mCamSpacePosX/Y/Z are three consecutive words; dActor_c.h declares them
        individually rather than as one Vector3. */
-    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x27, (const Vector3 *)&mCamSpacePosX);
+    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x27, &mCamSpacePos);
 }
 }
 
@@ -16230,7 +16230,7 @@ int Player::St_BurnFire_Init()
     mStateWork = 0;
     /* mCamSpacePosX/Y/Z are three consecutive words, which is the Vector3 the
        sound wants; dActor_c.h declares them individually rather than as one. */
-    Sound::PlayCharVoice(mCharacter, 0x23, *(const Vector3 *)&mCamSpacePosX);
+    Sound::PlayCharVoice(mCharacter, 0x23, mCamSpacePos);
     return 1;
 }
 }
@@ -16282,7 +16282,7 @@ int Player::St_Electrocute_Main()
     extern void Player_AdvanceAnims(void* self);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_0211067c;
-    Vector3* pos = (Vector3*)&mCamSpacePosX;
+    Vector3 *pos = &mCamSpacePos;
     volatile s32 x;
     volatile s32 y;
     volatile s32 zvar;
@@ -20226,7 +20226,7 @@ int Player::St_Thrown_Init()
     int b = (mFlags & 0x400) ? 1 : 0;
     if (b)
         mStateTimer = 4;
-    Sound::PlayCharVoice(mCharacter, 0x1d, *(const Vector3*)&mCamSpacePosX);
+    Sound::PlayCharVoice(mCharacter, 0x1d, mCamSpacePos);
     _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x15, 0x40000000, 0x1000, 0x12);
     mStateStep = 0;
     mStateWork = 0;
@@ -21106,7 +21106,7 @@ int Player::St_SweepKick_Init()
     unk_726 = 0;
     /* mCamSpacePosX/Y/Z are three consecutive words; dActor_c.h declares them
        individually rather than as one Vector3. */
-    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0xa, (const Vector3*)&mCamSpacePosX);
+    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0xa, &mCamSpacePos);
     return 1;
 }
 }
@@ -21996,7 +21996,7 @@ int Player::St_GroundPound_Main()
                 if (mIsMega != 0) anim = 0xa1;
                 _ZN6Player7SetAnimEji5Fix12IiEj(this, anim, 0x40000000, 0x1000, 0);
                 mVertSpeed = -0x32000;
-                Sound::PlayCharVoice(mCharacter, 0x15, *(const Vector3 *)&mCamSpacePosX);
+                Sound::PlayCharVoice(mCharacter, 0x15, mCamSpacePos);
                 mPeakY = mPosY;
             }
         }
@@ -22024,9 +22024,9 @@ int Player::St_GroundPound_Main()
                     return 1;
                 func_ov002_020dd908(this);
                 if (mIsMega != 0) {
-                    Sound::PlayBank0(0xd3, *(const Vector3 *)&mCamSpacePosX);
+                    Sound::PlayBank0(0xd3, mCamSpacePos);
                 } else {
-                    Sound::PlayBank0((u32)mGroundSoundType + 0x90, *(const Vector3 *)&mCamSpacePosX);
+                    Sound::PlayBank0((u32)mGroundSoundType + 0x90, mCamSpacePos);
                 }
                 {
                     Vector3 v;
@@ -22439,7 +22439,7 @@ s32 Player::St_Balloon_Main()
             if (mVertSpeed > 0xc000)
                 mVertSpeed = 0xc000;
         }
-        _ZN5Sound9PlayBank0EjRK7Vector3(0xbe, *(const Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank0EjRK7Vector3(0xbe, mCamSpacePos);
         mStateTimer = 8;
     }
 
@@ -24254,11 +24254,11 @@ int Player::St_LongJump_Init()
     /* mCamSpacePosX/Y/Z are three consecutive words; dActor_c.h declares them
        individually rather than as one Vector3. */
     if (mIsMetal == 0) {
-        Sound::PlayBank0((u32)mGroundSoundType + 0x30, *(const Vector3*)&mCamSpacePosX);
+        Sound::PlayBank0((u32)mGroundSoundType + 0x30, mCamSpacePos);
     } else {
-        Sound::PlayBank0(0xa0, *(const Vector3*)&mCamSpacePosX);
+        Sound::PlayBank0(0xa0, mCamSpacePos);
     }
-    Sound::PlayCharVoice(mCharacter, 4, *(const Vector3*)&mCamSpacePosX);
+    Sound::PlayCharVoice(mCharacter, 4, mCamSpacePos);
     return 1;
 }
 }

@@ -31,8 +31,6 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 
-struct Vector3_16 { s16 x, y, z; };
-
 extern "C" {
 extern int _ZN13SharedFilePtr7ReleaseEv(void *sfp);
 extern SharedFilePtr *data_ov002_020ff028[];

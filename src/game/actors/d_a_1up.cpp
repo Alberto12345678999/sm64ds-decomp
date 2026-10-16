@@ -346,7 +346,7 @@ void da1up_c::func_ov002_020af0c0() {
         diff.z = ppos.z - mPosZ;
         int len = Vec3_HorzLen(&diff);
         short pitch = _ZN4cstd5atan2E5Fix12IiES1_(len, diff.y);
-        short yaw = Vec3_HorzAngle((Vector3*)&mPosX, &ppos);
+        short yaw = Vec3_HorzAngle(&mPos, &ppos);
         ApproachLinear(mPrevAngleY, yaw, 0x1000);
         ApproachLinear(mPrevAngleX, pitch, 0x1000);
         mVertSpeed = (short)data_02082214[(*(unsigned short*)&mPrevAngleX >> 4)*2+1] * (short)0x1e;
@@ -446,7 +446,7 @@ void da1up_c::OnTurnIntoEgg(Player &player)
     unsigned isMatch = (actorID == ACTOR_ONEUPKINOKO);
     if (isMatch) {
         Vector3 vec;
-        Sound::PlayBank3(SND3_GIVE_LIFE, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(SND3_GIVE_LIFE, mCamSpacePos);
         GiveLives(1);
         vec.x = mPosX;
         vec.y = mPosY;
@@ -490,7 +490,7 @@ void da1up_c::func_ov002_020af3a8() {
         unsigned is114 = (h == ACTOR_ONEUPKINOKO);
         if (is114) {
             struct Vector3 vec;
-            Sound::PlayBank3(SND3_GIVE_LIFE, *(Vector3*)&mCamSpacePosX);
+            Sound::PlayBank3(SND3_GIVE_LIFE, mCamSpacePos);
             GiveLives(1);
             vec.x = mPosX;
             vec.y = mPosY;
@@ -629,9 +629,9 @@ void da1up_c::func_ov002_020af684(int target, Player* player) {
         GiveCoins(p->mPlayerNo, 1);
         p->Heal(0x100);
         if (p->mIsUnderwater)
-            Sound::PlayBank3(SND3_COIN_UNDERWATER, *(Vector3*)&mCamSpacePosX);
+            Sound::PlayBank3(SND3_COIN_UNDERWATER, mCamSpacePos);
         else
-            Sound::PlayBank3(SND3_COIN, *(Vector3*)&mCamSpacePosX);
+            Sound::PlayBank3(SND3_COIN, mCamSpacePos);
     }
     KillAndTrackInDeathTable();
 }
@@ -648,7 +648,7 @@ void da1up_c::func_ov002_020af724() {
     func_ov002_020aefb8();
     switch (mState) {
     case 0:
-        Sound::PlayBank3(SND3_UNK_69, *(Vector3*)&mCamSpacePosX);
+        Sound::PlayBank3(SND3_UNK_69, mCamSpacePos);
         mState += 1;
         break;
     case 1:
@@ -757,7 +757,7 @@ void da1up_c::func_ov002_020af950() {
       mState = 3;
       mShown = 1;
       func_ov002_020aefa4((char*)this);
-      Sound::PlayBank3(SND3_LAUNCH, *(Vector3*)&mCamSpacePosX);
+      Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
       mFlags &= ~ACTOR_FLAG_CLIP_TEST;
       return;
 
@@ -823,7 +823,7 @@ void da1up_c::func_ov002_020afa98() {
         mState = 3;
         mShown = 1;
         func_ov002_020aefa4((char*)this);
-        Sound::PlayBank3(SND3_LAUNCH, *(Vector3*)&mCamSpacePosX);
+        Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
         mFlags &= ~ACTOR_FLAG_CLIP_TEST;
         return;
     case 1:
@@ -988,7 +988,7 @@ void da1up_c::func_ov002_020afe4c() {
     switch (mState) {
     case 0:
         if (*(unsigned short*)&mStateTimer == 0) {
-            Sound::PlayBank3(SND3_LAUNCH, *(Vector3*)&mCamSpacePosX);
+            Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
         }
         func_ov002_020af474();
         if (*(unsigned short*)&mStateTimer == 0x25) {
