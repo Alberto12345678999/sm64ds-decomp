@@ -10,9 +10,10 @@
  * pending, save the interrupted thread's user-mode registers and switch to
  * the highest-priority ready one.
  *
- * Both are whole-function asm, as in the SDK: `clz`, the banked-register
- * transfers (`stmib ...^`, `ldmib ...^`) and the CPSR/SPSR mode switches have
- * no C expression, and each routine exits through the other's stack frame.
+ * HAND-ASM PRIMITIVE: both are whole-function asm, as in the SDK: `clz`, the
+ * banked-register transfers (`stmib ...^`, `ldmib ...^`) and the CPSR/SPSR
+ * mode switches have no C expression, and each routine exits through the
+ * other's stack frame.
  * Asm-only functions are emitted in source order.
  *
  * Context block (per thread): +0x00 spsr, +0x04.. the banked user registers,
