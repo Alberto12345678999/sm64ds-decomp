@@ -11416,9 +11416,6 @@
       "src/game/stages/d_s_entry_entry.cpp": [
         "return:char []"
       ],
-      "src/game/stages/d_s_entry_result.cpp": [
-        "return:char []"
-      ],
       "src/game/stages/d_s_stage.cpp": [
         "return:void * []"
       ]
@@ -11830,7 +11827,7 @@
       "src/game/stages/d_s_entry_entry.cpp": [
         "return:char []"
       ],
-      "src/game/stages/d_s_entry_result.cpp": [
+      "src/game/stages/d_s_entry_methods.cpp": [
         "return:char []"
       ]
     },
@@ -23144,7 +23141,7 @@
       ]
     },
     "func_020308b4": {
-      "src/_ZN10dScEntry_c16CleanupResourcesEv.cpp": [
+      "src/game/stages/d_s_entry_methods.cpp": [
         "param:#1 void *"
       ],
       "src/game/stages/d_s_mb.cpp": [
@@ -30018,7 +30015,7 @@
       ]
     },
     "func_ov075_02116818": {
-      "src/_ZN10dScEntry_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_entry_methods.cpp": [
         "return:void"
       ]
     },
@@ -30065,7 +30062,7 @@
       ]
     },
     "func_ov075_02119dc4": {
-      "src/_ZN10dScEntry_c8BehaviorEv.cpp": [
+      "src/game/stages/d_s_entry_methods.cpp": [
         "param:#2 void *",
         "return:int"
       ],

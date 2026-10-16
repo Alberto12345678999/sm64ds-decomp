@@ -283,7 +283,7 @@ inherited at 0x0c).
 [data_ov075_0211d304](../config/arm9/overlays/ov075/symbols.txt) (18 slots) against `_ZTV8dScene_c` slot for slot, `dScEntry_c`
 overrides exactly eight — 0, 1, 3, 6, 9, 12, 16, 17.
 
-**Construction.** Two real Spawn-style factories, [func_ov075_0211a740](../src/game/stages/d_s_entry_result.cpp)(reconstructed names as `dScEntry_c_classInit_RESULT` in `d_s_entry_result.cpp`) and
+**Construction.** Two real Spawn-style factories, [func_ov075_0211a740](../src/game/stages/d_s_entry_methods.cpp)(reconstructed name as `dScEntry_c_classInit_RESULT` in `d_s_entry_methods.cpp`) and
 [func_ov075_0211a854](../src/game/stages/d_s_entry_entry.cpp)(reconstructed name as `dScEntry_c_classInit_ENTRY` in `d_s_entry_entry.cpp`), both open with `_ZN7fBase_cnwEj(0x288)`, i.e.
 `fBase_c::operator new(0x288)`. They are not C1/C2 variants: both allocate and return
 a new object. Size 0x288 is read directly off the allocator call, not inferred from
