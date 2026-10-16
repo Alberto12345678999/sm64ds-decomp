@@ -757,7 +757,7 @@ extern int data_ov006_0213b918;
 extern int data_ov006_0213bc44;
 extern int data_ov006_0213bcb0[];
 extern int data_ov006_0213bd48[];
-extern int data_ov006_0213c2e4[];
+extern int sCurlingAimMarkerSprites[];
 extern int data_ov006_0213c954;
 extern int sHanaFieldWigglerCount;
 extern int data_ov006_0213cab8;

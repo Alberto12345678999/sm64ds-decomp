@@ -128,13 +128,13 @@ extern Pmf pmf_dScMgSound_c_Pop12_Finish;
 
 extern "C" {
 extern int Hud_RenderSprite(int a,int b,int c,int d,int e);
-extern int data_ov006_02137ae8[];
+extern int sSoundWinSpriteBSprites[];
 extern unsigned short data_ov006_0212ee38[];
-extern int data_ov006_02138d28[];
+extern int sSoundWinSpriteASprites[];
 extern u16 data_ov006_0212ee28[];
 extern void Mg_DrawStockCounter(int a, int b);
 extern const short data_02082214[];
-extern void* data_ov006_0213f6f0[];
+extern void *sSoundPopsSprites[];
 extern int data_ov006_0212ef30[];
 extern int data_ov006_0212ef0c[];
 extern int data_ov006_0212eeac[];
@@ -1618,8 +1618,8 @@ void dScMgSound_c::DrawPops()
             m[3] = a;
             m[1] = b;
             m[2] = -b;
-            Mg_RenderSpriteBothPalMtx(data_ov006_0213f6f0[pop->pop.sprite],
-                                (x >> 12) - 8, (y >> 12) - 0x10, -1, m);
+            Mg_RenderSpriteBothPalMtx(sSoundPopsSprites[pop->pop.sprite], (x >> 12) - 8,
+                                      (y >> 12) - 0x10, -1, m);
         }
         tb = data_02082214[0];
         p += 0x24;
@@ -1627,7 +1627,7 @@ void dScMgSound_c::DrawPops()
 }
 
 // @symbol _ZN12dScMgSound_c9DrawNotesEv
-extern void* data_ov006_0213f730[];
+extern void *sSoundNotesSprites[];
 void dScMgSound_c::DrawNotes() {
   char *c = (char *)this;
   int i;
@@ -1641,7 +1641,7 @@ void dScMgSound_c::DrawNotes() {
       if (mState != 1)
           a4 = 1;
       unsigned char sel = note->note.frame;
-      Hud_RenderSprite((int)data_ov006_0213f730[sel], a1, a2, -1, a4);
+      Hud_RenderSprite((int)sSoundNotesSprites[sel], a1, a2, -1, a4);
     }
     o += 0x14;
   }
@@ -1678,8 +1678,8 @@ void dScMgSound_c::UpdateWinSpriteA()
 // @symbol _ZN12dScMgSound_c14DrawWinSpriteAEv
 void dScMgSound_c::DrawWinSpriteA(){
     if (this->mSpriteA.visible == 0) return;
-  Hud_RenderSprite(data_ov006_02138d28[this->mSpriteA.frame],
-    this->mSpriteA.x >> 0xc, this->mSpriteA.y >> 0xc, -1, -1);
+    Hud_RenderSprite(sSoundWinSpriteASprites[this->mSpriteA.frame], this->mSpriteA.x >> 0xc,
+                     this->mSpriteA.y >> 0xc, -1, -1);
 }
 
 // @symbol _ZN12dScMgSound_c15StartWinSpriteBEv
@@ -1704,8 +1704,8 @@ void dScMgSound_c::UpdateWinSpriteB()
 // @symbol _ZN12dScMgSound_c14DrawWinSpriteBEv
 void dScMgSound_c::DrawWinSpriteB(){
     if (this->mSpriteB.visible == 0) return;
-  Hud_RenderSprite(data_ov006_02137ae8[this->mSpriteB.frame],
-    this->mSpriteB.x >> 0xc, this->mSpriteB.y >> 0xc, -1, -1);
+    Hud_RenderSprite(sSoundWinSpriteBSprites[this->mSpriteB.frame], this->mSpriteB.x >> 0xc,
+                     this->mSpriteB.y >> 0xc, -1, -1);
 }
 
 // @symbol _ZN12dScMgSound_cD1Ev

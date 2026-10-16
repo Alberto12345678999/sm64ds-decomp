@@ -126,10 +126,10 @@ extern unsigned char data_ov006_0212e454[];
 extern u8   data_ov006_0212e458[];
 extern int  data_ov006_0212e460[];
 extern int  data_ov006_0212e468[];
-extern int  data_ov006_0213a5e0[];
+extern int sCurlingBitSprites[];
 extern int  data_ov006_0213c264;
 extern int  data_ov006_0213c2ac;
-extern int  data_ov006_0213c2e4[];
+extern int sCurlingAimMarkerSprites[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
 extern char data_ov006_0213c394;
@@ -197,8 +197,8 @@ void dScMgCurling_c::Bit_DrawAll()
         if (mBit[i].shown) {
             int x = mBit[i].x >> 0xc;
             int y = mBit[i].y >> 0xc;
-            Mg_RenderSubSpriteMtx(data_ov006_0213a5e0[mBit[i].texA], x, y, 0);
-            DrawOamSprite(data_ov006_0213a5e0[mBit[i].texB], x, y, 0);
+            Mg_RenderSubSpriteMtx(sCurlingBitSprites[mBit[i].texA], x, y, 0);
+            DrawOamSprite(sCurlingBitSprites[mBit[i].texB], x, y, 0);
         }
     }
 }
@@ -690,7 +690,7 @@ void dScMgCurling_c::DrawAimMarker()
   if(mAimShown==0) return;
   int x=mAimX;
   int y=mAimY;
-  Mg_RenderSpriteBoth((int)data_ov006_0213c2e4,(x>>12)-0x20,(y>>12)-8,-1,0);
+  Mg_RenderSpriteBoth((int)sCurlingAimMarkerSprites, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
 }
 
 #pragma push

@@ -453,11 +453,9 @@ void dScMgPanel_c::Banner_Draw()
 {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
-    extern void *data_ov006_02136e2c[];
+    extern void *sPanelBannerSprites[];
     if (self->mBanner.visible == 0) return;
-    Mg_RenderSubSpriteMtx(data_ov006_02136e2c[0],
-                        self->mBanner.x >> 12,
-                        self->mBanner.y >> 12, 0);
+    Mg_RenderSubSpriteMtx(sPanelBannerSprites[0], self->mBanner.x >> 12, self->mBanner.y >> 12, 0);
 }
 
 // @symbol _ZN12dScMgPanel_c16Banner_StateIdleEv
@@ -533,10 +531,9 @@ void dScMgPanel_c::DrawCursor()
 {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
-    extern void *data_ov006_02136d40[];
+    extern void *sPanelCursorSprites[];
     if (*(u8 *)(scene + 0x4fe3) == 0) return;
-    Hud_RenderSprite(data_ov006_02136d40[s->mCredits],
-                        0xf0, 0x24, -1, -1);
+    Hud_RenderSprite(sPanelCursorSprites[s->mCredits], 0xf0, 0x24, -1, -1);
 }
 
 // @symbol _ZN12dScMgPanel_c7DrawHudEv

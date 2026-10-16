@@ -158,13 +158,13 @@ extern unsigned short data_ov006_0212efc8[];
 extern unsigned char  data_ov006_0212efcc[];
 extern unsigned char  data_ov006_0212efd4[];
 extern unsigned short data_ov006_0212efdc[];
-extern void          *data_ov006_02133a5c;
-extern void          *data_ov006_02134210[];
+extern void *sTeresaExclaimSprites;
+extern void *sTeresaVanishPuffSprites[];
 extern int            data_ov006_02135fc8[];
 extern int sMgDigitSprites[];
-extern void          *data_ov006_0213a5f4;
+extern void *sTeresaMarkerSprites;
 extern struct OamAttr *data_ov006_0213a628[];
-extern int           *data_ov006_0213f9d0[];
+extern int *sTeresaCountdownSprites[];
 extern void          *data_ov006_0213a964[];
 extern int            data_ov006_0212efec[];
 extern int            data_ov006_0212f014[];
@@ -603,10 +603,7 @@ void dScMgTeresa_c::StepBg3Scroll()
 void dScMgTeresa_c::Marker_Draw()
 {
   if(mMarker.visible==0) return;
-  RenderOamMainScreen(data_ov006_0213a5f4,
-                      mMarker.x>>0xc,
-                      mMarker.y>>0xc,
-                      -1, -1);
+  RenderOamMainScreen(sTeresaMarkerSprites, mMarker.x >> 0xc, mMarker.y >> 0xc, -1, -1);
 }
 
 
@@ -927,8 +924,8 @@ void dScMgTeresa_c::VanishPuff_DrawAll() {
     int i;
     for (i = 0; i < 16; i++) {
         if (mVanishPuffs[i].visible) {
-            Hud_RenderSprite(data_ov006_02134210[mVanishPuffs[i].frame], mVanishPuffs[i].x >> 12,
-                             mVanishPuffs[i].y >> 12, -1, -1);
+            Hud_RenderSprite(sTeresaVanishPuffSprites[mVanishPuffs[i].frame],
+                             mVanishPuffs[i].x >> 12, mVanishPuffs[i].y >> 12, -1, -1);
         }
     }
 }
@@ -980,7 +977,7 @@ void dScMgTeresa_c::DrawCountdown()
   unsigned char* raw = (unsigned char*)arg;
   if(*(unsigned char*)(raw+0x4c1b)==0) return;
   Mg_DrawNumberRotated(0x80,0x60,*(unsigned short*)(raw+0x4c14),1,0,0x800,0);
-  DrawOamSprite(data_ov006_0213f9d0[GetGameLanguage()][3],0x80,0x48,0);
+  DrawOamSprite(sTeresaCountdownSprites[GetGameLanguage()][3], 0x80, 0x48, 0);
 }
 
 
@@ -1035,7 +1032,7 @@ void dScMgTeresa_c::Exclaim_DrawAll()
             int v4 = mExclaims[i].y >> 12;
             if (v4 <= 8) v4 = 8;
             if (v4 >= 0xb8) v4 = 0xb8;
-            Hud_RenderSprite(data_ov006_02133a5c, v0, v4, -1, -1);
+            Hud_RenderSprite(sTeresaExclaimSprites, v0, v4, -1, -1);
         }
     }
 }

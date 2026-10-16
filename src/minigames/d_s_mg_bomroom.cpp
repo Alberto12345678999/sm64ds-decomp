@@ -44,7 +44,7 @@
 
 extern "C" {
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
-extern int data_ov006_021344ec[];
+extern int sBomroomPenGateSprites[];
 extern int data_ov006_0212e2c8[];
 extern int data_ov006_0212e2e0[];
 extern int data_ov006_021342bc[];
@@ -60,9 +60,9 @@ extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
 extern unsigned char* data_ov006_0213bb18[];
 extern unsigned char* data_ov006_0213bb28[];
-extern void* data_ov006_0213bb4c[];
+extern void *sBomroomBombsSprites[];
 extern void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern void *data_ov006_02134f30;
+extern void *sBomroomRoundOverSprites;
 extern void *data_ov006_02133ae0[];
 extern void *data_ov006_02133a70[];
 extern int data_ov006_0212e2c0[];
@@ -108,7 +108,7 @@ void dScMgBomroom_c::DrawRoundOver() {
     void * p = (void *)this;
     char *c = (char *)p;
     if (*(unsigned char *)(c + 0x6000 + 0x2fa) == 0) return;
-    RenderOamMainScreen((int)data_ov006_02134f30, 0x80, 0xc0, -1, 1);
+    RenderOamMainScreen((int)sBomroomRoundOverSprites, 0x80, 0xc0, -1, 1);
 }
 
 
@@ -406,7 +406,7 @@ void dScMgBomroom_c::PenGate_DrawAll() {
         int yv = mPenGates[i].y >> 12;
         int k = mPenGates[i].level;
         if (i != 0) k += 5;
-        Hud_RenderSprite((void*)data_ov006_021344ec[k], xv, yv, -1, -1);
+        Hud_RenderSprite((void *)sBomroomPenGateSprites[k], xv, yv, -1, -1);
     }
 }
 
@@ -1120,7 +1120,7 @@ void dScMgBomroom_c::DrawBombs() {
             if (b697 == 6) {
                 if (mBombs[i].substate == 4) { y = (f664 - mBg2Y) >> 12; }
             }
-            Mg_RenderSpriteBoth(data_ov006_0213bb4c[sprite], x, y, -1, palette);
+            Mg_RenderSpriteBoth(sBomroomBombsSprites[sprite], x, y, -1, palette);
         }
     }
 }

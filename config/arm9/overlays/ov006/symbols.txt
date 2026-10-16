@@ -2280,8 +2280,8 @@ data_ov006_02133a1c kind:data(any) addr:0x02133a1c
 data_ov006_02133a24 kind:data(any) addr:0x02133a24
 data_ov006_02133a2c kind:data(any) addr:0x02133a2c
 data_ov006_02133a34 kind:data(any) addr:0x02133a34
-data_ov006_02133a3c kind:data(any) addr:0x02133a3c
-data_ov006_02133a5c kind:data(any) addr:0x02133a5c
+sEsp3DAnimSetSlotsSprites kind:data(any) addr:0x02133a3c
+sTeresaExclaimSprites kind:data(any) addr:0x02133a5c
 data_ov006_02133a60 kind:data(any) addr:0x02133a60
 data_ov006_02133a70 kind:data(any) addr:0x02133a70
 data_ov006_02133a80 kind:data(any) addr:0x02133a80
@@ -2336,7 +2336,7 @@ data_ov006_02133eb0 kind:data(any) addr:0x02133eb0
 data_ov006_02133ed0 kind:data(any) addr:0x02133ed0
 data_ov006_02133f00 kind:data(any) addr:0x02133f00
 data_ov006_02133f08 kind:data(any) addr:0x02133f08
-data_ov006_02133f10 kind:data(any) addr:0x02133f10
+sCoinValuesSprites kind:data(any) addr:0x02133f10
 data_ov006_02133f18 kind:data(any) addr:0x02133f18
 data_ov006_02133f1c kind:data(any) addr:0x02133f1c
 data_ov006_02133f24 kind:data(any) addr:0x02133f24
@@ -2361,11 +2361,11 @@ data_ov006_02134144 kind:data(any) addr:0x02134144 ambiguous
 data_ov006_021341d4 kind:data(any) addr:0x021341d4
 data_ov006_021341dc kind:data(any) addr:0x021341dc
 data_ov006_021341e4 kind:data(any) addr:0x021341e4
-data_ov006_021341ec kind:data(any) addr:0x021341ec
+sCoinPopupSprites kind:data(any) addr:0x021341ec
 data_ov006_021341f0 kind:data(any) addr:0x021341f0
 data_ov006_021341f8 kind:data(any) addr:0x021341f8
 data_ov006_02134200 kind:data(any) addr:0x02134200
-data_ov006_02134210 kind:data(any) addr:0x02134210
+sTeresaVanishPuffSprites kind:data(any) addr:0x02134210
 data_ov006_02134218 kind:data(any) addr:0x02134218 ambiguous
 data_ov006_02134224 kind:data(any) addr:0x02134224
 data_ov006_0213424c kind:data(any) addr:0x0213424c
@@ -2387,7 +2387,7 @@ data_ov006_02134444 kind:data(any) addr:0x02134444
 data_ov006_02134484 kind:data(any) addr:0x02134484
 data_ov006_021344a4 kind:data(any) addr:0x021344a4
 data_ov006_021344c4 kind:data(any) addr:0x021344c4
-data_ov006_021344ec kind:data(any) addr:0x021344ec
+sBomroomPenGateSprites kind:data(any) addr:0x021344ec
 data_ov006_02134514 kind:data(any) addr:0x02134514
 data_ov006_0213453c kind:data(any) addr:0x0213453c
 data_ov006_0213456c kind:data(any) addr:0x0213456c
@@ -2429,7 +2429,7 @@ data_ov006_02134abc kind:data(any) addr:0x02134abc
 data_ov006_02134afc kind:data(any) addr:0x02134afc
 data_ov006_02134b3c kind:data(any) addr:0x02134b3c
 data_ov006_02134b44 kind:data(any) addr:0x02134b44
-data_ov006_02134b4c kind:data(any) addr:0x02134b4c
+sCoinBagSprites kind:data(any) addr:0x02134b4c
 data_ov006_02134b54 kind:data(any) addr:0x02134b54
 data_ov006_02134b60 kind:data(any) addr:0x02134b60
 data_ov006_02134b6c kind:data(any) addr:0x02134b6c
@@ -2486,7 +2486,7 @@ data_ov006_02134f08 kind:data(any) addr:0x02134f08
 data_ov006_02134f0c kind:data(any) addr:0x02134f0c
 data_ov006_02134f24 kind:data(any) addr:0x02134f24
 data_ov006_02134f28 kind:data(any) addr:0x02134f28
-data_ov006_02134f30 kind:data(any) addr:0x02134f30
+sBomroomRoundOverSprites kind:data(any) addr:0x02134f30
 data_ov006_02134f34 kind:data(any) addr:0x02134f34
 data_ov006_02134f60 kind:data(any) addr:0x02134f60 ambiguous
 data_ov006_02134f7c kind:data(any) addr:0x02134f7c ambiguous
@@ -2575,7 +2575,7 @@ data_ov006_02136be4 kind:data(any) addr:0x02136be4
 data_ov006_02136c0c kind:data(any) addr:0x02136c0c
 data_ov006_02136c34 kind:data(any) addr:0x02136c34
 data_ov006_02136c7c kind:data(any) addr:0x02136c7c
-data_ov006_02136cd4 kind:data(any) addr:0x02136cd4
+sPachinkoBallSprites kind:data(any) addr:0x02136cd4
 data_ov006_02136cd8 kind:data(any) addr:0x02136cd8
 data_ov006_02136ce0 kind:data(any) addr:0x02136ce0
 data_ov006_02136ce8 kind:data(any) addr:0x02136ce8
@@ -2586,7 +2586,7 @@ data_ov006_02136d14 kind:data(any) addr:0x02136d14
 data_ov006_02136d1c kind:data(any) addr:0x02136d1c
 data_ov006_02136d28 kind:data(any) addr:0x02136d28
 data_ov006_02136d38 kind:data(any) addr:0x02136d38
-data_ov006_02136d40 kind:data(any) addr:0x02136d40
+sPanelCursorSprites kind:data(any) addr:0x02136d40
 data_ov006_02136d50 kind:data(any) addr:0x02136d50
 data_ov006_02136d60 kind:data(any) addr:0x02136d60
 data_ov006_02136d78 kind:data(any) addr:0x02136d78
@@ -2601,10 +2601,10 @@ data_ov006_02136e04 kind:data(any) addr:0x02136e04
 data_ov006_02136e0c kind:data(any) addr:0x02136e0c
 data_ov006_02136e14 kind:data(any) addr:0x02136e14
 data_ov006_02136e1c kind:data(any) addr:0x02136e1c
-data_ov006_02136e24 kind:data(any) addr:0x02136e24
-data_ov006_02136e2c kind:data(any) addr:0x02136e2c
+sCoinSparkleSprites kind:data(any) addr:0x02136e24
+sPanelBannerSprites kind:data(any) addr:0x02136e2c
 data_ov006_02136e30 kind:data(any) addr:0x02136e30
-data_ov006_02136e38 kind:data(any) addr:0x02136e38
+sEsp3DAnimSetRowsSprites kind:data(any) addr:0x02136e38
 data_ov006_02136e3c kind:data(any) addr:0x02136e3c
 data_ov006_02136e44 kind:data(any) addr:0x02136e44
 data_ov006_02136e4c kind:data(any) addr:0x02136e4c
@@ -2766,11 +2766,11 @@ data_ov006_021375dc kind:data(any) addr:0x021375dc
 data_ov006_021375e4 kind:data(any) addr:0x021375e4
 data_ov006_021375e8 kind:data(any) addr:0x021375e8 ambiguous
 data_ov006_021375ec kind:data(any) addr:0x021375ec
-data_ov006_021375f4 kind:data(any) addr:0x021375f4
+sPachinkoFlyerSprites kind:data(any) addr:0x021375f4
 data_ov006_021375fc kind:data(any) addr:0x021375fc
 data_ov006_02137604 kind:data(any) addr:0x02137604
 data_ov006_0213760c kind:data(any) addr:0x0213760c
-data_ov006_02137614 kind:data(any) addr:0x02137614
+sPachinkoBobOmbSprites kind:data(any) addr:0x02137614
 data_ov006_02137618 kind:data(any) addr:0x02137618
 data_ov006_02137620 kind:data(any) addr:0x02137620
 data_ov006_02137628 kind:data(any) addr:0x02137628
@@ -2791,7 +2791,7 @@ data_ov006_021376ac kind:data(any) addr:0x021376ac
 data_ov006_021376bc kind:data(any) addr:0x021376bc
 data_ov006_021376cc kind:data(any) addr:0x021376cc
 data_ov006_021376dc kind:data(any) addr:0x021376dc
-data_ov006_021376ec kind:data(any) addr:0x021376ec
+sRouletteStripSprites kind:data(any) addr:0x021376ec
 data_ov006_02137714 kind:data(any) addr:0x02137714
 data_ov006_02137764 kind:data(any) addr:0x02137764
 data_ov006_021377b4 kind:data(any) addr:0x021377b4
@@ -2829,7 +2829,7 @@ data_ov006_02137aa8 kind:data(any) addr:0x02137aa8
 data_ov006_02137ab8 kind:data(any) addr:0x02137ab8
 data_ov006_02137ac8 kind:data(any) addr:0x02137ac8
 data_ov006_02137ad8 kind:data(any) addr:0x02137ad8
-data_ov006_02137ae8 kind:data(any) addr:0x02137ae8
+sSoundWinSpriteBSprites kind:data(any) addr:0x02137ae8
 data_ov006_02137af8 kind:data(any) addr:0x02137af8
 data_ov006_02137b00 kind:data(any) addr:0x02137b00
 data_ov006_02137b08 kind:data(any) addr:0x02137b08
@@ -3028,7 +3028,7 @@ data_ov006_02138bf4 kind:data(any) addr:0x02138bf4
 data_ov006_02138bf8 kind:data(any) addr:0x02138bf8
 data_ov006_02138c18 kind:data(any) addr:0x02138c18
 data_ov006_02138c1c kind:data(any) addr:0x02138c1c
-data_ov006_02138c3c kind:data(any) addr:0x02138c3c
+sRouletteRacerSprites kind:data(any) addr:0x02138c3c
 data_ov006_02138c40 kind:data(any) addr:0x02138c40
 data_ov006_02138c48 kind:data(any) addr:0x02138c48
 data_ov006_02138c60 kind:data(any) addr:0x02138c60
@@ -3039,7 +3039,7 @@ data_ov006_02138cc0 kind:data(any) addr:0x02138cc0
 data_ov006_02138cd8 kind:data(any) addr:0x02138cd8
 data_ov006_02138cf0 kind:data(any) addr:0x02138cf0
 data_ov006_02138d08 kind:data(any) addr:0x02138d08
-data_ov006_02138d28 kind:data(any) addr:0x02138d28
+sSoundWinSpriteASprites kind:data(any) addr:0x02138d28
 data_ov006_02138d34 kind:data(any) addr:0x02138d34
 data_ov006_02138d44 kind:data(any) addr:0x02138d44
 data_ov006_02138d54 kind:data(any) addr:0x02138d54
@@ -3155,8 +3155,8 @@ data_ov006_0213a5c0 kind:data(any) addr:0x0213a5c0
 data_ov006_0213a5c8 kind:data(any) addr:0x0213a5c8
 data_ov006_0213a5d0 kind:data(any) addr:0x0213a5d0
 data_ov006_0213a5d8 kind:data(any) addr:0x0213a5d8
-data_ov006_0213a5e0 kind:data(any) addr:0x0213a5e0
-data_ov006_0213a5f4 kind:data(any) addr:0x0213a5f4
+sCurlingBitSprites kind:data(any) addr:0x0213a5e0
+sTeresaMarkerSprites kind:data(any) addr:0x0213a5f4
 data_ov006_0213a5f8 kind:data(any) addr:0x0213a5f8
 data_ov006_0213a628 kind:data(any) addr:0x0213a628
 data_ov006_0213a63c kind:data(any) addr:0x0213a63c
@@ -3185,7 +3185,7 @@ data_ov006_0213a9a4 kind:data(any) addr:0x0213a9a4
 data_ov006_0213a9ac kind:data(any) addr:0x0213a9ac
 data_ov006_0213a9c4 kind:data(any) addr:0x0213a9c4
 data_ov006_0213a9dc kind:data(any) addr:0x0213a9dc
-data_ov006_0213a9fc kind:data(any) addr:0x0213a9fc
+sCoinCaptionSprites kind:data(any) addr:0x0213a9fc
 data_ov006_0213aa24 kind:data(any) addr:0x0213aa24
 data_ov006_0213aa5c kind:data(any) addr:0x0213aa5c
 data_ov006_0213aa94 kind:data(any) addr:0x0213aa94
@@ -3451,7 +3451,7 @@ data_ov006_0213bb08 kind:data(any) addr:0x0213bb08
 data_ov006_0213bb18 kind:data(any) addr:0x0213bb18
 data_ov006_0213bb28 kind:data(any) addr:0x0213bb28
 _ZTS14dScMgBomroom_c kind:data(any) addr:0x0213bb38
-data_ov006_0213bb4c kind:data(any) addr:0x0213bb4c
+sBomroomBombsSprites kind:data(any) addr:0x0213bb4c
 data_ov006_0213bbb4 kind:data(any) addr:0x0213bbb4
 _ZTV14dScMgBomroom_c kind:data(any) addr:0x0213bbb4
 data_ov006_0213bc44 kind:data(any) addr:0x0213bc44
@@ -3498,10 +3498,10 @@ pmf_dScMgCoin_c_Block_StateWaiting kind:data(any) addr:0x0213beec
 pmf_dScMgCoin_c_Bag_StateParked kind:data(any) addr:0x0213bef4
 pmf_dScMgCoin_c_Coin_StateWaitTouch kind:data(any) addr:0x0213befc
 pmf_dScMgCoin_c_Coin_StateHop kind:data(any) addr:0x0213bf04
-data_ov006_0213bf0c kind:data(any) addr:0x0213bf0c
+sCoinBlocksSprites kind:data(any) addr:0x0213bf0c
 _ZTI11dScMgCoin_c kind:data(any) addr:0x0213bf18
 _ZTS11dScMgCoin_c kind:data(any) addr:0x0213bf24
-data_ov006_0213bf34 kind:data(any) addr:0x0213bf34
+sCoinScorePlayerSprites kind:data(any) addr:0x0213bf34
 data_ov006_0213bf50 kind:data(any) addr:0x0213bf50
 _ZTV11dScMgCoin_c kind:data(any) addr:0x0213bf50
 data_ov006_0213bfe0 kind:data(any) addr:0x0213bfe0
@@ -3562,7 +3562,7 @@ pmf_dScMgCurling_c_Scene_Score kind:data(any) addr:0x0213c2b4
 pmf_dScMgCurling_c_Aim_Swing kind:data(any) addr:0x0213c2bc
 _ZTI14dScMgCurling_c kind:data(any) addr:0x0213c2c4
 _ZTS14dScMgCurling_c kind:data(any) addr:0x0213c2d0
-data_ov006_0213c2e4 kind:data(any) addr:0x0213c2e4
+sCurlingAimMarkerSprites kind:data(any) addr:0x0213c2e4
 data_ov006_0213c304 kind:data(any) addr:0x0213c304
 _ZTV14dScMgCurling_c kind:data(any) addr:0x0213c304
 data_ov006_0213c394 kind:data(any) addr:0x0213c394
@@ -3584,7 +3584,7 @@ g_profile_MG_CURLING_J kind:data(any) addr:0x0213c434 ambiguous
 pmf_dScMgCurling2_c_StepXPushNeg kind:data(any) addr:0x0213c43c
 pmf_dScMgCurling2_c_StepXPushPos kind:data(any) addr:0x0213c444
 data_ov006_0213c44c kind:data(any) addr:0x0213c44c
-data_ov006_0213c454 kind:data(any) addr:0x0213c454
+sCurling2StonesSprites kind:data(any) addr:0x0213c454
 pmf_dScMgCurling2_c_StepXSettleFast kind:data(any) addr:0x0213c45c
 pmf_dScMgCurling2_c_StepXPushNegFast kind:data(any) addr:0x0213c464
 pmf_dScMgCurling2_c_StepYRampDown kind:data(any) addr:0x0213c46c
@@ -3599,8 +3599,8 @@ pmf_dScMgCurling2_c_DragUpdate kind:data(any) addr:0x0213c4ac
 pmf_dScMgCurling2_c_DragBegin kind:data(any) addr:0x0213c4b4
 _ZTI15dScMgCurling2_c kind:data(any) addr:0x0213c4bc
 _ZTS15dScMgCurling2_c kind:data(any) addr:0x0213c4c8
-data_ov006_0213c4dc kind:data(any) addr:0x0213c4dc
-data_ov006_0213c4f0 kind:data(any) addr:0x0213c4f0
+sCurling2CounterSprites kind:data(any) addr:0x0213c4dc
+sCurling2CursorSprites kind:data(any) addr:0x0213c4f0
 data_ov006_0213c510 kind:data(any) addr:0x0213c510
 _ZTV15dScMgCurling2_c kind:data(any) addr:0x0213c510
 data_ov006_0213c5a0 kind:data(any) addr:0x0213c5a0
@@ -4065,7 +4065,7 @@ data_ov006_0213e654 kind:data(any) addr:0x0213e654
 data_ov006_0213e656 kind:data(any) addr:0x0213e656
 _ZTSN12dScMgSlot1_c9betIcon_cE kind:data(any) addr:0x0213e66c
 data_ov006_0213e688 kind:data(any) addr:0x0213e688
-data_ov006_0213e6a8 kind:data(any) addr:0x0213e6a8
+sSlotsSlotBlinkSprites kind:data(any) addr:0x0213e6a8
 data_ov006_0213e6c8 kind:data(any) addr:0x0213e6c8
 data_ov006_0213e6e8 kind:data(any) addr:0x0213e6e8
 data_ov006_0213e708 kind:data(any) addr:0x0213e708
@@ -4233,11 +4233,11 @@ pmf_dScMgSound_c_Pop03_Finish kind:data(any) addr:0x0213f6cc
 pmf_dScMgSound_c_Pop03_Fly kind:data(any) addr:0x0213f6d4
 pmf_dScMgSound_c_Pop03_Start kind:data(any) addr:0x0213f6dc
 _ZTI12dScMgSound_c kind:data(any) addr:0x0213f6e4
-data_ov006_0213f6f0 kind:data(any) addr:0x0213f6f0
+sSoundPopsSprites kind:data(any) addr:0x0213f6f0
 data_ov006_0213f6fc kind:data(any) addr:0x0213f6fc
 _ZTS12dScMgSound_c kind:data(any) addr:0x0213f708
 data_ov006_0213f718 kind:data(any) addr:0x0213f718
-data_ov006_0213f730 kind:data(any) addr:0x0213f730
+sSoundNotesSprites kind:data(any) addr:0x0213f730
 data_ov006_0213f74c kind:data(any) addr:0x0213f74c
 data_ov006_0213f76c kind:data(any) addr:0x0213f76c
 data_ov006_0213f794 kind:data(any) addr:0x0213f794
@@ -4273,7 +4273,7 @@ pmf_dScMgTeresa_c_BigBoo_StateGone kind:data(any) addr:0x0213f9a4
 pmf_dScMgTeresa_c_BigBoo_StateRemove kind:data(any) addr:0x0213f9ac
 _ZTI13dScMgTeresa_c kind:data(any) addr:0x0213f9b4
 _ZTS13dScMgTeresa_c kind:data(any) addr:0x0213f9c0
-data_ov006_0213f9d0 kind:data(any) addr:0x0213f9d0
+sTeresaCountdownSprites kind:data(any) addr:0x0213f9d0
 data_ov006_0213f9e4 kind:data(any) addr:0x0213f9e4
 data_ov006_0213fa0c kind:data(any) addr:0x0213fa0c
 _ZTV13dScMgTeresa_c kind:data(any) addr:0x0213fa0c

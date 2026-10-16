@@ -647,7 +647,7 @@ void dScMg3DEsp_c::UpdateFlash()
     (this->*s3DEspFlashTable[idx])();
 }
 
-extern void* data_ov006_02133a3c[];
+extern void *sEsp3DAnimSetSlotsSprites[];
 
 typedef struct {
     int x;                  /* 0x00 */
@@ -670,8 +670,8 @@ void dScMg3DEsp_c::RenderSlots()
     int i;
     for (i = 0; i < 20; i++) {
         if (a->slots[i].enable) {
-            Mg_RenderSubSpriteMtx(data_ov006_02133a3c[a->slots[i].type],
-                                a->slots[i].x >> 12, a->slots[i].y >> 12, 0);
+            Mg_RenderSubSpriteMtx(sEsp3DAnimSetSlotsSprites[a->slots[i].type], a->slots[i].x >> 12,
+                                  a->slots[i].y >> 12, 0);
         }
     }
 }
@@ -914,7 +914,7 @@ void dScMg3DEsp_c::ResetSlots()
 }
 #pragma pop
 
-extern int data_ov006_02136e38;
+extern int sEsp3DAnimSetRowsSprites;
 
 inline char *inline_fn_8b18(int *arg0)
 {
@@ -931,14 +931,18 @@ void dScMg3DEsp_c::RenderRows()
   {
     if ((*((unsigned char *) ((thiz + 0x5000) + 0x292))) != 0)
     {
-      int *o = (int *) Mg_RenderSubSpriteScaled(*(&data_ov006_02136e38), (*((int *) ((thiz + 0x5000) + 0x280))) >> 12, (*((int *) ((thiz + 0x5000) + 0x284))) >> 12, -1, *((unsigned char *) ((thiz + 0x5000) + 0x293)), *((int *) ((thiz + 0x5000) + 0x288)), 0);
-      if ((*((unsigned char *) ((thiz + 0x5000) + 0x291))) == 2)
-      {
-        int w0 = o[0];
-        int w1 = o[1];
-        o[0] = (w0 & (~0xc00)) | 0x400;
-        *((unsigned short *) (((char *) o) + 4)) = ((*((unsigned short *) (inline_fn_8b18(o) + 4))) & (~0xf000)) | (((((unsigned) w1) << 0x10) >> 0x1c) << 12);
-      }
+        int *o = (int *)Mg_RenderSubSpriteScaled(
+            *(&sEsp3DAnimSetRowsSprites), (*((int *)((thiz + 0x5000) + 0x280))) >> 12,
+            (*((int *)((thiz + 0x5000) + 0x284))) >> 12, -1,
+            *((unsigned char *)((thiz + 0x5000) + 0x293)), *((int *)((thiz + 0x5000) + 0x288)), 0);
+        if ((*((unsigned char *)((thiz + 0x5000) + 0x291))) == 2) {
+            int w0 = o[0];
+            int w1 = o[1];
+            o[0] = (w0 & (~0xc00)) | 0x400;
+            *((unsigned short *)(((char *)o) + 4)) =
+                ((*((unsigned short *)(inline_fn_8b18(o) + 4))) & (~0xf000)) |
+                (((((unsigned)w1) << 0x10) >> 0x1c) << 12);
+        }
     }
     thiz += 0x14;
   }

@@ -223,10 +223,10 @@ extern int sRouletteResultIndex;
 extern char *sRouletteStrips[];
 extern int   data_020a0db0;
 extern s32   data_ov006_0212ed24[];
-extern void *data_ov006_021376ec[];
+extern void *sRouletteStripSprites[];
 extern void *data_ov006_0213e320[];
 extern int   data_ov006_0212ed14[];
-extern void *data_ov006_02138c3c;
+extern void *sRouletteRacerSprites;
 extern Matrix4x3 data_020a0e68;
 extern short data_02082214[];
 extern short data_ov006_0213e334[];
@@ -1089,12 +1089,8 @@ void RouletteRacer_CheckLandingB(int *racer)
 extern "C" {
 void RouletteRacer_Draw(char *racer) {
     if (*(unsigned char *)(racer + 0x32) == 6) return;
-    RenderOamBothScreens(data_ov006_02138c3c,
-                        *(int *)racer >> 0xc,
-                        *(int *)(racer + 4) >> 0xc,
-                        -1,
-                        *(int *)(racer + 0x28),
-                        (void *)0);
+    RenderOamBothScreens(sRouletteRacerSprites, *(int *)racer >> 0xc, *(int *)(racer + 4) >> 0xc,
+                         -1, *(int *)(racer + 0x28), (void *)0);
     *(int *)(racer + 0x28) = 1;
 }
 }
@@ -1514,7 +1510,7 @@ void RouletteStrip_Draw(short* strip, int y)
 
     {
         int b = y + 0x10;
-        RenderOamBothScreens(data_ov006_02138c3c, 0x20, b, -1, 1, (void*)0);
+        RenderOamBothScreens(sRouletteRacerSprites, 0x20, b, -1, 1, (void *)0);
         Mg_DrawBigNumber(0x2e, b, *(short*)((char*)strip + 0x16), 0, -1, 1, 0);
     }
 }
@@ -1538,7 +1534,7 @@ void RouletteStrip_DrawRacers(void **strip)
         a1 = ((TileXY *)sRouletteTiles)[m].x >> 12;
         a2 = ((TileXY *)sRouletteTiles)[m].y >> 12;
         if (r0 == 3) a1 += 0x58;
-        Hud_RenderSprite(data_ov006_021376ec[idx], a1, a2, -1, -1);
+        Hud_RenderSprite(sRouletteStripSprites[idx], a1, a2, -1, -1);
     }
 }
 }

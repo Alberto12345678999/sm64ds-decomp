@@ -143,7 +143,7 @@ extern int Mascot_Construct(char *t);
 extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV12dScMgSlot3_c[];
 extern void RenderOamMainScreen(void*, int, int, int, int);
-extern void* data_ov006_0213e6a8;
+extern void *sSlotsSlotBlinkSprites;
 extern void Mg_LoseCredits(void *c);
 extern void func_ov001_020ab3f0(void *c);
 void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
@@ -1041,7 +1041,7 @@ void SlotBlink_Start(void *raw, s16 x, s16 y)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void SlotBlink_Draw(unsigned char* raw){
     if (*(u8 *)(raw + 8) == 0) return;
-    RenderOamMainScreen(&data_ov006_0213e6a8, *(short *)raw, *(short *)(raw + 2), -1, -1);
+    RenderOamMainScreen(&sSlotsSlotBlinkSprites, *(short *)raw, *(short *)(raw + 2), -1, -1);
 }
 }
 
