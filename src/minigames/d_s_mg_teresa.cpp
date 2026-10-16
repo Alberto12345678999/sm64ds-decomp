@@ -599,26 +599,20 @@ void dScMgTeresa_c::BigBoo_Hide()
 void dScMgTeresa_c::StepBg3Scroll()
 {
     char *raw = (char *)this;
-    if (*(unsigned char *)(raw + 0x4c24) >= 8)
-    {
+    if (mBg3FlashStep >= 8) {
         return;
     }
     (*(unsigned short *)(raw + 0x4c18))++;
-    if (*(unsigned short *)(raw + 0x4c18) >= data_ov006_0212efdc[*(unsigned char *)(raw + 0x4c24)])
-    {
-        (*(unsigned char *)(raw + 0x4c24))++;
+    if (*(unsigned short *)(raw + 0x4c18) >= data_ov006_0212efdc[mBg3FlashStep]) {
+        (mBg3FlashStep)++;
         *(unsigned short *)(raw + 0x4c18) = 0;
-        if (*(unsigned char *)(raw + 0x4c24) & 1)
-        {
+        if (mBg3FlashStep & 1) {
             SetBg3Offset(0, 0);
-        }
-        else
-        {
+        } else {
             SetBg3Offset(0, 0x100);
         }
     }
-    if (*(unsigned char *)(raw + 0x4c24) >= 8)
-    {
+    if (mBg3FlashStep >= 8) {
         SetBg3Offset(0, 0);
     }
 }
@@ -1149,10 +1143,10 @@ void dScMgTeresa_c::CheckRoundEnd()
     unsigned char *raw = (unsigned char *)this;
     if (*(unsigned short*)(raw + 0x4c14) == 0 && *(unsigned char*)(raw + 0x4c20) != 0) {
         *(unsigned char*)(raw + 0x4c1f) = 0;
-        *(int*)(raw + 0x4be8) = 3;
+        mSceneState = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
         BigBoo_SetDone();
-        *(unsigned char*)(raw + 0x4c27) = 1;
+        mRubLocked = 1;
         return;
     }
     {
@@ -1171,7 +1165,7 @@ void dScMgTeresa_c::CheckRoundEnd()
         } while (i < 0x10);
         if (count != 0)
             return;
-        *(int*)(raw + 0x4be8) = 3;
+        mSceneState = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
         BigBoo_SetDone();
         *(unsigned char*)(raw + 0x4c1f) = 1;
@@ -1683,13 +1677,13 @@ void dScMgTeresa_c::SpawnBoos()
         int k;
         r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
         k = (r << 2) >> 15;
-        if (k + 0xa == *(unsigned char *)(c + 0x4c23)) {
+        if (k + 0xa == mBooPattern) {
             k += (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 3) >> 15) + 1;
             if (k >= 4) k -= 4;
         }
         sel = k + 0xa;
     }
-    *(unsigned char *)(c + 0x4c23) = sel;
+    mBooPattern = sel;
     count = data_ov006_0212f014[sel];
     mBooCount = count;
 
@@ -2039,7 +2033,7 @@ void dScMgTeresa_c::Scene_State1()
 void dScMgTeresa_c::Scene_State0()
 {
     char *p = (char *)this;
-    *(int *)(p + 0x4be8) = 1;
+    mSceneState = 1;
 }
 
 
@@ -2248,7 +2242,7 @@ s32 dScMgTeresa_c::InitResources()
     Deallocate(f2);
     Mg_SetTopScreenYOffset(0x20);
     ResetRound();
-    *((u8 *) (self + 0x4c23)) = 0xff;
+    mBooPattern = 0xff;
     Marker_Show();
     Reveal_Start();
     SpawnBoos();

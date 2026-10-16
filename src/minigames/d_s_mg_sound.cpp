@@ -1638,7 +1638,8 @@ void dScMgSound_c::DrawNotes() {
       int a1 = note->note.x >> 12;
       int a2 = note->note.y >> 12;
       int a4 = 0;
-      if (*(int*)(c + 0x5608) != 1) a4 = 1;
+      if (mState != 1)
+          a4 = 1;
       unsigned char sel = note->note.frame;
       Hud_RenderSprite((int)data_ov006_0213f730[sel], a1, a2, -1, a4);
     }

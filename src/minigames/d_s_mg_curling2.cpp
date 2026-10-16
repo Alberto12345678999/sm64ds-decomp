@@ -1407,8 +1407,7 @@ void dScMgCurling2_c::StoneWait(int idx)
 void dScMgCurling2_c::NextStone()
 {
     char *self = (char *)this;
-    if ((*((unsigned char *) (self + 0x55bb))) == 0)
-    {
+    if ((spawning) == 0) {
         return;
     }
     if ((*((unsigned short *) ((self + 0x5500) + 0xb4))) != 0)
@@ -1420,9 +1419,9 @@ void dScMgCurling2_c::NextStone()
         }
         return;
     }
-    *((unsigned char *) (self + 0x55bb)) = 0;
+    spawning = 0;
     {
-        int n = *((unsigned char *) (self + 0x55ba));
+        int n = thrown;
         char *ip;
         char *p;
         char *q;
@@ -1442,19 +1441,16 @@ void dScMgCurling2_c::NextStone()
         *((unsigned char *) ((ip + 0x4000) + 0x688)) = 0;
         *((unsigned char *) ((ip + 0x4000) + 0x68d)) = 0;
         *((unsigned char *) ((ip + 0x4000) + 0x68c)) = 0;
-        if ((*((unsigned char *) (self + 0x55ba))) == 0)
-        {
+        if ((thrown) == 0) {
             SeedStones();
-        }
-        else
-        {
+        } else {
             Sound::PlayBank2_2D(0x1d7);
         }
         *((unsigned char *) ((int)self + 0x55ba)) += 1;
         mDragX = 0x80000;
         mDragY = 0xb0000;
-        *((unsigned char *) (self + 0x55b8)) = 0;
-        *((unsigned char *) (self + 0x55b9)) = 1;
+        mDragState = 0;
+        mShowCursor = 1;
         ClearStoneFlags();
     }
 }
@@ -1712,20 +1708,20 @@ void dScMgCurling2_c::ResetGame()
     }
 
     *((short *) (c + 0x55b4)) = 0;
-    *((unsigned char *) (c + 0x55ba)) = 0;
+    thrown = 0;
     mDragX = 0;
     mDragY = 0;
     mDragOffsetX = 0;
     mDragOffsetY = 0;
     mThrowPower = 0;
     *((short *) (c + 0x55b2)) = 0;
-    *((unsigned char *) (c + 0x55b8)) = 0;
-    *((unsigned char *) (c + 0x55b9)) = 0;
-    *((unsigned char *) (c + 0x55bb)) = 0;
-    *((unsigned char *) (c + 0x55bc)) = 0;
+    mDragState = 0;
+    mShowCursor = 0;
+    spawning = 0;
+    gameOver = 0;
     *((short *) (c + 0x55b6)) = 0;
     *((short *) (c + 0x55b0)) = 0;
-    *((unsigned char *) (c + 0x55bd)) = 0;
+    sndCooldown = 0;
     Mg_SubmitScore(0);
     ClearValues();
 }

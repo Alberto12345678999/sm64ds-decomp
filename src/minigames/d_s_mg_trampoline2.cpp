@@ -598,7 +598,7 @@ void dScMgTrampoline2_c::StatePlay()
         BeginResults();
         return;
     }
-    if (data_ov006_02140830 >= *(int *)(raw + 0x7b90) && data_ov006_021405bc < 5) {
+    if (data_ov006_02140830 >= mScoreGate && data_ov006_021405bc < 5) {
         unsigned int v;
         Trmp2Mario_MoveToStart();
         {
@@ -609,19 +609,19 @@ void dScMgTrampoline2_c::StatePlay()
             mLevel = 0x270e;
         v = mLevel;
         if (v < 4)
-            *(int *)(raw + 0x7b90) = data_ov006_0213fc10[v];
+            mScoreGate = data_ov006_0213fc10[v];
         else
-            *(int *)(raw + 0x7b90) = 0x7fffffff;
+            mScoreGate = 0x7fffffff;
         return;
     }
     if (data_ov006_02140828 != 0)
         return;
     /* Member form DIFFs here (bytes, not relocations): these are mTimer,
        mScoreGate, mPattern, mScriptDone and mWaveStep. */
-    if (ApproachLinear(*(int *)(raw + 0x7b84), 0, 1) == 0)
+    if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
-    if (*(int *)(raw + 0x7b94) == 0) {
-        SpawnDef *d = &data_ov006_0212f2b0[*(int *)(raw + 0x7b88)];
+    if (mScriptDone == 0) {
+        SpawnDef *d = &data_ov006_0212f2b0[mPattern];
         int i;
         Vec3i vecA;
         for (i = 0; i < d->count; i++) {
@@ -631,12 +631,12 @@ void dScMgTrampoline2_c::StatePlay()
             func_0203cc28((int *)&vecA, d->a[i]);
             TrmpItem_Spawn(d->base + i * 0xc, (int *)&vecA, d->b[i], d->c[i]);
         }
-        if (ApproachLinear(*(int *)(raw + 0x7b88), 6, 1)) {
-            *(int *)(raw + 0x7b94) = 1;
-            *(int *)(raw + 0x7b98) = 0;
+        if (ApproachLinear(mPattern, 6, 1)) {
+            mScriptDone = 1;
+            mWaveStep = 0;
         }
     } else {
-        if (ApproachLinear(*(int *)(raw + 0x7b98), 4, 1)) {
+        if (ApproachLinear(mWaveStep, 4, 1)) {
             unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff;
             SpawnDef *d = &data_ov006_0212f2b0[(int)((rnd >> 19) * 6) >> 12];
             int i;
@@ -648,12 +648,12 @@ void dScMgTrampoline2_c::StatePlay()
                 func_0203cc28((int *)&vecB, d->a[i]);
                 TrmpItem_Spawn(d->base + i * 0xc, (int *)&vecB, d->b[i], d->c[i]);
             }
-            *(int *)(raw + 0x7b98) = 0;
+            mWaveStep = 0;
         } else {
             SpawnWave();
         }
     }
-    *(int *)(raw + 0x7b84) = 0x78;
+    mTimer = 0x78;
 }
 
 // @symbol _ZN18dScMgTrampoline2_c12BeginResultsEv

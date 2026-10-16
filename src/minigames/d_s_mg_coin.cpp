@@ -1452,10 +1452,10 @@ void dScMgCoin_c::ResetRound()
 
     *((u32 *)(c + 0x51c8)) = 0;
     *((u32 *)(c + 0x51cc)) = 0;
-    *((u8 *)(c + 0x51db)) = 0;
+    mWonLast = 0;
     *((u8 *)(c + 0x51dd)) = 0;
     *((u32 *)(c + 0x51d0)) = 0;
-    *((u8 *)(c + 0x51de)) = 0;
+    mCaptionLatch = 0;
     this->Caption_Reset();
     this->Bag_Hide();
     *((u8 *)(c + 0x51df)) = 0;

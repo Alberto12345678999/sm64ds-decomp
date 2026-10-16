@@ -704,20 +704,23 @@ void dScMgPanel_c::StartSolveCheck()
 {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
-    if (*(u8 *)(scene + 0x4fe9) != 0) return;
-    if (*(int *)(scene + 0x4ca8) == 6) return;
-    if (*(u8 *)(scene + 0x4fe1) < *(u8 *)(scene + 0x4fde)) return;
+    if (mBusy != 0)
+        return;
+    if (mState == 6)
+        return;
+    if (*(u8 *)(scene + 0x4fe1) < mFlipCount)
+        return;
 
     func_02012790(0xe);
     EnableOverlayLayer();
 
     if (s->mCredits > 1) {
-        *(int *)(scene + 0x4ca8) = 3;
+        mState = 3;
         CountMatches();
     } else {
         *(u8 *)(scene + 0x4fe6) = 0;
         CountMatches();
-        *(int *)(scene + 0x4ca8) = 6;
+        mState = 6;
         *(s16 *)(scene + 0x4ec0) = 0x50;
     }
 }
@@ -1017,7 +1020,7 @@ void dScMgPanel_c::UpdateMoves()
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     if (*(u16 *)(scene + 0x4ec4) != 0) {
         (*(u16 *)(int)(scene + 0x4ec4))--;
-        if (*(s16 *)(scene + 0x4ec4) < 0)
+        if (mDelay < 0)
             *(u16 *)(scene + 0x4ec4) = 0;
         return;
     }
@@ -1038,7 +1041,7 @@ void dScMgPanel_c::UpdateMoves()
 
     if (*(u8 *)(scene + 0x4fe4) == 0xff) {
         *(u8 *)(scene + 0x4fe4) = 0;
-        *(int *)(scene + 0x4ca8) = 2;
+        mState = 2;
         SetSlideFlag();
         ReloadSlideDelay();
         return;
@@ -1048,7 +1051,7 @@ void dScMgPanel_c::UpdateMoves()
 
     if (*(u8 *)(scene + 0x4fe4) == 0xff) {
         *(u8 *)(scene + 0x4fe4) = 0;
-        *(int *)(scene + 0x4ca8) = 2;
+        mState = 2;
         *(u8 *)(scene + 0x4fe1) = 0;
         SetSlideFlag();
         ReloadSlideDelay();
@@ -1059,7 +1062,7 @@ void dScMgPanel_c::UpdateMoves()
         u8 slot = *(u8 *)(scene + 0x4fe4);
         int hq = 3;
         int index = *(u8 *)(scene + slot + 0x4fce);
-        int w = *(int *)(scene + 0x4cbc);
+        int w = mWidth;
         int wq = 3;
         int col = index % w;
         int row = index / w;
@@ -1076,7 +1079,7 @@ void dScMgPanel_c::UpdateMoves()
 
         for (y = 0; y < hq; y++) {
             for (x = 0; x < wq; x++) {
-                int cell = *(int *)(scene + 0x4cbc) * (row + y) + (col + x);
+                int cell = mWidth * (row + y) + (col + x);
                 *(u8 *)(scene + cell + 0x4efa) = 1;
                 s->mFace[cell] ^= 1;
                 *(u16 *)(scene + cell * 2 + 0x4e78) = 8;
@@ -1202,7 +1205,8 @@ void dScMgPanel_c::CheckSolved()
     int i;
     int n;
     int tmp;
-    if (*(u8 *)(scene + 0x4fe9) == 0) return;
+    if (mBusy == 0)
+        return;
     if (*(u8 *)(scene + 0x4feb) == 0) return;
     /* Laundered volatile round trip: the `(int)` cast and the volatile are both
        load-bearing -- they are what turns this decrement into the ROM's
@@ -1255,7 +1259,7 @@ void dScMgPanel_c::UpdateTouch()
     int i;
     int tx, ty;
 
-    if (*(u8 *)(scene + 0x4fe9) != 0)
+    if (mBusy != 0)
         return;
 
     lvl = gActivePlayerSlot;
@@ -1286,7 +1290,7 @@ void dScMgPanel_c::UpdateTouch()
 
             *(u8 *)(scene + *(u8 *)(scene + 0x4fe4) + 0x4fce) = i;
             (*(u8 *)(int)(scene + 0x4fe4))++;
-            w = *(int *)(scene + 0x4cbc);
+            w = mWidth;
             col = i % w;
             row = i / w;
 
@@ -1305,7 +1309,7 @@ void dScMgPanel_c::UpdateTouch()
                 for (y = 0; y < hq; y++) {
                     int x;
                     for (x = 0; x < wq; x++) {
-                        int index = *(int *)(scene + 0x4cbc) * (row + y) + (col + x);
+                        int index = mWidth * (row + y) + (col + x);
                         ((dScMgPanel_c *)scene)->mKind[index] = 1;
                         ((dScMgPanel_c *)scene)->mFace[index] ^= 1;
                         *(u16 *)(scene + index * 2 + 0x4e78) = 8;
@@ -1345,7 +1349,7 @@ extern "C" {
 void dScMgPanel_c::FlipAt(int index)
 {
     char *scene = (char *)this;
-    int w = *(int *)(scene + 0x4cbc);
+    int w = mWidth;
     int wq = 3;
     int hq = 3;
     int col = index % w;
@@ -1359,7 +1363,7 @@ void dScMgPanel_c::FlipAt(int index)
     int y, x;
     for (y = 0; y < hq; y++) {
         for (x = 0; x < wq; x++) {
-            u8 *p = (u8 *)((((int)scene + ((*(int *)(scene + 0x4cbc)) * (row + y) + (col + x))) + 0x4f1e));
+            u8 *p = (u8 *)((((int)scene + ((mWidth) * (row + y) + (col + x))) + 0x4f1e));
             *p ^= 1;
         }
     }
@@ -1610,7 +1614,7 @@ void dScMgPanel_c::ResetRound()
         ((dScMgPanel_c *)scene)->mVisible[i] = 0;
         *(char *)(scene + i + 0x4f8a) = 0;
     }
-    *(int *)(scene + 0x4ca8) = 0;
+    mState = 0;
     *(char *)(scene + 0x4fe9) = 0;
     *(s16 *)(scene + 0x4ec0) = 0;
     *(s16 *)(scene + 0x4ec2) = 0;
@@ -1653,7 +1657,7 @@ void dScMgPanel_c::Panel_StartAll()
 {
     char *scene = (char *)this;
     int i;
-    for (i = 0; i < *(int *)(scene + 0x4cbc); i++) {
+    for (i = 0; i < mWidth; i++) {
         *(u8 *)(scene + i + 0x4efa) = 3;
     }
 }
@@ -1804,7 +1808,7 @@ void dScMgPanel_c::Scene_State7()
     char *scene = (char *)this;
     extern PanelStateFnI data_ov006_02142840[];
     int i;
-    for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
+    for (i = 0; i < mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
         struct PanelPmfRec_bc0 *e = (struct PanelPmfRec_bc0 *)&data_ov006_02142840[index];
         int adj = e->adj;
@@ -1928,7 +1932,7 @@ void dScMgPanel_c::Scene_State5()
     int i;
     IntroCard_Update();
     Input_Update();
-    for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
+    for (i = 0; i < mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
         (((dScMgPanel_c *)scene)->*data_ov006_02142840[index])(i);
     }

@@ -223,12 +223,12 @@ struct dScMgTeresa_c : dScMgBase_c {
     u8  pad_4c18[0x9];
     u8  mFoundCount;         /* 0x4c21 -- Boos found this round; stamped into mFoundOrder */
     u8  mLastSettledBoo;     /* 0x4c22 -- the Boo AreBoosSettled settled last */
-    u8  unk_4c23;            /* 0x4c23 */
+    u8 mBooPattern;          /* 0x4c23 -- spawn pattern: mLevel, or 10..13 from level 15 */
     /* trailing extent the ROM's `new dScMgTeresa_c` literal proves; see tools/opnew_sizes.py */
-    u8  unk_4c24;            /* 0x4c24 */
+    u8 mBg3FlashStep;        /* 0x4c24 -- StepBg3Scroll's flash step, 0..8 */
     u8  mBooCount;           /* 0x4c25 -- Boos SpawnBoos placed */
     u8  mFirstFoundBoo;      /* 0x4c26 -- 0xff until the first find */
-    u8  unk_4c27;            /* 0x4c27 */
+    u8 mRubLocked;           /* 0x4c27 -- set at time up; UpdateRubbing stops */
 };
 
 #ifndef SM64DS_PLATFORM_PC
