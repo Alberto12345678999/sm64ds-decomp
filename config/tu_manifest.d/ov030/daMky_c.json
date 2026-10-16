@@ -553,9 +553,9 @@
       "reason": "Vague-linkage Vector3 destructor. Vector3 carries a user-declared ~Vector3() (include/types.h) and this TU odr-uses several as function locals -- three in func_ov030_02111734 alone. One row however many objects: the emitted symbol is the single vague copy. arm9 owns the kept copy at 0x020072c0, four bytes of bx lr."
     },
     {
-      "symbol": "_ZN7daMky_c21Bundle$945d_a_mky_cppD1Ev",
+      "symbol": "_ZN7daMky_c21Bundle$963d_a_mky_cppD1Ev",
       "disposition": "deadstrip",
-      "reason": "Implicit four-byte, unreferenced destructor of the function-local Bundle in func_ov030_02112094. Its Vector3 members require an emitted destructor; no ROM symbol or surviving relocation names it. Native line lifetime, shared matrix copies and the recovered actor field change the compiler-generated uniquifier from950 to945. The exact emitted helper remains subject to the ordinary compiler-only policy."
+      "reason": "The genuine shared dClipper header and native call renumber the same unreferenced four-byte Bundle destructor from945 to963. Complete seven-TU allocated payload/symbol/typed-relocation comparison preserves its body and attributes. It has no configured ROM home; admit only this exact compiler-local symbol."
     },
     {
       "symbol": "_ZN11SurfaceInfoD1Ev",

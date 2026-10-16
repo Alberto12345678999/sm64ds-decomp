@@ -38,9 +38,6 @@
  *   are not methods on dActor_c.h; same by-value Fix12 wall.
  * - Particle::RunningSlidingDustAt (State4): Fix12<int> parameters are
  *   0xa4 -> 0xc8 (9 words). State2 and State3 use the same scalar extern.
- * - dClipper::Func_02015560 (State5): the header takes Fix12<int> by
- *   value. Same caller wall as DropShadowRadHeight. The scalar extern
- *   stays. data_0209f43c is the dClipper, data_0209b3ec the camera matrix.
  * - Player::Hurt (HurtPlayer): not declared on Player.h.
  * - dBgCh_Actr_UpdateContinuous_Veneer (UpdateGroundCollision): retail
  *   bl is 0x020383fc, the veneer, not UpdateContinuous at 0x020366b4.
@@ -72,6 +69,7 @@
 #include "Player.h"
 #include "dBgPi.h"
 #include "Sound.h"
+#include "dClipper.h"
 
 /* Real C++ names. Declared here, not via decl_common.h: that header's
  * other spellings of these symbols collide with this TU. */
@@ -120,16 +118,14 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                                 u32 flags, u32 vulnFlags);
 
 void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
-int  _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-         void *clipper, void *matrix, void *pos, int radius, void *result);
 
 /* ov072 and arm9 statics this TU reads but does not own. */
 extern SharedFilePtr data_ov072_02122b20;
 extern Vector3       data_ov072_02122b40;
 extern Vector3       data_ov072_02122b58;
 extern daBgSnmBdy_c::StateEntry data_ov072_02122b64[];
-extern int           data_0209f43c[];
-extern int           data_0209b3ec[];
+extern dClipper data_0209f43c;
+extern Matrix4x3 data_0209b3ec;
 }
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
@@ -527,8 +523,7 @@ int daBgSnmBdy_c::State5()
     Vector3 clipResult;
     Vector3 homePos;
     Vec3_Asr(&homePos, &mHomePosX, 3);
-    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-            data_0209f43c, data_0209b3ec, &homePos, 0x1f400, &clipResult) < 0x1194000)
+    if (data_0209f43c.TransformAndClip(data_0209b3ec, homePos, 0x1f400, clipResult) < 0x1194000)
         return 1;
     mPosX = mHomePosX;
     mPosY = mHomePosY;
