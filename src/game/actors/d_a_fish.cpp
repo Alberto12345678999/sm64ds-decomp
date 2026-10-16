@@ -31,7 +31,6 @@
  *   (notes/mwccarm-codegen.md 6az).
  * - SharedFilePtr carries no fields yet, so the loaded file pointer in a
  *   handle's second word is read through a cast.
- * - (Vector3 *)&mPosX: dActor_c stores the position as three scalars.
  * - data_0209caa0 / data_0209f32c are the arm9 level-state words that
  *   carry the "has water" flag and the water height; neither is named yet.
  * - RawMatrix4x3 / RawVector3_16 are POD views whose aggregate copies
@@ -193,7 +192,7 @@ s32 daFish_c::Behavior()
             UpdatePos(0);
             mStateTimer++;
         }
-        Vec3_Asr(&shiftedPos, (Vector3 *)&mPosX, 3);
+        Vec3_Asr(&shiftedPos, &mPos, 3);
         Matrix4x3_FromTranslation(
             &data_020a0e68, shiftedPos.x, shiftedPos.y, shiftedPos.z);
         mAngleY = mPrevAngleY;
@@ -248,7 +247,7 @@ void daFish_c::func_ov100_02146828()
     player = this->ClosestPlayer();
     if (player == 0) return;
 
-    Vec3_Sub(&diff, (Vector3 *)&this->mPosX, (Vector3 *)&player->mPosX);
+    Vec3_Sub(&diff, &this->mPos, &player->mPos);
     if (Vec3_HorzLen(&diff) >= 0x1388000) return;
 
     if (data_0209caa0[2] & 0x80000) {
@@ -341,14 +340,14 @@ void daFish_c::func_ov100_02146640()
 
     Player *p = this->ClosestPlayer();
     if (p) {
-        s16 ang = Vec3_HorzAngle((Vector3 *)&this->mPosX, (Vector3 *)&p->mPosX);
+        s16 ang = Vec3_HorzAngle(&this->mPos, &p->mPos);
         if (ApproachLinear(this->mPrevAngleY, ang, 0x400) != 0) {
             if (this->mModelIndex == 0) {
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
                     &this->mModelAnim, LoadedBCA(&data_ov100_021489cc), 0, 0x1000, 0);
             }
         }
-        Vec3_Sub(&d, (Vector3 *)&this->mPosX, (Vector3 *)&p->mPosX);
+        Vec3_Sub(&d, &this->mPos, &p->mPos);
         if (Vec3_HorzLen(&d) >= this->mTriggerDist)
             return;
         this->mStateTimer = -1;
@@ -382,13 +381,12 @@ void daFish_c::func_ov100_021464f4()
     }
     pl = this->ClosestPlayer();
     if (pl == 0) return;
-    ApproachLinear(this->mPrevAngleY,
-        Vec3_HorzAngle((Vector3 *)&pl->mPosX, (Vector3 *)&this->mPosX), this->mTurnSpeed);
-    Vec3_Sub(&v, (Vector3 *)&this->mPosX, (Vector3 *)&pl->mPosX);
+    ApproachLinear(this->mPrevAngleY, Vec3_HorzAngle(&pl->mPos, &this->mPos), this->mTurnSpeed);
+    Vec3_Sub(&v, &this->mPos, &pl->mPos);
     if (Vec3_HorzLen(&v) <= this->mTriggerDist) return;
     this->mStateTimer = -1;
     this->mState = 3;
-    func_0201267c(kFleeSound, (Vector3 *)&this->mCamSpacePosX);
+    func_0201267c(kFleeSound, &this->mCamSpacePos);
 }
 
 // @symbol _ZN8daFish_c19func_ov100_02146468Ev
@@ -397,7 +395,7 @@ void daFish_c::func_ov100_02146468()
 {
     Vector3 v;
     dActor_c *spawner = dActor_c::FindWithID(this->mSpawnerID);
-    Vec3_Sub(&v, (Vector3 *)&this->mPosX, (Vector3 *)&spawner->mPosX);
+    Vec3_Sub(&v, &this->mPos, &spawner->mPos);
     if (DecIfAbove0_Byte(&this->mWanderTimer) != 0) {
         if (Vec3_HorzLen(&v) < 0xfa000) return;
     }
@@ -416,7 +414,7 @@ void daFish_c::func_ov100_021463b0()
         return;
     {
         dActor_c *spawner = dActor_c::FindWithID(this->mSpawnerID);
-        Vec3_Sub(&v, (Vector3 *)&this->mPosX, (Vector3 *)&spawner->mPosX);
+        Vec3_Sub(&v, &this->mPos, &spawner->mPos);
     }
     if (Vec3_HorzLen(&v) >= 0xfa000) return;
     this->mHorzSpeed = (((unsigned)RandomIntInternal(&data_0209e650) >> 15) & 0x1fff) + 0x2000;

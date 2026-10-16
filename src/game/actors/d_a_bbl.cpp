@@ -251,8 +251,7 @@ int daBbl_c::func_ov064_02118760()
         spawnPos[1] = spawnY;
         spawnPos[2] = spawnZ;
         spawnPos[0] = x;
-        dActor_c::Spawn(0xd6, 0, *(const Vector3 *)spawnPos,
-                        (const Vector3_16 *)&mPrevAngleX, mAreaId, -1);
+        dActor_c::Spawn(0xd6, 0, *(const Vector3 *)spawnPos, &mPrevAngle, mAreaId, -1);
     }
     return 1;
 }

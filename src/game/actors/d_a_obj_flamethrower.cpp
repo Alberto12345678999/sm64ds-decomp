@@ -44,6 +44,7 @@
 #include "decl_common.h"
 #include "Player.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 /* Three ints, so the transform helpers can take their address without
  * calling ~Vector3. */
@@ -230,9 +231,7 @@ int daObjFlamethrower_c::Behavior()
     }
 
     if (mActiveFlames != 0) {
-        mSoundHandle = Sound::PlayLong(
-            mSoundHandle, 3, kFlameSound,
-            *(const Vector3 *)&mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, kFlameSound, mCamSpacePos, 0);
     }
 
     if ((mFlags & kOffScreen) != 0)
@@ -282,8 +281,7 @@ int daObjFlamethrower_c::Behavior()
                     }
                     if (data_0209f2f8 == kBigBoosHaunt) {
                         s16 wave = data_02082214[(((u16)(s16)wavePhase) >> 4) * 2];
-                        *((int *)(ppos + 0x3a8)) = mPosY
-                            + (int)(((((long long)wave) * (-0xaa000)) + 0x800) >> 12);
+                        *((int *)(ppos + 0x3a8)) = mPosY + FX_MUL(wave, -0xaa000);
                     }
                     *((int *)(pclsn + 0x104)) = *((int *)(ppos + 0x3a4));
                     *((int *)(pclsn + 0x108)) = *((int *)(ppos + 0x3a8));

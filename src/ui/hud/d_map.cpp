@@ -19,11 +19,10 @@
  * - Vtbl/VtblOwner stay a file-local slice: the object data_0209f5bc points
  *   at is reached through vtable slot 5 alone (dMeter_c cuts the same slice).
  * - The camera's follow word is mTargetPlayer in dCamera_c.h, typed s32;
- *   this TU reads it as the object the map follows. (Vector3*)&o->mPosX is
- *   the shared-header leftover: dActor_c has no Pos() accessor.
+ *   this TU reads it as the object the map follows.
  * - focusPos/playerPos keep their (int)o + 0x5c integer launders: the
  *   ROM forms the copy source with `add r, o, #0x5c` plus three offset
- *   loads; a *(Vector3*)&o->mPosX pun uses [r8,#0x5c] addressing and
+ *   loads; an o->mPos copy uses [r8,#0x5c] addressing and
  *   shortens the copy.
  * - GetMinimapID's extern keeps GetMinimapID.c's own `struct Obj` slice
  *   spelling; the Obj tag is only a forward here so the declaration agrees.
@@ -36,12 +35,12 @@
 #include "dMap_c.h"
 #include "decl_common.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "PlayerInput.h"
 #include "Player.h"
 #include "dActor_c.h"
 #include "dCamera_c.h"
 #include "OAM.h"
-#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which makes its
@@ -402,9 +401,9 @@ int dMap_c::Render()
                 u16 ang = (s16)this->mAngle + ((player->mAngleY ^ 0xffff) + 0x8001);
                 int angIdx = ((u16)(s16)ang >> 4) * 2;
                 s16 sn = data_02082214[angIdx + 1];
-                this->mArrowMatrixA = (s16)(((s64)sn * this->mArrowScale + 0x800) >> 0xc);
+                this->mArrowMatrixA = (s16)FX_MUL(sn, this->mArrowScale);
                 s16 cn = data_02082214[angIdx];
-                this->mArrowMatrixB = (s16)(((s64)cn * this->mArrowScale + 0x800) >> 0xc);
+                this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                 this->mArrowMatrixC = -this->mArrowMatrixB;
                 this->mArrowMatrixD = this->mArrowMatrixA;
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, _ZN3OAM8MM_ARROWE,
@@ -452,9 +451,9 @@ int dMap_c::Render()
                         {
                             int angIdx = ((u16)(s16)ang >> 4) * 2;
                             s16 sn = data_02082214[angIdx + 1];
-                            this->mArrowMatrixA = (s16)(((s64)sn * this->mArrowScale + 0x800) >> 0xc);
+                            this->mArrowMatrixA = (s16)FX_MUL(sn, this->mArrowScale);
                             s16 cn = data_02082214[angIdx];
-                            this->mArrowMatrixB = (s16)(((s64)cn * this->mArrowScale + 0x800) >> 0xc);
+                            this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                             this->mArrowMatrixC = -this->mArrowMatrixB;
                             this->mArrowMatrixD = this->mArrowMatrixA;
                             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, _ZN3OAM8MM_ARROWE,
@@ -792,7 +791,9 @@ L738:
     for (i = 0; i < 0xc; i++) {
         dActor_c *o = (dActor_c *)data_0209f40c[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+                &miniPos);
             this->mStarIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mStarIconY[i] = (miniPos.z + 0x800) >> 12;
             if (data_0209f37c[i] != 4)
@@ -807,7 +808,9 @@ L738:
     for (i = 0; i < 9; i++) {
         dActor_c *o = (dActor_c *)data_0209f3e8[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+                &miniPos);
             this->mCapIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mCapIconY[i] = (miniPos.z + 0x800) >> 12;
             this->mCapMapIDs[i] = (s8)GetMinimapID((Obj *)o, -1);
@@ -822,7 +825,9 @@ L738:
     {
         dActor_c *o = (dActor_c *)data_0209f33c;
         if (o == 0) { this->mStarKeyMapID = -1; goto La64; }
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+            &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+            &miniPos);
         this->mStarKeyIconX = (miniPos.x + 0x800) >> 12;
         this->mStarKeyIconY = (miniPos.z + 0x800) >> 12;
         this->mStarKeyMapID = 1;
@@ -832,7 +837,9 @@ La64:
     for (i = 0; i < 8; i++) {
         dActor_c *o = (dActor_c *)data_0209f3a4[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+                &miniPos);
             this->mSpikeBombIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mSpikeBombIconY[i] = (miniPos.z + 0x800) >> 12;
             this->mSpikeBombMapIDs[i] = o->mAreaId;

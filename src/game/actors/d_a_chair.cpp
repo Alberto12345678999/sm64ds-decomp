@@ -13,20 +13,24 @@
 // leftovers:
 // - dCcAcPos_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
 //   Particle::System::NewSimple, Player::Hurt and cstd::atan2 stay scalar
-//   externs. The headers spell Fix12i, which mangles as int, not the
-//   Fix12<int> symbols the ROM has.
+//   externs. The header Fix12<int> forms pool constants (InitResources
+//   and UpdateModel grew .rodata). dBgCh_Actr::Init's header spells
+//   Fix12i, which mangles as int, not 5Fix12IiE; a scalar cstd::atan2
+//   declaration would mangle as ii.
 // - The ROM calls dBgCh_Actr_UpdateContinuous_Veneer (0x020383fc), not
 //   UpdateContinuous. func_0200f760 (cylinder movement bit from the
 //   vanish flag) and func_0201267c (bank-3 player, one past
 //   Sound::PlayBank3) have no header names.
 // - GetWallResult is the member; the +4 SurfaceInfo and the CopyNormalTo
 //   reference pun stay. Vec3 POD twins (player copy, diff, normal, hurt
-//   pos): a Vector3 local emits its destructor call.
+//   pos): a Vector3 local emits its destructor call. player->mPosX by
+//   name changes State2's size.
 // - ST reads mStateTimer/mActionTimer through this+0x300, and the
 //   halfword increments use the int-cast form; the member forms change
-//   sizes. (Vector3 *)&mPosX stays: no dActor_c::Pos() on this line.
+//   sizes.
 // - unk_0a4/unk_0ac keep the base header's names (lateral velocity
 //   beside mVertSpeed). g_profile_CHAIR is not in this TU.
+//   data_ov020_02114af0 is the model handle.
 
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -35,6 +39,7 @@ enum daChair_c_AssetId {
 };
 
 #include "common.h"
+#include "nitro/fx/fx.h"
 #include "daChair_c.h"
 #include "SharedFilePtr.h"
 #include "SurfaceInfo.h"
@@ -86,9 +91,6 @@ enum ChairSfxId {
 /* Index of an unsigned 16-bit angle into data_02082214, the sin/cos
  * table: one s16 sin, s16 cos pair per 16 angle units. */
 #define SINCOS_INDEX(angle) ((*(u16 *)&(angle) >> 4) * 2)
-
-/* A fix12 multiply, rounded to nearest. */
-#define FIX12_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
 void func_0200f760(void *self, void *cyl);
@@ -239,7 +241,7 @@ void daChair_c::State0()
     mTargetID = 0;
     if (piano == 0)
         return;
-    if (Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)&piano->mPosX) < 0x12c000) {
+    if (Vec3_Dist(&mPos, &piano->mPos) < 0x12c000) {
         mTargetID = piano->uniqueID;
         mActionTimer = 0;
     }
@@ -264,10 +266,9 @@ void daChair_c::State1()
         targetPos[0] = *av;
         targetPos[1] = av[1];
         targetPos[2] = av[2];
-        if (Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)targetPos) >= 0xfa000)
+        if (Vec3_Dist(&mPos, (const Vector3 *)targetPos) >= 0xfa000)
             return;
-        delta = (short)(Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)targetPos)
-                        - mAngleY + 0x2000);
+        delta = (short)(Vec3_HorzAngle(&mPos, (const Vector3 *)targetPos) - mAngleY + 0x2000);
         if (delta & 0x4000) {
             mTrackedAngle = &mAngleZ;
             if (delta > 0)
@@ -292,7 +293,7 @@ void daChair_c::State1()
     if (mActionTimer != 0) {
         player = ClosestPlayer();
         if (player != 0) {
-            if (Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)&player->mPosX) < 0x1f4000)
+            if (Vec3_Dist(&mPos, &player->mPos) < 0x1f4000)
                 mActionTimer = 0;
         }
         mStateTimer = 0;
@@ -374,10 +375,10 @@ void daChair_c::State2()
                 mPrevAngleX = _ZN4cstd5atan2E5Fix12IiES1_(
                                   diff.y, Vec3_HorzLen((const Vector3 *)&diff)) * -1;
                 /* unk_0a4 / unk_0ac: lateral velocity beside mVertSpeed. */
-                reach = FIX12_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX) + 1], 0x32000);
-                unk_0a4 = FIX12_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY)]);
-                mVertSpeed = FIX12_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX)], -0x32000);
-                unk_0ac = FIX12_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY) + 1]);
+                reach = FX_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX) + 1], 0x32000);
+                unk_0a4 = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY)]);
+                mVertSpeed = FX_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX)], -0x32000);
+                unk_0ac = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY) + 1]);
             } else {
                 if (ST->timer > 0x14) {
                     /* (int)&mAngleY. mAngleY += 0x2710 changes the code size. */

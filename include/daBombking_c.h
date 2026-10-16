@@ -98,7 +98,7 @@ struct daBombking_c : dEnemyBase_c {
     u8  mIntroTalked;                 /* 0x508 */
     u8  mStarID;                      /* 0x509 */
     /* Counts while mMusicLayer3; resets the fight when it exceeds 0xc8. */
-    u8  unk_50a;                      /* 0x50a */
+    u8 mMusicLayer3Timer; /* 0x50a */
     u8  pad_50b[0x1];
 
     /* --- vtable --- */

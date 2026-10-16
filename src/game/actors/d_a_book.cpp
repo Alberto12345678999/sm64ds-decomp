@@ -34,6 +34,7 @@
  */
 
 #include "common.h"
+#include "nitro/fx/fx.h"
 #include "daBook_c.h"
 #include "daBookGen_c.h"
 #include "daTrsTrap_c.h"
@@ -87,9 +88,6 @@ typedef struct { int x, y, z; } Vec3;
 /* Index of an unsigned 16-bit angle into data_02082214, the sin/cos table:
  * one s16 sin, s16 cos pair per 16 angle units. */
 #define SINCOS_INDEX(angle) ((*(u16 *)&(angle) >> 4) * 2)
-
-/* A fix12 multiply, rounded to nearest. */
-#define FIX12_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
 short _ZN4cstd5atan2E5Fix12IiES1_(int, int);
@@ -204,13 +202,13 @@ void daBook_c::func_ov020_021112b0()
     Player *player = ClosestPlayer();
     if (!player)
         return;
-    Vector3 *playerPos = (Vector3 *)&player->mPosX;
+    Vector3 *playerPos = &player->mPos;
     Vector3 tmp;
     tmp.x = playerPos->x;
     tmp.y = playerPos->y;
     tmp.z = playerPos->z;
     Vector3 toPlayer;
-    Vec3_Sub(&toPlayer, &tmp, (Vector3 *)&mPosX);
+    Vec3_Sub(&toPlayer, &tmp, &mPos);
     mAimYaw = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.x, toPlayer.z);
     mAimPitch = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.y, Vec3_HorzLen(&toPlayer));
     mAimRoll = 0x4000;
@@ -422,7 +420,7 @@ void daBook_c::func_ov020_0211174c()
         fl = &mdCcAcPos_c.flags;
         mState = STATE_SWITCH_PUSH;
         *fl |= 1;
-        Sound::PlayBank0(kSfxSwitchPush, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(kSfxSwitchPush, mCamSpacePos);
         return;
     }
     case STATE_SWITCH_PUSH:
@@ -522,7 +520,7 @@ void daBook_c::func_ov020_02111aa8()
         t = *bf;
         sid = kSfxTakeOff;
         *bf = t & ~1;
-        func_0201267c(sid, (const Vector3 *)&mCamSpacePosX);
+        func_0201267c(sid, &mCamSpacePos);
     }
     ApproachLinear(mHorzSpeed, kFlightSpeed, 0x1000);
     UpdatePos(0);
@@ -543,7 +541,7 @@ void daBook_c::func_ov020_02111b28()
   if (mWithMeshClsn.IsOnGround() != 0) {
     unk_108 = 0;
     func_ov020_02112110();
-    func_0201267c(kSfxImpact, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(kSfxImpact, &mCamSpacePos);
     return;
   }
   if (mWithMeshClsn.IsOnWall() == 0) return;
@@ -556,7 +554,7 @@ void daBook_c::func_ov020_02111b28()
   }
   unk_108 = 0;
   func_ov020_02112110();
-  func_0201267c(kSfxImpact, (const Vector3 *)&mCamSpacePosX);
+  func_0201267c(kSfxImpact, &mCamSpacePos);
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02111c30Ev
@@ -590,10 +588,10 @@ void daBook_c::func_ov020_02111c30()
 
         {
             /* velocity = kFlightSpeed along (yaw, pitch) */
-            s32 r = FIX12_MUL(data_02082214[SINCOS_INDEX(mAngleX) + 1], 0x32000);
-            unk_0a4 = FIX12_MUL(r, data_02082214[SINCOS_INDEX(mAngleY)]);
-            mVertSpeed = FIX12_MUL(data_02082214[SINCOS_INDEX(mAngleX)], -0x32000);
-            unk_0ac = FIX12_MUL(r, data_02082214[SINCOS_INDEX(mAngleY) + 1]);
+            s32 r = FX_MUL(data_02082214[SINCOS_INDEX(mAngleX) + 1], 0x32000);
+            unk_0a4 = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY)]);
+            mVertSpeed = FX_MUL(data_02082214[SINCOS_INDEX(mAngleX)], -0x32000);
+            unk_0ac = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY) + 1]);
         }
         return;
     }
@@ -667,9 +665,10 @@ void daBook_c::func_ov020_02111fc4()
         v.y = s[1];
         v.z = s[2];
     }
-    if (Vec3_Dist((Vector3*)&mPosX, &v) >= 0x190000) return;
+    if (Vec3_Dist(&mPos, &v) >= 0x190000)
+        return;
     {
-        short ang = Vec3_HorzAngle((Vector3*)&mPosX, &v);
+        short ang = Vec3_HorzAngle(&mPos, &v);
         if (GetSubtraction(mPrevAngleY, ang) >= 0x3000) return;
     }
     mState = STATE_TILT_BACK;
@@ -679,7 +678,7 @@ void daBook_c::func_ov020_02111fc4()
         u32* p234 = &mdCcAcPos_c.flags;
         *p234 = *p234 & ~1;
     }
-    func_0201267c(kSfxTakeOff, (const Vector3*)&mCamSpacePosX);
+    func_0201267c(kSfxTakeOff, &mCamSpacePos);
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02112080Ev
@@ -704,7 +703,7 @@ void daBook_c::func_ov020_02112110()
 {
   if (unk_108) {
     int param = mAreaId;
-    dActor_c::Spawn(kBlueCoinActorId, 2, *(const Vector3*)&mPosX, 0, param, -1);
+    dActor_c::Spawn(kBlueCoinActorId, 2, mPos, 0, param, -1);
   }
   PoofDust();
   MarkForDestruction();
@@ -760,9 +759,9 @@ int daBook_c::Render()
         return 1;
 
     if (mUsesModelAnim != 0)
-        mModelAnim.Render((Vector3 *)&mScaleX);
+        mModelAnim.Render(&mScale);
     else
-        mModel.Render((Vector3 *)&mScaleX);
+        mModel.Render(&mScale);
 
     return 1;
 }
@@ -812,16 +811,14 @@ int daBookGen_c::Behavior()
         if (player != 0) {
 
             Vector3 tmp;
-            Vector3 *ps = (Vector3 *)&player->mPosX;
+            Vector3 *ps = &player->mPos;
             tmp = *ps;
 
-            if (Vec3_HorzDist((Vector3 *)&mPosX, &tmp) < 0x258000) {
-                short angle = Vec3_HorzAngle((Vector3 *)&mPosX, &tmp);
+            if (Vec3_HorzDist(&mPos, &tmp) < 0x258000) {
+                short angle = Vec3_HorzAngle(&mPos, &tmp);
                 if (GetSubtraction(mAngleY, angle) < 0x2000) {
                     signed char sc = mAreaId;
-                    dActor_c::Spawn(
-                        kShootBookActorId, 0, *(Vector3 *)&mPosX, (Vector3_16 *)&mPrevAngleX,
-                        sc, -1);
+                    dActor_c::Spawn(kShootBookActorId, 0, mPos, &mPrevAngle, sc, -1);
                     mSpawnTimer = 0;
                 }
             }

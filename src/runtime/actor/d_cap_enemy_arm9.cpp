@@ -31,8 +31,6 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 
-struct Vector3_16 { s16 x, y, z; };
-
 extern "C" {
 extern int _ZN13SharedFilePtr7ReleaseEv(void *sfp);
 extern SharedFilePtr *data_ov002_020ff028[];
@@ -122,7 +120,7 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
     if (mCapId >= 6) return;
 
     CapVec sum, asr;
-    Vec3_Add((Vector3 *)&sum, (Vector3 *)&mPosX, &pos);
+    Vec3_Add((Vector3 *)&sum, &mPos, &pos);
     Vec3_Asr(&asr, &sum, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, rot.x, rot.y, rot.z);
@@ -146,8 +144,9 @@ struct dActor_c *dCapEnemy_c::ReleaseCap(const Vector3 & v_)
         func_02005ed8();
         if (mCapId < 6u) {
             CapVec out;
-            Vec3_Add((Vector3 *)&out, (const Vector3 *)&mPosX, v);
-            ret = dActor_c::Spawn(0x10d, 0x1012 | (mCapId << 8), *(const Vector3 *)&out, (const Vector3_16 *)&mAngleX, mAreaId, -1);
+            Vec3_Add((Vector3 *)&out, &mPos, v);
+            ret = dActor_c::Spawn(0x10d, 0x1012 | (mCapId << 8), *(const Vector3 *)&out, &mAngle,
+                                  mAreaId, -1);
             if (mCapBank != 0) {
                 mCapId |= 8;
             } else {
@@ -192,11 +191,7 @@ struct dActor_c * dCapEnemy_c::RespawnIfHasCap()
     struct dActor_c *r;
     func_02005ed8();
     if ((mCapId & 0xf) >= 6) return 0;
-    r = dActor_c::Spawn(
-        actorID, param1,
-        *(const Vector3 *)&mPosX,
-        (const Vector3_16 *)&mAngleX,
-        mAreaId, -1);
+    r = dActor_c::Spawn(actorID, param1, mPos, &mAngle, mAreaId, -1);
     if (!r) return r;
     ((dCapEnemy_c *)r)->mIsDormant = 1;
     *(int *)((char *)r + 0xf4) = r->mFlags;

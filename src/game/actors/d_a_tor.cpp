@@ -142,7 +142,7 @@ void daTor_c::State2()
     Player *player = ClosestPlayer();
     if (player) {
         dActor_c *actor = (dActor_c *)player;
-        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, (const Vector3 *)&actor->mPosX) > 0x9c4000)
+        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, &actor->mPos) > 0x9c4000)
             mState = 0;
         if (mStateTimer > 0x168)
             mState = 0;
@@ -158,11 +158,10 @@ void daTor_c::State1()
     s16 angle;
     ++mChaseTimer;
 
-    angle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mHomePosX);
+    angle = Vec3_HorzAngle(&mPos, (const Vector3 *)&mHomePosX);
     mAngleToHome = angle;
 
-    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x85,
-                                   *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x85, mCamSpacePos, 0);
     mHorzSpeed = 0x14000;
 
     Player *player = ClosestPlayer();
@@ -180,7 +179,7 @@ void daTor_c::State1()
     if (Vec3_HorzDist((const Vector3 *)&mHomePosX, &playerPos) < mChaseRange
         && mTriggerCount == 0
         && mChaseTimer < 0x384) {
-        angle = Vec3_HorzAngle((const Vector3 *)&mPosX, &playerPos);
+        angle = Vec3_HorzAngle(&mPos, &playerPos);
         mAngleToPlayer = angle;
         ApproachLinear(mPrevAngleY, mAngleToPlayer, 0x200);
         /* ov002 helper wraps Player::IsState(tornado): still being carried. */
@@ -188,7 +187,7 @@ void daTor_c::State1()
             ++mTriggerCount;
     } else {
         ApproachLinear(mPrevAngleY, mAngleToHome, 0x200);
-        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, (const Vector3 *)&mPosX) < 0xc8000)
+        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, &mPos) < 0xc8000)
             mState = 2;
     }
     goto cont;
@@ -198,7 +197,7 @@ null_player:
     return;
 
 cont:
-    if (Vec3_Dist((const Vector3 *)&mPosX, &playerPos) > 0xbb8000 || mChaseTimer >= 0x384)
+    if (Vec3_Dist(&mPos, &playerPos) > 0xbb8000 || mChaseTimer >= 0x384)
         mState = 2;
 
     UpdatePos(0);
@@ -240,8 +239,7 @@ void daTor_c::State0()
         mdCcAc_c.flags &= ~1;
         mChaseTimer = 0;
     } else {
-        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x85,
-                                       *(Vector3 *)&mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x85, mCamSpacePos, 0);
         UpdateSpin((mStateTimer << 12) / 60);
         if (mStateTimer >= 0x3c)
             mState = 1;
@@ -260,7 +258,7 @@ int daTor_c::CleanupResources()
 int daTor_c::Render()
 {
     mTextureTransformer.Update(mModelAnim.data);
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -283,7 +281,7 @@ int daTor_c::Behavior()
         dActor_c *o = dActor_c::FindWithID(id);
         if (o != 0) {
             dActor_c *closest = ClosestWithActorID(0x135 /* ONIMASU */);
-            if (closest == 0 || Vec3_Dist((const Vector3 *)&o->mPosX, (const Vector3 *)&closest->mPosX) > 0x118000) {
+            if (closest == 0 || Vec3_Dist(&o->mPos, &closest->mPos) > 0x118000) {
                 /* ov002 player-state helper: stores `this` into the player's
                    tornado slot and switches it into the tornado state. */
                 if (func_ov002_020de33c((char *)o, (int)this) != 0)

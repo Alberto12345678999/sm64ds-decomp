@@ -98,13 +98,13 @@ int daObjKumo_c::InitResources()
 // @symbol _ZN11daObjKumo_c8BehaviorEv
 int daObjKumo_c::Behavior()
 {
-    int d = Vec3_Dist((const Vector3*)&mCamSpacePosX, (const Vector3*)&mPosX);
+    int d = Vec3_Dist(&mCamSpacePos, &mPos);
     int rank = 1;
     int base = 2;
     dActor_c *actor = FindWithActorID(0x13a, 0);
     while (actor) {
         if (actor != this) {
-            int d2 = Vec3_Dist((const Vector3*)&mCamSpacePosX, (const Vector3*)&actor->mPosX);
+            int d2 = Vec3_Dist(&mCamSpacePos, &actor->mPos);
             if (d > d2)
                 rank++;
         }

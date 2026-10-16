@@ -55,8 +55,10 @@
  *   the settle step, the merry-go-round occupancy test and the book-switch
  *   callback keep the C linkage they matched with as separate files; they
  *   take the daTrsTrap_c and read its members.
- * - The trapdoor state adds mAngVelX to mAngleX through *(s16 *)(this + 0x8c):
- *   the member spelling, and *(s16 *)&mAngleX, both change its codegen.
+ * - The trapdoor state adds mAngVelX to mAngleX through a
+ *   `(long long)(int)&mAngleX` launder. The plain member, `+=`,
+ *   *(s16 *)&mAngleX, `(int)&mAngleX` and a pointer local all change its
+ *   codegen.
  * - Behavior names mStateTimer directly at both sites (TRAP-2709
  *   experiment: unified spelling matches).
  * - +0x418 on the spawned BOOK_SWITCH is daBookGen_c's, which has no header;
@@ -213,7 +215,7 @@ void daTrsTrap_c::func_ov063_0211c7b0()
     t = &mAngleY;
     *t = (short)(*t + mAngVelY);
     func_ov063_0211c82c((char *)this);
-    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8f, *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8f, mCamSpacePos, 0);
 }
 
 /* Merry-go-round occupancy. The first call only latches mInitLatch; after
@@ -262,9 +264,8 @@ void daTrsTrap_c::func_ov063_0211c89c()
 
     switch (mState) {
     case 0:
-        if ((mBookFlags & 8) == 0 &&
-            Vec3_Dist((Vector3 *)&mPosX, &pp) < 0x320000) {
-            short a = Vec3_HorzAngle((Vector3 *)&mPosX, &pp);
+        if ((mBookFlags & 8) == 0 && Vec3_Dist(&mPos, &pp) < 0x320000) {
+            short a = Vec3_HorzAngle(&mPos, &pp);
             if (a <= -0x7000 || a >= 0x7000)
                 mBookFlags |= 8;
         }
@@ -292,7 +293,7 @@ void daTrsTrap_c::func_ov063_0211c89c()
         return;
     case 2:
         mPosX += 0x5000;
-        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8d, *(Vector3 *)&mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8d, mCamSpacePos, 0);
         Sound::PlaySecretSound(this, &mSoundTimer);
         if (mStateTimer > 0x65)
             mState = 3;
@@ -322,13 +323,13 @@ extern "C" void func_ov063_0211cae8(daTrsTrap_c *c, int m) {
 /* Trapdoor state. While an actor stands on it, mAngVelX tilts toward the
    rider's z offset; with nobody on it the door swings back and stops at
    level. The tilt is applied twice in the standing case, as in the ROM.
-   mAngleX is written through its raw address (see the banner). */
+   mAngleX is written through a laundered address (see the banner). */
 // @symbol _ZN11daTrsTrap_c19func_ov063_0211cb54Ev
 void daTrsTrap_c::func_ov063_0211cb54()
 {
     if (mStandingActor != 0) {
         mAngVelX = (s16)((mStandingActor->mPosZ - mPosZ) >> 0xc);
-        *(s16 *)((int)this + 0x8c) = *(s16 *)((int)this + 0x8c) + mAngVelX;
+        *(s16 *)((long long)(int)&mAngleX) = *(s16 *)((long long)(int)&mAngleX) + mAngVelX;
     } else {
         int a = mAngleX;
         if (a < 0) a = -a;
@@ -345,7 +346,7 @@ void daTrsTrap_c::func_ov063_0211cb54()
             }
         }
     }
-    *(s16 *)((int)this + 0x8c) = *(s16 *)((int)this + 0x8c) + mAngVelX;
+    *(s16 *)((long long)(int)&mAngleX) = *(s16 *)((long long)(int)&mAngleX) + mAngVelX;
 }
 
 /* Staircase rise state. Waits until the master step (or this one, for the
@@ -378,7 +379,7 @@ void daTrsTrap_c::func_ov063_0211cc18()
     case 1:
         mPosY += 0x8000;
         mRiseProgress += 8;
-        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, *(Vector3 *)&mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, mCamSpacePos, 0);
         if (mRiseProgress <= limit)
             return;
         mRiseProgress = limit;
@@ -387,7 +388,7 @@ void daTrsTrap_c::func_ov063_0211cc18()
         return;
     case 2:
         if (mStateTimer == 0)
-            Sound::PlayBank3(0x3d, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x3d, mCamSpacePos);
         if (func_ov063_0211c770(this, mStateTimer) != 0)
             mState++;
         return;

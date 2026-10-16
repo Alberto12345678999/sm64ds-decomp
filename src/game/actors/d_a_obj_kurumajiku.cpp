@@ -8,8 +8,6 @@
  * func_ov002_020b6c54; the discarded class metadata is recorded in the manifest.
  *
  * deslop
- * Leftover: (Vector3 *)&mPosX -- no Pos() accessor exists on this branch,
- *   so the pun stays.
  * Leftover: data_ov002_0210ddd0 (four rider mount offsets) and
  *   data_020a0e68 (shared arm9 matrix scratch, used tree-wide) keep
  *   linker names; naming belongs at a shared home, not this leaf.
@@ -132,7 +130,7 @@ s32 daObjKurumajiku_c::Behavior()
                 mid.z = 0;
                 Matrix4x3_FromRotationXYZExt(data_020a0e68, mAngleX, mAngleY, mAngleZ);
                 MulVec3Mat4x3(&data_ov002_0210ddd0[i], data_020a0e68, &mid);
-                Vec3_Add(&res, (Vector3 *)&mPosX, &mid);
+                Vec3_Add(&res, &mPos, &mid);
                 rider->mPosX = res.x;
                 rider->mPosY = res.y;
                 rider->mPosZ = res.z;
@@ -171,8 +169,7 @@ extern "C" int func_ov002_020b6c54(void *actor, void *descriptor, unsigned int r
         resources->clps);
     for (i = 0; i < 4; i++) {
         self->mMountedActorIds[i] = 0;
-        dActor_c *rider = dActor_c::Spawn(riderActorID, 0,
-            *reinterpret_cast<const Vector3 *>(&self->mPosX), 0, self->mAreaId, -1);
+        dActor_c *rider = dActor_c::Spawn(riderActorID, 0, self->mPos, 0, self->mAreaId, -1);
         if (rider != 0)
             self->mMountedActorIds[i] = rider->uniqueID;
     }

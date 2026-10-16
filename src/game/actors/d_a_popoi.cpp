@@ -27,7 +27,7 @@
  *   - ModelAnim::SetAnim and the three collision Init calls stay spelled-out
  *     _ZN identifiers (Fix12<int> by value; the real headers can't express the
  *     call-site mangling). Sound::PlayLong and dBgCh_Actr::GetFloorResult are
- *     real calls; PlayLong takes a const Vector3& so mCamSpacePosX is punned.
+ *     real calls.
  *   - func_ov077_021269a8 calls AngleDiff through an (int(*)(short,short))
  *     pointer cast: decl_common declares (int,int), and the short call-site
  *     typing is byte-load-bearing.
@@ -401,7 +401,7 @@ int daPopoi_c::func_ov077_02126ad0()
     struct Vector3 pp;
 
     dist = Vec3_Dist(&mPosX, &mHomePosX);
-    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, daPopoi_SND_MOVE_LOOP, *(const Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, daPopoi_SND_MOVE_LOOP, mCamSpacePos, 0);
 
     if (func_ov077_02126300() != 0) {
         func_ov077_02126d5c((daPopoi_StateRecord *)&data_ov077_02127d18);   /* TurnAway */
@@ -435,7 +435,7 @@ int daPopoi_c::func_ov077_02126ad0()
 
     player = ClosestPlayer();
     if (player != 0) {
-        struct Vector3* src = (struct Vector3*)(((long)&player->mPosX));
+        struct Vector3 *src = &player->mPos;
         pp.x = src->x;
         pp.y = src->y;
         pp.z = src->z;
@@ -551,8 +551,7 @@ int daPopoi_c::func_ov077_0212679c()
 
     p = ClosestPlayer();
     if (p != 0) {
-        /* u64 launder forces base materialization after the null cmp */
-        pp = (struct Vector3 *)(void *)(unsigned long long)(unsigned long)&p->mPosX;
+        pp = &p->mPos;
         pv.x = pp->x;
         pv.y = pp->y;
         pv.z = pp->z;
@@ -562,8 +561,7 @@ int daPopoi_c::func_ov077_0212679c()
     ApproachLinear(mPrevAngleY, mTargetAngleY, mTurnRate);
     ApproachLinear(mTurnRate, 0x600, 0x100);
 
-    mSoundHandle = Sound::PlayLong(
-        mSoundHandle, 3, daPopoi_SND_MOVE_LOOP, *(const Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, daPopoi_SND_MOVE_LOOP, mCamSpacePos, 0);
 
     spd = *(unsigned short *)&mStateTimer;
     if (spd < 0x64) {

@@ -316,16 +316,16 @@ void daFPkn_c::CheckClsnHits()
     if (hitBits != 0) {
         cmp = (int)(actorID == ACTOR_FIREPAKUN);
         if (cmp != 0)
-            func_02012694(SND_HIT, (const Vector3 *)&mCamSpacePosX);
+            func_02012694(SND_HIT, &mCamSpacePos);
         else
-            Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
+            Sound::PlayBank0(SND_HIT_S, mCamSpacePos);
     activate_path:
         cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
         if (cmp != 0) {
             unk_108 = 1;            /* the coin kind SpawnCoin drops */
             SpawnCoin();
             KillAndTrackInDeathTable();
-            Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
+            Sound::PlayBank0(SND_HIT_S, mCamSpacePos);
         } else {
             mState = STATE_WAIT;
             mSpinCount = 0xa;
@@ -338,12 +338,12 @@ void daFPkn_c::CheckClsnHits()
         }
         if ((mdCcAc_c.hitFlags & HIT_MEGA_CHARACTER) == 0)
             goto second;
-        Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
+        Sound::PlayBank0(SND_HIT_S, mCamSpacePos);
         hitter = dActor_c::FindWithID(mdCcAc_c.otherOwner);
         if (hitter == 0)
             goto second;
         ((Player *)hitter)->IncMegaKillCount();
-        func_02012694(SND_MEGA_KILL, (const Vector3 *)&mCamSpacePosX);
+        func_02012694(SND_MEGA_KILL, &mCamSpacePos);
         goto second;
     }
 
@@ -354,13 +354,13 @@ void daFPkn_c::CheckClsnHits()
     if (cmp == 0)
         goto second;
     if (((Player *)hitter)->mIsMetal != 0) {
-        Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
+        Sound::PlayBank0(SND_HIT_S, mCamSpacePos);
         goto activate_path;
     }
     cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
     if (cmp != 0) {
         if (JumpedOnByPlayer(mdCcAc_c, *(Player *)hitter) != 0) {
-            Sound::PlayBank0(SND_JUMPED_ON, (Vector3 &)mCamSpacePosX);
+            Sound::PlayBank0(SND_JUMPED_ON, mCamSpacePos);
             _ZN6Player6BounceE5Fix12IiE(hitter, 0x28000);
             goto activate_path;
         }
@@ -390,13 +390,13 @@ second:
     if (hitBits != 0) {
         if ((hitBits & HIT_MEGA_CHARACTER) != 0) {
             ((Player *)hitter)->IncMegaKillCount();
-            func_02012694(SND_MEGA_KILL, (const Vector3 *)&mCamSpacePosX);
+            func_02012694(SND_MEGA_KILL, &mCamSpacePos);
         } else {
             cmp = (int)(actorID == ACTOR_FIREPAKUN);
             if (cmp != 0)
-                func_02012694(SND_HIT, (const Vector3 *)&mCamSpacePosX);
+                func_02012694(SND_HIT, &mCamSpacePos);
             else
-                Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
+                Sound::PlayBank0(SND_HIT_S, mCamSpacePos);
         }
         mState = STATE_WAIT;
         mSpinCount = 0xa;
@@ -436,7 +436,7 @@ void daFPkn_c::StateGrow()
         mModelAnim.WillHitFrame(0x20) ||
         mModelAnim.WillHitFrame(0x34) ||
         mModelAnim.WillHitFrame(0x4b)) {
-        func_0201267c(SND_GROW_BITE, (const Vector3 *)&mCamSpacePosX);
+        func_0201267c(SND_GROW_BITE, &mCamSpacePos);
     }
 
     targetAngle = mAngleY;
@@ -447,12 +447,12 @@ void daFPkn_c::StateGrow()
     playerPos.y = src[1];
     playerPos.z = src[2];
     if (player != 0) {
-        targetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, &playerPos);
+        targetAngle = Vec3_HorzAngle(&mPos, &playerPos);
     }
     ApproachLinear(mAngleY, targetAngle, 0x400);
 
     if (mSuppressDeathReward == 1) {
-        spawned = dActor_c::Spawn(ACTOR_PAKUN, 0, (Vector3 &)mPosX, (Vector3_16 *)&mAngleX, mAreaId, -1);
+        spawned = dActor_c::Spawn(ACTOR_PAKUN, 0, mPos, &mAngle, mAreaId, -1);
         if (spawned == 0) return;
 
         mSuppressDeathReward = 2;
@@ -484,9 +484,9 @@ void daFPkn_c::StateSpit()
     if (mModelAnim.Finished() != 0) {
         cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
         if (cmp != 0)
-            func_0201267c(SND_SPIT_END_S, (const Vector3 *)&mCamSpacePosX);
+            func_0201267c(SND_SPIT_END_S, &mCamSpacePos);
         else
-            func_0201267c(SND_SPIT_END, (const Vector3 *)&mCamSpacePosX);
+            func_0201267c(SND_SPIT_END, &mCamSpacePos);
         mState = STATE_WAIT;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((PknSharedFile *)data_ov084_02130e1c)->file, 0, 0x1000, 0);
     } else {
@@ -494,7 +494,7 @@ void daFPkn_c::StateSpit()
             targetAngle = mAngleY;
             player = ClosestPlayer();
             if (player != 0)
-                targetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&player->mPosX);
+                targetAngle = Vec3_HorzAngle(&mPos, &player->mPos);
             ApproachLinear(mAngleY, targetAngle, 0x400);
         }
     }
@@ -504,9 +504,9 @@ void daFPkn_c::StateSpit()
 
     cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
     if (cmp != 0)
-        func_0201267c(SND_FIREBALL_S, (const Vector3 *)&mCamSpacePosX);
+        func_0201267c(SND_FIREBALL_S, &mCamSpacePos);
     else
-        func_0201267c(SND_FIREBALL, (const Vector3 *)&mCamSpacePosX);
+        func_0201267c(SND_FIREBALL, &mCamSpacePos);
 
     pos.x = mPosX;
     pos.y = mPosY;
@@ -546,7 +546,7 @@ void daFPkn_c::StateWait()
         mSpinCount--;
         if (mSpinCount != 0)
             return;
-        func_02012694(SND_SPUN_DOWN, (const Vector3 *)&mCamSpacePosX);
+        func_02012694(SND_SPUN_DOWN, &mCamSpacePos);
         mParticleHandle2 = 0;
         mParticleHandle1 = mParticleHandle2;
         return;
@@ -579,7 +579,7 @@ void daFPkn_c::StateWait()
                 _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &coinPos, 2, 0xa000, 0);
             }
             if (leader->mGroupDefeatedCount == 5) {
-                dActor_c::Spawn(ACTOR_STAR, mStarID | 0x40, (Vector3 &)mPosX, 0, mAreaId, -1);
+                dActor_c::Spawn(ACTOR_STAR, mStarID | 0x40, mPos, 0, mAreaId, -1);
                 leader->KillAndTrackInDeathTable();
                 KillAndTrackInDeathTable();
                 return;
@@ -626,9 +626,9 @@ void daFPkn_c::StateWait()
     }
     cmp = actorID == ACTOR_FIREPAKUN_S;
     if (cmp != false)
-        func_0201267c(SND_EMERGE_S, (const Vector3 *)&mCamSpacePosX);
+        func_0201267c(SND_EMERGE_S, &mCamSpacePos);
     else
-        func_0201267c(SND_EMERGE, (const Vector3 *)&mCamSpacePosX);
+        func_0201267c(SND_EMERGE, &mCamSpacePos);
     cmp = 1;
     mEmerged = 1;
     if (actorID != ACTOR_FIREPAKUN)
@@ -659,7 +659,7 @@ void daFPkn_c::StateWait()
     player = ClosestPlayer();
     if (player == 0)
         return;
-    mAngleY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&player->mPosX);
+    mAngleY = Vec3_HorzAngle(&mPos, &player->mPos);
 }
 
 // @symbol _ZN8daFPkn_c9StateInitEv

@@ -17,7 +17,6 @@
  * - data_ov048_021115e4 / 021115f4 are the BMA and BTA this TU's
  *   MaterialChanger::Prepare and TextureTransformer::Prepare load. They sit
  *   in the level overlay; only ov048 has an animation record at both words.
- * - (Vector3 *)&mPosX and &player->mPosX: dActor_c has no Pos().
  * - func_02016b24 is the unnamed model-mask call in InitResources.
  */
 
@@ -116,8 +115,7 @@ s32 daFRing_c::Behavior()
     unsigned int frame = mFrame;
     int reach = frame * 0x22;
     if (player != 0 && frame < 0x46 && player->mIsAirborne == 0) {
-        int dist = Vec3_HorzDist((const Vector3 *)&mPosX,
-                                  (const Vector3 *)&player->mPosX);
+        int dist = Vec3_HorzDist(&mPos, &player->mPos);
         int band0 = reach * data_ov060_0211ab20[0];
         int band1 = reach * data_ov060_0211ab20[1];
         int band2 = reach * data_ov060_0211ab20[2];

@@ -197,8 +197,7 @@ int daDsnBase_c::func_ov091_02132dc0()
         aimPos.y = mPosY;
         aimPos.z = mPosZ;
         aimPos.y = aimPos.y + OnAimedAtWithEgg();
-        if (Vec3_Dist((const Vector3 *)&mPosX,
-                      (const Vector3 *)&egg->mPosX) < (mClipRadius << 3)) {
+        if (Vec3_Dist(&mPos, &egg->mPos) < (mClipRadius << 3)) {
             if (!mMeshCollider.IsEnabled()) {
                 mMeshCollider.Enable(this);
                 return 1;

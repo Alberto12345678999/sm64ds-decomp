@@ -298,8 +298,8 @@ int daDossy_c::InitResources()
         mCapPosZ = 0;
         func_ov065_02118838();
         {
-            daDossyCap_c *cap = (daDossyCap_c *)dActor_c::Spawn(
-                0xa9, 0, *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX, mAreaId, -1);
+            daDossyCap_c *cap =
+                (daDossyCap_c *)dActor_c::Spawn(0xa9, 0, mPos, &mAngle, mAreaId, -1);
             if (cap != 0) {
                 mCap = cap;
                 cap->mCarrier = (s32)this;
@@ -327,8 +327,7 @@ int daDossyCap_c::Behavior()
         return 1;
     int eaten = (mFlags & 0x20000) != 0;
     if (eaten != 0) {
-        dActor_c *spit = dActor_c::Spawn(0x10d, 0x1210, *(Vector3 *)&mPosX,
-                                         (Vector3_16 *)&mAngleX, mAreaId, -1);
+        dActor_c *spit = dActor_c::Spawn(0x10d, 0x1210, mPos, &mAngle, mAreaId, -1);
         if (spit != 0) {
             /* dEnemyBase_c::mEatingPlayer of the spawned daObjMarioCap_c;
                including dEnemyBase_c.h renumbers the pins by 26. */
@@ -528,9 +527,9 @@ void daDossy_c::func_ov065_02118838()
             v.y = m->m[10];
             v.z = m->m[11];
         }
-        SubVec3(&v, (Vector3 *)&mPosX, &v);
+        SubVec3(&v, &mPos, &v);
         Vec3_LslInPlace(&v, three);
-        AddVec3(&v, (Vector3 *)&mPosX, &v);
+        AddVec3(&v, &mPos, &v);
         if (i == 2) {
             s32 *cx = &mCapPosX;
             s32 *cy = &mCapPosY;
@@ -664,7 +663,7 @@ void daDossy_c::func_ov065_021183c8()
     if (mClsnPlayer != 0) {
         if (mClsnState == 2 && mUnkTimer == 0) {
             if (mCap == 0 || func_ov065_02119210((unsigned char *)mCap) == 0) {
-                playerPos = *(Vector3 *)&mClsnPlayer->mPosX;
+                playerPos = mClsnPlayer->mPos;
                 if (playerPos.y >= mHomePosY
                     && Vec3_HorzDist(&playerPos, &mHomePosX) < 0x88000
                     && ((Player *)mClsnPlayer)->SetNoControlState(5, -1, 0) != 0) {
@@ -759,7 +758,7 @@ extern "C" int func_ov065_021180d4(char *self)
                     int idx;
                     int speed;
 
-                    playerPos = (Vector3 *)&player->mPosX;
+                    playerPos = &player->mPos;
                     pos.x = playerPos->x;
                     pos.y = playerPos->y;
                     pos.z = playerPos->z;
@@ -768,14 +767,10 @@ extern "C" int func_ov065_021180d4(char *self)
                     speed = player->mHorzSpeed;
 
                     pos.y += 0x50000;
-                    pos.x += (int)(((s64)speed *
-                                       data_02082214[idx * 2] + 0x800) >> 0xc);
-                    pos.z += (int)(((s64)speed *
-                                       data_02082214[idx * 2 + 1] + 0x800) >> 0xc);
+                    pos.x += FX_MUL(speed, data_02082214[idx * 2]);
+                    pos.z += FX_MUL(speed, data_02082214[idx * 2 + 1]);
 
-                    if (dActor_c::Spawn(0x10d, 0x1210, pos, (Vector3_16 *)&cap->mAngleX,
-                                        cap->mAreaId, -1) != 0)
-                    {
+                    if (dActor_c::Spawn(0x10d, 0x1210, pos, &cap->mAngle, cap->mAreaId, -1) != 0) {
                         cap->mCapIcon.Unlink();
                         cap->mCapIcon.func_ov001_020ab228(self, 2, 0, 0);
                         ((daDossy_c *)cap->mCarrier)->mUnkTimer = 0x1e;
