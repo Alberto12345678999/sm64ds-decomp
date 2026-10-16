@@ -59,6 +59,7 @@ enum dScMgSnowball_c_AssetId {
    here, so the one copy that has to be a block move goes through M4x3Flat,
    below, rather than member-wise through Vector3's destructor. */
 #include "dScMgSnowball_c.h"
+#include "SpawnInfo.h"
 #include "types.h"
 #include "decl_common.h"
 #include "common.h"
@@ -2542,16 +2543,13 @@ void dScMgSnowball_c::Bit_InitAll()
     }
 }
 
-/* The registry word between the PMF descriptors: classInit, then the
- * actor id 0x179 stored in both halfwords. */
-extern "C" void *dScMgSnowball_c_classInit(void);
-struct SnowballProfile {
-    void *(*init)(void);
-    unsigned short actorId;
-    unsigned short actorId2;
-};
-SnowballProfile g_profile_MG_SNOWBALL = {
-    dScMgSnowball_c_classInit, 0x179, 0x179,
+/* MG_SNOWBALL's base profile, between the PMF descriptors: classInit, then
+ * the same priority (0x179, the registry id) in both halfwords. */
+extern "C" dScMgSnowball_c *dScMgSnowball_c_classInit(void);
+BaseSpawnInfo<dScMgSnowball_c> g_profile_MG_SNOWBALL = {
+    dScMgSnowball_c_classInit,
+    0x179,
+    0x179,
 };
 
 /* Source order is copy order. Each entry is a {function, 0} descriptor;
@@ -2590,11 +2588,10 @@ Entry_02129d94 sSnowballBitStateTable[3] = {
  * constructor body is the free dScMgSnowball_c_Construct above (see the banner),
  * so the factory calls the class's operator new itself and hands the
  * storage over. */
-extern "C" void *dScMgSnowball_c_classInit(void)
-{
+extern "C" dScMgSnowball_c *dScMgSnowball_c_classInit(void) {
     void *p = dScMgSnowball_c::operator new(sizeof(dScMgSnowball_c));
     if (p) {
-        return dScMgSnowball_c_Construct((char *)p);
+        return (dScMgSnowball_c *)dScMgSnowball_c_Construct((char *)p);
     }
-    return p;
+    return (dScMgSnowball_c *)p;
 }

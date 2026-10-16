@@ -42,6 +42,7 @@ enum dScMgLuigi_c_AssetId {
 #include "Sound.h"
 #include "IRQ.h"
 #include "nitro/fx/fx.h"
+#include "SpawnInfo.h"
 
 typedef void (dScMgLuigi_c::*LuigiSlotHandler)(int);
 typedef void (dScMgLuigi_c::*LuigiStateHandler)();
@@ -79,7 +80,7 @@ extern void Mg_SetSharedState(int c);
 
 extern void Luigi_PrepareScanlines(void);
 extern void Luigi_PushScanlineRecord(void);
-extern int *dScMgLuigi_c_classInit(void);
+extern dScMgLuigi_c *dScMgLuigi_c_classInit(void);
 }
 namespace GXS {
 void LoadBGPltt(const void *src, u32 offset, u32 size);
@@ -1916,9 +1917,8 @@ s32 dScMgLuigi_c::InitResources()
 // @symbol dScMgLuigi_c_classInit
 extern "C" {
 /* Allocates the scene. The ROM has no spelling for this factory. */
-int *dScMgLuigi_c_classInit(void)
-{
-    return (int *)new dScMgLuigi_c;
+dScMgLuigi_c *dScMgLuigi_c_classInit(void) {
+    return new dScMgLuigi_c;
 }
 }
 
@@ -1959,15 +1959,12 @@ LuigiSlotHandler sLuigiIrisTable[3] = {
     &dScMgLuigi_c::IrisStop,
 };
 
-/* MG_LUIGI's registry profile: the factory, then the same priority in both
+/* MG_LUIGI's base profile: the factory, then the same priority in both
    halfwords. */
-struct MgLuigiProfile {
-    int *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-};
-MgLuigiProfile g_profile_MG_LUIGI = {
-    dScMgLuigi_c_classInit, 0x16e, 0x16e
+BaseSpawnInfo<dScMgLuigi_c> g_profile_MG_LUIGI = {
+    dScMgLuigi_c_classInit,
+    0x16e,
+    0x16e,
 };
 
 /* ChooseTarget's tile-number table, indexed by the wanted character. */

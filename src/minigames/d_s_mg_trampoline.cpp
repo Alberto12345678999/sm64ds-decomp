@@ -30,6 +30,7 @@ enum d_s_mg_trampoline_AssetId {
 };
 
 #include "dScMgTrampoline_c.h"
+#include "SpawnInfo.h"
 #include "types.h"
 #include "G2x.h"
 #include "Sound.h"
@@ -101,15 +102,6 @@ struct P2 { int a, b; };
 
 // Preserve the original front end's blind two-word aggregate copy in C++ mode.
 struct P2Words { int words[2]; };
-
-struct TrampolineTimeProfile {
-    void *(*spawn)(void);
-    s16 behaviorPriority;
-    s16 renderPriority;
-};
-
-typedef char TrampolineTimeProfile_size_must_be_8[
-    sizeof(TrampolineTimeProfile) == 8 ? 1 : -1];
 
 /* TUBUILD CONFLICT -- alternate body of struct 'P2', from the legacy file for func_ov006_021218c4, NOT applied:
 struct P2 { int a, b; };
@@ -237,7 +229,7 @@ extern void Trmp3DMario_Construct(void);
 extern void TrmpLine_Reset(void);
 extern void Trmp_Nothing2(void);
 
-void *dScMgTrampoline_c_classInit(void);
+dScMgTrampoline_c *dScMgTrampoline_c_classInit(void);
 /* Literal aliases used only to make the five ROM PMF relocations static data.
    Their definitions below are real compiler-spelled C++ members. Each is a
    local extern: a pointer to member cannot convert to the int word a P2
@@ -262,8 +254,10 @@ extern int data_ov006_02137454[];
 P2 pmf_dScMgTrampoline_c_StateWaitExit = { (int)_ZN17dScMgTrampoline_c13StateWaitExitEv, 0 };
 P2 pmf_dScMgTrampoline_c_StateDone = { (int)_ZN17dScMgTrampoline_c9StateDoneEv, 0 };
 P2 pmf_dScMgTrampoline_c_StateIntro = { (int)_ZN17dScMgTrampoline_c10StateIntroEv, 0 };
-TrampolineTimeProfile g_profile_MG_TRAMPOLINE = {
-    dScMgTrampoline_c_classInit, 0x180, 0x180
+BaseSpawnInfo<dScMgTrampoline_c> g_profile_MG_TRAMPOLINE = {
+    dScMgTrampoline_c_classInit,
+    0x180,
+    0x180,
 };
 P2 pmf_dScMgTrampoline_c_StatePlay = { (int)_ZN17dScMgTrampoline_c9StatePlayEv, 0 };
 P2 pmf_dScMgTrampoline_c_StateResults = { (int)_ZN17dScMgTrampoline_c12StateResultsEv, 0 };
@@ -326,8 +320,7 @@ extern "C" void Trmp_Nothing2(void)
 }
 
 // @symbol dScMgTrampoline_c_classInit
-extern "C" void *dScMgTrampoline_c_classInit(void)
-{
+extern "C" dScMgTrampoline_c *dScMgTrampoline_c_classInit(void) {
     char *scene = (char *)_ZN7fBase_cnwEj(0x5dc8);
     if (scene) {
         char *it;
@@ -356,7 +349,7 @@ extern "C" void *dScMgTrampoline_c_classInit(void)
                       (void *)Trmp_Nothing);
         ((dScMgTrampoline_DoorMark *)(scene + 0x5d84))->Init();
     }
-    return scene;
+    return (dScMgTrampoline_c *)scene;
 }
 
 // @symbol _ZN17dScMgTrampoline_c11InitDisplayEv
