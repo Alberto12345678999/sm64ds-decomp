@@ -26,10 +26,10 @@
  * Hana_StateNoneB and Hana_LoadBackground take nothing.
  *
  * leftovers:
- * - the sixteen popups at data_ov006_02142044 are read through
+ * - the sixteen popups at sHanaPopups are read through
  *   four record spellings (HanaPopup_DrawAll, HanaPopup_UpdateAll,
  *   HanaPopup_Spawn, HanaPopup_ClearAll).
- * - the popup at data_ov006_02141fe4 is read through raw byte
+ * - the popup at sHanaStarPopup is read through raw byte
  *   offsets, and StarPopup_Update reaches its +0xc byte through a
  *   separate symbol, data_ov006_02141ff0.
  * - Wiggler_DrawTarget repeats Wiggler_DrawField's segment
@@ -348,14 +348,14 @@ struct S_ea81c {
     unsigned char pad2[2];/* +0x12 -> stride 0x14 */
 };
 
-/* The popup records: one at data_ov006_02141fe4 and sixteen at
-   data_ov006_02142044, 0x14 bytes each. The sixteen are declared with
+/* The popup records: one at sHanaStarPopup and sixteen at
+   sHanaPopups, 0x14 bytes each. The sixteen are declared with
    HanaPopup_Spawn's layout, which it needs to match; the other
    functions keep the spelling their own match used, through a cast. */
 extern "C" {
 extern void NullDestructor_0203d47c(void);
-extern char data_ov006_02141fe4[];
-extern struct S_ea81c data_ov006_02142044[];
+extern char sHanaStarPopup[];
+extern struct S_ea81c sHanaPopups[];
 extern char data_ov006_02137cd8[];
 }
 
@@ -404,12 +404,11 @@ extern "C" void StarPopup_Draw(void)
     int y;
     s32 r;
     int *new_var;
-    new_var = (int *)data_ov006_02141fe4;
-    if ((*(((unsigned char *)data_ov006_02141fe4) + 0x10)) != 1)
-    {
+    new_var = (int *)sHanaStarPopup;
+    if ((*(((unsigned char *)sHanaStarPopup) + 0x10)) != 1) {
         return;
     }
-    x = ((int *)data_ov006_02141fe4)[0] >> 12;
+    x = ((int *)sHanaStarPopup)[0] >> 12;
     y = new_var[1] >> 12;
     r = GetGameLanguage();
     Mg_RenderSubSpriteMtx(*((void **)(((char *)data_ov006_0213ca9c[r]) + 0x34)), x - 8, y, 0);
@@ -431,7 +430,7 @@ extern "C" Timer20 data_ov006_02141ff0[];
 extern "C" void StarPopup_Update(char *arg)
 {
     int i;
-    char *f = data_ov006_02141fe4;
+    char *f = sHanaStarPopup;
     for (i = 0; i < 1; i++, f += 0x14) {
         u8 ph;
         if (*(u8 *)(f + 0xd) != 1)
@@ -494,7 +493,7 @@ extern "C" void StarPopup_Update(char *arg)
    unless it is already active. */
 extern "C" void StarPopup_Start(int x, int y)
 {
-    char *g = data_ov006_02141fe4;
+    char *g = sHanaStarPopup;
     if (*(unsigned char *)(g + 0xd) != 0) return;
     *(unsigned char *)(g + 0xd) = 1;
     if (x < 0x10000) x = 0x10000;
@@ -512,8 +511,8 @@ extern "C" void StarPopup_Start(int x, int y)
 /* Clears the single popup's active and draw flags. */
 extern "C" unsigned char StarPopup_Clear(void)
 {
-    ((unsigned char *)data_ov006_02141fe4)[0xd] = 0;
-    ((unsigned char *)data_ov006_02141fe4)[0x10] = 0;
+    ((unsigned char *)sHanaStarPopup)[0xd] = 0;
+    ((unsigned char *)sHanaStarPopup)[0x10] = 0;
     return 0;
 }
 
@@ -533,7 +532,7 @@ extern "C" void HanaPopup_DrawAll(void)
     void *a = 0, *b = 0, *c = 0;
     int i;
     for (i = 0; i < 16; i++) {
-        Ent_ea670 *e = &((Ent_ea670 *)data_ov006_02142044)[i];
+        Ent_ea670 *e = &((Ent_ea670 *)sHanaPopups)[i];
         if (e->flag != 0) {
             int sb = e->x >> 12;
             int r8 = e->y >> 12;
@@ -565,7 +564,7 @@ extern "C" void HanaPopup_UpdateAll(void)
 {
     int i;
     for (i = 0; i < 16; i++) {
-        Ent71c *e = &((Ent71c *)data_ov006_02142044)[i];
+        Ent71c *e = &((Ent71c *)sHanaPopups)[i];
         if (e->active) {
             if (e->pos > 0xb8000)
                 e->pos = 0xb8000;
@@ -603,16 +602,16 @@ extern "C" void HanaPopup_Spawn(int r0, int r1)
 {
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (data_ov006_02142044[i].inuse == 0) {
-            data_ov006_02142044[i].inuse = 1;
-            data_ov006_02142044[i].f = 1;
-            data_ov006_02142044[i].w = 0x18;
+        if (sHanaPopups[i].inuse == 0) {
+            sHanaPopups[i].inuse = 1;
+            sHanaPopups[i].f = 1;
+            sHanaPopups[i].w = 0x18;
             if (r0 < 0x14000) r0 = 0x14000;
             else if (r0 > 0xf0000) r0 = 0xf0000;
-            data_ov006_02142044[i].x = r0;
-            data_ov006_02142044[i].y = r1;
-            data_ov006_02142044[i].z = 0x800;
-            data_ov006_02142044[i].g = 0;
+            sHanaPopups[i].x = r0;
+            sHanaPopups[i].y = r1;
+            sHanaPopups[i].z = 0x800;
+            sHanaPopups[i].g = 0;
             return;
         }
     }
@@ -627,9 +626,9 @@ extern "C" void HanaPopup_ClearAll(void)
 {
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (((struct E6_ea8e0 *)data_ov006_02142044)[i].e == 0) {
-            ((struct E6_ea8e0 *)data_ov006_02142044)[i].e = 0;
-            ((struct E6_ea8e0 *)data_ov006_02142044)[i].f = 0;
+        if (((struct E6_ea8e0 *)sHanaPopups)[i].e == 0) {
+            ((struct E6_ea8e0 *)sHanaPopups)[i].e = 0;
+            ((struct E6_ea8e0 *)sHanaPopups)[i].f = 0;
         }
     }
 }

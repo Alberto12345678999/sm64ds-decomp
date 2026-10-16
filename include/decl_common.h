@@ -199,7 +199,7 @@ extern char data_ov006_0214009c;
 extern char data_ov006_021400bc;
 extern char data_ov006_021400dc;
 extern char data_ov006_021400fc;
-extern char data_ov006_02142ab4[];
+extern char sRouletteTiles[];
 extern char data_ov006_02142ab8[];
 extern char data_ov009_02113c20[];
 extern char data_ov009_02113c28[];

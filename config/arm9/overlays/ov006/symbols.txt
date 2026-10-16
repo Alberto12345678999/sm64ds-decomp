@@ -4663,11 +4663,11 @@ data_ov006_02141fd0 kind:bss addr:0x02141fd0
 data_ov006_02141fd4 kind:bss addr:0x02141fd4
 data_ov006_02141fd8 kind:bss addr:0x02141fd8
 data_ov006_02141fdc kind:bss addr:0x02141fdc
-data_ov006_02141fe4 kind:bss addr:0x02141fe4
+sHanaStarPopup kind:bss addr:0x02141fe4
 data_ov006_02141ff0 kind:bss addr:0x02141ff0
 data_ov006_02141ff8 kind:bss addr:0x02141ff8
 data_ov006_02142018 kind:bss addr:0x02142018
-data_ov006_02142044 kind:bss addr:0x02142044
+sHanaPopups kind:bss addr:0x02142044
 data_ov006_02142048 kind:bss addr:0x02142048
 data_ov006_0214204c kind:bss addr:0x0214204c
 data_ov006_02142050 kind:bss addr:0x02142050
@@ -4785,8 +4785,8 @@ data_ov006_02142a74 kind:bss addr:0x02142a74
 data_ov006_02142a80 kind:bss addr:0x02142a80
 data_ov006_02142a8c kind:bss addr:0x02142a8c
 data_ov006_02142a98 kind:bss addr:0x02142a98
-data_ov006_02142aa4 kind:bss addr:0x02142aa4
-data_ov006_02142ab4 kind:bss addr:0x02142ab4
+sRouletteStrips kind:bss addr:0x02142aa4
+sRouletteTiles kind:bss addr:0x02142ab4
 data_ov006_02142ab8 kind:bss addr:0x02142ab8
 data_ov006_02142abc kind:bss addr:0x02142abc
 data_ov006_02142ac4 kind:bss addr:0x02142ac4

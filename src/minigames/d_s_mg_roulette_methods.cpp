@@ -55,7 +55,7 @@ typedef struct { short v[12]; } ShortTbl12;
 struct Pair   { int w[2]; };
 struct Pair2W { int w[2]; };
 
-/* The board's tile centres: data_ov006_02142ab4 holds x and
+/* The board's tile centres: sRouletteTiles holds x and
    data_ov006_02142ab8 the same array offset to y, stride 8. decl_common.h
    types both as `char[]`, so every read casts. */
 struct TileXY { int x, y; };
@@ -220,7 +220,7 @@ int  Dealer_Load(char *c);
 
 extern int   data_ov006_021428d0;
 extern int   data_ov006_0213e2dc;
-extern char *data_ov006_02142aa4[];
+extern char *sRouletteStrips[];
 extern int   data_020a0db0;
 extern s32   data_ov006_0212ed24[];
 extern void *data_ov006_021376ec[];
@@ -426,7 +426,8 @@ s32 dScMgRoulette_c::Behavior()
                         if (onTile == 0)
                             goto landedElsewhere;
                     landedInRange:
-                        RouletteRacer_SetVelocityToward((int *)racer, (int *)&((TileXY *)data_ov006_02142ab4)[tileType].x, 0x100);
+                        RouletteRacer_SetVelocityToward(
+                            (int *)racer, (int *)&((TileXY *)sRouletteTiles)[tileType].x, 0x100);
                         goto nextRacer;
                     landedElsewhere:
                         RouletteRacer_MoveToTile((RacerPos *)racer, tileType);
@@ -597,9 +598,9 @@ s32 dScMgRoulette_c::Render()
                 if (data_020a0db0 & 8) {
                     s16 idx = mSelectedTile;
                     Hud_RenderSprite((void *)data_ov006_02138c18,
-                                        ((TileXY *)data_ov006_02142ab4)[idx].x >> 12,
-                                        ((TileXY *)data_ov006_02142ab8)[idx].x >> 12, /* = [idx].y */
-                                        -1, 1);
+                                     ((TileXY *)sRouletteTiles)[idx].x >> 12,
+                                     ((TileXY *)data_ov006_02142ab8)[idx].x >> 12, /* = [idx].y */
+                                     -1, 1);
                 }
             }
         }
@@ -799,7 +800,7 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile)
     buf[0] = f18;
     buf[1] = racer->f1c;
     if ((unsigned short)(short)(tile - 0x23) <= 1) {
-        a = ((TileXY *)data_ov006_02142ab4)[tile].x;
+        a = ((TileXY *)sRouletteTiles)[tile].x;
         b = ((TileXY *)data_ov006_02142ab8)[tile].x;
         buf[2] = a;
         buf[3] = b;
@@ -832,7 +833,7 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile)
         if (LNDR(early) == 0)
             return;
     }
-    a = ((TileXY *)data_ov006_02142ab4)[tile].x;
+    a = ((TileXY *)sRouletteTiles)[tile].x;
     b = ((TileXY *)data_ov006_02142ab8)[tile].x;
     buf[4] = a;
     buf[5] = b;
@@ -976,7 +977,8 @@ void RouletteRacer_Update(Thing* racer)
                 if (b == false)
                     goto no_table;
             use_table:
-                RouletteRacer_SetVelocityToward((int *)racer, (int *)&data_ov006_02142ab4[type * 8], 0x100);
+                RouletteRacer_SetVelocityToward((int *)racer, (int *)&sRouletteTiles[type * 8],
+                                                0x100);
                 goto snd;
             no_table:
                 RouletteRacer_MoveToTile((RacerPos *)racer, type);
@@ -1532,8 +1534,8 @@ void RouletteStrip_DrawRacers(void **strip)
         idx = data_ov006_0212ed24[r0];
         if (data_020a0db0 & 8) idx++;
         if (m >= 0xc && m <= 0x13) idx += 2;
-        a1 = ((TileXY *)data_ov006_02142ab4)[m].x >> 12;
-        a2 = ((TileXY *)data_ov006_02142ab4)[m].y >> 12;
+        a1 = ((TileXY *)sRouletteTiles)[m].x >> 12;
+        a2 = ((TileXY *)sRouletteTiles)[m].y >> 12;
         if (r0 == 3) a1 += 0x58;
         Hud_RenderSprite(data_ov006_021376ec[idx], a1, a2, -1, -1);
     }
@@ -1545,7 +1547,7 @@ extern "C" {
 void RouletteStrip_LinkAll(char* p) {
     int i;
     for (i = 0; i < 4; i++) {
-        data_ov006_02142aa4[i] = p;
+        sRouletteStrips[i] = p;
         p += 0x18;
     }
 }
@@ -1556,8 +1558,8 @@ extern "C" {
 void RouletteStrip_ResetAll(void) {
     int i;
     for (i = 0; i < 4; i++) {
-        RouletteStrip_Reset((int *)data_ov006_02142aa4[i]);
-        *(short*)((char*)data_ov006_02142aa4[i] + 0x14) = (short)i;
+        RouletteStrip_Reset((int *)sRouletteStrips[i]);
+        *(short *)((char *)sRouletteStrips[i] + 0x14) = (short)i;
     }
     data_ov006_0213e2dc = -1;
     data_ov006_021428d0 = 0;
@@ -1573,7 +1575,8 @@ extern "C" int RouletteResults_Tick(void)
         idx = data_ov006_0213e2dc;
         data_ov006_021428d0 = 0x78;
         while (idx < 4) {
-            if (*(short*)(data_ov006_02142aa4[idx] + 0x16) != 0) break;
+            if (*(short *)(sRouletteStrips[idx] + 0x16) != 0)
+                break;
             data_ov006_0213e2dc = data_ov006_0213e2dc + 1;
             idx = data_ov006_0213e2dc;
         }
@@ -1595,14 +1598,14 @@ void RouletteResults_Draw(void){
     if (n > 4) n = 4;
     arg = 0x28;
     for (i = 0; i < n; i++) {
-        int* o = (int *)data_ov006_02142aa4[i];
+        int *o = (int *)sRouletteStrips[i];
         if (*(short*)((char*)o + 0x16) > 0) {
             RouletteStrip_Draw((short *)o, arg);
             arg += 0x24;
         }
     }
     if (data_ov006_0213e2dc >= 4) return;
-    RouletteStrip_DrawRacers((void **)data_ov006_02142aa4[data_ov006_0213e2dc]);
+    RouletteStrip_DrawRacers((void **)sRouletteStrips[data_ov006_0213e2dc]);
 }
 }
 
