@@ -70,7 +70,7 @@
   "bss": [],
   "notes": [
     "Intact-object: this TU owns the class's RTTI+vtable band 0x020992f8..0x02099360 (ZTS, the __vmi _ZTI with its three base records, and the _ZTV carrying the dBgPi/dM3dGSph secondary thunk partitions). The eight inherited base-class RTTI copies emit as vague linkage and are externalized to their canonical cartridge homes.",
-    "func_02038ea4 (0x02038ea4..0x02038f44) is NOT part of this fold: its only caller (daMky_c) passes a dBgCh_Gnd local and it only touches the shared dBgPi base offset -- Gnd-family evidence, left as its own shard for the Gnd fold.",
+    "The slot-zero ground query at 0x02038ea4..0x02038f44 is excluded from this sphere-lifecycle fold. It is production-owned by d_bg_ch_sph_crr_query.cpp as the genuine dBgCh_Gnd::DetectClsnSlot0 member; daMky_c passes a real dBgCh_Gnd local and the query records the hit through its dBgPi base. DetectClsnSlot0 is an inferred descriptive name, not a recovered ROM identifier.",
     "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
   ],
   "functions": [
