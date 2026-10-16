@@ -22,7 +22,7 @@
  *   dBgCh_Actr_UpdateContinuous_Veneer are the tail-call veneers the
  *   bl targets. func_0203567c returns its argument plus 0x30;
  *   GetFloorResult is the previous symbol, and this TU still calls
- *   func_0203567c. func_02038ea4 is not dBgCh_Gnd::DetectClsn.
+ *   func_0203567c. DetectClsnSlot0 only queries collider slot zero.
  *   func_02037f44 returns word 8 of the record it is handed. Real
  *   dBgPi copy construction avoids the unwanted default-constructor call.
  * - Native Matrix4x3 copies use common.h's shared flat representation.
@@ -51,6 +51,7 @@
 #include "SurfaceInfo.h"
 #include "dBgCh_Lin.h"
 #include "dBgPi.h"
+#include "dClipper.h"
 
 /* The callees of this TU's members, spelled by their mangled or ROM names.
  * They cannot be declared inside a method body: a block-scope extern in a
@@ -69,11 +70,9 @@ void  func_020383f0(void *p);
 bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void  Vec3_Asr(void *d, void *s, int sh);
-int   _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
-int   func_02038ea4(void *self);
 int   func_0203567c(int self);
 int   func_02037f44(void *result);
 void  Matrix4x3_FromRotationY(void *m, int angle);
@@ -124,8 +123,8 @@ s32 daMky_c::OnYoshiTryEat()
 void daMky_c::func_ov030_02111734()
 {
 
-    extern char data_0209f43c;
-    extern char data_0209b3ec;
+    extern dClipper data_0209f43c;
+    extern Matrix4x3 data_0209b3ec;
     struct Vector3 a, b, out, asr;
 
     if (DecIfAbove0_Byte(&this->mResetTimer))
@@ -150,7 +149,7 @@ void daMky_c::func_ov030_02111734()
 
     Vec3_Asr(&asr, (Vector3 *)&this->mPerchPosX, 3);
 
-    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
+    if (data_0209f43c.TransformAndClip(data_0209b3ec, asr, 0x1f400, out) <= 0xc350000)
         goto done;
 
     this->mPosX = this->mPerchPosX;
@@ -340,7 +339,7 @@ int daMky_c::func_ov030_02111dd0()
         v.y = s;
         v.z = z;
         rg.SetObjAndPos(v, this);
-        if (func_02038ea4(&rg) == 0 || this->mPosY - rg.clsnY > 0x2000) {
+        if (rg.DetectClsnSlot0() == 0 || this->mPosY - rg.clsnY > 0x2000) {
             this->mPosX = this->mSpawnPosX;
             this->mPosY = this->mSpawnPosY;
             this->mPosZ = this->mSpawnPosZ;
@@ -997,7 +996,7 @@ int daMky_c::EnterState5() {
 int daMky_c::func_ov030_02113324()
 {
 
-    extern void* data_0209f318;
+    extern dCamera_c *data_0209f318;
     extern Matrix4x3 data_020a0e68;
     extern unsigned char data_0209d684;
 
@@ -1045,7 +1044,7 @@ skip_raycast:
             if (this->mPlayer->StartTalk(*this, 1) != 0) {
                 Vector3 camPos;
                 {
-                    Vector3 *src = &((dCamera_c *)data_0209f318)->pos;
+                    Vector3 *src = &data_0209f318->pos;
                     camPos.x = src->x;
                     camPos.y = src->y;
                     camPos.z = src->z;
@@ -1126,7 +1125,7 @@ int daMky_c::func_ov030_021136b0()
 
     /* The arm9 symbols.txt row spells this Vector3_16 (not Vector3s) — a wrong mangling here left the reloc BLIND and broke mwldarm. */
 
-    extern void *data_0209f318;
+    extern dCamera_c *data_0209f318;
     extern Matrix4x3 data_020a0e68;
     int msg;
     s16 a = this->mPlayer->mAngleY;
@@ -1178,7 +1177,7 @@ int daMky_c::func_ov030_021136b0()
         {
             u8 fl = this->mHasSpawnedCap;
             msg = fl ? 0xbe : 0xbf;
-            dCamera_c *camBase = (dCamera_c *)data_0209f318;
+            dCamera_c *camBase = data_0209f318;
             Vector3 *src = &camBase->pos;
             camPos.x = src->x;
             camPos.y = src->y;
