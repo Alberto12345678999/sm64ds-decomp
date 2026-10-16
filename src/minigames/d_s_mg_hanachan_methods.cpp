@@ -9,7 +9,7 @@
  * its own file (src/minigames/d_s_mg_hanachan.cpp).
  *
  * The destructor pair and the ten functions from Wiggler_Destroy to
- * Wiggler_DrawPassA came from one-function files. Their bodies are kept
+ * Wiggler_DrawTarget came from one-function files. Their bodies are kept
  * as they matched there. The two popup arrays are declared once; where a
  * function spelled a record differently, its tag is renamed per function
  * and the access casts. Wiggler_Destroy is the wiggler array's element
@@ -20,7 +20,7 @@
  * dScMgHanachan_c members, declared in dScMgHanachan_c.h; the address is the
  * method name, since no ROM spelling survives. Each body opens by re-viewing
  * `this` as the char * it used to take. The other func_ov006 helpers stay
- * free: the ones from Wiggler_DrawPassA to Hana_SpawnWigglers take one
+ * free: the ones from Wiggler_DrawTarget to Hana_SpawnWigglers take one
  * 0x98-byte wiggler record (an element of mWiggler) or no object at all, the
  * popup helpers before them take no object, and Hana_StateNoneA,
  * Hana_StateNoneB and Hana_LoadBackground take nothing.
@@ -32,7 +32,7 @@
  * - the popup at data_ov006_02141fe4 is read through raw byte
  *   offsets, and StarPopup_Update reaches its +0xc byte through a
  *   separate symbol, data_ov006_02141ff0.
- * - Wiggler_DrawPassA repeats Wiggler_DrawPassB's segment
+ * - Wiggler_DrawTarget repeats Wiggler_DrawField's segment
  *   walk with its own point type, Vec2_ea914, whose trivial destructor
  *   is part of the match.
  * - dScMgHanachan_c::Render, `Thing *base; &base[i]` and `slot++`
@@ -46,7 +46,7 @@
  * - Wiggler_StepSegmentsA, Wiggler_StepSegmentsB, Wiggler_StepSegmentsC,
  *   Wiggler_MoveBounce, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
- * - Wiggler_DrawPassB, OAM::Render(int, OamAttr*, int, int, int,
+ * - Wiggler_DrawField, OAM::Render(int, OamAttr*, int, int, int,
  *   int, int, int), does not typecheck (the sprite table is void*). The
  *   ROM symbol's scale parameter is Fix12<int>, which this tree cannot spell.
  * - Wiggler_Retarget and Wiggler_StartPathA, a state copy of two
@@ -217,7 +217,7 @@ namespace cstd { int fdiv(int numerator, int denominator); }
 
 extern "C" {
 /* This TU's own functions. */
-extern void Wiggler_DrawPassB(void* o_);
+extern void Wiggler_DrawField(void *o_);
 extern void Wiggler_Update(char *c);
 extern void Wiggler_StateHold(char *self);
 extern void Wiggler_StateMoveA(char *c);
@@ -635,7 +635,7 @@ extern "C" void HanaPopup_ClearAll(void)
     }
 }
 
-// @symbol Wiggler_DrawPassA
+// @symbol Wiggler_DrawTarget
 /* Draws a wiggler's five segments from the tail forward, then one more
    sprite by the head when +0x94 is set and Wiggler_IsStarVisible agrees. The
    trivial ~Vec2_ea914 and the strength-reduction bracket are both part of
@@ -644,8 +644,7 @@ struct Vec2_ea914 { s32 x; s32 y; ~Vec2_ea914() {} };
 
 #pragma push
 #pragma opt_strength_reduction off
-extern "C" void Wiggler_DrawPassA(void *self_)
-{
+extern "C" void Wiggler_DrawTarget(void *self_) {
     char *self = (char *)self_;
     s32 i;
     s16 rot;
@@ -720,12 +719,11 @@ extern "C" void Wiggler_DrawPassA(void *self_)
 }
 #pragma pop
 
-// @symbol Wiggler_DrawPassB
+// @symbol Wiggler_DrawField
 extern "C" {
 #pragma push
 #pragma opt_strength_reduction off
-void Wiggler_DrawPassB(void* arg)
-{
+void Wiggler_DrawField(void *arg) {
     char* raw = (char*)arg;
     struct { int A, B, urot, va0x, res; } t;
     Vec2 vb0;
@@ -1015,9 +1013,8 @@ void Wiggler_StateMoveB(char *c)
 }
 
 // @symbol Wiggler_UpdateSway
-extern "C" /* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawPassB. */
-void Wiggler_UpdateSway(char *raw)
-{
+/* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawField. */
+extern "C" void Wiggler_UpdateSway(char *raw) {
     int *thiz = (int *)raw;
     int *g = &pmf_Wiggler_TurnTowardAim_7;
     int v0 = thiz[0];
@@ -1202,7 +1199,7 @@ void Wiggler_Retarget(struct ObjB* c, int v)
 
 // @symbol Wiggler_GetFrame
 extern "C" {
-/* Second parameter unused by the body -- Wiggler_DrawPassB passes an index
+/* Second parameter unused by the body -- Wiggler_DrawField passes an index
    this callee ignores; declaring it keeps the caller's argument setup. */
 int Wiggler_GetFrame(char *raw, int){
   int r2 = 0;
@@ -1893,7 +1890,7 @@ s32 dScMgHanachan_c::Render()
                 if (data_ov006_0213c958 > 0) {
                     arr = raw + 0x4678;
                     do {
-                        Wiggler_DrawPassB(arr);
+                        Wiggler_DrawField(arr);
                         i++;
                         arr += 0x98;
                     } while (i < data_ov006_0213c958);
@@ -1916,14 +1913,14 @@ s32 dScMgHanachan_c::Render()
                 if (mPhaseTimer < 0x8a) goto do_eac;
                 goto count_loop;
             do_eac:
-                Wiggler_DrawPassB(mTarget);
+                Wiggler_DrawField(mTarget);
                 goto tail;
             count_loop:
                 i = 0;
                 if (data_ov006_0213c958 > 0) {
                     arr = raw + 0x4678;
                     do {
-                        Wiggler_DrawPassB(arr);
+                        Wiggler_DrawField(arr);
                         i++;
                         arr += 0x98;
                     } while (i < data_ov006_0213c958);
@@ -1938,12 +1935,12 @@ s32 dScMgHanachan_c::Render()
         Pair *g = &pmf_Hana_StateNoneB;
         if ((p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0))
             || (p = PAIR0(raw), g = &pmf_dScMgHanachan_c_Phase_WaitTouch, (p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0)))) {
-            Wiggler_DrawPassB(mTarget);
+            Wiggler_DrawField(mTarget);
         }
     }
 
 tail:
-    Wiggler_DrawPassA(mTarget);
+    Wiggler_DrawTarget(mTarget);
 
     {
         Pair *p = PAIR0(raw);

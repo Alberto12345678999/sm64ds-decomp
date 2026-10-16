@@ -258,63 +258,63 @@
       "ordinal": 30
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c18RisingIcon_DrawAllEv",
+      "symbol": "_ZN13dScMgTeresa_c19FoundNumber_DrawAllEv",
       "address": "0x0211ddcc",
       "size": "0x00000088",
       "legacy_source": "src/func_ov006_0211ddcc.c",
       "ordinal": 31
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c19RisingIcon_ClearAllEv",
+      "symbol": "_ZN13dScMgTeresa_c20FoundNumber_ClearAllEv",
       "address": "0x0211de54",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_0211de54.c",
       "ordinal": 32
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c20RisingIcon_CountBusyEv",
+      "symbol": "_ZN13dScMgTeresa_c21FoundNumber_CountBusyEv",
       "address": "0x0211de7c",
       "size": "0x00000044",
       "legacy_source": "src/func_ov006_0211de7c.c",
       "ordinal": 33
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c20RisingIcon_UpdateAllEv",
+      "symbol": "_ZN13dScMgTeresa_c21FoundNumber_UpdateAllEv",
       "address": "0x0211dec0",
       "size": "0x00000160",
       "legacy_source": "src/func_ov006_0211dec0.c",
       "ordinal": 34
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c16RisingIcon_SpawnEi",
+      "symbol": "_ZN13dScMgTeresa_c17FoundNumber_SpawnEi",
       "address": "0x0211e020",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov006_0211e020.c",
       "ordinal": 35
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c24RisingIcon_SpawnForFoundEv",
+      "symbol": "_ZN13dScMgTeresa_c25FoundNumber_SpawnForFoundEv",
       "address": "0x0211e0c8",
       "size": "0x00000050",
       "legacy_source": "src/func_ov006_0211e0c8.cpp",
       "ordinal": 36
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c17FoundMark_DrawAllEv",
+      "symbol": "_ZN13dScMgTeresa_c18VanishPuff_DrawAllEv",
       "address": "0x0211e118",
       "size": "0x0000006c",
       "legacy_source": "src/func_ov006_0211e118.c",
       "ordinal": 37
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c19FoundMark_UpdateAllEv",
+      "symbol": "_ZN13dScMgTeresa_c20VanishPuff_UpdateAllEv",
       "address": "0x0211e184",
       "size": "0x0000009c",
       "legacy_source": "src/func_ov006_0211e184.c",
       "ordinal": 38
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c15FoundMark_SpawnEi",
+      "symbol": "_ZN13dScMgTeresa_c16VanishPuff_SpawnEi",
       "address": "0x0211e220",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov006_0211e220.c",

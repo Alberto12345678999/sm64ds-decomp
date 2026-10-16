@@ -170,7 +170,7 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void PlotSubBg2Pixels(int a1, int a2, int a3); /* BG2 tile stamp (a0 unused) */
     void DrawAimLine();            /* draw the guide lines */
     void StartCountdown();            /* arm 30-tick countdown */
-    void UpdateRoundEnd();            /* launch queued ball */
+    void UpdateNextBall();            /* launch queued ball */
     void ResetRound();            /* reset the whole round */
 
     /* sprite bursts: the two 16 x 0x18 records at 0x5320 and 0x54a0 */
@@ -228,7 +228,7 @@ struct dScMgPachinko2_c : dScMgBase_c {
     s32 mPhase;         /* 0x5660 -- 0 setup, 1 play, 2 time up, 3 results wait */
     s32 mGuideStep;     /* 0x5664 -- DrawAimLine */
     s32 mLaneConfig;    /* 0x5668 -- 0..5, ChooseLaneConfig */
-    u16 mNextBallDelay; /* 0x566c -- frames until UpdateRoundEnd pens a new ball */
+    u16 mNextBallDelay; /* 0x566c -- frames until UpdateNextBall pens a new ball */
     u16 mEndTimer;      /* 0x566e -- 0x40 frames from time up to the results */
     u16 mBallDealt;     /* 0x5670 -- [medium] first ball dealt; later ones sound 0x19d */
     u16 unk_5672;       /* 0x5672 */

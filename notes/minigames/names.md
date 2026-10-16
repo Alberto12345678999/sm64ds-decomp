@@ -40,10 +40,10 @@ which declares no virtual, so a slot number means nothing between them.
 | 19 | `OnTurnIntoEgg(int)` | `CanEndState(int)` | high | Every `dMgState_c` behaviour handler polls it with `mState` and waits for nonzero. The overrides return 0 while their own reaction animation plays. |
 | 20 | `Virtual50` | `OnNewRecord` | medium | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
 | 21 | `OnGroundPounded` | `OnDealDone` | high (seen) | Seen in Memory and Card: it fires once Luigi finishes dealing, from `Dealer_StateDeal`. Memory's override goes straight to `MgCoins_PlaceBet(3)`. Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
-| 22 | `OnAttacked1` | `OnGraphCallback1` | high (mapping) | `graphCallback_c::GraphCallback1` forwards to it. What the engine's callback 1 is for is not known. |
-| 23 | `OnAttacked2` | `OnGraphCallback0` | high (mapping) | `GraphCallback0` forwards to it. The arm9 caller `func_02019390` skips its OAM reset and 3D flush when the callback returns 0. |
-| 24 | `OnKicked` | `OnGraphCallback2` | high (mapping) | `GraphCallback2` returns its result. The base body saves or restores the screen on an edge of `mMenuOpen`. |
-| 25 | `OnPushed` | `OnGraphCallback3` | high (mapping) | `GraphCallback3` forwards to it. The base returns `mMenuOpen == 0`. |
+| 22 | `OnAttacked1` | `OnGraphCallback1` | high (mapping) | `graphCallback_c::GraphCallback1` forwards to it. Runs in the main loop after the scene step, before the frame wait (`func_02019404`). |
+| 23 | `OnAttacked2` | `OnGraphCallback0` | high (mapping) | `GraphCallback0` forwards to it. Runs at the main loop's frame start; the arm9 caller `func_02019390` skips its OAM reset and 3D flush when the callback returns 0. |
+| 24 | `OnKicked` | `OnGraphCallback2` | high (mapping) | `GraphCallback2` returns its result. Runs in the VBlank IRQ before the OAM flush and display-register commit (`func_02019144`), which a 0 return skips. The base body saves or restores the screen on an edge of `mMenuOpen`. |
+| 25 | `OnPushed` | `OnGraphCallback3` | high (mapping) | `GraphCallback3` forwards to it. Runs at the end of the VBlank IRQ (`func_02019100`). The base returns `mMenuOpen == 0`. |
 | 26 | `OnHitByCannonBlastedChar` | `GetDisplayMode` | high | It returns 0, 1 or 2 from Base, Single3DBase and D3DBase. `BeforeInitResources` enables the 3D engines for any nonzero value, and the sprite wrappers choose a screen on 2. |
 | 27 | `OnHitByMegaChar` | `OpenMenu` | high | It sets the three menu items to their slide-in positions and sets `mMenuOpen = 1`. `BeforeBehavior` calls it on A, B, Select or Start with the stylus up. |
 | 28 | `OnHitFromUnderneath` | `CloseMenu` | high | It clears `mMenuOpen` and resets the options panel. It runs from the resume item, or from a button press with nothing highlighted. |
@@ -171,7 +171,7 @@ and a guess (unconfirmed):
 | 16 | 7 at (0x80, 0x14), none, 120 | record table, touch to go on; `Mg_CommitRecords` | the timed games (Bomroom, Coin, Curling, Pachinko, Smartball); Wanted! after game over | results. **Seen:** banner 7 is "HIGH SCORE" |
 | 17 | as 16, 300 frames | record table; banner 5, jingle 1 and `OnNewRecord` 120 frames in | 16 or 18/19, when `Mg_IsNewRecord` | results, new record. **Seen** on a new Wanted! high score |
 | 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Sound, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 (Wanted!, Sound, Cup) |
-| 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
+| 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal. **Seen:** Snowball's ball crossing the finish line shows "GOAL" (banner 4), jingle 4, then state 17 on a new record |
 
 **Banner ids seen on screen** (`Mg_ShowBanner` r0, melonDS 2026-10-15):
 
@@ -179,6 +179,7 @@ and a guess (unconfirmed):
 |---|---|---|
 | 0, 2 | PLAY AGAIN, QUIT buttons | retry prompts |
 | 3 | "CLEAR" | Sound, state 0 |
+| 4 | rainbow "GOAL" over the checkered line | Snowball, state 19 (`Mg_SetNextBanner(4)`) |
 | 5 | rainbow "HIGH SCORE" | new record (state 17), Pachinko |
 | 6 | rainbow "PERFECT" | Sound, a round with no miss (`Mg_SetNextBanner(6)`) |
 | 7 | "HIGH SCORE" header over the record table | state 16 |
@@ -198,8 +199,8 @@ meaning word per entry:
   - `ROUND_CLEAR`, `NEXT_ROUND` and `RETRY_PROMPT`;
   - `WIN`, `LOSE`, `DRAW` and `TIE`;
   - `RETRY_PROMPT_WIDE`;
-  - `RESULTS`, `RESULTS_NEW_RECORD` and `GAME_OVER`.
-- **medium:** `FINISHED`. Snowball would settle it.
+  - `RESULTS`, `RESULTS_NEW_RECORD` and `GAME_OVER`;
+  - `FINISHED` (Snowball's "GOAL").
 - **low:** the rest, which no caller enters or one game enters.
 
 The runtime check on `Mg_SetSharedState` settles the medium and low words. A
@@ -318,11 +319,12 @@ Descriptive names, high confidence:
 - **The clock:** `StartCountdown` (3 seconds, or 2 from level 15), `UpdateCountdown`, `DrawCountdown`.
 - **Round flow:** `CheckRoundEnd`, `CheckRevealDone`, `ResetRound`.
 
-Medium confidence: the three popup pools above found Boos. Their order on a find is seen: `Exclaim_Spawn`, then `RisingIcon_Spawn`, then `FoundMark_Spawn`, then state 0 (runtime-checks.md). By timing, the exclaim is a red "!" over the Boo and the rising icon a yellow "1". The found mark is not the star that counts finds, since stubbing its spawn left the star, and its look is still unknown.
-- `RisingIcon_*` (+0x4a60): a delayed icon that rises, with sound 0x1bc.
-- `FoundMark_*` (+0x4960).
-- `Exclaim_*` (+0x48a0): spawned by the rub test, 0x18 px above the Boo.
-- Also `Marker_*` (one sprite) and `StepBg3Scroll`.
+The three popup pools over found Boos, seen in play (2026-10-15, runtime-checks.md):
+- `Exclaim_*` (+0x48a0): the red "!" the rub test spawns 0x18 px above the Boo it finds.
+- `FoundNumber_*` (+0x4a60, was `RisingIcon_*`): the digit that rises off a found Boo, 1 for the first, 2 for the second. Its sprite is the Boo's found order + 1, its delay is staggered by that order, and it plays sound 0x1bc.
+- `VanishPuff_*` (+0x4960, was `FoundMark_*`): the five-frame puff of smoke where a caught Boo vanishes, while Luigi raises his flashlight on the top screen.
+
+Medium confidence: `Marker_*` (one sprite) and `StepBg3Scroll`.
 
 Left unnamed: `func_ov006_0211cc90`. Both round endings in `CheckRoundEnd` call it. It sets the Big Boo's `done` (+0x4be5, `Boo` +0x19) while the Boo is `active` (+0x4be0, +0x14), which sends the Boo out instead of turning it around. **Seen** once, as the clock ran out (lr 0x0211e69c), 5 s before GAME OVER. Candidate name: `BigBoo_SendOff`.
 
@@ -378,7 +380,7 @@ Three tables, named by index:
 High confidence:
 - **The aim line:** `DrawAimLine`, `ClearAimLine`, `PlotSubBg2Pixels`.
 - **The clock:** `StartCountdown`, `UpdateCountdown`, `DrawCountdown`, `CheckCountdownEnd`.
-- **The round:** `CheckRoundOver`, `StartRoundEnd`, `UpdateRoundEnd`, `ResetRound`.
+- **The round:** `CheckRoundOver`, `StartRoundEnd`, `UpdateNextBall` (pens the next ball once `mNextBallDelay` runs out; was `UpdateRoundEnd`), `ResetRound`.
 - **Ball hits:** `Ball_HitAt`, `Ball_Bounce`.
 
 Medium confidence: `Popup_*`, `Spark_*`, `CupSlot_*` and `ChooseLaneConfig`, named from the
@@ -420,7 +422,7 @@ High confidence:
 
 Medium confidence:
 - The movement modes: `Wiggler_StartPathA/B/C`, `Wiggler_StepSegmentsA/B/C`, `Wiggler_StartBounce`/`Wiggler_MoveBounce`, `Wiggler_StateMoveA/B`, `Wiggler_StateHold`, `Wiggler_StateWait`, `Wiggler_Retarget`, `Wiggler_OnTouched`, `Wiggler_StopIfIdle`, `Wiggler_UpdateSway` (sounds 0x1e7/0x1e8 as the sway crosses zero).
-- `Wiggler_DrawPassA/B`: two draw passes. **Seen** by stubbing each one: A draws the reference wiggler on the top screen (main engine, once a frame) and B draws each playfield wiggler on the bottom screen (sub engine, once per wiggler). Candidate names: `DrawReference` and `DrawPlayfield`.
+- `Wiggler_DrawTarget` and `Wiggler_DrawField` (were `Wiggler_DrawPassA/B`): **high, seen**. With each stubbed to `bx lr` in RAM, A's absence removed the target Wiggler on the top screen and B's removed every Wiggler on the bottom play field; the scene calls A with `mTarget` and B for each entry of the field array. A runs on the main engine once a frame, B on the sub engine once per wiggler.
 - `Wiggler_IsStarVisible`.
 
 **unit020cd744: the stylus-drawn trampolines.**
@@ -560,7 +562,7 @@ compare (all 45 TUs identical).
   - **high:** `mX`/`mY`, `mHeading` (indexes the sine table; its sign picks `mAnim`), `mFrame`/`mAnimTimer`, `mFade` (nonzero draws semi-transparent), `mVisible`, `mPriority` (passed as the OAM priority), `mState`.
   - **medium:** `mSpeed` (0xc00 adjusted by `mKind`), `mInPlay`, `mKind`, `mFound` (set by the touch test), `mFoundOrder`.
   - **unknown:** `unk_12`, `unk_19`. (`unk_21` is now `mPlaySettleSound`; see the pass 3 fields below.)
-- **`mExclaims`, `mFoundMarks`, `mRisingIcons`** (16 each): **medium**. The record names come from their Spawn/Update/Draw functions. Seen by timing: the exclaim is a red "!" and the rising icon a yellow "1". The found mark's look is unidentified.
+- **`mExclaims`, `mVanishPuffs`, `mFoundNumbers`** (16 each): **high, seen** (the "!", the vanish puff and the found-order digit; see the Teresa section above).
 - **`mReveal[1]`, `mMarker`** (0x4ba0, 0x4bc0):
   - **medium:** the field mechanics, including the bounce `phase` and `angle` (the `OAM::Render` rotation).
   - **low:** the one-element array. It is inferred from handlers that take an index while the dispatcher passes 0.
@@ -603,6 +605,11 @@ row says otherwise; "seen" marks a name checked in play.
 - Bomroom's bomb `+0x28` was commented "set to the spawn step base". Its only uses are a sound handle while the bomb is dragged and a reset, so it is `dragSound`.
 - Slot3's `mLineActive` ("which pay line is bet") is set when that row stops, and the row's step is skipped after that. It is now `mRowStopped`.
 
-**Found while reading, not renamed.** `dScMgPachinko2_c::UpdateRoundEnd` puts the next ball in the pen once `mNextBallDelay` runs out. It is not a round-end step. Renaming a member needs a lineage row, so it is left for a function pass.
+**Renamed in pass 4.** `dScMgPachinko2_c::UpdateRoundEnd` puts the next ball in the pen once `mNextBallDelay` runs out; it is not a round-end step, so it is now `UpdateNextBall`.
 
 **Left as `unk_`.** The rest have no read in the reconstructed code (reset-only or written only), or only reads by offset whose meaning is not settled: Flower's `unk_5fcd`, Snowball's `unk_ab7a`, the card dealer's `unk_01a`, and `dMg3DEspModel_c`'s first three words. Most of Memory's, Memory2's and Roulette's are reset-only.
+
+## Pass 4 (2026-10-15)
+
+- **`MgEntry::sceneParam`** (`dScMiniGm_c`, was `unk4`): high. `StartSceneFade(id, sceneParam, 0)` opens the game with it as param1, and its low byte is what `IsAltVariant` tests (seen: the two Snowballs, runtime-checks.md).
+- **Teresa's `FoundNumber` and `VanishPuff`, Pachinko2's `UpdateNextBall`, Hanachan's `Wiggler_DrawTarget`/`Wiggler_DrawField`:** see those games' entries above.
