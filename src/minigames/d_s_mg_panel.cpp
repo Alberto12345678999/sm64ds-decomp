@@ -1854,7 +1854,7 @@ void dScMgPanel_c::Scene_State6()
     IntroCard_Update();
     found = 0;
     i = found;
-    n = *(int *)(scene + 0x4000 + 0xcb8);
+    n = mCount;
     if (n > 0) {
         do {
             u8 *p = (u8 *)(scene + i + 0x4efa);
@@ -1862,7 +1862,7 @@ void dScMgPanel_c::Scene_State6()
             i++;
             if (*p != 0)
                 found++;
-            n = *(int *)(scene + 0x4000 + 0xcb8);
+            n = mCount;
         } while (i < n);
     }
     if (found != 0)
@@ -1909,7 +1909,7 @@ void dScMgPanel_c::Scene_State6()
             return;
         }
         *(u16 *)(scene + 0x4e00 + 0xc0) = 0x10;
-        *(int *)(scene + 0x4000 + 0xca8) = 7;
+        mState = 7;
         Panel_StartAll();
         return;
     }

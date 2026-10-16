@@ -2101,10 +2101,10 @@ void dScMgHanachan_c::BeginResult()
             p += 0x98;
         } while (i < data_ov006_0213c958);
     }
-    if (*(unsigned char *)(raw + 0x4000 + 0xf64) != 0)
-        *(int *)(raw + 0x4000 + 0x66c) = 0xb4;
+    if (mHit != 0)
+        mPhaseTimer = 0xb4;
     else
-        *(int *)(raw + 0x4000 + 0x66c) = 0xe4;
+        mPhaseTimer = 0xe4;
     *(struct Words2 *)(raw + 0x4000 + 0x660) = *(struct Words2 *)pmf_dScMgHanachan_c_Phase_Result_2;
 }
 
