@@ -110,6 +110,17 @@ enum {
                                      | 0x400 (player's) dive | 0x2000 egg | 0x4000 explosion */
 };
 
+/* dActor_c::mFlags bit 0x40000 is set while the actor is in Yoshi's mouth.
+ * These int-returning predicates are what make the ROM materialize 0/1
+ * before testing it. */
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == kPlayerActorId;
+}
+
 /* -------------------------------------------------------------------------- */
 // @symbol daPropeller_Heyho_c_classInit
 /* Registry factory for the PROPELLER_HEYHO profile. */
@@ -339,8 +350,8 @@ int daPropeller_Heyho_c::Behavior()
  * and 0x040000 as the yoshi-mouth state bits). */
 int daPropeller_Heyho_c::Render()
 {
-    int b = ((mFlags & 0x40000) != 0);
-    if (b) return 1;
+    if (IsInYoshiMouth(this))
+        return 1;
     mModelAnim.Render(0);
     return 1;
 }
@@ -905,19 +916,17 @@ int daPropeller_Heyho_c::func_ov070_0211f48c() {
     struct Vector3 tmp;
 
     pl = ClosestPlayer();
-    if ((unsigned)(mModelAnim.currFrame << 4) >> 0x10 >= kFireFrame)
-        goto hitframe;
-
-    if (pl != 0) {
-        *(V3w*)&posbuf = *(V3w*)&pl->mPosX;
-        tmp.x = posbuf.x;
-        tmp.y = posbuf.y;
-        tmp.z = posbuf.z;
-        mTargetAngY = Vec3_HorzAngle(&mPosX, &tmp);
+    if ((unsigned)(mModelAnim.currFrame << 4) >> 0x10 < kFireFrame) {
+        if (pl != 0) {
+            *(V3w *)&posbuf = *(V3w *)&pl->mPosX;
+            tmp.x = posbuf.x;
+            tmp.y = posbuf.y;
+            tmp.z = posbuf.z;
+            mTargetAngY = Vec3_HorzAngle(&mPosX, &tmp);
+        }
+        ApproachAngleInt::ApproachAngle(&mPrevAngleY, mTargetAngY, 0xa, 0x400, 0x200);
     }
-    ApproachAngleInt::ApproachAngle(&mPrevAngleY, mTargetAngY, 0xa, 0x400, 0x200);
 
-hitframe:
     if (mModelAnim.dExtFrameCtrl_c::WillHitFrame(kFireFrame) != 0) {
         *(V3h*)&vel = *(V3h*)&mAngleX;
         if (pl != 0) {
@@ -1058,11 +1067,8 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
         return;
     }
 
-    {
-        int isBf = (int)(hitPlayer->actorID == kPlayerActorId);
-        if (!isBf)
-            return;
-    }
+    if (!IsPlayerActor(hitPlayer))
+        return;
     if (hitPlayer->mIsVanish != 0)
         return;
 
