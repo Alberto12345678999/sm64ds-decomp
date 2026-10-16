@@ -171,22 +171,19 @@ s32 daObjHmBskt_c::CleanupResources()
 // @symbol func_ov030_0211124c
 extern "C" int func_ov030_0211124c(char *c, char *mc)
 {
+    daObjHmBskt_c *self = (daObjHmBskt_c *)c;
     dBgCh_Actr_UpdateContinuous_Veneer(mc);
     int g = ((dBgCh_Actr *)mc)->IsOnGround();
     if (!g) return g;
-    ((fBase_c *)*(void **)(c + 0x4dc))->MarkForDestruction();
-    int px = *(int *)(c + 0x5c);
-    int pz = *(int *)(c + 0x64);
-    int py = *(int *)(c + 0x60) + 0x96000;
+    self->mStarActor->MarkForDestruction();
+    int px = self->mPosX;
+    int pz = self->mPosZ;
+    int py = self->mPosY + 0x96000;
     Vector3 p(px, py, pz);
-    dActor_c::Spawn(
-        0xb2, (unsigned char)((*(unsigned int *)(c + 8)) & 0xf) | 0x20, p, 0,
-        *(signed char *)(c + 0xcc), -1);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0xb, *(int *)(c + 0x5c), *(int *)(c + 0x60), *(int *)(c + 0x64));
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0xd, *(int *)(c + 0x5c), *(int *)(c + 0x60), *(int *)(c + 0x64));
-    ((fBase_c *)c)->MarkForDestruction();
+    dActor_c::Spawn(0xb2, (unsigned char)(self->param1 & 0xf) | 0x20, p, 0, self->mAreaId, -1);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb, self->mPosX, self->mPosY, self->mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd, self->mPosX, self->mPosY, self->mPosZ);
+    self->MarkForDestruction();
 }
 
 /* _ZN13daObjHmBskt_cD1Ev and _ZN13daObjHmBskt_cD0Ev are NOT WRITTEN HERE ON
