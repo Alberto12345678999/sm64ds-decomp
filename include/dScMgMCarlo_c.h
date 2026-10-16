@@ -174,7 +174,7 @@ struct dScMgMCarlo_c : dScMgSingle3DBase_c {
     s16 mRoundState;                 /* 0x60a8 -- the round's step; Behavior switches on it */
     s16 mTimer;                      /* 0x60aa -- step timer (ApproachLinear2 to 0) */
     u8  pad_60ac[0x2];     /* 0x60ac */
-    s16 mDealCount;        /* 0x60ae -- cards dealt so far; Dealer_StartDeal counts it */
+    s16 mDealCount;        /* 0x60ae -- cards dealt so far; Dealer_StartShuffle counts it */
 };
 
 #ifndef SM64DS_PLATFORM_PC

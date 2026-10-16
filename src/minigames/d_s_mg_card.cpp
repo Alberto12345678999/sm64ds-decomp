@@ -45,7 +45,7 @@ typedef struct OamAttrTmpl {
 } OamAttrTmpl;
 
 extern "C" {
-extern int pmf_Dealer_StateCollect_2[2];
+extern int pmf_Dealer_StateDeal_2[2];
 extern int pmf_Dealer_StateReveal[2];
 /* The two element vtables are emitted here by their key functions. The four
    measured array-construction ABI callbacks reference the ROM address points;
@@ -76,7 +76,7 @@ void Dealer_Update(void *table);
 void MgCoins_Update(void);
 extern int Dealer_IsBusy(void *p);
 extern int Dealer_IsIdle(void *p);
-extern void Dealer_StartCollect(void *c, s16 arg1, void *arg2);
+extern void Dealer_StartDeal(void *c, s16 arg1, void *arg2);
 extern void Dealer_PlayLose(void *c);
 extern void Dealer_PlayWin(void *c);
 extern void Mg_SaveRecordPair(int a0, int a1);
@@ -90,7 +90,7 @@ extern int data_ov006_0213bd48[];
 extern void FreeGfxSlotsById(int arg);
 extern void MgCoins_StartPayout(int a);
 extern s16 gMgCoinsStatus;
-extern "C" void Dealer_StartDeal(char *c, int unused, short a2, int a3);
+extern "C" void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
 extern "C" void MgCoins_Reset(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
@@ -256,7 +256,7 @@ void dScMgCard_c::StartRound(int mode)
     mPlayerHandFace2 = 6;
     mDealerHandFace = 6;
     mDealerHandFace2 = 6;
-    Dealer_StartDeal((char *)&mShared, 4, 5, (int)&mDealCount);
+    Dealer_StartShuffle((char *)&mShared, 4, 5, (int)&mDealCount);
 
     mShared.unk_1e6 = 1;
     mShared.unk_01a = 2;
@@ -524,7 +524,7 @@ void dScMgCard_c::UpdateState()
             if (r != 0) {
                 mDealCount = 0;
                 mShared.unk_1e6 = 0;
-                Dealer_StartCollect(&mShared, (s16)r, &mDealCount);
+                Dealer_StartDeal(&mShared, (s16)r, &mDealCount);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray1, 6);
@@ -555,7 +555,7 @@ void dScMgCard_c::UpdateState()
             if (r != 0) {
                 mDealCount = 0;
                 mShared.unk_1e6 = 0;
-                Dealer_StartCollect(&mShared, (s16)r, &mDealCount);
+                Dealer_StartDeal(&mShared, (s16)r, &mDealCount);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray2, 6);

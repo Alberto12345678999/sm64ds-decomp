@@ -197,28 +197,28 @@
       "ordinal": 24
     },
     {
-      "symbol": "Dealer_StateCollect",
+      "symbol": "Dealer_StateDeal",
       "address": "0x020c11c0",
       "size": "0x00000260",
       "legacy_source": "src/func_ov006_020c11c0.cpp",
       "ordinal": 25
     },
     {
-      "symbol": "Dealer_StartCollect",
+      "symbol": "Dealer_StartDeal",
       "address": "0x020c1420",
       "size": "0x0000009c",
       "legacy_source": "src/func_ov006_020c1420.cpp",
       "ordinal": 26
     },
     {
-      "symbol": "Dealer_StateDeal",
+      "symbol": "Dealer_StateShuffle",
       "address": "0x020c14bc",
       "size": "0x00000148",
       "legacy_source": "src/func_ov006_020c14bc.cpp",
       "ordinal": 27
     },
     {
-      "symbol": "Dealer_StartDeal",
+      "symbol": "Dealer_StartShuffle",
       "address": "0x020c1604",
       "size": "0x000000b0",
       "legacy_source": "src/func_ov006_020c1604.c",

@@ -80,7 +80,7 @@ void Dealer_Draw(void* p);
 int Dealer_IsIdle(void* p);
 void MgCoins_Update(void);
 void Dealer_Update(void* c);
-void Dealer_StartDeal(char* c, int unused, short a2, int a3);
+void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
 void MgCoins_Reset(char* p);
 void FreeGfxSlotsById(int arg);
 void MgCoins_StartPayout(char* p);
@@ -174,7 +174,7 @@ void dScMgMCarlo_c::StartRound(int arg)
     data_ov006_0213d564 = 0;
     mDealCount = 0;
     mShared.unk_1e6 = 1;
-    Dealer_StartDeal((char *)&mShared, 4, 4, (int)&mDealCount);
+    Dealer_StartShuffle((char *)&mShared, 4, 4, (int)&mDealCount);
     mShared.unk_01a = 1;
     mTimer = 0;
     mRoundState = 1;

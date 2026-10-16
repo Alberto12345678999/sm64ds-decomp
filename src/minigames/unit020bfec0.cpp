@@ -147,10 +147,10 @@ int Dealer_IsAnimDone(void* a);
 int Dealer_IsBusy(int *c);
 void Dealer_StateReveal(void *cc);
 void Dealer_StartReveal(int *t, int a1, int a2);
-void Dealer_StateCollect(char *c);
-void Dealer_StartCollect(char *c, short arg1, int arg2);
-void Dealer_StateDeal(char* c);
-void Dealer_StartDeal(char* c, int unused, short a2, int a3);
+void Dealer_StateDeal(char *c);
+void Dealer_StartDeal(char *c, short arg1, int arg2);
+void Dealer_StateShuffle(char *c);
+void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
 int Dealer_IsIdleAtRest(char *c);
 int Dealer_IsIdle(int* r0);
 void Dealer_StateIdle(void);
@@ -1863,24 +1863,25 @@ extern "C" {
 typedef int Fix12;
 typedef short s16;
 struct M8 { int w[2]; };
-extern char pmf_Dealer_StateDeal[];
+extern char pmf_Dealer_StateShuffle[];
 
-void Dealer_StartDeal(char* c, int unused, short a2, int a3) {
-  if (*(s16*)(c+0x1dc) == 0) {
-    *(s16*)(c+0x1d8) = 4;
-    *(s16*)(c+0x1da) = 3;
-  } else {
-    *(s16*)(c+0x1d8) = 1;
-    *(s16*)(c+0x1da) = 1;
-  }
-  if (_Z15ApproachLinear2Rsss((short*)(c+0x1dc), 5, 1) != 0) {
-    *(s16*)(c+0x1dc) = 0;
-  }
-  *(int*)(c+0x26c) = 0;
-  *(s16*)(c+0x1de) = a2;
-  *(int*)(c+0x1d4) = a3;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c+0x1c, *(void**)(c+0x204), 0, 0x40000000, 0x800, 0);
-  *(struct M8*)c = *(struct M8*)pmf_Dealer_StateDeal;
+void Dealer_StartShuffle(char *c, int unused, short a2, int a3) {
+    if (*(s16 *)(c + 0x1dc) == 0) {
+        *(s16 *)(c + 0x1d8) = 4;
+        *(s16 *)(c + 0x1da) = 3;
+    } else {
+        *(s16 *)(c + 0x1d8) = 1;
+        *(s16 *)(c + 0x1da) = 1;
+    }
+    if (_Z15ApproachLinear2Rsss((short *)(c + 0x1dc), 5, 1) != 0) {
+        *(s16 *)(c + 0x1dc) = 0;
+    }
+    *(int *)(c + 0x26c) = 0;
+    *(s16 *)(c + 0x1de) = a2;
+    *(int *)(c + 0x1d4) = a3;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x204), 0,
+                                                       0x40000000, 0x800, 0);
+    *(struct M8 *)c = *(struct M8 *)pmf_Dealer_StateShuffle;
 }
 }
 }
@@ -1899,8 +1900,7 @@ struct V {
 /* local extern: only slot 21 is called, through the view V above. */
 extern "C" { extern V* gMgScene; }
 
-extern "C" void Dealer_StateDeal(char* c)
-{
+extern "C" void Dealer_StateShuffle(char *c) {
     if (*(int*)(c + 0x268) == 0) {
         _ZN5Sound12PlayBank2_2DEj(0x139);
         *(int*)(c + 0x268) = 1;
@@ -1918,7 +1918,7 @@ extern "C" void Dealer_StateDeal(char* c)
         short old = *p;
         *p = old - 1;
         if (cv <= 0) {
-            Dealer_StartCollect(c, *(short*)(c + 0x1de), *(int*)(c + 0x1d4));
+            Dealer_StartDeal(c, *(short *)(c + 0x1de), *(int *)(c + 0x1d4));
             return;
         }
     }
@@ -1947,10 +1947,11 @@ struct BlendModelAnim {
 
 struct P2 { int w[2]; };
 
-extern "C" { extern P2 pmf_Dealer_StateCollect; }
+extern "C" {
+extern P2 pmf_Dealer_StateDeal;
+}
 
-extern "C" void Dealer_StartCollect(char *c, short arg1, int arg2)
-{
+extern "C" void Dealer_StartDeal(char *c, short arg1, int arg2) {
     *(short *)(c + 0x1de) = arg1;
     *(int *)(c + 0x1d4) = arg2;
     if (Dealer_IsIdle((int *)c) && *(int *)(c + 0x7c) != *(int *)(c + 0x234)) {
@@ -1958,15 +1959,14 @@ extern "C" void Dealer_StartCollect(char *c, short arg1, int arg2)
     } else {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x214), 0, 0x40000000, 0x800, 0);
     }
-    *(P2 *)c = pmf_Dealer_StateCollect;
+    *(P2 *)c = pmf_Dealer_StateDeal;
 }
 }
 
 namespace s020c11c0 {
 extern "C" {
 
-void Dealer_StateCollect(char *c)
-{
+void Dealer_StateDeal(char *c) {
     void *f7c = *(void **)(c + 0x7c);
 
     if (f7c == *(void **)(c + 0x214)) {
@@ -2106,12 +2106,14 @@ other:
 
 namespace s020c0f0c {
 extern "C" {
-extern "C" { extern int pmf_Dealer_StateCollect_2[2]; }
+extern "C" {
+extern int pmf_Dealer_StateDeal_2[2];
+}
 extern "C" { extern int pmf_Dealer_StateReveal[2]; }
 
 int Dealer_IsBusy(int *c)
 {
-    int *p = pmf_Dealer_StateCollect_2;
+    int *p = pmf_Dealer_StateDeal_2;
     int r = 1;
     int m1 = r;
     int x = *c;

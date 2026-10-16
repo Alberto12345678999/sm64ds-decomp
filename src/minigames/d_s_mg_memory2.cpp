@@ -113,7 +113,7 @@ extern void Mg_SetSharedState(int);
 extern void Mg_SubmitScore(int self);
 extern void Dealer_PlayWin(void *c);
 extern void Dealer_PlayLose(void *c);
-extern void Dealer_StartDeal(char *c, int unused, short count, int ready);
+extern void Dealer_StartShuffle(char *c, int unused, short count, int ready);
 extern int data_ov006_0212e948[];
 extern int data_ov006_0212e93c[];
 extern int data_ov006_0212e924[];
@@ -935,9 +935,9 @@ void dScMgMemory2_c::RoundStart(){
     mReadyCount = 0;
     mDealCount = 0;
     if (mDifficulty == 1)
-        Dealer_StartDeal((char *)&mShared, 4, 3, (int)&mReadyCount);
+        Dealer_StartShuffle((char *)&mShared, 4, 3, (int)&mReadyCount);
     else
-        Dealer_StartDeal((char *)&mShared, 4, 4, (int)&mReadyCount);
+        Dealer_StartShuffle((char *)&mShared, 4, 4, (int)&mReadyCount);
     mShared.ready = 1;
     mSubstate = 1;
     if (mPromptBlinkCount == 0) {

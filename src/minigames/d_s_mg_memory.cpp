@@ -82,7 +82,7 @@ extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int c);
 extern void Mg_SubmitScore(int self);
 extern void Dealer_PlayWin(void *c);
-extern void Dealer_StartDeal(char *c, int unused, short count, int ready);
+extern void Dealer_StartShuffle(char *c, int unused, short count, int ready);
 extern int data_0209d4b8;
 extern int RandomIntInternal(int *seed);
 extern void FreeGfxSlotsById(int x);
@@ -798,9 +798,9 @@ void dScMgMemory_c::RoundStart(){
     mReadyCount = 0;
     mDealCount = 0;
     if (mDifficulty >= 2)
-        Dealer_StartDeal((char *)&mShared, 4, 3, (int)&mReadyCount);
+        Dealer_StartShuffle((char *)&mShared, 4, 3, (int)&mReadyCount);
     else
-        Dealer_StartDeal((char *)&mShared, 4, 2, (int)&mReadyCount);
+        Dealer_StartShuffle((char *)&mShared, 4, 2, (int)&mReadyCount);
     mShared.ready = 1;
     mSubstate = 1;
     if (mPromptBlinkCount == 0) {

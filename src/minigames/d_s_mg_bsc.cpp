@@ -65,7 +65,7 @@ extern void Mg_SaveRecordPair(int a, int b);
 extern int sBscLaneX[];
 extern int sMgCoinsBetPlaced;
 extern int RandomIntInternal(int* seed);
-extern void Dealer_StartDeal(char* c, int unused, short a2, int a3);
+extern void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
 extern int data_0209e650;
 extern "C" void FreeGfxSlotsById(int arg);
 extern "C" void MgCoins_Reset(void);
@@ -285,7 +285,7 @@ void dScMgBSC_c::StateDealCards()
     mOtherCard = 0;
     mChosenCard = 1;
     mDealCount = 0;
-    Dealer_StartDeal((char *)&mShared, 3, 2, (int)&mDealCount);
+    Dealer_StartShuffle((char *)&mShared, 3, 2, (int)&mDealCount);
 
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;

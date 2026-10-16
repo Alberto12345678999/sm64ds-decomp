@@ -20247,19 +20247,19 @@
     },
     "ov006:0x020c11c0": {
       "author": "lunavyqo",
-      "name": "Dealer_StateCollect"
+      "name": "Dealer_StateDeal"
     },
     "ov006:0x020c1420": {
       "author": "tangosdev",
-      "name": "Dealer_StartCollect"
+      "name": "Dealer_StartDeal"
     },
     "ov006:0x020c14bc": {
       "author": "tangosdev",
-      "name": "Dealer_StateDeal"
+      "name": "Dealer_StateShuffle"
     },
     "ov006:0x020c1604": {
       "author": "tangosdev",
-      "name": "Dealer_StartDeal"
+      "name": "Dealer_StartShuffle"
     },
     "ov006:0x020c16b4": {
       "author": "tangosdev",

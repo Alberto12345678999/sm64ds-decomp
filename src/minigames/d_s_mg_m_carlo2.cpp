@@ -68,7 +68,7 @@ void Mg_CommitRecords(void* t);
 void Mg_SubmitScore(int score);
 void LoadCard2SubBg3(void* c);
 void Camera_InitDealerView(void* c);
-void Dealer_StartDeal(char* t, int unused, short a2, void* a3);
+void Dealer_StartShuffle(char *t, int unused, short a2, void *a3);
 int  Dealer_IsIdle(void* t);
 void Dealer_Draw(void* t);
 void Dealer_Update(void* t);
@@ -157,7 +157,7 @@ void dScMgMCarlo2_c::StartRound(int /* arg */)
     data_ov006_0213d6fc = 0;
     mDealCount = 0;
     mShared.unk_1e6 = 1;
-    Dealer_StartDeal(raw + 0x4f38, 4, 4, raw + 0x592e);
+    Dealer_StartShuffle(raw + 0x4f38, 4, 4, raw + 0x592e);
     mShared.unk_01a = 1;
     mTimer = 0;
     Mg_SubmitScore(0);

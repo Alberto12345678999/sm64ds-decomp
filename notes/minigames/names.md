@@ -39,7 +39,7 @@ which declares no virtual, so a slot number means nothing between them.
 | 18 | `OnYoshiTryEat(int)` | `StartRound(int)` | high (seen) | `dMgState_c` calls it with the finished state's number when a banner ends. Games call it with -1 to retry after a lost life (Cup's `StateFinish`). The overrides reset their round, and Memory's calls `ResetGame`. |
 | 19 | `OnTurnIntoEgg(int)` | `CanEndState(int)` | high | Every `dMgState_c` behaviour handler polls it with `mState` and waits for nonzero. The overrides return 0 while their own reaction animation plays. |
 | 20 | `Virtual50` | `OnNewRecord` | high, seen | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Seen in play: a record-beating Teresa run and a Snowball finish both ran it, with banner 5 and jingle 1 (runtime-checks.md). Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
-| 21 | `OnGroundPounded` | `OnDealDone` | high (seen) | Seen in Memory and Card: it fires once Luigi finishes dealing, from `Dealer_StateDeal`. Memory's override goes straight to `MgCoins_PlaceBet(3)`. Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
+| 21 | `OnGroundPounded` | `OnDealDone` | high (seen) | Seen in Memory and Card: it fires as Luigi's opening shuffle-and-deal plays, from `Dealer_StateShuffle`. Memory's override goes straight to `MgCoins_PlaceBet(3)`. Its one caller is `Dealer_StateShuffle` (unit020bfec0, was `Dealer_StateDeal`): the shuffle loop calls it when its repeat count reaches the mark set at the start (`+0x1d8 == +0x1da`). Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
 | 22 | `OnAttacked1` | `OnGraphCallback1` | high (mapping) | `graphCallback_c::GraphCallback1` forwards to it. Runs in the main loop after the scene step, before the frame wait (`func_02019404`). |
 | 23 | `OnAttacked2` | `OnGraphCallback0` | high (mapping) | `GraphCallback0` forwards to it. Runs at the main loop's frame start; the arm9 caller `func_02019390` skips its OAM reset and 3D flush when the callback returns 0. |
 | 24 | `OnKicked` | `OnGraphCallback2` | high (mapping) | `GraphCallback2` returns its result. Runs in the VBlank IRQ before the OAM flush and display-register commit (`func_02019144`), which a 0 return skips. The base body saves or restores the screen on an edge of `mMenuOpen`. |
@@ -269,7 +269,7 @@ each one is named after the games that construct it and what it draws:
 | `Camera_` | all | `Camera_UpdateMatrices` (already named), screen projection, and four eye/target presets: `Camera_InitFlowerView`, `Camera_InitPresenterView`, `Camera_InitSlotsView`, `Camera_InitDealerView` | high |
 | `FlowerFace_`, `FallingPetal_` | Flower | The face that watches the player pull petals. It has idle and two reaction animations, and up to 22 falling petals with gravity and spin. | high |
 | `Presenter_` | Cup, Sound | A character with 8 body, 8 texture-sequence and 8 texture-transform animations, whose head follows the stylus (`Presenter_TrackStylus`). | high (structure) |
-| `Dealer_` | Card, BSC, MCarlo/2, Memory/2, Roulette | The card dealer: deal, collect, reveal, swap, win and lose animations, plus the table lamps that cycle colours. | medium |
+| `Dealer_` | Card, BSC, MCarlo/2, Memory/2, Roulette | The card dealer, Luigi (`MG/luigi_d.bmd`): shuffle, deal, reveal, swap, win and lose animations, plus the table lamps that cycle colours. | high (pass 7) |
 | `Mascot_`, `MascotWalker_` | Slots; inside `Dealer_` | One small character model (files 0x205/0x206). Slots shows it turning its head toward a target. Behind the dealer it walks a waypoint path and pauses at random. | medium |
 
 The `Presenter_StateAnimN` names give the animation slot index (N = 0..7), which
@@ -285,8 +285,9 @@ show (2026-10-15, seen in Sound; high):**
 
 All 45 minigame objects stayed identical modulo the renamed symbols.
 
-The dealer's deal, collect, reveal and swap names follow the animation order
-and the sounds (0x139-0x142) and are medium confidence.
+The dealer's shuffle, deal, reveal and swap names follow the animation files
+each state plays (pass 7: the dealer is Luigi, `MG/luigi_d_*.bca`), high
+confidence.
 
 ## Per-game helpers (ov006)
 
@@ -653,3 +654,7 @@ The two Marios share their first five fields with the line code's jumper view (`
   - the texture animations `sPresenterLoseLoopTexAnim` and `sPresenterSmileTexAnim`.
 
   `include/Presenter.h` holds the 0x1ac-byte layout, which the helpers read through `PRESENTER()` (36 sites). The embedded BlendModelAnim, Model, TextureSequence and TextureTransformer stay byte regions. `mTracking` and `mQuiet` are medium: only the constructor writes them.
+- **The dealer is Luigi.** `Dealer_Construct` builds `MG/luigi_d.bmd`, and its thirteen animation slots resolve to `luigi_d_wait`, `shuffle_start`, `shuffle`, `deal_start`, `deal`, `deal_end`, `deal_end2`, `deal_wait`, `throw`, `win_start`, `win`, `win_end` and `lose.bca`. Two of the earlier names had the shuffle and the deal the wrong way round, so they are corrected:
+  - `Dealer_StartShuffle` / `StateShuffle` (were `StartDeal` / `StateDeal`) play shuffle_start, then loop shuffle;
+  - `Dealer_StartDeal` / `StateDeal` (were `StartCollect` / `StateCollect`) play deal_start, then loop deal, counting each card dealt (sound 0x142), and end with deal_end or deal_end2;
+  - `StateSwap` plays throw, `StateReveal` the deal ends, and `StateWin` / `StateLose` their animations.

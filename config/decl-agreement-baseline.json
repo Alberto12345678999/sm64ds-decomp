@@ -27722,12 +27722,12 @@
         "param:#3 void *"
       ]
     },
-    "Dealer_StartCollect": {
+    "Dealer_StartDeal": {
       "src/minigames/d_s_mg_card.cpp": [
         "param:#3 void *"
       ]
     },
-    "Dealer_StartDeal": {
+    "Dealer_StartShuffle": {
       "src/minigames/d_s_mg_m_carlo2.cpp": [
         "param:#4 void *"
       ]

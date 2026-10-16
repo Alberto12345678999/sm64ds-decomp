@@ -23,10 +23,10 @@ Dealer_IsAnimDone kind:function(arm,size=0x10) addr:0x020c0efc
 Dealer_IsBusy kind:function(arm,size=0x90) addr:0x020c0f0c
 Dealer_StateReveal kind:function(arm,size=0x1c8) addr:0x020c0f9c
 Dealer_StartReveal kind:function(arm,size=0x5c) addr:0x020c1164
-Dealer_StateCollect kind:function(arm,size=0x260) addr:0x020c11c0
-Dealer_StartCollect kind:function(arm,size=0x9c) addr:0x020c1420
-Dealer_StateDeal kind:function(arm,size=0x148) addr:0x020c14bc
-Dealer_StartDeal kind:function(arm,size=0xb0) addr:0x020c1604
+Dealer_StateDeal kind:function(arm,size=0x260) addr:0x020c11c0
+Dealer_StartDeal kind:function(arm,size=0x9c) addr:0x020c1420
+Dealer_StateShuffle kind:function(arm,size=0x148) addr:0x020c14bc
+Dealer_StartShuffle kind:function(arm,size=0xb0) addr:0x020c1604
 Dealer_IsIdleAtRest kind:function(arm,size=0x64) addr:0x020c16b4
 Dealer_IsIdle kind:function(arm,size=0x48) addr:0x020c1718
 Dealer_StateIdle kind:function(arm,size=0x4) addr:0x020c1760
@@ -3212,10 +3212,10 @@ data_ov006_0213ac30 kind:data(any) addr:0x0213ac30
 data_ov006_0213ac34 kind:data(any) addr:0x0213ac34
 data_ov006_0213ac3c kind:data(any) addr:0x0213ac3c
 data_ov006_0213ac40 kind:data(any) addr:0x0213ac40
-pmf_Dealer_StateCollect kind:data(any) addr:0x0213ac48
+pmf_Dealer_StateDeal kind:data(any) addr:0x0213ac48
 pmf_Dealer_StateIdle kind:data(any) addr:0x0213ac50
 pmf_Dealer_StateIdle_2 kind:data(any) addr:0x0213ac58
-pmf_Dealer_StateDeal kind:data(any) addr:0x0213ac60
+pmf_Dealer_StateShuffle kind:data(any) addr:0x0213ac60
 pmf_MascotWalker_StateWalk kind:data(any) addr:0x0213ac68
 pmf_MascotWalker_StatePause kind:data(any) addr:0x0213ac70
 pmf_MascotWalker_StateWalk_2 kind:data(any) addr:0x0213ac78
@@ -3225,7 +3225,7 @@ pmf_Dealer_StateIdle_3 kind:data(any) addr:0x0213ac90
 pmf_Dealer_StateLose kind:data(any) addr:0x0213ac98
 pmf_Dealer_StateSwap kind:data(any) addr:0x0213aca0
 pmf_Dealer_StateReveal kind:data(any) addr:0x0213aca8
-pmf_Dealer_StateCollect_2 kind:data(any) addr:0x0213acb0
+pmf_Dealer_StateDeal_2 kind:data(any) addr:0x0213acb0
 pmf_Dealer_StateReveal_2 kind:data(any) addr:0x0213acb8
 data_ov006_0213acc0 kind:data(any) addr:0x0213acc0
 data_ov006_0213ace0 kind:data(any) addr:0x0213ace0
