@@ -11965,9 +11965,6 @@
       ]
     },
     "data_02099fd0": {
-      "src/func_02053c40.c": [
-        "return:int"
-      ],
       "src/engine/gx/G3X.cpp": [
         "return:int"
       ]
@@ -13806,35 +13803,12 @@
       ]
     },
     "data_020a4b68": {
-      "src/_ZN9fLiNdBa_cD1Ev.cpp": [
-        "return:fLiNdBa_c *"
-      ],
       "src/unnamed/arm9/0204/func_02043fdc.cpp": [
         "return:Node *"
       ]
     },
     "data_020a4b6c": {
-      "src/runtime/actor/ActorBase.cpp": [
-        "return:int []"
-      ]
-    },
-    "data_020a4b78": {
-      "src/unnamed/arm9/0204/func_02044120.c": [
-        "return:int"
-      ]
-    },
-    "data_020a4b88": {
-      "src/unnamed/arm9/0204/func_02044120.c": [
-        "return:int"
-      ]
-    },
-    "data_020a4b98": {
-      "src/unnamed/arm9/0204/func_02044120.c": [
-        "return:int"
-      ]
-    },
-    "data_020a4ba8": {
-      "src/unnamed/arm9/0204/func_02044120.c": [
+      "include/decl_common.h": [
         "return:int"
       ]
     },
@@ -23974,26 +23948,9 @@
         "return:dActor_c *"
       ]
     },
-    "func_02043fdc": {
-      "src/unnamed/arm9/0204/func_02044120.c": [
-        "param:#1 int *",
-        "return:void"
-      ]
-    },
-    "func_020441cc": {
-      "src/unnamed/arm9/0204/func_02044120.c": [
-        "param:#1 int *",
-        "return:void"
-      ]
-    },
     "func_0204424c": {
       "include/decl_common.h": [
         "param:#1 int"
-      ]
-    },
-    "func_02044284": {
-      "src/func_0204424c.c": [
-        "return:short"
       ]
     },
     "func_02044f74": {
