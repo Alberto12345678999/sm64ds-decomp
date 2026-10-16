@@ -275,10 +275,7 @@ int daPeach_c::State3()
             mTalkState += 1;
         break;
     case 1:
-        if (ApproachLinear(mAngleY,
-                Vec3_HorzAngle((Vector3 *)&mPosX,
-                               (Vector3 *)&mTalkPlayer->mPosX),
-                0x514) != 0) {
+        if (ApproachLinear(mAngleY, Vec3_HorzAngle(&mPos, &mTalkPlayer->mPos), 0x514) != 0) {
             msgPos.x = mPosX;
             msgPos.y = mPosY;
             msgPos.z = mPosZ;

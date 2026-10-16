@@ -31,8 +31,6 @@
  * - Kill stores pos and dustPos memberwise; a Vector3 assignment does not
  *   match. Behavior widens mPosY through `long long` before the
  *   spawn-height add.
- * - dActor_c has no Pos()/CamSpacePos() view, so the (Vector3 *)&mPosX and
- *   *(Vector3 *)&mCamSpacePosX puns stay.
  * - The launcher's link to its bill is an unnamed word at +0x3dc; actor
  *   0xde has no header.
  * - data_0209f2f8 (level id), data_0209caa0 (per-level flags) and
@@ -95,7 +93,7 @@ void daObjBkKillerdai_c::Kill()
     dustPos.y = pos.y;
     dustPos.z = pos.z;
     PoofDustAt(dustPos);
-    Sound::PlayBank3(0xf, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0xf, mCamSpacePos);
     MarkForDestruction();
 }
 
@@ -136,8 +134,8 @@ s32 daObjBkKillerdai_c::Behavior()
         return 1;
     if (!dActor_c::FindWithID(mSpawnedUniqueID)) {
         Player *player = ClosestPlayer();
-        int dist = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
-        s16 ang = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
+        int dist = Vec3_HorzDist(&mPos, &player->mPos);
+        s16 ang = Vec3_HorzAngle(&mPos, &player->mPos);
         if (AngleDiff(ang, mAngleY) < 0x2000 && dist > 0x320000 && dist < 0x5dc000) {
             long long yll = mPosY;
             int z = mPosZ;
@@ -147,8 +145,7 @@ s32 daObjBkKillerdai_c::Behavior()
             pos.x = x;
             pos.z = z;
             pos.y = y;
-            dActor_c *spawned = dActor_c::Spawn(0xde, 0, pos, (Vector3_16 *)&mAngleX,
-                                                 mAreaId, -1);
+            dActor_c *spawned = dActor_c::Spawn(0xde, 0, pos, &mAngle, mAreaId, -1);
             mSpawnedUniqueID = spawned->uniqueID;
             *(u32 *)((char *)spawned + 0x3dc) = (u32)this;
         }

@@ -3895,7 +3895,7 @@ int daDemo_c::func_ov002_020f6a9c()
 int daDemo_c::func_ov002_020f6ab8(unsigned char *p)
 {
     unsigned int id = ReadUnalignedInt(p);
-    Sound::Play(1, id, *(Vector3 *)&mCamSpacePosX);
+    Sound::Play(1, id, mCamSpacePos);
     return 1;
 }
 
@@ -3907,7 +3907,7 @@ int daDemo_c::func_ov002_020f6ab8(unsigned char *p)
 int daDemo_c::func_ov002_020f6ae4(unsigned char *p)
 {
     unsigned int id = ReadUnalignedInt(p);
-    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, id, *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, id, mCamSpacePos, 0);
     return 1;
 }
 
@@ -3941,7 +3941,7 @@ int daDemo_c::func_ov002_020f6b4c(unsigned char *p)
     target.x = ReadUnalignedShort(p) << 12;
     target.y = y;
     target.z = z;
-    this->mAngleY = Vec3_HorzAngle((const Vector3 *)&this->mPosX, (const Vector3 *)&target);
+    this->mAngleY = Vec3_HorzAngle(&this->mPos, (const Vector3 *)&target);
     this->mPrevAngleY = this->mAngleY;
     this->mHorzSpeed = ReadUnalignedShort(p + 6);
     return 1;
@@ -4113,8 +4113,8 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
 {
     Matrix4x3 *m;
-    ApproachAngle(&this->mAngleX, Vec3_VertAngle(((struct Vector3*)&this->mPosX), v), amt, 0x4000, 0);
-    ApproachAngle(&this->mAngleY, Vec3_HorzAngle(((struct Vector3*)&this->mPosX), v), amt, 0x4000, 0);
+    ApproachAngle(&this->mAngleX, Vec3_VertAngle((&this->mPos), v), amt, 0x4000, 0);
+    ApproachAngle(&this->mAngleY, Vec3_HorzAngle((&this->mPos), v), amt, 0x4000, 0);
     m = &this->mModelAnim->mat4x3;
     this->unk_0a4 = FX_MUL(this->unk_0f4, m->m[6]);
     this->mVertSpeed = FX_MUL(this->unk_0f4, m->m[7]);
@@ -4282,7 +4282,8 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
         this->mAngleZ = 0;
         func_0201f138();
     }
-    MulVec3Mat4x3((Vector3*)(((unsigned char *)this->mModel) + 0x50), (Matrix4x3*)&data_0209b41c, ((Vector3*)&this->mPosX));
+    MulVec3Mat4x3((Vector3 *)(((unsigned char *)this->mModel) + 0x50), (Matrix4x3 *)&data_0209b41c,
+                  (&this->mPos));
     Vec3_LslInPlace(&this->mPosX, 3);
     if (_Z14ApproachLinearRiii(&this->unk_0f4, a, b) != 0 && a == 0 && b != 0)
         func_0201ef38();
@@ -4371,7 +4372,8 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     *(int*)(dp + 4) = sum.y;
     *(int*)(dp + 8) = sum.z;
   }
-  MulVec3Mat4x3((Vector3*)(*(char**)(&this->mModelAnim) + 0x64), (Matrix4x3*)&data_0209b41c, (Vector3*)(&this->mPosX));
+  MulVec3Mat4x3((Vector3 *)(*(char **)(&this->mModelAnim) + 0x64), (Matrix4x3 *)&data_0209b41c,
+                &this->mPos);
   Vec3_LslInPlace((int*)(&this->mPosX), 3);
   _Z14ApproachLinearRiii(&this->unk_0f4, f1, f2);
   this->mOpacity = this->unk_0f4 >> 0xc;
@@ -4423,7 +4425,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
                 *p94 = *p94 + 0x78;
                 *p92 = *p92 + 0x40;
 
-                short h = Vec3_HorzAngle(((const Vector3 *)&this->mPosX), (const Vector3 *)(r4 + 0x8c));
+                short h = Vec3_HorzAngle((&this->mPos), (const Vector3 *)(r4 + 0x8c));
                 _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
             }
 
@@ -4434,7 +4436,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
         } else {
             Math_Function_0203b0fc(&this->unk_0f4, 0x3c000, 0xcc, 0x7fffffff);
 
-            short h = Vec3_HorzAngle(((const Vector3 *)&this->mPosX), (const Vector3 *)(r4 + 0x8c));
+            short h = Vec3_HorzAngle((&this->mPos), (const Vector3 *)(r4 + 0x8c));
             _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
 
             state = *&this->unk_0fc;
@@ -4684,11 +4686,11 @@ int daDemo_c::Render()
   if (op == 0) return 1;
   if (mModel != 0){
     mModel->ApplyOpacity(op, 0);
-    mModel->Render((const Vector3 *)&mScaleX);
+    mModel->Render(&mScale);
   } else if (mModelAnim != 0){
     ((anmModel_c*)mModelAnim)->func_ov002_020f65b8();
     mModelAnim->ApplyOpacity(mOpacity, 0);
-    mModelAnim->Render((const Vector3 *)&mScaleX);
+    mModelAnim->Render(&mScale);
   }
   return 1;
 }

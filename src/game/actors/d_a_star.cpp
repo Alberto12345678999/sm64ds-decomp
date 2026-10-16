@@ -655,8 +655,7 @@ s32 daStar_c::InitResources()
         _ZN5Event8ClearBitEj(0x1d);
         if (mKind != KIND_3) {
             if ((s32)(data_0209f2d8 == 1) != 0 || (s32)(actorID == ACTOR_SILVER_STAR) != 0) {
-                sp = (char *)dActor_c::Spawn(ACTOR_STAR_MARKER, 0x50, *(Vector3 *)&mPosX, 0,
-                                             mSavedAreaId, -1);
+                sp = (char *)dActor_c::Spawn(ACTOR_STAR_MARKER, 0x50, mPos, 0, mSavedAreaId, -1);
                 if (sp != 0) {
                     mMarkerID = ((dActor_c *)sp)->uniqueID;
                 } else {
@@ -740,7 +739,7 @@ int daStarBase_c::InitResources()
 
     if (kind == 6) {
         void *sp;
-        sp = dActor_c::Spawn(ACTOR_STAR, mStarID | 0x60, *(Vector3 *)&mPosX, 0, (s8)mAreaId, -1);
+        sp = dActor_c::Spawn(ACTOR_STAR, mStarID | 0x60, mPos, 0, (s8)mAreaId, -1);
         if (sp != 0) {
             ((daStar_c *)sp)->mBits.switchStar = 1;
         }
@@ -969,9 +968,9 @@ done:
     return 1;
 callit:
     if (!mBits.collectedModel)
-        mModelAnim1.Render((const Vector3 *)&mScaleX);
+        mModelAnim1.Render(&mScale);
     else
-        mModelAnim2.Render((const Vector3 *)&mScaleX);
+        mModelAnim2.Render(&mScale);
     return 1;
 }
 
@@ -1088,7 +1087,7 @@ void daStar_c::func_ov002_020ea9d0() {
             mState = STATE_LAND;
         } else {
             mState = STATE_FLY_TO_MARKER;
-            op = (struct Vector3 *)&other->mPosX;
+            op = &other->mPos;
             *(struct Vec1 *)&v0.x = *(struct Vec1 *)&op->x;
             *(struct Vec1 *)&v0.y = *(struct Vec1 *)&op->y;
             *(struct Vec1 *)&v0.z = *(struct Vec1 *)&op->z;
@@ -1135,7 +1134,7 @@ void daStar_c::func_ov002_020ea90c() {
             mVertSpeed = 0x18000;
             mState = STATE_LAND;
         } else {
-            Vector3* pp = (Vector3*)&other->mPosX;
+            Vector3 *pp = &other->mPos;
             Vector3 v;
             int yv;
             v.x = pp->x;
@@ -1769,7 +1768,7 @@ void daStar_c::func_ov002_020e9840() {
 
         mBits.visible = 1;
         func_ov002_020e8dd8();
-        func_02012694(0x54, (struct Vector3 *)&mCamSpacePosX);
+        func_02012694(0x54, &mCamSpacePos);
         return;
     }
 
@@ -1933,7 +1932,7 @@ void daStar_c::func_ov002_020e947c(Vector3 *p, int n) {
     }
     mTerminalVelocity = -0x32000;
     mHorzSpeed = Vec3_HorzDist((const Vec3 *)&mPosX, (const Vec3*)p) / 50;
-    mPrevAngleY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3*)p);
+    mPrevAngleY = Vec3_HorzAngle(&mPos, (const Vector3 *)p);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2411,8 +2410,8 @@ void daStar_c::func_ov002_020e88a8() {
         v.y = s[1];
         v.z = s[2];
     }
-    if (Vec3_Dist((struct Vector3*)&mPosX, &v) < 0x4b0000) {
-        mPrevAngleY = Vec3_HorzAngle(&v, (struct Vector3*)&mPosX);
+    if (Vec3_Dist(&mPos, &v) < 0x4b0000) {
+        mPrevAngleY = Vec3_HorzAngle(&v, &mPos);
         if (mFloorNormalY >= *(short*)(data_02082714 + 0x56)) {
             if (data_0209f2f8 != 0x1d) return;
             if (func_02037e58((char *)mWithMeshClsn.GetFloorResult() + 4) != 5)
@@ -2425,7 +2424,7 @@ void daStar_c::func_ov002_020e88a8() {
     } else {
         dActor_c *q = (dActor_c *)_ZN8dActor_c14FarthestPlayerEv((char *)this);
         if (q != 0) {
-            mPrevAngleY = Vec3_HorzAngle((struct Vector3*)&mPosX, (struct Vector3*)&q->mPosX);
+            mPrevAngleY = Vec3_HorzAngle(&mPos, &q->mPos);
         }
     }
 }
@@ -2529,7 +2528,7 @@ void daStar_c::func_ov002_020e84ec() {
     int t;
 
     if (mKind == KIND_8) {
-        Vec3_Asr(&v, (struct Vector3*)&mPosX, 3);
+        Vec3_Asr(&v, &mPos, 3);
         Matrix4x3_FromTranslation(&mModelAnim1.mat4x3, v.x, v.y, v.z);
     } else if (*(void**)((char *)this + 0xc8) != 0) {
         /* M48 overlay: the class headers above switch Matrix4x3 to the
@@ -2633,9 +2632,9 @@ void func_ov002_020e8244(void *out, daStar_c *b)
     b->mCenterX = data_020a0e68.w[9];
     b->mCenterY = data_020a0e68.w[10];
     b->mCenterZ = data_020a0e68.w[11];
-    SubVec3((struct Vector3 *)&b->mCenterX, (struct Vector3 *)&b->mPosX, (struct Vector3 *)&b->mCenterX);
+    SubVec3((struct Vector3 *)&b->mCenterX, &b->mPos, (struct Vector3 *)&b->mCenterX);
     Vec3_LslInPlace((void *)&b->mCenterX, 3);
-    AddVec3((struct Vector3 *)&b->mCenterX, (struct Vector3 *)&b->mPosX, (struct Vector3 *)&b->mCenterX);
+    AddVec3((struct Vector3 *)&b->mCenterX, &b->mPos, (struct Vector3 *)&b->mCenterX);
     {
         int *p = &b->mCenterY;
         *p = *(int *)((char *)b->mModelAnim1.data.bones + 0xc) * 0xd + *p;
@@ -2680,11 +2679,11 @@ void daStar_c::func_ov002_020e8098() {
     vc.z = v.z;
     if (mState != STATE_SPIN_AND_END)
         vc.y = v.y + 0x32000;
-    SubVec3(&vc, (Vector3*)&mPosX, &vc);
+    SubVec3(&vc, &mPos, &vc);
     vc.x = FX_MUL(vc.x, mScaleX);
     vc.y = FX_MUL(vc.y, mScaleY);
     vc.z = FX_MUL(vc.z, mScaleZ);
-    AddVec3(&vc, (Vector3*)&mPosX, &vc);
+    AddVec3(&vc, &mPos, &vc);
     *(void**)&mParticle[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         mParticle[0], 0x115, vc.x, vc.y, vc.z, 0, 0);
     *(void**)&mParticle[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -2868,8 +2867,8 @@ int daStar_c::func_ov002_020e7c90(void* cam) {
         a = (dActor_c *)dActor_c::FindWithActorID(ACTOR_CAMERA_MARKER, a);
         if (a == 0) break;
         if (mStarID == (a->param1 & 0xf)) {
-            ((dCamera_c *)cam)->SetLookAt(*(const Vector3*)&mPosX);
-            ((dCamera_c *)cam)->SetPos(*(const Vector3*)&a->mPosX);
+            ((dCamera_c *)cam)->SetLookAt(mPos);
+            ((dCamera_c *)cam)->SetPos(a->mPos);
             return 1;
         }
     }

@@ -29,7 +29,7 @@
  * Leftover: gObjStargateModelFile model handle (SharedFilePtr.h has no fields;
  *   StarGateModelFilePtr is the 8-byte wrapper). data_ov100_02148390 gate
  *   table.
- * Leftover: *(Vector3 *)&mPosX / mScaleX / unk_0a4 (dActor_c consecutive
+ * Leftover: (Vector3 *)&unk_0a4 (dActor_c consecutive
  *   s32s; a Vector3 member is not this class).
  * Leftover: data_0209caa0 +0x41 character byte (SaveData.mCharacter).
  *   SaveData.h shifts this TU's @432..@446 PTMF uniquifiers in symbols.txt.
@@ -239,9 +239,8 @@ Player *daStarGate_c::CalculateRelativePlayerPos()
 {
     StarGateVector3 tmp;
     Player* player = data_0209f394[data_0209f250];
-    Vec3_Sub((Vector3 *)&tmp, (Vector3*)&player->mPosX, (Vector3*)&mPosX);
-    Vec3_RotateYAndTranslate((Vector3*)&mScaleX, data_020a0ebc,
-                             (short)-mAngleY, (Vector3 *)&tmp);
+    Vec3_Sub((Vector3 *)&tmp, &player->mPos, &mPos);
+    Vec3_RotateYAndTranslate(&mScale, data_020a0ebc, (short)-mAngleY, (Vector3 *)&tmp);
     return player;
 }
 
@@ -271,7 +270,7 @@ void daStarGate_c::TryOpenDoor(Player *player)
     int z = mScaleZ;
     if (z < 0) a = mAngleY;
     else a = mAngleY + 0x8000;
-    if (player->TryEnterStarDoor(*(Vector3 *)&mPosX, a))
+    if (player->TryEnterStarDoor(mPos, a))
         ChangeState(&ST_OPEN_CLOSE, player);
     SetTouchScreenDelay();
 }

@@ -162,7 +162,7 @@ s32 daObjWlPolelift_c::Behavior()
 
         path.GetNode(node, current);
         path.GetNode(prevNode, prevNodeIdx);
-        Vec3_Sub(&delta, (Vector3 *)&mPosX, &node);
+        Vec3_Sub(&delta, &mPos, &node);
         length = LenVec3(&delta);
         if (length == 0 || length <= 0xa000) {
             mPosX = node.x;
@@ -172,7 +172,7 @@ s32 daObjWlPolelift_c::Behavior()
         } else {
             scale = cstd::fdiv(0xa000, length);
             Vec3_MulScalar(&step, &delta, scale);
-            SubVec3((Vector3 *)&mPosX, &step, (Vector3 *)&mPosX);
+            SubVec3(&mPos, &step, &mPos);
         }
 
         if (moved) {
@@ -201,7 +201,7 @@ s32 daObjWlPolelift_c::Behavior()
     clsn.Clear();
     skipCollision = (mFlags & 8) != 0;
     if (!skipCollision) {
-        rayPos = *(Vector3 *)&mPosX;
+        rayPos = mPos;
         rayPos.y -= 0x14000;
 
         dBgCh_Gnd ray;
