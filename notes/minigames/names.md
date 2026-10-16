@@ -422,7 +422,7 @@ High confidence:
 
 Medium confidence:
 - The movement modes: `Wiggler_StartPathA/B/C`, `Wiggler_StepSegmentsA/B/C`, `Wiggler_StartBounce`/`Wiggler_MoveBounce`, `Wiggler_StateMoveA/B`, `Wiggler_StateHold`, `Wiggler_StateWait`, `Wiggler_Retarget`, `Wiggler_OnTouched`, `Wiggler_StopIfIdle`, `Wiggler_UpdateSway` (sounds 0x1e7/0x1e8 as the sway crosses zero).
-- `Wiggler_DrawTarget` and `Wiggler_DrawField` (were `Wiggler_DrawPassA/B`): **high, seen**. With each stubbed to `bx lr` in RAM, A's absence removed the target Wiggler on the top screen and B's removed every Wiggler on the bottom play field; the scene calls A with `mTarget` and B for each entry of the field array. A runs on the main engine once a frame, B on the sub engine once per wiggler.
+- `Wiggler_DrawTarget` and `Wiggler_DrawField` (were `Wiggler_DrawPassA/B`): **high, seen**. With each stubbed to `bx lr` in RAM, A's absence removed the target Wiggler on the top screen and B's removed every Wiggler on the bottom play field; the scene calls A with `mTarget` and B for each entry of the field array. A runs on the main engine once a frame, B on the sub engine once per wiggler.
 - `Wiggler_IsStarVisible`.
 
 **unit020cd744: the stylus-drawn trampolines.**
