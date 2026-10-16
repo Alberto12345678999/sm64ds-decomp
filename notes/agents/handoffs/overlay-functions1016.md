@@ -2,9 +2,9 @@
 
 Candidate: this commit. Base: `67bf07bbb364e06fe50de726ee2b2e99c51d1696`. Producer/integration owner:
 `codex-overlay-root1016`. No shared header or attribution ledger changes.
-Independent acceptance is recorded separately. Publication of a dedicated
-tracking issue is pending; the initial queue issue reference came from older
-asset work and is not the authority for this overlay-wide scope.
+Independent acceptance is recorded separately. Tracking issue #3970 supersedes
+the initial queue issue reference from older asset work, which is not the
+authority for this overlay-wide scope.
 
 ## Production changes
 
@@ -66,5 +66,5 @@ heads; the present checks are pinned to the base above, not a future main.
 
 Initial verification: all 15 entry functions MATCH, correct emission order,
 objisolate and relocation-destination checks clean. All three ov007 functions
-strictly VERIFIED with zero blind relocations. Final composition proof is
-recorded in overlay-snow-init1016.md. Source reconstruction remains partial.
+strictly VERIFIED with zero blind relocations. Historical combined-candidate proof is
+recorded in overlay-snow-init1016.md; final publication excludes its Snowman fold. Source reconstruction remains partial.

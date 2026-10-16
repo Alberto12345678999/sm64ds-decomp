@@ -1,8 +1,19 @@
 # Snowman initializer adoption and remaining initializer disposition
 
-Candidate: this commit. Base: `67bf07bbb364e06fe50de726ee2b2e99c51d1696`. Producer/integration owner:
+Historical candidate: `fcc89f8f0ef4b4d62206c07c574004e6980420ec`. Base: `67bf07bbb364e06fe50de726ee2b2e99c51d1696`. Producer/integration owner:
 `codex-overlay-root1016`; source scope tracks issue #2476. Independent acceptance
 is recorded separately. This is a local candidate; no PR/merge is implied.
+
+## Publication disposition
+
+MERGE.md requires preserving the contributor's own PR, rather than recreating
+their work under another author. PR #3937 belongs to lunavyqo. The published
+overlay change therefore restores all five ov072 source/config files to the
+tested base. The corrected Snowman candidate and its proof remain preserved at
+`fcc89f8f0ef4b4d62206c07c574004e6980420ec`; they are not current-branch changes.
+Apply the wrapper/storage correction through #3937, then check its composed
+initializer relocations and module output. No contributor branch was changed.
+The historical account and 36-initializer disposition below remain useful evidence.
 
 Adopt the Snowman-body fold from PR #3937, exact head
 `e8dfc11bc8912f2d51fc945990efe945cf8f4618`. Apply only its actor source/manifest
@@ -25,7 +36,7 @@ relocations, not copied blindly from the imported @810/@811/@812 spellings.
 The manifest retains canonical @174/@175/@176 destinations. No shared headers
 or declaration/credit baselines are edited.
 
-## Final proof
+## Historical candidate proof
 
 Tested source commit: 500b5159e69963eab0bb1d4583432c464e52a254.
 
@@ -87,7 +98,7 @@ existing class/range owner. Root owns follow-through after those dependencies.
 |030 02114924|Monkey resources; sound continuation reservation and #3937.|
 |062 0211cf30|Holhei resources; yegg continuation reservation.|
 |065 0211c110|Yurei Mucho/projectile resources; yegg continuation reservation.|
-|072 02122018|Adopted/corrected in this candidate from #3937; old shard retired.|
+|072 02122018|Correction verified in saved fcc89f8 candidate; defer to contributor PR #3937. Published overlay scope retains original shard.|
 |072 021221f8|Snowman head; sound continuation reservation and #3937 storage.|
 |072 02122414|Baby penguin; compose #3937 initializer/storage changes.|
 |075 0211bb00|Scene callback and step tables; finish typed entry-scene globals first.|
@@ -110,5 +121,6 @@ registration node 020bfa28..020bfa34, and twenty 0x24-byte Sprite records
 references. Generated array initialization is still an unmeasured recipe;
 verify all 43 existing functions and storage before adopting it.
 
-This candidate removes four shards total: 653 -> 649 (614 ordinary, 35 initializer).
+The saved candidate removed four shards: 653 -> 649. The narrowed publication
+excludes the Snowman fold and removes three: 653 -> 650 (614 ordinary, 36 initializers).
 It does not claim completion of all overlay reconstruction. No merges authorized.
