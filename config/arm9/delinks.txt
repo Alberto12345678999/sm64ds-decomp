@@ -1499,39 +1499,7 @@ src/unnamed/arm9/0201/func_0201aaec.c:
 
 src/Message2.cpp:
     complete
-    .text start:0x0201ab04 end:0x0201adfc
-
-src/unnamed/arm9/0201/func_0201adfc.c:
-    complete
-    .text start:0x0201adfc end:0x0201b100
-
-src/unnamed/arm9/0201/func_0201b100.c:
-    complete
-    .text start:0x0201b100 end:0x0201b388
-
-src/unnamed/arm9/0201/func_0201b388.c:
-    complete
-    .text start:0x0201b388 end:0x0201b5a8
-
-src/_ZN7Message7AddCharEc.cpp:
-    complete
-    .text start:0x0201b5a8 end:0x0201b6f8
-
-src/unnamed/arm9/0201/func_0201b6f8.c:
-    complete
-    .text start:0x0201b6f8 end:0x0201b7cc
-
-src/unnamed/arm9/0201/func_0201b7cc.c:
-    complete
-    .text start:0x0201b7cc end:0x0201bbc8
-
-src/_ZN7Message12UpdateWindowEv.cpp:
-    complete
-    .text start:0x0201bbc8 end:0x0201c0b8
-
-src/_ZN7Message6UpdateEv.cpp:
-    complete
-    .text start:0x0201c0b8 end:0x0201cb2c
+    .text start:0x0201ab04 end:0x0201cb2c
 
 src/ui/messages/func_0201cb2c.c:
     complete
