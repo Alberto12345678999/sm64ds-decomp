@@ -192,7 +192,6 @@ int func_02037e20(int* p);
 void func_ov084_02129498(daKrb_c *goomba);
 extern "C" void func_ov084_02129238(char *c);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
-extern char* _ZNK10dBgCh_Actr14GetFloorResultEv(void*);
 extern int SurfaceInfo_TestFlag0x20(int* p);
 extern void func_ov084_021296cc(daKrb_c *goomba);
 extern int func_02037e38(unsigned int* p);
@@ -495,7 +494,7 @@ extern "C" void func_ov084_021294d0(char* c)
     if (!goomba->mWithMeshClsn.IsOnGround())
         return;
 
-    char* fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&goomba->mWithMeshClsn);
+    char *fr = (char *)goomba->mWithMeshClsn.GetFloorResult();
     if (SurfaceInfo_TestFlag0x20((int*)(fr + 4))) {
         func_ov084_021296cc(goomba);
         goomba->SpawnCoin();
@@ -512,7 +511,7 @@ extern "C" void func_ov084_021294d0(char* c)
 
     /* Copy the floor result into obj's own surface record, then ask what kind of
      * ground it is. The Goomba is lost on some terrain types. */
-    char* floorResult = _ZNK10dBgCh_Actr14GetFloorResultEv(&goomba->mWithMeshClsn);
+    char *floorResult = (char *)goomba->mWithMeshClsn.GetFloorResult();
     int surfaceType;
     {
     char* surface = obj + 4;

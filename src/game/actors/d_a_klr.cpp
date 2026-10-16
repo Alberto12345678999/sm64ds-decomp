@@ -39,6 +39,7 @@
 #include "Player.h"
 #include "Sound.h"
 #include "dBgPi.h"
+#include "dBgCh_Actr.h"
 
 struct BMD_File;
 
@@ -66,8 +67,6 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *self, const Vector3 *source, u32 damage, int speed, u8 a, u8 b,
     u8 c);
-
-void *_ZNK10dBgCh_Actr13GetWallResultEv(const dBgCh_Actr *self);
 
 void func_ov079_02126704(daKlr_c *self);
 }
@@ -243,7 +242,7 @@ void daKlr_c::func_ov079_0212682c()
         if ((u16)this->mStateTimer > 150)
             hit = 1;
         if (this->mWallClsn.IsOnWall() != 0) {
-            dBgPi *wall = (dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(&this->mWallClsn);
+            dBgPi *wall = (dBgPi *)this->mWallClsn.GetWallResult();
             if (wall->GetClsnID() != (u32)-1) {
                 if (dActor_c::FindWithID(wall->GetClsnID()) != this->mLauncher)
                     hit = 1;

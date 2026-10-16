@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "dBgCh_Actr.h"
 #include "dClipper.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -45,11 +46,9 @@ void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void func_0201267c(unsigned int soundID, const Vector3 *pos);
 
-/* The dBgCh_Actr::UpdateContinuous call goes through a veneer, and the two
-   result getters are not declared by dBgCh_Actr.h. */
+/* The dBgCh_Actr::UpdateContinuous call goes through a veneer, which no
+   header declares. */
 void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *c);
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *c);
 void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *surface, Vector3 &out);
 int _ZN4cstd4fdivEii(int a, int b);
 
@@ -617,7 +616,7 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
     if (b != 0) return;
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);
     if (clsn->IsOnGround()) {
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(clsn) + 4, floorNormal);
+        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)clsn->GetFloorResult() + 4, floorNormal);
         if (floorNormal.y != 0) {
             long long a = (long long)floorNormal.x * (long long)unk_0a4;
             long long bb = (long long)floorNormal.z * (long long)unk_0ac;
@@ -627,7 +626,7 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr13GetWallResultEv(clsn) + 4, wallNormal);
+        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)clsn->GetWallResult() + 4, wallNormal);
     }
 }
 

@@ -35,6 +35,7 @@
 #include "Player.h"
 #include "Sound.h"
 #include "daFPknBall_c.h"
+#include "dBgCh_Actr.h"
 
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &value, int target, int step);
@@ -104,7 +105,6 @@ s16 Vec3_HorzAngle(const void* a, const void* b);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
 void func_02012694(u32 id, const void* v);
 void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
-int _ZNK10dBgCh_Actr12TouchesWaterEv(void* self);
 extern s16 data_02082214[];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int fix12, int t, void* vec, int last);
@@ -380,9 +380,8 @@ int daFPknBall_c::Behavior() {
     mdCcAc_c.Update();
     mDistanceFlown += mHorzSpeed;
 
-    if (mDistanceFlown > mMaxDistance
-        || mWithMeshClsn.IsOnWall() != 0
-        || _ZNK10dBgCh_Actr12TouchesWaterEv(&mWithMeshClsn) != 0) {
+    if (mDistanceFlown > mMaxDistance || mWithMeshClsn.IsOnWall() != 0 ||
+        mWithMeshClsn.TouchesWater() != 0) {
         u8 variant = mVariant;
         if (variant == VARIANT_DROPS_ITEM) {
             func_ov002_020f897c();
