@@ -104,6 +104,14 @@
       "count": 1,
       "reason": "dScEntry_c::InitResources clears byte 0x287, moved verbatim from the retired src/_ZN10dScEntry_c13InitResourcesEv.cpp (`self->unk_287 = 0` on main). include/dScEntry_c.h names the field unk_287. Its other users are unnamed raw-offset helpers in the same unit (func_ov075_02117e84 and func_ov075_02118378 store 0 and 0xe; func_ov075_02119dc4 clears it as a bit mask out of data_0209d45c), and data_0209d45c's role is itself unproven, so no name is invented. Follow-up: rename the header field when those helpers fold into this class and data_0209d45c is identified.",
       "evidence": "src/_ZN10dScEntry_c13InitResourcesEv.cpp on main line 95; include/dScEntry_c.h line 33 (`u8 unk_287; /* 0x287 */`); ROM ov075 dScEntry_c::InitResources TEXT-VERIFIED in ov075/d_s_entry_methods"
+    },
+    {
+      "path": "src/Message2.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
+      "count": 9,
+      "reason": "OAM::Render's scaled overload takes two Fix12<int> by value, and include/OAM.h deliberately leaves the by-value Fix12 overloads out: a method with that parameter homes r0-r3 to the stack, which the ROM callers do not. Message::Update calls it eight times to draw the choice cursor and the next-page arrow; the ninth occurrence is the extern \"C\" declaration. Follow-up: retire it together with the other Fix12-by-value walls once a Fix12 spelling that passes in registers exists.",
+      "evidence": "include/OAM.h header comment (by-value Fix12 overloads not declared); carried verbatim from src/_ZN7Message6UpdateEv.cpp on main (9 occurrences), which this PR folds; arm9/Message2 13/13 TEXT-VERIFIED"
     }
   ]
 }

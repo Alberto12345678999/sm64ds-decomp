@@ -9457,6 +9457,14 @@
         "param:#1 int"
       ]
     },
+    "_ZN7Message7AddCharEc": {
+      "src/Message.cpp": [
+        "param:#1 int"
+      ],
+      "src/Message2.cpp": [
+        "param:#1 int"
+      ]
+    },
     "_ZN7Message7DisplayEj": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "arity:1"

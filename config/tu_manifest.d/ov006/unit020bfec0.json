@@ -372,7 +372,7 @@
       "ordinal": 49
     },
     {
-      "symbol": "Presenter_PlayAnim7Loop",
+      "symbol": "Presenter_PlayCheerLoop",
       "address": "0x020c2300",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov006_020c2300.c",
@@ -386,7 +386,7 @@
       "ordinal": 51
     },
     {
-      "symbol": "Presenter_PlayAnim4",
+      "symbol": "Presenter_PlayLose",
       "address": "0x020c2440",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov006_020c2440.cpp",
@@ -400,7 +400,7 @@
       "ordinal": 53
     },
     {
-      "symbol": "Presenter_PlayAnim7",
+      "symbol": "Presenter_PlayCheer",
       "address": "0x020c2594",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov006_020c2594.c",
@@ -414,7 +414,7 @@
       "ordinal": 55
     },
     {
-      "symbol": "Presenter_PlayAnim1",
+      "symbol": "Presenter_PlayMiss",
       "address": "0x020c2664",
       "size": "0x00000090",
       "legacy_source": "src/func_ov006_020c2664.c",
@@ -428,7 +428,7 @@
       "ordinal": 57
     },
     {
-      "symbol": "Presenter_PlayAnim2",
+      "symbol": "Presenter_PlayMatch",
       "address": "0x020c271c",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov006_020c271c.c",

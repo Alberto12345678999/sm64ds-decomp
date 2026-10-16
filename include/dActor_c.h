@@ -112,7 +112,9 @@ struct dActor_c : dBase_c {
     s32 mClipDistance;      /* 0x0bc -- past this the actor is off screen AND far away */
     s32 mFarDistance;       /* 0x0c0 -- past this it is merely far away */
     u8  mClipResult;        /* 0x0c4 -- written by the dClipper */
-    u8  pad_0c5[0x7];
+    /* Pointer alignment leaves 0x0c5..0x0c7 unused. Shared by carried actors
+       and attached objects; zero selects the actor's own model matrix. */
+    struct Matrix4x3 *mCarryMatrix; /* 0x0c8 */
     s8  mAreaId;            /* 0x0cc -- negative means "not area-bound" */
     u8  pad_0cd[0x1];
     s16 mDeathTableID;      /* 0x0ce -- index into the already-killed bitmap */
@@ -340,7 +342,9 @@ struct dActor_c {
     s32 mClipDistance;      /* 0x0bc */
     s32 mFarDistance;       /* 0x0c0 */
     u8  mClipResult;        /* 0x0c4 */
-    u8  pad_0c5[0x7];
+    /* Pointer alignment leaves 0x0c5..0x0c7 unused. Shared by carried actors
+       and attached objects; zero selects the actor's own model matrix. */
+    struct Matrix4x3 *mCarryMatrix; /* 0x0c8 */
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x1];
     s16 mDeathTableID;      /* 0x0ce */
