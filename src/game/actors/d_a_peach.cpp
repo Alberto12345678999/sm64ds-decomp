@@ -18,6 +18,7 @@
 #include "dExtFrameCtrl_c.h"
 #include "dCc_c.h"
 #include "types.h"
+#include "dBgCh_Actr.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -53,8 +54,6 @@ extern int data_020a0e68[];
 
 /* mesh collision */
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
-extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *c);
-extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void *c);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, dActor_c *a, int b, int c, Vector3_16 *d, Vector3_16 *e);
 
@@ -150,7 +149,7 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
     int wallN[3];
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);
     if (clsn->IsOnGround()) {
-        ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(clsn) + 4))->CopyNormalTo(*(Vector3 *)floorN);
+        ((SurfaceInfo *)((char *)clsn->GetFloorResult() + 4))->CopyNormalTo(*(Vector3 *)floorN);
         if (floorN[1] != 0) {
             long long xProd = (long long)floorN[0] * (long long)words[0xa4 / 4];
             long long zProd = (long long)floorN[2] * (long long)words[0xac / 4];
@@ -160,7 +159,7 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(clsn) + 4))->CopyNormalTo(*(Vector3 *)wallN);
+        ((SurfaceInfo *)((char *)clsn->GetWallResult() + 4))->CopyNormalTo(*(Vector3 *)wallN);
     }
 }
 

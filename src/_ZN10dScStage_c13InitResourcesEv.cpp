@@ -23,6 +23,9 @@
 // Swapping either pair is byte-identical -- the literal-pool words are relocations and
 // therefore wildcards to the byte gate -- but sends each address to the wrong pool slot.
 // match.py --strict-relocs is what distinguishes them; keep this order.
+#include "Model.h"
+#include "dActor_c.h"
+
 typedef unsigned char u8;
 typedef signed char s8;
 typedef unsigned short u16;
@@ -98,7 +101,6 @@ extern void *data_0209d4a8;
 extern s32 data_0209f3c4;
 extern u8 data_0209f204;
 extern s32 data_0209b454;
-extern void *data_020a0eac;
 extern s32 data_0209fc48;
 extern s32 data_0209fc68;
 extern s16 data_0209f300;
@@ -151,7 +153,6 @@ void _ZN3GXS15SetGraphicsModeEi(int a);
 void _ZN2GX6DispOnEv(void);
 void _Z17LoadLevelOverlaysi(int level);
 void _ZN5Sound19LoadGroupAndSetBankEii(int a, int b);
-void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
 // local extern: this file also passes &_ZN9dFdWipe_cC1Ev / &_ZN9dFdWipe_cD1Ev to func_02073470's ctor/dtor pair, which member syntax cannot express
 void _ZN9dFdWipe_c14LoadAndSetFileEt(int thiz, u16 fileID);
 void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int x);
@@ -358,7 +359,7 @@ L_after304:
         {
             u32 i;
             for (i = 0; i < 0xC; i++) {
-                _ZN5Model8LoadFileER13SharedFilePtr(data_020756f0[i]);
+                Model::LoadFile(*(SharedFilePtr *)data_020756f0[i]);
             }
         }
 

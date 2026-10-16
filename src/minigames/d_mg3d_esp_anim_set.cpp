@@ -48,6 +48,7 @@
 #include "TextureSequence.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "Model.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -102,17 +103,14 @@ void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-int _ZN5Model8LoadFileER13SharedFilePtr(void *p);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
 void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* r);
 void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);
-void _ZN9ModelBase7SetFileEP8BMD_Fileii(char *t, int f, int a, int b);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *anim, BCA_File *bca, int frame, int speed, u16 flags);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
-void _ZN5Model12SetPolygonIDEi(char *t, int id);
 void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void*, void*);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
@@ -301,16 +299,16 @@ void dMg3DEspAnimSet_c::InitResources()
     char *w;
     char *w2;
     *(int *)(o + 0x174) = 0x800;
-    bmd = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov006_02141e94);
+    bmd = (int)Model::LoadFile(data_ov006_02141e94);
     bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e6c);
     _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(bmd, &data_ov006_0213c7f4);
     w = o;
     w2 = o + 0x12c;
     for (i = 0; i < 3; i++) {
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(w, bmd, 1, m1);
+        ((ModelBase *)w)->SetFile((BMD_File *)bmd, 1, m1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000, *(int *)(o + 0x174), z1);
         _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &data_ov006_0213c7f4, 0x40000000, *(int *)(o + 0x174), z2);
-        _ZN5Model12SetPolygonIDEi(w, (i + 1) & 0xff);
+        ((Model *)w)->SetPolygonID((i + 1) & 0xff);
         *(int *)(o + i * 4 + 0x168) = 0;
         w += 0x64;
         w2 += 0x14;

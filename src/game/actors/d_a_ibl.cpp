@@ -43,6 +43,10 @@
 #include "SharedFilePtr.h"
 #include "decl_dBgCh_Actr.h"
 #include "Player.h"
+#include "Model.h"
+#include "dActor_c.h"
+#include "dBgCh_Actr.h"
+#include "dCc_c.h"
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -91,9 +95,6 @@ extern "C" {
 
 void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, Vector3_16 *s, void *a, int z);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
-void _ZN8dActor_c8PoofDustEv(void *a);
-void _ZN8dActor_c14TriplePoofDustEv(void *a);
-void _ZN8dActor_c11LandingDustEb(void *a, int b);
 void _ZN7fBase_c18MarkForDestructionEv(void *a);
 int func_02012694(int a, void *p);
 void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, void *pos);
@@ -103,31 +104,20 @@ int _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 d);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_020383f0(void *p);
 void func_02038414(void *p);
-int _ZNK10dBgCh_Actr8IsOnWallEv(void *w);
-int _ZNK10dBgCh_Actr10IsOnGroundEv(void *w);
-int _ZNK10dBgCh_Actr13JustHitGroundEv(void *w);
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *w);
 void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, Vector3 *v);
 int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 int _ZN4cstd4fdivEii(int a, int b);
 int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
 int _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, int ang);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
-void _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(void *self, void *c);
-void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *c);
-void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *self, void *c);
-void _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv(void *self);
 int func_ov002_020ad660(void *a, void *b, void *d, int e);
 int _Z14ApproachLinearRsss(short *value, short target, short step);
 void _Z14ApproachLinearRiii(int *value, int target, int step);
 int Vec3_HorzLen(void *v);
 int Vec3_HorzDist(const void *a, const void *b);
 int Vec3_Equal(void *a, void *b);
-void _ZN5dCc_c5ClearEv(void *c);
 int _ZN5dCc_c6UpdateEv(void *c);
 void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
-void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, int v1);
 
@@ -214,7 +204,7 @@ void daIbl_c::func_ov100_02141fb0()
         if (a->param1 == 2) {
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
                 daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
-            _ZN8dActor_c8PoofDustEv(this);
+            PoofDust();
             _ZN7fBase_c18MarkForDestructionEv(this);
             func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
             return;
@@ -247,14 +237,16 @@ void daIbl_c::func_ov100_02142130()
     mHitWall = 0;
     if (data_0209f2f8 == 0x19) func_020383f0(&mWithMeshClsn);
     else func_02038414(&mWithMeshClsn);
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn) != 0) {
+    if (mWithMeshClsn.IsOnWall() != 0) {
         _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4, (Vector3 *)&mWallNormalX);
         int a = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
         if (_ZN8dActor_c14GetSubtractionEss(this, mPrevAngleY, a) > 0x4000)
             mHitWall = 1;
     }
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) == 0) return;
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4, (Vector3 *)&mFloorNormalX);
+    if (mWithMeshClsn.IsOnGround() == 0)
+        return;
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)mWithMeshClsn.GetFloorResult() + 4,
+                                              (Vector3 *)&mFloorNormalX);
     if (mHitWall != 0) return;
     mPosX = mPrevPosX;
     mPosZ = mPrevPosZ;
@@ -282,7 +274,7 @@ void daIbl_c::func_ov100_02142264()
     *(M48 *)mShadowMtx = *(M48 *)&mModel.mat4x3;
     int k = 0x32;
     mShadowMtx[10] = (mDrawScale.x * k + mPosY) >> 3;
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0)
+    if (mWithMeshClsn.IsOnGround() != 0)
         k += 0x28;
     else
         k += 0x190;
@@ -430,7 +422,7 @@ int daIbl_c::func_ov100_021424c0()
     int r;
     int vy;
 
-    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(this, &mdCcAc_c);
+    MakeVanishLuigiWork(mdCcAc_c);
     r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
@@ -453,7 +445,7 @@ int daIbl_c::func_ov100_021424c0()
     if (r == -1) {
         mVariant = daIbl_KIND_ROLL_OFF;
         /* mVariant was just set to 3, so the != 4 test cannot fail here. */
-        if (mVariant != daIbl_KIND_PATH_RAMP && _ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0) {
+        if (mVariant != daIbl_KIND_PATH_RAMP && mWithMeshClsn.IsOnGround() != 0) {
             mVertSpeed = 0;
             mPosY += 0xf000;
         } else {
@@ -468,10 +460,10 @@ int daIbl_c::func_ov100_021424c0()
                                                                       mWallNormalZ,
                                                                       mPrevAngleY);
             mRollSoundHandle = 0;
-        } else if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0) {
-            if (_ZNK10dBgCh_Actr13JustHitGroundEv(&mWithMeshClsn) != 0) {
+        } else if (mWithMeshClsn.IsOnGround() != 0) {
+            if (mWithMeshClsn.JustHitGround() != 0) {
                 func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
-                _ZN8dActor_c11LandingDustEb(this, 1);
+                LandingDust(1);
                 if (vy < -0x14000)
                     mVertSpeed = (int)(-vy + ((u32)-vy >> 31)) >> 1;
                 mRollSoundHandle = 0;
@@ -491,9 +483,9 @@ int daIbl_c::func_ov100_021424c0()
         }
     }
 
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, 0);
+    UpdatePos(0);
     func_ov100_02142264();
-    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+    mdCcAc_c.Clear();
     return _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
@@ -512,7 +504,7 @@ void daIbl_c::func_ov100_0214272c()
 {
     int r;
 
-    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(this, &mdCcAc_c);
+    MakeVanishLuigiWork(mdCcAc_c);
     r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
@@ -538,12 +530,12 @@ void daIbl_c::func_ov100_0214272c()
         *(volatile int *)&mPosY,
         mPosZ);
     func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
-    _ZN8dActor_c14TriplePoofDustEv(this);
+    TriplePoofDust();
     _ZN7fBase_c18MarkForDestructionEv(this);
     return;
 
 ground:
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn)) {
+    if (mWithMeshClsn.IsOnGround()) {
         int *pa4;
         int *pac;
 
@@ -558,9 +550,9 @@ ground:
             _ZN4cstd5atan2E5Fix12IiES1_(
                 unk_0a4, unk_0ac);
 
-        if (_ZNK10dBgCh_Actr13JustHitGroundEv(&mWithMeshClsn)) {
+        if (mWithMeshClsn.JustHitGround()) {
             func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
-            _ZN8dActor_c11LandingDustEb(this, 1);
+            LandingDust(1);
 
             if (mVertSpeed < -0x8000)
                 mVertSpeed = mVertSpeed * -3 / 2;
@@ -582,9 +574,9 @@ ground:
         mVertSpeed = lim;
     }
 
-    _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(this, 0);
+    UpdatePosWithOnlySpeed(0);
     func_ov100_02142264();
-    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+    mdCcAc_c.Clear();
     _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
@@ -606,7 +598,7 @@ ground:
 void daIbl_c::func_ov100_02142918()
 {
     int r;
-    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(this, &mdCcAc_c);
+    MakeVanishLuigiWork(mdCcAc_c);
     r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
@@ -638,7 +630,7 @@ void daIbl_c::func_ov100_02142918()
         goto Lend;
     }
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) == 0)
+    if (mWithMeshClsn.IsOnGround() == 0)
         goto Lend;
 
     {
@@ -651,28 +643,27 @@ void daIbl_c::func_ov100_02142918()
     if (mFloorNormalY == 0x1000 && mHorzSpeed > 0x1c000) {
         mHorzSpeed = 0x1c000;
         mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(unk_0a4, unk_0ac);
-        _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv(this);
+        UpdatePosWithHorzSpeedAndAng();
     }
 
-    if (_ZNK10dBgCh_Actr13JustHitGroundEv(&mWithMeshClsn) != 0) {
+    if (mWithMeshClsn.JustHitGround() != 0) {
         func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
-        _ZN8dActor_c11LandingDustEb(this, 1);
+        LandingDust(1);
         goto Lend;
     }
 
     mRollSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mRollSoundHandle, 3, daIbl_SND_ROLL, &mCamSpacePosX, 0);
 
-Lend:
-    {
-        int nv = mVertSpeed + mVertAccel;
-        int lim = mTerminalVelocity;
-        if (nv >= lim)
-            lim = nv;
-        mVertSpeed = lim;
-    }
-    _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(this, 0);
+Lend: {
+    int nv = mVertSpeed + mVertAccel;
+    int lim = mTerminalVelocity;
+    if (nv >= lim)
+        lim = nv;
+    mVertSpeed = lim;
+}
+    UpdatePosWithOnlySpeed(0);
     func_ov100_02142264();
-    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+    mdCcAc_c.Clear();
     _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
@@ -814,8 +805,7 @@ int daIbl_c::InitResources()
     int kind;
     int d;
 
-    _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel,
-        _ZN5Model8LoadFileER13SharedFilePtr(&data_ov100_02148668), 1, -1);
+    mModel.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov100_02148668), 1, -1);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     mVertAccel = -0x4000;
@@ -893,7 +883,7 @@ int daIbl_c::InitResources()
                     mHorzSpeed = 0xa000;
             }
         }
-        _ZN8dActor_c9UpdatePosEP5dCc_c(this, 0);
+        UpdatePos(0);
         _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);
         goto end;
     }

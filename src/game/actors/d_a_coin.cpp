@@ -37,6 +37,8 @@
 #include "daStarBase_c.h"
 #include "daObjBlockL_c.h"
 #include "SurfaceInfo.h"
+#include "ModelBase.h"
+#include "dBgCh_Actr.h"
 
 namespace Event { s32 GetBit(u32 bit); void SetBit(u32 bit); }
 
@@ -110,8 +112,6 @@ extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
 extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
 extern void *_ZN5dBgPiC1Ev(void* self);
 extern void _ZN5dBgPiD1Ev(void* self);
-extern void* _ZNK10dBgCh_Actr13GetWallResultEv(void*);
-extern void* _ZNK10dBgCh_Actr14GetFloorResultEv(void *w);
 /* local extern: the veneer forwards r0 to UpdateDiscreteNoLava; its own
  * definition file declares it void(void), which drops the object argument. */
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void* p);
@@ -284,7 +284,7 @@ void daCoin_c::func_ov002_020b1384()
 {
     if (mWithMeshClsn.IsOnWall() == 0) return;
     int normal[3];
-    void* wall = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
+    void *wall = mWithMeshClsn.GetWallResult();
     ((SurfaceInfo*)((char*)wall + 4))->CopyNormalTo(*(Vector3*)normal);
     mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, normal[0], normal[2], mPrevAngleY);
 }
@@ -310,7 +310,8 @@ void daCoin_c::func_ov002_020b13e0()
     else
         dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
     if (!mWithMeshClsn.IsOnGround()) return;
-    if (SurfaceInfo_TestFlag0x20((char*)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4) == 0) return;
+    if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0)
+        return;
     if (mVertSpeed > 0) return;
     func_02012694(0xe2, (const Vector3 *)&mCamSpacePosX);
     _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(mPosX, mPosY, mPosZ);
@@ -580,7 +581,7 @@ void daCoin_c::func_ov002_020b1ad4()
         mDisappearTimer = 0x1c2;
     }
     if (mWithMeshClsn.JustHitGround()) {
-        if (SurfaceInfo_TestFlag0x20((char*)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4) == 0) {
+        if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
             _ZN5Sound9PlayBank3EjRK7Vector3(0x52, *(const Vector3 *)&mCamSpacePosX);
             mVertSpeed = 0x19000;
         }
@@ -600,7 +601,8 @@ void daCoin_c::func_ov002_020b1bfc()
     func_ov002_020b13e0();
     func_ov002_020b1384();
     if (!mWithMeshClsn.JustHitGround()) return;
-    if (SurfaceInfo_TestFlag0x20((char*)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4) != 0) return;
+    if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) != 0)
+        return;
     _ZN5Sound9PlayBank3EjRK7Vector3(0x52, *(const Vector3 *)&mCamSpacePosX);
     if (mHorzSpeed == 0) {
         mHorzSpeed = 0x13000;
@@ -671,12 +673,12 @@ void daCoin_c::func_ov002_020b1cc0()
     if (mWithMeshClsn.IsOnGround() == 0)
         return;
 
-    floor = (char*)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+    floor = (char *)mWithMeshClsn.GetFloorResult();
     floorClass = func_02037e58((unsigned int*)(floor + 4));
     ((SurfaceInfo*)(floor + 4))->CopyNormalTo(normal);
 
     if (mWithMeshClsn.JustHitGround() != 0) {
-        if (SurfaceInfo_TestFlag0x20((char*)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4) == 0) {
+        if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
             if (mDisappearTimer > 0xf000)
                 mDisappearTimer = 0xf;
             _ZN5Sound9PlayBank3EjRK7Vector3(0x52, *(const Vector3 *)&mCamSpacePosX);
@@ -707,7 +709,7 @@ void daCoin_c::func_ov002_020b1cc0()
 
     if (mWithMeshClsn.JustHitGround() != 0)
         return;
-    if (SurfaceInfo_TestFlag0x20((char*)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4) != 0)
+    if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) != 0)
         return;
 
     if (normal.y != 0) {
@@ -893,11 +895,8 @@ int daCoin_c::Behavior()
 extern "C" {
 extern int SublevelToLevel(int i);
 extern void SetStarMarker(int i, void* actor, int v2);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, int a, int b);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, s32 f1, s32 f2, u32 a, u32 b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, s32 f1, s32 f2, void* v, s32 f3);
-extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void* thiz);
-extern void _ZN10dBgCh_Actr19StartDetectingWaterEv(void* thiz);
 }
 s32 daCoin_c::InitResources()
 {
@@ -1031,19 +1030,19 @@ common:;
 
     type = mCoinType;
     if (type < COIN_BLUE) {
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mCommonModel1, data_ov002_020ff06c[type]->bmd, 1, 1) == 0) {
+        if (mCommonModel1.SetFile((BMD_File *)data_ov002_020ff06c[type]->bmd, 1, 1) == 0) {
             return 0;
         }
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mCommonModel2, data_ov002_020ff060[mCoinType]->bmd, 1, 1) == 0) {
+        if (mCommonModel2.SetFile((BMD_File *)data_ov002_020ff060[mCoinType]->bmd, 1, 1) == 0) {
             return 0;
         }
     } else {
         Model::LoadFile(*(SharedFilePtr *)data_ov002_020ff06c[type]);
         Model::LoadFile(*(SharedFilePtr *)data_ov002_020ff060[mCoinType]);
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mCommonModel1, data_ov002_020ff06c[mCoinType]->bmd, 1, 1) == 0) {
+        if (mCommonModel1.SetFile((BMD_File *)data_ov002_020ff06c[mCoinType]->bmd, 1, 1) == 0) {
             return 0;
         }
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mCommonModel2, data_ov002_020ff060[mCoinType]->bmd, 1, 1) == 0) {
+        if (mCommonModel2.SetFile((BMD_File *)data_ov002_020ff060[mCoinType]->bmd, 1, 1) == 0) {
             return 0;
         }
     }
@@ -1054,8 +1053,8 @@ common:;
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, ccRadius, ccHeight, 0x100002, 0x8000);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x3c000, 0x3c000, 0, 0);
-    _ZN10dBgCh_Actr13SetLimMovFlagEv(&mWithMeshClsn);
-    _ZN10dBgCh_Actr19StartDetectingWaterEv(&mWithMeshClsn);
+    mWithMeshClsn.SetLimMovFlag();
+    mWithMeshClsn.StartDetectingWater();
 
     behavior = mBehaviorType;
     if (behavior == 8) {
