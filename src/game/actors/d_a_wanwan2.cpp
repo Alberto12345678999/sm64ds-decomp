@@ -80,6 +80,8 @@
 #include "dBgCh_Lin.h"
 #include "Player.h"
 #include "daStar_c.h"
+#include "dActor_c.h"
+#include "dCc_c.h"
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -160,23 +162,16 @@ extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void _Z14ApproachLinearRiii(int &x, int target, int step);
 int __aeabi_idiv(int, int);
-void _ZN8dActor_c9UpdatePosEP5dCc_c(dActor_c *thiz, dCc_c *c);
-void _ZN8dActor_c15HugeLandingDustEb(dActor_c *thiz, bool b);
-dActor_c *_ZN8dActor_c13ClosestPlayerEv(dActor_c *thiz);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
     s32 radius, s32 height, u32 flags, u32 vulnFlags);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, int b, u32 c, u32 d, u32 e);
-void _ZN5dCc_c5ClearEv(void *thiz);
-int _ZN5dCc_c6UpdateEv(void *thiz);
 int func_02012694(int, void *);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
 void *_ZN7PathPtrC1Ev(void *thiz);
-void _ZN7PathPtr6FromIDEj(void *thiz, unsigned int id);
-void _ZNK7PathPtr7GetNodeER7Vector3j(void *thiz, Vector3 &out, unsigned int idx);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
@@ -644,12 +639,12 @@ int daWanwan2_c::Behavior()
         mScaleY = mScaleZ;
         func_ov100_02143b68((char *)this);
         mHorzSpeed = 0;
-        _ZN8dActor_c9UpdatePosEP5dCc_c(((dActor_c *)this), (dCc_c *)&mdCcAcPos_c);
+        UpdatePos((dCc_c *)&mdCcAcPos_c);
         if (func_ov100_02143370((char *)this) != 0) {
             mTerminalVelocity = 0;
         }
-        _ZN5dCc_c5ClearEv(&mdCcAcPos_c);
-        _ZN5dCc_c6UpdateEv(&mdCcAcPos_c);
+        mdCcAcPos_c.Clear();
+        mdCcAcPos_c.Update();
         return 1;
     }
 
@@ -663,21 +658,21 @@ int daWanwan2_c::Behavior()
     }
 
     mHorzSpeed = 0x17000;
-    _ZN8dActor_c9UpdatePosEP5dCc_c(((dActor_c *)this), (dCc_c *)&mdCcAcPos_c);
+    UpdatePos((dCc_c *)&mdCcAcPos_c);
 
     if (func_ov100_02143370((char *)this) != 0) {
         if (unk_6a8 == 0) {
             func_02012694(daWanwan2_SND_FLOOR_HIT, &mCamSpacePosX);
         }
         mVertSpeed = 0x14000;
-        _ZN8dActor_c15HugeLandingDustEb(((dActor_c *)this), true);
+        HugeLandingDust(true);
     }
 
     int flag = (data_0209f2d8[0] == 1);
     if (flag != 0 && mCoinTimer == 0) {
         int q16 = __aeabi_idiv(0x10000, mPathNodeIndex);
         short spd = (short)q16;
-        dActor_c *pl = _ZN8dActor_c13ClosestPlayerEv(((dActor_c *)this));
+        dActor_c *pl = ClosestPlayer();
         (void)pl;
 
         volatile Vector3 v;
@@ -709,8 +704,8 @@ int daWanwan2_c::Behavior()
         Vector3 node;
         Vector3 diff;
         _ZN7PathPtrC1Ev(path);
-        _ZN7PathPtr6FromIDEj(path, mPathID);
-        _ZNK7PathPtr7GetNodeER7Vector3j(path, node, mPathNodeIndex);
+        ((PathPtr *)path)->FromID(mPathID);
+        ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
 
         Vec3_Sub(&diff, (Vector3 *)&mPosX, &node);
 
@@ -719,7 +714,7 @@ int daWanwan2_c::Behavior()
             if (mPathNodeIndex >= mNumPathNodes) {
                 mPathNodeIndex = 0;
             }
-            _ZNK7PathPtr7GetNodeER7Vector3j(path, node, mPathNodeIndex);
+            ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
         }
 
         short ang = Vec3_HorzAngle((Vector3 *)&mPosX, &node);
@@ -730,11 +725,11 @@ int daWanwan2_c::Behavior()
         mAngleY = mPrevAngleY;
 
         func_ov100_02143b68((char *)this);
-        _ZN5dCc_c5ClearEv(&mdCcAcPos_c);
+        mdCcAcPos_c.Clear();
 
-        dActor_c *p = _ZN8dActor_c13ClosestPlayerEv(((dActor_c *)this));
+        dActor_c *p = ClosestPlayer();
         if (p != 0 && ((Player *)p)->mIsVanish == 0) {
-            _ZN5dCc_c6UpdateEv(&mdCcAcPos_c);
+            mdCcAcPos_c.Update();
         }
         return 1;
     }

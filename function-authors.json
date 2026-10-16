@@ -5579,7 +5579,7 @@
     },
     "arm9:0x02038ea4": {
       "author": "tangosdev",
-      "name": "func_02038ea4"
+      "name": "_ZN9dBgCh_Gnd15DetectClsnSlot0Ev"
     },
     "arm9:0x02038f44": {
       "author": "tangosdev",
@@ -19771,7 +19771,7 @@
     },
     "ov004:0x020b67e4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b67e4"
+      "name": "Coin_Construct"
     },
     "ov004:0x020b67e8": {
       "author": "tangosdev",
@@ -21035,7 +21035,7 @@
     },
     "ov006:0x020ca840": {
       "author": "lunavyqo",
-      "name": "func_ov006_020ca840"
+      "name": "Trmp2Mario_EnterAll"
     },
     "ov006:0x020ca8e0": {
       "author": "tangosdev",
@@ -21279,75 +21279,75 @@
     },
     "ov006:0x020cd864": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion7"
+      "name": "TrmpItem_MotionSpinHover"
     },
     "ov006:0x020cd98c": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion7"
+      "name": "TrmpItem_SetMotionSpinHover"
     },
     "ov006:0x020cd9b0": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion8"
+      "name": "TrmpItem_MotionSpinDrift"
     },
     "ov006:0x020cdad0": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion8"
+      "name": "TrmpItem_SetMotionSpinDrift"
     },
     "ov006:0x020cdaec": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion5"
+      "name": "TrmpItem_MotionSpinSway"
     },
     "ov006:0x020cdc14": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion5"
+      "name": "TrmpItem_SetMotionSpinSway"
     },
     "ov006:0x020cdc38": {
       "author": "ruspecial",
-      "name": "TrmpItem_Motion6"
+      "name": "TrmpItem_MotionHover"
     },
     "ov006:0x020cdc68": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion6"
+      "name": "TrmpItem_SetMotionHover"
     },
     "ov006:0x020cdc8c": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion4"
+      "name": "TrmpItem_MotionSway"
     },
     "ov006:0x020cdce4": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion4"
+      "name": "TrmpItem_SetMotionSway"
     },
     "ov006:0x020cdd08": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion3"
+      "name": "TrmpItem_MotionSpin"
     },
     "ov006:0x020cde28": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion3"
+      "name": "TrmpItem_SetMotionSpin"
     },
     "ov006:0x020cde4c": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion2"
+      "name": "TrmpItem_MotionBob"
     },
     "ov006:0x020cde7c": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion2"
+      "name": "TrmpItem_SetMotionBob"
     },
     "ov006:0x020cdea0": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion1"
+      "name": "TrmpItem_MotionPatrol"
     },
     "ov006:0x020cdeec": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion1"
+      "name": "TrmpItem_SetMotionPatrol"
     },
     "ov006:0x020cdf1c": {
       "author": "tangosdev",
-      "name": "TrmpItem_Motion0"
+      "name": "TrmpItem_MotionStill"
     },
     "ov006:0x020cdf20": {
       "author": "tangosdev",
-      "name": "TrmpItem_SetMotion0"
+      "name": "TrmpItem_SetMotionStill"
     },
     "ov006:0x020cdf3c": {
       "author": "andrewboudreau",
@@ -23291,11 +23291,11 @@
     },
     "ov006:0x020ea914": {
       "author": "tangosdev",
-      "name": "Wiggler_DrawPassA"
+      "name": "Wiggler_DrawTarget"
     },
     "ov006:0x020eac38": {
       "author": "andrewboudreau",
-      "name": "Wiggler_DrawPassB"
+      "name": "Wiggler_DrawField"
     },
     "ov006:0x020eb018": {
       "author": "tangosdev",
@@ -24799,7 +24799,7 @@
     },
     "ov006:0x020fea70": {
       "author": "lunavyqo",
-      "name": "func_ov006_020fea70"
+      "name": "Pachinko_UpdateNextBall"
     },
     "ov006:0x020feba8": {
       "author": "andrewboudreau",
@@ -25095,7 +25095,7 @@
     },
     "ov006:0x02103ac0": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c14UpdateRoundEndEv"
+      "name": "_ZN16dScMgPachinko2_c14UpdateNextBallEv"
     },
     "ov006:0x02103bfc": {
       "author": "tangosdev",
@@ -26651,7 +26651,7 @@
     },
     "ov006:0x0211cc90": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211cc90Ev"
+      "name": "_ZN13dScMgTeresa_c14BigBoo_SetDoneEv"
     },
     "ov006:0x0211cca8": {
       "author": "tangosdev",
@@ -26763,39 +26763,39 @@
     },
     "ov006:0x0211ddcc": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c18RisingIcon_DrawAllEv"
+      "name": "_ZN13dScMgTeresa_c19FoundNumber_DrawAllEv"
     },
     "ov006:0x0211de54": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19RisingIcon_ClearAllEv"
+      "name": "_ZN13dScMgTeresa_c20FoundNumber_ClearAllEv"
     },
     "ov006:0x0211de7c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c20RisingIcon_CountBusyEv"
+      "name": "_ZN13dScMgTeresa_c21FoundNumber_CountBusyEv"
     },
     "ov006:0x0211dec0": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c20RisingIcon_UpdateAllEv"
+      "name": "_ZN13dScMgTeresa_c21FoundNumber_UpdateAllEv"
     },
     "ov006:0x0211e020": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c16RisingIcon_SpawnEi"
+      "name": "_ZN13dScMgTeresa_c17FoundNumber_SpawnEi"
     },
     "ov006:0x0211e0c8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c24RisingIcon_SpawnForFoundEv"
+      "name": "_ZN13dScMgTeresa_c25FoundNumber_SpawnForFoundEv"
     },
     "ov006:0x0211e118": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c17FoundMark_DrawAllEv"
+      "name": "_ZN13dScMgTeresa_c18VanishPuff_DrawAllEv"
     },
     "ov006:0x0211e184": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19FoundMark_UpdateAllEv"
+      "name": "_ZN13dScMgTeresa_c20VanishPuff_UpdateAllEv"
     },
     "ov006:0x0211e220": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c15FoundMark_SpawnEi"
+      "name": "_ZN13dScMgTeresa_c16VanishPuff_SpawnEi"
     },
     "ov006:0x0211e29c": {
       "author": "tangosdev",

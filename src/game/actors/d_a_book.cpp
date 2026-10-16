@@ -43,6 +43,7 @@
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
 #include "Sound.h"
+#include "dBgCh_Actr.h"
 
 int ApproachLinear(int &value, int target, int step);
 int ApproachLinear(short &value, short target, short step);
@@ -104,7 +105,6 @@ void func_0203568c(int *p, int v);
 void func_0201267c(unsigned int id, const Vector3 *pos);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *, BCA_File *, int, int, u16);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *c_);
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *self);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
 void UnloadBlueCoinModel(void *);
@@ -547,7 +547,7 @@ void daBook_c::func_ov020_02111b28()
   if (mWithMeshClsn.IsOnWall() == 0) return;
   {
     Vector3 normal;
-    void* w = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
+    void *w = mWithMeshClsn.GetWallResult();
     ((SurfaceInfo *)((char *)w + 4))->CopyNormalTo(normal);
     short angle = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
     if (GetSubtraction(mPrevAngleY, angle) <= 0x4000) return;

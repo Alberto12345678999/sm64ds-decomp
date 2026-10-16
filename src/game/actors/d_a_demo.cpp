@@ -115,13 +115,13 @@ enum daDemo_c_AssetId {
 #include "dFdBrightness_c.h"
 #include "decl_Model.h"
 #include "decl_ModelAnim.h"
+#include "OAM.h"
+#include "SaveData.h"
+#include "TextureSequence.h"
 
 struct OamAttr;
 
 #pragma defer_codegen off
-
-/* shadow struct 'OAM' */
-struct OAM { static void RenderSub(OamAttr *, int, int); };
 
 /* shadow typedef 's16' */
 typedef signed short s16;
@@ -483,9 +483,7 @@ extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii( int a, struct OamAttr* 
 extern struct OamAttr* data_ov002_0210b988[];
 extern void func_0201ef50(unsigned char v);
 extern void func_0201f108(void);
-extern int _ZN3OAM9RenderSubEP7OamAttriiii(struct OamAttr*, int, int, int, int);
 extern struct OamAttr* data_ov002_0210bba0[];
-extern int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
 extern int func_ov002_020f5a94(void *c);
 extern int* data_ov002_0210b97c[];
 extern void func_ov002_020f2f18(char *c, int a, int b);
@@ -573,9 +571,6 @@ extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
-extern void _ZN15TextureSequence6UpdateER15ModelComponents(void *thiz, void *mc);
-extern "C" BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr&);
-extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File*, int, int);
 extern void __cxa_vec_ctor(void* obj, int a, int b, void* cb1, void* cb2);
 extern void *_ZN7Vector3D1Ev(void *object);
 extern void func_0203d384(void);
@@ -859,7 +854,8 @@ void daDemo_c::func_ov002_020f20f4()
         }
       }
       d = (char *)this->mScroll;
-      _ZN3OAM9RenderSubEP7OamAttriiii(data_ov002_0210be1c[i], ((ScrollState *)d)->spriteX[i], ((ScrollState *)d)->spriteY[i], m1, two);
+      OAM::RenderSub(data_ov002_0210be1c[i], ((ScrollState *)d)->spriteX[i],
+                     ((ScrollState *)d)->spriteY[i], m1, two);
     }
   }
 }
@@ -1439,12 +1435,9 @@ void func_ov002_020f2eac(void* c) {
   char* p = (char*)c;
   for (i = 0; i < 5; i++) {
     if (*(unsigned char*)(p+0x171) != 0) {
-      _ZN3OAM9RenderSubEP7OamAttriiii(
-          data_ov002_0210bba0[*(unsigned char*)(p+0x172)],
-          *(int*)(p+0x160) >> 12,
-          *(int*)(p+0x164) >> 12,
-          -1,
-          *(unsigned char*)(p+0x173));
+        OAM::RenderSub(data_ov002_0210bba0[*(unsigned char *)(p + 0x172)],
+                       *(int *)(p + 0x160) >> 12, *(int *)(p + 0x164) >> 12, -1,
+                       *(unsigned char *)(p + 0x173));
     }
     p += 0x14;
   }
@@ -1503,9 +1496,11 @@ void func_ov002_020f2f9c(void* self, int count)
         if (i == 0 || i == 1 || i == 4) {
             ok++;
         } else if (i == 2) {
-            if (_ZN8SaveData19IsCharacterUnlockedEj(2)) ok++;
+            if (SaveData::IsCharacterUnlocked(2))
+                ok++;
         } else {
-            if (_ZN8SaveData19IsCharacterUnlockedEj(1)) ok++;
+            if (SaveData::IsCharacterUnlocked(1))
+                ok++;
         }
         if (ok) {
             int* p;
@@ -1833,14 +1828,13 @@ void func_ov002_020f396c(char *p)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3978
 extern "C" {
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
 extern void* data_ov002_0210b998[];
 void func_ov002_020f3978(char* c){
   int i;
   for(i = 0; i < 4; i++){
     if(*(unsigned char*)(c+0x45)){
-      _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, data_ov002_0210b998[i],
-        *(int*)c >> 0xc, *(int*)(c+4) >> 0xc, -1, 1, 0);
+        OAM::Render(true, (OamAttr *)data_ov002_0210b998[i], *(int *)c >> 0xc,
+                    *(int *)(c + 4) >> 0xc, -1, 1, 0);
     }
     c += 0x4c;
   }
@@ -3051,7 +3045,7 @@ int func_ov002_020f5a94(void *unused){
     unsigned char count = 0;
     int i;
     for (i = 0; i < 4; i++) {
-        if (_ZN8SaveData19IsCharacterUnlockedEj(i))
+        if (SaveData::IsCharacterUnlocked(i))
             count = count + 1;
     }
     return count;
@@ -3692,7 +3686,7 @@ void daDemo_c::anmModel_c::func_ov002_020f65b8()
     ObjSeq *o = (ObjSeq *)this;
     if (o->seq == 0)
         return;
-    _ZN15TextureSequence6UpdateER15ModelComponents(o->seq, (char *)o + 8);
+    ((TextureSequence *)o->seq)->Update(*(ModelComponents *)((char *)o + 8));
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3713,14 +3707,12 @@ int daDemo_c::anmModel_c::func_ov002_020f65ec()
 /* ROM ordinal 111 -- func_ov002_020f6618, 0x020f6618, size 0x160 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f6618EP13SharedFilePtriPS2_ihS3_i
-#include "TextureSequence.h"
 struct BTP_File;
 extern "C" {
 void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr& f); /* local extern: untyped file pointer. */
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* f, int a, int fx, unsigned int e);
 void* _Znwj(unsigned int sz);
 void* _ZN15TextureSequenceC1Ev(void* self);
-void* _ZN15TextureSequence8LoadFileER13SharedFilePtr(SharedFilePtr& f);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int fx, unsigned int e);
 }
 
@@ -3731,8 +3723,9 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     int i;
     void* ts;
     *(SharedFilePtr**)(self + 0x70) = mdl;
-    if (_ZN9ModelBase7SetFileEP8BMD_Fileii(self,
-            _ZN5Model8LoadFileER13SharedFilePtr(**(SharedFilePtr**)(self + 0x70)), 1, tsData) == 0)
+    if (((ModelBase *)self)
+            ->SetFile((BMD_File *)Model::LoadFile(**(SharedFilePtr **)(self + 0x70)), 1, tsData) ==
+        0)
         return 0;
     self[0x80] = (char)nAnims;
     *(SharedFilePtr***)(self + 0x74) = anims;
@@ -3751,7 +3744,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
         *(SharedFilePtr***)(self + 0x78) = texs;
         for (i = 0; i < *(unsigned char*)(self + 0x81); i++) {
             void* bmd = *(void**)((char*)(*(SharedFilePtr**)(self + 0x70)) + 4);
-            void* btp = _ZN15TextureSequence8LoadFileER13SharedFilePtr(*(*(SharedFilePtr***)(self + 0x78))[i]);
+            void *btp = TextureSequence::LoadFile(*(*(SharedFilePtr ***)(self + 0x78))[i]);
             TextureSequence::Prepare(*(BMD_File*)bmd, *(BTP_File*)btp);
         }
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(*(void**)(self + 0x7c),
@@ -3822,8 +3815,8 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
 {
     char *self = (char *)this;
     *(SharedFilePtr**)(self + 0x5c) = fp;
-    BMD_File* f = _ZN5Model8LoadFileER13SharedFilePtr(*(*(SharedFilePtr**)(self + 0x5c)));
-    return _ZN9ModelBase7SetFileEP8BMD_Fileii(self, f, 1, n) != 0 ? 1 : 0;
+    BMD_File *f = (BMD_File *)Model::LoadFile(*(*(SharedFilePtr **)(self + 0x5c)));
+    return ((ModelBase *)self)->SetFile(f, 1, n) != 0 ? 1 : 0;
 }
 
 /* -------------------------------------------------------------------------- */

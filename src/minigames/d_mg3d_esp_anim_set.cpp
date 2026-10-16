@@ -46,8 +46,11 @@
 #include "dMg3DEspAnimSet_c.h"
 #include "TextureTransformer.h"
 #include "TextureSequence.h"
+#include "MaterialChanger.h"
+#include "G3X.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "Model.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -82,16 +85,16 @@ struct EspAnimSetTexSequenceFilePtr : SharedFilePtr {
 
 extern "C" {
 /* The file handles: word 1 of a SharedFilePtr is its loaded file. */
-extern EspAnimSetModelFilePtr data_ov006_02141e54;
-extern EspAnimSetAnimationFileHandle data_ov006_02141e5c;
-extern EspAnimSetTexSequenceFilePtr data_ov006_02141e64;
-extern EspAnimSetAnimationFileHandle data_ov006_02141e6c;
-extern EspAnimSetModelFilePtr data_ov006_02141e74;
-extern EspAnimSetAnimationFileHandle data_ov006_02141e7c;
-extern EspAnimSetAnimationFileHandle data_ov006_02141e84;
-extern EspAnimSetAnimationFileHandle data_ov006_02141e8c;
-extern EspAnimSetModelFilePtr data_ov006_02141e94;
-extern EspAnimSetModelFilePtr data_ov006_02141e9c;
+extern EspAnimSetModelFilePtr gEspCardModelFile;
+extern EspAnimSetAnimationFileHandle gEspCardStartAnimFile;
+extern EspAnimSetTexSequenceFilePtr gEspCardTexSeqFile;
+extern EspAnimSetAnimationFileHandle gEspHamonAnimFile;
+extern EspAnimSetModelFilePtr gIrieBackModelFile;
+extern EspAnimSetAnimationFileHandle gEspCardWaitAnimFile;
+extern EspAnimSetAnimationFileHandle gEspCardOpenWaitAnimFile;
+extern EspAnimSetAnimationFileHandle gEspCardOpenAnimFile;
+extern EspAnimSetModelFilePtr gEspHamonModelFile;
+extern EspAnimSetModelFilePtr gEspIrieModelFile;
 
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
@@ -102,17 +105,12 @@ void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-int _ZN5Model8LoadFileER13SharedFilePtr(void *p);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
-void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* r);
-void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);
-void _ZN9ModelBase7SetFileEP8BMD_Fileii(char *t, int f, int a, int b);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *anim, BCA_File *bca, int frame, int speed, u16 flags);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
-void _ZN5Model12SetPolygonIDEi(char *t, int id);
 void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void*, void*);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
@@ -133,7 +131,6 @@ void Mg_SetNextBanner(int);
 void Mg_SetSharedState(int);
 void Mg_ShowBanner(int, int, int, int, int, short);
 void Mg_SetTopScreenYOffset(int);
-void _ZN3G3X6SetFogEbiii(int, int, int, int);
 void InitialiseVramGlobals(void);
 void Deallocate(void*);
 int LoadFile(int handle);
@@ -154,8 +151,8 @@ extern void *data_ov006_0213c844;
 extern s16 data_02082214[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
-extern int data_ov004_020bc880;
-extern int data_ov004_020bc884;
+extern int sMgClearBannerX;
+extern int sMgClearBannerY;
 }
 
 extern Matrix4x3 data_ov006_0213c85c;
@@ -208,7 +205,7 @@ void dMg3DEspAnimSet_c::Render()
     i = 0;
     zero = (void*)i;
     do {
-        if (*(int*)(c + i*4 + 0x168) != 0) {
+        if (mActive[i] != 0) {
             *(Matrix4x3*)(r5 + 0x1c) = data_020a0e68;
             ((MaterialChanger*)r4)->Update(*(ModelComponents*)(r5 + 8));
             ((Obj_777c*)r5)->m(zero);
@@ -224,11 +221,11 @@ void dMg3DEspAnimSet_c::Behavior()
 {
     char *self = (char *)this;
     int sb = 0;
-    if (*(short*)(self + 0x178) != 0) {
+    if (mRepeats != 0) {
         if (_Z15ApproachLinear2Rsss((short*)(self + 0x17a), 0, 1)) {
-            *(short*)(self + 0x17a) = *(short*)(self + 0x17c);
+            mPhase = mPeriod;
             sb = 1;
-            if (*(short*)(self + 0x178) > 0) {
+            if (mRepeats > 0) {
                 *(short*)(int)(self + 0x178) -= 1;
             }
         }
@@ -300,18 +297,20 @@ void dMg3DEspAnimSet_c::InitResources()
     int i;
     char *w;
     char *w2;
-    *(int *)(o + 0x174) = 0x800;
-    bmd = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov006_02141e94);
-    bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e6c);
-    _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(bmd, &data_ov006_0213c7f4);
+    mSpeed = 0x800;
+    bmd = (int)Model::LoadFile(gEspHamonModelFile);
+    bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspHamonAnimFile);
+    MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&data_ov006_0213c7f4);
     w = o;
     w2 = o + 0x12c;
     for (i = 0; i < 3; i++) {
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(w, bmd, 1, m1);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000, *(int *)(o + 0x174), z1);
-        _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &data_ov006_0213c7f4, 0x40000000, *(int *)(o + 0x174), z2);
-        _ZN5Model12SetPolygonIDEi(w, (i + 1) & 0xff);
-        *(int *)(o + i * 4 + 0x168) = 0;
+        ((ModelBase *)w)->SetFile((BMD_File *)bmd, 1, m1);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000,
+                                                    mSpeed, z1);
+        _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &data_ov006_0213c7f4, 0x40000000,
+                                                           mSpeed, z2);
+        ((Model *)w)->SetPolygonID((i + 1) & 0xff);
+        mActive[i] = 0;
         w += 0x64;
         w2 += 0x14;
     }
@@ -322,8 +321,8 @@ void dMg3DEspAnimSet_c::InitResources()
 // @symbol _ZN17dMg3DEspAnimSet_cD1Ev
 dMg3DEspAnimSet_c::~dMg3DEspAnimSet_c()
 {
-    data_ov006_02141e94.Release();
-    data_ov006_02141e6c.Release();
+    gEspHamonModelFile.Release();
+    gEspHamonAnimFile.Release();
 }
 
 // @symbol _ZN17dMg3DEspAnimSet_cC1Ev
@@ -350,9 +349,9 @@ void dMg3DEspModel_c::Render()
         if (*(int*)(c + 0x210) == 0) return;
     }
 
-    func_02046208(c + 0x14, *(unsigned char*)(c + 0x21a), 0);
+    func_02046208(c + 0x14, mPolygonID, 0);
 
-    *(int*)(c + 0x78) = (unsigned)((*(short*)(c + 0x218)) << 0x11) >> 4;
+    *(int *)(c + 0x78) = (unsigned)((mTextureFrame) << 0x11) >> 4;
     mTextureSequence.Update(mModelAnim.data);
 
     ResetTransform();
@@ -391,9 +390,10 @@ void dMg3DEspModel_c::Behavior()
 void dMg3DEspModel_c::Hit()
 {
     char *thiz = (char*)this;
-    if (((dExtFrameCtrl_c*)(thiz + 0x5c))->Finished() != 0 &&
-        *(void**)(thiz + 0x6c) == ((void**)&data_ov006_02141e8c)[1]) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((BCA_File**)&data_ov006_02141e84)[1], 0, 0x800, 0);
+    if (((dExtFrameCtrl_c *)(thiz + 0x5c))->Finished() != 0 &&
+        *(void **)(thiz + 0x6c) == ((void **)&gEspCardOpenAnimFile)[1]) {
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            &mModelAnim, ((BCA_File **)&gEspCardOpenWaitAnimFile)[1], 0, 0x800, 0);
         return;
     }
     if (((dExtFrameCtrl_c*)(thiz + 0x5c))->WillHitFrame(0x10) == 0 &&
@@ -407,7 +407,8 @@ void dMg3DEspModel_c::Hit()
 // @symbol _ZN15dMg3DEspModel_c8StartHitEv
 void dMg3DEspModel_c::StartHit()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File**)((char*)&data_ov006_02141e8c + 4), 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, *(BCA_File **)((char *)&gEspCardOpenAnimFile + 4), 0x40000000, 0x800, 0);
     if (mMuted == 0)
         Sound::PlayBank2_2D(0x191);
     mState = pmf_dMg3DEspModel_c_Hit;
@@ -434,7 +435,8 @@ void dMg3DEspModel_c::Intro()
 // @symbol _ZN15dMg3DEspModel_c10StartIntroEv
 void dMg3DEspModel_c::StartIntro()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File**)((char*)&data_ov006_02141e5c + 4), 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, *(BCA_File **)((char *)&gEspCardStartAnimFile + 4), 0x40000000, 0x800, 0);
     mAnimSet.SetPeriod(0xf);
     mAnimSet.SetSpeed(0x1000);
     mAnimSet.SetRepeats(3);
@@ -461,8 +463,8 @@ void dMg3DEspModel_c::Wait()
 // @symbol _ZN15dMg3DEspModel_c9StartWaitEv
 void dMg3DEspModel_c::StartWait()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
-        ((BCA_File**)&data_ov006_02141e7c)[1], 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, ((BCA_File **)&gEspCardWaitAnimFile)[1], 0, 0x800, 0);
     mState = pmf_dMg3DEspModel_c_Wait;
 }
 
@@ -483,17 +485,19 @@ void dMg3DEspModel_c::Reset()
 int dMg3DEspModel_c::InitResources()
 {
     char* c = (char*)this;
-    if (func_020179b4(&data_ov006_02141e54, c + 0xc, 1) == 0)
+    if (func_020179b4(&gEspCardModelFile, c + 0xc, 1) == 0)
         return 0;
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov006_02141e64);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e5c);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e7c);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e8c);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e84);
-    TextureSequence::Prepare(**(BMD_File**)((void**)&data_ov006_02141e54 + 1),
-                             **(BTP_File**)((void**)&data_ov006_02141e64 + 1));
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x70, *((void**)&data_ov006_02141e64 + 1), 0, 0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim*)(c + 0xc), *((BCA_File**)&data_ov006_02141e5c + 1), 0x40000000, 0x800, 0);
+    TextureSequence::LoadFile(gEspCardTexSeqFile);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardStartAnimFile);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardWaitAnimFile);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardOpenAnimFile);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardOpenWaitAnimFile);
+    TextureSequence::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
+                             **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        c + 0x70, *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        (ModelAnim *)(c + 0xc), *((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
     mAnimSet.InitResources();
     ResetTransform();
     Reset();
@@ -504,12 +508,12 @@ int dMg3DEspModel_c::InitResources()
 // @symbol _ZN15dMg3DEspModel_cD1Ev
 dMg3DEspModel_c::~dMg3DEspModel_c()
 {
-    data_ov006_02141e54.Release();
-    data_ov006_02141e5c.Release();
-    data_ov006_02141e7c.Release();
-    data_ov006_02141e8c.Release();
-    data_ov006_02141e84.Release();
-    data_ov006_02141e64.Release();
+    gEspCardModelFile.Release();
+    gEspCardStartAnimFile.Release();
+    gEspCardWaitAnimFile.Release();
+    gEspCardOpenAnimFile.Release();
+    gEspCardOpenWaitAnimFile.Release();
+    gEspCardTexSeqFile.Release();
 }
 
 // @symbol _ZN15dMg3DEspModel_cC1Ev
@@ -531,13 +535,13 @@ dMg3DEspModel_c::dMg3DEspModel_c()
    two slot states, four slot type handlers and three flash modes. */
 typedef void (dScMg3DEsp_c::*dScMg3DEsp_cState)();
 typedef void (dScMg3DEsp_c::*dScMg3DEsp_cObjState)(int);
-extern "C" dScMg3DEsp_cState data_ov006_02141f2c[];
-extern "C" dScMg3DEsp_cState data_ov006_02141fac[];
-extern "C" dScMg3DEsp_cState data_ov006_02141f44[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f1c[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f5c[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f74[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f8c[];
+extern "C" dScMg3DEsp_cState s3DEspRoundTable[];
+extern "C" dScMg3DEsp_cState s3DEspPhaseTable[];
+extern "C" dScMg3DEsp_cState s3DEspFlashTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspSlotFallTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspCardTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspRowTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspSlotRiseTable[];
 
 /* The ROM PMF constants the seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
@@ -568,7 +572,7 @@ extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_FlashQuick;
 void dScMg3DEsp_c::DrawBanner()
 {
     char *c = (char*)this;
-    if (*(unsigned char *)(c + 0x5555) != 0)
+    if (mDone != 0)
         Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 }
 
@@ -580,16 +584,17 @@ void dScMg3DEsp_c::DrawBanner()
 void dScMg3DEsp_c::FlashQuick()
 {
     char *self = (char*)this;
-    if (*(unsigned char *)(self + 0x5553)) return;
+    if (mFlashStep)
+        return;
     *(unsigned char *)(self + 0x51f2) = 0x1e;
-    *(unsigned char *)(self + 0x5553) += 1;
+    mFlashStep += 1;
 }
 
 // @symbol _ZN12dScMg3DEsp_c9FlashSyncEv
 void dScMg3DEsp_c::FlashSync()
 {
     char* c = (char*)this;
-    u8 state = *(u8*)(c + 0x5553);
+    u8 state = mFlashStep;
     if (state == 0) {
         u8* p = (u8*)(c + 0x5553);
         *(u8*)(c + 0x51f2) = 0x1e;
@@ -602,7 +607,7 @@ void dScMg3DEsp_c::FlashSync()
         u8* p = (u8*)(c + 0x5554);
         (*p)++;
     }
-    if (*(u8*)(c + 0x5554) < 1)
+    if (mFlashBeats < 1)
         return;
     {
         u8* p = (u8*)(c + 0x5553);
@@ -636,7 +641,7 @@ void dScMg3DEsp_c::UpdateFlash()
     char* c = (char*)this;
     unsigned char idx = *(unsigned char*)(c + 0x5000 + 0x552);
     if (idx >= 3) return;
-    (this->*data_ov006_02141f44[idx])();
+    (this->*s3DEspFlashTable[idx])();
 }
 
 extern void* data_ov006_02133a3c[];
@@ -819,7 +824,7 @@ void dScMg3DEsp_c::SlotFall(int idx)
 {
   char* base = (char*)this;
   unsigned char b = *(unsigned char*)(base + idx*0x20 + 0x52da);
-  (this->*data_ov006_02141f8c[b])(idx);
+  (this->*s3DEspSlotRiseTable[b])(idx);
 
   unsigned char c = *(unsigned char*)(base + idx*0x20 + 0x52d6);
   *(int*)(base + 0x52c8 + idx*0x20) -= (c<<3) + 0x10;
@@ -871,7 +876,7 @@ void dScMg3DEsp_c::UpdateSlots()
     for (int i = 0; i < 0x14; i++) {
         if (rows[i].d[0x52d4]) {
             u8 k = rows[i].d[0x52d9];
-            (this->*data_ov006_02141f1c[k])(i);
+            (this->*s3DEspSlotFallTable[k])(i);
         }
     }
 }
@@ -948,14 +953,14 @@ void dScMg3DEsp_c::RowFade(int i)
     *(int *)(b + off) = x;
     *(unsigned char *)(((int)c + 0x554e)) += 1;
     {
-        unsigned char ip = *(unsigned char *)(c + 0x554e);
+        unsigned char ip = mFade;
         _ZN3G2x13SetBlendAlphaEPVttttj(
             (volatile unsigned short *)0x4001050, 0, 4,
             0x10 - ip, ip);
     }
-    if (*(unsigned char *)(c + 0x554e) < 0x10)
+    if (mFade < 0x10)
         return;
-    *(unsigned char *)(c + 0x554e) = 0;
+    mFade = 0;
     *(unsigned char *)(c + off + 0x5292) = 0;
     *(unsigned char *)(c + off + 0x5290) = 0;
 }
@@ -998,7 +1003,7 @@ void dScMg3DEsp_c::UpdateRows()
     char* s = (char*)this;
     for (i = 0; i < 3; i++) {
         if (*(unsigned char*)(s + 0x5290)) {
-            (this->*data_ov006_02141f74[*(unsigned char*)(s + 0x5291)])(i);
+            (this->*s3DEspRowTable[*(unsigned char *)(s + 0x5291)])(i);
         }
         s += 0x14;
     }
@@ -1141,45 +1146,35 @@ void dScMg3DEsp_c::CardSeek(int i)
     *(int *) (self + 0x520c + n) = 0x30000;
     *(u8 *) (self + 0x5218 + n) = 0;
 
-    if (*(u8 *) (self + 0x5552) == 0)
-    {
-        if ((*(u8 *) (self + 0x5551)) == (*(u8 *) (self + 0x521b + n)))
-        {
-            *(u8 *) (self + 0x5550) = 1;
-        }
-        else
-        {
+    if (mFlashMode == 0) {
+        if ((mTarget) == (*(u8 *)(self + 0x521b + n))) {
+            mCorrect = 1;
+        } else {
             int rnd = RandomIntInternal(&data_0209d4b8);
             u32 temp = ((u32) rnd >> 16) & 0x7fff;
             if (((temp << 1) >> 0xf) == 0)
             {
-                *(u8 *) (self + 0x5550) = 0;
+                mCorrect = 0;
             }
             else
             {
-                *(u8 *) (self + 0x5551) = *(u8 *) (self + 0x521b + n);
+                mTarget = *(u8 *)(self + 0x521b + n);
                 *(u16 *) (self + 0x51f0) = *(u8 *) (self + 0x521b + n);
-                *(u8 *) (self + 0x5550) = 1;
+                mCorrect = 1;
             }
         }
-    }
-    else
-    {
-        if ((*(u8 *) (self + 0x5551)) == (*(u8 *) (self + 0x521b + n)))
-        {
-            *(u8 *) (self + 0x5550) = 1;
-        }
-        else
-        {
-            *(u8 *) (self + 0x5550) = 0;
+    } else {
+        if ((mTarget) == (*(u8 *)(self + 0x521b + n))) {
+            mCorrect = 1;
+        } else {
+            mCorrect = 0;
         }
     }
 
     mRoundState = 2;
     mPhase = 0;
     mTimer = 0x90;
-    if (*(u8 *) (self + 0x5550) == 0)
-    {
+    if (mCorrect == 0) {
         u16 *p548 = (u16 *) (self + 0x5548);
         *p548 = *p548 + 0x40;
     }
@@ -1232,12 +1227,12 @@ void dScMg3DEsp_c::CardTouch(int idx)
 void dScMg3DEsp_c::CardExit(int i)
 {
     char* c = (char*)this;
-    unsigned char st = *(unsigned char*)(c + 0x554e);
+    unsigned char st = mFade;
     if (st == 1) {
         unsigned char* p = (unsigned char*)(c + 0x521c + i * 0x18);
         if (*p == 1) *p = 0;
     }
-    if (*(unsigned char*)(c + 0x554e) >= 0x10) {
+    if (mFade >= 0x10) {
         *(unsigned char*)(c + i * 0x18 + 0x5219) = 1;
     }
 }
@@ -1249,7 +1244,7 @@ void dScMg3DEsp_c::UpdateCards()
     char* s = (char*)this;
     for (i = 0; i < 5; i++) {
         if (*(unsigned char*)(s + 0x5218)) {
-            (this->*data_ov006_02141f5c[*(unsigned char*)(s + 0x5219)])(i);
+            (this->*s3DEspCardTable[*(unsigned char *)(s + 0x5219)])(i);
         }
         s += 0x18;
     }
@@ -1274,9 +1269,10 @@ void dScMg3DEsp_c::DealCards()
     int o;
     char *p;
 
-    n = data_ov006_0212e588[*(int *)(c + 0x5544)];
-    *(unsigned char *)(c + 0x5551) =
-        (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 5 >> 15);
+    n = data_ov006_0212e588[mDifficulty];
+    mTarget =
+        (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 5 >>
+                        15);
     for (i = 0; i < 5; i++) {
         a[i] = 0;
         b[i] = 0;
@@ -1289,7 +1285,7 @@ void dScMg3DEsp_c::DealCards()
         a[i] = k & 0xff;
     }
     m = (int)((n * ((((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff)) >> 15);
-    v = *(unsigned char *)(c + 0x5551);
+    v = mTarget;
     for (j = 0; j < 5; j++) {
         if (v == a[j]) {
             a[j] = a[m];
@@ -1314,7 +1310,7 @@ void dScMg3DEsp_c::DealCards()
             l++;
         } while (l < n);
     }
-    *(short *)(c + 0x51f0) = *(unsigned char *)(c + 0x5551);
+    *(short *)(c + 0x51f0) = mTarget;
 }
 
 // @symbol _ZN12dScMg3DEsp_c10ClearCardsEv
@@ -1342,17 +1338,18 @@ void dScMg3DEsp_c::SetDifficulty()
     int v = *(int *)(c + 0xbc);
     int mult = 2;
     if (v >= 0xf) {
-        *(int *)(c + 0x5544) = 3;
+        mDifficulty = 3;
     } else if (v >= 0xa) {
-        *(int *)(c + 0x5544) = 2;
+        mDifficulty = 2;
     } else if (v >= 5) {
-        *(int *)(c + 0x5544) = 1;
+        mDifficulty = 1;
     } else {
-        *(int *)(c + 0x5544) = 0;
+        mDifficulty = 0;
         mult = 3;
     }
-    *(unsigned char *)(c + 0x5552) =
-        (unsigned char)((mult * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf);
+    mFlashMode = (unsigned char)((mult * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) &
+                                          0x7fff)) >>
+                                 0xf);
 }
 
 // @symbol _ZN12dScMg3DEsp_c7ResolveEv
@@ -1371,8 +1368,9 @@ void dScMg3DEsp_c::Await()
     int i;
     struct E_968c *arr;
     UpdateCards();
-    if (*(unsigned char *)(c + 0x554f) == 0) return;
-    *(int *)(c + 0x5540) = 3;
+    if (mTouched == 0)
+        return;
+    mPhase = 3;
     arr = (struct E_968c *)c;
     for (i = 0; i < 5; i++) {
         char *base = (char *)&arr[i];
@@ -1390,27 +1388,26 @@ void dScMg3DEsp_c::Fade()
 {
     char *thiz = (char*)this;
     *(unsigned short*)(((int)thiz + 0x554a)) += 1;
-    if (*(unsigned short*)(thiz + 0x554a) >= 4) {
-        *(unsigned short*)(thiz + 0x554a) = 0;
+    if (mFadeTick >= 4) {
+        mFadeTick = 0;
         *(unsigned char*)(((int)thiz + 0x554e)) += 1;
-        _ZN3G2x13SetBlendAlphaEPVttttj(
-            (volatile unsigned short*)0x4001050, 0, 4,
-            *(unsigned char*)(thiz + 0x554e), 0x10 - *(unsigned char*)(thiz + 0x554e));
+        _ZN3G2x13SetBlendAlphaEPVttttj((volatile unsigned short *)0x4001050, 0, 4, mFade,
+                                       0x10 - mFade);
     }
     UpdateCards();
-    if (*(unsigned char*)(thiz + 0x554e) < 0x10)
+    if (mFade < 0x10)
         return;
-    *(unsigned char*)(thiz + 0x554e) = 0;
-    *(unsigned short*)(thiz + 0x554a) = 0;
-    *(int*)(thiz + 0x5540) = 2;
-    *(unsigned short*)(thiz + 0x5548) = 0;
+    mFade = 0;
+    mFadeTick = 0;
+    mPhase = 2;
+    mTimer = 0;
 }
 
 // @symbol _ZN12dScMg3DEsp_c4DealEv
 void dScMg3DEsp_c::Deal()
 {
     char *c = (char*)this;
-    if (*(unsigned short*)(c + 0x5548) != 0) {
+    if (mTimer != 0) {
         unsigned short *d = (unsigned short*)((int)(c + 0x5548));
         *d = *d - 1;
         if (*(short*)(c + 0x5548) < 0)
@@ -1420,7 +1417,7 @@ void dScMg3DEsp_c::Deal()
     SetDifficulty();
     ((dMg3DEspModel_c*)pad_4fd8)->StartIntro();
     DealCards();
-    *(int*)(c + 0x5540) = 1;
+    mPhase = 1;
     FreeGfxSlotsById(0x1d);
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;
@@ -1436,14 +1433,14 @@ void dScMg3DEsp_c::ResetRound()
     ClearCards();
     *(short*)(c + 0x5548) = 0;
     *(short*)(c + 0x554a) = 0;
-    *(unsigned char*)(c + 0x554e) = 0;
-    *(unsigned char*)(c + 0x554f) = 0;
-    *(unsigned char*)(c + 0x5550) = 0;
-    *(unsigned char*)(c + 0x5552) = 0xff;
-    *(unsigned char*)(c + 0x5553) = 0;
+    mFade = 0;
+    mTouched = 0;
+    mCorrect = 0;
+    mFlashMode = 0xff;
+    mFlashStep = 0;
     *(short*)(c + 0x554c) = 0;
-    *(unsigned char*)(c + 0x5554) = 0;
-    *(unsigned char*)(c + 0x5555) = 1;
+    mFlashBeats = 0;
+    mDone = 1;
 }
 
 extern "C" unsigned int data_ov006_0212e594[];
@@ -1454,10 +1451,10 @@ void dScMg3DEsp_c::Results()
     char *c = (char *)this;
 
     UpdateRows();
-    if (*(u16 *)(c + 0x5548) != 0) {
+    if (mTimer != 0) {
         (*(u16 *)(int)(((long long)(int)(c + 0x5548))))--;
-        if (*(u16 *)(c + 0x5548) == 0x40) {
-            if (*(u8 *)(c + 0x5550) != 0) {
+        if (mTimer == 0x40) {
+            if (mCorrect != 0) {
                 int idx = gMgScene != 0 ? gMgScene->mHudScore : 0;
                 while (idx >= 5)
                     idx -= 5;
@@ -1477,7 +1474,7 @@ void dScMg3DEsp_c::Results()
         }
         if (*(s16 *)(c + 0x5548) > 0)
             return;
-        if (*(u8 *)(c + 0x5550) != 0) {
+        if (mCorrect != 0) {
             int rem, quot;
             Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
             rem = gMgScene != 0 ? gMgScene->mHudScore : 0;
@@ -1499,18 +1496,18 @@ void dScMg3DEsp_c::Results()
                 StartRound(-1);
             }
         } else {
-            *(u16 *)(c + 0x554c) = 0;
-            *(u8 *)(c + 0x5555) = 0;
+            mIdleTimer = 0;
+            mDone = 0;
             Mg_ShowBanner(8, 0x80, 0xa0, 1, -1, 0xd);
             Mg_SetSharedState(MG_STATE_GAME_OVER);
-            *(int *)(c + 0x51e4) = 1;
+            mModelMuted = 1;
         }
         mPromptEnabled = 0;
-        *(u16 *)(c + 0x5548) = 0;
+        mTimer = 0;
     } else {
         int b;
         u8 i;
-        if (*(u8 *)(c + 0x5550) != 0)
+        if (mCorrect != 0)
             return;
         b = 0;
         i = gActivePlayerSlot;
@@ -1521,17 +1518,17 @@ void dScMg3DEsp_c::Results()
         if (b != 0)
             ClearCards();
         (*(u16 *)(int)(((long long)(int)(c + 0x554c))))++;
-        if (*(u16 *)(c + 0x554c) == 0xb4)
+        if (mIdleTimer == 0xb4)
             ClearCards();
-        if (*(u16 *)(c + 0x554c) >= 0xb5)
-            *(u16 *)(c + 0x554c) = 0xb5;
+        if (mIdleTimer >= 0xb5)
+            mIdleTimer = 0xb5;
     }
 }
 
 // @symbol _ZN12dScMg3DEsp_c4PlayEv
 void dScMg3DEsp_c::Play()
 {
-    (this->*data_ov006_02141fac[mPhase])();
+    (this->*s3DEspPhaseTable[mPhase])();
     UpdateFlash();
 }
 
@@ -1577,7 +1574,7 @@ void dScMg3DEsp_c::StartRound(int a)
         mLevel = 0;
         if (mLevel > 9998) mLevel = 9998; /* the ROM keeps this clamp; 16 bytes */
     }
-    unk_51e4 = 0;
+    mModelMuted = 0;
     ((dMg3DEspModel_c*)pad_4fd8)->Reset();
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 }
@@ -1587,8 +1584,8 @@ void dScMg3DEsp_c::StartRound(int a)
 // @symbol _ZN12dScMg3DEsp_c16CleanupResourcesEv
 s32 dScMg3DEsp_c::CleanupResources()
 {
-    data_ov006_02141e9c.Release();
-    data_ov006_02141e74.Release();
+    gEspIrieModelFile.Release();
+    gIrieBackModelFile.Release();
     return 1;
 }
 
@@ -1623,7 +1620,7 @@ s32 dScMg3DEsp_c::Render()
 // @symbol _ZN12dScMg3DEsp_c8BehaviorEv
 s32 dScMg3DEsp_c::Behavior()
 {
-    (this->*data_ov006_02141f2c[mRoundState])();
+    (this->*s3DEspRoundTable[mRoundState])();
     UpdateSlots();
     ((TextureTransformer *)mTextureTransformer)->Advance();
     ((dMg3DEspModel_c*)pad_4fd8)->Behavior();
@@ -1643,7 +1640,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     data_0209d45c = 0x11;
     data_0209d454 = 0x10;
-    _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
+    G3X::SetFog(false, 0, 2, 0x1000);
     InitialiseVramGlobals();
 
     /* main BG0CNT: priority 1 */
@@ -1659,14 +1656,17 @@ s32 dScMg3DEsp_c::InitResources()
     mCameraAngle = 0xc00;
     Camera_UpdateMatrices(pad_4660); /* the camera block starts at 0x4660 */
 
-    if (func_020179b4(&data_ov006_02141e9c, mModel1, 1) == 0) return 0;
+    if (func_020179b4(&gEspIrieModelFile, mModel1, 1) == 0)
+        return 0;
 
-    TextureTransformer::Prepare(**(BMD_File**)((void**)&data_ov006_02141e9c + 1), *(BTA_File*)&data_ov006_0213c844);
+    TextureTransformer::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
+                                *(BTA_File *)&data_ov006_0213c844);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &data_ov006_0213c844, 0, 0x1000, 0);
 
     if (((dMg3DEspModel_c*)pad_4fd8)->InitResources() == 0) return 0;
 
-    if (func_020179b4(&data_ov006_02141e74, mModel2, 1) == 0) return 0;
+    if (func_020179b4(&gIrieBackModelFile, mModel2, 1) == 0)
+        return 0;
 
     tmp = (Matrix4x3&)data_ov006_0213c88c;
     ((Model*)mModel1)->mat4x3 = (Matrix4x3&)data_ov006_0213c88c;
@@ -1714,8 +1714,8 @@ s32 dScMg3DEsp_c::InitResources()
 
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc884 = ~0x3f;
+    sMgClearBannerX = 0x80;
+    sMgClearBannerY = ~0x3f;
 
     mHudScore = 0;
 
@@ -1723,7 +1723,6 @@ s32 dScMg3DEsp_c::InitResources()
 }
 
 extern "C" {
-extern void *_ZN7fBase_cnwEj(unsigned int sz);
 extern void *_ZN11dScMgBase_cC2Ev(void *p);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
 extern void *_ZN5ModelC1Ev(void *);
@@ -1757,49 +1756,49 @@ void *dScMg3DEsp_c_classInit(void){
  * Retail order: the four model handles, the five animation handles, the
  * texture sequence, then the seven PMF state tables plain-copied from
  * the ROM PMF constants. */
-EspAnimSetModelFilePtr data_ov006_02141e9c(0x1ef);
-EspAnimSetModelFilePtr data_ov006_02141e74(0x202);
-EspAnimSetModelFilePtr data_ov006_02141e54(0x1e7);
-EspAnimSetModelFilePtr data_ov006_02141e94(0x1ee);
-EspAnimSetAnimationFileHandle data_ov006_02141e5c(0x1eb);
-EspAnimSetAnimationFileHandle data_ov006_02141e7c(0x1ec);
-EspAnimSetAnimationFileHandle data_ov006_02141e8c(0x1e9);
-EspAnimSetAnimationFileHandle data_ov006_02141e84(0x1ea);
-EspAnimSetAnimationFileHandle data_ov006_02141e6c(0x1ed);
-EspAnimSetTexSequenceFilePtr data_ov006_02141e64(0x1e8);
+EspAnimSetModelFilePtr gEspIrieModelFile(0x1ef);
+EspAnimSetModelFilePtr gIrieBackModelFile(0x202);
+EspAnimSetModelFilePtr gEspCardModelFile(0x1e7);
+EspAnimSetModelFilePtr gEspHamonModelFile(0x1ee);
+EspAnimSetAnimationFileHandle gEspCardStartAnimFile(0x1eb);
+EspAnimSetAnimationFileHandle gEspCardWaitAnimFile(0x1ec);
+EspAnimSetAnimationFileHandle gEspCardOpenAnimFile(0x1e9);
+EspAnimSetAnimationFileHandle gEspCardOpenWaitAnimFile(0x1ea);
+EspAnimSetAnimationFileHandle gEspHamonAnimFile(0x1ed);
+EspAnimSetTexSequenceFilePtr gEspCardTexSeqFile(0x1e8);
 
-dScMg3DEsp_cState data_ov006_02141f2c[3] = {
+dScMg3DEsp_cState s3DEspRoundTable[3] = {
     pmf_dScMg3DEsp_c_Wait,
     pmf_dScMg3DEsp_c_Play,
     pmf_dScMg3DEsp_c_Results,
 };
-dScMg3DEsp_cState data_ov006_02141fac[4] = {
+dScMg3DEsp_cState s3DEspPhaseTable[4] = {
     pmf_dScMg3DEsp_c_Deal,
     pmf_dScMg3DEsp_c_Fade,
     pmf_dScMg3DEsp_c_Await,
     pmf_dScMg3DEsp_c_Resolve,
 };
-dScMg3DEsp_cObjState data_ov006_02141f5c[3] = {
+dScMg3DEsp_cObjState s3DEspCardTable[3] = {
     pmf_dScMg3DEsp_c_CardExit,
     pmf_dScMg3DEsp_c_CardTouch,
     pmf_dScMg3DEsp_c_CardSeek,
 };
-dScMg3DEsp_cObjState data_ov006_02141f74[3] = {
+dScMg3DEsp_cObjState s3DEspRowTable[3] = {
     pmf_dScMg3DEsp_c_RowWait,
     pmf_dScMg3DEsp_c_RowDecay,
     pmf_dScMg3DEsp_c_RowFade,
 };
-dScMg3DEsp_cObjState data_ov006_02141f1c[2] = {
+dScMg3DEsp_cObjState s3DEspSlotFallTable[2] = {
     pmf_dScMg3DEsp_c_SlotWait,
     pmf_dScMg3DEsp_c_SlotFall,
 };
-dScMg3DEsp_cObjState data_ov006_02141f8c[4] = {
+dScMg3DEsp_cObjState s3DEspSlotRiseTable[4] = {
     pmf_dScMg3DEsp_c_SlotSetup,
     pmf_dScMg3DEsp_c_SlotRise,
     pmf_dScMg3DEsp_c_SlotKick,
     pmf_dScMg3DEsp_c_SlotDampen,
 };
-dScMg3DEsp_cState data_ov006_02141f44[3] = {
+dScMg3DEsp_cState s3DEspFlashTable[3] = {
     pmf_dScMg3DEsp_c_FlashOnce,
     pmf_dScMg3DEsp_c_FlashSync,
     pmf_dScMg3DEsp_c_FlashQuick,

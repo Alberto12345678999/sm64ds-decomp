@@ -30,6 +30,7 @@
  */
 
 #include "daObjKinokoTag_c.h"
+#include "SpawnInfo.h"
 #include "Model.h"
 #include "SharedFilePtr.h"
 
@@ -43,24 +44,6 @@ struct KinokoPositionWords {
 
 typedef char KinokoPositionWords_size_must_be_0xc[
     sizeof(KinokoPositionWords) == 0xc ? 1 : -1];
-
-/* Typed owner for the two 0x1c actor/process profile descriptors at
- * ov002:0x02108cb4 and 0x02108cd0. Field roles are recovered from
- * fBase_c/dActor_c consumers; exact original member spellings are not
- * preserved. */
-struct KinokoTagSpawnInfo {
-    daObjKinokoTag_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char KinokoTagSpawnInfo_size_must_be_0x1c[
-    sizeof(KinokoTagSpawnInfo) == 0x1c ? 1 : -1];
 
 extern "C" {
 extern SharedFilePtr data_ov002_0210da30;
@@ -79,7 +62,8 @@ extern "C" daObjKinokoTag_c *daObjKinokoTag_c_classInit_KINOKO_TAG()
     return new daObjKinokoTag_c();
 }
 
-extern "C" KinokoTagSpawnInfo g_profile_KINOKO_TAG = {
+/* The actor profile at ov002:0x02108cb4. */
+extern "C" SpawnInfo<daObjKinokoTag_c> g_profile_KINOKO_TAG = {
     daObjKinokoTag_c_classInit_KINOKO_TAG,
     0x0140,
     0x013e,
@@ -96,7 +80,8 @@ extern "C" daObjKinokoTag_c *daObjKinokoTag_c_classInit_KINOKO_CREATE_TAG()
     return new daObjKinokoTag_c();
 }
 
-extern "C" KinokoTagSpawnInfo g_profile_KINOKO_CREATE_TAG = {
+/* The actor profile at ov002:0x02108cd0. */
+extern "C" SpawnInfo<daObjKinokoTag_c> g_profile_KINOKO_CREATE_TAG = {
     daObjKinokoTag_c_classInit_KINOKO_CREATE_TAG,
     0x013f,
     0x013d,

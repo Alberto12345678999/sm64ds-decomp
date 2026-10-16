@@ -10,8 +10,8 @@
  *   header is Fix12i (mangles as i); this TU's call is Fix12<int>.
  *   The 4-arg KillByInvincibleChar stays a scalar extern; Behavior already
  *   calls the 3-arg method.
- * - GetFloorResult is not on dBgCh_Actr. Behavior skips 4 bytes to the
- *   SurfaceInfo and tests CLPS bit 0x20 (water).
+ * - Behavior skips 4 bytes past GetFloorResult's dBgPi to the SurfaceInfo
+ *   and tests CLPS bit 0x20 (water).
  * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mModelAnim
  *   explicitly. The qualified base call preserves the ROM entry point
  *   without a byte-offset pointer or a ModelAnim forwarding call.
@@ -36,10 +36,12 @@
 
 #include "common.h"
 #include "daBmb_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "dBgCh_Actr.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -80,8 +82,6 @@ int   SurfaceInfo_TestFlag0x20(int *si);
 void  _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *, void *, void *, unsigned int);
 
 
-
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *);
 
 /* dCcAc_c::Init / dBgCh_Actr::Init stay scalar: they carry Fix12<int> BY
    VALUE (6az). dBgCh_Actr::Init's header is Fix12i, which mangles as i;
@@ -134,29 +134,16 @@ daBmb_c *daBmb_c_classInit(void)
 
 }
 
-struct BmbSpawnInfo {
-    daBmb_c *(*classInit)();
-    s16 executePriority; /* +4: also BOMBHEI registry id 0x00ce = 206 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char BmbSpawnInfo_size_must_be_0x1c[
-    sizeof(BmbSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_BOMBHEI
-extern "C" BmbSpawnInfo g_profile_BOMBHEI = {
+extern "C" SpawnInfo<daBmb_c> g_profile_BOMBHEI = {
     daBmb_c_classInit,
-    0x00ce,
+    0x00ce, /* BOMBHEI registry id 206 */
     0x002d,
     0x10008083,
     0x00032000,
     0x00046000,
     0x01000000,
-    0x01000000
+    0x01000000,
 };
 
 /* ==========================================================================
@@ -305,7 +292,7 @@ int daBmb_c::Behavior()
             }
 
             if (mWithMeshClsn.IsOnGround()) {
-                if (SurfaceInfo_TestFlag0x20((int*)((char*)_ZNK10dBgCh_Actr14GetFloorResultEv((char *)&mWithMeshClsn)+4))) {
+                if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4))) {
                     func_ov102_0214ae1c(this);
                     return 1;
                 }

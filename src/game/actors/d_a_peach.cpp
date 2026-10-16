@@ -19,6 +19,7 @@
 #include "dExtFrameCtrl_c.h"
 #include "dCc_c.h"
 #include "types.h"
+#include "dBgCh_Actr.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -54,8 +55,6 @@ extern int data_020a0e68[];
 
 /* mesh collision */
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
-extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *c);
-extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void *c);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, dActor_c *a, int b, int c, Vector3_16 *d, Vector3_16 *e);
 
@@ -78,8 +77,7 @@ extern int data_ov085_021304c4[];
 extern void *data_ov085_021304d4[];
 extern int data_ov085_021304e4[];
 extern void *data_ov085_021304ec[];
-extern daPeach_c::StateFunc data_ov085_0213055c[];
-
+extern daPeach_c::StateEntry data_ov085_0213055c[];
 }
 
 #pragma defer_codegen off
@@ -151,7 +149,7 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
     int wallN[3];
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);
     if (clsn->IsOnGround()) {
-        ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(clsn) + 4))->CopyNormalTo(*(Vector3 *)floorN);
+        ((SurfaceInfo *)((char *)clsn->GetFloorResult() + 4))->CopyNormalTo(*(Vector3 *)floorN);
         if (floorN[1] != 0) {
             int x = FX_MUL(floorN[0], words[0xa4 / 4]);
             int z = FX_MUL(floorN[2], words[0xac / 4]);
@@ -159,7 +157,7 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(clsn) + 4))->CopyNormalTo(*(Vector3 *)wallN);
+        ((SurfaceInfo *)((char *)clsn->GetWallResult() + 4))->CopyNormalTo(*(Vector3 *)wallN);
     }
 }
 
@@ -337,25 +335,23 @@ int daPeach_c::State4()
 }
 
 // @symbol _ZN9daPeach_c17CallStateBehaviorEv
-/* The second member of the selected pair. mStateFuncs points at a pair of
+/* The behavior half of the selected row. The table rows are pairs of
  * pointers-to-member copied out of the ten ROM constants at 0x0212ff34. */
 void daPeach_c::CallStateBehavior()
 {
-    StateFunc *func = mStateFuncs + 1;
-    (this->**func)();
+    (this->*mState->behavior)();
 }
 
 // @symbol _ZN9daPeach_c13CallStateInitEv
 void daPeach_c::CallStateInit()
 {
-    StateFunc *func = mStateFuncs;
-    (this->**func)();
+    (this->*mState->init)();
 }
 
 // @symbol _ZN9daPeach_c8SetStateEi
 void daPeach_c::SetState(int state)
 {
-    mStateFuncs = data_ov085_0213055c + state * 2;
+    mState = &data_ov085_0213055c[state];
     CallStateInit();
 }
 

@@ -169,14 +169,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_02142188",
+      "symbol": "gJumpBack02ModelFile",
       "address": "0x02142188",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 0x204; InitResources selects it through data_ov006_02142184"
     },
     {
-      "symbol": "data_ov006_02142190",
+      "symbol": "gJumpBack01ModelFile",
       "address": "0x02142190",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -573,12 +573,12 @@
     {
       "from": "@646",
       "to": "@77",
-      "evidence": "emitted destructor-registration node name collides with the configured @600 on ov081 on main; @77 is unused everywhere and shorter than the original. Folding OnYoshiTryEat in (2026-10-12) shifted the per-TU @NNN uniquifier so mwcc now emits this node (the file-0x204 handle's, paired with data_ov006_02142188 in __sinit) as @646."
+      "evidence": "emitted destructor-registration node name collides with the configured @600 on ov081 on main; @77 is unused everywhere and shorter than the original. Folding OnYoshiTryEat in (2026-10-12) shifted the per-TU @NNN uniquifier so mwcc now emits this node (the file-0x204 handle's, paired with gJumpBack02ModelFile in __sinit) as @646."
     },
     {
       "from": "@645",
       "to": "@599",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, and folding OnYoshiTryEat in (2026-10-12) shifted it again, so mwcc emits this node (the file-0x203 handle's, paired with data_ov006_02142190 in __sinit) as @645 now; licensed under the existing pin @599"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, and folding OnYoshiTryEat in (2026-10-12) shifted it again, so mwcc emits this node (the file-0x203 handle's, paired with gJumpBack01ModelFile in __sinit) as @645 now; licensed under the existing pin @599"
     }
   ],
   "symbol_binding_rewrites": [
@@ -653,7 +653,7 @@
       "source": "0x02130ee8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142190",
+      "symbol": "gJumpBack01ModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142190"
@@ -683,7 +683,7 @@
       "source": "0x02130ef8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142188",
+      "symbol": "gJumpBack02ModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142188"

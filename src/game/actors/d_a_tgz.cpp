@@ -49,6 +49,7 @@
 #include "dBgCh_Gnd.h"
 #include "decl_dBgCh_Actr.h"
 #include "decl_Particle.h"
+#include "dBgCh_Actr.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -86,7 +87,6 @@ void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
 void func_0201267c(unsigned int id, const Vector3 *pos);
-void * _ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
 int _ZN4cstd4fdivEii(int a, int b);
 s32 func_02010844(void *unused, Vector3 *v, s16 angle);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos, unsigned int count, int spread, short angle);
@@ -208,7 +208,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 return;
             }
             {
-                dBgPi *fr = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(clsn);
+                dBgPi *fr = (dBgPi *)clsn->GetFloorResult();
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {

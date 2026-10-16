@@ -515,70 +515,70 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_02141e54",
+      "symbol": "gEspCardModelFile",
       "address": "0x02141e54",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 0x1e7; consumed by func_020179b4 in InitResources and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e5c",
+      "symbol": "gEspCardStartAnimFile",
       "address": "0x02141e5c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x1eb; consumed by ModelAnim::SetAnim and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e64",
+      "symbol": "gEspCardTexSeqFile",
       "address": "0x02141e64",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "texture-sequence resource handle constructed with file ID 0x1e8; consumed by TextureSequence::LoadFile in InitResources and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e6c",
+      "symbol": "gEspHamonAnimFile",
       "address": "0x02141e6c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x1ed; consumed by dExtFrameCtrl_c::LoadFile and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e74",
+      "symbol": "gIrieBackModelFile",
       "address": "0x02141e74",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 0x202; consumed by InitResources and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e7c",
+      "symbol": "gEspCardWaitAnimFile",
       "address": "0x02141e7c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x1ec; consumed by ModelAnim::SetAnim and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e84",
+      "symbol": "gEspCardOpenWaitAnimFile",
       "address": "0x02141e84",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x1ea; consumed by ModelAnim::SetAnim and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e8c",
+      "symbol": "gEspCardOpenAnimFile",
       "address": "0x02141e8c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x1e9; consumed by ModelAnim::SetAnim and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e94",
+      "symbol": "gEspHamonModelFile",
       "address": "0x02141e94",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 0x1ee; consumed by Model::LoadFile in InitResources and released in CleanupResources"
     },
     {
-      "symbol": "data_ov006_02141e9c",
+      "symbol": "gEspIrieModelFile",
       "address": "0x02141e9c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -655,49 +655,49 @@
       "evidence": "compiler-generated destructor-registration node for the 0x1ed animation handle"
     },
     {
-      "symbol": "data_ov006_02141f1c",
+      "symbol": "s3DEspSlotFallTable",
       "address": "0x02141f1c",
       "size": "0x10",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[2] slot state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f2c",
+      "symbol": "s3DEspRoundTable",
       "address": "0x02141f2c",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cState[3] round-state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f44",
+      "symbol": "s3DEspFlashTable",
       "address": "0x02141f44",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cState[3] flash-mode table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f5c",
+      "symbol": "s3DEspCardTable",
       "address": "0x02141f5c",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[3] row state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f74",
+      "symbol": "s3DEspRowTable",
       "address": "0x02141f74",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[3] card state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f8c",
+      "symbol": "s3DEspSlotRiseTable",
       "address": "0x02141f8c",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[4] slot-type handler table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141fac",
+      "symbol": "s3DEspPhaseTable",
       "address": "0x02141fac",
       "size": "0x20",
       "binding": "STB_GLOBAL",
@@ -1545,7 +1545,7 @@
       "source": "0x02130d08",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e9c",
+      "symbol": "gEspIrieModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e9c"
@@ -1575,7 +1575,7 @@
       "source": "0x02130d18",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e74",
+      "symbol": "gIrieBackModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e74"
@@ -1595,7 +1595,7 @@
       "source": "0x02130d24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e54",
+      "symbol": "gEspCardModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e54"
@@ -1615,7 +1615,7 @@
       "source": "0x02130d30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e94",
+      "symbol": "gEspHamonModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e94"
@@ -1635,7 +1635,7 @@
       "source": "0x02130d3c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e5c",
+      "symbol": "gEspCardStartAnimFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e5c"
@@ -1665,7 +1665,7 @@
       "source": "0x02130d4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e7c",
+      "symbol": "gEspCardWaitAnimFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e7c"
@@ -1685,7 +1685,7 @@
       "source": "0x02130d54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e8c",
+      "symbol": "gEspCardOpenAnimFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e8c"
@@ -1705,7 +1705,7 @@
       "source": "0x02130d60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e84",
+      "symbol": "gEspCardOpenWaitAnimFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e84"
@@ -1725,7 +1725,7 @@
       "source": "0x02130d6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e6c",
+      "symbol": "gEspHamonAnimFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e6c"
@@ -1745,7 +1745,7 @@
       "source": "0x02130d78",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141e64",
+      "symbol": "gEspCardTexSeqFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141e64"
@@ -1775,7 +1775,7 @@
       "source": "0x02130d84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f2c",
+      "symbol": "s3DEspRoundTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f2c"
@@ -1815,7 +1815,7 @@
       "source": "0x02130d94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141fac",
+      "symbol": "s3DEspPhaseTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141fac"
@@ -1865,7 +1865,7 @@
       "source": "0x02130da8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f5c",
+      "symbol": "s3DEspCardTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f5c"
@@ -1905,7 +1905,7 @@
       "source": "0x02130db8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f74",
+      "symbol": "s3DEspRowTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f74"
@@ -1945,7 +1945,7 @@
       "source": "0x02130dc8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f1c",
+      "symbol": "s3DEspSlotFallTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f1c"
@@ -1975,7 +1975,7 @@
       "source": "0x02130dd4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f8c",
+      "symbol": "s3DEspSlotRiseTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f8c"
@@ -2025,7 +2025,7 @@
       "source": "0x02130de8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f44",
+      "symbol": "s3DEspFlashTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f44"
@@ -2073,52 +2073,52 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1823",
+      "from": "@1822",
       "to": "@1809",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1823 now; licensed under the existing pin @1809"
     },
     {
-      "from": "@1814",
+      "from": "@1813",
       "to": "@1800",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1814 now; licensed under the existing pin @1800"
     },
     {
-      "from": "@1815",
+      "from": "@1814",
       "to": "@1801",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1815 now; licensed under the existing pin @1801"
     },
     {
-      "from": "@1816",
+      "from": "@1815",
       "to": "@1802",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1816 now; licensed under the existing pin @1802"
     },
     {
-      "from": "@1817",
+      "from": "@1816",
       "to": "@1803",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1817 now; licensed under the existing pin @1803"
     },
     {
-      "from": "@1818",
+      "from": "@1817",
       "to": "@1804",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1818 now; licensed under the existing pin @1804"
     },
     {
-      "from": "@1819",
+      "from": "@1818",
       "to": "@1805",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1819 now; licensed under the existing pin @1805"
     },
     {
-      "from": "@1820",
+      "from": "@1819",
       "to": "@1806",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1820 now; licensed under the existing pin @1806"
     },
     {
-      "from": "@1821",
+      "from": "@1820",
       "to": "@1807",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1821 now; licensed under the existing pin @1807"
     },
     {
-      "from": "@1822",
+      "from": "@1821",
       "to": "@1808",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1822 now; licensed under the existing pin @1808"
     }

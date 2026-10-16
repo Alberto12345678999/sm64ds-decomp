@@ -52,6 +52,14 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *kcl, void *mtx, int scale, short angleY, void *clps);
 }
 
+/* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
+ * off screen. This int-returning predicate is what makes the ROM
+ * materialize 0/1 with movne/moveq before testing it; a direct `if` on the
+ * bit folds the two. */
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol daObjRc_Guruguru_c_classInit
@@ -112,11 +120,7 @@ s32 daObjRc_Guruguru_c::Behavior()
        is what the ROM does here. */
     mAngleY += mAngVelY;
 
-    /* The temporary is load-bearing: the ROM materialises the predicate with
-       movne/moveq and then tests it, where a direct `if` folds the two.
-       Bit 0x8 is the framework off-screen flag (include/dActor_c.h). */
-    int flagged = (int)((mFlags & 8) != 0);
-    if (flagged != 0) {
+    if (IsOffScreen(this)) {
         if (mMeshCollider.IsEnabled())
             mMeshCollider.Disable();
         return 1;

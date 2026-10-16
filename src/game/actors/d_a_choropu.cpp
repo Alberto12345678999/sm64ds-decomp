@@ -522,22 +522,23 @@ void daChoropu_c::func_ov080_02124088()
         }
     }
 
-    if (acc < 7) goto tail_inc;
-    if (acc != 7) return;
+    if (acc >= 7) {
+        if (acc != 7)
+            return;
 
-    v3.x = mPosX;
-    {
-        int y3 = mPosY;
-        v3.y = y3;
-        v3.z = mPosZ;
-        v3.y = y3 + 0x64000;
+        v3.x = mPosX;
+        {
+            int y3 = mPosY;
+            v3.y = y3;
+            v3.z = mPosZ;
+            v3.y = y3 + 0x64000;
+        }
+        dActor_c::Spawn(daChoropu_ACTOR_ONEUPKINOKO, 0, v3, 0, mAreaId, -1);
+
+        mTimesHit = 8;
+        return;
     }
-    dActor_c::Spawn(daChoropu_ACTOR_ONEUPKINOKO, 0, v3, 0, mAreaId, -1);
 
-    mTimesHit = 8;
-    return;
-
-tail_inc:
     {
         u8 *p184 = (u8 *)LAUND(&mTimesHit);
         (*p184)++;

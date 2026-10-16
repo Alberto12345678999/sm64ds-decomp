@@ -46,6 +46,13 @@ extern void LoadSilverStarAndNumber();
 extern "C" ItemTagAction data_ov002_0210dd30[];
 }
 
+/* Actor IDs 0xf, 0x10 and 0x11 are three of the daObjBlockL_c brick
+ * blocks a tag can attach to. This int-returning predicate is what makes
+ * the ROM materialize 0/1 before testing it. */
+static inline int IsActorID(dActor_c *actor, int id) {
+    return actor->actorID == id;
+}
+
 /* Emission order is ROM order: the destructor pair must stay first.
  * Do not reorder. */
 #pragma defer_codegen off
@@ -133,38 +140,25 @@ int daObjBlockItemTag_c::CleanupResources()
 // @symbol _ZN19daObjBlockItemTag_c8BehaviorEv
 int daObjBlockItemTag_c::Behavior()
 {
-    dActor_c *block = 0;
-    if (mIsAttached != 0)
-        goto attached;
-
-    block = dActor_c::Next(0);
-    while (block) {
-        u16 type = block->actorID;
-        int isBlock;
-        isBlock = (type == 0x10);
-        if (!isBlock) {
-            isBlock = (type == 0x0f);
-            if (!isBlock) {
-                isBlock = (type == 0x11);
-                if (!isBlock)
-                    goto next;
+    if (mIsAttached == 0) {
+        dActor_c *block;
+        for (block = dActor_c::Next(0); block != 0; block = dActor_c::Next(block)) {
+            if (IsActorID(block, 0x10) || IsActorID(block, 0x0f) || IsActorID(block, 0x11)) {
+                if (Vec3_Dist(&mPosX, &block->mPosX) < 0x32000) {
+                    ((daObjBlockL_c *)block)->mLinkedActor = this;
+                    mIsAttached = 1;
+                    return 1;
+                }
             }
         }
-        if (Vec3_Dist(&mPosX, &block->mPosX) < 0x32000) {
-            ((daObjBlockL_c *)block)->mLinkedActor = this;
-            mIsAttached = 1;
+
+        /* Always true after the loop, but the ROM keeps the test. */
+        if (block == 0) {
+            MarkForDestruction();
             return 1;
         }
-    next:
-        block = dActor_c::Next(block);
     }
 
-    if (block)
-        goto attached;
-    MarkForDestruction();
-    return 1;
-
-attached:
     if (mActionPending != 0) {
         int index = mActionIndex;
         (this->*data_ov002_0210dd30[index])();

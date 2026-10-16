@@ -47,6 +47,7 @@ enum daChair_c_AssetId {
 #include "SharedFilePtr.h"
 #include "SurfaceInfo.h"
 #include "Player.h"
+#include "dBgCh_Actr.h"
 
 #pragma opt_common_subs off
 
@@ -84,7 +85,6 @@ void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 void Vec3_Sub(Vec3 *res, Vec3 *v0, Vec3 *v1);
 s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
 s32 Vec3_HorzLen(const Vector3 *v);
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *clsn);
 void AddVec3(Vec3 *dst, Vec3 *add, Vec3 *src);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
@@ -377,7 +377,7 @@ void daChair_c::State2()
             if (mWithMeshClsn.IsOnGround() != 0) {
                 Break();
             } else if (mWithMeshClsn.IsOnWall() != 0) {
-                void *wall = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
+                void *wall = mWithMeshClsn.GetWallResult();
                 Vec3 normal;
                 ((SurfaceInfo *)((char *)wall + 4))->CopyNormalTo(
                     *(Vector3 *)&normal);

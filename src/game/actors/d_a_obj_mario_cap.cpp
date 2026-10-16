@@ -140,6 +140,7 @@ enum daObjMarioCap_c_AssetId {
 #include "Sound.h"
 #include "SurfaceInfo.h"
 #include "dBgCh_Gnd.h"
+#include "dBgCh_Actr.h"
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
@@ -262,9 +263,6 @@ void  _Z14ApproachLinearRiii(int *x, int target, int step);
 short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 int   _ZN4cstd4fdivEii(int a, int b);
 
-
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *self);
-char *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
 
 /* dCcAc_c::Init and dBgCh_Actr::Init take Fix12<int> by value, which has no
    implicit int conversion (notes/mwccarm-codegen.md 6az). */
@@ -1066,7 +1064,7 @@ int daObjMarioCap_c::Slide()
         mHorzSpeed = 0;
         return 1;
     }
-    fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+    fr = (char *)mWithMeshClsn.GetFloorResult();
     ((SurfaceInfo *)(fr + 4))->CopyNormalTo(*(Vector3 *)&mFloorNormalX);
     surface = func_02037e58(fr + 4);
     mSlopeAngle = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
@@ -1384,7 +1382,7 @@ void daObjMarioCap_c::CheckTouch()
     int state;
 
     if (mWithMeshClsn.IsOnWall() != 0) {
-        void* wr = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
+        void *wr = mWithMeshClsn.GetWallResult();
         ((SurfaceInfo *)((char*)wr + 4))->CopyNormalTo(*(Vector3 *)&normal[0]);
         mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
             this, normal[0], normal[2], mPrevAngleY);

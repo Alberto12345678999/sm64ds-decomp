@@ -30,6 +30,7 @@ enum d_a_obj_km2_ukishima_AssetId {
 };
 
 #include "daObjKm2_Ukishima_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 
 struct CLPS_Block;
@@ -68,19 +69,6 @@ extern UkishimaModelFilePtr gKm2UkishimaModelFile;     /* BMD, file 1643 */
 extern UkishimaCollisionFilePtr gKm2UkishimaCollisionFile; /* KCL, file 1644 */
 }
 
-struct UkishimaSpawnInfo {
-    daObjKm2_Ukishima_c *(*classInit)();
-    s16 executePriority; /* +4: also KM2_UKISHIMA registry id 0x0091 = 145 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char UkishimaSpawnInfo_size_must_be_0x1c[
-    sizeof(UkishimaSpawnInfo) == 0x1c ? 1 : -1];
-
 /* 20.12; the shared setup helper writes this to mBobAmplitude. */
 enum { kBobAmplitude = 0xf50 };
 
@@ -91,9 +79,9 @@ extern "C" daObjKm2_Ukishima_c *daObjKm2_Ukishima_c_classInit()
 }
 
 // @symbol g_profile_KM2_UKISHIMA
-extern "C" UkishimaSpawnInfo g_profile_KM2_UKISHIMA = {
+extern "C" SpawnInfo<daObjKm2_Ukishima_c> g_profile_KM2_UKISHIMA = {
     daObjKm2_Ukishima_c_classInit,
-    0x0091,
+    0x0091, /* KM2_UKISHIMA registry id 145 */
     0x00d8,
     2,
     0x00060000,

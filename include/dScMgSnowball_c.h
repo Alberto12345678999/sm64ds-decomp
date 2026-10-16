@@ -120,7 +120,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     void ResetScene();           /* seed the course + sprite tables */
 
     /* mArray4 records: the 50 on-course objects, dispatched by the four
-       sinit-built PMF tables at data_ov006_02143020/38/50/70 */
+       sinit-built PMF tables at sSnowballBitStateTable/38/50/70 */
     void Bit_DrawAll();           /* render live mArray4 records */
     void Bit_State2(int idx);    /* table 02143020 entry 2: cooldown tick */
     void Bit_State1(int idx);    /* table 02143020 entry 1 */
@@ -177,7 +177,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     s32   mBallSize;        /* 0xaba0 -- grows with the climb, capped 0x37000,
                                 shrinks by 0x1000 a tick while melting */
     Model mModel;           /* 0xaba4 -- 0x50, see file banner */
-    s32   unk_abf4;         /* 0xabf4 -- the constructor's own `= 0` write */
+    s32 mBallBmd; /* 0xabf4 -- the snowball BMD, loaded by InitResources and freed in slot 3 */
     u8    mProbeHit[0x20];  /* 0xabf8 -- one flag per 32-step angle probe: set when that probe hit solid or breakable */
     u8    mProbePush[0x20]; /* 0xac18 -- same probe hit solid; drives the push-out */
     u8    mProbeWater[0x20];/* 0xac38 -- same probe is inside water */
@@ -204,7 +204,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     u8    mAllWater;        /* 0xb9e5 -- every probe was in water */
     u8    mSoundPending;    /* 0xb9e6 */
     u8    pad_b9e7[0x1];    /* 0xb9e7 */
-    s32   unk_b9e8;         /* 0xb9e8 */
+    s32 mHitSoundX;         /* 0xb9e8 -- x of the prop hit; pans sound 0x16a (y at 0xb9ec) */
     u8    pad_b9ec[0x8];    /* 0xb9ec */
     s32   mState;           /* 0xb9f4 -- 0 count-in, 1 rolling, 2/3 crash,
                                 4 melt, 5 over */

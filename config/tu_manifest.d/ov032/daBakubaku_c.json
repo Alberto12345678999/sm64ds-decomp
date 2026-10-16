@@ -1789,67 +1789,67 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@856",
+      "from": "@849",
       "to": "@834",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@857",
+      "from": "@850",
       "to": "@836",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@858",
+      "from": "@851",
       "to": "@838",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@860",
+      "from": "@853",
       "to": "@840",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@862",
+      "from": "@855",
       "to": "@842",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@864",
+      "from": "@857",
       "to": "@844",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@866",
+      "from": "@859",
       "to": "@846",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@868",
+      "from": "@861",
       "to": "@847",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@870",
+      "from": "@863",
       "to": "@33",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@872",
+      "from": "@865",
       "to": "@34",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@874",
+      "from": "@867",
       "to": "@35",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@876",
+      "from": "@869",
       "to": "@36",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     },
     {
-      "from": "@878",
+      "from": "@871",
       "to": "@37",
       "evidence": "Compiler-generated input name after the ten native local vectors. Exact section, symbol and typed-reference correspondence to the accepted baseline is established by these 13 temporary-name mappings; canonical output names and descriptor contents remain unchanged."
     }

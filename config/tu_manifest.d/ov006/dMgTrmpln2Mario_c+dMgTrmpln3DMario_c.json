@@ -222,7 +222,7 @@
       "ordinal": 28
     },
     {
-      "symbol": "func_ov006_020ca840",
+      "symbol": "Trmp2Mario_EnterAll",
       "address": "0x020ca840",
       "size": "0x000000a0",
       "legacy_source": "src/func_ov006_020ca840.c",

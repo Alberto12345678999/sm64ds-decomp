@@ -7,10 +7,8 @@
  * InitResources the key function that emits the vtable.
  *
  * leftovers:
- * - mLevel (dScMgBase_c) and unk_4664 (dScMgD3DBase_c) stay placeholders:
- *   they are read here as the `mLevel % 5` egg check and the Render flag
- *   test, but naming them is the shared header's change -- every minigame
- *   scene reads them under the placeholder spellings.
+ * - mLevel (dScMgBase_c) and mDrawSubScreen (dScMgD3DBase_c) are read here
+ *   as the `mLevel % 5` egg check and the Render flag test.
  * - `base + 0x466c` / `base + 0x4728` still address the two per-minigame
  *   cameras by offset: include/dScMgD3DBase_c.h already calls them camera
  *   elements and records "typing it as a real array is its own change".
@@ -74,8 +72,8 @@ struct MgJumpModelFilePtr : SharedFilePtr {
     MgJumpModelFilePtr(u32 fileID);
     ~MgJumpModelFilePtr();
 };
-extern MgJumpModelFilePtr data_ov006_02142188;
-extern MgJumpModelFilePtr data_ov006_02142190;
+extern MgJumpModelFilePtr gJumpBack02ModelFile;
+extern MgJumpModelFilePtr gJumpBack01ModelFile;
 
 /* Everything below that decl_common.h does not declare. Keep it above the
  * first function: tools/tiers.py charges text between two functions to the
@@ -112,7 +110,7 @@ extern int  data_0209e650;
 extern int  data_ov006_0213cb48;
 extern u8   data_0209d45c;
 extern s16  data_02082614;
-extern int  data_ov006_02140418;
+extern int sJump3DMarioCount;
 extern int  data_ov006_02140304;
 extern int  data_ov006_02140434;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Result;
@@ -178,13 +176,13 @@ void dScMgJump_c::StartRound(int arg)
     Jump3D_Arrange(mLevel, idx);
 
     if (mLevel < 0xf)
-        data_ov006_02140328 = 3;
+        sHeyhoCount = 3;
     else if (mLevel < 0x14)
-        data_ov006_02140328 = 4;
+        sHeyhoCount = 4;
     else if (mLevel < 0x19)
-        data_ov006_02140328 = 5;
+        sHeyhoCount = 5;
     else
-        data_ov006_02140328 = 6;
+        sHeyhoCount = 6;
 
     Heyho_SpawnAll((void *)mLevel, idx);
     BeginIntro();
@@ -263,9 +261,9 @@ s32 dScMgJump_c::InitResources()
         return 0;
 
     if (param1 & 1) {
-        data_ov006_02142184 = &data_ov006_02142188;
+        data_ov006_02142184 = &gJumpBack02ModelFile;
     } else {
-        data_ov006_02142184 = &data_ov006_02142190;
+        data_ov006_02142184 = &gJumpBack01ModelFile;
     }
     modelFile = Model::LoadFile(*(SharedFilePtr *)data_ov006_02142184);
     r = mModel.SetFile((BMD_File *)modelFile, 1, -1);
@@ -402,7 +400,7 @@ void dScMgJump_c::State_Final()
   mAccum += mAccumStep >> 12;
   mAccumStep += 0x600;
   Jump3D_UpdateAll();
-  int same = (int)(data_ov006_02140434 == data_ov006_02140418);
+  int same = (int)(data_ov006_02140434 == sJump3DMarioCount);
   if(same == 0) return;
   dScMgBase_c *shared = gMgScene;
   if(shared != 0){
@@ -436,14 +434,14 @@ s32 dScMgJump_c::Behavior()
 }
 
 // @symbol _ZN11dScMgJump_c6RenderEv
-/* Slot 9. Draws the instruction rows while unk_4664 == 1, then programs the
+/* Slot 9. Draws the instruction rows while mDrawSubScreen == 1, then programs the
  * light vector and light color registers at 0x040004c8 and 0x040004cc
  * (lights 0 and 1, hence volatile) and renders the model. The row
  * sprites and the ov006 draw helpers are unnamed in symbols.txt. */
 s32 dScMgJump_c::Render()
 {
 
-    if (unk_4664 == 1) {
+    if (mDrawSubScreen == 1) {
         int count;
         int y;
         int i;
@@ -531,5 +529,5 @@ s32 dScMgJump_c::CleanupResources()
 
 /* The scene's model file handles, registered in file-ID order; file 0x203
  * sits at 0x02142190, file 0x204 at 0x02142188. */
-MgJumpModelFilePtr data_ov006_02142190(0x203);
-MgJumpModelFilePtr data_ov006_02142188(0x204);
+MgJumpModelFilePtr gJumpBack01ModelFile(0x203);
+MgJumpModelFilePtr gJumpBack02ModelFile(0x204);

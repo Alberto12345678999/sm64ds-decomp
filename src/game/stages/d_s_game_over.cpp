@@ -17,7 +17,7 @@
  * deslop leftovers:
  * - func_ov003_020b060c and func_ov003_020b0730 are non-virtual methods.
  *   The address stays the method name. 060c keeps the GO_OFF pointer
- *   arithmetic and the goto/case skeleton; member indexing does not match.
+ *   arithmetic; member indexing does not match.
  * - `#pragma opt_strength_reduction off` is file-global last-wins;
  *   func_ov003_020b060c needs it (glyph-loop induction) and the other nine
  *   members verify with it set, so it costs nothing. No narrower form.
@@ -116,6 +116,17 @@ void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
 void func_02012790(int se);
+}
+
+/* The stylus went down this frame: held, with the held state just changed
+ * (see PlayerInput.h). Int-returning, so the ROM materializes the 0/1 it
+ * tests. */
+static inline int IsTouchStarted() {
+    int started = 0;
+    unsigned char slot = gActivePlayerSlot;
+    if (gTouchHeld[slot * 4] != 0)
+        started = gTouchEdge[slot * 4] != 0;
+    return started;
 }
 
 /* Reconstructed source-style name: SM64DS proves dScGameOver_c through RTTI,
@@ -298,96 +309,67 @@ s32 dScGameOver_c::CleanupResources()
  * prompt: state 0 reads the stylus box and the button, state 1 runs the two
  * countdowns down and commits -- continue (func_0202ae74) on "yes", or a
  * scene fade back out on "no". mIntroPhase gates all of it until the intro
- * is in. The goto skeleton is the ROM's own branch shape. */
- // @symbol _ZN13dScGameOver_c8BehaviorEv
+ * is in. */
+// @symbol _ZN13dScGameOver_c8BehaviorEv
 s32 dScGameOver_c::Behavior()
 {
-    if (data_0209f5bc->f05() == 0)
-        goto end;
+    if (data_0209f5bc->f05() != 0) {
+        func_ov003_020b060c();
 
-    func_ov003_020b060c();
+        if (mIntroPhase < 2)
+            return 1;
 
-    if (mIntroPhase < 2)
-        return 1;
-
-    switch (mCursorState) {
-        case 0: goto state0;
-        case 1: goto state1;
-        default: goto end;
-    }
-
-state0:
-        {
-            unsigned char idx = gActivePlayerSlot;
-            int b = 0;
-            if (gTouchHeld[idx * 4] != 0)
-                b = (gTouchEdge[idx * 4] != 0);
-            if (!b) {
-                if (!IsButtonInputValid())
-                    goto end;
-            }
-        }
-        {
-            unsigned char idx = gActivePlayerSlot;
-            if ((unsigned char)(gTouchX[idx * 4] - 8) < 0xf0) {
-                if ((unsigned char)(gTouchY[idx * 4] - 0x38) < 0x20)
-                    goto left;
-            }
-        }
-        if (mSelection != 0)
-            goto right_check;
-        if (!IsButtonInputValid())
-            goto right_check;
-    left:
-        if (mSelection == 0)
-            mFlashTimer = (unsigned char)(data_0208ee44 << 3);
-        mSelection = 0;
-        func_ov003_020b0730(0);
-        mCommitTimer = (unsigned char)(data_0208ee44 << 4);
-        func_02012790(0x9a);
-        mCursorState = 1;
-        goto end;
-
-    right_check:
-        {
-            unsigned char idx = gActivePlayerSlot;
-            if ((unsigned char)(gTouchX[idx * 4] - 8) < 0xf0) {
-                if ((unsigned char)(gTouchY[idx * 4] - 0x68) < 0x20)
-                    goto right;
-            }
-        }
-        if (mSelection != 1)
-            goto end;
-        if (!IsButtonInputValid())
-            goto end;
-    right:
-        if (mSelection == 1)
-            mFlashTimer = (unsigned char)(data_0208ee44 << 3);
-        mSelection = 1;
-        func_ov003_020b0730(0);
-        mCommitTimer = (unsigned char)(data_0208ee44 << 4);
-        func_02012790(0x9b);
-        mCursorState = 1;
-        goto end;
-
-state1:
-        if (mFlashTimer != 0) {
-            mFlashTimer -= data_0208ee44;
-            if (mFlashTimer == 0)
-                func_ov003_020b0730(0);
-        }
-        if (mCommitTimer != 0) {
-            mCommitTimer -= data_0208ee44;
-            if (mCommitTimer == 0) {
+        switch (mCursorState) {
+        case 0: {
+            unsigned char idx;
+            if (!IsTouchStarted() && !IsButtonInputValid())
+                break;
+            idx = gActivePlayerSlot;
+            if (((unsigned char)(gTouchX[idx * 4] - 8) < 0xf0 &&
+                 (unsigned char)(gTouchY[idx * 4] - 0x38) < 0x20) ||
+                (mSelection == 0 && IsButtonInputValid())) {
                 if (mSelection == 0)
-                    func_0202ae74();
-                else
-                    dScene_c::StartSceneFade(1, 0, 0);
-                _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
+                    mFlashTimer = (unsigned char)(data_0208ee44 << 3);
+                mSelection = 0;
+                func_ov003_020b0730(0);
+                mCommitTimer = (unsigned char)(data_0208ee44 << 4);
+                func_02012790(0x9a);
+                mCursorState = 1;
+                break;
             }
+            idx = gActivePlayerSlot;
+            if (((unsigned char)(gTouchX[idx * 4] - 8) < 0xf0 &&
+                 (unsigned char)(gTouchY[idx * 4] - 0x68) < 0x20) ||
+                (mSelection == 1 && IsButtonInputValid())) {
+                if (mSelection == 1)
+                    mFlashTimer = (unsigned char)(data_0208ee44 << 3);
+                mSelection = 1;
+                func_ov003_020b0730(0);
+                mCommitTimer = (unsigned char)(data_0208ee44 << 4);
+                func_02012790(0x9b);
+                mCursorState = 1;
+            }
+            break;
         }
-
-end:
+        case 1:
+            if (mFlashTimer != 0) {
+                mFlashTimer -= data_0208ee44;
+                if (mFlashTimer == 0)
+                    func_ov003_020b0730(0);
+            }
+            if (mCommitTimer != 0) {
+                mCommitTimer -= data_0208ee44;
+                if (mCommitTimer == 0) {
+                    if (mSelection == 0)
+                        func_0202ae74();
+                    else
+                        dScene_c::StartSceneFade(1, 0, 0);
+                    _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
+                }
+            }
+            break;
+        }
+    }
     return 1;
 }
 
@@ -482,67 +464,66 @@ void dScGameOver_c::func_ov003_020b0730(int arg)
  * e = base + (i << 1) once per iteration and reaches both rows as small
  * constant offsets off e, while the member-index form makes mwccarm compute
  * two separate base+i*2 addresses. GO_OFF names those offsets after their
- * fields without changing the tree the compiler sees. The goto/case
- * skeleton, the `short *q` re-reads, the (long long)(int) launders on the
- * decrement, and case1's `(char *)o + GO_OFF` spelling (the member-index
- * form perturbs the tail: 999 words differ, size 0x124 vs 0x11c, pinned in
+ * fields without changing the tree the compiler sees. The `short *q`
+ * re-reads, the (long long)(int) launders on the decrement, and case 1's
+ * `(char *)o + GO_OFF` spelling (the member-index form perturbs the tail:
+ * 999 words differ, size 0x124 vs 0x11c, pinned in
  * notes/experiments/gameover-2711-case1-gooff-spelling.md) are the ROM's own
  * shape too. */
- // @symbol _ZN13dScGameOver_c19func_ov003_020b060cEv
+// @symbol _ZN13dScGameOver_c19func_ov003_020b060cEv
 void dScGameOver_c::func_ov003_020b060c()
 {
     unsigned char s = this->mIntroPhase;
     int i;
     int ip;
-    if (s == 0)
-        goto case0;
-    if (s == 1)
-        goto case1;
-    return;
-
-case0:
-    i = 0;
-    ip = 0xa;
-    do {
-        char *e = (char *)this + (i << 1);
-        if (*(unsigned short *)(e + GO_OFF(mGlyphDelay)) != 0) {
-            *(unsigned short *)((long long)(int)(e + GO_OFF(mGlyphDelay))) =
-                (unsigned short)(*(unsigned short *)((long long)(int)(e + GO_OFF(mGlyphDelay))) - 1);
-        } else {
-            short tgt = data_ov003_020b1774[i];
-            if (*(short *)(e + GO_OFF(mGlyphX)) != tgt) {
-                if (i < 4) {
-                    short *q = (short *)(e + GO_OFF(mGlyphX));
-                    *q = (short)(*q + 0xc);
-                    if (*(short *)(e + GO_OFF(mGlyphX)) >= tgt) {
-                        *(short *)(e + GO_OFF(mGlyphX)) = tgt;
-                        *(unsigned short *)(e + GO_OFF(mGlyphDelay)) = (unsigned short)ip;
-                    }
-                } else {
-                    short *q = (short *)(e + GO_OFF(mGlyphX));
-                    *q = (short)(*q - 0xc);
-                    if (*(short *)(e + GO_OFF(mGlyphX)) <= tgt) {
-                        *(short *)(e + GO_OFF(mGlyphX)) = tgt;
-                        *(unsigned short *)(e + GO_OFF(mGlyphDelay)) = (unsigned short)ip;
-                        this->mIntroPhase = 1;
+    switch (s) {
+    case 0:
+        i = 0;
+        ip = 0xa;
+        do {
+            char *e = (char *)this + (i << 1);
+            if (*(unsigned short *)(e + GO_OFF(mGlyphDelay)) != 0) {
+                *(unsigned short *)((long long)(int)(e + GO_OFF(mGlyphDelay))) =
+                    (unsigned short)(*(unsigned short *)((long long)(int)(e +
+                                                                          GO_OFF(mGlyphDelay))) -
+                                     1);
+            } else {
+                short tgt = data_ov003_020b1774[i];
+                if (*(short *)(e + GO_OFF(mGlyphX)) != tgt) {
+                    if (i < 4) {
+                        short *q = (short *)(e + GO_OFF(mGlyphX));
+                        *q = (short)(*q + 0xc);
+                        if (*(short *)(e + GO_OFF(mGlyphX)) >= tgt) {
+                            *(short *)(e + GO_OFF(mGlyphX)) = tgt;
+                            *(unsigned short *)(e + GO_OFF(mGlyphDelay)) = (unsigned short)ip;
+                        }
+                    } else {
+                        short *q = (short *)(e + GO_OFF(mGlyphX));
+                        *q = (short)(*q - 0xc);
+                        if (*(short *)(e + GO_OFF(mGlyphX)) <= tgt) {
+                            *(short *)(e + GO_OFF(mGlyphX)) = tgt;
+                            *(unsigned short *)(e + GO_OFF(mGlyphDelay)) = (unsigned short)ip;
+                            this->mIntroPhase = 1;
+                        }
                     }
                 }
             }
-        }
-        i = i + 1;
-        ip = ip + 4;
-    } while (i < 8);
-    return;
+            i = i + 1;
+            ip = ip + 4;
+        } while (i < 8);
+        break;
 
-case1:
-    if (*(unsigned short *)((char *)this + GO_OFF(mGlyphDelay)) != 0) {
-        unsigned short *p = (unsigned short *)((char *)this + GO_OFF(mGlyphDelay));
-        *p = (unsigned short)(*p - 1);
-        return;
+    case 1:
+        if (*(unsigned short *)((char *)this + GO_OFF(mGlyphDelay)) != 0) {
+            unsigned short *p = (unsigned short *)((char *)this + GO_OFF(mGlyphDelay));
+            *p = (unsigned short)(*p - 1);
+            return;
+        }
+        this->mIntroPhase = 2;
+        data_0209d45c |= 1;
+        data_0209d454 |= 3;
+        break;
     }
-    this->mIntroPhase = 2;
-    data_0209d45c |= 1;
-    data_0209d454 |= 3;
 }
 
 /* [1] [0] 0x020b05bc (D0) and 0x020b0580 (D1) -- neither is written here.

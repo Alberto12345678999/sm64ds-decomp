@@ -35,126 +35,126 @@
       "ordinal": 1
     },
     {
-      "symbol": "TrmpItem_Motion7",
+      "symbol": "TrmpItem_MotionSpinHover",
       "address": "0x020cd864",
       "size": "0x00000128",
       "legacy_source": "src/func_ov006_020cd864.c",
       "ordinal": 2
     },
     {
-      "symbol": "TrmpItem_SetMotion7",
+      "symbol": "TrmpItem_SetMotionSpinHover",
       "address": "0x020cd98c",
       "size": "0x00000024",
       "legacy_source": "src/func_ov006_020cd98c.c",
       "ordinal": 3
     },
     {
-      "symbol": "TrmpItem_Motion8",
+      "symbol": "TrmpItem_MotionSpinDrift",
       "address": "0x020cd9b0",
       "size": "0x00000120",
       "legacy_source": "src/func_ov006_020cd9b0.c",
       "ordinal": 4
     },
     {
-      "symbol": "TrmpItem_SetMotion8",
+      "symbol": "TrmpItem_SetMotionSpinDrift",
       "address": "0x020cdad0",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov006_020cdad0.c",
       "ordinal": 5
     },
     {
-      "symbol": "TrmpItem_Motion5",
+      "symbol": "TrmpItem_MotionSpinSway",
       "address": "0x020cdaec",
       "size": "0x00000128",
       "legacy_source": "src/func_ov006_020cdaec.c",
       "ordinal": 6
     },
     {
-      "symbol": "TrmpItem_SetMotion5",
+      "symbol": "TrmpItem_SetMotionSpinSway",
       "address": "0x020cdc14",
       "size": "0x00000024",
       "legacy_source": "src/func_ov006_020cdc14.c",
       "ordinal": 7
     },
     {
-      "symbol": "TrmpItem_Motion6",
+      "symbol": "TrmpItem_MotionHover",
       "address": "0x020cdc38",
       "size": "0x00000030",
       "legacy_source": "src/func_ov006_020cdc38.c",
       "ordinal": 8
     },
     {
-      "symbol": "TrmpItem_SetMotion6",
+      "symbol": "TrmpItem_SetMotionHover",
       "address": "0x020cdc68",
       "size": "0x00000024",
       "legacy_source": "src/func_ov006_020cdc68.c",
       "ordinal": 9
     },
     {
-      "symbol": "TrmpItem_Motion4",
+      "symbol": "TrmpItem_MotionSway",
       "address": "0x020cdc8c",
       "size": "0x00000058",
       "legacy_source": "src/func_ov006_020cdc8c.c",
       "ordinal": 10
     },
     {
-      "symbol": "TrmpItem_SetMotion4",
+      "symbol": "TrmpItem_SetMotionSway",
       "address": "0x020cdce4",
       "size": "0x00000024",
       "legacy_source": "src/func_ov006_020cdce4.c",
       "ordinal": 11
     },
     {
-      "symbol": "TrmpItem_Motion3",
+      "symbol": "TrmpItem_MotionSpin",
       "address": "0x020cdd08",
       "size": "0x00000120",
       "legacy_source": "src/func_ov006_020cdd08.c",
       "ordinal": 12
     },
     {
-      "symbol": "TrmpItem_SetMotion3",
+      "symbol": "TrmpItem_SetMotionSpin",
       "address": "0x020cde28",
       "size": "0x00000024",
       "legacy_source": "src/func_ov006_020cde28.c",
       "ordinal": 13
     },
     {
-      "symbol": "TrmpItem_Motion2",
+      "symbol": "TrmpItem_MotionBob",
       "address": "0x020cde4c",
       "size": "0x00000030",
       "legacy_source": "src/func_ov006_020cde4c.c",
       "ordinal": 14
     },
     {
-      "symbol": "TrmpItem_SetMotion2",
+      "symbol": "TrmpItem_SetMotionBob",
       "address": "0x020cde7c",
       "size": "0x00000024",
       "legacy_source": "src/func_ov006_020cde7c.c",
       "ordinal": 15
     },
     {
-      "symbol": "TrmpItem_Motion1",
+      "symbol": "TrmpItem_MotionPatrol",
       "address": "0x020cdea0",
       "size": "0x0000004c",
       "legacy_source": "src/func_ov006_020cdea0.c",
       "ordinal": 16
     },
     {
-      "symbol": "TrmpItem_SetMotion1",
+      "symbol": "TrmpItem_SetMotionPatrol",
       "address": "0x020cdeec",
       "size": "0x00000030",
       "legacy_source": "src/func_ov006_020cdeec.c",
       "ordinal": 17
     },
     {
-      "symbol": "TrmpItem_Motion0",
+      "symbol": "TrmpItem_MotionStill",
       "address": "0x020cdf1c",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020cdf1c.c",
       "ordinal": 18
     },
     {
-      "symbol": "TrmpItem_SetMotion0",
+      "symbol": "TrmpItem_SetMotionStill",
       "address": "0x020cdf20",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov006_020cdf20.c",
@@ -478,7 +478,7 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
-      "reason": "include/types.h gives Vector3 an empty inline destructor, so this TU re-emits it with vague linkage for the Vector3 locals in TrmpItem_Motion7, TrmpItem_Motion5, TrmpItem_ReflectOffLine, TrmpLine_PushJumper and TrmpLine_Build. The cartridge keeps exactly one copy at arm9:0x020072c0, kind:function(arm,size=0x4), owned by the enrolled `complete` source src/_ZN7Vector3D1Ev.cpp. This object's copy is the identical 4-byte `bx lr` body (1e ff 2f e1) with no relocations; rombuild compares the body against those cartridge bytes before discarding the duplicate."
+      "reason": "include/types.h gives Vector3 an empty inline destructor, so this TU re-emits it with vague linkage for the Vector3 locals in TrmpItem_MotionSpinHover, TrmpItem_MotionSpinSway, TrmpItem_ReflectOffLine, TrmpLine_PushJumper and TrmpLine_Build. The cartridge keeps exactly one copy at arm9:0x020072c0, kind:function(arm,size=0x4), owned by the enrolled `complete` source src/_ZN7Vector3D1Ev.cpp. This object's copy is the identical 4-byte `bx lr` body (1e ff 2f e1) with no relocations; rombuild compares the body against those cartridge bytes before discarding the duplicate."
     },
     {
       "symbol": "_ZN9s020d01e06Spare4D1Ev",

@@ -8,12 +8,13 @@
  *  ~1 *(T *)(p + 0x..)           class layout does not name these offsets.
  */
 
+#include "fBase_c.h"
+
 struct dMgJump3DMario_c;
 
 /* The array runtime passes each element address and ignores callback results.
  * The casts below adapt the existing lifecycle entries at that ABI boundary. */
 extern "C" {
-extern void *_ZN7fBase_cnwEj(unsigned int sz);
 extern void *_ZN11dScMgBase_cC2Ev(void *p);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
 extern void *_ZN5ModelC1Ev(void *);

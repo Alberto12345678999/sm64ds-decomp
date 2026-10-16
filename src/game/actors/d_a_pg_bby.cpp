@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "dBgCh_Actr.h"
 #include "dClipper.h"
 #include "nitro/fx/fx.h"
 
@@ -46,12 +47,9 @@ void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void func_0201267c(unsigned int soundID, const Vector3 *pos);
 
-/* The dBgCh_Actr::UpdateContinuous call goes through a veneer, and the two
-   result getters are not declared by dBgCh_Actr.h. */
+/* The dBgCh_Actr::UpdateContinuous call goes through a veneer, which no
+   header declares. */
 void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *c);
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *c);
-void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *surface, Vector3 &out);
 int _ZN4cstd4fdivEii(int a, int b);
 
 extern short data_02082214[];   /* sine/cosine table */
@@ -616,7 +614,7 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
     if (b != 0) return;
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);
     if (clsn->IsOnGround()) {
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(clsn) + 4, floorNormal);
+        ((SurfaceInfo *)((char *)clsn->GetFloorResult() + 4))->CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
             int x = FX_MUL(floorNormal.x, unk_0a4);
             int y = FX_MUL(floorNormal.z, unk_0ac);
@@ -624,7 +622,7 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr13GetWallResultEv(clsn) + 4, wallNormal);
+        ((SurfaceInfo *)((char *)clsn->GetWallResult() + 4))->CopyNormalTo(wallNormal);
     }
 }
 

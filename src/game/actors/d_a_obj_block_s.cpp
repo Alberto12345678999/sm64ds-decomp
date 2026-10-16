@@ -95,6 +95,7 @@ enum daObjBlockS_c_AssetId {
 #include "dBgCh_Actr.h"
 #include "dBgCh_Gnd.h"
 #include "SurfaceInfo.h"
+#include "dCc_c.h"
 
 struct Vector3_16f;
 
@@ -150,42 +151,26 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
     char *thiz, int f, char *m, int fix, short s, int blk);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     char *thiz, char *actor, int b, int d, void *v, int f);
-extern int _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void *thiz, Matrix4x3 &m, short ang);
 
-extern int _ZN8dActor_c13DistToCPlayerEv(void *self);
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *clsn);
-extern void *_ZN8dActor_c10FindWithIDEj(u32 id);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos, unsigned int n, int speed, short ang);
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
 extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern char *_ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3(char *self, char *player, const struct Vector3 *v);
 extern int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int a, int b);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
-extern void _ZN5dCc_c5ClearEv(void *cc);
-extern void _ZN5dCc_c6UpdateEv(void *cc);
 
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
-extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *p);
-extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *p);
 extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_0203567c(int p);
 extern int func_02037e38(u32 *p);
 extern int func_02037e58(u32 *p);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
 extern int func_ov002_020ef228(void *c, int arg);
 extern int func_ov002_020f030c(int x);
 extern int func_ov002_020e496c(char *c);
 extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
-extern int _ZNK5dBgPi9GetClsnIDEv(int self);
-extern dBgPi *_ZNK10dBgCh_Actr13GetWallResultEv(const dBgCh_Actr *self);
 
-extern void _ZN6Player9DropActorEv(void *p);
-extern int _ZN6Player7TryGrabER8dActor_c(void *player, void *actor);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, struct Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
-extern int _ZN6Player14IsFrontSlidingEv(char *p);
-extern int _ZN6Player17LostGrabbedObjectEv(char *p);
 
 extern void _ZN5Sound9PlayBank3EjRK7Vector3(u32 id, const struct Vector3 *pos);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
@@ -269,12 +254,12 @@ void daObjBlockS_c::func_ov098_0213814c()
 {
     func_ov098_02138ce0();
     unsigned b = (unsigned)((mFlags & ACTOR_FLAG_OFF_SCREEN) != 0);
-    if (b != 0 && _ZN8dActor_c13DistToCPlayerEv(this) > 0x7d0000) {
+    if (b != 0 && DistToCPlayer() > 0x7d0000) {
         Crate_SetState(this, daObjBlockS_c::STATE_IDLE);
         return;
     }
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c1);
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c2);
+    mdCcAcPos_c1.Clear();
+    mdCcAcPos_c2.Clear();
     func_ov098_02139850();
     func_ov098_021397c8();
     if (((dBgW *)&mMeshCollider)->IsEnabled())
@@ -341,7 +326,7 @@ void daObjBlockS_c::func_ov098_02138238()
         }
     }
 
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c1);
+    mdCcAcPos_c1.Clear();
     func_ov098_02139850();
     if (!((dBgW *)&mMeshCollider)->IsEnabled()) return;
     ((dBgW *)&mMeshCollider)->Disable();
@@ -371,10 +356,10 @@ void daObjBlockS_c::func_ov098_02138318()
  * the collider transform while the collider is in range on screen. */
 void daObjBlockS_c::func_ov098_02138344()
 {
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, &mdCcAcPos_c1);
+    UpdatePos(&mdCcAcPos_c1);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0) {
+    if (mWithMeshClsn.IsOnGround() != 0) {
         _ZN5Sound9PlayBank3EjRK7Vector3(0x51, (struct Vector3 *)&mCamSpacePosX);
         DecIfAbove0_Byte(&mBounceCount);
         mVertSpeed = mBounceCount * 0xa000;
@@ -389,10 +374,10 @@ void daObjBlockS_c::func_ov098_02138344()
     if (func_ov098_02138bb8() != 0) {
         Kill();
     }
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c1);
-    _ZN5dCc_c6UpdateEv(&mdCcAcPos_c1);
+    mdCcAcPos_c1.Clear();
+    mdCcAcPos_c1.Update();
     func_ov098_02139850();
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) == 0) {
+    if (mWithMeshClsn.IsOnGround() == 0) {
         func_ov098_021396a4();
     }
     if (_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0, 0) != 0) {
@@ -427,7 +412,7 @@ void daObjBlockS_c::func_ov098_02138484()
  * disabled throughout. */
 void daObjBlockS_c::func_ov098_021384fc()
 {
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, &mdCcAcPos_c1);
+    UpdatePos(&mdCcAcPos_c1);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     if (func_ov098_02139228()) {
         Crate_SetState(this, daObjBlockS_c::STATE_IDLE);
@@ -439,10 +424,10 @@ void daObjBlockS_c::func_ov098_021384fc()
     if (func_ov098_02138bb8()) {
         Kill();
     }
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c1);
-    _ZN5dCc_c6UpdateEv(&mdCcAcPos_c1);
+    mdCcAcPos_c1.Clear();
+    mdCcAcPos_c1.Update();
     func_ov098_02139850();
-    if (!_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn)) {
+    if (!mWithMeshClsn.IsOnGround()) {
         func_ov098_021396a4();
     }
     if (((dBgW *)&mMeshCollider)->IsEnabled()) {
@@ -509,7 +494,7 @@ void daObjBlockS_c::func_ov098_021385e0()
  * (0x555) and run the shared tail. The collider is kept disabled. */
 void daObjBlockS_c::func_ov098_02138734()
 {
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, &mdCcAcPos_c1);
+    UpdatePos(&mdCcAcPos_c1);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     if (func_ov098_02139228()) {
         Crate_SetState(this, daObjBlockS_c::STATE_IDLE);
@@ -521,10 +506,10 @@ void daObjBlockS_c::func_ov098_02138734()
     if (func_ov098_02138bb8()) {
         Kill();
     }
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c1);
-    _ZN5dCc_c6UpdateEv(&mdCcAcPos_c1);
+    mdCcAcPos_c1.Clear();
+    mdCcAcPos_c1.Update();
     func_ov098_02139850();
-    if (!_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn)) {
+    if (!mWithMeshClsn.IsOnGround()) {
         func_ov098_021396a4();
     }
     if (((dBgW *)&mMeshCollider)->IsEnabled()) {
@@ -584,11 +569,11 @@ void daObjBlockS_c::func_ov098_021388bc()
     bool t;
 
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0) {
-        if (SurfaceInfo_TestFlag0x20((int *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4)) != 0) {
+    if (mWithMeshClsn.IsOnGround() != 0) {
+        if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) != 0) {
             Player *p = mHoldingPlayer;
             if (p != 0) {
-                _ZN6Player9DropActorEv(p);
+                p->DropActor();
                 Kill();
                 return;
             }
@@ -611,7 +596,7 @@ void daObjBlockS_c::func_ov098_021388bc()
         }
     }
 
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c1);
+    mdCcAcPos_c1.Clear();
     func_ov098_02139850();
     func_ov098_021396a4();
     if (((dBgW *)&mMeshCollider)->IsEnabled()) {
@@ -648,7 +633,7 @@ void daObjBlockS_c::func_ov098_021389f8()
             }
         }
     }
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, &mdCcAcPos_c1);
+    UpdatePos(&mdCcAcPos_c1);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     func_ov098_02139228();
     func_ov098_02138e6c();
@@ -656,12 +641,12 @@ void daObjBlockS_c::func_ov098_021389f8()
     if (func_ov098_02138bb8() || func_ov098_02138bfc()) {
         Kill();
     }
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c1);
-    _ZN5dCc_c6UpdateEv(&mdCcAcPos_c1);
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c2);
-    _ZN5dCc_c6UpdateEv(&mdCcAcPos_c2);
+    mdCcAcPos_c1.Clear();
+    mdCcAcPos_c1.Update();
+    mdCcAcPos_c2.Clear();
+    mdCcAcPos_c2.Update();
     func_ov098_02139850();
-    if (!_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn)) {
+    if (!mWithMeshClsn.IsOnGround()) {
         func_ov098_021396a4();
     }
     if (!_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x600000, 0)) {
@@ -705,9 +690,8 @@ void daObjBlockS_c::func_ov098_02138b70()
  * crate on it. */
 int daObjBlockS_c::func_ov098_02138bb8()
 {
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn))
-    {
-        if (SurfaceInfo_TestFlag0x20((int *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4)))
+    if (mWithMeshClsn.IsOnGround()) {
+        if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)))
             return 1;
     }
     return 0;
@@ -725,8 +709,9 @@ int daObjBlockS_c::func_ov098_02138bfc()
     unsigned short type;
     if (!func_02035638((unsigned char *)&mWithMeshClsn)) return 0;
     r = func_0203567c((int)&mWithMeshClsn);
-    if (_ZNK5dBgPi9GetClsnIDEv(r) == -1) return 0;
-    a = _ZN8dActor_c10FindWithIDEj((unsigned int)_ZNK5dBgPi9GetClsnIDEv(r));
+    if (((dBgPi *)r)->GetClsnID() == -1)
+        return 0;
+    a = dActor_c::FindWithID((unsigned int)((dBgPi *)r)->GetClsnID());
     if (!a) return 0;
     type = *(unsigned short *)((char *)a + 0xc);
     {
@@ -852,7 +837,7 @@ void daObjBlockS_c::func_ov098_02138e6c()
         Kill();
     }
 
-    a = _ZN8dActor_c10FindWithIDEj(mdCcAcPos_c1.otherOwner);
+    a = dActor_c::FindWithID(mdCcAcPos_c1.otherOwner);
     if (a == 0) return;
     {
         int bf = (int)(*(u16 *)((char *)a + 0xc) == ACTOR_PLAYER);
@@ -869,7 +854,8 @@ void daObjBlockS_c::func_ov098_02138e6c()
         return;
     }
     if ((fl & CC_HIT_GRAB) != 0) {
-        if (_ZN6Player7TryGrabER8dActor_c(a, this) == 0) return;
+        if (((Player *)a)->TryGrab(*this) == 0)
+            return;
         mHoldingPlayer = (Player *)a;
         Crate_SetState(this, daObjBlockS_c::STATE_CARRIED);
         return;
@@ -931,7 +917,7 @@ void daObjBlockS_c::func_ov098_021390ec()
     if (DecIfAbove0_Byte(&mWallCooldown) != 0)
         return;
     if (mWithMeshClsn.IsOnWall() != 0) {
-        dBgPi *wr = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
+        dBgPi *wr = (dBgPi *)mWithMeshClsn.GetWallResult();
         if (wr->GetClsnID() != -1) {
             dActor_c *a = dActor_c::FindWithID((u32)wr->GetClsnID());
             if (a != 0) {
@@ -954,7 +940,7 @@ void daObjBlockS_c::func_ov098_021390ec()
         return;
     }
     Vector3 v;
-    ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4))->CopyNormalTo(v);
+    ((SurfaceInfo *)((char *)mWithMeshClsn.GetWallResult() + 4))->CopyNormalTo(v);
     mPrevAngleY =
         _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, v.x, v.z, mPrevAngleY);
 }
@@ -1010,10 +996,10 @@ int daObjBlockS_c::func_ov098_02139228()
     Vector3 a2;
     Vector3 sum;
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) == 0)
+    if (mWithMeshClsn.IsOnGround() == 0)
         return 0;
 
-    fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+    fr = mWithMeshClsn.GetFloorResult();
     switch (func_02037e38((u32 *)((char *)fr + 4))) {
     case 6:
         mClsnYOffsetTarget = 0x1e000;
@@ -1045,7 +1031,7 @@ int daObjBlockS_c::func_ov098_02139228()
         Kill();
     }
 
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)fr + 4, (Vector3 *)&mFloorNormalX);
+    ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(*(Vector3 *)&mFloorNormalX);
     n = func_02037e58((u32 *)((char *)fr + 4));
     ang = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
     hl = func_ov002_020f02c8(n);
@@ -1180,7 +1166,7 @@ void daObjBlockS_c::func_ov098_021397c8()
     mClsnMat.m[9] = tmp[0];
     mClsnMat.m[10] = tmp[1];
     mClsnMat.m[11] = tmp[2];
-    _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(&mMeshCollider, mClsnMat, mAngleY);
+    mMeshCollider.Transform(mClsnMat, mAngleY);
 }
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_02139850Ev
@@ -1211,8 +1197,9 @@ void daObjBlockS_c::func_ov098_02139850()
     {
         char *r4 = (char *)func_ov002_020e496c((char *)obj);
         int r5 = 0;
-        if (_ZN6Player14IsFrontSlidingEv((char *)mHoldingPlayer) != 0) r5 = 1;
-        if (_ZN6Player17LostGrabbedObjectEv((char *)mHoldingPlayer) != 0) {
+        if (mHoldingPlayer->IsFrontSliding() != 0)
+            r5 = 1;
+        if (mHoldingPlayer->LostGrabbedObject() != 0) {
             if (((u32)*(int *)(r4 + 0x58) << 4) >> 0x10 < 0xe) r5 = 1;
         }
         if (mHoldingPlayer->param1 == 2) {
@@ -1222,7 +1209,7 @@ void daObjBlockS_c::func_ov098_02139850()
         Math_Function_0203b14c((char *)&mCarryOffsetY, *(int *)((char *)data_ov098_0213bf64 + r5 * 0xc), 0x800, 0x3e8000, 4);
         Math_Function_0203b14c((char *)&mCarryOffsetZ, *(int *)((char *)data_ov098_0213bf68 + r5 * 0xc), 0x800, 0x3e8000, 4);
         {
-            char *res = _ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3((char *)this, (char *)mHoldingPlayer, (struct Vector3 *)&mCarryOffsetX);
+            char *res = (char *)UpdateCarry(*(Player *)mHoldingPlayer, *(Vector3 *)&mCarryOffsetX);
             mModel.mat4x3 = *(struct Matrix4x3 *)res;
         }
         mFlags |= 0x4000000;
@@ -1243,7 +1230,7 @@ other:
         mCarryOffsetX = 0;
         mCarryOffsetY = 0;
         mCarryOffsetZ = 0;
-        if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0) {
+        if (mWithMeshClsn.IsOnGround() != 0) {
             mFlags &= ~0x4000000;
         }
     }

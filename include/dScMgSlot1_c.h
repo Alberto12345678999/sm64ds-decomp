@@ -154,27 +154,27 @@ struct dScMgSlot1_c : dScMgBase_c {
     virtual void OpenMenu();                     /* slot 27 */
     virtual int  CloseMenu();                 /* slot 28 */
 
-    betIcon_c mBetIcon;      /* 0x4660 -- RTTI-proven nested touch icon */
-    u8  pad_4684[0xc];      /* 0x4684 -- embedded object, own type unknown */
-    u8  pad_4690[0xc];      /* 0x4690 -- embedded object, own type unknown */
-    u8  pad_469c[0x8];      /* 0x469c -- embedded object, own type unknown */
-    u32 unk_46a4[3];         /* 0x46a4 */
-    s32 unk_46b0;            /* 0x46b0 -- reel-spin sound handle (Behavior) */
-    s32 unk_46b4;            /* 0x46b4 */
-    s32 unk_46b8;            /* 0x46b8 -- payout multiplier (Behavior) */
-    s32 unk_46bc;            /* 0x46bc */
-    u8  unk_46c0[0x15];      /* 0x46c0 */
-    u8  pad_46d5[0x2a];
-    u8  unk_46ff[3];         /* 0x46ff */
-    u8  unk_4702[3];         /* 0x4702 */
-    u8  unk_4705;            /* 0x4705 -- reels stopped by touch this spin (Behavior) */
-    u8  pad_4706[0x2];       /* 0x4706 used by StartRound */
-    u8  unk_4708;            /* 0x4708 -- reel speed table row (Behavior) */
-    u8  unk_4709;            /* 0x4709 */
-    u8  unk_470a;            /* 0x470a */
-    u8  unk_470b;            /* 0x470b */
-    u8  unk_470c;            /* 0x470c -- state timer, DecIfAbove0_Byte (Behavior) */
-    u8  pad_470d[0x3];
+    betIcon_c mBetIcon;  /* 0x4660 -- RTTI-proven nested touch icon */
+    u8 pad_4684[0xc];    /* 0x4684 -- embedded object, own type unknown */
+    u8 pad_4690[0xc];    /* 0x4690 -- embedded object, own type unknown */
+    u8 pad_469c[0x8];    /* 0x469c -- embedded object, own type unknown */
+    u32 mReelScroll[3];  /* 0x46a4 -- each reel's offset into its symbol, 0x40000 = one symbol */
+    s32 mSpinSound;      /* 0x46b0 -- reel-spin sound handle */
+    s32 mStep;           /* 0x46b4 -- Behavior's step: spin, stop, pay, ... */
+    s32 mPayout;         /* 0x46b8 -- line payout plus 2 per wild; times the bet */
+    s32 mStartCredits;   /* 0x46bc -- [medium] 10, submitted when the game opens */
+    u8 mReelStrip[0x15]; /* 0x46c0 -- 3 x 0x15 symbol strips (the next 0x2a are reels 1-2) */
+    u8 pad_46d5[0x2a];
+    u8 mReelStop[3];     /* 0x46ff -- symbol index in each reel's window, 0..20 */
+    u8 mReelSpinning[3]; /* 0x4702 -- 1 while the reel spins */
+    u8 mReelsStopped;    /* 0x4705 -- reels stopped by touch this spin */
+    u8 pad_4706[0x2];    /* 0x4706 used by StartRound */
+    u8 mSpeedLevel;      /* 0x4708 -- reel speed row; rises with each win, to 2 */
+    u8 mMatchSymbol;     /* 0x4709 -- symbol the stopped line matched; 5 is the wild */
+    u8 mLineMatched;     /* 0x470a -- SlotReels_CheckStopped: all three match */
+    u8 mWilds;           /* 0x470b -- wilds on the line */
+    u8 mTimer;           /* 0x470c -- step timer (DecIfAbove0_Byte) */
+    u8 pad_470d[0x3];
 };
 
 #ifndef SM64DS_PLATFORM_PC

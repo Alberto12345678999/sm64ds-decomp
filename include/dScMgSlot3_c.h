@@ -19,7 +19,7 @@
  * `struct T4fe4 { char pad[0x4fe4]; int vals[3]; }` names it outright, and
  * InitResources, Slot3_State1, Slot3_State2 and
  * Slot3_ReelDigits all index it as
- * `[i]` or `+ i*4`). It closes exactly on unk_4ff0. Left opaque up to
+ * `[i]` or `+ i*4`). It closes exactly on mStripSpan. Left opaque up to
  * there rather than guessed at, as dScMgCard_c.h leaves its own.
  *
  * OWN TAIL, 0x4ff0..0x5043: seventeen fields carried over verbatim from
@@ -71,36 +71,39 @@ struct dScMgSlot3_c : dScMgSingle3DBase_c {
     u8  pad_4f38[0xac];     /* 0x4f38 -- opaque table, see file banner */
     s32 mReelPos[3];        /* 0x4fe4 -- Fix12 scroll of each reel; seeded to a
                                random symbol * 0x50000 (0x50 px a symbol) */
-    s32 unk_4ff0;           /* 0x4ff0 */
+    s32 mStripSpan;         /* 0x4ff0 -- strip length * 0x50 px (Fix12); reels wrap here */
     s32 mReelWinPos[3];     /* 0x4ff4 -- read instead of mReelPos during the
                                state-6 win-line pass */
     s32 mState;             /* 0x5000 -- index into the pointer-to-member table
-                               data_ov006_02142bdc that Behavior dispatches */
-    s32 unk_5004;           /* 0x5004 -- seeded from dScMgBase_c's own 0xbc */
+                               sSlot3StateTable that Behavior dispatches */
+    s32 mDifficulty;        /* 0x5004 -- 0..5: +1 a win, 0 at game over;
+                               sets the strip length and reel directions */
     u8  pad_5008[0x4];      /* 0x5008 */
     s32 mReelDrawY;         /* 0x500c -- while positive the marker rows are drawn
                                at +0x10 and +0x60 instead of a single 0x60 */
     s32 mWinColumn;         /* 0x5010 -- column of the payout caption
                                (n * 0x50 + 0x20); negative means none */
-    s32 unk_5014;           /* 0x5014 */
+    s32 mPayoutLeft;        /* 0x5014 -- coins still to pay out */
     u16 mLamp1Angle;        /* 0x5018 -- -0x200 a tick while mState is 1 */
     u16 mLamp2Angle;        /* 0x501a -- -0x400 a tick */
     u8  mReelStrip[3][5];   /* 0x501c -- the symbol on each stop of each reel;
                                Render walks it modulo mStripLength */
     u8  pad_502b[0x3];      /* 0x502b */
-    u8  mLineActive[3];     /* 0x502e -- which of the three pay lines is bet */
+    u8 mRowStopped[3];      /* 0x502e -- set when that row stops; its step
+                               is then skipped */
     u8  mResultSymbols[3][3]; /* 0x5031 -- the 3x3 window the reels stopped on */
     u8  mStripLength;       /* 0x503a -- number of stops per reel */
-    u8  mWinSymbol;         /* 0x503b -- matched against mResultSymbols; seeded
-                               from 0x503c at InitResources */
-    u8  unk_503c;           /* 0x503c -- drawn as the second marker row */
-    u8  unk_503d;           /* 0x503d */
-    u8  unk_503e;           /* 0x503e */
+    u8 mWinSymbol;          /* 0x503b -- matched against mResultSymbols; seeded
+                               from mTargetFace at InitResources */
+    u8 mTargetFace;         /* 0x503c -- the face Toad shows (seen); seeds mWinSymbol */
+    u8 mRowsStopped;        /* 0x503d -- rows stopped; 3 ends the spin, and
+                               it picks the faster speed row */
+    u8 mTimer;              /* 0x503e -- state timer (DecIfAbove0_Byte) */
     u8  mFrameCounter;      /* 0x503f -- +1 a Behavior tick; the win chime fires
                                on (n & 0x3f) == 0x20 */
-    u8  unk_5040;           /* 0x5040 */
-    u8  unk_5041;           /* 0x5041 */
-    u8  unk_5042;           /* 0x5042 */
+    u8 mReelReverse0;       /* 0x5040 -- 1: the row scrolls the other way */
+    u8 mReelReverse1;       /* 0x5041 */
+    u8 mReelReverse2;       /* 0x5042 */
     u8  pad_5043[0x1];      /* 0x5043 -- rounds up to the 0x5044 boundary */
 };
 

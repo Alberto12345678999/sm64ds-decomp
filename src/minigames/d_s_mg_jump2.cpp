@@ -39,7 +39,7 @@ enum d_s_mg_jump2_AssetId {
 #include "Particle__System.h"
 
 /* The list link at the head of each Elem. Its two methods link `this` into
- * and back out of the live list at data_ov006_021421c0. */
+ * and back out of the live list at sJump2PopupList. */
 struct Node {
     struct Node* next;
     void Link();   /* push */
@@ -121,9 +121,9 @@ extern Jump2ModelFile data_ov006_021421c4; /* model file 0x204 */
 
 extern "C" {
 extern void func_0203d630(int* p, int m);
-extern struct Node* data_ov006_021421c0;
-extern int data_ov006_021421bc;
-extern struct Elem *data_ov006_021421b0;
+extern struct Node *sJump2PopupList;
+extern int sJump2PopupCount;
+extern struct Elem *sJump2Popups;
 extern void *data_ov006_021421b8;
 void Mg_CommitRecords(void);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -140,13 +140,13 @@ extern void Mg_SubmitScore(int);
 extern void Mg_SetSharedState(int);
 extern void Heyho_SeparateAll(void);
 extern void Jump3D_UpdateAll(void);
-extern int data_ov006_02140308;
+extern int sJumpComboCount;
 extern struct G2 pmf_dScMgJump2_c_State_Idle;
 extern struct G2 pmf_dScMgJump2_c_State_End;
 extern void Heyho_SettleAll(void);
 extern void Jump3D_SetTuning(int a);
 extern int data_ov006_02140304;
-extern int data_ov006_02140328;
+extern int sHeyhoCount;
 extern int data_ov006_02140428;
 extern struct G2 pmf_dScMgJump2_c_State_Play;
 extern void Jump3D_StartRoundLayout(void);
@@ -230,7 +230,7 @@ void dScMgJump2_c::StartRound(int /* arg */)
 {
   Jump3D_DisableInput();
   Jump3D_Arrange(0, 0);
-  data_ov006_02140328 = 3;
+  sHeyhoCount = 3;
   Heyho_SpawnAll(0, 0);
   Jump2Popup_ClearAll();
   BeginIntro();
@@ -311,24 +311,24 @@ s32 dScMgJump2_c::InitResources()
 /* The state functions: five are the exec targets the PMF records at
  * pmf_dScMgJump2_c_State_Idle..9c point into (see the header's state-machine note);
  * the other three are the transitions that install a record and arm
- * unk_5a74. unk_5a64 accumulates unk_5a68 >> 12 each tick and wraps at
+ * mStateTimer. mAnimPhase accumulates mAnimRate >> 12 each tick and wraps at
  * 0x1000.
  *
  * This one arms the countdown and installs the next state. */
 // @symbol _ZN12dScMgJump2_c10BeginIntroEv
 void dScMgJump2_c::BeginIntro(){
-  unk_5a74 = 0x78;
-  unk_5a64 = 0;
-  unk_5a68 = 0x4000;
-  *(struct G2*)pad_5004 = pmf_dScMgJump2_c_State_Intro;
+    mStateTimer = 0x78;
+    mAnimPhase = 0;
+    mAnimRate = 0x4000;
+    *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Intro;
 }
 
 // @symbol _ZN12dScMgJump2_c11State_IntroEv
 void dScMgJump2_c::State_Intro()
 {
-    s16 *countdown = &unk_5a74;
+    s16 *countdown = &mStateTimer;
     *countdown = *countdown - 1;
-    if (unk_5a74 == 0) {
+    if (mStateTimer == 0) {
         if (mPromptBlinkCount == 0) {
             mPromptEnabled = 1;
             mPromptBlinkCount = 1;
@@ -343,7 +343,7 @@ void dScMgJump2_c::State_Intro()
 // @symbol _ZN12dScMgJump2_c9BeginPlayEv
 void dScMgJump2_c::BeginPlay()
 {
-    unk_5a74 = 0xf0;
+    mStateTimer = 0xf0;
     *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Play;
 }
 
@@ -351,12 +351,12 @@ void dScMgJump2_c::BeginPlay()
 void dScMgJump2_c::State_Play()
 {
     s16 done;
-    int prevScore = data_ov006_02140308;
-    int *acc = &unk_5a64;
+    int prevScore = sJumpComboCount;
+    int *acc = &mAnimPhase;
     int mode;
 
-    *acc += unk_5a68 >> 12;
-    if (unk_5a64 > 0x1000)
+    *acc += mAnimRate >> 12;
+    if (mAnimPhase > 0x1000)
         *acc -= 0x1000;
 
     done = 0;
@@ -367,30 +367,30 @@ void dScMgJump2_c::State_Play()
         break;
     case 1:
         {
-            int rc = ApproachLinear2(unk_5a74, done, 2);
-            if (rc)
-                done = 1;
+        int rc = ApproachLinear2(mStateTimer, done, 2);
+        if (rc)
+            done = 1;
         }
         break;
     default:
         {
-            int rc = ApproachLinear2(unk_5a74, done, 1);
-            if (rc)
-                done = 1;
+        int rc = ApproachLinear2(mStateTimer, done, 1);
+        if (rc)
+            done = 1;
         }
         break;
     }
 
-    if (done != 0 && data_ov006_02140304 < data_ov006_02140328) {
+    if (done != 0 && data_ov006_02140304 < sHeyhoCount) {
         int value;
         s16 countdown;
         Heyho_SettleAll();
-        unk_5a74 = 0xf0 - data_ov006_02140308 * 6;
-        countdown = unk_5a74;
+        mStateTimer = 0xf0 - sJumpComboCount * 6;
+        countdown = mStateTimer;
         if (countdown < 0x3c)
             countdown = 0x3c;
-        unk_5a74 = countdown;
-        value = (data_ov006_02140308 << 4) + 0x1600;
+        mStateTimer = countdown;
+        value = (sJumpComboCount << 4) + 0x1600;
         if (value > 0x2200)
             value = 0x2200;
         Jump3D_SetTuning(value);
@@ -399,20 +399,20 @@ void dScMgJump2_c::State_Play()
     Heyho_SeparateAll();
     Jump3D_UpdateAll();
 
-    if (prevScore != data_ov006_02140308) {
-        switch (data_ov006_02140308) {
+    if (prevScore != sJumpComboCount) {
+        switch (sJumpComboCount) {
         case 3:
-            data_ov006_02140328 = 4;
+            sHeyhoCount = 4;
             mPromptEnabled = 0;
             break;
         case 0xa:
-            data_ov006_02140328 = 5;
+            sHeyhoCount = 5;
             break;
         case 0x14:
-            data_ov006_02140328 = 6;
+            sHeyhoCount = 6;
             break;
         }
-        Mg_SubmitScore(data_ov006_02140308);
+        Mg_SubmitScore(sJumpComboCount);
     }
 
     if (data_ov006_02140428 != 0)
@@ -423,24 +423,22 @@ void dScMgJump2_c::State_Play()
 // @symbol _ZN12dScMgJump2_c8BeginEndEv
 void dScMgJump2_c::BeginEnd()
 {
-    unk_5a74 = 0x20;
+    mStateTimer = 0x20;
     *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_End;
 }
 
 // @symbol _ZN12dScMgJump2_c9State_EndEv
 void dScMgJump2_c::State_End()
 {
-  int *acc = &unk_5a64;
-  *acc += unk_5a68 >> 12;
-  if (unk_5a64 > 0x1000)
-  {
-    *acc -= 0x1000;
-  }
+    int *acc = &mAnimPhase;
+    *acc += mAnimRate >> 12;
+    if (mAnimPhase > 0x1000) {
+        *acc -= 0x1000;
+    }
   Heyho_SeparateAll();
   Jump3D_UpdateAll();
-  if (ApproachLinear2(unk_5a74, 0, 1) == 0)
-  {
-    return;
+  if (ApproachLinear2(mStateTimer, 0, 1) == 0) {
+      return;
   }
   Jump3D_SetLowGravity();
   Heyho_ReactAll();
@@ -453,7 +451,7 @@ void dScMgJump2_c::State_Result(){
     if(obj){
         obj = Heyho_AllIdle(obj);
         if(obj){
-            Mg_SubmitScore(data_ov006_02140308);
+            Mg_SubmitScore(sJumpComboCount);
             Mg_SetSharedState(MG_STATE_GAME_OVER);
             mPromptEnabled = 0;
             *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Idle;
@@ -469,16 +467,16 @@ void dScMgJump2_c::State_Idle()
 }
 
 // @symbol _ZN12dScMgJump2_c8BehaviorEv
-/* Slot 6. unk_5a6c is a particle system's unique ID, handed to
+/* Slot 6. mParticleId is a particle system's unique ID, handed to
  * NewUnkCallback818 and back each frame. The object FromUniqueID returns is
  * untyped, so its fields at 0x50 and 0x58 stay raw. Both Particle::System
  * calls keep their mangled spellings: declaring the real Fix12<int>
  * parameters changes how the call passes them. */
 s32 dScMgJump2_c::Behavior()
 {
-    unk_5a6c = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-        unk_5a6c, 0xf0, 0x400000, 0x800000, -0x480000, 0);
-    void *system = Particle::System::FromUniqueID(unk_5a6c);
+    mParticleId = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+        mParticleId, 0xf0, 0x400000, 0x800000, -0x480000, 0);
+    void *system = Particle::System::FromUniqueID(mParticleId);
     if (system != 0) {
         *(int *)((char *)system + 0x50) = 0x4000;
         *(unsigned char *)((char *)system + 0x58) = 0x2c;
@@ -535,7 +533,7 @@ s32 dScMgJump2_c::Render()
     int x;
     int i;
 
-    Mg_DrawTopRightCounter(data_ov006_02140308, 4);
+    Mg_DrawTopRightCounter(sJumpComboCount, 4);
     Jump2Popup_DrawAll();
     Jump2_SetLights();
     Matrix4x3_FromTranslation(&data_020a0e68, 0, 0xffead000, -0xa0000);
@@ -548,7 +546,7 @@ s32 dScMgJump2_c::Render()
         anim = (void *)obj[1];
         func_02045e44((void *)obj, 1, 0);
     }
-    *(int *)((char *)anim + 0x18) = unk_5a64;
+    *(int *)((char *)anim + 0x18) = mAnimPhase;
     {
         Model *model = (Model *)mModel;
         model->Render((Vector3 *)&scale);
@@ -557,7 +555,7 @@ s32 dScMgJump2_c::Render()
     Jump3D_DrawAll();
     Heyho_DrawAll();
 
-    if (unk_4664 == 1) {
+    if (mDrawSubScreen == 1) {
         x = 0x6e;
         count = data_ov006_02140428;
         for (i = 0; i < 3; i++) {
@@ -587,9 +585,9 @@ s32 dScMgJump2_c::CleanupResources()
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_InitPool(int table, int count){
-  data_ov006_021421b0 = (struct Elem *)table;
-  data_ov006_021421bc = count;
-  data_ov006_021421b4 = 0;
+    sJump2Popups = (struct Elem *)table;
+    sJump2PopupCount = count;
+    data_ov006_021421b4 = 0;
 }
 }
 
@@ -597,9 +595,9 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_Spawn(int x, int y, int sprite)
 {
     int i;
-    for (i = data_ov006_021421bc - 1; i >= 0; i--) {
-        if (data_ov006_021421b0[i].active == 0) {
-            data_ov006_021421b0[i].Spawn(x, y, sprite);
+    for (i = sJump2PopupCount - 1; i >= 0; i--) {
+        if (sJump2Popups[i].active == 0) {
+            sJump2Popups[i].Spawn(x, y, sprite);
             return;
         }
     }
@@ -609,10 +607,10 @@ void Jump2Popup_Spawn(int x, int y, int sprite)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_ClearAll(void){
     int i;
-    for(i=0;i<data_ov006_021421bc;i++){
-        data_ov006_021421b0[i].active = 0;
+    for (i = 0; i < sJump2PopupCount; i++) {
+        sJump2Popups[i].active = 0;
     }
-    data_ov006_021421c0=0;
+    sJump2PopupList = 0;
 }
 }
 
@@ -620,20 +618,20 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_UpdateAll(void)
 {
     int i = 0;
-    if (i < data_ov006_021421bc) {
+    if (i < sJump2PopupCount) {
         int offset = 0;
         do {
-            ((Elem *)((char *)data_ov006_021421b0 + offset))->Tick();
+            ((Elem *)((char *)sJump2Popups + offset))->Tick();
             i++;
             offset += 0x24;
-        } while (i < data_ov006_021421bc);
+        } while (i < sJump2PopupCount);
     }
 }
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_DrawAll(void) {
-    void *node = data_ov006_021421c0;
+    void *node = sJump2PopupList;
     if (node == 0) return;
     do {
         ((Elem *)node)->DrawNumber();
@@ -644,15 +642,15 @@ void Jump2Popup_DrawAll(void) {
 
 // @symbol _ZN4Node4LinkEv
 void Node::Link(){
-  *(void**)this = data_ov006_021421c0;
-  data_ov006_021421c0 = this;
+    *(void **)this = sJump2PopupList;
+    sJump2PopupList = this;
 }
 
 // @symbol _ZN4Node6UnlinkEv
 void Node::Unlink() {
-    struct Node* prev = data_ov006_021421c0;
+    struct Node *prev = sJump2PopupList;
     if (prev == this) {
-        data_ov006_021421c0 = this->next;
+        sJump2PopupList = this->next;
         return;
     }
     struct Node* cur = prev->next;

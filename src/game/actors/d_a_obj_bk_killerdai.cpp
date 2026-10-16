@@ -182,14 +182,11 @@ s32 daObjBkKillerdai_c::InitResources()
             return 0;
     }
     if (course == 7) {
-        if (data_0209f220 != 1) {
-            if (IsStarCollectedInCurLevel(1) != 0)
-                goto alive;
+        if (data_0209f220 == 1 || IsStarCollectedInCurLevel(1) == 0) {
+            if (mPosY >= 0xdac000)
+                return 0;
         }
-        if (mPosY >= 0xdac000)
-            return 0;
     }
-alive:
     return 1;
 }
 

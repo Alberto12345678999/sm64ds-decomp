@@ -209,19 +209,19 @@ struct dScMgPachinko_c : dScMgBase_c {
     dScMgPachinko_flyer  mFlyer[1];   /* 0x5bb0 */
     dScMgPachinko_target mTarget[4];  /* 0x5bcc */
     dScMgPachinko_bg     mBg[1];      /* 0x5bfc */
-    s32 unk_5c10;            /* 0x5c10 */
-    u8  pad_5c14[0x4];
-    u16 unk_5c18;            /* 0x5c18 */
-    u8  pad_5c1a[0x2];
-    u16 unk_5c1c;            /* 0x5c1c */
-    u8  pad_5c1e[0x6];
-    u16 unk_5c24;            /* 0x5c24 */
-    u16 unk_5c26;            /* 0x5c26 */
-    u16 unk_5c28;            /* 0x5c28 */
-    u16 unk_5c2a;            /* 0x5c2a */
+    s32 mPhase;                       /* 0x5c10 -- Behavior: 0 setup, 1 play, 2 results wait */
+    u8 pad_5c14[0x4];                 /* 0x5c14 */
+    u16 mEndTimer;                    /* 0x5c18 -- 0x40 frames from time up to the results */
+    u8 pad_5c1a[0x2];                 /* 0x5c1a */
+    u16 mNextBallDelay; /* 0x5c1c -- frames to the next penned Bob-omb (throw speed >> 10) */
+    u8 pad_5c1e[0x6];   /* 0x5c1e */
+    u16 mWaveTimer;     /* 0x5c24 -- frames to the next spawn; 0x50 - 4 per level, >= 0x20 */
+    u16 mWaveSpawns;    /* 0x5c26 -- enemies spawned; every tenth raises mWaveLevel */
+    u16 mWaveLevel;     /* 0x5c28 -- 0..0x27: enemy speed, spawn rate and wave size */
+    u16 mHitPause;      /* 0x5c2a -- 0x20 frames of only effects after a shot hits a flyer */
     /* trailing extent the ROM's `new dScMgPachinko_c` literal proves; see tools/opnew_sizes.py */
-    u8  pad_5c2c[0x5];
-    u8  unk_5c31;            /* 0x5c31 */
+    u8 pad_5c2c[0x5];
+    u8 unk_5c31; /* 0x5c31 */
     u8  pad_5c32[0x6];
 };
 

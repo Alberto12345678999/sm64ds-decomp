@@ -15,8 +15,8 @@
 //   the member struct.
 // - mInvModelMat stays flat words. A Matrix4x3 member reorders the
 //   destructor group to D2, D0, D1.
-// - IsPlayerInRange keeps its goto chain. Folding the six tests into one
-//   condition makes the function 4 bytes larger.
+// - IsPlayerInRange tests the box as one positive `&&` condition. The
+//   negated `||` form makes the function 4 bytes larger.
 
 #pragma defer_codegen off
 
@@ -73,6 +73,12 @@ extern SharedFilePtr data_ov002_0210d9c0;
 typedef struct { s32 words[12]; } MatrixWords;
 }
 
+/* Actor ID 0xbf is PLAYER. int-returning, so the ROM materializes the 0/1
+ * before testing it; a direct `!=` does not. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 // @symbol _ZN10daSnmBth_cD1Ev
 // @symbol _ZN10daSnmBth_cD0Ev
 daSnmBth_c::~daSnmBth_c()
@@ -93,7 +99,7 @@ void SnowmanBreathParticle::HitPlayer()
     dActor_c *actor = dActor_c::FindWithID(id);
     if (actor == 0)
         return;
-    if ((int)(actor->actorID == 0xbf) == 0)
+    if (!IsPlayerActor(actor))
         return;
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
         0x100, mPos.x, mPos.y, mPos.z);
@@ -238,20 +244,9 @@ int daSnmBth_c::IsPlayerInRange()
     MulVec3Mat4x3(&playerPos, &data_020a0e68, &localPos);
     Vec3_LslInPlace(&localPos, 3);
 
-    if (localPos.x < -0xe1000)
-        goto fail;
-    if (localPos.x > 0xe1000)
-        goto fail;
-    if (localPos.y < -0x5000)
-        goto fail;
-    if (localPos.y > 0x300000)
-        goto fail;
-    if (localPos.z < -0x430000)
-        goto fail;
-    if (localPos.z > 0x430000)
-        goto fail;
-    return 1;
-fail:
+    if (localPos.x >= -0xe1000 && localPos.x <= 0xe1000 && localPos.y >= -0x5000 &&
+        localPos.y <= 0x300000 && localPos.z >= -0x430000 && localPos.z <= 0x430000)
+        return 1;
     return 0;
 }
 

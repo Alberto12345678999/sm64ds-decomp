@@ -50,6 +50,22 @@ enum d_a_obj_hatena_switch_AssetId {
 struct HatenaVector3Words { s32 x, y, z; };
 struct HatenaMatrixWords { s32 words[12]; };
 
+/* Actor ID 0xbf is PLAYER, 0xc2 is CRATE. dActor_c::mFlags bit 0x08 is
+ * written by the framework while the actor is off screen. These
+ * int-returning predicates are what make the ROM materialize 0/1 before
+ * testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
+static inline int IsCrateActor(dActor_c *actor) {
+    return actor->actorID == 0xc2;
+}
+
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
 struct HatenaSwitchSpawnInfo {
     daObjHatenaSwitch_c *(*classInit)();
     s16 profileIDAndExecuteOrder;
@@ -157,13 +173,8 @@ void daObjHatenaSwitch_c::AfterClsnCallback(
 // @symbol _ZN19daObjHatenaSwitch_c10HandleClsnER8dActor_c
 void daObjHatenaSwitch_c::HandleClsn(dActor_c &other)
 {
-    u16 actorID = other.actorID;
-    int isPlayer = (int)(actorID == 0xbf);
-    if (isPlayer == 0) {
-        int isCrate = (int)(actorID == 0xc2);
-        if (isCrate == 0)
-            return;
-    }
+    if (!IsPlayerActor(&other) && !IsCrateActor(&other))
+        return;
 
     if (other.mPosY > mPosY + 0x64000)
         mPressedThisFrame = 1;
@@ -371,9 +382,7 @@ void daObjHatenaSwitch_c::UpdateClsnTransform()
 // @symbol _ZN19daObjHatenaSwitch_c15UpdateClsnStateEv
 s32 daObjHatenaSwitch_c::UpdateClsnState()
 {
-    int shouldDisable = (int)((mFlags & 8) != 0);
-
-    if (shouldDisable) {
+    if (IsOffScreen(this)) {
         if (mActiveMeshCollider->IsEnabled())
             mActiveMeshCollider->Disable();
         return 1;

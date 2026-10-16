@@ -38,6 +38,7 @@ enum d_a_pg_mthr_AssetId {
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Player.h"
+#include "dBgCh_Actr.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -444,9 +445,7 @@ struct dBgPiRaw {
     struct dBgPiRawBody info;
 };
 void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *w);
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(dBgCh_Actr *w);
 int _ZN4cstd4fdivEii(int a, int b);
-struct dBgPiRaw *_ZNK10dBgCh_Actr13GetWallResultEv(dBgCh_Actr *w);
 void _ZN5dBgPiD1Ev(struct dBgPiRaw *r);
 extern int data_02099368[];
 
@@ -458,7 +457,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(w);
     if (w->IsOnGround() != 0) {
         Vector3 n;
-        dBgPi *floor = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(w);
+        dBgPi *floor = (dBgPi *)w->GetFloorResult();
         floor->surface.CopyNormalTo(n);
         if (n.y != 0) {
             int s = FX_MUL(n.x, self->unk_0a4) + FX_MUL(n.z, self->unk_0ac);
@@ -466,7 +465,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
         }
     }
     if (w->IsOnWall() != 0) {
-        struct dBgPiRaw *src = _ZNK10dBgCh_Actr13GetWallResultEv(w);
+        struct dBgPiRaw *src = (struct dBgPiRaw *)w->GetWallResult();
         struct dBgPiRaw cr;
         Vector3 wn;
         struct dBgPiRawBody *dst = &cr.info;

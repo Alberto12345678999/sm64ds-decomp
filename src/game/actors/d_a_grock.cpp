@@ -62,6 +62,7 @@ enum daGrock_c_AssetId {
 #include "Player.h"
 #include "Sound.h"
 #include "dBgPi.h"
+#include "dBgCh_Actr.h"
 
 /* Kind in param1's low nibble. */
 enum {
@@ -126,13 +127,11 @@ extern struct Matrix4x3 data_020a0e68;
 extern void func_02012694(int id, void *pos);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
-extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *clsn);
 extern void func_0201267c(int id, void *pos);
 extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int prev, unsigned int effect, int x, int y, int z, void *dir, void *cb);
 extern int Vec3_HorzLen(void *v);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void *clsn);
 /* dActor_c.h types GetSubtraction(short, short). The wall angle is an int
  * passed straight through; the short spelling adds lsl/asr #16. */
 extern int _ZN8dActor_c14GetSubtractionEss(void *a, s16 x, int y);
@@ -274,7 +273,7 @@ extern "C" void func_ov021_02112544(char *raw)
 
     dBgCh_Actr_UpdateContinuous_Veneer(&rock->mWithMeshClsn);
     if (rock->mWithMeshClsn.IsOnGround() != 0) {
-        hit = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&rock->mWithMeshClsn);
+        hit = (dBgPi *)rock->mWithMeshClsn.GetFloorResult();
         hit->surface.CopyNormalTo(*(Vector3 *)&normal);
 
         pos = *(Vec3 *)&rock->mPosX;
@@ -312,7 +311,7 @@ extern "C" void func_ov021_02112544(char *raw)
     if (rock->mWithMeshClsn.IsOnWall() == 0)
         return;
 
-    hit = (dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(&rock->mWithMeshClsn);
+    hit = (dBgPi *)rock->mWithMeshClsn.GetWallResult();
     hit->surface.CopyNormalTo(*(Vector3 *)&wallNormal);
     {
         int wallAngle = _ZN4cstd5atan2E5Fix12IiES1_(wallNormal.x, wallNormal.z);
