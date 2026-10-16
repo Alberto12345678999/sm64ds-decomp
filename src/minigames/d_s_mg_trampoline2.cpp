@@ -991,7 +991,7 @@ s32 dScMgTrampoline2_c::Render()
     TrmpFx_DrawAll();
     Jump2Popup_DrawAll();
 
-    if (unk_4664 == 1) {
+    if (mDrawSubScreen == 1) {
         count = data_ov006_0213b0f0;
         a1v = 0x6e;
         if (GetOwnerLanguage() == 5 || GetOwnerLanguage() == 4)
@@ -1033,7 +1033,7 @@ int dScMgTrampoline2_c::OnGraphCallback2()
 {
     if (!dScMgD3DBase_c::OnGraphCallback2()) return 0;
     if (mMenuOpen == 0) {
-        if (unk_4664 == 0) {
+        if (mDrawSubScreen == 0) {
             data_0209d45c = data_0209d45c & ~8;
             SetBg2Offset(0, 0);
             *(int *)0x4000018 = 0;

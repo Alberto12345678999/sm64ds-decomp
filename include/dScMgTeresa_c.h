@@ -53,7 +53,7 @@ struct dScMgTeresa_c : dScMgBase_c {
         u8  mAnim;       /* 0x1e -- facing: 1 when the heading's sine is >= 0 */
         u8  mKind;       /* 0x1f -- per-level table value; 8 is the slow kind */
         u8  mFoundOrder; /* 0x20 -- the found counter (+0x4c21) when found */
-        u8  unk_21;      /* 0x21 */
+        u8 mPlaySettleSound; /* 0x21 -- the one Boo of a settling group that plays sound 0x1f1 */
         u8  pad_22[0x2];
     };
 
@@ -215,7 +215,7 @@ struct dScMgTeresa_c : dScMgBase_c {
     /* The big Boo, 0x1c bytes; d_s_mg_teresa.cpp's `struct Boo` (BOO()) is
        its typed view. */
     u8  pad_4bcc[0x1c];
-    s32 unk_4be8;            /* 0x4be8 -- state index for Behavior's pmf dispatch */
+    s32 mSceneState; /* 0x4be8 -- state index for Behavior's pmf dispatch */
     u8  pad_4bec[0x2a];
     s16 unk_4c16;            /* 0x4c16 */
     u8  pad_4c18[0x9];
