@@ -79,6 +79,7 @@ extern "C" ResourceDescriptor data_ov047_02112258 = {
 };
 
 #include "daObjKm3_Kurumajiku_c.h"
+#include "SpawnInfo.h"
 
 extern "C" {
 int func_ov002_020b6c54(daObjKm3_Kurumajiku_c *self,
@@ -86,19 +87,6 @@ int func_ov002_020b6c54(daObjKm3_Kurumajiku_c *self,
 int func_ov002_020b6ac8(daObjKm3_Kurumajiku_c *self,
                         ResourceDescriptor *descriptor);
 }
-
-struct KurumajikuSpawnInfo {
-    daObjKm3_Kurumajiku_c *(*classInit)();
-    s16 executePriority; /* +4: also KM3_KURUMAJIKU registry id 0x0098 = 152 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char KurumajikuSpawnInfo_size_must_be_0x1c[
-    sizeof(KurumajikuSpawnInfo) == 0x1c ? 1 : -1];
 
 /* KM3_KURUMA: the cart this axle drives. The helper Spawns four of them. */
 enum { kCartActorId = 0x97 };
@@ -110,9 +98,9 @@ extern "C" daObjKm3_Kurumajiku_c *daObjKm3_Kurumajiku_c_classInit()
 }
 
 // @symbol g_profile_KM3_KURUMAJIKU
-extern "C" KurumajikuSpawnInfo g_profile_KM3_KURUMAJIKU = {
+extern "C" SpawnInfo<daObjKm3_Kurumajiku_c> g_profile_KM3_KURUMAJIKU = {
     daObjKm3_Kurumajiku_c_classInit,
-    0x0098,
+    0x0098, /* KM3_KURUMAJIKU registry id 152 */
     0x00df,
     2,
     0,
