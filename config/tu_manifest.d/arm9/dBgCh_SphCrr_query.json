@@ -406,7 +406,7 @@
       "ordinal": 54
     },
     {
-      "symbol": "func_02038ea4",
+      "symbol": "_ZN9dBgCh_Gnd15DetectClsnSlot0Ev",
       "address": "0x02038ea4",
       "size": "0x000000a0",
       "legacy_source": "src/unnamed/arm9/0203/func_02038ea4.cpp",

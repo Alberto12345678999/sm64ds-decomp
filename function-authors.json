@@ -2019,7 +2019,7 @@
     },
     "arm9:0x020150e8": {
       "author": "andrewboudreau",
-      "name": "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh"
+      "name": "_ZN8dClipper10ClipSphereER7Vector3iPh"
     },
     "arm9:0x02015560": {
       "author": "tangosdev",
@@ -5579,7 +5579,7 @@
     },
     "arm9:0x02038ea4": {
       "author": "tangosdev",
-      "name": "func_02038ea4"
+      "name": "_ZN9dBgCh_Gnd15DetectClsnSlot0Ev"
     },
     "arm9:0x02038f44": {
       "author": "tangosdev",

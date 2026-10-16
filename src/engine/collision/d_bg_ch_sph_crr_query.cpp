@@ -109,22 +109,19 @@ int dBgCh_Gnd::DetectClsn()
     return ret;
 }
 
-// @symbol func_02038ea4
-/* Slot-0-only Gnd scan: shared with the full scan above, kept under its
-   address name. data_020a0c80[0] is read as the single entry (the table
-   base holds the slot-0 collider). */
-extern "C" int func_02038ea4(void *thiz)
-{
+// @symbol _ZN9dBgCh_Gnd15DetectClsnSlot0Ev
+/* Inferred name: reset the ground query and scan only collider slot zero. */
+int dBgCh_Gnd::DetectClsnSlot0() {
     int r = 0;
     dBgW *o;
-    func_02037464(thiz);
+    func_02037464(this);
     o = (dBgW *)data_020a0c80[0];
     if (o != 0) {
-        if (func_02035354(thiz, (void *)func_020393b4(o)) == 0) {
-            if (o->DetectClsn(*(dBgCh_Gnd *)thiz) != 0) {
+        if (func_02035354(this, (void *)func_020393b4(o)) == 0) {
+            if (o->DetectClsn(*this) != 0) {
                 int a = func_020393ac(o);
                 int b = func_020393b4(o);
-                static_cast<dBgCh_Gnd *>(thiz)->dBgPi::SetCollider(0, a, (dActor_c *)b, (dBgW *)o);
+                dBgPi::SetCollider(0, a, (dActor_c *)b, (dBgW *)o);
                 r = 1;
             }
         }
