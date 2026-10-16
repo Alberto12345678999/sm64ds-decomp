@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "issue": 2410,
+  "status": "owned API checkpoint; Actor contribution/production/independent Source/privateCI pending",
+  "base_commit": "5fd54e39d307634d1580330ca5984163ff8c0906",
+  "source_preview": "C:\\tmp\\sm64ds-clipper-scalar1015\\build\\clipper-sphere-preview",
+  "preview_handoff_sha256": "1184c241f1dd67f30b18dc376a5d0137d73398a0418291a9c91c085d4bfa16fd",
+  "canonical_rename": {
+    "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh": "_ZN8dClipper10ClipSphereER7Vector3iPh"
+  },
+  "method_size": 1144,
+  "name_provenance": "inferred from observed sphere/frustum tests; not recovered name",
+  "private_preview": {
+    "strict_checks_per_control_candidate": 342,
+    "complete_tus": 9,
+    "blind": 0,
+    "diffs": [],
+    "compiler_local_name_shifts": 0,
+    "canonical_rename_only": true
+  },
+  "ownership": {
+    "Actor_source": "original Yegg producer reservation, excluded from root resources",
+    "actual_Actor_producer": "codex-yegg-native-three-method-astra-producer1014",
+    "no_Actor_header_change": true
+  },
+  "current_main_preimage_evidence": {
+    "composition": "fe7f1868ec5714db783c0e1081a1a9a05df49a46",
+    "main": "d6edd59a6a476acfdf8325980be709d129313923",
+    "all10_preimages_literal": true,
+    "current_stack_ROM_report_sha256": "c52ae8cf69b3ec853613ac8e0bd8ec3cec8b947f6bc137c80055c70e8aee3861"
+  },
+  "debt_retained": [
+    "Actor scalar camera-position Vector3 view",
+    "Shared Matrix4x3 representation debt",
+    "ClipSphere arithmetic/casts/goto and propagation pragma",
+    "Other Monkey scalar APIs, shared asset lifecycles and native initializer/data ownership"
+  ],
+  "production_acceptance": null,
+  "issue_complete": false
+}
