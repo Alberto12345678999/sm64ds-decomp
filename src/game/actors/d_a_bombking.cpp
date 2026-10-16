@@ -380,13 +380,13 @@ int daBombking_c::func_ov078_02123d3c()
         *(s16 *)(((int)this + 0x94)) += 0x1000;
         this->mHorzSpeed = 0;
     } else {
-        s16 a = Vec3_HorzAngle((Vector3 *)&this->mPosX, &v);
+        s16 a = Vec3_HorzAngle(&this->mPos, &v);
         ApproachAngle(&this->mPrevAngleY, a, 5, 0x1000, 0x100);
     }
 
     this->mAngleY = this->mPrevAngleY;
 
-    if (Vec3_Dist((Vector3 *)&this->mPosX, &v) > 0x1e000) {
+    if (Vec3_Dist(&this->mPos, &v) > 0x1e000) {
         if (this->unk_505 == 0) {
             func_02012694(0x12d, &this->mCamSpacePosX);
             this->unk_505 = 0xf;
@@ -506,7 +506,7 @@ int func_ov078_021240a0(char* c)
                         msg = 0x95;
                     }
                     _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
-                    if (pl->ShowMessage(*(fBase_c *)c, (int)msg, (Vector3 *)&k->mPosX, 0, 0) != 0) {
+                    if (pl->ShowMessage(*(fBase_c *)c, (int)msg, &k->mPos, 0, 0) != 0) {
                         func_02012694(0x12a, &k->mCamSpacePosX);
                         k->KingBobOmb_SetState(&data_ov078_0212705c);
                     }
@@ -668,7 +668,7 @@ int daBombking_c::func_ov078_02124520()
         ppos.x = pp[0];
         ppos.y = pp[1];
         ppos.z = pp[2];
-        ang = Vec3_HorzAngle((Vector3 *)&this->mPosX, &ppos);
+        ang = Vec3_HorzAngle(&this->mPos, &ppos);
         look.x = this->mPosX;
         look.y = this->mPosY;
         look.z = this->mPosZ;
@@ -909,7 +909,8 @@ int daBombking_c::func_ov078_02124cf4()
         msg = 0x95;
     }
 
-    if (other->ShowMessage(*(fBase_c *)this, (unsigned)(int)msg, (Vector3 *)&this->mPosX, 0, 0) == 0) goto done;
+    if (other->ShowMessage(*(fBase_c *)this, (unsigned)(int)msg, &this->mPos, 0, 0) == 0)
+        goto done;
     func_02012694(0x12a, &this->mCamSpacePosX);
     KingBobOmb_SetState(&data_ov078_0212705c);
 done:
@@ -1367,7 +1368,7 @@ int daBombking_c::func_ov078_021259ec()
         *(struct M3 *)&ppos = *(struct M3 *)&player->mPosX;
 
         if (this->mIntroTalked == 0) {
-            dist = Vec3_Dist((struct Vector3 *)&this->mPosX, &ppos);
+            dist = Vec3_Dist(&this->mPos, &ppos);
             if (dist < 0x12c000) {
                 this->mTalkingPlayer = player;
                 v.x = this->mPosX;
@@ -1386,7 +1387,7 @@ int daBombking_c::func_ov078_021259ec()
                 }
             }
         } else {
-            dist = Vec3_Dist((struct Vector3 *)&this->mPosX, &ppos);
+            dist = Vec3_Dist(&this->mPos, &ppos);
             if (dist < 0x258000) {
                 if (this->mArenaPosY - 0xa000 < ppos.y) {
                     KingBobOmb_SetState(&data_ov078_0212701c);
@@ -1431,7 +1432,7 @@ void daBombking_c::func_ov078_02125c98() {
   int h = mPosY;
   if (this->mWithMeshClsn.IsOnGround() == 0) {
     dBgCh_Gnd rg;
-    rg.SetObjAndPos(*(const Vector3 *)&this->mPosX, 0);
+    rg.SetObjAndPos(this->mPos, 0);
     if (rg.DetectClsn() != 0)
       h = rg.clsnY;
   }

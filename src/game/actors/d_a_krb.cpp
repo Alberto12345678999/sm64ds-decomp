@@ -343,7 +343,7 @@ void func_ov084_02129168(daKrb_c* goomba, dActor_c* actor)
     goomba->mVertSpeed = cstd::fdiv(0xd000 - goomba->mVertAccel, goomba->mFloorNormalY);
     goomba->mHorzSpeed = Vec3_HorzLen((char *)&goomba->unk_0a4) * -1;
     if (actor != 0)
-        goomba->mPrevAngleY = Vec3_HorzAngle((Vector3 *)&goomba->mPosX, (Vector3 *)&actor->mPosX);
+        goomba->mPrevAngleY = Vec3_HorzAngle(&goomba->mPos, &actor->mPos);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cc0.ptr, 0, 0x1000, 0);
     goomba->mState = daKrb_c::STATE_TUMBLE;
     goomba->mEatenByYoshi = 0;
@@ -351,7 +351,7 @@ void func_ov084_02129168(daKrb_c* goomba, dActor_c* actor)
     _ZN10dBgCh_Actr12Unk_0203589cEv(&goomba->mWithMeshClsn);
     goomba->mWithMeshClsn.ClearJustHitGroundFlag();
     goomba->mWithMeshClsn.ClearGroundFlag();
-    func_02012694(SND_TUMBLE_BOUNCE_FIRST, (const Vector3 *)&goomba->mCamSpacePosX);
+    func_02012694(SND_TUMBLE_BOUNCE_FIRST, &goomba->mCamSpacePos);
     goomba->unk_467 = 0;
 }
 }
@@ -441,7 +441,7 @@ void func_ov084_0212934c(char* c)
         if (kind <= 4 || (kind >= 0xc && kind <= 0x10)) {
             if (((Flags *)&goomba->mMoveFlags)->flag)
                 return;
-            func_02012694(SND_FOOTSTEP, (const Vector3 *)&goomba->mCamSpacePosX);
+            func_02012694(SND_FOOTSTEP, &goomba->mCamSpacePos);
             goomba->mMoveFlags |= daKrb_c::MOVE_STEP_SOUND_LATCH;
             return;
         }
@@ -453,7 +453,7 @@ void func_ov084_0212934c(char* c)
         if (kind <= 3 || (kind >= 0x10 && kind <= 0x13)) {
             if (((Flags *)&goomba->mMoveFlags)->flag)
                 return;
-            func_02012694(SND_FOOTSTEP, (const Vector3 *)&goomba->mCamSpacePosX);
+            func_02012694(SND_FOOTSTEP, &goomba->mCamSpacePos);
             goomba->mMoveFlags |= daKrb_c::MOVE_STEP_SOUND_LATCH;
             return;
         }
@@ -593,8 +593,8 @@ void func_ov084_021296cc(daKrb_c *goomba)
         goomba->UntrackStar(goomba->mStarTracked);
         starMarker = (char *)dActor_c::Spawn(
             ACTOR_STARBASE, 0x50, goomba->mHomePos, 0, goomba->mAreaId, -1);
-        silverStar = (char *)dActor_c::Spawn(
-            ACTOR_SILVER_STAR, 0x10, *(Vector3 *)&goomba->mPosX, 0, goomba->mAreaId, -1);
+        silverStar =
+            (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, goomba->mPos, 0, goomba->mAreaId, -1);
         if (starMarker != 0 && silverStar != 0) {
             /* the silver star's +0x434 holds the marker's uniqueID (+4) */
             *(int *)(silverStar + 0x434) = *(int *)(starMarker + 4);
@@ -610,12 +610,9 @@ void func_ov084_021296cc(daKrb_c *goomba)
     if (goomba->mStarID != data_0209f344[data_0209f208[0]])
         return;
     goomba->UntrackStar(goomba->mStarTracked);
-    dActor_c::Spawn(
-        ACTOR_STARBASE, goomba->mStarID | 0x30, *(Vector3 *)&goomba->mPosX, 0,
-        goomba->mAreaId, -1);
-    dActor_c::Spawn(
-        ACTOR_SILVER_STAR, goomba->mStarID | 0x30, *(Vector3 *)&goomba->mPosX, 0,
-        goomba->mAreaId, -1);
+    dActor_c::Spawn(ACTOR_STARBASE, goomba->mStarID | 0x30, goomba->mPos, 0, goomba->mAreaId, -1);
+    dActor_c::Spawn(ACTOR_SILVER_STAR, goomba->mStarID | 0x30, goomba->mPos, 0, goomba->mAreaId,
+                    -1);
     goomba->mRewardType = daKrb_c::REWARD_SPENT;
     goomba->param1 = *(const int *)((const char *)goomba + 8) & 0xff0f;
     goomba->SpawnSoundObj(1);
@@ -688,7 +685,7 @@ int func_ov084_021298d0(char* c){
 
 L_a4:
     if (deathState == 0) goto L_end;
-    func_02012694(data_ov084_02130218[goomba->mGoombaType], (const Vector3 *)&goomba->mCamSpacePosX);
+    func_02012694(data_ov084_02130218[goomba->mGoombaType], &goomba->mCamSpacePos);
     func_ov084_021296cc(goomba);
     if ((goomba->mCapId & 0xf) < 6 || goomba->mRewardType == daKrb_c::REWARD_SILVER_STAR_IF_CURRENT) {
         goomba->mPosX = goomba->mHomePos.x;
@@ -807,7 +804,7 @@ extern "C" {
 void func_ov084_02129c9c(char *c)
 {
     daKrb_c *goomba = (daKrb_c *)c;
-    func_02012694(SND_HOP, (const Vector3 *)&goomba->mCamSpacePosX);
+    func_02012694(SND_HOP, &goomba->mCamSpacePos);
     goomba->mState = daKrb_c::STATE_AIRBORNE;
     goomba->mHorzSpeed = 0;
     goomba->mVertSpeed = data_ov084_02130248[goomba->mGoombaType];
@@ -841,10 +838,10 @@ void func_ov084_02129cf4(daKrb_c *goomba, Fix12i distThresh)
 
     goomba->mClosestPlayer = goomba->ClosestPlayer();
 
-    if (goomba->mClosestPlayer == 0
-        || (Vec3_Dist((struct Vector3*)&goomba->mPosX, (struct Vector3*)&goomba->mHomePos) > distThresh
-            && goomba->mCapId >= 6)) {
-        goomba->mInitAngleY = Vec3_HorzAngle((struct Vector3*)&goomba->mPosX, (struct Vector3*)&goomba->mHomePos);
+    if (goomba->mClosestPlayer == 0 ||
+        (Vec3_Dist(&goomba->mPos, (struct Vector3 *)&goomba->mHomePos) > distThresh &&
+         goomba->mCapId >= 6)) {
+        goomba->mInitAngleY = Vec3_HorzAngle(&goomba->mPos, (struct Vector3 *)&goomba->mHomePos);
         goomba->mDistToPlayer = 0x61a8000;
         return;
     }
@@ -857,20 +854,21 @@ void func_ov084_02129cf4(daKrb_c *goomba, Fix12i distThresh)
     }
 
     if (goomba->mCapId < 6) {
-        if (Vec3_Dist((struct Vector3*)&goomba->mPosX, (struct Vector3*)&goomba->mHomePos) > distThresh
-            && !goomba->mWithMeshClsn.IsOnWall()) {
+        if (Vec3_Dist(&goomba->mPos, (struct Vector3 *)&goomba->mHomePos) > distThresh &&
+            !goomba->mWithMeshClsn.IsOnWall()) {
             goomba->mDistToPlayer = 0x61a8000;
-            goomba->mInitAngleY = Vec3_HorzAngle((struct Vector3*)&goomba->mPosX, (struct Vector3*)&goomba->mHomePos);
+            goomba->mInitAngleY =
+                Vec3_HorzAngle(&goomba->mPos, (struct Vector3 *)&goomba->mHomePos);
             return;
         }
 
-        if (Vec3_Dist((struct Vector3*)&goomba->mPosX, &ppos) < goomba->mChaseRadius) {
-            goomba->mDistToPlayer = Vec3_Dist((struct Vector3*)&goomba->mPosX, &ppos);
+        if (Vec3_Dist(&goomba->mPos, &ppos) < goomba->mChaseRadius) {
+            goomba->mDistToPlayer = Vec3_Dist(&goomba->mPos, &ppos);
             if (goomba->mUnstickTimer != 0) {
-                goomba->mInitAngleY = Vec3_HorzAngle((struct Vector3*)&goomba->mPosX, &ppos);
+                goomba->mInitAngleY = Vec3_HorzAngle(&goomba->mPos, &ppos);
                 return;
             }
-            goomba->mInitAngleY = Vec3_HorzAngle(&ppos, (struct Vector3*)&goomba->mPosX);
+            goomba->mInitAngleY = Vec3_HorzAngle(&ppos, &goomba->mPos);
             return;
         }
         goomba->mDistToPlayer = 0x61a8000;
@@ -881,8 +879,8 @@ void func_ov084_02129cf4(daKrb_c *goomba, Fix12i distThresh)
         goomba->mDistToPlayer = 0x61a8000;
         return;
     }
-    goomba->mDistToPlayer = Vec3_Dist((struct Vector3*)&goomba->mPosX, &ppos);
-    goomba->mInitAngleY = Vec3_HorzAngle((struct Vector3*)&goomba->mPosX, &ppos);
+    goomba->mDistToPlayer = Vec3_Dist(&goomba->mPos, &ppos);
+    goomba->mInitAngleY = Vec3_HorzAngle(&goomba->mPos, &ppos);
 }
 }
 
@@ -985,7 +983,7 @@ void func_ov084_02129ed4(void *c)
         goomba->mScaleX = 0x1000;     /* 1.0 */
         goomba->mScaleY = 0x1000;
         goomba->mScaleZ = 0x1000;
-        func_02012694(SND_STOMPED, (const ::Vector3 *)&goomba->mCamSpacePosX);
+        func_02012694(SND_STOMPED, &goomba->mCamSpacePos);
         goto block_68;
     }
 
@@ -1036,7 +1034,12 @@ void func_ov084_02129ed4(void *c)
                     _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(goomba, killDirPlayer, other, 0x41000);     /* 65.0 */
                     return;
                 }
-                { Vector3* pp = (Vector3*)(((int)&((dActor_c *)other)->mPosX) & 0xffffffffffffffffULL); playerPos.x = pp->x; playerPos.y = pp->y; playerPos.z = pp->z; }
+                {
+                    Vector3 *pp = &((dActor_c *)other)->mPos;
+                    playerPos.x = pp->x;
+                    playerPos.y = pp->y;
+                    playerPos.z = pp->z;
+                }
                 if (((Player *)other)->IsOnShell() != 0) {
                     goomba->mDeathState = daKrb_c::DEATH_DIVE_OR_EGG;
                     turnAround = 1;
@@ -1045,7 +1048,7 @@ void func_ov084_02129ed4(void *c)
                 }
                 if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
                     _ZN6Player6BounceE5Fix12IiE(other, 0x28000);     /* 40.0 */
-                    func_02012694(SND_STOMPED, (const ::Vector3 *)&goomba->mCamSpacePosX);
+                    func_02012694(SND_STOMPED, &goomba->mCamSpacePos);
                     goomba->mDeathState = daKrb_c::DEATH_STOMPED;
                     goomba->mScaleX = 0x1000;     /* 1.0 */
                     goomba->mScaleY = 0x1000;
@@ -1059,7 +1062,7 @@ void func_ov084_02129ed4(void *c)
                         hurtOriginFirstHit.x = goomba->mPosX; hurtOriginFirstHit.y = goomba->mPosY; hurtOriginFirstHit.z = goomba->mPosZ;
                         _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &hurtOriginFirstHit, 0, hurtKnockback, 1, 0, 1);
                         func_ov084_02129498(goomba);
-                        func_02012694(SND_DEATH_SMALL, (const ::Vector3 *)&goomba->mCamSpacePosX);
+                        func_02012694(SND_DEATH_SMALL, &goomba->mCamSpacePos);
                         return;
                     }
                     if ((goomba->mdCcAc_c.hitFlags & HIT_PLAYER) == 0) return;
@@ -1077,10 +1080,15 @@ void func_ov084_02129ed4(void *c)
 
     typeMatch = (s32)(((dActor_c *)other)->actorID == ACTOR_PLAYER);
     if (typeMatch != 0) {
-        { Vector3* pp = (Vector3*)(((int)&((dActor_c *)other)->mPosX) & 0xffffffffffffffffULL); playerPosJump.x = pp->x; playerPosJump.y = pp->y; playerPosJump.z = pp->z; }
+        {
+            Vector3 *pp = &((dActor_c *)other)->mPos;
+            playerPosJump.x = pp->x;
+            playerPosJump.y = pp->y;
+            playerPosJump.z = pp->z;
+        }
         if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
             _ZN6Player6BounceE5Fix12IiE(other, 0x28000);     /* 40.0 */
-            func_02012694(SND_STOMPED, (const ::Vector3 *)&goomba->mCamSpacePosX);
+            func_02012694(SND_STOMPED, &goomba->mCamSpacePos);
             goomba->mDeathState = daKrb_c::DEATH_STOMPED;
             goomba->mScaleX = 0x1000;     /* 1.0 */
             goomba->mScaleY = 0x1000;
@@ -1277,9 +1285,9 @@ void func_ov084_0212a774(daKrb_c *goomba)
         }
 
         if (goomba->unk_467 == 0) {
-            func_02012694(SND_TUMBLE_BOUNCE_FIRST, (const ::Vector3 *)&goomba->mCamSpacePosX);
+            func_02012694(SND_TUMBLE_BOUNCE_FIRST, &goomba->mCamSpacePos);
         } else if (goomba->unk_467 <= 2) {
-            func_02012694(SND_TUMBLE_BOUNCE_LATER, (const ::Vector3 *)&goomba->mCamSpacePosX);
+            func_02012694(SND_TUMBLE_BOUNCE_LATER, &goomba->mCamSpacePos);
         }
         *(u8 *)(((long long)(int)&goomba->unk_467)) += 1;
     } else {
@@ -1406,7 +1414,7 @@ void func_ov084_0212abd4(daKrb_c *goomba)
         } else {
             goomba->mTargetHorzSpeed = data_ov084_02130228[goomba->mGoombaType];
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
-            goomba->mTargetAngleY = Vec3_HorzAngle((Vector3 *)&goomba->mPosX, (Vector3 *)&goomba->mHomePos);
+            goomba->mTargetAngleY = Vec3_HorzAngle(&goomba->mPos, (Vector3 *)&goomba->mHomePos);
             step = 0x400;
         }
         ApproachLinear(*(short *)&goomba->mPrevAngleY, goomba->mTargetAngleY, step);
@@ -1425,7 +1433,7 @@ void func_ov084_0212abd4(daKrb_c *goomba)
     if (!((Flag *)&goomba->mMoveFlags)->b0) {
         if (goomba->mDistToPlayer < goomba->mChaseRadius ||
             (goomba->mCapId < 6 &&
-             Vec3_Dist((Vector3 *)&goomba->mPosX, (Vector3 *)&goomba->mHomePos) > 0x3e8000)) {
+             Vec3_Dist(&goomba->mPos, (Vector3 *)&goomba->mHomePos) > 0x3e8000)) {
             if (goomba->mTargetHorzSpeed <= data_ov084_02130228[goomba->mGoombaType]) {
                 func_ov084_02129c9c((char *)goomba);
             } else {
@@ -1562,7 +1570,7 @@ void func_ov084_0212af74(daKrb_c *goomba)
                 _Z14ApproachLinearRiii((int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
             }
         } else {
-            goomba->mInitAngleY = Vec3_HorzAngle((Vector3 *)&goomba->mPosX, &targetPos);
+            goomba->mInitAngleY = Vec3_HorzAngle(&goomba->mPos, &targetPos);
             if (Vec3_HorzDist(&goomba->mPosX, &targetPos) < 0x32000) {
                 goomba->mTargetHorzSpeed = king->mGoombaTargetSpeed >> 2;
             } else if (Vec3_HorzDist(&goomba->mPosX, &targetPos) < 0x64000) {
@@ -1728,7 +1736,7 @@ int daKrb_c::Render()
         mScaleZ = (int)(((long long)mScaleZ * data_ov084_02130258[mGoombaType] + 0x800) >> 12);
     }
 
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
 
     mScaleX = backup.x;
     mScaleY = backup.y;
@@ -1886,7 +1894,7 @@ int daKrb_c::Behavior()
     if (mState == STATE_WALK) {
         int b = (mFlags & 8) ? 1 : 0;
         if (b == 0) {
-            if (Vec3_Dist((Vector3*)((char*)&mPosX), &mStuckCheckPos) < 0xa000) {     /* moved less than 10.0 */
+            if (Vec3_Dist(&mPos, &mStuckCheckPos) < 0xa000) { /* moved less than 10.0 */
                 *(u16*)((char*)&mStuckTimer) += 1;
                 if (mCapId < 6 && mStuckTimer == 0x1e) {
                     func_ov084_02129c9c((char *)this);

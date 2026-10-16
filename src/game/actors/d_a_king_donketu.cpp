@@ -1461,8 +1461,7 @@ int daKing_Donketu_c::func_ov073_02120e60() {
    In leg 0 the model hitting animation frame 0 or 0xe shakes the camera
    (0x3e8000) and plays SND_CHASE_STEP. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120ed0Ev
-int daKing_Donketu_c::func_ov073_02120ed0()
-{
+int daKing_Donketu_c::func_ov073_02120ed0() {
     daKing_Donketu_c *c = this;
 
     if (c->mNoGroundAhead == 1) {
@@ -1512,18 +1511,18 @@ int daKing_Donketu_c::func_ov073_02120ed0()
         break;
 
     case 1:
-    case 2:
-    {
+    case 2: {
         int d;
         int i;
         c->mStateScratch = 0;
         d = c->mHorzSpeed;
-        if (d < 0) d = -d;
+        if (d < 0)
+            d = -d;
         if (d > 0xa) {
             i = 0;
             do {
-                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(
-                    c->unk_4d4[i].x, c->unk_4d4[i].y, c->unk_4d4[i].z);
+                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(c->unk_4d4[i].x, c->unk_4d4[i].y,
+                                                                   c->unk_4d4[i].z);
                 i++;
             } while (i < 2);
         }
@@ -1533,19 +1532,24 @@ int daKing_Donketu_c::func_ov073_02120ed0()
             ApproachLinear(c->mAngleY, c->mTargetAngle, 0x500);
         }
         d = c->mHorzSpeed;
-        if (d < 0) d = -d;
-        if (d >= 0xa) break;
-        if ((unsigned short)c->mStateTimer != 0) break;
+        if (d < 0)
+            d = -d;
+        if (d >= 0xa)
+            break;
+        if ((unsigned short)c->mStateTimer != 0)
+            break;
         if (c->mPhase == 2) {
             Player *p = c->ClosestPlayer();
             if (p != 0) {
                 int t;
-                if (p->GetHurtState() == 4) goto hz;
-                if (p->GetHurtState() == 5) goto hz;
+                if (p->GetHurtState() == 4)
+                    goto hz;
+                if (p->GetHurtState() == 5)
+                    goto hz;
                 t = p->mIsNoControl ? 1 : 0;
                 if (t == 1) {
-hz:
-                    c->mTargetAngle = Vec3_HorzAngle((Vector3 *)&c->mPosX, (Vector3 *)&c->mSpawnPosX);
+                hz:
+                    c->mTargetAngle = Vec3_HorzAngle(&c->mPos, (Vector3 *)&c->mSpawnPosX);
                 } else {
                     c->mTargetAngle = c->HorzAngleToCPlayer();
                 }
@@ -1564,8 +1568,7 @@ hz:
     }
 
     if (c->mPhase == 0) {
-        if (c->mBlendModelAnim.WillHitFrame(0) != 0 ||
-            c->mBlendModelAnim.WillHitFrame(0xe) != 0) {
+        if (c->mBlendModelAnim.WillHitFrame(0) != 0 || c->mBlendModelAnim.WillHitFrame(0xe) != 0) {
             c->func_ov073_0211f2c0(0x3e8000);
             func_02012694(SND_CHASE_STEP, &c->mCamSpacePosX);
         }

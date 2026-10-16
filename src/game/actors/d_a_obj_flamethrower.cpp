@@ -231,9 +231,7 @@ int daObjFlamethrower_c::Behavior()
     }
 
     if (mActiveFlames != 0) {
-        mSoundHandle = Sound::PlayLong(
-            mSoundHandle, 3, kFlameSound,
-            *(const Vector3 *)&mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, kFlameSound, mCamSpacePos, 0);
     }
 
     if ((mFlags & kOffScreen) != 0)

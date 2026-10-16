@@ -127,7 +127,7 @@ int daObjSlIceBlock_c::Behavior()
       }
     }
     UpdatePos(0);
-    mSoundID = Sound::PlayLong(mSoundID, 3, 0x98, *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundID = Sound::PlayLong(mSoundID, 3, 0x98, mCamSpacePos, 0);
   } else {
     if(DecIfAbove0_Short(&mDelayTimer) == 0){
       V3 pos;
@@ -143,7 +143,7 @@ int daObjSlIceBlock_c::Behavior()
       }
       unsigned char cnt = mNumToBigIce;
       mDelayTimer = (cnt + 1) * 0x14;
-      dActor_c::Spawn(0x5d, spawnType, *(Vector3 *)&pos, (Vector3_16 *)&mAngleX, mAreaId, -1);
+      dActor_c::Spawn(0x5d, spawnType, *(Vector3 *)&pos, &mAngle, mAreaId, -1);
     }
   }
   return 1;

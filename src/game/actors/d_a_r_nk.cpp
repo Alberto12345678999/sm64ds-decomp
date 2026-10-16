@@ -670,19 +670,18 @@ void daRNk_c::func_ov062_0211a0f0()
  *           another talk, go on
  *   steps 5-8  turn to face the player, show a chatter message, and return
  *           to step 4 when it ends */
-void daRNk_c::func_ov062_02119be0()
-{
+void daRNk_c::func_ov062_02119be0() {
     Vector3 playerPos;
     Vector3 msgPos;
     Vector3 starPos;
     unsigned int msg;
     unsigned short t;
-    unsigned short* tp;
+    unsigned short *tp;
     int x;
     int y;
     int z;
 
-    tp = (unsigned short*)&this->mStateTimer;
+    tp = (unsigned short *)&this->mStateTimer;
     t = *tp;
     if (t != 0) {
         t--;
@@ -691,7 +690,7 @@ void daRNk_c::func_ov062_02119be0()
 
     switch (this->mStep) {
     case 0:
-        if (*(unsigned short*)&this->mStateTimer != 0)
+        if (*(unsigned short *)&this->mStateTimer != 0)
             return;
         {
             Vector3 *pp = &this->mPlayer->mPos;
@@ -767,14 +766,13 @@ void daRNk_c::func_ov062_02119be0()
             this->mStep = 0;
         }
         return;
-    case 4:
-        {
-            Vector3* pp = (Vector3 *)&this->mPlayer->mPosX;
-            playerPos.x = pp->x;
-            playerPos.y = pp->y;
-            playerPos.z = pp->z;
-        }
-        if (Vec3_Dist((Vector3*)&this->mPosX, &playerPos) >= kChatDist)
+    case 4: {
+        Vector3 *pp = &this->mPlayer->mPos;
+        playerPos.x = pp->x;
+        playerPos.y = pp->y;
+        playerPos.z = pp->z;
+    }
+        if (Vec3_Dist(&this->mPos, &playerPos) >= kChatDist)
             return;
         if (this->mPlayer->StartTalk(*this, 0) != 0)
             this->mStep++;
@@ -791,17 +789,16 @@ void daRNk_c::func_ov062_02119be0()
             this->mStep++;
         this->mAngleY = this->mPrevAngleY;
         return;
-    case 7:
-        {
-            Player* p = this->mPlayer;
-            if (p->param1 == 0)
-                msg = MSG_CHAT_MARIO;
-            else
-                msg = MSG_CHAT_NOT_MARIO;
-            x = p->GetTalkState();
-            if (x != 0)
-                return;
-        }
+    case 7: {
+        Player *p = this->mPlayer;
+        if (p->param1 == 0)
+            msg = MSG_CHAT_MARIO;
+        else
+            msg = MSG_CHAT_NOT_MARIO;
+        x = p->GetTalkState();
+        if (x != 0)
+            return;
+    }
         x = this->mPosX;
         z = this->mPosZ;
         y = this->mPosY + kMsgAnchorHeight;

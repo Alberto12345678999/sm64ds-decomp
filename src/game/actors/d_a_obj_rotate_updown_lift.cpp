@@ -219,7 +219,7 @@ void daObjRotateUpdownLift_c::Kill()
     v.y = mPosY;
     v.z = mPosZ;
     PoofDustAt(v);
-    Sound::PlayBank3(0xf, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0xf, mCamSpacePos);
     mIsDead = 1;
     unk_31c = 0;
     if (mMeshCollider.IsEnabled())
@@ -237,7 +237,7 @@ void daObjRotateUpdownLift_c::OnHitByMegaChar(Player &player)
     if (isHs)
         return;
     player.IncMegaKillCount();
-    func_02012694(0x1e, (const Vector3 *)&mCamSpacePosX);
+    func_02012694(0x1e, &mCamSpacePos);
     KillByMegaChar(player);
     mAngleY = mPrevAngleY;
 }
@@ -367,9 +367,7 @@ int daObjRotateUpdownLift_c::Behavior()
                 nearby = (daObjRotateUpdownLift_c *)FindWithActorID(0x1d, 0);
                 if (nearby != 0) {
                     do {
-                        if (nearby != this
-                            && Vec3_HorzDist((Vector3 *)&mPosX,
-                                             (Vector3 *)&nearby->mPosX) < 0xa0000) {
+                        if (nearby != this && Vec3_HorzDist(&mPos, &nearby->mPos) < 0xa0000) {
                             if ((daObjRotateUpdownLift_c *)mPlatform0 == 0)
                                 mPlatform0 = (s32)nearby;
                             else if ((daObjRotateUpdownLift_c *)mPlatform1 == 0)
@@ -401,8 +399,7 @@ int daObjRotateUpdownLift_c::Behavior()
             }
         }
         if (keepSound != 0) {
-            mSoundHandle = Sound::PlayLong(
-                mSoundHandle, 3, 0x8d, *(Vector3 *)&mCamSpacePosX, 0);
+            mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8d, mCamSpacePos, 0);
         }
         return 1;
     }

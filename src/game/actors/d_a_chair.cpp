@@ -24,9 +24,8 @@
 //   closest player's vanish flag. Neither has a header name.
 // - cstd::atan2's symbol is 5Fix12IiE. A scalar namespace declaration
 //   would mangle as ii. State2 calls it for the launch and the wall normal.
-// - dActor_c has no Pos(). Callers pass &mPosX. State2 copies the player's
-//   position through a plain Vec3; player->mPosX by name changes that
-//   function's size.
+// - State2 copies the player's position through a plain Vec3;
+//   player->mPosX by name changes that function's size.
 // - State2 compares mStateTimer and mActionTimer through a view based at
 //   this+0x300. mAngleY += 0x2710 changes State2's size; the int-cast form
 //   matches.
@@ -227,7 +226,7 @@ void daChair_c::State0()
     mTargetID = 0;
     if (piano == 0)
         return;
-    if (Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)&piano->mPosX) < 0x12c000) {
+    if (Vec3_Dist(&mPos, &piano->mPos) < 0x12c000) {
         mTargetID = piano->uniqueID;
         mActionTimer = 0;
     }
@@ -252,10 +251,9 @@ void daChair_c::State1()
         targetPos[0] = *av;
         targetPos[1] = av[1];
         targetPos[2] = av[2];
-        if (Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)targetPos) >= 0xfa000)
+        if (Vec3_Dist(&mPos, (const Vector3 *)targetPos) >= 0xfa000)
             return;
-        delta = (short)(Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)targetPos)
-                        - mAngleY + 0x2000);
+        delta = (short)(Vec3_HorzAngle(&mPos, (const Vector3 *)targetPos) - mAngleY + 0x2000);
         if (delta & 0x4000) {
             mTrackedAngle = &mAngleZ;
             if (delta > 0)
@@ -280,7 +278,7 @@ void daChair_c::State1()
     if (mActionTimer != 0) {
         player = ClosestPlayer();
         if (player != 0) {
-            if (Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)&player->mPosX) < 0x1f4000)
+            if (Vec3_Dist(&mPos, &player->mPos) < 0x1f4000)
                 mActionTimer = 0;
         }
         mStateTimer = 0;

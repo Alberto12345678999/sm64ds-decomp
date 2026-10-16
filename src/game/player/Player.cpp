@@ -5419,7 +5419,7 @@ finish:
         data_ov002_0210e15c |= 1;
     }
 
-    Vec3_RotateYAndTranslate((Vector3 *)(&unk_744), (Vector3 *)(&mPosX), mAngleY, (Vector3 *)data_ov002_0210f224);
+    Vec3_RotateYAndTranslate((Vector3 *)(&unk_744), &mPos, mAngleY, (Vector3 *)data_ov002_0210f224);
 
     if (pos) {
         *(Vector3 *)(&unk_744) = *pos;
@@ -13100,10 +13100,10 @@ int Player::St_LedgeGrab_Init()
 
   if(mStateStep){
     _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this),0x20,0x40000000,0x1000,0);
-    Sound::PlayCharVoice(mCharacter, 0x1a, *(const Vector3 *)(((char*)&mCamSpacePosX)));
+    Sound::PlayCharVoice(mCharacter, 0x1a, mCamSpacePos);
   } else {
     _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this),0x23,0x40000000,0x1000,0);
-    Sound::PlayCharVoice(mCharacter, 0x17, *(const Vector3 *)(((char*)&mCamSpacePosX)));
+    Sound::PlayCharVoice(mCharacter, 0x17, mCamSpacePos);
   }
   return 1;
 }
@@ -13799,7 +13799,7 @@ int Player::St_HoldHeavy_Init()
 
   mStateWork=0;
   _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), data_ov002_020ff254[mStateWork], 0x40000000, 0x1000, 0);
-  Sound::PlayCharVoice(mCharacter, 0x12, *(const Vector3 *)(((char*)&mCamSpacePosX)));
+  Sound::PlayCharVoice(mCharacter, 0x12, mCamSpacePos);
   return 1;
 }
 }
@@ -15833,7 +15833,7 @@ int Player::St_Bonk_Main()
         }
 
         if (mPeakY - mPosY > 0xbb8000) {
-            func_0200d8c8(data_0209f318, (struct Vector3*)((char*)&mPosX), 0x7d0000);
+            func_0200d8c8(data_0209f318, &mPos, 0x7d0000);
         }
 
         rate = 0x1800;
@@ -16040,7 +16040,7 @@ int Player::St_BurnLava_Init()
     mStateArg=0;
   }
   func_ov002_020d91e0(((char*)this),0x300,1);
-  Sound::PlayCharVoice(mCharacter, 0x23, *(const Vector3 *)(((char*)&mCamSpacePosX)));
+  Sound::PlayCharVoice(mCharacter, 0x23, mCamSpacePos);
   return 1;
 }
 }
@@ -16228,8 +16228,6 @@ int Player::St_BurnFire_Init()
     }
     mHorzSpeed = 0;
     mStateWork = 0;
-    /* mCamSpacePosX/Y/Z are three consecutive words, which is the Vector3 the
-       sound wants; dActor_c.h declares them individually rather than as one. */
     Sound::PlayCharVoice(mCharacter, 0x23, mCamSpacePos);
     return 1;
 }
@@ -17623,8 +17621,7 @@ void func_ov002_020d7430(Player& player)
         _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_0211013c);
     }
     player.func_ov002_020d718c();
-    Sound::PlayCharVoice(0, 0xfd,
-        *reinterpret_cast<const Vector3*>(&player.mCamSpacePosX));
+    Sound::PlayCharVoice(0, 0xfd, player.mCamSpacePos);
 }
 }
 
@@ -20088,24 +20085,24 @@ int Player::St_Throw_Main()
 /* SetAnim takes a Fix12<int> by value -- the mwccarm 6az wall, runbook
    section 7 -- so it stays extern "C" with a scalar in that slot. */
 extern "C" {
-int Player::St_Throw_Init()
-{
-    extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
-    dActor_c* held = (dActor_c*)mHeldObj;
+int Player::St_Throw_Init() {
+    extern int _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned, int, int, unsigned);
+    dActor_c *held = (dActor_c *)mHeldObj;
     int b = (held->mFlags & 0x200) ? 1 : 0;
     if (!b) {
         unsigned short a = held->actorID;
         int t1 = (a == 0xbd);
         if (!t1) {
             int t2 = (a == 0xbe);
-            if (!t2) goto anim30;
+            if (!t2)
+                goto anim30;
         }
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x91, 0x40000000, 0x1000, 0);
         goto voice;
-anim30:
+    anim30:
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x30, 0x40000000, 0x1000, 0);
-voice:
-        Sound::PlayCharVoice(mCharacter, 0x13, *(const Vector3*)&mCamSpacePosX);
+    voice:
+        Sound::PlayCharVoice(mCharacter, 0x13, mCamSpacePos);
     } else {
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x8a, 0x40000000, 0x1000, 0);
     }
@@ -20160,7 +20157,7 @@ int Player::St_Thrown_Main()
             func_ov002_020c06fc(0x8000);
             if (mStateArg == 0) {
                 mStateArg = 1;
-                _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 6, *(Vector3*)((char*)&mCamSpacePosX));
+                _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 6, mCamSpacePos);
             }
             int r5 = func_ov002_020e2c84(((char*)this));
             if (r5 != 2 && mIsInShallowWater == 0) {
@@ -26820,14 +26817,14 @@ after_player_slot:
         mPeakY = mPosY;
 
     if (mIsAirborne == 0 && mIsFallScreaming != 0) {
-        _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x2e, (const Vector3 *)((char *)&mCamSpacePosX));
+        _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x2e, &mCamSpacePos);
         mIsFallScreaming = 0;
     }
     if (mIsAirborne != 0 && mIsFallScreaming == 0
         && IsState(data_ov002_02110454) == 0
         && (mPeakY - mPosY) > 0x47e000) {
         mIsFallScreaming = 1;
-        _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x1d, (const Vector3 *)((char *)&mCamSpacePosX));
+        _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x1d, &mCamSpacePos);
     }
 
     if (mIsInShallowWater != 0 && mIsUnderwater == 0 && mIsAirborne == 0)

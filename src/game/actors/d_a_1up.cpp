@@ -965,13 +965,15 @@ void da1up_c::func_ov002_020afd10() {
    a turn (0x8000), runs the touch check, and goes to state 2 when the floor
    collision reports a wall or the player is not within 3000 units. */
 void da1up_c::func_ov002_020afde4() {
-  Player* p = ClosestPlayer();
-  if(p){
-    mPrevAngleY = Vec3_HorzAngle((Vector3*)&mPosX, (Vector3*)&p->mPosX) + 0x8000;
-  }
-  func_ov002_020af3a8();
-  if(mWithMeshClsn.IsOnWall()) mState=2;
-  if(IsPlayerInRange(0xbb8)==0) mState=2;
+    Player *p = ClosestPlayer();
+    if (p) {
+        mPrevAngleY = Vec3_HorzAngle(&mPos, &p->mPos) + 0x8000;
+    }
+    func_ov002_020af3a8();
+    if (mWithMeshClsn.IsOnWall())
+        mState = 2;
+    if (IsPlayerInRange(0xbb8) == 0)
+        mState = 2;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1019,27 +1021,30 @@ void da1up_c::func_ov002_020afe4c() {
    (30 frames, then 40 blinking, then removed) and the touch check. Every frame ends with the range check and the trail effect. */
 void da1up_c::func_ov002_020aff10() {
 
-  func_ov002_020aefb8();
-  switch(mState){
-  case 0:
-    if(*(unsigned short*)&mStateTimer == 0) Sound::PlayBank3(SND3_LAUNCH, *(Vector3*)&mCamSpacePosX);
-    func_ov002_020af474();
-    if(*(unsigned short*)&mStateTimer != 0x25) break;
-    mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
-    mState = 1;
-    mHorzSpeed = 0x2000;
-    break;
-  case 1:
-    if(*(unsigned short*)&mStateTimer > 0x12c) mState = 2;
-    func_ov002_020af3a8();
-    break;
-  case 2:
-    func_ov002_020af248(0x1e);
-    func_ov002_020af3a8();
-    break;
-  }
-  func_ov002_020af218(0xbb8);
-  func_ov002_020aeee4();
+    func_ov002_020aefb8();
+    switch (mState) {
+    case 0:
+        if (*(unsigned short *)&mStateTimer == 0)
+            Sound::PlayBank3(SND3_LAUNCH, mCamSpacePos);
+        func_ov002_020af474();
+        if (*(unsigned short *)&mStateTimer != 0x25)
+            break;
+        mdCcAc_c.flags &= ~CC_FLAGS_DISABLED;
+        mState = 1;
+        mHorzSpeed = 0x2000;
+        break;
+    case 1:
+        if (*(unsigned short *)&mStateTimer > 0x12c)
+            mState = 2;
+        func_ov002_020af3a8();
+        break;
+    case 2:
+        func_ov002_020af248(0x1e);
+        func_ov002_020af3a8();
+        break;
+    }
+    func_ov002_020af218(0xbb8);
+    func_ov002_020aeee4();
 }
 
 /* File-scope `extern "C"` region for the members below. Every one of these

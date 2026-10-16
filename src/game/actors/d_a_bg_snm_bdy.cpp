@@ -52,9 +52,8 @@
  * - data_ov072_02122b20 / 02122b40 / 02122b58 / 02122b64: model file,
  *   reach point, landing point, twelve-PMF table. __sinit_ov072_02122018
  *   owns that bss, so the names stay.
- * - dActor_c stores position, scale and camera-space position as three
- *   s32 fields each, not as Vector3s, so Render and the Vec3_* and
- *   PlayLong calls take the address of the X field.
+ * - Vec3_Dist, Vec3_HorzDist and Vec3_HorzAngle are declared here on
+ *   const void *, so their calls take the address of the X field.
  *
  * The 0/1 values the ROM materializes in HurtPlayer and State5 come from
  * int-returning inline predicates, IsPlayerActor and IsOffScreen.
@@ -244,7 +243,7 @@ int daBgSnmBdy_c::Behavior()
 // @symbol _ZN12daBgSnmBdy_c6RenderEv
 int daBgSnmBdy_c::Render()
 {
-    mModel.Render((Vector3 *)&mScaleX);
+    mModel.Render(&mScale);
     return 1;
 }
 
@@ -394,8 +393,7 @@ int daBgSnmBdy_c::State2()
             SetState(4);
     }
     _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
-    mSoundID = Sound::PlayLong(
-        mSoundID, 3, 0x8a, *(const Vector3 *)&mCamSpacePosX, 0);
+    mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
     UpdateRollAngle();
     UpdatePos(&mCylinder);
     UpdateGroundCollision(&mWithMeshClsn);
@@ -428,14 +426,12 @@ int daBgSnmBdy_c::State3()
             mPrevAngleY = mAngleY;
             _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(
                 mPosX, mPosY, mPosZ);
-            mSoundID = Sound::PlayLong(
-                mSoundID, 3, 0x8a,
-                *(const Vector3 *)&mCamSpacePosX, 0);
+            mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
             if (distToLanding < 0x17c000) {
                 daBgSnmHed_c *head =
                     (daBgSnmHed_c *)dActor_c::FindWithActorID(0x111, 0); /* BIG_SNOWMAN_HEAD */
                 head->unk_336 = 1;
-                func_0201267c(0x114, (const Vector3 *)&mCamSpacePosX);
+                func_0201267c(0x114, &mCamSpacePos);
                 mVertSpeed = 0x1d000;
                 mHorzSpeed = 0xe000;
                 mSubstate++;
@@ -483,8 +479,7 @@ int daBgSnmBdy_c::State4()
 {
     ApproachLinear(mHorzSpeed, 0x28000, 0x400);
     _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
-    mSoundID = Sound::PlayLong(
-        mSoundID, 3, 0x8a, *(const Vector3 *)&mCamSpacePosX, 0);
+    mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
     UpdateRollAngle();
     UpdatePos(&mCylinder);
     UpdateGroundCollision(&mWithMeshClsn);

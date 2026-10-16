@@ -173,12 +173,12 @@ extern "C" void func_ov081_021237ec(daHuwa_c *self)
     dust.x = data_020a0e68.m[9];
     dust.y = data_020a0e68.m[10];
     dust.z = data_020a0e68.m[11];
-    SubVec3(&dust, (Vector3 *)&self->mPosX, &dust);
+    SubVec3(&dust, &self->mPos, &dust);
     Vec3_LslInPlace(&dust, 3);
-    AddVec3(&dust, (Vector3 *)&self->mPosX, &dust);
+    AddVec3(&dust, &self->mPos, &dust);
 
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x53, dust.x, dust.y, dust.z);
-    func_0201267c(0xd5, (const Vector3 *)&self->mCamSpacePosX);
+    func_0201267c(0xd5, &self->mCamSpacePos);
     self->KillAndTrackInDeathTable();
 }
 
@@ -254,7 +254,7 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
         self->mStateTimer = 0;
         self->mHorzSpeed = -speed;
     }
-    self->mPrevAngleY = Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&player->mPosX);
+    self->mPrevAngleY = Vec3_HorzAngle(&self->mPos, &player->mPos);
 
     pos.x = self->mPosX;
     pos.y = self->mPosY;
@@ -334,11 +334,11 @@ int daHuwa_c::Behavior()
             playerPos[1] = src[1];
             playerPos[2] = src[2];
             if (Vec3_HorzDist((const Vector3 *)&mHomePosX, (const Vector3 *)playerPos) > 0x3e8000)
-                mTargetAngY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mHomePosX);
-            else if (Vec3_HorzDist((const Vector3 *)&mPosX, (const Vector3 *)playerPos) > 0x12c000)
-                mTargetAngY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)playerPos);
+                mTargetAngY = Vec3_HorzAngle(&mPos, (const Vector3 *)&mHomePosX);
+            else if (Vec3_HorzDist(&mPos, (const Vector3 *)playerPos) > 0x12c000)
+                mTargetAngY = Vec3_HorzAngle(&mPos, (const Vector3 *)playerPos);
         } else {
-            mTargetAngY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mHomePosX);
+            mTargetAngY = Vec3_HorzAngle(&mPos, (const Vector3 *)&mHomePosX);
         }
         ApproachLinear(mAngleY, mTargetAngY, 0x200);
         mPrevAngleY = mAngleY;

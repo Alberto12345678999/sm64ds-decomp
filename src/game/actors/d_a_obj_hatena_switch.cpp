@@ -318,7 +318,7 @@ s32 daObjHatenaSwitch_c::Behavior()
         } else if (mModelAnim.Finished() == 0) {
             mModelAnim.Advance();
             if (mModelAnim.Finished() != 0)
-                Sound::PlayBank3(0, *(Vector3 *)&mCamSpacePosX);
+                Sound::PlayBank3(0, mCamSpacePos);
         }
         UpdateModelTransform();
         UpdateClsnTransform();

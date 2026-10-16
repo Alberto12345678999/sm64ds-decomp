@@ -9,8 +9,8 @@
  * deslop leftovers:
  * - dCcAc_c::Init stays a scalar extern: it takes Fix12<int> by value and
  *   the member form size-DIFFs (mwccarm-codegen wall 6az).
- * - SpawnStar reads the marker's position through int* at +0x5c: named
- *   mPosX/Y/Z on the daStarBase_c* size-DIFFs. dActor_c has no Pos().
+ * - SpawnStar copies the marker's position through an int * at its mPosX:
+ *   member reads (marker->mPos.x or marker->mPosX, ...) size-DIFF.
  * - LinkToBlock's ID tests go through the int-returning HasActorID: a
  *   direct `actorID == id` in the for/else-if loop size-DIFFs.
  * - data_ov002_0210d9a8 (the ov002 SharedFilePtr handle) and func_02012790
@@ -144,7 +144,7 @@ void daSCoin_c::SpawnStar()
         marker = (daStarBase_c *)dActor_c::FindWithActorID(0xb4, marker);
         if (marker == 0) return;
         if (mStarID == marker->mStarID) {
-            int *base = (int *)((char *)marker + 0x5c);
+            int *base = &marker->mPosX;
             Vector3 pos;
             pos.x = base[0];
             pos.y = base[1];
@@ -171,13 +171,13 @@ void daSCoin_c::LinkToBlock()
     if (mBlockScanDone != 0) return;
     for (dActor_c *other = dActor_c::Next(0); other != 0; other = dActor_c::Next(other)) {
         if (HasActorID(other, 0x14) || HasActorID(other, 0x15)) {
-            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+            if (Vec3_Dist(&mPos, &other->mPos) < 0xc8000) {
                 mClsnDisabled = 1;
                 ((daObjHatenaBlock_c *)other)->mHeldActor = this;
                 break;
             }
         } else if (HasActorID(other, 0xc0)) {
-            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+            if (Vec3_Dist(&mPos, &other->mPos) < 0xc8000) {
                 mClsnDisabled = 1;
                 ((daObjPushblock_c *)other)->mLinkedActor = this;
                 break;

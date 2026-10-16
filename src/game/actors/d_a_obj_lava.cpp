@@ -55,9 +55,8 @@ s32 daObjLava_c::Behavior()
 {
     /* The ROM forms &player->mPosX once and loads all three words off it, which
      * is what taking the position as a Vector3 does; three separate member
-     * loads off the Player pointer keep the 0x5c/0x60/0x64 offsets instead.
-     * Keep this spelling until dActor_c::Pos() is on the shared header. */
-    Vector3 *pos = (Vector3 *)&ClosestPlayer()->mPosX;
+     * loads off the Player pointer keep the 0x5c/0x60/0x64 offsets instead. */
+    Vector3 *pos = &ClosestPlayer()->mPos;
     mEffectHandle = func_02022c3c(mEffectHandle, kLavaBubbleEffect,
         pos->x, pos->y, pos->z, 0);
     return 1;

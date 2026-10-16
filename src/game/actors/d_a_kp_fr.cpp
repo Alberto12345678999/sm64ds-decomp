@@ -240,7 +240,7 @@ void daKpFr_c::func_ov070_02121e14() {
   mMatrix.t.y = mPosY >> 3;
   mMatrix.t.z = mPosZ >> 3;
   dBgCh_Gnd ground;
-  ground.SetObjAndPos(*(Vector3*)&mPosX, this);
+  ground.SetObjAndPos(mPos, this);
   if (ground.DetectClsn() != 0)
     shadowDepth = (mPosY - ground.clsnY) + 0x1e000;
   else
