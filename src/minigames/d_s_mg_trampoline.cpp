@@ -179,7 +179,7 @@ int  RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 extern void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-extern short data_ov006_02140538;
+extern short sTrmpGoalRow;
 
 extern void Trmp3DMario_UpdateAll(...);
 extern int _Z14ApproachLinearRiii(int*,int,int);
@@ -770,7 +770,7 @@ s16 dScMgTrampoline_c::GetDoorSide()
 // @symbol _ZN17dScMgTrampoline_c11SetDoorSideEs
 void dScMgTrampoline_c::SetDoorSide(short value)
 {
-    data_ov006_02140538 = value;
+    sTrmpGoalRow = value;
     mDoorSide = value;
 }
 

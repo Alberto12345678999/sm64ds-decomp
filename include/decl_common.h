@@ -811,7 +811,7 @@ extern int sHeyhoCount;
 extern int data_ov006_02140428;
 extern int sTrmp3DGravityStep;
 extern int data_ov006_02140570;
-extern int data_ov006_02140574;
+extern int sTrmpSpeedScale;
 extern int data_ov006_02140578;
 extern int sTrmpComboCount;
 extern int sTrmp2RiseSpeedMax[];

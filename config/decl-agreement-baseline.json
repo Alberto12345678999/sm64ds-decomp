@@ -15919,7 +15919,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140540": {
+    "sTrmpAnimStruggle": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int",
         "return:int []"
@@ -15938,7 +15938,7 @@
         "return:int"
       ]
     },
-    "data_ov006_0214054c": {
+    "sTrmpAnimRollJumpEnd": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
@@ -15960,38 +15960,38 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140560": {
+    "sTrmpAnimDoubleJump1": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_02140564": {
+    "sTrmpAnimWalk": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int",
         "return:int []"
       ]
     },
-    "data_ov006_02140568": {
+    "sTrmpAnimTurnEnd": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_0214056c": {
+    "sTrmpAnimTurn": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_0214057c": {
+    "sTrmpAnimJumpEnd": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_02140580": {
+    "sTrmpAnimWallJump": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_02140590": {
+    "sTrmpAnimJump": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
@@ -16010,7 +16010,7 @@
         "return:void *"
       ]
     },
-    "data_ov006_021405a0": {
+    "sTrmpAnimDoubleJump2": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
@@ -16028,90 +16028,90 @@
         "return:int []"
       ]
     },
-    "data_ov006_021405c0": {
+    "sTrmpAnimHangUp": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int *",
         "return:void *"
       ]
     },
-    "data_ov006_021405c4": {
+    "sTrmpAnimSdown": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_021405c8": {
+    "sTrmpRowHeights": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int",
         "return:void *",
         "return:void * []"
       ]
     },
-    "data_ov006_021405d0": {
+    "sTrmpMarioDoubleJump1AnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_021405d8": {
+    "sTrmpMarioRollJumpAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_021405e0": {
+    "sTrmpMarioTurnAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_021405e8": {
+    "sTrmpMarioDoubleJump2AnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_021405f0": {
+    "sTrmpMarioWalkAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_021405f8": {
+    "sTrmpMarioModelFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140600": {
+    "sTrmpMarioJumpEndAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140608": {
+    "sTrmpMarioJumpAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140610": {
+    "sTrmpMarioTurnEndAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140618": {
+    "sTrmpMarioHangUpAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140620": {
+    "sTrmpMarioStruggleAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140628": {
+    "sTrmpMarioWallJumpAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140630": {
+    "sTrmpMarioSdownAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140638": {
+    "sTrmpMarioRollJumpEndAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:int []"
       ]
