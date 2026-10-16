@@ -71,14 +71,25 @@ the baseline objects, is in `build/mgnames-tools/` (gitignored):
 
 ## Next steps
 
-1. **Pass 3, next play session.**
-   - Play the two unplayed menu entries (rows 1 and 5), and Card, Memory or Cup once unlocked. They settle the win/lose/draw/tie states (4, 5, 7, 8), `mCredits` (lives or coins), "bet", `OnDealDone` and the presenter animations.
-   - Setup:
+1. **Pass 3, second session (done 2026-10-15).** Played: Slot3, Memory, Picture Poker, Roulette and Sound.
+   - **Seen:** shared states 0, 4, 5, 7 and 8; `mCredits` is coins; "bet" fits; `OnDealDone` fires; jingles 1, 3 and 4; and banners 3 "CLEAR" and 6 "PERFECT".
+   - **Renamed:** the presenter's `Presenter_PlayAnim1/2/4/7` became `Presenter_PlayMiss/Match/Lose/Cheer`.
+   - **Details:** runtime-checks.md "Observed so far" and names.md.
+   - **Still open:**
+     - shared states 2, 6, 9-11, 13-15 and 19 (Snowball has 19);
+     - the `IsAltVariant` rows;
+     - Hanachan's Wiggler passes;
+     - Trampoline2's items;
+     - Teresa's sprites;
+     - the graph-callback order.
+   - **Setup:** the handoff zip's `HANDOFF.md`, or the steps below.
      1. Start `build/melonds/melonDS.exe build/melonds/sm64_eu.nds`. Check that `[Instance0.Gdb] Enabled = true`, because melonDS can rewrite it to false.
-     2. Attach `python build/melonds/mgwatch.py`.
-     3. Run the screenshot loop with `build/melonds/shot.ps1`.
+     2. Check `[Instance0.Keyboard]` too. It shipped with every key at -1, which is why keys never reached the game.
+     3. Attach `python build/melonds/mgwatch.py --unlock`.
+   - **Driving the game:** `build/melonds/input.ps1` gives taps, drags and keys. Its foreground unlock uses F24, because an Alt tap opens melonDS's menu bar.
+   - **Reading memory:** write `addr len` (both hex) to `build/melonds/PEEK`, and the watcher answers in `PEEK.out`. That is how Sound's chest notes were read.
    - The stub takes one client per launch. A second attach halts the game, so restart melonDS instead of reattaching.
-   - Copies of `mgwatch.py` and `shot.ps1` are in `build/mgnames-tools/`. Both are gitignored, because tooling goes in its own PR.
+   - **Finding a game:** a game's menu row is its tab + 4 × its position (Mario 0, Luigi 1, Wario 2, Yoshi 3). Rows 24-35 are each tab's second page.
 2. **Pass 2 leftovers.** These handlers measured different in the typed form, so they keep their offsets: Teresa StepBoo, CountRubbedTiles, Boo_State7, Reveal_State1/4, ResetRound; Pachinko Fx_Spawn, Bg_State0/1/3, Bg_Start, Flyer_State0/2/3/4. Retry one only with a new spelling idea, one function at a time, with `tryrepl.py`.
 3. **Baseline after main merges.** Main's `Heap` → `mHeap::Heap_t` rename changes the minigame objects' `Memory::Deallocate` reference. The local `renames.json` maps it, so compares against the pre-pass baseline stay exact.
 

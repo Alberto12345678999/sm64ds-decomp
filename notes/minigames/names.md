@@ -39,7 +39,7 @@ which declares no virtual, so a slot number means nothing between them.
 | 18 | `OnYoshiTryEat(int)` | `StartRound(int)` | high (seen) | `dMgState_c` calls it with the finished state's number when a banner ends. Games call it with -1 to retry after a lost life (Cup's `StateFinish`). The overrides reset their round, and Memory's calls `ResetGame`. |
 | 19 | `OnTurnIntoEgg(int)` | `CanEndState(int)` | high | Every `dMgState_c` behaviour handler polls it with `mState` and waits for nonzero. The overrides return 0 while their own reaction animation plays. |
 | 20 | `Virtual50` | `OnNewRecord` | medium | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
-| 21 | `OnGroundPounded` | `OnDealDone` | medium | Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
+| 21 | `OnGroundPounded` | `OnDealDone` | high (seen) | Seen in Memory and Card: it fires once Luigi finishes dealing, from `Dealer_StateDeal`. Memory's override goes straight to `MgCoins_PlaceBet(3)`. Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
 | 22 | `OnAttacked1` | `OnGraphCallback1` | high (mapping) | `graphCallback_c::GraphCallback1` forwards to it. What the engine's callback 1 is for is not known. |
 | 23 | `OnAttacked2` | `OnGraphCallback0` | high (mapping) | `GraphCallback0` forwards to it. The arm9 caller `func_02019390` skips its OAM reset and 3D flush when the callback returns 0. |
 | 24 | `OnKicked` | `OnGraphCallback2` | high (mapping) | `GraphCallback2` returns its result. The base body saves or restores the screen on an edge of `mMenuOpen`. |
@@ -151,15 +151,15 @@ and a guess (unconfirmed):
 
 | State | Enter: banner, jingle, timer | Then | Entered by | Guess |
 |---|---|---|---|---|
-| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on |
+| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on. **Seen** in Sound: banner 3 is "CLEAR". A no-miss round first calls `Mg_SetNextBanner(6)`, and banner 6 is "PERFECT" |
 | 1 | none, none, 15 | fade, `StartRound(1)` | Hanachan, Luigi | silent next round |
 | 2 | 5, 1, 180 | fade, restore music, `StartRound(2)` | none found | |
 | 3 | 8\*, 3, 60 | retry (button 0) / quit (1, 2) buttons | Snowball, with banner 0xe | game over, retry? |
-| 4 | 9\*, s0x136, 120 | `StartRound(4)` | a win in Memory, Card, BSC, MCarlo, Roulette | you win |
-| 5 | 0xa, s0x137, 120 | game over at 0 credits, else `StartRound(5)` | a loss in the same games | you lose |
+| 4 | 9\*, s0x136, 120 | `StartRound(4)` | a win in Memory, Card, BSC, MCarlo, Roulette | you win. **Seen:** clearing Memory's board pays out and deals again |
+| 5 | 0xa, s0x137, 120 | game over at 0 credits, else `StartRound(5)` | a loss in the same games | you lose. **Seen** in Memory (bet gone) and Card (Luigi's hand higher), each then `StartRound(5)` |
 | 6 | 0xa, s0x137, 120 | hides the controller and hands back to the game | none found | |
-| 7 | 0xb, none, 120 | `StartRound(7)` | Card | draw? |
-| 8 | none, none, 0 | `StartRound(8)` at once | Roulette's tie | silent tie |
+| 7 | 0xb, none, 120 | `StartRound(7)` | Card | draw. **Seen:** `CompareHands` = 0 refunds the bet coin, then `StartRound(7)` |
+| 8 | none, none, 0 | `StartRound(8)` at once | Roulette's tie | silent tie. **Seen:** a spin with no chip staked (payout 0 = stake 0) returns the rack chips and spins again |
 | 9 | 3\* on the top screen, 4, 180 | `StartRound(9)` | none found | |
 | 10 | 8 (style 0xb), 3, 180 | retry / quit buttons | none found | |
 | 11 | none, 1, 180, draws the score | fade, `StartRound(11)` | none found | |
@@ -171,13 +171,33 @@ and a guess (unconfirmed):
 | 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 |
 | 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
 
+**Banner ids seen on screen** (`Mg_ShowBanner` r0, melonDS 2026-10-15):
+
+| Id | Graphic | Seen in |
+|---|---|---|
+| 0, 2 | PLAY AGAIN, QUIT buttons | retry prompts |
+| 3 | "CLEAR" | Sound, state 0 |
+| 5 | rainbow "HIGH SCORE" | new record (state 17), Pachinko |
+| 6 | rainbow "PERFECT" | Sound, a round with no miss (`Mg_SetNextBanner(6)`) |
+| 7 | "HIGH SCORE" header over the record table | state 16 |
+| 8 | "GAME OVER" | state 18 |
+| 9, 0xa, 0xb | win, lose and draw banners | states 4, 5 and 7. Memory places them at y −0x3c, off screen, so they were not seen |
+| 0xc | red "START" | Snowball |
+| 0xd | "LEVEL n" | every game with levels |
+| 0xe | "TIME IS UP" | Snowball, before state 3 |
+| 0x10, 0x13 | "LOVES ME", "LOVES ME NOT" | Flower |
+| 0x18..0x1a | the poker hand names | Card (Picture Poker) |
+
 **The `MgSharedState` enum** (`include/dMgState_c.h`, 2026-10-15). Every
 `Mg_SetSharedState(n)` call now passes a name. Each name describes the state's
 mechanics from the table above, and the enum marks the confidence of its
 meaning word per entry:
-- **high:** `RETRY_PROMPT`, `LOSE`, `RESULTS`, `RESULTS_NEW_RECORD`.
-- **medium:** `ROUND_CLEAR`, `NEXT_ROUND`, `WIN`, `TIE`, `CONTINUE_PROMPT`,
-  `GAME_OVER`, `FINISHED`.
+- **high, all seen at runtime** (2026-10-15):
+  - `ROUND_CLEAR`, `NEXT_ROUND` and `RETRY_PROMPT`;
+  - `WIN`, `LOSE`, `DRAW` and `TIE`;
+  - `RETRY_PROMPT_WIDE`;
+  - `RESULTS`, `RESULTS_NEW_RECORD` and `GAME_OVER`.
+- **medium:** `FINISHED`. Snowball would settle it.
 - **low:** the rest, which no caller enters or one game enters.
 
 The runtime check on `Mg_SetSharedState` settles the medium and low words. A
@@ -210,9 +230,10 @@ The entry points are:
 Games watch `gMgCoinsStatus`: 1 when a sequence is done, 2-4 while one runs.
 `gMgCoinsShowDelta` makes the sequences draw their signed count.
 
-What is not settled is the word "bet". The touch button and the sounds (0x149-0x14e)
-fit Card, BSC and MCarlo, but Memory and Memory2 also call `MgCoins_PlaceBet`
-with their remaining misses.
+**"Bet" is right; seen 2026-10-15.**
+- **Memory.** `MgCoins_PlaceBet(3)` stakes three coins on the table. Each miss slides one coin over to Luigi, and clearing the board pays the coins still on the table ×6. The misses allowed are the stake.
+- **Card (Picture Poker).** The BET! button runs `MgCoins_AddBetCoin` and adds one coin to the stake.
+- **Coin moves.** Each staked coin is one `Coin_Launch` → `Mg_LoseCredits(1)` → `Mg_SubCredits(1)`. Each paid or refunded coin is one `Mg_GainCredits(1)` → `Mg_AddCredits(1)`.
 
 **The options panel, high confidence.** Pass 2 (2026-10-15) made the
 `dMgPsOpt_c` helpers real members: `dMgPsOpt_c::Open`, `Close`, `Update`, `Draw`
@@ -245,11 +266,18 @@ each one is named after the games that construct it and what it draws:
 | `Dealer_` | Card, BSC, MCarlo/2, Memory/2, Roulette | The card dealer: deal, collect, reveal, swap, win and lose animations, plus the table lamps that cycle colours. | medium |
 | `Mascot_`, `MascotWalker_` | Slots; inside `Dealer_` | One small character model (files 0x205/0x206). Slots shows it turning its head toward a target. Behind the dealer it walks a waypoint path and pauses at random. | medium |
 
-The `Presenter_PlayAnimN` / `Presenter_StateAnimN` names give the animation slot
-index (N = 0..7), which is certain. What each animation looks like is not
-observed yet:
-- Cup's `OnNewRecord` comment calls slot 7 the win animation.
-- Slot 7 plays with sound 3 and slot 2 with sound 0x1c.
+The `Presenter_StateAnimN` names give the animation slot index (N = 0..7), which
+is certain. **The four `Presenter_Play*` entry points were renamed by what they
+show (2026-10-15, seen in Sound; high):**
+
+| Slot | Old name | New name | What it shows | Cup calls it for |
+|---|---|---|---|---|
+| 1 | `Presenter_PlayAnim1` | `Presenter_PlayMiss` | Mario puzzled, one eye squinting | a wrong pick with lives left |
+| 2 | `Presenter_PlayAnim2` | `Presenter_PlayMatch` | plays on each matched pair, with sound 0x1c (its frame was not captured) | (not used) |
+| 4 | `Presenter_PlayAnim4` | `Presenter_PlayLose` | Mario laughing and winking | the wrong pick that ends the game |
+| 7 | `Presenter_PlayAnim7`, `...7Loop` | `Presenter_PlayCheer`, `Presenter_PlayCheerLoop` | Mario laughing, eyes shut, with sound 3 | a right pick and `OnNewRecord` |
+
+All 45 minigame objects stayed identical modulo the renamed symbols.
 
 The dealer's deal, collect, reveal and swap names follow the animation order
 and the sounds (0x139-0x142) and are medium confidence.
@@ -266,7 +294,7 @@ pitch, two matching notes clear, and a mismatch closes them again.
 - **Notes:** `DealNotes`, `ResetRound`, `UpdateNotes`, `CheckPair`, `CheckRoundOver`, and `RevealUnmatched` on a loss.
 - **Note states 0-4:** `Note_StateWait`, `Note_StateOpening`, `Note_StateOpen`, `Note_StateClosing`, `Note_StateScroll`.
 - **Pops:** `SpawnPops` launches the burst sprites, and each of the 13 pop kinds has `PopNN_Update`, `PopNN_Start`, `PopNN_Fly` and `PopNN_Finish`. The kind number is the index in the dispatch table; the look of each kind is not observed.
-- **Win and loss:** the win plays `Presenter_PlayAnim7` (a cheer, medium) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayAnim4` (disappointment, medium).
+- **Win and loss:** the win plays `Presenter_PlayCheer` (seen) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayLose` (seen). Each match plays `Presenter_PlayMatch` and each miss `Presenter_PlayMiss`. Sound's three hearts are `mTries` and move no credits.
 
 **Teresa (`dScMgTeresa_c`, Hide and Boo Seek).**
 

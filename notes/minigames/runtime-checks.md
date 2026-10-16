@@ -30,17 +30,17 @@ one is meaningless while the other is loaded.
 
 | Question | Breakpoint (symbol, address) | Log | Play |
 |---|---|---|---|
-| What each shared state (0..19) shows | `Mg_SetSharedState` 0x020b0a54 | r0 = state | Win and lose a round each in Cup, Memory, Card, Roulette, Snowball, and one timed game (Bomroom or Coin). Note the banner and the jingle. |
+| What each shared state (0..19) shows | `Mg_SetSharedState` 0x020b0a54 | r0 = state | **Done:** seen 0, 1, 3, 4, 5, 7, 8, 12, 16, 17 and 18; still open are 2, 6, 9-11, 13-15 and 19 (Snowball has 19). |
 | Which graphic each banner id is | `Mg_ShowBanner` 0x020b0cac | r0 = file id, r1/r2 = x/y | The same plays. Fill in the "Guess" column of names.md's state table. |
-| One-shot banner override (e.g. "Perfect") | `Mg_SetNextBanner` 0x020b67e8 | r0 = id | Memory with no misses (expect 6); Snowball (4, 0xe). |
-| What jingle ids 1, 3 and 4 sound like | `Mg_PlayJingle` 0x020ae274 | r0 = id | Any game; listen at the hit. |
-| `StartRound(state)` is really "start or restart a round" | `Mg_CallStartRound` (see symbols.txt) | r1 = finished state | Cup: lose a life (the game calls slot 18 with -1 itself) versus clear a round. |
+| One-shot banner override (e.g. "Perfect") | `Mg_SetNextBanner` 0x020b67e8 | r0 = id | **Done:** Sound with no miss sets 6, which is "PERFECT". |
+| What jingle ids 1, 3 and 4 sound like | `Mg_PlayJingle` 0x020ae274 | r0 = id | **Done:** they play with the new record (1), GAME OVER (3) and CLEAR (4). They were placed by the moment they play, not by ear. |
+| `StartRound(state)` is really "start or restart a round" | `Mg_CallStartRound` (see symbols.txt) | r1 = finished state | **Done:** seen with 0, 1, 4, 5, 7, 8 and 0x12. |
 | `OnNewRecord` fires as the record banner goes up | `dScMgBase_c::OnNewRecord` 0x020b2990, plus the Cup/Sound/Teresa/3DEsp overrides | hit or not | Beat a saved record in Cup or Sound. |
-| `OnDealDone` fires when the dealer finishes dealing | `dScMgBase_c::OnDealDone` 0x020b298c, plus the BSC/Card/Memory/Memory2 overrides | hit timing | Memory or Card: watch the dealer deal. |
-| What Presenter animations 1, 2, 4 and 7 look like | `Presenter_PlayAnim1/2/4/7` 0x020c2664 / 0x020c271c / 0x020c2440 / 0x020c2594 | hit | Sound: a match (2), a mismatch (1), a loss (4), a win (7). Cup: a win. |
-| `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | Cup (lives), Card (coins). Coins confirmed in Slot3; see below. |
-| Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | Card, BSC and MCarlo: tap the top-left box. Memory: start of round. |
-| The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | Open a never-played game's page, play it once, and come back. |
+| `OnDealDone` fires when the dealer finishes dealing | `dScMgBase_c::OnDealDone` 0x020b298c, plus the BSC/Card/Memory/Memory2 overrides | hit timing | **Done:** it fires once Luigi finishes dealing, in Memory and in Card. |
+| What Presenter animations 1, 2, 4 and 7 look like | `Presenter_PlayMiss` / `PlayMatch` / `PlayLose` / `PlayCheer` 0x020c2664 / 0x020c271c / 0x020c2440 / 0x020c2594 | hit | **Done:** seen in Sound and renamed (names.md). |
+| `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | **Done:** coins in Slot3, Memory, Card and Roulette. |
+| Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | **Done:** yes. Memory stakes 3 coins, and Card's BET! button runs `AddBetCoin`. |
+| The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | **Done:** `ClearNew(row)` fires on opening a game. Rows map as tab + 4 × position. |
 | `IsAltVariant` = the second menu row of a game | `dScMgBase_c::IsAltVariant` 0x020ad660 (Amida overrides) | r0 on return | Play both menu entries of a duplicated game (Coin, Panel, Sound, Snowball). |
 | Wiggler draw passes A and B | `Wiggler_DrawPassA` 0x020ea914, `Wiggler_DrawPassB` 0x020eac38 | which runs for which part | Hanachan; freeze a frame after each pass. |
 | Trampoline2 item kinds 0..8 | `TrmpItem_SetMotion0..8` (0x020cdf20 is kind 0) | hit and kind | Trampoline2; note which item moves which way. |
@@ -70,6 +70,24 @@ screenshots, over two games of Wanted! (Luigi):
   - A miss gave three `Mg_SubCredits(1)` (`Slot3_State3and4`, local state 4) and the counter went 12 → 9 → 6.
   - A Wario column on the right gave three `Mg_AddCredits(1)` (local state 3; the middle column pays 6) and the counter went 6 → 9. A star appeared by Toad (`mHudScore`, rounds won). Then `StartRound(4)`: banner 0xd, Yoshi as the new target, and a fourth face in each strip (`mStripLength` 3 → 4).
   - **`mCredits` is coins here**, moved one coin per tick. Slot3 settles a round in its own state machine and never calls `Mg_SetSharedState` for a win or a loss. Only an empty purse reaches `MG_STATE_GAME_OVER` (`Slot3_State6`).
+- **Memory** (`dScMgMemory_c`, Luigi's page, top-left card, menu row 1) has eight cards and starts with 12 coins. Luigi deals, then:
+  - `Dealer_StateDeal` calls `OnDealDone`, whose override is `MgCoins_PlaceBet(3)`. Three coins go onto the table, each via `Coin_Launch` → `Mg_LoseCredits(1)` → `Mg_SubCredits(1)`.
+  - A miss slides one table coin over to Luigi and calls nothing watched.
+  - **Clearing the board** with 2 coins left: `Mg_SetSharedState(4)` and banner 9, then twelve `Mg_GainCredits(1)` + `Mg_AddCredits(1)` pairs (the "+12" on screen), then `StartRound(4)` and a new deal and bet.
+  - **Three misses:** `Mg_SetSharedState(5)` and banner 0xa. The board is revealed until touched, then `StartRound(5)` deals and bets again.
+  - Memory passes banners 9 and 0xa at y −0x3c, and neither was visible on screen.
+- **Picture Poker** (`dScMgCard_c`, Luigi's page, top-right card, menu row 9) also opens with `OnDealDone`. It stakes one coin itself, without `PlaceBet`, and the BET! button runs `MgCoins_AddBetCoin` for one more coin. The banners 0x18..0x1a carry the hand names.
+  - **Luigi's full house against the player's two pair:** `Mg_SetSharedState(5)`, then `StartRound(5)`.
+  - **Equal hands:** `Mg_SetSharedState(7)` and banner 0xb. One `Mg_GainCredits(1)` + `Mg_AddCredits(1)` refunds the bet, then `StartRound(7)`.
+- **Roulette** (`dScMgRoulette_c`, Luigi's page, bottom-left card, menu row 0xd). Each spin, five coins go to the chip rack (`Mg_LoseCredits(1)` ×5). Chips not staked come back with `Mg_GainCredits(1)`.
+  - **No chip staked:** payout 0 = stake 0, so `Mg_SetSharedState(8)`, silent, then `StartRound(8)` at once.
+  - **One chip on black, and black came up:** `Mg_SetSharedState(4)` and banner 9, two coins paid, then `StartRound(4)`.
+- **Sound** (`dScMgSound_c`, Yoshi's page, bottom-middle card, menu row 0x13) is six chests, three note pairs and three hearts (`mTries`, no credits). The pairs were read from `mNotes[].note` with the watcher's PEEK.
+  - Each match plays `Presenter_PlayMatch`, and each miss `Presenter_PlayMiss` and a heart.
+  - **Third miss:** `Presenter_PlayLose`, then `MG_STATE_GAME_OVER` (banner 8, jingle 3), then the record table (banner 7).
+  - **Round cleared:** `Presenter_PlayCheer`, then `Mg_SetSharedState(0)` with banner 3 "CLEAR" and jingle 4, then `StartRound(0)` and banner 0xd. A round with no miss first calls `Mg_SetNextBanner(6)`, and banner 6 is the rainbow "PERFECT".
+- **The menu table.** A game's menu row is its tab + 4 × its position on the page, with Mario 0, Luigi 1, Wario 2 and Yoshi 3. Rows 24..35 are each tab's second page. `MiniGm_ClearNew(row)` agrees for Memory 1, Card 9, Roulette 0xd, Sound 0x13 and Slot3 0x1f.
+- So shared states 4, 5, 7 and 8 are seen: `MG_STATE_WIN`, `MG_STATE_LOSE`, `MG_STATE_DRAW` and `MG_STATE_TIE` all hold. Memory and Card never called a `Presenter_Play*`; their dealer has its own `Dealer_PlayWin/Lose`.
 
 ## Recording the answer
 
