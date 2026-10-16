@@ -16,11 +16,6 @@
         "arity:0"
       ]
     },
-    "ARMProcessorMode": {
-      "src/unnamed/arm9/0205/func_02057f54.c": [
-        "return:int"
-      ]
-    },
     "AddVec3": {
       "src/engine/view/d_camera.cpp": [
         "param:#2 const void *"
