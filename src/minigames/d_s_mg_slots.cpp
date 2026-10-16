@@ -300,9 +300,10 @@ void Slot3_State6(char* c){
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         self->mState = 7;
         Mg_SetSharedState(MG_STATE_GAME_OVER);
-        self->unk_5004 = 0;
+        self->mDifficulty = 0;
     }
-    if (self->unk_503e >= 0x3c) return;
+    if (self->mTimer >= 0x3c)
+        return;
     {
         int* a = &self->mReelWinPos[0];
         int* b = &self->mReelWinPos[1];
@@ -602,7 +603,7 @@ void dScMgSlot3_c::StartRound(int mode)
     if (mode == 3 || mode == 0x12) {
         mCredits = 0xc;
         mCreditsShown = mCredits;
-        mLevel = unk_5004;
+        mLevel = mDifficulty;
         if (mLevel > 0x270e) {
             mLevel = 0x270e;
         }
@@ -610,7 +611,7 @@ void dScMgSlot3_c::StartRound(int mode)
         Mg_SubmitScore(mHudScore);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     } else if (mode == 4) {
-        if (unk_5004 < 5) {
+        if (mDifficulty < 5) {
             *(int *)(int)(c + 0x5004) += 1;
         }
         *(int *)(int)(c + 0xbc) += 1;
@@ -627,7 +628,7 @@ void dScMgSlot3_c::StartRound(int mode)
         u8 k;
         int m;
 
-        v = unk_5004;
+        v = mDifficulty;
         if (v <= 0) {
             mStripLength = 3;
         } else if (v <= 2) {
@@ -636,15 +637,15 @@ void dScMgSlot3_c::StartRound(int mode)
             mStripLength = 5;
         }
 
-        v2 = unk_5004;
+        v2 = mDifficulty;
         if (v2 <= 0 || v2 == 1 || v2 == 3) {
-            unk_5040 = 0;
-            unk_5041 = 1;
-            unk_5042 = 0;
+            mReelReverse0 = 0;
+            mReelReverse1 = 1;
+            mReelReverse2 = 0;
         } else if (v2 == 2 || v2 == 4) {
-            unk_5040 = 1;
-            unk_5041 = 0;
-            unk_5042 = 1;
+            mReelReverse0 = 1;
+            mReelReverse1 = 0;
+            mReelReverse2 = 1;
         } else {
             for (i = 0; i < 3; i++) {
                 if ((u8)(((u32)RandomIntInternal(&data_0209e650) >> 16) & 1)) {
@@ -655,10 +656,10 @@ void dScMgSlot3_c::StartRound(int mode)
             }
         }
 
-        unk_503c = ((u32)RandomIntInternal(&data_0209e650) >> 16) % mStripLength;
+        mTargetFace = ((u32)RandomIntInternal(&data_0209e650) >> 16) % mStripLength;
         if (mode != 4) {
             mReelDrawY = 0;
-            mWinSymbol = unk_503c;
+            mWinSymbol = mTargetFace;
         } else {
             mReelDrawY = 0x50;
             func_02012790(0x1aa);
@@ -676,7 +677,7 @@ void dScMgSlot3_c::StartRound(int mode)
                 }
             }
         }
-        unk_4ff0 = (mStripLength * 0x50) << 12;
+        mStripSpan = (mStripLength * 0x50) << 12;
     }
 
     {
@@ -694,11 +695,11 @@ void dScMgSlot3_c::StartRound(int mode)
         for (m2 = 0; m2 < 3; m2++) {
             mReelWinPos[m2] = 0;
         }
-        unk_503d = 0;
-        unk_503e = 0x3c;
+        mRowsStopped = 0;
+        mTimer = 0x3c;
         mState = 0;
         mWinColumn = -1;
-        unk_5014 = 0;
+        mPayoutLeft = 0;
     }
 }
 
@@ -736,7 +737,9 @@ s32 dScMgSlot3_c::Render()
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov006_0213e9a4[self->mWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x10, -1, 2, 0x1000, 0x1000, 0, 1);
         }
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov006_0213e9a4[self->unk_503c * 3 + i], 0x80, self->mReelDrawY + 0x60, -1, 2, 0x1000, 0x1000, 0, 1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+                0, data_ov006_0213e9a4[self->mTargetFace * 3 + i], 0x80, self->mReelDrawY + 0x60,
+                -1, 2, 0x1000, 0x1000, 0, 1);
         }
     } else {
         for (i = 0; i < 3; i++) {
@@ -777,7 +780,7 @@ s32 dScMgSlot3_c::Render()
         }
     }
 
-    if (self->unk_503d < 3 && (self->mFrameCounter & 0x20)) {
+    if (self->mRowsStopped < 3 && (self->mFrameCounter & 0x20)) {
         int slot = 3;
         int ok = 1;
         int i3, j3;
@@ -955,11 +958,11 @@ s32 dScMgSlot3_c::InitResources()
     Mascot_Load(c + 0x4f38);
     Camera_InitSlotsView(c + 0x4660);
 
-    unk_5004 = (int)mLevel;
+    mDifficulty = (int)mLevel;
 
     ((dScMgSlot3_c *)c)->StartRound(3);
 
-    mWinSymbol = unk_503c;
+    mWinSymbol = mTargetFace;
     mReelDrawY = 0;
 
     for (int i = 0; i < 3; i++) {
