@@ -126,28 +126,28 @@
       "ordinal": 12
     },
     {
-      "symbol": "func_ov060_02116f74",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_02116f74Ev",
       "address": "0x02116f74",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov060_02116f74.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov060_02116f90",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_02116f90Ev",
       "address": "0x02116f90",
       "size": "0x0000019c",
       "legacy_source": "src/func_ov060_02116f90.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_ov060_0211712c",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_0211712cEv",
       "address": "0x0211712c",
       "size": "0x000000bc",
       "legacy_source": "src/func_ov060_0211712c.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_ov060_021171e8",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021171e8Ev",
       "address": "0x021171e8",
       "size": "0x00000044",
       "legacy_source": "src/func_ov060_021171e8.c",
