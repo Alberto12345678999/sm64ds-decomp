@@ -322,18 +322,23 @@ Medium confidence: `Marker_*` (one sprite) and `StepBg3Scroll`.
 
 **Bomroom (`dScMgBomroom_c`, Bob-omb sorting).**
 
-The seven member-pointer tables are named by index:
+Four of the seven member-pointer tables are named by index (the other three are the fixtures below):
 - `Round_State0..4` and `Round_SubState0..3`
 - `Bomb_State0..6` and `Bomb_Roam0..4`
-- `SlotA_State0..3`, `SlotB_State0..3` and `SlotB2_State0..3`
 
 Descriptive names, high confidence:
 - **Bombs:** `SpawnBombs`, `UpdateBombs`, `DrawBombs`, `ClearBombs`, `Bomb_Animate`, `Bomb_CheckGrab`, `Bomb_CheckSorted`, `Bomb_CheckWrongPen`, `Bomb_PushApart`, `OnBombExploded`, `HideExplodedBombs`.
 - **Round flow:** `CountSortedBombs`, `CheckColorComplete`, `ResetRound`, `UpdateBg2Lift`.
 
 Medium confidence:
-- `SlotA_*`, `SlotB_*`, `SlotB2_*` and `Marker_*` keep the header's names for the UI slot records at +0x6260, +0x6280 and +0x62b0. What they show is not observed. `SlotB_Hit` bounces BG0 and `SlotA_Trigger` plays sound 0x1e2, which suggests the pen doors and their lamps.
+- `Marker_*`: the two sprites at +0x62b0. `HatchPanel_Activate` shows marker 0; the right panel shows marker 1 at frame 3. Neither was on screen during the stub check.
 - `DrawRemaining`.
+
+**The room's fixtures (pass 5, seen in melonDS 2026-10-16), high confidence.** These were the header's `SlotA_*`, `SlotB_*` and `SlotB2_*`. Each draw was stubbed in turn with POKE during a game (runtime-checks.md), and the state names come from the bodies:
+- **`HatchPanel_*` (+0x6260, two):** the green panels on either side of the bomb hatch at the top of the bottom screen. `HatchPanel_Activate(side)` (was `SlotA_Trigger`) runs as the spawner sends a bomb out towards that side. It plays sound 0x1e2 and steps the panel's frame 0 to 4 (`StateAnimate`), then holds it (`StateHeld`) until the round resets. No caller sets `StateRevert`.
+- **`PenGate_*` (+0x6280, two, indexed by bomb colour):** the green gates at the outer edge of each pen. `PenGate_Open(color)` (was `SlotB_Hit`) runs on each frame a sorted bomb walks out on that side, and at the round-end blasts. It opens the gate over 4 frames, holds it for 0x20 frames (each further call re-arms the hold), then closes it. Opening a shut gate also sets BG0's offset to (0x100, 0).
+- **`TopDoor_*` (+0x62a0, one):** the emblem door at the top centre of the top screen. `TopDoor_Open` (was `SlotB2_Start`, sound 0x1e2) runs as the round end marches the lined-up bombs out. `TopDoor_Close` (was `SlotB2_Finish`, sound 0x1e3) runs once none is left marching.
+- The header splits the old `mSlotsB[3]` into `mPenGates[2]` and `mTopDoor`, and renames `mSlotsA` to `mHatchPanels`. The dispatch tables are `sBomroomHatchPanelStateTable`, `sBomroomPenGateStateTable` and `sBomroomTopDoorStateTable`.
 
 `AnyBombMarching` (was `func_ov006_020d8c88`, pass 5): whether any active bomb is in state 6, the march to the line-up that the round end assigns; `Round_SubState2` raises BG2 when it is.
 
