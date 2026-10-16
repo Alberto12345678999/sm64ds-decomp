@@ -34,6 +34,9 @@ shared minigame functions. Windows only (input and capture use user32/gdi32).
 - `teresabot.py <scene> [seconds]` — plays Hide and Boo Seek (`dScMgTeresa_c`):
   reads the Boo records through PEEK and holds the stylus on the Boo while
   rubbing is enabled, then screenshots the find.
+- `snowbot.py [seconds] [steer]` — pushes Snowball's ball up the course with
+  repeated upward swipes, reading the ball through PEEK. It gets most of the way
+  in 40 s; obstacles cost time, as it does not read the course.
 
 ## Setup
 Everything runtime lives in `build/melonds/` (gitignored): melonDS 1.1
