@@ -981,7 +981,7 @@
       "source": "0x2131c58",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBobOmb_State0",
+      "symbol": "pmf_PachinkoBobOmb_StateWaitGrab",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8a8"
@@ -991,7 +991,7 @@
       "source": "0x2131c5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBobOmb_State1",
+      "symbol": "pmf_PachinkoBobOmb_StateAim",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8f0"
@@ -1011,7 +1011,7 @@
       "source": "0x2131c64",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBobOmb_State2",
+      "symbol": "pmf_PachinkoBobOmb_StateFlying",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8f8"
@@ -1021,7 +1021,7 @@
       "source": "0x2131c68",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBobOmb_State3",
+      "symbol": "pmf_PachinkoBobOmb_StateFallAway",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8b8"
@@ -1031,7 +1031,7 @@
       "source": "0x2131c6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBobOmb_State4",
+      "symbol": "pmf_PachinkoBobOmb_StateRemove",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d908"
@@ -1041,7 +1041,7 @@
       "source": "0x2131c70",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBall_State0",
+      "symbol": "pmf_PachinkoBall_StateWaiting",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8c0"
@@ -1051,7 +1051,7 @@
       "source": "0x2131c74",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBall_State1",
+      "symbol": "pmf_PachinkoBall_StateFall",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8c8"
@@ -1071,7 +1071,7 @@
       "source": "0x2131c7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBall_State2",
+      "symbol": "pmf_PachinkoBall_StateDrift",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d898"
@@ -1081,7 +1081,7 @@
       "source": "0x2131c80",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBall_State3",
+      "symbol": "pmf_PachinkoBall_StateDive",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d920"
@@ -1091,7 +1091,7 @@
       "source": "0x2131c84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBall_State4",
+      "symbol": "pmf_PachinkoBall_StateGlide",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8b0"
@@ -1101,7 +1101,7 @@
       "source": "0x2131c88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBall_State5",
+      "symbol": "pmf_PachinkoBall_StateSpinAway",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d880"
@@ -1111,7 +1111,7 @@
       "source": "0x2131c8c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBall_State6",
+      "symbol": "pmf_PachinkoBall_StatePop",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8d8"
@@ -1121,7 +1121,7 @@
       "source": "0x2131c90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoPipe_State1",
+      "symbol": "pmf_PachinkoPipe_StateRise",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d940"
@@ -1131,7 +1131,7 @@
       "source": "0x2131c94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoPipe_State0",
+      "symbol": "pmf_PachinkoPipe_StatePick",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d930"
@@ -1141,7 +1141,7 @@
       "source": "0x2131c98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoPipe_State2",
+      "symbol": "pmf_PachinkoPipe_StateSink",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d938"
@@ -1151,7 +1151,7 @@
       "source": "0x2131c9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoPipe_State3",
+      "symbol": "pmf_PachinkoPipe_StateIdle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8d0"
@@ -1171,7 +1171,7 @@
       "source": "0x2131ca4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoFlyer_State0",
+      "symbol": "pmf_PachinkoFlyer_StateWaiting",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d878"
@@ -1181,7 +1181,7 @@
       "source": "0x2131ca8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoFlyer_State1",
+      "symbol": "pmf_PachinkoFlyer_StateDescend",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8e8"
@@ -1201,7 +1201,7 @@
       "source": "0x2131cb0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoFlyer_State3",
+      "symbol": "pmf_PachinkoFlyer_StatePause",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d890"
@@ -1211,7 +1211,7 @@
       "source": "0x2131cb4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoFlyer_State4",
+      "symbol": "pmf_PachinkoFlyer_StateLeave",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d888"
@@ -1221,7 +1221,7 @@
       "source": "0x2131cb8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoFlyer_State2",
+      "symbol": "pmf_PachinkoFlyer_StateCross",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8e0"
@@ -1231,7 +1231,7 @@
       "source": "0x2131cbc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBg_State3",
+      "symbol": "pmf_PachinkoBg_StateSinkOut",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d900"
@@ -1241,7 +1241,7 @@
       "source": "0x2131cc0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBg_State0",
+      "symbol": "pmf_PachinkoBg_StateWaiting",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d928"
@@ -1251,7 +1251,7 @@
       "source": "0x2131cc4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBg_State1",
+      "symbol": "pmf_PachinkoBg_StateRiseIn",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d918"
@@ -1261,7 +1261,7 @@
       "source": "0x2131cc8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_PachinkoBg_State2",
+      "symbol": "pmf_PachinkoBg_StateScroll",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213d8a0"

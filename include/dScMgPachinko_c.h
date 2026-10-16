@@ -10,7 +10,7 @@
    words (address-gap math against the neighbouring g_profile_MG_TAMAIRE
    table, and relocs.txt cross-references confirm it belongs to a wholly
    different actor's spawn descriptor, not this class) -- excluded, along
-   with Paddle_State4 and dScMgPachinko2_c_classInit, from this migration.
+   with Paddle_StateOrbit and dScMgPachinko2_c_classInit, from this migration.
    Fields below dScMgBase_c's own 0x4660 are INHERITED, not this class's
    own -- accessed via raw offsets on a char* cast of `this` (0xa4, 0xc0,
    0xc3, 0xc4 all touched here, all already dScMgBase_c's own, same as

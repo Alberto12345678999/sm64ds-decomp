@@ -29,8 +29,8 @@
 //   PachinkoTarget_ShowAll/HideAll/DrawAll and the target count read them by
 //   field (PachinkoFx_Spawn's typed forms change code). mFlyer and mBg are
 //   one-element arrays because their handlers take an index; PachinkoBg_StateScroll
-//   and PachinkoFlyer_CheckHits' head use them, while Bg_State0/1/3,
-//   Bg_Start and Flyer_State0/2/3/4 measured different typed and stay on
+//   and PachinkoFlyer_CheckHits' head use them, while Bg_StateWaiting/RiseIn/SinkOut,
+//   Bg_Start and Flyer_StateWaiting/Cross/Pause/Leave measured different typed and stay on
 //   offsets; the other handlers
 //   keep the offset forms their launder macros and saved row cursors tune,
 //   and convert one function at a time. 0x5418..0x5958 is never
@@ -231,31 +231,31 @@ extern Ent7d0 sPachinkoBallStateTable[];
 
 /* The ROM {code pointer, adjustment} records the five tables copy from
    (unlicensed .data), grouped by destination table in retail copy order. */
-extern Ent7d0 pmf_PachinkoBobOmb_State0;
-extern Ent7d0 pmf_PachinkoBobOmb_State1;
-extern Ent7d0 pmf_PachinkoBobOmb_State2;
-extern Ent7d0 pmf_PachinkoBobOmb_State3;
-extern Ent7d0 pmf_PachinkoBobOmb_State4;
-extern Ent7d0 pmf_PachinkoBall_State0;
-extern Ent7d0 pmf_PachinkoBall_State1;
-extern Ent7d0 pmf_PachinkoBall_State2;
-extern Ent7d0 pmf_PachinkoBall_State3;
-extern Ent7d0 pmf_PachinkoBall_State4;
-extern Ent7d0 pmf_PachinkoBall_State5;
-extern Ent7d0 pmf_PachinkoBall_State6;
-extern Ent7d0 pmf_PachinkoPipe_State0;
-extern Ent7d0 pmf_PachinkoPipe_State1;
-extern Ent7d0 pmf_PachinkoPipe_State2;
-extern Ent7d0 pmf_PachinkoPipe_State3;
-extern PMF2   pmf_PachinkoFlyer_State0;
-extern PMF2   pmf_PachinkoFlyer_State1;
-extern PMF2   pmf_PachinkoFlyer_State2;
-extern PMF2   pmf_PachinkoFlyer_State3;
-extern PMF2   pmf_PachinkoFlyer_State4;
-extern PMF    pmf_PachinkoBg_State0;
-extern PMF    pmf_PachinkoBg_State1;
-extern PMF    pmf_PachinkoBg_State2;
-extern PMF    pmf_PachinkoBg_State3;
+extern Ent7d0 pmf_PachinkoBobOmb_StateWaitGrab;
+extern Ent7d0 pmf_PachinkoBobOmb_StateAim;
+extern Ent7d0 pmf_PachinkoBobOmb_StateFlying;
+extern Ent7d0 pmf_PachinkoBobOmb_StateFallAway;
+extern Ent7d0 pmf_PachinkoBobOmb_StateRemove;
+extern Ent7d0 pmf_PachinkoBall_StateWaiting;
+extern Ent7d0 pmf_PachinkoBall_StateFall;
+extern Ent7d0 pmf_PachinkoBall_StateDrift;
+extern Ent7d0 pmf_PachinkoBall_StateDive;
+extern Ent7d0 pmf_PachinkoBall_StateGlide;
+extern Ent7d0 pmf_PachinkoBall_StateSpinAway;
+extern Ent7d0 pmf_PachinkoBall_StatePop;
+extern Ent7d0 pmf_PachinkoPipe_StatePick;
+extern Ent7d0 pmf_PachinkoPipe_StateRise;
+extern Ent7d0 pmf_PachinkoPipe_StateSink;
+extern Ent7d0 pmf_PachinkoPipe_StateIdle;
+extern PMF2 pmf_PachinkoFlyer_StateWaiting;
+extern PMF2 pmf_PachinkoFlyer_StateDescend;
+extern PMF2 pmf_PachinkoFlyer_StateCross;
+extern PMF2 pmf_PachinkoFlyer_StatePause;
+extern PMF2 pmf_PachinkoFlyer_StateLeave;
+extern PMF pmf_PachinkoBg_StateWaiting;
+extern PMF pmf_PachinkoBg_StateRiseIn;
+extern PMF pmf_PachinkoBg_StateScroll;
+extern PMF pmf_PachinkoBg_StateSinkOut;
 
 /* This TU's own members, forward-declared for the callers below them. */
 extern void PachinkoDeco_DrawAll(char *thiz);
@@ -2858,27 +2858,28 @@ extern "C" void *dScMgPachinko_c_classInit()
    then the 4-row Entry table. mwcc emits __sinit_d_s_mg_pachinko.cpp from
    these definitions, copying the ROM .data records. */
 Ent7d0 sPachinkoBobOmbStateTable[5] = {
-    pmf_PachinkoBobOmb_State0, pmf_PachinkoBobOmb_State1, pmf_PachinkoBobOmb_State2,
-    pmf_PachinkoBobOmb_State3, pmf_PachinkoBobOmb_State4,
+    pmf_PachinkoBobOmb_StateWaitGrab, pmf_PachinkoBobOmb_StateAim,
+    pmf_PachinkoBobOmb_StateFlying,   pmf_PachinkoBobOmb_StateFallAway,
+    pmf_PachinkoBobOmb_StateRemove,
 };
 Ent7d0 sPachinkoBallStateTable[7] = {
-    pmf_PachinkoBall_State0, pmf_PachinkoBall_State1, pmf_PachinkoBall_State2,
-    pmf_PachinkoBall_State3, pmf_PachinkoBall_State4, pmf_PachinkoBall_State5,
-    pmf_PachinkoBall_State6,
+    pmf_PachinkoBall_StateWaiting, pmf_PachinkoBall_StateFall,  pmf_PachinkoBall_StateDrift,
+    pmf_PachinkoBall_StateDive,    pmf_PachinkoBall_StateGlide, pmf_PachinkoBall_StateSpinAway,
+    pmf_PachinkoBall_StatePop,
 };
 Ent7d0 sPachinkoPipeStateTable[4] = {
-    pmf_PachinkoPipe_State0,
-    pmf_PachinkoPipe_State1,
-    pmf_PachinkoPipe_State2,
-    pmf_PachinkoPipe_State3,
+    pmf_PachinkoPipe_StatePick,
+    pmf_PachinkoPipe_StateRise,
+    pmf_PachinkoPipe_StateSink,
+    pmf_PachinkoPipe_StateIdle,
 };
 PMF2 sPachinkoFlyerStateTable[5] = {
-    pmf_PachinkoFlyer_State0, pmf_PachinkoFlyer_State1, pmf_PachinkoFlyer_State2,
-    pmf_PachinkoFlyer_State3, pmf_PachinkoFlyer_State4,
+    pmf_PachinkoFlyer_StateWaiting, pmf_PachinkoFlyer_StateDescend, pmf_PachinkoFlyer_StateCross,
+    pmf_PachinkoFlyer_StatePause,   pmf_PachinkoFlyer_StateLeave,
 };
 Entry sPachinkoBgStateTable[4] = {
-    {pmf_PachinkoBg_State0},
-    {pmf_PachinkoBg_State1},
-    {pmf_PachinkoBg_State2},
-    {pmf_PachinkoBg_State3},
+    {pmf_PachinkoBg_StateWaiting},
+    {pmf_PachinkoBg_StateRiseIn},
+    {pmf_PachinkoBg_StateScroll},
+    {pmf_PachinkoBg_StateSinkOut},
 };

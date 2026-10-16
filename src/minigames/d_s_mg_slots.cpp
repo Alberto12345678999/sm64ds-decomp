@@ -117,14 +117,14 @@ extern void **sSlotLangSprites[];
 extern SlotState sSlot3StateTable[];
 /* The ROM PMF constants the Slot3 state table copies from (unlicensed
  * .data), in retail copy order. */
-extern SlotState pmf_Slot3_State0;
-extern SlotState pmf_Slot3_State1;
-extern SlotState pmf_Slot3_State2;
-extern SlotState pmf_Slot3_State3and4;
-extern SlotState pmf_Slot3_State3and4_2;
-extern SlotState pmf_Slot3_State5;
-extern SlotState pmf_Slot3_State6;
-extern SlotState pmf_Slot3_State7;
+extern SlotState pmf_Slot3_StateIntro;
+extern SlotState pmf_Slot3_StateSpin;
+extern SlotState pmf_Slot3_StateJudge;
+extern SlotState pmf_Slot3_StatePayout;
+extern SlotState pmf_Slot3_StatePayout_2;
+extern SlotState pmf_Slot3_StateWait;
+extern SlotState pmf_Slot3_StateGameOver;
+extern SlotState pmf_Slot3_StateDone;
 extern int LoadFile(int handle);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -1677,6 +1677,6 @@ void *dScMgSlot1_c_classInit(void)
  * The Slot3 state table plain-copied from the ROM PMF constants, in
  * retail copy order. */
 SlotState sSlot3StateTable[8] = {
-    pmf_Slot3_State0,       pmf_Slot3_State1, pmf_Slot3_State2, pmf_Slot3_State3and4,
-    pmf_Slot3_State3and4_2, pmf_Slot3_State5, pmf_Slot3_State6, pmf_Slot3_State7,
+    pmf_Slot3_StateIntro,    pmf_Slot3_StateSpin, pmf_Slot3_StateJudge,    pmf_Slot3_StatePayout,
+    pmf_Slot3_StatePayout_2, pmf_Slot3_StateWait, pmf_Slot3_StateGameOver, pmf_Slot3_StateDone,
 };
