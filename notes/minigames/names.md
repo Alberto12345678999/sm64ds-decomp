@@ -299,11 +299,11 @@ pitch, two matching notes clear, and a mismatch closes them again.
 
 **Teresa (`dScMgTeresa_c`, Hide and Boo Seek).**
 
-The four state tables are named by index, which is certain:
-- `BigBoo_State0..8`: the big Boo's flight.
-- `Reveal_State0..4`: the reveal pair.
-- `Boo_State0..7`: each of the 16 hiding Boos.
-- `Scene_State0..4`: the scene.
+The four state tables' handlers are named from their bodies (pass 6; they were `BigBoo_State0..8`, `Reveal_State0..4`, `Boo_State0..7` and `Scene_State0..4`), high confidence unless noted:
+- **The big Boo (top screen):** `BigBoo_StateDropIn` (0: falls in, then the START banner 0xc), `StateHover` (1: waits 0x30 frames, then picks a side), `StateFlyLeft` / `StateFlyRight` (2, 3: crosses the screen), `StateOffscreen` (4: waits 8 frames, then crosses back), `StateExit` (5: leaves once the round is done), `StateRemove` (6: hides and reloads OBJ graphics from file 0x103), `StateGone` (7, empty), `StateResult` (8: `BigBoo_ShowResult` drops it in with the win or lose frames).
+- **The reveal:** `Reveal_StateStart`, `StateSlideIn` (slides to x 0x80, sound 0x1f3), `StateAnimate` (eight frames, sound 0x1f9), `StateDipAndRise` (sinks, then rises with the marker), `StateFinish` (hides the marker, starts the play state, sets the Boos hiding and starts the big Boo).
+- **Each Boo:** `Boo_StateAppear` (speed by kind), `StateFly`, `StateFadeOut` (fades into the dark), `StateHidden` (moves, turns at rubbed tiles, touch-tested), `StateHiddenTimed` (medium: hidden and touch-tested but not turned by rubbing, until a timer returns it to `StateHidden`; no setter found, the settle check treats it like `StateHidden`), `StateFound` (vanishes with a puff once the scene reaches its result), `StateFadeIn` (the round end shows the Boos left), `StateFadeAway`.
+- **The scene:** `Scene_StateInit`, `StateReveal`, `StatePlay`, `StateRoundEnd` (found numbers and the BG3 scroll), `StateResult` (`MG_STATE_ROUND_CLEAR` or the GAME OVER banner).
 
 Descriptive names, high confidence:
 - **Boos:** `SpawnBoos`, `UpdateBoos`, `StepBoo`, `BounceBooOffWalls`, `MoveBoo`, `DrawBoos`.
@@ -613,7 +613,7 @@ The two Marios share their first five fields with the line code's jumper view (`
 
 **Globals.** Named from their writers and readers (free data symbols, so no lineage rows):
 - the record pools and counts of each game that keeps one (trampoline Marios, items, lines, effects, spinners, Heyho, Jump2 popups) and their tuning (fall speed, gravity step, maximum rise speed);
-- 80 member-pointer dispatch tables, each after its handlers' common prefix (`sTeresaBooStateTable` holds `Boo_State0..7`);
+- 80 member-pointer dispatch tables, each after its handlers' common prefix (`sTeresaBooStateTable` holds the eight `Boo_State*` handlers);
 - 15 file handles, after the file each resolves to through `tools/asset_catalog.py` (`gEspCardWaitAnimFile` is `MG/esp_card_wait.bca`); handles with the 0x8000 bit stay unresolved;
 - the shared banner positions `dMgState_c` places each banner at, the digit sprite table, the 3D scenes' three cameras, and per-game state (card picks and lists, scores, deal progress, slot reel positions, sound note effects).
 

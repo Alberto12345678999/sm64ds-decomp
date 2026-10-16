@@ -76,63 +76,63 @@
       "ordinal": 4
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State8Ei",
+      "symbol": "_ZN13dScMgTeresa_c18BigBoo_StateResultEi",
       "address": "0x0211cd24",
       "size": "0x0000016c",
       "legacy_source": "src/func_ov006_0211cd24.c",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State7Ev",
+      "symbol": "_ZN13dScMgTeresa_c16BigBoo_StateGoneEv",
       "address": "0x0211ce90",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_0211ce90.c",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State6Ei",
+      "symbol": "_ZN13dScMgTeresa_c18BigBoo_StateRemoveEi",
       "address": "0x0211ce94",
       "size": "0x00000060",
       "legacy_source": "src/func_ov006_0211ce94.c",
       "ordinal": 7
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State5Ei",
+      "symbol": "_ZN13dScMgTeresa_c16BigBoo_StateExitEi",
       "address": "0x0211cef4",
       "size": "0x00000124",
       "legacy_source": "src/func_ov006_0211cef4.c",
       "ordinal": 8
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State4Ei",
+      "symbol": "_ZN13dScMgTeresa_c21BigBoo_StateOffscreenEi",
       "address": "0x0211d018",
       "size": "0x000000e0",
       "legacy_source": "src/func_ov006_0211d018.c",
       "ordinal": 9
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State3Ei",
+      "symbol": "_ZN13dScMgTeresa_c20BigBoo_StateFlyRightEi",
       "address": "0x0211d0f8",
       "size": "0x0000012c",
       "legacy_source": "src/func_ov006_0211d0f8.c",
       "ordinal": 10
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State2Ei",
+      "symbol": "_ZN13dScMgTeresa_c19BigBoo_StateFlyLeftEi",
       "address": "0x0211d224",
       "size": "0x00000144",
       "legacy_source": "src/func_ov006_0211d224.c",
       "ordinal": 11
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State1Ei",
+      "symbol": "_ZN13dScMgTeresa_c17BigBoo_StateHoverEi",
       "address": "0x0211d368",
       "size": "0x00000180",
       "legacy_source": "src/func_ov006_0211d368.c",
       "ordinal": 12
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13BigBoo_State0Ei",
+      "symbol": "_ZN13dScMgTeresa_c18BigBoo_StateDropInEi",
       "address": "0x0211d4e8",
       "size": "0x000000c0",
       "legacy_source": "src/func_ov006_0211d4e8.c",
@@ -202,35 +202,35 @@
       "ordinal": 22
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13Reveal_State4Ei",
+      "symbol": "_ZN13dScMgTeresa_c18Reveal_StateFinishEi",
       "address": "0x0211d86c",
       "size": "0x000000b8",
       "legacy_source": "src/func_ov006_0211d86c.cpp",
       "ordinal": 23
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13Reveal_State3Ei",
+      "symbol": "_ZN13dScMgTeresa_c22Reveal_StateDipAndRiseEi",
       "address": "0x0211d924",
       "size": "0x000001ac",
       "legacy_source": "src/func_ov006_0211d924.c",
       "ordinal": 24
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13Reveal_State2Ei",
+      "symbol": "_ZN13dScMgTeresa_c19Reveal_StateAnimateEi",
       "address": "0x0211dad0",
       "size": "0x000000ac",
       "legacy_source": "src/func_ov006_0211dad0.c",
       "ordinal": 25
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13Reveal_State1Ei",
+      "symbol": "_ZN13dScMgTeresa_c19Reveal_StateSlideInEi",
       "address": "0x0211db7c",
       "size": "0x00000164",
       "legacy_source": "src/func_ov006_0211db7c.c",
       "ordinal": 26
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13Reveal_State0Ei",
+      "symbol": "_ZN13dScMgTeresa_c17Reveal_StateStartEi",
       "address": "0x0211dce0",
       "size": "0x0000002c",
       "legacy_source": "src/func_ov006_0211dce0.c",
@@ -412,42 +412,42 @@
       "ordinal": 52
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State7Ei",
+      "symbol": "_ZN13dScMgTeresa_c17Boo_StateFadeAwayEi",
       "address": "0x0211ebdc",
       "size": "0x00000258",
       "legacy_source": "src/func_ov006_0211ebdc.c",
       "ordinal": 53
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State6Ei",
+      "symbol": "_ZN13dScMgTeresa_c15Boo_StateFadeInEi",
       "address": "0x0211ee34",
       "size": "0x0000020c",
       "legacy_source": "src/func_ov006_0211ee34.c",
       "ordinal": 54
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State5Ei",
+      "symbol": "_ZN13dScMgTeresa_c14Boo_StateFoundEi",
       "address": "0x0211f040",
       "size": "0x00000090",
       "legacy_source": "src/func_ov006_0211f040.cpp",
       "ordinal": 55
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State4Ei",
+      "symbol": "_ZN13dScMgTeresa_c20Boo_StateHiddenTimedEi",
       "address": "0x0211f0d0",
       "size": "0x000000d4",
       "legacy_source": "src/func_ov006_0211f0d0.c",
       "ordinal": 56
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State3Ei",
+      "symbol": "_ZN13dScMgTeresa_c15Boo_StateHiddenEi",
       "address": "0x0211f1a4",
       "size": "0x00000080",
       "legacy_source": "src/func_ov006_0211f1a4.c",
       "ordinal": 57
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State2Ei",
+      "symbol": "_ZN13dScMgTeresa_c16Boo_StateFadeOutEi",
       "address": "0x0211f224",
       "size": "0x00000128",
       "legacy_source": "src/func_ov006_0211f224.c",
@@ -475,14 +475,14 @@
       "ordinal": 61
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State1Ei",
+      "symbol": "_ZN13dScMgTeresa_c12Boo_StateFlyEi",
       "address": "0x0211f554",
       "size": "0x00000080",
       "legacy_source": "src/func_ov006_0211f554.c",
       "ordinal": 62
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c10Boo_State0Ei",
+      "symbol": "_ZN13dScMgTeresa_c15Boo_StateAppearEi",
       "address": "0x0211f5d4",
       "size": "0x00000090",
       "legacy_source": "src/func_ov006_0211f5d4.c",
@@ -531,35 +531,35 @@
       "ordinal": 69
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c12Scene_State4Ev",
+      "symbol": "_ZN13dScMgTeresa_c17Scene_StateResultEv",
       "address": "0x0211fd44",
       "size": "0x00000134",
       "legacy_source": "src/func_ov006_0211fd44.c",
       "ordinal": 70
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c12Scene_State3Ev",
+      "symbol": "_ZN13dScMgTeresa_c19Scene_StateRoundEndEv",
       "address": "0x0211fe78",
       "size": "0x00000190",
       "legacy_source": "src/func_ov006_0211fe78.c",
       "ordinal": 71
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c12Scene_State2Ev",
+      "symbol": "_ZN13dScMgTeresa_c15Scene_StatePlayEv",
       "address": "0x02120008",
       "size": "0x000000a0",
       "legacy_source": "src/func_ov006_02120008.c",
       "ordinal": 72
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c12Scene_State1Ev",
+      "symbol": "_ZN13dScMgTeresa_c17Scene_StateRevealEv",
       "address": "0x021200a8",
       "size": "0x00000024",
       "legacy_source": "src/func_ov006_021200a8.c",
       "ordinal": 73
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c12Scene_State0Ev",
+      "symbol": "_ZN13dScMgTeresa_c15Scene_StateInitEv",
       "address": "0x021200cc",
       "size": "0x00000010",
       "legacy_source": "src/func_ov006_021200cc.c",
@@ -1013,7 +1013,7 @@
       "source": "0x021331b0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Scene_State0",
+      "symbol": "pmf_dScMgTeresa_c_Scene_StateInit",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f904"
@@ -1023,7 +1023,7 @@
       "source": "0x021331b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Scene_State1",
+      "symbol": "pmf_dScMgTeresa_c_Scene_StateReveal",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f92c"
@@ -1043,7 +1043,7 @@
       "source": "0x021331bc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Scene_State2",
+      "symbol": "pmf_dScMgTeresa_c_Scene_StatePlay",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f954"
@@ -1053,7 +1053,7 @@
       "source": "0x021331c0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Scene_State3",
+      "symbol": "pmf_dScMgTeresa_c_Scene_StateRoundEnd",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f964"
@@ -1063,7 +1063,7 @@
       "source": "0x021331c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Scene_State4",
+      "symbol": "pmf_dScMgTeresa_c_Scene_StateResult",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f914"
@@ -1073,7 +1073,7 @@
       "source": "0x021331c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State0",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateAppear",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f934"
@@ -1083,7 +1083,7 @@
       "source": "0x021331cc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State1",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateFly",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8dc"
@@ -1103,7 +1103,7 @@
       "source": "0x021331d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State2",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateFadeOut",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f94c"
@@ -1113,7 +1113,7 @@
       "source": "0x021331d8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State3",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateHidden",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8ec"
@@ -1123,7 +1123,7 @@
       "source": "0x021331dc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Reveal_State0",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_StateStart",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f99c"
@@ -1133,7 +1133,7 @@
       "source": "0x021331e0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State4",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateHiddenTimed",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8e4"
@@ -1143,7 +1143,7 @@
       "source": "0x021331e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State5",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateFound",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8d4"
@@ -1153,7 +1153,7 @@
       "source": "0x021331e8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State6",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateFadeIn",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f93c"
@@ -1163,7 +1163,7 @@
       "source": "0x021331ec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Boo_State7",
+      "symbol": "pmf_dScMgTeresa_c_Boo_StateFadeAway",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f96c"
@@ -1173,7 +1173,7 @@
       "source": "0x021331f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Reveal_State1",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_StateSlideIn",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f994"
@@ -1193,7 +1193,7 @@
       "source": "0x021331f8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Reveal_State3",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_StateDipAndRise",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f984"
@@ -1203,7 +1203,7 @@
       "source": "0x021331fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Reveal_State2",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_StateAnimate",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f98c"
@@ -1213,7 +1213,7 @@
       "source": "0x02133200",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_Reveal_State4",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_StateFinish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f97c"
@@ -1223,7 +1223,7 @@
       "source": "0x02133204",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State0",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateDropIn",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f90c"
@@ -1243,7 +1243,7 @@
       "source": "0x0213320c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State1",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateHover",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f95c"
@@ -1253,7 +1253,7 @@
       "source": "0x02133210",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State2",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateFlyLeft",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f91c"
@@ -1263,7 +1263,7 @@
       "source": "0x02133214",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State3",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateFlyRight",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8fc"
@@ -1273,7 +1273,7 @@
       "source": "0x02133218",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State4",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateOffscreen",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f944"
@@ -1283,7 +1283,7 @@
       "source": "0x0213321c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State5",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateExit",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8f4"
@@ -1293,7 +1293,7 @@
       "source": "0x02133220",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State6",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateRemove",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f9ac"
@@ -1303,7 +1303,7 @@
       "source": "0x02133224",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State7",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateGone",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f9a4"
@@ -1313,7 +1313,7 @@
       "source": "0x02133228",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "pmf_dScMgTeresa_c_BigBoo_State8",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_StateResult",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f924"
