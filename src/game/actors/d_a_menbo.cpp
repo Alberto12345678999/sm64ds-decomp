@@ -900,17 +900,13 @@ int daMenbo_c::InitResources()
     unk_10a = 2;
     mVertAccel = -0x3000;
 
-    {
-        int b = 1;
-        if (data_0209f2d8 != 2) b = 0;
-        if (b != 0 && data_0209f2f8 == 0x12) {
-            unk_3ac = mPosY;
-            unk_374 = mPosX;
-            unk_378 = mPosY;
-            unk_37c = mPosZ;
-            func_ov090_02131e00((MenboState *)this, data_ov090_021344f4);
-            return 1;
-        }
+    if (IsGameMode(2) && data_0209f2f8 == 0x12) {
+        unk_3ac = mPosY;
+        unk_374 = mPosX;
+        unk_378 = mPosY;
+        unk_37c = mPosZ;
+        func_ov090_02131e00((MenboState *)this, data_ov090_021344f4);
+        return 1;
     }
 
     {
