@@ -42,7 +42,6 @@ struct Vector3_16 {
 
 struct Player;
 struct Vector3;
-struct Vector3_16;
 struct dCc_c;
 /* Only ever named through a pointer below; the definition lives in common.h /
    math/Matrix.h, which this header deliberately does not pull in. */
@@ -83,7 +82,9 @@ struct dActor_c : dBase_c {
        Vector3 has a constructor, so mwcc warns "unions cannot have nontrivial
        class members" here; the warning is expected. Nothing is constructed
        through these, but the constructor's TU now also emits unused empty
-       destructors for the four Vector3 unions. */
+       destructors for the four Vector3 unions. For the port (C++11 and
+       later), a nontrivial union member also deletes dActor_c's implicit
+       copy constructor and copy assignment; nothing copies an actor. */
     union {
         struct {
             s32 mPosX, mPosY, mPosZ;
@@ -177,9 +178,16 @@ struct dActor_c : dBase_c {
        function, so no TU gains a vtable from this. */
     dActor_c();
 
-    /* Parameters that are only `Player &`, `dActor_c &`, `dCc_c &`, a shadow or
-       a dust position go unnamed in this class: each name would cost an @NNN
-       number, and the vector overlays above spend them instead. */
+    /* The 24 unnamed parameters in this class, each left off because a name
+       would cost an @NNN number that the vector overlays above spend instead:
+         Player & / dActor_c &: slots 19 and 21-28, BumpedUnderneathByPlayer,
+           JumpedOnByPlayer's Player, GivePlayerCoins;
+         dCc_c & / dCc_c *: FindEgg, FindExplosionActor, MakeVanishLuigiWork,
+           JumpedOnByPlayer, UpdatePos, UpdatePosWithOnlySpeed;
+         dExtShadowModel_c &: DropShadowScaleXYZ, DropShadowRadHeight;
+         dust position: PoofDustAt, DisappearPoofDustAt, TriplePoofDustAt,
+           HugeLandingDustAt (LandingDustAt's `pos` was already named).
+       Naming one, or unnaming another, moves every consumer's @NNN. */
 
     /* --- overrides of inherited slots. Each takes its base's index. --- */
     virtual bool BeforeInitResources();                /* slot  1 */
