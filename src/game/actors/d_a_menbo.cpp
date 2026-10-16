@@ -318,7 +318,7 @@ void func_ov090_021310b4(daMenbo_c *c)
         hv[1] = 0;
         hv[2] = 0;
         _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(c, hv, p, 0);
-        func_02012694(0x1d, (const Vector3 *)&c->mCamSpacePosX);
+        func_02012694(0x1d, &c->mCamSpacePos);
         return;
     }
     if (flags & 0x4380) {
@@ -364,7 +364,7 @@ void func_ov090_02131378(daMenbo_c *c)
     v.y = vy;
     v.z = vz;
     c->unk_39c = 0;
-    if (Vec3_HorzDist((Vector3 *)&c->mPosX, (Vector3 *)&c->mPrevPosX) != 0) {
+    if (Vec3_HorzDist(&c->mPos, &c->mPrevPos) != 0) {
         rg.SetObjAndPos(v, c);
         if (rg.DetectClsn() != 0)
             c->unk_3a8 = rg.clsnY;
@@ -398,12 +398,12 @@ int func_ov090_021314a0(daMenbo_c *c)
         v[0] = sv[0];
         v[1] = sv[1];
         v[2] = sv[2];
-        if (Vec3_Dist((const Vector3 *)&c->mPosX, (const Vector3 *)v) < 0x3ac000) {
+        if (Vec3_Dist(&c->mPos, (const Vector3 *)v) < 0x3ac000) {
             int w[3];
             w[0] = v[0];
             w[1] = v[1];
             w[2] = v[2];
-            c->unk_39a = (u16)Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)w);
+            c->unk_39a = (u16)Vec3_HorzAngle(&c->mPos, (const Vector3 *)w);
             MENBO_LATCH(c)->chase = 1;
             return 1;
         }
@@ -411,7 +411,7 @@ int func_ov090_021314a0(daMenbo_c *c)
     if (MENBO_LATCH(c)->chase == 1) {
         c->mHorzSpeed = 0x9000;
         MENBO_LATCH(c)->chase = 0;
-        c->unk_39a = (u16)Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->unk_374);
+        c->unk_39a = (u16)Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->unk_374);
     }
     return 0;
 }
@@ -463,10 +463,10 @@ int daMenbo_c::func_ov090_02131648()
     s32 *p390;
 
     rnd = (u32)RandomIntInternal(&data_0209e650) >> 8;
-    dist = Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&self->unk_374);
+    dist = Vec3_Dist(&self->mPos, (Vector3 *)&self->unk_374);
 
     if (((((u32)static_cast<dExtFrameCtrl_c &>(self->mModelAnim).currFrame) << 4) >> 0x10 & 0xf) == 0) {
-        func_02012694(0xfc, (const Vector3 *)&self->mCamSpacePosX);
+        func_02012694(0xfc, &self->mCamSpacePos);
     }
 
     angleSet = 0;
@@ -500,7 +500,7 @@ int daMenbo_c::func_ov090_02131648()
 
     if (!line.DetectClsn()) {
         if (MENBO_LATCH(self)->probe == 0) {
-            ha = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->unk_374);
+            ha = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->unk_374);
             sh = (rnd & 3) << 0xc;
             self->unk_39a = (u16)ha;
             p39a = (s16 *)&self->unk_39a;
@@ -517,7 +517,7 @@ int daMenbo_c::func_ov090_02131648()
 
     if (dist > 0x3c0000) {
         if (MENBO_LATCH(self)->far == 0 && MENBO_LATCH(self)->probe == 0) {
-            ha = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->unk_374);
+            ha = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->unk_374);
             self->unk_39a = (u16)ha;
             angleSet = 1;
             self->mPosX = self->mPrevPosX;
@@ -531,7 +531,7 @@ int daMenbo_c::func_ov090_02131648()
 
     if (self->mWithMeshClsn.IsOnWall() != 0) {
         if (MENBO_LATCH(self)->wall == 0 && MENBO_LATCH(self)->far == 0 && MENBO_LATCH(self)->probe == 0) {
-            ha = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->unk_374);
+            ha = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->unk_374);
             sh = (rnd & 3) << 0xc;
             self->unk_39a = (u16)ha;
             p39a = (s16 *)&self->unk_39a;
@@ -653,7 +653,7 @@ int daMenbo_c::func_ov090_02131c48()
         mHorzSpeed = 0x19000;
 
     if ((((unsigned)static_cast<dExtFrameCtrl_c &>(mModelAnim).currFrame) << 4) >> 16 == 4)
-        func_02012694(0xfd, (const Vector3 *)&mCamSpacePosX);
+        func_02012694(0xfd, &mCamSpacePos);
 
     if (unk_394 == 0
         && mWithMeshClsn.IsOnWall()
@@ -746,7 +746,7 @@ int daMenbo_c::Render()
     unsigned int f = mFlags;
     int b = ((f & 0x40000) != 0);
     if (b) return 1;
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 

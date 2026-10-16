@@ -171,13 +171,13 @@ void daSCoin_c::LinkToBlock()
     if (mBlockScanDone != 0) return;
     for (dActor_c *other = dActor_c::Next(0); other != 0; other = dActor_c::Next(other)) {
         if (HasActorID(other, 0x14) || HasActorID(other, 0x15)) {
-            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+            if (Vec3_Dist(&mPos, &other->mPos) < 0xc8000) {
                 mClsnDisabled = 1;
                 ((daObjHatenaBlock_c *)other)->mHeldActor = this;
                 break;
             }
         } else if (HasActorID(other, 0xc0)) {
-            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+            if (Vec3_Dist(&mPos, &other->mPos) < 0xc8000) {
                 mClsnDisabled = 1;
                 ((daObjPushblock_c *)other)->mLinkedActor = this;
                 break;

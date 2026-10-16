@@ -119,8 +119,7 @@ void SnowmanBreathParticle::HitPlayer()
     if (player->mIsVanish)
         return;
 
-    s32 angle = Vec3_HorzAngle(&data_ov027_02113d10,
-                               (Vector3 *)&actor->mPosX);
+    s32 angle = Vec3_HorzAngle(&data_ov027_02113d10, &actor->mPos);
     Vector3_16 rotation;
     rotation.x = 0;
     rotation.y = (s16)angle;
@@ -157,7 +156,7 @@ void SnowmanBreathParticle::CheckSnowman()
 {
     dActor_c *snowman = dActor_c::FindWithActorID(0x102, 0);
     s32 threshold = mCollider.radius + 0x12b000;
-    s32 distance = Vec3_Dist(&mPos, (Vector3 *)&snowman->mPosX);
+    s32 distance = Vec3_Dist(&mPos, &snowman->mPos);
     if (distance >= threshold)
         return;
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
@@ -206,7 +205,7 @@ int SnowmanBreathParticle::TrySpawn(Player &player)
     if (mTimer != 0)
         return 0;
     mPos = data_ov027_02113d10;
-    angle = Vec3_HorzAngle(&mPos, (Vector3 *)&player.mPosX);
+    angle = Vec3_HorzAngle(&mPos, &player.mPos);
     if (angle > 0x2af8)
         angle = 0x2af8;
     if (angle < 0x9de)
@@ -237,7 +236,7 @@ int daSnmBth_c::IsPlayerInRange()
     mTalkPlayer = player;
 
     Vector3 playerPos;
-    Vec3_Asr(&playerPos, (Vector3 *)&player->mPosX, 3);
+    Vec3_Asr(&playerPos, &player->mPos, 3);
     *(MatrixWords *)&data_020a0e68 = *(MatrixWords *)&mInvModelMat;
 
     Vector3 localPos;
@@ -371,7 +370,7 @@ int daSnmBth_c::InitResources()
     mPosZ = 0x46988e;
     mAngleY = 0x5d30;
     Vector3 pos;
-    Vec3_Asr(&pos, (Vector3 *)&mPosX, 3);
+    Vec3_Asr(&pos, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, pos.x, pos.y, pos.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     InvMat4x3(&data_020a0e68, &data_020a0e68);

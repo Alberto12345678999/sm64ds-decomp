@@ -217,9 +217,7 @@ int daObjC1_Trap_c::InitResources()
         position.x = x;
         position.y = y;
         position.z = z;
-        spawned = dActor_c::Spawn(
-            0x24, 0, *(const Vector3 *)&position,
-            (const Vector3_16 *)&mAngleX, mAreaId, -1);
+        spawned = dActor_c::Spawn(0x24, 0, *(const Vector3 *)&position, &mAngle, mAreaId, -1);
         ((daObjC1_Trap_c *)spawned)->mSpawnerID = uniqueID;
 
         index = ((int)(u16)mAngleY >> 4) * 2;
@@ -231,9 +229,7 @@ int daObjC1_Trap_c::InitResources()
         position.x = x;
         position.y = y;
         position.z = z;
-        spawned = dActor_c::Spawn(
-            0x24, 1, *(const Vector3 *)&position,
-            (const Vector3_16 *)&mAngleX, mAreaId, -1);
+        spawned = dActor_c::Spawn(0x24, 1, *(const Vector3 *)&position, &mAngle, mAreaId, -1);
         ((daObjC1_Trap_c *)spawned)->mSpawnerID = uniqueID;
         return 1;
     }
@@ -365,7 +361,7 @@ void daObjC1_Trap_c::State0()
     if (!spawner || !spawner->mTrapActive)
         return;
     mState = 1;
-    Sound::PlayBank3(0xe, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0xe, mCamSpacePos);
 }
 
 // @symbol _ZN14daObjC1_Trap_c6State1Ev

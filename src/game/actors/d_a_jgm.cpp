@@ -20,8 +20,7 @@
  * - DaJgmVector3Words (not Vector3): a Vector3 stack local emits a
  *   vague-linkage ~Vector3 into this text-only TU. JgmVector3's
  *   declared-not-defined destructor aliases the ROM's canonical D1.
- * - *(Vector3 *)&mPosX / mSpawnPosX stay punned: dActor_c has no Pos()
- *   accessor.
+ * - mSpawnPosX stays punned: daJgm_c stores it as three scalars.
  * - dBgCh_Actr_UpdateDiscreteNoLava_veneer stays: the named
  *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
  * - Fix12<int>-by-value callees stay mangled (6az): dCcAcPos_c::Init,
@@ -384,9 +383,7 @@ s32 daJgm_c::UpdateHoverState()
         /* Nested on purpose: one flat && chain is 12 bytes shorter. */
         Player *p = ClosestNonVanishPlayer();
         if (p != 0) {
-            if (p->mPosY < mPosY
-                && Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&p->mPosX) < 0x190000
-                && CountSpinies() < 4)
+            if (p->mPosY < mPosY && Vec3_HorzDist(&mPos, &p->mPos) < 0x190000 && CountSpinies() < 4)
                 SetState(1);
             else
                 mTimer = 0x96;
@@ -409,8 +406,7 @@ s32 daJgm_c::UpdateHoverState()
     }
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.Update();
-    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-        mSoundHandle, 3, 0x182, (const Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 3, 0x182, &mCamSpacePos, 0);
     return 1;
 }
 
@@ -438,9 +434,7 @@ s32 daJgm_c::UpdateThrowState()
 {
     unsigned int frame = (unsigned int)(mModelAnim.currFrame << 4) >> 16;
     if (frame == 0x3a) {
-        dActor_c::Spawn(
-            0x104, 0, *(Vector3 *)&mThrowPosX, (Vector3_16 *)&mAngleX,
-            mAreaId, -1);
+        dActor_c::Spawn(0x104, 0, *(Vector3 *)&mThrowPosX, &mAngle, mAreaId, -1);
         func_0201267c(0xd2, &mCamSpacePosX);
     }
     if (mModelAnim.Finished())
@@ -460,8 +454,7 @@ s32 daJgm_c::UpdateThrowState()
     }
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.Update();
-    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-        mSoundHandle, 3, 0x182, (const Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 3, 0x182, &mCamSpacePos, 0);
     return 1;
 }
 
@@ -558,7 +551,7 @@ s32 daJgm_c::UpdateSpitState()
 // @symbol _ZN7daJgm_c14EnterFallStateEv
 s32 daJgm_c::EnterFallState()
 {
-    Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank0(9, mCamSpacePos);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0xa000;
@@ -691,7 +684,7 @@ void daJgm_c::HandlePlayerCollision()
     int b;
 
     if (FindEgg(mdCcAcPos_c) != 0) {
-        Sound::PlayBank0(9, *(const Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         DieAndDropCoins();
         return;
     }
@@ -720,13 +713,13 @@ void daJgm_c::HandlePlayerCollision()
         || BumpedUnderneathByPlayer(*player) != 0
         || player->IsOnShell() != 0
         || player->mIsMetal != 0) {
-        Sound::PlayBank0(9, *(const Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         DieAndDropCoins();
         return;
     }
 
     if (mdCcAcPos_c.hitFlags & 0x10) {
-        mPrevAngleY = Vec3_HorzAngle((Vector3 *)&player->mPosX, (Vector3 *)&mPosX);
+        mPrevAngleY = Vec3_HorzAngle(&player->mPos, &mPos);
         mAngleY = (short)(mPrevAngleY + 0x8000);
         player->IncMegaKillCount();
         SetState(4);
@@ -773,7 +766,7 @@ void daJgm_c::UpdateFlight()
     int chaseRange;
     if (p != 0) {
         chaseRange = (param1 != 0) ? 0x1068000 : 0x7d0000;
-        if (Vec3_HorzDist((Vector3 *)&mSpawnPosX, (Vector3 *)&p->mPosX) < chaseRange) {
+        if (Vec3_HorzDist((Vector3 *)&mSpawnPosX, &p->mPos) < chaseRange) {
             int d = mSpawnPosY - p->mPosY;
             if (d < 0)
                 d = -d;

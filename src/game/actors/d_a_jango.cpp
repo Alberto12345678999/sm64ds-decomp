@@ -406,9 +406,9 @@ int daJango_c::InitResources()
 
     if (mCarriedItem == CARRIES_STAR) {
         if (mSilverStarFlag != 2) {
-            spawned = dActor_c::Spawn(ACTOR_STAR, mHeldItemParam | 0x50, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+            spawned = dActor_c::Spawn(ACTOR_STAR, mHeldItemParam | 0x50, mPos, 0, mAreaId, -1);
         } else {
-            spawned = dActor_c::Spawn(ACTOR_SILVER_STAR, 0x50, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+            spawned = dActor_c::Spawn(ACTOR_SILVER_STAR, 0x50, mPos, 0, mAreaId, -1);
         }
         if (spawned != 0) {
             mHeldActorID = spawned->uniqueID;
@@ -433,7 +433,7 @@ int daJango_c::InitResources()
                 int area = mAreaId;
                 unsigned int param = 0;
                 param = param | (hat << 8);
-                spawned = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, *(Vector3 *)&mPosX, 0, area, -1);
+                spawned = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, mPos, 0, area, -1);
             }
             if (spawned != 0) {
                 _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(spawned, 0x64000, 0x258000, 0x1f40000, 0x1f40000);
@@ -441,7 +441,7 @@ int daJango_c::InitResources()
             }
         }
         /* Taken while mPos still equals mSpawnPos, so the two vectors are equal. */
-        mTargetAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mSpawnPosX);
+        mTargetAngleY = Vec3_HorzAngle(&mPos, (Vector3 *)&mSpawnPosX);
         func_ov062_0211c658(JANGO_STATE_CIRCLE);
     }
     return 1;
@@ -717,14 +717,14 @@ int daJango_c::func_ov062_0211c2f4() {
     path.FromID(mPathId);
     zero[0] = 0; zero[1] = 0; zero[2] = 0; zero[3] = 0; zero[4] = 0; zero[5] = 0;
     path.GetNode(node, mPathNodeIndex);
-    ApproachAngle(&mPrevAngleY, Vec3_HorzAngle((const Vector3 *)&mPosX, &node), 0xa, 0x200, 0x100);
+    ApproachAngle(&mPrevAngleY, Vec3_HorzAngle(&mPos, &node), 0xa, 0x200, 0x100);
     ApproachAngle(&mPrevAngleZ, 0, 0xa, 0x100, 0x50);
 
     idx = mPathNodeIndex - 1;
     if ((int)idx < 0)
         idx = mPathNodeCount - 1;
     path.GetNode(node2, idx);
-    Vec3_Sub(&diff, (Vector3 *)&mPosX, &node);
+    Vec3_Sub(&diff, &mPos, &node);
     len = LenVec3(&diff);
     /* len == 0 is already covered by len <= 0x14000, but the ROM keeps
        it as a test of its own. */
@@ -760,7 +760,7 @@ int daJango_c::func_ov062_0211c2f4() {
         return 1;
     }
 
-    if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&mPosX, &node), mAngleY) < 0x2000) {
+    if (AngleDiff(Vec3_HorzAngle(&mPos, &node), mAngleY) < 0x2000) {
         int s;
         zero[1] = mPosY;
         s = _ZN4cstd4fdivEii(0x14000, len);
@@ -855,10 +855,10 @@ int daJango_c::func_ov062_0211bd10()
         if (mWithMeshClsn.IsOnWall() != 0) {
             mTargetAngleY = (s16)(mPrevAngleY + 0x4000);
         } else {
-            mTargetAngleY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mSpawnPosX);
+            mTargetAngleY = Vec3_HorzAngle(&mPos, (const Vector3 *)&mSpawnPosX);
         }
         ApproachLinear(mPrevAngleY, mTargetAngleY, 0x1000);
-        ApproachLinear(mPrevAngleX, Vec3_VertAngle((const Vector3 *)&mPosX, (const Vector3 *)&mSpawnPosX), 0x500);
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, (const Vector3 *)&mSpawnPosX), 0x500);
         ApproachLinear(mPrevAngleZ, 0, 0x500);
         if (Vec3_Dist(&mPosX, &mSpawnPosX) < 0x1f4000) {
             mTimer = 0;
@@ -870,10 +870,10 @@ int daJango_c::func_ov062_0211bd10()
     }
 
     if (mCarriedItem == CARRIES_NO_STAR && mHeldActorID == 0) {
-        angV = Vec3_VertAngle((const Vector3 *)&mPosX, (const Vector3 *)&mSpawnPosX);
+        angV = Vec3_VertAngle(&mPos, (const Vector3 *)&mSpawnPosX);
         angD = (s16)(AngleDiff(mTargetAngleY, mPrevAngleY) / 3);
     } else {
-        angV = Vec3_VertAngle((const Vector3 *)&mPosX, (const Vector3 *)&mPathNodePosX);
+        angV = Vec3_VertAngle(&mPos, (const Vector3 *)&mPathNodePosX);
         angD = (s16)(AngleDiff(mTargetAngleY, mPrevAngleY) / 3);
     }
 
@@ -967,7 +967,7 @@ int daJango_c::func_ov062_0211bd10()
         _ZN7PathPtrC1Ev(path);
         ((PathPtr *)path)->FromID(mPathId);
         ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
-        if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&mPosX, &node), mAngleY) < 0x2000) {
+        if (AngleDiff(Vec3_HorzAngle(&mPos, &node), mAngleY) < 0x2000) {
             func_ov062_0211c658(JANGO_STATE_FLY_PATH);
         }
     }
@@ -1053,10 +1053,9 @@ int func_ov062_0211ba84(char *c)
         tz = t.w[2];
         ty = t.w[1];
         hv.x = tx; hv.y = ty; hv.z = tz;
-        actor.mTargetAngleY = Vec3_HorzAngle((Vector3 *)&actor.mPosX, &hv);
+        actor.mTargetAngleY = Vec3_HorzAngle(&actor.mPos, &hv);
         vv.x = tx; vv.y = ty; vv.z = tz;
-        pitch = Vec3_VertAngle((Vector3 *)&actor.mPosX, &vv);
-
+        pitch = Vec3_VertAngle(&actor.mPos, &vv);
     }
     if (data_0209f2f8 == 0x10) {
         ApproachLinear(actor.mPrevAngleY, actor.mTargetAngleY, (s16)actor.unk_43c);
@@ -1109,9 +1108,9 @@ int daJango_c::func_ov062_0211b930()
         if (mCarriedItem == CARRIES_STAR) {
             ((fBase_c*)found)->MarkForDestruction();
             if (mSilverStarFlag != 2) {
-                dActor_c::Spawn(ACTOR_STAR, mHeldItemParam | 0x40, *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX, mAreaId, -1);
+                dActor_c::Spawn(ACTOR_STAR, mHeldItemParam | 0x40, mPos, &mAngle, mAreaId, -1);
             } else {
-                dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX, mAreaId, -1);
+                dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, mPos, &mAngle, mAreaId, -1);
                 mCarriedItem = CARRIES_NO_STAR;
             }
         } else {
@@ -1287,7 +1286,7 @@ int daJango_c::func_ov062_0211b51c()
             unsigned int ch = pl->param1;
             unsigned int param = 0;
             param = param | (ch << 8);
-            sp = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, *(Vector3 *)&mPosX, 0, area, -1);
+            sp = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, mPos, 0, area, -1);
         }
         if (sp != 0) {
             _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(

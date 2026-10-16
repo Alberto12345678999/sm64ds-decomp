@@ -885,8 +885,7 @@ extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int x
 void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 & vel_, Player & player_, Fix12<int>)
 {
     mFlags &= ~0x10000001;
-    mPrevAngleY = Vec3_HorzAngle((const Vector3 *)((char *)&player_ + 0x5c),
-                                 (const Vector3 *)&mPosX);
+    mPrevAngleY = Vec3_HorzAngle((const Vector3 *)((char *)&player_ + 0x5c), &mPos);
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mDeathTimer = 0x1e;
