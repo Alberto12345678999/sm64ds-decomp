@@ -150,7 +150,6 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
     char *thiz, int f, char *m, int fix, short s, int blk);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     char *thiz, char *actor, int b, int d, void *v, int f);
-extern int _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void *thiz, Matrix4x3 &m, short ang);
 
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos, unsigned int n, int speed, short ang);
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
@@ -165,18 +164,12 @@ extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_0203567c(int p);
 extern int func_02037e38(u32 *p);
 extern int func_02037e58(u32 *p);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
 extern int func_ov002_020ef228(void *c, int arg);
 extern int func_ov002_020f030c(int x);
 extern int func_ov002_020e496c(char *c);
 extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
-extern int _ZNK5dBgPi9GetClsnIDEv(int self);
 
-extern void _ZN6Player9DropActorEv(void *p);
-extern int _ZN6Player7TryGrabER8dActor_c(void *player, void *actor);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, struct Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
-extern int _ZN6Player14IsFrontSlidingEv(char *p);
-extern int _ZN6Player17LostGrabbedObjectEv(char *p);
 
 extern void _ZN5Sound9PlayBank3EjRK7Vector3(u32 id, const struct Vector3 *pos);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
@@ -579,7 +572,7 @@ void daObjBlockS_c::func_ov098_021388bc()
         if (SurfaceInfo_TestFlag0x20((int *)((char *)mWithMeshClsn.GetFloorResult() + 4)) != 0) {
             Player *p = mHoldingPlayer;
             if (p != 0) {
-                _ZN6Player9DropActorEv(p);
+                p->DropActor();
                 Kill();
                 return;
             }
@@ -715,8 +708,9 @@ int daObjBlockS_c::func_ov098_02138bfc()
     unsigned short type;
     if (!func_02035638((unsigned char *)&mWithMeshClsn)) return 0;
     r = func_0203567c((int)&mWithMeshClsn);
-    if (_ZNK5dBgPi9GetClsnIDEv(r) == -1) return 0;
-    a = dActor_c::FindWithID((unsigned int)_ZNK5dBgPi9GetClsnIDEv(r));
+    if (((dBgPi *)r)->GetClsnID() == -1)
+        return 0;
+    a = dActor_c::FindWithID((unsigned int)((dBgPi *)r)->GetClsnID());
     if (!a) return 0;
     type = *(unsigned short *)((char *)a + 0xc);
     {
@@ -859,7 +853,8 @@ void daObjBlockS_c::func_ov098_02138e6c()
         return;
     }
     if ((fl & CC_HIT_GRAB) != 0) {
-        if (_ZN6Player7TryGrabER8dActor_c(a, this) == 0) return;
+        if (((Player *)a)->TryGrab(*this) == 0)
+            return;
         mHoldingPlayer = (Player *)a;
         Crate_SetState(this, daObjBlockS_c::STATE_CARRIED);
         return;
@@ -1035,7 +1030,7 @@ int daObjBlockS_c::func_ov098_02139228()
         Kill();
     }
 
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)fr + 4, (Vector3 *)&mFloorNormalX);
+    ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(*(Vector3 *)&mFloorNormalX);
     n = func_02037e58((u32 *)((char *)fr + 4));
     ang = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
     hl = func_ov002_020f02c8(n);
@@ -1170,7 +1165,7 @@ void daObjBlockS_c::func_ov098_021397c8()
     mClsnMat.m[9] = tmp[0];
     mClsnMat.m[10] = tmp[1];
     mClsnMat.m[11] = tmp[2];
-    _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(&mMeshCollider, mClsnMat, mAngleY);
+    mMeshCollider.Transform(mClsnMat, mAngleY);
 }
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_02139850Ev
@@ -1201,8 +1196,9 @@ void daObjBlockS_c::func_ov098_02139850()
     {
         char *r4 = (char *)func_ov002_020e496c((char *)obj);
         int r5 = 0;
-        if (_ZN6Player14IsFrontSlidingEv((char *)mHoldingPlayer) != 0) r5 = 1;
-        if (_ZN6Player17LostGrabbedObjectEv((char *)mHoldingPlayer) != 0) {
+        if (mHoldingPlayer->IsFrontSliding() != 0)
+            r5 = 1;
+        if (mHoldingPlayer->LostGrabbedObject() != 0) {
             if (((u32)*(int *)(r4 + 0x58) << 4) >> 0x10 < 0xe) r5 = 1;
         }
         if (mHoldingPlayer->param1 == 2) {

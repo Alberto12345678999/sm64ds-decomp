@@ -220,7 +220,6 @@ extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
 extern short data_02082214[];
-extern "C" void _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(void *, const Vector3&, const Vector3_16_local&);
 extern char data_ov084_0213089c;
 extern void func_ov084_02129c9c(char *c);
 extern void func_ov084_02129cf4(daKrb_c *goomba, int a);
@@ -1161,7 +1160,7 @@ void daKrb_c::func_ov084_0212a580(){
     arg16.y = ((unsigned short*)&rotation)[1];
     arg16.z = ((unsigned short*)&rotation)[2];
     /* equal-arm ternary forces arg16 setup (r2) before arg (r1) — matches ROM call-arg order */
-    _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16((dCapEnemy_c*)this, arg, this ? arg16 : arg16);
+    UpdateCapPos(arg, (const Vector3_16 &)(this ? arg16 : arg16));
 }
 
 // @symbol func_ov084_0212a6f8
