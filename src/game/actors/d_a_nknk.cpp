@@ -60,6 +60,7 @@ enum d_a_nknk_AssetId {
 #include "decl_ShadowModel.h"
 #include "Particle__System.h"
 #include "dBgPi.h"
+#include "nitro/fx/fx.h"
 
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
@@ -380,9 +381,9 @@ int daNknk_c::Render()
   saved.y = mScaleY;
   saved.z = mScaleZ;
   if (mDeathState == 1 && mKoopaVariant == 2) {
-    mScaleX = (int)(((long long)*(volatile int *)&mScaleX * 0x800 + 0x800) >> 12);
-    mScaleY = (int)(((long long)*(volatile int *)&mScaleY * 0x800 + 0x800) >> 12);
-    mScaleZ = (int)(((long long)*(volatile int *)&mScaleZ * 0x800 + 0x800) >> 12);
+      mScaleX = FX_MUL(*(volatile int *)&mScaleX, 0x800);
+      mScaleY = FX_MUL(*(volatile int *)&mScaleY, 0x800);
+      mScaleZ = FX_MUL(*(volatile int *)&mScaleZ, 0x800);
   }
   mModelAnim.Render((const Vector3*)&mScaleX);
   mScaleX = saved.x;
@@ -1119,9 +1120,9 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
         if (ps == 0) return;
         iscb2 = actorID == 0xcb;
         if (iscb2)
-            ps->callbackScale = (short)(((long long)ps->callbackScale * 0x800 + 0x800) >> 12);
+            ps->callbackScale = (short)FX_MUL(ps->callbackScale, 0x800);
         else
-            ps->callbackScale = (short)(((long long)ps->callbackScale * 0x500 + 0x800) >> 12);
+            ps->callbackScale = (short)FX_MUL(ps->callbackScale, 0x500);
     } else {
         mFootstep = 0;
     }
@@ -1168,11 +1169,11 @@ void daNknk_c::func_ov062_021175c0()
         t2 = t2 == 0xcb;
         if (t2 != 0) {
             int v = particle->callbackScale;
-            int r = (int)((((s64)v) * 0x800 + 0x800) >> 12);
+            int r = FX_MUL(v, 0x800);
             particle->callbackScale = (short)r;
         } else {
             int v = particle->callbackScale;
-            int r = (int)((((s64)v) * 0x500 + 0x800) >> 12);
+            int r = FX_MUL(v, 0x500);
             particle->callbackScale = (short)r;
         }
     }

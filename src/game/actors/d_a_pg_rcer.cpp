@@ -20,6 +20,7 @@
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &value, int target, int step);
@@ -601,10 +602,8 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            long long a = (long long)floorNormal.x * (long long)self->unk_0a4;
-            long long b = (long long)floorNormal.z * (long long)self->unk_0ac;
-            int x = (int)((a + 0x800) >> 12);
-            int y = (int)((b + 0x800) >> 12);
+            int x = FX_MUL(floorNormal.x, self->unk_0a4);
+            int y = FX_MUL(floorNormal.z, self->unk_0ac);
             self->mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
             if (self->mVertSpeed > 0)
                 self->mVertSpeed = 0;
@@ -640,7 +639,7 @@ int daPgRcer_c::func_ov019_0211131c()
         mAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, &node);
     }
     mPathDist = mPathDist - mHorzSpeed;
-    return mPathDist < 0 ? 1 : 0;
+    return mPathDist < 0;
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_021112b8Ev
@@ -673,7 +672,7 @@ int daPgRcer_c::func_ov019_0211127c(Vector3 *pos, unsigned int nodeIndex)
     Vector3 node;
     mPath.GetNode(node, nodeIndex);
     Fix12i dist = Vec3_HorzDist(&node, pos);
-    return dist <= 0x320000 ? 1 : 0;
+    return dist <= 0x320000;
 }
 
 extern "C" {

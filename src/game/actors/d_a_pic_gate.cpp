@@ -20,8 +20,8 @@
  *                        plays a sound.
  *   func_ov080_02125940  BuildNormals -- per-cell normal from the neighbour
  *                        cross product, packed for G3_NORMAL.
- *   func_ov080_02125af0  FlattenFrame -- cells off the current width/height
- *                        get z = 0 and the flat packed normal.
+ *   func_ov080_02125af0  FlattenFrame -- cells on the border of the current
+ *                        width/height get z = 0 and the flat packed normal.
  *   func_ov080_02125bb0  RippleHeight -- wave height at a cell's distance.
  *   func_ov080_02125cd4 / func_ov080_02125d08 -- wave-clock math on
  *                        mWaveParams.
@@ -39,9 +39,7 @@
  * - Vertex.texCoord/colour reach the GX ports through literal
  *   *(int *)0x0400xxxx stores: the ports stay unnamed so the stores keep
  *   the same non-volatile idiom the promoted TU uses.
- * - HitTest keeps the goto skeleton the ROM's branch shape needs (the
- *   positive/negative-z split), and BuildNormals keeps the triple-store
- *   zero-init of its Vec3 locals.
+ * - BuildNormals keeps the triple-store zero-init of its Vec3 locals.
  */
 
 #include "daPicGate_c.h"
@@ -50,6 +48,7 @@
 #include "Model.h"
 #include "SharedFilePtr.h"
 #include "private/Ov080Mat.h"
+#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off
 
@@ -220,8 +219,6 @@ void daPicGate_c::func_ov080_021256f8()
     Vec3 ob;
     Vec3 oa;
     Player *r5;
-    int za;
-    int zb;
     int x, y;
     int lim;
     u32 raw;
@@ -237,44 +234,31 @@ void daPicGate_c::func_ov080_021256f8()
     MulVec3Mat4x3((Vector3 *)&a, &data_020a0e68, (Vector3 *)&oa);
     MulVec3Mat4x3((Vector3 *)&b, &data_020a0e68, (Vector3 *)&ob);
 
-    za = oa.z;
-    if (za <= 0)
-        goto L9c;
-    zb = ob.z;
-    if (zb <= 0)
-        goto Lb0;
-L9c:
-    if (za >= 0)
-        goto neg;
-    zb = ob.z;
-    if (zb < 0)
-        goto neg;
-Lb0:
-    x = ob.x << 3;
-    y = ob.y << 3;
-    ob.x = x;
-    ob.y = y;
-    if (x < 0)
+    if ((oa.z > 0 && ob.z <= 0) || (oa.z < 0 && ob.z >= 0)) {
+        x = ob.x << 3;
+        y = ob.y << 3;
+        ob.x = x;
+        ob.y = y;
+        if (x < 0)
+            return;
+        raw = param1;
+        nib = raw & 0xf;
+        lim = (nib + 1) * 0x64000;
+        if (x > lim)
+            return;
+        if (y < 0)
+            return;
+        nib = (raw >> 4) & 0xf;
+        lim = (nib + 1) * 0x64000;
+        if (y > lim)
+            return;
+        func_ov080_02125de0(x, y, 1);
         return;
-    raw = param1;
-    nib = raw & 0xf;
-    lim = (nib + 1) * 0x64000;
-    if (x > lim)
-        return;
-    if (y < 0)
-        return;
-    nib = (raw >> 4) & 0xf;
-    lim = (nib + 1) * 0x64000;
-    if (y > lim)
-        return;
-    func_ov080_02125de0(x, y, 1);
-    return;
+    }
 
-neg:
-    if (za <= 0xa000)
+    if (oa.z <= 0xa000)
         return;
-    zb = ob.z;
-    if (zb > 0xa000)
+    if (ob.z > 0xa000)
         return;
     if (mWaveTimer != 0)
         return;
@@ -349,37 +333,19 @@ void daPicGate_c::func_ov080_02125940()
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125af0Ev
-/* FlattenFrame: every cell whose x or y is off the picture's width/height
- * keeps its edge; the interior is reset to z = 0 and the flat packed
- * normal (0x1ff00000). */
+/* FlattenFrame: every cell on the picture's border (x at 0 or the full
+ * width, y at 0 or the full height) is reset to z = 0 and the flat packed
+ * normal (0x1ff00000); interior cells are left as they are. */
 void daPicGate_c::func_ov080_02125af0()
 {
-    int i;
-    int cnt = mNumCells;
-    i = 0;
-    if (cnt <= 0) return;
-    do {
+    for (int i = 0; i < mNumCells; i++) {
         Vertex *e = mCells + i;
-        int v = e->x;
-        if (v != 0) {
-            unsigned int t = param1;
-            int a = ((unsigned char)(t & 0xf) + 1) * 0x64000;
-            if (v != a) {
-                int v2 = e->y;
-                if (v2 != 0) {
-                    int b = ((unsigned char)((t >> 4) & 0xf) + 1) * 0x64000;
-                    if (v2 != b) goto next;
-                }
-            }
+        if (e->x == 0 || e->x == ((unsigned char)(param1 & 0xf) + 1) * 0x64000 || e->y == 0 ||
+            e->y == ((unsigned char)((param1 >> 4) & 0xf) + 1) * 0x64000) {
+            e->z = 0;
+            mCells[i].color = 0x1ff00000;
         }
-        e->z = 0;
-        {
-            Vertex *e2 = mCells + i;
-            e2->color = 0x1ff00000;
-        }
-    next:
-        i++;
-    } while (i < mNumCells);
+    }
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125bb0Ei
@@ -393,7 +359,6 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
     int r5res, r4res, sum, idx;
     Fix12i f;
     short tv;
-    long long prod;
 
     if (r4 == 0)
         return 0;
@@ -412,15 +377,13 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
     r4res = func_ov080_02125cd4(mWaveParams->duration - mWaveTimer);
 
     f = _ZN4cstd4fdivEii(r4res, mWaveParams->unk_0c);
-    prod = (long long)(-f) * (long long)r6;
-    sum = r4res + (int)((prod + 0x800) >> 12);
+    sum = r4res + FX_MUL(-f, r6);
     if (sum < 0)
         sum = 0;
 
     idx = (unsigned short)r5res >> 4;
     tv = *(short *)((char *)data_02082214 + (idx << 2));
-    prod = (long long)tv * (long long)sum;
-    return (int)((prod + 0x800) >> 12);
+    return FX_MUL(tv, sum);
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125cd4Ei
@@ -440,8 +403,7 @@ s32 daPicGate_c::func_ov080_02125d08(s32 frames)
 {
     int *obj = (int *)mWaveParams;
     Fix12i speed = _ZN4cstd4fdivEii(0xffff, obj[2]);
-    long long prod = (long long)frames * (long long)speed;
-    int result = (int)((prod + 0x800) >> 12);
+    int result = FX_MUL(frames, speed);
     s16 cur = mWavePhase;
     return (s16)(result - cur);
 }

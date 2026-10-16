@@ -85,8 +85,8 @@ the baseline objects, is in `build/mgnames-tools/` (gitignored):
    - **Setup:** the handoff zip's `HANDOFF.md`, or the steps below.
      1. Start `build/melonds/melonDS.exe build/melonds/sm64_eu.nds`. Check that `[Instance0.Gdb] Enabled = true`, because melonDS can rewrite it to false.
      2. Check `[Instance0.Keyboard]` too. It shipped with every key at -1, which is why keys never reached the game.
-     3. Attach `python build/melonds/mgwatch.py --unlock`.
-   - **Driving the game:** `build/melonds/input.ps1` gives taps, drags and keys. Its foreground unlock uses F24, because an Alt tap opens melonDS's menu bar.
+     3. Attach `python tools/trace/mg/mgwatch.py --unlock` (setup and gotchas: `tools/trace/mg/README.md`).
+   - **Driving the game:** `tools/trace/mg/input.ps1` gives taps, drags and keys. Its foreground unlock uses F24, because an Alt tap opens melonDS's menu bar.
    - **Reading memory:** write `addr len` (both hex) to `build/melonds/PEEK`, and the watcher answers in `PEEK.out`. That is how Sound's chest notes were read.
    - The stub takes one client per launch. A second attach halts the game, so restart melonDS instead of reattaching.
    - **Finding a game:** a game's menu row is its tab + 4 × its position (Mario 0, Luigi 1, Wario 2, Yoshi 3). Rows 24-35 are each tab's second page.

@@ -76,16 +76,27 @@ struct TouchOwner {
 };
 struct TouchRec { u8 held; u8 edge; u8 x; u8 y; };
 struct MgMid { s32 v[5]; };
+/* One menu entry (sMiniGmRows, 36 of them: rows 0-23 are the first page of
+   each tab, 24-35 the second). StartSceneFade(id, sceneParam, 0) opens the
+   game, so sceneParam becomes the scene's fBase_c param1. Its low byte is the
+   variant that dScMgBase_c::IsAltVariant tests. Six games are listed twice:
+   Amida (rows 0/24), Snowball (6/34), Smartball (10/22), Coin (14/30), Panel
+   (15/35) and Slot1 (17/33). Each first entry has low byte 0 and each second
+   1, except Amida's row 24 with 2 (Amida's override asks for exactly 1).
+   Sound's only entry (row 19) has 0, so its IsAltVariant branch is not
+   reached from this menu. Seen in play: the two Snowballs start with param1
+   0x0a00 and 0x2201. Bytes 1 and 2 each give every row a distinct number
+   0..35. */
 struct MgEntry {
     u16 id; u16 pad;
-    s32 unk4, unk8, unkc, unk10;
+    s32 sceneParam, unk8, unkc, unk10;
     MgMid mid;
     s32 unk28, unk2c, unk30;
 };
 typedef char MgEntry_size_must_be_0x34[sizeof(MgEntry) == 0x34 ? 1 : -1];
 typedef struct Entry {
     int pad0;
-    int unk4;
+    int sceneParam;
     int unk8;
     int unkC;
     int unk10;
@@ -1041,7 +1052,7 @@ void dScMiniGm_c::UpdateGameSelect()
         const MgEntry *src = &sMiniGmRows[sel];
         gMgLastSelected[0] = sel;
         gMgMenuRow.id = src->id;
-        gMgMenuRow.unk4 = src->unk4;
+        gMgMenuRow.sceneParam = src->sceneParam;
         gMgMenuRow.unk8 = src->unk8;
         gMgMenuRow.unkc = src->unkc;
         gMgMenuRow.unk10 = src->unk10;
@@ -1055,7 +1066,8 @@ void dScMiniGm_c::UpdateGameSelect()
     _ZN8dScene_c9SetFadersEP15dFdBrightness_c(&data_0209f61c);
     data_0209f61c.func_0202ec9c(0);
     gMgMenuRow.unk30 = unk_05c;
-    dScene_c::StartSceneFade(sMiniGmRows[gMgLastSelected[0]].id, sMiniGmRows[gMgLastSelected[0]].unk4, 0);
+    dScene_c::StartSceneFade(sMiniGmRows[gMgLastSelected[0]].id,
+                             sMiniGmRows[gMgLastSelected[0]].sceneParam, 0);
     _ZN5Sound22StopLoadedMusic_Layer1Ej(0x1e);
     mExiting = 1;
     data_0209b2fc = 1;

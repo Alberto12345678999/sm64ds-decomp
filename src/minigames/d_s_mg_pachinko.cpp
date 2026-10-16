@@ -28,9 +28,9 @@
 //   in the header. PachinkoFlyer_Draw, PachinkoFx_DrawAll, PachinkoBg_Stop,
 //   PachinkoTarget_ShowAll/HideAll/DrawAll and the target count read them by
 //   field (PachinkoFx_Spawn's typed forms change code). mFlyer and mBg are
-//   one-element arrays because their handlers take an index; PachinkoBg_State2
-//   and PachinkoFlyer_CheckHits' head use them, while Bg_State0/1/3,
-//   Bg_Start and Flyer_State0/2/3/4 measured different typed and stay on
+//   one-element arrays because their handlers take an index; PachinkoBg_StateScroll
+//   and PachinkoFlyer_CheckHits' head use them, while Bg_StateWaiting/RiseIn/SinkOut,
+//   Bg_Start and Flyer_StateWaiting/Cross/Pause/Leave measured different typed and stay on
 //   offsets; the other handlers
 //   keep the offset forms their launder macros and saved row cursors tune,
 //   and convert one function at a time. 0x5418..0x5958 is never
@@ -58,7 +58,7 @@ struct C2;
 typedef void (C2::*PMF2)(int);
 struct C2 { char pad[0x5bc6]; unsigned char g; char gap; unsigned char idx; };
 
-/* PachinkoFlyer_State1's typed view of the rows at 0x5bb4. `volatile` on the
+/* PachinkoFlyer_StateDescend's typed view of the rows at 0x5bb4. `volatile` on the
    position is needed: the ROM reloads it after the store. */
 typedef struct Ent {
     volatile int a; /* 0x00 position (20.12) */
@@ -76,7 +76,7 @@ typedef struct Obj {
    PachinkoBall_UpdateAll and PachinkoBobOmb_UpdateAll walk. */
 struct Ent7d0 { int a; int b; };
 
-/* PachinkoFlyer_State0's stride-only view of the same 0x1c-byte rows. */
+/* PachinkoFlyer_StateWaiting's stride-only view of the same 0x1c-byte rows. */
 struct E { char pad[0x1c]; };
 
 /* The sprite record Mg_RenderSpriteBothScaled draws; only handled by pointer here. */
@@ -89,7 +89,7 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 /* Launder macros: they make the compiler materialise a base address on its
    own instead of folding it into a neighbouring add, as the ROM does. */
 #define AT(p, off) ((void*)(int)((char*)(p) + (off)))
-/* PachinkoBall_State2's two spellings of the same address: one through a
+/* PachinkoBall_StateDrift's two spellings of the same address: one through a
    signed and one through an unsigned integer. */
 #define ATI(p, off) ((char *)(int)((char *)(p) + (off)))
 #define ATU(p, off) ((char *)(unsigned int)((char *)(p) + (off)))
@@ -97,7 +97,7 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 #define M2(a) (a)
 #define AC (*(int *)(((long long)((int)a + 0x5c14))))
 
-/* Pipe row accessors for PachinkoPipe_State2. */
+/* Pipe row accessors for PachinkoPipe_StateSink. */
 #define ST(c,b)       (*(u8*)((c) + 0x4eb4 + (b)))
 #define CTA(c,b)      (*(u16*)((c) + 0x4eb0 + (b)))
 #define FB(c,b)       (*(u8*)((c) + 0x4eb6 + (b)))
@@ -223,49 +223,49 @@ extern u8    data_ov006_0213d974[];
    record tables PachinkoPipe_UpdateAll, PachinkoBobOmb_UpdateAll and
    PachinkoBall_UpdateAll walk. Static initialisers fill them from {code
    pointer, adjustment} records in ov006 .data. */
-extern Entry  data_ov006_02142604[];
-extern Ent7d0 data_ov006_02142624[];
-extern Ent7d0 data_ov006_02142644[];
-extern PMF2   data_ov006_0214266c[];
-extern Ent7d0 data_ov006_02142694[];
+extern Entry sPachinkoBgStateTable[];
+extern Ent7d0 sPachinkoPipeStateTable[];
+extern Ent7d0 sPachinkoBobOmbStateTable[];
+extern PMF2 sPachinkoFlyerStateTable[];
+extern Ent7d0 sPachinkoBallStateTable[];
 
 /* The ROM {code pointer, adjustment} records the five tables copy from
    (unlicensed .data), grouped by destination table in retail copy order. */
-extern Ent7d0 pmf_PachinkoBobOmb_State0;
-extern Ent7d0 pmf_PachinkoBobOmb_State1;
-extern Ent7d0 pmf_PachinkoBobOmb_State2;
-extern Ent7d0 pmf_PachinkoBobOmb_State3;
-extern Ent7d0 pmf_PachinkoBobOmb_State4;
-extern Ent7d0 pmf_PachinkoBall_State0;
-extern Ent7d0 pmf_PachinkoBall_State1;
-extern Ent7d0 pmf_PachinkoBall_State2;
-extern Ent7d0 pmf_PachinkoBall_State3;
-extern Ent7d0 pmf_PachinkoBall_State4;
-extern Ent7d0 pmf_PachinkoBall_State5;
-extern Ent7d0 pmf_PachinkoBall_State6;
-extern Ent7d0 pmf_PachinkoPipe_State0;
-extern Ent7d0 pmf_PachinkoPipe_State1;
-extern Ent7d0 pmf_PachinkoPipe_State2;
-extern Ent7d0 pmf_PachinkoPipe_State3;
-extern PMF2   pmf_PachinkoFlyer_State0;
-extern PMF2   pmf_PachinkoFlyer_State1;
-extern PMF2   pmf_PachinkoFlyer_State2;
-extern PMF2   pmf_PachinkoFlyer_State3;
-extern PMF2   pmf_PachinkoFlyer_State4;
-extern PMF    pmf_PachinkoBg_State0;
-extern PMF    pmf_PachinkoBg_State1;
-extern PMF    pmf_PachinkoBg_State2;
-extern PMF    pmf_PachinkoBg_State3;
+extern Ent7d0 pmf_PachinkoBobOmb_StateWaitGrab;
+extern Ent7d0 pmf_PachinkoBobOmb_StateAim;
+extern Ent7d0 pmf_PachinkoBobOmb_StateFlying;
+extern Ent7d0 pmf_PachinkoBobOmb_StateFallAway;
+extern Ent7d0 pmf_PachinkoBobOmb_StateRemove;
+extern Ent7d0 pmf_PachinkoBall_StateWaiting;
+extern Ent7d0 pmf_PachinkoBall_StateFall;
+extern Ent7d0 pmf_PachinkoBall_StateDrift;
+extern Ent7d0 pmf_PachinkoBall_StateDive;
+extern Ent7d0 pmf_PachinkoBall_StateGlide;
+extern Ent7d0 pmf_PachinkoBall_StateSpinAway;
+extern Ent7d0 pmf_PachinkoBall_StatePop;
+extern Ent7d0 pmf_PachinkoPipe_StatePick;
+extern Ent7d0 pmf_PachinkoPipe_StateRise;
+extern Ent7d0 pmf_PachinkoPipe_StateSink;
+extern Ent7d0 pmf_PachinkoPipe_StateIdle;
+extern PMF2 pmf_PachinkoFlyer_StateWaiting;
+extern PMF2 pmf_PachinkoFlyer_StateDescend;
+extern PMF2 pmf_PachinkoFlyer_StateCross;
+extern PMF2 pmf_PachinkoFlyer_StatePause;
+extern PMF2 pmf_PachinkoFlyer_StateLeave;
+extern PMF pmf_PachinkoBg_StateWaiting;
+extern PMF pmf_PachinkoBg_StateRiseIn;
+extern PMF pmf_PachinkoBg_StateScroll;
+extern PMF pmf_PachinkoBg_StateSinkOut;
 
 /* This TU's own members, forward-declared for the callers below them. */
 extern void PachinkoDeco_DrawAll(char *thiz);
 extern void PachinkoDeco_UpdateAll(char *self);
 extern void PachinkoDeco_ShowAll(char *p);
 extern void PachinkoDeco_HideAll(char *p);
-extern void PachinkoBg_State3(char *p, int i);
-extern void PachinkoBg_State2(char *c, int i);
-extern void PachinkoBg_State1(char *c, int i);
-extern void PachinkoBg_State0(char *c, int idx);
+extern void PachinkoBg_StateSinkOut(char *p, int i);
+extern void PachinkoBg_StateScroll(char *c, int i);
+extern void PachinkoBg_StateRiseIn(char *c, int i);
+extern void PachinkoBg_StateWaiting(char *c, int idx);
 extern void PachinkoBg_Update(C *c);
 extern void PachinkoBg_Start(char *c);
 extern void PachinkoBg_Stop(char *p);
@@ -274,11 +274,11 @@ extern void PachinkoTarget_ShowAll(u8 *c);
 extern void PachinkoTarget_HideAll(char *p);
 extern void PachinkoFlyer_Draw(char *c);
 extern void PachinkoFlyer_CheckHits(char *c, int idx);
-extern void PachinkoFlyer_State4(char *c, int i);
-extern void PachinkoFlyer_State3(char *c, int i);
-extern void PachinkoFlyer_State2(char *p, int i);
-extern void PachinkoFlyer_State1(Obj *self, int i);
-extern void PachinkoFlyer_State0(char *c, int idx);
+extern void PachinkoFlyer_StateLeave(char *c, int i);
+extern void PachinkoFlyer_StatePause(char *c, int i);
+extern void PachinkoFlyer_StateCross(char *p, int i);
+extern void PachinkoFlyer_StateDescend(Obj *self, int i);
+extern void PachinkoFlyer_StateWaiting(char *c, int idx);
 extern void PachinkoFlyer_Update(C2 *c);
 extern void PachinkoTarget_Choose(char *obj);
 extern void PachinkoFx_DrawAll(void *base);
@@ -295,10 +295,10 @@ extern void Pachinko_PlotSubBg2Pixels(void *a0, int a1, int a2, int a3);
 extern void Pachinko_DrawAimLine(void *arg0);
 extern void PachinkoPipe_DrawAll(char *base);
 extern void PachinkoPipe_SetAll(char *base, int val);
-extern int  PachinkoPipe_State3(char *self, int idx);
-extern void PachinkoPipe_State2(char *c, int i);
-extern void PachinkoPipe_State1(char *c, int i);
-extern void PachinkoPipe_State0(char *thiz, int n);
+extern int PachinkoPipe_StateIdle(char *self, int idx);
+extern void PachinkoPipe_StateSink(char *c, int i);
+extern void PachinkoPipe_StateRise(char *c, int i);
+extern void PachinkoPipe_StatePick(char *thiz, int n);
 extern void PachinkoPipe_UpdateAll(char *c);
 extern void PachinkoPipe_ResetAll(unsigned char *c);
 extern void PachinkoBall_DrawAll(char *scene);
@@ -306,13 +306,13 @@ extern void PachinkoBall_CountNearby(char *base, int i);
 extern void PachinkoBall_CheckPipes(char *c, int idx);
 extern void PachinkoBall_AimAtTarget(char *base, int i);
 extern void PachinkoBall_CheckFall(char *thiz, int idx);
-extern void PachinkoBall_State6(char *c, int i);
-extern void PachinkoBall_State5(char *c, int i);
-extern void PachinkoBall_State4(char *self, int idx);
-extern void PachinkoBall_State3(char *c, int i);
-extern void PachinkoBall_State2(char *o, int i);
-extern void PachinkoBall_State1(char *o, int i);
-extern void PachinkoBall_State0(char *base, int idx);
+extern void PachinkoBall_StatePop(char *c, int i);
+extern void PachinkoBall_StateSpinAway(char *c, int i);
+extern void PachinkoBall_StateGlide(char *self, int idx);
+extern void PachinkoBall_StateDive(char *c, int i);
+extern void PachinkoBall_StateDrift(char *o, int i);
+extern void PachinkoBall_StateFall(char *o, int i);
+extern void PachinkoBall_StateWaiting(char *base, int idx);
 extern void PachinkoBall_UpdateAll(char *c);
 extern void PachinkoBall_CheckHitByBobOmb(char *base, int i);
 extern void Pachinko_SpawnWave(dScMgPachinko_c *self);
@@ -320,12 +320,12 @@ extern void PachinkoBobOmb_ClearAll(char *p);
 extern void PachinkoBobOmb_DrawAll(char *thiz);
 extern void PachinkoBobOmb_UpdateAll(char *c);
 extern void Pachinko_CountLaunch(char *c);
-extern void PachinkoBobOmb_State0(char *self, int i);
-extern void PachinkoBobOmb_State1(dScMgPachinko_c *self, int i);
-extern void PachinkoBobOmb_State2(char *c, int idx);
-extern void PachinkoBobOmb_State3(char *base, int i);
-extern void PachinkoBobOmb_State4(char *p, int idx);
-extern void func_ov006_020fea70(char *o);
+extern void PachinkoBobOmb_StateWaitGrab(char *self, int i);
+extern void PachinkoBobOmb_StateAim(dScMgPachinko_c *self, int i);
+extern void PachinkoBobOmb_StateFlying(char *c, int idx);
+extern void PachinkoBobOmb_StateFallAway(char *base, int i);
+extern void PachinkoBobOmb_StateRemove(char *p, int idx);
+extern void Pachinko_UpdateNextBall(char *o);
 extern void Pachinko_ResetRound(char *self);
 
 }  /* extern "C" */
@@ -412,9 +412,8 @@ void PachinkoDeco_HideAll(char *row)
     }
 }
 
-// @symbol PachinkoBg_State3
-void PachinkoBg_State3(char *raw, int i)
-{
+// @symbol PachinkoBg_StateSinkOut
+void PachinkoBg_StateSinkOut(char *raw, int i) {
     int off = i * 0x14;
     int y;
     *(int *)(raw + 0x5bfc + off) += *(int *)(raw + 0x5c04 + off);
@@ -432,9 +431,8 @@ void PachinkoBg_State3(char *raw, int i)
     PachinkoDeco_HideAll(raw);
 }
 
-// @symbol PachinkoBg_State2
-void PachinkoBg_State2(char* raw, int i)
-{
+// @symbol PachinkoBg_StateScroll
+void PachinkoBg_StateScroll(char *raw, int i) {
     int* vel = &PACHINKO(raw)->mBg[i].vx;
     int* pos = &PACHINKO(raw)->mBg[i].x;
     int x;
@@ -454,9 +452,8 @@ void PachinkoBg_State2(char* raw, int i)
     PACHINKO(raw)->mBg[i].state = 3;
 }
 
-// @symbol PachinkoBg_State1
-void PachinkoBg_State1(char* raw, int i)
-{
+// @symbol PachinkoBg_StateRiseIn
+void PachinkoBg_StateRiseIn(char *raw, int i) {
     int off = i * 0x14;
     int* velX;
     int* velY;
@@ -484,9 +481,8 @@ void PachinkoBg_State1(char* raw, int i)
     SetBg2Offset(x, y);
 }
 
-// @symbol PachinkoBg_State0
-void PachinkoBg_State0(char *raw, int idx)
-{
+// @symbol PachinkoBg_StateWaiting
+void PachinkoBg_StateWaiting(char *raw, int idx) {
     int off;
     unsigned short delay;
     char *p_row;
@@ -530,7 +526,7 @@ void PachinkoBg_State0(char *raw, int idx)
 /* Dispatches through the ov006 pointer-to-member table at 0x02142604. */
 void PachinkoBg_Update(C* c) {
     if (c->guard) {
-        (c->*(data_ov006_02142604[c->idx].pmf))(0);
+        (c->*(sPachinkoBgStateTable[c->idx].pmf))(0);
     }
     PachinkoDeco_UpdateAll((char *)c);
 }
@@ -662,26 +658,29 @@ void PachinkoFlyer_CheckHits(char *raw, int idx)
 }
 #pragma pop
 
-// @symbol PachinkoFlyer_State4
-void PachinkoFlyer_State4(char *raw, int i){
-  int n = i*0x1c;
-  int *pos = (int*)(raw + 0x5bb0);
-  int *sound = (int*)(raw + 0x5bc0);
-  *(int*)((char*)sound + n) = func_02012468(*(int*)((char*)sound + n), 2, 0x189, 4, 0, 0, func_020126e8(*(int*)((char*)pos + n)), 0);
-  *(int*)((char*)pos + n) = *(int*)((char*)pos + n) + *(int*)(raw + 0x5bb8 + n);
-  {
-    int v = *(int*)((char*)pos + n) >> 12;
-    if (v >= 0x110) goto clear;
-    if (v > -0x10) return;
-  }
+// @symbol PachinkoFlyer_StateLeave
+void PachinkoFlyer_StateLeave(char *raw, int i) {
+    int n = i * 0x1c;
+    int *pos = (int *)(raw + 0x5bb0);
+    int *sound = (int *)(raw + 0x5bc0);
+    *(int *)((char *)sound + n) = func_02012468(*(int *)((char *)sound + n), 2, 0x189, 4, 0, 0,
+                                                func_020126e8(*(int *)((char *)pos + n)), 0);
+    *(int *)((char *)pos + n) = *(int *)((char *)pos + n) + *(int *)(raw + 0x5bb8 + n);
+    {
+        int v = *(int *)((char *)pos + n) >> 12;
+        if (v >= 0x110)
+            goto clear;
+        if (v > -0x10)
+            return;
+    }
 clear:
   *(unsigned char*)(raw + 0x5bc6 + n) = 0;
   *(unsigned char*)(raw + 0x5bc7 + n) = 0;
   *(unsigned char*)(raw + 0x5c34) = 0;
 }
 
-// @symbol PachinkoFlyer_State3
-void PachinkoFlyer_State3(char *raw, int i){
+// @symbol PachinkoFlyer_StatePause
+void PachinkoFlyer_StatePause(char *raw, int i) {
     short *delay = (short*)(raw + 0x5bc4 + i*0x1c);
     if(*(unsigned short*)delay != 0){
         *delay = *(unsigned short*)delay - 1;
@@ -692,61 +691,63 @@ void PachinkoFlyer_State3(char *raw, int i){
     *(unsigned char*)(raw+0x5bca+i*0x1c) = *(unsigned char*)(raw+0x5bca+i*0x1c) - 1;
 }
 
-// @symbol PachinkoFlyer_State2
-void PachinkoFlyer_State2(char *raw, int i)
-{
-  int n = i * 0x1c;
-  int x;
-  u8 flag;
-  *((int *) ((raw + 0x5bc0) + n)) = func_02012468(*((int *) ((raw + 0x5bc0) + n)), 2, 0x189, 4, 0, 0, func_020126e8(*((int *) ((raw + 0x5bb0) + n))), 0);
-  *((int *) ((raw + 0x5bb0) + n)) += *((int *) ((raw + 0x5bb8) + n));
-  flag = *((u8 *) ((raw + 0x5bc9) + n));
-  x = (*((int *) ((raw + 0x5bb0) + n))) >> 12;
-  if (flag != 0)
-  {
-    if (x >= 0xc0)
-      *((int *) ((raw + 0x5bb8) + n)) -= 0x80;
-    else if ((*((int *) ((raw + 0x5bb8) + n))) <= 0x3000)
-      *((int *) ((raw + 0x5bb8) + n)) += 0x200;
-    if (x >= 0xf0)
-    {
-      u32 a;
-      if ((*((u8 *) ((raw + 0x5bca) + n))) == 0) { *((u8 *) ((raw + 0x5bc8) + n)) = 4; return; }
-      *((int *) ((raw + 0x5bb0) + n)) = 0xf0000;
-      *((int *) ((raw + 0x5bb8) + n)) = 0;
-      *((u8 *) ((raw + 0x5bc9) + n)) ^= 1;
-      a = (((u32) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
-      *((u16 *) ((raw + 0x5bc4) + n)) = (u16) ((((a << 3) >> 15) * 2) + 0x10);
-      *((u8 *) ((raw + 0x5bc8) + n)) = 3;
-      return;
+// @symbol PachinkoFlyer_StateCross
+void PachinkoFlyer_StateCross(char *raw, int i) {
+    int n = i * 0x1c;
+    int x;
+    u8 flag;
+    *((int *)((raw + 0x5bc0) + n)) =
+        func_02012468(*((int *)((raw + 0x5bc0) + n)), 2, 0x189, 4, 0, 0,
+                      func_020126e8(*((int *)((raw + 0x5bb0) + n))), 0);
+    *((int *)((raw + 0x5bb0) + n)) += *((int *)((raw + 0x5bb8) + n));
+    flag = *((u8 *)((raw + 0x5bc9) + n));
+    x = (*((int *)((raw + 0x5bb0) + n))) >> 12;
+    if (flag != 0) {
+        if (x >= 0xc0)
+            *((int *)((raw + 0x5bb8) + n)) -= 0x80;
+        else if ((*((int *)((raw + 0x5bb8) + n))) <= 0x3000)
+            *((int *)((raw + 0x5bb8) + n)) += 0x200;
+        if (x >= 0xf0) {
+            u32 a;
+            if ((*((u8 *)((raw + 0x5bca) + n))) == 0) {
+                *((u8 *)((raw + 0x5bc8) + n)) = 4;
+                return;
+            }
+            *((int *)((raw + 0x5bb0) + n)) = 0xf0000;
+            *((int *)((raw + 0x5bb8) + n)) = 0;
+            *((u8 *)((raw + 0x5bc9) + n)) ^= 1;
+            a = (((u32)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
+            *((u16 *)((raw + 0x5bc4) + n)) = (u16)((((a << 3) >> 15) * 2) + 0x10);
+            *((u8 *)((raw + 0x5bc8) + n)) = 3;
+            return;
+        }
+    } else {
+        if (x <= 0x40)
+            *((int *)((raw + 0x5bb8) + n)) += 0x80;
+        else if ((*((int *)((raw + 0x5bb8) + n))) >= (-0x3000))
+            *((int *)((raw + 0x5bb8) + n)) -= 0x200;
+        if (x <= 0x10) {
+            u32 a;
+            if ((*((u8 *)((raw + 0x5bca) + n))) == 0) {
+                *((u8 *)((raw + 0x5bc8) + n)) = 4;
+                return;
+            }
+            *((int *)((raw + 0x5bb0) + n)) = 0x10000;
+            *((int *)((raw + 0x5bb8) + n)) = 0;
+            *((u8 *)((raw + 0x5bc9) + n)) ^= 1;
+            a = (((u32)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
+            *((u16 *)((raw + 0x5bc4) + n)) = (u16)((((a << 3) >> 15) * 2) + 0x10);
+            *((u8 *)((raw + 0x5bc8) + n)) = 3;
+            return;
+        }
     }
-  }
-  else
-  {
-    if (x <= 0x40)
-      *((int *) ((raw + 0x5bb8) + n)) += 0x80;
-    else if ((*((int *) ((raw + 0x5bb8) + n))) >= (-0x3000))
-      *((int *) ((raw + 0x5bb8) + n)) -= 0x200;
-    if (x <= 0x10)
-    {
-      u32 a;
-      if ((*((u8 *) ((raw + 0x5bca) + n))) == 0) { *((u8 *) ((raw + 0x5bc8) + n)) = 4; return; }
-      *((int *) ((raw + 0x5bb0) + n)) = 0x10000;
-      *((int *) ((raw + 0x5bb8) + n)) = 0;
-      *((u8 *) ((raw + 0x5bc9) + n)) ^= 1;
-      a = (((u32) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
-      *((u16 *) ((raw + 0x5bc4) + n)) = (u16) ((((a << 3) >> 15) * 2) + 0x10);
-      *((u8 *) ((raw + 0x5bc8) + n)) = 3;
-      return;
-    }
-  }
 }
 
-// @symbol PachinkoFlyer_State1
+// @symbol PachinkoFlyer_StateDescend
 /* Moves row i: pos += vel. While below -0xc0 it keeps accelerating
    (vel -= 0x60); once it reaches -0xc0 it snaps to -0xc0000 and stops.
-   Then hands on to PachinkoFlyer_State2. */
-void PachinkoFlyer_State1(Obj* self, int i) {
+   Then hands on to PachinkoFlyer_StateCross. */
+void PachinkoFlyer_StateDescend(Obj *self, int i) {
     self->entries[i].a += self->entries[i].b;
     if (self->entries[i].a >> 12 >= -0xc0) {
         self->entries[i].a = -0xc0000;
@@ -754,14 +755,13 @@ void PachinkoFlyer_State1(Obj* self, int i) {
     } else {
         self->entries[i].b -= 0x60;
     }
-    PachinkoFlyer_State2((char *)self, i);
+    PachinkoFlyer_StateCross((char *)self, i);
 }
 
 #pragma push
 #pragma opt_common_subs off
-// @symbol PachinkoFlyer_State0
-void PachinkoFlyer_State0(char* raw, int idx)
-{
+// @symbol PachinkoFlyer_StateWaiting
+void PachinkoFlyer_StateWaiting(char *raw, int idx) {
     int off;
     short* delay;
     unsigned int side;
@@ -796,7 +796,7 @@ void PachinkoFlyer_State0(char* raw, int idx)
 /* Dispatches through the ov006 pointer-to-member table at 0x0214266c. */
 void PachinkoFlyer_Update(C2 *c){
   if (c->g == 0) return;
-  (c->*data_ov006_0214266c[c->idx])(0);
+  (c->*sPachinkoFlyerStateTable[c->idx])(0);
   PachinkoFlyer_CheckHits((char *)c, 0);
 }
 
@@ -1006,8 +1006,8 @@ void PachinkoPopup_SpawnScore(char *raw, int idx, unsigned short points)
     char *popup = raw + 0x15c;
     for (i = 0x1d; i >= 0; popup -= 0xc, i--) {
         if (*(unsigned short *)(popup + 0x4cfa) != 0) continue;
-        self->mPopup[i].x = *(int *)(raw + idx * 0x14 + 0x5958);
-        self->mPopup[i].y = *(int *)(raw + idx * 0x14 + 0x595c);
+        self->mPopup[i].x = self->mFx[idx].x;
+        self->mPopup[i].y = self->mFx[idx].y;
         self->mPopup[i].value = 0x30;
         self->mPopup[i].timer = points;
         Mg_SubmitScore(self->mPopup[i].timer + Mg_GetSubmittedScore());
@@ -1236,9 +1236,8 @@ void PachinkoPipe_SetAll(char* row, int mode) {
     }
 }
 
-// @symbol PachinkoPipe_State3
-int PachinkoPipe_State3(char* raw, int idx)
-{
+// @symbol PachinkoPipe_StateIdle
+int PachinkoPipe_StateIdle(char *raw, int idx) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
   u16* counter = &self->mPipe[idx].timer;
   u8* frame = (u8*)(raw + 0x4eb6 + idx*0x1c);
@@ -1271,9 +1270,8 @@ int PachinkoPipe_State3(char* raw, int idx)
   }
 }
 
-// @symbol PachinkoPipe_State2
-void PachinkoPipe_State2(char* raw, int i)
-{
+// @symbol PachinkoPipe_StateSink
+void PachinkoPipe_StateSink(char *raw, int i) {
     int off = i * 0x1c;
     int y;
 
@@ -1322,8 +1320,8 @@ void PachinkoPipe_State2(char* raw, int i)
     OUTFLAG(raw, off) = data_ov006_0212eb10[0];
 }
 
-// @symbol PachinkoPipe_State1
-void PachinkoPipe_State1(char* raw, int i) {
+// @symbol PachinkoPipe_StateRise
+void PachinkoPipe_StateRise(char *raw, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
     int off = i * 0x1c;
     int y;
@@ -1378,7 +1376,7 @@ void PachinkoPipe_State1(char* raw, int i) {
 
 #pragma push
 #pragma opt_common_subs off
-// @symbol PachinkoPipe_State0
+// @symbol PachinkoPipe_StatePick
 /* Resets one row of the ov006 table (rows are 0x1c bytes apart) after
    rolling a random kind from data_ov006_0212eb2c.  The row base `raw + off`
    is spelled twice on purpose: the ROM computes it once for the +0x4000
@@ -1386,8 +1384,7 @@ void PachinkoPipe_State1(char* raw, int i) {
    if-else, for the tail stores.  With common-subexpression elimination on,
    mwccarm folds the second into the first and sinks the add below the
    if-else, which recolours the whole tail. */
-void PachinkoPipe_State0(char *raw, int n)
-{
+void PachinkoPipe_StatePick(char *raw, int n) {
     int rnd = RandomIntInternal(&data_0209d4b8);
     int off = n * 0x1c;
     unsigned int rand = ((unsigned)rnd >> 16) & 0x7fff;
@@ -1421,7 +1418,7 @@ void PachinkoPipe_UpdateAll(char* raw){
   do{
     if(*(unsigned char*)(row+0x4000+0xeb7)!=0){
       int idx=*(unsigned char*)(row+0x4000+0xeb3);
-      Ent7d0* rec=&data_ov006_02142624[idx];
+      Ent7d0 *rec = &sPachinkoPipeStateTable[idx];
       int adj=rec->b;
       char* obj=raw+(adj>>1);
       int fn;
@@ -1636,9 +1633,8 @@ void PachinkoBall_CheckFall(char *thiz, int idx) {
     func_02012718(0x184, *(int*)(e + 0x4660));
 }
 
-// @symbol PachinkoBall_State6
-void PachinkoBall_State6(char *c, int i)
-{
+// @symbol PachinkoBall_StatePop
+void PachinkoBall_StatePop(char *c, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)c;
     int k = i * 0x38;
     unsigned short *cnt = &self->mBall[i].timer;
@@ -1659,9 +1655,8 @@ void PachinkoBall_State6(char *c, int i)
     *(unsigned char *)((c + k) + 0x4000 + 0x68d) = 0;
 }
 
-// @symbol PachinkoBall_State5
-void PachinkoBall_State5(char *c, int i)
-{
+// @symbol PachinkoBall_StateSpinAway
+void PachinkoBall_StateSpinAway(char *c, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)c;
     int n = i * 0x38;
     int x;
@@ -1696,45 +1691,40 @@ void PachinkoBall_State5(char *c, int i)
     }
 }
 
-// @symbol PachinkoBall_State4
-void PachinkoBall_State4(char *self, int idx)
-{
-  char *new_var;
-  *((int *) ((self + 0x4660) + (idx * 0x38))) = (*((int *) ((self + 0x4660) + (idx * 0x38)))) + (*((int *) ((self + (idx * 0x38)) + 0x4668)));
-  new_var = self;
-  *((int *) ((new_var + 0x4664) + (idx * 0x38))) = (*((int *) ((new_var + 0x4664) + (idx * 0x38)))) + (*((int *) ((self + (idx * 0x38)) + 0x466c)));
-  {
-    int raw = *((u16 *) ((new_var + ((idx * 0x38) & 0xFFFFFFFF)) + 0x4686));
-    u16 ip = (u16) (raw - 0x4000);
-    short tgt = (short) ip;
-    short *cur = (short *) ((self + 0x4684) + (idx * 0x38));
-    if ((*cur) > tgt)
+// @symbol PachinkoBall_StateGlide
+void PachinkoBall_StateGlide(char *self, int idx) {
+    char *new_var;
+    *((int *)((self + 0x4660) + (idx * 0x38))) =
+        (*((int *)((self + 0x4660) + (idx * 0x38)))) + (*((int *)((self + (idx * 0x38)) + 0x4668)));
+    new_var = self;
+    *((int *)((new_var + 0x4664) + (idx * 0x38))) =
+        (*((int *)((new_var + 0x4664) + (idx * 0x38)))) +
+        (*((int *)((self + (idx * 0x38)) + 0x466c)));
     {
-      *cur = (*cur) - 0x100;
-      if ((*cur) <= ((short) ip))
-      {
-        *cur = ip & 0xFFFFFFFFFFFFFFFF;
-      }
+        int raw = *((u16 *)((new_var + ((idx * 0x38) & 0xFFFFFFFF)) + 0x4686));
+        u16 ip = (u16)(raw - 0x4000);
+        short tgt = (short)ip;
+        short *cur = (short *)((self + 0x4684) + (idx * 0x38));
+        if ((*cur) > tgt) {
+            *cur = (*cur) - 0x100;
+            if ((*cur) <= ((short)ip)) {
+                *cur = ip & 0xFFFFFFFFFFFFFFFF;
+            }
+        } else if ((*cur) < ((short)ip)) {
+            *cur = (*cur) + 0x100;
+            raw = ip & 0xFFFFFFFFFFFFFFFF;
+            if ((*cur) >= ((short)ip)) {
+                *cur = raw;
+            }
+        }
     }
-    else
-      if ((*cur) < ((short) ip))
-    {
-      *cur = (*cur) + 0x100;
-      raw = ip & 0xFFFFFFFFFFFFFFFF;
-      if ((*cur) >= ((short) ip))
-      {
-        *cur = raw;
-      }
-    }
-  }
-  PachinkoBall_CheckHitByBobOmb(new_var, idx);
-  PachinkoBall_CheckPipes(self, idx);
-  PachinkoBall_CountNearby(self, idx);
+    PachinkoBall_CheckHitByBobOmb(new_var, idx);
+    PachinkoBall_CheckPipes(self, idx);
+    PachinkoBall_CountNearby(self, idx);
 }
 
-// @symbol PachinkoBall_State3
-void PachinkoBall_State3(char *c, int i)
-{
+// @symbol PachinkoBall_StateDive
+void PachinkoBall_StateDive(char *c, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)c;
     unsigned short t;
     int lim;
@@ -1777,9 +1767,8 @@ void PachinkoBall_State3(char *c, int i)
     PachinkoBall_AimAtTarget(c, i);
 }
 
-// @symbol PachinkoBall_State2
-void PachinkoBall_State2(char *o, int i)
-{
+// @symbol PachinkoBall_StateDrift
+void PachinkoBall_StateDrift(char *o, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)o;
     int idx;
     PachinkoBall_CheckFall(o, i);
@@ -1940,9 +1929,8 @@ void PachinkoBall_State2(char *o, int i)
     PachinkoBall_AimAtTarget(o, i);
 }
 
-// @symbol PachinkoBall_State1
-void PachinkoBall_State1(char *o, int i)
-{
+// @symbol PachinkoBall_StateFall
+void PachinkoBall_StateFall(char *o, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)o;
     if (self->mBall[i].unk30 == 0)
     {
@@ -1971,9 +1959,8 @@ void PachinkoBall_State1(char *o, int i)
     PachinkoBall_AimAtTarget(o, i);
 }
 
-// @symbol PachinkoBall_State0
-void PachinkoBall_State0(char *base, int idx)
-{
+// @symbol PachinkoBall_StateWaiting
+void PachinkoBall_StateWaiting(char *base, int idx) {
     int off = idx * 0x38;
     unsigned short *timer = (unsigned short *)(base + 0x4688 + off);
     unsigned int r;
@@ -2003,7 +1990,7 @@ void PachinkoBall_UpdateAll(char* c){
   do{
     if(*(unsigned char*)(r5+0x468c)!=0){
       int idx=*(unsigned char*)(r5+0x468f);
-      Ent7d0* e=&data_ov006_02142694[idx];
+      Ent7d0 *e = &sPachinkoBallStateTable[idx];
       int adj=e->b;
       char* obj=c+(adj>>1);
       int fn;
@@ -2250,7 +2237,7 @@ void PachinkoBobOmb_UpdateAll(char* c){
   do{
     if(*(unsigned char*)(r5+0x4f0c)!=0){
       int idx=*(unsigned char*)(r5+0x4f0d);
-      Ent7d0* e=&data_ov006_02142644[idx];
+      Ent7d0 *e = &sPachinkoBobOmbStateTable[idx];
       int adj=e->b;
       char* obj=c+(adj>>1);
       int fn;
@@ -2273,9 +2260,8 @@ void Pachinko_CountLaunch(char *c)
         *(unsigned char *)(c + 0x5c32) += 1;
 }
 
-// @symbol PachinkoBobOmb_State0
-void PachinkoBobOmb_State0(char *self, int i)
-{
+// @symbol PachinkoBobOmb_StateWaitGrab
+void PachinkoBobOmb_StateWaitGrab(char *self, int i) {
     unsigned int idx = gActivePlayerSlot;
     int flag = 0;
     char *p;
@@ -2298,7 +2284,7 @@ void PachinkoBobOmb_State0(char *self, int i)
 
 #pragma push
 #pragma opt_propagation off
-// @symbol PachinkoBobOmb_State1
+// @symbol PachinkoBobOmb_StateAim
 /* One ball's stylus frame. While the stylus is down the ball follows the touch
  * point through its grab offset, clamped into the 8..0xf8 x 8..0xb8 box, the
  * offset is re-derived, and the drag-speed sound is re-armed at 0x17b or 0x17c
@@ -2318,8 +2304,7 @@ void PachinkoBobOmb_State0(char *self, int i)
  *   and not at function scope.
  * `opt_propagation off` was measured against deleting it outright.
  */
-void PachinkoBobOmb_State1(dScMgPachinko_c *self, int i)
-{
+void PachinkoBobOmb_StateAim(dScMgPachinko_c *self, int i) {
     char *c = (char *)self;
     s32 cx;
     s32 *py;
@@ -2421,9 +2406,8 @@ void PachinkoBobOmb_State1(dScMgPachinko_c *self, int i)
 }
 #pragma pop
 
-// @symbol PachinkoBobOmb_State2
-void PachinkoBobOmb_State2(char* c, int idx)
-{
+// @symbol PachinkoBobOmb_StateFlying
+void PachinkoBobOmb_StateFlying(char *c, int idx) {
     int n = idx * 0x38;
     int old;
     int e, b;
@@ -2465,9 +2449,8 @@ void PachinkoBobOmb_State2(char* c, int idx)
         Pachinko_DrawAimLine(c);
 }
 
-// @symbol PachinkoBobOmb_State3
-void PachinkoBobOmb_State3(char* base, int i)
-{
+// @symbol PachinkoBobOmb_StateFallAway
+void PachinkoBobOmb_StateFallAway(char *base, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)base;
     int n = i * 0x38;
     s16 t;
@@ -2489,15 +2472,14 @@ void PachinkoBobOmb_State3(char* base, int i)
     }
 }
 
-// @symbol PachinkoBobOmb_State4
-void PachinkoBobOmb_State4(char *p, int idx) {
+// @symbol PachinkoBobOmb_StateRemove
+void PachinkoBobOmb_StateRemove(char *p, int idx) {
     *(p + idx * 0x38 + 0x4000 + 0xf0c) = 0;
     *(p + idx * 0x38 + 0x4000 + 0xf0e) = 0;
 }
 
-// @symbol func_ov006_020fea70
-void func_ov006_020fea70(char *o)
-{
+// @symbol Pachinko_UpdateNextBall
+void Pachinko_UpdateNextBall(char *o) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)o;
     int i;
     char *p;
@@ -2709,7 +2691,7 @@ s32 dScMgPachinko_c::Behavior()
         } else {
             Pachinko_SpawnWave(this);
             Pachinko_CountLaunch(c);
-            func_ov006_020fea70(c);
+            Pachinko_UpdateNextBall(c);
             PachinkoBobOmb_UpdateAll(c);
             PachinkoBall_UpdateAll(c);
             PachinkoTarget_Choose(c);
@@ -2875,38 +2857,29 @@ extern "C" void *dScMgPachinko_c_classInit()
    and 7-row Ent7d0 tables, the 4-row Ent7d0 table, the 5-row PMF2 table,
    then the 4-row Entry table. mwcc emits __sinit_d_s_mg_pachinko.cpp from
    these definitions, copying the ROM .data records. */
-Ent7d0 data_ov006_02142644[5] = {
-    pmf_PachinkoBobOmb_State0,
-    pmf_PachinkoBobOmb_State1,
-    pmf_PachinkoBobOmb_State2,
-    pmf_PachinkoBobOmb_State3,
-    pmf_PachinkoBobOmb_State4,
+Ent7d0 sPachinkoBobOmbStateTable[5] = {
+    pmf_PachinkoBobOmb_StateWaitGrab, pmf_PachinkoBobOmb_StateAim,
+    pmf_PachinkoBobOmb_StateFlying,   pmf_PachinkoBobOmb_StateFallAway,
+    pmf_PachinkoBobOmb_StateRemove,
 };
-Ent7d0 data_ov006_02142694[7] = {
-    pmf_PachinkoBall_State0,
-    pmf_PachinkoBall_State1,
-    pmf_PachinkoBall_State2,
-    pmf_PachinkoBall_State3,
-    pmf_PachinkoBall_State4,
-    pmf_PachinkoBall_State5,
-    pmf_PachinkoBall_State6,
+Ent7d0 sPachinkoBallStateTable[7] = {
+    pmf_PachinkoBall_StateWaiting, pmf_PachinkoBall_StateFall,  pmf_PachinkoBall_StateDrift,
+    pmf_PachinkoBall_StateDive,    pmf_PachinkoBall_StateGlide, pmf_PachinkoBall_StateSpinAway,
+    pmf_PachinkoBall_StatePop,
 };
-Ent7d0 data_ov006_02142624[4] = {
-    pmf_PachinkoPipe_State0,
-    pmf_PachinkoPipe_State1,
-    pmf_PachinkoPipe_State2,
-    pmf_PachinkoPipe_State3,
+Ent7d0 sPachinkoPipeStateTable[4] = {
+    pmf_PachinkoPipe_StatePick,
+    pmf_PachinkoPipe_StateRise,
+    pmf_PachinkoPipe_StateSink,
+    pmf_PachinkoPipe_StateIdle,
 };
-PMF2 data_ov006_0214266c[5] = {
-    pmf_PachinkoFlyer_State0,
-    pmf_PachinkoFlyer_State1,
-    pmf_PachinkoFlyer_State2,
-    pmf_PachinkoFlyer_State3,
-    pmf_PachinkoFlyer_State4,
+PMF2 sPachinkoFlyerStateTable[5] = {
+    pmf_PachinkoFlyer_StateWaiting, pmf_PachinkoFlyer_StateDescend, pmf_PachinkoFlyer_StateCross,
+    pmf_PachinkoFlyer_StatePause,   pmf_PachinkoFlyer_StateLeave,
 };
-Entry data_ov006_02142604[4] = {
-    {pmf_PachinkoBg_State0},
-    {pmf_PachinkoBg_State1},
-    {pmf_PachinkoBg_State2},
-    {pmf_PachinkoBg_State3},
+Entry sPachinkoBgStateTable[4] = {
+    {pmf_PachinkoBg_StateWaiting},
+    {pmf_PachinkoBg_StateRiseIn},
+    {pmf_PachinkoBg_StateScroll},
+    {pmf_PachinkoBg_StateSinkOut},
 };

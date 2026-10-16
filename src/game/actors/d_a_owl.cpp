@@ -38,9 +38,9 @@
  * non-static methods. The cartridge keeps no English spelling, so the method
  * name is the ROM address. func_ov094_02136188 still takes the State pointer.
  *
- * Leftover: the actor-id test in func_ov094_021357a4 goes through locals `t`
- *   and `eq`. Collapsing it to `other->actorID != ACTOR_PLAYER` shrank the
- *   method from ROM 0x110 to object 0x104. The locals stay.
+ * The actor-id test in func_ov094_021357a4 goes through the int-returning
+ *   IsPlayerActor; a bare `other->actorID != ACTOR_PLAYER` shrinks the method
+ *   from ROM 0x110 to object 0x104.
  * Leftover: func_ov094_02136024 stores mPos into `d` and then overwrites all
  *   three fields. Dropping those three stores shrank the method from ROM
  *   0x12c to object 0x114. The stores stay.
@@ -74,6 +74,7 @@ enum daOwl_c_AssetId {
 #include "daOwl_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 /* Resource handles the static initializer constructs. The wrapper spellings
  * are reconstructed; the constructor and destructor addresses, the file IDs
@@ -190,6 +191,12 @@ int IsStarCollectedInCurLevel(int);
 void DecIfAbove0_Short(void *);
 }
 
+/* Actor ID 0xbf is PLAYER. This int-returning predicate is what makes the
+ * ROM materialize 0/1 before testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == ACTOR_PLAYER;
+}
+
 // @symbol _ZN7daOwl_cD1Ev
 // @symbol _ZN7daOwl_cD0Ev
 /* The whole body is compiler-emitted: one vptr store, then dExtShadowModel_c
@@ -219,9 +226,7 @@ void daOwl_c::func_ov094_021357a4()
     dActor_c *other = dActor_c::FindWithID(mdCcAcPos_c.otherOwner);
     if (other == 0)
         return;
-    int t = other->actorID;
-    unsigned eq = (t == ACTOR_PLAYER);
-    if (!eq)
+    if (!IsPlayerActor(other))
         return;
     mRider = (Player *)other;
     st[0] = 0;
@@ -334,20 +339,13 @@ int daOwl_c::func_ov094_021359d8()
     }
 
     rider = mRider;
-    if (rider == 0) {
-        goto cleanup;
-    }
-    if (rider == 0) {
-        goto end;
-    }
-    if (func_ov002_020df7f4(rider) < 0) {
-cleanup:
+    /* The second null test is dead, but the ROM keeps it as a real cmp. */
+    if (rider == 0 || (rider != 0 && func_ov002_020df7f4(rider) < 0)) {
         mRider = 0;
         unk_3e8 = 0;
         mStateTimer = 0;
         func_ov094_02136188(OWL_STATE_RETURN);
     }
-end:
     return 1;
 }
 
@@ -418,7 +416,7 @@ int daOwl_c::func_ov094_02135c28()
     ang = unk_3e8;
     idx = ((u16)(short)ang >> 4) * 2;
     tbl = data_02082214[idx];
-    result = (int)(((long long)tbl * 0x64000 + 0x800) >> 12);
+    result = FX_MUL(tbl, 0x64000);
     _Z14ApproachLinearRiii(&mPosY, mAnchorY + result, 0x3000);
 
     Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
@@ -702,15 +700,12 @@ int daOwl_c::InitResources()
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x50000, 0x64000, (void *)0, 0);
     func_ov094_02136188(OWL_STATE_DORMANT);
 
-    if (data_0209f2f8 != 7)
-        goto ret1;
-    if (data_0209f220 != 1) {
-        if (IsStarCollectedInCurLevel(1) != 0)
-            goto ret1;
+    if (data_0209f2f8 == 7) {
+        if (data_0209f220 == 1 || IsStarCollectedInCurLevel(1) == 0) {
+            MarkForDestruction();
+            return 0;
+        }
     }
-    MarkForDestruction();
-    return 0;
-ret1:
     return 1;
 }
 

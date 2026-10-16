@@ -37,6 +37,7 @@
 #include "Message.h"
 #include "Sound.h"
 #include "G3X.h"
+#include "G3i.h"
 
 /* The Nitro SDK's GX (main engine) and GXS (sub engine) VRAM helpers that
  * InitResources calls. No header in the tree declares either namespace
@@ -127,7 +128,6 @@ extern u16 data_020a0e58[];
 int IsStarCollectedInLevel(s8 levelID, s32 starID);
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void *, int, int, int, int, int, int, int, int);
 void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int, void *);
-void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(const void *, const void *, const void *, int, Matrix4x3 *);
 void _Z13CopyToViewMatPK9Matrix4x3(const Matrix4x3 *);
 void Matrix4x3_FromTranslation(Matrix4x3 *, s32, s32, s32);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *, s16);
@@ -511,7 +511,8 @@ s32 dScStarSel_c::Render()
 
     if (SublevelToLevel(data_02092110) <= 0xe) {
         _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(data_02082214[0x16], data_02082214[0x17], 0x1555, 0x1000, 0x1388000, 0x1000, 1, 0);
-        _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(&data_ov003_020b132c, &data_ov003_020b1338, &data_ov003_020b1344, 1, &mtx);
+        G3i::LookAt_((const Vector3 *)&data_ov003_020b132c, (const Vector3 *)&data_ov003_020b1338,
+                     (const Vector3 *)&data_ov003_020b1344, true, &mtx);
         _Z13CopyToViewMatPK9Matrix4x3(&mtx);
 
         /* The plates are 0x18000 apart, centred on x = 0, and sit at y = 0x28000. */
@@ -1343,7 +1344,6 @@ s32 dScStarSel_c::InitResources() {
 
 // @symbol dScStarSel_c_classInit
 extern "C" {
-extern void *_ZN7fBase_cnwEj(unsigned int);
 extern void *_ZN7fBase_cC2Ev(void *);
 extern void _ZN5ModelD1Ev(void *);
 extern void *_ZN5ModelC1Ev(void *);

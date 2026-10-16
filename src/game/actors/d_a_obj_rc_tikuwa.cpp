@@ -192,8 +192,8 @@ s32 daObjRc_Tikuwa_c::InitResources()
  * unmangled name func_ov036_02111ca4, so it has to keep C linkage -- spelling
  * it as a method would mangle the symbol to
  * _ZN16daObjRc_Tikuwa_c14OnClsnWithTypeEPv and the link would stop resolving
- * the name the ROM actually carries. `self` is this block; +0x4e8 is its
- * mHadClsn. A clsn word of 0xbf at +0xc is the collider it counts. */
+ * the name the ROM actually carries. `self` is this block. A clsn word of
+ * 0xbf at +0xc is the collider it counts. */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov036_02111ca4
 extern "C" void func_ov036_02111ca4(void *self, void *clsn)
@@ -203,7 +203,7 @@ extern "C" void func_ov036_02111ca4(void *self, void *clsn)
      * 0x20. */
     unsigned char isOurs = *(unsigned short *)((char *)clsn + 0xc) == 0xbf;
     if (isOurs)
-        *(unsigned char *)((char *)self + 0x4e8) = 1;   /* mHadClsn */
+        ((daObjRc_Tikuwa_c *)self)->mHadClsn = 1;
 }
 
 /* -------------------------------------------------------------------------- */

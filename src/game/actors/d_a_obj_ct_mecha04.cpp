@@ -20,8 +20,8 @@
 // common.h first: UpdateShadow writes mShadowMat.m[9..11] on the flat 12-word
 // spelling. InitResources keeps its two-store animationFiles[2] stack array,
 // the variant reloads, MoveActorOnBelt's &mPosX-derived pointer chain and flat
-// sin/cos index, Behavior's (mFlags & 8) ? 1 : 0, and UpdateShadow's isLarge
-// temporary -- measured bool-widening / pointer-reuse shapes. `return new`
+// sin/cos index, and the int-returning IsOffScreen / IsLargeBelt tests --
+// measured bool-widening / pointer-reuse shapes. `return new`
 // emits a homeless _ZN10dBgActor_cD2Ev (compiler-only deadstrip); the header's
 // inline dtor gives the D1/D0 pair, no D2.
 
@@ -38,6 +38,7 @@ enum daObjCtMecha04_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 int ApproachLinear(int &value, int target, int step);
 
@@ -97,6 +98,15 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern s16 data_02082214[]; /* sin/cos pair per (angle >> 4) index */
 }
 
+/* mFlags 0x08 is the framework's off-screen bit (dActor_c.h bit table). */
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
+static inline int IsLargeBelt(dActor_c *actor) {
+    return actor->actorID == ACTOR_CT_MECHA04L;
+}
+
 // @symbol daObjCtMecha04_c_classInit_CT_MECHA04S
 extern "C" daObjCtMecha04_c *daObjCtMecha04_c_classInit_CT_MECHA04S()
 {
@@ -130,7 +140,7 @@ void daObjCtMecha04_c::MoveActorOnBelt(dActor_c &actor)
     int angleIndexForX = angleForX >> 4;
     int beltStepForX = mBeltSpeed << 2;
     int sinY = data_02082214[angleIndexForX * 2];
-    int deltaX = (int)((((s64)beltStepForX * sinY) + 0x800) >> 12);
+    int deltaX = FX_MUL(beltStepForX, sinY);
     s32 *actorPosX = &actor.mPosX;
     int oldX = *actorPosX;
     *actorPosX = oldX + deltaX;
@@ -141,7 +151,7 @@ void daObjCtMecha04_c::MoveActorOnBelt(dActor_c &actor)
     s32 *actorPosZ = actorPosX + 2;
     int cosY = data_02082214[(angleIndexForZ * 2) + 1];
     int oldZ = *actorPosZ;
-    int deltaZ = (int)((((s64)beltStepForZ * cosY) + 0x800) >> 12);
+    int deltaZ = FX_MUL(beltStepForZ, cosY);
     *actorPosZ = oldZ + deltaZ;
 }
 
@@ -223,7 +233,7 @@ int daObjCtMecha04_c::Behavior()
         func_020393c4(&mMeshCollider, 0);
         _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
     } else {
-        if (((mFlags & 8) ? 1 : 0) == 0) {
+        if (!IsOffScreen(this)) {
             if (!func_020393bc(&mMeshCollider)) {
                 func_020393c4(&mMeshCollider,
                               (void *)&daObjCtMecha04_c::AfterClsnCallback);
@@ -295,8 +305,7 @@ void daObjCtMecha04_c::UpdateShadow()
     mShadowMat.m[10] = (mGroundY + 0x1000) >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
 
-    int isLarge = (int)(actorID == ACTOR_CT_MECHA04L);
-    if (isLarge != 0) {
+    if (IsLargeBelt(this)) {
         _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             this, &mShadowModel, &mShadowMat,
             0x1f4000, 0x32000, 0x3e8000, 0xf);

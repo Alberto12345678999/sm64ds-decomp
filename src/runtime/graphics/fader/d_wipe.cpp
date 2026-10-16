@@ -531,7 +531,7 @@ int dWipe_c::IsAtStart()
 {
     if (type == 1)
         return dFdBrightness_c::IsAtStart();
-    return (state == 0 || wipeInterp >= 0x200000) ? 1 : 0;
+    return state == 0 || wipeInterp >= 0x200000;
 }
 
 /* Vtable slot 6. Mirror of IsAtStart: an idle state machine counts as
@@ -541,7 +541,7 @@ int dWipe_c::IsAtEnd()
 {
     if (type == 1)
         return dFdBrightness_c::IsAtEnd();
-    return (state == 0 || wipeInterp <= 0) ? 1 : 0;
+    return state == 0 || wipeInterp <= 0;
 }
 
 /* Vtable slot 7. `type == 1` defers straight back to the base through a

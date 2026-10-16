@@ -38,19 +38,7 @@ enum d_a_obj_rc_dorifu_AssetId {
 };
 
 #include "daObjRc_Dorifu_c.h"
-
-struct DorifuSpawnInfo {
-    daObjRc_Dorifu_c *(*classInit)();
-    s16 executePriority; /* +4: also RC_DORIFU registry id 0x007b = 123 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char DorifuSpawnInfo_size_must_be_0x1c[
-    sizeof(DorifuSpawnInfo) == 0x1c ? 1 : -1];
+#include "SpawnInfo.h"
 
 extern "C" {
 extern CLPS_Block data_ov036_02112be8;
@@ -100,9 +88,9 @@ extern "C" daObjRc_Dorifu_c *daObjRc_Dorifu_c_classInit()
 }
 
 // @symbol g_profile_RC_DORIFU
-extern "C" DorifuSpawnInfo g_profile_RC_DORIFU = {
+extern "C" SpawnInfo<daObjRc_Dorifu_c> g_profile_RC_DORIFU = {
     daObjRc_Dorifu_c_classInit,
-    0x007b,
+    0x007b, /* RC_DORIFU registry id 123 */
     0x00fd,
     0,
     0x00500000,

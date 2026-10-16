@@ -76,24 +76,12 @@ extern "C" ResourceDescriptor data_ov047_02112408 = {
 };
 
 #include "daObjKm3_Kuruma_c.h"
+#include "SpawnInfo.h"
 
 extern "C" {
 s32 func_ov002_020b6958(daObjKuruma_c *self, ResourceDescriptor *descriptor);
 s32 func_ov002_020b68b0(daObjKuruma_c *self, ResourceDescriptor *descriptor);
 }
-
-struct KurumaSpawnInfo {
-    daObjKm3_Kuruma_c *(*classInit)();
-    s16 executePriority; /* +4: also KM3_KURUMA registry id 0x0097 = 151 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char KurumaSpawnInfo_size_must_be_0x1c[
-    sizeof(KurumaSpawnInfo) == 0x1c ? 1 : -1];
 
 // @symbol daObjKm3_Kuruma_c_classInit
 extern "C" daObjKm3_Kuruma_c *daObjKm3_Kuruma_c_classInit()
@@ -102,9 +90,9 @@ extern "C" daObjKm3_Kuruma_c *daObjKm3_Kuruma_c_classInit()
 }
 
 // @symbol g_profile_KM3_KURUMA
-extern "C" KurumaSpawnInfo g_profile_KM3_KURUMA = {
+extern "C" SpawnInfo<daObjKm3_Kuruma_c> g_profile_KM3_KURUMA = {
     daObjKm3_Kuruma_c_classInit,
-    0x0097,
+    0x0097, /* KM3_KURUMA registry id 151 */
     0x00de,
     2,
     0,

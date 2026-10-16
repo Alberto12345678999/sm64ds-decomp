@@ -44,6 +44,7 @@
 #include "decl_common.h"
 #include "Player.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 /* Three ints, so the transform helpers can take their address without
  * calling ~Vector3. */
@@ -109,8 +110,8 @@ int daObjFlamethrower_c::InitResources()
     int zero;
     int flag;
     char *rowBase;
-    char *flamePos;
-    char *collider;
+    Vector3 *flamePos;
+    dCcPos_c *collider;
     struct Vec3 offset;
     struct Vec3 dst;
     struct Vec3 firstPos;
@@ -125,8 +126,8 @@ int daObjFlamethrower_c::InitResources()
     i = 0;
     if (i < count) {
         rowBase = (char *)this;
-        flamePos = rowBase + 0x3a4;
-        collider = rowBase + 0xd4;
+        flamePos = mFlamePositions;
+        collider = mColliders;
         do {
             im1 = i - 1;
             offset.x = zero;
@@ -143,7 +144,7 @@ int daObjFlamethrower_c::InitResources()
                 *(int *)(rowBase + 0x3a8) = firstPos.y;
                 *(int *)(rowBase + 0x3ac) = firstPos.z;
             } else {
-                Vec3_Add((int *)&nextPos, (int *)((char *)this + 0x3a4 + im1 * 0xc), (int *)&dst);
+                Vec3_Add((int *)&nextPos, (int *)&mFlamePositions[im1], (int *)&dst);
                 *(int *)(rowBase + 0x3a4) = nextPos.x;
                 *(int *)(rowBase + 0x3a8) = nextPos.y;
                 *(int *)(rowBase + 0x3ac) = nextPos.z;
@@ -156,8 +157,8 @@ int daObjFlamethrower_c::InitResources()
                     kClsnFlags, flag);
             }
             rowBase += 0xc;
-            flamePos += 0xc;
-            collider += 0x3c;
+            flamePos++;
+            collider++;
             i++;
         } while (i < count);
     }
@@ -275,15 +276,14 @@ int daObjFlamethrower_c::Behavior()
                         *((int *)(ppos + 0x3a8)) = sum[1];
                         *((int *)(ppos + 0x3ac)) = sum[2];
                     } else {
-                        Vec3_Add(sum2, (int *)(self + 0x3a4 + im1 * 0xc), dst);
+                        Vec3_Add(sum2, (int *)&mFlamePositions[im1], dst);
                         *((int *)(ppos + 0x3a4)) = sum2[0];
                         *((int *)(ppos + 0x3a8)) = sum2[1];
                         *((int *)(ppos + 0x3ac)) = sum2[2];
                     }
                     if (data_0209f2f8 == kBigBoosHaunt) {
                         s16 wave = data_02082214[(((u16)(s16)wavePhase) >> 4) * 2];
-                        *((int *)(ppos + 0x3a8)) = mPosY
-                            + (int)(((((long long)wave) * (-0xaa000)) + 0x800) >> 12);
+                        *((int *)(ppos + 0x3a8)) = mPosY + FX_MUL(wave, -0xaa000);
                     }
                     *((int *)(pclsn + 0x104)) = *((int *)(ppos + 0x3a4));
                     *((int *)(pclsn + 0x108)) = *((int *)(ppos + 0x3a8));
