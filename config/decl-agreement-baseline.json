@@ -6851,9 +6851,6 @@
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205bad8.c": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0206/func_02060b64.c": [
         "return:void"
       ],
@@ -6911,9 +6908,6 @@
         "param:#2 void *"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "param:#2 void (*)(void)"
-      ],
-      "src/unnamed/arm9/0205/func_0205bad8.c": [
         "param:#2 void (*)(void)"
       ],
       "src/unnamed/arm9/0206/func_02060b64.c": [
@@ -7011,12 +7005,6 @@
       "src/DMAStartTransferFB.c": [
         "return:void"
       ],
-      "src/IPCSend.c": [
-        "return:void"
-      ],
-      "src/_ZN3IRQ24IPCRxFifoNotEmptyHandlerEv.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0201/func_0201a96c.c": [
         "return:void"
       ],
@@ -7104,12 +7092,6 @@
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205ba64.c": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205bad8.c": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205c528.cpp": [
@@ -13633,14 +13615,6 @@
     "data_020a7fc0": {
       "src/unnamed/arm9/0205/func_0205b358.c": [
         "return:void *"
-      ]
-    },
-    "data_020a7fc8": {
-      "src/_ZN3IRQ24IPCRxFifoNotEmptyHandlerEv.cpp": [
-        "return:void (*[])(unsigned int, unsigned int, unsigned int)"
-      ],
-      "src/unnamed/arm9/0205/func_0205bad8.c": [
-        "return:unsigned int []"
       ]
     },
     "data_020a8048": {

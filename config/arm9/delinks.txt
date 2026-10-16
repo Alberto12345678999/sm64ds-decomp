@@ -4086,25 +4086,9 @@ src/unnamed/arm9/0205/func_0205b858.c:
     complete
     .text start:0x0205b858 end:0x0205b864
 
-src/_ZN3IRQ24IPCRxFifoNotEmptyHandlerEv.cpp:
+src/engine/pxi/PXI_Fifo.cpp:
     complete
-    .text start:0x0205b864 end:0x0205b988
-
-src/IPCSend.c:
-    complete
-    .text start:0x0205b988 end:0x0205ba3c
-
-src/unnamed/arm9/0205/func_0205ba3c.c:
-    complete
-    .text start:0x0205ba3c end:0x0205ba64
-
-src/unnamed/arm9/0205/func_0205ba64.c:
-    complete
-    .text start:0x0205ba64 end:0x0205bad8
-
-src/unnamed/arm9/0205/func_0205bad8.c:
-    complete
-    .text start:0x0205bad8 end:0x0205bbdc
+    .text start:0x0205b864 end:0x0205bbdc
 
 src/unnamed/arm9/0205/func_0205bbdc.c:
     complete
