@@ -277,8 +277,6 @@ bool daStarGate_c::IsInFrontOfPlayer(Player *player)
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12daStarGate_c11TryOpenDoorEP6Player/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarGate_c11TryOpenDoorEP6Player
 void daStarGate_c::TryOpenDoor(Player *player)
 {

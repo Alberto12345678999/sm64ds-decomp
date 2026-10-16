@@ -20,8 +20,8 @@
  *                        plays a sound.
  *   func_ov080_02125940  BuildNormals -- per-cell normal from the neighbour
  *                        cross product, packed for G3_NORMAL.
- *   func_ov080_02125af0  FlattenFrame -- cells off the current width/height
- *                        get z = 0 and the flat packed normal.
+ *   func_ov080_02125af0  FlattenFrame -- cells on the border of the current
+ *                        width/height get z = 0 and the flat packed normal.
  *   func_ov080_02125bb0  RippleHeight -- wave height at a cell's distance.
  *   func_ov080_02125cd4 / func_ov080_02125d08 -- wave-clock math on
  *                        mWaveParams.
