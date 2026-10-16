@@ -1257,7 +1257,7 @@ void dScMg3DEsp_c::UpdateCards()
     }
 }
 
-extern unsigned char data_ov006_0212e588[];
+extern unsigned char sEsp3DCardsPerDifficulty[];
 extern int volatile data_ov006_0213c818[];
 
 // @symbol _ZN12dScMg3DEsp_c9DealCardsEv
@@ -1276,7 +1276,7 @@ void dScMg3DEsp_c::DealCards()
     int o;
     char *p;
 
-    n = data_ov006_0212e588[mDifficulty];
+    n = sEsp3DCardsPerDifficulty[mDifficulty];
     mTarget =
         (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 5 >>
                         15);
@@ -1450,7 +1450,7 @@ void dScMg3DEsp_c::ResetRound()
     mDone = 1;
 }
 
-extern "C" unsigned int data_ov006_0212e594[];
+extern "C" unsigned int sEsp3DResultSfx[];
 
 // @symbol _ZN12dScMg3DEsp_c7ResultsEv
 void dScMg3DEsp_c::Results()
@@ -1474,7 +1474,7 @@ void dScMg3DEsp_c::Results()
                     if (g->mHudScore > g->mBestHudScore)
                         g->mBestHudScore = g->mHudScore;
                 }
-                Sound::PlayBank2_2D(data_ov006_0212e594[idx]);
+                Sound::PlayBank2_2D(sEsp3DResultSfx[idx]);
             } else {
                 func_02012790(0xe);
             }

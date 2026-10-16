@@ -150,9 +150,9 @@ extern char *_ZN2G212GetBG0ScrPtrEv(void);
 extern char *_ZN2G212GetBG2ScrPtrEv(void);
 extern char *_ZN2G212GetBG3ScrPtrEv(void);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
-extern const unsigned char data_ov006_0212f1ac[];
+extern const unsigned char sTrmp2BrushPltt[];
 extern char* data_0209f5bc;
-extern int data_ov006_0213fbc4;
+extern int sTrmp2TouchBlocked;
 unsigned int func_02012790(unsigned int a);
 int TrmpLine_Create(u16* a, u16* b);
 extern "C" void Mg_CommitRecords(void);
@@ -165,7 +165,7 @@ unsigned int a, unsigned int b, int c, int d, int e, const Vector3_16f *f);
 void Jump2Popup_UpdateAll(void);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern int data_ov006_0212f328;
+extern int sTrmp2ItemKinds;
 extern int Trmp2_ColumnForKind(int kind);
 extern unsigned short Trmp2_OccupancyBits(int column, int side);
 extern int Trmp2_PickFaceA(int kind);
@@ -186,8 +186,8 @@ extern int sTrmp2Lives;
 extern int sTrmp2Score;
 extern int sTrmp2MarioCount;
 extern int sTrmpItemsActive;
-extern int data_ov006_0213fc10[];
-extern SpawnDef data_ov006_0212f2b0[];
+extern int sTrmp2ScoreGates[];
+extern SpawnDef sTrmp2SpawnDefs[];
 extern void TrmpLine_UpdateAll(void);
 extern void Trmp2Mario_UpdateAll(void);
 extern void Trmp2Mario_SetTuning(int a);
@@ -208,17 +208,17 @@ extern u8 data_0209d45c;
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void Deallocate(void *ptr);
-extern int data_ov006_0213fc34[];
+extern int sTrmp2NcgByLanguage[];
 extern int data_ov006_02134d40[];
 extern int data_ov006_02134d4c[];
 extern int data_ov006_02134d58[];
 extern int data_ov006_02134d34[];
 extern int data_ov006_02134d28[];
-extern int data_ov006_021373a4[];
-extern int data_ov006_021373fc[];
-extern int data_ov006_0213734c[];
-extern int data_ov006_021372f4[];
-extern int data_ov006_02137454[];
+extern int sMgTextSpritesEnglish[];
+extern int sMgTextSpritesSpanish[];
+extern int sMgTextSpritesFrench[];
+extern int sMgTextSpritesGerman[];
+extern int sMgTextSpritesItalian[];
 extern void *_ZN11dScMgBase_cC2Ev(void *scene);
 extern void _ZN8Particle10SysTrackerC1Ev(void *tracker);
 extern void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
@@ -279,7 +279,7 @@ extern "C" void _ZN18dScMgTrampoline2_c9StatePlayEv(void);      /* local extern:
 extern "C" void _ZN18dScMgTrampoline2_c10StateIntroEv(void);    /* local extern: PMF -> int */
 
 /* Data owned by this production TU; the original TU grouping is inferred. */
-int data_ov006_0213fbc4 = 1;
+int sTrmp2TouchBlocked = 1;
 TrampolineTerrorProfile g_profile_MG_TRAMPOLINE2 = {
     dScMgTrampoline2_c_classInit, 0x181, 0x181
 };
@@ -289,22 +289,14 @@ StateValue pmf_dScMgTrampoline2_c_StateWaitExit = {{ (int)_ZN18dScMgTrampoline2_
 S2 pmf_dScMgTrampoline2_c_StatePlay = {{ (int)_ZN18dScMgTrampoline2_c9StatePlayEv, 0 }};
 P2 pmf_dScMgTrampoline2_c_StateResults = {{ (int)_ZN18dScMgTrampoline2_c12StateResultsEv, 0 }};
 Tbl data_ov006_0213fbf8 = { 0x600, 0xc00, 0xe00 };
-int data_ov006_0213fc10[] = { 1000, 5000, 10000, 20000 };
-int data_ov006_0213fc20[] = {
-    (int)data_ov006_02134d40,
-    (int)data_ov006_02134d4c,
-    (int)data_ov006_02134d58,
-    (int)data_ov006_02134d34,
-    (int)data_ov006_02134d28
-};
-int data_ov006_0213fc34[] = { 0x107, 0x109, 0x104, 0x105, 0x106 };
-int *data_ov006_0213fc48[] = {
-    data_ov006_021373a4,
-    data_ov006_021373fc,
-    data_ov006_0213734c,
-    data_ov006_021372f4,
-    data_ov006_02137454
-};
+int sTrmp2ScoreGates[] = {1000, 5000, 10000, 20000};
+int sTrmp2PuffXByLanguage[] = {(int)data_ov006_02134d40, (int)data_ov006_02134d4c,
+                               (int)data_ov006_02134d58, (int)data_ov006_02134d34,
+                               (int)data_ov006_02134d28};
+int sTrmp2NcgByLanguage[] = {0x107, 0x109, 0x104, 0x105, 0x106};
+int *sTrmp2TextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpanish,
+                                      sMgTextSpritesFrench, sMgTextSpritesGerman,
+                                      sMgTextSpritesItalian};
 }
 
 /* This overload is C++, unlike the address-spelled C ABI declarations above. */
@@ -376,7 +368,7 @@ void dScMgTrampoline2_c::InitDisplay()
     int objChar, objPltt, bgChar, bgScr, bgPltt;
     volatile u16 sp0;
 
-    objChar = LoadFile(data_ov006_0213fc34[GetGameLanguage()]);
+    objChar = LoadFile(sTrmp2NcgByLanguage[GetGameLanguage()]);
     objPltt = LoadFile(ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN);
     bgChar = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NCG_BIN);
     bgScr = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NSC_BIN);
@@ -478,7 +470,7 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
     Jump2Popup_ClearAll();
     Trmp2Spinner_HideAll();
     TrmpFx_ClearAll();
-    Puff_ClearAll(0, data_ov006_0213fc20[GetGameLanguage()]);
+    Puff_ClearAll(0, sTrmp2PuffXByLanguage[GetGameLanguage()]);
 
     mInputEnabled = 0;
     mRoundOver = 0;
@@ -501,7 +493,7 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
 /* CanEndState: the vtable slot is this class's own; the name is inferred. */
 int dScMgTrampoline2_c::CanEndState(int /* mode */)
 {
-    Puff_ClearAll(0, data_ov006_0213fc20[GetGameLanguage()]);
+    Puff_ClearAll(0, sTrmp2PuffXByLanguage[GetGameLanguage()]);
     return 1;
 }
 
@@ -609,7 +601,7 @@ void dScMgTrampoline2_c::StatePlay()
             mLevel = 0x270e;
         v = mLevel;
         if (v < 4)
-            mScoreGate = data_ov006_0213fc10[v];
+            mScoreGate = sTrmp2ScoreGates[v];
         else
             mScoreGate = 0x7fffffff;
         return;
@@ -621,7 +613,7 @@ void dScMgTrampoline2_c::StatePlay()
     if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
     if (mScriptDone == 0) {
-        SpawnDef *d = &data_ov006_0212f2b0[mPattern];
+        SpawnDef *d = &sTrmp2SpawnDefs[mPattern];
         int i;
         Vec3i vecA;
         for (i = 0; i < d->count; i++) {
@@ -638,7 +630,7 @@ void dScMgTrampoline2_c::StatePlay()
     } else {
         if (ApproachLinear(mWaveStep, 4, 1)) {
             unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff;
-            SpawnDef *d = &data_ov006_0212f2b0[(int)((rnd >> 19) * 6) >> 12];
+            SpawnDef *d = &sTrmp2SpawnDefs[(int)((rnd >> 19) * 6) >> 12];
             int i;
             Vec3i vecB;
             for (i = 0; i < d->count; i++) {
@@ -932,8 +924,7 @@ void dScMgTrampoline2_c::SpawnWave()
         variant = 1;
         if (faces[i] == 6)
             variant = 2;
-        TrmpItem_Spawn((int)&data_ov006_0212f328 + kinds[i] * 0xc,
-                            (int *)&up, variant, faces[i]);
+        TrmpItem_Spawn((int)&sTrmp2ItemKinds + kinds[i] * 0xc, (int *)&up, variant, faces[i]);
     }
 }
 
@@ -999,7 +990,8 @@ s32 dScMgTrampoline2_c::Render()
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();
-                DrawOamSprite((void *)data_ov006_0213fc48[idx][1], (void *)a1v, 0xc, (void *)0);
+                DrawOamSprite((void *)sTrmp2TextSpritesByLanguage[idx][1], (void *)a1v, 0xc,
+                              (void *)0);
             } else {
                 RenderOamMainScreen(data_ov006_02134ecc, a1v, 0xc, -1, -1);
             }
@@ -1067,16 +1059,16 @@ int dScMgTrampoline2_c::OnGraphCallback0()
         char* obj = data_0209f5bc;
         int (*vf)(char*) = *(int (**)(char*))(*(char**)obj + 0x14);
         if (vf(obj)) {
-            data_ov006_0213fbc4 = 0;
+            sTrmp2TouchBlocked = 0;
         } else {
             char* obj2 = data_0209f5bc;
             int (*vf2)(char*) = *(int (**)(char*))(*(char**)obj2 + 0x1c);
             if (vf2(obj2))
-                data_ov006_0213fbc4 = 1;
+                sTrmp2TouchBlocked = 1;
         }
     }
 
-    if (data_ov006_0213fbc4 != 0)
+    if (sTrmp2TouchBlocked != 0)
         return 0;
 
     if (mMenuOpen != 0)
@@ -1153,7 +1145,7 @@ void dScMgTrampoline2_c::InitBrush(int layer)
 
     t1 = 0;
     MultiStore16(t1, charPtr, 0x6000);
-    GX::LoadBGPltt(data_ov006_0212f1ac, 0xe0, 0x20);
+    GX::LoadBGPltt(sTrmp2BrushPltt, 0xe0, 0x20);
 }
 
 // @symbol _ZN18dScMgTrampoline2_c11PaintSquareEiiii

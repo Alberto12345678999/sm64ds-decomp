@@ -262,7 +262,7 @@ int dScMgAmida_c::InitSubScreenBg()
     data_0209d454 = (unsigned char)(data_0209d454 & ~2);
     id = GetGameLanguage();
     t = (void*)_ZN3G2S13GetBG1CharPtrEv();
-    LoadCompressedFileAt(data_ov006_0213b838[id], t);
+    LoadCompressedFileAt(sAmidaOptionNcgByLanguage[id], t);
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_OPTION_NSC_BIN, _ZN3G2S12GetBG1ScrPtrEv());
 }
 

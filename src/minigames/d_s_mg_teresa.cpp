@@ -155,22 +155,22 @@ extern unsigned char  data_0209d45c;
 extern int            data_ov006_021350fc[];
 extern unsigned char  data_ov006_0212efc4[];
 extern unsigned short data_ov006_0212efc8[];
-extern unsigned char  data_ov006_0212efcc[];
-extern unsigned char  data_ov006_0212efd4[];
-extern unsigned short data_ov006_0212efdc[];
+extern unsigned char sTeresaRevealSlideFrames[];
+extern unsigned char sTeresaRevealAnimFrames[];
+extern unsigned short sTeresaBg3FlashTimes[];
 extern void *sTeresaExclaimSprites;
 extern void *sTeresaVanishPuffSprites[];
 extern int            data_ov006_02135fc8[];
 extern int sMgDigitSprites[];
 extern void *sTeresaMarkerSprites;
-extern struct OamAttr *data_ov006_0213a628[];
+extern struct OamAttr *sTeresaRevealSprites[];
 extern int *sTeresaCountdownSprites[];
 extern void          *data_ov006_0213a964[];
-extern int            data_ov006_0212efec[];
-extern int            data_ov006_0212f014[];
+extern int sTeresaBooTouchOffsets[];
+extern int sTeresaSpawnCounts[];
 extern int            data_ov006_0212f050[];
 extern int            data_ov006_0212f08c[];
-extern int            data_ov006_0213f9e4[];
+extern int sTeresaPaintMask[];
 extern short          data_02082214[];
 extern int            sMgTopScreenYOffset;
 
@@ -583,7 +583,7 @@ void dScMgTeresa_c::StepBg3Scroll()
         return;
     }
     (*(unsigned short *)(raw + 0x4c18))++;
-    if (*(unsigned short *)(raw + 0x4c18) >= data_ov006_0212efdc[mBg3FlashStep]) {
+    if (*(unsigned short *)(raw + 0x4c18) >= sTeresaBg3FlashTimes[mBg3FlashStep]) {
         (mBg3FlashStep)++;
         *(unsigned short *)(raw + 0x4c18) = 0;
         if (mBg3FlashStep & 1) {
@@ -637,14 +637,9 @@ void dScMgTeresa_c::Marker_Hide()
 void dScMgTeresa_c::Reveal_Draw()
 {
     if (mReveal[0].visible == 0) return;
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        0,
-        data_ov006_0213a628[mReveal[0].sprite],
-        mReveal[0].x >> 12,
-        mReveal[0].y >> 12,
-        -1, 0,
-        0x1000, 0x1000,
-        mReveal[0].angle, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, sTeresaRevealSprites[mReveal[0].sprite],
+                                                mReveal[0].x >> 12, mReveal[0].y >> 12, -1, 0,
+                                                0x1000, 0x1000, mReveal[0].angle, -1);
 }
 
 // @symbol _ZN13dScMgTeresa_c18Reveal_StateFinishEi
@@ -720,7 +715,7 @@ void dScMgTeresa_c::Reveal_StateAnimate(int i) {
         mReveal[i].vy = 0x1000;
         Sound::PlayBank2_2D(0x1f9);
     } else {
-        mReveal[i].sprite = data_ov006_0212efd4[mReveal[i].frame];
+        mReveal[i].sprite = sTeresaRevealAnimFrames[mReveal[i].frame];
     }
 }
 
@@ -741,7 +736,7 @@ void dScMgTeresa_c::Reveal_StateSlideIn(int i) {
         A8(0x4bbd) += 1;
         if (B8(0x4bbd) >= 8)
             B8(0x4bbd) = 0;
-        B8(0x4bb8) = data_ov006_0212efcc[B8(0x4bbd)];
+        B8(0x4bb8) = sTeresaRevealSlideFrames[B8(0x4bbd)];
     }
     if (B32(0x4ba0) >> 12 <= 0x80) {
         B32(0x4ba0) = 0x80000;
@@ -1222,8 +1217,8 @@ void dScMgTeresa_c::TouchTestBoo(int idx)
     count = 0;
     firstOk = 0;
     for (i = 0; i < 5; i++) {
-        x = (mBoos[idx].mX >> 12) - data_ov006_0212efec[i * 2];
-        y = (mBoos[idx].mY >> 12) - data_ov006_0212efec[i * 2 + 1];
+        x = (mBoos[idx].mX >> 12) - sTeresaBooTouchOffsets[i * 2];
+        y = (mBoos[idx].mY >> 12) - sTeresaBooTouchOffsets[i * 2 + 1];
         r = ((int (*)[8])G2S::GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
         word = r[y & 7];
         if (((word >> ((x & 7) << 2)) & 0xf) == 0) {
@@ -1632,7 +1627,7 @@ void dScMgTeresa_c::SpawnBoos()
         sel = k + 0xa;
     }
     mBooPattern = sel;
-    count = data_ov006_0212f014[sel];
+    count = sTeresaSpawnCounts[sel];
     mBooCount = count;
 
     r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
@@ -1981,7 +1976,7 @@ void dScMgTeresa_c::Scene_StateInit() {
 
    Same square walk and the same 4bpp nibble arithmetic as dScMgBase_c's, with
    one difference that changes what it is for: each cell is painted only if
-   `data_ov006_0213f9e4[row] & (1 << (col*4))` is set, so the table is a
+   `sTeresaPaintMask[row] & (1 << (col*4))` is set, so the table is a
    bitmapped shape and this stamps that shape rather than a solid block.
 
    It also never consults the layer index at +0x6c -- it always draws into sub
@@ -2006,7 +2001,7 @@ void dScMgTeresa_c::PaintSquare(int cx, int cy, int val, int n)
         x0 = cx - half;
         do {
             for (i = 0; i < n; i++) {
-                if (data_ov006_0213f9e4[j] & (1 << (i * 4))) {
+                if (sTeresaPaintMask[j] & (1 << (i * 4))) {
                     x = i + x0;
                     if (x >= 0 && x < 0x100) {
                         if (y >= -0xc0 - sMgTopScreenYOffset && y >= 0 && y < 0xc0) {

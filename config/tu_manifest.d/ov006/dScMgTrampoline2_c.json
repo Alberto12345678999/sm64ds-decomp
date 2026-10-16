@@ -356,7 +356,7 @@
   ],
   "data": [
     {
-      "symbol": "data_ov006_0213fbc4",
+      "symbol": "sTrmp2TouchBlocked",
       "address": "0x0213fbc4",
       "size": "0x4",
       "evidence": "TU-local initialized state; referenced only by dScMgTrampoline2_c text and begins exactly where the preceding dScMgTrampoline_c vtable storage ends"
@@ -410,25 +410,25 @@
       "evidence": "compiler-emitted single-inheritance RTTI matches retail and points to the ROM-proven dScMgD3DBase_c type"
     },
     {
-      "symbol": "data_ov006_0213fc10",
+      "symbol": "sTrmp2ScoreGates",
       "address": "0x0213fc10",
       "size": "0x10",
       "evidence": "four-word score threshold table; all constants match retail"
     },
     {
-      "symbol": "data_ov006_0213fc20",
+      "symbol": "sTrmp2PuffXByLanguage",
       "address": "0x0213fc20",
       "size": "0x14",
       "evidence": "five-entry TU-local pointer table; every relocation destination matches the OV006 configuration"
     },
     {
-      "symbol": "data_ov006_0213fc34",
+      "symbol": "sTrmp2NcgByLanguage",
       "address": "0x0213fc34",
       "size": "0x14",
       "evidence": "five-word resource identifier table; all constants match retail"
     },
     {
-      "symbol": "data_ov006_0213fc48",
+      "symbol": "sTrmp2TextSpritesByLanguage",
       "address": "0x0213fc48",
       "size": "0x14",
       "evidence": "five-entry TU-local pointer table; every relocation destination matches the OV006 configuration"
@@ -798,7 +798,7 @@
       "source": "0x0213fc48",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021373a4",
+      "symbol": "sMgTextSpritesEnglish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021373a4"
@@ -808,7 +808,7 @@
       "source": "0x0213fc4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021373fc",
+      "symbol": "sMgTextSpritesSpanish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021373fc"
@@ -818,7 +818,7 @@
       "source": "0x0213fc50",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213734c",
+      "symbol": "sMgTextSpritesFrench",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213734c"
@@ -828,7 +828,7 @@
       "source": "0x0213fc54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021372f4",
+      "symbol": "sMgTextSpritesGerman",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021372f4"
@@ -838,7 +838,7 @@
       "source": "0x0213fc58",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02137454",
+      "symbol": "sMgTextSpritesItalian",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02137454"
@@ -1547,7 +1547,7 @@
             "anchors": {
               "5": [
                 {
-                  "symbol": "data_ov006_0213fbc4",
+                  "symbol": "sTrmp2TouchBlocked",
                   "address": 34864068,
                   "sectionBase": 34864068
                 }
@@ -1610,28 +1610,28 @@
               ],
               "37": [
                 {
-                  "symbol": "data_ov006_0213fc10",
+                  "symbol": "sTrmp2ScoreGates",
                   "address": 34864144,
                   "sectionBase": 34864144
                 }
               ],
               "39": [
                 {
-                  "symbol": "data_ov006_0213fc20",
+                  "symbol": "sTrmp2PuffXByLanguage",
                   "address": 34864160,
                   "sectionBase": 34864160
                 }
               ],
               "41": [
                 {
-                  "symbol": "data_ov006_0213fc34",
+                  "symbol": "sTrmp2NcgByLanguage",
                   "address": 34864180,
                   "sectionBase": 34864180
                 }
               ],
               "42": [
                 {
-                  "symbol": "data_ov006_0213fc48",
+                  "symbol": "sTrmp2TextSpritesByLanguage",
                   "address": 34864200,
                   "sectionBase": 34864200
                 }

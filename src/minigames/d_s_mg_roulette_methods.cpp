@@ -224,7 +224,7 @@ extern char *sRouletteStrips[];
 extern int   data_020a0db0;
 extern s32   data_ov006_0212ed24[];
 extern void *sRouletteStripSprites[];
-extern void *data_ov006_0213e320[];
+extern void *sRouletteTextSpritesByLanguage[];
 extern int   data_ov006_0212ed14[];
 extern void *sRouletteRacerSprites;
 extern Matrix4x3 data_020a0e68;
@@ -1503,7 +1503,7 @@ extern "C" {
 void RouletteStrip_Draw(short* strip, int y)
 {
     int idx = GetGameLanguage();
-    void* p = *(void**)((char*)data_ov006_0213e320[idx] + 0x50);
+    void *p = *(void **)((char *)sRouletteTextSpritesByLanguage[idx] + 0x50);
     Hud_RenderSprite(p, 0xc, y, -1, -1);
 
     Mg_DrawBigNumber(0x1e, y, data_ov006_0212ed14[*(short*)((char*)strip + 0x14)], 0, -1, 2, 0);

@@ -589,29 +589,29 @@ s32 dScMgFlower_c::InitResources()
     *(volatile u32 *)0x400101c = 0;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_021401d0);
+    h = (int)Ov004_LoadFileByPath(&sFlowerBgUpNcgPath);
     DecompressLZ16(h, _ZN2G213GetBG2CharPtrEv());
     Ov004_Deallocate((void *)h);
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_021401f4);
+    h = (int)Ov004_LoadFileByPath(&sFlowerBgDownNcgPath);
     DecompressLZ16(h, G2S::GetBG2CharPtr());
     Ov004_Deallocate((void *)h);
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_02140218);
+    h = (int)Ov004_LoadFileByPath(&sFlowerBgUpNscPath);
     DecompressLZ16(h, _ZN2G212GetBG2ScrPtrEv());
     Ov004_Deallocate((void *)h);
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_0214023c);
+    h = (int)Ov004_LoadFileByPath(&sFlowerBgDownNscPath);
     DecompressLZ16(h, G2S::GetBG2ScrPtr());
     DecompressLZ16(h, G2S::GetBG3ScrPtr());
     Ov004_Deallocate((void *)h);
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_02140260);
+    h = (int)Ov004_LoadFileByPath(&sFlowerBgUpNclPath);
     CP15::FlushAndInvalidateDataCache(h, 0x1a0);
     GX::LoadBGPltt((const void *)h, 0x60, 0x1a0);
     Ov004_Deallocate((void *)h);
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_02140284);
+    h = (int)Ov004_LoadFileByPath(&sFlowerBgDownNclPath);
     CP15::FlushAndInvalidateDataCache(h, 0x1a0);
     GXS::LoadBGPltt((const void *)h, 0x60, 0x1a0);
     Ov004_Deallocate((void *)h);
@@ -622,12 +622,12 @@ s32 dScMgFlower_c::InitResources()
     data_0209d45c |= 4;
     data_0209d454 |= 0xc;
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_021402a8);
+    h = (int)Ov004_LoadFileByPath(&sFlowerNcgPath);
     DecompressLZ16(h, (void *)0x6400000);
     DecompressLZ16(h, (void *)0x6600000);
     Ov004_Deallocate((void *)h);
 
-    h = (int)Ov004_LoadFileByPath(&data_ov006_021402c4);
+    h = (int)Ov004_LoadFileByPath(&sFlowerNclPath);
     CP15::FlushAndInvalidateDataCache(h, 0x100);
     GX::LoadOBJPltt((const void *)h, 0, 0x100);
     GXS::LoadOBJPltt((const void *)h, 0, 0x100);

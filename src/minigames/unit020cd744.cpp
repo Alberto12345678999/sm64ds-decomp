@@ -2245,15 +2245,15 @@ extern "C" void TrmpLine_ClearAll(void) {
 namespace s020d0b2c {
 extern "C" {
 extern unsigned int func_02045a50(const void *src, unsigned int size);
-extern char data_ov006_0213b414[];
+extern char sTrmpLineTex[];
 extern void *sTrmpLineTexAddr;
-extern char data_ov006_0213b3f4[];
+extern char sTrmpLinePltt[];
 extern void *sTrmpLinePlttAddr;
 }
 // @symbol TrmpLine_LoadTextures
 extern "C" void TrmpLine_LoadTextures(void) {
-    sTrmpLineTexAddr = (void *)Model::LoadTextureToVram(data_ov006_0213b414, 0x400);
-    sTrmpLinePlttAddr = (void *)func_02045a50(data_ov006_0213b3f4, 0x20);
+    sTrmpLineTexAddr = (void *)Model::LoadTextureToVram(sTrmpLineTex, 0x400);
+    sTrmpLinePlttAddr = (void *)func_02045a50(sTrmpLinePltt, 0x20);
 }
 }
 

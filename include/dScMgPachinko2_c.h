@@ -37,8 +37,8 @@ struct dScMgPachinko2_Ball {
     u8 state;       /* +0x39 -- 2 while released, 0 when reset */
     u8 visible;     /* +0x3a -- Ball_DrawAll draws the ball while set */
     u8 unk_3b;      /* +0x3b */
-    u8 sprite;      /* +0x3c -- 0 = the rolling ball, else frame + 1 in data_ov006_02138d08 */
-    u8 animStep;    /* +0x3d -- 0..3, picks the frame */
+    u8 sprite;   /* +0x3c -- 0 = the rolling ball, else frame + 1 in sPachinko2BallCountSprites */
+    u8 animStep; /* +0x3d -- 0..3, picks the frame */
     u8 facingRight; /* +0x3e -- moving right; frames +4 */
     u8 pad_3f;      /* +0x3f */
 };

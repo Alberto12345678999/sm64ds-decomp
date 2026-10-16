@@ -113,23 +113,23 @@ enum {
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
-extern int data_ov006_0212e370[];
-extern int data_ov006_0212e388[];
-extern int data_ov006_0212e344[];
+extern int sCoinBagRowTopY[];
+extern int sCoinBagRowHeight[];
+extern int sCoinBagHopVX[];
 extern int sCoinCaptionSprites[];
-extern unsigned char data_ov006_0212e324[];
-extern unsigned char data_ov006_0212e31c[];
-extern unsigned char data_ov006_0212e308[];
-extern unsigned char data_ov006_0212e30c[];
-extern u16 data_ov006_0212e33c[];
-extern u8 data_ov006_0212e310[];
+extern unsigned char sCoinCaptionLoopTimes[];
+extern unsigned char sCoinCaptionLoopSprites[];
+extern unsigned char sCoinCaptionBlinkTimes[];
+extern unsigned char sCoinCaptionBlinkSprites[];
+extern u16 sCoinCaptionCountInTimes[];
+extern u8 sCoinCaptionCountInSprites[];
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern int data_ov006_0212e430[];
-extern u16 data_ov006_0212e334[];
+extern u16 sCoinSparkleAngles[];
 extern s16 data_02082214[];
 extern int sCoinPopupSprites;
-extern int data_ov006_0212e364[];
+extern int sCoinPopupY[];
 extern int *sCoinScorePlayerSprites[];
 extern int GetGameLanguage(void);
 extern void Mg_DrawCreditsIcon(int r0, int r1, int r2, int r3);
@@ -140,19 +140,19 @@ extern void *sCoinSparkleSprites[];
 extern void *sCoinBagSprites[];
 extern void Mg_RenderSpriteBothPalMtx(void *obj, int x, int y, int w, int *vec);
 extern void func_020127a4(int a, int b, int c, int d);
-extern int data_ov006_0212e358[];
+extern int sCoinRowY[];
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern void RenderOamMainScreen(int a, int b, int c, int d, int e);
-extern u16 data_ov006_0212e314[];
+extern u16 sCoinBlockFrameSprites[];
 extern void *sCoinBlocksSprites[];
-extern int data_ov006_0212e418[];
-extern int data_ov006_0212e400[];
-extern int data_ov006_0212e3d0[];
-extern int data_ov006_0212e3e8[];
-extern int data_ov006_0212e3a0[];
-extern int data_ov006_0212e3b8[];
-extern int data_ov006_0212e34c[];
-extern u16 data_ov006_0212e32c[];
+extern int sCoinBlockFallRowY[];
+extern int sCoinBlockDropRowY[];
+extern int sCoinBlockWanderRowY[];
+extern int sCoinBlockWanderRowHeight[];
+extern int sCoinBlockHopRowY[];
+extern int sCoinBlockHopRowHeight[];
+extern int sCoinBlockHopVX[];
+extern u16 sCoinBlockFrameTimes[];
 extern void FreeGfxSlotsById(int n);
 extern void Mg_PlayJingle(void *c);
 extern int Mg_GetTopRecord(void);
@@ -303,10 +303,10 @@ void dScMgCoin_c::Bag_StateBounceDown(int i) {
 
     if (scene->bag[i].bouncesLeft != 0) {
         unsigned int roll;
-        if (height < (data_ov006_0212e370[stageIndex] - data_ov006_0212e388[stageIndex]))
+        if (height < (sCoinBagRowTopY[stageIndex] - sCoinBagRowHeight[stageIndex]))
             return;
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        scene->bag[i].vx = data_ov006_0212e344[((roll >> 16 & 0x7fff) << 1) >> 15];
+        scene->bag[i].vx = sCoinBagHopVX[((roll >> 16 & 0x7fff) << 1) >> 15];
         scene->bag[i].vy = kHopVy;
         scene->bag[i].bouncesLeft--;
         func_02012718(kSndBounce, scene->bag[i].x);
@@ -438,7 +438,7 @@ void dScMgCoin_c::Caption_StateLoop(int index) {
     u8 *frame = &scene->cap[index].frame;
 
     *frameTime = *frameTime + 1;
-    if (*frameTime < data_ov006_0212e324[*frame])
+    if (*frameTime < sCoinCaptionLoopTimes[*frame])
         return;
 
     *frameTime = 0;
@@ -446,7 +446,7 @@ void dScMgCoin_c::Caption_StateLoop(int index) {
     if (*frame >= 8)
         *frame = 1;
     else
-        scene->cap[index].sprite = data_ov006_0212e31c[*frame];
+        scene->cap[index].sprite = sCoinCaptionLoopSprites[*frame];
 }
 
 // @symbol _ZN11dScMgCoin_c19Caption_StateHiddenEi
@@ -461,12 +461,12 @@ void dScMgCoin_c::Caption_StateBlink(int index) {
     u16 frameTime = scene->cap[index].frameTime;
     scene->cap[index].frameTime = frameTime + 1;
     u8 frame = scene->cap[index].frame;
-    if (scene->cap[index].frameTime >= data_ov006_0212e308[frame]) {
+    if (scene->cap[index].frameTime >= sCoinCaptionBlinkTimes[frame]) {
         scene->cap[index].frameTime = 0;
         scene->cap[index].frame = scene->cap[index].frame + 1;
         scene->cap[index].frame = scene->cap[index].frame & 1;
     }
-    scene->cap[index].sprite = data_ov006_0212e30c[scene->cap[index].frame];
+    scene->cap[index].sprite = sCoinCaptionBlinkSprites[scene->cap[index].frame];
     if (this->mPhase == kResultPhase)
         return;
     u16 delay = scene->cap[index].delay;
@@ -488,7 +488,7 @@ void dScMgCoin_c::Caption_StateCountIn(int index) {
     u8 *frame = &scene->cap[index].frame;
 
     *frameTime = (u16)(*frameTime + 1);
-    if (*frameTime < data_ov006_0212e33c[*frame])
+    if (*frameTime < sCoinCaptionCountInTimes[*frame])
         return;
     *frameTime = 0;
     *frame = (u8)(*frame + 1);
@@ -506,7 +506,7 @@ void dScMgCoin_c::Caption_StateCountIn(int index) {
             *phase = *phase + 1;
         }
     } else {
-        scene->cap[index].sprite = data_ov006_0212e310[*frame];
+        scene->cap[index].sprite = sCoinCaptionCountInSprites[*frame];
     }
 }
 
@@ -680,7 +680,7 @@ void dScMgCoin_c::Sparkle_Burst(int coinIndex)
             *(int *)(raw + 0x4d14) = *coinX + (data_ov006_0212e430[j] << 12);
             *(int *)(raw + 0x4d18) = *coinY + (data_ov006_0212e430[k] << 12);
             {
-                u16 ang = data_ov006_0212e334[i];
+                u16 ang = sCoinSparkleAngles[i];
                 int sine = (ang >> 4) * 2;
                 *(int *)(raw + 0x4d1c) = (int)(((s64)data_02082214[sine + 1] * 0x2000 + 0x800) >> 12);
                 *(int *)(raw + 0x4d20) = (int)(((s64)data_02082214[sine] * 0x2000 + 0x800) >> 12);
@@ -698,7 +698,7 @@ void dScMgCoin_c::Popup_DrawAll()
     int i;
     int x, y, j;
     for (i = 0; i < kTileRows; i++) {
-        y = data_ov006_0212e364[i];
+        y = sCoinPopupY[i];
         x = 0x10;
         for (j = 0; j < kTileCols; j++) {
             Mg_RenderSpriteBothMtx((void *)sCoinPopupSprites, x, y, (void *)0);
@@ -946,7 +946,7 @@ void dScMgCoin_c::LayOutCoins()
     col = 0;
     for (i = 0; i < 0x18; i++) {
         mCoins[i].x = (((col << 5) + 0x10) << 12);
-        mCoins[i].y = data_ov006_0212e358[row] << 12;
+        mCoins[i].y = sCoinRowY[row] << 12;
         col++;
         mCoins[i].pad11 = 1;
         mCoins[i].visible = 1;
@@ -1027,7 +1027,7 @@ void dScMgCoin_c::DrawBlocks()
             a1 = v0 >> 12;
             a2 = v4 >> 12;
             a4 = (flag >= 3) ? 1 : 0;
-            idx = data_ov006_0212e314[self->e[i].b18];
+            idx = sCoinBlockFrameSprites[self->e[i].b18];
             RenderOamBothScreens(sCoinBlocksSprites[idx], a1, a2, -1, a4, 0);
         }
     }
@@ -1065,7 +1065,7 @@ void dScMgCoin_c::Block_StateFallIn(int i) {
         u8 idx = mBlocks[i].row;
         if (mBlocks[i].vy < 0)
             return;
-        if (y <= data_ov006_0212e418[idx] - 0x20)
+        if (y <= sCoinBlockFallRowY[idx] - 0x20)
             return;
 
         mBlocks[i].state = 4;
@@ -1090,7 +1090,7 @@ void dScMgCoin_c::Block_StateResting() {}
 
 // @symbol _ZN11dScMgCoin_c21Block_StateDropOnCoinEi
 /* A block dropping onto its coin's row. It stops at the row height from
-   data_ov006_0212e400, takes the coin's x and rests (state 4). */
+   sCoinBlockDropRowY, takes the coin's x and rests (state 4). */
 void dScMgCoin_c::Block_StateDropOnCoin(int index) {
     char *thiz = (char *)this;
     int off = index * 0x1c;
@@ -1100,7 +1100,7 @@ void dScMgCoin_c::Block_StateDropOnCoin(int index) {
     *pb = (*pb) + (*((int *)((thiz + 0x466c) + off)));
     *((int *)((thiz + 0x466c) + off)) = (*pa) + 0x400;
     new_var = 0x674;
-    int look = data_ov006_0212e400[*((unsigned char *)(((thiz + off) - -0x4000) + new_var))];
+    int look = sCoinBlockDropRowY[*((unsigned char *)(((thiz + off) - -0x4000) + new_var))];
     if (((*pb) >> 12) <= look) {
         return;
     }
@@ -1139,7 +1139,7 @@ void dScMgCoin_c::Block_StateWander(int i) {
 
     pD = (int *)(c + 0x466c + n);
     idxb = *(u8 *)(c + n + 0x4674);
-    diff = data_ov006_0212e3d0[idxb] - data_ov006_0212e3e8[idxb];
+    diff = sCoinBlockWanderRowY[idxb] - sCoinBlockWanderRowHeight[idxb];
     if ((*(int *)(c + 0x4664 + n) >> 12) > diff) {
         *(int *)(c + 0x4664 + n) = diff * 0x1000;
         *pD = 0;
@@ -1203,12 +1203,12 @@ void dScMgCoin_c::Block_StateHopDown(int i) {
             int rnd, idx, a, v;
             u8 g3;
 
-            fp = (char *)(data_ov006_0212e3a0[h] - data_ov006_0212e3b8[h]);
+            fp = (char *)(sCoinBlockHopRowY[h] - sCoinBlockHopRowHeight[h]);
             if (y < (int)fp) return;
 
             rnd = RandomIntInternal(&data_0209d4b8);
             idx = ((((unsigned)rnd >> 16) & 0x7fff) * 3) >> 15;
-            mBlocks[i].vx = data_ov006_0212e34c[idx];
+            mBlocks[i].vx = sCoinBlockHopVX[idx];
             mBlocks[i].vy = -0x2e00;
             mBlocks[i].y = (int)fp << 12;
             mBlocks[i].hops -= 1;
@@ -1302,7 +1302,7 @@ void dScMgCoin_c::Block_UpdateAll()
 }
 
 // @symbol _ZN11dScMgCoin_c13Block_AnimateEi
-/* Steps one block's four-frame animation; data_ov006_0212e32c holds each
+/* Steps one block's four-frame animation; sCoinBlockFrameTimes holds each
    frame's length. */
 typedef struct {
     char _pad0[0x12];
@@ -1322,7 +1322,7 @@ void dScMgCoin_c::Block_Animate(int index)
     char *c = (char *)this;
     Work_dde28 *w = (Work_dde28 *)c;
     w->entries[index].timer++;
-    if (w->entries[index].timer < data_ov006_0212e32c[w->entries[index].frame])
+    if (w->entries[index].timer < sCoinBlockFrameTimes[w->entries[index].frame])
         return;
     w->entries[index].frame++;
     w->entries[index].frame &= 3;

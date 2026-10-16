@@ -163,9 +163,9 @@ extern void *func_02054ea8(void);
 extern int func_02054d88(void);
 extern void MultiCopy_Int(int *dst, int *src, int len);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
-extern const unsigned char data_ov006_0212f0d0[];
+extern const unsigned char sTrmpBrushPltt[];
 extern UnkObj* data_0209f5bc;
-extern int data_ov006_0213fa9c;
+extern int sTrmpTouchBlocked;
 unsigned int func_02012790(unsigned int a);
 int TrmpLine_Create(Vec2s* a, Vec2s* b);
 
@@ -205,7 +205,7 @@ extern void Camera_UpdateMatrices(void *cam);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void Deallocate(void *ptr);
-extern int data_ov006_0213fadc[];
+extern int sTrmpNcgByLanguage[];
 extern void InitialiseVramGlobals(void);
 extern s16 data_02082414;
 extern int Trmp3DMario_InitPool(unsigned char *, int);
@@ -220,7 +220,7 @@ extern void func_02012718(int, int);
 extern void TrmpFx_UpdateAll(void);
 extern void Mg_SubmitScore(int);
 extern void TrmpFx_DrawAll(void);
-extern int *data_ov006_0213fb04[];
+extern int *sTrmpTextSpritesByLanguage[];
 extern int data_ov006_02134ecc;
 extern void Mg_DrawTopRightCounter(int, int);
 extern void *data_ov006_02134f00[];
@@ -251,11 +251,11 @@ extern int data_ov006_02134d4c[];
 extern int data_ov006_02134d58[];
 extern int data_ov006_02134d34[];
 extern int data_ov006_02134d28[];
-extern int data_ov006_021373a4[];
-extern int data_ov006_021373fc[];
-extern int data_ov006_0213734c[];
-extern int data_ov006_021372f4[];
-extern int data_ov006_02137454[];
+extern int sMgTextSpritesEnglish[];
+extern int sMgTextSpritesSpanish[];
+extern int sMgTextSpritesFrench[];
+extern int sMgTextSpritesGerman[];
+extern int sMgTextSpritesItalian[];
 
 /* Data owned by the same original TU. */
 P2 pmf_dScMgTrampoline_c_StateWaitExit = { (int)_ZN17dScMgTrampoline_c13StateWaitExitEv, 0 };
@@ -266,14 +266,10 @@ TrampolineTimeProfile g_profile_MG_TRAMPOLINE = {
 };
 P2 pmf_dScMgTrampoline_c_StatePlay = { (int)_ZN17dScMgTrampoline_c9StatePlayEv, 0 };
 P2 pmf_dScMgTrampoline_c_StateResults = { (int)_ZN17dScMgTrampoline_c12StateResultsEv, 0 };
-int data_ov006_0213fadc[] = { 0x107, 0x109, 0x104, 0x105, 0x106 };
-int *data_ov006_0213fb04[] = {
-    data_ov006_021373a4,
-    data_ov006_021373fc,
-    data_ov006_0213734c,
-    data_ov006_021372f4,
-    data_ov006_02137454
-};
+int sTrmpNcgByLanguage[] = {0x107, 0x109, 0x104, 0x105, 0x106};
+int *sTrmpTextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpanish,
+                                     sMgTextSpritesFrench, sMgTextSpritesGerman,
+                                     sMgTextSpritesItalian};
 int sTrmpPuffXByLanguage[] = {(int)data_ov006_02134d40, (int)data_ov006_02134d4c,
                               (int)data_ov006_02134d58, (int)data_ov006_02134d34,
                               (int)data_ov006_02134d28};
@@ -363,7 +359,7 @@ void dScMgTrampoline_c::InitDisplay()
     r8 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCG_BIN);
     r7 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NSC_BIN);
     r6 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCL_BIN);
-    r5 = LoadFile(data_ov006_0213fadc[GetGameLanguage()]);
+    r5 = LoadFile(sTrmpNcgByLanguage[GetGameLanguage()]);
     r4 = LoadFile(ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN);
 
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & ~3) | 2;
@@ -846,7 +842,8 @@ s32 dScMgTrampoline_c::Render()
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();
-                DrawOamSprite((void*)data_ov006_0213fb04[idx][1], (void*)a1v, 0xc, (void*)0);
+                DrawOamSprite((void *)sTrmpTextSpritesByLanguage[idx][1], (void *)a1v, 0xc,
+                              (void *)0);
             } else {
                 RenderOamMainScreen(data_ov006_02134ecc, a1v, 0xc, -1, -1);
             }
@@ -930,12 +927,12 @@ int dScMgTrampoline_c::OnGraphCallback0()
         return 0;
 
     if (data_0209f5bc->vt[5](data_0209f5bc)) {
-        data_ov006_0213fa9c = 0;
+        sTrmpTouchBlocked = 0;
     } else if (data_0209f5bc->vt[7](data_0209f5bc)) {
-        data_ov006_0213fa9c = 1;
+        sTrmpTouchBlocked = 1;
     }
 
-    if (data_ov006_0213fa9c != 0)
+    if (sTrmpTouchBlocked != 0)
         return 0;
 
     if (mMenuOpen != 0)
@@ -1010,7 +1007,7 @@ void dScMgTrampoline_c::InitBrush(int layer)
 
     t1 = 0;
     MultiStore16(t1, charPtr, 0x6000);
-    GX::LoadBGPltt(data_ov006_0212f0d0, 0xe0, 0x20);
+    GX::LoadBGPltt(sTrmpBrushPltt, 0xe0, 0x20);
 }
 
 #pragma opt_loop_invariants off

@@ -40,7 +40,7 @@ struct CupFx {
     s32 vx;           /* +0x08 -- added to x each tick */
     s32 vy;           /* +0x0c -- added to y each tick */
     u8  pad_10[2];    /* +0x10 */
-    s8  frame;        /* +0x12 -- counts down; + row*6 indexes data_ov006_0213c064 */
+    s8 frame;         /* +0x12 -- counts down; + row*6 indexes sCupFxFrameSprites */
     u8  row;          /* +0x13 -- 1 for kind 2; while set, y drops by 6 */
     u8  delay;        /* +0x14 -- DecIfAbove0_Byte, reloaded to 3 */
     u8  active;       /* +0x15 */

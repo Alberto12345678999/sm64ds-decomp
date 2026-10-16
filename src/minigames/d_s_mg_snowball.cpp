@@ -1519,11 +1519,14 @@ s32 dScMgSnowball_c::Render()
                 }
                 {
                     int idx = GetGameLanguage();
-                    Mg_RenderSpriteBothMtx(*(void**)((char*)data_ov006_0213fff0[idx] + 0xc), 0x5c, r4, 0);
+                    Mg_RenderSpriteBothMtx(
+                        *(void **)((char *)sSnowballTextSpritesByLanguage[idx] + 0xc), 0x5c, r4, 0);
                 }
                 {
                     int idx = GetGameLanguage();
-                    Mg_RenderSpriteBothMtx(*(void**)((char*)data_ov006_0213fff0[idx] + 0x1c), 0x90, r4, 0);
+                    Mg_RenderSpriteBothMtx(
+                        *(void **)((char *)sSnowballTextSpritesByLanguage[idx] + 0x1c), 0x90, r4,
+                        0);
                 }
             }
         }
@@ -1953,18 +1956,18 @@ s32 dScMgSnowball_c::InitResources()
     data_0209d45c |= 0xc;
     data_0209d454 |= 0xc;
 
-    buf = Ov004_LoadFileByPath(&data_ov006_0214009c);
+    buf = Ov004_LoadFileByPath(&sSnowballBgNclPath);
     CP15::FlushAndInvalidateDataCache((u32)buf, 0x100);
     GX::LoadBGPltt(buf, 0x100, 0x100);
     GXS::LoadBGPltt(buf, 0x100, 0x100);
     Ov004_Deallocate(buf);
 
-    buf = Ov004_LoadFileByPath(&data_ov006_021400bc);
+    buf = Ov004_LoadFileByPath(&sSnowballNcgPath);
     DecompressLZ16(buf, (void *)0x6400000);
     DecompressLZ16(buf, (void *)0x6600000);
     Ov004_Deallocate(buf);
 
-    buf = Ov004_LoadFileByPath(&data_ov006_021400dc);
+    buf = Ov004_LoadFileByPath(&sSnowballNclPath);
     CP15::FlushAndInvalidateDataCache((u32)buf, 0x100);
     GX::LoadOBJPltt(buf, 0, 0x100);
     GXS::LoadOBJPltt(buf, 0, 0x100);

@@ -221,18 +221,18 @@ extern int sPachinkoPipeSprites[];
 extern int  data_ov006_02136bd4[];
 extern int  data_ov006_0213386c;
 extern int  data_ov006_021389ec;
-extern int  data_ov006_02138d08[];
-extern u8   data_ov006_0212ebac[];
-extern u8   data_ov006_0212ebb0[];
-extern unsigned char data_ov006_0212ebb4[];
-extern unsigned char data_ov006_0212ebb8[];
-extern u8   data_ov006_0212ebc0[];
-extern u8   data_ov006_0212ebc8[];
-extern unsigned char data_ov006_0212ebd8[];
-extern unsigned char data_ov006_0212ebe0[];
-extern int  data_ov006_0212ec08[];
+extern int sPachinko2BallCountSprites[];
+extern u8 sPachinko2CupHopRightStartFrames[];
+extern u8 sPachinko2CupHopLeftStartFrames[];
+extern unsigned char sPachinko2BallWalkOffSprites[];
+extern unsigned char sPachinko2PaddleCountPerLanes[];
+extern u8 sPachinko2CupHopLeftFrames[];
+extern u8 sPachinko2CupHopRightFrames[];
+extern unsigned char sPachinko2CupWaitFrames[];
+extern unsigned char sPachinko2CupWaitTimes[];
+extern int sPachinko2CupX[];
 extern int sPachinko2CrossRowY[];
-extern int  data_ov006_0212ec80[];
+extern int sPachinko2PaddleFlyAwayVX[];
 extern unsigned short data_ov006_0212ecac[];
 extern s32 sPachinko2CupRightStops[];
 extern s32 sPachinko2CupLeftStops[];
@@ -469,7 +469,7 @@ void dScMgPachinko2_c::Cup_StateHopRight(int i) {
             mCups[i].phase = 2;
             return;
         }
-        mCups[i].frame = data_ov006_0212ebac[mCups[i].animStep];
+        mCups[i].frame = sPachinko2CupHopRightStartFrames[mCups[i].animStep];
         return;
     }
 
@@ -479,7 +479,7 @@ void dScMgPachinko2_c::Cup_StateHopRight(int i) {
         mCups[i].animStep++;
         if (mCups[i].animStep >= 6)
             mCups[i].animStep = 0;
-        mCups[i].frame = data_ov006_0212ebc8[mCups[i].animStep];
+        mCups[i].frame = sPachinko2CupHopRightFrames[mCups[i].animStep];
     }
 
     mCups[i].x = mCups[i].x + mCups[i].vx;
@@ -511,7 +511,7 @@ void dScMgPachinko2_c::Cup_StateHopRight(int i) {
     mCups[i].phase++;
     mCups[i].timer = 0;
     mCups[i].animStep = 0;
-    mCups[i].frame = data_ov006_0212ebac[0];
+    mCups[i].frame = sPachinko2CupHopRightStartFrames[0];
 }
 #pragma pop
 
@@ -540,7 +540,7 @@ void dScMgPachinko2_c::Cup_StateHopLeft(int i) {
             mCups[i].phase = 2;
             return;
         }
-        mCups[i].frame = data_ov006_0212ebb0[mCups[i].animStep];
+        mCups[i].frame = sPachinko2CupHopLeftStartFrames[mCups[i].animStep];
         return;
     }
 
@@ -550,7 +550,7 @@ void dScMgPachinko2_c::Cup_StateHopLeft(int i) {
         mCups[i].animStep++;
         if (mCups[i].animStep >= 6)
             mCups[i].animStep = 0;
-        mCups[i].frame = data_ov006_0212ebc0[mCups[i].animStep];
+        mCups[i].frame = sPachinko2CupHopLeftFrames[mCups[i].animStep];
     }
 
     mCups[i].x = mCups[i].x + mCups[i].vx;
@@ -582,7 +582,7 @@ void dScMgPachinko2_c::Cup_StateHopLeft(int i) {
     mCups[i].phase++;
     mCups[i].timer = 0;
     mCups[i].animStep = 0;
-    mCups[i].frame = data_ov006_0212ebb0[0];
+    mCups[i].frame = sPachinko2CupHopLeftStartFrames[0];
 }
 #pragma pop
 
@@ -592,7 +592,7 @@ void dScMgPachinko2_c::Cup_StateHopLeft(int i) {
 void dScMgPachinko2_c::Cup_StateWait(int k) {
     if (mCups[k].armed != 0) {
         mCups[k].timer++;
-        if (mCups[k].timer >= data_ov006_0212ebe0[mCups[k].animStep]) {
+        if (mCups[k].timer >= sPachinko2CupWaitTimes[mCups[k].animStep]) {
             mCups[k].timer = 0;
             mCups[k].animStep++;
             if (mCups[k].animStep >= 8) {
@@ -605,7 +605,7 @@ void dScMgPachinko2_c::Cup_StateWait(int k) {
                 mCups[k].hops--;
             }
         }
-        mCups[k].frame = data_ov006_0212ebd8[mCups[k].animStep];
+        mCups[k].frame = sPachinko2CupWaitFrames[mCups[k].animStep];
     } else {
         mCups[k].timer++;
         if ((unsigned int)mCups[k].timer >= (unsigned int)data_ov006_0212ecac[mCups[k].animStep]) {
@@ -661,7 +661,7 @@ void dScMgPachinko2_c::Cup_ShowAll()
         mCups[i].frame = 0;
         mCups[i].animStep = 0;
         mCups[i].dir = 0;
-        mCups[i].x = data_ov006_0212ec08[i] << 12;
+        mCups[i].x = sPachinko2CupX[i] << 12;
         mCups[i].y = 0x68000;
     }
 }
@@ -1043,7 +1043,7 @@ void dScMgPachinko2_c::Paddle_StateFlyAway(int i) {
         if ((short)mPaddles[i].timer > 0)
             return;
         mPaddles[i].vy = 0;
-        mPaddles[i].vx = data_ov006_0212ec80[i];
+        mPaddles[i].vx = sPachinko2PaddleFlyAwayVX[i];
         mPaddles[i].dir = i;
         return;
     }
@@ -1820,7 +1820,7 @@ void dScMgPachinko2_c::Paddle_UpdateAll()
 void dScMgPachinko2_c::Paddle_SpawnForLanes()
 {
     char *c = (char *)this;
-    int n = data_ov006_0212ebb8[mLaneConfig];
+    int n = sPachinko2PaddleCountPerLanes[mLaneConfig];
     int i = 0;
     if (n <= 0) return;
     do {
@@ -2161,7 +2161,7 @@ void dScMgPachinko2_c::Ball_DrawAll()
             unsigned char t = mBalls[i].sprite;
             int y = mBalls[i].y >> 12;
             if (t != 0) {
-                Mg_RenderSpriteBoth((void *)data_ov006_02138d08[t - 1], x, y, -1, -1);
+                Mg_RenderSpriteBoth((void *)sPachinko2BallCountSprites[t - 1], x, y, -1, -1);
             } else {
                 Mg_RenderSpriteBothScaled(data_ov006_021389ec, x, y, -1, -1, 0x1000,
                                     *(unsigned short *)(p + i * 64 + 0x4690));
@@ -2514,7 +2514,7 @@ void dScMgPachinko2_c::Ball_StateWalkOff(int i) {
 
     {
         unsigned char idx = mBalls[i].animStep;
-        mBalls[i].sprite = data_ov006_0212ebb4[idx];
+        mBalls[i].sprite = sPachinko2BallWalkOffSprites[idx];
         if (mBalls[i].facingRight != 0)
             mBalls[i].sprite += 4;
     }

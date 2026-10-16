@@ -369,11 +369,11 @@ extern void SetSubBg0Offset(int x, int y);
 extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
 extern int data_ov006_02142c40[];
-extern int data_ov006_0213ef8c[];
-extern int data_ov006_0213efb8[];
-extern int data_ov006_0213efe4[];
-extern int data_ov006_0213f010[];
-extern int data_ov006_0213f03c[];
+extern int sSmartballLayoutSPathFmt[];
+extern int sSmartballLayoutIPathFmt[];
+extern int sSmartballLayoutGPathFmt[];
+extern int sSmartballLayoutFPathFmt[];
+extern int sSmartballLayoutEPathFmt[];
 extern int data_ov006_0213f068[];
 extern int data_ov006_0213f090[];
 extern int data_ov006_0213f0c0[];
@@ -392,7 +392,7 @@ void Mg_DrawTopRightCounter(int a0, int a1);
 int Mg_DrawTopLeftCounter(void *self);
 void Mg_DrawBlinkSprite(void *c, int a1, int a2);
 extern OamAttr *data_ov006_02138ae0[];
-extern char *data_ov006_0213ecb8[];
+extern char *sSmartballTextSpritesByLanguage[];
 extern int data_ov006_0212edfc[];
 extern OamAttr *data_ov006_02137a78[];
 extern OamAttr *data_ov006_02137a6c[];
@@ -420,9 +420,9 @@ void *_ZN3G2S13GetBG0CharPtrEv(void);
 void *_ZN2G213GetBG2CharPtrEv(void);
 void *_ZN3G2S13GetBG2CharPtrEv(void);
 void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, u16 a, u16 b, u16 c, u16 d);
-extern void *data_ov006_0213f260;
-extern void *data_ov006_0213f280;
-extern void *data_ov006_0213f2a0;
+extern void *sSmartballResultBgNcgPath;
+extern void *sSmartballResultBgNscPath;
+extern void *sSmartballResultNclPath;
 extern void *data_ov006_0213f2bc;
 extern void *data_ov006_0213f2ec;
 extern void *data_ov006_0213f31c;
@@ -435,7 +435,7 @@ extern void *data_ov006_0213f42c;
 extern void *data_ov006_0213f458;
 extern void *data_ov006_0213f484;
 extern void *data_ov006_0213f4b0;
-extern void *data_ov006_0213f4dc;
+extern void *sSmartballNclPath;
 extern OamAttr *data_ov006_021382e0[];
 extern OamAttr *data_ov006_021382f8[];
 extern OamAttr *data_ov006_02137a9c[];
@@ -494,7 +494,7 @@ extern "C" {
 extern char*_ZN3G2S13GetBG3CharPtrEv(void);
 extern int sMgResultsBannerY;
 extern int sMgResultsBannerX;
-extern int data_ov006_0213eccc[];
+extern int sSmartballOptionNcgByLanguage[];
 extern int func_02054d88(void);
 extern void SetSubBg1Offset(int, int);
 extern void Mg_RestoreMusic(void);
@@ -4938,15 +4938,15 @@ void dScMgSmartball_c::SpawnObjects()
     Mg_SetTopScreenYOffset(0x30);
 
     if (GetOwnerLanguage() == 5) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, (int)self->mLevel & 1);
+        func_02057d00(data_ov006_02142c40, sSmartballLayoutSPathFmt, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 4) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, (int)self->mLevel & 1);
+        func_02057d00(data_ov006_02142c40, sSmartballLayoutIPathFmt, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 3) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, (int)self->mLevel & 1);
+        func_02057d00(data_ov006_02142c40, sSmartballLayoutGPathFmt, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 2) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, (int)self->mLevel & 1);
+        func_02057d00(data_ov006_02142c40, sSmartballLayoutFPathFmt, (int)self->mLevel & 1);
     } else if (((int)self->param1 & 0xff) == 0) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, (int)self->mLevel & 1);
+        func_02057d00(data_ov006_02142c40, sSmartballLayoutEPathFmt, (int)self->mLevel & 1);
     } else {
         func_02057d00(data_ov006_02142c40, data_ov006_0213f068, (int)self->mLevel & 1);
     }
@@ -5579,7 +5579,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02138ae0[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x64, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5964), 0, 0, 1, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5964) * 0x64, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5594,7 +5595,8 @@ s32 dScMgSmartball_c::Render()
                 val = data_ov006_0212edfc[row];
                 Mg_DrawNumber(0x80, xpos, val, 0, 0, 1, 0);
                 i = GetGameLanguage();
-                Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+                Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54),
+                                    0x90, xpos, -1, -1);
                 pcnt = (int *)(g + row * 4 + 0x5968);
                 Mg_DrawNumber(0xa0, xpos, *pcnt, 0, 0, 0, 0);
                 Mg_DrawNumber(0xe0, xpos, val * *pcnt, 0, 0, 1, 0);
@@ -5609,7 +5611,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_0213765c[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x12c, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x597c), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x597c) * 0x12c, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5621,7 +5624,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02137a78[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0xbb8, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5984), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5984) * 0xbb8, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5633,7 +5637,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02137a6c[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x7d0, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5980), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5980) * 0x7d0, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5668,7 +5673,8 @@ s32 dScMgSmartball_c::Render()
                 }
                 Mg_DrawNumber(0x80, xpos, mult, 0, 0, 1, 0);
                 i = GetGameLanguage();
-                Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+                Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54),
+                                    0x90, xpos, -1, -1);
                 Mg_DrawNumber(0xa0, xpos, *slot[1], 0, 0, 0, 0);
                 Mg_DrawNumber(0xe0, xpos, mult * *slot[1], 0, 0, 1, 0);
                 xpos += 0x18;
@@ -5682,7 +5688,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02138ae0[5], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x2710, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5978), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5978) * 0x2710, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5694,7 +5701,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_021382e0[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x7d0, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5994), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5994) * 0x7d0, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5756,7 +5764,7 @@ s32 dScMgSmartball_c::Render()
                         } while (u != 0);
                     }
                     i = GetGameLanguage();
-                    Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54),
+                    Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54),
                                         (*px >> 12) + nd * 8 - 8, *py >> 12, -1, -1);
                     nd = 0;
                     u = (unsigned int)*pcnt;
@@ -6113,7 +6121,7 @@ int dScMgSmartball_c::InitSubScreenBg()
     SetSubBg1Offset(0, 0);
     data_0209d454[0] &= ~2;
     f = GetGameLanguage();
-    LoadCompressedFileAt(data_ov006_0213eccc[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
+    LoadCompressedFileAt(sSmartballOptionNcgByLanguage[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_OPTION_NSC_BIN, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
@@ -6178,17 +6186,17 @@ s32 dScMgSmartball_c::InitResources()
   *((volatile u16 *) 0x4001008) &= ~0x40;
   *((volatile s32 *) 0x4001010) = 0x100;
   *((volatile u16 *) 0x4001008) &= ~3;
-  f = Ov004_LoadFileByPath(&data_ov006_0213f260);
+  f = Ov004_LoadFileByPath(&sSmartballResultBgNcgPath);
   DecompressLZ16(f, _ZN3G2S13GetBG0CharPtrEv());
   Ov004_Deallocate(f);
   {
     volatile u16 v;
     MultiStore16((u16) (v = 0), _ZN3G2S12GetBG0ScrPtrEv(), 0x1000);
   }
-  f = Ov004_LoadFileByPath(&data_ov006_0213f280);
+  f = Ov004_LoadFileByPath(&sSmartballResultBgNscPath);
   DecompressLZ16(f, _ZN3G2S12GetBG0ScrPtrEv());
   Ov004_Deallocate(f);
-  f = Ov004_LoadFileByPath(&data_ov006_0213f2a0);
+  f = Ov004_LoadFileByPath(&sSmartballResultNclPath);
   _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x20);
   _ZN3GXS10LoadBGPlttEPKvjj(((char *) f) + 2, 2, 0x1e);
   Ov004_Deallocate(f);
@@ -6263,7 +6271,7 @@ s32 dScMgSmartball_c::InitResources()
   data_0209d45c &= ~1;
   data_0209d45c |= 0xc;
   data_0209d454[0] |= 0xd;
-  f = Ov004_LoadFileByPath(&data_ov006_0213f4dc);
+  f = Ov004_LoadFileByPath(&sSmartballNclPath);
   _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x100);
   _ZN2GX11LoadOBJPlttEPKvjj(f, 0, 0x100);
   _ZN3GXS11LoadOBJPlttEPKvjj(f, 0, 0x100);

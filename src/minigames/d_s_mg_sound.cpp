@@ -129,9 +129,9 @@ extern Pmf pmf_dScMgSound_c_Pop12_Finish;
 extern "C" {
 extern int Hud_RenderSprite(int a,int b,int c,int d,int e);
 extern int sSoundWinSpriteBSprites[];
-extern unsigned short data_ov006_0212ee38[];
+extern unsigned short sSoundWinSpriteBTimes[];
 extern int sSoundWinSpriteASprites[];
-extern u16 data_ov006_0212ee28[];
+extern u16 sSoundWinSpriteATimes[];
 extern void Mg_DrawStockCounter(int a, int b);
 extern const short data_02082214[];
 extern void *sSoundPopsSprites[];
@@ -165,16 +165,16 @@ extern int data_ov006_0212ef7c[];
 extern int data_ov006_0212ef8c[];
 extern int data_ov006_0212ef5c[];
 extern int data_ov006_0212ef6c[];
-extern unsigned short data_ov006_0212ef4c[];
+extern unsigned short sSoundNoteClosingTimes[];
 void Presenter_PlayCheerLoop(char *p);
 void func_02012174(u32 bank, u32 id);
-extern u16 data_ov006_0212ef3c[];
+extern u16 sSoundNoteOpeningTimes[];
 extern u16 data_ov006_0213f794[];
 extern u16 sSoundNoteSfx[];
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
-extern u8 data_ov006_0212ee10[];
-extern u8 data_ov006_0212ee18[];
+extern u8 sSoundDealSpeeds[];
+extern u8 sSoundDealCounts[];
 extern u8 data_ov006_0212ee20[];
 extern int data_ov006_0212ef9c[];
 extern int data_ov006_0212efb0[];
@@ -603,8 +603,8 @@ void dScMgSound_c::DealNotes()
     }
     this->mPattern = sel;
     k = this->mPattern;
-    count = data_ov006_0212ee18[k];
-    speed = data_ov006_0212ee10[k];
+    count = sSoundDealCounts[k];
+    speed = sSoundDealSpeeds[k];
     if (k == 3) {
         int a = (u32)(RND << 2) >> 15;
         int b = (u32)(RND * 3) >> 15;
@@ -753,7 +753,8 @@ void dScMgSound_c::Note_StateOpening(int idx)
     u8 instrument;
 
     this->mNotes[idx].timer = this->mNotes[idx].timer + 1;
-    if (this->mNotes[idx].timer < data_ov006_0212ef3c[this->mNotes[idx].frame]) return;
+    if (this->mNotes[idx].timer < sSoundNoteOpeningTimes[this->mNotes[idx].frame])
+        return;
     this->mNotes[idx].timer = 0;
     this->mNotes[idx].frame = this->mNotes[idx].frame + 1;
     if (this->mNotes[idx].frame <= 6) return;
@@ -817,7 +818,8 @@ void dScMgSound_c::Note_StateClosing(int slot){
     unsigned char b;
     this->mNotes[slot].timer = (unsigned short)(this->mNotes[slot].timer + 1);
     b = this->mNotes[slot].frame;
-    if (this->mNotes[slot].timer < data_ov006_0212ef4c[b]) return;
+    if (this->mNotes[slot].timer < sSoundNoteClosingTimes[b])
+        return;
     this->mNotes[slot].timer = 0;
     this->mNotes[slot].frame = (unsigned char)(this->mNotes[slot].frame - 1);
     if (this->mNotes[slot].frame == 0) this->mNotes[slot].state = 0;
@@ -1669,7 +1671,7 @@ void dScMgSound_c::UpdateWinSpriteA()
     if (this->mSpriteA.frame >= 2)
         return;
     (*(u16 *)(int)&this->mSpriteA.timer)++;
-    if (this->mSpriteA.timer < data_ov006_0212ee28[this->mSpriteA.frame])
+    if (this->mSpriteA.timer < sSoundWinSpriteATimes[this->mSpriteA.frame])
         return;
     this->mSpriteA.timer = 0;
     (*(u8 *)(int)&this->mSpriteA.frame)++;
@@ -1696,7 +1698,8 @@ void dScMgSound_c::UpdateWinSpriteB()
         if (this->mSpriteB.active == 0) return;
     if (this->mSpriteB.frame >= 3) return;
     (*(u16 *)(int)&this->mSpriteB.timer) += 1;
-    if (this->mSpriteB.timer < data_ov006_0212ee38[this->mSpriteB.frame]) return;
+    if (this->mSpriteB.timer < sSoundWinSpriteBTimes[this->mSpriteB.frame])
+        return;
     this->mSpriteB.timer = 0;
     (*(u8 *)(int)&this->mSpriteB.frame) += 1;
 }

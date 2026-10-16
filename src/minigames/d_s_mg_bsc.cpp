@@ -132,7 +132,7 @@ s32 dScMgBSC_c::InitResources()
     int fh;
     data_0209d45c[0] = 0x11;
     LoadCard2SubBg3();
-    LoadCompressedFileAt(data_ov006_0213fe78[GetGameLanguage()], (void *)0x6600000);
+    LoadCompressedFileAt(sBscBigSmallNcgByLanguage[GetGameLanguage()], (void *)0x6600000);
     fh = LoadFile(ASSET_D_2D_MG_BIG_SMALL_NCL_BIN);
     GXS::LoadOBJPltt((void *)fh, 0, 0x100);
     Deallocate((void *)fh);

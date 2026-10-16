@@ -263,7 +263,7 @@ void dScMgSlot3_c::InitMainScreenBg()
     data_0209d45c &= ~2;
 
     idx = GetGameLanguage();
-    LoadCompressedFileAt(data_ov006_0213e614[idx], func_02054ea8());
+    LoadCompressedFileAt(sSlotPauseBgNcgByLanguage[idx], func_02054ea8());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_PAUSE_NSC_BIN, G2::GetBG1ScrPtr());
 
     *(volatile unsigned short*)0x400000a = (*(volatile unsigned short*)0x400000a & 0x43) | 0x1118;
@@ -1591,8 +1591,8 @@ s32 dScMgSlot1_c::InitResources()
         MultiStore16(fill, d3, 0x800);
     }
 
-    LoadCompressedFileAt(data_ov006_0213e628[GetGameLanguage()], (void *)0x6400000);
-    LoadCompressedFileAt(data_ov006_0213e628[GetGameLanguage()], (void *)0x6600000);
+    LoadCompressedFileAt(sSlotNcgByLanguage[GetGameLanguage()], (void *)0x6400000);
+    LoadCompressedFileAt(sSlotNcgByLanguage[GetGameLanguage()], (void *)0x6600000);
 
     {
         int h = LoadFile(ASSET_D_2D_MG_SLOT_NCL_BIN);

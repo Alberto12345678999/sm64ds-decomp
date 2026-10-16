@@ -195,29 +195,29 @@ extern u8    gTouchX[][4];
 // local extern: see above.
 extern u8    gTouchY[][4];
 extern void *data_ov006_0213ac24;
-extern unsigned char data_ov006_0212eb0c[];
-extern unsigned char data_ov006_0212eb10[];
-extern unsigned char data_ov006_0212eb14[];
-extern unsigned char data_ov006_0212eb1c[];
+extern unsigned char sPachinkoPipeRiseStartFrames[];
+extern unsigned char sPachinkoPipeSinkStartFrames[];
+extern unsigned char sPachinkoPipeRiseFrames[];
+extern unsigned char sPachinkoPipeSinkFrames[];
 extern int   data_ov006_0212eb24[];
-extern int   data_ov006_0212eb2c[];
-extern u8    data_ov006_0212eb34[];
-extern u8    data_ov006_0212eb3c[];
+extern int sPachinkoPipeKinds[];
+extern u8 sPachinkoPipeIdleFrames[];
+extern u8 sPachinkoPipeIdleTimes[];
 extern s32   data_ov006_0212eb44[];
 extern int sPachinkoPipeRiseStops[];
 extern s32 sPachinkoPipeSinkStops[];
-extern int   data_ov006_0212eb70[];
-extern int   data_ov006_02133e10[];
-extern int   data_ov006_02133e7c[];
+extern int sPachinkoTargetX[];
+extern int sPachinkoFxSpritesA[];
+extern int sPachinkoFxSpritesB[];
 extern int sPachinkoPipeSprites[];
-extern int   data_ov006_02136e0c[];
+extern int sPachinkoTargetSprites[];
 extern int sPachinkoFlyerSprites[];
-extern int   data_ov006_0212eb80[];
-extern int   data_ov006_0212eb94[];
+extern int sPachinkoWaveColumnX[];
+extern int sPachinkoPopSfx[];
 extern int sPachinkoBallSprites[];
 extern int sPachinkoBobOmbSprites;
-extern u16   data_ov006_0213d954[];
-extern u8    data_ov006_0213d974[];
+extern u16 sPachinkoPopScores[];
+extern u8 sPachinkoWaveSlots[];
 
 /* The two pointer-to-member tables the helpers dispatch through, and the
    record tables PachinkoPipe_UpdateAll, PachinkoBobOmb_UpdateAll and
@@ -558,11 +558,9 @@ void PachinkoTarget_DrawAll(char *raw)
     int i;
     for (i = 0; i < 4; i++) {
         if (PACHINKO(raw)->mTarget[i].visible != 0) {
-            Mg_RenderSpriteBoth(
-                (void *)data_ov006_02136e0c[PACHINKO(raw)->mTarget[i].sprite],
-                PACHINKO(raw)->mTarget[i].x >> 0xc,
-                PACHINKO(raw)->mTarget[i].y >> 0xc,
-                -1, 1);
+            Mg_RenderSpriteBoth((void *)sPachinkoTargetSprites[PACHINKO(raw)->mTarget[i].sprite],
+                                PACHINKO(raw)->mTarget[i].x >> 0xc,
+                                PACHINKO(raw)->mTarget[i].y >> 0xc, -1, 1);
         }
     }
 }
@@ -574,7 +572,7 @@ void PachinkoTarget_ShowAll(u8 *raw)
     for (i = 0; i < 4; i++) {
         PACHINKO(raw)->mTarget[i].active = 1;
         PACHINKO(raw)->mTarget[i].visible = 1;
-        PACHINKO(raw)->mTarget[i].x = data_ov006_0212eb70[i] << 12;
+        PACHINKO(raw)->mTarget[i].x = sPachinkoTargetX[i] << 12;
         PACHINKO(raw)->mTarget[i].y = 0xa0000;
         PACHINKO(raw)->mTarget[i].sprite = 0;
     }
@@ -844,9 +842,9 @@ void PachinkoFx_DrawAll(void* raw) {
             int y = PACHINKO(raw)->mFx[i].y >> 12;
             int idx = PACHINKO(raw)->mFx[i].frame;
             if (type != 2) {
-                Mg_RenderSpriteBoth((void*)data_ov006_02133e10[idx], x, y, -1, -1);
+                Mg_RenderSpriteBoth((void *)sPachinkoFxSpritesA[idx], x, y, -1, -1);
             } else {
-                Mg_RenderSpriteBoth((void*)data_ov006_02133e7c[idx], x, y, -1, -1);
+                Mg_RenderSpriteBoth((void *)sPachinkoFxSpritesB[idx], x, y, -1, -1);
             }
         }
     }
@@ -1243,14 +1241,14 @@ int PachinkoPipe_StateIdle(char *raw, int idx) {
   u16 c = *counter;
   *counter = c + 1;
   u8 oldFrame = *frame;
-  if (*counter >= data_ov006_0212eb3c[oldFrame]) {
-    *counter = 0;
-    *frame = *frame + 1;
-    if (*frame >= 8) {
-      *frame = 0;
-      self->mPipe[idx].laps = self->mPipe[idx].laps + 1;
-    }
-    self->mPipe[idx].out = data_ov006_0212eb34[*frame];
+  if (*counter >= sPachinkoPipeIdleTimes[oldFrame]) {
+      *counter = 0;
+      *frame = *frame + 1;
+      if (*frame >= 8) {
+          *frame = 0;
+          self->mPipe[idx].laps = self->mPipe[idx].laps + 1;
+      }
+      self->mPipe[idx].out = sPachinkoPipeIdleFrames[*frame];
   }
   {
     if (self->mPipe[idx].state != 0) {
@@ -1286,7 +1284,7 @@ void PachinkoPipe_StateSink(char *raw, int i) {
             ST(raw, off) = 0;
             return;
         }
-        OUTFLAG(raw, off) = data_ov006_0212eb10[FB(raw, off)];
+        OUTFLAG(raw, off) = sPachinkoPipeSinkStartFrames[FB(raw, off)];
         return;
     }
 
@@ -1297,7 +1295,7 @@ void PachinkoPipe_StateSink(char *raw, int i) {
         if (FB(raw, off) >= 6) {
             FB(raw, off) = 0;
         }
-        OUTFLAG(raw, off) = data_ov006_0212eb1c[FB(raw, off)];
+        OUTFLAG(raw, off) = sPachinkoPipeSinkFrames[FB(raw, off)];
     }
 
     ACC(raw, off) += VEL(raw, off);
@@ -1316,7 +1314,7 @@ void PachinkoPipe_StateSink(char *raw, int i) {
     ST(raw, off)++;
     CTA(raw, off) = 0;
     FB(raw, off) = 0;
-    OUTFLAG(raw, off) = data_ov006_0212eb10[0];
+    OUTFLAG(raw, off) = sPachinkoPipeSinkStartFrames[0];
 }
 
 // @symbol PachinkoPipe_StateRise
@@ -1338,7 +1336,7 @@ void PachinkoPipe_StateRise(char *raw, int i) {
             self->mPipe[i].state = 0;
             return;
         }
-        self->mPipe[i].out = data_ov006_0212eb0c[self->mPipe[i].frame];
+        self->mPipe[i].out = sPachinkoPipeRiseStartFrames[self->mPipe[i].frame];
         return;
     }
 
@@ -1349,7 +1347,7 @@ void PachinkoPipe_StateRise(char *raw, int i) {
         if (self->mPipe[i].frame >= 6) {
             self->mPipe[i].frame = 0;
         }
-        self->mPipe[i].out = data_ov006_0212eb14[self->mPipe[i].frame];
+        self->mPipe[i].out = sPachinkoPipeRiseFrames[self->mPipe[i].frame];
     }
 
     self->mPipe[i].acc = self->mPipe[i].acc + self->mPipe[i].vel;
@@ -1370,14 +1368,14 @@ void PachinkoPipe_StateRise(char *raw, int i) {
     (self->mPipe[i].state)++;
     self->mPipe[i].timer = 0;
     self->mPipe[i].frame = 0;
-    self->mPipe[i].out = data_ov006_0212eb0c[0];
+    self->mPipe[i].out = sPachinkoPipeRiseStartFrames[0];
 }
 
 #pragma push
 #pragma opt_common_subs off
 // @symbol PachinkoPipe_StatePick
 /* Resets one row of the ov006 table (rows are 0x1c bytes apart) after
-   rolling a random kind from data_ov006_0212eb2c.  The row base `raw + off`
+   rolling a random kind from sPachinkoPipeKinds.  The row base `raw + off`
    is spelled twice on purpose: the ROM computes it once for the +0x4000
    stores and again, right after the kind reload and before the predicated
    if-else, for the tail stores.  With common-subexpression elimination on,
@@ -1388,7 +1386,7 @@ void PachinkoPipe_StatePick(char *raw, int n) {
     int off = n * 0x1c;
     unsigned int rand = ((unsigned)rnd >> 16) & 0x7fff;
     unsigned int idx = (rand << 1) >> 0xf;
-    int kind = data_ov006_0212eb2c[idx];
+    int kind = sPachinkoPipeKinds[idx];
     unsigned char *kinds = (unsigned char*)(raw + 0x4eb3);
     char *q;
     kinds[off] = (unsigned char)kind;
@@ -1641,12 +1639,7 @@ void PachinkoBall_StatePop(char *c, int i) {
         *cnt = *cnt - 1;
         if (*cnt != 0)
             return;
-        PachinkoFx_Spawn(c,
-                            self->mBall[i].x,
-                            self->mBall[i].y,
-                            2,
-                            data_ov006_0213d954[0],
-                            0);
+        PachinkoFx_Spawn(c, self->mBall[i].x, self->mBall[i].y, 2, sPachinkoPopScores[0], 0);
         func_02012718(0x18b, self->mBall[i].x);
         return;
     }
@@ -2017,7 +2010,7 @@ void PachinkoBall_UpdateAll(char* c){
  * writes its heading into self+0x4684+i*0x38, derives a sine/cosine pair from
  * data_02082214 at 0x2000 scale plus a zero velocity pair into the record at
  * self+i*0x38+0x4000+0x668..0x674, plays the sound whose id comes from
- * data_ov006_0212eb94 indexed by the hit record's counter (clamped at 5),
+ * sPachinkoPopSfx indexed by the hit record's counter (clamped at 5),
  * spawns the effect through PachinkoFx_Spawn, bumps that counter, and
  * returns. With no hit the loop runs out and the function returns having
  * written nothing.
@@ -2037,7 +2030,6 @@ void PachinkoBall_UpdateAll(char* c){
  *      the record base lands in r2 and the loaded x in r3 (the cartridge) or
  *      the other way round.
  */
-
 
 // @symbol PachinkoBall_CheckHitByBobOmb
 void PachinkoBall_CheckHitByBobOmb(char *base, int i)
@@ -2112,15 +2104,11 @@ void PachinkoBall_CheckHitByBobOmb(char *base, int i)
                 if (cc >= 5)
                     cc = five;
                 p60 = o + 0x4660;
-                func_02012718(data_ov006_0212eb94[cc], *(int *)(p60 + n));
+                func_02012718(sPachinkoPopSfx[cc], *(int *)(p60 + n));
                 {
                     char *q = (char *)o + n;
-                    PachinkoFx_Spawn(o,
-                        *(int *)(p60 + n),
-                        *(int *)(q + 0x4664),
-                        2,
-                        (int)data_ov006_0213d954[cc],
-                        0);
+                    PachinkoFx_Spawn(o, *(int *)(p60 + n), *(int *)(q + 0x4664), 2,
+                                     (int)sPachinkoPopScores[cc], 0);
                 }
                 cntp = f0f + m;
                 *cntp = (u8)(*cntp + 1);
@@ -2154,7 +2142,9 @@ void Pachinko_SpawnWave(dScMgPachinko_c *self)
         self->mBall[i].active = 1;
         ra = RandomIntInternal(&data_0209d4b8);
         rb = RandomIntInternal(&data_0209d4b8);
-        self->mBall[i].x = (data_ov006_0212eb80[(((u32)rb >> 16) & 0x7fff) * 5 >> 15] + ((((u32)ra >> 16) & 0x7fff) * 4 >> 15) * 8) << 12;
+        self->mBall[i].x = (sPachinkoWaveColumnX[(((u32)rb >> 16) & 0x7fff) * 5 >> 15] +
+                            ((((u32)ra >> 16) & 0x7fff) * 4 >> 15) * 8)
+                           << 12;
         self->mBall[i].y = -0x100000;
         self->mBall[i].unk08 = 0;
         self->mBall[i].unk0c = 0;
@@ -2172,7 +2162,8 @@ void Pachinko_SpawnWave(dScMgPachinko_c *self)
             int r = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15;
             int lvl = self->mWaveLevel >> 1;
             if (lvl >= 4) lvl = 4;
-            if (data_ov006_0213d974[r + lvl * 4] == 0) break;
+            if (sPachinkoWaveSlots[r + lvl * 4] == 0)
+                break;
         }
         if ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 2 >> 15) {
             self->mBall[i].x = 0x100000;

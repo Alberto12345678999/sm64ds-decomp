@@ -254,7 +254,7 @@ s32 dScMgJump2_c::InitResources()
     s32 fov;
     void *bmdFile;
 
-    tiles = LoadFile(data_ov006_0213cce0[GetGameLanguage()]);
+    tiles = LoadFile(sJump2NcgByLanguage[GetGameLanguage()]);
     palette = LoadFile(ASSET_D_2D_MG_JUMP_NCL_BIN);
     DecompressLZ16(tiles, 0x6400000);
     GX::LoadOBJPltt((const void *)palette, 0, 0x80);
@@ -561,7 +561,8 @@ s32 dScMgJump2_c::Render()
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();
-                DrawOamSprite((void *)data_ov006_0213cccc[idx][1], (void *)x, 0xc, (void *)0);
+                DrawOamSprite((void *)sJump2TextSpritesByLanguage[idx][1], (void *)x, 0xc,
+                              (void *)0);
             } else {
                 RenderOamMainScreen(data_ov006_02134cf8, x, 0xc, -1, -1);
             }

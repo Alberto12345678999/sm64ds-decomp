@@ -45,34 +45,34 @@
 extern "C" {
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 extern int sBomroomPenGateSprites[];
-extern int data_ov006_0212e2c8[];
-extern int data_ov006_0212e2e0[];
-extern int data_ov006_021342bc[];
-extern int data_ov006_021343b0[];
-extern int data_ov006_0212e2d8[];
-extern int data_ov006_0212e2d0[];
+extern int sBomroomPenGateX[];
+extern int sBomroomPenGateY[];
+extern int sBomroomHatchPanelSprites[];
+extern int sBomroomTopDoorSprites[];
+extern int sBomroomHatchPanelX[];
+extern int sBomroomHatchPanelY[];
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-extern unsigned char *data_ov006_0213bb08[];
-extern unsigned char data_ov006_0213b9bc[];
+extern unsigned char *sBomroomBombFrameTimes[];
+extern unsigned char sBomroomBombFrameCounts[];
 extern s16 data_02082214[];
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
-extern unsigned char* data_ov006_0213bb18[];
-extern unsigned char* data_ov006_0213bb28[];
+extern unsigned char *sBomroomBombSprites[];
+extern unsigned char *sBomroomBombLitSprites[];
 extern void *sBomroomBombsSprites[];
 extern void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 extern void *sBomroomRoundOverSprites;
-extern void *data_ov006_02133ae0[];
-extern void *data_ov006_02133a70[];
-extern int data_ov006_0212e2c0[];
+extern void *sBomroomMarkerPlainSprites[];
+extern void *sBomroomMarkerLitSprites[];
+extern int sBomroomMarkerY[];
 extern int Mg_GetSubmittedScore(void);
 extern int RandomIntInternal(int *seed);
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
 extern u8 gTouchX[];
 // local extern: see above.
 extern u8 gTouchY[];
-extern u16 data_ov006_0212e2e8[];
+extern u16 sBomroomSpawnDelays[];
 extern int sBomroomRoundEndTable[];
 extern int LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
@@ -205,8 +205,8 @@ void dScMgBomroom_c::Marker_DrawAll() {
             int idx = mMarkers[i].idx;
             int a1 = xv >> 12;
             int a2 = yv >> 12;
-            Hud_RenderSprite((i != 0) ? data_ov006_02133a70[idx]
-                                      : data_ov006_02133ae0[idx],
+            Hud_RenderSprite((i != 0) ? sBomroomMarkerLitSprites[idx]
+                                      : sBomroomMarkerPlainSprites[idx],
                              a1, a2, -1, 1);
         }
     }
@@ -239,7 +239,7 @@ void dScMgBomroom_c::Marker_Show(int idx) {
     mMarkers[idx].state = 1;
     mMarkers[idx].gate = 1;
     mMarkers[idx].x = 0x80000;
-    mMarkers[idx].y = data_ov006_0212e2c0[idx] << 12;
+    mMarkers[idx].y = sBomroomMarkerY[idx] << 12;
     mMarkers[idx].timer = 0;
     mMarkers[idx].idx = 0;
 }
@@ -293,7 +293,7 @@ void dScMgBomroom_c::TopDoor_Draw() {
     char * c = (char *)this;
     c += 0x6000;
     if (*(unsigned char *)(c + 0x2af) == 0) return;
-    RenderOamMainScreen(data_ov006_021343b0[*(unsigned char *)(c + 0x2ae)],
+    RenderOamMainScreen(sBomroomTopDoorSprites[*(unsigned char *)(c + 0x2ae)],
                         *(int *)(c + 0x2a0) >> 0xc, *(int *)(c + 0x2a4) >> 0xc, -1, 2);
 }
 
@@ -496,8 +496,8 @@ void dScMgBomroom_c::PenGate_ShowAll() {
         mPenGates[i].gate = 1;
         mPenGates[i].state = 0;
         mPenGates[i].idx = 1;
-        mPenGates[i].x = data_ov006_0212e2c8[i] << 0xc;
-        mPenGates[i].y = data_ov006_0212e2e0[i] << 0xc;
+        mPenGates[i].x = sBomroomPenGateX[i] << 0xc;
+        mPenGates[i].y = sBomroomPenGateY[i] << 0xc;
         mPenGates[i].level = 0;
         mPenGates[i].timer = 0;
     }
@@ -545,7 +545,7 @@ void dScMgBomroom_c::HatchPanel_DrawAll() {
             int xv = mHatchPanels[i].x >> 12;
             int yv = mHatchPanels[i].y >> 12;
             int k = mHatchPanels[i].level;
-            int v = (i == 0) ? data_ov006_021343b0[k] : data_ov006_021342bc[k];
+            int v = (i == 0) ? sBomroomTopDoorSprites[k] : sBomroomHatchPanelSprites[k];
             Hud_RenderSprite((void*)v, xv, yv, -1, 1);
         }
     }
@@ -633,8 +633,8 @@ void dScMgBomroom_c::HatchPanel_ShowAll() {
     for (i = 0; i < 2; i++) {
         mHatchPanels[i].gate = 1;
         mHatchPanels[i].state = 0;
-        mHatchPanels[i].x = data_ov006_0212e2d8[i] << 0xc;
-        mHatchPanels[i].y = data_ov006_0212e2d0[i] << 0xc;
+        mHatchPanels[i].x = sBomroomHatchPanelX[i] << 0xc;
+        mHatchPanels[i].y = sBomroomHatchPanelY[i] << 0xc;
         mHatchPanels[i].level = 0;
         mHatchPanels[i].timer = 0;
         mHatchPanels[i].idx = 1;
@@ -787,7 +787,7 @@ void dScMgBomroom_c::Bomb_Animate(int index) {
                                func_020126e8(mBombs[index].x), 0);
     }
 
-    if (mBombs[index].counter >= data_ov006_0213bb08[type][frame]) {
+    if (mBombs[index].counter >= sBomroomBombFrameTimes[type][frame]) {
         frame++;
         mBombs[index].frame = frame;
         mBombs[index].counter = 0;
@@ -805,7 +805,7 @@ void dScMgBomroom_c::Bomb_Animate(int index) {
         }
     }
 
-    max = data_ov006_0213b9bc[type];
+    max = sBomroomBombFrameCounts[type];
     if (frame < max) {
         return;
     }
@@ -1111,8 +1111,11 @@ void dScMgBomroom_c::DrawBombs() {
             if (b694 == 3) palette = 0;
             b696 = mBombs[i].color;
             b695 = mBombs[i].frame;
-            if (b696 != 0) { sprite = data_ov006_0213bb28[b694][b695]; }
-            else { sprite = data_ov006_0213bb18[b694][b695]; }
+            if (b696 != 0) {
+                sprite = sBomroomBombLitSprites[b694][b695];
+            } else {
+                sprite = sBomroomBombSprites[b694][b695];
+            }
             b697 = mBombs[i].state;
             x = mBombs[i].x >> 12;
             f664 = mBombs[i].y;
@@ -1596,7 +1599,7 @@ void dScMgBomroom_c::UpdateBombs() {
 /* Spawner: once the +0x62e2 delay runs out, picks a step from the spawn
  * count at +0x62d8, drops that many new bombs into free records with a
  * random color and angle, and reloads the delay from
- * data_ov006_0212e2e8. */
+ * sBomroomSpawnDelays. */
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
@@ -1863,7 +1866,7 @@ void dScMgBomroom_c::SpawnBombs()
     }
     while (i < cnt);
   }
-  mSpawnDelay = data_ov006_0212e2e8[sb];
+  mSpawnDelay = sBomroomSpawnDelays[sb];
 }
 
 #pragma pop

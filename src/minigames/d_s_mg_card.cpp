@@ -177,7 +177,7 @@ s32 dScMgCard_c::InitResources()
     data_0209d454 = 0x18;
     mainTiles = LoadFile(0xbd);
     mainPalette = LoadFile(0xbe);
-    subTiles = LoadFile(data_ov006_0213bcb0[GetGameLanguage()]);
+    subTiles = LoadFile(sCardNcgByLanguage[GetGameLanguage()]);
     subPalette = LoadFile(0xbb);
     DecompressLZ16(mainTiles, (void *)0x6400000);
     GX::LoadOBJPltt(mainPalette, 0, 0x20);
