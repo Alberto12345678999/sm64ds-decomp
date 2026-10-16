@@ -38,7 +38,7 @@ which declares no virtual, so a slot number means nothing between them.
 |---|---|---|---|---|
 | 18 | `OnYoshiTryEat(int)` | `StartRound(int)` | high (seen) | `dMgState_c` calls it with the finished state's number when a banner ends. Games call it with -1 to retry after a lost life (Cup's `StateFinish`). The overrides reset their round, and Memory's calls `ResetGame`. |
 | 19 | `OnTurnIntoEgg(int)` | `CanEndState(int)` | high | Every `dMgState_c` behaviour handler polls it with `mState` and waits for nonzero. The overrides return 0 while their own reaction animation plays. |
-| 20 | `Virtual50` | `OnNewRecord` | medium | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
+| 20 | `Virtual50` | `OnNewRecord` | high, seen | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Seen in play: a record-beating Teresa run and a Snowball finish both ran it, with banner 5 and jingle 1 (runtime-checks.md). Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
 | 21 | `OnGroundPounded` | `OnDealDone` | high (seen) | Seen in Memory and Card: it fires once Luigi finishes dealing, from `Dealer_StateDeal`. Memory's override goes straight to `MgCoins_PlaceBet(3)`. Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
 | 22 | `OnAttacked1` | `OnGraphCallback1` | high (mapping) | `graphCallback_c::GraphCallback1` forwards to it. Runs in the main loop after the scene step, before the frame wait (`func_02019404`). |
 | 23 | `OnAttacked2` | `OnGraphCallback0` | high (mapping) | `GraphCallback0` forwards to it. Runs at the main loop's frame start; the arm9 caller `func_02019390` skips its OAM reset and 3D flush when the callback returns 0. |
@@ -53,7 +53,7 @@ which declares no virtual, so a slot number means nothing between them.
 | 32 | `Virtual80` (was `AfterClsn`) | `InitMainScreenBg` | high | It does the same for main-engine BG1 with screen map 0x67. |
 | 33 | `Virtual84` | `InitEngines` | high | It sets graphics modes, VRAM banks, the BG/OBJ character files and palettes, and registers the graph callback. (`InitDisplay` was already taken by Trampoline's own method.) |
 | 34 | `Virtual88(int,int,int,int)` | `PaintSquare` | high | It paints a size x size square of one 4bpp palette index into the brush's BG layer. The line rasteriser `Mg_DrawLine` calls it once per point. |
-| 35 | `Virtual8C` | `IsAltVariant` | medium | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. Which menu rows set that byte has not been checked against the menu table. |
+| 35 | `Virtual8C` | `IsAltVariant` | high, seen | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. The menu passes `MgEntry::sceneParam` as param1: the second entries of Amida, Snowball, Smartball, Coin, Panel and Slot1 set the byte, and the two Snowballs were seen starting with 0x0a00 and 0x2201 (pass 4). |
 
 Still open for the graph callbacks: what the engine's four `dGraph_c::callback_c`
 slots are for. The arm9 dispatchers are `func_02019390` (slot 0),
@@ -423,9 +423,8 @@ Medium confidence:
   - **Drawing:** `TrmpLine_Draw`/`DrawAll`.
   - **Behaviour:** the three states `StateFade`, `StateSettle` and `StateFlex`, each with its setter; `TrmpLine_PushJumper` applies the line's spring to the jumper.
   - **Setup:** `TrmpLine_CreateStartLineT1/T2`, the line each game starts with.
-- **`TrmpItem_*`, medium confidence.** The bouncing items of Trampoline2.
+- **`TrmpItem_*`.** The bouncing items of Trampoline2; the layout is in `include/TrmpItem.h` (pass 5).
   - The nine motions, indexed by the item's kind byte (+0x98, `mMotionKind`), are named from their code (pass 5): `MotionStill`, `MotionPatrol` (moves along x, reversing at a size-dependent range), `MotionBob` (moves along y between two heights), `MotionSpin` (turns its facing 0x100 a frame), `MotionSway` (x speed flips with a phase), `MotionSpinSway`, `MotionHover` (y speed flips with a faster phase), `MotionSpinHover` and `MotionSpinDrift` (spins like MotionSpin but keeps its vertical speed). Each has its `SetMotion*`. What each item looks like is still not observed.
-  - What each kind looks like is not observed.
 
 **Curling (`dScMgCurling_c`).** Named mostly from the bodies' own comments, high confidence.
 - **Scene:** `Scene_StartRound`, `Scene_Play`, `Scene_Score`, `Scene_End`, `Scene_Idle`.
