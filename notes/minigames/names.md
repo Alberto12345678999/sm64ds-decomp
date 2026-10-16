@@ -348,12 +348,12 @@ Medium confidence:
 functions on a `char *` view of the scene, so each name carries the `Pachinko`
 prefix.
 
-Six tables, named by index:
-- `PachinkoBg_State0..3`: the board scroll.
-- `PachinkoFlyer_State0..4`: a crossing flyer that plays looped sound 0x189.
-- `PachinkoPipe_State0..3`
-- `PachinkoBall_State0..6`: the enemies that aim at a live target.
-- `PachinkoBobOmb_State0..4`: grab, aim, fly, hit, remove.
+The five state tables' handlers are named from their bodies (pass 6; they were `PachinkoBg_State0..3`, `PachinkoFlyer_State0..4`, `PachinkoPipe_State0..3`, `PachinkoBall_State0..6` and `PachinkoBobOmb_State0..4`):
+- **The board scroll (BG2):** `PachinkoBg_StateWaiting` (its delay), `StateRiseIn`, `StateScroll` (left until x -0x90), `StateSinkOut` (then hides BG2 and the deco and waits 0x258 frames again).
+- **The flyer (Lakitu, seen):** `PachinkoFlyer_StateWaiting` (delay, then sound 0x188 and a random side), `StateDescend`, `StateCross` (looped sound 0x189; at the far edge it turns), `StatePause`, `StateLeave`.
+- **The pipes:** `PachinkoPipe_StatePick` (rolls rise or sink), `StateRise`, `StateSink`, `StateIdle` (an eight-frame loop that counts laps).
+- **The enemies:** `PachinkoBall_StateWaiting`, `StateFall`, `StateSpinAway` (spirals off screen with sound 0x187), `StatePop` (a burst and sound 0x18b, then removed). Medium: `StateDrift` (also picks a sideways speed), `StateDive` (falls faster as the wave rises and faces its velocity), `StateGlide` (drifts and turns to face down); the three move differently, and the names say how.
+- **The slingshot Bob-omb:** `PachinkoBobOmb_StateWaitGrab`, `StateAim` (drag and release), `StateFlying`, `StateFallAway`, `StateRemove`.
 
 The other subsystems are named by what they draw and update:
 - `PachinkoTarget_*` (4 targets)
@@ -553,7 +553,7 @@ compare (all 45 TUs identical).
 - **`mFx[30]`:** **medium**. The hit bursts; `kind` 2 is the long animation.
 - **`mTarget[4]`:** **medium**. `sprite` is high: it indexes the target sprite table.
 - **`mFlyer[1]` and `mBg[1]`:**
-  - **medium:** the fields. `vy` is high: `Flyer_State0` seeds it and `State1` adds it to y.
+  - **medium:** the fields. `vy` is high: `PachinkoFlyer_StateWaiting` seeds it and `StateDescend` adds it to y.
   - **low:** the one-element arrays, inferred the same way as Teresa's `mReveal`.
   - **seen:** the flyer is Lakitu and the targets are the four flowers (runtime-checks.md, 2026-10-15). "background" is still medium.
 - **0x5418..0x5958:** no reconstructed function touches it.

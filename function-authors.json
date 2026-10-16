@@ -24547,19 +24547,19 @@
     },
     "ov006:0x020fa9c8": {
       "author": "tangosdev",
-      "name": "PachinkoBg_State3"
+      "name": "PachinkoBg_StateSinkOut"
     },
     "ov006:0x020faac8": {
       "author": "tangosdev",
-      "name": "PachinkoBg_State2"
+      "name": "PachinkoBg_StateScroll"
     },
     "ov006:0x020fab70": {
       "author": "ruspecial",
-      "name": "PachinkoBg_State1"
+      "name": "PachinkoBg_StateRiseIn"
     },
     "ov006:0x020fac48": {
       "author": "lunavyqo",
-      "name": "PachinkoBg_State0"
+      "name": "PachinkoBg_StateWaiting"
     },
     "ov006:0x020fad34": {
       "author": "tangosdev",
@@ -24595,23 +24595,23 @@
     },
     "ov006:0x020fb0fc": {
       "author": "tangosdev",
-      "name": "PachinkoFlyer_State4"
+      "name": "PachinkoFlyer_StateLeave"
     },
     "ov006:0x020fb1c4": {
       "author": "tangosdev",
-      "name": "PachinkoFlyer_State3"
+      "name": "PachinkoFlyer_StatePause"
     },
     "ov006:0x020fb230": {
       "author": "lunavyqo",
-      "name": "PachinkoFlyer_State2"
+      "name": "PachinkoFlyer_StateCross"
     },
     "ov006:0x020fb45c": {
       "author": "ruspecial",
-      "name": "PachinkoFlyer_State1"
+      "name": "PachinkoFlyer_StateDescend"
     },
     "ov006:0x020fb4e0": {
       "author": "andrewboudreau",
-      "name": "PachinkoFlyer_State0"
+      "name": "PachinkoFlyer_StateWaiting"
     },
     "ov006:0x020fb60c": {
       "author": "tangosdev",
@@ -24679,19 +24679,19 @@
     },
     "ov006:0x020fc1f8": {
       "author": "tangosdev",
-      "name": "PachinkoPipe_State3"
+      "name": "PachinkoPipe_StateIdle"
     },
     "ov006:0x020fc2ec": {
       "author": "tangosdev",
-      "name": "PachinkoPipe_State2"
+      "name": "PachinkoPipe_StateSink"
     },
     "ov006:0x020fc500": {
       "author": "tangosdev",
-      "name": "PachinkoPipe_State1"
+      "name": "PachinkoPipe_StateRise"
     },
     "ov006:0x020fc718": {
       "author": "github-actions[bot]",
-      "name": "PachinkoPipe_State0"
+      "name": "PachinkoPipe_StatePick"
     },
     "ov006:0x020fc7d0": {
       "author": "tangosdev",
@@ -24723,31 +24723,31 @@
     },
     "ov006:0x020fce04": {
       "author": "tangosdev",
-      "name": "PachinkoBall_State6"
+      "name": "PachinkoBall_StatePop"
     },
     "ov006:0x020fcec4": {
       "author": "andrewboudreau",
-      "name": "PachinkoBall_State5"
+      "name": "PachinkoBall_StateSpinAway"
     },
     "ov006:0x020fd088": {
       "author": "tangosdev",
-      "name": "PachinkoBall_State4"
+      "name": "PachinkoBall_StateGlide"
     },
     "ov006:0x020fd17c": {
       "author": "andrewboudreau",
-      "name": "PachinkoBall_State3"
+      "name": "PachinkoBall_StateDive"
     },
     "ov006:0x020fd2d8": {
       "author": "lunavyqo",
-      "name": "PachinkoBall_State2"
+      "name": "PachinkoBall_StateDrift"
     },
     "ov006:0x020fd894": {
       "author": "tangosdev",
-      "name": "PachinkoBall_State1"
+      "name": "PachinkoBall_StateFall"
     },
     "ov006:0x020fd9cc": {
       "author": "tangosdev",
-      "name": "PachinkoBall_State0"
+      "name": "PachinkoBall_StateWaiting"
     },
     "ov006:0x020fda7c": {
       "author": "tangosdev",
@@ -24779,23 +24779,23 @@
     },
     "ov006:0x020fe2e4": {
       "author": "tangosdev",
-      "name": "PachinkoBobOmb_State0"
+      "name": "PachinkoBobOmb_StateWaitGrab"
     },
     "ov006:0x020fe394": {
       "author": "tangosdev",
-      "name": "PachinkoBobOmb_State1"
+      "name": "PachinkoBobOmb_StateAim"
     },
     "ov006:0x020fe750": {
       "author": "andrewboudreau",
-      "name": "PachinkoBobOmb_State2"
+      "name": "PachinkoBobOmb_StateFlying"
     },
     "ov006:0x020fe90c": {
       "author": "tangosdev",
-      "name": "PachinkoBobOmb_State3"
+      "name": "PachinkoBobOmb_StateFallAway"
     },
     "ov006:0x020fea54": {
       "author": "tangosdev",
-      "name": "PachinkoBobOmb_State4"
+      "name": "PachinkoBobOmb_StateRemove"
     },
     "ov006:0x020fea70": {
       "author": "lunavyqo",
