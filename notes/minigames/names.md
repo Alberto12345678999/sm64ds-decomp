@@ -587,3 +587,28 @@ row says otherwise; "seen" marks a name checked in play.
 
 - **`MgEntry::sceneParam`** (`dScMiniGm_c`, was `unk4`): high. `StartSceneFade(id, sceneParam, 0)` opens the game with it as param1, and its low byte is what `IsAltVariant` tests (seen: the two Snowballs, runtime-checks.md).
 - **Teresa's `FoundNumber` and `VanishPuff`, Pachinko2's `UpdateNextBall`, Hanachan's `Wiggler_DrawTarget`/`Wiggler_DrawField`:** see those games' entries above.
+
+## Pass 5 (2026-10-16): offsets, layouts and globals
+
+**Functions.** The last unnamed functions are named: `AnyBombMarching` (Bomroom), `BigBoo_SetDone` (Teresa), `Pachinko_UpdateNextBall`, `Trmp2Mario_EnterAll` and `Coin_Construct`. Every function defined in `src/minigames/` now has a real name.
+
+**Offset reads to members.** `*(T *)(alias + 0xNNN)` reads were rewritten to the declared member wherever the cast width and signedness match the field and the function's bytes do not move (bisected per function against strict byte equality). About 190 sites in the scene classes, through `this` aliases, typed and macro views, and indexed records (`mBalls[i].x`). The functions that moved keep their offsets; most are the loops the file comments mark as codegen-pinned.
+
+**Recovered layouts.** Four record types had no header; each layout is recovered from the helpers that use it (every offset is read at one width) and named from those uses. The helpers read them through cast macros, the pattern `PACHINKO()` already used:
+
+| Header | Record | Size | Sites |
+|---|---|---|---|
+| `dMgTrmpln2Mario_c.h` | Trampoline2's Mario | 0xdc | 231 |
+| `dMgTrmpln3DMario_c.h` | Trampoline's Mario | 0xd0 | 241 |
+| `Heyho.h` | a Jump Shy Guy (coined name) | 0xf0 | 301 |
+| `TrmpLine.h` | a drawn trampoline line (coined name) | 0x32c | 100 |
+
+The two Marios share their first five fields with the line code's jumper view (`TrmpLine_PushJumper`): the contact normal, offset, half width and contact kind (0 none, 1 hit, 2 hard hit, 3 the line's end). A Mario's bounce scales by `halfWidth / (halfWidth + |offset|)`, so a centre hit bounces hardest.
+
+**Globals.** Named from their writers and readers (free data symbols, so no lineage rows):
+- the record pools and counts of each game that keeps one (trampoline Marios, items, lines, effects, spinners, Heyho, Jump2 popups) and their tuning (fall speed, gravity step, maximum rise speed);
+- 80 member-pointer dispatch tables, each after its handlers' common prefix (`sTeresaBooStateTable` holds `Boo_State0..7`);
+- 15 file handles, after the file each resolves to through `tools/asset_catalog.py` (`gEspCardWaitAnimFile` is `MG/esp_card_wait.bca`); handles with the 0x8000 bit stay unresolved;
+- the shared banner positions `dMgState_c` places each banner at, the digit sprite table, the 3D scenes' three cameras, and per-game state (card picks and lists, scores, deal progress, slot reel positions, sound note effects).
+
+**Left as they are.** Smartball's scene code is pinned by volatile and laundered spellings (see its file comments), so its offsets stay. The dealer, presenter and mascot records in `unit020bfec0`, and Trampoline2's item record, still read by offset: their embedded file and animation objects need more layout work. About 200 BSS globals and 650 initialized data symbols with few uses each, mostly sprite tables, keep their address names.
