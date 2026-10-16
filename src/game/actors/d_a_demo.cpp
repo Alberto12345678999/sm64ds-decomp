@@ -3815,10 +3815,9 @@ daDemo_c::anmModel_c::~anmModel_c()
 
 int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
 {
-    char *self = (char *)this;
-    *(SharedFilePtr**)(self + 0x5c) = fp;
-    BMD_File *f = (BMD_File *)Model::LoadFile(*(*(SharedFilePtr **)(self + 0x5c)));
-    return ((ModelBase *)self)->SetFile(f, 1, n) != 0 ? 1 : 0;
+    mFile = fp;
+    BMD_File *f = (BMD_File *)Model::LoadFile(*mFile);
+    return ((ModelBase *)this)->SetFile(f, 1, n) != 0 ? 1 : 0;
 }
 
 /* -------------------------------------------------------------------------- */
