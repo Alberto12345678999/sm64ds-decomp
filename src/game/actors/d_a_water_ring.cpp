@@ -87,12 +87,12 @@ void daWater_Ring_c::func_ov064_02119afc()
     isPlayer = (other->actorID == 0xbf);
     if (isPlayer == 0) return;
     {
-        const Vector3 &pos = *(const Vector3 *)&other->mPosX;
+        const Vector3 &pos = other->mPos;
         otherPos.x = pos.x;
         otherPos.y = pos.y;
         otherPos.z = pos.z;
     }
-    if (AngleDiff(mAngleX, Vec3_VertAngle((Vector3 *)&mPosX, &otherPos)) >= 0x3000)
+    if (AngleDiff(mAngleX, Vec3_VertAngle(&mPos, &otherPos)) >= 0x3000)
         return;
     if ((mRingType == 1 && ((mPrevPlayerAngle >> 16) & 1) != ((HorzAngleToCPlayer() >> 16) & 1))
         || mRingType != 1) {
@@ -198,7 +198,7 @@ int daWater_Ring_c::func_ov064_02119ecc(const State *state)
 // @symbol _ZN14daWater_Ring_c19func_ov064_02119f1cEv
 void daWater_Ring_c::func_ov064_02119f1c() {
     Vector3 v;
-    Vec3_Asr(&v, (Vector3 *)&mPosX, 3);
+    Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     mModel.ApplyOpacity(mOpacity, 1);
@@ -221,7 +221,7 @@ void daWater_Ring_c::OnPendingDestroy()
 int daWater_Ring_c::Render()
 {
     mTextureTransformer.Update(mModel.data);
-    mModel.Render((const Vector3 *)&mScaleX);
+    mModel.Render(&mScale);
     return 1;
 }
 

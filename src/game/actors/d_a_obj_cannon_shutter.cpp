@@ -18,8 +18,7 @@
  *   header method form size-DIFFs (0xb8 against the cartridge's 0xac).
  * - dBgActor_c::IsClsnInRangeOnScreen 6az (Behavior; header method form
  *   refused). No dBgCh::Init in this TU.
- * - (Vector3 *)&mPosX / mHomePosX: dActor_c stores the triples as scalars;
- *   grouping as Vector3 is a shared-header campaign.
+ * - (Vector3 *)&mHomePosX: the class stores its home triple as scalars.
  * - data_ov002_0210d7f4 CLPS: this TU consumes it, overlay .data owns it.
  *   S14: g_profile_CANNON_SHUTTER stays outside the licensed .text.
  * - func_ov002_020bc990: inbound from ov084 (daRedBombhei_c). No coined name.
@@ -178,11 +177,11 @@ int daObjCannonShutter_c::Behavior()
         }
         Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
         MulVec3Mat4x3(&slide, &data_020a0e68, &rotated);
-        AddVec3((Vector3 *)&mPosX, &rotated, (Vector3 *)&mPosX);
-        if (Vec3_Dist((Vector3 *)&mHomePosX, (Vector3 *)&mPosX) > 0xa000) {
+        AddVec3(&mPos, &rotated, &mPos);
+        if (Vec3_Dist((Vector3 *)&mHomePosX, &mPos) > 0xa000) {
             mOpenPhase = 1;                             /* past 10.0: go forward */
         }
-        if (Vec3_HorzDist((Vector3 *)&mHomePosX, (Vector3 *)&mPosX) > 0xc8000) {
+        if (Vec3_HorzDist((Vector3 *)&mHomePosX, &mPos) > 0xc8000) {
             /* Past 200.0 out: the cannon is clear. Tell every shutter. */
             daObjCannonShutter_c *other =
                 (daObjCannonShutter_c *)dActor_c::FindWithActorID(0xe, 0);

@@ -173,12 +173,12 @@ void daObjTbox_c::State0()
     int isPlayer = player->actorID;
     isPlayer = isPlayer == 0xbf;
     if (isPlayer != false) {
-        Vector3 *playerPosPtr = (Vector3 *)&player->mPosX;
+        Vector3 *playerPosPtr = &player->mPos;
         Vector3 playerPos;
         playerPos.x = playerPosPtr->x;
         playerPos.y = playerPosPtr->y;
         playerPos.z = playerPosPtr->z;
-        if (AngleDiff(Vec3_HorzAngle((Vector3 *)&mPosX, &playerPos), mAngleY) < 0x4000) {
+        if (AngleDiff(Vec3_HorzAngle(&mPos, &playerPos), mAngleY) < 0x4000) {
             int openCount = 0;
             int chestCount = 0;
             dActor_c *chest = FindWithActorID(0xd, 0);
@@ -205,9 +205,9 @@ void daObjTbox_c::State0()
                     func_02012790(0x26);
                 }
                 if (player->mIsUnderwater != 0)
-                    func_02012694(0x22, (Vector3 *)&mCamSpacePosX);
+                    func_02012694(0x22, &mCamSpacePos);
                 else
-                    func_02012694(0x20, (Vector3 *)&mCamSpacePosX);
+                    func_02012694(0x20, &mCamSpacePos);
                 SetState(1);
             } else {
                 mStateTimer = 0x5a;

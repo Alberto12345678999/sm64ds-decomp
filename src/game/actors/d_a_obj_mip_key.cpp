@@ -242,7 +242,7 @@ extern "C" int func_ov085_0212d108(daObj_Mip_Key_c *c)
     }
 
     zero = 0;
-    ppos = (Vector3*)(&player->mPosX);
+    ppos = &player->mPos;
     v.x = zero;
     v.y = zero;
     v.z = zero;
@@ -252,8 +252,8 @@ extern "C" int func_ov085_0212d108(daObj_Mip_Key_c *c)
     pp.x = ppos->x;
     pp.y = ppos->y;
     pp.z = ppos->z;
-    c->mPrevAngleY = Vec3_HorzAngle((Vector3*)&c->mPosX, &pp);
-    c->mPrevAngleX = Vec3_VertAngle((Vector3*)&c->mPosX, &pp);
+    c->mPrevAngleY = Vec3_HorzAngle(&c->mPos, &pp);
+    c->mPrevAngleX = Vec3_VertAngle(&c->mPos, &pp);
     v.z = 0x14000;
     Matrix4x3_FromRotationY(&data_020a0e68, c->mPrevAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, c->mPrevAngleX);
@@ -298,7 +298,7 @@ extern "C" void func_ov085_0212d2b8(daObj_Mip_Key_c *thiz)
     // Preserve the measured flat 48-byte copy until the shared type is resolved.
     typedef struct { int w[12]; } MipKeyM48;
     Vector3 v;
-    Vec3_Asr(&v, (Vector3*)&thiz->mPosX, 3);
+    Vec3_Asr(&v, &thiz->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         thiz->mAngleX, thiz->mAngleY, thiz->mAngleZ);

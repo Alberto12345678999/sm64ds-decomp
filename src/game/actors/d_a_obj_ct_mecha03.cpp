@@ -150,7 +150,7 @@ int daObjCtMecha03_c::Behavior()
     if (data_0209f2c0 != 3) {
         if ((u16)mSoundTimer != 0) {
             if (DecIfAbove0_Short((u16 *)&mSoundTimer) == 0) {
-                Sound::PlayBank3(0x38, *(Vector3 *)&mCamSpacePosX);
+                Sound::PlayBank3(0x38, mCamSpacePos);
             }
         }
         if (DecIfAbove0_Short((u16 *)&mPauseTimer) == 0) {
@@ -242,7 +242,7 @@ void daObjCtMecha03_c::func_ov065_02119fe8()
     armOffset.z = 0;
     Matrix4x3_FromRotationZXYExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     MulVec3Mat4x3(&armOffset, &data_020a0e68, &bobPos);
-    AddVec3(&bobPos, (Vector3 *)&mPosX, &bobPos);
+    AddVec3(&bobPos, &mPos, &bobPos);
     {
         int bobY = bobPos.y;
         pos.x = bobPos.x;

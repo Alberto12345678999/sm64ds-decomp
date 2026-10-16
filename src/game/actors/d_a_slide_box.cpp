@@ -245,8 +245,7 @@ int daSlide_Box_c::Behavior()
             if (vel < 0)
                 vel = -vel;
             if (vel > kSoundSpeed) {
-                mSoundID = Sound::PlayLong(
-                    mSoundID, kSoundPlayer, kRollSound, *(Vector3 *)&mCamSpacePosX, 0);
+                mSoundID = Sound::PlayLong(mSoundID, kSoundPlayer, kRollSound, mCamSpacePos, 0);
             }
         }
         break;

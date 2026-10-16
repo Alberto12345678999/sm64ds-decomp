@@ -246,7 +246,7 @@ int daWbm_c::Behavior()
 int daWbm_c::Render()
 {
     if (mVariant != 0) {
-        mModel.Render((Vector3 *)&mScaleX);
+        mModel.Render(&mScale);
     }
     return 1;
 }
@@ -310,12 +310,12 @@ void daWbm_c::StateDrop()
     if (player == 0)
         return;
     {
-        const Vector3 &pos = *(const Vector3 *)&player->mPosX;
+        const Vector3 &pos = player->mPos;
         spawnPos.x = pos.x;
         spawnPos.y = pos.y;
         spawnPos.z = pos.z;
     }
-    if (Vec3_HorzDist(&spawnPos, (Vector3 *)&mPosX) > 0x5dc000)
+    if (Vec3_HorzDist(&spawnPos, &mPos) > 0x5dc000)
         return;
     playerY = spawnPos.y;
     bombY = mPosY;
@@ -373,7 +373,7 @@ void daWbm_c::StateBounce()
             mHorzSpeed = 0x6000;
             player = ClosestPlayer();
             if (player != 0) {
-                mPrevAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
+                mPrevAngleY = Vec3_HorzAngle(&mPos, &player->mPos);
             } else {
                 Burst();
                 return;
@@ -443,8 +443,8 @@ void daWbm_c::Burst()
 {
     int i;
     for (i = 0; i < 5; i++) {
-        dActor_c *frag = dActor_c::Spawn(ACTOR_WATERBOMB, 2, *(const Vector3 *)&mPosX,
-                                      (const Vector3_16 *)0, mAreaId, -1);
+        dActor_c *frag =
+            dActor_c::Spawn(ACTOR_WATERBOMB, 2, mPos, (const Vector3_16 *)0, mAreaId, -1);
         frag->unk_0a4 = 0;
         frag->mVertSpeed = 0x14000;
         frag->unk_0ac = 0;
@@ -462,7 +462,7 @@ void daWbm_c::Burst()
 void daWbm_c::func_ov098_0213b584()
 {
     Vector3 shadowPos;
-    Vec3_Asr(&shadowPos, (Vector3 *)&mPosX, 3);
+    Vec3_Asr(&shadowPos, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shadowPos.x, shadowPos.y, shadowPos.z);
     mShadowMat = data_020a0e68;
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);

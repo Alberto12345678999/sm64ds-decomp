@@ -36,7 +36,6 @@
  *   callbacks.
  * - data_ov021_* handles, data_02092768, data_020a0e68 and data_02082214
  *   stay address names (__sinit_ov021_02113500 owns the handles).
- *   dActor_c has no Pos(), so callers cast &mPosX.
  */
 
 #include "daObjCvNewsLift_c.h"
@@ -132,7 +131,7 @@ void daObjCvNewsLift_c::OnMainMeshRide(dActor_c *player)
         data_020a0e68 = mClsnMat;
         InvMat4x3(&data_020a0e68, &data_020a0e68);
         Vector3 inFrame;
-        MulVec3Mat4x3((Vector3 *)&player->mPosX, &data_020a0e68, &inFrame);
+        MulVec3Mat4x3(&player->mPos, &data_020a0e68, &inFrame);
         inFrame.y *= 0x30;
         Vector3 axis;
         axis.x = 0;
@@ -242,7 +241,7 @@ s32 daObjCvNewsLift_c::InitResources()
     for (int i = 0; i < 4; i++)
         mPlatformColliders[i].Enable(this);
 
-    mHomePos = *(Vector3 *)&mPosX;
+    mHomePos = mPos;
 
     Vector3 probePos;
     probePos.x = mPosX;
@@ -310,7 +309,7 @@ s32 daObjCvNewsLift_c::Behavior()
         }
     } else {
         if (mLoweredPlatform != -1) {
-            mMotorSound = Sound::PlayLong(mMotorSound, 3, 0x88, *(Vector3 *)&mCamSpacePosX, 0);
+            mMotorSound = Sound::PlayLong(mMotorSound, 3, 0x88, mCamSpacePos, 0);
             mPrevAngleY = data_ov021_02114740[mLoweredPlatform];
             mHorzSpeed = 0x5000;
             rayStart[0].x = 0; rayStart[0].y = -0xa000; rayStart[0].z = 0x10e000;
@@ -344,8 +343,8 @@ s32 daObjCvNewsLift_c::Behavior()
                     ahead.z += 0x28000;
                     MulVec3Mat4x3(start, &data_020a0e68, from);
                     MulVec3Mat4x3(&ahead, &data_020a0e68, to);
-                    AddVec3(from, (Vector3 *)&mPosX, from);
-                    AddVec3(to, (Vector3 *)&mPosX, to);
+                    AddVec3(from, &mPos, from);
+                    AddVec3(to, &mPos, to);
                     start++; from++; to++;
                 }
             }
@@ -365,7 +364,7 @@ s32 daObjCvNewsLift_c::Behavior()
                             mHorzSpeed = 0;
                             mBumped = 1;
                             mWobbleTimer = 60;
-                            Sound::PlayBank3(hitSound, *(Vector3 *)&mCamSpacePosX);
+                            Sound::PlayBank3(hitSound, mCamSpacePos);
                         }
                         to++; from++; line++;
                     }
@@ -381,10 +380,10 @@ s32 daObjCvNewsLift_c::Behavior()
         }
     }
     Quaternion_SLerp(&mRotation[0], &mTargetRotation[0], 0x199, &mRotation[0]);
-    if (Vec3_Equal((Vector3 *)&mPosX, &mHomePos))
+    if (Vec3_Equal(&mPos, &mHomePos))
         mResetTimer = 300;
     if (!DecIfAbove0_Short(&mResetTimer)) {
-        *(Vector3 *)&mPosX = mHomePos;
+        mPos = mHomePos;
         mRotation[0] = *(volatile s32 *)&data_02092768[0];
         mRotation[1] = *(volatile s32 *)&data_02092768[1];
         mRotation[2] = *(volatile s32 *)&data_02092768[2];
@@ -410,7 +409,7 @@ s32 daObjCvNewsLift_c::Behavior()
     mPlayerOnMesh = 0;
     mHorzSpeed = 0;
     if (mPrevLoweredPlatform != mLoweredPlatform)
-        Sound::PlayBank3(0x3e, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(0x3e, mCamSpacePos);
     mPrevLoweredPlatform = mLoweredPlatform;
     return 1;
 }

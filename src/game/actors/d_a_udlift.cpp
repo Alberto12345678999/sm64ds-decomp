@@ -44,12 +44,12 @@
  *   fields directly shrinks InitResources 0x18c->0x184 and drops the two
  *   call relocs.
  * - StateStop, StateStopAtBottom: Earthquake copies mPos into a stack
- *   Vector3. Passing (Vector3 *)&mPosX shrinks each function 0x74->0x54
+ *   Vector3. Passing &mPos shrinks each function 0x74->0x54
  *   and stops emitting _ZN7Vector3D1Ev, which this TU deadstrips. A shared
  *   Land() is not inlined. It is emitted as _Z4LandR10daUdlift_ci and both
  *   states shrink to 0x10.
- * - StateMoveDown: one Vector3& over mCamSpacePosX, shared by PlayLong and
- *   PlayBank3, grows the function 0x120->0x124. The two puns stay. A
+ * - StateMoveDown: one Vector3& over mCamSpacePos, shared by PlayLong and
+ *   PlayBank3, grows the function 0x120->0x124. Both calls name it. A
  *   CamPos() helper is emitted as _Z6CamPosR10daUdlift_c and grows
  *   StateMoveUp 0xd0->0xd4, StateMoveDown 0x120->0x12c, and both stops
  *   0x74->0x78.
@@ -332,7 +332,7 @@ void daUdlift_c::StateWait()
 /* State 1, climbing: speed up toward 10 units a frame and stop at mTopY. */
 void daUdlift_c::StateMoveUp()
 {
-    Vector3 &camPos = *(Vector3 *)&mCamSpacePosX;
+    Vector3 &camPos = mCamSpacePos;
     mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, camPos, 0);
     ApproachLinear(mVertSpeed, (10 << 12), (2 << 12));
     mPosY += mVertSpeed;
@@ -357,13 +357,12 @@ void daUdlift_c::StateMoveUp()
  * mBottomY. */
 void daUdlift_c::StateMoveDown()
 {
-    mSoundHandle = Sound::PlayLong(
-        mSoundHandle, 3, 0x82, *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, mCamSpacePos, 0);
     /* UDLIFT plays a one-shot (bank 3, id 0x40) on the first frame. The (int) flag keeps the
        branch; a plain compare shrinks this function. One Vector3& shared
-       with PlayLong also grows it, so the second pun stays. */
+       with PlayLong also grows it, so this call names mCamSpacePos again. */
     if (mStateTimer == 0 && (int)(actorID == UDLIFT) != 0)
-        Sound::PlayBank3(0x40, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(0x40, mCamSpacePos);
 
     ApproachLinear(mVertSpeed, -(10 << 12), -(2 << 12));
     mPosY += mVertSpeed;
@@ -394,7 +393,7 @@ void daUdlift_c::StateStopAtBottom()
 {
     mVertSpeed = 0;
     if (mStateTimer == 0) {
-        Vector3 &camPos = *(Vector3 *)&mCamSpacePosX;
+        Vector3 &camPos = mCamSpacePos;
         Sound::PlayBank3(0x6b, camPos);
         /* memberwise stores: the (x,y,z) ctor form batches the loads */
         Vector3 pos;
@@ -414,7 +413,7 @@ void daUdlift_c::StateStop()
 {
     mVertSpeed = 0;
     if (mStateTimer == 0) {
-        Vector3 &camPos = *(Vector3 *)&mCamSpacePosX;
+        Vector3 &camPos = mCamSpacePos;
         Sound::PlayBank3(0x6b, camPos);
         Vector3 pos;
         pos.x = mPosX;

@@ -35,8 +35,8 @@
  * Leftover: Matrix4x3_FromRotationXYZExt has no shared header.
  * Leftover: Vec3_Sub / LenVec3 / Vec3_HorzAngle / Vec3_Dist / AngleDiff:
  *   no shared header this TU can take without a campaign.
- * Leftover: (Vector3 *)&mPosX / &mRestPosX / &mHitPosX / &mCamSpacePosX:
- *   dActor_c stores the triples as scalars (issue #2566).
+ * Leftover: (Vector3 *)&mRestPosX / &mHitPosX: the class stores those
+ *   triples as scalars (issue #2566).
  * Leftover: sine table data_02082214 (arm9).
  * Leftover: no return new -- this class is abstract; the leaves own
  *   classInit.
@@ -218,10 +218,10 @@ extern "C" int func_ov080_0212714c(daObjMaruta_c *self, int *maxDist)
                     self->mRollAngVel = 0x100;
             }
         }
-        if (Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX) < 0x2000)
+        if (Vec3_Dist(&self->mPos, (Vector3 *)&self->mRestPosX) < 0x2000)
             self->mRollAngVel = 0;
     } else {
-        horz = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mHitPosX);
+        horz = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->mHitPosX);
         AngleDiff(horz, self->mAngleY);
         ang = AngleDiff(horz, self->mAngleY);
         if (ang > 0x4000) {
@@ -246,9 +246,9 @@ extern "C" int func_ov080_0212714c(daObjMaruta_c *self, int *maxDist)
         self->mHorzSpeed = (d / 64) << 12;
     }
     self->UpdatePos(0);
-    Vec3_Sub(&tmp, (Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX);
+    Vec3_Sub(&tmp, &self->mPos, (Vector3 *)&self->mRestPosX);
     len = LenVec3(&tmp);
-    ang = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX);
+    ang = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->mRestPosX);
     ang = AngleDiff(ang, self->mAngleY);
     if (ang >= 0x7f00)
         ang = 0x8000;
@@ -270,7 +270,7 @@ extern "C" int func_ov080_0212714c(daObjMaruta_c *self, int *maxDist)
         int mask = 0x1fff;
         if ((self->mAngleX & mask) < 0x210 && self->mRollAngVel != 0) {
             if (self->mSoundTimer == 0) {
-                Sound::PlayBank3(0x25, *(const Vector3 *)&self->mCamSpacePosX);
+                Sound::PlayBank3(0x25, self->mCamSpacePos);
                 self->mSoundTimer = 0xe;
             }
         } else {
@@ -313,11 +313,10 @@ extern "C" int func_ov080_021274ac(daObjMaruta_c *self, ResourceDescriptor *arg)
     self->mRestPosX = self->mPosX;
     self->mRestPosY = self->mPosY;
     self->mRestPosZ = self->mPosZ;
-    Vec3_Sub(&d, (Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX);
+    Vec3_Sub(&d, &self->mPos, (Vector3 *)&self->mRestPosX);
     LenVec3(&d);
-    self->mPathAngDiff = AngleDiff(
-        Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX),
-        self->mAngleY);
+    self->mPathAngDiff =
+        AngleDiff(Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->mRestPosX), self->mAngleY);
     return 1;
 }
 
@@ -336,7 +335,7 @@ extern "C" void func_ov080_0212758c(daObjMaruta_c *self, dActor_c *other)
 
     t = (*(volatile u16 *)&other->actorID == 0xbf);
     if (t != 0) {
-        Vector3 *position = (Vector3 *)&other->mPosX;
+        Vector3 *position = &other->mPos;
         self->mHitPosX = position->x;
         self->mHitPosY = position->y;
         self->mHitPosZ = position->z;

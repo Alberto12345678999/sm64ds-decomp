@@ -32,9 +32,8 @@
  */
 
 // leftovers:
-// - func_ov064_02118da0 keeps its `(int)this + 0x336` byte increment and its
-//   Vec-typed read of the manager's position; spelling either as a plain
-//   member changes the bytes.
+// - func_ov064_02118da0 keeps its Vec-typed read of the manager's position;
+//   spelling it as a plain member changes the bytes.
 // - Behavior's IsClsnInRange call keeps its mangled free-function form
 //   (Fix12 by value).
 // - Model::LoadFile and dBgW_KcMbg::SetFile stay ABI-exact free
@@ -360,7 +359,7 @@ void daObjFl_Puzzle_c::func_ov064_02118e24(int a1, int a2, int a3)
 
     if (st == 0x14) {
         mShakeOffsetY = 0;
-        _ZN5Sound9PlayBank3EjRK7Vector3(0xe7, (const struct Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0xe7, &mCamSpacePos);
     }
 
     if ((int)mStepTimer >= a3 + 0x14) {
@@ -398,7 +397,7 @@ void daObjFl_Puzzle_c::func_ov064_02118da0(){
     a->mPosY = y;
     a->mPosZ = z;
     mStepActive = 0;
-    *(unsigned char*)(((int)this + 0x336)) = *(unsigned char*)(((int)this + 0x336)) + 1;   /* mState++ */
+    mState++;
     return;
   }
   MarkForDestruction();
@@ -455,7 +454,7 @@ void daObjFl_Puzzle_c::func_ov064_02118cd4() {
  * mPuzzleManagerID and bumps the manager's live-coin count. */
 void daObjFl_Puzzle_c::func_ov064_02118c48()
 {
-    dActor_c* spawned = dActor_c::Spawn(ACTOR_ID_COIN, 2, *(const Vector3*)&mPosX, 0, mAreaId, -1);
+    dActor_c *spawned = dActor_c::Spawn(ACTOR_ID_COIN, 2, mPos, 0, mAreaId, -1);
     daObjFl_Coin_c* found;
     if (spawned == 0)
         return;

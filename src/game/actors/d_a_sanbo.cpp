@@ -41,8 +41,6 @@
  *   choose a 0 or 0x5a regrowth delay. func_ov096_021365d4 clears it
  *   once three segments exist. It stays unk_ until that role is
  *   measured past those two stores.
- *   - dActor_c has no Pos(). Spawn and PlayBank0 take the
- *   mPosX and mCamSpacePosX triples through a Vector3 pun.
  *   - unk_0a4 and unk_0ac keep dActor_c's names.
  *   func_ov096_02135e2c multiplies them by the floor normal.
  *   - func_ov096_02135948 keeps five int[3] positions. One
@@ -220,7 +218,7 @@ int daSanbo_c::Render()
     int b = ((f & 0x40000) != 0);
     if(b) return 1;
     Model *model = &mModel;
-    model->Render((const Vector3 *)&mScaleX);
+    model->Render(&mScale);
     return 1;
 }
 
@@ -309,7 +307,6 @@ int daSanbo_c::func_ov096_02136754()
         func_ov096_02136928(1);
     } else {
         int offset = 0xe000;
-        int round;
         int vy;
         int clamped;
         s16 *tbl;
@@ -338,16 +335,15 @@ int daSanbo_c::func_ov096_02136754()
         tbl = data_02082214;
         mAngleY = next->mAngleY;
         next = mNextSegment;
-        cs = (s16)(next->mSegAngY + 0x13000);
-        round = 0x800;
-        mSegAngY = cs;
+        s16 segAng = (s16)(next->mSegAngY + 0x13000);
+        mSegAngY = segAng;
         ang = (u16)mSegAngY;
         cs = tbl[(ang >> 4) * 2];
-        mOffsetX = (int)(((s64)cs * offset + round) >> 12);
+        mOffsetX = FX_MUL(cs, offset);
         mOffsetY = 0;
         ang = (u16)mSegAngY;
         sn = tbl[(ang >> 4) * 2 + 1];
-        mOffsetZ = (int)(((s64)sn * offset + round) >> 12);
+        mOffsetZ = FX_MUL(sn, offset);
     }
     func_ov096_02135948();
     mdCcAc_c.Clear();
@@ -395,9 +391,7 @@ int daSanbo_c::func_ov096_021365d4()
     func_ov096_021358c8();
     if (func_ov096_02135838() < 4) {
         if (DecIfAbove0_Byte(&mTimer) == 0) {
-            dActor_c *spawned = dActor_c::Spawn(SANBO_BODY, uniqueID,
-                *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX,
-                mAreaId, -1);
+            dActor_c *spawned = dActor_c::Spawn(SANBO_BODY, uniqueID, mPos, &mAngle, mAreaId, -1);
             if (spawned != 0) {
                 mNextSegment = (daSanbo_c *)spawned;
                 func_ov096_02136928(4);
@@ -424,8 +418,7 @@ int daSanbo_c::func_ov096_02136534()
     int head = (actorID == SANBO_HEAD);
 
     if (head != 0) {
-        dActor_c::Spawn(0x122, 2, *(Vector3 *)&mPosX, (Vector3_16 *)0,
-            mAreaId, -1);
+        dActor_c::Spawn(0x122, 2, mPos, (Vector3_16 *)0, mAreaId, -1);
     }
     func_ov096_02135800();
     mPrevAngleY = Vec3_HorzAngle(&mHitActor->mPosX, &mPosX);
@@ -513,19 +506,16 @@ int daSanbo_c::func_ov096_02136264()
     if (!next) {
         func_ov096_02136928(1);
     } else {
+        int fullHeight = 0x6e000;
         int scale = next->mScaleX;
-        /* Spelled out: FX_MUL at the use moves the multiply and changes the bytes. */
-        s64 prod = (s64)scale * 0x6e000;
-        int raised;
+        int raised = FX_MUL(scale, fullHeight);
         int offset = 0xe000;
-        int round = 0x800;
         s16 *tbl;
         s16 cs;
         s16 sn;
         u16 ang;
 
         mPosX = next->mPosX;
-        raised = (int)((prod + 0x800) >> 12);
         next = mNextSegment;
         mPosY = raised + next->mPosY;
         next = mNextSegment;
@@ -534,16 +524,16 @@ int daSanbo_c::func_ov096_02136264()
         next = mNextSegment;
         mAngleY = next->mAngleY;
         next = mNextSegment;
-        cs = (s16)(next->mSegAngY + 0x13000);
-        mSegAngY = cs;
+        s16 segAng = (s16)(next->mSegAngY + 0x13000);
+        mSegAngY = segAng;
         ang = (u16)mSegAngY;
         cs = tbl[(ang >> 4) * 2];
-        mOffsetX = (int)(((s64)cs * offset + round) >> 12);
+        mOffsetX = FX_MUL(cs, offset);
         mOffsetY = 0;
         ang = (u16)mSegAngY;
         sn = tbl[(ang >> 4) * 2 + 1];
-        mOffsetZ = (int)(((s64)sn * offset + round) >> 12);
-        if (raised == 0x6e000)
+        mOffsetZ = FX_MUL(sn, offset);
+        if (raised == fullHeight)
             func_ov096_02136928(0);
     }
     func_ov096_02135948();
@@ -559,9 +549,9 @@ int daSanbo_c::func_ov096_02136134()
     int rnd;
 
     if (head) {
-        dActor_c::Spawn(0x122, 2, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+        dActor_c::Spawn(0x122, 2, mPos, 0, mAreaId, -1);
     }
-    Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank0(9, mCamSpacePos);
     func_ov096_02135800();
     mPrevAngleY = Vec3_HorzAngle(&mHitActor->mPosX, &mPosX);
     rnd = RandomIntInternal(data_0209e650);
@@ -603,7 +593,7 @@ void daSanbo_c::func_ov096_02135efc()
         if (head) {
             int y;
 
-            Vec3_Asr(&cam, (struct Vector3 *)&mPosX, 3);
+            Vec3_Asr(&cam, &mPos, 3);
             Matrix4x3_FromTranslation(&data_020a0e68, cam.x, cam.y, cam.z);
 
             y = OnAimedAtWithEgg() >> 3;
@@ -646,12 +636,11 @@ void daSanbo_c::func_ov096_02135e2c(dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         static_cast<dBgPi *>(clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)n0);
         if (n0[1] != 0) {
-            /* Spelled out: FX_MUL drops ax / az, which renumbers the TU's @NNN objects. */
-            long long ax = (long long)n0[0] * (long long)unk_0a4;
-            long long az = (long long)n0[2] * (long long)unk_0ac;
-            int x = (int)((ax + 0x800) >> 12);
-            int z = (int)((az + 0x800) >> 12);
-            mVertSpeed = -(cstd::fdiv(x + z, n0[1]) + 0x8000);
+            int x = FX_MUL(n0[0], unk_0a4);
+            int z = FX_MUL(n0[2], unk_0ac);
+            int dot = x + z;
+            int slope = cstd::fdiv(dot, n0[1]);
+            mVertSpeed = -(slope + 0x8000);
         }
     }
     if (clsn->IsOnWall()) {
@@ -690,12 +679,12 @@ void daSanbo_c::func_ov096_02135948()
 
     if (FindEgg(mdCcAc_c) != 0 ||
         FindExplosionActor(mdCcAc_c) != 0) {
-        Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         func_ov096_02135800();
         {
             int head = (actorID == SANBO_HEAD);
             if (head)
-                dActor_c::Spawn(0x122, 2, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+                dActor_c::Spawn(0x122, 2, mPos, 0, mAreaId, -1);
         }
         func_ov096_0213585c();
         return;
@@ -747,12 +736,12 @@ void daSanbo_c::func_ov096_02135948()
                 mParticle0, 0x13a, pos.x, pos.y, pos.z, 0, 0);
             mParticle1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
                 mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);
-            Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank0(9, mCamSpacePos);
             mHitActor = player;
             func_ov096_02136928(2);
         } else if ((flags & 0x26fe0) || player->IsOnShell() != 0 ||
                    player->mIsMetal != 0) {
-            Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank0(9, mCamSpacePos);
             mHitActor = player;
             func_ov096_02136928(2);
         } else if (mdCcAc_c.hitFlags & 0x10) {
@@ -840,17 +829,11 @@ void daSanbo_c::func_ov096_021358c8()
 // @symbol _ZN9daSanbo_c19func_ov096_02135878Ei
 int daSanbo_c::func_ov096_02135878(int x)
 {
-    int q;
-    long long m;
-    int r;
-
     if (x > 0x190000)
         return 0;
-    q = cstd::fdiv(0x4000, 0xc8000);
-    m = (long long)q * x;
-    m += 0x800;
-    r = (int)(m >> 12);
-    r = 0x8000 - r;
+    int rate = cstd::fdiv(0x4000, 0xc8000);
+    int drop = FX_MUL(rate, x);
+    int r = 0x8000 - drop;
     return (short)r;
 }
 

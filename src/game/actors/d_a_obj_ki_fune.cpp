@@ -118,7 +118,7 @@ int daObjKi_Fune_c::Behavior()
         *(s16 *)&mBobAngle += 0xda;
         mAngleX = (s16)((data_02082214[(mBobAngle >> 4) * 2] << 0xa) >> 0xc);
         if (DistToCPlayer() < 0xbb8000) {
-            mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8b, *(Vector3*)&mCamSpacePosX, 0);
+            mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8b, mCamSpacePos, 0);
         }
         func_ov016_021126a8();
         UpdateClsnPosAndRot();

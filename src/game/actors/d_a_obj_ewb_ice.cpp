@@ -187,7 +187,7 @@ extern "C" int func_ov073_02122034(char *raw)
     pos.y = y - kSplashDrop;
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x8b, pos.x, pos.y, pos.z);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x8c, pos.x, pos.y, pos.z);
-    func_02012694(0x172, (const Vector3 *)&ice->mCamSpacePosX);
+    func_02012694(0x172, &ice->mCamSpacePos);
     return 1;
 }
 
@@ -250,7 +250,7 @@ extern "C" int func_ov073_02122200(daObjEwbIce_c *ice)
         ice->mVertAccel = 0;
         ice->mVertSpeed = 0;
         if (ice->mTimer == kSinkSoundAt)
-            func_02012694(0x171, (const Vector3 *)&ice->mCamSpacePosX);
+            func_02012694(0x171, &ice->mCamSpacePos);
         if (ice->mTimer < kSinkSoundAt) {
             ice->mVertAccel = -kFallAccel;
             ApproachLinear(ice->mAngleX, kTiltTarget, kTiltStep);
@@ -337,7 +337,7 @@ void daObjEwbIce_c::Kill()
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa, pos.x, pos.y, pos.z);
     dust = pos;
     PoofDustAt(dust);
-    Sound::PlayBank3(0x41, *(const Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
 }
 
 // @symbol _ZN13daObjEwbIce_c16CleanupResourcesEv

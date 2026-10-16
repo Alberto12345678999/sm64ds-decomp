@@ -360,7 +360,7 @@ void daObjBlockS_c::func_ov098_02138344()
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
     if (mWithMeshClsn.IsOnGround() != 0) {
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x51, (struct Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
         DecIfAbove0_Byte(&mBounceCount);
         mVertSpeed = mBounceCount * 0xa000;
         mHorzSpeed = mBounceCount * 0x5000;
@@ -898,7 +898,7 @@ void daObjBlockS_c::Kill()
     ((int *)&vec2)[1] = ((int *)&vec)[1];
     ((int *)&vec2)[2] = ((int *)&vec)[2];
     _ZN8dActor_c19DisappearPoofDustAtERK7Vector3((char *)this, &vec2);
-    _ZN5Sound9PlayBank3EjRK7Vector3(0x41, (Vector3 *)&mCamSpacePosX);
+    _ZN5Sound9PlayBank3EjRK7Vector3(0x41, &mCamSpacePos);
     Crate_SetState(this, STATE_BROKEN);
 }
 
@@ -1086,7 +1086,7 @@ int daObjBlockS_c::func_ov098_02139228()
                 sd = _ZN4cstd4fdivEii(FX_MUL(v, 8), 0xa);
                 if (sd < 0) sd = -sd;
                 if (mVertSpeed > 0xa000)
-                    _ZN5Sound9PlayBank3EjRK7Vector3(0x51, (Vector3 *)&mCamSpacePosX);
+                    _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
                 if (mVertSpeed > sd)
                     mVertSpeed = sd;
             }
@@ -1097,7 +1097,8 @@ int daObjBlockS_c::func_ov098_02139228()
         && mClsnYOffsetTarget != 0xa0
         && mHorzSpeed > 0xa000) {
         _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
-        mSlideSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, (Vector3 *)&mCamSpacePosX, 0);
+        mSlideSoundHandle =
+            _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, &mCamSpacePos, 0);
     }
 
     {
@@ -1304,9 +1305,8 @@ int daObjBlockS_c::Behavior()
     }
 
     b2 = (enum Bool)((mFlags & ACTOR_FLAG_OFF_SCREEN) != 0);
-    if (b2 != FALSE
-        && Vec3_HorzDist((struct Vector3 *)&mPosX, (const struct Vector3 *)&mHomePosX)
-        && DistToCPlayer() > 0x7d0000) {
+    if (b2 != FALSE && Vec3_HorzDist(&mPos, (const struct Vector3 *)&mHomePosX) &&
+        DistToCPlayer() > 0x7d0000) {
         Crate_SetState(this, STATE_BROKEN);
         return 1;
     }

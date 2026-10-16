@@ -209,7 +209,7 @@ s32 daObjRc_Hane_c::Behavior()
        the low bits either way. */
     if (mPlaySound != 0) {
         if (mFrame == 0x40) {
-            Sound::PlayBank3(0x75, *(const Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x75, mCamSpacePos);
             mFrame = 0;
         }
     }
