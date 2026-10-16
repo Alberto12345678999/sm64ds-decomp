@@ -108,8 +108,8 @@ struct daKpaFire_c : dEnemyBase_c {
     int Render();
     int Behavior();
 
-    void func_ov060_0211747c();  /* variant 0 handler */
-    void func_ov060_021172e0();  /* variant 6/7 handler */
+    void func_ov060_0211747c(); /* variant 0 handler */
+    void func_ov060_021172e0(); /* variant 6/7 handler */
     int func_ov060_021172c8(unsigned int n);
     void func_ov060_0211722c();
     void func_ov060_021171e8();
