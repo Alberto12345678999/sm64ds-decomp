@@ -22483,31 +22483,31 @@
     },
     "ov006:0x020e071c": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c10Bit_State2Ei"
+      "name": "_ZN14dScMgCurling_c21Bit_StateFallSlowDownEi"
     },
     "ov006:0x020e07b0": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c10Bit_State1Ei"
+      "name": "_ZN14dScMgCurling_c20Bit_StateFallSpeedUpEi"
     },
     "ov006:0x020e0884": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c10Bit_State0Ei"
+      "name": "_ZN14dScMgCurling_c18Bit_StateFallStartEi"
     },
     "ov006:0x020e091c": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c11BitA_State3Ei"
+      "name": "_ZN14dScMgCurling_c19BitA_StateDriftStopEi"
     },
     "ov006:0x020e0a24": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c11BitA_State2Ei"
+      "name": "_ZN14dScMgCurling_c19BitA_StateDriftLeftEi"
     },
     "ov006:0x020e0b64": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c11BitA_State1Ei"
+      "name": "_ZN14dScMgCurling_c20BitA_StateDriftRightEi"
     },
     "ov006:0x020e0ca0": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c11BitA_State0Ei"
+      "name": "_ZN14dScMgCurling_c15BitA_StatePauseEi"
     },
     "ov006:0x020e0d84": {
       "author": "tangosdev",
@@ -22515,19 +22515,19 @@
     },
     "ov006:0x020e0e18": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c11BitB_State3Ei"
+      "name": "_ZN14dScMgCurling_c19BitB_StateDriftStopEi"
     },
     "ov006:0x020e0edc": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c11BitB_State2Ei"
+      "name": "_ZN14dScMgCurling_c19BitB_StateDriftLeftEi"
     },
     "ov006:0x020e0ff0": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c11BitB_State1Ei"
+      "name": "_ZN14dScMgCurling_c20BitB_StateDriftRightEi"
     },
     "ov006:0x020e1100": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c11BitB_State0Ei"
+      "name": "_ZN14dScMgCurling_c15BitB_StatePauseEi"
     },
     "ov006:0x020e1214": {
       "author": "andrewboudreau",
@@ -27495,31 +27495,31 @@
     },
     "ov006:0x0212972c": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c10Bit_State2Ei"
+      "name": "_ZN15dScMgSnowball_c21Bit_StateFallSlowDownEi"
     },
     "ov006:0x021297c0": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c10Bit_State1Ei"
+      "name": "_ZN15dScMgSnowball_c20Bit_StateFallSpeedUpEi"
     },
     "ov006:0x02129894": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c10Bit_State0Ei"
+      "name": "_ZN15dScMgSnowball_c18Bit_StateFallStartEi"
     },
     "ov006:0x0212992c": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitA_State3Ei"
+      "name": "_ZN15dScMgSnowball_c19BitA_StateDriftStopEi"
     },
     "ov006:0x02129a34": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitA_State2Ei"
+      "name": "_ZN15dScMgSnowball_c19BitA_StateDriftLeftEi"
     },
     "ov006:0x02129b74": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitA_State1Ei"
+      "name": "_ZN15dScMgSnowball_c20BitA_StateDriftRightEi"
     },
     "ov006:0x02129cb0": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitA_State0Ei"
+      "name": "_ZN15dScMgSnowball_c15BitA_StatePauseEi"
     },
     "ov006:0x02129d94": {
       "author": "tangosdev",
@@ -27527,19 +27527,19 @@
     },
     "ov006:0x02129e28": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitB_State3Ei"
+      "name": "_ZN15dScMgSnowball_c19BitB_StateDriftStopEi"
     },
     "ov006:0x02129eec": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitB_State2Ei"
+      "name": "_ZN15dScMgSnowball_c19BitB_StateDriftLeftEi"
     },
     "ov006:0x0212a000": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitB_State1Ei"
+      "name": "_ZN15dScMgSnowball_c20BitB_StateDriftRightEi"
     },
     "ov006:0x0212a110": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11BitB_State0Ei"
+      "name": "_ZN15dScMgSnowball_c15BitB_StatePauseEi"
     },
     "ov006:0x0212a224": {
       "author": "tangosdev",

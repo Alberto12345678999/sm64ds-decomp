@@ -2067,8 +2067,8 @@ void dScMgSnowball_c::Bit_DrawAll()
     }
 }
 
-// @symbol _ZN15dScMgSnowball_c10Bit_State2Ei
-void dScMgSnowball_c::Bit_State2(int idx){
+// @symbol _ZN15dScMgSnowball_c21Bit_StateFallSlowDownEi
+void dScMgSnowball_c::Bit_StateFallSlowDown(int idx) {
     char *c = (char *)this;
   int off = idx * 0x24;
   short* h = (short*)(c + 0xbeac + off);
@@ -2088,14 +2088,13 @@ void dScMgSnowball_c::Bit_State2(int idx){
   *(unsigned char*)(c + 0xb000 + off + 0xeb1) = 0;
 }
 
-// @symbol _ZN15dScMgSnowball_c10Bit_State1Ei
+// @symbol _ZN15dScMgSnowball_c20Bit_StateFallSpeedUpEi
 extern "C" {
 extern int RandomIntInternal(int* seed);
 extern int data_0209d4b8;
 
 }
-void dScMgSnowball_c::Bit_State1(int idx)
-{
+void dScMgSnowball_c::Bit_StateFallSpeedUp(int idx) {
     unsigned char *base = (unsigned char *)this;
     int off = idx * 0x24;
     int* pa = (int*)(base + 0xbea0 + off);
@@ -2118,12 +2117,12 @@ void dScMgSnowball_c::Bit_State1(int idx)
     }
 }
 
-// @symbol _ZN15dScMgSnowball_c10Bit_State0Ei
+// @symbol _ZN15dScMgSnowball_c18Bit_StateFallStartEi
 extern "C" {
 extern int RandomIntInternal(int* seed);
 extern int data_0209d4b8;
 }
-void dScMgSnowball_c::Bit_State0(int i) {
+void dScMgSnowball_c::Bit_StateFallStart(int i) {
     char *c = (char *)this;
   int idx = i * 0x24;
   unsigned int r;
@@ -2136,9 +2135,8 @@ void dScMgSnowball_c::Bit_State0(int i) {
   *(short*)(c + 0xbeac + idx) = (unsigned char)r;
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitA_State3Ei
-void dScMgSnowball_c::BitA_State3(int idx)
-{
+// @symbol _ZN15dScMgSnowball_c19BitA_StateDriftStopEi
+void dScMgSnowball_c::BitA_StateDriftStop(int idx) {
     char *self = (char *)this;
     int off = idx * 0x24;
     int *be94 = (int*)(self + 0xbe94 + off);
@@ -2165,14 +2163,13 @@ void dScMgSnowball_c::BitA_State3(int idx)
     *(unsigned char*)(self + 0xbeb0 + off) = 0;
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitA_State2Ei
+// @symbol _ZN15dScMgSnowball_c19BitA_StateDriftLeftEi
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 
 }
-void dScMgSnowball_c::BitA_State2(int i)
-{
+void dScMgSnowball_c::BitA_StateDriftLeft(int i) {
     char *base = (char *)this;
     int o = i * 0x24;
     unsigned short *aa8;
@@ -2207,14 +2204,13 @@ void dScMgSnowball_c::BitA_State2(int i)
     }
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitA_State1Ei
+// @symbol _ZN15dScMgSnowball_c20BitA_StateDriftRightEi
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 
 }
-void dScMgSnowball_c::BitA_State1(int index)
-{
+void dScMgSnowball_c::BitA_StateDriftRight(int index) {
     char *base = (char *)this;
     int i = index * 0x24;
     unsigned short v;
@@ -2248,15 +2244,14 @@ void dScMgSnowball_c::BitA_State1(int index)
     *(short *)(base + 0xbeaa + i) = (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) + 0x20 & 0xff;
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitA_State0Ei
+// @symbol _ZN15dScMgSnowball_c15BitA_StatePauseEi
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 extern unsigned char data_ov006_0212f3b0[];
 
 }
-void dScMgSnowball_c::BitA_State0(int i)
-{
+void dScMgSnowball_c::BitA_StatePause(int i) {
     char *o = (char *)this;
     int n = i * 0x24;
     if (*(unsigned short *)(o + 0xbea8 + n) != 0) {
@@ -2285,8 +2280,8 @@ void dScMgSnowball_c::Bit_RunKindA(int i) {
   (this->*sSnowballBitStateTable[idx1].pmf)(i);
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitB_State3Ei
-void dScMgSnowball_c::BitB_State3(int i){
+// @symbol _ZN15dScMgSnowball_c19BitB_StateDriftStopEi
+void dScMgSnowball_c::BitB_StateDriftStop(int i) {
     char *c = (char *)this;
   int o = i*0x24;
   char *b9c = c + 0xbe9c;
@@ -2312,9 +2307,8 @@ void dScMgSnowball_c::BitB_State3(int i){
   }
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitB_State2Ei
-void dScMgSnowball_c::BitB_State2(int idx)
-{
+// @symbol _ZN15dScMgSnowball_c19BitB_StateDriftLeftEi
+void dScMgSnowball_c::BitB_StateDriftLeft(int idx) {
     char *c = (char *)this;
     int n = idx * 0x24;
     unsigned short d;
@@ -2342,9 +2336,8 @@ void dScMgSnowball_c::BitB_State2(int idx)
     *(unsigned char *)(c + 0xbeb0 + n) = 3;
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitB_State1Ei
-void dScMgSnowball_c::BitB_State1(int index)
-{
+// @symbol _ZN15dScMgSnowball_c20BitB_StateDriftRightEi
+void dScMgSnowball_c::BitB_StateDriftRight(int index) {
     char *base = (char *)this;
     int n;
 
@@ -2376,15 +2369,14 @@ void dScMgSnowball_c::BitB_State1(int index)
     *(unsigned char *)(base + 0xbeb0 + index * 0x24) = 3;
 }
 
-// @symbol _ZN15dScMgSnowball_c11BitB_State0Ei
+// @symbol _ZN15dScMgSnowball_c15BitB_StatePauseEi
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 extern unsigned char data_ov006_0212f3ac[];
 
 }
-void dScMgSnowball_c::BitB_State0(int idx)
-{
+void dScMgSnowball_c::BitB_StatePause(int idx) {
     char *c = (char *)this;
     int n = idx * 0x24;
     unsigned short d;
@@ -2562,23 +2554,23 @@ extern "C" PMF_0212a2e0 sSnowballBitKindTable[3] = {
     &dScMgSnowball_c::Bit_RunKindA,
 };
 extern "C" PMF_0212a224 sSnowballBitBStateTable[4] = {
-    &dScMgSnowball_c::BitB_State0,
-    &dScMgSnowball_c::BitB_State1,
-    &dScMgSnowball_c::BitB_State2,
-    &dScMgSnowball_c::BitB_State3,
+    &dScMgSnowball_c::BitB_StatePause,
+    &dScMgSnowball_c::BitB_StateDriftRight,
+    &dScMgSnowball_c::BitB_StateDriftLeft,
+    &dScMgSnowball_c::BitB_StateDriftStop,
 };
 /* Six slots so the symbol runs to the overlay bss end at 0x021430a0.
  * Only the first four are copied from descriptors; the tail stays zero. */
 Entry_02129d94 sSnowballBitAStateTable[6] = {
-    {&dScMgSnowball_c::BitA_State0},
-    {&dScMgSnowball_c::BitA_State1},
-    {&dScMgSnowball_c::BitA_State2},
-    {&dScMgSnowball_c::BitA_State3},
+    {&dScMgSnowball_c::BitA_StatePause},
+    {&dScMgSnowball_c::BitA_StateDriftRight},
+    {&dScMgSnowball_c::BitA_StateDriftLeft},
+    {&dScMgSnowball_c::BitA_StateDriftStop},
 };
 Entry_02129d94 sSnowballBitStateTable[3] = {
-    {&dScMgSnowball_c::Bit_State0},
-    {&dScMgSnowball_c::Bit_State1},
-    {&dScMgSnowball_c::Bit_State2},
+    {&dScMgSnowball_c::Bit_StateFallStart},
+    {&dScMgSnowball_c::Bit_StateFallSpeedUp},
+    {&dScMgSnowball_c::Bit_StateFallSlowDown},
 };
 
 // @symbol dScMgSnowball_c_classInit

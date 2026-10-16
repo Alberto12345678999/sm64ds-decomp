@@ -438,7 +438,7 @@ Medium confidence:
 - **Stones:** `Stone_WaitRelease`, `Stone_Slide`, `Stone_Collide`, `Stone_Drag`, `SeparateStones`, `ResolveStoneCollision`, `SetStoneSpin`, `BringOutNextStone`, `ClearStones`, `ScoreStones`.
 - **Aim:** `Aim_WaitTouch` and `Aim_Swing`.
 - **Houses:** `PickHouse` and `ResetHouse`.
-- **The falling bits (50 records):** `Bit_PickKind`, `Bit_RunKindA/B`, `Bit_State0..2`, `BitA_State0..3`, `BitB_State0..3`. These are named by index; what the bits are (snow?) is not observed.
+- **The falling bits (50 records):** `Bit_PickKind`, `Bit_RunKindA/B`, and the states named from their bodies in pass 6 (they were `Bit_State0..2`, `BitA_State0..3` and `BitB_State0..3`). The fall speed runs `Bit_StateFallStart` (picks a top speed), `StateFallSpeedUp` and `StateFallSlowDown`. The sideways sway runs `BitA_StatePause` (a random wait, then a direction), `StateDriftRight`, `StateDriftLeft` and `StateDriftStop`, up to 0x300; `BitB_*` is the same up to 0x400. In both `DriftLeft` handlers, reaching full leftward speed stores the full rightward speed (`vx = 0x300` / `0x400`); the bytes require it, and Snowball's copy does the same. What the bits are (snow?) is not observed.
 
 **Roulette (`dScMgRoulette_c`, Mushroom Roulette).** These are C-linkage free helpers with a `Roulette` prefix.
 - **`RouletteRacer_*`, high confidence:** the racers dealt onto the board, how they move to a tile, and the payout.
@@ -455,7 +455,7 @@ High confidence:
 
 Medium confidence:
 - `SnowSpray_*`: the 32 moving records at +0xba14.
-- The falling-bit machine, which has the same shape as Curling's and the same names (`Bit_*`, `BitA/B_State*`).
+- The falling-bit machine, which has the same shape as Curling's and the same names (`Bit_*`, `BitA/B_State*`; pass 6 named the states).
 
 **Cup, Jump2, Slots, Trampoline2 (one batch).**
 
