@@ -24,8 +24,6 @@
  * - _Znwj stays spelled: also a language limit. `::operator new` mangles
  *   _Znwm here (sizeof is unsigned long), which has no ROM home; the
  *   cartridge calls _Znwj.
- * - *(const Vector3 *)&mPosX: dActor_c carries position as three scalars
- *   with no Pos() accessor, so the Init call puns them TU-locally.
  * - data_ov002_02110a48 / data_ov002_0210abb8 / g_profile_TREE: overlay
  *   bss/data owns them (S14); this TU's delinks span is .text-only.
  * - data_0209f43c / data_0209b3ec: arm9 bss, the dClipper singleton and the
@@ -133,9 +131,8 @@ int daTree_c::InitResources()
     node->pos.z = mPosZ;
     Vec3_AsrInPlace(&node->pos, 3);
     node->pos.y += kCanopyLift;
-    _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-        &node->clsn, *(const Vector3 *)&mPosX, kClsnRadius, kClsnHeight,
-        kClsnFlags, 0);
+    _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(&node->clsn, mPos, kClsnRadius, kClsnHeight,
+                                               kClsnFlags, 0);
     node->next = *slot;
     *slot = node;
     if (node->next != 0) {

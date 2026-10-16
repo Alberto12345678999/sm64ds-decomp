@@ -587,7 +587,7 @@ int daObjHatenaBlock_c::Render()
         }
     }
     {
-        mModel.Render((const Vector3 *)&mScaleX);
+        mModel.Render(&mScale);
     }
 done:
     return 1;
@@ -880,7 +880,7 @@ void daObjHatenaBlock_c::func_ov102_021498e0()
             ((daSCoin_c *)held)->Collect();
         mHeldActor = 0;
     }
-    Sound::PlayBank3(0, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0, mCamSpacePos);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb, pos.x, pos.y, pos.z);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd, pos.x, pos.y, pos.z);
     typ = actorID;

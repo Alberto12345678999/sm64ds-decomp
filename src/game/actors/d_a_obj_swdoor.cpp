@@ -144,7 +144,7 @@ int func_ov002_020bac18(daObjSwdoor_c *self)
                 *(u8*)(c+0x320) = 0x40;
                 (*LM(c+0x31f))++;
                 *LMI(&self->mFlags) &= ~1;
-                Sound::PlayBank3(0x3f, *(Vector3 *)&self->mCamSpacePosX);
+                Sound::PlayBank3(0x3f, self->mCamSpacePos);
             }
         }
         break;

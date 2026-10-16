@@ -272,17 +272,15 @@ int daShark_c::Behavior()
 
         path.FromID(mPathID);
         path.GetNode(node, mPathNodeIdx);
-        Vec3_Sub(&difference, (Vector3 *)&mPosX, &node);
+        Vec3_Sub(&difference, &mPos, &node);
         distance = LenVec3(&difference);
         if (distance == 0 || distance <= 0x258000) {
             mPathNodeIdx++;
             if (mPathNodeIdx >= mPathNodeCount)
                 mPathNodeIdx = 0;
         }
-        ApproachLinear(mPrevAngleY,
-            Vec3_HorzAngle((Vector3 *)&mPosX, &node), 0x180);
-        ApproachLinear(mPrevAngleX,
-            Vec3_VertAngle((Vector3 *)&mPosX, &node), 0x40);
+        ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPos, &node), 0x180);
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, &node), 0x40);
         mAngleX = mPrevAngleX;
         mAngleY = mPrevAngleY;
         mAngleZ = mPrevAngleZ;
@@ -341,7 +339,7 @@ int daShark_c::InitResources()
         PathPtr path;
         path.FromID(mPathID);
         mPathNodeIdx = 1;
-        path.GetNode(*(Vector3 *)&mPosX, mPathNodeIdx);
+        path.GetNode(mPos, mPathNodeIdx);
     }
     func_ov090_021338b4(this, &data_ov090_021345cc);
     return 1;

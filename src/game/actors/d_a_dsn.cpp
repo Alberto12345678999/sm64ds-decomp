@@ -233,7 +233,7 @@ void daDsn_c::OnHitByMegaChar(Player &player)
     poofPosCopy.z = poofPos.z;
     PoofDustAt(poofPosCopy);
     MarkForDestruction();
-    func_02012694(0x1e, (const Vector3 *)&mCamSpacePosX);
+    func_02012694(0x1e, &mCamSpacePos);
 }
 
 // @symbol _ZN7daDsn_c16OnAimedAtWithEggEv

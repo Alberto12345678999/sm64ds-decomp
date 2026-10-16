@@ -20,8 +20,6 @@
  * - dBgCh_Actr_UpdateContinuous_Veneer: arm9's own 0x020383fc tail; no method.
  * - Vec3_Asr / Matrix4x3_* / ApproachLinear / ApproachLinear2 /
  *   DecIfAbove0_Byte: no header declares them; TU-local extern "C".
- * - (Vector3 *)&mPosX in func_ov002_020b2c44: dActor_c has no Pos() on this
- *   branch (#2513); the pun stays at the call, not as a leaf accessor.
  * - The *(short*)&mSwayAngle increment: the cartridge sign-extends it
  *   (ldrsh) while the index below zero-extends (ldrh). The plain u16
  *   re-read holds the reload (volatile disproved, FEATHER-2713-01).
@@ -261,9 +259,7 @@ void func_ov002_020b2c44(daFeather_c *c)
     Vector3 v;
     int b;
 
-    /* (Vector3 *)&mPosX: dActor_c has no Pos() on this branch (#2513), so
-       the three words are punned at the call. */
-    Vec3_Asr(&v, (Vector3 *)&c->mPosX, 3);
+    Vec3_Asr(&v, &c->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, c->mAngleY);
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, c->mAngleZ);

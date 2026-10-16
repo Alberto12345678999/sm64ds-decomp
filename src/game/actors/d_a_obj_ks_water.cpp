@@ -144,7 +144,7 @@ int daObjKsWater_c::Behavior()
         int d = mOriginalPosY - mPosY;
         if (d < 0) d = -d;
         if (d < 0x92e000) {
-            mSoundID = Sound::PlayLong(mSoundID, 3, 0x96, *(const Vector3 *)&mCamSpacePosX, 0);
+            mSoundID = Sound::PlayLong(mSoundID, 3, 0x96, mCamSpacePos, 0);
             mPosY -= 0x5000;
         }
     }

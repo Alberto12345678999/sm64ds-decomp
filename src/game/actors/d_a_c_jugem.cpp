@@ -284,7 +284,7 @@ int daC_Jugem_c::StateApproachMain()
 
     cam = (dCamera_c *)data_0209f318;
     cam->SetFlag_3();
-    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, *(::Vector3 *)&mCamSpacePosX, 0);
+    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
     ApproachLinear(mAngleY, Vec3_HorzAngle(&mPosX, &data_ov085_0213084c), 0x200);
     ApproachLinear(mAngleX, Vec3_VertAngle(&mPosX, &data_ov085_0213084c), 0x200);
     _Z14ApproachLinearRiii(&mHorzSpeed, 0x28000, 0x2000);
@@ -367,8 +367,7 @@ int daC_Jugem_c::StateBobMain()
         _Z14ApproachLinearRiii(&mHorzSpeed, a1, 0x1000);
     }
 
-    mSfxHandle = Sound::PlayLong(
-        mSfxHandle, 3, 0x182, *(Vector3 *)&mCamSpacePosX, 0);
+    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
 
     if (mTimer > 0x78) {
         mAngleY = 0x4000;
@@ -589,8 +588,7 @@ int daC_Jugem_c::StateLeaveMain()
 {
     ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPosX, &mTargetX), 0x800);
     ApproachLinear(mAngleY, mPrevAngleY, 0x800);
-    mSfxHandle = Sound::PlayLong(
-        mSfxHandle, 3, 0x182, *(Vector3 *)&mCamSpacePosX, 0);
+    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
     if (AngleDiff(mPrevAngleY, Vec3_HorzAngle(&mPosX, &mTargetX)) < 0x2000) {
         Vec3_ApproachHorz(&mPosX, &mTargetX, 0x1e000);
         _Z14ApproachLinearRiii(&mPosY, mTargetY, 0x1e000);
@@ -685,7 +683,7 @@ int daC_Jugem_c::StateFlyToPlayerMain()
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4a, 0x14, 0x7f, 0x15666, 0);
     }
 
-    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, *(::Vector3 *)&mCamSpacePosX, 0);
+    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
 
     in.x = 0;
     in.y = 0;
@@ -884,6 +882,7 @@ void daC_Jugem_c::UpdateShadowPlayer()
     off.x = 0;
     off.y = 0;
     off.z = 0;
+    /* Not &pl->mPos: Vector3 here is this function's local struct. */
     ps = (struct Vector3 *)&pl->mPosX;
     pp.x = ps->x;
     pp.y = ps->y;

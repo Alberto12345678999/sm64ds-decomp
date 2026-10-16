@@ -144,7 +144,7 @@ s32 daObjFl_KomaU_c::Behavior()
                        : ((int)(long long)i - 3) * 0x96000 + 0x64000;
 
         MulVec3Mat4x3(&in, &data_020a0e68, &out);
-        AddVec3(&out, (Vector3 *)&mPosX, &out);
+        AddVec3(&out, &mPos, &out);
 
         /* Raw offsets from w, not cyl->pos / cyl->otherOwner. The member
          * spelling makes mwccarm recompute the element address and Behavior
@@ -191,8 +191,8 @@ s32 daObjFl_KomaU_c::InitResources()
 
     mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov064_0211adbc.model), 1, -1);
     for (i = 0; i < 8; i++)
-        _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-            &mColliders[i], (Vector3 *)&mPosX, 0x4b000, 0x96000, 0x200002, 0);
+        _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(&mColliders[i], &mPos, 0x4b000, 0x96000,
+                                                   0x200002, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

@@ -360,7 +360,7 @@ void daObjFl_Puzzle_c::func_ov064_02118e24(int a1, int a2, int a3)
 
     if (st == 0x14) {
         mShakeOffsetY = 0;
-        _ZN5Sound9PlayBank3EjRK7Vector3(0xe7, (const struct Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0xe7, &mCamSpacePos);
     }
 
     if ((int)mStepTimer >= a3 + 0x14) {
@@ -455,7 +455,7 @@ void daObjFl_Puzzle_c::func_ov064_02118cd4() {
  * mPuzzleManagerID and bumps the manager's live-coin count. */
 void daObjFl_Puzzle_c::func_ov064_02118c48()
 {
-    dActor_c* spawned = dActor_c::Spawn(ACTOR_ID_COIN, 2, *(const Vector3*)&mPosX, 0, mAreaId, -1);
+    dActor_c *spawned = dActor_c::Spawn(ACTOR_ID_COIN, 2, mPos, 0, mAreaId, -1);
     daObjFl_Coin_c* found;
     if (spawned == 0)
         return;

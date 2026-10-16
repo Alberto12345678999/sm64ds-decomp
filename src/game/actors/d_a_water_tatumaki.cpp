@@ -21,7 +21,7 @@
  * - func_ov026_02111b24, func_ov026_02111cb4, func_ov026_02111d4c,
  *   func_ov026_02111f30: a TU-local reference to mPosX grows those
  *   functions by 4 bytes (0x190, 0x98, 0x18c, 0x74 become 0x194, 0x9c,
- *   0x190, 0x78). dActor_c has three position scalars and no Pos().
+ *   0x190, 0x78). dActor_c has no Pos().
  * - func_ov026_02111cb4: deleting the stores of 0 to mPullHeight and
  *   mPullRadius is 0x90 against ROM 0x98. Deleting unk_190 = 0 is 0x94
  *   against ROM 0x98. The ROM zeroes both heights and then overwrites
@@ -202,7 +202,7 @@ int daWater_Tatumaki_c::func_ov026_02111b24()
             player->mAngleZ = 0;
         }
         {
-            const Vector3 *playerPos = (const Vector3 *)&player->mPosX;
+            const Vector3 *playerPos = &player->mPos;
             spilled[0] = playerPos->x;
             spilled[1] = playerPos->y;
             spilled[2] = playerPos->z;
@@ -223,12 +223,12 @@ int daWater_Tatumaki_c::func_ov026_02111cb4()
 {
     Player *player = this->ClosestPlayer();
     if (player) {
-        const Vector3 *playerPos = (const Vector3 *)&player->mPosX;
+        const Vector3 *playerPos = &player->mPos;
         Vector3 pos;
         pos.x = playerPos->x;
         pos.y = playerPos->y;
         pos.z = playerPos->z;
-        this->mPullAngle = Vec3_HorzAngle((Vector3 *)&this->mPosX, &pos);
+        this->mPullAngle = Vec3_HorzAngle(&this->mPos, &pos);
         this->unk_190 = 0;
         this->mPullHeight = 0;
         this->mPullRadius = 0;
@@ -250,7 +250,7 @@ int daWater_Tatumaki_c::func_ov026_02111d4c()
     if (player != 0) {
         Vector3 pos;
         {
-            const Vector3 *playerPos = (const Vector3 *)&player->mPosX;
+            const Vector3 *playerPos = &player->mPos;
             pos = *playerPos;
         }
 
@@ -285,7 +285,7 @@ int daWater_Tatumaki_c::func_ov026_02111d4c()
                 MulVec3Mat4x3(&pull, &data_020a0e68, &out);
 
                 {
-                    const Vector3 *playerPos = (const Vector3 *)&player->mPosX;
+                    const Vector3 *playerPos = &player->mPos;
                     pull = *playerPos;
                 }
                 pull.x += out.x;
@@ -322,7 +322,7 @@ extern "C" int func_ov026_02111ee0(daWater_Tatumaki_c *self, const daWater_Tatum
 extern "C" void func_ov026_02111f30(daWater_Tatumaki_c *self)
 {
     Vector3 pos;
-    Vec3_Asr(&pos, (Vector3 *)&self->mPosX, 3);
+    Vec3_Asr(&pos, &self->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, pos.x, pos.y, pos.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         self->mAngleX, self->mAngleY, self->mAngleZ);

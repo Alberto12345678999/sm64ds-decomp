@@ -75,7 +75,7 @@ void daObjTtFuta_c::OnGroundPounded(dActor_c &other)
 {
     int *v = (int *)(((char *)&other) + 0x5c);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x28, v[0], v[1], v[2]);
-    Sound::PlayBank3(0xf, *(const Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0xf, mCamSpacePos);
     _ZN5Event6SetBitEj(0xe);
     MarkForDestruction();
 }

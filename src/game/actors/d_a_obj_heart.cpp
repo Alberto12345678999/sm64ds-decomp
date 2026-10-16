@@ -14,8 +14,6 @@
  * leftovers:
  * - ModelAnim::SetAnim and dCcAc_c::Init take Fix12<int> by value, so their
  *   calls stay mangled spellings inside InitResources.
- * - `*(Vector3 *)&mCamSpacePosX` in Behavior puns three s32 fields on
- *   dActor_c; the fix is a shared-header accessor, not a leaf helper.
  * - func_ov002_020bc664 keeps its address name as a member; the cartridge
  *   records no name for it.
  */
@@ -120,7 +118,7 @@ s32 daObjHeart_c::Behavior()
                         amount = (scaled / 4 + 1) << 8;
                     }
                     ((Player *)other)->Heal(amount);
-                    Sound::PlayBank3(0x61, *(Vector3 *)&mCamSpacePosX);
+                    Sound::PlayBank3(0x61, mCamSpacePos);
                 }
             }
             mHealTimer = 0x5a;

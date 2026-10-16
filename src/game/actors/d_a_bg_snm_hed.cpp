@@ -97,8 +97,7 @@ int daBgSnmHed_c::State3()
             unsigned int param = (*(int *)&param1) & 0xf;
             param = param & 0xff;
             param |= 0x40;
-            Spawn(0xb2, param, *(Vector3 *)&mPosX,
-                  0, mAreaId, -1);
+            Spawn(0xb2, param, mPos, 0, mAreaId, -1);
             mSubstate++;
         }
         break;
@@ -283,7 +282,7 @@ void daBgSnmHed_c::OnPendingDestroy()
 int daBgSnmHed_c::Render()
 {
     mTextureSequence.Update(mModel.data);
-    mModel.Render((Vector3 *)&mScaleX);
+    mModel.Render(&mScale);
     return 1;
 }
 

@@ -16,8 +16,7 @@
 // - PlayStepSound, PlayHitSound, PlayShellHitSound and PlayDeathSound call
 //   func_0201267c. That symbol has no header name.
 // - The coin's unk_0a4 and unk_0ac stay the base header's lateral-velocity
-//   names. The step sounds pass (Vector3 *)&mCamSpacePosX because dActor_c
-//   has no Pos().
+//   names.
 // - data_ov064_0211b834 stays the file table decl_common.h already declares.
 //   g_profile_DONKETU is not in this TU.
 
@@ -192,25 +191,25 @@ void daDonketu_c::PlayStepSound()
         if (mModelAnim.WillHitFrame(7) == 0)
             return;
     }
-    func_0201267c(0xca, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(0xca, &mCamSpacePos);
 }
 
 // @symbol _ZN11daDonketu_c12PlayHitSoundEv
 void daDonketu_c::PlayHitSound()
 {
-    func_0201267c(0xcb, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(0xcb, &mCamSpacePos);
 }
 
 // @symbol _ZN11daDonketu_c17PlayShellHitSoundEv
 void daDonketu_c::PlayShellHitSound()
 {
-    func_0201267c(0xc9, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(0xc9, &mCamSpacePos);
 }
 
 // @symbol _ZN11daDonketu_c14PlayDeathSoundEv
 void daDonketu_c::PlayDeathSound()
 {
-    func_0201267c(0xc8, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(0xc8, &mCamSpacePos);
 }
 
 // @symbol __sinit_d_a_donketu.cpp
