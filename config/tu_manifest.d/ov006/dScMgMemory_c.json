@@ -375,35 +375,35 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_021422a4",
+      "symbol": "sMemoryPlayerTable",
       "address": "0x021422a4",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "three player states (no enrolled consumer names it yet), plain-copied from the ROM constants"
     },
     {
-      "symbol": "data_ov006_021422bc",
+      "symbol": "sMemoryResultTable",
       "address": "0x021422bc",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "four result states, plain-copied from the ROM constants"
     },
     {
-      "symbol": "data_ov006_021422dc",
+      "symbol": "sMemoryStateTable",
       "address": "0x021422dc",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "five main states, plain-copied from the ROM constants"
     },
     {
-      "symbol": "data_ov006_02142304",
+      "symbol": "sMemoryRoundTable",
       "address": "0x02142304",
       "size": "0x30",
       "binding": "STB_GLOBAL",
       "evidence": "six round states, plain-copied from the ROM constants"
     },
     {
-      "symbol": "data_ov006_02142334",
+      "symbol": "sMemoryCardTable",
       "address": "0x02142334",
       "size": "0x38",
       "binding": "STB_GLOBAL",
@@ -818,7 +818,7 @@
       "source": "0x02131464",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02133810",
+      "symbol": "sMgCardSprites",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02133810"
@@ -848,7 +848,7 @@
       "source": "0x02131470",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021422dc",
+      "symbol": "sMemoryStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021422dc"
@@ -918,7 +918,7 @@
       "source": "0x0213148c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142304",
+      "symbol": "sMemoryRoundTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142304"
@@ -988,7 +988,7 @@
       "source": "0x021314a8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021422bc",
+      "symbol": "sMemoryResultTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021422bc"
@@ -1038,7 +1038,7 @@
       "source": "0x021314bc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142334",
+      "symbol": "sMemoryCardTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142334"
@@ -1128,7 +1128,7 @@
       "source": "0x021314e0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021422a4",
+      "symbol": "sMemoryPlayerTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021422a4"

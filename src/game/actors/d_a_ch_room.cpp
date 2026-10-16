@@ -15,6 +15,7 @@
  */
 
 #include "daChRoom_c.h"
+#include "SpawnInfo.h"
 
 extern "C" {
 extern void Vec3_Sub(Vector3* out, Vector3* a, Vector3* b);
@@ -31,21 +32,7 @@ extern "C" daChRoom_c *daChRoom_c_classInit()
     return new daChRoom_c();
 }
 
-struct ChRoomProfile {
-    daChRoom_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char ChRoomProfile_size_must_be_0x1c[
-    sizeof(ChRoomProfile) == 0x1c ? 1 : -1];
-
-extern "C" ChRoomProfile g_profile_CH_ROOM = {
+extern "C" SpawnInfo<daChRoom_c> g_profile_CH_ROOM = {
     daChRoom_c_classInit,
     0x015c,
     0x015c,

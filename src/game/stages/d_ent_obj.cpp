@@ -45,6 +45,7 @@
 #include "common.h"
 #include "dClipper.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -373,11 +374,9 @@ void UnknownVsPlayer::func_ov075_02114560(){
         mAnimState = 0;
     }
 
-    mPosition.x += (int)(((long long)mSpeed
-        * data_02082214[((unsigned short)mAngleY >> 4) * 2] + 0x800) >> 12);
+    mPosition.x += FX_MUL(mSpeed, data_02082214[((unsigned short)mAngleY >> 4) * 2]);
     mPosition.y += mVertSpeed;
-    mPosition.z += (int)(((long long)mSpeed
-        * data_02082214[((unsigned short)mAngleY >> 4) * 2 + 1] + 0x800) >> 12);
+    mPosition.z += FX_MUL(mSpeed, data_02082214[((unsigned short)mAngleY >> 4) * 2 + 1]);
 
     if (mPosition.y < 0) {
         mPosition.y = 0;

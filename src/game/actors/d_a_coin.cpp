@@ -30,6 +30,7 @@
 
 #include "common.h"
 #include "daCoin_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "Model.h"
 #include "Player.h"
@@ -70,22 +71,6 @@ struct CoinFlagBits {
     u8 bounces : 3;            /* bounces so far; scales the next one */
     u8 floorState : 3;         /* FLOOR_* */
 };
-
-/* Registry profile payloads for the three coin actors. */
-struct CoinSpawnInfo {
-    daCoin_c *(*classInit)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 actorFlags;
-    s32 clipOffsetY;
-    s32 clipRadius;
-    s32 clipDistance;
-    s32 farDistance;
-};
-
-#ifndef SM64DS_PLATFORM_PC
-typedef char CoinSpawnInfo_size_must_be_0x1c[sizeof(CoinSpawnInfo) == 0x1c ? 1 : -1];
-#endif
 
 /* ROM symbols. Mangled spellings live inside extern "C" so the C++ front end
  * does not mangle them a second time. */
@@ -1142,22 +1127,41 @@ extern "C" daCoin_c *daCoin_c_classInit_COIN()
     return new daCoin_c();
 }
 
+/* The three coin actor profiles. */
 // @symbol g_profile_COIN
-extern "C" CoinSpawnInfo g_profile_COIN = {
-    daCoin_c_classInit_COIN,      0x0120, 0x009a, 0x20000002,
-    0x00028000, 0x00028000, 0x01000000, 0x00bb8000
+extern "C" SpawnInfo<daCoin_c> g_profile_COIN = {
+    daCoin_c_classInit_COIN,
+    0x0120,
+    0x009a,
+    0x20000002,
+    0x00028000,
+    0x00028000,
+    0x01000000,
+    0x00bb8000,
 };
 
 // @symbol g_profile_RED_COIN
-extern "C" CoinSpawnInfo g_profile_RED_COIN = {
-    daCoin_c_classInit_RED_COIN,  0x0121, 0x009b, 0x08000002,
-    0x00028000, 0x00028000, 0x01800000, 0x00bb8000
+extern "C" SpawnInfo<daCoin_c> g_profile_RED_COIN = {
+    daCoin_c_classInit_RED_COIN,
+    0x0121,
+    0x009b,
+    0x08000002,
+    0x00028000,
+    0x00028000,
+    0x01800000,
+    0x00bb8000,
 };
 
 // @symbol g_profile_BLUE_COIN
-extern "C" CoinSpawnInfo g_profile_BLUE_COIN = {
-    daCoin_c_classInit_BLUE_COIN, 0x0122, 0x009c, 0x00000002,
-    0x00028000, 0x00028000, 0x01000000, 0x00bb8000
+extern "C" SpawnInfo<daCoin_c> g_profile_BLUE_COIN = {
+    daCoin_c_classInit_BLUE_COIN,
+    0x0122,
+    0x009c,
+    0x00000002,
+    0x00028000,
+    0x00028000,
+    0x01000000,
+    0x00bb8000,
 };
 
 /* Per-behavior handler table (indexed by mBehaviorType). */

@@ -120,7 +120,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     void ResetScene();           /* seed the course + sprite tables */
 
     /* mArray4 records: the 50 on-course objects, dispatched by the four
-       sinit-built PMF tables at data_ov006_02143020/38/50/70 */
+       sinit-built PMF tables at sSnowballBitStateTable/38/50/70 */
     void Bit_DrawAll();           /* render live mArray4 records */
     void Bit_State2(int idx);    /* table 02143020 entry 2: cooldown tick */
     void Bit_State1(int idx);    /* table 02143020 entry 1 */

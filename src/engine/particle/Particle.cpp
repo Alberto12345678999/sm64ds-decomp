@@ -281,10 +281,6 @@ struct Args3
   int c;
 };
 
-struct System *_ZNK8Particle10SysTracker8Contents8FindDataEj(void *contents, unsigned int type);
-void *_ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE(
-    void *contents, unsigned int definitionID, void *position,
-    const void *direction, void *callback);
 
 // @symbol _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -298,7 +294,7 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
   contents = ((char *) data_0209ee74) + 8;
   args.b = b >> 3;
   args.c = (c >> 1) >> 2;
-  new_var = _ZNK8Particle10SysTracker8Contents8FindDataEj(contents, type);
+  new_var = (struct System *)((Particle::SysTracker::Contents *)contents)->FindData(type);
   sys = new_var;
   if (sys)
   {
@@ -322,8 +318,8 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     }
     return sys->f0;
   }
-  return (int) _ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE(
-      contents, u, &args, pos, cb);
+  return (int)((Particle::SysTracker::Contents *)contents)
+      ->Create(u, *(Vector3 *)&args, (const Vector3_16f *)pos, (dPa_c::level_c::callback_c *)cb);
 }
 
 // @symbol func_02022d44

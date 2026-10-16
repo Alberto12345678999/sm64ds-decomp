@@ -164,7 +164,6 @@ int func_ov063_0211a0a8(int a0, int a1, int a2, int a3, int a4);
 extern void Vec3_MulScalarInPlace(void *v, int s);
 extern void func_020167a4(void *p);
 void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angle);
-void _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(void *self, const void *pos, const void *rot);
 extern int data_0209e650;
 extern int Vec3_Dist(const void* a, const void* b);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
@@ -508,7 +507,7 @@ void daTrs_c::func_ov063_021166ac() {
         rot.z = *(u16 *)&this->mAngleZ;
     }
     /* equal-arm ternary: the rot address (r2) is set up before pos (r1), as in the ROM */
-    _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(this, &pos, this ? &rot : &rot);
+    UpdateCapPos(pos, this ? rot : rot);
     func_ov063_021160d4();
 }
 

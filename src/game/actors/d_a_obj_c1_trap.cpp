@@ -32,6 +32,7 @@ enum d_a_obj_c1_trap_AssetId {
 };
 
 #include "daObjC1_Trap_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
@@ -44,20 +45,6 @@ struct TrapVector3 {
     s32 y;
     s32 z;
 };
-
-struct TrapSpawnInfo {
-    daObjC1_Trap_c *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 flags;
-    Fix12i rangeOffsetY;
-    Fix12i range;
-    Fix12i drawDistance;
-    u32 unk_18;
-};
-
-typedef char TrapSpawnInfo_size_must_be_0x1c[
-    sizeof(TrapSpawnInfo) == 0x1c ? 1 : -1];
 
 typedef void (daObjC1_Trap_c::*TrapState)();
 
@@ -130,7 +117,7 @@ extern "C" daObjC1_Trap_c *daObjC1_Trap_c_classInit()
     return new daObjC1_Trap_c();
 }
 
-extern "C" TrapSpawnInfo g_profile_C1_TRAP = {
+extern "C" SpawnInfo<daObjC1_Trap_c> g_profile_C1_TRAP = {
     daObjC1_Trap_c_classInit,
     0x0024,
     0x0143,

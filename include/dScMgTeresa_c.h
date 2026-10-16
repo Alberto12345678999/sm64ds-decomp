@@ -94,7 +94,7 @@ struct dScMgTeresa_c : dScMgBase_c {
     };
 
     /* The reveal sprite (Reveal_Draw, Reveal_State0..4). Its handlers take
-       an index and dispatch on `state` through data_ov006_02142e88. */
+       an index and dispatch on `state` through sTeresaRevealStateTable. */
     struct Reveal {
         s32 x;           /* 0x00 -- 20.12 */
         s32 y;           /* 0x04 -- 20.12 */
@@ -133,7 +133,7 @@ struct dScMgTeresa_c : dScMgBase_c {
 
     /* scene helpers, in ROM order */
     void BigBoo_ShowResult();
-    void func_ov006_0211cc90();
+    void BigBoo_SetDone();
     void BigBoo_Draw();
     void BigBoo_State8(int idx);
     void BigBoo_State7();
@@ -223,12 +223,12 @@ struct dScMgTeresa_c : dScMgBase_c {
     u8  pad_4c18[0x9];
     u8  mFoundCount;         /* 0x4c21 -- Boos found this round; stamped into mFoundOrder */
     u8  mLastSettledBoo;     /* 0x4c22 -- the Boo AreBoosSettled settled last */
-    u8  unk_4c23;            /* 0x4c23 */
+    u8 mBooPattern;          /* 0x4c23 -- spawn pattern: mLevel, or 10..13 from level 15 */
     /* trailing extent the ROM's `new dScMgTeresa_c` literal proves; see tools/opnew_sizes.py */
-    u8  unk_4c24;            /* 0x4c24 */
+    u8 mBg3FlashStep;        /* 0x4c24 -- StepBg3Scroll's flash step, 0..8 */
     u8  mBooCount;           /* 0x4c25 -- Boos SpawnBoos placed */
     u8  mFirstFoundBoo;      /* 0x4c26 -- 0xff until the first find */
-    u8  unk_4c27;            /* 0x4c27 */
+    u8 mRubLocked;           /* 0x4c27 -- set at time up; UpdateRubbing stops */
 };
 
 #ifndef SM64DS_PLATFORM_PC

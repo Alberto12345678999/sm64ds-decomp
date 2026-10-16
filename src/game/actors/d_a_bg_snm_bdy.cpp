@@ -63,6 +63,7 @@
 
 #include "common.h"
 #include "daBgSnmBdy_c.h"
+#include "SpawnInfo.h"
 #include "daBgSnmHed_c.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
@@ -165,25 +166,6 @@ static inline short AbsAngle(short angle) {
     return angle;
 }
 
-/* The typed 0x1c actor profile: fBase_c reads the halfwords at +4/+6 as
- * behavior/render priorities. dActor_c reads actor flags at +8 and passes
- * the words at +0xc/+0x10/+0x14/+0x18 to SetRanges as clip offset Y, clip
- * radius, clip distance and far distance. These field names follow those
- * consumers; the existing widths, types and retail values are unchanged. */
-struct SnmBdyProfile {
-    daBgSnmBdy_c *(*classInit)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    u32 clipDistance;
-    u32 farDistance;
-};
-
-typedef char SnmBdyProfile_size_must_be_0x1c[
-    sizeof(SnmBdyProfile) == 0x1c ? 1 : -1];
-
 /* Reconstructed source-style names. SM64DS preserves this class's RTTI, the
  * BIG_SNOWMAN_BODY registry ID, the descriptor relationship and the factory's
  * behavior; it preserves neither identifier below. */
@@ -193,7 +175,12 @@ extern "C" daBgSnmBdy_c *daBgSnmBdy_c_classInit()
     return new daBgSnmBdy_c();
 }
 
-SnmBdyProfile g_profile_BIG_SNOWMAN_BODY = {
+/* The actor profile, in SpawnInfo's layout: fBase_c reads the halfwords at
+ * +4/+6 as behavior/render priorities, and dActor_c reads the actor flags at
+ * +8 and passes the words at +0xc/+0x10/+0x14/+0x18 to SetRanges as clip
+ * offset Y, clip radius, clip distance and far distance. SpawnInfo's field
+ * names follow those consumers; the retail values are unchanged. */
+SpawnInfo<daBgSnmBdy_c> g_profile_BIG_SNOWMAN_BODY = {
     daBgSnmBdy_c_classInit,
     0x0112,
     0x0085,

@@ -18,9 +18,9 @@
 // leftovers: dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled
 // (Fix12<int> by value -- a method call homes the argument and size-DIFFs,
 // 6az; this TU's InitResources/Behavior calls). DecIfAbove0_Short and
-// RandomIntInternal keep linker names (no header home). Behavior's clamp
-// keeps the goto shape and the mMoveDir toggle goes through a laundered
-// address (both measured). TtcRotatingGear_* handles keep their coined
+// RandomIntInternal keep linker names (no header home). Behavior's
+// mMoveDir toggle goes through a laundered address (measured).
+// TtcRotatingGear_* handles keep their coined
 // spellings (only names in the tree); data_ov065_0211c0d0/0211c0d4 speed and
 // timer tables, data_0209f2c0 clock byte, data_0209e650 RNG, and the ov035
 // CLPS block stay linker-named. g_profile_CT_MECHA08A/B live outside this TU.
@@ -87,6 +87,15 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     Fix12i scale, s16 angle, CLPS_Block *clps);
 }
 
+/* int-returning, so the ROM materializes the 0/1 before testing it. */
+static inline int IsInRange(s32 v, s32 lo, s32 hi) {
+    return v >= lo && v <= hi;
+}
+
+static inline s32 Clamp(s32 v, s32 lo, s32 hi) {
+    return v < lo ? lo : (v > hi ? hi : v);
+}
+
 // @symbol daObjCtMecha08_c_classInit_CT_MECHA08A
 extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08A()
 {
@@ -130,10 +139,8 @@ int daObjCtMecha08_c::InitResources()
    its own speed, and each time the timer runs out it clamps back inside
    [mHomePosY, mHomePosY + 0x14a000], turns round, and reloads speed and timer.
    Setting 2 overrides the timer with 0xa plus a random multiple of 0x14, at most 0x6e.
-
-   MEASURED: the control flow is the ROM's, gotos and all -- the in-range test
-   reads as an if/else but compiles to the cartridge's interleaved form only in
-   this shape. */
+   The in-range test is an int-returning inline, which is what makes the ROM
+   materialize its 0/1 before branching on it. */
 int daObjCtMecha08_c::Behavior()
 {
     if (data_0209f2c0 == CLOCK_SETTING_STOPPED) {
@@ -141,69 +148,43 @@ int daObjCtMecha08_c::Behavior()
         UpdateModelPosAndRotY();
         if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
             UpdateClsnPosAndRot();
-        goto done;
-    }
+    } else {
+        if (DecIfAbove0_Short(&mMoveTimer) == 0) {
+            s32 lower, upper;
 
-    if (DecIfAbove0_Short(&mMoveTimer) == 0) {
-        s32 lower, upper, y, inRange;
+            UpdatePos(0);
+            lower = mHomePosY;
+            upper = lower + LIFT_TRAVEL;
+            if (!IsInRange(mPosY, lower, upper)) {
+                mPosY = Clamp(mPosY, lower, upper);
 
-        UpdatePos(0);
-        lower = mHomePosY;
-        y = mPosY;
-        upper = lower + LIFT_TRAVEL;
-        if (y < lower)
-            goto outside;
-        if (y <= upper) {
-            inRange = 1;
-            goto test;
-        }
-outside:
-        inRange = 0;
-test:
-        if (inRange != 0)
-            goto update;
-        {
-            s32 v = lower;
-            if (y >= lower) {
-                s32 t = upper;
-                if (y <= upper)
-                    t = y;
-                v = t;
-            }
-            mPosY = v;
-        }
+                /* MEASURED: THE LAUNDERED ADDRESS IS LOAD-BEARING. Spelling
+                   this as `mMoveDir ^= 1` or as a load/store pair through the
+                   member changes the function's size, not just its
+                   allocation -- the RMW-address CSE described in
+                   notes/mwccarm-codegen.md. Taking the address through an
+                   integer first defeats it. 0x32e is the offset of
+                   mMoveDir. */
+                u8 *dirp = (u8 *)((int)this + 0x32e);
+                u8 dir = *dirp;
+                *dirp = dir ^ 1;
 
-        {
-            /* MEASURED: THE LAUNDERED ADDRESS IS LOAD-BEARING. Spelling this
-               as `mMoveDir ^= 1` or as a load/store pair through the member
-               changes the function's size, not just its allocation -- the
-               RMW-address CSE described in notes/mwccarm-codegen.md. Taking
-               the address through an integer first defeats it. 0x32e is the
-               offset of mMoveDir. */
-            u8 *dirp = (u8 *)((int)this + 0x32e);
-            u8 dir = *dirp;
-            *dirp = dir ^ 1;
-            {
                 int setting = data_0209f2c0;
                 u8 d = mMoveDir;
                 mMoveTimer = data_ov065_0211c0d4[setting][d][0];
                 d = mMoveDir;
                 mVertSpeed = data_ov065_0211c0d0[setting][d][0];
-                if (data_0209f2c0 != CLOCK_SETTING_RANDOM)
-                    goto update;
-                {
+                if (data_0209f2c0 == CLOCK_SETTING_RANDOM) {
                     u32 rnd = (u32)RandomIntInternal(&data_0209e650);
                     mMoveTimer = (u16)((rnd % 6) * 0x14 + 0xa);
                 }
             }
         }
-    }
 
-update:
-    UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
-        UpdateClsnPosAndRot();
-done:
+        UpdateModelPosAndRotY();
+        if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+            UpdateClsnPosAndRot();
+    }
     return 1;
 }
 

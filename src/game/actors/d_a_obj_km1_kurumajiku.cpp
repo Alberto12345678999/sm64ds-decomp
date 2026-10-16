@@ -32,6 +32,7 @@ enum d_a_obj_km1_kurumajiku_AssetId {
 };
 
 #include "daObjKm1_Kurumajiku_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 
 struct CLPS_Block;
@@ -68,19 +69,6 @@ int func_ov002_020b6ac8(daObjKm1_Kurumajiku_c *self,
 extern ResourceDescriptor data_ov043_02112344;
 }
 
-struct KurumajikuSpawnInfo {
-    daObjKm1_Kurumajiku_c *(*classInit)();
-    s16 executePriority; /* +4: also KM1_KURUMAJIKU registry id 0x0089 = 137 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char KurumajikuSpawnInfo_size_must_be_0x1c[
-    sizeof(KurumajikuSpawnInfo) == 0x1c ? 1 : -1];
-
 /* KM1_KURUMA: the cart this axle drives. The helper Spawns four of them. */
 enum { kCartActorId = 0x88 };
 
@@ -91,9 +79,9 @@ extern "C" daObjKm1_Kurumajiku_c *daObjKm1_Kurumajiku_c_classInit()
 }
 
 // @symbol g_profile_KM1_KURUMAJIKU
-extern "C" KurumajikuSpawnInfo g_profile_KM1_KURUMAJIKU = {
+extern "C" SpawnInfo<daObjKm1_Kurumajiku_c> g_profile_KM1_KURUMAJIKU = {
     daObjKm1_Kurumajiku_c_classInit,
-    0x0089,
+    0x0089, /* KM1_KURUMAJIKU registry id 137 */
     0x00b2,
     2,
     0,

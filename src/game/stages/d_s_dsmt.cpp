@@ -373,7 +373,7 @@ extern "C" void func_ov007_020cc168(u32 idx)
     }
 
     ((u8 *)data_0209b340)[9] = data_0208ee3c[0];
-    data_0209b34b[idx] = (data_0209caa0[1] & 1) ? 1 : 0;
+    data_0209b34b[idx] = (data_0209caa0[1] & 1) != 0;
 
     chr = 3;
     i = 2;
@@ -386,7 +386,7 @@ extern "C" void func_ov007_020cc168(u32 idx)
 
     rec = &((u8 *)data_0209b340)[idx * 0xf];
     for (j = 0; j < 0xf; j++) {
-        rec[0x6b] = IsStarCollected(j, 0) ? 1 : 0;
+        rec[0x6b] = IsStarCollected(j, 0) != 0;
         rec[0x11] = CountStarsCollectedInLevelToDisplay(j) - rec[0x6b];
         rec[0x3e] = SaveData::GetCoinRecord((u32)j);
         rec++;

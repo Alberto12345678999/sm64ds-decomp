@@ -4,7 +4,6 @@
 /* The array runtime passes each element address and ignores lifecycle results.
  * Explicit function-pointer casts mark that runtime ABI boundary. */
 extern "C" {
-extern void* _ZN7fBase_cnwEj(unsigned int);
 extern void *_ZN7fBase_cC2Ev(void*);
 extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
                            void (*ctor)(void *), void (*dtor)(void *));

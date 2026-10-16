@@ -84,6 +84,11 @@ extern WcObj03ModelFilePtr data_ov029_02114270;
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
+/* Actor 0xbf is the player. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 // @symbol daObjWc_Obj03_c_classInit
 /* Historical alias: WaterDiamond_Spawn -- this entry point carried the
  * project's coined class name until the ROM's RTTI name was adopted.
@@ -192,11 +197,13 @@ void daObjWc_Obj03_c::SetWaterID()
   water = 0;
   for (;;) {
     water = dActor_c::FindWithActorID(0x65, water);
-    if (water == 0) goto done;
-    if (mWaterParam == ((daObjWc_Mizu_c *)water)->mUseSpawnPosY) break;
+    if (water == 0)
+        break;
+    if (mWaterParam == ((daObjWc_Mizu_c *)water)->mUseSpawnPosY) {
+        mWaterID = water->uniqueID;
+        break;
+    }
   }
-  mWaterID = water->uniqueID;
-done:
   if (mWaterID != 0) return;
   MarkForDestruction();
 }
@@ -214,8 +221,7 @@ void daObjWc_Obj03_c::CheckClsnWithPlayer()
     dActor_c *actor = dActor_c::FindWithID(id);
     if (actor == 0)
         return;
-    int isPlayer = (int)(actor->actorID == 0xbf);
-    if (isPlayer == 0)
+    if (!IsPlayerActor(actor))
         return;
     daObjWc_Mizu_c *water = (daObjWc_Mizu_c *)dActor_c::FindWithID(mWaterID);
     int targetPosY = water->mTargetPosY;

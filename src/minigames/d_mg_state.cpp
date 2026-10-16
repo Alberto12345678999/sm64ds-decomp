@@ -17,7 +17,7 @@
  * .data window (Mg_SetNextBanner, 020b67f8, 020b6808, 020b682c and
  * Mg_ResetBannerLayout).
  *
- * Edges. 0x020b67e8 is the first function after func_ov004_020b67e4, the last
+ * Edges. 0x020b67e8 is the first function after Coin_Construct, the last
  * destructor helper __sinit_ov004_020b9ad0 registers for the preceding unit
  * (the 0x14-entry array at sMgCoins). 0x020b8c18 is the start of
  * dMgPsOpt_c. The unit's .data window, 0x020bc850..0x020bca44, is read only
@@ -183,32 +183,32 @@ extern int gMgCoinsShowDelta;
 extern int sMgCoinsDeltaShown;
 
 extern int data_ov004_020bc850;
-extern int data_ov004_020bc854;
-extern int data_ov004_020bc858;
+extern int sMgRecordBannerX;
+extern int sMgDrawBannerY;
 extern int data_ov004_020bc85c;
-extern int data_ov004_020bc860;
-extern int data_ov004_020bc864;
-extern int data_ov004_020bc868;
-extern int data_ov004_020bc86c;
+extern int sMgWinBannerY;
+extern int sMgResultsBannerY;
+extern int sMgDrawBannerX;
+extern int sMgQuitX;
 extern int data_ov004_020bc870;
-extern int data_ov004_020bc874;
-extern int data_ov004_020bc878;
-extern int data_ov004_020bc87c;
-extern int data_ov004_020bc880;
-extern int data_ov004_020bc884;
-extern int data_ov004_020bc888;
-extern int data_ov004_020bc88c;
-extern int data_ov004_020bc890;
-extern int data_ov004_020bc894;
-extern int data_ov004_020bc898;
+extern int sMgRetryBannerY;
+extern int sMgLoseBannerX;
+extern int sMgRecordBannerY;
+extern int sMgClearBannerX;
+extern int sMgClearBannerY;
+extern int sMgResultsBannerX;
+extern int sMgWinBannerX;
+extern int sMgLoseBannerY;
+extern int sMgRetryBannerX;
+extern int sMgPlayAgainY;
 extern int data_ov004_020bc89c;
 extern int sMgNextBanner;
-extern int data_ov004_020bc8a4;
-extern int data_ov004_020bc8a8;
-extern int data_ov004_020bc8ac;
-extern int data_ov004_020bc8b0;
-extern int data_ov004_020bc8b4;
-extern int data_ov004_020bc8b8;
+extern int sMgQuitY;
+extern int sMgPlayAgainX;
+extern int sMgTopBannerY;
+extern int sMgTopBannerX;
+extern int sMgMainBannerY;
+extern int sMgMainBannerX;
 extern unsigned char *data_ov004_020bca44[];
 
 /* Behavior and render records. Each comment names the member the record
@@ -269,30 +269,30 @@ extern dMgState_c::Callback pmf_dMgState_c_State19_Enter;
 
 // @symbol Mg_ResetBannerLayout
 extern "C" void Mg_ResetBannerLayout(void) {
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc854 = 0x80;
-    data_ov004_020bc884 = 0x60;
-    data_ov004_020bc888 = 0x80;
-    data_ov004_020bc8b8 = 0x80;
-    data_ov004_020bc87c = 0x60;
-    data_ov004_020bc88c = 0x80;
-    data_ov004_020bc860 = 0x60;
-    data_ov004_020bc878 = 0x80;
-    data_ov004_020bc890 = 0x60;
-    data_ov004_020bc864 = -0x60;
-    data_ov004_020bc8b4 = 0x40;
-    data_ov004_020bc858 = 0x58;
-    data_ov004_020bc874 = 0x28;
-    data_ov004_020bc898 = 0x6c;
-    data_ov004_020bc8a4 = 0x9c;
+    sMgClearBannerX = 0x80;
+    sMgRecordBannerX = 0x80;
+    sMgClearBannerY = 0x60;
+    sMgResultsBannerX = 0x80;
+    sMgMainBannerX = 0x80;
+    sMgRecordBannerY = 0x60;
+    sMgWinBannerX = 0x80;
+    sMgWinBannerY = 0x60;
+    sMgLoseBannerX = 0x80;
+    sMgLoseBannerY = 0x60;
+    sMgResultsBannerY = -0x60;
+    sMgMainBannerY = 0x40;
+    sMgDrawBannerY = 0x58;
+    sMgRetryBannerY = 0x28;
+    sMgPlayAgainY = 0x6c;
+    sMgQuitY = 0x9c;
     sMgNextBanner = 0x1d;
     sMgBannerButtonsArmed = 1;
-    data_ov004_020bc868 = 0x80;
-    data_ov004_020bc8b0 = 0x80;
-    data_ov004_020bc8ac = 0x60;
-    data_ov004_020bc894 = 0x80;
-    data_ov004_020bc8a8 = 0x80;
-    data_ov004_020bc86c = 0x80;
+    sMgDrawBannerX = 0x80;
+    sMgTopBannerX = 0x80;
+    sMgTopBannerY = 0x60;
+    sMgRetryBannerX = 0x80;
+    sMgPlayAgainX = 0x80;
+    sMgQuitX = 0x80;
     data_ov004_020bc850 = 0x80;
     data_ov004_020bc89c = 0x60;
     data_ov004_020bc85c = 0x80;
@@ -363,7 +363,7 @@ void dMgState_c::State00_Enter() {
   prevId = sMgNextBanner;
   id = 3;
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
-  Mg_ShowBanner(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
+  Mg_ShowBanner(id, sMgClearBannerX, sMgClearBannerY, -1, -1, 0xd);
   Mg_PlayJingle((void*)4);
   mBehavior = pmf_dMgState_c_State00_Update;
 }
@@ -420,7 +420,7 @@ void dMgState_c::State01_Update() {
 // @symbol _ZN10dMgState_c13State02_EnterEv
 void dMgState_c::State02_Enter() {
   mTimer = 0xb4;
-  Mg_ShowBanner(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
+  Mg_ShowBanner(5, sMgRecordBannerX, sMgRecordBannerY, -1, -1, 0xd);
   Mg_PlayJingle((void*)1);
   mBehavior = pmf_dMgState_c_State02_Update;
 }
@@ -457,7 +457,7 @@ void dMgState_c::State03_Enter() {
   prevId = sMgNextBanner;
   id = 8;
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
-  Mg_ShowBanner(id, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+  Mg_ShowBanner(id, sMgMainBannerX, sMgMainBannerY, -1, -1, 0xd);
   Mg_PlayJingle((void*)3);
   mBehavior = pmf_dMgState_c_State03_Update;
 }
@@ -483,8 +483,8 @@ void dMgState_c::State03_Update() {
   }
   if (mTimer != 0)
     return;
-  Mg_ShowBanner(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
-  Mg_ShowBanner(2, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
+  Mg_ShowBanner(0, sMgPlayAgainX, sMgPlayAgainY, -1, -1, 0xd);
+  Mg_ShowBanner(2, sMgQuitX, sMgQuitY, -1, -1, 0xd);
 }
 
 // @symbol _ZN10dMgState_c18UpdateRetryFadeOutEv
@@ -512,7 +512,7 @@ void dMgState_c::State04_Enter() {
   prevId = sMgNextBanner;
   id = 9;
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
-  Mg_ShowBanner(id, data_ov004_020bc88c, data_ov004_020bc860, -1, -1, 0xd);
+  Mg_ShowBanner(id, sMgWinBannerX, sMgWinBannerY, -1, -1, 0xd);
   Sound::PlayBank2_2D(0x136);
   mBehavior = pmf_dMgState_c_State04_Update;
 }
@@ -541,7 +541,7 @@ void dMgState_c::State04_Update() {
 // @symbol _ZN10dMgState_c13State05_EnterEv
 void dMgState_c::State05_Enter() {
     mTimer = 0x78;
-    Mg_ShowBanner(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
+    Mg_ShowBanner(0xa, sMgLoseBannerX, sMgLoseBannerY, -1, -1, 0xd);
     Sound::PlayBank2_2D(0x137);
     mBehavior = pmf_dMgState_c_State05_Update;
 }
@@ -591,7 +591,7 @@ void dMgState_c::UpdateGameOverToMenu() {
     Obj* obj;
     int v = mTimer;
     if (v == 0xb3) {
-        Mg_ShowBanner(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+        Mg_ShowBanner(8, sMgMainBannerX, sMgMainBannerY, -1, -1, 0xd);
         Mg_PlayJingle((void*)3);
         return;
     }
@@ -607,7 +607,7 @@ void dMgState_c::UpdateGameOverToMenu() {
 // @symbol _ZN10dMgState_c13State06_EnterEv
 void dMgState_c::State06_Enter() {
     mTimer = 0x78;
-    Mg_ShowBanner(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
+    Mg_ShowBanner(0xa, sMgLoseBannerX, sMgLoseBannerY, -1, -1, 0xd);
     Sound::PlayBank2_2D(0x137);
     mBehavior = pmf_dMgState_c_State06_Update;
 }
@@ -652,7 +652,7 @@ void dMgState_c::UpdateAfterHidden() {
 // @symbol _ZN10dMgState_c13State07_EnterEv
 void dMgState_c::State07_Enter() {
     mTimer = 0x78;
-    Mg_ShowBanner(0xb, data_ov004_020bc868, data_ov004_020bc858, -1, -1, 0xd);
+    Mg_ShowBanner(0xb, sMgDrawBannerX, sMgDrawBannerY, -1, -1, 0xd);
     mBehavior = pmf_dMgState_c_UpdateWaitThenResume;
 }
 
@@ -681,7 +681,7 @@ void dMgState_c::State09_Enter() {
     Mg_PlayJingle((void*)4);
     id = 3;
     if (sMgNextBanner != 0x1d) { id = sMgNextBanner; sMgNextBanner = 0x1d; }
-    Mg_ShowBanner(id, data_ov004_020bc8b0, data_ov004_020bc8ac - (sMgTopScreenYOffset + 0xc0), -1, -1, 0xa);
+    Mg_ShowBanner(id, sMgTopBannerX, sMgTopBannerY - (sMgTopScreenYOffset + 0xc0), -1, -1, 0xa);
     mBehavior = pmf_dMgState_c_State09_Update;
 }
 
@@ -708,7 +708,7 @@ void dMgState_c::State09_Update() {
 void dMgState_c::State10_Enter() {
   mTimer = 0xb4;
   Mg_PlayJingle((void*)3);
-  Mg_ShowBanner(8, data_ov004_020bc894, data_ov004_020bc874, -1, -1, 0xb);
+  Mg_ShowBanner(8, sMgRetryBannerX, sMgRetryBannerY, -1, -1, 0xb);
   mBehavior = pmf_dMgState_c_State10_Update;
 }
 
@@ -733,8 +733,8 @@ void dMgState_c::State10_Update() {
   }
   if (mTimer != 0)
     return;
-  Mg_ShowBanner(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
-  Mg_ShowBanner(1, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
+  Mg_ShowBanner(0, sMgPlayAgainX, sMgPlayAgainY, -1, -1, 0xd);
+  Mg_ShowBanner(1, sMgQuitX, sMgQuitY, -1, -1, 0xd);
 }
 
 // @symbol _ZN10dMgState_c13State11_EnterEv
@@ -798,15 +798,15 @@ void dMgState_c::UpdateRetryPrompt() {
     func_02012dd0((void*)0x3c);
     return;
   }
-  Mg_ShowBanner(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
-  Mg_ShowBanner(2, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
+  Mg_ShowBanner(0, sMgPlayAgainX, sMgPlayAgainY, -1, -1, 0xd);
+  Mg_ShowBanner(2, sMgQuitX, sMgQuitY, -1, -1, 0xd);
   mTimer = 0;
 }
 
 // @symbol _ZN10dMgState_c13State14_EnterEv
 void dMgState_c::State14_Enter() {
   mTimer = 0xb4;
-  Mg_ShowBanner(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
+  Mg_ShowBanner(5, sMgRecordBannerX, sMgRecordBannerY, -1, -1, 0xd);
   Mg_PlayJingle((void*)1);
   mBehavior = pmf_dMgState_c_UpdateFadeThenResume;
   mRender = pmf_dMgState_c_DrawScoreDigits;
@@ -840,7 +840,7 @@ void dMgState_c::UpdateFadeThenResume() {
 // @symbol _ZN10dMgState_c13State15_EnterEv
 void dMgState_c::State15_Enter() {
   mTimer = 0x3c;
-  Mg_ShowBanner(0xe, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+  Mg_ShowBanner(0xe, sMgMainBannerX, sMgMainBannerY, -1, -1, 0xd);
   Mg_PlayJingle((void*)3);
   mBehavior = pmf_dMgState_c_UpdateFadeThenResume_2;
 }
@@ -925,18 +925,18 @@ void dMgState_c::State17_Update() {
         id = v;
     }
 
-    s = data_ov004_020bc864;
+    s = sMgResultsBannerY;
     if (s < 0)
         s -= Mg_GetTopScreenYOffset();
 
-    Mg_ShowBanner(id, data_ov004_020bc888, s, -1, -1, 0xd);
+    Mg_ShowBanner(id, sMgResultsBannerX, s, -1, -1, 0xd);
     Mg_PlayJingle((void*)1);
 }
 
 // @symbol _ZN10dMgState_c13State18_EnterEv
 void dMgState_c::State18_Enter() {
   mTimer = 0xb4;
-  Mg_ShowBanner(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+  Mg_ShowBanner(8, sMgMainBannerX, sMgMainBannerY, -1, -1, 0xd);
   Mg_PlayJingle((void*)3);
   mBehavior = pmf_dMgState_c_State18_Update;
 }
@@ -973,7 +973,7 @@ void dMgState_c::State19_Enter() {
   prevId = sMgNextBanner;
   id = 3;
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
-  Mg_ShowBanner(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
+  Mg_ShowBanner(id, sMgClearBannerX, sMgClearBannerY, -1, -1, 0xd);
   Mg_PlayJingle((void*)4);
   mBehavior = pmf_dMgState_c_State19_Update;
 }
@@ -1047,29 +1047,29 @@ void dMgState_c::DrawRecordTable() {
 extern "C" void Mg_PlaceBannersOnTopScreen(void)
 {
     int v1 = -0x1c - Mg_GetTopScreenYOffset();
-    data_ov004_020bc88c = 0x80;
-    data_ov004_020bc860 = v1;
+    sMgWinBannerX = 0x80;
+    sMgWinBannerY = v1;
     {
         int v2 = -0x1c - Mg_GetTopScreenYOffset();
-        data_ov004_020bc878 = 0x80;
-        data_ov004_020bc890 = v2;
+        sMgLoseBannerX = 0x80;
+        sMgLoseBannerY = v2;
     }
     {
         int v3 = -0x1c - Mg_GetTopScreenYOffset();
-        data_ov004_020bc868 = 0x80;
-        data_ov004_020bc858 = v3;
-        data_ov004_020bc888 = 0x80;
-        data_ov004_020bc864 = -0x1c;
-        data_ov004_020bc8b8 = 0x80;
-        data_ov004_020bc8b4 = 0x60;
+        sMgDrawBannerX = 0x80;
+        sMgDrawBannerY = v3;
+        sMgResultsBannerX = 0x80;
+        sMgResultsBannerY = -0x1c;
+        sMgMainBannerX = 0x80;
+        sMgMainBannerY = 0x60;
     }
 }
 
 // @symbol Mg_ResetRecordBannerPos
 extern "C" void Mg_ResetRecordBannerPos(void)
 {
-    data_ov004_020bc888 = 0x80;
-    data_ov004_020bc864 = -0x1c;
+    sMgResultsBannerX = 0x80;
+    sMgResultsBannerY = -0x1c;
 }
 
 // @symbol Mg_SetPerfectBanner
