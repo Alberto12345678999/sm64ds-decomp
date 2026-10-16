@@ -32,7 +32,6 @@
 //   beside mVertSpeed). g_profile_CHAIR is not in this TU.
 //   data_ov020_02114af0 is the model handle.
 
-
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daChair_c_AssetId {
     ASSET_CHAIR_BMD = 0x02d0
@@ -77,15 +76,15 @@ typedef struct {
 
 /* Actor IDs from the ROM's actor table. */
 enum ChairActorId {
-    kPianoActorId = 0xf9,   /* Mad Piano; State0 arms off it */
+    kPianoActorId = 0xf9, /* Mad Piano; State0 arms off it */
     kPlayerActorId = 0xbf,
 };
 
 /* Sound IDs, named by the state that plays them. */
 enum ChairSfxId {
-    kSfxWobble = 0x5f,  /* State1: chair rocks the other way */
-    kSfxWindup = 0x5c,  /* State2: wind-up ends */
-    kSfxHop = 0x5d,     /* State2: hop timer expires, aims at the player */
+    kSfxWobble = 0x5f, /* State1: chair rocks the other way */
+    kSfxWindup = 0x5c, /* State2: wind-up ends */
+    kSfxHop = 0x5d,    /* State2: hop timer expires, aims at the player */
 };
 
 /* Index of an unsigned 16-bit angle into data_02082214, the sin/cos
