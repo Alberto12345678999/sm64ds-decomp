@@ -151,6 +151,17 @@ u32 func_02022d00(u32, u32, Fix12i, Fix12i, Fix12i, void *);
 void _Z14ApproachLinearRiii(int *p, int t, int s);
 }
 
+/* Both predicates are int-returning, as the ROM materializes the 0/1
+   before testing it. dActor_c::mFlags bit 0x40000 is set while the actor
+   is held in Yoshi's mouth. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == kPlayerActorId;
+}
+
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
 // @symbol daBakubaku_c_classInit
 extern "C" daBakubaku_c *daBakubaku_c_classInit()
 {
@@ -261,9 +272,8 @@ s32 daBakubaku_c::Behavior()
 // @symbol _ZN12daBakubaku_c6RenderEv
 s32 daBakubaku_c::Render()
 {
-    /* 0x40000 is a yoshi-mouth flag. The 0/1 temporary is the ROM's cmp. */
-    int b = ((mFlags & 0x40000) != 0);
-    if (b) return 1;
+    if (IsInYoshiMouth(this))
+        return 1;
     mModelAnim.Render(0);
     return 1;
 }
@@ -412,51 +422,40 @@ int daBakubaku_c::func_ov032_02111d58()
 // @symbol _ZN12daBakubaku_c19func_ov032_02111b9cEv
 int daBakubaku_c::func_ov032_02111b9c()
 {
-    if (*(unsigned short *)&mStateTimer != 0) {
-        if (func_ov032_02111350() == 1) goto give_up;
-        if (func_ov032_02111254() != 0) goto aim;
-    }
-give_up:
-    {
+    /* Out of time, chase aborted, or no target: back to wandering. */
+    if (*(unsigned short *)&mStateTimer == 0 || func_ov032_02111350() == 1 ||
+        func_ov032_02111254() == 0) {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
             &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
         mChaseCooldown = 0x64;
         func_ov032_02111ff4((State *)&data_ov032_02113a8c);
         return 1;
     }
-aim:
-    {
-        mAngTarget = Vec3_HorzAngle(
-            (Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
-        unsigned int r = (unsigned int)RandomIntInternal(data_0209e650);
-        int s5 = (int)(((r >> 8) & 3) << 0x1c) >> 0x10;
-        ApproachLinear(mPrevAngleY, mAngTarget, 0x200);
-        if (Vec3_HorzDist(
-                (Vector3 *)&mPosX,
-                (Vector3 *)&mTargetPosX) < 0x258000) {
-            int d = AngleDiff(mAngleY, mAngTarget);
-            if (d < (int)(short)(s5 + 0x200)) {
-                mAngTarget = Vec3_VertAngle(
-                    (Vector3 *)&mPosX,
-                    (Vector3 *)&mTargetPosX);
-                mFlags = 0;
-                mModelAnim.speed = 0x1000;
-                mDiveStartY = mPosY;
-                mStateTimer = 0;
-                mHorzSpeed = 0x14000;
-                unk_429 = 0;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &mModelAnim, (BCA_File *)data_ov032_02113a48.filePtr,
-                    0x40000000, 0x1000, 0);
-                if (mAngTarget > 0)
-                    func_ov032_02111ff4(&data_ov032_02113a7c);
-                else
-                    func_ov032_02111ff4(&data_ov032_02113abc);
-                return 1;
-            }
+
+    mAngTarget = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
+    unsigned int r = (unsigned int)RandomIntInternal(data_0209e650);
+    int s5 = (int)(((r >> 8) & 3) << 0x1c) >> 0x10;
+    ApproachLinear(mPrevAngleY, mAngTarget, 0x200);
+    if (Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX) < 0x258000) {
+        int d = AngleDiff(mAngleY, mAngTarget);
+        if (d < (int)(short)(s5 + 0x200)) {
+            mAngTarget = Vec3_VertAngle((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
+            mFlags = 0;
+            mModelAnim.speed = 0x1000;
+            mDiveStartY = mPosY;
+            mStateTimer = 0;
+            mHorzSpeed = 0x14000;
+            unk_429 = 0;
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                &mModelAnim, (BCA_File *)data_ov032_02113a48.filePtr, 0x40000000, 0x1000, 0);
+            if (mAngTarget > 0)
+                func_ov032_02111ff4(&data_ov032_02113a7c);
+            else
+                func_ov032_02111ff4(&data_ov032_02113abc);
+            return 1;
         }
-        return 1;
     }
+    return 1;
 }
 
 /* Dive enter: pitch down, and let the cylinders count as char-movement. */
@@ -514,34 +513,27 @@ int daBakubaku_c::func_ov032_02111830()
         }
     }
 
-    if (func_ov032_02111350() == 1)
-        goto stop;
-    if (func_ov032_02111254() != 0)
-        goto thrust;
-stop:
-    speed = 0;
-    mHorzSpeed = 0;
-    unk_0a4 = 0;
-    mVertSpeed = 0;
-    unk_0ac = 0;
-    goto pitched;
-thrust:
-    {
-    Vector3 in2;
-    Vector3 out2;
-    in2.z = 0;
-    in2.z = 0x14000;
-    in2.x = 0;
-    in2.y = 0;
-    out2.x = 0;
-    out2.y = 0;
-    out2.z = 0;
-    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-    MulVec3Mat4x3(&in2, &data_020a0e68, &out2);
-    mVertSpeed = out2.y;
+    if (func_ov032_02111350() == 1 || func_ov032_02111254() == 0) {
+        speed = 0;
+        mHorzSpeed = 0;
+        unk_0a4 = 0;
+        mVertSpeed = 0;
+        unk_0ac = 0;
+    } else {
+        Vector3 in2;
+        Vector3 out2;
+        in2.z = 0;
+        in2.z = 0x14000;
+        in2.x = 0;
+        in2.y = 0;
+        out2.x = 0;
+        out2.y = 0;
+        out2.z = 0;
+        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
+        MulVec3Mat4x3(&in2, &data_020a0e68, &out2);
+        mVertSpeed = out2.y;
     }
-pitched: ;
     ApproachLinear(mAngTarget, speed, 0x200);
     ApproachLinear(mPrevAngleX, mAngTarget, 0x200);
     if (mModelAnim.Finished() != 0) {
@@ -591,74 +583,60 @@ int daBakubaku_c::func_ov032_02111620()
     if (r5 == 0)
         return 1;
 
-    if (func_ov032_02111350() == 1)
-        goto stop;
-    if (func_ov032_02111254() != 0)
-        goto thrust;
-stop:
-    mHorzSpeed = 0;
-    unk_0a4 = 0;
-    mVertSpeed = 0;
-    unk_0ac = 0;
-    goto pitched;
-thrust:
-    {
-    Vector3 in;
-    Vector3 out;
-    in.z = 0;
-    in.z = 0x14000;
-    in.x = 0;
-    in.y = 0;
-    out.x = 0;
-    out.y = 0;
-    out.z = 0;
-    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-    MulVec3Mat4x3(&in, &data_020a0e68, &out);
-    mVertSpeed = out.y;
-    }
-pitched: ;
-
-    if (mLungePhase == 0) {
-        if (mModelAnim.Finished() == 0)
-            goto at_player;
-    }
-
-    ApproachLinear(mPrevAngleX, 0, 0x200);
-    mLungePhase = 1;
-    mMouthOpen = 0;
-    if (AngleDiff(mPrevAngleX, 0) < 0x200) {
-        mPrevAngleX = 0;
-        mChaseCooldown = 0x64;
-        mAngTarget = mAngleY;
-        mFlags = 3;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr,
-            0, 0x1000, 0);
-        func_ov032_02111ff4((State *)&data_ov032_02113a8c);
-    }
-    goto done;
-
-at_player:
-    {
-    Vector3 vec;
-    unsigned int n;
-    const s32 *playerPos = &r5->mPosX;
-    vec.x = playerPos[0];
-    vec.y = playerPos[1];
-    vec.z = playerPos[2];
-    if (data_0209f32c > mPosY) {
-        ApproachLinear(mPrevAngleX, 0, 0x200);
+    if (func_ov032_02111350() == 1 || func_ov032_02111254() == 0) {
+        mHorzSpeed = 0;
+        unk_0a4 = 0;
+        mVertSpeed = 0;
+        unk_0ac = 0;
     } else {
-        ApproachLinear(mPrevAngleX, Vec3_VertAngle((const Vector3 *)&mPosX, &vec), 0x200);
+        Vector3 in;
+        Vector3 out;
+        in.z = 0;
+        in.z = 0x14000;
+        in.x = 0;
+        in.y = 0;
+        out.x = 0;
+        out.y = 0;
+        out.z = 0;
+        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
+        MulVec3Mat4x3(&in, &data_020a0e68, &out);
+        mVertSpeed = out.y;
     }
+
+    /* Once the lunge has started or the bite animation is over, level out
+       and go back to wandering; until then, pitch toward the player. */
+    if (mLungePhase != 0 || mModelAnim.Finished() != 0) {
+        ApproachLinear(mPrevAngleX, 0, 0x200);
+        mLungePhase = 1;
+        mMouthOpen = 0;
+        if (AngleDiff(mPrevAngleX, 0) < 0x200) {
+            mPrevAngleX = 0;
+            mChaseCooldown = 0x64;
+            mAngTarget = mAngleY;
+            mFlags = 3;
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
+            func_ov032_02111ff4((State *)&data_ov032_02113a8c);
+        }
+    } else {
+        Vector3 vec;
+        unsigned int n;
+        const s32 *playerPos = &r5->mPosX;
+        vec.x = playerPos[0];
+        vec.y = playerPos[1];
+        vec.z = playerPos[2];
+        if (data_0209f32c > mPosY) {
+            ApproachLinear(mPrevAngleX, 0, 0x200);
+        } else {
+            ApproachLinear(mPrevAngleX, Vec3_VertAngle((const Vector3 *)&mPosX, &vec), 0x200);
+        }
         n = (unsigned int)(mModelAnim.currFrame << 4) >> 0x10;
         if (n > 0x14 && n < 0x3c)
             mMouthOpen = 1;
         else
             mMouthOpen = 0;
     }
-done:
     return 1;
 }
 
@@ -675,8 +653,7 @@ void daBakubaku_c::func_ov032_021113fc()
     u32 id1 = mBodyClsn.otherOwner;
     if (id1 != 0) {
         dActor_c *actor = dActor_c::FindWithID(id1);
-        int isPlayer = (int)(actor->actorID == kPlayerActorId);
-        if (isPlayer) {
+        if (IsPlayerActor(actor)) {
             Player *f = static_cast<Player *>(actor);
             if (f->mIsVanish != 0) return;
             if (mBodyClsn.hitFlags & kCcMega) {
@@ -705,8 +682,8 @@ void daBakubaku_c::func_ov032_021113fc()
     u32 id2 = mHeadClsn.otherOwner;
     if (id2 == 0) return;
     dActor_c *actor2 = dActor_c::FindWithID(id2);
-    int isPlayer2 = (int)(actor2->actorID == kPlayerActorId);
-    if (isPlayer2 == 0) return;
+    if (!IsPlayerActor(actor2))
+        return;
     Player *f2 = static_cast<Player *>(actor2);
 
     if (mHeadClsn.hitFlags & kCcMega) {
