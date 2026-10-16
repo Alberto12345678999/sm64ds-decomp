@@ -71,6 +71,7 @@ enum d_a_jgm_AssetId {
 
 #include "common.h"
 #include "daJgm_c.h"
+#include "SpawnInfo.h"
 #include "dBgCh_Gnd.h"
 #include "Particle__System.h"
 #include "Player.h"
@@ -92,20 +93,6 @@ struct DaJgmVector3Words { Fix12i x, y, z; };
 
 typedef char DaJgmVector3Words_size_must_be_0xc[
     sizeof(DaJgmVector3Words) == 0xc ? 1 : -1];
-
-struct DaJgmSpawnInfo {
-    daJgm_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char DaJgmSpawnInfo_size_must_be_0x1c[
-    sizeof(DaJgmSpawnInfo) == 0x1c ? 1 : -1];
 
 struct DaJgmMatrixWords { int words[12]; };
 
@@ -240,7 +227,7 @@ extern "C" daJgm_c *daJgm_c_classInit()
     return new daJgm_c();
 }
 
-extern "C" DaJgmSpawnInfo g_profile_JUGEM = {
+extern "C" SpawnInfo<daJgm_c> g_profile_JUGEM = {
     daJgm_c_classInit,
     0x0109,
     0x007c,

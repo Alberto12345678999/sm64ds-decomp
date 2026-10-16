@@ -66,6 +66,7 @@ enum daKrb_c_AssetId {
 #pragma defer_codegen off
 
 #include "daKrb_c.h"
+#include "SpawnInfo.h"
 #include "common.h"
 #include "dBgCh_Gnd.h"
 #include "types.h"
@@ -2086,33 +2087,20 @@ extern "C" daKrb_c *daKrb_c_classInit_KURIBO()
     return new daKrb_c();
 }
 
-struct KrbSpawnInfo {
-    daKrb_c *(*classInit)();
-    s16 executePriority; /* +4: also KURIBO registry id 0x00c8 = 200 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char KrbSpawnInfo_size_must_be_0x1c[
-    sizeof(KrbSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_KURIBO
-extern "C" KrbSpawnInfo g_profile_KURIBO = {
+extern "C" SpawnInfo<daKrb_c> g_profile_KURIBO = {
     daKrb_c_classInit_KURIBO,
-    0x00c8,
+    0x00c8, /* KURIBO registry id 200 */
     0x0018,
     0x10000006,
     0x00032000,
     0x00046000,
     0x01000000,
-    0x01000000
+    0x01000000,
 };
 
 // @symbol g_profile_KURIBO_S
-extern "C" KrbSpawnInfo g_profile_KURIBO_S = {
+extern "C" SpawnInfo<daKrb_c> g_profile_KURIBO_S = {
     daKrb_c_classInit_KURIBO_S,
     0x00c9,
     0x0019,
@@ -2120,11 +2108,11 @@ extern "C" KrbSpawnInfo g_profile_KURIBO_S = {
     0x00032000,
     0x00046000,
     0x006a4000,
-    0x00800000
+    0x00800000,
 };
 
 // @symbol g_profile_KURIBO_L
-extern "C" KrbSpawnInfo g_profile_KURIBO_L = {
+extern "C" SpawnInfo<daKrb_c> g_profile_KURIBO_L = {
     daKrb_c_classInit_KURIBO_L,
     0x00ca,
     0x001a,
@@ -2132,7 +2120,7 @@ extern "C" KrbSpawnInfo g_profile_KURIBO_L = {
     0x00064000,
     0x000c8000,
     0x01000000,
-    0x01000000
+    0x01000000,
 };
 
 /* The nine file-scope resource handles, in retail initializer order. Two

@@ -40,6 +40,7 @@ enum d_a_star_gate_AssetId {
 };
 
 #include "daStarGate_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Model.h"
@@ -126,23 +127,9 @@ extern "C" daStarGateInfo data_ov100_02148390[] = {
     { 80, 8, 31, 36 }
 };
 
-struct StarGateSpawnInfo {
-    daStarGate_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char StarGateSpawnInfo_size_must_be_0x1c[
-    sizeof(StarGateSpawnInfo) == 0x1c ? 1 : -1];
-
 extern "C" daStarGate_c *daStarGate_c_classInit();
 
-extern "C" StarGateSpawnInfo g_profile_STAR_GATE = {
+extern "C" SpawnInfo<daStarGate_c> g_profile_STAR_GATE = {
     daStarGate_c_classInit,
     0x0162,
     0x0162,

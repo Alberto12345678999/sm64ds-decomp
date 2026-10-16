@@ -39,6 +39,7 @@ enum daBakubaku_c_AssetId {
 
 #include "common.h"
 #include "daBakubaku_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 
@@ -53,19 +54,6 @@ enum {
 };
 
 enum { kPlayerActorId = 0xbf };
-
-struct BakubakuSpawnInfo {
-    daBakubaku_c *(*classInit)();
-    s16 executePriority; /* +4: also BAKUBAKU registry id 0x00e4 = 228 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char BakubakuSpawnInfo_size_must_be_0x1c[
-    sizeof(BakubakuSpawnInfo) == 0x1c ? 1 : -1];
 
 /* The model handle constructs through func_02017acc and destroys through
  * func_02017ab4; the animation handles go through SharedFilePtr::Construct
@@ -169,15 +157,15 @@ extern "C" daBakubaku_c *daBakubaku_c_classInit()
 }
 
 // @symbol g_profile_BAKUBAKU
-extern "C" BakubakuSpawnInfo g_profile_BAKUBAKU = {
+extern "C" SpawnInfo<daBakubaku_c> g_profile_BAKUBAKU = {
     daBakubaku_c_classInit,
-    0x00e4,
+    0x00e4, /* BAKUBAKU registry id 228 */
     0x0052,
     3,
     0,
     0x003e8000,
     0x01000000,
-    0x01000000
+    0x01000000,
 };
 
 // @symbol _ZN12daBakubaku_c16OnAimedAtWithEggEv

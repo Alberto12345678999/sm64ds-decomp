@@ -19,6 +19,7 @@
  */
 
 #include "daObjFire_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 
 extern "C" {
@@ -60,28 +61,28 @@ extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_BLUE_FIRE()
     return new daObjFire_c();
 }
 
-struct FireSpawnInfo {
-    daObjFire_c *(*classInit)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char FireSpawnInfo_size_must_be_0x1c[sizeof(FireSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_OBJ_RED_FIRE
-extern "C" FireSpawnInfo g_profile_OBJ_RED_FIRE = {
-    daObjFire_c_classInit_OBJ_RED_FIRE, 0x013c, 0x013a, 0x00800003,
-    0x00000000, 0x00100000, 0x01000000, 0x00000000
+extern "C" SpawnInfo<daObjFire_c> g_profile_OBJ_RED_FIRE = {
+    daObjFire_c_classInit_OBJ_RED_FIRE,
+    0x013c,
+    0x013a,
+    0x00800003,
+    0x00000000,
+    0x00100000,
+    0x01000000,
+    0x00000000,
 };
 
 // @symbol g_profile_OBJ_BLUE_FIRE
-extern "C" FireSpawnInfo g_profile_OBJ_BLUE_FIRE = {
-    daObjFire_c_classInit_OBJ_BLUE_FIRE, 0x013d, 0x013b, 0x00800003,
-    0x00000000, 0x00100000, 0x02000000, 0x00000000
+extern "C" SpawnInfo<daObjFire_c> g_profile_OBJ_BLUE_FIRE = {
+    daObjFire_c_classInit_OBJ_BLUE_FIRE,
+    0x013d,
+    0x013b,
+    0x00800003,
+    0x00000000,
+    0x00100000,
+    0x02000000,
+    0x00000000,
 };
 
 // @symbol _ZN11daObjFire_c13OnYoshiTryEatEv
