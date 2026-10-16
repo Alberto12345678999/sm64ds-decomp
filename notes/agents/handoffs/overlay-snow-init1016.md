@@ -27,7 +27,29 @@ or declaration/credit baselines are edited.
 
 ## Final proof
 
-Pending terminal final checks; this section is updated before committing.
+Tested source commit: 500b5159e69963eab0bb1d4583432c464e52a254.
+
+- python tools/rombuild.py -j16 --no-rom: exit 0; 106/106 exact modules,
+  11334/11334 reproducing functions, 339/339 source-owned data claims, 246 BSS
+  claims (31380 bytes). Intact-TU linked module/storage gates pass with zero
+  new symbol errors. Nine scratch-baseline diagnostics remain pre-existing.
+- python tools/prepush_linkcheck.py --range 67bf07bbb364e06fe50de726ee2b2e99c51d1696..HEAD:
+  exit 0; 48 checked, 47 VERIFIED, one BLIND-5 initializer warning, zero blocking.
+  Those five raw imports are closed by the exact production-linked ov072
+  comparison and manifest-owned init/ctor/storage gates, not ignored.
+- python tools/check_decl_agreement.py --changed 67bf07bbb364e06fe50de726ee2b2e99c51d1696:
+  exit 0, no new declaration disagreements or local header redeclarations.
+- python tools/port_refcheck.py: exit 0; all 247 references resolve.
+- python tools/romdata_check.py --files src/game/actors/d_a_bg_snm_bdy.cpp src/game/stages/d_s_entry.cpp:
+  17 VERIFIED (412 bytes), 12 PARTIAL (84 compared bytes), zero DIFFERS and
+  zero UNNAMED. Partial rows remain partial, not full data acceptance.
+- Full-tree data diagnostics remain 974 verified, 1563 partial, one differing
+  and 15 unnamed; this candidate does not claim to repair that unrelated debt.
+- git diff --check: pass. Independent local acceptance is recorded separately;
+  none of these producer results is CI, remote review, or merge approval.
+
+The final handoff-only commit preserves identical src/include/config/tools/port
+trees to that tested source commit.
 The text-oriented tubuild verifier sees 29/29 exact actor functions but reports
 the generated initializer/ancestor metadata as extras. It is not the intact-
 object acceptance gate. Production rombuild and its owned-range/storage gates
