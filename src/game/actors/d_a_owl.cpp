@@ -579,7 +579,7 @@ void daOwl_c::func_ov094_021362e0()
     *(volatile Fix12i *)&v.y = z;
     *(volatile Fix12i *)&v.z = z;
     m = mRider;
-    data_020a0e68 = *(Matrix4x3 *)(*(char **)((char *)m + 0xc8));
+    data_020a0e68 = *m->mCarryMatrix;
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0x3000, z, z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, -0x6000, 0x1000, 0x4000);
     v.x = data_020a0e68.m[9];

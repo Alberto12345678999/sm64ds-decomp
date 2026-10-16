@@ -395,7 +395,7 @@ extern "C" s16 data_02082214[];
 }
 void dActor_c::UpdatePosWithHorzSpeedAndAng(){
     void *c = this;
-    s32 v98 = *(s32*)((char*)c+0x98);
+    s32 v98 = ((dActor_c *)c)->mHorzSpeed;
     if (v98 == 0) {
         s32 a8 = *(s32*)((char*)c+0xa8);
         s32 v9c = *(s32*)((char*)c+0x9c);
@@ -694,7 +694,7 @@ extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
             prev = ang;
             *(s16 *)((char *)actor + 0x94) = (s16)(ang0 + ang);
             *(s16 *)((char *)actor + 0x96) = 0;
-            *(s32 *)((char *)actor + 0x98) = spread;
+            actor->mHorzSpeed = spread;
         }
     }
 }
