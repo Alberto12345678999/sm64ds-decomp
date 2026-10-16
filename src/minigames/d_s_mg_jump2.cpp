@@ -147,7 +147,7 @@ extern void Heyho_SettleAll(void);
 extern void Jump3D_SetTuning(int a);
 extern int data_ov006_02140304;
 extern int sHeyhoCount;
-extern int data_ov006_02140428;
+extern int sJump3DMariosLeft;
 extern struct G2 pmf_dScMgJump2_c_State_Play;
 extern void Jump3D_StartRoundLayout(void);
 extern struct G2 pmf_dScMgJump2_c_State_Result;
@@ -415,7 +415,7 @@ void dScMgJump2_c::State_Play()
         Mg_SubmitScore(sJumpComboCount);
     }
 
-    if (data_ov006_02140428 != 0)
+    if (sJump3DMariosLeft != 0)
         return;
     BeginEnd();
 }
@@ -557,7 +557,7 @@ s32 dScMgJump2_c::Render()
 
     if (mDrawSubScreen == 1) {
         x = 0x6e;
-        count = data_ov006_02140428;
+        count = sJump3DMariosLeft;
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();

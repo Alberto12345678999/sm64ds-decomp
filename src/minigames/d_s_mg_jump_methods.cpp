@@ -112,7 +112,7 @@ extern u8   data_0209d45c;
 extern s16  data_02082614;
 extern int sJump3DMarioCount;
 extern int  data_ov006_02140304;
-extern int  data_ov006_02140434;
+extern int sJump3DRisenOutCount;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Result;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Intro;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_End;
@@ -195,7 +195,7 @@ int dScMgJump_c::CanEndState(int sel)
     if (sel == 0) {
         if (mLevel % 5 == 4) {
             if (ApproachLinear2(mStateTimer, 0, 1) != 0) {
-                if (data_ov006_02140428 < 3) {
+                if (sJump3DMariosLeft < 3) {
                     Jump3D_RestoreCount();
                     func_02012790(0x26);
                     mStateTimer = 0x3c;
@@ -332,7 +332,7 @@ void dScMgJump_c::State_Play()
     }
     Heyho_SeparateAll();
     Jump3D_UpdateAll();
-    if(data_ov006_02140428 == 0){
+    if (sJump3DMariosLeft == 0) {
         BeginEnd();
         return;
     }
@@ -400,7 +400,7 @@ void dScMgJump_c::State_Final()
   mAccum += mAccumStep >> 12;
   mAccumStep += 0x600;
   Jump3D_UpdateAll();
-  int same = (int)(data_ov006_02140434 == sJump3DMarioCount);
+  int same = (int)(sJump3DRisenOutCount == sJump3DMarioCount);
   if(same == 0) return;
   dScMgBase_c *shared = gMgScene;
   if(shared != 0){
@@ -448,7 +448,7 @@ s32 dScMgJump_c::Render()
 
         Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
 
-        count = data_ov006_02140428;
+        count = sJump3DMariosLeft;
         y = 0x6e;
         for (i = 0; i < 3; i++) {
             if (i >= count) {

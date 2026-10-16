@@ -15884,17 +15884,17 @@
         "return:struct Obj * []"
       ]
     },
-    "data_ov006_02140438": {
+    "sJump3DMarioWallJumpAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140440": {
+    "sJump3DMarioSdownAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140448": {
+    "sJump3DMarioStruggleAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]
@@ -15904,17 +15904,17 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140458": {
+    "sJump3DMarioRollJumpAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140460": {
+    "sJump3DMarioJumpAnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]
     },
-    "data_ov006_02140468": {
+    "sJump3DMarioDoubleJump1AnimFile": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:int []"
       ]

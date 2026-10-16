@@ -808,7 +808,7 @@ extern int data_ov006_021402c4;
 extern int sJumpComboCount;
 extern int data_ov006_02140314;
 extern int sHeyhoCount;
-extern int data_ov006_02140428;
+extern int sJump3DMariosLeft;
 extern int sTrmp3DGravityStep;
 extern int data_ov006_02140570;
 extern int sTrmpSpeedScale;
