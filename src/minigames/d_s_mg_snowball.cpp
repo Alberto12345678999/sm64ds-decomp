@@ -174,9 +174,9 @@ extern void SetSubBg3Offset(int, int);
 extern void func_020731dc(void *, void *, void **);
 extern void Quaternion_Normalize(s32 *);
 extern void *_ZN7Vector3D1Ev(void *object);
-extern u32 data_ov006_02143004;
-extern void *data_ov006_02143008;
-extern s32 data_ov006_02143014[3];
+extern u32 sSnowball_ResetScene_UnitYGuard;
+extern void *sSnowball_ResetScene_UnitYDtorRec;
+extern s32 sSnowball_ResetScene_UnitY[3];
 extern s32 data_02092768[4];
 void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
 void func_0203cd80(int *m, short angle);
@@ -1331,25 +1331,25 @@ void dScMgSnowball_c::ResetScene()
     H(0xab80) = 0;
     H(0xab82) = 0;
 
-    if (!(data_ov006_02143004 & 1)) {
-        data_ov006_02143014[0] = 0;
-        data_ov006_02143014[1] = 0x1000;
-        data_ov006_02143014[2] = 0;
-        func_020731dc(data_ov006_02143014, (void *)&_ZN7Vector3D1Ev,
-                      &data_ov006_02143008);
-        data_ov006_02143004 |= 1;
+    if (!(sSnowball_ResetScene_UnitYGuard & 1)) {
+        sSnowball_ResetScene_UnitY[0] = 0;
+        sSnowball_ResetScene_UnitY[1] = 0x1000;
+        sSnowball_ResetScene_UnitY[2] = 0;
+        func_020731dc(sSnowball_ResetScene_UnitY, (void *)&_ZN7Vector3D1Ev,
+                      &sSnowball_ResetScene_UnitYDtorRec);
+        sSnowball_ResetScene_UnitYGuard |= 1;
     }
 
-    I(0xab84) = data_ov006_02143014[0];
-    I(0xab88) = data_ov006_02143014[1];
-    I(0xab8c) = data_ov006_02143014[2];
+    I(0xab84) = sSnowball_ResetScene_UnitY[0];
+    I(0xab88) = sSnowball_ResetScene_UnitY[1];
+    I(0xab8c) = sSnowball_ResetScene_UnitY[2];
     func_0203ce80((struct Vector3 *)tmp, (struct Vector3 *)(c + 0xab84));
 
     I(0xab90) = data_02092768[0];
     I(0xab94) = data_02092768[1];
     I(0xab98) = data_02092768[2];
     I(0xab9c) = data_02092768[3];
-    Quaternion_FromVector3((int *)(c + 0xab90), (struct Vector3 *)data_ov006_02143014,
+    Quaternion_FromVector3((int *)(c + 0xab90), (struct Vector3 *)sSnowball_ResetScene_UnitY,
                            (struct Vector3 *)(c + 0xab84));
     Quaternion_Normalize((s32 *)(c + 0xab90));
 

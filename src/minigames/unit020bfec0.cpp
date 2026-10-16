@@ -575,8 +575,12 @@ void FallingPetal_SetModel(char *t, int a1)
 
 namespace s020c3754 {
 extern "C" {
-extern "C" { extern int data_ov006_021402e0; }
-extern "C" { extern int data_ov006_021402e4; }
+extern "C" {
+extern int sFallingPetal_Spawn_UnitYGuard;
+}
+extern "C" {
+extern int sFallingPetal_Spawn_UnitYDtorRec;
+}
 extern "C" { extern int data_ov006_021402f0[3]; }
 extern "C" { extern int data_0209e650; }
 extern "C" { extern int data_02092768[4]; }
@@ -584,13 +588,13 @@ extern "C" { extern int data_02092768[4]; }
 void FallingPetal_Spawn(int *r6, int *r5, int *r4)
 {
     int *n;
-    if (!(data_ov006_021402e0 & 1)) {
+    if (!(sFallingPetal_Spawn_UnitYGuard & 1)) {
         n = data_ov006_021402f0;
         n[0] = 0;
         n[1] = 0x1000;
         n[2] = 0;
-        func_020731dc(n, (void *)_ZN7Vector3D1Ev, (void **)&data_ov006_021402e4);
-        data_ov006_021402e0 |= 1;
+        func_020731dc(n, (void *)_ZN7Vector3D1Ev, (void **)&sFallingPetal_Spawn_UnitYDtorRec);
+        sFallingPetal_Spawn_UnitYGuard |= 1;
     }
     r6[0] = r5[0];
     r6[1] = r5[1];
