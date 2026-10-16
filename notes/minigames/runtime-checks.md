@@ -46,7 +46,7 @@ one is meaningless while the other is loaded.
 | Trampoline2 item kinds 0..8 | `TrmpItem_SetMotion0..8` (0x020cdf20 is kind 0) | hit and kind | Trampoline2; note which item moves which way. |
 | Pachinko's flyer, background scroller and hit bursts | `PachinkoFlyer_State0`, `PachinkoBg_Start`, `PachinkoFx_Spawn` (see ov006 symbols.txt) | hit timing | Pachinko: note what crosses the top of the board when the flyer starts, and what scrolls when the background starts. |
 | ~~Teresa's exclaim, found mark, rising icon and reveal sprites~~ **Done 2026-10-15** | `dScMgTeresa_c::Exclaim_Spawn`, `VanishPuff_Spawn`, `FoundNumber_Spawn`, `Reveal_State0` | hit timing | See Observed: the "!", the found-order digit, the vanish puff. `Reveal_State0` runs at each round start. |
-| The graph-callback hooks (slots 22-25) | `dScMgBase_c::OnGraphCallback0..3`, or the arm9 dispatchers `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | Any game. Name the callbacks by frame phase: before draw, after the OAM flush, and so on. |
+| ~~The graph-callback hooks (slots 22-25)~~ **Done 2026-10-15 (from code)** | `dScMgBase_c::OnGraphCallback0..3`; arm9 `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | Read from the main loop (`func_020197b8`) and `IRQ::VBlankHandler`: 0 at frame start, 1 after the scene step, 2 in VBlank before the OAM/register commit, 3 at the end of VBlank. See `include/dScMgBase_c.h`. |
 
 ## Observed so far (melonDS 1.1, EU ROM, 2026-10-15)
 
