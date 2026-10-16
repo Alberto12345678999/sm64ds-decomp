@@ -1,3 +1,4 @@
+#include "nitro/fx/fx.h"
 typedef struct { int x, y, z; } Vector3;
 
 extern short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -61,8 +62,8 @@ void func_0200b590(char *c, short *a1, int arg2)
     dx = rotated.x - selfX;
     pos.y = arg2 + 0x100000;
 
-    pos.x = selfX + (int)(((long long)dx * 0xb33 + 0x800) >> 12);
-    pos.z = selfZ + (int)(((long long)dz * 0xb33 + 0x800) >> 12);
+    pos.x = selfX + FX_MUL(dx, 0xb33);
+    pos.z = selfZ + FX_MUL(dz, 0xb33);
 
     _ZN9dBgCh_GndC1Ev(rg);
     func_0200897c(c, rg);

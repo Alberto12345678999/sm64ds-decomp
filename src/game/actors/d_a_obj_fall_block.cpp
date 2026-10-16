@@ -46,6 +46,7 @@
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "daStar_c.h"
+#include "nitro/fx/fx.h"
 
 #define U64 0xFFFFFFFFFFFFFFFFLL
 
@@ -382,9 +383,7 @@ s32 daObjFallBlock_c::Behavior()
             sinv = data_02082214[(*(u16 *)&mBobPhase >> 4) << 1];
             /* (long long) is load-bearing: a plain int mul changes the code
                size. */
-            mPosY =
-                mRestPos.y
-                + (int)(((long long)sinv * 0x19000 + 0x800) >> 12);
+            mPosY = mRestPos.y + FX_MUL(sinv, 0x19000);
             {
                 s16 *bobPhase = &mBobPhase;
                 *bobPhase = (s16)(*bobPhase + 0x3000);

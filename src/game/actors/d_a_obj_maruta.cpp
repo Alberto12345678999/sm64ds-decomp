@@ -53,6 +53,7 @@
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "dBgW.h"
+#include "nitro/fx/fx.h"
 
 struct CLPS_Block;
 
@@ -348,14 +349,14 @@ extern "C" void func_ov080_0212758c(daObjMaruta_c *self, dActor_c *other)
             int idx = ((u16)self->mAngleY) >> 4;
             int sc = data_02082214[idx * 2];
             int v = position->x;
-            position->x = v + (int)(((long long)half * sc + 0x800) >> 12);
+            position->x = v + FX_MUL(half, sc);
         }
 
         {
             int idx = ((u16)self->mAngleY) >> 4;
             int sc = data_02082214[idx * 2 + 1];
             int v = position->z;
-            position->z = v + (int)(((long long)half * sc + 0x800) >> 12);
+            position->z = v + FX_MUL(half, sc);
         }
     }
 }

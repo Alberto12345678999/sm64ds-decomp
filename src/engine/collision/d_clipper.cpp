@@ -13,11 +13,8 @@
  * destructor's variants in that order before the constructor is written.
  *
  * leftovers:
- * - Func_020150E8 and Func_02015560 stay mangled free definitions: the
- *   real signatures take Fix12<int> by value and wall 6az homes
- *   class-typed by-value parameters (the dClipper.h declarations are
- *   the real ones for callers).
- * - Func_020150E8's opt_propagation off pair and goto-shaped body are
+ * - ClipSphere and TransformAndClip are names inferred from their operations.
+ * - ClipSphere's opt_propagation off pair and goto-shaped body are
  *   the matched form; dClipper_EmitDeletingDestructor/EmitDestructor
  *   are uncalled stubs that force D0 then D1 out of the inline
  *   destructor (ROM order).
@@ -27,26 +24,19 @@
 #include "types.h"
 #include "dClipper.h"
 #include "math/Matrix.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *res);
 void CrossVec3(Vector3 *a, Vector3 *b, Vector3 *result);
 void NormalizeVec3(Vector3 *src, Vector3 *dst);
 int _ZN4cstd4fdivEii(int a, int b);
-/* Stays a mangled call: the real signature carries Fix12<int> and wall 6az
-   (notes/mwccarm-codegen.md) homes class-typed by-value parameters. The
-   declaration in dClipper.h is the real one and non-6az callers may use it. */
-int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, Vector3 *v, int clip, u8 *hint);
 }
 extern short data_02082214[];
 
 #pragma opt_propagation off
-// @symbol _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh
-/* Stays a mangled free definition: the real signature carries Fix12<int> and
-   wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in dClipper.h is the real one and callers may use it. */
-extern "C" int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, Vector3 *v, int clip, u8 *hint)
-{
+// @symbol _ZN8dClipper10ClipSphereER7Vector3iPh
+int dClipper::ClipSphere(Vector3 &v, Fix12i radius, u8 *hint) {
     if (hint != 0)
     {
         unsigned int first;
@@ -63,25 +53,32 @@ extern "C" int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, 
         int ok;
         long long d;
 
-        negZ = -v->z;
-        if (negZ < thiz->mNearZ - clip) goto fail1;
-        if (negZ > thiz->mFarZ + clip) goto fail1;
+        negZ = -v.z;
+        if (negZ < this->mNearZ - radius)
+            goto fail1;
+        if (negZ > this->mFarZ + radius)
+            goto fail1;
 
         first = *hint & 3;
-        x = v->x;
-        c = clip;
-        dot = ((long long)v->x * thiz->mPlaneNormals[first].x + (long long)v->y * thiz->mPlaneNormals[first].y + (long long)v->z * thiz->mPlaneNormals[first].z + 0x800) >> 12;
+        x = v.x;
+        c = radius;
+        dot = ((long long)v.x * this->mPlaneNormals[first].x +
+               (long long)v.y * this->mPlaneNormals[first].y +
+               (long long)v.z * this->mPlaneNormals[first].z + 0x800) >>
+              12;
         outside = 0;
         if (c < dot) outside = 1;
         if (outside == 0)
         {
             i = (first + 1) & 3;
-            y = (int)*(unsigned int *)&v->y;
-            z = (int)*(unsigned int *)&v->z;
+            y = (int)*(unsigned int *)&v.y;
+            z = (int)*(unsigned int *)&v.z;
             zero = 0;
             one = 1;
             do {
-                d = (z * thiz->mPlaneNormals[i].z + (x * thiz->mPlaneNormals[i].x + y * thiz->mPlaneNormals[i].y) + 0x800) >> 12;
+                d = (z * this->mPlaneNormals[i].z +
+                     (x * this->mPlaneNormals[i].x + y * this->mPlaneNormals[i].y) + 0x800) >>
+                    12;
                 ok = d <= c ? one : zero;
                 if (ok == 0) goto failstore;
                 i = (i + 1) & 3;
@@ -97,28 +94,33 @@ extern "C" int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, 
     {
         int negZ;
 
-        negZ = -v->z;
-        if (negZ < thiz->mNearZ - clip) goto fail2;
-        if (negZ > thiz->mFarZ + clip) goto fail2;
+        negZ = -v.z;
+        if (negZ < this->mNearZ - radius)
+            goto fail2;
+        if (negZ > this->mFarZ + radius)
+            goto fail2;
 
-        if ((int)(((long long)v->z * thiz->mPlaneNormals[0].z + 0x800) >> 12)
-            + ((int)(((long long)v->x * thiz->mPlaneNormals[0].x + 0x800) >> 12)
-             + (int)(((long long)v->y * thiz->mPlaneNormals[0].y + 0x800) >> 12)) > clip)
+        if (FX_MUL(v.z, this->mPlaneNormals[0].z) +
+                (FX_MUL(v.x, this->mPlaneNormals[0].x) + FX_MUL(v.y, this->mPlaneNormals[0].y)) >
+            radius)
             goto fail2;
 
         {
-            long long x = v->x, y = v->y, z = v->z;
-            if ((int)((z * thiz->mPlaneNormals[1].z + 0x800) >> 12)
-                + ((int)((x * thiz->mPlaneNormals[1].x + 0x800) >> 12)
-                 + (int)((y * thiz->mPlaneNormals[1].y + 0x800) >> 12)) > clip)
+            long long x = v.x, y = v.y, z = v.z;
+            if ((int)((z * this->mPlaneNormals[1].z + 0x800) >> 12) +
+                    ((int)((x * this->mPlaneNormals[1].x + 0x800) >> 12) +
+                     (int)((y * this->mPlaneNormals[1].y + 0x800) >> 12)) >
+                radius)
                 goto fail2;
-            if ((int)((z * thiz->mPlaneNormals[2].z + 0x800) >> 12)
-                + ((int)((x * thiz->mPlaneNormals[2].x + 0x800) >> 12)
-                 + (int)((y * thiz->mPlaneNormals[2].y + 0x800) >> 12)) > clip)
+            if ((int)((z * this->mPlaneNormals[2].z + 0x800) >> 12) +
+                    ((int)((x * this->mPlaneNormals[2].x + 0x800) >> 12) +
+                     (int)((y * this->mPlaneNormals[2].y + 0x800) >> 12)) >
+                radius)
                 goto fail2;
-            if ((int)((z * thiz->mPlaneNormals[3].z + 0x800) >> 12)
-                + ((int)((x * thiz->mPlaneNormals[3].x + 0x800) >> 12)
-                 + (int)((y * thiz->mPlaneNormals[3].y + 0x800) >> 12)) <= clip)
+            if ((int)((z * this->mPlaneNormals[3].z + 0x800) >> 12) +
+                    ((int)((x * this->mPlaneNormals[3].x + 0x800) >> 12) +
+                     (int)((y * this->mPlaneNormals[3].y + 0x800) >> 12)) <=
+                radius)
                 return negZ;
         }
     fail2:
@@ -127,16 +129,10 @@ extern "C" int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, 
 }
 #pragma opt_propagation on
 
-// @symbol _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_
-/* Stays a mangled free definition: the real signature carries Fix12<int> and
-   wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in dClipper.h is the real one and callers may use it. */
-extern "C" int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-    dClipper *thiz, Matrix4x3 *mat, Vector3 *srcVec, int scale, Vector3 *dstVec)
-{
-    MulVec3Mat4x3(srcVec, mat, dstVec);
-    return _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(
-        thiz, dstVec, scale, (u8 *)0);
+// @symbol _ZN8dClipper16TransformAndClipER9Matrix4x3R7Vector3iS3_
+int dClipper::TransformAndClip(Matrix4x3 &mat, Vector3 &srcVec, Fix12i radius, Vector3 &dstVec) {
+    MulVec3Mat4x3(&srcVec, &mat, &dstVec);
+    return ClipSphere(dstVec, radius, (u8 *)0);
 }
 
 // @symbol _ZN8dClipper13Func_0201559CEv
@@ -154,8 +150,8 @@ void dClipper::Func_0201559C()
 {
     int idx = (int)mFovAngle >> 4;
     int q = _ZN4cstd4fdivEii(data_02082214[2 * idx], data_02082214[2 * idx + 1]);
-    Fix12i b = (Fix12i)(((long long)mNearZ * q + 0x800) >> 12);
-    Fix12i c = (Fix12i)(((long long)mAspectRatio * b + 0x800) >> 12);
+    Fix12i b = FX_MUL(mNearZ, q);
+    Fix12i c = FX_MUL(mAspectRatio, b);
     Vector3 v0, v1, v2, v3;
     v0.x = -c; v0.y = -b; v0.z = -mNearZ;
     v1.x = -c; v1.y = b;  v1.z = -mNearZ;

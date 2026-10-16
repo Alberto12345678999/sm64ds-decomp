@@ -72,6 +72,8 @@ struct dBgCh_Gnd : dBgCh, dBgPi {
     void GetClsnPos(Vector3 &res);
     void SetClsnPos(const Vector3 &pos);
     int DetectClsn();
+    /* Inferred name: query only collider-table slot zero. */
+    int DetectClsnSlot0();
 };
 
 /* Size is the flat span the .c branch spells below AND the stride the ~50

@@ -70,7 +70,7 @@ struct daMky_c : dActor_c {
     dBgCh_Actr mWithMeshClsn;            /* 0x194 */
     /* 02112094 builds the cap attachment matrix here and stores
        &mCapMtx on the spawned cap at +0xc8. */
-    s32 mCapMtx[12];        /* 0x350 */
+    Matrix4x3 mCapMtx; /* 0x350 */
     /* Init copies mPos then adds 0x64000 to Y. 02111734 restores from here. */
     s32 mPerchPosX;         /* 0x380 */
     s32 mPerchPosY;         /* 0x384 */
@@ -102,7 +102,7 @@ struct daMky_c : dActor_c {
     u32 mCapPlayerNo;            /* 0x3b0 */
     s32 mState;             /* 0x3b4 -- EnterState0..10 each write 0..10 */
     s32 mPrevState;         /* 0x3b8 -- 02111bc4 snapshots mState; 021141a8(this, mPrevState) */
-    s32 unk_3bc;            /* 0x3bc */
+    s32 mCagePushProgress;  /* 0x3bc */
     u8  pad_3c0[6];
     u8  mActionTimer;       /* 0x3c6 -- EnterState10 arms 0x1e; DecIfAbove0_Byte */
     u8 mSubState;           /* 0x3c7 -- this TU switches on it; not padding */

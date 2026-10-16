@@ -38,10 +38,6 @@ extern Matrix4x3 data_0209b3ec;
 extern Matrix4x3 data_0209b41c;
 extern void MulVec3Mat4x3(
     Vector3 *vector, Matrix4x3 *matrix, Vector3 *result);
-/* Fix12<int> by value is the measured 2004/b56 caller-side ABI wall. */
-extern int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-    dClipper *clipper, Matrix4x3 *matrix, Vector3 *source,
-    int scale, Vector3 *result);
 extern s32 data_0209f32c;
 extern u32 _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(
     Fix12i x, Fix12i y, Fix12i z);
@@ -200,10 +196,7 @@ void dPa_c::level_c::checkYoganCallback_c::SpawnParticles(
         v.y = vy;
         v.z = sz << 3;
         rg.SetObjAndPos(v, 0);
-        if (rg.DetectClsn() == 0)
-            goto Lac;
-        if (func_02037e38((u32*)&rg.surface) != 1) {
-        Lac:
+        if (rg.DetectClsn() == 0 || func_02037e38((u32 *)&rg.surface) != 1) {
             particle->age = particle->lifetime;
         } else {
             particle->offsetAsr3.y =
@@ -365,8 +358,7 @@ int dPa_c::level_c::clipCallback_c::OnUpdate(
         worldPos.y = particle->offsetAsr3.y + particle->positionAsr3.y;
         worldPos.z = particle->offsetAsr3.z + particle->positionAsr3.z;
 
-        result = _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-            &data_0209f43c, &data_0209b3ec, &worldPos, 0x8000, &clipPos);
+        result = data_0209f43c.TransformAndClip(data_0209b3ec, worldPos, 0x8000, clipPos);
         if (result > 0x100000) {
             if (clipPos.y < -0x40000) {
                 particle->age = particle->lifetime;

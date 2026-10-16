@@ -41,6 +41,7 @@ enum dScMgLuigi_c_AssetId {
 #include "dScMgLuigi_c.h"
 #include "Sound.h"
 #include "IRQ.h"
+#include "nitro/fx/fx.h"
 
 typedef void (dScMgLuigi_c::*LuigiSlotHandler)(int);
 typedef void (dScMgLuigi_c::*LuigiStateHandler)();
@@ -255,10 +256,10 @@ void dScMgLuigi_c::IrisHold(int idx) {
 // @symbol _ZN12dScMgLuigi_c10UpdateIrisEv
 void dScMgLuigi_c::UpdateIris()
 {
-    extern LuigiSlotHandler data_ov006_021421ec[];
+    extern LuigiSlotHandler sLuigiIrisTable[];
     if (mIris[0].active == 0) return;
     int j = mIris[0].state;
-    (this->*data_ov006_021421ec[j])(0);
+    (this->*sLuigiIrisTable[j])(0);
 }
 
 // @symbol _ZN12dScMgLuigi_c9StartIrisEv
@@ -302,7 +303,7 @@ void dScMgLuigi_c::StartIris()
 void dScMgLuigi_c::DrawReward()
 {
     extern void *data_ov006_0213ce70[];
-    extern char data_ov006_02137cd8[];
+    extern char sMgDigitSprites[];
     if (mReward.shown == 0) return;
     int x = mReward.x >> 0xc;
     int y = mReward.y >> 0xc;
@@ -312,7 +313,7 @@ void dScMgLuigi_c::DrawReward()
     if (y >= 0xb8) y = 0xb8;
     s32 r = GetGameLanguage();
     Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x34), x - 8, y, 0);
-    Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0x64), x + 8, y, 0);
+    Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0x64), x + 8, y, 0);
 }
 
 // @symbol _ZN12dScMgLuigi_c12UpdateRewardEv
@@ -577,8 +578,8 @@ void dScMgLuigi_c::CurtainStateBounce(int i)
 
 // @symbol _ZN12dScMgLuigi_c13CurtainUpdateEi
 void dScMgLuigi_c::CurtainUpdate(int i) {
-    extern LuigiSlotHandler data_ov006_0214221c[];
-    (this->*(data_ov006_0214221c[mCurtain[i].phase]))(i);
+    extern LuigiSlotHandler sLuigiCurtainStateTable[];
+    (this->*(sLuigiCurtainStateTable[mCurtain[i].phase]))(i);
 }
 
 // @symbol _ZN12dScMgLuigi_c12CurtainStartEi
@@ -633,12 +634,12 @@ void dScMgLuigi_c::CurtainStart(int i) {
 // @symbol _ZN12dScMgLuigi_c12CurtainsDoneEv
 int dScMgLuigi_c::CurtainsDone()
 {
-    extern LuigiSlotHandler data_ov006_02142204[];
+    extern LuigiSlotHandler sLuigiCurtainTable[];
     int count = 0;
     int i = 0;
     do {
         if (mCurtain[i].active != 0) {
-            (this->*data_ov006_02142204[mCurtain[i].state])(i);
+            (this->*sLuigiCurtainTable[mCurtain[i].state])(i);
             count++;
         }
         i++;
@@ -721,7 +722,7 @@ void dScMgLuigi_c::DrawPictures() {
 void dScMgLuigi_c::DrawPenalties()
 {
     extern void *data_ov006_0213ce70[];
-    extern char data_ov006_02137cd8[];
+    extern char sMgDigitSprites[];
     int i;
     for (i = 0; i < 0x10; i++) {
         if (mPenalty[i].shown != 0) {
@@ -734,8 +735,8 @@ void dScMgLuigi_c::DrawPenalties()
             if (y >= 0xb8) y = 0xb8;
             r = GetGameLanguage();
             Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x38), x - 0x10, y, 0);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa4), x, y, 0);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa0), x + 0x10, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa4), x, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa0), x + 0x10, y, 0);
         }
     }
 }
@@ -986,9 +987,11 @@ void dScMgLuigi_c::MovePictureDriftRandom(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e878[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e878[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e878[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e878[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1020,9 +1023,11 @@ void dScMgLuigi_c::MovePictureDriftByRow(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e868[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e868[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e868[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e868[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1044,9 +1049,11 @@ void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e858[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e858[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e858[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e858[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1063,9 +1070,11 @@ void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
         mStarted[idx]++;
     } else {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8d8[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e8d8[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8d8[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e8d8[mCharacter[idx]]);
         WrapPicture(idx);
     }
 }
@@ -1083,9 +1092,11 @@ void dScMgLuigi_c::MovePictureDriftFixed(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8c8[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e8c8[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8c8[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e8c8[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1721,7 +1732,7 @@ extern unsigned char data_0209d454;
 /* dScMgLuigi_c::Render */
 extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 /* dScMgLuigi_c::Behavior */
-extern LuigiStateHandler data_ov006_02142234[];
+extern LuigiStateHandler sLuigiStateTable[];
 /* dScMgLuigi_c::InitResources */
 extern void *data_ov006_0213cfa0;
 extern void *Ov004_LoadFileByPath(const char *path);
@@ -1734,8 +1745,8 @@ extern void func_02056314(void *, u32, u32);
 extern void func_02056374(const void *, u32, u32);
 extern void Deallocate(void *);
 extern void Mg_SetTopScreenYOffset(int);
-extern int data_ov004_020bc888;
-extern int data_ov004_020bc864;
+extern int sMgResultsBannerX;
+extern int sMgResultsBannerY;
 }
 
 // @symbol _ZN12dScMgLuigi_c10StartRoundEi
@@ -1796,7 +1807,7 @@ s32 dScMgLuigi_c::Render()
 s32 dScMgLuigi_c::Behavior()
 {
     int j = mState;
-    (this->*data_ov006_02142234[j])();
+    (this->*sLuigiStateTable[j])();
     return 1;
 }
 
@@ -1896,8 +1907,8 @@ s32 dScMgLuigi_c::InitResources()
     Mg_SetTopScreenYOffset(0x30);
     mTime = 0xa;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
-    data_ov004_020bc888 = 0x80;
-    data_ov004_020bc864 = ~0x1b;
+    sMgResultsBannerX = 0x80;
+    sMgResultsBannerY = ~0x1b;
     mHudScore = 0;
     return 1;
 }
@@ -1914,7 +1925,7 @@ int *dScMgLuigi_c_classInit(void)
 
 /* The state tables, in the order the static initializer fills them. Each
    entry's {function, 0} record is a compiler temporary in .data. */
-LuigiStateHandler data_ov006_02142234[4] = {
+LuigiStateHandler sLuigiStateTable[4] = {
     &dScMgLuigi_c::StateSetup,
     &dScMgLuigi_c::StatePlace,
     &dScMgLuigi_c::StatePlay,
@@ -1932,17 +1943,17 @@ LuigiSlotHandler data_ov006_02142254[10] = {
     &dScMgLuigi_c::MovePictureBounce,
     &dScMgLuigi_c::TickPictureFlash,
 };
-LuigiSlotHandler data_ov006_02142204[3] = {
+LuigiSlotHandler sLuigiCurtainTable[3] = {
     &dScMgLuigi_c::CurtainStart,
     &dScMgLuigi_c::CurtainUpdate,
     &dScMgLuigi_c::CurtainStateSlow,
 };
-LuigiSlotHandler data_ov006_0214221c[3] = {
+LuigiSlotHandler sLuigiCurtainStateTable[3] = {
     &dScMgLuigi_c::CurtainStateBounce,
     &dScMgLuigi_c::CurtainStateHold,
     &dScMgLuigi_c::CurtainStateFast,
 };
-LuigiSlotHandler data_ov006_021421ec[3] = {
+LuigiSlotHandler sLuigiIrisTable[3] = {
     &dScMgLuigi_c::IrisHold,
     &dScMgLuigi_c::IrisGrow,
     &dScMgLuigi_c::IrisStop,

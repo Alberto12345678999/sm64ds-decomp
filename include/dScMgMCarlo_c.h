@@ -25,7 +25,7 @@
  * 0x0213d5c8, build/rtti.json), and the member below carries that type, so
  * the board's list walks spell real member access. The board lives on ONE
  * intrusive doubly-linked list threaded through the elements' mPrev/mNext
- * (head data_ov006_02142500, tail data_ov006_02142504; data_ov006_021424fc /
+ * (head sMCarloCards, tail data_ov006_02142504; sMCarloFirstPick /
  * _02142508 are the first/second pick).
  *
  * OWN TAIL, 0x60a8..0x60b0: three fields carried over verbatim from this
@@ -171,10 +171,10 @@ struct dScMgMCarlo_c : dScMgSingle3DBase_c {
 
     dMgMCarloSharedState_c mShared; /* 0x4f38..0x51a8 */
     dMgMCarloCardObj_c mArray[0x50]; /* 0x51a8..0x60a8 */
-    s16 unk_60a8;          /* 0x60a8 */
-    s16 unk_60aa;          /* 0x60aa */
+    s16 mRoundState;                 /* 0x60a8 -- the round's step; Behavior switches on it */
+    s16 mTimer;                      /* 0x60aa -- step timer (ApproachLinear2 to 0) */
     u8  pad_60ac[0x2];     /* 0x60ac */
-    s16 unk_60ae;          /* 0x60ae */
+    s16 mDealCount;        /* 0x60ae -- cards dealt so far; Dealer_StartDeal counts it */
 };
 
 #ifndef SM64DS_PLATFORM_PC

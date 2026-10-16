@@ -11,14 +11,14 @@
  * the registry factory dScMgCoin_c_classInit. The destructor is the key
  * function, so the vtable and RTTI are emitted here too.
  *
- * The functions from Coin_State0 up, and the three below
- * Bag_State3, came from one-function files. Their bodies are
+ * The functions from Coin_StateWaitTouch up, and the three below
+ * Bag_StateBounceDown, came from one-function files. Their bodies are
  * kept as they matched there. Where two of them spelled a type or a
  * declaration differently, the tag is renamed per function and the
- * call casts. Block_State2 and SpawnBlocks called
+ * call casts. Block_StateWander and SpawnBlocks called
  * slot 35 through a stand-in vtable; they now call IsAltVariant.
  *
- * The five state tables (the coin handlers at data_ov006_021417b0, the
+ * The five state tables (the coin handlers at sCoinCoinStateTable, the
  * moneybag's at 021417c8, the caption's at 021417e8, the phases' at
  * 02141810 and the blocks' at 02141840) are {pmf, delta} records on
  * dScMgCoin_c. They are defined here, and the TU's static initialiser
@@ -33,7 +33,7 @@
 // Mg_RenderSpriteBothMtx are redeclared extern "C" at the call -- the ROM symbols
 // are unmangled and the sites disagree on the types. DrawScoreRival
 // reads the other score at gMgScene + 0xac (not a dScMgBase_c
-// field). Caption_State0 casts the scene through unsigned long long
+// field). Caption_StateDelay casts the scene through unsigned long long
 // before clearing the caption frameTime (five words without it).
 // Popup_UpdateAll/_020dc960/_020dcb1c stay on byte offsets (popup and
 // sparkle structs miss: timer address reused, 0x18 kept as stride and timer,
@@ -55,6 +55,7 @@ enum dScMgCoin_c_AssetId {
 #include "Sound.h"
 #include "dScMgCoin_c.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off /* ROM-ascending emission; dropping this inverts it */
 
@@ -178,58 +179,45 @@ struct CoinPmfEntry { CoinPmf pmf; };
 typedef void (dScMgCoin_c::*PMF_Behavior)();
 struct Entry_Behavior { PMF_Behavior pmf; };
 extern "C" {
-extern const Entry_Behavior pmf_dScMgCoin_c_Phase_State0, pmf_dScMgCoin_c_Phase_State1,
-    pmf_dScMgCoin_c_Phase_State2, pmf_dScMgCoin_c_Phase_State3, pmf_dScMgCoin_c_Phase_State4,
-    pmf_dScMgCoin_c_Phase_State5;
-extern const CoinPmfEntry pmf_dScMgCoin_c_Block_State0, pmf_dScMgCoin_c_Block_State1,
-    pmf_dScMgCoin_c_Block_State2, pmf_dScMgCoin_c_Block_State3, pmf_dScMgCoin_c_Block_State4,
-    pmf_dScMgCoin_c_Block_State5;
-extern const CoinPmfEntry pmf_dScMgCoin_c_Coin_State0, pmf_dScMgCoin_c_Coin_State1,
-    pmf_dScMgCoin_c_Coin_State2;
-extern const CoinPmfEntry pmf_dScMgCoin_c_Caption_State0, pmf_dScMgCoin_c_Caption_State1,
-    pmf_dScMgCoin_c_Caption_State2, pmf_dScMgCoin_c_Caption_State3, pmf_dScMgCoin_c_Caption_State4;
-extern const CoinPmfEntry pmf_dScMgCoin_c_Bag_State0, pmf_dScMgCoin_c_Bag_State1,
-    pmf_dScMgCoin_c_Bag_State2, pmf_dScMgCoin_c_Bag_State3;
+extern const Entry_Behavior pmf_dScMgCoin_c_Phase_StateIdle, pmf_dScMgCoin_c_Phase_StateIntro,
+    pmf_dScMgCoin_c_Phase_StatePlay, pmf_dScMgCoin_c_Phase_StateSettle,
+    pmf_dScMgCoin_c_Phase_StateScoreDelay, pmf_dScMgCoin_c_Phase_StateResult;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Block_StateWaiting, pmf_dScMgCoin_c_Block_StateHopDown,
+    pmf_dScMgCoin_c_Block_StateWander, pmf_dScMgCoin_c_Block_StateDropOnCoin,
+    pmf_dScMgCoin_c_Block_StateResting, pmf_dScMgCoin_c_Block_StateFallIn;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Coin_StateWaitTouch, pmf_dScMgCoin_c_Coin_StateHop,
+    pmf_dScMgCoin_c_Coin_StateSettled;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Caption_StateDelay, pmf_dScMgCoin_c_Caption_StateCountIn,
+    pmf_dScMgCoin_c_Caption_StateBlink, pmf_dScMgCoin_c_Caption_StateHidden,
+    pmf_dScMgCoin_c_Caption_StateLoop;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Bag_StateIdle, pmf_dScMgCoin_c_Bag_StateRise,
+    pmf_dScMgCoin_c_Bag_StateParked, pmf_dScMgCoin_c_Bag_StateBounceDown;
 
 /* the phases (Behavior) */
-Entry_Behavior data_ov006_02141810[6] = {
-    { pmf_dScMgCoin_c_Phase_State0 },
-    { pmf_dScMgCoin_c_Phase_State1 },
-    { pmf_dScMgCoin_c_Phase_State2 },
-    { pmf_dScMgCoin_c_Phase_State3 },
-    { pmf_dScMgCoin_c_Phase_State4 },
-    { pmf_dScMgCoin_c_Phase_State5 }
-};
+Entry_Behavior sCoinPhaseStateTable[6] = {
+    {pmf_dScMgCoin_c_Phase_StateIdle},       {pmf_dScMgCoin_c_Phase_StateIntro},
+    {pmf_dScMgCoin_c_Phase_StatePlay},       {pmf_dScMgCoin_c_Phase_StateSettle},
+    {pmf_dScMgCoin_c_Phase_StateScoreDelay}, {pmf_dScMgCoin_c_Phase_StateResult}};
 /* the blocks */
-CoinPmfEntry data_ov006_02141840[6] = {
-    { pmf_dScMgCoin_c_Block_State0 },
-    { pmf_dScMgCoin_c_Block_State1 },
-    { pmf_dScMgCoin_c_Block_State2 },
-    { pmf_dScMgCoin_c_Block_State3 },
-    { pmf_dScMgCoin_c_Block_State4 },
-    { pmf_dScMgCoin_c_Block_State5 }
-};
+CoinPmfEntry sCoinBlockStateTable[6] = {
+    {pmf_dScMgCoin_c_Block_StateWaiting}, {pmf_dScMgCoin_c_Block_StateHopDown},
+    {pmf_dScMgCoin_c_Block_StateWander},  {pmf_dScMgCoin_c_Block_StateDropOnCoin},
+    {pmf_dScMgCoin_c_Block_StateResting}, {pmf_dScMgCoin_c_Block_StateFallIn}};
 /* the coins */
-CoinPmfEntry data_ov006_021417b0[3] = {
-    { pmf_dScMgCoin_c_Coin_State0 },
-    { pmf_dScMgCoin_c_Coin_State1 },
-    { pmf_dScMgCoin_c_Coin_State2 }
-};
+CoinPmfEntry sCoinCoinStateTable[3] = {{pmf_dScMgCoin_c_Coin_StateWaitTouch},
+                                       {pmf_dScMgCoin_c_Coin_StateHop},
+                                       {pmf_dScMgCoin_c_Coin_StateSettled}};
 /* the caption */
-CoinPmfEntry data_ov006_021417e8[5] = {
-    { pmf_dScMgCoin_c_Caption_State0 },
-    { pmf_dScMgCoin_c_Caption_State1 },
-    { pmf_dScMgCoin_c_Caption_State2 },
-    { pmf_dScMgCoin_c_Caption_State3 },
-    { pmf_dScMgCoin_c_Caption_State4 }
-};
+CoinPmfEntry sCoinCaptionStateTable[5] = {{pmf_dScMgCoin_c_Caption_StateDelay},
+                                          {pmf_dScMgCoin_c_Caption_StateCountIn},
+                                          {pmf_dScMgCoin_c_Caption_StateBlink},
+                                          {pmf_dScMgCoin_c_Caption_StateHidden},
+                                          {pmf_dScMgCoin_c_Caption_StateLoop}};
 /* the moneybag */
-CoinPmfEntry data_ov006_021417c8[4] = {
-    { pmf_dScMgCoin_c_Bag_State0 },
-    { pmf_dScMgCoin_c_Bag_State1 },
-    { pmf_dScMgCoin_c_Bag_State2 },
-    { pmf_dScMgCoin_c_Bag_State3 }
-};
+CoinPmfEntry sCoinBagStateTable[4] = {{pmf_dScMgCoin_c_Bag_StateIdle},
+                                      {pmf_dScMgCoin_c_Bag_StateRise},
+                                      {pmf_dScMgCoin_c_Bag_StateParked},
+                                      {pmf_dScMgCoin_c_Bag_StateBounceDown}};
 }
 
 // @symbol _ZN11dScMgCoin_cD1Ev
@@ -255,7 +243,6 @@ extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz)
 }
 #endif
 
-#define FX_MUL(a, b) ((int)(((s64)(a) * (b) + 0x800) >> 12))
 
 // @symbol _ZN11dScMgCoin_c8Bag_DrawEv
 /* The hand cursor while the stylus is down: the sine table entry for the
@@ -289,9 +276,8 @@ void dScMgCoin_c::Bag_Draw()
 }
 #pragma pop
 
-// @symbol _ZN11dScMgCoin_c10Bag_State3Ei
-void dScMgCoin_c::Bag_State3(int i)
-{
+// @symbol _ZN11dScMgCoin_c19Bag_StateBounceDownEi
+void dScMgCoin_c::Bag_StateBounceDown(int i) {
     BagView *scene = (BagView *)this;
     int height;
     int stageIndex;
@@ -331,9 +317,8 @@ void dScMgCoin_c::Bag_State3(int i)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c10Bag_State2Ei
-void dScMgCoin_c::Bag_State2(int index)
-{
+// @symbol _ZN11dScMgCoin_c15Bag_StateParkedEi
+void dScMgCoin_c::Bag_StateParked(int index) {
     BagView *scene = (BagView *)this;
     if (scene->bag[index].countdown != 0) {
         scene->bag[index].countdown = scene->bag[index].countdown - 1;
@@ -346,9 +331,8 @@ void dScMgCoin_c::Bag_State2(int index)
     this->SpawnBlocks();
 }
 
-// @symbol _ZN11dScMgCoin_c10Bag_State1Ei
-void dScMgCoin_c::Bag_State1(int index)
-{
+// @symbol _ZN11dScMgCoin_c13Bag_StateRiseEi
+void dScMgCoin_c::Bag_StateRise(int index) {
     BagView *scene = (BagView *)this;
     scene->bag[index].y = scene->bag[index].y + scene->bag[index].vy;
     scene->bag[index].vy = scene->bag[index].vy - kFallStep;
@@ -371,21 +355,19 @@ void dScMgCoin_c::Bag_Release()
     scene->mBouncer.vy = kKickVy;
 }
 
-// @symbol _ZN11dScMgCoin_c10Bag_State0Ev
-void dScMgCoin_c::Bag_State0()
-{
-}
+// @symbol _ZN11dScMgCoin_c13Bag_StateIdleEv
+void dScMgCoin_c::Bag_StateIdle() {}
 
 // @symbol _ZN11dScMgCoin_c10Bag_UpdateEv
 /* Dispatch the moneybag while mBouncer.active is set. Not a vtable:
-   the records live in data_ov006_021417c8. */
+   the records live in sCoinBagStateTable. */
 void dScMgCoin_c::Bag_Update()
 {
     if (this->mBouncer.active == 0)
         return;
 
     int state = this->mBouncer.state;
-    (this->*data_ov006_021417c8[state].pmf)(0);
+    (this->*sCoinBagStateTable[state].pmf)(0);
 }
 
 // @symbol _ZN11dScMgCoin_c8Bag_ShowEv
@@ -449,9 +431,8 @@ void dScMgCoin_c::Caption_Draw()
         scene->mCaption.x >> 12, scene->mCaption.y >> 12, -1, -1);
 }
 
-// @symbol _ZN11dScMgCoin_c14Caption_State4Ei
-void dScMgCoin_c::Caption_State4(int index)
-{
+// @symbol _ZN11dScMgCoin_c17Caption_StateLoopEi
+void dScMgCoin_c::Caption_StateLoop(int index) {
     CapView *scene = (CapView *)this;
     u16 *frameTime = &scene->cap[index].frameTime;
     u8 *frame = &scene->cap[index].frame;
@@ -468,16 +449,14 @@ void dScMgCoin_c::Caption_State4(int index)
         scene->cap[index].sprite = data_ov006_0212e31c[*frame];
 }
 
-// @symbol _ZN11dScMgCoin_c14Caption_State3Ei
-void dScMgCoin_c::Caption_State3(int index)
-{
+// @symbol _ZN11dScMgCoin_c19Caption_StateHiddenEi
+void dScMgCoin_c::Caption_StateHidden(int index) {
     dScMgCoin_c *scene = this;
     (&scene->mCaption)[index].sprite = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c14Caption_State2Ei
-void dScMgCoin_c::Caption_State2(int index)
-{
+// @symbol _ZN11dScMgCoin_c18Caption_StateBlinkEi
+void dScMgCoin_c::Caption_StateBlink(int index) {
     CapView *scene = (CapView *)this;
     u16 frameTime = scene->cap[index].frameTime;
     scene->cap[index].frameTime = frameTime + 1;
@@ -501,9 +480,8 @@ void dScMgCoin_c::Caption_State2(int index)
     scene->cap[index].delay = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c14Caption_State1Ei
-void dScMgCoin_c::Caption_State1(int index)
-{
+// @symbol _ZN11dScMgCoin_c20Caption_StateCountInEi
+void dScMgCoin_c::Caption_StateCountIn(int index) {
     CapView *scene = (CapView *)this;
 
     u16 *frameTime = &scene->cap[index].frameTime;
@@ -532,9 +510,8 @@ void dScMgCoin_c::Caption_State1(int index)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c14Caption_State0Ei
-void dScMgCoin_c::Caption_State0(int index)
-{
+// @symbol _ZN11dScMgCoin_c18Caption_StateDelayEi
+void dScMgCoin_c::Caption_StateDelay(int index) {
     int raw = (int)this;
     CapView *scene = (CapView *)raw;
 
@@ -556,7 +533,7 @@ void dScMgCoin_c::Caption_Update()
         return;
 
     int state = this->mCaption.state;
-    (this->*data_ov006_021417e8[state].pmf)(0);
+    (this->*sCoinCaptionStateTable[state].pmf)(0);
 }
 
 // @symbol _ZN11dScMgCoin_c12Caption_ShowEv
@@ -705,8 +682,8 @@ void dScMgCoin_c::Sparkle_Burst(int coinIndex)
             {
                 u16 ang = data_ov006_0212e334[i];
                 int sine = (ang >> 4) * 2;
-                *(int *)(raw + 0x4d1c) = (int)(((s64)data_02082214[sine + 1] * 0x2000 + 0x800) >> 12);
-                *(int *)(raw + 0x4d20) = (int)(((s64)data_02082214[sine] * 0x2000 + 0x800) >> 12);
+                *(int *)(raw + 0x4d1c) = FX_MUL(data_02082214[sine + 1], 0x2000);
+                *(int *)(raw + 0x4d20) = FX_MUL(data_02082214[sine], 0x2000);
             }
             *(u16 *)(raw + 0x4d24) = 0x18;
         }
@@ -821,14 +798,11 @@ void dScMgCoin_c::DrawCoinValues()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c11Coin_State2Ev
-void dScMgCoin_c::Coin_State2()
-{
-}
+// @symbol _ZN11dScMgCoin_c17Coin_StateSettledEv
+void dScMgCoin_c::Coin_StateSettled() {}
 
-// @symbol _ZN11dScMgCoin_c11Coin_State1Ei
-void dScMgCoin_c::Coin_State1(int index)
-{
+// @symbol _ZN11dScMgCoin_c13Coin_StateHopEi
+void dScMgCoin_c::Coin_StateHop(int index) {
     CoinView *scene = (CoinView *)this;
 
     scene->coin[index].y = scene->coin[index].y + scene->coin[index].vy;
@@ -847,7 +821,7 @@ void dScMgCoin_c::Coin_State1(int index)
     this->KickBlockUnderCoin(index);
 }
 
-// @symbol _ZN11dScMgCoin_c11Coin_State0Ei
+// @symbol _ZN11dScMgCoin_c19Coin_StateWaitTouchEi
 /* The touch test for one coin. In phase 2, with the stylus down and newly
    pressed, a touch within 0x10 of the coin takes it: a coin still worth
    something starts its hop, otherwise the round ends (phase 3, a 0x40 timer,
@@ -856,8 +830,7 @@ void dScMgCoin_c::Coin_State1(int index)
    is re-read through gActivePlayerSlot rather than the i already in hand; each
    of the five coin stores spells its own self + n + 0x4000 + ... with no
    hoisted base; and the hop target re-reads its address instead of *p1. */
-void dScMgCoin_c::Coin_State0(int idx)
-{
+void dScMgCoin_c::Coin_StateWaitTouch(int idx) {
     char *self = (char *)this;
     int i;
     int ok;
@@ -937,13 +910,13 @@ void dScMgCoin_c::Coin_State0(int idx)
 }
 
 // @symbol _ZN11dScMgCoin_c14Coin_UpdateAllEv
-/* Runs each coin's state handler from data_ov006_021417b0. */
+/* Runs each coin's state handler from sCoinCoinStateTable. */
 void dScMgCoin_c::Coin_UpdateAll()
 {
     int i;
     for (i = 0; i < 0x18; i++) {
         unsigned char k = this->mCoins[i].state;
-        (this->*data_ov006_021417b0[k].pmf)(i);
+        (this->*sCoinCoinStateTable[k].pmf)(i);
     }
 }
 
@@ -1060,7 +1033,7 @@ void dScMgCoin_c::DrawBlocks()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c12Block_State5Ei
+// @symbol _ZN11dScMgCoin_c17Block_StateFallInEi
 /* A block falling into place. The panned landing sound plays on the frame
    vy turns from rising to falling; once it passes its row it rests (state
    4), bumps the running total and bursts an effect. */
@@ -1068,8 +1041,7 @@ struct Pair_dd658 { int a; int b; };
 extern "C" void Mg_SpawnFx(int a, int b, struct Pair_dd658 *p2, struct Pair_dd658 *p3,
                                     struct Pair_dd658 *p4);
 
-void dScMgCoin_c::Block_State5(int i)
-{
+void dScMgCoin_c::Block_StateFallIn(int i) {
     int n = i * 0x1c;
     int oldVy;
     struct Pair_dd658 pa;
@@ -1113,16 +1085,13 @@ void dScMgCoin_c::Block_State5(int i)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c12Block_State4Ev
-void dScMgCoin_c::Block_State4()
-{
-}
+// @symbol _ZN11dScMgCoin_c18Block_StateRestingEv
+void dScMgCoin_c::Block_StateResting() {}
 
-// @symbol _ZN11dScMgCoin_c12Block_State3Ei
+// @symbol _ZN11dScMgCoin_c21Block_StateDropOnCoinEi
 /* A block dropping onto its coin's row. It stops at the row height from
    data_ov006_0212e400, takes the coin's x and rests (state 4). */
-void dScMgCoin_c::Block_State3(int index)
-{
+void dScMgCoin_c::Block_StateDropOnCoin(int index) {
     char *thiz = (char *)this;
     int off = index * 0x1c;
     int new_var;
@@ -1146,15 +1115,14 @@ void dScMgCoin_c::Block_State3(int index)
     *((unsigned char *)(((thiz + off) + 0x4000) + 0x676)) = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c12Block_State2Ei
+// @symbol _ZN11dScMgCoin_c17Block_StateWanderEi
 /* A block wandering along its row. When it reaches the row it picks a
    random direction, and over a coin of that row still worth at most two
    (five when IsAltVariant says so) it claims the coin, adds one to its value
    and starts to rise (state 3). */
 #define LB(a) (*(unsigned char *)(((long long)(int)(a))))
 
-void dScMgCoin_c::Block_State2(int i)
-{
+void dScMgCoin_c::Block_StateWander(int i) {
     char *c = (char *)this;
     int n = i * 0x1c;
     int idxb;
@@ -1211,12 +1179,11 @@ void dScMgCoin_c::Block_State2(int i)
 
 #undef LB
 
-// @symbol _ZN11dScMgCoin_c12Block_State1Ei
+// @symbol _ZN11dScMgCoin_c18Block_StateHopDownEi
 /* A block hopping down the stages. Each landing picks a new random vx and
    plays the panned hop; when its hops for a stage run out it moves down a
    stage, and past its own row it switches to state 2. */
-void dScMgCoin_c::Block_State1(int i)
-{
+void dScMgCoin_c::Block_StateHopDown(int i) {
     char *self = (char *)this;
     int n = i * 0x1c;
     char *fp;
@@ -1274,10 +1241,9 @@ void dScMgCoin_c::Block_State1(int i)
     }
 }
 
-// @symbol _ZN11dScMgCoin_c12Block_State0Ei
+// @symbol _ZN11dScMgCoin_c18Block_StateWaitingEi
 /* A block waiting to drop: counts its delay down, then starts it (state 1). */
-void dScMgCoin_c::Block_State0(int i)
-{
+void dScMgCoin_c::Block_StateWaiting(int i) {
     char *c = (char *)this;
     int idx = i * 0x1c;
     char *r2 = c + 0x4670;
@@ -1321,7 +1287,7 @@ void dScMgCoin_c::Block_UpdateAll()
     char *p = thiz;
     for (; i < 0x28; i++) {
         if (*(unsigned char *)(p + 0x4000 + 0x677) != 0) {
-            (this->*data_ov006_02141840[*(unsigned char *)(p + 0x4000 + 0x675)].pmf)(i);
+            (this->*sCoinBlockStateTable[*(unsigned char *)(p + 0x4000 + 0x675)].pmf)(i);
             if (*(unsigned char *)(p + 0x4000 + 0x675) != 4)
                 n++;
             this->Block_Animate(i);
@@ -1452,21 +1418,20 @@ void dScMgCoin_c::ResetRound()
 
     *((u32 *)(c + 0x51c8)) = 0;
     *((u32 *)(c + 0x51cc)) = 0;
-    *((u8 *)(c + 0x51db)) = 0;
+    mWonLast = 0;
     *((u8 *)(c + 0x51dd)) = 0;
     *((u32 *)(c + 0x51d0)) = 0;
-    *((u8 *)(c + 0x51de)) = 0;
+    mCaptionLatch = 0;
     this->Caption_Reset();
     this->Bag_Hide();
     *((u8 *)(c + 0x51df)) = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c12Phase_State5Ev
+// @symbol _ZN11dScMgCoin_c17Phase_StateResultEv
 /* The result countdown. While the stylus is held it speeds to zero with a
    sound; otherwise it holds at 0x80. At zero the scene frees its graphics
    if it loaded them and starts the fade out. */
-void dScMgCoin_c::Phase_State5()
-{
+void dScMgCoin_c::Phase_StateResult() {
     char *self = (char *)this;
     if (mCountdown == 0) return;
     mCountdown -= 1;
@@ -1491,11 +1456,10 @@ void dScMgCoin_c::Phase_State5()
     mPromptEnabled = 0;
 }
 
-// @symbol _ZN11dScMgCoin_c12Phase_State4Ev
+// @symbol _ZN11dScMgCoin_c21Phase_StateScoreDelayEv
 /* Counts the countdown at 0x51cc down; at zero, re-arms the caption if the
    other player scored, then enters the result phase with 0xc0 frames. */
-void dScMgCoin_c::Phase_State4()
-{
+void dScMgCoin_c::Phase_StateScoreDelay() {
     char *c = (char *)this;
     if (*(int *)((c + 0x5000) + 0x1cc) != 0) {
         int *p = (int *)(int)(((long long)(int)(c + 0x51cc)));
@@ -1516,12 +1480,11 @@ void dScMgCoin_c::Phase_State4()
     mPhase = 5;
 }
 
-// @symbol _ZN11dScMgCoin_c12Phase_State3Ev
+// @symbol _ZN11dScMgCoin_c17Phase_StateSettleEv
 /* Phase 4 on the way to the result: runs the blocks, coins and sparkles,
    and once nothing moves counts 0x51cc down, bringing in the caption or
    the other screen at 0x20, then hands the score over and sets phase 4. */
-void dScMgCoin_c::Phase_State3()
-{
+void dScMgCoin_c::Phase_StateSettle() {
     char *self = (char *)this;
     int count;
     int i;
@@ -1532,7 +1495,7 @@ void dScMgCoin_c::Phase_State3()
     for (i = 0; i < 0x28; i++) {
         if (mBlocks[i].unk17) {
             int idx = mBlocks[i].state;
-            (this->*data_ov006_02141840[idx].pmf)(i);
+            (this->*sCoinBlockStateTable[idx].pmf)(i);
             if (mBlocks[i].state != 4) count++;
             if (mBlocks[i].unk16 != 0) this->Block_Animate(i);
         }
@@ -1562,17 +1525,16 @@ void dScMgCoin_c::Phase_State3()
     (&mSparkles[31].y)[0x72] = 4;
 }
 
-// @symbol _ZN11dScMgCoin_c12Phase_State2Ev
+// @symbol _ZN11dScMgCoin_c15Phase_StatePlayEv
 /* Phase 2, play: runs the blocks, coins and sparkles. Once every coin worth
    something has been touched the round ends (phase 3, 0x40 frames) and the
    win flag is set from the other score. */
-void dScMgCoin_c::Phase_State2()
-{
+void dScMgCoin_c::Phase_StatePlay() {
     char *c = (char *)this;
     int i;
     for (i = 0; i < 0x28; i++) {
         if (mBlocks[i].unk17 != 0) {
-            (this->*data_ov006_02141840[mBlocks[i].state].pmf)(i);
+            (this->*sCoinBlockStateTable[mBlocks[i].state].pmf)(i);
             this->Block_Animate(i);
         }
     }
@@ -1615,11 +1577,10 @@ void dScMgCoin_c::Phase_State2()
     }
 }
 
-// @symbol _ZN11dScMgCoin_c12Phase_State1Ev
+// @symbol _ZN11dScMgCoin_c16Phase_StateIntroEv
 /* Phase 1: on the first frame, flags the scene and clears its timer, then
    runs the blocks. */
-void dScMgCoin_c::Phase_State1()
-{
+void dScMgCoin_c::Phase_StateIntro() {
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;
         mPromptBlinkCount = 1;
@@ -1628,10 +1589,8 @@ void dScMgCoin_c::Phase_State1()
     Block_UpdateAll();
 }
 
-// @symbol _ZN11dScMgCoin_c12Phase_State0Ev
-void dScMgCoin_c::Phase_State0()
-{
-}
+// @symbol _ZN11dScMgCoin_c15Phase_StateIdleEv
+void dScMgCoin_c::Phase_StateIdle() {}
 
 // @symbol _ZN11dScMgCoin_c10StartRoundEi
 /* Slot 18. Starts the next round: counts a win if the last one was won,
@@ -1674,13 +1633,13 @@ int dScMgCoin_c::Render()
 }
 
 // @symbol _ZN11dScMgCoin_c8BehaviorEv
-/* Runs this phase's handler from data_ov006_02141810, then the caption,
+/* Runs this phase's handler from sCoinPhaseStateTable, then the caption,
    the moneybag, the popups and the score. */
 
 int dScMgCoin_c::Behavior()
 {
     int idx = mPhase;
-    (this->*data_ov006_02141810[idx].pmf)();
+    (this->*sCoinPhaseStateTable[idx].pmf)();
     this->Caption_Update();
     this->Bag_Update();
     this->Popup_UpdateAll();

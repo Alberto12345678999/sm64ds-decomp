@@ -19,19 +19,15 @@
  * (daObjC0Water_c publishes it); data_ov032_021137cc / 021137d8 are
  * the body and head cylinder offsets.
  */
-/* leftovers: common.h precedes daBakubaku_c.h. Model.h's nested Matrix4x3
- * scalarizes the mShadowMat and mat4x3 copies this file makes.
- * mSpawnPos and mTargetPos stay three s32s: a Vector3 member emits ~Vector3
- * from the inline destructor. mStateTimer is an s16 on dEnemyBase_c; the
- * reads that match are unsigned halfwords (ldrh, not ldrsh).
- * func_ov032_02111ff4 reloads mState through a StateFn *; flattening that
- * drops the store-then-load. dBgCh_Actr::Init, SetAnim, dCcAcPos_c::Init
- * and DropShadowRadHeight stay scalar externs: this file's call sites grow
- * when the argument is a Fix12<int> temporary, and the header's Fix12i
- * spelling of Init does not link. Player::Hurt has no header declaration.
- * g_profile_BAKUBAKU is this file's .data, not a class member. The forward
- * vector's doubled Z store and the register-shaped locals stay; renaming
- * them reschedules the matched bodies.
+/* leftovers: common.h precedes daBakubaku_c.h to retain the current flat
+ * Matrix4x3 copies. Actor, spawn and target positions remain separate scalar
+ * fields; the existing vector pointer views at those helper boundaries are
+ * still partial reconstruction. The state timer uses unsigned halfword reads,
+ * and the state installer retains its StateFn pointer read-back.
+ * Native Fix12<int> calls for collision setup, animation, shadow and Hurt
+ * remain pending; the local declarations retain their matched scalar ABI.
+ * The forward vectors retain the observed doubled Z store and store order.
+ * g_profile_BAKUBAKU remains this file's data, not a class member.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -43,6 +39,7 @@ enum daBakubaku_c_AssetId {
 
 #include "common.h"
 #include "daBakubaku_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 
@@ -57,19 +54,6 @@ enum {
 };
 
 enum { kPlayerActorId = 0xbf };
-
-struct BakubakuSpawnInfo {
-    daBakubaku_c *(*classInit)();
-    s16 executePriority; /* +4: also BAKUBAKU registry id 0x00e4 = 228 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char BakubakuSpawnInfo_size_must_be_0x1c[
-    sizeof(BakubakuSpawnInfo) == 0x1c ? 1 : -1];
 
 /* The model handle constructs through func_02017acc and destroys through
  * func_02017ab4; the animation handles go through SharedFilePtr::Construct
@@ -131,7 +115,7 @@ void Matrix4x3_FromRotationY(void *m, s16 angY);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 void MulVec3Mat4x3(void *in, void *m, void *out);
 
-/* Scalar so the immediate stays in a register. Fix12<int> by value homes it. */
+/* local extern: retain the matched scalar ABI; native Fix12<int> calls remain pending. */
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     void *self, void *bca, int a, int fix, unsigned int b);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -141,8 +125,9 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a, void *b);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int f, int g, unsigned int h);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *p, void *v, u32 a, int f, u32 c, u32 d, u32 e);
+/* local extern: native Hurt takes Fix12<int> by value; retain the current
+ * definition's scalar ABI while that call reconstruction remains pending. */
+int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, u32 a, int f, u8 c, u8 d, u8 e);
 /* Sets Player::mStateStep to 6 and stores this fish in mAttachedActor. */
 int func_ov002_020c5cd8(void *a, void *self);
 /* Sound::Play with bank 3. */
@@ -154,6 +139,17 @@ u32 func_02022d00(u32, u32, Fix12i, Fix12i, Fix12i, void *);
 void _Z14ApproachLinearRiii(int *p, int t, int s);
 }
 
+/* Both predicates are int-returning, as the ROM materializes the 0/1
+   before testing it. dActor_c::mFlags bit 0x40000 is set while the actor
+   is held in Yoshi's mouth. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == kPlayerActorId;
+}
+
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
 // @symbol daBakubaku_c_classInit
 extern "C" daBakubaku_c *daBakubaku_c_classInit()
 {
@@ -161,15 +157,15 @@ extern "C" daBakubaku_c *daBakubaku_c_classInit()
 }
 
 // @symbol g_profile_BAKUBAKU
-extern "C" BakubakuSpawnInfo g_profile_BAKUBAKU = {
+extern "C" SpawnInfo<daBakubaku_c> g_profile_BAKUBAKU = {
     daBakubaku_c_classInit,
-    0x00e4,
+    0x00e4, /* BAKUBAKU registry id 228 */
     0x0052,
     3,
     0,
     0x003e8000,
     0x01000000,
-    0x01000000
+    0x01000000,
 };
 
 // @symbol _ZN12daBakubaku_c16OnAimedAtWithEggEv
@@ -264,9 +260,8 @@ s32 daBakubaku_c::Behavior()
 // @symbol _ZN12daBakubaku_c6RenderEv
 s32 daBakubaku_c::Render()
 {
-    /* 0x40000 is a yoshi-mouth flag. The 0/1 temporary is the ROM's cmp. */
-    int b = ((mFlags & 0x40000) != 0);
-    if (b) return 1;
+    if (IsInYoshiMouth(this))
+        return 1;
     mModelAnim.Render(0);
     return 1;
 }
@@ -331,8 +326,8 @@ int daBakubaku_c::func_ov032_02111f9c()
 // @symbol _ZN12daBakubaku_c19func_ov032_02111e24Ev
 int daBakubaku_c::func_ov032_02111e24()
 {
-    int in[3];
-    int out[3];
+    Vector3 in;
+    Vector3 out;
     short ang;
 
     _Z14ApproachLinearRiii(&mHorzSpeed, 0x5000, 0x333);
@@ -349,17 +344,17 @@ int daBakubaku_c::func_ov032_02111e24()
         (const Vector3 *)&mPosX,
         (const Vector3 *)&mSpawnPosX);
     ApproachLinear(mPrevAngleX, ang, 0x100);
-    in[2] = 0;
-    in[2] = 0x5000;
-    in[0] = 0;
-    in[1] = 0;
-    out[0] = 0;
-    out[1] = 0;
-    out[2] = 0;
+    in.z = 0;
+    in.z = 0x5000;
+    in.x = 0;
+    in.y = 0;
+    out.x = 0;
+    out.y = 0;
+    out.z = 0;
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-    MulVec3Mat4x3(in, &data_020a0e68, out);
-    mVertSpeed = out[1];
+    MulVec3Mat4x3(&in, &data_020a0e68, &out);
+    mVertSpeed = out.y;
     if (func_ov032_02111254() == 1) {
         func_ov032_02111ff4(&data_ov032_02113aac);
         return 1;
@@ -415,51 +410,40 @@ int daBakubaku_c::func_ov032_02111d58()
 // @symbol _ZN12daBakubaku_c19func_ov032_02111b9cEv
 int daBakubaku_c::func_ov032_02111b9c()
 {
-    if (*(unsigned short *)&mStateTimer != 0) {
-        if (func_ov032_02111350() == 1) goto give_up;
-        if (func_ov032_02111254() != 0) goto aim;
-    }
-give_up:
-    {
+    /* Out of time, chase aborted, or no target: back to wandering. */
+    if (*(unsigned short *)&mStateTimer == 0 || func_ov032_02111350() == 1 ||
+        func_ov032_02111254() == 0) {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
             &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
         mChaseCooldown = 0x64;
         func_ov032_02111ff4((State *)&data_ov032_02113a8c);
         return 1;
     }
-aim:
-    {
-        mAngTarget = Vec3_HorzAngle(
-            (Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
-        unsigned int r = (unsigned int)RandomIntInternal(data_0209e650);
-        int s5 = (int)(((r >> 8) & 3) << 0x1c) >> 0x10;
-        ApproachLinear(mPrevAngleY, mAngTarget, 0x200);
-        if (Vec3_HorzDist(
-                (Vector3 *)&mPosX,
-                (Vector3 *)&mTargetPosX) < 0x258000) {
-            int d = AngleDiff(mAngleY, mAngTarget);
-            if (d < (int)(short)(s5 + 0x200)) {
-                mAngTarget = Vec3_VertAngle(
-                    (Vector3 *)&mPosX,
-                    (Vector3 *)&mTargetPosX);
-                mFlags = 0;
-                mModelAnim.speed = 0x1000;
-                mDiveStartY = mPosY;
-                mStateTimer = 0;
-                mHorzSpeed = 0x14000;
-                unk_429 = 0;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &mModelAnim, (BCA_File *)data_ov032_02113a48.filePtr,
-                    0x40000000, 0x1000, 0);
-                if (mAngTarget > 0)
-                    func_ov032_02111ff4(&data_ov032_02113a7c);
-                else
-                    func_ov032_02111ff4(&data_ov032_02113abc);
-                return 1;
-            }
+
+    mAngTarget = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
+    unsigned int r = (unsigned int)RandomIntInternal(data_0209e650);
+    int s5 = (int)(((r >> 8) & 3) << 0x1c) >> 0x10;
+    ApproachLinear(mPrevAngleY, mAngTarget, 0x200);
+    if (Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX) < 0x258000) {
+        int d = AngleDiff(mAngleY, mAngTarget);
+        if (d < (int)(short)(s5 + 0x200)) {
+            mAngTarget = Vec3_VertAngle((Vector3 *)&mPosX, (Vector3 *)&mTargetPosX);
+            mFlags = 0;
+            mModelAnim.speed = 0x1000;
+            mDiveStartY = mPosY;
+            mStateTimer = 0;
+            mHorzSpeed = 0x14000;
+            unk_429 = 0;
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                &mModelAnim, (BCA_File *)data_ov032_02113a48.filePtr, 0x40000000, 0x1000, 0);
+            if (mAngTarget > 0)
+                func_ov032_02111ff4(&data_ov032_02113a7c);
+            else
+                func_ov032_02111ff4(&data_ov032_02113abc);
+            return 1;
         }
-        return 1;
     }
+    return 1;
 }
 
 /* Dive enter: pitch down, and let the cylinders count as char-movement. */
@@ -492,60 +476,52 @@ int daBakubaku_c::func_ov032_02111830()
     if (mLungePhase > 0 && mLungePhase < 5) {
         mLungePhase++;
         if (mLungePhase == 4) {
-            /* Int triples, not Vector3: a Vector3 temporary runs ~Vector3. */
-            typedef struct { int x, y, z; } V3;
-            V3 v[3];
-            v[0].x = mPosX;
-            v[0].y = mPosY;
-            v[0].z = mPosZ;
-            v[1].z = 0;
-            v[1].x = 0;
-            v[1].y = 0;
-            v[2].x = 0;
-            v[2].y = 0;
-            v[2].z = 0;
-            v[1].z = 0xa0000;
+            Vector3 splashPosition;
+            Vector3 forwardOffset;
+            Vector3 rotatedOffset;
+            splashPosition.x = mPosX;
+            splashPosition.y = mPosY;
+            splashPosition.z = mPosZ;
+            forwardOffset.z = 0;
+            forwardOffset.x = 0;
+            forwardOffset.y = 0;
+            rotatedOffset.x = 0;
+            rotatedOffset.y = 0;
+            rotatedOffset.z = 0;
+            forwardOffset.z = 0xa0000;
             Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-            MulVec3Mat4x3(&v[1], &data_020a0e68, &v[2]);
-            v[0].x += v[2].x;
-            v[0].z += v[2].z;
-            func_02022c80(0, 0x55, v[0].x, v[0].y, v[0].z, 0);
-            mSplashParticle = func_02022d00(
-                mSplashParticle, 0x56, v[0].x, data_0209f32c,
-                v[0].z, 0);
-            v[0].y += 0x4b000;
-            func_02022c80(0, 0x54, v[0].x, v[0].y, v[0].z, 0);
+            MulVec3Mat4x3(&forwardOffset, &data_020a0e68, &rotatedOffset);
+            splashPosition.x += rotatedOffset.x;
+            splashPosition.z += rotatedOffset.z;
+            func_02022c80(0, 0x55, splashPosition.x, splashPosition.y, splashPosition.z, 0);
+            mSplashParticle = func_02022d00(mSplashParticle, 0x56, splashPosition.x, data_0209f32c,
+                                            splashPosition.z, 0);
+            splashPosition.y += 0x4b000;
+            func_02022c80(0, 0x54, splashPosition.x, splashPosition.y, splashPosition.z, 0);
         }
     }
 
-    if (func_ov032_02111350() == 1)
-        goto stop;
-    if (func_ov032_02111254() != 0)
-        goto thrust;
-stop:
-    speed = 0;
-    mHorzSpeed = 0;
-    unk_0a4 = 0;
-    mVertSpeed = 0;
-    unk_0ac = 0;
-    goto pitched;
-thrust:
-    {
-        int in2[3];
-        int out2[3];
-        in2[2] = 0;
-        in2[2] = 0x14000;
-        in2[0] = 0;
-        in2[1] = 0;
-        out2[0] = 0;
-        out2[1] = 0;
-        out2[2] = 0;
+    if (func_ov032_02111350() == 1 || func_ov032_02111254() == 0) {
+        speed = 0;
+        mHorzSpeed = 0;
+        unk_0a4 = 0;
+        mVertSpeed = 0;
+        unk_0ac = 0;
+    } else {
+        Vector3 in2;
+        Vector3 out2;
+        in2.z = 0;
+        in2.z = 0x14000;
+        in2.x = 0;
+        in2.y = 0;
+        out2.x = 0;
+        out2.y = 0;
+        out2.z = 0;
         Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-        MulVec3Mat4x3(in2, &data_020a0e68, out2);
-        mVertSpeed = out2[1];
+        MulVec3Mat4x3(&in2, &data_020a0e68, &out2);
+        mVertSpeed = out2.y;
     }
-pitched: ;
     ApproachLinear(mAngTarget, speed, 0x200);
     ApproachLinear(mPrevAngleX, mAngTarget, 0x200);
     if (mModelAnim.Finished() != 0) {
@@ -595,69 +571,53 @@ int daBakubaku_c::func_ov032_02111620()
     if (r5 == 0)
         return 1;
 
-    if (func_ov032_02111350() == 1)
-        goto stop;
-    if (func_ov032_02111254() != 0)
-        goto thrust;
-stop:
-    mHorzSpeed = 0;
-    unk_0a4 = 0;
-    mVertSpeed = 0;
-    unk_0ac = 0;
-    goto pitched;
-thrust:
-    {
-        int in[3];
-        int out[3];
-        in[2] = 0;
-        in[2] = 0x14000;
-        in[0] = 0;
-        in[1] = 0;
-        out[0] = 0;
-        out[1] = 0;
-        out[2] = 0;
+    if (func_ov032_02111350() == 1 || func_ov032_02111254() == 0) {
+        mHorzSpeed = 0;
+        unk_0a4 = 0;
+        mVertSpeed = 0;
+        unk_0ac = 0;
+    } else {
+        Vector3 in;
+        Vector3 out;
+        in.z = 0;
+        in.z = 0x14000;
+        in.x = 0;
+        in.y = 0;
+        out.x = 0;
+        out.y = 0;
+        out.z = 0;
         Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-        MulVec3Mat4x3(in, &data_020a0e68, out);
-        mVertSpeed = out[1];
-    }
-pitched: ;
-
-    if (mLungePhase == 0) {
-        if (mModelAnim.Finished() == 0)
-            goto at_player;
+        MulVec3Mat4x3(&in, &data_020a0e68, &out);
+        mVertSpeed = out.y;
     }
 
-    ApproachLinear(mPrevAngleX, 0, 0x200);
-    mLungePhase = 1;
-    mMouthOpen = 0;
-    if (AngleDiff(mPrevAngleX, 0) < 0x200) {
-        mPrevAngleX = 0;
-        mChaseCooldown = 0x64;
-        mAngTarget = mAngleY;
-        mFlags = 3;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr,
-            0, 0x1000, 0);
-        func_ov032_02111ff4((State *)&data_ov032_02113a8c);
-    }
-    goto done;
-
-at_player:
-    {
-        int vec[3];
+    /* Once the lunge has started or the bite animation is over, level out
+       and go back to wandering; until then, pitch toward the player. */
+    if (mLungePhase != 0 || mModelAnim.Finished() != 0) {
+        ApproachLinear(mPrevAngleX, 0, 0x200);
+        mLungePhase = 1;
+        mMouthOpen = 0;
+        if (AngleDiff(mPrevAngleX, 0) < 0x200) {
+            mPrevAngleX = 0;
+            mChaseCooldown = 0x64;
+            mAngTarget = mAngleY;
+            mFlags = 3;
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
+            func_ov032_02111ff4((State *)&data_ov032_02113a8c);
+        }
+    } else {
+        Vector3 vec;
         unsigned int n;
-        int *p = (int *)&r5->mPosX;
-        vec[0] = p[0];
-        vec[1] = p[1];
-        vec[2] = p[2];
+        const s32 *playerPos = &r5->mPosX;
+        vec.x = playerPos[0];
+        vec.y = playerPos[1];
+        vec.z = playerPos[2];
         if (data_0209f32c > mPosY) {
             ApproachLinear(mPrevAngleX, 0, 0x200);
         } else {
-            ApproachLinear(
-                mPrevAngleX,
-                Vec3_VertAngle((const Vector3 *)&mPosX, (const Vector3 *)vec),
-                0x200);
+            ApproachLinear(mPrevAngleX, Vec3_VertAngle((const Vector3 *)&mPosX, &vec), 0x200);
         }
         n = (unsigned int)(mModelAnim.currFrame << 4) >> 0x10;
         if (n > 0x14 && n < 0x3c)
@@ -665,7 +625,6 @@ at_player:
         else
             mMouthOpen = 0;
     }
-done:
     return 1;
 }
 
@@ -681,9 +640,9 @@ void daBakubaku_c::func_ov032_021113fc()
 
     u32 id1 = mBodyClsn.otherOwner;
     if (id1 != 0) {
-        Player *f = (Player *)dActor_c::FindWithID(id1);
-        int isPlayer = (int)(f->actorID == kPlayerActorId);
-        if (isPlayer) {
+        dActor_c *actor = dActor_c::FindWithID(id1);
+        if (IsPlayerActor(actor)) {
+            Player *f = static_cast<Player *>(actor);
             if (f->mIsVanish != 0) return;
             if (mBodyClsn.hitFlags & kCcMega) {
                 SpawnMegaCharParticles(*f, 0);
@@ -710,9 +669,10 @@ void daBakubaku_c::func_ov032_021113fc()
 
     u32 id2 = mHeadClsn.otherOwner;
     if (id2 == 0) return;
-    Player *f2 = (Player *)dActor_c::FindWithID(id2);
-    int isPlayer2 = (int)(f2->actorID == kPlayerActorId);
-    if (isPlayer2 == 0) return;
+    dActor_c *actor2 = dActor_c::FindWithID(id2);
+    if (!IsPlayerActor(actor2))
+        return;
+    Player *f2 = static_cast<Player *>(actor2);
 
     if (mHeadClsn.hitFlags & kCcMega) {
         SpawnMegaCharParticles(*f2, 0);

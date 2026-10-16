@@ -9,7 +9,7 @@
  * its own file (src/minigames/d_s_mg_hanachan.cpp).
  *
  * The destructor pair and the ten functions from Wiggler_Destroy to
- * Wiggler_DrawPassA came from one-function files. Their bodies are kept
+ * Wiggler_DrawTarget came from one-function files. Their bodies are kept
  * as they matched there. The two popup arrays are declared once; where a
  * function spelled a record differently, its tag is renamed per function
  * and the access casts. Wiggler_Destroy is the wiggler array's element
@@ -20,19 +20,19 @@
  * dScMgHanachan_c members, declared in dScMgHanachan_c.h; the address is the
  * method name, since no ROM spelling survives. Each body opens by re-viewing
  * `this` as the char * it used to take. The other func_ov006 helpers stay
- * free: the ones from Wiggler_DrawPassA to Hana_SpawnWigglers take one
+ * free: the ones from Wiggler_DrawTarget to Hana_SpawnWigglers take one
  * 0x98-byte wiggler record (an element of mWiggler) or no object at all, the
  * popup helpers before them take no object, and Hana_StateNoneA,
  * Hana_StateNoneB and Hana_LoadBackground take nothing.
  *
  * leftovers:
- * - the sixteen popups at data_ov006_02142044 are read through
+ * - the sixteen popups at sHanaPopups are read through
  *   four record spellings (HanaPopup_DrawAll, HanaPopup_UpdateAll,
  *   HanaPopup_Spawn, HanaPopup_ClearAll).
- * - the popup at data_ov006_02141fe4 is read through raw byte
+ * - the popup at sHanaStarPopup is read through raw byte
  *   offsets, and StarPopup_Update reaches its +0xc byte through a
  *   separate symbol, data_ov006_02141ff0.
- * - Wiggler_DrawPassA repeats Wiggler_DrawPassB's segment
+ * - Wiggler_DrawTarget repeats Wiggler_DrawField's segment
  *   walk with its own point type, Vec2_ea914, whose trivial destructor
  *   is part of the match.
  * - dScMgHanachan_c::Render, `Thing *base; &base[i]` and `slot++`
@@ -46,7 +46,7 @@
  * - Wiggler_StepSegmentsA, Wiggler_StepSegmentsB, Wiggler_StepSegmentsC,
  *   Wiggler_MoveBounce, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
- * - Wiggler_DrawPassB, OAM::Render(int, OamAttr*, int, int, int,
+ * - Wiggler_DrawField, OAM::Render(int, OamAttr*, int, int, int,
  *   int, int, int), does not typecheck (the sprite table is void*). The
  *   ROM symbol's scale parameter is Fix12<int>, which this tree cannot spell.
  * - Wiggler_Retarget and Wiggler_StartPathA, a state copy of two
@@ -76,6 +76,7 @@ enum dScMgHanachan_c_AssetId {
 #include "dScMgHanachan_c.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 typedef struct V2 { int x, y; } V2;
 typedef struct { int x, y; } Vec2;
@@ -216,7 +217,7 @@ namespace cstd { int fdiv(int numerator, int denominator); }
 
 extern "C" {
 /* This TU's own functions. */
-extern void Wiggler_DrawPassB(void* o_);
+extern void Wiggler_DrawField(void *o_);
 extern void Wiggler_Update(char *c);
 extern void Wiggler_StateHold(char *self);
 extern void Wiggler_StateMoveA(char *c);
@@ -348,15 +349,17 @@ struct S_ea81c {
     unsigned char pad2[2];/* +0x12 -> stride 0x14 */
 };
 
-/* The popup records: one at data_ov006_02141fe4 and sixteen at
-   data_ov006_02142044, 0x14 bytes each. The sixteen are declared with
+/* The popup records: one at sHanaStarPopup and sixteen at
+   sHanaPopups, 0x14 bytes each. The sixteen are declared with
    HanaPopup_Spawn's layout, which it needs to match; the other
    functions keep the spelling their own match used, through a cast. */
 extern "C" {
+/* local extern: only sibling minigame headers (dScMgAmida_c.h and four
+   others) declare it; this TU includes none of them */
 extern void NullDestructor_0203d47c(void);
-extern char data_ov006_02141fe4[];
-extern struct S_ea81c data_ov006_02142044[];
-extern char data_ov006_02137cd8[];
+extern char sHanaStarPopup[];
+extern struct S_ea81c sHanaPopups[];
+extern char sMgDigitSprites[];
 }
 
 // @symbol _ZN15dScMgHanachan_cD1Ev
@@ -396,7 +399,7 @@ extern "C" void *Wiggler_Destroy(void *self)
 
 // @symbol StarPopup_Draw
 /* Draws the single popup while its +0x10 flag is 1: a sprite from the
-   language's table 8 pixels left of it and one from data_ov006_02137cd8
+   language's table 8 pixels left of it and one from sMgDigitSprites
    8 pixels right. */
 extern "C" void StarPopup_Draw(void)
 {
@@ -404,16 +407,15 @@ extern "C" void StarPopup_Draw(void)
     int y;
     s32 r;
     int *new_var;
-    new_var = (int *)data_ov006_02141fe4;
-    if ((*(((unsigned char *)data_ov006_02141fe4) + 0x10)) != 1)
-    {
+    new_var = (int *)sHanaStarPopup;
+    if ((*(((unsigned char *)sHanaStarPopup) + 0x10)) != 1) {
         return;
     }
-    x = ((int *)data_ov006_02141fe4)[0] >> 12;
+    x = ((int *)sHanaStarPopup)[0] >> 12;
     y = new_var[1] >> 12;
     r = GetGameLanguage();
     Mg_RenderSubSpriteMtx(*((void **)(((char *)data_ov006_0213ca9c[r]) + 0x34)), x - 8, y, 0);
-    Mg_RenderSubSpriteMtx(*((void **)(data_ov006_02137cd8 + 0x64)), x + 8, y, 0);
+    Mg_RenderSubSpriteMtx(*((void **)(sMgDigitSprites + 0x64)), x + 8, y, 0);
 }
 
 // @symbol StarPopup_Update
@@ -431,7 +433,7 @@ extern "C" Timer20 data_ov006_02141ff0[];
 extern "C" void StarPopup_Update(char *arg)
 {
     int i;
-    char *f = data_ov006_02141fe4;
+    char *f = sHanaStarPopup;
     for (i = 0; i < 1; i++, f += 0x14) {
         u8 ph;
         if (*(u8 *)(f + 0xd) != 1)
@@ -494,7 +496,7 @@ extern "C" void StarPopup_Update(char *arg)
    unless it is already active. */
 extern "C" void StarPopup_Start(int x, int y)
 {
-    char *g = data_ov006_02141fe4;
+    char *g = sHanaStarPopup;
     if (*(unsigned char *)(g + 0xd) != 0) return;
     *(unsigned char *)(g + 0xd) = 1;
     if (x < 0x10000) x = 0x10000;
@@ -512,8 +514,8 @@ extern "C" void StarPopup_Start(int x, int y)
 /* Clears the single popup's active and draw flags. */
 extern "C" unsigned char StarPopup_Clear(void)
 {
-    ((unsigned char *)data_ov006_02141fe4)[0xd] = 0;
-    ((unsigned char *)data_ov006_02141fe4)[0x10] = 0;
+    ((unsigned char *)sHanaStarPopup)[0xd] = 0;
+    ((unsigned char *)sHanaStarPopup)[0x10] = 0;
     return 0;
 }
 
@@ -533,15 +535,15 @@ extern "C" void HanaPopup_DrawAll(void)
     void *a = 0, *b = 0, *c = 0;
     int i;
     for (i = 0; i < 16; i++) {
-        Ent_ea670 *e = &((Ent_ea670 *)data_ov006_02142044)[i];
+        Ent_ea670 *e = &((Ent_ea670 *)sHanaPopups)[i];
         if (e->flag != 0) {
             int sb = e->x >> 12;
             int r8 = e->y >> 12;
             int idx = GetGameLanguage();
             void *obj = data_ov006_0213ca9c[idx];
             Mg_RenderSubSpriteMtx(*(void **)((char *)obj + 0x38), sb - 0x10, r8, a);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa4), sb, r8, b);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa0), sb + 0x10, r8, c);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa4), sb, r8, b);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa0), sb + 0x10, r8, c);
         }
     }
 }
@@ -565,7 +567,7 @@ extern "C" void HanaPopup_UpdateAll(void)
 {
     int i;
     for (i = 0; i < 16; i++) {
-        Ent71c *e = &((Ent71c *)data_ov006_02142044)[i];
+        Ent71c *e = &((Ent71c *)sHanaPopups)[i];
         if (e->active) {
             if (e->pos > 0xb8000)
                 e->pos = 0xb8000;
@@ -603,16 +605,16 @@ extern "C" void HanaPopup_Spawn(int r0, int r1)
 {
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (data_ov006_02142044[i].inuse == 0) {
-            data_ov006_02142044[i].inuse = 1;
-            data_ov006_02142044[i].f = 1;
-            data_ov006_02142044[i].w = 0x18;
+        if (sHanaPopups[i].inuse == 0) {
+            sHanaPopups[i].inuse = 1;
+            sHanaPopups[i].f = 1;
+            sHanaPopups[i].w = 0x18;
             if (r0 < 0x14000) r0 = 0x14000;
             else if (r0 > 0xf0000) r0 = 0xf0000;
-            data_ov006_02142044[i].x = r0;
-            data_ov006_02142044[i].y = r1;
-            data_ov006_02142044[i].z = 0x800;
-            data_ov006_02142044[i].g = 0;
+            sHanaPopups[i].x = r0;
+            sHanaPopups[i].y = r1;
+            sHanaPopups[i].z = 0x800;
+            sHanaPopups[i].g = 0;
             return;
         }
     }
@@ -627,14 +629,14 @@ extern "C" void HanaPopup_ClearAll(void)
 {
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (((struct E6_ea8e0 *)data_ov006_02142044)[i].e == 0) {
-            ((struct E6_ea8e0 *)data_ov006_02142044)[i].e = 0;
-            ((struct E6_ea8e0 *)data_ov006_02142044)[i].f = 0;
+        if (((struct E6_ea8e0 *)sHanaPopups)[i].e == 0) {
+            ((struct E6_ea8e0 *)sHanaPopups)[i].e = 0;
+            ((struct E6_ea8e0 *)sHanaPopups)[i].f = 0;
         }
     }
 }
 
-// @symbol Wiggler_DrawPassA
+// @symbol Wiggler_DrawTarget
 /* Draws a wiggler's five segments from the tail forward, then one more
    sprite by the head when +0x94 is set and Wiggler_IsStarVisible agrees. The
    trivial ~Vec2_ea914 and the strength-reduction bracket are both part of
@@ -643,8 +645,7 @@ struct Vec2_ea914 { s32 x; s32 y; ~Vec2_ea914() {} };
 
 #pragma push
 #pragma opt_strength_reduction off
-extern "C" void Wiggler_DrawPassA(void *self_)
-{
+extern "C" void Wiggler_DrawTarget(void *self_) {
     char *self = (char *)self_;
     s32 i;
     s16 rot;
@@ -719,12 +720,11 @@ extern "C" void Wiggler_DrawPassA(void *self_)
 }
 #pragma pop
 
-// @symbol Wiggler_DrawPassB
+// @symbol Wiggler_DrawField
 extern "C" {
 #pragma push
 #pragma opt_strength_reduction off
-void Wiggler_DrawPassB(void* arg)
-{
+void Wiggler_DrawField(void *arg) {
     char* raw = (char*)arg;
     struct { int A, B, urot, va0x, res; } t;
     Vec2 vb0;
@@ -1014,9 +1014,8 @@ void Wiggler_StateMoveB(char *c)
 }
 
 // @symbol Wiggler_UpdateSway
-extern "C" /* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawPassB. */
-void Wiggler_UpdateSway(char *raw)
-{
+/* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawField. */
+extern "C" void Wiggler_UpdateSway(char *raw) {
     int *thiz = (int *)raw;
     int *g = &pmf_Wiggler_TurnTowardAim_7;
     int v0 = thiz[0];
@@ -1201,7 +1200,7 @@ void Wiggler_Retarget(struct ObjB* c, int v)
 
 // @symbol Wiggler_GetFrame
 extern "C" {
-/* Second parameter unused by the body -- Wiggler_DrawPassB passes an index
+/* Second parameter unused by the body -- Wiggler_DrawField passes an index
    this callee ignores; declaring it keeps the caller's argument setup. */
 int Wiggler_GetFrame(char *raw, int){
   int r2 = 0;
@@ -1569,8 +1568,8 @@ void Wiggler_StartPathA(Obj *self, int n)
         base.x = 0;
         base.y = 0;
         delta = 0;
-        base.x = (int)(((long long)cm * rC + 0x800) >> 12) + (int)(((long long)dm * rD + 0x800) >> 12);
-        base.y = (int)((((long long)rA << 16) + 0x800) >> 12) + (int)(((long long)rB * 0xb0000 + 0x800) >> 12);
+        base.x = FX_MUL(cm, rC) + FX_MUL(dm, rD);
+        base.y = (int)((((long long)rA << 16) + 0x800) >> 12) + FX_MUL(rB, 0xb0000);
 
         for (; i < 5; i++) {
             int bx = *(volatile int *)&base.x;
@@ -1708,8 +1707,7 @@ void Wiggler_StartPathB(char* raw, int idx)
     B = cstd::fdiv((n1 - idx) << 12, n1 << 12);
 
     p = (n1 - 2) << 3;
-    valY = (int)(((long long)((0x28 - p) << 12) * A + 0x800) >> 12)
-         + (int)(((long long)((p + 0x98) << 12) * B + 0x800) >> 12);
+    valY = FX_MUL(((0x28 - p) << 12), A) + FX_MUL(((p + 0x98) << 12), B);
 
     *(int*)((char*)pos + 4) = 0;
     *(int*)((char*)pos + 0) = 0;
@@ -1780,8 +1778,7 @@ void Wiggler_StartPathC(struct C* c, int param)
     k = (m - 2) * 8;
 
     vec0.y = 0;
-    vec0.y = (int)(((long long)((0x40 - k) << 12) * r1 + 0x800) >> 12)
-           + (int)(((long long)((k + 0x98) << 12) * r2 + 0x800) >> 12);
+    vec0.y = FX_MUL(((0x40 - k) << 12), r1) + FX_MUL(((k + 0x98) << 12), r2);
     vec0.x = 0;
     if (param & 1)
         vec0.x = 0xa8000;
@@ -1894,7 +1891,7 @@ s32 dScMgHanachan_c::Render()
                 if (data_ov006_0213c958 > 0) {
                     arr = raw + 0x4678;
                     do {
-                        Wiggler_DrawPassB(arr);
+                        Wiggler_DrawField(arr);
                         i++;
                         arr += 0x98;
                     } while (i < data_ov006_0213c958);
@@ -1917,14 +1914,14 @@ s32 dScMgHanachan_c::Render()
                 if (mPhaseTimer < 0x8a) goto do_eac;
                 goto count_loop;
             do_eac:
-                Wiggler_DrawPassB(mTarget);
+                Wiggler_DrawField(mTarget);
                 goto tail;
             count_loop:
                 i = 0;
                 if (data_ov006_0213c958 > 0) {
                     arr = raw + 0x4678;
                     do {
-                        Wiggler_DrawPassB(arr);
+                        Wiggler_DrawField(arr);
                         i++;
                         arr += 0x98;
                     } while (i < data_ov006_0213c958);
@@ -1939,12 +1936,12 @@ s32 dScMgHanachan_c::Render()
         Pair *g = &pmf_Hana_StateNoneB;
         if ((p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0))
             || (p = PAIR0(raw), g = &pmf_dScMgHanachan_c_Phase_WaitTouch, (p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0)))) {
-            Wiggler_DrawPassB(mTarget);
+            Wiggler_DrawField(mTarget);
         }
     }
 
 tail:
-    Wiggler_DrawPassA(mTarget);
+    Wiggler_DrawTarget(mTarget);
 
     {
         Pair *p = PAIR0(raw);
@@ -2104,10 +2101,10 @@ void dScMgHanachan_c::BeginResult()
             p += 0x98;
         } while (i < data_ov006_0213c958);
     }
-    if (*(unsigned char *)(raw + 0x4000 + 0xf64) != 0)
-        *(int *)(raw + 0x4000 + 0x66c) = 0xb4;
+    if (mHit != 0)
+        mPhaseTimer = 0xb4;
     else
-        *(int *)(raw + 0x4000 + 0x66c) = 0xe4;
+        mPhaseTimer = 0xe4;
     *(struct Words2 *)(raw + 0x4000 + 0x660) = *(struct Words2 *)pmf_dScMgHanachan_c_Phase_Result_2;
 }
 

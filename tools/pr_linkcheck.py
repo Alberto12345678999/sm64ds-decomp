@@ -349,6 +349,12 @@ def main():
                     help="files to link-check in parallel")
     args = ap.parse_args()
 
+    # This run checks one tree that nothing edits underneath it, so an identical compile
+    # can be reused -- and a many-function TU otherwise recompiles once per symbol. See
+    # match.memoize_compiles.
+    import match as M
+    M.memoize_compiles()
+
     import reloc_audit as RA
     _NAME_INDEX = RA.build_name_index()
     idx = build_symbol_index()

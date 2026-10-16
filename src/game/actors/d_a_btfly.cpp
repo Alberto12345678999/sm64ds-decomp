@@ -66,6 +66,7 @@ enum daBtfly_c_AssetId {
 #include "decl_Actor.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -165,9 +166,9 @@ void daBtfly_c::State7()
         int ang = (short)*(s16 *)(c + 0x3ee);
         ang = (unsigned short)(short)ang;
         int idx = ang >> 4;
-        v = (int)(((s64)(int)data_02082214[(idx << 1) + 1] * 0xa3 + 0x800) >> 12);
+        v = FX_MUL((int)data_02082214[(idx << 1) + 1], 0xa3);
         if (v > 0) {
-            v = (int)(((s64)v * 0x4800 + 0x800) >> 12);
+            v = FX_MUL(v, 0x4800);
             *(u16 *)L(c + 0x3ee) += 0x2710;
         } else {
             *(u16 *)L(c + 0x3ee) += 0xfa0;
@@ -350,11 +351,11 @@ void daBtfly_c::State3()
 
     {
         int *p = &mPosY;
-        *p = *p - ((int)(((long long)mHorzSpeed
-            * data_02082214[((unsigned short)mPrevAngleX >> 4) * 2] + 0x800) >> 12)
-            + (short)data_02082214[
-            ((unsigned short)(short)((mStateTimer << 16) / 100) >> 4) * 2 + 1]
-            * (short)20 / 4);
+        *p = *p -
+             (FX_MUL(mHorzSpeed, data_02082214[((unsigned short)mPrevAngleX >> 4) * 2]) +
+              (short)data_02082214[((unsigned short)(short)((mStateTimer << 16) / 100) >> 4) * 2 +
+                                   1] *
+                  (short)20 / 4);
     }
 
     mStateTimer = mStateTimer + 1;
@@ -422,11 +423,10 @@ void daBtfly_c::State2()
 
         {
             int *p = &mPosY;
-            *p = *p - ((int)(((long long)mHorzSpeed
-                * data_02082214[((unsigned short)mPrevAngleX >> 4) * 2] + 0x800) >> 12)
-                + (short)data_02082214[
-                ((unsigned short)(short)((mStateTimer << 16) / 100) >> 4) * 2 + 1]
-                * (short)20 / 4);
+            *p = *p - (FX_MUL(mHorzSpeed, data_02082214[((unsigned short)mPrevAngleX >> 4) * 2]) +
+                       (short)data_02082214
+                               [((unsigned short)(short)((mStateTimer << 16) / 100) >> 4) * 2 + 1] *
+                           (short)20 / 4);
             int *cnt = &mStateTimer;
             *cnt = *cnt + 1;
             if (mStateTimer > 100)

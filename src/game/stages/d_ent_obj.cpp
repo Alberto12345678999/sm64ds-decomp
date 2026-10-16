@@ -18,7 +18,7 @@
  *
  * leftovers:
  *  - The Fix12-by-value member calls (BlendModelAnim::SetAnim,
- *    ModelAnim::SetAnim, TextureSequence::SetFile, dClipper Func_02015560,
+ *    ModelAnim::SetAnim, TextureSequence::SetFile,
  *    dExtShadowModel_c::InitModel, Particle::System::New,
  *    G3i::PerspectiveW_) keep measured scalar-extern spellings: spelled as
  *    the real member types, mwccarm homes the register arguments and the
@@ -45,6 +45,7 @@
 #include "common.h"
 #include "dClipper.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -96,8 +97,6 @@ void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     void *anim, void *file, int flags, int speed, unsigned short startFrame);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     void *seq, void *file, int flags, int speed, unsigned short startFrame);
-int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-    void *clipper, void *mat, void *src, int scale, void *dst);
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
     void *shadow, Matrix4x3 *mat, int radius, int height, int depth, unsigned char flags);
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -124,7 +123,7 @@ long long __aeabi_uidiv(unsigned int n, int d);
 
 extern Matrix4x3 data_020a0e68;
 extern dClipper data_0209f43c;
-extern int data_0209b3ec[];
+extern Matrix4x3 data_0209b3ec;
 extern int data_0209e650;
 extern short data_02082214[];     /* sine/cosine table, interleaved */
 extern short data_02082614[];
@@ -234,8 +233,7 @@ void UnknownVsPlayer::func_ov075_02114010(){
         if (mModel.WillHitFrame(0x22) == 0) return;
     }
     Vector3 screenPos;
-    _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-        &data_0209f43c, data_0209b3ec, &mPosition, 0, &screenPos);
+    data_0209f43c.TransformAndClip(data_0209b3ec, mPosition, 0, screenPos);
     func_0201251c(0, 0x20, &screenPos, mSpeed);
 }
 
@@ -253,8 +251,7 @@ void UnknownVsPlayer::func_ov075_021140e4(){
         if (mModel.WillHitFrame(0x22) == 0) return;
     }
     Vector3 screenPos;
-    _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-        &data_0209f43c, data_0209b3ec, &mPosition, 0, &screenPos);
+    data_0209f43c.TransformAndClip(data_0209b3ec, mPosition, 0, screenPos);
     func_0201251c(0, 0x20, &screenPos, mSpeed);
 }
 
@@ -285,14 +282,13 @@ int UnknownVsPlayer::func_ov075_02114218(){
 /* dExtFrameCtrl_c state 1: step sounds on frames 4 and 0x22 while walking. */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_0211427cEv
 int UnknownVsPlayer::func_ov075_0211427c(){
-    int screenPos[2];
+    Vector3 screenPos;
     if (mModel.WillHitFrame(4) == 0) {
         int hit = mModel.WillHitFrame(0x22);
         if (hit == 0) return hit;
     }
-    _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-        &data_0209f43c, data_0209b3ec, &mPosition, 0, screenPos);
-    return func_0201251c(0, 0x20, screenPos, mSpeed);
+    data_0209f43c.TransformAndClip(data_0209b3ec, mPosition, 0, screenPos);
+    return func_0201251c(0, 0x20, &screenPos, mSpeed);
 }
 
 // @symbol _ZN15UnknownVsPlayer19func_ov075_021142fcEv
@@ -378,11 +374,9 @@ void UnknownVsPlayer::func_ov075_02114560(){
         mAnimState = 0;
     }
 
-    mPosition.x += (int)(((long long)mSpeed
-        * data_02082214[((unsigned short)mAngleY >> 4) * 2] + 0x800) >> 12);
+    mPosition.x += FX_MUL(mSpeed, data_02082214[((unsigned short)mAngleY >> 4) * 2]);
     mPosition.y += mVertSpeed;
-    mPosition.z += (int)(((long long)mSpeed
-        * data_02082214[((unsigned short)mAngleY >> 4) * 2 + 1] + 0x800) >> 12);
+    mPosition.z += FX_MUL(mSpeed, data_02082214[((unsigned short)mAngleY >> 4) * 2 + 1]);
 
     if (mPosition.y < 0) {
         mPosition.y = 0;

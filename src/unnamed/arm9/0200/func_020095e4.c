@@ -1,4 +1,5 @@
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 extern void FUN_02029ab0(void);
 extern int func_02008b08(void *cam);
 extern short func_02008abc(void *cam);
@@ -30,7 +31,7 @@ int func_020095e4(void *cam)
         {
             short *p = (short *)(((int)c + 0x186));
             int a = func_02008abc(cam);
-            *p -= (int)(((long long)r7 * a + 0x800) >> 12);
+            *p -= FX_MUL(r7, a);
         }
         {
             int t = *(short *)(c + 0x186);
@@ -42,7 +43,7 @@ int func_020095e4(void *cam)
         old17e = *(short *)(c + 0x17e);
         {
             short *p = (short *)(((int)c + 0x17e));
-            *p += (int)(((long long)r7 * (long long)func_02008a70(cam) + 0x800) >> 12);
+            *p += FX_MUL(r7, (long long)func_02008a70(cam));
         }
         {
             int t = *(short *)(c + 0x17e);

@@ -29,6 +29,7 @@
 #include "daMugenBGM_c.h"
 #include "types.h"
 #include "decl_common.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 extern signed char data_ov002_02110af0;
@@ -131,7 +132,7 @@ int daMugenBGM_c::Behavior()
                     d = 0;
                 else if (d > 0x4000)
                     d = 0x4000;
-                depth = (int)(((s64)rotated[2] * (0x40 - (d >> 8)) + 0x800) >> 12) + 0xffff;
+                depth = FX_MUL(rotated[2], (0x40 - (d >> 8))) + 0xffff;
                 if (depth < 0x700)
                     depth = 0x700;
             }

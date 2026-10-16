@@ -86,10 +86,9 @@ int daObjWcObj01_c::InitResources()
                 mPosY = hit.y;
             }
         }
-        /* pad_320 lives in dBgActor_c tail padding at 0x31e, not here. */
-        *(int *)((char *)this + 0x320) = mPosX;
+        mRestPosX = mPosX;
         mWaterY = mPosY;
-        *(int *)((char *)this + 0x328) = mPosZ;
+        mRestPosZ = mPosZ;
         return 1;
     }
     return 0;

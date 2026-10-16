@@ -71,6 +71,10 @@ struct VtEntry {
 
 enum { kMovingBarBigActorId = 0x35 };
 
+static inline int IsBigBar(dActor_c *actor) {
+    return actor->actorID == kMovingBarBigActorId;
+}
+
 extern StateEntry data_ov015_021149ec[7];
 extern VtEntry data_ov015_02114a24[7];
 extern StateEntry data_ov015_02114500;
@@ -125,9 +129,8 @@ extern "C" daObjBk_Dossunbar_c *daObjBk_Dossunbar_c_classInit_BK_DOSSUNBAR_L()
 // @symbol _ZN19daObjBk_Dossunbar_c13InitResourcesEv
 s32 daObjBk_Dossunbar_c::InitResources()
 {
-    /* Temporary is load-bearing: ROM materialises 0/1 then stores. */
-    int isBig = (actorID == kMovingBarBigActorId) ? 1 : 0;
-    if (isBig)
+    /* The ROM materialises the 0/1 test before choosing the store. */
+    if (IsBigBar(this))
         mVariant = 1;
     else
         mVariant = 0;

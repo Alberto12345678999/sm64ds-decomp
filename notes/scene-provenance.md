@@ -203,17 +203,15 @@ object and no other argument; `GraphCallback2` reads its fields (fixed-point mat
 `dScStage_c`; non-static because slot 2 needs `this`, non-virtual to keep their TUs from
 emitting a vtable the delink ranges do not own.
 
-**`PS_Init` is deliberately not declared in the header**, even though
-`src/_ZN10dScStage_c7PS_InitEv.cpp` defines `dScStage_c::PS_Init()` and is byte-verified and
-enrolled. It uses its own local shadow `class dScStage_c` (the same pattern
-`src/_ZN10dScStage_c8BehaviorEv.cpp` uses) on purpose: a real landmine lived at that exact
+**`PS_Init` is now declared in the header** (static, like the rest of the pause-screen
+family) and defined in `src/game/stages/d_s_stage_methods.cpp` with the rest of the class. Its old standalone
+shard used a local shadow `class dScStage_c` on purpose: a real landmine had lived at that
 filename — an untracked, un-enrolled second `.cpp` for the symbol whose private
 `struct G2x` declared `SetBlendBrightness`'s middle parameter as `int`, mangling to
 `_ZN3G2x18SetBlendBrightnessEPVtis`, which resolves to nothing and would silently *not*
-be what byte-matches. The surviving file never declares a `G2x` type at all — it calls
-the correctly-mangled `_ZN3G2x18SetBlendBrightnessEPVtts` symbol directly, as the `.c`
-file it replaced did — so the landmine cannot recur through it. Wiring `PS_Init` to the
-header is a separate, low-risk change.
+be what byte-matches. The TU still calls the correctly-mangled
+`_ZN3G2x18SetBlendBrightnessEPVtts` symbol directly (the ROM passes an unnarrowed int
+where `G2x.h` declares `unsigned short`), so the landmine cannot recur through it.
 
 ---
 
@@ -283,7 +281,7 @@ inherited at 0x0c).
 [data_ov075_0211d304](../config/arm9/overlays/ov075/symbols.txt) (18 slots) against `_ZTV8dScene_c` slot for slot, `dScEntry_c`
 overrides exactly eight — 0, 1, 3, 6, 9, 12, 16, 17.
 
-**Construction.** Two real Spawn-style factories, [func_ov075_0211a740](../src/game/stages/d_s_entry_result.cpp)(reconstructed names as `dScEntry_c_classInit_RESULT` in `d_s_entry_result.cpp`) and
+**Construction.** Two real Spawn-style factories, [func_ov075_0211a740](../src/game/stages/d_s_entry_methods.cpp)(reconstructed name as `dScEntry_c_classInit_RESULT` in `d_s_entry_methods.cpp`) and
 [func_ov075_0211a854](../src/game/stages/d_s_entry_entry.cpp)(reconstructed name as `dScEntry_c_classInit_ENTRY` in `d_s_entry_entry.cpp`), both open with `_ZN7fBase_cnwEj(0x288)`, i.e.
 `fBase_c::operator new(0x288)`. They are not C1/C2 variants: both allocate and return
 a new object. Size 0x288 is read directly off the allocator call, not inferred from

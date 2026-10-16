@@ -17,6 +17,7 @@
  */
 #include "dCc_c.h"
 #include "dActor_c.h"
+#include "nitro/fx/fx.h"
 
 struct Player;
 struct Arg;
@@ -245,8 +246,8 @@ void dCc_c::Process()
                         }
                         else
                             overlap = cstd::fdiv(overlap, dist);
-                        other->pushback.x = (Fix12i)(((long long)diff.x * overlap + 0x800) >> 12);
-                        other->pushback.z = (Fix12i)(((long long)diff.z * overlap + 0x800) >> 12);
+                        other->pushback.x = FX_MUL(diff.x, overlap);
+                        other->pushback.z = FX_MUL(diff.z, overlap);
                     }
                     data_0209cee8->pushback.x = 0;
                     data_0209cee8->pushback.z = 0;
@@ -269,8 +270,8 @@ void dCc_c::Process()
                     }
                     else
                         overlap = cstd::fdiv(overlap, dist);
-                    data_0209cee8->pushback.x = -(Fix12i)(((long long)diff.x * overlap + 0x800) >> 12);
-                    data_0209cee8->pushback.z = -(Fix12i)(((long long)diff.z * overlap + 0x800) >> 12);
+                    data_0209cee8->pushback.x = -FX_MUL(diff.x, overlap);
+                    data_0209cee8->pushback.z = -FX_MUL(diff.z, overlap);
                     other->pushback.x = 0;
                     other->pushback.z = 0;
                 }
@@ -289,10 +290,10 @@ void dCc_c::Process()
                         other->pushback.y = h;
                     }
                     Fix12i ratio = cstd::fdiv(overlap, dist) >> 1;
-                    data_0209cee8->pushback.x = -(Fix12i)(((long long)diff.x * ratio + 0x800) >> 12);
-                    data_0209cee8->pushback.z = -(Fix12i)(((long long)diff.z * ratio + 0x800) >> 12);
-                    other->pushback.x = (Fix12i)(((long long)diff.x * ratio + 0x800) >> 12);
-                    other->pushback.z = (Fix12i)(((long long)diff.z * ratio + 0x800) >> 12);
+                    data_0209cee8->pushback.x = -FX_MUL(diff.x, ratio);
+                    data_0209cee8->pushback.z = -FX_MUL(diff.z, ratio);
+                    other->pushback.x = FX_MUL(diff.x, ratio);
+                    other->pushback.z = FX_MUL(diff.z, ratio);
                 }
             }
         }

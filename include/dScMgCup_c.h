@@ -65,7 +65,7 @@ typedef char CupPos_size_must_be_0x8[sizeof(CupPos) == 0x8 ? 1 : -1];
 struct dScMgCup_c : dScMgSingle3DBase_c {
     virtual ~dScMgCup_c();
 
-    /* Eight states, dispatched by Behavior through data_ov006_02141870.
+    /* Eight states, dispatched by Behavior through sCupStateTable.
        The spellings are not in the ROM. */
     void StateSetup();
     void StatePrepareShuffle();
@@ -87,7 +87,7 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     s32 mTouchX;          /* 0x50d4 */
     s32 mTouchY;          /* 0x50d8 */
     s32 mTouchLock;       /* 0x50dc -- component +0x1a4; the ctor zeroes it */
-    /* Presenter_PlayAnim7 and Presenter_PlayAnim4 play a sound only when this is 0. */
+    /* Presenter_PlayCheer and Presenter_PlayLose play a sound only when this is 0. */
     s32 mSuppressSound;   /* 0x50e0 -- component +0x1a8 */
     u8  pad_50e4[4];      /* 0x50e4 */
     CupFx mFx[0x20];      /* 0x50e8 -- elem dtor CupFx_ElemDtor */

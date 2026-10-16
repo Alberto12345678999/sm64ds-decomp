@@ -22,8 +22,10 @@
  */
 #include "dCamera_c.h"
 #include "dBgCh_Lin.h"
+#include "Memory.h"
 #include "decl_common.h"
 #include "decl_Particle.h"
+#include "dClipper.h"
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
 
@@ -80,7 +82,7 @@ extern u8 data_0209f2c4;
 extern s8 data_0209f2f8;
 extern s32 data_0209f32c;
 extern void *data_0209f394[];
-extern int data_0209f43c[];
+extern dClipper data_0209f43c;
 extern s32 data_0209fc48;
 extern Matrix4x3 data_020a0e68;
 extern void *data_ov002_0210c3b0;
@@ -126,15 +128,12 @@ extern void *_ZN9dBgCh_GndC1Ev(void *self);
 extern void _ZN9dBgCh_GndD1Ev(void *self);
 extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
 extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, const void *pos, void *actor);
-extern int _ZN9dBgCh_Lin10DetectClsnEv(void *self);
-extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *self, const void *a, const void *b, void *actor);
 /* The C bodies spell the member by its mangled name (C cannot write `this->ChangeState`). */
 /* local extern: dCamera_c.h declares the same symbol as a member. */
 extern int _ZN9dCamera_c11ChangeStateEPNS_5StateE(void *thiz, void *state);
 
 extern void *_ZN7fBase_cC2Ev(void *self);
 extern void *_Znwj(u32 sz);
-extern void _ZN6Memory16operator_delete2EPv(void *p);
 /* _ZTV7dBase_c/_ZTV7dView_c/_ZTV9dCamera_c come from decl_common.h (int[]/u32
    spellings); the stores below take their addresses explicitly. */
 
@@ -511,7 +510,7 @@ int dCamera_c::CleanupResources()
     void *p = mFixedViewPos;
     if (p) {
         if (p)
-            _ZN6Memory16operator_delete2EPv(p);
+            Memory::operator_delete2(p);
     }
     return 1;
 }
@@ -523,7 +522,8 @@ void func_0200d954(char *c, short arg) {
     int j = i * 2;
     *(int *)(c + 0x104) = func_02053200(data_02082214[j]);
     *(int *)(c + 0x108) = func_02053200(data_02082214[j + 1]);
-    _ZN8dClipper13Func_020156DCEitii(data_0209f43c, *(int *)(c + 0xf8), arg, *(int *)(c + 0xfc), *(int *)(c + 0x100));
+    _ZN8dClipper13Func_020156DCEitii(&data_0209f43c, *(int *)(c + 0xf8), arg, *(int *)(c + 0xfc),
+                                     *(int *)(c + 0x100));
 }
 
 // @symbol func_0200d8c8
@@ -987,8 +987,8 @@ extern "C" void func_0200cce4(char* cam)
             vec.y = ty;
             vec.z = tz;
         }
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&line, (Vec3*)(cam + 0x8c), &vec, 0);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(&line) != 0) {
+        line.SetObjAndLine(((dCamera_c *)cam)->pos, *(Vector3 *)&vec, 0);
+        if (line.DetectClsn() != 0) {
             Vector3 cp = line.GetClsnPos();
             vec.x = cp.x;
             vec.y = cp.y;
@@ -1229,8 +1229,8 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
             tmp.y = ty;
             tmp.z = tz;
         }
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&line, pos, &tmp, 0);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(&line) != 0) {
+        line.SetObjAndLine(*(Vector3 *)pos, *(Vector3 *)&tmp, 0);
+        if (line.DetectClsn() != 0) {
             Vector3 clsn = line.GetClsnPos();
             tmp.x = clsn.x;
             tmp.y = clsn.y;
@@ -1430,8 +1430,8 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
         sp20.z = tz;
     }
     func_0200897c(self, &line);
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&line, &sp20, &sp14, 0);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&line) != 0) {
+    line.SetObjAndLine(*(Vector3 *)&sp20, *(Vector3 *)&sp14, 0);
+    if (line.DetectClsn() != 0) {
         Vector3 sp50 = line.GetClsnPos();
         sp8.x = sp50.x;
         sp8.y = sp50.y;
@@ -1441,8 +1441,8 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
     sp2C.y = sp8.y + 0x100000;
     sp2C.z = sp8.z;
     func_0200897c(self, &line);
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&line, &sp8, &sp2C, 0);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&line) != 0) {
+    line.SetObjAndLine(*(Vector3 *)&sp8, *(Vector3 *)&sp2C, 0);
+    if (line.DetectClsn() != 0) {
         Vector3 sp5C = line.GetClsnPos();
         sp2C.x = sp5C.x;
         sp2C.y = sp5C.y;

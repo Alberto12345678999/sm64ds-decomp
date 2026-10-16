@@ -41,6 +41,7 @@ enum daObjCtMecha11_c_AssetId {
 #include "daObjCtMecha11_c.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 /* Vector3 declares a destructor. A real local would emit one this function
  * does not call. */
@@ -109,7 +110,7 @@ int daObjCtMecha11_c::UpdateShadow()
     int idx = (unsigned short)mAngleX >> 4;
     int s = data_02082214[(idx << 1) + 1];
     int sa = s < 0 ? -s : s;
-    int scaled = (int)(((long long)sa * 0x26c000 + 0x800) >> 12);
+    int scaled = FX_MUL(sa, 0x26c000);
     return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         this, &mShadowModel, &mShadowMat, 0x12c000, 0x32000,
         scaled + 0x50000, 0xf);

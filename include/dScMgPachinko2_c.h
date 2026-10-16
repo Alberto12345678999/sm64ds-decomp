@@ -13,34 +13,34 @@
  * MgLakituLaunch_Spawn) installs this class's vtable. The ROM proves the
  * class; the classInit spelling follows later EAD lineage.
  */
-/* One launched ball. Ball_State1 drives it from the touch record while
+/* One launched ball. Ball_StateAim drives it from the touch record while
    the pen is down (x/y follow the pen, px/py keep the pen offset) and, on
    release, aims it at (0x80, 0x20): angle = atan2, speed from the distance,
    vx/vy from the sine table. */
 struct dScMgPachinko2_Ball {
-    s32 x;            /* +0x00 -- Fix12 */
-    s32 y;            /* +0x04 */
-    s32 vx;           /* +0x08 */
-    s32 vy;           /* +0x0c */
-    s32 px;           /* +0x10 -- pen offset while held */
-    s32 py;           /* +0x14 */
-    u8  unk_18[0x8];
-    s32 speed;        /* +0x20 */
-    u8  unk_24[0x4];
-    s32 sound;        /* +0x28 -- Sound_PlayIfNotActive handle */
-    s32 prevDist;     /* +0x2c */
-    u8  unk_30[0x2];
-    s16 unk_32;       /* +0x32 */
-    s16 angle;        /* +0x34 */
-    s16 unk_36;       /* +0x36 */
-    u8  unk_38;
-    u8  state;        /* +0x39 -- 2 while released, 0 when reset */
-    u8  unk_3a;
-    u8  unk_3b;
-    u8  unk_3c;
-    u8  unk_3d;
-    u8  unk_3e;
-    u8  pad_3f;
+    s32 x;          /* +0x00 -- Fix12 */
+    s32 y;          /* +0x04 */
+    s32 vx;         /* +0x08 */
+    s32 vy;         /* +0x0c */
+    s32 px;         /* +0x10 -- pen offset while held */
+    s32 py;         /* +0x14 */
+    u8 unk_18[0x8]; /* +0x18 */
+    s32 speed;      /* +0x20 */
+    u8 unk_24[0x4]; /* +0x24 */
+    s32 sound;      /* +0x28 -- Sound_PlayIfNotActive handle */
+    s32 prevDist;   /* +0x2c */
+    u8 unk_30[0x2]; /* +0x30 */
+    s16 spin;       /* +0x32 -- rotation step (rotation at +0x30); vx / 4 at the throw */
+    s16 angle;      /* +0x34 */
+    s16 timer;      /* +0x36 -- anim tick in state 5, countdown from 0x40 in state 7 */
+    u8 active;      /* +0x38 -- Ball_UpdateAll runs the ball while set */
+    u8 state;       /* +0x39 -- 2 while released, 0 when reset */
+    u8 visible;     /* +0x3a -- Ball_DrawAll draws the ball while set */
+    u8 spawnClear;  /* +0x3b -- zeroed when a ball spawns; nothing reads it */
+    u8 sprite;      /* +0x3c -- 0 = the rolling ball, else frame + 1 in data_ov006_02138d08 */
+    u8 animStep;    /* +0x3d -- 0..3, picks the frame */
+    u8 facingRight; /* +0x3e -- moving right; frames +4 */
+    u8 pad_3f;      /* +0x3f */
 };
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
@@ -48,33 +48,33 @@ typedef char dScMgPachinko2_Ball_size_must_be_0x40[sizeof(struct dScMgPachinko2_
 #endif
 
 /* One of the three paddles. State 0..14 dispatches through
-   data_ov006_02142734; Paddle_Hit parks the current motion in
+   sPachinko2PaddleStateTable; Paddle_Hit parks the current motion in
    home/saved* and later states restore it. */
 struct dScMgPachinko2_Paddle {
-    s32 x;            /* +0x00 -- Fix12 */
-    s32 y;            /* +0x04 */
-    s32 vx;           /* +0x08 */
-    s32 vy;           /* +0x0c */
-    s32 speed;        /* +0x10 */
-    u8  unk_14[0x8];
-    s32 homeX;        /* +0x1c */
-    s32 homeY;        /* +0x20 */
-    s32 savedVx;      /* +0x24 */
-    s32 savedVy;      /* +0x28 */
-    s32 sound;        /* +0x2c -- Sound_PlayIfNotActive handle */
-    s16 angle;        /* +0x30 */
-    u16 timer;        /* +0x32 */
-    u8  active;       /* +0x34 */
-    u8  visible;      /* +0x35 */
-    u8  state;        /* +0x36 */
-    u8  savedState;   /* +0x37 */
-    u8  dir;          /* +0x38 */
-    u8  ballsHeld;    /* +0x39 -- balls caught, dropped back one at a time */
-    u8  swing;        /* +0x3a */
-    u8  unk_3b;
-    u8  hits;         /* +0x3c -- four parks the paddle */
-    u8  flip;         /* +0x3d */
-    u8  pad_3e[0x2];
+    s32 x;          /* +0x00 -- Fix12 */
+    s32 y;          /* +0x04 */
+    s32 vx;         /* +0x08 */
+    s32 vy;         /* +0x0c */
+    s32 speed;      /* +0x10 */
+    u8 unk_14[0x8]; /* +0x14 */
+    s32 homeX;      /* +0x1c */
+    s32 homeY;      /* +0x20 */
+    s32 savedVx;    /* +0x24 */
+    s32 savedVy;    /* +0x28 */
+    s32 sound;      /* +0x2c -- Sound_PlayIfNotActive handle */
+    s16 angle;      /* +0x30 */
+    u16 timer;      /* +0x32 */
+    u8 active;      /* +0x34 */
+    u8 visible;     /* +0x35 */
+    u8 state;       /* +0x36 */
+    u8 savedState;  /* +0x37 */
+    u8 dir;         /* +0x38 */
+    u8 ballsHeld;   /* +0x39 -- balls caught, dropped back one at a time */
+    u8 swing;       /* +0x3a */
+    u8 step;        /* +0x3b -- sub-step inside the current state */
+    u8 hits;        /* +0x3c -- four parks the paddle */
+    u8 flip;        /* +0x3d */
+    u8 pad_3e[0x2]; /* +0x3e */
 };
 
 /* The flash at a paddle catch: four frames from data_ov006_02136bd4, eight
@@ -107,7 +107,7 @@ struct dScMgPachinko2_ScorePop {
     u8  falling;      /* +0x17 */
 };
 
-/* One of the two cups. State 0..4 dispatches through data_ov006_021426cc. */
+/* One of the two cups. State 0..4 dispatches through sPachinko2CupStateTable. */
 struct dScMgPachinko2_Cup {
     s32 x;            /* +0x00 -- Fix12 */
     s32 y;            /* +0x04 */
@@ -147,17 +147,17 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void CupSlot_DrawAll();            /* render both cups */
     void CupSlot_ResetAll();            /* reset cup slots */
     void Cup_PickTarget(int k);       /* launched-ball vs cup k check */
-    void Cup_State4(int k);       /* cup state 4: randomize */
-    void Cup_State3(int k);       /* cup state 3 */
-    void Cup_State2(int k);       /* cup state 2 */
-    void Cup_State1(int k);       /* cup state 1 */
-    void Cup_State0(int k);       /* cup state 0: idle reset */
-    void Cup_DrawAll();            /* cup PMF dispatch, data_ov006_021426cc */
+    void Cup_StateDecide(int k);      /* cup state 4: randomize */
+    void Cup_StateHopRight(int k);    /* cup state 3 */
+    void Cup_StateHopLeft(int k);     /* cup state 2 */
+    void Cup_StateWait(int k);        /* cup state 1 */
+    void Cup_StateInit(int k);        /* cup state 0: idle reset */
+    void Cup_DrawAll();               /* cup PMF dispatch, sPachinko2CupStateTable */
     void Cup_ShowAll();            /* init both cups */
     void Cup_HideAll();            /* clear cup flags */
 
     /* scene state */
-    void ChooseLaneConfig();            /* pick lane config -> unk_5668 */
+    void ChooseLaneConfig();     /* pick lane config -> mLaneConfig */
     void DrawScore();            /* round-end jingle gate */
     void DrawTopRecord();            /* round-end sfx gate */
     void StartRoundEnd(int a);       /* enter state 3, fade */
@@ -170,7 +170,7 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void PlotSubBg2Pixels(int a1, int a2, int a3); /* BG2 tile stamp (a0 unused) */
     void DrawAimLine();            /* draw the guide lines */
     void StartCountdown();            /* arm 30-tick countdown */
-    void UpdateRoundEnd();            /* launch queued ball */
+    void UpdateNextBall();            /* launch queued ball */
     void ResetRound();            /* reset the whole round */
 
     /* sprite bursts: the two 16 x 0x18 records at 0x5320 and 0x54a0 */
@@ -186,60 +186,60 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void Paddle_HideAll();            /* reset paddle timers */
     void Paddle_Stop(int idx);     /* park paddle idx */
     void Paddle_CheckBallHits(int idx);     /* paddle idx vs balls */
-    void Paddle_UpdateAll();            /* paddle PMF dispatch, data_ov006_02142734 */
+    void Paddle_UpdateAll();                /* paddle PMF dispatch, sPachinko2PaddleStateTable */
     void Paddle_ClearAll();            /* clear paddle flags */
-    void Paddle_State14(int i);       /* paddle state 14 */
-    void Paddle_State13(int i);       /* paddle state 13 */
-    void Paddle_State12(int i);       /* paddle state 12: seek lane target */
-    void Paddle_State11(int i);       /* paddle state 11 */
-    void Paddle_State10(int i);       /* paddle state 10 */
-    void Paddle_State9(int i);       /* paddle state 9 */
-    void Paddle_State8(int i);       /* paddle state 8 */
+    void Paddle_StateFlyAway(int i);   /* paddle state 14 */
+    void Paddle_StateDropBalls(int i); /* paddle state 13 */
+    void Paddle_StateGather(int i);    /* paddle state 12: seek lane target */
+    void Paddle_StateRiseHome(int i);  /* paddle state 11 */
+    void Paddle_StateSwing(int i);     /* paddle state 10 */
+    void Paddle_StateFallToGround(int i); /* paddle state 9 */
+    void Paddle_StateKnockedDown(int i);  /* paddle state 8 */
     void Paddle_Hit(int i);       /* collect -> next state */
-    void Paddle_State7(int i);       /* paddle state 7 */
-    void Paddle_State6(int i);       /* paddle state 6: horizontal patrol */
-    void Paddle_State5(int i);       /* paddle state 5 */
-    void Paddle_State4(int i);       /* paddle state 4: circle lane */
-    void Paddle_State3(int i);       /* paddle state 3 */
-    void Paddle_State2(int i);       /* paddle state 2 */
-    void Paddle_State1(int i);       /* paddle state 1: rise then split */
-    void Paddle_State0(int i);       /* paddle state 0: enter */
+    void Paddle_StatePause(int i);   /* paddle state 7 */
+    void Paddle_StateCross(int i);   /* paddle state 6: horizontal patrol */
+    void Paddle_StateWeave(int i);   /* paddle state 5 */
+    void Paddle_StateOrbit(int i);   /* paddle state 4: circle lane */
+    void Paddle_StateBoxLoop(int i); /* paddle state 3 */
+    void Paddle_StateSweep(int i);   /* paddle state 2 */
+    void Paddle_StateDescend(int i); /* paddle state 1: rise then split */
+    void Paddle_StateSpawn(int i);   /* paddle state 0: enter */
 
     /* balls: mBalls[0x30] active */
     void Ball_HitAt(int x, int z, int d); /* spawn ball */
     void Ball_Bounce(int i);       /* ball i hits the floor */
     void Ball_ClearAll();            /* clear ball flags */
     void Ball_DrawAll();            /* render balls */
-    void Ball_UpdateAll();            /* ball PMF dispatch, data_ov006_021426f4 */
-    void Ball_State0(int arg1);    /* ball state 0: idle in tray */
-    void Ball_State1(int i);       /* ball state 1: pen drag */
-    void Ball_State2(int i);       /* ball state 2: launched flight */
-    void Ball_State3(int i);       /* ball state 3 */
-    void Ball_State4(int i);       /* ball state 4 */
-    void Ball_State5(int i);       /* ball state 5 */
-    void Ball_State6(int i);       /* ball state 6: despawn */
-    void Ball_State7(int i);       /* ball state 7 */
+    void Ball_UpdateAll();          /* ball PMF dispatch, sPachinko2BallStateTable */
+    void Ball_StateWaitGrab(int arg1); /* ball state 0: idle in tray */
+    void Ball_StateAim(int i);         /* ball state 1: pen drag */
+    void Ball_StateFlying(int i);      /* ball state 2: launched flight */
+    void Ball_StateTumble(int i);      /* ball state 3 */
+    void Ball_StateHop(int i);         /* ball state 4 */
+    void Ball_StateWalkOff(int i);     /* ball state 5 */
+    void Ball_StateRemove(int i);      /* ball state 6: despawn */
+    void Ball_StateScored(int i);      /* ball state 7 */
 
-    dScMgPachinko2_Ball     mBalls[0x30];      /* 0x4660 */
-    dScMgPachinko2_Paddle   mPaddles[3];       /* 0x5260 */
-    dScMgPachinko2_HitFx    mHitFx[0x10];      /* 0x5320 */
-    dScMgPachinko2_ScorePop mScorePops[0x10];  /* 0x54a0 */
-    dScMgPachinko2_Cup      mCups[2];          /* 0x5620 */
-    s32 unk_5660;            /* 0x5660 -- Behavior switches on it, 0..3 */
-    s32 mGuideStep;          /* 0x5664 -- DrawAimLine */
-    s32 mLaneConfig;         /* 0x5668 -- 0..5, ChooseLaneConfig */
-    u16 unk_566c;            /* 0x566c */
-    u16 unk_566e;            /* 0x566e -- set to 0x40; Behavior's case 3 counts it down */
-    u16 unk_5670;            /* 0x5670 */
-    u16 unk_5672;            /* 0x5672 */
-    u16 mCountdown;          /* 0x5674 -- seconds; UpdateCountdown */
-    u8  mHeldBall;           /* 0x5676 -- 1 + the ball in the pen, 0 for none */
-    u8  mResult;             /* 0x5677 */
-    u8  mCountdownArmed;     /* 0x5678 */
-    u8  mCountdownTick;      /* 0x5679 -- frames into the current second */
-    u8  mCountdownShown;     /* 0x567a */
+    dScMgPachinko2_Ball mBalls[0x30];         /* 0x4660 */
+    dScMgPachinko2_Paddle mPaddles[3];        /* 0x5260 */
+    dScMgPachinko2_HitFx mHitFx[0x10];        /* 0x5320 */
+    dScMgPachinko2_ScorePop mScorePops[0x10]; /* 0x54a0 */
+    dScMgPachinko2_Cup mCups[2];              /* 0x5620 */
+    s32 mPhase;         /* 0x5660 -- 0 setup, 1 play, 2 time up, 3 results wait */
+    s32 mGuideStep;     /* 0x5664 -- DrawAimLine */
+    s32 mLaneConfig;    /* 0x5668 -- 0..5, ChooseLaneConfig */
+    u16 mNextBallDelay; /* 0x566c -- frames until UpdateNextBall pens a new ball */
+    u16 mEndTimer;      /* 0x566e -- 0x40 frames from time up to the results */
+    u16 mBallDealt;     /* 0x5670 -- [medium] first ball dealt; later ones sound 0x19d */
+    u16 unk_5672;       /* 0x5672 */
+    u16 mCountdown;     /* 0x5674 -- seconds; UpdateCountdown */
+    u8 mHeldBall;       /* 0x5676 -- 1 + the ball in the pen, 0 for none */
+    u8 mResult;         /* 0x5677 */
+    u8 mCountdownArmed; /* 0x5678 */
+    u8 mCountdownTick;  /* 0x5679 -- frames into the current second */
+    u8 mCountdownShown; /* 0x567a */
     /* the factory allocates 0x567c bytes; see tools/opnew_sizes.py */
-    u8  pad_567b;
+    u8 pad_567b;
 };
 
 #ifndef SM64DS_PLATFORM_PC

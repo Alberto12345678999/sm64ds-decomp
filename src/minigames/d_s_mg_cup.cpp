@@ -29,6 +29,7 @@ enum dScMgCup_c_AssetId {
 #include "decl_common.h"
 #include "OamAttr.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* data_ov006_0213c094: swap count, then two speed-row nibbles.
    StateSetup reads byte [kind * 2]. df024 reads .lo / .hi. */
@@ -92,10 +93,10 @@ extern RestPos data_ov006_0213c0ac[];
 extern int RandomIntInternal(int *seed);
 extern void Mg_SetSharedState(int c);
 extern void Cup_UpdateAnim(char *self, int i);
-extern void Presenter_PlayAnim7(void *c);
+extern void Presenter_PlayCheer(void *c);
 extern void Mg_SubCredits(void *c, int val);
-extern void Presenter_PlayAnim1(char *c);
-extern void Presenter_PlayAnim4(char *c);
+extern void Presenter_PlayMiss(char *c);
+extern void Presenter_PlayLose(char *c);
 extern void func_02012790(int x);
 extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int arg);
@@ -115,7 +116,7 @@ void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void Mg_DrawStockCounter(int arg0, int arg1);
 void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern char data_ov006_02139df4[];
-extern PMF data_ov006_02141870[];
+extern PMF sCupStateTable[];
 /* The ROM PMF constants the table copies from (unlicensed .data). */
 extern PMF pmf_dScMgCup_c_StateSetup;
 extern PMF pmf_dScMgCup_c_StatePrepareShuffle;
@@ -493,16 +494,16 @@ void dScMgCup_c::StateResult()
     score = mHudScore;
     if (mCorrect != 0) {
         mTimer = 0x3c;
-        Presenter_PlayAnim7(&mModel);
+        Presenter_PlayCheer(&mModel);
         score++;
     } else {
         Mg_SubCredits(this, 1);
         if (mCredits > 0) {
             mTimer = 0x96;
-            Presenter_PlayAnim1((char *)&mModel);
+            Presenter_PlayMiss((char *)&mModel);
         } else {
             mTimer = 0x1e;
-            Presenter_PlayAnim4((char *)&mModel);
+            Presenter_PlayLose((char *)&mModel);
         }
         func_02012790(0x12f);
     }
@@ -609,7 +610,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX - (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX - FX_MUL(cosine, mHalfX);
     }
     {
         int slot = mIds[mSwap0];
@@ -632,7 +633,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX + (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX + FX_MUL(cosine, mHalfX);
     }
     {
         int slot = mIds[mSwap1];
@@ -830,7 +831,7 @@ void dScMgCup_c::StateSetup()
 /* Slot 20: the win animation on mModel. */
 void dScMgCup_c::OnNewRecord()
 {
-    Presenter_PlayAnim7(&mModel);
+    Presenter_PlayCheer(&mModel);
 }
 
 #pragma push
@@ -951,7 +952,7 @@ s32 dScMgCup_c::Behavior()
 {
     char *raw = (char *)this;
     int i;
-    (this->*data_ov006_02141870[mState])();
+    (this->*sCupStateTable[mState])();
     for (i = 0; i < 3; i++) {
         AnimStep *anim = &data_ov006_0213c0d8[mAnim[i]][mFrame[i]];
         int length = anim->ticks;
@@ -1014,12 +1015,12 @@ s32 dScMgCup_c::InitResources()
 
     data_0208ee44 = 1;
     Mg_ResetRecordBannerPos();
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc884 = 0x88;
-    data_ov004_020bc8a8 = 0x40;
-    data_ov004_020bc898 = 0xa0;
-    data_ov004_020bc86c = 0xc0;
-    data_ov004_020bc8a4 = 0xa0;
+    sMgClearBannerX = 0x80;
+    sMgClearBannerY = 0x88;
+    sMgPlayAgainX = 0x40;
+    sMgPlayAgainY = 0xa0;
+    sMgQuitX = 0xc0;
+    sMgQuitY = 0xa0;
 
     {
         int i;
@@ -1068,13 +1069,9 @@ extern "C" void Cup_Nothing()
  * The eight Cup state records plain-copied from the ROM PMF constants;
  * Behavior indexes this table by mState. Definition order is the retail
  * initializer's copy order. */
-PMF data_ov006_02141870[8] = {
-    pmf_dScMgCup_c_StateSetup,
-    pmf_dScMgCup_c_StatePrepareShuffle,
-    pmf_dScMgCup_c_StateShuffle,
-    pmf_dScMgCup_c_StateWaitForInput,
-    pmf_dScMgCup_c_StateSelect,
-    pmf_dScMgCup_c_StateResult,
-    pmf_dScMgCup_c_StateFinish,
-    pmf_dScMgCup_c_StateIdle,
+PMF sCupStateTable[8] = {
+    pmf_dScMgCup_c_StateSetup,   pmf_dScMgCup_c_StatePrepareShuffle,
+    pmf_dScMgCup_c_StateShuffle, pmf_dScMgCup_c_StateWaitForInput,
+    pmf_dScMgCup_c_StateSelect,  pmf_dScMgCup_c_StateResult,
+    pmf_dScMgCup_c_StateFinish,  pmf_dScMgCup_c_StateIdle,
 };

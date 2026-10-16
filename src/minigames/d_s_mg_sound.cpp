@@ -28,6 +28,7 @@ enum dScMgSound_c_AssetId {
 #include "types.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* A cursor keeps the add-#0x5000 split on a walk that advances the scene
    pointer. Pointing the record itself at the slot pools the base instead. */
@@ -159,18 +160,18 @@ extern int data_ov006_0212eea0[];
 extern unsigned char data_ov006_0212ee0c[];
 extern u8 data_ov006_0212ee30[];
 extern void func_02012790(int);
-extern void Presenter_PlayAnim2(void *c);
-extern void Presenter_PlayAnim1(char *c);
+extern void Presenter_PlayMatch(void *c);
+extern void Presenter_PlayMiss(char *c);
 extern int data_ov006_0212ef7c[];
 extern int data_ov006_0212ef8c[];
 extern int data_ov006_0212ef5c[];
 extern int data_ov006_0212ef6c[];
 extern unsigned short data_ov006_0212ef4c[];
-void Presenter_PlayAnim7Loop(char *p);
+void Presenter_PlayCheerLoop(char *p);
 void func_02012174(u32 bank, u32 id);
 extern u16 data_ov006_0212ef3c[];
 extern u16 data_ov006_0213f794[];
-extern u16 data_ov006_0213f7e8[];
+extern u16 sSoundNoteSfx[];
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 extern u8 data_ov006_0212ee10[];
@@ -180,7 +181,7 @@ extern int data_ov006_0212ef9c[];
 extern int data_ov006_0212efb0[];
 extern u16 *data_ov006_0213f6fc[];
 extern void Presenter_ResetPose(char *c);
-extern void Presenter_PlayAnim7(void *c);
+extern void Presenter_PlayCheer(void *c);
 extern "C" void Mg_DrawScoreTally(void *c, int a, int b, int d);
 void FreeGfxSlotsById(int id);
 int LoadFile(int handle);
@@ -194,12 +195,12 @@ extern u8 data_0209d454;
 /* The note and pop dispatch tables belong to this scene. Declaration
  * order preserves the cartridge static-initialization sequence. */
 
-PmfEntry data_ov006_02142df8[5] = {
+PmfEntry sSoundNoteStateTable[5] = {
     {pmf_dScMgSound_c_Note_StateWait},   {pmf_dScMgSound_c_Note_StateOpening},
     {pmf_dScMgSound_c_Note_StateOpen},   {pmf_dScMgSound_c_Note_StateClosing},
     {pmf_dScMgSound_c_Note_StateScroll},
 };
-PmfEntry data_ov006_02142e20[13] = {
+PmfEntry sSoundPopUpdateTable[13] = {
     {pmf_dScMgSound_c_Pop00_Update}, {pmf_dScMgSound_c_Pop01_Update},
     {pmf_dScMgSound_c_Pop02_Update}, {pmf_dScMgSound_c_Pop03_Update},
     {pmf_dScMgSound_c_Pop04_Update}, {pmf_dScMgSound_c_Pop05_Update},
@@ -208,67 +209,67 @@ PmfEntry data_ov006_02142e20[13] = {
     {pmf_dScMgSound_c_Pop10_Update}, {pmf_dScMgSound_c_Pop11_Update},
     {pmf_dScMgSound_c_Pop12_Update},
 };
-Pmf data_ov006_02142d38[3] = {
+Pmf sSoundPop00Table[3] = {
     pmf_dScMgSound_c_Pop00_Start,
     pmf_dScMgSound_c_Pop00_Fly,
     pmf_dScMgSound_c_Pop00_Finish,
 };
-PmfEntry data_ov006_02142d50[3] = {
+PmfEntry sSoundPop01Table[3] = {
     {pmf_dScMgSound_c_Pop01_Start},
     {pmf_dScMgSound_c_Pop01_Fly},
     {pmf_dScMgSound_c_Pop01_Finish},
 };
-PmfEntry data_ov006_02142d80[3] = {
+PmfEntry sSoundPop02Table[3] = {
     {pmf_dScMgSound_c_Pop02_Start},
     {pmf_dScMgSound_c_Pop02_Fly},
     {pmf_dScMgSound_c_Pop02_Finish},
 };
-PmfEntry data_ov006_02142dc8[3] = {
+PmfEntry sSoundPop03Table[3] = {
     {pmf_dScMgSound_c_Pop03_Start},
     {pmf_dScMgSound_c_Pop03_Fly},
     {pmf_dScMgSound_c_Pop03_Finish},
 };
-PmfEntry data_ov006_02142de0[3] = {
+PmfEntry sSoundPop04Table[3] = {
     {pmf_dScMgSound_c_Pop04_Start},
     {pmf_dScMgSound_c_Pop04_Fly},
     {pmf_dScMgSound_c_Pop04_Finish},
 };
-PmfEntry data_ov006_02142cd8[3] = {
+PmfEntry sSoundPop05Table[3] = {
     {pmf_dScMgSound_c_Pop05_Start},
     {pmf_dScMgSound_c_Pop05_Fly},
     {pmf_dScMgSound_c_Pop05_Finish},
 };
-PmfEntry data_ov006_02142cf0[3] = {
+PmfEntry sSoundPop06Table[3] = {
     {pmf_dScMgSound_c_Pop06_Start},
     {pmf_dScMgSound_c_Pop06_Fly},
     {pmf_dScMgSound_c_Pop06_Finish},
 };
-PmfEntry data_ov006_02142d20[3] = {
+PmfEntry sSoundPop07Table[3] = {
     {pmf_dScMgSound_c_Pop07_Start},
     {pmf_dScMgSound_c_Pop07_Fly},
     {pmf_dScMgSound_c_Pop07_Finish},
 };
-PmfEntry data_ov006_02142d68[3] = {
+PmfEntry sSoundPop08Table[3] = {
     {pmf_dScMgSound_c_Pop08_Start},
     {pmf_dScMgSound_c_Pop08_Fly},
     {pmf_dScMgSound_c_Pop08_Finish},
 };
-Pmf data_ov006_02142d98[3] = {
+Pmf sSoundPop09Table[3] = {
     pmf_dScMgSound_c_Pop09_Start,
     pmf_dScMgSound_c_Pop09_Fly,
     pmf_dScMgSound_c_Pop09_Finish,
 };
-Pmf data_ov006_02142cc0[3] = {
+Pmf sSoundPop10Table[3] = {
     pmf_dScMgSound_c_Pop10_Start,
     pmf_dScMgSound_c_Pop10_Fly,
     pmf_dScMgSound_c_Pop10_Finish,
 };
-PmfEntry data_ov006_02142d08[3] = {
+PmfEntry sSoundPop11Table[3] = {
     {pmf_dScMgSound_c_Pop11_Start},
     {pmf_dScMgSound_c_Pop11_Fly},
     {pmf_dScMgSound_c_Pop11_Finish},
 };
-PmfEntry data_ov006_02142db0[3] = {
+PmfEntry sSoundPop12Table[3] = {
     {pmf_dScMgSound_c_Pop12_Start},
     {pmf_dScMgSound_c_Pop12_Fly},
     {pmf_dScMgSound_c_Pop12_Finish},
@@ -393,7 +394,7 @@ s32 dScMgSound_c::Behavior()
             if (mResultTimer == 0) {
                 if (mTries != 0) {
                     mTable.mSuppressSound = 0;
-                    Presenter_PlayAnim7((char *)&mTable);
+                    Presenter_PlayCheer((char *)&mTable);
                     if (mTries == 3)
                         Mg_SetPerfectBanner();
                     Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
@@ -429,7 +430,7 @@ s32 dScMgSound_c::Behavior()
             (*(u16 *)(int)&mResultTimer)--;
             if (*(s16 *)&mResultTimer <= 0) {
                 mTable.mSuppressSound = 0;
-                Presenter_PlayAnim4((char *)&mTable);
+                Presenter_PlayLose((char *)&mTable);
                 Mg_SetSharedState(MG_STATE_GAME_OVER);
                 mPromptEnabled = 0;
                 mResultTimer = 0;
@@ -509,7 +510,7 @@ void dScMgSound_c::StartRound(int mode)
 /* Slot 20, OnNewRecord: plays the table model's win animation. */
 void dScMgSound_c::OnNewRecord()
 {
-    Presenter_PlayAnim7((char *)&mTable);
+    Presenter_PlayCheer((char *)&mTable);
 }
 
 // @symbol _ZN12dScMgSound_c10ResetRoundEv
@@ -772,36 +773,37 @@ void dScMgSound_c::Note_StateOpening(int idx)
         instrument = this->mPattern;
         if (instrument == 0 || instrument == 2) {
             if (data_ov006_0213f794[note] == 2) {
-                func_02012790(data_ov006_0213f7e8[note]);
+                func_02012790(sSoundNoteSfx[note]);
             } else {
-                func_02012174(this->mBank, data_ov006_0213f7e8[note]);
+                func_02012174(this->mBank, sSoundNoteSfx[note]);
             }
         } else if (instrument == 1) {
             int n = note - 0x1a;
             int k = 0;
             while (n >= 4) { n -= 4; k++; }
-            func_02012174(n, data_ov006_0213f7e8[0x1a + k * 4]);
+            func_02012174(n, sSoundNoteSfx[0x1a + k * 4]);
         } else {
-            Sound::PlayBank2_2D(data_ov006_0213f7e8[note]);
+            Sound::PlayBank2_2D(sSoundNoteSfx[note]);
         }
     } else {
         instrument = this->mPattern;
         if (instrument == 0 || instrument == 2) {
-            func_02012790(data_ov006_0213f7e8[note]);
+            func_02012790(sSoundNoteSfx[note]);
         } else if (instrument == 1) {
-            func_02012174(this->mBank, data_ov006_0213f7e8[note]);
+            func_02012174(this->mBank, sSoundNoteSfx[note]);
         } else if (instrument == 4) {
             if (data_ov006_0213f794[note] == 2) {
-                Sound::PlayBank2_2D(data_ov006_0213f7e8[note]);
+                Sound::PlayBank2_2D(sSoundNoteSfx[note]);
             } else {
-                func_02012174(this->mBank, data_ov006_0213f7e8[note]);
+                func_02012174(this->mBank, sSoundNoteSfx[note]);
             }
         } else {
-            Sound::PlayBank2_2D(data_ov006_0213f7e8[note]);
+            Sound::PlayBank2_2D(sSoundNoteSfx[note]);
         }
     }
 
-    if (this->mTouchCount == 1) Presenter_PlayAnim7Loop((char *)&this->mTable);
+    if (this->mTouchCount == 1)
+        Presenter_PlayCheerLoop((char *)&this->mTable);
 }
 
 // @symbol _ZN12dScMgSound_c14Note_StateOpenEi
@@ -902,7 +904,7 @@ void dScMgSound_c::UpdateNotes(){
     dMgSoundNoteCur *note = (dMgSoundNoteCur *)r5;
     if(note->note.alive != 0){
       int idx=note->note.state;
-      (this->*data_ov006_02142df8[idx].pmf)(i);
+      (this->*sSoundNoteStateTable[idx].pmf)(i);
     }
     i++;
     r5+=0x14;
@@ -921,14 +923,14 @@ void dScMgSound_c::CheckPair(){
     this->mNotes[this->mQueue[0] >> 8].alive = 0;
     this->mNotes[this->mQueue[1] >> 8].alive = 0;
     func_02012790(0x26);
-    Presenter_PlayAnim2(&this->mTable);
+    Presenter_PlayMatch(&this->mTable);
   } else {
     this->mNotes[this->mQueue[0] >> 8].state = 3;
     this->mNotes[this->mQueue[1] >> 8].state = 3;
     func_02012790(0xe);
     this->mTries--;
     func_02012790(0x12f);
-    Presenter_PlayAnim1((char *)&this->mTable);
+    Presenter_PlayMiss((char *)&this->mTable);
   }
   this->mQueue[1] = 0;
   this->mQueue[0] = this->mQueue[1];
@@ -1002,7 +1004,7 @@ void dScMgSound_c::UpdatePops(){
     dMgSoundPopCur *pop = (dMgSoundPopCur *)r5;
     if(pop->pop.active != 0){
       int idx=pop->pop.state;
-      (this->*data_ov006_02142e20[idx].pmf)(i);
+      (this->*sSoundPopUpdateTable[idx].pmf)(i);
     }
     i++;
     r5+=0x24;
@@ -1013,7 +1015,7 @@ void dScMgSound_c::UpdatePops(){
 void dScMgSound_c::Pop00_Update(int slot)
 {
     unsigned char idx = this->mPops[slot].phase;
-    (this->*data_ov006_02142d38[idx])(slot);
+    (this->*sSoundPop00Table[idx])(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop00_StartEi
@@ -1067,7 +1069,7 @@ void dScMgSound_c::Pop00_Finish()
 void dScMgSound_c::Pop01_Update(int slot)
 {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142d50[state].pmf)(slot);
+    (this->*sSoundPop01Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop01_StartEi
@@ -1108,7 +1110,7 @@ void dScMgSound_c::Pop01_Finish(int slot){
 // @symbol _ZN12dScMgSound_c12Pop02_UpdateEi
 void dScMgSound_c::Pop02_Update(int slot) {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142d80[state].pmf)(slot);
+    (this->*sSoundPop02Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop02_StartEi
@@ -1149,7 +1151,7 @@ void dScMgSound_c::Pop02_Finish(int slot){
 // @symbol _ZN12dScMgSound_c12Pop03_UpdateEi
 void dScMgSound_c::Pop03_Update(int slot) {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142dc8[state].pmf)(slot);
+    (this->*sSoundPop03Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop03_StartEi
@@ -1190,7 +1192,7 @@ void dScMgSound_c::Pop03_Finish(int slot){
 // @symbol _ZN12dScMgSound_c12Pop04_UpdateEi
 void dScMgSound_c::Pop04_Update(int slot) {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142de0[state].pmf)(slot);
+    (this->*sSoundPop04Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop04_StartEi
@@ -1230,7 +1232,7 @@ void dScMgSound_c::Pop04_Finish()
 // @symbol _ZN12dScMgSound_c12Pop05_UpdateEi
 void dScMgSound_c::Pop05_Update(int slot) {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142cd8[state].pmf)(slot);
+    (this->*sSoundPop05Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop05_StartEi
@@ -1267,7 +1269,7 @@ void dScMgSound_c::Pop05_Finish(int slot) {
 // @symbol _ZN12dScMgSound_c12Pop06_UpdateEi
 void dScMgSound_c::Pop06_Update(int slot) {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142cf0[state].pmf)(slot);
+    (this->*sSoundPop06Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop06_StartEi
@@ -1333,7 +1335,7 @@ void dScMgSound_c::Pop06_Finish(int slot)
 // @symbol _ZN12dScMgSound_c12Pop07_UpdateEi
 void dScMgSound_c::Pop07_Update(int slot) {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142d20[state].pmf)(slot);
+    (this->*sSoundPop07Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop07_StartEi
@@ -1377,7 +1379,7 @@ void dScMgSound_c::Pop07_Finish()
 // @symbol _ZN12dScMgSound_c12Pop08_UpdateEi
 void dScMgSound_c::Pop08_Update(int slot) {
     unsigned char state = this->mPops[slot].phase;
-    (this->*data_ov006_02142d68[state].pmf)(slot);
+    (this->*sSoundPop08Table[state].pmf)(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop08_StartEi
@@ -1415,7 +1417,7 @@ void dScMgSound_c::Pop08_Finish(int slot) {
 void dScMgSound_c::Pop09_Update(int slot)
 {
     unsigned char idx = this->mPops[slot].phase;
-    (this->*data_ov006_02142d98[idx])(slot);
+    (this->*sSoundPop09Table[idx])(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop09_StartEi
@@ -1461,7 +1463,7 @@ void dScMgSound_c::Pop09_Finish(int slot)
 // @symbol _ZN12dScMgSound_c12Pop10_UpdateEi
 void dScMgSound_c::Pop10_Update(int slot){
   unsigned char sel = this->mPops[slot].phase;
-  (this->*data_ov006_02142cc0[sel])(slot);
+  (this->*sSoundPop10Table[sel])(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop10_StartEi
@@ -1507,7 +1509,7 @@ void dScMgSound_c::Pop10_Finish(int slot)
 // @symbol _ZN12dScMgSound_c12Pop11_UpdateEi
 void dScMgSound_c::Pop11_Update(int slot){
   unsigned char phase = this->mPops[slot].phase;
-  (this->*(data_ov006_02142d08[phase].pmf))(slot);
+  (this->*(sSoundPop11Table[phase].pmf))(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop11_StartEi
@@ -1551,7 +1553,7 @@ void dScMgSound_c::Pop11_Finish(int slot)
 // @symbol _ZN12dScMgSound_c12Pop12_UpdateEi
 void dScMgSound_c::Pop12_Update(int slot){
   unsigned char phase = this->mPops[slot].phase;
-  (this->*(data_ov006_02142db0[phase].pmf))(slot);
+  (this->*(sSoundPop12Table[phase].pmf))(slot);
 }
 
 // @symbol _ZN12dScMgSound_c11Pop12_StartEi
@@ -1612,7 +1614,7 @@ void dScMgSound_c::DrawPops()
             int x = pop->pop.x;
             int y = pop->pop.y;
             int a = (int)((ta * vv + 0x800) >> 12);
-            int b = (int)(((long long)tb * (int)vv + 0x800) >> 12);
+            int b = FX_MUL(tb, (int)vv);
             m[0] = a;
             m[3] = a;
             m[1] = b;
@@ -1637,7 +1639,8 @@ void dScMgSound_c::DrawNotes() {
       int a1 = note->note.x >> 12;
       int a2 = note->note.y >> 12;
       int a4 = 0;
-      if (*(int*)(c + 0x5608) != 1) a4 = 1;
+      if (mState != 1)
+          a4 = 1;
       unsigned char sel = note->note.frame;
       Hud_RenderSprite((int)data_ov006_0213f730[sel], a1, a2, -1, a4);
     }

@@ -313,6 +313,15 @@ enum { PARTICLE_AT_HURT_ENTER = 0x7e };
 #define JANGO_STATE_CIRCLE    data_ov062_0211e17c
 #define JANGO_STATE_SWOOP     (&data_ov062_0211e18c)
 
+/* dActor_c::mFlags bit 0x08 is set by the framework while the actor is off
+   screen. Int-returning, as the ROM materializes the 0/1 before testing it. */
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
+static inline int IsNoControl(Player *player) {
+    return player->mIsNoControl != 0;
+}
 
 // @symbol daJango_c_classInit
 extern "C" daJango_c *daJango_c_classInit()
@@ -458,7 +467,6 @@ unsigned short DecIfAbove0_Short(unsigned short *p);
 int daJango_c::Behavior()
 {
     StateRecord *m;
-    int b;
 
     DecIfAbove0_Short((unsigned short *)&mStateTimer);
     DecIfAbove0_Short(&mTimer);
@@ -503,7 +511,6 @@ int daJango_c::Behavior()
                 p->mPosX = mHeldPosX;
                 p->mPosY = mHeldPosY;
                 p->mPosZ = mHeldPosZ;
-                goto skip_destroy;
             } else if (static_cast<daObjMarioCap_c *>(p)->unk_403 == 0) {
                 /* daObjMarioCap_c::unk_403: the cap sets it to 1 in
                    InitTaken, the same function that clears the +0xc8
@@ -511,32 +518,25 @@ int daJango_c::Behavior()
                 p->mPosX = mHeldPosX;
                 p->mPosY = mHeldPosY;
                 p->mPosZ = mHeldPosZ;
-                goto skip_destroy;
             } else {
                 mHeldActorID = 0;
                 ((void (*)(int, int))func_02012790)(SND_HELD_RELEASED, 0);
                 mTimer = 0x1e;
                 func_ov062_0211c658(JANGO_STATE_CIRCLE);
-                goto skip_destroy;
             }
         } else {
             mHeldActorID = 0;
             ((void (*)(int, int))func_02012790)(SND_HELD_RELEASED, 0);
             mTimer = 0x1e;
             func_ov062_0211c658(JANGO_STATE_CIRCLE);
-            goto skip_destroy;
         }
+    } else if (mCarriedItem == CARRIES_STAR && mSilverStarFlag != 2) {
+        /* Holding nothing: a star carrier (not the silver-star variant)
+           that is off screen removes itself. */
+        if (IsOffScreen(this))
+            MarkForDestruction();
     }
 
-    /* Holding nothing: a star carrier (not the silver-star variant) that is
-       off screen (mFlags & 8, the framework's off-screen bit) removes itself. */
-    if (mCarriedItem == CARRIES_STAR && mSilverStarFlag != 2) {
-        b = (mFlags & 8) != 0;
-        if (b != 0) {
-            MarkForDestruction();
-        }
-    }
-skip_destroy:
     mBlendModelAnim.Advance();
     /* Hurt state excepted, test the cylinders for a hit or a player contact. */
     if (mState != (void *)JANGO_STATE_HURT) {
@@ -726,55 +726,54 @@ int daJango_c::func_ov062_0211c2f4() {
     path.GetNode(node2, idx);
     Vec3_Sub(&diff, (Vector3 *)&mPosX, &node);
     len = LenVec3(&diff);
-    if (len == 0)
-        goto arrived;
-    if (len > 0x14000)
-        goto faraway;
-
-arrived:
-    unk_460 = 7;
-    if (mSilverStarFlag == 2 || (u8)(s8)(data_0209f2f8 - 0x18) <= 1) {
-        mPathNodeIndex++;
-        if (mPathNodeIndex >= 4)
-            mPathNodeIndex = 0;
-    } else if (func_ov062_0211b3ac() == 0) {
-        u32 r = (u32)RandomIntInternal(&data_0209e650) >> 8 & 3;
-        if (mPathNodeIndex != r) {
-            mPathNodeIndex = r;
-        } else {
-            int *p = &mPathNodeIndex;
-            (*p)++;
-            *p &= 3;
+    /* len == 0 is already covered by len <= 0x14000, but the ROM keeps
+       it as a test of its own. */
+    if (len == 0 || len <= 0x14000) {
+        unk_460 = 7;
+        if (mSilverStarFlag == 2 || (u8)(s8)(data_0209f2f8 - 0x18) <= 1) {
+            mPathNodeIndex++;
+            if (mPathNodeIndex >= 4)
+                mPathNodeIndex = 0;
+        } else if (func_ov062_0211b3ac() == 0) {
+            u32 r = (u32)RandomIntInternal(&data_0209e650) >> 8 & 3;
+            if (mPathNodeIndex != r) {
+                mPathNodeIndex = r;
+            } else {
+                int *p = &mPathNodeIndex;
+                (*p)++;
+                *p &= 3;
+            }
         }
+        mPosX = node.x;
+        mPosY = node.y;
+        mPosZ = node.z;
+        mPathNodePosX = mPosX;
+        mPathNodePosY = mPosY;
+        mPathNodePosZ = mPosZ;
+        zero[2] = 0;
+        zero[0] = 0;
+        zero[1] = 0;
+        zero[2] = 0x14000;
+        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+        MulVec3Mat4x3((Vector3 *)zero, data_020a0e68, (Vector3 *)&unk_0a4);
+        func_ov062_0211c658(JANGO_STATE_CIRCLE);
+        return 1;
     }
-    mPosX = node.x; mPosY = node.y; mPosZ = node.z;
-    mPathNodePosX = mPosX;
-    mPathNodePosY = mPosY;
-    mPathNodePosZ = mPosZ;
-    zero[2] = 0; zero[0] = 0; zero[1] = 0; zero[2] = 0x14000;
-    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-    MulVec3Mat4x3((Vector3 *)zero, data_020a0e68, (Vector3 *)&unk_0a4);
-    func_ov062_0211c658(JANGO_STATE_CIRCLE);
-    return 1;
 
-faraway:
-    if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&mPosX, &node), mAngleY) >= 0x2000)
-        goto ret1;
-    {
+    if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&mPosX, &node), mAngleY) < 0x2000) {
         int s;
         zero[1] = mPosY;
         s = _ZN4cstd4fdivEii(0x14000, len);
         Vec3_MulScalar(&scaled, &diff, s);
         SubVec3(&mPosX, &scaled, &mPosX);
-        if (unk_446 != 1)
-            goto ret1;
-        mPosY = zero[1];
-        if (*(u16 *)&mStateTimer == 0) {
-            mVertSpeed = 0;
-            unk_446 = 0;
+        if (unk_446 == 1) {
+            mPosY = zero[1];
+            if (*(u16 *)&mStateTimer == 0) {
+                mVertSpeed = 0;
+                unk_446 = 0;
+            }
         }
     }
-ret1:
     return 1;
 }
 
@@ -851,7 +850,6 @@ int daJango_c::func_ov062_0211bd10()
     s16 *p94;
     int *pp;
     int tmp;
-    int flag;
 
     if (mTimer != 0) {
         if (mWithMeshClsn.IsOnWall() != 0) {
@@ -918,12 +916,8 @@ int daJango_c::func_ov062_0211bd10()
                     thr = 0x2bc000;
                 }
                 if (Vec3_Dist(&mPosX, ppos) < thr) {
-                    flag = player->mIsNoControl ? 1 : 0;
-                    if (flag == 0) {
-                        if (player->mIsVanish == 0) {
-                            func_ov062_0211c658(JANGO_STATE_SWOOP);
-                        }
-                    }
+                    if (!IsNoControl(player) && player->mIsVanish == 0)
+                        func_ov062_0211c658(JANGO_STATE_SWOOP);
                 }
                 /* fall through to shared b2fc + return */
             }

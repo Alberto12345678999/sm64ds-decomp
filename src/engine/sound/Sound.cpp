@@ -14,7 +14,6 @@
  *   `5Fix12IiE' is unproducible (the Fix12 wall, see include/Sound.h).
  * - Sound_PlayIfNotActive calls func_0201186c through an int-arity pointer:
  *   the def takes short #4 and the site passes d untruncated.
- * - PlaySub's goto chain mirrors the ROM branch structure.
  * - `int dd = (int)(((long long)d))' in func_02012468 is a no-op tower of
  *   unknown load-bearing status.
  * - The registry alloc/link/unlink helpers address the table raw
@@ -367,36 +366,31 @@ extern "C" bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, 
 {
     int x;
     if (c == 0) {
-        if (e) goto end;
+        if (!e) {
+            x = data_0208e430;
+            if ((x >= 0 && x != (int)a) ||
+                (data_0209b49c == 0 && data_0208e42c == (int)b && data_0209b490 == (int)(b << 12)))
+                return true;
+        }
+    } else {
         x = data_0208e430;
-        if (x >= 0 && x != (int)a) goto ret1;
-        if (data_0209b49c != 0) goto end;
-        if (data_0208e42c != (int)b) goto end;
-        if (data_0209b490 != (int)(b << 12)) goto end;
-ret1:
-        return true;
+        if (x < 0 || e) {
+            if (x != (int)a) {
+                data_0208e430 = a;
+                if (a != 0x35 && a != 0x36) {
+                    if (a != 0x2e)
+                        data_0209b49c = c & 0xff;
+                }
+                func_02011dcc(data_0209b4b0, a);
+            }
+        } else if (x != (int)a) {
+            return false;
+        }
     }
-    x = data_0208e430;
-    if (x >= 0) {
-        if (!e) goto ld4;
-    }
-    if (x == (int)a) goto end;
-    data_0208e430 = a;
-    if (a != 0x35 && a != 0x36) {
-        if (a != 0x2e) data_0209b49c = c & 0xff;
-    }
-    func_02011dcc(data_0209b4b0, a);
-    goto end;
-ld4:
-    if (x != (int)a) return false;
-end:
     data_0208e42c = (signed char)b;
     data_0209b470 = (signed char)c;
     data_0209b494 = d;
-    if (data_0209b490 != (int)(b << 12)) goto ret0;
-    if (data_0209b49c == (int)(c << 12)) return true;
-ret0:
-    return false;
+    return data_0209b490 == (int)(b << 12) && data_0209b49c == (int)(c << 12);
 }
 
 namespace Sound {

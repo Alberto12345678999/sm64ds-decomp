@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/fx/fx.h"
 typedef struct { int x, y, z; } Vec3i;
 typedef struct { short x, y, z; } Vec3s;
 
@@ -44,7 +45,7 @@ void func_ov007_020beb80(char *self) {
                 frames -= t;
                 func_02053380(&dd, &dd);
                 *(Vec3s *)(e + 0x3c) = dd;
-                vel = (short)(((s64)sc * 0x460 + 0x800) >> 12);
+                vel = (short)FX_MUL(sc, 0x460);
             }
             *(u8 *)(e + 0x58) = (u8)(((frames << 2) >> 12) + 1);
             *(int *)(e + 0x4c) = vel;

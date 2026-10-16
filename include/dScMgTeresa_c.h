@@ -53,7 +53,7 @@ struct dScMgTeresa_c : dScMgBase_c {
         u8  mAnim;       /* 0x1e -- facing: 1 when the heading's sine is >= 0 */
         u8  mKind;       /* 0x1f -- per-level table value; 8 is the slow kind */
         u8  mFoundOrder; /* 0x20 -- the found counter (+0x4c21) when found */
-        u8  unk_21;      /* 0x21 */
+        u8 mPlaySettleSound; /* 0x21 -- the one Boo of a settling group that plays sound 0x1f1 */
         u8  pad_22[0x2];
     };
 
@@ -67,36 +67,38 @@ struct dScMgTeresa_c : dScMgBase_c {
         u8  pad0b;
     };
 
-    /* The five-frame mark left where a Boo was caught (FoundMark_Spawn). */
-    struct FoundMark {
+    /* The five-frame puff of smoke where a caught Boo vanishes (seen in
+       play; VanishPuff_Spawn). */
+    struct VanishPuff {
         s32 x;           /* 0x00 -- 20.12 */
         s32 y;           /* 0x04 -- 20.12 */
         u16 timer;       /* 0x08 -- the frame steps every 4 */
         u16 pad0a;
-        u8  frame;       /* 0x0c -- 0..4, then the mark ends */
+        u8 frame;        /* 0x0c -- 0..4, then the puff ends */
         u8  active;      /* 0x0d */
         u8  visible;     /* 0x0e */
         u8  pad0f;
     };
 
-    /* The score icon that rises off a found Boo (RisingIcon_Spawn). */
-    struct RisingIcon {
+    /* The digit that rises off a found Boo: 1 for the first found, 2 for the
+       second (seen in play; FoundNumber_Spawn). */
+    struct FoundNumber {
         s32 x;           /* 0x00 -- 20.12 */
         s32 y;           /* 0x04 -- 20.12 */
         s32 vy;          /* 0x08 */
         s32 timer;       /* 0x0c -- seeded from the Boo's mFoundOrder */
         u8  active;      /* 0x10 */
         u8  visible;     /* 0x11 */
-        u8  sprite;      /* 0x12 -- the Boo's mFoundOrder */
+        u8 sprite;       /* 0x12 -- the Boo's mFoundOrder; draws digit sprite + 1 */
         u8  state;       /* 0x13 */
     };
 
-    /* The reveal sprite (Reveal_Draw, Reveal_State0..4). Its handlers take
-       an index and dispatch on `state` through data_ov006_02142e88. */
+    /* The reveal sprite (Reveal_Draw, Reveal_StateStart..4). Its handlers take
+       an index and dispatch on `state` through sTeresaRevealStateTable. */
     struct Reveal {
         s32 x;           /* 0x00 -- 20.12 */
         s32 y;           /* 0x04 -- 20.12 */
-        s32 vx;          /* 0x08 -- 20.12; Reveal_State1 slides x by it */
+        s32 vx;          /* 0x08 -- 20.12; Reveal_StateSlideIn slides x by it */
         s32 vy;          /* 0x0c -- also moves mMarker */
         u16 angle;       /* 0x10 -- OAM::Render rotation */
         u16 frameTimer;  /* 0x12 -- the frame steps every 8 */
@@ -108,7 +110,7 @@ struct dScMgTeresa_c : dScMgBase_c {
         u8  unk_1b;      /* 0x1b */
         u8  active;      /* 0x1c -- dispatch runs only while set */
         u8  frame;       /* 0x1d */
-        u8  phase;       /* 0x1e -- Reveal_State3: 0 rising, 1 falling */
+        u8 phase;        /* 0x1e -- Reveal_StateDipAndRise: 0 rising, 1 falling */
         u8  pad1f;
     };
 
@@ -131,17 +133,17 @@ struct dScMgTeresa_c : dScMgBase_c {
 
     /* scene helpers, in ROM order */
     void BigBoo_ShowResult();
-    void func_ov006_0211cc90();
+    void BigBoo_SetDone();
     void BigBoo_Draw();
-    void BigBoo_State8(int idx);
-    void BigBoo_State7();
-    void BigBoo_State6(int index);
-    void BigBoo_State5(int i);
-    void BigBoo_State4(int idx);
-    void BigBoo_State3(int i);
-    void BigBoo_State2(int i);
-    void BigBoo_State1(int i);
-    void BigBoo_State0(int i);
+    void BigBoo_StateResult(int idx);
+    void BigBoo_StateGone();
+    void BigBoo_StateRemove(int index);
+    void BigBoo_StateExit(int i);
+    void BigBoo_StateOffscreen(int idx);
+    void BigBoo_StateFlyRight(int i);
+    void BigBoo_StateFlyLeft(int i);
+    void BigBoo_StateHover(int i);
+    void BigBoo_StateDropIn(int i);
     void BigBoo_Update();
     void BigBoo_Start();
     void BigBoo_Hide();
@@ -151,23 +153,23 @@ struct dScMgTeresa_c : dScMgBase_c {
     void Marker_Show();
     void Marker_Hide();
     void Reveal_Draw();
-    void Reveal_State4(int idx);
-    void Reveal_State3(int i);
-    void Reveal_State2(int i);
-    void Reveal_State1(int i);
-    void Reveal_State0(int i);
+    void Reveal_StateFinish(int idx);
+    void Reveal_StateDipAndRise(int i);
+    void Reveal_StateAnimate(int i);
+    void Reveal_StateSlideIn(int i);
+    void Reveal_StateStart(int i);
     void Reveal_Update();
     void Reveal_Start();
     void Reveal_Hide();
-    void RisingIcon_DrawAll();
-    void RisingIcon_ClearAll();
-    int RisingIcon_CountBusy();
-    void RisingIcon_UpdateAll();
-    void RisingIcon_Spawn(int i);
-    void RisingIcon_SpawnForFound();
-    void FoundMark_DrawAll();
-    void FoundMark_UpdateAll();
-    void FoundMark_Spawn(int param);
+    void FoundNumber_DrawAll();
+    void FoundNumber_ClearAll();
+    int FoundNumber_CountBusy();
+    void FoundNumber_UpdateAll();
+    void FoundNumber_Spawn(int i);
+    void FoundNumber_SpawnForFound();
+    void VanishPuff_DrawAll();
+    void VanishPuff_UpdateAll();
+    void VanishPuff_Spawn(int param);
     void DrawCountdown();
     void UpdateCountdown();
     void StartCountdown();
@@ -181,33 +183,33 @@ struct dScMgTeresa_c : dScMgBase_c {
     void TouchTestBoo(int idx);
     void CountRubbedTiles(int idx);
     void MoveBoo(int i);
-    void Boo_State7(int i);
-    void Boo_State6(int i);
-    void Boo_State5(int idx);
-    void Boo_State4(int idx);
-    void Boo_State3(int i);
-    void Boo_State2(int i);
+    void Boo_StateFadeAway(int i);
+    void Boo_StateFadeIn(int i);
+    void Boo_StateFound(int idx);
+    void Boo_StateHiddenTimed(int idx);
+    void Boo_StateHidden(int i);
+    void Boo_StateFadeOut(int i);
     void BounceBooOffWalls(int i);
     void StepBoo(int i);
     void StartBoosHiding();
-    void Boo_State1(int i);
-    void Boo_State0(int idx);
+    void Boo_StateFly(int i);
+    void Boo_StateAppear(int idx);
     void AnimateBoo(int i);
     void UpdateBoos();
     void SpawnBoos();
     void UpdateRubbing();
     void ReadRubTouch();
     void ResetRound();
-    void Scene_State4();
-    void Scene_State3();
-    void Scene_State2();
-    void Scene_State1();
-    void Scene_State0();
+    void Scene_StateResult();
+    void Scene_StateRoundEnd();
+    void Scene_StatePlay();
+    void Scene_StateReveal();
+    void Scene_StateInit();
 
     SmallBoo   mBoos[16];        /* 0x4660 */
     Exclaim    mExclaims[16];    /* 0x48a0 */
-    FoundMark  mFoundMarks[16];  /* 0x4960 */
-    RisingIcon mRisingIcons[16]; /* 0x4a60 */
+    VanishPuff mVanishPuffs[16]; /* 0x4960 */
+    FoundNumber mFoundNumbers[16]; /* 0x4a60 */
     /* A one-element array: the Reveal_State handlers take an index and
        step it by 0x20, and the dispatcher passes 0. [inference from codegen] */
     Reveal     mReveal[1];       /* 0x4ba0 */
@@ -215,18 +217,18 @@ struct dScMgTeresa_c : dScMgBase_c {
     /* The big Boo, 0x1c bytes; d_s_mg_teresa.cpp's `struct Boo` (BOO()) is
        its typed view. */
     u8  pad_4bcc[0x1c];
-    s32 unk_4be8;            /* 0x4be8 -- state index for Behavior's pmf dispatch */
+    s32 mSceneState; /* 0x4be8 -- state index for Behavior's pmf dispatch */
     u8  pad_4bec[0x2a];
     s16 unk_4c16;            /* 0x4c16 */
     u8  pad_4c18[0x9];
     u8  mFoundCount;         /* 0x4c21 -- Boos found this round; stamped into mFoundOrder */
     u8  mLastSettledBoo;     /* 0x4c22 -- the Boo AreBoosSettled settled last */
-    u8  unk_4c23;            /* 0x4c23 */
+    u8 mBooPattern;          /* 0x4c23 -- spawn pattern: mLevel, or 10..13 from level 15 */
     /* trailing extent the ROM's `new dScMgTeresa_c` literal proves; see tools/opnew_sizes.py */
-    u8  unk_4c24;            /* 0x4c24 */
+    u8 mBg3FlashStep;        /* 0x4c24 -- StepBg3Scroll's flash step, 0..8 */
     u8  mBooCount;           /* 0x4c25 -- Boos SpawnBoos placed */
     u8  mFirstFoundBoo;      /* 0x4c26 -- 0xff until the first find */
-    u8  unk_4c27;            /* 0x4c27 */
+    u8 mRubLocked;           /* 0x4c27 -- set at time up; UpdateRubbing stops */
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -234,8 +236,11 @@ struct dScMgTeresa_c : dScMgBase_c {
 typedef char dScMgTeresa_c_Reveal_size_must_be_0x20[sizeof(dScMgTeresa_c::Reveal) == 0x20 ? 1 : -1];
 typedef char dScMgTeresa_c_Marker_size_must_be_0xc[sizeof(dScMgTeresa_c::Marker) == 0xc ? 1 : -1];
 typedef char dScMgTeresa_c_Exclaim_size_must_be_0xc[sizeof(dScMgTeresa_c::Exclaim) == 0xc ? 1 : -1];
-typedef char dScMgTeresa_c_FoundMark_size_must_be_0x10[sizeof(dScMgTeresa_c::FoundMark) == 0x10 ? 1 : -1];
-typedef char dScMgTeresa_c_RisingIcon_size_must_be_0x14[sizeof(dScMgTeresa_c::RisingIcon) == 0x14 ? 1 : -1];
+typedef char
+    dScMgTeresa_c_VanishPuff_size_must_be_0x10[sizeof(dScMgTeresa_c::VanishPuff) == 0x10 ? 1 : -1];
+typedef char dScMgTeresa_c_FoundNumber_size_must_be_0x14[sizeof(dScMgTeresa_c::FoundNumber) == 0x14
+                                                             ? 1
+                                                             : -1];
 typedef char dScMgTeresa_c_SmallBoo_size_must_be_0x24[sizeof(dScMgTeresa_c::SmallBoo) == 0x24 ? 1 : -1];
 typedef char dScMgTeresa_c_size_must_be_0x4c28[sizeof(struct dScMgTeresa_c) == 0x4c28 ? 1 : -1];
 #endif

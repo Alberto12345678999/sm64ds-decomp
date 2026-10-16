@@ -23,7 +23,7 @@
  *
  * Edges: 0x020b4aa4 is the first function after func_ov004_020b4aa0, the
  * last destructor helper __sinit_ov004_020b955c registers for the previous
- * unit. 0x020b67e8 is the end of func_ov004_020b67e4, the last helper
+ * unit. 0x020b67e8 is the end of Coin_Construct, the last helper
  * __sinit_ov004_020b9ad0 registers for this one (with MgCoins_Cleanup,
  * which runs __cxa_vec_cleanup over the array, and the empty per-element
  * destructor Coin_Destroy); the next function reads the .data block
@@ -79,12 +79,13 @@
  *   0x020b66d4  MgCoins_Reset
  *   0x020b67bc  MgCoins_Cleanup
  *   0x020b67e0  Coin_Destroy
- *   0x020b67e4  func_ov004_020b67e4
+ *   0x020b67e4  Coin_Construct
  */
 
 #include "types.h"
 #include "PlayerInput.h"
 #include "dScMgBase_c.h"
+#include "nitro/fx/fx.h"
 
 struct Vec2i { int x, y; };
 
@@ -192,10 +193,8 @@ extern unsigned char sMgCoinsVisible[];
 extern int data_020a0db0;
 }
 
-// @symbol func_ov004_020b67e4
-extern "C" void func_ov004_020b67e4(void)
-{
-}
+// @symbol Coin_Construct
+extern "C" void Coin_Construct(void) {}
 
 // @symbol Coin_Destroy
 extern "C" void Coin_Destroy(void)
@@ -906,7 +905,7 @@ extern "C" void Coin_Rise(Sprite* s){
   int v;
   n = p ? n : n;  /* code shape: dropping it makes the function 12 bytes shorter */
   q = __aeabi_idiv(n, g);  /* `n / g` here compiles differently (measured) */
-  v = (int)(((long long)(q - 0x600) * 0x4000 + 0x800) >> 12);
+  v = FX_MUL((q - 0x600), 0x4000);
   *p += v;
   if (ApproachLinear2(s->mDelay, 0, 1) == 0)
     return;
@@ -965,7 +964,7 @@ extern "C" void Coin_RiseSpent(Sprite* s){
   int g = sMgCoinRiseFrames[0];
   int n = -(((short)s->mDelay - (g >> 1)) << 12);
   int q = n / g;
-  int v = (int)(((long long)(q - 0x600) * 0x4000 + 0x800) >> 12);
+  int v = FX_MUL((q - 0x600), 0x4000);
   *p = *p + v;
   if (ApproachLinear2(s->mDelay, 0, 1) == 0)
     return;

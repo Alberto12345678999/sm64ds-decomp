@@ -28,7 +28,7 @@
  * inherited flat-field layout is not reconstructed here.
  *
  * leftovers:
- * - func_ov060_02116740, 02117624 and 021172c8 stay free functions with
+ * - func_ov060_02116740, 02117624 stay free functions with
  *   the char * / unsigned char * decl_common.h declares. Their bodies
  *   compile as C++; 02117624 uses a POD matrix view for its block copy.
  * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
@@ -61,7 +61,9 @@
 #include "dActor_c.h"
 #include "daKpa_c.h"
 #include "Player.h"
+#include "SaveData.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
 
 /* POD view of the 0x30-byte matrix. The single integer array preserves
  * the shadow update's block copy in C++ with Vector3's user-declared
@@ -114,9 +116,6 @@ enum { SOUND_ID_MOUTH = 0x180 };
 
 extern "C" {
 /* This file's own helpers, defined further down. */
-extern void func_ov060_02116518(daKpaFire_c *self, u32 kind, int resize, int yOffset);
-extern void func_ov060_0211712c(daKpaFire_c *self);
-extern void func_ov060_021172e0(daKpaFire_c *self);
 extern Entry data_ov060_0211afb4[];
 extern PMF data_ov060_0211af74[];
 
@@ -124,7 +123,6 @@ extern PMF data_ov060_0211af74[];
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
-int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
 /* local extern: the header method is not this symbol's spelling here. */
 extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32 d);
@@ -402,7 +400,7 @@ void daKpaFire_c::func_ov060_021172e0()
             int idx;
             int mask = 0;
             for (chr = 0; chr < 3; chr++) {
-                if (_ZN8SaveData19IsCharacterUnlockedEj(chr) != 0) {
+                if (SaveData::IsCharacterUnlocked(chr) != 0) {
                     mask = (mask | (1 << chr)) & 0xff;
                 }
             }
@@ -435,8 +433,7 @@ void daKpaFire_c::func_ov060_021172e0()
 }
 
 // @symbol _ZN11daKpaFire_c19func_ov060_021172c8Ej
-/* 1 if more than n Behavior frames have passed (mFrameCount > n), else 0.
- * Keeps the unsigned char * parameter decl_common.h declares. */
+/* 1 if more than n Behavior frames have passed (mFrameCount > n), else 0. */
 int daKpaFire_c::func_ov060_021172c8(unsigned int n)
 {
     return mFrameCount > n;
@@ -540,7 +537,7 @@ void daKpaFire_c::func_ov060_02116f90()
             this->mParticleHandle = this->mParticleHandle2;
         }
     } else {
-        func_ov060_02116518(this, PARTICLE_LANDED_BURN, 1, this->mFireScale * 0xc);
+        func_ov060_02116518(PARTICLE_LANDED_BURN, 1, this->mFireScale * 0xc);
         this->mdCcAc_c.flags &= ~1;
         if (this->mFrameCount > this->mFireScale * 0xa / 0x1000 + 5) {
             this->mFireScale -= 0x266;
@@ -609,7 +606,7 @@ void daKpaFire_c::func_ov060_02116d78()
     this->mPosY += this->mVertSpeed;
     this->mPosZ += this->unk_0ac;
 
-    func_ov060_02116518(this, PARTICLE_SCALED_9A, 1, this->mFireScale * 0xc);
+    func_ov060_02116518(PARTICLE_SCALED_9A, 1, this->mFireScale * 0xc);
     if (this->mWithMeshClsn.IsOnGround() != 0) {
         int rnd = RandomIntInternal(&data_0209e650[0]);
         unsigned int roll = (unsigned int)rnd >> 16;
@@ -665,9 +662,9 @@ void daKpaFire_c::func_ov060_02116c68()
  * destroys itself once its y is below 0. */
 void daKpaFire_c::func_ov060_02116b68()
 {
-    func_ov060_02116518(this, data_ov060_02119358[this->mSubVariant], 0, 0x46000);
+    func_ov060_02116518(data_ov060_02119358[this->mSubVariant], 0, 0x46000);
     func_ov060_0211712c();
-    if (func_ov060_021172c8((unsigned char *)this, 0x1c2))
+    if (this->func_ov060_021172c8(0x1c2))
         this->MarkForDestruction();
     this->UpdatePos(0);
     if (this->mWithMeshClsn.IsOnGround()) {
@@ -718,7 +715,7 @@ void daKpaFire_c::func_ov060_021169f8()
         this->mFireScale += 0x200;
     }
     this->UpdatePos(0);
-    func_ov060_02116518(this, PARTICLE_SCALED_9A, 1, 0x78000);
+    func_ov060_02116518(PARTICLE_SCALED_9A, 1, 0x78000);
     if (this->mFrameCount <= 0x14)
         return;
     if (this->mSubVariant == 0) {
@@ -781,8 +778,8 @@ void daKpaFire_c::func_ov060_021168c4()
         this->mVertSpeed = 0x1e000;
     }
     this->UpdatePos(0);
-    func_ov060_02116518(this, PARTICLE_VARIANT_4, 0, 0x32000);
-    if (func_ov060_021172c8((unsigned char*)this, 0x96) != 0) {
+    func_ov060_02116518(PARTICLE_VARIANT_4, 0, 0x32000);
+    if (this->func_ov060_021172c8(0x96) != 0) {
         this->MarkForDestruction();
     }
     if (koopa == 0) return;
@@ -827,16 +824,14 @@ void daKpaFire_c::func_ov060_021167ec()
     this->MarkForDestruction();
 }
 
-// @symbol func_ov060_021167c8
+// @symbol _ZN11daKpaFire_c19func_ov060_021167c8Ev
 /* Init shared by variants 0 and 3: cylinder flags bit 0 set (cylinder
  * disabled), mFireScale 2.0 (0x2000), shadow multiplier 0x10. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021167c8(daKpaFire_c *self)
+void daKpaFire_c::func_ov060_021167c8()
 {
-    self->mdCcAc_c.flags |= 1;
-    self->mFireScale = 0x2000;
-    self->mShadowRadiusMul = 0x10;
-}
+    this->mdCcAc_c.flags |= 1;
+    this->mFireScale = 0x2000;
+    this->mShadowRadiusMul = 0x10;
 }
 
 // @symbol func_ov060_02116740
@@ -893,8 +888,8 @@ void daKpaFire_c::func_ov060_02116518(u32 kind, int resize, int yOffset)
         if (this->mFireScale >= 0x8000) { sys->callbackScale = 0x7fff; } else { sys->callbackScale = (short)this->mFireScale; }
 
         if (kind == PARTICLE_SCALED_9A) {
-            *(int *)((char *)sys + 0x44) = (int)(((long long)(this->mFireScale) * 0x2800 + 0x800) >> 12);
-            sys->callbackVelocity = (short)(Fix12i)(((long long)(this->mFireScale) * 0xa66 + 0x800) >> 12);
+            *(int *)((char *)sys + 0x44) = FX_MUL((this->mFireScale), 0x2800);
+            sys->callbackVelocity = (short)FX_MUL((this->mFireScale), 0xa66);
         }
     }
 
@@ -911,8 +906,8 @@ void daKpaFire_c::func_ov060_02116518(u32 kind, int resize, int yOffset)
     if (kind != PARTICLE_SCALED_9A)
         return;
 
-    *(int *)((char *)sys + 0x44) = (int)(((long long)(this->mFireScale) * 0x2800 + 0x800) >> 12);
-    sys->callbackVelocity = (short)(Fix12i)(((long long)(this->mFireScale) * 0xa66 + 0x800) >> 12);
+    *(int *)((char *)sys + 0x44) = FX_MUL((this->mFireScale), 0x2800);
+    sys->callbackVelocity = (short)FX_MUL((this->mFireScale), 0xa66);
 }
 
 // @symbol _ZN11daKpaFire_cD1Ev

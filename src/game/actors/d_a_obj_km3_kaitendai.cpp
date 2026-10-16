@@ -80,6 +80,7 @@ extern "C" ResourceDescriptor data_ov047_02112334 = {
 };
 
 #include "daObjKm3_Kaitendai_c.h"
+#include "SpawnInfo.h"
 
 extern "C" {
 s32 func_ov002_020b676c(daObjKaitendai_c *self, ResourceDescriptor *descriptor,
@@ -89,19 +90,6 @@ extern s16 data_ov047_02112320;
 extern s16 data_ov047_02112324;
 }
 
-struct KaitendaiSpawnInfo {
-    daObjKm3_Kaitendai_c *(*classInit)();
-    s16 executePriority; /* +4: also KM3_KAITENDAI registry id 0x009c = 156 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char KaitendaiSpawnInfo_size_must_be_0x1c[
-    sizeof(KaitendaiSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol daObjKm3_Kaitendai_c_classInit
 extern "C" daObjKm3_Kaitendai_c *daObjKm3_Kaitendai_c_classInit()
 {
@@ -109,9 +97,9 @@ extern "C" daObjKm3_Kaitendai_c *daObjKm3_Kaitendai_c_classInit()
 }
 
 // @symbol g_profile_KM3_KAITENDAI
-extern "C" KaitendaiSpawnInfo g_profile_KM3_KAITENDAI = {
+extern "C" SpawnInfo<daObjKm3_Kaitendai_c> g_profile_KM3_KAITENDAI = {
     daObjKm3_Kaitendai_c_classInit,
-    0x009c,
+    0x009c, /* KM3_KAITENDAI registry id 156 */
     0x00e3,
     2,
     0,

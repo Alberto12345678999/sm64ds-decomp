@@ -38,6 +38,7 @@
  * matrices through M12; only the flat spelling reproduces the block move. */
 #include "common.h"
 #include "daBombking_c.h"
+#include "SpawnInfo.h"
 #include "daBmb_c.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
@@ -47,6 +48,7 @@
 #include "Player.h"
 #include "dCamera_c.h"
 #include "Message.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -1442,7 +1444,7 @@ void daBombking_c::func_ov078_02125c98() {
   int ip = this->mPosY - h;
   if (ip <= 0x1000)
     ip = 0x1000;
-  int scale = 0x15e000 - (int)(((long long)ip * 0x180 + 0x800) >> 12);
+  int scale = 0x15e000 - FX_MUL(ip, 0x180);
   if (scale < 0xa000)
     scale = 0xa000;
   *(struct M12 *)this->mShadowMtx = *(struct M12 *)&IDENTITY_MATRIX4X3;
@@ -1724,27 +1726,14 @@ extern "C" daBombking_c *daBombking_c_classInit(void)
     return new daBombking_c();
 }
 
-struct BombkingSpawnInfo {
-    daBombking_c *(*classInit)();
-    s16 executePriority; /* +4: also BOMBKING registry id 0x00bd = 189 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char BombkingSpawnInfo_size_must_be_0x1c[
-    sizeof(BombkingSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_BOMBKING
-extern "C" BombkingSpawnInfo g_profile_BOMBKING = {
+extern "C" SpawnInfo<daBombking_c> g_profile_BOMBKING = {
     daBombking_c_classInit,
-    0x00bd,
+    0x00bd, /* BOMBKING registry id 189 */
     0x002c,
     0x10000003,
     0x00000000,
     0x00190000,
     0x01fa0000,
-    0x01fa0000
+    0x01fa0000,
 };

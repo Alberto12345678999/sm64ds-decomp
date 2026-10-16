@@ -144,7 +144,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        reconstructed as void: the base does nothing, Cup and Sound forward
        to a void component helper, and 3DEsp and Teresa call the void
        FreeGfxSlotsById function. The recorded caller in
-       State17_Update discards the result. These bodies reproduce under
+       ResultsNewRecord_Update discards the result. These bodies reproduce under
        the coherent void declarations with 2004/b56; this does not recover
        the original return-type spelling. The separate dActor_c slot 20
        remains int. See issue #2492 for caller coverage and proof limits. */
@@ -159,10 +159,19 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        Prior int/void experiments and separate slot-27/28 observations are
        retained in the original source history cited by issue #2492's handoff. */
     virtual void OnDealDone();                    /* slot 21 */
-/* Slot 22 -- OnGraphCallback1: graphCallback_c::GraphCallback1 forwards
+    /* Slot 22 -- OnGraphCallback1: graphCallback_c::GraphCallback1 forwards
    to it (slot 23 is GraphCallback0's, 24 GraphCallback2's, 25
-   GraphCallback3's). What dGraph_c's four callbacks are for is not named
-   yet; see include/dGraph_c.h.
+   GraphCallback3's). When each runs, from the arm9 callers (the scene is
+   the object at data_0209d4a8):
+     GraphCallback0 (slot 23): the main loop's frame start, func_02019390.
+       A 0 return skips OAM::Reset and the 3D flush.
+     GraphCallback1 (slot 22): the main loop after the scene step
+       (func_02044120), before the frame wait, func_02019404.
+     GraphCallback2 (slot 24): the VBlank IRQ, func_02019144, before the OAM
+       flush and the display-register commit; a 0 return skips the commit.
+       dScMgD3DBase_c swaps its 3D capture between the screens here.
+     GraphCallback3 (slot 25): the end of the VBlank IRQ, func_02019100,
+       which then clears data_0209d464 (the flag D3DBase's slot 24 waits on).
      overrides: NONE.  Every one of the 32 descendants inherits this slot, so
        this declaration widens 30 emitted tables by a word and adds no other
        file.  A slot with no overrides is the one case where the widened-table
@@ -590,7 +599,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            other thirty-eight sites are in ov002, ov015, ov018, ov027, ov064,
            ov079, ov081 and ov098 -- dBgActor_c's Kill, on the other branch.
            The base body does not even read `this`; dScMgD3DBase_c's override
-           does (unk_4660, mSubBgBank), which is what fixes r0 as the object.
+           does (mSavedSubObjBank, mSubBgBank), which is what fixes r0 as the object.
          WHAT IT DOES.  All four bodies are one shape.  Three read-modify-writes
            on the sub engine's BG1CNT at 0x0400100a (`& 0x43`, `| X`, `& ~0x40`,
            `& ~3`) leave the register holding exactly X: priority 0, no mosaic,
@@ -806,7 +815,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     virtual void PaintSquare(int cx, int cy, int colour, int size); /* slot 34 */
     /* Slot 35 -- IsAltVariant, the LAST slot of dScMgBase_c's own eighteen and the
        end of the 18-35 range.  With this declared the class emits its full
-       36-slot vtable from source, and dScMgAmida_c's Unk36 finally lands on 36
+       36-slot vtable from source, and dScMgAmida_c's IsVariant2 finally lands on 36
        where the ROM puts it.
        WHAT IT IS: a predicate on the scene's own spawn parameter.  The base
          body (ov004:0x020ad660, twenty bytes) is `return (param1 & 0xff) != 0`

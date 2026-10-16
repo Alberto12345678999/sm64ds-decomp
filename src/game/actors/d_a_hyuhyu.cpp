@@ -115,6 +115,17 @@ extern HyuhyuModelFilePtr data_ov091_02135674;    /* BMD */
 extern HyuhyuAnimationFileHandle data_ov091_0213567c;  /* BCA: blow */
 extern HyuhyuAnimationFileHandle data_ov091_02135684;  /* BCA: wait */
 
+/* Actor ID 0xbf is PLAYER; dActor_c::mFlags bit 0x40000 is set while the
+ * actor is in Yoshi's mouth. int-returning, so the ROM materializes the 0/1
+ * before testing it; a direct test does not. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
 // @symbol __sinit_d_a_hyuhyu.cpp
 HyuhyuModelFilePtr data_ov091_02135674(ASSET_HYUHYU_BMD);    /* BMD */
 HyuhyuAnimationFileHandle data_ov091_0213567c(ASSET_HYUHYU_ATTACK_BCA);  /* BCA: blow */
@@ -241,8 +252,7 @@ int daHyuhyu_c::Render()
 {
     if (mVariant == 1)
         return 1;
-    int hidden = (mFlags & 0x40000) != 0;
-    if (hidden)
+    if (IsInYoshiMouth(this))
         return 1;
     mModelAnim.Render(0);
     return 1;
@@ -306,27 +316,22 @@ int daHyuhyu_c::func_ov091_0213400c()
 int daHyuhyu_c::func_ov091_02133f60()
 {
     Player *player = this->ClosestPlayer();
-    Vector3 target;
-    s16 angle;
 
-    if (player == 0)
-        goto done;
-    {
-        Vector3 *pos = (Vector3 *)&player->mPosX;
-        target.x = pos->x;
-        target.y = pos->y;
-        target.z = pos->z;
+    if (player != 0) {
+        Vector3 target;
+        s16 angle;
+        {
+            Vector3 *pos = (Vector3 *)&player->mPosX;
+            target.x = pos->x;
+            target.y = pos->y;
+            target.z = pos->z;
+        }
+        angle = Vec3_HorzAngle((Vector3 *)&this->mPosX, &target);
+        ApproachAngle(&this->mPrevAngleY, angle, 0xa, 0x200, 0x100);
+        if ((u16)this->mStateTimer == 0 && Vec3_Dist((Vector3 *)&this->mPosX, &target) < 0x3e8000 &&
+            angle < 0x1000)
+            func_ov091_02134044(&data_ov091_021356b0);
     }
-    angle = Vec3_HorzAngle((Vector3 *)&this->mPosX, &target);
-    ApproachAngle(&this->mPrevAngleY, angle, 0xa, 0x200, 0x100);
-    if ((u16)this->mStateTimer != 0)
-        goto done;
-    if (Vec3_Dist((Vector3 *)&this->mPosX, &target) >= 0x3e8000)
-        goto done;
-    if (angle >= 0x1000)
-        goto done;
-    func_ov091_02134044(&data_ov091_021356b0);
-done:
     return 1;
 }
 
@@ -441,8 +446,8 @@ int daHyuhyu_c::func_ov091_02133c6c()
    Wings and balloon form prevent the subsequent cap loss. When mCharacter
    and the player's param1 differ the player is switched back with
    SetNewHatCharacter; otherwise the cap is recorded as lost (once). Either
-   way an OBJ_MARIO_CAP is dropped and flies off along the gust. The
-   isPlayer temporaries are the ROM's shape: a plain `!=` test misses. */
+   way an OBJ_MARIO_CAP is dropped and flies off along the gust. The player
+   tests go through the int-returning IsPlayerActor: a plain `!=` misses. */
 void daHyuhyu_c::func_ov091_021339fc()
 {
     u32 hitFlags;
@@ -464,11 +469,8 @@ void daHyuhyu_c::func_ov091_021339fc()
             this->MarkForDestruction();
             return;
         }
-        {
-            int isPlayer = (int)(player->actorID == 0xbf);
-            if (isPlayer == 0)
-                return;
-        }
+        if (!IsPlayerActor(player))
+            return;
         if (player->mIsMetal == 1) {
             this->PoofDust();
             this->MarkForDestruction();
@@ -484,11 +486,8 @@ void daHyuhyu_c::func_ov091_021339fc()
         return;
     }
 
-    {
-        int isPlayer = (int)(player->actorID == 0xbf);
-        if (isPlayer == 0)
-            return;
-    }
+    if (!IsPlayerActor(player))
+        return;
     if (player->mIsMetal != 0)
         return;
     if (player->mIsMega != 0)
