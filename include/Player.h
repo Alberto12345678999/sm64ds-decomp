@@ -116,12 +116,13 @@ struct Player : dActor_c {
        GetBodyModelID(j, 0). The element type is ModelAnim, and the matched
        bodies pin every part of it: they reach +0x08 (Model's ModelComponents),
        +0x14 (Model::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
-       currFrame), and they call vtable slots 5 (Render) and 6 (Virtual18). */
-    ModelAnim *mBodyModels[4];            /* 0x0dc */
-    u8  unk_0ec;            /* 0x0ec */
-    u8  pad_0ed[0x3];
+       currFrame), and they call vtable slots 5 (Render) and 6 (Virtual18).
+       FIVE slots: GetBodyModelID returns 4 while mIsMetal is set, and
+       func_ov002_020e5948 builds [4] from wario_metal_model.bmd (arc0 0x54c).
+       CleanupResources deletes [4] on its own after the `i < 4` loop. */
+    ModelAnim *mBodyModels[5]; /* 0x0dc */
     /* ~Player calls _ZN9ModelAnimD1Ev on this LAST of the two, and ModelAnim
-       asserts 0x64 -- 0x0f0..0x154, closing exactly at unk_154. The markers
+       asserts 0x64 -- 0x0f0..0x154, closing exactly at mHeadModels. The markers
        this replaces are its own sub-objects: mAnimation1 at 0x140 was the
        dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
        (+0x58). Both are reachable through the member now. */
@@ -133,8 +134,11 @@ struct Player : dActor_c {
        which are "no model" sentinels -- Render loads the slot FIRST and only then
        tests `i != 9 && i != 8`, so the ROM itself reads one word past this run in
        those two cases. Kept as written; the read lands in mModelAnim4 below and
-       its result is discarded. */
-    ModelAnim *unk_154[8];            /* 0x154 */
+       its result is discarded. [0..3] are the per-character head_cap models
+       (Yoshi: yoshi_head) from data_ov002_0210a69c, [4..7] the head_nocap ones
+       (Yoshi: yoshi_head_fill) from data_ov002_0210a6ac; Render pins each to body
+       bone 15 (face_1). */
+    ModelAnim *mHeadModels[8]; /* 0x154 */
     /* The other ModelAnim, destroyed FIRST of the two. 0x174..0x1d8, closing
        exactly at unk_1d8; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
     ModelAnim mModelAnim4;            /* 0x174 */
@@ -147,19 +151,13 @@ struct Player : dActor_c {
     TextureSequence mTexSeqBody[4];            /* 0x1dc */
     MaterialChanger mMatChanger[2];            /* 0x22c */
     TextureSequence mTexSeqPlayer[2];            /* 0x254 */
-    /* Two more runs, one per model array and the same lengths: 4 words parallel
-       to mBodyModels, 8 words parallel to unk_154. CleanupResources frees each
-       non-null element with func_0203cbc0 over exactly the same i / i+4 pattern,
-       and TurnOffToonShading hands element [j] of the first run to
-       func_ov002_020e6b74 together with mBodyModels[...], and elements [j] and
-       [j + 4] of the second together with unk_154[j] and unk_154[j + 4]. That
-       helper walks the model's material records writing one word of the array
-       into each record's +0x1c, so each element is an allocated per-material
-       word buffer belonging to the model at the same index. What the word MEANS
-       is not witnessed -- nothing matched allocates or fills either run -- so
-       the pairing is expressed and the name is not. */
-    s32 unk_27c[4];            /* 0x27c */
-    s32 unk_28c[8];            /* 0x28c */
+    /* One saved word per material, per model: func_ov002_020e6bb0 allocates
+       numMaterials words and copies each runtime material's +0x1c
+       (TEXIMAGE_PARAM) into them. func_ov002_020e6b74 writes them back
+       (TurnOffToonShading, cap-change phases 3/4) after func_ov002_020e6b3c
+       zeroed them for the untextured flash. Element type kept as stored. */
+    s32 mBodyTexParams[4]; /* 0x27c */
+    s32 mHeadTexParams[8]; /* 0x28c */
     /* ~Player calls _ZN17dExtShadowModel_cD1Ev on this, and dExtShadowModel_c asserts
        0x28 -- which closes exactly at mdCcAcPos_c. */
     dExtShadowModel_c mShadowModel;            /* 0x2ac */
@@ -199,8 +197,10 @@ struct Player : dActor_c {
        veto can abort the transition -- so it records what was asked for, not
        what was taken. */
     State *mRequestedState;            /* 0x378 */
-    u8  unk_37c;            /* 0x37c */
-    u8  pad_37d[0x3];
+    /* The collider being climbed: func_ov002_020caf98, reached from a dCc_c hit
+       callback, stores it and enters St_Climb; St_Headstand_Main stands on its
+       top (+0x08 height); func_ov002_020caf68 clears it. Every access is a word. */
+    dCc_c *mClimbClsn; /* 0x37c */
     /* ~Player calls _ZN10dBgCh_ActrD1Ev on this FIRST, and dBgCh_Actr
        asserts 0x1bc -- which closes exactly at mSpawnPosX. */
     dBgCh_Actr mMeshClsn;            /* 0x380 */
@@ -241,8 +241,11 @@ struct Player : dActor_c {
     s32 unk_56c;            /* 0x56c */
     s32 unk_570;            /* 0x570 */
     s32 unk_574;            /* 0x574 */
-    s32 unk_578;            /* 0x578 */
-    s32 unk_57c;            /* 0x57c */
+    /* A 50-entry trail buffer, built by InitResources (new Vector3[50], new
+       u8[50]). func_ov002_020bf13c writes entry 0 for Yoshi only: a point 0x78
+       behind him, and speed/airborne/moving flags. No other reader in the ROM. */
+    Vector3 *mTrailPos; /* 0x578 */
+    u8 *mTrailFlags;    /* 0x57c */
     u8  pad_580[0x8];
     s32 mHeldObjQueue;            /* 0x588 */
     u8  pad_58c[0x74];
@@ -320,8 +323,12 @@ struct Player : dActor_c {
     u16 mHoldHeavyTimer;            /* 0x6b4 */
     u16 unk_6b6;            /* 0x6b6 */
     u16 mWalkTimer;            /* 0x6b8 */
-    u16 unk_6ba;            /* 0x6ba */
-    u16 unk_6bc;            /* 0x6bc */
+    /* Luigi's run-over-liquid windows, both counted down in Behavior.
+       func_ov002_020c2b08 arms the first (0x3c or 0x1e) on a water floor;
+       func_ov002_020c29d4 arms the second (0x1e), and while it runs the
+       quicksand handler skips sinking. */
+    u16 mWaterRunTimer;     /* 0x6ba */
+    u16 mQuicksandRunTimer; /* 0x6bc */
     u16 unk_6be;            /* 0x6be */
     /* u16, not s16: every READ of this slot in the ROM is an ldrh --
        func_ov002_020e4bb8 tests `< 0x3f` and `& 1`, Behavior passes it to
@@ -361,7 +368,11 @@ struct Player : dActor_c {
     u8  mSlideStoppedTimer;            /* 0x6e7 */
     u8  mTeleportId;            /* 0x6e8 */
     u8  mClsnFlags;            /* 0x6e9 */
-    u8  pad_6ea[0x2];
+    /* Latches for the two timers at 0x6ba/0x6bc: set when the water run is
+       armed, cleared on land; bit 0 set by the quicksand handler, 0x80 once
+       func_ov002_020c29d4 has evaluated it. Cap change zeroes both. */
+    u8 mWaterRunLatch;      /* 0x6ea */
+    u8 mQuicksandRunFlags;  /* 0x6eb */
     u8  unk_6ec;            /* 0x6ec */
     u8  unk_6ed;            /* 0x6ed */
     u8  unk_6ee;            /* 0x6ee */
@@ -399,7 +410,9 @@ struct Player : dActor_c {
        window. Cleared on every other exit. */
     u8 mSnapToFloor;        /* 0x70f */
     u8  unk_710;            /* 0x710 */
-    u8  pad_711[0x1];
+    /* Set to 1 only by func_ov002_020c71e0, the last step of St_LevelEnter;
+       dScStage_c::RenderVsModeCountdown counts the players that have it. */
+    u8 mLevelEntryDone;           /* 0x711 */
     u8  mIsInAirState;            /* 0x712 */
     u8  mIsBodyClsnEnabled;            /* 0x713 */
     u8  mUseAltBodyModel;            /* 0x714 */
@@ -443,7 +456,10 @@ struct Player : dActor_c {
        lowered in phase 6, and passed every frame to func_ov002_020e6a78,
        which runs Color_Interp over 0x20 palette entries with it. */
     u16 mCapPaletteBlend;   /* 0x740 */
-    u8  unk_742;            /* 0x742 */
+    /* How func_ov002_020e640c applies mHeadRot to body bone 15 (face_1):
+       0 off, 1 add, 2 set, 3 set swizzled (and mSpineRot to bone 8),
+       4 ease back to the animated pose. func_ov002_020e6780 zeroes it. */
+    u8 mHeadRotMode;        /* 0x742 */
     u8  unk_743;            /* 0x743 */
     /* 0x744..0x74c is a Vector3, not three bytes: five files cast it as one
        -- ShowMessage2, TryEnterStarDoor, func_ov002_020c47f4 and
@@ -458,13 +474,12 @@ struct Player : dActor_c {
     s32 unk_750;            /* 0x750 */
     s32 unk_754;            /* 0x754 */
     s32 unk_758;            /* 0x758 */
-    u8  pad_75c[0x4];
-    s16 unk_760;            /* 0x760 */
-    u8  unk_762;            /* 0x762 */
-    u8  pad_763[0x1];
-    u8  unk_764;            /* 0x764 */
-    u8  pad_765[0x1];
-    s16 unk_766;            /* 0x766 */
+    /* Extra rotation for body bone 8 ("spin", the spine): func_ov002_020e640c
+       adds [1]/[2] every frame and sets all three in mHeadRotMode 3. */
+    s16 mSpineRot[3]; /* 0x75c */
+    /* Extra rotation for body bone 15 (face_1, the head), applied per
+       mHeadRotMode. Every access is a halfword. */
+    s16 mHeadRot[3]; /* 0x762 */
     /* methods */
     /* Two of the State objects, as the static members they are. `ST_WAIT`
        mangles to _ZN6Player7ST_WAITE and `ST_OWL` to _ZN6Player6ST_OWLE --
