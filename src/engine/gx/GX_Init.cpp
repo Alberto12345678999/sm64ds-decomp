@@ -61,9 +61,9 @@
 
 extern "C" {
 
-extern u16 data_02099fcc;  // display on (TRUE until GX_DispOff)
-extern int data_02099fd0;  // GX DMA channel, -1 if none
-extern u16 data_020a6084;  // display mode parked by GX_DispOff
+extern u16 data_02099fcc; // display on (TRUE until GX_DispOff)
+extern int data_02099fd0; // GX DMA channel, -1 if none
+extern u16 data_020a6084; // display mode parked by GX_DispOff
 
 void func_02053d9c(void);
 void DMASyncFillTransfer(u32 channel, void *dst, u32 data, u32 size);
@@ -145,7 +145,8 @@ namespace GX {
 void DispOn() {
     data_02099fcc = 1;
     if (data_020a6084 != 0)
-        REG_DISPCNT = (REG_DISPCNT & ~DISPCNT_MODE_MASK) | ((u32)data_020a6084 << DISPCNT_MODE_SHIFT);
+        REG_DISPCNT =
+            (REG_DISPCNT & ~DISPCNT_MODE_MASK) | ((u32)data_020a6084 << DISPCNT_MODE_SHIFT);
     else
         REG_DISPCNT |= DISPMODE_GRAPHICS << DISPCNT_MODE_SHIFT;
 }
@@ -157,7 +158,8 @@ void SetGraphicsMode(int dispMode, int bgMode, int bg0As3d) {
     if (data_02099fcc == 0)
         dispMode = 0;
     cnt &= ~(DISPCNT_BGMODE_MASK | DISPCNT_BG0_3D | DISPCNT_MODE_MASK | DISPCNT_VRAM_MASK);
-    REG_DISPCNT = cnt | (dispMode << DISPCNT_MODE_SHIFT) | bgMode | (bg0As3d << DISPCNT_BG0_3D_SHIFT);
+    REG_DISPCNT =
+        cnt | (dispMode << DISPCNT_MODE_SHIFT) | bgMode | (bg0As3d << DISPCNT_BG0_3D_SHIFT);
     if (data_020a6084 == 0)
         data_02099fcc = 0;
 }
