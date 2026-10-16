@@ -169,7 +169,7 @@ and a guess (unconfirmed):
 | 16 | 7 at (0x80, 0x14), none, 120 | record table, touch to go on; `Mg_CommitRecords` | the timed games (Bomroom, Coin, Curling, Pachinko, Smartball); Wanted! after game over | results. **Seen:** banner 7 is "HIGH SCORE" |
 | 17 | as 16, 300 frames | record table; banner 5, jingle 1 and `OnNewRecord` 120 frames in | 16 or 18/19, when `Mg_IsNewRecord` | results, new record. **Seen** on a new Wanted! high score |
 | 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 |
-| 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
+| 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal. **Seen:** Snowball's ball crossing the finish line shows "GOAL" (banner 4), jingle 4, then state 17 on a new record |
 
 **Banner ids seen on screen** (`Mg_ShowBanner` r0, melonDS 2026-10-15):
 
@@ -177,6 +177,7 @@ and a guess (unconfirmed):
 |---|---|---|
 | 0, 2 | PLAY AGAIN, QUIT buttons | retry prompts |
 | 3 | "CLEAR" | Sound, state 0 |
+| 4 | rainbow "GOAL" over the checkered line | Snowball, state 19 (`Mg_SetNextBanner(4)`) |
 | 5 | rainbow "HIGH SCORE" | new record (state 17), Pachinko |
 | 6 | rainbow "PERFECT" | Sound, a round with no miss (`Mg_SetNextBanner(6)`) |
 | 7 | "HIGH SCORE" header over the record table | state 16 |
@@ -196,8 +197,8 @@ meaning word per entry:
   - `ROUND_CLEAR`, `NEXT_ROUND` and `RETRY_PROMPT`;
   - `WIN`, `LOSE`, `DRAW` and `TIE`;
   - `RETRY_PROMPT_WIDE`;
-  - `RESULTS`, `RESULTS_NEW_RECORD` and `GAME_OVER`.
-- **medium:** `FINISHED`. Snowball would settle it.
+  - `RESULTS`, `RESULTS_NEW_RECORD` and `GAME_OVER`;
+  - `FINISHED` (Snowball's "GOAL").
 - **low:** the rest, which no caller enters or one game enters.
 
 The runtime check on `Mg_SetSharedState` settles the medium and low words. A
