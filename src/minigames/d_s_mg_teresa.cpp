@@ -162,7 +162,7 @@ extern unsigned short data_ov006_0212efdc[];
 extern void          *data_ov006_02133a5c;
 extern void          *data_ov006_02134210[];
 extern int            data_ov006_02135fc8[];
-extern int            data_ov006_02137cd8[];
+extern int sMgDigitSprites[];
 extern void          *data_ov006_0213a5f4;
 extern struct OamAttr *data_ov006_0213a628[];
 extern int           *data_ov006_0213f9d0[];
@@ -856,7 +856,7 @@ void dScMgTeresa_c::FoundNumber_DrawAll() {
             int a = mFoundNumbers[i].x >> 12;
             if (b <= 8) b = 8;
             if (b >= 0xb8) b = 0xb8;
-            Mg_RenderSubSpriteMtx((void *)data_ov006_02137cd8[mFoundNumbers[i].sprite + 1], a, b,
+            Mg_RenderSubSpriteMtx((void *)sMgDigitSprites[mFoundNumbers[i].sprite + 1], a, b,
                                   (void *)0);
         }
     }
@@ -2249,8 +2249,8 @@ s32 dScMgTeresa_c::InitResources()
     mSceneState = 1;
     *((u16 *) (self + 0x4c16)) = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc884 = -128;
+    sMgClearBannerX = 0x80;
+    sMgClearBannerY = -128;
     mHudScore = 0;
     return 1;
 }

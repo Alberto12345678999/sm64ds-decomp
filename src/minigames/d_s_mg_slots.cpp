@@ -91,7 +91,7 @@ struct SlotReels {
 };
 
 extern "C" {
-extern int data_ov004_020bc8b4;
+extern int sMgMainBannerY;
 void SetBg1Offset(int a, int b);
 int GetGameLanguage(void);
 void* func_02054ea8(void);
@@ -972,14 +972,14 @@ s32 dScMgSlot3_c::InitResources()
         ((u32 *)(c + 0x4fe4))[i] = val * 0x50000;
     }
 
-    data_ov004_020bc88c = 0x80;
-    data_ov004_020bc860 = 0xa0;
-    data_ov004_020bc878 = 0x80;
-    data_ov004_020bc890 = 0xa0;
-    data_ov004_020bc8b8 = 0x80;
-    data_ov004_020bc8b4 = 0x60;
-    data_ov004_020bc888 = 0x80;
-    data_ov004_020bc864 = ~0x1b;
+    sMgWinBannerX = 0x80;
+    sMgWinBannerY = 0xa0;
+    sMgLoseBannerX = 0x80;
+    sMgLoseBannerY = 0xa0;
+    sMgMainBannerX = 0x80;
+    sMgMainBannerY = 0x60;
+    sMgResultsBannerX = 0x80;
+    sMgResultsBannerY = ~0x1b;
 
     Mg_SetTopScreenYOffset(0x20);
 
@@ -1558,7 +1558,7 @@ s32 dScMgSlot1_c::Behavior()
 }
 
 // @symbol _ZN12dScMgSlot1_c13InitResourcesEv
-/* The ov004 scroll words (data_ov004_020bc85c..data_ov004_020bc8b8) name
+/* The ov004 scroll words (data_ov004_020bc85c..sMgMainBannerX) name
  * no struct; they are stored raw. The reel-table fill stays a raw char*
  * cursor over 0x46c0..0x46ff (see leftovers). */
 s32 dScMgSlot1_c::InitResources()
@@ -1632,12 +1632,12 @@ s32 dScMgSlot1_c::InitResources()
     *(volatile u16 *)0x4000050 = 0;
     G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x1c, 7, 9);
 
-    data_ov004_020bc88c = 0x80;
-    data_ov004_020bc860 = 0x40;
-    data_ov004_020bc878 = 0x80;
-    data_ov004_020bc890 = 0x40;
-    data_ov004_020bc8b8 = 0x80;
-    data_ov004_020bc8b4 = 0x40;
+    sMgWinBannerX = 0x80;
+    sMgWinBannerY = 0x40;
+    sMgLoseBannerX = 0x80;
+    sMgLoseBannerY = 0x40;
+    sMgMainBannerX = 0x80;
+    sMgMainBannerY = 0x40;
 
     if ((int)param1 & 0xff) {
         unsigned char *tbl = data_ov006_0213ea20;

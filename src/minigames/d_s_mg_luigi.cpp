@@ -302,7 +302,7 @@ void dScMgLuigi_c::StartIris()
 void dScMgLuigi_c::DrawReward()
 {
     extern void *data_ov006_0213ce70[];
-    extern char data_ov006_02137cd8[];
+    extern char sMgDigitSprites[];
     if (mReward.shown == 0) return;
     int x = mReward.x >> 0xc;
     int y = mReward.y >> 0xc;
@@ -312,7 +312,7 @@ void dScMgLuigi_c::DrawReward()
     if (y >= 0xb8) y = 0xb8;
     s32 r = GetGameLanguage();
     Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x34), x - 8, y, 0);
-    Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0x64), x + 8, y, 0);
+    Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0x64), x + 8, y, 0);
 }
 
 // @symbol _ZN12dScMgLuigi_c12UpdateRewardEv
@@ -721,7 +721,7 @@ void dScMgLuigi_c::DrawPictures() {
 void dScMgLuigi_c::DrawPenalties()
 {
     extern void *data_ov006_0213ce70[];
-    extern char data_ov006_02137cd8[];
+    extern char sMgDigitSprites[];
     int i;
     for (i = 0; i < 0x10; i++) {
         if (mPenalty[i].shown != 0) {
@@ -734,8 +734,8 @@ void dScMgLuigi_c::DrawPenalties()
             if (y >= 0xb8) y = 0xb8;
             r = GetGameLanguage();
             Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x38), x - 0x10, y, 0);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa4), x, y, 0);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa0), x + 0x10, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa4), x, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa0), x + 0x10, y, 0);
         }
     }
 }
@@ -1734,8 +1734,8 @@ extern void func_02056314(void *, u32, u32);
 extern void func_02056374(const void *, u32, u32);
 extern void Deallocate(void *);
 extern void Mg_SetTopScreenYOffset(int);
-extern int data_ov004_020bc888;
-extern int data_ov004_020bc864;
+extern int sMgResultsBannerX;
+extern int sMgResultsBannerY;
 }
 
 // @symbol _ZN12dScMgLuigi_c10StartRoundEi
@@ -1896,8 +1896,8 @@ s32 dScMgLuigi_c::InitResources()
     Mg_SetTopScreenYOffset(0x30);
     mTime = 0xa;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
-    data_ov004_020bc888 = 0x80;
-    data_ov004_020bc864 = ~0x1b;
+    sMgResultsBannerX = 0x80;
+    sMgResultsBannerY = ~0x1b;
     mHudScore = 0;
     return 1;
 }

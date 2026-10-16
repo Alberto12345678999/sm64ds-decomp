@@ -2890,7 +2890,7 @@ data_ov006_02137cb8 kind:data(any) addr:0x02137cb8
 data_ov006_02137cc0 kind:data(any) addr:0x02137cc0
 data_ov006_02137cc8 kind:data(any) addr:0x02137cc8
 data_ov006_02137cd0 kind:data(any) addr:0x02137cd0
-data_ov006_02137cd8 kind:data(any) addr:0x02137cd8
+sMgDigitSprites kind:data(any) addr:0x02137cd8
 data_ov006_02137dc8 kind:data(any) addr:0x02137dc8
 data_ov006_02137dd0 kind:data(any) addr:0x02137dd0
 data_ov006_02137dd8 kind:data(any) addr:0x02137dd8

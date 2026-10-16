@@ -15776,7 +15776,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02137cd8": {
+    "sMgDigitSprites": {
       "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "return:char []"
       ]

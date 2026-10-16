@@ -1014,12 +1014,12 @@ s32 dScMgCup_c::InitResources()
 
     data_0208ee44 = 1;
     Mg_ResetRecordBannerPos();
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc884 = 0x88;
-    data_ov004_020bc8a8 = 0x40;
-    data_ov004_020bc898 = 0xa0;
-    data_ov004_020bc86c = 0xc0;
-    data_ov004_020bc8a4 = 0xa0;
+    sMgClearBannerX = 0x80;
+    sMgClearBannerY = 0x88;
+    sMgPlayAgainX = 0x40;
+    sMgPlayAgainY = 0xa0;
+    sMgQuitX = 0xc0;
+    sMgQuitY = 0xa0;
 
     {
         int i;

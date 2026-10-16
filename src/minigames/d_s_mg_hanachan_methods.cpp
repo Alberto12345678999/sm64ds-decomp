@@ -356,7 +356,7 @@ extern "C" {
 extern void NullDestructor_0203d47c(void);
 extern char sHanaStarPopup[];
 extern struct S_ea81c sHanaPopups[];
-extern char data_ov006_02137cd8[];
+extern char sMgDigitSprites[];
 }
 
 // @symbol _ZN15dScMgHanachan_cD1Ev
@@ -396,7 +396,7 @@ extern "C" void *Wiggler_Destroy(void *self)
 
 // @symbol StarPopup_Draw
 /* Draws the single popup while its +0x10 flag is 1: a sprite from the
-   language's table 8 pixels left of it and one from data_ov006_02137cd8
+   language's table 8 pixels left of it and one from sMgDigitSprites
    8 pixels right. */
 extern "C" void StarPopup_Draw(void)
 {
@@ -412,7 +412,7 @@ extern "C" void StarPopup_Draw(void)
     y = new_var[1] >> 12;
     r = GetGameLanguage();
     Mg_RenderSubSpriteMtx(*((void **)(((char *)data_ov006_0213ca9c[r]) + 0x34)), x - 8, y, 0);
-    Mg_RenderSubSpriteMtx(*((void **)(data_ov006_02137cd8 + 0x64)), x + 8, y, 0);
+    Mg_RenderSubSpriteMtx(*((void **)(sMgDigitSprites + 0x64)), x + 8, y, 0);
 }
 
 // @symbol StarPopup_Update
@@ -539,8 +539,8 @@ extern "C" void HanaPopup_DrawAll(void)
             int idx = GetGameLanguage();
             void *obj = data_ov006_0213ca9c[idx];
             Mg_RenderSubSpriteMtx(*(void **)((char *)obj + 0x38), sb - 0x10, r8, a);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa4), sb, r8, b);
-            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa0), sb + 0x10, r8, c);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa4), sb, r8, b);
+            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa0), sb + 0x10, r8, c);
         }
     }
 }

@@ -154,8 +154,8 @@ extern void *data_ov006_0213c844;
 extern s16 data_02082214[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
-extern int data_ov004_020bc880;
-extern int data_ov004_020bc884;
+extern int sMgClearBannerX;
+extern int sMgClearBannerY;
 }
 
 extern Matrix4x3 data_ov006_0213c85c;
@@ -1717,8 +1717,8 @@ s32 dScMg3DEsp_c::InitResources()
 
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 
-    data_ov004_020bc880 = 0x80;
-    data_ov004_020bc884 = ~0x3f;
+    sMgClearBannerX = 0x80;
+    sMgClearBannerY = ~0x3f;
 
     mHudScore = 0;
 
