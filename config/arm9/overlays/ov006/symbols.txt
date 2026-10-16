@@ -4451,7 +4451,7 @@ data_ov006_021404f0 kind:bss addr:0x021404f0
 data_ov006_021404f2 kind:bss addr:0x021404f2
 data_ov006_021404f4 kind:bss addr:0x021404f4
 data_ov006_021404f6 kind:bss addr:0x021404f6
-data_ov006_02140518 kind:bss addr:0x02140518
+sPuffPoolLast kind:bss addr:0x02140518
 sTrmpGoalRow kind:bss addr:0x02140538
 data_ov006_0214053c kind:bss addr:0x0214053c
 sTrmpAnimStruggle kind:bss addr:0x02140540
@@ -4826,7 +4826,7 @@ data_ov006_02142bcc kind:bss addr:0x02142bcc
 data_ov006_02142bd4 kind:bss addr:0x02142bd4
 sSlot3StateTable kind:bss addr:0x02142bdc
 sSmartballCellOrder kind:bss addr:0x02142c1c
-data_ov006_02142c40 kind:bss addr:0x02142c40
+sSmartballPathBuf kind:bss addr:0x02142c40
 sSoundPop10Table kind:bss addr:0x02142cc0
 sSoundPop05Table kind:bss addr:0x02142cd8
 sSoundPop06Table kind:bss addr:0x02142cf0

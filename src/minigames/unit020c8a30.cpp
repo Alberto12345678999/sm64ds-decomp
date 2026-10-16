@@ -45,7 +45,7 @@ extern void **sPuffSprites[];
 extern int sPuffNextIndex;
 extern void **sPuffXTable;
 extern struct Ent_ov006 sPuffs[3];
-extern int data_ov006_02140518[];
+extern int sPuffPoolLast[];
 
 void Puff_Draw(char *c);
 void Puff_Update(char *c);
@@ -173,7 +173,7 @@ void Puff_UpdateAll(void){
 // @symbol Puff_DrawAll
 void Puff_DrawAll(void){
   int i;
-  char *p=(char*)data_ov006_02140518;
+  char *p = (char *)sPuffPoolLast;
   for(i=2;i>=0;i--){
     Puff_Draw(p);
     p-=0x20;

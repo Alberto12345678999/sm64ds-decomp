@@ -368,7 +368,7 @@ extern void *_Znwj(u32 size);
 extern void SetSubBg0Offset(int x, int y);
 extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
-extern int data_ov006_02142c40[];
+extern int sSmartballPathBuf[];
 extern int sSmartballLayoutNcgFmtSpanish[];
 extern int sSmartballLayoutNcgFmtItalian[];
 extern int sSmartballLayoutNcgFmtGerman[];
@@ -4981,33 +4981,33 @@ void dScMgSmartball_c::SpawnObjects()
     Mg_SetTopScreenYOffset(0x30);
 
     if (GetOwnerLanguage() == 5) {
-        func_02057d00(data_ov006_02142c40, sSmartballLayoutNcgFmtSpanish, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtSpanish, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 4) {
-        func_02057d00(data_ov006_02142c40, sSmartballLayoutNcgFmtItalian, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtItalian, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 3) {
-        func_02057d00(data_ov006_02142c40, sSmartballLayoutNcgFmtGerman, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtGerman, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 2) {
-        func_02057d00(data_ov006_02142c40, sSmartballLayoutNcgFmtFrench, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtFrench, (int)self->mLevel & 1);
     } else if (((int)self->param1 & 0xff) == 0) {
-        func_02057d00(data_ov006_02142c40, sSmartballLayoutNcgFmtE, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtE, (int)self->mLevel & 1);
     } else {
-        func_02057d00(data_ov006_02142c40, sSmartballLayoutNcgFmt, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmt, (int)self->mLevel & 1);
     }
     {
-        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, (void *)0x6400000);
         DecompressLZ16(d, (void *)0x6600000);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, sSmartballBg1NscFmt, (int)self->mLevel & 1);
+    func_02057d00(sSmartballPathBuf, sSmartballBg1NscFmt, (int)self->mLevel & 1);
     {
-        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, c + 0x4954);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, sSmartballBg2NscFmt, (int)self->mLevel & 1);
+    func_02057d00(sSmartballPathBuf, sSmartballBg2NscFmt, (int)self->mLevel & 1);
     {
-        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, c + 0x5154);
         Ov004_Deallocate(d);
     }
