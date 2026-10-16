@@ -335,7 +335,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_02142bdc",
+      "symbol": "sSlot3StateTable",
       "address": "0x02142bdc",
       "size": "0x40",
       "binding": "STB_GLOBAL",
@@ -352,7 +352,7 @@
     "RESOLVED non-text ownership: 21 compiler-emitted metadata symbols have explicit canonical homes outside this text-only unit. romdata_check reports 12 VERIFIED, 9 PARTIAL name strings, zero DIFFERS, zero UNNAMED and zero blind words. A direct LC.link_function comparison additionally proves all 552 emitted bytes including vtable preambles and string tails against their canonical ROM storage.",
     "RESOLVED emitted-vtable factory addresses: The Slot3 factory addresses its emitted class table at +8 bytes; the imported base table retains its configured address point.",
     "Both D2 variants remain explicit compiler-only deadstrip outputs with no configured ROM home. All 39 licensed ROM functions are emitted in ascending ROM order. Unnamed helper identities, opaque embedded fields and explicit factory construction remain reconstruction work; promotion is a production ownership claim, not complete original-source recovery.",
-    "Static initializer folded: the Slot3 state table data_ov006_02142bdc[8] moves out of the handwritten src/unnamed shard into src/minigames/d_s_mg_slots.cpp, defined through the existing SlotState typedef and plain-copied from the eight ROM PMF constants in retail copy order (curling precedent). The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov006_02132894; no handles, no compiler temporaries, no renames. The .bss claim 0x02142bdc..0x02142c1c ends exactly at the next symbol; no bound row is needed. The retired shard converted-baseline row is dropped per the c62c3266 precedent.",
+    "Static initializer folded: the Slot3 state table sSlot3StateTable[8] moves out of the handwritten src/unnamed shard into src/minigames/d_s_mg_slots.cpp, defined through the existing SlotState typedef and plain-copied from the eight ROM PMF constants in retail copy order (curling precedent). The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov006_02132894; no handles, no compiler temporaries, no renames. The .bss claim 0x02142bdc..0x02142c1c ends exactly at the next symbol; no bound row is needed. The retired shard converted-baseline row is dropped per the c62c3266 precedent.",
     "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
     "FOLD 2026-10-12: Slot1 Behavior, InitResources and dScMgSlot1_c_classInit joined the TU as ordinals 39-41, appended in ascending ROM order after Render, before the static-init table. The factory's vptr stores take the object-relative &_ZTV...[2] form for the two vtables this TU emits (_ZTV12dScMgSlot1_c, _ZTVN12dScMgSlot1_c9betIcon_cE) and the configured-address form for ov001's _ZTV9dThIcon_c, exactly as the Slot3 factory does for its own and dScMgSingle3DBase_c's tables. func_02012718 is called through include/decl_common.h's (int, int) spelling instead of the shard's local (void *, int); the bytes are the same."
   ],
@@ -876,7 +876,7 @@
       "source": "0x0213296c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142bdc",
+      "symbol": "sSlot3StateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142bdc"

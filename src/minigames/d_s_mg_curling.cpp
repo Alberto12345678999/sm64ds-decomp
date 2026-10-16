@@ -142,13 +142,13 @@ extern int  data_ov006_0212e4c8[];
 extern int  data_ov006_0212e4dc[];
 
 /* The six state tables, filled at startup by the ov006 static init. */
-extern PMF0  data_ov006_021418b0[];
-extern PMF   data_ov006_021418c0[];
-extern PMF   data_ov006_021418d8[];
-extern Entry data_ov006_021418f0[];
-extern PMF   data_ov006_02141910[];
-extern PMF   data_ov006_02141930[];
-extern PMF0  data_ov006_02141950[];
+extern PMF0 sCurlingAimTable[];
+extern PMF sCurlingBitKindTable[];
+extern PMF sCurlingBitStateTable[];
+extern Entry sCurlingBitBStateTable[];
+extern PMF sCurlingStoneTable[];
+extern PMF sCurlingBitAStateTable[];
+extern PMF0 sCurlingSceneTable[];
 /* The ROM PMF constants the seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
 extern PMF0 pmf_dScMgCurling_c_Scene_StartRound;
@@ -360,9 +360,9 @@ void dScMgCurling_c::Bit_RunKindA(int index)
 {
     C *self = (C *)this;
     unsigned char state = mBit[index].state;
-    (self->*data_ov006_02141930[state])(index);
+    (self->*sCurlingBitAStateTable[state])(index);
     unsigned char state2 = mBit[index].state2;
-    (self->*data_ov006_021418d8[state2])(index);
+    (self->*sCurlingBitStateTable[state2])(index);
 }
 
 // @symbol _ZN14dScMgCurling_c11BitB_State3Ei
@@ -493,7 +493,7 @@ void dScMgCurling_c::BitB_State0(int idx)
 void dScMgCurling_c::Bit_RunKindB(int idx)
 {
     unsigned char state = mBit[idx].state;
-    (((C*)this)->*data_ov006_021418f0[state].pmf)(idx);
+    (((C *)this)->*sCurlingBitBStateTable[state].pmf)(idx);
 }
 
 #pragma push
@@ -517,7 +517,7 @@ void dScMgCurling_c::Bit_UpdateAll()
     for (i = 0; i < 0x32; i++) {
         if (mBit[i].on != 0) {
             unsigned char kind = mBit[i].kind;
-            (((C *)this)->*data_ov006_021418c0[kind])(i);
+            (((C *)this)->*sCurlingBitKindTable[kind])(i);
             if ((mBit[i].y >> 0xc) >= 0xc8) {
                 mBit[i].x = (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf << 0xf;
                 mBit[i].y = -0x8000;
@@ -1463,7 +1463,7 @@ void dScMgCurling_c::Scene_Play()
         u8 *q = (u8 *)(c + 0x4ee9);
         *q = *q - 1;
     }
-    (((C *)c)->*data_ov006_021418b0[mStylusHeld])();
+    (((C *)c)->*sCurlingAimTable[mStylusHeld])();
 
     {
         int count = 0;
@@ -1477,7 +1477,7 @@ void dScMgCurling_c::Scene_Play()
                     u16 *q = (u16 *)(p + 0x4680);
                     *q = *q - 1;
                 }
-                (((C *)c)->*data_ov006_02141910[*(u8 *)(p + 0x4688)])(i);
+                (((C *)c)->*sCurlingStoneTable[*(u8 *)(p + 0x4688)])(i);
                 if (*(u8 *)(p + 0x4688) != 2) count++;
             }
         }
@@ -1626,7 +1626,7 @@ s32 dScMgCurling_c::Behavior()
 {
     C *c = (C *)this;
     int j = mState;
-    (c->*data_ov006_02141950[j])();
+    (c->*sCurlingSceneTable[j])();
     Bit_UpdateAll();
     return 1;
 }
@@ -1716,41 +1716,39 @@ extern "C" void *dScMgCurling_c_classInit()
  * retail copy order: the five no-arg scene states, the four per-state
  * tables, the two stylus states, the three kind states, the four Entry
  * states, the four reveal states, then the three state2 states. */
-PMF0 data_ov006_02141950[5] = {
-    pmf_dScMgCurling_c_Scene_StartRound,
-    pmf_dScMgCurling_c_Scene_Play,
-    pmf_dScMgCurling_c_Scene_Score,
-    pmf_dScMgCurling_c_Scene_End,
+PMF0 sCurlingSceneTable[5] = {
+    pmf_dScMgCurling_c_Scene_StartRound, pmf_dScMgCurling_c_Scene_Play,
+    pmf_dScMgCurling_c_Scene_Score,      pmf_dScMgCurling_c_Scene_End,
     pmf_dScMgCurling_c_Scene_Idle,
 };
-PMF data_ov006_02141910[4] = {
+PMF sCurlingStoneTable[4] = {
     pmf_dScMgCurling_c_Stone_WaitRelease,
     pmf_dScMgCurling_c_Stone_Slide,
     pmf_dScMgCurling_c_Stone_Collide,
     pmf_dScMgCurling_c_Stone_Drag,
 };
-PMF0 data_ov006_021418b0[2] = {
+PMF0 sCurlingAimTable[2] = {
     pmf_dScMgCurling_c_Aim_WaitTouch,
     pmf_dScMgCurling_c_Aim_Swing,
 };
-PMF data_ov006_021418c0[3] = {
+PMF sCurlingBitKindTable[3] = {
     pmf_dScMgCurling_c_Bit_PickKind,
     pmf_dScMgCurling_c_Bit_RunKindB,
     pmf_dScMgCurling_c_Bit_RunKindA,
 };
-Entry data_ov006_021418f0[4] = {
+Entry sCurlingBitBStateTable[4] = {
     {pmf_dScMgCurling_c_BitB_State0},
     {pmf_dScMgCurling_c_BitB_State1},
     {pmf_dScMgCurling_c_BitB_State2},
     {pmf_dScMgCurling_c_BitB_State3},
 };
-PMF data_ov006_02141930[4] = {
+PMF sCurlingBitAStateTable[4] = {
     pmf_dScMgCurling_c_BitA_State0,
     pmf_dScMgCurling_c_BitA_State1,
     pmf_dScMgCurling_c_BitA_State2,
     pmf_dScMgCurling_c_BitA_State3,
 };
-PMF data_ov006_021418d8[3] = {
+PMF sCurlingBitStateTable[3] = {
     pmf_dScMgCurling_c_Bit_State0,
     pmf_dScMgCurling_c_Bit_State1,
     pmf_dScMgCurling_c_Bit_State2,

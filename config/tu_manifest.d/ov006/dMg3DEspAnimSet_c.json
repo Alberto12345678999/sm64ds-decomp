@@ -655,49 +655,49 @@
       "evidence": "compiler-generated destructor-registration node for the 0x1ed animation handle"
     },
     {
-      "symbol": "data_ov006_02141f1c",
+      "symbol": "s3DEspSlotFallTable",
       "address": "0x02141f1c",
       "size": "0x10",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[2] slot state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f2c",
+      "symbol": "s3DEspRoundTable",
       "address": "0x02141f2c",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cState[3] round-state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f44",
+      "symbol": "s3DEspFlashTable",
       "address": "0x02141f44",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cState[3] flash-mode table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f5c",
+      "symbol": "s3DEspCardTable",
       "address": "0x02141f5c",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[3] row state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f74",
+      "symbol": "s3DEspRowTable",
       "address": "0x02141f74",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[3] card state table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141f8c",
+      "symbol": "s3DEspSlotRiseTable",
       "address": "0x02141f8c",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "dScMg3DEsp_cObjState[4] slot-type handler table; the initializer plain-copies the ROM PMF constants into it"
     },
     {
-      "symbol": "data_ov006_02141fac",
+      "symbol": "s3DEspPhaseTable",
       "address": "0x02141fac",
       "size": "0x20",
       "binding": "STB_GLOBAL",
@@ -1775,7 +1775,7 @@
       "source": "0x02130d84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f2c",
+      "symbol": "s3DEspRoundTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f2c"
@@ -1815,7 +1815,7 @@
       "source": "0x02130d94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141fac",
+      "symbol": "s3DEspPhaseTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141fac"
@@ -1865,7 +1865,7 @@
       "source": "0x02130da8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f5c",
+      "symbol": "s3DEspCardTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f5c"
@@ -1905,7 +1905,7 @@
       "source": "0x02130db8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f74",
+      "symbol": "s3DEspRowTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f74"
@@ -1945,7 +1945,7 @@
       "source": "0x02130dc8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f1c",
+      "symbol": "s3DEspSlotFallTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f1c"
@@ -1975,7 +1975,7 @@
       "source": "0x02130dd4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f8c",
+      "symbol": "s3DEspSlotRiseTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f8c"
@@ -2025,7 +2025,7 @@
       "source": "0x02130de8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02141f44",
+      "symbol": "s3DEspFlashTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02141f44"

@@ -21,7 +21,7 @@
 // - The SlotReels view (reel strips, stops, matchSymbol, wilds) is local:
 //   the strip lengths and win state on dScMgSlot1_c.h/dScMgSlot3_c.h are
 //   still pads, so the reel helpers index through it (callers: the Slot3
-//   state-table handlers dispatching through data_ov006_02142bdc).
+//   state-table handlers dispatching through sSlot3StateTable).
 // - The ROM PMF constants the Slot3 state table copies (data_ov006_0213e5xx)
 //   come from unlicensed .data, in retail copy order.
 // - SaveScreenForMenu/RestoreScreenFromMenu keep slot-identity names from
@@ -114,7 +114,7 @@ void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
 void Mg_DrawScoreTally(char *a0, int a1, int a2, int a3);
 extern void **data_ov006_0213e5ec[];
-extern SlotState data_ov006_02142bdc[];
+extern SlotState sSlot3StateTable[];
 /* The ROM PMF constants the Slot3 state table copies from (unlicensed
  * .data), in retail copy order. */
 extern SlotState pmf_Slot3_State0;
@@ -856,7 +856,7 @@ s32 dScMgSlot3_c::Render()
  * agreed, and here it is right.
  *
  * Steps the reel state machine through the pointer-to-member table at
- * data_ov006_02142bdc, ticks the frame counter at 0x503f, spins the two reel
+ * sSlot3StateTable, ticks the frame counter at 0x503f, spins the two reel
  * offsets while state 1 is running, and flips the blend bit in data_0209d45c off a
  * coin toss so the machine's lights flicker.
  *
@@ -872,7 +872,7 @@ s32 dScMgSlot3_c::Behavior()
     unsigned short *ph1;
     unsigned short *ph2;
 
-    (self->*data_ov006_02142bdc[self->mState])();
+    (self->*sSlot3StateTable[self->mState])();
 
     pc = (unsigned char *)((char *)self + 0x503f);
     *pc = *pc + 1;
@@ -1707,13 +1707,7 @@ void *dScMgSlot1_c_classInit(void)
 /* Static-init globals (was the handwritten __sinit_ov006_02132894 shard).
  * The Slot3 state table plain-copied from the ROM PMF constants, in
  * retail copy order. */
-SlotState data_ov006_02142bdc[8] = {
-    pmf_Slot3_State0,
-    pmf_Slot3_State1,
-    pmf_Slot3_State2,
-    pmf_Slot3_State3and4,
-    pmf_Slot3_State3and4_2,
-    pmf_Slot3_State5,
-    pmf_Slot3_State6,
-    pmf_Slot3_State7,
+SlotState sSlot3StateTable[8] = {
+    pmf_Slot3_State0,       pmf_Slot3_State1, pmf_Slot3_State2, pmf_Slot3_State3and4,
+    pmf_Slot3_State3and4_2, pmf_Slot3_State5, pmf_Slot3_State6, pmf_Slot3_State7,
 };

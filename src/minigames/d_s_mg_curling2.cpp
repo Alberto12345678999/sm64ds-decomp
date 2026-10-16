@@ -130,13 +130,13 @@ extern char           data_ov006_0213c5a0;
  * through. __sinit_ov006_02130758 fills them from the 8-byte {code
  * pointer, zero adjustment} records in ov006 .data; their definitions are
  * the tail of this file. */
-extern PMF0 data_ov006_02141978[];
-extern PMF  data_ov006_02141988[];
-extern PMF  data_ov006_021419a0[];
-extern PMF  data_ov006_021419b8[];
-extern PMF1 data_ov006_021419d8[];
-extern PMF  data_ov006_021419f8[];
-extern PMF0 data_ov006_02141a18[];
+extern PMF0 sCurling2DragTable[];
+extern PMF sCurling2StepModeTable[];
+extern PMF sCurling2StepYTable[];
+extern PMF sCurling2StepXFastTable[];
+extern PMF1 sCurling2StoneTable[];
+extern PMF sCurling2StepXTable[];
+extern PMF0 sCurling2BehaviorTable[];
 /* The ROM PMF constants all seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
 extern PMF0 pmf_dScMgCurling2_c_BeginRound;
@@ -494,9 +494,9 @@ void dScMgCurling2_c::StepXAndY(int entry)
 {
     C *self = (C *)this;
     unsigned char k0 = mPiece[entry].xIndex;
-    (self->*data_ov006_021419f8[k0])(entry);
+    (self->*sCurling2StepXTable[k0])(entry);
     unsigned char k1 = ((dScMgCurling2_c *)self)->mPiece[entry].yIndex;
-    (self->*data_ov006_021419a0[k1])(entry);
+    (self->*sCurling2StepYTable[k1])(entry);
 }
 
 
@@ -616,11 +616,11 @@ void dScMgCurling2_c::StepXPickFast(int entry)
 
 
 // @symbol _ZN15dScMgCurling2_c9StepXOnlyEi
-/* Run one piece's data_ov006_021419b8 callback, indexed by xIndex. */
+/* Run one piece's sCurling2StepXFastTable callback, indexed by xIndex. */
 void dScMgCurling2_c::StepXOnly(int entry)
 {
     unsigned char idx = mPiece[entry].xIndex;
-    (((C *)this)->*data_ov006_021419b8[idx])(entry);
+    (((C *)this)->*sCurling2StepXFastTable[idx])(entry);
 }
 
 
@@ -647,7 +647,7 @@ void dScMgCurling2_c::StepPieces()
     for (i = 0; i < 0x32; i++) {
         if (mPiece[i].updateEnable != 0) {
             unsigned char idx = mPiece[i].modeIndex;
-            (((C *)this)->*data_ov006_02141988[idx])(i);
+            (((C *)this)->*sCurling2StepModeTable[idx])(i);
             if ((mPiece[i].y >> 0xc) >= 0xc8) {
                 mPiece[i].x = (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf << 0xf;
                 mPiece[i].y = -0x8000;
@@ -926,7 +926,7 @@ void dScMgCurling2_c::DragUpdate()
 
 // @symbol _ZN15dScMgCurling2_c9DragBeginEv
 /* Begin a drag: latch the grab offset and the first angle. Entry 0 of
- * data_ov006_02141978; DragUpdate is entry 1. */
+ * sCurling2DragTable; DragUpdate is entry 1. */
 void dScMgCurling2_c::DragBegin()
 {
     int idx;
@@ -1589,7 +1589,7 @@ void dScMgCurling2_c::Play()
         u8* q = (u8*)(c + 0x55bd);
         *q = *q - 1;
     }
-    (((C *)c)->*data_ov006_02141978[mDragState])();
+    (((C *)c)->*sCurling2DragTable[mDragState])();
 
     {
         int count = 0;
@@ -1603,7 +1603,7 @@ void dScMgCurling2_c::Play()
                     u16* q = (u16*)(p + 0x4680);
                     *q = *q - 1;
                 }
-                (((C*)c)->*data_ov006_021419d8[*(u8*)(p + 0x4688)])(i);
+                (((C *)c)->*sCurling2StoneTable[*(u8 *)(p + 0x4688)])(i);
                 if (*(u8*)(p + 0x4688) != 2) count++;
             }
         }
@@ -1760,12 +1760,12 @@ s32 dScMgCurling2_c::Render()
 
 
 // @symbol _ZN15dScMgCurling2_c8BehaviorEv
-/* Slot 6. One state-handler call through data_ov006_02141a18, then the
+/* Slot 6. One state-handler call through sCurling2BehaviorTable, then the
  * falling pieces and the collision values. */
 s32 dScMgCurling2_c::Behavior()
 {
     C *c = (C *)this;
-    (c->*data_ov006_02141a18[mState])();
+    (c->*sCurling2BehaviorTable[mState])();
     StepPieces();
     AgeValues();
     return 1;
@@ -1880,41 +1880,38 @@ extern "C" void *dScMgCurling2_c_classInit()
 /* Static-init globals (was the handwritten __sinit_ov006_02130758 shard).
  * All seven PMF state tables plain-copied from the ROM PMF constants, in
  * retail copy order. */
-PMF0 data_ov006_02141a18[5] = {
-    pmf_dScMgCurling2_c_BeginRound,
-    pmf_dScMgCurling2_c_Play,
-    pmf_dScMgCurling2_c_NextThrow,
-    pmf_dScMgCurling2_c_EndRound,
-    pmf_dScMgCurling2_c_Idle,
+PMF0 sCurling2BehaviorTable[5] = {
+    pmf_dScMgCurling2_c_BeginRound, pmf_dScMgCurling2_c_Play, pmf_dScMgCurling2_c_NextThrow,
+    pmf_dScMgCurling2_c_EndRound,   pmf_dScMgCurling2_c_Idle,
 };
-PMF1 data_ov006_021419d8[4] = {
+PMF1 sCurling2StoneTable[4] = {
     pmf_dScMgCurling2_c_StoneWait,
     pmf_dScMgCurling2_c_StoneSlide,
     pmf_dScMgCurling2_c_StoneRest,
     pmf_dScMgCurling2_c_StoneSteer,
 };
-PMF0 data_ov006_02141978[2] = {
+PMF0 sCurling2DragTable[2] = {
     pmf_dScMgCurling2_c_DragBegin,
     pmf_dScMgCurling2_c_DragUpdate,
 };
-PMF data_ov006_02141988[3] = {
+PMF sCurling2StepModeTable[3] = {
     pmf_dScMgCurling2_c_PickStepMode,
     pmf_dScMgCurling2_c_StepXOnly,
     pmf_dScMgCurling2_c_StepXAndY,
 };
-PMF data_ov006_021419b8[4] = {
+PMF sCurling2StepXFastTable[4] = {
     pmf_dScMgCurling2_c_StepXPickFast,
     pmf_dScMgCurling2_c_StepXPushPosFast,
     pmf_dScMgCurling2_c_StepXPushNegFast,
     pmf_dScMgCurling2_c_StepXSettleFast,
 };
-PMF data_ov006_021419f8[4] = {
+PMF sCurling2StepXTable[4] = {
     pmf_dScMgCurling2_c_StepXPick,
     pmf_dScMgCurling2_c_StepXPushPos,
     pmf_dScMgCurling2_c_StepXPushNeg,
     pmf_dScMgCurling2_c_StepXSettle,
 };
-PMF data_ov006_021419a0[3] = {
+PMF sCurling2StepYTable[3] = {
     pmf_dScMgCurling2_c_StepYRestart,
     pmf_dScMgCurling2_c_StepYRampUp,
     pmf_dScMgCurling2_c_StepYRampDown,

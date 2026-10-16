@@ -94,7 +94,7 @@ struct dScMgTeresa_c : dScMgBase_c {
     };
 
     /* The reveal sprite (Reveal_Draw, Reveal_State0..4). Its handlers take
-       an index and dispatch on `state` through data_ov006_02142e88. */
+       an index and dispatch on `state` through sTeresaRevealStateTable. */
     struct Reveal {
         s32 x;           /* 0x00 -- 20.12 */
         s32 y;           /* 0x04 -- 20.12 */

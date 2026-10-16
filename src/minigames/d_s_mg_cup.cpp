@@ -115,7 +115,7 @@ void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void Mg_DrawStockCounter(int arg0, int arg1);
 void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern char data_ov006_02139df4[];
-extern PMF data_ov006_02141870[];
+extern PMF sCupStateTable[];
 /* The ROM PMF constants the table copies from (unlicensed .data). */
 extern PMF pmf_dScMgCup_c_StateSetup;
 extern PMF pmf_dScMgCup_c_StatePrepareShuffle;
@@ -951,7 +951,7 @@ s32 dScMgCup_c::Behavior()
 {
     char *raw = (char *)this;
     int i;
-    (this->*data_ov006_02141870[mState])();
+    (this->*sCupStateTable[mState])();
     for (i = 0; i < 3; i++) {
         AnimStep *anim = &data_ov006_0213c0d8[mAnim[i]][mFrame[i]];
         int length = anim->ticks;
@@ -1068,13 +1068,9 @@ extern "C" void Cup_Nothing()
  * The eight Cup state records plain-copied from the ROM PMF constants;
  * Behavior indexes this table by mState. Definition order is the retail
  * initializer's copy order. */
-PMF data_ov006_02141870[8] = {
-    pmf_dScMgCup_c_StateSetup,
-    pmf_dScMgCup_c_StatePrepareShuffle,
-    pmf_dScMgCup_c_StateShuffle,
-    pmf_dScMgCup_c_StateWaitForInput,
-    pmf_dScMgCup_c_StateSelect,
-    pmf_dScMgCup_c_StateResult,
-    pmf_dScMgCup_c_StateFinish,
-    pmf_dScMgCup_c_StateIdle,
+PMF sCupStateTable[8] = {
+    pmf_dScMgCup_c_StateSetup,   pmf_dScMgCup_c_StatePrepareShuffle,
+    pmf_dScMgCup_c_StateShuffle, pmf_dScMgCup_c_StateWaitForInput,
+    pmf_dScMgCup_c_StateSelect,  pmf_dScMgCup_c_StateResult,
+    pmf_dScMgCup_c_StateFinish,  pmf_dScMgCup_c_StateIdle,
 };

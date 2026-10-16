@@ -556,21 +556,21 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_021426f4",
+      "symbol": "sPachinko2BallStateTable",
       "address": "0x021426f4",
       "size": "0x40",
       "binding": "STB_GLOBAL",
       "evidence": "eight ball-state Entry records, plain-copied from the ROM .data constants"
     },
     {
-      "symbol": "data_ov006_02142734",
+      "symbol": "sPachinko2PaddleStateTable",
       "address": "0x02142734",
       "size": "0x78",
       "binding": "STB_GLOBAL",
       "evidence": "fifteen paddle-state pointer-to-member entries, plain-copied from the ROM .data constants"
     },
     {
-      "symbol": "data_ov006_021426cc",
+      "symbol": "sPachinko2CupStateTable",
       "address": "0x021426cc",
       "size": "0x28",
       "binding": "STB_GLOBAL",
@@ -957,7 +957,7 @@
       "source": "0x02131f30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021426f4",
+      "symbol": "sPachinko2BallStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021426f4"
@@ -1067,7 +1067,7 @@
       "source": "0x02131f5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142734",
+      "symbol": "sPachinko2PaddleStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142734"
@@ -1237,7 +1237,7 @@
       "source": "0x02131fa0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021426cc",
+      "symbol": "sPachinko2CupStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021426cc"

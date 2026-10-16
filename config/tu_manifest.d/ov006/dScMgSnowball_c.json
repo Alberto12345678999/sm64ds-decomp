@@ -7,7 +7,7 @@
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "HISTORY: contiguous linker run: 0x0212568c..0x0212a520, 42 functions. tools/tu_map.py cuts the run at 0x021295ac, between this labelled class run and the following unlabelled one, at 'medium' confidence: a contiguity cut that nothing in the ROM backs. The cut is moved here to 0x0212a520, the start of dScMgSnowball_c_classInit (0x0212a520..0x0212a554, src/d_s_mg_snowball.cpp), which stays its own TU the way dScMgCoin_c_classInit does beside the widened dScMgCoin_c.",
-    "WHY 0x021295ac..0x0212a520 BELONGS TO THIS CLASS. dScMgSnowball_c_Construct is dScMgSnowball_c's constructor: it calls _ZN11dScMgBase_cC2Ev, stores the vptr _ZTV19dScMgSingle3DBase_c, then _ZTV15dScMgSnowball_c (the class's own, address _ZTV+8), constructs mModel at 0xaba4 and the three element arrays that ~dScMgSnowball_c (0x0212568c) tears down in reverse, with SnowSpray_ElemDtor (in this TU) as the mArray3 element destructor and SnowSpray_ElemCtor (empty, 0x0212968c) as its constructor. The 17 functions after it are per-element and whole-array helpers on the 0x32-element, 0x24-byte array at this+0xbe94 (the field map in include/dScMgSnowball_c.h) and the pointer-to-member tables data_ov006_02143020/02143038/02143050/02143070. Only dScMgSnowball_c_classInit, which calls the constructor, is factory code.",
+    "WHY 0x021295ac..0x0212a520 BELONGS TO THIS CLASS. dScMgSnowball_c_Construct is dScMgSnowball_c's constructor: it calls _ZN11dScMgBase_cC2Ev, stores the vptr _ZTV19dScMgSingle3DBase_c, then _ZTV15dScMgSnowball_c (the class's own, address _ZTV+8), constructs mModel at 0xaba4 and the three element arrays that ~dScMgSnowball_c (0x0212568c) tears down in reverse, with SnowSpray_ElemDtor (in this TU) as the mArray3 element destructor and SnowSpray_ElemCtor (empty, 0x0212968c) as its constructor. The 17 functions after it are per-element and whole-array helpers on the 0x32-element, 0x24-byte array at this+0xbe94 (the field map in include/dScMgSnowball_c.h) and the pointer-to-member tables sSnowballBitStateTable/02143038/02143050/02143070. Only dScMgSnowball_c_classInit, which calls the constructor, is factory code.",
     "class label(s): dScMgSnowball_c",
     "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
     "CLASSINIT TAIL FOLD (2026-10-10): dScMgSnowball_c_classInit (0x0212a520, size 0x34), formerly src/d_s_mg_snowball.cpp, is folded in as the last function, so the TU is 43 functions over .text 0x0212568c..0x0212a554, ROM ordinals 0..42, ROM-ascending under #pragma defer_codegen off. Membership: the factory calls fBase_c::operator new(0xc59c) == sizeof(dScMgSnowball_c) (the header's static size assert) and hands the storage to dScMgSnowball_c_Construct, this TU's constructor body, which stores _ZTV15dScMgSnowball_c. It is spelled as dScMgSnowball_c::operator new(sizeof(dScMgSnowball_c)) plus the explicit constructor call because that constructor stays a free function."
@@ -348,84 +348,84 @@
       "address": "0x0213ff58",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitA_State3, copied into data_ov006_02143070"
+      "evidence": "PMF descriptor for BitA_State3, copied into sSnowballBitAStateTable"
     },
     {
       "symbol": "@2728",
       "address": "0x0213ff60",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitA_State2, copied into data_ov006_02143070"
+      "evidence": "PMF descriptor for BitA_State2, copied into sSnowballBitAStateTable"
     },
     {
       "symbol": "@2726",
       "address": "0x0213ff68",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitA_State1, copied into data_ov006_02143070"
+      "evidence": "PMF descriptor for BitA_State1, copied into sSnowballBitAStateTable"
     },
     {
       "symbol": "@2722",
       "address": "0x0213ff70",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitB_State3, copied into data_ov006_02143050"
+      "evidence": "PMF descriptor for BitB_State3, copied into sSnowballBitBStateTable"
     },
     {
       "symbol": "@2723",
       "address": "0x0213ff78",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for Bit_RunKindA, copied into data_ov006_02143038; mwcc numbers it @2714, which ov060 already uses, so the manifest renames it to @2723"
+      "evidence": "PMF descriptor for Bit_RunKindA, copied into sSnowballBitKindTable; mwcc numbers it @2714, which ov060 already uses, so the manifest renames it to @2723"
     },
     {
       "symbol": "@2720",
       "address": "0x0213ff80",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitB_State2, copied into data_ov006_02143050"
+      "evidence": "PMF descriptor for BitB_State2, copied into sSnowballBitBStateTable"
     },
     {
       "symbol": "@2725",
       "address": "0x0213ff88",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for Bit_PickKind, copied into data_ov006_02143038; mwcc numbers it @2710, which ov060 already uses, so the manifest renames it to @2719"
+      "evidence": "PMF descriptor for Bit_PickKind, copied into sSnowballBitKindTable; mwcc numbers it @2710, which ov060 already uses, so the manifest renames it to @2719"
     },
     {
       "symbol": "@2719",
       "address": "0x0213ff90",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitB_State0, copied into data_ov006_02143050; mwcc numbers it @2716, which ov002 already uses, so the manifest renames it to @2725"
+      "evidence": "PMF descriptor for BitB_State0, copied into sSnowballBitBStateTable; mwcc numbers it @2716, which ov002 already uses, so the manifest renames it to @2725"
     },
     {
       "symbol": "@2721",
       "address": "0x0213ff98",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitB_State1, copied into data_ov006_02143050; mwcc numbers it @2718, which ov002 already uses, so the manifest renames it to @2727"
+      "evidence": "PMF descriptor for BitB_State1, copied into sSnowballBitBStateTable; mwcc numbers it @2718, which ov002 already uses, so the manifest renames it to @2727"
     },
     {
       "symbol": "@2724",
       "address": "0x0213ffa0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for BitA_State0, copied into data_ov006_02143070"
+      "evidence": "PMF descriptor for BitA_State0, copied into sSnowballBitAStateTable"
     },
     {
       "symbol": "@2734",
       "address": "0x0213ffa8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for Bit_State1, copied into data_ov006_02143020"
+      "evidence": "PMF descriptor for Bit_State1, copied into sSnowballBitStateTable"
     },
     {
       "symbol": "@2727",
       "address": "0x0213ffb0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for Bit_RunKindB, copied into data_ov006_02143038; mwcc numbers it @2712, which ov060 already uses, so the manifest renames it to @2721"
+      "evidence": "PMF descriptor for Bit_RunKindB, copied into sSnowballBitKindTable; mwcc numbers it @2712, which ov060 already uses, so the manifest renames it to @2721"
     },
     {
       "symbol": "g_profile_MG_SNOWBALL",
@@ -439,40 +439,40 @@
       "address": "0x0213ffc0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for Bit_State2, copied into data_ov006_02143020"
+      "evidence": "PMF descriptor for Bit_State2, copied into sSnowballBitStateTable"
     },
     {
       "symbol": "@2732",
       "address": "0x0213ffc8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF descriptor for Bit_State0, copied into data_ov006_02143020"
+      "evidence": "PMF descriptor for Bit_State0, copied into sSnowballBitStateTable"
     }
   ],
   "bss": [
     {
-      "symbol": "data_ov006_02143020",
+      "symbol": "sSnowballBitStateTable",
       "address": "0x02143020",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "three-entry PMF table Bit_RunKindA indexes by the element byte at +0xbeb1"
     },
     {
-      "symbol": "data_ov006_02143038",
+      "symbol": "sSnowballBitKindTable",
       "address": "0x02143038",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "three-entry PMF table Bit_UpdateAll indexes by the element byte at +0xbeaf"
     },
     {
-      "symbol": "data_ov006_02143050",
+      "symbol": "sSnowballBitBStateTable",
       "address": "0x02143050",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "four-entry PMF table Bit_RunKindB indexes by the element byte at +0xbeb0"
     },
     {
-      "symbol": "data_ov006_02143070",
+      "symbol": "sSnowballBitAStateTable",
       "address": "0x02143070",
       "size": "0x30",
       "binding": "STB_GLOBAL",
@@ -1138,7 +1138,7 @@
       "source": "0x02133528",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02143038",
+      "symbol": "sSnowballBitKindTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02143038"
@@ -1188,7 +1188,7 @@
       "source": "0x0213353c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02143050",
+      "symbol": "sSnowballBitBStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02143050"
@@ -1248,7 +1248,7 @@
       "source": "0x02133554",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02143070",
+      "symbol": "sSnowballBitAStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02143070"
@@ -1298,7 +1298,7 @@
       "source": "0x02133568",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02143020",
+      "symbol": "sSnowballBitStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02143020"

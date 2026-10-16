@@ -39,14 +39,14 @@ enum MemoryCardState {
 
 typedef void (dScMgMemory_c::*dScMgMemory_cState)();
 typedef void (dScMgMemory_c::*dScMgMemory_cCardState)(int);
-extern "C" dScMgMemory_cState data_ov006_021422bc[];
-extern "C" dScMgMemory_cState data_ov006_021422dc[];
-extern dScMgMemory_cState data_ov006_02142304[];
-extern dScMgMemory_cCardState data_ov006_02142334[];
+extern "C" dScMgMemory_cState sMemoryResultTable[];
+extern "C" dScMgMemory_cState sMemoryStateTable[];
+extern dScMgMemory_cState sMemoryRoundTable[];
+extern dScMgMemory_cCardState sMemoryCardTable[];
 /* The player-state table filled by the same initializer; no enrolled
  * consumer names it yet, so it keeps the shard's grouping with the
  * no-arg tables. */
-extern "C" dScMgMemory_cState data_ov006_021422a4[];
+extern "C" dScMgMemory_cState sMemoryPlayerTable[];
 
 /* A walk that advances the scene pointer. The card sits at 0x51a8 so the
  * address stays add #0x5000 plus the field. mCards[i] did not match in
@@ -348,7 +348,7 @@ void dScMgMemory_c::UpdateCards()
 {
     for (int i = 0; i < 12; i++) {
         if (mCards[i].active)
-            (this->*data_ov006_02142334[mCards[i].state])(i);
+            (this->*sMemoryCardTable[mCards[i].state])(i);
     }
 }
 
@@ -966,7 +966,7 @@ void dScMgMemory_c::StateExit()
 }
 
 void dScMgMemory_c::StateResult(){
-  (this->*data_ov006_021422bc[mSubstate])();
+    (this->*sMemoryResultTable[mSubstate])();
 }
 
 void dScMgMemory_c::StateJudge() {
@@ -976,7 +976,7 @@ void dScMgMemory_c::StateJudge() {
 }
 
 void dScMgMemory_c::StatePlay() {
-    (this->*data_ov006_02142304[mSubstate])();
+    (this->*sMemoryRoundTable[mSubstate])();
     UpdateCards();
 }
 
@@ -1056,7 +1056,7 @@ s32 dScMgMemory_c::Render()
 /* Slot 6: runs the current state from the table, indexed by mState. */
 s32 dScMgMemory_c::Behavior()
 {
-    (this->*data_ov006_021422dc[mState])();
+    (this->*sMemoryStateTable[mState])();
     MgCoins_Update();
     Dealer_Update(&mShared);
     return 1;
@@ -1160,39 +1160,28 @@ void *data_ov006_0214236c[15] = {
     (void *)data_ov006_02133810[7],
     (void *)data_ov006_02133810[8],
 };
-dScMgMemory_cState data_ov006_021422dc[5] = {
-    pmf_dScMgMemory_c_StateSetup,
-    pmf_dScMgMemory_c_StatePlay,
-    pmf_dScMgMemory_c_StateJudge,
-    pmf_dScMgMemory_c_StateResult,
-    pmf_dScMgMemory_c_StateExit,
+dScMgMemory_cState sMemoryStateTable[5] = {
+    pmf_dScMgMemory_c_StateSetup,  pmf_dScMgMemory_c_StatePlay, pmf_dScMgMemory_c_StateJudge,
+    pmf_dScMgMemory_c_StateResult, pmf_dScMgMemory_c_StateExit,
 };
-dScMgMemory_cState data_ov006_02142304[6] = {
-    pmf_dScMgMemory_c_RoundStart,
-    pmf_dScMgMemory_c_RoundDealEasy,
-    pmf_dScMgMemory_c_RoundDealNormal,
-    pmf_dScMgMemory_c_RoundDealHard,
-    pmf_dScMgMemory_c_RoundWaitDeal,
-    pmf_dScMgMemory_c_RoundReveal,
+dScMgMemory_cState sMemoryRoundTable[6] = {
+    pmf_dScMgMemory_c_RoundStart,      pmf_dScMgMemory_c_RoundDealEasy,
+    pmf_dScMgMemory_c_RoundDealNormal, pmf_dScMgMemory_c_RoundDealHard,
+    pmf_dScMgMemory_c_RoundWaitDeal,   pmf_dScMgMemory_c_RoundReveal,
 };
-dScMgMemory_cState data_ov006_021422bc[4] = {
+dScMgMemory_cState sMemoryResultTable[4] = {
     pmf_dScMgMemory_c_ResultWait,
     pmf_dScMgMemory_c_ResultReward,
     pmf_dScMgMemory_c_ResultTurnCards,
     pmf_dScMgMemory_c_ResultFinish,
 };
-dScMgMemory_cCardState data_ov006_02142334[7] = {
-    pmf_dScMgMemory_c_CardMove,
-    pmf_dScMgMemory_c_CardIdle,
-    pmf_dScMgMemory_c_CardSelect,
-    pmf_dScMgMemory_c_CardFlipUp,
-    pmf_dScMgMemory_c_CardWait,
-    pmf_dScMgMemory_c_CardFlipDown,
+dScMgMemory_cCardState sMemoryCardTable[7] = {
+    pmf_dScMgMemory_c_CardMove,    pmf_dScMgMemory_c_CardIdle, pmf_dScMgMemory_c_CardSelect,
+    pmf_dScMgMemory_c_CardFlipUp,  pmf_dScMgMemory_c_CardWait, pmf_dScMgMemory_c_CardFlipDown,
     pmf_dScMgMemory_c_CardFlyAway,
 };
-dScMgMemory_cState data_ov006_021422a4[3] = {
+dScMgMemory_cState sMemoryPlayerTable[3] = {
     pmf_dScMgMemory_c_PlayerDrop,
     pmf_dScMgMemory_c_PlayerMove,
     pmf_dScMgMemory_c_PlayerWait,
 };
-

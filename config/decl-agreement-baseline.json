@@ -16162,27 +16162,27 @@
         "return:int []"
       ]
     },
-    "data_ov006_021417b0": {
+    "sCoinCoinStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_021417c8": {
+    "sCoinBagStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_021417e8": {
+    "sCoinCaptionStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_02141810": {
+    "sCoinPhaseStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
     },
-    "data_ov006_02141840": {
+    "sCoinBlockStateTable": {
       "src/unnamed/ov006/__sinit_ov006_0213014c.c": [
         "return:Pair []"
       ]
@@ -16212,22 +16212,22 @@
         "return:int []"
       ]
     },
-    "data_ov006_021422bc": {
+    "sMemoryResultTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_021422dc": {
+    "sMemoryStateTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142304": {
+    "sMemoryRoundTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142334": {
+    "sMemoryCardTable": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:Ent []"
       ]
@@ -16237,22 +16237,22 @@
         "return:int []"
       ]
     },
-    "data_ov006_021423c0": {
+    "sMemory2ResultTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst4_21423c0"
       ]
     },
-    "data_ov006_021423e0": {
+    "sMemory2StateTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst5_21423e0"
       ]
     },
-    "data_ov006_02142408": {
+    "sMemory2CardTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst7_2142408"
       ]
     },
-    "data_ov006_02142440": {
+    "sMemory2RoundTable": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:Dst10_2142440"
       ]
@@ -16267,67 +16267,67 @@
         "return:S8"
       ]
     },
-    "data_ov006_02142cc0": {
+    "sSoundPop10Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142cd8": {
+    "sSoundPop05Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142cf0": {
+    "sSoundPop06Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d08": {
+    "sSoundPop11Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d20": {
+    "sSoundPop07Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d38": {
+    "sSoundPop00Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d50": {
+    "sSoundPop01Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d68": {
+    "sSoundPop08Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d80": {
+    "sSoundPop02Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142d98": {
+    "sSoundPop09Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142db0": {
+    "sSoundPop12Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142dc8": {
+    "sSoundPop03Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]
     },
-    "data_ov006_02142de0": {
+    "sSoundPop04Table": {
       "src/unnamed/ov006/__sinit_ov006_02132970.c": [
         "return:Ent []"
       ]

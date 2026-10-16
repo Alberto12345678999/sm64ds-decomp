@@ -48,7 +48,7 @@ typedef char dScMgPachinko2_Ball_size_must_be_0x40[sizeof(struct dScMgPachinko2_
 #endif
 
 /* One of the three paddles. State 0..14 dispatches through
-   data_ov006_02142734; Paddle_Hit parks the current motion in
+   sPachinko2PaddleStateTable; Paddle_Hit parks the current motion in
    home/saved* and later states restore it. */
 struct dScMgPachinko2_Paddle {
     s32 x;          /* +0x00 -- Fix12 */
@@ -107,7 +107,7 @@ struct dScMgPachinko2_ScorePop {
     u8  falling;      /* +0x17 */
 };
 
-/* One of the two cups. State 0..4 dispatches through data_ov006_021426cc. */
+/* One of the two cups. State 0..4 dispatches through sPachinko2CupStateTable. */
 struct dScMgPachinko2_Cup {
     s32 x;            /* +0x00 -- Fix12 */
     s32 y;            /* +0x04 */
@@ -152,7 +152,7 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void Cup_State2(int k);       /* cup state 2 */
     void Cup_State1(int k);       /* cup state 1 */
     void Cup_State0(int k);       /* cup state 0: idle reset */
-    void Cup_DrawAll();            /* cup PMF dispatch, data_ov006_021426cc */
+    void Cup_DrawAll();           /* cup PMF dispatch, sPachinko2CupStateTable */
     void Cup_ShowAll();            /* init both cups */
     void Cup_HideAll();            /* clear cup flags */
 
@@ -186,7 +186,7 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void Paddle_HideAll();            /* reset paddle timers */
     void Paddle_Stop(int idx);     /* park paddle idx */
     void Paddle_CheckBallHits(int idx);     /* paddle idx vs balls */
-    void Paddle_UpdateAll();            /* paddle PMF dispatch, data_ov006_02142734 */
+    void Paddle_UpdateAll();                /* paddle PMF dispatch, sPachinko2PaddleStateTable */
     void Paddle_ClearAll();            /* clear paddle flags */
     void Paddle_State14(int i);       /* paddle state 14 */
     void Paddle_State13(int i);       /* paddle state 13 */
@@ -210,7 +210,7 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void Ball_Bounce(int i);       /* ball i hits the floor */
     void Ball_ClearAll();            /* clear ball flags */
     void Ball_DrawAll();            /* render balls */
-    void Ball_UpdateAll();            /* ball PMF dispatch, data_ov006_021426f4 */
+    void Ball_UpdateAll();          /* ball PMF dispatch, sPachinko2BallStateTable */
     void Ball_State0(int arg1);    /* ball state 0: idle in tray */
     void Ball_State1(int i);       /* ball state 1: pen drag */
     void Ball_State2(int i);       /* ball state 2: launched flight */

@@ -538,13 +538,13 @@ dMg3DEspModel_c::dMg3DEspModel_c()
    two slot states, four slot type handlers and three flash modes. */
 typedef void (dScMg3DEsp_c::*dScMg3DEsp_cState)();
 typedef void (dScMg3DEsp_c::*dScMg3DEsp_cObjState)(int);
-extern "C" dScMg3DEsp_cState data_ov006_02141f2c[];
-extern "C" dScMg3DEsp_cState data_ov006_02141fac[];
-extern "C" dScMg3DEsp_cState data_ov006_02141f44[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f1c[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f5c[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f74[];
-extern "C" dScMg3DEsp_cObjState data_ov006_02141f8c[];
+extern "C" dScMg3DEsp_cState s3DEspRoundTable[];
+extern "C" dScMg3DEsp_cState s3DEspPhaseTable[];
+extern "C" dScMg3DEsp_cState s3DEspFlashTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspSlotFallTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspCardTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspRowTable[];
+extern "C" dScMg3DEsp_cObjState s3DEspSlotRiseTable[];
 
 /* The ROM PMF constants the seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
@@ -644,7 +644,7 @@ void dScMg3DEsp_c::UpdateFlash()
     char* c = (char*)this;
     unsigned char idx = *(unsigned char*)(c + 0x5000 + 0x552);
     if (idx >= 3) return;
-    (this->*data_ov006_02141f44[idx])();
+    (this->*s3DEspFlashTable[idx])();
 }
 
 extern void* data_ov006_02133a3c[];
@@ -827,7 +827,7 @@ void dScMg3DEsp_c::SlotFall(int idx)
 {
   char* base = (char*)this;
   unsigned char b = *(unsigned char*)(base + idx*0x20 + 0x52da);
-  (this->*data_ov006_02141f8c[b])(idx);
+  (this->*s3DEspSlotRiseTable[b])(idx);
 
   unsigned char c = *(unsigned char*)(base + idx*0x20 + 0x52d6);
   *(int*)(base + 0x52c8 + idx*0x20) -= (c<<3) + 0x10;
@@ -879,7 +879,7 @@ void dScMg3DEsp_c::UpdateSlots()
     for (int i = 0; i < 0x14; i++) {
         if (rows[i].d[0x52d4]) {
             u8 k = rows[i].d[0x52d9];
-            (this->*data_ov006_02141f1c[k])(i);
+            (this->*s3DEspSlotFallTable[k])(i);
         }
     }
 }
@@ -1006,7 +1006,7 @@ void dScMg3DEsp_c::UpdateRows()
     char* s = (char*)this;
     for (i = 0; i < 3; i++) {
         if (*(unsigned char*)(s + 0x5290)) {
-            (this->*data_ov006_02141f74[*(unsigned char*)(s + 0x5291)])(i);
+            (this->*s3DEspRowTable[*(unsigned char *)(s + 0x5291)])(i);
         }
         s += 0x14;
     }
@@ -1247,7 +1247,7 @@ void dScMg3DEsp_c::UpdateCards()
     char* s = (char*)this;
     for (i = 0; i < 5; i++) {
         if (*(unsigned char*)(s + 0x5218)) {
-            (this->*data_ov006_02141f5c[*(unsigned char*)(s + 0x5219)])(i);
+            (this->*s3DEspCardTable[*(unsigned char *)(s + 0x5219)])(i);
         }
         s += 0x18;
     }
@@ -1531,7 +1531,7 @@ void dScMg3DEsp_c::Results()
 // @symbol _ZN12dScMg3DEsp_c4PlayEv
 void dScMg3DEsp_c::Play()
 {
-    (this->*data_ov006_02141fac[mPhase])();
+    (this->*s3DEspPhaseTable[mPhase])();
     UpdateFlash();
 }
 
@@ -1623,7 +1623,7 @@ s32 dScMg3DEsp_c::Render()
 // @symbol _ZN12dScMg3DEsp_c8BehaviorEv
 s32 dScMg3DEsp_c::Behavior()
 {
-    (this->*data_ov006_02141f2c[mRoundState])();
+    (this->*s3DEspRoundTable[mRoundState])();
     UpdateSlots();
     ((TextureTransformer *)mTextureTransformer)->Advance();
     ((dMg3DEspModel_c*)pad_4fd8)->Behavior();
@@ -1771,38 +1771,38 @@ EspAnimSetAnimationFileHandle gEspCardOpenWaitAnimFile(0x1ea);
 EspAnimSetAnimationFileHandle gEspHamonAnimFile(0x1ed);
 EspAnimSetTexSequenceFilePtr gEspCardTexSeqFile(0x1e8);
 
-dScMg3DEsp_cState data_ov006_02141f2c[3] = {
+dScMg3DEsp_cState s3DEspRoundTable[3] = {
     pmf_dScMg3DEsp_c_Wait,
     pmf_dScMg3DEsp_c_Play,
     pmf_dScMg3DEsp_c_Results,
 };
-dScMg3DEsp_cState data_ov006_02141fac[4] = {
+dScMg3DEsp_cState s3DEspPhaseTable[4] = {
     pmf_dScMg3DEsp_c_Deal,
     pmf_dScMg3DEsp_c_Fade,
     pmf_dScMg3DEsp_c_Await,
     pmf_dScMg3DEsp_c_Resolve,
 };
-dScMg3DEsp_cObjState data_ov006_02141f5c[3] = {
+dScMg3DEsp_cObjState s3DEspCardTable[3] = {
     pmf_dScMg3DEsp_c_CardExit,
     pmf_dScMg3DEsp_c_CardTouch,
     pmf_dScMg3DEsp_c_CardSeek,
 };
-dScMg3DEsp_cObjState data_ov006_02141f74[3] = {
+dScMg3DEsp_cObjState s3DEspRowTable[3] = {
     pmf_dScMg3DEsp_c_RowWait,
     pmf_dScMg3DEsp_c_RowDecay,
     pmf_dScMg3DEsp_c_RowFade,
 };
-dScMg3DEsp_cObjState data_ov006_02141f1c[2] = {
+dScMg3DEsp_cObjState s3DEspSlotFallTable[2] = {
     pmf_dScMg3DEsp_c_SlotWait,
     pmf_dScMg3DEsp_c_SlotFall,
 };
-dScMg3DEsp_cObjState data_ov006_02141f8c[4] = {
+dScMg3DEsp_cObjState s3DEspSlotRiseTable[4] = {
     pmf_dScMg3DEsp_c_SlotSetup,
     pmf_dScMg3DEsp_c_SlotRise,
     pmf_dScMg3DEsp_c_SlotKick,
     pmf_dScMg3DEsp_c_SlotDampen,
 };
-dScMg3DEsp_cState data_ov006_02141f44[3] = {
+dScMg3DEsp_cState s3DEspFlashTable[3] = {
     pmf_dScMg3DEsp_c_FlashOnce,
     pmf_dScMg3DEsp_c_FlashSync,
     pmf_dScMg3DEsp_c_FlashQuick,

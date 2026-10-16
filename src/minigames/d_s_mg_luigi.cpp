@@ -255,10 +255,10 @@ void dScMgLuigi_c::IrisHold(int idx) {
 // @symbol _ZN12dScMgLuigi_c10UpdateIrisEv
 void dScMgLuigi_c::UpdateIris()
 {
-    extern LuigiSlotHandler data_ov006_021421ec[];
+    extern LuigiSlotHandler sLuigiIrisTable[];
     if (mIris[0].active == 0) return;
     int j = mIris[0].state;
-    (this->*data_ov006_021421ec[j])(0);
+    (this->*sLuigiIrisTable[j])(0);
 }
 
 // @symbol _ZN12dScMgLuigi_c9StartIrisEv
@@ -577,8 +577,8 @@ void dScMgLuigi_c::CurtainStateBounce(int i)
 
 // @symbol _ZN12dScMgLuigi_c13CurtainUpdateEi
 void dScMgLuigi_c::CurtainUpdate(int i) {
-    extern LuigiSlotHandler data_ov006_0214221c[];
-    (this->*(data_ov006_0214221c[mCurtain[i].phase]))(i);
+    extern LuigiSlotHandler sLuigiCurtainStateTable[];
+    (this->*(sLuigiCurtainStateTable[mCurtain[i].phase]))(i);
 }
 
 // @symbol _ZN12dScMgLuigi_c12CurtainStartEi
@@ -633,12 +633,12 @@ void dScMgLuigi_c::CurtainStart(int i) {
 // @symbol _ZN12dScMgLuigi_c12CurtainsDoneEv
 int dScMgLuigi_c::CurtainsDone()
 {
-    extern LuigiSlotHandler data_ov006_02142204[];
+    extern LuigiSlotHandler sLuigiCurtainTable[];
     int count = 0;
     int i = 0;
     do {
         if (mCurtain[i].active != 0) {
-            (this->*data_ov006_02142204[mCurtain[i].state])(i);
+            (this->*sLuigiCurtainTable[mCurtain[i].state])(i);
             count++;
         }
         i++;
@@ -1721,7 +1721,7 @@ extern unsigned char data_0209d454;
 /* dScMgLuigi_c::Render */
 extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 /* dScMgLuigi_c::Behavior */
-extern LuigiStateHandler data_ov006_02142234[];
+extern LuigiStateHandler sLuigiStateTable[];
 /* dScMgLuigi_c::InitResources */
 extern void *data_ov006_0213cfa0;
 extern void *Ov004_LoadFileByPath(const char *path);
@@ -1796,7 +1796,7 @@ s32 dScMgLuigi_c::Render()
 s32 dScMgLuigi_c::Behavior()
 {
     int j = mState;
-    (this->*data_ov006_02142234[j])();
+    (this->*sLuigiStateTable[j])();
     return 1;
 }
 
@@ -1914,7 +1914,7 @@ int *dScMgLuigi_c_classInit(void)
 
 /* The state tables, in the order the static initializer fills them. Each
    entry's {function, 0} record is a compiler temporary in .data. */
-LuigiStateHandler data_ov006_02142234[4] = {
+LuigiStateHandler sLuigiStateTable[4] = {
     &dScMgLuigi_c::StateSetup,
     &dScMgLuigi_c::StatePlace,
     &dScMgLuigi_c::StatePlay,
@@ -1932,17 +1932,17 @@ LuigiSlotHandler data_ov006_02142254[10] = {
     &dScMgLuigi_c::MovePictureBounce,
     &dScMgLuigi_c::TickPictureFlash,
 };
-LuigiSlotHandler data_ov006_02142204[3] = {
+LuigiSlotHandler sLuigiCurtainTable[3] = {
     &dScMgLuigi_c::CurtainStart,
     &dScMgLuigi_c::CurtainUpdate,
     &dScMgLuigi_c::CurtainStateSlow,
 };
-LuigiSlotHandler data_ov006_0214221c[3] = {
+LuigiSlotHandler sLuigiCurtainStateTable[3] = {
     &dScMgLuigi_c::CurtainStateBounce,
     &dScMgLuigi_c::CurtainStateHold,
     &dScMgLuigi_c::CurtainStateFast,
 };
-LuigiSlotHandler data_ov006_021421ec[3] = {
+LuigiSlotHandler sLuigiIrisTable[3] = {
     &dScMgLuigi_c::IrisHold,
     &dScMgLuigi_c::IrisGrow,
     &dScMgLuigi_c::IrisStop,

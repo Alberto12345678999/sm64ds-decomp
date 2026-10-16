@@ -57,18 +57,18 @@ struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     s32 Behavior();           /* slot 6 */
     s32 Render();             /* slot 9 */
 
-    /* The round states data_ov006_02141f2c[mRoundState] dispatches. */
+    /* The round states s3DEspRoundTable[mRoundState] dispatches. */
     void Wait();                  /* inter-round timer */
     void Play();                  /* dispatch the phase and the flash */
     void Results();               /* reveal, score and restart */
 
-    /* The play phases data_ov006_02141fac[mPhase] dispatches. */
+    /* The play phases s3DEspPhaseTable[mPhase] dispatches. */
     void Deal();                  /* difficulty, intro anim, deal the cards */
     void Fade();                  /* blend in */
     void Await();                 /* run the cards until a tap lands */
     void Resolve();               /* run cards and rows while scoring */
 
-    /* The flash handlers data_ov006_02141f44[mFlashMode] picks. */
+    /* The flash handlers s3DEspFlashTable[mFlashMode] picks. */
     void UpdateFlash();
     void FlashOnce();
     void FlashSync();

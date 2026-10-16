@@ -17,7 +17,7 @@
  *
  * The helpers whose first parameter was the scene are now members of
  * dScMgSnowball_c, including the 17 per-element helpers dispatched through
- * the PMF tables data_ov006_02143020/38/50/70 (8-byte {function, 0}
+ * the PMF tables sSnowballBitStateTable/38/50/70 (8-byte {function, 0}
  * records). __sinit_d_s_mg_snowball.cpp copies them. Some calls stay mangled:
  * cstd::atan2 and Particle::System take Fix12 or reference
  * arguments, and decl_common.h declares a global named G2, so no
@@ -2273,16 +2273,16 @@ void dScMgSnowball_c::BitA_State0(int i)
 // @symbol _ZN15dScMgSnowball_c12Bit_RunKindAEi
 struct C_02129d94; typedef void (dScMgSnowball_c::*PMF_02129d94)(int);
 struct Entry_02129d94 { PMF_02129d94 pmf; };
-extern Entry_02129d94 data_ov006_02143070[];
-extern Entry_02129d94 data_ov006_02143020[];
+extern Entry_02129d94 sSnowballBitAStateTable[];
+extern Entry_02129d94 sSnowballBitStateTable[];
 struct Elem_02129d94 { unsigned char a; unsigned char b; char pad[0x22]; };
 struct C_02129d94 { char head[0xbeb0]; Elem_02129d94 arr[1]; }; /* pun view over the scene; PMF receiver is the class */
 void dScMgSnowball_c::Bit_RunKindA(int i) {
     C_02129d94 *c = (C_02129d94 *)this;
   int idx0 = c->arr[i].a;
-  (this->*data_ov006_02143070[idx0].pmf)(i);
+  (this->*sSnowballBitAStateTable[idx0].pmf)(i);
   int idx1 = c->arr[i].b;
-  (this->*data_ov006_02143020[idx1].pmf)(i);
+  (this->*sSnowballBitStateTable[idx1].pmf)(i);
 }
 
 // @symbol _ZN15dScMgSnowball_c11BitB_State3Ei
@@ -2411,13 +2411,13 @@ void dScMgSnowball_c::BitB_State0(int idx)
 // @symbol _ZN15dScMgSnowball_c12Bit_RunKindBEi
 
 typedef void (dScMgSnowball_c::*PMF_0212a224)(int);
-extern "C" PMF_0212a224 data_ov006_02143050[];
+extern "C" PMF_0212a224 sSnowballBitBStateTable[];
 
 void dScMgSnowball_c::Bit_RunKindB(int idx)
 {
     char *base = (char *)this;
     unsigned char state = *(unsigned char *)(base + idx * 0x24 + 0xbeb0);
-    (this->*data_ov006_02143050[state])(idx);
+    (this->*sSnowballBitBStateTable[state])(idx);
 }
 
 // @symbol _ZN15dScMgSnowball_c12Bit_PickKindEi
@@ -2442,7 +2442,7 @@ void dScMgSnowball_c::Bit_PickKind(int idx)
 
 typedef void (dScMgSnowball_c::*PMF_0212a2e0)(int);
 
-extern "C" PMF_0212a2e0 data_ov006_02143038[];
+extern "C" PMF_0212a2e0 sSnowballBitKindTable[];
 extern "C" int RandomIntInternal(int *seed);
 extern "C" int data_0209d4b8;
 
@@ -2459,7 +2459,7 @@ void dScMgSnowball_c::Bit_UpdateAll()
     do {
         if (*(u8 *)(q + 0xbeae) != 0) {
             u8 fidx = *(u8 *)(q + 0xbeaf);
-            (this->*data_ov006_02143038[fidx])(i);
+            (this->*sSnowballBitKindTable[fidx])(i);
             if ((*(int *)(q + 0xbe98) - mScrollY) >> 12 >= 0xc8) {
                 u32 rnd = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & mask;
                 rnd = (rnd << 5) >> 0xf;
@@ -2556,12 +2556,12 @@ SnowballProfile g_profile_MG_SNOWBALL = {
 
 /* Source order is copy order. Each entry is a {function, 0} descriptor;
  * __sinit_d_s_mg_snowball.cpp copies them into the tables. */
-extern "C" PMF_0212a2e0 data_ov006_02143038[3] = {
+extern "C" PMF_0212a2e0 sSnowballBitKindTable[3] = {
     &dScMgSnowball_c::Bit_PickKind,
     &dScMgSnowball_c::Bit_RunKindB,
     &dScMgSnowball_c::Bit_RunKindA,
 };
-extern "C" PMF_0212a224 data_ov006_02143050[4] = {
+extern "C" PMF_0212a224 sSnowballBitBStateTable[4] = {
     &dScMgSnowball_c::BitB_State0,
     &dScMgSnowball_c::BitB_State1,
     &dScMgSnowball_c::BitB_State2,
@@ -2569,16 +2569,16 @@ extern "C" PMF_0212a224 data_ov006_02143050[4] = {
 };
 /* Six slots so the symbol runs to the overlay bss end at 0x021430a0.
  * Only the first four are copied from descriptors; the tail stays zero. */
-Entry_02129d94 data_ov006_02143070[6] = {
-    { &dScMgSnowball_c::BitA_State0 },
-    { &dScMgSnowball_c::BitA_State1 },
-    { &dScMgSnowball_c::BitA_State2 },
-    { &dScMgSnowball_c::BitA_State3 },
+Entry_02129d94 sSnowballBitAStateTable[6] = {
+    {&dScMgSnowball_c::BitA_State0},
+    {&dScMgSnowball_c::BitA_State1},
+    {&dScMgSnowball_c::BitA_State2},
+    {&dScMgSnowball_c::BitA_State3},
 };
-Entry_02129d94 data_ov006_02143020[3] = {
-    { &dScMgSnowball_c::Bit_State0 },
-    { &dScMgSnowball_c::Bit_State1 },
-    { &dScMgSnowball_c::Bit_State2 },
+Entry_02129d94 sSnowballBitStateTable[3] = {
+    {&dScMgSnowball_c::Bit_State0},
+    {&dScMgSnowball_c::Bit_State1},
+    {&dScMgSnowball_c::Bit_State2},
 };
 
 // @symbol dScMgSnowball_c_classInit

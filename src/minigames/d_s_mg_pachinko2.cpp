@@ -13,9 +13,9 @@
  * own push/pop bracket around the one member that needs it.
  *
  * The scene's three PMF state tables dispatch on this class: cups at
- * data_ov006_021426cc (5 states on the two 0x20 records at 0x5620), balls at
- * data_ov006_021426f4 (8 states on mBalls[]), paddles at
- * data_ov006_02142734 (15 states on the three 0x40 records at 0x5260). The
+ * sPachinko2CupStateTable (5 states on the two 0x20 records at 0x5620), balls at
+ * sPachinko2BallStateTable (8 states on mBalls[]), paddles at
+ * sPachinko2PaddleStateTable (15 states on the three 0x40 records at 0x5260). The
  * descriptor records they are built from live at data_ov006_0213da*; the
  * runtime copies are made by __sinit_ov006_02131cd0.
  *
@@ -243,9 +243,9 @@ extern int *data_ov006_0213db9c[];
 extern int  data_ov006_0213dbbc[];
 
 /* The three pointer-to-member tables the helpers dispatch through. */
-extern Entry data_ov006_021426cc[];
-extern Entry data_ov006_021426f4[];
-extern PMF   data_ov006_02142734[];
+extern Entry sPachinko2CupStateTable[];
+extern Entry sPachinko2BallStateTable[];
+extern PMF sPachinko2PaddleStateTable[];
 
 /* The ROM {code pointer, adjustment} records the three tables copy from
    (unlicensed .data), grouped by destination table in retail copy order. */
@@ -648,7 +648,7 @@ void dScMgPachinko2_c::Cup_DrawAll()
     for (i = 0; i < 2; i++) {
         char *b = (char *)this + (i << 5);
         if (*(unsigned char *)(b + 0x5634) != 0) {
-            (this->*data_ov006_021426cc[*(unsigned char *)(b + 0x5635)].pmf)(i);
+            (this->*sPachinko2CupStateTable[*(unsigned char *)(b + 0x5635)].pmf)(i);
         }
     }
 }
@@ -1830,7 +1830,7 @@ void dScMgPachinko2_c::Paddle_UpdateAll()
     Row *rows = (Row *)this;
     for (int i = 0; i < 3; i++) {
         if (rows[i].d[0x5294]) {
-            (this->*data_ov006_02142734[rows[i].d[0x5296]])(i);
+            (this->*sPachinko2PaddleStateTable[rows[i].d[0x5296]])(i);
             Paddle_CheckBallHits(i);
         }
     }
@@ -2202,7 +2202,7 @@ void dScMgPachinko2_c::Ball_UpdateAll()
     for (i = 0; i < 0x30; i++) {
         if (mBalls[i].active != 0) {
             unsigned char k = mBalls[i].state;
-            (this->*data_ov006_021426f4[k].pmf)(i);
+            (this->*sPachinko2BallStateTable[k].pmf)(i);
         }
     }
 }
@@ -2904,37 +2904,24 @@ extern "C" int *dScMgPachinko2_c_classInit(void)
    table, the 15-row paddle table, then the 5-row cup table. mwcc emits
    __sinit_d_s_mg_pachinko2.cpp from these definitions, copying the ROM
    .data records. */
-Entry data_ov006_021426f4[8] = {
-    {pmf_dScMgPachinko2_c_Ball_State0},
-    {pmf_dScMgPachinko2_c_Ball_State1},
-    {pmf_dScMgPachinko2_c_Ball_State2},
-    {pmf_dScMgPachinko2_c_Ball_State3},
-    {pmf_dScMgPachinko2_c_Ball_State4},
-    {pmf_dScMgPachinko2_c_Ball_State5},
-    {pmf_dScMgPachinko2_c_Ball_State6},
-    {pmf_dScMgPachinko2_c_Ball_State7},
+Entry sPachinko2BallStateTable[8] = {
+    {pmf_dScMgPachinko2_c_Ball_State0}, {pmf_dScMgPachinko2_c_Ball_State1},
+    {pmf_dScMgPachinko2_c_Ball_State2}, {pmf_dScMgPachinko2_c_Ball_State3},
+    {pmf_dScMgPachinko2_c_Ball_State4}, {pmf_dScMgPachinko2_c_Ball_State5},
+    {pmf_dScMgPachinko2_c_Ball_State6}, {pmf_dScMgPachinko2_c_Ball_State7},
 };
-PMF data_ov006_02142734[15] = {
-    pmf_dScMgPachinko2_c_Paddle_State0,
-    pmf_dScMgPachinko2_c_Paddle_State1,
-    pmf_dScMgPachinko2_c_Paddle_State2,
-    pmf_dScMgPachinko2_c_Paddle_State3,
-    pmf_dScMgPachinko2_c_Paddle_State4,
-    pmf_dScMgPachinko2_c_Paddle_State5,
-    pmf_dScMgPachinko2_c_Paddle_State6,
-    pmf_dScMgPachinko2_c_Paddle_State7,
-    pmf_dScMgPachinko2_c_Paddle_State8,
-    pmf_dScMgPachinko2_c_Paddle_State9,
-    pmf_dScMgPachinko2_c_Paddle_State10,
-    pmf_dScMgPachinko2_c_Paddle_State11,
-    pmf_dScMgPachinko2_c_Paddle_State12,
-    pmf_dScMgPachinko2_c_Paddle_State13,
+PMF sPachinko2PaddleStateTable[15] = {
+    pmf_dScMgPachinko2_c_Paddle_State0,  pmf_dScMgPachinko2_c_Paddle_State1,
+    pmf_dScMgPachinko2_c_Paddle_State2,  pmf_dScMgPachinko2_c_Paddle_State3,
+    pmf_dScMgPachinko2_c_Paddle_State4,  pmf_dScMgPachinko2_c_Paddle_State5,
+    pmf_dScMgPachinko2_c_Paddle_State6,  pmf_dScMgPachinko2_c_Paddle_State7,
+    pmf_dScMgPachinko2_c_Paddle_State8,  pmf_dScMgPachinko2_c_Paddle_State9,
+    pmf_dScMgPachinko2_c_Paddle_State10, pmf_dScMgPachinko2_c_Paddle_State11,
+    pmf_dScMgPachinko2_c_Paddle_State12, pmf_dScMgPachinko2_c_Paddle_State13,
     pmf_dScMgPachinko2_c_Paddle_State14,
 };
-Entry data_ov006_021426cc[5] = {
-    {pmf_dScMgPachinko2_c_Cup_State0},
-    {pmf_dScMgPachinko2_c_Cup_State1},
-    {pmf_dScMgPachinko2_c_Cup_State2},
-    {pmf_dScMgPachinko2_c_Cup_State3},
+Entry sPachinko2CupStateTable[5] = {
+    {pmf_dScMgPachinko2_c_Cup_State0}, {pmf_dScMgPachinko2_c_Cup_State1},
+    {pmf_dScMgPachinko2_c_Cup_State2}, {pmf_dScMgPachinko2_c_Cup_State3},
     {pmf_dScMgPachinko2_c_Cup_State4},
 };
