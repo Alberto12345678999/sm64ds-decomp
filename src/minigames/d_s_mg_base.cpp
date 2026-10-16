@@ -3676,7 +3676,7 @@ void dScMgBase_c::InitMainScreenBg()
     SetBg1Offset(0, 0);
     data_0209d45c[0] &= ~2;
     f = GetGameLanguage();
-    LoadCompressedFileAt(data_ov004_020bbff8[f], (void *)func_02054ea8());
+    LoadCompressedFileAt(sMgPauseBgNcgByLanguage[f], (void *)func_02054ea8());
     LoadCompressedFileAt(0x67, _ZN2G212GetBG1ScrPtrEv());
 }
 
@@ -3717,7 +3717,7 @@ int dScMgBase_c::InitSubScreenBg()
     SetSubBg1Offset(0, 0);
     data_0209d454[0] &= ~2;
     f = GetGameLanguage();
-    LoadCompressedFileAt(data_ov004_020bc00c[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
+    LoadCompressedFileAt(sMgOptionNcgByLanguage[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
     LoadCompressedFileAt(0x5b, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
