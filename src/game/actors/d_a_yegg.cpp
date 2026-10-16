@@ -1248,7 +1248,7 @@ void func_ov002_020edca4(daYegg_c* self)
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x41, self->mPosX, self->mPosY, self->mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x42, self->mPosX, self->mPosY, self->mPosZ);
     self->MarkForDestruction();
-    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, (const struct Vector3*)&self->mCamSpacePosX);
+    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, &self->mCamSpacePos);
 
     self->mBurstDone = 1;
 }

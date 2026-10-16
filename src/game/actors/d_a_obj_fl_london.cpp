@@ -125,8 +125,10 @@ s32 daObjFl_London_c::Behavior()
         }
     } else {
         if (mCooldown == 1) {
-            if (mFlag == 0) Sound::PlayBank3(0x34, *(Vector3 *)&mCamSpacePosX);
-            else            Sound::PlayBank3(0x35, *(Vector3 *)&mCamSpacePosX);
+            if (mFlag == 0)
+                Sound::PlayBank3(0x34, mCamSpacePos);
+            else
+                Sound::PlayBank3(0x35, mCamSpacePos);
         }
     }
     mAngleZ = mPrevAngleZ;

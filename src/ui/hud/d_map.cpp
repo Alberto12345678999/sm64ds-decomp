@@ -19,11 +19,10 @@
  * - Vtbl/VtblOwner stay a file-local slice: the object data_0209f5bc points
  *   at is reached through vtable slot 5 alone (dMeter_c cuts the same slice).
  * - The camera's follow word is mTargetPlayer in dCamera_c.h, typed s32;
- *   this TU reads it as the object the map follows. (Vector3*)&o->mPosX is
- *   the shared-header leftover: dActor_c has no Pos() accessor.
+ *   this TU reads it as the object the map follows.
  * - focusPos/playerPos keep their (int)o + 0x5c integer launders: the
  *   ROM forms the copy source with `add r, o, #0x5c` plus three offset
- *   loads; a *(Vector3*)&o->mPosX pun uses [r8,#0x5c] addressing and
+ *   loads; an o->mPos copy uses [r8,#0x5c] addressing and
  *   shortens the copy.
  * - GetMinimapID's extern keeps GetMinimapID.c's own `struct Obj` slice
  *   spelling; the Obj tag is only a forward here so the declaration agrees.
@@ -792,7 +791,9 @@ L738:
     for (i = 0; i < 0xc; i++) {
         dActor_c *o = (dActor_c *)data_0209f40c[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+                &miniPos);
             this->mStarIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mStarIconY[i] = (miniPos.z + 0x800) >> 12;
             if (data_0209f37c[i] != 4)
@@ -807,7 +808,9 @@ L738:
     for (i = 0; i < 9; i++) {
         dActor_c *o = (dActor_c *)data_0209f3e8[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+                &miniPos);
             this->mCapIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mCapIconY[i] = (miniPos.z + 0x800) >> 12;
             this->mCapMapIDs[i] = (s8)GetMinimapID((Obj *)o, -1);
@@ -822,7 +825,9 @@ L738:
     {
         dActor_c *o = (dActor_c *)data_0209f33c;
         if (o == 0) { this->mStarKeyMapID = -1; goto La64; }
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+            &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+            &miniPos);
         this->mStarKeyIconX = (miniPos.x + 0x800) >> 12;
         this->mStarKeyIconY = (miniPos.z + 0x800) >> 12;
         this->mStarKeyMapID = 1;
@@ -832,7 +837,9 @@ La64:
     for (i = 0; i < 8; i++) {
         dActor_c *o = (dActor_c *)data_0209f3a4[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(
+                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
+                &miniPos);
             this->mSpikeBombIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mSpikeBombIconY[i] = (miniPos.z + 0x800) >> 12;
             this->mSpikeBombMapIDs[i] = o->mAreaId;

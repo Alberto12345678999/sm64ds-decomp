@@ -347,7 +347,7 @@ int daBmb_c::Render()
         int flags = mFlags;
         int b = (flags & 0x40000) != 0;
         if (!b) {
-            mModelAnim.Render((Vector3 *)&mScaleX);
+            mModelAnim.Render(&mScale);
         }
     }
     return result;
@@ -420,11 +420,12 @@ void func_ov102_0214bf64(void *ov)
                 o->mState = 2;
             } else {
                 if (o->mVariant == 5) {
-                    s16 ang = Vec3_HorzAngle((const Vector3 *)&o->mPosX, (const Vector3 *)&o->mHomePosX);
+                    s16 ang = Vec3_HorzAngle(&o->mPos, (const Vector3 *)&o->mHomePosX);
                     ApproachLinear(o->mPrevAngleY, ang, 0x200);
                     o->mAngleY = o->mPrevAngleY;
                 } else {
-                    if (o->mTurnTimer == 0 || Vec3_Dist((const Vector3 *)&o->mPosX, (const Vector3 *)&o->mHomePosX) >= 0x500000) {
+                    if (o->mTurnTimer == 0 ||
+                        Vec3_Dist(&o->mPos, (const Vector3 *)&o->mHomePosX) >= 0x500000) {
                         o->mHorzSpeed = 0x5000;
                         func_ov102_0214beb4(o);
                     }
@@ -432,7 +433,7 @@ void func_ov102_0214bf64(void *ov)
             }
         } else {
             _Z14ApproachLinearRiii(o->mHorzSpeed, 0x10000, 0x1000);
-            s16 target = Vec3_HorzAngle((const Vector3 *)&o->mPosX, (const Vector3 *)&o->mChasePlayer->mPosX);
+            s16 target = Vec3_HorzAngle(&o->mPos, &o->mChasePlayer->mPos);
             if (o->mVariant == 3) {
                 /* Player::mGrabbedByActor: stop turning toward a held player. */
                 int b = (o->mChasePlayer->mGrabbedByActor != 0);
@@ -751,14 +752,16 @@ void func_ov102_0214b988(void *thiz)
     self->mChasePlayer = 0;
     pl = self->ClosestPlayer();
     if (!pl) return;
-    if (Vec3_Dist((struct Vector3 *)&self->mPosX, (struct Vector3 *)&pl->mPosX) > 0x190000) return;
+    if (Vec3_Dist(&self->mPos, &pl->mPos) > 0x190000)
+        return;
     {
         int *src = (int *)&pl->mPosX;
         v.x = src[0];
         v.y = src[1];
         v.z = src[2];
     }
-    if (AngleDiff(Vec3_HorzAngle((struct Vector3 *)&self->mPosX, &v), self->mAngleY) >= self->mNoticeAngle) return;
+    if (AngleDiff(Vec3_HorzAngle(&self->mPos, &v), self->mAngleY) >= self->mNoticeAngle)
+        return;
     self->mChasePlayer = pl;
     func_ov102_0214b384(self, 0x96);
 }
@@ -964,7 +967,7 @@ void func_ov102_0214b444(void *cv)
     v = self->mPosY;
     if (self->mWithMeshClsn.IsOnGround() == 0) {
         dBgCh_Gnd rg;
-        rg.SetObjAndPos(*(const Vector3 *)&self->mPosX, (dActor_c *)0);
+        rg.SetObjAndPos(self->mPos, (dActor_c *)0);
         if (rg.DetectClsn() != 0)
             v = rg.clsnY;
     }
@@ -1067,8 +1070,7 @@ int func_ov102_0214b248(void *cv)
     daBmb_c *self = (daBmb_c *)cv;
 
     if (DecIfAbove0_Short(&self->mFuse)) {
-        self->mFuseSound = Sound::PlayLong(
-            self->mFuseSound, 3, 0x188, *(Vector3 *)&self->mCamSpacePosX, 0);
+        self->mFuseSound = Sound::PlayLong(self->mFuseSound, 3, 0x188, self->mCamSpacePos, 0);
     }
 
     {
@@ -1251,7 +1253,7 @@ void func_ov102_0214ae1c(void *cv) {
 void daBmb_c::OnTurnIntoEgg(Player &player)
 {
     if (unk_108 == 1) {
-        Sound::PlayBank3(0x11, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(0x11, mCamSpacePos);
         GiveCoins(player.mPlayerNo, 1);
         player.Heal(0x100);
     }

@@ -366,10 +366,8 @@ void func_ov060_0211747c(daKpaFire_c *self)
     if (n & 1)
         return;
 
-    dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(5, 0),
-        *reinterpret_cast<const Vector3*>(&self->mPosX),
-        reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
-        self->mAreaId, -1);
+    dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(5, 0), self->mPos, &self->mPrevAngle, self->mAreaId,
+                    -1);
 }
 }
 
@@ -413,10 +411,8 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
                 idx = ((u32)RandomIntInternal(&data_0209e650[0]) >> 0x10) % 3;
             } while ((mask & (1 << idx)) == 0);
             {
-                dActor_c* spawned = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
-                    *reinterpret_cast<const Vector3*>(&self->mPosX),
-                    reinterpret_cast<const Vector3_16*>(&self->mAngleX),
-                    self->mAreaId, -1);
+                dActor_c *spawned = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
+                                                    self->mPos, &self->mAngle, self->mAreaId, -1);
                 if (spawned != 0) {
                     koopa->mCapActorAlive = 1;
                 }
@@ -426,9 +422,7 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
     }
 
     {
-        dActor_c* spawned = dActor_c::Spawn(ACTOR_COIN, 0,
-            *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
-            self->mAreaId, -1);
+        dActor_c *spawned = dActor_c::Spawn(ACTOR_COIN, 0, self->mPos, 0, self->mAreaId, -1);
         if (spawned != 0) {
             spawned->unk_0a4 = 0;
             spawned->mVertSpeed = 0;
@@ -629,9 +623,7 @@ void func_ov060_02116d78(daKpaFire_c *self)
         int rnd = RandomIntInternal(&data_0209e650[0]);
         unsigned int roll = (unsigned int)rnd >> 16;
         if (roll % 17 != 0)
-            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(6, 0),
-                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
-                self->mAreaId, -1);
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(6, 0), self->mPos, 0, self->mAreaId, -1);
         self->MarkForDestruction();
     }
     if (self->mFrameCount < 0x3c) return;
@@ -691,13 +683,9 @@ void func_ov060_02116b68(daKpaFire_c *self)
     self->UpdatePos(0);
     if (self->mWithMeshClsn.IsOnGround()) {
         if (self->mSubVariant == 0)
-            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(7, 0),
-                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
-                self->mAreaId, -1);
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(7, 0), self->mPos, 0, self->mAreaId, -1);
         else
-            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(3, 0),
-                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
-                self->mAreaId, -1);
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(3, 0), self->mPos, 0, self->mAreaId, -1);
         self->MarkForDestruction();
     } else {
         if (self->mPosY >= 0) return;
@@ -746,22 +734,16 @@ void func_ov060_021169f8(daKpaFire_c* self)
         return;
     if (self->mSubVariant == 0) {
         for (i = 0; i < 3; i++) {
-            child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 0),
-                *reinterpret_cast<const Vector3*>(&self->mPosX),
-                reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
-                self->mAreaId, -1);
+            child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 0), self->mPos,
+                                                   &self->mPrevAngle, self->mAreaId, -1);
             child->mFireScale = 0x5000;
         }
     } else {
-        child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 1),
-            *reinterpret_cast<const Vector3*>(&self->mPosX),
-            reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
-            self->mAreaId, -1);
+        child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 1), self->mPos,
+                                               &self->mPrevAngle, self->mAreaId, -1);
         child->mFireScale = 0x8000;
-        child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 2),
-            *reinterpret_cast<const Vector3*>(&self->mPosX),
-            reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
-            self->mAreaId, -1);
+        child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 2), self->mPos,
+                                               &self->mPrevAngle, self->mAreaId, -1);
         child->mFireScale = 0x8000;
     }
     self->MarkForDestruction();
@@ -812,7 +794,8 @@ extern "C" void func_ov060_021168c4(daKpaFire_c* self)
     }
     if (koopa == 0) return;
     if (koopa->mHoldState != 0) return;
-    if (Vec3_HorzDist((Vector3*)&self->mPosX, (Vector3*)&koopa->mPosX) >= 0x96000) return;
+    if (Vec3_HorzDist(&self->mPos, &koopa->mPos) >= 0x96000)
+        return;
     self->MarkForDestruction();
 }
 
@@ -832,15 +815,14 @@ void func_ov060_021167ec(daKpaFire_c* self)
     if (self->mFrameCount != 0) return;
     player = self->ClosestPlayer();
     if (player == 0) return;
-    self->mPrevAngleY = Vec3_HorzAngle((struct Vector3*)&self->mPosX, (struct Vector3*)&player->mPosX);
+    self->mPrevAngleY = Vec3_HorzAngle(&self->mPos, &player->mPos);
     self->mFireScale = 0x5000;
     {
         int i = 0;
         int ang = 0;
         do {
-            daKpaFire_c* child = (daKpaFire_c*)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(4, 0),
-                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
-                self->mAreaId, -1);
+            daKpaFire_c *child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(4, 0),
+                                                                self->mPos, 0, self->mAreaId, -1);
             short heading = self->mPrevAngleY + ang;
             child->mPrevAngleX = 0;
             child->mPrevAngleY = heading;

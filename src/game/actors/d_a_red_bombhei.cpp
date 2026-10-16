@@ -205,16 +205,16 @@ s32 daRedBombhei_c::Behavior()
     func_ov084_0212c9a8();
     player = ClosestPlayer();
     if (player != 0) {
-        Vector3 *src = (Vector3 *)&player->mPosX;
+        Vector3 *src = &player->mPos;
         playerPos = *src;
-        if (Vec3_HorzDist((Vector3 *)&mPosX, &playerPos) < 0x12c000) {
-            short angle = Vec3_HorzAngle((Vector3 *)&mPosX, &playerPos);
+        if (Vec3_HorzDist(&mPos, &playerPos) < 0x12c000) {
+            short angle = Vec3_HorzAngle(&mPos, &playerPos);
             ApproachLinear(mAngleY, angle, 0x100);
         }
     }
     mModelAnim.Advance();
     if ((unsigned short)(mModelAnim.currFrame >> 12) == 0)
-        func_02012694(0xd7, (Vector3 *)&mCamSpacePosX);
+        func_02012694(0xd7, &mCamSpacePos);
     func_ov084_0212ce50();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -335,7 +335,7 @@ int daRedBombhei_c::func_ov084_0212cae0()
             offset.z = lookAtDone;
             Matrix4x3_FromRotationY(&data_020a0e68, shutter->mAngleY);
             MulVec3Mat4x3(&targetLookAt, &data_020a0e68, &offset);
-            Vec3_Add(&sum, (Vector3 *)&shutter->mPosX, &offset);
+            Vec3_Add(&sum, &shutter->mPos, &offset);
             {
                 int dx = sum.x;
                 int dy = sum.y;
@@ -349,7 +349,7 @@ int daRedBombhei_c::func_ov084_0212cae0()
                 *(volatile int *)&targetLookAt.z = dz;
             }
             MulVec3Mat4x3(&targetPos, &data_020a0e68, &offset);
-            Vec3_Add(&sum2, (Vector3 *)&shutter->mPosX, &offset);
+            Vec3_Add(&sum2, &shutter->mPos, &offset);
             {
                 int ey = sum2.y;
                 int ex = sum2.x;
@@ -436,7 +436,7 @@ void daRedBombhei_c::func_ov084_0212c9f0(int msgID, unsigned int msgFlag)
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_02012694(0x108, (Vector3 *)&this->mCamSpacePosX);
+    func_02012694(0x108, &this->mCamSpacePos);
     _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(player, this, (s16)msgID, &pos, msgFlag, 0);
 }
 
@@ -512,7 +512,7 @@ void daRedBombhei_c::func_ov084_0212c508()
         int c = p[2];
         playerPos.z = c;
     }
-    angle = Vec3_HorzAngle((Vector3 *)&this->mPosX, &playerPos);
+    angle = Vec3_HorzAngle(&this->mPos, &playerPos);
 
     if (func_ov084_0212cac0() != 0) {
         if (IsCannonOpenInCurLevel() == 0) {
@@ -644,7 +644,7 @@ void daRedBombhei_c::func_ov084_0212c1a0()
     playerPos.x = src[0];
     playerPos.y = src[1];
     playerPos.z = src[2];
-    angle = Vec3_HorzAngle((Vector3 *)&this->mPosX, &playerPos);
+    angle = Vec3_HorzAngle(&this->mPos, &playerPos);
 
     switch (this->mCutsceneStep) {
     case 0:

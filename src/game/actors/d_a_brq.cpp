@@ -206,7 +206,7 @@ int daBrq_c::Render()
     if (mState != 0 && mState != 2) {
         mTextureSequence.Update(mModel.data);
         mTextureTransformer.Update(mModel.data);
-        mModel.Render((Vector3 *)&mScaleX);
+        mModel.Render(&mScale);
     }
 
     return 1;
@@ -377,8 +377,7 @@ s32 daBrq_c::UpdateActiveState()
     mTextureSequence.Advance();
     mTextureTransformer.Advance();
 
-    mSoundHandle = Sound::PlayLong(
-        mSoundHandle, 3, 0x183, *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x183, mCamSpacePos, 0);
 
     if (DecIfAbove0_Byte(&mStateTimer) == 0) {
         HandlePlayerCollision();
@@ -395,7 +394,7 @@ extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
 // @symbol _ZN7daBrq_c18EnterDefeatedStateEv
 s32 daBrq_c::EnterDefeatedState()
 {
-    Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank0(9, mCamSpacePos);
     mFlags &= ~1;
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
@@ -507,8 +506,7 @@ s32 daBrq_c::HandlePlayerCollision()
         return 0;
 
     if (mdCcAcPos_c.hitFlags & 0x10) {
-        mPrevAngleY = Vec3_HorzAngle(
-            (Vector3 *)&player->mPosX, (Vector3 *)&mPosX);
+        mPrevAngleY = Vec3_HorzAngle(&player->mPos, &mPos);
         mAngleY = (short)(mPrevAngleY + 0x8000);
         player->IncMegaKillCount();
         SetState(2);

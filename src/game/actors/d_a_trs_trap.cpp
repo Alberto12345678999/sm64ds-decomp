@@ -213,7 +213,7 @@ void daTrsTrap_c::func_ov063_0211c7b0()
     t = &mAngleY;
     *t = (short)(*t + mAngVelY);
     func_ov063_0211c82c((char *)this);
-    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8f, *(Vector3 *)&mCamSpacePosX, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8f, mCamSpacePos, 0);
 }
 
 /* Merry-go-round occupancy. The first call only latches mInitLatch; after
@@ -262,9 +262,8 @@ void daTrsTrap_c::func_ov063_0211c89c()
 
     switch (mState) {
     case 0:
-        if ((mBookFlags & 8) == 0 &&
-            Vec3_Dist((Vector3 *)&mPosX, &pp) < 0x320000) {
-            short a = Vec3_HorzAngle((Vector3 *)&mPosX, &pp);
+        if ((mBookFlags & 8) == 0 && Vec3_Dist(&mPos, &pp) < 0x320000) {
+            short a = Vec3_HorzAngle(&mPos, &pp);
             if (a <= -0x7000 || a >= 0x7000)
                 mBookFlags |= 8;
         }
@@ -292,7 +291,7 @@ void daTrsTrap_c::func_ov063_0211c89c()
         return;
     case 2:
         mPosX += 0x5000;
-        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8d, *(Vector3 *)&mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x8d, mCamSpacePos, 0);
         Sound::PlaySecretSound(this, &mSoundTimer);
         if (mStateTimer > 0x65)
             mState = 3;
@@ -378,7 +377,7 @@ void daTrsTrap_c::func_ov063_0211cc18()
     case 1:
         mPosY += 0x8000;
         mRiseProgress += 8;
-        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, *(Vector3 *)&mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, mCamSpacePos, 0);
         if (mRiseProgress <= limit)
             return;
         mRiseProgress = limit;
@@ -387,7 +386,7 @@ void daTrsTrap_c::func_ov063_0211cc18()
         return;
     case 2:
         if (mStateTimer == 0)
-            Sound::PlayBank3(0x3d, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x3d, mCamSpacePos);
         if (func_ov063_0211c770(this, mStateTimer) != 0)
             mState++;
         return;
