@@ -1156,21 +1156,33 @@ void func_ov102_0214b128(void *cv) {
  * ======================================================================== */
 
 // @symbol _ZN7daBmb_c19func_ov102_0214b03cEv
-void daBmb_c::func_ov102_0214b03c(){
-  if(mState < 2 && mModelAnim.file == *((BCA_File **)((char *)&data_ov102_0214e9c0 + 4))){
-    if(((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0) != 0
-       || ((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0x10) != 0){
-      func_0201267c(0x132, (const Vector3 *)&mCamSpacePosX);
+void daBmb_c::func_ov102_0214b03c() {
+    if (mState < 2 && mModelAnim.file == *((BCA_File **)((char *)&data_ov102_0214e9c0 + 4))) {
+        if (((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0) != 0 ||
+            ((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0x10) != 0) {
+            func_0201267c(0x132, &mCamSpacePos);
+        }
     }
-  }
-  switch(mState){
-  case 0: func_ov102_0214bf64(this); return;
-  case 1: State1(); return;
-  case 2: func_ov102_0214bd90(); return;
-  case 3: State3(); return;
-  case 4: State4(); return;
-  case 5: State5(); return;
-  }
+    switch (mState) {
+    case 0:
+        func_ov102_0214bf64(this);
+        return;
+    case 1:
+        State1();
+        return;
+    case 2:
+        func_ov102_0214bd90();
+        return;
+    case 3:
+        State3();
+        return;
+    case 4:
+        State4();
+        return;
+    case 5:
+        State5();
+        return;
+    }
 }
 
 /* ==========================================================================

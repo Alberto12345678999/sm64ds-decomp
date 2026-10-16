@@ -758,8 +758,7 @@ void daJgm_c::DieAndDropCoins()
 }
 
 // @symbol _ZN7daJgm_c12UpdateFlightEv
-void daJgm_c::UpdateFlight()
-{
+void daJgm_c::UpdateFlight() {
     /* The goto is kept: the goto-free if/else emits 4 more bytes. */
     Player *p = ClosestNonVanishPlayer();
     s32 *target;
@@ -779,19 +778,18 @@ void daJgm_c::UpdateFlight()
     } else {
         target = &mSpawnPosX;
     }
-haveTarget:
-    {
-        int hd = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)target);
-        short ha = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)target);
-        ApproachLinear(mAngleY, ha, 0x5e8);
-        if (mTurnDir != 0)
-            mPrevAngleY = (short)(mAngleY - TurnOffsetFromDist(hd));
-        else
-            mPrevAngleY = (short)(mAngleY + TurnOffsetFromDist(hd));
-        ApproachLinear(mPosY, target[1] + 0x12c000, 0x2000);
-        UpdatePos(&mdCcAcPos_c);
-        UpdateWallAndWater(mWithMeshClsn);
-    }
+haveTarget: {
+    int hd = Vec3_HorzDist(&mPos, (Vector3 *)target);
+    short ha = Vec3_HorzAngle(&mPos, (Vector3 *)target);
+    ApproachLinear(mAngleY, ha, 0x5e8);
+    if (mTurnDir != 0)
+        mPrevAngleY = (short)(mAngleY - TurnOffsetFromDist(hd));
+    else
+        mPrevAngleY = (short)(mAngleY + TurnOffsetFromDist(hd));
+    ApproachLinear(mPosY, target[1] + 0x12c000, 0x2000);
+    UpdatePos(&mdCcAcPos_c);
+    UpdateWallAndWater(mWithMeshClsn);
+}
 }
 
 // @symbol _ZN7daJgm_c18TurnOffsetFromDistEi

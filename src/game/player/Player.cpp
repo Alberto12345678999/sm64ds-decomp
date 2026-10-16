@@ -20085,24 +20085,24 @@ int Player::St_Throw_Main()
 /* SetAnim takes a Fix12<int> by value -- the mwccarm 6az wall, runbook
    section 7 -- so it stays extern "C" with a scalar in that slot. */
 extern "C" {
-int Player::St_Throw_Init()
-{
-    extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
-    dActor_c* held = (dActor_c*)mHeldObj;
+int Player::St_Throw_Init() {
+    extern int _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned, int, int, unsigned);
+    dActor_c *held = (dActor_c *)mHeldObj;
     int b = (held->mFlags & 0x200) ? 1 : 0;
     if (!b) {
         unsigned short a = held->actorID;
         int t1 = (a == 0xbd);
         if (!t1) {
             int t2 = (a == 0xbe);
-            if (!t2) goto anim30;
+            if (!t2)
+                goto anim30;
         }
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x91, 0x40000000, 0x1000, 0);
         goto voice;
-anim30:
+    anim30:
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x30, 0x40000000, 0x1000, 0);
-voice:
-        Sound::PlayCharVoice(mCharacter, 0x13, *(const Vector3*)&mCamSpacePosX);
+    voice:
+        Sound::PlayCharVoice(mCharacter, 0x13, mCamSpacePos);
     } else {
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x8a, 0x40000000, 0x1000, 0);
     }

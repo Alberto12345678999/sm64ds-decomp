@@ -1190,8 +1190,7 @@ void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mo
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02120d74Ev
-void daKuriKing_c::func_ov074_02120d74()
-{
+void daKuriKing_c::func_ov074_02120d74() {
     struct Vector3 v0;
     struct Vector3 v1;
     struct Vector3 v2;
@@ -1252,7 +1251,8 @@ void daKuriKing_c::func_ov074_02120d74()
                             v1.x = this->mPosX;
                             v1.y = this->mPosY;
                             v1.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v1, 1, 0x5000, 1, 0, 1);
+                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v1, 1, 0x5000, 1,
+                                                                    0, 1);
                         }
                     } else if (cur == &this->mdCc_cs[3]) {
                         if (this->mWalkSpeed != 0) {
@@ -1262,13 +1262,15 @@ void daKuriKing_c::func_ov074_02120d74()
                             v2.x = this->mPosX;
                             v2.y = this->mPosY;
                             v2.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v2, 1, 0x5000, 1, 0, 1);
+                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v2, 1, 0x5000, 1,
+                                                                    0, 1);
                         }
                     } else {
                         v3.x = this->mPosX;
                         v3.y = this->mPosY;
                         v3.z = this->mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v3, 1, 0x5000, 1, 0, 1);
+                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v3, 1, 0x5000, 1, 0,
+                                                                1);
                         this->mHurtTimer = 0x10;
                     }
                 }
@@ -1297,12 +1299,21 @@ void daKuriKing_c::func_ov074_02120d74()
                                 v0.x = this->mPosX;
                                 v0.y = this->mPosY;
                                 v0.z = this->mPosZ;
-                                if (this->mMegaMushroomID == 0 && dActor_c::FindWithID(this->mMegaMushroomID) == 0) {
-                                    int k = ((u16)(s16)(this->mDirection * ((s16)((this->mScaleX / 0x1000) * 0x350 + 0x500) + 0x600) + (this->mWalkAngle + this->mMaxWalkSpeed))) >> 4;
+                                if (this->mMegaMushroomID == 0 &&
+                                    dActor_c::FindWithID(this->mMegaMushroomID) == 0) {
+                                    int k =
+                                        ((u16)(s16)(this->mDirection *
+                                                        ((s16)((this->mScaleX / 0x1000) * 0x350 +
+                                                               0x500) +
+                                                         0x600) +
+                                                    (this->mWalkAngle + this->mMaxWalkSpeed))) >>
+                                        4;
                                     v0.x = FX_MUL(data_02082214[k * 2], 0x546000LL);
                                     v0.y += 0x32000;
                                     v0.z = FX_MUL(data_02082214[k * 2 + 1], 0x546000LL);
-                                    this->mMegaMushroomID = dActor_c::Spawn(0x115, 0, v0, 0, this->mAreaId, -1)->uniqueID;
+                                    this->mMegaMushroomID =
+                                        dActor_c::Spawn(0x115, 0, v0, 0, this->mAreaId, -1)
+                                            ->uniqueID;
                                 }
                             }
                         }
@@ -1321,14 +1332,14 @@ void daKuriKing_c::func_ov074_02120d74()
         return;
     func_02012694(0x15b, &this->mCamSpacePosX);
     {
-    int ang2 = Vec3_HorzAngle((struct Vector3 *)&this->mPosX, (struct Vector3 *)&player->mPosX);
-    dir2 = 1;
-    if (AngleDiff(ang2, this->mAngleY) > 0x4000) {
-        func_ov074_02121a4c((char *)this, dir2);
-        dir2 = -1;
-    } else {
-        func_ov074_02121a4c((char *)this, 2);
-    }
+        int ang2 = Vec3_HorzAngle(&this->mPos, &player->mPos);
+        dir2 = 1;
+        if (AngleDiff(ang2, this->mAngleY) > 0x4000) {
+            func_ov074_02121a4c((char *)this, dir2);
+            dir2 = -1;
+        } else {
+            func_ov074_02121a4c((char *)this, 2);
+        }
     }
     this->mWalkSpeed = dir2 * (this->mDirection * -0x190);
     func_ov074_021203e4(5);
