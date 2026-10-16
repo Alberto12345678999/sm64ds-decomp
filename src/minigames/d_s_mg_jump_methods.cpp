@@ -110,7 +110,7 @@ extern int  data_0209e650;
 extern int  data_ov006_0213cb48;
 extern u8   data_0209d45c;
 extern s16  data_02082614;
-extern int  data_ov006_02140418;
+extern int sJump3DMarioCount;
 extern int  data_ov006_02140304;
 extern int  data_ov006_02140434;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Result;
@@ -400,7 +400,7 @@ void dScMgJump_c::State_Final()
   mAccum += mAccumStep >> 12;
   mAccumStep += 0x600;
   Jump3D_UpdateAll();
-  int same = (int)(data_ov006_02140434 == data_ov006_02140418);
+  int same = (int)(data_ov006_02140434 == sJump3DMarioCount);
   if(same == 0) return;
   dScMgBase_c *shared = gMgScene;
   if(shared != 0){

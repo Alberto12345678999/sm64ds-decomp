@@ -133,8 +133,8 @@ extern Matrix4x3 data_020a0e68;
 extern "C" void Trmp2Spinner_UpdateMatrix(char *c);
 extern void AddVec3(struct Vector3* a, struct Vector3* b, struct Vector3* c);
 extern "C" Trampoline2ModelFilePtr data_ov006_02142f80;
-extern int data_ov006_02142f74;
-extern unsigned char *data_ov006_02142f7c;
+extern int sTrmp2SpinnerCount;
+extern unsigned char *sTrmp2Spinners;
 extern void Trmp2Spinner_Update(char *obj);
 extern void Trmp2Spinner_Init(void *obj, void *kind);
 extern void Trmp2Spinner_SetModel(void* self);
@@ -234,9 +234,9 @@ extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
 extern int Trmp2Spinner_Construct(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of Trmp2Spinner_UpdateMatrix, from the legacy file for Trmp2Spinner_UpdateMatricesAll, NOT applied: extern void Trmp2Spinner_UpdateMatrix(char *obj); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int data_ov006_02142f7c; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *data_ov006_02142f7c; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_LoadAll, NOT applied: extern int data_ov006_02142f7c; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int sTrmp2Spinners; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *sTrmp2Spinners; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_LoadAll, NOT applied: extern int sTrmp2Spinners; */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f80, from the legacy file for Trmp2Spinner_Destruct, NOT applied: extern SharedFilePtr data_ov006_02142f80; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_02122e20, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054efc, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054efc(void); */
@@ -264,7 +264,7 @@ extern int Trmp2Spinner_Construct(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for func_ov006_021245a8, NOT applied: extern s32 GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_021245a8, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_021245a8, NOT applied: extern void MultiStore16(u16 val, char *dst, int nbytes); */
- /* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
 
 void *dScMgTrampoline2_c_classInit(void);
 /* Literal aliases used only to make the five ROM PMF relocations static data.
@@ -1249,10 +1249,10 @@ extern "C" Model* Trmp2Spinner_Destruct(Model* m){
 extern "C" {
 void Trmp2Spinner_LoadAll(int x, int count) {
     int i;
-    data_ov006_02142f7c = (unsigned char *)x;
-    data_ov006_02142f74 = count;
-    for (i = 0; i < data_ov006_02142f74; i++) {
-        Trmp2Spinner_SetModel((void*)(data_ov006_02142f7c + i * 0x78));
+    sTrmp2Spinners = (unsigned char *)x;
+    sTrmp2SpinnerCount = count;
+    for (i = 0; i < sTrmp2SpinnerCount; i++) {
+        Trmp2Spinner_SetModel((void *)(sTrmp2Spinners + i * 0x78));
     }
 }
 }
@@ -1262,14 +1262,14 @@ extern "C" {
 void Trmp2Spinner_InitAll(unsigned char *c)
 {
   int i = 0;
-  int n = data_ov006_02142f74;
+  int n = sTrmp2SpinnerCount;
   unsigned char *base;
   unsigned char *p;
   if (n <= 0)
   {
     return;
   }
-  base = data_ov006_02142f7c;
+  base = sTrmp2Spinners;
   p = base;
   do
   {
@@ -1280,8 +1280,7 @@ void Trmp2Spinner_InitAll(unsigned char *c)
     }
     i++;
     p += 0x78;
-  }
-  while (i < data_ov006_02142f74);
+  } while (i < sTrmp2SpinnerCount);
 }
 }
 
@@ -1289,13 +1288,13 @@ void Trmp2Spinner_InitAll(unsigned char *c)
 extern "C" {
 void Trmp2Spinner_HideAll(void){
   int i = 0;
-  if(data_ov006_02142f74 > 0){
-    int off = 0;
-    do {
-      *(short*)(data_ov006_02142f7c + off + 0x76) = 0;
-      i++;
-      off += 0x78;
-    } while(i < data_ov006_02142f74);
+  if (sTrmp2SpinnerCount > 0) {
+      int off = 0;
+      do {
+          *(short *)(sTrmp2Spinners + off + 0x76) = 0;
+          i++;
+          off += 0x78;
+      } while (i < sTrmp2SpinnerCount);
   }
 }
 }
@@ -1305,8 +1304,8 @@ extern "C" {
 void Trmp2Spinner_UpdateAll(void)
 {
     int i;
-    for (i = 0; i < data_ov006_02142f74; i++) {
-        char *obj = (char *)data_ov006_02142f7c + i * 0x78;
+    for (i = 0; i < sTrmp2SpinnerCount; i++) {
+        char *obj = (char *)sTrmp2Spinners + i * 0x78;
         if (*(short *)(obj + 0x76) != 0) {
             Trmp2Spinner_Update(obj);
         }
@@ -1319,8 +1318,8 @@ extern "C" {
 void Trmp2Spinner_UpdateMatricesAll(void)
 {
     int i;
-    for (i = 0; i < data_ov006_02142f74; i++) {
-        char *obj = (char *)data_ov006_02142f7c + i * 0x78;
+    for (i = 0; i < sTrmp2SpinnerCount; i++) {
+        char *obj = (char *)sTrmp2Spinners + i * 0x78;
         if (*(short *)(obj + 0x76) != 0) {
             Trmp2Spinner_UpdateMatrix(obj);
         }

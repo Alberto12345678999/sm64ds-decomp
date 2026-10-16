@@ -39,7 +39,7 @@ enum d_s_mg_jump2_AssetId {
 #include "Particle__System.h"
 
 /* The list link at the head of each Elem. Its two methods link `this` into
- * and back out of the live list at data_ov006_021421c0. */
+ * and back out of the live list at sJump2PopupList. */
 struct Node {
     struct Node* next;
     void Link();   /* push */
@@ -121,9 +121,9 @@ extern Jump2ModelFile data_ov006_021421c4; /* model file 0x204 */
 
 extern "C" {
 extern void func_0203d630(int* p, int m);
-extern struct Node* data_ov006_021421c0;
-extern int data_ov006_021421bc;
-extern struct Elem *data_ov006_021421b0;
+extern struct Node *sJump2PopupList;
+extern int sJump2PopupCount;
+extern struct Elem *sJump2Popups;
 extern void *data_ov006_021421b8;
 void Mg_CommitRecords(void);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -585,9 +585,9 @@ s32 dScMgJump2_c::CleanupResources()
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_InitPool(int table, int count){
-  data_ov006_021421b0 = (struct Elem *)table;
-  data_ov006_021421bc = count;
-  data_ov006_021421b4 = 0;
+    sJump2Popups = (struct Elem *)table;
+    sJump2PopupCount = count;
+    data_ov006_021421b4 = 0;
 }
 }
 
@@ -595,9 +595,9 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_Spawn(int x, int y, int sprite)
 {
     int i;
-    for (i = data_ov006_021421bc - 1; i >= 0; i--) {
-        if (data_ov006_021421b0[i].active == 0) {
-            data_ov006_021421b0[i].Spawn(x, y, sprite);
+    for (i = sJump2PopupCount - 1; i >= 0; i--) {
+        if (sJump2Popups[i].active == 0) {
+            sJump2Popups[i].Spawn(x, y, sprite);
             return;
         }
     }
@@ -607,10 +607,10 @@ void Jump2Popup_Spawn(int x, int y, int sprite)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_ClearAll(void){
     int i;
-    for(i=0;i<data_ov006_021421bc;i++){
-        data_ov006_021421b0[i].active = 0;
+    for (i = 0; i < sJump2PopupCount; i++) {
+        sJump2Popups[i].active = 0;
     }
-    data_ov006_021421c0=0;
+    sJump2PopupList = 0;
 }
 }
 
@@ -618,20 +618,20 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_UpdateAll(void)
 {
     int i = 0;
-    if (i < data_ov006_021421bc) {
+    if (i < sJump2PopupCount) {
         int offset = 0;
         do {
-            ((Elem *)((char *)data_ov006_021421b0 + offset))->Tick();
+            ((Elem *)((char *)sJump2Popups + offset))->Tick();
             i++;
             offset += 0x24;
-        } while (i < data_ov006_021421bc);
+        } while (i < sJump2PopupCount);
     }
 }
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_DrawAll(void) {
-    void *node = data_ov006_021421c0;
+    void *node = sJump2PopupList;
     if (node == 0) return;
     do {
         ((Elem *)node)->DrawNumber();
@@ -642,15 +642,15 @@ void Jump2Popup_DrawAll(void) {
 
 // @symbol _ZN4Node4LinkEv
 void Node::Link(){
-  *(void**)this = data_ov006_021421c0;
-  data_ov006_021421c0 = this;
+    *(void **)this = sJump2PopupList;
+    sJump2PopupList = this;
 }
 
 // @symbol _ZN4Node6UnlinkEv
 void Node::Unlink() {
-    struct Node* prev = data_ov006_021421c0;
+    struct Node *prev = sJump2PopupList;
     if (prev == this) {
-        data_ov006_021421c0 = this->next;
+        sJump2PopupList = this->next;
         return;
     }
     struct Node* cur = prev->next;
