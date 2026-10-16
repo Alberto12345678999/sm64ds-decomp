@@ -204,8 +204,7 @@ int daWanwan_c::InitResources()
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
 
-    dActor_c *spawned = dActor_c::Spawn(
-        kStumpActorId, 0x11, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+    dActor_c *spawned = dActor_c::Spawn(kStumpActorId, 0x11, mPos, 0, mAreaId, -1);
     mStumpUniqueID = spawned->uniqueID;
     int one = 1;
     ((daObjPile_c *)spawned)->mBusy = (unsigned char)one;
@@ -267,7 +266,7 @@ int daWanwan_c::Behavior()
 // @symbol _ZN10daWanwan_c6RenderEv
 int daWanwan_c::Render()
 {
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
 
     int j = 0;
     Model *p = mLinkModels;
@@ -600,7 +599,7 @@ void func_ov014_02112114(daWanwan_c *c)
     }
 
     if ((int)(other->actorID == kPlayerActorId) != 0) {
-        ang = Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&other->mPosX);
+        ang = Vec3_HorzAngle(&c->mPos, &other->mPos);
         if (c->mdCcAcPos_c.hitFlags & 0x10) {
             c->func_ov014_02111ebc(5);
             c->mPrevAngleY = other->mAngleY;
@@ -634,7 +633,7 @@ void func_ov014_02111fe0(daWanwan_c *c)
     Vector3 out;
     int len;
     int lim;
-    Vec3_Sub(&v, (Vector3 *)&c->mPosX, (Vector3 *)&c->mSpawnPosX);
+    Vec3_Sub(&v, &c->mPos, (Vector3 *)&c->mSpawnPosX);
     len = LenVec3(&v);
     lim = c->mChainExtension * 7 + kRestLift;
     if (len <= lim)
@@ -831,14 +830,14 @@ extern "C" void func_ov014_02111b70(daWanwan_c *c)
 
     a = (unsigned short)Vec3_VertAngle(&c->mPosX, tgt);
     i = (a >> 4) << 1;
-    c->mVertSpeed = -((int)(((((long long)data_02082214[i]) * 0x8c000) + 0x800) >> 12));
+    c->mVertSpeed = -FX_MUL(data_02082214[i], 0x8c000);
     v = c->mVertSpeed;
     if (v < 0x5000)
         v = 0x5000;
     else if (v > 0x2d000)
         v = 0x2d000;
     c->mVertSpeed = v;
-    c->mHorzSpeed = (int)(((((long long)data_02082214[i + 1]) * 0x8c000) + 0x800) >> 12);
+    c->mHorzSpeed = FX_MUL(data_02082214[i + 1], 0x8c000);
     c->mActionTimer = 0x3c;
 }
 
@@ -907,7 +906,7 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
     }
     camera = (dCamera_c *)data_0209f318;
     angleToPlayer = self->HorzAngleToCPlayer();
-    angleToAnchor = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mSpawnPosX);
+    angleToAnchor = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->mSpawnPosX);
     /* camera+0x118 has no name in dCamera_c.h. dCamera_c::Behavior clears
        it and ORs 4 into mFlags when it was non-zero; steps 0-6 write the
        chomp there. */
@@ -948,7 +947,7 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
         ApproachLinear(self->mReleaseSpeed, 0x1000, 0x400);
         if (self->mIsOnGround != 0) {
             SetChompAnim(self, data_ov014_02114970);
-            self->mAngleY = Vec3_HorzAngle((Vector3 *)&self->mPosX, &partnerPos);
+            self->mAngleY = Vec3_HorzAngle(&self->mPos, &partnerPos);
             self->mPrevAngleY = self->mAngleY;
             self->mVertSpeed = 0x14000;
             self->mReleaseSpeed = kChainMax;
@@ -965,19 +964,19 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
                 s16 *tbl = data_02082214;
                 u16 ang = fence->mAngleY;
                 s32 s = tbl[(ang >> 4) << 1];
-                s32 add = (s32)(((((long long)s) * 0x96000) + 0x800) >> 12);
+                s32 add = FX_MUL(s, 0x96000);
                 target.x = x + add;
             }
             {
                 s16 *tbl = data_02082214;
                 u16 ang = fence->mAngleY;
                 s32 s = tbl[(((ang >> 4) << 1) + 1)];
-                s32 add = (s32)(((((long long)s) * 0x96000) + 0x800) >> 12);
+                s32 add = FX_MUL(s, 0x96000);
                 target.z = z + add;
             }
-            if (Vec3_ApproachHorz((Vector3 *)&self->mPosX, &target, self->mReleaseSpeed) != 0) {
+            if (Vec3_ApproachHorz(&self->mPos, &target, self->mReleaseSpeed) != 0) {
                 incRelease(self);
-                self->mPrevAngleY = (s16)(Vec3_HorzAngle((Vector3 *)&self->mPosX, &partnerPos) + 0x8000);
+                self->mPrevAngleY = (s16)(Vec3_HorzAngle(&self->mPos, &partnerPos) + 0x8000);
                 self->mHorzSpeed = 0x28000;
                 self->mVertSpeed = 0xa000;
                 func_ov014_02112ea8(fence);
@@ -988,7 +987,7 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
     case 7:
         if (self->mIsOnGround != 0) {
             SetChompAnim(self, data_ov014_02114980);
-            self->mPrevAngleY = Vec3_HorzAngle((Vector3 *)&self->mPosX, &partnerPos);
+            self->mPrevAngleY = Vec3_HorzAngle(&self->mPos, &partnerPos);
             self->mActionTimer = 0x3c;
             self->mAngleY = self->mPrevAngleY;
             if (fence->mDisabled != 0) {
@@ -1010,7 +1009,7 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
                 self->mActionTimer = 0x3c;
             }
         } else {
-            camera->SetLookAt(*(Vector3 *)&self->mPosX);
+            camera->SetLookAt(self->mPos);
         }
         break;
     case 9:

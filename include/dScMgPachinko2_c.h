@@ -37,7 +37,7 @@ struct dScMgPachinko2_Ball {
     u8 state;       /* +0x39 -- 2 while released, 0 when reset */
     u8 visible;     /* +0x3a -- Ball_DrawAll draws the ball while set */
     u8 spawnClear;  /* +0x3b -- zeroed when a ball spawns; nothing reads it */
-    u8 sprite;      /* +0x3c -- 0 = the rolling ball, else frame + 1 in data_ov006_02138d08 */
+    u8 sprite;      /* +0x3c -- 0 = rolling ball, else frame + 1 in sPachinko2BallCountSprites */
     u8 animStep;    /* +0x3d -- 0..3, picks the frame */
     u8 facingRight; /* +0x3e -- moving right; frames +4 */
     u8 pad_3f;      /* +0x3f */
@@ -77,7 +77,7 @@ struct dScMgPachinko2_Paddle {
     u8 pad_3e[0x2]; /* +0x3e */
 };
 
-/* The flash at a paddle catch: four frames from data_ov006_02136bd4, eight
+/* The flash at a paddle catch: four frames from sPachinko2SparkSprites, eight
    ticks each (Spark_UpdateAll). */
 struct dScMgPachinko2_HitFx {
     s32 x;            /* +0x00 */
@@ -118,7 +118,7 @@ struct dScMgPachinko2_Cup {
     u8  active;       /* +0x14 */
     u8  state;        /* +0x15 */
     u8  phase;        /* +0x16 */
-    u8  frame;        /* +0x17 -- sprite index into data_ov006_02136b80 */
+    u8 frame;         /* +0x17 -- sprite index into sPachinkoPipeSprites */
     u8  animStep;     /* +0x18 */
     u8  visible;      /* +0x19 */
     u8  dir;          /* +0x1a */

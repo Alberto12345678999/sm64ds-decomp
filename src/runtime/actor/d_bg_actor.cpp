@@ -23,7 +23,6 @@
  * - dActor_c::Earthquake / Particle::System::NewSimple stay TU-local mangled
  *   calls: Fix12<int> by value (6az); typed shared-header decls of them are
  *   overload poison (S13).
- * - (Vector3 *)&mPosX puns stay: dActor_c::Pos() does not exist yet (#2513).
  * - Player+0x5c stays an offset: Player is only forward-declared here, and
  *   naming three words is not worth pulling Player.h into a TU that has no
  *   other use for it.
@@ -396,7 +395,7 @@ int func_ov002_020eea84(char *self, char *player)
             if (actor != 0 && (b = (int)(actor->actorID == 0x139)) != 0) {
                 { int *s = (int *)(&actor->mPosX); v2.x = s[0]; v2.y = s[1]; v2.z = s[2]; }
                 if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, 1, 0xc000, 1, 0, 1) != 0)
-                    Sound::PlayBank0(0xb5, *(Vector3 *)&actor->mCamSpacePosX);
+                    Sound::PlayBank0(0xb5, actor->mCamSpacePos);
                 return 1;
             }
         }
@@ -527,11 +526,11 @@ int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, F
     rayEnd.z = 0;
     Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
     MulVec3Mat4x3(&probe, &data_020a0e68, &rayEnd);
-    Vec3_Add(&sum, (Vector3 *)&mPosX, &rayEnd);
+    Vec3_Add(&sum, &mPos, &rayEnd);
     rayEnd = sum;
 
     dBgCh_Lin ray;
-    ray.SetObjAndLine(*(Vector3 *)&mPosX, rayEnd, this);
+    ray.SetObjAndLine(mPos, rayEnd, this);
     if (ray.DetectClsn())
         mPrevAngleY += 0x8000;
     mAngleX += angStepX;
@@ -551,7 +550,7 @@ extern "C" {
 void func_ov002_020ee5d0(dBgActor_c *self, int pivotY)
 {
     Vector3 modelPos;
-    Vec3_Asr(&modelPos, (Vector3 *)&self->mPosX, 3);
+    Vec3_Asr(&modelPos, &self->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, modelPos.x, modelPos.y, modelPos.z);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, pivotY >> 3, 0);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68,
@@ -584,7 +583,7 @@ void dBgActor_c::Kill()
     dustPos.y = pos.y;
     dustPos.z = pos.z;
     PoofDustAt(dustPos);
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();
 }
 
@@ -604,7 +603,7 @@ void dBgActor_c::KillByMegaChar(Player &player)
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x14000;
     mVertSpeed = 0x1e000;
-    mPrevAngleY = Vec3_HorzAngle((Vector3 *)((char *)&player + 0x5c), (Vector3 *)&mPosX);
+    mPrevAngleY = Vec3_HorzAngle((Vector3 *)((char *)&player + 0x5c), &mPos);
     unk_31d = 0x1e;
     if (mMeshCollider.IsEnabled() == 0)
         return;

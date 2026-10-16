@@ -20,6 +20,7 @@
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &value, int target, int step);
@@ -125,7 +126,7 @@ int daPgRcer_c::InitResources()
     func_ov019_021122dc(0);
     mPath.FromID(param1 & 0xff);
     mPathNodeIndex = 0;
-    mPath.GetNode(*(Vector3 *)&mPosX, mPathNodeIndex);
+    mPath.GetNode(mPos, mPathNodeIndex);
     func_ov019_021113b0();
     func_ov019_021114ec(this);
     return 1;
@@ -147,7 +148,7 @@ int daPgRcer_c::Behavior()
 int daPgRcer_c::Render()
 {
     mTextureSequence.Update(mModelAnim.data);
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -214,7 +215,7 @@ int daPgRcer_c::func_ov019_02112168()
     if (pl == 0)
         return 1;
     int radius = mdCcAc_c.radius;
-    if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&pl->mPosX) < radius + 0x78000) {
+    if (Vec3_Dist(&mPos, &pl->mPos) < radius + 0x78000) {
         if (pl->StartTalk(*this, 1)) {
             mTalkPlayer = pl;
             func_ov019_021122dc(1);
@@ -240,7 +241,7 @@ int func_ov019_02111fec(daPgRcer_c *self)
 {
     switch (self->mActionStep) {
     case 0: {
-        short ang = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mTalkPlayer->mPosX);
+        short ang = Vec3_HorzAngle(&self->mPos, &self->mTalkPlayer->mPos);
         if (ApproachLinear(self->mAngleY, ang, 0x514) != 0) {
             Vector3 pos;
             int msg;
@@ -372,7 +373,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
             }
             {
                 Player *o = self->mTalkPlayer;
-                const Vector3 *p = (const Vector3 *)&o->mPosX;
+                const Vector3 *p = &o->mPos;
                 Vector3 v;
                 v.x = p->x;
                 v.y = p->y;
@@ -408,7 +409,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
             }
             {
                 Player *o = self->mTalkPlayer;
-                const Vector3 *p = (const Vector3 *)&o->mPosX;
+                const Vector3 *p = &o->mPos;
                 Vector3 v;
                 v.x = p->x;
                 v.y = p->y;
@@ -425,7 +426,8 @@ int func_ov019_0211197c(daPgRcer_c *self)
             }
             ApproachLinear(self->mHorzSpeed, val, 0x800);
         }
-        if (self->mPenguinFinished == 0 && Vec3_Dist(&data_ov019_021134e8, (Vector3 *)&self->mPosX) < 0x190000) {
+        if (self->mPenguinFinished == 0 &&
+            Vec3_Dist(&data_ov019_021134e8, &self->mPos) < 0x190000) {
             if (self->mPlayerFinished != 0) {
                 self->mPenguinWon = 0;
             } else {
@@ -433,7 +435,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
             }
             self->mPenguinFinished = 1;
         }
-        self->mSlideSound = Sound::PlayLong(self->mSlideSound, 3, 0x185, *(const Vector3 *)&self->mCamSpacePosX, 0);
+        self->mSlideSound = Sound::PlayLong(self->mSlideSound, 3, 0x185, self->mCamSpacePos, 0);
         self->mDustParticle = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
             self->mDustParticle, 0x101, self->mPosX, self->mPosY + 0x32000, self->mPosZ, 0, 0);
         break;
@@ -446,10 +448,10 @@ int func_ov019_0211197c(daPgRcer_c *self)
     }
 
     self->func_ov019_021112b8();
-    if (Vec3_Dist(&data_ov019_0211353c, (Vector3 *)&self->mTalkPlayer->mPosX) < 0x280000) {
+    if (Vec3_Dist(&data_ov019_0211353c, &self->mTalkPlayer->mPos) < 0x280000) {
         self->mPlayerCheated = 1;
     }
-    if (Vec3_Dist(&data_ov019_021134e8, (Vector3 *)&self->mTalkPlayer->mPosX) < 0x190000) {
+    if (Vec3_Dist(&data_ov019_021134e8, &self->mTalkPlayer->mPos) < 0x190000) {
         self->mPlayerFinished = 1;
     }
     return 1;
@@ -476,8 +478,8 @@ int func_ov019_021117a8(daPgRcer_c *self)
     case 0: {
         int n = self->mPath.NumNodes();
         self->mPath.GetNode(node, n - 1);
-        self->mPathDist = Vec3_Dist((Vector3 *)&self->mPosX, &node);
-        self->mTargetAngY = Vec3_HorzAngle((Vector3 *)&self->mPosX, &node);
+        self->mPathDist = Vec3_Dist(&self->mPos, &node);
+        self->mTargetAngY = Vec3_HorzAngle(&self->mPos, &node);
         ApproachLinear(self->mAngleY, self->mTargetAngY, 0x200);
         self->mPrevAngleY = self->mAngleY;
         if (self->mPathDist < self->mHorzSpeed) {
@@ -495,7 +497,7 @@ int func_ov019_021117a8(daPgRcer_c *self)
         break;
     }
     case 1: {
-        short ang = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mTalkPlayer->mPosX);
+        short ang = Vec3_HorzAngle(&self->mPos, &self->mTalkPlayer->mPos);
         if (ApproachLinear(self->mAngleY, ang, 0x514) != 0) {
             self->func_ov019_021122dc(5);
         }
@@ -528,7 +530,7 @@ int func_ov019_02111558(daPgRcer_c *self)
     switch (self->mActionStep) {
     case 0: {
         int radius = self->mdCcAc_c.radius;
-        int d = Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&self->mTalkPlayer->mPosX);
+        int d = Vec3_Dist(&self->mPos, &self->mTalkPlayer->mPos);
         if (d < radius + 0x78000) {
             if (self->mTalkPlayer->StartTalk(*self, 1) != 0) {
                 ++self->mActionStep;
@@ -537,7 +539,7 @@ int func_ov019_02111558(daPgRcer_c *self)
         break;
     }
     case 1: {
-        short ang = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mTalkPlayer->mPosX);
+        short ang = Vec3_HorzAngle(&self->mPos, &self->mTalkPlayer->mPos);
         if (ApproachLinear(self->mAngleY, ang, 0x514) != 0) {
             unsigned int id;
             Vector3 v;
@@ -567,10 +569,9 @@ int func_ov019_02111558(daPgRcer_c *self)
     case 2:
         if (self->mTalkPlayer->GetTalkState() == 2) {
             if (self->mPenguinWon == 0) {
-                self->UntrackAndSpawnStar(
-                    *(s8 *)&self->mStarSlot,
-                    (unsigned int)(unsigned char)((self->param1 >> 8) & 0xf),
-                    *(Vector3 *)&self->mPosX, 4);
+                self->UntrackAndSpawnStar(*(s8 *)&self->mStarSlot,
+                                          (unsigned int)(unsigned char)((self->param1 >> 8) & 0xf),
+                                          self->mPos, 4);
             }
             self->mTalkPlayer->HasFinishedTalking();
             _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(gOV019PenguinWait1TextureSequenceFile), 0, 0x1000, 0);
@@ -601,10 +602,8 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            long long a = (long long)floorNormal.x * (long long)self->unk_0a4;
-            long long b = (long long)floorNormal.z * (long long)self->unk_0ac;
-            int x = (int)((a + 0x800) >> 12);
-            int y = (int)((b + 0x800) >> 12);
+            int x = FX_MUL(floorNormal.x, self->unk_0a4);
+            int y = FX_MUL(floorNormal.z, self->unk_0ac);
             self->mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
             if (self->mVertSpeed > 0)
                 self->mVertSpeed = 0;
@@ -623,8 +622,8 @@ void daPgRcer_c::func_ov019_021113b0()
     Vector3 node;
     mPathNodeIndex = mPathNodeIndex + 1;
     mPath.GetNode(node, mPathNodeIndex);
-    mPathDist = Vec3_Dist((Vector3 *)&mPosX, &node);
-    mTargetAngY = Vec3_HorzAngle((Vector3 *)&mPosX, &node);
+    mPathDist = Vec3_Dist(&mPos, &node);
+    mTargetAngY = Vec3_HorzAngle(&mPos, &node);
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_0211131cEv
@@ -637,7 +636,7 @@ int daPgRcer_c::func_ov019_0211131c()
     } else {
         Vector3 node;
         mPath.GetNode(node, n + 1);
-        mAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, &node);
+        mAngleY = Vec3_HorzAngle(&mPos, &node);
     }
     mPathDist = mPathDist - mHorzSpeed;
     return mPathDist < 0;

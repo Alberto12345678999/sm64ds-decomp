@@ -113,7 +113,7 @@ void func_ov002_020b6074(daObjGuragura_c *self)
     Matrix4x3 q;
     Vector3 v;
     Matrix4x3_FromQuaternion(self->mTilt, &q);
-    Vec3_Asr(&v, (Vector3 *)&self->mPosX, 3);
+    Vec3_Asr(&v, &self->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     MulMat4x3Mat4x3(&q, &data_020a0e68, &data_020a0e68);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, self->mAngleY);

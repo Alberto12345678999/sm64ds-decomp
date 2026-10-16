@@ -41,6 +41,7 @@
 #include "dBgPc.h"
 #include "SurfaceInfo.h"
 #include "Vector3s.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 
@@ -143,12 +144,6 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
 #define EDGENORMAL_DOT(a, b) \
     (MUL10((a)[0], (b)[0]) + MUL10((a)[1], (b)[1]) + MUL10((a)[2], (b)[2]))
 
-/* The ROUNDED Fix12 multiply -- `smull` / `adds #0x800` / `adc` / `lsr #0xc` /
-   `orr lsl #20`. The wall block uses this and nothing else does: the collider's
-   axis is Fix12i where the edge normals are 0x400-scale, so MUL10 is wrong there
-   and this is wrong everywhere else. */
-#define FX12(a, b) ((s32)((((s64)(a) * (b)) + 0x800) >> 12))
-
 /* One vertex of the triangle, recovered from the KCL prism: the prism stores a
    position, a face normal, three edge normals and a length, and the vertex is
    `pos + cross(fn, ea) * (length / dot(cross(fn, ea), en3))`. The cross goes
@@ -169,10 +164,14 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
     (out)[1] = (o1) + (s32)(((s64)cr.y * u) >> 14);                         \
     (out)[2] = (o2) + (s32)(((s64)cr.z * u) >> 14);
 
-/* Post-subtraction form: components already relative to the centre. */
-#define AXIS_DOT0(v) (FX12(unk_28, (v).x) \
-                    + FX12(unk_2c, (v).y) \
-                    + FX12(unk_30, (v).z))
+/* Post-subtraction form: components already relative to the centre. The wall
+   block is the one place that uses the ROUNDED Fix12 multiply, FX_MUL --
+   `smull` / `adds #0x800` / `adc` / `lsr #0xc` / `orr lsl #20`: the collider's
+   axis is Fix12i where the edge normals are 0x400-scale, so MUL10 is wrong here
+   and FX_MUL is wrong everywhere else. */
+#define AXIS_DOT0(v) (FX_MUL(unk_28, (v).x) \
+                    + FX_MUL(unk_2c, (v).y) \
+                    + FX_MUL(unk_30, (v).z))
 
 /* A vertex region: the closest point is where edge normals `ea` and `eb` meet.
    `nn` is their cosine, already formed by the dispatch. Solve the 2x2 for the

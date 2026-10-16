@@ -25,6 +25,7 @@
  *   header owns them.
  */
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "dFdWipe_c.h"
 #include "dFdDummy_c.h"
 #include "decl_common.h"
@@ -222,7 +223,7 @@ void dFdWipe_c::AdvanceFade()
             if (old != 0x1000) *(u16*)0x4000050 = 0;
         }
         if (*(Fix12i*)((char*)&currInterp) != 0) {
-            Fix12i scale = (Fix12i)(((long long)(0x1000 - *(Fix12i*)((char*)&currInterp)) * 0x20000 + 0x800) >> 12);
+            Fix12i scale = FX_MUL(0x1000 - *(Fix12i *)((char *)&currInterp), 0x20000);
             Matrix4x3_FromTranslation(&data_020a0e68, 0, 0, -0x1000);
             Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, scale, scale, scale);
             Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, 0x4000);

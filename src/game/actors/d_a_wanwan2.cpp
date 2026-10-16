@@ -73,6 +73,7 @@
 
 #include "daWanwan2_c.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
@@ -463,8 +464,8 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
         delta.x = vel->x + (pos->x - src->x);
         delta.z = vel->z + (pos->z - src->z);
         idx = ((unsigned short)(short)(angOff + (thisx->mChainTimer << 12))) >> 4;
-        val = (pos->y + vel->y) - 0x2000     /* 2 units down */
-            + (int)(((s64)data_02082214[idx * 2] * (-0xa000) + 0x800) >> 12);
+        val = (pos->y + vel->y) - 0x2000 /* 2 units down */
+              + FX_MUL(data_02082214[idx * 2], -0xa000);
         if (val <= *heights) val = *heights;
         delta.y = val - src->y;
         ang = _ZN4cstd5atan2E5Fix12IiES1_(delta.x, delta.z);
@@ -600,7 +601,7 @@ void daWanwan2_c::OnPendingDestroy()
    the six link models are drawn. */
 int daWanwan2_c::Render()
 {
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     for (int i = 0; i < 5; i++)
         mModels[i].Render(0);
     return 1;
@@ -679,9 +680,8 @@ int daWanwan2_c::Behavior()
         v.y = 4;
         v.z = 0;
 
-        dActor_c *sp = dActor_c::Spawn(
-            daWanwan2_ACTOR_COIN, 2, *(const Vector3 *)&mPosX, (const Vector3_16 *)0,
-            mAreaId, -1);
+        dActor_c *sp =
+            dActor_c::Spawn(daWanwan2_ACTOR_COIN, 2, mPos, (const Vector3_16 *)0, mAreaId, -1);
         if (unk_6a8 == 0) {
             func_02012694(daWanwan2_SND_COIN_SPAWN, &mCamSpacePosX);
         }
@@ -706,7 +706,7 @@ int daWanwan2_c::Behavior()
         ((PathPtr *)path)->FromID(mPathID);
         ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
 
-        Vec3_Sub(&diff, (Vector3 *)&mPosX, &node);
+        Vec3_Sub(&diff, &mPos, &node);
 
         if (LenVec3(&diff) < 0x190000) {
             mPathNodeIndex += 1;
@@ -716,7 +716,7 @@ int daWanwan2_c::Behavior()
             ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
         }
 
-        short ang = Vec3_HorzAngle((Vector3 *)&mPosX, &node);
+        short ang = Vec3_HorzAngle(&mPos, &node);
         mTargetAngle = ang;
 
         ApproachAngle(&mPrevAngleY, mTargetAngle, 0x10, 0x20, 0x500);
@@ -829,7 +829,7 @@ int daWanwan2_c::InitResources()
         PathPtr path;
         path.FromID(mPathID);
         mPathNodeIndex = 1;
-        path.GetNode(*(Vector3 *)&mPosX, mPathNodeIndex);
+        path.GetNode(mPos, mPathNodeIndex);
     }
 
     /* Raise it 100 units (0x64000). Preserve the ROM's materialized

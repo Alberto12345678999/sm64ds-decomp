@@ -145,7 +145,7 @@ extern "C" void func_020371fc(char *self)
     if (((Player *)clsn->mActor)->IsInAir()) return;
     {
         Vector3 pos;
-        Vector3 *objpos = (Vector3 *)&clsn->mActor->mPosX;
+        Vector3 *objpos = &clsn->mActor->mPos;
         dBgCh_Gnd rg;
         pos.x = objpos->x;
         pos.y = objpos->y + clsn->mRadius;
@@ -186,8 +186,8 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
     int sy;
     struct Vector3 v;
     struct Vector3 *p6c;
-    struct Vector3 *src = (struct Vector3 *)&mActor->mPosX;
-    struct Vector3 *p68 = (struct Vector3 *)&mActor->mPrevPosX;
+    struct Vector3 *src = &mActor->mPos;
+    struct Vector3 *p68 = &mActor->mPrevPos;
 
     if (IsOnGround() && func_020355a0((int *)this)
         && ShouldUpdatePos()) {
@@ -234,7 +234,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava_2()
     int sy;
     struct Vector3 v;
     struct Vector3 *p6c;
-    struct Vector3 *src = (struct Vector3 *)&mActor->mPosX;
+    struct Vector3 *src = &mActor->mPos;
     dActor_c *obj = mActor;
 
     onGround = IsOnGround();
@@ -695,8 +695,8 @@ void dBgCh_Actr::UpdateExtraContinous()
     dActor_c *ac;
 
     ac = mActor;
-    pos = (Vector3 *)&ac->mPosX;
-    prev = (Vector3 *)&ac->mPrevPosX;
+    pos = &ac->mPos;
+    prev = &ac->mPrevPos;
 
     if (IsOnGround() && func_020355a0((int *)this))
         func_02038324((void *)mSphereClsn.GetFloorResult(), (int)pos, mSphereClsn.mMotionAngPtr,
@@ -1014,11 +1014,11 @@ void dBgCh_Actr::Unk_0203589c()
 extern "C" void func_02035860(char *o, struct Vector3 *src)
 {
     dActor_c *base = ((dBgCh_Actr *)o)->mActor;
-    struct Vector3 *d1 = (struct Vector3 *)&base->mPosX;
+    struct Vector3 *d1 = &base->mPos;
     d1->x = src->x;
     d1->y = src->y;
     d1->z = src->z;
-    struct Vector3 *d2 = (struct Vector3 *)&base->mPrevPosX;
+    struct Vector3 *d2 = &base->mPrevPos;
     d2->x = src->x;
     d2->y = src->y;
     d2->z = src->z;

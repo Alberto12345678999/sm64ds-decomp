@@ -166,7 +166,7 @@ int dBgCh_SphCrr::DetectClsn()
             int active = (owner->mFlags & 2) ? 1 : 0;
             if (active != 0) {
                 Vector3 ownerPos;
-                Vector3 *src = (Vector3 *)&owner->mPosX;
+                Vector3 *src = &owner->mPos;
                 ownerPos.x = src->x;
                 ownerPos.y = src->y;
                 ownerPos.z = src->z;
@@ -242,7 +242,7 @@ int dBgCh_SphCrr::func_02038824()
                diffs. Its value is the dM3dGSph base's centre. */
             int pos = (int)&((dM3dGSph &)*this).centre;
             Vector3 ownerPos;
-            Vector3 *src = (Vector3 *)&owner->mPosX;
+            Vector3 *src = &owner->mPos;
             int clipDist;
             ownerPos.x = src->x;
             ownerPos.y = src->y;

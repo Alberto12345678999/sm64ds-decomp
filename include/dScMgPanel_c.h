@@ -63,7 +63,7 @@ struct dScMgPanel_Particle {
     s32 vy;           /* +0x0c */
     u8  active;       /* +0x10 */
     u8  stuck;        /* +0x11 -- set: no gravity */
-    u8  kind;         /* +0x12 -- sprite, data_ov006_0213def0 */
+    u8 kind;          /* +0x12 -- sprite, sPanelParticleSprites */
     u8  frame;        /* +0x13 -- five frames, then the slot frees */
     u8  tick;         /* +0x14 */
     u8  visible;      /* +0x15 */

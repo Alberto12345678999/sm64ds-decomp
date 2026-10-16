@@ -264,7 +264,7 @@ int daPkn_c::Render()
 {
     if (mScaleX == 0)
         return 1;
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     if ((int)mModelAnim.file == (int)data_ov084_02130df4.file)
         mModel.Render(&mBubbleScale);
     return 1;
@@ -323,7 +323,7 @@ void daPkn_c::StateSleep()
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xff, mBubblePos.x, mBubblePos.y, mBubblePos.z);
         return;
     }
-    mLoopSoundHandle = Sound::PlayLong(mLoopSoundHandle, 3, 0x174, *(Vector3 *)&mCamSpacePosX, 0);
+    mLoopSoundHandle = Sound::PlayLong(mLoopSoundHandle, 3, 0x174, mCamSpacePos, 0);
     if (mPlayerDist < 0x352000) {
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x36, 0, 0x7f, 0x1451, 0);
         mSubSoundFadedOut = 0;
@@ -605,12 +605,12 @@ void daPkn_c::TrackClosestPlayer()
     Player *p = mClosestPlayer;
     if (p != 0) {
         /* Member by member: `v = *pos` emits a different copy. */
-        Vector3 *pos = (Vector3 *)&p->mPosX;
+        Vector3 *pos = &p->mPos;
         v.x = pos->x;
         v.y = pos->y;
         v.z = pos->z;
-        mPlayerDist = Vec3_Dist((Vector3 *)&mPosX, &v);
-        mTargetAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, &v);
+        mPlayerDist = Vec3_Dist(&mPos, &v);
+        mTargetAngleY = Vec3_HorzAngle(&mPos, &v);
         mPlayerAirborne = mClosestPlayer->mIsAirborne;
     } else {
         mPlayerDist = 0x7fffffff;

@@ -421,7 +421,7 @@ extern "C" int func_ov062_02116a08(daHolhei_c *self)
     self->mHorzSpeed = 0xa000;
     pl = self->ClosestPlayer();
 
-    self->mMoveSound = Sound::PlayLong(self->mMoveSound, 3, 0x18a, *(const Vector3 *)&self->mCamSpacePosX, 0);
+    self->mMoveSound = Sound::PlayLong(self->mMoveSound, 3, 0x18a, self->mCamSpacePos, 0);
 
     if (pl != 0 && self->mChaseCooldown == 0) {
         int *pos = &pl->mPosX;
@@ -536,7 +536,7 @@ int daHolhei_c::func_ov062_021165e8()
     if (player == 0)
         return 1;
 
-    pp = (struct Vector3*)&player->mPosX;
+    pp = &player->mPos;
     pos.x = pp->x;
     pos.y = pp->y;
     pos.z = pp->z;
@@ -553,7 +553,7 @@ int daHolhei_c::func_ov062_021165e8()
         }
     }
 
-    mMoveSound = Sound::PlayLong(mMoveSound, 3, 0x18a, *(const Vector3 *)&mCamSpacePosX, 0);
+    mMoveSound = Sound::PlayLong(mMoveSound, 3, 0x18a, mCamSpacePos, 0);
 
     {
         int s = mChargeStep;
