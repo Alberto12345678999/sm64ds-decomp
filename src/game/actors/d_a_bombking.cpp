@@ -13,10 +13,12 @@
  * conversion. InitResources keeps
  * _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_ because
  * include/dBgCh_Actr.h spells Fix12i, which mangles as i.
- * The held matrix at actor+0xc8 sits in dActor_c's pad (0xc5..0xcb).
- * func_ov078_02125de0, Render and the throw helper still store it; naming
- * the field is a base-class change. Behavior's store at dCamera_c+0x114 is
- * the word after mTargetPlayer, still pad_114. func_02035550 is the call
+ * The held matrix pointer at actor+0xc8 is dActor_c::mCarryMatrix.
+ * func_ov078_02125de0 stores the king's own as the member; the stores into
+ * the held actor (there and in the throw helper) and the reads in Render and
+ * Behavior still use the raw offset on that other actor. Behavior's store
+ * at dCamera_c+0x114 is the word after mTargetPlayer, still pad_114.
+ * func_02035550 is the call
  * that ORs 0x4000 into dBgCh_Actr::mFlags; inlining the or deletes the call.
  * func_02012694 plays bank 3 at mCamSpacePos. It is not Sound::PlayBank3
  * (that body is 0x02012664). func_0200d8c8 shakes the camera.
@@ -27,9 +29,7 @@
  * func_ov078_021240a0 stays a free function. It is method-shaped, but the
  * member spelling reschedules the clamp under opt_propagation off.
  * Borrowed file views are initialized by the separate __sinit_ov078_02126660.
- * State records stay data_ov078_021270*. A plain member read moved a word
- * for mPrevAngleY in func_ov078_02123d3c, mHealth in func_ov078_021243c0,
- * mVertSpeed in func_ov078_021247bc, and unk_50a in func_ov078_021259ec.
+ * State records stay data_ov078_021270*.
  */
 
 /* common.h FIRST: daBombking_c.h reaches math/Matrix.h through BlendModelAnim.h,
@@ -376,8 +376,7 @@ int daBombking_c::func_ov078_02123d3c()
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        /* Address launder: a plain mPrevAngleY += 0x1000 reschedules this arm. */
-        *(s16 *)(((int)this + 0x94)) += 0x1000;
+        this->mPrevAngleY += 0x1000;
         this->mHorzSpeed = 0;
     } else {
         s16 a = Vec3_HorzAngle(&this->mPos, &v);
@@ -581,8 +580,7 @@ int daBombking_c::func_ov078_021243c0()
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f20.file, 0, 0, 0x1000, 0);
   this->mStateTimer = 0xc8;
   this->mTargetAngY = Vec3_HorzAngle(&this->mPosX, &this->mArenaPosX);
-  *(int*)(((long long)(int)((char *)this + 0x500))) =
-    *(int*)(((long long)(int)((char *)this + 0x500))) - 1;
+  this->mHealth -= 1;
   this->mActionStep = 0;
   this->mVertSpeed = 0x28000;
   this->mHorzSpeed = 0x5000;
@@ -749,8 +747,7 @@ int daBombking_c::func_ov078_021247bc()
                 this->mVertSpeed = 0x1e000;
         }
         this->unk_0ac = vC.z;
-        /* Address launder: mVertSpeed += mVertAccel reschedules this arm. */
-        *(int *)(((int)this + 0xa8)) += this->mVertAccel;
+        this->mVertSpeed += this->mVertAccel;
         vA.x = this->mPosX;
         vA.y = this->mPosY;
         vA.z = this->mPosZ;
@@ -1343,12 +1340,12 @@ int daBombking_c::func_ov078_021259ec()
     unsigned int b;
 
     if (this->mMusicLayer3 == 1) {
-        unsigned char *p = (unsigned char *)((char *)this + 0x50a);
+        unsigned char *p = &this->mMusicLayer3Timer;
         *p += 1;
-        if (*(unsigned char *)((char *)this + 0x50a) > 0xc8) {
+        if (this->mMusicLayer3Timer > 0xc8) {
             this->mFlags = 0x10000003;
             this->mMusicLayer3 = 0;
-            *(unsigned char *)((char *)this + 0x50a) = 0;
+            this->mMusicLayer3Timer = 0;
             this->mHealth = 3;
             _ZN5Sound22StopLoadedMusic_Layer3Ev();
             func_02011cfc();
@@ -1406,7 +1403,7 @@ int daBombking_c::func_ov078_02125bc8() {
     this->mHorzSpeed = 0;
     this->mAnimSpeed = 1;
     this->mVertAccel = -0x2000;
-    this->unk_50a = 0;
+    this->mMusicLayer3Timer = 0;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f30.file, 8, 0, 0x1000, 0);
     return 1;
 }
@@ -1470,8 +1467,8 @@ void daBombking_c::func_ov078_02125de0()
     MulMat4x3Mat4x3((char *)this->mBlendModelAnim.data.transforms + 0x1e0,
                     &this->mBlendModelAnim.mat4x3, this->mHoldMtx);
 
-    /* Held-matrix pointer. It sits in dActor_c's pad at 0xc8. */
-    *(void **)((char *)this + 0xc8) = this->mHoldMtx;
+    /* Held-matrix pointer: dActor_c's mCarryMatrix. */
+    this->mCarryMatrix = (Matrix4x3 *)this->mHoldMtx;
     this->mThrowPosX = 0;
     this->mThrowPosY = 0;
     this->mThrowPosZ = 0;

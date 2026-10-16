@@ -32,9 +32,8 @@
  */
 
 // leftovers:
-// - func_ov064_02118da0 keeps its `(int)this + 0x336` byte increment and its
-//   Vec-typed read of the manager's position; spelling either as a plain
-//   member changes the bytes.
+// - func_ov064_02118da0 keeps its Vec-typed read of the manager's position;
+//   spelling it as a plain member changes the bytes.
 // - Behavior's IsClsnInRange call keeps its mangled free-function form
 //   (Fix12 by value).
 // - Model::LoadFile and dBgW_KcMbg::SetFile stay ABI-exact free
@@ -398,7 +397,7 @@ void daObjFl_Puzzle_c::func_ov064_02118da0(){
     a->mPosY = y;
     a->mPosZ = z;
     mStepActive = 0;
-    *(unsigned char*)(((int)this + 0x336)) = *(unsigned char*)(((int)this + 0x336)) + 1;   /* mState++ */
+    mState++;
     return;
   }
   MarkForDestruction();
