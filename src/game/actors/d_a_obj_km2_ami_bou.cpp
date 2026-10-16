@@ -23,6 +23,7 @@ enum d_a_obj_km2_ami_bou_AssetId {
 
 #include "daObjKm2_Ami_Bou_c.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 enum {
     kUnsetParam = 0xffff,
@@ -114,10 +115,10 @@ s32 daObjKm2_Ami_Bou_c::Behavior()
     mdCcAc_c.Update();
     if (param1 != kUnsetParam) {
         int s = data_02082214[(mHeightAng >> 4) << 1];
-        mPosY += (int)(((long long)s * kRiseAmp + 0x800) >> 12);
+        mPosY += FX_MUL(s, kRiseAmp);
     } else {
         int s = data_02082214[(mHeightAng >> 4) << 1];
-        mPosY -= (int)(((long long)s * kFallAmp + 0x800) >> 12);
+        mPosY -= FX_MUL(s, kFallAmp);
     }
     *(s16 *)&mHeightAng += kPhaseStep;
     UpdateModelPosAndRotY();

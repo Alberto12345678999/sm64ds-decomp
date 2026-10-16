@@ -90,6 +90,7 @@ extern "C" daKpFrSpawnInfo g_profile_KERONPA_FIRE = {
 
 // @symbol _ZN8daKpFr_c13InitResourcesEv
 #include "decl_common.h"
+#include "dBgCh_Actr.h"
 /* Array-only wrapper preserves retail's ldm/stm matrix copy in C++ mode.
  * Nested math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes otherwise. */
 struct M48 { int w[12]; };
@@ -271,14 +272,13 @@ void daKpFr_c::func_ov070_02121e14() {
 namespace cstd { int fdiv(int a, int b); }
 
 extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* c);
-extern "C" dBgPi* _ZNK10dBgCh_Actr14GetFloorResultEv(const dBgCh_Actr*);
 
 void daKpFr_c::func_ov070_02121d50(void* vclsn) {
     dBgCh_Actr* clsn = (dBgCh_Actr*)vclsn;
     Fix12i normal[3];
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);
     if (clsn->IsOnGround()) {
-        _ZNK10dBgCh_Actr14GetFloorResultEv(clsn)->surface.CopyNormalTo(*(Vector3*)normal);
+        ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)normal);
         if (normal[1] != 0) {
             int a = (int)(((long long)normal[0] * unk_0a4 + 0x800) >> 12);
             int b = (int)(((long long)normal[2] * unk_0ac + 0x800) >> 12);

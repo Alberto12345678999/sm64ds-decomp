@@ -47,6 +47,7 @@
 #include "Player.h"
 #include "dCamera_c.h"
 #include "Message.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -1442,7 +1443,7 @@ void daBombking_c::func_ov078_02125c98() {
   int ip = this->mPosY - h;
   if (ip <= 0x1000)
     ip = 0x1000;
-  int scale = 0x15e000 - (int)(((long long)ip * 0x180 + 0x800) >> 12);
+  int scale = 0x15e000 - FX_MUL(ip, 0x180);
   if (scale < 0xa000)
     scale = 0xa000;
   *(struct M12 *)this->mShadowMtx = *(struct M12 *)&IDENTITY_MATRIX4X3;

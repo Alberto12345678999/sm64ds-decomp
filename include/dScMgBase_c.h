@@ -590,7 +590,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            other thirty-eight sites are in ov002, ov015, ov018, ov027, ov064,
            ov079, ov081 and ov098 -- dBgActor_c's Kill, on the other branch.
            The base body does not even read `this`; dScMgD3DBase_c's override
-           does (unk_4660, mSubBgBank), which is what fixes r0 as the object.
+           does (mSavedSubObjBank, mSubBgBank), which is what fixes r0 as the object.
          WHAT IT DOES.  All four bodies are one shape.  Three read-modify-writes
            on the sub engine's BG1CNT at 0x0400100a (`& 0x43`, `| X`, `& ~0x40`,
            `& ~3`) leave the register holding exactly X: priority 0, no mosaic,

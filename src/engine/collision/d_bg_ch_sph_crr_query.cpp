@@ -19,6 +19,7 @@
 #include "dBgCh_Lin.h"
 #include "dBgCh_SphCrr.h"
 #include "dBgCh_Gnd.h"
+#include "dBgCh_Actr.h"
 #include "dBgPc.h"
 #include "dBgPi.h"
 #include "CLPS_BlockRef.h"
@@ -43,12 +44,7 @@ void func_02037de8(int *dst, int *src);
 int func_02038298(void *arg);
 // local extern: forwarders pass int triID; the member's short parameter would sign-extend
 void _ZN5dBgPi9RecordHitEsP11SurfaceInfo(void *res, int triID, void *info);
-void _ZN10dBgCh_Actr20UpdateExtraContinousEv(void);
-void _ZN10dBgCh_Actr22UpdateContinuousNoLavaEv(void *self);
 void func_02036acc(void);
-void _ZN10dBgCh_Actr22UpdateDiscreteNoLava_2Ev(void);
-void _ZN10dBgCh_Actr16UpdateContinuousEv(void *self);
-void _ZN10dBgCh_Actr20UpdateDiscreteNoLavaEv(void);
 void func_ov002_020fea4c(int *a, int *b);       /* dM3dGLin::GetEnd */
 void func_ov002_020fea68(int *a, int *b);       /* dM3dGLin::GetStart */
 extern dBgW *data_020a0c80[];
@@ -113,22 +109,19 @@ int dBgCh_Gnd::DetectClsn()
     return ret;
 }
 
-// @symbol func_02038ea4
-/* Slot-0-only Gnd scan: shared with the full scan above, kept under its
-   address name. data_020a0c80[0] is read as the single entry (the table
-   base holds the slot-0 collider). */
-extern "C" int func_02038ea4(void *thiz)
-{
+// @symbol _ZN9dBgCh_Gnd15DetectClsnSlot0Ev
+/* Inferred name: reset the ground query and scan only collider slot zero. */
+int dBgCh_Gnd::DetectClsnSlot0() {
     int r = 0;
     dBgW *o;
-    func_02037464(thiz);
+    func_02037464(this);
     o = (dBgW *)data_020a0c80[0];
     if (o != 0) {
-        if (func_02035354(thiz, (void *)func_020393b4(o)) == 0) {
-            if (o->DetectClsn(*(dBgCh_Gnd *)thiz) != 0) {
+        if (func_02035354(this, (void *)func_020393b4(o)) == 0) {
+            if (o->DetectClsn(*this) != 0) {
                 int a = func_020393ac(o);
                 int b = func_020393b4(o);
-                static_cast<dBgCh_Gnd *>(thiz)->dBgPi::SetCollider(0, a, (dActor_c *)b, (dBgW *)o);
+                dBgPi::SetCollider(0, a, (dActor_c *)b, (dBgW *)o);
                 r = 1;
             }
         }
@@ -413,15 +406,17 @@ extern "C" int func_0203842c(char *self)
 }
 
 // @symbol dBgCh_Actr_UpdateDiscreteNoLava_veneer
-/* dBgCh_Actr_UpdateDiscreteNoLava_veneer @ 0x2038420 (arm9) -- tail-call veneer to _ZN10dBgCh_Actr20UpdateDiscreteNoLavaEv (0x2037024). */
-extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void) {
-    _ZN10dBgCh_Actr20UpdateDiscreteNoLavaEv();
+/* dBgCh_Actr_UpdateDiscreteNoLava_veneer @ 0x2038420 (arm9) -- tail-call veneer to dBgCh_Actr::UpdateDiscreteNoLava (0x2037024).
+ * r0 (the dBgCh_Actr) passes straight through to the member. */
+extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *self) {
+    ((dBgCh_Actr *)self)->UpdateDiscreteNoLava();
 }
 
 // @symbol func_02038414
-/* func_02038414 @ 0x2038414 (arm9) -- tail-call veneer to _ZN10dBgCh_Actr22UpdateDiscreteNoLava_2Ev (0x2036ee4). */
-extern "C" void func_02038414(void) {
-    _ZN10dBgCh_Actr22UpdateDiscreteNoLava_2Ev();
+/* func_02038414 @ 0x2038414 (arm9) -- tail-call veneer to dBgCh_Actr::UpdateDiscreteNoLava_2 (0x2036ee4).
+ * r0 (the dBgCh_Actr) passes straight through to the member. */
+extern "C" void func_02038414(void *self) {
+    ((dBgCh_Actr *)self)->UpdateDiscreteNoLava_2();
 }
 
 // @symbol func_02038408
@@ -431,23 +426,24 @@ extern "C" void func_02038408(void) {
 }
 
 // @symbol dBgCh_Actr_UpdateContinuous_Veneer
-/* dBgCh_Actr_UpdateContinuous_Veneer @ 0x20383fc (arm9) -- tail-call veneer to _ZN10dBgCh_Actr16UpdateContinuousEv (0x20366b4).
+/* dBgCh_Actr_UpdateContinuous_Veneer @ 0x20383fc (arm9) -- tail-call veneer to dBgCh_Actr::UpdateContinuous (0x20366b4).
  * r0 (the dBgCh_Actr) passes straight through to the member. */
 extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void *self) {
-    _ZN10dBgCh_Actr16UpdateContinuousEv(self);
+    ((dBgCh_Actr *)self)->UpdateContinuous();
 }
 
 // @symbol func_020383f0
-/* func_020383f0 @ 0x20383f0 (arm9) -- tail-call veneer to _ZN10dBgCh_Actr22UpdateContinuousNoLavaEv (0x2036318).
+/* func_020383f0 @ 0x20383f0 (arm9) -- tail-call veneer to dBgCh_Actr::UpdateContinuousNoLava (0x2036318).
  * r0 (the dBgCh_Actr) passes straight through to the member. */
 extern "C" void func_020383f0(void *self) {
-    _ZN10dBgCh_Actr22UpdateContinuousNoLavaEv(self);
+    ((dBgCh_Actr *)self)->UpdateContinuousNoLava();
 }
 
 // @symbol func_020383e4
-/* func_020383e4 @ 0x20383e4 (arm9) -- tail-call veneer to _ZN10dBgCh_Actr20UpdateExtraContinousEv (0x20358ac). */
-extern "C" void func_020383e4(void) {
-    _ZN10dBgCh_Actr20UpdateExtraContinousEv();
+/* func_020383e4 @ 0x20383e4 (arm9) -- tail-call veneer to dBgCh_Actr::UpdateExtraContinous (0x20358ac).
+ * r0 (the dBgCh_Actr) passes straight through to the member. */
+extern "C" void func_020383e4(void *self) {
+    ((dBgCh_Actr *)self)->UpdateExtraContinous();
 }
 
 // @symbol func_02038324

@@ -28,6 +28,7 @@ enum dScMgSound_c_AssetId {
 #include "types.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* A cursor keeps the add-#0x5000 split on a walk that advances the scene
    pointer. Pointing the record itself at the slot pools the base instead. */
@@ -159,14 +160,14 @@ extern int data_ov006_0212eea0[];
 extern unsigned char data_ov006_0212ee0c[];
 extern u8 data_ov006_0212ee30[];
 extern void func_02012790(int);
-extern void Presenter_PlayAnim2(void *c);
-extern void Presenter_PlayAnim1(char *c);
+extern void Presenter_PlayMatch(void *c);
+extern void Presenter_PlayMiss(char *c);
 extern int data_ov006_0212ef7c[];
 extern int data_ov006_0212ef8c[];
 extern int data_ov006_0212ef5c[];
 extern int data_ov006_0212ef6c[];
 extern unsigned short data_ov006_0212ef4c[];
-void Presenter_PlayAnim7Loop(char *p);
+void Presenter_PlayCheerLoop(char *p);
 void func_02012174(u32 bank, u32 id);
 extern u16 data_ov006_0212ef3c[];
 extern u16 data_ov006_0213f794[];
@@ -180,7 +181,7 @@ extern int data_ov006_0212ef9c[];
 extern int data_ov006_0212efb0[];
 extern u16 *data_ov006_0213f6fc[];
 extern void Presenter_ResetPose(char *c);
-extern void Presenter_PlayAnim7(void *c);
+extern void Presenter_PlayCheer(void *c);
 extern "C" void Mg_DrawScoreTally(void *c, int a, int b, int d);
 void FreeGfxSlotsById(int id);
 int LoadFile(int handle);
@@ -393,7 +394,7 @@ s32 dScMgSound_c::Behavior()
             if (mResultTimer == 0) {
                 if (mTries != 0) {
                     mTable.mSuppressSound = 0;
-                    Presenter_PlayAnim7((char *)&mTable);
+                    Presenter_PlayCheer((char *)&mTable);
                     if (mTries == 3)
                         Mg_SetPerfectBanner();
                     Mg_SetSharedState(MG_STATE_ROUND_CLEAR);
@@ -429,7 +430,7 @@ s32 dScMgSound_c::Behavior()
             (*(u16 *)(int)&mResultTimer)--;
             if (*(s16 *)&mResultTimer <= 0) {
                 mTable.mSuppressSound = 0;
-                Presenter_PlayAnim4((char *)&mTable);
+                Presenter_PlayLose((char *)&mTable);
                 Mg_SetSharedState(MG_STATE_GAME_OVER);
                 mPromptEnabled = 0;
                 mResultTimer = 0;
@@ -509,7 +510,7 @@ void dScMgSound_c::StartRound(int mode)
 /* Slot 20, OnNewRecord: plays the table model's win animation. */
 void dScMgSound_c::OnNewRecord()
 {
-    Presenter_PlayAnim7((char *)&mTable);
+    Presenter_PlayCheer((char *)&mTable);
 }
 
 // @symbol _ZN12dScMgSound_c10ResetRoundEv
@@ -801,7 +802,8 @@ void dScMgSound_c::Note_StateOpening(int idx)
         }
     }
 
-    if (this->mTouchCount == 1) Presenter_PlayAnim7Loop((char *)&this->mTable);
+    if (this->mTouchCount == 1)
+        Presenter_PlayCheerLoop((char *)&this->mTable);
 }
 
 // @symbol _ZN12dScMgSound_c14Note_StateOpenEi
@@ -921,14 +923,14 @@ void dScMgSound_c::CheckPair(){
     this->mNotes[this->mQueue[0] >> 8].alive = 0;
     this->mNotes[this->mQueue[1] >> 8].alive = 0;
     func_02012790(0x26);
-    Presenter_PlayAnim2(&this->mTable);
+    Presenter_PlayMatch(&this->mTable);
   } else {
     this->mNotes[this->mQueue[0] >> 8].state = 3;
     this->mNotes[this->mQueue[1] >> 8].state = 3;
     func_02012790(0xe);
     this->mTries--;
     func_02012790(0x12f);
-    Presenter_PlayAnim1((char *)&this->mTable);
+    Presenter_PlayMiss((char *)&this->mTable);
   }
   this->mQueue[1] = 0;
   this->mQueue[0] = this->mQueue[1];
@@ -1612,7 +1614,7 @@ void dScMgSound_c::DrawPops()
             int x = pop->pop.x;
             int y = pop->pop.y;
             int a = (int)((ta * vv + 0x800) >> 12);
-            int b = (int)(((long long)tb * (int)vv + 0x800) >> 12);
+            int b = FX_MUL(tb, (int)vv);
             m[0] = a;
             m[3] = a;
             m[1] = b;

@@ -70,6 +70,7 @@ enum d_a_btn_AssetId {
 #include "dBgW.h"
 #include "Message.h"
 #include "dCamera_c.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 /* local extern: include/Sound.h does not declare the layer-3 pair yet. It
@@ -1639,11 +1640,12 @@ extern "C" void func_ov079_02123d4c(int* out, daBtn_c *self){
         } else {
             m = (s16)data_02082214[((unsigned short)self->mAngleX >> 4) * 2] * (s16)0xc8;
         }
-        out[0] = out[0] + (int)(((s64)m * data_02082214[((unsigned short)self->mAngleY >> 4) * 2] + 0x800) >> 12);
+        out[0] = out[0] + FX_MUL(m, data_02082214[((unsigned short)self->mAngleY >> 4) * 2]);
         d = self->OnAimedAtWithEgg();
         {
             out[1] += d;
-            out[2] = out[2] + (int)(((s64)m * data_02082214[((unsigned short)self->mAngleY >> 4) * 2 + 1] + 0x800) >> 12);
+            out[2] =
+                out[2] + FX_MUL(m, data_02082214[((unsigned short)self->mAngleY >> 4) * 2 + 1]);
         }
     }
 }
@@ -1667,11 +1669,11 @@ int daBtn_c::func_ov079_02123bcc() {
     a0 = mAngleY; a1 = mBodyYaw; a2 = mTargetAngle;
     raw = (a0 + a1) << 16; ang = a2 + (raw >> 16); rangle = raw >> 16;
     idx = (u16)(s16)ang >> 4; cosv = data_02082214[idx*2+1];
-    hc = (int)(((s64)dist * cosv + 0x800) >> 12);
+    hc = FX_MUL(dist, cosv);
     if (hc < 0) hc = -hc;
     if (hc <= 0x3c000) {
         sinv = data_02082214[idx*2];
-        hs = (int)(((s64)dist * sinv + 0x800) >> 12);
+        hs = FX_MUL(dist, sinv);
         if (hs < 0) hs = -hs;
         if (hs <= 0xe1000) {
             int vx, vy, vz;

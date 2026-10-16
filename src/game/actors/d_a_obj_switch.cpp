@@ -38,6 +38,7 @@ enum daObjSwitch_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "daStar_c.h"
+#include "nitro/fx/fx.h"
 
 namespace cstd { Fix12i fdiv(Fix12i numerator, Fix12i denominator); }
 
@@ -464,9 +465,9 @@ void daObjSwitch_c::func_ov002_020ba01c(int mask, Fix12i b, Fix12i base, Fix12i 
 {
     Fix12i d = cstd::fdiv((Fix12i)mTimer, b);
     Fix12i diff = target - base;
-    Fix12i e = (Fix12i)(((long long)diff * d + 0x800) >> 12);
+    Fix12i e = FX_MUL(diff, d);
     Fix12i v = base + cstd::fdiv(e, 0x1000);
-    Fix12i h = (Fix12i)(((long long)v * 0x3c000 + 0x800) >> 12);
+    Fix12i h = FX_MUL(v, 0x3c000);
     mDisplacementY = 0x3c000 - h;
     if (mask & 1) mDrawScale.x = v;
     if (mask & 2) mDrawScale.y = v;

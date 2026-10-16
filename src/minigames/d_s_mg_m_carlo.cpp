@@ -157,14 +157,14 @@ s32 dScMgMCarlo_c::InitResources()
         if (gMgScene != 0) gMgScene->mHudScore = score;
     }
     StartRound(-1);
-    this->unk_60aa = 0;
+    this->mTimer = 0;
     return 1;
 }
 
 // @symbol _ZN13dScMgMCarlo_c10StartRoundEi
 /* Slot 18: restart the round from a fresh board. SetupBoard deals a new
- * layout, the round state re-arms (unk_60a8 = 1), and the shared prompt
- * window re-opens watching unk_60ae.
+ * layout, the round state re-arms (mRoundState = 1), and the shared prompt
+ * window re-opens watching mDealCount.
  *
  * MgCoins_Reset never reads its argument, but the ROM still computes
  * this + 0x6000 for it, which is mArray[76].mTargetY. */
@@ -172,18 +172,18 @@ void dScMgMCarlo_c::StartRound(int arg)
 {
     SetupBoard(mArray);
     data_ov006_0213d564 = 0;
-    unk_60ae = 0;
+    mDealCount = 0;
     mShared.unk_1e6 = 1;
-    Dealer_StartDeal((char *)&mShared, 4, 4, (int)&unk_60ae);
+    Dealer_StartDeal((char *)&mShared, 4, 4, (int)&mDealCount);
     mShared.unk_01a = 1;
-    unk_60aa = 0;
-    unk_60a8 = 1;
+    mTimer = 0;
+    mRoundState = 1;
     MgCoins_Reset((char *)&mArray[76].mTargetY);
     gMgCoinsShowDelta = 1;
 }
 
 // @symbol _ZN13dScMgMCarlo_c11CanEndStateEi
-/* Slot 19: the egg-exit sequence, run on the same round state (unk_60a8)
+/* Slot 19: the egg-exit sequence, run on the same round state (mRoundState)
  * as Behavior. 4 frees the Gfx slots. 5 waits for the shared window, then
  * hands the dealt total on (or plays the wrap-up cue). 6 hides the board
  * one card at a time from the tail. 7 waits for the active scene, then
@@ -191,44 +191,44 @@ void dScMgMCarlo_c::StartRound(int arg)
  * frames remain. */
 int dScMgMCarlo_c::CanEndState(int mode)
 {
-    switch (unk_60a8) {
+    switch (mRoundState) {
     case 4:
         FreeGfxSlotsById(0x1d);
-        unk_60a8 += 1;
+        mRoundState += 1;
         break;
     case 5:
         if (Dealer_IsIdle(&mShared) != 0) {
             int dealt = data_ov006_0213d570;
             if (dealt != 0) {
                 MgCoins_StartSpend(dealt);
-                unk_60aa = -1;
+                mTimer = -1;
             } else {
                 MgCoins_StartPayout((char*)data_ov006_0213d568);
             }
-            unk_60ae = 0;
-            unk_60a8 += 1;
+            mDealCount = 0;
+            mRoundState += 1;
         }
         break;
     case 6: {
         dMgMCarloCardObj_c *head = data_ov006_02142500;
         if (head != 0 && head->mVisible != 0) {
-            if (ApproachLinear2(unk_60aa, 0, 1) != 0) {
+            if (ApproachLinear2(mTimer, 0, 1) != 0) {
                 dMgMCarloCardObj_c *card;
                 int i;
                 int n;
-                unk_60aa = 0x10;
-                n = unk_60ae;
+                mTimer = 0x10;
+                n = mDealCount;
                 card = data_ov006_02142504;
                 for (i = 0; i < n; i++) {
                     if (card == 0) break;
                     card = card->mPrev;
                 }
                 if (card != 0) card->mVisible = 0;
-                unk_60ae += 1;
+                mDealCount += 1;
             }
         } else {
             if (gMgCoinsStatus <= 1)
-                unk_60a8 += 1;
+                mRoundState += 1;
         }
         break;
     }
@@ -237,12 +237,12 @@ int dScMgMCarlo_c::CanEndState(int mode)
         if ((active != 0 ? active->mCredits : 0) != 0)
             return 1;
         dScMgMCarlo_c::FlipDealtCards();
-        unk_60aa = 0x1e;
-        unk_60a8 += 1;
+        mTimer = 0x1e;
+        mRoundState += 1;
         break;
     }
     case 8:
-        if (ApproachLinear2(unk_60aa, 0, 1) != 0)
+        if (ApproachLinear2(mTimer, 0, 1) != 0)
             return 1;
         break;
     }
@@ -250,15 +250,15 @@ int dScMgMCarlo_c::CanEndState(int mode)
 }
 
 // @symbol _ZN13dScMgMCarlo_c8BehaviorEv
-/* Slot 6: the round, on the s16 state at unk_60a8. Case 1 arms the prompt
+/* Slot 6: the round, on the s16 state at mRoundState. Case 1 arms the prompt
  * blink and falls through into case 2 on purpose. gMgScene is
  * the active scene (dScMgBase_c.h declares it void *), so it is cast at
  * each use. */
 s32 dScMgMCarlo_c::Behavior()
 {
-    switch (unk_60a8) {
+    switch (mRoundState) {
     case 1:
-        unk_60a8++;
+        mRoundState++;
         if (mPromptBlinkCount == 0) {
             mPromptEnabled = 1;
             mPromptBlinkCount = 1;
@@ -266,11 +266,11 @@ s32 dScMgMCarlo_c::Behavior()
         }
         /* fall through */
     case 2:
-        data_ov006_0213d574 = unk_60ae * 5 << 12;
-        if (unk_60ae == 4) {
+        data_ov006_0213d574 = mDealCount * 5 << 12;
+        if (mDealCount == 4) {
             if (dScMgMCarlo_c::BoardBusy() == 0) {
-                unk_60ae = 0;
-                unk_60a8++;
+                mDealCount = 0;
+                mRoundState++;
             }
         }
         break;
@@ -282,13 +282,13 @@ s32 dScMgMCarlo_c::Behavior()
             shown = data_ov006_0213d574 >> 12;
             if (data_ov006_0213d56c != 0 && shown > 10 && shown <= 18
                 && Dealer_IsIdle(&mShared) != 0) {
-                unk_60ae = 0;
+                mDealCount = 0;
                 mShared.unk_1e6 = 0;
-                Dealer_StartReveal(&mShared, 2, &unk_60ae);
+                Dealer_StartReveal(&mShared, 2, &mDealCount);
                 if (data_ov006_0213d56c == 2)
                     mShared.unk_01a = 0;
             } else {
-                int lim = unk_60ae + 18;
+                int lim = mDealCount + 18;
                 if (shown >= lim) {
                     int flag = (data_ov006_021424fc != 0 && data_ov006_02142508 != 0);
                     if (flag == 0)
@@ -321,7 +321,7 @@ s32 dScMgMCarlo_c::Behavior()
                                 Mg_SaveRecordPair(left, score);
                             }
                             mPromptEnabled = 0;
-                            unk_60a8++;
+                            mRoundState++;
                         }
                     } else {
                         {
@@ -343,7 +343,7 @@ s32 dScMgMCarlo_c::Behavior()
                                                 (active != 0) ? active->mHudScore : 0);
                         }
                         mPromptEnabled = 0;
-                        unk_60a8++;
+                        mRoundState++;
                     }
                     data_ov006_0213d564 = 0;
                 }

@@ -36,6 +36,7 @@ enum daObjCtMecha05_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "nitro/fx/fx.h"
 
 /* Actor/process profile descriptor at ov065:0x0211d290. Field roles are
  * recovered from fBase_c/dActor_c consumers; exact original member spellings
@@ -182,11 +183,9 @@ int daObjCtMecha05_c::Behavior()
         int ang;
         /* ldrh, not the ldrsh a plain s16 mPrevAngleY read would emit. */
         ang = *(u16 *)&mPrevAngleY;
-        mPosX = mHomePosX +
-            (int)(((long long)data_02082214[(ang >> 4) << 1] * 0xfa000 + 0x800) >> 12);
+        mPosX = mHomePosX + FX_MUL(data_02082214[(ang >> 4) << 1], 0xfa000);
         ang = *(u16 *)&mPrevAngleY;
-        mPosZ = mHomePosZ +
-            (int)(((long long)data_02082214[((ang >> 4) << 1) + 1] * 0xfa000 + 0x800) >> 12);
+        mPosZ = mHomePosZ + FX_MUL(data_02082214[((ang >> 4) << 1) + 1], 0xfa000);
         UpdateModelPosAndRotY();
         func_ov065_0211ac0c(this);
         if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
@@ -225,7 +224,7 @@ int daObjCtMecha05_c::Behavior()
     case 2: {
         int d = mTravel;
         if (d != 0xfa000) {
-            int val = (int)(((long long)(0xfa000 - d) * (0xfa000 - mPrevTravel) + 0x800) >> 12);
+            int val = FX_MUL((0xfa000 - d), (0xfa000 - mPrevTravel));
             if (val >= 0) goto L280;
         }
         {
@@ -242,17 +241,19 @@ int daObjCtMecha05_c::Behavior()
             int m = (mTravel < 0xfa000) ? 0x6666 : -0x6666;
             int sp = mHorzSpeed;
             int delta;
-            if ((int)(((long long)sp * m + 0x800) >> 12) >= 0)
+            if (FX_MUL(sp, m) >= 0)
                 delta = m;
             else
-                delta = (int)(((long long)m * 0x2599 + 0x800) >> 12);
+                delta = FX_MUL(m, 0x2599);
             mHorzSpeed += delta;
             if (data_0209f2c0 != 2) goto Lend;
         }
-        if ((int)(((long long)mTravel * mPrevTravel + 0x800) >> 12) >= 0) goto Lend;
-        if ((RandomIntInternal(&data_0209e650) & 3) != 0) goto Lend;
-        func_ov065_0211ad70(this);
-        goto Lend;
+            if (FX_MUL(mTravel, mPrevTravel) >= 0)
+                goto Lend;
+            if ((RandomIntInternal(&data_0209e650) & 3) != 0)
+                goto Lend;
+            func_ov065_0211ad70(this);
+            goto Lend;
     }
 
     case 3:

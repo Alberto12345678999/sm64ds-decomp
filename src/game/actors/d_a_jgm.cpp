@@ -77,6 +77,7 @@ enum d_a_jgm_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "SurfaceInfo.h"
+#include "nitro/fx/fx.h"
 
 /* local extern: no header declares ApproachLinear or cstd::fdiv. */
 int ApproachLinear(int &value, int target, int step);
@@ -539,11 +540,11 @@ s32 daJgm_c::EnterSpitState()
 
     idx = ((int)(u16)mPrevAngleY) >> 4;
     sinv = data_02082214[idx * 2];
-    *pPosX = *pPosX + (int)(((s64)sinv * 0x50000 + 0x800) >> 12);
+    *pPosX = *pPosX + FX_MUL(sinv, 0x50000);
     *pPosY = *pPosY + 0x50000;
     idx = ((int)(u16)mPrevAngleY) >> 4;
     cosv = data_02082214[idx * 2 + 1];
-    *pPosZ = *pPosZ + (int)(((s64)cosv * 0x50000 + 0x800) >> 12);
+    *pPosZ = *pPosZ + FX_MUL(cosv, 0x50000);
 
     mAngVelY = 0x7000;
     mTimer = 0x1e;

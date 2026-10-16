@@ -29,6 +29,7 @@ enum dScMgCup_c_AssetId {
 #include "decl_common.h"
 #include "OamAttr.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* data_ov006_0213c094: swap count, then two speed-row nibbles.
    StateSetup reads byte [kind * 2]. df024 reads .lo / .hi. */
@@ -92,10 +93,10 @@ extern RestPos data_ov006_0213c0ac[];
 extern int RandomIntInternal(int *seed);
 extern void Mg_SetSharedState(int c);
 extern void Cup_UpdateAnim(char *self, int i);
-extern void Presenter_PlayAnim7(void *c);
+extern void Presenter_PlayCheer(void *c);
 extern void Mg_SubCredits(void *c, int val);
-extern void Presenter_PlayAnim1(char *c);
-extern void Presenter_PlayAnim4(char *c);
+extern void Presenter_PlayMiss(char *c);
+extern void Presenter_PlayLose(char *c);
 extern void func_02012790(int x);
 extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int arg);
@@ -493,16 +494,16 @@ void dScMgCup_c::StateResult()
     score = mHudScore;
     if (mCorrect != 0) {
         mTimer = 0x3c;
-        Presenter_PlayAnim7(&mModel);
+        Presenter_PlayCheer(&mModel);
         score++;
     } else {
         Mg_SubCredits(this, 1);
         if (mCredits > 0) {
             mTimer = 0x96;
-            Presenter_PlayAnim1((char *)&mModel);
+            Presenter_PlayMiss((char *)&mModel);
         } else {
             mTimer = 0x1e;
-            Presenter_PlayAnim4((char *)&mModel);
+            Presenter_PlayLose((char *)&mModel);
         }
         func_02012790(0x12f);
     }
@@ -609,7 +610,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX - (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX - FX_MUL(cosine, mHalfX);
     }
     {
         int slot = mIds[mSwap0];
@@ -632,7 +633,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX + (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX + FX_MUL(cosine, mHalfX);
     }
     {
         int slot = mIds[mSwap1];
@@ -830,7 +831,7 @@ void dScMgCup_c::StateSetup()
 /* Slot 20: the win animation on mModel. */
 void dScMgCup_c::OnNewRecord()
 {
-    Presenter_PlayAnim7(&mModel);
+    Presenter_PlayCheer(&mModel);
 }
 
 #pragma push

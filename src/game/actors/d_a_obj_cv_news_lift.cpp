@@ -45,6 +45,7 @@
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 struct Quaternion;
 
@@ -280,7 +281,7 @@ s32 daObjCvNewsLift_c::Behavior()
                 s16 sine = data_02082214[((u16)(s16)mWobblePhase >> 4) * 2];
                 s32 amp = mWobbleTimer * 0x1a;
                 s8 which = mLoweredPlatform;
-                s16 wobble = (s16)(s32)(((long long)amp * sine + 0x800) >> 12);
+                s16 wobble = (s16)FX_MUL(amp, sine);
                 switch (which) {
                 case 0: mAngleX = -wobble; break;
                 case 1: mAngleX = wobble; break;

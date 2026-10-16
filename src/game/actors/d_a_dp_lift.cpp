@@ -51,6 +51,7 @@ enum daDpLift_c_AssetId {
 
 #include "daDpLift_c.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off
 
@@ -144,7 +145,7 @@ s32 daDpLift_c::Behavior()
         break;
     case STATE_SHAKE: {
         s16 ang = mShakeTimer << 12;
-        s32 wave = (s32)(((s64)data_02082214[((u16)ang >> 4) * 2] * 10 + 0x800) >> 12);
+        s32 wave = FX_MUL(data_02082214[((u16)ang >> 4) * 2], 10);
         mPosY = mBasePosY + wave;
         if (mShakeTimer == 8) {
             mState = STATE_SINK;
@@ -166,7 +167,7 @@ s32 daDpLift_c::Behavior()
     }
     case STATE_SETTLE: {
         s16 ang = mShakeTimer << 12;
-        s32 wave = (s32)(((s64)data_02082214[((u16)ang >> 4) * 2] * 10 + 0x800) >> 12);
+        s32 wave = FX_MUL(data_02082214[((u16)ang >> 4) * 2], 10);
         mPosY = wave + 0x80000;
         if (mShakeTimer >= 8) {
             mVertSpeed = 0;

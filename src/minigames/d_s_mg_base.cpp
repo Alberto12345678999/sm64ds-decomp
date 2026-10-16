@@ -1890,7 +1890,7 @@ void RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority);
  * With no scene they draw nothing. With the menu closed and the scene's
  * GetDisplayMode (slot 26) returning 2 -- the value
  * dScMgD3DBase_c's body returns -- they read the u16 at +0x4664
- * (dScMgD3DBase_c::unk_4664) and draw once, or not at all. Otherwise they
+ * (dScMgD3DBase_c::mDrawSubScreen) and draw once, or not at all. Otherwise they
  * take their normal path. +0x4664 is past dScMgBase_c, so it is read
  * raw: including dScMgD3DBase_c.h renumbers this file's
  * compiler-generated @ labels (@329 becomes @529). The OAM::Render
@@ -2265,7 +2265,7 @@ int dScMgBase_c::BeforeRender()
         return 0;
     }
 
-    if (mStateController.unk_024 == 0) {
+    if (mStateController.mSuspended == 0) {
         p = gMgBanners;
         for (i = 0; i < 3; i++, p += 0x134) {
             if (*(int *)(p + 0x20) == 0x1d) continue;
@@ -2332,7 +2332,7 @@ int dScMgBase_c::BeforeBehavior()
     if (mMenuScreenSaved != 0)
         return 0;
 
-    if (mStateController.unk_024 == 0) {
+    if (mStateController.mSuspended == 0) {
         int i;
         char *g;
         mStateController.Behavior();
@@ -2434,13 +2434,13 @@ bool dScMgBase_c::BeforeInitResources()
 // @symbol Mg_ResumeSharedState
 namespace s20b0a38 {
 extern "C" {
-/* Clears mStateController.unk_024, so BeforeBehavior and BeforeRender
+/* Clears mStateController.mSuspended, so BeforeBehavior and BeforeRender
    step and draw the UI state controller again. */
 void Mg_ResumeSharedState(void)
 {
     dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
-    scene->mStateController.unk_024 = 0;
+    scene->mStateController.mSuspended = 0;
 }
 }
 }

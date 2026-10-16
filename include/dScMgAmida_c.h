@@ -192,7 +192,7 @@ struct dScMgAmida_c : dScMgBase_c {
     u8  pad_53df;
     s32 mRoundTimer;             /* 0x53e0 -- counts down; expiry ends the
                                  round and picks replay or finish */
-    s32 unk_53e4;                /* 0x53e4 */
+    s32 mLineColor;              /* 0x53e4 -- colour of every Mg_DrawLine stroke; always 2 */
     s32 mScore;                  /* 0x53e8 -- mLevel * 5, clamped to 9999;
                                  pushed to the dMeter_c every Behavior tick */
     u8  pad_53ec[0x10];          /* tail padding to the 0x53fc allocation */

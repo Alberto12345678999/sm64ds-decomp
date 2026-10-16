@@ -192,7 +192,6 @@ int func_02037e20(int* p);
 void func_ov084_02129498(daKrb_c *goomba);
 extern "C" void func_ov084_02129238(char *c);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
-extern char* _ZNK10dBgCh_Actr14GetFloorResultEv(void*);
 extern int SurfaceInfo_TestFlag0x20(int* p);
 extern void func_ov084_021296cc(daKrb_c *goomba);
 extern int func_02037e38(unsigned int* p);
@@ -221,7 +220,6 @@ extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
 extern short data_02082214[];
-extern "C" void _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(void *, const Vector3&, const Vector3_16_local&);
 extern char data_ov084_0213089c;
 extern void func_ov084_02129c9c(char *c);
 extern void func_ov084_02129cf4(daKrb_c *goomba, int a);
@@ -495,7 +493,7 @@ extern "C" void func_ov084_021294d0(char* c)
     if (!goomba->mWithMeshClsn.IsOnGround())
         return;
 
-    char* fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&goomba->mWithMeshClsn);
+    char *fr = (char *)goomba->mWithMeshClsn.GetFloorResult();
     if (SurfaceInfo_TestFlag0x20((int*)(fr + 4))) {
         func_ov084_021296cc(goomba);
         goomba->SpawnCoin();
@@ -512,7 +510,7 @@ extern "C" void func_ov084_021294d0(char* c)
 
     /* Copy the floor result into obj's own surface record, then ask what kind of
      * ground it is. The Goomba is lost on some terrain types. */
-    char* floorResult = _ZNK10dBgCh_Actr14GetFloorResultEv(&goomba->mWithMeshClsn);
+    char *floorResult = (char *)goomba->mWithMeshClsn.GetFloorResult();
     int surfaceType;
     {
     char* surface = obj + 4;
@@ -1162,7 +1160,7 @@ void daKrb_c::func_ov084_0212a580(){
     arg16.y = ((unsigned short*)&rotation)[1];
     arg16.z = ((unsigned short*)&rotation)[2];
     /* equal-arm ternary forces arg16 setup (r2) before arg (r1) — matches ROM call-arg order */
-    _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16((dCapEnemy_c*)this, arg, this ? arg16 : arg16);
+    UpdateCapPos(arg, (const Vector3_16 &)(this ? arg16 : arg16));
 }
 
 // @symbol func_ov084_0212a6f8

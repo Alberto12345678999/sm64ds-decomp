@@ -43,8 +43,8 @@
  *   emit a second vector cleanup.
  * - gTouchX/gTouchY stay 4-byte rows (flat indexing costs CheckHurryButton
  *   four words, measured at promotion), the pattern table is five separate
- *   data symbols, and unk_53e4 keeps its name -- its only use is as the
- *   sixth argument of the line-draw helper.
+ *   data symbols. mLineColor is named for its only use, the colour
+ *   argument of the line-draw helper (always 2).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -76,7 +76,7 @@ enum dScMgAmida_c_AssetId {
 #include "types.h"
 #include "decl_common.h"
 #include "dScMgAmida_c.h"
-
+#include "nitro/fx/fx.h"
 
 extern "C" {
 /* --- shared ov004 and main helpers --- */
@@ -188,7 +188,6 @@ extern Buf14 data_ov006_0213b880;
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
 #define IP(p,o) (*(int*)((char*)(p)+(o)))
 #define IAP(p,o) (*(int*)AT(p,(o)))
-#define MULFX(a,b) ((int)(((s64)(a)*(b)+0x800)>>12))
 
 #pragma defer_codegen off
 
@@ -622,7 +621,7 @@ void dScMgAmida_c::HandlePen()
             this->mPenTapped = 1;
             return;
         }
-        Mg_DrawLine(this, oldX, oldY, this->mPen.x, this->mPen.y, this->unk_53e4, 1);
+        Mg_DrawLine(this, oldX, oldY, this->mPen.x, this->mPen.y, this->mLineColor, 1);
         if (this->mPenTapped == 1) {
             this->mPenSoundHandle = func_02012468(this->mPenSoundHandle, 2, 0xde, 4, 0, 0, func_020126e8(this->mPen.x << 12), 0);
             return;
@@ -793,13 +792,13 @@ void dScMgAmida_c::HandlePen()
                 if (hit == 0) {
                     ClearStroke();
                     this->mLineCommit = 1;
-                    Mg_DrawLine(this, a.x, a.y, b.x, b.y, this->unk_53e4, 1);
+                    Mg_DrawLine(this, a.x, a.y, b.x, b.y, this->mLineColor, 1);
                     if (a.x < b.x) {
-                        Mg_DrawLine(this, a.x - 1, a.y, a.x - 1, a.y, this->unk_53e4, 1);
-                        Mg_DrawLine(this, b.x + 1, b.y, b.x + 1, b.y, this->unk_53e4, 1);
+                        Mg_DrawLine(this, a.x - 1, a.y, a.x - 1, a.y, this->mLineColor, 1);
+                        Mg_DrawLine(this, b.x + 1, b.y, b.x + 1, b.y, this->mLineColor, 1);
                     } else {
-                        Mg_DrawLine(this, a.x + 1, a.y, a.x + 1, a.y, this->unk_53e4, 1);
-                        Mg_DrawLine(this, b.x - 1, b.y, b.x - 1, b.y, this->unk_53e4, 1);
+                        Mg_DrawLine(this, a.x + 1, a.y, a.x + 1, a.y, this->mLineColor, 1);
+                        Mg_DrawLine(this, b.x - 1, b.y, b.x - 1, b.y, this->mLineColor, 1);
                     }
                     this->mLineCommit = 0;
                     Amida_SaveBgChars(this);
@@ -838,7 +837,7 @@ int dScMgAmida_c::ProbeRung(Point p1, Point p2)
     lo = p1.x;
     this->mPrev.x = lo;
     this->mPrev.y = hi;
-    Mg_DrawLine(this, p1.x, p1.y, p2.x, p2.y, this->unk_53e4, 1);
+    Mg_DrawLine(this, p1.x, p1.y, p2.x, p2.y, this->mLineColor, 1);
     this->mProbeMode = 0;
     return this->mProbeHit;
 }
@@ -1562,15 +1561,15 @@ void dScMgAmida_c::SetupRound()
     }
 
     if (Unk36() != 0) {
-        Mg_DrawLine(this, 0x20, -0xb4, 0x20, mLineEndY, unk_53e4, 1);
-        Mg_DrawLine(this, 0x60, -0xb4, 0x60, mLineEndY, unk_53e4, 1);
-        Mg_DrawLine(this, 0xa0, -0xb4, 0xa0, mLineEndY, unk_53e4, 1);
-        Mg_DrawLine(this, 0xe0, -0xb4, 0xe0, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0x20, -0xb4, 0x20, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(this, 0x60, -0xb4, 0x60, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(this, 0xa0, -0xb4, 0xa0, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(this, 0xe0, -0xb4, 0xe0, mLineEndY, mLineColor, 1);
     } else {
-        Mg_DrawLine(this, 0x20, -0xd4, 0x20, mLineEndY, unk_53e4, 1);
-        Mg_DrawLine(this, 0x60, -0xd4, 0x60, mLineEndY, unk_53e4, 1);
-        Mg_DrawLine(this, 0xa0, -0xd4, 0xa0, mLineEndY, unk_53e4, 1);
-        Mg_DrawLine(this, 0xe0, -0xd4, 0xe0, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0x20, -0xd4, 0x20, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(this, 0x60, -0xd4, 0x60, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(this, 0xa0, -0xd4, 0xa0, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(this, 0xe0, -0xd4, 0xe0, mLineEndY, mLineColor, 1);
     }
 
     mLineCount++;
@@ -1653,7 +1652,7 @@ void dScMgAmida_c::SetupRound()
                 if (skip[i] == 0) {
                     int x = rungs[i].a;
                     int y = rungs[i].b - 0x20;
-                    Mg_DrawLine(this, x, y, x + 0x40, y, unk_53e4, 1);
+                    Mg_DrawLine(this, x, y, x + 0x40, y, mLineColor, 1);
                 }
             }
             break;
@@ -1665,7 +1664,7 @@ void dScMgAmida_c::SetupRound()
                 if (skip[i] == 0) {
                     int x = rungs[i].a;
                     int y = rungs[i].b - 0x20;
-                    Mg_DrawLine(this, x, y, x + 0x40, y, unk_53e4, 1);
+                    Mg_DrawLine(this, x, y, x + 0x40, y, mLineColor, 1);
                 }
             }
             break;
@@ -1679,9 +1678,9 @@ void dScMgAmida_c::SetupRound()
     if (Unk36() == 0) {
         int v = *(int *)(data_ov006_0212e1b8 + mPatternIndex * 0x1c);
         if (v != 0 && v == 1) {
-            Mg_DrawLine(this, 0x60, 0x2d, 0xa0, 0x2d, unk_53e4, 1);
-            Mg_DrawLine(this, 0x20, 0x5a, 0x60, 0x5a, unk_53e4, 1);
-            Mg_DrawLine(this, 0xa0, 0x5a, 0xe0, 0x5a, unk_53e4, 1);
+            Mg_DrawLine(this, 0x60, 0x2d, 0xa0, 0x2d, mLineColor, 1);
+            Mg_DrawLine(this, 0x20, 0x5a, 0x60, 0x5a, mLineColor, 1);
+            Mg_DrawLine(this, 0xa0, 0x5a, 0xe0, 0x5a, mLineColor, 1);
         }
     }
 
@@ -2098,13 +2097,16 @@ s32 dScMgAmida_c::Behavior()
                         idxA = ((int)((av << 17) >> 16) >> 4) * 2;
                         cA = data_02082214[idxA + 1];
                         {
-                            mPieces[slot].posX = MULFX(cosB, (int)((0x8000LL * cA + 0x800) >> 12));
+                            mPieces[slot].posX = FX_MUL(cosB, (int)((0x8000LL * cA + 0x800) >> 12));
                             sinA = data_02082214[idxA];
-                            mPieces[slot].posY = MULFX(cosB, (int)((0x8000LL * sinA + 0x800) >> 12));
+                            mPieces[slot].posY =
+                                FX_MUL(cosB, (int)((0x8000LL * sinA + 0x800) >> 12));
                             mPieces[slot].posX += mLanePos[j][0];
                             mPieces[slot].posY += mLanePos[j][1];
-                            mPieces[slot].velX = MULFX(cosB, (int)((0x1000LL * (int)(cA) + 0x800) >> 12));
-                            mPieces[slot].velY = MULFX(cosB, (int)((0x1000LL * sinA + 0x800) >> 12));
+                            mPieces[slot].velX =
+                                FX_MUL(cosB, (int)((0x1000LL * (int)(cA) + 0x800) >> 12));
+                            mPieces[slot].velY =
+                                FX_MUL(cosB, (int)((0x1000LL * sinA + 0x800) >> 12));
                         }
                         mPieces[slot].velY -= 0x400;
                         mPieces[slot].active = 1;
@@ -2156,10 +2158,10 @@ s32 dScMgAmida_c::InitResources()
 
     if (Unk36() != 0) {
         mLineEndY = 0x78;
-        unk_53e4 = 2;
+        mLineColor = 2;
     } else {
         mLineEndY = 0x98;
-        unk_53e4 = 2;
+        mLineColor = 2;
     }
 
     data_0208ee44 = 1;

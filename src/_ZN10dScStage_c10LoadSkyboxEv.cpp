@@ -20,7 +20,6 @@
 extern "C" {
 extern void *_Znwj(u32 size);
 extern void *_ZN5ModelC1Ev(void *thiz);
-extern void _ZN5Model14LoadAndSetFileEtii(void *thiz, u16 fileID, s32 a, s32 b);
 extern u16 data_02075620[];
 }
 
@@ -34,5 +33,5 @@ void dScStage_c::LoadSkybox()
     }
     mSkyboxModel = model;
     u16 fileID = data_02075620[skyboxID - 1];
-    _ZN5Model14LoadAndSetFileEtii(mSkyboxModel, fileID, 0, 2);
+    mSkyboxModel->LoadAndSetFile(fileID, 0, 2);
 }

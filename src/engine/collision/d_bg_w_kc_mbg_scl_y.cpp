@@ -17,6 +17,7 @@
 #include "dBgCh_Gnd.h"
 #include "dBgCh_SphCrr.h"
 #include "dBgPi.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 /* This TU's own free helpers, called from the members below. */
@@ -87,7 +88,7 @@ extern "C" void func_0203aa74(dBgW_KcMbgSclY *self, Vector3 *v, Vector3 *res)
     Fix12i isy = self->invScaleY;
     if (isy == 0x1000)
         return;
-    res->y = (Fix12i)(((s64)res->y * isy + 0x800) >> 12);
+    res->y = FX_MUL(res->y, isy);
 }
 
 /* Collider -> world space: fold the y stretch in first, then the parent's
@@ -101,7 +102,7 @@ extern "C" void func_0203aa10(dBgW_KcMbgSclY *self, Vector3 *v, Vector3 *res)
     tmp.z = v->z;
     if (self->scaleY != 0x1000) {
         Fix12i sy = self->scaleY;
-        tmp.y = (Fix12i)(((s64)tmp.y * sy + 0x800) >> 12);
+        tmp.y = FX_MUL(tmp.y, sy);
     }
     MulVec3Mat4x3(&tmp, &self->newScaledMat, res);
 }
@@ -152,7 +153,6 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_Gnd &ground)
 // @symbol _ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr
 #pragma opt_common_subs off
 
-#define FMUL(a, b) ((int)(((s64)(a) * (b) + 0x800) >> 12))
 
 int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere)
 {
@@ -168,8 +168,8 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere)
     func_0203aa74(this, &centre, &localCentre);
 
     inverseScale = invScale;
-    radius1 = FMUL(sphere.radius, inverseScale);
-    radius2 = FMUL(sphere.unk_0ec, inverseScale);
+    radius1 = FX_MUL(sphere.radius, inverseScale);
+    radius2 = FX_MUL(sphere.unk_0ec, inverseScale);
 
     dBgCh_SphCrr loc;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&loc, &localCentre, radius1, 0);
@@ -179,12 +179,12 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere)
     r = dBgW_Kc::DetectClsn(loc);
     if (r) {
         loc.func_02037a04((Vector3 *)d, (Vector3 *)(d + 3));
-        d[6] = FMUL(d[0], scale);
-        d[7] = FMUL(d[1], scale);
-        d[8] = FMUL(d[2], scale);
-        d[9] = FMUL(d[3], scale);
-        d[10] = FMUL(d[4], scale);
-        d[11] = FMUL(d[5], scale);
+        d[6] = FX_MUL(d[0], scale);
+        d[7] = FX_MUL(d[1], scale);
+        d[8] = FX_MUL(d[2], scale);
+        d[9] = FX_MUL(d[3], scale);
+        d[10] = FX_MUL(d[4], scale);
+        d[11] = FX_MUL(d[5], scale);
         sphere.func_02037a6c(d[6], d[7], d[8], d[9], d[10], d[11]);
         (dBgPi &)sphere = (dBgPi &)loc;
         sphere.flags |= 1;
@@ -259,9 +259,9 @@ void dBgW_KcMbgSclY::GetNormal(s16 triID, Vector3 &res)
     tmp.y = v[1] << 2;
     tmp.z = v[2] << 2;
     sy = scaleY;
-    tmp.x = (Fix12i)(((s64)tmp.x * sy + 0x800) >> 12);
+    tmp.x = FX_MUL(tmp.x, sy);
     sy = scaleY;
-    tmp.z = (Fix12i)(((s64)tmp.z * sy + 0x800) >> 12);
+    tmp.z = FX_MUL(tmp.z, sy);
     NormalizeVec3(&tmp, &tmp);
     func_02039db8(this, &tmp, &res);
 }

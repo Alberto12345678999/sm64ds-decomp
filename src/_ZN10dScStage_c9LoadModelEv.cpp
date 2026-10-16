@@ -3,11 +3,10 @@
 extern "C" {
 extern char data_0209f340[];
 extern int data_0209f320;
-void _ZN5Model14LoadAndSetFileEtii(char* model, unsigned short id, int b, int c);
 }
 void dScStage_c::LoadModel() {
     char *self = (char *)this;
-    _ZN5Model14LoadAndSetFileEtii(self + 0x86c, *(unsigned short*)(*(char**)data_0209f340 + 8), 1, -1);
+    mModel.LoadAndSetFile(*(unsigned short *)(*(char **)data_0209f340 + 8), 1, -1);
     char* list;
     unsigned int count;
     char* node;

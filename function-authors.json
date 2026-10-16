@@ -2019,11 +2019,11 @@
     },
     "arm9:0x020150e8": {
       "author": "andrewboudreau",
-      "name": "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh"
+      "name": "_ZN8dClipper10ClipSphereER7Vector3iPh"
     },
     "arm9:0x02015560": {
       "author": "tangosdev",
-      "name": "_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_"
+      "name": "_ZN8dClipper16TransformAndClipER9Matrix4x3R7Vector3iS3_"
     },
     "arm9:0x0201559c": {
       "author": "andrewboudreau",
@@ -5579,7 +5579,7 @@
     },
     "arm9:0x02038ea4": {
       "author": "tangosdev",
-      "name": "func_02038ea4"
+      "name": "_ZN9dBgCh_Gnd15DetectClsnSlot0Ev"
     },
     "arm9:0x02038f44": {
       "author": "tangosdev",
@@ -20347,7 +20347,7 @@
     },
     "ov006:0x020c2300": {
       "author": "tangosdev",
-      "name": "Presenter_PlayAnim7Loop"
+      "name": "Presenter_PlayCheerLoop"
     },
     "ov006:0x020c23a8": {
       "author": "tangosdev",
@@ -20355,7 +20355,7 @@
     },
     "ov006:0x020c2440": {
       "author": "tangosdev",
-      "name": "Presenter_PlayAnim4"
+      "name": "Presenter_PlayLose"
     },
     "ov006:0x020c24e4": {
       "author": "tangosdev",
@@ -20363,7 +20363,7 @@
     },
     "ov006:0x020c2594": {
       "author": "tangosdev",
-      "name": "Presenter_PlayAnim7"
+      "name": "Presenter_PlayCheer"
     },
     "ov006:0x020c263c": {
       "author": "tangosdev",
@@ -20371,7 +20371,7 @@
     },
     "ov006:0x020c2664": {
       "author": "tangosdev",
-      "name": "Presenter_PlayAnim1"
+      "name": "Presenter_PlayMiss"
     },
     "ov006:0x020c26f4": {
       "author": "tangosdev",
@@ -20379,7 +20379,7 @@
     },
     "ov006:0x020c271c": {
       "author": "tangosdev",
-      "name": "Presenter_PlayAnim2"
+      "name": "Presenter_PlayMatch"
     },
     "ov006:0x020c27c4": {
       "author": "tangosdev",

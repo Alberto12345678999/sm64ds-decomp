@@ -1,3 +1,4 @@
+#include "nitro/fx/fx.h"
 /* func_0200814c at 0x0200814c
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
@@ -19,7 +20,7 @@ int func_0200814c(int self)
     v.y = 0x50000;
     v.z = diff;
     absdiff = diff < 0 ? -diff : diff;
-    val = (int)(((long long)absdiff * -0x199 + 0x800) >> 12);
+    val = FX_MUL(absdiff, -0x199);
     v.z = val;
     if (val > -0x64000)
         v.z = -0x64000;
