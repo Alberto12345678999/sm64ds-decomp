@@ -3270,81 +3270,9 @@ src/Copy48BytesFixed.c:
     complete
     .text start:0x02056c1c end:0x02056c40
 
-src/_ZN3IRQ19Tim3OverflowHandlerEv.cpp:
+src/IRQ.cpp:
     complete
-    .text start:0x02056c40 end:0x02056c50
-
-src/_ZN3IRQ19Tim2OverflowHandlerEv.cpp:
-    complete
-    .text start:0x02056c50 end:0x02056c60
-
-src/_ZN3IRQ19Tim1OverflowHandlerEv.cpp:
-    complete
-    .text start:0x02056c60 end:0x02056c70
-
-src/_ZN3IRQ19Tim0OverflowHandlerEv.cpp:
-    complete
-    .text start:0x02056c70 end:0x02056c80
-
-src/_ZN3IRQ11Dma3HandlerEv.cpp:
-    complete
-    .text start:0x02056c80 end:0x02056c90
-
-src/_ZN3IRQ11Dma2HandlerEv.cpp:
-    complete
-    .text start:0x02056c90 end:0x02056ca0
-
-src/_ZN3IRQ11Dma1HandlerEv.cpp:
-    complete
-    .text start:0x02056ca0 end:0x02056cb0
-
-src/_ZN3IRQ11Dma0HandlerEv.cpp:
-    complete
-    .text start:0x02056cb0 end:0x02056cc0
-
-src/_ZN3IRQ13DmaTimHandlerEj.cpp:
-    complete
-    .text start:0x02056cc0 end:0x02056d60
-
-src/_ZN3IRQ12EmptyHandlerEv.cpp:
-    complete
-    .text start:0x02056d60 end:0x02056d64
-
-src/_ZN3IRQ15ClearInterruptsEj.cpp:
-    complete
-    .text start:0x02056d64 end:0x02056d98
-
-src/_ZN3IRQ11DisableIRQsEj.cpp:
-    complete
-    .text start:0x02056d98 end:0x02056de0
-
-src/_ZN3IRQ10EnableIRQsEj.cpp:
-    complete
-    .text start:0x02056de0 end:0x02056e18
-
-src/_ZN3IRQ7SetIRQsEj.cpp:
-    complete
-    .text start:0x02056e18 end:0x02056e4c
-
-src/unnamed/arm9/0205/func_02056e4c.c:
-    complete
-    .text start:0x02056e4c end:0x02056e98
-
-src/unnamed/arm9/0205/func_02056e98.c:
-    complete
-    .text start:0x02056e98 end:0x02056ee4
-
-src/_ZN3IRQ13GetIRQHandlerEj.cpp:
-    complete
-    .text start:0x02056ee4 end:0x02056f70
-
-src/_ZN3IRQ13SetIRQHandlerEjPFvvE.cpp:
-    complete
-    .text start:0x02056f70 end:0x02057000
-
-src/unnamed/arm9/0205/func_02057000.c:
-    complete
-    .text start:0x02057000 end:0x02057014
+    .text start:0x02056c40 end:0x02057014
 
 src/unnamed/arm9/0205/func_020570a8.c:
     complete
