@@ -6826,9 +6826,6 @@
       "src/unnamed/arm9/0204/func_0204175c.c": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02056e4c.c": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_02059788.c": [
         "return:void"
       ],
@@ -13477,11 +13474,6 @@
         "return:unsigned short []"
       ]
     },
-    "data_020a60c4": {
-      "src/_ZN3IRQ13DmaTimHandlerEj.cpp": [
-        "return:DmaEnt []"
-      ]
-    },
     "data_020a612c": {
       "src/unnamed/arm9/0205/func_02058308.c": [
         "return:void *"
@@ -13870,9 +13862,6 @@
       ]
     },
     "data_023c0000": {
-      "src/_ZN3IRQ13DmaTimHandlerEj.cpp": [
-        "return:unsigned int []"
-      ],
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "return:char []"
       ],
