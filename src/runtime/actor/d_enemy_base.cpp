@@ -690,15 +690,12 @@ int dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr & clsn_)
                 *(int *)(self + 0x64) = *(int *)(o2 + 8);
                 *(int *)(self + 0x60) += 0x32000;
                 {
-                    long long rnd = 0x800;
                     char *o3 = *(char **)(self + 0xd0);
                     u16 ang = *(u16 *)(o3 + 0x8e);
                     int idx = (ang >> 4) << 1;
-                    *(int *)(self + 0x5c) =
-                        (int)(((long long)data_02082214[idx] * 0x32000 + rnd) >> 12) +
-                        *(int *)(self + 0x5c);
-                    *(int *)(self + 0x64) +=
-                        (int)(((long long)data_02082214[idx + 1] * 0x32000 + rnd) >> 12);
+                    int dist = 0x32000;
+                    *(int *)(self + 0x5c) += FX_MUL(data_02082214[idx], dist);
+                    *(int *)(self + 0x64) += FX_MUL(data_02082214[idx + 1], dist);
                 }
                 {
                     s16 *p = (s16 *)(*(char **)(self + 0xd0) + 0x8c);
