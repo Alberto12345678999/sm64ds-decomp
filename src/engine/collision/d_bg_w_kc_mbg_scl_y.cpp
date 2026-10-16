@@ -37,8 +37,12 @@ void func_02035394(void *dst, void *src);
 /* local extern: the radius is Fix12 by value, so the call spells the symbol. */
 void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
     dBgCh_SphCrr *sphere, const Vector3 *pos, Fix12i radius, dActor_c *actor);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *thiz, void *f, const Matrix4x3 *m, int fix, short s, void *b);
+/* local extern: the scale is Fix12 by value, so the call spells the symbol
+   with the scalar signature d_bg_w_kc_mbg.cpp defines. */
+void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *file,
+                                                                           const Matrix4x3 *mtx,
+                                                                           int scale, short angY,
+                                                                           void *clps);
 
 extern dBgCh_Lin data_020a0d0c;   /* the scratch line, in collider space */
 extern Vector3   data_020a0d60;   /* == data_020a0d0c.lineEnd  (+0x54) */
@@ -58,9 +62,10 @@ dBgW_KcMbgSclY::~dBgW_KcMbgSclY()
 
 // @symbol _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
 extern "C" void _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbgSclY *self, KCL_File *f, const Matrix4x3 *m, Fix12i fix, s16 s, CLPS_Block *b)
-{
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(self, f, m, fix, s, b);
+    dBgW_KcMbgSclY *self, KCL_File *file, const Matrix4x3 *mtx, Fix12i scale, s16 angY,
+    CLPS_Block *clps) {
+    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(self, file, mtx, scale,
+                                                                          angY, clps);
     self->scaleY = 0x1000;
     self->invScaleY = 0x1000;
 }
