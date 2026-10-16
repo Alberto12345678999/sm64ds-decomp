@@ -53,13 +53,15 @@ which declares no virtual, so a slot number means nothing between them.
 | 32 | `Virtual80` (was `AfterClsn`) | `InitMainScreenBg` | high | It does the same for main-engine BG1 with screen map 0x67. |
 | 33 | `Virtual84` | `InitEngines` | high | It sets graphics modes, VRAM banks, the BG/OBJ character files and palettes, and registers the graph callback. (`InitDisplay` was already taken by Trampoline's own method.) |
 | 34 | `Virtual88(int,int,int,int)` | `PaintSquare` | high | It paints a size x size square of one 4bpp palette index into the brush's BG layer. The line rasteriser `Mg_DrawLine` calls it once per point. |
-| 35 | `Virtual8C` | `IsAltVariant` | high, seen | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`; Amida's own slot 36, `IsVariant2` (was `Unk36`, pass 6), asks `== 2`, which its second Rec Room entry (row 24) passes. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. The menu passes `MgEntry::sceneParam` as param1: the second entries of Amida, Snowball, Smartball, Coin, Panel and Slot1 set the byte, and the two Snowballs were seen starting with 0x0a00 and 0x2201 (pass 4). |
+| 35 | `Virtual8C` | `IsAltVariant` | high, seen | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. The menu passes `MgEntry::sceneParam` as param1, the menu row's second word: its low byte is 1 on each duplicated game's second row (2 on Amida's), so the name holds. The second entries of Amida, Snowball, Smartball, Coin, Panel and Slot1 set the byte, and the two Snowballs were seen starting with 0x0a00 and 0x2201 (pass 4). Seen on Panel's row 35 (runtime-checks.md). Sound has only one row, so its branch never runs from the menu, and no Amida row is variant 1; Amida's own slot 36, `IsVariant2` (was `Unk36`, pass 6), asks `== 2`: that is its second-row test, which its second Rec Room entry (row 24) passes. |
 
-Still open for the graph callbacks: what the engine's four `dGraph_c::callback_c`
-slots are for. The arm9 dispatchers are `func_02019390` (slot 0),
-`func_02019404` (slot 1), `func_02019144` (slot 2) and `func_02019100` (slot 3).
-They are named from their call order by the frame loop once the dispatchers are
-named, and not before.
+The graph callbacks' frame phases are seen (runtime-checks.md, 2026-10-15). Each
+frame runs 0 at the start, before the scene update (`func_02019390`), then the
+scene's `BeforeBehavior`, then 1 after the scene update (`func_02019404`). In the
+VBlank IRQ, 2 runs before the OAM flush and display-register writes, which it
+can veto (`func_02019144`), and 3 runs at the end (`func_02019100`). The callback
+names stay as they are until the arm9 dispatchers are renamed to match, which
+needs the usual gates.
 
 ## ov004 runtime helpers and globals (renamed 2026-10-14)
 
@@ -87,7 +89,7 @@ runtime. `Ov004_` marks a thunk that only forwards to an arm9 routine.
 
 | Name (old) | Why it is not high |
 |---|---|
-| `Mg_PlayJingle` (020ae274) | It starts sequence `id` on `Sound::PlaySub`'s player and sets the music volume target to 0x40. The callers pass 1, 3 and 4 when a banner goes up. "Jingle" is inferred; the IDs are not mapped to sounds. |
+| `Mg_PlayJingle` (020ae274) | It starts sequence `id` on `Sound::PlaySub`'s player and sets the music volume target to 0x40. The callers pass 1, 3 and 4 when a banner goes up. **Seen:** 4 with the round-clear banner (state 0), 3 with GAME OVER (state 18) and 1 with the new HIGH SCORE (state 17). The audio was not heard. |
 | `Mg_LoseCredits`, `Mg_GainCredits`, `Mg_SubCredits`, `Mg_AddCredits`, `Mg_DrawCredits`, `Mg_DrawCreditsIcon` | They work on `mCredits`, clamped to 0..9999, which `BeforeBehavior` eases `mCreditsShown` toward for display. Cup gives 2 and loses one per wrong pick before game over; Memory caps the value at 3. A wider "credits" reading is possible in the gambling games. |
 | `Mg_ResumeSharedState` (020b0a38) | It clears `mStateController.unk_024`, which lets `BeforeBehavior`/`BeforeRender` step and draw the controller again. What sets the flag (state 6's behaviour) reads as "hand control back to the game". |
 | `Mg_CheckBannerButton` (020b0b1c) | It hit-tests a touch against a shown banner whose graphic id is `arg` (0x40 x 0x13 box), or reports the banner's finish. States use ids 0, 1 and 2 as retry/quit buttons. |
@@ -156,7 +158,7 @@ and a guess (unconfirmed):
 
 | State | Enter: banner, jingle, timer | Then | Entered by | Guess |
 |---|---|---|---|---|
-| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on. **Seen** in Sound: banner 3 is "CLEAR". A no-miss round first calls `Mg_SetNextBanner(6)`, and banner 6 is "PERFECT" |
+| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on. **Seen** in Sound, Cup and Teresa: banner 3 is the rainbow "CLEAR" and r1 is the score. A no-miss round first calls `Mg_SetNextBanner(6)`, and banner 6 is "PERFECT" |
 | 1 | none, none, 15 | fade, `StartRound(1)` | Hanachan, Luigi | silent next round |
 | 2 | 5, 1, 180 | fade, restore music, `StartRound(2)` | none found | |
 | 3 | 8\*, 3, 60 | retry (button 0) / quit (1, 2) buttons | Snowball, with banner 0xe | game over, retry? |
@@ -173,7 +175,7 @@ and a guess (unconfirmed):
 | 15 | 0xe, 3, 60 | fade, `StartRound(15)` | none found | |
 | 16 | 7 at (0x80, 0x14), none, 120 | record table, touch to go on; `Mg_CommitRecords` | the timed games (Bomroom, Coin, Curling, Pachinko, Smartball); Wanted! after game over | results. **Seen:** banner 7 is "HIGH SCORE" |
 | 17 | as 16, 300 frames | record table; banner 5, jingle 1 and `OnNewRecord` 120 frames in | 16 or 18/19, when `Mg_IsNewRecord` | results, new record. **Seen** on a new Wanted! high score |
-| 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 |
+| 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Sound, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 (Wanted!, Sound, Cup) |
 | 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal. **Seen:** Snowball's ball crossing the finish line shows "GOAL" (banner 4), jingle 4, then state 17 on a new record |
 
 **Banner ids seen on screen** (`Mg_ShowBanner` r0, melonDS 2026-10-15):
@@ -239,6 +241,7 @@ Games watch `gMgCoinsStatus`: 1 when a sequence is done, 2-4 while one runs.
 **"Bet" is right; seen 2026-10-15.**
 - **Memory.** `MgCoins_PlaceBet(3)` stakes three coins on the table. Each miss slides one coin over to Luigi, and clearing the board pays the coins still on the table ×6. The misses allowed are the stake.
 - **Card (Picture Poker).** The BET! button runs `MgCoins_AddBetCoin` and adds one coin to the stake.
+- **Memory_J.** `dScMgMemory2_c::OnDealDone` stakes five coins each deal (`MgCoins_PlaceBet(5)`). A lost round forfeits them, and with the purse empty the game ends at `UpdateGameOverToMenu`.
 - **Coin moves.** Each staked coin is one `Coin_Launch` → `Mg_LoseCredits(1)` → `Mg_SubCredits(1)`. Each paid or refunded coin is one `Mg_GainCredits(1)` → `Mg_AddCredits(1)`.
 
 **The options panel, high confidence.** Pass 2 (2026-10-15) made the
@@ -279,11 +282,16 @@ show (2026-10-15, seen in Sound; high):**
 | Slot | Old name | New name | What it shows | Cup calls it for |
 |---|---|---|---|---|
 | 1 | `Presenter_PlayAnim1` | `Presenter_PlayMiss` | Mario puzzled, one eye squinting | a wrong pick with lives left |
-| 2 | `Presenter_PlayAnim2` | `Presenter_PlayMatch` | plays on each matched pair, with sound 0x1c (its frame was not captured) | (not used) |
+| 2 | `Presenter_PlayAnim2` | `Presenter_PlayMatch` | an open-mouthed grin and a nod, on each matched pair, with sound 0x1c | (not used) |
 | 4 | `Presenter_PlayAnim4` | `Presenter_PlayLose` | Mario laughing and winking | the wrong pick that ends the game |
 | 7 | `Presenter_PlayAnim7`, `...7Loop` | `Presenter_PlayCheer`, `Presenter_PlayCheerLoop` | Mario laughing, eyes shut, with sound 3 | a right pick and `OnNewRecord` |
 
 All 45 minigame objects stayed identical modulo the renamed symbols.
+
+A second watch of Sound and Cup saw the same four calls at the same moments. It
+caught slot 1 as a wince, with the head flipping up off the screen and dropping
+back, and slot 4 as a tilted head with one eye shut and a lopsided grin. The two
+watches caught different frames; the names hold.
 
 The dealer's deal, collect, reveal and swap names follow the animation order
 and the sounds (0x139-0x142) and are medium confidence.
@@ -300,7 +308,7 @@ pitch, two matching notes clear, and a mismatch closes them again.
 - **Notes:** `DealNotes`, `ResetRound`, `UpdateNotes`, `CheckPair`, `CheckRoundOver`, and `RevealUnmatched` on a loss.
 - **Note states 0-4:** `Note_StateWait`, `Note_StateOpening`, `Note_StateOpen`, `Note_StateClosing`, `Note_StateScroll`.
 - **Pops:** `SpawnPops` launches the burst sprites, and each of the 13 pop kinds has `PopNN_Update`, `PopNN_Start`, `PopNN_Fly` and `PopNN_Finish`. The kind number is the index in the dispatch table; the look of each kind is not observed.
-- **Win and loss:** the win plays `Presenter_PlayCheer` (seen) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayLose` (seen). Each match plays `Presenter_PlayMatch` and each miss `Presenter_PlayMiss`. Sound's three hearts are `mTries` and move no credits.
+- **Win and loss:** the win plays `Presenter_PlayCheer` (seen) and the two win sprites (`Start/Update/DrawWinSpriteA/B`: the sparkle ring round "CLEAR" and the star at the top right, seen); the loss plays `Presenter_PlayLose` (seen). Each match plays `Presenter_PlayMatch` and each miss `Presenter_PlayMiss`. Sound's three hearts are `mTries` and move no credits.
 
 **Teresa (`dScMgTeresa_c`, Hide and Boo Seek).**
 
@@ -323,7 +331,7 @@ The three popup pools over found Boos, seen in play (2026-10-15, runtime-checks.
 
 Medium confidence: `Marker_*` (one sprite) and `StepBg3Scroll`.
 
-`BigBoo_SetDone` (was `func_ov006_0211cc90`, pass 5): sets the big Boo's `done` byte (+0x19 of its record at 0x4bcc) when its `active` byte is set; both round endings call it.
+`BigBoo_SetDone` (was `func_ov006_0211cc90`, pass 5): sets the big Boo's `done` byte (+0x19 of its record at 0x4bcc, so +0x4be5) when its `active` byte (+0x14, +0x4be0) is set; both round endings in `CheckRoundEnd` call it. Setting it sends the Boo out instead of turning it around. **Seen** once, as the clock ran out (lr 0x0211e69c), 5 s before GAME OVER.
 
 **Bomroom (`dScMgBomroom_c`, Bob-omb sorting).**
 
@@ -347,7 +355,7 @@ Medium confidence:
 - **`TopDoor_*` (+0x62a0, one):** the emblem door at the top centre of the top screen. `TopDoor_Open` (was `SlotB2_Start`, sound 0x1e2) runs as the round end marches the lined-up bombs out. `TopDoor_Close` (was `SlotB2_Finish`, sound 0x1e3) runs once none is left marching.
 - The header splits the old `mSlotsB[3]` into `mPenGates[2]` and `mTopDoor`, and renames `mSlotsA` to `mHatchPanels`. The dispatch tables are `sBomroomHatchPanelStateTable`, `sBomroomPenGateStateTable` and `sBomroomTopDoorStateTable`.
 
-`AnyBombMarching` (was `func_ov006_020d8c88`, pass 5): whether any active bomb is in `Bomb_StateMarch`, which the round end assigns; `RoundEnd_Tally` raises BG2 when it is.
+`AnyBombMarching` (was `func_ov006_020d8c88`, pass 5): returns 1 while any live bomb is in `Bomb_StateMarch`, the march out of a pen. When a pen's colour completes (or a pen blows), `RoundEnd_StartMarch` puts its bombs in `Bomb_StateMarch`. Each walks to a slot in rows on the top screen (sub-state 4 on arrival, sound 0x1d9/0x1da by colour). When `RoundEnd_Tally`'s timer ends, this check starts the lift (`mBg2State = 1`, sound 0x1dd), and the bombs are then retired one every four frames (sound 0x1bc). **Seen** once (lr 0x020d8b50), 3 s before state 16.
 
 **Pachinko (`dScMgPachinko_c`, Bob-omb Squad).** These helpers are C-linkage free
 functions on a `char *` view of the scene, so each name carries the `Pachinko`
@@ -367,10 +375,11 @@ The other subsystems are named by what they draw and update:
 - `PachinkoDeco_*` (3 records that scroll with the board)
 - the aim line on sub BG2 (`Pachinko_DrawAimLine`, `Pachinko_ClearAimLine`, `Pachinko_PlotSubBg2Pixels`)
 
-Medium confidence: "Flyer", "Deco" and "Ball" are role words from code alone; the
-actors' looks are not observed.
+Medium confidence: "Ball" is a role word from code alone. The others are seen
+(runtime-checks.md): the flyer is Lakitu, the board scroll (`PachinkoBg_*`) is the
+airship that drops the Para-Bombs, and `PachinkoDeco_*` are its wings.
 
-`Pachinko_UpdateNextBall` (was `func_ov006_020fea70`, pass 5): counts down `mNextBallDelay`, then pens the next Bob-omb, the same shape as Pachinko2's `UpdateNextBall`.
+`Pachinko_UpdateNextBall` (was `func_ov006_020fea70`, pass 5): runs every frame of play and counts down `mNextBallDelay`, the same shape as Pachinko2's `UpdateNextBall`. When the delay runs out, it puts a new shot in the first free `mShot` slot at (0x80, 0x28) and plays 0x18d (silently the first time). **Seen:** that point is the slingshot's cradle. The ball sits there until fired, and the sling is empty right after a shot.
 
 **Pachinko2 (`dScMgPachinko2_c`, Tamaire).** These are members, named after the
 header's own `mCups` / `mBalls` / `mPaddles`.
@@ -425,7 +434,7 @@ High confidence:
 
 Medium confidence:
 - The movement modes: `Wiggler_StartPathA/B/C`, `Wiggler_StepSegmentsA/B/C`, `Wiggler_StartBounce`/`Wiggler_MoveBounce`, `Wiggler_StateMoveA/B`, `Wiggler_StateHold`, `Wiggler_StateWait`, `Wiggler_Retarget`, `Wiggler_OnTouched`, `Wiggler_StopIfIdle`, `Wiggler_UpdateSway` (sounds 0x1e7/0x1e8 as the sway crosses zero).
-- `Wiggler_DrawTarget` and `Wiggler_DrawField` (were `Wiggler_DrawPassA/B`): **high, seen**. With each stubbed to `bx lr` in RAM, A's absence removed the target Wiggler on the top screen and B's removed every Wiggler on the bottom play field; the scene calls A with `mTarget` and B for each entry of the field array.
+- `Wiggler_DrawTarget` and `Wiggler_DrawField` (were `Wiggler_DrawPassA/B`): **high, seen**. With each stubbed to `bx lr` in RAM, A's absence removed the target Wiggler on the top screen and B's removed every Wiggler on the bottom play field; the scene calls A with `mTarget` and B for each entry of the field array. A runs on the main engine once a frame, B on the sub engine once per wiggler.
 - `Wiggler_IsStarVisible`.
 
 **unit020cd744: the stylus-drawn trampolines.**
@@ -436,7 +445,9 @@ Medium confidence:
   - **Behaviour:** the three states `StateFade`, `StateSettle` and `StateFlex`, each with its setter; `TrmpLine_PushJumper` applies the line's spring to the jumper.
   - **Setup:** `TrmpLine_CreateStartLineT1/T2`, the line each game starts with.
 - **`TrmpItem_*`.** The bouncing items of Trampoline2; the layout is in `include/TrmpItem.h` (pass 5).
-  - The nine motions, indexed by the item's kind byte (+0x98, `mMotionKind`), are named from their code (pass 5): `MotionStill`, `MotionPatrol` (moves along x, reversing at a size-dependent range), `MotionBob` (moves along y between two heights), `MotionSpin` (turns its facing 0x100 a frame), `MotionSway` (x speed flips with a phase), `MotionSpinSway`, `MotionHover` (y speed flips with a faster phase), `MotionSpinHover` and `MotionSpinDrift` (spins like MotionSpin but keeps its vertical speed). Each has its `SetMotion*`. What each item looks like is still not observed.
+  - The nine motions, indexed by the item's kind byte (+0x98, `mMotionKind`), are named from their code (pass 5): `MotionStill`, `MotionPatrol` (moves along x, reversing at a size-dependent range), `MotionBob` (moves along y between two heights), `MotionSpin` (turns its facing 0x100 a frame), `MotionSway` (x speed flips with a phase), `MotionSpinSway`, `MotionHover` (y speed flips with a faster phase), `MotionSpinHover` and `MotionSpinDrift` (spins like MotionSpin but keeps its vertical speed). Each has its `SetMotion*`.
+  - **Seen** (pass 4: each kind forced, then tracked; runtime-checks.md): 0 still, 1 slides side to side, 2 rises and falls, 3 spins in place, 4 sways on a timer, 5 sways and spins, 6 bobs on a timer, 7 bobs and spins, 8 spins in place on fixed axes. The items are rainbow rings.
+  - In `dScMgTrampoline2_c::SpawnWave`, the local `faces[i]` holds the motion kind and `kinds[i]` the position index, so the locals and `Trmp2_PickFaceA/B` / `Trmp2_ColumnForKind` read backwards. Renaming them is a candidate for the next pass. Read that way, the dealer is: `Trmp2_ColumnForKind` maps a position (0..10) to one of five columns. `Trmp2_PickFaceA` picks a motion kind, sway (4/5) for positions below 5 and bob (6/7) above. `Trmp2_PickFaceB` can also give 8, spin in place. `Trmp2_OccupancyBits` marks the neighbouring columns a placed ring blocks. Candidate names: `PickMotionA/B`, `ColumnForPosition` and `BlockedColumns`. `SpawnWave` never ran in natural play, so this is from code.
 
 **Curling (`dScMgCurling_c`).** Named mostly from the bodies' own comments, high confidence.
 - **Scene:** `Scene_StartRound`, `Scene_Play`, `Scene_Score`, `Scene_End`, `Scene_Idle`.
@@ -464,17 +475,21 @@ Medium confidence:
 
 **Cup, Jump2, Slots, Trampoline2 (one batch).**
 
-- **Cup.** High confidence: `CupFx_*` (the 32-sprite effect pool), `Cup_DrawOamList`, `Cup_UpdateAnim`, `Cup_PlayAnimSound`. Medium confidence: `Cup_PickShuffleSpeed`, which reads the round row's speed nibbles.
+- **Cup.** High confidence: `CupFx_*` (the 32-sprite effect pool), `Cup_DrawOamList`, `Cup_UpdateAnim`, `Cup_PlayAnimSound`. Medium confidence: `Cup_PickShuffleSpeed`, which reads the round row's speed nibbles. **Seen:** 8 calls per round in two rounds, all from `StatePrepareShuffle` (lr 0x020dfd0c), one per swap. Besides the speed, it picks which of the three pairs swaps and sets the pair's midpoint, half-distance and start angle, plus a fake-out from row 7 up. Candidate name: `Cup_SetupSwap`.
 - **Jump2.**
-  - A linked list of score popups: `Jump2Popup_*`, plus the members `Elem::Spawn/Tick/DrawNumber` and `Node::Link/Unlink`.
-  - Phases: `BeginIntro`, `State_Intro`, `BeginPlay`, `State_Play`, `BeginEnd`, `State_End`, `State_Result`, `State_Idle`. These are medium confidence, from the PMF records the transitions store.
+  - A linked list of score popups: `Jump2Popup_*`, plus the members `Elem::Spawn/Tick/DrawNumber` and `Node::Link/Unlink`. **Seen:** a yellow number, the running score, rising from where a Shy Guy was knocked out (`Heyho_Settle`, lr 0x020c4e58). Trampoline2 also clears the list at setup (lr 0x02124360), so the `Jump2` prefix is narrower than its use.
+  - Phases: `BeginIntro`, `State_Intro`, `BeginPlay`, `State_Play`, `BeginEnd`, `State_End`, `State_Result`, `State_Idle`. These are medium confidence, from the PMF records the transitions store. **Seen**, in both Jump games: Intro about 3 s under "A RULES", Play, End about 0.5 s (after the third miss), Result 2-3 s (until `Heyho_AllIdle`), then state 0x12 and Idle.
 - **Slots.**
   - Slot3's state table is named from its bodies (pass 6; it was `Slot3_State0..7`, with `Slot3_State3and4` shared by states 3 and 4): `Slot3_StateIntro` (shows the target face and the LEVEL banner), `StateSpin` (a touch in a row's band stops it), `StateJudge` (compares the rows against the target and scores), `StatePayout` (states 3 and 4: pays the win coin by coin, or takes three coins for a miss; seen), `StateWait` (5, empty), `StateGameOver` (slides the reels apart, then `MG_STATE_GAME_OVER`), `StateDone` (7, empty).
   - `SlotLamp_*` and `SlotBlink_*`: the blink helpers the file's own comments describe.
   - Medium confidence: `SlotBet_*`, `SlotReel_SetSpeed`, `SlotReels_CheckStopped`, `Slot1_InitHud`.
+  - **Seen** (Slot1, one 3-coin spin that hit three feathers, ×5):
+    - `SlotBet_Place` and `Slot1_InitHud` run at setup. `InitHud` loads `mCredits` from the saved record. `SlotBet_Reset` follows, and each BET touch is a `SlotBet_OnTouch` (one coin, up to 3).
+    - `SlotReels_CheckStopped` ran once, as the third reel stopped (lr 0x0210cd4c). It is the payline check: symbol 5 is wild, and it returns 1 when the other symbols agree. Candidate name: `SlotReels_CheckLine`.
+    - `SlotReel_SetSpeed` is called on the bet icon, not a reel (lr 0x0210ceec, r1 5, the ×5 line). It stores bet × multiplier × 4 at icon +0x20, and the credits rose by bet × 5 (7 → 22). Candidate name: `SlotBet_SetPayout`.
 - **Trampoline2.** All medium confidence:
   - `Trmp2_ColumnForKind`, `Trmp2_OccupancyBits` and `Trmp2_PickFaceA/B`: the face-row dealer.
-  - `Trmp2Spinner_*`: a spinning decoration pool.
+  - `Trmp2Spinner_*`: a spinning decoration pool. **Seen:** the reward star. `TrmpItem_UpdateWithJumper` spawns one (via `Trmp2Spinner_InitAll`, which fills one free slot) each time Mario takes a ring, sized by the combo count. Three slots written live showed large white stars spinning off the top screen to the lower left within a second. The background shooting stars are something else: they kept moving with `Trmp2Spinner_UpdateAll` stubbed. Candidate names: `Trmp2Star_*`, with `InitAll` → `SpawnOne`.
   - `TrmpItem_Construct`, `Trmp2_DestructJumperModels`.
 
 **Small leftovers (one batch).**
@@ -493,17 +508,24 @@ High confidence:
   - The empty element constructors and destructors.
 
 Medium confidence:
-- `Puff_*` (unit020c8a30): three rising, growing sprites spawned at a jumper's x.
-- `Luigi_PrepareScanlines` / `Luigi_PushScanlineRecord`.
+- `Puff_*` (unit020c8a30): three rising, growing sprites spawned at a jumper's x. **Seen** (Jump, Jump2; the same `Puff_Spawn(x, 0xc0)` calls fire on each miss in both trampoline games): the cyan "MISSED 1/2/3" label where a Mario fell. The sprite is picked by the miss count (`mIndex`) from a per-language table; it rises with a sideways wobble, and the third stays. Candidate prefix: `MissLabel_*`.
+- `Luigi_PrepareScanlines` / `Luigi_PushScanlineRecord`. **Seen** (Wanted!): the iris's HBlank pair. `PrepareScanlines` runs from the IRQ dispatcher (lr 0x01ffd9d4) once the clock runs out and the iris opens from the centre circle to the full poster wall. Each line, it copies the next line's window registers (0x04000040) from the double-buffered [2][192] table. On lines 192 and up (r0 = VCOUNT + 1, 0xcb..0xdb), it calls `PushScanlineRecord`, which latches the pending buffer and loads line 0. Candidate names: `Luigi_IrisHBlank` / `Luigi_IrisLatchBuffer`.
 
 The three left unnamed here were named in pass 5: `AnyBombMarching` (Bomroom), `BigBoo_SetDone` (Teresa), `Pachinko_UpdateNextBall` (Pachinko).
 
 **dMgJump3DMario_c (Jump, Jump2).** The member names are checked against the state records each setter stores: `StartWindUp` → `StateWindUp`, `StartRiseOut` → `StateRiseOut`, `StartFallOut` → `StateFallOut`, `HideAndIdle` → `StateIdle`. The pool helpers are `Jump3D_*`. Medium confidence: `Jump3D_DisableInput`/`EnableInput` (a flag the scenes toggle) and `Jump3D_SetLowGravity`/`StopGravity` (tuning words). Pass 6 named the three `dMg3DHeyhoObjAdapter_c` slots it implements, which were `Unk_020c76d8/d0/2c`: `GetPos` (slot 0, returns `&mPos`), `GetVelocity` (slot 1, returns `&mVel`) and `IsLaunched` (slot 2, 1 once Mario has left `StateIdle` and `StateWindUp`; medium, since what reads it through the adapter is not traced).
+- **Seen:** the flag (`data_ov006_02140400`) is not input. `dMgJump3DMario_c::Draw` reads it to draw the bobbing blue arrow over each Mario. Jump sets it at setup (`EnableInput`, lr 0x020eea38) and shows the arrows; Jump2 clears it (`DisableInput`, lr 0x020efab4) and shows none. Candidate names: `Jump3D_ShowArrows`/`HideArrows`.
+- **Seen:** `SetLowGravity` runs once as `State_End` hands to `State_Result`, in both games (lr 0x020ee4b0, 0x020ef550). It sets gravity 0x100 and a floor of −0x4800, then sends every Mario to `StartFallOut`. `StopGravity` (gravity 0, every Mario to `StartRiseOut`) is only called by `dScMgJump_c::BeginFinal`, which was not reached. Candidate names: `Jump3D_FallOutAll`/`RiseOutAll`.
 
 **dMg3DHeyhoObjAdapter_c (the Shy Guys of the Jump games).**
 - **Motions** (pass 6; they were `Heyho_Motion0..14` with `Heyho_StartMotion0..14`), named from their bodies. Each `Heyho_StartMotion<Name>` stores its motion's record. `MotionFlyIn` (3: `Heyho_SpawnAll` sends it to its start point, then it switches on `mMoveKind`) and `MotionRegroup` (8: the same from `Heyho_SettleAll`) pick one of: `MotionHover` (bobs in place), `MotionPatrolBob` (crosses the screen, bobbing), `MotionBobVertical`, `MotionBounceNear` (inside a 0x60 box by its start), `MotionVShape` (bottom, a top corner, bottom centre), `MotionBounceInRange`, `MotionDiagonal` / `MotionDiagonalMirror` (corner to corner of its range), `MotionCircleUpper` / `MotionCircleLower` (laps of the upper or lower field, turning opposite ways), or `MotionChase` (heads for the nearest launched jumper through the adapter's `IsLaunched`). `MotionHitSpin` is the squash-and-spin after a jumper hits one (sound 0x1c8, then 0x1c7), and `MotionLeave` eases it 0x100 to the side, off screen (`Heyho_React`). The kind-to-motion map is 0 Hover, 1 PatrolBob, 2 BobVertical, 3 BounceNear, 4 VShape, 5 BounceInRange, 6 Diagonal, 7 DiagonalMirror, 8 CircleUpper, 9 CircleLower, 10 Chase.
 - Pool and object helpers: `Heyho_InitPool`, `Heyho_SpawnAll`, `Heyho_ReactAll`/`Heyho_React`, `Heyho_SeparateAll`, `Heyho_CheckHitA/B`, `Heyho_Update`, `Heyho_Draw`, `Heyho_Construct`/`Heyho_Destruct`, `Heyho_LoadResources`.
 - Medium confidence: `Heyho_Settle`, `Heyho_SettleAll`, `Heyho_AllIdle`, `Heyho_IsChasing`.
+- **Seen** (Jump and Jump2, runtime-checks.md "Ten more"):
+  - A Mario landing on a Shy Guy starts `Motion11` (the spin). `Settle` then runs: a white puff (particles 0x122/0x123), score +1, and in Jump2 a yellow `Jump2Popup` number (the running score) rising from the spot. Candidate name: `Heyho_KnockOut`.
+  - `SettleAll` runs right after, from Jump2's `State_Play` (lr 0x020ef674). It sends the first idle Shy Guy back in with `Motion8` from a random entry point, and it flies in from above. Candidate name: `Heyho_SendInNext`. Jump never called it.
+  - `AllIdle` is polled every frame of Jump2's `State_Result`, and GAME OVER follows once it returns 1. The name fits.
+  - The motions seen: `Motion3` at setup (one per Shy Guy, from the 0x0212d560 table); `Motion12` for all three when play starts; `Motion4`, `5` and `9` now and then in play (from 0x020c6848, 0x020c686c and 0x020c6830); `Motion14` once at the end.
 
 **dMgTrmpln2Mario_c / dMgTrmpln3DMario_c (the trampoline Marios).** The two classes mirror each other, so their helpers carry parallel names.
 
@@ -519,7 +541,12 @@ High confidence:
 
 Medium confidence: `BounceOffLineA/B` (the reflection off the drawn line), `EnterByKind`, `PickIdleAnim`, `MoveToStart`, `PlaceAtStart`, `CountFinished`, `SetSpawnHeight`.
 
-`Trmp2Mario_EnterAll` (was `func_ov006_020ca840`, pass 5): sets the launch globals, then runs `EnterByKind` and `UpdateMatrix` on every trampoline Mario.
+**Seen** (Trampoline and Trampoline2, runtime-checks.md "Ten more"):
+- `BounceOffLineA/B`: `State7` (3DMario) and `State5` (2Mario) dispatch on the u16 at +0x18, set by the line as it catches a jumper. Kind 2 (A, sound 0x1b1) is a catch near the line's centre, where |offset| × half-length < 0x400000; kind 1 (B, sound 0x1ae) is a catch further out. B ran 22 times to A's 2, with flat and slanted lines alike. Trampoline2's start pad catches with B.
+- `CountFinished` and `SetSpawnHeight` are polled every frame (lr 0x02121878 and 0x02121bfc). Game over follows `CountFinished` at once.
+- `EnterByKind` ran once per Mario at game end (four Marios, stride 0xd0).
+
+`Trmp2Mario_EnterAll` (was `func_ov006_020ca840`, pass 5): sets the launch globals, then runs `EnterByKind` and `UpdateMatrix` on every trampoline Mario. **Seen** once, at Trampoline2's game over (`BeginResults`, lr 0x02123c84). It sets gravity 0x100 and a floor of −0x4800 for every Mario, and raises the flag (`data_ov006_021405ac`) that stops `TrmpItem_UpdateWithJumper` scoring. Each Mario then goes through `EnterByKind`: a hop (vy 0x2000, sound 0x1c9) and a slow fall, or State7 from State3.
 
 ## Member-pointer records (`pmf_*`, renamed 2026-10-15)
 
@@ -563,7 +590,7 @@ compare (all 45 TUs identical).
 - **`mFlyer[1]` and `mBg[1]`:**
   - **medium:** the fields. `vy` is high: `PachinkoFlyer_StateWaiting` seeds it and `StateDescend` adds it to y.
   - **low:** the one-element arrays, inferred the same way as Teresa's `mReveal`.
-  - **seen:** the flyer is Lakitu and the targets are the four flowers (runtime-checks.md, 2026-10-15). "background" is still medium.
+  - **seen:** the flyer is Lakitu and the targets are the four flowers (runtime-checks.md, 2026-10-15). The background is seen too: `mBg` scrolls the airship across the top screen, and `PachinkoDeco` is its wings.
 - **0x5418..0x5958:** no reconstructed function touches it.
 
 ## Pass 3 fields (2026-10-15)

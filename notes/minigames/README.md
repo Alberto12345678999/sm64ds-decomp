@@ -168,6 +168,6 @@ fBase_c > dBase_c > dScene_c
 
 - **Shared states:** what do the 20 shared states show? Callers most often enter 0x12, 5, 4, 0 and 0x10.
 - **Scoring modes:** what separate modes 0, 1 and 3? Mode 5 is Snowball's lower-is-better time.
-- **Duplicate rows:** are the six duplicated menu rows one game offered in two variants?
+- **Duplicate rows (answered 2026-10-15):** the six duplicated menu rows are one game offered in two variants. The row's second word becomes `param1`, and its low byte is the variant that `IsAltVariant` reads (runtime-checks.md).
 - **Pause gate:** why does `BeforeBehavior` stop a game while `mMenuScreenSaved` is set, or while `mRunDuringFade` is 0 and the fader is not at its start?
 - **Slot 18:** what does it really do? Callers pass -1, 3, 4 and 5.

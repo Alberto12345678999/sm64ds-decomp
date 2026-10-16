@@ -78,6 +78,7 @@
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
+#include "dClipper.h"
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c19BeforeInitResourcesEv
@@ -145,10 +146,9 @@ void dActor_c::AfterCleanupResources(u32 vfSuccess)
 extern "C" {
 u8 IsAreaShowing(int areaId);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
-int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(char *thisp, Vector3 *v, int radius, u8 *out);
 extern int data_0209fc68; /* nonzero forces the actor to think anyway */
 extern Matrix4x3 data_0209b3ec; /* world -> camera */
-extern char data_0209f43c; /* the dClipper instance */
+extern dClipper data_0209f43c;  /* the dClipper instance */
 extern u8 data_0209f274; /* doubles the far-away threshold when set */
 extern u8 data_0209f2c4;
 extern u8 data_0209f20c;
@@ -179,11 +179,7 @@ int dActor_c::BeforeBehavior()
             MulVec3Mat4x3(&tmp, &data_0209b3ec, (Vector3 *)&mCamSpacePosX);
         }
         if (mFlags & 0x10003) {
-            int r = _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(
-                        &data_0209f43c,
-                        (Vector3 *)&mCamSpacePosX,
-                        mClipRadius,
-                        &mClipResult);
+            int r = data_0209f43c.ClipSphere(*(Vector3 *)&mCamSpacePosX, mClipRadius, &mClipResult);
             int thresh = mClipDistance;
             if (data_0209f274)
                 thresh <<= 1;

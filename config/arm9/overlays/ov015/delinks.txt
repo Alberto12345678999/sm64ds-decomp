@@ -21,6 +21,9 @@ src/game/actors/d_a_obj_bk_botaosi.cpp:
 src/game/actors/d_a_obj_bk_dossunbar.cpp:
     complete
     .text start:0x02111ba0 end:0x02112290
+    .init start:0x02113048 end:0x02113264
+    .ctor start:0x02113418 end:0x0211341c
+    .bss start:0x0211499c end:0x02114a5c
 
 src/game/actors/d_a_obj_bk_lift.cpp:
     complete
@@ -49,7 +52,3 @@ src/game/actors/d_a_obj_bk_fall_block.cpp:
     .init start:0x021133a8 end:0x02113410
     .ctor start:0x02113428 end:0x0211342c
     .bss start:0x02114ad4 end:0x02114afc
-
-src/unnamed/ov015/__sinit_ov015_02113048.c:
-    complete
-    .init start:0x02113048 end:0x02113264

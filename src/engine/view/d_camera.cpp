@@ -24,6 +24,7 @@
 #include "dBgCh_Lin.h"
 #include "decl_common.h"
 #include "decl_Particle.h"
+#include "dClipper.h"
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
 
@@ -80,7 +81,7 @@ extern u8 data_0209f2c4;
 extern s8 data_0209f2f8;
 extern s32 data_0209f32c;
 extern void *data_0209f394[];
-extern int data_0209f43c[];
+extern dClipper data_0209f43c;
 extern s32 data_0209fc48;
 extern Matrix4x3 data_020a0e68;
 extern void *data_ov002_0210c3b0;
@@ -523,7 +524,8 @@ void func_0200d954(char *c, short arg) {
     int j = i * 2;
     *(int *)(c + 0x104) = func_02053200(data_02082214[j]);
     *(int *)(c + 0x108) = func_02053200(data_02082214[j + 1]);
-    _ZN8dClipper13Func_020156DCEitii(data_0209f43c, *(int *)(c + 0xf8), arg, *(int *)(c + 0xfc), *(int *)(c + 0x100));
+    _ZN8dClipper13Func_020156DCEitii(&data_0209f43c, *(int *)(c + 0xf8), arg, *(int *)(c + 0xfc),
+                                     *(int *)(c + 0x100));
 }
 
 // @symbol func_0200d8c8

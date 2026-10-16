@@ -10,7 +10,7 @@
     {
       "name": ".text",
       "start": "0x0203c1b4",
-      "end": "0x0203cbc0"
+      "end": "0x0203cc28"
     },
     {
       "name": ".data",
@@ -501,6 +501,48 @@
       "size": "0xbc",
       "ordinal": 68,
       "legacy_source": "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp"
+    },
+    {
+      "symbol": "func_0203cbc0",
+      "address": "0x0203cbc0",
+      "size": "0x0000000c",
+      "legacy_source": "src/func_0203cbc0.c",
+      "ordinal": 69
+    },
+    {
+      "symbol": "_ZN6Memory16operator_delete2EPv",
+      "address": "0x0203cbcc",
+      "size": "0x0000000c",
+      "legacy_source": "src/_ZN6Memory16operator_delete2EPv.cpp",
+      "ordinal": 70
+    },
+    {
+      "symbol": "_ZN6Memory13operator_new2Ej",
+      "address": "0x0203cbd8",
+      "size": "0x0000000c",
+      "legacy_source": "src/_ZN6Memory13operator_new2Ej.cpp",
+      "ordinal": 71
+    },
+    {
+      "symbol": "_Znwj",
+      "address": "0x0203cbe4",
+      "size": "0x0000000c",
+      "legacy_source": "src/_Znwj.cpp",
+      "ordinal": 72
+    },
+    {
+      "symbol": "_ZdlPv",
+      "address": "0x0203cbf0",
+      "size": "0x0000001c",
+      "legacy_source": "src/_ZdlPv.cpp",
+      "ordinal": 73
+    },
+    {
+      "symbol": "func_0203cc0c",
+      "address": "0x0203cc0c",
+      "size": "0x0000001c",
+      "legacy_source": "src/func_0203cc0c.c",
+      "ordinal": 74
     }
   ],
   "data": [
@@ -607,7 +649,8 @@
     "absorb/Heap: folded the 43 family leftovers at 0x0203c33c..0x0203c970 into this TU, bodies verbatim (includes merged, externs kept), prepended in descending address order so mwccarm deferred codegen still emits ascending. That fold moved no key function; the structor fold below does.",
     "Memory::Allocate/Deallocate (0x0203c1b4..0x0203c24c) are folded here.",
     "absorb/structors: folded the twelve shards at 0x0203c970..0x0203cbc0 -- SolidHeap_t D0/D1, ExpHeap_t D0/D1, Heap_t D2/D0/D1, SolidHeap_t C1, ExpHeap_t C1, Heap_t C2, InitializeRootHeap and SetupRootHeap -- as three empty destructors, three constructors and the two root-heap functions, written at the top of the file so deferred codegen emits them last and ascending. They were separate files because each D0/D1/D2 shard defined the same ~X(){}; one definition per class emits every variant, and the manifest deadstrips the five the cartridge never kept.",
-    "The factories' `if (heap != 0)' before each constructor call is placement new's own null test: CreateSolidHeap, CreateExpandingHeap and CreateRootHeap now write `new (heap) X(...)' against a TU-local `operator new(size_t, void*)' and drop the explicit test, which had to be spelled out while the constructors lived in other files. Keeping both costs eight bytes per factory."
+    "The factories' `if (heap != 0)' before each constructor call is placement new's own null test: CreateSolidHeap, CreateExpandingHeap and CreateRootHeap now write `new (heap) X(...)' against a TU-local `operator new(size_t, void*)' and drop the explicit test, which had to be spelled out while the constructors lived in other files. Keeping both costs eight bytes per factory.",
+    "absorb/global-allocation: folded the six functions at 0x0203cbc0..0x0203cc28 -- the delete veneer func_0203cbc0, Memory::operator_delete2 and operator_new2, the global operator new (_Znwj) and operator delete (_ZdlPv), and the default-heap allocator func_0203cc0c -- written at the very top of the file so deferred codegen emits them last and ascending. The run ends there: func_0203cc28 is a vector rotate over the sine table, not heap code. On the host the global operators stay the CRT's; Heap.cpp gives the port only the two unnamed veneers, and port/slice_gate4b.txt drops the two shard paths."
   ],
   "relocations": [
     {
@@ -1062,7 +1105,7 @@
       },
       "tuRange": {
         "start": "0x0203c1b4",
-        "end": "0x0203cbc0",
+        "end": "0x0203cc28",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -1070,7 +1113,7 @@
         {
           "section": ".text",
           "start": "0x0203c1b4",
-          "end": "0x0203cbc0",
+          "end": "0x0203cc28",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -1084,7 +1127,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 73
+          "LICENSED": 79
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],

@@ -2640,7 +2640,7 @@ class NativeConstructorAndWrapperTests(unittest.TestCase):
 
     def test_real_constructor_and_force_wrapper_fixtures(self):
         examples = (("src/engine/model/Model.cpp", "_ZN5ModelC1Ev", "Model"),
-                    ("src/_ZN10dScEntry_c6icon_cC1Ev.cpp", "_ZN10dScEntry_c6icon_cC1Ev", "dScEntry_c::icon_c"))
+                    ("src/game/stages/d_s_entry_methods.cpp", "_ZN10dScEntry_c6icon_cC1Ev", "dScEntry_c::icon_c"))
         for rel, symbol, owner in examples:
             with self.subTest(path=rel):
                 text = (REPO / rel).read_text(encoding="utf-8")
