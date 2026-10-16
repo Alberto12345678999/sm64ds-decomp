@@ -4,7 +4,7 @@
  * The run sits between dMgTrmpln2Mario_c and dScMgAmida_c. No RTTI
  * in it. A line slot is a 4x4 patch: positions at +0x5c, normals at
  * +0x1dc, packed normals at +0x2dc. Four slots of 0x32c bytes sit at
- * data_ov006_02140990. defer_codegen off keeps ROM order.
+ * sTrmpLines. defer_codegen off keeps ROM order.
  *
  * leftovers:
  * - Address names stay. Each function keeps its namespace, because
@@ -53,8 +53,12 @@ namespace s020cd7b8 {
 extern "C" extern void Camera_ProjectToScreen(void* a, void* b, int* c, int* d);
 extern "C" extern int Mg_GetTopScreenYOffset(void);
 extern "C" extern void Jump2Popup_Spawn(int a, int b, int c);
-extern "C" {extern void* data_ov006_02141a50;}
-extern "C" {extern void* data_ov006_02141a40;}
+extern "C" {
+extern void *sMgSubCamera;
+}
+extern "C" {
+extern void *sMgMainCamera;
+}
 struct P2 { int w[2]; };
 extern "C" {extern struct P2 pmf_TrmpItem_GrowScale;}
 
@@ -62,10 +66,10 @@ extern "C" void TrmpItem_ProjectToScreen(char* c, int arg1)
 {
     int v0, v1;
     if (*(int*)(c + 0xc) > 0) {
-        Camera_ProjectToScreen(data_ov006_02141a50, (void*)(c + 8), &v0, &v1);
+        Camera_ProjectToScreen(sMgSubCamera, (void *)(c + 8), &v0, &v1);
         v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
     } else {
-        Camera_ProjectToScreen(data_ov006_02141a40, (void*)(c + 8), &v0, &v1);
+        Camera_ProjectToScreen(sMgMainCamera, (void *)(c + 8), &v0, &v1);
     }
     Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)arg1);
     *(struct P2*)c = pmf_TrmpItem_GrowScale;
@@ -405,17 +409,19 @@ extern "C" void TrmpItem_StateAppear(char* c)
 }
 
 namespace s020ce0ac {
-extern "C" {extern int data_ov006_02140838;}
+extern "C" {
+extern int sTrmpItemCount;
+}
 extern "C" {extern int data_ov006_02140828;}
 struct S2 { int w[2]; };
 extern "C" {extern struct S2 pmf_TrmpItem_StateAppear_2;}
 extern "C" void TrmpItem_StartAppear(char *c) {
-  ApproachLinear(data_ov006_02140828, data_ov006_02140838, 1);
-  *(char *)(c + 0x9c) = 0x1f;
-  *(int *)(c + 0x2c) = 0;
-  *(int *)(c + 0x30) = 0;
-  *(int *)(c + 0x34) = 0;
-  *(struct S2 *)c = pmf_TrmpItem_StateAppear_2;
+    ApproachLinear(data_ov006_02140828, sTrmpItemCount, 1);
+    *(char *)(c + 0x9c) = 0x1f;
+    *(int *)(c + 0x2c) = 0;
+    *(int *)(c + 0x30) = 0;
+    *(int *)(c + 0x34) = 0;
+    *(struct S2 *)c = pmf_TrmpItem_StateAppear_2;
 }
 }
 
@@ -558,10 +564,16 @@ extern "C" void TrmpItem_ReflectOffLine(char *a, Obj *o)
 
 namespace s020ce46c {
 extern "C" {extern int data_ov006_021405ac;}
-extern "C" {extern int data_ov006_02140838;}
-extern "C" {extern char *data_ov006_0214082c;}
+extern "C" {
+extern int sTrmpItemCount;
+}
+extern "C" {
+extern char *sTrmpItems;
+}
 extern "C" {extern int data_ov006_02140818;}
-extern "C" {extern int data_ov006_02140830;}
+extern "C" {
+extern int sTrmp2Score;
+}
 
 extern "C" extern void TrmpItem_ReflectOffLine(char *a, void *o);
 extern "C" extern int TrmpItem_HitTest2D(char *a, void *o, int arg1);
@@ -570,7 +582,7 @@ extern "C" extern void D3D_PlaySeAtX(int a, int b);
 extern "C" extern void Trmp2Spinner_InitAll(int c);
 extern "C" extern void TrmpItem_ProjectToScreen(char *c, unsigned short arg1);
 
-#define ELEM ((char *)data_ov006_0214082c + i * 0x1d0)
+#define ELEM ((char *)sTrmpItems + i * 0x1d0)
 
 extern "C" void TrmpItem_UpdateWithJumper(void *thiz, int arg1)
 {
@@ -585,7 +597,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *thiz, int arg1)
         return;
     *(unsigned short *)(sb + 0x22) = 0;
 
-    for (i = 0; i < data_ov006_02140838; i++) {
+    for (i = 0; i < sTrmpItemCount; i++) {
         if (*(int *)(ELEM + 0x84) == 0)
             continue;
         TrmpItem_ReflectOffLine(ELEM, sb);
@@ -615,7 +627,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *thiz, int arg1)
             D3D_PlaySeAtX(0x135, *(int *)(ELEM + 8));
             break;
         }
-        _Z14ApproachLinearRiii(&data_ov006_02140830, 0xf423f, step);
+        _Z14ApproachLinearRiii(&sTrmp2Score, 0xf423f, step);
         Trmp2Spinner_InitAll(*(unsigned short *)(sb + 0x20));
         TrmpItem_ProjectToScreen(ELEM, (short)step);
         (*(unsigned short *)(sb + 0x20))++;
@@ -875,20 +887,22 @@ extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void *, BT
 
 
 struct data_t { int a; BMD_File* f; };
-extern "C" {extern data_t data_ov006_02140850;}
+extern "C" {
+extern data_t sTrmpItemModelFile;
+}
 extern "C" {extern data_t data_ov006_02140858;}
 extern "C" {extern data_t data_ov006_02140848;}
 extern "C" {extern BTA_File data_ov006_0213b3a4;}
 
 extern "C" void TrmpItem_Load(char* c)
 {
-    ((Model*)(c+0xa0))->SetFile(data_ov006_02140850.f, 1, -1);
+    ((Model *)(c + 0xa0))->SetFile(sTrmpItemModelFile.f, 1, -1);
     ((Model*)(c+0xf0))->SetFile(data_ov006_02140858.f, 1, -1);
     ((Model*)(c+0x140))->SetFile(data_ov006_02140848.f, 1, -1);
     ((Model*)(c+0xa0))->SetPolygonID(1);
     ((Model*)(c+0xf0))->SetPolygonID(2);
     ((Model*)(c+0x140))->SetPolygonID(3);
-    TextureTransformer::Prepare(*data_ov006_02140850.f, data_ov006_0213b3a4);
+    TextureTransformer::Prepare(*sTrmpItemModelFile.f, data_ov006_0213b3a4);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj((TextureTransformer*)(c+0x194), data_ov006_0213b3a4, 0, 0x1000, 0);
     TrmpItem_Hide((int*)c);
 }
@@ -899,16 +913,19 @@ namespace s020ced84 {
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
  */
-extern "C" {extern int data_ov006_02140838;}
-extern "C" {extern char *data_ov006_0214082c;}
+extern "C" {
+extern int sTrmpItemCount;
+}
+extern "C" {
+extern char *sTrmpItems;
+}
 extern "C" extern void TrmpItem_UpdateMatrix(char *c);
 
 extern "C" void TrmpItem_UpdateMatricesAll(void)
 {
     int i;
-    for (i = 0; i < data_ov006_02140838; i++)
-    {
-        char *p = data_ov006_0214082c + i * 0x1d0;
+    for (i = 0; i < sTrmpItemCount; i++) {
+        char *p = sTrmpItems + i * 0x1d0;
         if (*(int *)(p + 0x84) != 0)
             TrmpItem_UpdateMatrix(p);
     }
@@ -920,59 +937,71 @@ namespace s020cedf0 {
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
  */
-extern "C" {extern int data_ov006_02140838;}
-extern "C" {extern char* data_ov006_0214082c;}
+extern "C" {
+extern int sTrmpItemCount;
+}
+extern "C" {
+extern char *sTrmpItems;
+}
 extern "C" extern void TrmpItem_Update(char *c);
 
 extern "C" void TrmpItem_UpdateAll(void){
   int i=0;
   int off;
-  if(data_ov006_02140838>0){
-    off=0;
-    do{
-      char *p = data_ov006_0214082c + off;
-      if(*(int*)(p+0x84)!=0){
-        TrmpItem_Update(p);
-      }
-      i++;
-      off+=0x1d0;
-    }while(i<data_ov006_02140838);
+  if (sTrmpItemCount > 0) {
+      off = 0;
+      do {
+          char *p = sTrmpItems + off;
+          if (*(int *)(p + 0x84) != 0) {
+              TrmpItem_Update(p);
+          }
+          i++;
+          off += 0x1d0;
+      } while (i < sTrmpItemCount);
   }
 }
 }
 
 namespace s020cee5c {
-extern "C" {extern int data_ov006_02140838;}
-extern "C" {extern unsigned char* data_ov006_0214082c;}
+extern "C" {
+extern int sTrmpItemCount;
+}
+extern "C" {
+extern unsigned char *sTrmpItems;
+}
 extern "C" {extern int data_ov006_02140828;}
 extern "C" {extern int data_ov006_02140818;}
-extern "C" {extern int data_ov006_02140830;}
+extern "C" {
+extern int sTrmp2Score;
+}
 extern "C" extern void TrmpItem_Hide(int* p);
 extern "C" void TrmpItem_HideAll(void){
   int i=0;
   int off;
-  if(data_ov006_02140838>0){
-    off=0;
-    do{
-      TrmpItem_Hide((int*)(data_ov006_0214082c+off));
-      i++;
-      off+=0x1d0;
-    }while(i<data_ov006_02140838);
+  if (sTrmpItemCount > 0) {
+      off = 0;
+      do {
+          TrmpItem_Hide((int *)(sTrmpItems + off));
+          i++;
+          off += 0x1d0;
+      } while (i < sTrmpItemCount);
   }
   data_ov006_02140828=0;
   data_ov006_02140818=0;
-  data_ov006_02140830=0;
+  sTrmp2Score = 0;
 }
 }
 
 namespace s020ceedc {
 extern "C" extern void _ZN13SharedFilePtr7ReleaseEv(void *);
-extern "C" {extern int data_ov006_02140850[];}
+extern "C" {
+extern int sTrmpItemModelFile[];
+}
 extern "C" {extern int data_ov006_02140858[];}
 extern "C" {extern int data_ov006_02140848[];}
 extern "C" void TrmpItem_ReleaseFiles(void)
 {
-    _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140850);
+    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemModelFile);
     _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140858);
     _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140848);
 }
@@ -981,30 +1010,36 @@ extern "C" void TrmpItem_ReleaseFiles(void)
 namespace s020cef14 {
 extern "C" extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 extern "C" extern void TrmpItem_Load(void *p);
-extern "C" {extern int data_ov006_02140850[];}
+extern "C" {
+extern int sTrmpItemModelFile[];
+}
 extern "C" {extern int data_ov006_02140858[];}
 extern "C" {extern int data_ov006_02140848[];}
-extern "C" {extern char *data_ov006_0214082c[];}
-extern "C" {extern int data_ov006_02140838[];}
+extern "C" {
+extern char *sTrmpItems[];
+}
+extern "C" {
+extern int sTrmpItemCount[];
+}
 
 extern "C" void TrmpItem_LoadAll(char *a, int count)
 {
     int i;
     int off;
-    _ZN5Model8LoadFileER13SharedFilePtr(data_ov006_02140850);
+    _ZN5Model8LoadFileER13SharedFilePtr(sTrmpItemModelFile);
     _ZN5Model8LoadFileER13SharedFilePtr(data_ov006_02140858);
     _ZN5Model8LoadFileER13SharedFilePtr(data_ov006_02140848);
-    data_ov006_0214082c[0] = a;
-    data_ov006_02140838[0] = count;
+    sTrmpItems[0] = a;
+    sTrmpItemCount[0] = count;
     i = 0;
     if (count <= 0)
         return;
     off = 0;
     do {
-        TrmpItem_Load(data_ov006_0214082c[0] + off);
+        TrmpItem_Load(sTrmpItems[0] + off);
         i++;
         off += 0x1d0;
-    } while (i < data_ov006_02140838[0]);
+    } while (i < sTrmpItemCount[0]);
 }
 }
 
@@ -1013,8 +1048,12 @@ namespace s020cefa4 {
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
  */
-extern "C" {extern int data_ov006_02140838;}
-extern "C" {extern char *data_ov006_0214082c;}
+extern "C" {
+extern int sTrmpItemCount;
+}
+extern "C" {
+extern char *sTrmpItems;
+}
 extern "C" extern int TrmpItem_Init(char *p, int a0, int a1, int a2, int a3);
 
 extern "C" char *TrmpItem_Spawn(int a0, int a1, int a2, int a3)
@@ -1022,17 +1061,17 @@ extern "C" char *TrmpItem_Spawn(int a0, int a1, int a2, int a3)
     int i = 0;
     char *base;
     int off;
-    if (data_ov006_02140838 > 0) {
-        base = data_ov006_0214082c;
+    if (sTrmpItemCount > 0) {
+        base = sTrmpItems;
         do {
             if (*(int*)(base + 0x84) == 0) {
                 off = i * 0x1d0;
-                TrmpItem_Init(data_ov006_0214082c + off, a0, a1, a2, a3);
-                return data_ov006_0214082c + off;
+                TrmpItem_Init(sTrmpItems + off, a0, a1, a2, a3);
+                return sTrmpItems + off;
             }
             i++;
             base += 0x1d0;
-        } while (i < data_ov006_02140838);
+        } while (i < sTrmpItemCount);
     }
     return 0;
 }
@@ -1484,7 +1523,7 @@ extern "C" void TrmpLine_SetStateFlex(char *p) { *(struct S *)(p + 0x0) = pmf_Tr
 namespace s020cfc74 {
 /*
  * Per-frame gate-crossing check over the five tracked objects
- * (data_ov006_0214097c). For each live object, project its position and
+ * (sTrmpJumpers). For each live object, project its position and
  * target onto the gate frame (c+0x14 / c+0x20 basis, c+0x58 half-width). A
  * segment that crosses the gate records the hit (c+0x38 position, c+0x44
  * direction, state 1 or 2 with a sound whose pitch is lerped from the
@@ -1529,7 +1568,9 @@ extern "C" extern void TrmpLine_SetStateSettle(char *p);
 extern "C" extern void Vec3_MulScalar(Vector3 *out, Vector3 *in, int scale);
 extern "C" extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
 
-extern "C" {extern struct Cannon *data_ov006_0214097c[];}
+extern "C" {
+extern struct Cannon *sTrmpJumpers[];
+}
 extern "C" {extern int data_ov006_0213b30c;}
 extern "C" {extern int data_ov006_0213b310;}
 extern "C" {extern int data_ov006_0213b2f4;}
@@ -1557,11 +1598,11 @@ extern "C" int TrmpLine_PushJumper(char *c)
         Vector3 *p0;
         Vector3 *p1;
 
-        if (data_ov006_0214097c[i] == 0)
+        if (sTrmpJumpers[i] == 0)
             continue;
-        if (data_ov006_0214097c[i]->vt->IsActive(data_ov006_0214097c[i]) == 0)
+        if (sTrmpJumpers[i]->vt->IsActive(sTrmpJumpers[i]) == 0)
             continue;
-        arr = data_ov006_0214097c;
+        arr = sTrmpJumpers;
 
         p0 = arr[i]->vt->GetPos(arr[i]);
         pos0.x = p0->x;
@@ -1733,7 +1774,7 @@ extern void D3D_PlaySePannedLoop(int a0, int a1, int a2);
 extern void TrmpLine_SetStateSettle(char *p);
 extern void TrmpLine_SetStateFlex(char *p);
 
-extern void *data_ov006_0214097c[];
+extern void *sTrmpJumpers[];
 extern s32 data_ov006_0213b2fc;
 extern s32 data_ov006_0213b300;
 extern s32 data_ov006_0213b2f8;
@@ -1913,15 +1954,15 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
 
     k = 0;
     do {
-        obj = data_ov006_0214097c[k];
+        obj = sTrmpJumpers[k];
         if (obj != 0) {
             if (((IsActiveFn)((*(void ***)obj))[3])(obj) != 0) {
-                obj = data_ov006_0214097c[k];
+                obj = sTrmpJumpers[k];
                 pos = ((GetVecFn)((*(void ***)obj))[0])(obj);
                 relPos.x = pos->x;
                 relPos.y = pos->y;
                 relPos.z = pos->z;
-                obj = data_ov006_0214097c[k];
+                obj = sTrmpJumpers[k];
                 dir = ((GetVecFn)((*(void ***)obj))[2])(obj);
                 rawDir.x = dir->x;
                 rawDir.y = dir->y;
@@ -1938,7 +1979,7 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
                     if (alongDot > -h && alongDot < h) {
                         bestRel = relPos;
                         bestDir = rawDir;
-                        bestObj = data_ov006_0214097c[k];
+                        bestObj = sTrmpJumpers[k];
                         bestVal = crossDot;
                         bestD1 = alongDot;
                     }
@@ -1993,7 +2034,9 @@ extern "C" extern void func_020553a4(void* p);
 extern "C" extern void func_0203cd80(struct V3* out, int a, int b);
 extern "C" extern void TrmpLine_Draw(char* p);
 extern "C" {extern char data_0209b3ec[];}
-extern "C" {extern char data_ov006_02140990[];}
+extern "C" {
+extern char sTrmpLines[];
+}
 // @symbol TrmpLine_DrawAll
 extern "C" void TrmpLine_DrawAll(void) {
     struct V3 s;
@@ -2009,7 +2052,7 @@ extern "C" void TrmpLine_DrawAll(void) {
         | 0x40000000;
     *(volatile int*)0x40004cc = 0x40007fff;
     int i;
-    char* p = data_ov006_02140990;
+    char *p = sTrmpLines;
     for (i = 0; i < 4; i++) {
         if (*(unsigned char*)(p + 0x328) != 0) {
             TrmpLine_Draw(p);
@@ -2020,12 +2063,14 @@ extern "C" void TrmpLine_DrawAll(void) {
 }
 
 namespace s020d0ac0 {
-extern "C" {extern char data_ov006_02140990[];}
+extern "C" {
+extern char sTrmpLines[];
+}
 extern "C" extern void TrmpLine_Update(void *c);
 // @symbol TrmpLine_UpdateAll
 extern "C" void TrmpLine_UpdateAll(void) {
     int i = 0;
-    char *p = data_ov006_02140990;
+    char *p = sTrmpLines;
     do {
         if (*(unsigned char*)(p + 0x328) != 0)
             TrmpLine_Update(p);
@@ -2036,12 +2081,14 @@ extern "C" void TrmpLine_UpdateAll(void) {
 }
 
 namespace s020d0b04 {
-extern "C" {extern unsigned char data_ov006_02140990[];}
+extern "C" {
+extern unsigned char sTrmpLines[];
+}
 
 // @symbol TrmpLine_ClearAll
 extern "C" void TrmpLine_ClearAll(void) {
     int i = 0;
-    unsigned char *p = data_ov006_02140990;
+    unsigned char *p = sTrmpLines;
     int r0 = i;
     do {
         i++;
@@ -2130,7 +2177,9 @@ extern "C" extern void func_0203d704(int* o, int* a, int* b);
 extern "C" extern void Vec2_Sub(int* o, int* a, int* b);
 extern "C" extern void TrmpLine_Build(s16* slot, s16* a, s16* b);
 
-extern "C" {extern char data_ov006_02140990[];}
+extern "C" {
+extern char sTrmpLines[];
+}
 extern "C" {extern s16 data_ov006_02140cb4[];}
 extern "C" {extern s16 data_ov006_02140cb6[];}
 extern "C" {extern s16 data_ov006_02140cae[];}
@@ -2225,11 +2274,11 @@ extern "C" int TrmpLine_Create(s16* sl, s16* sb) {
         sb[1] = (s16)(p2[1] >> 12);
     }
 
-    base = data_ov006_02140990;
+    base = sTrmpLines;
     i = 0;
     do {
         if ((unsigned char)base[0x328] == 0) {
-            p = data_ov006_02140990;
+            p = sTrmpLines;
             j = 0;
             do {
                 if (i != j) {
@@ -2287,7 +2336,7 @@ extern "C" int TrmpLine_Create(s16* sl, s16* sb) {
             b[0] = sb[0];
             b[1] = sb[1];
             off = i * 0x32c;
-            slot = (s16*)((int)data_ov006_02140990 + off);
+            slot = (s16 *)((int)sTrmpLines + off);
             TrmpLine_Build(slot, a, b);
             *(s16*)((int)data_ov006_02140cb4 + off) = 1;
             *(s16*)((int)data_ov006_02140cb6 + off) = 0;
@@ -2304,13 +2353,15 @@ extern "C" int TrmpLine_Create(s16* sl, s16* sb) {
 
 namespace s020d0fe4 {
 extern "C" extern int __cxa_vec_cleanup(void *dest, int a, int size, void (*func)(void));
-extern "C" {extern char data_ov006_02140990;}
+extern "C" {
+extern char sTrmpLines;
+}
 extern "C" extern void TrmpLine_Destroy(void);  /* local extern: only the two Trampoline scene headers declare it; this unit includes neither */
 
 // @symbol TrmpLine_CleanupAll
 extern "C" void TrmpLine_CleanupAll(void)
 {
-    __cxa_vec_cleanup(&data_ov006_02140990, 4, 0x32c, TrmpLine_Destroy);
+    __cxa_vec_cleanup(&sTrmpLines, 4, 0x32c, TrmpLine_Destroy);
 }
 }
 

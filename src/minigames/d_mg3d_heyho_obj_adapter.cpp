@@ -1302,7 +1302,7 @@ extern int LenVec3(Vec3 *v);
 extern int DotVec3(Vec3 *a, Vec3 *b);
 extern void Heyho_CheckHitB(char *c);
 extern int data_0209e650;
-extern VB *data_ov006_021403f4[];
+extern VB *sJumpAdapters[];
 }
 
 extern "C" void Heyho_Motion1(char *c)
@@ -1345,13 +1345,13 @@ extern "C" void Heyho_Motion1(char *c)
         best = 0;
         bm = 0x20000;
         for (i = 0; i < 3; i++) {
-            if (data_ov006_021403f4[i]->m2() != 0) {
+            if (sJumpAdapters[i]->m2() != 0) {
                 int *v;
                 int dot;
-                v = data_ov006_021403f4[i]->m0();
+                v = sJumpAdapters[i]->m0();
                 op.x = v[0]; op.y = v[1]; op.z = v[2];
                 Vec3_Sub(&delta, (Vec3 *)(c + 0x9c), &op);
-                v = data_ov006_021403f4[i]->m1();
+                v = sJumpAdapters[i]->m1();
                 nrm.x = v[0]; nrm.y = v[1]; nrm.z = v[2];
                 if (NormalizeVec3IfNonZero(&nrm) != 0) {
                     dot = DotVec3(&nrm, &delta);
@@ -1362,7 +1362,7 @@ extern "C" void Heyho_Motion1(char *c)
                         cand.x = proj.x; cand.y = proj.y; cand.z = proj.z;
                         d = Vec3_Dist((Vec3 *)(c + 0x9c), &cand);
                         if (d < bm) {
-                            best = data_ov006_021403f4[i];
+                            best = sJumpAdapters[i];
                             bp = cand;
                             bm = d;
                         }
@@ -1482,10 +1482,10 @@ extern void Jump2Popup_Spawn(int a, int b, int c);
 extern void Heyho_SetIdle(char* p);
 
 extern int data_ov006_02140304[];
-extern int data_ov006_02140308;
+extern int sJumpComboCount;
 extern int data_ov006_02140314;
-extern void* data_ov006_02141a50;
-extern void* data_ov006_02141a40;
+extern void *sMgSubCamera;
+extern void *sMgMainCamera;
 
 void Heyho_Settle(char* c)
 {
@@ -1503,17 +1503,17 @@ void Heyho_Settle(char* c)
     if (b) *(int*)((char*)a + 0x50) = t;
 
     _Z14ApproachLinearRiii(data_ov006_02140304, 0, 1);
-    _Z14ApproachLinearRiii(&data_ov006_02140308, 0x270f, 1);
+    _Z14ApproachLinearRiii(&sJumpComboCount, 0x270f, 1);
 
     if (data_ov006_02140314 != 0) {
         if (HEYHO(c)->mPos.y > 0) {
-            Camera_ProjectToScreen(data_ov006_02141a50, (void*)(c + 0x9c), &v0, &v1);
+            Camera_ProjectToScreen(sMgSubCamera, (void *)(c + 0x9c), &v0, &v1);
             v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
         } else {
-            Camera_ProjectToScreen(data_ov006_02141a40, (void*)(c + 0x9c), &v0, &v1);
+            Camera_ProjectToScreen(sMgMainCamera, (void *)(c + 0x9c), &v0, &v1);
         }
         v1 = v1 - 0x20;
-        Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)data_ov006_02140308);
+        Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)sJumpComboCount);
     }
 
     Heyho_SetIdle(c);
@@ -1627,10 +1627,10 @@ extern int LenVec3(Vec3* v);
 extern int DotVec3(Vec3* a, Vec3* b);
 extern int NormalizeVec3IfNonZero(Vec3* v);
 extern void Heyho_StartMotion11(struct Self* self);
-extern char* data_ov006_021403f4[];
+extern char *sJumpAdapters[];
 
-#define O  (data_ov006_021403f4[i])
-#define OM (((char* volatile*)data_ov006_021403f4)[i])
+#define O  (sJumpAdapters[i])
+#define OM (((char* volatile*)sJumpAdapters)[i])
 
 void Heyho_CheckHitB(struct Self* self)
 {
@@ -1717,7 +1717,7 @@ typedef struct Self {
     int speed;      /* 0xd8 */
 } Self;
 
-extern Obj *data_ov006_021403f4[3];
+extern Obj *sJumpAdapters[3];
 extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern Fix12 DotVec3(const Vec3 *a, const Vec3 *b);
@@ -1735,10 +1735,10 @@ void Heyho_CheckHitA(Self *self)
         Vec3 *p, *q;
         Obj *o;
 
-        if (data_ov006_021403f4[i]->vt->f2(data_ov006_021403f4[i]) == 0)
+        if (sJumpAdapters[i]->vt->f2(sJumpAdapters[i]) == 0)
             continue;
 
-        p = data_ov006_021403f4[i]->vt->f0(data_ov006_021403f4[i]);
+        p = sJumpAdapters[i]->vt->f0(sJumpAdapters[i]);
         Vec3_Sub(&disp, p, &self->pos);
 
         disp.y -= thresh >> 1;
@@ -1756,7 +1756,7 @@ void Heyho_CheckHitA(Self *self)
                 disp.x = 0;
         }
 
-        q = data_ov006_021403f4[i]->vt->f1(data_ov006_021403f4[i]);
+        q = sJumpAdapters[i]->vt->f1(sJumpAdapters[i]);
         Vec3_Sub(&rel, q, &self->vel);
         Vec3_Add(&sum, &disp, &rel);
 
@@ -1764,8 +1764,8 @@ void Heyho_CheckHitA(Self *self)
             continue;
 
         if (NormalizeVec3IfNonZero(&disp) == 0) {
-            data_ov006_021403f4[i]->flag = 1;
-            o = data_ov006_021403f4[i];
+            sJumpAdapters[i]->flag = 1;
+            o = sJumpAdapters[i];
             o->vec.x = self->pos.x;
             o->vec.y = self->pos.y;
             o->vec.z = self->pos.z;
@@ -1781,8 +1781,8 @@ void Heyho_CheckHitA(Self *self)
         if (rel.y >= 0)
             continue;
 
-        data_ov006_021403f4[i]->flag = 1;
-        o = data_ov006_021403f4[i];
+        sJumpAdapters[i]->flag = 1;
+        o = sJumpAdapters[i];
         o->vec.x = self->pos.x;
         o->vec.y = self->pos.y;
         o->vec.z = self->pos.z;
@@ -1845,27 +1845,27 @@ int Heyho_IsChasing(dActor_c *a)
 namespace n020c4684 {
 extern "C" {
 extern int Heyho_LoadResources(char *p);
-extern int data_ov006_02140328;
+extern int sHeyhoCount;
 extern int data_ov006_02140304;
-extern char *data_ov006_02140324;
+extern char *sHeyhos;
 extern int data_ov006_02140314;
 int Heyho_InitPool(char *ptr, int n);
 int Heyho_InitPool(char *ptr, int n){
     int i;
     int off;
     data_ov006_02140314 = 0;
-    data_ov006_02140328 = n;
+    sHeyhoCount = n;
     data_ov006_02140304 = n;
-    data_ov006_02140324 = ptr;
+    sHeyhos = ptr;
     if (n > 0) {
         i = 0;
         off = 0;
         do {
-            if (Heyho_LoadResources(data_ov006_02140324 + off) == 0)
+            if (Heyho_LoadResources(sHeyhos + off) == 0)
                 return 0;
             i++;
             off += 0xf0;
-        } while (i < data_ov006_02140328);
+        } while (i < sHeyhoCount);
     }
     return 1;
 }
@@ -1878,10 +1878,10 @@ namespace n020c44b4 {
 extern "C" {
 extern void *data_ov006_021402fc;
 extern int data_ov006_02140304;
-extern int data_ov006_02140308;
+extern int sJumpComboCount;
 extern int data_ov006_0214031c;
-extern char *data_ov006_02140324;
-extern int data_ov006_02140328;
+extern char *sHeyhos;
+extern int sHeyhoCount;
 extern int data_ov006_021403b8[];
 extern int data_0209e650;
 extern char data_ov006_0212d560[];
@@ -1909,11 +1909,11 @@ void Heyho_SpawnAll(void *arg0, int arg1)
     char *base;
     int t;
 
-    count = data_ov006_02140328;
+    count = sHeyhoCount;
     data_ov006_0214031c = arg1;
     data_ov006_021402fc = arg0;
     data_ov006_02140304 = count;
-    data_ov006_02140308 = 0;
+    sJumpComboCount = 0;
     if (count <= 0)
         return;
 
@@ -1928,12 +1928,11 @@ void Heyho_SpawnAll(void *arg0, int arg1)
 
     do {
         if (sl < 3) {
-            base = data_ov006_02140324 + r8;
+            base = sHeyhos + r8;
             *(short *)(base + 0xea) = (short)sp8;
-            Heyho_StartMotion3(
-                data_ov006_02140324 + r8,
-                data_ov006_0212d560 + data_ov006_0214031c * 0x90 + sp4);
-            Heyho_UpdateMatrix(data_ov006_02140324 + r8);
+            Heyho_StartMotion3(sHeyhos + r8,
+                               data_ov006_0212d560 + data_ov006_0214031c * 0x90 + sp4);
+            Heyho_UpdateMatrix(sHeyhos + r8);
         } else {
             t = RandomIntInternal(seed) & 0x7fffffff;
             t = (int)((unsigned)t >> 0x13);
@@ -1958,17 +1957,15 @@ void Heyho_SpawnAll(void *arg0, int arg1)
                 } while (r1 < r6);
             }
             data_ov006_021403b8[sl - 3] = sb;
-            base = data_ov006_02140324 + r8;
+            base = sHeyhos + r8;
             *(short *)(base + 0xea) = (short)sp10;
-            Heyho_StartMotion3(
-                data_ov006_02140324 + r8,
-                data_ov006_0212c9f0 + sb * 0xc0 + sp0 * 0x30);
-            Heyho_UpdateMatrix(data_ov006_02140324 + r8);
+            Heyho_StartMotion3(sHeyhos + r8, data_ov006_0212c9f0 + sb * 0xc0 + sp0 * 0x30);
+            Heyho_UpdateMatrix(sHeyhos + r8);
         }
         sp4 = sp4 + 0x30;
         r8 = r8 + 0xf0;
         sl = sl + 1;
-    } while (sl < data_ov006_02140328);
+    } while (sl < sHeyhoCount);
 }
 
 }
@@ -1988,8 +1985,8 @@ struct Obj {
     char pade4[0xf0 - 0xe4];
 };
 
-extern struct Obj* data_ov006_02140324;
-extern int data_ov006_02140328;
+extern struct Obj *sHeyhos;
+extern int sHeyhoCount;
 
 extern void Heyho_Update(struct Obj* o);
 extern int Heyho_IsChasing(struct Obj* o);
@@ -2010,20 +2007,20 @@ void Heyho_SeparateAll(void)
     int i, j, k, t;
     Vec3* ai;
 
-    for (i = 0; i < data_ov006_02140328; i++) {
-        Heyho_Update(&data_ov006_02140324[i]);
+    for (i = 0; i < sHeyhoCount; i++) {
+        Heyho_Update(&sHeyhos[i]);
     }
-    for (k = 0; k < data_ov006_02140328; k++) {
-        data_ov006_02140324[k].e0 = 0;
+    for (k = 0; k < sHeyhoCount; k++) {
+        sHeyhos[k].e0 = 0;
     }
-    for (t = 0; t < data_ov006_02140328; t++) {
-        if (Heyho_IsChasing(&data_ov006_02140324[t]) != 0) {
-            oi = &data_ov006_02140324[t];
+    for (t = 0; t < sHeyhoCount; t++) {
+        if (Heyho_IsChasing(&sHeyhos[t]) != 0) {
+            oi = &sHeyhos[t];
             pi = &oi->pos;
             ai = &oi->vel;
-            for (j = t + 1; j < data_ov006_02140328; j++) {
-                if (Heyho_IsChasing(&data_ov006_02140324[j]) != 0) {
-                    oj = (struct Obj*)((long long)(int)&data_ov006_02140324[j]);
+            for (j = t + 1; j < sHeyhoCount; j++) {
+                if (Heyho_IsChasing(&sHeyhos[j]) != 0) {
+                    oj = (struct Obj *)((long long)(int)&sHeyhos[j]);
                     pj = &oj->pos;
                     Vec3_Sub(&v1, pi, pj);
                     Vec3_Sub(&v2, ai, &oj->vel);
@@ -2032,8 +2029,8 @@ void Heyho_SeparateAll(void)
                     if (NormalizeVec3IfNonZero(&v1) == 0) continue;
                     AddVec3(pi, &v1, pi);
                     SubVec3(pj, &v1, pj);
-                    data_ov006_02140324[t].e0 = 1;
-                    data_ov006_02140324[j].e0 = 1;
+                    sHeyhos[t].e0 = 1;
+                    sHeyhos[j].e0 = 1;
                 }
             }
         }
@@ -2047,17 +2044,17 @@ void Heyho_SeparateAll(void)
 namespace n020c425c {
 extern "C" {
 extern void Heyho_Draw(int);
-extern int data_ov006_02140328;
-extern int data_ov006_02140324;
+extern int sHeyhoCount;
+extern int sHeyhos;
 void Heyho_DrawAll(void){
   int i = 0;
-  if(data_ov006_02140328 > 0){
-    int off = 0;
-    do {
-      Heyho_Draw(data_ov006_02140324 + off);
-      i++;
-      off += 0xf0;
-    } while(i < data_ov006_02140328);
+  if (sHeyhoCount > 0) {
+      int off = 0;
+      do {
+          Heyho_Draw(sHeyhos + off);
+          i++;
+          off += 0xf0;
+      } while (i < sHeyhoCount);
   }
 }
 
@@ -2074,8 +2071,8 @@ typedef struct Ent {
     char _pad38[0xb8];
 } Ent;
 
-extern int data_ov006_02140328;
-extern Ent *data_ov006_02140324;
+extern int sHeyhoCount;
+extern Ent *sHeyhos;
 extern int data_ov006_0213afc8[2];
 extern char data_ov006_0212ccf0;
 extern int data_ov006_02140304;
@@ -2088,23 +2085,20 @@ extern void _Z14ApproachLinearRiii(int *x, int target, int step);
 void Heyho_SettleAll(void)
 {
     int i;
-    for (i = 0; i < data_ov006_02140328; i++) {
-        int *v = (int *)(&data_ov006_02140324[i].x);
+    for (i = 0; i < sHeyhoCount; i++) {
+        int *v = (int *)(&sHeyhos[i].x);
         volatile int *q = (volatile int *)data_ov006_0213afc8;
-        if (v[0] != data_ov006_0213afc8[0]
-            || (v[1] != q[1] && data_ov006_02140324[i].x != 0))
+        if (v[0] != data_ov006_0213afc8[0] || (v[1] != q[1] && sHeyhos[i].x != 0))
             continue;
         {
             int r1 = RandomIntInternal(&data_0209e650);
             int r2 = RandomIntInternal(&data_0209e650);
             unsigned v0 = (unsigned)(r1 & 0x7fffffff) >> 0x13;
             unsigned u0 = (unsigned)(r2 & 0x7fffffff) >> 0x13;
-            Heyho_StartMotion8(
-                (char *)data_ov006_02140324 + i * 0xf0,
-                &data_ov006_0212ccf0
-                    + (((int)(v0 * 9)) >> 0xc) * 0xf0
-                    + (((int)(u0 * 5)) >> 0xc) * 0x30);
-            _Z14ApproachLinearRiii(&data_ov006_02140304, data_ov006_02140328, 1);
+            Heyho_StartMotion8((char *)sHeyhos + i * 0xf0, &data_ov006_0212ccf0 +
+                                                               (((int)(v0 * 9)) >> 0xc) * 0xf0 +
+                                                               (((int)(u0 * 5)) >> 0xc) * 0x30);
+            _Z14ApproachLinearRiii(&data_ov006_02140304, sHeyhoCount, 1);
             return;
         }
     }
@@ -2117,17 +2111,17 @@ void Heyho_SettleAll(void)
 namespace n020c40e8 {
 extern "C" {
 extern void Heyho_React(int);
-extern int data_ov006_02140328;
-extern int data_ov006_02140324;
+extern int sHeyhoCount;
+extern int sHeyhos;
 void Heyho_ReactAll(void){
   int i = 0;
-  if(data_ov006_02140328 > 0){
-    int off = 0;
-    do {
-      Heyho_React(data_ov006_02140324 + off);
-      i++;
-      off += 0xf0;
-    } while(i < data_ov006_02140328);
+  if (sHeyhoCount > 0) {
+      int off = 0;
+      do {
+          Heyho_React(sHeyhos + off);
+          i++;
+          off += 0xf0;
+      } while (i < sHeyhoCount);
   }
 }
 
@@ -2137,7 +2131,7 @@ void Heyho_ReactAll(void){
 /* ---- Heyho_AllIdle ---- */
 namespace n020c4060 {
 extern "C" {
-// Scans data_ov006_02140328 entries (stride 0xf0) from data_ov006_02140324:
+// Scans sHeyhoCount entries (stride 0xf0) from sHeyhos:
 // returns 0 if any entry's pair at +0x30 mismatches pmf_Heyho_StateIdle_4
 // (y-mismatch tolerated when x is 0), else 1. Leaf, no callees.
 typedef struct Ent {
@@ -2147,17 +2141,16 @@ typedef struct Ent {
     char _pad38[0xb8]; // 0x38 (stride 0xf0)
 } Ent;
 
-extern int data_ov006_02140328;
-extern Ent* data_ov006_02140324;
+extern int sHeyhoCount;
+extern Ent *sHeyhos;
 extern int pmf_Heyho_StateIdle_4[2];
 
 int Heyho_AllIdle(void) {
     int i;
-    for (i = 0; i < data_ov006_02140328; i++) {
-        int* v = (int*)(&data_ov006_02140324[i].x);
+    for (i = 0; i < sHeyhoCount; i++) {
+        int *v = (int *)(&sHeyhos[i].x);
         volatile int* q = (volatile int*)pmf_Heyho_StateIdle_4;
-        if (v[0] != pmf_Heyho_StateIdle_4[0]
-            || (v[1] != q[1] && data_ov006_02140324[i].x != 0))
+        if (v[0] != pmf_Heyho_StateIdle_4[0] || (v[1] != q[1] && sHeyhos[i].x != 0))
             return 0;
     }
     return 1;

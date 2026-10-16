@@ -176,13 +176,13 @@ void dScMgJump_c::StartRound(int arg)
     Jump3D_Arrange(mLevel, idx);
 
     if (mLevel < 0xf)
-        data_ov006_02140328 = 3;
+        sHeyhoCount = 3;
     else if (mLevel < 0x14)
-        data_ov006_02140328 = 4;
+        sHeyhoCount = 4;
     else if (mLevel < 0x19)
-        data_ov006_02140328 = 5;
+        sHeyhoCount = 5;
     else
-        data_ov006_02140328 = 6;
+        sHeyhoCount = 6;
 
     Heyho_SpawnAll((void *)mLevel, idx);
     BeginIntro();

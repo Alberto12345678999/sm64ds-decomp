@@ -15856,7 +15856,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140324": {
+    "sHeyhos": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:Ent *",
         "return:int"
@@ -15878,7 +15878,7 @@
         "return:char []"
       ]
     },
-    "data_ov006_021403f4": {
+    "sJumpAdapters": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:VB * []",
         "return:struct Obj * []"
@@ -16121,13 +16121,13 @@
         "return:V3"
       ]
     },
-    "data_ov006_0214082c": {
+    "sTrmpItems": {
       "src/minigames/unit020cd744.cpp": [
         "return:char * []",
         "return:unsigned char *"
       ]
     },
-    "data_ov006_02140838": {
+    "sTrmpItemCount": {
       "src/minigames/unit020cd744.cpp": [
         "return:int []"
       ]
@@ -16137,7 +16137,7 @@
         "return:data_t"
       ]
     },
-    "data_ov006_02140850": {
+    "sTrmpItemModelFile": {
       "src/minigames/unit020cd744.cpp": [
         "return:data_t"
       ]
@@ -16147,13 +16147,13 @@
         "return:data_t"
       ]
     },
-    "data_ov006_0214097c": {
+    "sTrmpJumpers": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []",
         "return:unsigned char * []"
       ]
     },
-    "data_ov006_02140990": {
+    "sTrmpLines": {
       "src/minigames/unit020cd744.cpp": [
         "return:char",
         "return:unsigned char []"
@@ -16187,17 +16187,17 @@
         "return:Pair []"
       ]
     },
-    "data_ov006_02141a40": {
+    "sMgMainCamera": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char *"
       ]
     },
-    "data_ov006_02141a44": {
+    "sMgCurCamera": {
       "src/minigames/d_mg_jump3d_mario.cpp": [
         "return:void *"
       ]
     },
-    "data_ov006_02141a50": {
+    "sMgSubCamera": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char *"
       ]

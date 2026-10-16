@@ -140,13 +140,13 @@ extern void Mg_SubmitScore(int);
 extern void Mg_SetSharedState(int);
 extern void Heyho_SeparateAll(void);
 extern void Jump3D_UpdateAll(void);
-extern int data_ov006_02140308;
+extern int sJumpComboCount;
 extern struct G2 pmf_dScMgJump2_c_State_Idle;
 extern struct G2 pmf_dScMgJump2_c_State_End;
 extern void Heyho_SettleAll(void);
 extern void Jump3D_SetTuning(int a);
 extern int data_ov006_02140304;
-extern int data_ov006_02140328;
+extern int sHeyhoCount;
 extern int data_ov006_02140428;
 extern struct G2 pmf_dScMgJump2_c_State_Play;
 extern void Jump3D_StartRoundLayout(void);
@@ -230,7 +230,7 @@ void dScMgJump2_c::StartRound(int /* arg */)
 {
   Jump3D_DisableInput();
   Jump3D_Arrange(0, 0);
-  data_ov006_02140328 = 3;
+  sHeyhoCount = 3;
   Heyho_SpawnAll(0, 0);
   Jump2Popup_ClearAll();
   BeginIntro();
@@ -351,7 +351,7 @@ void dScMgJump2_c::BeginPlay()
 void dScMgJump2_c::State_Play()
 {
     s16 done;
-    int prevScore = data_ov006_02140308;
+    int prevScore = sJumpComboCount;
     int *acc = &mAnimPhase;
     int mode;
 
@@ -381,16 +381,16 @@ void dScMgJump2_c::State_Play()
         break;
     }
 
-    if (done != 0 && data_ov006_02140304 < data_ov006_02140328) {
+    if (done != 0 && data_ov006_02140304 < sHeyhoCount) {
         int value;
         s16 countdown;
         Heyho_SettleAll();
-        mStateTimer = 0xf0 - data_ov006_02140308 * 6;
+        mStateTimer = 0xf0 - sJumpComboCount * 6;
         countdown = mStateTimer;
         if (countdown < 0x3c)
             countdown = 0x3c;
         mStateTimer = countdown;
-        value = (data_ov006_02140308 << 4) + 0x1600;
+        value = (sJumpComboCount << 4) + 0x1600;
         if (value > 0x2200)
             value = 0x2200;
         Jump3D_SetTuning(value);
@@ -399,20 +399,20 @@ void dScMgJump2_c::State_Play()
     Heyho_SeparateAll();
     Jump3D_UpdateAll();
 
-    if (prevScore != data_ov006_02140308) {
-        switch (data_ov006_02140308) {
+    if (prevScore != sJumpComboCount) {
+        switch (sJumpComboCount) {
         case 3:
-            data_ov006_02140328 = 4;
+            sHeyhoCount = 4;
             mPromptEnabled = 0;
             break;
         case 0xa:
-            data_ov006_02140328 = 5;
+            sHeyhoCount = 5;
             break;
         case 0x14:
-            data_ov006_02140328 = 6;
+            sHeyhoCount = 6;
             break;
         }
-        Mg_SubmitScore(data_ov006_02140308);
+        Mg_SubmitScore(sJumpComboCount);
     }
 
     if (data_ov006_02140428 != 0)
@@ -451,7 +451,7 @@ void dScMgJump2_c::State_Result(){
     if(obj){
         obj = Heyho_AllIdle(obj);
         if(obj){
-            Mg_SubmitScore(data_ov006_02140308);
+            Mg_SubmitScore(sJumpComboCount);
             Mg_SetSharedState(MG_STATE_GAME_OVER);
             mPromptEnabled = 0;
             *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Idle;
@@ -533,7 +533,7 @@ s32 dScMgJump2_c::Render()
     int x;
     int i;
 
-    Mg_DrawTopRightCounter(data_ov006_02140308, 4);
+    Mg_DrawTopRightCounter(sJumpComboCount, 4);
     Jump2Popup_DrawAll();
     Jump2_SetLights();
     Matrix4x3_FromTranslation(&data_020a0e68, 0, 0xffead000, -0xa0000);

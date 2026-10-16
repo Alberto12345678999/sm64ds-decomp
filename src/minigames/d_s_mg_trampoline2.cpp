@@ -183,7 +183,7 @@ extern void Trmp2Mario_EnterAll(void *c);
 extern struct P2 pmf_dScMgTrampoline2_c_StateResults;
 extern int data_ov006_02140818;
 extern int data_ov006_0213b0f0;
-extern int data_ov006_02140830;
+extern int sTrmp2Score;
 extern int sTrmp2MarioCount;
 extern int data_ov006_02140828;
 extern int data_ov006_0213fc10[];
@@ -598,7 +598,7 @@ void dScMgTrampoline2_c::StatePlay()
         BeginResults();
         return;
     }
-    if (data_ov006_02140830 >= mScoreGate && sTrmp2MarioCount < 5) {
+    if (sTrmp2Score >= mScoreGate && sTrmp2MarioCount < 5) {
         unsigned int v;
         Trmp2Mario_MoveToStart();
         {
@@ -942,7 +942,7 @@ void dScMgTrampoline2_c::SpawnWave()
    mRamp is written into the particle's byte at +0x58. */
 s32 dScMgTrampoline2_c::Behavior()
 {
-    int saved = data_ov006_02140830;
+    int saved = sTrmp2Score;
 
     TrmpFx_UpdateAll();
     Jump2Popup_UpdateAll();
@@ -960,8 +960,8 @@ s32 dScMgTrampoline2_c::Behavior()
         (this->**pp)();
     }
     UpdateTouchInput();
-    if (saved != data_ov006_02140830) {
-        Mg_SubmitScore(data_ov006_02140830);
+    if (saved != sTrmp2Score) {
+        Mg_SubmitScore(sTrmp2Score);
     }
     return 1;
 }
@@ -1007,7 +1007,7 @@ s32 dScMgTrampoline2_c::Render()
         }
     }
 
-    Mg_DrawTopRightCounter(data_ov006_02140830, 6);
+    Mg_DrawTopRightCounter(sTrmp2Score, 6);
 
     if (mRoundOver == 0) {
         Trmp2Mario_DrawAll();

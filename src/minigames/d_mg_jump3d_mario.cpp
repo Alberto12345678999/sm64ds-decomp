@@ -151,13 +151,13 @@ extern int data_ov006_02140410;
 extern int data_ov006_02140414;
 extern int data_ov006_02140418;
 extern char *data_ov006_02140420;
-extern char *data_ov006_021403f4[];
+extern char *sJumpAdapters[];
 extern int pmf_dMgJump3DMario_c_StateIdle[2];
 
 extern u8  data_ov006_02140400;
 extern u16 data_ov006_02140404;
-extern void *data_ov006_02141a40;
-extern void *data_ov006_02141a44;
+extern void *sMgMainCamera;
+extern void *sMgCurCamera;
 extern OamAttr *data_ov006_02134d1c;
 extern Vector3 data_ov006_0212ddd0;
 extern char data_ov006_0212dddc[];
@@ -369,7 +369,8 @@ extern "C" int Jump3D_InitPool(char *base, int count)
             ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->HideAndIdle();
             ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->UpdateModelMatrix();
             q = data_ov006_02140420 + off;
-            if (i < 3) data_ov006_021403f4[i] = q;
+            if (i < 3)
+                sJumpAdapters[i] = q;
             i++;
             off += 0xb8;
         } while (i < data_ov006_02140418);
@@ -438,7 +439,7 @@ void dMgJump3DMario_c::Draw()
         return;
 
     if (data_ov006_02140400 != 0) {
-        Camera_ProjectToScreen16(data_ov006_02141a44, &mPos, screen);
+        Camera_ProjectToScreen16(sMgCurCamera, &mPos, screen);
 
         angle = data_ov006_02140404;
         wave = data_02082214[(angle >> 4) * 2];
@@ -467,7 +468,7 @@ void dMgJump3DMario_c::Update()
     ApproachLinear(mVel.y, data_ov006_0213b010, data_ov006_0213b018);
     AddVec3(&mPos, &mVel, &mPos);
     (this->*mState)();
-    Camera_ProjectToScreen16(data_ov006_02141a40, &mPos, &mScreenX);
+    Camera_ProjectToScreen16(sMgMainCamera, &mPos, &mScreenX);
     UpdateModelMatrix();
     mModelAnim.dExtFrameCtrl_c::Advance();
 }
@@ -925,8 +926,8 @@ int dMgJump3DMario_c::LoadResources()
     data_ov006_0214042c = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140448);
 
     mAnimIdx = 0;
-    if (data_ov006_02141a40 != 0)
-        Camera_ProjectToScreen16(data_ov006_02141a40, &mPos, &mScreenX);
+    if (sMgMainCamera != 0)
+        Camera_ProjectToScreen16(sMgMainCamera, &mPos, &mScreenX);
 
     t = data_0209f5c0->actorID == 0x175;
     if (t != 0) {
