@@ -3970,69 +3970,9 @@ src/Vram__Map.c:
     complete
     .text start:0x02054c80 end:0x02054d38
 
-src/_ZN3G2S13GetBG3CharPtrEv.cpp:
+src/engine/gx/G2.cpp:
     complete
-    .text start:0x02054d38 end:0x02054d88
-
-src/unnamed/arm9/0205/func_02054d88.c:
-    complete
-    .text start:0x02054d88 end:0x02054de8
-
-src/_ZN3G2S13GetBG2CharPtrEv.cpp:
-    complete
-    .text start:0x02054de8 end:0x02054e30
-
-src/_ZN2G213GetBG2CharPtrEv.cpp:
-    complete
-    .text start:0x02054e30 end:0x02054e88
-
-src/_ZN3G2S13GetBG1CharPtrEv.cpp:
-    complete
-    .text start:0x02054e88 end:0x02054ea8
-
-src/unnamed/arm9/0205/func_02054ea8.c:
-    complete
-    .text start:0x02054ea8 end:0x02054edc
-
-src/_ZN3G2S13GetBG0CharPtrEv.cpp:
-    complete
-    .text start:0x02054edc end:0x02054efc
-
-src/unnamed/arm9/0205/func_02054efc.c:
-    complete
-    .text start:0x02054efc end:0x02054f30
-
-src/_ZN3G2S12GetBG3ScrPtrEv.cpp:
-    complete
-    .text start:0x02054f30 end:0x02054fb0
-
-src/_ZN2G212GetBG3ScrPtrEv.cpp:
-    complete
-    .text start:0x02054fb0 end:0x0205503c
-
-src/_ZN3G2S12GetBG2ScrPtrEv.cpp:
-    complete
-    .text start:0x0205503c end:0x020550bc
-
-src/_ZN2G212GetBG2ScrPtrEv.cpp:
-    complete
-    .text start:0x020550bc end:0x02055148
-
-src/_ZN3G2S12GetBG1ScrPtrEv.cpp:
-    complete
-    .text start:0x02055148 end:0x02055168
-
-src/_ZN2G212GetBG1ScrPtrEv.cpp:
-    complete
-    .text start:0x02055168 end:0x0205519c
-
-src/_ZN3G2S12GetBG0ScrPtrEv.cpp:
-    complete
-    .text start:0x0205519c end:0x020551bc
-
-src/_ZN2G212GetBG0ScrPtrEv.cpp:
-    complete
-    .text start:0x020551bc end:0x020551f0
+    .text start:0x02054d38 end:0x020551f0
 
 src/unnamed/arm9/0205/func_020551f0.c:
     complete
@@ -6773,4 +6713,3 @@ src/unnamed/arm9/0207/__sinit_02075150.c:
 src/unnamed/arm9/0207/__sinit_02075154.c:
     complete
     .init start:0x02075154 end:0x02075230
-
