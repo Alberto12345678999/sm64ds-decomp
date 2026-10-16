@@ -21,7 +21,7 @@
  * - func_ov026_02111b24, func_ov026_02111cb4, func_ov026_02111d4c,
  *   func_ov026_02111f30: a TU-local reference to mPosX grows those
  *   functions by 4 bytes (0x190, 0x98, 0x18c, 0x74 become 0x194, 0x9c,
- *   0x190, 0x78). dActor_c has no Pos().
+ *   0x190, 0x78).
  * - func_ov026_02111cb4: deleting the stores of 0 to mPullHeight and
  *   mPullRadius is 0x90 against ROM 0x98. Deleting unk_190 = 0 is 0x94
  *   against ROM 0x98. The ROM zeroes both heights and then overwrites

@@ -41,8 +41,6 @@
  *   choose a 0 or 0x5a regrowth delay. func_ov096_021365d4 clears it
  *   once three segments exist. It stays unk_ until that role is
  *   measured past those two stores.
- *   - dActor_c has no Pos(). Spawn and PlayBank0 take the
- *   mPosX and mCamSpacePosX triples through a Vector3 pun.
  *   - unk_0a4 and unk_0ac keep dActor_c's names.
  *   func_ov096_02135e2c multiplies them by the floor normal.
  *   - func_ov096_02135948 keeps five int[3] positions. One

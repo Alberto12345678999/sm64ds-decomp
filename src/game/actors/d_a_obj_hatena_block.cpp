@@ -46,9 +46,9 @@
  *   an inline dtor; the manifest marks it compiler_only).
  *
  *   The (int *) / (Vector3 *) casts around the local position buffers in
- *   the spawn helpers. dActor_c.h has no Pos() accessor, and a real Vector3
- *   copy would emit an extra Vector3 D1 destructor. The copies here are licensed
- *   deadstrip-duplicates.
+ *   the spawn helpers stay: the buffers are plain ints, and a real Vector3
+ *   local would emit an extra Vector3 D1 destructor. The copies here are
+ *   licensed deadstrip-duplicates.
  *
  *   OnAttacked1 / OnHitFromUnderneath keep their valueless nested-if exits;
  *   C++ rejects a valueless return in a non-void function.
@@ -116,8 +116,8 @@
  *   daObjHatenaBlock_c::* is wider than the 8-byte entries the sinit
  *   copies into data_ov102_0214e890/e870/e8c0.
  * - The (Vector3 *) prize-point casts around func_ov102_02149684's int
- *   buffers stay: dActor_c.h has no Pos() accessor, and a real Vector3
- *   copy emits a Vector3 D1 deadstrip.
+ *   buffers stay: they are local ints, and a real Vector3 local emits a
+ *   Vector3 D1 deadstrip.
  */
 
 /* common.h first: see the header. */
