@@ -46,8 +46,8 @@ void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void func_0201267c(unsigned int soundID, const Vector3 *pos);
 
-/* The dBgCh_Actr::UpdateContinuous call goes through a veneer, and the two
-   result getters are not declared by dBgCh_Actr.h. */
+/* The dBgCh_Actr::UpdateContinuous call goes through a veneer, which no
+   header declares. */
 void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
 void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *surface, Vector3 &out);
 int _ZN4cstd4fdivEii(int a, int b);

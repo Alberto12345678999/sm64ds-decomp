@@ -112,8 +112,8 @@ extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
 extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
 extern void *_ZN5dBgPiC1Ev(void* self);
 extern void _ZN5dBgPiD1Ev(void* self);
-/* local extern: the veneer forwards r0 to UpdateDiscreteNoLava; its own
- * definition file declares it void(void), which drops the object argument. */
+/* local extern: no header declares the veneer. It forwards r0 (the
+ * dBgCh_Actr) to UpdateDiscreteNoLava. */
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void* p);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
