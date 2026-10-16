@@ -97,6 +97,7 @@ enum daKuriKing_c_AssetId {
 #include "daKrb_c.h"
 #include "dCamera_c.h"
 #include "Message.h"
+#include "nitro/fx/fx.h"
 
 #define FX(a, b) (int)(((long long)(a) * (long long)(b) + 0x800) >> 12)
 
@@ -969,15 +970,15 @@ int daKuriKing_c::func_ov074_021204c0() {
             v.x = this->mPosX;
             v.y = this->mPosY;
             v.z = this->mPosZ;
-            v.y += (int)(((long long)this->mCurrentScale * (long long)0x190000 + 0x800) >> 12);
+            v.y += FX_MUL(this->mCurrentScale, (long long)0x190000);
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb1, ((int*)&v)[0], ((int*)&v)[1], ((int*)&v)[2]);
         }
     }
     k = ((u16)this->mScalePhase >> 4) * 2;
     d = this->mTargetScale - this->mCurrentScale + 0x11e;
-    this->mScaleY = this->mCurrentScale + (int)(((long long)d * data_02082214[k] + 0x800) >> 12);
+    this->mScaleY = this->mCurrentScale + FX_MUL(d, data_02082214[k]);
     this->mScaleX = this->mCurrentScale;
-    this->mScaleX = this->mCurrentScale + (int)(((long long)d * data_02082214[k + 1] + 0x800) >> 12);
+    this->mScaleX = this->mCurrentScale + FX_MUL(d, data_02082214[k + 1]);
     this->mScaleZ = this->mScaleX;
     this->mScalePhase += 0x1230;
     return 0;
@@ -1074,9 +1075,9 @@ extern "C" void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_)
         diff = (self->mWalkAngle + self->mMaxWalkSpeed) - prod;
         idx = ((u16)(s16)diff >> 4) * 2;
 
-        out[0] = (int)(((s64)scale * data_02082214[idx] + 0x800) >> 12);
+        out[0] = FX_MUL(scale, data_02082214[idx]);
         out[1] += 0x32000;
-        out[2] = (int)(((s64)scale * data_02082214[idx + 1] + 0x800) >> 12);
+        out[2] = FX_MUL(scale, data_02082214[idx + 1]);
     } else {
         int lim;
         int one;
@@ -1113,9 +1114,9 @@ extern "C" void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_)
         diff2 = (self->mWalkAngle + self->mWalkSpeed) - prod3;
         idx2 = ((u16)(s16)diff2 >> 4) * 2;
 
-        out[0] = (int)(((s64)scale2 * data_02082214[idx2] + 0x800) >> 12);
+        out[0] = FX_MUL(scale2, data_02082214[idx2]);
         out[1] += 0x32000;
-        out[2] = (int)(((s64)scale2 * data_02082214[idx2 + 1] + 0x800) >> 12);
+        out[2] = FX_MUL(scale2, data_02082214[idx2 + 1]);
     }
 }
 
@@ -1175,10 +1176,10 @@ void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mo
     iY = (u16)aY >> 4;
     iX = (u16)aX >> 4;
 
-    s = (s32)(((long long)w * data_02082214[iY * 2 + 1] + 0x800) >> 12);
-    dst.x += (s32)(((long long)s * data_02082214[iX * 2] + 0x800) >> 12);
-    dst.y += (s32)(((long long)w * data_02082214[iY * 2] + 0x800) >> 12);
-    dst.z += (s32)(((long long)s * data_02082214[iX * 2 + 1] + 0x800) >> 12);
+    s = FX_MUL(w, data_02082214[iY * 2 + 1]);
+    dst.x += FX_MUL(s, data_02082214[iX * 2]);
+    dst.y += FX_MUL(w, data_02082214[iY * 2]);
+    dst.z += FX_MUL(s, data_02082214[iX * 2 + 1]);
 
     switch (mode) {
     case 0:
@@ -1301,9 +1302,9 @@ void daKuriKing_c::func_ov074_02120d74()
                                 v0.z = this->mPosZ;
                                 if (this->mMegaMushroomID == 0 && dActor_c::FindWithID(this->mMegaMushroomID) == 0) {
                                     int k = ((u16)(s16)(this->mDirection * ((s16)((this->mScaleX / 0x1000) * 0x350 + 0x500) + 0x600) + (this->mWalkAngle + this->mMaxWalkSpeed))) >> 4;
-                                    v0.x = (int)(((long long)data_02082214[k * 2] * 0x546000LL + 0x800) >> 12);
+                                    v0.x = FX_MUL(data_02082214[k * 2], 0x546000LL);
                                     v0.y += 0x32000;
-                                    v0.z = (int)(((long long)data_02082214[k * 2 + 1] * 0x546000LL + 0x800) >> 12);
+                                    v0.z = FX_MUL(data_02082214[k * 2 + 1], 0x546000LL);
                                     this->mMegaMushroomID = dActor_c::Spawn(0x115, 0, v0, 0, this->mAreaId, -1)->uniqueID;
                                 }
                             }
@@ -1505,8 +1506,7 @@ void daKuriKing_c::func_ov074_02121800()
         height = this->mPosY - this->mSpawnPosY;
         if (height <= 0x1000)
             height = 0x1000;
-        rad = (this->mdCc_cs[i + 1].radius << 1)
-             - (int)(((s64)height * 0x180 + 0x800) >> 12);
+        rad = (this->mdCc_cs[i + 1].radius << 1) - FX_MUL(height, 0x180);
         if (rad < 0xa000)
             rad = 0xa000;
         radius = rad;

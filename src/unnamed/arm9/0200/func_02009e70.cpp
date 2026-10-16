@@ -8,6 +8,7 @@
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Lin.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 struct CamMode {
@@ -84,8 +85,6 @@ extern struct CamMode data_020874cc;
 static inline int CheckMode(void) { return data_0209f2d8 == 1; }
 
 #define L0(p) (p)
-#define FXMUL(a, b) ((s32)((((s64)(a)) * (b) + 0x800) >> 12))
-#define FXMULC(a, b) ((s32)((((s64)(a)) * (s64)(b) + 0x800) >> 12))
 
 static inline s32 CollisionCeiling(dBgCh_Lin &line, s32 floorHeight)
 {
@@ -196,22 +195,22 @@ s32 func_02009e70(char *self)
     r4 = sp1c->f1c;
     r5 = sp1c->f20;
     if ((fp & 1) == 0 && (*(s32 *)(self + 0x154) & 2) != 0) {
-        r4 = FXMULC(r4, 0x1800);
-        r5 = FXMULC(r5, 0x1800);
+        r4 = FX_MUL(r4, 0x1800);
+        r5 = FX_MUL(r5, 0x1800);
     }
     if (CheckMode() && (fp & 2) != 0 && func_02009374(self) != 0) {
-        r4 = FXMULC(r4, 0x14cc);
-        r5 = FXMULC(r5, 0x14cc);
+        r4 = FX_MUL(r4, 0x14cc);
+        r5 = FX_MUL(r5, 0x14cc);
     }
     if (*(s32 *)(self + 0x154) & 0x80) {
-        r4 = FXMULC(r4, 0x1800);
-        r5 = FXMULC(r5, 0x1800);
+        r4 = FX_MUL(r4, 0x1800);
+        r5 = FX_MUL(r5, 0x1800);
     }
     /* near limit -> fp (reuses the flags local), far limit -> r4 (reuses the
        near-distance local): both must be later live ranges of already-assigned
        locals for the allocator to colour them fp/sl. */
     t0 = *(s32 *)(self + 0x12c) - r4;
-    fp = func_020093f4(self, r4 + FXMUL(t0, *(s32 *)(self + 0x130)));
+    fp = func_020093f4(self, r4 + FX_MUL(t0, *(s32 *)(self + 0x130)));
     if (sp24 != 0) {
         r4 = fp;
     } else {
@@ -411,10 +410,10 @@ L_A814:
     sp18 = _ZN4cstd5atan2E5Fix12IiES1_(-sp40.y, fp);
     ApproachAngle((s16 *)&sp18, sb, 0x20, 0x800, 0);
     t0 = (sp18 >> 4) * 2;
-    sp40.y = FXMUL(sp28, -data_02082214[t0]);
-    t0 = _ZN4cstd4fdivEii(FXMUL(sp28, data_02082214[t0 + 1]), fp);
-    sp40.x = FXMUL(sp40.x, t0);
-    sp40.z = FXMUL(sp40.z, t0);
+    sp40.y = FX_MUL(sp28, -data_02082214[t0]);
+    t0 = _ZN4cstd4fdivEii(FX_MUL(sp28, data_02082214[t0 + 1]), fp);
+    sp40.x = FX_MUL(sp40.x, t0);
+    sp40.z = FX_MUL(sp40.z, t0);
 L_A94C:
     Math_Function_0203b14c(&sp28, r4, 0x400, r7 + 0x20000, 0x100);
     Vec3_MulScalarInPlace((s32 *)&sp40, _ZN4cstd4fdivEii(sp28, sp14));
@@ -429,8 +428,8 @@ L_A984:
         r7 = _ZN4cstd4sqrtEy((u64)distanceSq);
     }
     t0 = _ZN4cstd4fdivEii(r7, Vec3_HorzLen(&sp40));
-    sp40.x = FXMUL(sp40.x, t0);
-    sp40.z = FXMUL(sp40.z, t0);
+    sp40.x = FX_MUL(sp40.x, t0);
+    sp40.z = FX_MUL(sp40.z, t0);
     *(s16 *)L0(self + 0x188) -= *(s16 *)(self + 0x17c) - sb;
 L_AA34:
     t0 = Vec3_HorzLen(&sp40);
@@ -490,8 +489,8 @@ L_AAD0:
     sp40.y = r7h - *(s32 *)(self + 0x84);
     if (sp1c == &data_0208706c && sp34.y < 0) t0 = 0xa49;
     else t0 = sp2c;
-    r6 = FXMUL(sp28, t0);
-    t0 = FXMUL(sp28, sp30);
+    r6 = FX_MUL(sp28, t0);
+    t0 = FX_MUL(sp28, sp30);
     if (sp40.y < r6) r7h = *(s32 *)(self + 0x84) + r6;
     else if (sp40.y > t0) r7h = *(s32 *)(self + 0x84) + t0;
     if (data_0209f2f8 == 0x26) {

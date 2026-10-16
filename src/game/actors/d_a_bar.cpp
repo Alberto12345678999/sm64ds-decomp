@@ -13,6 +13,7 @@
  */
 
 #include "daBar_c.h"
+#include "SpawnInfo.h"
 
 extern "C" {
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(
@@ -39,30 +40,16 @@ extern "C" daBar_c *daBar_c_classInit()
     return new daBar_c();
 }
 
-struct DaBarSpawnInfo {
-    daBar_c *(*classInit)();
-    s16 executePriority;   /* +4 */
-    s16 renderPriority;    /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char DaBarSpawnInfo_size_must_be_0x1c[
-    sizeof(DaBarSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_BAR
-extern "C" DaBarSpawnInfo g_profile_BAR = {
+extern "C" SpawnInfo<daBar_c> g_profile_BAR = {
     daBar_c_classInit,
-    0x011f,       /* behavior/execute priority */
-    0x0099,       /* render priority */
-    0x00000003,   /* actorFlags */
+    0x011f,     /* behavior/execute priority */
+    0x0099,     /* render priority */
+    0x00000003, /* actorFlags */
     0,
     0,
     0,
-    0
+    0,
 };
 
 // @symbol _ZN7daBar_c13InitResourcesEv

@@ -39,6 +39,7 @@ enum dScMgRoulette_c_AssetId {
 #include "Model.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* Local views of the records the helpers walk. */
 
@@ -1288,10 +1289,10 @@ extern "C" {
 void RouletteBoard_StateSpin(char *slider)
 {
     int spin = *(int *)(slider + 0xb8);
-    int pull = cstd::fdiv((int)(((s64)spin * spin + 0x800) >> 12), *(int *)(slider + 0xb0)) - 0xc00;
+    int pull = cstd::fdiv(FX_MUL(spin, spin), *(int *)(slider + 0xb0)) - 0xc00;
 
     spin = *(int *)(slider + 0xb8);
-    int scaled = (int)(((s64)spin * 0x500 + 0x800) >> 12);
+    int scaled = FX_MUL(spin, 0x500);
     int step = cstd::fdiv(scaled, *(int *)(slider + 0xb0));
     *(s16 *)(slider + 0xc6) = (s16)step;
 
@@ -1330,9 +1331,9 @@ void RouletteBoard_StateSpin(char *slider)
 
     int x, y, z;
     struct Vec3 t;
-    x = (int)(((s64)dist * val1 + 0x800) >> 12);
-    y = (int)(((s64)dist * 0x400 + 0x800) >> 12) + 0x780;
-    z = (int)(((s64)dist * val0 + 0x800) >> 12);
+    x = FX_MUL(dist, val1);
+    y = FX_MUL(dist, 0x400) + 0x780;
+    z = FX_MUL(dist, val0);
     ((int *)&t)[0] = x; ((int *)&t)[1] = y; ((int *)&t)[2] = z;
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, ((int *)&t)[0], ((int *)&t)[1], ((int *)&t)[2]);
 

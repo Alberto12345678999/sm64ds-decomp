@@ -5,6 +5,7 @@
 #include "decl_common.h"
 /* recovered: shared common types */
 #include "common.h"
+#include "nitro/fx/fx.h"
 extern void *_ZN7PathPtrC1Ev(void *self);
 extern void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
 extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, struct Vector3 *out, unsigned int idx);
@@ -158,13 +159,13 @@ void func_0200b0fc(char *c, char *a)
     }
 
     if (data_0209f2f8 == 0x2f) {
-        projSide = projSide - (int)(((long long)*(int*)(c + 0x12c) * 0x5000 + 0x800) >> 12);
+        projSide = projSide - FX_MUL(*(int *)(c + 0x12c), 0x5000);
         if (projSide < 0) {
-            targetPos.y -= (int)(((long long)projSide * 0x400 + 0x800) >> 12);
+            targetPos.y -= FX_MUL(projSide, 0x400);
             projSide = 0;
         }
     } else {
-        projSide = (int)(((long long)projSide * v4 + 0x800) >> 12);
+        projSide = FX_MUL(projSide, v4);
     }
 
     Vec3_MulScalarInPlace((int*)&side, projSide);

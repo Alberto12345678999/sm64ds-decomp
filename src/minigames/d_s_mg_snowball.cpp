@@ -66,6 +66,7 @@ enum dScMgSnowball_c_AssetId {
 #include "dScMgBase_c.h"
 #include "Particle__System.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -110,7 +111,6 @@ struct SPS {
     int cc[3];
 };
 
-#define MUL12(a, b) ((int)(((s64)(a) * (b) + 0x800) >> 12))
 #define I(o) (*(s32 *)(c + (o)))
 #define H(o) (*(u16 *)(c + (o)))
 /* The SIGNED halfword read. The one-function files spelled this offset macro
@@ -391,7 +391,7 @@ int dScMgSnowball_c::HitsBreakable(int *point)
                 continue;
             dy = *(int *)(prop + 0xacdc) - point[1];
             dx = *(int *)(prop + 0xacd8) - point[0];
-            if ((int)(((s64)dx * dx + 0x800) >> 12) + (int)(((s64)dy * dy + 0x800) >> 12) / 4 > 0x100000)
+            if (FX_MUL(dx, dx) + FX_MUL(dy, dy) / 4 > 0x100000)
                 continue;
             *(u8 *)(scene + i + 0xb2d8) = 1;
             if (mArray1Kind[i] == 1) {
@@ -701,21 +701,21 @@ void dScMgSnowball_c::UpdateSnowball()
         return;
 
     func_0203d434(push);
-    sc = MUL12(self->mVelX, push[0]) + MUL12(self->mVelY, push[1]);
+    sc = FX_MUL(self->mVelX, push[0]) + FX_MUL(self->mVelY, push[1]);
     if (self->mHitBreakable == 1) {
-        sc = MUL12(sc, 0x1800);
-        self->mVelX -= MUL12(sc, push[0]);
-        self->mVelY -= MUL12(sc, push[1]);
+        sc = FX_MUL(sc, 0x1800);
+        self->mVelX -= FX_MUL(sc, push[0]);
+        self->mVelY -= FX_MUL(sc, push[1]);
         cosv = data_02082214[((unsigned short)_ZN4cstd5atan2E5Fix12IiES1_(
             self->mVelY, self->mVelX) >> 4) * 2];
         vx = self->mVelX;
-        self->mVelX = vx / 8 + MUL12(vx, cosv) / 4;
+        self->mVelX = vx / 8 + FX_MUL(vx, cosv) / 4;
         vy = self->mVelY;
-        self->mVelY = vy / 8 + MUL12(vy, cosv) / 4;
+        self->mVelY = vy / 8 + FX_MUL(vy, cosv) / 4;
     } else {
-        sc = MUL12(sc, 0x1200);
-        self->mVelX -= MUL12(sc, push[0]);
-        self->mVelY -= MUL12(sc, push[1]);
+        sc = FX_MUL(sc, 0x1200);
+        self->mVelX -= FX_MUL(sc, push[0]);
+        self->mVelY -= FX_MUL(sc, push[1]);
     }
 }
 

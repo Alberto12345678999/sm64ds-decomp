@@ -60,6 +60,8 @@ enum dScMgSmartball_c_AssetId {
 #include "private/disp_obj_vtbl.h"
 #include "private/ov006_smartball_pair.h"
 #include "PlayerInput.h"
+#include "Memory.h"
+#include "nitro/fx/fx.h"
 
 /* Local shadow declarations carried from the legacy files. RECONCILED on
  * fold: where two files spelled one name for different memory, each keeps
@@ -353,8 +355,6 @@ extern void Mg_PlayJingle(void* c);
 extern "C" int Mg_GetSubmittedScore(void);
 extern "C" void Mg_SubmitScore(int self);
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-extern void _ZN6Memory16operator_delete2EPv(void *p);
-extern void __cxa_vec_cleanup(void *p, int a, int b, void *cb);
 extern void Mg_SetTopScreenYOffset(int a);
 extern void func_02057d00(void *dst, void *src, int flag);
 extern void *Ov004_LoadFileByPath(void *p);
@@ -366,7 +366,6 @@ extern void *_ZN2G212GetBG3ScrPtrEv(void);
 extern void __cxa_vec_ctor(void *p, int a, int b, void *cb1, void *cb2);
 extern void *_Znwj(u32 size);
 extern void SetSubBg0Offset(int x, int y);
-extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
 extern int sSmartballPathBuf[];
 extern int sSmartballLayoutNcgFmtSpanish[];
@@ -2557,8 +2556,8 @@ void cMgSmartball_kinoko_c::Update()
             int vec[4];
             if (mRadius < 0x1000) return;
             d = _ZN4cstd4fdivEii(0x7000, mRadius);
-            b = (int)(((long long)data_02082214[1] * d + 0x800) >> 12);
-            a = (int)(((long long)data_02082214[0] * d + 0x800) >> 12);
+            b = FX_MUL(data_02082214[1], d);
+            a = FX_MUL(data_02082214[0], d);
             vec[0] = b;
             vec[1] = a;
             vec[2] = -a;
@@ -3048,8 +3047,8 @@ int cMgSmartball_ball_c::NeedsRespawn(int *pos) {
     if (state3a == 1) {
         int dz = arg->b - *(int *)(self + 0x48);
         int dx = arg->a - *(int *)(self + 0x44);
-        int dxsq = (int)(((long long)dx * dx + 0x800) >> 12);
-        int dzsq = (int)(((long long)dz * dz + 0x800) >> 12);
+        int dxsq = FX_MUL(dx, dx);
+        int dzsq = FX_MUL(dz, dz);
         return dxsq + dzsq >= 0x100000;
     }
 
@@ -3091,8 +3090,8 @@ L1dc:
     {
         int u = x - 0x80000;
         int v = z2 + 0x70000;
-        int usq = (int)(((long long)u * u + 0x800) >> 12);
-        int vsq = (int)(((long long)v * v + 0x800) >> 12);
+        int usq = FX_MUL(u, u);
+        int vsq = FX_MUL(v, v);
         if (usq + vsq >= 0x3840000) return 1;
     }
 L238:
@@ -3147,9 +3146,7 @@ block1:
     mVel0 = 0;
     mVel1 = 0;
 
-    mCurrent1 =
-        _ZN4cstd4fdivEii((int)(((long long)(int)self->param1 * 0xa000 + 0x800) >> 12), 0xd8000) +
-        0x90000;
+    mCurrent1 = _ZN4cstd4fdivEii(FX_MUL((int)self->param1, 0xa000), 0xd8000) + 0x90000;
 
     if (mIndex > *(int *)(*(char **)(c + 4) + 0x4664)) {
         mQueueGap = (mIndex - *(int *)(*(char **)(c + 4) + 0x4664)) * 0xf;
@@ -3163,9 +3160,7 @@ block2:
     mVel0 = 0;
     mVel1 = 0;
 
-    mCurrent1 =
-        _ZN4cstd4fdivEii((int)(((long long)(int)self->param1 * 0xa000 + 0x800) >> 12), 0xd8000) +
-        0x90000;
+    mCurrent1 = _ZN4cstd4fdivEii(FX_MUL((int)self->param1, 0xa000), 0xd8000) + 0x90000;
 
     if (mIndex > *(int *)(*(char **)(c + 4) + 0x4664)) {
         mQueueGap = (mIndex - *(int *)(*(char **)(c + 4) + 0x4664)) * 0xf;
@@ -3745,7 +3740,7 @@ void cMgSmartball_ball_c::DrawMarker()
             if (y >= -0xb5000 && y < -0x85000) return;
         }
         v = c->field28 + 0x15000;
-        sq = (int)(((long long)v * v + 0x800) >> 12);
+        sq = FX_MUL(v, v);
         for (i = 0; i < c->mgr->count; i++) {
             if (((cMgSmartball_ana_c *)((unsigned char *)((i >= c->mgr->count) ? 0 : c->mgr->arr[i])))->HasBall() == 0) {
                 s[0] = c->x;
@@ -4046,7 +4041,7 @@ int cMgSmartball_object_c::PointInTriangle(int* p, int* q0, int* q1, int* q2){
 // @symbol _ZN21cMgSmartball_kinoko_c11HitRadiusSqEv
 int cMgSmartball_kinoko_c::HitRadiusSq() {
     struct S28 *p = (struct S28 *)this;
-    return (int)(((long long)p->field_0x28 * p->field_0x28 + 0x800) >> 12);
+    return FX_MUL(p->field_0x28, p->field_0x28);
 }
 
 // @symbol _ZN21cMgSmartball_object_c6SetVelEPi
@@ -4862,7 +4857,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV19cMgSmartball_ball_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -4874,7 +4869,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV18cMgSmartball_ana_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -4886,7 +4881,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_kinoko_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -4898,7 +4893,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV24cMgSmartball_propeller_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -4910,7 +4905,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV20cMgSmartball_dokan_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -4922,7 +4917,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_pakkun_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -4934,7 +4929,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV25cMgSmartball_pushswitch_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -4948,7 +4943,7 @@ void dScMgSmartball_c::SpawnObjects()
                 __cxa_vec_cleanup((char *)p + 0x4c, 3, 8, NullDestructor_0203d47c);
                 __cxa_vec_cleanup((char *)p + 0x34, 3, 8, NullDestructor_0203d47c);
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *(int **)(c + 0x4000 + 0x778) = 0;
         }
@@ -4959,7 +4954,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *p = (int)&_ZTV20cMgSmartball_board_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *(int **)(c + 0x4000 + 0x77c) = 0;
         }
@@ -4970,7 +4965,7 @@ void dScMgSmartball_c::SpawnObjects()
             if (p != 0) {
                 *p = (int)&_ZTV19cMgSmartball_wing_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *(int **)(c + 0x4000 + 0x780) = 0;
         }
@@ -5182,7 +5177,7 @@ void dScMgSmartball_c::SpawnObjects()
         for (j = 0; j < *(int *)(c + 0x4000 + 0x668); j++) {
             void *p;
             pos[j].x = ((1 - j) << 0x10) + 0xc0000;
-            pos[j].y = _ZN4cstd4fdivEii((int)(((long long)pos[j].x * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
+            pos[j].y = _ZN4cstd4fdivEii(FX_MUL(pos[j].x, 0xa000), 0xd8000) + 0x90000;
             p = _Znwj(0x12c);
             if (p != 0) {
                 V2 tmp = pos[j];
@@ -6551,7 +6546,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV19cMgSmartball_ball_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -6565,7 +6560,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_kinoko_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -6579,7 +6574,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV18cMgSmartball_ana_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -6592,7 +6587,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_spring_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *(int *)(c + 0x4000 + 0x684) = 0;
         }
@@ -6605,7 +6600,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV24cMgSmartball_propeller_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -6618,7 +6613,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV20cMgSmartball_dokan_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -6632,7 +6627,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_pakkun_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -6646,7 +6641,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *(int volatile *)p = (int)&_ZTV25cMgSmartball_pushswitch_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *slot = 0;
         }
@@ -6661,7 +6656,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
                 __cxa_vec_cleanup((char *)p + 0x4c, 3, 8, NullDestructor_0203d47c);
                 __cxa_vec_cleanup((char *)p + 0x34, 3, 8, NullDestructor_0203d47c);
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *(int **)(c + 0x4000 + 0x778) = 0;
         }
@@ -6672,7 +6667,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *p = (int)&_ZTV20cMgSmartball_board_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *(int **)(c + 0x4000 + 0x77c) = 0;
         }
@@ -6683,7 +6678,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
             if (p != 0) {
                 *p = (int)&_ZTV19cMgSmartball_wing_c[2];
                 *(int volatile *)p = (int)&_ZTV21cMgSmartball_object_c[2];
-                _ZN6Memory16operator_delete2EPv(p);
+                Memory::operator_delete2(p);
             }
             *(int **)(c + 0x4000 + 0x780) = 0;
         }

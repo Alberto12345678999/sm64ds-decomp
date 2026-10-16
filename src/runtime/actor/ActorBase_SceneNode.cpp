@@ -51,29 +51,31 @@ extern "C" int func_0203b438(struct N *a, struct N *b, struct N *c)
 {
     struct N *t;
     struct N *n;
-    if (b == 0) goto ret0;
-    if (c == 0) goto handle_a;
-    b->f0 = c;
-    t = c->f4;
-    if (t == 0) {
-        c->f4 = b;
-        goto ret1;
+    if (b != 0) {
+        if (c != 0) {
+            b->f0 = c;
+            t = c->f4;
+            if (t == 0) {
+                c->f4 = b;
+            } else {
+                n = t->fc;
+                while (n != 0) {
+                    t = n;
+                    n = n->fc;
+                }
+                t->fc = b;
+                b->f8 = t;
+            }
+        } else {
+            if (a->f0 != 0)
+                return 0;
+            a->f0 = b;
+        }
+    } else {
+        /* The else arm places this return ahead of the shared return 1,
+           as the ROM lays it out. */
+        return 0;
     }
-    n = t->fc;
-    while (n != 0) {
-        t = n;
-        n = n->fc;
-    }
-    t->fc = b;
-    b->f8 = t;
-    goto ret1;
-handle_a:
-    if (a->f0 != 0) return 0;
-    a->f0 = b;
-    goto ret1;
-ret0:
-    return 0;
-ret1:
     return 1;
 }
 }
@@ -84,27 +86,28 @@ struct Node { int f0; int f4; struct Node* f8; struct Node* fc; };
 
 extern "C" int func_0203b3c0(int* list, struct Node* n)
 {
-    if(n == 0) goto fail;
-    if(n->f4 != 0) return 0;
-    if(n->f8 != 0){
-        n->f8->fc = n->fc;
-    }else{
-        if(n->f0 != 0){
-            *(int*)(n->f0 + 4) = (int)n->fc;
-        }else{
-            *list = 0;
+    if (n != 0) {
+        if (n->f4 != 0)
+            return 0;
+        if (n->f8 != 0) {
+            n->f8->fc = n->fc;
+        } else {
+            if (n->f0 != 0) {
+                *(int *)(n->f0 + 4) = (int)n->fc;
+            } else {
+                *list = 0;
+            }
         }
+        if (n->fc != 0) {
+            n->fc->f8 = n->f8;
+        }
+        n->f8 = 0;
+        n->fc = 0;
+        n->f0 = 0;
+    } else {
+        /* Same layout as func_0203b438: return 0 sits before return 1. */
+        return 0;
     }
-    if(n->fc != 0){
-        n->fc->f8 = n->f8;
-    }
-    n->f8 = 0;
-    n->fc = 0;
-    n->f0 = 0;
-    goto success;
-fail:
-    return 0;
-success:
     return 1;
 }
 }

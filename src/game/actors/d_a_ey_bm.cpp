@@ -78,6 +78,22 @@ struct DaEyBmSpawnInfo {
 typedef char DaEyBmSpawnInfo_size_must_be_0x1c[
     sizeof(DaEyBmSpawnInfo) == 0x1c ? 1 : -1];
 
+/* dActor_c::mFlags bits 0x20000 and 0x40000 are the two yoshi-mouth states:
+ * Yoshi is eating the actor, then has it in his mouth. Actor ID 0xbf is
+ * PLAYER. These int-returning predicates are what make the ROM materialize
+ * 0/1 before testing it. */
+static inline int IsBeingEaten(dActor_c *actor) {
+    return (actor->mFlags & 0x20000) != 0;
+}
+
+static inline int IsInYoshiMouth(dActor_c *actor) {
+    return (actor->mFlags & 0x40000) != 0;
+}
+
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
 /* The leaf operator new forwards fBase_c::operator new; the implicit constructor
  * emits the measured dActor_c C2, vptr store, and three member C1s. */
 // @symbol daEyBm_c_classInit
@@ -147,14 +163,10 @@ int daEyBm_c::Behavior()
 {
     DaEyBmVector3Words offset;
     DaEyBmVector3Words velocity;
-    int flags = mFlags;
-    int destroying = (int)((flags & 0x40000) != 0);
-    int beingEaten;
-    if (destroying)
+    if (IsInYoshiMouth(this))
         return 1;
 
-    beingEaten = (int)((flags & 0x20000) != 0);
-    if (!beingEaten) {
+    if (!IsBeingEaten(this)) {
         offset = *(DaEyBmVector3Words *)&data_ov071_021230b8;
         mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&offset);
 
@@ -247,8 +259,7 @@ void daEyBm_c::HurtPlayer()
     dActor_c *found = dActor_c::FindWithID(ownerID);
     if (!found)
         return;
-    int isPlayer = (int)(found->actorID == 0xbf);
-    if (!isPlayer)
+    if (!IsPlayerActor(found))
         return;
     if (mdCcAcPos_c.hitFlags & 0x8000)
         return;

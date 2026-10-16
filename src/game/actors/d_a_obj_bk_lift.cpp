@@ -76,6 +76,7 @@ enum daObjBk_Lift_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 /* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
  * constructors and destructors are the ROM resource-family veneers, aliased
@@ -188,10 +189,10 @@ int daObjBk_Lift_c::InitResources()
 
     u16 angle = mAngleY;
     int sine = data_02082214[(angle >> 4) * 2];
-    mShadowOffsetX = (int)(((s64)sine * 0xc8000 + 0x800) >> 12);
+    mShadowOffsetX = FX_MUL(sine, 0xc8000);
     angle = mAngleY;
     int cosine = data_02082214[(angle >> 4) * 2 + 1];
-    mShadowOffsetY = (int)(((s64)cosine * 0xc8000 + 0x800) >> 12);
+    mShadowOffsetY = FX_MUL(cosine, 0xc8000);
 
     func_ov015_021123c8();
 

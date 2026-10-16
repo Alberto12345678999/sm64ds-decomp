@@ -41,6 +41,7 @@
 #include "decl_common.h"
 #include "Sound.h"
 #include "G2x.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
@@ -1007,14 +1008,11 @@ void dScMgBomroom_c::Bomb_PushApart(int index) {
             cstd::sqrt((s64)(sy * sy + dy2 * dy2));
             ang = (u16)_ZN4cstd5atan2E5Fix12IiES1_(dy2, sy);
             i2 = (ang >> 4) * 2;
-            mBombs[index].x =
-                (0xC0 - (int)(((s64)data_02082214[i2 + 1] * 0xF + 0x800) >> 12)) << 12;
+            mBombs[index].x = (0xC0 - FX_MUL(data_02082214[i2 + 1], 0xF)) << 12;
             if (py >= 0x60) {
-                mBombs[index].y =
-                    (0x80 - (int)(((s64)data_02082214[i2] * 0xF + 0x800) >> 12)) << 12;
+                mBombs[index].y = (0x80 - FX_MUL(data_02082214[i2], 0xF)) << 12;
             } else {
-                mBombs[index].y =
-                    (0x40 - (int)(((s64)data_02082214[i2] * 0xF + 0x800) >> 12)) << 12;
+                mBombs[index].y = (0x40 - FX_MUL(data_02082214[i2], 0xF)) << 12;
             }
             a = mBombs[index].angle;
             if (data_02082214[(a >> 4) * 2 + 1] > 0) {
@@ -1074,14 +1072,11 @@ void dScMgBomroom_c::Bomb_PushApart(int index) {
     cstd::sqrt((s64)(dy2 * dy2 + sy * sy));
     ang = (u16)_ZN4cstd5atan2E5Fix12IiES1_(sy, dy2);
     i2 = (ang >> 4) * 2;
-    mBombs[index].x =
-        (0x40 - (int)(((s64)data_02082214[i2 + 1] * 0xF + 0x800) >> 12)) << 12;
+    mBombs[index].x = (0x40 - FX_MUL(data_02082214[i2 + 1], 0xF)) << 12;
     if (py >= 0x60) {
-        mBombs[index].y =
-            (0x80 - (int)(((s64)data_02082214[i2] * 0xF + 0x800) >> 12)) << 12;
+        mBombs[index].y = (0x80 - FX_MUL(data_02082214[i2], 0xF)) << 12;
     } else {
-        mBombs[index].y =
-            (0x40 - (int)(((s64)data_02082214[i2] * 0xF + 0x800) >> 12)) << 12;
+        mBombs[index].y = (0x40 - FX_MUL(data_02082214[i2], 0xF)) << 12;
     }
     a = mBombs[index].angle;
     if (data_02082214[(a >> 4) * 2 + 1] < 0) {
@@ -1260,13 +1255,11 @@ void dScMgBomroom_c::BombMarch_Exit(int index) {
     int color, x;
     {
         s16 sine = data_02082214[((mBombs[index].angle) >> 4) * 2 + 1];
-        mBombs[index].x +=
-            (int)(((s64)sine * mBombs[index].speed + 0x800) >> 12);
+        mBombs[index].x += FX_MUL(sine, mBombs[index].speed);
     }
     {
         s16 sine = data_02082214[((mBombs[index].angle) >> 4) * 2];
-        mBombs[index].y +=
-            (int)(((s64)sine * mBombs[index].speed + 0x800) >> 12);
+        mBombs[index].y += FX_MUL(sine, mBombs[index].speed);
     }
     color = mBombs[index].color;
     x = mBombs[index].x >> 12;
@@ -1374,9 +1367,9 @@ void dScMgBomroom_c::Bomb_StateInPen(int idx) {
     s16 cosv;
 
     sinv = data_02082214[(self->mBombs[idx].angle >> 4) * 2 + 1];
-    self->mBombs[idx].x += (s32)(((s64)sinv * self->mBombs[idx].speed + 0x800) >> 12);
+    self->mBombs[idx].x += FX_MUL(sinv, self->mBombs[idx].speed);
     cosv = data_02082214[(self->mBombs[idx].angle >> 4) * 2];
-    self->mBombs[idx].y += (s32)(((s64)cosv * self->mBombs[idx].speed + 0x800) >> 12);
+    self->mBombs[idx].y += FX_MUL(cosv, self->mBombs[idx].speed);
     xv = self->mBombs[idx].x >> 12;
     yv = self->mBombs[idx].y >> 12;
     if (self->mBombs[idx].color != 0) {
@@ -1543,9 +1536,9 @@ void dScMgBomroom_c::Bomb_StateWalk(int idx) {
     }
 
     t = data_02082214[((int)mBombs[idx].angle >> 4) * 2 + 1];
-    mBombs[idx].x += (int)(((long long)t * mBombs[idx].speed + 0x800) >> 12);
+    mBombs[idx].x += FX_MUL(t, mBombs[idx].speed);
     t = data_02082214[((int)mBombs[idx].angle >> 4) * 2];
-    mBombs[idx].y += (int)(((long long)t * mBombs[idx].speed + 0x800) >> 12);
+    mBombs[idx].y += FX_MUL(t, mBombs[idx].speed);
     Bomb_PushApart(idx);
     Bomb_CheckGrab(idx);
     mBombs[idx].prevX = mBombs[idx].x;

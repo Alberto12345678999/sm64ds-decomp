@@ -137,7 +137,6 @@ extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 extern u8 data_0209d454;
 extern int data_0208ee44;
-extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
 extern int Mascot_Construct(char *t);
 extern int _ZTV19dScMgSingle3DBase_c[];

@@ -22,6 +22,7 @@
 #include "types.h"
 #include "decl_common.h"
 #include "common.h"
+#include "SharedFilePtr.h"
 #include "TrmpLine.h"
 #include "TrmpItem.h"
 /* Typed access to a TrmpLine slot from the char* helpers below. */
@@ -1134,7 +1135,6 @@ extern "C" void TrmpItem_HideAll(void){
 }
 
 namespace s020ceedc {
-extern "C" extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern "C" {
 extern int sTrmpItemRingAModelFile[];
 }
@@ -1146,9 +1146,9 @@ extern int sTrmpItemRingCModelFile[];
 }
 extern "C" void TrmpItem_ReleaseFiles(void)
 {
-    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemRingAModelFile);
-    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemRingBModelFile);
-    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemRingCModelFile);
+    ((SharedFilePtr *)sTrmpItemRingAModelFile)->Release();
+    ((SharedFilePtr *)sTrmpItemRingBModelFile)->Release();
+    ((SharedFilePtr *)sTrmpItemRingCModelFile)->Release();
 }
 }
 

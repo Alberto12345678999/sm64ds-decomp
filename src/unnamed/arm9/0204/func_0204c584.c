@@ -1,3 +1,4 @@
+#include "nitro/fx/fx.h"
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed short s16;
@@ -77,7 +78,7 @@ static inline int RandScale(void)
 
 static inline int FMul(int a, int b)
 {
-    return (int)(((s64)a * b + 0x800) >> 12);
+    return FX_MUL(a, b);
 }
 
 void func_0204c584(u8 *self, List *list)
@@ -136,14 +137,14 @@ void func_0204c584(u8 *self, List *list)
             break;
         case 1:
             func_0204da4c((Vector3 *)(p + 0x14));
-            *(int *)(p + 0x14) = (int)(((s64)*(int *)(p + 0x14) * *(int *)(self + 0x44) + 0x800) >> 12);
-            *(int *)(p + 0x18) = (int)(((s64)*(int *)(p + 0x18) * *(int *)(self + 0x44) + 0x800) >> 12);
-            *(int *)(p + 0x1c) = (int)(((s64)*(int *)(p + 0x1c) * *(int *)(self + 0x44) + 0x800) >> 12);
+            *(int *)(p + 0x14) = FX_MUL(*(int *)(p + 0x14), *(int *)(self + 0x44));
+            *(int *)(p + 0x18) = FX_MUL(*(int *)(p + 0x18), *(int *)(self + 0x44));
+            *(int *)(p + 0x1c) = FX_MUL(*(int *)(p + 0x1c), *(int *)(self + 0x44));
             break;
         case 2:
             func_0204d9f0(&vecB);
-            vecB.x = (int)(((s64)vecB.x * *(int *)(self + 0x44) + 0x800) >> 12);
-            vecB.y = (int)(((s64)vecB.y * *(int *)(self + 0x44) + 0x800) >> 12);
+            vecB.x = FX_MUL(vecB.x, *(int *)(self + 0x44));
+            vecB.y = FX_MUL(vecB.y, *(int *)(self + 0x44));
             func_0204cd5c((int *)(p + 0x14), (int *)&vecB, def->sel, (s16 *)self);
             break;
         case 3: {

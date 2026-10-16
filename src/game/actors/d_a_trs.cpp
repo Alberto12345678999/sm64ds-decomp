@@ -68,6 +68,7 @@ enum daTrs_c_AssetId {
 #include "Sound.h"
 #include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -163,7 +164,6 @@ int func_ov063_0211a0a8(int a0, int a1, int a2, int a3, int a4);
 extern void Vec3_MulScalarInPlace(void *v, int s);
 extern void func_020167a4(void *p);
 void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angle);
-void _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(void *self, const void *pos, const void *rot);
 extern int data_0209e650;
 extern int Vec3_Dist(const void* a, const void* b);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
@@ -491,7 +491,7 @@ void daTrs_c::func_ov063_021166ac() {
         else
             _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x64000, 0xc8000, 0xf);
     }
-    this->mCapPosY = this->mClsnOffY + (int)(((s64)this->mScaleX * 0x60000 + 0x800) >> 12);
+    this->mCapPosY = this->mClsnOffY + FX_MUL(this->mScaleX, 0x60000);
     pos.x = this->mCapPosX;
     pos.y = this->mCapPosY;
     pos.z = this->mCapPosZ;
@@ -507,7 +507,7 @@ void daTrs_c::func_ov063_021166ac() {
         rot.z = *(u16 *)&this->mAngleZ;
     }
     /* equal-arm ternary: the rot address (r2) is set up before pos (r1), as in the ROM */
-    _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(this, &pos, this ? &rot : &rot);
+    UpdateCapPos(pos, this ? rot : rot);
     func_ov063_021160d4();
 }
 
@@ -1018,7 +1018,7 @@ void daTrs_c::func_ov063_021177b0() {
                     ang = Vec3_HorzAngle(&v, &this->mPosX);
                     sn = data_02082214[(((unsigned short)ang >> 4) * 2) + 1];
                     t = (int)0xFF894000 - look.x;
-                    mid.z = mid.z + (int)(((long long)t * sn + 0x800) >> 12);
+                    mid.z = mid.z + FX_MUL(t, sn);
                     look.x = (int)0xFF894000;
                 }
 
@@ -2416,12 +2416,12 @@ void daTrs_c::func_ov063_0211a030(int a, int b) {
 
     int h = b >> 1;
     int pv = this->mClosestPlayer->mHorzSpeed;
-    int m = (int)(((long long)a * h + 0x800) >> 12);
+    int m = FX_MUL(a, h);
     if (pv < m) {
         this->mHorzSpeed = m;
         return;
     }
-    this->mHorzSpeed = (int)(((long long)pv * h + 0x800) >> 12);
+    this->mHorzSpeed = FX_MUL(pv, h);
 }
 
 

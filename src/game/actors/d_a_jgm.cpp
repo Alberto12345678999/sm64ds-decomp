@@ -71,12 +71,14 @@ enum d_a_jgm_AssetId {
 
 #include "common.h"
 #include "daJgm_c.h"
+#include "SpawnInfo.h"
 #include "dBgCh_Gnd.h"
 #include "Particle__System.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "SurfaceInfo.h"
+#include "nitro/fx/fx.h"
 
 /* local extern: no header declares ApproachLinear or cstd::fdiv. */
 int ApproachLinear(int &value, int target, int step);
@@ -91,20 +93,6 @@ struct DaJgmVector3Words { Fix12i x, y, z; };
 
 typedef char DaJgmVector3Words_size_must_be_0xc[
     sizeof(DaJgmVector3Words) == 0xc ? 1 : -1];
-
-struct DaJgmSpawnInfo {
-    daJgm_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char DaJgmSpawnInfo_size_must_be_0x1c[
-    sizeof(DaJgmSpawnInfo) == 0x1c ? 1 : -1];
 
 struct DaJgmMatrixWords { int words[12]; };
 
@@ -239,7 +227,7 @@ extern "C" daJgm_c *daJgm_c_classInit()
     return new daJgm_c();
 }
 
-extern "C" DaJgmSpawnInfo g_profile_JUGEM = {
+extern "C" SpawnInfo<daJgm_c> g_profile_JUGEM = {
     daJgm_c_classInit,
     0x0109,
     0x007c,
@@ -539,11 +527,11 @@ s32 daJgm_c::EnterSpitState()
 
     idx = ((int)(u16)mPrevAngleY) >> 4;
     sinv = data_02082214[idx * 2];
-    *pPosX = *pPosX + (int)(((s64)sinv * 0x50000 + 0x800) >> 12);
+    *pPosX = *pPosX + FX_MUL(sinv, 0x50000);
     *pPosY = *pPosY + 0x50000;
     idx = ((int)(u16)mPrevAngleY) >> 4;
     cosv = data_02082214[idx * 2 + 1];
-    *pPosZ = *pPosZ + (int)(((s64)cosv * 0x50000 + 0x800) >> 12);
+    *pPosZ = *pPosZ + FX_MUL(cosv, 0x50000);
 
     mAngVelY = 0x7000;
     mTimer = 0x1e;

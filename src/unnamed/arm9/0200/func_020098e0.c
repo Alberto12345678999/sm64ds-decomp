@@ -1,5 +1,6 @@
 #include "types.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 #define LP(p) (p)
 
 extern void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
@@ -36,7 +37,7 @@ int func_020098e0(char *self)
         int idx = gActivePlayerSlot;
         int off = idx * 0x18;
         s16 t1 = *(short*)((char*)data_0209f4a2 + off);
-        int scaled1 = (int)((((s64)t1 * 0x200) + 0x800) >> 12);
+        int scaled1 = FX_MUL(t1, 0x200);
 
         *p17c = (s16)(*p17c - scaled1);
 
@@ -51,7 +52,7 @@ int func_020098e0(char *self)
         {
             s16 *p17e = (s16*)(int)LP(self + 0x17e);
             s16 t2 = *(short*)((char*)data_0209f4a4 + off);
-            int scaled2 = (int)((((s64)t2 * 0x200) + 0x800) >> 12);
+            int scaled2 = FX_MUL(t2, 0x200);
             *p17e = (s16)(*p17e + scaled2);
         }
 

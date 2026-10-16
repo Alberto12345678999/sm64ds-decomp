@@ -60,6 +60,7 @@ enum daDossy_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Vector3s.h"
+#include "nitro/fx/fx.h"
 
 typedef enum { FALSE = 0, TRUE = 1 } BOOL;
 
@@ -383,7 +384,7 @@ int daDossy_c::Behavior()
         short sv = data_02082214[((unsigned short)d >> 4) * 2 + 1];
         short cv = data_02082214[((unsigned short)mPlatforms[1].mRot.x >> 4) * 2];
         int sm = sv * 0x190;
-        int t = (int)(((long long)sm * cv + 0x800) >> 12);
+        int t = FX_MUL(sm, cv);
         if (d < 0x4000) {
             inner = t + 0x5f8000;
             outer = 0x97c000;
@@ -394,15 +395,13 @@ int daDossy_c::Behavior()
     }
 
     if (mDistToCenter >= outer) {
-        mPosX = mSpawnPosX
-            - (int)(((long long)outer * data_02082214[((unsigned short)mAngToCenter >> 4) * 2] + 0x800) >> 12);
-        mPosZ = mSpawnPosZ
-            - (int)(((long long)outer * data_02082214[((unsigned short)mAngToCenter >> 4) * 2 + 1] + 0x800) >> 12);
+        mPosX = mSpawnPosX - FX_MUL(outer, data_02082214[((unsigned short)mAngToCenter >> 4) * 2]);
+        mPosZ =
+            mSpawnPosZ - FX_MUL(outer, data_02082214[((unsigned short)mAngToCenter >> 4) * 2 + 1]);
     } else if (mDistToCenter <= inner) {
-        mPosX = mSpawnPosX
-            - (int)(((long long)inner * data_02082214[((unsigned short)mAngToCenter >> 4) * 2] + 0x800) >> 12);
-        mPosZ = mSpawnPosZ
-            - (int)(((long long)inner * data_02082214[((unsigned short)mAngToCenter >> 4) * 2 + 1] + 0x800) >> 12);
+        mPosX = mSpawnPosX - FX_MUL(inner, data_02082214[((unsigned short)mAngToCenter >> 4) * 2]);
+        mPosZ =
+            mSpawnPosZ - FX_MUL(inner, data_02082214[((unsigned short)mAngToCenter >> 4) * 2 + 1]);
     }
 
     UpdatePos(0);

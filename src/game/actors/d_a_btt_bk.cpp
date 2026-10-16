@@ -36,6 +36,7 @@ enum daBttBk_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 struct Mtx43 { int a[12]; };
 typedef char Mtx43_size_must_be_0x30[sizeof(Mtx43) == 0x30 ? 1 : -1];
@@ -186,7 +187,7 @@ void daBttBk_c::func_ov080_02124c3c()
         s16 a = mAngleX;
         int sv = data_02082214[((unsigned short)(short)(a << 1) >> 4) * 2];
         if (sv < 0) sv = -sv;
-        int result = (int)(((s64)sv * 0x28000 + 0x800) >> 12);
+        int result = FX_MUL(sv, 0x28000);
         _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             this, &mShadowModel, mShadowMtx, 0x96000, 0x32000, result + 0x96000, 0xf);
     }

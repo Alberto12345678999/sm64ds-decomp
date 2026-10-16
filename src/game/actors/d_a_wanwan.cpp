@@ -27,6 +27,7 @@
 #include "Sound.h"
 #include "dCc_c.h"
 #include "dExtFrameCtrl_c.h"
+#include "nitro/fx/fx.h"
 
 enum {
     kYoshiEggId = 9,
@@ -317,10 +318,7 @@ void func_ov014_02112788(daWanwan_c *c)
         t = 0x1000;
     /* DropShadowRadHeight takes Fix12<int> by value. */
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, &c->mModelAnim.mat4x3,
-        0x15e000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
-        t + 0x28000,
-        0xf);
+        c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000 - FX_MUL(t, 0x180), t + 0x28000, 0xf);
     tmp = IDENTITY_MATRIX4X3;
     sm = c->mLinkShadows;
     i = 0;
@@ -336,10 +334,7 @@ void func_ov014_02112788(daWanwan_c *c)
         if (t <= 0x1000)
             t = 0x1000;
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            c, sm, &m->mat4x3,
-            0x78000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
-            t + 0x28000,
-            0xf);
+            c, sm, &m->mat4x3, 0x78000 - FX_MUL(t, 0x180), t + 0x28000, 0xf);
         m++;
         e = (daWanwan_c *)((char *)e + sizeof(Vector3));
         o = (daWanwan_c *)((char *)o + sizeof(Model));
@@ -644,9 +639,9 @@ void func_ov014_02111fe0(daWanwan_c *c)
     lim = c->mChainExtension * 7 + kRestLift;
     if (len <= lim)
         return;
-    v.x = (int)(((s64)v.x * cstd::fdiv(lim, len) + 0x800) >> 12);
-    v.y = (int)(((s64)v.y * cstd::fdiv(lim, len) + 0x800) >> 12);
-    v.z = (int)(((s64)v.z * cstd::fdiv(lim, len) + 0x800) >> 12);
+    v.x = FX_MUL(v.x, cstd::fdiv(lim, len));
+    v.y = FX_MUL(v.y, cstd::fdiv(lim, len));
+    v.z = FX_MUL(v.z, cstd::fdiv(lim, len));
     Vec3_Add(&out, (Vector3 *)&c->mSpawnPosX, &v);
     c->mPosX = out.x;
     c->mPosY = out.y;

@@ -36,6 +36,7 @@ enum daObjC1Peach_c_AssetId {
 
 #include "daObjC1Peach_c.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 namespace cstd { int fdiv(int a, int b); }
 
@@ -85,7 +86,7 @@ int daObjC1Peach_c::Behavior()
         mOpacity = 0;
     } else {
         int fraction = cstd::fdiv(distance - 0xbf4000, 0x21c000);
-        int opacity = (int)(((long long)fraction * 0xff + 0x800) >> 12);
+        int opacity = FX_MUL(fraction, 0xff);
         mOpacity = (u8)(opacity >> 3);
     }
 

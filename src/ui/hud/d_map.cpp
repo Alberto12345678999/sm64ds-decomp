@@ -40,6 +40,8 @@
 #include "Player.h"
 #include "dActor_c.h"
 #include "dCamera_c.h"
+#include "OAM.h"
+#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which makes its
@@ -76,8 +78,6 @@ struct Vec3 { int x, y, z; };
 /* An icon is drawn when it lies within 16 pixels of the 256x192 screen. */
 #define ICON_X_VISIBLE(x) ((u16)((x) + 0x10) < 0x120)
 #define ICON_Y_VISIBLE(y) ((u16)((y) + 0x10) < 0xe0)
-/* Fix12 multiply with rounding. */
-#define FMUL(a, b) ((s32)((((long long)(a) * (b)) + 0x800) >> 12))
 
 extern "C" {
 extern void Vec3_Sub(struct Vector3* out, struct Vector3* a, struct Vector3* b);
@@ -87,9 +87,7 @@ extern u8 data_0209f220;
 extern u32 data_0209caa0[];
 int SublevelToLevel(int i);
 int IsStarCollected(int level, int star);
-extern void _ZN3OAM9RenderSubEP7OamAttriiii(void *oam, int x, int y, int a, int pal);
 extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int on, void *oam, int x, int y, int a, int pal, int scale, int ang);
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int on, void *oam, int x, int y, int a, int pal, void *mtx);
 extern u8 data_0209f20c;
 extern u8 data_0209f2c4;
 extern u8 data_0209f294;
@@ -198,13 +196,13 @@ void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
         int factor;
         Vec3_Sub(&out, v, &p0);
         factor = 0xc00 - (_ZN4cstd4fdivEii(out.z, (int)0xffffd1a0) >> 12);
-        v->x = p0.x + (int)(((long long)out.x * factor + 0x800) >> 12);
-        v->z = p0.z + (int)(((long long)out.z * 0x200 + 0x800) >> 12);
+        v->x = p0.x + FX_MUL(out.x, factor);
+        v->z = p0.z + FX_MUL(out.z, 0x200);
     } else {
         if (v->x > p1.x) return;
         Vec3_Sub(&out2, v, &p1);
-        v->x = p1.x + (int)(((long long)out2.x * 0x400 + 0x800) >> 12);
-        v->z = p1.z + (int)(((long long)out2.z * 0xe00 + 0x800) >> 12);
+        v->x = p1.x + FX_MUL(out2.x, 0x400);
+        v->z = p1.z + FX_MUL(out2.z, 0xe00);
     }
 }
 
@@ -398,9 +396,8 @@ int dMap_c::Render()
         Player *player = (Player *)data_0209f394[idx];
         int vs = (data_0209f2d8 == 1);
         if (vs != 0) {
-            _ZN3OAM9RenderSubEP7OamAttriiii(
-                _ZN3OAM18MM_VS_PLAYER_ICONSE[player->param1 + idx * 4],
-                this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
+            OAM::RenderSub((OamAttr *)_ZN3OAM18MM_VS_PLAYER_ICONSE[player->param1 + idx * 4],
+                           this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
             {
                 u16 ang = (s16)this->mAngle + ((player->mAngleY ^ 0xffff) + 0x8001);
                 int angIdx = ((u16)(s16)ang >> 4) * 2;
@@ -421,9 +418,9 @@ int dMap_c::Render()
                             int x = this->mPlayerIconX[i];
                             if (ICON_X_VISIBLE(x)) {
                                 if (data_ov002_02111148 == this->mPlayerMapIDs[i]) {
-                                    _ZN3OAM9RenderSubEP7OamAttriiii(
-                                        _ZN3OAM20MM_VS_PLAYER_ICONS_SE[j + ((Player *)data_0209f394[i])->param1],
-                                        x, y, -1, 2);
+                                    OAM::RenderSub((OamAttr *)_ZN3OAM20MM_VS_PLAYER_ICONS_SE
+                                                       [j + ((Player *)data_0209f394[i])->param1],
+                                                   x, y, -1, 2);
                                 }
                             }
                         }
@@ -441,8 +438,8 @@ int dMap_c::Render()
                         icon = player->mCharacter * 4 + 3;
                     else
                         icon = player->param1 + player->mCharacter * 4;
-                    _ZN3OAM9RenderSubEP7OamAttriiii(_ZN3OAM15MM_PLAYER_ICONSE[icon],
-                        this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
+                    OAM::RenderSub((OamAttr *)_ZN3OAM15MM_PLAYER_ICONSE[icon],
+                                   this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
                 }
                 if (data_0209caa0[2] & 0x80) {
                     u8 s = this->mArrowType;
@@ -491,8 +488,9 @@ int dMap_c::Render()
                                     if (ICON_Y_VISIBLE(y)) {
                                         int x = this->mStarIconX[i];
                                         if (ICON_X_VISIBLE(x)) {
-                                            _ZN3OAM9RenderSubEP7OamAttriiii(_ZN3OAM15MM_STAR_MARKERSE[icon],
-                                                x, y, -1, 2);
+                                            OAM::RenderSub(
+                                                (OamAttr *)_ZN3OAM15MM_STAR_MARKERSE[icon], x, y,
+                                                -1, 2);
                                         }
                                     }
                                 }
@@ -502,8 +500,8 @@ int dMap_c::Render()
                         }
                     } else {
                         if (data_0209f288 != 0) {
-                            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, _ZN3OAM11MM_RED_COINE,
-                                this->mStarIconX[i], this->mStarIconY[i], -1, 2, 0);
+                            OAM::Render(true, (OamAttr *)_ZN3OAM11MM_RED_COINE, this->mStarIconX[i],
+                                        this->mStarIconY[i], -1, 2, 0);
                         }
                     }
                 } else {
@@ -524,7 +522,7 @@ int dMap_c::Render()
                         if (ICON_Y_VISIBLE(y)) {
                             int x = this->mCapIconX[i];
                             if (ICON_X_VISIBLE(x)) {
-                                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, tbl[*p2], x, y, -1, 2, 0);
+                                OAM::Render(true, (OamAttr *)tbl[*p2], x, y, -1, 2, 0);
                             }
                         }
                     }
@@ -539,8 +537,8 @@ int dMap_c::Render()
             if (this->mStarKeyMapID >= 0) {
                 if (data_0209d660 == 0 || !(data_020a0db0 & 8)) {
                     int sel = ((u32)this->mStarKeyBlinkTimer < 2) ? 1 : 0;
-                    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, _ZN3OAM12MM_STAR_KEYSE[sel],
-                        this->mStarKeyIconX, this->mStarKeyIconY, -1, 2, 0);
+                    OAM::Render(true, (OamAttr *)_ZN3OAM12MM_STAR_KEYSE[sel], this->mStarKeyIconX,
+                                this->mStarKeyIconY, -1, 2, 0);
                 }
             }
         }
@@ -551,7 +549,7 @@ int dMap_c::Render()
                 if (ICON_Y_VISIBLE(y)) {
                     int x = this->mSpikeBombIconX[i];
                     if (ICON_X_VISIBLE(x)) {
-                        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, _ZN3OAM13MM_SPIKE_BOMBE, x, y, -1, 2, 0);
+                        OAM::Render(true, (OamAttr *)_ZN3OAM13MM_SPIKE_BOMBE, x, y, -1, 2, 0);
                     }
                 }
             }
@@ -716,16 +714,22 @@ L4b0:
 L4d8:
     this->mCurrentScale = _ZN4cstd4fdivEii(this->mScale, this->mInvScale);
     { s32 s1 = data_02082214[(((s32)(u16)this->mAngle >> 4) * 2) + 1];
-      this->mBgMatrixA = FMUL(s1, this->mInvScale); }
+        this->mBgMatrixA = FX_MUL(s1, this->mInvScale);
+    }
     { s32 s2 = data_02082214[((s32)(u16)this->mAngle >> 4) * 2];
-      this->mBgMatrixB = FMUL(s2, this->mInvScale); }
+        this->mBgMatrixB = FX_MUL(s2, this->mInvScale);
+    }
     this->mBgMatrixC = -this->mBgMatrixB;
     this->mBgMatrixD = this->mBgMatrixA;
     ((Vector3*)&this->mMapCenterWorldX)->x = ((Vector3*)&this->mMapOriginX)->x;
     ((Vector3*)&this->mMapCenterWorldX)->y = ((Vector3*)&this->mMapOriginX)->y;
     ((Vector3*)&this->mMapCenterWorldX)->z = ((Vector3*)&this->mMapOriginX)->z;
-    this->mMapCenterX = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->x, this->mScale) + 0x800) >> 12);
-    this->mMapCenterY = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->z, this->mScale) + 0x800) >> 12);
+    this->mMapCenterX =
+        this->mMapCenterOffset +
+        ((FX_MUL(((Vector3 *)&this->mMapCenterWorldX)->x, this->mScale) + 0x800) >> 12);
+    this->mMapCenterY =
+        this->mMapCenterOffset +
+        ((FX_MUL(((Vector3 *)&this->mMapCenterWorldX)->z, this->mScale) + 0x800) >> 12);
 
     focusPosSrc = (Vector3 *)(((int)focus + 0x5c));
     focusPos = *focusPosSrc;
@@ -759,8 +763,12 @@ L738:
     _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(&miniPos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &clampedWorld);
     Vec3_Sub(&scrollDelta, &focusPos, &clampedWorld);
     AddVec3((Vector3*)&this->mMapCenterWorldX, &scrollDelta, (Vector3*)&this->mMapCenterWorldX);
-    this->mMapCenterX = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->x, this->mScale) + 0x800) >> 12);
-    this->mMapCenterY = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->z, this->mScale) + 0x800) >> 12);
+    this->mMapCenterX =
+        this->mMapCenterOffset +
+        ((FX_MUL(((Vector3 *)&this->mMapCenterWorldX)->x, this->mScale) + 0x800) >> 12);
+    this->mMapCenterY =
+        this->mMapCenterOffset +
+        ((FX_MUL(((Vector3 *)&this->mMapCenterWorldX)->z, this->mScale) + 0x800) >> 12);
 
     /* Project each object list onto the map. A missing object gets map id -1. Stars whose
      * kind byte in data_0209f37c is 4 are the ones Render draws as MM_RED_COIN. */

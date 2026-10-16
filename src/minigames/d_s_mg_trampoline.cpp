@@ -34,6 +34,7 @@ enum d_s_mg_trampoline_AssetId {
 #include "G2x.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 /* local: the ROM re-reads the slot byte at each use here, so keep the read volatile. */
 #define ACTIVE_SLOT (*(volatile unsigned char *)&gActivePlayerSlot)
 /* local: these readers only reproduce through a 4-byte-record view of the lane. */
@@ -460,9 +461,7 @@ void dScMgTrampoline_c::StartRound(int /* arg */)
        reads the field SIGNED, which is what this header used to declare
        locally. Cast at the use site rather than retype the shared base. */
     q = ((((s32)self->mLevel % 5) << 12)) / 4;
-    self->mScrollY =
-        (int)(((long long)(0x1000 - q) * 0x20 + 0x800) >> 12) +
-        (int)(((long long)q * 0x50 + 0x800) >> 12);
+    self->mScrollY = FX_MUL((0x1000 - q), 0x20) + FX_MUL(q, 0x50);
     self->mScrollTargetY = self->mScrollY;
     self->mScrollHoldTimer = 0;
     Trmp3DMario_ResetAll(self->mLevel, self->mScrollY);

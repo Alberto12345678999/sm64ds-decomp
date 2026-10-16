@@ -67,6 +67,7 @@ enum daSanbo_c_AssetId {
 #include "decl_common.h"
 #include "Player.h"
 #include "Particle__System.h"
+#include "nitro/fx/fx.h"
 
 enum { SANBO_HEAD = 0xf0, SANBO_BODY = 0xf1 };
 
@@ -715,10 +716,10 @@ void daSanbo_c::func_ov096_02135948()
             index = ((unsigned short)angle >> 4) * 2;
             cs = data_02082214[index];
             dist = mdCcAc_c.radius + 0x1a9000;
-            mPosX = other->mPosX + (int)(((s64)dist * cs + 0x800) >> 12);
+            mPosX = other->mPosX + FX_MUL(dist, cs);
             sn = data_02082214[index + 1];
             dist2 = mdCcAc_c.radius + 0x1a9000;
-            mPosZ = other->mPosZ + (int)(((s64)dist2 * sn + 0x800) >> 12);
+            mPosZ = other->mPosZ + FX_MUL(dist2, sn);
         }
         }
     }

@@ -217,13 +217,13 @@ extern "C" int func_020393bc(int *p)
 // @symbol func_020393b4
 extern "C" int func_020393b4(int *p)
 {
-    return p[1];
+    return (int)((dBgW *)p)->owner;
 }
 
 // @symbol func_020393ac
 extern "C" int func_020393ac(int *p)
 {
-    return p[2];
+    return ((dBgW *)p)->ownerUniqueID;
 }
 
 // @symbol func_020393a4

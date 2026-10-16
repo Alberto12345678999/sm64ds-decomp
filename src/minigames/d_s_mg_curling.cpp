@@ -42,6 +42,7 @@ enum dScMgCurling_c_AssetId {
 #include "types.h"
 #include "dScMgCurling_c.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* `C` is the receiver of the pointer-to-member state tables. It must stay
  * incomplete: mwccarm picks the pointer-to-member layout from whether the
@@ -78,8 +79,6 @@ struct B4 { unsigned char v; unsigned char pad[3]; };
 
 /* Launder: forces an address through an integer so it is not shared. */
 #define M(p) ((int *)(int)(p))
-/* FX_Mul: 12-bit fixed-point product, rounded. */
-#define FMUL(a, b) ((int)(((long long)(a) * (b) + 0x800) >> 12))
 
 /* Everything this file calls or reads. Class members cannot go inside an
  * `extern "C"` block, so the C-linkage names are collected here in one. */
@@ -928,10 +927,10 @@ void dScMgCurling_c::SeparateStones(int idx)
 
             k = (ang >> 4) * 2;
             cs = data_02082214[k + 1];
-            vx = (int)(((long long)cs * 0x1a + 0x800) >> 12);
+            vx = FX_MUL(cs, 0x1a);
             mStone[i].x = mStone[idx].x + (vx << 12);
             sn = data_02082214[k];
-            vy = (int)(((long long)sn * 0x1a + 0x800) >> 12);
+            vy = FX_MUL(sn, 0x1a);
             mStone[i].y = mStone[idx].y + (vy << 12);
             for (j = 0; j < 5; j++) {
                 int dx2;
@@ -954,10 +953,10 @@ void dScMgCurling_c::SeparateStones(int idx)
 
                     k = (ang2 >> 4) * 2;
                     cs2 = data_02082214[k + 1];
-                    vx2 = (int)(((long long)cs2 * 0x1a + 0x800) >> 12);
+                    vx2 = FX_MUL(cs2, 0x1a);
                     mStone[j].x = mStone[i].x + (vx2 << 12);
                     sn2 = data_02082214[k];
-                    vy2 = (int)(((long long)sn2 * 0x1a + 0x800) >> 12);
+                    vy2 = FX_MUL(sn2, 0x1a);
                     mStone[j].y = mStone[i].y + (vy2 << 12);
                     func_02012718(0xe8, mStone[idx].x);
                     return;
@@ -1032,12 +1031,12 @@ void dScMgCurling_c::ResolveStoneCollision(int idx)
             pAngle = &mStone[idx].angle;
             pSpeed = &mStone[idx].speed;
             k = (mStone[idx].angle >> 4) * 2;
-            vmx = FMUL(data_02082214[k + 1], mStone[idx].speed);
-            vmy = FMUL(data_02082214[k], mStone[idx].speed);
+            vmx = FX_MUL(data_02082214[k + 1], mStone[idx].speed);
+            vmy = FX_MUL(data_02082214[k], mStone[idx].speed);
             pHitAngle = &mStone[i].angle;
             k = (mStone[i].angle >> 4) * 2;
-            vhx = FMUL(data_02082214[k + 1], mStone[i].speed);
-            vhy = FMUL(data_02082214[k], mStone[i].speed);
+            vhx = FX_MUL(data_02082214[k + 1], mStone[i].speed);
+            vhy = FX_MUL(data_02082214[k], mStone[i].speed);
             if (vhy == 0) vhy = vmy >> 1;
 
             /* sin/cos of -contact rotate into the contact frame; sin/cos of
@@ -1051,26 +1050,26 @@ void dScMgCurling_c::ResolveStoneCollision(int idx)
             cosA = data_02082214[k + 1];
 
             /* Normal and tangential components of each velocity. */
-            mNormal = FMUL(cosN, vmx);
-            mNormal -= FMUL(sinN, vmy);
-            mTangent = FMUL(sinN, vmx) + FMUL(cosN, vmy);
-            hNormal = FMUL(cosN, vhx) - FMUL(sinN, vhy);
-            hTangent = FMUL(sinN, vhx) + FMUL(cosN, vhy);
+            mNormal = FX_MUL(cosN, vmx);
+            mNormal -= FX_MUL(sinN, vmy);
+            mTangent = FX_MUL(sinN, vmx) + FX_MUL(cosN, vmy);
+            hNormal = FX_MUL(cosN, vhx) - FX_MUL(sinN, vhy);
+            hTangent = FX_MUL(sinN, vhx) + FX_MUL(cosN, vhy);
 
             /* Swap the normal components and rotate back: dx/mvy for the
              * moving stone, hvx/hvy for the one it hit. */
-            dx = FMUL(cosA, hNormal) - FMUL(sinA, mTangent);
-            mvy = FMUL(sinA, hNormal) + FMUL(cosA, mTangent);
-            hvx = FMUL(cosA, mNormal) - FMUL(sinA, hTangent);
-            hvy = FMUL(sinA, mNormal) + FMUL(cosA, hTangent);
+            dx = FX_MUL(cosA, hNormal) - FX_MUL(sinA, mTangent);
+            mvy = FX_MUL(sinA, hNormal) + FX_MUL(cosA, mTangent);
+            hvx = FX_MUL(cosA, mNormal) - FX_MUL(sinA, hTangent);
+            hvy = FX_MUL(sinA, mNormal) + FX_MUL(cosA, hTangent);
 
             *pAngle = _ZN4cstd5atan2E5Fix12IiES1_(mvy, dx);
             *pSpeed = cstd::sqrt((u64)((long long)dx * dx + (long long)mvy * mvy));
 
             /* Separate the stones along the contact line, then keep the
              * moving one on the board and hand any overshoot to the other. */
-            mStone[idx].x = mStone[i].x + FMUL(cosA, 0x1b000);
-            mStone[idx].y = mStone[i].y + FMUL(sinA, 0x1b000);
+            mStone[idx].x = mStone[i].x + FX_MUL(cosA, 0x1b000);
+            mStone[idx].y = mStone[i].y + FX_MUL(sinA, 0x1b000);
             xi = mStone[idx].x >> 12;
             yi = mStone[idx].y >> 12;
             if (xi - 0xc < 0) {
@@ -1193,9 +1192,9 @@ void dScMgCurling_c::Stone_Slide(int idx)
     p664 = (int *)(c + 0x4664 + m);
 
     sn = data_02082214[((*pang) >> 4) * 2 + 1];
-    *p660 += (int)(((long long)sn * *p668 + 0x800) >> 12);
+    *p660 += FX_MUL(sn, *p668);
     cs = data_02082214[((*pang) >> 4) * 2];
-    *p664 += (int)(((long long)cs * *p668 + 0x800) >> 12);
+    *p664 += FX_MUL(cs, *p668);
     mStone[idx].heading += (u16)mStone[idx].spin;
 
     x = *p660;
