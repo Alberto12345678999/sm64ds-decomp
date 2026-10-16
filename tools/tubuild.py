@@ -2514,6 +2514,18 @@ def apply_compiler_only_policy(obj_bytes, entry, homes=None):
     inv = elf_inventory(obj_bytes)
     licensed = {f["symbol"] for f in entry.get("functions", [])}
     licensed |= {row["symbol"] for _sec, row in manifest_owned_symbol_rows(entry)}
+    # Classify the raw preimage of an explicitly owned function before the
+    # later rename stage. Validate the same ELF and unique canonical home;
+    # this adds no deadstrip policy and does not change the object bytes.
+    renames = entry.get("defined_symbol_renames") or []
+    if isinstance(renames, list) and any(
+            isinstance(row, dict) and "owned_function" in row for row in renames):
+        _mapping, requested, rename_errors = RA.validated_defined_symbol_rename_plan(
+            obj_bytes, entry)
+        if rename_errors:
+            return None, {"requested": [], "ownedFunctionCorrespondences": []}, rename_errors
+        licensed |= {row["from"] for row in requested
+                     if "owned_function" in row and row["to"] in licensed}
     extras = {s["name"]: s for s in inv["symbols"]
               if s["type"] == "STT_FUNC" and not s["name"].startswith("$")
               and s["name"] not in licensed}
@@ -3031,32 +3043,7 @@ def _apply_defined_renames_for_audit(obj_bytes, audited_bytes, policy_reasons, e
 
 def apply_defined_symbol_rename_policy(obj_bytes, entry):
     """Renumber manifest-licensed compiler-local definitions to fleet-unique names."""
-    raw = entry.get("defined_symbol_renames", [])
-    if raw is None:
-        raw = []
-    if not isinstance(raw, list):
-        return None, {"requested": [], "renamed": []}, \
-            ["defined_symbol_renames must be a list"]
-    owned = {row["symbol"] for _section, row in manifest_owned_symbol_rows(entry)}
-    mapping, requested, reasons = {}, [], []
-    for ordinal, row in enumerate(raw):
-        label = f"defined_symbol_renames[{ordinal}]"
-        if not isinstance(row, dict):
-            reasons.append(f"{label} is not an object")
-            continue
-        missing = [key for key in ("from", "to", "evidence") if not row.get(key)]
-        if missing:
-            reasons.append(f"{label} is missing {missing}")
-            continue
-        old, new = str(row["from"]), str(row["to"])
-        if new not in owned:
-            reasons.append(f"{label} renames to {new}, which the manifest does not own")
-            continue
-        if old in mapping:
-            reasons.append(f"duplicate defined symbol rename for {old}")
-            continue
-        mapping[old] = new
-        requested.append(dict(row))
+    mapping, requested, reasons = RA.validated_defined_symbol_rename_plan(obj_bytes, entry)
     if reasons:
         return None, {"requested": requested, "renamed": []}, reasons
     out, plan = OI.rename_defined_symbols(obj_bytes, mapping)
