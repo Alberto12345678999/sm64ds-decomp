@@ -159,7 +159,7 @@ void func_0200b0fc(char *c, char *a)
     }
 
     if (data_0209f2f8 == 0x2f) {
-        projSide = projSide - (int)(((long long)*(int*)(c + 0x12c) * 0x5000 + 0x800) >> 12);
+        projSide = projSide - FX_MUL(*(int *)(c + 0x12c), 0x5000);
         if (projSide < 0) {
             targetPos.y -= FX_MUL(projSide, 0x400);
             projSide = 0;
