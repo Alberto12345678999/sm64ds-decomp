@@ -45,26 +45,10 @@ enum d_a_krpa_AssetId {
 };
 
 #include "daKrpa_c.h"
+#include "SpawnInfo.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
-
-/* Actor/process profile descriptor at ov070:0x0212334c. Field roles are
- * recovered from fBase_c/dActor_c consumers; exact original member spellings
- * are not preserved. */
-struct daKrpaSpawnInfo {
-    daKrpa_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char daKrpaSpawnInfo_size_must_be_0x1c[
-    sizeof(daKrpaSpawnInfo) == 0x1c ? 1 : -1];
 
 // @symbol daKrpa_c_classInit
 /* `return new daKrpa_c()` emits 0x50; the leaf unsigned-long
@@ -79,8 +63,8 @@ extern "C" daKrpa_c *daKrpa_c_classInit()
  * KERONPA registry ID, descriptor/factory relationship, and object shape;
  * later EAD lineage supplies the spelling prior. Exact original SM64DS
  * spellings are not preserved. Historical aliases: daKrpa_c_Spawn and
- * daKrpa_c_SpawnInfo. */
-extern "C" daKrpaSpawnInfo g_profile_KERONPA = {
+ * daKrpa_c_SpawnInfo. The descriptor is at ov070:0x0212334c. */
+extern "C" SpawnInfo<daKrpa_c> g_profile_KERONPA = {
     daKrpa_c_classInit,
     0x010e,
     0x0081,

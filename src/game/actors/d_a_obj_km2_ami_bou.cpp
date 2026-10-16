@@ -22,6 +22,7 @@ enum d_a_obj_km2_ami_bou_AssetId {
 };
 
 #include "daObjKm2_Ami_Bou_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 
 enum {
@@ -67,23 +68,10 @@ extern "C" daObjKm2_Ami_Bou_c *daObjKm2_Ami_Bou_c_classInit()
     return new daObjKm2_Ami_Bou_c();
 }
 
-struct AmiBouSpawnInfo {
-    daObjKm2_Ami_Bou_c *(*classInit)();
-    s16 executePriority; /* +4: also KM2_AMI_BOU registry id 0x008e = 142 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char AmiBouSpawnInfo_size_must_be_0x1c[
-    sizeof(AmiBouSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_KM2_AMI_BOU
-extern "C" AmiBouSpawnInfo g_profile_KM2_AMI_BOU = {
+extern "C" SpawnInfo<daObjKm2_Ami_Bou_c> g_profile_KM2_AMI_BOU = {
     daObjKm2_Ami_Bou_c_classInit,
-    0x008e,
+    0x008e, /* KM2_AMI_BOU registry id 142 */
     0x00d5,
     2,
     0x00100000,

@@ -38,33 +38,19 @@ enum d_a_propeller_heyho_AssetId {
 };
 
 #include "daPropeller_Heyho_c.h"
+#include "SpawnInfo.h"
 
 /* The cartridge preserves this descriptor's C-ABI symbol but not its source
- * spelling.  Keep that evidence-bounded alias while giving the table its real
- * field layout; all seven scalar words and the factory relocation are covered
- * by the TU's data claim. */
+ * spelling.  Keep that evidence-bounded alias; all seven scalar words and
+ * the factory relocation are covered by the TU's data claim. */
 extern "C" daPropeller_Heyho_c *daPropeller_Heyho_c_classInit(void);
-
-struct PropellerHeyhoSpawnInfo {
-    daPropeller_Heyho_c *(*classInit)();
-    short behaviorPriority;
-    short renderPriority;
-    unsigned flags;
-    int rangeOffsetY;
-    int range;
-    int drawDistance;
-    int untrackDistance;
-};
-
-typedef char PropellerHeyhoSpawnInfo_size_must_be_0x1c[
-    sizeof(PropellerHeyhoSpawnInfo) == 0x1c ? 1 : -1];
 
 /* Reconstructed source-style name: SM64DS proves this descriptor through
  * its registry role, the PROPELLER_HEYHO literal ROM profile ID, and the
  * factory relocation it carries; later EAD lineage supplies g_profile_.
  * Exact original spelling is not preserved. Historical alias:
  * FlyGuy_SpawnInfo. */
-extern "C" PropellerHeyhoSpawnInfo g_profile_PROPELLER_HEYHO = {
+extern "C" SpawnInfo<daPropeller_Heyho_c> g_profile_PROPELLER_HEYHO = {
     daPropeller_Heyho_c_classInit,
     0x00e8,
     0x0057,

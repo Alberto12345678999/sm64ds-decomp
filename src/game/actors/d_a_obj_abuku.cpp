@@ -30,14 +30,15 @@
  *   no named alias exists. Sway lookup off (mSwayAngle >> 4).
  * - AbukuVector3 POD + reinterpret_cast: a real Vector3 local emits
  *   vague-linkage ~Vector3 into this text-only TU.
- * - g_profile_OBJ_ABUKU keeps TU-local AbukuSpawnInfo; no shared 0x1c
- *   actor-profile struct exists. The manifest proves the descriptor,
+ * - g_profile_OBJ_ABUKU is a SpawnInfo, the shared 0x1c actor-profile
+ *   layout. The manifest proves the descriptor,
  *   then deadstrip-discards it (canonical home outside .text).
  * - mSwayAngle volatile-u16 reload + >> 4, and the actorID == 0xbf
  *   int-then-if, kept in matched form.
  */
 
 #include "daObjAbuku_c.h"
+#include "SpawnInfo.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "Sound.h"
@@ -45,20 +46,6 @@
 /* POD stand-in: a real Vector3 local emits vague-linkage ~Vector3 into this
  * text-only TU. */
 struct AbukuVector3 { int x, y, z; };
-
-struct AbukuSpawnInfo {
-    daObjAbuku_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char AbukuSpawnInfo_size_must_be_0x1c[
-    sizeof(AbukuSpawnInfo) == 0x1c ? 1 : -1];
 
 extern "C" {
 void func_ov002_020b330c(daObjAbuku_c *);
@@ -83,7 +70,7 @@ extern "C" daObjAbuku_c *daObjAbuku_c_classInit()
     return new daObjAbuku_c();
 }
 
-extern "C" AbukuSpawnInfo g_profile_OBJ_ABUKU = {
+extern "C" SpawnInfo<daObjAbuku_c> g_profile_OBJ_ABUKU = {
     daObjAbuku_c_classInit,
     0x0123,
     0x00a1,

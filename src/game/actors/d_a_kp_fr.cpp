@@ -41,27 +41,11 @@
 //   triples live on the shared dActor_c header, which has not named them yet
 //   (same header work as the linelift2 leaf below).
 #include "daKpFr_c.h"
+#include "SpawnInfo.h"
 #include "dBgCh_Gnd.h"
 #include "Particle__System.h"
 #include "Player.h"
 #include "SurfaceInfo.h"
-
-/* Actor/process profile descriptor at ov070:0x02123424. Field roles are
- * recovered from fBase_c/dActor_c consumers; exact original member spellings
- * are not preserved. */
-struct daKpFrSpawnInfo {
-    daKpFr_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char daKpFrSpawnInfo_size_must_be_0x1c[
-    sizeof(daKpFrSpawnInfo) == 0x1c ? 1 : -1];
 
 /* The registry factory behind the KERONPA_FIRE profile.
  * `return new daKpFr_c()` emits 0x48 with the synthesized ctor storing
@@ -76,8 +60,8 @@ extern "C" daKpFr_c *daKpFr_c_classInit(void)
  * KERONPA_FIRE registry ID, descriptor/factory relationship, and object shape;
  * later EAD lineage supplies the spelling prior. Exact original SM64DS
  * spellings are not preserved. Historical aliases: daKpFr_c_Spawn and
- * daKpFr_c_SpawnInfo. */
-extern "C" daKpFrSpawnInfo g_profile_KERONPA_FIRE = {
+ * daKpFr_c_SpawnInfo. The descriptor is at ov070:0x02123424. */
+extern "C" SpawnInfo<daKpFr_c> g_profile_KERONPA_FIRE = {
     daKpFr_c_classInit,
     0x010f,
     0x0082,

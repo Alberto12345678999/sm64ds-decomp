@@ -36,6 +36,7 @@
 
 #include "common.h"
 #include "daBmb_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
@@ -134,29 +135,16 @@ daBmb_c *daBmb_c_classInit(void)
 
 }
 
-struct BmbSpawnInfo {
-    daBmb_c *(*classInit)();
-    s16 executePriority; /* +4: also BOMBHEI registry id 0x00ce = 206 */
-    s16 renderPriority;  /* +6 */
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char BmbSpawnInfo_size_must_be_0x1c[
-    sizeof(BmbSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_BOMBHEI
-extern "C" BmbSpawnInfo g_profile_BOMBHEI = {
+extern "C" SpawnInfo<daBmb_c> g_profile_BOMBHEI = {
     daBmb_c_classInit,
-    0x00ce,
+    0x00ce, /* BOMBHEI registry id 206 */
     0x002d,
     0x10008083,
     0x00032000,
     0x00046000,
     0x01000000,
-    0x01000000
+    0x01000000,
 };
 
 /* ==========================================================================

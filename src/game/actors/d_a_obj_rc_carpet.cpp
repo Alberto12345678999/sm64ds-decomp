@@ -40,6 +40,7 @@ enum d_a_obj_rc_carpet_AssetId {
 
 #include "common.h"
 #include "daObjRcCarpet_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 
@@ -51,20 +52,6 @@ struct FlyingCarpetResources {
 
 typedef char FlyingCarpetResources_size_must_be_0x0c[
     sizeof(FlyingCarpetResources) == 0x0c ? 1 : -1];
-
-struct FlyingCarpetSpawnInfo {
-    daObjRcCarpet_c *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 flags;
-    Fix12i rangeOffsetY;
-    Fix12i range;
-    Fix12i drawDistance;
-    u32 farDistance;
-};
-
-typedef char FlyingCarpetSpawnInfo_size_must_be_0x1c[
-    sizeof(FlyingCarpetSpawnInfo) == 0x1c ? 1 : -1];
 
 /* Retail constructs these 8-byte handles in this order and registers
  * their destructors. The wrapper names are local; the ctor/dtor
@@ -150,7 +137,7 @@ extern "C" daObjRcCarpet_c *daObjRcCarpet_c_classInit()
     return actor;
 }
 
-extern "C" FlyingCarpetSpawnInfo g_profile_RC_CARPET = {
+extern "C" SpawnInfo<daObjRcCarpet_c> g_profile_RC_CARPET = {
     daObjRcCarpet_c_classInit,
     0x0082,
     0x0104,
@@ -158,7 +145,7 @@ extern "C" FlyingCarpetSpawnInfo g_profile_RC_CARPET = {
     0x00000000,
     0x00300000,
     0x01000000,
-    0x00000000
+    0x00000000,
 };
 
 // @symbol _ZN15daObjRcCarpet_c13InitResourcesEv
