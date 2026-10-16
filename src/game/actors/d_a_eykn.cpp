@@ -36,7 +36,6 @@
  * - St_Attack_Main's three aim points written off mTarget are
  *   0x314->0x32c. LookForPlayer's eye point written off the player is
  *   27 words off at 0xcc.
- * - (Vector3 *)&mPosX: dActor_c has no Pos().
  * - The shadow matrix is twelve s32s. Assigning a Matrix4x3 in
  *   InitResources is 0x298->0x2b4.
  * - data_ov071_02123038 / 02123040 are BTP files 0x2f8 / 0x2fb,
@@ -320,9 +319,9 @@ void daEykn_c::LookForPlayer()
     Player *p = ClosestNonVanishPlayer();
     if (p == 0)
         return;
-    if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&p->mPosX) > kWatchRange)
+    if (Vec3_Dist(&mPos, &p->mPos) > kWatchRange)
         return;
-    if (AngleDiff(Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&p->mPosX), mAngleY) > kWatchFov)
+    if (AngleDiff(Vec3_HorzAngle(&mPos, &p->mPos), mAngleY) > kWatchFov)
         return;
     int px = p->mPosX;
     int pz = p->mPosZ;
@@ -331,7 +330,7 @@ void daEykn_c::LookForPlayer()
     v.x = px;
     v.y = py;
     v.z = pz;
-    if (DetectRaycastClsn(v, *(Vector3 *)&mPosX, false) != 0)
+    if (DetectRaycastClsn(v, mPos, false) != 0)
         return;
     mTarget = p;
     mCircleTimer = kCircleFrames;
@@ -355,7 +354,7 @@ void daEykn_c::CheckAttacks()
     if (FindExplosionActor(mdCcAcPos_c) == 0) goto idCheck;
 
 playSound:
-    Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank0(9, mCamSpacePos);
     SetState(2);
     return;
 
@@ -494,7 +493,7 @@ int daEykn_c::St_Die_Main()
             int isBig = (kind == kBigMrI);
             if (isBig != 0) {
                 unsigned char star = (unsigned char)(param1 & 0xf);
-                UntrackAndSpawnStar(mStarTrackID, star, *(Vector3 *)&mPosX, 4);
+                UntrackAndSpawnStar(mStarTrackID, star, mPos, 4);
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x124, mPosX, mPosY, mPosZ);
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x125, mPosX, mPosY, mPosZ);
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x126, mPosX, mPosY, mPosZ);
@@ -568,10 +567,10 @@ int daEykn_c::St_Attack_Main()
         target1.z = pz;
     }
 
-    Vec3_HorzAngle((Vector3 *)&mPosX, &target1);
-    ang = Vec3_VertAngle((Vector3 *)&mPosX, &target1);
+    Vec3_HorzAngle(&mPos, &target1);
+    ang = Vec3_VertAngle(&mPos, &target1);
     UpdateAngle(mAngleX, ang, 2, 0x320);
-    ang = Vec3_HorzAngle((Vector3 *)&mPosX, &target1);
+    ang = Vec3_HorzAngle(&mPos, &target1);
     UpdateAngle(mAngleY, ang, 2, 0x8fc);
 
     if ((s16)(mAngleY - mTurnRefAngleY) == 0) {
@@ -666,11 +665,11 @@ int daEykn_c::St_Attack_Main()
 
     if (UpdateCircling() != 0) {
         SetState(2);
-    } else if (Vec3_Dist((Vector3 *)&mPosX, &target1) > kWatchRange) {
+    } else if (Vec3_Dist(&mPos, &target1) > kWatchRange) {
         SetState(0);
     } else if (mTarget->mIsVanish != 0) {
         SetState(0);
-    } else if (DetectRaycastClsn(target3, *(Vector3 *)&mPosX, false) != 0) {
+    } else if (DetectRaycastClsn(target3, mPos, false) != 0) {
         SetState(0);
     }
 
@@ -765,6 +764,7 @@ void daEykn_c::OnPendingDestroy()
 int daEykn_c::Render()
 {
     mTextureSequence.Update(mModelAnim.data);
+    /* Not &mScale: daEykn_c's own s32 mScale hides dActor_c's vector. */
     mModelAnim.Render((Vector3 *)&mScaleX);
     return 1;
 }
@@ -855,7 +855,7 @@ s32 daEykn_c::InitResources()
     *(MatrixWords *)mShadowMat = *(MatrixWords *)&IDENTITY_MATRIX4X3;
 
     dBgCh_Gnd ray;
-    ray.SetObjAndPos(*(Vector3 *)&mPosX, this);
+    ray.SetObjAndPos(mPos, this);
     int y;
     if (ray.DetectClsn()) {
         y = (mPosY - ray.clsnY) + 0x1e000;
