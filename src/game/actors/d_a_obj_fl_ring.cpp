@@ -104,6 +104,13 @@ void func_020393c4(void *p, void *fn);
 void func_ov022_02111558(daObjFl_Ring_c *self, dActor_c *other);
 }
 
+/* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
+ * off screen. This int-returning predicate is what makes the ROM
+ * materialize 0/1 before testing it. */
+static inline int IsOffScreen(dActor_c *actor) {
+    return (actor->mFlags & 8) != 0;
+}
+
 // @symbol daObjFl_Ring_c_classInit
 /* Reconstructed source-style name: SM64DS proves daObjFl_Ring_c through RTTI,
  * allocation size, vtable identity, and the FL_RING registry profile; later
@@ -194,13 +201,8 @@ s32 daObjFl_Ring_c::Behavior()
             mState = 0;
             break;
         }
-        {
-            int offscreen;
-            /* mFlags bit 3 is the framework's off-screen flag. */
-            offscreen = (int)((mFlags & 8) != 0);
-            if (offscreen != 0)
-                break;
-        }
+        if (IsOffScreen(this))
+            break;
         if (DecIfAbove0_Byte(&mSpawnGuard) != 0)
             break;
         {
