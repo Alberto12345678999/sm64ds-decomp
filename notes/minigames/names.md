@@ -708,9 +708,10 @@ The rest:
 - **Coined classes renamed after their records:** `MgFx` (was `Ent`, the base's `sMgFxPool`), `MgBanner` (was ov004's `Elem`, `gMgBanners`), `Jump2Popup` / `Jump2PopupLink` (were Jump2's `Elem` / `Node`), and `TrmpScorePopup` (was `Desc`, on `sTrmpFxList`).
 - **From closer reading:** the Trampoline line's bounce-sound pitch at its middle and its ends (`sTrmpLine{Weak,Strong}Pitch{Mid,End}` and the `Push` pair; the third argument reaches `func_02012860`'s track-pitch call), Sound's row lengths, Amida's per-pattern modes (`GoalShuffle`, `RungSkip`, `ExtraRungs`, `SpeedUp`), Cup's swap pairs, the Slot blink positions, Teresa's spawn kinds and burst flag, Luigi's touch sounds and the wanted poster's tile offsets.
 
+- **`sHeyhoScorePopups`**: only Jump2's InitResources sets it, and while it is set a Shy Guy that settles spawns a score popup.
 - **`sJump3DStartVx`** (Jump3D_SetTuning scales it; StartRoundLayout multiplies it by the layout entry into each Mario's `mVel.x`) and **`sPanelFlipFrameSprites`** (the `sPanelSprites` index for a flipping panel by kind and frame).
 - **Sprites read off their draw code:** Snowball's breakable (animated and static), obstacle, side-obstacle, ball and course-meter sprites (`mArray1` is the breakables, `HitsBreakable`); the life icons Trampoline and both Jump games draw for each Mario left (a lost one is drawn from the language set); Trampoline's door signs; Smartball's sparks (`Alt` again by `param1`); and the three menu items' sprites by language (`mMenuItem0..2`).
 
-About 73 data and 12 BSS symbols keep their address names. Their one use doesn't say what they hold: lerp endpoints, flags written once, or tables read through an offset into a stride.
+About 73 data and 11 BSS symbols keep their address names. Their one use doesn't say what they hold: lerp endpoints, flags written once, or tables read through an offset into a stride.
 
 `datadump.py` reads ov004 at its overlay-table base, 0x020ad660. ov005 and ov006 load at 0x020bfec0.

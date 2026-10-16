@@ -806,7 +806,7 @@ extern int sFlowerBgDownNclPath;
 extern int sFlowerNcgPath;
 extern int sFlowerNclPath;
 extern int sJumpComboCount;
-extern int data_ov006_02140314;
+extern int sHeyhoScorePopups;
 extern int sHeyhoCount;
 extern int sJump3DMariosLeft;
 extern int sTrmp3DGravityStep;

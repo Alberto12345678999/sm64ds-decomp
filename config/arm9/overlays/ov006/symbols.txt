@@ -4385,7 +4385,7 @@ sHeyhoUnsettledCount kind:bss addr:0x02140304
 sJumpComboCount kind:bss addr:0x02140308
 sHeyho_React_Right256Guard kind:bss addr:0x0214030c
 sHeyho_StartMotionRegroup_Left256Guard kind:bss addr:0x02140310
-data_ov006_02140314 kind:bss addr:0x02140314
+sHeyhoScorePopups kind:bss addr:0x02140314
 sHeyho_StartMotionFlyIn_Right256Guard kind:bss addr:0x02140318
 sHeyhoLayout kind:bss addr:0x0214031c
 sHeyho_StartMotionRegroup_Right256Guard kind:bss addr:0x02140320

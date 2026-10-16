@@ -1519,7 +1519,7 @@ extern void Heyho_SetIdle(char* p);
 
 extern int sHeyhoUnsettledCount[];
 extern int sJumpComboCount;
-extern int data_ov006_02140314;
+extern int sHeyhoScorePopups;
 extern void *sMgSubCamera;
 extern void *sMgMainCamera;
 
@@ -1541,7 +1541,7 @@ void Heyho_Settle(char* c)
     _Z14ApproachLinearRiii(sHeyhoUnsettledCount, 0, 1);
     _Z14ApproachLinearRiii(&sJumpComboCount, 0x270f, 1);
 
-    if (data_ov006_02140314 != 0) {
+    if (sHeyhoScorePopups != 0) {
         if (HEYHO(c)->mPos.y > 0) {
             Camera_ProjectToScreen(sMgSubCamera, (void *)(c + 0x9c), &v0, &v1);
             v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
@@ -1884,12 +1884,12 @@ extern int Heyho_LoadResources(char *p);
 extern int sHeyhoCount;
 extern int sHeyhoUnsettledCount;
 extern char *sHeyhos;
-extern int data_ov006_02140314;
+extern int sHeyhoScorePopups;
 int Heyho_InitPool(char *ptr, int n);
 int Heyho_InitPool(char *ptr, int n){
     int i;
     int off;
-    data_ov006_02140314 = 0;
+    sHeyhoScorePopups = 0;
     sHeyhoCount = n;
     sHeyhoUnsettledCount = n;
     sHeyhos = ptr;

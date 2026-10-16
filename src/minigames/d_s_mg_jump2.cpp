@@ -290,7 +290,7 @@ s32 dScMgJump2_c::InitResources()
 
     Jump2Popup_InitPool((int)mArray3, 0x10);
 
-    data_ov006_02140314 = 1;
+    sHeyhoScorePopups = 1;
     if (Jump3D_InitPool(mPlayers, 3) == 0)
         return 0;
 
