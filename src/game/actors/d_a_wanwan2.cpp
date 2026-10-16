@@ -171,8 +171,6 @@ int func_02012694(int, void *);
 void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
 void *_ZN7PathPtrC1Ev(void *thiz);
-void _ZN7PathPtr6FromIDEj(void *thiz, unsigned int id);
-void _ZNK7PathPtr7GetNodeER7Vector3j(void *thiz, Vector3 &out, unsigned int idx);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
@@ -705,8 +703,8 @@ int daWanwan2_c::Behavior()
         Vector3 node;
         Vector3 diff;
         _ZN7PathPtrC1Ev(path);
-        _ZN7PathPtr6FromIDEj(path, mPathID);
-        _ZNK7PathPtr7GetNodeER7Vector3j(path, node, mPathNodeIndex);
+        ((PathPtr *)path)->FromID(mPathID);
+        ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
 
         Vec3_Sub(&diff, (Vector3 *)&mPosX, &node);
 
@@ -715,7 +713,7 @@ int daWanwan2_c::Behavior()
             if (mPathNodeIndex >= mNumPathNodes) {
                 mPathNodeIndex = 0;
             }
-            _ZNK7PathPtr7GetNodeER7Vector3j(path, node, mPathNodeIndex);
+            ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
         }
 
         short ang = Vec3_HorzAngle((Vector3 *)&mPosX, &node);

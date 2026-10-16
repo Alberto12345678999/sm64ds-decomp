@@ -46,6 +46,8 @@
 #include "dMg3DEspAnimSet_c.h"
 #include "TextureTransformer.h"
 #include "TextureSequence.h"
+#include "MaterialChanger.h"
+#include "G3X.h"
 #include "Sound.h"
 #include "PlayerInput.h"
 #include "Model.h"
@@ -105,8 +107,6 @@ int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
-void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* r);
-void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *anim, BCA_File *bca, int frame, int speed, u16 flags);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
@@ -131,7 +131,6 @@ void Mg_SetNextBanner(int);
 void Mg_SetSharedState(int);
 void Mg_ShowBanner(int, int, int, int, int, short);
 void Mg_SetTopScreenYOffset(int);
-void _ZN3G3X6SetFogEbiii(int, int, int, int);
 void InitialiseVramGlobals(void);
 void Deallocate(void*);
 int LoadFile(int handle);
@@ -301,7 +300,7 @@ void dMg3DEspAnimSet_c::InitResources()
     *(int *)(o + 0x174) = 0x800;
     bmd = (int)Model::LoadFile(data_ov006_02141e94);
     bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e6c);
-    _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(bmd, &data_ov006_0213c7f4);
+    MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&data_ov006_0213c7f4);
     w = o;
     w2 = o + 0x12c;
     for (i = 0; i < 3; i++) {
@@ -483,7 +482,7 @@ int dMg3DEspModel_c::InitResources()
     char* c = (char*)this;
     if (func_020179b4(&data_ov006_02141e54, c + 0xc, 1) == 0)
         return 0;
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov006_02141e64);
+    TextureSequence::LoadFile(data_ov006_02141e64);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e5c);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e7c);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e8c);
@@ -1641,7 +1640,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     data_0209d45c = 0x11;
     data_0209d454 = 0x10;
-    _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
+    G3X::SetFog(false, 0, 2, 0x1000);
     InitialiseVramGlobals();
 
     /* main BG0CNT: priority 1 */
@@ -1721,7 +1720,6 @@ s32 dScMg3DEsp_c::InitResources()
 }
 
 extern "C" {
-extern void *_ZN7fBase_cnwEj(unsigned int sz);
 extern void *_ZN11dScMgBase_cC2Ev(void *p);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
 extern void *_ZN5ModelC1Ev(void *);

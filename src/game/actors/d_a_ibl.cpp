@@ -95,7 +95,6 @@ extern "C" {
 
 void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, Vector3_16 *s, void *a, int z);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
-void _ZN7fBase_c18MarkForDestructionEv(void *a);
 int func_02012694(int a, void *p);
 void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, void *pos);
 int _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 d);
@@ -104,7 +103,6 @@ int _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 d);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_020383f0(void *p);
 void func_02038414(void *p);
-void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, Vector3 *v);
 int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 int _ZN4cstd4fdivEii(int a, int b);
 int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
@@ -117,7 +115,6 @@ int Vec3_HorzLen(void *v);
 int Vec3_HorzDist(const void *a, const void *b);
 int Vec3_Equal(void *a, void *b);
 int _ZN5dCc_c6UpdateEv(void *c);
-void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, int v1);
 
@@ -205,7 +202,7 @@ void daIbl_c::func_ov100_02141fb0()
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
                 daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
             PoofDust();
-            _ZN7fBase_c18MarkForDestructionEv(this);
+            MarkForDestruction();
             func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
             return;
         }
@@ -238,15 +235,16 @@ void daIbl_c::func_ov100_02142130()
     if (data_0209f2f8 == 0x19) func_020383f0(&mWithMeshClsn);
     else func_02038414(&mWithMeshClsn);
     if (mWithMeshClsn.IsOnWall() != 0) {
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4, (Vector3 *)&mWallNormalX);
+        ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4))
+            ->CopyNormalTo(*(Vector3 *)&mWallNormalX);
         int a = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
         if (_ZN8dActor_c14GetSubtractionEss(this, mPrevAngleY, a) > 0x4000)
             mHitWall = 1;
     }
     if (mWithMeshClsn.IsOnGround() == 0)
         return;
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)mWithMeshClsn.GetFloorResult() + 4,
-                                              (Vector3 *)&mFloorNormalX);
+    ((SurfaceInfo *)((char *)mWithMeshClsn.GetFloorResult() + 4))
+        ->CopyNormalTo(*(Vector3 *)&mFloorNormalX);
     if (mHitWall != 0) return;
     mPosX = mPrevPosX;
     mPosZ = mPrevPosZ;
@@ -389,8 +387,7 @@ int daIbl_c::func_ov100_0214233c()
         if (mPathNodeIndex >= mNumPathNodes) {
             mPathNodeIndex = 0;
         }
-        _ZNK7PathPtr7GetNodeER7Vector3j(&mPathPtr, (Vector3 *)&mNextNodePosX,
-                                       mPathNodeIndex);
+        mPathPtr.GetNode(*(Vector3 *)&mNextNodePosX, mPathNodeIndex);
         return (mPathNodeIndex == 0) ? -1 : 1;
     }
     return 0;
@@ -531,7 +528,7 @@ void daIbl_c::func_ov100_0214272c()
         mPosZ);
     func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
     TriplePoofDust();
-    _ZN7fBase_c18MarkForDestructionEv(this);
+    MarkForDestruction();
     return;
 
 ground:
@@ -842,10 +839,10 @@ int daIbl_c::InitResources()
         mPrevNodePosX = mPosX;
         mPrevNodePosY = mPosY;
         mPrevNodePosZ = mPosZ;
-        _ZNK7PathPtr7GetNodeER7Vector3j(&mPathPtr, &mNextNodePosX, mPathNodeIndex);
+        mPathPtr.GetNode(*(Vector3 *)&mNextNodePosX, mPathNodeIndex);
         if (Vec3_Equal(&mPosX, &mNextNodePosX)) {
             mPathNodeIndex += 1;
-            _ZNK7PathPtr7GetNodeER7Vector3j(&mPathPtr, &mNextNodePosX, mPathNodeIndex);
+            mPathPtr.GetNode(*(Vector3 *)&mNextNodePosX, mPathNodeIndex);
         }
         func_ov100_0214233c();
         mPrevAngleY = mHeadingToNode;

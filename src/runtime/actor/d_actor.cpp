@@ -899,7 +899,6 @@ dActor_c *dActor_c::FindExplosionActor(dCc_c &clsn)
 /* ROM ordinal 49 -- func_02010304
  * 0x02010304  size 0x70 */
 extern "C" {
-extern int _ZN6Player7TryGrabER8dActor_c(void *, void *);
 }
 extern "C" {
 void *func_02010304(void *target, char *p) {
@@ -907,7 +906,7 @@ void *func_02010304(void *target, char *p) {
     void *found;
     if (id != 0 && (found = dActor_c::FindWithID(id)) != 0 && (*(int *)(p + 0x20) & 0x1000)) {
         int t = *(unsigned short *)((char *)found + 0xc) == 0xbf;
-        if (t && _ZN6Player7TryGrabER8dActor_c(found, target))
+        if (t && ((Player *)found)->TryGrab(*(dActor_c *)target))
             return found;
     }
     return 0;
