@@ -286,8 +286,7 @@ inline s32 *chaseRadius(daKrb_c *goomba)
     return &goomba->mChaseRadius;
 }
 
-void func_ov084_021290d4(daKrb_c *c)
-{
+void func_ov084_021290d4(daKrb_c *c) {
     int timerOff;
     daKrb_c *self2;
     int state;
@@ -337,8 +336,7 @@ void func_ov084_021290d4(daKrb_c *c)
  * animation, gives it a vertical speed of (13.0 - mVertAccel) / mFloorNormalY
  * and a backward horizontal speed equal to the length of the horizontal part
  * of the velocity vector at 0xa4, and releases it from Yoshi. */
-extern "C" void func_ov084_02129168(daKrb_c* goomba, dActor_c* actor)
-{
+extern "C" void func_ov084_02129168(daKrb_c *goomba, dActor_c *actor) {
     goomba->mBounceCountdown = 0x3c;
     goomba->mVertSpeed = cstd::fdiv(0xd000 - goomba->mVertAccel, goomba->mFloorNormalY);
     goomba->mHorzSpeed = Vec3_HorzLen((char *)&goomba->unk_0a4) * -1;
@@ -363,8 +361,7 @@ extern "C" void func_ov084_02129168(daKrb_c* goomba, dActor_c* actor)
  * the Goomba is below the height of the hit, the Goomba is lost: it drops its
  * coin, poofs, is removed (func_ov084_02129498), has its cap released and is
  * put back at mHomePos (RespawnIfHasCap). */
-void func_ov084_02129238(daKrb_c *goomba)
-{
+void func_ov084_02129238(daKrb_c *goomba) {
     if (goomba->mWithMeshClsn.IsOnGround() != 0)
         return;
     {
@@ -416,8 +413,7 @@ void func_ov084_02129238(daKrb_c *goomba)
  * window the sound plays once and MOVE_STEP_SOUND_LATCH is set; the latch is
  * cleared when the frame leaves the window. */
 extern "C" {
-void func_ov084_0212934c(daKrb_c *goomba)
-{
+void func_ov084_0212934c(daKrb_c *goomba) {
     unsigned int kind;
     int frame;
     int type;
@@ -484,8 +480,7 @@ void func_ov084_02129498(daKrb_c* goomba) {
  * REWARD_SILVER_STAR_IF_CURRENT) if the type is 1, 4, 5 or 0x13, or if it is
  * 6..9 (Player.h calls those the quicksand tiers) while the collision kind
  * (CLPS bits 0..4, func_02037e84) is 8. */
-extern "C" void func_ov084_021294d0(daKrb_c *goomba)
-{
+extern "C" void func_ov084_021294d0(daKrb_c *goomba) {
     char obj[0x28];
     if (!goomba->mWithMeshClsn.IsOnGround())
         return;
@@ -558,8 +553,7 @@ dtor:
 /* Set the home position (mHomePos) from a three-word position. daKuriKing_c
  * calls this on each minion it spawns, after the Spawn. */
 extern "C" {
-void func_ov084_021296b0(void *a, void *b)
-{
+void func_ov084_021296b0(void *a, void *b) {
     daKrb_c *goomba = (daKrb_c *)a;
     int *pos = (int *)b;
     goomba->mHomePos.x = pos[0];
@@ -621,7 +615,7 @@ void func_ov084_021296cc(daKrb_c *goomba)
  * (mStarTracked negative) and mStarID matches data_0209f344[data_0209f208[0]],
  * claim a slot (TrackStar(mStarID, 1)). */
 extern "C" {
-void func_ov084_02129864(daKrb_c *goomba){
+void func_ov084_02129864(daKrb_c *goomba) {
     if (goomba->mRewardType != daKrb_c::REWARD_SILVER_STAR_IF_CURRENT)
         return;
     if (goomba->mStarTracked >= 0)
@@ -649,7 +643,7 @@ void func_ov084_02129864(daKrb_c *goomba){
  * (mCapId < 6) or REWARD_SILVER_STAR_IF_CURRENT send it back to mHomePos and
  * respawn; one with a cap is also dropped from the death table. */
 extern "C" {
-int func_ov084_021298d0(daKrb_c *goomba){
+int func_ov084_021298d0(daKrb_c *goomba) {
     int deathState = goomba->UpdateDeath(goomba->mWithMeshClsn);
     if ((unsigned int)(goomba->mDeathState - 2) > 4) goto L_a4;
     static_cast<dExtFrameCtrl_c &>(goomba->mModelAnim).speed = 0x1000;
@@ -759,7 +753,7 @@ int func_ov084_02129a00(daKrb_c *goomba) {
                 ((dCc_c *)&goomba->mdCcAc_c)->Update();
             } else if (s == 5) {
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
-                goomba->mPrevAngleY += 0x8000;     /* half a turn */
+                goomba->mPrevAngleY += 0x8000; /* half a turn */
                 goomba->mHorzSpeed = -goomba->mHorzSpeed;
                 MaterialChanger::Prepare(*(BMD_File *)(data_ov084_02130cf8.ptr), *(BMA_File *)&data_ov084_0213088c);
                 _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&goomba->mMaterialChanger, &data_ov084_0213088c, 0x40000000, 0x1000, 0);
@@ -791,8 +785,7 @@ ret0:
  * the per-type launch speed data_ov084_02130248[type] as vertical speed, and
  * set the 0x4 bit of the dCcAc_c flags (meaning not recovered). */
 extern "C" {
-void func_ov084_02129c9c(daKrb_c *goomba)
-{
+void func_ov084_02129c9c(daKrb_c *goomba) {
     func_02012694(SND_HOP, &goomba->mCamSpacePos);
     goomba->mState = daKrb_c::STATE_AIRBORNE;
     goomba->mHorzSpeed = 0;
@@ -916,8 +909,7 @@ extern "C" {
  * instead of testing inline is deliberate: mwccarm emits the comparison into a
  * register and then re-tests it, which is the shape the cartridge has. Folding
  * either back into its `if` collapses the pair. See notes/matching-style.md 3. */
-void func_ov084_02129ed4(daKrb_c *goomba)
-{
+void func_ov084_02129ed4(daKrb_c *goomba) {
     s16 killDirNormal[3];
     s16 killDirVariant[3];
     s16 killDirPlayer[3];
@@ -1665,28 +1657,27 @@ void daKrb_c::OnTurnIntoEgg(Player &playerRef)
 /* Release the shared files: the blue-coin model for a KURIBO_L, the BMD and
  * the seven BCA handles, the silver-star model when mRewardType is 1 or 2,
  * and the cap model. A king minion also decrements the king's mSpawnedCount. */
-int daKrb_c::CleanupResources()
-{
-  int i;
-  if (mGoombaType == GOOMBA_LARGE)
-    UnloadBlueCoinModel(this);
-  data_ov084_02130cf8.Release();
-  for (i = 0; i < 7; ++i)
-    ((SharedFilePtr *)(data_ov084_02130278[i]))->Release();
-  if ((unsigned char)(mRewardType + 0xff) <= 1)
-    UnloadSilverStarAndNumber();
-  UnloadCapModel();
-  if (mGoombaType == GOOMBA_KING_MINION) {
-    unsigned int id = mTargetUniqueID;
-    if (id != 0) {
-      daKuriKing_c* a = (daKuriKing_c*)dActor_c::FindWithID(id);
-      if (a != 0) {
-        unsigned char *p = (unsigned char*)(((int)&a->mSpawnedCount));
-        *p = *p - 1;
-      }
+int daKrb_c::CleanupResources() {
+    int i;
+    if (mGoombaType == GOOMBA_LARGE)
+        UnloadBlueCoinModel(this);
+    data_ov084_02130cf8.Release();
+    for (i = 0; i < 7; ++i)
+        ((SharedFilePtr *)(data_ov084_02130278[i]))->Release();
+    if ((unsigned char)(mRewardType + 0xff) <= 1)
+        UnloadSilverStarAndNumber();
+    UnloadCapModel();
+    if (mGoombaType == GOOMBA_KING_MINION) {
+        unsigned int id = mTargetUniqueID;
+        if (id != 0) {
+            daKuriKing_c *a = (daKuriKing_c *)dActor_c::FindWithID(id);
+            if (a != 0) {
+                unsigned char *p = (unsigned char *)(((int)&a->mSpawnedCount));
+                *p = *p - 1;
+            }
+        }
     }
-  }
-  return 1;
+    return 1;
 }
 
 // @symbol _ZN7daKrb_c16OnPendingDestroyEv
@@ -1947,7 +1938,7 @@ int daKrb_c::InitResources()
     for (i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)(data_ov084_02130278[i]));
 
-    AddCap((unsigned char)(*(int*)(c + 8) & 0xf));
+    AddCap((unsigned char)(*(int *)(c + 8) & 0xf));
 
     if ((mCapId & 0xf) < 6)
         /* The load and the store must not be spelled the same way: mwcc CSEs the
