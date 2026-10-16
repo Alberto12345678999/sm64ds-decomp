@@ -52,9 +52,15 @@ class PromoteError(RuntimeError):
 
 
 def delinks_path(module):
-    """The delinks.txt for a manifest module name ("arm9" or "ovNNN")."""
+    """The delinks.txt for a manifest module name ("arm9", "itcm", "dtcm" or "ovNNN").
+
+    Same layout as tubuild.module_config_dir: the two TCM modules sit beside
+    arm9's own delinks.txt, not under overlays/.
+    """
     if module in ("arm9", "main"):
         return CONFIG / "arm9" / "delinks.txt"
+    if module in ("itcm", "dtcm"):
+        return CONFIG / "arm9" / module / "delinks.txt"
     return CONFIG / "arm9" / "overlays" / module / "delinks.txt"
 
 
