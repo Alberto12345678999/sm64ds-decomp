@@ -76,6 +76,32 @@ extern void *_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(unsigned int size, int align
 
 }
 
+/* aliveState is 0 before the actor joins the lists, 1 while it is alive
+ * in them and 2 once it is dying; data_02099f24[0] is a global mode word.
+ * These int-returning predicates are what make the ROM materialize 0/1
+ * before testing it. */
+static inline int IsPendingState(u32 state) {
+    return state == 0;
+}
+static inline int IsAliveState(u32 state) {
+    return state == 1;
+}
+static inline int IsDyingState(u32 state) {
+    return state == 2;
+}
+static inline int GlobalModeIs(volatile int *mode, int value) {
+    return mode[0] == value;
+}
+static inline int PriorityChanged(fLiNdBaPr_c *node) {
+    return node->nextPriority != node->currentPriority;
+}
+static inline int OwnerUniqueIDDiffers(fLiNdBa_c *node, unsigned int id) {
+    return node->owner->uniqueID != id;
+}
+static inline int OwnerActorIDDiffers(fLiNdBa_c *node, unsigned int id) {
+    return node->owner->actorID != id;
+}
+
 /* List helpers keep address-named C entries. The sorting and process-list
  * descriptors retain local views; actor lookups use real actor-owned nodes. */
 
@@ -105,16 +131,8 @@ extern "C" int func_0204405c(void *list, void *nodep)
         return func_0203b244(l, n);
     if (node->c > n->c)
         return func_0203b2ec(l, n, 0);
-    goto enter;
-advance:
-    node = next;
-enter:
-    next = node->next;
-    if (next == 0)
-        goto done;
-    if (next->c <= n->c)
-        goto advance;
-done:
+    while ((next = node->next) != 0 && next->c <= n->c)
+        node = next;
     return func_0203b2ec(l, n, node);
 }
 }
@@ -158,8 +176,8 @@ extern "C" fLiNdBa_c *func_02043f98(fLiNdBa_c **head, unsigned int key)
 {
     fLiNdBa_c *node = *head;
     while (node != 0) {
-        int b = (int)(node->owner->uniqueID != key);
-        if (b == 0) return node;
+        if (!OwnerUniqueIDDiffers(node, key))
+            return node;
         node = node->next;
     }
     return 0;
@@ -173,8 +191,8 @@ extern "C" fLiNdBa_c *func_02043f4c(fLiNdBa_c **head, unsigned int key,
 {
     fLiNdBa_c *node = after ? after->next : *head;
     while (node != 0) {
-        int b = (int)(node->owner->actorID != key);
-        if (b == 0) return node;
+        if (!OwnerActorIDDiffers(node, key))
+            return node;
         node = node->next;
     }
     return 0;
@@ -257,9 +275,7 @@ void fBase_c::AfterInitResources(u32 vfSuccess)
     if (vfSuccess != 2)
         return;
     func_0203b27c(data_020a4b88, &manager.behaviorNode);
-    volatile int *p = data_02099f24;
-    bool b = (p[0] == 3);
-    if (b) {
+    if (GlobalModeIs(data_02099f24, 3)) {
         unk_010 = 1;
         return;
     }
@@ -280,15 +296,8 @@ s32 fBase_c::CleanupResources()
 int fBase_c::BeforeCleanupResources()
 {
     int v = (int)lifecycleState;
-    if (v != 0) {
-        if (func_0204424c((char *)v) == 0)
-            goto ret0;
-    }
-    if (manager.sceneNode.child == 0)
-        goto ret1;
-ret0:
-    return 0;
-ret1:
+    if ((v != 0 && func_0204424c((char *)v) == 0) || manager.sceneNode.child != 0)
+        return 0;
     return 1;
 }
 
@@ -322,13 +331,8 @@ s32 fBase_c::Behavior()
 // @symbol _ZN7fBase_c14BeforeBehaviorEv
 int fBase_c::BeforeBehavior()
 {
-    if (shouldBeKilled != 0)
-        goto ret0;
-    if ((pauseFlags & 2) == 0)
-        goto ret1;
-ret0:
-    return 0;
-ret1:
+    if (shouldBeKilled != 0 || (pauseFlags & 2) != 0)
+        return 0;
     return 1;
 }
 
@@ -350,13 +354,8 @@ s32 fBase_c::Render()
 // @symbol _ZN7fBase_c12BeforeRenderEv
 int fBase_c::BeforeRender()
 {
-    if (shouldBeKilled != 0)
-        goto ret0;
-    if ((pauseFlags & 8) == 0)
-        goto ret1;
-ret0:
-    return 0;
-ret1:
+    if (shouldBeKilled != 0 || (pauseFlags & 8) != 0)
+        return 0;
     return 1;
 }
 
@@ -386,10 +385,8 @@ extern "C" int func_02043880(fBase_c *o)
 {
     if (o->shouldBeKilled != 0) {
         fBase_c::SceneNode *it;
-        int b = 0;
-        o->shouldBeKilled = b;
-        if (o->aliveState == 1) b = 1;
-        if (b != 0) {
+        o->shouldBeKilled = 0;
+        if (IsAliveState(o->aliveState)) {
             func_0203b27c(data_020a4b78, &o->manager.behaviorNode);
             func_0203b27c(data_020a4b98, &o->manager.renderNode);
         } else {
@@ -402,55 +399,22 @@ extern "C" int func_02043880(fBase_c *o)
         }
     } else {
         u32 state;
-        int b;
         fBase_c *other = (fBase_c *)func_02043810(o);
         if (other != 0) {
-            {
-                u8 f = other->pauseFlags;
-                int t = f & 1;
-                if (t == 0) {
-                    t = f & 2;
-                    if (t == 0) goto Lelse1;
-                }
-                {
-                    u8 *q = (&o->pauseFlags);
-                    *q |= 2;
-                }
-                goto Lafter1;
-            Lelse1:
-                if (o->pauseFlags & 2) {
-                    u8 *q = (&o->pauseFlags);
-                    *q &= ~2;
-                }
-            Lafter1:;
-            }
-            {
-                u8 f = other->pauseFlags;
-                int t = f & 4;
-                if (t == 0) {
-                    t = f & 8;
-                    if (t == 0) goto Lelse2;
-                }
-                {
-                    u8 *q = (&o->pauseFlags);
-                    *q |= 8;
-                }
-                goto Lafter2;
-            Lelse2:
-                if (o->pauseFlags & 8) {
-                    u8 *q = (&o->pauseFlags);
-                    *q &= ~8;
-                }
-            Lafter2:;
-            }
+            if ((other->pauseFlags & 1) || (other->pauseFlags & 2))
+                o->pauseFlags |= 2;
+            else if (o->pauseFlags & 2)
+                o->pauseFlags &= ~2;
+            if ((other->pauseFlags & 4) || (other->pauseFlags & 8))
+                o->pauseFlags |= 8;
+            else if (o->pauseFlags & 8)
+                o->pauseFlags &= ~8;
         }
         state = o->aliveState;
-        b = (state == 1);
-        if (b != 0) {
+        if (IsAliveState(state)) {
             {
                 fLiNdBaPr_c *n = (&o->manager.behaviorNode);
-                int c = (n->nextPriority != n->currentPriority);
-                if (c != 0) {
+                if (PriorityChanged(n)) {
                     fLiNdBaPr_c *m;
                     func_0203b27c(data_020a4b78, &o->manager.behaviorNode);
                     m = (&o->manager.behaviorNode);
@@ -460,8 +424,7 @@ extern "C" int func_02043880(fBase_c *o)
             }
             {
                 fLiNdBaPr_c *n = (&o->manager.renderNode);
-                int c = (n->nextPriority != n->currentPriority);
-                if (c != 0) {
+                if (PriorityChanged(n)) {
                     fLiNdBaPr_c *m;
                     func_0203b27c(data_020a4b98, &o->manager.renderNode);
                     m = (&o->manager.renderNode);
@@ -469,18 +432,15 @@ extern "C" int func_02043880(fBase_c *o)
                     func_0204405c(data_020a4b98, m);
                 }
             }
-        } else {
-            int b2 = (state == 2);
-            if (b2 == 0) {
-                if (o->unk_011 != 0) {
-                    o->unk_011 = 0;
-                    func_0203b244(data_020a4b88, &o->manager.behaviorNode);
-                } else if (o->unk_010 != 0) {
-                    o->unk_010 = 0;
-                    func_0204405c(data_020a4b78, &o->manager.behaviorNode);
-                    func_0204405c(data_020a4b98, &o->manager.renderNode);
-                    o->aliveState = 1;
-                }
+        } else if (!IsDyingState(state)) {
+            if (o->unk_011 != 0) {
+                o->unk_011 = 0;
+                func_0203b244(data_020a4b88, &o->manager.behaviorNode);
+            } else if (o->unk_010 != 0) {
+                o->unk_010 = 0;
+                func_0204405c(data_020a4b78, &o->manager.behaviorNode);
+                func_0204405c(data_020a4b98, &o->manager.renderNode);
+                o->aliveState = 1;
             }
         }
     }
@@ -494,8 +454,7 @@ void fBase_c::MarkForDestruction()
 {
     if (shouldBeKilled != 0)
         return;
-    unsigned char b = (aliveState == 2);
-    if (b != 0)
+    if (IsDyingState(aliveState))
         return;
     shouldBeKilled = 1;
     OnPendingDestroy();   /* vtable+0x30 = slot 12 */
@@ -582,10 +541,7 @@ int fBase_c::Virtual34(u32 a, u32 b)
         avail = (avail + 0x1f) & ~0x1f;
     }
 
-    if (h == 0)
-        goto fail;
-
-    {
+    if (h != 0) {
         u32 topH = *(u32 *)((char *)h + 8);
         void *h2 = 0;
         u32 availInH = topH - ((Heap *)h)->MaxAllocationUnitSize();
@@ -615,15 +571,13 @@ int fBase_c::Virtual34(u32 a, u32 b)
             heap = h2;
             return 1;
         }
+        if (h != 0) {
+            ((Heap *)h)->ResizeToFit();
+            heap = h;
+            return 1;
+        }
     }
 
-    if (h != 0) {
-        ((Heap *)h)->ResizeToFit();
-        heap = h;
-        return 1;
-    }
-
-fail:
     MarkForDestruction();
     return 0;
 }
@@ -696,18 +650,11 @@ void func_020433b8(char* self)
     func_0204335c(self);
     if (actor->shouldBeKilled != 0) return;
     if (actor->unk_010 != 0) return;
-    {
-        volatile u8* q = &actor->aliveState;
-        int b = q[0] == 0 ? 1 : 0;
-        if (b == 0) return;
-    }
-    {
-        volatile int* p = data_02099f24;
-        int c = p[0] == 2 ? 1 : 0;
-        if (c) {
-            actor->unk_011 = 1;
-            return;
-        }
+    if (!IsPendingState(actor->aliveState))
+        return;
+    if (GlobalModeIs(data_02099f24, 2)) {
+        actor->unk_011 = 1;
+        return;
     }
     func_0203b244(data_020a4b88, &actor->manager.behaviorNode);
 }

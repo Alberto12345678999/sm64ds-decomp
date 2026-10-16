@@ -48,9 +48,9 @@ int func_ov007_020c704c(S *self, Vec3 *b, int r2arg, int r3arg, int radius)
         ratio = _ZN4cstd4fdivEii(r2arg, spd);
 
         q = (int *)(int)((char *)self + 0x10);
-        *q = *q + (int)((ratio * sdx + 0x800) >> 12);
+        *q = *q + FX_MUL(ratio, sdx);
         self = (S *)(int)((char *)self + 0x14);
-        *(int *)self = *(int *)self + (int)((ratio * sdy + 0x800) >> 12);
+        *(int *)self = *(int *)self + FX_MUL(ratio, sdy);
         return 1;
     }
     return 0;

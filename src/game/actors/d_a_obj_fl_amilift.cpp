@@ -80,14 +80,12 @@ int _Z14ApproachLinearRiii(int* v, int target, int step);
 extern LiftState data_ov064_0211c750[];
 extern short data_02082214[];
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void*, int, int);
-KCL_File *_ZN7dBgW_Kc8LoadFileER13SharedFilePtr(SharedFilePtr &f);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block( void *self, KCL_File *k, Matrix4x3 *m, int fix, short s, CLPS_Block *clps);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
 extern AmiliftModelFilePtr data_ov064_0211c730;
 extern AmiliftClsnFilePtr data_ov064_0211c728;
 extern CLPS_Block data_ov064_0211bb6c;
-extern void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
 extern void Vec3_Sub(Vector3* dst, Vector3* a, Vector3* b);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 /* The collision callback this TU installs; defined at the end of the file. */
@@ -288,11 +286,11 @@ s32 daObjFl_Amilift_c::InitResources() {
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
-    kcl = _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov064_0211c728);
+    kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov064_0211c728);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY, &data_ov064_0211bb6c);
 
-    func_020393d4(&mMeshCollider, (void *)&_ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_);
+    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&func_ov064_02117fd4);
 
     mPathPtr.FromID(param1 & 0xf);

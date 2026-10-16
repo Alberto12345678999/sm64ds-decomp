@@ -554,21 +554,21 @@
       "address": "0x0213dc4c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State1Ev, 0}, copied into data_ov006_02142888"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State1Ev, 0}, copied into sPanelSceneStateTable"
     },
     {
       "symbol": "@2240",
       "address": "0x0213dc54",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State3Ev, 0}, copied into data_ov006_02142888; mwcc numbers it @2226, which arm9 already defines, so the manifest renames it to @8802"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State3Ev, 0}, copied into sPanelSceneStateTable; mwcc numbers it @2226, which arm9 already defines, so the manifest renames it to @8802"
     },
     {
       "symbol": "@2238",
       "address": "0x0213dc5c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State2Ev, 0}, copied into data_ov006_02142888; mwcc numbers it @2224, which arm9 already defines, so the manifest renames it to @8801"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State2Ev, 0}, copied into sPanelSceneStateTable; mwcc numbers it @2224, which arm9 already defines, so the manifest renames it to @8801"
     },
     {
       "symbol": "g_profile_MG_PANEL",
@@ -582,35 +582,35 @@
       "address": "0x0213dc6c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State5Ev, 0}, copied into data_ov006_02142888; mwcc numbers it @2230, which arm9 already defines, so the manifest renames it to @8804"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State5Ev, 0}, copied into sPanelSceneStateTable; mwcc numbers it @2230, which arm9 already defines, so the manifest renames it to @8804"
     },
     {
       "symbol": "@2242",
       "address": "0x0213dc74",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State4Ev, 0}, copied into data_ov006_02142888; mwcc numbers it @2228, which arm9 already defines, so the manifest renames it to @8803"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State4Ev, 0}, copied into sPanelSceneStateTable; mwcc numbers it @2228, which arm9 already defines, so the manifest renames it to @8803"
     },
     {
       "symbol": "@8814",
       "address": "0x0213dc7c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State2Ev, 0}, copied into data_ov006_02142860"
+      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State2Ev, 0}, copied into sPanelIntroCardStateTable"
     },
     {
       "symbol": "@2246",
       "address": "0x0213dc84",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State6Ev, 0}, copied into data_ov006_02142888"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State6Ev, 0}, copied into sPanelSceneStateTable"
     },
     {
       "symbol": "@2276",
       "address": "0x0213dc8c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c13Banner_State0Ev, 0}, copied into data_ov006_021427ec; mwcc numbers it @2262, which arm9 already defines, so the manifest renames it to @8805"
+      "evidence": "PMF record {_ZN12dScMgPanel_c13Banner_State0Ev, 0}, copied into sPanelBannerStateTable; mwcc numbers it @2262, which arm9 already defines, so the manifest renames it to @8805"
     },
     {
       "symbol": "data_ov006_0213dc94",
@@ -624,138 +624,138 @@
       "address": "0x0213dc9c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State3Ev, 0}, copied into data_ov006_02142820"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State3Ev, 0}, copied into sPanelInputStateTable"
     },
     {
       "symbol": "@8815",
       "address": "0x0213dca4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State3Ev, 0}, copied into data_ov006_02142860"
+      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State3Ev, 0}, copied into sPanelIntroCardStateTable"
     },
     {
       "symbol": "@2258",
       "address": "0x0213dcac",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State0Ev, 0}, copied into data_ov006_02142820"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State0Ev, 0}, copied into sPanelInputStateTable"
     },
     {
       "symbol": "@8816",
       "address": "0x0213dcb4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State4Ev, 0}, copied into data_ov006_02142860"
+      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State4Ev, 0}, copied into sPanelIntroCardStateTable"
     },
     {
       "symbol": "@2282",
       "address": "0x0213dcbc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Shake_State0Ei, 0}, copied into data_ov006_021427bc; mwcc numbers it @2268, which arm9 already defines, so the manifest renames it to @8808"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Shake_State0Ei, 0}, copied into sPanelShakeStateTable; mwcc numbers it @2268, which arm9 already defines, so the manifest renames it to @8808"
     },
     {
       "symbol": "@8813",
       "address": "0x0213dcc4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State1Ev, 0}, copied into data_ov006_02142860"
+      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State1Ev, 0}, copied into sPanelIntroCardStateTable"
     },
     {
       "symbol": "@2248",
       "address": "0x0213dccc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State7Ev, 0}, copied into data_ov006_02142888"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State7Ev, 0}, copied into sPanelSceneStateTable"
     },
     {
       "symbol": "@8812",
       "address": "0x0213dcd4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State0Ev, 0}, copied into data_ov006_02142860"
+      "evidence": "PMF record {_ZN12dScMgPanel_c16IntroCard_State0Ev, 0}, copied into sPanelIntroCardStateTable"
     },
     {
       "symbol": "@2260",
       "address": "0x0213dcdc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State1Ev, 0}, copied into data_ov006_02142820"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State1Ev, 0}, copied into sPanelInputStateTable"
     },
     {
       "symbol": "@2252",
       "address": "0x0213dce4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State1Ei, 0}, copied into data_ov006_02142840"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State1Ei, 0}, copied into sPanelPanelStateTable"
     },
     {
       "symbol": "@8810",
       "address": "0x0213dcec",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State2Ev, 0}, copied into data_ov006_02142820"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Input_State2Ev, 0}, copied into sPanelInputStateTable"
     },
     {
       "symbol": "@2284",
       "address": "0x0213dcf4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Shake_State1Ei, 0}, copied into data_ov006_021427bc; mwcc numbers it @2270, which arm9 already defines, so the manifest renames it to @8809"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Shake_State1Ei, 0}, copied into sPanelShakeStateTable; mwcc numbers it @2270, which arm9 already defines, so the manifest renames it to @8809"
     },
     {
       "symbol": "@2254",
       "address": "0x0213dcfc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State2Ei, 0}, copied into data_ov006_02142840"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State2Ei, 0}, copied into sPanelPanelStateTable"
     },
     {
       "symbol": "@2278",
       "address": "0x0213dd04",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c13Banner_State1Ev, 0}, copied into data_ov006_021427ec; mwcc numbers it @2264, which arm9 already defines, so the manifest renames it to @8806"
+      "evidence": "PMF record {_ZN12dScMgPanel_c13Banner_State1Ev, 0}, copied into sPanelBannerStateTable; mwcc numbers it @2264, which arm9 already defines, so the manifest renames it to @8806"
     },
     {
       "symbol": "@2234",
       "address": "0x0213dd0c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State0Ev, 0}, copied into data_ov006_02142888"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Scene_State0Ev, 0}, copied into sPanelSceneStateTable"
     },
     {
       "symbol": "@2250",
       "address": "0x0213dd14",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State0Ei, 0}, copied into data_ov006_02142840"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State0Ei, 0}, copied into sPanelPanelStateTable"
     },
     {
       "symbol": "@2256",
       "address": "0x0213dd1c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State3Ei, 0}, copied into data_ov006_02142840"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Panel_State3Ei, 0}, copied into sPanelPanelStateTable"
     },
     {
       "symbol": "@2286",
       "address": "0x0213dd24",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c12Shake_State2Ei, 0}, copied into data_ov006_021427bc; mwcc numbers it @2272, which arm9 already defines, so the manifest renames it to @8810"
+      "evidence": "PMF record {_ZN12dScMgPanel_c12Shake_State2Ei, 0}, copied into sPanelShakeStateTable; mwcc numbers it @2272, which arm9 already defines, so the manifest renames it to @8810"
     },
     {
       "symbol": "@2280",
       "address": "0x0213dd2c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgPanel_c13Banner_State2Ev, 0}, copied into data_ov006_021427ec; mwcc numbers it @2266, which arm9 already defines, so the manifest renames it to @8807"
+      "evidence": "PMF record {_ZN12dScMgPanel_c13Banner_State2Ev, 0}, copied into sPanelBannerStateTable; mwcc numbers it @2266, which arm9 already defines, so the manifest renames it to @8807"
     }
   ],
   "bss": [
     {
-      "symbol": "data_ov006_021427bc",
+      "symbol": "sPanelShakeStateTable",
       "address": "0x021427bc",
       "size": "0x18",
       "binding": "STB_GLOBAL",
@@ -769,7 +769,7 @@
       "evidence": "six sprite handles; the initializer copies data_ov006_02136cf0[3] then data_ov006_02136d1c[3] into it"
     },
     {
-      "symbol": "data_ov006_021427ec",
+      "symbol": "sPanelBannerStateTable",
       "address": "0x021427ec",
       "size": "0x18",
       "binding": "STB_GLOBAL",
@@ -783,28 +783,28 @@
       "evidence": "zero-initialised object inside this TU's contiguous .bss run; the pointer table word at 0x0213e08c refers to it"
     },
     {
-      "symbol": "data_ov006_02142820",
+      "symbol": "sPanelInputStateTable",
       "address": "0x02142820",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "PanelStateFn table [4]; the initializer copies four PMF records into it"
     },
     {
-      "symbol": "data_ov006_02142840",
+      "symbol": "sPanelPanelStateTable",
       "address": "0x02142840",
       "size": "0x20",
       "binding": "STB_GLOBAL",
       "evidence": "PanelStateFnI per-panel table [4]; the initializer copies four PMF records into it"
     },
     {
-      "symbol": "data_ov006_02142860",
+      "symbol": "sPanelIntroCardStateTable",
       "address": "0x02142860",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "PanelStateFn intro-card table [5]; the initializer copies five PMF records into it"
     },
     {
-      "symbol": "data_ov006_02142888",
+      "symbol": "sPanelSceneStateTable",
       "address": "0x02142888",
       "size": "0x40",
       "binding": "STB_GLOBAL",
@@ -812,8 +812,8 @@
     }
   ],
   "notes": [
-    "SINIT FOLDED (fold/mg-sinits-b-1011): the retail static initializer __sinit_ov006_02131fa4 (.init 0x02131fa4-0x021322bc, ctor word 0x021335c8) is this TU's own __sinit_d_s_mg_panel.cpp. In .init link order it sits between __sinit_d_s_mg_pachinko2.cpp and __sinit_ov006_021322bc, exactly where this TU's .text sits between dScMgPachinko2_c and dScMgRoulette_c, and every global it writes (the six sprite handles at data_ov006_021427d4 and the seven pointer-to-member state tables at data_ov006_021427bc..02142888) is read only by members of this file. The tables are now file-scope arrays of PanelStateFn / PanelStateFnI, so mwcc emits the initializer with the same 0x318 bytes and 36 relocations, and the 27 PMF records it copies from become this TU's .data at 0x0213dc4c-0x0213dd34, together with g_profile_MG_PANEL and data_ov006_0213dc94. The three empty state handlers 02104ac0, 02104bac and 02104ec8 became dScMgPanel_c members, because a pointer-to-member constant needs a member; include/dScMgPanel_c.h has no other consumer. Ten compiled @NNN records collide with arm9 names and are renamed to the free @8801-@8810 through defined_symbol_renames. Guided by lunavyqo's unmerged fold (sinit/ov006-panel, 44d9c4d4b6), re-derived on the methodized TU.",
-    "LINK DEFECT FOUND AND FIXED AT STAGE 4, and it is the reason ordinals 67-70 do not follow the block-scope rule the other 67 members do. As written by stages 2 and 3 this TU compiled, byte-matched 71/71, passed objisolate, passed reloc-destinations and passed the [4b] object audit -- and did not link. Every `func_ov006_*` member sits inside its own file-scope `extern \"C\" { }` region, so its block-scope `extern` declarations have C linkage and name the ROM symbol. A class member function cannot sit inside such a region, so the identical block-scope declarations in the four C++-named members had C++ LINKAGE: the object carried 41 mangled undefined symbols that do not exist in the image (`_Z8LoadFilei`, `_Z10DeallocatePv`, `_Z19func_ov006_021063a0Pv`, ...) and mwldarm aborted with 22 `Undefined`, all `Referenced from \"dScMgPanel_c::InitResources()\"`. mwccarm 2004/b56 rejects a block-scope `extern \"C\"` (measured: `Error: declarator expected`), so the repair is the shape dScMgTeresa_c and dScMgRoulette_c already use -- ONE file-scope `extern \"C\"` region carrying the 24 genuinely external ROM symbols those four members call, placed after ordinal 66 so the 67 members above it keep their own recovered spellings unchanged. The 13 declarations that named members OF THIS TU were deleted outright rather than moved: those symbols are now defined earlier in the same file, so the call binds to the definition, and three call sites took the definition's own pointer type (`DealPuzzle(this)` in ordinals 67 and 70, `(PanelObj_ab4 *)` in 68, `(PanelC_ac4 *)` in 69). One declaration, `func_02073244` in ordinal 69, was dead -- nothing in the body referenced it -- and was dropped. Data symbols were NOT touched and did not need to be: mwccarm leaves a file-scope variable's name unmangled in C++, which is why `data_0209d454`, `data_0209d45c` and `data_ov006_02142888` still sit at block scope. AFTER the repair: 71/71 MATCH unchanged, object audit order_ok true with {'LICENSED': 71} and zero refusals, 0 mangled undefined symbols left in the object, and `tools/rombuild.py -j 6` reaches `module fidelity: 106/106 exact, 100.000000%` with `ROM-build analysis: PASS`. NOTE FOR THE READER OF THE `linkcheck` BLOCK BELOW: its recorded `scratch-link-verified` was NOT reproducible on the source as shipped by stage 2 -- the same scratch pipeline, reached through rombuild's own BASELINE CONTROL, failed to link it. It is reproducible now.",
+    "SINIT FOLDED (fold/mg-sinits-b-1011): the retail static initializer __sinit_ov006_02131fa4 (.init 0x02131fa4-0x021322bc, ctor word 0x021335c8) is this TU's own __sinit_d_s_mg_panel.cpp. In .init link order it sits between __sinit_d_s_mg_pachinko2.cpp and __sinit_ov006_021322bc, exactly where this TU's .text sits between dScMgPachinko2_c and dScMgRoulette_c, and every global it writes (the six sprite handles at data_ov006_021427d4 and the seven pointer-to-member state tables at sPanelShakeStateTable..02142888) is read only by members of this file. The tables are now file-scope arrays of PanelStateFn / PanelStateFnI, so mwcc emits the initializer with the same 0x318 bytes and 36 relocations, and the 27 PMF records it copies from become this TU's .data at 0x0213dc4c-0x0213dd34, together with g_profile_MG_PANEL and data_ov006_0213dc94. The three empty state handlers 02104ac0, 02104bac and 02104ec8 became dScMgPanel_c members, because a pointer-to-member constant needs a member; include/dScMgPanel_c.h has no other consumer. Ten compiled @NNN records collide with arm9 names and are renamed to the free @8801-@8810 through defined_symbol_renames. Guided by lunavyqo's unmerged fold (sinit/ov006-panel, 44d9c4d4b6), re-derived on the methodized TU.",
+    "LINK DEFECT FOUND AND FIXED AT STAGE 4, and it is the reason ordinals 67-70 do not follow the block-scope rule the other 67 members do. As written by stages 2 and 3 this TU compiled, byte-matched 71/71, passed objisolate, passed reloc-destinations and passed the [4b] object audit -- and did not link. Every `func_ov006_*` member sits inside its own file-scope `extern \"C\" { }` region, so its block-scope `extern` declarations have C linkage and name the ROM symbol. A class member function cannot sit inside such a region, so the identical block-scope declarations in the four C++-named members had C++ LINKAGE: the object carried 41 mangled undefined symbols that do not exist in the image (`_Z8LoadFilei`, `_Z10DeallocatePv`, `_Z19func_ov006_021063a0Pv`, ...) and mwldarm aborted with 22 `Undefined`, all `Referenced from \"dScMgPanel_c::InitResources()\"`. mwccarm 2004/b56 rejects a block-scope `extern \"C\"` (measured: `Error: declarator expected`), so the repair is the shape dScMgTeresa_c and dScMgRoulette_c already use -- ONE file-scope `extern \"C\"` region carrying the 24 genuinely external ROM symbols those four members call, placed after ordinal 66 so the 67 members above it keep their own recovered spellings unchanged. The 13 declarations that named members OF THIS TU were deleted outright rather than moved: those symbols are now defined earlier in the same file, so the call binds to the definition, and three call sites took the definition's own pointer type (`DealPuzzle(this)` in ordinals 67 and 70, `(PanelObj_ab4 *)` in 68, `(PanelC_ac4 *)` in 69). One declaration, `func_02073244` in ordinal 69, was dead -- nothing in the body referenced it -- and was dropped. Data symbols were NOT touched and did not need to be: mwccarm leaves a file-scope variable's name unmangled in C++, which is why `data_0209d454`, `data_0209d45c` and `sPanelSceneStateTable` still sit at block scope. AFTER the repair: 71/71 MATCH unchanged, object audit order_ok true with {'LICENSED': 71} and zero refusals, 0 mangled undefined symbols left in the object, and `tools/rombuild.py -j 6` reaches `module fidelity: 106/106 exact, 100.000000%` with `ROM-build analysis: PASS`. NOTE FOR THE READER OF THE `linkcheck` BLOCK BELOW: its recorded `scratch-link-verified` was NOT reproducible on the source as shipped by stage 2 -- the same scratch pipeline, reached through rombuild's own BASELINE CONTROL, failed to link it. It is reproducible now.",
     "Hand-assembled from the 71 legacy shards; tools/tubuild.py create ran, and its generated preamble was DISCARDED WHOLE rather than repaired. At 71 members it carried the failure modes writer.md documents: two contradictory PMF typedefs, three incompatible `struct C` bodies (0x4692 pad / 0x4674 pad / derived from a 36-virtual base), two incompatible `Obj` typedefs, and data_0209d454 declared both as a scalar and as an array. The shipped file follows ov002/Player for the 67 `extern \"C\"` members: each keeps its own declarations inside its own body and nothing is canonicalised. The four C++-NAMED members (ordinals 67-70) cannot, because a class member function cannot sit inside an `extern \"C\"` region -- see the link note below.",
     "decl_common.h is deliberately NOT included, and this is a departure from the daDsnBase_c / daObjCtMecha03_c / dScMgTeresa_c precedent. It declares ten of this TU's own members and seven of the ten contradict the shard that defines them: Particle_UpdateAll and Shake_Update on the RETURN TYPE (`int` against the shards' `void`), and Particle_DrawAll, 02104b5c, 02104d44, 02104d94 and 02105ab4 on the parameter type (`void*` against `char*` or a shadow struct). Including it makes each of those an `illegal function overloading` error against a body that already matches byte-for-byte. ov002/Player, the largest promoted TU in the tree, excludes it for the same reason. The four class-method members that used to lean on it -- ordinals 67-70 -- carry the declarations they actually used, copied from decl_common.h, in one FILE-SCOPE `extern \"C\"` region placed after ordinal 66 so that none of the 67 members above can see it; their block-scope spelling did not link (see the link note below).",
     "One member needed a source change the merge forced. include/dScMgBase_c.h:12 declares `extern \"C\" void *gMgScene;` at file scope, and ordinal 60 (Scene_State6) recovered the same ROM object as `char *`. The block-scope licence covers FUNCTIONS with C linkage, not a second declaration of one variable with a different type, so the shard's view is spelled as a reinterpreting read of the header's object -- `#define PANEL_BEB68 (*(char **)&gMgScene)` -- rather than a redeclaration. Same address, same load width, no extra local, and the member matches.",
@@ -1681,7 +1681,7 @@
       "source": "0x02132240",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142888",
+      "symbol": "sPanelSceneStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142888"
@@ -1771,7 +1771,7 @@
       "source": "0x02132264",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142840",
+      "symbol": "sPanelPanelStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142840"
@@ -1811,7 +1811,7 @@
       "source": "0x02132274",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142820",
+      "symbol": "sPanelInputStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142820"
@@ -1901,7 +1901,7 @@
       "source": "0x02132298",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142860",
+      "symbol": "sPanelIntroCardStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142860"
@@ -1971,7 +1971,7 @@
       "source": "0x021322b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021427ec",
+      "symbol": "sPanelBannerStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021427ec"
@@ -1981,7 +1981,7 @@
       "source": "0x021322b8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021427bc",
+      "symbol": "sPanelShakeStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021427bc"

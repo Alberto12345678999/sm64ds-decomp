@@ -1,3 +1,4 @@
+#include "nitro/fx/fx.h"
 typedef struct Node Node;
 typedef struct Entry Entry;
 
@@ -83,7 +84,7 @@ void func_0204dab4(void *sys, Entry *buf, int count, unsigned int mask, void *cb
 
             fn(&sp[1], slot, (short *)((char *)slot + 2), &sp[0]);
 
-            slot->f4 = (short)(((long long)sp[0] * scale + 0x800) >> 12);
+            slot->f4 = (short)FX_MUL(sp[0], scale);
             fp6 = (unsigned char *)((int)slot + 6);
             *fp6 = (unsigned char)(*fp6 | 4u);
         }

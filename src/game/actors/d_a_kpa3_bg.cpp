@@ -16,11 +16,12 @@
  * functions under the members' mangled names.
  *
  * __sinit at the end of this file emits compiler-numbered statics; they
- * compile as @495..@520 and the manifest maps them to the ROM's
+ * compile as @666..@691 and the manifest maps them to the ROM's
  * @456..@479 and @506. mwcc's counter for those names advances for
  * named variables, named parameters (prototypes included) and some
  * compiler temporaries declared before them (`new daKpa3Bg_c` alone
- * advances it by 25), so adding or deleting one renumbers them. These
+ * advances it by 25, and including daKpa_c.h by 171), so adding or
+ * deleting one renumbers them. These
  * names are there for the count:
  * - the local-extern prototype of func_ov060_021181b4 names its
  *   parameter c. Making the function a member drops that name; the
@@ -49,6 +50,7 @@
 
 #include "common.h"
 #include "daKpa3Bg_c.h"
+#include "daKpa_c.h"
 #include "SharedFilePtr.h"
 
 struct BMD_File;
@@ -64,7 +66,9 @@ void MulVec3Mat4x3(Vec3 *in, void *m, void *out);
 void func_02012694(int a, void *p);
 void CopyTexPalFromLevelModel(void *p);
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vec3 *v, int fix);
+// local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
 void _ZN8dActor_c10PoofDustAtERK7Vector3(void *self, Vec3 *v);
+// local extern: the C body of func_ov060_02117db8 calls it, as above.
 void _ZN7fBase_c18MarkForDestructionEv(void *self);
 
 extern u16 data_ov060_0211956c[];
@@ -219,23 +223,20 @@ extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
    bit 0x10000 set (BOWSER_STATE_JUMP and BOWSER_COND_RECOVERING in
    d_a_kpa.cpp). On his last hit point, in state 3 or while held or being released
    (mHoldState != 0), mActive latches; from then on mTimer counts each frame and the
-   platform drops once it passes mVariant * 20.
-   koopa+0x40c/0x410/0x418/0x41e are daKpa_c's mState, mHoldState,
-   mCondFlags and mHealth. Including daKpa_c.h keeps the bytes but
-   renumbers the @NNN statics the manifest pins. */
+   platform drops once it passes mVariant * 20. */
 void daKpa3Bg_c::func_ov060_021180e0()
 {
-    char *koopa = (char *)dActor_c::FindWithID(mKoopaUniqueId);
+    daKpa_c *koopa = (daKpa_c *)dActor_c::FindWithID(mKoopaUniqueId);
     if (koopa == 0) {
         MarkForDestruction();
         return;
     }
-    if (mTouchedKoopa != 0 && *(int *)(koopa + 0x40c) == 0xd) {
-        if ((*(int *)(koopa + 0x418) & 0x10000) != 0)
+    if (mTouchedKoopa != 0 && koopa->mState == 0xd) {
+        if ((koopa->mCondFlags & 0x10000) != 0)
             mState = 2;
     }
-    if (*(s8 *)(koopa + 0x41e) == 1) {
-        if (*(int *)(koopa + 0x40c) == 3 || *(int *)(koopa + 0x410) != 0)
+    if (koopa->mHealth == 1) {
+        if (koopa->mState == 3 || koopa->mHoldState != 0)
             mActive = 1;
     }
     if (mActive == 0) {

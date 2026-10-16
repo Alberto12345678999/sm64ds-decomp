@@ -332,7 +332,9 @@ extern OamAnimation *_ZN12OamAnimationC1Ev(OamAnimation *object);
  * preserved. Historical alias: func_ov075_0211a740. */
 void *dScEntry_c_classInit_RESULT(void) {
     /* The raw byte pointer preserves the ROM factory's address-expression
-       tree; typed member expressions fold five instructions in mwccarm. */
+       tree; typed member expressions fold five instructions in mwccarm.
+       Members cast through it (pauseFlags, mIcons, mOamAnimations) are
+       byte-neutral; 0x54..0x6c have no header names. */
     char *p = (char *)_ZN7fBase_cnwEj(sizeof(dScEntry_c));
     if (p) {
         struct P2 v;
@@ -340,7 +342,7 @@ void *dScEntry_c_classInit_RESULT(void) {
         *(char **)p = data_0208e4b8;
         *(char **)p = (char *)_ZTV8dScene_c;
         {
-            unsigned char *flags = (unsigned char *)((int)p + 0x13);
+            unsigned char *flags = &((dScEntry_c *)p)->pauseFlags;
             *flags |= 1;
             *flags |= 4;
         }
@@ -351,12 +353,12 @@ void *dScEntry_c_classInit_RESULT(void) {
         *(struct P2Copy *)(p + 0x54) = *(struct P2Copy *)&v;
         *(struct P2Copy *)(p + 0x5c) = *(struct P2Copy *)&v;
         *(struct P2Copy *)(p + 0x64) = *(struct P2Copy *)&v;
-        __cxa_vec_ctor(p + 0x70, 9, sizeof(dScEntry_c::icon_c),
+        __cxa_vec_ctor(((dScEntry_c *)p)->mIcons, 9, sizeof(dScEntry_c::icon_c),
                        (void (*)(void *))_ZN10dScEntry_c6icon_cC1Ev,
                        (void (*)(void *))_ZN10dScEntry_c6icon_cD1Ev);
-        __cxa_vec_ctor(p + 0x1b4, 4, sizeof(((dScEntry_c *)p)->mOamAnimations[0]),
-                       (void (*)(void *))_ZN12OamAnimationC1Ev,
-                       (void (*)(void *))_ZN12OamAnimationD1Ev);
+        __cxa_vec_ctor(
+            ((dScEntry_c *)p)->mOamAnimations, 4, sizeof(((dScEntry_c *)p)->mOamAnimations[0]),
+            (void (*)(void *))_ZN12OamAnimationC1Ev, (void (*)(void *))_ZN12OamAnimationD1Ev);
     }
     return p;
 }

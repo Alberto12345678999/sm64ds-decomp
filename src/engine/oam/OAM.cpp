@@ -624,7 +624,7 @@ OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int draw, OamAttr *obj_, int px
         {
           *((u32 *) res) = flags | ((mask | (((y & 0xff) | (dep << 13) | (mode << 10)) | (mosaic << 12))) | ((x & 0x1ff) << 16));
         }
-        *((u16 *) (((u32 *) res) + 1)) = (tiles | (prio << 10)) | (pal << 12);
+        ((OamAttr *)res)->attr2 = (tiles | (prio << 10)) | (pal << 12);
       }
     }
     *counter += 1;
@@ -725,7 +725,7 @@ void OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, Ma
             else
                 ATTR01(res) = flags | (mask | ((y & 0xff) | (dep << 13) | (mode << 10) | (mosaic << 12)) | ((x & 0x1ff) << 16));
         }
-        *(u16 *)((u32 *)res + 1) = tiles | (prio << 10) | (pal << 12);
+        ((OamAttr *)res)->attr2 = tiles | (prio << 10) | (pal << 12);
     }
     }
     *counter += 1;

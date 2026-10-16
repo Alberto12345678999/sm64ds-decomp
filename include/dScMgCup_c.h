@@ -65,7 +65,7 @@ typedef char CupPos_size_must_be_0x8[sizeof(CupPos) == 0x8 ? 1 : -1];
 struct dScMgCup_c : dScMgSingle3DBase_c {
     virtual ~dScMgCup_c();
 
-    /* Eight states, dispatched by Behavior through data_ov006_02141870.
+    /* Eight states, dispatched by Behavior through sCupStateTable.
        The spellings are not in the ROM. */
     void StateSetup();
     void StatePrepareShuffle();

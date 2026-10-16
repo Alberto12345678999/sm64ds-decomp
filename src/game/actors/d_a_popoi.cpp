@@ -134,6 +134,16 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void*, void*
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void*, void*, int, int, void*, int);
 }
 
+/* Actor ID daPopoi_ACTOR_PLAYER (0xbf) is the Player. These int-returning
+ * predicates are what make the ROM materialize 0/1 before testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == daPopoi_ACTOR_PLAYER;
+}
+
+static inline int IsNoControl(Player *player) {
+    return player->mIsNoControl != 0;
+}
+
 /* resolved: VT0 = _ZTV9daPopoi_c */
 // @symbol daPopoi_c_classInit
 extern "C" int *daPopoi_c_classInit(void)
@@ -237,16 +247,11 @@ int daPopoi_c::Behavior()
      * acceptable slope of 0x2888 (57 degrees), detectWater 0, skipPipeCheck 1 and an
      * upward probe of 50 units (0x32000). */
     goingOffCliff = IsGoingOffCliff(mWithMeshClsn, 0x3c000, (s16)0x2888, 0, 1, 0x32000);
-    if (goingOffCliff == 0) {
-        if (slope < 0)
-            slope = (s16)-slope;
-        if (slope <= 0x100)
-            goto writeback;
+    if (goingOffCliff != 0 || (slope < 0 ? (s16)-slope : slope) > 0x100) {
+        mPosX = mSavedPosX;
+        mPosY = mSavedPosY;
+        mPosZ = mSavedPosZ;
     }
-    mPosX = mSavedPosX;
-    mPosY = mSavedPosY;
-    mPosZ = mSavedPosZ;
-writeback:
     mSavedPosX = mPosX;
     mSavedPosY = mPosY;
     mSavedPosZ = mPosZ;
@@ -602,7 +607,6 @@ int daPopoi_c::func_ov077_02126640()
 {
     Vector3 v;
     Player *a;
-    int t;
     if (mCaughtPlayer != 0) {
         v.x = data_ov077_02127a5c.x;
         v.y = data_ov077_02127a5c.y;
@@ -614,8 +618,7 @@ int daPopoi_c::func_ov077_02126640()
                 if (a == mCaughtPlayer) {
                     if (a->mIsMetal == 0) {
                         if (a->mIsMega == 0) {
-                            t = (a->mIsNoControl != 0);
-                            if (t == 0) {
+                            if (!IsNoControl(a)) {
                                 if (a->GetHurtState() < 0) {
                                     if (func_ov002_020db674(a, 0x28000, 0x70000,
                                             (int)(short)(mAngleY + 0x8000)) != 0) {
@@ -647,7 +650,6 @@ void daPopoi_c::func_ov077_02126528()
 {
     Vector3 v;
     Player *a;
-    int t;
     v.x = data_ov077_02127a5c.x;
     v.y = data_ov077_02127a5c.y;
     v.z = data_ov077_02127a5c.z;
@@ -655,12 +657,14 @@ void daPopoi_c::func_ov077_02126528()
     if (mdCcAcPos_c.otherOwner == 0) return;
     a = (Player *)dActor_c::FindWithID(mdCcAcPos_c.otherOwner);
     if (a == 0) return;
-    t = (a->actorID == daPopoi_ACTOR_PLAYER);
-    if (t == 0) return;
-    if (a->mIsMetal == 1) return;
-    if (a->mIsMega == 1) return;
-    t = (a->mIsNoControl != 0);
-    if (t == 1) return;
+    if (!IsPlayerActor(a))
+        return;
+    if (a->mIsMetal == 1)
+        return;
+    if (a->mIsMega == 1)
+        return;
+    if (IsNoControl(a) == 1)
+        return;
     if (a->GetHurtState() >= 0) return;
     if (a->IsCollectingCap() != 0) return;
     mCaughtPlayer = a;

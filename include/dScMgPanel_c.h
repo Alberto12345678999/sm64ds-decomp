@@ -18,7 +18,7 @@
  * Only the class name is a cartridge string.
  */
 /* The banner that drops in at the start of a round (func_ov006_02104a84
-   and its state table data_ov006_021427ec). */
+   and its state table sPanelBannerStateTable). */
 struct dScMgPanel_Banner {
     s32 x;            /* +0x00 -- Fix12 */
     s32 y;            /* +0x04 */
@@ -31,7 +31,7 @@ struct dScMgPanel_Banner {
 };
 
 /* Sub-screen BG0 shake after a miss (Shake_State2/02104a10);
-   state indexes data_ov006_021427bc. */
+   state indexes sPanelShakeStateTable. */
 struct dScMgPanel_Shake {
     s32 unk_00;
     s32 offset;       /* +0x04 -- SetSubBg0Offset y */

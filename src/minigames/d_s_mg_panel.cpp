@@ -427,10 +427,10 @@ struct PanelC_ac4 {
 void dScMgPanel_c::Shake_Update()
 {
     PanelC_ac4 *c = (PanelC_ac4 *)this;
-    extern PanelStateFnI data_ov006_021427bc[];
+    extern PanelStateFnI sPanelShakeStateTable[];
     if (c->guard == 0) return;
     int j = c->idx;
-    (((dScMgPanel_c *)c)->*data_ov006_021427bc[j])(0);
+    (((dScMgPanel_c *)c)->*sPanelShakeStateTable[j])(0);
 }
 
 // @symbol _ZN12dScMgPanel_c11Shake_StartEv
@@ -505,7 +505,7 @@ void dScMgPanel_c::Banner_State0()
 void dScMgPanel_c::Banner_Update()
 {
     char *scene = (char *)this;
-    extern PanelStateFn data_ov006_021427ec[];
+    extern PanelStateFn sPanelBannerStateTable[];
     u16 *ip;
     if (*(u8 *)(scene + 0x4000 + 0x684) == 0) return;
     ip = (u16 *)(scene + 0x4680);
@@ -518,7 +518,7 @@ void dScMgPanel_c::Banner_Update()
     }
     {
         dScMgPanel_c *cc = (dScMgPanel_c *)scene;
-        (cc->*data_ov006_021427ec[*(u8 *)(scene + 0x4000 + 0x686)])();
+        (cc->*sPanelBannerStateTable[*(u8 *)(scene + 0x4000 + 0x686)])();
     }
 }
 
@@ -685,9 +685,9 @@ struct PanelC_0bc { char pad[0x4674]; u8 guard; u8 idx; };
 void dScMgPanel_c::IntroCard_Update()
 {
     PanelC_0bc *c = (PanelC_0bc *)this;
-    extern PanelStateFn data_ov006_02142860[];
+    extern PanelStateFn sPanelIntroCardStateTable[];
     if (!c->guard) return;
-    (((dScMgPanel_c *)c)->*data_ov006_02142860[c->idx])();
+    (((dScMgPanel_c *)c)->*sPanelIntroCardStateTable[c->idx])();
 }
 
 // @symbol _ZN12dScMgPanel_c15IntroCard_StartEv
@@ -704,20 +704,23 @@ void dScMgPanel_c::StartSolveCheck()
 {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
-    if (*(u8 *)(scene + 0x4fe9) != 0) return;
-    if (*(int *)(scene + 0x4ca8) == 6) return;
-    if (*(u8 *)(scene + 0x4fe1) < *(u8 *)(scene + 0x4fde)) return;
+    if (mBusy != 0)
+        return;
+    if (mState == 6)
+        return;
+    if (*(u8 *)(scene + 0x4fe1) < mFlipCount)
+        return;
 
     func_02012790(0xe);
     EnableOverlayLayer();
 
     if (s->mCredits > 1) {
-        *(int *)(scene + 0x4ca8) = 3;
+        mState = 3;
         CountMatches();
     } else {
         *(u8 *)(scene + 0x4fe6) = 0;
         CountMatches();
-        *(int *)(scene + 0x4ca8) = 6;
+        mState = 6;
         *(s16 *)(scene + 0x4ec0) = 0x50;
     }
 }
@@ -1004,9 +1007,9 @@ struct PanelC_7f0 : PanelB_7f0 { char pad[0x4fdc]; u8 idx; };
 void dScMgPanel_c::Input_Update()
 {
     PanelC_7f0 *c = (PanelC_7f0 *)this;
-    extern PanelStateFn data_ov006_02142820[];
+    extern PanelStateFn sPanelInputStateTable[];
     if (c->m() != 0) return;
-    (((dScMgPanel_c *)c)->*data_ov006_02142820[c->idx])();
+    (((dScMgPanel_c *)c)->*sPanelInputStateTable[c->idx])();
     Banner_Update();
 }
 
@@ -1017,7 +1020,7 @@ void dScMgPanel_c::UpdateMoves()
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
     if (*(u16 *)(scene + 0x4ec4) != 0) {
         (*(u16 *)(int)(scene + 0x4ec4))--;
-        if (*(s16 *)(scene + 0x4ec4) < 0)
+        if (mDelay < 0)
             *(u16 *)(scene + 0x4ec4) = 0;
         return;
     }
@@ -1038,7 +1041,7 @@ void dScMgPanel_c::UpdateMoves()
 
     if (*(u8 *)(scene + 0x4fe4) == 0xff) {
         *(u8 *)(scene + 0x4fe4) = 0;
-        *(int *)(scene + 0x4ca8) = 2;
+        mState = 2;
         SetSlideFlag();
         ReloadSlideDelay();
         return;
@@ -1048,7 +1051,7 @@ void dScMgPanel_c::UpdateMoves()
 
     if (*(u8 *)(scene + 0x4fe4) == 0xff) {
         *(u8 *)(scene + 0x4fe4) = 0;
-        *(int *)(scene + 0x4ca8) = 2;
+        mState = 2;
         *(u8 *)(scene + 0x4fe1) = 0;
         SetSlideFlag();
         ReloadSlideDelay();
@@ -1059,7 +1062,7 @@ void dScMgPanel_c::UpdateMoves()
         u8 slot = *(u8 *)(scene + 0x4fe4);
         int hq = 3;
         int index = *(u8 *)(scene + slot + 0x4fce);
-        int w = *(int *)(scene + 0x4cbc);
+        int w = mWidth;
         int wq = 3;
         int col = index % w;
         int row = index / w;
@@ -1076,7 +1079,7 @@ void dScMgPanel_c::UpdateMoves()
 
         for (y = 0; y < hq; y++) {
             for (x = 0; x < wq; x++) {
-                int cell = *(int *)(scene + 0x4cbc) * (row + y) + (col + x);
+                int cell = mWidth * (row + y) + (col + x);
                 *(u8 *)(scene + cell + 0x4efa) = 1;
                 s->mFace[cell] ^= 1;
                 *(u16 *)(scene + cell * 2 + 0x4e78) = 8;
@@ -1202,7 +1205,8 @@ void dScMgPanel_c::CheckSolved()
     int i;
     int n;
     int tmp;
-    if (*(u8 *)(scene + 0x4fe9) == 0) return;
+    if (mBusy == 0)
+        return;
     if (*(u8 *)(scene + 0x4feb) == 0) return;
     /* Laundered volatile round trip: the `(int)` cast and the volatile are both
        load-bearing -- they are what turns this decrement into the ROM's
@@ -1255,7 +1259,7 @@ void dScMgPanel_c::UpdateTouch()
     int i;
     int tx, ty;
 
-    if (*(u8 *)(scene + 0x4fe9) != 0)
+    if (mBusy != 0)
         return;
 
     lvl = gActivePlayerSlot;
@@ -1286,7 +1290,7 @@ void dScMgPanel_c::UpdateTouch()
 
             *(u8 *)(scene + *(u8 *)(scene + 0x4fe4) + 0x4fce) = i;
             (*(u8 *)(int)(scene + 0x4fe4))++;
-            w = *(int *)(scene + 0x4cbc);
+            w = mWidth;
             col = i % w;
             row = i / w;
 
@@ -1305,7 +1309,7 @@ void dScMgPanel_c::UpdateTouch()
                 for (y = 0; y < hq; y++) {
                     int x;
                     for (x = 0; x < wq; x++) {
-                        int index = *(int *)(scene + 0x4cbc) * (row + y) + (col + x);
+                        int index = mWidth * (row + y) + (col + x);
                         ((dScMgPanel_c *)scene)->mKind[index] = 1;
                         ((dScMgPanel_c *)scene)->mFace[index] ^= 1;
                         *(u16 *)(scene + index * 2 + 0x4e78) = 8;
@@ -1345,7 +1349,7 @@ extern "C" {
 void dScMgPanel_c::FlipAt(int index)
 {
     char *scene = (char *)this;
-    int w = *(int *)(scene + 0x4cbc);
+    int w = mWidth;
     int wq = 3;
     int hq = 3;
     int col = index % w;
@@ -1359,7 +1363,7 @@ void dScMgPanel_c::FlipAt(int index)
     int y, x;
     for (y = 0; y < hq; y++) {
         for (x = 0; x < wq; x++) {
-            u8 *p = (u8 *)((((int)scene + ((*(int *)(scene + 0x4cbc)) * (row + y) + (col + x))) + 0x4f1e));
+            u8 *p = (u8 *)((((int)scene + ((mWidth) * (row + y) + (col + x))) + 0x4f1e));
             *p ^= 1;
         }
     }
@@ -1610,7 +1614,7 @@ void dScMgPanel_c::ResetRound()
         ((dScMgPanel_c *)scene)->mVisible[i] = 0;
         *(char *)(scene + i + 0x4f8a) = 0;
     }
-    *(int *)(scene + 0x4ca8) = 0;
+    mState = 0;
     *(char *)(scene + 0x4fe9) = 0;
     *(s16 *)(scene + 0x4ec0) = 0;
     *(s16 *)(scene + 0x4ec2) = 0;
@@ -1653,7 +1657,7 @@ void dScMgPanel_c::Panel_StartAll()
 {
     char *scene = (char *)this;
     int i;
-    for (i = 0; i < *(int *)(scene + 0x4cbc); i++) {
+    for (i = 0; i < mWidth; i++) {
         *(u8 *)(scene + i + 0x4efa) = 3;
     }
 }
@@ -1802,11 +1806,11 @@ typedef void (*PanelPmfFn_bc0)(void *, int);
 void dScMgPanel_c::Scene_State7()
 {
     char *scene = (char *)this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
-    for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
+    for (i = 0; i < mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        struct PanelPmfRec_bc0 *e = (struct PanelPmfRec_bc0 *)&data_ov006_02142840[index];
+        struct PanelPmfRec_bc0 *e = (struct PanelPmfRec_bc0 *)&sPanelPanelStateTable[index];
         int adj = e->adj;
         char *thisp = scene + (adj >> 1);
         PanelPmfFn_bc0 fn;
@@ -1836,8 +1840,8 @@ extern "C" {
 void dScMgPanel_c::Scene_State6()
 {
     char *scene = (char *)this;
-    extern PanelStateFnI data_ov006_02142840[];
-// local extern: see above.
+    extern PanelStateFnI sPanelPanelStateTable[];
+    // local extern: see above.
     extern u8 gActivePlayerSlot;
 // local extern: see above.
     extern u8 gTouchHeld[];
@@ -1850,15 +1854,15 @@ void dScMgPanel_c::Scene_State6()
     IntroCard_Update();
     found = 0;
     i = found;
-    n = *(int *)(scene + 0x4000 + 0xcb8);
+    n = mCount;
     if (n > 0) {
         do {
             u8 *p = (u8 *)(scene + i + 0x4efa);
-            (((dScMgPanel_c *)scene)->*data_ov006_02142840[*p])(i);
+            (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[*p])(i);
             i++;
             if (*p != 0)
                 found++;
-            n = *(int *)(scene + 0x4000 + 0xcb8);
+            n = mCount;
         } while (i < n);
     }
     if (found != 0)
@@ -1905,7 +1909,7 @@ void dScMgPanel_c::Scene_State6()
             return;
         }
         *(u16 *)(scene + 0x4e00 + 0xc0) = 0x10;
-        *(int *)(scene + 0x4000 + 0xca8) = 7;
+        mState = 7;
         Panel_StartAll();
         return;
     }
@@ -1924,13 +1928,13 @@ void dScMgPanel_c::Scene_State6()
 void dScMgPanel_c::Scene_State5()
 {
     char *scene = (char *)this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
     IntroCard_Update();
     Input_Update();
-    for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
+    for (i = 0; i < mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        (((dScMgPanel_c *)scene)->*data_ov006_02142840[index])(i);
+        (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[index])(i);
     }
 }
 
@@ -1939,14 +1943,14 @@ void dScMgPanel_c::Scene_State4()
 {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
     IntroCard_Update();
     self->mBusy = 1;
     UpdateMoves();
     for (i = 0; i < self->mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        (((dScMgPanel_c *)scene)->*data_ov006_02142840[index])(i);
+        (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[index])(i);
     }
 }
 
@@ -1954,7 +1958,7 @@ void dScMgPanel_c::Scene_State4()
 void dScMgPanel_c::Scene_State3()
 {
     dScMgPanel_c *scene = this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     u8 index;
     int found;
     int i;
@@ -1963,7 +1967,7 @@ void dScMgPanel_c::Scene_State3()
     scene->mBusy = 1;
     for (i = 0; i < scene->mCount; i++) {
         index = scene->mKind[i];
-        (scene->*data_ov006_02142840[index])(i);
+        (scene->*sPanelPanelStateTable[index])(i);
         if (index != 0)
             found++;
     }
@@ -1978,7 +1982,7 @@ void dScMgPanel_c::Scene_State3()
 void dScMgPanel_c::Scene_State2()
 {
     dScMgPanel_c *scene = this;
-    extern PanelStateFnI data_ov006_02142840[];
+    extern PanelStateFnI sPanelPanelStateTable[];
     int i;
     char *b = (char *)scene;
     UpdateTouch();
@@ -1986,7 +1990,7 @@ void dScMgPanel_c::Scene_State2()
     *(u8 *)(b + 0x4fe9) = 0;
     for (i = 0; i < *(int *)(b + 0x4cb8); i++) {
         u8 index = *(u8 *)(b + i + 0x4efa);
-        (scene->*data_ov006_02142840[index])(i);
+        (scene->*sPanelPanelStateTable[index])(i);
     }
     CheckSolved();
     CountFlipping();
@@ -2109,16 +2113,16 @@ s32 dScMgPanel_c::Render()
 
 // @symbol _ZN12dScMgPanel_c8BehaviorEv
 /* Vtable slot 6.  One frame of the current state, dispatched through the
-   descriptor pair at data_ov006_02142888. */
-/* One row of the state-dispatch table at data_ov006_02142888: `a` is either a
+   descriptor pair at sPanelSceneStateTable. */
+/* One row of the state-dispatch table at sPanelSceneStateTable: `a` is either a
    function address or a vtable byte offset, and bit 0 of `b` says which. */
 struct Ent_358 { int a; int b; };
 s32 dScMgPanel_c::Behavior()
 {
-    extern PanelStateFn data_ov006_02142888[];
+    extern PanelStateFn sPanelSceneStateTable[];
     char *c = (char *)this;
     int idx = mState;
-    Ent_358 *e = (Ent_358 *)&data_ov006_02142888[idx];
+    Ent_358 *e = (Ent_358 *)&sPanelSceneStateTable[idx];
     int adj = e->b;
     char *obj = c + (adj >> 1);
     int fn;
@@ -2287,41 +2291,34 @@ void *data_ov006_021427d4[6] = {
     data_ov006_02136cf0[0], data_ov006_02136cf0[1], data_ov006_02136cf0[2],
     data_ov006_02136d1c[0], data_ov006_02136d1c[1], data_ov006_02136d1c[2],
 };
-PanelStateFn data_ov006_02142888[8] = {
-    &dScMgPanel_c::Scene_State0,
-    &dScMgPanel_c::Scene_State1,
-    &dScMgPanel_c::Scene_State2,
-    &dScMgPanel_c::Scene_State3,
-    &dScMgPanel_c::Scene_State4,
-    &dScMgPanel_c::Scene_State5,
-    &dScMgPanel_c::Scene_State6,
-    &dScMgPanel_c::Scene_State7,
+PanelStateFn sPanelSceneStateTable[8] = {
+    &dScMgPanel_c::Scene_State0, &dScMgPanel_c::Scene_State1, &dScMgPanel_c::Scene_State2,
+    &dScMgPanel_c::Scene_State3, &dScMgPanel_c::Scene_State4, &dScMgPanel_c::Scene_State5,
+    &dScMgPanel_c::Scene_State6, &dScMgPanel_c::Scene_State7,
 };
-PanelStateFnI data_ov006_02142840[4] = {
+PanelStateFnI sPanelPanelStateTable[4] = {
     &dScMgPanel_c::Panel_State0,
     &dScMgPanel_c::Panel_State1,
     &dScMgPanel_c::Panel_State2,
     &dScMgPanel_c::Panel_State3,
 };
-PanelStateFn data_ov006_02142820[4] = {
+PanelStateFn sPanelInputStateTable[4] = {
     &dScMgPanel_c::Input_State0,
     &dScMgPanel_c::Input_State1,
     &dScMgPanel_c::Input_State2,
     &dScMgPanel_c::Input_State3,
 };
-PanelStateFn data_ov006_02142860[5] = {
-    &dScMgPanel_c::IntroCard_State0,
-    &dScMgPanel_c::IntroCard_State1,
-    &dScMgPanel_c::IntroCard_State2,
-    &dScMgPanel_c::IntroCard_State3,
+PanelStateFn sPanelIntroCardStateTable[5] = {
+    &dScMgPanel_c::IntroCard_State0, &dScMgPanel_c::IntroCard_State1,
+    &dScMgPanel_c::IntroCard_State2, &dScMgPanel_c::IntroCard_State3,
     &dScMgPanel_c::IntroCard_State4,
 };
-PanelStateFn data_ov006_021427ec[3] = {
+PanelStateFn sPanelBannerStateTable[3] = {
     &dScMgPanel_c::Banner_State0,
     &dScMgPanel_c::Banner_State1,
     &dScMgPanel_c::Banner_State2,
 };
-PanelStateFnI data_ov006_021427bc[3] = {
+PanelStateFnI sPanelShakeStateTable[3] = {
     &dScMgPanel_c::Shake_State0,
     &dScMgPanel_c::Shake_State1,
     &dScMgPanel_c::Shake_State2,

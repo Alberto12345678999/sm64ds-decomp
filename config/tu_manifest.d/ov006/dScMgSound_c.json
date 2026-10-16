@@ -612,105 +612,105 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_02142cc0",
+      "symbol": "sSoundPop10Table",
       "address": "0x02142cc0",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142cd8",
+      "symbol": "sSoundPop05Table",
       "address": "0x02142cd8",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142cf0",
+      "symbol": "sSoundPop06Table",
       "address": "0x02142cf0",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142d08",
+      "symbol": "sSoundPop11Table",
       "address": "0x02142d08",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142d20",
+      "symbol": "sSoundPop07Table",
       "address": "0x02142d20",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142d38",
+      "symbol": "sSoundPop00Table",
       "address": "0x02142d38",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142d50",
+      "symbol": "sSoundPop01Table",
       "address": "0x02142d50",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142d68",
+      "symbol": "sSoundPop08Table",
       "address": "0x02142d68",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142d80",
+      "symbol": "sSoundPop02Table",
       "address": "0x02142d80",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142d98",
+      "symbol": "sSoundPop09Table",
       "address": "0x02142d98",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142db0",
+      "symbol": "sSoundPop12Table",
       "address": "0x02142db0",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142dc8",
+      "symbol": "sSoundPop03Table",
       "address": "0x02142dc8",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142de0",
+      "symbol": "sSoundPop04Table",
       "address": "0x02142de0",
       "size": "0x18",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142df8",
+      "symbol": "sSoundNoteStateTable",
       "address": "0x02142df8",
       "size": "0x28",
       "binding": "STB_GLOBAL",
       "evidence": "Scene-owned pointer-to-member dispatch table populated by the Sound static initializer and consumed by this TU."
     },
     {
-      "symbol": "data_ov006_02142e20",
+      "symbol": "sSoundPopUpdateTable",
       "address": "0x02142e20",
       "size": "0x68",
       "binding": "STB_GLOBAL",
@@ -732,7 +732,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'Obj') differs between the legacy file that used to hold Pop06_Start and the one that held RevealUnmatched; kept the first, the other is commented out for review -- RESOLVED by renaming: three unrelated types shared the tag. Pop08_Finish's is `BallObj`, Pop06_Start's is `NoteObj`, and RevealUnmatched's polymorphic view is `SceneVt`.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'E') differs between the legacy file that used to hold CheckPair and the one that held Note_StateOpen; kept the first, the other is commented out for review -- RESOLVED by merging: `char _[0x14]` and `unsigned char b[0x14]` are the same layout and neither member is ever read -- both members use the type only for its 0x14 stride. One `struct E { char _[0x14]; }` serves both.",
     "SOUND INITIALIZER FOLD (2026-10-15): the fifteen native PMF table definitions emit __sinit_d_s_mg_sound.cpp at ov006:0x02132970 (0x5f8), its .ctor word at 0x021335d4, and 456 BSS bytes at 0x02142cc0..0x02142e88. Retired the handwritten C initializer. Descriptor constants remain ROM-owned imports; no .data ownership is claimed. All 82 original functions remain identical including relocation records. Owned tables use ordinary C++ linkage. Direct &member initializers were also measured: same initializer instructions and unchanged functions, but 57 anonymous descriptors whose layout/names are not yet reconstructed. Named const PMF definitions add runtime initialization (0xe14 instead of 0x5f8). These candidates are not substituted into production.",
-    "The interior BSS label data_ov006_02142e02 is live: OV007:0x020f7cf0 relocates to it, ten bytes into data_ov006_02142df8. It must remain a configured destination. Supported linker alias preservation is required for the intact BSS-owning candidate; deleting the label fails dsd delink. See notes/agents/handoffs/sound-sinit1015.md."
+    "The interior BSS label data_ov006_02142e02 is live: OV007:0x020f7cf0 relocates to it, ten bytes into sSoundNoteStateTable. It must remain a configured destination. Supported linker alias preservation is required for the intact BSS-owning candidate; deleting the label fails dsd delink. See notes/agents/handoffs/sound-sinit1015.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1178,7 +1178,7 @@
       "source": "0x2132e50",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142df8",
+      "symbol": "sSoundNoteStateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142df8"
@@ -1228,7 +1228,7 @@
       "source": "0x2132e64",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142e20",
+      "symbol": "sSoundPopUpdateTable",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142e20"
@@ -1368,7 +1368,7 @@
       "source": "0x2132e9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142d38",
+      "symbol": "sSoundPop00Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142d38"
@@ -1428,7 +1428,7 @@
       "source": "0x2132eb4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142d50",
+      "symbol": "sSoundPop01Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142d50"
@@ -1448,7 +1448,7 @@
       "source": "0x2132ebc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142d80",
+      "symbol": "sSoundPop02Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142d80"
@@ -1498,7 +1498,7 @@
       "source": "0x2132ed0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142dc8",
+      "symbol": "sSoundPop03Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142dc8"
@@ -1538,7 +1538,7 @@
       "source": "0x2132ee0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142de0",
+      "symbol": "sSoundPop04Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142de0"
@@ -1588,7 +1588,7 @@
       "source": "0x2132ef4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142cd8",
+      "symbol": "sSoundPop05Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142cd8"
@@ -1628,7 +1628,7 @@
       "source": "0x2132f04",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142cf0",
+      "symbol": "sSoundPop06Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142cf0"
@@ -1648,7 +1648,7 @@
       "source": "0x2132f0c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142d20",
+      "symbol": "sSoundPop07Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142d20"
@@ -1698,7 +1698,7 @@
       "source": "0x2132f20",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142d68",
+      "symbol": "sSoundPop08Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142d68"
@@ -1738,7 +1738,7 @@
       "source": "0x2132f30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142d98",
+      "symbol": "sSoundPop09Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142d98"
@@ -1798,7 +1798,7 @@
       "source": "0x2132f48",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142cc0",
+      "symbol": "sSoundPop10Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142cc0"
@@ -1858,7 +1858,7 @@
       "source": "0x2132f60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142d08",
+      "symbol": "sSoundPop11Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142d08"
@@ -1868,7 +1868,7 @@
       "source": "0x2132f64",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142db0",
+      "symbol": "sSoundPop12Table",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x2142db0"

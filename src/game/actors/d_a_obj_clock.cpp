@@ -36,6 +36,7 @@
  */
 
 #include "daObjClock_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 
 /* Model handles construct through func_02017acc and destroy through
@@ -87,32 +88,30 @@ extern "C" daObjClock_c *daObjClock_c_classInit_CLOCK_SHORT()
     return new daObjClock_c();
 }
 
-/* 0x1c actor descriptor. Source order is CLOCK_LONG (0x021121c0) then
- * CLOCK_SHORT (0x021121dc). +4/+6 are the halfwords fBase_c passes to the
- * behavior and render priority setters; the s16 type is the storage, not
- * a recovered signedness. */
-struct ClockSpawnInfo {
-    daObjClock_c *(*classInit)();
-    s16 profileID;
-    s16 drawOrder;
-    u32 actorFlags;
-    s32 clipOffsetY;
-    s32 clipRadius;                 /* 0x1000 == 1.0 */
-    s32 clipDistance;
-    s32 farDistance;
-};
-typedef char ClockSpawnInfo_size_must_be_0x1c[sizeof(ClockSpawnInfo) == 0x1c ? 1 : -1];
-
+/* The two actor profiles. Source order is CLOCK_LONG (0x021121c0) then
+ * CLOCK_SHORT (0x021121dc). */
 // @symbol g_profile_CLOCK_LONG
-extern "C" ClockSpawnInfo g_profile_CLOCK_LONG = {
-    daObjClock_c_classInit_CLOCK_LONG, ACTOR_CLOCK_LONG, 0x00a3, 0x00000006,
-    0x00064000, 0x000fa000, 0x00c80000, 0x00640000
+extern "C" SpawnInfo<daObjClock_c> g_profile_CLOCK_LONG = {
+    daObjClock_c_classInit_CLOCK_LONG,
+    ACTOR_CLOCK_LONG,
+    0x00a3,
+    0x00000006,
+    0x00064000,
+    0x000fa000,
+    0x00c80000,
+    0x00640000,
 };
 
 // @symbol g_profile_CLOCK_SHORT
-extern "C" ClockSpawnInfo g_profile_CLOCK_SHORT = {
-    daObjClock_c_classInit_CLOCK_SHORT, ACTOR_CLOCK_SHORT, 0x00a2, 0x00000006,
-    0x00064000, 0x000fa000, 0x00c80000, 0x00640000
+extern "C" SpawnInfo<daObjClock_c> g_profile_CLOCK_SHORT = {
+    daObjClock_c_classInit_CLOCK_SHORT,
+    ACTOR_CLOCK_SHORT,
+    0x00a2,
+    0x00000006,
+    0x00064000,
+    0x000fa000,
+    0x00c80000,
+    0x00640000,
 };
 
 // @symbol _ZN12daObjClock_c13InitResourcesEv

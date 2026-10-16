@@ -52,8 +52,9 @@ extern u8   data_ov002_0210cb70[];
 extern u16  data_ov002_0210cb88[];
 extern u16  data_ov002_0210cbf4[];
 
-/* local extern: the header's s8/s16 tail truncates areaID and adds 4
- * bytes to LoadStandardObjects. All five call sites use this spelling. */
+/* The header's s8/s16 tail truncates areaID and adds 4 bytes to
+ * LoadStandardObjects. All five call sites use this spelling.
+ * local extern: s32 areaID/deathTableID, see above. */
 void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
         u32 actorID, u32 spawnParam, const Vector3 *pos, const Vector3_16 *rot,
         s32 areaID, s32 deathTableID);
@@ -104,6 +105,16 @@ struct LVL_Overlay_Layout {
     }                    *subTables;    /* 0x10 */
     u8                    subCount;     /* 0x14 */
 };
+
+/* The loaders test the game mode as a 0/1 value. */
+static inline int IsGameMode(int mode) {
+    return data_0209f2d8 == mode;
+}
+
+/* Game mode 0 with bit 0x80 of data_0209caa0 word 2 clear. */
+static inline int IntroAllowed() {
+    return IsGameMode(0) && (((int *)data_0209caa0)[2] & 0x80) == 0;
+}
 
 /* Spawn simple actors, or hand a minimap-change sentinel to
  * LoadMinimapChangeObject. Each SimpleEntry is 8 bytes: a packed `raw` word
@@ -201,8 +212,7 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable& tbl, int p2, u32 p3)
 
             int f2 = data_0209caa0[0x41];
             int f1 = data_02092128[i];
-            int cond = (data_0209f2d8 == 1);
-            if (cond != 0) {
+            if (IsGameMode(1)) {
                 f2 = 3;
                 f1 = 3;
             }
@@ -227,9 +237,7 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable& tbl, int p2, u32 p3)
 
     data_0209f318 = dBase_c::Spawn(0x14c, data_0209f5c0, entranceId, 0);
 
-    int t = data_0209f2d8;
-    t = t == 2;
-    if (t != 0)
+    if (IsGameMode(2))
         return;
 
     if (sl >= 0x13)
@@ -443,9 +451,6 @@ void dScStage_c::LoadClsnAndObjects(LVL_Overlay &ovlRef, u32 p, dBgW_Kc &mcRef)
     signed char i;
     int kuppa;
     int intro;
-    int t1;
-    int t2;
-    int isTwo;
 
     PathPtr::SetNodeTable(0);
     PathPtr::SetPathTable(0, 0);
@@ -470,20 +475,9 @@ void dScStage_c::LoadClsnAndObjects(LVL_Overlay &ovlRef, u32 p, dBgW_Kc &mcRef)
 
     kuppa = ContinueKuppaScriptIfNecessary();
 
-    intro = 0;
-    t2 = 0;
-    t1 = (data_0209f2d8 == 0);
-    if (t1 != 0) {
-        if ((((int *)data_0209caa0)[2] & 0x80) == 0)
-            t2 = 1;
-    }
-    if (t2 != 0) {
-        if (kuppa == 0)
-            intro = 1;
-    }
+    intro = IntroAllowed() && kuppa == 0;
 
-    isTwo = (data_0209f2d8 == 2);
-    if (isTwo == 0) {
+    if (!IsGameMode(2)) {
         dBase_c::Spawn(0x14f, data_0209f5c0, 0, 0);
         if (intro == 0)
             dBase_c::Spawn(0x14e, data_0209f5c0, 0, 0);
