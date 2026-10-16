@@ -5,6 +5,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "dScStage_c.h"
+#include "TextureTransformer.h"
 struct Info {
     char pad[0x14];
     u8 count;
@@ -44,7 +45,6 @@ struct LocalModelVtableShape {
 
 extern Info *data_0209f340;
 
-extern "C" void _ZN18TextureTransformer6UpdateER15ModelComponents(void *transformer, ModelComponents &mc);
 
 void dScStage_c::RenderModel()
 {
@@ -73,7 +73,7 @@ void dScStage_c::RenderModel()
                 }
             }
             if (slot->mTransformer != 0)
-                _ZN18TextureTransformer6UpdateER15ModelComponents(slot->mTransformer, mModel.data);
+                ((TextureTransformer *)slot->mTransformer)->Update(mModel.data);
         } else {
             u16 j;
             for (j = 0; j < inner->count; j++) {

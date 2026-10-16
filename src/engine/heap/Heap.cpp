@@ -36,6 +36,7 @@
 #include "SolidHeapAllocator.h"
 #include "ExpandingHeap.h"
 #include "ExpandingHeapAllocator.h"
+#include "Memory.h"
 
 /* Placement new, as <new> declares it. The factories construct each heap
    in a block they have already carved out, and the null test the ROM
@@ -46,7 +47,6 @@ inline void* operator new(size_t, void* p) { return p; }
 
 /* 0x020a0eac, already named in config/arm9/symbols.txt. */
 extern "C" Heap* GAME_HEAP_PTR;
-namespace Memory { extern Heap* defaultHeapPtr; }   /* 0x020a0ea0 */
 /* 0x020a0ea8 -- where SetupSolidHeapAsDefault parks the outgoing default heap.
    Unnamed in config/arm9/symbols.txt; left as the address symbol rather than
    minted here, since naming it is a claim of its own. */

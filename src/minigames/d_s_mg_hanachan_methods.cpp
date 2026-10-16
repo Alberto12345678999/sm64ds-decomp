@@ -353,6 +353,8 @@ struct S_ea81c {
    HanaPopup_Spawn's layout, which it needs to match; the other
    functions keep the spelling their own match used, through a cast. */
 extern "C" {
+/* local extern: only sibling minigame headers (dScMgAmida_c.h and four
+   others) declare it; this TU includes none of them */
 extern void NullDestructor_0203d47c(void);
 extern char data_ov006_02141fe4[];
 extern struct S_ea81c data_ov006_02142044[];

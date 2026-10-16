@@ -5,6 +5,10 @@
 #include "dScStage_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "Memory.h"
+#include "Message.h"
+#include "Sound.h"
+#include "dScene_c.h"
 /* _ZN10dScStage_c16CleanupResourcesEv @ 0x0202c9a8 (arm9, size 0x264)
  * Releases the level file handles, tears down fader/mesh-collider/message
  * state and unloads the level overlays/archive. Returns 1.
@@ -30,8 +34,6 @@ extern u8 data_0209f20c;
 
 extern void _ZN5Sound21ResetPlayerVoiceGroupEv(void);
 extern void EndKuppaScript(void);
-extern void _ZN6Memory16operator_delete2EPv(void *);
-extern void _ZN8dScene_c20SetAndStopColorFaderEv(void);
 extern void func_02073244(void *, int, int, void (*)(void *));
 extern void _ZN9dFdWipe_cD1Ev(void *);
 extern void CleanCommonModelDataArr(void);
@@ -39,8 +41,6 @@ extern void func_01ffb0c8(void *);
 extern void Deallocate(void);
 extern void _Z19UnloadLevelOverlaysi(int);
 extern void UnloadArchive(int);
-extern void _ZN7Message15ResetAllGlobalsEv(void);
-extern void _ZN5Sound6Player19SetPlayableSeqCountEii(int, int);
 
 static inline void DestroyVirt(void **o)
 {
@@ -84,7 +84,7 @@ int dScStage_c::CleanupResources()
                 char *p = (char *)e->mBlockList;
                 while (p) {
                     char *next = *(char **)(p + 0xc);
-                    _ZN6Memory16operator_delete2EPv(p);
+                    Memory::operator_delete2(p);
                     p = next;
                 }
             }
@@ -93,7 +93,7 @@ int dScStage_c::CleanupResources()
 
     data_0209f320 = 0;
     data_0209f314 = 0;
-    _ZN8dScene_c20SetAndStopColorFaderEv();
+    dScene_c::SetAndStopColorFader();
     data_0209d4b0 = 0;
     func_02073244(data_0209f324, 0x60, 8, _ZN9dFdWipe_cD1Ev);
     data_0209f324 = 0;
@@ -113,7 +113,7 @@ int dScStage_c::CleanupResources()
     }
     data_0209f318 = 0;
     data_0209f2c4 = 0;
-    _ZN7Message15ResetAllGlobalsEv();
+    Message::ResetAllGlobals();
 
     {
         u8 mode = data_0209f2d8;
@@ -126,8 +126,8 @@ int dScStage_c::CleanupResources()
         if (mode == 1)
             music = 1;
         if (music) {
-            _ZN5Sound6Player19SetPlayableSeqCountEii(2, 2);
-            _ZN5Sound6Player19SetPlayableSeqCountEii(3, 1);
+            Sound::Player::SetPlayableSeqCount(2, 2);
+            Sound::Player::SetPlayableSeqCount(3, 1);
         }
     }
     return 1;

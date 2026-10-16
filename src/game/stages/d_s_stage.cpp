@@ -3,7 +3,6 @@
 #include "dScStage_c.h"
 
 extern "C" {
-void *_ZN7fBase_cnwEj(unsigned int size);
 void *_ZN7fBase_cC2Ev(fBase_c *base);
 void _ZN8Particle10SysTrackerC1Ev(Particle::SysTracker *tracker);
 void *_ZN5ModelC1Ev(Model *model);

@@ -39,6 +39,9 @@ enum dScStage_c_AssetId {
 #include "decl_common.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "Message.h"
+#include "OAM.h"
+#include "SaveData.h"
 
 struct OamAttr;
 struct Matrix2x2;
@@ -87,30 +90,23 @@ void TurnBacklightOn(void);
 void TurnBacklightOff(void);
 int IsStarCollected(int lv, int star);
 
-void _ZN7Message17DisplayVsExitTextEt(unsigned short n);
+// local extern: Message.h's s8 level parameter re-narrows the SublevelToLevel result (LC_Update differs).
 void _ZN7Message21DisplayLevelClearTextEta(int m, unsigned char lvl);
-void _ZN7Message21DisplaySaveStatusTextEt(int m);
+// local extern: Message::Display is a non-static member; this call passes the message id in r0 with no receiver.
 void _ZN7Message7DisplayEj(int m);
+// local extern: Message.h's u16 parameter re-narrows the s16 table entry (PS_Update differs by one word).
 void _ZN7Message11DisplayTextEt(int m);
-void _ZN7Message16DisplayPauseTextEth(int m, unsigned char a);
-void _ZN7Message18DisplayPauseTextVSEt(int m);
+// local extern: Message.h's u16 parameter changes the sign-extended (s16) argument codegen (PS_Update differs).
 void _ZN7Message22DisplayOptionsMenuTextEt(int m);
-void _ZN7Message19DisplaySaveMenuTextEt(int m);
-void _ZN7Message19DisplayDontSaveTextEt(int m);
-void _ZN7Message25DisplayControllerModeTextEt(int m);
-void _ZN8dScene_c14StartSceneFadeEjjt(unsigned int a, unsigned int b, unsigned short c);
 bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
 unsigned int _ZN5Sound12PlayBank3_2DEj(unsigned int a);
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a);
-int _ZN8SaveData15SaveCurrentFileEv(void);
-unsigned char _ZN8SaveData13GetCoinRecordEj(unsigned int lv);
+// local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
 void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
 void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
 void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, unsigned int a, unsigned int b);
 void _ZN3OAM14BOUNCING_ARROWE(void);
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc, int fx, int fy, int rot, int mode);
-void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(bool sub, OamAttr *attr, int x, int y, int a, int cc, Matrix2x2 *mtx);
-void _ZN3OAM9RenderSubEP7OamAttrii(void *attr, int x, int y);
 int __aeabi_idiv(int a, int b);
 
 extern int data_0208ee44;
@@ -323,7 +319,7 @@ void dScStage_c::VE_Init()
     b = data_0209d454 ^ 0x10;
     *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 0x1100;
     *(volatile unsigned short *)0x400000c = (*(volatile unsigned short *)0x400000c & 0x43) | 0x1010;
-    _ZN7Message17DisplayVsExitTextEt(0x1f);
+    Message::DisplayVsExitText(0x1f);
     data_0209f360[0] = 0xe0;
     data_0209f360[1] = 0x1a0;
     data_0209f2b4 = 2;
@@ -480,7 +476,7 @@ void dScStage_c::LC_Update()
                 data_0209f22c = 0x1e;
                 if (level < 0xf) {
                     u8 coins = data_0209f260;
-                    if (_ZN8SaveData13GetCoinRecordEj(level) >= coins)
+                    if (SaveData::GetCoinRecord(level) >= coins)
                         return;
                     _ZN8SaveData21SetCoinRecordIfHigherEah(level, coins);
                     data_0209f2b0 = 1;
@@ -610,16 +606,16 @@ void dScStage_c::LC_Update()
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xe00;
         data_0209f2d4 = 5;
         data_0209d45c &= ~4;
-        _ZN7Message21DisplaySaveStatusTextEt(0x295);
+        Message::DisplaySaveStatusText(0x295);
         data_0209f2b8 = 0x78;
         return;
     case 5:
         if (data_0209f2b8 == 0)
             return;
         if (data_0209f2b8 == 0x78) {
-            _ZN8SaveData15SaveCurrentFileEv();
+            SaveData::SaveCurrentFile();
         } else if (data_0209f2b8 == 0x3c) {
-            _ZN7Message21DisplaySaveStatusTextEt(0x296);
+            Message::DisplaySaveStatusText(0x296);
         }
         data_0209f2b8 = data_0209f2b8 - data_0208ee44;
         if (data_0209f2b8 == 0)
@@ -636,7 +632,7 @@ void dScStage_c::LC_Update()
         if (data_0209f2e0 != 1) {
             data_ov002_02111178 = 5;
         } else {
-            _ZN8dScene_c14StartSceneFadeEjjt(1, 0, 0);
+            dScene_c::StartSceneFade(1, 0, 0);
             data_ov002_02111178 = 0;
             _ZN5Sound22StopLoadedMusic_Layer1Ej(0xa);
             {
@@ -752,11 +748,11 @@ void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5)
         {
             if (b == 0)
             {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(true, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, mtx);
+                OAM::Render(true, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, mtx);
             }
             else
             {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(false, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, 0);
+                OAM::Render(false, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, 0);
             }
             leading = 1;
             x += 9;
@@ -793,17 +789,17 @@ void dScStage_c::PS_Render()
         if (data_0209f248 == 1 && data_0209f2f0 == 0) {
             if (data_0209f238 == 1) {
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
-                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x10);
+                OAM::RenderSub((OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x10);
             } else {
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
-                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x10);
+                OAM::RenderSub((OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x10);
             }
             if (data_0209f238 == 2) {
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
-                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x10);
+                OAM::RenderSub((OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x10);
             } else {
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
-                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x10);
+                OAM::RenderSub((OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x10);
             }
         }
         if (data_0209f2c8 != 0xf) {
@@ -812,10 +808,12 @@ void dScStage_c::PS_Render()
             if (var_r8 != 0) {
                 do {
                     if (IsStarCollected(data_0209f2c8, var_sl) != 0) {
-                        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, var_sb, 0x60, -1, -1, 0);
+                        OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, var_sb, 0x60, -1,
+                                    -1, 0);
                         var_r7 = (var_r7 + 1) & 0xff;
                     } else {
-                        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1, -1, 0);
+                        OAM::Render(false, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1,
+                                    -1, 0);
                         sp18 = 1;
                     }
                     var_sb += 0x10;
@@ -823,33 +821,33 @@ void dScStage_c::PS_Render()
                 } while (var_r7 != var_r8);
             }
             if (sp18 == 0 && var_r8 != 7) {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1, -1, 0);
+                OAM::Render(false, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1, -1, 0);
             }
-            unsigned char r5v = _ZN8SaveData13GetCoinRecordEj(data_0209f2c8);
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM4COINE, 0x70, 0x70, -1, -1, 0);
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x80, 0x78, -1, -1, 0);
+            unsigned char r5v = SaveData::GetCoinRecord(data_0209f2c8);
+            OAM::Render(false, &_ZN3OAM4COINE, 0x70, 0x70, -1, -1, 0);
+            OAM::Render(false, &_ZN3OAM5TIMESE, 0x80, 0x78, -1, -1, 0);
             RenderNumber(r5v, 0x88, 0x70, 1, 8);
             if (IsStarCollected(data_0209f2c8, 0) != 0) {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0xb0, 0x78, -1, -1, 0);
+                OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0xb0, 0x78, -1, -1, 0);
             }
         } else {
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x70, 0x60, -1, -1, 0);
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x80, 0x60, -1, -1, 0);
+            OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x70, 0x60, -1, -1, 0);
+            OAM::Render(false, &_ZN3OAM5TIMESE, 0x80, 0x60, -1, -1, 0);
             RenderNumber(CountStarsCollectedInLevelToDisplay(0x1d), 0x88, 0x58, 1, 8);
         }
     } else if (data_0209d45c & 8) {
         if ((unsigned int)data_0209f2c8 < 0xfU) {
             unsigned char r4v = CountStarsCollectedInLevelToDisplay(data_0209f2c8);
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x58, 0x8c, -1, -1, 0);
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x68, 0x8c, -1, -1, 0);
+            OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x58, 0x8c, -1, -1, 0);
+            OAM::Render(false, &_ZN3OAM5TIMESE, 0x68, 0x8c, -1, -1, 0);
             RenderNumber(r4v, 0x70, 0x84, 1, 1);
-            unsigned char r4v2 = _ZN8SaveData13GetCoinRecordEj(data_0209f2c8);
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM4COINE, 0x88, 0x84, -1, -1, 0);
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x98, 0x8c, -1, -1, 0);
+            unsigned char r4v2 = SaveData::GetCoinRecord(data_0209f2c8);
+            OAM::Render(false, &_ZN3OAM4COINE, 0x88, 0x84, -1, -1, 0);
+            OAM::Render(false, &_ZN3OAM5TIMESE, 0x98, 0x8c, -1, -1, 0);
             RenderNumber(r4v2, 0xa0, 0x84, 1, 1);
         }
         if (data_0209f248 == 0xb) {
-            _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM5PAUSEE, 0x80, 0x60);
+            OAM::RenderSub((OamAttr *)&_ZN3OAM5PAUSEE, 0x80, 0x60);
         }
     }
 
@@ -858,17 +856,22 @@ void dScStage_c::PS_Render()
         if (data_0209f2e0 == 3) {
             if (data_0209f29c == 0) {
                 if (GetOwnerLanguage() == 5) {
-                    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46,
+                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
                 } else if (GetOwnerLanguage() == 3) {
-                    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e,
+                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
                 } else {
-                    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56,
+                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
                 }
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce,
+                            ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
             }
         } else {
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x26, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+            OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x26, ((data_0209f2e0 * 5) + 6) * 8,
+                        -1, -1, 0);
         }
         if (GetOwnerLanguage() == 5) {
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020abd98[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
@@ -897,30 +900,31 @@ void dScStage_c::PS_Render()
     if (data_0209f2e0 == 2) {
         if (data_0209f29c == 0) {
             if (GetOwnerLanguage() == 5) {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46, 0xa8, -1, -1, 0);
+                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46, 0xa8, -1, -1, 0);
             } else if (GetOwnerLanguage() == 3) {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e, 0xa8, -1, -1, 0);
+                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e, 0xa8, -1, -1, 0);
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56, 0xa8, -1, -1, 0);
+                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56, 0xa8, -1, -1, 0);
             }
         } else {
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce, 0xa8, -1, -1, 0);
+            OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce, 0xa8, -1, -1, 0);
         }
     } else {
-        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xe, ((data_0209f2e0 * 6) + 7) * 8, -1, -1, 0);
+        OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xe, ((data_0209f2e0 * 6) + 7) * 8, -1,
+                    -1, 0);
     }
 
     if (data_0209f238 == 2) {
-        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x62, 0x38, -1, -1, 0);
+        OAM::Render(true, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x62, 0x38, -1, -1, 0);
     } else {
-        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x64, 0x38, -1, -1, 0);
+        OAM::Render(true, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x64, 0x38, -1, -1, 0);
     }
 
     if (data_0209f238 == 1) {
-        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf6, 0x38, -1, -1, 0);
+        OAM::Render(true, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf6, 0x38, -1, -1, 0);
         return;
     }
-    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf4, 0x38, -1, -1, 0);
+    OAM::Render(true, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf4, 0x38, -1, -1, 0);
 }
 // @symbol _ZN10dScStage_c25PS_UpdateOkAndBackButtonsEb
 /* Lever (notes 6au): TWO coupled changes that only work together.
@@ -1415,7 +1419,7 @@ void dScStage_c::PS_Update()
         REG16(0x400000c) = (REG16(0x400000c) & 0x43) | 0x1010;
         data_0209f1ec = 3;
         data_0209f2c8 = SublevelToLevel(data_0209f2f8);
-        _ZN7Message16DisplayPauseTextEth(0x277, data_0209f2c8);
+        Message::DisplayPauseText(0x277, data_0209f2c8);
         data_0209f360[0] = 0x60;
         data_0209f360[1] = 0x100;
         data_0209f360[2] = 0x1a0;
@@ -1538,7 +1542,7 @@ void dScStage_c::PS_Update()
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xd00;
         REG16(0x400000c) = (REG16(0x400000c) & 0x43) | 0x1010;
         data_0209f1ec = 5;
-        _ZN7Message18DisplayPauseTextVSEt(0);
+        Message::DisplayPauseTextVS(0);
         data_0209f360[0] = 0xa0;
         data_0209f360[1] = 0x140;
         data_0209f360[2] = 0x1e0;
@@ -1636,7 +1640,7 @@ void dScStage_c::PS_Update()
         }
     }
     case 6: {
-        _ZN8dScene_c14StartSceneFadeEjjt(1, 0, 0);
+        dScene_c::StartSceneFade(1, 0, 0);
         data_0209b454 |= 0x40000000;
         data_0209b464 = data_0209b454;
         data_0209f280 = 1;
@@ -1681,7 +1685,7 @@ void dScStage_c::PS_Update()
             data_0209f2e0 = cur;
         }
         dScStage_c::UpdateMenuButtons(0);
-        _ZN7Message25DisplayControllerModeTextEt(0x280);
+        Message::DisplayControllerModeText(0x280);
         REG16(0x400000c) = (((data_0209f2dc + 0xd) << 8) | (REG16(0x400000c) & 0x43)) | 0x10;
         SetSubBg0Offset(0, 0);
         SetSubBg1Offset(0, 0);
@@ -2257,7 +2261,7 @@ void dScStage_c::PS_Update()
     }
     case 0xc: {
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xd00;
-        _ZN7Message19DisplaySaveMenuTextEt(0x290);
+        Message::DisplaySaveMenuText(0x290);
         data_0209f360[0] = 0xa0;
         data_0209f360[1] = 0x140;
         data_0209f360[2] = 0x1e0;
@@ -2349,7 +2353,7 @@ void dScStage_c::PS_Update()
     case 0xe: {
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xe00;
         data_0209f1ec = 0xf;
-        _ZN7Message21DisplaySaveStatusTextEt(0x295);
+        Message::DisplaySaveStatusText(0x295);
         data_0209d45c &= ~2;
         data_0209f2b8 = 0x78;
         return;
@@ -2358,9 +2362,9 @@ void dScStage_c::PS_Update()
         if (data_0209f2b8 == 0)
             return;
         if (data_0209f2b8 == 0x78)
-            _ZN8SaveData15SaveCurrentFileEv();
+            SaveData::SaveCurrentFile();
         if (data_0209f2b8 == 0x3c)
-            _ZN7Message21DisplaySaveStatusTextEt(0x296);
+            Message::DisplaySaveStatusText(0x296);
         data_0209f2b8 = data_0209f2b8 - data_0208ee44;
         if (data_0209f2b8 != 0)
             return;
@@ -2368,7 +2372,7 @@ void dScStage_c::PS_Update()
             data_0209f2c4 = 2;
             return;
         }
-        _ZN8dScene_c14StartSceneFadeEjjt(1, 0, 0);
+        dScene_c::StartSceneFade(1, 0, 0);
         data_0209f280 = 1;
         dScStage_c::PS_Cleanup();
         data_0209b454 |= 0x40000000;
@@ -2379,7 +2383,7 @@ void dScStage_c::PS_Update()
     case 0x10: {
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0x1100;
         data_0209f1ec = 0x11;
-        _ZN7Message19DisplayDontSaveTextEt(0x297);
+        Message::DisplayDontSaveText(0x297);
         data_0209f2e0 = 1;
         dScStage_c::PS_UpdateSaveMenu(1);
         return;
@@ -2451,7 +2455,7 @@ void dScStage_c::PS_Update()
             data_0209f2c4 = 2;
             return;
         }
-        _ZN8dScene_c14StartSceneFadeEjjt(1, 0, 0);
+        dScene_c::StartSceneFade(1, 0, 0);
         data_0209f280 = 1;
         dScStage_c::PS_Cleanup();
         data_0209b454 |= 0x40000000;
@@ -2461,7 +2465,7 @@ void dScStage_c::PS_Update()
     case 0x13: {
         int t = (data_0209f2d8 == 1);
         if (t != false && data_0209fc68 == 0) {
-            _ZN8dScene_c14StartSceneFadeEjjt(6, 1, 0);
+            dScene_c::StartSceneFade(6, 1, 0);
             data_0209f280 = 1;
             dScStage_c::PS_Cleanup();
             data_0209b454 |= 0x40000000;

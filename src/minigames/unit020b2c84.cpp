@@ -166,6 +166,8 @@ void func_0203d704(int *o, int *a, int *b);
 void func_0203d388(int *p, int angle);
 int RandomIntInternal(int *seed);
 void Mg_SpawnFx(int c, short a1, int *a2, int *r3, int *sp0);
+/* local extern: only sibling minigame scene headers declare these two, and the
+   named __cxa_vec_cleanup parameters hold the @NNN count noted above. */
 void NullDestructor_0203d47c(void);
 void __cxa_vec_cleanup(void *array, unsigned int count, unsigned int size, void (*dtor)(void *));
 void Mg_RenderSpriteOnMtx(void *a0, int a1, int a2, int a3, int a4, M *a5);
