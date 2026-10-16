@@ -5579,7 +5579,7 @@
     },
     "arm9:0x02038ea4": {
       "author": "tangosdev",
-      "name": "func_02038ea4"
+      "name": "_ZN9dBgCh_Gnd15DetectClsnSlot0Ev"
     },
     "arm9:0x02038f44": {
       "author": "tangosdev",
