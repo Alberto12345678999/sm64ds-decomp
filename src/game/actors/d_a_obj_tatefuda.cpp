@@ -78,6 +78,9 @@ enum daObjTatefuda_c_AssetId {
 #include "dBgW.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "Model.h"
+#include "dBgCh_Actr.h"
+#include "dCc_c.h"
 
 /* Local shadow declarations carried from the legacy files verbatim.
  * NOT reconciled against real project headers -- check include/*.h for
@@ -148,10 +151,7 @@ enum {
 #define FIXMUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
-extern void _ZN10dBgActor_c21UpdateModelPosAndRotYEv(void *c);
-extern void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void *c);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int b, int d, unsigned int e, unsigned int f);
-extern void _ZN5dCc_c5ClearEv(void *c);
 extern void Matrix4x3_FromRotationY(void *, int);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, Fix12i x, Fix12i y, Fix12i z);
@@ -169,43 +169,28 @@ extern int data_ov002_020ff0dc[];
 extern "C" void func_02012694(int a, void *b);
 extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_( u32 id, Fix12i x, Fix12i y, Fix12i z);
 
-extern void* _ZN8dActor_c10FindWithIDEj(unsigned int id);
 extern s16 Vec3_HorzAngle(const struct Vector3* v0, const struct Vector3* v1);
-extern int _ZN6Player7TryGrabER8dActor_c(char* p, char* a);
-extern int _ZN6Player9StartTalkER7fBase_cb(char* p, char* a, int b);
 extern s16 data_02082214[];
 extern u8 data_0209d660;
 extern u8 data_0209d6bc;
 extern u8 data_0209f284;
-extern int _ZN6Player12GetTalkStateEv(void *player);
 extern s32 Vec3_HorzDist(struct Vector3 *a, struct Vector3 *b);
 extern int func_ov002_020bec84(void *player, unsigned int i);
 extern int func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
-extern int _ZN6Player12FinishedAnimEv(void *player);
 extern void _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh( void *player, void *actor, unsigned int msg, struct Vector3 *pos, unsigned int a, unsigned int b);
 extern void func_02012790(int id);
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void* self, void* c);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
-extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void* p);
-extern int _ZNK10dBgCh_Actr8IsOnWallEv(void* p);
-extern int _ZNK10dBgCh_Actr12TouchesWaterEv(void* p);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* thiz, void* v, unsigned a, int b, unsigned c, unsigned d, unsigned e);
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
-extern int _ZN8dActor_c13DistToCPlayerEv(void* self);
 extern "C" unsigned int data_0209b454;
-extern "C" void _ZN6Player9DropActorEv(void *self);
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
 extern "C" u8 DecIfAbove0_Byte(u8 *p);
 extern "C" int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int fix);
 extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
 extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
-extern "C" void _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(void *self, const struct Vector3 *vec);
 extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *sm, void *m, int a, int b, int c, u32 j);
 extern "C" void _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-extern "C" void _ZN5dCc_c6UpdateEv(void *self);
 extern "C" void RebuildModelMatrix(struct daObjTatefuda_c *self);
-extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *);
-extern "C" void *_ZN7dBgW_Kc8LoadFileER13SharedFilePtr(void *);
 extern "C" void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block( void *self, KCL_File *f, const Matrix4x3 &m, s32 fix, s16 sh, CLPS_Block &b);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_( void *self, dActor_c *a, s32 radius, s32 height, Vector3_16 *v, Vector3_16 *v2);
 extern "C" CLPS_Block data_ov002_0210d714;
@@ -266,7 +251,7 @@ extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
    declares StartDetectingWater itself. */
 int daObjTatefuda_c::InitResources()
 {
-    void *mf = _ZN5Model8LoadFileER13SharedFilePtr(&SignPost_ModelFile);
+    void *mf = Model::LoadFile(SignPost_ModelFile);
     mModel.SetFile((BMD_File*)mf, 1, -1);
     mShadowModel.InitCuboid();
 
@@ -284,7 +269,7 @@ int daObjTatefuda_c::InitResources()
     UpdateClsnPosAndRot();
     UpdateShadowMatrix();
 
-    void *kf = _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&SignPost_ClsnFile);
+    void *kf = dBgW_Kc::LoadFile(SignPost_ClsnFile);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, (KCL_File*)kf, mClsnMat, 0x199, mAngleY, data_ov002_0210d714);
 
@@ -357,7 +342,7 @@ int daObjTatefuda_c::Behavior()
         /* Bit 0x4000000 of mFlags and of the global word; neither is named
            yet. */
         if (b != FALSE && (data_0209b454 & 0x4000000) && mHoldingPlayer != 0)
-            _ZN6Player9DropActorEv(mHoldingPlayer);
+            mHoldingPlayer->DropActor();
     }
 
     {
@@ -380,20 +365,18 @@ int daObjTatefuda_c::Behavior()
     if (mHidden != 0) {
         /* mFlags bit 8 is dActor_c's "off screen" bit. */
         enum Bool b = (enum Bool)((mFlags & 8) != 0);
-        if (b != FALSE && DecIfAbove0_Byte(&mRespawnDelay) == 0
-            && _ZN8dActor_c13DistToCPlayerEv(this) > 0x7d0000)
+        if (b != FALSE && DecIfAbove0_Byte(&mRespawnDelay) == 0 && DistToCPlayer() > 0x7d0000)
             mHidden = 0;
         return 1;
     }
 
     if (mPoundsLeft == 0) {
         enum Bool b = (enum Bool)((mFlags & 8) != 0);
-        if (b != FALSE && DecIfAbove0_Byte(&mRespawnDelay) == 0
-            && _ZN8dActor_c13DistToCPlayerEv(this) > 0x7d0000) {
+        if (b != FALSE && DecIfAbove0_Byte(&mRespawnDelay) == 0 && DistToCPlayer() > 0x7d0000) {
             mPoundsLeft = 2;
             mPosY = mHomePosY;
-            _ZN10dBgActor_c21UpdateModelPosAndRotYEv(this);
-            _ZN10dBgActor_c19UpdateClsnPosAndRotEv(this);
+            UpdateModelPosAndRotY();
+            UpdateClsnPosAndRot();
             UpdateShadowMatrix();
         }
     }
@@ -425,7 +408,7 @@ int daObjTatefuda_c::Behavior()
             ((int *)&vec)[1] = y2;
             ((int *)&vec)[2] = z2;
             vec2 = vec;
-            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(this, &vec2);
+            DisappearPoofDustAt(vec2);
             Reset();
             return 1;
         }
@@ -438,8 +421,8 @@ int daObjTatefuda_c::Behavior()
     if (mHidden == 0)
         _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
     UpdateState();
-    _ZN5dCc_c5ClearEv(&mdCcAc_c);
-    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
     {
         int s = mState;
         if (s == STATE_THROWN) {
@@ -605,12 +588,11 @@ void daObjTatefuda_c::Thrown()
         s16* pa = &mAngleX;
         *pa = *pa + 0x2000;
     }
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, 0);
+    UpdatePos(0);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0 ||
-        _ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn) != 0 ||
-        _ZNK10dBgCh_Actr12TouchesWaterEv(&mWithMeshClsn) != 0) {
+    if (mWithMeshClsn.IsOnGround() != 0 || mWithMeshClsn.IsOnWall() != 0 ||
+        mWithMeshClsn.TouchesWater() != 0) {
         Kill();
         return;
     }
@@ -618,7 +600,7 @@ void daObjTatefuda_c::Thrown()
     /* otherOwner: the uniqueID of the actor whose collider this one touched. */
     id = mdCcAc_c.otherOwner;
     if (id != 0) {
-        found = _ZN8dActor_c10FindWithIDEj(id);
+        found = dActor_c::FindWithID(id);
         if (found != 0) {
             if (found != mLastHolder) {
                 b = ((dActor_c *)found)->actorID;
@@ -642,7 +624,7 @@ void daObjTatefuda_c::Thrown()
     b = mFlags & 8;
     b = b != 0;
     if (b) {
-        if (_ZN8dActor_c13DistToCPlayerEv(this) > 0x7d0000) {
+        if (DistToCPlayer() > 0x7d0000) {
             Reset();
         }
     }
@@ -678,11 +660,7 @@ void daObjTatefuda_c::InitDropped()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c7DroppedEv
 bool ApproachLinear(short &value, short target, short step);
-extern "C" void _ZN8dActor_c9UpdatePosEP5dCc_c(void* self, void* c);
 extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
-extern "C" int _ZNK10dBgCh_Actr10IsOnGroundEv(void* p);
-extern "C" int _ZNK10dBgCh_Actr8IsOnWallEv(void* p);
-extern "C" int _ZNK10dBgCh_Actr12TouchesWaterEv(void* p);
 
 /* DROPPED, update: turn the X angle toward 0x4000 (a quarter turn) by at most
  * 0x1000 per frame, move, and Kill the sign if it touched the ground, a wall or
@@ -690,11 +668,9 @@ extern "C" int _ZNK10dBgCh_Actr12TouchesWaterEv(void* p);
  * mesh collider off. */
 void daObjTatefuda_c::Dropped(){
     ApproachLinear(mAngleX, 0x4000, 0x1000);
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, 0);
+    UpdatePos(0);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn)
-        || _ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn)
-        || _ZNK10dBgCh_Actr12TouchesWaterEv(&mWithMeshClsn)) {
+    if (mWithMeshClsn.IsOnGround() || mWithMeshClsn.IsOnWall() || mWithMeshClsn.TouchesWater()) {
         Kill();
     } else {
         RebuildModelMatrix(this);
@@ -840,7 +816,7 @@ void daObjTatefuda_c::Talk()
         plPos.z = pPos[2];
     }
 
-    talk = _ZN6Player12GetTalkStateEv(player);
+    talk = player->GetTalkState();
     switch (talk) {
     case 0:
         st = mTalkStep;
@@ -875,11 +851,9 @@ void daObjTatefuda_c::Talk()
                     if (func_ov002_020bec84(player, 1) != 0
                         || func_ov002_020bec84(player, 0) != 0) {
                         func_ov002_020bec9c(player, 2, 0x40000000, 0x1000, 0);
-                    } else if (func_ov002_020bec84(player, 2) != 0
-                               && _ZN6Player12FinishedAnimEv(player) != 0) {
+                    } else if (func_ov002_020bec84(player, 2) != 0 && player->FinishedAnim() != 0) {
                         func_ov002_020bec9c(player, 3, 0x40000000, 0x1000, 0);
-                    } else if (func_ov002_020bec84(player, 3) != 0
-                               && _ZN6Player12FinishedAnimEv(player) != 0) {
+                    } else if (func_ov002_020bec84(player, 3) != 0 && player->FinishedAnim() != 0) {
                         _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh(
                             player, this, (s16)msgId, &msgPos, 0, 1);
                     }
@@ -930,30 +904,36 @@ void daObjTatefuda_c::Talk()
  * absolute 16-bit difference. Then the player is remembered in mTalkingPlayer
  * (before Player::StartTalk is tried, so it stays set if that refuses) and, on
  * success, the sign enters TALK. Returns 1 only in that case. */
-int daObjTatefuda_c::TryStartTalk(){
-  unsigned int id = mdCcAc_c.otherOwner;
-  if (id == 0) return 0;
-  if ((mdCcAc_c.hitFlags & 0x8000000) == 0) return 0;
-  if (mPoundsLeft == 0) return 0;
-  {
-    dActor_c* other = (dActor_c*)_ZN8dActor_c10FindWithIDEj(id);
-    if (other == 0) goto fail;
+int daObjTatefuda_c::TryStartTalk() {
+    unsigned int id = mdCcAc_c.otherOwner;
+    if (id == 0)
+        return 0;
+    if ((mdCcAc_c.hitFlags & 0x8000000) == 0)
+        return 0;
+    if (mPoundsLeft == 0)
+        return 0;
     {
-      int b = (int)(other->actorID == ACTOR_PLAYER);
-      if (b != false) goto success;
+        dActor_c *other = dActor_c::FindWithID(id);
+        if (other == 0)
+            goto fail;
+        {
+            int b = (int)(other->actorID == ACTOR_PLAYER);
+            if (b != false)
+                goto success;
+        }
+    fail:
+        return 0;
+    success: {
+        int ang = Vec3_HorzAngle((struct Vector3 *)&mPosX, (struct Vector3 *)&other->mPosX);
+        if (AngleDiff(ang, mAngleY) > 0x4000)
+            return 0;
+        mTalkingPlayer = (Player *)other;
+        if (((Player *)other)->StartTalk(*this, false) == 0)
+            return 0;
+        SetState(STATE_TALK);
+        return 1;
     }
-  fail:
-    return 0;
-  success:
-    {
-      int ang = Vec3_HorzAngle((struct Vector3*)&mPosX, (struct Vector3*)&other->mPosX);
-      if (AngleDiff(ang, mAngleY) > 0x4000) return 0;
-      mTalkingPlayer = (Player *)other;
-      if (_ZN6Player9StartTalkER7fBase_cb((char *)other, (char *)this, 0) == 0) return 0;
-      SetState(STATE_TALK);
-      return 1;
     }
-  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -975,7 +955,7 @@ void daObjTatefuda_c::CheckGrabOrBreak(){
   dActor_c* other;
   unsigned int id = mdCcAc_c.otherOwner;
   if (id == 0) return;
-  other = (dActor_c*)_ZN8dActor_c10FindWithIDEj(id);
+  other = dActor_c::FindWithID(id);
   if (other == 0) return;
   {
     int b = (int)(other->actorID == ACTOR_PLAYER);
@@ -991,7 +971,8 @@ void daObjTatefuda_c::CheckGrabOrBreak(){
     if (AngleDiff(ang, mAngleY) <= 0x4000) return;
   }
   if ((mdCcAc_c.hitFlags & 0x1000) == 0) return;
-  if (_ZN6Player7TryGrabER8dActor_c((char *)other, (char *)this) == 0) return;
+  if (((Player *)other)->TryGrab(*this) == 0)
+      return;
   mHoldingPlayer = (Player *)other;
   SetState(STATE_CARRIED);
 }
@@ -1255,8 +1236,8 @@ void daObjTatefuda_c::Reset()
   mAngleY = mHomeAngleY;
   mAngleZ = mHomeAngleZ;
   mPoundsLeft = 2;
-  _ZN10dBgActor_c21UpdateModelPosAndRotYEv(this);
-  _ZN10dBgActor_c19UpdateClsnPosAndRotEv(this);
+  UpdateModelPosAndRotY();
+  UpdateClsnPosAndRot();
   UpdateShadowMatrix();
   SetState(STATE_IDLE);
   unk_31c = 0;
@@ -1265,7 +1246,7 @@ void daObjTatefuda_c::Reset()
   {
     _ZN4dBgW7DisableEv(&mMeshCollider);
   }
-  _ZN5dCc_c5ClearEv(&mdCcAc_c);
+  mdCcAc_c.Clear();
 }
 
 /* -------------------------------------------------------------------------- */

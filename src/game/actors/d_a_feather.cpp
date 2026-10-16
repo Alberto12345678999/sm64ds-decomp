@@ -40,6 +40,7 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 /* --------------------------------------------------------------------------
  * The one file-scope extern "C" region. Everything here is reached from a
@@ -180,7 +181,7 @@ int daFeather_c::Behavior()
         *(short*)&mSwayAngle += 0x400;
         u16 newv = mSwayAngle;
         int idx = ((newv >> 4) << 1) + 1;
-        mHorzSpeed = (int)(((s64)mDriftSpeed * data_02082214[idx] + 0x800) >> 12);
+        mHorzSpeed = FX_MUL(mDriftSpeed, data_02082214[idx]);
     }
 
     _Z14ApproachLinearRiii(&mDriftSpeed, 0x10000, 0x332);
@@ -295,7 +296,7 @@ void func_ov002_020b2c44(daFeather_c *c)
         r5 = c->mPosY - rg.clsnY;
         if (r5 <= 0x1000)
             r5 = 0x1000;
-        r4 = 0x96000 - (int)(((long long)r5 * 0x180 + 0x800) >> 12);
+        r4 = 0x96000 - FX_MUL(r5, 0x180);
         if (r4 < 0xa000)
             r4 = 0xa000;
 

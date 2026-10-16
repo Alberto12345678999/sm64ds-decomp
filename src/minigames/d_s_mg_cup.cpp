@@ -29,6 +29,7 @@ enum dScMgCup_c_AssetId {
 #include "decl_common.h"
 #include "OamAttr.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* sCupRoundTable: swap count, then two speed-row nibbles.
    StateSetup reads byte [kind * 2]. df024 reads .lo / .hi. */
@@ -607,7 +608,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX - (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX - FX_MUL(cosine, mHalfX);
     }
     {
         int slot = mIds[mSwap0];
@@ -630,7 +631,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX + (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX + FX_MUL(cosine, mHalfX);
     }
     {
         int slot = mIds[mSwap1];

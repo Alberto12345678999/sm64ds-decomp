@@ -46,8 +46,11 @@
 #include "dMg3DEspAnimSet_c.h"
 #include "TextureTransformer.h"
 #include "TextureSequence.h"
+#include "MaterialChanger.h"
+#include "G3X.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "Model.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -102,17 +105,12 @@ void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-int _ZN5Model8LoadFileER13SharedFilePtr(void *p);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
-void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* r);
-void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);
-void _ZN9ModelBase7SetFileEP8BMD_Fileii(char *t, int f, int a, int b);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *anim, BCA_File *bca, int frame, int speed, u16 flags);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
-void _ZN5Model12SetPolygonIDEi(char *t, int id);
 void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void*, void*);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
@@ -133,7 +131,6 @@ void Mg_SetNextBanner(int);
 void Mg_SetSharedState(int);
 void Mg_ShowBanner(int, int, int, int, int, short);
 void Mg_SetTopScreenYOffset(int);
-void _ZN3G3X6SetFogEbiii(int, int, int, int);
 void InitialiseVramGlobals(void);
 void Deallocate(void*);
 int LoadFile(int handle);
@@ -301,18 +298,18 @@ void dMg3DEspAnimSet_c::InitResources()
     char *w;
     char *w2;
     mSpeed = 0x800;
-    bmd = _ZN5Model8LoadFileER13SharedFilePtr(&gEspHamonModelFile);
+    bmd = (int)Model::LoadFile(gEspHamonModelFile);
     bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspHamonAnimFile);
-    _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(bmd, &data_ov006_0213c7f4);
+    MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&data_ov006_0213c7f4);
     w = o;
     w2 = o + 0x12c;
     for (i = 0; i < 3; i++) {
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(w, bmd, 1, m1);
+        ((ModelBase *)w)->SetFile((BMD_File *)bmd, 1, m1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000,
                                                     mSpeed, z1);
         _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &data_ov006_0213c7f4, 0x40000000,
                                                            mSpeed, z2);
-        _ZN5Model12SetPolygonIDEi(w, (i + 1) & 0xff);
+        ((Model *)w)->SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;
         w += 0x64;
         w2 += 0x14;
@@ -490,7 +487,7 @@ int dMg3DEspModel_c::InitResources()
     char* c = (char*)this;
     if (func_020179b4(&gEspCardModelFile, c + 0xc, 1) == 0)
         return 0;
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&gEspCardTexSeqFile);
+    TextureSequence::LoadFile(gEspCardTexSeqFile);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardStartAnimFile);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardWaitAnimFile);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardOpenAnimFile);
@@ -1647,7 +1644,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     data_0209d45c = 0x11;
     data_0209d454 = 0x10;
-    _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
+    G3X::SetFog(false, 0, 2, 0x1000);
     InitialiseVramGlobals();
 
     /* main BG0CNT: priority 1 */
@@ -1730,7 +1727,6 @@ s32 dScMg3DEsp_c::InitResources()
 }
 
 extern "C" {
-extern void *_ZN7fBase_cnwEj(unsigned int sz);
 extern void *_ZN11dScMgBase_cC2Ev(void *p);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
 extern void *_ZN5ModelC1Ev(void *);

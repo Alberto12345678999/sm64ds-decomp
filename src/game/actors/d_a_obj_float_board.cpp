@@ -22,9 +22,9 @@
  *   a base of that type, and the definition in src/engine/collision/d_bg_w.cpp still says
  *   int *.
  * Leftover: sine table data_02082214 (arm9).
- * Leftover: mBobPhase's second spelling ((char *)this + 0x300, + 0x38):
- *   collapsing it to one member access lets mwcc reuse the loaded value
- *   instead of reloading it, which the ROM does not.
+ * Leftover: Behavior bumps mBobPhase through ctr, then reads it back as
+ *   *(unsigned short *)&mBobPhase -- the reload the ROM does after the
+ *   store.
  * Leftover: the rider position goes through one Vector3 * (member loads
  *   cost an instruction and DIFF).
  * Leftover: abstract class -- no factory, no g_profile row (S14).
@@ -210,9 +210,8 @@ int daObjFloatBoard_c::Behavior()
         if (ApproachLinear(mSinkOffset, mRider != 0 ? -0x28000 : 0, 0x5000) != 0) {
             short *ctr = &mBobPhase;
             short cval = *ctr;
-            char *st = (char *)this + 0x300;
             *ctr = (short)(cval + 0xa00);
-            j = (*(unsigned short *)(st + 0x38) >> 4) * 2;
+            j = (*(unsigned short *)&mBobPhase >> 4) * 2;
             tv = data_02082214[j];
             mBobOffset = 10 * tv;
         }

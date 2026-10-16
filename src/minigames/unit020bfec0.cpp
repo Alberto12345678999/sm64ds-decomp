@@ -16,6 +16,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "PlayerInput.h"
+#include "G3i.h"
 #include "MascotWalker.h"
 #include "Presenter.h"
 #include "Dealer.h"
@@ -98,7 +99,6 @@ void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void *, void *, int, 
 void *_ZN18TextureTransformerC1Ev(void *);
 void _ZN18TextureTransformerD1Ev(void *);
 int _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int, void *);
-int _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void *, void *, void *, int, void *);
 void _ZN5Model12HideMaterialEii(void *, int, int);
 void _ZN5Model12ShowMaterialEii(void *, int, int);
 void _ZN5Model12SetPolygonIDEi(void *, int);
@@ -2784,8 +2784,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self)
         data_02082214[idx], data_02082214[idx + 1],
         0x1555, 0x1000, 0x1388000, 0x1000, 1, &self->projMat);
 
-    _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(
-        &self->target, &up, &self->eye, 1, &self->viewMat);
+    G3i::LookAt_(&self->target, &up, &self->eye, true, (Matrix4x3 *)&self->viewMat);
 
     _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
 

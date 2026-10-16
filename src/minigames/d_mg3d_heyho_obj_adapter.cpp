@@ -64,13 +64,12 @@ int Heyho_Construct(char *t)
 /* ---- Heyho_Destruct ---- */
 namespace n020c6f3c {
 extern "C" {
-extern int _ZN13SharedFilePtr7ReleaseEv(void*);
 extern int _ZN9ModelAnimD1Ev(void*);
 extern HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile;
 extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
 int Heyho_Destruct(int *c) {
-    _ZN13SharedFilePtr7ReleaseEv(&gMgPHeyhoMiniModelFile);
-    _ZN13SharedFilePtr7ReleaseEv(&gMgPHeyhoWaitAnimFile);
+    gMgPHeyhoMiniModelFile.Release();
+    gMgPHeyhoWaitAnimFile.Release();
     _ZN9ModelAnimD1Ev((char *)c + 0x38);
     return (int)c;
 }

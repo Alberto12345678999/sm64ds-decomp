@@ -51,6 +51,7 @@ enum dScMgPachinko2_c_AssetId {
 #include "types.h"
 #include "dScMgPachinko2_c.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 namespace Sound {
     void PlayBank2_2D(unsigned int id);
@@ -2114,8 +2115,10 @@ void dScMgPachinko2_c::Ball_HitAt(int x, int z, int d)
                 *(u16 *)(q + 0x4694) = 0xb000;
             mBalls[i].x = x << 12;
             mBalls[i].y = (z - 0x12) << 12;
-            mBalls[i].vx = (int)(((s64)data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2 + 1] * 0x2000 + 0x800) >> 12);
-            mBalls[i].vy = (int)(((s64)data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2] * 0x2000 + 0x800) >> 12);
+            mBalls[i].vx =
+                FX_MUL(data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2 + 1], 0x2000);
+            mBalls[i].vy =
+                FX_MUL(data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2], 0x2000);
             *(int *)(o + i * 0x40 + 0x4684) = 0;
             Sound::PlayBank2_2D(0x199);
             return;
@@ -2317,11 +2320,11 @@ void dScMgPachinko2_c::Ball_StateAim(int i) {
             }
             {
                 s16 c = data_02082214[((u16)this->mBalls[i].angle >> 4) * 2 + 1];
-                this->mBalls[i].vx = (s32)(((s64)c * this->mBalls[i].speed + 0x800) >> 12);
+                this->mBalls[i].vx = FX_MUL(c, this->mBalls[i].speed);
             }
             {
                 s16 s = data_02082214[((u16)this->mBalls[i].angle >> 4) * 2];
-                this->mBalls[i].vy = (s32)(((s64)s * this->mBalls[i].speed + 0x800) >> 12);
+                this->mBalls[i].vy = FX_MUL(s, this->mBalls[i].speed);
             }
             this->mBalls[i].timer = 0;
             this->mBalls[i].spin = this->mBalls[i].vx >> 2;
@@ -2354,14 +2357,14 @@ void dScMgPachinko2_c::Ball_StateFlying(int i) {
         {
             short tv = data_02082214[idx2 + 1];
             int spd = mBalls[i].speed;
-            mBalls[i].x += (int)(((long long)tv * spd + 0x800) >> 12);
+            mBalls[i].x += FX_MUL(tv, spd);
         }
 
         idx = (unsigned short)mBalls[i].angle >> 4;
         {
             short tv = data_02082214[idx * 2];
             int spd = mBalls[i].speed;
-            mBalls[i].y += (int)(((long long)tv * spd + 0x800) >> 12);
+            mBalls[i].y += FX_MUL(tv, spd);
         }
 
         *(int*)(c + 0x4684 + i * 0x40) += 0x10;

@@ -28,6 +28,7 @@
 #pragma defer_codegen off
 #include "daSBird_c.h"
 #include "common.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -105,12 +106,12 @@ void daSBird_c::func_ov009_02111234()
         u16 a = *(u16 *)&mPrevAngleX;
         s32 t = mFlySpeed;
         s16 s = data_02082214[((a >> 4) << 1) + 1];
-        mHorzSpeed = (s32)(((s64)t * s + 0x800) >> 12);
+        mHorzSpeed = FX_MUL(t, s);
     }
     {
         u16 a = *(u16 *)&mPrevAngleX;
         s32 t = mFlySpeed;
         s16 s = data_02082214[(a >> 4) << 1];
-        mVertSpeed = (s32)(((s64)t * s + 0x800) >> 12);
+        mVertSpeed = FX_MUL(t, s);
     }
 }

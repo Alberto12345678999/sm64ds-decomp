@@ -19,6 +19,7 @@
  */
 
 #include "daObjFire_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 
 extern "C" {
@@ -30,6 +31,22 @@ void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, dActor_c *actor, Fix12i radius, Fix12i height,
     u32 flags, u32 vulnFlags);
+}
+
+/* Actor ID 0x13d is BLUE_FLAME, 0xbf is PLAYER. dActor_c::mFlags bit
+ * 0x20000 is the first of the two yoshi-mouth states, set while Yoshi is
+ * eating the actor. These int-returning predicates are what make the ROM materialize 0/1 before
+ * testing it. */
+static inline int IsBlueFlame(dActor_c *actor) {
+    return actor->actorID == 0x13d;
+}
+
+static inline int IsBeingEaten(dActor_c *actor) {
+    return (actor->mFlags & 0x20000) != 0;
+}
+
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
 }
 
 // @symbol daObjFire_c_classInit_OBJ_RED_FIRE
@@ -44,28 +61,28 @@ extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_BLUE_FIRE()
     return new daObjFire_c();
 }
 
-struct FireSpawnInfo {
-    daObjFire_c *(*classInit)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-typedef char FireSpawnInfo_size_must_be_0x1c[sizeof(FireSpawnInfo) == 0x1c ? 1 : -1];
-
 // @symbol g_profile_OBJ_RED_FIRE
-extern "C" FireSpawnInfo g_profile_OBJ_RED_FIRE = {
-    daObjFire_c_classInit_OBJ_RED_FIRE, 0x013c, 0x013a, 0x00800003,
-    0x00000000, 0x00100000, 0x01000000, 0x00000000
+extern "C" SpawnInfo<daObjFire_c> g_profile_OBJ_RED_FIRE = {
+    daObjFire_c_classInit_OBJ_RED_FIRE,
+    0x013c,
+    0x013a,
+    0x00800003,
+    0x00000000,
+    0x00100000,
+    0x01000000,
+    0x00000000,
 };
 
 // @symbol g_profile_OBJ_BLUE_FIRE
-extern "C" FireSpawnInfo g_profile_OBJ_BLUE_FIRE = {
-    daObjFire_c_classInit_OBJ_BLUE_FIRE, 0x013d, 0x013b, 0x00800003,
-    0x00000000, 0x00100000, 0x02000000, 0x00000000
+extern "C" SpawnInfo<daObjFire_c> g_profile_OBJ_BLUE_FIRE = {
+    daObjFire_c_classInit_OBJ_BLUE_FIRE,
+    0x013d,
+    0x013b,
+    0x00800003,
+    0x00000000,
+    0x00100000,
+    0x02000000,
+    0x00000000,
 };
 
 // @symbol _ZN11daObjFire_c13OnYoshiTryEatEv
@@ -118,12 +135,12 @@ int daObjFire_c::Behavior()
     mPosZ = mFlamePos.z;
     mFlags &= ~0xc0000;
 
-    if ((int)(actorID == 0x13d) != 0)
+    if (IsBlueFlame(this))
         func_020228dc(pos.x, pos.y, pos.z);
     else
         func_0202293c(pos.x, pos.y, pos.z);
 
-    if ((int)((mFlags & 0x20000) != 0) != 0) {
+    if (IsBeingEaten(this)) {
         mDisappearTimer = 0x1e;
         particlePos.x = mFlamePos.x;
         particlePos.y = mFlamePos.y;
@@ -138,7 +155,7 @@ int daObjFire_c::Behavior()
         if (id != 0) {
             dActor_c *actor = FindWithID(id);
             if (actor != 0) {
-                if ((int)(actor->actorID == 0xbf) != 0) {
+                if (IsPlayerActor(actor)) {
                     if ((mdCcAc_c.hitFlags & 0x8000) == 0) {
                         ((Player *)actor)->Burn();
                     }

@@ -171,7 +171,7 @@ had no alternative:
 
 ```sh
 src/game/stages/d_scene.cpp (ResetHardwareRegisters)  74 volatile hits, all 0x0400xxxx
-src/_ZN2GX13SetBankForTexEt.cpp                  25 volatile hits, all VRAM banks
+src/engine/gx/GX_VramCnt.cpp (SetBankForTex)     25 volatile hits, all VRAM banks
 src/engine/gx/G2x.cpp (SetBGyAffine)              the register block is a PARAMETER
 ```
 

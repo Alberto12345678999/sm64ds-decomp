@@ -54,18 +54,6 @@ void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
    the opt_common_subs bodies -- a POD layout has no member spelling. */
 dBgPi *_ZN5dBgPiD1Ev(dBgPi *self);
 dBgPi *_ZN5dBgPiC1Ev(dBgPi *self);
-/* local extern: byte-required spellings inside UpdateExtraContinous --
-   each of these is a direct-call site in the ROM. */
-void _ZNK5dBgPi6CopyToERS_(const dBgPi *self, dBgPi &dst);                 /* local extern: ExtraCont's ROM calls are direct */
-void _ZN5dBgPiaSERKS_(dBgPi *self, const dBgPi &other);                    /* local extern: ExtraCont's ROM calls are direct */
-void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-    dBgCh_Lin *self, Vector3 *a, Vector3 *b, dActor_c *actor); /* local extern: ExtraCont's ROM calls are direct */
-int  _ZN9dBgCh_Lin10DetectClsnEv(dBgCh_Lin *self);                         /* local extern: ExtraCont's ROM calls are direct */
-void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const SurfaceInfo *self,
-                                             Vector3 &out);               /* local extern: ExtraCont's ROM calls are direct */
-void _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(dBgCh_SphCrr *self,
-                                              const dBgPi &r);            /* local extern: ExtraCont's ROM calls are direct */
-
 extern int data_02099368[];  /* _ZTV5dBgPi -- same address, see symbols.txt */
 
 /* This TU's own workers, defined below. */
@@ -119,8 +107,8 @@ extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     self->mRadius = radius;
     self->mHeight = height;
     self->mFlags = 0;
-    self->mSphereClsn.unk_10c = a;
-    self->unk_130 = b;
+    self->mSphereClsn.mMotionAngPtr = a;
+    self->mAngPtr = b;
     self->mScale = 0x1000;
 }
 
@@ -137,9 +125,9 @@ extern "C" void func_02037318(char *self)
         return;
     clsn->mFlags |= 0x100;
     src = &clsn->mSphereClsn.unk_0fc;
-    *(int *)(self + 0x1ac) = src[0];
-    *(int *)(self + 0x1b0) = src[1];
-    *(int *)(self + 0x1b4) = src[2];
+    clsn->mGroundNormal.x = src[0];
+    clsn->mGroundNormal.y = src[1];
+    clsn->mGroundNormal.z = src[2];
 }
 
 // @symbol func_020371fc
@@ -152,20 +140,21 @@ extern "C" void func_020371fc(char *self)
     if ((clsn->mSphereClsn.flags & 1) == 0) return;
     if ((clsn->mSphereClsn.flags & 8) == 0) return;
     if ((clsn->mFlags & 0x100) == 0) return;
-    if (*(int *)(self + 0x1b0) >= 0xf20) return;
+    if (clsn->mGroundNormal.y >= 0xf20)
+        return;
     if (((Player *)clsn->mActor)->IsInAir()) return;
     {
         Vector3 pos;
         Vector3 *objpos = (Vector3 *)&clsn->mActor->mPosX;
         dBgCh_Gnd rg;
         pos.x = objpos->x;
-        pos.y = objpos->y + *(int *)(self + 0x18);
+        pos.y = objpos->y + clsn->mRadius;
         pos.z = objpos->z;
         rg.SetObjAndPos(pos, clsn->mActor);
         if (rg.DetectClsn() != 0) {
             int cy = rg.clsnY;
             int diff = objpos->y - cy;
-            if (diff > 0 && diff < (*(int *)(self + 0x18) << 1)) {
+            if (diff > 0 && diff < (clsn->mRadius << 1)) {
                 objpos->y = cy;
                 clsn->mSphereClsn.flags |= 4;
                 clsn->mSphereClsn.mClsnResult1 = rg;
@@ -197,14 +186,13 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
     int sy;
     struct Vector3 v;
     struct Vector3 *p6c;
-    char *obj = *(char **)((char *)&mActor);
-    struct Vector3 *src = (struct Vector3 *)(obj + 0x5c);
-    struct Vector3 *p68 = (struct Vector3 *)(obj + 0x68);
+    struct Vector3 *src = (struct Vector3 *)&mActor->mPosX;
+    struct Vector3 *p68 = (struct Vector3 *)&mActor->mPrevPosX;
 
     if (IsOnGround() && func_020355a0((int *)this)
         && ShouldUpdatePos()) {
-        func_02038324((void *)mSphereClsn.GetFloorResult(), (int)src,
-                      mSphereClsn.unk_10c, unk_130);
+        func_02038324((void *)mSphereClsn.GetFloorResult(), (int)src, mSphereClsn.mMotionAngPtr,
+                      mAngPtr);
     }
     onGround = IsOnGround();
     ClearAllGroundFlags();
@@ -217,19 +205,19 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
         &mSphereClsn, &v, mRadius, mActor);
     mSphereClsn.mScale = mScale;
     if (src->y - p68->y > 0) {
-        *(unsigned char *)((char *)&mSphereClsn.flags) |= 0x20;
+        mSphereClsn.flags |= 0x20;
     }
     if (mSphereClsn.DetectClsn()) {
-        p6c = (struct Vector3 *)((char *)&mSphereClsn.disp);
+        p6c = &mSphereClsn.disp;
         if (mSphereClsn.flags & 4) {
             func_020371b0(this, onGround);
         }
         if (ShouldUpdatePos()) {
             src->x += p6c->x;
             if (ShouldUpdatePosY()) {
-                *(int *)((char *)src + 4) += p6c->y;
+                src->y += p6c->y;
             }
-            *(int *)((char *)src + 8) += p6c->z;
+            src->z += p6c->z;
         }
     }
     if (onGround == 0)
@@ -246,12 +234,12 @@ void dBgCh_Actr::UpdateDiscreteNoLava_2()
     int sy;
     struct Vector3 v;
     struct Vector3 *p6c;
-    struct Vector3 *src = (struct Vector3 *)(*(char **)((char *)&mActor) + 0x5c);
-    char *obj = *(char **)((char *)&mActor);
+    struct Vector3 *src = (struct Vector3 *)&mActor->mPosX;
+    dActor_c *obj = mActor;
 
     onGround = IsOnGround();
     ClearAllGroundFlags();
-    v.x = *(int *)(src);
+    v.x = src->x;
     sy = src->y;
     v.y = sy;
     v.z = src->z;
@@ -259,20 +247,20 @@ void dBgCh_Actr::UpdateDiscreteNoLava_2()
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
         &mSphereClsn, &v, mRadius, mActor);
     mSphereClsn.mScale = mScale;
-    if (src->y - *(int *)(obj + 0x6c) > 0) {
-        *(unsigned char *)((char *)&mSphereClsn.flags) |= 0x20;
+    if (src->y - obj->mPrevPosY > 0) {
+        mSphereClsn.flags |= 0x20;
     }
     if (mSphereClsn.func_02038a38()) {
-        p6c = (struct Vector3 *)((char *)&mSphereClsn.disp);
+        p6c = &mSphereClsn.disp;
         if (mSphereClsn.flags & 4) {
             func_020371b0(this, onGround);
         }
         if (ShouldUpdatePos()) {
             src->x += p6c->x;
             if (ShouldUpdatePosY()) {
-                *(int *)((char *)src + 4) += p6c->y;
+                src->y += p6c->y;
             }
-            *(int *)((char *)src + 8) += p6c->z;
+            src->z += p6c->z;
         }
     }
     if (onGround == 0)
@@ -302,23 +290,23 @@ extern "C" void func_02036acc(char *c)
     dBgPiLoc res0;
     dBgPiLoc res1;
     Vector3 lineStart, lineEnd;
-    char* a;
+    dActor_c *a;
     dBgCh_Actr *self = (dBgCh_Actr *)c;
 
-    a = *(char**)(c + 0x14);
-    pos = (int*)(a + 0x5c);
-    prev = (int*)(a + 0x68);
+    a = self->mActor;
+    pos = &a->mPosX;
+    prev = &a->mPrevPosX;
 
     if (self->IsOnGround() && func_020355a0((int*)c) && self->ShouldUpdatePos())
-        func_02038324((void*)((dBgCh_SphCrr *)(c + 0x20))->GetFloorResult(), (int)pos,
-                      *(int*)(c + 0x12c), *(int*)(c + 0x130));
+        func_02038324((void *)self->mSphereClsn.GetFloorResult(), (int)pos,
+                      self->mSphereClsn.mMotionAngPtr, self->mAngPtr);
 
     floorFlag = 0;
     _ZN5dBgPiC1Ev((dBgPi *)&res0);
     wallFlag = 0;
     _ZN5dBgPiC1Ev((dBgPi *)&res1);
 
-    height = *(int*)(c + 0x1c);
+    height = self->mHeight;
     {
         int tx = prev[0];
         int tz = prev[2];
@@ -335,13 +323,12 @@ extern "C" void func_02036acc(char *c)
         lineEnd.y = ty;
         lineEnd.z = tz;
     }
-    ((dBgCh_Lin *)(c + 0x134))->SetObjAndLine(*&lineStart, *&lineEnd, self->mActor);
-    if (func_0203842c(c + 0x134))
-    {
+    self->mRaycastLine.SetObjAndLine(*&lineStart, *&lineEnd, self->mActor);
+    if (func_0203842c((char *)&self->mRaycastLine)) {
         int r;
-        Vector3 clsnPos = ((dBgCh_Lin *)(c + 0x134))->GetClsnPos();
+        Vector3 clsnPos = self->mRaycastLine.GetClsnPos();
         Vector3 normal, newStart, newEnd;
-        ((const SurfaceInfo *)(c + 0x148))->CopyNormalTo(normal);
+        self->mRaycastLine.surface.CopyNormalTo(normal);
         newStart.x = clsnPos.x + (normal.x >> 2);
         newStart.y = (normal.y >> 2) + clsnPos.y;
         newStart.z = clsnPos.z + (normal.z >> 2);
@@ -351,19 +338,19 @@ extern "C" void func_02036acc(char *c)
         r = func_02039794(normal.y);
         if (r == 1) {
             wallFlag = 1;
-            ((const dBgPi *)(c + 0x144))->CopyTo(*(dBgPi *)&res1);
+            ((const dBgPi &)self->mRaycastLine).CopyTo(*(dBgPi *)&res1);
         } else if (r == 0) {
             floorFlag = 1;
-            ((const dBgPi *)(c + 0x144))->CopyTo(*(dBgPi *)&res0);
+            ((const dBgPi &)self->mRaycastLine).CopyTo(*(dBgPi *)&res0);
         }
-        ((dBgCh_Lin *)(c + 0x134))->SetObjAndLine(*&newStart, *&newEnd, self->mActor);
-        if (func_0203842c(c + 0x134)) {
-            Vector3 clsnPos2 = ((dBgCh_Lin *)(c + 0x134))->GetClsnPos();
+        self->mRaycastLine.SetObjAndLine(*&newStart, *&newEnd, self->mActor);
+        if (func_0203842c((char *)&self->mRaycastLine)) {
+            Vector3 clsnPos2 = self->mRaycastLine.GetClsnPos();
             Vector3 normal2;
-            ((const SurfaceInfo *)(c + 0x148))->CopyNormalTo(normal2);
+            self->mRaycastLine.surface.CopyNormalTo(normal2);
             if (func_02039794(normal2.y) == 0) {
                 floorFlag = 1;
-                ((const dBgPi *)(c + 0x144))->CopyTo(*(dBgPi *)&res0);
+                ((const dBgPi &)self->mRaycastLine).CopyTo(*(dBgPi *)&res0);
             }
             if (self->ShouldUpdatePos()) {
                 pos[0] = clsnPos2.x - (normal2.x >> 2);
@@ -385,30 +372,30 @@ extern "C" void func_02036acc(char *c)
     sphere.y = pos[1];
     sphere.z = pos[2];
     sphere.y += height;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
-        (dBgCh_SphCrr *)(c + 0x20), &sphere, *(int*)(c + 0x18), self->mActor);
+    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&self->mSphereClsn, &sphere,
+                                                                     self->mRadius, self->mActor);
     if (func_0203553c((int*)c) == 0)
-        *(u8*)((char*)c + 0x90) |= 0x40;
-    *(int*)(c + 0x128) = *(int*)(c + 0x1b8);
+        self->mSphereClsn.flags |= 0x40;
+    self->mSphereClsn.mScale = self->mScale;
     if (pos[1] - prev[1] > 0)
-        *(u8*)((char*)c + 0x90) |= 0x20;
+        self->mSphereClsn.flags |= 0x20;
     if (floorFlag != 0) {
-        *(u8*)((char*)c + 0x90) |= 4;
-        ((dBgCh_SphCrr *)(c + 0x20))->SetFloorResult(*(const dBgPi *)&res0);
-        *(u8*)((char*)c + 0x90) |= 1;
-        *(dBgPi *)(c + 0x30) = *(const dBgPi *)&res0;
+        self->mSphereClsn.flags |= 4;
+        self->mSphereClsn.SetFloorResult(*(const dBgPi *)&res0);
+        self->mSphereClsn.flags |= 1;
+        (dBgPi &)self->mSphereClsn = *(const dBgPi *)&res0;
         func_020371b0(self, onGround);
         handled = 1;
     }
     if (wallFlag != 0) {
-        *(u8*)((char*)c + 0x90) |= 8;
-        ((dBgCh_SphCrr *)(c + 0x20))->SetWallResult(*(const dBgPi *)&res1);
-        *(u8*)((char*)c + 0x90) |= 1;
-        *(dBgPi *)(c + 0x30) = *(const dBgPi *)&res1;
+        self->mSphereClsn.flags |= 8;
+        self->mSphereClsn.SetWallResult(*(const dBgPi *)&res1);
+        self->mSphereClsn.flags |= 1;
+        (dBgPi &)self->mSphereClsn = *(const dBgPi *)&res1;
     }
-    if (((dBgCh_SphCrr *)(c + 0x20))->func_02038824()) {
-        prev = (int*)(c + 0x6c);
-        if ((*(u8*)((char*)c + 0x90) & 4) && handled == 0)
+    if (self->mSphereClsn.func_02038824()) {
+        prev = (int *)&self->mSphereClsn.disp;
+        if ((self->mSphereClsn.flags & 4) && handled == 0)
             func_020371b0(self, onGround);
         if (self->ShouldUpdatePos()) {
             pos[0] += prev[0];
@@ -440,15 +427,15 @@ void dBgCh_Actr::UpdateContinuous()
     dBgPiLoc res0;
     dBgPiLoc res1;
     Vector3 lineStart, lineEnd;
-    char* a;
+    dActor_c *a;
 
-    a = *(char**)((char*)&mActor);
-    pos = (int*)(a + 0x5c);
-    prev = (int*)(a + 0x68);
+    a = mActor;
+    pos = &a->mPosX;
+    prev = &a->mPrevPosX;
 
     if (IsOnGround() && func_020355a0((int*)this) && ShouldUpdatePos())
-        func_02038324((void *)mSphereClsn.GetFloorResult(), (int)pos,
-                      mSphereClsn.unk_10c, unk_130);
+        func_02038324((void *)mSphereClsn.GetFloorResult(), (int)pos, mSphereClsn.mMotionAngPtr,
+                      mAngPtr);
 
     floorFlag = 0;
     _ZN5dBgPiC1Ev((dBgPi *)&res0);
@@ -472,13 +459,13 @@ void dBgCh_Actr::UpdateContinuous()
         lineEnd.y = ty;
         lineEnd.z = tz;
     }
-    ((dBgCh_Lin *)(((char*)this) + 0x134))->SetObjAndLine(*&lineStart, *&lineEnd, mActor);
+    mRaycastLine.SetObjAndLine(*&lineStart, *&lineEnd, mActor);
     if (((dBgCh_Lin *)((char*)&mRaycastLine))->DetectClsn())
     {
         int r;
         Vector3 clsnPos = mRaycastLine.GetClsnPos();
         Vector3 normal, newStart, newEnd;
-        ((const SurfaceInfo *)(((char*)this) + 0x148))->CopyNormalTo(normal);
+        mRaycastLine.surface.CopyNormalTo(normal);
         newStart.x = clsnPos.x + (normal.x >> 2);
         newStart.y = (normal.y >> 2) + clsnPos.y;
         newStart.z = clsnPos.z + (normal.z >> 2);
@@ -488,19 +475,19 @@ void dBgCh_Actr::UpdateContinuous()
         r = func_02039794(normal.y);
         if (r == 1) {
             wallFlag = 1;
-            ((const dBgPi *)(((char*)this) + 0x144))->CopyTo(*(dBgPi *)&res1);
+            ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res1);
         } else if (r == 0) {
             floorFlag = 1;
-            ((const dBgPi *)(((char*)this) + 0x144))->CopyTo(*(dBgPi *)&res0);
+            ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res0);
         }
-        ((dBgCh_Lin *)(((char*)this) + 0x134))->SetObjAndLine(*&newStart, *&newEnd, mActor);
+        mRaycastLine.SetObjAndLine(*&newStart, *&newEnd, mActor);
         if (((dBgCh_Lin *)((char*)&mRaycastLine))->DetectClsn()) {
             Vector3 clsnPos2 = mRaycastLine.GetClsnPos();
             Vector3 normal2;
-            ((const SurfaceInfo *)(((char*)this) + 0x148))->CopyNormalTo(normal2);
+            mRaycastLine.surface.CopyNormalTo(normal2);
             if (func_02039794(normal2.y) == 0) {
                 floorFlag = 1;
-                ((const dBgPi *)(((char*)this) + 0x144))->CopyTo(*(dBgPi *)&res0);
+                ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res0);
             }
             if (ShouldUpdatePos()) {
                 pos[0] = clsnPos2.x - (normal2.x >> 2);
@@ -522,26 +509,26 @@ void dBgCh_Actr::UpdateContinuous()
     sphere.y = pos[1];
     sphere.z = pos[2];
     sphere.y += height;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
-        (dBgCh_SphCrr *)(((char*)this) + 0x20), &sphere, mRadius, mActor);
+    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
+                                                                     mActor);
     if (func_0203553c((int*)this) == 0)
-        *(u8*)(((char*)this) + 0x90) |= 0x40;
+        mSphereClsn.flags |= 0x40;
     mSphereClsn.mScale = mScale;
     if (pos[1] - prev[1] > 0)
-        *(u8*)(((char*)this) + 0x90) |= 0x20;
+        mSphereClsn.flags |= 0x20;
     if (floorFlag != 0) {
-        *(u8*)(((char*)this) + 0x90) |= 4;
-        ((dBgCh_SphCrr *)(((char*)this) + 0x20))->SetFloorResult(*(const dBgPi *)&res0);
-        *(u8*)(((char*)this) + 0x90) |= 1;
-        *(dBgPi *)(((char*)this) + 0x30) = *(const dBgPi *)&res0;
+        mSphereClsn.flags |= 4;
+        mSphereClsn.SetFloorResult(*(const dBgPi *)&res0);
+        mSphereClsn.flags |= 1;
+        (dBgPi &)mSphereClsn = *(const dBgPi *)&res0;
         func_020371b0(this, onGround);
         handled = 1;
     }
     if (wallFlag != 0) {
-        *(u8*)(((char*)this) + 0x90) |= 8;
-        ((dBgCh_SphCrr *)(((char*)this) + 0x20))->SetWallResult(*(const dBgPi *)&res1);
-        *(u8*)(((char*)this) + 0x90) |= 1;
-        *(dBgPi *)(((char*)this) + 0x30) = *(const dBgPi *)&res1;
+        mSphereClsn.flags |= 8;
+        mSphereClsn.SetWallResult(*(const dBgPi *)&res1);
+        mSphereClsn.flags |= 1;
+        (dBgPi &)mSphereClsn = *(const dBgPi *)&res1;
     }
     if (mSphereClsn.DetectClsn()) {
         prev = (int*)((char*)&mSphereClsn.disp);
@@ -579,9 +566,9 @@ void dBgCh_Actr::UpdateContinuousNoLava()
     Vector3 lineStart, lineEnd;
 
     {
-        char* a = *(char**)((char*)&mActor);
-        pos = (int*)((char*)a + 0x5c);
-        prev = (int*)((char*)a + 0x68);
+        dActor_c *a = mActor;
+        pos = &a->mPosX;
+        prev = &a->mPrevPosX;
     }
 
     floorFlag = 0;
@@ -606,13 +593,13 @@ void dBgCh_Actr::UpdateContinuousNoLava()
         lineEnd.y = ty;
         lineEnd.z = tz;
     }
-    ((dBgCh_Lin *)(((char*)this) + 0x134))->SetObjAndLine(*&lineStart, *&lineEnd, mActor);
+    mRaycastLine.SetObjAndLine(*&lineStart, *&lineEnd, mActor);
     if (func_0203859c((char*)&mRaycastLine))
     {
         int r;
         Vector3 clsnPos = mRaycastLine.GetClsnPos();
         Vector3 normal, newStart, newEnd;
-        ((const SurfaceInfo *)(((char*)this) + 0x148))->CopyNormalTo(normal);
+        mRaycastLine.surface.CopyNormalTo(normal);
         newStart.x = clsnPos.x + (normal.x >> 2);
         newStart.y = (normal.y >> 2) + clsnPos.y;
         newStart.z = clsnPos.z + (normal.z >> 2);
@@ -622,16 +609,16 @@ void dBgCh_Actr::UpdateContinuousNoLava()
         r = func_02039794(normal.y);
         if (r == 1) {
             wallFlag = 1;
-            ((const dBgPi *)(((char*)this) + 0x144))->CopyTo(*(dBgPi *)&res1);
+            ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res1);
         }
-        ((dBgCh_Lin *)(((char*)this) + 0x134))->SetObjAndLine(*&newStart, *&newEnd, mActor);
+        mRaycastLine.SetObjAndLine(*&newStart, *&newEnd, mActor);
         if (func_0203859c((char*)&mRaycastLine)) {
             Vector3 clsnPos2 = mRaycastLine.GetClsnPos();
             Vector3 normal2;
-            ((const SurfaceInfo *)(((char*)this) + 0x148))->CopyNormalTo(normal2);
+            mRaycastLine.surface.CopyNormalTo(normal2);
             if (func_02039794(normal2.y) == 0) {
                 floorFlag = 1;
-                ((const dBgPi *)(((char*)this) + 0x144))->CopyTo(*(dBgPi *)&res0);
+                ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res0);
             }
             if (ShouldUpdatePos()) {
                 pos[0] = clsnPos2.x - (normal2.x >> 2);
@@ -653,24 +640,24 @@ void dBgCh_Actr::UpdateContinuousNoLava()
     sphere.y = pos[1];
     sphere.z = pos[2];
     sphere.y += height;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
-        (dBgCh_SphCrr *)(((char*)this) + 0x20), &sphere, mRadius, mActor);
+    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
+                                                                     mActor);
     mSphereClsn.mScale = mScale;
     if (pos[1] - prev[1] > 0)
-        *(u8*)(((char*)this) + 0x90) |= 0x20;
+        mSphereClsn.flags |= 0x20;
     if (floorFlag != 0) {
-        *(u8*)(((char*)this) + 0x90) |= 4;
-        ((dBgCh_SphCrr *)(((char*)this) + 0x20))->SetFloorResult(*(const dBgPi *)&res0);
-        *(u8*)(((char*)this) + 0x90) |= 1;
-        *(dBgPi *)(((char*)this) + 0x30) = *(const dBgPi *)&res0;
+        mSphereClsn.flags |= 4;
+        mSphereClsn.SetFloorResult(*(const dBgPi *)&res0);
+        mSphereClsn.flags |= 1;
+        (dBgPi &)mSphereClsn = *(const dBgPi *)&res0;
         func_020371b0(this, onGround);
         handled = 1;
     }
     if (wallFlag != 0) {
-        *(u8*)(((char*)this) + 0x90) |= 8;
-        ((dBgCh_SphCrr *)(((char*)this) + 0x20))->SetWallResult(*(const dBgPi *)&res1);
-        *(u8*)(((char*)this) + 0x90) |= 1;
-        *(dBgPi *)(((char*)this) + 0x30) = *(const dBgPi *)&res1;
+        mSphereClsn.flags |= 8;
+        mSphereClsn.SetWallResult(*(const dBgPi *)&res1);
+        mSphereClsn.flags |= 1;
+        (dBgPi &)mSphereClsn = *(const dBgPi *)&res1;
     }
     if (mSphereClsn.func_02038a38()) {
         prev = (int*)((char*)&mSphereClsn.disp);
@@ -703,18 +690,17 @@ void dBgCh_Actr::UpdateContinuousNoLava()
    copy is not used there. */
 void dBgCh_Actr::UpdateExtraContinous()
 {
-    char *t = (char *)this;
     s32 f0, f1, f2, vo, wasOnGround, didHit;
     Vector3 *pos, *prev;
-    char *ac;
+    dActor_c *ac;
 
-    ac = *(char **)(t + 0x14);
-    pos = (Vector3 *)(ac + 0x5c);
-    prev = (Vector3 *)(ac + 0x68);
+    ac = mActor;
+    pos = (Vector3 *)&ac->mPosX;
+    prev = (Vector3 *)&ac->mPrevPosX;
 
-    if (IsOnGround() && func_020355a0((int*)t))
-        func_02038324((void *)((dBgCh_SphCrr *)(t + 0x20))->GetFloorResult(), (int)pos,
-                      *(int*)(t + 0x12c), *(int*)(t + 0x130));
+    if (IsOnGround() && func_020355a0((int *)this))
+        func_02038324((void *)mSphereClsn.GetFloorResult(), (int)pos, mSphereClsn.mMotionAngPtr,
+                      mAngPtr);
 
     {
         dBgPiLoc res0;
@@ -727,7 +713,7 @@ void dBgCh_Actr::UpdateExtraContinous()
         f2 = 0;
         _ZN5dBgPiC1Ev((dBgPi *)&res2);
 
-        vo = *(s32 *)(t + 0x1c);
+        vo = mHeight;
 
         Vector3 v7c;
 
@@ -736,14 +722,12 @@ void dBgCh_Actr::UpdateExtraContinous()
         Vector3 v88;
 
         V3C(v88, prev)
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &v88, &v7c, *(dActor_c **)(t + 0x14));
+        mRaycastLine.SetObjAndLine(v88, v7c, mActor);
 
-        if (func_0203859c(t + 0x134))
-        {
+        if (func_0203859c(&mRaycastLine)) {
             v7c = mRaycastLine.GetClsnPos();
             Vector3 v94;
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3((const SurfaceInfo *)(t + 0x148), v94);
+            mRaycastLine.surface.CopyNormalTo(v94);
             v7c.x = v7c.x + (v94.x >> 2);
             v7c.y = v7c.y + (v94.y >> 2);
             v7c.z = v7c.z + (v94.z >> 2);
@@ -753,28 +737,26 @@ void dBgCh_Actr::UpdateExtraContinous()
 
 
         V3D(va0, pos, vo)
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &v7c, &va0, *(dActor_c **)(t + 0x14));
+        mRaycastLine.SetObjAndLine(v7c, va0, mActor);
 
-        if (_ZN9dBgCh_Lin10DetectClsnEv((dBgCh_Lin *)(t + 0x134)))
-        {
+        if (mRaycastLine.DetectClsn()) {
             Vector3 vac;
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3((const SurfaceInfo *)(t + 0x148), vac);
+            mRaycastLine.surface.CopyNormalTo(vac);
             s32 kind; kind = func_02039794(vac.y);
             if (kind == 1)
             {
                 f1 = 1;
-                _ZNK5dBgPi6CopyToERS_((const dBgPi *)(t + 0x144), *(dBgPi *)&res1);
+                ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res1);
             }
             else if (kind == 2)
             {
                 f2 = 1;
-                _ZNK5dBgPi6CopyToERS_((const dBgPi *)(t + 0x144), *(dBgPi *)&res2);
+                ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res2);
             }
             else if (kind == 0)
             {
                 f0 = 1;
-                _ZNK5dBgPi6CopyToERS_((const dBgPi *)(t + 0x144), *(dBgPi *)&res0);
+                ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res0);
             }
 
             Vector3 vb8 = mRaycastLine.GetClsnPos();
@@ -786,18 +768,16 @@ void dBgCh_Actr::UpdateExtraContinous()
             vd0.x = vc4.x;
             vd0.y = vc4.y - vo;
             vd0.z = vc4.z;
-            _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &vc4, &vd0, *(dActor_c **)(t + 0x14));
+            mRaycastLine.SetObjAndLine(vc4, vd0, mActor);
 
-            if (_ZN9dBgCh_Lin10DetectClsnEv((dBgCh_Lin *)(t + 0x134)))
-            {
+            if (mRaycastLine.DetectClsn()) {
                 Vector3 vdc = mRaycastLine.GetClsnPos();
                 Vector3 ve8;
-                _ZNK11SurfaceInfo12CopyNormalToER7Vector3((const SurfaceInfo *)(t + 0x148), ve8);
+                mRaycastLine.surface.CopyNormalTo(ve8);
                 if (func_02039794(ve8.y) == 0)
                 {
                     f0 = 1;
-                    _ZNK5dBgPi6CopyToERS_((const dBgPi *)(t + 0x144), *(dBgPi *)&res0);
+                    ((const dBgPi &)mRaycastLine).CopyTo(*(dBgPi *)&res0);
                 }
                 vdc.x = vdc.x + (ve8.x << 2);
                 vdc.y = vdc.y + (ve8.y << 2);
@@ -806,25 +786,19 @@ void dBgCh_Actr::UpdateExtraContinous()
                 vf4.x = vdc.x;
                 vf4.y = vdc.y + (vo << 1);
                 vf4.z = vdc.z;
-                _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &vdc, &vf4, *(dActor_c **)(t + 0x14));
+                mRaycastLine.SetObjAndLine(vdc, vf4, mActor);
 
-                if (_ZN9dBgCh_Lin10DetectClsnEv((dBgCh_Lin *)(t + 0x134)))
-                {
+                if (mRaycastLine.DetectClsn()) {
                     Vector3 v100 = mRaycastLine.GetClsnPos();
                     pos->x = v100.x;
                     pos->y = ((v100.y + vdc.y) >> 1) - vo;
                     pos->z = v100.z;
-                }
-                else
-                {
+                } else {
                     pos->x = vdc.x - (ve8.x >> 2);
                     pos->y = vdc.y - (ve8.y >> 2) - (vo >> 1);
                     pos->z = vdc.z - (ve8.z >> 2);
                 }
-            }
-            else
-            {
+            } else {
                 pos->x = vb8.x + (vac.x >> 2);
                 pos->y = vb8.y + (vac.y >> 2) - vo;
                 pos->z = vb8.z + (vac.z >> 2);
@@ -837,13 +811,11 @@ void dBgCh_Actr::UpdateExtraContinous()
             Vector3 v118;
 
             V3D(v118, pos, vo)
-            _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &v10c, &v118, *(dActor_c **)(t + 0x14));
+            mRaycastLine.SetObjAndLine(v10c, v118, mActor);
 
-            if (_ZN9dBgCh_Lin10DetectClsnEv((dBgCh_Lin *)(t + 0x134)) &&
-                ((Vector3 *)func_02037dc4((int)(t + 0x148)))->y >= 0)
-            {
-                Vector3 *cp = (Vector3 *)(t + 0x188);
+            if (mRaycastLine.DetectClsn() &&
+                ((Vector3 *)func_02037dc4((int)&mRaycastLine.surface))->y >= 0) {
+                Vector3 *cp = &mRaycastLine.lineEnd;
                 pos->x = cp->x;
                 pos->y = cp->y;
                 pos->z = cp->z;
@@ -859,46 +831,43 @@ void dBgCh_Actr::UpdateExtraContinous()
         v124.y = pos->y;
         v124.z = pos->z;
         v124.y = v124.y + vo;
-        _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
-            (dBgCh_SphCrr *)(t + 0x20), &v124, *(s32 *)(t + 0x18), *(dActor_c **)(t + 0x14));
+        _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &v124,
+                                                                         mRadius, mActor);
 
-        *(s32 *)(t + 0x128) = *(s32 *)(t + 0x1b8);
-        if (func_02035764((int*)t))
-            *(u8 *)(t + 0x90) |= 2;
+        mSphereClsn.mScale = mScale;
+        if (func_02035764((int *)this))
+            mSphereClsn.flags |= 2;
         if (pos->y - prev->y > 0)
-            *(u8 *)(t + 0x90) |= 0x20;
+            mSphereClsn.flags |= 0x20;
 
         if (f0)
         {
-            *(u8 *)(t + 0x90) |= 4;
-            _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(
-                (dBgCh_SphCrr *)(t + 0x20), *(const dBgPi *)&res0);
-            *(u8 *)(t + 0x90) |= 1;
-            _ZN5dBgPiaSERKS_((dBgPi *)(t + 0x30), *(const dBgPi *)&res0);
-            func_020371b0((dBgCh_Actr *)t, wasOnGround);
+            mSphereClsn.flags |= 4;
+            mSphereClsn.SetFloorResult(*(const dBgPi *)&res0);
+            mSphereClsn.flags |= 1;
+            (dBgPi &)mSphereClsn = *(const dBgPi *)&res0;
+            func_020371b0(this, wasOnGround);
             didHit = 1;
         }
         if (f1)
         {
-            *(u8 *)(t + 0x90) |= 8;
-            ((dBgCh_SphCrr *)(t + 0x20))->SetWallResult(*(const dBgPi *)&res1);
-            *(u8 *)(t + 0x90) |= 1;
-            _ZN5dBgPiaSERKS_((dBgPi *)(t + 0x30), *(const dBgPi *)&res1);
+            mSphereClsn.flags |= 8;
+            mSphereClsn.SetWallResult(*(const dBgPi *)&res1);
+            mSphereClsn.flags |= 1;
+            (dBgPi &)mSphereClsn = *(const dBgPi *)&res1;
         }
         if (f2)
         {
-            *(u8 *)(t + 0x90) |= 0x10;
-            ((dBgCh_SphCrr *)(t + 0x20))->SetUnderResult(*(const dBgPi *)&res2);
-            *(u8 *)(t + 0x90) |= 1;
-            _ZN5dBgPiaSERKS_((dBgPi *)(t + 0x30), *(const dBgPi *)&res2);
+            mSphereClsn.flags |= 0x10;
+            mSphereClsn.SetUnderResult(*(const dBgPi *)&res2);
+            mSphereClsn.flags |= 1;
+            (dBgPi &)mSphereClsn = *(const dBgPi *)&res2;
         }
 
-        if (((dBgCh_SphCrr *)(t + 0x20))->DetectClsn())
-        {
-            Vector3 *pb = (Vector3 *)(t + 0x6c);
-            if ((*(u8 *)(t + 0x90) & 4) && didHit == 0)
-            {
-                func_020371b0((dBgCh_Actr *)t, wasOnGround);
+        if (mSphereClsn.DetectClsn()) {
+            Vector3 *pb = &mSphereClsn.disp;
+            if ((mSphereClsn.flags & 4) && didHit == 0) {
+                func_020371b0(this, wasOnGround);
                 didHit = 1;
             }
             pos->x = pos->x + pb->x;
@@ -906,31 +875,29 @@ void dBgCh_Actr::UpdateExtraContinous()
                 pos->y = pos->y + pb->y;
             pos->z = pos->z + pb->z;
 
-            if (func_020355dc((int*)t))
-            {
+            if (func_020355dc((int *)this)) {
                 Vector3 v130;
 
                 V3D(v130, pos, (vo << 1))
                 Vector3 v13c;
 
                 V3C(v13c, pos)
-                _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &v130, &v13c, *(dActor_c **)(t + 0x14));
-                if (_ZN9dBgCh_Lin10DetectClsnEv((dBgCh_Lin *)(t + 0x134)))
-                {
-                    Vector3 *cp = (Vector3 *)(t + 0x188);
-                    Vector3 *n = (Vector3 *)func_02037dc4((int)(t + 0x148));
+                mRaycastLine.SetObjAndLine(v130, v13c, mActor);
+                if (mRaycastLine.DetectClsn()) {
+                    Vector3 *cp = &mRaycastLine.lineEnd;
+                    Vector3 *n = (Vector3 *)func_02037dc4((int)&mRaycastLine.surface);
                     pos->x = cp->x + (n->x >> 2);
                     pos->y = cp->y + (n->y >> 2);
                     pos->z = cp->z + (n->z >> 2);
                 }
             }
 
-            s32 fl; fl = *(u8 *)(t + 0x90);
+            s32 fl;
+            fl = mSphereClsn.flags;
             if (!(fl & 4) && (fl & 8))
             {
                 dBgPiLoc tmp;
-                dBgPiLoc *src = (dBgPiLoc *)(int)((dBgCh_SphCrr *)(t + 0x20))->GetWallResult();
+                dBgPiLoc *src = (dBgPiLoc *)(int)mSphereClsn.GetWallResult();
                 SurfaceInfo *dsi = &tmp.si;
                 {
                     s32 c0, c1;
@@ -957,42 +924,34 @@ void dBgCh_Actr::UpdateExtraContinous()
                     Vector3 v17c;
 
                     V3C(v17c, pos)
-                    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &v170, &v17c, *(dActor_c **)(t + 0x14));
-                    if (_ZN9dBgCh_Lin10DetectClsnEv((dBgCh_Lin *)(t + 0x134)))
-                    {
-                        Vector3 *cp = (Vector3 *)(t + 0x188);
-                        Vector3 *n = (Vector3 *)func_02037dc4((int)(t + 0x148));
+                    mRaycastLine.SetObjAndLine(v170, v17c, mActor);
+                    if (mRaycastLine.DetectClsn()) {
+                        Vector3 *cp = &mRaycastLine.lineEnd;
+                        Vector3 *n = (Vector3 *)func_02037dc4((int)&mRaycastLine.surface);
                         pos->x = cp->x + (n->x >> 2);
                         pos->y = cp->y + (n->y >> 2);
                         pos->z = cp->z + (n->z >> 2);
                         s32 k3; k3 = func_02039794(n->y);
-                        if (k3 == 1 && !(*(u8 *)(t + 0x90) & 8))
-                        {
-                            dBgPi *lr = (dBgPi *)(t + 0x144);
-                            *(u8 *)(t + 0x90) |= 8;
-                            ((dBgCh_SphCrr *)(t + 0x20))->SetWallResult(*(const dBgPi *)lr);
-                            *(u8 *)(t + 0x90) |= 1;
-                            _ZN5dBgPiaSERKS_((dBgPi *)(t + 0x30), *lr);
-                        }
-                        else if (k3 == 0 && !(*(u8 *)(t + 0x90) & 4))
-                        {
-                            dBgPi *lr = (dBgPi *)(t + 0x144);
-                            *(u8 *)(t + 0x90) |= 4;
-                            _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(
-                (dBgCh_SphCrr *)(t + 0x20), *lr);
-                            *(u8 *)(t + 0x90) |= 1;
-                            _ZN5dBgPiaSERKS_((dBgPi *)(t + 0x30), *lr);
+                        if (k3 == 1 && !(mSphereClsn.flags & 8)) {
+                            dBgPi *lr = (dBgPi *)&mRaycastLine;
+                            mSphereClsn.flags |= 8;
+                            mSphereClsn.SetWallResult(*(const dBgPi *)lr);
+                            mSphereClsn.flags |= 1;
+                            (dBgPi &)mSphereClsn = *lr;
+                        } else if (k3 == 0 && !(mSphereClsn.flags & 4)) {
+                            dBgPi *lr = (dBgPi *)&mRaycastLine;
+                            mSphereClsn.flags |= 4;
+                            mSphereClsn.SetFloorResult(*lr);
+                            mSphereClsn.flags |= 1;
+                            (dBgPi &)mSphereClsn = *lr;
                             if (didHit == 0)
-                                func_020371b0((dBgCh_Actr *)t, wasOnGround);
-                        }
-                        else if (k3 == 2 && !(*(u8 *)(t + 0x90) & 0x10))
-                        {
-                            dBgPi *lr = (dBgPi *)(t + 0x144);
-                            *(u8 *)(t + 0x90) |= 0x10;
-                            ((dBgCh_SphCrr *)(t + 0x20))->SetUnderResult(*(const dBgPi *)lr);
-                            *(u8 *)(t + 0x90) |= 1;
-                            _ZN5dBgPiaSERKS_((dBgPi *)(t + 0x30), *lr);
+                                func_020371b0(this, wasOnGround);
+                        } else if (k3 == 2 && !(mSphereClsn.flags & 0x10)) {
+                            dBgPi *lr = (dBgPi *)&mRaycastLine;
+                            mSphereClsn.flags |= 0x10;
+                            mSphereClsn.SetUnderResult(*(const dBgPi *)lr);
+                            mSphereClsn.flags |= 1;
+                            (dBgPi &)mSphereClsn = *lr;
                         }
                     }
                 }
@@ -1005,33 +964,27 @@ void dBgCh_Actr::UpdateExtraContinous()
                     Vector3 v194;
 
                     V3D(v194, pos, (vo << 1))
-                    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &v188, &v194, *(dActor_c **)(t + 0x14));
-                    if (_ZN9dBgCh_Lin10DetectClsnEv((dBgCh_Lin *)(t + 0x134)))
-                    {
-                        Vector3 *cp = (Vector3 *)(t + 0x188);
-                        Vector3 *n = (Vector3 *)func_02037dc4((int)(t + 0x148));
+                    mRaycastLine.SetObjAndLine(v188, v194, mActor);
+                    if (mRaycastLine.DetectClsn()) {
+                        Vector3 *cp = &mRaycastLine.lineEnd;
+                        Vector3 *n = (Vector3 *)func_02037dc4((int)&mRaycastLine.surface);
                         pos->x = cp->x + (n->x >> 2);
                         pos->y = cp->y + (n->y >> 2) - vo2;
                         pos->z = cp->z + (n->z >> 2);
                     }
                 }
                 _ZN5dBgPiD1Ev((dBgPi *)&tmp);
-            }
-            else if (*(s32 *)(t + 0x7c) <= -vo)
-            {
+            } else if (mSphereClsn.aabbMin.y <= -vo) {
                 Vector3 v1a0;
 
                 V3D(v1a0, prev, vo)
                 Vector3 v1ac;
 
                 V3D(v1ac, pos, vo)
-                _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-            (dBgCh_Lin *)(t + 0x134), &v1a0, &v1ac, *(dActor_c **)(t + 0x14));
-                if (func_0203859c(t + 0x134))
-                {
-                    Vector3 *cp = (Vector3 *)(t + 0x188);
-                    Vector3 *n = (Vector3 *)func_02037dc4((int)(t + 0x148));
+                mRaycastLine.SetObjAndLine(v1a0, v1ac, mActor);
+                if (func_0203859c(&mRaycastLine)) {
+                    Vector3 *cp = &mRaycastLine.lineEnd;
+                    Vector3 *n = (Vector3 *)func_02037dc4((int)&mRaycastLine.surface);
                     pos->x = cp->x + (n->x >> 2);
                     pos->y = cp->y + (n->y >> 2);
                     pos->z = cp->z + (n->z >> 2);
@@ -1040,7 +993,7 @@ void dBgCh_Actr::UpdateExtraContinous()
         }
 
         if (wasOnGround && !IsOnGround())
-            func_020356d4(t);
+            func_020356d4((char *)this);
 
         _ZN5dBgPiD1Ev((dBgPi *)&res2);
         _ZN5dBgPiD1Ev((dBgPi *)&res1);
@@ -1060,12 +1013,12 @@ void dBgCh_Actr::Unk_0203589c()
 /* Copy a vector into the actor's current and previous position fields. */
 extern "C" void func_02035860(char *o, struct Vector3 *src)
 {
-    char *base = *(char **)(o + 0x14);
-    struct Vector3 *d1 = (struct Vector3 *)(base + 0x5c);
+    dActor_c *base = ((dBgCh_Actr *)o)->mActor;
+    struct Vector3 *d1 = (struct Vector3 *)&base->mPosX;
     d1->x = src->x;
     d1->y = src->y;
     d1->z = src->z;
-    struct Vector3 *d2 = (struct Vector3 *)(base + 0x68);
+    struct Vector3 *d2 = (struct Vector3 *)&base->mPrevPosX;
     d2->x = src->x;
     d2->y = src->y;
     d2->z = src->z;
@@ -1125,13 +1078,13 @@ extern "C" void func_02035798(int *p, int v)
 // @symbol func_02035784
 extern "C" void func_02035784(char *self)
 {
-    *(unsigned int *)(self + 0x10) |= 0x200;
+    ((dBgCh_Actr *)self)->mFlags |= 0x200;
 }
 
 // @symbol func_02035770
 extern "C" void func_02035770(char *self)
 {
-    *(unsigned int *)(self + 0x10) &= ~0x200;
+    ((dBgCh_Actr *)self)->mFlags &= ~0x200;
 }
 
 // @symbol func_02035764
@@ -1149,7 +1102,7 @@ void dBgCh_Actr::ClearAllGroundFlags()
 // @symbol func_0203573c
 extern "C" void func_0203573c(char *self)
 {
-    *(unsigned int *)(self + 0x10) |= 0x20;
+    ((dBgCh_Actr *)self)->mFlags |= 0x20;
 }
 
 // @symbol _ZN10dBgCh_Actr22ClearJustHitGroundFlagEv
@@ -1187,7 +1140,7 @@ s32 dBgCh_Actr::IsOnGround() const
 // @symbol func_020356d4
 extern "C" void func_020356d4(char *self)
 {
-    *(unsigned int *)(self + 0x10) |= 0x40;
+    ((dBgCh_Actr *)self)->mFlags |= 0x40;
 }
 
 // @symbol func_020356c8
@@ -1248,7 +1201,7 @@ void *dBgCh_Actr::GetWallResult() const
 // @symbol func_0203564c
 extern "C" int func_0203564c(int p)
 {
-    return (int)((dBgCh_SphCrr *)(p + 0x20))->GetUnderResult();
+    return (int)((dBgCh_Actr *)p)->mSphereClsn.GetUnderResult();
 }
 
 // @symbol func_02035644
@@ -1286,13 +1239,13 @@ s32 dBgCh_Actr::TouchesWater() const
 // @symbol func_020355fc
 extern "C" void func_020355fc(char *self)
 {
-    *(unsigned int *)(self + 0x10) |= 0x400;
+    ((dBgCh_Actr *)self)->mFlags |= 0x400;
 }
 
 // @symbol func_020355e8
 extern "C" void func_020355e8(char *self)
 {
-    *(unsigned int *)(self + 0x10) &= ~0x400;
+    ((dBgCh_Actr *)self)->mFlags &= ~0x400;
 }
 
 // @symbol func_020355dc
@@ -1304,13 +1257,13 @@ extern "C" int func_020355dc(int *p)
 // @symbol func_020355c8
 extern "C" void func_020355c8(char *self)
 {
-    *(unsigned int *)(self + 0x10) &= ~0x800;
+    ((dBgCh_Actr *)self)->mFlags &= ~0x800;
 }
 
 // @symbol func_020355b4
 extern "C" void func_020355b4(char *self)
 {
-    *(unsigned int *)(self + 0x10) |= 0x800;
+    ((dBgCh_Actr *)self)->mFlags |= 0x800;
 }
 
 // @symbol func_020355a0
@@ -1322,7 +1275,7 @@ extern "C" int func_020355a0(int *p)
 // @symbol func_0203558c
 extern "C" void func_0203558c(char *self)
 {
-    *(unsigned int *)(self + 0x10) |= 0x1000;
+    ((dBgCh_Actr *)self)->mFlags |= 0x1000;
 }
 
 // @symbol _ZNK10dBgCh_Actr16ShouldUpdatePosYEv
@@ -1342,7 +1295,7 @@ s32 dBgCh_Actr::ShouldUpdatePos() const
 // @symbol func_02035550
 extern "C" void func_02035550(char *self)
 {
-    *(unsigned int *)(self + 0x10) |= 0x4000;
+    ((dBgCh_Actr *)self)->mFlags |= 0x4000;
 }
 
 // @symbol func_0203553c

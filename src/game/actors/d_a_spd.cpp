@@ -33,6 +33,7 @@ enum Scuttlebug_AssetId {
 #include "SharedFilePtr.h"
 #include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -886,10 +887,10 @@ void Scuttlebug::func_ov071_0211f148(dBgCh_Actr *w)
             void *fr = w->GetFloorResult();
             ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(normal);
             if (normal.y != 0) {
-                mVertSpeed = -(_ZN4cstd4fdivEii(
-                    (int)(((long long)normal.x * unk_0a4 + 0x800) >> 12)
-                  + (int)(((long long)normal.z * unk_0ac + 0x800) >> 12),
-                    normal.y) + 0x8000);
+                mVertSpeed =
+                    -(_ZN4cstd4fdivEii(FX_MUL(normal.x, unk_0a4) + FX_MUL(normal.z, unk_0ac),
+                                       normal.y) +
+                      0x8000);
             }
         }
     }

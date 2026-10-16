@@ -326,17 +326,15 @@ extern "C" int func_02017a0c(int self) {
 // @symbol func_020179b4
 extern "C" int func_020179b4(SharedFilePtr *filePtr, ModelBase *model, int arg) {
     int result = 0;
-    BMD_File *file;
-    if (!model)
-        goto done;
-    file = (BMD_File *)Model::LoadFile(*filePtr);
-    if (!file)
-        goto done;
-    result = model->SetFile(file, arg, -1);
-    if (!result) {
-        filePtr->Release();
+    if (model) {
+        BMD_File *file = (BMD_File *)Model::LoadFile(*filePtr);
+        if (file) {
+            result = model->SetFile(file, arg, -1);
+            if (!result) {
+                filePtr->Release();
+            }
+        }
     }
-done:
     return result;
 }
 

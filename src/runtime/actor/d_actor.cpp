@@ -78,6 +78,8 @@
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
+#include "Model.h"
+#include "SharedFilePtr.h"
 #include "dClipper.h"
 
 /* -------------------------------------------------------------------------- */
@@ -897,16 +899,14 @@ dActor_c *dActor_c::FindExplosionActor(dCc_c &clsn)
 /* ROM ordinal 49 -- func_02010304
  * 0x02010304  size 0x70 */
 extern "C" {
-extern void *_ZN8dActor_c10FindWithIDEj(unsigned);
-extern int _ZN6Player7TryGrabER8dActor_c(void *, void *);
 }
 extern "C" {
 void *func_02010304(void *target, char *p) {
     unsigned id = *(unsigned *)(p + 0x24);
     void *found;
-    if (id != 0 && (found = _ZN8dActor_c10FindWithIDEj(id)) != 0 && (*(int *)(p + 0x20) & 0x1000)) {
+    if (id != 0 && (found = dActor_c::FindWithID(id)) != 0 && (*(int *)(p + 0x20) & 0x1000)) {
         int t = *(unsigned short *)((char *)found + 0xc) == 0xbf;
-        if (t && _ZN6Player7TryGrabER8dActor_c(found, target))
+        if (t && ((Player *)found)->TryGrab(*(dActor_c *)target))
             return found;
     }
     return 0;
@@ -1221,26 +1221,21 @@ s32 dActor_c::GetWaterHeightWDW()
 extern "C" {
 extern SharedFilePtr data_ov002_0210da00; /* 0x0210da00 */
 extern SharedFilePtr data_ov002_0210d9c8; /* 0x0210d9c8 */
-extern void _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* ptr); /* 0x02017a3c */
 }
 extern "C" void LoadBlueCoinModel(void)
 {
-    _ZN5Model8LoadFileER13SharedFilePtr(&data_ov002_0210da00);
-    _ZN5Model8LoadFileER13SharedFilePtr(&data_ov002_0210d9c8);
+    Model::LoadFile(data_ov002_0210da00);
+    Model::LoadFile(data_ov002_0210d9c8);
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol UnloadBlueCoinModel
 /* ROM ordinal 26 -- UnloadBlueCoinModel
  * 0x0200fe70  size 0x2c */
-struct SharedFilePtr { u32 data[4]; };
-extern "C" {
-extern void _ZN13SharedFilePtr7ReleaseEv(struct SharedFilePtr *self);
-}
 extern "C" void UnloadBlueCoinModel(void)
 {
-    _ZN13SharedFilePtr7ReleaseEv(&data_ov002_0210da00);
-    _ZN13SharedFilePtr7ReleaseEv(&data_ov002_0210d9c8);
+    data_ov002_0210da00.Release();
+    data_ov002_0210d9c8.Release();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1336,8 +1331,6 @@ return func_0200fc44((int)s,(Vector3 *)&t,r1);
 typedef struct RaycastGroundPod { int filler[17]; int resultY; int pad[2]; } RaycastGroundPod;
 extern "C" {
 extern void _ZN9dBgCh_GndC1Ev(dBgCh_Gnd* c);
-extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd* c, const Vector3* pos, void* actor);
-extern int _ZN9dBgCh_Gnd10DetectClsnEv(RaycastGroundPod* c);
 extern void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd* c);
 }
 extern "C" int func_0200fc44(int a, Vector3* pos, int flag) {
@@ -1346,8 +1339,8 @@ extern "C" int func_0200fc44(int a, Vector3* pos, int flag) {
         _ZN9dBgCh_GndC1Ev((dBgCh_Gnd*)&rg);
         int* yp = (int*)((int)pos + 4);
         *yp += 0x32000;
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c((dBgCh_Gnd*)&rg, pos, 0);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg))
+        ((dBgCh_Gnd *)&rg)->SetObjAndPos(*pos, 0);
+        if (((dBgCh_Gnd *)&rg)->DetectClsn())
             pos->y = rg.resultY;
         _ZN9dBgCh_GndD1Ev((dBgCh_Gnd*)&rg);
     }
@@ -1452,8 +1445,8 @@ extern "C" int func_0200fa04(int a, Vector3* pos, int flag)
     if (flag) {
         _ZN9dBgCh_GndC1Ev((dBgCh_Gnd*)&rc);
         *(int*)(((int)pos + 4)) += 0x32000;
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c((dBgCh_Gnd*)&rc, pos, 0);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&rc))
+        ((dBgCh_Gnd *)&rc)->SetObjAndPos(*pos, 0);
+        if (((dBgCh_Gnd *)&rc)->DetectClsn())
             pos->y = rc.resultY;
         _ZN9dBgCh_GndD1Ev((dBgCh_Gnd*)&rc);
     }
@@ -1625,15 +1618,12 @@ extern "C" void func_0200f760(void *self, char *actor)
 // @symbol _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
 /* ROM ordinal 1 -- _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
  * 0x0200f70c  size 0x54 */
-extern "C" {
-int _ZN8dActor_c13DistToCPlayerEv(dActor_c *self);
-}
 extern "C" int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(dActor_c *self, int threshold)
 {
     if (data_0209fc68 == 0) {
         int b = (self->mFlags & 8) != 0;
         if (b != 0) {
-            if (_ZN8dActor_c13DistToCPlayerEv(self) >= threshold)
+            if (self->DistToCPlayer() >= threshold)
                 return 1;
         }
     }

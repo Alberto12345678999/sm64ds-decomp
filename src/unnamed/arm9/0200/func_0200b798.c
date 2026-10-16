@@ -1,3 +1,4 @@
+#include "nitro/fx/fx.h"
 typedef long long s64;
 
 typedef struct Vector3 { int x, y, z; } Vector3;
@@ -66,8 +67,8 @@ void func_0200b798(char *self, short *a1, int arg2)
     }
     c = e->c;
     v2.y = sum;
-    v2.x = pos.x + (int)(((s64)v1.x * c + 0x800) >> 12);
-    v2.z = pos.z + (int)(((s64)v1.z * c + 0x800) >> 12);
+    v2.x = pos.x + FX_MUL(v1.x, c);
+    v2.z = pos.z + FX_MUL(v1.z, c);
 
     len = LenVec3(&v1);
     if (len < 0x220000) {

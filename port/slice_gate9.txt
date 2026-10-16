@@ -50,11 +50,11 @@ src/engine/collision/d_bg_w_kc_itcm.cpp
 # The fBase_c framework hook virtuals are already covered above by
 # src/runtime/actor/ActorBase.cpp, the single translation unit that defines them.
 src/func_0203b27c.c
-src/func_02044334.cpp
-src/func_0204424c.c
+# func_0204424c, func_02044284 and func_02044334 live in the fListNode
+# production translation unit.
+src/fListNode.cpp
 src/MulVec3Mat4x3.c
 src/func_0203b2ec.c
-src/func_02044284.cpp
 src/func_0203b20c.c
 
 # Virtuals the host now needs as real methods: migrating a constructor to

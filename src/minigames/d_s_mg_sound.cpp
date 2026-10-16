@@ -28,6 +28,7 @@ enum dScMgSound_c_AssetId {
 #include "types.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 /* A cursor keeps the add-#0x5000 split on a walk that advances the scene
    pointer. Pointing the record itself at the slot pools the base instead. */
@@ -1613,7 +1614,7 @@ void dScMgSound_c::DrawPops()
             int x = pop->pop.x;
             int y = pop->pop.y;
             int a = (int)((ta * vv + 0x800) >> 12);
-            int b = (int)(((long long)tb * (int)vv + 0x800) >> 12);
+            int b = FX_MUL(tb, (int)vv);
             m[0] = a;
             m[3] = a;
             m[1] = b;

@@ -128,6 +128,18 @@ void func_ov062_02116dbc(daHolhei_c *self);
 extern void func_ov062_02116edc(daHolhei_c *self);
 }
 
+/* Actor ID 0xbf is PLAYER. The mFlags bits this file tests (0x100, 0x400,
+   0x2000, 0x4000) are undocumented, so they go through IsFlagSet. Both are
+   int-returning: that is what makes the ROM materialize the 0/1 before
+   testing it. */
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == 0xbf;
+}
+
+static inline int IsFlagSet(dActor_c *actor, u32 bit) {
+    return (actor->mFlags & bit) != 0;
+}
+
 // @symbol daHolhei_c_classInit
 /* The cartridge's body is the one `new`: 0x438 into fBase_c::operator new,
    dEnemyBase_c's C2, this TU's vtable, then the member C1s. */
@@ -233,27 +245,17 @@ int daHolhei_c::Behavior()
     mModel.Advance();
     mModel.UpdateVerts();
 
-    {
-        dActor_c *held = mHeld;
-        if (held != 0) {
-            int flag = (mFlags & 0x4000) != 0;
-            if (flag) {
-                if (*(int*)((char*)held + 0xc8) != 0) {
-                    func_ov062_02116d28();
-                    goto ret;
-                }
-            }
-        }
+    dActor_c *held = mHeld;
+    if (held != 0 && IsFlagSet(this, 0x4000) && *(int *)((char *)held + 0xc8) != 0) {
+        func_ov062_02116d28();
+    } else {
+        mdCc_c.Update();
+        mCarryOffsX = 0;
+        mCarryOffsY = 0;
+        mCarryOffsZ = 0;
+        func_ov062_02116e80(this);
+        func_ov062_02116dbc(this);
     }
-
-    mdCc_c.Update();
-    mCarryOffsX = 0;
-    mCarryOffsY = 0;
-    mCarryOffsZ = 0;
-    func_ov062_02116e80(this);
-    func_ov062_02116dbc(this);
-
-ret:
     return 1;
 }
 
@@ -261,15 +263,8 @@ ret:
 int daHolhei_c::Render()
 {
     dActor_c *held = mHeld;
-    if (held != 0) {
-        int flags = mFlags;
-        int flag = (flags & 0x4000) ? 1 : 0;
-        if (flag != 0) {
-            if (*(int*)((char*)held + 0xc8) != 0) {
-                func_ov062_02116edc(this);
-            }
-        }
-    }
+    if (held != 0 && IsFlagSet(this, 0x4000) && *(int *)((char *)held + 0xc8) != 0)
+        func_ov062_02116edc(this);
     /* ModelAnim overrides Render; the ROM calls Model::Render on this member. */
     mModel.Model::Render((const Vector3 *)0);
     return 1;
@@ -467,18 +462,17 @@ int daHolhei_c::func_ov062_02116980() {
 int daHolhei_c::func_ov062_02116894(){
     if (*(unsigned short *)&mStateTimer != 0)
         return 1;
-    if (mHorzSpeed == 0)
-        goto angle;
-    if (func_ov062_02115f84(this) != 0 || mEdgeStop == 1) {
-        mTargetAngY = (s16)(mPrevAngleY - 0x2000);
-        goto angle;
+    if (mHorzSpeed != 0) {
+        if (func_ov062_02115f84(this) != 0 || mEdgeStop == 1) {
+            mTargetAngY = (s16)(mPrevAngleY - 0x2000);
+        } else {
+            mPrevAngleY = mTargetAngY;
+            ::daHolhei_c_ChangeState(this, (HolheiState *)data_ov062_0211dee0);
+            mChaseCooldown = 0x1e;
+            mTargetAngY = mPrevAngleY;
+            return 1;
+        }
     }
-    mPrevAngleY = mTargetAngY;
-    ::daHolhei_c_ChangeState(this, (HolheiState *)data_ov062_0211dee0);
-    mChaseCooldown = 0x1e;
-    mTargetAngY = mPrevAngleY;
-    return 1;
-angle:
     if (AngleDiff(mTargetAngY, mAngleY) < 0x100)
         mHorzSpeed = 0xa000;
     ApproachAngle(&mPrevAngleY, mTargetAngY, 0xa, 0x200, 0x100);
@@ -587,24 +581,12 @@ extern "C" int func_ov062_021165e0(void)
 // @symbol _ZN10daHolhei_c19func_ov062_021164e8Ev
 int daHolhei_c::func_ov062_021164e8()
 {
-    int flag;
-    int t;
-    if (mGrabAnim == 0) {
-        t = (mFlags & 0x4000) != 0;
-        if (t) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModel, ((HolheiFile *)data_ov062_0211de00)->file, 0, 0x1000, 0);
-            mGrabAnim = 1;
-        }
+    if (mGrabAnim == 0 && IsFlagSet(this, 0x4000)) {
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            &mModel, ((HolheiFile *)data_ov062_0211de00)->file, 0, 0x1000, 0);
+        mGrabAnim = 1;
     }
-    flag = mFlags;
-    t = (flag & 0x400) != 0;
-    if (t) goto do_block;
-    t = (flag & 0x2000) != 0;
-    if (t) goto do_block;
-    t = (flag & 0x100) != 0;
-    if (t) goto done;
-do_block:
-    {
+    if (IsFlagSet(this, 0x400) || IsFlagSet(this, 0x2000) || !IsFlagSet(this, 0x100)) {
         dActor_c *held = mHeld;
         mPrevAngleY = held->mAngleY;
         mdCc_c.flags |= 2;
@@ -615,7 +597,6 @@ do_block:
         }
         mHeld = 0;
     }
-done:
     return 1;
 }
 
@@ -726,7 +707,6 @@ extern "C" void func_ov062_02116010(daHolhei_c *self)
 {
     u32 id;
     dActor_c *a;
-    int b;
     int angle;
     struct Vector3_16 v;
 
@@ -750,8 +730,7 @@ extern "C" void func_ov062_02116010(daHolhei_c *self)
     a = dActor_c::FindWithID(id);
     if (a == 0)
         return;
-    b = (int)(a->actorID == 0xbf); /* PLAYER */
-    if (b == 0)
+    if (!IsPlayerActor(a))
         return;
     angle = self->HorzAngleToCPlayer();
     angle = AngleDiff(angle, self->mAngleY);

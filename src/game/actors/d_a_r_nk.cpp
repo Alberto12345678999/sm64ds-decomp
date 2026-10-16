@@ -38,6 +38,7 @@ enum daRNk_c_AssetId {
 #include "common.h"
 #include "Timer.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 /* Actor IDs (symbols/actor_debug_names.tsv). */
 enum {
@@ -562,8 +563,7 @@ void daRNk_c::func_ov062_0211a1f4()
             /* target = speedMul * 6 units * speedScale (fix12 multiply, rounded);
                the step is speedMul * 0.1 units a frame. */
             int acc = speedMul * 0x6000;
-            ApproachLinear(this->mHorzSpeed,
-                (int)(((long long)acc * speedScale + 0x800) >> 12), speedMul * 0x19a);
+            ApproachLinear(this->mHorzSpeed, FX_MUL(acc, speedScale), speedMul * 0x19a);
         }
         ApproachLinear(this->mPrevAngleY, this->mTargetAngleY, kTurnStep);
         if (this->mModelAnim.file == (BCA_File *)ANIM_RUN) {
@@ -592,7 +592,7 @@ void daRNk_c::func_ov062_0211a1f4()
            of his speed, and go to the in-the-air step. */
         SET_ANIM(this, ANIM_JUMP, kAnimPlayOnce);
         this->mVertSpeed = 0xa000;
-        this->mHorzSpeed = (int)(((long long)this->mHorzSpeed * 0xd00 + 0x800) >> 12);
+        this->mHorzSpeed = FX_MUL(this->mHorzSpeed, 0xd00);
         this->mStep = 3;
         return;
     case 3:
@@ -911,7 +911,7 @@ int daRNk_c::func_ov062_021199ac()
     idx = (u16)(s16)(otherAngle - selfAngle);
     tableVal = data_02082214[(idx >> 4) * 2 + 1];
     otherK = other->mHorzSpeed;
-    fixed1 = (s32)(((long long)otherK * tableVal + 0x800) >> 12);
+    fixed1 = FX_MUL(otherK, tableVal);
 
     r = this->GetSubtraction(selfAngle, angle);
     if (r < 0x4000) {
@@ -920,7 +920,7 @@ int daRNk_c::func_ov062_021199ac()
         if (dist >= kBallAheadRange)
             goto ret0;
         selfK = this->mHorzSpeed;
-        fixed2 = (s32)(((long long)selfK * 0xb33 + 0x800) >> 12);
+        fixed2 = FX_MUL(selfK, 0xb33);
         if (fixed1 < fixed2)
             return BALL_AHEAD_JUMP;
         this->mHorzSpeed -= 0x2000;

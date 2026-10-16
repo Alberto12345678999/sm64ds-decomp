@@ -41,27 +41,11 @@
 //   triples live on the shared dActor_c header, which has not named them yet
 //   (same header work as the linelift2 leaf below).
 #include "daKpFr_c.h"
+#include "SpawnInfo.h"
 #include "dBgCh_Gnd.h"
 #include "Particle__System.h"
 #include "Player.h"
 #include "SurfaceInfo.h"
-
-/* Actor/process profile descriptor at ov070:0x02123424. Field roles are
- * recovered from fBase_c/dActor_c consumers; exact original member spellings
- * are not preserved. */
-struct daKpFrSpawnInfo {
-    daKpFr_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char daKpFrSpawnInfo_size_must_be_0x1c[
-    sizeof(daKpFrSpawnInfo) == 0x1c ? 1 : -1];
 
 /* The registry factory behind the KERONPA_FIRE profile.
  * `return new daKpFr_c()` emits 0x48 with the synthesized ctor storing
@@ -76,8 +60,8 @@ extern "C" daKpFr_c *daKpFr_c_classInit(void)
  * KERONPA_FIRE registry ID, descriptor/factory relationship, and object shape;
  * later EAD lineage supplies the spelling prior. Exact original SM64DS
  * spellings are not preserved. Historical aliases: daKpFr_c_Spawn and
- * daKpFr_c_SpawnInfo. */
-extern "C" daKpFrSpawnInfo g_profile_KERONPA_FIRE = {
+ * daKpFr_c_SpawnInfo. The descriptor is at ov070:0x02123424. */
+extern "C" SpawnInfo<daKpFr_c> g_profile_KERONPA_FIRE = {
     daKpFr_c_classInit,
     0x010f,
     0x0082,
@@ -90,6 +74,7 @@ extern "C" daKpFrSpawnInfo g_profile_KERONPA_FIRE = {
 
 // @symbol _ZN8daKpFr_c13InitResourcesEv
 #include "decl_common.h"
+#include "dBgCh_Actr.h"
 /* Array-only wrapper preserves retail's ldm/stm matrix copy in C++ mode.
  * Nested math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes otherwise. */
 struct M48 { int w[12]; };
@@ -271,14 +256,13 @@ void daKpFr_c::func_ov070_02121e14() {
 namespace cstd { int fdiv(int a, int b); }
 
 extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* c);
-extern "C" dBgPi* _ZNK10dBgCh_Actr14GetFloorResultEv(const dBgCh_Actr*);
 
 void daKpFr_c::func_ov070_02121d50(void* vclsn) {
     dBgCh_Actr* clsn = (dBgCh_Actr*)vclsn;
     Fix12i normal[3];
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);
     if (clsn->IsOnGround()) {
-        _ZNK10dBgCh_Actr14GetFloorResultEv(clsn)->surface.CopyNormalTo(*(Vector3*)normal);
+        ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)normal);
         if (normal[1] != 0) {
             int a = (int)(((long long)normal[0] * unk_0a4 + 0x800) >> 12);
             int b = (int)(((long long)normal[2] * unk_0ac + 0x800) >> 12);

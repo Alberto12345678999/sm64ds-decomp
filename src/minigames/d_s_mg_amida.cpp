@@ -76,7 +76,7 @@ enum dScMgAmida_c_AssetId {
 #include "types.h"
 #include "decl_common.h"
 #include "dScMgAmida_c.h"
-
+#include "nitro/fx/fx.h"
 
 extern "C" {
 /* --- shared ov004 and main helpers --- */
@@ -188,7 +188,6 @@ extern Buf14 data_ov006_0213b880;
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
 #define IP(p,o) (*(int*)((char*)(p)+(o)))
 #define IAP(p,o) (*(int*)AT(p,(o)))
-#define MULFX(a,b) ((int)(((s64)(a)*(b)+0x800)>>12))
 
 #pragma defer_codegen off
 
@@ -2100,13 +2099,16 @@ s32 dScMgAmida_c::Behavior()
                         idxA = ((int)((av << 17) >> 16) >> 4) * 2;
                         cA = data_02082214[idxA + 1];
                         {
-                            mPieces[slot].posX = MULFX(cosB, (int)((0x8000LL * cA + 0x800) >> 12));
+                            mPieces[slot].posX = FX_MUL(cosB, (int)((0x8000LL * cA + 0x800) >> 12));
                             sinA = data_02082214[idxA];
-                            mPieces[slot].posY = MULFX(cosB, (int)((0x8000LL * sinA + 0x800) >> 12));
+                            mPieces[slot].posY =
+                                FX_MUL(cosB, (int)((0x8000LL * sinA + 0x800) >> 12));
                             mPieces[slot].posX += mLanePos[j][0];
                             mPieces[slot].posY += mLanePos[j][1];
-                            mPieces[slot].velX = MULFX(cosB, (int)((0x1000LL * (int)(cA) + 0x800) >> 12));
-                            mPieces[slot].velY = MULFX(cosB, (int)((0x1000LL * sinA + 0x800) >> 12));
+                            mPieces[slot].velX =
+                                FX_MUL(cosB, (int)((0x1000LL * (int)(cA) + 0x800) >> 12));
+                            mPieces[slot].velY =
+                                FX_MUL(cosB, (int)((0x1000LL * sinA + 0x800) >> 12));
                         }
                         mPieces[slot].velY -= 0x400;
                         mPieces[slot].active = 1;

@@ -38,6 +38,7 @@
 #include "decl_common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -250,7 +251,7 @@ int daYurei_Mucho_c::Behavior()
            signed s16 would read the wrong table entry for negative angles. */
         idx = ((unsigned short)(short)ang >> 4) * 2;
         tbl = data_02082214[idx];
-        result = (int)(((long long)tbl * 0x46000 + 0x800) >> 12);
+        result = FX_MUL(tbl, 0x46000);
         _Z14ApproachLinearRiii(&mPosY, mHomePosY + (result + 0xb4000), 0x3000);
     }
     UpdatePosWithOnlySpeed(&mdCcAc_c);

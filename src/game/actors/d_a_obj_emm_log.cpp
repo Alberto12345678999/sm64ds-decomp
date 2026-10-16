@@ -34,6 +34,7 @@ enum d_a_obj_emm_log_AssetId {
 #include "daObjEmmLog_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "nitro/fx/fx.h"
 
 struct daObjEmmLog_c_Resources {
     SharedFilePtr *model;
@@ -105,7 +106,7 @@ s32 daObjEmmLog_c::Behavior()
 
     int idx = (u16)mBobPhase >> 4;
     int s = *(short *)((char *)data_02082214 + (idx << 2));
-    int m = (int)(((long long)mBobAmplitude * s + 0x800) >> 12);
+    int m = FX_MUL(mBobAmplitude, s);
     mPosY = mBasePosY + m;
 
     mBobPhase += 0x200;

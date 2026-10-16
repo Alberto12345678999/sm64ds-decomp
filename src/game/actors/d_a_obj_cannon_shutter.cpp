@@ -37,6 +37,7 @@ enum d_a_obj_cannon_shutter_AssetId {
 };
 
 #include "daObjCannonShutter_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "decl_common.h"
@@ -84,23 +85,6 @@ struct CannonShutterClsnFilePtr : SharedFilePtr {
 extern "C" CannonShutterModelFilePtr data_ov002_0210e12c;   /* the BMD model */
 extern "C" CannonShutterClsnFilePtr data_ov002_0210e124;    /* the KCL collision mesh */
 
-/* Runtime actor/process profile descriptor at ov002:0x02109d14. The field
- * roles are established by the recovered fBase_c/dActor_c consumers; their
- * exact original SM64DS member spellings are not preserved. */
-struct CannonShutterSpawnInfo {
-    daObjCannonShutter_c *(*classInit)();
-    s16 profileIDAndExecuteOrder;
-    s16 drawOrder;
-    u32 actorFlags;
-    Fix12i clipOffsetY;
-    Fix12i clipRadius;
-    Fix12i clipDistance;
-    Fix12i farDistance;
-};
-
-typedef char CannonShutterSpawnInfo_size_must_be_0x1c[
-    sizeof(CannonShutterSpawnInfo) == 0x1c ? 1 : -1];
-
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol daObjCannonShutter_c_classInit
@@ -121,8 +105,9 @@ extern "C" daObjCannonShutter_c *daObjCannonShutter_c_classInit()
  * CANNON_SHUTTER registry ID, descriptor/factory relationship, and object
  * shape; later EAD lineage supplies the classInit/g_profile spelling prior.
  * Exact original SM64DS spellings are not preserved. Historical project
- * aliases: daObjCannonShutter_c_Spawn and daObjCannonShutter_c_SpawnInfo. */
-extern "C" CannonShutterSpawnInfo g_profile_CANNON_SHUTTER = {
+ * aliases: daObjCannonShutter_c_Spawn and daObjCannonShutter_c_SpawnInfo.
+ * The descriptor is at ov002:0x02109d14. */
+extern "C" SpawnInfo<daObjCannonShutter_c> g_profile_CANNON_SHUTTER = {
     daObjCannonShutter_c_classInit,
     0x000e,
     0x009e,

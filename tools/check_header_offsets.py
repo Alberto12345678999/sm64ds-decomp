@@ -116,6 +116,10 @@ DECL = re.compile(r"^\s*(?:(?:const|volatile)\s+)*(?:(?:struct|union|class|enum)
                   r"((?:\[\s*(?:0x[0-9a-fA-F]+|\d+)\s*\])*)\s*;"
                   r"(?:\s*/\*\s*(0x[0-9a-fA-F]+))?")
 ARR_DIMS = re.compile(r"\[\s*(0x[0-9a-fA-F]+|\d+)\s*\]")
+# `s32 mPosX, mPosY, mPosZ;` -- several plain (no pointer, no array) declarators of
+# one type. Group 3 keeps the trailing `/* 0x...` text for DECL to read.
+MULTI_DECL = re.compile(r"^\s*((?:\w+::)*[A-Za-z_]\w*)\s+(\w+(?:\s*,\s*\w+)+)\s*;"
+                        r"(\s*/\*\s*0x[0-9a-fA-F]+)?")
 # A class-local allocation function occupies no instance storage. Recognize only
 # a complete allocation signature here; C++ validity is still the compiler's job.
 # Unlike the generated headers' ordinary method footer, an allocator can appear
@@ -627,7 +631,7 @@ def main(argv, repo=None):
         off, bad, n, skipped, pending = 0, 0, 0, [], []
         trusted = True
         started = in_comment = unmodelled = nested = skip_other = False
-        in_union = False
+        in_union = in_ustruct = False
         u_start = u_end = u_members = 0
         skip_body = 0
         await_body = body_comment = False
@@ -785,12 +789,30 @@ def main(argv, repo=None):
             # type is not sized here (a nested bit-field struct overlaying the same
             # word) is skipped rather than reported, since it can only restate the
             # first member and the header's own size assertion still holds the total.
+            #
+            # A union member can itself be an ANONYMOUS STRUCT -- dActor_c.h overlays
+            # `struct { s32 mPosX, mPosY, mPosZ; };` on `Vector3 mPos;`. Its members
+            # run one after another from the union's start, and its `};` closes the
+            # struct, not the union. Without this the `struct {` came back UNPARSED,
+            # and its `};` would have closed the union one line early.
             if in_union:
-                if re.match(r"^\s*\};", line):
+                if in_ustruct:
+                    if re.match(r"^\s*\};", line):
+                        in_ustruct = False
+                        u_end = max(u_end, off)
+                        u_members += 1
+                        off = u_start
+                        continue
+                elif re.match(r"^\s*struct\s*\{\s*$", line):
+                    in_ustruct = True
+                    off = u_start
+                    continue
+                elif re.match(r"^\s*\};", line):
                     in_union = False
                     off = max(u_end, u_start)
                     continue
-                off = u_start
+                else:
+                    off = u_start
             elif re.match(r"^\s*union\s*\{", line):
                 in_union, u_start, u_end, u_members = True, off, off, 0
                 continue
@@ -864,7 +886,17 @@ def main(argv, repo=None):
             # were reported UNPARSED and the header failed the gate on its own comments.
             if line.count("/*") > line.count("*/"):
                 in_comment = True
-            m = DECL.match(line)
+            # `s32 mPosX, mPosY, mPosZ;` declares three fields of one type. Read it as
+            # its first declarator, with the count multiplying the width below; a
+            # trailing offset comment belongs to the first name.
+            n_decl = 1
+            multi = MULTI_DECL.match(line)
+            if multi:
+                names = [s.strip() for s in multi.group(2).split(",")]
+                n_decl = len(names)
+                m = DECL.match(f"{multi.group(1)} {names[0]};{multi.group(3) or ''}")
+            else:
+                m = DECL.match(line)
             typ = m.group(1).rsplit("::", 1)[-1] if m else None
             # A qualified assertion is checked FIRST and settles the question. It
             # names one class unambiguously, so neither the bare-tag lookup nor the
@@ -891,7 +923,7 @@ def main(argv, repo=None):
                 # An unrecognised declaration is NOT harmless: skipping it leaves the
                 # running offset short, so every later field silently "matches" at the
                 # wrong place. Say so rather than quietly carrying on.
-                if in_union and u_members:
+                if in_union and u_members and not in_ustruct:
                     continue
                 skipped.append(f"{lineno}: {line.strip()}")
                 # ...and stop claiming MISMATCH from here on. The running offset is now
@@ -928,7 +960,7 @@ def main(argv, repo=None):
             arr_n = 1
             for d in ARR_DIMS.findall(arr):
                 arr_n *= int(d, 0)
-            off += w * arr_n
+            off += w * arr_n * n_decl
             if in_union:
                 u_members += 1
                 u_end = max(u_end, off)

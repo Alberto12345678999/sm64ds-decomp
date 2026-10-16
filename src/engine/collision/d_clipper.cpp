@@ -24,6 +24,7 @@
 #include "types.h"
 #include "dClipper.h"
 #include "math/Matrix.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *res);
@@ -99,9 +100,8 @@ int dClipper::ClipSphere(Vector3 &v, Fix12i radius, u8 *hint) {
         if (negZ > this->mFarZ + radius)
             goto fail2;
 
-        if ((int)(((long long)v.z * this->mPlaneNormals[0].z + 0x800) >> 12) +
-                ((int)(((long long)v.x * this->mPlaneNormals[0].x + 0x800) >> 12) +
-                 (int)(((long long)v.y * this->mPlaneNormals[0].y + 0x800) >> 12)) >
+        if (FX_MUL(v.z, this->mPlaneNormals[0].z) +
+                (FX_MUL(v.x, this->mPlaneNormals[0].x) + FX_MUL(v.y, this->mPlaneNormals[0].y)) >
             radius)
             goto fail2;
 
@@ -150,8 +150,8 @@ void dClipper::Func_0201559C()
 {
     int idx = (int)mFovAngle >> 4;
     int q = _ZN4cstd4fdivEii(data_02082214[2 * idx], data_02082214[2 * idx + 1]);
-    Fix12i b = (Fix12i)(((long long)mNearZ * q + 0x800) >> 12);
-    Fix12i c = (Fix12i)(((long long)mAspectRatio * b + 0x800) >> 12);
+    Fix12i b = FX_MUL(mNearZ, q);
+    Fix12i c = FX_MUL(mAspectRatio, b);
     Vector3 v0, v1, v2, v3;
     v0.x = -c; v0.y = -b; v0.z = -mNearZ;
     v1.x = -c; v1.y = b;  v1.z = -mNearZ;

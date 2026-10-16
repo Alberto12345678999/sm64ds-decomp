@@ -1426,7 +1426,7 @@ extern void ApproachLinearI(int*, int, int);
 extern void CccArena_Kill(char*);
 extern void ChangeArea(int);
 extern void CleanCommonModelDataArr(void);
-extern void CopyTexPalFromLevelModel(void*);
+extern int CopyTexPalFromLevelModel(void *);
 extern void Crash();
 extern void CrazedCrate_OnTurnIntoEgg(char*, void*);
 extern void dCc_c_Clear(void*);
@@ -1539,7 +1539,7 @@ extern void data_ov054_02111238(void*);
 extern void func_01ffb098(void*);
 extern void func_01ffb0b0(void*);
 extern void func_01ffb0bc(void*);
-extern void func_01ffb0c8(void*);
+extern struct KCL_File *func_01ffb0c8(struct dBgW_Kc *);
 extern void func_01ffde98(int, int, int);
 /* func_02005348 removed: it is the member dScBoot_c::func_02005348(), declared in include/dScBoot_c.h */
 extern void func_02007c14(struct Vector3*, const struct Vector3*, int, short, short);
@@ -1652,12 +1652,12 @@ extern void func_0203d630(int*, int);
 extern void func_0203d930(void);
 extern void func_0203dafc(int);
 /* 0x020440e8 is NOT `func_020440e8`. config/arm9/symbols.txt:1842 exports it as
-   _ZN11fLiNdBaPr_cD1Ev, and src/_ZN11fLiNdBaPr_cD1Ev.cpp is its source. The row
+   _ZN11fLiNdBaPr_cD1Ev, and src/fListNode.cpp is its source. The row
    that used to sit here declared a name no module exports; anything that called
    it compiled and byte-matched and then failed the ROM link. Removed rather than
    corrected: fLiNdBaPr_c is a real class, so callers should include
-   include/fListNode.h and let the destructor be a destructor. */
-extern void func_02044104(int);
+   include/fListNode.h and let the destructor be a destructor. The same holds
+   for 0x02044104, which is _ZN9fLiNdBa_cD1Ev in the same file. */
 extern void func_02045e44(void*, unsigned int, int);
 extern void func_0204a17c(void*, void*);
 extern void func_0204ae2c(void*, void*, void*);

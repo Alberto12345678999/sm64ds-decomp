@@ -94,11 +94,11 @@ daWater_Suikomi_c::~daWater_Suikomi_c()
 }
 
 // @symbol func_ov026_02112280
-/* Looks up the actor the collider last touched (+0x134, inside mdCcAcPos_c)
- * and does nothing with it: the ROM body returns either way. */
+/* Looks up the actor the collider last touched (mdCcAcPos_c.otherOwner) and
+ * does nothing with it: the ROM body returns either way. */
 extern "C" void func_ov026_02112280(char *c)
 {
-    unsigned int id = *(unsigned int *)(c + 0x134);
+    unsigned int id = ((daWater_Suikomi_c *)c)->mdCcAcPos_c.otherOwner;
     if (id == 0) return;
     void *r = dActor_c::FindWithID(id);
     if (r == 0) return;

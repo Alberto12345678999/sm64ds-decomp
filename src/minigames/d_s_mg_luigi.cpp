@@ -41,6 +41,7 @@ enum dScMgLuigi_c_AssetId {
 #include "dScMgLuigi_c.h"
 #include "Sound.h"
 #include "IRQ.h"
+#include "nitro/fx/fx.h"
 
 typedef void (dScMgLuigi_c::*LuigiSlotHandler)(int);
 typedef void (dScMgLuigi_c::*LuigiStateHandler)();
@@ -981,9 +982,11 @@ void dScMgLuigi_c::MovePictureDriftRandom(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e878[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e878[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e878[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e878[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1015,9 +1018,11 @@ void dScMgLuigi_c::MovePictureDriftByRow(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e868[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e868[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e868[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e868[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1039,9 +1044,11 @@ void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e858[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e858[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e858[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e858[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1058,9 +1065,11 @@ void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
         mStarted[idx]++;
     } else {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8d8[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e8d8[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8d8[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e8d8[mCharacter[idx]]);
         WrapPicture(idx);
     }
 }
@@ -1078,9 +1087,11 @@ void dScMgLuigi_c::MovePictureDriftFixed(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8c8[mCharacter[idx]] + 0x800) >> 12);
+        mPosX[idx] =
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e8c8[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
-        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8c8[mCharacter[idx]] + 0x800) >> 12);
+        mPosY[idx] =
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e8c8[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }

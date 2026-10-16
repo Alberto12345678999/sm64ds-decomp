@@ -70,6 +70,7 @@ enum daHanachan_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "Message.h"
 #include "Vector3s.h"
+#include "nitro/fx/fx.h"
 
 void ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
@@ -1016,7 +1017,10 @@ int daHanachan_c::Behavior()
         if (mDefeated == 0) {
             if (DecIfAbove0_Byte(&mSegmentBounceTimer[i]) != 0) {
                 mSegmentBouncePhase[i] += 0x1200;
-                mSegmentScale[i].y = ((s32)(((s64)data_02082214[(((u16)mSegmentBouncePhase[i] >> 4) << 1) + 1] * 0x3000 + 0x800) >> 12) + 0xc000) / 10;
+                mSegmentScale[i].y =
+                    (FX_MUL(data_02082214[(((u16)mSegmentBouncePhase[i] >> 4) << 1) + 1], 0x3000) +
+                     0xc000) /
+                    10;
             } else {
                 ApproachLinear(mSegmentScale[i].y, 0x1000, 0x199);
             }
@@ -1043,8 +1047,8 @@ int daHanachan_c::Behavior()
 
     mSegmentPos[0].y = mSegmentPos[1].y + 0x1000;
     head = mSegmentPos[0];
-    head.x += (s32)(((s64)data_02082214[((u16)mSegmentRot[0].y >> 4) << 1] * 0x64000 + 0x800) >> 12);
-    head.z += (s32)(((s64)data_02082214[(((u16)mSegmentRot[0].y >> 4) << 1) + 1] * 0x64000 + 0x800) >> 12);
+    head.x += FX_MUL(data_02082214[((u16)mSegmentRot[0].y >> 4) << 1], 0x64000);
+    head.z += FX_MUL(data_02082214[(((u16)mSegmentRot[0].y >> 4) << 1) + 1], 0x64000);
     mdCc_cs1[0].pos = head;
     mdCc_cs2[0].pos = head;
 
@@ -1052,8 +1056,8 @@ int daHanachan_c::Behavior()
         u32 n = (u8)(4 - mHealth);
         if (n < 3) {
             part = mSegmentPos[0];
-            part.x += (s32)(((s64)data_02082214[((u16)mSegmentRot[0].y >> 4) << 1] * 0x23000 + 0x800) >> 12);
-            part.z += (s32)(((s64)data_02082214[(((u16)mSegmentRot[0].y >> 4) << 1) + 1] * 0x23000 + 0x800) >> 12);
+            part.x += FX_MUL(data_02082214[((u16)mSegmentRot[0].y >> 4) << 1], 0x23000);
+            part.z += FX_MUL(data_02082214[(((u16)mSegmentRot[0].y >> 4) << 1) + 1], 0x23000);
             if (n == 0)
                 part.y += 0x89000;
             else

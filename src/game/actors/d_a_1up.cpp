@@ -130,6 +130,7 @@
 #include "Player.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -587,7 +588,7 @@ void da1up_c::func_ov002_020af4ec() {
         }
         depth = mPosY - depth;
         if (depth <= 0x1000) depth = 0x1000;
-        radius = (mdCcAc_c.radius - 0xa000) * 2 - (int)(((long long)depth * 0x180 + 0x800) >> 12);
+        radius = (mdCcAc_c.radius - 0xa000) * 2 - FX_MUL(depth, 0x180);
         if (radius < 0xa000) radius = 0xa000;
         depth += 0x3c000;
     } else {
@@ -905,7 +906,7 @@ void da1up_c::func_ov002_020afc68() {
         mHorzSpeed += 0x19000;
         mVertSpeed = 0;
     } else {
-        int t = (int)(((s64)mHorzSpeed * 0xfae + 0x800) >> 12);
+        int t = FX_MUL(mHorzSpeed, 0xfae);
         mHorzSpeed = _ZN4cstd4fdivEii(t, 0x1000);
     }
     if (mHorzSpeed > 0x28000) {
