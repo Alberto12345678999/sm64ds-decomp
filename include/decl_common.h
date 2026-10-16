@@ -1142,7 +1142,6 @@ extern int func_ov030_0211124c(char*, char*);
 extern int func_ov034_02112650(char*, char*, char*);
 extern int func_ov035_02111798(char*);
 extern int func_ov053_021112a4(char*);
-extern int func_ov060_021172c8(unsigned char*, unsigned int);
 extern int func_ov062_02115f84(void*);
 extern void func_ov063_0211ddf4(void*);
 extern int func_ov065_021180d4(char*);
