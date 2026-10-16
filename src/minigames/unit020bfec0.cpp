@@ -19,12 +19,15 @@
 #include "MascotWalker.h"
 #include "Presenter.h"
 #include "Dealer.h"
+#include "Mascot.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
 /* Typed access to a Presenter record from the char* helpers below. */
 #define PRESENTER(p) ((Presenter *)(p))
 /* Typed access to a Dealer record from the char* helpers below. */
 #define DEALER(p) ((Dealer *)(p))
+/* Typed access to a Mascot record from the char* helpers below. */
+#define MASCOT(p) ((Mascot *)(p))
 
 struct Sound { static void PlayBank2_2D(unsigned int); };
 struct Model { int d; void HideMaterial(int, int); void ShowMaterial(int, int); void Render(const Vector3 *); };
@@ -1366,7 +1369,7 @@ int Mascot_Construct(char *t)
     func_02017acc(t, 0x205);
     _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
     _ZN14BlendModelAnimC1Ev(t + 0x10);
-    *(int *)(t + 0xa8) = 0;
+    MASCOT(t)->mLooking = 0;
     return (int)t;
 }
 }
@@ -1394,14 +1397,15 @@ void Mascot_Load(char *c)
     f = _ZN5Model8LoadFileER13SharedFilePtr(c);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x10, f, 1, -1);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(c + 8);
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x10, *(void **)(c + 0xc), 0, 0, 0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        c + 0x10, ((void *)MASCOT(c)->mWaitAnimFile[1]), 0, 0, 0x800, 0);
     _ZN5Model12HideMaterialEii(c + 0x10, 7, 0);
-    *(int *)(c + 0x8c) = 0xd000;
-    *(int *)(c + 0x90) = 0;
-    *(int *)(c + 0x94) = 0;
-    *(short *)(c + 0x98) = 0;
-    *(short *)(c + 0x9a) = -0x1400;
-    *(short *)(c + 0x9c) = 0;
+    MASCOT(c)->mPos.x = 0xd000;
+    MASCOT(c)->mPos.y = 0;
+    MASCOT(c)->mPos.z = 0;
+    MASCOT(c)->mRot[0] = 0;
+    MASCOT(c)->mRot[1] = -0x1400;
+    MASCOT(c)->mRot[2] = 0;
 }
 }
 }
@@ -1419,42 +1423,41 @@ void Mascot_Update(void* a) {
 namespace s020c201c {
 typedef short s16;
 
-
+/* Mascot.h's layout, with its BlendModelAnim spelled as the local Model so
+   Draw can call Render on it. */
 struct C {
     char pad10[0x10];
     Model model;
     char pad[0x80 - 0x14];
-    int v80;
-    char pad8c[0x8c - 0x84];
-    int v8c;
-    char pad9a[0x9a - 0x90];
-    s16 v9a;
-    char pada2[0xa2 - 0x9c];
-    s16 va2;
-    s16 va4;
+    Vector3 mLookTarget;
+    Vector3 mPos;
+    s16 mRot[3];
+    char pada2[0xa2 - 0x9e];
+    s16 mHeadPitch;
+    s16 mHeadYaw;
     char pada8[0xa8 - 0xa6];
-    int va8;
+    int mLooking;
 };
 
 
 extern "C" void Mascot_Draw(C *c)
 {
-    if (c->va8 != 0) {
-        s16 h = Vec3_HorzAngle((const Vector3 *)&c->v8c, (const Vector3 *)&c->v80);
-        s16 v = Vec3_VertAngle((const Vector3 *)&c->v8c, (const Vector3 *)&c->v80);
-        s16 dh = (s16)(h - c->v9a);
+    if (c->mLooking != 0) {
+        s16 h = Vec3_HorzAngle(&c->mPos, &c->mLookTarget);
+        s16 v = Vec3_VertAngle(&c->mPos, &c->mLookTarget);
+        s16 dh = (s16)(h - c->mRot[1]);
         if (dh < -0x2800) dh = -0x2800;
         else if (dh > 0x2800) dh = 0x2800;
         if (v < -0x1000) v = -0x1000;
         else if (v > 0x1000) v = 0x1000;
-        UpdateAngle(c->va4, dh, 8, 0x200);
-        UpdateAngle(c->va2, v, 8, 0x200);
+        UpdateAngle(c->mHeadYaw, dh, 8, 0x200);
+        UpdateAngle(c->mHeadPitch, v, 8, 0x200);
         dh = (s16)(h - dh);
-        UpdateAngle(c->v9a, dh, 8, 0x200);
+        UpdateAngle(c->mRot[1], dh, 8, 0x200);
     } else {
-        UpdateAngle(c->va2, 0, 8, 0x200);
-        UpdateAngle(c->va4, 0x800, 8, 0x200);
-        UpdateAngle(c->v9a, -0x1400, 8, 0x200);
+        UpdateAngle(c->mHeadPitch, 0, 8, 0x200);
+        UpdateAngle(c->mHeadYaw, 0x800, 8, 0x200);
+        UpdateAngle(c->mRot[1], -0x1400, 8, 0x200);
     }
     Mascot_UpdateMatrix((char *)c);
     c->model.Render(0);
@@ -1479,14 +1482,15 @@ struct Vtbl {
 struct Sub { char pad[0x120]; Matrix4x3 m; };
 
 extern "C" void Mascot_UpdateMatrix(char* c){
-  Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x8c), *(int*)(c+0x90), *(int*)(c+0x94));
-  Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(s16*)(c+0x9a));
-  *(Matrix4x3*)(c+0x2c) = data_020a0e68;
-  ((Vtbl*)(c+0x10))->v3();
-  data_020a0e68 = (*(Sub**)(c+0x24))->m;
-  Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, *(s16*)(c+0xa4));
-  Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, *(s16*)(c+0xa2));
-  (*(Sub**)(c+0x24))->m = data_020a0e68;
+    Matrix4x3_FromTranslation(&data_020a0e68, MASCOT(c)->mPos.x, MASCOT(c)->mPos.y,
+                              MASCOT(c)->mPos.z);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, MASCOT(c)->mRot[1]);
+    *(Matrix4x3 *)(c + 0x2c) = data_020a0e68;
+    ((Vtbl *)(c + 0x10))->v3();
+    data_020a0e68 = (*(Sub **)(c + 0x24))->m;
+    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, MASCOT(c)->mHeadYaw);
+    Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, MASCOT(c)->mHeadPitch);
+    (*(Sub **)(c + 0x24))->m = data_020a0e68;
 }
 }
 
@@ -1494,15 +1498,15 @@ namespace s020c1f04 {
 extern "C" {
 void Mascot_LookAt(char* c, int* src) {
     if (src != 0) {
-        *(int*)(c+0x80) = src[0];
-        *(int*)(c+0x84) = src[1];
-        *(int*)(c+0x88) = src[2];
+        MASCOT(c)->mLookTarget.x = src[0];
+        MASCOT(c)->mLookTarget.y = src[1];
+        MASCOT(c)->mLookTarget.z = src[2];
     } else {
-        *(int*)(c+0x80) = 0;
-        *(int*)(c+0x84) = 0x2000;
-        *(int*)(c+0x88) = -0x2000;
+        MASCOT(c)->mLookTarget.x = 0;
+        MASCOT(c)->mLookTarget.y = 0x2000;
+        MASCOT(c)->mLookTarget.z = -0x2000;
     }
-    *(int*)(c+0xa8) = 1;
+    MASCOT(c)->mLooking = 1;
 }
 }
 }
@@ -1511,7 +1515,7 @@ namespace s020c1ef8 {
 extern "C" {
 void Mascot_StopLooking(int *p)
 {
-    p[42] = 0;
+    MASCOT(p)->mLooking = 0;
 }
 }
 }
