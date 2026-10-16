@@ -786,28 +786,28 @@ void dScMgCurling2_c::AgeMarks()
 
 
 // @symbol _ZN15dScMgCurling2_c10DrawCursorEv
-/* Draw the drag cursor at the unk_5584/unk_5588 drag point,
- * offset up and left, while the unk_55b9 flag is set. */
+/* Draw the drag cursor at the mDragX/mDragY drag point,
+ * offset up and left, while the mShowCursor flag is set. */
 void dScMgCurling2_c::DrawCursor()
 {
-    if (unk_55b9 == 0) return;
+    if (mShowCursor == 0)
+        return;
 
-    int x = unk_5584;
-    int y = unk_5588;
+    int x = mDragX;
+    int y = mDragY;
     Mg_RenderSpriteBoth((int)data_ov006_0213c4f0, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
 }
-
 
 /* Stylus drag update. Runs while the player drags a stone before the throw. With no touch in
  * the current input record it just drops the drag flags. Otherwise it moves
  * the drag point to the stylus plus the grab offset, clamps it to the rink,
  * and bails out (restoring the old point) when the stylus moved a unit or
- * less. The vertical direction-change tracker (unk_55be, unk_55a8,
- * unk_5590) plays the scrape sound on the first move and flips phases on
- * reversals; the throw angle (unk_55b2) is atan2 of the move with the
+ * less. The vertical direction-change tracker (mDragPhase, mLastDragDy,
+ * mTurnY) plays the scrape sound on the first move and flips phases on
+ * reversals; the throw angle (mThrowAngle) is atan2 of the move with the
  * horizontal halved, snapped to straight up inside [0x4000,0x8000] and to
  * zero below, then averaged with the previous frame; the throw power
- * (unk_559c) follows the move length times 9 with a 0xc000 cap, rising
+ * (mThrowPower) follows the move length times 9 with a 0xc000 cap, rising
  * instantly and decaying by half. Finally the grab offset is recomputed
  * from the new point and a fresh read of the input index.
  *
@@ -846,70 +846,78 @@ void dScMgCurling2_c::DragUpdate()
 
         by = gTouchY[i4];
         bx = gTouchX[i4];
-        oldx = self->unk_5584;
-        oldy = self->unk_5588;
-        self->unk_5584 = self->unk_5594 + (bx << 12);
-        self->unk_5588 = self->unk_5598 + (by << 12);
-        if (self->unk_5588 <= 0x94000) self->unk_5588 = 0x94000;
-        if (self->unk_5584 <= 0x20000) self->unk_5584 = 0x20000;
-        if (self->unk_5584 >= 0xe0000) self->unk_5584 = 0xe0000;
-        if (self->unk_5588 >= 0xb8000) self->unk_5588 = 0xb8000;
-        dx = (self->unk_5584 - oldx) >> 12;
-        dy = (self->unk_5588 - oldy) >> 12;
+        oldx = self->mDragX;
+        oldy = self->mDragY;
+        self->mDragX = self->mDragOffsetX + (bx << 12);
+        self->mDragY = self->mDragOffsetY + (by << 12);
+        if (self->mDragY <= 0x94000)
+            self->mDragY = 0x94000;
+        if (self->mDragX <= 0x20000)
+            self->mDragX = 0x20000;
+        if (self->mDragX >= 0xe0000)
+            self->mDragX = 0xe0000;
+        if (self->mDragY >= 0xb8000)
+            self->mDragY = 0xb8000;
+        dx = (self->mDragX - oldx) >> 12;
+        dy = (self->mDragY - oldy) >> 12;
         dy2 = dy * dy;
         if (cstd::sqrt((u64)(dx * dx + dy2)) <= 1) {
-            self->unk_5584 = oldx;
-            self->unk_5588 = oldy;
+            self->mDragX = oldx;
+            self->mDragY = oldy;
             return;
         }
-        diff = (self->unk_5588 - self->unk_5590) >> 12;
-        if (self->unk_55be == 0) {
-            func_02012718(0x1d6, self->unk_5584);
-            self->unk_55be = 2;
-            self->unk_55a8 = (self->unk_5588 - self->unk_5590) >> 12;
-            self->unk_5590 = self->unk_5588;
-        } else if (self->unk_55be == 1) {
-            if (self->unk_55a8 * diff > 0) {
+        diff = (self->mDragY - self->mTurnY) >> 12;
+        if (self->mDragPhase == 0) {
+            func_02012718(0x1d6, self->mDragX);
+            self->mDragPhase = 2;
+            self->mLastDragDy = (self->mDragY - self->mTurnY) >> 12;
+            self->mTurnY = self->mDragY;
+        } else if (self->mDragPhase == 1) {
+            if (self->mLastDragDy * diff > 0) {
                 if (diff < 0) diff = -diff;
-                if (diff >= 0xa) self->unk_55be = 0;
+                if (diff >= 0xa)
+                    self->mDragPhase = 0;
             } else {
-                self->unk_55a8 = diff;
-                self->unk_5590 = self->unk_5588;
+                self->mLastDragDy = diff;
+                self->mTurnY = self->mDragY;
             }
         } else {
-            if (self->unk_55a8 * diff < 0) self->unk_55be = 1;
-            self->unk_55a8 = (self->unk_5588 - self->unk_5590) >> 12;
-            self->unk_5590 = self->unk_5588;
+            if (self->mLastDragDy * diff < 0)
+                self->mDragPhase = 1;
+            self->mLastDragDy = (self->mDragY - self->mTurnY) >> 12;
+            self->mTurnY = self->mDragY;
         }
-        oldAng = self->unk_55b2;
-        self->unk_55b2 = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx >> 1);
+        oldAng = self->mThrowAngle;
+        self->mThrowAngle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx >> 1);
         {
-            u16 a = self->unk_55b2;
+            u16 a = self->mThrowAngle;
 
             if (a <= 0x8000 && a >= 0x4000) {
-                self->unk_55b2 = 0x8000;
+                self->mThrowAngle = 0x8000;
             } else if (a <= 0x4000) {
-                self->unk_55b2 = 0;
+                self->mThrowAngle = 0;
             }
         }
-        self->unk_55b2 = (self->unk_55b2 + oldAng) >> 1;
+        self->mThrowAngle = (self->mThrowAngle + oldAng) >> 1;
         mag = cstd::sqrt((u64)((dx >> 1) * (dx >> 1) + dy2)) * 9;
         mag = (mag << 12) >> 4;
         if (mag >= 0xc000) mag = 0xc000;
-        if (mag > self->unk_559c) self->unk_559c = mag;
-        if (self->unk_559c > mag) self->unk_559c -= (self->unk_559c - mag) >> 1;
+        if (mag > self->mThrowPower)
+            self->mThrowPower = mag;
+        if (self->mThrowPower > mag)
+            self->mThrowPower -= (self->mThrowPower - mag) >> 1;
         {
             int j = gActivePlayerSlot;
-            int ay = (self->unk_5588 >> 12) - gTouchY[j * 4];
-            int ax = (self->unk_5584 >> 12) - gTouchX[j * 4];
+            int ay = (self->mDragY >> 12) - gTouchY[j * 4];
+            int ax = (self->mDragX >> 12) - gTouchX[j * 4];
 
-            self->unk_5594 = ax << 12;
-            self->unk_5598 = ay << 12;
+            self->mDragOffsetX = ax << 12;
+            self->mDragOffsetY = ay << 12;
         }
         return;
     }
-    self->unk_55b8 = 0;
-    self->unk_55b9 = 1;
+    self->mDragState = 0;
+    self->mShowCursor = 1;
 }
 #pragma pop
 
@@ -936,26 +944,26 @@ void dScMgCurling2_c::DragBegin()
     if (flag == 0)
         return;
 
-    x = (unk_5584 >> 0xc) - gTouchX[idx * 4];
-    y = (unk_5588 >> 0xc) - gTouchY[idx * 4];
+    x = (mDragX >> 0xc) - gTouchX[idx * 4];
+    y = (mDragY >> 0xc) - gTouchY[idx * 4];
 
-    unk_5594 = x << 0xc;
-    unk_5598 = y << 0xc;
-    unk_55b8 = 1;
-    unk_55b2 = 0xc000;
+    mDragOffsetX = x << 0xc;
+    mDragOffsetY = y << 0xc;
+    mDragState = 1;
+    mThrowAngle = 0xc000;
 
     if (sndCooldown == 0)
     {
-        func_02012718(0x1d2, unk_5584);
+        func_02012718(0x1d2, mDragX);
         sndCooldown = 6;
     }
 
     unk_55a0 = 0;
     unk_55a4 = 0;
-    unk_558c = unk_5584 + unk_5594;
-    unk_5590 = unk_5588 + unk_5598;
-    unk_55a8 = 0xff;
-    unk_55be = 0;
+    mGrabX = mDragX + mDragOffsetX;
+    mTurnY = mDragY + mDragOffsetY;
+    mLastDragDy = 0xff;
+    mDragPhase = 0;
 }
 
 
@@ -966,7 +974,7 @@ void dScMgCurling2_c::DragBegin()
 void dScMgCurling2_c::DrawCounter()
 {
     int left;
-    if (unk_55c3 == 0)
+    if (mShowCounter == 0)
         return;
     left = 5 - thrown;
     if (left < 0)
@@ -1234,14 +1242,14 @@ void dScMgCurling2_c::StoneSteer(int idx)
         mStone[idx].velY = dv << 12;
     } else {
         mStone[idx].state = 0;
-        int dx = (unk_5584 - mStone[idx].x) >> 12;
+        int dx = (mDragX - mStone[idx].x) >> 12;
         int cy = mStone[idx].y;
-        int dy = (unk_5588 - cy) >> 12;
+        int dy = (mDragY - cy) >> 12;
         if (dx < -0x2e) return;
         if (dx > 0x2e) return;
         if (dy < -0x14) return;
         if (dy > 0x14) return;
-        unk_5588 = cy + 0x15000;
+        mDragY = cy + 0x15000;
     }
 }
 
@@ -1342,37 +1350,36 @@ void dScMgCurling2_c::StoneSlide(int idx)
 
 
 // @symbol _ZN15dScMgCurling2_c9StoneWaitEi
-/* Stone state 0: armed, waiting. While a drag is on (unk_55b8 == 1) and
+/* Stone state 0: armed, waiting. While a drag is on (mDragState == 1) and
  * the drag point overlaps the stone, throw it at the latched angle and
  * power (clamped to the legal cone), mark it fast when the power is high,
  * then re-arm the spawn slot and separate it from any stone it landed on. */
 void dScMgCurling2_c::StoneWait(int idx)
 {
-    if (unk_55b8 != 1) return;
+    if (mDragState != 1)
+        return;
 
-    int v = (unk_5584 - mStone[idx].x) >> 12;
-    int w = (unk_5588 - mStone[idx].y) >> 12;
+    int v = (mDragX - mStone[idx].x) >> 12;
+    int w = (mDragY - mStone[idx].y) >> 12;
     if (v < -0x2e) return;
     if (v > 0x2e) return;
     if (w < -0x14) return;
     if (w > 0x14) return;
 
     mStone[idx].state = 1;
-    mStone[idx].angle = unk_55b2;
-    mStone[idx].speed = unk_559c;
+    mStone[idx].angle = mThrowAngle;
+    mStone[idx].speed = mThrowPower;
 
-    if (unk_55b2 < 0x9800u ||
-        unk_55b2 > 0xe800u) {
-        if (unk_55b2 >= 0x4000u &&
-            unk_55b2 <= 0x9800u) {
-            unk_55b2 = 0x9800;
+    if (mThrowAngle < 0x9800u || mThrowAngle > 0xe800u) {
+        if (mThrowAngle >= 0x4000u && mThrowAngle <= 0x9800u) {
+            mThrowAngle = 0x9800;
         } else {
-            unk_55b2 = 0xe800;
+            mThrowAngle = 0xe800;
         }
-        mStone[idx].angle = unk_55b2;
+        mStone[idx].angle = mThrowAngle;
     }
 
-    if (unk_559c >= 0x3800) {
+    if (mThrowPower >= 0x3800) {
         mStone[idx].fast = 1;
     } else {
         mStone[idx].fast = 0;
@@ -1444,8 +1451,8 @@ void dScMgCurling2_c::NextStone()
             Sound::PlayBank2_2D(0x1d7);
         }
         *((unsigned char *) ((int)self + 0x55ba)) += 1;
-        unk_5584 = 0x80000;
-        unk_5588 = 0xb0000;
+        mDragX = 0x80000;
+        mDragY = 0xb0000;
         *((unsigned char *) (self + 0x55b8)) = 0;
         *((unsigned char *) (self + 0x55b9)) = 1;
         ClearStoneFlags();
@@ -1518,11 +1525,11 @@ void dScMgCurling2_c::EndRound()
         Mg_SetSharedState(MG_STATE_RESULTS);
     }
     mPromptEnabled = 0;
-    unk_55b9 = 0;
+    mShowCursor = 0;
     for (i = 0; i < 0xb; i++) {
         mStone[i].visible = 0;
     }
-    unk_55c3 = 0;
+    mShowCounter = 0;
 }
 
 
@@ -1584,7 +1591,7 @@ void dScMgCurling2_c::Play()
         u8* q = (u8*)(c + 0x55bd);
         *q = *q - 1;
     }
-    (((C*)c)->*data_ov006_02141978[unk_55b8])();
+    (((C *)c)->*data_ov006_02141978[mDragState])();
 
     {
         int count = 0;
@@ -1617,7 +1624,7 @@ void dScMgCurling2_c::BeginRound()
     ResetGame();
     spawning = 1;
     mSpawnTimer = 0;
-    unk_55c3 = 1;
+    mShowCounter = 1;
     NextStone();
     mState = 1;
 }
@@ -1706,11 +1713,11 @@ void dScMgCurling2_c::ResetGame()
 
     *((short *) (c + 0x55b4)) = 0;
     *((unsigned char *) (c + 0x55ba)) = 0;
-    unk_5584 = 0;
-    unk_5588 = 0;
-    unk_5594 = 0;
-    unk_5598 = 0;
-    unk_559c = 0;
+    mDragX = 0;
+    mDragY = 0;
+    mDragOffsetX = 0;
+    mDragOffsetY = 0;
+    mThrowPower = 0;
     *((short *) (c + 0x55b2)) = 0;
     *((unsigned char *) (c + 0x55b8)) = 0;
     *((unsigned char *) (c + 0x55b9)) = 0;
@@ -1734,7 +1741,7 @@ void dScMgCurling2_c::StartRound(int /* arg */)
     Scroll();
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_55ac = Mg_GetTopRecord();
+    mTopRecord = Mg_GetTopRecord();
 }
 
 
@@ -1847,7 +1854,7 @@ s32 dScMgCurling2_c::InitResources()
     Scroll();
     spawning = 1;
     mSpawnTimer = 0;
-    unk_55c3 = 1;
+    mShowCounter = 1;
     NextStone();
     SeedPieces();
     mState = 1;
@@ -1856,7 +1863,7 @@ s32 dScMgCurling2_c::InitResources()
     mRunDuringFade = 1;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_55ac = Mg_GetTopRecord();
+    mTopRecord = Mg_GetTopRecord();
     return 1;
 }
 

@@ -397,7 +397,7 @@ int dScMgSnowball_c::HitsBreakable(int *point)
             *(u8 *)(scene + i + 0xb2d8) = 1;
             if (mArray1Kind[i] == 1) {
                 mSoundPending = 1;
-                unk_b9e8 = *(int *)(prop + 0xacd8);
+                mHitSoundX = *(int *)(prop + 0xacd8);
                 *(int *)(scene + 0xb9ec) = *(int *)(prop + 0xacdc);
             }
             return 1;
@@ -674,7 +674,7 @@ void dScMgSnowball_c::UpdateSnowball()
             if (self->mState == 1) {
                 func_02012718(0x169, hit.x);
                 if (self->mSoundPending == 1) {
-                    func_02012718(0x16a, self->unk_b9e8);
+                    func_02012718(0x16a, self->mHitSoundX);
                     self->mSoundPending = 0;
                 }
             }
@@ -1889,11 +1889,11 @@ int dScMgSnowball_c::OnGraphCallback0()
  return ((dScMgBase_c *)t)->dScMgBase_c::OnGraphCallback0() != 0; }
 
 // @symbol _ZN15dScMgSnowball_c16CleanupResourcesEv
-/* Slot 3. Frees the BMD that InitResources parked in unk_abf4. The field is
+/* Slot 3. Frees the BMD that InitResources parked in mBallBmd. The field is
  * a file pointer but untyped in the header, so it is read through a cast. */
 s32 dScMgSnowball_c::CleanupResources()
 {
-    Ov004_Deallocate(*(void **)&unk_abf4);
+    Ov004_Deallocate(*(void **)&mBallBmd);
     return 1;
 }
 
@@ -1913,7 +1913,7 @@ void dScMgSnowball_c::StartRound(int i)
 
 // @symbol _ZN15dScMgSnowball_c13InitResourcesEv
 /* Slot 0. Sets up both screens' BG2 and BG3 layers, loads the palettes and
- * tiles, then loads the snowball BMD into unk_abf4 and hands it to mModel.
+ * tiles, then loads the snowball BMD into mBallBmd and hands it to mModel.
  * Returning 0 when ModelBase::SetFile fails aborts the scene. The helpers at
  * the end take the scene as an opaque pointer, so the receiver stays raw. */
 s32 dScMgSnowball_c::InitResources()

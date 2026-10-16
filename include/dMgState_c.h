@@ -48,7 +48,8 @@ struct dMgState_c {
     s32 mState;
     s32 mTimer;
     s32 unk_020;
-    s32 unk_024; /* dScMgBase_c steps and draws the machine only while this is 0 */
+    s32 mSuspended; /* state 6 sets it, Mg_ResumeSharedState clears it; the base
+                       steps and draws the machine only while it is 0 */
 
     dMgState_c();
     void Render();

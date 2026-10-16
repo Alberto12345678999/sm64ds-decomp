@@ -29,7 +29,7 @@
  * at data_ov006_02142f18 (9 states by Boo::state), the reveal pair at
  * data_ov006_02142e88 (5 states by mReveal[0].state), the 16-Boo rows at
  * data_ov006_02142ed8 (8 states), and the scene table data_ov006_02142eb0
- * (5 no-argument states by unk_4be8). __sinit_ov006_02132f68 fills them
+ * (5 no-argument states by mSceneState). __sinit_ov006_02132f68 fills them
  * from the .data descriptor records at data_ov006_0213f8xx.
  *
  * OAM::Render takes Fix12<int> by value, so that call stays mangled.
@@ -184,7 +184,7 @@ struct PmfEntry { Pmf0 pmf; };
 extern Pmf data_ov006_02142f18[];   /* big Boo flight states, by Boo::state */
 extern Pmf data_ov006_02142e88[];   /* reveal states, by mReveal[0].state */
 extern Pmf data_ov006_02142ed8[];   /* per-Boo states, one call per live row */
-extern PmfEntry data_ov006_02142eb0[]; /* scene states, by unk_4be8 */
+extern PmfEntry data_ov006_02142eb0[]; /* scene states, by mSceneState */
 /* The ROM PMF constants the four state tables copy from (unlicensed .data),
  * grouped by destination table in retail copy order. */
 extern Pmf0 pmf_dScMgTeresa_c_Scene_State0;
@@ -696,7 +696,7 @@ void dScMgTeresa_c::Reveal_State4(int idx)
     data_0209d45c |= 4;
     data_0209d454 |= 1;
     Sound::PlayBank2_2D(0x1f6);
-    unk_4be8 = 2;
+    mSceneState = 2;
     StartBoosHiding();
     BigBoo_Start();
     Sound::PlayBank2_2D(0x1f5);
@@ -1247,7 +1247,7 @@ void dScMgTeresa_c::AreBoosSettled()
                 mBoos[i].mFade = 0;
                 mBoos[i].unk_19 = 1;
                 mBoos[i].mFrame = 3;
-                mBoos[i].unk_21 = 0;
+                mBoos[i].mPlaySettleSound = 0;
                 mLastSettledBoo = (unsigned char)i;
                 mBoos[i].mDelay = 1;
                 found++;
@@ -1256,10 +1256,10 @@ void dScMgTeresa_c::AreBoosSettled()
     }
     if (found != 0) {
         unsigned char idx = mLastSettledBoo;
-        mBoos[idx].unk_21 = 1;
+        mBoos[idx].mPlaySettleSound = 1;
     } else {
         unsigned char idx = mLastSettledBoo;
-        mBoos[idx].unk_21 = 0;
+        mBoos[idx].mPlaySettleSound = 0;
     }
 }
 
@@ -1444,7 +1444,7 @@ void dScMgTeresa_c::Boo_State6(int i)
     if (mBoos[i].mDelay != 0) {
         mBoos[i].mDelay--;
         if (mBoos[i].mDelay == 0) {
-            if (mBoos[i].unk_21 != 0)
+            if (mBoos[i].mPlaySettleSound != 0)
                 Sound::PlayBank2_2D(0x1f1);
         }
     }
@@ -1494,7 +1494,7 @@ void dScMgTeresa_c::Boo_State6(int i)
 // @symbol _ZN13dScMgTeresa_c10Boo_State5Ei
 void dScMgTeresa_c::Boo_State5(int idx)
 {
-    if (unk_4be8 != 4)
+    if (mSceneState != 4)
         return;
     if (mBoos[idx].mTimer != 0) {
         mBoos[idx].mTimer--;
@@ -2003,7 +2003,7 @@ void dScMgTeresa_c::Scene_State3()
         return;
     }
     RisingIcon_ClearAll();
-    unk_4be8 = 4;
+    mSceneState = 4;
     *(s16 *)(c + 0x4c0c) = 0x60;
     *(int *)0x4001000 = *(int *)0x4001000 & ~0xe000;
     data_0209d454 = data_0209d454 & ~1;
@@ -2154,7 +2154,7 @@ void dScMgTeresa_c::StartRound(int reset)
     char* dst = (char *)G2S::GetBG0CharPtr();
     val = 0x1111;
     MultiStore16(val, dst, 0x6000);
-    unk_4be8 = 0;
+    mSceneState = 0;
     FreeGfxSlotsById(0x1d);
     unk_4c16 = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
@@ -2183,10 +2183,10 @@ s32 dScMgTeresa_c::Render()
 
 // @symbol _ZN13dScMgTeresa_c8BehaviorEv
 /* Vtable slot 6: runs the current state's handler from the pointer-to-member
-   table data_ov006_02142eb0, indexed by unk_4be8. */
+   table data_ov006_02142eb0, indexed by mSceneState. */
 s32 dScMgTeresa_c::Behavior()
 {
-    (this->*data_ov006_02142eb0[unk_4be8].pmf)();
+    (this->*data_ov006_02142eb0[mSceneState].pmf)();
     Exclaim_UpdateAll();
     return 1;
 }
@@ -2272,7 +2272,7 @@ s32 dScMgTeresa_c::InitResources()
     Marker_Show();
     Reveal_Start();
     SpawnBoos();
-    unk_4be8 = 1;
+    mSceneState = 1;
     *((u16 *) (self + 0x4c16)) = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     data_ov004_020bc880 = 0x80;

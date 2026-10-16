@@ -693,8 +693,9 @@ void dScMgBomroom_c::SlotA_Trigger(int index) {
 // @symbol _ZN14dScMgBomroom_c13DrawRemainingEv
 
 void dScMgBomroom_c::DrawRemaining() {
-  if(unk_62f9==0) return;
-  Mg_DrawBigNumber(0x80,0xc,unk_62ee,1,-1,0,0);
+    if (mShowTally == 0)
+        return;
+    Mg_DrawBigNumber(0x80, 0xc, mTallyCount, 1, -1, 0, 0);
 }
 
 
@@ -720,7 +721,7 @@ void dScMgBomroom_c::CountSortedBombs() {
         mWinColor = 0;
         *(volatile unsigned int *)(raw + 0xbc) = mLevel + 1;
         if (mLevel > 0x270e) mLevel = 0x270e;
-        unk_62fb = 1;
+        mFusesFrozen = 1;
         Sound::PlayBank2_2D(0x1e6);
     } else if (colored >= 0x28) {
         mSceneState = 3;
@@ -729,7 +730,7 @@ void dScMgBomroom_c::CountSortedBombs() {
         mWinColor = 1;
         *(volatile unsigned int *)(raw + 0xbc) = mLevel + 1;
         if (mLevel > 0x270e) mLevel = 0x270e;
-        unk_62fb = 1;
+        mFusesFrozen = 1;
         Sound::PlayBank2_2D(0x1e6);
     }
 }
@@ -759,14 +760,14 @@ void dScMgBomroom_c::OnBombExploded(int picked) {
                     u8 *state = (u8 *)(bomb + 0x4697);
                     if (*state != 5) {
                         *state = 3;
-                        mBombs[i].unk_30 = 0x20;
+                        mBombs[i].marchDelay = 0x20;
                     }
                 } else {
                     u8 *state = (u8 *)(bomb + 0x4697);
                     if (*state == 5) {
                         if (((dScMgBomroom_Bomb *)(bomb + 0x4660))->color + 1 == pen) {
                             *state = 3;
-                            mBombs[i].unk_30 = 0x20;
+                            mBombs[i].marchDelay = 0x20;
                         }
                     }
                     if (*state <= 1) {
@@ -831,7 +832,7 @@ void dScMgBomroom_c::Bomb_Animate(int index) {
     }
     if (type == 3) {
         mBombs[index].active = 0;
-        mBombs[index].unk_39 = 0;
+        mBombs[index].visible = 0;
     } else {
         max = 0;
     }
@@ -888,13 +889,13 @@ void dScMgBomroom_c::Bomb_CheckWrongPen(int index) {
             return;
         if (y >= 0x80)
             return;
-        mBombs[index].unk_32 = 0;
+        mBombs[index].fuse = 0;
         mBombs[index].state = 4;
         mBombs[index].type = 3;
         mBombs[index].frame = 0;
         mBombs[index].counter = 0;
         mBombs[index].pen = 1;
-        mBombs[index].unk_3d = 1;
+        mBombs[index].exploded = 1;
         OnBombExploded(index);
     } else {
         if (x <= 0xc0)
@@ -903,13 +904,13 @@ void dScMgBomroom_c::Bomb_CheckWrongPen(int index) {
             return;
         if (y >= 0x80)
             return;
-        mBombs[index].unk_32 = 0;
+        mBombs[index].fuse = 0;
         mBombs[index].state = 4;
         mBombs[index].type = 3;
         mBombs[index].frame = 0;
         mBombs[index].counter = 0;
         mBombs[index].pen = 2;
-        mBombs[index].unk_3d = 1;
+        mBombs[index].exploded = 1;
         OnBombExploded(index);
     }
 }
@@ -950,7 +951,7 @@ void dScMgBomroom_c::Bomb_CheckGrab(int index) {
     mBombs[index].state = 2;
     mBombs[index].grabX = dx << 0xc;
     mBombs[index].grabY = dy << 0xc;
-    mBombs[index].unk_3e = 0;
+    mBombs[index].overPen = 0;
     func_02012718((int)0x1d2, mBombs[index].x);
 }
 
@@ -1118,7 +1119,8 @@ void dScMgBomroom_c::Bomb_PushApart(int index) {
 void dScMgBomroom_c::DrawBombs() {
     int i;
     for (i = 0; i < 0x70; i++) {
-        if (mBombs[i].unk_39 == 0) continue;
+        if (mBombs[i].visible == 0)
+            continue;
         {
             int b694 = mBombs[i].type;
             int palette = 1;
@@ -1168,7 +1170,7 @@ void dScMgBomroom_c::CheckColorComplete() {
                     mBombs[i].substate = 3;
                     v = ca;
                     q = 0;
-                    mBombs[i].unk_30 = (unsigned short)(cc * 8);
+                    mBombs[i].marchDelay = (unsigned short)(cc * 8);
                     while (v >= 5) { v -= 5; q++; }
                     ((unsigned char *)(int)(bytes + i * 64))[0x469c] = (unsigned char)(q * 10 + v);
                     ca++;
@@ -1180,7 +1182,7 @@ void dScMgBomroom_c::CheckColorComplete() {
                     *d = (unsigned char)cb;
                     mBombs[i].substate = 3;
                     v = cb;
-                    mBombs[i].unk_30 = (unsigned short)(cc * 8);
+                    mBombs[i].marchDelay = (unsigned short)(cc * 8);
                     q = 0;
                     while (v >= 5) { v -= 5; q++; }
                     *d = (unsigned char)(q * 10 + v + 5);
@@ -1188,15 +1190,15 @@ void dScMgBomroom_c::CheckColorComplete() {
                     cc++;
                 }
             } else if (mBlastPen != 0) {
-                mBombs[i].unk_3c = (unsigned char)cc;
+                mBombs[i].lineSlot = (unsigned char)cc;
                 mBombs[i].substate = 3;
-                mBombs[i].unk_30 = (unsigned short)(cc * 8);
+                mBombs[i].marchDelay = (unsigned short)(cc * 8);
                 cc++;
             } else {
                 if (mWinColor == mBombs[i].color && mBombs[i].state == 6) {
-                    mBombs[i].unk_3c = (unsigned char)cc;
+                    mBombs[i].lineSlot = (unsigned char)cc;
                     mBombs[i].substate = 3;
-                    mBombs[i].unk_30 = (unsigned short)(cc * 8);
+                    mBombs[i].marchDelay = (unsigned short)(cc * 8);
                     cc++;
                 }
             }
@@ -1221,14 +1223,14 @@ void dScMgBomroom_c::Bomb_Roam4() {
 void dScMgBomroom_c::Bomb_Roam3(int index) {
     char * raw = (char *)this;
     int off = index << 6;
-    if (mBombs[index].unk_30 != 0) {
-        mBombs[index].unk_30 -= 1;
-        if ((s16)mBombs[index].unk_30 < 0)
-            mBombs[index].unk_30 = 0;
+    if (mBombs[index].marchDelay != 0) {
+        mBombs[index].marchDelay -= 1;
+        if ((s16)mBombs[index].marchDelay < 0)
+            mBombs[index].marchDelay = 0;
         return;
     }
     {
-        int slot = mBombs[index].unk_3c;
+        int slot = mBombs[index].lineSlot;
         int row = 0;
         int curX, curY, targetY, targetX;
         while (slot >= 10) { slot -= 10; row++; }
@@ -1440,11 +1442,12 @@ void dScMgBomroom_c::Bomb_State5(int idx) {
 void dScMgBomroom_c::Bomb_State4(int i) {
     char * c = (char *)this;
     char *b = c + i * 64;
-    if (mBombs[i].unk_3d == 0) return;
+    if (mBombs[i].exploded == 0)
+        return;
     if (mBombs[i].frame != 0) return;
     if (mBombs[i].counter != 1) return;
     Sound::PlayBank2_2D(0x1e0);
-    unk_62f0 = 0x60;
+    mDispatchDelay = 0x60;
 }
 
 
@@ -1478,7 +1481,7 @@ void dScMgBomroom_c::Bomb_State2(int idx) {
     char * self_ = (char *)this;
     if (mHeldColor == 0xff) {
         mBombs[idx].state = 1;
-        mBombs[idx].unk_32 += 0x40;
+        mBombs[idx].fuse += 0x40;
         Bomb_CheckSorted(idx);
         Bomb_CheckWrongPen(idx);
     } else {
@@ -1501,27 +1504,27 @@ void dScMgBomroom_c::Bomb_State2(int idx) {
             mBombs[idx].y = (gTouchY[t2 << 2] << 12) - mBombs[idx].grabY;
         }
 
-        was = mBombs[idx].unk_3e;
+        was = mBombs[idx].overPen;
         if (mBombs[idx].color != 0) {
             if (cx > 0xc0 && cy > 0x40 && cy < 0x80) {
-                mBombs[idx].unk_3e = 1;
+                mBombs[idx].overPen = 1;
             } else {
-                mBombs[idx].unk_3e = 0;
+                mBombs[idx].overPen = 0;
             }
         } else {
             if (cx < 0x40 && cy > 0x40 && cy < 0x80) {
-                mBombs[idx].unk_3e = 1;
+                mBombs[idx].overPen = 1;
             } else {
-                mBombs[idx].unk_3e = 0;
+                mBombs[idx].overPen = 0;
             }
         }
 
-        if (was == 0 && mBombs[idx].unk_3e != 0) {
+        if (was == 0 && mBombs[idx].overPen != 0) {
             func_02012718(0x1e4, mBombs[idx].x);
         }
 
-        mBombs[idx].unk_28 = func_02012468(mBombs[idx].unk_28, 2, 0x1e5, 4, 0, 0,
-                                            func_020126e8(mBombs[idx].x), 0);
+        mBombs[idx].dragSound = func_02012468(mBombs[idx].dragSound, 2, 0x1e5, 4, 0, 0,
+                                              func_020126e8(mBombs[idx].x), 0);
         mBombs[idx].prevX = mBombs[idx].x;
         mBombs[idx].prevY = mBombs[idx].y;
     }
@@ -1531,7 +1534,7 @@ void dScMgBomroom_c::Bomb_State2(int idx) {
 #pragma pop
 
 // @symbol _ZN14dScMgBomroom_c11Bomb_State1Ei
-/* While the bomb's +0x32 timer runs it counts down (unless +0x62fb is
+/* While the bomb's fuse runs it counts down (unless mFusesFrozen is
  * set) and the bomb moves along its angle; once it reaches 0 the bomb goes
  * to state 4 and OnBombExploded takes over. */
 
@@ -1539,29 +1542,29 @@ void dScMgBomroom_c::Bomb_State1(int idx) {
     char * self = (char *)this;
     int t;
 
-    if (mBombs[idx].unk_32 != 0) {
-        if (unk_62fb == 0) {
-            mBombs[idx].unk_32--;
+    if (mBombs[idx].fuse != 0) {
+        if (mFusesFrozen == 0) {
+            mBombs[idx].fuse--;
         }
-        if ((short)mBombs[idx].unk_32 < 0) {
-            mBombs[idx].unk_32 = 0;
+        if ((short)mBombs[idx].fuse < 0) {
+            mBombs[idx].fuse = 0;
         }
-        if (mBombs[idx].unk_32 <= 0x40) {
+        if (mBombs[idx].fuse <= 0x40) {
             mBombs[idx].type = 2;
         }
     } else {
-        mBombs[idx].unk_32 = 0;
+        mBombs[idx].fuse = 0;
         mBombs[idx].state = 4;
         mBombs[idx].type = 3;
         mBombs[idx].frame = 0;
         mBombs[idx].counter = 0;
         mBombs[idx].pen = 0;
-        mBombs[idx].unk_3d = 1;
+        mBombs[idx].exploded = 1;
         OnBombExploded(idx);
         return;
     }
 
-    if (unk_62fb != 0) {
+    if (mFusesFrozen != 0) {
         return;
     }
 
@@ -1904,7 +1907,7 @@ void dScMgBomroom_c::HideExplodedBombs() {
     for (i = 0; i < 0x70; i++) {
         if (mBombs[i].active != 0) {
             if (mBombs[i].state == 6)
-                mBombs[i].unk_39 = 0;
+                mBombs[i].visible = 0;
         }
     }
 }
@@ -1956,21 +1959,21 @@ void dScMgBomroom_c::ClearBombs() {
         mBombs[i].prevX = 0;
         mBombs[i].prevY = 0;
         mBombs[i].sound = 0;
-        mBombs[i].unk_28 = 0;
+        mBombs[i].dragSound = 0;
         mBombs[i].angle = 0;
         mBombs[i].counter = 0;
-        mBombs[i].unk_30 = 0;
-        mBombs[i].unk_32 = 0;
+        mBombs[i].marchDelay = 0;
+        mBombs[i].fuse = 0;
         mBombs[i].type = 0;
         mBombs[i].frame = 0;
         mBombs[i].color = 0;
         mBombs[i].state = 0;
         mBombs[i].active = 0;
         mBombs[i].substate = 0;
-        mBombs[i].unk_39 = 0;
+        mBombs[i].visible = 0;
         mBombs[i].pen = 0;
-        mBombs[i].unk_3c = 0;
-        mBombs[i].unk_3d = 0;
+        mBombs[i].lineSlot = 0;
+        mBombs[i].exploded = 0;
     }
 }
 
@@ -1997,7 +2000,7 @@ void dScMgBomroom_c::Round_SubState3() {
             if (mBombs[j].state == 6
              && mBombs[j].substate == 4) {
                 mBombs[j].active = 0;
-                mBombs[j].unk_39 = 0;
+                mBombs[j].visible = 0;
             }
         }
     }
@@ -2006,16 +2009,16 @@ void dScMgBomroom_c::Round_SubState3() {
         mStateTimer = 0x60;
         mSceneState = 4;
         mSubState = 0;
-        Mg_SubmitScore(unk_62ee + Mg_GetSubmittedScore());
+        Mg_SubmitScore(mTallyCount + Mg_GetSubmittedScore());
     } else {
-        Mg_SubmitScore(unk_62ee + Mg_GetSubmittedScore());
+        Mg_SubmitScore(mTallyCount + Mg_GetSubmittedScore());
         mSceneState = 2;
         mSubState = 0;
         mBlastPen = 0;
-        unk_62fb = 0;
+        mFusesFrozen = 0;
     }
-    unk_62f9 = 0;
-    unk_62ee = 0;
+    mShowTally = 0;
+    mTallyCount = 0;
     SetBg0Offset(0, 0);
 }
 
@@ -2036,7 +2039,7 @@ void dScMgBomroom_c::Round_SubState2() {
         if ((s16)mStateTimer > 0)
             return;
         mStateTimer = 0;
-        unk_62e0 = 0x10;
+        mTallyDelay = 0x10;
         if (func_ov006_020d8c88() != 0) {
             mBg2State = 1;
             Sound::PlayBank2_2D(0x1dd);
@@ -2044,8 +2047,8 @@ void dScMgBomroom_c::Round_SubState2() {
         return;
     }
 
-    if (unk_62e0 != 0) {
-        (unk_62e0)--;
+    if (mTallyDelay != 0) {
+        (mTallyDelay)--;
         return;
     }
 
@@ -2057,17 +2060,17 @@ void dScMgBomroom_c::Round_SubState2() {
         j++;
     } while (j < 0x70);
 
-    (unk_62ea)++;
-    if (unk_62ea < 4)
+    (mTallyTick)++;
+    if (mTallyTick < 4)
         return;
 
     if (found != 0) {
         mBombs[found - 1].active = 2;
-        unk_62ea = 0;
-        (unk_62ee)++;
+        mTallyTick = 0;
+        (mTallyCount)++;
         Sound::PlayBank2_2D(0x1bc);
     } else {
-        unk_62ea = 0;
+        mTallyTick = 0;
         mStateTimer = 0x40;
         mSubState = 3;
     }
@@ -2267,12 +2270,12 @@ void dScMgBomroom_c::ResetRound() {
     unk_62e6 = 0;
     mHeldColor = 0xff;
     unk_62f7 = 0;
-    unk_62ea = 0;
+    mTallyTick = 0;
     mBlastPen = 0;
     mSpawnCount = 0;
-    unk_62f0 = 0;
-    unk_62f9 = 0;
-    unk_62fb = 0;
+    mDispatchDelay = 0;
+    mShowTally = 0;
+    mFusesFrozen = 0;
     *(unsigned char *)(c + 0x62fc) = 0;
     Mg_SubmitScore(0);
     SlotA_HideAll();
@@ -2316,7 +2319,7 @@ s32 dScMgBomroom_c::Render()
 }
 
 // @symbol _ZN14dScMgBomroom_c8BehaviorEv
-/* Waits out the +0x62f0 delay, then runs the round state at +0x62d0 from
+/* Waits out mDispatchDelay, then runs the round state at +0x62d0 from
  * the pointer-to-member table data_ov006_021416e0 and steps the sprite
  * records and the BG2 offset. */
 typedef void (dScMgBomroom_c::*PMFv)();

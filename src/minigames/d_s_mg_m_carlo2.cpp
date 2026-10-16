@@ -140,7 +140,7 @@ s32 dScMgMCarlo2_c::InitResources()
     if (Dealer_Load((void *)(raw + 0x4f38)) == 0) return 0;
     Mg_PlaceBannersOnTopScreen();
     StartRound(-1);
-    this->unk_592a = 0;
+    this->mTimer = 0;
     this->mCredits = 0xa;
     this->mCreditsShown = this->mCredits;
     return 1;
@@ -155,13 +155,13 @@ void dScMgMCarlo2_c::StartRound(int /* arg */)
 
     dScMgMCarlo2_c::SetupBoard(mArray);
     data_ov006_0213d6fc = 0;
-    unk_592e = 0;
+    mDealCount = 0;
     mShared.unk_1e6 = 1;
     Dealer_StartDeal(raw + 0x4f38, 4, 4, raw + 0x592e);
     mShared.unk_01a = 1;
-    unk_592a = 0;
+    mTimer = 0;
     Mg_SubmitScore(0);
-    unk_5928 = 1;
+    mRoundState = 1;
 }
 
 // @symbol _ZN14dScMgMCarlo2_c11CanEndStateEi
@@ -169,11 +169,11 @@ int dScMgMCarlo2_c::CanEndState(int /* mode */)
 {
     char *raw = (char *)this;
 
-    short state = unk_5928;
+    short state = mRoundState;
     switch (state) {
     case 4:
         if (Dealer_IsIdle((int *)(raw + 0x4f38)) != 0) {
-            short *p = &unk_5928;
+            short *p = &mRoundState;
             *p += 1;
         }
         break;
@@ -188,16 +188,16 @@ int dScMgMCarlo2_c::CanEndState(int /* mode */)
         if (found != 0) {
             short *p;
             func_02012790(0x62);
-            unk_592a = 0x1e;
+            mTimer = 0x1e;
             dScMgMCarlo2_c::FlipDealtCards();
-            p = &unk_5928;
+            p = &mRoundState;
             *p += 1;
         }
         break;
     }
     case 6:
     default:
-        if (ApproachLinear2(unk_592a, 0, 1) != 0) {
+        if (ApproachLinear2(mTimer, 0, 1) != 0) {
             return 1;
         }
         break;
@@ -206,18 +206,18 @@ int dScMgMCarlo2_c::CanEndState(int /* mode */)
 }
 
 // @symbol _ZN14dScMgMCarlo2_c8BehaviorEv
-/* Slot 6. The state at unk_5928 is bumped through an int-cast pointer each
- * time: plain `unk_5928++` recomputes the address, and the ROM keeps it in a
+/* Slot 6. The state at mRoundState is bumped through an int-cast pointer each
+ * time: plain `mRoundState++` recomputes the address, and the ROM keeps it in a
  * register. data_ov006_0213d700 is the dealt-card count, shifted left 12. */
 s32 dScMgMCarlo2_c::Behavior()
 {
     unsigned char *raw = (unsigned char *)this;
 
-    switch (unk_5928) {
+    switch (mRoundState) {
     case 1:
         {
-            s16 *p = &unk_5928;
-            (*p)++;
+        s16 *p = &mRoundState;
+        (*p)++;
         }
         if (mPromptBlinkCount == 0) {
             mPromptEnabled = 1;
@@ -226,12 +226,12 @@ s32 dScMgMCarlo2_c::Behavior()
         }
         /* fall through */
     case 2:
-        data_ov006_0213d700 = unk_592e * 5 << 12;
-        if (unk_592e == 4) {
+        data_ov006_0213d700 = mDealCount * 5 << 12;
+        if (mDealCount == 4) {
             if (dScMgMCarlo2_c::BoardBusy() == 0) {
-                unk_592e = 0;
+                mDealCount = 0;
                 {
-                    s16 *p = &unk_5928;
+                    s16 *p = &mRoundState;
                     (*p)++;
                 }
             }
@@ -245,13 +245,13 @@ s32 dScMgMCarlo2_c::Behavior()
             dealt = data_ov006_0213d700 >> 12;
             if (data_ov006_0213d6f4 != 0 && dealt > 10 && dealt <= 18
                 && Dealer_IsIdle(raw + 0x4f38) != 0) {
-                unk_592e = 0;
+                mDealCount = 0;
                 mShared.unk_1e6 = 0;
-                Dealer_StartReveal(raw + 0x4f38, 2, &unk_592e);
+                Dealer_StartReveal(raw + 0x4f38, 2, &mDealCount);
                 if (data_ov006_0213d6f4 == 2)
                     mShared.unk_01a = 0;
             } else {
-                int lim = unk_592e + 0x12;
+                int lim = mDealCount + 0x12;
                 if (dealt >= lim) {
                     int flag = (data_ov006_02142570 != 0 && data_ov006_02142574 != 0);
                     if (flag == 0)
@@ -271,7 +271,7 @@ s32 dScMgMCarlo2_c::Behavior()
                             Mg_SetSharedState(MG_STATE_GAME_OVER);
                             mPromptEnabled = 0;
                             {
-                                s16 *p = &unk_5928;
+                                s16 *p = &mRoundState;
                                 (*p)++;
                             }
                         }
@@ -309,7 +309,7 @@ s32 dScMgMCarlo2_c::Render()
 
     RenderOamMainScreen(data_ov006_02133f18, 0xe8, 0x18, -1, -1);
 
-    if (this->unk_5928 == 5)
+    if (this->mRoundState == 5)
         Mg_DrawBlinkSprite(raw, 0xe0, 0xa0);
 
     lifted = data_ov006_02142578;

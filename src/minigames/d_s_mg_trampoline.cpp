@@ -845,7 +845,7 @@ s32 dScMgTrampoline_c::Render()
     mDoorMark.Render(mScrollY);
     TrmpFx_DrawAll();
 
-    if (unk_4664 == 1) {
+    if (mDrawSubScreen == 1) {
         count = data_ov006_0213b0ec;
         a1v = 0x6e;
         for (i = 0; i < 3; i++) {
@@ -901,7 +901,7 @@ int dScMgTrampoline_c::OnGraphCallback2()
     if (!dScMgD3DBase_c::OnGraphCallback2())
         return 0;
     if (mMenuOpen == 0) {
-        if (unk_4664 == 0) {
+        if (mDrawSubScreen == 0) {
             data_0209d45c &= ~8;
             SetBg2Offset(0, mScrollY + mScrollOffsetY);
             *(volatile int*)0x4000018 = (mScrollY + mScrollOffsetY) << 16 & 0x1ff0000;
