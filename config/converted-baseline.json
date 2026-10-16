@@ -214,7 +214,7 @@
     "src/WaitByLoop.c",
     "src/WarpPlayer.c",
     "src/Wireless_Reset.c",
-    "src/_Z13CopyToViewMatPK9Matrix4x3.cpp",
+    "src/engine/view/Graphics3D.cpp#_Z13CopyToViewMatPK9Matrix4x3",
     "src/game/stages/d_s_stage_methods.cpp#_Z17LoadLevelOverlaysi",
     "src/game/stages/d_s_stage_methods.cpp#_Z19UnloadLevelOverlaysi",
     "src/game/stages/d_s_stage_methods.cpp#_Z26LoadOrUnloadObjectOverlaysPFviEi",

@@ -929,7 +929,7 @@
       ]
     },
     "InvMat4x3": {
-      "src/_Z13CopyToViewMatPK9Matrix4x3.cpp": [
+      "src/engine/view/Graphics3D.cpp": [
         "param:#1 Matrix4x3 *",
         "param:#2 Matrix4x3 *",
         "return:void"
@@ -950,11 +950,6 @@
       "src/game/actors/d_a_snm_bth.cpp": [
         "param:#1 Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0200/func_0200f4f4.c": [
-        "param:#1 Matrix4x3 *",
-        "param:#2 Matrix4x3 *",
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02044efc.c": [
@@ -6757,9 +6752,6 @@
     },
     "_ZN3G3X13SetClearColorEtiiib": {
       "include/decl_common.h": [
-        "param:#5 int"
-      ],
-      "src/Initialise3dGraphics.cpp": [
         "param:#5 int"
       ],
       "src/unnamed/ov007/func_ov007_020b6c54.c": [
