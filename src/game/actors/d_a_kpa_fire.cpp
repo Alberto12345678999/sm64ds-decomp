@@ -115,9 +115,6 @@ enum { SOUND_ID_MOUTH = 0x180 };
 
 extern "C" {
 /* This file's own helpers, defined further down. */
-extern void func_ov060_02116518(daKpaFire_c *self, u32 kind, int resize, int yOffset);
-extern void func_ov060_0211712c(daKpaFire_c *self);
-extern void func_ov060_021172e0(daKpaFire_c *self);
 extern Entry data_ov060_0211afb4[];
 extern PMF data_ov060_0211af74[];
 
@@ -540,7 +537,7 @@ void daKpaFire_c::func_ov060_02116f90()
             this->mParticleHandle = this->mParticleHandle2;
         }
     } else {
-        func_ov060_02116518(this, PARTICLE_LANDED_BURN, 1, this->mFireScale * 0xc);
+        func_ov060_02116518(PARTICLE_LANDED_BURN, 1, this->mFireScale * 0xc);
         this->mdCcAc_c.flags &= ~1;
         if (this->mFrameCount > this->mFireScale * 0xa / 0x1000 + 5) {
             this->mFireScale -= 0x266;
@@ -609,7 +606,7 @@ void daKpaFire_c::func_ov060_02116d78()
     this->mPosY += this->mVertSpeed;
     this->mPosZ += this->unk_0ac;
 
-    func_ov060_02116518(this, PARTICLE_SCALED_9A, 1, this->mFireScale * 0xc);
+    func_ov060_02116518(PARTICLE_SCALED_9A, 1, this->mFireScale * 0xc);
     if (this->mWithMeshClsn.IsOnGround() != 0) {
         int rnd = RandomIntInternal(&data_0209e650[0]);
         unsigned int roll = (unsigned int)rnd >> 16;
@@ -665,7 +662,7 @@ void daKpaFire_c::func_ov060_02116c68()
  * destroys itself once its y is below 0. */
 void daKpaFire_c::func_ov060_02116b68()
 {
-    func_ov060_02116518(this, data_ov060_02119358[this->mSubVariant], 0, 0x46000);
+    func_ov060_02116518(data_ov060_02119358[this->mSubVariant], 0, 0x46000);
     func_ov060_0211712c();
     if (this->func_ov060_021172c8(0x1c2))
         this->MarkForDestruction();
@@ -718,7 +715,7 @@ void daKpaFire_c::func_ov060_021169f8()
         this->mFireScale += 0x200;
     }
     this->UpdatePos(0);
-    func_ov060_02116518(this, PARTICLE_SCALED_9A, 1, 0x78000);
+    func_ov060_02116518(PARTICLE_SCALED_9A, 1, 0x78000);
     if (this->mFrameCount <= 0x14)
         return;
     if (this->mSubVariant == 0) {
@@ -781,7 +778,7 @@ void daKpaFire_c::func_ov060_021168c4()
         this->mVertSpeed = 0x1e000;
     }
     this->UpdatePos(0);
-    func_ov060_02116518(this, PARTICLE_VARIANT_4, 0, 0x32000);
+    func_ov060_02116518(PARTICLE_VARIANT_4, 0, 0x32000);
     if (this->func_ov060_021172c8(0x96) != 0) {
         this->MarkForDestruction();
     }
