@@ -48,6 +48,7 @@ enum d_a_krpa_AssetId {
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "nitro/fx/fx.h"
 
 /* Actor/process profile descriptor at ov070:0x0212334c. Field roles are
  * recovered from fBase_c/dActor_c consumers; exact original member spellings
@@ -287,8 +288,8 @@ int daKrpa_c::func_ov070_0212156c() {
         int idx = (int)(u16)this->mAngleY >> 4;
         int cosv = data_02082214[idx * 2 + 1];
         int sinv = data_02082214[idx * 2];
-        int offZ = (int)(((s64)cosv * 0x50000 + 0x800) >> 12);
-        int offX = (int)(((s64)sinv * 0x50000 + 0x800) >> 12);
+        int offZ = FX_MUL(cosv, 0x50000);
+        int offX = FX_MUL(sinv, 0x50000);
         int x = this->mPosX + offX;
         int z = this->mPosZ + offZ;
         int y = this->mPosY - 0x29000;

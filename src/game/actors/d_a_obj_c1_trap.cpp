@@ -35,6 +35,7 @@ enum d_a_obj_c1_trap_AssetId {
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 /* The two copied position locals must stay POD. The shared Vector3 has an
  * empty destructor, which would add an unrelated compiler helper to this TU. */
@@ -194,8 +195,7 @@ void daObjC1_Trap_c::OnCollision(dActor_c &other)
     distance = Vec3_HorzDist(&spawnerPos, &otherPos);
     index = (u16)relativeAngle >> 4;
     projection = data_02082214[index * 2];
-    projectedDistance =
-        (s32)(((s64)distance * projection + 0x800) >> 12);
+    projectedDistance = FX_MUL(distance, projection);
     if (projectedDistance < 0x10e000)
         spawner->mTrapActive = 1;
 }
@@ -321,8 +321,8 @@ void daObjC1_Trap_c::UpdateModelTransform()
     int cosY = data_02082214[angleY * 2 + 1];
     int sinY = data_02082214[angleY * 2];
     int radius = sinZ * 5;
-    int offsetX = (int)(((s64)radius * cosY + 0x800) >> 12);
-    int offsetZ = (int)(((s64)radius * sinY + 0x800) >> 12);
+    int offsetX = FX_MUL(radius, cosY);
+    int offsetZ = FX_MUL(radius, sinY);
     int x = (mPosX - offsetX) >> 3;
     int y = mPosY >> 3;
     int z = (mPosZ + offsetZ) >> 3;

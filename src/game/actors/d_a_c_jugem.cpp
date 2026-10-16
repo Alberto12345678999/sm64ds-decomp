@@ -51,6 +51,7 @@ enum daC_Jugem_c_AssetId {
 #include "dCamera_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -352,9 +353,7 @@ int daC_Jugem_c::StateBobMain()
         int v = (short)mAuxCounter;
         int idx = (int)((unsigned int)(v << 16) >> 16) >> 4;
         short e = data_02082214[idx * 2];
-        _Z14ApproachLinearRiii(&mPosY,
-            (int)(((long long)e * 0x1a000 + 0x800) >> 12) + mTargetY,
-            0x10000000);
+        _Z14ApproachLinearRiii(&mPosY, FX_MUL(e, 0x1a000) + mTargetY, 0x10000000);
     }
 
     if (mTimer == 0x32) {

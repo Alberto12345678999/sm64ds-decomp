@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/fx/fx.h"
 typedef struct { int x, y, z; } Vec3;
 
 typedef struct {
@@ -101,7 +102,7 @@ void func_0204be40(Self *self, Node *node)
     if (scale == 0)
         return;
 
-    v1w = (int)(((s64)node->p30 * node->p34 + 0x800) >> 12);
+    v1w = FX_MUL(node->p30, node->p34);
     trans.x = node->p14 + node->p8;
     trans.y = node->p18 + node->pc;
     trans.z = node->p1c + node->p10;

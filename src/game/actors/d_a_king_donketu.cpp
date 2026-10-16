@@ -129,6 +129,7 @@ enum daKing_Donketu_c_AssetId {
 #include "Player.h"
 #include "dCamera_c.h"
 #include "dBgCh_Lin.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -287,7 +288,7 @@ void daKing_Donketu_c::func_ov073_0211f144() {
     y = c->mPosY;
     ((int*)&pos)[1] = y;
     ((int*)&pos)[2] = c->mPosZ;
-    ((int*)&pos)[1] = y + (int)(((long long)c->mScaleX * 0x1e000 + 0x800) >> 12);
+    ((int *)&pos)[1] = y + FX_MUL(c->mScaleX, 0x1e000);
 
     Vec3_HorzAngle((Vector3*)&c->mPosX, (Vector3*)&c->mSpawnPosX);
     in.z = 0; in.z = 0xc8000; in.x = 0; in.y = 0;
@@ -451,12 +452,12 @@ void daKing_Donketu_c::func_ov073_0211f494(void *pb)
     ay = (int)((unsigned short)ay >> 4);
     cos_ax = data_02082214[ax * 2 + 1];
     sin_ax = data_02082214[ax * 2];
-    tmp = (int)(((long long)vx * cos_ax + 0x800) >> 12);
-    ry = (int)(((long long)vx * sin_ax + 0x800) >> 12);
+    tmp = FX_MUL(vx, cos_ax);
+    ry = FX_MUL(vx, sin_ax);
     sin_ay = data_02082214[ay * 2];
     cos_ay = data_02082214[ay * 2 + 1];
-    rx = (int)(((long long)tmp * sin_ay + 0x800) >> 12);
-    rz = (int)(((long long)tmp * cos_ay + 0x800) >> 12);
+    rx = FX_MUL(tmp, sin_ay);
+    rz = FX_MUL(tmp, cos_ay);
     p.x += rx; p.y += ry; p.z += rz;
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x84, p.x, p.y, p.z);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x85, p.x, p.y, p.z);

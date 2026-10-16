@@ -27,6 +27,7 @@ enum daObjKanban_c_AssetId {
 #include "daObjKanban_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -108,8 +109,8 @@ int daObjKanban_c::Behavior()
         pos.y = mPosY;
         pos.z = mPosZ;
 
-        pos.x += (int)(((s64)data_02082214[(*(u16 *)&mAngleY >> 4) << 1] * 0x5a000 + 0x800) >> 12);
-        pos.z += (int)(((s64)data_02082214[((*(u16 *)&mAngleY >> 4) << 1) + 1] * 0x5a000 + 0x800) >> 12);
+        pos.x += FX_MUL(data_02082214[(*(u16 *)&mAngleY >> 4) << 1], 0x5a000);
+        pos.z += FX_MUL(data_02082214[((*(u16 *)&mAngleY >> 4) << 1) + 1], 0x5a000);
 
         {
             int *p = (int *)&tgt->mPosX;

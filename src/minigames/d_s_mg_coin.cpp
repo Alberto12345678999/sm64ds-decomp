@@ -55,6 +55,7 @@ enum dScMgCoin_c_AssetId {
 #include "Sound.h"
 #include "dScMgCoin_c.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off /* ROM-ascending emission; dropping this inverts it */
 
@@ -255,7 +256,6 @@ extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz)
 }
 #endif
 
-#define FX_MUL(a, b) ((int)(((s64)(a) * (b) + 0x800) >> 12))
 
 // @symbol _ZN11dScMgCoin_c8Bag_DrawEv
 /* The hand cursor while the stylus is down: the sine table entry for the
@@ -705,8 +705,8 @@ void dScMgCoin_c::Sparkle_Burst(int coinIndex)
             {
                 u16 ang = data_ov006_0212e334[i];
                 int sine = (ang >> 4) * 2;
-                *(int *)(raw + 0x4d1c) = (int)(((s64)data_02082214[sine + 1] * 0x2000 + 0x800) >> 12);
-                *(int *)(raw + 0x4d20) = (int)(((s64)data_02082214[sine] * 0x2000 + 0x800) >> 12);
+                *(int *)(raw + 0x4d1c) = FX_MUL(data_02082214[sine + 1], 0x2000);
+                *(int *)(raw + 0x4d20) = FX_MUL(data_02082214[sine], 0x2000);
             }
             *(u16 *)(raw + 0x4d24) = 0x18;
         }

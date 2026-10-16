@@ -24,6 +24,7 @@ enum d_s_mg_memory_AssetId {
 #include "PlayerInput.h"
 #include "decl_common.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 /* State numbers follow the card PMF table initialized by
  * __sinit_ov006_021311c8. These descriptive names are reconstructed. */
@@ -191,14 +192,14 @@ void dScMgMemory_c::PlayerMove(int player)
     {
         short trigValue = data_02082214[angleIndex * 2 + 1];
         int speed = mPlayers[player].speed;
-        mPlayers[player].x += (int)(((long long)trigValue * speed + 0x800) >> 12);
+        mPlayers[player].x += FX_MUL(trigValue, speed);
     }
 
     angleIndex = (u16)mPlayers[player].angle >> 4;
     {
         short trigValue = data_02082214[angleIndex * 2];
         int speed = mPlayers[player].speed;
-        mPlayers[player].y += (int)(((long long)trigValue * speed + 0x800) >> 12);
+        mPlayers[player].y += FX_MUL(trigValue, speed);
     }
 
     dx = targetX - (mPlayers[player].x >> 12);

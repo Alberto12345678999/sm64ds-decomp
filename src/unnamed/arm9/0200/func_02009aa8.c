@@ -1,4 +1,5 @@
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 typedef unsigned char u8;
 typedef short s16;
 typedef unsigned int u32;
@@ -71,7 +72,7 @@ int func_02009aa8(char *self)
 
         idx = gActivePlayerSlot * 0x18;
         t1 = *(s16 *)((char *)data_0209f4a2 + idx);
-        *(s16 *)(((long long)(int)(self + 0x17c)) & ~0ULL) -= (int)(((long long)t1 * 0x200 + 0x800) >> 12);
+        *(s16 *)(((long long)(int)(self + 0x17c)) & ~0ULL) -= FX_MUL(t1, 0x200);
 
         diff2 = (s16)(*(s16 *)(self + 0x17c) - newAngle);
         if (diff2 < -0x2000) {
@@ -89,7 +90,7 @@ int func_02009aa8(char *self)
         *(s16 *)(((long long)(int)(self + 0x186)) & ~0ULL) += rem;
 
         t2 = *(s16 *)((char *)data_0209f4a4 + idx);
-        *(s16 *)(((long long)(int)(self + 0x17e)) & ~0ULL) += (int)(((long long)t2 * 0x200 + 0x800) >> 12);
+        *(s16 *)(((long long)(int)(self + 0x17e)) & ~0ULL) += FX_MUL(t2, 0x200);
 
         v17e = *(s16 *)(self + 0x17e);
         if (v17e < -0x1c00) {

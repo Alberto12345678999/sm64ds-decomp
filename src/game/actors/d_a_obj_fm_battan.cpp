@@ -70,6 +70,7 @@ enum d_a_obj_fm_battan_AssetId {
 #include "daObjFm_Battan_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 /* A local Vector3 value would make mwccarm emit its vague-linkage destructor.
  * These calls only require the three-word ABI value, so keep that value POD. */
@@ -226,9 +227,9 @@ int daObjFm_Battan_c::Behavior()
             Sound::PlayBank3(0x44, *(Vector3 *)&mCamSpacePosX);
 
             sinY = data_02082214[((u16)mAngleY >> 4) * 2];
-            offset.x = (s32)(((s64)sinY * -0x190000 + 0x800) >> 12);
+            offset.x = FX_MUL(sinY, -0x190000);
             cosY = data_02082214[((u16)mAngleY >> 4) * 2 + 1];
-            offset.z = (s32)(((s64)cosY * -0x190000 + 0x800) >> 12);
+            offset.z = FX_MUL(cosY, -0x190000);
             AddVec3(&offset, (BattanVector3 *)&mPosX, &offset);
 
             dustPos.x = offset.x;
@@ -306,7 +307,7 @@ int daObjFm_Battan_c::UpdateShadow()
 {
     int tableIndex = (u16)mAngleX >> 4;
     int sinX = data_02082214[tableIndex * 2];
-    int depth = (s32)(((s64)sinX * 0x49c000 + 0x800) >> 12);
+    int depth = FX_MUL(sinX, 0x49c000);
 
     Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
     mShadowMat.m[9] = mPosX >> 3;

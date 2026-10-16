@@ -13,6 +13,7 @@
 // func_02055998 keeps its address name (no recovered name exists).
 #include "G3i.h"
 #include "math/Matrix.h"
+#include "nitro/fx/fx.h"
 
 extern "C" {
 void NormalizeVec3(Vector3 *v, Vector3 *out);
@@ -87,7 +88,7 @@ void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
     if (scaleW != 0x1000)
         q = q * scaleW / 0x1000;
     zz = (int)(((f + n) * q + 0x80000000LL) >> 32);
-    v = (int)(((s64)(n << 1) * f + 0x800) >> 12);
+    v = FX_MUL((n << 1), f);
     wz = (int)((q * v + 0x80000000LL) >> 32);
     if (flag) {
         *port = zz;

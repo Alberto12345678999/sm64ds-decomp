@@ -67,6 +67,7 @@ enum daObjBk_Botaosi_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
+#include "nitro/fx/fx.h"
 
 /* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
  * constructors and destructors are the ROM resource-family veneers, aliased
@@ -216,7 +217,7 @@ extern "C" void func_ov015_021114f0(daObjBk_Botaosi_c *plank)
     int lean = 0;
     int idx = (u16)plank->mAngleX >> 4;
     int sine = data_02082214[idx * 2];
-    int tilt = (int)(((s64)sine * 0x7d0000 + 0x800) >> 12);
+    int tilt = FX_MUL(sine, 0x7d0000);
     yaw = 0x8000;
     if (tilt <= 0) { yaw = yaw + 0x8000; tilt = -tilt; }
     lean = lean + tilt;
@@ -224,13 +225,13 @@ extern "C" void func_ov015_021114f0(daObjBk_Botaosi_c *plank)
     {
         int front = plank->mFrontPosX;
         int cosine = data_02082214[((u16)(s16)(plank->mAngleY + yaw) >> 4) * 2 + 1];
-        plank->mShadowMat.t.x = (front + (int)(((s64)cosine * (lean >> 1) + 0x800) >> 12)) >> 3;
+        plank->mShadowMat.t.x = (front + FX_MUL(cosine, (lean >> 1))) >> 3;
     }
     plank->mShadowMat.t.y = plank->mFrontPosY >> 3;
     {
         int front = plank->mFrontPosZ;
         int sine2 = data_02082214[((u16)(s16)(plank->mAngleY + yaw) >> 4) * 2];
-        plank->mShadowMat.t.z = (front + (int)(((s64)sine2 * (lean >> 1) + 0x800) >> 12)) >> 3;
+        plank->mShadowMat.t.z = (front + FX_MUL(sine2, (lean >> 1))) >> 3;
     }
     if (plank->mState >= 2)
         plank->mShadowMat.t.y = plank->mFrontFloorY >> 3;

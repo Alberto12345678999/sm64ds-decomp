@@ -41,6 +41,7 @@
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 /* POD stand-in: a real Vector3 local emits vague-linkage ~Vector3 into this
  * text-only TU. */
@@ -113,7 +114,7 @@ int daObjAbuku_c::Behavior()
     int v = *(volatile unsigned short*)(&mSwayAngle);
     int x = v >> 4;
     short tv = data_02082214[2*x + 1];
-    mHorzSpeed = (int)(((s64)mDriftSpeed * tv + 0x800) >> 12);
+    mHorzSpeed = FX_MUL(mDriftSpeed, tv);
     _Z14ApproachLinearRiii(&mDriftSpeed, 0x6000, 0x332);
     UpdatePos((dCc_c *)0);
     unsigned int id = mdCcAc_c.otherOwner;

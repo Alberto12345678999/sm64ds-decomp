@@ -5,6 +5,7 @@
 /* recovered: shared common types */
 #include "common.h"
 #include "PlayerInput.h"
+#include "nitro/fx/fx.h"
 extern u16 data_0209f49c[];
 extern u16 data_0209f49e[];
 
@@ -99,7 +100,7 @@ void func_0200bb28(char* c, char* a1)
     tbl = (*(u32*)(c + 0x154) & 2) ? data_02086d50 : data_02086cc8;
     sp_speed = tbl[1];
     func_0200c9e0(c, &sp_speed, &sp_speed);
-    comp = (s32)(((s64)tbl[0] * sp_speed + 0x800) >> 12);
+    comp = FX_MUL(tbl[0], sp_speed);
     vsrc.x = 0;
     vsrc.z = 0;
     vsrc.y = comp;
