@@ -396,7 +396,7 @@
       "evidence": "five-entry TU-local pointer table; every relocation destination matches the OV006 configuration"
     },
     {
-      "symbol": "data_ov006_0213fb18",
+      "symbol": "sTrmpPuffXByLanguage",
       "address": "0x0213fb18",
       "size": "0x14",
       "evidence": "five-entry TU-local pointer table; every relocation destination matches the OV006 configuration"

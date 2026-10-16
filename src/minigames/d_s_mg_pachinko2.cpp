@@ -217,7 +217,7 @@ extern int  data_0209d4b8;
 extern u8   data_0209d45c;
 extern u8   data_0209d454;
 extern s16  data_02082214[];
-extern int  data_ov006_02136b80[];
+extern int sPachinkoPipeSprites[];
 extern int  data_ov006_02136bd4[];
 extern int  data_ov006_0213386c;
 extern int  data_ov006_021389ec;
@@ -295,8 +295,8 @@ void dScMgPachinko2_c::CupSlot_DrawAll()
     int i;
     for (i = 0; i < 2; i++) {
         if (o->arr[i].flag) {
-            Mg_RenderSpriteBoth((void *)data_ov006_02136b80[o->arr[i].idx],
-                                o->arr[i].x >> 12, o->arr[i].y >> 12, -1, 2);
+            Mg_RenderSpriteBoth((void *)sPachinkoPipeSprites[o->arr[i].idx], o->arr[i].x >> 12,
+                                o->arr[i].y >> 12, -1, 2);
         }
     }
 }

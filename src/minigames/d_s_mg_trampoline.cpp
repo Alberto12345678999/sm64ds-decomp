@@ -148,7 +148,7 @@ struct Obj {
 
 extern "C" {
 extern void Mg_RenderSpriteBoth(void *a, int b, int c, int d, int e);
-extern int data_ov006_0212f0c8[];
+extern int sTrmpRowScreenY[];
 extern int data_ov006_02134f24;
 extern int _Z15ApproachLinear2Rsss(s16 *dst, s16 a, s16 b);
 extern void Mg_DrawBigNumber(int,int,int,int,int,int,int);
@@ -214,7 +214,7 @@ extern void TrmpLine_LoadTextures(void);
 extern void Mg_SetTopScreenYOffset(int);
 extern void Trmp3DMario_ResetAll(unsigned int, int);
 extern void TrmpFx_ClearAll(void);
-extern int data_ov006_0213fb18[];
+extern int sTrmpPuffXByLanguage[];
 extern void Puff_ClearAll(int, int);
 extern void func_02012718(int, int);
 extern void TrmpFx_UpdateAll(void);
@@ -274,13 +274,9 @@ int *data_ov006_0213fb04[] = {
     data_ov006_021372f4,
     data_ov006_02137454
 };
-int data_ov006_0213fb18[] = {
-    (int)data_ov006_02134d40,
-    (int)data_ov006_02134d4c,
-    (int)data_ov006_02134d58,
-    (int)data_ov006_02134d34,
-    (int)data_ov006_02134d28
-};
+int sTrmpPuffXByLanguage[] = {(int)data_ov006_02134d40, (int)data_ov006_02134d4c,
+                              (int)data_ov006_02134d58, (int)data_ov006_02134d34,
+                              (int)data_ov006_02134d28};
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_Link, NOT applied: extern void *sTrmpFxList; */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_DrawAll, NOT applied: extern void *sTrmpFxList; */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpFxPool, from the legacy file for TrmpFx_ClearAll, NOT applied: extern char* sTrmpFxPool; */
@@ -478,7 +474,7 @@ void dScMgTrampoline_c::StartRound(int /* arg */)
 
     TrmpLine_ClearAll(self->mLevel);
     TrmpFx_ClearAll();
-    Puff_ClearAll(0, data_ov006_0213fb18[GetGameLanguage()]);
+    Puff_ClearAll(0, sTrmpPuffXByLanguage[GetGameLanguage()]);
 
     mDoorMark.Hide();
 
@@ -507,7 +503,7 @@ void dScMgTrampoline_c::StartRound(int /* arg */)
 /* dScMgTrampoline_c::CanEndState, from its vtable slot. */
 int dScMgTrampoline_c::CanEndState(int /* mode */)
 {
-    Puff_ClearAll(0, data_ov006_0213fb18[GetGameLanguage()]);
+    Puff_ClearAll(0, sTrmpPuffXByLanguage[GetGameLanguage()]);
     return 1;
 }
 
@@ -870,11 +866,11 @@ s32 dScMgTrampoline_c::Render()
         if (mDoorBlinkPhase != 0) r5 = 0;
     }
 
-    t = data_ov006_0212f0c8[0] - (mScrollY + mScrollOffsetY);
+    t = sTrmpRowScreenY[0] - (mScrollY + mScrollOffsetY);
     Mg_RenderSpriteBoth(data_ov006_02134f08, mArrow1X + 0xf0, t, -1, 2);
     Mg_RenderSpriteBoth(data_ov006_02134f00[r6], 0xf0, t - 0x20, -1, 2);
 
-    t = data_ov006_0212f0c8[1] - (mScrollY + mScrollOffsetY);
+    t = sTrmpRowScreenY[1] - (mScrollY + mScrollOffsetY);
     Mg_RenderSpriteBoth(data_ov006_02134f08, mArrow2X + 0xf0, t, -1, 2);
     Mg_RenderSpriteBoth(data_ov006_02134f00[r5], 0xf0, t - 0x20, -1, 2);
 
@@ -1277,12 +1273,8 @@ void dScMgTrampoline_DoorMark::Update()
 void dScMgTrampoline_DoorMark::Render(int scrollY) {
     if (active == 0) return;
     if (shown == 0) return;
-    Mg_RenderSpriteBoth(
-        (void *)data_ov006_02134f24,
-        0xd0,
-        data_ov006_0212f0c8[row] - scrollY - 8,
-        -1,
-        -1);
+    Mg_RenderSpriteBoth((void *)data_ov006_02134f24, 0xd0, sTrmpRowScreenY[row] - scrollY - 8, -1,
+                        -1);
 }
 
 // @symbol Trmp_Nothing

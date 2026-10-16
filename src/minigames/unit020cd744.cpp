@@ -602,7 +602,7 @@ extern "C" void TrmpItem_ReflectOffLine(char *a, Obj *o)
     vA = diff;
     vC = diff;
 
-    Vec3_MulScalar(&scaled, &TRMPITEM(a)->mSide, data_ov006_0212e070[TRMPITEM(a)->mSizeIdx]);
+    Vec3_MulScalar(&scaled, &TRMPITEM(a)->mSide, sTrmpItemHitWidths[TRMPITEM(a)->mSizeIdx]);
     AddVec3(&vA, &scaled, &vA);
     SubVec3(&vB, &scaled, &vB);
 
@@ -661,7 +661,7 @@ extern "C" void TrmpItem_ReflectOffLine(char *a, Obj *o)
 
     if (dot44 < 0)
         dot44 = -dot44;
-    if (dot44 >= data_ov006_0212e070[TRMPITEM(a)->mSizeIdx])
+    if (dot44 >= sTrmpItemHitWidths[TRMPITEM(a)->mSizeIdx])
         return;
 
     Vec3_MulScalar(&vD, &TRMPITEM(a)->mForward, 0x70);
@@ -762,7 +762,9 @@ struct V2 { int x, y; };
 extern "C" extern void TrmpItem_ProjectOnLine(char* self, void* other, struct V2* a, struct V2* b);
 extern "C" extern void Vec2_Sub(struct V2* o, struct V2* a, struct V2* b);
 extern "C" extern int func_0203d524(struct V2* a, struct V2* b);
-extern "C" {extern int data_ov006_0212e070[];}
+extern "C" {
+extern int sTrmpItemHitWidths[];
+}
 extern "C" {extern int pmf_TrmpItem_StateAppear[2];}
 extern "C" {extern int pmf_TrmpItem_GrowScale_2[2];}
 
@@ -785,7 +787,7 @@ extern "C" int TrmpItem_HitTest2D(char* self, void* other) {
     TrmpItem_ProjectOnLine(self, other, &a, &b);
 
     {
-        int *dp = (int *)AT(data_ov006_0212e070, 0);
+        int *dp = (int *)AT(sTrmpItemHitWidths, 0);
         n.x = -dp[TRMPITEM(self)->mSizeIdx];
         n.y = 0;
         t0.x = dp[TRMPITEM(self)->mSizeIdx];

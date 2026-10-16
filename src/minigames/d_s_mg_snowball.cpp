@@ -144,7 +144,7 @@ namespace G3X  { void SetFog(bool enable, int blend, int slope, int offset); }
 
 extern "C" {
 extern void RenderOamBothScreens(int a, int b, int c, int d, int e, int f);
-extern int data_ov006_02139c6c[];
+extern int sSnowballBitSprites[];
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *dst);
 extern void func_0203d388(int *p, int angle);
 extern int func_0203d434(int *p);
@@ -231,8 +231,7 @@ void dScMgSnowball_c::SnowSpray_DrawAll()
     for (i = 0; i < 0x20; i++) {
         if (*(unsigned char *)(p + 0xba34) != 0) {
             RenderOamBothScreens(
-                data_ov006_02139c6c[*(int *)(p + 0xba30)],
-                *(int *)(p + 0xba14) >> 0xc,
+                sSnowballBitSprites[*(int *)(p + 0xba30)], *(int *)(p + 0xba14) >> 0xc,
                 ((((*(int *)(p + 0xba18) - *(int *)(p + 0xba1c)) - self->mScrollY) >> 0xc) - 0x110),
                 -1, 0, 0);
         }
@@ -2061,8 +2060,8 @@ void dScMgSnowball_c::Bit_DrawAll()
         if (a->arr[i].f1e != 0) {
             int bb = a->arr[i].a >> 12;
             int cc = (a->arr[i].b - a->fixed) >> 12;
-            Mg_RenderSubSpriteMtx((void*)data_ov006_02139c6c[a->arr[i].f1f], bb, cc, 0);
-            DrawOamSprite((void*)data_ov006_02139c6c[a->arr[i].f20], bb, cc, 0);
+            Mg_RenderSubSpriteMtx((void *)sSnowballBitSprites[a->arr[i].f1f], bb, cc, 0);
+            DrawOamSprite((void *)sSnowballBitSprites[a->arr[i].f20], bb, cc, 0);
         }
     }
 }

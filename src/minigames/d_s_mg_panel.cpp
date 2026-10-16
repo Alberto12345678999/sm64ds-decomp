@@ -772,8 +772,8 @@ void dScMgPanel_c::Answer_StateFlipSolution() {
 // @symbol _ZN12dScMgPanel_c24Answer_StateFindSolutionEv
 void dScMgPanel_c::Answer_StateFindSolution() {
     Ov006M8c *scene = (Ov006M8c *)this;
-    extern u8 *data_ov006_0213e070[];
-    extern u8 *data_ov006_0213ded0[];
+    extern u8 *sPanelPuzzles[];
+    extern u8 *sPanelPuzzlesAlt[];
     char *c = (char *)scene;
     int n;
     int found;
@@ -827,9 +827,9 @@ void dScMgPanel_c::Answer_StateFindSolution() {
         do {
             idx = *(int *)(c + 0x4cb4);
             if (scene->m8c() != 0) {
-                arr[j] = data_ov006_0213ded0[idx][j];
+                arr[j] = sPanelPuzzlesAlt[idx][j];
             } else {
-                arr[j] = data_ov006_0213e070[idx][j];
+                arr[j] = sPanelPuzzles[idx][j];
             }
             n = *(int *)(c + 0x4cb8);
             j++;
@@ -1369,8 +1369,8 @@ void dScMgPanel_c::DealPuzzle()
     extern int data_0209d4b8;
     extern u16 *data_ov006_0213dd4c[];
     extern u16 *data_ov006_0213dd58[];
-    extern u8 *data_ov006_0213ded0[];
-    extern u8 *data_ov006_0213e070[];
+    extern u8 *sPanelPuzzlesAlt[];
+    extern u8 *sPanelPuzzles[];
     int i;
     int v;
     int cnt2;
@@ -1386,8 +1386,8 @@ void dScMgPanel_c::DealPuzzle()
             int idx4 = mFaceSet;
             mX[i] = data_ov006_0213dd4c[m][i] << 12;
             mY[i] = data_ov006_0213dd58[m][i] << 12;
-            pe = data_ov006_0213e070;
-            pd = data_ov006_0213ded0;
+            pe = sPanelPuzzles;
+            pd = sPanelPuzzlesAlt;
             if (IsAltVariant()) {
                 mFace[i] = pd[idx4][i];
                 mGoal[i] = pd[idx4][i];
@@ -1460,7 +1460,7 @@ void dScMgPanel_c::ScramblePanels()
     extern u8 data_ov006_0213dd94[];
     extern u8 data_ov006_0213de28[];
     extern u8 data_ov006_0213de44[];
-    extern u8 data_ov006_0213de60[];
+    extern u8 sPanelPuzzleSizes[];
     int t = (int)self->mLevel;
     if (((PanelO_3a0 *)scene)->m8c() != 0) {
         int nv;
@@ -1491,8 +1491,8 @@ void dScMgPanel_c::ScramblePanels()
         if (data_ov006_0213de28[t] != 0 || self->mDealt == 0) {
             if (self->mDealt == 0) *(int *)PANEL_AT(scene, 0x4cb0) += 1;
             nv = (PANEL_RAND * 4) >> 15;
-            k = data_ov006_0213de60[t];
-            p = &data_ov006_0213de60[t];
+            k = sPanelPuzzleSizes[t];
+            p = &sPanelPuzzleSizes[t];
             if (k == 5) {
                 nv = ((PANEL_RAND * 5) >> 15) + 4;
             }
@@ -1506,7 +1506,7 @@ void dScMgPanel_c::ScramblePanels()
             }
             self->mFaceSet = nv;
         }
-        ((dScMgPanel_c *)scene)->mWidth = data_ov006_0213de60[t];
+        ((dScMgPanel_c *)scene)->mWidth = sPanelPuzzleSizes[t];
         { int q = ((dScMgPanel_c *)scene)->mWidth; ((dScMgPanel_c *)scene)->mCount = q * q; }
         self->mFlips = data_ov006_0213de44[t];
     }

@@ -118,7 +118,7 @@ struct dScMgPachinko2_Cup {
     u8  active;       /* +0x14 */
     u8  state;        /* +0x15 */
     u8  phase;        /* +0x16 */
-    u8  frame;        /* +0x17 -- sprite index into data_ov006_02136b80 */
+    u8 frame;         /* +0x17 -- sprite index into sPachinkoPipeSprites */
     u8  animStep;     /* +0x18 */
     u8  visible;      /* +0x19 */
     u8  dir;          /* +0x1a */

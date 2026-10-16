@@ -15781,17 +15781,17 @@
         "return:char []"
       ]
     },
-    "data_ov006_0213ae00": {
+    "sPresenterAnim4TexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_0213ae18": {
+    "sPresenterAnim7TexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:int"
       ]
     },
-    "data_ov006_0213ae30": {
+    "sPresenterLoseTexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:void *"
       ]
@@ -15801,7 +15801,7 @@
         "return:void *"
       ]
     },
-    "data_ov006_0213ae60": {
+    "sPresenterMissTexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:int []"
       ]
@@ -15811,7 +15811,7 @@
         "return:int"
       ]
     },
-    "data_ov006_0213aea8": {
+    "sPresenterMatchTexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:int"
       ]
