@@ -1008,9 +1008,8 @@ void Wiggler_StateMoveB(char *c)
 }
 
 // @symbol Wiggler_UpdateSway
-extern "C" /* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawField. */
-    void
-    Wiggler_UpdateSway(char *raw) {
+/* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawField. */
+extern "C" void Wiggler_UpdateSway(char *raw) {
     int *thiz = (int *)raw;
     int *g = &pmf_Wiggler_TurnTowardAim_7;
     int v0 = thiz[0];
