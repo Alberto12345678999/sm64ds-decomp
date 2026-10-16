@@ -107,7 +107,7 @@ int  RandomIntInternal(int *seed);
 
 extern int  data_020a0e68;
 extern int  data_0209e650;
-extern int  data_ov006_0213cb48;
+extern int sJumpLastPick;
 extern u8   data_0209d45c;
 extern s16  data_02082614;
 extern int sJump3DMarioCount;
@@ -169,8 +169,8 @@ void dScMgJump_c::StartRound(int arg)
     } else {
         do {
             idx = (int)((u32)(RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13) * 0xa >> 0xc;
-        } while (idx == (u32)data_ov006_0213cb48);
-        data_ov006_0213cb48 = idx;
+        } while (idx == (u32)sJumpLastPick);
+        sJumpLastPick = idx;
     }
 
     Jump3D_Arrange(mLevel, idx);
@@ -224,7 +224,7 @@ s32 dScMgJump_c::InitResources()
     int r;
 
     idx = GetGameLanguage();
-    buf1 = LoadFile(data_ov006_0213cbc8[idx]);
+    buf1 = LoadFile(sJumpNcgByLanguage[idx]);
     buf2 = LoadFile(0xd1);
     DecompressLZ16((void *)buf1, (void *)0x6400000);
     GX::LoadOBJPltt((void *)buf2, 0, 0x80);
@@ -453,9 +453,10 @@ s32 dScMgJump_c::Render()
         for (i = 0; i < 3; i++) {
             if (i >= count) {
                 int idx = GetGameLanguage();
-                DrawOamSprite((void *)data_ov006_0213cbb4[idx][1], (void *)y, 0xc, (void *)0);
+                DrawOamSprite((void *)sJumpTextSpritesByLanguage[idx][1], (void *)y, 0xc,
+                              (void *)0);
             } else {
-                RenderOamMainScreen(data_ov006_02134cf8, y, 0xc, -1, -1);
+                RenderOamMainScreen(sJumpLifeIconSprite, y, 0xc, -1, -1);
             }
             y += 0x12;
         }
@@ -494,7 +495,7 @@ s32 dScMgJump_c::Render()
         void *obj;
         void *p;
 
-        t = *(V3 *)data_ov006_0213cb8c;
+        t = *(V3 *)sJumpRenderScale;
 
         obj = &mModel.data;
         p = *(void **)((char *)obj + 4);

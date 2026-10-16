@@ -166,12 +166,12 @@ extern void SlotBlink_Start(void *o, s16 x, s16 y);
 extern void SlotBlink_Tick(void *o);
 extern void SlotReel_SetSpeed(void *o, int v);
 extern int SlotReels_CheckStopped(void *self);
-extern int data_ov006_0213e600[];
+extern int sSlotReelScrollSpeeds[];
 extern u8 sSlot1Payouts[];
-extern s16 data_ov006_0213e654[][2];
-extern s16 data_ov006_0213e656[][2];
-extern s16 data_ov006_0213e4f8[][2];
-extern s16 data_ov006_0213e4fa[][2];
+extern s16 sSlotMatchBlinkX[][2];
+extern s16 sSlotMatchBlinkY[][2];
+extern s16 sSlotWildBlinkX[][2];
+extern s16 sSlotWildBlinkY[][2];
 extern dWipe_c data_0209f61c;
 extern int _ZTV12dScMgSlot1_c[];
 extern int _ZTVN12dScMgSlot1_c9betIcon_cE[];
@@ -262,7 +262,7 @@ void dScMgSlot3_c::InitMainScreenBg()
     data_0209d45c &= ~2;
 
     idx = GetGameLanguage();
-    LoadCompressedFileAt(data_ov006_0213e614[idx], func_02054ea8());
+    LoadCompressedFileAt(sSlotPauseBgNcgByLanguage[idx], func_02054ea8());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_PAUSE_NSC_BIN, G2::GetBG1ScrPtr());
 
     *(volatile unsigned short*)0x400000a = (*(volatile unsigned short*)0x400000a & 0x43) | 0x1118;
@@ -811,8 +811,8 @@ s32 dScMgSlot3_c::Render()
         Mg_DrawBigNumber(0x90, 0x28, 3, 0, 0, 0, 0x28);
     }
 
-    Mg_RenderMainSpriteScaled(data_ov006_0213ac30, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
-    Mg_RenderMainSpriteScaled(data_ov006_0213ac3c, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
+    Mg_RenderMainSpriteScaled(sSlotLamp1Sprite, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
+    Mg_RenderMainSpriteScaled(sSlotLamp2Sprite, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
 
     return 1;
 }
@@ -1361,7 +1361,7 @@ s32 dScMgSlot1_c::Behavior()
         for (i = 0; i < 3; i++) {
             if (mReelSpinning[i] == 1 || mReelScroll[i] != 0) {
                 moving++;
-                mReelScroll[i] -= data_ov006_0213e600[mSpeedLevel + i];
+                mReelScroll[i] -= sSlotReelScrollSpeeds[mSpeedLevel + i];
                 if ((int)mReelScroll[i] < 0) {
                     if (mReelSpinning[i] == 1) {
                         mReelStop[i]++;
@@ -1429,12 +1429,12 @@ s32 dScMgSlot1_c::Behavior()
     case 4:
         if (DecIfAbove0_Byte(&mTimer) == 0) {
             if (mLineMatched != 0) {
-                SlotBlink_Start(pad_4684, data_ov006_0213e654[mMatchSymbol][0],
-                                data_ov006_0213e656[mMatchSymbol][0]);
+                SlotBlink_Start(pad_4684, sSlotMatchBlinkX[mMatchSymbol][0],
+                                sSlotMatchBlinkY[mMatchSymbol][0]);
             }
             if (mWilds != 0 && mWilds < 3) {
-                SlotBlink_Start(pad_4690, data_ov006_0213e4f8[mWilds - 1][0],
-                                data_ov006_0213e4fa[mWilds - 1][0]);
+                SlotBlink_Start(pad_4690, sSlotWildBlinkX[mWilds - 1][0],
+                                sSlotWildBlinkY[mWilds - 1][0]);
             }
             if (mPayout != 0) {
                 mStep = 5;
@@ -1590,8 +1590,8 @@ s32 dScMgSlot1_c::InitResources()
         MultiStore16(fill, d3, 0x800);
     }
 
-    LoadCompressedFileAt(data_ov006_0213e628[GetGameLanguage()], (void *)0x6400000);
-    LoadCompressedFileAt(data_ov006_0213e628[GetGameLanguage()], (void *)0x6600000);
+    LoadCompressedFileAt(sSlotNcgByLanguage[GetGameLanguage()], (void *)0x6400000);
+    LoadCompressedFileAt(sSlotNcgByLanguage[GetGameLanguage()], (void *)0x6600000);
 
     {
         int h = LoadFile(ASSET_D_2D_MG_SLOT_NCL_BIN);
@@ -1612,7 +1612,7 @@ s32 dScMgSlot1_c::InitResources()
     sMgMainBannerY = 0x40;
 
     if ((int)param1 & 0xff) {
-        unsigned char *tbl = data_ov006_0213ea20;
+        unsigned char *tbl = sSlotReelSymbolsAlt;
         char *p = c;
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 0x15; i++) {
@@ -1626,7 +1626,7 @@ s32 dScMgSlot1_c::InitResources()
         }
     } else {
         int k;
-        unsigned char *tbl = data_ov006_0213e9e0;
+        unsigned char *tbl = sSlotReelSymbols;
         char *p = c;
         for (k = 0; k < 3; k++) {
             for (i = 0; i < 0x15; i++) {

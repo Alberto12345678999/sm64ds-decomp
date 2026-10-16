@@ -46,7 +46,7 @@ enum dScMgRoulette_c_AssetId {
 /* Three consecutive Fix12 words, written a component at a time. */
 struct Vec3 { int x, y, z; };
 
-/* One row of the 12-entry angle table at data_ov006_0213e334, copied whole. */
+/* One row of the 12-entry angle table at sRouletteSlowStops, copied whole. */
 typedef struct { short v[12]; } ShortTbl12;
 
 /* Two Fix12 words copied as a unit out of pmf_RouletteBoard_StateSlow and
@@ -225,12 +225,12 @@ extern char *sRouletteStrips[];
 extern int   data_020a0db0;
 extern s32   data_ov006_0212ed24[];
 extern void *sRouletteStripSprites[];
-extern void *data_ov006_0213e320[];
-extern int   data_ov006_0212ed14[];
+extern void *sRouletteTextSpritesByLanguage[];
+extern int sRoulettePayoutMultipliers[];
 extern void *sRouletteRacerSprites;
 extern Matrix4x3 data_020a0e68;
 extern short data_02082214[];
-extern short data_ov006_0213e334[];
+extern short sRouletteSlowStops[];
 extern short data_ov006_0212ed34[];
 extern struct Pair   pmf_RouletteBoard_StateSlow;
 extern struct Pair2W pmf_RouletteBoard_StateSpin;
@@ -1391,7 +1391,7 @@ void RouletteBoard_StateSlow(char *slider)
 
     sum = *(short *)(slider + 0xc0) + *(short *)(slider + 0xc4);
 
-    stops = *(ShortTbl12 *)data_ov006_0213e334;
+    stops = *(ShortTbl12 *)sRouletteSlowStops;
 
     for (idx = 0; idx < 12; idx++) {
         short ad;
@@ -1504,10 +1504,11 @@ extern "C" {
 void RouletteStrip_Draw(short* strip, int y)
 {
     int idx = GetGameLanguage();
-    void* p = *(void**)((char*)data_ov006_0213e320[idx] + 0x50);
+    void *p = *(void **)((char *)sRouletteTextSpritesByLanguage[idx] + 0x50);
     Hud_RenderSprite(p, 0xc, y, -1, -1);
 
-    Mg_DrawBigNumber(0x1e, y, data_ov006_0212ed14[*(short*)((char*)strip + 0x14)], 0, -1, 2, 0);
+    Mg_DrawBigNumber(0x1e, y, sRoulettePayoutMultipliers[*(short *)((char *)strip + 0x14)], 0, -1,
+                     2, 0);
 
     {
         int b = y + 0x10;

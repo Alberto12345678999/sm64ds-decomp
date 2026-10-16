@@ -23,7 +23,7 @@
  * THIS CLASS ALSO TOUCHES THE BASE'S 0x31 BYTE, and does so through the
  * base's own member name in every access: SaveSnapshot/RestoreInitial read
  * and write it as a plain byte, and Update reads it as an ARRAY INDEX
- * (data_ov006_02137a9c[mTriggered]) -- still a single-byte load, so the access
+ * (sSmartballPushSwitchSprites[mTriggered]) -- still a single-byte load, so the access
  * width matches the base's declared u8 and the name states exactly what the
  * ROM does. No raw cast is needed here (unlike wing_c/ana_c's 0x32).
  *

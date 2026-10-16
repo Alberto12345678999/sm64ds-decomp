@@ -722,13 +722,14 @@ namespace s020c3528 {
 extern "C" {
 struct Q{int a,b,c,d;};
 
-
-extern "C" { extern struct Vector3 data_ov006_0212c9e4; }
+extern "C" {
+extern struct Vector3 sPetalUpAxis;
+}
 extern "C" { extern struct Matrix4x3 data_020a0e68; }
 void FallingPetal_UpdateMatrix(char* c){
   struct Matrix4x3 sp;
   Matrix4x3_FromQuaternion((char*)c+0x30, &sp);
-  MulVec3Mat3x3(&data_ov006_0212c9e4, &sp, (char*)c+0x24);
+  MulVec3Mat3x3(&sPetalUpAxis, &sp, (char *)c + 0x24);
   Matrix4x3_FromTranslation(&data_020a0e68, *(int*)c, *(int*)(c+4), *(int*)(c+8));
   MulMat4x3Mat4x3(&sp, &data_020a0e68, &data_020a0e68);
   *(struct Matrix4x3*)((char*)c+0x60) = data_020a0e68;
@@ -826,7 +827,7 @@ extern char sPresenterSmileTexAnim[];
 extern char sPresenterLoseTexAnim[];
 extern char sPresenterIdleTexAnim[];
 extern char sPresenterMissTexAnim[];
-extern char data_ov006_0213ae78[];
+extern char sPresenterTextureAnim[];
 extern char sPresenterCheerTexAnim[];
 extern char sPresenterMatchTexAnim[];
 }
@@ -878,7 +879,7 @@ int Presenter_Load(char *c)
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterMatchTexAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterLoseLoopTexAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterLoseTexAnim);
-    _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, data_ov006_0213ae78);
+    _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterTextureAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterCheerTexAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterSmileTexAnim);
 
@@ -976,7 +977,9 @@ void Presenter_Update(C* c) {
 
 namespace s020c29dc {
 extern "C" {
-extern "C" { extern char data_ov006_0212b8fc; }
+extern "C" {
+extern char sPresenterScale;
+}
 }
 struct Obj {
     void* vt;
@@ -1019,7 +1022,7 @@ extern "C" void Presenter_Draw(char *c)
     *(int *)(((int)p + 0x134)) += PRESENTER(c)->mSway[0];
     *(int *)(((int)p + 0x138)) += PRESENTER(c)->mSway[1];
     ((Obj *)(c + 8))->m(0);
-    ((Obj *)(c + 0x78))->m(&data_ov006_0212b8fc);
+    ((Obj *)(c + 0x78))->m(&sPresenterScale);
 }
 }
 
@@ -2310,13 +2313,15 @@ void Dealer_StateWin(char *p) {
 
 namespace s020c0af8 {
 extern "C" {
-extern "C" { extern volatile struct Matrix4x3 data_ov006_0213ad28; }
+extern "C" {
+extern volatile struct Matrix4x3 sDealerIdentityMtx;
+}
 // @symbol Dealer_ResetMatrices
 void Dealer_ResetMatrices(char* c)
 {
     struct Matrix4x3 tmp;
-    tmp = *(struct Matrix4x3*)&data_ov006_0213ad28;
-    *(struct Matrix4x3*)(c + 0x38) = (struct Matrix4x3 &)data_ov006_0213ad28;
+    tmp = *(struct Matrix4x3 *)&sDealerIdentityMtx;
+    *(struct Matrix4x3 *)(c + 0x38) = (struct Matrix4x3 &)sDealerIdentityMtx;
     *(struct Matrix4x3*)(c + 0xa8) = tmp;
 }
 }
@@ -2544,7 +2549,7 @@ extern "C" void MascotWalker_UpdateMatrix(char* thiz)
 namespace s020c057c {
 typedef struct Pair { int a, b; } Pair;
 extern "C" {
-extern int data_ov006_0213acc0[];
+extern int sMascotWalkerPaths[];
 extern int pmf_MascotWalker_StateWalk[];
 void MascotWalker_StartNextPath(char* c) {
     int sp8[3];
@@ -2556,7 +2561,7 @@ void MascotWalker_StartNextPath(char* c) {
     } else {
         WALKER(c)->mPathIndex = 0;
     }
-    WALKER(c)->mPath = (int)((char *)data_ov006_0213acc0 + (WALKER(c)->mPathIndex << 3));
+    WALKER(c)->mPath = (int)((char *)sMascotWalkerPaths + (WALKER(c)->mPathIndex << 3));
     WALKER(c)->mPathPoint = 0;
     {
         int t = WALKER(c)->mPathPoint * 0xc;

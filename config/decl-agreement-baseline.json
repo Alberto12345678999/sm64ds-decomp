@@ -8514,7 +8514,7 @@
         "param:#4 int"
       ]
     },
-    "_ZN6Player29TryExitCharacterDoorWithIntroEv": {
+    "Trmp2Mario_Construct": {
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "arity:0",
         "return:void"
@@ -15354,12 +15354,12 @@
         "return:int []"
       ]
     },
-    "data_ov006_0213b2c4": {
+    "sTrmp3DMarioOps": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
-    "data_ov006_0213b2e0": {
+    "sTrmp2MarioOps": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]

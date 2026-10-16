@@ -140,14 +140,14 @@ void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 void _ZN3GXS11LoadOBJPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 void func_02056374(const void*, u32, u32);
 
-extern int data_ov006_0213c7f4;
+extern int sEsp3DMaterialAnim;
 extern int pmf_dMg3DEspModel_c_Idle_2[];
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Idle;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Hit;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Intro;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Wait;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Idle_3;
-extern void *data_ov006_0213c844;
+extern void *sEsp3DTextureAnim;
 extern s16 data_02082214[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
@@ -160,7 +160,7 @@ extern Matrix4x3 data_ov006_0213c85c;
 /* Both models' starting matrix. Declaring it non-volatile adds 32 bytes to
    dScMg3DEsp_c::InitResources, and copying it without the stack temporary
    removes 32. */
-extern volatile Matrix4x3 data_ov006_0213c88c;
+extern volatile Matrix4x3 sEsp3DIdentityMtx;
 
 /* ---- dScMg3DEsp_c: the destructor (key function) ---------------------- */
 
@@ -300,14 +300,14 @@ void dMg3DEspAnimSet_c::InitResources()
     mSpeed = 0x800;
     bmd = (int)Model::LoadFile(gEspHamonModelFile);
     bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspHamonAnimFile);
-    MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&data_ov006_0213c7f4);
+    MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&sEsp3DMaterialAnim);
     w = o;
     w2 = o + 0x12c;
     for (i = 0; i < 3; i++) {
         ((ModelBase *)w)->SetFile((BMD_File *)bmd, 1, m1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000,
                                                     mSpeed, z1);
-        _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &data_ov006_0213c7f4, 0x40000000,
+        _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
                                                            mSpeed, z2);
         ((Model *)w)->SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;
@@ -1254,7 +1254,7 @@ void dScMg3DEsp_c::UpdateCards()
     }
 }
 
-extern unsigned char data_ov006_0212e588[];
+extern unsigned char sEsp3DCardsPerDifficulty[];
 extern int volatile data_ov006_0213c818[];
 
 // @symbol _ZN12dScMg3DEsp_c9DealCardsEv
@@ -1273,7 +1273,7 @@ void dScMg3DEsp_c::DealCards()
     int o;
     char *p;
 
-    n = data_ov006_0212e588[mDifficulty];
+    n = sEsp3DCardsPerDifficulty[mDifficulty];
     mTarget =
         (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 5 >>
                         15);
@@ -1447,7 +1447,7 @@ void dScMg3DEsp_c::ResetRound()
     mDone = 1;
 }
 
-extern "C" unsigned int data_ov006_0212e594[];
+extern "C" unsigned int sEsp3DResultSfx[];
 
 // @symbol _ZN12dScMg3DEsp_c7ResultsEv
 void dScMg3DEsp_c::Results()
@@ -1471,7 +1471,7 @@ void dScMg3DEsp_c::Results()
                     if (g->mHudScore > g->mBestHudScore)
                         g->mBestHudScore = g->mHudScore;
                 }
-                Sound::PlayBank2_2D(data_ov006_0212e594[idx]);
+                Sound::PlayBank2_2D(sEsp3DResultSfx[idx]);
             } else {
                 func_02012790(0xe);
             }
@@ -1664,16 +1664,17 @@ s32 dScMg3DEsp_c::InitResources()
         return 0;
 
     TextureTransformer::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
-                                *(BTA_File *)&data_ov006_0213c844);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &data_ov006_0213c844, 0, 0x1000, 0);
+                                *(BTA_File *)&sEsp3DTextureAnim);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &sEsp3DTextureAnim,
+                                                          0, 0x1000, 0);
 
     if (((dMg3DEspModel_c*)pad_4fd8)->InitResources() == 0) return 0;
 
     if (func_020179b4(&gIrieBackModelFile, mModel2, 1) == 0)
         return 0;
 
-    tmp = (Matrix4x3&)data_ov006_0213c88c;
-    ((Model*)mModel1)->mat4x3 = (Matrix4x3&)data_ov006_0213c88c;
+    tmp = (Matrix4x3 &)sEsp3DIdentityMtx;
+    ((Model *)mModel1)->mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
     ((Model*)mModel2)->mat4x3 = tmp;
 
     data_0209d454 |= 4;

@@ -124,21 +124,21 @@ extern u8  gTouchEdge[];
 extern u8  gTouchX[][4];
 // local extern: see above.
 extern u8  gTouchY[][4];
-extern int data_ov006_0212e1c0[];
+extern int sAmidaPatternSpeedUp[];
 extern s32 data_0208ee44;
-extern char data_ov006_0212e1a8[];
-extern char data_ov006_0212e1ac[];
-extern char data_ov006_0212e1b0[];
-extern char data_ov006_0212e1b4[];
-extern char data_ov006_0212e1b8[];
+extern char sAmidaPatterns[];
+extern char sAmidaPatternGoalShuffle[];
+extern char sAmidaPatternSpeeds[];
+extern char sAmidaPatternRungSkip[];
+extern char sAmidaPatternExtraRungs[];
 extern void *data_ov006_0213a32c;
-extern void *data_ov006_0213a35c;
+extern void *sAmidaSideSprite;
 extern int  data_ov006_0213a338[];
-extern void *data_ov006_0213a390[];
-extern void *data_ov006_0213a458[];
-extern void *data_ov006_0213a4b0[];
-extern int  data_ov006_0213a4c0[];
-extern int  data_ov006_0213a568[];
+extern void *sAmidaBoardAnimSprites[];
+extern void *sAmidaLaneAnimSprites[];
+extern void *sAmidaWalkerSprites[];
+extern int sAmidaLaneResultSprites[];
+extern int sAmidaLaneWantSprites[];
 extern int  data_ov006_0213b84c[13];
 extern s32 sAmidaLaneTargets[];
 extern s32 sAmidaLaneSaved[];
@@ -178,7 +178,7 @@ typedef struct { int a; int b; } Pair;
 extern Pair data_ov006_0213b8b8[11];
 
 typedef struct { int v[14]; } Buf14;
-extern Buf14 data_ov006_0213b880;
+extern Buf14 sAmidaRenderPeriods;
 
 #define PIECE_AT(p) ((dScMgAmida_c_Piece *)((p) + 0x4768))
 
@@ -262,7 +262,7 @@ int dScMgAmida_c::InitSubScreenBg()
     data_0209d454 = (unsigned char)(data_0209d454 & ~2);
     id = GetGameLanguage();
     t = (void*)_ZN3G2S13GetBG1CharPtrEv();
-    LoadCompressedFileAt(data_ov006_0213b838[id], t);
+    LoadCompressedFileAt(sAmidaOptionNcgByLanguage[id], t);
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_OPTION_NSC_BIN, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
@@ -1109,7 +1109,7 @@ void dScMgAmida_c::StepWalkers()
                                 if (mScore > 0x270f) {
                                     mScore = 0x270f;
                                 }
-                                t = *(s32 *)((char *)data_ov006_0212e1c0 + mPatternIndex * 0x1c);
+                                t = *(s32 *)((char *)sAmidaPatternSpeedUp + mPatternIndex * 0x1c);
                                 switch (t) {
                                 case 0:
                                     break;
@@ -1441,7 +1441,8 @@ void dScMgAmida_c::InitWalkers()
         if (this->IsVariant2() != 0) {
             this->mWalkerDelay[i] = 0;
         } else {
-            this->mWalkerDelay[i] = i * *(s32 *)(data_ov006_0212e1a8 + this->mPatternIndex * 0x1c + 0x14) * 0x3c;
+            this->mWalkerDelay[i] =
+                i * *(s32 *)(sAmidaPatterns + this->mPatternIndex * 0x1c + 0x14) * 0x3c;
         }
         this->mWalkerCell[i][0] = (this->mLanePerm[i] << 6) + 0x20;
         if (this->IsVariant2() != 0) {
@@ -1494,10 +1495,10 @@ void dScMgAmida_c::SetupRound()
     if (IsVariant2() != 0) {
         mWalkerCount = 4;
     } else {
-        mWalkerCount = *(int *)(data_ov006_0212e1a8 + mPatternIndex * 0x1c);
+        mWalkerCount = *(int *)(sAmidaPatterns + mPatternIndex * 0x1c);
     }
 
-    mScrollSpeed = ((*(int *)(data_ov006_0212e1b0 + mPatternIndex * 0x1c) - 1) * 5) + 0xb;
+    mScrollSpeed = ((*(int *)(sAmidaPatternSpeeds + mPatternIndex * 0x1c) - 1) * 5) + 0xb;
 
     {
         u32 stage = mLevel;
@@ -1546,7 +1547,7 @@ void dScMgAmida_c::SetupRound()
 
     mRoundCount = 0;
     InitWalkers();
-    ShuffleGoals( *(int *)(data_ov006_0212e1ac + mPatternIndex * 0x1c));
+    ShuffleGoals(*(int *)(sAmidaPatternGoalShuffle + mPatternIndex * 0x1c));
     Mg_SetTopScreenYOffset(0x20);
 
     mSetupInk = 1;
@@ -1600,7 +1601,7 @@ void dScMgAmida_c::SetupRound()
                 }
             } while (cnt > 0);
         } else {
-            int sel = *(int *)(data_ov006_0212e1b4 + mPatternIndex * 0x1c);
+            int sel = *(int *)(sAmidaPatternRungSkip + mPatternIndex * 0x1c);
             switch (sel) {
             case 0:
                 break;
@@ -1643,7 +1644,7 @@ void dScMgAmida_c::SetupRound()
                 break;
             }
         } else {
-            sel2 = *(int *)(data_ov006_0212e1b4 + mPatternIndex * 0x1c);
+            sel2 = *(int *)(sAmidaPatternRungSkip + mPatternIndex * 0x1c);
         }
 
         switch (sel2) {
@@ -1679,7 +1680,7 @@ void dScMgAmida_c::SetupRound()
 
     mLineCount++;
     if (IsVariant2() == 0) {
-        int v = *(int *)(data_ov006_0212e1b8 + mPatternIndex * 0x1c);
+        int v = *(int *)(sAmidaPatternExtraRungs + mPatternIndex * 0x1c);
         if (v != 0 && v == 1) {
             Mg_DrawLine(this, 0x60, 0x2d, 0xa0, 0x2d, mLineColor, 1);
             Mg_DrawLine(this, 0x20, 0x5a, 0x60, 0x5a, mLineColor, 1);
@@ -1774,10 +1775,8 @@ void dScMgAmida_c::RenderBoard()
                 if (*animFrame >= 14)
                     *animFrame = 0;
             }
-            Mg_RenderSpriteBoth(data_ov006_0213a458[mLaneAnimFrame[i]],
-                                mLanePos[i][0] >> 12,
-                                (mLanePos[i][1] >> 12) - 4,
-                                noPalette, 0);
+            Mg_RenderSpriteBoth(sAmidaLaneAnimSprites[mLaneAnimFrame[i]], mLanePos[i][0] >> 12,
+                                (mLanePos[i][1] >> 12) - 4, noPalette, 0);
         } else {
             int *timer;
             int *frame;
@@ -1810,8 +1809,7 @@ void dScMgAmida_c::RenderBoard()
                 }
             }
             *(T13 *)frames = *(T13 *)data_ov006_0213b84c;
-            Mg_RenderSpriteBoth(data_ov006_0213a390[frames[*frame]],
-                                y, 0xb8, noPalette, 0);
+            Mg_RenderSpriteBoth(sAmidaBoardAnimSprites[frames[*frame]], y, 0xb8, noPalette, 0);
         }
     }
     {
@@ -1823,8 +1821,8 @@ void dScMgAmida_c::RenderBoard()
                                 -1, 0);
         }
     }
-    Mg_RenderSpriteBoth(data_ov006_0213a35c, 8, 0x60, -1, 0);
-    Mg_RenderSpriteBoth(data_ov006_0213a35c, 0xf8, 0x60, -1, 0);
+    Mg_RenderSpriteBoth(sAmidaSideSprite, 8, 0x60, -1, 0);
+    Mg_RenderSpriteBoth(sAmidaSideSprite, 0xf8, 0x60, -1, 0);
 }
 #pragma pop
 
@@ -1841,16 +1839,13 @@ void dScMgAmida_c::RenderBoardAlt(){
     Mg_RenderSpriteBoth((void*)data_ov006_0213a338[0],0x80,0xb0,noPalette,0);
   }
   for(i=0;i<4;i++){
-    Mg_RenderSpriteBoth((void*)data_ov006_0213a568[mLaneWants[i]],
-                        mWalkerCell[i][0],
-                        mWalkerCell[i][1],
-                        noPalette,0);
+      Mg_RenderSpriteBoth((void *)sAmidaLaneWantSprites[mLaneWants[i]], mWalkerCell[i][0],
+                          mWalkerCell[i][1], noPalette, 0);
   }
   j = 0;
   x = 0x20;
   for(; j < 4; x += 0x40, j++){
-    Mg_RenderSpriteBoth((void*)data_ov006_0213a4c0[mLaneResult[j]],
-                        x,0x78,noPalette,0);
+      Mg_RenderSpriteBoth((void *)sAmidaLaneResultSprites[mLaneResult[j]], x, 0x78, noPalette, 0);
   }
 }
 #pragma pop
@@ -1883,7 +1878,7 @@ s32 dScMgAmida_c::Render()
                 if (mLaneResult[i] != 0) {
                     int *counterA = (int*)(raw + i * 4 + 0x539c);
                     (*counterA)++;
-                    Buf14 periods = data_ov006_0213b880;
+                    Buf14 periods = sAmidaRenderPeriods;
                     if (*counterA >= periods.v[i]) {
                         int *counterB;
                         *counterA = 0;
@@ -1892,12 +1887,8 @@ s32 dScMgAmida_c::Render()
                         if (*counterB >= 0xe)
                             *counterB = 0;
                     }
-                    Mg_RenderSpriteBoth(
-                        data_ov006_0213a458[mLaneAnimFrame[i]],
-                        mLanePos[i][0] >> 12,
-                        (mLanePos[i][1] >> 12) - 4,
-                        -1,
-                        0);
+                    Mg_RenderSpriteBoth(sAmidaLaneAnimSprites[mLaneAnimFrame[i]],
+                                        mLanePos[i][0] >> 12, (mLanePos[i][1] >> 12) - 4, -1, 0);
                 }
             }
 
@@ -1910,7 +1901,8 @@ s32 dScMgAmida_c::Render()
                     int x = *(int*)(raw + 0x4768);
                     int idx = age / 4;
                     int y = *(int*)(raw + 0x476c);
-                    Mg_RenderSpriteBoth(data_ov006_0213a4b0[idx], x >> 12, y >> 12, noPalette, zero);
+                    Mg_RenderSpriteBoth(sAmidaWalkerSprites[idx], x >> 12, y >> 12, noPalette,
+                                        zero);
                 }
             }
         }

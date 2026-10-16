@@ -1518,7 +1518,7 @@ extern void Heyho_SetIdle(char* p);
 
 extern int sHeyhoUnsettledCount[];
 extern int sJumpComboCount;
-extern int data_ov006_02140314;
+extern int sHeyhoScorePopups;
 extern void *sMgSubCamera;
 extern void *sMgMainCamera;
 
@@ -1540,7 +1540,7 @@ void Heyho_Settle(char* c)
     _Z14ApproachLinearRiii(sHeyhoUnsettledCount, 0, 1);
     _Z14ApproachLinearRiii(&sJumpComboCount, 0x270f, 1);
 
-    if (data_ov006_02140314 != 0) {
+    if (sHeyhoScorePopups != 0) {
         if (HEYHO(c)->mPos.y > 0) {
             Camera_ProjectToScreen(sMgSubCamera, (void *)(c + 0x9c), &v0, &v1);
             v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
@@ -1883,12 +1883,12 @@ extern int Heyho_LoadResources(char *p);
 extern int sHeyhoCount;
 extern int sHeyhoUnsettledCount;
 extern char *sHeyhos;
-extern int data_ov006_02140314;
+extern int sHeyhoScorePopups;
 int Heyho_InitPool(char *ptr, int n);
 int Heyho_InitPool(char *ptr, int n){
     int i;
     int off;
-    data_ov006_02140314 = 0;
+    sHeyhoScorePopups = 0;
     sHeyhoCount = n;
     sHeyhoUnsettledCount = n;
     sHeyhos = ptr;
@@ -1919,8 +1919,8 @@ extern char *sHeyhos;
 extern int sHeyhoCount;
 extern int data_ov006_021403b8[];
 extern int data_0209e650;
-extern char data_ov006_0212d560[];
-extern char data_ov006_0212c9f0[];
+extern char sHeyhoLayoutFlyInPaths[];
+extern char sHeyhoFlyInPaths[];
 
 extern void Heyho_StartMotionFlyIn(char *dst, char *src);
 extern void Heyho_UpdateMatrix(char *c);
@@ -1965,7 +1965,8 @@ void Heyho_SpawnAll(void *arg0, int arg1)
         if (sl < 3) {
             base = sHeyhos + r8;
             *(short *)(base + 0xea) = (short)sp8;
-            Heyho_StartMotionFlyIn(sHeyhos + r8, data_ov006_0212d560 + sHeyhoLayout * 0x90 + sp4);
+            Heyho_StartMotionFlyIn(sHeyhos + r8,
+                                   sHeyhoLayoutFlyInPaths + sHeyhoLayout * 0x90 + sp4);
             Heyho_UpdateMatrix(sHeyhos + r8);
         } else {
             t = RandomIntInternal(seed) & 0x7fffffff;
@@ -1993,7 +1994,7 @@ void Heyho_SpawnAll(void *arg0, int arg1)
             data_ov006_021403b8[sl - 3] = sb;
             base = sHeyhos + r8;
             *(short *)(base + 0xea) = (short)sp10;
-            Heyho_StartMotionFlyIn(sHeyhos + r8, data_ov006_0212c9f0 + sb * 0xc0 + sp0 * 0x30);
+            Heyho_StartMotionFlyIn(sHeyhos + r8, sHeyhoFlyInPaths + sb * 0xc0 + sp0 * 0x30);
             Heyho_UpdateMatrix(sHeyhos + r8);
         }
         sp4 = sp4 + 0x30;
@@ -2108,7 +2109,7 @@ typedef struct Ent {
 extern int sHeyhoCount;
 extern Ent *sHeyhos;
 extern int data_ov006_0213afc8[2];
-extern char data_ov006_0212ccf0;
+extern char sHeyhoSettlePaths;
 extern int sHeyhoUnsettledCount;
 extern int data_0209e650;
 
@@ -2130,7 +2131,7 @@ void Heyho_SettleAll(void)
             unsigned v0 = (unsigned)(r1 & 0x7fffffff) >> 0x13;
             unsigned u0 = (unsigned)(r2 & 0x7fffffff) >> 0x13;
             Heyho_StartMotionRegroup((char *)sHeyhos + i * 0xf0,
-                                     &data_ov006_0212ccf0 + (((int)(v0 * 9)) >> 0xc) * 0xf0 +
+                                     &sHeyhoSettlePaths + (((int)(v0 * 9)) >> 0xc) * 0xf0 +
                                          (((int)(u0 * 5)) >> 0xc) * 0x30);
             _Z14ApproachLinearRiii(&sHeyhoUnsettledCount, sHeyhoCount, 1);
             return;

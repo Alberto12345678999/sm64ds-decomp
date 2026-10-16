@@ -6,9 +6,9 @@
  * ov006 .text 0x020c8dd4..0x020cd744.
  *
  * ROM evidence: D1 0x020ca604 and constructor 0x020ca78c of
- * dMgTrmpln2Mario_c (filed under _ZN6Player29TryExitCharacterDoorWithIntroEv;
- * not a Player method -- it stores vptr data_ov006_0213b2e0 and constructs
- * a ModelAnim at +0x78, and the name stays because symbols.txt carries it);
+ * dMgTrmpln2Mario_c (Trmp2Mario_Construct, which was misfiled as
+ * _ZN6Player29TryExitCharacterDoorWithIntroEv: it stores vptr sTrmp2MarioOps
+ * and constructs a ModelAnim at +0x78);
  * D1 0x020ccfc8 and constructor 0x020cd12c of dMgTrmpln3DMario_c;
  * _ZTI17dMgTrmpln2Mario_c 0x0213b250, _ZTI18dMgTrmpln3DMario_c 0x0213b244,
  * beside dMgTrmpObjAdapter_c / dMgTrmpRingObjAdapter_c. No call runs from
@@ -126,14 +126,14 @@ int Trmp2Mario_GetPos(int p)
 // ---- Trmp2Mario_Render
 namespace ns_020c8e90 {
 extern "C" {
-extern int data_ov006_0212e02c[];
+extern int sTrmp2MarioScale[];
 struct C { virtual void a0(); virtual void a1(); virtual void a2(); virtual void a3(); virtual void a4(); virtual void f(void*); };
 // @symbol Trmp2Mario_Render
 void Trmp2Mario_Render(char *o) {
     if (MARIO2(o)->mVisible == 0)
         return;
     struct C *p = (struct C *)(o + 0x78);
-    p->f((void *)data_ov006_0212e02c);
+    p->f((void *)sTrmp2MarioScale);
 }
 }
 }
@@ -1267,14 +1267,14 @@ extern "C" SharedFilePtr sTrmpMarioModelFile, sTrmpMarioJumpAnimFile, sTrmpMario
 extern "C" int sTrmpAnimJump, sTrmpAnimDoubleJump1, sTrmpAnimWallJump, sTrmpAnimHangUp,
     sTrmpAnimRollJumpEnd, sTrmpAnimWalk, sTrmpAnimDoubleJump2, sTrmpAnimJumpEnd, sTrmpAnimTurn,
     sTrmpAnimTurnEnd, sTrmpAnimBounce, sTrmpAnimStruggle, sTrmpAnimSdown;
-extern "C" int data_ov006_0213b2e0;
+extern "C" int sTrmp2MarioOps;
 extern "C" int data_ov006_0213b3e0;
 extern "C" int data_ov006_0213b3c4;
 
 // @symbol Trmp2Mario_Destruct
 extern "C" void* Trmp2Mario_Destruct(int* c)
 {
-    *c = (int)&data_ov006_0213b2e0;
+    *c = (int)&sTrmp2MarioOps;
     sTrmpMarioModelFile.Release();
     sTrmpMarioJumpAnimFile.Release();
     sTrmpMarioDoubleJump1AnimFile.Release();
@@ -1308,9 +1308,10 @@ extern "C" void* Trmp2Mario_Destruct(int* c)
     return c;
 }
 }
-// ---- _ZN6Player29TryExitCharacterDoorWithIntroEv
+// ---- Trmp2Mario_Construct
 namespace ns__ZN6Player29TryExitCharacterDoorWithIntroEv {
-/* NOT a Player method, despite the name. ov006, 0x020ca78c.
+/* dMgTrmpln2Mario_c's constructor, ov006 0x020ca78c. It was filed as
+ * _ZN6Player29TryExitCharacterDoorWithIntroEv; it is not a Player method.
  *
  * The shape is a constructor, not a state handler: it calls a base routine,
  * stores a vptr into [this+0], then runs a member constructor at this+0x78.
@@ -1321,18 +1322,20 @@ namespace ns__ZN6Player29TryExitCharacterDoorWithIntroEv {
  * This file was the only evidence for Player.h's `mModelAnim2` at 0x078, so
  * that field can now be dropped and the offset returned to dActor_c.
  *
- * The vptr it stores is the invented symbol data_ov006_0213b2e0, which carries no address --
- * a separate problem, left alone here.
+ * The vptr it stores, sTrmp2MarioOps (0x0213b2e0), is dMgTrmpln2Mario_c's vtable
+ * address point: the two words before it are the offset 0 and
+ * _ZTI17dMgTrmpln2Mario_c, and its slots are Trmp2Mario_GetPos, GetPrevPos,
+ * GetVelocity, Reset and TrmpRingObjAdapter_Clear. sTrmp3DMarioOps (0x0213b2c4)
+ * is the same for dMgTrmpln3DMario_c.
  *
  * Detached from Player.h; see SlotB2_Hide.cpp.
  */
-extern "C" int data_ov006_0213b2e0[];
+extern "C" int sTrmp2MarioOps[];
 
-// @symbol _ZN6Player29TryExitCharacterDoorWithIntroEv
-extern "C" int *_ZN6Player29TryExitCharacterDoorWithIntroEv(int *self)
-{
+// @symbol Trmp2Mario_Construct
+extern "C" int *Trmp2Mario_Construct(int *self) {
     TrmpRingObjAdapter_Construct(self);
-    self[0] = (int)data_ov006_0213b2e0;
+    self[0] = (int)sTrmp2MarioOps;
     _ZN9ModelAnimC1Ev((char *)self + 0x78);
     return self;
 }
@@ -1698,12 +1701,12 @@ int Trmp3DMario_GetPos(int p)
 // ---- Trmp3DMario_Render
 namespace ns_020cafb4 {
 extern "C" {
-extern int data_ov006_0212e038[];
+extern int sTrmp3DMarioScale[];
 struct C { virtual void a0(); virtual void a1(); virtual void a2(); virtual void a3(); virtual void a4(); virtual void f(void*); };
 // @symbol Trmp3DMario_Render
 void Trmp3DMario_Render(char *o) {
   struct C *p = (struct C*)(o+0x6c);
-  p->f((void*)data_ov006_0212e038);
+  p->f((void *)sTrmp3DMarioScale);
 }
 }
 }
@@ -3279,13 +3282,13 @@ extern "C" SharedFilePtr sTrmpMarioModelFile, sTrmpMarioJumpAnimFile, sTrmpMario
 extern "C" int sTrmpAnimJump, sTrmpAnimDoubleJump1, sTrmpAnimWallJump, sTrmpAnimHangUp,
     sTrmpAnimRollJumpEnd, sTrmpAnimWalk, sTrmpAnimDoubleJump2, sTrmpAnimJumpEnd, sTrmpAnimTurn,
     sTrmpAnimTurnEnd, sTrmpAnimBounce, sTrmpAnimStruggle;
-extern "C" int data_ov006_0213b2c4;
+extern "C" int sTrmp3DMarioOps;
 extern "C" int data_ov006_0213b3c4;
 
 // @symbol Trmp3DMario_Destruct
 extern "C" void* Trmp3DMario_Destruct(int* c)
 {
-    *c = (int)&data_ov006_0213b2c4;
+    *c = (int)&sTrmp3DMarioOps;
     sTrmpMarioModelFile.Release();
     sTrmpMarioJumpAnimFile.Release();
     sTrmpMarioDoubleJump1AnimFile.Release();
@@ -3320,15 +3323,15 @@ extern "C" void* Trmp3DMario_Destruct(int* c)
 namespace ns_020cd12c {
 extern "C" {
 /* recovered: vtable identified, declarations from a shared header */
-extern "C" int data_ov006_0213b2c4[];
+extern "C" int sTrmp3DMarioOps[];
 extern void TrmpObjAdapter_Construct(int *c);
 /* recovered: vtable identified */
-/* vtable identified: VT0 = data_ov006_0213b2c4 */
+/* vtable identified: VT0 = sTrmp3DMarioOps */
 // @symbol Trmp3DMario_Construct
 int *Trmp3DMario_Construct(int *t)
 {
     TrmpObjAdapter_Construct(t);
-    t[0] = (int)data_ov006_0213b2c4;
+    t[0] = (int)sTrmp3DMarioOps;
     _ZN9ModelAnimC1Ev((char *)t + 0x6c);
     return t;
 }
@@ -3534,12 +3537,12 @@ void Trmp3DMario_SetTuning(int a)
 // ---- Trmp3DMario_SetSpawnHeight
 namespace ns_020cd62c {
 extern "C" {
-extern "C" int data_ov006_0212e024[];
+extern "C" int sTrmpRowBaseHeights[];
 extern "C" int sTrmpRowHeights[];
 // @symbol Trmp3DMario_SetSpawnHeight
 void Trmp3DMario_SetSpawnHeight(int n){
-    sTrmpRowHeights[0] = data_ov006_0212e024[0] + (n << 12);
-    sTrmpRowHeights[1] = data_ov006_0212e024[1] + (n << 12);
+    sTrmpRowHeights[0] = sTrmpRowBaseHeights[0] + (n << 12);
+    sTrmpRowHeights[1] = sTrmpRowBaseHeights[1] + (n << 12);
 }
 }
 }

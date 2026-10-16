@@ -61,7 +61,7 @@ extern int sMCarloPayout;
 extern int sMCarloDeckSize;
 extern int sMCarloFaceCounts[8]; /* the eight face weights */
 extern int data_020a0db0;
-extern unsigned short data_ov006_0213d600[];
+extern unsigned short sMCarloCardFrameSprites[];
 extern int sMgCardSprites[];
 extern int sMCarloCardSprites[];
 extern void Vec2_Sub(int* o, int* a, int* b);
@@ -69,7 +69,7 @@ extern void func_0203d630(int *p, int m);
 extern int sMgCoinsBetPlaced;
 extern unsigned int func_02012790(unsigned int a);
 extern int func_0203d5dc(void *a, void *b);
-extern int data_ov006_02133f18;
+extern int sMCarloHudSprite;
 extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 void Camera_InitDealerView(void* p);
@@ -135,7 +135,7 @@ s32 dScMgMCarlo_c::InitResources()
 
     Mg_SetTopScreenYOffset(0x20);
     LoadCard2SubBg3(this);
-    chr = (void *)LoadFile(data_ov006_0213d5b4[GetGameLanguage()]);
+    chr = (void *)LoadFile(sMCarloCardNcgByLanguage[GetGameLanguage()]);
     pal = (void *)LoadFile(ASSET_D_2D_MG_CARD_NCL_BIN);
     DecompressLZ16(chr, (void *)0x6600000);
     GXS::LoadOBJPltt(pal, 0, 0x100);
@@ -171,7 +171,7 @@ s32 dScMgMCarlo_c::InitResources()
 void dScMgMCarlo_c::StartRound(int arg)
 {
     SetupBoard(mArray);
-    data_ov006_0213d564 = 0;
+    sMCarloPickAllowed = 0;
     mDealCount = 0;
     mShared.unk_1e6 = 1;
     Dealer_StartShuffle((char *)&mShared, 4, 4, (int)&mDealCount);
@@ -277,8 +277,8 @@ s32 dScMgMCarlo_c::Behavior()
     case 3:
         if (dScMgMCarlo_c::BoardReady() == 0) {
             int shown;
-            if (data_ov006_0213d564 == 1)
-                data_ov006_0213d564 = 0;
+            if (sMCarloPickAllowed == 1)
+                sMCarloPickAllowed = 0;
             shown = sMCarloDealProgress >> 12;
             if (sMCarloDeckSize != 0 && shown > 10 && shown <= 18 && Dealer_IsIdle(&mShared) != 0) {
                 mDealCount = 0;
@@ -295,9 +295,9 @@ s32 dScMgMCarlo_c::Behavior()
                 }
             }
         } else {
-            if (data_ov006_0213d564 == 0) {
+            if (sMCarloPickAllowed == 0) {
                 if (dScMgMCarlo_c::HasRemovablePair() != 0) {
-                    data_ov006_0213d564 = 1;
+                    sMCarloPickAllowed = 1;
                 } else {
                     if (sMCarloCardTotal != 0) {
                         if (mShared.unk_01a == 1) {
@@ -344,7 +344,7 @@ s32 dScMgMCarlo_c::Behavior()
                         mPromptEnabled = 0;
                         mRoundState++;
                     }
-                    data_ov006_0213d564 = 0;
+                    sMCarloPickAllowed = 0;
                 }
             }
         }
@@ -405,7 +405,7 @@ void dScMgMCarlo_c::RenderHud(void)
     int deck = sMCarloDeckSize;
     if (deck == 0) return;
     Mg_DrawNumber(0xe8, 0x28, deck, -1, -1, 0, 0);
-    Hud_RenderSprite((void*)data_ov006_02133f18, 0xe8, 0x18, -1, -1);
+    Hud_RenderSprite((void *)sMCarloHudSprite, 0xe8, 0x18, -1, -1);
 }
 
 // @symbol _ZN18dMgMCarloCardObj_c4InitEi
@@ -511,7 +511,7 @@ fail:
 
 // @symbol _ZN18dMgMCarloCardObj_c7HitTestEv
 /* Is this card the one under the stylus?
- * Only when the round is armed (data_ov006_0213d564) and the board is
+ * Only when the round is armed (sMCarloPickAllowed) and the board is
  * settled (no card still flying or flipping in), the touch panel has to
  * report an active press, and this card's on-screen position (fixed-point
  * >> 12) has to fall in the 0x20-by-0x30 window around the reported touch
@@ -523,7 +523,8 @@ int dMgMCarloCardObj_c::HitTest(void)
     int touching;
     int touchXOffset, touchYOffset;
 
-    if (data_ov006_0213d564 == 0) return 0;
+    if (sMCarloPickAllowed == 0)
+        return 0;
     if (dScMgMCarlo_c::BoardBusy() != 0) goto fail;
 
     touchSlot = gActivePlayerSlot;
@@ -647,7 +648,7 @@ void dMgMCarloCardObj_c::Render(void)
     {
         int idx = (mFace + 1) * 5
                   + (mLift >> 12);
-        unsigned short sprite = data_ov006_0213d600[idx];
+        unsigned short sprite = sMCarloCardFrameSprites[idx];
         Hud_RenderSprite((void *)sMCarloCardSprites[sprite], (mX >> 12) + 24, (mY >> 12) + 24, -1,
                          -1);
     }

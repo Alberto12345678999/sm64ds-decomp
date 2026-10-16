@@ -120,24 +120,24 @@ extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c,
 
 extern int  data_0209d4b8;
 extern s16  data_02082214[];
-extern unsigned char data_ov006_0212e450[];
-extern unsigned char data_ov006_0212e454[];
-extern u8   data_ov006_0212e458[];
-extern int  data_ov006_0212e460[];
-extern int  data_ov006_0212e468[];
+extern unsigned char sCurlingBitAStates[];
+extern unsigned char sCurlingBitBStates[];
+extern u8 sCurlingScoreDelays[];
+extern int sCurlingBitKinds[];
+extern int sCurlingStonesLeftX[];
 extern int sCurlingBitSprites[];
-extern int  data_ov006_0213c264;
-extern int  data_ov006_0213c2ac;
+extern int sCurlingStoneLeftSprite;
+extern int sCurlingStoneLeftShadowSprite;
 extern int sCurlingAimMarkerSprites[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
-extern char data_ov006_0213c394;
-extern char data_ov006_0213c3b4;
-extern int  data_ov006_0212e478[];
-extern int  data_ov006_0212e48c[];
-extern int  data_ov006_0212e4a0[];
-extern int  data_ov006_0212e4b4[];
-extern int  data_ov006_0212e4c8[];
+extern char sCurlingMgDirPath;
+extern char sCurlingBgCurling2NcgPath;
+extern int sCurlingSlideZoneEdges[];
+extern int sCurlingSlideShiftLeft[];
+extern int sCurlingSlideShiftRight[];
+extern int sCurlingSlideMinLeft[];
+extern int sCurlingSlideMinRight[];
 extern int sCurlingHouseSpots[];
 
 /* The six state tables, filled at startup by the ov006 static init. */
@@ -342,7 +342,10 @@ void dScMgCurling_c::BitA_StatePause(int index) {
         return;
     }
     mBit[index].vx = 0;
-    mBit[index].state = data_ov006_0212e450[(((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1 >> 15];
+    mBit[index].state =
+        sCurlingBitAStates[(((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)
+                               << 1 >>
+                           15];
     mBit[index].wait = (short)(unsigned char)((0x10 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf);
     mBit[index].timer = (short)(unsigned char)(((0x40 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf) + 0x60);
 }
@@ -470,7 +473,7 @@ void dScMgCurling_c::BitB_StatePause(int idx) {
     roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
     mBit[idx].vy = (int)(((roll << 5) >> 15) << 4) + 0x600;
     roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-    mBit[idx].state = data_ov006_0212e454[(roll << 1) >> 15];
+    mBit[idx].state = sCurlingBitBStates[(roll << 1) >> 15];
     roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
     (s16&)mBit[idx].wait = (unsigned char)((roll << 4) >> 15);
     roll = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
@@ -493,7 +496,7 @@ void dScMgCurling_c::Bit_PickKind(int idx)
     int k = 0;
     unsigned pick = ((roll >> 16) & 0x7fff) << 3 >> 0xf;
     if (pick == 5) k = 1;
-    mBit[idx].kind = data_ov006_0212e460[k];
+    mBit[idx].kind = sCurlingBitKinds[k];
     mBit[idx].state = 0;
 }
 #pragma pop
@@ -641,7 +644,7 @@ void dScMgCurling_c::ScoreStones()
         }
     }
 
-    delay = &data_ov006_0212e458[slot];
+    delay = &sCurlingScoreDelays[slot];
     stone = raw;
     for (i = 0; i < 5; i++, stone += 0x2c) {
         int dx, dz, dist, top;
@@ -875,17 +878,17 @@ void dScMgCurling_c::DrawStonesLeft()
         if (mStone[i].dealt == 0) continue;
         x = mStone[i].x >> 12;
         y = mStone[i].y >> 12;
-        RenderOamBothScreens(&data_ov006_0213c264, x, y, -1, 1, 0);
-        RenderOamBothScreens(&data_ov006_0213c2ac, x, y + 8, -1, 2, 0);
+        RenderOamBothScreens(&sCurlingStoneLeftSprite, x, y, -1, 1, 0);
+        RenderOamBothScreens(&sCurlingStoneLeftShadowSprite, x, y + 8, -1, 2, 0);
     }
     remaining = 5 - mThrown;
     if (remaining < 0) remaining = 0;
     j = 0;
     if (remaining > 0) {
         for (; j < remaining; j++) {
-            int slotX = data_ov006_0212e468[j];
-            RenderOamBothScreens(&data_ov006_0213c264, slotX, 0xb0, -1, 1, 0);
-            RenderOamBothScreens(&data_ov006_0213c2ac, slotX, 0xb8, -1, 2, 0);
+            int slotX = sCurlingStonesLeftX[j];
+            RenderOamBothScreens(&sCurlingStoneLeftSprite, slotX, 0xb0, -1, 1, 0);
+            RenderOamBothScreens(&sCurlingStoneLeftShadowSprite, slotX, 0xb8, -1, 2, 0);
         }
     }
 }
@@ -1155,7 +1158,7 @@ void dScMgCurling_c::Stone_Collide(int idx)
 /* Stone idx while it slides. Moves it by its velocity, adds the spin to
  * the angle, bounces it off the four walls (with a sound), then takes
  * friction off the speed: a base of speed/512 (at least 0x1c), more in the
- * five bands below the house from the data_ov006_0212e478 tables, and a
+ * five bands below the house from the sCurlingSlideZoneEdges tables, and a
  * steeper rate while the stone still travels upward above -0x20. At zero
  * speed the stone stops (state 2). The collision and spin helpers run, and
  * the slide sound at 0x467c is retuned to the speed. */
@@ -1224,16 +1227,16 @@ void dScMgCurling_c::Stone_Slide(int idx)
     if (v <= 0x1c)
         v = 0x1c;
     for (i2 = 0, sbv = *p664 >> 12; i2 < 5; i2++) {
-        if (sbv <= -(data_ov006_0212e478[i2] + 0x20)) {
+        if (sbv <= -(sCurlingSlideZoneEdges[i2] + 0x20)) {
             s = data_02082214[(*pang >> 4) * 2];
             if (s < 0) {
-                v = zi >> data_ov006_0212e48c[i2];
-                if (v < data_ov006_0212e4b4[i2])
-                    v = data_ov006_0212e4b4[i2];
+                v = zi >> sCurlingSlideShiftLeft[i2];
+                if (v < sCurlingSlideMinLeft[i2])
+                    v = sCurlingSlideMinLeft[i2];
             } else if (s > 0) {
-                v = zi >> data_ov006_0212e4a0[i2];
-                if (v < data_ov006_0212e4c8[i2])
-                    v = data_ov006_0212e4c8[i2];
+                v = zi >> sCurlingSlideShiftRight[i2];
+                if (v < sCurlingSlideMinRight[i2])
+                    v = sCurlingSlideMinRight[i2];
             }
             break;
         }
@@ -1624,8 +1627,8 @@ s32 dScMgCurling_c::Behavior()
  * palettes and the house, then starts the first round with a 0x40 delay. */
 s32 dScMgCurling_c::InitResources()
 {
-    char *a = Ov004_LoadFileByPath(&data_ov006_0213c394);
-    char *b = Ov004_LoadFileByPath(&data_ov006_0213c3b4);
+    char *a = Ov004_LoadFileByPath(&sCurlingMgDirPath);
+    char *b = Ov004_LoadFileByPath(&sCurlingBgCurling2NcgPath);
     void *f;
 
     if (a == 0 || b == 0) return 0;

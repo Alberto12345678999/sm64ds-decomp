@@ -1398,9 +1398,9 @@ s32 dScMgSnowball_c::Render()
     {
         int base = self->mGoalY;
         int t = (((self->mPosY >> 0xc) - base) * 0x7c) / (self->mStartY - base);
-        Mg_RenderSpriteBoth(data_ov006_02139d24[0], 0xf0, t + 0x22, -1, 0);
+        Mg_RenderSpriteBoth(sSnowballCourseMeterSprites[0], 0xf0, t + 0x22, -1, 0);
     }
-    Mg_RenderSpriteBoth(data_ov006_02139d24[1], 0xf0, 0x60, -1, 0);
+    Mg_RenderSpriteBoth(sSnowballCourseMeterSprites[1], 0xf0, 0x60, -1, 0);
 
     m[2] = 0xfffff008;
     m[1] = 0;
@@ -1439,11 +1439,11 @@ s32 dScMgSnowball_c::Render()
                     if (*(u8*)(p + 0xb2d8) == 1) idx += 8;
                     int a1 = (*(int*)(c + i1 * 8 + 0xacd8) - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02138d64[idx], a1, a2, -1, -1);
+                    Mg_RenderSpriteBoth(sSnowballBreakableAnimSprites[idx], a1, a2, -1, -1);
                 } else {
                     int a1 = (*(int*)(c + i1 * 8 + 0xacd8) - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02139c24, a1, a2, -1, 2);
+                    Mg_RenderSpriteBoth(sSnowballBreakableSprite, a1, a2, -1, 2);
                 }
             }
         }
@@ -1460,7 +1460,7 @@ s32 dScMgSnowball_c::Render()
                 case 2: {
                     int a1 = (*(int*)(c + i2 * 8 + 0xb5d8) - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02139d18, a1, a2, -1, 1);
+                    Mg_RenderSpriteBoth(sSnowballObstacleSprite, a1, a2, -1, 1);
                     break;
                 }
                 case 3: {
@@ -1468,7 +1468,7 @@ s32 dScMgSnowball_c::Render()
                     int sel = (v < 0x80000) ? 1 : 0;
                     int a1 = (v - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
-                    Mg_RenderSpriteBoth(data_ov006_02139c80[sel], a1, a2, -1, 1);
+                    Mg_RenderSpriteBoth(sSnowballObstacleSideSprites[sel], a1, a2, -1, 1);
                     break;
                 }
                 }
@@ -1479,7 +1479,7 @@ s32 dScMgSnowball_c::Render()
     {
         int a1 = (self->mDrawPosX - self->mScrollX) >> 0xc;
         int a2 = ((self->mDrawPosY - self->mScrollY) >> 0xc) - 0x110;
-        Mg_RenderSpriteBoth(data_ov006_02139c38, a1, a2, -1, 2);
+        Mg_RenderSpriteBoth(sSnowballBallSprite, a1, a2, -1, 2);
     }
 
     {
@@ -1519,11 +1519,14 @@ s32 dScMgSnowball_c::Render()
                 }
                 {
                     int idx = GetGameLanguage();
-                    Mg_RenderSpriteBothMtx(*(void**)((char*)data_ov006_0213fff0[idx] + 0xc), 0x5c, r4, 0);
+                    Mg_RenderSpriteBothMtx(
+                        *(void **)((char *)sSnowballTextSpritesByLanguage[idx] + 0xc), 0x5c, r4, 0);
                 }
                 {
                     int idx = GetGameLanguage();
-                    Mg_RenderSpriteBothMtx(*(void**)((char*)data_ov006_0213fff0[idx] + 0x1c), 0x90, r4, 0);
+                    Mg_RenderSpriteBothMtx(
+                        *(void **)((char *)sSnowballTextSpritesByLanguage[idx] + 0x1c), 0x90, r4,
+                        0);
                 }
             }
         }
@@ -1953,18 +1956,18 @@ s32 dScMgSnowball_c::InitResources()
     data_0209d45c |= 0xc;
     data_0209d454 |= 0xc;
 
-    buf = Ov004_LoadFileByPath(&data_ov006_0214009c);
+    buf = Ov004_LoadFileByPath(&sSnowballBgNclPath);
     CP15::FlushAndInvalidateDataCache((u32)buf, 0x100);
     GX::LoadBGPltt(buf, 0x100, 0x100);
     GXS::LoadBGPltt(buf, 0x100, 0x100);
     Ov004_Deallocate(buf);
 
-    buf = Ov004_LoadFileByPath(&data_ov006_021400bc);
+    buf = Ov004_LoadFileByPath(&sSnowballNcgPath);
     DecompressLZ16(buf, (void *)0x6400000);
     DecompressLZ16(buf, (void *)0x6600000);
     Ov004_Deallocate(buf);
 
-    buf = Ov004_LoadFileByPath(&data_ov006_021400dc);
+    buf = Ov004_LoadFileByPath(&sSnowballNclPath);
     CP15::FlushAndInvalidateDataCache((u32)buf, 0x100);
     GX::LoadOBJPltt(buf, 0, 0x100);
     GXS::LoadOBJPltt(buf, 0, 0x100);

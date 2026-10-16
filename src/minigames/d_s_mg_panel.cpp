@@ -132,16 +132,13 @@ dScMgPanel_c::~dScMgPanel_c()
 void dScMgPanel_c::Particle_DrawAll()
 {
     char *scene = (char *)this;
-    extern int data_ov006_0213def0[];
+    extern int sPanelParticleSprites[];
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     int i;
     for (i = 0; i < 0x40; i++) {
         if (self->mParticles[i].visible != 0) {
-            Mg_RenderSpriteBoth(
-                (void *)data_ov006_0213def0[self->mParticles[i].kind],
-                self->mParticles[i].x >> 12,
-                self->mParticles[i].y >> 12,
-                -1, -1);
+            Mg_RenderSpriteBoth((void *)sPanelParticleSprites[self->mParticles[i].kind],
+                                self->mParticles[i].x >> 12, self->mParticles[i].y >> 12, -1, -1);
         }
     }
 }
@@ -386,7 +383,7 @@ void SetSubBg0Offset(int a, int b);
 }
 void dScMgPanel_c::Shake_StateShake(int index) {
     char *scene = (char *)this;
-    extern int data_ov006_0212ecec[];
+    extern int sPanelShakeOffsets[];
     int m = index * 0xc;
     char *b = scene + 0x4690;
     u16 h = *(u16 *)(b + m);
@@ -399,7 +396,7 @@ void dScMgPanel_c::Shake_StateShake(int index) {
         return;
     }
     {
-        int t = data_ov006_0212ecec[h >> 3];
+        int t = sPanelShakeOffsets[h >> 3];
         int *dst = (int *)(scene + 0x468c + m);
         u16 st;
         *dst = t;
@@ -541,7 +538,7 @@ void dScMgPanel_c::DrawHud()
 {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
-    extern void *data_ov006_02135054[];
+    extern void *sPanelHudSprites[];
     extern void *data_ov006_02136de8[];
     if (self->mSlideFlag == 0) return;
     if (self->mSlideStep != 4) {
@@ -551,7 +548,7 @@ void dScMgPanel_c::DrawHud()
         Mg_DrawBigNumber(a, b, self->mFlipCount, -1, -1, 0, 0);
         index = 1;
         if (self->mFlipCount >= 2) index = 0;
-        Mg_RenderSpriteBoth(data_ov006_02135054[index], a + 0x2c, b, -1, -1);
+        Mg_RenderSpriteBoth(sPanelHudSprites[index], a + 0x2c, b, -1, -1);
     } else {
         int x = self->mSlideLeft;
         Hud_RenderSprite(data_ov006_02136de8[x],
@@ -1093,7 +1090,7 @@ void dScMgPanel_c::DrawPanels()
 {
     PanelObj_ab4 *scene = (PanelObj_ab4 *)this;
     extern void *sPanelSprites[];
-    extern u8 data_ov006_0213dd34[];
+    extern u8 sPanelFlipFrameSprites[];
     int x;
     int y;
     int v;
@@ -1118,7 +1115,7 @@ void dScMgPanel_c::DrawPanels()
             index = k * 3;
             if (t == 1) {
                 int h = scene->harr[i];
-                index = data_ov006_0213dd34[k * 5 + h];
+                index = sPanelFlipFrameSprites[k * 5 + h];
             }
 
             Mg_RenderSubSpritePalMtx(sPanelSprites[index], x, y, -1, v, 0);
@@ -1367,8 +1364,8 @@ extern "C" {
 void dScMgPanel_c::DealPuzzle()
 {
     extern int data_0209d4b8;
-    extern u16 *data_ov006_0213dd4c[];
-    extern u16 *data_ov006_0213dd58[];
+    extern u16 *sPanelPuzzleXPerMode[];
+    extern u16 *sPanelPuzzleYPerMode[];
     extern u8 *sPanelPuzzlesAlt[];
     extern u8 *sPanelPuzzles[];
     int i;
@@ -1384,8 +1381,8 @@ void dScMgPanel_c::DealPuzzle()
         for (i = 0; i < (cnt1 = mCount); i++) {
             int m = mWidth - 4;
             int idx4 = mFaceSet;
-            mX[i] = data_ov006_0213dd4c[m][i] << 12;
-            mY[i] = data_ov006_0213dd58[m][i] << 12;
+            mX[i] = sPanelPuzzleXPerMode[m][i] << 12;
+            mY[i] = sPanelPuzzleYPerMode[m][i] << 12;
             pe = sPanelPuzzles;
             pd = sPanelPuzzlesAlt;
             if (IsAltVariant()) {
@@ -1455,11 +1452,11 @@ void dScMgPanel_c::ScramblePanels()
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     extern int data_0209d4b8;
-    extern u8 data_ov006_0213dd64[];
-    extern u8 data_ov006_0213dd74[];
-    extern u8 data_ov006_0213dd94[];
-    extern u8 data_ov006_0213de28[];
-    extern u8 data_ov006_0213de44[];
+    extern u8 sPanelScrambleFlipEnabled[];
+    extern u8 sPanelScrambleFlips[];
+    extern u8 sPanelScrambleWidths[];
+    extern u8 sPanelScrambleFlipEnabledAlt[];
+    extern u8 sPanelScrambleFlipsAlt[];
     extern u8 sPanelPuzzleSizes[];
     int t = (int)self->mLevel;
     if (((PanelO_3a0 *)scene)->m8c() != 0) {
@@ -1471,7 +1468,7 @@ void dScMgPanel_c::ScramblePanels()
                 if (t >= 0xf) t -= 0xf;
             }
         }
-        if (data_ov006_0213dd64[t] != 0 || self->mDealt == 0) {
+        if (sPanelScrambleFlipEnabled[t] != 0 || self->mDealt == 0) {
             if (self->mDealt == 0) *(int *)PANEL_AT(scene, 0x4cb0) += 1;
             nv = (PANEL_RAND * 8) >> 15;
             if (nv == self->mFaceSet) {
@@ -1479,16 +1476,16 @@ void dScMgPanel_c::ScramblePanels()
             }
             self->mFaceSet = nv;
         }
-        ((dScMgPanel_c *)scene)->mWidth = data_ov006_0213dd94[t];
+        ((dScMgPanel_c *)scene)->mWidth = sPanelScrambleWidths[t];
         { int q = ((dScMgPanel_c *)scene)->mWidth; ((dScMgPanel_c *)scene)->mCount = q * q; }
-        self->mFlips = data_ov006_0213dd74[t];
+        self->mFlips = sPanelScrambleFlips[t];
         *(int *)(scene + 0x4de4) = t;
     } else {
         int nv;
         int k;
         u8 *p;
         while (t >= 0x19) t -= 0x19;
-        if (data_ov006_0213de28[t] != 0 || self->mDealt == 0) {
+        if (sPanelScrambleFlipEnabledAlt[t] != 0 || self->mDealt == 0) {
             if (self->mDealt == 0) *(int *)PANEL_AT(scene, 0x4cb0) += 1;
             nv = (PANEL_RAND * 4) >> 15;
             k = sPanelPuzzleSizes[t];
@@ -1508,7 +1505,7 @@ void dScMgPanel_c::ScramblePanels()
         }
         ((dScMgPanel_c *)scene)->mWidth = sPanelPuzzleSizes[t];
         { int q = ((dScMgPanel_c *)scene)->mWidth; ((dScMgPanel_c *)scene)->mCount = q * q; }
-        self->mFlips = data_ov006_0213de44[t];
+        self->mFlips = sPanelScrambleFlipsAlt[t];
     }
 }
 #undef PANEL_AT

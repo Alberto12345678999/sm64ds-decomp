@@ -302,7 +302,7 @@ void dScMgLuigi_c::StartIris()
 // @symbol _ZN12dScMgLuigi_c10DrawRewardEv
 void dScMgLuigi_c::DrawReward()
 {
-    extern void *data_ov006_0213ce70[];
+    extern void *sLuigiTextSpritesByLanguage[];
     extern char sMgDigitSprites[];
     if (mReward.shown == 0) return;
     int x = mReward.x >> 0xc;
@@ -312,7 +312,7 @@ void dScMgLuigi_c::DrawReward()
     if (y <= 8) y = 8;
     if (y >= 0xb8) y = 0xb8;
     s32 r = GetGameLanguage();
-    Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x34), x - 8, y, 0);
+    Mg_RenderSubSpriteMtx(*(void **)((char *)sLuigiTextSpritesByLanguage[r] + 0x34), x - 8, y, 0);
     Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0x64), x + 8, y, 0);
 }
 
@@ -399,13 +399,13 @@ void dScMgLuigi_c::StartReward(int i) {
 // @symbol _ZN12dScMgLuigi_c12DrawCurtainsEv
 void dScMgLuigi_c::DrawCurtains()
 {
-    extern char *data_ov006_021350d8;
+    extern char *sLuigiCurtainSprite;
     int j;
     for (j = 0; j < 2; j++) {
         if (mCurtain[j].shown != 0) {
             int x = mCurtain[j].x >> 0xc;
             int y = mCurtain[j].y >> 0xc;
-            char *e = data_ov006_021350d8;
+            char *e = sLuigiCurtainSprite;
             for (;;) {
                 char *r = Mg_RenderMainSpriteScaled((int)e, x, y, -1, 1, 0x1000, 0);
                 if (r != 0) {
@@ -585,7 +585,7 @@ void dScMgLuigi_c::CurtainUpdate(int i) {
 // @symbol _ZN12dScMgLuigi_c12CurtainStartEi
 void dScMgLuigi_c::CurtainStart(int i) {
     extern unsigned char data_0209d460;
-    extern int data_ov006_0212e850[];
+    extern int sLuigiCurtainX[];
     unsigned short t;
     int x;
     int v;
@@ -609,7 +609,7 @@ void dScMgLuigi_c::CurtainStart(int i) {
     *(volatile int *)0x04000000 = (*(volatile int *)0x04000000 & ~0xe000) | 0x8000;
     data_0209d460 = 4;
 
-    mCurtain[i].x = data_ov006_0212e850[i] << 12;
+    mCurtain[i].x = sLuigiCurtainX[i] << 12;
     mCurtain[i].y = 0x60000;
     mCurtain[i].shown = 1;
     mCurtain[i].state = 1;
@@ -662,12 +662,12 @@ void dScMgLuigi_c::ResetCurtains() {
 
 // @symbol _ZN12dScMgLuigi_c9DrawTimerEv
 void dScMgLuigi_c::DrawTimer() {
-    extern int *data_ov006_0213ce70[];
+    extern int *sLuigiTextSpritesByLanguage[];
     int idx;
     if (mState < 2)
         return;
     idx = GetGameLanguage();
-    DrawOamSprite(*(int *)((char *)data_ov006_0213ce70[idx] + 0xc), 0x80, 0x10, 0);
+    DrawOamSprite(*(int *)((char *)sLuigiTextSpritesByLanguage[idx] + 0xc), 0x80, 0x10, 0);
     Mg_DrawNumberRotated(0x80, 0x28, static_cast<u16>(mTime), 1, -1, 0x800, 0);
 }
 
@@ -717,7 +717,7 @@ void dScMgLuigi_c::DrawPictures() {
 // @symbol _ZN12dScMgLuigi_c13DrawPenaltiesEv
 void dScMgLuigi_c::DrawPenalties()
 {
-    extern void *data_ov006_0213ce70[];
+    extern void *sLuigiTextSpritesByLanguage[];
     extern char sMgDigitSprites[];
     int i;
     for (i = 0; i < 0x10; i++) {
@@ -730,7 +730,8 @@ void dScMgLuigi_c::DrawPenalties()
             if (y <= 8) y = 8;
             if (y >= 0xb8) y = 0xb8;
             r = GetGameLanguage();
-            Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x38), x - 0x10, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)((char *)sLuigiTextSpritesByLanguage[r] + 0x38),
+                                  x - 0x10, y, 0);
             Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa4), x, y, 0);
             Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa0), x + 0x10, y, 0);
         }
@@ -849,7 +850,7 @@ after_flag:
 void dScMgLuigi_c::MovePictureBounce(int i)
 {
     extern int data_0209d4b8;
-    extern int data_ov006_0212e8b8[];
+    extern int sLuigiBounceSpeeds[];
     extern s16 data_02082214[];
     u8 *started = &mStarted[i];
 
@@ -876,14 +877,14 @@ void dScMgLuigi_c::MovePictureBounce(int i)
         phase = mMovePhase[i];
         a = phase >> 4;
         stepX = data_02082214[a * 2 + 1];
-        speed = data_ov006_0212e8b8[speedLevel[i]];
+        speed = sLuigiBounceSpeeds[speedLevel[i]];
         prod = (s64)stepX * speed;
         posX[i] += (int)((prod + round12) >> 12);
 
         phase = mMovePhase[i];
         a = phase >> 4;
         stepY = data_02082214[a * 2];
-        speed = data_ov006_0212e8b8[speedLevel[i]];
+        speed = sLuigiBounceSpeeds[speedLevel[i]];
         prod = (s64)stepY * speed;
         posY[i] += (int)((prod + round12) >> 12);
 
@@ -923,7 +924,7 @@ void dScMgLuigi_c::MovePictureBounce(int i)
 void dScMgLuigi_c::MovePictureSway(int idx)
 {
     extern int sLuigiSwaySpeed[];
-    extern int data_ov006_0212e898[];
+    extern int sLuigiSwayStartVY[];
     extern int sLuigiSwayAccel[];
     if (mStarted[idx] == 0) {
         mMovePhase[idx] = 0;
@@ -933,7 +934,7 @@ void dScMgLuigi_c::MovePictureSway(int idx)
         } else {
             mVelX[idx] = -sLuigiSwaySpeed[mCharacter[idx]];
         }
-        mVelY[idx] = data_ov006_0212e898[mCharacter[idx]];
+        mVelY[idx] = sLuigiSwayStartVY[mCharacter[idx]];
         return;
     }
     mPosX[idx] += mVelX[idx];
@@ -971,7 +972,7 @@ void dScMgLuigi_c::MovePictureSway(int idx)
 void dScMgLuigi_c::MovePictureDriftRandom(int idx)
 {
     extern int data_0209d4b8;
-    extern int data_ov006_0212e878[];
+    extern int sLuigiDriftRandomSpeed[];
     extern s16 data_02082214[];
     if (mStarted[idx] == 0) {
         unsigned int r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
@@ -983,10 +984,10 @@ void dScMgLuigi_c::MovePictureDriftRandom(int idx)
     {
         int a = mMovePhase[idx] >> 4;
         mPosX[idx] =
-            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e878[mCharacter[idx]]);
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], sLuigiDriftRandomSpeed[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
         mPosY[idx] =
-            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e878[mCharacter[idx]]);
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], sLuigiDriftRandomSpeed[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -995,7 +996,7 @@ void dScMgLuigi_c::MovePictureDriftRandom(int idx)
 /* Drift up or down from mRowDir of the slot's row. */
 void dScMgLuigi_c::MovePictureDriftByRow(int idx)
 {
-    extern int data_ov006_0212e868[];
+    extern int sLuigiDriftByRowSpeed[];
     extern s16 data_02082214[];
     int cnt;
     int j;
@@ -1019,10 +1020,10 @@ void dScMgLuigi_c::MovePictureDriftByRow(int idx)
     {
         int a = mMovePhase[idx] >> 4;
         mPosX[idx] =
-            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e868[mCharacter[idx]]);
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], sLuigiDriftByRowSpeed[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
         mPosY[idx] =
-            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e868[mCharacter[idx]]);
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], sLuigiDriftByRowSpeed[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1031,7 +1032,7 @@ void dScMgLuigi_c::MovePictureDriftByRow(int idx)
 /* Drift left or right from mColDir of the slot's column. */
 void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
 {
-    extern int data_ov006_0212e858[];
+    extern int sLuigiDriftByColumnSpeed[];
     extern s16 data_02082214[];
     if (mStarted[idx] == 0) {
         mStarted[idx]++;
@@ -1044,11 +1045,11 @@ void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
     }
     {
         int a = mMovePhase[idx] >> 4;
-        mPosX[idx] =
-            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e858[mCharacter[idx]]);
+        mPosX[idx] = mPosX[idx] +
+                     FX_MUL(data_02082214[a * 2 + 1], sLuigiDriftByColumnSpeed[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
         mPosY[idx] =
-            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e858[mCharacter[idx]]);
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], sLuigiDriftByColumnSpeed[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1057,7 +1058,7 @@ void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
 /* Drift on the angle stored for this picture's speed. */
 void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
 {
-    extern int data_ov006_0212e8d8[];
+    extern int sLuigiDriftByLevelSpeed[];
     extern s16 data_02082214[];
     if (mStarted[idx] == 0) {
         u8 t = mCharacter[idx];
@@ -1066,10 +1067,10 @@ void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
     } else {
         int a = mMovePhase[idx] >> 4;
         mPosX[idx] =
-            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e8d8[mCharacter[idx]]);
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], sLuigiDriftByLevelSpeed[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
         mPosY[idx] =
-            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e8d8[mCharacter[idx]]);
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], sLuigiDriftByLevelSpeed[mCharacter[idx]]);
         WrapPicture(idx);
     }
 }
@@ -1078,7 +1079,7 @@ void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
 /* Drift on a fixed angle of 0x6000. */
 void dScMgLuigi_c::MovePictureDriftFixed(int idx)
 {
-    extern int data_ov006_0212e8c8[];
+    extern int sLuigiDriftFixedSpeed[];
     extern s16 data_02082214[];
     if (mStarted[idx] == 0) {
         mMovePhase[idx] = 0x6000;
@@ -1088,10 +1089,10 @@ void dScMgLuigi_c::MovePictureDriftFixed(int idx)
     {
         int a = mMovePhase[idx] >> 4;
         mPosX[idx] =
-            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], data_ov006_0212e8c8[mCharacter[idx]]);
+            mPosX[idx] + FX_MUL(data_02082214[a * 2 + 1], sLuigiDriftFixedSpeed[mCharacter[idx]]);
         a = mMovePhase[idx] >> 4;
         mPosY[idx] =
-            mPosY[idx] + FX_MUL(data_02082214[a * 2], data_ov006_0212e8c8[mCharacter[idx]]);
+            mPosY[idx] + FX_MUL(data_02082214[a * 2], sLuigiDriftFixedSpeed[mCharacter[idx]]);
     }
     WrapPicture(idx);
 }
@@ -1169,7 +1170,7 @@ void dScMgLuigi_c::CheckTouch()
     extern unsigned char gTouchX[][4];
 // local extern: see above.
     extern unsigned char gTouchY[][4];
-    extern unsigned short data_ov006_0212e848[];
+    extern unsigned short sLuigiTouchSfx[];
     int idx = gActivePlayerSlot;
     int flag = 0;
     int cur;
@@ -1198,7 +1199,7 @@ void dScMgLuigi_c::CheckTouch()
             func_02012790(0x26);
 
             {
-                int tbl = data_ov006_0212e848[cat];
+                int tbl = sLuigiTouchSfx[cat];
                 func_02012790(tbl + (mWanted << 3));
             }
             return;
@@ -1365,7 +1366,7 @@ void dScMgLuigi_c::PlaceNextPicture()
     extern int data_0209d4b8;
     extern u8 sLuigiBoardFlags[];
     extern u8 sLuigiBoardModes[];
-    extern u16 data_ov006_0213cee0[];
+    extern u16 sLuigiPlaceLimits[];
     int idx;
     int cur;
     int lim;
@@ -1383,7 +1384,7 @@ void dScMgLuigi_c::PlaceNextPicture()
         return;
     }
 
-    lim = data_ov006_0213cee0[idx];
+    lim = sLuigiPlaceLimits[idx];
     cur = mTarget;
 
     rnd = RandomIntInternal(&data_0209d4b8);
@@ -1494,8 +1495,8 @@ void dScMgLuigi_c::PlaceNextPicture()
 void dScMgLuigi_c::ChooseTarget()
 {
     extern int data_0209d4b8;
-    extern u8 data_ov006_0213cec0[];
-    extern u16 data_ov006_0213cdec[];
+    extern u8 sLuigiWantedPicks[];
+    extern u16 sLuigiWantedPosterTiles[];
     s32 i;
     s32 k;
     u16 *dst;
@@ -1515,7 +1516,8 @@ void dScMgLuigi_c::ChooseTarget()
         k = 0xa;
     }
 
-    mWanted = (data_ov006_0213cec0 + k)[((u32)(((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0xa) >> 15];
+    mWanted = (sLuigiWantedPicks +
+               k)[((u32)(((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0xa) >> 15];
 
     t = mBoard;
     if (t == 9) {
@@ -1530,7 +1532,7 @@ void dScMgLuigi_c::ChooseTarget()
     nbytes = 2;
     for (i = 0, off = 0; i < 8; i++, off += 0x20) {
         dst = (u16 *)(G2::GetBG3ScrPtr() + 0x1d8) + off;
-        idx = data_ov006_0213cdec[mWanted];
+        idx = sLuigiWantedPosterTiles[mWanted];
         idx += off;
         for (j = 0; j < 8; j++) {
             v = ((u16 *)G2::GetBG3ScrPtr())[idx];
@@ -1729,7 +1731,7 @@ extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 /* dScMgLuigi_c::Behavior */
 extern LuigiStateHandler sLuigiStateTable[];
 /* dScMgLuigi_c::InitResources */
-extern void *data_ov006_0213cfa0;
+extern void *sLuigiBg1NcgPath;
 extern void *Ov004_LoadFileByPath(const char *path);
 extern void DecompressLZ16(void *src, void *dst);
 extern int LoadFile(int handle);
@@ -1817,7 +1819,7 @@ s32 dScMgLuigi_c::InitResources()
     int file;
     int objChar;
 
-    arc = Ov004_LoadFileByPath((const char *)&data_ov006_0213cfa0);
+    arc = Ov004_LoadFileByPath((const char *)&sLuigiBg1NcgPath);
     if (arc == 0) return 0;
 
     data_0209d45c |= 8;
@@ -1961,4 +1963,4 @@ MgLuigiProfile g_profile_MG_LUIGI = {
 };
 
 /* ChooseTarget's tile-number table, indexed by the wanted character. */
-u16 data_ov006_0213cdec[4] = { 0x0308, 0x0300, 0x0318, 0x0310 };
+u16 sLuigiWantedPosterTiles[4] = {0x0308, 0x0300, 0x0318, 0x0310};

@@ -92,7 +92,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
                                typed global PMF emits a non-ROM __sinit */
     u8  mArray1[0x340];     /* 0x500c -- 4 * 0xd0; StatePlay launches one */
     u8  mArray2[0x984];     /* 0x534c -- 3 * 0x32c, elem dtor TrmpLine_Destroy */
-    u8  mArray3[0xb4];      /* 0x5cd0 -- 5 * 0x24 floating scores (Desc) */
+    u8 mArray3[0xb4];       /* 0x5cd0 -- 5 * 0x24 floating scores (TrmpScorePopup) */
     dScMgTrampoline_DoorMark mDoorMark; /* 0x5d84 */
     int mTimer;             /* 0x5d90 -- countdown gating state transitions */
     s32 mScrollY;           /* 0x5d94 -- approached toward mScrollTargetY by 2 a

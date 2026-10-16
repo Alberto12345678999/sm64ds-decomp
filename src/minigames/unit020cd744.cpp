@@ -420,17 +420,19 @@ extern "C" void TrmpItem_SetMotionBob(char *c) {
 }
 
 namespace s020cdea0 {
-extern "C" {extern int data_ov006_0212e07c[];}
+extern "C" {
+extern int sTrmpItemPatrolLimits[];
+}
 extern "C" {
 extern int sTrmpItemPatrolSpeed[];
 }
 extern "C" void TrmpItem_MotionPatrol(char *c) {
     int idx = TRMPITEM(c)->mSizeIdx;
-    if (*(int *)(c + 8) > data_ov006_0212e07c[idx]) {
+    if (*(int *)(c + 8) > sTrmpItemPatrolLimits[idx]) {
         TRMPITEM(c)->mVel.x = -sTrmpItemPatrolSpeed[idx];
         return;
     }
-    if (*(int *)(c + 8) < -data_ov006_0212e07c[idx]) {
+    if (*(int *)(c + 8) < -sTrmpItemPatrolLimits[idx]) {
         TRMPITEM(c)->mVel.x = sTrmpItemPatrolSpeed[idx];
     }
 }
@@ -1025,7 +1027,9 @@ extern data_t sTrmpItemRingBModelFile;
 extern "C" {
 extern data_t sTrmpItemRingCModelFile;
 }
-extern "C" {extern BTA_File data_ov006_0213b3a4;}
+extern "C" {
+extern BTA_File sTrmpItemTextureAnim;
+}
 
 extern "C" void TrmpItem_Load(char* c)
 {
@@ -1035,8 +1039,9 @@ extern "C" void TrmpItem_Load(char* c)
     ((Model*)(c+0xa0))->SetPolygonID(1);
     ((Model*)(c+0xf0))->SetPolygonID(2);
     ((Model*)(c+0x140))->SetPolygonID(3);
-    TextureTransformer::Prepare(*sTrmpItemRingAModelFile.f, data_ov006_0213b3a4);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj((TextureTransformer*)(c+0x194), data_ov006_0213b3a4, 0, 0x1000, 0);
+    TextureTransformer::Prepare(*sTrmpItemRingAModelFile.f, sTrmpItemTextureAnim);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj((TextureTransformer *)(c + 0x194),
+                                                          sTrmpItemTextureAnim, 0, 0x1000, 0);
     TrmpItem_Hide((int*)c);
 }
 }
@@ -1343,8 +1348,8 @@ typedef struct
 struct Matrix4x3;
 extern "C" extern struct Matrix4x3 data_020a0e68;
 extern "C" extern struct Matrix4x3 data_0209b3ec;
-extern "C" extern unsigned short data_ov006_0212e060[];
-extern "C" extern unsigned short data_ov006_0212e068[];
+extern "C" extern unsigned short sTrmpLineDiffuse[];
+extern "C" extern unsigned short sTrmpLineAmbient[];
 extern "C" extern int sTrmpLineTexCoords[];
 extern "C" extern void *sTrmpLineTexAddr;
 extern "C" extern void *sTrmpLinePlttAddr;
@@ -1409,14 +1414,14 @@ extern "C" void TrmpLine_Draw(char *obj)
   {
     short *p31e = (short *) (obj + 0x31e);
     int sh = *p31e;
-    unsigned short *dif = data_ov006_0212e060;
+    unsigned short *dif = sTrmpLineDiffuse;
     volatile unsigned char *alpha = (volatile unsigned char *) (obj + 0x329);
     int pl = *alpha;
     REG_POLYGON_ATTR = (((sh + 1) << 24) | 0x82) | (pl << 16);
     {
       unsigned short *p326 = (unsigned short *) (obj + 0x326);
       unsigned idx = *p326;
-      REG_DIF_AMB = dif[idx] | (data_ov006_0212e068[idx] << 16);
+      REG_DIF_AMB = dif[idx] | (sTrmpLineAmbient[idx] << 16);
     }
   }
   REG_SPE_EMI = 0x8000;
@@ -1715,10 +1720,18 @@ extern "C" extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
 extern "C" {
 extern struct Cannon *sTrmpJumpers[];
 }
-extern "C" {extern int data_ov006_0213b30c;}
-extern "C" {extern int data_ov006_0213b310;}
-extern "C" {extern int data_ov006_0213b2f4;}
-extern "C" {extern int data_ov006_0213b308;}
+extern "C" {
+extern int sTrmpLinePushWeakPitchMid;
+}
+extern "C" {
+extern int sTrmpLinePushWeakPitchEnd;
+}
+extern "C" {
+extern int sTrmpLinePushStrongPitchMid;
+}
+extern "C" {
+extern int sTrmpLinePushStrongPitchEnd;
+}
 
 #pragma push
 #pragma opt_common_subs off
@@ -1824,12 +1837,16 @@ extern "C" int TrmpLine_PushJumper(char *c)
 
             if (mag < 0x400000) {
                 arr[i]->f18 = 2;
-                D3D_PlaySePannedLoop(0x1b1, *(int *)(c + 8),
-                    (data_ov006_0213b310 * t + data_ov006_0213b30c * (0x1000 - t)) >> 12);
+                D3D_PlaySePannedLoop(
+                    0x1b1, *(int *)(c + 8),
+                    (sTrmpLinePushWeakPitchEnd * t + sTrmpLinePushWeakPitchMid * (0x1000 - t)) >>
+                        12);
             } else {
                 arr[i]->f18 = 1;
                 D3D_PlaySePannedLoop(0x1ae, *(int *)(c + 8),
-                    (data_ov006_0213b308 * t + data_ov006_0213b2f4 * (0x1000 - t)) >> 12);
+                                     (sTrmpLinePushStrongPitchEnd * t +
+                                      sTrmpLinePushStrongPitchMid * (0x1000 - t)) >>
+                                         12);
             }
 
             {
@@ -1919,10 +1936,10 @@ extern void TrmpLine_SetStateSettle(char *p);
 extern void TrmpLine_SetStateFlex(char *p);
 
 extern void *sTrmpJumpers[];
-extern s32 data_ov006_0213b2fc;
-extern s32 data_ov006_0213b300;
-extern s32 data_ov006_0213b2f8;
-extern s32 data_ov006_0213b304;
+extern s32 sTrmpLineWeakPitchEnd;
+extern s32 sTrmpLineWeakPitchMid;
+extern s32 sTrmpLineStrongPitchEnd;
+extern s32 sTrmpLineStrongPitchMid;
 }
 
 struct Spare4 { s32 v; ~Spare4() {} };
@@ -2148,12 +2165,16 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
         blendVal = (s32)(((s64)absOff * halfLen + 0x800) >> 12);
         if (blendVal < 0x400000) {
             *(s16 *)((char *)bestObj + 0x18) = 2;
-            D3D_PlaySePannedLoop(0x1B1, *(s32 *)(c + 8),
-                (s32)(data_ov006_0213b2fc * ratio + data_ov006_0213b300 * (0x1000 - ratio)) >> 0xC);
+            D3D_PlaySePannedLoop(
+                0x1B1, *(s32 *)(c + 8),
+                (s32)(sTrmpLineWeakPitchEnd * ratio + sTrmpLineWeakPitchMid * (0x1000 - ratio)) >>
+                    0xC);
         } else {
             *(s16 *)((char *)bestObj + 0x18) = 1;
             D3D_PlaySePannedLoop(0x1AE, *(s32 *)(c + 8),
-                (s32)(data_ov006_0213b2f8 * ratio + data_ov006_0213b304 * (0x1000 - ratio)) >> 0xC);
+                                 (s32)(sTrmpLineStrongPitchEnd * ratio +
+                                       sTrmpLineStrongPitchMid * (0x1000 - ratio)) >>
+                                     0xC);
         }
         *(s32 *)((char *)bestObj + 0x4) = TRMPLINE(c)->mNormal.x;
         *(s32 *)((char *)bestObj + 0x8) = TRMPLINE(c)->mNormal.y;
@@ -2245,15 +2266,15 @@ extern "C" void TrmpLine_ClearAll(void) {
 namespace s020d0b2c {
 extern "C" {
 extern unsigned int func_02045a50(const void *src, unsigned int size);
-extern char data_ov006_0213b414[];
+extern char sTrmpLineTex[];
 extern void *sTrmpLineTexAddr;
-extern char data_ov006_0213b3f4[];
+extern char sTrmpLinePltt[];
 extern void *sTrmpLinePlttAddr;
 }
 // @symbol TrmpLine_LoadTextures
 extern "C" void TrmpLine_LoadTextures(void) {
-    sTrmpLineTexAddr = (void *)Model::LoadTextureToVram(data_ov006_0213b414, 0x400);
-    sTrmpLinePlttAddr = (void *)func_02045a50(data_ov006_0213b3f4, 0x20);
+    sTrmpLineTexAddr = (void *)Model::LoadTextureToVram(sTrmpLineTex, 0x400);
+    sTrmpLinePlttAddr = (void *)func_02045a50(sTrmpLinePltt, 0x20);
 }
 }
 

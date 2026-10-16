@@ -303,7 +303,7 @@ extern long long func_0203d5bc(int* p);
    all but two pass an int. The int spelling is kept and those two sites read
    their table entry the same way the other eighty do. */
 extern "C" void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
-extern "C" struct OamAttr *data_ov006_02137684[];
+extern "C" struct OamAttr *sSmartballWingSprites[];
 extern "C" void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii( int sub, struct OamAttr *data, s32 x, s32 y, s32 palette, s32 priority, Fix12i scaleX, Fix12i scaleY, s32 rotation, s32 mode);
 extern int Vec2_Len(Vec2 *v);
 /* Five of this helper's six recorded views spell the first and last arguments
@@ -311,15 +311,15 @@ extern int Vec2_Len(Vec2 *v);
 extern "C" void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern "C" int GetOwnerLanguage(void);
 extern "C" int _ZN4cstd4fdivEii(int a, int b);
-extern OamAttr *data_ov006_021381f0[];
-extern OamAttr *data_ov006_02138260[];
-extern OamAttr *data_ov006_02138180[];
-extern OamAttr *data_ov006_02138110[];
-extern OamAttr *data_ov006_021380a0[];
-extern OamAttr *data_ov006_02137fb8[];
+extern OamAttr *sSmartballLineSpritesItalian[];
+extern OamAttr *sSmartballLineSpritesSpanish[];
+extern OamAttr *sSmartballLineSpritesGerman[];
+extern OamAttr *sSmartballLineSpritesFrench[];
+extern OamAttr *sSmartballLineSprites[];
+extern OamAttr *sSmartballCellSprites[];
 extern "C" s16 data_02082214[];
 extern "C" s32 sSmartballCellOrder[];
-extern OamAttr *data_ov006_0213807c[];
+extern OamAttr *sSmartballCellRowSprites[];
 extern char *_ZN3G2S12GetBG3ScrPtrEv(void);
 /* The two legacy views of this helper disagreed on the destination pointer
    (char * against void *). void * is the reconciliation that accepts every
@@ -329,17 +329,17 @@ extern char *_ZN3G2S12GetBG3ScrPtrEv(void);
    not a change of contract. */
 extern void MultiStore16(u16 val, void *dst, int nbytes);
 extern "C" void func_02012718(int a, int b);
-extern struct W9 data_ov006_0213eed0;
+extern struct W9 sSmartballCellStartOrder;
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
-extern "C" void *data_ov006_021379dc;
-extern "C" void *data_ov006_021379e8;
-extern "C" void *data_ov006_02137a00;
-extern "C" void *data_ov006_021379f4;
+extern "C" void *sSmartballSlotFrameSprite;
+extern "C" void *sSmartballSlotReelEndSprite;
+extern "C" void *sSmartballSlotReelLowerSprite;
+extern "C" void *sSmartballSlotReelUpperSprite;
 extern "C" void Vec2_Sub(int *o, int *a, int *b);
-extern OamAttr *data_ov006_0213ec04[];
-extern OamAttr *data_ov006_02138318[];
+extern OamAttr *sSmartballDokanSprites[];
+extern OamAttr *sSmartballAnaSprites[];
 extern int func_020126e8(int a);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 extern int func_0203d570(V2 *a, V2 *b);
@@ -348,8 +348,8 @@ extern void func_0203d630(V2 *p, int scale);
 extern void func_0203d480(V2 *out, V2 *in);
 extern "C" int func_0203d524(V2 *a, V2 *b);
 extern int func_0203d4d0(void* p, int* a, int* b);
-extern OamAttr *data_ov006_021387a4[];
-extern OamAttr *data_ov006_02138364[];
+extern OamAttr *sSmartballSparkSpritesAlt[];
+extern OamAttr *sSmartballSparkSprites[];
 extern void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 extern void Mg_PlayJingle(void* c);
 extern "C" int Mg_GetSubmittedScore(void);
@@ -367,23 +367,23 @@ extern void __cxa_vec_ctor(void *p, int a, int b, void *cb1, void *cb2);
 extern void *_Znwj(u32 size);
 extern void SetSubBg0Offset(int x, int y);
 extern void func_0203d738(void);
-extern int data_ov006_02142c40[];
-extern int data_ov006_0213ef8c[];
-extern int data_ov006_0213efb8[];
-extern int data_ov006_0213efe4[];
-extern int data_ov006_0213f010[];
-extern int data_ov006_0213f03c[];
-extern int data_ov006_0213f068[];
-extern int data_ov006_0213f090[];
-extern int data_ov006_0213f0c0[];
-extern int data_ov006_0213f0f0[];
-extern int data_ov006_0213f120[];
-extern int data_ov006_0213f150[];
-extern int data_ov006_0213f17c[];
-extern int data_ov006_0213f1a8[];
-extern int data_ov006_0213f1d8[];
-extern int data_ov006_0213f208[];
-extern int data_ov006_0213f234[];
+extern int sSmartballPathBuf[];
+extern int sSmartballLayoutNcgFmtSpanish[];
+extern int sSmartballLayoutNcgFmtItalian[];
+extern int sSmartballLayoutNcgFmtGerman[];
+extern int sSmartballLayoutNcgFmtFrench[];
+extern int sSmartballLayoutNcgFmtE[];
+extern int sSmartballLayoutNcgFmt[];
+extern int sSmartballBg1NscFmt[];
+extern int sSmartballBg2NscFmt[];
+extern int sSmartballLay0Bg1FrameNscPath[];
+extern int sSmartballLay0Bg2FrameNscPath[];
+extern int sSmartballLay0Bg1NscPath[];
+extern int sSmartballLay0Bg2NscPath[];
+extern int sSmartballLay1Bg1FrameNscPath[];
+extern int sSmartballLay1Bg2FrameNscPath[];
+extern int sSmartballLay1Bg1NscPath[];
+extern int sSmartballLay1Bg2NscPath[];
 void Mg_DrawNumber(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
 int GetGameLanguage(void);
 int Mg_GetTopRecord(void);
@@ -391,16 +391,16 @@ void Mg_DrawTopRightCounter(int a0, int a1);
 int Mg_DrawTopLeftCounter(void *self);
 void Mg_DrawBlinkSprite(void *c, int a1, int a2);
 extern OamAttr *data_ov006_02138ae0[];
-extern char *data_ov006_0213ecb8[];
-extern int data_ov006_0212edfc[];
+extern char *sSmartballTextSpritesByLanguage[];
+extern int sSmartballCellScores[];
 extern OamAttr *data_ov006_02137a78[];
 extern OamAttr *data_ov006_02137a6c[];
-extern OamAttr *data_ov006_02138bd0[];
-extern OamAttr *data_ov006_02138bf4[];
+extern OamAttr *sSmartballTimerSprite[];
+extern OamAttr *sSmartballTimerSpriteAlt[];
 extern OamAttr *sSmartballMarkerSprites[];
 extern OamAttr *data_ov006_02137a60[];
-extern OamAttr *data_ov006_02138a40[];
-extern OamAttr *data_ov006_02138a88[];
+extern OamAttr *sSmartballSideSprites[];
+extern OamAttr *sSmartballSideSpritesAlt[];
 void FreeGfxSlotsById(int a);
 unsigned int func_02012790(unsigned int a);
 extern unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
@@ -419,32 +419,32 @@ void *_ZN3G2S13GetBG0CharPtrEv(void);
 void *_ZN2G213GetBG2CharPtrEv(void);
 void *_ZN3G2S13GetBG2CharPtrEv(void);
 void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, u16 a, u16 b, u16 c, u16 d);
-extern void *data_ov006_0213f260;
-extern void *data_ov006_0213f280;
-extern void *data_ov006_0213f2a0;
-extern void *data_ov006_0213f2bc;
-extern void *data_ov006_0213f2ec;
-extern void *data_ov006_0213f31c;
-extern void *data_ov006_0213f348;
-extern void *data_ov006_0213f374;
-extern void *data_ov006_0213f3a4;
-extern void *data_ov006_0213f3d4;
-extern void *data_ov006_0213f400;
-extern void *data_ov006_0213f42c;
-extern void *data_ov006_0213f458;
-extern void *data_ov006_0213f484;
-extern void *data_ov006_0213f4b0;
-extern void *data_ov006_0213f4dc;
-extern OamAttr *data_ov006_021382e0[];
-extern OamAttr *data_ov006_021382f8[];
-extern OamAttr *data_ov006_02137a9c[];
-extern OamAttr *data_ov006_02138a08[];
-extern OamAttr *data_ov006_0213765c[];
-extern OamAttr *data_ov006_02137674[];
-extern OamAttr *data_ov006_02138a20[];
-extern OamAttr *data_ov006_02138a38[];
-extern OamAttr *data_ov006_02137630[];
-extern OamAttr *data_ov006_02137994[];
+extern void *sSmartballResultBgNcgPath;
+extern void *sSmartballResultBgNscPath;
+extern void *sSmartballResultNclPath;
+extern void *sSmartballLay0Bg1FrameNcgPath;
+extern void *sSmartballLay0Bg2FrameNcgPath;
+extern void *sSmartballLay0Bg1NcgPath;
+extern void *sSmartballLay0Bg2NcgPath;
+extern void *sSmartballLay1Bg1FrameNcgPath;
+extern void *sSmartballLay1Bg2FrameNcgPath;
+extern void *sSmartballLay1Bg1NcgPath;
+extern void *sSmartballLay1Bg2NcgPath;
+extern void *sSmartballLay0Bg1NclPath;
+extern void *sSmartballLay0Bg2NclPath;
+extern void *sSmartballLay1Bg1NclPath;
+extern void *sSmartballLay1Bg2NclPath;
+extern void *sSmartballNclPath;
+extern OamAttr *sSmartballBallSprites[];
+extern OamAttr *sSmartballBallSpritesAlt[];
+extern OamAttr *sSmartballPushSwitchSprites[];
+extern OamAttr *sSmartballPropellerSprites[];
+extern OamAttr *sSmartballKinokoSprites[];
+extern OamAttr *sSmartballKinokoTurnSprites[];
+extern OamAttr *sSmartballSpringSprites[];
+extern OamAttr *sSmartballSpringSpritesAlt[];
+extern OamAttr *sSmartballPakkunSprites[];
+extern OamAttr *sSmartballWingBodySprites[];
 /* The Render shard read the 0x5998 field as a void * and this one reads it as an
    int; the next line down in that same function already reads it through I().
    The int view is kept and the one call site now uses I() as well: the same
@@ -493,7 +493,7 @@ extern "C" {
 extern char*_ZN3G2S13GetBG3CharPtrEv(void);
 extern int sMgResultsBannerY;
 extern int sMgResultsBannerX;
-extern int data_ov006_0213eccc[];
+extern int sSmartballOptionNcgByLanguage[];
 extern int func_02054d88(void);
 extern void SetSubBg1Offset(int, int);
 extern void Mg_RestoreMusic(void);
@@ -680,31 +680,22 @@ int cMgSmartball_wing_c::HitTest(int *p) {
 void cMgSmartball_wing_c::Update()
 {
     if (mTriggerCount <= 1) {
-        Mg_RenderSpriteBoth(data_ov006_02137994[0],
-            mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        Mg_RenderSpriteBoth(data_ov006_02137994[1],
-            mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+        Mg_RenderSpriteBoth(sSmartballWingBodySprites[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+        Mg_RenderSpriteBoth(sSmartballWingBodySprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5,
+                            -1, 2);
     }
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        0, data_ov006_02137684[0],
-        (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x118,
-        -1, 1, 0x1000, 0x1000,
-        (unsigned short)(short)(-0x4000 - *(short *)((char *)this + 0x32)), -1);
+        0, sSmartballWingSprites[0], (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x118, -1, 1,
+        0x1000, 0x1000, (unsigned short)(short)(-0x4000 - *(short *)((char *)this + 0x32)), -1);
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        0, data_ov006_02137684[0],
-        (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x118,
-        -1, 1, 0x1000, 0x1000,
-        (unsigned short)(short)(*(short *)((char *)this + 0x32) - 0x4000), -1);
+        0, sSmartballWingSprites[0], (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x118, -1, 1,
+        0x1000, 0x1000, (unsigned short)(short)(*(short *)((char *)this + 0x32) - 0x4000), -1);
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        0, data_ov006_02137684[1],
-        (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x11d,
-        -1, 2, 0x1000, 0x1000,
-        (unsigned short)(short)(-0x4000 - *(short *)((char *)this + 0x32)), -1);
+        0, sSmartballWingSprites[1], (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x11d, -1, 2,
+        0x1000, 0x1000, (unsigned short)(short)(-0x4000 - *(short *)((char *)this + 0x32)), -1);
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        0, data_ov006_02137684[1],
-        (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x11d,
-        -1, 2, 0x1000, 0x1000,
-        (unsigned short)(short)(*(short *)((char *)this + 0x32) - 0x4000), -1);
+        0, sSmartballWingSprites[1], (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x11d, -1, 2,
+        0x1000, 0x1000, (unsigned short)(short)(*(short *)((char *)this + 0x32) - 0x4000), -1);
 }
 
 // @symbol _ZN19cMgSmartball_wing_c12SaveSnapshotEv
@@ -821,12 +812,10 @@ int cMgSmartball_pushswitch_c::CheckBall(int *p) {
  * frame beneath it. */
 void cMgSmartball_pushswitch_c::Update()
 {
-    RenderOamBothScreens(data_ov006_02137a9c[mTriggered], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1,
-                         0);
-    RenderOamBothScreens(data_ov006_02137a9c[2],
-                        mCurrent0 >> 12,
-                        (mCurrent1 >> 12) + 5,
-                        -1, 2, 0);
+    RenderOamBothScreens(sSmartballPushSwitchSprites[mTriggered], mCurrent0 >> 12, mCurrent1 >> 12,
+                         -1, 1, 0);
+    RenderOamBothScreens(sSmartballPushSwitchSprites[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1,
+                         2, 0);
 }
 
 // @symbol _ZN25cMgSmartball_pushswitch_c12SaveSnapshotEv
@@ -925,15 +914,20 @@ void cMgSmartball_board_c::Update()
             case 1:
             case 2:
                 if (GetOwnerLanguage() == 5)
-                    Mg_RenderSpriteBoth(data_ov006_02138260[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesSpanish[0],
+                                        (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    Mg_RenderSpriteBoth(data_ov006_021381f0[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesItalian[0],
+                                        (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    Mg_RenderSpriteBoth(data_ov006_02138180[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesGerman[0],
+                                        (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    Mg_RenderSpriteBoth(data_ov006_02138110[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesFrench[0],
+                                        (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 else
-                    Mg_RenderSpriteBoth(data_ov006_021380a0[0], (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSprites[0],
+                                        (i - 1) * 0x18 + (mCurrent0 >> 12), mCurrent1 >> 12, -1, 1);
                 mCellHighlight[i] = 1;
                 mCellHighlight[i + 3] = 1;
                 mCellHighlight[i + 6] = 1;
@@ -942,45 +936,60 @@ void cMgSmartball_board_c::Update()
             case 4:
             case 5:
                 if (GetOwnerLanguage() == 5)
-                    Mg_RenderSpriteBoth(data_ov006_02138260[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesSpanish[1], mCurrent0 >> 12,
+                                        (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    Mg_RenderSpriteBoth(data_ov006_021381f0[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesItalian[1], mCurrent0 >> 12,
+                                        (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    Mg_RenderSpriteBoth(data_ov006_02138180[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesGerman[1], mCurrent0 >> 12,
+                                        (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    Mg_RenderSpriteBoth(data_ov006_02138110[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesFrench[1], mCurrent0 >> 12,
+                                        (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 else
-                    Mg_RenderSpriteBoth(data_ov006_021380a0[1], mCurrent0 >> 12, (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSprites[1], mCurrent0 >> 12,
+                                        (i - 4) * 0x18 + (mCurrent1 >> 12), -1, 1);
                 mCellHighlight[(i - 3) * 3] = 1;
                 mCellHighlight[(i - 3) * 3 + 1] = 1;
                 mCellHighlight[(i - 3) * 3 + 2] = 1;
                 break;
             case 6:
                 if (GetOwnerLanguage() == 5)
-                    Mg_RenderSpriteBoth(data_ov006_02138260[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesSpanish[2], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    Mg_RenderSpriteBoth(data_ov006_021381f0[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesItalian[2], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    Mg_RenderSpriteBoth(data_ov006_02138180[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesGerman[2], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    Mg_RenderSpriteBoth(data_ov006_02138110[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesFrench[2], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else
-                    Mg_RenderSpriteBoth(data_ov006_021380a0[2], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSprites[2], mCurrent0 >> 12, mCurrent1 >> 12,
+                                        -1, 1);
                 mCellHighlight[0] = 1;
                 mCellHighlight[4] = 1;
                 mCellHighlight[8] = 1;
                 break;
             case 7:
                 if (GetOwnerLanguage() == 5)
-                    Mg_RenderSpriteBoth(data_ov006_02138260[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesSpanish[3], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 4)
-                    Mg_RenderSpriteBoth(data_ov006_021381f0[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesItalian[3], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 3)
-                    Mg_RenderSpriteBoth(data_ov006_02138180[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesGerman[3], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else if (GetOwnerLanguage() == 2)
-                    Mg_RenderSpriteBoth(data_ov006_02138110[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSpritesFrench[3], mCurrent0 >> 12,
+                                        mCurrent1 >> 12, -1, 1);
                 else
-                    Mg_RenderSpriteBoth(data_ov006_021380a0[3], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+                    Mg_RenderSpriteBoth(sSmartballLineSprites[3], mCurrent0 >> 12, mCurrent1 >> 12,
+                                        -1, 1);
                 mCellHighlight[2] = 1;
                 mCellHighlight[4] = 1;
                 mCellHighlight[6] = 1;
@@ -1001,9 +1010,11 @@ void cMgSmartball_board_c::Update()
             idx = j + 2;
 
         if (ang == 0 || ang == 0x8000) {
-            Mg_RenderSpriteBoth(data_ov006_02137fb8[idx], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
+            Mg_RenderSpriteBoth(sSmartballCellSprites[idx], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12),
+                                (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
         } else if ((ang >= 0x3c00 && ang <= 0x4400) || (ang >= -0x3c00 && ang <= -0x4400)) {
-            Mg_RenderSpriteBoth(data_ov006_02137fb8[1], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
+            Mg_RenderSpriteBoth(sSmartballCellSprites[1], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12),
+                                (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1);
         } else {
             s32 vec[4];
 
@@ -1014,14 +1025,16 @@ void cMgSmartball_board_c::Update()
             vec[1] = 0;
             vec[2] = 0;
             vec[3] = 0x1000;
-            RenderOamBothScreens(data_ov006_02137fb8[idx], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1, vec);
-            RenderOamBothScreens(data_ov006_02137fb8[0], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12), (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1, vec);
+            RenderOamBothScreens(sSmartballCellSprites[idx], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12),
+                                 (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1, vec);
+            RenderOamBothScreens(sSmartballCellSprites[0], (j % 3 - 1) * 0x18 + (mCurrent0 >> 12),
+                                 (j / 3 - 1) * 0x18 + (mCurrent1 >> 12), -1, 1, vec);
         }
     }
 
     for (k = 0; k < 9; k++) {
-        Mg_RenderSpriteBoth(data_ov006_0213807c[sSmartballCellOrder[k]], k * 0x18 + 0x10, 0x78, -1,
-                            1);
+        Mg_RenderSpriteBoth(sSmartballCellRowSprites[sSmartballCellOrder[k]], k * 0x18 + 0x10, 0x78,
+                            -1, 1);
     }
 }
 
@@ -1281,7 +1294,7 @@ void cMgSmartball_board_c::ClaimCell(int i)
         return;
     m = 0;
     if (count > 0) {
-        tmp = data_ov006_0212edfc[0];
+        tmp = sSmartballCellScores[0];
         do {
             d[0] = c->f8;
             d[1] = c->fc;
@@ -1472,7 +1485,7 @@ void cMgSmartball_board_c::RestoreInitial()
 void cMgSmartball_board_c::ShuffleCells(){
   struct W9 tmp;
   int i;
-  tmp = data_ov006_0213eed0;
+  tmp = sSmartballCellStartOrder;
   for (i = 0; i < 9; i++) {
       sSmartballCellOrder[i] = tmp.w[i] - 1;
   }
@@ -1688,7 +1701,8 @@ void cMgSmartball_slot_c::Update()
     for (i = 0, x = 0; i < 3; i++, x += 0x18) {
         if (1) {
         }
-        Mg_RenderSpriteBoth(data_ov006_021379dc, inline_fn(mCurrent0 >> 12, x - 0x18), mCurrent1 >> 12, -1, 2);
+        Mg_RenderSpriteBoth(sSmartballSlotFrameSprite, inline_fn(mCurrent0 >> 12, x - 0x18),
+                            mCurrent1 >> 12, -1, 2);
     }
 
     i = 0;
@@ -1696,10 +1710,18 @@ void cMgSmartball_slot_c::Update()
 second_loop:
     {
         xo = (x - 0x18) & 0xFFFFFFFFFFFFFFFF;
-        Mg_RenderSpriteBoth(data_ov006_021379e8, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12), -1, 3);
-        Mg_RenderSpriteBoth(data_ov006_02137a00, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x10, -1, 3);
-        Mg_RenderSpriteBoth(data_ov006_021379f4, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x20, -1, 3);
-        Mg_RenderSpriteBoth(data_ov006_021379e8, inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo), inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x30, -1, 3);
+        Mg_RenderSpriteBoth(sSmartballSlotReelEndSprite,
+                            inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo),
+                            inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12), -1, 3);
+        Mg_RenderSpriteBoth(sSmartballSlotReelLowerSprite,
+                            inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo),
+                            inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x10, -1, 3);
+        Mg_RenderSpriteBoth(sSmartballSlotReelUpperSprite,
+                            inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo),
+                            inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x20, -1, 3);
+        Mg_RenderSpriteBoth(sSmartballSlotReelEndSprite,
+                            inline_fn(inline_fn(mCurrent0 >> 12, mReelOffset[i].x >> 12), xo),
+                            inline_fn(mCurrent1 >> 12, mReelOffset[i].y >> 12) - 0x30, -1, 3);
         x += 0x18;
         i++;
         if (i < 3)
@@ -1887,15 +1909,21 @@ void cMgSmartball_pakkun_c::Update()
             vec._01 = a;
             vec._10 = -a;
             vec._11 = b;
-            RenderOamBothScreens(data_ov006_02137630[idx], mCurrent0 >> 12, mCurrent1 >> 12, -1, 0, &vec);
-            RenderOamBothScreens(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2, &vec);
+            RenderOamBothScreens(sSmartballPakkunSprites[idx], mCurrent0 >> 12, mCurrent1 >> 12, -1,
+                                 0, &vec);
+            RenderOamBothScreens(sSmartballPakkunSprites[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5,
+                                 -1, 2, &vec);
         } else {
             if (mTriggered != 0) {
-                Mg_RenderSpriteBoth(data_ov006_02137630[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 0);
-                Mg_RenderSpriteBoth(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+                Mg_RenderSpriteBoth(sSmartballPakkunSprites[0], mCurrent0 >> 12, mCurrent1 >> 12,
+                                    -1, 0);
+                Mg_RenderSpriteBoth(sSmartballPakkunSprites[2], mCurrent0 >> 12,
+                                    (mCurrent1 >> 12) + 5, -1, 2);
             } else {
-                Mg_RenderSpriteBoth(data_ov006_02137630[1], mCurrent0 >> 12, mCurrent1 >> 12, -1, 0);
-                Mg_RenderSpriteBoth(data_ov006_02137630[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+                Mg_RenderSpriteBoth(sSmartballPakkunSprites[1], mCurrent0 >> 12, mCurrent1 >> 12,
+                                    -1, 0);
+                Mg_RenderSpriteBoth(sSmartballPakkunSprites[2], mCurrent0 >> 12,
+                                    (mCurrent1 >> 12) + 5, -1, 2);
             }
         }
     }
@@ -2008,11 +2036,15 @@ void cMgSmartball_dokan_c::Update()
     int flag = 0;
     if (*(int *)((char *)mpManager + 0x4660))
         flag = 1;
-    Mg_RenderSpriteBoth(data_ov006_0213ec04[0], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x40, -1, flag);
-    Mg_RenderSpriteBoth(data_ov006_0213ec04[1], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x30, -1, flag);
-    Mg_RenderSpriteBoth(data_ov006_0213ec04[1], mCurrent0 >> 12, mCurrent1 >> 12, -1, flag);
-    Mg_RenderSpriteBoth(data_ov006_0213ec04[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x10, -1, flag);
-    Mg_RenderSpriteBoth(data_ov006_0213ec04[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x20, -1, flag);
+    Mg_RenderSpriteBoth(sSmartballDokanSprites[0], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x40, -1,
+                        flag);
+    Mg_RenderSpriteBoth(sSmartballDokanSprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) - 0x30, -1,
+                        flag);
+    Mg_RenderSpriteBoth(sSmartballDokanSprites[1], mCurrent0 >> 12, mCurrent1 >> 12, -1, flag);
+    Mg_RenderSpriteBoth(sSmartballDokanSprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x10, -1,
+                        flag);
+    Mg_RenderSpriteBoth(sSmartballDokanSprites[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x20, -1,
+                        flag);
 }
 
 // @symbol _ZN20cMgSmartball_dokan_c12SaveSnapshotEv
@@ -2199,8 +2231,10 @@ void cMgSmartball_propeller_c::Update()
     vec[1] = a;
     vec[2] = -a;
 
-    RenderOamBothScreens(data_ov006_02138a08[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1, vec);
-    RenderOamBothScreens(data_ov006_02138a08[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2, vec);
+    RenderOamBothScreens(sSmartballPropellerSprites[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1,
+                         vec);
+    RenderOamBothScreens(sSmartballPropellerSprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1,
+                         2, vec);
 }
 
 // @symbol _ZN24cMgSmartball_propeller_c12SaveSnapshotEv
@@ -2283,11 +2317,13 @@ int cMgSmartball_propeller_c_Construct(char* c, int b, int d, int* s){
 void cMgSmartball_spring_c::Update()
 {
     if ((*(int *)((char *)mpManager + 8) & 0xff) == 0) {
-        Mg_RenderSpriteBoth(data_ov006_02138a20[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        Mg_RenderSpriteBoth(data_ov006_02138a20[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+        Mg_RenderSpriteBoth(sSmartballSpringSprites[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+        Mg_RenderSpriteBoth(sSmartballSpringSprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1,
+                            2);
     } else {
-        Mg_RenderSpriteBoth(data_ov006_02138a38[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        Mg_RenderSpriteBoth(data_ov006_02138a38[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+        Mg_RenderSpriteBoth(sSmartballSpringSpritesAlt[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+        Mg_RenderSpriteBoth(sSmartballSpringSpritesAlt[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5,
+                            -1, 2);
     }
 }
 
@@ -2440,10 +2476,11 @@ void cMgSmartball_ana_c::Update()
         else if (v < 0x28) idx = 1;
         else idx = 0;
         if (idx >= 1) {
-            Mg_RenderSpriteBoth(data_ov006_02138318[idx], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 2);
+            Mg_RenderSpriteBoth(sSmartballAnaSprites[idx], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1,
+                                2);
         }
     }
-    Mg_RenderSpriteBoth(data_ov006_02138318[0], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 3);
+    Mg_RenderSpriteBoth(sSmartballAnaSprites[0], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 3);
 }
 
 // @symbol _ZN18cMgSmartball_ana_c12SaveSnapshotEv
@@ -2508,8 +2545,9 @@ void cMgSmartball_kinoko_c::Update()
 {
     switch (mVariant) {
     case 0:
-        Mg_RenderSpriteBoth(data_ov006_0213765c[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
-        Mg_RenderSpriteBoth(data_ov006_0213765c[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2);
+        Mg_RenderSpriteBoth(sSmartballKinokoSprites[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
+        Mg_RenderSpriteBoth(sSmartballKinokoSprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1,
+                            2);
         break;
     case 1:
         {
@@ -2524,8 +2562,10 @@ void cMgSmartball_kinoko_c::Update()
             vec[1] = a;
             vec[2] = -a;
             vec[3] = b;
-            RenderOamBothScreens(data_ov006_02137674[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1, vec);
-            RenderOamBothScreens(data_ov006_02137674[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2, vec);
+            RenderOamBothScreens(sSmartballKinokoTurnSprites[0], mCurrent0 >> 12, mCurrent1 >> 12,
+                                 -1, 1, vec);
+            RenderOamBothScreens(sSmartballKinokoTurnSprites[1], mCurrent0 >> 12,
+                                 (mCurrent1 >> 12) + 5, -1, 2, vec);
         }
         break;
     }
@@ -3716,9 +3756,11 @@ void cMgSmartball_ball_c::DrawMarker()
     }
 
     if ((c->mgr->flags & 0xff) == 0)
-        RenderOamBothScreens(data_ov006_021382e0[1], (c->x + 0x800) >> 12, ((c->y + 0x800) >> 12) + 5, -1, 2, 0);
+        RenderOamBothScreens(sSmartballBallSprites[1], (c->x + 0x800) >> 12,
+                             ((c->y + 0x800) >> 12) + 5, -1, 2, 0);
     else
-        RenderOamBothScreens(data_ov006_021382f8[1], (c->x + 0x800) >> 12, ((c->y + 0x800) >> 12) + 5, -1, 2, 0);
+        RenderOamBothScreens(sSmartballBallSpritesAlt[1], (c->x + 0x800) >> 12,
+                             ((c->y + 0x800) >> 12) + 5, -1, 2, 0);
 }
 
 // @symbol _ZN19cMgSmartball_ball_c6UpdateEv
@@ -3738,11 +3780,12 @@ void cMgSmartball_ball_c::Update()
     if ((*(int *)((char *)mpManager + 8) & 0xff) == 0) {
         int x = mCurrent0;
         int y = mCurrent1;
-        Mg_RenderSpriteBoth(data_ov006_021382e0[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
+        Mg_RenderSpriteBoth(sSmartballBallSprites[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
     } else {
         int x = mCurrent0;
         int y = mCurrent1;
-        Mg_RenderSpriteBoth(data_ov006_021382f8[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
+        Mg_RenderSpriteBoth(sSmartballBallSpritesAlt[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1,
+                            r2);
     }
 }
 
@@ -4215,16 +4258,14 @@ void dScMgSmartball_c::RenderSparks()
         int idx = *(int*)(p + 0x5000 + 0x9b4) / 4 + 8;
         int b = *(unsigned char*)(p + 0x5000 + 0x9bd);
         if (b != 0) idx += 4;
-        Mg_RenderSpriteBoth(data_ov006_02138364[idx],
-                            *(int*)(p + 0x5000 + 0x9a4) >> 12,
-                            *(int*)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
+        Mg_RenderSpriteBoth(sSmartballSparkSprites[idx], *(int *)(p + 0x5000 + 0x9a4) >> 12,
+                            *(int *)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
       } else {
         int idx = *(int*)(p + 0x5000 + 0x9b4) / 4 + 4;
         int b = *(unsigned char*)(p + 0x5000 + 0x9bd);
         if (b != 0) idx += 4;
-        Mg_RenderSpriteBoth(data_ov006_021387a4[idx],
-                            *(int*)(p + 0x5000 + 0x9a4) >> 12,
-                            *(int*)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
+        Mg_RenderSpriteBoth(sSmartballSparkSpritesAlt[idx], *(int *)(p + 0x5000 + 0x9a4) >> 12,
+                            *(int *)(p + 0x5000 + 0x9a8) >> 12, -1, 0);
       }
     }
     p += 0x24;
@@ -4933,60 +4974,60 @@ void dScMgSmartball_c::SpawnObjects()
     Mg_SetTopScreenYOffset(0x30);
 
     if (GetOwnerLanguage() == 5) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtSpanish, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 4) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtItalian, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 3) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtGerman, (int)self->mLevel & 1);
     } else if (GetOwnerLanguage() == 2) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtFrench, (int)self->mLevel & 1);
     } else if (((int)self->param1 & 0xff) == 0) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmtE, (int)self->mLevel & 1);
     } else {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f068, (int)self->mLevel & 1);
+        func_02057d00(sSmartballPathBuf, sSmartballLayoutNcgFmt, (int)self->mLevel & 1);
     }
     {
-        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, (void *)0x6400000);
         DecompressLZ16(d, (void *)0x6600000);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f090, (int)self->mLevel & 1);
+    func_02057d00(sSmartballPathBuf, sSmartballBg1NscFmt, (int)self->mLevel & 1);
     {
-        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, c + 0x4954);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f0c0, (int)self->mLevel & 1);
+    func_02057d00(sSmartballPathBuf, sSmartballBg2NscFmt, (int)self->mLevel & 1);
     {
-        void *d = Ov004_LoadFileByPath(data_ov006_02142c40);
+        void *d = Ov004_LoadFileByPath(sSmartballPathBuf);
         DecompressLZ16(d, c + 0x5154);
         Ov004_Deallocate(d);
     }
     if (((int)self->param1 & 0xff) == 0) {
-        void *d = Ov004_LoadFileByPath(data_ov006_0213f0f0);
+        void *d = Ov004_LoadFileByPath(sSmartballLay0Bg1FrameNscPath);
         DecompressLZ16(d, _ZN2G212GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = Ov004_LoadFileByPath(data_ov006_0213f120);
+        d = Ov004_LoadFileByPath(sSmartballLay0Bg2FrameNscPath);
         DecompressLZ16(d, _ZN3G2S12GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = Ov004_LoadFileByPath(data_ov006_0213f150);
+        d = Ov004_LoadFileByPath(sSmartballLay0Bg1NscPath);
         DecompressLZ16(d, _ZN2G212GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
-        d = Ov004_LoadFileByPath(data_ov006_0213f17c);
+        d = Ov004_LoadFileByPath(sSmartballLay0Bg2NscPath);
         DecompressLZ16(d, _ZN3G2S12GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
     } else {
-        void *d = Ov004_LoadFileByPath(data_ov006_0213f1a8);
+        void *d = Ov004_LoadFileByPath(sSmartballLay1Bg1FrameNscPath);
         DecompressLZ16(d, _ZN2G212GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = Ov004_LoadFileByPath(data_ov006_0213f1d8);
+        d = Ov004_LoadFileByPath(sSmartballLay1Bg2FrameNscPath);
         DecompressLZ16(d, _ZN3G2S12GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
-        d = Ov004_LoadFileByPath(data_ov006_0213f208);
+        d = Ov004_LoadFileByPath(sSmartballLay1Bg1NscPath);
         DecompressLZ16(d, _ZN2G212GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
-        d = Ov004_LoadFileByPath(data_ov006_0213f234);
+        d = Ov004_LoadFileByPath(sSmartballLay1Bg2NscPath);
         DecompressLZ16(d, _ZN3G2S12GetBG3ScrPtrEv());
         Ov004_Deallocate(d);
     }
@@ -5574,7 +5615,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02138ae0[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x64, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5964), 0, 0, 1, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5964) * 0x64, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5586,10 +5628,11 @@ s32 dScMgSmartball_c::Render()
         for (row = 0; row < 4; row++) {
             if (I(0x5960) >= limit && *(int *)(g + row * 4 + 0x5968) > 0) {
                 Mg_RenderSpriteBoth(data_ov006_02138ae0[row + 1], 0x30, xpos, -1, -1);
-                val = data_ov006_0212edfc[row];
+                val = sSmartballCellScores[row];
                 Mg_DrawNumber(0x80, xpos, val, 0, 0, 1, 0);
                 i = GetGameLanguage();
-                Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+                Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54),
+                                    0x90, xpos, -1, -1);
                 pcnt = (int *)(g + row * 4 + 0x5968);
                 Mg_DrawNumber(0xa0, xpos, *pcnt, 0, 0, 0, 0);
                 Mg_DrawNumber(0xe0, xpos, val * *pcnt, 0, 0, 1, 0);
@@ -5601,10 +5644,11 @@ s32 dScMgSmartball_c::Render()
 
         /* Block D */
         if (I(0x597c) > 0 && I(0x5960) >= col * 0x14) {
-            Mg_RenderSpriteBoth(data_ov006_0213765c[0], 0x30, xpos, -1, -1);
+            Mg_RenderSpriteBoth(sSmartballKinokoSprites[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x12c, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x597c), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x597c) * 0x12c, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5616,7 +5660,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02137a78[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0xbb8, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5984), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5984) * 0xbb8, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5628,7 +5673,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02137a6c[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x7d0, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5980), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5980) * 0x7d0, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5663,7 +5709,8 @@ s32 dScMgSmartball_c::Render()
                 }
                 Mg_DrawNumber(0x80, xpos, mult, 0, 0, 1, 0);
                 i = GetGameLanguage();
-                Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+                Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54),
+                                    0x90, xpos, -1, -1);
                 Mg_DrawNumber(0xa0, xpos, *slot[1], 0, 0, 0, 0);
                 Mg_DrawNumber(0xe0, xpos, mult * *slot[1], 0, 0, 1, 0);
                 xpos += 0x18;
@@ -5677,7 +5724,8 @@ s32 dScMgSmartball_c::Render()
             Mg_RenderSpriteBoth(data_ov006_02138ae0[5], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x2710, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5978), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5978) * 0x2710, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5686,10 +5734,11 @@ s32 dScMgSmartball_c::Render()
 
         /* Block I */
         if (I(0x5994) > 0 && I(0x5960) >= col * 0x14) {
-            Mg_RenderSpriteBoth(data_ov006_021382e0[0], 0x30, xpos, -1, -1);
+            Mg_RenderSpriteBoth(sSmartballBallSprites[0], 0x30, xpos, -1, -1);
             Mg_DrawNumber(0x80, xpos, 0x7d0, 0, 0, 1, 0);
             i = GetGameLanguage();
-            Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54), 0x90, xpos, -1, -1);
+            Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54), 0x90,
+                                xpos, -1, -1);
             Mg_DrawNumber(0xa0, xpos, I(0x5994), 0, 0, 0, 0);
             Mg_DrawNumber(0xe0, xpos, I(0x5994) * 0x7d0, 0, 0, 1, 0);
             xpos += 0x18;
@@ -5699,9 +5748,9 @@ s32 dScMgSmartball_c::Render()
         /* Block J: timer */
         if (I(0x5960) >= col * 0x14) {
             if ((I(8) & 0xff) == 0)
-                Mg_RenderSpriteBoth(data_ov006_02138bd0[0], 0x40, xpos, -1, -1);
+                Mg_RenderSpriteBoth(sSmartballTimerSprite[0], 0x40, xpos, -1, -1);
             else
-                Mg_RenderSpriteBoth(data_ov006_02138bf4[0], 0x40, xpos, -1, -1);
+                Mg_RenderSpriteBoth(sSmartballTimerSpriteAlt[0], 0x40, xpos, -1, -1);
             Mg_DrawNumber(0xe0, xpos, Mg_GetSubmittedScore(), 0, 0, 1, 0);
             col++;
             if (I(0x5960) < 0x118)
@@ -5751,7 +5800,7 @@ s32 dScMgSmartball_c::Render()
                         } while (u != 0);
                     }
                     i = GetGameLanguage();
-                    Mg_RenderSpriteBoth((void *)*(int *)(data_ov006_0213ecb8[i] + 0x54),
+                    Mg_RenderSpriteBoth((void *)*(int *)(sSmartballTextSpritesByLanguage[i] + 0x54),
                                         (*px >> 12) + nd * 8 - 8, *py >> 12, -1, -1);
                     nd = 0;
                     u = (unsigned int)*pcnt;
@@ -5799,9 +5848,9 @@ s32 dScMgSmartball_c::Render()
                 flag = 1;
         }
         if ((I(8) & 0xff) == 0)
-            Mg_RenderSpriteBoth(data_ov006_02138a40[flag], 0x18, -0x90, -1, 0);
+            Mg_RenderSpriteBoth(sSmartballSideSprites[flag], 0x18, -0x90, -1, 0);
         else
-            Mg_RenderSpriteBoth(data_ov006_02138a88[flag], 0x18, -0x90, -1, 0);
+            Mg_RenderSpriteBoth(sSmartballSideSpritesAlt[flag], 0x18, -0x90, -1, 0);
     }
 
     /* Block N */
@@ -5816,9 +5865,9 @@ s32 dScMgSmartball_c::Render()
                 flag = 1;
         }
         if ((I(8) & 0xff) == 0)
-            Mg_RenderSpriteBoth(data_ov006_02138a40[flag], 0xe8, -0x90, -1, -1);
+            Mg_RenderSpriteBoth(sSmartballSideSprites[flag], 0xe8, -0x90, -1, -1);
         else
-            Mg_RenderSpriteBoth(data_ov006_02138a88[flag], 0xe8, -0x90, -1, -1);
+            Mg_RenderSpriteBoth(sSmartballSideSpritesAlt[flag], 0xe8, -0x90, -1, -1);
     }
 
     /* Dispatch loops */
@@ -6108,7 +6157,7 @@ int dScMgSmartball_c::InitSubScreenBg()
     SetSubBg1Offset(0, 0);
     data_0209d454[0] &= ~2;
     f = GetGameLanguage();
-    LoadCompressedFileAt(data_ov006_0213eccc[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
+    LoadCompressedFileAt(sSmartballOptionNcgByLanguage[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_OPTION_NSC_BIN, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
@@ -6130,7 +6179,7 @@ int dScMgSmartball_c::InitSubScreenBg()
  *     four bytes. This replaces the u64 cast the first draft used for the
  *     same effect: the plain narrowing conversion emits the same pair,
  *     so no launder is needed here at all.
- *   - the last OAM block reads its old attr2 from data_ov006_02137630[2],
+ *   - the last OAM block reads its old attr2 from sSmartballPakkunSprites[2],
  *     NOT from [2]+1 that it then writes. The ROM does the same, so the
  *     original macro expansion there was fed the wrong pointer.
  *
@@ -6173,17 +6222,17 @@ s32 dScMgSmartball_c::InitResources()
   *((volatile u16 *) 0x4001008) &= ~0x40;
   *((volatile s32 *) 0x4001010) = 0x100;
   *((volatile u16 *) 0x4001008) &= ~3;
-  f = Ov004_LoadFileByPath(&data_ov006_0213f260);
+  f = Ov004_LoadFileByPath(&sSmartballResultBgNcgPath);
   DecompressLZ16(f, _ZN3G2S13GetBG0CharPtrEv());
   Ov004_Deallocate(f);
   {
     volatile u16 v;
     MultiStore16((u16) (v = 0), _ZN3G2S12GetBG0ScrPtrEv(), 0x1000);
   }
-  f = Ov004_LoadFileByPath(&data_ov006_0213f280);
+  f = Ov004_LoadFileByPath(&sSmartballResultBgNscPath);
   DecompressLZ16(f, _ZN3G2S12GetBG0ScrPtrEv());
   Ov004_Deallocate(f);
-  f = Ov004_LoadFileByPath(&data_ov006_0213f2a0);
+  f = Ov004_LoadFileByPath(&sSmartballResultNclPath);
   _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x20);
   _ZN3GXS10LoadBGPlttEPKvjj(((char *) f) + 2, 2, 0x1e);
   Ov004_Deallocate(f);
@@ -6205,60 +6254,60 @@ s32 dScMgSmartball_c::InitResources()
   *((volatile u16 *) 0x400100e) = ((*((volatile u16 *) 0x400100e)) & (~3)) | 2;
   if (((u8) (*((s32 *) (c + 8)))) == 0)
   {
-    f = Ov004_LoadFileByPath(&data_ov006_0213f2bc);
-    DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f2ec);
-    DecompressLZ16(f, _ZN3G2S13GetBG2CharPtrEv());
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f31c);
-    DecompressLZ16(f, (void *) func_02054d88());
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f348);
-    DecompressLZ16(f, _ZN3G2S13GetBG3CharPtrEv());
-    Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay0Bg1FrameNcgPath);
+      DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay0Bg2FrameNcgPath);
+      DecompressLZ16(f, _ZN3G2S13GetBG2CharPtrEv());
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay0Bg1NcgPath);
+      DecompressLZ16(f, (void *)func_02054d88());
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay0Bg2NcgPath);
+      DecompressLZ16(f, _ZN3G2S13GetBG3CharPtrEv());
+      Ov004_Deallocate(f);
   }
   else
   {
-    f = Ov004_LoadFileByPath(&data_ov006_0213f374);
-    DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f3a4);
-    DecompressLZ16(f, _ZN3G2S13GetBG2CharPtrEv());
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f3d4);
-    DecompressLZ16(f, (void *) func_02054d88());
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f400);
-    DecompressLZ16(f, _ZN3G2S13GetBG3CharPtrEv());
-    Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay1Bg1FrameNcgPath);
+      DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay1Bg2FrameNcgPath);
+      DecompressLZ16(f, _ZN3G2S13GetBG2CharPtrEv());
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay1Bg1NcgPath);
+      DecompressLZ16(f, (void *)func_02054d88());
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay1Bg2NcgPath);
+      DecompressLZ16(f, _ZN3G2S13GetBG3CharPtrEv());
+      Ov004_Deallocate(f);
   }
   if (((u8) (*((s32 *) (c + 8)))) == 0)
   {
-    f = Ov004_LoadFileByPath(&data_ov006_0213f42c);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
-    _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f458);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
-    _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
-    Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay0Bg1NclPath);
+      _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
+      _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay0Bg2NclPath);
+      _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
+      _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
+      Ov004_Deallocate(f);
   }
   else
   {
-    f = Ov004_LoadFileByPath(&data_ov006_0213f484);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
-    _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
-    Ov004_Deallocate(f);
-    f = Ov004_LoadFileByPath(&data_ov006_0213f4b0);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
-    _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
-    Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay1Bg1NclPath);
+      _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
+      _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
+      Ov004_Deallocate(f);
+      f = Ov004_LoadFileByPath(&sSmartballLay1Bg2NclPath);
+      _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x1a0);
+      _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
+      Ov004_Deallocate(f);
   }
   data_0209d45c &= ~1;
   data_0209d45c |= 0xc;
   data_0209d454[0] |= 0xd;
-  f = Ov004_LoadFileByPath(&data_ov006_0213f4dc);
+  f = Ov004_LoadFileByPath(&sSmartballNclPath);
   _ZN4CP1527FlushAndInvalidateDataCacheEjj(f, 0x100);
   _ZN2GX11LoadOBJPlttEPKvjj(f, 0, 0x100);
   _ZN3GXS11LoadOBJPlttEPKvjj(f, 0, 0x100);
@@ -6332,122 +6381,124 @@ s32 dScMgSmartball_c::InitResources()
   _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *) 0x4001050, 0, 0x18, 4, 0xa);
   do
   {
-    OamAttr *_p = data_ov006_021382e0[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballBallSprites[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_021382f8[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballBallSpritesAlt[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02137a9c[2];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballPushSwitchSprites[2];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02138a08[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballPropellerSprites[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_0213765c[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballKinokoSprites[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02137674[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballKinokoTurnSprites[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = ((*OamWord(_p)) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02138a20[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballSpringSprites[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02138a38[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballSpringSpritesAlt[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02137630[2];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (_p->attr2 & (~0xf000)) | (_n << 0xc);
+      OamAttr *_p = sSmartballPakkunSprites[2];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (_p->attr2 & (~0xf000)) | (_n << 0xc);
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02137630[2] + 1;
-    u16 _a = data_ov006_02137630[2]->attr2;
-    u32 _n;
-    *OamWord(data_ov006_02137630[2] + 1) = (OamWordVal(OamNext(data_ov006_02137630[2])) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    OamNext(data_ov006_02137630[2])->attr2 = (u16) ((OamNext(data_ov006_02137630[2])->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballPakkunSprites[2] + 1;
+      u16 _a = sSmartballPakkunSprites[2]->attr2;
+      u32 _n;
+      *OamWord(sSmartballPakkunSprites[2] + 1) =
+          (OamWordVal(OamNext(sSmartballPakkunSprites[2])) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      OamNext(sSmartballPakkunSprites[2])->attr2 =
+          (u16)((OamNext(sSmartballPakkunSprites[2])->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02137684[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballWingSprites[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   do
   {
-    OamAttr *_p = data_ov006_02137994[1];
-    u16 _a = _p->attr2;
-    u32 _n;
-    *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
-    _n = (_a & 0xf000) >> 0xc;
-    _p->attr2 = (u16) ((_p->attr2 & (~0xf000)) | (_n << 0xc));
+      OamAttr *_p = sSmartballWingBodySprites[1];
+      u16 _a = _p->attr2;
+      u32 _n;
+      *OamWord(_p) = (OamWordVal(_p) & (~0xc00)) | 0x400;
+      _n = (_a & 0xf000) >> 0xc;
+      _p->attr2 = (u16)((_p->attr2 & (~0xf000)) | (_n << 0xc));
   }
   while (0);
   ((dScMgSmartball_c *)(c))->SpawnObjects();

@@ -40,7 +40,7 @@ struct CupFx {
     s32 vx;           /* +0x08 -- added to x each tick */
     s32 vy;           /* +0x0c -- added to y each tick */
     u8  pad_10[2];    /* +0x10 */
-    s8  frame;        /* +0x12 -- counts down; + row*6 indexes data_ov006_0213c064 */
+    s8 frame;         /* +0x12 -- counts down; + row*6 indexes sCupFxFrameSprites */
     u8  row;          /* +0x13 -- 1 for kind 2; while set, y drops by 6 */
     u8  delay;        /* +0x14 -- DecIfAbove0_Byte, reloaded to 3 */
     u8  active;       /* +0x15 */
@@ -99,8 +99,8 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     s32 mState;           /* 0x5418 */
     s32 mTimer;           /* 0x541c */
     s32 mIds[3];          /* 0x5420 -- which cup sits in each slot */
-    s32 mSwap0;           /* 0x542c -- index into mIds, from data_ov006_0213c0c0 */
-    s32 mSwap1;           /* 0x5430 -- the other index, from data_ov006_0213c0c4 */
+    s32 mSwap0;           /* 0x542c -- index into mIds, from sCupSwapFirst */
+    s32 mSwap1;           /* 0x5430 -- the other index, from sCupSwapSecond */
     s32 mAnim[3];         /* 0x5434 -- index into sCupAnimTable */
     s32 mFrame[3];        /* 0x5440 */
     s32 mTick[3];         /* 0x544c -- counts up to that frame's length */

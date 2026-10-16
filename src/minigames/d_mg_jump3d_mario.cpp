@@ -107,7 +107,7 @@ extern BCA_File **sJump3DAnimTable[];
 /* Tuning words, read as plain ints. */
 extern int sJump3DBounceVy;
 extern int sJump3DRiseVy;
-extern int data_ov006_0213b014;
+extern int sJump3DStartVx;
 extern int sJump3DFallSpeed;
 extern int sJump3DGravityStep;
 extern int sJump3DMoveSpeed;
@@ -160,8 +160,8 @@ extern u16 sJump3DSpinAngle;
 extern void *sMgMainCamera;
 extern void *sMgCurCamera;
 extern OamAttr *data_ov006_02134d1c;
-extern Vector3 data_ov006_0212ddd0;
-extern char data_ov006_0212dddc[];
+extern Vector3 sJump3DMarioScale;
+extern char sJump3DRoundLayouts[];
 
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
 extern u8 gActivePlayerSlot;
@@ -197,7 +197,7 @@ extern "C" void Jump3D_SetTuning(int a)
     sJump3DGravityStep = FX_MUL(a, 0xe0);
     sJump3DRiseVy = FX_MUL(b, 0x4c00);
     sJump3DMoveSpeed = FX_MUL(b, 0x200);
-    data_ov006_0213b014 = FX_MUL(b, 0x180);
+    sJump3DStartVx = FX_MUL(b, 0x180);
     sJump3DBounceVy = FX_MUL(b, 0x5000);
 }
 
@@ -334,12 +334,12 @@ extern "C" void Jump3D_StartRoundLayout(void)
     eoff = 0;
     ooff = 0;
     do {
-        char *e = data_ov006_0212dddc + sJump3DLayout * 0x24 + eoff;
+        char *e = sJump3DRoundLayouts + sJump3DLayout * 0x24 + eoff;
         int word = *(int *)e;
         ((dMgJump3DMario_c *)(sJump3DMarioPool + ooff))->StartWindUp((short)word);
         *(int *)(sJump3DMarioPool + ooff + 0x14) = *(int *)(e + 4);
         {
-            int s = data_ov006_0213b014;
+            int s = sJump3DStartVx;
             int c = *(int *)(e + 8);
             *(int *)(sJump3DMarioPool + ooff + 0x20) = FX_MUL(s, c);
         }
@@ -452,7 +452,7 @@ void dMgJump3DMario_c::Draw()
         OAM::Render(false, data_ov006_02134d1c, screen[0], screen[1], -1, -1, (Matrix2x2 *)&mtx);
     }
 
-    mModelAnim.Render(&data_ov006_0212ddd0);
+    mModelAnim.Render(&sJump3DMarioScale);
 }
 
 // @symbol _ZN16dMgJump3DMario_c6UpdateEv
