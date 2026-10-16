@@ -581,3 +581,8 @@ row says otherwise; "seen" marks a name checked in play.
 **Renamed in pass 4.** `dScMgPachinko2_c::UpdateRoundEnd` puts the next ball in the pen once `mNextBallDelay` runs out; it is not a round-end step, so it is now `UpdateNextBall`.
 
 **Left as `unk_`.** The rest have no read in the reconstructed code (reset-only or written only), or only reads by offset whose meaning is not settled: Flower's `unk_5fcd`, Snowball's `unk_ab7a`, the card dealer's `unk_01a`, and `dMg3DEspModel_c`'s first three words. Most of Memory's, Memory2's and Roulette's are reset-only.
+
+## Pass 4 (2026-10-15)
+
+- **`MgEntry::sceneParam`** (`dScMiniGm_c`, was `unk4`): high. `StartSceneFade(id, sceneParam, 0)` opens the game with it as param1, and its low byte is what `IsAltVariant` tests (seen: the two Snowballs, runtime-checks.md).
+- **Teresa's `FoundNumber` and `VanishPuff`, and Pachinko2's `UpdateNextBall`:** see the Teresa and Pachinko2 entries above.
