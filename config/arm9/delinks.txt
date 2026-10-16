@@ -3141,37 +3141,9 @@ src/runtime/actor/ActorBase.cpp:
     complete
     .text start:0x020433b8 end:0x020440e8
 
-src/_ZN11fLiNdBaPr_cD1Ev.cpp:
+src/fListNode.cpp:
     complete
-    .text start:0x020440e8 end:0x02044104
-
-src/_ZN9fLiNdBa_cD1Ev.cpp:
-    complete
-    .text start:0x02044104 end:0x02044120
-
-src/unnamed/arm9/0204/func_02044120.c:
-    complete
-    .text start:0x02044120 end:0x020441bc
-
-src/unnamed/arm9/0204/func_020441bc.c:
-    complete
-    .text start:0x020441bc end:0x020441cc
-
-src/unnamed/arm9/0204/func_020441cc.cpp:
-    complete
-    .text start:0x020441cc end:0x0204424c
-
-src/func_0204424c.c:
-    complete
-    .text start:0x0204424c end:0x02044284
-
-src/func_02044284.cpp:
-    complete
-    .text start:0x02044284 end:0x02044334
-
-src/func_02044334.cpp:
-    complete
-    .text start:0x02044334 end:0x020443c8
+    .text start:0x020440e8 end:0x020443c8
 
 src/engine/model/ModelComponents.cpp:
     complete
