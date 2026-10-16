@@ -21035,7 +21035,7 @@
     },
     "ov006:0x020ca840": {
       "author": "lunavyqo",
-      "name": "func_ov006_020ca840"
+      "name": "Trmp2Mario_EnterAll"
     },
     "ov006:0x020ca8e0": {
       "author": "tangosdev",
@@ -24799,7 +24799,7 @@
     },
     "ov006:0x020fea70": {
       "author": "lunavyqo",
-      "name": "func_ov006_020fea70"
+      "name": "Pachinko_UpdateNextBall"
     },
     "ov006:0x020feba8": {
       "author": "andrewboudreau",
@@ -26651,7 +26651,7 @@
     },
     "ov006:0x0211cc90": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211cc90Ev"
+      "name": "_ZN13dScMgTeresa_c14BigBoo_SetDoneEv"
     },
     "ov006:0x0211cca8": {
       "author": "tangosdev",

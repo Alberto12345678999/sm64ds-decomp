@@ -261,17 +261,14 @@ void dScMgTeresa_c::BigBoo_ShowResult()
     raw[0x4c1b] = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211cc90Ev
-void dScMgTeresa_c::func_ov006_0211cc90()
-{
+// @symbol _ZN13dScMgTeresa_c14BigBoo_SetDoneEv
+void dScMgTeresa_c::BigBoo_SetDone() {
     unsigned char *base = (unsigned char *)this;
     base += 0x4000;
     if (base[0xbe0] != 0) {
         base[0xbe5] = 1;
     }
 }
-
 
 // @symbol _ZN13dScMgTeresa_c11BigBoo_DrawEv
 /* decl_common.h declares this one with a `void *` parameter. */
@@ -1154,7 +1151,7 @@ void dScMgTeresa_c::CheckRoundEnd()
         *(unsigned char*)(raw + 0x4c1f) = 0;
         *(int*)(raw + 0x4be8) = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
-        func_ov006_0211cc90();
+        BigBoo_SetDone();
         *(unsigned char*)(raw + 0x4c27) = 1;
         return;
     }
@@ -1176,7 +1173,7 @@ void dScMgTeresa_c::CheckRoundEnd()
             return;
         *(int*)(raw + 0x4be8) = 3;
         *(unsigned short*)(raw + 0x4c0c) = 0x60;
-        func_ov006_0211cc90();
+        BigBoo_SetDone();
         *(unsigned char*)(raw + 0x4c1f) = 1;
     }
 }

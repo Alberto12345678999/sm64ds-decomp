@@ -137,7 +137,7 @@ struct dScMgBomroom_c : dScMgBase_c {
     void ClearBombs();
     void Round_SubState3();
     void Round_SubState2();
-    int func_ov006_020d8c88();
+    int AnyBombMarching();
     void Round_SubState1();
     void Round_SubState0();
     void Round_State4();

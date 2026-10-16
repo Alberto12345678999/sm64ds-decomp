@@ -179,7 +179,7 @@ extern int pmf_dScMgTrampoline2_c_StateDone[];
 extern void TrmpItem_UpdateAll(void);
 extern int Trmp2Mario_Hide(void);
 extern union StateValue pmf_dScMgTrampoline2_c_StateWaitExit;
-extern void func_ov006_020ca840(void *c);
+extern void Trmp2Mario_EnterAll(void *c);
 extern struct P2 pmf_dScMgTrampoline2_c_StateResults;
 extern int data_ov006_02140818;
 extern int data_ov006_0213b0f0;
@@ -658,7 +658,7 @@ void dScMgTrampoline2_c::StatePlay()
 
 // @symbol _ZN18dScMgTrampoline2_c12BeginResultsEv
 void dScMgTrampoline2_c::BeginResults() {
-    func_ov006_020ca840((char *)this);
+    Trmp2Mario_EnterAll((char *)this);
     mTimer = 0x5a;
     *(struct P2*)mState = pmf_dScMgTrampoline2_c_StateResults;
 }

@@ -133,7 +133,7 @@ struct dScMgTeresa_c : dScMgBase_c {
 
     /* scene helpers, in ROM order */
     void BigBoo_ShowResult();
-    void func_ov006_0211cc90();
+    void BigBoo_SetDone();
     void BigBoo_Draw();
     void BigBoo_State8(int idx);
     void BigBoo_State7();

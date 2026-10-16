@@ -62,7 +62,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c19func_ov006_0211cc90Ev",
+      "symbol": "_ZN13dScMgTeresa_c14BigBoo_SetDoneEv",
       "address": "0x0211cc90",
       "size": "0x00000018",
       "legacy_source": "src/func_ov006_0211cc90.c",

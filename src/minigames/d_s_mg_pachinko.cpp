@@ -325,7 +325,7 @@ extern void PachinkoBobOmb_State1(dScMgPachinko_c *self, int i);
 extern void PachinkoBobOmb_State2(char *c, int idx);
 extern void PachinkoBobOmb_State3(char *base, int i);
 extern void PachinkoBobOmb_State4(char *p, int idx);
-extern void func_ov006_020fea70(char *o);
+extern void Pachinko_UpdateNextBall(char *o);
 extern void Pachinko_ResetRound(char *self);
 
 }  /* extern "C" */
@@ -2495,9 +2495,8 @@ void PachinkoBobOmb_State4(char *p, int idx) {
     *(p + idx * 0x38 + 0x4000 + 0xf0e) = 0;
 }
 
-// @symbol func_ov006_020fea70
-void func_ov006_020fea70(char *o)
-{
+// @symbol Pachinko_UpdateNextBall
+void Pachinko_UpdateNextBall(char *o) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)o;
     int i;
     char *p;
@@ -2709,7 +2708,7 @@ s32 dScMgPachinko_c::Behavior()
         } else {
             Pachinko_SpawnWave(this);
             Pachinko_CountLaunch(c);
-            func_ov006_020fea70(c);
+            Pachinko_UpdateNextBall(c);
             PachinkoBobOmb_UpdateAll(c);
             PachinkoBall_UpdateAll(c);
             PachinkoTarget_Choose(c);

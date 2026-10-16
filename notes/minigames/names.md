@@ -126,7 +126,7 @@ and only the lines the compiler then rejected were changed.
 
 Left unnamed:
 - `unk_0c2`: only the constructor writes it (1).
-- The top record at +0x4650: still header padding, read raw (see themes.md, theme 1).
+- The top record at +0x4650 was padding here; pass 2 typed it as `mTopRecord` (below).
 
 ## dMgState_c: the shared banner states (renamed 2026-10-14)
 
@@ -318,7 +318,7 @@ The three popup pools over found Boos, seen in play (2026-10-15, runtime-checks.
 
 Medium confidence: `Marker_*` (one sprite) and `StepBg3Scroll`.
 
-Left unnamed: `func_ov006_0211cc90`. Both round endings call it, and it sets +0x4be5 when +0x4be0 is set; its role is unknown.
+`BigBoo_SetDone` (was `func_ov006_0211cc90`, pass 5): sets the big Boo's `done` byte (+0x19 of its record at 0x4bcc) when its `active` byte is set; both round endings call it.
 
 **Bomroom (`dScMgBomroom_c`, Bob-omb sorting).**
 
@@ -335,7 +335,7 @@ Medium confidence:
 - `SlotA_*`, `SlotB_*`, `SlotB2_*` and `Marker_*` keep the header's names for the UI slot records at +0x6260, +0x6280 and +0x62b0. What they show is not observed. `SlotB_Hit` bounces BG0 and `SlotA_Trigger` plays sound 0x1e2, which suggests the pen doors and their lamps.
 - `DrawRemaining`.
 
-Left unnamed: `func_ov006_020d8c88`.
+`AnyBombMarching` (was `func_ov006_020d8c88`, pass 5): whether any active bomb is in state 6, the march to the line-up that the round end assigns; `Round_SubState2` raises BG2 when it is.
 
 **Pachinko (`dScMgPachinko_c`, Bob-omb Squad).** These helpers are C-linkage free
 functions on a `char *` view of the scene, so each name carries the `Pachinko`
@@ -358,7 +358,7 @@ The other subsystems are named by what they draw and update:
 Medium confidence: "Flyer", "Deco" and "Ball" are role words from code alone; the
 actors' looks are not observed.
 
-Left unnamed: `func_ov006_020fea70`.
+`Pachinko_UpdateNextBall` (was `func_ov006_020fea70`, pass 5): counts down `mNextBallDelay`, then pens the next Bob-omb, the same shape as Pachinko2's `UpdateNextBall`.
 
 **Pachinko2 (`dScMgPachinko2_c`, Tamaire).** These are members, named after the
 header's own `mCups` / `mBalls` / `mPaddles`.
@@ -485,7 +485,7 @@ Medium confidence:
 - `Puff_*` (unit020c8a30): three rising, growing sprites spawned at a jumper's x.
 - `Luigi_PrepareScanlines` / `Luigi_PushScanlineRecord`.
 
-Left unnamed (role unknown): `func_ov006_020d8c88` (Bomroom), `func_ov006_0211cc90` (Teresa), `func_ov006_020fea70` (Pachinko).
+The three left unnamed here were named in pass 5: `AnyBombMarching` (Bomroom), `BigBoo_SetDone` (Teresa), `Pachinko_UpdateNextBall` (Pachinko).
 
 **dMgJump3DMario_c (Jump, Jump2).** The member names are checked against the state records each setter stores: `StartWindUp` → `StateWindUp`, `StartRiseOut` → `StateRiseOut`, `StartFallOut` → `StateFallOut`, `HideAndIdle` → `StateIdle`. The pool helpers are `Jump3D_*`. Medium confidence: `Jump3D_DisableInput`/`EnableInput` (a flag the scenes toggle) and `Jump3D_SetLowGravity`/`StopGravity` (tuning words).
 
@@ -505,7 +505,7 @@ High confidence:
 
 Medium confidence: `BounceOffLineA/B` (the reflection off the drawn line), `EnterByKind`, `PickIdleAnim`, `MoveToStart`, `PlaceAtStart`, `CountFinished`, `SetSpawnHeight`.
 
-Left unnamed: `func_ov006_020ca840`.
+`Trmp2Mario_EnterAll` (was `func_ov006_020ca840`, pass 5): sets the launch globals, then runs `EnterByKind` and `UpdateMatrix` on every trampoline Mario.
 
 ## Member-pointer records (`pmf_*`, renamed 2026-10-15)
 

@@ -1335,7 +1335,7 @@ int Trmp2Mario_Hide(void) {
 }
 }
 }
-// ---- func_ov006_020ca840
+// ---- Trmp2Mario_EnterAll
 namespace ns_020ca840 {
 extern "C" {
 extern void Trmp2Mario_EnterByKind(char* o);
@@ -1346,8 +1346,8 @@ extern "C" int data_ov006_021405b0;
 extern "C" int data_ov006_021405ac;
 extern "C" char* data_ov006_02140554;
 
-// @symbol func_ov006_020ca840
-void func_ov006_020ca840(void) {
+// @symbol Trmp2Mario_EnterAll
+void Trmp2Mario_EnterAll(void) {
     int i, n, off;
     n = data_ov006_021405bc;
     data_ov006_021405b0 = 0x100;

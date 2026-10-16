@@ -491,7 +491,7 @@
       "ordinal": 66
     },
     {
-      "symbol": "_ZN14dScMgBomroom_c19func_ov006_020d8c88Ev",
+      "symbol": "_ZN14dScMgBomroom_c15AnyBombMarchingEv",
       "address": "0x020d8c88",
       "size": "0x0000003c",
       "legacy_source": "src/func_ov006_020d8c88.c",

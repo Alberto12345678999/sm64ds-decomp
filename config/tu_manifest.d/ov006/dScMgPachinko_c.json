@@ -524,7 +524,7 @@
       "ordinal": 68
     },
     {
-      "symbol": "func_ov006_020fea70",
+      "symbol": "Pachinko_UpdateNextBall",
       "address": "0x020fea70",
       "size": "0x00000138",
       "legacy_source": "src/func_ov006_020fea70.c",

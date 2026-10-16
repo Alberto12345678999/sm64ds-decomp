@@ -2040,7 +2040,7 @@ void dScMgBomroom_c::Round_SubState2() {
             return;
         mStateTimer = 0;
         mTallyDelay = 0x10;
-        if (func_ov006_020d8c88() != 0) {
+        if (AnyBombMarching() != 0) {
             mBg2State = 1;
             Sound::PlayBank2_2D(0x1dd);
         }
@@ -2076,10 +2076,9 @@ void dScMgBomroom_c::Round_SubState2() {
     }
 }
 
+// @symbol _ZN14dScMgBomroom_c15AnyBombMarchingEv
 
-// @symbol _ZN14dScMgBomroom_c19func_ov006_020d8c88Ev
-
-int dScMgBomroom_c::func_ov006_020d8c88() {
+int dScMgBomroom_c::AnyBombMarching() {
     char * c = (char *)this;
     int i;
     unsigned char (*arr)[0x40];
@@ -2092,7 +2091,6 @@ int dScMgBomroom_c::func_ov006_020d8c88() {
     } while (i < 0x70);
     return 0;
 }
-
 
 // @symbol _ZN14dScMgBomroom_c15Round_SubState1Ev
 #pragma push
