@@ -1616,7 +1616,7 @@ extern "C" int sTrmp2MarioCount;
 extern "C" int sTrmp2MarioTarget;
 extern "C" int sTrmp2Marios;
 extern "C" int sTrmpJumpers[];
-extern "C" int data_ov006_02140968[];
+extern "C" int sTrmp2MarioPtrs[];
 
 // @symbol Trmp2Mario_InitPool
 int Trmp2Mario_InitPool(int base, int n)
@@ -1638,7 +1638,8 @@ int Trmp2Mario_InitPool(int base, int n)
             p = sTrmp2Marios + off;
             if (i < 5)
                 sTrmpJumpers[i] = p;
-            if (i < 5) data_ov006_02140968[i] = p;
+            if (i < 5)
+                sTrmp2MarioPtrs[i] = p;
             off = off + 0xdc;
             n = sTrmp2MarioCount;
             i++;
@@ -1880,8 +1881,8 @@ extern "C" int sTrmpMariosInPlay;
 extern "C" int sTrmpMariosOnLedges;
 extern "C" char *sMgSubCamera;
 extern "C" char *sMgMainCamera;
-extern "C" int sTrmpFxCursor;
-extern "C" Triple data_ov006_02140778[];
+extern "C" int sTrmpGoalSlotCursor;
+extern "C" Triple sTrmpGoalSlots[];
 extern "C" Triple data_020a0ebc;
 
 extern void _Z11UpdateAngleRssis(short *, short, int, short);
@@ -1946,13 +1947,13 @@ void Trmp3DMario_StateGoal(void *self) {
     vb -= 0x20;
     TrmpFx_Spawn(vb << 12, (short)sTrmpComboCount);
 
-    sTrmpFxCursor += 1;
-    if (sTrmpFxCursor >= 6)
-        sTrmpFxCursor = 0;
+    sTrmpGoalSlotCursor += 1;
+    if (sTrmpGoalSlotCursor >= 6)
+        sTrmpGoalSlotCursor = 0;
 
-    i = sTrmpFxCursor;
+    i = sTrmpGoalSlotCursor;
     {
-        Triple *p = &data_ov006_02140778[i];
+        Triple *p = &sTrmpGoalSlots[i];
         *(int *)(c + 0x1c) = p->m0;
         *(int *)(c + 0x20) = p->m4;
         *(int *)(c + 0x24) = p->m8;
@@ -2613,7 +2614,7 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c)
     Trmp3DMario_StateBounce(c);
 }
 }
-// ---- Trmp3DMario_PickIdleAnim
+// ---- Trmp3DMario_JumpOff
 namespace ns_020cc198 {
 extern "C" {
 int RandomIntInternal(int *seed);
@@ -2625,7 +2626,7 @@ void Trmp3DMario_StateBounce(char *c);
 
 extern "C" int sTrmp3DGravityStep;
 extern "C" int data_0209e650;
-extern "C" int data_ov006_02140558;
+extern "C" int sTrmp3DJumpOffSpeed;
 extern "C" int sTrmp3DBounceScale;
 extern "C" void *data_ov006_0213b22c[];
 extern "C" int pmf_Trmp3DMario_StateBounce_2[2];
@@ -2638,15 +2639,14 @@ struct VtObj {
     virtual void m4();
 };
 
-// @symbol Trmp3DMario_PickIdleAnim
-extern "C" void Trmp3DMario_PickIdleAnim(char *c)
-{
+// @symbol Trmp3DMario_JumpOff
+extern "C" void Trmp3DMario_JumpOff(char *c) {
     int *p38;
     int b;
 
     MARIO3D(c)->mGravityStep = sTrmp3DGravityStep;
     MARIO3D(c)->mVel.x =
-        data_ov006_02140558 +
+        sTrmp3DJumpOffSpeed +
         (int)(((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 19);
 
     b = MARIO3D(c)->mPos.x;
@@ -2875,7 +2875,7 @@ namespace ns_020cc63c {
 extern "C" {
 extern "C" int sTrmpRowHeights[];
 extern "C" int sTrmpMariosOnLedges;
-extern void Trmp3DMario_PickIdleAnim(int *c);
+extern void Trmp3DMario_JumpOff(int *c);
 // @symbol Trmp3DMario_StateWalkBack
 void Trmp3DMario_StateWalkBack(int *c) {
     short idx = *(short *)((char *)c + 0x52);
@@ -2883,7 +2883,7 @@ void Trmp3DMario_StateWalkBack(int *c) {
     if (*(int *)((char *)c + 0x1c) >= 0x5bff8)
         return;
     sTrmpMariosOnLedges--;
-    Trmp3DMario_PickIdleAnim(c);
+    Trmp3DMario_JumpOff(c);
 }
 }
 }
@@ -3011,13 +3011,13 @@ void Trmp3DMario_EnterOnLedge(char *p) {
 namespace ns_020cc9b8 {
 extern "C" {
 extern "C" int sTrmpRowHeights;
-extern void Trmp3DMario_PickIdleAnim(int *c);
+extern void Trmp3DMario_JumpOff(int *c);
 // @symbol Trmp3DMario_StateWalkIn
 void Trmp3DMario_StateWalkIn(int *c) {
     *(int *)((char *)c + 0x20) = sTrmpRowHeights;
     if (*(int *)((char *)c + 0x1c) <= -0x5c008)
         return;
-    Trmp3DMario_PickIdleAnim(c);
+    Trmp3DMario_JumpOff(c);
 }
 }
 }
@@ -3455,7 +3455,7 @@ extern void Puff_UpdateAll(void);
 extern "C" int sTrmp3DMarioCount;
 extern "C" char *sTrmp3DMarios;
 extern "C" int sTrmpMariosOnLedges;
-extern "C" int data_ov006_02142f60;
+extern "C" int sTrmpAnyOnLedge;
 
 // @symbol Trmp3DMario_UpdateAll
 void Trmp3DMario_UpdateAll(void)
@@ -3464,9 +3464,9 @@ void Trmp3DMario_UpdateAll(void)
     for (i = 0; i < sTrmp3DMarioCount; i++)
         Trmp3DMario_Update(sTrmp3DMarios + i * 0xd0);
     if (sTrmpMariosOnLedges != 0)
-        data_ov006_02142f60 = 1;
+        sTrmpAnyOnLedge = 1;
     else
-        data_ov006_02142f60 = 0;
+        sTrmpAnyOnLedge = 0;
     Puff_UpdateAll();
 }
 }
@@ -3511,7 +3511,7 @@ extern "C" {
 extern int func_020531a4(int a);
 extern "C" int sTrmp3DFallSpeed;
 extern "C" int sTrmp3DGravityStep;
-extern "C" int data_ov006_02140558;
+extern "C" int sTrmp3DJumpOffSpeed;
 extern "C" int sTrmp3DBounceScale;
 extern "C" int sTrmp3DHardBounceScale;
 
@@ -3523,7 +3523,7 @@ void Trmp3DMario_SetTuning(int a)
     v = func_020531a4(a);
     sTrmp3DFallSpeed = (int)(((long long)v * -0x2400 + 0x800) >> 12);
     sTrmp3DGravityStep = (int)(((long long)a * 0xe0 + 0x800) >> 12);
-    data_ov006_02140558 = (int)(((long long)v * 0xc00 + 0x800) >> 12);
+    sTrmp3DJumpOffSpeed = (int)(((long long)v * 0xc00 + 0x800) >> 12);
     sTrmp3DBounceScale = (int)(((long long)v * 0x4800 + 0x800) >> 12);
     sTrmp3DHardBounceScale = (int)(((long long)v * 0x5400 + 0x800) >> 12);
 }

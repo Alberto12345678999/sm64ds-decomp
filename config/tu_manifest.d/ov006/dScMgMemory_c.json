@@ -410,7 +410,7 @@
       "evidence": "seven card states, plain-copied from the ROM constants"
     },
     {
-      "symbol": "data_ov006_0214236c",
+      "symbol": "sMemoryCardSprites",
       "address": "0x0214236c",
       "size": "0x3c",
       "binding": "STB_GLOBAL",
@@ -828,7 +828,7 @@
       "source": "0x02131468",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0214236c",
+      "symbol": "sMemoryCardSprites",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0214236c"

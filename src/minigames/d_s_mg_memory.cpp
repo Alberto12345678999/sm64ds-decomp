@@ -71,7 +71,7 @@ void func_02012790(int a);
 void MgCoins_StartLoseOneMore(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 data_ov006_0213d168[];
-extern void *data_ov006_0214236c[];
+extern void *sMemoryCardSprites[];
 extern unsigned short data_ov006_0213d0a8[];
 extern void Mg_SaveRecordPair(int a, int b);
 extern s16 data_02082214[];
@@ -333,8 +333,7 @@ void dScMgMemory_c::DrawCards()
             if (mState != 2)
                 dim = 1;
             spriteIndex = data_ov006_0213d168[card->card.value * 5 + card->card.frame];
-            Hud_RenderSprite(data_ov006_0214236c[spriteIndex],
-                             card->card.x >> 12,
+            Hud_RenderSprite(sMemoryCardSprites[spriteIndex], card->card.x >> 12,
                              card->card.y >> 12, -1, dim);
         }
         i += 1;
@@ -1143,7 +1142,7 @@ extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerDrop;
 extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerMove;
 extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerWait;
 
-void *data_ov006_0214236c[15] = {
+void *sMemoryCardSprites[15] = {
     (void *)sMgCardSprites[0],  (void *)sMgCardSprites[1],  (void *)sMgCardSprites[2],
     (void *)sMgCardSprites[11], (void *)sMgCardSprites[12], (void *)sMgCardSprites[13],
     (void *)sMgCardSprites[14], (void *)sMgCardSprites[3],  (void *)sMgCardSprites[4],

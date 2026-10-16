@@ -245,7 +245,7 @@ void dScMgD3DBase_c::InitEngines()
     GX::SetBankForOBJ(0x10);
     GX::SetBankForBG(2);
     file = Ov004_LoadFile(data_ov006_0213c5fc[GetGameLanguage()]);
-    data_ov006_02141a4c = file;
+    sD3DLanguageFile = file;
     {
         char *dst = (char *)0x6400000;
         dst += 0x4000;
@@ -335,7 +335,7 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
         *(int*)0x40004c8 = 0x696a5800;
         *(int*)0x40004cc = 0x40007fff;
         D3D_ReleaseSubBg1(this);
-        Ov004_Deallocate(data_ov006_02141a4c);
+        Ov004_Deallocate(sD3DLanguageFile);
         Ov004_Deallocate(sD3DSubObjPalette);
     }
     data_0209f5f8 = 0;

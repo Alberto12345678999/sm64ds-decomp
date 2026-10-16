@@ -73,7 +73,7 @@ extern u8 gTouchX[];
 // local extern: see above.
 extern u8 gTouchY[];
 extern u16 data_ov006_0212e2e8[];
-extern int data_ov006_021416a0[];
+extern int sBomroomRoundEndTable[];
 extern int LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -1348,12 +1348,12 @@ done:
 
 // @symbol _ZN14dScMgBomroom_c15Bomb_StateMarchEi
 /* Runs the bomb's current handler: the byte at +0x3b indexes the
- * pointer-to-member table data_ov006_02141708. */
+ * pointer-to-member table sBomroomBombMarchTable. */
 
-extern "C" PMFEntry data_ov006_02141708[];
+extern "C" PMFEntry sBomroomBombMarchTable[];
 void dScMgBomroom_c::Bomb_StateMarch(int index) {
     unsigned char state = mBombs[index].substate;
-    (this->*(data_ov006_02141708[state].pmf))(index);
+    (this->*(sBomroomBombMarchTable[state].pmf))(index);
 }
 
 // @symbol _ZN14dScMgBomroom_c15Bomb_StateInPenEi
@@ -1567,12 +1567,12 @@ void dScMgBomroom_c::Bomb_StateWaiting(int i) {
 // @symbol _ZN14dScMgBomroom_c11UpdateBombsEv
 /* Per-frame bomb pass: with no touch, nothing is held (0x62f6 = 0xff);
  * then every live bomb runs its state handler from the pointer-to-member
- * table data_ov006_02141730, indexed by +0x697, and Bomb_Animate. */
+ * table sBomroomBombStateTable, indexed by +0x697, and Bomb_Animate. */
 #pragma push
 #pragma opt_strength_reduction off
 
 typedef void (dScMgBomroom_c::*PMF)(int);
-extern PMF data_ov006_02141730[];
+extern PMF sBomroomBombStateTable[];
 void dScMgBomroom_c::UpdateBombs() {
     char * c = (char *)this;
     if (*(u8 *)(gTouchHeld + gActivePlayerSlot) == 0)
@@ -1584,7 +1584,7 @@ void dScMgBomroom_c::UpdateBombs() {
         o += 0x4000;
         flag = o[0x698];
         if (flag != 0) {
-            (this->*data_ov006_02141730[o[0x697]])(i);
+            (this->*sBomroomBombStateTable[o[0x697]])(i);
             Bomb_Animate(i);
         }
     }
@@ -2169,14 +2169,14 @@ void dScMgBomroom_c::Round_StateGameOver() {
 
 // @symbol _ZN14dScMgBomroom_c14Round_StateEndEv
 /* Runs the +0x62d4 sub-state through the pointer-to-member table
- * data_ov006_021416a0, decoded by hand (a function word, then a
+ * sBomroomRoundEndTable, decoded by hand (a function word, then a
  * this-adjust whose low bit marks a virtual call), then the three
  * per-frame passes. */
 
 void dScMgBomroom_c::Round_StateEnd() {
     unsigned char * c = (unsigned char *)this;
     int idx = mSubState;
-    int *e = &data_ov006_021416a0[idx * 2];
+    int *e = &sBomroomRoundEndTable[idx * 2];
     int off = e[1];
     void *obj = c + (off >> 1);
     void (*f)(void *);
@@ -2280,10 +2280,10 @@ s32 dScMgBomroom_c::Render()
 
 // @symbol _ZN14dScMgBomroom_c8BehaviorEv
 /* Waits out mDispatchDelay, then runs the round state at +0x62d0 from
- * the pointer-to-member table data_ov006_021416e0 and steps the sprite
+ * the pointer-to-member table sBomroomRoundStateTable and steps the sprite
  * records and the BG2 offset. */
 typedef void (dScMgBomroom_c::*PMFv)();
-extern "C" PMFv data_ov006_021416e0[];
+extern "C" PMFv sBomroomRoundStateTable[];
 s32 dScMgBomroom_c::Behavior()
 {
     char *c = (char *)this;
@@ -2293,7 +2293,7 @@ s32 dScMgBomroom_c::Behavior()
         if (*(short *)(c + 0x6200 + 0xf0) <= 0)
             *(short *)(c + 0x6200 + 0xf0) = 0;
     } else {
-        (this->*data_ov006_021416e0[*(int *)(c + 0x6000 + 0x2d0)])();
+        (this->*sBomroomRoundStateTable[*(int *)(c + 0x6000 + 0x2d0)])();
         Marker_UpdateAll();
         UpdateBg2Lift();
     }

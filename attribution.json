@@ -7140,7 +7140,7 @@
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_BounceOffLineA": "tangosdev",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_StateBounce": "andrewboudreau",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_BounceOffLineB": "tangosdev",
-    "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_PickIdleAnim": "lunavyqo",
+    "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_JumpOff": "lunavyqo",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_StateMissed": "tangosdev",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_EnterMissed": "tangosdev",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp3DMario_StateFall": "tangosdev",

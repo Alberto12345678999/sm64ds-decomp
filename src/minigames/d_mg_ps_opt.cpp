@@ -93,11 +93,11 @@ extern int GetGameLanguage(void);
 /* Writes the icon center, half extents, touch kind, and clears the blink. */
 extern void func_ov001_020ab5b0(char *icon, int kind, short x, short y, short halfW, short halfH);
 extern short sPsOptIconPosA[];
-extern short data_ov004_020bfe76[];
+extern short sPsOptIconPosAY[];
 extern short sPsOptIconPosB[];
-extern short data_ov004_020bfe8a[];
-extern short data_ov004_020bfe9c[];
-extern short data_ov004_020bfe9e[];
+extern short sPsOptIconPosBY[];
+extern short sPsOptStylePos[];
+extern short sPsOptStylePosY[];
 int TouchArea_Update(void *icon, int touch);
 /* Toggles mOn, drops mReady, and reloads mBlink from the icon's +0x18. */
 void func_ov001_020ab3f0(void *icon);
@@ -343,16 +343,15 @@ extern "C" void PsOpt_PlaceIcon(dMgPsOpt_c::TouchIcon_c *icon, int style, int va
         lang = GetGameLanguage();
         lang2 = GetGameLanguage();
         func_ov001_020ab5b0((char *)icon, kind, x, y, HALF_AT(sPsOptIconPosA, lang),
-                            HALF_AT(data_ov004_020bfe76, lang2));
+                            HALF_AT(sPsOptIconPosAY, lang2));
     } else if (style == kStyleLightLabel) {
         lang = GetGameLanguage();
         lang2 = GetGameLanguage();
         func_ov001_020ab5b0((char *)icon, kind, x, y, HALF_AT(sPsOptIconPosB, lang),
-                            HALF_AT(data_ov004_020bfe8a, lang2));
+                            HALF_AT(sPsOptIconPosBY, lang2));
     } else {
-        func_ov001_020ab5b0((char *)icon, kind, x, y,
-                            HALF_AT(data_ov004_020bfe9c, style),
-                            HALF_AT(data_ov004_020bfe9e, style));
+        func_ov001_020ab5b0((char *)icon, kind, x, y, HALF_AT(sPsOptStylePos, style),
+                            HALF_AT(sPsOptStylePosY, style));
     }
 }
 

@@ -15766,7 +15766,7 @@
         "return:int"
       ]
     },
-    "data_ov004_020bfe9c": {
+    "sPsOptStylePos": {
       "src/unnamed/ov004/__sinit_ov004_020b9b24.c": [
         "return:int"
       ]
@@ -16116,7 +16116,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140778": {
+    "sTrmpGoalSlots": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
         "return:V3"
       ]
@@ -16232,7 +16232,7 @@
         "return:Ent []"
       ]
     },
-    "data_ov006_0214236c": {
+    "sMemoryCardSprites": {
       "src/unnamed/ov006/__sinit_ov006_021311c8.c": [
         "return:int []"
       ]
@@ -16257,7 +16257,7 @@
         "return:Dst10_2142440"
       ]
     },
-    "data_ov006_02142490": {
+    "sMemory2CardSprites": {
       "src/unnamed/ov006/__sinit_ov006_021314e4.c": [
         "return:int []"
       ]
@@ -27891,7 +27891,7 @@
         "param:#1 void *"
       ]
     },
-    "Trmp3DMario_PickIdleAnim": {
+    "Trmp3DMario_JumpOff": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int *"
       ]

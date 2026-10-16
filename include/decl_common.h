@@ -839,7 +839,7 @@ extern int data_ov006_021421b4;
    winner here. Every consumer now lives in that one translation unit,
    which declares both with the recovered pointer type, so no declaration
    belongs here either. */
-extern int data_ov006_02142f60;
+extern int sTrmpAnyOnLedge;
 extern int data_ov007_02103260;
 extern int data_ov007_02103290;
 extern int data_ov007_02103340;
@@ -1415,7 +1415,7 @@ extern unsigned int _ZNK7PathPtr9GetUnk004Ev(void*);
 extern unsigned short data_0209b274;
 extern unsigned short data_ov002_0210abb8[];
 extern unsigned short data_ov002_0210c088[];
-extern unsigned short data_ov006_02141fcc;
+extern unsigned short sHanaSpinAngle;
 extern unsigned short data_ov007_02104c28;
 extern void ActorBase_MarkForDestruction(void*);
 extern void Actor_MakeVanishLuigiWork(void*, void*);
@@ -2204,7 +2204,7 @@ extern void *sTrmpItem_MotionSpinSway_UnitZDtorRec;
 extern void *sTrmpItem_MotionSpinHover_UnitYDtorRec;
 extern void *sTrmpItem_MotionSpinSway_UnitYDtorRec;
 extern void *sMgMainCamera;
-extern void*data_ov006_02141a4c;
+extern void *sD3DLanguageFile;
 extern void *sJumpBackFile;
 extern void *sRouletteLandedRacer;
 extern void*data_ov007_0210342c;

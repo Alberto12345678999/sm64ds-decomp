@@ -47,7 +47,7 @@ extern int sTrmp3DFallSpeed;
 extern int data_ov006_0212e020;
 extern int sTrmp3DGravityStep;
 extern int data_ov006_0212dffc;
-extern int data_ov006_02140558;
+extern int sTrmp3DJumpOffSpeed;
 extern int data_ov006_0212e008;
 extern int sTrmp3DBounceScale;
 extern int data_ov006_0212e004;
@@ -67,7 +67,7 @@ extern int data_ov006_0212e01c;
 extern int sTrmp2DriftScale;
 
 typedef struct { unsigned int x, y, z; } V3;
-extern V3 data_ov006_02140778;
+extern V3 sTrmpGoalSlots;
 extern V3 data_ov006_02140784;
 extern V3 data_ov006_02140790;
 extern V3 data_ov006_0214079c;
@@ -141,14 +141,14 @@ void __sinit_ov006_0212f6b4(void)
     sTrmpRowHeights.b = data_ov006_0212e024.b;
     sTrmp3DFallSpeed = data_ov006_0212e000;
     sTrmp3DGravityStep = data_ov006_0212e020;
-    data_ov006_02140558 = data_ov006_0212dffc;
+    sTrmp3DJumpOffSpeed = data_ov006_0212dffc;
     sTrmp3DBounceScale = data_ov006_0212e008;
     sTrmp3DHardBounceScale = data_ov006_0212e004;
 
-    data_ov006_02140778.x = (unsigned int)-0x50000;
-    data_ov006_02140778.y = 0x100000;
-    data_ov006_02140778.z = 0;
-    func_020731dc(&data_ov006_02140778, (void*)&_ZN7Vector3D1Ev, data_ov006_02140640);
+    sTrmpGoalSlots.x = (unsigned int)-0x50000;
+    sTrmpGoalSlots.y = 0x100000;
+    sTrmpGoalSlots.z = 0;
+    func_020731dc(&sTrmpGoalSlots, (void *)&_ZN7Vector3D1Ev, data_ov006_02140640);
 
     {
         unsigned int *p = (unsigned int*)&data_ov006_02140784;

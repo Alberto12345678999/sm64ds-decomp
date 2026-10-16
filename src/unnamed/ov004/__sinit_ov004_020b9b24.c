@@ -11,7 +11,7 @@ extern int data_ov004_020bfe8c;
 extern int data_ov004_020bfe90;
 extern int data_ov004_020bfe94;
 extern int data_ov004_020bfe98;
-extern int data_ov004_020bfe9c;
+extern int sPsOptStylePos;
 extern int data_ov004_020bfea0;
 extern int data_ov004_020bfea4;
 extern int data_ov004_020bfea8;
@@ -74,9 +74,9 @@ void __sinit_ov004_020b9b24(void)
   {
     int sz = 0x3c;
     int h = 0x10;
-    ((short *) (&data_ov004_020bfe9c))[0] = (short)sz;
-    ((short *) (&data_ov004_020bfe9c))[1] = (short)h;
-    func_020731dc((short *) (&data_ov004_020bfe9c), (void *) NoOpDestructor, data_ov004_020bfe08);
+    ((short *)(&sPsOptStylePos))[0] = (short)sz;
+    ((short *)(&sPsOptStylePos))[1] = (short)h;
+    func_020731dc((short *)(&sPsOptStylePos), (void *)NoOpDestructor, data_ov004_020bfe08);
   }
 
   p = (short *) (&data_ov004_020bfea0); p[0] = 0x1c; p[1] = 0x10;

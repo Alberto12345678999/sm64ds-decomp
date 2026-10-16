@@ -189,7 +189,7 @@ extern void Trmp3DMario_StartAll(void *c);
 extern int sTrmpComboCount;
 extern int data_ov006_0213b0ec;
 extern int sTrmpMariosInPlay;
-extern int data_ov006_02142f60;
+extern int sTrmpAnyOnLedge;
 extern int data_0209e650;
 extern void TrmpLine_UpdateAll(void);
 extern int Trmp3DMario_IsOffstage(int *r0);
@@ -460,7 +460,7 @@ void dScMgTrampoline_c::StartRound(int /* arg */)
     self->mTouchX = data_020a0dbc[0];
     self->mTouchY = data_020a0dbc[1];
 
-    data_ov006_02142f60 = 0;
+    sTrmpAnyOnLedge = 0;
     self->mLevel = 0;
     if ((unsigned int)self->mLevel > 0x270e)
         self->mLevel = 0x270e;
@@ -664,7 +664,7 @@ void dScMgTrampoline_c::StatePlay()
         }
     }
 
-    if (data_ov006_02142f60 == 0) {
+    if (sTrmpAnyOnLedge == 0) {
         if (_Z15ApproachLinear2Rsss((short *)&mDoorSwitchTimer, 0, 1)) {
             if (GetDoorSide()) {
                 SetDoorSide(0);

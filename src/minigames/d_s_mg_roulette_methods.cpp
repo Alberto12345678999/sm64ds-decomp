@@ -242,7 +242,7 @@ extern short data_ov006_0212ed88[];
 extern short data_ov006_0212ed8a[];
 extern short data_ov006_0212ed8c[];
 extern short data_ov006_0212ed8e[];
-extern int   data_ov006_021428cc;
+extern int sRouletteRacerGoalGuard;
 extern int sRouletteRacerGoal[];
 extern void *sRouletteRacerGoalDtorRec;
 extern s32   sMgCoinRiseFrames;
@@ -863,13 +863,13 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile)
 extern "C" {
 void RouletteRacer_Init(void* racer)
 {
-    int b = data_ov006_021428cc & 1;
+    int b = sRouletteRacerGoalGuard & 1;
     if (b == 0) {
         sRouletteRacerGoal[0] = 0xc000;
         sRouletteRacerGoal[1] = 0xc000;
         func_020731dc(sRouletteRacerGoal, (void *)NullDestructor_0203d47c,
                       &sRouletteRacerGoalDtorRec);
-        data_ov006_021428cc |= 1;
+        sRouletteRacerGoalGuard |= 1;
     }
     RouletteRacer_SetVelocityToward((int *)racer, sRouletteRacerGoal, 0x80);
     *(unsigned char*)((char*)racer + 0x32) = 7;

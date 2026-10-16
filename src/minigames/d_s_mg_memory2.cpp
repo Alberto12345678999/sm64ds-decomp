@@ -99,7 +99,7 @@ extern "C" unsigned int func_02012790(unsigned int x);
 extern "C" void MgCoins_StartLoseOneMore(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 data_ov006_0213d45c[];
-extern void *data_ov006_02142490[];
+extern void *sMemory2CardSprites[];
 extern s32 data_ov006_0212e930[];
 extern unsigned short data_ov006_0213d344[];
 extern void Mg_SaveRecordPair(int a, int b);
@@ -356,8 +356,7 @@ void dScMgMemory2_c::DrawCards()
                 dim = 1;
             sprite = data_ov006_0213d45c[*(u8 *)(p + 0x51b8) * 5
                                     + *(u8 *)(p + 0x51bd)];
-            Hud_RenderSprite(data_ov006_02142490[sprite],
-                             *(int *)(p + 0x51a8) >> 12,
+            Hud_RenderSprite(sMemory2CardSprites[sprite], *(int *)(p + 0x51a8) >> 12,
                              *(int *)(p + 0x51ac) >> 12, -1, dim);
         }
         i += 1;
@@ -1324,7 +1323,7 @@ extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerDrop;
 extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerMove;
 extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerWait;
 
-void *data_ov006_02142490[23] = {
+void *sMemory2CardSprites[23] = {
     (void *)sMgCardSprites[0],  (void *)sMgCardSprites[1],  (void *)sMgCardSprites[2],
     (void *)sMgCardSprites[11], (void *)sMgCardSprites[12], (void *)sMgCardSprites[13],
     (void *)sMgCardSprites[14], (void *)sMgCardSprites[3],  (void *)sMgCardSprites[4],

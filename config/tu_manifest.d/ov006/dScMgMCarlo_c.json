@@ -221,7 +221,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_0214250c",
+      "symbol": "sMCarloCardSprites",
       "address": "0x0214250c",
       "size": "0x4c",
       "binding": "STB_GLOBAL",
@@ -668,7 +668,7 @@
       "source": "0x02131958",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0214250c",
+      "symbol": "sMCarloCardSprites",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0214250c"

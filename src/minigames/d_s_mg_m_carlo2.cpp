@@ -46,7 +46,7 @@ struct Carlo2SpriteWords {
     int a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22;
 };
 extern int sMgCardSprites[];
-extern Carlo2SpriteWords data_ov006_021425a8;
+extern Carlo2SpriteWords sMCarlo2CardSprites;
 extern unsigned short data_ov006_0213d770[];
 extern int data_ov006_0212e954[];   /* the starting weights                     */
 extern int data_ov006_0212e97c[][10]; /* per-difficulty weight top-ups          */
@@ -541,12 +541,8 @@ void dMgMCarlo2CardObj_c::Render()
     {
         int idx = (mFace + 1) * 5 + (mLift >> 12);
         unsigned short sprite = data_ov006_0213d770[idx];
-        Hud_RenderSprite(
-            (void*)((int*)&data_ov006_021425a8)[sprite],
-            (mX >> 12) + 0x18,
-            (mY >> 12) + 0x18,
-            -1,
-            -1);
+        Hud_RenderSprite((void *)((int *)&sMCarlo2CardSprites)[sprite], (mX >> 12) + 0x18,
+                         (mY >> 12) + 0x18, -1, -1);
     }
 }
 
@@ -858,7 +854,7 @@ dMgMCarlo2CardObj_c::~dMgMCarlo2CardObj_c()
  * here makes the compiler emit both out of line in cartridge order. */
 
 /* Retail copy order is not address order. mwcc emits __sinit_d_s_mg_m_carlo2.cpp. */
-Carlo2SpriteWords data_ov006_021425a8 = {
+Carlo2SpriteWords sMCarlo2CardSprites = {
     sMgCardSprites[0],  sMgCardSprites[1],  sMgCardSprites[2],  sMgCardSprites[11],
     sMgCardSprites[12], sMgCardSprites[13], sMgCardSprites[14], sMgCardSprites[3],
     sMgCardSprites[4],  sMgCardSprites[5],  sMgCardSprites[6],  sMgCardSprites[9],

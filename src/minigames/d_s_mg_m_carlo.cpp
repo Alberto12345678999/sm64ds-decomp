@@ -63,7 +63,7 @@ extern int data_ov006_0213d5e0[8]; /* the eight face weights */
 extern int data_020a0db0;
 extern unsigned short data_ov006_0213d600[];
 extern int sMgCardSprites[];
-extern int data_ov006_0214250c[];
+extern int sMCarloCardSprites[];
 extern void Vec2_Sub(int* o, int* a, int* b);
 extern void func_0203d630(int *p, int m);
 extern int sMgCoinsBetPlaced;
@@ -649,12 +649,8 @@ void dMgMCarloCardObj_c::Render(void)
         int idx = (mFace + 1) * 5
                   + (mLift >> 12);
         unsigned short sprite = data_ov006_0213d600[idx];
-        Hud_RenderSprite(
-            (void*)data_ov006_0214250c[sprite],
-            (mX >> 12) + 24,
-            (mY >> 12) + 24,
-            -1,
-            -1);
+        Hud_RenderSprite((void *)sMCarloCardSprites[sprite], (mX >> 12) + 24, (mY >> 12) + 24, -1,
+                         -1);
     }
 }
 
@@ -946,7 +942,7 @@ dMgMCarloCardObj_c::~dMgMCarloCardObj_c()
 /* The sprite-index remap table. Its initializer reads the retail table, so
  * it is not a constant expression: the compiler emits
  * __sinit_d_s_mg_m_carlo.cpp to copy the 19 words at overlay load. */
-int data_ov006_0214250c[19] = {
+int sMCarloCardSprites[19] = {
     sMgCardSprites[0],  sMgCardSprites[1],  sMgCardSprites[2],  sMgCardSprites[11],
     sMgCardSprites[12], sMgCardSprites[13], sMgCardSprites[14], sMgCardSprites[3],
     sMgCardSprites[4],  sMgCardSprites[5],  sMgCardSprites[6],  sMgCardSprites[9],

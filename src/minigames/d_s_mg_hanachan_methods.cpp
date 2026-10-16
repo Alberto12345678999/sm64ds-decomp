@@ -276,9 +276,9 @@ extern struct P2 pmf_Wiggler_StateMoveB;
 extern struct P2 pmf_Wiggler_StateWait;
 extern int pmf_Wiggler_StateWait_4[];
 extern int pmf_Wiggler_StateHold[];
-extern short data_ov006_02141fd0;
+extern short sHanaPickedCount;
 extern unsigned short sHanaPickedIds[];
-extern unsigned short data_ov006_02141ff8[];
+extern unsigned short sHanaUsedIds[];
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern Vec2i pmf_Wiggler_CheckOffLeftA;
 extern struct Words2 pmf_Wiggler_MoveBounce_2;
@@ -1260,7 +1260,7 @@ int Hana_PickUnused(int n, int mask)
     int i;
     int found = 0;
 
-    for (i = 0; i < data_ov006_02141fd0; i++) {
+    for (i = 0; i < sHanaPickedCount; i++) {
         if (n == sHanaPickedIds[i]) {
             found = 1;
             break;
@@ -1272,7 +1272,7 @@ int Hana_PickUnused(int n, int mask)
         v = sHanaPickedLow | (unsigned short)(v & 0xf0);
 
     for (i = 0; i < n; i++) {
-        if (v == data_ov006_02141ff8[i]) {
+        if (v == sHanaUsedIds[i]) {
             v = (unsigned short)(mask & RandomIntInternal(&data_0209e650));
             if (found)
                 v = sHanaPickedLow | (unsigned short)(v & 0xf0);
@@ -1280,7 +1280,7 @@ int Hana_PickUnused(int n, int mask)
         }
     }
 
-    data_ov006_02141ff8[n] = v;
+    sHanaUsedIds[n] = v;
     return v;
 }
 }
@@ -1291,7 +1291,7 @@ void Hana_ChooseStarWiggler(int count)
 {
     int i, j;
     sHanaPickedLow = (short)(RandomIntInternal(&data_0209e650) & 0xf);
-    data_ov006_02141fd0 = (short)count;
+    sHanaPickedCount = (short)count;
     for (i = 0; i < count; i++) {
         int r = RandomIntInternal(&data_0209e650);
         sHanaPickedIds[i] = (unsigned short)((int)((int)((unsigned int)(r & 0x7fffffff) >> 0x13) *
@@ -1969,7 +1969,7 @@ tail:
 s32 dScMgHanachan_c::Behavior()
 {
 
-    data_ov006_02141fcc = data_ov006_02141fcc + 0x800;
+    sHanaSpinAngle = sHanaSpinAngle + 0x800;
     (((CB *)this)->*(*(PMF *)&mPhaseFn))();
     int i = 0;
     if (data_ov006_0213c958 > 0) {
