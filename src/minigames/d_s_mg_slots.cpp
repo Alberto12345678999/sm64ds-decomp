@@ -1527,7 +1527,7 @@ s32 dScMgSlot1_c::Behavior()
 }
 
 // @symbol _ZN12dScMgSlot1_c13InitResourcesEv
-/* The ov004 scroll words (data_ov004_020bc85c..sMgMainBannerX) name
+/* The ov004 scroll words (sMgScoreDigitsX..sMgMainBannerX) name
  * no struct; they are stored raw. The reel-table fill stays a raw char*
  * cursor over 0x46c0..0x46ff (see leftovers). */
 s32 dScMgSlot1_c::InitResources()

@@ -15771,7 +15771,7 @@
         "return:int"
       ]
     },
-    "data_ov006_02137560": {
+    "sHanaBackgroundParts": {
       "src/unnamed/ov006/__sinit_ov006_02130df8.c": [
         "return:int []"
       ]
@@ -15816,12 +15816,12 @@
         "return:int"
       ]
     },
-    "data_ov006_0213b0ec": {
+    "sTrmp3DLives": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
-    "data_ov006_0213b0f0": {
+    "sTrmp2Lives": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]

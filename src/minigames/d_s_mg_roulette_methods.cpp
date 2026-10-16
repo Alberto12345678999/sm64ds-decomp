@@ -219,7 +219,7 @@ void Dealer_Update(char *thiz);
 int  Dealer_Load(char *c);
 
 extern int sRouletteResultsTimer;
-extern int   data_ov006_0213e2dc;
+extern int sRouletteResultIndex;
 extern char *sRouletteStrips[];
 extern int   data_020a0db0;
 extern s32   data_ov006_0212ed24[];
@@ -234,7 +234,7 @@ extern short data_ov006_0212ed34[];
 extern struct Pair   pmf_RouletteBoard_StateSlow;
 extern struct Pair2W pmf_RouletteBoard_StateSpin;
 extern int   data_0209e650[];
-extern int   data_ov006_0212ed4c[];
+extern int sRouletteTileBounds[];
 extern int sRouletteRowEdgesY[];
 extern short data_ov006_0212edb8[];
 extern short data_ov006_0212edba[];
@@ -1145,13 +1145,13 @@ short Roulette_TileAt(int x, int y)
 {
     short tile = 0x25;
 
-    if (x > data_ov006_0212ed4c[0] && x <= data_ov006_0212ed4c[1]) {
+    if (x > sRouletteTileBounds[0] && x <= sRouletteTileBounds[1]) {
         if (y > 0x10 && y <= 0x60) {
             tile = 0x23;
         } else if (y > 0x60 && y <= 0xb0) {
             tile = 0x24;
         }
-    } else if (x > data_ov006_0212ed4c[1] && x <= data_ov006_0212ed4c[2]) {
+    } else if (x > sRouletteTileBounds[1] && x <= sRouletteTileBounds[2]) {
         if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 0;
         } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
@@ -1167,7 +1167,7 @@ short Roulette_TileAt(int x, int y)
         } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 9;
         }
-    } else if (x > data_ov006_0212ed4c[2] && x <= data_ov006_0212ed4c[3]) {
+    } else if (x > sRouletteTileBounds[2] && x <= sRouletteTileBounds[3]) {
         if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 0xc;
         } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
@@ -1183,7 +1183,7 @@ short Roulette_TileAt(int x, int y)
         } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 0x12;
         }
-    } else if (x > data_ov006_0212ed4c[3] && x <= data_ov006_0212ed4c[4]) {
+    } else if (x > sRouletteTileBounds[3] && x <= sRouletteTileBounds[4]) {
         if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 1;
         } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
@@ -1199,7 +1199,7 @@ short Roulette_TileAt(int x, int y)
         } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 0xa;
         }
-    } else if (x > data_ov006_0212ed4c[4] && x <= data_ov006_0212ed4c[5]) {
+    } else if (x > sRouletteTileBounds[4] && x <= sRouletteTileBounds[5]) {
         if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 0xd;
         } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
@@ -1215,7 +1215,7 @@ short Roulette_TileAt(int x, int y)
         } else if (y > sRouletteRowEdgesY[6] && y <= sRouletteRowEdgesY[7]) {
             tile = 0x13;
         }
-    } else if (x > data_ov006_0212ed4c[5] && x <= data_ov006_0212ed4c[6]) {
+    } else if (x > sRouletteTileBounds[5] && x <= sRouletteTileBounds[6]) {
         if (y > sRouletteRowEdgesY[0] && y <= sRouletteRowEdgesY[1]) {
             tile = 2;
         } else if (y > sRouletteRowEdgesY[1] && y <= sRouletteRowEdgesY[2]) {
@@ -1562,7 +1562,7 @@ void RouletteStrip_ResetAll(void) {
         RouletteStrip_Reset((int *)sRouletteStrips[i]);
         *(short *)((char *)sRouletteStrips[i] + 0x14) = (short)i;
     }
-    data_ov006_0213e2dc = -1;
+    sRouletteResultIndex = -1;
     sRouletteResultsTimer = 0;
 }
 }
@@ -1572,26 +1572,26 @@ extern "C" int RouletteResults_Tick(void)
 {
     if (ApproachLinear(sRouletteResultsTimer, 0, 1) != 0) {
         int idx;
-        data_ov006_0213e2dc = data_ov006_0213e2dc + 1;
-        idx = data_ov006_0213e2dc;
+        sRouletteResultIndex = sRouletteResultIndex + 1;
+        idx = sRouletteResultIndex;
         sRouletteResultsTimer = 0x78;
         while (idx < 4) {
             if (*(short *)(sRouletteStrips[idx] + 0x16) != 0)
                 break;
-            data_ov006_0213e2dc = data_ov006_0213e2dc + 1;
-            idx = data_ov006_0213e2dc;
+            sRouletteResultIndex = sRouletteResultIndex + 1;
+            idx = sRouletteResultIndex;
         }
         if (idx < 4) {
             func_02012790(0x26);
         }
     }
-    return (data_ov006_0213e2dc >= 4) ? 1 : 0;
+    return (sRouletteResultIndex >= 4) ? 1 : 0;
 }
 
 // @symbol RouletteResults_Draw
 extern "C" {
 void RouletteResults_Draw(void){
-    int n = data_ov006_0213e2dc;
+    int n = sRouletteResultIndex;
     int arg;
     int i;
     if (n < 0) return;
@@ -1605,8 +1605,9 @@ void RouletteResults_Draw(void){
             arg += 0x24;
         }
     }
-    if (data_ov006_0213e2dc >= 4) return;
-    RouletteStrip_DrawRacers((void **)sRouletteStrips[data_ov006_0213e2dc]);
+    if (sRouletteResultIndex >= 4)
+        return;
+    RouletteStrip_DrawRacers((void **)sRouletteStrips[sRouletteResultIndex]);
 }
 }
 

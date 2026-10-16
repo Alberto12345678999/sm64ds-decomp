@@ -185,12 +185,12 @@ extern int sMgCoinsDeltaShown;
 extern int data_ov004_020bc850;
 extern int sMgRecordBannerX;
 extern int sMgDrawBannerY;
-extern int data_ov004_020bc85c;
+extern int sMgScoreDigitsX;
 extern int sMgWinBannerY;
 extern int sMgResultsBannerY;
 extern int sMgDrawBannerX;
 extern int sMgQuitX;
-extern int data_ov004_020bc870;
+extern int sMgScoreDigitsY;
 extern int sMgRetryBannerY;
 extern int sMgLoseBannerX;
 extern int sMgRecordBannerY;
@@ -295,8 +295,8 @@ extern "C" void Mg_ResetBannerLayout(void) {
     sMgQuitX = 0x80;
     data_ov004_020bc850 = 0x80;
     data_ov004_020bc89c = 0x60;
-    data_ov004_020bc85c = 0x80;
-    data_ov004_020bc870 = 0x80;
+    sMgScoreDigitsX = 0x80;
+    sMgScoreDigitsY = 0x80;
 }
 
 // @symbol _ZN10dMgState_cC1Ev
@@ -1049,19 +1049,21 @@ void dMgState_c::DrawScoreDigits() {
     if (gMgScene == 0) return;
 
     r = Mg_GetSubmittedScore();
-    Mg_DrawBigNumber(data_ov004_020bc85c + 4, data_ov004_020bc870, r / 100, -1, -1, 1, 0);
+    Mg_DrawBigNumber(sMgScoreDigitsX + 4, sMgScoreDigitsY, r / 100, -1, -1, 1, 0);
 
     r = Mg_GetSubmittedScore();
-    Mg_DrawBigNumber(data_ov004_020bc85c + 0x1c, data_ov004_020bc870, r % 100 / 10, -1, -1, 1, 0);
+    Mg_DrawBigNumber(sMgScoreDigitsX + 0x1c, sMgScoreDigitsY, r % 100 / 10, -1, -1, 1, 0);
 
     r = Mg_GetSubmittedScore();
-    Mg_DrawBigNumber(data_ov004_020bc85c + 0x2c, data_ov004_020bc870, r % 10, -1, -1, 1, 0);
+    Mg_DrawBigNumber(sMgScoreDigitsX + 0x2c, sMgScoreDigitsY, r % 10, -1, -1, 1, 0);
 
     idx = GetGameLanguage();
-    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0xc), data_ov004_020bc85c - 0x24, data_ov004_020bc870, 0);
+    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0xc), sMgScoreDigitsX - 0x24,
+                          sMgScoreDigitsY, 0);
 
     idx = GetGameLanguage();
-    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0x1c), data_ov004_020bc85c + 0x10, data_ov004_020bc870, 0);
+    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0x1c), sMgScoreDigitsX + 0x10,
+                          sMgScoreDigitsY, 0);
 }
 
 // @symbol _ZN10dMgState_c15DrawRecordTableEv

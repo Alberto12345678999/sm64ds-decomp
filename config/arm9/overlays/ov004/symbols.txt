@@ -706,12 +706,12 @@ sMgCoinsDeltaSprites kind:data(any) addr:0x020bc83c
 data_ov004_020bc850 kind:data(any) addr:0x020bc850
 sMgRecordBannerX kind:data(any) addr:0x020bc854
 sMgDrawBannerY kind:data(any) addr:0x020bc858
-data_ov004_020bc85c kind:data(any) addr:0x020bc85c
+sMgScoreDigitsX kind:data(any) addr:0x020bc85c
 sMgWinBannerY kind:data(any) addr:0x020bc860
 sMgResultsBannerY kind:data(any) addr:0x020bc864
 sMgDrawBannerX kind:data(any) addr:0x020bc868
 sMgQuitX kind:data(any) addr:0x020bc86c
-data_ov004_020bc870 kind:data(any) addr:0x020bc870
+sMgScoreDigitsY kind:data(any) addr:0x020bc870
 sMgRetryBannerY kind:data(any) addr:0x020bc874
 sMgLoseBannerX kind:data(any) addr:0x020bc878
 sMgRecordBannerY kind:data(any) addr:0x020bc87c

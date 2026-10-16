@@ -187,7 +187,7 @@ extern int Trmp3DMario_CountFinished(void);
 extern void Mg_SetSharedState(int);
 extern void Trmp3DMario_StartAll(void *c);
 extern int sTrmpComboCount;
-extern int data_ov006_0213b0ec;
+extern int sTrmp3DLives;
 extern int sTrmpMariosInPlay;
 extern int sTrmpAnyOnLedge;
 extern int data_0209e650;
@@ -199,8 +199,8 @@ extern "C" void Trmp3DMario_SetSpawnHeight(int n);
 extern "C" void Trmp3DMario_SetTuning(int a);
 void TrmpLine_CreateStartLineT1(void);
 extern s16 data_ov006_0212e04c;
-extern s16 data_ov006_0212e044;
-extern s16 data_ov006_0212e048;
+extern s16 sTrmpStartTouchX;
+extern s16 sTrmpStartTouchY;
 extern void Camera_UpdateMatrices(void *cam);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
@@ -308,8 +308,8 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of Mg_DrawLine, from the legacy file for func_ov006_02121d64, NOT applied: void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g); */
 /* TUBUILD CONFLICT -- alternate declaration of func_020126e8, from the legacy file for func_ov006_02121d64, NOT applied: int func_020126e8(int a); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02121d64, NOT applied: int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e044, from the legacy file for func_ov006_02121f04, NOT applied: extern short data_ov006_0212e044; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e048, from the legacy file for func_ov006_02121f04, NOT applied: extern short data_ov006_0212e048; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpStartTouchX, from the legacy file for func_ov006_02121f04, NOT applied: extern short sTrmpStartTouchX; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpStartTouchY, from the legacy file for func_ov006_02121f04, NOT applied: extern short sTrmpStartTouchY; */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN17dScMgTrampoline_c11CanEndStateEi, NOT applied: extern int GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN4cstd4fdivEii, from the legacy file for _ZN17dScMgTrampoline_c13InitResourcesEv, NOT applied: extern s32 _ZN4cstd4fdivEii(s32 a, s32 b); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209d45c, from the legacy file for _ZN17dScMgTrampoline_c13InitResourcesEv, NOT applied: extern u8 data_0209d45c; */
@@ -518,9 +518,9 @@ void dScMgTrampoline_c::BeginIntro()
     short b;
 
     mTimer = 0x5a;
-    a = data_ov006_0212e044;
+    a = sTrmpStartTouchX;
     mTouchStartX = a;
-    b = data_ov006_0212e048;
+    b = sTrmpStartTouchY;
     mTouchStartY = b;
     mTouchX = a;
     mTouchY = b;
@@ -561,11 +561,10 @@ void dScMgTrampoline_c::StateIntro()
         int t = cstd::fdiv(counter << 12, 0x5a000);
         volatile s16 oldY = mTouchX;
         volatile s16 oldZ = mTouchY;
-        int mixRaw = data_ov006_0212e044 * t +
-                     data_ov006_0212e04c * (0x1000 - t);
+        int mixRaw = sTrmpStartTouchX * t + data_ov006_0212e04c * (0x1000 - t);
 
         mTouchX = (s16)(mixRaw >> 12);
-        mTouchY = data_ov006_0212e048;
+        mTouchY = sTrmpStartTouchY;
 
         mTouchY +=
             ((((int)((unsigned int)(RandomIntInternal(&data_0209e650) &
@@ -639,7 +638,7 @@ void dScMgTrampoline_c::StatePlay()
     }
     UpdateScroll();
 
-    if (data_ov006_0213b0ec == 0) {
+    if (sTrmp3DLives == 0) {
         mInputEnabled = 0;
         BeginResults();
     } else {
@@ -846,7 +845,7 @@ s32 dScMgTrampoline_c::Render()
     TrmpFx_DrawAll();
 
     if (mDrawSubScreen == 1) {
-        count = data_ov006_0213b0ec;
+        count = sTrmp3DLives;
         a1v = 0x6e;
         for (i = 0; i < 3; i++) {
             if (i >= count) {

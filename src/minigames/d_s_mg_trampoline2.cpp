@@ -182,7 +182,7 @@ extern union StateValue pmf_dScMgTrampoline2_c_StateWaitExit;
 extern void Trmp2Mario_EnterAll(void *c);
 extern struct P2 pmf_dScMgTrampoline2_c_StateResults;
 extern int sTrmpItemsHit;
-extern int data_ov006_0213b0f0;
+extern int sTrmp2Lives;
 extern int sTrmp2Score;
 extern int sTrmp2MarioCount;
 extern int sTrmpItemsActive;
@@ -197,8 +197,8 @@ extern struct S2 pmf_dScMgTrampoline2_c_StatePlay;
 extern void TrmpLine_CreateStartLineT2(void);
 extern s16 data_ov006_0212e058;
 extern s16 data_ov006_0212e050;
-extern s16 data_ov006_0212e048;
-extern short data_ov006_0212e044;
+extern s16 sTrmpStartTouchY;
+extern short sTrmpStartTouchX;
 extern struct P2 pmf_dScMgTrampoline2_c_StateIntro;
 extern "C" void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, u16 a, u16 b, u16 c, u16 d);
 extern "C" void TrmpLine_ClearAll(u32 a);
@@ -256,7 +256,7 @@ extern int Trmp2Spinner_Construct(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02124088, NOT applied: extern void func_02012718(void *a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02124088, NOT applied: extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h); */
 /* TUBUILD CONFLICT -- alternate declaration of Mg_DrawLine, from the legacy file for func_ov006_02124088, NOT applied: extern int Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e048, from the legacy file for func_ov006_02124228, NOT applied: extern short data_ov006_0212e048; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpStartTouchY, from the legacy file for func_ov006_02124228, NOT applied: extern short sTrmpStartTouchY; */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c11CanEndStateEi, NOT applied: extern int GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" s32 GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" void MultiStore16(u16 val, char *dst, int nbytes); */
@@ -509,9 +509,9 @@ int dScMgTrampoline2_c::CanEndState(int /* mode */)
 void dScMgTrampoline2_c::BeginIntro() {
     short a, b;
     mTimer = 0x5a;
-    a = data_ov006_0212e044;
+    a = sTrmpStartTouchX;
     mTouchStartX = a;
-    b = data_ov006_0212e048;
+    b = sTrmpStartTouchY;
     mTouchStartY = b;
     mTouchX = a;
     mTouchY = b;
@@ -554,7 +554,7 @@ void dScMgTrampoline2_c::StateIntro()
         volatile s16 old9e = mTouchY;
         int mixRaw = data_ov006_0212e050 * t + data_ov006_0212e058 * (0x1000 - t);
         mTouchX = (s16)(mixRaw >> 12);
-        mTouchY = data_ov006_0212e048;
+        mTouchY = sTrmpStartTouchY;
 
         mTouchY +=
             ((((int)((unsigned int)(RandomIntInternal(&data_0209e650) & ~0x80000000) >> 19) - 0x800) << 2) >> 12);
@@ -593,7 +593,7 @@ void dScMgTrampoline2_c::StatePlay()
             mPromptEnabled = 0;
     }
     Trmp2Mario_SetTuning((sTrmpItemsHit / 10) * 64 + 0x1000);
-    if (data_ov006_0213b0f0 == 0) {
+    if (sTrmp2Lives == 0) {
         mInputEnabled = 0;
         BeginResults();
         return;
@@ -992,7 +992,7 @@ s32 dScMgTrampoline2_c::Render()
     Jump2Popup_DrawAll();
 
     if (mDrawSubScreen == 1) {
-        count = data_ov006_0213b0f0;
+        count = sTrmp2Lives;
         a1v = 0x6e;
         if (GetOwnerLanguage() == 5 || GetOwnerLanguage() == 4)
             a1v -= 4;

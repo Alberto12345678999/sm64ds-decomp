@@ -316,7 +316,7 @@ extern "C" int sTrmpAnimBounce;
 extern "C" void *sMgMainCamera;
 extern "C" int sTrmpSpeedScale;
 extern "C" int sTrmp2RiseSpeedMax;
-extern "C" void *data_ov006_0213b22c[];
+extern "C" void *sTrmpBounceAnimTable[];
 extern "C" int sTrmp2FallSpeed;
 
 struct VtObj {
@@ -370,9 +370,9 @@ L70:
         int t;
 
         MARIO2(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x78),
-                                                    *(void **)data_ov006_0213b22c[MARIO2(c)->mAnim],
-                                                    0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
+            0);
 
         *(int *)(c + 0xd0) = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -570,7 +570,7 @@ void Sound_PlayBank1Panned(int a0, int a1, int a2);
 extern "C" void *sMgMainCamera;
 extern "C" int sTrmpSpeedScale;
 extern "C" int sTrmp2RiseSpeedMax;
-extern "C" void *data_ov006_0213b22c[];
+extern "C" void *sTrmpBounceAnimTable[];
 extern "C" int sTrmp2FallSpeed;
 
 struct VtObj {
@@ -629,9 +629,9 @@ L70:
         MARIO2(c)->mVel.y = v40;
 
         MARIO2(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x78),
-                                                    *(void **)data_ov006_0213b22c[MARIO2(c)->mAnim],
-                                                    0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
+            0);
 
         *(int *)(c + 0xd0) = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -770,7 +770,7 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c)
     }
 
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        (void *)(c + 0x78), *(void **)data_ov006_0213b22c[MARIO2(c)->mAnim], 0x40000000, 0x800, 0);
+        (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800, 0);
 
     *(int *)(c + 0xd0) = 0;
     Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -908,7 +908,7 @@ extern "C" {
 extern void Trmp2Mario_EnterRespawnWait(void *p);
 }
 extern "C" int data_ov006_02140598;
-extern "C" int data_ov006_0213b0f0;
+extern "C" int sTrmp2Lives;
 
 struct Obj {
   virtual void v0();
@@ -924,7 +924,7 @@ extern "C" void Trmp2Mario_StateMissed(char *c) {
     if (MARIO2(c)->mTimer == 0) {
         Puff_Spawn(MARIO2(c)->mScreenPos[0], 0xc0);
         data_ov006_02140598 = data_ov006_02140598 - 1;
-        ApproachLinear(data_ov006_0213b0f0, 0, 1);
+        ApproachLinear(sTrmp2Lives, 0, 1);
         Sound::PlayBank2_2D(0x130);
         ((Obj *)c)->v4();
         MARIO2(c)->mWallBumpTimer = 0;
@@ -946,13 +946,13 @@ extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
-extern int data_ov006_0213b0f0[];
+extern int sTrmp2Lives[];
 extern void *sTrmpAnimStruggle;
 extern double pmf_Trmp2Mario_StateMissed_2;
 void Trmp2Mario_EnterMissed(char *c);
 // @symbol Trmp2Mario_EnterMissed
 void Trmp2Mario_EnterMissed(char *c) {
-    if (data_ov006_0213b0f0[0] > 1)
+    if (sTrmp2Lives[0] > 1)
         D3D_PlaySeAtX(0x1ca, MARIO2(c)->mPos.x);
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
@@ -977,7 +977,7 @@ void Trmp2Mario_EnterMissed(char *c);
 }
 
 extern "C" void *sMgMainCamera;
-extern "C" void *data_ov006_0213b22c[];
+extern "C" void *sTrmpBounceAnimTable[];
 
 struct S8 { int a, b; };
 extern "C" S8 pmf_Trmp2Mario_StateWallBounce;
@@ -1034,9 +1034,9 @@ L70:
     {
         MARIO2(c)->mVel.y = 0x800;
         MARIO2(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x78),
-                                                    *(void **)data_ov006_0213b22c[MARIO2(c)->mAnim],
-                                                    0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
+            0);
 
         *(int *)(c + 0xd0) = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -1555,7 +1555,7 @@ void Trmp2Mario_EnterHidden(char *c);
 void Trmp2Mario_UpdateMatrix(char* o);
 void Puff_ClearAll(int a0, int a1);
 extern "C" int sTrmp2MarioTarget;
-extern "C" int data_ov006_0213b0f0;
+extern "C" int sTrmp2Lives;
 extern "C" int data_ov006_02140598;
 extern "C" int sTrmpItemHitsOff;
 extern "C" char *sTrmp2Marios;
@@ -1565,7 +1565,7 @@ void Trmp2Mario_ResetAll(void){
     int i;
     int off;
     Trmp2Mario_SetTuning(0x1000);
-    data_ov006_0213b0f0 = 3;
+    sTrmp2Lives = 3;
     data_ov006_02140598 = 0;
     sTrmpItemHitsOff = 0;
     if (sTrmp2MarioTarget > 0) {
@@ -2153,7 +2153,7 @@ int D3D_PlaySeAtX(int a, int b);
 
 extern "C" void *sMgMainCamera;
 extern "C" int sTrmpRowHeights[2];
-extern "C" void *data_ov006_0213b22c[];
+extern "C" void *sTrmpBounceAnimTable[];
 extern "C" int sTrmpAnimBounce;
 
 struct VtObj {
@@ -2236,8 +2236,8 @@ L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)(c + 0x6c), *(void **)data_ov006_0213b22c[MARIO3D(c)->mAnim], 0x40000000, 0x800,
-            0);
+            (void *)(c + 0x6c), *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim], 0x40000000,
+            0x800, 0);
 
         *(int *)(c + 0xc4) = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2409,7 +2409,7 @@ void func_02012718(int a, int b);
 
 extern "C" void *sMgMainCamera;
 extern "C" int sTrmpRowHeights[2];
-extern "C" void *data_ov006_0213b22c[];
+extern "C" void *sTrmpBounceAnimTable[];
 
 struct VtObj {
     virtual void d0();
@@ -2484,8 +2484,8 @@ L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)(c + 0x6c), *(void **)data_ov006_0213b22c[MARIO3D(c)->mAnim], 0x40000000, 0x800,
-            0);
+            (void *)(c + 0x6c), *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim], 0x40000000,
+            0x800, 0);
 
         *(int *)(c + 0xc4) = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2597,8 +2597,9 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c)
         MARIO3D(c)->mAnim = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        (void *)(c + 0x6c), *(void **)data_ov006_0213b22c[MARIO3D(c)->mAnim], 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x6c),
+                                                *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+                                                0x40000000, 0x800, 0);
 
     *(int *)(c + 0xc4) = 0;
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2628,7 +2629,7 @@ extern "C" int sTrmp3DGravityStep;
 extern "C" int data_0209e650;
 extern "C" int sTrmp3DJumpOffSpeed;
 extern "C" int sTrmp3DBounceScale;
-extern "C" void *data_ov006_0213b22c[];
+extern "C" void *sTrmpBounceAnimTable[];
 extern "C" int pmf_Trmp3DMario_StateBounce_2[2];
 
 struct VtObj {
@@ -2660,8 +2661,9 @@ extern "C" void Trmp3DMario_JumpOff(char *c) {
 
     MARIO3D(c)->mAnim = 0;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        (void *)(c + 0x6c), *(void **)data_ov006_0213b22c[MARIO3D(c)->mAnim], 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x6c),
+                                                *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+                                                0x40000000, 0x800, 0);
 
     *(int *)(c + 0xc4) = 0;
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2686,7 +2688,7 @@ extern void _Z14ApproachLinearRiii(int *ref, int target, int step);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int x);
 extern void Trmp3DMario_EnterOffstage(char *c);
 extern "C" int sTrmpMariosInPlay;
-extern "C" int data_ov006_0213b0ec;
+extern "C" int sTrmp3DLives;
 
 // @symbol Trmp3DMario_StateMissed
 void Trmp3DMario_StateMissed(char *c) {
@@ -2695,7 +2697,7 @@ void Trmp3DMario_StateMissed(char *c) {
     if (MARIO3D(c)->mTimer == 0) {
         Puff_Spawn(MARIO3D(c)->mScreenPos[0], 0xc0);
         sTrmpMariosInPlay -= 1;
-        _Z14ApproachLinearRiii(&data_ov006_0213b0ec, 0, 1);
+        _Z14ApproachLinearRiii(&sTrmp3DLives, 0, 1);
         _ZN5Sound12PlayBank2_2DEj(0x130);
         Trmp3DMario_EnterOffstage(c);
         return;
@@ -2719,13 +2721,13 @@ extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
-extern int data_ov006_0213b0ec[];
+extern int sTrmp3DLives[];
 extern void *sTrmpAnimStruggle;
 extern double pmf_Trmp3DMario_StateMissed_2;
 void Trmp3DMario_EnterMissed(char *c);
 // @symbol Trmp3DMario_EnterMissed
 void Trmp3DMario_EnterMissed(char *c) {
-    if (data_ov006_0213b0ec[0] > 1)
+    if (sTrmp3DLives[0] > 1)
         D3D_PlaySeAtX(0x1ca, MARIO3D(c)->mPos.x);
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
@@ -3481,7 +3483,7 @@ extern void Trmp3DMario_UpdateMatrix(char *o);
 extern void Puff_ClearAll(int a0, int a1);
 
 extern "C" int sTrmp3DMarioCount;
-extern "C" int data_ov006_0213b0ec;
+extern "C" int sTrmp3DLives;
 extern "C" int sTrmpComboCount;
 extern "C" int sTrmpMariosInPlay;
 extern "C" int sTrmpMariosOnLedges;
@@ -3493,7 +3495,7 @@ void Trmp3DMario_ResetAll(unsigned int n, int arg1)
     int i;
     Trmp3DMario_SetTuning((n % 5 + n / 5) * 0x150 + 0x1000);
     Trmp3DMario_SetSpawnHeight(arg1);
-    data_ov006_0213b0ec = 3;
+    sTrmp3DLives = 3;
     sTrmpComboCount = 0;
     sTrmpMariosInPlay = 0;
     sTrmpMariosOnLedges = 0;

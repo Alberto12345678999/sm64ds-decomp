@@ -58,7 +58,7 @@ extern int sMCarloCardsMoving;
 extern int sMCarloCols;
 extern int sMCarloRows;
 extern int data_ov006_0213d568;
-extern int data_ov006_0213d56c;
+extern int sMCarloDeckSize;
 extern int data_ov006_0213d5e0[8]; /* the eight face weights */
 extern int data_020a0db0;
 extern unsigned short data_ov006_0213d600[];
@@ -280,12 +280,11 @@ s32 dScMgMCarlo_c::Behavior()
             if (data_ov006_0213d564 == 1)
                 data_ov006_0213d564 = 0;
             shown = sMCarloDealProgress >> 12;
-            if (data_ov006_0213d56c != 0 && shown > 10 && shown <= 18
-                && Dealer_IsIdle(&mShared) != 0) {
+            if (sMCarloDeckSize != 0 && shown > 10 && shown <= 18 && Dealer_IsIdle(&mShared) != 0) {
                 mDealCount = 0;
                 mShared.unk_1e6 = 0;
                 Dealer_StartReveal(&mShared, 2, &mDealCount);
-                if (data_ov006_0213d56c == 2)
+                if (sMCarloDeckSize == 2)
                     mShared.unk_01a = 0;
             } else {
                 int lim = mDealCount + 18;
@@ -397,13 +396,13 @@ s32 dScMgMCarlo_c::Render()
 
 // @symbol _ZN13dScMgMCarlo_c9RenderHudEv
 /* The ROM passes `this` and the body never reads it. Draw the deck
- * gauge while cards remain in the deck: the count -- data_ov006_0213d56c,
+ * gauge while cards remain in the deck: the count -- sMCarloDeckSize,
  * seeded with the deck size by SetupBoard and drained one card at a time
  * as the deal proceeds -- drawn as a number at (0xe8, 0x28), with the
  * gauge's frame sprite behind it at (0xe8, 0x18). */
 void dScMgMCarlo_c::RenderHud(void)
 {
-    int deck = data_ov006_0213d56c;
+    int deck = sMCarloDeckSize;
     if (deck == 0) return;
     Mg_DrawNumber(0xe8, 0x28, deck, -1, -1, 0, 0);
     Hud_RenderSprite((void*)data_ov006_02133f18, 0xe8, 0x18, -1, -1);
@@ -444,12 +443,12 @@ void dMgMCarloCardObj_c::DealIn(int slot)
     }
 
     if (mSlot >= 0x14) {
-        mX = (0x70 - ((data_ov006_0213d56c >> 2) << 1)) << 12;
+        mX = (0x70 - ((sMCarloDeckSize >> 2) << 1)) << 12;
         mY = -0x30000;
         sMCarloCardsTail = this;
         mState = CARD_ENTERING;
     } else if (mState == CARD_WAITING) {
-        mX = (0x70 - ((data_ov006_0213d56c >> 2) << 1)) << 12;
+        mX = (0x70 - ((sMCarloDeckSize >> 2) << 1)) << 12;
         mY = -0x30000;
         mState = CARD_MOVING;
         sMCarloCardsMoving++;
@@ -555,7 +554,7 @@ void dMgMCarloCardObj_c::Update(int slot)
         mDealDelay -= 1;
         if (mDealDelay != 0)
             return;
-        data_ov006_0213d56c--;
+        sMCarloDeckSize--;
         DealIn(slot);
         return;
 
@@ -696,7 +695,7 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
         data_ov006_0213d568 = 0xa;
     }
 
-    data_ov006_0213d56c = sMCarloRows * sMCarloCols;
+    sMCarloDeckSize = sMCarloRows * sMCarloCols;
     sMCarloCardTotal = sMCarloRows * sMCarloCols;
 
     do

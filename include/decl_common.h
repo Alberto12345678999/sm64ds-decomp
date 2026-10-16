@@ -746,8 +746,8 @@ extern int pmf_MascotWalker_StateWalk_2[2];
 extern int data_ov006_0213aee8[12];
 extern int data_ov006_0213b010;
 extern int data_ov006_0213b018;
-extern int data_ov006_0213b0ec;
-extern int data_ov006_0213b0f0;
+extern int sTrmp3DLives;
+extern int sTrmp2Lives;
 extern int pmf_Trmp3DMario_StateHardBounce[2];
 extern int pmf_Trmp2Mario_StateWallBounce_2[2];
 extern int pmf_Trmp3DMario_StateBounce[2];
@@ -759,7 +759,7 @@ extern int data_ov006_0213bcb0[];
 extern int data_ov006_0213bd48[];
 extern int data_ov006_0213c2e4[];
 extern int data_ov006_0213c954;
-extern int data_ov006_0213c958;
+extern int sHanaFieldWigglerCount;
 extern int data_ov006_0213cab8;
 extern int data_ov006_0213cb8c[3];
 extern int data_ov006_0213cbc8[];
@@ -768,7 +768,7 @@ extern int data_ov006_0213cce0[];
 extern int data_ov006_0213d0c4[];
 extern int data_ov006_0213d370[];
 extern int data_ov006_0213d564;
-extern int data_ov006_0213d56c;
+extern int sMCarloDeckSize;
 extern int sMCarloCardTotal;
 extern int sMCarloDealProgress;
 extern int data_ov006_0213d5b4[];
@@ -2185,7 +2185,7 @@ extern void*data_ov006_02139d18;
 extern void*data_ov006_02139d24[2];
 extern void*data_ov006_0213ac30;
 extern void*data_ov006_0213ac3c;
-extern void*data_ov006_0213b22c[];
+extern void *sTrmpBounceAnimTable[];
 extern void*data_ov006_0213c844;
 extern void*data_ov006_0213ca9c[];
 extern void*_ZTV11dScMgJump_c[];
@@ -2292,8 +2292,7 @@ extern void*vtbl_TextureTransformer[];
 extern volatile struct Matrix4x3 data_ov006_0213ad28;
 extern volatile unsigned short data_ov002_0210c208[];
 extern vu16 reg_G2S_DB_BG3PA;
-extern vu32*data_ov006_02137560[];
-
+extern vu32 *sHanaBackgroundParts[];
 
 #ifdef __cplusplus
 }

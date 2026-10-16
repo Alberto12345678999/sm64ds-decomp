@@ -1919,8 +1919,8 @@ data_ov006_0212e020 kind:data(any) addr:0x0212e020
 data_ov006_0212e024 kind:data(any) addr:0x0212e024
 data_ov006_0212e02c kind:data(any) addr:0x0212e02c
 data_ov006_0212e038 kind:data(any) addr:0x0212e038
-data_ov006_0212e044 kind:data(any) addr:0x0212e044
-data_ov006_0212e048 kind:data(any) addr:0x0212e048
+sTrmpStartTouchX kind:data(any) addr:0x0212e044
+sTrmpStartTouchY kind:data(any) addr:0x0212e048
 data_ov006_0212e04c kind:data(any) addr:0x0212e04c
 data_ov006_0212e050 kind:data(any) addr:0x0212e050
 data_ov006_0212e054 kind:data(any) addr:0x0212e054
@@ -2076,7 +2076,7 @@ data_ov006_0212ed00 kind:data(any) addr:0x0212ed00
 data_ov006_0212ed14 kind:data(any) addr:0x0212ed14
 data_ov006_0212ed24 kind:data(any) addr:0x0212ed24
 data_ov006_0212ed34 kind:data(any) addr:0x0212ed34
-data_ov006_0212ed4c kind:data(any) addr:0x0212ed4c
+sRouletteTileBounds kind:data(any) addr:0x0212ed4c
 sRouletteRowEdgesY kind:data(any) addr:0x0212ed68
 data_ov006_0212ed88 kind:data(any) addr:0x0212ed88
 data_ov006_0212ed8a kind:data(any) addr:0x0212ed8a
@@ -2163,7 +2163,7 @@ data_ov006_0212f328 kind:data(any) addr:0x0212f328
 data_ov006_0212f3ac kind:data(any) addr:0x0212f3ac
 data_ov006_0212f3b0 kind:data(any) addr:0x0212f3b0
 data_ov006_0212f3b4 kind:data(any) addr:0x0212f3b4
-data_ov006_0212f3bc kind:data(any) addr:0x0212f3bc
+sSnowballCourseTiles kind:data(any) addr:0x0212f3bc
 __sinit_d_mg3d_heyho_obj_adapter.cpp kind:function(arm,size=0x68) addr:0x0212f4c4
 __sinit_d_mg_jump3d_mario.cpp kind:function(arm,size=0x134) addr:0x0212f52c
 __sinit_ov006_0212f660 kind:function(arm,size=0x54) addr:0x0212f660
@@ -2752,7 +2752,7 @@ data_ov006_02137540 kind:data(any) addr:0x02137540
 data_ov006_02137548 kind:data(any) addr:0x02137548
 data_ov006_02137550 kind:data(any) addr:0x02137550
 data_ov006_02137558 kind:data(any) addr:0x02137558
-data_ov006_02137560 kind:data(any) addr:0x02137560
+sHanaBackgroundParts kind:data(any) addr:0x02137560
 data_ov006_02137590 kind:data(any) addr:0x02137590
 data_ov006_02137598 kind:data(any) addr:0x02137598
 data_ov006_021375a0 kind:data(any) addr:0x021375a0
@@ -2809,7 +2809,7 @@ data_ov006_021379f4 kind:data(any) addr:0x021379f4
 data_ov006_021379f8 kind:data(any) addr:0x021379f8
 data_ov006_02137a00 kind:data(any) addr:0x02137a00
 data_ov006_02137a04 kind:data(any) addr:0x02137a04
-data_ov006_02137a0c kind:data(any) addr:0x02137a0c
+sSmartballMarkerSprites kind:data(any) addr:0x02137a0c
 data_ov006_02137a18 kind:data(any) addr:0x02137a18
 data_ov006_02137a28 kind:data(any) addr:0x02137a28
 data_ov006_02137a38 kind:data(any) addr:0x02137a38
@@ -3308,8 +3308,8 @@ _ZTI16dMgJump3DMario_c kind:data(any) addr:0x0213b0a4
 _ZTS16dMgJump3DMario_c kind:data(any) addr:0x0213b0b0
 _ZTV16dMgJump3DMario_c kind:data(any) addr:0x0213b0cc
 data_ov006_0213b0d8 kind:data(any) addr:0x0213b0d8
-data_ov006_0213b0ec kind:data(any) addr:0x0213b0ec
-data_ov006_0213b0f0 kind:data(any) addr:0x0213b0f0
+sTrmp3DLives kind:data(any) addr:0x0213b0ec
+sTrmp2Lives kind:data(any) addr:0x0213b0f0
 pmf_Trmp3DMario_StateMissed kind:data(any) addr:0x0213b0f4
 pmf_Trmp2Mario_StateRespawnWait kind:data(any) addr:0x0213b0fc
 pmf_Trmp2Mario_StateHidden kind:data(any) addr:0x0213b104
@@ -3349,7 +3349,7 @@ pmf_Trmp3DMario_StateKnockedOut kind:data(any) addr:0x0213b20c
 pmf_Trmp2Mario_StateHidden_5 kind:data(any) addr:0x0213b214
 pmf_Trmp3DMario_StateOnLedge kind:data(any) addr:0x0213b21c
 pmf_Trmp3DMario_StateLand kind:data(any) addr:0x0213b224
-data_ov006_0213b22c kind:data(any) addr:0x0213b22c
+sTrmpBounceAnimTable kind:data(any) addr:0x0213b22c
 _ZTI23dMgTrmpRingObjAdapter_c kind:data(any) addr:0x0213b238
 _ZTI18dMgTrmpln3DMario_c kind:data(any) addr:0x0213b244
 _ZTI17dMgTrmpln2Mario_c kind:data(any) addr:0x0213b250
@@ -3657,7 +3657,7 @@ data_ov006_0213c85c kind:data(any) addr:0x0213c85c
 data_ov006_0213c88c kind:data(any) addr:0x0213c88c
 _ZTV12dScMg3DEsp_c kind:data(any) addr:0x0213c8c4
 data_ov006_0213c954 kind:data(any) addr:0x0213c954
-data_ov006_0213c958 kind:data(any) addr:0x0213c958
+sHanaFieldWigglerCount kind:data(any) addr:0x0213c958
 pmf_Wiggler_StateWait kind:data(any) addr:0x0213c95c
 pmf_dScMgHanachan_c_Phase_WaitIntro kind:data(any) addr:0x0213c964
 pmf_Wiggler_TurnTowardAim kind:data(any) addr:0x0213c96c
@@ -3840,7 +3840,7 @@ data_ov006_0213d45c kind:data(any) addr:0x0213d45c
 _ZTV14dScMgMemory2_c kind:data(any) addr:0x0213d4d4
 data_ov006_0213d564 kind:data(any) addr:0x0213d564
 data_ov006_0213d568 kind:data(any) addr:0x0213d568
-data_ov006_0213d56c kind:data(any) addr:0x0213d56c
+sMCarloDeckSize kind:data(any) addr:0x0213d56c
 sMCarloCardTotal kind:data(any) addr:0x0213d570
 sMCarloDealProgress kind:data(any) addr:0x0213d574
 _ZTI18dMgMCarloCardObj_c kind:data(any) addr:0x0213d578
@@ -4008,7 +4008,7 @@ data_ov006_0213e1b4 kind:data(any) addr:0x0213e1b4
 data_ov006_0213e1fc kind:data(any) addr:0x0213e1fc
 data_ov006_0213e24c kind:data(any) addr:0x0213e24c
 _ZTV12dScMgPanel_c kind:data(any) addr:0x0213e24c
-data_ov006_0213e2dc kind:data(any) addr:0x0213e2dc
+sRouletteResultIndex kind:data(any) addr:0x0213e2dc
 data_ov006_0213e2e0 kind:data(any) addr:0x0213e2e0
 pmf_RouletteBoard_StateSpin kind:data(any) addr:0x0213e2e8
 g_profile_MG_ROULETTE kind:data(any) addr:0x0213e2f0 ambiguous

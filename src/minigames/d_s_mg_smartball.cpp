@@ -398,7 +398,7 @@ extern OamAttr *data_ov006_02137a78[];
 extern OamAttr *data_ov006_02137a6c[];
 extern OamAttr *data_ov006_02138bd0[];
 extern OamAttr *data_ov006_02138bf4[];
-extern OamAttr *data_ov006_02137a0c[];
+extern OamAttr *sSmartballMarkerSprites[];
 extern OamAttr *data_ov006_02137a60[];
 extern OamAttr *data_ov006_02138a40[];
 extern OamAttr *data_ov006_02138a88[];
@@ -5638,21 +5638,21 @@ s32 dScMgSmartball_c::Render()
                 int mult;
                 switch (j) {
                 case 0:
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[1], 0x20, xpos, -1, -1);
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[1], 0x30, xpos, -1, -1);
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[1], 0x40, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[1], 0x20, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[1], 0x30, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[1], 0x40, xpos, -1, -1);
                     mult = 5000;
                     break;
                 case 1:
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[0], 0x20, xpos, -1, -1);
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[0], 0x30, xpos, -1, -1);
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[0], 0x40, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[0], 0x20, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[0], 0x30, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[0], 0x40, xpos, -1, -1);
                     mult = 8000;
                     break;
                 case 2:
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[2], 0x20, xpos, -1, -1);
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[2], 0x30, xpos, -1, -1);
-                    Mg_RenderSpriteBoth(data_ov006_02137a0c[2], 0x40, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[2], 0x20, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[2], 0x30, xpos, -1, -1);
+                    Mg_RenderSpriteBoth(sSmartballMarkerSprites[2], 0x40, xpos, -1, -1);
                     mult = 10000;
                     break;
                 }
