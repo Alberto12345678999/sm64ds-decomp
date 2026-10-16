@@ -2574,32 +2574,8 @@ src/Matrix4x3_ApplyInPlaceToTranslation.c:
 
 src/engine/heap/Heap.cpp:
     complete
-    .text start:0x0203c1b4 end:0x0203cbc0
+    .text start:0x0203c1b4 end:0x0203cc28
     .data start:0x02099d28 end:0x02099e18
-
-src/func_0203cbc0.c:
-    complete
-    .text start:0x0203cbc0 end:0x0203cbcc
-
-src/_ZN6Memory16operator_delete2EPv.cpp:
-    complete
-    .text start:0x0203cbcc end:0x0203cbd8
-
-src/_ZN6Memory13operator_new2Ej.cpp:
-    complete
-    .text start:0x0203cbd8 end:0x0203cbe4
-
-src/_Znwj.cpp:
-    complete
-    .text start:0x0203cbe4 end:0x0203cbf0
-
-src/_ZdlPv.cpp:
-    complete
-    .text start:0x0203cbf0 end:0x0203cc0c
-
-src/func_0203cc0c.c:
-    complete
-    .text start:0x0203cc0c end:0x0203cc28
 
 src/unnamed/arm9/0203/func_0203cc28.c:
     complete

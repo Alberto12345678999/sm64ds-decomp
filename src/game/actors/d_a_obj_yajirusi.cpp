@@ -57,6 +57,21 @@
 #include "decl_Platform.h"
 #include "decl_ShadowModel.h"
 
+/* The model and collision resource families each own an eight-byte handle.
+ * These local type spellings bind to the existing resource constructors and
+ * destructors; no new resource implementation is introduced. */
+struct YajirusiModelFile : SharedFilePtr {
+    u32 words[2];
+    YajirusiModelFile(u32 fileID);
+    ~YajirusiModelFile();
+};
+
+struct YajirusiCollisionFile : SharedFilePtr {
+    u32 words[2];
+    YajirusiCollisionFile(u32 fileID);
+    ~YajirusiCollisionFile();
+};
+
 /* One column of the table at 0x0213c380. Stride 0xc covers the other two
  * words of the same row; only `value` is read. */
 struct ArrowSignFileColumn {
@@ -245,3 +260,13 @@ void daObjYajirusi_c::func_ov098_02137c8c()
  * this class adds no member with a destructor of its own; D0 additionally
  * destroys through the base and returns the object to its heap via an inline
  * operator delete. */
+
+/* The PC actor slice retains its existing ROM-data/HAL resource setup;
+ * these resource-family constructor aliases belong to the NDS link. */
+#ifndef SM64DS_PLATFORM_PC
+/* Construction order follows the two models, then the two collision files. */
+YajirusiModelFile gYajirusiLModelFile(0x0497);
+YajirusiModelFile gYajirusiRModelFile(0x0499);
+YajirusiCollisionFile gYajirusiLCollisionFile(0x0498);
+YajirusiCollisionFile gYajirusiRCollisionFile(0x049a);
+#endif
