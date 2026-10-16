@@ -166,15 +166,15 @@ int Mascot_Construct(char *t);
 void Camera_InitPresenterView(void *self);
 void Presenter_UpdateMatrix(char* c);
 void Presenter_StateAnim7Loop(char *t);
-void Presenter_PlayAnim7Loop(void *c);
+void Presenter_PlayCheerLoop(void *c);
 void Presenter_StateAnim4(void* c);
-void Presenter_PlayAnim4(char* c);
+void Presenter_PlayLose(char *c);
 void Presenter_StateAnim7(void* c);
-void Presenter_PlayAnim7(void *c);
+void Presenter_PlayCheer(void *c);
 void Presenter_StateAnim1(char *t);
-void Presenter_PlayAnim1(char *c);
+void Presenter_PlayMiss(char *c);
 void Presenter_StateAnim2(char *t);
-void Presenter_PlayAnim2(void *c);
+void Presenter_PlayMatch(void *c);
 void Presenter_StateIdle(char* c);
 void Presenter_PlayIdle(char* c);
 void Presenter_ResetPose(char* c);
@@ -1088,21 +1088,22 @@ inline char *inline_fn(char *arg0)
   return arg0 + 8;
 }
 
-void Presenter_PlayAnim2(void *c)
-{
-  char *r4 = (char *) c;
-  unsigned long long new_var;
-  long long *new_var2;
-  if ((*((int *) (r4 + 0x1a8))) == 0)
-  {
-    func_02012174(0, 0x1c);
-  }
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(inline_fn(r4), *((void **) (r4 + 0x114)), 4, 0x40000000, 0x800, 0);
-  new_var2 = (long long *) r4;
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **) (r4 + 0x154)), 0x40000000, 0x800, 0);
-  _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &data_ov006_0213aea8, 0x40000000, 0x800, 0);
-  new_var = pmf_Presenter_StateAnim2;
-  *new_var2 = new_var;
+void Presenter_PlayMatch(void *c) {
+    char *r4 = (char *)c;
+    unsigned long long new_var;
+    long long *new_var2;
+    if ((*((int *)(r4 + 0x1a8))) == 0) {
+        func_02012174(0, 0x1c);
+    }
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(inline_fn(r4), *((void **)(r4 + 0x114)), 4,
+                                                       0x40000000, 0x800, 0);
+    new_var2 = (long long *)r4;
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **)(r4 + 0x154)),
+                                                       0x40000000, 0x800, 0);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &data_ov006_0213aea8,
+                                                          0x40000000, 0x800, 0);
+    new_var = pmf_Presenter_StateAnim2;
+    *new_var2 = new_var;
 }
 }
 }
@@ -1125,8 +1126,7 @@ extern int pmf_Presenter_StateAnim1[];
 
 struct W2 { int w[2]; };
 
-void Presenter_PlayAnim1(char *c)
-{
+void Presenter_PlayMiss(char *c) {
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void **)(c + 0x10c), 4, 0x40000000, 0x800, 0);
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void **)(c + 0x14c), 0x40000000, 0x800, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(c + 0xdc, data_ov006_0213ae60, 0x40000000, 0x800, 0);
@@ -1150,17 +1150,18 @@ namespace s020c2594 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae90; }
 extern "C" { extern volatile long long pmf_Presenter_StateAnim7; }
-void Presenter_PlayAnim7(void *c)
-{
-  char *r4 = (char *) c;
-  if ((*((int *) (r4 + 0x1a8))) == 0)
-  {
-    func_02012174(0, 3);
-  }
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *((void **) (r4 + 0x13c)), 8, 0x40000000, 0x800, 0);
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **) (r4 + 0x17c)), 0x40000000, 0x800, 0);
-  _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &data_ov006_0213ae90, 0x40000000, 0x800, 0);
-  *((long long *) r4) = pmf_Presenter_StateAnim7;
+void Presenter_PlayCheer(void *c) {
+    char *r4 = (char *)c;
+    if ((*((int *)(r4 + 0x1a8))) == 0) {
+        func_02012174(0, 3);
+    }
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *((void **)(r4 + 0x13c)), 8,
+                                                       0x40000000, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **)(r4 + 0x17c)),
+                                                       0x40000000, 0x800, 0);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &data_ov006_0213ae90,
+                                                          0x40000000, 0x800, 0);
+    *((long long *)r4) = pmf_Presenter_StateAnim7;
 }
 }
 }
@@ -1185,12 +1186,16 @@ extern "C" {
 struct G2 { int w[2]; };
 extern "C" { extern struct G2 pmf_Presenter_StateAnim4; }
 extern "C" { extern void* data_ov006_0213ae30; }
-void Presenter_PlayAnim4(char* c){
-  if (*(int*)(c + 0x1a8) == 0) _ZN5Sound12PlayBank2_2DEj(0x1c9);
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void**)(c + 0x124), 0, 0x40000000, 0x800, 0);
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void**)(c + 0x164), 0x40000000, 0x800, 0);
-  _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(c + 0xdc, (void*)&data_ov006_0213ae30, 0x40000000, 0x800, 0);
-  *(struct G2*)c = pmf_Presenter_StateAnim4;
+void Presenter_PlayLose(char *c) {
+    if (*(int *)(c + 0x1a8) == 0)
+        _ZN5Sound12PlayBank2_2DEj(0x1c9);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void **)(c + 0x124), 0, 0x40000000,
+                                                       0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void **)(c + 0x164), 0x40000000,
+                                                       0x800, 0);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(c + 0xdc, (void *)&data_ov006_0213ae30,
+                                                          0x40000000, 0x800, 0);
+    *(struct G2 *)c = pmf_Presenter_StateAnim4;
 }
 }
 }
@@ -1213,18 +1218,19 @@ namespace s020c2300 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae90; }
 extern "C" { extern long long pmf_Presenter_StateAnim7Loop; }
-void Presenter_PlayAnim7Loop(void *c)
-{
-  long long new_var;
-  char *r4 = (char *) c;
-  if ((*((int *) (((char *) c) + 0x1a8))) == 0)
-  {
-    func_02012174(0, 3);
-  }
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *((void **) (r4 + 0x13c)), 8, 0x40000000, 0x800, 0);
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **) (r4 + 0x17c)), 0x40000000, 0x800, 0);
-  _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &data_ov006_0213ae90, 0x40000000, 0x800, 0);
-  *((long long *) r4) = (new_var = pmf_Presenter_StateAnim7Loop & 0xFFFFFFFFFFFFFFFF);
+void Presenter_PlayCheerLoop(void *c) {
+    long long new_var;
+    char *r4 = (char *)c;
+    if ((*((int *)(((char *)c) + 0x1a8))) == 0) {
+        func_02012174(0, 3);
+    }
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *((void **)(r4 + 0x13c)), 8,
+                                                       0x40000000, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **)(r4 + 0x17c)),
+                                                       0x40000000, 0x800, 0);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &data_ov006_0213ae90,
+                                                          0x40000000, 0x800, 0);
+    *((long long *)r4) = (new_var = pmf_Presenter_StateAnim7Loop & 0xFFFFFFFFFFFFFFFF);
 }
 }
 }
