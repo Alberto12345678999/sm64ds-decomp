@@ -572,7 +572,7 @@
     {
       "from": "@441",
       "to": "@425",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @439 now; licensed under the existing pin @425"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @441 now; licensed under the existing pin @425"
     }
   ],
   "symbol_binding_rewrites": [

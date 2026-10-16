@@ -18,8 +18,6 @@
  *   header form takes Fix12<int> by value (6az).
  * Leftover: g_profile_WARPKUN stays outside the TU (S14): this entry owns
  *   .text only.
- * Leftover: Behavior's widened `isPlayer` bool: folding it into the if
- *   above changes the function size and DIFFs (S8, measured in this TU).
  */
 
 #include "daWarpkun_c.h"
