@@ -50,7 +50,7 @@ one is meaningless while the other is loaded.
 
 ## Observed so far (melonDS 1.1, EU ROM, 2026-10-15)
 
-Logged with `build/melonds/mgwatch.py` (local, not in the repo) plus window
+Logged with `tools/trace/mg/mgwatch.py` (setup in that folder's README) plus window
 screenshots, over two games of Wanted! (Luigi):
 - `MiniGm_IsNew` polls menu rows 0-3 and 7 every frame; picking Wanted! ran `MiniGm_ClearNew(3)` once. The badge names are confirmed, and Wanted! is row 3.
 - Banner 0xd, shown at (0x80, 0xa8) at each new level, is the "LEVEL n" text.
@@ -66,7 +66,7 @@ screenshots, over two games of Wanted! (Luigi):
 - The stub accepts one client per melonDS launch. A second attach after `D` timed out and left the game halted. Restart melonDS (and re-enable `[Instance0.Gdb]`, which melonDS can rewrite to false) before reattaching.
 - State 1, explained: Luigi enters it only when `mLevel % 5 == 4`, so after every fifth level, and otherwise restarts the round directly. A four-level game never entered it. On screen it is the fade into level 6, with the poster halves split aside. `MG_STATE_NEXT_ROUND` is confirmed. A nine-level game showed it exactly once, between level 5's and level 6's banners.
 - PLAY AGAIN after game over calls `Mg_CallStartRound` with 0x12, the finished state's number. Retry also goes through `StartRound(state)`.
-- Toad's face slot game (`dScMgSlot3_c`, Mario's page 2, middle card) was played with taps timed by a colour tracker (`build/melonds/slotbot.py`, local). Toad projects a target face, and three strips of caps, eyes and mouths scroll. A touch in DS y 0x40/0x58/0x70 stops that row on the next slot (`Slot3_State1`). The run starts at 12 coins (`StartRound(3)`).
+- Toad's face slot game (`dScMgSlot3_c`, Mario's page 2, middle card) was played with taps timed by a colour tracker (`tools/trace/mg/slotbot.py`). Toad projects a target face, and three strips of caps, eyes and mouths scroll. A touch in DS y 0x40/0x58/0x70 stops that row on the next slot (`Slot3_State1`). The run starts at 12 coins (`StartRound(3)`).
   - A miss gave three `Mg_SubCredits(1)` (`Slot3_State3and4`, local state 4) and the counter went 12 → 9 → 6.
   - A Wario column on the right gave three `Mg_AddCredits(1)` (local state 3; the middle column pays 6) and the counter went 6 → 9. A star appeared by Toad (`mHudScore`, rounds won). Then `StartRound(4)`: banner 0xd, Yoshi as the new target, and a fourth face in each strip (`mStripLength` 3 → 4).
   - **`mCredits` is coins here**, moved one coin per tick. Slot3 settles a round in its own state machine and never calls `Mg_SetSharedState` for a win or a loss. Only an empty purse reaches `MG_STATE_GAME_OVER` (`Slot3_State6`).
