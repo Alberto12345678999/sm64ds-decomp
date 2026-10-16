@@ -37,7 +37,7 @@ CHECKS = [
     ('wiggler pass',      r'^Wiggler_DrawPass[AB]$'),
     ('trampoline item',   r'^TrmpItem_SetMotion\d$'),
     ('pachinko flyer/bg', r'^Pachinko(Flyer_State0|Bg_Start|Fx_Spawn)$'),
-    ('teresa sprites',    r'^_ZN13dScMgTeresa_c\d+(Exclaim_Spawn|VanishPuff_Spawn|FoundNumber_Spawn|Reveal_State0)Ei$'),
+    ('teresa sprites',    r'^_ZN13dScMgTeresa_c\d+(Exclaim_Spawn|FoundMark_Spawn|RisingIcon_Spawn|Reveal_State0)Ei$'),
 ]
 MAX_HITS = 400
 # per-frame pollers: a few hits are enough
