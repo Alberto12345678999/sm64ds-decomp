@@ -106,7 +106,7 @@ extern BCA_File **sJump3DAnimTable[];
 /* Tuning words, read as plain ints. */
 extern int sJump3DBounceVy;
 extern int sJump3DRiseVy;
-extern int data_ov006_0213b014;
+extern int sJump3DStartVx;
 extern int sJump3DFallSpeed;
 extern int sJump3DGravityStep;
 extern int sJump3DMoveSpeed;
@@ -196,7 +196,7 @@ extern "C" void Jump3D_SetTuning(int a)
     sJump3DGravityStep = (int)(((long long)a * 0xe0 + 0x800) >> 12);
     sJump3DRiseVy = (int)(((long long)b * 0x4c00 + 0x800) >> 12);
     sJump3DMoveSpeed = (int)(((long long)b * 0x200 + 0x800) >> 12);
-    data_ov006_0213b014 = (int)(((long long)b * 0x180 + 0x800) >> 12);
+    sJump3DStartVx = (int)(((long long)b * 0x180 + 0x800) >> 12);
     sJump3DBounceVy = (int)(((long long)b * 0x5000 + 0x800) >> 12);
 }
 
@@ -338,7 +338,7 @@ extern "C" void Jump3D_StartRoundLayout(void)
         ((dMgJump3DMario_c *)(sJump3DMarioPool + ooff))->StartWindUp((short)word);
         *(int *)(sJump3DMarioPool + ooff + 0x14) = *(int *)(e + 4);
         {
-            int s = data_ov006_0213b014;
+            int s = sJump3DStartVx;
             int c = *(int *)(e + 8);
             *(int *)(sJump3DMarioPool + ooff + 0x20) = (int)(((long long)s * c + 0x800) >> 12);
         }

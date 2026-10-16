@@ -3285,7 +3285,7 @@ _ZTI22dMg3DHeyhoObjAdapter_c kind:data(any) addr:0x0213b000
 sJump3DBounceVy kind:data(any) addr:0x0213b008
 sJump3DRiseVy kind:data(any) addr:0x0213b00c
 sJump3DFallSpeed kind:data(any) addr:0x0213b010
-data_ov006_0213b014 kind:data(any) addr:0x0213b014
+sJump3DStartVx kind:data(any) addr:0x0213b014
 sJump3DGravityStep kind:data(any) addr:0x0213b018
 sJump3DMoveSpeed kind:data(any) addr:0x0213b01c
 pmf_dMgJump3DMario_c_StateMove kind:data(any) addr:0x0213b020
@@ -3964,7 +3964,7 @@ data_ov006_0213dc94 kind:data(any) addr:0x0213dc94
 @2256 kind:data(any) addr:0x0213dd1c
 @2286 kind:data(any) addr:0x0213dd24
 @2280 kind:data(any) addr:0x0213dd2c
-data_ov006_0213dd34 kind:data(any) addr:0x0213dd34
+sPanelFlipFrameSprites kind:data(any) addr:0x0213dd34
 _ZTI12dScMgPanel_c kind:data(any) addr:0x0213dd40
 sPanelPuzzleXPerMode kind:data(any) addr:0x0213dd4c
 sPanelPuzzleYPerMode kind:data(any) addr:0x0213dd58

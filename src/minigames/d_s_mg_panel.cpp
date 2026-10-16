@@ -1090,7 +1090,7 @@ void dScMgPanel_c::DrawPanels()
 {
     PanelObj_ab4 *scene = (PanelObj_ab4 *)this;
     extern void *sPanelSprites[];
-    extern u8 data_ov006_0213dd34[];
+    extern u8 sPanelFlipFrameSprites[];
     int x;
     int y;
     int v;
@@ -1115,7 +1115,7 @@ void dScMgPanel_c::DrawPanels()
             index = k * 3;
             if (t == 1) {
                 int h = scene->harr[i];
-                index = data_ov006_0213dd34[k * 5 + h];
+                index = sPanelFlipFrameSprites[k * 5 + h];
             }
 
             Mg_RenderSubSpritePalMtx(sPanelSprites[index], x, y, -1, v, 0);
