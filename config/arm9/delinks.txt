@@ -3646,21 +3646,13 @@ src/unnamed/arm9/0205/func_0205938c.c:
     complete
     .text start:0x0205938c end:0x020593a8
 
-src/_ZN4CP1510EnableDTCMEv.cpp:
+src/engine/cp15/CP15_TCM.cpp:
     complete
-    .text start:0x020593a8 end:0x020593b8
+    .text start:0x020593a8 end:0x020593cc
 
-src/_ZN4CP1518GetDTCMBaseAddressEv.cpp:
+src/engine/cp15/CP15_ProtectionUnit.cpp:
     complete
-    .text start:0x020593b8 end:0x020593cc
-
-src/_ZN4CP159EnableMPUEv.cpp:
-    complete
-    .text start:0x020593cc end:0x020593dc
-
-src/_ZN4CP1510DisableMPUEv.cpp:
-    complete
-    .text start:0x020593dc end:0x020593ec
+    .text start:0x020593cc end:0x020593ec
 
 src/_ZN4CP1514MPUDataRegion1Ej.cpp:
     complete

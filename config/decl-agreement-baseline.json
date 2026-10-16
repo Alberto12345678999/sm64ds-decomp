@@ -7386,16 +7386,6 @@
         "return:int"
       ]
     },
-    "_ZN4CP1510DisableMPUEv": {
-      "src/unnamed/arm9/0205/func_0205950c.c": [
-        "return:void"
-      ]
-    },
-    "_ZN4CP1510EnableDTCMEv": {
-      "src/engine/model/Model4.cpp": [
-        "return:void"
-      ]
-    },
     "_ZN4CP1527FlushAndInvalidateDataCacheEjj": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 void *"
@@ -7409,11 +7399,6 @@
       ],
       "src/unnamed/arm9/0204/func_020499bc.c": [
         "param:#1 void *"
-      ]
-    },
-    "_ZN4CP159EnableMPUEv": {
-      "src/unnamed/arm9/0205/func_0205950c.c": [
-        "return:void"
       ]
     },
     "_ZN5mHeap6Heap_t10ReallocateEPvj": {
