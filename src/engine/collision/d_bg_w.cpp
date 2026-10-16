@@ -90,8 +90,12 @@ extern "C" void func_020395fc(dBgW *collider, dActor_c *actor) {
 // @symbol _ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b
 bool dBgCh::ShouldPassThroughImpl(void *p, const CLPS &clps_, const dBgCh &bg_, bool flag)
 {
-    /* The CLPS predicates and the dBgCh flag tests are C helpers that take
-       raw word and byte views. */
+    /* Each special surface asks whether the query detects its kind, through
+       dBgCh::mDetectFlags: a water surface (CLPS 0x20) needs the water bit
+       (2), CLPS bit 0x02000000 needs the toxic bit (8). A surface no rule
+       covers stops only queries that detect ordinary ground (bit 1). The
+       CLPS predicates and the flag tests are C helpers taking raw word and
+       byte views. */
     int *clps = (int *)&clps_;
     unsigned char *bg = (unsigned char *)&bg_;
     bool ruleApplies = false;

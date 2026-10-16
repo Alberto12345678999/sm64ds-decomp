@@ -163,7 +163,15 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere)
 {
     Vector3 centre;
     Vector3 localCentre;
-    int d[12];
+    /* The local query's broad-phase box, and the same box scaled back out.
+       Plain words: Vector3 declares a destructor. */
+    struct BoxCorner {
+        s32 x, y, z;
+    };
+    struct {
+        BoxCorner localMin, localMax;
+        BoxCorner worldMin, worldMax;
+    } box;
     int inverseScale;
     int radius1;
     int radius2;
@@ -183,14 +191,15 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere)
     func_02035394(&loc, &sphere);
     r = dBgW_Kc::DetectClsn(loc);
     if (r) {
-        loc.func_02037a04((Vector3 *)d, (Vector3 *)(d + 3));
-        d[6] = FX_MUL(d[0], scale);
-        d[7] = FX_MUL(d[1], scale);
-        d[8] = FX_MUL(d[2], scale);
-        d[9] = FX_MUL(d[3], scale);
-        d[10] = FX_MUL(d[4], scale);
-        d[11] = FX_MUL(d[5], scale);
-        sphere.func_02037a6c(d[6], d[7], d[8], d[9], d[10], d[11]);
+        loc.func_02037a04((Vector3 *)&box.localMin, (Vector3 *)&box.localMax);
+        box.worldMin.x = FX_MUL(box.localMin.x, scale);
+        box.worldMin.y = FX_MUL(box.localMin.y, scale);
+        box.worldMin.z = FX_MUL(box.localMin.z, scale);
+        box.worldMax.x = FX_MUL(box.localMax.x, scale);
+        box.worldMax.y = FX_MUL(box.localMax.y, scale);
+        box.worldMax.z = FX_MUL(box.localMax.z, scale);
+        sphere.func_02037a6c(box.worldMin.x, box.worldMin.y, box.worldMin.z, box.worldMax.x,
+                             box.worldMax.y, box.worldMax.z);
         (dBgPi &)sphere = (dBgPi &)loc;
         sphere.flags |= 1;
         if (loc.flags & 4) {
