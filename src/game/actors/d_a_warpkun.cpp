@@ -30,6 +30,10 @@
    reads mPlayerNo / CanWarp off it. No shared header names the id. */
 static const u16 kPlayerActorID = 0xbf;
 
+static inline int IsPlayerActor(dActor_c *actor) {
+    return actor->actorID == kPlayerActorID;
+}
+
 /* The one file-scope extern "C" region. IsPlayerWarping / WarpPlayer come
    from decl_common.h; these two wrappers stay TU-local per S13. */
 extern "C" {
@@ -83,18 +87,13 @@ s32 daWarpkun_c::Behavior()
     if (hitId != 0) {
         if (mAngleY == 0) {
             dActor_c *hit = dActor_c::FindWithID(hitId);
-            if (hit != 0) {
-                /* Widened bool: folding this into the if above changes
-                   Behavior's size and DIFFs (S8). */
-                int isPlayer = (hit->actorID == kPlayerActorID) ? 1 : 0;
-                if (isPlayer != 0) {
-                    Player *player = (Player *)hit;
-                    if (IsPlayerWarping(player->mPlayerNo) != 0) {
-                        mAngleY = 1;
-                    } else if (player->CanWarp()) {
-                        u32 warpParam = (param1 >> 0xc) + 1;
-                        WarpPlayer(player->mPlayerNo, warpParam & 0xff);
-                    }
+            if (hit != 0 && IsPlayerActor(hit)) {
+                Player *player = (Player *)hit;
+                if (IsPlayerWarping(player->mPlayerNo) != 0) {
+                    mAngleY = 1;
+                } else if (player->CanWarp()) {
+                    u32 warpParam = (param1 >> 0xc) + 1;
+                    WarpPlayer(player->mPlayerNo, warpParam & 0xff);
                 }
             }
         }
