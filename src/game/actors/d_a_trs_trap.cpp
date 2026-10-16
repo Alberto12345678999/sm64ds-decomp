@@ -53,8 +53,10 @@
  * - The four state bodies are members under their func_ov063_* names (the
  *   dispatch table's PMF records need member functions); the matrix refreshes,
  *   the settle step, the merry-go-round occupancy test and the book-switch
- *   callback keep C linkage and the byte-matching char-offset bodies they
- *   matched with as separate files.
+ *   callback keep the C linkage they matched with as separate files; they
+ *   take the daTrsTrap_c and read its members.
+ * - The trapdoor state adds mAngVelX to mAngleX through *(s16 *)(this + 0x8c):
+ *   the member spelling, and *(s16 *)&mAngleX, both change its codegen.
  * - Behavior names mStateTimer directly at both sites (TRAP-2709
  *   experiment: unified spelling matches).
  * - +0x418 on the spawned BOOK_SWITCH is daBookGen_c's, which has no header;
@@ -122,9 +124,9 @@ struct TrsTrapCollisionFilePtr : SharedFilePtr {
 extern "C" {
 /* This TU's matrix/collision refresh and the occupancy test, called before
    their definitions; the mesh callback lives in the factory unit. */
-void func_ov063_0211c684(char *c);
-void func_ov063_0211c6f8(char *c);
-void func_ov063_0211c82c(char *c);
+void func_ov063_0211c684(char *p);
+void func_ov063_0211c6f8(daTrsTrap_c *c);
+void func_ov063_0211c82c(char *p);
 void func_ov063_0211d28c(dBgW *clsn, daTrsTrap_c *self, dActor_c *actor);
 /* dBgW callback-word stores (see above). */
 void func_020393d4(int *p, int v);
@@ -133,8 +135,6 @@ void func_020393c4(int *p, int v);
    free definition declares it; only the TU-local linkage differs. */
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *f, const Matrix4x3 *m, int fx, short s, void *b);
-/* dBgW_KcMbg::Transform: dBgW_KcMbg.h notes it keeps a free definition. */
-void _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void *self, const Matrix4x3 &mtx, short s);
 
 extern Matrix4x3 data_020a0e68;             /* the shared scratch matrix */
 /* Staircase settle offsets, one signed byte per frame 0..3. */
@@ -151,6 +151,11 @@ u8 IsAreaShowing(int idx);
 unsigned int func_02012790(unsigned int);
 }
 
+/* InitResources tests the profile's actor id as a 0/1 value. */
+static inline int IsActorType(u16 actorType, int id) {
+    return actorType == id;
+}
+
 /* Out of line, and FIRST in this ROM-ascending file: that puts D1 and D0 at
  * 0x0211c600 / 0x0211c638, the two lowest addresses in the unit, and makes
  * this TU the one that emits the vtable. mwcc also emits D2, which the ROM
@@ -162,37 +167,35 @@ daTrsTrap_c::~daTrsTrap_c()
 }
 
 /* The model matrix: position (>> 3) and the three angles, into
-   mModel.mat4x3 at 0xf0. Called from Behavior. */
+   mModel.mat4x3 at 0xf0. Called from Behavior. Takes char *, as
+   decl_common.h declares it. */
 // @symbol func_ov063_0211c684
-extern "C" void func_ov063_0211c684(char *c)
-{
+extern "C" void func_ov063_0211c684(char *p) {
+    daTrsTrap_c *c = (daTrsTrap_c *)p;
     int v[3];
-    Vec3_Asr(v, c + 0x5c, 3);
+    Vec3_Asr(v, &c->mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
-        *(short *)(c + 0x8c), *(short *)(c + 0x8e), *(short *)(c + 0x90));
-    *(Matrix4x3 *)(c + 0xf0) = data_020a0e68;
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
+    c->mModel.mat4x3 = data_020a0e68;
 }
 
 /* The collision matrix mClsnMat from position and angles, then the moving
    mesh follows it. Called from InitResources and Behavior. */
 // @symbol func_ov063_0211c6f8
-extern "C" void func_ov063_0211c6f8(char *c)
-{
-    Matrix4x3_FromTranslation(&data_020a0e68, *(int *)(c + 0x5c), *(int *)(c + 0x60), *(int *)(c + 0x64));
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, *(short *)(c + 0x8c), *(short *)(c + 0x8e), *(short *)(c + 0x90));
-    *(Matrix4x3 *)(c + 0x324) = data_020a0e68;
-    _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(c + 0x15c, *(Matrix4x3 *)(c + 0x324), *(short *)(c + 0x8e));
+extern "C" void func_ov063_0211c6f8(daTrsTrap_c *c) {
+    Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX, c->mPosY, c->mPosZ);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
+    c->mClsnMat = data_020a0e68;
+    c->mMovingMeshCollider.Transform(c->mClsnMat, c->mAngleY);
 }
 
 /* Staircase settle: frames 0..3 nudge mPosY by the signed table entry
    (<< 12); any later frame reports done. */
 // @symbol func_ov063_0211c770
-extern "C" int func_ov063_0211c770(unsigned char *c, int idx)
-{
+extern "C" int func_ov063_0211c770(daTrsTrap_c *c, int idx) {
     if ((unsigned int)idx > 3 || (short)idx < 0)
         return 1;
-    (*(int *)(((int)c + 0x60))) += data_ov063_0211e26c[idx] << 12;
+    c->mPosY += data_ov063_0211e26c[idx] << 12;
     return 0;
 }
 
@@ -215,18 +218,18 @@ void daTrsTrap_c::func_ov063_0211c7b0()
 
 /* Merry-go-round occupancy. The first call only latches mInitLatch; after
    that mOccupiedFlag is set while a rider stands on the mesh or the area is
-   showing. */
+   showing. Takes char *, as decl_common.h declares it. */
 // @symbol func_ov063_0211c82c
-extern "C" void func_ov063_0211c82c(char *c)
-{
-    if (*(unsigned char *)(c + 0x152) == 0) {
-        *(unsigned char *)(((int)c + 0x152)) += 1;
+extern "C" void func_ov063_0211c82c(char *p) {
+    daTrsTrap_c *c = (daTrsTrap_c *)p;
+    if (c->mInitLatch == 0) {
+        c->mInitLatch += 1;
         return;
     }
-    if (*(int *)(c + 0x124) != 0 || IsAreaShowing(*(signed char *)(c + 0xcc))) {
-        *(unsigned char *)(c + 0x153) = 1;
+    if (c->mStandingActor != 0 || IsAreaShowing(c->mAreaId)) {
+        c->mOccupiedFlag = 1;
     } else {
-        *(unsigned char *)(c + 0x153) = 0;
+        c->mOccupiedFlag = 0;
     }
 }
 
@@ -237,7 +240,7 @@ extern "C" void func_ov063_0211c82c(char *c)
 void daTrsTrap_c::func_ov063_0211c89c()
 {
     Vector3 pp;
-    char *p;
+    dActor_c *p;
 
     mAreaId = ~0;
     if (IsAreaShowing(mSavedAreaId) == 0) {
@@ -245,9 +248,9 @@ void daTrsTrap_c::func_ov063_0211c89c()
         mAreaId = mSavedAreaId;
         return;
     }
-    p = (char *)ClosestPlayer();
+    p = (dActor_c *)ClosestPlayer();
     {
-        int *q = (int *)(p + 0x5c);
+        int *q = &p->mPosX;
         pp.x = q[0];
         pp.y = q[1];
         pp.z = q[2];
@@ -305,11 +308,10 @@ void daTrsTrap_c::func_ov063_0211c89c()
 /* Book-switch callback: ORs switch bit m into mBookFlags, then the right or
    wrong chime -- the order is 1, then 1|2, then all three. */
 // @symbol func_ov063_0211cae8
-extern "C" void func_ov063_0211cae8(unsigned char *c, int m)
-{
-    unsigned char *p = (unsigned char *)(c + 0x157);
+extern "C" void func_ov063_0211cae8(daTrsTrap_c *c, int m) {
+    unsigned char *p = &c->mBookFlags;
     *p |= m;
-    unsigned char v = c[0x157] & 7;
+    unsigned char v = c->mBookFlags & 7;
     if (v != 1 && v != 3 && v != 7) {
         func_02012790(0xe);
         return;
@@ -319,7 +321,8 @@ extern "C" void func_ov063_0211cae8(unsigned char *c, int m)
 
 /* Trapdoor state. While an actor stands on it, mAngVelX tilts toward the
    rider's z offset; with nobody on it the door swings back and stops at
-   level. The tilt is applied twice in the standing case, as in the ROM. */
+   level. The tilt is applied twice in the standing case, as in the ROM.
+   mAngleX is written through its raw address (see the banner). */
 // @symbol _ZN11daTrsTrap_c19func_ov063_0211cb54Ev
 void daTrsTrap_c::func_ov063_0211cb54()
 {
@@ -353,9 +356,6 @@ void daTrsTrap_c::func_ov063_0211cc18()
 {
     int limit;
     daTrsTrap_c *other;
-    unsigned char *pst;
-    int *p60;
-    int *p144;
 
     limit = data_ov063_0211e270[mStepIndex];
     other = (daTrsTrap_c *)dActor_c::FindWithID(mParentUniqueID);
@@ -373,39 +373,30 @@ void daTrsTrap_c::func_ov063_0211cc18()
     case 0:
         mPosY = mHomePosY;
         mRiseProgress = 0;
-        pst = &mState;
-        *pst = (unsigned char)(*pst + 1);
+        mState++;
         /* fallthrough */
     case 1:
-        p60 = &mPosY;
-        p144 = &mRiseProgress;
-        *p60 = *p60 + 0x8000;
-        *p144 = *p144 + 8;
+        mPosY += 0x8000;
+        mRiseProgress += 8;
         mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, *(Vector3 *)&mCamSpacePosX, 0);
         if (mRiseProgress <= limit)
             return;
         mRiseProgress = limit;
         mPosY = mHomePosY + (limit << 12);
-        pst = &mState;
-        *pst = (unsigned char)(*pst + 1);
+        mState++;
         return;
     case 2:
         if (mStateTimer == 0)
             Sound::PlayBank3(0x3d, *(Vector3 *)&mCamSpacePosX);
-        if (func_ov063_0211c770((unsigned char *)this, mStateTimer) != 0) {
-            pst = &mState;
-            *pst = (unsigned char)(*pst + 1);
-        }
+        if (func_ov063_0211c770(this, mStateTimer) != 0)
+            mState++;
         return;
     case 3:
         if (mStepIndex == 2) {
-            if (Sound::PlaySecretSound(this, &mSoundTimer) != 0) {
-                pst = &mState;
-                *pst = (unsigned char)(*pst + 1);
-            }
+            if (Sound::PlaySecretSound(this, &mSoundTimer) != 0)
+                mState++;
         } else {
-            pst = &mState;
-            *pst = (unsigned char)(*pst + 1);
+            mState++;
         }
         return;
     case 4:
@@ -451,13 +442,12 @@ int daTrsTrap_c::Behavior()
     int idx = mIndex;
     (this->*data_ov063_0211ef38[idx])();
     /* Count frames in state; restart on transition. */
-    u16 *ctr = &mStateTimer;
-    *ctr = *ctr + 1;
+    mStateTimer++;
     if (before != mState) {
         mStateTimer = 0;
     }
     func_ov063_0211c684((char *)this);
-    func_ov063_0211c6f8((char *)this);
+    func_ov063_0211c6f8(this);
     mStandingActor = 0;
     return 1;
 }
@@ -480,8 +470,6 @@ int daTrsTrap_c::Behavior()
 int daTrsTrap_c::InitResources()
 {
     char *c = (char *)this;
-    int is41;
-    int t;
     u16 actorType;
     s32 param;
     s32 dx;
@@ -493,17 +481,14 @@ int daTrsTrap_c::InitResources()
     param = param1;
     mStepIndex = ((u32)param >> 8) & 3;
     mParentUniqueID = 0;
-    is41 = 1;
-    mVisible = is41;
+    mVisible = 1;
     actorType = actorID;
-    if (actorType != 0x41)
-        is41 = 0;
-    if (is41 != false) {
+    if (IsActorType(actorType, 0x41)) {
         mIndex = 0;
         if (mStepIndex == 0) {
             bit = param1 & 1;
             dx = (bit ^ 1) * 0xc8000;
-            if (bit != false)
+            if (bit)
                 mVisible = 0;
             mPosY = mPosY - 0x258000 + dx;
             pos.x = mPosX;
@@ -517,18 +502,12 @@ int daTrsTrap_c::InitResources()
                 ((daTrsTrap_c *)sp)->mVisible = mVisible;
             }
         }
+    } else if (IsActorType(actorType, 0xa0)) {
+        mIndex = 1;
+    } else if (IsActorType(actorType, 0x9e)) {
+        mIndex = 2;
     } else {
-        t = (int)(actorType == 0xa0);
-        if (t != false) {
-            mIndex = 1;
-        } else {
-            t = (int)(actorType == 0x9e);
-            if (t != false) {
-                mIndex = 2;
-            } else {
-                mIndex = 3;
-            }
-        }
+        mIndex = 3;
     }
 
     mHomePosX = mPosX;
@@ -548,7 +527,7 @@ int daTrsTrap_c::InitResources()
             *data_ov063_0211e27c[mIndex]), 1, -1) == 0)
         return 0;
 
-    func_ov063_0211c6f8(c);
+    func_ov063_0211c6f8(this);
 
     {
         int m = mIndex;
