@@ -665,7 +665,7 @@ The two Marios share their first five fields with the line code's jumper view (`
 
 ## Pass 8 (2026-10-16): the data tables
 
-About 470 more data symbols are named, mostly from the files they load and the strings they hold. Two facts about language order did most of the work:
+About 490 more data symbols are named, mostly from the files they load and the strings they hold. Two facts about language order did most of the work:
 
 - **`GetGameLanguage()` indexes 0 English, 1 Spanish, 2 French, 3 German, 4 Italian.** Every five-word handle table indexed by it resolves (`tools/asset_catalog.py`) to one file's variants in that order: `d_2d_mg_card_ncg`, `_S_`, `_F_`, `_G_`, `_I_`. Those tables are named `s<Game><File>NcgByLanguage` (`sCardNcgByLanguage`, `sSlotPauseBgNcgByLanguage`, `sMgOptionNcgByLanguage` ...).
 - **`GetOwnerLanguage()` is the DS firmware order** (2 French, 3 German, 4 Italian, 5 Spanish). Smartball chooses its line sprites and its layout file name from it, so those are `sSmartballLineSprites{French,German,Italian,Spanish}` and `sSmartballLayoutNcgFmt{French,German,Italian,Spanish}`. The plain and `_E` formats are chosen by `param1`'s low byte, which the code does not explain, so they keep the file's letter (`sSmartballLayoutNcgFmt`, `...FmtE`). The four Smartball tables chosen by the same byte are `...Sprites` / `...SpritesAlt`.
@@ -677,6 +677,10 @@ The rest:
 - **Single-use tables** are named from their one use: per-difficulty counts (Memory2's deal and preview tables, `sEsp3DCardsPerDifficulty`), animation frame and time tables, positions, Sound's per-pop `VX` / `XOffsets`, and sprite tables after what they draw.
 - **Two corrections while doing it:** `sMCarloPickAllowed` (MCarlo's flag is set when the board has a removable pair and gates touch input), and `sTrmpTouchBlocked`.
 
-About 115 data and 12 BSS symbols keep their address names. Their one use doesn't say what they hold: lerp endpoints, flags written once, or tables read through an offset into a stride.
+- **`Trmp2Mario_Construct`** (0x020ca78c) was filed as `_ZN6Player29TryExitCharacterDoorWithIntroEv`. It constructs `dMgTrmpln2Mario_c` the way `Trmp3DMario_Construct` constructs its sibling. The vptr it stores (`sTrmp2MarioOps`, 0x0213b2e0) is preceded by offset 0 and `_ZTI17dMgTrmpln2Mario_c`, and its slots are `Trmp2Mario_GetPos`, `GetPrevPos`, `GetVelocity` and `Reset`. `sTrmp3DMarioOps` (0x0213b2c4) is the same for `dMgTrmpln3DMario_c`.
+- **Coined classes renamed after their records:** `MgFx` (was `Ent`, the base's `sMgFxPool`), `MgBanner` (was ov004's `Elem`, `gMgBanners`), `Jump2Popup` / `Jump2PopupLink` (were Jump2's `Elem` / `Node`), and `TrmpScorePopup` (was `Desc`, on `sTrmpFxList`).
+- **From closer reading:** the Trampoline line's bounce-sound pitch at its middle and its ends (`sTrmpLine{Weak,Strong}Pitch{Mid,End}` and the `Push` pair; the third argument reaches `func_02012860`'s track-pitch call), Sound's row lengths, Amida's per-pattern modes (`GoalShuffle`, `RungSkip`, `ExtraRungs`, `SpeedUp`), Cup's swap pairs, the Slot blink positions, Teresa's spawn kinds and burst flag, Luigi's touch sounds and the wanted poster's tile offsets.
+
+About 89 data and 12 BSS symbols keep their address names. Their one use doesn't say what they hold: lerp endpoints, flags written once, or tables read through an offset into a stride.
 
 `datadump.py` reads ov004 at its overlay-table base, 0x020ad660. ov005 and ov006 load at 0x020bfec0.
