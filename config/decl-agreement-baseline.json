@@ -15781,12 +15781,12 @@
         "return:char []"
       ]
     },
-    "sPresenterAnim4TexAnim": {
+    "sPresenterLoseLoopTexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:int"
       ]
     },
-    "sPresenterAnim7TexAnim": {
+    "sPresenterSmileTexAnim": {
       "src/minigames/unit020bfec0.cpp": [
         "return:int"
       ]

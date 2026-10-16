@@ -365,7 +365,7 @@
       "ordinal": 48
     },
     {
-      "symbol": "Presenter_StateAnim7Loop",
+      "symbol": "Presenter_StateSurprisedThenIdle",
       "address": "0x020c22d8",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020c22d8.c",
@@ -379,7 +379,7 @@
       "ordinal": 50
     },
     {
-      "symbol": "Presenter_StateAnim4",
+      "symbol": "Presenter_StateLoseStart",
       "address": "0x020c23a8",
       "size": "0x00000098",
       "legacy_source": "src/func_ov006_020c23a8.cpp",
@@ -393,7 +393,7 @@
       "ordinal": 52
     },
     {
-      "symbol": "Presenter_StateAnim7",
+      "symbol": "Presenter_StateSurprisedThenSmile",
       "address": "0x020c24e4",
       "size": "0x000000b0",
       "legacy_source": "src/func_ov006_020c24e4.cpp",
@@ -407,7 +407,7 @@
       "ordinal": 54
     },
     {
-      "symbol": "Presenter_StateAnim1",
+      "symbol": "Presenter_StateMistake",
       "address": "0x020c263c",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020c263c.c",
@@ -421,7 +421,7 @@
       "ordinal": 56
     },
     {
-      "symbol": "Presenter_StateAnim2",
+      "symbol": "Presenter_StateWin",
       "address": "0x020c26f4",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020c26f4.c",

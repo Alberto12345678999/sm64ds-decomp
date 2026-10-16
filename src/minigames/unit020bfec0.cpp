@@ -17,8 +17,11 @@
 #include "SharedFilePtr.h"
 #include "PlayerInput.h"
 #include "MascotWalker.h"
+#include "Presenter.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
+/* Typed access to a Presenter record from the char* helpers below. */
+#define PRESENTER(p) ((Presenter *)(p))
 
 struct Sound { static void PlayBank2_2D(unsigned int); };
 struct Model { int d; void HideMaterial(int, int); void ShowMaterial(int, int); void Render(const Vector3 *); };
@@ -168,15 +171,15 @@ int Mascot_Destruct(char *t); // local extern: raw char*/void* view of the actor
 int Mascot_Construct(char *t);
 void Camera_InitPresenterView(void *self);
 void Presenter_UpdateMatrix(char* c);
-void Presenter_StateAnim7Loop(char *t);
+void Presenter_StateSurprisedThenIdle(char *t);
 void Presenter_PlayCheerLoop(void *c);
-void Presenter_StateAnim4(void* c);
+void Presenter_StateLoseStart(void *c);
 void Presenter_PlayLose(char *c);
-void Presenter_StateAnim7(void* c);
+void Presenter_StateSurprisedThenSmile(void *c);
 void Presenter_PlayCheer(void *c);
-void Presenter_StateAnim1(char *t);
+void Presenter_StateMistake(char *t);
 void Presenter_PlayMiss(char *c);
-void Presenter_StateAnim2(char *t);
+void Presenter_StateWin(char *t);
 void Presenter_PlayMatch(void *c);
 void Presenter_StateIdle(char* c);
 void Presenter_PlayIdle(char* c);
@@ -739,8 +742,8 @@ int Presenter_Construct(char *t)
     SharedFilePtr_Construct_TexSeq(t + 0x168, 0x1f3);
     SharedFilePtr_Construct_TexSeq(t + 0x170, 0x1f9);
     SharedFilePtr_Construct_TexSeq(t + 0x178, 0x1fb);
-    *(int *)(t + 0x1a4) = 0;
-    *(int *)(t + 0x1a8) = 0;
+    PRESENTER(t)->mTracking = 0;
+    PRESENTER(t)->mQuiet = 0;
     return (int)t;
 }
 }
@@ -798,8 +801,8 @@ int Presenter_Destruct(char *t)
 namespace s020c3050 {
 extern "C" {
 extern "C" {
-extern char sPresenterAnim4TexAnim[];
-extern char sPresenterAnim7TexAnim[];
+extern char sPresenterLoseLoopTexAnim[];
+extern char sPresenterSmileTexAnim[];
 extern char sPresenterLoseTexAnim[];
 extern char sPresenterIdleTexAnim[];
 extern char sPresenterMissTexAnim[];
@@ -841,28 +844,28 @@ int Presenter_Load(char *c)
 
     func_02016b24(c + 8, 2);
 
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x144));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x14c));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x154));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x15c));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x164));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x16c));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x174));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, *(void **)(c + 0x17c));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[0].file));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[1].file));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[2].file));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[3].file));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[4].file));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[5].file));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[6].file));
+    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[7].file));
 
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterIdleTexAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterMissTexAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterMatchTexAnim);
-    _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterAnim4TexAnim);
+    _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterLoseLoopTexAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterLoseTexAnim);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, data_ov006_0213ae78);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterCheerTexAnim);
-    _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterAnim7TexAnim);
+    _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, sPresenterSmileTexAnim);
 
     Presenter_PlayIdle(c);
-    *(int *)(c + 0x180) = 0;
-    *(int *)(c + 0x184) = 0;
-    *(int *)(c + 0x188) = 0;
+    PRESENTER(c)->mPos.x = 0;
+    PRESENTER(c)->mPos.y = 0;
+    PRESENTER(c)->mPos.z = 0;
     Presenter_UpdateMatrix(c);
 
     if (!_ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x78, r4, 1, -1))
@@ -912,9 +915,9 @@ extern "C" {
 
 void Presenter_TrackStylus(char* c)
 {
-    if (*(int*)(c + 0x1a4) != 0) {
-        int s = *(int*)(c + 0x19c);
-        int t = *(int*)(c + 0x1a0);
+    if (PRESENTER(c)->mTracking != 0) {
+        int s = PRESENTER(c)->mTouchX;
+        int t = PRESENTER(c)->mTouchY;
         COMPUTE(c, s, t);
         return;
     }
@@ -927,10 +930,10 @@ void Presenter_TrackStylus(char* c)
             return;
         }
     }
-    *(int*)(c + 0x18c) = (int)(((s64)*(int*)(c + 0x18c) * 0xE00 + 0x800) >> 12);
-    *(int*)(c + 0x190) = (int)(((s64)*(int*)(c + 0x190) * 0xE00 + 0x800) >> 12);
-    *(int*)(c + 0x194) = (int)(((s64)*(int*)(c + 0x194) * 0xE00 + 0x800) >> 12);
-    *(int*)(c + 0x198) = (int)(((s64)*(int*)(c + 0x198) * 0xE00 + 0x800) >> 12);
+    PRESENTER(c)->mSway[0] = (int)(((s64)PRESENTER(c)->mSway[0] * 0xE00 + 0x800) >> 12);
+    PRESENTER(c)->mSway[1] = (int)(((s64)PRESENTER(c)->mSway[1] * 0xE00 + 0x800) >> 12);
+    PRESENTER(c)->mSway[2] = (int)(((s64)PRESENTER(c)->mSway[2] * 0xE00 + 0x800) >> 12);
+    PRESENTER(c)->mSway[3] = (int)(((s64)PRESENTER(c)->mSway[3] * 0xE00 + 0x800) >> 12);
 }
 }
 }
@@ -991,10 +994,10 @@ extern "C" void Presenter_Draw(char *c)
     p = *(int **)(mc + 4);
     _ZN15TextureSequence6UpdateER15ModelComponents(c + 0xc8, mc);
     _ZN18TextureTransformer6UpdateER15ModelComponents(c + 0xdc, mc);
-    *(int *)(((int)p + 0x104)) -= *(int *)(c + 0x194);
-    *(int *)(((int)p + 0x108)) += *(int *)(c + 0x198);
-    *(int *)(((int)p + 0x134)) += *(int *)(c + 0x18c);
-    *(int *)(((int)p + 0x138)) += *(int *)(c + 0x190);
+    *(int *)(((int)p + 0x104)) -= PRESENTER(c)->mSway[2];
+    *(int *)(((int)p + 0x108)) += PRESENTER(c)->mSway[3];
+    *(int *)(((int)p + 0x134)) += PRESENTER(c)->mSway[0];
+    *(int *)(((int)p + 0x138)) += PRESENTER(c)->mSway[1];
     ((Obj *)(c + 8))->m(0);
     ((Obj *)(c + 0x78))->m(&data_ov006_0212b8fc);
 }
@@ -1034,10 +1037,10 @@ void Presenter_ResetPose(char* c){
   void* obj=data_0209f5bc;
   int (**vt)(void*)=*(int(***)(void*))obj;
   if(vt[6](obj)==0) return;
-  *(int*)(c+0x190)=0;
-  *(int*)(c+0x18c)=*(int*)(c+0x190);
-  *(int*)(c+0x198)=0;
-  *(int*)(c+0x194)=*(int*)(c+0x198);
+  PRESENTER(c)->mSway[1] = 0;
+  PRESENTER(c)->mSway[0] = PRESENTER(c)->mSway[1];
+  PRESENTER(c)->mSway[3] = 0;
+  PRESENTER(c)->mSway[2] = PRESENTER(c)->mSway[3];
   *(int*)(c+0x60)=0;
   *(int*)(c+0xd0)=0;
   *(int*)(c+0xe4)=0;
@@ -1067,15 +1070,18 @@ struct VObj {
 
 extern "C" void Presenter_PlayIdle(char* c)
 {
-    if (*(int*)(c + 0x68) != *(int*)(c + 0x104)) {
+    if (PRESENTER(c)->mFaceAnim != PRESENTER(c)->mAnims[0].file) {
         int r5 = 0;
         if (((VObj*)data_0209f5bc)->v6() == 0) {
-            if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x58) == 0 || *(int*)(c + 0x68) == *(int*)(c + 0x13c)) {
+            if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x58) == 0 ||
+                PRESENTER(c)->mFaceAnim == PRESENTER(c)->mAnims[7].file) {
                 r5 = 8;
             }
         }
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void**)(c + 0x104), r5, 0, 0x800, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void**)(c + 0x144), 0, 0x800, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            c + 8, ((void *)PRESENTER(c)->mAnims[0].file), r5, 0, 0x800, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            c + 0xc8, ((void *)PRESENTER(c)->mTexSeqs[0].file), 0, 0x800, 0);
         _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
             c + 0xdc, (void *)&sPresenterIdleTexAnim, 0, 0x800, 0);
     }
@@ -1095,8 +1101,10 @@ extern void *sPresenterIdleTexAnim;
 }
 void Presenter_StateIdle(char* c){
   if (!_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x58)) return;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void**)(c + 0x104), 0, 0, 0x800, 0);
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void**)(c + 0x144), 0, 0x800, 0);
+  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, ((void *)PRESENTER(c)->mAnims[0].file),
+                                                     0, 0, 0x800, 0);
+  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+      c + 0xc8, ((void *)PRESENTER(c)->mTexSeqs[0].file), 0, 0x800, 0);
   _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(c + 0xdc, (void *)&sPresenterIdleTexAnim, 0,
                                                         0x800, 0);
 }
@@ -1108,7 +1116,9 @@ extern "C" {
 extern "C" {
 extern int sPresenterMatchTexAnim;
 }
-extern "C" { extern long long pmf_Presenter_StateAnim2; }
+extern "C" {
+extern long long pmf_Presenter_StateWin;
+}
 inline char *inline_fn(char *arg0)
 {
   return arg0 + 8;
@@ -1118,17 +1128,17 @@ void Presenter_PlayMatch(void *c) {
     char *r4 = (char *)c;
     unsigned long long new_var;
     long long *new_var2;
-    if ((*((int *)(r4 + 0x1a8))) == 0) {
+    if ((PRESENTER(r4)->mQuiet) == 0) {
         func_02012174(0, 0x1c);
     }
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(inline_fn(r4), *((void **)(r4 + 0x114)), 4,
-                                                       0x40000000, 0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        inline_fn(r4), ((void *)PRESENTER(r4)->mAnims[2].file), 4, 0x40000000, 0x800, 0);
     new_var2 = (long long *)r4;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **)(r4 + 0x154)),
-                                                       0x40000000, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[2].file), 0x40000000, 0x800, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterMatchTexAnim,
                                                           0x40000000, 0x800, 0);
-    new_var = pmf_Presenter_StateAnim2;
+    new_var = pmf_Presenter_StateWin;
     *new_var2 = new_var;
 }
 }
@@ -1136,8 +1146,7 @@ void Presenter_PlayMatch(void *c) {
 
 namespace s020c26f4 {
 extern "C" {
-void Presenter_StateAnim2(char *t)
-{
+void Presenter_StateWin(char *t) {
     int r = Presenter_IsAnimDone(t);
     if (r == 0) return;
     Presenter_PlayIdle(t);
@@ -1148,24 +1157,25 @@ void Presenter_StateAnim2(char *t)
 namespace s020c2664 {
 extern "C" {
 extern int sPresenterMissTexAnim[];
-extern int pmf_Presenter_StateAnim1[];
+extern int pmf_Presenter_StateMistake[];
 
 struct W2 { int w[2]; };
 
 void Presenter_PlayMiss(char *c) {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void **)(c + 0x10c), 4, 0x40000000, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void **)(c + 0x14c), 0x40000000, 0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        c + 8, ((void *)PRESENTER(c)->mAnims[1].file), 4, 0x40000000, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        c + 0xc8, ((void *)PRESENTER(c)->mTexSeqs[1].file), 0x40000000, 0x800, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(c + 0xdc, sPresenterMissTexAnim,
                                                           0x40000000, 0x800, 0);
-    *(struct W2 *)c = *(struct W2 *)pmf_Presenter_StateAnim1;
+    *(struct W2 *)c = *(struct W2 *)pmf_Presenter_StateMistake;
 }
 }
 }
 
 namespace s020c263c {
 extern "C" {
-void Presenter_StateAnim1(char *t)
-{
+void Presenter_StateMistake(char *t) {
     int r = Presenter_IsAnimDone(t);
     if (r == 0) return;
     Presenter_PlayIdle(t);
@@ -1178,19 +1188,21 @@ extern "C" {
 extern "C" {
 extern int sPresenterCheerTexAnim;
 }
-extern "C" { extern volatile long long pmf_Presenter_StateAnim7; }
+extern "C" {
+extern volatile long long pmf_Presenter_StateSurprisedThenSmile;
+}
 void Presenter_PlayCheer(void *c) {
     char *r4 = (char *)c;
-    if ((*((int *)(r4 + 0x1a8))) == 0) {
+    if ((PRESENTER(r4)->mQuiet) == 0) {
         func_02012174(0, 3);
     }
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *((void **)(r4 + 0x13c)), 8,
-                                                       0x40000000, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **)(r4 + 0x17c)),
-                                                       0x40000000, 0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        r4 + 8, ((void *)PRESENTER(r4)->mAnims[7].file), 8, 0x40000000, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[7].file), 0x40000000, 0x800, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterCheerTexAnim,
                                                           0x40000000, 0x800, 0);
-    *((long long *)r4) = pmf_Presenter_StateAnim7;
+    *((long long *)r4) = pmf_Presenter_StateSurprisedThenSmile;
 }
 }
 }
@@ -1198,17 +1210,22 @@ void Presenter_PlayCheer(void *c) {
 namespace s020c24e4 {
 extern "C" {
 extern "C" {
-extern int sPresenterAnim7TexAnim;
+extern int sPresenterSmileTexAnim;
 }
-void Presenter_StateAnim7(void* c){
-  char* r4 = (char*)c;
-  if (!Presenter_IsAnimDone(r4)) return;
-  if (*(int*)(r4 + 0x68) != *(int*)(r4 + 0x13c)) return;
-  if (*(int*)(r4 + 0x1a8) == 0) _ZN5Sound12PlayBank2_2DEj(0x1d1);
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *(void**)(r4 + 0x134), 8, 0, 0x800, 0);
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *(void**)(r4 + 0x174), 0, 0x800, 0);
-  _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterAnim7TexAnim, 0,
-                                                        0x800, 0);
+void Presenter_StateSurprisedThenSmile(void *c) {
+    char *r4 = (char *)c;
+    if (!Presenter_IsAnimDone(r4))
+        return;
+    if (PRESENTER(r4)->mFaceAnim != PRESENTER(r4)->mAnims[7].file)
+        return;
+    if (PRESENTER(r4)->mQuiet == 0)
+        _ZN5Sound12PlayBank2_2DEj(0x1d1);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        r4 + 8, ((void *)PRESENTER(r4)->mAnims[6].file), 8, 0, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[6].file), 0, 0x800, 0);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterSmileTexAnim, 0,
+                                                          0x800, 0);
 }
 }
 }
@@ -1216,20 +1233,22 @@ void Presenter_StateAnim7(void* c){
 namespace s020c2440 {
 extern "C" {
 struct G2 { int w[2]; };
-extern "C" { extern struct G2 pmf_Presenter_StateAnim4; }
+extern "C" {
+extern struct G2 pmf_Presenter_StateLoseStart;
+}
 extern "C" {
 extern void *sPresenterLoseTexAnim;
 }
 void Presenter_PlayLose(char *c) {
-    if (*(int *)(c + 0x1a8) == 0)
+    if (PRESENTER(c)->mQuiet == 0)
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void **)(c + 0x124), 0, 0x40000000,
-                                                       0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void **)(c + 0x164), 0x40000000,
-                                                       0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        c + 8, ((void *)PRESENTER(c)->mAnims[4].file), 0, 0x40000000, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        c + 0xc8, ((void *)PRESENTER(c)->mTexSeqs[4].file), 0x40000000, 0x800, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(c + 0xdc, (void *)&sPresenterLoseTexAnim,
                                                           0x40000000, 0x800, 0);
-    *(struct G2 *)c = pmf_Presenter_StateAnim4;
+    *(struct G2 *)c = pmf_Presenter_StateLoseStart;
 }
 }
 }
@@ -1237,16 +1256,20 @@ void Presenter_PlayLose(char *c) {
 namespace s020c23a8 {
 extern "C" {
 extern "C" {
-extern int sPresenterAnim4TexAnim;
+extern int sPresenterLoseLoopTexAnim;
 }
-void Presenter_StateAnim4(void* c){
-  char* r4 = (char*)c;
-  if (!Presenter_IsAnimDone(r4)) return;
-  if (*(int*)(r4 + 0x68) != *(int*)(r4 + 0x124)) return;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *(void**)(r4 + 0x11c), 0, 0, 0x800, 0);
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *(void**)(r4 + 0x15c), 0, 0x800, 0);
-  _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterAnim4TexAnim, 0,
-                                                        0x800, 0);
+void Presenter_StateLoseStart(void *c) {
+    char *r4 = (char *)c;
+    if (!Presenter_IsAnimDone(r4))
+        return;
+    if (PRESENTER(r4)->mFaceAnim != PRESENTER(r4)->mAnims[4].file)
+        return;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        r4 + 8, ((void *)PRESENTER(r4)->mAnims[3].file), 0, 0, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[3].file), 0, 0x800, 0);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterLoseLoopTexAnim, 0,
+                                                          0x800, 0);
 }
 }
 }
@@ -1256,28 +1279,29 @@ extern "C" {
 extern "C" {
 extern int sPresenterCheerTexAnim;
 }
-extern "C" { extern long long pmf_Presenter_StateAnim7Loop; }
+extern "C" {
+extern long long pmf_Presenter_StateSurprisedThenIdle;
+}
 void Presenter_PlayCheerLoop(void *c) {
     long long new_var;
     char *r4 = (char *)c;
     if ((*((int *)(((char *)c) + 0x1a8))) == 0) {
         func_02012174(0, 3);
     }
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *((void **)(r4 + 0x13c)), 8,
-                                                       0x40000000, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *((void **)(r4 + 0x17c)),
-                                                       0x40000000, 0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        r4 + 8, ((void *)PRESENTER(r4)->mAnims[7].file), 8, 0x40000000, 0x800, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[7].file), 0x40000000, 0x800, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterCheerTexAnim,
                                                           0x40000000, 0x800, 0);
-    *((long long *)r4) = (new_var = pmf_Presenter_StateAnim7Loop & 0xFFFFFFFFFFFFFFFF);
+    *((long long *)r4) = (new_var = pmf_Presenter_StateSurprisedThenIdle & 0xFFFFFFFFFFFFFFFF);
 }
 }
 }
 
 namespace s020c22d8 {
 extern "C" {
-void Presenter_StateAnim7Loop(char *t)
-{
+void Presenter_StateSurprisedThenIdle(char *t) {
     int r = Presenter_IsAnimDone(t);
     if (r == 0) return;
     Presenter_PlayIdle(t);
@@ -1290,7 +1314,8 @@ extern "C" {
 // @symbol Presenter_UpdateMatrix
 extern "C" { extern struct Matrix4x3 data_020a0e68; }
 void Presenter_UpdateMatrix(char* c) {
-    Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x180), *(int*)(c+0x184), *(int*)(c+0x188));
+    Matrix4x3_FromTranslation(&data_020a0e68, PRESENTER(c)->mPos.x, PRESENTER(c)->mPos.y,
+                              PRESENTER(c)->mPos.z);
     *(struct Matrix4x3*)(c+0x24) = data_020a0e68;
 }
 }
