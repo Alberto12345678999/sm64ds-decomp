@@ -72,7 +72,7 @@ dScMgBase_c::graphCallback_c sMgGraphCallback;
 Ent sMgFxPool[0x40];
 EntPMF sMgFxUpdateTable[2] = { &Ent::UpdateDrift, &Ent::UpdateFlyTo };
 EntPMF sMgFxDrawTable[2] = { &Ent::DrawSparkle, &Ent::DrawFlyTo };
-int data_ov004_020beba8[16];
+int sMgSparkleSprites[16];
 }
 
 /* Local view of the installed screen fader at data_0209f5bc (a dFader_c,
@@ -555,17 +555,17 @@ extern "C" {
 extern void Mg_RenderSpriteOnNoMtx(int a0,int a1,int a2,int a3,int a4);
 extern int data_ov004_020beb70;
 extern int data_ov004_020bea14[];
-extern int data_ov004_020beba8[];
+extern int sMgSparkleSprites[];
 }
 }
 /* State 0's draw. The first call builds the 16-entry frame table
-   data_ov004_020beba8 from five words at data_ov004_020bea14 (bit 0 of
+   sMgSparkleSprites from five words at data_ov004_020bea14 (bit 0 of
    data_ov004_020beb70 marks it built); the frame is picked by the low four
    bits of mTimer. */
 void Ent::DrawSparkle(){
   if((s20adcc8::data_ov004_020beb70 & 1) == 0){
     int* s = s20adcc8::data_ov004_020bea14;
-    int* d = s20adcc8::data_ov004_020beba8;
+    int *d = s20adcc8::sMgSparkleSprites;
     d[0]=s[0];d[1]=s[0];d[2]=s[0];d[3]=s[0];d[4]=s[0];
     d[5]=s[4];d[6]=s[4];d[7]=s[3];d[8]=s[2];d[9]=s[1];
     d[10]=s[2];d[11]=s[2];d[12]=s[3];d[13]=s[4];d[14]=s[4];d[15]=s[0];
@@ -574,7 +574,7 @@ void Ent::DrawSparkle(){
   {
     int idx=((int)mTimer)&0xf;
     int x=*(int*)this>>0xc; int y=*(int*)((char*)this+4)>>0xc;
-    s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::data_ov004_020beba8[idx],x,y,-1,-1);
+    s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::sMgSparkleSprites[idx], x, y, -1, -1);
   }
 }
 
@@ -1017,14 +1017,24 @@ extern void MultiCopy_Int(void* a, void* b, int n);
 }
 
 extern "C" {
-extern int data_ov004_020beb64;
+extern int sMgPaintWord;
 extern int sMgTopScreenYOffset;
 }
 }
 }
 
-void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
-{ using s20ae3b4::MultiCopy_Int; using s20ae3b4::_ZN2G213GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv; using s20ae3b4::data_ov004_020beb64; using s20ae3b4::sMgTopScreenYOffset; using s20ae3b4::func_02054d88; using s20ae3b4::func_02054ea8; using s20ae3b4::func_02054efc;
+void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
+    using s20ae3b4::MultiCopy_Int;
+    using s20ae3b4::_ZN2G213GetBG2CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv;
+    using s20ae3b4::sMgPaintWord;
+    using s20ae3b4::sMgTopScreenYOffset;
+    using s20ae3b4::func_02054d88;
+    using s20ae3b4::func_02054ea8;
+    using s20ae3b4::func_02054efc;
     char *obj = (char *)this;
 
     int oi;
@@ -1088,10 +1098,10 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
                     }
                 }
                 cell = (int*)((char*)base + ((xx / 8 + (yy / 8) * 32) * 32) + ((yy & 7) * 4));
-                MultiCopy_Int(cell, &data_ov004_020beb64, four);
+                MultiCopy_Int(cell, &sMgPaintWord, four);
                 sh = (xx & 7) << 2;
-                data_ov004_020beb64 = (data_ov004_020beb64 & (-1 ^ (m << sh))) | (colour << sh);
-                MultiCopy_Int(&data_ov004_020beb64, cell, four);
+                sMgPaintWord = (sMgPaintWord & (-1 ^ (m << sh))) | (colour << sh);
+                MultiCopy_Int(&sMgPaintWord, cell, four);
             inc:;
             } while (++ci < size);
         }

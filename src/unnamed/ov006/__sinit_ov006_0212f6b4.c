@@ -49,7 +49,7 @@ extern int sTrmp3DGravityStep;
 extern int data_ov006_0212dffc;
 extern int data_ov006_02140558;
 extern int data_ov006_0212e008;
-extern int data_ov006_02140578;
+extern int sTrmp3DBounceScale;
 extern int data_ov006_0212e004;
 extern int data_ov006_02140570;
 
@@ -142,7 +142,7 @@ void __sinit_ov006_0212f6b4(void)
     sTrmp3DFallSpeed = data_ov006_0212e000;
     sTrmp3DGravityStep = data_ov006_0212e020;
     data_ov006_02140558 = data_ov006_0212dffc;
-    data_ov006_02140578 = data_ov006_0212e008;
+    sTrmp3DBounceScale = data_ov006_0212e008;
     data_ov006_02140570 = data_ov006_0212e004;
 
     data_ov006_02140778.x = (unsigned int)-0x50000;

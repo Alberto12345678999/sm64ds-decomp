@@ -140,8 +140,8 @@ extern void *data_ov006_0213a4b0[];
 extern int  data_ov006_0213a4c0[];
 extern int  data_ov006_0213a568[];
 extern int  data_ov006_0213b84c[13];
-extern s32  data_ov006_02141640[];
-extern s32  data_ov006_02141650[];
+extern s32 sAmidaLaneTargets[];
+extern s32 sAmidaLaneSaved[];
 }
 
 namespace CP15 {
@@ -1370,17 +1370,17 @@ void dScMgAmida_c::InitWalkers()
                     break;
                 }
                 for (j = 0; j < 4; j++) {
-                    data_ov006_02141640[this->mLanePerm[j]] = this->mLaneWants[j];
+                    sAmidaLaneTargets[this->mLanePerm[j]] = this->mLaneWants[j];
                 }
             } else {
                 for (i = 0; i < 4; i++) {
-                    data_ov006_02141650[i] = data_ov006_02141640[i];
+                    sAmidaLaneSaved[i] = sAmidaLaneTargets[i];
                 }
                 for (j = 0; j < 4; j++) {
-                    data_ov006_02141640[this->mLanePerm[j]] = this->mLaneWants[j];
+                    sAmidaLaneTargets[this->mLanePerm[j]] = this->mLaneWants[j];
                 }
                 for (j = 0; j < 4; j++) {
-                    if (data_ov006_02141650[j] != data_ov006_02141640[j]) {
+                    if (sAmidaLaneSaved[j] != sAmidaLaneTargets[j]) {
                         again = 0;
                         break;
                     }

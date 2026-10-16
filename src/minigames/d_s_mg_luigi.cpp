@@ -1120,12 +1120,12 @@ void dScMgLuigi_c::RestartPicture(int idx) {
 
 // @symbol _ZN12dScMgLuigi_c14UpdatePicturesEv
 void dScMgLuigi_c::UpdatePictures() {
-    extern LuigiSlotHandler data_ov006_02142254[];
+    extern LuigiSlotHandler sLuigiSlotHandlers[];
     int i;
     for (i = 0; i < 0x78; i++) {
         if (mActive[i] != 0) {
             unsigned char k = mKind[i];
-            (this->*data_ov006_02142254[k])(i);
+            (this->*sLuigiSlotHandlers[k])(i);
         }
     }
 }
@@ -1626,7 +1626,7 @@ void dScMgLuigi_c::ResetBoard()
 
 void dScMgLuigi_c::StateCatch()
 {
-    extern LuigiSlotHandler data_ov006_02142254[];
+    extern LuigiSlotHandler sLuigiSlotHandlers[];
     int matches;
     int i;
 
@@ -1640,7 +1640,7 @@ void dScMgLuigi_c::StateCatch()
             int x = mKind[i];
             if (x == 9) {
                 matches++;
-                (this->*data_ov006_02142254[x])(i);
+                (this->*sLuigiSlotHandlers[x])(i);
             }
         }
     }
@@ -1920,17 +1920,12 @@ LuigiStateHandler sLuigiStateTable[4] = {
     &dScMgLuigi_c::StatePlay,
     &dScMgLuigi_c::StateCatch,
 };
-LuigiSlotHandler data_ov006_02142254[10] = {
-    &dScMgLuigi_c::RestartPicture,
-    &dScMgLuigi_c::StopPicture,
-    &dScMgLuigi_c::MovePictureDriftFixed,
-    &dScMgLuigi_c::MovePictureDriftByLevel,
-    &dScMgLuigi_c::MovePictureDriftByColumn,
-    &dScMgLuigi_c::MovePictureDriftByRow,
-    &dScMgLuigi_c::MovePictureDriftRandom,
-    &dScMgLuigi_c::MovePictureSway,
-    &dScMgLuigi_c::MovePictureBounce,
-    &dScMgLuigi_c::TickPictureFlash,
+LuigiSlotHandler sLuigiSlotHandlers[10] = {
+    &dScMgLuigi_c::RestartPicture,           &dScMgLuigi_c::StopPicture,
+    &dScMgLuigi_c::MovePictureDriftFixed,    &dScMgLuigi_c::MovePictureDriftByLevel,
+    &dScMgLuigi_c::MovePictureDriftByColumn, &dScMgLuigi_c::MovePictureDriftByRow,
+    &dScMgLuigi_c::MovePictureDriftRandom,   &dScMgLuigi_c::MovePictureSway,
+    &dScMgLuigi_c::MovePictureBounce,        &dScMgLuigi_c::TickPictureFlash,
 };
 LuigiSlotHandler sLuigiCurtainTable[3] = {
     &dScMgLuigi_c::CurtainStart,

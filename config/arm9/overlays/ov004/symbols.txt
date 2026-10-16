@@ -800,7 +800,7 @@ data_ov004_020bea14 kind:data(any) addr:0x020bea14
 data_ov004_020bea28 kind:data(any) addr:0x020bea28
 data_ov004_020beac8 kind:data(any) addr:0x020beac8
 sMgWorkBuffer kind:bss addr:0x020beb60
-data_ov004_020beb64 kind:bss addr:0x020beb64
+sMgPaintWord kind:bss addr:0x020beb64
 gMgScene kind:bss addr:0x020beb68
 sMgTopScreenYOffset kind:bss addr:0x020beb6c
 data_ov004_020beb70 kind:bss addr:0x020beb70
@@ -808,7 +808,7 @@ sMgGraphCallback kind:bss addr:0x020beb74
 @315 kind:bss addr:0x020beb7c
 sMgFxUpdateTable kind:bss addr:0x020beb88
 sMgFxDrawTable kind:bss addr:0x020beb98
-data_ov004_020beba8 kind:bss addr:0x020beba8
+sMgSparkleSprites kind:bss addr:0x020beba8
 sMgFxPool kind:bss addr:0x020bebe8
 sMgBannerGfxSlotUsed kind:bss addr:0x020bf3e8
 data_ov004_020bf3ec kind:bss addr:0x020bf3ec

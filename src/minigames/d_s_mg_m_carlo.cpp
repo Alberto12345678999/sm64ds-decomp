@@ -49,14 +49,14 @@ extern dMgMCarloCardObj_c *sMCarloFirstPick;  /* first pick */
 extern dMgMCarloCardObj_c *sMCarloCards;      /* board list head */
 extern dMgMCarloCardObj_c *sMCarloCardsTail;  /* board list tail */
 extern dMgMCarloCardObj_c *sMCarloSecondPick; /* second pick */
-extern short data_ov006_021424ec;
+extern short sMCarloBoardDelay;
 extern int sMCarloCardTotal;
 extern int sMCarloDealProgress;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern int data_ov006_021424f4;
-extern int data_ov006_021424f8;
-extern int data_ov006_021424f0;
+extern int sMCarloCardsMoving;
+extern int sMCarloCols;
+extern int sMCarloRows;
 extern int data_ov006_0213d568;
 extern int data_ov006_0213d56c;
 extern int data_ov006_0213d5e0[8]; /* the eight face weights */
@@ -452,10 +452,10 @@ void dMgMCarloCardObj_c::DealIn(int slot)
         mX = (0x70 - ((data_ov006_0213d56c >> 2) << 1)) << 12;
         mY = -0x30000;
         mState = CARD_MOVING;
-        data_ov006_021424f4++;
+        sMCarloCardsMoving++;
     } else {
         mState = CARD_MOVING;
-        data_ov006_021424f4++;
+        sMCarloCardsMoving++;
     }
 
     mTargetX = ((slot % 5) * 32 + 0x30) << 12;
@@ -574,7 +574,7 @@ void dMgMCarloCardObj_c::Update(int slot)
         }
         if (IsPairWith(sMCarloFirstPick) != 0) {
             sMCarloSecondPick = this;
-            data_ov006_021424ec = 0x20;
+            sMCarloBoardDelay = 0x20;
             mState = CARD_SELECTED;
             Sound::PlayBank2_2D(0x154);
             if (sMgCoinsBetPlaced == 0)
@@ -611,7 +611,7 @@ void dMgMCarloCardObj_c::Update(int slot)
         if (mLift != 0x4000)
             return;
         mState = CARD_IDLE;
-        ApproachLinear(data_ov006_021424f4, 0, 1);
+        ApproachLinear(sMCarloCardsMoving, 0, 1);
         mXStep = 0;
         mYStep = 0;
         return;
@@ -687,28 +687,28 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
     stars = (active != 0) ? active->mHudScore : 0;
 
     if (stars < 5) {
-        data_ov006_021424f8 = 6;
-        data_ov006_021424f0 = 6;
+        sMCarloCols = 6;
+        sMCarloRows = 6;
         data_ov006_0213d568 = 5;
     } else if (stars < 0xa) {
-        data_ov006_021424f8 = 8;
-        data_ov006_021424f0 = 7;
+        sMCarloCols = 8;
+        sMCarloRows = 7;
         data_ov006_0213d568 = 8;
     } else {
-        data_ov006_021424f8 = 0xa;
-        data_ov006_021424f0 = 8;
+        sMCarloCols = 0xa;
+        sMCarloRows = 8;
         data_ov006_0213d568 = 0xa;
     }
 
-    data_ov006_0213d56c = data_ov006_021424f0 * data_ov006_021424f8;
-    sMCarloCardTotal = data_ov006_021424f0 * data_ov006_021424f8;
+    data_ov006_0213d56c = sMCarloRows * sMCarloCols;
+    sMCarloCardTotal = sMCarloRows * sMCarloCols;
 
     do
     {
         for (face = 0; face < 8; face++)
         {
-            if (face < data_ov006_021424f0)
-                data_ov006_0213d5e0[face] = data_ov006_021424f8;
+            if (face < sMCarloRows)
+                data_ov006_0213d5e0[face] = sMCarloCols;
             else
                 data_ov006_0213d5e0[face] = 0;
         }
@@ -727,8 +727,8 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
         slot = 0;
         sMCarloFirstPick = 0;
         sMCarloSecondPick = 0;
-        data_ov006_021424ec = 0;
-        data_ov006_021424f4 = 0;
+        sMCarloBoardDelay = 0;
+        sMCarloCardsMoving = 0;
         sMCarloDealProgress = 0;
         sMCarloCards = cards;
 
@@ -788,8 +788,7 @@ int dScMgMCarlo_c::BoardBusy(void)
         target = 20;
     if (shown == target)
     {
-        if (data_ov006_021424f4 == 0)
-        {
+        if (sMCarloCardsMoving == 0) {
             if (sMCarloFirstPick == 0 || sMCarloSecondPick == 0)
                 busy = 0;
         }
@@ -811,8 +810,7 @@ int dScMgMCarlo_c::BoardReady(void)
         target = 20;
     if (shown == target)
     {
-        if (data_ov006_021424f4 == 0)
-        {
+        if (sMCarloCardsMoving == 0) {
             if (sMCarloFirstPick == 0 || sMCarloSecondPick == 0)
                 ready = 1;
         }
@@ -878,7 +876,7 @@ void dScMgMCarlo_c::UpdateBoard(void) {
 
     if (sMCarloFirstPick != 0) {
         if (sMCarloSecondPick != 0) {
-            if (--data_ov006_021424ec == 0) {
+            if (--sMCarloBoardDelay == 0) {
                 if (sMCarloFirstPick->mSlot > sMCarloSecondPick->mSlot)
                     sMCarloDealProgress = sMCarloSecondPick->mSlot << 12;
                 else

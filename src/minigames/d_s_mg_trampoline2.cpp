@@ -132,7 +132,7 @@ extern "C" void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 extern Matrix4x3 data_020a0e68;
 extern "C" void Trmp2Spinner_UpdateMatrix(char *c);
 extern void AddVec3(struct Vector3* a, struct Vector3* b, struct Vector3* c);
-extern "C" Trampoline2ModelFilePtr data_ov006_02142f80;
+extern "C" Trampoline2ModelFilePtr sTrmp2StarModelFile;
 extern int sTrmp2SpinnerCount;
 extern unsigned char *sTrmp2Spinners;
 extern void Trmp2Spinner_Update(char *obj);
@@ -140,7 +140,7 @@ extern void Trmp2Spinner_Init(void *obj, void *kind);
 extern void Trmp2Spinner_SetModel(void* self);
 extern void *_ZN5ModelC1Ev(void *model);
 extern void _ZN5ModelD1Ev(void *model);
-extern int data_ov006_02142f78[];
+extern int sTrmp2BrushWord[];
 extern void *func_02054efc(void);
 extern void *func_02054ea8(void);
 extern char *_ZN2G213GetBG2CharPtrEv(void);
@@ -237,7 +237,7 @@ extern int Trmp2Spinner_Construct(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int sTrmp2Spinners; */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *sTrmp2Spinners; */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_LoadAll, NOT applied: extern int sTrmp2Spinners; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f80, from the legacy file for Trmp2Spinner_Destruct, NOT applied: extern SharedFilePtr data_ov006_02142f80; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmp2StarModelFile, from the legacy file for Trmp2Spinner_Destruct, NOT applied: extern SharedFilePtr sTrmp2StarModelFile; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_02122e20, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054efc, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054efc(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054ea8, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054ea8(void); */
@@ -1213,12 +1213,10 @@ void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n)
                             ((x / 8) + (yy / 8) * 32) * 32 +
                             (yy & 7) * 4);
 
-                        MultiCopy_Int(addr, data_ov006_02142f78, 4);
-                        data_ov006_02142f78[0] =
-                            (data_ov006_02142f78[0] &
-                             (-1 ^ (mask << ((x & 7) * 4)))) |
-                            (val << ((x & 7) * 4));
-                        MultiCopy_Int(data_ov006_02142f78, addr, 4);
+                        MultiCopy_Int(addr, sTrmp2BrushWord, 4);
+                        sTrmp2BrushWord[0] = (sTrmp2BrushWord[0] & (-1 ^ (mask << ((x & 7) * 4)))) |
+                                             (val << ((x & 7) * 4));
+                        MultiCopy_Int(sTrmp2BrushWord, addr, 4);
                     }
                 }
             }
@@ -1240,9 +1238,9 @@ int Trmp2Spinner_Construct(char *raw)
 
 // @symbol Trmp2Spinner_Destruct
 extern "C" Model* Trmp2Spinner_Destruct(Model* m){
-  data_ov006_02142f80.Release();
-  _ZN5ModelD1Ev(m);
-  return m;
+    sTrmp2StarModelFile.Release();
+    _ZN5ModelD1Ev(m);
+    return m;
 }
 
 // @symbol Trmp2Spinner_LoadAll
@@ -1330,7 +1328,7 @@ void Trmp2Spinner_UpdateMatricesAll(void)
 // @symbol Trmp2Spinner_SetModel
 extern "C" void Trmp2Spinner_SetModel(void* raw)
 {
-    BMD_File *file = (BMD_File *)Model::LoadFile(data_ov006_02142f80);
+    BMD_File *file = (BMD_File *)Model::LoadFile(sTrmp2StarModelFile);
     ((ModelBase *)raw)->SetFile(file, 1, -1);
 }
 
@@ -1426,7 +1424,7 @@ int Trmp2_DestructJumperModels(char* raw){
 
 /* D1 and D0 come from the inline destructor in dScMgTrampoline2_c.h. */
 
-/* data_ov006_02142f80 is the model SharedFilePtr this Init LoadFile's,
+/* sTrmp2StarModelFile is the model SharedFilePtr this Init LoadFile's,
  * defined here at the end of the file (constructed as file ID 537) so its
  * constructor does not enter .text. */
-Trampoline2ModelFilePtr data_ov006_02142f80(ASSET_MINI_STAR_BMD);
+Trampoline2ModelFilePtr sTrmp2StarModelFile(ASSET_MINI_STAR_BMD);

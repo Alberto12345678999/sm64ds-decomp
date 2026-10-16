@@ -124,7 +124,7 @@ extern void func_0203d630(int* p, int m);
 extern struct Node *sJump2PopupList;
 extern int sJump2PopupCount;
 extern struct Elem *sJump2Popups;
-extern void *data_ov006_021421b8;
+extern void *sJump2BackFile;
 void Mg_CommitRecords(void);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 int GetGameLanguage(void);
@@ -145,7 +145,7 @@ extern struct G2 pmf_dScMgJump2_c_State_Idle;
 extern struct G2 pmf_dScMgJump2_c_State_End;
 extern void Heyho_SettleAll(void);
 extern void Jump3D_SetTuning(int a);
-extern int data_ov006_02140304;
+extern int sHeyhoUnsettledCount;
 extern int sHeyhoCount;
 extern int sJump3DMariosLeft;
 extern struct G2 pmf_dScMgJump2_c_State_Play;
@@ -294,7 +294,7 @@ s32 dScMgJump2_c::InitResources()
     if (Jump3D_InitPool(mPlayers, 3) == 0)
         return 0;
 
-    data_ov006_021421b8 = &data_ov006_021421c4;
+    sJump2BackFile = &data_ov006_021421c4;
     bmdFile = Model::LoadFile(*(SharedFilePtr *)&data_ov006_021421c4);
 
     if (((Model *)mModel)->SetFile((BMD_File *)bmdFile, 1, -1) == 0) {
@@ -360,7 +360,7 @@ void dScMgJump2_c::State_Play()
         *acc -= 0x1000;
 
     done = 0;
-    mode = data_ov006_02140304;
+    mode = sHeyhoUnsettledCount;
     switch (mode) {
     case 0:
         done = 1;
@@ -381,7 +381,7 @@ void dScMgJump2_c::State_Play()
         break;
     }
 
-    if (done != 0 && data_ov006_02140304 < sHeyhoCount) {
+    if (done != 0 && sHeyhoUnsettledCount < sHeyhoCount) {
         int value;
         s16 countdown;
         Heyho_SettleAll();
@@ -573,12 +573,12 @@ s32 dScMgJump2_c::Render()
 }
 
 // @symbol _ZN12dScMgJump2_c16CleanupResourcesEv
-/* Slot 3. data_ov006_021421b8 points at the model's file handle; it is
+/* Slot 3. sJump2BackFile points at the model's file handle; it is
  * released and cleared. */
 s32 dScMgJump2_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov006_021421b8)->Release();
-    data_ov006_021421b8 = 0;
+    ((SharedFilePtr *)sJump2BackFile)->Release();
+    sJump2BackFile = 0;
     Mg_CommitRecords();
     return 1;
 }

@@ -1517,7 +1517,7 @@ extern int Mg_GetTopScreenYOffset(void);
 extern void Jump2Popup_Spawn(int a, int b, int c);
 extern void Heyho_SetIdle(char* p);
 
-extern int data_ov006_02140304[];
+extern int sHeyhoUnsettledCount[];
 extern int sJumpComboCount;
 extern int data_ov006_02140314;
 extern void *sMgSubCamera;
@@ -1538,7 +1538,7 @@ void Heyho_Settle(char* c)
     if (a) *(int*)((char*)a + 0x50) = t;
     if (b) *(int*)((char*)a + 0x50) = t;
 
-    _Z14ApproachLinearRiii(data_ov006_02140304, 0, 1);
+    _Z14ApproachLinearRiii(sHeyhoUnsettledCount, 0, 1);
     _Z14ApproachLinearRiii(&sJumpComboCount, 0x270f, 1);
 
     if (data_ov006_02140314 != 0) {
@@ -1882,7 +1882,7 @@ namespace n020c4684 {
 extern "C" {
 extern int Heyho_LoadResources(char *p);
 extern int sHeyhoCount;
-extern int data_ov006_02140304;
+extern int sHeyhoUnsettledCount;
 extern char *sHeyhos;
 extern int data_ov006_02140314;
 int Heyho_InitPool(char *ptr, int n);
@@ -1891,7 +1891,7 @@ int Heyho_InitPool(char *ptr, int n){
     int off;
     data_ov006_02140314 = 0;
     sHeyhoCount = n;
-    data_ov006_02140304 = n;
+    sHeyhoUnsettledCount = n;
     sHeyhos = ptr;
     if (n > 0) {
         i = 0;
@@ -1913,7 +1913,7 @@ int Heyho_InitPool(char *ptr, int n){
 namespace n020c44b4 {
 extern "C" {
 extern void *data_ov006_021402fc;
-extern int data_ov006_02140304;
+extern int sHeyhoUnsettledCount;
 extern int sJumpComboCount;
 extern int data_ov006_0214031c;
 extern char *sHeyhos;
@@ -1948,7 +1948,7 @@ void Heyho_SpawnAll(void *arg0, int arg1)
     count = sHeyhoCount;
     data_ov006_0214031c = arg1;
     data_ov006_021402fc = arg0;
-    data_ov006_02140304 = count;
+    sHeyhoUnsettledCount = count;
     sJumpComboCount = 0;
     if (count <= 0)
         return;
@@ -2111,7 +2111,7 @@ extern int sHeyhoCount;
 extern Ent *sHeyhos;
 extern int data_ov006_0213afc8[2];
 extern char data_ov006_0212ccf0;
-extern int data_ov006_02140304;
+extern int sHeyhoUnsettledCount;
 extern int data_0209e650;
 
 extern int RandomIntInternal(int *seed);
@@ -2134,7 +2134,7 @@ void Heyho_SettleAll(void)
             Heyho_StartMotionRegroup((char *)sHeyhos + i * 0xf0,
                                      &data_ov006_0212ccf0 + (((int)(v0 * 9)) >> 0xc) * 0xf0 +
                                          (((int)(u0 * 5)) >> 0xc) * 0x30);
-            _Z14ApproachLinearRiii(&data_ov006_02140304, sHeyhoCount, 1);
+            _Z14ApproachLinearRiii(&sHeyhoUnsettledCount, sHeyhoCount, 1);
             return;
         }
     }

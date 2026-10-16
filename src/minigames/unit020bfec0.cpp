@@ -581,7 +581,9 @@ extern int sFallingPetal_Spawn_UnitYGuard;
 extern "C" {
 extern int sFallingPetal_Spawn_UnitYDtorRec;
 }
-extern "C" { extern int data_ov006_021402f0[3]; }
+extern "C" {
+extern int sFallingPetalAxis[3];
+}
 extern "C" { extern int data_0209e650; }
 extern "C" { extern int data_02092768[4]; }
 
@@ -589,7 +591,7 @@ void FallingPetal_Spawn(int *r6, int *r5, int *r4)
 {
     int *n;
     if (!(sFallingPetal_Spawn_UnitYGuard & 1)) {
-        n = data_ov006_021402f0;
+        n = sFallingPetalAxis;
         n[0] = 0;
         n[1] = 0x1000;
         n[2] = 0;
@@ -606,15 +608,15 @@ void FallingPetal_Spawn(int *r6, int *r5, int *r4)
     r6[7] = -0x40;
     r6[8] = 0;
     *(short *)((char *)r6 + 0x94) = 0xb4;
-    r6[9] = data_ov006_021402f0[0];
-    r6[10] = data_ov006_021402f0[1];
-    r6[11] = data_ov006_021402f0[2];
+    r6[9] = sFallingPetalAxis[0];
+    r6[10] = sFallingPetalAxis[1];
+    r6[11] = sFallingPetalAxis[2];
     func_0203cd80((char *)r6 + 0x24, (short)RandomIntInternal(&data_0209e650));
     r6[12] = data_02092768[0];
     r6[13] = data_02092768[1];
     r6[14] = data_02092768[2];
     r6[15] = data_02092768[3];
-    Quaternion_FromVector3((char *)r6 + 0x30, data_ov006_021402f0, (int *)((char *)r6 + 0x24));
+    Quaternion_FromVector3((char *)r6 + 0x30, sFallingPetalAxis, (int *)((char *)r6 + 0x24));
     *(int *)((char *)r6 + 0x40) = 1;
 }
 }

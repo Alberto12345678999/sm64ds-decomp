@@ -65,7 +65,7 @@ struct Base {
 };
 
 /* The two model file handles InitResources swaps between through
- * data_ov006_02142184; a declared-only subclass so the static initializer
+ * sJumpBackFile; a declared-only subclass so the static initializer
  * names the real entry points. */
 struct MgJumpModelFilePtr : SharedFilePtr {
     u32 words[2];
@@ -111,7 +111,7 @@ extern int  data_ov006_0213cb48;
 extern u8   data_0209d45c;
 extern s16  data_02082614;
 extern int sJump3DMarioCount;
-extern int  data_ov006_02140304;
+extern int sHeyhoUnsettledCount;
 extern int sJump3DRisenOutCount;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Result;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Intro;
@@ -261,11 +261,11 @@ s32 dScMgJump_c::InitResources()
         return 0;
 
     if (param1 & 1) {
-        data_ov006_02142184 = &gJumpBack02ModelFile;
+        sJumpBackFile = &gJumpBack02ModelFile;
     } else {
-        data_ov006_02142184 = &gJumpBack01ModelFile;
+        sJumpBackFile = &gJumpBack01ModelFile;
     }
-    modelFile = Model::LoadFile(*(SharedFilePtr *)data_ov006_02142184);
+    modelFile = Model::LoadFile(*(SharedFilePtr *)sJumpBackFile);
     r = mModel.SetFile((BMD_File *)modelFile, 1, -1);
     if (r == 0) {
         Matrix4x3_FromTranslation(&data_020a0e68, 0, 0, 0);
@@ -336,7 +336,7 @@ void dScMgJump_c::State_Play()
         BeginEnd();
         return;
     }
-    if(data_ov006_02140304 != 0)
+    if (sHeyhoUnsettledCount != 0)
         return;
     BeginFinal();
 }
@@ -517,8 +517,8 @@ s32 dScMgJump_c::Render()
 /* Slot 3. Releases the model file; `this` is never read. */
 s32 dScMgJump_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov006_02142184)->Release();
-    data_ov006_02142184 = 0;
+    ((SharedFilePtr *)sJumpBackFile)->Release();
+    sJumpBackFile = 0;
     Mg_CommitRecords();
     return 1;
 }

@@ -15851,7 +15851,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140304": {
+    "sHeyhoUnsettledCount": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:int []"
       ]
@@ -15955,7 +15955,7 @@
         "return:int"
       ]
     },
-    "data_ov006_0214055c": {
+    "sTrmpMariosOnLedges": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
@@ -16202,7 +16202,7 @@
         "return:char *"
       ]
     },
-    "data_ov006_02142018": {
+    "sWigglerSprites": {
       "src/unnamed/ov006/__sinit_ov006_02130df8.c": [
         "return:int []"
       ]
@@ -16332,7 +16332,7 @@
         "return:Ent []"
       ]
     },
-    "data_ov006_02142f80": {
+    "sTrmp2StarModelFile": {
       "src/unnamed/ov006/__sinit_ov006_0213322c.c": [
         "return:int []"
       ]

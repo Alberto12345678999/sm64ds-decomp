@@ -173,14 +173,14 @@
       "address": "0x02142188",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with file ID 0x204; InitResources selects it through data_ov006_02142184"
+      "evidence": "model resource handle constructed with file ID 0x204; InitResources selects it through sJumpBackFile"
     },
     {
       "symbol": "gJumpBack01ModelFile",
       "address": "0x02142190",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with file ID 0x203; InitResources selects it through data_ov006_02142184"
+      "evidence": "model resource handle constructed with file ID 0x203; InitResources selects it through sJumpBackFile"
     },
     {
       "symbol": "@599",

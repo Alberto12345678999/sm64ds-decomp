@@ -36,10 +36,10 @@ extern dMgMCarlo2CardObj_c *sMCarlo2FirstPick;
 extern dMgMCarlo2CardObj_c *sMCarlo2SecondPick;
 extern dMgMCarlo2CardObj_c *sMCarlo2CardsTail;
 extern dMgMCarlo2CardObj_c *sMCarlo2Cards;
-extern s16 data_ov006_02142558;     /* frames left before the pair resolves  */
-extern s16 data_ov006_0214255c;     /* pieces still animating                */
-extern s16 data_ov006_02142560;     /* difficulty row into data_ov006_0212e97c */
-extern int sMCarlo2FaceCounts[];    /* per-face weights the picker draws from  */
+extern s16 sMCarlo2BoardDelay;   /* frames left before the pair resolves  */
+extern s16 sMCarlo2CardsMoving;  /* pieces still animating                */
+extern s16 sMCarlo2BoardStep;    /* difficulty row into data_ov006_0212e97c */
+extern int sMCarlo2FaceCounts[]; /* per-face weights the picker draws from  */
 /* Twenty-three sprite words. The static initializer copies them out of
  * sMgCardSprites in this order; an in-order copy does not. */
 struct Carlo2SpriteWords {
@@ -380,10 +380,10 @@ void dMgMCarlo2CardObj_c::DealIn(int slot)
         mX = (0x70 - ((data_ov006_0213d6f4 >> 2) << 1)) << 12;
         mY = -0x30000;
         mState = 4;
-        data_ov006_0214255c++;
+        sMCarlo2CardsMoving++;
     } else {
         mState = 4;
-        data_ov006_0214255c++;
+        sMCarlo2CardsMoving++;
     }
 
     mTargetX = ((slot % 5) * 32 + 0x30) << 12;
@@ -487,7 +487,7 @@ void dMgMCarlo2CardObj_c::Update(int slot)
         }
         if (IsPairWith(sMCarlo2FirstPick) != 0) {
             sMCarlo2SecondPick = this;
-            data_ov006_02142558 = 0x20;
+            sMCarlo2BoardDelay = 0x20;
             mState = 3;
             Sound::PlayBank2_2D(0x154);
             return;
@@ -517,7 +517,7 @@ void dMgMCarlo2CardObj_c::Update(int slot)
         if (mLift != 0x4000)
             return;
         mState = 2;
-        ApproachLinear2(data_ov006_0214255c, 0, 1);
+        ApproachLinear2(sMCarlo2CardsMoving, 0, 1);
         mXStep = 0;
         mYStep = 0;
         return;
@@ -575,11 +575,11 @@ void dScMgMCarlo2_c::SetupBoard(dMgMCarlo2CardObj_c* base)
         sMCarlo2CardHead = 0;
         sMCarlo2FirstPick = 0;
         sMCarlo2SecondPick = 0;
-        data_ov006_02142558 = 0;
-        data_ov006_0214255c = 0;
+        sMCarlo2BoardDelay = 0;
+        sMCarlo2CardsMoving = 0;
         data_ov006_0213d6f8 = 0x28;
         data_ov006_0213d6f4 = 0x28;
-        data_ov006_02142560 = 0;
+        sMCarlo2BoardStep = 0;
         sMCarlo2Score = 0;
         sMCarlo2DealProgress = 0;
         {
@@ -628,7 +628,7 @@ int dScMgMCarlo2_c::BoardBusy() {
     int dealt = (sMCarlo2DealProgress << 4) >> 0x10;
     int wanted = data_ov006_0213d6f8;
     if (wanted > 0x14) wanted = 0x14;
-    if (dealt == wanted && data_ov006_0214255c == 0) {
+    if (dealt == wanted && sMCarlo2CardsMoving == 0) {
         if (sMCarlo2FirstPick == 0 || sMCarlo2SecondPick == 0) {
             ret = 0;
         }
@@ -646,7 +646,7 @@ int dScMgMCarlo2_c::BoardReady() {
     if (wanted > 0x14) {
         wanted = 0x14;
     }
-    if (dealt == wanted && data_ov006_0214255c == 0 &&
+    if (dealt == wanted && sMCarlo2CardsMoving == 0 &&
         (sMCarlo2FirstPick == 0 || sMCarlo2SecondPick == 0)) {
         ready = 1;
     }
@@ -694,8 +694,8 @@ void dScMgMCarlo2_c::UpdateBoard()
     dMgMCarlo2CardObj_c *head = sMCarlo2Cards;
 
     if (sMCarlo2FirstPick != 0 && sMCarlo2SecondPick != 0) {
-        data_ov006_02142558 -= 1;
-        if (data_ov006_02142558 == 0) {
+        sMCarlo2BoardDelay -= 1;
+        if (sMCarlo2BoardDelay == 0) {
             dMgMCarlo2CardObj_c* first;
             dMgMCarlo2CardObj_c* second;
             dMgMCarlo2CardObj_c* tail;
@@ -772,7 +772,7 @@ void dScMgMCarlo2_c::UpdateBoard()
             if (data_ov006_0213d6f8 <= 0x14) {
                 {
                     int i = 0;
-                    s16 idx = *(volatile s16*)&data_ov006_02142560;
+                    s16 idx = *(volatile s16 *)&sMCarlo2BoardStep;
                     int* row = (int*)((char*)data_ov006_0212e97c + idx * 0x28);
                     do {
                         sMCarlo2FaceCounts[i] = sMCarlo2FaceCounts[i] + row[i];
@@ -813,7 +813,7 @@ void dScMgMCarlo2_c::UpdateBoard()
                         } while (p != 0);
                     }
                 }
-                ApproachLinear2(data_ov006_02142560, 9, 1);
+                ApproachLinear2(sMCarlo2BoardStep, 9, 1);
                 data_ov006_0213d6f4 += 0x14;
                 data_ov006_0213d6f8 += 0x14;
             }

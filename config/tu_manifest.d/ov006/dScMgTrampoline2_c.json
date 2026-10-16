@@ -1238,7 +1238,7 @@
       "source": "0x0213325c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142f80",
+      "symbol": "sTrmp2StarModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142f80"
@@ -1331,7 +1331,7 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov006_02142f80",
+      "symbol": "sTrmp2StarModelFile",
       "address": "0x02142f80",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -1363,7 +1363,7 @@
     "tubuild create warning: CONFLICT: extern declaration 'sTrmp2Spinners' differs between the legacy file that used to hold Trmp2Spinner_UpdateMatricesAll and the one that held Trmp2Spinner_HideAll; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'sTrmp2Spinners' differs between the legacy file that used to hold Trmp2Spinner_UpdateMatricesAll and the one that held Trmp2Spinner_InitAll; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'sTrmp2Spinners' differs between the legacy file that used to hold Trmp2Spinner_UpdateMatricesAll and the one that held Trmp2Spinner_LoadAll; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'data_ov006_02142f80' differs between the legacy file that used to hold Trmp2Spinner_SetModel and the one that held Trmp2Spinner_Destruct; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'sTrmp2StarModelFile' differs between the legacy file that used to hold Trmp2Spinner_SetModel and the one that held Trmp2Spinner_Destruct; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN2G213GetBG2CharPtrEv' differs between the legacy file that used to hold _ZN18dScMgTrampoline2_c11PaintSquareEiiii and the one that held func_ov006_02122e20; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02054efc' differs between the legacy file that used to hold _ZN18dScMgTrampoline2_c11PaintSquareEiiii and the one that held func_ov006_02122e20; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02054ea8' differs between the legacy file that used to hold _ZN18dScMgTrampoline2_c11PaintSquareEiiii and the one that held func_ov006_02122e20; kept the first, the other is commented out for review",
@@ -1701,7 +1701,7 @@
             "anchors": {
               "12": [
                 {
-                  "symbol": "data_ov006_02142f80",
+                  "symbol": "sTrmp2StarModelFile",
                   "address": 34877312,
                   "sectionBase": 34877312
                 }

@@ -157,7 +157,7 @@ extern struct Node *sTrmpFxList;
 extern int sTrmpFxCount;
 extern int sTrmpFxPool;
 
-extern int data_ov006_02142f6c[];
+extern int sTrmpBrushWord[];
 extern void *func_02054efc(void);
 extern void *func_02054ea8(void);
 extern int func_02054d88(void);
@@ -188,7 +188,7 @@ extern void Mg_SetSharedState(int);
 extern void Trmp3DMario_StartAll(void *c);
 extern int sTrmpComboCount;
 extern int data_ov006_0213b0ec;
-extern int data_ov006_0214058c;
+extern int sTrmpMariosInPlay;
 extern int data_ov006_02142f60;
 extern int data_0209e650;
 extern void TrmpLine_UpdateAll(void);
@@ -644,7 +644,7 @@ void dScMgTrampoline_c::StatePlay()
         BeginResults();
     } else {
         if (_Z14ApproachLinearRiii(&mTimer, 0, 1)) {
-            if (sTrmpComboCount >= 5 || data_ov006_0214058c < 3) {
+            if (sTrmpComboCount >= 5 || sTrmpMariosInPlay < 3) {
                 int i;
                 char *p = (char *)mArray1;
                 for (i = 0; i < 4; i++) {
@@ -1023,7 +1023,7 @@ void dScMgTrampoline_c::InitBrush(int layer)
 // @symbol _ZN17dScMgTrampoline_c11PaintSquareEiiii
 /* Slot 34, the brush stamp. dScMgD3DBase_c does not override this slot,
    so each trampoline class has its own; they differ only in the shape
-   table (data_ov006_02142f6c here, _02142f78 in dScMgTrampoline2_c).
+   table (sTrmpBrushWord here, _02142f78 in dScMgTrampoline2_c).
    bgLayer (+0x6c, in the base padding) picks the character base. No
    wrapped-region branch: a 3D minigame owns the top screen. */
 void dScMgTrampoline_c::PaintSquare(int x_base, int y, int val, int n)
@@ -1079,12 +1079,10 @@ void dScMgTrampoline_c::PaintSquare(int x_base, int y, int val, int n)
                             ((x / 8) + (yy / 8) * 32) * 32 +
                             (yy & 7) * 4);
 
-                        MultiCopy_Int(addr, data_ov006_02142f6c, 4);
-                        data_ov006_02142f6c[0] =
-                            (data_ov006_02142f6c[0] &
-                             (-1 ^ (mask << ((x & 7) * 4)))) |
-                            (val << ((x & 7) * 4));
-                        MultiCopy_Int(data_ov006_02142f6c, addr, 4);
+                        MultiCopy_Int(addr, sTrmpBrushWord, 4);
+                        sTrmpBrushWord[0] = (sTrmpBrushWord[0] & (-1 ^ (mask << ((x & 7) * 4)))) |
+                                            (val << ((x & 7) * 4));
+                        MultiCopy_Int(sTrmpBrushWord, addr, 4);
                     }
                 }
             }

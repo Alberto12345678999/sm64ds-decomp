@@ -732,7 +732,7 @@ void dScMgRoulette_c::StartRound(int /* arg */)
 
     RouletteBoard_StartSpin((char *)mSlider);
 
-    data_ov006_021428c8 = 0;
+    sRouletteLandedRacer = 0;
     mCameraPreset = 0;
     unk_53e0 = 0x100;
     unk_53ea = 0;
@@ -988,7 +988,7 @@ void RouletteRacer_Update(Thing* racer)
                 Sound::PlayBank2_2D(0x15f);
                 RouletteRacer_Release((char *)racer);
             }
-            data_ov006_021428c8 = 0;
+            sRouletteLandedRacer = 0;
             racer->state = 1;
         }
         ApproachLinear(racer->x, racer->targetX, racer->stepX);
@@ -1007,9 +1007,8 @@ int RouletteRacer_CheckLandingA(int *racer)
   int dx;
   int dy;
   stride = 4;
-  if (data_ov006_021428c8 != 0)
-  {
-    return 0;
+  if (sRouletteLandedRacer != 0) {
+      return 0;
   }
   idx = gActivePlayerSlot;
   flag = 0;
@@ -1030,7 +1029,7 @@ int RouletteRacer_CheckLandingA(int *racer)
   if ((((dx >= (-8)) && (dx < 8)) && (dy >= (-8))) && (dy < 8))
   {
     Sound::PlayBank2_2D(0x15d);
-    data_ov006_021428c8 = (void *)racer;
+    sRouletteLandedRacer = (void *)racer;
     *((u8 *) (((char *) racer) + 0x32)) = 2;
     racer[2] = dx << 0xc;
     racer[3] = dy << 0xc;
@@ -1052,7 +1051,8 @@ void RouletteRacer_CheckLandingB(int *racer)
   int px, py, touchX, touchY;
   s16 tile;
   stride = 4;
-  if (data_ov006_021428c8 != 0) return;
+  if (sRouletteLandedRacer != 0)
+      return;
   idx = gActivePlayerSlot;
   flag = 0;
   if (gTouchHeld[idx * 4])
@@ -1077,7 +1077,7 @@ void RouletteRacer_CheckLandingB(int *racer)
   if (tile != 0x25) return;
   if (Roulette_TileAt(touchX, touchY) == 0x25) return;
   Sound::PlayBank2_2D(0x15d);
-  data_ov006_021428c8 = (void *)racer;
+  sRouletteLandedRacer = (void *)racer;
   *((u8 *)(((char *)racer) + 0x32)) = 2;
   racer[2] = dx << 12;
   racer[3] = dy << 12;

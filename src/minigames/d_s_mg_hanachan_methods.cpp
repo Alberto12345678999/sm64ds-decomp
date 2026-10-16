@@ -31,7 +31,7 @@
  *   HanaPopup_Spawn, HanaPopup_ClearAll).
  * - the popup at sHanaStarPopup is read through raw byte
  *   offsets, and StarPopup_Update reaches its +0xc byte through a
- *   separate symbol, data_ov006_02141ff0.
+ *   separate symbol, sHanaStarPopups.
  * - Wiggler_DrawTarget repeats Wiggler_DrawField's segment
  *   walk with its own point type, Vec2_ea914, whose trivial destructor
  *   is part of the match.
@@ -253,7 +253,7 @@ extern void Hana_StateNoneB(void);
 extern void Hana_LoadBackground(void);
 
 extern short data_02082214[];
-extern void* data_ov006_02142018[];
+extern void *sWigglerSprites[];
 extern void* data_ov006_021375c0[];
 extern int pmf_Wiggler_StateWait_2[];
 extern void* data_ov006_021375a0[];
@@ -327,9 +327,9 @@ extern int data_0209e650;
 /* data_ov006_02141fd4 is only read where it is unsigned and only written as a
    halfword, so the unsigned spelling costs the writer nothing. */
 extern unsigned short data_ov006_02141fd4;
-/* data_ov006_02141fd8: Phase_SetupRound spelled it volatile and only ever
+/* sHanaRoundPattern: Phase_SetupRound spelled it volatile and only ever
    stores to it (never re-reads), so the plain spelling emits the same strh. */
-extern s16 data_ov006_02141fd8;
+extern s16 sHanaRoundPattern;
 /* LoadFile returns the buffer; one file typed it int and casts at each use. */
 extern void *LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
@@ -425,7 +425,7 @@ typedef struct {
     u8 t;
     u8 pad[0x13];
 } Timer20;
-extern "C" Timer20 data_ov006_02141ff0[];
+extern "C" Timer20 sHanaStarPopups[];
 
 extern "C" void StarPopup_Update(char *arg)
 {
@@ -443,10 +443,10 @@ extern "C" void StarPopup_Update(char *arg)
             *(int *)(((int)f + 8)) -= 0x100;
             if (*(u8 *)(f + 0xc) != 0) {
                 int v;
-                data_ov006_02141ff0[i].t--;
-                v = data_ov006_02141ff0[i].t;
+                sHanaStarPopups[i].t--;
+                v = sHanaStarPopups[i].t;
                 if (v < 0)
-                    data_ov006_02141ff0[i].t = 0;
+                    sHanaStarPopups[i].t = 0;
                 return;
             }
             *(u8 *)(f + 0xc) = 0x40;
@@ -454,10 +454,10 @@ extern "C" void StarPopup_Update(char *arg)
         } else if (ph == 1) {
             if (*(u8 *)(f + 0xc) != 0) {
                 int v;
-                data_ov006_02141ff0[i].t--;
-                v = data_ov006_02141ff0[i].t;
+                sHanaStarPopups[i].t--;
+                v = sHanaStarPopups[i].t;
                 if (v < 0)
-                    data_ov006_02141ff0[i].t = 0;
+                    sHanaStarPopups[i].t = 0;
                 return;
             }
             *(u8 *)(f + 0x10) = 0;
@@ -695,8 +695,8 @@ extern "C" void Wiggler_DrawTarget(void *self_) {
         px = pos.y >> 12;
         py = pos.x >> 12;
         a2i = Wiggler_GetFlag(self, i);
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, data_ov006_02142018[a2i],
-            py, px, res, -1, 0x1000, (u16)rot);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, sWigglerSprites[a2i], py, px, res, -1, 0x1000,
+                                                (u16)rot);
         if (i == 0) {
             if (*(u8 *)(self + 0x94) != 0) {
                 if (Wiggler_IsStarVisible(self) != 0) {
@@ -770,10 +770,8 @@ void Wiggler_DrawField(void *arg) {
         py = s.pos.x >> 12;
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
             1,
-            data_ov006_02142018[(a2i = Wiggler_GetFlag(raw, i), (t.urot = (unsigned short)rot), a2i)],
-            py, px,
-            t.res, -1, 0x1000,
-            t.urot);
+            sWigglerSprites[(a2i = Wiggler_GetFlag(raw, i), (t.urot = (unsigned short)rot), a2i)],
+            py, px, t.res, -1, 0x1000, t.urot);
 
         if (i == 0) {
             if (*(unsigned char*)(raw + 0x94) != 0 && *(int*)(raw + 0x48) > 0) {
@@ -1842,7 +1840,7 @@ void Hana_SpawnWigglers(char *raw, int arg1, int arg2)
 
     o->color = (short)Hana_PickUnused(arg1, 0xff);
 
-    switch (data_ov006_02141fd8) {
+    switch (sHanaRoundPattern) {
     case 0:
         Wiggler_StartPathC((struct C *)raw, arg1);
         return;
@@ -2146,7 +2144,7 @@ void dScMgHanachan_c::Phase_Play()
                 Sound::PlayBank2_2D(0x1ef);
             else
                 Sound::PlayBank2_2D(0x1ee);
-            if (data_ov006_02141fd8 == 0)
+            if (sHanaRoundPattern == 0)
                 vec[0] -= 0x28000;
             StarPopup_Start(vec[0], vec[1]);
             BeginResult();
@@ -2214,7 +2212,7 @@ void dScMgHanachan_c::Phase_Play()
                     vec[2] = s3->x;
                     vec[3] = s3->y;
                 }
-                if (data_ov006_02141fd8 == 0)
+                if (sHanaRoundPattern == 0)
                     vec[2] -= 0x28000;
                 HanaPopup_Spawn(vec[2], vec[3]);
 
@@ -2278,11 +2276,11 @@ void dScMgHanachan_c::Phase_SetupRound()
     char *raw = (char *)this;
     if ((s32)self->mLevel < 0xa) {
         int bc = (s32)self->mLevel;
-        data_ov006_02141fd8 = data_ov006_0212e80c[bc];
+        sHanaRoundPattern = data_ov006_0212e80c[bc];
         data_ov006_0213c958 = data_ov006_0212e820[bc];
     } else {
         int ret = Hana_PickMoveKind();
-        data_ov006_02141fd8 = ret;
+        sHanaRoundPattern = ret;
         if (ret == 3) {
             data_ov006_0213c958 = 0xf;
         } else {
@@ -2434,12 +2432,18 @@ extern void* data_ov006_021374e8;
 extern void* data_ov006_021374f4;
 extern void* data_ov006_021375dc[];
 
-void* data_ov006_02142018[11] = {
-    data_ov006_021374b8, data_ov006_021374c4, data_ov006_021374ac,
-    data_ov006_021374e8, data_ov006_021374f4,
-    data_ov006_021375dc[0], data_ov006_021375dc[1],
-    (void*)data_ov006_02137560[0], (void*)data_ov006_02137560[3],
-    (void*)data_ov006_02137560[6], (void*)data_ov006_02137560[9],
+void *sWigglerSprites[11] = {
+    data_ov006_021374b8,
+    data_ov006_021374c4,
+    data_ov006_021374ac,
+    data_ov006_021374e8,
+    data_ov006_021374f4,
+    data_ov006_021375dc[0],
+    data_ov006_021375dc[1],
+    (void *)data_ov006_02137560[0],
+    (void *)data_ov006_02137560[3],
+    (void *)data_ov006_02137560[6],
+    (void *)data_ov006_02137560[9],
 };
 }
 

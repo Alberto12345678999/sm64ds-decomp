@@ -28,7 +28,7 @@ typedef struct Oam {
 extern "C" {
 
 /* ov006's own data. */
-extern void *data_ov006_02141a48;
+extern void *sD3DSubObjPalette;
 extern void *sMgSubCamera;
 extern Oam sD3DOamShadow[];
 extern unsigned char data_ov006_0212e574[];
@@ -252,9 +252,9 @@ void dScMgD3DBase_c::InitEngines()
         DecompressLZ16(file, dst);
     }
     file = Ov004_LoadFile(0xc3);
-    data_ov006_02141a48 = file;
+    sD3DSubObjPalette = file;
     GX::LoadOBJPltt(file, 0x100u, 0x100u);
-    GXS::LoadOBJPltt(data_ov006_02141a48, 0x100u, 0x100u);
+    GXS::LoadOBJPltt(sD3DSubObjPalette, 0x100u, 0x100u);
     InitialiseVramGlobals();
     Mg_ResetOverlays();
     D3D_DrawSpriteTable();
@@ -336,7 +336,7 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
         *(int*)0x40004cc = 0x40007fff;
         D3D_ReleaseSubBg1(this);
         Ov004_Deallocate(data_ov006_02141a4c);
-        Ov004_Deallocate(data_ov006_02141a48);
+        Ov004_Deallocate(sD3DSubObjPalette);
     }
     data_0209f5f8 = 0;
     dScMgBase_c::AfterCleanupResources(vfSuccess);
@@ -434,7 +434,7 @@ int dScMgD3DBase_c::CloseMenu()
 int dScMgD3DBase_c::SaveScreenForMenu()
 {
     D3D_InitDualScreen();
-    GXS::LoadOBJPltt(data_ov006_02141a48, 0x100, 0x100);
+    GXS::LoadOBJPltt(sD3DSubObjPalette, 0x100, 0x100);
     data_0209e660 = 0;
     mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);

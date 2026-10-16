@@ -1001,7 +1001,7 @@
       "evidence": "two-entry Ent member-function state table; Mg_DrawFx dispatches through it on Ent::idx"
     },
     {
-      "symbol": "data_ov004_020beba8",
+      "symbol": "sMgSparkleSprites",
       "address": "0x020beba8",
       "size": "0x40",
       "binding": "STB_GLOBAL",
