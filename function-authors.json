@@ -24847,23 +24847,23 @@
     },
     "ov006:0x020ff690": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c10Cup_State4Ei"
+      "name": "_ZN16dScMgPachinko2_c15Cup_StateDecideEi"
     },
     "ov006:0x020ff8c8": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c10Cup_State3Ei"
+      "name": "_ZN16dScMgPachinko2_c17Cup_StateHopRightEi"
     },
     "ov006:0x020ffb54": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c10Cup_State2Ei"
+      "name": "_ZN16dScMgPachinko2_c16Cup_StateHopLeftEi"
     },
     "ov006:0x020ffde4": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c10Cup_State1Ei"
+      "name": "_ZN16dScMgPachinko2_c13Cup_StateWaitEi"
     },
     "ov006:0x020fff54": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c10Cup_State0Ei"
+      "name": "_ZN16dScMgPachinko2_c13Cup_StateInitEi"
     },
     "ov006:0x020fff84": {
       "author": "tangosdev",
@@ -24939,31 +24939,31 @@
     },
     "ov006:0x021009b8": {
       "author": "aitddlabs",
-      "name": "_ZN16dScMgPachinko2_c14Paddle_State14Ei"
+      "name": "_ZN16dScMgPachinko2_c19Paddle_StateFlyAwayEi"
     },
     "ov006:0x02100b08": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c14Paddle_State13Ei"
+      "name": "_ZN16dScMgPachinko2_c21Paddle_StateDropBallsEi"
     },
     "ov006:0x02100bac": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c14Paddle_State12Ei"
+      "name": "_ZN16dScMgPachinko2_c18Paddle_StateGatherEi"
     },
     "ov006:0x02100d90": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c14Paddle_State11Ei"
+      "name": "_ZN16dScMgPachinko2_c20Paddle_StateRiseHomeEi"
     },
     "ov006:0x02100e3c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c14Paddle_State10Ei"
+      "name": "_ZN16dScMgPachinko2_c17Paddle_StateSwingEi"
     },
     "ov006:0x02100f7c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State9Ei"
+      "name": "_ZN16dScMgPachinko2_c24Paddle_StateFallToGroundEi"
     },
     "ov006:0x02101088": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State8Ei"
+      "name": "_ZN16dScMgPachinko2_c23Paddle_StateKnockedDownEi"
     },
     "ov006:0x02101148": {
       "author": "andrewboudreau",
@@ -24971,35 +24971,35 @@
     },
     "ov006:0x02101224": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State7Ei"
+      "name": "_ZN16dScMgPachinko2_c17Paddle_StatePauseEi"
     },
     "ov006:0x021012cc": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State6Ei"
+      "name": "_ZN16dScMgPachinko2_c17Paddle_StateCrossEi"
     },
     "ov006:0x021016ec": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State5Ei"
+      "name": "_ZN16dScMgPachinko2_c17Paddle_StateWeaveEi"
     },
     "ov006:0x021019e0": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State4Ei"
+      "name": "_ZN16dScMgPachinko2_c17Paddle_StateOrbitEi"
     },
     "ov006:0x02101af0": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State3Ei"
+      "name": "_ZN16dScMgPachinko2_c19Paddle_StateBoxLoopEi"
     },
     "ov006:0x02101e88": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State2Ei"
+      "name": "_ZN16dScMgPachinko2_c17Paddle_StateSweepEi"
     },
     "ov006:0x021020c4": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State1Ei"
+      "name": "_ZN16dScMgPachinko2_c19Paddle_StateDescendEi"
     },
     "ov006:0x02102274": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c13Paddle_State0Ei"
+      "name": "_ZN16dScMgPachinko2_c17Paddle_StateSpawnEi"
     },
     "ov006:0x0210246c": {
       "author": "andrewboudreau",
@@ -25063,35 +25063,35 @@
     },
     "ov006:0x02102f3c": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State0Ei"
+      "name": "_ZN16dScMgPachinko2_c18Ball_StateWaitGrabEi"
     },
     "ov006:0x02102fe8": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State1Ei"
+      "name": "_ZN16dScMgPachinko2_c13Ball_StateAimEi"
     },
     "ov006:0x02103360": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State2Ei"
+      "name": "_ZN16dScMgPachinko2_c16Ball_StateFlyingEi"
     },
     "ov006:0x02103608": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State3Ei"
+      "name": "_ZN16dScMgPachinko2_c16Ball_StateTumbleEi"
     },
     "ov006:0x0210371c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State4Ei"
+      "name": "_ZN16dScMgPachinko2_c13Ball_StateHopEi"
     },
     "ov006:0x02103870": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State5Ei"
+      "name": "_ZN16dScMgPachinko2_c17Ball_StateWalkOffEi"
     },
     "ov006:0x0210397c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State6Ei"
+      "name": "_ZN16dScMgPachinko2_c16Ball_StateRemoveEi"
     },
     "ov006:0x02103994": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c11Ball_State7Ei"
+      "name": "_ZN16dScMgPachinko2_c16Ball_StateScoredEi"
     },
     "ov006:0x02103ac0": {
       "author": "lunavyqo",

@@ -370,10 +370,10 @@ actors' looks are not observed.
 **Pachinko2 (`dScMgPachinko2_c`, Tamaire).** These are members, named after the
 header's own `mCups` / `mBalls` / `mPaddles`.
 
-Three tables, named by index:
-- `Cup_State0..4`
-- `Ball_State0..7`
-- `Paddle_State0..14`
+The three tables' handlers are named from their bodies (pass 6; they were `Cup_State0..4`, `Ball_State0..7` and `Paddle_State0..14`):
+- **Cups:** `Cup_StateInit`, `StateWait` (animates; aims through `Cup_PickTarget` until armed), `StateDecide` (stays or hops a random number of times, never the same choice three times running), `StateHopLeft` / `StateHopRight`.
+- **Balls:** `Ball_StateWaitGrab`, `StateAim` (follows the stylus; release launches it towards (0x80, 0x20)), `StateFlying`, `StateTumble` (falls spinning; off the field it is removed, on the floor it bounces), `StateHop`, `StateWalkOff` (walks off its nearer side), `StateRemove`, `StateScored` (falls with a score popup and one point).
+- **Paddles (the flying targets, looped sound 0x198):** `Paddle_StateSpawn`, `StateDescend` (to its lane height, then the movement that `mLaneConfig` picks): `StateSweep` (side to side, with `StatePause` at each end), `StateBoxLoop` (round a rectangle), `StateOrbit` (a circle of radius 0x50), `StateWeave`, `StateCross` (the two paddles cross vertically). After four hits (`Paddle_Hit`) one `StateKnockedDown` (sinks 0x60) or `StateFallToGround` then `StateSwing`, and `StateRiseHome` restores its saved movement. At the end `Paddle_Stop` sends them to `StateGather` (to the centre), then `StateDropBalls` releases the balls they hold, and `StateFlyAway` takes them off the top. Medium: the movement names describe the paths, not observed looks.
 
 High confidence:
 - **The aim line:** `DrawAimLine`, `ClearAimLine`, `PlotSubBg2Pixels`.
