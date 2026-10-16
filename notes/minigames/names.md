@@ -322,9 +322,11 @@ Medium confidence: `Marker_*` (one sprite) and `StepBg3Scroll`.
 
 **Bomroom (`dScMgBomroom_c`, Bob-omb sorting).**
 
-Four of the seven member-pointer tables are named by index (the other three are the fixtures below):
-- `Round_State0..4` and `Round_SubState0..3`
-- `Bomb_State0..6` and `Bomb_Roam0..4`
+The seven member-pointer tables' handlers are named from their bodies (pass 6; they were `Round_State0..4`, `Round_SubState0..3`, `Bomb_State0..6` and `Bomb_Roam0..4`, and three are the fixtures below), high confidence:
+- **Scene states (`mSceneState`):** `Round_StateSetup` (0: shows the fixtures), `Round_StateStart` (1: enables the prompt), `Round_StatePlay` (2: spawns and moves bombs), `Round_StateEnd` (3: runs the round-end steps below and the fixtures), `Round_StateGameOver` (4: waits, then `MG_STATE_RESULTS`).
+- **Round-end steps (`mSubState`):** `RoundEnd_StartMarch` (0: sends the finished pen's bombs, or after a blast every bomb, into the march, and opens their pen gates), `RoundEnd_WaitLinedUp` (1: waits until every marching bomb is lined up, then closes the top door), `RoundEnd_Tally` (2: counts the lined-up bombs one by one, sound 0x1bc), `RoundEnd_Finish` (3: removes them, submits the score, and goes back to play, or to state 4 after a blast).
+- **Bomb states (`state`):** `Bomb_StateWaiting` (0: its spawn delay), `Bomb_StateWalk` (1: walks while its fuse burns), `Bomb_StateHeld` (2: follows the stylus), `Bomb_StateChainDelay` (3: set off by another bomb's blast, 0x20 frames later), `Bomb_StateExploding` (4), `Bomb_StateInPen` (5: bounces around inside its pen), `Bomb_StateMarch` (6: runs the march steps).
+- **March steps (`substate`):** `BombMarch_ToGate` (walks to its pen's outer gate), `BombMarch_Exit` (walks off the screen's edge), `BombMarch_Offscreen` (empty), `BombMarch_ToLine` (after its delay, walks to its line-up slot on the top screen; sound 0x1d9 or 0x1da on arrival), `BombMarch_LinedUp` (empty).
 
 Descriptive names, high confidence:
 - **Bombs:** `SpawnBombs`, `UpdateBombs`, `DrawBombs`, `ClearBombs`, `Bomb_Animate`, `Bomb_CheckGrab`, `Bomb_CheckSorted`, `Bomb_CheckWrongPen`, `Bomb_PushApart`, `OnBombExploded`, `HideExplodedBombs`.
@@ -340,7 +342,7 @@ Medium confidence:
 - **`TopDoor_*` (+0x62a0, one):** the emblem door at the top centre of the top screen. `TopDoor_Open` (was `SlotB2_Start`, sound 0x1e2) runs as the round end marches the lined-up bombs out. `TopDoor_Close` (was `SlotB2_Finish`, sound 0x1e3) runs once none is left marching.
 - The header splits the old `mSlotsB[3]` into `mPenGates[2]` and `mTopDoor`, and renames `mSlotsA` to `mHatchPanels`. The dispatch tables are `sBomroomHatchPanelStateTable`, `sBomroomPenGateStateTable` and `sBomroomTopDoorStateTable`.
 
-`AnyBombMarching` (was `func_ov006_020d8c88`, pass 5): whether any active bomb is in state 6, the march to the line-up that the round end assigns; `Round_SubState2` raises BG2 when it is.
+`AnyBombMarching` (was `func_ov006_020d8c88`, pass 5): whether any active bomb is in `Bomb_StateMarch`, which the round end assigns; `RoundEnd_Tally` raises BG2 when it is.
 
 **Pachinko (`dScMgPachinko_c`, Bob-omb Squad).** These helpers are C-linkage free
 functions on a `char *` view of the scene, so each name carries the `Pachinko`

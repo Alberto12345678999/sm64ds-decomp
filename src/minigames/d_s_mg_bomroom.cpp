@@ -27,7 +27,7 @@
 // field and &state differ from (u8 *)(bomb + 0x4697); the idle-bomb timer
 // stays raw + i*0x40 + 0x4690; mBombs[i].color swaps the compare's register
 // pairing). CheckColorComplete keeps &f3c over (unsigned char *)(bomb +
-// 0x469c). Bomb_State5 keeps the sine-table value as the first factor
+// 0x469c). Bomb_StateInPen keeps the sine-table value as the first factor
 // (inline reads flip smull order) and the spawner keeps raw (c + (j << 6)) +
 // 0x46NN stores. TopDoor_StateClosing/_020d5f2c/_020d6100/_020d6170/_020d6454
 // keep the rec = this + index*0x10 temp and its *(ty *)(rec + 0x62NN) puns
@@ -1188,18 +1188,15 @@ void dScMgBomroom_c::CheckColorComplete() {
 
 #pragma pop
 
-// @symbol _ZN14dScMgBomroom_c10Bomb_Roam4Ev
+// @symbol _ZN14dScMgBomroom_c17BombMarch_LinedUpEv
 
-void dScMgBomroom_c::Bomb_Roam4() {
-}
+void dScMgBomroom_c::BombMarch_LinedUp() {}
 
-
-// @symbol _ZN14dScMgBomroom_c10Bomb_Roam3Ei
+// @symbol _ZN14dScMgBomroom_c16BombMarch_ToLineEi
 #pragma push
 #pragma opt_common_subs off
 
-
-void dScMgBomroom_c::Bomb_Roam3(int index) {
+void dScMgBomroom_c::BombMarch_ToLine(int index) {
     char * raw = (char *)this;
     int off = index << 6;
     if (mBombs[index].marchDelay != 0) {
@@ -1246,18 +1243,16 @@ void dScMgBomroom_c::Bomb_Roam3(int index) {
 
 #pragma pop
 
-// @symbol _ZN14dScMgBomroom_c10Bomb_Roam2Ev
+// @symbol _ZN14dScMgBomroom_c19BombMarch_OffscreenEv
 
-void dScMgBomroom_c::Bomb_Roam2() {
-}
+void dScMgBomroom_c::BombMarch_Offscreen() {}
 
-
-// @symbol _ZN14dScMgBomroom_c10Bomb_Roam1Ei
+// @symbol _ZN14dScMgBomroom_c14BombMarch_ExitEi
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 
-void dScMgBomroom_c::Bomb_Roam1(int index) {
+void dScMgBomroom_c::BombMarch_Exit(int index) {
     char * raw = (char *)this;
     int color, x;
     {
@@ -1290,12 +1285,12 @@ void dScMgBomroom_c::Bomb_Roam1(int index) {
 
 #pragma pop
 
-// @symbol _ZN14dScMgBomroom_c10Bomb_Roam0Ei
+// @symbol _ZN14dScMgBomroom_c16BombMarch_ToGateEi
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 
-void dScMgBomroom_c::Bomb_Roam0(int index) {
+void dScMgBomroom_c::BombMarch_ToGate(int index) {
     char * raw = (char *)this;
     int color, x, z, tx, ty;
 
@@ -1351,25 +1346,24 @@ done:
 
 #pragma pop
 
-// @symbol _ZN14dScMgBomroom_c11Bomb_State6Ei
+// @symbol _ZN14dScMgBomroom_c15Bomb_StateMarchEi
 /* Runs the bomb's current handler: the byte at +0x3b indexes the
  * pointer-to-member table data_ov006_02141708. */
 
 extern "C" PMFEntry data_ov006_02141708[];
-void dScMgBomroom_c::Bomb_State6(int index) {
-  unsigned char state = mBombs[index].substate;
-  (this->*(data_ov006_02141708[state].pmf))(index);
+void dScMgBomroom_c::Bomb_StateMarch(int index) {
+    unsigned char state = mBombs[index].substate;
+    (this->*(data_ov006_02141708[state].pmf))(index);
 }
 
-
-// @symbol _ZN14dScMgBomroom_c11Bomb_State5Ei
+// @symbol _ZN14dScMgBomroom_c15Bomb_StateInPenEi
 /* Roaming step: advance x/y along the angle at speed (sine table, Fix12),
  * then bounce off the box selected by color (0xc0..0x100 x 0x40..0x80 for
  * color 1, 0..0x40 x 0x40..0x80 for color 0): a vertical wall mirrors the
  * angle (0x8000 - a), a horizontal one negates it, and the coordinate is
  * pinned just inside the wall. */
 
-void dScMgBomroom_c::Bomb_State5(int idx) {
+void dScMgBomroom_c::Bomb_StateInPen(int idx) {
     dScMgBomroom_c * self = (dScMgBomroom_c *)this;
     int xv;
     int yv;
@@ -1415,10 +1409,9 @@ void dScMgBomroom_c::Bomb_State5(int idx) {
     }
 }
 
+// @symbol _ZN14dScMgBomroom_c19Bomb_StateExplodingEi
 
-// @symbol _ZN14dScMgBomroom_c11Bomb_State4Ei
-
-void dScMgBomroom_c::Bomb_State4(int i) {
+void dScMgBomroom_c::Bomb_StateExploding(int i) {
     char * c = (char *)this;
     char *b = c + i * 64;
     if (mBombs[i].exploded == 0)
@@ -1429,10 +1422,9 @@ void dScMgBomroom_c::Bomb_State4(int i) {
     mDispatchDelay = 0x60;
 }
 
+// @symbol _ZN14dScMgBomroom_c20Bomb_StateChainDelayEi
 
-// @symbol _ZN14dScMgBomroom_c11Bomb_State3Ei
-
-void dScMgBomroom_c::Bomb_State3(int idx) {
+void dScMgBomroom_c::Bomb_StateChainDelay(int idx) {
     unsigned char * c = (unsigned char *)this;
     unsigned char *slot = c + idx * 0x40;
     if (mBombs[idx].marchDelay != 0) {
@@ -1448,8 +1440,7 @@ void dScMgBomroom_c::Bomb_State3(int idx) {
     }
 }
 
-
-// @symbol _ZN14dScMgBomroom_c11Bomb_State2Ei
+// @symbol _ZN14dScMgBomroom_c14Bomb_StateHeldEi
 /* A held bomb follows the stylus less its grab offset, and +0x69e records
  * whether it is over its own pen. With nothing held (0x62f6 is 0xff) the
  * bomb goes back to state 1 instead. */
@@ -1457,7 +1448,7 @@ void dScMgBomroom_c::Bomb_State3(int idx) {
 #pragma opt_common_subs off
 
 #define B ((char *)self_ + idx * 0x40 + 0x4000)
-void dScMgBomroom_c::Bomb_State2(int idx) {
+void dScMgBomroom_c::Bomb_StateHeld(int idx) {
     char * self_ = (char *)this;
     if (mHeldColor == 0xff) {
         mBombs[idx].state = 1;
@@ -1513,12 +1504,12 @@ void dScMgBomroom_c::Bomb_State2(int idx) {
 
 #pragma pop
 
-// @symbol _ZN14dScMgBomroom_c11Bomb_State1Ei
+// @symbol _ZN14dScMgBomroom_c14Bomb_StateWalkEi
 /* While the bomb's fuse runs it counts down (unless mFusesFrozen is
  * set) and the bomb moves along its angle; once it reaches 0 the bomb goes
  * to state 4 and OnBombExploded takes over. */
 
-void dScMgBomroom_c::Bomb_State1(int idx) {
+void dScMgBomroom_c::Bomb_StateWalk(int idx) {
     char * self = (char *)this;
     int t;
 
@@ -1558,10 +1549,9 @@ void dScMgBomroom_c::Bomb_State1(int idx) {
     mBombs[idx].prevY = mBombs[idx].y;
 }
 
+// @symbol _ZN14dScMgBomroom_c17Bomb_StateWaitingEi
 
-// @symbol _ZN14dScMgBomroom_c11Bomb_State0Ei
-
-void dScMgBomroom_c::Bomb_State0(int i) {
+void dScMgBomroom_c::Bomb_StateWaiting(int i) {
     char * c = (char *)this;
     char *b = c + (i << 6);
     if (mBombs[i].marchDelay != 0) {
@@ -1573,7 +1563,6 @@ void dScMgBomroom_c::Bomb_State0(int i) {
         mBombs[i].state = 1;
     }
 }
-
 
 // @symbol _ZN14dScMgBomroom_c11UpdateBombsEv
 /* Per-frame bomb pass: with no touch, nothing is held (0x62f6 = 0xff);
@@ -1957,12 +1946,11 @@ void dScMgBomroom_c::ClearBombs() {
     }
 }
 
-
-// @symbol _ZN14dScMgBomroom_c15Round_SubState3Ev
+// @symbol _ZN14dScMgBomroom_c15RoundEnd_FinishEv
 #pragma push
 #pragma opt_strength_reduction off
 
-void dScMgBomroom_c::Round_SubState3() {
+void dScMgBomroom_c::RoundEnd_Finish() {
     char * self = (char *)this;
     int j;
 
@@ -2004,9 +1992,9 @@ void dScMgBomroom_c::Round_SubState3() {
 
 #pragma pop
 
-// @symbol _ZN14dScMgBomroom_c15Round_SubState2Ev
+// @symbol _ZN14dScMgBomroom_c14RoundEnd_TallyEv
 
-void dScMgBomroom_c::Round_SubState2() {
+void dScMgBomroom_c::RoundEnd_Tally() {
     char * self = (char *)this;
     int found;
     int j;
@@ -2072,11 +2060,11 @@ int dScMgBomroom_c::AnyBombMarching() {
     return 0;
 }
 
-// @symbol _ZN14dScMgBomroom_c15Round_SubState1Ev
+// @symbol _ZN14dScMgBomroom_c20RoundEnd_WaitLinedUpEv
 #pragma push
 #pragma opt_strength_reduction off
 
-void dScMgBomroom_c::Round_SubState1() {
+void dScMgBomroom_c::RoundEnd_WaitLinedUp() {
     char * base = (char *)this;
     UpdateBombs();
     int c4 = 0;
@@ -2104,9 +2092,9 @@ void dScMgBomroom_c::Round_SubState1() {
 
 #pragma pop
 
-// @symbol _ZN14dScMgBomroom_c15Round_SubState0Ev
+// @symbol _ZN14dScMgBomroom_c19RoundEnd_StartMarchEv
 
-void dScMgBomroom_c::Round_SubState0() {
+void dScMgBomroom_c::RoundEnd_StartMarch() {
     char * self = (char *)this;
     int flag;
     int count;
@@ -2165,10 +2153,9 @@ void dScMgBomroom_c::Round_SubState0() {
     mSubState = 1;
 }
 
+// @symbol _ZN14dScMgBomroom_c19Round_StateGameOverEv
 
-// @symbol _ZN14dScMgBomroom_c12Round_State4Ev
-
-void dScMgBomroom_c::Round_State4() {
+void dScMgBomroom_c::Round_StateGameOver() {
     char * c = (char *)this;
     if (mStateTimer == 0)
         return;
@@ -2180,14 +2167,13 @@ void dScMgBomroom_c::Round_State4() {
     mPromptEnabled = 0;
 }
 
-
-// @symbol _ZN14dScMgBomroom_c12Round_State3Ev
+// @symbol _ZN14dScMgBomroom_c14Round_StateEndEv
 /* Runs the +0x62d4 sub-state through the pointer-to-member table
  * data_ov006_021416a0, decoded by hand (a function word, then a
  * this-adjust whose low bit marks a virtual call), then the three
  * per-frame passes. */
 
-void dScMgBomroom_c::Round_State3() {
+void dScMgBomroom_c::Round_StateEnd() {
     unsigned char * c = (unsigned char *)this;
     int idx = mSubState;
     int *e = &data_ov006_021416a0[idx * 2];
@@ -2202,10 +2188,9 @@ void dScMgBomroom_c::Round_State3() {
     TopDoor_Update();
 }
 
+// @symbol _ZN14dScMgBomroom_c15Round_StatePlayEv
 
-// @symbol _ZN14dScMgBomroom_c12Round_State2Ev
-
-void dScMgBomroom_c::Round_State2() {
+void dScMgBomroom_c::Round_StatePlay() {
     void * c = (void *)this;
     HatchPanel_UpdateAll();
     SpawnBombs();
@@ -2213,27 +2198,24 @@ void dScMgBomroom_c::Round_State2() {
     CountSortedBombs();
 }
 
+// @symbol _ZN14dScMgBomroom_c16Round_StateStartEv
 
-// @symbol _ZN14dScMgBomroom_c12Round_State1Ev
-
-void dScMgBomroom_c::Round_State1() {
+void dScMgBomroom_c::Round_StateStart() {
     void * c = (void *)this;
     unsigned char *p = (unsigned char *)c;
     if (mPromptBlinkCount == 0) { mPromptEnabled = 1; mPromptBlinkCount = 1; mPromptBlinkTimer = 0; }
     *(int *)(p + 0x6000 + 0x2d0) = 2;
 }
 
+// @symbol _ZN14dScMgBomroom_c16Round_StateSetupEv
 
-// @symbol _ZN14dScMgBomroom_c12Round_State0Ev
-
-void dScMgBomroom_c::Round_State0() {
+void dScMgBomroom_c::Round_StateSetup() {
     void * c = (void *)this;
     HatchPanel_ShowAll();
     PenGate_ShowAll();
     TopDoor_Show();
     *(int *)((char *)c + 0x6000 + 0x2d0) = 1;
 }
-
 
 // @symbol _ZN14dScMgBomroom_c10ResetRoundEv
 /* Resets the round: clears every bomb record and the round counters
