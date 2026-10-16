@@ -1,0 +1,31 @@
+{
+  "issue": 2410,
+  "task": "issue2410-native-ground1015",
+  "base": "c039f325547d3636acce5b6e91ad556f48713d6f",
+  "status": "source checkpoint; actual production and independent Source pending",
+  "canonical_rename": {
+    "old": "func_02038ea4",
+    "new": "_ZN9dBgCh_Gnd15DetectClsnSlot0Ev",
+    "module": "arm9",
+    "address": "0x02038ea4",
+    "size": "0xa0",
+    "inferred_name": true
+  },
+  "private_preview_handoff_sha256": "2530fd0a73eb14ce75fa12dc96d0ab6a1de545c09b6a0b433c2039f63273e917",
+  "patch_sha256": "8f57237be4cba9a46619d1564713e02cd6641804aa4cdb60375bd0c04b0027a4",
+  "private_preview": {
+    "header_consumers": 70,
+    "other_literal_ELF_identical": 68,
+    "changed_tu_strict_checks_per_side": 105,
+    "blind": 0,
+    "combined_camera_object_literal_query_only": true,
+    "canonical_name_map_only": true,
+    "compiler_local_map": {
+      "_ZN7daMky_c21Bundle$963d_a_mky_cppD1Ev": "_ZN7daMky_c21Bundle$962d_a_mky_cppD1Ev"
+    }
+  },
+  "prior_findings": 50,
+  "collision_predecessor": "collision-native-bases-current-main1014",
+  "production_acceptance": null,
+  "issue_complete": false
+}
