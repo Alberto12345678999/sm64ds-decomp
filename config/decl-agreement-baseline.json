@@ -1821,10 +1821,6 @@
       "src/minigames/d_s_mg_snowball.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
       "src/unnamed/arm9/0204/func_02049c48.c": [
         "param:#3 unsigned int"
       ],
@@ -1854,9 +1850,6 @@
       "src/unnamed/arm9/0201/func_02017fd0.c": [
         "param:#1 unsigned int",
         "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "param:#2 int"
       ]
     },
     "NoOpDestructor": {
@@ -6503,9 +6496,6 @@
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0203/func_02033bb8.c": [
         "return:int"
       ],
@@ -6611,9 +6601,6 @@
       ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "return:int"
       ],
       "src/unnamed/arm9/0203/func_020316d8.c": [
         "return:void *"

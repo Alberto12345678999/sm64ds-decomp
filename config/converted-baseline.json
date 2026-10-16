@@ -233,7 +233,7 @@
     "src/game/stages/d_s_entry_methods.cpp#_ZN10dScEntry_c6RenderEv",
     "src/game/stages/d_s_entry_methods.cpp#_ZN10dScEntry_c6icon_cC1Ev",
     "src/game/stages/d_s_stage_methods.cpp#_ZN10dScStage_c11GetSkyboxIDEv",
-    "src/_ZN10dScStage_c13UpdateMessageEv.cpp",
+    "src/Message.cpp#_ZN10dScStage_c13UpdateMessageEv",
     "src/game/stages/d_s_stage_methods.cpp#_ZN10dScStage_c14GraphCallback2Ev",
     "src/game/stages/d_s_stage_methods.cpp#_ZN10dScStage_c15IsPauseDisabledEv",
     "src/game/stages/d_s_stage_methods.cpp#_ZN10dScStage_c16OnPendingDestroyEv",
