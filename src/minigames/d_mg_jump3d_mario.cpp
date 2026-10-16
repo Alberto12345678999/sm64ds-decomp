@@ -147,8 +147,8 @@ extern Jump3DMarioAnimFilePtr sJump3DMarioDoubleJump1AnimFile;
 
 /* The pool the minigame scenes hand in: count, base pointer, level, round
  * and the three player slots. */
-extern int data_ov006_02140410;
-extern int data_ov006_02140414;
+extern int sJump3DArrangeLevel;
+extern int sJump3DLayout;
 extern int sJump3DMarioCount;
 extern char *sJump3DMarioPool;
 extern char *sJumpAdapters[];
@@ -226,15 +226,15 @@ extern "C" void Jump3D_Arrange(u32 a0, u32 a1)
 {
     int i;
     int x;
-    data_ov006_02140410 = a0;
-    data_ov006_02140414 = a1;
+    sJump3DArrangeLevel = a0;
+    sJump3DLayout = a1;
     if (a0 < 5) {
         x = a0 * 0x140 + 0x1000;
     } else {
         x = (a0 % 5 + a0 / 5) * 0x280 + 0x1000;
     }
     Jump3D_SetTuning(x);
-    if ((u32)data_ov006_02140410 % 5 == 0) {
+    if ((u32)sJump3DArrangeLevel % 5 == 0) {
         sJump3DMariosLeft = sJump3DMarioCount;
     }
     for (i = 0; i < sJump3DMarioCount; i++) {
@@ -333,7 +333,7 @@ extern "C" void Jump3D_StartRoundLayout(void)
     eoff = 0;
     ooff = 0;
     do {
-        char *e = data_ov006_0212dddc + data_ov006_02140414 * 0x24 + eoff;
+        char *e = data_ov006_0212dddc + sJump3DLayout * 0x24 + eoff;
         int word = *(int *)e;
         ((dMgJump3DMario_c *)(sJump3DMarioPool + ooff))->StartWindUp((short)word);
         *(int *)(sJump3DMarioPool + ooff + 0x14) = *(int *)(e + 4);

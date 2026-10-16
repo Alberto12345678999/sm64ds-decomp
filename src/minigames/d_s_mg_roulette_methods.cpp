@@ -56,7 +56,7 @@ struct Pair   { int w[2]; };
 struct Pair2W { int w[2]; };
 
 /* The board's tile centres: sRouletteTiles holds x and
-   data_ov006_02142ab8 the same array offset to y, stride 8. decl_common.h
+   sRouletteTilePos the same array offset to y, stride 8. decl_common.h
    types both as `char[]`, so every read casts. */
 struct TileXY { int x, y; };
 
@@ -218,7 +218,7 @@ void Dealer_Draw(char *c);
 void Dealer_Update(char *thiz);
 int  Dealer_Load(char *c);
 
-extern int   data_ov006_021428d0;
+extern int sRouletteResultsTimer;
 extern int   data_ov006_0213e2dc;
 extern char *sRouletteStrips[];
 extern int   data_020a0db0;
@@ -243,8 +243,8 @@ extern short data_ov006_0212ed8a[];
 extern short data_ov006_0212ed8c[];
 extern short data_ov006_0212ed8e[];
 extern int   data_ov006_021428cc;
-extern int   data_ov006_021428d4[];
-extern void *data_ov006_02142948;
+extern int sRouletteRacerGoal[];
+extern void *sRouletteRacerGoalDtorRec;
 extern s32   sMgCoinRiseFrames;
 extern u16   gMgCoinsStatus;
 extern u8    data_0209d45c;
@@ -599,7 +599,7 @@ s32 dScMgRoulette_c::Render()
                     s16 idx = mSelectedTile;
                     Hud_RenderSprite((void *)data_ov006_02138c18,
                                      ((TileXY *)sRouletteTiles)[idx].x >> 12,
-                                     ((TileXY *)data_ov006_02142ab8)[idx].x >> 12, /* = [idx].y */
+                                     ((TileXY *)sRouletteTilePos)[idx].x >> 12, /* = [idx].y */
                                      -1, 1);
                 }
             }
@@ -801,7 +801,7 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile)
     buf[1] = racer->f1c;
     if ((unsigned short)(short)(tile - 0x23) <= 1) {
         a = ((TileXY *)sRouletteTiles)[tile].x;
-        b = ((TileXY *)data_ov006_02142ab8)[tile].x;
+        b = ((TileXY *)sRouletteTilePos)[tile].x;
         buf[2] = a;
         buf[3] = b;
         lr = a + 0x8000;
@@ -834,7 +834,7 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile)
             return;
     }
     a = ((TileXY *)sRouletteTiles)[tile].x;
-    b = ((TileXY *)data_ov006_02142ab8)[tile].x;
+    b = ((TileXY *)sRouletteTilePos)[tile].x;
     buf[4] = a;
     buf[5] = b;
     lr = a - 0x10000;
@@ -865,12 +865,13 @@ void RouletteRacer_Init(void* racer)
 {
     int b = data_ov006_021428cc & 1;
     if (b == 0) {
-        data_ov006_021428d4[0] = 0xc000;
-        data_ov006_021428d4[1] = 0xc000;
-        func_020731dc(data_ov006_021428d4, (void *)NullDestructor_0203d47c, &data_ov006_02142948);
+        sRouletteRacerGoal[0] = 0xc000;
+        sRouletteRacerGoal[1] = 0xc000;
+        func_020731dc(sRouletteRacerGoal, (void *)NullDestructor_0203d47c,
+                      &sRouletteRacerGoalDtorRec);
         data_ov006_021428cc |= 1;
     }
-    RouletteRacer_SetVelocityToward((int *)racer, data_ov006_021428d4, 0x80);
+    RouletteRacer_SetVelocityToward((int *)racer, sRouletteRacerGoal, 0x80);
     *(unsigned char*)((char*)racer + 0x32) = 7;
 }
 }
@@ -1562,18 +1563,18 @@ void RouletteStrip_ResetAll(void) {
         *(short *)((char *)sRouletteStrips[i] + 0x14) = (short)i;
     }
     data_ov006_0213e2dc = -1;
-    data_ov006_021428d0 = 0;
+    sRouletteResultsTimer = 0;
 }
 }
 
 // @symbol RouletteResults_Tick
 extern "C" int RouletteResults_Tick(void)
 {
-    if (ApproachLinear(data_ov006_021428d0, 0, 1) != 0) {
+    if (ApproachLinear(sRouletteResultsTimer, 0, 1) != 0) {
         int idx;
         data_ov006_0213e2dc = data_ov006_0213e2dc + 1;
         idx = data_ov006_0213e2dc;
-        data_ov006_021428d0 = 0x78;
+        sRouletteResultsTimer = 0x78;
         while (idx < 4) {
             if (*(short *)(sRouletteStrips[idx] + 0x16) != 0)
                 break;

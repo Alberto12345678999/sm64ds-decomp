@@ -1095,7 +1095,7 @@ typedef struct PanelObj_ab4
 void dScMgPanel_c::DrawPanels()
 {
     PanelObj_ab4 *scene = (PanelObj_ab4 *)this;
-    extern void *data_ov006_021427d4[];
+    extern void *sPanelSprites[];
     extern u8 data_ov006_0213dd34[];
     int x;
     int y;
@@ -1124,15 +1124,15 @@ void dScMgPanel_c::DrawPanels()
                 index = data_ov006_0213dd34[k * 5 + h];
             }
 
-            Mg_RenderSubSpritePalMtx(data_ov006_021427d4[index], x, y, -1, v, 0);
+            Mg_RenderSubSpritePalMtx(sPanelSprites[index], x, y, -1, v, 0);
 
             if (scene->mode == 1) {
                 int p = scene->parr[i];
                 int q = scene->q;
-                DrawOamSprite(data_ov006_021427d4[p * 3 + q], (void *)x, y, 0);
+                DrawOamSprite(sPanelSprites[p * 3 + q], (void *)x, y, 0);
             } else {
                 int p = scene->parr[i];
-                DrawOamSprite(data_ov006_021427d4[p * 3], (void *)x, y, 0);
+                DrawOamSprite(sPanelSprites[p * 3], (void *)x, y, 0);
             }
         }
     }
@@ -2256,7 +2256,7 @@ extern "C" void *dScMgPanel_c_classInit()
 extern "C" void *data_ov006_02136cf0[3];
 extern "C" void *data_ov006_02136d1c[3];
 
-void *data_ov006_021427d4[6] = {
+void *sPanelSprites[6] = {
     data_ov006_02136cf0[0], data_ov006_02136cf0[1], data_ov006_02136cf0[2],
     data_ov006_02136d1c[0], data_ov006_02136d1c[1], data_ov006_02136d1c[2],
 };

@@ -4387,7 +4387,7 @@ sHeyho_React_Right256Guard kind:bss addr:0x0214030c
 sHeyho_StartMotionRegroup_Left256Guard kind:bss addr:0x02140310
 data_ov006_02140314 kind:bss addr:0x02140314
 sHeyho_StartMotionFlyIn_Right256Guard kind:bss addr:0x02140318
-data_ov006_0214031c kind:bss addr:0x0214031c
+sHeyhoLayout kind:bss addr:0x0214031c
 sHeyho_StartMotionRegroup_Right256Guard kind:bss addr:0x02140320
 sHeyhos kind:bss addr:0x02140324
 sHeyhoCount kind:bss addr:0x02140328
@@ -4414,8 +4414,8 @@ data_ov006_02140400 kind:bss addr:0x02140400
 sJump3DSpinAngle kind:bss addr:0x02140404
 sJump3DAnimSdown kind:bss addr:0x02140408
 sJump3DAnimDoubleJump1 kind:bss addr:0x0214040c
-data_ov006_02140410 kind:bss addr:0x02140410
-data_ov006_02140414 kind:bss addr:0x02140414
+sJump3DArrangeLevel kind:bss addr:0x02140410
+sJump3DLayout kind:bss addr:0x02140414
 sJump3DMarioCount kind:bss addr:0x02140418
 sJump3DAnimRollJump kind:bss addr:0x0214041c
 sJump3DMarioPool kind:bss addr:0x02140420
@@ -4466,7 +4466,7 @@ sTrmpAnimDoubleJump1 kind:bss addr:0x02140560
 sTrmpAnimWalk kind:bss addr:0x02140564
 sTrmpAnimTurnEnd kind:bss addr:0x02140568
 sTrmpAnimTurn kind:bss addr:0x0214056c
-data_ov006_02140570 kind:bss addr:0x02140570
+sTrmp3DHardBounceScale kind:bss addr:0x02140570
 sTrmpSpeedScale kind:bss addr:0x02140574
 sTrmp3DBounceScale kind:bss addr:0x02140578
 sTrmpAnimJumpEnd kind:bss addr:0x0214057c
@@ -4544,7 +4544,7 @@ data_ov006_021407fc kind:bss addr:0x021407fc
 sTrmpItem_MotionSpinSway_UnitYGuard kind:bss addr:0x02140808
 sTrmpItem_MotionSpin_UnitZGuard kind:bss addr:0x0214080c
 sTrmpItem_MotionSpinSway_UnitZGuard kind:bss addr:0x02140810
-data_ov006_02140814 kind:bss addr:0x02140814
+sTrmpLinePlttAddr kind:bss addr:0x02140814
 sTrmpItemsHit kind:bss addr:0x02140818
 sTrmpItem_Init_UnitYGuard kind:bss addr:0x0214081c
 sTrmpItem_MotionSpinHover_UnitYGuard kind:bss addr:0x02140820
@@ -4556,10 +4556,10 @@ sTrmpItem_MotionSpinDrift_UnitYGuard kind:bss addr:0x02140834
 sTrmpItemCount kind:bss addr:0x02140838
 sTrmpItem_MotionSpinDrift_UnitZGuard kind:bss addr:0x0214083c
 sTrmpItem_MotionSpinHover_UnitZGuard kind:bss addr:0x02140840
-data_ov006_02140844 kind:bss addr:0x02140844
-data_ov006_02140848 kind:bss addr:0x02140848
-sTrmpItemModelFile kind:bss addr:0x02140850
-data_ov006_02140858 kind:bss addr:0x02140858
+sTrmpLineTexAddr kind:bss addr:0x02140844
+sTrmpItemRingCModelFile kind:bss addr:0x02140848
+sTrmpItemRingAModelFile kind:bss addr:0x02140850
+sTrmpItemRingBModelFile kind:bss addr:0x02140858
 sTrmpItem_MotionSpinSway_UnitY kind:bss addr:0x02140860
 sTrmpItem_MotionSpinHover_UnitZDtorRec kind:bss addr:0x0214086c
 sTrmpItem_MotionSpinSway_UnitZDtorRec kind:bss addr:0x02140878
@@ -4577,10 +4577,10 @@ sTrmpItem_MotionSpin_UnitY kind:bss addr:0x021408fc
 sTrmpItem_MotionSpin_UnitZDtorRec kind:bss addr:0x02140908
 sTrmpItem_MotionSpin_UnitZ kind:bss addr:0x02140914
 sTrmpItem_MotionSpinHover_UnitYDtorRec kind:bss addr:0x02140920
-data_ov006_0214092c kind:bss addr:0x0214092c
+sTrmpItemRingAModelFileDtorRec kind:bss addr:0x0214092c
 sTrmpItem_MotionSpinHover_UnitY kind:bss addr:0x02140938
-data_ov006_02140944 kind:bss addr:0x02140944
-data_ov006_02140950 kind:bss addr:0x02140950
+sTrmpItemRingBModelFileDtorRec kind:bss addr:0x02140944
+sTrmpItemRingCModelFileDtorRec kind:bss addr:0x02140950
 sTrmpItem_MotionSpinSway_UnitYDtorRec kind:bss addr:0x0214095c
 data_ov006_02140968 kind:bss addr:0x02140968
 sTrmpJumpers kind:bss addr:0x0214097c
@@ -4589,9 +4589,9 @@ data_ov006_02140cae kind:bss addr:0x02140cae
 data_ov006_02140cb4 kind:bss addr:0x02140cb4
 data_ov006_02140cb6 kind:bss addr:0x02140cb6
 data_ov006_02140d80 kind:bss addr:0x02140d80 ambiguous
-data_ov006_02141314 kind:bss addr:0x02141314
+sTrmpStartLinePoints kind:bss addr:0x02141314
 data_ov006_02141402 kind:bss addr:0x02141402
-data_ov006_02141590 kind:bss addr:0x02141590
+sTrmpStartLine kind:bss addr:0x02141590
 sAmidaLaneTargets kind:bss addr:0x02141640
 sAmidaLaneSaved kind:bss addr:0x02141650
 sBomroomTopDoorStateTable kind:bss addr:0x02141660
@@ -4604,7 +4604,7 @@ data_ov006_02141730 kind:bss addr:0x02141730
 sCardSelectLocked kind:bss addr:0x02141768
 sCardSwapRequested kind:bss addr:0x0214176c
 data_ov006_02141770 kind:bss addr:0x02141770
-data_ov006_02141774 kind:bss addr:0x02141774
+sCardObjSprites kind:bss addr:0x02141774
 sCoinCoinStateTable kind:bss addr:0x021417b0
 sCoinBagStateTable kind:bss addr:0x021417c8
 sCoinCaptionStateTable kind:bss addr:0x021417e8
@@ -4660,9 +4660,9 @@ s3DEspSlotRiseTable kind:bss addr:0x02141f8c
 s3DEspPhaseTable kind:bss addr:0x02141fac
 data_ov006_02141fcc kind:bss addr:0x02141fcc
 data_ov006_02141fd0 kind:bss addr:0x02141fd0
-data_ov006_02141fd4 kind:bss addr:0x02141fd4
+sHanaPickedLow kind:bss addr:0x02141fd4
 sHanaRoundPattern kind:bss addr:0x02141fd8
-data_ov006_02141fdc kind:bss addr:0x02141fdc
+sHanaPickedIds kind:bss addr:0x02141fdc
 sHanaStarPopup kind:bss addr:0x02141fe4
 sHanaStarPopups kind:bss addr:0x02141ff0
 data_ov006_02141ff8 kind:bss addr:0x02141ff8
@@ -4684,7 +4684,7 @@ data_ov006_021421b4 kind:bss addr:0x021421b4
 sJump2BackFile kind:bss addr:0x021421b8
 sJump2PopupCount kind:bss addr:0x021421bc
 sJump2PopupList kind:bss addr:0x021421c0
-data_ov006_021421c4 kind:bss addr:0x021421c4
+sJump2Back02ModelFile kind:bss addr:0x021421c4
 gOV006JumpBack01ModelFile kind:bss addr:0x021421cc
 @158 kind:bss addr:0x021421d4
 @159 kind:bss addr:0x021421e0
@@ -4736,7 +4736,7 @@ sPachinko2BallStateTable kind:bss addr:0x021426f4
 sPachinko2PaddleStateTable kind:bss addr:0x02142734
 data_ov006_021427ac kind:bss addr:0x021427ac
 sPanelShakeStateTable kind:bss addr:0x021427bc
-data_ov006_021427d4 kind:bss addr:0x021427d4
+sPanelSprites kind:bss addr:0x021427d4
 sPanelBannerStateTable kind:bss addr:0x021427ec
 data_ov006_02142804 kind:bss addr:0x02142804
 sPanelInputStateTable kind:bss addr:0x02142820
@@ -4745,8 +4745,8 @@ sPanelIntroCardStateTable kind:bss addr:0x02142860
 sPanelSceneStateTable kind:bss addr:0x02142888
 sRouletteLandedRacer kind:bss addr:0x021428c8
 data_ov006_021428cc kind:bss addr:0x021428cc
-data_ov006_021428d0 kind:bss addr:0x021428d0
-data_ov006_021428d4 kind:bss addr:0x021428d4
+sRouletteResultsTimer kind:bss addr:0x021428d0
+sRouletteRacerGoal kind:bss addr:0x021428d4
 data_ov006_021428dc kind:bss addr:0x021428dc
 data_ov006_021428e8 kind:bss addr:0x021428e8
 data_ov006_021428f4 kind:bss addr:0x021428f4
@@ -4756,7 +4756,7 @@ data_ov006_02142918 kind:bss addr:0x02142918
 data_ov006_02142924 kind:bss addr:0x02142924
 data_ov006_02142930 kind:bss addr:0x02142930
 data_ov006_0214293c kind:bss addr:0x0214293c
-data_ov006_02142948 kind:bss addr:0x02142948
+sRouletteRacerGoalDtorRec kind:bss addr:0x02142948
 data_ov006_02142954 kind:bss addr:0x02142954
 data_ov006_02142960 kind:bss addr:0x02142960
 data_ov006_0214296c kind:bss addr:0x0214296c
@@ -4787,7 +4787,7 @@ data_ov006_02142a8c kind:bss addr:0x02142a8c
 data_ov006_02142a98 kind:bss addr:0x02142a98
 sRouletteStrips kind:bss addr:0x02142aa4
 sRouletteTiles kind:bss addr:0x02142ab4
-data_ov006_02142ab8 kind:bss addr:0x02142ab8
+sRouletteTilePos kind:bss addr:0x02142ab8
 data_ov006_02142abc kind:bss addr:0x02142abc
 data_ov006_02142ac4 kind:bss addr:0x02142ac4
 data_ov006_02142acc kind:bss addr:0x02142acc
@@ -4825,7 +4825,7 @@ data_ov006_02142bc4 kind:bss addr:0x02142bc4
 data_ov006_02142bcc kind:bss addr:0x02142bcc
 data_ov006_02142bd4 kind:bss addr:0x02142bd4
 sSlot3StateTable kind:bss addr:0x02142bdc
-data_ov006_02142c1c kind:bss addr:0x02142c1c
+sSmartballCellOrder kind:bss addr:0x02142c1c
 data_ov006_02142c40 kind:bss addr:0x02142c40
 sSoundPop10Table kind:bss addr:0x02142cc0
 sSoundPop05Table kind:bss addr:0x02142cd8

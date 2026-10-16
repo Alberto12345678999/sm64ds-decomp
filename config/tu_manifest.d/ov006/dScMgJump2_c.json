@@ -248,7 +248,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_021421c4",
+      "symbol": "sJump2Back02ModelFile",
       "address": "0x021421c4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -766,7 +766,7 @@
       "source": "0x02130f5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021421c4",
+      "symbol": "sJump2Back02ModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021421c4"

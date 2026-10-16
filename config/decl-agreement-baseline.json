@@ -15756,12 +15756,12 @@
         "return:unsigned short"
       ]
     },
-    "data_ov004_020bfe74": {
+    "sPsOptIconPosA": {
       "src/unnamed/ov004/__sinit_ov004_020b9b24.c": [
         "return:int"
       ]
     },
-    "data_ov004_020bfe88": {
+    "sPsOptIconPosB": {
       "src/unnamed/ov004/__sinit_ov004_020b9b24.c": [
         "return:int"
       ]
@@ -16132,17 +16132,17 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140848": {
+    "sTrmpItemRingCModelFile": {
       "src/minigames/unit020cd744.cpp": [
         "return:data_t"
       ]
     },
-    "sTrmpItemModelFile": {
+    "sTrmpItemRingAModelFile": {
       "src/minigames/unit020cd744.cpp": [
         "return:data_t"
       ]
     },
-    "data_ov006_02140858": {
+    "sTrmpItemRingBModelFile": {
       "src/minigames/unit020cd744.cpp": [
         "return:data_t"
       ]
@@ -16207,7 +16207,7 @@
         "return:int []"
       ]
     },
-    "data_ov006_021421c4": {
+    "sJump2Back02ModelFile": {
       "src/unnamed/ov006/__sinit_ov006_02130f00.c": [
         "return:int []"
       ]

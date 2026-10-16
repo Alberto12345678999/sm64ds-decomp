@@ -51,7 +51,7 @@ extern int pmf_Dealer_StateReveal[2];
    measured array-construction ABI callbacks reference the ROM address points;
    these names are already mangled, so C linkage means "use literally". */
 extern unsigned short data_ov006_0213bd64[];
-extern void *data_ov006_02141774[];
+extern void *sCardObjSprites[];
 extern int sMgCardSprites[];
 extern void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
 extern void **data_ov006_0213bd30[];
@@ -1522,11 +1522,7 @@ void dMgCardObj_c::Render()
     if (mState == 0) return;
     idx = (mValue + 1) * 5 + (mLift >> 12);
     e = data_ov006_0213bd64[idx];
-    Hud_RenderSprite(
-        data_ov006_02141774[e],
-        (mX >> 12) + 24,
-        (mY >> 12) + 24,
-        -1, -1);
+    Hud_RenderSprite(sCardObjSprites[e], (mX >> 12) + 24, (mY >> 12) + 24, -1, -1);
 }
 
 // @symbol _ZN12dMgCardObj_c13GetOffscreenYEv
@@ -1698,11 +1694,7 @@ void dMgDilarCardObj_c::Render()
   int k;
   if(mState==0) return;
   k=data_ov006_0213bd64[(mValue+1)*5+(mLift>>12)];
-  Hud_RenderSprite(
-    data_ov006_02141774[k],
-    (mX>>12)+24,
-    (mY>>12)+24,
-    -1,-1);
+  Hud_RenderSprite(sCardObjSprites[k], (mX >> 12) + 24, (mY >> 12) + 24, -1, -1);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1733,7 +1725,7 @@ extern "C" void _ZN12dMgCardObj_cD1Ev(void *elem)
 /* The sprite-pointer table Render indexes by card kind: the elements are
  * not constant, so the cartridge fills it at load time from
  * sMgCardSprites in suit order. */
-void *data_ov006_02141774[15] = {
+void *sCardObjSprites[15] = {
     (void *)sMgCardSprites[0],   (void *)sMgCardSprites[1],   (void *)sMgCardSprites[2],
     (void *)sMgCardSprites[5],   (void *)sMgCardSprites[6],   (void *)sMgCardSprites[0xd],
     (void *)sMgCardSprites[0xe], (void *)sMgCardSprites[0xb], (void *)sMgCardSprites[0xc],

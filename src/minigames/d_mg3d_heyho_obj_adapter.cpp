@@ -1915,7 +1915,7 @@ extern "C" {
 extern void *data_ov006_021402fc;
 extern int sHeyhoUnsettledCount;
 extern int sJumpComboCount;
-extern int data_ov006_0214031c;
+extern int sHeyhoLayout;
 extern char *sHeyhos;
 extern int sHeyhoCount;
 extern int data_ov006_021403b8[];
@@ -1946,7 +1946,7 @@ void Heyho_SpawnAll(void *arg0, int arg1)
     int t;
 
     count = sHeyhoCount;
-    data_ov006_0214031c = arg1;
+    sHeyhoLayout = arg1;
     data_ov006_021402fc = arg0;
     sHeyhoUnsettledCount = count;
     sJumpComboCount = 0;
@@ -1966,8 +1966,7 @@ void Heyho_SpawnAll(void *arg0, int arg1)
         if (sl < 3) {
             base = sHeyhos + r8;
             *(short *)(base + 0xea) = (short)sp8;
-            Heyho_StartMotionFlyIn(sHeyhos + r8,
-                                   data_ov006_0212d560 + data_ov006_0214031c * 0x90 + sp4);
+            Heyho_StartMotionFlyIn(sHeyhos + r8, data_ov006_0212d560 + sHeyhoLayout * 0x90 + sp4);
             Heyho_UpdateMatrix(sHeyhos + r8);
         } else {
             t = RandomIntInternal(seed) & 0x7fffffff;

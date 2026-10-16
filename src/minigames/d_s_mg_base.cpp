@@ -553,24 +553,37 @@ void Ent::DrawFlyTo(){
 namespace s20adcc8 {
 extern "C" {
 extern void Mg_RenderSpriteOnNoMtx(int a0,int a1,int a2,int a3,int a4);
-extern int data_ov004_020beb70;
+extern int sMgSparkleSpritesGuard;
 extern int data_ov004_020bea14[];
 extern int sMgSparkleSprites[];
 }
 }
 /* State 0's draw. The first call builds the 16-entry frame table
    sMgSparkleSprites from five words at data_ov004_020bea14 (bit 0 of
-   data_ov004_020beb70 marks it built); the frame is picked by the low four
+   sMgSparkleSpritesGuard marks it built); the frame is picked by the low four
    bits of mTimer. */
 void Ent::DrawSparkle(){
-  if((s20adcc8::data_ov004_020beb70 & 1) == 0){
-    int* s = s20adcc8::data_ov004_020bea14;
-    int *d = s20adcc8::sMgSparkleSprites;
-    d[0]=s[0];d[1]=s[0];d[2]=s[0];d[3]=s[0];d[4]=s[0];
-    d[5]=s[4];d[6]=s[4];d[7]=s[3];d[8]=s[2];d[9]=s[1];
-    d[10]=s[2];d[11]=s[2];d[12]=s[3];d[13]=s[4];d[14]=s[4];d[15]=s[0];
-    s20adcc8::data_ov004_020beb70 |= 1;
-  }
+    if ((s20adcc8::sMgSparkleSpritesGuard & 1) == 0) {
+        int *s = s20adcc8::data_ov004_020bea14;
+        int *d = s20adcc8::sMgSparkleSprites;
+        d[0] = s[0];
+        d[1] = s[0];
+        d[2] = s[0];
+        d[3] = s[0];
+        d[4] = s[0];
+        d[5] = s[4];
+        d[6] = s[4];
+        d[7] = s[3];
+        d[8] = s[2];
+        d[9] = s[1];
+        d[10] = s[2];
+        d[11] = s[2];
+        d[12] = s[3];
+        d[13] = s[4];
+        d[14] = s[4];
+        d[15] = s[0];
+        s20adcc8::sMgSparkleSpritesGuard |= 1;
+    }
   {
     int idx=((int)mTimer)&0xf;
     int x=*(int*)this>>0xc; int y=*(int*)((char*)this+4)>>0xc;

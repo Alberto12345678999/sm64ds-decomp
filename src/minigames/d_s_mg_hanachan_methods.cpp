@@ -277,7 +277,7 @@ extern struct P2 pmf_Wiggler_StateWait;
 extern int pmf_Wiggler_StateWait_4[];
 extern int pmf_Wiggler_StateHold[];
 extern short data_ov006_02141fd0;
-extern unsigned short data_ov006_02141fdc[];
+extern unsigned short sHanaPickedIds[];
 extern unsigned short data_ov006_02141ff8[];
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern Vec2i pmf_Wiggler_CheckOffLeftA;
@@ -324,9 +324,9 @@ extern int RandomIntInternal(int *seed);
 /* data_0209e650 is the RNG state: one file spelled it int[] and passed it bare,
    the rest spelled it int and passed &.  Scalar wins; the address is the same. */
 extern int data_0209e650;
-/* data_ov006_02141fd4 is only read where it is unsigned and only written as a
+/* sHanaPickedLow is only read where it is unsigned and only written as a
    halfword, so the unsigned spelling costs the writer nothing. */
-extern unsigned short data_ov006_02141fd4;
+extern unsigned short sHanaPickedLow;
 /* sHanaRoundPattern: Phase_SetupRound spelled it volatile and only ever
    stores to it (never re-reads), so the plain spelling emits the same strh. */
 extern s16 sHanaRoundPattern;
@@ -1261,19 +1261,21 @@ int Hana_PickUnused(int n, int mask)
     int found = 0;
 
     for (i = 0; i < data_ov006_02141fd0; i++) {
-        if (n == data_ov006_02141fdc[i]) {
+        if (n == sHanaPickedIds[i]) {
             found = 1;
             break;
         }
     }
 
     v = (unsigned short)(mask & RandomIntInternal(&data_0209e650));
-    if (found) v = data_ov006_02141fd4 | (unsigned short)(v & 0xf0);
+    if (found)
+        v = sHanaPickedLow | (unsigned short)(v & 0xf0);
 
     for (i = 0; i < n; i++) {
         if (v == data_ov006_02141ff8[i]) {
             v = (unsigned short)(mask & RandomIntInternal(&data_0209e650));
-            if (found) v = data_ov006_02141fd4 | (unsigned short)(v & 0xf0);
+            if (found)
+                v = sHanaPickedLow | (unsigned short)(v & 0xf0);
             i = -1;
         }
     }
@@ -1288,16 +1290,21 @@ extern "C" {
 void Hana_ChooseStarWiggler(int count)
 {
     int i, j;
-    data_ov006_02141fd4 = (short)(RandomIntInternal(&data_0209e650) & 0xf);
+    sHanaPickedLow = (short)(RandomIntInternal(&data_0209e650) & 0xf);
     data_ov006_02141fd0 = (short)count;
     for (i = 0; i < count; i++) {
         int r = RandomIntInternal(&data_0209e650);
-        data_ov006_02141fdc[i] = (unsigned short)((int)((int)((unsigned int)(r & 0x7fffffff) >> 0x13) * data_ov006_0213c958) >> 0xc);
+        sHanaPickedIds[i] = (unsigned short)((int)((int)((unsigned int)(r & 0x7fffffff) >> 0x13) *
+                                                   data_ov006_0213c958) >>
+                                             0xc);
         j = 0;
         while (j < i) {
-            if (data_ov006_02141fdc[j] == data_ov006_02141fdc[i]) {
+            if (sHanaPickedIds[j] == sHanaPickedIds[i]) {
                 r = RandomIntInternal(&data_0209e650);
-                data_ov006_02141fdc[i] = (unsigned short)((int)((int)((unsigned int)(r & 0x7fffffff) >> 0x13) * data_ov006_0213c958) >> 0xc);
+                sHanaPickedIds[i] =
+                    (unsigned short)((int)((int)((unsigned int)(r & 0x7fffffff) >> 0x13) *
+                                           data_ov006_0213c958) >>
+                                     0xc);
                 j = 0;
             } else {
                 j++;

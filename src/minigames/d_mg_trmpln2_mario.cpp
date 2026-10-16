@@ -2347,7 +2347,7 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c)
             *(unsigned int *)(c + 0x54), 0xf5, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
             MARIO3D(c)->mPos.z << 3, 0, 0);
 
-    scale = (int)(((long long)data_ov006_02140570 * fdivr + 0x800) >> 12);
+    scale = (int)(((long long)sTrmp3DHardBounceScale * fdivr + 0x800) >> 12);
     Vec3_MulScalar(&tmp4, &tmp, scale);
     AddVec3(&MARIO3D(c)->mVel, &tmp4, &MARIO3D(c)->mVel);
 
@@ -2359,7 +2359,7 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c)
     }
 
     {
-        int half = data_ov006_02140570 >> 1;
+        int half = sTrmp3DHardBounceScale >> 1;
         int cur = MARIO3D(c)->mVel.y;
         if (cur >= half) half = cur;
         MARIO3D(c)->mVel.y = half;
@@ -3513,7 +3513,7 @@ extern "C" int sTrmp3DFallSpeed;
 extern "C" int sTrmp3DGravityStep;
 extern "C" int data_ov006_02140558;
 extern "C" int sTrmp3DBounceScale;
-extern "C" int data_ov006_02140570;
+extern "C" int sTrmp3DHardBounceScale;
 
 // @symbol Trmp3DMario_SetTuning
 void Trmp3DMario_SetTuning(int a)
@@ -3525,7 +3525,7 @@ void Trmp3DMario_SetTuning(int a)
     sTrmp3DGravityStep = (int)(((long long)a * 0xe0 + 0x800) >> 12);
     data_ov006_02140558 = (int)(((long long)v * 0xc00 + 0x800) >> 12);
     sTrmp3DBounceScale = (int)(((long long)v * 0x4800 + 0x800) >> 12);
-    data_ov006_02140570 = (int)(((long long)v * 0x5400 + 0x800) >> 12);
+    sTrmp3DHardBounceScale = (int)(((long long)v * 0x5400 + 0x800) >> 12);
 }
 }
 }

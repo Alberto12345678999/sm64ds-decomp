@@ -117,7 +117,7 @@ struct Jump2ModelFile : SharedFilePtr {
 };
 
 extern Jump2ModelFile gOV006JumpBack01ModelFile; /* model file 0x203 */
-extern Jump2ModelFile data_ov006_021421c4; /* model file 0x204 */
+extern Jump2ModelFile sJump2Back02ModelFile;     /* model file 0x204 */
 
 extern "C" {
 extern void func_0203d630(int* p, int m);
@@ -294,8 +294,8 @@ s32 dScMgJump2_c::InitResources()
     if (Jump3D_InitPool(mPlayers, 3) == 0)
         return 0;
 
-    sJump2BackFile = &data_ov006_021421c4;
-    bmdFile = Model::LoadFile(*(SharedFilePtr *)&data_ov006_021421c4);
+    sJump2BackFile = &sJump2Back02ModelFile;
+    bmdFile = Model::LoadFile(*(SharedFilePtr *)&sJump2Back02ModelFile);
 
     if (((Model *)mModel)->SetFile((BMD_File *)bmdFile, 1, -1) == 0) {
         Matrix4x3_FromTranslation(&data_020a0e68, 0, 0, 0);
@@ -727,4 +727,4 @@ void Jump2Popup_ElemDtor(void *object)
  * Definition order is the retail initializer's construction order: the
  * 0x203 model handle, then the 0x204 model handle. */
 Jump2ModelFile gOV006JumpBack01ModelFile(ASSET_JUMP_BACK01_BMD);
-Jump2ModelFile data_ov006_021421c4(ASSET_JUMP_BACK02_BMD);
+Jump2ModelFile sJump2Back02ModelFile(ASSET_JUMP_BACK02_BMD);

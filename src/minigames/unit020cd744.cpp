@@ -1010,21 +1010,25 @@ extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void *, BT
 
 struct data_t { int a; BMD_File* f; };
 extern "C" {
-extern data_t sTrmpItemModelFile;
+extern data_t sTrmpItemRingAModelFile;
 }
-extern "C" {extern data_t data_ov006_02140858;}
-extern "C" {extern data_t data_ov006_02140848;}
+extern "C" {
+extern data_t sTrmpItemRingBModelFile;
+}
+extern "C" {
+extern data_t sTrmpItemRingCModelFile;
+}
 extern "C" {extern BTA_File data_ov006_0213b3a4;}
 
 extern "C" void TrmpItem_Load(char* c)
 {
-    ((Model *)(c + 0xa0))->SetFile(sTrmpItemModelFile.f, 1, -1);
-    ((Model*)(c+0xf0))->SetFile(data_ov006_02140858.f, 1, -1);
-    ((Model*)(c+0x140))->SetFile(data_ov006_02140848.f, 1, -1);
+    ((Model *)(c + 0xa0))->SetFile(sTrmpItemRingAModelFile.f, 1, -1);
+    ((Model *)(c + 0xf0))->SetFile(sTrmpItemRingBModelFile.f, 1, -1);
+    ((Model *)(c + 0x140))->SetFile(sTrmpItemRingCModelFile.f, 1, -1);
     ((Model*)(c+0xa0))->SetPolygonID(1);
     ((Model*)(c+0xf0))->SetPolygonID(2);
     ((Model*)(c+0x140))->SetPolygonID(3);
-    TextureTransformer::Prepare(*sTrmpItemModelFile.f, data_ov006_0213b3a4);
+    TextureTransformer::Prepare(*sTrmpItemRingAModelFile.f, data_ov006_0213b3a4);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj((TextureTransformer*)(c+0x194), data_ov006_0213b3a4, 0, 0x1000, 0);
     TrmpItem_Hide((int*)c);
 }
@@ -1121,15 +1125,19 @@ extern "C" void TrmpItem_HideAll(void){
 namespace s020ceedc {
 extern "C" extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern "C" {
-extern int sTrmpItemModelFile[];
+extern int sTrmpItemRingAModelFile[];
 }
-extern "C" {extern int data_ov006_02140858[];}
-extern "C" {extern int data_ov006_02140848[];}
+extern "C" {
+extern int sTrmpItemRingBModelFile[];
+}
+extern "C" {
+extern int sTrmpItemRingCModelFile[];
+}
 extern "C" void TrmpItem_ReleaseFiles(void)
 {
-    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemModelFile);
-    _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140858);
-    _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140848);
+    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemRingAModelFile);
+    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemRingBModelFile);
+    _ZN13SharedFilePtr7ReleaseEv(sTrmpItemRingCModelFile);
 }
 }
 
@@ -1137,10 +1145,14 @@ namespace s020cef14 {
 extern "C" extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 extern "C" extern void TrmpItem_Load(void *p);
 extern "C" {
-extern int sTrmpItemModelFile[];
+extern int sTrmpItemRingAModelFile[];
 }
-extern "C" {extern int data_ov006_02140858[];}
-extern "C" {extern int data_ov006_02140848[];}
+extern "C" {
+extern int sTrmpItemRingBModelFile[];
+}
+extern "C" {
+extern int sTrmpItemRingCModelFile[];
+}
 extern "C" {
 extern char *sTrmpItems[];
 }
@@ -1152,9 +1164,9 @@ extern "C" void TrmpItem_LoadAll(char *a, int count)
 {
     int i;
     int off;
-    _ZN5Model8LoadFileER13SharedFilePtr(sTrmpItemModelFile);
-    _ZN5Model8LoadFileER13SharedFilePtr(data_ov006_02140858);
-    _ZN5Model8LoadFileER13SharedFilePtr(data_ov006_02140848);
+    _ZN5Model8LoadFileER13SharedFilePtr(sTrmpItemRingAModelFile);
+    _ZN5Model8LoadFileER13SharedFilePtr(sTrmpItemRingBModelFile);
+    _ZN5Model8LoadFileER13SharedFilePtr(sTrmpItemRingCModelFile);
     sTrmpItems[0] = a;
     sTrmpItemCount[0] = count;
     i = 0;
@@ -1328,8 +1340,8 @@ extern "C" extern struct Matrix4x3 data_0209b3ec;
 extern "C" extern unsigned short data_ov006_0212e060[];
 extern "C" extern unsigned short data_ov006_0212e068[];
 extern "C" extern int data_ov006_0212e0b0[];
-extern "C" extern void *data_ov006_02140844;
-extern "C" extern void *data_ov006_02140814;
+extern "C" extern void *sTrmpLineTexAddr;
+extern "C" extern void *sTrmpLinePlttAddr;
 extern "C" extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern "C" extern void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
 extern "C" extern void Matrix4x3_ApplyInPlaceToScale(struct Matrix4x3 *m, int x, int y, int z);
@@ -1386,8 +1398,8 @@ extern "C" void TrmpLine_Draw(char *obj)
   REG_MTX_SCALE = 0x100000;
   REG_MTX_MODE = 3;
   REG_MTX_IDENTITY = 0;
-  REG_TEXIMAGE_PARAM = 0x8da70000 | ((u32) data_ov006_02140844 >> 3);
-  REG_TEXPLTT_BASE = (u32) data_ov006_02140814 >> 4;
+  REG_TEXIMAGE_PARAM = 0x8da70000 | ((u32)sTrmpLineTexAddr >> 3);
+  REG_TEXPLTT_BASE = (u32)sTrmpLinePlttAddr >> 4;
   {
     short *p31e = (short *) (obj + 0x31e);
     int sh = *p31e;
@@ -2228,20 +2240,24 @@ namespace s020d0b2c {
 extern "C" {
 extern unsigned int func_02045a50(const void *src, unsigned int size);
 extern char data_ov006_0213b414[];
-extern void *data_ov006_02140844;
+extern void *sTrmpLineTexAddr;
 extern char data_ov006_0213b3f4[];
-extern void *data_ov006_02140814;
+extern void *sTrmpLinePlttAddr;
 }
 // @symbol TrmpLine_LoadTextures
 extern "C" void TrmpLine_LoadTextures(void) {
-  data_ov006_02140844 = (void *)Model::LoadTextureToVram(data_ov006_0213b414, 0x400);
-  data_ov006_02140814 = (void *)func_02045a50(data_ov006_0213b3f4, 0x20);
+    sTrmpLineTexAddr = (void *)Model::LoadTextureToVram(data_ov006_0213b414, 0x400);
+    sTrmpLinePlttAddr = (void *)func_02045a50(data_ov006_0213b3f4, 0x20);
 }
 }
 
 namespace s020d0b78 {
-extern "C" {extern short data_ov006_02141314[];}
-extern "C" {extern short data_ov006_02141590[];}
+extern "C" {
+extern short sTrmpStartLinePoints[];
+}
+extern "C" {
+extern short sTrmpStartLine[];
+}
 extern "C" extern void TrmpLine_Build(short* g, short* a, short* b);
 // @symbol TrmpLine_CreateStartLineT2
 extern "C" void TrmpLine_CreateStartLineT2(void) {
@@ -2251,16 +2267,20 @@ extern "C" void TrmpLine_CreateStartLineT2(void) {
     a[1] = 0xb0;
     b[0] = 0xf0;
     b[1] = 0xb0;
-    TrmpLine_Build(data_ov006_02141314, a, b);
-    data_ov006_02141590[0x54] = 3;
-    data_ov006_02141590[0x55] = 0;
-    data_ov006_02141590[0x51] = 3;
+    TrmpLine_Build(sTrmpStartLinePoints, a, b);
+    sTrmpStartLine[0x54] = 3;
+    sTrmpStartLine[0x55] = 0;
+    sTrmpStartLine[0x51] = 3;
 }
 }
 
 namespace s020d0bd8 {
-extern "C" {extern short data_ov006_02141314[];}
-extern "C" {extern short data_ov006_02141590[];}
+extern "C" {
+extern short sTrmpStartLinePoints[];
+}
+extern "C" {
+extern short sTrmpStartLine[];
+}
 extern "C" extern void TrmpLine_Build(short* g, short* a, short* b);
 // @symbol TrmpLine_CreateStartLineT1
 extern "C" void TrmpLine_CreateStartLineT1(void) {
@@ -2270,10 +2290,10 @@ extern "C" void TrmpLine_CreateStartLineT1(void) {
     a[1] = 0xb0;
     b[0] = 0xe8;
     b[1] = 0xb0;
-    TrmpLine_Build(data_ov006_02141314, a, b);
-    data_ov006_02141590[0x54] = 3;
-    data_ov006_02141590[0x55] = 0;
-    data_ov006_02141590[0x51] = 3;
+    TrmpLine_Build(sTrmpStartLinePoints, a, b);
+    sTrmpStartLine[0x54] = 3;
+    sTrmpStartLine[0x55] = 0;
+    sTrmpStartLine[0x51] = 3;
 }
 }
 

@@ -316,7 +316,7 @@ extern OamAttr *data_ov006_02138110[];
 extern OamAttr *data_ov006_021380a0[];
 extern OamAttr *data_ov006_02137fb8[];
 extern "C" s16 data_02082214[];
-extern "C" s32 data_ov006_02142c1c[];
+extern "C" s32 sSmartballCellOrder[];
 extern OamAttr *data_ov006_0213807c[];
 extern char *_ZN3G2S12GetBG3ScrPtrEv(void);
 /* The two legacy views of this helper disagreed on the destination pointer
@@ -905,7 +905,7 @@ int cMgSmartball_board_c::AnyLineActive()
  *    data_02082214 -- edge-on at +-0x4000 it degenerates to the flat sprite.
  *
  * 3. The nine slot markers along the bottom, in the order the shuffle table
- *    data_ov006_02142c1c currently holds.
+ *    sSmartballCellOrder currently holds.
  *
  * No raw offsets are needed anywhere here: this slot never touches the base's
  * 0x31-0x33 span, so unlike SaveSnapshot and RestoreInitial it reaches
@@ -1018,7 +1018,8 @@ void cMgSmartball_board_c::Update()
     }
 
     for (k = 0; k < 9; k++) {
-        Mg_RenderSpriteBoth(data_ov006_0213807c[data_ov006_02142c1c[k]], k * 0x18 + 0x10, 0x78, -1, 1);
+        Mg_RenderSpriteBoth(data_ov006_0213807c[sSmartballCellOrder[k]], k * 0x18 + 0x10, 0x78, -1,
+                            1);
     }
 }
 
@@ -1074,7 +1075,7 @@ void cMgSmartball_board_c::PaintCell(int idx, int *pos)
         b1 += 0x20;
     }
 
-    if (idx == 0 || *(u8 *)(c + data_ov006_02142c1c[idx - 1] + 0x31) == 1) {
+    if (idx == 0 || *(u8 *)(c + sSmartballCellOrder[idx - 1] + 0x31) == 1) {
         base = 0x33f;
     } else {
         base = 0x33d;
@@ -1103,7 +1104,7 @@ void cMgSmartball_board_c::PaintCell(int idx, int *pos)
         return;
     }
 
-    if (*(u8 *)(c + data_ov006_02142c1c[idx + 1] + 0x31) == 1) {
+    if (*(u8 *)(c + sSmartballCellOrder[idx + 1] + 0x31) == 1) {
         int lay4 = 2;
         int i4;
         int bas4 = 0x33f;
@@ -1143,7 +1144,7 @@ void cMgSmartball_board_c::ClaimCell(int i)
     int e[2];
 
     c = (SBoard*)this;
-    slot = data_ov006_02142c1c[i];
+    slot = sSmartballCellOrder[i];
     if (c->cells[slot] == 1)
         return;
     c->cells[slot] = 1;
@@ -1308,7 +1309,7 @@ void cMgSmartball_board_c::ClaimCell(int i)
  * selected by mLinesScored; age the eight per-line timers in mLineTimer; scan the
  * shared manager's up-to-13 tracked balls for one sitting in the board's
  * horizontal strip, map its x to one of the nine cells through the shuffle
- * table data_ov006_02142c1c and claim that cell; finally spin every claimed
+ * table sSmartballCellOrder and claim that cell; finally spin every claimed
  * cell's angle in mCellFlipAngle up to its 0x8000 stop.
  *
  * The nine cell bytes are reached as (&unk_031)[k] -- the array begins at the
@@ -1391,12 +1392,12 @@ void cMgSmartball_board_c::SaveSnapshot()
         if (v.y >= 0x7c000)
             continue;
         for (j = 0, lo = 0xc000, hi = 0x14000; j < 9; j++) {
-            int slot = data_ov006_02142c1c[j];
+            int slot = sSmartballCellOrder[j];
             if (v.x >= lo && v.x < hi) {
                 if (((cMgSmartball_ball_c *)((char *)GetObjBoard((char *)mpManager, n)))->ArmExpire(0x14)) {
                     if ((&unk_031)[slot] == 0) {
-                        SetV2(&a, mCurrent0 + ((data_ov006_02142c1c[j] % 3 - 1) * 0x18 << 12),
-                              mCurrent1 + ((data_ov006_02142c1c[j] / 3 - 1) * 0x18 << 12));
+                        SetV2(&a, mCurrent0 + ((sSmartballCellOrder[j] % 3 - 1) * 0x18 << 12),
+                              mCurrent1 + ((sSmartballCellOrder[j] / 3 - 1) * 0x18 << 12));
                         ((dScMgSmartball_c *)((char *)mpManager))->EmitSparks((int *)&a,  0);
                         SetV2(&b, (j * 0x18 + 0x10) << 12, 0x78000);
                         ((dScMgSmartball_c *)((char *)mpManager))->EmitSparks((int *)&b,  0);
@@ -1432,7 +1433,7 @@ void cMgSmartball_board_c::SaveSnapshot()
  * unqualified RestoreInitial() here would dispatch through the vtable and
  * recurse.
  *
- * After that it refills the shared shuffle table data_ov006_02142c1c with the
+ * After that it refills the shared shuffle table sSmartballCellOrder with the
  * identity 0..8, reshuffles it via ShuffleCells, and then zeroes every
  * field this class owns. That zero pass is exhaustive and in address order,
  * which is why it -- not a union of the "obvious" accesses in the other two
@@ -1450,7 +1451,7 @@ void cMgSmartball_board_c::RestoreInitial()
     int i;
     cMgSmartball_object_c::RestoreInitial();
     for (i = 0; i < 9; i++)
-        data_ov006_02142c1c[i] = i;
+        sSmartballCellOrder[i] = i;
     ShuffleCells();
     for (i = 0; i < 9; i++) {
         (&unk_031)[i] = 0;
@@ -1471,7 +1472,7 @@ void cMgSmartball_board_c::ShuffleCells(){
   int i;
   tmp = data_ov006_0213eed0;
   for (i = 0; i < 9; i++) {
-    data_ov006_02142c1c[i] = tmp.w[i] - 1;
+      sSmartballCellOrder[i] = tmp.w[i] - 1;
   }
 }
 
