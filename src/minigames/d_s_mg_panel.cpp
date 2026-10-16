@@ -60,6 +60,7 @@ enum dScMgPanel_c_AssetId {
 
 #include "types.h"
 #include "dScMgPanel_c.h"
+#include "SpawnInfo.h"
 #include "private/ov006_m8c.h"
 
 #include "Sound.h"
@@ -2238,8 +2239,7 @@ s32 dScMgPanel_c::InitResources()
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgPuzzlePanelPuzzlePanic_Spawn. */
 // @symbol dScMgPanel_c_classInit
-extern "C" void *dScMgPanel_c_classInit()
-{
+extern "C" dScMgPanel_c *dScMgPanel_c_classInit() {
     return new dScMgPanel_c;
 }
 
@@ -2288,15 +2288,12 @@ PanelStateFnI sPanelShakeStateTable[3] = {
     &dScMgPanel_c::Shake_StateLoseTry,
 };
 
-/* MG_PANEL's registry profile: the factory, then the same priority in both
+/* MG_PANEL's base profile: the factory, then the same priority in both
    halfwords. */
-struct MgPanelProfile {
-    void *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-};
-MgPanelProfile g_profile_MG_PANEL = {
-    dScMgPanel_c_classInit, 0x17c, 0x17c
+BaseSpawnInfo<dScMgPanel_c> g_profile_MG_PANEL = {
+    dScMgPanel_c_classInit,
+    0x17c,
+    0x17c,
 };
 unsigned int data_ov006_0213dc94[2] = { 0x01fc00fc, 0xffff2099 };
 int data_ov006_02142804[7];

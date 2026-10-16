@@ -34,6 +34,7 @@ enum d_s_mg_trampoline2_AssetId {
 #include "common.h"
 #include "types.h"
 #include "dScMgTrampoline2_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "Particle__System.h"
 #define Trmp2_DestructJumperModels func_ov006_021227c8_decl_common_shadow
@@ -96,15 +97,6 @@ union StateValue {
     int words[2];
     double asDouble;
 };
-
-struct TrampolineTerrorProfile {
-    void *(*spawn)(void);
-    s16 behaviorPriority;
-    s16 renderPriority;
-};
-
-typedef char TrampolineTerrorProfile_size_must_be_8[
-    sizeof(TrampolineTerrorProfile) == 8 ? 1 : -1];
 
 struct Tbl { int a, b, c; };
 
@@ -266,7 +258,7 @@ extern int Trmp2Spinner_Construct(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_021245a8, NOT applied: extern void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
 
-void *dScMgTrampoline2_c_classInit(void);
+dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void);
 /* Literal aliases used only to make the five ROM PMF relocations static data.
    Their definitions below are real compiler-spelled C++ members. Each is a
    local extern: a pointer to member cannot convert to the int word a record
@@ -280,8 +272,10 @@ extern "C" void _ZN18dScMgTrampoline2_c10StateIntroEv(void);    /* local extern:
 
 /* Data owned by this production TU; the original TU grouping is inferred. */
 int sTrmp2TouchBlocked = 1;
-TrampolineTerrorProfile g_profile_MG_TRAMPOLINE2 = {
-    dScMgTrampoline2_c_classInit, 0x181, 0x181
+BaseSpawnInfo<dScMgTrampoline2_c> g_profile_MG_TRAMPOLINE2 = {
+    dScMgTrampoline2_c_classInit,
+    0x181,
+    0x181,
 };
 int pmf_dScMgTrampoline2_c_StateDone[] = { (int)_ZN18dScMgTrampoline2_c9StateDoneEv, 0 };
 P2 pmf_dScMgTrampoline2_c_StateIntro = {{ (int)_ZN18dScMgTrampoline2_c10StateIntroEv, 0 }};
@@ -321,8 +315,7 @@ extern "C" void *TrmpItem_Construct(char *raw)
 }
 
 // @symbol dScMgTrampoline2_c_classInit
-extern "C" void *dScMgTrampoline2_c_classInit(void)
-{
+extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
     char *scene = (char *)fBase_c::operator new(0x7bac);
     if (scene) {
         char *it;
@@ -357,7 +350,7 @@ extern "C" void *dScMgTrampoline2_c_classInit(void)
                       (void *)Trmp_Nothing2,
                       (void *)Trmp_Nothing);
     }
-    return scene;
+    return (dScMgTrampoline2_c *)scene;
 }
 
 // @symbol _ZN18dScMgTrampoline2_c11InitDisplayEv
