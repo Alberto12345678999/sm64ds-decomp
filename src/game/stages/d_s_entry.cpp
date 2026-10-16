@@ -364,13 +364,11 @@ int func_02030958(int val);
 }
 extern u8 data_0209fc50;
 
-static inline void SetPalette(u16 *entry, u16 pal)
-{
+static inline void SetPalette(u16 *entry, u16 pal) {
     *entry = (*entry & 0xfff) | (u16)(pal << 12);
 }
 
-extern "C" void func_ov075_02116128(int unused, int slot, int dim)
-{
+extern "C" void func_ov075_02116128(int unused, int slot, int dim) {
     int players = data_0209fc50;
     u16 *map = (u16 *)_ZN2G212GetBG1ScrPtrEv();
     u16 pal = func_02030958(slot) + 10;
@@ -430,113 +428,112 @@ extern s8 data_0209f310[];
 extern s16 data_0209f358[];
 extern char data_0209ee90[];
 // local extern: OAM::Render takes Fix12<int> by value (measured wall 6az).
-extern OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int a, OamAttr *attr, int x, int y, int pal, int prio, int scale, int rot);
-
+extern OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int a, OamAttr *attr, int x, int y, int pal,
+                                                        int prio, int scale, int rot);
 }
 
-static inline int EntryPlayerIndex(int arg0)
-{
-  return func_02030958(arg0);
+static inline int EntryPlayerIndex(int arg0) {
+    return func_02030958(arg0);
 }
 
-extern "C" void func_ov075_0211621c(char *c)
-{
-  int count = data_0209fc50;
-  int stride;
-  int tens;
-  int hundreds;
-  int i = 0;
-  int d = 4 - count;
-  int xbase;
-  (void) c;
-  xbase = data_ov075_0211c6e8[d];
-  stride = (d * 16) + 0x38;
-  {
-    if (count > 0)
+extern "C" void func_ov075_0211621c(char *c) {
+    int count = data_0209fc50;
+    int stride;
+    int tens;
+    int hundreds;
+    int i = 0;
+    int d = 4 - count;
+    int xbase;
+    (void)c;
+    xbase = data_ov075_0211c6e8[d];
+    stride = (d * 16) + 0x38;
     {
-      int minus1 = -1;
-      int zA;
-      int yIcon;
-      int zC;
-      int zB;
-      int off14;
-      int zD;
-      int zE;
-      int zF;
-      int scale;
-      int yNum;
-      zE = i;
-      zD = i;
-      zB = i;
-      off14 = 0x14;
-      zF = i;
-      zA = i;
-      yIcon = 0x98;
-      zC = i;
-      scale = 0x1000;
-      yNum = 0xb0;
-      do
-      {
-        int *p;
-        int pid = EntryPlayerIndex(i);
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(zA, data_ov075_0211c7c0, xbase + i * stride, yIcon, minus1, minus1, scale, scale, zA, minus1);
-        p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(zC, (OamAttr *)data_ov075_0211c8b0, xbase + 0x1c + i * stride, yIcon, minus1, minus1, scale, zC);
-        if (p != 0)
-        {
-          int *q = (int *) ((int) (p + 1));
-          int val = *q;
-          *q = (val & (~0x3ff)) | ((data_0209f310[pid] + (((u32) (val << 22)) >> 22)) & 0x3ff);
+        if (count > 0) {
+            int minus1 = -1;
+            int zA;
+            int yIcon;
+            int zC;
+            int zB;
+            int off14;
+            int zD;
+            int zE;
+            int zF;
+            int scale;
+            int yNum;
+            zE = i;
+            zD = i;
+            zB = i;
+            off14 = 0x14;
+            zF = i;
+            zA = i;
+            yIcon = 0x98;
+            zC = i;
+            scale = 0x1000;
+            yNum = 0xb0;
+            do {
+                int *p;
+                int pid = EntryPlayerIndex(i);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(zA, data_ov075_0211c7c0,
+                                                            xbase + i * stride, yIcon, minus1,
+                                                            minus1, scale, scale, zA, minus1);
+                p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                    zC, (OamAttr *)data_ov075_0211c8b0, xbase + 0x1c + i * stride, yIcon, minus1,
+                    minus1, scale, zC);
+                if (p != 0) {
+                    int *q = (int *)((int)(p + 1));
+                    int val = *q;
+                    *q = (val & (~0x3ff)) |
+                         ((data_0209f310[pid] + (((u32)(val << 22)) >> 22)) & 0x3ff);
+                }
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(zB, data_ov075_0211c870,
+                                                            xbase + i * stride, yNum, minus1,
+                                                            minus1, scale, scale, zB, minus1);
+                {
+                    int n;
+                    int dx = off14;
+                    int rem;
+                    n = (*((int *)(data_0209ee90 + 0x1d4))) + data_0209f358[pid];
+                    hundreds = n / 100;
+                    rem = n % 100;
+                    tens = rem / 10;
+                    if (hundreds != 0) {
+                        p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                            zD, (OamAttr *)data_ov075_0211c8b0, xbase + 0x14 + i * stride, yNum,
+                            minus1, minus1, scale, zD);
+                        if (p != 0) {
+                            int *q = (int *)((int)(p + 1));
+                            int val = *q;
+                            *q = (val & (~0x3ff)) |
+                                 ((hundreds + (((u32)(val << 22)) >> 22)) & 0x3ff);
+                        }
+                        dx = dx + 8;
+                    } else {
+                        dx = dx + 4;
+                    }
+                    if ((tens != 0) || (hundreds != 0)) {
+                        p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                            zE, (OamAttr *)data_ov075_0211c8b0, xbase + dx + i * stride, yNum,
+                            minus1, minus1, scale, zE);
+                        if (p != 0) {
+                            int *q = (int *)((int)(p + 1));
+                            int val = *q;
+                            *q = (val & (~0x3ff)) | ((tens + (((u32)(val << 22)) >> 22)) & 0x3ff);
+                        }
+                        dx = dx + 8;
+                    } else {
+                        dx = dx + 4;
+                    }
+                    p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                        zF, (OamAttr *)data_ov075_0211c8b0, xbase + dx + i * stride, yNum, minus1,
+                        minus1, scale, zF);
+                    if (p != 0) {
+                        int *q = (int *)((int)(p + 1));
+                        int val = *q;
+                        *q = (val & (~0x3ff)) | (((((u32)(val << 22)) >> 22) + (rem % 10)) & 0x3ff);
+                    }
+                }
+                i++;
+            } while (i < count);
         }
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(zB, data_ov075_0211c870, xbase + i * stride, yNum, minus1, minus1, scale, scale, zB, minus1);
-        {
-          int n;
-          int dx = off14;
-          int rem;
-          n = (*((int *) (data_0209ee90 + 0x1d4))) + data_0209f358[pid];
-          hundreds = n / 100;
-          rem = n % 100;
-          tens = rem / 10;
-          if (hundreds != 0)
-          {
-            p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(zD, (OamAttr *)data_ov075_0211c8b0, xbase + 0x14 + i * stride, yNum, minus1, minus1, scale, zD);
-            if (p != 0)
-            {
-              int *q = (int *) ((int) (p + 1));
-              int val = *q;
-              *q = (val & (~0x3ff)) | ((hundreds + (((u32) (val << 22)) >> 22)) & 0x3ff);
-            }
-            dx = dx + 8;
-          }
-          else
-          {
-            dx = dx + 4;
-          }
-          if ((tens != 0) || (hundreds != 0))
-          {
-            p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(zE, (OamAttr *)data_ov075_0211c8b0, xbase + dx + i * stride, yNum, minus1, minus1, scale, zE);
-            if (p != 0)
-            {
-              int *q = (int *) ((int) (p + 1));
-              int val = *q;
-              *q = (val & (~0x3ff)) | ((tens + (((u32) (val << 22)) >> 22)) & 0x3ff);
-            }
-            dx = dx + 8;
-          }
-          else
-          {
-            dx = dx + 4;
-          }
-          p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(zF, (OamAttr *)data_ov075_0211c8b0, xbase + dx + i * stride, yNum, minus1, minus1, scale, zF);
-          if (p != 0)
-          {
-            int *q = (int *) ((int) (p + 1));
-            int val = *q;
-            *q = (val & (~0x3ff)) | (((((u32) (val << 22)) >> 22) + (rem % 10)) & 0x3ff);
-          }
-        }
-        i++;
-      }
-      while (i < count);
     }
-  }
 }
