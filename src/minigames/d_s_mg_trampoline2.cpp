@@ -223,7 +223,7 @@ extern void *_ZN11dScMgBase_cC2Ev(void *scene);
 extern void _ZN8Particle10SysTrackerC1Ev(void *tracker);
 extern void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
 extern int _ZTV14dScMgD3DBase_c[];
-extern void _ZN6Player29TryExitCharacterDoorWithIntroEv(void);
+extern void Trmp2Mario_Construct(void);
 extern void TrmpLine_Reset(void);
 extern void Jump2Popup_ElemCtor(void *object);
 extern void Trmp_Nothing2(void);
@@ -339,9 +339,8 @@ extern "C" void *dScMgTrampoline2_c_classInit(void)
         }
         _ZN8Particle10SysTrackerC1Ev(scene + 0x47e4);
         *(int *)scene = (int)&_ZTV18dScMgTrampoline2_c[2];
-        __cxa_vec_ctor(scene + 0x500c, 5, 0xdc,
-                      (void *)_ZN6Player29TryExitCharacterDoorWithIntroEv,
-                      (void *)Trmp2Mario_Destruct);
+        __cxa_vec_ctor(scene + 0x500c, 5, 0xdc, (void *)Trmp2Mario_Construct,
+                       (void *)Trmp2Mario_Destruct);
         __cxa_vec_ctor(scene + 0x5458, 3, 0x32c,
                       (void *)TrmpLine_Reset,
                       (void *)TrmpLine_Destroy);

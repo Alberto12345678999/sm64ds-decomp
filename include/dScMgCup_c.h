@@ -99,8 +99,8 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     s32 mState;           /* 0x5418 */
     s32 mTimer;           /* 0x541c */
     s32 mIds[3];          /* 0x5420 -- which cup sits in each slot */
-    s32 mSwap0;           /* 0x542c -- index into mIds, from data_ov006_0213c0c0 */
-    s32 mSwap1;           /* 0x5430 -- the other index, from data_ov006_0213c0c4 */
+    s32 mSwap0;           /* 0x542c -- index into mIds, from sCupSwapFirst */
+    s32 mSwap1;           /* 0x5430 -- the other index, from sCupSwapSecond */
     s32 mAnim[3];         /* 0x5434 -- index into sCupAnimTable */
     s32 mFrame[3];        /* 0x5440 */
     s32 mTick[3];         /* 0x544c -- counts up to that frame's length */

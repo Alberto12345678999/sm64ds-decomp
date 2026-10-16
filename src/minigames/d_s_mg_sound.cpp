@@ -161,10 +161,10 @@ extern u8 data_ov006_0212ee30[];
 extern void func_02012790(int);
 extern void Presenter_PlayMatch(void *c);
 extern void Presenter_PlayMiss(char *c);
-extern int data_ov006_0212ef7c[];
-extern int data_ov006_0212ef8c[];
-extern int data_ov006_0212ef5c[];
-extern int data_ov006_0212ef6c[];
+extern int sSoundRowLengthAlt[];
+extern int sSoundRowLength[];
+extern int sSoundScrollRowLengthAlt[];
+extern int sSoundScrollRowLength[];
 extern unsigned short sSoundNoteClosingTimes[];
 void Presenter_PlayCheerLoop(char *p);
 void func_02012174(u32 bank, u32 id);
@@ -828,7 +828,7 @@ void dScMgSound_c::Note_StateClosing(int slot){
 // @symbol _ZN12dScMgSound_c16Note_StateScrollEi
 /* Scrolls one note slot left by 0x10 per call and clears it once it has
    gone off screen. Its column comes from the per-mode tables
-   data_ov006_0212ef5c and data_ov006_0212ef6c. */
+   sSoundScrollRowLengthAlt and sSoundScrollRowLength. */
 void dScMgSound_c::Note_StateScroll(int slot)
 {
     int n;
@@ -838,9 +838,9 @@ void dScMgSound_c::Note_StateScroll(int slot)
     this->mNotes[slot].x -= 0x10000;
 
     if (this->IsAltVariant() != 0) {
-        limit = data_ov006_0212ef5c[this->mPattern];
+        limit = sSoundScrollRowLengthAlt[this->mPattern];
     } else {
-        limit = data_ov006_0212ef6c[this->mPattern];
+        limit = sSoundScrollRowLength[this->mPattern];
     }
 
     if (this->mNotes[slot].checked == 0) {
@@ -878,9 +878,9 @@ void dScMgSound_c::RevealUnmatched() {
     int found;
     int off;
     if (this->IsAltVariant()) {
-        lr = data_ov006_0212ef7c[this->mPattern];
+        lr = sSoundRowLengthAlt[this->mPattern];
     } else {
-        lr = data_ov006_0212ef8c[this->mPattern];
+        lr = sSoundRowLength[this->mPattern];
     }
     for (ip = 0, off = 0; ip < 2; ip++) {
         int sb;

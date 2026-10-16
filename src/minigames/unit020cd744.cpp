@@ -1720,10 +1720,18 @@ extern "C" extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
 extern "C" {
 extern struct Cannon *sTrmpJumpers[];
 }
-extern "C" {extern int data_ov006_0213b30c;}
-extern "C" {extern int data_ov006_0213b310;}
-extern "C" {extern int data_ov006_0213b2f4;}
-extern "C" {extern int data_ov006_0213b308;}
+extern "C" {
+extern int sTrmpLinePushWeakPitchMid;
+}
+extern "C" {
+extern int sTrmpLinePushWeakPitchEnd;
+}
+extern "C" {
+extern int sTrmpLinePushStrongPitchMid;
+}
+extern "C" {
+extern int sTrmpLinePushStrongPitchEnd;
+}
 
 #pragma push
 #pragma opt_common_subs off
@@ -1829,12 +1837,16 @@ extern "C" int TrmpLine_PushJumper(char *c)
 
             if (mag < 0x400000) {
                 arr[i]->f18 = 2;
-                D3D_PlaySePannedLoop(0x1b1, *(int *)(c + 8),
-                    (data_ov006_0213b310 * t + data_ov006_0213b30c * (0x1000 - t)) >> 12);
+                D3D_PlaySePannedLoop(
+                    0x1b1, *(int *)(c + 8),
+                    (sTrmpLinePushWeakPitchEnd * t + sTrmpLinePushWeakPitchMid * (0x1000 - t)) >>
+                        12);
             } else {
                 arr[i]->f18 = 1;
                 D3D_PlaySePannedLoop(0x1ae, *(int *)(c + 8),
-                    (data_ov006_0213b308 * t + data_ov006_0213b2f4 * (0x1000 - t)) >> 12);
+                                     (sTrmpLinePushStrongPitchEnd * t +
+                                      sTrmpLinePushStrongPitchMid * (0x1000 - t)) >>
+                                         12);
             }
 
             {
@@ -1924,10 +1936,10 @@ extern void TrmpLine_SetStateSettle(char *p);
 extern void TrmpLine_SetStateFlex(char *p);
 
 extern void *sTrmpJumpers[];
-extern s32 data_ov006_0213b2fc;
-extern s32 data_ov006_0213b300;
-extern s32 data_ov006_0213b2f8;
-extern s32 data_ov006_0213b304;
+extern s32 sTrmpLineWeakPitchEnd;
+extern s32 sTrmpLineWeakPitchMid;
+extern s32 sTrmpLineStrongPitchEnd;
+extern s32 sTrmpLineStrongPitchMid;
 }
 
 struct Spare4 { s32 v; ~Spare4() {} };
@@ -2153,12 +2165,16 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
         blendVal = (s32)(((s64)absOff * halfLen + 0x800) >> 12);
         if (blendVal < 0x400000) {
             *(s16 *)((char *)bestObj + 0x18) = 2;
-            D3D_PlaySePannedLoop(0x1B1, *(s32 *)(c + 8),
-                (s32)(data_ov006_0213b2fc * ratio + data_ov006_0213b300 * (0x1000 - ratio)) >> 0xC);
+            D3D_PlaySePannedLoop(
+                0x1B1, *(s32 *)(c + 8),
+                (s32)(sTrmpLineWeakPitchEnd * ratio + sTrmpLineWeakPitchMid * (0x1000 - ratio)) >>
+                    0xC);
         } else {
             *(s16 *)((char *)bestObj + 0x18) = 1;
             D3D_PlaySePannedLoop(0x1AE, *(s32 *)(c + 8),
-                (s32)(data_ov006_0213b2f8 * ratio + data_ov006_0213b304 * (0x1000 - ratio)) >> 0xC);
+                                 (s32)(sTrmpLineStrongPitchEnd * ratio +
+                                       sTrmpLineStrongPitchMid * (0x1000 - ratio)) >>
+                                     0xC);
         }
         *(s32 *)((char *)bestObj + 0x4) = TRMPLINE(c)->mNormal.x;
         *(s32 *)((char *)bestObj + 0x8) = TRMPLINE(c)->mNormal.y;

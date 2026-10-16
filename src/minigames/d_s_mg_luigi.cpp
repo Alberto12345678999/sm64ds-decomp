@@ -1192,7 +1192,7 @@ void dScMgLuigi_c::CheckTouch()
     extern unsigned char gTouchX[][4];
 // local extern: see above.
     extern unsigned char gTouchY[][4];
-    extern unsigned short data_ov006_0212e848[];
+    extern unsigned short sLuigiTouchSfx[];
     int idx = gActivePlayerSlot;
     int flag = 0;
     int cur;
@@ -1221,7 +1221,7 @@ void dScMgLuigi_c::CheckTouch()
             func_02012790(0x26);
 
             {
-                int tbl = data_ov006_0212e848[cat];
+                int tbl = sLuigiTouchSfx[cat];
                 func_02012790(tbl + (mWanted << 3));
             }
             return;
@@ -1518,7 +1518,7 @@ void dScMgLuigi_c::ChooseTarget()
 {
     extern int data_0209d4b8;
     extern u8 sLuigiWantedPicks[];
-    extern u16 data_ov006_0213cdec[];
+    extern u16 sLuigiWantedPosterTiles[];
     s32 i;
     s32 k;
     u16 *dst;
@@ -1554,7 +1554,7 @@ void dScMgLuigi_c::ChooseTarget()
     nbytes = 2;
     for (i = 0, off = 0; i < 8; i++, off += 0x20) {
         dst = (u16 *)(G2::GetBG3ScrPtr() + 0x1d8) + off;
-        idx = data_ov006_0213cdec[mWanted];
+        idx = sLuigiWantedPosterTiles[mWanted];
         idx += off;
         for (j = 0; j < 8; j++) {
             v = ((u16 *)G2::GetBG3ScrPtr())[idx];
@@ -1985,4 +1985,4 @@ MgLuigiProfile g_profile_MG_LUIGI = {
 };
 
 /* ChooseTarget's tile-number table, indexed by the wanted character. */
-u16 data_ov006_0213cdec[4] = { 0x0308, 0x0300, 0x0318, 0x0310 };
+u16 sLuigiWantedPosterTiles[4] = {0x0308, 0x0300, 0x0318, 0x0310};

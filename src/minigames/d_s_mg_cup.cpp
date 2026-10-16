@@ -38,7 +38,7 @@ typedef struct { u8 swaps; u8 lo:4; u8 hi:4; } RoundRow;
    later, so [i].x there is cup i's y. */
 struct RestPos { s32 x, y; };
 
-/* data_ov006_0213c0c0 is the three swap pairs. 0213c0c4 is one word later,
+/* sCupSwapFirst is the three swap pairs. 0213c0c4 is one word later,
    so [i].a there is the second cup. */
 struct IdxPair { s32 a, b; };
 
@@ -85,8 +85,8 @@ extern int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int 
 extern int data_0209e650;
 extern RoundRow sCupRoundTable[];
 extern s16 sCupShuffleSpeeds[];
-extern IdxPair data_ov006_0213c0c0[];
-extern IdxPair data_ov006_0213c0c4[];
+extern IdxPair sCupSwapFirst[];
+extern IdxPair sCupSwapSecond[];
 extern RestPos sCupHomePositions[];
 extern RestPos sCupSlots[];
 extern int RandomIntInternal(int *seed);
@@ -407,8 +407,8 @@ extern "C" void Cup_PickShuffleSpeed(char *raw)
     self->mShuffleSpeed = sCupShuffleSpeeds[row];
 
     rem = (rnd >> 0x18) % 3;
-    self->mSwap0 = data_ov006_0213c0c0[rem].a;
-    self->mSwap1 = data_ov006_0213c0c4[rem].a;
+    self->mSwap0 = sCupSwapFirst[rem].a;
+    self->mSwap1 = sCupSwapSecond[rem].a;
 
     self->mMidX = (sCupHomePositions[self->mSwap1].x + sCupHomePositions[self->mSwap0].x) / 2;
     self->mMidY = (sCupSlots[self->mSwap1].x + sCupSlots[self->mSwap0].x) / 2;

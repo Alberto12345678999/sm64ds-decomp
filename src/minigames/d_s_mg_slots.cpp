@@ -169,10 +169,10 @@ extern void SlotReel_SetSpeed(void *o, int v);
 extern int SlotReels_CheckStopped(void *self);
 extern int sSlotReelScrollSpeeds[];
 extern u8 sSlot1Payouts[];
-extern s16 data_ov006_0213e654[][2];
-extern s16 data_ov006_0213e656[][2];
-extern s16 data_ov006_0213e4f8[][2];
-extern s16 data_ov006_0213e4fa[][2];
+extern s16 sSlotMatchBlinkX[][2];
+extern s16 sSlotMatchBlinkY[][2];
+extern s16 sSlotWildBlinkX[][2];
+extern s16 sSlotWildBlinkY[][2];
 extern dWipe_c data_0209f61c;
 extern int _ZTV12dScMgSlot1_c[];
 extern int _ZTVN12dScMgSlot1_c9betIcon_cE[];
@@ -1430,12 +1430,12 @@ s32 dScMgSlot1_c::Behavior()
     case 4:
         if (DecIfAbove0_Byte(&mTimer) == 0) {
             if (mLineMatched != 0) {
-                SlotBlink_Start(pad_4684, data_ov006_0213e654[mMatchSymbol][0],
-                                data_ov006_0213e656[mMatchSymbol][0]);
+                SlotBlink_Start(pad_4684, sSlotMatchBlinkX[mMatchSymbol][0],
+                                sSlotMatchBlinkY[mMatchSymbol][0]);
             }
             if (mWilds != 0 && mWilds < 3) {
-                SlotBlink_Start(pad_4690, data_ov006_0213e4f8[mWilds - 1][0],
-                                data_ov006_0213e4fa[mWilds - 1][0]);
+                SlotBlink_Start(pad_4690, sSlotWildBlinkX[mWilds - 1][0],
+                                sSlotWildBlinkY[mWilds - 1][0]);
             }
             if (mPayout != 0) {
                 mStep = 5;

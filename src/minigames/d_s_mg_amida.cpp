@@ -124,13 +124,13 @@ extern u8  gTouchEdge[];
 extern u8  gTouchX[][4];
 // local extern: see above.
 extern u8  gTouchY[][4];
-extern int data_ov006_0212e1c0[];
+extern int sAmidaPatternSpeedUp[];
 extern s32 data_0208ee44;
 extern char sAmidaPatterns[];
-extern char data_ov006_0212e1ac[];
+extern char sAmidaPatternGoalShuffle[];
 extern char sAmidaPatternSpeeds[];
-extern char data_ov006_0212e1b4[];
-extern char data_ov006_0212e1b8[];
+extern char sAmidaPatternRungSkip[];
+extern char sAmidaPatternExtraRungs[];
 extern void *data_ov006_0213a32c;
 extern void *sAmidaSideSprite;
 extern int  data_ov006_0213a338[];
@@ -1109,7 +1109,7 @@ void dScMgAmida_c::StepWalkers()
                                 if (mScore > 0x270f) {
                                     mScore = 0x270f;
                                 }
-                                t = *(s32 *)((char *)data_ov006_0212e1c0 + mPatternIndex * 0x1c);
+                                t = *(s32 *)((char *)sAmidaPatternSpeedUp + mPatternIndex * 0x1c);
                                 switch (t) {
                                 case 0:
                                     break;
@@ -1547,7 +1547,7 @@ void dScMgAmida_c::SetupRound()
 
     mRoundCount = 0;
     InitWalkers();
-    ShuffleGoals( *(int *)(data_ov006_0212e1ac + mPatternIndex * 0x1c));
+    ShuffleGoals(*(int *)(sAmidaPatternGoalShuffle + mPatternIndex * 0x1c));
     Mg_SetTopScreenYOffset(0x20);
 
     mSetupInk = 1;
@@ -1601,7 +1601,7 @@ void dScMgAmida_c::SetupRound()
                 }
             } while (cnt > 0);
         } else {
-            int sel = *(int *)(data_ov006_0212e1b4 + mPatternIndex * 0x1c);
+            int sel = *(int *)(sAmidaPatternRungSkip + mPatternIndex * 0x1c);
             switch (sel) {
             case 0:
                 break;
@@ -1644,7 +1644,7 @@ void dScMgAmida_c::SetupRound()
                 break;
             }
         } else {
-            sel2 = *(int *)(data_ov006_0212e1b4 + mPatternIndex * 0x1c);
+            sel2 = *(int *)(sAmidaPatternRungSkip + mPatternIndex * 0x1c);
         }
 
         switch (sel2) {
@@ -1680,7 +1680,7 @@ void dScMgAmida_c::SetupRound()
 
     mLineCount++;
     if (IsVariant2() == 0) {
-        int v = *(int *)(data_ov006_0212e1b8 + mPatternIndex * 0x1c);
+        int v = *(int *)(sAmidaPatternExtraRungs + mPatternIndex * 0x1c);
         if (v != 0 && v == 1) {
             Mg_DrawLine(this, 0x60, 0x2d, 0xa0, 0x2d, mLineColor, 1);
             Mg_DrawLine(this, 0x20, 0x5a, 0x60, 0x5a, mLineColor, 1);

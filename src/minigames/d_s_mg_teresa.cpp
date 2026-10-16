@@ -168,8 +168,8 @@ extern int *sTeresaCountdownSprites[];
 extern void *sTeresaBooFrameSprites[];
 extern int sTeresaBooTouchOffsets[];
 extern int sTeresaSpawnCounts[];
-extern int            data_ov006_0212f050[];
-extern int            data_ov006_0212f08c[];
+extern int sTeresaSpawnKinds[];
+extern int sTeresaSpawnBurst[];
 extern int sTeresaPaintMask[];
 extern short          data_02082214[];
 extern int            sMgTopScreenYOffset;
@@ -1642,8 +1642,8 @@ void dScMgTeresa_c::SpawnBoos()
     if (count <= 0) {
         return;
     }
-    flagA = data_ov006_0212f08c[sel];
-    cval = data_ov006_0212f050[sel];
+    flagA = sTeresaSpawnBurst[sel];
+    cval = sTeresaSpawnKinds[sel];
     full = 0x10000;
     do {
         if (flagA == 0) {

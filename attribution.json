@@ -7110,7 +7110,7 @@
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp2Mario_EnterHidden": "tangosdev",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp2Mario_Load": "tangosdev",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp2Mario_Destruct": "tangosdev",
-    "src/minigames/d_mg_trmpln2_mario.cpp#_ZN6Player29TryExitCharacterDoorWithIntroEv": "tangosdev",
+    "src/minigames/d_mg_trmpln2_mario.cpp#Trmp2Mario_Construct": "tangosdev",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp2Mario_Hide": "ruspecial",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp2Mario_EnterAll": "lunavyqo",
     "src/minigames/d_mg_trmpln2_mario.cpp#Trmp2Mario_MoveToStart": "tangosdev",
