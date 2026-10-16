@@ -59,7 +59,7 @@ Tested source commit: 500b5159e69963eab0bb1d4583432c464e52a254.
 - git diff --check: pass. Independent local acceptance is recorded separately;
   none of these producer results is CI, remote review, or merge approval.
 
-The final handoff-only commit preserves identical src/include/config/tools/port
+The final handoff-only commit preserves identical source, header, config, tools and port
 trees to that tested source commit.
 The text-oriented tubuild verifier sees 29/29 exact actor functions but reports
 the generated initializer/ancestor metadata as extras. It is not the intact-
