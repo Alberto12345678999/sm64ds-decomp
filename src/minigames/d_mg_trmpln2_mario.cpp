@@ -126,14 +126,14 @@ int Trmp2Mario_GetPos(int p)
 // ---- Trmp2Mario_Render
 namespace ns_020c8e90 {
 extern "C" {
-extern int data_ov006_0212e02c[];
+extern int sTrmp2MarioScale[];
 struct C { virtual void a0(); virtual void a1(); virtual void a2(); virtual void a3(); virtual void a4(); virtual void f(void*); };
 // @symbol Trmp2Mario_Render
 void Trmp2Mario_Render(char *o) {
     if (MARIO2(o)->mVisible == 0)
         return;
     struct C *p = (struct C *)(o + 0x78);
-    p->f((void *)data_ov006_0212e02c);
+    p->f((void *)sTrmp2MarioScale);
 }
 }
 }
@@ -1698,12 +1698,12 @@ int Trmp3DMario_GetPos(int p)
 // ---- Trmp3DMario_Render
 namespace ns_020cafb4 {
 extern "C" {
-extern int data_ov006_0212e038[];
+extern int sTrmp3DMarioScale[];
 struct C { virtual void a0(); virtual void a1(); virtual void a2(); virtual void a3(); virtual void a4(); virtual void f(void*); };
 // @symbol Trmp3DMario_Render
 void Trmp3DMario_Render(char *o) {
   struct C *p = (struct C*)(o+0x6c);
-  p->f((void*)data_ov006_0212e038);
+  p->f((void *)sTrmp3DMarioScale);
 }
 }
 }
@@ -3534,12 +3534,12 @@ void Trmp3DMario_SetTuning(int a)
 // ---- Trmp3DMario_SetSpawnHeight
 namespace ns_020cd62c {
 extern "C" {
-extern "C" int data_ov006_0212e024[];
+extern "C" int sTrmpRowBaseHeights[];
 extern "C" int sTrmpRowHeights[];
 // @symbol Trmp3DMario_SetSpawnHeight
 void Trmp3DMario_SetSpawnHeight(int n){
-    sTrmpRowHeights[0] = data_ov006_0212e024[0] + (n << 12);
-    sTrmpRowHeights[1] = data_ov006_0212e024[1] + (n << 12);
+    sTrmpRowHeights[0] = sTrmpRowBaseHeights[0] + (n << 12);
+    sTrmpRowHeights[1] = sTrmpRowBaseHeights[1] + (n << 12);
 }
 }
 }

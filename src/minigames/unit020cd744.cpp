@@ -419,17 +419,19 @@ extern "C" void TrmpItem_SetMotionBob(char *c) {
 }
 
 namespace s020cdea0 {
-extern "C" {extern int data_ov006_0212e07c[];}
+extern "C" {
+extern int sTrmpItemPatrolLimits[];
+}
 extern "C" {
 extern int sTrmpItemPatrolSpeed[];
 }
 extern "C" void TrmpItem_MotionPatrol(char *c) {
     int idx = TRMPITEM(c)->mSizeIdx;
-    if (*(int *)(c + 8) > data_ov006_0212e07c[idx]) {
+    if (*(int *)(c + 8) > sTrmpItemPatrolLimits[idx]) {
         TRMPITEM(c)->mVel.x = -sTrmpItemPatrolSpeed[idx];
         return;
     }
-    if (*(int *)(c + 8) < -data_ov006_0212e07c[idx]) {
+    if (*(int *)(c + 8) < -sTrmpItemPatrolLimits[idx]) {
         TRMPITEM(c)->mVel.x = sTrmpItemPatrolSpeed[idx];
     }
 }
@@ -1024,7 +1026,9 @@ extern data_t sTrmpItemRingBModelFile;
 extern "C" {
 extern data_t sTrmpItemRingCModelFile;
 }
-extern "C" {extern BTA_File data_ov006_0213b3a4;}
+extern "C" {
+extern BTA_File sTrmpItemTextureAnim;
+}
 
 extern "C" void TrmpItem_Load(char* c)
 {
@@ -1034,8 +1038,9 @@ extern "C" void TrmpItem_Load(char* c)
     ((Model*)(c+0xa0))->SetPolygonID(1);
     ((Model*)(c+0xf0))->SetPolygonID(2);
     ((Model*)(c+0x140))->SetPolygonID(3);
-    TextureTransformer::Prepare(*sTrmpItemRingAModelFile.f, data_ov006_0213b3a4);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj((TextureTransformer*)(c+0x194), data_ov006_0213b3a4, 0, 0x1000, 0);
+    TextureTransformer::Prepare(*sTrmpItemRingAModelFile.f, sTrmpItemTextureAnim);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj((TextureTransformer *)(c + 0x194),
+                                                          sTrmpItemTextureAnim, 0, 0x1000, 0);
     TrmpItem_Hide((int*)c);
 }
 }
@@ -1343,8 +1348,8 @@ typedef struct
 struct Matrix4x3;
 extern "C" extern struct Matrix4x3 data_020a0e68;
 extern "C" extern struct Matrix4x3 data_0209b3ec;
-extern "C" extern unsigned short data_ov006_0212e060[];
-extern "C" extern unsigned short data_ov006_0212e068[];
+extern "C" extern unsigned short sTrmpLineDiffuse[];
+extern "C" extern unsigned short sTrmpLineAmbient[];
 extern "C" extern int sTrmpLineTexCoords[];
 extern "C" extern void *sTrmpLineTexAddr;
 extern "C" extern void *sTrmpLinePlttAddr;
@@ -1409,14 +1414,14 @@ extern "C" void TrmpLine_Draw(char *obj)
   {
     short *p31e = (short *) (obj + 0x31e);
     int sh = *p31e;
-    unsigned short *dif = data_ov006_0212e060;
+    unsigned short *dif = sTrmpLineDiffuse;
     volatile unsigned char *alpha = (volatile unsigned char *) (obj + 0x329);
     int pl = *alpha;
     REG_POLYGON_ATTR = (((sh + 1) << 24) | 0x82) | (pl << 16);
     {
       unsigned short *p326 = (unsigned short *) (obj + 0x326);
       unsigned idx = *p326;
-      REG_DIF_AMB = dif[idx] | (data_ov006_0212e068[idx] << 16);
+      REG_DIF_AMB = dif[idx] | (sTrmpLineAmbient[idx] << 16);
     }
   }
   REG_SPE_EMI = 0x8000;

@@ -308,7 +308,7 @@ s32 dScMgFlower_c::Render()
         int off = (t + (int)((unsigned)(t >> 7) >> 24)) >> 8;
         SetSubBg3Offset(off, off);
     }
-    Mg_RenderSpriteBoth(data_ov006_0213ab94[mFaceSprite], 0x80, 0x60, -1, 1);
+    Mg_RenderSpriteBoth(sFlowerFaceSprites[mFaceSprite], 0x80, 0x60, -1, 1);
 
     for (i = 0; i < 0x16; i++) {
         if (barr[i][0x4f38] != 0) {

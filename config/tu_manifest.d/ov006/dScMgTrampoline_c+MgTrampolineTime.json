@@ -556,7 +556,7 @@
       "source": "0x0213fb18",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d40",
+      "symbol": "sTrmpPuffEnglish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d40"
@@ -566,7 +566,7 @@
       "source": "0x0213fb1c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d4c",
+      "symbol": "sTrmpPuffSpanish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d4c"
@@ -576,7 +576,7 @@
       "source": "0x0213fb20",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d58",
+      "symbol": "sTrmpPuffFrench",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d58"
@@ -586,7 +586,7 @@
       "source": "0x0213fb24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d34",
+      "symbol": "sTrmpPuffGerman",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d34"
@@ -596,7 +596,7 @@
       "source": "0x0213fb28",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d28",
+      "symbol": "sTrmpPuffItalian",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d28"

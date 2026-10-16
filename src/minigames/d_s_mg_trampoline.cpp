@@ -149,7 +149,7 @@ struct Obj {
 extern "C" {
 extern void Mg_RenderSpriteBoth(void *a, int b, int c, int d, int e);
 extern int sTrmpRowScreenY[];
-extern int data_ov006_02134f24;
+extern int sTrmpRowMarkerSprite;
 extern int _Z15ApproachLinear2Rsss(s16 *dst, s16 a, s16 b);
 extern void Mg_DrawBigNumber(int,int,int,int,int,int,int);
 extern void TrmpFx_Link(int *self);
@@ -198,7 +198,7 @@ extern int RandomIntInternal(int *seed);
 extern "C" void Trmp3DMario_SetSpawnHeight(int n);
 extern "C" void Trmp3DMario_SetTuning(int a);
 void TrmpLine_CreateStartLineT1(void);
-extern s16 data_ov006_0212e04c;
+extern s16 sTrmpIntroFromX;
 extern s16 sTrmpStartTouchX;
 extern s16 sTrmpStartTouchY;
 extern void Camera_UpdateMatrices(void *cam);
@@ -224,7 +224,7 @@ extern int *sTrmpTextSpritesByLanguage[];
 extern int data_ov006_02134ecc;
 extern void Mg_DrawTopRightCounter(int, int);
 extern void *data_ov006_02134f00[];
-extern void *data_ov006_02134f08;
+extern void *sTrmpArrowSprite;
 extern void Trmp3DMario_DrawAll(void);
 extern void TrmpLine_DrawAll(void);
 extern void *_ZN11dScMgBase_cC2Ev(void *self);
@@ -246,11 +246,11 @@ extern "C" void _ZN17dScMgTrampoline_c13StateWaitExitEv(void);  /* local extern:
 extern "C" void _ZN17dScMgTrampoline_c12StateResultsEv(void);   /* local extern: PMF -> int */
 extern "C" void _ZN17dScMgTrampoline_c9StatePlayEv(void);       /* local extern: PMF -> int */
 extern "C" void _ZN17dScMgTrampoline_c10StateIntroEv(void);     /* local extern: PMF -> int */
-extern int data_ov006_02134d40[];
-extern int data_ov006_02134d4c[];
-extern int data_ov006_02134d58[];
-extern int data_ov006_02134d34[];
-extern int data_ov006_02134d28[];
+extern int sTrmpPuffEnglish[];
+extern int sTrmpPuffSpanish[];
+extern int sTrmpPuffFrench[];
+extern int sTrmpPuffGerman[];
+extern int sTrmpPuffItalian[];
 extern int sMgTextSpritesEnglish[];
 extern int sMgTextSpritesSpanish[];
 extern int sMgTextSpritesFrench[];
@@ -270,9 +270,8 @@ int sTrmpNcgByLanguage[] = {0x107, 0x109, 0x104, 0x105, 0x106};
 int *sTrmpTextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpanish,
                                      sMgTextSpritesFrench, sMgTextSpritesGerman,
                                      sMgTextSpritesItalian};
-int sTrmpPuffXByLanguage[] = {(int)data_ov006_02134d40, (int)data_ov006_02134d4c,
-                              (int)data_ov006_02134d58, (int)data_ov006_02134d34,
-                              (int)data_ov006_02134d28};
+int sTrmpPuffXByLanguage[] = {(int)sTrmpPuffEnglish, (int)sTrmpPuffSpanish, (int)sTrmpPuffFrench,
+                              (int)sTrmpPuffGerman, (int)sTrmpPuffItalian};
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_Link, NOT applied: extern void *sTrmpFxList; */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpFxList, from the legacy file for TrmpFx_DrawAll, NOT applied: extern void *sTrmpFxList; */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpFxPool, from the legacy file for TrmpFx_ClearAll, NOT applied: extern char* sTrmpFxPool; */
@@ -553,7 +552,7 @@ void dScMgTrampoline_c::StateIntro()
         int t = cstd::fdiv(counter << 12, 0x5a000);
         volatile s16 oldY = mTouchX;
         volatile s16 oldZ = mTouchY;
-        int mixRaw = sTrmpStartTouchX * t + data_ov006_0212e04c * (0x1000 - t);
+        int mixRaw = sTrmpStartTouchX * t + sTrmpIntroFromX * (0x1000 - t);
 
         mTouchX = (s16)(mixRaw >> 12);
         mTouchY = sTrmpStartTouchY;
@@ -864,11 +863,11 @@ s32 dScMgTrampoline_c::Render()
     }
 
     t = sTrmpRowScreenY[0] - (mScrollY + mScrollOffsetY);
-    Mg_RenderSpriteBoth(data_ov006_02134f08, mArrow1X + 0xf0, t, -1, 2);
+    Mg_RenderSpriteBoth(sTrmpArrowSprite, mArrow1X + 0xf0, t, -1, 2);
     Mg_RenderSpriteBoth(data_ov006_02134f00[r6], 0xf0, t - 0x20, -1, 2);
 
     t = sTrmpRowScreenY[1] - (mScrollY + mScrollOffsetY);
-    Mg_RenderSpriteBoth(data_ov006_02134f08, mArrow2X + 0xf0, t, -1, 2);
+    Mg_RenderSpriteBoth(sTrmpArrowSprite, mArrow2X + 0xf0, t, -1, 2);
     Mg_RenderSpriteBoth(data_ov006_02134f00[r5], 0xf0, t - 0x20, -1, 2);
 
     if (mRoundOver == 0) {
@@ -1270,7 +1269,7 @@ void dScMgTrampoline_DoorMark::Update()
 void dScMgTrampoline_DoorMark::Render(int scrollY) {
     if (active == 0) return;
     if (shown == 0) return;
-    Mg_RenderSpriteBoth((void *)data_ov006_02134f24, 0xd0, sTrmpRowScreenY[row] - scrollY - 8, -1,
+    Mg_RenderSpriteBoth((void *)sTrmpRowMarkerSprite, 0xd0, sTrmpRowScreenY[row] - scrollY - 8, -1,
                         -1);
 }
 

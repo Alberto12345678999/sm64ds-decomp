@@ -40,7 +40,7 @@ extern int sTrmpMarioSdownAnimFile[];
 extern int data_ov006_0214076c[];
 
 struct P2 { int a, b; };
-extern struct P2 data_ov006_0212e024;
+extern struct P2 sTrmpRowBaseHeights;
 extern struct P2 sTrmpRowHeights;
 extern int data_ov006_0212e000;
 extern int sTrmp3DFallSpeed;
@@ -137,8 +137,8 @@ void __sinit_ov006_0212f6b4(void)
     func_020731dc(sTrmpMarioSdownAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
                   data_ov006_0214076c);
 
-    sTrmpRowHeights.a = data_ov006_0212e024.a;
-    sTrmpRowHeights.b = data_ov006_0212e024.b;
+    sTrmpRowHeights.a = sTrmpRowBaseHeights.a;
+    sTrmpRowHeights.b = sTrmpRowBaseHeights.b;
     sTrmp3DFallSpeed = data_ov006_0212e000;
     sTrmp3DGravityStep = data_ov006_0212e020;
     sTrmp3DJumpOffSpeed = data_ov006_0212dffc;

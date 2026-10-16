@@ -398,13 +398,13 @@ void dScMgLuigi_c::StartReward(int i) {
 // @symbol _ZN12dScMgLuigi_c12DrawCurtainsEv
 void dScMgLuigi_c::DrawCurtains()
 {
-    extern char *data_ov006_021350d8;
+    extern char *sLuigiCurtainSprite;
     int j;
     for (j = 0; j < 2; j++) {
         if (mCurtain[j].shown != 0) {
             int x = mCurtain[j].x >> 0xc;
             int y = mCurtain[j].y >> 0xc;
-            char *e = data_ov006_021350d8;
+            char *e = sLuigiCurtainSprite;
             for (;;) {
                 char *r = Mg_RenderMainSpriteScaled((int)e, x, y, -1, 1, 0x1000, 0);
                 if (r != 0) {

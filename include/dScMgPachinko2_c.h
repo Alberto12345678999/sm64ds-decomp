@@ -77,7 +77,7 @@ struct dScMgPachinko2_Paddle {
     u8 pad_3e[0x2]; /* +0x3e */
 };
 
-/* The flash at a paddle catch: four frames from data_ov006_02136bd4, eight
+/* The flash at a paddle catch: four frames from sPachinko2SparkSprites, eight
    ticks each (Spark_UpdateAll). */
 struct dScMgPachinko2_HitFx {
     s32 x;            /* +0x00 */

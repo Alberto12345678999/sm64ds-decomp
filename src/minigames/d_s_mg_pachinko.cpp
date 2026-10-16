@@ -194,7 +194,7 @@ extern u8    gTouchEdge[][4];
 extern u8    gTouchX[][4];
 // local extern: see above.
 extern u8    gTouchY[][4];
-extern void *data_ov006_0213ac24;
+extern void *sPachinkoDecoSprite;
 extern unsigned char sPachinkoPipeRiseStartFrames[];
 extern unsigned char sPachinkoPipeSinkStartFrames[];
 extern unsigned char sPachinkoPipeRiseFrames[];
@@ -344,11 +344,10 @@ void PachinkoDeco_DrawAll(char* row)
 {
     for (int i = 0; i < 3; i++) {
         if (*(unsigned char*)(row + 0x4000 + 0xe6d) != 0) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, data_ov006_0213ac24,
-                *(int*)(row + 0x4000 + 0xe58) >> 12,
-                *(int*)(row + 0x4000 + 0xe5c) >> 12,
-                -1, -1, 0x1000, (void*)0x1000,
-                *(unsigned short*)(row + 0x4e00 + 0x68), -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+                false, sPachinkoDecoSprite, *(int *)(row + 0x4000 + 0xe58) >> 12,
+                *(int *)(row + 0x4000 + 0xe5c) >> 12, -1, -1, 0x1000, (void *)0x1000,
+                *(unsigned short *)(row + 0x4e00 + 0x68), -1);
         }
         row += 0x18;
     }

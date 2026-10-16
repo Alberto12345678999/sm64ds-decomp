@@ -133,7 +133,7 @@ extern int sCurlingAimMarkerSprites[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
 extern char sCurlingMgDirPath;
-extern char sCurlingBg2NcgPath;
+extern char sCurlingBgCurling2NcgPath;
 extern int sCurlingSlideZoneEdges[];
 extern int sCurlingSlideShiftLeft[];
 extern int sCurlingSlideShiftRight[];
@@ -1629,7 +1629,7 @@ s32 dScMgCurling_c::Behavior()
 s32 dScMgCurling_c::InitResources()
 {
     char *a = Ov004_LoadFileByPath(&sCurlingMgDirPath);
-    char *b = Ov004_LoadFileByPath(&sCurlingBg2NcgPath);
+    char *b = Ov004_LoadFileByPath(&sCurlingBgCurling2NcgPath);
     void *f;
 
     if (a == 0 || b == 0) return 0;

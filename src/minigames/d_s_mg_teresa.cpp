@@ -152,20 +152,20 @@ extern void  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, struct OamAttr
 
 extern unsigned char  data_0209d454;
 extern unsigned char  data_0209d45c;
-extern int            data_ov006_021350fc[];
-extern unsigned char  data_ov006_0212efc4[];
-extern unsigned short data_ov006_0212efc8[];
+extern int sTeresaBigBooSprites[];
+extern unsigned char sTeresaBigBooHoverPicks[];
+extern unsigned short sTeresaBigBooFrameTimes[];
 extern unsigned char sTeresaRevealSlideFrames[];
 extern unsigned char sTeresaRevealAnimFrames[];
 extern unsigned short sTeresaBg3FlashTimes[];
 extern void *sTeresaExclaimSprites;
 extern void *sTeresaVanishPuffSprites[];
-extern int            data_ov006_02135fc8[];
+extern int sTeresaBigBooHoverSprites[];
 extern int sMgDigitSprites[];
 extern void *sTeresaMarkerSprites;
 extern struct OamAttr *sTeresaRevealSprites[];
 extern int *sTeresaCountdownSprites[];
-extern void          *data_ov006_0213a964[];
+extern void *sTeresaBooFrameSprites[];
 extern int sTeresaBooTouchOffsets[];
 extern int sTeresaSpawnCounts[];
 extern int            data_ov006_0212f050[];
@@ -281,8 +281,10 @@ void dScMgTeresa_c::BigBoo_Draw()
   p=BOO(raw)->x>>12;
   q=BOO(raw)->y>>12;
   if(BOO(raw)->moveRight!=0) idx+=4;
-  if(BOO(raw)->state==8) v=data_ov006_02135fc8[idx];
-  else v=data_ov006_021350fc[idx];
+  if (BOO(raw)->state == 8)
+      v = sTeresaBigBooHoverSprites[idx];
+  else
+      v = sTeresaBigBooSprites[idx];
   RenderOamMainScreen((void*)v,p,q,-1,-1);
 }
 
@@ -481,8 +483,7 @@ void dScMgTeresa_c::BigBoo_StateHover(int i) {
     if ((unsigned char)(state - 8) < 2)
     {
         w->boo[i].frameTimer++;
-        if (w->boo[i].frameTimer >= data_ov006_0212efc8[(unsigned char)(state - 8)])
-        {
+        if (w->boo[i].frameTimer >= sTeresaBigBooFrameTimes[(unsigned char)(state - 8)]) {
             w->boo[i].frameTimer = 0;
             w->boo[i].frame++;
         }
@@ -497,7 +498,7 @@ void dScMgTeresa_c::BigBoo_StateHover(int i) {
     {
     int rnd = RandomIntInternal(&data_0209d4b8);
     w->boo[i].state =
-        data_ov006_0212efc4[((unsigned int)(((unsigned int)rnd >> 16) & 0x7fff) * 2) >> 15];
+        sTeresaBigBooHoverPicks[((unsigned int)(((unsigned int)rnd >> 16) & 0x7fff) * 2) >> 15];
     }
     w->boo[i].frameTimer = 0;
     w->boo[i].frame = 0;
@@ -1149,7 +1150,7 @@ void dScMgTeresa_c::DrawBoos()
 
     for (i = 0; i < 16; i++) {
         if (mBoos[i].mVisible != 0) {
-            void **frames = data_ov006_0213a964;
+            void **frames = sTeresaBooFrameSprites;
             int translucent = mBoos[i].mFade;
             int x = mBoos[i].mX >> 12;
             int frame = mBoos[i].mFrame;

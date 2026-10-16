@@ -539,7 +539,7 @@ s32 dScMgJump2_c::Render()
     Matrix4x3_FromTranslation(&data_020a0e68, 0, 0xffead000, -0xa0000);
     *(struct M48 *)&((Model *)mModel)->mat4x3 = *(struct M48 *)&data_020a0e68;
 
-    scale = *(struct S3 *)&data_ov006_0213ccb0;
+    scale = *(struct S3 *)&sJump2RenderScale;
 
     {
         int *obj = (int *)(mModel + 8);

@@ -538,7 +538,7 @@ void dScMgPanel_c::DrawHud()
 {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
-    extern void *data_ov006_02135054[];
+    extern void *sPanelHudSprites[];
     extern void *data_ov006_02136de8[];
     if (self->mSlideFlag == 0) return;
     if (self->mSlideStep != 4) {
@@ -548,7 +548,7 @@ void dScMgPanel_c::DrawHud()
         Mg_DrawBigNumber(a, b, self->mFlipCount, -1, -1, 0, 0);
         index = 1;
         if (self->mFlipCount >= 2) index = 0;
-        Mg_RenderSpriteBoth(data_ov006_02135054[index], a + 0x2c, b, -1, -1);
+        Mg_RenderSpriteBoth(sPanelHudSprites[index], a + 0x2c, b, -1, -1);
     } else {
         int x = self->mSlideLeft;
         Hud_RenderSprite(data_ov006_02136de8[x],

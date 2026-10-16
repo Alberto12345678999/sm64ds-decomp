@@ -135,28 +135,28 @@ extern u16 sSoundWinSpriteATimes[];
 extern void Mg_DrawStockCounter(int a, int b);
 extern const short data_02082214[];
 extern void *sSoundPopsSprites[];
-extern int data_ov006_0212ef30[];
-extern int data_ov006_0212ef0c[];
-extern int data_ov006_0212eeac[];
-extern int data_ov006_0212ee88[];
-extern int data_ov006_0212ee58[];
-extern int data_ov006_0212ee4c[];
-extern int data_ov006_0212ee64[];
-extern int data_ov006_0212ef00[];
-extern int data_ov006_0212eedc[];
-extern int data_ov006_0212ee94[];
-extern u32 data_ov006_0212ee70[];
-extern int data_ov006_0212ee7c[];
-extern int data_ov006_0212ee40[];
-extern int data_ov006_0212ef18[];
-extern int data_ov006_0212ef24[];
-extern int data_ov006_0212eef4[];
-extern int data_ov006_0212eee8[];
-extern int data_ov006_0212eed0[];
-extern int data_ov006_0212eec4[];
-extern int data_ov006_0212eeb8[];
-extern int data_ov006_0212eea0[];
-extern unsigned char data_ov006_0212ee0c[];
+extern int sSoundPop12XOffsets[];
+extern int sSoundPop12VX[];
+extern int sSoundPop11XOffsets[];
+extern int sSoundPop11VX[];
+extern int sSoundPop10XOffsets[];
+extern int sSoundPop10VX[];
+extern int sSoundPop09XOffsets[];
+extern int sSoundPop09VX[];
+extern int sSoundPop08XOffsets[];
+extern int sSoundPop07XOffsets[];
+extern u32 sSoundPop06VX[];
+extern int sSoundPop05XOffsets[];
+extern int sSoundPop04VX[];
+extern int sSoundPop03XOffsets[];
+extern int sSoundPop03VX[];
+extern int sSoundPop02XOffsets[];
+extern int sSoundPop02VX[];
+extern int sSoundPop01XOffsets[];
+extern int sSoundPop01VX[];
+extern int sSoundPop00XOffsets[];
+extern int sSoundPop00VX[];
+extern unsigned char sSoundPop00Dirs[];
 extern u8 data_ov006_0212ee30[];
 extern void func_02012790(int);
 extern void Presenter_PlayMatch(void *c);
@@ -176,9 +176,9 @@ extern int data_0209d4b8;
 extern u8 sSoundDealSpeeds[];
 extern u8 sSoundDealCounts[];
 extern u8 data_ov006_0212ee20[];
-extern int data_ov006_0212ef9c[];
-extern int data_ov006_0212efb0[];
-extern u16 *data_ov006_0213f6fc[];
+extern int sSoundPairNoteOffsets[];
+extern int sSoundBankByLevel[];
+extern u16 *sSoundNotePositions[];
 extern void Presenter_ResetPose(char *c);
 extern void Presenter_PlayCheer(void *c);
 extern "C" void Mg_DrawScoreTally(void *c, int a, int b, int d);
@@ -644,11 +644,11 @@ void dScMgSound_c::DealNotes()
     }
     k = this->mPattern;
     if (k == 1 || k == 4) {
-        this->mBank = data_ov006_0212efb0[((u32)this->mLevel >> 2) & 3];
+        this->mBank = sSoundBankByLevel[((u32)this->mLevel >> 2) & 3];
     }
     half = count >> 1;
     for (i = 0; i < half; i++) {
-        this->mPairNotes[i] += data_ov006_0212ef9c[this->mPattern];
+        this->mPairNotes[i] += sSoundPairNoteOffsets[this->mPattern];
     }
     {
         int xi;
@@ -667,8 +667,8 @@ void dScMgSound_c::DealNotes()
         do {
             dMgSoundNoteCur *note = (dMgSoundNoteCur *)p;
             t = data_ov006_0212ee20[this->mPattern];
-            note->note.x = data_ov006_0213f6fc[t][xi] << 12;
-            note->note.y = (*(u16 * volatile *)&data_ov006_0213f6fc[t])[zi] << 12;
+            note->note.x = sSoundNotePositions[t][xi] << 12;
+            note->note.y = (*(u16 *volatile *)&sSoundNotePositions[t])[zi] << 12;
             note->note.timer = 0;
             note->note.state = 0;
             note->note.alive = 1;
@@ -1023,10 +1023,10 @@ void dScMgSound_c::Pop00_Update(int slot)
 void dScMgSound_c::Pop00_Start(int slot)
 {
     this->mPops[slot].visible = 1;
-    this->mPops[slot].x += data_ov006_0212eeb8[this->mPops[slot].kind];
+    this->mPops[slot].x += sSoundPop00XOffsets[this->mPops[slot].kind];
     this->mPops[slot].velY = 0;
-    this->mPops[slot].velX = data_ov006_0212eea0[this->mPops[slot].kind];
-    this->mPops[slot].dir = data_ov006_0212ee0c[this->mPops[slot].kind];
+    this->mPops[slot].velX = sSoundPop00VX[this->mPops[slot].kind];
+    this->mPops[slot].dir = sSoundPop00Dirs[this->mPops[slot].kind];
     this->mPops[slot].phase = 1;
 }
 
@@ -1077,9 +1077,9 @@ void dScMgSound_c::Pop01_Update(int slot)
 void dScMgSound_c::Pop01_Start(int slot)
 {
   this->mPops[slot].visible = 1;
-  this->mPops[slot].x += data_ov006_0212eed0[this->mPops[slot].kind];
+  this->mPops[slot].x += sSoundPop01XOffsets[this->mPops[slot].kind];
   this->mPops[slot].velY = -0x2800;
-  this->mPops[slot].velX = data_ov006_0212eec4[this->mPops[slot].kind];
+  this->mPops[slot].velX = sSoundPop01VX[this->mPops[slot].kind];
   this->mPops[slot].timer = 0;
   this->mPops[slot].phase = 1;
 }
@@ -1118,9 +1118,9 @@ void dScMgSound_c::Pop02_Update(int slot) {
 void dScMgSound_c::Pop02_Start(int slot)
 {
     this->mPops[slot].visible = 1;
-    this->mPops[slot].x += data_ov006_0212eef4[this->mPops[slot].kind];
+    this->mPops[slot].x += sSoundPop02XOffsets[this->mPops[slot].kind];
     this->mPops[slot].velY = -0x2000;
-    this->mPops[slot].velX = data_ov006_0212eee8[this->mPops[slot].kind];
+    this->mPops[slot].velX = sSoundPop02VX[this->mPops[slot].kind];
     this->mPops[slot].timer = 0;
     this->mPops[slot].phase = 1;
 }
@@ -1159,9 +1159,9 @@ void dScMgSound_c::Pop03_Update(int slot) {
 void dScMgSound_c::Pop03_Start(int slot)
 {
   this->mPops[slot].visible = 1;
-  this->mPops[slot].x += data_ov006_0212ef18[this->mPops[slot].kind];
+  this->mPops[slot].x += sSoundPop03XOffsets[this->mPops[slot].kind];
   this->mPops[slot].velY = -0x4800;
-  this->mPops[slot].velX = data_ov006_0212ef24[this->mPops[slot].kind];
+  this->mPops[slot].velX = sSoundPop03VX[this->mPops[slot].kind];
   this->mPops[slot].timer = 0;
   this->mPops[slot].phase = 1;
 }
@@ -1201,7 +1201,7 @@ void dScMgSound_c::Pop04_Start(int slot) {
     this->mPops[slot].scale = 0x3000;
     this->mPops[slot].visible = 1;
     this->mPops[slot].velY = -0x1000;
-    this->mPops[slot].velX = data_ov006_0212ee40[this->mPops[slot].kind];
+    this->mPops[slot].velX = sSoundPop04VX[this->mPops[slot].kind];
     this->mPops[slot].phase = 1;
 }
 
@@ -1241,7 +1241,7 @@ void dScMgSound_c::Pop05_Start(int slot) {
     unsigned char k;
     this->mPops[slot].visible = 1;
     k = this->mPops[slot].kind;
-    this->mPops[slot].x += data_ov006_0212ee7c[k];
+    this->mPops[slot].x += sSoundPop05XOffsets[k];
     this->mPops[slot].velY = -0x4000;
     this->mPops[slot].phase = 1;
 }
@@ -1279,7 +1279,7 @@ void dScMgSound_c::Pop06_Start(int slot)
 {
     this->mPops[slot].visible = 1;
     this->mPops[slot].velY = 0;
-    this->mPops[slot].velX = data_ov006_0212ee70[this->mPops[slot].kind];
+    this->mPops[slot].velX = sSoundPop06VX[this->mPops[slot].kind];
     this->mPops[slot].phase = 1;
     this->mPops[slot].timer = 0;
 }
@@ -1349,7 +1349,7 @@ void dScMgSound_c::Pop07_Start(int slot) {
     return;
   }
   this->mPops[slot].visible = 1;
-  this->mPops[slot].x += data_ov006_0212ee94[this->mPops[slot].kind];
+  this->mPops[slot].x += sSoundPop07XOffsets[this->mPops[slot].kind];
   this->mPops[slot].velY = -0x4000;
   this->mPops[slot].phase = 1;
 }
@@ -1388,7 +1388,7 @@ void dScMgSound_c::Pop08_Start(int slot) {
     unsigned char k;
     this->mPops[slot].visible = 1;
     k = this->mPops[slot].kind;
-    this->mPops[slot].x += data_ov006_0212eedc[k];
+    this->mPops[slot].x += sSoundPop08XOffsets[k];
     this->mPops[slot].velY = -0x4000;
     this->mPops[slot].phase = 1;
 }
@@ -1427,9 +1427,9 @@ void dScMgSound_c::Pop09_Start(int slot)
   unsigned char idx;
   this->mPops[slot].visible = 1;
   idx = this->mPops[slot].kind;
-  this->mPops[slot].x += data_ov006_0212ee64[idx];
+  this->mPops[slot].x += sSoundPop09XOffsets[idx];
   this->mPops[slot].velY = -0x3800;
-  this->mPops[slot].velX = data_ov006_0212ef00[this->mPops[slot].kind];
+  this->mPops[slot].velX = sSoundPop09VX[this->mPops[slot].kind];
   this->mPops[slot].timer = 0;
   this->mPops[slot].phase = 1;
 }
@@ -1473,9 +1473,9 @@ void dScMgSound_c::Pop10_Start(int slot)
   unsigned char idx;
   this->mPops[slot].visible = 1;
   idx = this->mPops[slot].kind;
-  this->mPops[slot].x += data_ov006_0212ee58[idx];
+  this->mPops[slot].x += sSoundPop10XOffsets[idx];
   this->mPops[slot].velY = -0x3200;
-  this->mPops[slot].velX = data_ov006_0212ee4c[this->mPops[slot].kind];
+  this->mPops[slot].velX = sSoundPop10VX[this->mPops[slot].kind];
   this->mPops[slot].timer = 0;
   this->mPops[slot].phase = 1;
 }
@@ -1517,9 +1517,9 @@ void dScMgSound_c::Pop11_Update(int slot){
 void dScMgSound_c::Pop11_Start(int slot)
 {
   this->mPops[slot].visible = 1;
-  this->mPops[slot].x += data_ov006_0212eeac[this->mPops[slot].kind];
+  this->mPops[slot].x += sSoundPop11XOffsets[this->mPops[slot].kind];
   this->mPops[slot].velY = -0x2800;
-  this->mPops[slot].velX = data_ov006_0212ee88[this->mPops[slot].kind];
+  this->mPops[slot].velX = sSoundPop11VX[this->mPops[slot].kind];
   this->mPops[slot].timer = 0;
   this->mPops[slot].phase = 1;
 }
@@ -1563,9 +1563,9 @@ void dScMgSound_c::Pop12_Start(int slot)
   unsigned char idx;
   this->mPops[slot].visible = 1;
   idx = this->mPops[slot].kind;
-  this->mPops[slot].x += data_ov006_0212ef30[idx];
+  this->mPops[slot].x += sSoundPop12XOffsets[idx];
   this->mPops[slot].velY = -0x2400;
-  this->mPops[slot].velX = data_ov006_0212ef0c[this->mPops[slot].kind];
+  this->mPops[slot].velX = sSoundPop12VX[this->mPops[slot].kind];
   this->mPops[slot].timer = 0;
   this->mPops[slot].phase = 1;
 }

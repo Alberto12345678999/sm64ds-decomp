@@ -398,7 +398,7 @@
       "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateResults member"
     },
     {
-      "symbol": "data_ov006_0213fbf8",
+      "symbol": "sTrmp2SpinnerSpeeds",
       "address": "0x0213fbf8",
       "size": "0xc",
       "evidence": "three-word Trampoline Terror tuning table; all three constants match retail"
@@ -748,7 +748,7 @@
       "source": "0x0213fc20",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d40",
+      "symbol": "sTrmpPuffEnglish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d40"
@@ -758,7 +758,7 @@
       "source": "0x0213fc24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d4c",
+      "symbol": "sTrmpPuffSpanish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d4c"
@@ -768,7 +768,7 @@
       "source": "0x0213fc28",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d58",
+      "symbol": "sTrmpPuffFrench",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d58"
@@ -778,7 +778,7 @@
       "source": "0x0213fc2c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d34",
+      "symbol": "sTrmpPuffGerman",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d34"
@@ -788,7 +788,7 @@
       "source": "0x0213fc30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02134d28",
+      "symbol": "sTrmpPuffItalian",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02134d28"
@@ -1603,7 +1603,7 @@
               ],
               "31": [
                 {
-                  "symbol": "data_ov006_0213fbf8",
+                  "symbol": "sTrmp2SpinnerSpeeds",
                   "address": 34864120,
                   "sectionBase": 34864120
                 }

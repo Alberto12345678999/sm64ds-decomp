@@ -218,9 +218,9 @@ extern u8   data_0209d45c;
 extern u8   data_0209d454;
 extern s16  data_02082214[];
 extern int sPachinkoPipeSprites[];
-extern int  data_ov006_02136bd4[];
-extern int  data_ov006_0213386c;
-extern int  data_ov006_021389ec;
+extern int sPachinko2SparkSprites[];
+extern int sPachinko2PaddleSprite;
+extern int sPachinko2BallSprite;
 extern int sPachinko2BallCountSprites[];
 extern u8 sPachinko2CupHopRightStartFrames[];
 extern u8 sPachinko2CupHopLeftStartFrames[];
@@ -233,13 +233,13 @@ extern unsigned char sPachinko2CupWaitTimes[];
 extern int sPachinko2CupX[];
 extern int sPachinko2CrossRowY[];
 extern int sPachinko2PaddleFlyAwayVX[];
-extern unsigned short data_ov006_0212ecac[];
+extern unsigned short sPachinko2CupWaitTimesAlt[];
 extern s32 sPachinko2CupRightStops[];
 extern s32 sPachinko2CupLeftStops[];
-extern unsigned short *data_ov006_0213daa4[];
-extern int *data_ov006_0213db6c[];
-extern int *data_ov006_0213db84[];
-extern int *data_ov006_0213db9c[];
+extern unsigned short *sPachinko2CupWaitFramesPerCup[];
+extern int *sPachinko2PaddleDescendLimits[];
+extern int *sPachinko2PaddleSweepLimits[];
+extern int *sPachinko2PaddleGatherTargets[];
 extern int  data_ov006_0213dbbc[];
 
 /* The three pointer-to-member tables the helpers dispatch through. */
@@ -608,13 +608,14 @@ void dScMgPachinko2_c::Cup_StateWait(int k) {
         mCups[k].frame = sPachinko2CupWaitFrames[mCups[k].animStep];
     } else {
         mCups[k].timer++;
-        if ((unsigned int)mCups[k].timer >= (unsigned int)data_ov006_0212ecac[mCups[k].animStep]) {
+        if ((unsigned int)mCups[k].timer >=
+            (unsigned int)sPachinko2CupWaitTimesAlt[mCups[k].animStep]) {
             mCups[k].timer = 0;
             mCups[k].animStep++;
             if (mCups[k].animStep >= 7) {
                 mCups[k].animStep = 0;
             }
-            mCups[k].frame = data_ov006_0213daa4[k][mCups[k].animStep];
+            mCups[k].frame = sPachinko2CupWaitFramesPerCup[k][mCups[k].animStep];
         }
         Cup_PickTarget(k);
     }
@@ -775,10 +776,8 @@ void dScMgPachinko2_c::Spark_DrawAll()
     for(i=0;i<0x10;i++){
         if(*(unsigned char*)(c+0x5000+0x334) != 0){
             Mg_RenderSpriteBoth(
-                (void *)data_ov006_02136bd4[*(unsigned char*)(c+0x5000+0x335)],
-                *(int*)(c+0x5000+0x320) >> 12,
-                *(int*)(c+0x5000+0x324) >> 12,
-                -1, -1);
+                (void *)sPachinko2SparkSprites[*(unsigned char *)(c + 0x5000 + 0x335)],
+                *(int *)(c + 0x5000 + 0x320) >> 12, *(int *)(c + 0x5000 + 0x324) >> 12, -1, -1);
         }
         c += 0x18;
     }
@@ -899,11 +898,8 @@ void dScMgPachinko2_c::Paddle_DrawAll()
     int i;
     for(i=0;i<3;i++){
         if(o->arr[i].flag){
-            Mg_RenderSpriteBoth(
-                (void *)data_ov006_0213386c,
-                o->arr[i].x >> 12,
-                o->arr[i].y >> 12,
-                -1, -1);
+            Mg_RenderSpriteBoth((void *)sPachinko2PaddleSprite, o->arr[i].x >> 12,
+                                o->arr[i].y >> 12, -1, -1);
         }
     }
 }
@@ -1104,7 +1100,7 @@ void dScMgPachinko2_c::Paddle_StateGather(int i) {
     }
 
     {
-        int r4 = data_ov006_0213db9c[mLaneConfig][i];
+        int r4 = sPachinko2PaddleGatherTargets[mLaneConfig][i];
         int ax = 0x80 - (mPaddles[i].x >> 12);
         int y_raw = mPaddles[i].y;
 
@@ -1610,7 +1606,7 @@ void dScMgPachinko2_c::Paddle_StateSweep(int i) {
                 mPaddles[i].vx -= 8;
         } else {
             int idx = mLaneConfig;
-            if (mPaddles[i].vx <= data_ov006_0213db84[idx][i])
+            if (mPaddles[i].vx <= sPachinko2PaddleSweepLimits[idx][i])
                 mPaddles[i].vx += 0x80;
         }
         if (v >= 0xe0) {
@@ -1628,7 +1624,7 @@ void dScMgPachinko2_c::Paddle_StateSweep(int i) {
                 mPaddles[i].vx += 8;
         } else {
             int idx = mLaneConfig;
-            if (mPaddles[i].vx >= -data_ov006_0213db84[idx][i])
+            if (mPaddles[i].vx >= -sPachinko2PaddleSweepLimits[idx][i])
                 mPaddles[i].vx -= 0x80;
         }
         if (v <= 0x20) {
@@ -1654,7 +1650,7 @@ void dScMgPachinko2_c::Paddle_StateDescend(int i) {
     int limit;
 
     mPaddles[i].y += mPaddles[i].vy;
-    limit = data_ov006_0213db6c[mLaneConfig][i];
+    limit = sPachinko2PaddleDescendLimits[mLaneConfig][i];
 
     if ((mPaddles[i].y >> 12) >= limit) {
         mPaddles[i].y = limit << 12;
@@ -2163,8 +2159,8 @@ void dScMgPachinko2_c::Ball_DrawAll()
             if (t != 0) {
                 Mg_RenderSpriteBoth((void *)sPachinko2BallCountSprites[t - 1], x, y, -1, -1);
             } else {
-                Mg_RenderSpriteBothScaled(data_ov006_021389ec, x, y, -1, -1, 0x1000,
-                                    *(unsigned short *)(p + i * 64 + 0x4690));
+                Mg_RenderSpriteBothScaled(sPachinko2BallSprite, x, y, -1, -1, 0x1000,
+                                          *(unsigned short *)(p + i * 64 + 0x4690));
             }
         }
     }

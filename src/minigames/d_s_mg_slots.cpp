@@ -167,7 +167,7 @@ extern void SlotBlink_Start(void *o, s16 x, s16 y);
 extern void SlotBlink_Tick(void *o);
 extern void SlotReel_SetSpeed(void *o, int v);
 extern int SlotReels_CheckStopped(void *self);
-extern int data_ov006_0213e600[];
+extern int sSlotReelScrollSpeeds[];
 extern u8 sSlot1Payouts[];
 extern s16 data_ov006_0213e654[][2];
 extern s16 data_ov006_0213e656[][2];
@@ -812,8 +812,8 @@ s32 dScMgSlot3_c::Render()
         Mg_DrawBigNumber(0x90, 0x28, 3, 0, 0, 0, 0x28);
     }
 
-    Mg_RenderMainSpriteScaled(data_ov006_0213ac30, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
-    Mg_RenderMainSpriteScaled(data_ov006_0213ac3c, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
+    Mg_RenderMainSpriteScaled(sSlotLamp1Sprite, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
+    Mg_RenderMainSpriteScaled(sSlotLamp2Sprite, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
 
     return 1;
 }
@@ -1362,7 +1362,7 @@ s32 dScMgSlot1_c::Behavior()
         for (i = 0; i < 3; i++) {
             if (mReelSpinning[i] == 1 || mReelScroll[i] != 0) {
                 moving++;
-                mReelScroll[i] -= data_ov006_0213e600[mSpeedLevel + i];
+                mReelScroll[i] -= sSlotReelScrollSpeeds[mSpeedLevel + i];
                 if ((int)mReelScroll[i] < 0) {
                     if (mReelSpinning[i] == 1) {
                         mReelStop[i]++;
@@ -1613,7 +1613,7 @@ s32 dScMgSlot1_c::InitResources()
     sMgMainBannerY = 0x40;
 
     if ((int)param1 & 0xff) {
-        unsigned char *tbl = data_ov006_0213ea20;
+        unsigned char *tbl = sSlotReelSymbolsAlt;
         char *p = c;
         for (j = 0; j < 3; j++) {
             for (i = 0; i < 0x15; i++) {
@@ -1627,7 +1627,7 @@ s32 dScMgSlot1_c::InitResources()
         }
     } else {
         int k;
-        unsigned char *tbl = data_ov006_0213e9e0;
+        unsigned char *tbl = sSlotReelSymbols;
         char *p = c;
         for (k = 0; k < 3; k++) {
             for (i = 0; i < 0x15; i++) {

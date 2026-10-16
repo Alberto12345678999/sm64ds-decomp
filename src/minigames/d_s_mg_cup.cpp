@@ -88,7 +88,7 @@ extern s16 sCupShuffleSpeeds[];
 extern IdxPair data_ov006_0213c0c0[];
 extern IdxPair data_ov006_0213c0c4[];
 extern RestPos sCupHomePositions[];
-extern RestPos data_ov006_0213c0ac[];
+extern RestPos sCupSlots[];
 extern int RandomIntInternal(int *seed);
 extern void Mg_SetSharedState(int c);
 extern void Cup_UpdateAnim(char *self, int i);
@@ -411,8 +411,7 @@ extern "C" void Cup_PickShuffleSpeed(char *raw)
     self->mSwap1 = data_ov006_0213c0c4[rem].a;
 
     self->mMidX = (sCupHomePositions[self->mSwap1].x + sCupHomePositions[self->mSwap0].x) / 2;
-    self->mMidY = (data_ov006_0213c0ac[self->mSwap1].x +
-                   data_ov006_0213c0ac[self->mSwap0].x) / 2;
+    self->mMidY = (sCupSlots[self->mSwap1].x + sCupSlots[self->mSwap0].x) / 2;
     self->mHalfX = self->mMidX - sCupHomePositions[self->mSwap0].x;
     self->mShuffleAngle = 0;
 

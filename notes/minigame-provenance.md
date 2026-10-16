@@ -412,11 +412,11 @@ name -- a wrong name is a claim the next reader will trust.
 | 0x4724 | `mLanePos[4][2]` | [func_ov006_020d3ba0](../src/minigames/d_s_mg_amida.cpp) seeds `{ (0x20 + 0x40*i) << 12, 0xb0 << 12 }`; Behavior adds `mLaneVel` into it; Render draws the lane sprite at `>> 12`. |
 | 0x4744 | `mLaneVel[4][2]` | Added into `mLanePos` once a tick, and its y component loses a fixed 0x100 every tick -- a velocity under gravity. Zeroed by the same reset. |
 | 0x4768 | `mPieces[0x80]` | Renamed from `arr4768`; the element layout is unchanged (see the section above). |
-| 0x5368 | `mScrollSpeed` | [func_ov006_020d3ba0](../src/minigames/d_s_mg_amida.cpp) computes it from the pattern table [data_ov006_0212e1b0](../config/arm9/overlays/ov006/symbols.txt) `+ mPatternIndex * 0x1c`, biases it by the inherited 0xbc, and clamps it to 0x64. |
+| 0x5368 | `mScrollSpeed` | [func_ov006_020d3ba0](../src/minigames/d_s_mg_amida.cpp) computes it from the pattern table [sAmidaPatternSpeeds](../config/arm9/overlays/ov006/symbols.txt) `+ mPatternIndex * 0x1c`, biases it by the inherited 0xbc, and clamps it to 0x64. |
 | 0x536c | `mScrollAccum` | Behavior adds `mScrollSpeed` into it, keeps the low four bits (`&= 0xf`) and runs [func_ov006_020d27dc](../config/arm9/overlays/ov006/symbols.txt) once per 16 accumulated -- a fixed-point step accumulator. |
 | 0x5374 | `mRoundCount` | Zeroed by the reset; Behavior replays the board while it is below 5 and finishes at 5, and scales the fast-forward speed by `n * 5 + 0x20`. |
-| 0x539c | `mLaneAnimTimer[4]` | Render bumps entry `i` each frame and wraps it on the per-lane period it copies out of [data_ov006_0213b880](../config/arm9/overlays/ov006/symbols.txt). |
-| 0x53ac | `mLaneAnimFrame[4]` | Bumped when the timer above wraps, cycles 0..0xd, and indexes the sprite table [data_ov006_0213a458](../config/arm9/overlays/ov006/symbols.txt). |
+| 0x539c | `mLaneAnimTimer[4]` | Render bumps entry `i` each frame and wraps it on the per-lane period it copies out of [sAmidaRenderPeriods](../config/arm9/overlays/ov006/symbols.txt). |
+| 0x53ac | `mLaneAnimFrame[4]` | Bumped when the timer above wraps, cycles 0..0xd, and indexes the sprite table [sAmidaLaneAnimSprites](../config/arm9/overlays/ov006/symbols.txt). |
 | 0x53bc | `mBgScrollPhase` | u16. Render adds 0xc0 a frame and feeds `>> 4` into the shared sine table [data_02082214](../config/arm9/symbols.txt) to get the sub-screen BG2 offset. The 16-bit width comes from the reset's own `*(s16*)` store. |
 | 0x53c0 | `mResultWaitTimer` | Loaded with 0x3c on entry to state 2 and counted down there; at 0 the scene clears `mPromptEnabled` and moves to state 3. |
 | 0x53c4 | `mStartBannerTimer` | Reset to 0x3c right after [Mg_ShowBanner](../src/minigames/d_s_mg_base.cpp)`(0xd, 0x80, 0x60, ...)` puts banner 0xd on screen; Behavior counts it down and calls `FreeGfxSlotsById(0xd)` on expiry. |
@@ -515,7 +515,7 @@ into it by raw offset).
 | 0x5fe0 | `mLoseStreak` | The mirror counter on the other outcome; at 3 it swaps in banner 0x11. It never touches the score. |
 | 0x5fe4 | `mHoldTimer` | `dScMgFlower_c::StartRound` (src/minigames/d_s_mg_flower.cpp) increments it while `<= 0x14` and otherwise resets it to 0; Behavior treats `> 0x14` as "held long enough". InitResources zeroes it. |
 | 0x5fe8 | `mState` | Behavior's `switch`: 0 plays, 1 is over (it stops the prompt and only ticks the 0x51f8 object). |
-| 0x5fec | `mFaceSprite` | Render's only use is [data_ov006_0213ab94](../config/arm9/overlays/ov006/symbols.txt)`[n]` drawn at the screen centre; Behavior sets it to 0..4 on each outcome. |
+| 0x5fec | `mFaceSprite` | Render's only use is [sFlowerFaceSprites](../config/arm9/overlays/ov006/symbols.txt)`[n]` drawn at the screen centre; Behavior sets it to 0..4 on each outcome. |
 | 0x5ff0 | `mScore` | Incremented by 1 or 3 per winning pull and clamped to 0x270f -- the same 9999 cap dScMgAmida_c and dScMgSnowball_c use. |
 | 0x5ff4 | `mBgScrollPhase` | u16. Render adds 0xc0 a frame and feeds `>> 4` into [data_02082214](../config/arm9/symbols.txt) for both background layers -- the same idiom as dScMgAmida_c's own. |
 
@@ -542,7 +542,7 @@ address-only, so the exact original source names remain unknown.
 | 0x5d98 | `mScrollTargetY` | The other argument of that `ApproachLinear`; recomputed as `(q << 3) + 0x20` once the scroll has caught up. InitResources seeds it from `mScrollY`. |
 | 0x5d9c | `mScrollHoldTimer` | Loaded with 0x78 and run down to 0 by `ApproachLinear(..., 0, 1)`; the target may not move again until it reaches 0. |
 | 0x5da0 | `mScrollOffsetY` | Added to `mScrollY` at every one of its uses, and zeroed once the scroll settles. |
-| 0x5da4 | `mArrow1X` / `mArrow2X` (0x5da8) | `dScMgTrampoline_c::StatePlay` drives the pair in opposition (`ApproachLinear` one toward 0 while the other goes toward 0x20); Render draws sprite [data_ov006_02134f08](../config/arm9/overlays/ov006/symbols.txt) at `n + 0xf0` for each. |
+| 0x5da4 | `mArrow1X` / `mArrow2X` (0x5da8) | `dScMgTrampoline_c::StatePlay` drives the pair in opposition (`ApproachLinear` one toward 0 while the other goes toward 0x20); Render draws sprite [sTrmpArrowSprite](../config/arm9/overlays/ov006/symbols.txt) at `n + 0xf0` for each. |
 | 0x5dac | `mDragSoundHandle` | `UpdateTouchInput` passes the previous word to `func_02012468`, stores its returned handle, and zeroes it when a new drag begins; the intro interpolation uses the same positional-sound update path. |
 | 0x5db0 | `mTouchX` / `mTouchY` (0x5db2) | `dScMgTrampoline_c::UpdateTouchInput` refreshes them from the touch sample [gTouchX](../config/arm9/symbols.txt) / [gTouchY](../config/arm9/symbols.txt) every tick a drag is live, and draws the drag segment from them. |
 | 0x5db4 | `mTouchStartX` / `mTouchStartY` (0x5db6) | Copied from the pair above on the press edge and then left alone; `OnGraphCallback0` measures the swipe as start-to-current and only accepts it if the two ends sit on opposite sides of the screen. |

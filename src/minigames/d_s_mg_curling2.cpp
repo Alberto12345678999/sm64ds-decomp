@@ -124,7 +124,7 @@ extern int sCurling2TargetStoneSprite;
 extern int sCurling2StonesSprites;
 extern int *sCurling2CounterSprites[];
 extern int sCurling2CursorSprites[];
-extern char sCurling2BgNcgPath;
+extern char sCurling2BgJokyuNcgPath;
 
 /* The seven pointer-to-member state tables this file's functions dispatch
  * through. __sinit_ov006_02130758 fills them from the 8-byte {code
@@ -1786,7 +1786,7 @@ s32 dScMgCurling2_c::Behavior()
  * with a 0x40 state delay. */
 s32 dScMgCurling2_c::InitResources()
 {
-    char *r6 = (char *)Ov004_LoadFileByPath(&sCurling2BgNcgPath);
+    char *r6 = (char *)Ov004_LoadFileByPath(&sCurling2BgJokyuNcgPath);
     void *f;
     void *c7;
     void *c8;

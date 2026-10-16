@@ -31,7 +31,7 @@ extern "C" {
 extern void *sD3DSubObjPalette;
 extern void *sMgSubCamera;
 extern Oam sD3DOamShadow[];
-extern unsigned char data_ov006_0212e574[];
+extern unsigned char sD3DSoundPanOffsets[];
 
 /* arm9 / ov004 globals with no project header. */
 extern unsigned char data_0209d454;
@@ -199,7 +199,7 @@ int dScMgD3DBase_c::InitSubScreenBg()
     LoadCompressedFileAt(sD3DCommonNcgByLanguage[GetGameLanguage()], (void *)0x6600000);
     {
         char *dst = (char*)0x6600000; dst += 0x2000;
-        DecompressLZ16((void*)data_ov006_0213c5e8[GetGameLanguage()], dst);
+        DecompressLZ16((void *)sD3DSubScreenBgByLanguage[GetGameLanguage()], dst);
     }
     _ZN2GX16SetBankForSubOBJEt(mSavedSubObjBank);
     mSubBgBank = func_02053eb0();
@@ -397,7 +397,7 @@ extern "C" int D3D_PlaySeAtX(int a, int b)
 
 // @symbol Sound_PlayBank1Panned
 extern "C" void Sound_PlayBank1Panned(int a0, char *a1, void *a2) {
-    a1 += data_ov006_0212e574[a0];
+    a1 += sD3DSoundPanOffsets[a0];
     int pan = D3D_PanForX((int)a2);
     func_020127ec(1, (int)a1, 4, 0, 0, pan);
 }

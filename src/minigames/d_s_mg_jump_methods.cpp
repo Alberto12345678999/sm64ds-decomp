@@ -495,7 +495,7 @@ s32 dScMgJump_c::Render()
         void *obj;
         void *p;
 
-        t = *(V3 *)data_ov006_0213cb8c;
+        t = *(V3 *)sJumpRenderScale;
 
         obj = &mModel.data;
         p = *(void **)((char *)obj + 4);

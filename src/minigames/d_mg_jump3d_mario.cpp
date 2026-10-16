@@ -159,8 +159,8 @@ extern u16 sJump3DSpinAngle;
 extern void *sMgMainCamera;
 extern void *sMgCurCamera;
 extern OamAttr *data_ov006_02134d1c;
-extern Vector3 data_ov006_0212ddd0;
-extern char data_ov006_0212dddc[];
+extern Vector3 sJump3DMarioScale;
+extern char sJump3DRoundLayouts[];
 
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
 extern u8 gActivePlayerSlot;
@@ -333,7 +333,7 @@ extern "C" void Jump3D_StartRoundLayout(void)
     eoff = 0;
     ooff = 0;
     do {
-        char *e = data_ov006_0212dddc + sJump3DLayout * 0x24 + eoff;
+        char *e = sJump3DRoundLayouts + sJump3DLayout * 0x24 + eoff;
         int word = *(int *)e;
         ((dMgJump3DMario_c *)(sJump3DMarioPool + ooff))->StartWindUp((short)word);
         *(int *)(sJump3DMarioPool + ooff + 0x14) = *(int *)(e + 4);
@@ -451,7 +451,7 @@ void dMgJump3DMario_c::Draw()
         OAM::Render(false, data_ov006_02134d1c, screen[0], screen[1], -1, -1, (Matrix2x2 *)&mtx);
     }
 
-    mModelAnim.Render(&data_ov006_0212ddd0);
+    mModelAnim.Render(&sJump3DMarioScale);
 }
 
 // @symbol _ZN16dMgJump3DMario_c6UpdateEv

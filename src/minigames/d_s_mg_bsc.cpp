@@ -169,14 +169,11 @@ s32 dScMgBSC_c::Render()
     if (mState >= 1) {
         for (i = 0; i < 2; i++) {
             if (mCardFrame[i] < 3) {
-                Hud_RenderSprite(data_ov006_0213fe8c[mCardFrame[i]],
-                                    mCardPos[i].x >> 12,
-                                    mCardPos[i].y >> 12, -1, -1);
+                Hud_RenderSprite(sBscCardSprites[mCardFrame[i]], mCardPos[i].x >> 12,
+                                 mCardPos[i].y >> 12, -1, -1);
             } else {
-                Hud_RenderSprite(
-                    data_ov006_0213fe8c[mCardFrame[i] + mCardValue[i] * 2],
-                    mCardPos[i].x >> 12,
-                    mCardPos[i].y >> 12, -1, -1);
+                Hud_RenderSprite(sBscCardSprites[mCardFrame[i] + mCardValue[i] * 2],
+                                 mCardPos[i].x >> 12, mCardPos[i].y >> 12, -1, -1);
             }
         }
     }

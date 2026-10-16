@@ -41,7 +41,7 @@ void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 typedef void (*dtor_t)(void *);
 void __cxa_vec_cleanup(void *block, unsigned int n, unsigned int size, dtor_t dtor);
 extern short data_02082214[];
-extern void **data_ov006_0213b0d8[];
+extern void **sPuffSprites[];
 extern int sPuffNextIndex;
 extern void **sPuffXTable;
 extern struct Ent_ov006 sPuffs[3];
@@ -138,7 +138,7 @@ void Puff_Draw(char *c)
         x = sPuffXTable[*(short *)(c + 0x1a)];
     } else {
         int idx2 = GetGameLanguage();
-        x = data_ov006_0213b0d8[idx2][*(short*)(c + 0x1a)];
+        x = sPuffSprites[idx2][*(short *)(c + 0x1a)];
     }
     t = data_02082214[(*(unsigned short*)(c + 0x1c) >> 4) * 2];
     prod = (int)(((s64)*(int*)(c + 0x10) * t + 0x800) >> 12);

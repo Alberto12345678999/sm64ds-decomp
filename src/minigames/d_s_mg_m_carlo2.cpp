@@ -307,7 +307,7 @@ s32 dScMgMCarlo2_c::Render()
         score = 0x270f;
     Mg_DrawNumber(0xe8, 0x28, score, 1, -1, 0, 0);
 
-    RenderOamMainScreen(data_ov006_02133f18, 0xe8, 0x18, -1, -1);
+    RenderOamMainScreen(sMCarloHudSprite, 0xe8, 0x18, -1, -1);
 
     if (this->mRoundState == 5)
         Mg_DrawBlinkSprite(raw, 0xe0, 0xa0);

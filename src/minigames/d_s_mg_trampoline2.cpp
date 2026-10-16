@@ -195,8 +195,8 @@ extern void Trmp2Mario_MoveToStart(void);
 extern void Trmp2Mario_PlaceAtStart(void* a);
 extern struct S2 pmf_dScMgTrampoline2_c_StatePlay;
 extern void TrmpLine_CreateStartLineT2(void);
-extern s16 data_ov006_0212e058;
-extern s16 data_ov006_0212e050;
+extern s16 sTrmp2IntroFromX;
+extern s16 sTrmp2IntroToX;
 extern s16 sTrmpStartTouchY;
 extern short sTrmpStartTouchX;
 extern struct P2 pmf_dScMgTrampoline2_c_StateIntro;
@@ -209,11 +209,11 @@ extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void Deallocate(void *ptr);
 extern int sTrmp2NcgByLanguage[];
-extern int data_ov006_02134d40[];
-extern int data_ov006_02134d4c[];
-extern int data_ov006_02134d58[];
-extern int data_ov006_02134d34[];
-extern int data_ov006_02134d28[];
+extern int sTrmpPuffEnglish[];
+extern int sTrmpPuffSpanish[];
+extern int sTrmpPuffFrench[];
+extern int sTrmpPuffGerman[];
+extern int sTrmpPuffItalian[];
 extern int sMgTextSpritesEnglish[];
 extern int sMgTextSpritesSpanish[];
 extern int sMgTextSpritesFrench[];
@@ -288,11 +288,10 @@ P2 pmf_dScMgTrampoline2_c_StateIntro = {{ (int)_ZN18dScMgTrampoline2_c10StateInt
 StateValue pmf_dScMgTrampoline2_c_StateWaitExit = {{ (int)_ZN18dScMgTrampoline2_c13StateWaitExitEv, 0 }};
 S2 pmf_dScMgTrampoline2_c_StatePlay = {{ (int)_ZN18dScMgTrampoline2_c9StatePlayEv, 0 }};
 P2 pmf_dScMgTrampoline2_c_StateResults = {{ (int)_ZN18dScMgTrampoline2_c12StateResultsEv, 0 }};
-Tbl data_ov006_0213fbf8 = { 0x600, 0xc00, 0xe00 };
+Tbl sTrmp2SpinnerSpeeds = {0x600, 0xc00, 0xe00};
 int sTrmp2ScoreGates[] = {1000, 5000, 10000, 20000};
-int sTrmp2PuffXByLanguage[] = {(int)data_ov006_02134d40, (int)data_ov006_02134d4c,
-                               (int)data_ov006_02134d58, (int)data_ov006_02134d34,
-                               (int)data_ov006_02134d28};
+int sTrmp2PuffXByLanguage[] = {(int)sTrmpPuffEnglish, (int)sTrmpPuffSpanish, (int)sTrmpPuffFrench,
+                               (int)sTrmpPuffGerman, (int)sTrmpPuffItalian};
 int sTrmp2NcgByLanguage[] = {0x107, 0x109, 0x104, 0x105, 0x106};
 int *sTrmp2TextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpanish,
                                       sMgTextSpritesFrench, sMgTextSpritesGerman,
@@ -544,7 +543,7 @@ void dScMgTrampoline2_c::StateIntro()
         int t = cstd::fdiv(counter << 12, 0x5a000);
         volatile s16 old9c = mTouchX;
         volatile s16 old9e = mTouchY;
-        int mixRaw = data_ov006_0212e050 * t + data_ov006_0212e058 * (0x1000 - t);
+        int mixRaw = sTrmp2IntroToX * t + sTrmp2IntroFromX * (0x1000 - t);
         mTouchX = (s16)(mixRaw >> 12);
         mTouchY = sTrmpStartTouchY;
 
@@ -1325,8 +1324,8 @@ extern "C" void Trmp2Spinner_SetModel(void* raw)
 }
 
 extern "C" {
-extern struct Tbl data_ov006_0213fbf8;
-extern unsigned short data_ov006_0212f144[];
+extern struct Tbl sTrmp2SpinnerSpeeds;
+extern unsigned short sTrmp2SpinnerColors[];
 extern int RandomIntInternal(int* seed);
 extern void func_020169f4(char* self, int kind);
 
@@ -1334,7 +1333,7 @@ extern void func_020169f4(char* self, int kind);
 void Trmp2Spinner_Init(void *r0, void *r1) {
     char* raw = (char *)r0;
     int value = (int)r1;
-    struct Tbl t = data_ov006_0213fbf8;
+    struct Tbl t = sTrmp2SpinnerSpeeds;
     unsigned int rnd = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
     int idx;
     if ((int)rnd < t.a) {
@@ -1346,7 +1345,7 @@ void Trmp2Spinner_Init(void *r0, void *r1) {
     } else {
         idx = 3;
     }
-    func_020169f4(raw, data_ov006_0212f144[idx]);
+    func_020169f4(raw, sTrmp2SpinnerColors[idx]);
     int scale = value * 0xA00;
     *(short*)(raw + 0x76) = 0xF0;
     if (scale > 0x4000) {

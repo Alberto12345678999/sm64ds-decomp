@@ -143,14 +143,14 @@ void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 void _ZN3GXS11LoadOBJPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 void func_02056374(const void*, u32, u32);
 
-extern int data_ov006_0213c7f4;
+extern int sEsp3DMaterialAnim;
 extern int pmf_dMg3DEspModel_c_Idle_2[];
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Idle;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Hit;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Intro;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Wait;
 extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Idle_3;
-extern void *data_ov006_0213c844;
+extern void *sEsp3DTextureAnim;
 extern s16 data_02082214[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
@@ -163,7 +163,7 @@ extern Matrix4x3 data_ov006_0213c85c;
 /* Both models' starting matrix. Declaring it non-volatile adds 32 bytes to
    dScMg3DEsp_c::InitResources, and copying it without the stack temporary
    removes 32. */
-extern volatile Matrix4x3 data_ov006_0213c88c;
+extern volatile Matrix4x3 sEsp3DIdentityMtx;
 
 /* ---- dScMg3DEsp_c: the destructor (key function) ---------------------- */
 
@@ -303,14 +303,14 @@ void dMg3DEspAnimSet_c::InitResources()
     mSpeed = 0x800;
     bmd = _ZN5Model8LoadFileER13SharedFilePtr(&gEspHamonModelFile);
     bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspHamonAnimFile);
-    _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(bmd, &data_ov006_0213c7f4);
+    _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(bmd, &sEsp3DMaterialAnim);
     w = o;
     w2 = o + 0x12c;
     for (i = 0; i < 3; i++) {
         _ZN9ModelBase7SetFileEP8BMD_Fileii(w, bmd, 1, m1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000,
                                                     mSpeed, z1);
-        _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &data_ov006_0213c7f4, 0x40000000,
+        _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
                                                            mSpeed, z2);
         _ZN5Model12SetPolygonIDEi(w, (i + 1) & 0xff);
         mActive[i] = 0;
@@ -1667,16 +1667,17 @@ s32 dScMg3DEsp_c::InitResources()
         return 0;
 
     TextureTransformer::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
-                                *(BTA_File *)&data_ov006_0213c844);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &data_ov006_0213c844, 0, 0x1000, 0);
+                                *(BTA_File *)&sEsp3DTextureAnim);
+    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &sEsp3DTextureAnim,
+                                                          0, 0x1000, 0);
 
     if (((dMg3DEspModel_c*)pad_4fd8)->InitResources() == 0) return 0;
 
     if (func_020179b4(&gIrieBackModelFile, mModel2, 1) == 0)
         return 0;
 
-    tmp = (Matrix4x3&)data_ov006_0213c88c;
-    ((Model*)mModel1)->mat4x3 = (Matrix4x3&)data_ov006_0213c88c;
+    tmp = (Matrix4x3 &)sEsp3DIdentityMtx;
+    ((Model *)mModel1)->mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
     ((Model*)mModel2)->mat4x3 = tmp;
 
     data_0209d454 |= 4;

@@ -54,15 +54,15 @@ extern unsigned short sCardFaceSprites[];
 extern void *sCardObjSprites[];
 extern int sMgCardSprites[];
 extern void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
-extern void **data_ov006_0213bd30[];
-extern void *data_ov006_0213406c[];
+extern void **sCardPayoutHighlightSprites[];
+extern void *sCardHudSprites[];
 unsigned int func_02012790(unsigned int a);
 extern int sCardSelectLocked;
 extern int sCardSwapRequested;
 extern int data_ov006_02141770;
 extern "C" void Vec2_Sub(int* o, int* a, int* b);
 extern "C" void func_0203d680(int* out, int* in, int scale);
-extern const Five data_ov006_0213bcd8;
+extern const Five sCardHandOrder;
 extern int RandomIntInternal(int *seed);
 extern int sCardFaceWeights[];
 extern int data_0209e650;
@@ -84,9 +84,9 @@ extern void Mg_ShowBanner(int a0, int a1, int a2, int a3, int a4, s16 a5);
 extern void Mg_SubmitScore(int v);
 extern void Mg_SetSharedState(int v);
 extern int sMgCoinsBetPlaced;
-extern int data_ov006_0213bc44;
+extern int sCardDrawsLeft;
 extern int gMgCoinsInPlay;
-extern int data_ov006_0213bd48[];
+extern int sCardHandPayouts[];
 extern void FreeGfxSlotsById(int arg);
 extern void MgCoins_StartPayout(int a);
 extern s16 gMgCoinsStatus;
@@ -278,7 +278,7 @@ void dScMgCard_c::StartRound(int mode)
     sCardSelectLocked = 0;
     data_ov006_02141770 = 0;
     unk_539a = 0;
-    data_ov006_0213bc44 = 1;
+    sCardDrawsLeft = 1;
     mState = 1;
 }
 
@@ -307,7 +307,8 @@ int dScMgCard_c::CanEndState(int mode)
                 MgCoins_StartLose();
                 mStateTimer = 0;
             } else if (r == 1) {
-                int v = data_ov006_0213bd48[dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray1, 0)];
+                int v =
+                    sCardHandPayouts[dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray1, 0)];
                 MgCoins_StartPayout(v * gMgCoinsInPlay);
                 mStateTimer = 0;
             } else {
@@ -540,8 +541,8 @@ void dScMgCard_c::UpdateState()
         break;
     case 7:
         if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray2, 1) != 0 && Dealer_IsIdle(&mShared) != 0) {
-            r = data_ov006_0213bc44 - 1;
-            data_ov006_0213bc44 = r;
+            r = sCardDrawsLeft - 1;
+            sCardDrawsLeft = r;
             if (r == 0) {
                 mState++;
             } else {
@@ -632,7 +633,7 @@ void dScMgCard_c::UpdateState()
             } else if (r == 1) {
                 g = gMgScene;
                 {
-                    int *tbl = data_ov006_0213bd48;
+                    int *tbl = sCardHandPayouts;
                     int scale;
                     int prod;
                     a0 = g ? g->mCredits : 0;
@@ -743,7 +744,7 @@ s32 dScMgCard_c::Render()
         y = 0xc;
         for (; i < 6; i++) {
             if (i != hiddenRank)
-                RenderOamMainScreen(data_ov006_02134010[i], 0x28, y, -1, -1);
+                RenderOamMainScreen(sCardPayoutRowSprites[i], 0x28, y, -1, -1);
             y += 0x10;
         }
 
@@ -1109,7 +1110,7 @@ void dScMgCard_c::MarkSingles(dMgCardObj_c *hand){
 /* dScMgCard_c::ArrangeHand -- the sort that pulls a scored hand together:
  * histogram the faces, decide the winning combination's two faces (the
  * stronger face first), then bubble the five cards by combination rank
- * through the order table at data_ov006_0213bcd8, stamp the combination
+ * through the order table at sCardHandOrder, stamp the combination
  * cards' mComboFlag, and SetHome every card to its sorted slot. Returns
  * whether the order changed at all. Coined name; the ROM's symbol is
  * address-only. */
@@ -1195,7 +1196,7 @@ int dScMgCard_c::ArrangeHand(dMgCardObj_c *hand)
       }
     }
   }
-  order = data_ov006_0213bcd8;
+  order = sCardHandOrder;
   n = 4;
   zero = 0;
   neg1 = -1;
@@ -1559,16 +1560,16 @@ void dScMgCard_c::RenderHud()
             } else if (i == mPlayerHandFace || i == mPlayerHandFace2) {
                 if (mFrameCounter & 0x10) highlight = 1;
             }
-            Hud_RenderSprite(data_ov006_0213bd30[i][highlight], 0x14, y, -1, -1);
+            Hud_RenderSprite(sCardPayoutHighlightSprites[i][highlight], 0x14, y, -1, -1);
             y -= 0x10;
         }
     }
     if (mState != 4) return;
     if (dScMgCard_c::AllLifted((const dMgCardObj_c *)mArray1) == 0) return;
     if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray1, 2) == 0)
-        Hud_RenderSprite(data_ov006_0213406c[0], 0x80, 0x58, -1, -1);
+        Hud_RenderSprite(sCardHudSprites[0], 0x80, 0x58, -1, -1);
     else
-        Hud_RenderSprite(data_ov006_0213406c[1], 0x80, 0x58, -1, -1);
+        Hud_RenderSprite(sCardHudSprites[1], 0x80, 0x58, -1, -1);
 }
 
 // @symbol _ZN12dMgCardObj_c7SetHomeEi
