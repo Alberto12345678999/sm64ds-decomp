@@ -113,9 +113,45 @@ learn_aggregates(REPO / "include" / "types.h")
 DECL = re.compile(r"^\s*(?:(?:const|volatile)\s+)*(?:(?:struct|union|class|enum)\s+)?"
                   r"(?:(?:const|volatile)\s+)*((?:\w+::)*[A-Za-z_]\w*)\s*"
                   r"(?:(?:const|volatile)\b\s*)*(\**)\s*(\w+)\s*"
-                  r"((?:\[\s*(?:0x[0-9a-fA-F]+|\d+)\s*\])*)\s*;"
+                  r"((?:\[\s*(?:0x[0-9a-fA-F]+|\d+|[A-Za-z_]\w*)\s*\])*)\s*;"
                   r"(?:\s*/\*\s*(0x[0-9a-fA-F]+))?")
-ARR_DIMS = re.compile(r"\[\s*(0x[0-9a-fA-F]+|\d+)\s*\]")
+ARR_DIMS = re.compile(r"\[\s*(0x[0-9a-fA-F]+|\d+|[A-Za-z_]\w*)\s*\]")
+# `PresenterFile mAnims[PRESENTER_ANIM_COUNT];` -- a bound named by a constant the
+# same header defines. Only that header's own `#define NAME <number>` lines and
+# enumerators (implicit, `= <number>` or `= <earlier enumerator>`) are read; a
+# name defined anywhere else stays unknown, and its field reports UNPARSED rather
+# than being sized from a guess.
+_NUM = r"(?:0x[0-9a-fA-F]+|\d+)"
+DEFINE_CONST = re.compile(r"^[ \t]*#[ \t]*define[ \t]+([A-Za-z_]\w*)[ \t]+\(?[ \t]*(" + _NUM + r")[uUlL]*[ \t]*\)?[ \t]*$",
+                          re.M)
+ENUM_BODY = re.compile(r"\benum\s+(?:class\s+)?(?:\w+\s*)?(?::\s*\w+\s*)?\{([^{}]*)\}", re.S)
+
+
+def header_constants(txt):
+    """The integer constants one header defines, by name: see ARR_DIMS above."""
+    code = re.sub(r"/\*.*?\*/", " ", txt, flags=re.S)
+    code = re.sub(r"//[^\n]*", "", code)
+    consts = {n: int(v, 0) for n, v in DEFINE_CONST.findall(code)}
+    for body in ENUM_BODY.findall(code):
+        nxt = 0
+        for item in body.split(","):
+            item = item.strip()
+            if not item:
+                continue
+            em = re.fullmatch(r"([A-Za-z_]\w*)(?:\s*=\s*(\w+))?", item)
+            if not em:
+                break                       # an expression: stop, do not guess
+            if em.group(2) is not None:
+                v = em.group(2)
+                if re.fullmatch(_NUM, v):
+                    nxt = int(v, 0)
+                elif v in consts:
+                    nxt = consts[v]
+                else:
+                    break
+            consts[em.group(1)] = nxt
+            nxt += 1
+    return consts
 # `s32 mPosX, mPosY, mPosZ;` -- several plain (no pointer, no array) declarators of
 # one type. Group 3 keeps the trailing `/* 0x...` text for DECL to read.
 MULTI_DECL = re.compile(r"^\s*((?:\w+::)*[A-Za-z_]\w*)\s+(\w+(?:\s*,\s*\w+)+)\s*;"
@@ -641,6 +677,7 @@ def main(argv, repo=None):
         expected = fp.stem
         all_lines = txt.splitlines()
         nested_names = _nested_names(all_lines)
+        consts = header_constants(txt)
         for lineno, line in enumerate(all_lines, 1):
             if not started:
                 # A struct-with-body BEFORE the file's own class is a helper type
@@ -935,6 +972,12 @@ def main(argv, repo=None):
                 trusted = False
                 continue
             _, _, name, arr, decl = m.groups()
+            dims = [int(d, 0) if d[0].isdigit() else consts.get(d)
+                    for d in ARR_DIMS.findall(arr)]
+            if None in dims:
+                skipped.append(f"{lineno}: {line.strip()}")
+                trusted = False
+                continue
             # Alignment is the strictest MEMBER alignment, never the type's size: a
             # 100-byte ModelAnim aligns to 4, not to 100. Aligning to size padded 0xd4
             # out to 0x12c and made every later field in the header mismatch.
@@ -958,8 +1001,8 @@ def main(argv, repo=None):
                                    f"computed 0x{off:03x}")
                     bad += 1
             arr_n = 1
-            for d in ARR_DIMS.findall(arr):
-                arr_n *= int(d, 0)
+            for d in dims:
+                arr_n *= d
             off += w * arr_n * n_decl
             if in_union:
                 u_members += 1
