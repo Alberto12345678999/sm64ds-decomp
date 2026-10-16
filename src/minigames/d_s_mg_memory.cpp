@@ -1116,7 +1116,7 @@ extern "C" void *dScMgMemory_c_classInit()
  * from the ROM constants, in retail copy order: the permuted sprite
  * pointers, the five main states, the six round states, the four result
  * states, the seven card states, then the three player states. */
-extern "C" int data_ov006_02133810[];
+extern "C" int sMgCardSprites[];
 extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StateSetup;
 extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StatePlay;
 extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StateJudge;
@@ -1144,21 +1144,11 @@ extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerMove;
 extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerWait;
 
 void *data_ov006_0214236c[15] = {
-    (void *)data_ov006_02133810[0],
-    (void *)data_ov006_02133810[1],
-    (void *)data_ov006_02133810[2],
-    (void *)data_ov006_02133810[11],
-    (void *)data_ov006_02133810[12],
-    (void *)data_ov006_02133810[13],
-    (void *)data_ov006_02133810[14],
-    (void *)data_ov006_02133810[3],
-    (void *)data_ov006_02133810[4],
-    (void *)data_ov006_02133810[5],
-    (void *)data_ov006_02133810[6],
-    (void *)data_ov006_02133810[9],
-    (void *)data_ov006_02133810[10],
-    (void *)data_ov006_02133810[7],
-    (void *)data_ov006_02133810[8],
+    (void *)sMgCardSprites[0],  (void *)sMgCardSprites[1],  (void *)sMgCardSprites[2],
+    (void *)sMgCardSprites[11], (void *)sMgCardSprites[12], (void *)sMgCardSprites[13],
+    (void *)sMgCardSprites[14], (void *)sMgCardSprites[3],  (void *)sMgCardSprites[4],
+    (void *)sMgCardSprites[5],  (void *)sMgCardSprites[6],  (void *)sMgCardSprites[9],
+    (void *)sMgCardSprites[10], (void *)sMgCardSprites[7],  (void *)sMgCardSprites[8],
 };
 dScMgMemory_cState sMemoryStateTable[5] = {
     pmf_dScMgMemory_c_StateSetup,  pmf_dScMgMemory_c_StatePlay, pmf_dScMgMemory_c_StateJudge,

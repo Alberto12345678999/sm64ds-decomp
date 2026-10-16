@@ -170,7 +170,7 @@ void Presenter_PlayCheerLoop(char *p);
 void func_02012174(u32 bank, u32 id);
 extern u16 data_ov006_0212ef3c[];
 extern u16 data_ov006_0213f794[];
-extern u16 data_ov006_0213f7e8[];
+extern u16 sSoundNoteSfx[];
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 extern u8 data_ov006_0212ee10[];
@@ -772,32 +772,32 @@ void dScMgSound_c::Note_StateOpening(int idx)
         instrument = this->mPattern;
         if (instrument == 0 || instrument == 2) {
             if (data_ov006_0213f794[note] == 2) {
-                func_02012790(data_ov006_0213f7e8[note]);
+                func_02012790(sSoundNoteSfx[note]);
             } else {
-                func_02012174(this->mBank, data_ov006_0213f7e8[note]);
+                func_02012174(this->mBank, sSoundNoteSfx[note]);
             }
         } else if (instrument == 1) {
             int n = note - 0x1a;
             int k = 0;
             while (n >= 4) { n -= 4; k++; }
-            func_02012174(n, data_ov006_0213f7e8[0x1a + k * 4]);
+            func_02012174(n, sSoundNoteSfx[0x1a + k * 4]);
         } else {
-            Sound::PlayBank2_2D(data_ov006_0213f7e8[note]);
+            Sound::PlayBank2_2D(sSoundNoteSfx[note]);
         }
     } else {
         instrument = this->mPattern;
         if (instrument == 0 || instrument == 2) {
-            func_02012790(data_ov006_0213f7e8[note]);
+            func_02012790(sSoundNoteSfx[note]);
         } else if (instrument == 1) {
-            func_02012174(this->mBank, data_ov006_0213f7e8[note]);
+            func_02012174(this->mBank, sSoundNoteSfx[note]);
         } else if (instrument == 4) {
             if (data_ov006_0213f794[note] == 2) {
-                Sound::PlayBank2_2D(data_ov006_0213f7e8[note]);
+                Sound::PlayBank2_2D(sSoundNoteSfx[note]);
             } else {
-                func_02012174(this->mBank, data_ov006_0213f7e8[note]);
+                func_02012174(this->mBank, sSoundNoteSfx[note]);
             }
         } else {
-            Sound::PlayBank2_2D(data_ov006_0213f7e8[note]);
+            Sound::PlayBank2_2D(sSoundNoteSfx[note]);
         }
     }
 

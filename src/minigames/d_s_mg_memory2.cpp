@@ -1293,7 +1293,7 @@ extern "C" void *dScMgMemory2_c_classInit()
  * from the ROM constants, in retail copy order: the permuted sprite
  * pointers, the five main states, the ten round states, the four result
  * states, the seven card states, then the three player states. */
-extern "C" int data_ov006_02133810[];
+extern "C" int sMgCardSprites[];
 extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateSetup;
 extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StatePlay;
 extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateJudge;
@@ -1325,29 +1325,14 @@ extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerMove;
 extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerWait;
 
 void *data_ov006_02142490[23] = {
-    (void *)data_ov006_02133810[0],
-    (void *)data_ov006_02133810[1],
-    (void *)data_ov006_02133810[2],
-    (void *)data_ov006_02133810[11],
-    (void *)data_ov006_02133810[12],
-    (void *)data_ov006_02133810[13],
-    (void *)data_ov006_02133810[14],
-    (void *)data_ov006_02133810[3],
-    (void *)data_ov006_02133810[4],
-    (void *)data_ov006_02133810[5],
-    (void *)data_ov006_02133810[6],
-    (void *)data_ov006_02133810[9],
-    (void *)data_ov006_02133810[10],
-    (void *)data_ov006_02133810[7],
-    (void *)data_ov006_02133810[8],
-    (void *)data_ov006_02133810[15],
-    (void *)data_ov006_02133810[16],
-    (void *)data_ov006_02133810[17],
-    (void *)data_ov006_02133810[18],
-    (void *)data_ov006_02133810[19],
-    (void *)data_ov006_02133810[20],
-    (void *)data_ov006_02133810[21],
-    (void *)data_ov006_02133810[22],
+    (void *)sMgCardSprites[0],  (void *)sMgCardSprites[1],  (void *)sMgCardSprites[2],
+    (void *)sMgCardSprites[11], (void *)sMgCardSprites[12], (void *)sMgCardSprites[13],
+    (void *)sMgCardSprites[14], (void *)sMgCardSprites[3],  (void *)sMgCardSprites[4],
+    (void *)sMgCardSprites[5],  (void *)sMgCardSprites[6],  (void *)sMgCardSprites[9],
+    (void *)sMgCardSprites[10], (void *)sMgCardSprites[7],  (void *)sMgCardSprites[8],
+    (void *)sMgCardSprites[15], (void *)sMgCardSprites[16], (void *)sMgCardSprites[17],
+    (void *)sMgCardSprites[18], (void *)sMgCardSprites[19], (void *)sMgCardSprites[20],
+    (void *)sMgCardSprites[21], (void *)sMgCardSprites[22],
 };
 dScMgMemory2_cState sMemory2StateTable[5] = {
     pmf_dScMgMemory2_c_StateSetup,  pmf_dScMgMemory2_c_StatePlay, pmf_dScMgMemory2_c_StateJudge,

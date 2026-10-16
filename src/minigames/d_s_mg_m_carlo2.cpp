@@ -41,11 +41,11 @@ extern s16 data_ov006_0214255c;     /* pieces still animating                */
 extern s16 data_ov006_02142560;     /* difficulty row into data_ov006_0212e97c */
 extern int sMCarlo2FaceCounts[];    /* per-face weights the picker draws from  */
 /* Twenty-three sprite words. The static initializer copies them out of
- * data_ov006_02133810 in this order; an in-order copy does not. */
+ * sMgCardSprites in this order; an in-order copy does not. */
 struct Carlo2SpriteWords {
     int a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22;
 };
-extern int data_ov006_02133810[];
+extern int sMgCardSprites[];
 extern Carlo2SpriteWords data_ov006_021425a8;
 extern unsigned short data_ov006_0213d770[];
 extern int data_ov006_0212e954[];   /* the starting weights                     */
@@ -208,7 +208,7 @@ int dScMgMCarlo2_c::CanEndState(int /* mode */)
 // @symbol _ZN14dScMgMCarlo2_c8BehaviorEv
 /* Slot 6. The state at mRoundState is bumped through an int-cast pointer each
  * time: plain `mRoundState++` recomputes the address, and the ROM keeps it in a
- * register. data_ov006_0213d700 is the dealt-card count, shifted left 12. */
+ * register. sMCarlo2DealProgress is the dealt-card count, shifted left 12. */
 s32 dScMgMCarlo2_c::Behavior()
 {
     unsigned char *raw = (unsigned char *)this;
@@ -226,7 +226,7 @@ s32 dScMgMCarlo2_c::Behavior()
         }
         /* fall through */
     case 2:
-        data_ov006_0213d700 = mDealCount * 5 << 12;
+        sMCarlo2DealProgress = mDealCount * 5 << 12;
         if (mDealCount == 4) {
             if (dScMgMCarlo2_c::BoardBusy() == 0) {
                 mDealCount = 0;
@@ -242,7 +242,7 @@ s32 dScMgMCarlo2_c::Behavior()
             int dealt;
             if (data_ov006_0213d6fc == 1)
                 data_ov006_0213d6fc = 0;
-            dealt = data_ov006_0213d700 >> 12;
+            dealt = sMCarlo2DealProgress >> 12;
             if (data_ov006_0213d6f4 != 0 && dealt > 10 && dealt <= 18
                 && Dealer_IsIdle(raw + 0x4f38) != 0) {
                 mDealCount = 0;
@@ -255,7 +255,7 @@ s32 dScMgMCarlo2_c::Behavior()
                 if (dealt >= lim) {
                     int flag = (sMCarlo2FirstPick != 0 && sMCarlo2SecondPick != 0);
                     if (flag == 0)
-                        data_ov006_0213d700 = lim << 12;
+                        sMCarlo2DealProgress = lim << 12;
                 }
             }
         } else {
@@ -580,7 +580,7 @@ void dScMgMCarlo2_c::SetupBoard(dMgMCarlo2CardObj_c* base)
         data_ov006_0213d6f4 = 0x28;
         data_ov006_02142560 = 0;
         sMCarlo2Score = 0;
-        data_ov006_0213d700 = 0;
+        sMCarlo2DealProgress = 0;
         {
             s16 i = 0;
             dMgMCarlo2CardObj_c* h = base;
@@ -624,7 +624,7 @@ int dScMgMCarlo2_c::HasRemovablePair()
 // @symbol _ZN14dScMgMCarlo2_c9BoardBusyEv
 int dScMgMCarlo2_c::BoardBusy() {
     int ret = 1;
-    int dealt = (data_ov006_0213d700 << 4) >> 0x10;
+    int dealt = (sMCarlo2DealProgress << 4) >> 0x10;
     int wanted = data_ov006_0213d6f8;
     if (wanted > 0x14) wanted = 0x14;
     if (dealt == wanted && data_ov006_0214255c == 0) {
@@ -638,7 +638,7 @@ int dScMgMCarlo2_c::BoardBusy() {
 // @symbol _ZN14dScMgMCarlo2_c10BoardReadyEv
 /* One exit on purpose: early `return 0`s cost 8 bytes. */
 int dScMgMCarlo2_c::BoardReady() {
-    int dealt = (data_ov006_0213d700 << 4) >> 16;
+    int dealt = (sMCarlo2DealProgress << 4) >> 16;
     int ready = 0;
     int wanted = data_ov006_0213d6f8;
 
@@ -677,13 +677,14 @@ int dScMgMCarlo2_c::DrawCardValue(){
 void dScMgMCarlo2_c::FlipDealtCards(){
     dMgMCarlo2CardObj_c *node = sMCarlo2Cards;
     short i = 0;
-    if((data_ov006_0213d700>>12) <= 0) return;
+    if ((sMCarlo2DealProgress >> 12) <= 0)
+        return;
     do {
         if(node == 0) return;
         node->FlipAway(i);
         i = i+1;
         node = node->mNext;
-    } while(i < (data_ov006_0213d700>>12));
+    } while (i < (sMCarlo2DealProgress >> 12));
 }
 
 // @symbol _ZN14dScMgMCarlo2_c11UpdateBoardEv
@@ -701,9 +702,9 @@ void dScMgMCarlo2_c::UpdateBoard()
             s16 secondSlot = sMCarlo2SecondPick->mSlot;
             s16 firstSlot = sMCarlo2FirstPick->mSlot;
             if (firstSlot > secondSlot)
-                data_ov006_0213d700 = secondSlot << 12;
+                sMCarlo2DealProgress = secondSlot << 12;
             else
-                data_ov006_0213d700 = firstSlot << 12;
+                sMCarlo2DealProgress = firstSlot << 12;
 
             first = sMCarlo2FirstPick;
             if (sMCarlo2Cards == first)
@@ -815,28 +816,30 @@ void dScMgMCarlo2_c::UpdateBoard()
         }
         {
             s16 i = 0;
-            if ((data_ov006_0213d700 >> 12) <= 0) return;
+            if ((sMCarlo2DealProgress >> 12) <= 0)
+                return;
             do {
                 if (head == 0) return;
                 if (head->mState == 1)
                     head->Update(i);
                 i = i + 1;
                 head = head->mNext;
-            } while (i < (data_ov006_0213d700 >> 12));
+            } while (i < (sMCarlo2DealProgress >> 12));
         }
     } else {
         int v = data_ov006_0213d6f8;
         if (v > 0x14) v = 0x14;
-        ApproachLinear(data_ov006_0213d700, v << 12, 0x800);
+        ApproachLinear(sMCarlo2DealProgress, v << 12, 0x800);
         {
             s16 i = 0;
-            if ((data_ov006_0213d700 >> 12) <= 0) return;
+            if ((sMCarlo2DealProgress >> 12) <= 0)
+                return;
             do {
                 if (head == 0) return;
                 head->Update(i);
                 i = i + 1;
                 head = head->mNext;
-            } while (i < (data_ov006_0213d700 >> 12));
+            } while (i < (sMCarlo2DealProgress >> 12));
         }
     }
 }
@@ -852,27 +855,10 @@ dMgMCarlo2CardObj_c::~dMgMCarlo2CardObj_c()
 
 /* Retail copy order is not address order. mwcc emits __sinit_d_s_mg_m_carlo2.cpp. */
 Carlo2SpriteWords data_ov006_021425a8 = {
-    data_ov006_02133810[0],
-    data_ov006_02133810[1],
-    data_ov006_02133810[2],
-    data_ov006_02133810[11],
-    data_ov006_02133810[12],
-    data_ov006_02133810[13],
-    data_ov006_02133810[14],
-    data_ov006_02133810[3],
-    data_ov006_02133810[4],
-    data_ov006_02133810[5],
-    data_ov006_02133810[6],
-    data_ov006_02133810[9],
-    data_ov006_02133810[10],
-    data_ov006_02133810[7],
-    data_ov006_02133810[8],
-    data_ov006_02133810[15],
-    data_ov006_02133810[16],
-    data_ov006_02133810[17],
-    data_ov006_02133810[18],
-    data_ov006_02133810[19],
-    data_ov006_02133810[20],
-    data_ov006_02133810[21],
-    data_ov006_02133810[22],
+    sMgCardSprites[0],  sMgCardSprites[1],  sMgCardSprites[2],  sMgCardSprites[11],
+    sMgCardSprites[12], sMgCardSprites[13], sMgCardSprites[14], sMgCardSprites[3],
+    sMgCardSprites[4],  sMgCardSprites[5],  sMgCardSprites[6],  sMgCardSprites[9],
+    sMgCardSprites[10], sMgCardSprites[7],  sMgCardSprites[8],  sMgCardSprites[15],
+    sMgCardSprites[16], sMgCardSprites[17], sMgCardSprites[18], sMgCardSprites[19],
+    sMgCardSprites[20], sMgCardSprites[21], sMgCardSprites[22],
 };

@@ -2077,7 +2077,7 @@ data_ov006_0212ed14 kind:data(any) addr:0x0212ed14
 data_ov006_0212ed24 kind:data(any) addr:0x0212ed24
 data_ov006_0212ed34 kind:data(any) addr:0x0212ed34
 data_ov006_0212ed4c kind:data(any) addr:0x0212ed4c
-data_ov006_0212ed68 kind:data(any) addr:0x0212ed68
+sRouletteRowEdgesY kind:data(any) addr:0x0212ed68
 data_ov006_0212ed88 kind:data(any) addr:0x0212ed88
 data_ov006_0212ed8a kind:data(any) addr:0x0212ed8a
 data_ov006_0212ed8c kind:data(any) addr:0x0212ed8c
@@ -2249,7 +2249,7 @@ data_ov006_021337b0 kind:data(any) addr:0x021337b0
 data_ov006_021337c8 kind:data(any) addr:0x021337c8
 data_ov006_021337e0 kind:data(any) addr:0x021337e0
 data_ov006_021337f8 kind:data(any) addr:0x021337f8
-data_ov006_02133810 kind:data(any) addr:0x02133810
+sMgCardSprites kind:data(any) addr:0x02133810
 data_ov006_0213386c kind:data(any) addr:0x0213386c
 data_ov006_02133870 kind:data(any) addr:0x02133870
 data_ov006_02133890 kind:data(any) addr:0x02133890
@@ -3841,8 +3841,8 @@ _ZTV14dScMgMemory2_c kind:data(any) addr:0x0213d4d4
 data_ov006_0213d564 kind:data(any) addr:0x0213d564
 data_ov006_0213d568 kind:data(any) addr:0x0213d568
 data_ov006_0213d56c kind:data(any) addr:0x0213d56c
-data_ov006_0213d570 kind:data(any) addr:0x0213d570
-data_ov006_0213d574 kind:data(any) addr:0x0213d574
+sMCarloCardTotal kind:data(any) addr:0x0213d570
+sMCarloDealProgress kind:data(any) addr:0x0213d574
 _ZTI18dMgMCarloCardObj_c kind:data(any) addr:0x0213d578
 g_profile_MG_MCARLO kind:data(any) addr:0x0213d580 ambiguous
 _ZTI13dScMgMCarlo_c kind:data(any) addr:0x0213d588
@@ -3856,7 +3856,7 @@ _ZTV13dScMgMCarlo_c kind:data(any) addr:0x0213d664
 data_ov006_0213d6f4 kind:data(any) addr:0x0213d6f4
 data_ov006_0213d6f8 kind:data(any) addr:0x0213d6f8
 data_ov006_0213d6fc kind:data(any) addr:0x0213d6fc
-data_ov006_0213d700 kind:data(any) addr:0x0213d700
+sMCarlo2DealProgress kind:data(any) addr:0x0213d700
 _ZTI19dMgMCarlo2CardObj_c kind:data(any) addr:0x0213d704
 g_profile_MG_MCARLO2 kind:data(any) addr:0x0213d70c ambiguous
 _ZTI14dScMgMCarlo2_c kind:data(any) addr:0x0213d714
@@ -4056,11 +4056,11 @@ _ZTS12dScMgSlot3_c kind:data(any) addr:0x0213e5ac
 _ZTS12dScMgSlot1_c kind:data(any) addr:0x0213e5bc
 _ZTVN12dScMgSlot1_c9betIcon_cE kind:data(any) addr:0x0213e5d4
 data_ov006_0213e5dc kind:data(any) addr:0x0213e5dc
-data_ov006_0213e5ec kind:data(any) addr:0x0213e5ec
+sSlotLangSprites kind:data(any) addr:0x0213e5ec
 data_ov006_0213e600 kind:data(any) addr:0x0213e600
 data_ov006_0213e614 kind:data(any) addr:0x0213e614
 data_ov006_0213e628 kind:data(any) addr:0x0213e628
-data_ov006_0213e63c kind:data(any) addr:0x0213e63c
+sSlot1ReelPos kind:data(any) addr:0x0213e63c
 data_ov006_0213e654 kind:data(any) addr:0x0213e654
 data_ov006_0213e656 kind:data(any) addr:0x0213e656
 _ZTSN12dScMgSlot1_c9betIcon_cE kind:data(any) addr:0x0213e66c
@@ -4241,7 +4241,7 @@ data_ov006_0213f730 kind:data(any) addr:0x0213f730
 data_ov006_0213f74c kind:data(any) addr:0x0213f74c
 data_ov006_0213f76c kind:data(any) addr:0x0213f76c
 data_ov006_0213f794 kind:data(any) addr:0x0213f794
-data_ov006_0213f7e8 kind:data(any) addr:0x0213f7e8
+sSoundNoteSfx kind:data(any) addr:0x0213f7e8
 _ZTV12dScMgSound_c kind:data(any) addr:0x0213f844
 pmf_dScMgTeresa_c_Boo_State5 kind:data(any) addr:0x0213f8d4
 pmf_dScMgTeresa_c_Boo_State1 kind:data(any) addr:0x0213f8dc

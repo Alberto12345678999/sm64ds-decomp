@@ -113,7 +113,7 @@ void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int a2, int 
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
 void Mg_DrawScoreTally(char *a0, int a1, int a2, int a3);
-extern void **data_ov006_0213e5ec[];
+extern void **sSlotLangSprites[];
 extern SlotState sSlot3StateTable[];
 /* The ROM PMF constants the Slot3 state table copies from (unlicensed
  * .data), in retail copy order. */
@@ -153,7 +153,7 @@ void SlotBet_OnTouch(void *c);
 void Mg_GainCredits(int x);
 extern void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
 extern int Mg_GetSavedRecord0(void);
-extern int data_ov006_0213e63c[][2];
+extern int sSlot1ReelPos[][2];
 extern void* data_ov006_0213e96c[];
 extern unsigned char data_ov006_0213e4d8[];
 extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
@@ -827,16 +827,18 @@ s32 dScMgSlot3_c::Render()
     Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 
     if (self->mState == 3 && self->mWinColumn >= 0) {
-        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], self->mWinColumn * 0x50 + 0x20, 0x28, 0);
-        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][13], self->mWinColumn * 0x50 + 0x30, 0x28, 0);
+        Mg_RenderSubSpriteMtx(sSlotLangSprites[GetGameLanguage()][2],
+                              self->mWinColumn * 0x50 + 0x20, 0x28, 0);
+        Mg_RenderSubSpriteMtx(sSlotLangSprites[GetGameLanguage()][13],
+                              self->mWinColumn * 0x50 + 0x30, 0x28, 0);
         if (self->mWinColumn == 1) {
             Mg_DrawBigNumber(self->mWinColumn * 0x50 + 0x40, 0x28, 6, 0, 0, 0, 0x14);
         } else {
             Mg_DrawBigNumber(self->mWinColumn * 0x50 + 0x40, 0x28, 3, 0, 0, 0, 0x14);
         }
     } else if (self->mState == 4 && self->mWinColumn < 0) {
-        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], 0x70, 0x28, 0);
-        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][14], 0x80, 0x28, 0);
+        Mg_RenderSubSpriteMtx(sSlotLangSprites[GetGameLanguage()][2], 0x70, 0x28, 0);
+        Mg_RenderSubSpriteMtx(sSlotLangSprites[GetGameLanguage()][14], 0x80, 0x28, 0);
         Mg_DrawBigNumber(0x90, 0x28, 3, 0, 0, 0, 0x28);
     }
 
@@ -1159,7 +1161,8 @@ void dScMgSlot1_c::betIcon_c::Render()
     int y = 0xb0;
     int zero = 0;
     for (i = 0; i < unk_01c; i++) {
-        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], 0xb0 + i * 0x10, y, (void *)zero);
+        Mg_RenderSubSpriteMtx(sSlotLangSprites[GetGameLanguage()][2], 0xb0 + i * 0x10, y,
+                              (void *)zero);
     }
 }
 
@@ -1293,10 +1296,10 @@ s32 dScMgSlot1_c::Render()
     unsigned char b;
     for (i = 0; i < 3; i++) {
         pos = *(t + i + 0x46ff);
-        x = data_ov006_0213e63c[i][1] - (*(int*)(t + (i << 2) + 0x46a4) >> 12);
+        x = sSlot1ReelPos[i][1] - (*(int *)(t + (i << 2) + 0x46a4) >> 12);
         for (j = 0; j < 2; j++) {
-            Hud_RenderSprite(data_ov006_0213e96c[*(cur + pos + 0x46c0)],
-                                data_ov006_0213e63c[i][0], x, -1, 3);
+            Hud_RenderSprite(data_ov006_0213e96c[*(cur + pos + 0x46c0)], sSlot1ReelPos[i][0], x, -1,
+                             3);
             pos--;
             x += 0x40;
             if (pos < 0)
@@ -1318,7 +1321,7 @@ s32 dScMgSlot1_c::Render()
                     i++;
                 } while (i < *(t + 0x470b));
             }
-            Mg_RenderSubSpritePalMtx(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x30, -1, 2, 0);
+            Mg_RenderSubSpritePalMtx(sSlotLangSprites[GetGameLanguage()][1], 0x50, 0x30, -1, 2, 0);
             Mg_DrawBigNumber(0x60, 0x30, *(t + 0x470b) * 2, 0, 2, 2, 0x14);
         }
         if (*(t + 0x470a) != 0) {
@@ -1328,7 +1331,7 @@ s32 dScMgSlot1_c::Render()
                 Mg_RenderSubSpriteScaled(data_ov006_0213e96c[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000, 0);
                 pos += 0x10;
             }
-            Mg_RenderSubSpritePalMtx(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
+            Mg_RenderSubSpritePalMtx(sSlotLangSprites[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
             Mg_DrawBigNumber(0x60, 0x40, data_ov006_0213e4d8[*(t + 0x4709)], 0, 2, 2, 0x14);
         }
     }
@@ -1415,8 +1418,8 @@ s32 dScMgSlot1_c::Behavior()
             if (hit != 0) {
                 for (i = 0; i < 3; i++) {
                     if (mReelSpinning[i] == 1) {
-                        int dx = ((TouchRec *)gTouchHeld)[idx].x - data_ov006_0213e63c[i][0];
-                        int dy = ((TouchRec *)gTouchHeld)[idx].y - data_ov006_0213e63c[i][1];
+                        int dx = ((TouchRec *)gTouchHeld)[idx].x - sSlot1ReelPos[i][0];
+                        int dy = ((TouchRec *)gTouchHeld)[idx].y - sSlot1ReelPos[i][1];
                         if (dx <= 0x20 && dx >= -0x20 && dy <= 0x20 && dy >= -0x20) {
                             mReelSpinning[i] = 0;
                             mReelsStopped++;
@@ -1424,7 +1427,7 @@ s32 dScMgSlot1_c::Behavior()
                                 mBetIcon.unk_011 = 0;
                                 Mg_SaveRecordPair(mCredits, mHudScore);
                             }
-                            func_02012718(0x162, data_ov006_0213e63c[i][0] << 12);
+                            func_02012718(0x162, sSlot1ReelPos[i][0] << 12);
                             break;
                         }
                     }
@@ -1520,7 +1523,7 @@ s32 dScMgSlot1_c::Behavior()
             mReelScroll[idx] = 0;
             mTimer = 0xa;
             mStep++;
-            func_02012718(0x164, data_ov006_0213e63c[idx][0] << 12);
+            func_02012718(0x164, sSlot1ReelPos[idx][0] << 12);
             if (idx == 0) {
                 Mg_PlayJingle((void *) 2);
             }
@@ -1533,7 +1536,7 @@ s32 dScMgSlot1_c::Behavior()
             mReelScroll[2] = 0;
             mTimer = 0x3c;
             mStep = 8;
-            func_02012718(0x164, data_ov006_0213e63c[2][0] << 12);
+            func_02012718(0x164, sSlot1ReelPos[2][0] << 12);
         }
         break;
     case 8:
