@@ -11,9 +11,10 @@
  *   and 3 are pure virtual; the two leaves call these).
  * Leftover: dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled
  *   (Fix12<int> by value, wall 6az).
- * Leftover: mBobPhase is stepped as *(u16 *)((int)this + 0x328) and
- *   mPosY as *(int *)((int)this + 0x60) -- writing through the member
- *   changes what mwccarm CSEs.
+ * Leftover: mBobPhase is stepped through a u16 pun, *(u16 *)&mBobPhase --
+ *   the plain s16 member step differs by one word. (The old
+ *   `(int)this + off` launders on it and on mPosY measured byte-neutral as
+ *   member spellings.)
  * Leftover: (s64) mBobPhase / mBobAmplitude launders; a plain int mul
  *   size-DIFFs.
  * Leftover: sine table data_02082214 (arm9).
@@ -98,7 +99,7 @@ s32 daObjUkiyuka_c::Render()
 
 /* ROM ordinal 4 -- vtable slot 6, ov002 0x020b6494.
  * mBobPhase is declared s16 but stepped as u16; mRestTimer is passed to
- * DecIfAbove0_Short by address. The two (int)this + off launders stay. */
+ * DecIfAbove0_Short by address. */
 // @symbol _ZN14daObjUkiyuka_c8BehaviorEv
 s32 daObjUkiyuka_c::Behavior()
 {
@@ -108,11 +109,10 @@ s32 daObjUkiyuka_c::Behavior()
         _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(c, 0, 0);
         return 1;
     }
-    *(u16 *)((int)c + 0x328) += 0x100;
+    *(u16 *)&mBobPhase += 0x100;
     {
         u16 h = (u16)((s64)mBobPhase);
-        *(int *)((int)c + 0x60) -=
-            (int)((((s64)mBobAmplitude * data_02082214[(h >> 4) * 2]) + 0x800) >> 0xc);
+        mPosY -= (int)((((s64)mBobAmplitude * data_02082214[(h >> 4) * 2]) + 0x800) >> 0xc);
     }
     {
         int d = mPosY - mRestY;

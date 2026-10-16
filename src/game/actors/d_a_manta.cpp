@@ -206,11 +206,11 @@ int daManta_c::func_ov090_021327e4()
                     mRingRead = 0;
                 /* Named mRingIDs[mRingRead] == uniqueID is cmp r1, r0 either
                  * operand order. The cartridge is cmp r0, r1. 0x3ac is mRingIDs;
-                 * +4 is uniqueID. */
+                 * spelling the slot as &mRingIDs[i] differs by four words. */
                 int slotAddr = mRingRead;
                 int ringId = (int)mHitRing;
                 slotAddr = (int)((char *)this + (slotAddr << 2));
-                ringId = *(int *)(ringId + 4);
+                ringId = ((dActor_c *)ringId)->uniqueID;
                 slotAddr = *(int *)(slotAddr + 0x3ac);
                 if (slotAddr == ringId) {
                     mRingCount += 1;
