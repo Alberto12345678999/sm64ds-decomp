@@ -5,7 +5,7 @@
 
 /* dMgTrmpln2Mario_c, the Mario of Trampoline2 (ROM RTTI _ZTI17dMgTrmpln2Mario_c;
  * constructor 0x020ca78c, D1 0x020ca604; 0xdc bytes, the stride of the array at
- * data_ov006_02140554).
+ * sTrmp2Marios).
  *
  * A layout view only: src/minigames/d_mg_trmpln2_mario.cpp is still free
  * functions over a char* record (see that file's leftovers note), and reads this

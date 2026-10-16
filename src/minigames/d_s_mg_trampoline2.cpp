@@ -184,7 +184,7 @@ extern struct P2 pmf_dScMgTrampoline2_c_StateResults;
 extern int data_ov006_02140818;
 extern int data_ov006_0213b0f0;
 extern int data_ov006_02140830;
-extern int data_ov006_021405bc;
+extern int sTrmp2MarioCount;
 extern int data_ov006_02140828;
 extern int data_ov006_0213fc10[];
 extern SpawnDef data_ov006_0212f2b0[];
@@ -472,7 +472,7 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
 
     Trmp2Mario_SetTuning(0x1000);
     Trmp2Mario_ResetAll(mLevel);
-    data_ov006_021405bc = 1;
+    sTrmp2MarioCount = 1;
     TrmpLine_ClearAll(mLevel);
     TrmpItem_HideAll(mLevel);
     Jump2Popup_ClearAll();
@@ -598,7 +598,7 @@ void dScMgTrampoline2_c::StatePlay()
         BeginResults();
         return;
     }
-    if (data_ov006_02140830 >= mScoreGate && data_ov006_021405bc < 5) {
+    if (data_ov006_02140830 >= mScoreGate && sTrmp2MarioCount < 5) {
         unsigned int v;
         Trmp2Mario_MoveToStart();
         {

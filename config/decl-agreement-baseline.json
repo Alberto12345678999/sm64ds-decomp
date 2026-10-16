@@ -15925,12 +15925,12 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140544": {
+    "sTrmp3DGravityStep": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
-    "data_ov006_02140548": {
+    "sTrmp3DFallSpeed": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ],
@@ -15943,13 +15943,13 @@
         "return:int"
       ]
     },
-    "data_ov006_02140550": {
+    "sTrmp3DMarios": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char * []",
         "return:unsigned char *"
       ]
     },
-    "data_ov006_02140554": {
+    "sTrmp2Marios": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:Ent *",
         "return:int"
@@ -15996,12 +15996,12 @@
         "return:int"
       ]
     },
-    "data_ov006_02140594": {
+    "sTrmp3DMarioCount": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
-    "data_ov006_0214059c": {
+    "sTrmpAnimBounce": {
       "include/decl_common.h": [
         "return:void *"
       ],
@@ -16015,12 +16015,12 @@
         "return:int"
       ]
     },
-    "data_ov006_021405a8": {
+    "sTrmp2RiseSpeedMax": {
       "include/decl_common.h": [
         "return:int []"
       ]
     },
-    "data_ov006_021405b4": {
+    "sTrmp2FallSpeed": {
       "include/decl_common.h": [
         "return:int []"
       ],

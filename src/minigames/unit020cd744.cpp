@@ -524,8 +524,8 @@ extern "C" void TrmpItem_ReflectOffLine(char *a, Obj *o)
     }
 
     {
-        int mx = data_ov006_021405a8[0];
-        int mn = data_ov006_021405b4[0];
+        int mx = sTrmp2RiseSpeedMax[0];
+        int mn = sTrmp2FallSpeed[0];
         int y = p2->y;
         if (y >= mn) {
             if (y <= mx)

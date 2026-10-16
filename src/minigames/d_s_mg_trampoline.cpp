@@ -186,7 +186,7 @@ extern int _Z14ApproachLinearRiii(int*,int,int);
 extern int Trmp3DMario_CountFinished(void);
 extern void Mg_SetSharedState(int);
 extern void Trmp3DMario_StartAll(void *c);
-extern int data_ov006_02140588;
+extern int sTrmpComboCount;
 extern int data_ov006_0213b0ec;
 extern int data_ov006_0214058c;
 extern int data_ov006_02142f60;
@@ -297,7 +297,7 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov006_021218fc, NOT applied: extern int _Z14ApproachLinearRiii(int *v, int step, int rate); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z15ApproachLinear2Rsss, from the legacy file for func_ov006_021218fc, NOT applied: extern int _Z15ApproachLinear2Rsss(short *v, short step, short rate); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound12PlayBank2_2DEj, from the legacy file for func_ov006_021218fc, NOT applied: extern void _ZN5Sound12PlayBank2_2DEj(unsigned int bank); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02140588, from the legacy file for func_ov006_02121bc8, NOT applied: extern "C" int data_ov006_02140588; */
+/* TUBUILD CONFLICT -- alternate declaration of sTrmpComboCount, from the legacy file for func_ov006_02121bc8, NOT applied: extern "C" int sTrmpComboCount; */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_02120a18, from the legacy file for func_ov006_02121cf4, NOT applied: extern void func_ov006_02120a18(char* p, int v); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound12PlayBank2_2DEj, from the legacy file for func_ov006_02121cf4, NOT applied: extern void _ZN5Sound12PlayBank2_2DEj(unsigned int n); */
 /* TUBUILD CONFLICT -- alternate declaration of TrmpLine_UpdateAll, from the legacy file for func_ov006_02121d64, NOT applied: void TrmpLine_UpdateAll(void); */
@@ -598,7 +598,7 @@ int ApproachLinear(int&, int, int);
 
 void dScMgTrampoline_c::UpdateScroll()
 {
-    int q = data_ov006_02140588 / 10;
+    int q = sTrmpComboCount / 10;
     int old = mLevel;
     Trmp3DMario_SetSpawnHeight(mScrollY);
     Trmp3DMario_SetTuning((q << 8) + 0x1000);
@@ -630,11 +630,11 @@ void dScMgTrampoline_c::UpdateScroll()
 // @symbol _ZN17dScMgTrampoline_c9StatePlayEv
 void dScMgTrampoline_c::StatePlay()
 {
-    int old = data_ov006_02140588;
+    int old = sTrmpComboCount;
     TrmpLine_UpdateAll();
     Trmp3DMario_UpdateAll();
-    if (data_ov006_02140588 > old) {
-        if (data_ov006_02140588 == 3)
+    if (sTrmpComboCount > old) {
+        if (sTrmpComboCount == 3)
             mPromptEnabled = 0;
     }
     UpdateScroll();
@@ -644,7 +644,7 @@ void dScMgTrampoline_c::StatePlay()
         BeginResults();
     } else {
         if (_Z14ApproachLinearRiii(&mTimer, 0, 1)) {
-            if (data_ov006_02140588 >= 5 || data_ov006_0214058c < 3) {
+            if (sTrmpComboCount >= 5 || data_ov006_0214058c < 3) {
                 int i;
                 char *p = (char *)mArray1;
                 for (i = 0; i < 4; i++) {
@@ -657,7 +657,7 @@ void dScMgTrampoline_c::StatePlay()
             }
             mTimer = 0x168;
             {
-                int amt = data_ov006_02140588 * 2;
+                int amt = sTrmpComboCount * 2;
                 if (amt > 0xb4) amt = 0xb4;
                 mTimer -= amt;
             }
@@ -819,13 +819,13 @@ void dScMgTrampoline_c::UpdateTouchInput()
  * words, so it is cast to dScMgTrampoline_c::State here to dispatch. */
 s32 dScMgTrampoline_c::Behavior()
 {
-    int saved = data_ov006_02140588;
+    int saved = sTrmpComboCount;
     TrmpFx_UpdateAll();
     (this->*(*(State *)mState))();
     UpdateTouchInput();
     mDoorMark.Update();
-    if (saved != data_ov006_02140588)
-        Mg_SubmitScore(data_ov006_02140588);
+    if (saved != sTrmpComboCount)
+        Mg_SubmitScore(sTrmpComboCount);
     return 1;
 }
 
@@ -859,7 +859,7 @@ s32 dScMgTrampoline_c::Render()
         }
     }
 
-    Mg_DrawTopRightCounter(data_ov006_02140588, 4);
+    Mg_DrawTopRightCounter(sTrmpComboCount, 4);
 
     aa = mDoorSide;
     r6 = 1;
