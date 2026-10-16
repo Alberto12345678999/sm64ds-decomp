@@ -117,14 +117,14 @@ extern void **sSlotLangSprites[];
 extern SlotState sSlot3StateTable[];
 /* The ROM PMF constants the Slot3 state table copies from (unlicensed
  * .data), in retail copy order. */
-extern SlotState pmf_Slot3_State0;
-extern SlotState pmf_Slot3_State1;
-extern SlotState pmf_Slot3_State2;
-extern SlotState pmf_Slot3_State3and4;
-extern SlotState pmf_Slot3_State3and4_2;
-extern SlotState pmf_Slot3_State5;
-extern SlotState pmf_Slot3_State6;
-extern SlotState pmf_Slot3_State7;
+extern SlotState pmf_Slot3_StateIntro;
+extern SlotState pmf_Slot3_StateSpin;
+extern SlotState pmf_Slot3_StateJudge;
+extern SlotState pmf_Slot3_StatePayout;
+extern SlotState pmf_Slot3_StatePayout_2;
+extern SlotState pmf_Slot3_StateWait;
+extern SlotState pmf_Slot3_StateGameOver;
+extern SlotState pmf_Slot3_StateDone;
 extern int LoadFile(int handle);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -284,17 +284,15 @@ void Slot3_ReelDigits(char *c, int idx){
 }
 }
 
-// @symbol Slot3_State7
+// @symbol Slot3_StateDone
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void Slot3_State7(void)
-{
-}
+void Slot3_StateDone(void) {}
 }
 
-// @symbol Slot3_State6
+// @symbol Slot3_StateGameOver
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 
-void Slot3_State6(char* c){
+void Slot3_StateGameOver(char *c) {
     dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         self->mState = 7;
@@ -314,16 +312,13 @@ void Slot3_State6(char* c){
 }
 }
 
-// @symbol Slot3_State5
+// @symbol Slot3_StateWait
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void Slot3_State5(void)
-{
-}
+void Slot3_StateWait(void) {}
 }
 
-// @symbol Slot3_State3and4
-extern "C" void Slot3_State3and4(char* c)
-{
+// @symbol Slot3_StatePayout
+extern "C" void Slot3_StatePayout(char *c) {
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         if (*(int*)(c + 0x5000) == 3) {
             if (*(int*)(c + 0xb4) < 0x270f)
@@ -366,10 +361,9 @@ extern "C" void Slot3_State3and4(char* c)
     Sound::PlayBank2_2D(0x14a);
 }
 
-// @symbol Slot3_State2
+// @symbol Slot3_StateJudge
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void Slot3_State2(char *c)
-{
+void Slot3_StateJudge(char *c) {
     unsigned char buf[3];
     int i;
     int total;
@@ -435,129 +429,101 @@ void Slot3_State2(char *c)
 // the members outside them DIFF with them applied file-wide.
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
-// @symbol Slot3_State1
+// @symbol Slot3_StateSpin
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void Slot3_State1(char *c)
-{
-  u8 idx;
-  int ok;
-  int off;
-  int i;
-  int new_var;
-  int *tab;
-  idx = gActivePlayerSlot;
-  ok = 0;
-  off = idx * 4;
-  new_var = 1;
-  if (gTouchHeld[idx * 4])
-  {
-    if (gTouchEdge[off])
-    {
-      ok = 1;
-    }
-  }
-  if (ok != 0)
-  {
-    unsigned int v = gTouchY[idx * 4];
-    if ((v >= 0x40) && (v < 0x58))
-    {
-      if ((*((u8 *) (c + 0x502b))) == new_var)
-      {
-        *((u8 *) (c + 0x502b)) = 0;
-      }
-    }
-    else
-      if ((v >= 0x58) && (v < 0x70))
-    {
-      if ((*((u8 *) (c + 0x502c))) == 1)
-      {
-        *((u8 *) (c + 0x502c)) = 0;
-      }
-    }
-    else
-      if ((v >= 0x70) && (v < 0x88))
-    {
-      if ((*((u8 *) (c + 0x502d))) == new_var)
-      {
-        *((u8 *) (c + 0x502d)) = 0;
-      }
-    }
-  }
-  i = 0;
-  for (; i < 3; i++)
-  {
-    if ((*((u8 *) ((int) (((long long) ((int) ((c + i) + 0x502e))))))) == 0)
-    {
-      int *p = (int *) (c + (i * 4));
-      int val;
-      int q;
-      int q2;
-      u8 *dir;
-      tab = data_ov006_0213e948;
-      p = (int *) ((int) (((long long) ((int) (((int) p) + 0x4fe4)))));
-      val = *p;
-      ;
-      q = (val >> 12) / 0x50;
-      if ((*((u8 *) ((int) (((long long) ((int) ((c + i) + 0x5040))))))) == 1)
-      {
-        *p = val - tab[((*((u8 *) (c + 0x503d))) * 3) + i];
-        if ((*p) < 0)
-        {
-          *p += *((int *) (c + 0x4ff0));
+void Slot3_StateSpin(char *c) {
+    u8 idx;
+    int ok;
+    int off;
+    int i;
+    int new_var;
+    int *tab;
+    idx = gActivePlayerSlot;
+    ok = 0;
+    off = idx * 4;
+    new_var = 1;
+    if (gTouchHeld[idx * 4]) {
+        if (gTouchEdge[off]) {
+            ok = 1;
         }
-      }
-      else
-      {
-        *p = val + tab[((*((u8 *) (c + 0x503d))) * 3) + i];
-        if ((*p) >= (*((int *) (c + 0x4ff0))))
-        {
-          *p -= *((int *) (c + 0x4ff0));
-        }
-      }
-      if ((*((u8 *) ((c + i) + 0x502b))) == 0)
-      {
-        q2 = ((*p) >> 12) / 0x50;
-        if (q2 != q)
-        {
-          if ((*((u8 *) ((int) (((long long) ((int) ((c + i) + 0x5040))))))) == new_var)
-          {
-            *p = (q * 0x50) << 12;
-          }
-          else
-          {
-            *p = (q2 * 0x50) << 12;
-          }
-          Slot3_ReelDigits(c, i);
-          *((u8 *) ((int) (((long long) ((int) ((c + i) + 0x502e)))))) = 1;
-          *((u8 *) ((int) (((long long) ((int) (c + 0x503d)))))) += new_var;
-          *((u8 *) (c + 0x503f)) = 0;
-          _ZN5Sound12PlayBank2_2DEj(0x1a9);
-        }
-      }
     }
-  }
+    if (ok != 0) {
+        unsigned int v = gTouchY[idx * 4];
+        if ((v >= 0x40) && (v < 0x58)) {
+            if ((*((u8 *)(c + 0x502b))) == new_var) {
+                *((u8 *)(c + 0x502b)) = 0;
+            }
+        } else if ((v >= 0x58) && (v < 0x70)) {
+            if ((*((u8 *)(c + 0x502c))) == 1) {
+                *((u8 *)(c + 0x502c)) = 0;
+            }
+        } else if ((v >= 0x70) && (v < 0x88)) {
+            if ((*((u8 *)(c + 0x502d))) == new_var) {
+                *((u8 *)(c + 0x502d)) = 0;
+            }
+        }
+    }
+    i = 0;
+    for (; i < 3; i++) {
+        if ((*((u8 *)((int)(((long long)((int)((c + i) + 0x502e))))))) == 0) {
+            int *p = (int *)(c + (i * 4));
+            int val;
+            int q;
+            int q2;
+            u8 *dir;
+            tab = data_ov006_0213e948;
+            p = (int *)((int)(((long long)((int)(((int)p) + 0x4fe4)))));
+            val = *p;
+            ;
+            q = (val >> 12) / 0x50;
+            if ((*((u8 *)((int)(((long long)((int)((c + i) + 0x5040))))))) == 1) {
+                *p = val - tab[((*((u8 *)(c + 0x503d))) * 3) + i];
+                if ((*p) < 0) {
+                    *p += *((int *)(c + 0x4ff0));
+                }
+            } else {
+                *p = val + tab[((*((u8 *)(c + 0x503d))) * 3) + i];
+                if ((*p) >= (*((int *)(c + 0x4ff0)))) {
+                    *p -= *((int *)(c + 0x4ff0));
+                }
+            }
+            if ((*((u8 *)((c + i) + 0x502b))) == 0) {
+                q2 = ((*p) >> 12) / 0x50;
+                if (q2 != q) {
+                    if ((*((u8 *)((int)(((long long)((int)((c + i) + 0x5040))))))) == new_var) {
+                        *p = (q * 0x50) << 12;
+                    } else {
+                        *p = (q2 * 0x50) << 12;
+                    }
+                    Slot3_ReelDigits(c, i);
+                    *((u8 *)((int)(((long long)((int)((c + i) + 0x502e)))))) = 1;
+                    *((u8 *)((int)(((long long)((int)(c + 0x503d)))))) += new_var;
+                    *((u8 *)(c + 0x503f)) = 0;
+                    _ZN5Sound12PlayBank2_2DEj(0x1a9);
+                }
+            }
+        }
+    }
 
-  *((int *) (c + 0x5008)) = Sound_PlayIfNotActive(*((int *) (c + 0x5008)), 2, 0x1a8, 0);
-  if ((*((u8 *) (c + 0x503d))) >= 3u)
-  {
-    *((u8 *) (c + 0x503e)) = 0x1e;
-    *((int *) (c + 0x5000)) = 2;
-  }
+    *((int *)(c + 0x5008)) = Sound_PlayIfNotActive(*((int *)(c + 0x5008)), 2, 0x1a8, 0);
+    if ((*((u8 *)(c + 0x503d))) >= 3u) {
+        *((u8 *)(c + 0x503e)) = 0x1e;
+        *((int *)(c + 0x5000)) = 2;
+    }
 }
 }
 
 #pragma opt_loop_invariants on
 #pragma opt_strength_reduction on
 
-// @symbol Slot3_State0
+// @symbol Slot3_StateIntro
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Mascot_LookAt(char *c, int *src);
 void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 void Mascot_StopLooking(int *p);
 void FreeGfxSlotsById(int arg);
 
-void Slot3_State0(char *p)
-{
+void Slot3_StateIntro(char *p) {
     if (*(int *)(p + 0x500c) == 0x50) {
         Mascot_LookAt(p + 0x4f38, 0);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
@@ -1710,6 +1676,6 @@ void *dScMgSlot1_c_classInit(void)
  * The Slot3 state table plain-copied from the ROM PMF constants, in
  * retail copy order. */
 SlotState sSlot3StateTable[8] = {
-    pmf_Slot3_State0,       pmf_Slot3_State1, pmf_Slot3_State2, pmf_Slot3_State3and4,
-    pmf_Slot3_State3and4_2, pmf_Slot3_State5, pmf_Slot3_State6, pmf_Slot3_State7,
+    pmf_Slot3_StateIntro,    pmf_Slot3_StateSpin, pmf_Slot3_StateJudge,    pmf_Slot3_StatePayout,
+    pmf_Slot3_StatePayout_2, pmf_Slot3_StateWait, pmf_Slot3_StateGameOver, pmf_Slot3_StateDone,
 };

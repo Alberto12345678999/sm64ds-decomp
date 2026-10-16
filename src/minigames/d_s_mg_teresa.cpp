@@ -38,14 +38,14 @@
 // leftovers:
 // - The 16 small Boos at 0x4660 are typed (dScMgTeresa_c::SmallBoo mBoos[16]).
 //   Their handlers use mBoos[i] where that measured identical; StepBoo,
-//   CountRubbedTiles, Boo_State7 and ResetRound's first loop keep their tuned
+//   CountRubbedTiles, Boo_StateFadeAway and ResetRound's first loop keep their tuned
 //   offset forms (the typed forms change code).
 // - mExclaims (0x48a0), mVanishPuffs (0x4960) and mFoundNumbers (0x4a60) are
 //   typed; their Spawn/UpdateAll/DrawAll handlers read them by field.
 //   ResetRound still clears them by offset.
 // - mReveal[1] (0x4ba0) and mMarker (0x4bc0) are typed. The old 0x4bac
 //   "element pair" view started 0xc bytes into the reveal record, which is
-//   why its second element seemed to overlap the big Boo. Reveal_State1/4
+//   why its second element seemed to overlap the big Boo. Reveal_StateSlideIn/4
 //   keep their offset forms (typed forms change code). The big Boo at
 //   0x4bcc is typed through the local `struct Boo` below; the bytes at
 //   0x4c1b and 0x4c1f are still reached by offset.
@@ -91,13 +91,12 @@ typedef char Boo_size_must_be_0x1c[sizeof(struct Boo) == 0x1c ? 1 : -1];
 /* Each access is a fresh cast. A saved Boo* makes mwcc address every field
  * from 0x4bcc, and that is not the code in the ROM. */
 #define BOO(p) ((struct Boo *)((p) + 0x4bcc))
-/* BigBoo_State4's wait and BigBoo_State0's y/yVel are a raw
+/* BigBoo_StateOffscreen's wait and BigBoo_StateDropIn's y/yVel are a raw
  * base plus the field. Taking `&BOO(p)->member` shares one base and does
  * not match. */
 #define BOO_FIELD(p, member) ((p) + (0x4bcc + (int)&((struct Boo *)0)->member))
 
-
-/* Scene_State4's view of the ov004 score block at gMgScene
+/* Scene_StateResult's view of the ov004 score block at gMgScene
    (dScMgBase_c.h declares it void *): the current score at +0xb4 and the best
    at +0xb8. */
 struct ScoreView { unsigned char pad[0xb4]; int b4; int b8; };
@@ -137,7 +136,7 @@ extern int   Mg_IsNewRecord(void);
 extern int   func_020126e8(int a);
 extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void  MultiStore16(u16 val, void *dst, int nbytes);
-/* Boo_State7 and 0211f224 pass `0x10 - alpha` as computed: the
+/* Boo_StateFadeAway and 0211f224 pass `0x10 - alpha` as computed: the
    cartridge does not narrow it to 16 bits at either call, which G2x.h's
    unsigned short parameters would. So those two call the mangled name. */
 extern void  _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *reg, int a, int b,
@@ -187,33 +186,33 @@ extern Pmf sTeresaBooStateTable[];        /* per-Boo states, one call per live r
 extern PmfEntry sTeresaSceneStateTable[]; /* scene states, by mSceneState */
 /* The ROM PMF constants the four state tables copy from (unlicensed .data),
  * grouped by destination table in retail copy order. */
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State0;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State1;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State2;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State3;
-extern Pmf0 pmf_dScMgTeresa_c_Scene_State4;
-extern Pmf pmf_dScMgTeresa_c_Boo_State0;
-extern Pmf pmf_dScMgTeresa_c_Boo_State1;
-extern Pmf pmf_dScMgTeresa_c_Boo_State2;
-extern Pmf pmf_dScMgTeresa_c_Boo_State3;
-extern Pmf pmf_dScMgTeresa_c_Boo_State4;
-extern Pmf pmf_dScMgTeresa_c_Boo_State5;
-extern Pmf pmf_dScMgTeresa_c_Boo_State6;
-extern Pmf pmf_dScMgTeresa_c_Boo_State7;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State0;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State1;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State2;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State3;
-extern Pmf pmf_dScMgTeresa_c_Reveal_State4;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State0;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State1;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State2;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State3;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State4;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State5;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State6;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State7;
-extern Pmf pmf_dScMgTeresa_c_BigBoo_State8;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateInit;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateReveal;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StatePlay;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateRoundEnd;
+extern Pmf0 pmf_dScMgTeresa_c_Scene_StateResult;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateAppear;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFly;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFadeOut;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateHidden;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateHiddenTimed;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFound;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFadeIn;
+extern Pmf pmf_dScMgTeresa_c_Boo_StateFadeAway;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateStart;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateSlideIn;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateAnimate;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateDipAndRise;
+extern Pmf pmf_dScMgTeresa_c_Reveal_StateFinish;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateDropIn;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateHover;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateFlyLeft;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateFlyRight;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateOffscreen;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateExit;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateRemove;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateGone;
+extern Pmf pmf_dScMgTeresa_c_BigBoo_StateResult;
 
 }  /* extern "C" */
 
@@ -289,9 +288,8 @@ void dScMgTeresa_c::BigBoo_Draw()
 
 
 #define FLAG  (*(u8*)((char*)raw + 0x4c1f))
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State8Ei
-void dScMgTeresa_c::BigBoo_State8(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c18BigBoo_StateResultEi
+void dScMgTeresa_c::BigBoo_StateResult(int idx) {
     void *raw = this;
     struct BooWalk *w = (struct BooWalk *)raw;
 
@@ -321,16 +319,11 @@ void dScMgTeresa_c::BigBoo_State8(int idx)
 }
 #undef FLAG
 
+// @symbol _ZN13dScMgTeresa_c16BigBoo_StateGoneEv
+void dScMgTeresa_c::BigBoo_StateGone() {}
 
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State7Ev
-void dScMgTeresa_c::BigBoo_State7()
-{
-}
-
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State6Ei
-void dScMgTeresa_c::BigBoo_State6(int index)
-{
+// @symbol _ZN13dScMgTeresa_c18BigBoo_StateRemoveEi
+void dScMgTeresa_c::BigBoo_StateRemove(int index) {
     struct BooWalk *base = (struct BooWalk *)this;
     void *data;
     base->boo[index].xVel = 0;
@@ -342,10 +335,8 @@ void dScMgTeresa_c::BigBoo_State6(int index)
     Deallocate(data);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State5Ei
-void dScMgTeresa_c::BigBoo_State5(int i)
-{
+// @symbol _ZN13dScMgTeresa_c16BigBoo_StateExitEi
+void dScMgTeresa_c::BigBoo_StateExit(int i) {
     char *c = (char *)this;
     struct BooWalk *w = (struct BooWalk *)c;
     unsigned short *p16 = &w->boo[i].frameTimer;
@@ -380,10 +371,8 @@ void dScMgTeresa_c::BigBoo_State5(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State4Ei
-void dScMgTeresa_c::BigBoo_State4(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c21BigBoo_StateOffscreenEi
+void dScMgTeresa_c::BigBoo_StateOffscreen(int idx) {
     char *raw = (char *)this;
   struct BooWalk *w = (struct BooWalk *)raw;
   int off = idx * 0x1c;
@@ -413,10 +402,8 @@ void dScMgTeresa_c::BigBoo_State4(int idx)
   w->boo[idx].state = 2;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State3Ei
-void dScMgTeresa_c::BigBoo_State3(int i)
-{
+// @symbol _ZN13dScMgTeresa_c20BigBoo_StateFlyRightEi
+void dScMgTeresa_c::BigBoo_StateFlyRight(int i) {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
     int v;
@@ -447,10 +434,8 @@ void dScMgTeresa_c::BigBoo_State3(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State2Ei
-void dScMgTeresa_c::BigBoo_State2(int i)
-{
+// @symbol _ZN13dScMgTeresa_c19BigBoo_StateFlyLeftEi
+void dScMgTeresa_c::BigBoo_StateFlyLeft(int i) {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
     int t;
@@ -488,10 +473,8 @@ void dScMgTeresa_c::BigBoo_State2(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State1Ei
-void dScMgTeresa_c::BigBoo_State1(int i)
-{
+// @symbol _ZN13dScMgTeresa_c17BigBoo_StateHoverEi
+void dScMgTeresa_c::BigBoo_StateHover(int i) {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
     unsigned char state = w->boo[i].frame;
@@ -536,10 +519,8 @@ void dScMgTeresa_c::BigBoo_State1(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13BigBoo_State0Ei
-void dScMgTeresa_c::BigBoo_State0(int i)
-{
+// @symbol _ZN13dScMgTeresa_c18BigBoo_StateDropInEi
+void dScMgTeresa_c::BigBoo_StateDropIn(int i) {
     char *raw = (char *)this;
     int off = i * 0x1c;
     struct BooWalk *w = (struct BooWalk *)raw;
@@ -556,7 +537,6 @@ void dScMgTeresa_c::BigBoo_State0(int i)
     w->boo[i].wait = 0x30;
     Mg_ShowBanner(0xc, 0x80, 0x40, 1, -1, 0xd);
 }
-
 
 // @symbol _ZN13dScMgTeresa_c13BigBoo_UpdateEv
 void dScMgTeresa_c::BigBoo_Update()
@@ -631,7 +611,7 @@ void dScMgTeresa_c::Marker_Draw()
 
 
 // @symbol _ZN13dScMgTeresa_c13Marker_UpdateEv
-/* Empty. Scene_State1 calls it with the object. */
+/* Empty. Scene_StateReveal calls it with the object. */
 void dScMgTeresa_c::Marker_Update()
 {
 }
@@ -670,10 +650,8 @@ void dScMgTeresa_c::Reveal_Draw()
         mReveal[0].angle, -1);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c13Reveal_State4Ei
-void dScMgTeresa_c::Reveal_State4(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c18Reveal_StateFinishEi
+void dScMgTeresa_c::Reveal_StateFinish(int idx) {
     char *raw = (char *)this;
     char *base = raw + (idx << 5);
     if (*(unsigned short*)(base + 0x4bb4) != 0) {
@@ -693,13 +671,11 @@ void dScMgTeresa_c::Reveal_State4(int idx)
     Sound::PlayBank2_2D(0x1f5);
 }
 
-
 #pragma push
 #pragma opt_common_subs off
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
-// @symbol _ZN13dScMgTeresa_c13Reveal_State3Ei
-void dScMgTeresa_c::Reveal_State3(int i)
-{
+// @symbol _ZN13dScMgTeresa_c22Reveal_StateDipAndRiseEi
+void dScMgTeresa_c::Reveal_StateDipAndRise(int i) {
     u8 flag;
 
     flag = mReveal[i].phase;
@@ -733,10 +709,8 @@ void dScMgTeresa_c::Reveal_State3(int i)
 #undef AT
 #pragma pop
 
-
-// @symbol _ZN13dScMgTeresa_c13Reveal_State2Ei
-void dScMgTeresa_c::Reveal_State2(int i)
-{
+// @symbol _ZN13dScMgTeresa_c19Reveal_StateAnimateEi
+void dScMgTeresa_c::Reveal_StateAnimate(int i) {
     mReveal[i].frameTimer++;
     if (mReveal[i].frameTimer < 8) return;
     mReveal[i].frameTimer = 0;
@@ -753,7 +727,6 @@ void dScMgTeresa_c::Reveal_State2(int i)
     }
 }
 
-
 #pragma push
 #pragma opt_common_subs off
 #define A16(off) (*(unsigned short *)(raw + (off) + i * 32))
@@ -762,9 +735,8 @@ void dScMgTeresa_c::Reveal_State2(int i)
 #define B16(off) (*(unsigned short *)(raw + i * 32 + (off)))
 #define B8(off)  (*(unsigned char  *)(raw + i * 32 + (off)))
 #define B32(off) (*(int            *)(raw + i * 32 + (off)))
-// @symbol _ZN13dScMgTeresa_c13Reveal_State1Ei
-void dScMgTeresa_c::Reveal_State1(int i)
-{
+// @symbol _ZN13dScMgTeresa_c19Reveal_StateSlideInEi
+void dScMgTeresa_c::Reveal_StateSlideIn(int i) {
     char *raw = (char *)this;
     A16(0x4bb2) += 1;
     if (B16(0x4bb2) >= 8) {
@@ -800,15 +772,12 @@ void dScMgTeresa_c::Reveal_State1(int i)
 #undef B32
 #pragma pop
 
-
-// @symbol _ZN13dScMgTeresa_c13Reveal_State0Ei
-void dScMgTeresa_c::Reveal_State0(int i)
-{
+// @symbol _ZN13dScMgTeresa_c17Reveal_StateStartEi
+void dScMgTeresa_c::Reveal_StateStart(int i) {
     mReveal[i].state = 1;
     mReveal[i].timer = 0x40;
     mReveal[i].vx = -0xb00;
 }
-
 
 // @symbol _ZN13dScMgTeresa_c13Reveal_UpdateEv
 void dScMgTeresa_c::Reveal_Update()
@@ -1341,10 +1310,8 @@ void dScMgTeresa_c::MoveBoo(int i)
     BounceBooOffWalls(i);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State7Ei
-void dScMgTeresa_c::Boo_State7(int i)
-{
+// @symbol _ZN13dScMgTeresa_c17Boo_StateFadeAwayEi
+void dScMgTeresa_c::Boo_StateFadeAway(int i) {
     char *c = (char *)this;
     u8 *s;
     int o = i * 0x24;
@@ -1410,10 +1377,8 @@ void dScMgTeresa_c::Boo_State7(int i)
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State6Ei
-void dScMgTeresa_c::Boo_State6(int i)
-{
+// @symbol _ZN13dScMgTeresa_c15Boo_StateFadeInEi
+void dScMgTeresa_c::Boo_StateFadeIn(int i) {
 
     if (mBoos[i].mDelay != 0) {
         mBoos[i].mDelay--;
@@ -1464,10 +1429,8 @@ void dScMgTeresa_c::Boo_State6(int i)
     mBoos[i].mState = 7;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State5Ei
-void dScMgTeresa_c::Boo_State5(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c14Boo_StateFoundEi
+void dScMgTeresa_c::Boo_StateFound(int idx) {
     if (mSceneState != 4)
         return;
     if (mBoos[idx].mTimer != 0) {
@@ -1482,10 +1445,8 @@ void dScMgTeresa_c::Boo_State5(int idx)
     Sound::PlayBank2_2D(0x1c7);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State4Ei
-void dScMgTeresa_c::Boo_State4(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c20Boo_StateHiddenTimedEi
+void dScMgTeresa_c::Boo_StateHiddenTimed(int idx) {
     if (mBoos[idx].mTimer != 0) {
         mBoos[idx].mTimer--;
         if ((s16)mBoos[idx].mTimer <= 0) {
@@ -1503,10 +1464,8 @@ void dScMgTeresa_c::Boo_State4(int idx)
     TouchTestBoo(idx);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State3Ei
-void dScMgTeresa_c::Boo_State3(int i)
-{
+// @symbol _ZN13dScMgTeresa_c15Boo_StateHiddenEi
+void dScMgTeresa_c::Boo_StateHidden(int i) {
     MoveBoo(i);
     CountRubbedTiles(i);
     TouchTestBoo(i);
@@ -1516,10 +1475,8 @@ void dScMgTeresa_c::Boo_State3(int i)
         mBoos[i].mAnim = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State2Ei
-void dScMgTeresa_c::Boo_State2(int i)
-{
+// @symbol _ZN13dScMgTeresa_c16Boo_StateFadeOutEi
+void dScMgTeresa_c::Boo_StateFadeOut(int i) {
     StepBoo(i);
     BounceBooOffWalls(i);
     if (data_02082214[2 * (mBoos[i].mHeading >> 4) + 1] >= 0)
@@ -1540,7 +1497,6 @@ void dScMgTeresa_c::Boo_State2(int i)
     mBoos[i].mState = 3;
     mBoos[i].mPriority = 1;
 }
-
 
 // @symbol _ZN13dScMgTeresa_c17BounceBooOffWallsEi
 void dScMgTeresa_c::BounceBooOffWalls(int i)
@@ -1598,10 +1554,8 @@ void dScMgTeresa_c::StartBoosHiding()
     }
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State1Ei
-void dScMgTeresa_c::Boo_State1(int i)
-{
+// @symbol _ZN13dScMgTeresa_c12Boo_StateFlyEi
+void dScMgTeresa_c::Boo_StateFly(int i) {
     mBoos[i].mTimer = 0;
     StepBoo(i);
     BounceBooOffWalls(i);
@@ -1611,10 +1565,8 @@ void dScMgTeresa_c::Boo_State1(int i)
         mBoos[i].mAnim = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c10Boo_State0Ei
-void dScMgTeresa_c::Boo_State0(int idx)
-{
+// @symbol _ZN13dScMgTeresa_c15Boo_StateAppearEi
+void dScMgTeresa_c::Boo_StateAppear(int idx) {
     unsigned char t;
     mBoos[idx].mVisible = 1;
     mBoos[idx].mTimer = 0x60;
@@ -1629,7 +1581,6 @@ void dScMgTeresa_c::Boo_State0(int idx)
     else
         mBoos[idx].mSpeed += (t - 1) << 9;
 }
-
 
 // @symbol _ZN13dScMgTeresa_c10AnimateBooEi
 void dScMgTeresa_c::AnimateBoo(int i)
@@ -1903,10 +1854,8 @@ void dScMgTeresa_c::ResetRound()
 }
 #pragma pop
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State4Ev
-void dScMgTeresa_c::Scene_State4()
-{
+// @symbol _ZN13dScMgTeresa_c17Scene_StateResultEv
+void dScMgTeresa_c::Scene_StateResult() {
     char *c = (char *)this;
     BigBoo_Update();
     UpdateBoos();
@@ -1938,10 +1887,8 @@ void dScMgTeresa_c::Scene_State4()
     mPromptEnabled = 0;
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State3Ev
-void dScMgTeresa_c::Scene_State3()
-{
+// @symbol _ZN13dScMgTeresa_c19Scene_StateRoundEndEv
+void dScMgTeresa_c::Scene_StateRoundEnd() {
     char *c = (char *)this;
     BigBoo_Update();
     UpdateRubbing();
@@ -1988,10 +1935,8 @@ void dScMgTeresa_c::Scene_State3()
     Sound::PlayBank2_2D(0x1f2);
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State2Ev
-void dScMgTeresa_c::Scene_State2()
-{
+// @symbol _ZN13dScMgTeresa_c15Scene_StatePlayEv
+void dScMgTeresa_c::Scene_StatePlay() {
     char *c = (char *)this;
   unsigned short *g = (unsigned short *) (c + 0x4c00);
   int new_var;
@@ -2019,23 +1964,18 @@ void dScMgTeresa_c::Scene_State2()
   CheckRoundEnd();
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State1Ev
-void dScMgTeresa_c::Scene_State1()
-{
+// @symbol _ZN13dScMgTeresa_c17Scene_StateRevealEv
+void dScMgTeresa_c::Scene_StateReveal() {
     Reveal_Update();
     Marker_Update();
     UpdateBoos();
 }
 
-
-// @symbol _ZN13dScMgTeresa_c12Scene_State0Ev
-void dScMgTeresa_c::Scene_State0()
-{
+// @symbol _ZN13dScMgTeresa_c15Scene_StateInitEv
+void dScMgTeresa_c::Scene_StateInit() {
     char *p = (char *)this;
     mSceneState = 1;
 }
-
 
 #pragma push
 #pragma opt_loop_invariants off
@@ -2270,24 +2210,25 @@ extern "C" void *dScMgTeresa_c_classInit()
  * retail copy order: the scene table, the per-Boo table, the reveal-pair
  * table, then the big-Boo flight table. */
 PmfEntry sTeresaSceneStateTable[5] = {
-    {pmf_dScMgTeresa_c_Scene_State0}, {pmf_dScMgTeresa_c_Scene_State1},
-    {pmf_dScMgTeresa_c_Scene_State2}, {pmf_dScMgTeresa_c_Scene_State3},
-    {pmf_dScMgTeresa_c_Scene_State4},
+    {pmf_dScMgTeresa_c_Scene_StateInit},   {pmf_dScMgTeresa_c_Scene_StateReveal},
+    {pmf_dScMgTeresa_c_Scene_StatePlay},   {pmf_dScMgTeresa_c_Scene_StateRoundEnd},
+    {pmf_dScMgTeresa_c_Scene_StateResult},
 };
 Pmf sTeresaBooStateTable[8] = {
-    pmf_dScMgTeresa_c_Boo_State0, pmf_dScMgTeresa_c_Boo_State1, pmf_dScMgTeresa_c_Boo_State2,
-    pmf_dScMgTeresa_c_Boo_State3, pmf_dScMgTeresa_c_Boo_State4, pmf_dScMgTeresa_c_Boo_State5,
-    pmf_dScMgTeresa_c_Boo_State6, pmf_dScMgTeresa_c_Boo_State7,
+    pmf_dScMgTeresa_c_Boo_StateAppear,      pmf_dScMgTeresa_c_Boo_StateFly,
+    pmf_dScMgTeresa_c_Boo_StateFadeOut,     pmf_dScMgTeresa_c_Boo_StateHidden,
+    pmf_dScMgTeresa_c_Boo_StateHiddenTimed, pmf_dScMgTeresa_c_Boo_StateFound,
+    pmf_dScMgTeresa_c_Boo_StateFadeIn,      pmf_dScMgTeresa_c_Boo_StateFadeAway,
 };
 Pmf sTeresaRevealStateTable[5] = {
-    pmf_dScMgTeresa_c_Reveal_State0, pmf_dScMgTeresa_c_Reveal_State1,
-    pmf_dScMgTeresa_c_Reveal_State2, pmf_dScMgTeresa_c_Reveal_State3,
-    pmf_dScMgTeresa_c_Reveal_State4,
+    pmf_dScMgTeresa_c_Reveal_StateStart,   pmf_dScMgTeresa_c_Reveal_StateSlideIn,
+    pmf_dScMgTeresa_c_Reveal_StateAnimate, pmf_dScMgTeresa_c_Reveal_StateDipAndRise,
+    pmf_dScMgTeresa_c_Reveal_StateFinish,
 };
 Pmf sTeresaBigBooStateTable[9] = {
-    pmf_dScMgTeresa_c_BigBoo_State0, pmf_dScMgTeresa_c_BigBoo_State1,
-    pmf_dScMgTeresa_c_BigBoo_State2, pmf_dScMgTeresa_c_BigBoo_State3,
-    pmf_dScMgTeresa_c_BigBoo_State4, pmf_dScMgTeresa_c_BigBoo_State5,
-    pmf_dScMgTeresa_c_BigBoo_State6, pmf_dScMgTeresa_c_BigBoo_State7,
-    pmf_dScMgTeresa_c_BigBoo_State8,
+    pmf_dScMgTeresa_c_BigBoo_StateDropIn,    pmf_dScMgTeresa_c_BigBoo_StateHover,
+    pmf_dScMgTeresa_c_BigBoo_StateFlyLeft,   pmf_dScMgTeresa_c_BigBoo_StateFlyRight,
+    pmf_dScMgTeresa_c_BigBoo_StateOffscreen, pmf_dScMgTeresa_c_BigBoo_StateExit,
+    pmf_dScMgTeresa_c_BigBoo_StateRemove,    pmf_dScMgTeresa_c_BigBoo_StateGone,
+    pmf_dScMgTeresa_c_BigBoo_StateResult,
 };

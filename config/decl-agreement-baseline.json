@@ -27243,32 +27243,32 @@
         "param:#1 struct Obj *"
       ]
     },
-    "Heyho_StartMotion11": {
+    "Heyho_StartMotionHitSpin": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 Self *"
       ]
     },
-    "Heyho_StartMotion6": {
+    "Heyho_StartMotionDiagonalMirror": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "Heyho_StartMotion4": {
+    "Heyho_StartMotionDiagonal": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "Heyho_StartMotion7": {
+    "Heyho_StartMotionBounceInRange": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "Heyho_StartMotion10": {
+    "Heyho_StartMotionBobVertical": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "Heyho_StartMotion14": {
+    "Heyho_StartMotionPatrolBob": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
@@ -27290,7 +27290,7 @@
         "return:void *"
       ]
     },
-    "Trmp2Mario_EnterState1": {
+    "Trmp2Mario_EnterBounce": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "arity:2"
       ]
@@ -27330,7 +27330,7 @@
         "param:#1 int *"
       ]
     },
-    "Trmp3DMario_EnterState12": {
+    "Trmp3DMario_EnterOffstage": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
