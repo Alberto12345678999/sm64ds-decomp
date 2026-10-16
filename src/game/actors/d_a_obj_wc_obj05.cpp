@@ -20,8 +20,9 @@
  * - func_020393d4 / func_020393c4 / func_020393a4: InitResources stores
  *   dBgW::UpdatePosWithTransform and &func_ov029_02111e60 on mMeshCollider;
  *   Behavior clips at 0x250000; dBgW.h has no setter.
- * - Sound::PlayLong: Behavior recycles unk_324 at mCamSpacePosX; not in
- *   include/Sound.h.
+ * - Sound::PlayLong: Behavior recycles unk_324 at mCamSpacePosX. Sound.h
+ *   declares it, but including Sound.h renumbers this TU's @NNN temps, which
+ *   the manifest pins, so the mangled extern stays.
  * - gWcObj05ModelFile / 02114284 are this TU's BMD/KCL file handles;
  *   data_ov029_0211306c the CLPS block stays unowned overlay data.
  * - func_ov029_02111e40 / 02111e60 stay placeholder labels (BeforeClsn

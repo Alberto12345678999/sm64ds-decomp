@@ -12,6 +12,7 @@
  */
 
 #include "types.h"
+#include "IRQ.h"
 
 extern "C" {
 extern int data_0209d514;
@@ -23,8 +24,6 @@ extern char data_023c0000[];
 extern void OS_WakeupThread(int *p);
 extern void func_02019144(void);
 extern void func_02019100(void);
-extern void _ZN3IRQ13SetIRQHandlerEjPFvvE(u32 irqBit, void (*handler)(void));
-extern void _ZN3IRQ13VBlankHandlerEv(void);
 extern u8 data_0209d4dc;
 }
 
@@ -56,6 +55,6 @@ extern "C" void func_0201a4e4(void)
 {
     data_0209d4fc = 0;
     data_0209d500 = 0;
-    _ZN3IRQ13SetIRQHandlerEjPFvvE(1, _ZN3IRQ13VBlankHandlerEv);
+    IRQ::SetIRQHandler(1, IRQ::VBlankHandler);
     data_0209d4dc = 1;
 }
