@@ -22103,15 +22103,15 @@
     },
     "ov006:0x020dbf7c": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c10Bag_State3Ei"
+      "name": "_ZN11dScMgCoin_c19Bag_StateBounceDownEi"
     },
     "ov006:0x020dc154": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c10Bag_State2Ei"
+      "name": "_ZN11dScMgCoin_c15Bag_StateParkedEi"
     },
     "ov006:0x020dc1c4": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c10Bag_State1Ei"
+      "name": "_ZN11dScMgCoin_c13Bag_StateRiseEi"
     },
     "ov006:0x020dc26c": {
       "author": "tangosdev",
@@ -22119,7 +22119,7 @@
     },
     "ov006:0x020dc294": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c10Bag_State0Ev"
+      "name": "_ZN11dScMgCoin_c13Bag_StateIdleEv"
     },
     "ov006:0x020dc298": {
       "author": "tangosdev",
@@ -22147,23 +22147,23 @@
     },
     "ov006:0x020dc414": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c14Caption_State4Ei"
+      "name": "_ZN11dScMgCoin_c17Caption_StateLoopEi"
     },
     "ov006:0x020dc4b0": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c14Caption_State3Ei"
+      "name": "_ZN11dScMgCoin_c19Caption_StateHiddenEi"
     },
     "ov006:0x020dc4c8": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c14Caption_State2Ei"
+      "name": "_ZN11dScMgCoin_c18Caption_StateBlinkEi"
     },
     "ov006:0x020dc5c4": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgCoin_c14Caption_State1Ei"
+      "name": "_ZN11dScMgCoin_c20Caption_StateCountInEi"
     },
     "ov006:0x020dc6d0": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c14Caption_State0Ei"
+      "name": "_ZN11dScMgCoin_c18Caption_StateDelayEi"
     },
     "ov006:0x020dc754": {
       "author": "tangosdev",
@@ -22227,15 +22227,15 @@
     },
     "ov006:0x020dcffc": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c11Coin_State2Ev"
+      "name": "_ZN11dScMgCoin_c17Coin_StateSettledEv"
     },
     "ov006:0x020dd000": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c11Coin_State1Ei"
+      "name": "_ZN11dScMgCoin_c13Coin_StateHopEi"
     },
     "ov006:0x020dd0e0": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c11Coin_State0Ei"
+      "name": "_ZN11dScMgCoin_c19Coin_StateWaitTouchEi"
     },
     "ov006:0x020dd2cc": {
       "author": "tangosdev",
@@ -22255,27 +22255,27 @@
     },
     "ov006:0x020dd658": {
       "author": "ruspecial",
-      "name": "_ZN11dScMgCoin_c12Block_State5Ei"
+      "name": "_ZN11dScMgCoin_c17Block_StateFallInEi"
     },
     "ov006:0x020dd7bc": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c12Block_State4Ev"
+      "name": "_ZN11dScMgCoin_c18Block_StateRestingEv"
     },
     "ov006:0x020dd7c0": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c12Block_State3Ei"
+      "name": "_ZN11dScMgCoin_c21Block_StateDropOnCoinEi"
     },
     "ov006:0x020dd880": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgCoin_c12Block_State2Ei"
+      "name": "_ZN11dScMgCoin_c17Block_StateWanderEi"
     },
     "ov006:0x020dda94": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c12Block_State1Ei"
+      "name": "_ZN11dScMgCoin_c18Block_StateHopDownEi"
     },
     "ov006:0x020ddca0": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c12Block_State0Ei"
+      "name": "_ZN11dScMgCoin_c18Block_StateWaitingEi"
     },
     "ov006:0x020ddcf8": {
       "author": "tangosdev",
@@ -22299,27 +22299,27 @@
     },
     "ov006:0x020de0e0": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgCoin_c12Phase_State5Ev"
+      "name": "_ZN11dScMgCoin_c17Phase_StateResultEv"
     },
     "ov006:0x020de1d4": {
       "author": "lunavyqo",
-      "name": "_ZN11dScMgCoin_c12Phase_State4Ev"
+      "name": "_ZN11dScMgCoin_c21Phase_StateScoreDelayEv"
     },
     "ov006:0x020de26c": {
       "author": "ruspecial",
-      "name": "_ZN11dScMgCoin_c12Phase_State3Ev"
+      "name": "_ZN11dScMgCoin_c17Phase_StateSettleEv"
     },
     "ov006:0x020de440": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c12Phase_State2Ev"
+      "name": "_ZN11dScMgCoin_c15Phase_StatePlayEv"
     },
     "ov006:0x020de584": {
       "author": "ruspecial",
-      "name": "_ZN11dScMgCoin_c12Phase_State1Ev"
+      "name": "_ZN11dScMgCoin_c16Phase_StateIntroEv"
     },
     "ov006:0x020de5ac": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgCoin_c12Phase_State0Ev"
+      "name": "_ZN11dScMgCoin_c15Phase_StateIdleEv"
     },
     "ov006:0x020de5b0": {
       "author": "andrewboudreau",

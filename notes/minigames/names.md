@@ -400,12 +400,12 @@ Medium confidence: `ScramblePanels`, `HasDuplicateRows`, `UpdateMoves`, `StartSo
 
 **Coin (`dScMgCoin_c`, Coincentration).**
 
-Five tables, named by index:
-- `Phase_State0..5`
-- `Block_State0..5`
-- `Coin_State0..2`
-- `Caption_State0..4`
-- `Bag_State0..3`: the moneybag.
+The five tables' handlers are named from their bodies (pass 6; they were `Phase_State0..5`, `Block_State0..5`, `Coin_State0..2`, `Caption_State0..4` and `Bag_State0..3`), high confidence:
+- **Phases (`mPhase`):** `Phase_StateIdle`, `StateIntro` (blocks drop in, prompt on), `StatePlay`, `StateSettle` (waits until no block or coin moves), `StateScoreDelay`, `StateResult` (the result countdown, then `MG_STATE_RESULTS`).
+- **Blocks:** `Block_StateWaiting` (drop delay), `StateHopDown` (hops down the stages), `StateWander` (along its row until it claims a coin), `StateDropOnCoin`, `StateResting`, `StateFallIn` (falls into place, landing sound, bumps the total).
+- **Coins:** `Coin_StateWaitTouch`, `StateHop` (hops once per point of value, kicking the block under it), `StateSettled`.
+- **Caption:** `Caption_StateDelay` (chime), `StateCountIn` (releases the moneybag on frame 2, phase + 1 at the end), `StateBlink`, `StateHidden`, `StateLoop`.
+- **The moneybag:** `Bag_StateIdle`, `StateRise` (kicked up off the top), `StateParked` (spawns the blocks), `StateBounceDown` (bounces down the stages and off the bottom).
 
 High confidence: `LayOutCoins`, `SpawnBlocks`, `KickBlockUnderCoin`, `Block_ClampToWalls`, `Sparkle_*`, `Popup_*`, `ResetRound`.
 
