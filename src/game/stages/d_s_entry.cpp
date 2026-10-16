@@ -95,12 +95,6 @@ extern short data_ov075_0211d94a[];
 
 #define SH(base,i) (*(short*)((char*)(base) + (i)*4))
 
-/* Local overlay of icon_c Render (slot 1). 0x24 stride. */
-struct Base {
-    virtual void method0();
-    virtual void method1();
-};
-
 extern "C" void func_ov075_021160dc(char* c);
 
 /* Written first so D1 and D0 are emitted first, as in the cartridge. The
@@ -175,8 +169,12 @@ void dScEntry_c::icon_c::Render()
     case 2:
         mask = (unk_010 != 0) ? 0x6000 : 0x5000;
         /* The ROM's case 0..2 block branches into case 8..11's fill loop.
-         * A shared inline helper, one merged case and a fill tail after
-         * the switch all miss it, so the jump stays. */
+         * A shared inline helper (void or int-returning), one merged
+         * case, a do/while(0) that breaks out of a merged case, a fill
+         * tail after the switch and a fill duplicated into both cases
+         * all miss it: mwccarm merges no tails, and merging the cases
+         * adds an unk_01c compare. `if (0) { case 8: ... }' matches,
+         * but it is this jump spelled less plainly, so the jump stays. */
         goto fill;
 
     case 8:
@@ -279,20 +277,23 @@ void func_ov075_02115e8c(char* self, int a, int b, short c, short e)
 
 // @symbol func_ov075_0211601c
 void func_ov075_0211601c(char* c, int a, int b) {
-  *(int*)(c+8) = a;
-  *(int*)(c+0xc) = b;
+    dScEntry_c::graphCallback_c *cb = (dScEntry_c::graphCallback_c *)c;
+    cb->entryScene = (void *)a;
+    cb->bg2Priority = b;
 }
 
 // @symbol func_ov075_02116028
 void func_ov075_02116028(int *p, int v)
 {
-    p[3] = v;
+    ((dScEntry_c::graphCallback_c *)p)->bg2Priority = v;
 }
 
 // @symbol func_ov075_02116030
 void func_ov075_02116030(void *c, int v)
 {
-    if (*(int *)((char *)c + 4) == 0) *(int *)((char *)c + 4) = v;
+    dScEntry_c::graphCallback_c *cb = (dScEntry_c::graphCallback_c *)c;
+    if (cb->compressedBg2Screen == 0)
+        cb->compressedBg2Screen = (void *)v;
 }
 
 }
@@ -325,14 +326,15 @@ dScEntry_c::graphCallback_c::graphCallback_c()
 
 // @symbol func_ov075_021160dc
 extern "C" void func_ov075_021160dc(char* c) {
-    int count = *(unsigned char*)(c + 0x280);
+    dScEntry_c *scene = (dScEntry_c *)c;
+    int count = scene->mIconCount;
     int i = 0;
     if (count <= 0) return;
-    Base *elem = (Base*)(c + 0x70);
+    dScEntry_c::icon_c *elem = scene->mIcons;
     do {
-        elem->method1();
-        count = *(unsigned char*)(c + 0x280);
+        elem->Render();
+        count = scene->mIconCount;
         i++;
-        elem = (Base*)((char*)elem + 0x24);
+        elem++;
     } while (i < count);
 }
