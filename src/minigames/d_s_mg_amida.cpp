@@ -15,7 +15,7 @@
  * files. Their bodies are kept as they matched there, with these changes:
  *   - ShuffleGoals, CheckHurryButton, CheckEdgeBoost and StepWalkers
  *     called slot 36 through stand-in vtable structs; they now call
- *     Unk36().
+ *     IsVariant2().
  *   - ProbeRung took the two rung ends as int pointers; it now takes them
  *     as by-value Points, the way the pen handler already declared it,
  *     and uses the member names.
@@ -237,12 +237,12 @@ int dScMgAmida_c::IsAltVariant()
     return (param1 & 0xff) == 1;
 }
 
-// @symbol _ZN12dScMgAmida_c5Unk36Ev
-/* Slot 36, this class's own: whether the low byte of the word at this+8,
-   a field from above dScMgBase_c, is 2. Left as a raw offset, as
-   dScMgSlot1_c.h does for the same word. */
-int dScMgAmida_c::Unk36()
-{
+// @symbol _ZN12dScMgAmida_c10IsVariant2Ev
+/* Slot 36, this class's own: whether the low byte of param1 (the menu
+   entry's sceneParam) is 2. The Rec Room lists Amida twice, and its second
+   entry (row 24) passes 2 (notes/minigames/runtime-checks.md, IsAltVariant),
+   so this picks that variant. The base's IsAltVariant tests for 1. */
+int dScMgAmida_c::IsVariant2() {
     return (((int)param1) & 0xff) == 2;
 }
 
@@ -267,7 +267,7 @@ int dScMgAmida_c::InitSubScreenBg()
 }
 
 // @symbol _ZN12dScMgAmida_c12ShuffleGoalsEi
-/* Refills and shuffles the four-entry table at 0x4714. When Unk36() holds,
+/* Refills and shuffles the four-entry table at 0x4714. When IsVariant2() holds,
    the entries come from the pattern index, are copied to 0x46a4, and the
    table is reshuffled until it differs somewhere from that copy as seen
    through 0x4694; otherwise the first arg1 entries (at most 4) are 1 and
@@ -287,7 +287,7 @@ void dScMgAmida_c::ShuffleGoals(int arg1)
     int u;
     int *pi;
 
-    if (Unk36()) {
+    if (IsVariant2()) {
         switch (mPatternIndex) {
         case 0:
             A714(0) = 0;
@@ -524,7 +524,8 @@ void dScMgAmida_c::PaintSquare(int y, int x, int arg3, int /* size */)
 // @symbol _ZN12dScMgAmida_c16CheckHurryButtonEv
 void dScMgAmida_c::CheckHurryButton()
 {
-    if (Unk36() == 0) return;
+    if (IsVariant2() == 0)
+        return;
     if (mHurry == 1) return;
     unsigned int i = 0;
     int b3 = gActivePlayerSlot;
@@ -551,7 +552,8 @@ void dScMgAmida_c::CheckEdgeBoost()
     int a;
     int b;
 
-    if (Unk36()) return;
+    if (IsVariant2())
+        return;
 
     idx = gActivePlayerSlot;
     flag = 0;
@@ -984,7 +986,7 @@ void dScMgAmida_c::StepWalkers()
                         s32 *dirSlot;
                         s32 dirVal;
 
-                        if (Unk36() != 0) {
+                        if (IsVariant2() != 0) {
                             u32 want = (u32)mLaneWants[idx];
                             dirSlot = (s32 *)(p + idx * 8 + 0x4660);
                             dirVal = *dirSlot;
@@ -1054,7 +1056,7 @@ void dScMgAmida_c::StepWalkers()
                         }
 
                         if (sl == 1) {
-                            if (Unk36() != 0) {
+                            if (IsVariant2() != 0) {
                                 if (mRoundFailed == 0) {
                                     func_02012718(v10, *dirSlot << 0xc);
                                     u32 w2 = (u32)mLaneWants[idx];
@@ -1134,7 +1136,7 @@ void dScMgAmida_c::StepWalkers()
                             return;
                         }
 
-                        if (Unk36() != 0) {
+                        if (IsVariant2() != 0) {
                             func_02012dbc(5);
                             if (mRoundFailed == 0) {
                                 func_02012718(0x1c2, *(s32 *)(p + idx * 8 + 0x4660) << 0xc);
@@ -1331,7 +1333,7 @@ void dScMgAmida_c::InitWalkers()
     u8 seenBefore[4];
 
     this->mHurry = 0;
-    if (this->Unk36() != 0) {
+    if (this->IsVariant2() != 0) {
         again = 1;
         for (i = 0; i < 4; i++) {
             this->mLanePerm[i] = i;
@@ -1436,13 +1438,13 @@ void dScMgAmida_c::InitWalkers()
     }
 
     for (i = 0; i < 4; i++) {
-        if (this->Unk36() != 0) {
+        if (this->IsVariant2() != 0) {
             this->mWalkerDelay[i] = 0;
         } else {
             this->mWalkerDelay[i] = i * *(s32 *)(data_ov006_0212e1a8 + this->mPatternIndex * 0x1c + 0x14) * 0x3c;
         }
         this->mWalkerCell[i][0] = (this->mLanePerm[i] << 6) + 0x20;
-        if (this->Unk36() != 0) {
+        if (this->IsVariant2() != 0) {
             this->mWalkerCell[i][1] = -0xcc;
         } else {
             this->mWalkerCell[i][1] = -0xd4;
@@ -1475,7 +1477,7 @@ void dScMgAmida_c::SetupRound()
     shuffle = 0;
 
     level = mLevel;
-    if (Unk36() != 0) {
+    if (IsVariant2() != 0) {
         if ((u32) mLevel >= 7) {
             level = 7;
             shuffle = 1;
@@ -1489,7 +1491,7 @@ void dScMgAmida_c::SetupRound()
     }
     mPatternIndex = level;
 
-    if (Unk36() != 0) {
+    if (IsVariant2() != 0) {
         mWalkerCount = 4;
     } else {
         mWalkerCount = *(int *)(data_ov006_0212e1a8 + mPatternIndex * 0x1c);
@@ -1561,7 +1563,7 @@ void dScMgAmida_c::SetupRound()
         }
     }
 
-    if (Unk36() != 0) {
+    if (IsVariant2() != 0) {
         Mg_DrawLine(this, 0x20, -0xb4, 0x20, mLineEndY, mLineColor, 1);
         Mg_DrawLine(this, 0x60, -0xb4, 0x60, mLineEndY, mLineColor, 1);
         Mg_DrawLine(this, 0xa0, -0xb4, 0xa0, mLineEndY, mLineColor, 1);
@@ -1587,7 +1589,7 @@ void dScMgAmida_c::SetupRound()
     }
 
     if (shuffle == 1) {
-        if (Unk36() != 0) {
+        if (IsVariant2() != 0) {
             int msk = 0x7fff;
             int cnt = 3;
             do {
@@ -1625,7 +1627,7 @@ void dScMgAmida_c::SetupRound()
 
     {
         int sel2;
-        if (Unk36() != 0) {
+        if (IsVariant2() != 0) {
             switch (mPatternIndex) {
             case 0:
             case 1:
@@ -1676,7 +1678,7 @@ void dScMgAmida_c::SetupRound()
     }
 
     mLineCount++;
-    if (Unk36() == 0) {
+    if (IsVariant2() == 0) {
         int v = *(int *)(data_ov006_0212e1b8 + mPatternIndex * 0x1c);
         if (v != 0 && v == 1) {
             Mg_DrawLine(this, 0x60, 0x2d, 0xa0, 0x2d, mLineColor, 1);
@@ -1875,7 +1877,7 @@ s32 dScMgAmida_c::Render()
     if (mState == 3 && mEndDelayTimer == 0) {
         data_0209d45c &= ~1;
         data_0209d454 &= ~1;
-        if (Unk36() == 0 && mFinished == 1) {
+        if (IsVariant2() == 0 && mFinished == 1) {
             int i;
             for (i = 0; i < 4; i++) {
                 if (mLaneResult[i] != 0) {
@@ -1911,13 +1913,12 @@ s32 dScMgAmida_c::Render()
                     Mg_RenderSpriteBoth(data_ov006_0213a4b0[idx], x >> 12, y >> 12, noPalette, zero);
                 }
             }
-
         }
         return 1;
     } else {
         data_0209d45c |= 1;
         data_0209d454 |= 1;
-        if (Unk36() != 0) {
+        if (IsVariant2() != 0) {
             RenderBoardAlt();
         } else {
             RenderBoard();
@@ -1966,7 +1967,7 @@ s32 dScMgAmida_c::Behavior()
         CheckEdgeBoost();
         CheckHurryButton();
         HandlePen();
-        if (Unk36() != 0) {
+        if (IsVariant2() != 0) {
             if (mHurry == 1) {
                 mScrollAccum += mRoundCount * 5 + 0x20;
             }
@@ -1978,7 +1979,7 @@ s32 dScMgAmida_c::Behavior()
         accum = mScrollAccum;
         mScrollAccum &= 0xf;
         steps = accum / 16;
-        if (Unk36() == 0 || mHurry != 0) {
+        if (IsVariant2() == 0 || mHurry != 0) {
             if (mRoundTimer > 0) {
                 mRoundTimer -= 1;
                 if (mRoundTimer == 0) {
@@ -2020,7 +2021,7 @@ s32 dScMgAmida_c::Behavior()
         break;
     case 2:
         mEdgeBoost = 0;
-        if (Unk36() != 0) {
+        if (IsVariant2() != 0) {
             if (mResultWaitTimer > 0)
                 mResultWaitTimer -= 1;
         } else {
@@ -2052,7 +2053,7 @@ s32 dScMgAmida_c::Behavior()
         }
         if (touched != 0)
             mEndDelayTimer = 0;
-        if (Unk36() != 0)
+        if (IsVariant2() != 0)
             break;
         if (mFinished != 1)
             break;
@@ -2154,7 +2155,7 @@ s32 dScMgAmida_c::InitResources()
     mStrokeGrid = (u8 *)Memory::Allocate(0x15800);
     mInkGrid = (u8 *)Memory::Allocate(0x15800);
 
-    if (Unk36() != 0) {
+    if (IsVariant2() != 0) {
         mLineEndY = 0x78;
         mLineColor = 2;
     } else {
@@ -2188,7 +2189,7 @@ s32 dScMgAmida_c::InitResources()
     *(volatile s32 *)0x400001c = 0;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 3;
 
-    if (Unk36() != 0) {
+    if (IsVariant2() != 0) {
         LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCG_BIN, (void *)func_02054d88());
         file = (void *)LoadFile(ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCL_BIN);
         CP15::FlushAndInvalidateDataCache((u32)file, 0x1a0);
@@ -2213,7 +2214,7 @@ s32 dScMgAmida_c::InitResources()
     *(volatile s32 *)0x400101c = 0;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
 
-    if (Unk36() != 0) {
+    if (IsVariant2() != 0) {
         LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NCG_BIN, G2S::GetBG3CharPtr());
         file = (void *)LoadFile(ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NCL_BIN);
         GXS::LoadBGPltt(file, 0x60, 0x1a0);
@@ -2234,7 +2235,7 @@ s32 dScMgAmida_c::InitResources()
         data_0209d454 |= 0xd;
     }
 
-    if (Unk36() != 0) {
+    if (IsVariant2() != 0) {
         if (GetOwnerLanguage() == 5) {
             LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_S_NCG_BIN, (void *)0x6400000);
             LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_S_NCG_BIN, (void *)0x6600000);

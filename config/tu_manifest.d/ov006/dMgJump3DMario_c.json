@@ -120,24 +120,24 @@
       "ordinal": 11
     },
     {
-      "symbol": "_ZN16dMgJump3DMario_c12Unk_020c762cEv",
+      "symbol": "_ZN16dMgJump3DMario_c10IsLaunchedEv",
       "address": "0x020c762c",
       "size": "0x000000a4",
-      "legacy_source": "src/_ZN16dMgJump3DMario_c12Unk_020c762cEv.cpp",
+      "legacy_source": "src/_ZN16dMgJump3DMario_c10IsLaunchedEv.cpp",
       "ordinal": 12
     },
     {
-      "symbol": "_ZN16dMgJump3DMario_c12Unk_020c76d0Ev",
+      "symbol": "_ZN16dMgJump3DMario_c11GetVelocityEv",
       "address": "0x020c76d0",
       "size": "0x00000008",
-      "legacy_source": "src/_ZN16dMgJump3DMario_c12Unk_020c76d0Ev.cpp",
+      "legacy_source": "src/_ZN16dMgJump3DMario_c11GetVelocityEv.cpp",
       "ordinal": 13
     },
     {
-      "symbol": "_ZN16dMgJump3DMario_c12Unk_020c76d8Ev",
+      "symbol": "_ZN16dMgJump3DMario_c6GetPosEv",
       "address": "0x020c76d8",
       "size": "0x00000008",
-      "legacy_source": "src/_ZN16dMgJump3DMario_c12Unk_020c76d8Ev.cpp",
+      "legacy_source": "src/_ZN16dMgJump3DMario_c6GetPosEv.cpp",
       "ordinal": 14
     },
     {

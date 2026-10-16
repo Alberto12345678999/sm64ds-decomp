@@ -55,10 +55,10 @@
       "ordinal": 3
     },
     {
-      "symbol": "_ZN12dScMgAmida_c5Unk36Ev",
+      "symbol": "_ZN12dScMgAmida_c10IsVariant2Ev",
       "address": "0x020d1188",
       "size": "0x00000018",
-      "legacy_source": "src/_ZN12dScMgAmida_c5Unk36Ev.cpp",
+      "legacy_source": "src/_ZN12dScMgAmida_c10IsVariant2Ev.cpp",
       "ordinal": 4
     },
     {

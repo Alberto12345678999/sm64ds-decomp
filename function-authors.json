@@ -20767,15 +20767,15 @@
     },
     "ov006:0x020c762c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dMgJump3DMario_c12Unk_020c762cEv"
+      "name": "_ZN16dMgJump3DMario_c10IsLaunchedEv"
     },
     "ov006:0x020c76d0": {
       "author": "andrewboudreau",
-      "name": "_ZN16dMgJump3DMario_c12Unk_020c76d0Ev"
+      "name": "_ZN16dMgJump3DMario_c11GetVelocityEv"
     },
     "ov006:0x020c76d8": {
       "author": "andrewboudreau",
-      "name": "_ZN16dMgJump3DMario_c12Unk_020c76d8Ev"
+      "name": "_ZN16dMgJump3DMario_c6GetPosEv"
     },
     "ov006:0x020c76e0": {
       "author": "tangosdev",
@@ -21523,7 +21523,7 @@
     },
     "ov006:0x020d1188": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgAmida_c5Unk36Ev"
+      "name": "_ZN12dScMgAmida_c10IsVariant2Ev"
     },
     "ov006:0x020d11a0": {
       "author": "tangosdev",

@@ -10,7 +10,7 @@
  *
  * Source order is ROM order, which `#pragma defer_codegen off` keeps; do not
  * reorder. The destructor is not virtual, so the first declared virtual
- * (Unk_020c76d8) is the key function and this file emits the vtable.
+ * (GetPos) is the key function and this file emits the vtable.
  *
  * Include common.h first: the mat4x3 copy in UpdateModelMatrix needs its
  * flat s32 m[12]; math/Matrix.h's nested form scalarizes the copy.
@@ -378,10 +378,9 @@ extern "C" int Jump3D_InitPool(char *base, int count)
     return 1;
 }
 
-// @symbol _ZN16dMgJump3DMario_c12Unk_020c762cEv
-/* Vtable slot 2. */
-int dMgJump3DMario_c::Unk_020c762c()
-{
+// @symbol _ZN16dMgJump3DMario_c10IsLaunchedEv
+/* Vtable slot 2: 1 once Mario has left StateIdle and StateWindUp. */
+int dMgJump3DMario_c::IsLaunched() {
     int r = 0;
     int m = 1;
 
@@ -397,22 +396,17 @@ int dMgJump3DMario_c::Unk_020c762c()
     return r;
 }
 
-
-// @symbol _ZN16dMgJump3DMario_c12Unk_020c76d0Ev
+// @symbol _ZN16dMgJump3DMario_c11GetVelocityEv
 /* Vtable slot 1. */
-void *dMgJump3DMario_c::Unk_020c76d0()
-{
+void *dMgJump3DMario_c::GetVelocity() {
     return &mVel;
 }
 
-
-// @symbol _ZN16dMgJump3DMario_c12Unk_020c76d8Ev
+// @symbol _ZN16dMgJump3DMario_c6GetPosEv
 /* Vtable slot 0, and the key function. */
-void *dMgJump3DMario_c::Unk_020c76d8()
-{
+void *dMgJump3DMario_c::GetPos() {
     return &mPos;
 }
-
 
 // @symbol _ZN16dMgJump3DMario_c17UpdateModelMatrixEv
 /* Rebuilds the model matrix from mPos and mAngleY. */

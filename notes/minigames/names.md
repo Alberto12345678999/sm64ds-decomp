@@ -53,7 +53,7 @@ which declares no virtual, so a slot number means nothing between them.
 | 32 | `Virtual80` (was `AfterClsn`) | `InitMainScreenBg` | high | It does the same for main-engine BG1 with screen map 0x67. |
 | 33 | `Virtual84` | `InitEngines` | high | It sets graphics modes, VRAM banks, the BG/OBJ character files and palettes, and registers the graph callback. (`InitDisplay` was already taken by Trampoline's own method.) |
 | 34 | `Virtual88(int,int,int,int)` | `PaintSquare` | high | It paints a size x size square of one 4bpp palette index into the brush's BG layer. The line rasteriser `Mg_DrawLine` calls it once per point. |
-| 35 | `Virtual8C` | `IsAltVariant` | high, seen | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. The menu passes `MgEntry::sceneParam` as param1: the second entries of Amida, Snowball, Smartball, Coin, Panel and Slot1 set the byte, and the two Snowballs were seen starting with 0x0a00 and 0x2201 (pass 4). |
+| 35 | `Virtual8C` | `IsAltVariant` | high, seen | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`; Amida's own slot 36, `IsVariant2` (was `Unk36`, pass 6), asks `== 2`, which its second Rec Room entry (row 24) passes. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. The menu passes `MgEntry::sceneParam` as param1: the second entries of Amida, Snowball, Smartball, Coin, Panel and Slot1 set the byte, and the two Snowballs were seen starting with 0x0a00 and 0x2201 (pass 4). |
 
 Still open for the graph callbacks: what the engine's four `dGraph_c::callback_c`
 slots are for. The arm9 dispatchers are `func_02019390` (slot 0),
@@ -493,7 +493,7 @@ Medium confidence:
 
 The three left unnamed here were named in pass 5: `AnyBombMarching` (Bomroom), `BigBoo_SetDone` (Teresa), `Pachinko_UpdateNextBall` (Pachinko).
 
-**dMgJump3DMario_c (Jump, Jump2).** The member names are checked against the state records each setter stores: `StartWindUp` → `StateWindUp`, `StartRiseOut` → `StateRiseOut`, `StartFallOut` → `StateFallOut`, `HideAndIdle` → `StateIdle`. The pool helpers are `Jump3D_*`. Medium confidence: `Jump3D_DisableInput`/`EnableInput` (a flag the scenes toggle) and `Jump3D_SetLowGravity`/`StopGravity` (tuning words).
+**dMgJump3DMario_c (Jump, Jump2).** The member names are checked against the state records each setter stores: `StartWindUp` → `StateWindUp`, `StartRiseOut` → `StateRiseOut`, `StartFallOut` → `StateFallOut`, `HideAndIdle` → `StateIdle`. The pool helpers are `Jump3D_*`. Medium confidence: `Jump3D_DisableInput`/`EnableInput` (a flag the scenes toggle) and `Jump3D_SetLowGravity`/`StopGravity` (tuning words). Pass 6 named the three `dMg3DHeyhoObjAdapter_c` slots it implements, which were `Unk_020c76d8/d0/2c`: `GetPos` (slot 0, returns `&mPos`), `GetVelocity` (slot 1, returns `&mVel`) and `IsLaunched` (slot 2, 1 once Mario has left `StateIdle` and `StateWindUp`; medium, since what reads it through the adapter is not traced).
 
 **dMg3DHeyhoObjAdapter_c (the Shy Guys of the Jump games).**
 - `Heyho_MotionN` / `Heyho_StartMotionN` (N = 0..14) pair each motion handler with the setter that stores its state record. The pairing is certain; what each motion looks like (walk, hop, bob, path, spin) is only partly read, and Motion11 is the spin taken when a jumper hits one (sound 0x1c8).

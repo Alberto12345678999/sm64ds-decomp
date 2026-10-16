@@ -623,7 +623,7 @@
     "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_c14RenderBoardAltEv",
     "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_c16CheckHurryButtonEv",
     "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_c21AfterCleanupResourcesEj",
-    "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_c5Unk36Ev",
+    "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_c10IsVariant2Ev",
     "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_c8BehaviorEv",
     "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_c12IsAltVariantEv",
     "src/minigames/d_s_mg_amida.cpp#_ZN12dScMgAmida_cD1Ev",
