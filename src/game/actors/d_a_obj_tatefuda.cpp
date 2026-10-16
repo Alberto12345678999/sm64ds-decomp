@@ -74,6 +74,7 @@ enum daObjTatefuda_c_AssetId {
 #include "dBgActor_c.h"
 #include "Player.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "decl_common.h"
 #include "dBgW.h"
 #include "SharedFilePtr.h"
@@ -147,8 +148,6 @@ enum {
     ACTOR_PLAYER  = 191,   /* 0xbf */
     ACTOR_BOMBHEI = 206    /* 0xce */
 };
-
-#define FIXMUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int b, int d, unsigned int e, unsigned int f);
@@ -801,12 +800,12 @@ void daObjTatefuda_c::Talk()
 
     ang = (s32) * (u16 *)&mAngleY;
     sinV = data_02082214[(ang >> 4) * 2];
-    tx = tx + FIXMUL(scale, sinV);
+    tx = tx + FX_MUL(scale, sinV);
     tgt.x = tx;
 
     ang = (s32) * (u16 *)&mAngleY;
     cosV = data_02082214[(ang >> 4) * 2 + 1];
-    tz = tz + FIXMUL(scale, cosV);
+    tz = tz + FX_MUL(scale, cosV);
     tgt.z = tz;
 
     {

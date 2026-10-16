@@ -768,10 +768,8 @@ extern "C" int func_ov065_021180d4(char *self)
                     speed = player->mHorzSpeed;
 
                     pos.y += 0x50000;
-                    pos.x += (int)(((s64)speed *
-                                       data_02082214[idx * 2] + 0x800) >> 0xc);
-                    pos.z += (int)(((s64)speed *
-                                       data_02082214[idx * 2 + 1] + 0x800) >> 0xc);
+                    pos.x += FX_MUL(speed, data_02082214[idx * 2]);
+                    pos.z += FX_MUL(speed, data_02082214[idx * 2 + 1]);
 
                     if (dActor_c::Spawn(0x10d, 0x1210, pos, (Vector3_16 *)&cap->mAngleX,
                                         cap->mAreaId, -1) != 0)

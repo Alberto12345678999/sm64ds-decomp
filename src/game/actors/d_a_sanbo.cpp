@@ -511,6 +511,7 @@ int daSanbo_c::func_ov096_02136264()
         func_ov096_02136928(1);
     } else {
         int scale = next->mScaleX;
+        /* Spelled out: FX_MUL at the use moves the multiply and changes the bytes. */
         s64 prod = (s64)scale * 0x6e000;
         int raised;
         int offset = 0xe000;
@@ -642,6 +643,7 @@ void daSanbo_c::func_ov096_02135e2c(dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         static_cast<dBgPi *>(clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)n0);
         if (n0[1] != 0) {
+            /* Spelled out: FX_MUL drops ax / az, which renumbers the TU's @NNN objects. */
             long long ax = (long long)n0[0] * (long long)unk_0a4;
             long long az = (long long)n0[2] * (long long)unk_0ac;
             int x = (int)((ax + 0x800) >> 12);

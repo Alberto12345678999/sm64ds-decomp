@@ -22,6 +22,7 @@
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
 #include "dClipper.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -558,7 +559,6 @@ void daPgBby_c::func_ov072_021210c4()
     Vector3 v;
     int shadowHeight;
     int shadowRadius;
-    long long tmp;
 
     if (mCarrier && ((mFlags & 0x4000) ? 1 : 0) && *(int *)((char *)mCarrier + 0xc8)) {
         idx = 0;
@@ -593,8 +593,7 @@ void daPgBby_c::func_ov072_021210c4()
         if (ground.DetectClsn()) {
             shadowHeight = mPosY - ground.clsnY;
             if (shadowHeight < 0x1000) shadowHeight = 0x1000;
-            tmp = (long long)shadowHeight * 0x180 + 0x800;
-            shadowRadius = shadowRadius - (int)(tmp >> 12);
+            shadowRadius = shadowRadius - FX_MUL(shadowHeight, 0x180);
             if (shadowRadius < 0x1000) shadowRadius = 0x1000;
             if (shadowRadius > 0x5a000) shadowRadius = 0x5a000;
             shadowHeight = shadowHeight + 0x28000;
@@ -617,10 +616,8 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((SurfaceInfo *)((char *)clsn->GetFloorResult() + 4))->CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            long long a = (long long)floorNormal.x * (long long)unk_0a4;
-            long long bb = (long long)floorNormal.z * (long long)unk_0ac;
-            int x = (int)((a + 0x800) >> 12);
-            int y = (int)((bb + 0x800) >> 12);
+            int x = FX_MUL(floorNormal.x, unk_0a4);
+            int y = FX_MUL(floorNormal.z, unk_0ac);
             mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
         }
     }

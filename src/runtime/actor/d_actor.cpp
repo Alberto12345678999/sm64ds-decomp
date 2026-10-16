@@ -81,6 +81,7 @@
 #include "Model.h"
 #include "SharedFilePtr.h"
 #include "dClipper.h"
+#include "nitro/fx/fx.h"
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c19BeforeInitResourcesEv
@@ -420,11 +421,11 @@ void dActor_c::UpdatePosWithHorzSpeedAndAng(){
         a8 = *(s32*)((char*)c+0xa8);
         v9c = *(s32*)((char*)c+0x9c);
         a0 = *(s32*)((char*)c+0xa0);
-        px = ((s64)v98 * sinv + 0x800) >> 12;
+        px = FX_MUL(v98, sinv);
         nx = a8 + v9c;
         if (nx >= a0) a0 = nx;
         cosv = data_02082214[j];
-        pz = ((s64)v98 * cosv + 0x800) >> 12;
+        pz = FX_MUL(v98, cosv);
         *(s32*)((char*)c+0xa4) = (s32)pz;
         *(s32*)((char*)c+0xa8) = a0;
         *(s32*)((char*)c+0xac) = (s32)px;
@@ -637,9 +638,8 @@ extern "C" s32 func_02010844(void* unused, Vector3* v, s16 angle)
     dir = _ZN4cstd5atan2E5Fix12IiES1_(v->x, v->z);
     angle = (s16)(dir - angle);
     horzLen = Vec3_HorzLen(v);
-    return _ZN4cstd5atan2E5Fix12IiES1_(
-        (s32)(((s64)horzLen * data_02082214[((u16)angle >> 4) * 2 + 1] + 0x800) >> 12),
-        v->y);
+    return _ZN4cstd5atan2E5Fix12IiES1_(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]),
+                                       v->y);
 }
 
 /* -------------------------------------------------------------------------- */

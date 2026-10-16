@@ -20,6 +20,7 @@
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Sound.h"
+#include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &value, int target, int step);
@@ -601,10 +602,8 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            long long a = (long long)floorNormal.x * (long long)self->unk_0a4;
-            long long b = (long long)floorNormal.z * (long long)self->unk_0ac;
-            int x = (int)((a + 0x800) >> 12);
-            int y = (int)((b + 0x800) >> 12);
+            int x = FX_MUL(floorNormal.x, self->unk_0a4);
+            int y = FX_MUL(floorNormal.z, self->unk_0ac);
             self->mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
             if (self->mVertSpeed > 0)
                 self->mVertSpeed = 0;

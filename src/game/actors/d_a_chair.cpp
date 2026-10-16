@@ -42,6 +42,7 @@ enum daChair_c_AssetId {
 };
 
 #include "common.h"
+#include "nitro/fx/fx.h"
 #include "daChair_c.h"
 #include "SharedFilePtr.h"
 #include "SurfaceInfo.h"
@@ -362,14 +363,10 @@ void daChair_c::State2()
                                   diff.y, Vec3_HorzLen((const Vector3 *)&diff)) * -1;
                 /* unk_0a4 / unk_0ac: lateral velocity beside mVertSpeed.
                  * Unsigned table index; mPrevAngleX/Y are s16. */
-                reach = (s32)(((long long)data_02082214[((*(u16 *)&mPrevAngleX) >> 4) * 2 + 1]
-                               * 0x32000 + 0x800) >> 12);
-                unk_0a4 = (s32)(((long long)reach
-                                 * data_02082214[((*(u16 *)&mPrevAngleY) >> 4) * 2] + 0x800) >> 12);
-                mVertSpeed = (s32)(((long long)data_02082214[((*(u16 *)&mPrevAngleX) >> 4) * 2]
-                                    * -0x32000 + 0x800) >> 12);
-                unk_0ac = (s32)(((long long)reach
-                                 * data_02082214[((*(u16 *)&mPrevAngleY) >> 4) * 2 + 1] + 0x800) >> 12);
+                reach = FX_MUL(data_02082214[((*(u16 *)&mPrevAngleX) >> 4) * 2 + 1], 0x32000);
+                unk_0a4 = FX_MUL(reach, data_02082214[((*(u16 *)&mPrevAngleY) >> 4) * 2]);
+                mVertSpeed = FX_MUL(data_02082214[((*(u16 *)&mPrevAngleX) >> 4) * 2], -0x32000);
+                unk_0ac = FX_MUL(reach, data_02082214[((*(u16 *)&mPrevAngleY) >> 4) * 2 + 1]);
             } else {
                 if (ST->timer > 0x14) {
                     /* (int)&mAngleY. mAngleY += 0x2710 changes the code size. */

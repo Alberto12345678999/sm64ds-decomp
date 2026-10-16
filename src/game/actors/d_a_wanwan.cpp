@@ -830,14 +830,14 @@ extern "C" void func_ov014_02111b70(daWanwan_c *c)
 
     a = (unsigned short)Vec3_VertAngle(&c->mPosX, tgt);
     i = (a >> 4) << 1;
-    c->mVertSpeed = -((int)(((((long long)data_02082214[i]) * 0x8c000) + 0x800) >> 12));
+    c->mVertSpeed = -FX_MUL(data_02082214[i], 0x8c000);
     v = c->mVertSpeed;
     if (v < 0x5000)
         v = 0x5000;
     else if (v > 0x2d000)
         v = 0x2d000;
     c->mVertSpeed = v;
-    c->mHorzSpeed = (int)(((((long long)data_02082214[i + 1]) * 0x8c000) + 0x800) >> 12);
+    c->mHorzSpeed = FX_MUL(data_02082214[i + 1], 0x8c000);
     c->mActionTimer = 0x3c;
 }
 
@@ -964,14 +964,14 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
                 s16 *tbl = data_02082214;
                 u16 ang = fence->mAngleY;
                 s32 s = tbl[(ang >> 4) << 1];
-                s32 add = (s32)(((((long long)s) * 0x96000) + 0x800) >> 12);
+                s32 add = FX_MUL(s, 0x96000);
                 target.x = x + add;
             }
             {
                 s16 *tbl = data_02082214;
                 u16 ang = fence->mAngleY;
                 s32 s = tbl[(((ang >> 4) << 1) + 1)];
-                s32 add = (s32)(((((long long)s) * 0x96000) + 0x800) >> 12);
+                s32 add = FX_MUL(s, 0x96000);
                 target.z = z + add;
             }
             if (Vec3_ApproachHorz(&self->mPos, &target, self->mReleaseSpeed) != 0) {
