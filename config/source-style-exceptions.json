@@ -264,6 +264,38 @@
       "count": 13,
       "reason": "No header declares G2S's BG pointer getters; they are defined in src/engine/gx/G2.cpp as unsigned-returning members of namespace G2S, and Message.cpp's leftover note already keeps every one of its calls to them mangled for that reason. Follow-up: give G2S a header and convert all of this file's calls together.",
       "evidence": "src/Message.cpp header leftover note (G2S BG pointer getters stay mangled); the count caps the whole file: its existing calls plus one carried verbatim from src/unnamed/arm9/0201/func_0201cd08.cpp, which this PR folds; arm9/Message 32/32 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/stages/d_s_entry.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN2G212GetBG1ScrPtrEv",
+      "count": 2,
+      "reason": "Inherited BG1-screen-map binding from absorbed helper 02116128; no shared G2 function header exists. Retained partial interface reconstruction, not a measured compiler wall. Follow-up: recover the shared G2 interface and prove its consumers.",
+      "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
+    },
+    {
+      "path": "src/game/stages/d_s_entry.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi",
+      "count": 5,
+      "reason": "Inherited OAM Render binding from absorbed helper 0211621c. The Fix12-by-value overload is intentionally absent from OAM.h because its class ABI changes calls (wall 6az). Follow-up: resolve that ABI with consumer byte proof before replacing the word arguments.",
+      "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
+    },
+    {
+      "path": "src/game/stages/d_s_entry.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
+      "count": 4,
+      "reason": "Existing and absorbed OAM scaled Render calls retain the measured Fix12-by-value ABI bridge (OAM.h, wall 6az). Follow-up: resolve that ABI across consumers before replacing the integer arguments.",
+      "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
+    },
+    {
+      "path": "src/game/stages/d_s_entry.cpp",
+      "rule": "raw-offset",
+      "match": "(int*)(data_0209ee90+0x1d4",
+      "count": 1,
+      "reason": "Inherited score field access in absorbed helper 0211621c; ROM loads the base score at offset 0x1d4 then adds the per-player delta. The cross-overlay global layout is not yet reconstructed. Follow-up: recover its owning arm9 type and verify all consumers before substituting a shared field.",
+      "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
     }
   ]
 }
