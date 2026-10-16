@@ -914,11 +914,6 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_020610fc.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/unnamed/arm9/0206/func_0206a318.c": [
         "param:#1 int",
         "param:#2 void *",
@@ -6856,9 +6851,6 @@
       ],
       "src/unnamed/arm9/0206/func_02060b64.c": [
         "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02061138.c": [
-        "return:void"
       ]
     },
     "_ZN3IRQ10RestoreAllEj": {
@@ -6917,9 +6909,6 @@
         "param:#2 void (*)(void)"
       ],
       "src/unnamed/arm9/0206/func_02060b64.c": [
-        "param:#2 void (*)(void)"
-      ],
-      "src/unnamed/arm9/0206/func_02061138.c": [
         "param:#2 void (*)(void)"
       ],
       "src/IRQ2.cpp": [
@@ -7174,9 +7163,6 @@
       ],
       "src/unnamed/arm9/0206/func_02060b64.c": [
         "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02061138.c": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02061c88.c": [
@@ -25314,11 +25300,6 @@
     "func_02060f60": {
       "src/unnamed/arm9/0206/func_020607e8.c": [
         "return:void"
-      ]
-    },
-    "func_020610fc": {
-      "src/_ZN3IRQ21GameCardIREQMCHandlerEv.cpp": [
-        "return:int"
       ]
     },
     "func_02061128": {
