@@ -41,9 +41,7 @@
  * - dClipper::Func_02015560 (State5): the header takes Fix12<int> by
  *   value. Same caller wall as DropShadowRadHeight. The scalar extern
  *   stays. data_0209f43c is the dClipper, data_0209b3ec the camera matrix.
- * - Player::Hurt (HurtPlayer): not declared on Player.h. Replacing the
- *   goto with early returns is 0xb0 -> 0xb8 (2 words). The 0/1 from
- *   actorID == 0xbf is what the ROM materializes.
+ * - Player::Hurt (HurtPlayer): not declared on Player.h.
  * - dBgCh_Actr_UpdateContinuous_Veneer (UpdateGroundCollision): retail
  *   bl is 0x020383fc, the veneer, not UpdateContinuous at 0x020366b4.
  * - GetFloorResult returns an existing polygon through void *. The local
@@ -57,13 +55,13 @@
  * - data_ov072_02122b20 / 02122b40 / 02122b58 / 02122b64: model file,
  *   reach point, landing point, twelve-PMF table. __sinit_ov072_02122018
  *   owns that bss, so the names stay.
- * - State1 mSubstate = mSubstate + 1 is 0xe8 -> 0xcc (7 words). State3,
- *   both increments, is 0x1a8 -> 0x194 (5 words). The switch already
- *   reads the field; only the increment is this+0x3a2 via a pool word.
- * - Earlier AdvancePath named-field experiments differed by 14 words
- *   at size 0xa4. Its node is now a real Vector3; the raw field views
- *   remain. IsPlayerNearCenter without the gotos was 0xb4 -> 0xb0
- *   (1 word). State5 without the 0/1 clip flag is 0xec -> 0xe0 (3 words).
+ * - dActor_c stores position, scale and camera-space position as three
+ *   s32 fields each, not as Vector3s, so Render and the Vec3_* and
+ *   PlayLong calls take the address of the X field.
+ *
+ * The 0/1 values the ROM materializes in HurtPlayer and State5 come from
+ * int-returning inline predicates, IsPlayerActor and IsOffScreen.
+ * IsPlayerNearCenter's sign-extend/negate/re-extend is the AbsAngle inline.
  */
 
 #include "common.h"
@@ -73,6 +71,7 @@
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "dBgPi.h"
+#include "Sound.h"
 
 /* Real C++ names. Declared here, not via decl_common.h: that header's
  * other spellings of these symbols collide with this TU. */
@@ -81,10 +80,6 @@ int ApproachLinear(int &value, int target, int step);
 
 namespace cstd {
 int fdiv(int numerator, int denominator);
-}
-
-namespace Sound {
-int PlayLong(u32 handle, u32 bank, u32 id, const Vector3 &pos, s16 distance);
 }
 
 /* Shared ABI seams, kept above the first `// @symbol` marker so no member is
@@ -132,12 +127,52 @@ int  _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
 extern SharedFilePtr data_ov072_02122b20;
 extern Vector3       data_ov072_02122b40;
 extern Vector3       data_ov072_02122b58;
-extern daBgSnmBdy_c::StateFunc data_ov072_02122b64[];
+extern daBgSnmBdy_c::StateEntry data_ov072_02122b64[];
 extern int           data_0209f43c[];
 extern int           data_0209b3ec[];
 }
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
+
+/* The NitroSDK fixed-point products, written as local inlines the way
+ * d_s_mg_base.cpp and d_s_mg_pachinko.cpp spell FX_Mul. FX_Mul is a 20.12
+ * product rounded at bit 11; FX_Mul32x64c multiplies by a 32.32 constant
+ * and rounds at bit 31. */
+static inline int FX_Mul(int v1, int v2)
+{
+    return (int)(((s64)v1 * v2 + 0x800) >> 12);
+}
+
+static inline int FX_Mul32x64c(int v32, s64 v64c)
+{
+    return (int)(((s64)v32 * v64c + 0x80000000LL) >> 32);
+}
+
+/* pi as a 32.32 constant: 0x3.243f6a89. */
+#define FX64C_PI 0x00000003243F6A89LL
+
+/* One full turn of a 16-bit angle, as a 20.12 multiplier. */
+#define ANGLE_FULL_TURN 0xffff
+
+/* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
+ * off screen. Actor ID 0xbf is PLAYER. These int-returning predicates are
+ * what make the ROM materialize 0/1 before testing it. */
+static inline int IsOffScreen(dActor_c *actor)
+{
+    return (actor->mFlags & 8) != 0;
+}
+
+static inline int IsPlayerActor(dActor_c *actor)
+{
+    return actor->actorID == 0xbf;
+}
+
+static inline short AbsAngle(short angle)
+{
+    if (angle < 0)
+        angle = -angle;
+    return angle;
+}
 
 /* The typed 0x1c actor profile: fBase_c reads the halfwords at +4/+6 as
  * behavior/render priorities. dActor_c reads actor flags at +8 and passes
@@ -167,7 +202,7 @@ extern "C" daBgSnmBdy_c *daBgSnmBdy_c_classInit()
     return new daBgSnmBdy_c();
 }
 
-extern "C" SnmBdyProfile g_profile_BIG_SNOWMAN_BODY = {
+SnmBdyProfile g_profile_BIG_SNOWMAN_BODY = {
     daBgSnmBdy_c_classInit,
     0x0112,
     0x0085,
@@ -190,14 +225,10 @@ int daBgSnmBdy_c::InitResources()
                                              0x104000, 0x800004, 0);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         &mWithMeshClsn, this, 0x82000, 0x82000, 0, 0);
-    {
-        int posY;
-        pos.x = mPosX;
-        posY = mPosY;
-        pos.y = posY;
-        pos.z = mPosZ;
-        pos.y = posY + 0x14000;
-    }
+    pos.x = mPosX;
+    pos.y = mPosY;
+    pos.z = mPosZ;
+    pos.y += 0x14000;
     dBgCh_Gnd ground;
     ground.SetObjAndPos(pos, 0);
     if (ground.DetectClsn())
@@ -260,22 +291,20 @@ int daBgSnmBdy_c::CleanupResources()
 // @symbol _ZN12daBgSnmBdy_c8SetStateEi
 void daBgSnmBdy_c::SetState(int state)
 {
-    mStateFuncs = data_ov072_02122b64 + state * 2;
+    mState = &data_ov072_02122b64[state];
     CallStateInit();
 }
 
 // @symbol _ZN12daBgSnmBdy_c13CallStateInitEv
 void daBgSnmBdy_c::CallStateInit()
 {
-    StateFunc *func = mStateFuncs;
-    (this->**func)();
+    (this->*mState->init)();
 }
 
 // @symbol _ZN12daBgSnmBdy_c17CallStateBehaviorEv
 void daBgSnmBdy_c::CallStateBehavior()
 {
-    StateFunc *func = mStateFuncs + 1;
-    (this->**func)();
+    (this->*mState->behavior)();
 }
 
 // @symbol _ZN12daBgSnmBdy_c10InitState0Ev
@@ -286,7 +315,7 @@ int daBgSnmBdy_c::InitState0()
     mScaleX = 0x800;
     mScaleY = 0x800;
     mScaleZ = 0x800;
-    mRadius = (int)(((long long)mScaleX * 0x82000 + 0x800) >> 12);
+    mRadius = FX_Mul(mScaleX, 0x82000);
     mCylinder.radius = mRadius;
     mCylinder.height = mRadius << 1;
     func_0203568c((int *)&mWithMeshClsn, mRadius);
@@ -324,24 +353,20 @@ int daBgSnmBdy_c::InitState1()
 int daBgSnmBdy_c::State1()
 {
     Vector3 messagePos;
-    unsigned char *state;
     messagePos.x = mPosX;
-    int y = mPosY;
-    messagePos.y = y;
+    messagePos.y = mPosY;
     messagePos.z = mPosZ;
-    messagePos.y = y + 0x96000;
+    messagePos.y += 0x96000;
     switch (mSubstate) {
     case 0:
         if (mTalkPlayer->ShowMessage(*this, 0xb0, &messagePos, 0, 0) == 0)
             break;
-        state = (unsigned char *)((int)this + 0x3a2);
-        *state = *state + 1;
+        mSubstate++;
         break;
     case 1:
         if (mTalkPlayer->GetTalkState() != -1)
             break;
-        state = (unsigned char *)((int)this + 0x3a2);
-        *state = *state + 1;
+        mSubstate++;
         break;
     case 2:
         if (DecIfAbove0_Short(&mStateTimer) == 0)
@@ -376,7 +401,7 @@ int daBgSnmBdy_c::State2()
         mScaleX = newScale;
         mScaleY = newScale;
         mScaleZ = newScale;
-        mRadius = (int)(((long long)growScale * 0x82000 + 0x800) >> 12);
+        mRadius = FX_Mul(growScale, 0x82000);
         mCylinder.radius = mRadius;
         mCylinder.height = mRadius << 1;
         func_0203568c((int *)&mWithMeshClsn, mRadius);
@@ -415,7 +440,6 @@ int daBgSnmBdy_c::InitState3()
 // @symbol _ZN12daBgSnmBdy_c6State3Ev
 int daBgSnmBdy_c::State3()
 {
-    unsigned char *state;
     switch (mSubstate) {
     case 0:
         {
@@ -430,13 +454,13 @@ int daBgSnmBdy_c::State3()
                 mSoundID, 3, 0x8a,
                 *(const Vector3 *)&mCamSpacePosX, 0);
             if (distToLanding < 0x17c000) {
-                dActor_c *head = dActor_c::FindWithActorID(0x111, 0); /* BIG_SNOWMAN_HEAD */
-                ((daBgSnmHed_c *)head)->unk_336 = 1;
+                daBgSnmHed_c *head = (daBgSnmHed_c *)dActor_c::FindWithActorID(
+                    0x111, 0); /* BIG_SNOWMAN_HEAD */
+                head->unk_336 = 1;
                 func_0201267c(0x114, (const Vector3 *)&mCamSpacePosX);
                 mVertSpeed = 0x1d000;
                 mHorzSpeed = 0xe000;
-                state = (unsigned char *)((int)this + 0x3a2);
-                *state = *state + 1;
+                mSubstate++;
             }
         }
         break;
@@ -453,8 +477,7 @@ int daBgSnmBdy_c::State3()
             mAngleX = 0;
             mAngleY = (short)-0x4000;
             mHorzSpeed = 0;
-            state = (unsigned char *)((int)this + 0x3a2);
-            *state = *state + 1;
+            mSubstate++;
         }
         break;
     case 2:
@@ -504,8 +527,8 @@ int daBgSnmBdy_c::InitState5()
 // @symbol _ZN12daBgSnmBdy_c6State5Ev
 int daBgSnmBdy_c::State5()
 {
-    int inClip = (int)((mFlags & 8) != 0);
-    if (inClip == 0) return 1;
+    if (!IsOffScreen(this))
+        return 1;
     Vector3 clipResult;
     Vector3 homePos;
     Vec3_Asr(&homePos, &mHomePosX, 3);
@@ -547,15 +570,15 @@ void daBgSnmBdy_c::UpdateModel()
 void daBgSnmBdy_c::UpdateGroundCollision(dBgCh_Actr *mc)
 {
     Vector3 normal;
-    const dBgPi *floorResult;
+    dBgPi *floorResult;
     dBgCh_Actr_UpdateContinuous_Veneer(mc);
     if (mc->IsOnGround() == 0) return;
-    floorResult = static_cast<const dBgPi *>(mc->GetFloorResult());
+    floorResult = static_cast<dBgPi *>(mc->GetFloorResult());
     floorResult->surface.CopyNormalTo(normal);
     if (normal.y == 0) return;
     {
-        int alongX = (int)(((long long)normal.x * unk_0a4 + 0x800) >> 12);
-        int alongZ = (int)(((long long)normal.z * unk_0ac + 0x800) >> 12);
+        int alongX = FX_Mul(normal.x, unk_0a4);
+        int alongZ = FX_Mul(normal.z, unk_0ac);
         mVertSpeed = -(cstd::fdiv(alongX + alongZ, normal.y) + 0x8000);
     }
 }
@@ -565,18 +588,13 @@ int daBgSnmBdy_c::HurtPlayer()
 {
     dActor_c *actor;
     u32 id;
-    int isPlayer;
     Vector3 pos;
 
     id = mCylinder.otherOwner;
     if (id == 0) return 0;
     actor = dActor_c::FindWithID(id);
-    if (actor == 0) goto fail;
-    isPlayer = (int)(actor->actorID == 0xbf);
-    if (isPlayer != 0) goto body;
-fail:
-    return 0;
-body:
+    if (actor == 0 || !IsPlayerActor(actor))
+        return 0;
     if (mHorzSpeed != 0) {
         pos.x = mPosX;
         pos.y = mPosY;
@@ -590,17 +608,14 @@ body:
 // @symbol _ZN12daBgSnmBdy_c11AdvancePathEv
 int daBgSnmBdy_c::AdvancePath()
 {
-    char *c = (char *)this;
     Vector3 node;
     int numNodes;
-    /* Named &mPath / &mPosX / mRadius / mAngleY size-DIFF (14 words). */
-    ((PathPtr *)(c + 0x380))->GetNode(node, *(int *)(c + 0x388));
-    int dist = Vec3_HorzDist(c + 0x5c, &node);
-    UpdateAngle(*(short *)(c + 0x8e),
-                Vec3_HorzAngle(c + 0x5c, &node), 2, 0x600);
-    *(short *)(c + 0x94) = *(short *)(c + 0x8e);
-    if (dist < *(int *)(c + 0x398)) {
-        numNodes = ((PathPtr *)(c + 0x380))->NumNodes();
+    mPath.GetNode(node, mPathNode);
+    int dist = Vec3_HorzDist(&mPosX, &node);
+    UpdateAngle(mAngleY, Vec3_HorzAngle(&mPosX, &node), 2, 0x600);
+    mPrevAngleY = mAngleY;
+    if (dist < mRadius) {
+        numNodes = mPath.NumNodes();
         /* Signed compare. mPathNode is u32; comparing it as u32 is unsigned. */
         mPathNode = mPathNode + 1;
         if ((int)mPathNode >= numNodes - 1) return 1;
@@ -611,11 +626,9 @@ int daBgSnmBdy_c::AdvancePath()
 // @symbol _ZN12daBgSnmBdy_c15UpdateRollAngleEv
 void daBgSnmBdy_c::UpdateRollAngle()
 {
-    int circumference = (int)(((long long)(mRadius << 1) *
-                       0x3243F6A89LL + 0x80000000LL) >> 32);
+    int circumference = FX_Mul32x64c(mRadius << 1, FX64C_PI);
     Fix12i turns = cstd::fdiv(mHorzSpeed, circumference);
-    mAngleX = (short)(mAngleX +
-        (int)(((long long)turns * 0xffff + 0x800) >> 12));
+    mAngleX = (short)(mAngleX + FX_Mul(turns, ANGLE_FULL_TURN));
 }
 
 // @symbol _ZN12daBgSnmBdy_c18IsPlayerNearCenterEv
@@ -625,16 +638,9 @@ int daBgSnmBdy_c::IsPlayerNearCenter()
     int playerDist = Vec3_Dist(&data_ov072_02122b58, &mTalkPlayer->mPosX);
     int bodyAngle = Vec3_HorzAngle(&data_ov072_02122b58, &mPosX);
     int playerAngle = Vec3_HorzAngle(&data_ov072_02122b58, &mTalkPlayer->mPosX);
-    int sub = bodyAngle - playerAngle;
-    if (playerDist < bodyDist) {
-        short diff = (short)sub;
-        if (diff < 0) diff = -diff;
-        if (diff < 0x700) goto ret1;
-    }
-    if (Vec3_Dist(&data_ov072_02122b58, &mTalkPlayer->mPosX) >= 0x300000)
-        goto ret0;
-ret1:
-    return 1;
-ret0:
+    int angleDiff = bodyAngle - playerAngle;
+    if ((playerDist < bodyDist && AbsAngle((short)angleDiff) < 0x700)
+        || Vec3_Dist(&data_ov072_02122b58, &mTalkPlayer->mPosX) < 0x300000)
+        return 1;
     return 0;
 }
