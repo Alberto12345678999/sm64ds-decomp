@@ -41,6 +41,7 @@
 //   triples live on the shared dActor_c header, which has not named them yet
 //   (same header work as the linelift2 leaf below).
 #include "daKpFr_c.h"
+#include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
 #include "dBgCh_Gnd.h"
 #include "Particle__System.h"
@@ -264,8 +265,8 @@ void daKpFr_c::func_ov070_02121d50(void* vclsn) {
     if (clsn->IsOnGround()) {
         ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)normal);
         if (normal[1] != 0) {
-            int a = (int)(((long long)normal[0] * unk_0a4 + 0x800) >> 12);
-            int b = (int)(((long long)normal[2] * unk_0ac + 0x800) >> 12);
+            int a = FX_MUL(normal[0], unk_0a4);
+            int b = FX_MUL(normal[2], unk_0ac);
             mVertSpeed = -(cstd::fdiv(a + b, normal[1]) + 0x8000);
         }
     }

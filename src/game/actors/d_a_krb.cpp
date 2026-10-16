@@ -66,6 +66,7 @@ enum daKrb_c_AssetId {
 #pragma defer_codegen off
 
 #include "daKrb_c.h"
+#include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
 #include "common.h"
 #include "dBgCh_Gnd.h"
@@ -1343,7 +1344,7 @@ void func_ov084_0212ab48(daKrb_c *goomba)
     func_ov084_02129c9c((char *)goomba);
     large = (int)(goomba->actorID == (unsigned short)ACTOR_KURIBO_L);
     if (large != 0) {
-        goomba->mVertSpeed = (int)(((long long)goomba->mVertSpeed * 0x1800 + 0x800) >> 0xc);
+        goomba->mVertSpeed = FX_MUL(goomba->mVertSpeed, 0x1800);
     }
     goomba->mTargetAngleY = goomba->mInitAngleY;
     *(unsigned char *)&goomba->mMoveFlags &= ~daKrb_c::MOVE_AVOIDING;
@@ -1723,9 +1724,9 @@ int daKrb_c::Render()
     backup.z = mScaleZ;
 
     if (mDeathState == DEATH_STOMPED) {
-        mScaleX = (int)(((long long)mScaleX * data_ov084_02130258[mGoombaType] + 0x800) >> 12);
-        mScaleY = (int)(((long long)mScaleY * data_ov084_02130258[mGoombaType] + 0x800) >> 12);
-        mScaleZ = (int)(((long long)mScaleZ * data_ov084_02130258[mGoombaType] + 0x800) >> 12);
+        mScaleX = FX_MUL(mScaleX, data_ov084_02130258[mGoombaType]);
+        mScaleY = FX_MUL(mScaleY, data_ov084_02130258[mGoombaType]);
+        mScaleZ = FX_MUL(mScaleZ, data_ov084_02130258[mGoombaType]);
     }
 
     mModelAnim.Render((const Vector3 *)&mScaleX);
