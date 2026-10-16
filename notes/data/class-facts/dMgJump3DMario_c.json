@@ -46,7 +46,7 @@
   "base_chain": {
     "chain": ["dMgJump3DMario_c", "dMg3DHeyhoObjAdapter_c"],
     "length": 2,
-    "chain_terminates_evidence": "_ZTI22dMg3DHeyhoObjAdapter_c at 0x0213b000 is only 8 bytes (the next symbol, data_ov006_0213b008, starts at 0x0213b008) and its vptr word is 0x0209a774 = _ZTVN3abi17__class_type_infoE, the ROOT __class_type_info with NO base word. The chain is exactly two classes, proven from the cartridge rather than from build/rtti.json's edge list.",
+    "chain_terminates_evidence": "_ZTI22dMg3DHeyhoObjAdapter_c at 0x0213b000 is only 8 bytes (the next symbol, sJump3DBounceVy, starts at 0x0213b008) and its vptr word is 0x0209a774 = _ZTVN3abi17__class_type_infoE, the ROOT __class_type_info with NO base word. The chain is exactly two classes, proven from the cartridge rather than from build/rtti.json's edge list.",
     "edges": [
       {"derived": "dMgJump3DMario_c", "base": "dMg3DHeyhoObjAdapter_c", "derived_key": "ov006:0x0213b0a4", "base_key": "ov006:0x0213b000", "offset": 0, "resolved_by": "own_module"}
     ],

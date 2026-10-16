@@ -248,7 +248,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov006_021421c4",
+      "symbol": "sJump2Back02ModelFile",
       "address": "0x021421c4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -288,7 +288,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Mg_SubmitScore' differs between the legacy file that used to hold State_Result and the one that held State_Play; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'GetGameLanguage' differs between the legacy file that used to hold _ZN12dScMgJump2_c6RenderEv and the one that held _ZN12dScMgJump2_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Matrix4x3_FromTranslation' differs between the legacy file that used to hold _ZN12dScMgJump2_c6RenderEv and the one that held _ZN12dScMgJump2_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov006_021421b8' differs between the legacy file that used to hold _ZN12dScMgJump2_c16CleanupResourcesEv and the one that held _ZN12dScMgJump2_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'sJump2BackFile' differs between the legacy file that used to hold _ZN12dScMgJump2_c16CleanupResourcesEv and the one that held _ZN12dScMgJump2_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_020a0e68' differs between the legacy file that used to hold _ZN12dScMgJump2_c6RenderEv and the one that held _ZN12dScMgJump2_c13InitResourcesEv; kept the first; RESOLVED -- the TU now carries one declaration per symbol, typed to what the ROM bytes require (struct Elem */struct Node * for the two 021421xx pointers, one s16* spelling of ApproachLinear2, and data_020a0e68 copied whole as *(Mtx43T *)&data_020a0e68), and every call site casts to it; 29/29 MATCH with that spelling",
     "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
   ],
@@ -766,7 +766,7 @@
       "source": "0x02130f5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021421c4",
+      "symbol": "sJump2Back02ModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021421c4"

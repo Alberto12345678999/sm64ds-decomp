@@ -125,10 +125,10 @@ extern unsigned char data_ov006_0212e454[];
 extern u8   data_ov006_0212e458[];
 extern int  data_ov006_0212e460[];
 extern int  data_ov006_0212e468[];
-extern int  data_ov006_0213a5e0[];
+extern int sCurlingBitSprites[];
 extern int  data_ov006_0213c264;
 extern int  data_ov006_0213c2ac;
-extern int  data_ov006_0213c2e4[];
+extern int sCurlingAimMarkerSprites[];
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
 extern char data_ov006_0213c394;
@@ -138,7 +138,7 @@ extern int  data_ov006_0212e48c[];
 extern int  data_ov006_0212e4a0[];
 extern int  data_ov006_0212e4b4[];
 extern int  data_ov006_0212e4c8[];
-extern int  data_ov006_0212e4dc[];
+extern int sCurlingHouseSpots[];
 
 /* The six state tables, filled at startup by the ov006 static init. */
 extern PMF0 sCurlingAimTable[];
@@ -196,8 +196,8 @@ void dScMgCurling_c::Bit_DrawAll()
         if (mBit[i].shown) {
             int x = mBit[i].x >> 0xc;
             int y = mBit[i].y >> 0xc;
-            Mg_RenderSubSpriteMtx(data_ov006_0213a5e0[mBit[i].texA], x, y, 0);
-            DrawOamSprite(data_ov006_0213a5e0[mBit[i].texB], x, y, 0);
+            Mg_RenderSubSpriteMtx(sCurlingBitSprites[mBit[i].texA], x, y, 0);
+            DrawOamSprite(sCurlingBitSprites[mBit[i].texB], x, y, 0);
         }
     }
 }
@@ -689,7 +689,7 @@ void dScMgCurling_c::DrawAimMarker()
   if(mAimShown==0) return;
   int x=mAimX;
   int y=mAimY;
-  Mg_RenderSpriteBoth((int)data_ov006_0213c2e4,(x>>12)-0x20,(y>>12)-8,-1,0);
+  Mg_RenderSpriteBoth((int)sCurlingAimMarkerSprites, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
 }
 
 #pragma push
@@ -1491,7 +1491,7 @@ void dScMgCurling_c::Scene_StartRound()
 // @symbol _ZN14dScMgCurling_c9PickHouseEv
 /* Picks the house (0x4e9c): a fresh random one of three that differs from
  * the last, or the first one when the slot still holds its 0xff reset.
- * The house centre comes from data_ov006_0212e4dc and its background from
+ * The house centre comes from sCurlingHouseSpots and its background from
  * one of three files. */
 void dScMgCurling_c::PickHouse()
 {
@@ -1507,8 +1507,8 @@ void dScMgCurling_c::PickHouse()
         }
         mHouse = m;
     }
-    mHouseX = data_ov006_0212e4dc[mHouse * 2] << 12;
-    mHouseY = (data_ov006_0212e4dc[mHouse * 2 + 1] - 0xe0) << 12;
+    mHouseX = sCurlingHouseSpots[mHouse * 2] << 12;
+    mHouseY = (sCurlingHouseSpots[mHouse * 2 + 1] - 0xe0) << 12;
     if (mHouse == 0) {
         file = LoadFile(ASSET_D_2D_MG_BG_CURLING1_NSC_BIN);
     } else if (mHouse == 1) {

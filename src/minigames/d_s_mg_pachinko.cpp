@@ -204,18 +204,18 @@ extern int   data_ov006_0212eb2c[];
 extern u8    data_ov006_0212eb34[];
 extern u8    data_ov006_0212eb3c[];
 extern s32   data_ov006_0212eb44[];
-extern int   data_ov006_0212eb50[];
-extern s32   data_ov006_0212eb60[];
+extern int sPachinkoPipeRiseStops[];
+extern s32 sPachinkoPipeSinkStops[];
 extern int   data_ov006_0212eb70[];
 extern int   data_ov006_02133e10[];
 extern int   data_ov006_02133e7c[];
-extern int   data_ov006_02136b80[];
+extern int sPachinkoPipeSprites[];
 extern int   data_ov006_02136e0c[];
-extern int   data_ov006_021375f4[];
+extern int sPachinkoFlyerSprites[];
 extern int   data_ov006_0212eb80[];
 extern int   data_ov006_0212eb94[];
-extern int   data_ov006_02136cd4[];
-extern int   data_ov006_02137614;
+extern int sPachinkoBallSprites[];
+extern int sPachinkoBobOmbSprites;
 extern u16   data_ov006_0213d954[];
 extern u8    data_ov006_0213d974[];
 
@@ -595,8 +595,8 @@ void PachinkoFlyer_Draw(char* raw){
   if (PACHINKO(raw)->mFlyer[0].visible == 0) return;
   int x = PACHINKO(raw)->mFlyer[0].x;
   int y = PACHINKO(raw)->mFlyer[0].y;
-  Mg_RenderSpriteBoth((void *)data_ov006_021375f4[PACHINKO(raw)->mFlyer[0].facing],
-    x>>0xc, y>>0xc, -1, -1);
+  Mg_RenderSpriteBoth((void *)sPachinkoFlyerSprites[PACHINKO(raw)->mFlyer[0].facing], x >> 0xc,
+                      y >> 0xc, -1, -1);
 }
 
 #pragma push
@@ -1214,10 +1214,9 @@ void PachinkoPipe_DrawAll(char *raw)
     for (i = 0; i < 2; i++) {
         if (*(unsigned char *)(row + 0x4000 + 0xeb8) != 0) {
             Mg_RenderSpriteBoth(
-                (void *)data_ov006_02136b80[*(unsigned char *)(row + 0x4000 + 0xeb5)],
-                *(int *)(row + 0x4000 + 0xea0) >> 0xc,
-                *(int *)(row + 0x4000 + 0xea4) >> 0xc,
-                -1, 2);
+                (void *)sPachinkoPipeSprites[*(unsigned char *)(row + 0x4000 + 0xeb5)],
+                *(int *)(row + 0x4000 + 0xea0) >> 0xc, *(int *)(row + 0x4000 + 0xea4) >> 0xc, -1,
+                2);
         }
         row += 0x1c;
     }
@@ -1303,16 +1302,16 @@ void PachinkoPipe_StateSink(char *raw, int i) {
 
     ACC(raw, off) += VEL(raw, off);
     y = ACC(raw, off) >> 0xc;
-    if (y >= data_ov006_0212eb60[i + 2]) {
+    if (y >= sPachinkoPipeSinkStops[i + 2]) {
         if (VEL(raw, off) >= 0x800)
             VEL(raw, off) -= 0x80;
     } else {
         VEL(raw, off) += 0x80;
     }
-    if (y < data_ov006_0212eb60[i])
+    if (y < sPachinkoPipeSinkStops[i])
         return;
 
-    ACC(raw, off) = data_ov006_0212eb60[i] << 0xc;
+    ACC(raw, off) = sPachinkoPipeSinkStops[i] << 0xc;
     VEL(raw, off) = -0x1000;
     ST(raw, off)++;
     CTA(raw, off) = 0;
@@ -1355,7 +1354,7 @@ void PachinkoPipe_StateRise(char *raw, int i) {
 
     self->mPipe[i].acc = self->mPipe[i].acc + self->mPipe[i].vel;
     y = self->mPipe[i].acc >> 0xc;
-    if (y <= data_ov006_0212eb50[i + 2]) {
+    if (y <= sPachinkoPipeRiseStops[i + 2]) {
         if (self->mPipe[i].vel <= -0x800) {
             self->mPipe[i].vel = self->mPipe[i].vel + 0x80;
         }
@@ -1363,10 +1362,10 @@ void PachinkoPipe_StateRise(char *raw, int i) {
         self->mPipe[i].vel = self->mPipe[i].vel - 0x80;
     }
 
-    if (y > data_ov006_0212eb50[i]) {
+    if (y > sPachinkoPipeRiseStops[i]) {
         return;
     }
-    self->mPipe[i].acc = data_ov006_0212eb50[i] << 0xc;
+    self->mPipe[i].acc = sPachinkoPipeRiseStops[i] << 0xc;
     self->mPipe[i].vel = 0x1000;
     (self->mPipe[i].state)++;
     self->mPipe[i].timer = 0;
@@ -1489,7 +1488,7 @@ void PachinkoBall_DrawAll(char *scene)
             m._01 = sinv;
             m._10 = -sinv;
             m._11 = cosv;
-            Mg_RenderSpriteBothPalMtx((void *)data_ov006_02136cd4[sprite], x, y, -1, &m);
+            Mg_RenderSpriteBothPalMtx((void *)sPachinkoBallSprites[sprite], x, y, -1, &m);
         }
     }
 }
@@ -2223,10 +2222,8 @@ void PachinkoBobOmb_DrawAll(char *thiz) {
     int i;
     for (i = 0; i < 0x30; i++, thiz += 0x38) {
         if (*(unsigned char*)(thiz + 0x4f0e) == 0) continue;
-        Mg_RenderSpriteBothScaled((OamAttr *)data_ov006_02137614,
-                            *(int*)(thiz + 0x4ed8) >> 0xc,
-                            *(int*)(thiz + 0x4edc) >> 0xc,
-                            -1, -1, 0x1000, 0);
+        Mg_RenderSpriteBothScaled((OamAttr *)sPachinkoBobOmbSprites, *(int *)(thiz + 0x4ed8) >> 0xc,
+                                  *(int *)(thiz + 0x4edc) >> 0xc, -1, -1, 0x1000, 0);
     }
 }
 

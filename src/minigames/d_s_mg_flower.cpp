@@ -494,9 +494,9 @@ s32 dScMgFlower_c::Behavior()
                 }
                 if (FlowerFace_IsIdle(c + 0x51f8) != 0) {
                     if (self->mPetalToggle == 1)
-                        FlowerFace_PlayReactA(c + 0x51f8);
+                        FlowerFace_PlayLike(c + 0x51f8);
                     else
-                        FlowerFace_PlayReactB(c + 0x51f8);
+                        FlowerFace_PlayHate(c + 0x51f8);
                 }
             } else {
                 FreeGfxSlotsById(0x1d);
@@ -545,9 +545,9 @@ s32 dScMgFlower_c::Behavior()
     case 1:
         if (FlowerFace_IsIdle(c + 0x51f8) != 0) {
             if (self->mPetalToggle == 1)
-                FlowerFace_PlayReactA(c + 0x51f8);
+                FlowerFace_PlayLike(c + 0x51f8);
             else
-                FlowerFace_PlayReactB(c + 0x51f8);
+                FlowerFace_PlayHate(c + 0x51f8);
         }
         self->mPromptEnabled = 0;
         UpdatePetals();

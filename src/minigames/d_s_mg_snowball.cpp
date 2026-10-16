@@ -144,7 +144,7 @@ namespace G3X  { void SetFog(bool enable, int blend, int slope, int offset); }
 
 extern "C" {
 extern void RenderOamBothScreens(int a, int b, int c, int d, int e, int f);
-extern int data_ov006_02139c6c[];
+extern int sSnowballBitSprites[];
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *dst);
 extern void func_0203d388(int *p, int angle);
 extern int func_0203d434(int *p);
@@ -163,7 +163,7 @@ extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short ang);
 extern struct Matrix4x3 data_020a0e68;
 extern char *_ZN2G212GetBG2ScrPtrEv(void);
 extern void MultiStore16(int val, char *dst, int n);
-extern u16 data_ov006_0212f3bc[];
+extern u16 sSnowballCourseTiles[];
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 extern void Mg_SetTopScreenYOffset(int);
@@ -174,9 +174,9 @@ extern void SetSubBg3Offset(int, int);
 extern void func_020731dc(void *, void *, void **);
 extern void Quaternion_Normalize(s32 *);
 extern void *_ZN7Vector3D1Ev(void *object);
-extern u32 data_ov006_02143004;
-extern void *data_ov006_02143008;
-extern s32 data_ov006_02143014[3];
+extern u32 sSnowball_ResetScene_UnitYGuard;
+extern void *sSnowball_ResetScene_UnitYDtorRec;
+extern s32 sSnowball_ResetScene_UnitY[3];
 extern s32 data_02092768[4];
 void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
 void func_0203cd80(int *m, short angle);
@@ -231,8 +231,7 @@ void dScMgSnowball_c::SnowSpray_DrawAll()
     for (i = 0; i < 0x20; i++) {
         if (*(unsigned char *)(p + 0xba34) != 0) {
             RenderOamBothScreens(
-                data_ov006_02139c6c[*(int *)(p + 0xba30)],
-                *(int *)(p + 0xba14) >> 0xc,
+                sSnowballBitSprites[*(int *)(p + 0xba30)], *(int *)(p + 0xba14) >> 0xc,
                 ((((*(int *)(p + 0xba18) - *(int *)(p + 0xba1c)) - self->mScrollY) >> 0xc) - 0x110),
                 -1, 0, 0);
         }
@@ -791,7 +790,7 @@ void dScMgSnowball_c::RedrawCourse()
  * Copies one 16-row column of 2x2 BG tiles into the BG2 screen of both the
  * main and the sub engine. Each cell index comes from the u16 grid at
  * self+0x4f38 (row stride 0x5c0, column `col`); its four tiles are the four
- * u16 words of data_ov006_0212f3bc[idx], written with MultiStore16 (two
+ * u16 words of sSnowballCourseTiles[idx], written with MultiStore16 (two
  * halfwords each) at screen offset ((col & 0xf) << 7) + 2*j, +2, +0x40,
  * +0x42. flag == 1 targets the first half of the screen block, anything else
  * the half at +0x800.
@@ -821,7 +820,7 @@ void dScMgSnowball_c::DrawCourseColumn(int col, int flag)
 
     if (flag == 1) {
         masked = col & 0xf;
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + 6);
+        tile = *(u16 *)((char *)sSnowballCourseTiles + 6);
         row = scene;
         i = 0;
         j = i;
@@ -830,42 +829,42 @@ void dScMgSnowball_c::DrawCourseColumn(int col, int flag)
         n = 2;
         do {
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3));
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v0 = tile, (char *)(scr + j), n);
 
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 2);
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v1 = tile, (char *)(scr + j + 1), n);
 
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 4);
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v2 = tile, (char *)(scr + j + 0x20), n);
 
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 6);
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v3 = tile, (char *)(scr + j + 0x21), n);
 
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3));
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v4 = tile, (char *)(scr + j), n);
 
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 2);
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v5 = tile, (char *)(scr + j + 1), n);
 
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 4);
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v6 = tile, (char *)(scr + j + 0x20), n);
 
             idx = *(u16 *)(row + 0x4f38);
-            tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 6);
+            tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v7 = tile, (char *)(scr + j + 0x21), n);
 
@@ -885,42 +884,42 @@ void dScMgSnowball_c::DrawCourseColumn(int col, int flag)
     k842 = 0x842;
     do {
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3));
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + 0x800 + off);
         MultiStore16(w0 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 2);
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + 0x802 + off);
         MultiStore16(w1 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 4);
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + 0x840 + off);
         MultiStore16(w2 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 6);
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + k842 + off);
         MultiStore16(w3 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3));
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x800 + off);
         MultiStore16(w4 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 2);
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x802 + off);
         MultiStore16(w5 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 4);
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x840 + off);
         MultiStore16(w6 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + 0x4f38);
-        tile = *(u16 *)((char *)data_ov006_0212f3bc + (idx << 3) + 6);
+        tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + k842 + off);
         MultiStore16(w7 = tile, (char *)(scr + j), n);
 
@@ -1331,25 +1330,25 @@ void dScMgSnowball_c::ResetScene()
     H(0xab80) = 0;
     H(0xab82) = 0;
 
-    if (!(data_ov006_02143004 & 1)) {
-        data_ov006_02143014[0] = 0;
-        data_ov006_02143014[1] = 0x1000;
-        data_ov006_02143014[2] = 0;
-        func_020731dc(data_ov006_02143014, (void *)&_ZN7Vector3D1Ev,
-                      &data_ov006_02143008);
-        data_ov006_02143004 |= 1;
+    if (!(sSnowball_ResetScene_UnitYGuard & 1)) {
+        sSnowball_ResetScene_UnitY[0] = 0;
+        sSnowball_ResetScene_UnitY[1] = 0x1000;
+        sSnowball_ResetScene_UnitY[2] = 0;
+        func_020731dc(sSnowball_ResetScene_UnitY, (void *)&_ZN7Vector3D1Ev,
+                      &sSnowball_ResetScene_UnitYDtorRec);
+        sSnowball_ResetScene_UnitYGuard |= 1;
     }
 
-    I(0xab84) = data_ov006_02143014[0];
-    I(0xab88) = data_ov006_02143014[1];
-    I(0xab8c) = data_ov006_02143014[2];
+    I(0xab84) = sSnowball_ResetScene_UnitY[0];
+    I(0xab88) = sSnowball_ResetScene_UnitY[1];
+    I(0xab8c) = sSnowball_ResetScene_UnitY[2];
     func_0203ce80((struct Vector3 *)tmp, (struct Vector3 *)(c + 0xab84));
 
     I(0xab90) = data_02092768[0];
     I(0xab94) = data_02092768[1];
     I(0xab98) = data_02092768[2];
     I(0xab9c) = data_02092768[3];
-    Quaternion_FromVector3((int *)(c + 0xab90), (struct Vector3 *)data_ov006_02143014,
+    Quaternion_FromVector3((int *)(c + 0xab90), (struct Vector3 *)sSnowball_ResetScene_UnitY,
                            (struct Vector3 *)(c + 0xab84));
     Quaternion_Normalize((s32 *)(c + 0xab90));
 
@@ -2061,8 +2060,8 @@ void dScMgSnowball_c::Bit_DrawAll()
         if (a->arr[i].f1e != 0) {
             int bb = a->arr[i].a >> 12;
             int cc = (a->arr[i].b - a->fixed) >> 12;
-            Mg_RenderSubSpriteMtx((void*)data_ov006_02139c6c[a->arr[i].f1f], bb, cc, 0);
-            DrawOamSprite((void*)data_ov006_02139c6c[a->arr[i].f20], bb, cc, 0);
+            Mg_RenderSubSpriteMtx((void *)sSnowballBitSprites[a->arr[i].f1f], bb, cc, 0);
+            DrawOamSprite((void *)sSnowballBitSprites[a->arr[i].f20], bb, cc, 0);
         }
     }
 }

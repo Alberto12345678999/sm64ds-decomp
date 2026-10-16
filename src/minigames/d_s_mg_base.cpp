@@ -72,7 +72,7 @@ dScMgBase_c::graphCallback_c sMgGraphCallback;
 Ent sMgFxPool[0x40];
 EntPMF sMgFxUpdateTable[2] = { &Ent::UpdateDrift, &Ent::UpdateFlyTo };
 EntPMF sMgFxDrawTable[2] = { &Ent::DrawSparkle, &Ent::DrawFlyTo };
-int data_ov004_020beba8[16];
+int sMgSparkleSprites[16];
 }
 
 /* Local view of the installed screen fader at data_0209f5bc (a dFader_c,
@@ -553,28 +553,41 @@ void Ent::DrawFlyTo(){
 namespace s20adcc8 {
 extern "C" {
 extern void Mg_RenderSpriteOnNoMtx(int a0,int a1,int a2,int a3,int a4);
-extern int data_ov004_020beb70;
+extern int sMgSparkleSpritesGuard;
 extern int data_ov004_020bea14[];
-extern int data_ov004_020beba8[];
+extern int sMgSparkleSprites[];
 }
 }
 /* State 0's draw. The first call builds the 16-entry frame table
-   data_ov004_020beba8 from five words at data_ov004_020bea14 (bit 0 of
-   data_ov004_020beb70 marks it built); the frame is picked by the low four
+   sMgSparkleSprites from five words at data_ov004_020bea14 (bit 0 of
+   sMgSparkleSpritesGuard marks it built); the frame is picked by the low four
    bits of mTimer. */
 void Ent::DrawSparkle(){
-  if((s20adcc8::data_ov004_020beb70 & 1) == 0){
-    int* s = s20adcc8::data_ov004_020bea14;
-    int* d = s20adcc8::data_ov004_020beba8;
-    d[0]=s[0];d[1]=s[0];d[2]=s[0];d[3]=s[0];d[4]=s[0];
-    d[5]=s[4];d[6]=s[4];d[7]=s[3];d[8]=s[2];d[9]=s[1];
-    d[10]=s[2];d[11]=s[2];d[12]=s[3];d[13]=s[4];d[14]=s[4];d[15]=s[0];
-    s20adcc8::data_ov004_020beb70 |= 1;
-  }
+    if ((s20adcc8::sMgSparkleSpritesGuard & 1) == 0) {
+        int *s = s20adcc8::data_ov004_020bea14;
+        int *d = s20adcc8::sMgSparkleSprites;
+        d[0] = s[0];
+        d[1] = s[0];
+        d[2] = s[0];
+        d[3] = s[0];
+        d[4] = s[0];
+        d[5] = s[4];
+        d[6] = s[4];
+        d[7] = s[3];
+        d[8] = s[2];
+        d[9] = s[1];
+        d[10] = s[2];
+        d[11] = s[2];
+        d[12] = s[3];
+        d[13] = s[4];
+        d[14] = s[4];
+        d[15] = s[0];
+        s20adcc8::sMgSparkleSpritesGuard |= 1;
+    }
   {
     int idx=((int)mTimer)&0xf;
     int x=*(int*)this>>0xc; int y=*(int*)((char*)this+4)>>0xc;
-    s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::data_ov004_020beba8[idx],x,y,-1,-1);
+    s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::sMgSparkleSprites[idx], x, y, -1, -1);
   }
 }
 
@@ -1017,14 +1030,24 @@ extern void MultiCopy_Int(void* a, void* b, int n);
 }
 
 extern "C" {
-extern int data_ov004_020beb64;
+extern int sMgPaintWord;
 extern int sMgTopScreenYOffset;
 }
 }
 }
 
-void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
-{ using s20ae3b4::MultiCopy_Int; using s20ae3b4::_ZN2G213GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv; using s20ae3b4::data_ov004_020beb64; using s20ae3b4::sMgTopScreenYOffset; using s20ae3b4::func_02054d88; using s20ae3b4::func_02054ea8; using s20ae3b4::func_02054efc;
+void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
+    using s20ae3b4::MultiCopy_Int;
+    using s20ae3b4::_ZN2G213GetBG2CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv;
+    using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv;
+    using s20ae3b4::sMgPaintWord;
+    using s20ae3b4::sMgTopScreenYOffset;
+    using s20ae3b4::func_02054d88;
+    using s20ae3b4::func_02054ea8;
+    using s20ae3b4::func_02054efc;
     char *obj = (char *)this;
 
     int oi;
@@ -1088,10 +1111,10 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
                     }
                 }
                 cell = (int*)((char*)base + ((xx / 8 + (yy / 8) * 32) * 32) + ((yy & 7) * 4));
-                MultiCopy_Int(cell, &data_ov004_020beb64, four);
+                MultiCopy_Int(cell, &sMgPaintWord, four);
                 sh = (xx & 7) << 2;
-                data_ov004_020beb64 = (data_ov004_020beb64 & (-1 ^ (m << sh))) | (colour << sh);
-                MultiCopy_Int(&data_ov004_020beb64, cell, four);
+                sMgPaintWord = (sMgPaintWord & (-1 ^ (m << sh))) | (colour << sh);
+                MultiCopy_Int(&sMgPaintWord, cell, four);
             inc:;
             } while (++ci < size);
         }
@@ -1709,14 +1732,14 @@ extern int _ZN3G2S13GetBG3CharPtrEv(void);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 
-extern char data_ov004_020b9468;
+extern char sMgBrushPalette;
 
 /* Sets up the brush that PaintSquare paints with. Stores `en` at +0x68 and
    the layer `mode` (0..3) at +0x6c, fills the first 0x300 screen entries of
    that sub-screen BG layer (and of the main-screen one when `en` is set)
    with tile numbers 0..0x2ff under palette `base`, zeroes 0x6000 bytes of
    the layer's character data, and loads the 0x20-byte palette
-   data_ov004_020b9468 into palette slot `base` on both screens. Any other
+   sMgBrushPalette into palette slot `base` on both screens. Any other
    mode returns at once. */
 void Mg_InitBrush(char* sb, char en, int mode, int base)
 {
@@ -1826,8 +1849,8 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
         return;
     }
 
-    _ZN2GX10LoadBGPlttEPKvjj(&data_ov004_020b9468, base << 5, 0x20);
-    _ZN3GXS10LoadBGPlttEPKvjj(&data_ov004_020b9468, base << 5, 0x20);
+    _ZN2GX10LoadBGPlttEPKvjj(&sMgBrushPalette, base << 5, 0x20);
+    _ZN3GXS10LoadBGPlttEPKvjj(&sMgBrushPalette, base << 5, 0x20);
 }
 }
 }
@@ -3504,7 +3527,7 @@ extern "C" {
    shadows -- data_0209d45c for the main engine, data_0209d454 for the sub --
    initialised to 0x10, which is the value slots 30 and 31 later save, clear
    bits out of and restore.  A language-indexed character file (indexed by
-   GetGameLanguage into data_ov004_020bbfe4) is decompressed into BOTH engines'
+   GetGameLanguage into sMgStockCounterFiles) is decompressed into BOTH engines'
    BG char VRAM at 0x06404000 and 0x06604000, OBJ palette file 0xc3 is loaded
    into both, and the scene object is published into the global registry --
    sMgGraphCallback[1] = this, then data_0209d4a8 points at that registry.
@@ -3543,15 +3566,35 @@ extern void Mg_ResetOverlays(void);
 extern void FreeGfxSlotsById(int arg);
 extern int sMgTopScreenYOffset;
 extern u8 data_0209d45c;
-extern int data_ov004_020bbfe4[];
+extern int sMgStockCounterFiles[];
 extern u8 data_0209d454;
 extern void **data_0209d4a8;
 extern int data_0208ee44;
 }
 }
 
-void dScMgBase_c::InitEngines()
-{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::sMgTopScreenYOffset; using s20b265c::Ov004_LoadFile; using s20b265c::Mg_ResetOverlays; using s20b265c::Mg_ResetBgOffsets; using s20b265c::Mg_DisableAllBanks;
+void dScMgBase_c::InitEngines() {
+    using s20b265c::DecompressLZ16;
+    using s20b265c::FreeGfxSlotsById;
+    using s20b265c::GetGameLanguage;
+    using s20b265c::Ov004_Deallocate;
+    using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj;
+    using s20b265c::_ZN2GX12SetBankForBGEt;
+    using s20b265c::_ZN2GX13SetBankForOBJEt;
+    using s20b265c::_ZN2GX15SetBankForSubBGEt;
+    using s20b265c::_ZN2GX16SetBankForSubOBJEt;
+    using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj;
+    using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj;
+    using s20b265c::data_0208ee44;
+    using s20b265c::data_0209d454;
+    using s20b265c::data_0209d45c;
+    using s20b265c::data_0209d4a8;
+    using s20b265c::sMgStockCounterFiles;
+    using s20b265c::sMgTopScreenYOffset;
+    using s20b265c::Ov004_LoadFile;
+    using s20b265c::Mg_ResetOverlays;
+    using s20b265c::Mg_ResetBgOffsets;
+    using s20b265c::Mg_DisableAllBanks;
     char *obj = (char *)this;
 
     void *p;
@@ -3573,7 +3616,7 @@ void dScMgBase_c::InitEngines()
     data_0209d45c = 0x10;
     _ZN2GX15SetBankForSubBGEt(4);
     _ZN2GX16SetBankForSubOBJEt(8);
-    p = Ov004_LoadFile(data_ov004_020bbfe4[GetGameLanguage()]);
+    p = Ov004_LoadFile(sMgStockCounterFiles[GetGameLanguage()]);
     {
         char *dst = (char *)0x6400000; dst += 0x4000;
         DecompressLZ16(p, dst);

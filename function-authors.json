@@ -20247,19 +20247,19 @@
     },
     "ov006:0x020c11c0": {
       "author": "lunavyqo",
-      "name": "Dealer_StateCollect"
+      "name": "Dealer_StateDeal"
     },
     "ov006:0x020c1420": {
       "author": "tangosdev",
-      "name": "Dealer_StartCollect"
+      "name": "Dealer_StartDeal"
     },
     "ov006:0x020c14bc": {
       "author": "tangosdev",
-      "name": "Dealer_StateDeal"
+      "name": "Dealer_StateShuffle"
     },
     "ov006:0x020c1604": {
       "author": "tangosdev",
-      "name": "Dealer_StartDeal"
+      "name": "Dealer_StartShuffle"
     },
     "ov006:0x020c16b4": {
       "author": "tangosdev",
@@ -20343,7 +20343,7 @@
     },
     "ov006:0x020c22d8": {
       "author": "tangosdev",
-      "name": "Presenter_StateAnim7Loop"
+      "name": "Presenter_StateSurprisedThenIdle"
     },
     "ov006:0x020c2300": {
       "author": "tangosdev",
@@ -20351,7 +20351,7 @@
     },
     "ov006:0x020c23a8": {
       "author": "tangosdev",
-      "name": "Presenter_StateAnim4"
+      "name": "Presenter_StateLoseStart"
     },
     "ov006:0x020c2440": {
       "author": "tangosdev",
@@ -20359,7 +20359,7 @@
     },
     "ov006:0x020c24e4": {
       "author": "tangosdev",
-      "name": "Presenter_StateAnim7"
+      "name": "Presenter_StateSurprisedThenSmile"
     },
     "ov006:0x020c2594": {
       "author": "tangosdev",
@@ -20367,7 +20367,7 @@
     },
     "ov006:0x020c263c": {
       "author": "tangosdev",
-      "name": "Presenter_StateAnim1"
+      "name": "Presenter_StateMistake"
     },
     "ov006:0x020c2664": {
       "author": "tangosdev",
@@ -20375,7 +20375,7 @@
     },
     "ov006:0x020c26f4": {
       "author": "tangosdev",
-      "name": "Presenter_StateAnim2"
+      "name": "Presenter_StateWin"
     },
     "ov006:0x020c271c": {
       "author": "tangosdev",
@@ -20447,23 +20447,23 @@
     },
     "ov006:0x020c38ac": {
       "author": "tangosdev",
-      "name": "FlowerFace_StateReactB"
+      "name": "FlowerFace_StateHate"
     },
     "ov006:0x020c38b0": {
       "author": "tangosdev",
-      "name": "FlowerFace_PlayReactB"
+      "name": "FlowerFace_PlayHate"
     },
     "ov006:0x020c3904": {
       "author": "tangosdev",
-      "name": "FlowerFace_StateReactA"
+      "name": "FlowerFace_StateLike"
     },
     "ov006:0x020c3908": {
       "author": "tangosdev",
-      "name": "FlowerFace_PlayReactA"
+      "name": "FlowerFace_PlayLike"
     },
     "ov006:0x020c395c": {
       "author": "tangosdev",
-      "name": "FlowerFace_StateReact"
+      "name": "FlowerFace_StatePick"
     },
     "ov006:0x020c3990": {
       "author": "andrewboudreau",
@@ -21147,7 +21147,7 @@
     },
     "ov006:0x020cc198": {
       "author": "lunavyqo",
-      "name": "Trmp3DMario_PickIdleAnim"
+      "name": "Trmp3DMario_JumpOff"
     },
     "ov006:0x020cc2ac": {
       "author": "tangosdev",

@@ -52,7 +52,7 @@ struct dScMgCurling2_piece {
     u8 xIndex;          /* 0x1e, into sCurling2StepXTable or _021419b8 */
     u8 yIndex;          /* 0x1f, into sCurling2StepYTable */
     u8  drawEnable;     /* 0x20 */
-    u8  sprite0;        /* 0x21, into data_ov006_0213a5e0 */
+    u8 sprite0;         /* 0x21, into sCurlingBitSprites */
     u8  sprite1;        /* 0x22 */
     u8  pad23;          /* 0x23 */
 };

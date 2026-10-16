@@ -117,7 +117,7 @@ extern int data_0209d4b8;
 extern int data_ov006_0212e370[];
 extern int data_ov006_0212e388[];
 extern int data_ov006_0212e344[];
-extern int data_ov006_0213a9fc[];
+extern int sCoinCaptionSprites[];
 extern unsigned char data_ov006_0212e324[];
 extern unsigned char data_ov006_0212e31c[];
 extern unsigned char data_ov006_0212e308[];
@@ -129,23 +129,23 @@ extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, i
 extern int data_ov006_0212e430[];
 extern u16 data_ov006_0212e334[];
 extern s16 data_02082214[];
-extern int data_ov006_021341ec;
+extern int sCoinPopupSprites;
 extern int data_ov006_0212e364[];
-extern int *data_ov006_0213bf34[];
+extern int *sCoinScorePlayerSprites[];
 extern int GetGameLanguage(void);
 extern void Mg_DrawCreditsIcon(int r0, int r1, int r2, int r3);
 extern void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3);
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
-extern void *data_ov006_02133f10[];
-extern void *data_ov006_02136e24[];
-extern void *data_ov006_02134b4c[];
+extern void *sCoinValuesSprites[];
+extern void *sCoinSparkleSprites[];
+extern void *sCoinBagSprites[];
 extern void Mg_RenderSpriteBothPalMtx(void *obj, int x, int y, int w, int *vec);
 extern void func_020127a4(int a, int b, int c, int d);
 extern int data_ov006_0212e358[];
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern void RenderOamMainScreen(int a, int b, int c, int d, int e);
 extern u16 data_ov006_0212e314[];
-extern void *data_ov006_0213bf0c[];
+extern void *sCoinBlocksSprites[];
 extern int data_ov006_0212e418[];
 extern int data_ov006_0212e400[];
 extern int data_ov006_0212e3d0[];
@@ -271,7 +271,7 @@ void dScMgCoin_c::Bag_Draw()
         vec[1] = FX_MUL(data_02082214[i], 0x1000);
         vec[2] = -FX_MUL(data_02082214[i], 0x1000);
         vec[3] = FX_MUL(data_02082214[i + 1], 0x1000);
-        Mg_RenderSpriteBothPalMtx(data_ov006_02134b4c[idx_l], xr >> 12, yr >> 12, -1, vec);
+        Mg_RenderSpriteBothPalMtx(sCoinBagSprites[idx_l], xr >> 12, yr >> 12, -1, vec);
     }
 }
 #pragma pop
@@ -427,8 +427,8 @@ void dScMgCoin_c::Caption_Draw()
     if (scene->mCaption.visible == 0)
         return;
 
-    RenderOamMainScreen(data_ov006_0213a9fc[scene->mCaption.sprite],
-        scene->mCaption.x >> 12, scene->mCaption.y >> 12, -1, -1);
+    RenderOamMainScreen(sCoinCaptionSprites[scene->mCaption.sprite], scene->mCaption.x >> 12,
+                        scene->mCaption.y >> 12, -1, -1);
 }
 
 // @symbol _ZN11dScMgCoin_c17Caption_StateLoopEi
@@ -634,7 +634,7 @@ void dScMgCoin_c::Sparkle_DrawAll()
             int sprite = scene->spark[i].sprite;
             int x = scene->spark[i].x;
             int y = scene->spark[i].y;
-            Mg_RenderSpriteBothMtx(data_ov006_02136e24[sprite], x >> 12, y >> 12, 0);
+            Mg_RenderSpriteBothMtx(sCoinSparkleSprites[sprite], x >> 12, y >> 12, 0);
         }
     }
 }
@@ -701,7 +701,7 @@ void dScMgCoin_c::Popup_DrawAll()
         y = data_ov006_0212e364[i];
         x = 0x10;
         for (j = 0; j < kTileCols; j++) {
-            Mg_RenderSpriteBothMtx((void *)data_ov006_021341ec, x, y, (void *)0);
+            Mg_RenderSpriteBothMtx((void *)sCoinPopupSprites, x, y, (void *)0);
             x += kTileStep;
         }
     }
@@ -717,10 +717,10 @@ void dScMgCoin_c::DrawScorePlayer()
         return;
 
     lang = GetGameLanguage();
-    RenderOamMainScreen(data_ov006_0213bf34[lang][8], 0x80, 0x18, -1, -1);
+    RenderOamMainScreen(sCoinScorePlayerSprites[lang][8], 0x80, 0x18, -1, -1);
     Mg_DrawCreditsIcon(0x68, 0x28, 1, -1);
     lang = GetGameLanguage();
-    DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7a, 0x28, (void *)0);
+    DrawOamSprite((void *)sCoinScorePlayerSprites[lang][1], (void *)0x7a, 0x28, (void *)0);
     Mg_DrawBigNumber(0x8c, 0x28, scene->mPlayerScore, 1, -1, 2, 0);
 }
 
@@ -735,10 +735,10 @@ void dScMgCoin_c::DrawScoreRival()
         return;
 
     lang = GetGameLanguage();
-    RenderOamMainScreen(data_ov006_0213bf34[lang][4], 0x80, 0x50, -1, -1);
+    RenderOamMainScreen(sCoinScorePlayerSprites[lang][4], 0x80, 0x50, -1, -1);
     Mg_DrawCreditsIcon(0x6c, 0x60, 1, -1);
     lang = GetGameLanguage();
-    DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7e, 0x60, (void *)0);
+    DrawOamSprite((void *)sCoinScorePlayerSprites[lang][1], (void *)0x7e, 0x60, (void *)0);
     if (gMgScene != 0)
         count = gMgScene->mCreditsShown;
     else
@@ -788,10 +788,10 @@ void dScMgCoin_c::DrawCoinValues()
             highlight = 1;
         if (scene->mPhase != kResultPhase) {
             if (scene->mCoins[i].visible != 0)
-                Mg_RenderSpriteBoth(data_ov006_02133f10[sprite], x, y, -1, highlight);
+                Mg_RenderSpriteBoth(sCoinValuesSprites[sprite], x, y, -1, highlight);
         } else {
             if (sprite != 0 && scene->mCoins[i].value != 0)
-                Mg_RenderSpriteBoth(data_ov006_02133f10[sprite], x, y, -1, highlight);
+                Mg_RenderSpriteBoth(sCoinValuesSprites[sprite], x, y, -1, highlight);
             if (scene->mCoins[i].collected == 0 && scene->mCoins[i].value != 0)
                 Mg_DrawBigNumber(x, y, scene->mCoins[i].value, 0, -1, 0, 0);
         }
@@ -1028,7 +1028,7 @@ void dScMgCoin_c::DrawBlocks()
             a2 = v4 >> 12;
             a4 = (flag >= 3) ? 1 : 0;
             idx = data_ov006_0212e314[self->e[i].b18];
-            RenderOamBothScreens(data_ov006_0213bf0c[idx], a1, a2, -1, a4, 0);
+            RenderOamBothScreens(sCoinBlocksSprites[idx], a1, a2, -1, a4, 0);
         }
     }
 }

@@ -452,28 +452,28 @@
       "address": "0x0213cd8c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c15MovePictureSwayEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c15MovePictureSwayEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@2200",
       "address": "0x0213cd94",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c21MovePictureDriftFixedEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c21MovePictureDriftFixedEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@2206",
       "address": "0x0213cd9c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c21MovePictureDriftByRowEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c21MovePictureDriftByRowEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@2204",
       "address": "0x0213cda4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c24MovePictureDriftByColumnEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c24MovePictureDriftByColumnEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@8807",
@@ -487,7 +487,7 @@
       "address": "0x0213cdb4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c22MovePictureDriftRandomEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c22MovePictureDriftRandomEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@2218",
@@ -501,14 +501,14 @@
       "address": "0x0213cdc4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c16TickPictureFlashEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c16TickPictureFlashEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@8805",
       "address": "0x0213cdcc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c14RestartPictureEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c14RestartPictureEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@8801",
@@ -522,14 +522,14 @@
       "address": "0x0213cddc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c11StopPictureEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c11StopPictureEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@2202",
       "address": "0x0213cde4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c23MovePictureDriftByLevelEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c23MovePictureDriftByLevelEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "data_ov006_0213cdec",
@@ -578,7 +578,7 @@
       "address": "0x0213ce1c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "PMF record {_ZN12dScMgLuigi_c17MovePictureBounceEi, 0}, copied into data_ov006_02142254"
+      "evidence": "PMF record {_ZN12dScMgLuigi_c17MovePictureBounceEi, 0}, copied into sLuigiSlotHandlers"
     },
     {
       "symbol": "@8802",
@@ -653,7 +653,7 @@
       "evidence": "LuigiStateHandler table [4] that Behavior dispatches through; the initializer copies 4 PMF records into it"
     },
     {
-      "symbol": "data_ov006_02142254",
+      "symbol": "sLuigiSlotHandlers",
       "address": "0x02142254",
       "size": "0x50",
       "binding": "STB_GLOBAL",
@@ -1461,7 +1461,7 @@
       "source": "0x02131174",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_02142254",
+      "symbol": "sLuigiSlotHandlers",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02142254"

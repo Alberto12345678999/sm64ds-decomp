@@ -142,7 +142,7 @@ extern int Mascot_Construct(char *t);
 extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV12dScMgSlot3_c[];
 extern void RenderOamMainScreen(void*, int, int, int, int);
-extern void* data_ov006_0213e6a8;
+extern void *sSlotsSlotBlinkSprites;
 extern void Mg_LoseCredits(void *c);
 extern void func_ov001_020ab3f0(void *c);
 void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
@@ -153,8 +153,8 @@ void Mg_GainCredits(int x);
 extern void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
 extern int Mg_GetSavedRecord0(void);
 extern int sSlot1ReelPos[][2];
-extern void* data_ov006_0213e96c[];
-extern unsigned char data_ov006_0213e4d8[];
+extern void *sSlot1Sprites[];
+extern unsigned char sSlot1Payouts[];
 extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern void Mg_RenderSubSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5);
 extern void SlotBlink_Draw(unsigned char* o);
@@ -167,7 +167,7 @@ extern void SlotBlink_Tick(void *o);
 extern void SlotReel_SetSpeed(void *o, int v);
 extern int SlotReels_CheckStopped(void *self);
 extern int data_ov006_0213e600[];
-extern u8 data_ov006_0213e4d8[];
+extern u8 sSlot1Payouts[];
 extern s16 data_ov006_0213e654[][2];
 extern s16 data_ov006_0213e656[][2];
 extern s16 data_ov006_0213e4f8[][2];
@@ -699,16 +699,20 @@ s32 dScMgSlot3_c::Render()
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov006_0213e9a4[self->mWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x10, -1, 2, 0x1000, 0x1000, 0, 1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+                0, sSlot3FaceSprites[self->mWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x10, -1,
+                2, 0x1000, 0x1000, 0, 1);
         }
         for (i = 0; i < 3; i++) {
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-                0, data_ov006_0213e9a4[self->mTargetFace * 3 + i], 0x80, self->mReelDrawY + 0x60,
-                -1, 2, 0x1000, 0x1000, 0, 1);
+                0, sSlot3FaceSprites[self->mTargetFace * 3 + i], 0x80, self->mReelDrawY + 0x60, -1,
+                2, 0x1000, 0x1000, 0, 1);
         }
     } else {
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov006_0213e9a4[self->mWinSymbol * 3 + i], 0x80, 0x60, -1, 2, 0x1000, 0x1000, 0, 1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0,
+                                                        sSlot3FaceSprites[self->mWinSymbol * 3 + i],
+                                                        0x80, 0x60, -1, 2, 0x1000, 0x1000, 0, 1);
         }
     }
 
@@ -719,8 +723,8 @@ s32 dScMgSlot3_c::Render()
             for (i2 = 0; i2 < 3; i2++) {
                 int y;
                 for (j2 = 0, y = 0x30; j2 < 3; j2++) {
-                    Hud_RenderSprite(data_ov006_0213e9a4[*(u8 *)(p + j2 + 0x5031) * 3 + i2],
-                                        y - (*(int *)((int)c + i2 * 4 + 0x4ff4) >> 12), 0x60, -1, -1);
+                    Hud_RenderSprite(sSlot3FaceSprites[*(u8 *)(p + j2 + 0x5031) * 3 + i2],
+                                     y - (*(int *)((int)c + i2 * 4 + 0x4ff4) >> 12), 0x60, -1, -1);
                     y += 0x50;
                 }
                 p += 3;
@@ -735,8 +739,8 @@ s32 dScMgSlot3_c::Render()
                 row = a / 0x50;
                 rem = a % 0x50;
                 for (j2 = 0, y = 0x30; j2 < 4; j2++) {
-                    Hud_RenderSprite(data_ov006_0213e9a4[*(u8 *)(p + row + 0x501c) * 3 + i2],
-                                        y - rem, 0x60, -1, -1);
+                    Hud_RenderSprite(sSlot3FaceSprites[*(u8 *)(p + row + 0x501c) * 3 + i2], y - rem,
+                                     0x60, -1, -1);
                     row = (row + 1) % self->mStripLength;
                     y += 0x50;
                 }
@@ -1040,7 +1044,7 @@ void SlotBlink_Start(void *raw, s16 x, s16 y)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void SlotBlink_Draw(unsigned char* raw){
     if (*(u8 *)(raw + 8) == 0) return;
-    RenderOamMainScreen(&data_ov006_0213e6a8, *(short *)raw, *(short *)(raw + 2), -1, -1);
+    RenderOamMainScreen(&sSlotsSlotBlinkSprites, *(short *)raw, *(short *)(raw + 2), -1, -1);
 }
 }
 
@@ -1263,8 +1267,7 @@ s32 dScMgSlot1_c::Render()
         pos = *(t + i + 0x46ff);
         x = sSlot1ReelPos[i][1] - (*(int *)(t + (i << 2) + 0x46a4) >> 12);
         for (j = 0; j < 2; j++) {
-            Hud_RenderSprite(data_ov006_0213e96c[*(cur + pos + 0x46c0)], sSlot1ReelPos[i][0], x, -1,
-                             3);
+            Hud_RenderSprite(sSlot1Sprites[*(cur + pos + 0x46c0)], sSlot1ReelPos[i][0], x, -1, 3);
             pos--;
             x += 0x40;
             if (pos < 0)
@@ -1281,7 +1284,7 @@ s32 dScMgSlot1_c::Render()
             if ((int)b > 0) {
                 pos = 0x18;
                 do {
-                    Mg_RenderSubSpriteScaled(data_ov006_0213e96c[0xb], pos, 0x30, -1, 2, 0x1000, 0);
+                    Mg_RenderSubSpriteScaled(sSlot1Sprites[0xb], pos, 0x30, -1, 2, 0x1000, 0);
                     pos += 0x10;
                     i++;
                 } while (i < *(t + 0x470b));
@@ -1293,11 +1296,12 @@ s32 dScMgSlot1_c::Render()
             i = 0;
             pos = 0x18;
             for (; i < 3; i++) {
-                Mg_RenderSubSpriteScaled(data_ov006_0213e96c[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000, 0);
+                Mg_RenderSubSpriteScaled(sSlot1Sprites[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000,
+                                         0);
                 pos += 0x10;
             }
             Mg_RenderSubSpritePalMtx(sSlotLangSprites[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
-            Mg_DrawBigNumber(0x60, 0x40, data_ov006_0213e4d8[*(t + 0x4709)], 0, 2, 2, 0x14);
+            Mg_DrawBigNumber(0x60, 0x40, sSlot1Payouts[*(t + 0x4709)], 0, 2, 2, 0x14);
         }
     }
     SlotBlink_Draw(t + 0x4684);
@@ -1410,7 +1414,7 @@ s32 dScMgSlot1_c::Behavior()
                 mLineMatched = SlotReels_CheckStopped(this);
                 mPayout = 0;
                 if (mLineMatched != 0) {
-                    mPayout += data_ov006_0213e4d8[mMatchSymbol];
+                    mPayout += sSlot1Payouts[mMatchSymbol];
                 }
                 if (mWilds != 0 && mWilds < 3) {
                     mPayout += mWilds << 1;
@@ -1526,7 +1530,7 @@ s32 dScMgSlot1_c::Behavior()
 }
 
 // @symbol _ZN12dScMgSlot1_c13InitResourcesEv
-/* The ov004 scroll words (data_ov004_020bc85c..sMgMainBannerX) name
+/* The ov004 scroll words (sMgScoreDigitsX..sMgMainBannerX) name
  * no struct; they are stored raw. The reel-table fill stays a raw char*
  * cursor over 0x46c0..0x46ff (see leftovers). */
 s32 dScMgSlot1_c::InitResources()

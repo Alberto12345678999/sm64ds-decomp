@@ -119,12 +119,12 @@ extern int            data_ov006_0212e504[];
 extern int            data_ov006_0212e51c[];
 extern int            data_ov006_0212e534[];
 extern int            data_ov006_0212e554[];
-extern int            data_ov006_0213a5e0[];
+extern int sCurlingBitSprites[];
 extern int            data_ov006_0213c3fc;
 extern int            data_ov006_0213c44c;
-extern int            data_ov006_0213c454;
-extern int           *data_ov006_0213c4dc[];
-extern int            data_ov006_0213c4f0[];
+extern int sCurling2StonesSprites;
+extern int *sCurling2CounterSprites[];
+extern int sCurling2CursorSprites[];
 extern char           data_ov006_0213c5a0;
 
 /* The seven pointer-to-member state tables this file's functions dispatch
@@ -295,7 +295,7 @@ void dScMgCurling2_c::ClearValues()
 
 // @symbol _ZN15dScMgCurling2_c10DrawPiecesEv
 /* Draw every piece whose drawEnable is set, as two stacked sprites
- * from data_ov006_0213a5e0. */
+ * from sCurlingBitSprites. */
 void dScMgCurling2_c::DrawPieces()
 {
     int i;
@@ -303,8 +303,8 @@ void dScMgCurling2_c::DrawPieces()
         if (mPiece[i].drawEnable) {
             int x = mPiece[i].x >> 0xc;
             int y = mPiece[i].y >> 0xc;
-            Mg_RenderSubSpriteMtx(data_ov006_0213a5e0[mPiece[i].sprite0], x, y, 0);
-            DrawOamSprite(data_ov006_0213a5e0[mPiece[i].sprite1], x, y, 0);
+            Mg_RenderSubSpriteMtx(sCurlingBitSprites[mPiece[i].sprite0], x, y, 0);
+            DrawOamSprite(sCurlingBitSprites[mPiece[i].sprite1], x, y, 0);
         }
     }
 }
@@ -798,7 +798,7 @@ void dScMgCurling2_c::DrawCursor()
 
     int x = mDragX;
     int y = mDragY;
-    Mg_RenderSpriteBoth((int)data_ov006_0213c4f0, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
+    Mg_RenderSpriteBoth((int)sCurling2CursorSprites, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
 }
 
 /* Stylus drag update. Runs while the player drags a stone before the throw. With no touch in
@@ -972,7 +972,7 @@ void dScMgCurling2_c::DragBegin()
 
 // @symbol _ZN15dScMgCurling2_c11DrawCounterEv
 /* Draw the counter at the bottom of the screen: a fixed
- * sprite, a language-dependent label out of data_ov006_0213c4dc, and 5 minus
+ * sprite, a language-dependent label out of sCurling2CounterSprites, and 5 minus
  * the thrown count, floored at zero. */
 void dScMgCurling2_c::DrawCounter()
 {
@@ -983,7 +983,7 @@ void dScMgCurling2_c::DrawCounter()
     if (left < 0)
         left = 0;
     Mg_RenderSubSpriteMtx((int)&data_ov006_0213c3fc, 0xd0, 0xb4, 0);
-    Mg_RenderSubSpriteMtx(data_ov006_0213c4dc[GetGameLanguage()][1], 0xe8, 0xb4, 0);
+    Mg_RenderSubSpriteMtx(sCurling2CounterSprites[GetGameLanguage()][1], 0xe8, 0xb4, 0);
     Mg_DrawBigNumber(0xf8, 0xb4, left, 0, 0, 0, 0);
 }
 
@@ -1005,7 +1005,7 @@ void dScMgCurling2_c::DrawStones()
         if (mStone[i].target != 0) tex = &data_ov006_0213c44c;
         else tex = &data_ov006_0213c3fc;
         RenderOamBothScreens(tex, x, y, -1, 1, 0);
-        RenderOamBothScreens(&data_ov006_0213c454, x, y + 8, -1, 2, 0);
+        RenderOamBothScreens(&sCurling2StonesSprites, x, y + 8, -1, 2, 0);
     }
 }
 

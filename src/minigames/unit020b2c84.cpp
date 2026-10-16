@@ -197,12 +197,12 @@ extern int pmf_Banner_DrawSpin[];
 extern int pmf_Banner_UpdateSpin[];
 extern int pmf_Banner_UpdatePressed_2[];
 extern unsigned char sMgBannerGfxSlotUsed[];
-extern int data_ov004_020bf3ec;
-extern int data_ov004_020bf3f0;
-extern int data_ov004_020bf3f4[2];
-extern int data_ov004_020bf3fc[2];
-extern void *data_ov004_020bf404[3];
-extern void *data_ov004_020bf410[3];
+extern int sBannerWaveFxPosGuard;
+extern int sBannerZoomFxPosGuard;
+extern int sBannerWaveFxPos[2];
+extern int sBannerZoomFxPos[2];
+extern void *sBannerZoomFxPosDtorRec[3];
+extern void *sBannerWaveFxPosDtorRec[3];
 extern PairW sBannerUpdateTable[];
 extern PairW sBannerSetupTable[];
 extern PairW sBannerDrawTable[];
@@ -663,7 +663,7 @@ extern "C" void Banner_StartWaveBurst(Elem* e) {
     boxB[0] = 0; boxB[1] = -0x1800;
     boxC[0] = 0; boxC[1] = -0x4000;
 
-    flags = data_ov004_020bf3ec;
+    flags = sBannerWaveFxPosGuard;
 
     {
         int y12 = e->mY;
@@ -677,10 +677,11 @@ extern "C" void Banner_StartWaveBurst(Elem* e) {
     }
 
     if (flags == 0) {
-        data_ov004_020bf3f4[0] = 0;
-        data_ov004_020bf3f4[1] = 0xc0;
-        __register_global_object(data_ov004_020bf3f4, (void *)NullDestructor_0203d47c, data_ov004_020bf410);
-        data_ov004_020bf3ec = data_ov004_020bf3ec | 1;
+        sBannerWaveFxPos[0] = 0;
+        sBannerWaveFxPos[1] = 0xc0;
+        __register_global_object(sBannerWaveFxPos, (void *)NullDestructor_0203d47c,
+                                 sBannerWaveFxPosDtorRec);
+        sBannerWaveFxPosGuard = sBannerWaveFxPosGuard | 1;
     }
 
     for (i = 0; i < 0x20; i++) {
@@ -699,7 +700,7 @@ extern "C" void Banner_StartWaveBurst(Elem* e) {
         ang = ang + 0x5a;
         spawnAngle = (s16)ang;
 
-        Mg_SpawnFx(0, spawnAngle, outA, outB, data_ov004_020bf3f4);
+        Mg_SpawnFx(0, spawnAngle, outA, outB, sBannerWaveFxPos);
     }
 }
 
@@ -1112,7 +1113,7 @@ extern "C" void Banner_SetupZoomBurst(Elem* e)
     boxC[0] = 0;
     boxC[1] = -0x4000;
 
-    flags = data_ov004_020bf3f0;
+    flags = sBannerZoomFxPosGuard;
 
     {
         int y12 = e->mY;
@@ -1126,10 +1127,11 @@ extern "C" void Banner_SetupZoomBurst(Elem* e)
     }
 
     if (flags == 0) {
-        data_ov004_020bf3fc[0] = 0;
-        data_ov004_020bf3fc[1] = 0xc0;
-        __register_global_object(data_ov004_020bf3fc, (void*)NullDestructor_0203d47c, data_ov004_020bf404);
-        data_ov004_020bf3f0 = data_ov004_020bf3f0 | 1;
+        sBannerZoomFxPos[0] = 0;
+        sBannerZoomFxPos[1] = 0xc0;
+        __register_global_object(sBannerZoomFxPos, (void *)NullDestructor_0203d47c,
+                                 sBannerZoomFxPosDtorRec);
+        sBannerZoomFxPosGuard = sBannerZoomFxPosGuard | 1;
     }
 
     for (i = 0; i < 0x20; i++) {
@@ -1144,7 +1146,7 @@ extern "C" void Banner_SetupZoomBurst(Elem* e)
         ang = ang + 0x5a;
         spawnAngle = (s16)ang;
 
-        Mg_SpawnFx(0, spawnAngle, outA, outB, data_ov004_020bf3fc);
+        Mg_SpawnFx(0, spawnAngle, outA, outB, sBannerZoomFxPos);
     }
 }
 

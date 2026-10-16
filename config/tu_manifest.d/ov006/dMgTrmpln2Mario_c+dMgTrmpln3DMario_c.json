@@ -418,7 +418,7 @@
       "ordinal": 56
     },
     {
-      "symbol": "Trmp3DMario_PickIdleAnim",
+      "symbol": "Trmp3DMario_JumpOff",
       "address": "0x020cc198",
       "size": "0x00000114",
       "legacy_source": "src/func_ov006_020cc198.cpp",
