@@ -7213,7 +7213,7 @@
     "src/minigames/unit020b4aa4.cpp#MgCoins_Reset": "tangosdev",
     "src/minigames/unit020b4aa4.cpp#MgCoins_Cleanup": "ruspecial",
     "src/minigames/unit020b4aa4.cpp#Coin_Destroy": "tangosdev",
-    "src/minigames/unit020b4aa4.cpp#func_ov004_020b67e4": "tangosdev",
+    "src/minigames/unit020b4aa4.cpp#Coin_Construct": "tangosdev",
     "src/game/actors/d_a_book.cpp#_ZN8daBook_cD1Ev": "tangosdev",
     "src/game/actors/d_a_book.cpp#_ZN8daBook_cD0Ev": "tangosdev",
     "src/game/actors/d_a_book.cpp#_ZN11daBookGen_cD1Ev": "tangosdev",

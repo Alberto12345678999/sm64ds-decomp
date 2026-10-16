@@ -17,7 +17,7 @@
  * .data window (Mg_SetNextBanner, 020b67f8, 020b6808, 020b682c and
  * Mg_ResetBannerLayout).
  *
- * Edges. 0x020b67e8 is the first function after func_ov004_020b67e4, the last
+ * Edges. 0x020b67e8 is the first function after Coin_Construct, the last
  * destructor helper __sinit_ov004_020b9ad0 registers for the preceding unit
  * (the 0x14-entry array at sMgCoins). 0x020b8c18 is the start of
  * dMgPsOpt_c. The unit's .data window, 0x020bc850..0x020bca44, is read only
