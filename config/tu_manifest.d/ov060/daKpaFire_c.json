@@ -49,7 +49,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov060_02116518",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_02116518Ejii",
       "address": "0x02116518",
       "size": "0x00000228",
       "legacy_source": "src/func_ov060_02116518.c",
@@ -63,63 +63,63 @@
       "ordinal": 3
     },
     {
-      "symbol": "func_ov060_021167c8",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021167c8Ev",
       "address": "0x021167c8",
       "size": "0x00000024",
       "legacy_source": "src/func_ov060_021167c8.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov060_021167ec",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021167ecEv",
       "address": "0x021167ec",
       "size": "0x000000d8",
       "legacy_source": "src/func_ov060_021167ec.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov060_021168c4",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021168c4Ev",
       "address": "0x021168c4",
       "size": "0x000000ec",
       "legacy_source": "src/func_ov060_021168c4.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov060_021169b0",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021169b0Ev",
       "address": "0x021169b0",
       "size": "0x00000048",
       "legacy_source": "src/func_ov060_021169b0.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov060_021169f8",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021169f8Ev",
       "address": "0x021169f8",
       "size": "0x00000120",
       "legacy_source": "src/func_ov060_021169f8.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov060_02116b18",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_02116b18Ev",
       "address": "0x02116b18",
       "size": "0x00000050",
       "legacy_source": "src/func_ov060_02116b18.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov060_02116b68",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_02116b68Ev",
       "address": "0x02116b68",
       "size": "0x00000100",
       "legacy_source": "src/func_ov060_02116b68.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov060_02116c68",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_02116c68Ev",
       "address": "0x02116c68",
       "size": "0x00000110",
       "legacy_source": "src/func_ov060_02116c68.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov060_02116d78",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_02116d78Ev",
       "address": "0x02116d78",
       "size": "0x000001fc",
       "legacy_source": "src/func_ov060_02116d78.c",

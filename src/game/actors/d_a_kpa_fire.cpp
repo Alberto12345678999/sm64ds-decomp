@@ -436,8 +436,7 @@ void daKpaFire_c::func_ov060_021172e0()
 }
 
 // @symbol _ZN11daKpaFire_c19func_ov060_021172c8Ej
-/* 1 if more than n Behavior frames have passed (mFrameCount > n), else 0.
- * Keeps the unsigned char * parameter decl_common.h declares. */
+/* 1 if more than n Behavior frames have passed (mFrameCount > n), else 0. */
 int daKpaFire_c::func_ov060_021172c8(unsigned int n)
 {
     return mFrameCount > n;
@@ -668,7 +667,7 @@ void daKpaFire_c::func_ov060_02116b68()
 {
     func_ov060_02116518(this, data_ov060_02119358[this->mSubVariant], 0, 0x46000);
     func_ov060_0211712c();
-    if (func_ov060_021172c8((unsigned char *)this, 0x1c2))
+    if (this->func_ov060_021172c8(0x1c2))
         this->MarkForDestruction();
     this->UpdatePos(0);
     if (this->mWithMeshClsn.IsOnGround()) {
@@ -783,7 +782,7 @@ void daKpaFire_c::func_ov060_021168c4()
     }
     this->UpdatePos(0);
     func_ov060_02116518(this, PARTICLE_VARIANT_4, 0, 0x32000);
-    if (func_ov060_021172c8((unsigned char*)this, 0x96) != 0) {
+    if (this->func_ov060_021172c8(0x96) != 0) {
         this->MarkForDestruction();
     }
     if (koopa == 0) return;
@@ -828,16 +827,14 @@ void daKpaFire_c::func_ov060_021167ec()
     this->MarkForDestruction();
 }
 
-// @symbol func_ov060_021167c8
+// @symbol _ZN11daKpaFire_c19func_ov060_021167c8Ev
 /* Init shared by variants 0 and 3: cylinder flags bit 0 set (cylinder
  * disabled), mFireScale 2.0 (0x2000), shadow multiplier 0x10. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021167c8(daKpaFire_c *self)
+void daKpaFire_c::func_ov060_021167c8()
 {
-    self->mdCcAc_c.flags |= 1;
-    self->mFireScale = 0x2000;
-    self->mShadowRadiusMul = 0x10;
-}
+    this->mdCcAc_c.flags |= 1;
+    this->mFireScale = 0x2000;
+    this->mShadowRadiusMul = 0x10;
 }
 
 // @symbol func_ov060_02116740

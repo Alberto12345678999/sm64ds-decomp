@@ -35083,7 +35083,7 @@
     },
     "ov060:0x02116518": {
       "author": "tangosdev",
-      "name": "func_ov060_02116518"
+      "name": "_ZN11daKpaFire_c19func_ov060_02116518Ejii"
     },
     "ov060:0x02116740": {
       "author": "tangosdev",
@@ -35091,43 +35091,43 @@
     },
     "ov060:0x021167c8": {
       "author": "andrewboudreau",
-      "name": "func_ov060_021167c8"
+      "name": "_ZN11daKpaFire_c19func_ov060_021167c8Ev"
     },
     "ov060:0x021167ec": {
       "author": "ruspecial",
-      "name": "func_ov060_021167ec"
+      "name": "_ZN11daKpaFire_c19func_ov060_021167ecEv"
     },
     "ov060:0x021168c4": {
       "author": "tangosdev",
-      "name": "func_ov060_021168c4"
+      "name": "_ZN11daKpaFire_c19func_ov060_021168c4Ev"
     },
     "ov060:0x021169b0": {
       "author": "tangosdev",
-      "name": "func_ov060_021169b0"
+      "name": "_ZN11daKpaFire_c19func_ov060_021169b0Ev"
     },
     "ov060:0x021169f8": {
       "author": "tangosdev",
-      "name": "func_ov060_021169f8"
+      "name": "_ZN11daKpaFire_c19func_ov060_021169f8Ev"
     },
     "ov060:0x02116b18": {
       "author": "tangosdev",
-      "name": "func_ov060_02116b18"
+      "name": "_ZN11daKpaFire_c19func_ov060_02116b18Ev"
     },
     "ov060:0x02116b68": {
       "author": "tangosdev",
-      "name": "func_ov060_02116b68"
+      "name": "_ZN11daKpaFire_c19func_ov060_02116b68Ev"
     },
     "ov060:0x02116c68": {
       "author": "tangosdev",
-      "name": "func_ov060_02116c68"
+      "name": "_ZN11daKpaFire_c19func_ov060_02116c68Ev"
     },
     "ov060:0x02116d78": {
       "author": "lunavyqo",
-      "name": "func_ov060_02116d78"
+      "name": "_ZN11daKpaFire_c19func_ov060_02116d78Ev"
     },
     "ov060:0x02116f74": {
       "author": "tangosdev",
-      "name": "func_ov060_02116f74"
+      "name": "_ZN11daKpaFire_c19func_ov060_02116f74Ev"
     },
     "ov060:0x02116f90": {
       "author": "tangosdev",
