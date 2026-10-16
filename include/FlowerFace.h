@@ -41,6 +41,7 @@ struct FlowerFace {
 };
 
 #ifndef SM64DS_PLATFORM_PC
+typedef char FlowerFaceFile_size_must_be_0x8[sizeof(FlowerFaceFile) == 0x8 ? 1 : -1];
 typedef char FallingPetal_size_must_be_0x98[sizeof(FallingPetal) == 0x98 ? 1 : -1];
 typedef char FlowerFace_size_must_be_0xdac[sizeof(FlowerFace) == 0xdac ? 1 : -1];
 #endif

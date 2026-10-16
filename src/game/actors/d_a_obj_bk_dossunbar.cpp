@@ -11,8 +11,8 @@
  * deslop
  * Leftover: state bodies stay extern "C" (func_ov015_02111ce0..02111fb8).
  *   A C++ method would emit _ZN19daObjBk_Dossunbar_c* and miss the
- *   unowned PMF records. Tables 02114a24 / 021149ec are filled by
- *   __sinit_ov015_02113048, not this TU.
+ *   unowned PMF descriptor records. The two dispatch tables and their
+ *   compiler-generated initializer are owned by this TU.
  * Leftover: dBgW_KcMbg::SetFile, IsClsnInRange, Particle::System::NewSimple
  *   stay mangled (Fix12-by-value, wall 6az). SetFile as a method
  *   size-DIFF Init.
@@ -21,8 +21,8 @@
  * Leftover: resource table is two { model, KCL, CLPS } rows. Init must
  *   keep the three column symbols 02114534/38/3c; a typed
  *   ResourceDescriptor[2] size-DIFF Init and changes reloc destinations.
- *   sinit file IDs 0x58b / 0x58c / 0x58d / 0x58e. Text-only TU, so
- *   g_profile_BK_DOSSUNBAR_L / _S are not defined here (S14).
+ *   sinit file IDs 0x58b / 0x58c / 0x58d / 0x58e. The registry profiles
+ *   g_profile_BK_DOSSUNBAR_L / _S remain outside the owned ranges.
  * Leftover: func_01ffb0a4 / func_01ffb07c are MeshCollider ITCM
  *   (flag 0x35 / vec at +0x38). func_020393d4 stores the BeforeClsn
  *   callback; 020396d0 and Math_Function_0203b0fc / 0203b14c names
@@ -34,6 +34,20 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+
+/* Local names for the existing eight-byte model/collision resource families.
+ * Their constructors and destructors remain ordinary cross-TU C++ imports. */
+struct DossunbarModelFile : SharedFilePtr {
+    u32 words[2];
+    DossunbarModelFile(u32 fileID);
+    ~DossunbarModelFile();
+};
+
+struct DossunbarCollisionFile : SharedFilePtr {
+    u32 words[2];
+    DossunbarCollisionFile(u32 fileID);
+    ~DossunbarCollisionFile();
+};
 
 struct CLPS_Block;
 
@@ -57,14 +71,29 @@ struct VtEntry {
 
 enum { kMovingBarBigActorId = 0x35 };
 
+extern StateEntry data_ov015_021149ec[7];
+extern VtEntry data_ov015_02114a24[7];
+extern StateEntry data_ov015_02114500;
+extern StateEntry data_ov015_021144f0;
+extern StateEntry data_ov015_021144e0;
+extern StateEntry data_ov015_021144d0;
+extern StateEntry data_ov015_02114508;
+extern StateEntry data_ov015_021144d8;
+extern StateEntry data_ov015_021144e8;
+extern VtEntry data_ov015_021144b0;
+extern VtEntry data_ov015_021144f8;
+extern VtEntry data_ov015_021144c8;
+extern VtEntry data_ov015_021144c0;
+extern VtEntry data_ov015_021144a8;
+extern VtEntry data_ov015_021144b8;
+extern VtEntry data_ov015_021144a0;
+
 extern "C" {
 /* Three column symbols of one two-row {model, KCL, CLPS} table.
    A typed ResourceDescriptor[2] changes Init reloc destinations. */
 extern SharedFilePtr *data_ov015_02114534;
 extern SharedFilePtr *data_ov015_02114538;
 extern CLPS_Block *data_ov015_0211453c;
-extern StateEntry data_ov015_021149ec[];
-extern VtEntry data_ov015_02114a24[];
 
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *, int, int);
@@ -338,3 +367,19 @@ void daObjBk_Dossunbar_c::Kill()
     Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
     MarkForDestruction();
 }
+
+/* Preserve the small/model, small/collision, large/model, large/collision
+ * construction order before initializing the two dispatch tables. */
+DossunbarModelFile gBkDossunbarSModelFile(0x058d);
+DossunbarCollisionFile gBkDossunbarSCollisionFile(0x058e);
+DossunbarModelFile gBkDossunbarLModelFile(0x058b);
+DossunbarCollisionFile gBkDossunbarLCollisionFile(0x058c);
+
+VtEntry data_ov015_02114a24[7] = {
+    data_ov015_021144b0, data_ov015_021144f8, data_ov015_021144c8, data_ov015_021144c0,
+    data_ov015_021144a8, data_ov015_021144b8, data_ov015_021144a0,
+};
+StateEntry data_ov015_021149ec[7] = {
+    data_ov015_02114500, data_ov015_021144f0, data_ov015_021144e0, data_ov015_021144d0,
+    data_ov015_02114508, data_ov015_021144d8, data_ov015_021144e8,
+};

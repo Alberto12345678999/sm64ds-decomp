@@ -241,7 +241,8 @@ int dScMgAmida_c::IsAltVariant()
 /* Slot 36, this class's own: whether the low byte of param1 (the menu
    entry's sceneParam) is 2. The Rec Room lists Amida twice, and its second
    entry (row 24) passes 2 (notes/minigames/runtime-checks.md, IsAltVariant),
-   so this picks that variant. The base's IsAltVariant tests for 1. */
+   so this picks that variant. IsAltVariant above is the == 1 test (the
+   base's own asks only for nonzero). */
 int dScMgAmida_c::IsVariant2() {
     return (((int)param1) & 0xff) == 2;
 }

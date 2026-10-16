@@ -4739,7 +4739,7 @@ sPanelShakeStateTable kind:bss addr:0x021427bc
 sPanelSprites kind:bss addr:0x021427d4
 sPanelBannerStateTable kind:bss addr:0x021427ec
 data_ov006_02142804 kind:bss addr:0x02142804
-sPanelInputStateTable kind:bss addr:0x02142820
+sPanelAnswerStateTable kind:bss addr:0x02142820
 sPanelPanelStateTable kind:bss addr:0x02142840
 sPanelIntroCardStateTable kind:bss addr:0x02142860
 sPanelSceneStateTable kind:bss addr:0x02142888
