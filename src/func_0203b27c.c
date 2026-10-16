@@ -1,6 +1,6 @@
 struct Node { struct Node* next; struct Node* prev; };
 struct List { struct Node* head; struct Node* tail; };
-int func_0203b27c(struct List* l, struct Node* n){
+int func_0203b27c(struct List *l, struct Node *n) {
     if (n != 0) {
         if (n->next != 0) {
             n->next->prev = n->prev;
@@ -19,5 +19,5 @@ int func_0203b27c(struct List* l, struct Node* n){
     } else {
         return 0;
     }
-  return 1;
+    return 1;
 }

@@ -333,7 +333,8 @@ s32 func_02009e70(char *self)
                             if (sp28 > (s32)func_020093f4(self, 0xdfe60))
                                 *(u32 *)L0(self + 0x154) &= ~0x100;
                         }
-                        /* sb = sp28 is assigned inside the test: hoisting it above the if re-lays it (290 words) */
+                        /* sb = sp28 is assigned inside the test: hoisting it above the if
+                           re-lays the function (290 words differ). */
                         if (kf != 0 || *(u16 *)(self + 0x1a0) != 0 || *(u8 *)(self + 0x1a6) != 0 ||
                             r7 <= sp08 || (sb = sp28) < fp || sb <= sp0c) {
                             sb = *(s16 *)(self + 0x17c);
