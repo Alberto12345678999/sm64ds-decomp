@@ -81,9 +81,47 @@ struct MatrixWords {
 };
 
 /* A loaded SharedFilePtr: the second word is the file it loaded. */
-struct LoadedFile {
+struct LoadedFile : SharedFilePtr {
     u32 fileID;
     void *file;
+};
+
+/* Inferred local resource-family ABI views; these type names are not ROM
+ * names. The manifest binds each constructor/destructor to its existing
+ * model, texture-sequence or animation helper at the original address. */
+struct EyknModelFile : LoadedFile {
+    EyknModelFile(u32 fileID);
+    ~EyknModelFile();
+};
+
+struct EyknTextureSequenceFile : LoadedFile {
+    EyknTextureSequenceFile(u32 fileID);
+    ~EyknTextureSequenceFile();
+};
+
+struct EyknAnimationFileHandle : LoadedFile {
+    EyknAnimationFileHandle(u32 fileID);
+    ~EyknAnimationFileHandle();
+};
+
+EyknModelFile data_ov071_02123050(0x02f7);           // EYEKUN_BMD
+EyknTextureSequenceFile data_ov071_02123038(0x02f8); // EYEKUN_CLOSE_BTP
+EyknTextureSequenceFile data_ov071_02123040(0x02fb); // EYEKUN_OPEN_BTP
+EyknAnimationFileHandle data_ov071_02123048(0x02f9); // EYEKUN_DEAD_BCA
+
+/* Existing ROM PMF descriptors remain ROM-owned. Their native copies build
+ * the three wait/attack/die rows in BSS, in the original initialization order. */
+extern daEykn_c::StateFunc data_ov071_02122cb8;
+extern daEykn_c::StateFunc data_ov071_02122cc0;
+extern daEykn_c::StateFunc data_ov071_02122ca8;
+extern daEykn_c::StateFunc data_ov071_02122cd0;
+extern daEykn_c::StateFunc data_ov071_02122cb0;
+extern daEykn_c::StateFunc data_ov071_02122cc8;
+
+daEykn_c::State data_ov071_02123088[3] = {
+    {data_ov071_02122cb8, data_ov071_02122cc0},
+    {data_ov071_02122ca8, data_ov071_02122cd0},
+    {data_ov071_02122cb0, data_ov071_02122cc8},
 };
 
 int ApproachLinear(int &value, int target, int step);
@@ -124,12 +162,7 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 extern s16 data_02082214[];
 extern s8 data_0209f2f8; /* current sublevel id */
 extern Matrix4x3 IDENTITY_MATRIX4X3;
-extern daEykn_c::State data_ov071_02123088[];
-extern LoadedFile data_ov071_02123038; /* BTP 0x2f8 */
-extern LoadedFile data_ov071_02123040; /* BTP 0x2fb */
-extern LoadedFile data_ov071_02123048; /* BCA 0x2f9 */
 extern SharedFilePtr data_ov002_0210da38; /* blue-coin model */
-extern SharedFilePtr data_ov071_02123050; /* BMD 0x2f7 */
 extern SharedFilePtr *data_ov071_021226a4[2]; /* the two BTPs */
 extern SharedFilePtr *data_ov071_021226a0; /* the BCA */
 }
