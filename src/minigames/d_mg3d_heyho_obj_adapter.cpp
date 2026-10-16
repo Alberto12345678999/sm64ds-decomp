@@ -23,6 +23,7 @@
 #include "common.h"
 #include "decl_common.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "SharedFilePtr.h"
 #include "dMgJump3DMario_c.h"
 #include "Heyho.h"
@@ -203,9 +204,9 @@ void Heyho_MotionFlyIn(char *c) {
     short *ang = (short *)(((int)c + 0xea));
     *ang = *ang + 0x200;
 
-    HEYHO(c)->mVel.x = (int)(((HEYHO(c)->mGoal.x - HEYHO(c)->mPos.x) * 0x100LL + 0x800) >> 12);
-    HEYHO(c)->mVel.y = (int)(((HEYHO(c)->mGoal.y - HEYHO(c)->mPos.y) * 0x100LL + 0x800) >> 12);
-    HEYHO(c)->mVel.z = (int)(((HEYHO(c)->mGoal.z - HEYHO(c)->mPos.z) * 0x100LL + 0x800) >> 12);
+    HEYHO(c)->mVel.x = FX_MUL(HEYHO(c)->mGoal.x - HEYHO(c)->mPos.x, 0x100);
+    HEYHO(c)->mVel.y = FX_MUL(HEYHO(c)->mGoal.y - HEYHO(c)->mPos.y, 0x100);
+    HEYHO(c)->mVel.z = FX_MUL(HEYHO(c)->mGoal.z - HEYHO(c)->mPos.z, 0x100);
     AddVec3((struct Vector3 *)(c + 0x9c), (struct Vector3 *)(c + 0xa8), (struct Vector3 *)(c + 0x9c));
 
     if ((HEYHO(c)->mVel.x < 0 ? -HEYHO(c)->mVel.x : HEYHO(c)->mVel.x) < 0x10 &&
@@ -1441,7 +1442,7 @@ extern "C" void Heyho_MotionChase(char *c) {
                     HEYHO(c)->mVel.y = vel.y;
                     HEYHO(c)->mVel.z = vel.z;
                 } else {
-                    int w = (int)(((long long)len * 0xb50 + 0x800) >> 12);
+                    int w = FX_MUL(len, 0xb50);
                     HEYHO(c)->mVel.x = w;
                     HEYHO(c)->mVel.y = w;
                 }
@@ -1493,10 +1494,9 @@ void Heyho_MotionHitSpin(char *c) {
         ang = *(unsigned short*)(c + 0xea) >> 4;
         idx = ang * 2;
         idx1 = idx + 1;
-        r0 = (int)(((long long)((tbl[idx] >> 1) + 0x1000) * (long long)0x1400 + 0x800) >> 0xc);
+        r0 = FX_MUL((tbl[idx] >> 1) + 0x1000, 0x1400);
         HEYHO(c)->mScale.x = r0;
-        HEYHO(c)->mScale.y =
-            (int)(((long long)((tbl[idx1] >> 1) + 0x800) * (long long)0x1400 + 0x800) >> 0xc);
+        HEYHO(c)->mScale.y = FX_MUL((tbl[idx1] >> 1) + 0x800, 0x1400);
         HEYHO(c)->mScale.z = r0;
         return;
     }
@@ -1671,7 +1671,7 @@ extern char *sJumpAdapters[];
 void Heyho_CheckHitB(struct Self* self)
 {
     int i;
-    int lim = (int)(((long long)self->d8 * 0x12000 + 0x800) >> 12);
+    int lim = FX_MUL(self->d8, 0x12000);
     int half = lim >> 1;
 
     for (i = 0; i < 3; i++) {
@@ -1764,7 +1764,7 @@ extern void Heyho_StartMotionHitSpin(Self *self);
 void Heyho_CheckHitA(Self *self)
 {
     int i;
-    int thresh = (int)(((long long)self->speed * 0x12000 + 0x800) >> 12);
+    int thresh = FX_MUL(self->speed, 0x12000);
 
     for (i = 0; i < 3; i++) {
         Vec3 disp, rel, up, sum;

@@ -17,6 +17,8 @@
  *   not this TU's.
  */
 
+#include "nitro/fx/fx.h"
+
 typedef long long s64;
 
 struct Ent_ov006 {
@@ -114,7 +116,7 @@ void Puff_Update(char* c)
 {
     if (*(short*)(c+0x18) == 0) return;
     *(short*)(((int)c + 0x1c)) += 0x200;
-    *(int*)(c+0x10) = (int)(((long long)*(int*)(c+0x10) * *(int*)(c+0x14) + 0x800) >> 12);
+    *(int *)(c + 0x10) = FX_MUL(*(int *)(c + 0x10), *(int *)(c + 0x14));
     *(int*)(((int)c + 0xc)) -= 0x40;
     ApproachLinear(*(int*)(c+0x14), 0x800, 0x10);
     if (ApproachLinear2(*(short*)(c+0x1e), 0, 1) != 0) {
@@ -141,7 +143,7 @@ void Puff_Draw(char *c)
         x = sPuffSprites[idx2][*(short *)(c + 0x1a)];
     }
     t = data_02082214[(*(unsigned short*)(c + 0x1c) >> 4) * 2];
-    prod = (int)(((s64)*(int*)(c + 0x10) * t + 0x800) >> 12);
+    prod = FX_MUL(*(int *)(c + 0x10), t);
     pos = *(int*)c + prod;
     Hud_RenderSprite(x, pos >> 12, *(int*)(c + 4) >> 12, -1, -1);
 }

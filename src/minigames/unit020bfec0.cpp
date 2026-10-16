@@ -13,6 +13,7 @@
  */
 
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "PlayerInput.h"
@@ -911,15 +912,15 @@ extern "C" {
         int b; \
         if (q > 0x800) { \
             int d = (q - 0x800) << 1; \
-            a = (int)(((s64)d * -0x100 + 0x800) >> 12); \
-            b = (int)(((s64)d * -0x260 + 0x800) >> 12); \
+            a = FX_MUL(d, -0x100); \
+            b = FX_MUL(d, -0x260); \
         } else { \
             int d = (0x800 - q) << 1; \
-            a = (int)(((s64)d * 0x260 + 0x800) >> 12); \
-            b = (int)(((s64)d * 0x100 + 0x800) >> 12); \
+            a = FX_MUL(d, 0x260); \
+            b = FX_MUL(d, 0x100); \
         } \
         { \
-            int m = (int)(((s64)r * 0x20 + 0x800) >> 12) + (int)(((s64)w * 0x500 + 0x800) >> 12); \
+            int m = FX_MUL(r, 0x20) + FX_MUL(w, 0x500); \
             int o1 = *(int*)((c) + 0x18c); \
             int o2 = *(int*)((c) + 0x194); \
             b -= o2; \
@@ -951,10 +952,10 @@ void Presenter_TrackStylus(char* c)
             return;
         }
     }
-    PRESENTER(c)->mSway[0] = (int)(((s64)PRESENTER(c)->mSway[0] * 0xE00 + 0x800) >> 12);
-    PRESENTER(c)->mSway[1] = (int)(((s64)PRESENTER(c)->mSway[1] * 0xE00 + 0x800) >> 12);
-    PRESENTER(c)->mSway[2] = (int)(((s64)PRESENTER(c)->mSway[2] * 0xE00 + 0x800) >> 12);
-    PRESENTER(c)->mSway[3] = (int)(((s64)PRESENTER(c)->mSway[3] * 0xE00 + 0x800) >> 12);
+    PRESENTER(c)->mSway[0] = FX_MUL(PRESENTER(c)->mSway[0], 0xE00);
+    PRESENTER(c)->mSway[1] = FX_MUL(PRESENTER(c)->mSway[1], 0xE00);
+    PRESENTER(c)->mSway[2] = FX_MUL(PRESENTER(c)->mSway[2], 0xE00);
+    PRESENTER(c)->mSway[3] = FX_MUL(PRESENTER(c)->mSway[3], 0xE00);
 }
 }
 }
@@ -2622,7 +2623,7 @@ void MascotWalker_StateWalk(char *c)
     a = WALKER(c)->mDir.x;
     if (a < 0)
         a = -a;
-    t1 = (int)(((s64)a * 0x1a9 + 0x800) >> 12);
+    t1 = FX_MUL(a, 0x1a9);
 
     b = WALKER(c)->mDir.z;
     if (b < 0)
@@ -2633,7 +2634,7 @@ void MascotWalker_StateWalk(char *c)
     arr = *(char **)(path + 4);
     r1 = _Z14ApproachLinearRiii((int *)(c + 0xc8), *(int *)(arr + idx), t1);
 
-    t2 = (int)(((s64)b * 0x1a9 + 0x800) >> 12);
+    t2 = FX_MUL(b, 0x1a9);
 
     idx = WALKER(c)->mPathPoint * 0xc;
     path = *(char **)(c + 0xb0);
@@ -2812,13 +2813,13 @@ void Camera_ProjectToScreen(char* r4, void* r1, int* r6, int* r5) {
     int cosv = data_02082214[i];
     int sinv = data_02082214[i + 1];
     int f1 = _ZN4cstd4fdivEii(cosv, sinv);
-    int r = (int)(((long long)f1 * (long long)(-out[2]) + 0x800) >> 0xc);
+    int r = FX_MUL(f1, -out[2]);
     int f2 = _ZN4cstd4fdivEii(out[1], r);
-    int t1 = (int)(((long long)f2 * (long long)0x5f800u + 0x800) >> 0xc);
+    int t1 = FX_MUL(f2, 0x5f800u);
     r5[0] = -((t1 + (int)0xfffa0800) >> 0xc);
-    int g = (int)(((long long)r * (long long)0x1555u + 0x800) >> 0xc);
+    int g = FX_MUL(r, 0x1555u);
     int f3 = _ZN4cstd4fdivEii(out[0], g);
-    int t3 = (int)(((long long)f3 * (long long)0x7f800u + 0x800) >> 0xc);
+    int t3 = FX_MUL(f3, 0x7f800u);
     r6[0] = (t3 + 0x7f800) >> 0xc;
 }
 }
@@ -2836,13 +2837,13 @@ void Camera_ProjectToScreen16(char* r4, void* r1, short* r5) {
     int cosv = data_02082214[i];
     int sinv = data_02082214[i + 1];
     int f1 = _ZN4cstd4fdivEii(cosv, sinv);
-    int r = (int)(((long long)f1 * (long long)(-out[2]) + 0x800) >> 0xc);
+    int r = FX_MUL(f1, -out[2]);
     int f2 = _ZN4cstd4fdivEii(out[1], r);
-    int t1 = (int)(((long long)f2 * (long long)0x5f800u + 0x800) >> 0xc);
+    int t1 = FX_MUL(f2, 0x5f800u);
     r5[1] = -((t1 + (int)0xfffa0800) >> 0xc);
-    int g = (int)(((long long)r * (long long)0x1555u + 0x800) >> 0xc);
+    int g = FX_MUL(r, 0x1555u);
     int f3 = _ZN4cstd4fdivEii(out[0], g);
-    int t3 = (int)(((long long)f3 * (long long)0x7f800u + 0x800) >> 0xc);
+    int t3 = FX_MUL(f3, 0x7f800u);
     r5[0] = (t3 + 0x7f800) >> 0xc;
 }
 }

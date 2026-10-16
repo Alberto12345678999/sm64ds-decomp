@@ -40,6 +40,7 @@
 
 #include "common.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "SharedFilePtr.h"
 #include "dScMg3DEsp_c.h"
 #include "dMg3DEspModel_c.h"
@@ -1129,11 +1130,11 @@ void dScMg3DEsp_c::CardSeek(int i)
     angle1 = *(u16 *) (angleBase + n);
     angle1 >>= 4;
     tv1 = data_02082214[(angle1 << 1) + 1];
-    *(int *) (self + 0x5208 + n) = (*(int *) (self + 0x5208 + n)) + ((int) ((((s64) tv1) * speed1 + 0x800) >> 0xc));
+    *(int *)(self + 0x5208 + n) = (*(int *)(self + 0x5208 + n)) + FX_MUL(tv1, speed1);
 
     tv2 = data_02082214[(*(u16 *) (angleBase + n) >> 4) << 1];
     speed2 = *(int *) (speedBase + n);
-    *(int *) (self + 0x520c + n) = (*(int *) (self + 0x520c + n)) + ((int) ((((s64) tv2) * speed2 + 0x800) >> 0xc));
+    *(int *)(self + 0x520c + n) = (*(int *)(self + 0x520c + n)) + FX_MUL(tv2, speed2);
     *(int *) (speedBase + n) = (*(int *) (speedBase + n)) + 0x300;
 
     {

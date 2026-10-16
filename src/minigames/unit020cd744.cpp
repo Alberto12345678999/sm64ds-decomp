@@ -20,6 +20,7 @@
  */
 
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "decl_common.h"
 #include "common.h"
 #include "TrmpLine.h"
@@ -1256,8 +1257,8 @@ extern "C" void TrmpLine_PointDistance(char *sl, void *arg1, struct Vec3 *r2)
       int r4 = (long long)(TRMPLINE(sl)->mHalfWidth);
       int len = LenVec3(&d);
       int f = _ZN4cstd4fdivEii(r4, r4 + len);
-      int t = (int) (((((long long) n5) * (*dp)) + 0x800) >> 12);
-      new_var = (int) (((((long long) t) * f) + 0x800) >> 12);
+      int t = FX_MUL(n5, *dp);
+      new_var = FX_MUL(t, f);
       *op = new_var;
       vp += 0xc;
       dp++;
@@ -1318,9 +1319,9 @@ extern "C" void TrmpLine_ComputeNormals(char* self)
             CrossVec3(&ej, &ei, n);
             NormalizeVec3((int*)n, (int*)n);
 
-            n->x = (int)(((long long)n->x * 0xff8 + 0x800) >> 12);
-            n->y = (int)(((long long)n->y * 0xff8 + 0x800) >> 12);
-            n->z = (int)(((long long)n->z * 0xff8 + 0x800) >> 12);
+            n->x = FX_MUL(n->x, 0xff8);
+            n->y = FX_MUL(n->y, 0xff8);
+            n->z = FX_MUL(n->z, 0xff8);
 
             *out = ((n->x >> 3) & mask)
                  | (((n->y >> 3) & mask) << 10)
@@ -1549,8 +1550,8 @@ extern "C" void TrmpLine_StateSettle(char *c)
 
     negS = -(int)data_02082214[(ang >> 4) * 2];
 
-    dx = (int)(((s64)vx * negS + 0x800) >> 12);
-    dz = (int)(((s64)vz * negS + 0x800) >> 12);
+    dx = FX_MUL(vx, negS);
+    dz = FX_MUL(vz, negS);
 
     src = (int *)(c + 0x11c);
     dst = (int *)(c + 0x5c);
@@ -1564,8 +1565,8 @@ extern "C" void TrmpLine_StateSettle(char *c)
             dst[0] = src[0];
             dst[1] = src[1];
             dst[2] = src[2];
-            dst[0] = dst[0] + (int)(((s64)*val * dx + 0x800) >> 12);
-            dst[1] = dst[1] + (int)(((s64)*val * dz + 0x800) >> 12);
+            dst[0] = dst[0] + FX_MUL(*val, dx);
+            dst[1] = dst[1] + FX_MUL(*val, dz);
             _Z14ApproachLinearRiii(val, target, step);
             src += 3;
             dst += 3;
@@ -1626,8 +1627,8 @@ extern "C" void TrmpLine_StateFlex(char *o)
     src = (Vec3 *)(o + 0x11c);
     dst = (Vec3 *)(o + 0x5c);
 
-    mulX = (int)(((s64)a14 * ns + 0x800) >> 12);
-    mulY = (int)(((s64)a18 * ns + 0x800) >> 12);
+    mulX = FX_MUL(a14, ns);
+    mulY = FX_MUL(a18, ns);
 
     ratep = (int *)(o + 0x29c);
 
@@ -1640,8 +1641,8 @@ extern "C" void TrmpLine_StateFlex(char *o)
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
-            dst->x += (int)(((s64)(*ratep) * mulX + 0x800) >> 12);
-            dst->y += (int)(((s64)(*ratep) * mulY + 0x800) >> 12);
+            dst->x += FX_MUL(*ratep, mulX);
+            dst->y += FX_MUL(*ratep, mulY);
 
             _Z14ApproachLinearRiii(ratep, zeroArg, stepArg);
             src++;
@@ -1824,7 +1825,7 @@ extern "C" int TrmpLine_PushJumper(char *c)
             {
                 int w = TRMPLINE(c)->mHalfWidth;
                 int av = (a < 0) ? -a : a;
-                mag = (int)(((long long)av * w + 0x800) >> 12);
+                mag = FX_MUL(av, w);
             }
 
             if (mag < 0x400000) {
@@ -2051,19 +2052,19 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
                 invColWeight = 0x1000 - colWeight;
                 rowAbs = (rowFrac < 0) ? negRowFrac : rowFrac;
                 rowW = 0x1000 - (0x180 - rowAbs);
-                cornerW = (s32)(((s64)colW * rowW + 0x800) >> 12);
+                cornerW = FX_MUL(colW, rowW);
                 flag = 0;
-                weightA = (s32)(((s64)invColWeight * cornerW + 0x800) >> 12);
-                weightSq = (s32)(((s64)cornerW * cornerW + 0x800) >> 12);
-                weightB = (s32)(((s64)colWeight * cornerW + 0x800) >> 12);
+                weightA = FX_MUL(invColWeight, cornerW);
+                weightSq = FX_MUL(cornerW, cornerW);
+                weightB = FX_MUL(colWeight, cornerW);
 
-                cell->x = (s32)(((s64)vb.x * weightB + 0x800) >> 12);
-                cell->x += (s32)(((s64)va.x * weightA + 0x800) >> 12);
-                cell->y = (s32)(((s64)vb.y * weightB + 0x800) >> 12);
-                cell->y += (s32)(((s64)va.y * weightA + 0x800) >> 12);
+                cell->x = FX_MUL(vb.x, weightB);
+                cell->x += FX_MUL(va.x, weightA);
+                cell->y = FX_MUL(vb.y, weightB);
+                cell->y += FX_MUL(va.y, weightA);
 
                 cell->z = accum - TRMPLINE(c)->mHalfWidth;
-                cell->z = (s32)(((s64)cell->z * weightSq + 0x800) >> 12);
+                cell->z = FX_MUL(cell->z, weightSq);
 
                 mirror->x = cell->x;
                 mirror->y = cell->y;
@@ -2150,7 +2151,7 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
         ratio = _ZN4cstd4fdivEii(absOff, TRMPLINE(c)->mHalfWidth);
         halfLen = TRMPLINE(c)->mHalfWidth;
         absOff = (bestD1 < 0) ? (0 - bestD1) : bestD1;
-        blendVal = (s32)(((s64)absOff * halfLen + 0x800) >> 12);
+        blendVal = FX_MUL(absOff, halfLen);
         if (blendVal < 0x400000) {
             *(s16 *)((char *)bestObj + 0x18) = 2;
             D3D_PlaySePannedLoop(0x1B1, *(s32 *)(c + 8),
