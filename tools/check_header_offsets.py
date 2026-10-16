@@ -20,7 +20,7 @@ honest: the diff contained files and none of them was under include/. That
 distinction is computed and printed rather than assumed -- see changed_paths.
 """
 import re, subprocess, sys, pathlib
-SZ = {"u8":1,"s8":1,"char":1,"u16":2,"s16":2,"short":2,"u32":4,"s32":4,"int":4,
+SZ = {"u8":1,"s8":1,"char":1,"bool":1,"u16":2,"s16":2,"short":2,"u32":4,"s32":4,"int":4,
       "unsigned":4,"long":4,"Fix12i":4,"float":4,"u64":8,"s64":8,"double":8}
 # Alignment is NOT the same as width once aggregates are in play: a Vector3 is 12
 # bytes wide but 4-aligned, and using the width for the padding test would invent
