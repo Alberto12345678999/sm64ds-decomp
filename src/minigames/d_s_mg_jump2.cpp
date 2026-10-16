@@ -38,18 +38,18 @@ enum d_s_mg_jump2_AssetId {
 #include "decl_common.h"
 #include "Particle__System.h"
 
-/* The list link at the head of each Elem. Its two methods link `this` into
+/* The list link at the head of each Jump2Popup. Its two methods link `this` into
  * and back out of the live list at sJump2PopupList. */
-struct Node {
-    struct Node* next;
+struct Jump2PopupLink {
+    struct Jump2PopupLink *next;
     void Link();   /* push */
     void Unlink();   /* remove */
 };
 
 /* The 0x24-byte entries of mArray3, read back from what the functions below
  * do with them. Local because nothing names the type yet. */
-struct Elem {
-    struct Elem *next;      /* 0x00 -- the live list */
+struct Jump2Popup {
+    struct Jump2Popup *next; /* 0x00 -- the live list */
     int   x, y;             /* 0x04 -- 20.12 position */
     int   targetX, targetY; /* 0x0c */
     int   speedX, speedY;   /* 0x14 */
@@ -121,9 +121,9 @@ extern Jump2ModelFile sJump2Back02ModelFile;     /* model file 0x204 */
 
 extern "C" {
 extern void func_0203d630(int* p, int m);
-extern struct Node *sJump2PopupList;
+extern struct Jump2PopupLink *sJump2PopupList;
 extern int sJump2PopupCount;
-extern struct Elem *sJump2Popups;
+extern struct Jump2Popup *sJump2Popups;
 extern void *sJump2BackFile;
 void Mg_CommitRecords(void);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -586,7 +586,7 @@ s32 dScMgJump2_c::CleanupResources()
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Jump2Popup_InitPool(int table, int count){
-    sJump2Popups = (struct Elem *)table;
+    sJump2Popups = (struct Jump2Popup *)table;
     sJump2PopupCount = count;
     data_ov006_021421b4 = 0;
 }
@@ -622,7 +622,7 @@ void Jump2Popup_UpdateAll(void)
     if (i < sJump2PopupCount) {
         int offset = 0;
         do {
-            ((Elem *)((char *)sJump2Popups + offset))->Tick();
+            ((Jump2Popup *)((char *)sJump2Popups + offset))->Tick();
             i++;
             offset += 0x24;
         } while (i < sJump2PopupCount);
@@ -635,26 +635,26 @@ void Jump2Popup_DrawAll(void) {
     void *node = sJump2PopupList;
     if (node == 0) return;
     do {
-        ((Elem *)node)->DrawNumber();
+        ((Jump2Popup *)node)->DrawNumber();
         node = *(void **)node;
     } while (node != 0);
 }
 }
 
-// @symbol _ZN4Node4LinkEv
-void Node::Link(){
+// @symbol _ZN14Jump2PopupLink4LinkEv
+void Jump2PopupLink::Link() {
     *(void **)this = sJump2PopupList;
     sJump2PopupList = this;
 }
 
-// @symbol _ZN4Node6UnlinkEv
-void Node::Unlink() {
-    struct Node *prev = sJump2PopupList;
+// @symbol _ZN14Jump2PopupLink6UnlinkEv
+void Jump2PopupLink::Unlink() {
+    struct Jump2PopupLink *prev = sJump2PopupList;
     if (prev == this) {
         sJump2PopupList = this->next;
         return;
     }
-    struct Node* cur = prev->next;
+    struct Jump2PopupLink *cur = prev->next;
     while (cur) {
         if (cur == this) {
             prev->next = this->next;
@@ -665,9 +665,8 @@ void Node::Unlink() {
     }
 }
 
-// @symbol _ZN4Elem5SpawnEiii
-void Elem::Spawn(int startX, int startY, int spriteId)
-{
+// @symbol _ZN10Jump2Popup5SpawnEiii
+void Jump2Popup::Spawn(int startX, int startY, int spriteId) {
     x = startX;
     y = startY;
     speedX = 0;
@@ -688,14 +687,14 @@ done:
     life = 0x80;
     active = 1;
     sprite = (short)spriteId;
-    ((Node *)this)->Link();
+    ((Jump2PopupLink *)this)->Link();
 }
 
-// @symbol _ZN4Elem4TickEv
-void Elem::Tick() {
+// @symbol _ZN10Jump2Popup4TickEv
+void Jump2Popup::Tick() {
     if (active == 0) return;
     if (ApproachLinear2(life, 0, 1) != 0) {
-        ((Node *)this)->Unlink();
+        ((Jump2PopupLink *)this)->Unlink();
         active = 0;
     }
     ApproachLinear(x, targetX, speedX);
@@ -703,9 +702,8 @@ void Elem::Tick() {
     func_0203d630(&speedX, 0xf00);
 }
 
-// @symbol _ZN4Elem10DrawNumberEv
-void Elem::DrawNumber()
-{
+// @symbol _ZN10Jump2Popup10DrawNumberEv
+void Jump2Popup::DrawNumber() {
     if (active == 0) return;
     Mg_DrawBigNumber(x >> 12, y >> 12,
                         sprite, -1, -1, 0, data_ov006_021421b4);

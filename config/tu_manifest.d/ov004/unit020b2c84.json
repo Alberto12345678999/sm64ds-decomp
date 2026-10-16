@@ -329,7 +329,7 @@
       "ordinal": 40
     },
     {
-      "symbol": "_ZN4ElemC1Ev",
+      "symbol": "_ZN8MgBannerC1Ev",
       "address": "0x020b4a70",
       "size": "0x0000000c",
       "legacy_source": "src/func_ov004_020b4a70.c",
@@ -343,7 +343,7 @@
       "ordinal": 42
     },
     {
-      "symbol": "_ZN4ElemD1Ev",
+      "symbol": "_ZN8MgBannerD1Ev",
       "address": "0x020b4aa0",
       "size": "0x00000004",
       "legacy_source": "src/func_ov004_020b4aa0.c",
@@ -428,10 +428,10 @@
     "functions_declared": 44,
     "compilerOnlyOutput": {
       "requested": [
-        "_ZN4ElemC2Ev"
+        "_ZN8MgBannerC2Ev"
       ],
       "deadstripped": [
-        "_ZN4ElemC2Ev"
+        "_ZN8MgBannerC2Ev"
       ],
       "droppedSections": [
         80
@@ -636,7 +636,7 @@
   "production_mode": "intact-object",
   "compiler_only_output": [
     {
-      "symbol": "_ZN4ElemC2Ev",
+      "symbol": "_ZN8MgBannerC2Ev",
       "disposition": "deadstrip",
       "reason": "mwccarm emits the base-object constructor beside the licensed complete-object C1; the ROM has no configured C2 home"
     }
@@ -743,7 +743,7 @@
       "source": "0x20b99bc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN4ElemD1Ev",
+      "symbol": "_ZN8MgBannerD1Ev",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20b4aa0"
@@ -763,7 +763,7 @@
       "source": "0x20b99c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN4ElemC1Ev",
+      "symbol": "_ZN8MgBannerC1Ev",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20b4a70"

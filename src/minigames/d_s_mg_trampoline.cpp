@@ -11,13 +11,13 @@
  * leftovers:
  * - The factory still builds the object by hand, so its offset stores
  *   stay raw.
- * - Desc::Render, Desc::Update and TrmpFx_Spawn keep raw offsets:
+ * - TrmpScorePopup::Render, TrmpScorePopup::Update and TrmpFx_Spawn keep raw offsets:
  *   the member-access form DIFFed there.
  * - The score pool (TrmpFx_Unlink..TrmpFx_InitPool) stays free:
  *   it works on the file-scope live-list globals, not one object, and
  *   TrmpFx_Spawn is the entry dMgTrmpln2Mario_c calls.
  * - Trmp_Nothing2 / Trmp_Nothing stay free: the shared empty
- *   ctor/dtor pair for the Desc pool, used by d_s_mg_trampoline2.cpp too.
+ *   ctor/dtor pair for the TrmpScorePopup pool, used by d_s_mg_trampoline2.cpp too.
  * - ov004 helpers and most data symbols are unnamed.
  */
 
@@ -54,7 +54,7 @@ struct Node { struct Node* next; };
    targetY, and number is the score drawn by Mg_DrawBigNumber.
    Same 0x24 shape as dScMgJump2_c's Elem. targetX is written and not
    read by this TU's step. */
-struct Desc {
+struct TrmpScorePopup {
     Node *next;     /* +0x00 -- the live list */
     int x;          /* +0x04 -- 20.12 */
     int y;          /* +0x08 */
@@ -1093,12 +1093,12 @@ void TrmpFx_InitPool(void *records, int count) {
 
 // @symbol TrmpFx_Spawn
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-/* Desc* index DIFFed (the scale folded the wrong register). */
+/* TrmpScorePopup* index DIFFed (the scale folded the wrong register). */
 void TrmpFx_Spawn(int x, int y) {
   int i;
   for (i = sTrmpFxCount - 1; i >= 0; i--) {
       if (*(short *)(sTrmpFxPool + i * 0x24 + 0x20) == 0) {
-          ((Desc *)(sTrmpFxPool + i * 0x24))->Spawn(x, y);
+          ((TrmpScorePopup *)(sTrmpFxPool + i * 0x24))->Spawn(x, y);
           return;
       }
   }
@@ -1110,7 +1110,7 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void TrmpFx_ClearAll(void){
     int i;
     for (i = 0; i < sTrmpFxCount; i++) {
-        ((Desc *)(sTrmpFxPool + i * 0x24))->active = 0;
+        ((TrmpScorePopup *)(sTrmpFxPool + i * 0x24))->active = 0;
     }
     sTrmpFxList = 0;
 }
@@ -1123,7 +1123,7 @@ void TrmpFx_UpdateAll(void){
   if (sTrmpFxCount > 0) {
       int off = 0;
       do {
-          ((Desc *)(sTrmpFxPool + off))->Update();
+          ((TrmpScorePopup *)(sTrmpFxPool + off))->Update();
           i++;
           off += 0x24;
       } while (i < sTrmpFxCount);
@@ -1137,7 +1137,7 @@ void TrmpFx_DrawAll(void) {
     void *node = sTrmpFxList;
     if (node == 0) return;
     do {
-        ((Desc *)node)->Render();
+        ((TrmpScorePopup *)node)->Render();
         node = *(void **)node;
     } while (node != 0);
 }
@@ -1146,15 +1146,15 @@ void TrmpFx_DrawAll(void) {
 // @symbol TrmpFx_Link
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void TrmpFx_Link(int *entryRaw) {
-    Desc *entry = (Desc *)entryRaw;
-    Desc *node;
+    TrmpScorePopup *entry = (TrmpScorePopup *)entryRaw;
+    TrmpScorePopup *node;
     entry->next = sTrmpFxList;
     sTrmpFxList = (Node *)entry;
-    node = (Desc *)entry->next;
+    node = (TrmpScorePopup *)entry->next;
     int v = entry->y - 0x10000;
     while (node) {
         node->targetY = v;
-        node = (Desc *)node->next;
+        node = (TrmpScorePopup *)node->next;
         v -= 0x10000;
     }
 }
@@ -1180,10 +1180,9 @@ void TrmpFx_Unlink(struct Node* node) {
 }
 }
 
-// @symbol _ZN4Desc5SpawnEii
+// @symbol _ZN14TrmpScorePopup5SpawnEii
 /* Fills a slot with fixed parameters and tail-calls TrmpFx_Link. */
-void Desc::Spawn(int y, int number)
-{
+void TrmpScorePopup::Spawn(int y, int number) {
     x = 0x110000;
     this->y = y;
     speedX = -0x4000;
@@ -1197,34 +1196,33 @@ void Desc::Spawn(int y, int number)
 }
 
 extern "C" void func_0203d630(int *p, int m);
-// @symbol _ZN4Desc6UpdateEv
-/* Member form of x += speedX DIFFed. Offsets are Desc's. */
-void Desc::Update()
-{
-  char *self = (char *)this;
-  if ((*((short *) (self + 0x20))) == 0)
-  {
-    return;
-  }
-  if (_Z15ApproachLinear2Rsss((short *) (self + 0x1c), 0, 1))
-  {
-    TrmpFx_Unlink((Node *)self);
-    *((short *) (self + 0x20)) = 0;
-  }
-  {
-    int *p = (int *) (((int) self + 4));
-    *p = *p + (*((int *) (self + 0x14)));
-  }
-  _Z14ApproachLinearRiii((int *) (self + 8), *((int *) (self + 0x10)), 0x1800);
-  func_0203d630((int *) (self + 0x14), 0xf00);
+// @symbol _ZN14TrmpScorePopup6UpdateEv
+/* Member form of x += speedX DIFFed. Offsets are TrmpScorePopup's. */
+void TrmpScorePopup::Update() {
+    char *self = (char *)this;
+    if ((*((short *)(self + 0x20))) == 0) {
+        return;
+    }
+    if (_Z15ApproachLinear2Rsss((short *)(self + 0x1c), 0, 1)) {
+        TrmpFx_Unlink((Node *)self);
+        *((short *)(self + 0x20)) = 0;
+    }
+    {
+        int *p = (int *)(((int)self + 4));
+        *p = *p + (*((int *)(self + 0x14)));
+    }
+    _Z14ApproachLinearRiii((int *)(self + 8), *((int *)(self + 0x10)), 0x1800);
+    func_0203d630((int *)(self + 0x14), 0xf00);
 }
 
-// @symbol _ZN4Desc6RenderEv
-/* Member form DIFFed (ldrsh of number). Offsets are Desc::active, x, y, number. */
-void Desc::Render(){
-  char *desc = (char *)this;
-  if(*(short*)(desc+0x20)==0) return;
-  Mg_DrawBigNumber(*(int*)(desc+4)>>12,*(int*)(desc+8)>>12,*(short*)(desc+0x1e),-1,-1,0,0);
+// @symbol _ZN14TrmpScorePopup6RenderEv
+/* Member form DIFFed (ldrsh of number). Offsets are TrmpScorePopup::active, x, y, number. */
+void TrmpScorePopup::Render() {
+    char *desc = (char *)this;
+    if (*(short *)(desc + 0x20) == 0)
+        return;
+    Mg_DrawBigNumber(*(int *)(desc + 4) >> 12, *(int *)(desc + 8) >> 12, *(short *)(desc + 0x1e),
+                     -1, -1, 0, 0);
 }
 
 // @symbol _ZN24dScMgTrampoline_DoorMark4InitEv

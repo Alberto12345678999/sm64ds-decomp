@@ -49,29 +49,29 @@
    The three s32 pairs stay raw offsets: declaring them as s32 members makes
    the struct 4-aligned, and the pool's .bss section goes from 2-byte to
    4-byte alignment. */
-struct Ent {
+struct MgFx {
     char pad[0x1a];                     /* 0x00 mPos, 0x08 mVecA, 0x10 mVecB */
     s16 mTimer;                         /* 0x1a -- counts down to 0; 0 = free */
     s16 mDuration;                      /* 0x1c -- mTimer's starting value */
     s16 mState;                         /* 0x1e -- index into both PMF tables */
-    Ent() {}
-    ~Ent() {}
+    MgFx() {}
+    ~MgFx() {}
     void DrawFlyTo();
     void DrawSparkle();
     void UpdateFlyTo();
     void UpdateDrift();
 };
 
-typedef void (Ent::*EntPMF)();
+typedef void (MgFx::*EntPMF)();
 
 extern "C" {
 /* Static minigame base state: the graphCallback_c registry instance, the
-   Ent record pool, and the two PMF state tables the dispatchers call
+   MgFx record pool, and the two PMF state tables the dispatchers call
    through. Declaration order is the ROM's __sinit order. */
 dScMgBase_c::graphCallback_c sMgGraphCallback;
-Ent sMgFxPool[0x40];
-EntPMF sMgFxUpdateTable[2] = { &Ent::UpdateDrift, &Ent::UpdateFlyTo };
-EntPMF sMgFxDrawTable[2] = { &Ent::DrawSparkle, &Ent::DrawFlyTo };
+MgFx sMgFxPool[0x40];
+EntPMF sMgFxUpdateTable[2] = {&MgFx::UpdateDrift, &MgFx::UpdateFlyTo};
+EntPMF sMgFxDrawTable[2] = {&MgFx::DrawSparkle, &MgFx::DrawFlyTo};
 int sMgSparkleSprites[16];
 }
 
@@ -534,7 +534,7 @@ void *Ov004_LoadFileByPath(const char *path)
 }
 }
 
-// @symbol _ZN3Ent9DrawFlyToEv
+// @symbol _ZN4MgFx9DrawFlyToEv
 namespace s20adc80 {
 extern "C" {
 extern int GetGameLanguage(void);
@@ -543,13 +543,13 @@ extern int Mg_RenderSpriteOnNoMtx(int,int,int,long long);
 }
 /* State 1's draw: word 2 of the current language's entry in
    sMgSpriteTables, at mPos >> 12. */
-void Ent::DrawFlyTo(){
+void MgFx::DrawFlyTo() {
     int idx=s20adc80::GetGameLanguage();
     int *t=sMgSpriteTables[idx];
     s20adc80::Mg_RenderSpriteOnNoMtx(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
 }
 
-// @symbol _ZN3Ent11DrawSparkleEv
+// @symbol _ZN4MgFx11DrawSparkleEv
 namespace s20adcc8 {
 extern "C" {
 extern void Mg_RenderSpriteOnNoMtx(int a0,int a1,int a2,int a3,int a4);
@@ -562,7 +562,7 @@ extern int sMgSparkleSprites[];
    sMgSparkleSprites from five words at data_ov004_020bea14 (bit 0 of
    sMgSparkleSpritesGuard marks it built); the frame is picked by the low four
    bits of mTimer. */
-void Ent::DrawSparkle(){
+void MgFx::DrawSparkle() {
     if ((s20adcc8::sMgSparkleSpritesGuard & 1) == 0) {
         int *s = s20adcc8::data_ov004_020bea14;
         int *d = s20adcc8::sMgSparkleSprites;
@@ -584,11 +584,12 @@ void Ent::DrawSparkle(){
         d[15] = s[0];
         s20adcc8::sMgSparkleSpritesGuard |= 1;
     }
-  {
-    int idx=((int)mTimer)&0xf;
-    int x=*(int*)this>>0xc; int y=*(int*)((char*)this+4)>>0xc;
-    s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::sMgSparkleSprites[idx], x, y, -1, -1);
-  }
+    {
+        int idx = ((int)mTimer) & 0xf;
+        int x = *(int *)this >> 0xc;
+        int y = *(int *)((char *)this + 4) >> 0xc;
+        s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::sMgSparkleSprites[idx], x, y, -1, -1);
+    }
 }
 
 // @symbol Mg_DrawFx
@@ -596,13 +597,13 @@ namespace s20add88 {
 extern "C" {
 extern EntPMF sMgFxDrawTable[];
 /* Draws one record through its state's handler. */
-extern "C" void Mg_DrawFx(Ent *c) {
-  (c->*sMgFxDrawTable[c->mState])();
+extern "C" void Mg_DrawFx(MgFx *c) {
+    (c->*sMgFxDrawTable[c->mState])();
 }
 }
 }
 
-// @symbol _ZN3Ent11UpdateFlyToEv
+// @symbol _ZN4MgFx11UpdateFlyToEv
 namespace s20addcc {
 extern "C" {
 void Mg_GainCredits(void *c);
@@ -616,37 +617,35 @@ inline long long inline_fn(int arg0)
    the frame it reaches 0, then places mPos between the two vectors by the
    remaining fraction s = mTimer / mDuration: x = mVecA.x * s + mVecB.x * (1 - s),
    y = mVecB.y + s * s * (mVecA.y - mVecB.y), all Fix12. */
-void Ent::UpdateFlyTo()
-{
-  char *r5 = (char *)this;
-  using namespace s20addcc;
-  {
-  if (ApproachLinear2(mTimer, 0, 1))
-  {
-    Mg_GainCredits((void *) 1);
-  }
-  int a = mTimer;
-  int b = mDuration;
-  int s = cstd::fdiv(a << 0xc, b << 0xc);
-  int c3 = mDuration;
-  int c2 = mTimer;
-  int t = cstd::fdiv((c3 - c2) << 0xc, c3 << 0xc);
-  int v8 = *((int *) (r5 + 8));
-  int v10 = *((int *) (r5 + 0x10));
-  long long m1 = inline_fn(v8) * inline_fn(s);
-  long long m2 = inline_fn(v10) * inline_fn(t);
-  long long m3 = inline_fn(s) * inline_fn(s);
-  long long m4 = inline_fn((int) ((m3 + 0x800) >> 0xc)) * inline_fn((*((int *) (r5 + 0xc))) - (*((int *) (r5 + 0x14))));
-  *((int *) r5) = ((int) ((m1 + 0x800) >> 0xc)) + ((int) ((m2 + 0x800) >> 0xc));
-  *((int *) (r5 + 4)) = (*((int *) (r5 + 0x14))) + ((int) ((m4 + 0x800) >> 0xc));
-  }
+void MgFx::UpdateFlyTo() {
+    char *r5 = (char *)this;
+    using namespace s20addcc;
+    {
+        if (ApproachLinear2(mTimer, 0, 1)) {
+            Mg_GainCredits((void *)1);
+        }
+        int a = mTimer;
+        int b = mDuration;
+        int s = cstd::fdiv(a << 0xc, b << 0xc);
+        int c3 = mDuration;
+        int c2 = mTimer;
+        int t = cstd::fdiv((c3 - c2) << 0xc, c3 << 0xc);
+        int v8 = *((int *)(r5 + 8));
+        int v10 = *((int *)(r5 + 0x10));
+        long long m1 = inline_fn(v8) * inline_fn(s);
+        long long m2 = inline_fn(v10) * inline_fn(t);
+        long long m3 = inline_fn(s) * inline_fn(s);
+        long long m4 = inline_fn((int)((m3 + 0x800) >> 0xc)) *
+                       inline_fn((*((int *)(r5 + 0xc))) - (*((int *)(r5 + 0x14))));
+        *((int *)r5) = ((int)((m1 + 0x800) >> 0xc)) + ((int)((m2 + 0x800) >> 0xc));
+        *((int *)(r5 + 4)) = (*((int *)(r5 + 0x14))) + ((int)((m4 + 0x800) >> 0xc));
+    }
 }
 
-// @symbol _ZN3Ent11UpdateDriftEv
+// @symbol _ZN4MgFx11UpdateDriftEv
 /* State 0's update: counts mTimer down, passes mVecA to func_0203d630 with
    0xff8, then adds mVecB into mVecA and mVecA into mPos. */
-void Ent::UpdateDrift()
-{
+void MgFx::UpdateDrift() {
     char* c = (char*)this;
     ApproachLinear2(mTimer, 0, 1);
     func_0203d630((int*)(c + 8), 0xff8);
@@ -664,8 +663,8 @@ namespace s20adf2c {
 extern "C" {
 extern EntPMF sMgFxUpdateTable[];
 /* Updates one record through its state's handler. */
-extern "C" void Mg_UpdateFx(Ent *c) {
-  (c->*sMgFxUpdateTable[c->mState])();
+extern "C" void Mg_UpdateFx(MgFx *c) {
+    (c->*sMgFxUpdateTable[c->mState])();
 }
 }
 }
@@ -676,16 +675,16 @@ extern "C" {
 /* Fills record `c`. mDuration starts equal to mTimer; either vector may
    be omitted with a null pointer. */
 void Mg_InitFx(char *c, short state, short timer, int *pos, int *vecA, int *vecB){
-  Ent *e=(Ent*)c;
-  e->mState=state;
-  e->mTimer=timer;
-  e->mDuration=e->mTimer;
-  *(int*)(c)=pos[0];
-  *(int*)(c+4)=pos[1];
-  if(vecA){
-    *(int*)(c+8)=vecA[0];
-    *(int*)(c+0xc)=vecA[1];
-  }
+    MgFx *e = (MgFx *)c;
+    e->mState = state;
+    e->mTimer = timer;
+    e->mDuration = e->mTimer;
+    *(int *)(c) = pos[0];
+    *(int *)(c + 4) = pos[1];
+    if (vecA) {
+        *(int *)(c + 8) = vecA[0];
+        *(int *)(c + 0xc) = vecA[1];
+    }
   if(vecB){
     *(int*)(c+0x10)=vecB[0];
     *(int*)(c+0x14)=vecB[1];
@@ -2370,7 +2369,7 @@ int dScMgBase_c::BeforeBehavior()
     {
         int j;
         char *p = (char *)sMgFxPool;
-        Ent *base = sMgFxPool;
+        MgFx *base = sMgFxPool;
         for (j = 0; j < 0x40; j++) {
             if (base[j].mTimer != 0)
                 Mg_UpdateFx(p);
@@ -2617,9 +2616,11 @@ int Mg_CheckBannerButton(int arg) {
 // @symbol Mg_ShowBanner
 namespace s20b0cac {
 extern "C" {
-struct Elem { char pad[0x134]; };
-extern struct Elem gMgBanners[];
-extern void Banner_Init(struct Elem *e, int c, int a1, int a2, int a3, int s1, short s2);
+struct MgBanner {
+    char pad[0x134];
+};
+extern struct MgBanner gMgBanners[];
+extern void Banner_Init(struct MgBanner *e, int c, int a1, int a2, int a3, int s1, short s2);
 /* Hands its arguments to Banner_Init for the first of the three
    records at gMgBanners whose word at +0x20 is 0x1d; does nothing
    when none is. */

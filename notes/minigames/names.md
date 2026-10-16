@@ -467,7 +467,7 @@ Medium confidence:
 
 - **Cup.** High confidence: `CupFx_*` (the 32-sprite effect pool), `Cup_DrawOamList`, `Cup_UpdateAnim`, `Cup_PlayAnimSound`. Medium confidence: `Cup_PickShuffleSpeed`, which reads the round row's speed nibbles.
 - **Jump2.**
-  - A linked list of score popups: `Jump2Popup_*`, plus the members `Elem::Spawn/Tick/DrawNumber` and `Node::Link/Unlink`.
+  - A linked list of score popups: `Jump2Popup_*`, plus the members `Jump2Popup::Spawn/Tick/DrawNumber` and `Jump2PopupLink::Link/Unlink` (were `Elem` and `Node`).
   - Phases: `BeginIntro`, `State_Intro`, `BeginPlay`, `State_Play`, `BeginEnd`, `State_End`, `State_Result`, `State_Idle`. These are medium confidence, from the PMF records the transitions store.
 - **Slots.**
   - Slot3's state table is named from its bodies (pass 6; it was `Slot3_State0..7`, with `Slot3_State3and4` shared by states 3 and 4): `Slot3_StateIntro` (shows the target face and the LEVEL banner), `StateSpin` (a touch in a row's band stops it), `StateJudge` (compares the rows against the target and scores), `StatePayout` (states 3 and 4: pays the win coin by coin, or takes three coins for a miss; seen), `StateWait` (5, empty), `StateGameOver` (slides the reels apart, then `MG_STATE_GAME_OVER`), `StateDone` (7, empty).

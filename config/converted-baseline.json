@@ -3424,7 +3424,7 @@
     "src/minigames/d_s_mg_trampoline.cpp#_ZN24dScMgTrampoline_DoorMark4InitEv",
     "src/minigames/d_s_mg_trampoline.cpp#_ZN24dScMgTrampoline_DoorMark4ShowEi",
     "src/minigames/d_s_mg_trampoline.cpp#_ZN24dScMgTrampoline_DoorMark6RenderEi",
-    "src/minigames/d_s_mg_trampoline.cpp#_ZN4Desc5SpawnEii",
+    "src/minigames/d_s_mg_trampoline.cpp#_ZN14TrmpScorePopup5SpawnEii",
     "src/minigames/d_s_mg_trampoline2.cpp#_ZN18dScMgTrampoline2_c10BeginIntroEv",
     "src/minigames/d_s_mg_trampoline2.cpp#_ZN18dScMgTrampoline2_c16OnGraphCallback0Ev",
     "src/minigames/d_s_mg_trampoline2.cpp#_ZN18dScMgTrampoline2_c12BeginResultsEv",

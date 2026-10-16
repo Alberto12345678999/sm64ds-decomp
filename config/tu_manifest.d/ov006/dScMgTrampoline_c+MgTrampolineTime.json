@@ -82,21 +82,21 @@
       "ordinal": 7
     },
     {
-      "symbol": "_ZN4Desc6RenderEv",
+      "symbol": "_ZN14TrmpScorePopup6RenderEv",
       "address": "0x02120a64",
       "size": "0x00000054",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
       "ordinal": 8
     },
     {
-      "symbol": "_ZN4Desc6UpdateEv",
+      "symbol": "_ZN14TrmpScorePopup6UpdateEv",
       "address": "0x02120ab8",
       "size": "0x00000078",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
       "ordinal": 9
     },
     {
-      "symbol": "_ZN4Desc5SpawnEii",
+      "symbol": "_ZN14TrmpScorePopup5SpawnEii",
       "address": "0x02120b30",
       "size": "0x0000004c",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",

@@ -56,35 +56,35 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN4Elem10DrawNumberEv",
+      "symbol": "_ZN10Jump2Popup10DrawNumberEv",
       "address": "0x020eed68",
       "size": "0x00000060",
       "legacy_source": "src/func_ov006_020eed68.c",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN4Elem4TickEv",
+      "symbol": "_ZN10Jump2Popup4TickEv",
       "address": "0x020eedc8",
       "size": "0x00000074",
       "legacy_source": "src/func_ov006_020eedc8.c",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN4Elem5SpawnEiii",
+      "symbol": "_ZN10Jump2Popup5SpawnEiii",
       "address": "0x020eee3c",
       "size": "0x000000b8",
       "legacy_source": "src/func_ov006_020eee3c.c",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN4Node6UnlinkEv",
+      "symbol": "_ZN14Jump2PopupLink6UnlinkEv",
       "address": "0x020eeef4",
       "size": "0x0000004c",
       "legacy_source": "src/func_ov006_020eeef4.c",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN4Node4LinkEv",
+      "symbol": "_ZN14Jump2PopupLink4LinkEv",
       "address": "0x020eef40",
       "size": "0x00000018",
       "legacy_source": "src/func_ov006_020eef40.c",
