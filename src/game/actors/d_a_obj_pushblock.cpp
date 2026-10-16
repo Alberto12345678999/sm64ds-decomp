@@ -24,9 +24,8 @@
  *   (Fix12<int> by value, 6az; include/dBgActor_c.h).
  * - dBgCh_Actr_UpdateContinuous_Veneer: named UpdateContinuous misses the
  *   veneer dest (Behavior).
- * - (Vector3 *)&mPosX / mPrevPosX / mHomePosX / mCamSpacePosX: dActor_c
- *   stores the triples as scalars; grouping as Vector3 is a shared-header
- *   campaign, and the address-of-first-component form is the MATCH shape.
+ * - (Vector3 *)&mHomePosX: the class stores that triple as scalars, and the
+ *   address-of-first-component form is the MATCH shape.
  * - data_ov002_0210d7b4 CLPS: this TU consumes it, overlay .data owns it.
  *   S14: g_profile_PUSHBLOCK stays outside the licensed .text.
  * - func_020393a4 / func_02039394 store clip ranges on mMeshCollider
@@ -187,7 +186,7 @@ int daObjPushblock_c::Behavior()
         v.z = 0x96000;
         Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
         MulVec3Mat4x3(&v, &data_020a0e68, &dst);
-        AddVec3(&dst, (Vector3 *)&mPosX, &dst);
+        AddVec3(&dst, &mPos, &dst);
         dBgCh_Gnd ray;
         ray.SetObjAndPos(dst, 0);
         if (ray.DetectClsn()) {
@@ -207,12 +206,11 @@ int daObjPushblock_c::Behavior()
     func_02039394((int *)&mMeshCollider, 0x96000);
     _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x3e8000, 0x96000);
 
-    if (mHorzSpeed != 0 && Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&mPrevPosX) != 0) {
-        mSlideSound = Sound::PlayLong(
-            mSlideSound, 3, 0x97, *(Vector3 *)&mCamSpacePosX, 0);
+    if (mHorzSpeed != 0 && Vec3_Dist(&mPos, &mPrevPos) != 0) {
+        mSlideSound = Sound::PlayLong(mSlideSound, 3, 0x97, mCamSpacePos, 0);
     }
 
-    if (Vec3_HorzDist((Vector3 *)&mHomePosX, (Vector3 *)&mPosX) >= 0x12c000) {
+    if (Vec3_HorzDist((Vector3 *)&mHomePosX, &mPos) >= 0x12c000) {
         if (mLinkedActor != 0) {
             if (mLinkedActor->actorID == 0x149) {
                 const int homeX = mHomePosX;
@@ -356,7 +354,7 @@ void daObjPushblock_c::Kill()
     vec2.y = vec.y;
     vec2.z = vec.z;
     PoofDustAt(vec2);
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();
 }
 

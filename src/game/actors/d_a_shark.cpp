@@ -27,9 +27,6 @@
  * constructor copies them into the BSS slots at startup.
  *
  * deslop leftovers:
- * - func_ov090_02133710: a reference through pad_380[4] differs by 3 words
- *   (ldr/str via a register). The ROM is [this, #0x384], so the phase
- *   stays *(s32 *)((char *)self + 0x384).
  * - func_ov090_02133710: `if (hit->actorID != 0xbf)` is size 0x120 to
  *   0x114. The int temporary stays.
  * - func_ov090_0213387c: ModelAnim::SetAnim with a Fix12<int> speed is
@@ -153,17 +150,15 @@ extern "C" void func_ov090_02133710(daShark_c *self)
 {
     Vector3 offset;
     Vector3 pos;
-    /* Swing phase lives at +0x384, inside pad_380. A pointer or reference
-     * to that word addresses it from a register; the ROM uses [this, #0x384]. */
-    *(s32 *)((char *)self + 0x384) += 1;
-    if (*(s32 *)((char *)self + 0x384) > 2)
-        *(s32 *)((char *)self + 0x384) = 0;
+    self->mSwingPhase += 1;
+    if (self->mSwingPhase > 2)
+        self->mSwingPhase = 0;
     offset.x = 0;
     offset.y = 0;
     offset.z = 0;
-    if (*(s32 *)((char *)self + 0x384) == 1)
+    if (self->mSwingPhase == 1)
         offset.z = 0x8c000;
-    else if (*(s32 *)((char *)self + 0x384) == 2)
+    else if (self->mSwingPhase == 2)
         offset.z = -0x8c000;
     Matrix4x3_FromRotationY(data_020a0e68, 0);
     MulVec3Mat4x3(&offset, data_020a0e68, &self->mClsnOffset);
@@ -272,17 +267,15 @@ int daShark_c::Behavior()
 
         path.FromID(mPathID);
         path.GetNode(node, mPathNodeIdx);
-        Vec3_Sub(&difference, (Vector3 *)&mPosX, &node);
+        Vec3_Sub(&difference, &mPos, &node);
         distance = LenVec3(&difference);
         if (distance == 0 || distance <= 0x258000) {
             mPathNodeIdx++;
             if (mPathNodeIdx >= mPathNodeCount)
                 mPathNodeIdx = 0;
         }
-        ApproachLinear(mPrevAngleY,
-            Vec3_HorzAngle((Vector3 *)&mPosX, &node), 0x180);
-        ApproachLinear(mPrevAngleX,
-            Vec3_VertAngle((Vector3 *)&mPosX, &node), 0x40);
+        ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPos, &node), 0x180);
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, &node), 0x40);
         mAngleX = mPrevAngleX;
         mAngleY = mPrevAngleY;
         mAngleZ = mPrevAngleZ;
@@ -341,7 +334,7 @@ int daShark_c::InitResources()
         PathPtr path;
         path.FromID(mPathID);
         mPathNodeIdx = 1;
-        path.GetNode(*(Vector3 *)&mPosX, mPathNodeIdx);
+        path.GetNode(mPos, mPathNodeIdx);
     }
     func_ov090_021338b4(this, &data_ov090_021345cc);
     return 1;

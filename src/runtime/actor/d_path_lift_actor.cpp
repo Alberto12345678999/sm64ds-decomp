@@ -434,7 +434,7 @@ void dPathLiftActor_c::UpdatePathModels()
             if (idx < (int)mPath.NumNodes() && idx >= 0) {
                 struct Vector3 diff;
                 mPath.GetNode(node, idx);
-                Vec3_Sub(&diff, &node, (struct Vector3 *)&mPosX);
+                Vec3_Sub(&diff, &node, &mPos);
                 if (LenVec3(&diff) < 0xc8000) {
                     if (found == 0) {
                         found = one;

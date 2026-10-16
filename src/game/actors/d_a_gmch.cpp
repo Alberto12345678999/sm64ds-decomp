@@ -16,10 +16,8 @@
  * - GetFloorResult / GetWallResult return the raw word; a dBgPi* return
  *   disagrees with the definitions, so the callers still cast.
  *   TouchesWater and cstd::fdiv are the const method and the divide.
- * - *(Vector3 *)&mPosX and the mCamSpacePosX pun still view actor scalar
- *   fields; the real local vectors below do not establish Vector3 subobject
- *   lifetimes for those fields. holder->mPosX/Y/Z in place of the word triple
- *   changes EnterState7 and UpdateState6.
+ * - holder->mPosX/Y/Z in place of the word triple changes EnterState7 and
+ *   UpdateState6.
  * - unk_0a4 / unk_0ac stay. They are the base's world-velocity X/Z beside
  *   mVertSpeed; dActor_c.h still spells them unk_, and this TU multiplies
  *   them by the floor normal.
@@ -150,8 +148,8 @@ struct GmchDrawReg { GmchDrawReg(Vector3 &v) { v.x = 0; v.y = 0x2000; v.z = 0; }
  *   takes the short & its mangled name encodes).
  *
  *   ONE needed a call site adapted rather than a declaration chosen.
- *   Sound::PlayBank0's position is the camera-space triple, passed as
- *   *(Vector3 *)&mCamSpacePosX because dActor_c has no Pos().
+ *   Sound::PlayBank0's position is the camera-space vector, passed as
+ *   mCamSpacePos.
  *   Same address, same register, and the member still matches.
  *
  * The NINTH is genuinely load-bearing: RandomIntInternal must return
@@ -280,7 +278,7 @@ void daGmch_c::CheckPlayerContact()
     int cmp;
 
     if (FindEgg(mdCcAc_c) != 0) {
-        Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         SpawnCoinsAndDie();
         return;
     }
@@ -307,7 +305,7 @@ void daGmch_c::CheckPlayerContact()
     if ((mdCcAc_c.hitFlags & 0x66fe0)
         || player->IsOnShell() != 0
         || player->mIsMetal != 0) {
-        Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         SpawnCoinsAndDie();
         return;
     }
@@ -353,11 +351,11 @@ void daGmch_c::ApplySlopeToVertSpeed(void *clsn)
             /* unk_0a4 / unk_0ac: world velocity X/Z next to mVertSpeed. */
             s32 velX = unk_0a4;
             s32 velZ = unk_0ac;
-            long long prodX = (long long)floorNormal.x * (long long)velX;
-            long long prodZ = (long long)floorNormal.z * (long long)velZ;
-            int termX = (int)((prodX + 0x800) >> 12);
-            int termZ = (int)((prodZ + 0x800) >> 12);
-            mVertSpeed = -(cstd::fdiv(termX + termZ, floorNormal.y) + 0x8000);
+            int termX = FX_MUL(floorNormal.x, velX);
+            int termZ = FX_MUL(floorNormal.z, velZ);
+            int dot = termX + termZ;
+            int slope = cstd::fdiv(dot, floorNormal.y);
+            mVertSpeed = -(slope + 0x8000);
         }
     }
     if (((dBgCh_Actr *)clsn)->IsOnWall()) {
@@ -430,7 +428,7 @@ int daGmch_c::EnterState8()
 {
     extern GmchAnimationFileHandle data_ov081_02128edc;
 
-    Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank0(9, mCamSpacePos);
     mFlags &= ~1;
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
@@ -523,7 +521,7 @@ int daGmch_c::EnterState7()
         rayStart.z = z;
     }
 
-    DetectRaycastClsn(rayStart, *(Vector3 *)&mPosX, 1);
+    DetectRaycastClsn(rayStart, mPos, 1);
     mHolder = (dActor_c *)zero;
     mWithMeshClsn.SetLimMovFlag();
     mStateIndex = 7;

@@ -171,9 +171,7 @@ int daManta_c::func_ov090_021327e4()
 
     if (mRingCount < MANTA_RING_GOAL) {
         if (*(unsigned short *)&mStateTimer == 0) {
-            spawned = dActor_c::Spawn(
-                MANTA_WATER_RING, 1, mRingPos, (Vector3_16 *)&mAngleX,
-                mAreaId, -1);
+            spawned = dActor_c::Spawn(MANTA_WATER_RING, 1, mRingPos, &mAngle, mAreaId, -1);
             if (spawned != 0) {
                 mRingIDs[mRingWrite] = spawned->uniqueID;
                 mRingWrite += 1;
@@ -194,7 +192,7 @@ int daManta_c::func_ov090_021327e4()
                         mRingRead = i;
                         mRingCount += 1;
                         func_02012790(MANTA_COLLECT_JINGLE);
-                        num1 = *(Vector3 *)&mHitRing->mPosX;
+                        num1 = mHitRing->mPos;
                         SpawnNumber(num1, mRingCount, 0, 0, 0);
                         mHitRing = 0;
                         return 1;
@@ -215,7 +213,7 @@ int daManta_c::func_ov090_021327e4()
                 if (slotAddr == ringId) {
                     mRingCount += 1;
                     func_02012790(MANTA_COLLECT_JINGLE);
-                    num2 = *(Vector3 *)&mHitRing->mPosX;
+                    num2 = mHitRing->mPos;
                     SpawnNumber(num2, mRingCount, 0, 0, 0);
                     mHitRing = 0;
                     return 1;
@@ -230,10 +228,7 @@ int daManta_c::func_ov090_021327e4()
     if (mRingCount == MANTA_RING_GOAL) {
         mStarDelay += 1;
         if (mStarDelay > MANTA_STAR_WAIT) {
-            dActor_c::Spawn(
-                MANTA_STAR, mStarID | MANTA_STAR_FLAG,
-                *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX,
-                mAreaId, -1);
+            dActor_c::Spawn(MANTA_STAR, mStarID | MANTA_STAR_FLAG, mPos, &mAngle, mAreaId, -1);
             mRingCount = MANTA_STAR_SPAWNED;
         }
     }
@@ -274,7 +269,7 @@ int daManta_c::func_ov090_02132ac4(MantaState *state)
 void daManta_c::func_ov090_02132b14()
 {
     Vector3 scaled;
-    Vec3_Asr(&scaled, (Vector3 *)&mPosX, 3);
+    Vec3_Asr(&scaled, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, scaled.x, scaled.y, scaled.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(
         &data_020a0e68, mAngleX, mAngleY, mAngleZ);
@@ -334,15 +329,15 @@ int daManta_c::Behavior()
 
         path.FromID(*(unsigned int *)&mPathID);
         path.GetNode(node, *(unsigned int *)&mPathNode);
-        Vec3_Sub(&diff, (Vector3 *)&mPosX, &node);
+        Vec3_Sub(&diff, &mPos, &node);
         len = LenVec3(&diff);
         if (len == 0 || len <= MANTA_NODE_REACH) {
             mPathNode++;
             if (mPathNode >= mNumNodes)
                 mPathNode = 0;
         }
-        ApproachLinear(mPrevAngleY, Vec3_HorzAngle((Vector3 *)&mPosX, &node), 0x60);
-        ApproachLinear(mPrevAngleX, Vec3_VertAngle((Vector3 *)&mPosX, &node), 0x40);
+        ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPos, &node), 0x60);
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, &node), 0x40);
         mAngleX = mPrevAngleX;
         mAngleY = mPrevAngleY;
         mAngleZ = mPrevAngleZ;
@@ -402,7 +397,7 @@ int daManta_c::InitResources()
         PathPtr path;
         path.FromID(*(unsigned int *)&mPathID);
         mPathNode = 1;
-        path.GetNode(*(Vector3 *)&mPosX, *(unsigned int *)&mPathNode);
+        path.GetNode(mPos, *(unsigned int *)&mPathNode);
     }
 
     {

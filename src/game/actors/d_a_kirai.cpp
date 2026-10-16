@@ -18,7 +18,7 @@
  *   data_ov060_0211b1d8 is the four-state member-pointer table Behavior
  *   dispatches through.
  * - The state helpers keep their func_ov060_* address names.
- * - (Vector3 *)&mPosX / &mHomePosX: dActor_c has no Pos().
+ * - &mHomePosX stays punned: daKirai_c stores it as three scalars.
  * - The armed state tests IsPlayerActor, an int-returning predicate: a bool
  *   local there misses.
  * - The spent state keeps opt_strength_reduction and opt_common_subs off.
@@ -198,12 +198,12 @@ void daKirai_c::func_ov060_02118728()
     if (player == 0) return;
 
     {
-        Vector3 *pp = (Vector3 *)&player->mPosX;
+        Vector3 *pp = &player->mPos;
         v.x = pp->x;
         v.y = pp->y;
         v.z = pp->z;
     }
-    best = Vec3_Dist((Vector3 *)&mPosX, &v);
+    best = Vec3_Dist(&mPos, &v);
     bestActor = this;
 
     for (i = 0; i < 8; i++) {
@@ -215,7 +215,7 @@ void daKirai_c::func_ov060_02118728()
             if (!IsOffScreen(actor))
                 continue;
             {
-                int d = Vec3_Dist(&v, (Vector3 *)&actor->mPosX);
+                int d = Vec3_Dist(&v, &actor->mPos);
                 if (d < best) {
                     best = d;
                     bestActor = actor;
@@ -341,13 +341,13 @@ int daKirai_c::InitResources()
     z.x = 0;
     z.y = 0;
     z.z = 0;
-    Vec3_HorzAngle(&z, (const Vector3 *)&mPosX);
+    Vec3_HorzAngle(&z, &mPos);
     mHomeYOffset = 0x2ee000;
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
     mHomePosY += mHomeYOffset >> 3;
-    mHomeHorzDist = Vec3_HorzLen((const Vector3 *)&mPosX);
+    mHomeHorzDist = Vec3_HorzLen(&mPos);
     mStateIndex = 0;
     mSlotIndex = AddSpikeBomb(this);
     return 1;

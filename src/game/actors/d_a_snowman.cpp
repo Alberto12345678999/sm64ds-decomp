@@ -247,7 +247,7 @@ void daSnowman_c::func_ov081_0212423c(int idx)
         v.y = py;
         v.z = pz;
     }
-    ang = Vec3_HorzAngle((struct Vector3 *)&this->mPosX, &v);
+    ang = Vec3_HorzAngle(&this->mPos, &v);
 
     /* Two rows of (divisor, band, maxStep), six bytes apart. Both rows in
        the ROM are 1, 0x1000, 0x1000; idx still selects which one. */
@@ -336,7 +336,7 @@ void daSnowman_c::func_ov081_021243cc()
         }
         if (hit == 0) {
             Vector3 hv;
-            hv = *(Vector3 *)&this->mPosX;
+            hv = this->mPos;
             _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(found, &hv, 2, 0xc000, 1, 0, 1);
         }
     }
@@ -361,7 +361,7 @@ int daSnowman_c::func_ov081_021245e8()
                 v.x = s[0];
                 v.y = s[1];
                 v.z = s[2];
-                dist = Vec3_Dist((Vector3 *)&this->mPosX, &v);
+                dist = Vec3_Dist(&this->mPos, &v);
                 if (i == 0) {
                     min = dist;
                     this->mClosestPlayerIdx = 0;
@@ -733,15 +733,15 @@ int daSnowman_c::func_ov081_021250c8()
     p.FromID(this->mPathId);
     p.GetNode(node, this->mPathNodeIndex);
     node.y = this->mPosY;
-    Vec3_Sub(&diff, (struct Vector3 *)&this->mPosX, &node);
+    Vec3_Sub(&diff, &this->mPos, &node);
     len = LenVec3(&diff);
-    ApproachAngle(&this->mPrevAngleY, Vec3_HorzAngle((struct Vector3 *)&this->mPosX, &node), 1, 0x1000, 0x500);
+    ApproachAngle(&this->mPrevAngleY, Vec3_HorzAngle(&this->mPos, &node), 1, 0x1000, 0x500);
     if (len == 0 || len <= this->mHopStep)
         return 1;
     {
         int q = cstd::fdiv(this->mHopStep, len);
         Vec3_MulScalar(&scaled, &diff, q);
-        SubVec3((struct Vector3 *)&this->mPosX, &scaled, (struct Vector3 *)&this->mPosX);
+        SubVec3(&this->mPos, &scaled, &this->mPos);
     }
     return 1;
 }
@@ -770,10 +770,10 @@ int daSnowman_c::func_ov081_02125208()
         PathPtr p;
         p.FromID(this->mPathId);
         p.GetNode(node, this->mPathNodeIndex);
-        ApproachAngle(&this->mPrevAngleY, Vec3_HorzAngle((struct Vector3 *)&this->mPosX, &node), 1, 0x1000, 0x500);
+        ApproachAngle(&this->mPrevAngleY, Vec3_HorzAngle(&this->mPos, &node), 1, 0x1000, 0x500);
 
-        if (AngleDiff(this->mPrevAngleY, Vec3_HorzAngle((struct Vector3 *)&this->mPosX, &node)) < 0x100
-            && this->mWithMeshClsn.IsOnGround()) {
+        if (AngleDiff(this->mPrevAngleY, Vec3_HorzAngle(&this->mPos, &node)) < 0x100 &&
+            this->mWithMeshClsn.IsOnGround()) {
             int st = this->mStep;
             if (st != 0) {
                 if (st == 1)
@@ -805,7 +805,7 @@ int daSnowman_c::func_ov081_0212538c()
     pp.FromID(this->mPathId);
     pp.GetNode(node, this->mPathNodeIndex);
     node.y = this->mPosY;
-    Vec3_Sub(&diff, (struct Vector3 *)&this->mPosX, &node);
+    Vec3_Sub(&diff, &this->mPos, &node);
     len = LenVec3(&diff);
     this->mHopStep = 0xa000;
     this->mStep = 0;
@@ -937,7 +937,7 @@ int daSnowman_c::Render()
         else
             mModelAnim.ShowMaterial(0, 2);
     }
-    mModelAnim.Model::Render((const Vector3 *)&mScaleX);
+    mModelAnim.Model::Render(&mScale);
     return 1;
 }
 
@@ -984,7 +984,7 @@ int daSnowman_c::Behavior()
         if (p != 0) {
             int param = 0xc;
             param = param | (p->mCharacter << 8);
-            cap = dActor_c::Spawn(kMarioCapId, param, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+            cap = dActor_c::Spawn(kMarioCapId, param, mPos, 0, mAreaId, -1);
             if (cap != 0) {
                 _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(cap, 0x64000, 0xc8000, 0x1000000, 0x1000000);
                 mCapUniqueID = cap->uniqueID;
@@ -1084,7 +1084,7 @@ int daSnowman_c::InitResources()
     if (mType == 0) {
         PathPtr pp;
         pp.FromID(mPathId);
-        pp.GetNode(*(Vector3 *)&mPosX, mPathNodeIndex);
+        pp.GetNode(mPos, mPathNodeIndex);
         mPathNodeIndex = 1;
         mVertAccel = -0x2000;
         mFlags = 0x10000000;

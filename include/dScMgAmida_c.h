@@ -165,10 +165,10 @@ struct dScMgAmida_c : dScMgBase_c {
     s32 mLaneFlashFrame[4];   /* 0x5388 -- flash animation frames */
     u8  mLaneFlashFlag[4];    /* 0x5398 -- flash armed (StepWalkers sets
                                  when a walker's goal mismatches) */
-    s32 mLaneAnimTimer[4];     /* 0x539c -- per lane; wraps on the per-lane
-                                 period in data_ov006_0213b880 */
-    s32 mLaneAnimFrame[4];     /* 0x53ac -- per lane, cycles 0..0xd into the
-                                 sprite table data_ov006_0213a458 */
+    s32 mLaneAnimTimer[4];    /* 0x539c -- per lane; wraps on the per-lane
+                                 period in sAmidaRenderPeriods */
+    s32 mLaneAnimFrame[4];    /* 0x53ac -- per lane, cycles 0..0xd into the
+                                 sprite table sAmidaLaneAnimSprites */
     u16 mBgScrollPhase;        /* 0x53bc -- += 0xc0 a frame; indexes the sine
                                  table for the sub-screen BG2 offset */
     u8  pad_53be[0x2];

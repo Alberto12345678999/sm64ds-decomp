@@ -174,11 +174,9 @@ extern "C" void func_ov021_02112294(void *raw)
     if (rock->unk_3c1 == 0xff)
         return;
     if (rock->mType == kGrockStill) {
-        rock->UntrackAndSpawnStar(grock_star_slot(rock), rock->unk_3c1,
-                                  *(Vector3 *)&rock->mPosX, 2);
+        rock->UntrackAndSpawnStar(grock_star_slot(rock), rock->unk_3c1, rock->mPos, 2);
     } else {
-        rock->UntrackAndSpawnStar(grock_star_slot(rock), rock->unk_3c1,
-                                  *(Vector3 *)&rock->mPosX, 4);
+        rock->UntrackAndSpawnStar(grock_star_slot(rock), rock->unk_3c1, rock->mPos, 4);
     }
 }
 
@@ -245,7 +243,7 @@ extern "C" void func_ov021_021123b0(char *raw)
             func_ov021_02112294(rock);
             return;
         }
-        Sound::PlayBank0(0xb5, *(Vector3 *)&rock->mCamSpacePosX);
+        Sound::PlayBank0(0xb5, rock->mCamSpacePos);
         return;
     }
 
@@ -290,8 +288,8 @@ extern "C" void func_ov021_02112544(char *raw)
         } else {
             grock_dust(rock) = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                 grock_dust(rock), 0x69, pos.x, pos.y, pos.z, 0, 0);
-            grock_roll_sound(rock) = Sound::PlayLong(
-                grock_roll_sound(rock), 3, 0x8a, *(Vector3 *)&rock->mCamSpacePosX, 0);
+            grock_roll_sound(rock) =
+                Sound::PlayLong(grock_roll_sound(rock), 3, 0x8a, rock->mCamSpacePos, 0);
         }
         {
             int *vx = (int *)(int)&rock->unk_0a4;
@@ -334,7 +332,7 @@ extern "C" void func_ov021_021127b4(char *raw)
     if (sum >= clamped)
         clamped = sum;
     rock->mVertSpeed = clamped;
-    AddVec3((Vector3 *)&rock->mPosX, (Vector3 *)&rock->unk_0a4, (Vector3 *)&rock->mPosX);
+    AddVec3(&rock->mPos, (Vector3 *)&rock->unk_0a4, &rock->mPos);
 }
 
 // @symbol _ZN9daGrock_c16CleanupResourcesEv
@@ -422,15 +420,13 @@ int daGrock_c::Behavior()
                     daGrock_c *child;
 
                     unk_3c2 = 1;
-                    child = (daGrock_c *)dActor_c::Spawn(
-                        0xdd, (unk_3c1 << 8) | kGrockStar, *(Vector3 *)&mPosX,
-                        &rot, mAreaId, -1);
+                    child = (daGrock_c *)dActor_c::Spawn(0xdd, (unk_3c1 << 8) | kGrockStar, mPos,
+                                                         &rot, mAreaId, -1);
                     unk_3bf = 0;
                     if (child)
                         child->unk_3b4 = uniqueID;
                 } else {
-                    dActor_c::Spawn(0xdd, kGrockRolling, *(Vector3 *)&mPosX,
-                                    &rot, mAreaId, -1);
+                    dActor_c::Spawn(0xdd, kGrockRolling, mPos, &rot, mAreaId, -1);
                 }
             }
         }

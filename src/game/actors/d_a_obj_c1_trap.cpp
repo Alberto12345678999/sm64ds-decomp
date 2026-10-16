@@ -16,7 +16,8 @@
  * - dBgW_KcMbg::SetFile stays mangled (Fix12<int> by value, wall 6az)
  * - TrapVector3 POD locals; Vector3's empty destructor would add an
  *   unrelated helper to this TU
- * - InitResources mAngleY uses (int)this+0x8e (named member CSE/size-DIFF)
+ * - InitResources adds to mAngleY through a pointer local (plain
+ *   `mAngleY += 0x8000` CSE/size-DIFFs)
  * - func_020393c4 stores dBgW+0x1c (no setter)
  * - data_ov010_02112d08 / 02112d00 are this file's resource handles;
  *   data_ov010_02112d28 is the state record the compiler copies into .bss;
@@ -217,9 +218,7 @@ int daObjC1_Trap_c::InitResources()
         position.x = x;
         position.y = y;
         position.z = z;
-        spawned = dActor_c::Spawn(
-            0x24, 0, *(const Vector3 *)&position,
-            (const Vector3_16 *)&mAngleX, mAreaId, -1);
+        spawned = dActor_c::Spawn(0x24, 0, *(const Vector3 *)&position, &mAngle, mAreaId, -1);
         ((daObjC1_Trap_c *)spawned)->mSpawnerID = uniqueID;
 
         index = ((int)(u16)mAngleY >> 4) * 2;
@@ -231,9 +230,7 @@ int daObjC1_Trap_c::InitResources()
         position.x = x;
         position.y = y;
         position.z = z;
-        spawned = dActor_c::Spawn(
-            0x24, 1, *(const Vector3 *)&position,
-            (const Vector3_16 *)&mAngleX, mAreaId, -1);
+        spawned = dActor_c::Spawn(0x24, 1, *(const Vector3 *)&position, &mAngle, mAreaId, -1);
         ((daObjC1_Trap_c *)spawned)->mSpawnerID = uniqueID;
         return 1;
     }
@@ -252,9 +249,9 @@ int daObjC1_Trap_c::InitResources()
     mState = 0;
 
     if ((param1 & 0xff) == 1) {
-        /* Named `mAngleY = mAngleY + 0x8000` size-DIFFs InitResources
-         * (addressing shape / CSE). Keep the MATCH form. */
-        s16 *angleY = (s16 *)((int)this + 0x8e);
+        /* Named `mAngleY += 0x8000` size-DIFFs InitResources (addressing
+         * shape / CSE); the pointer local keeps the ROM form. */
+        s16 *angleY = &mAngleY;
         *angleY = *angleY + 0x8000;
     }
     return 1;
@@ -365,7 +362,7 @@ void daObjC1_Trap_c::State0()
     if (!spawner || !spawner->mTrapActive)
         return;
     mState = 1;
-    Sound::PlayBank3(0xe, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0xe, mCamSpacePos);
 }
 
 // @symbol _ZN14daObjC1_Trap_c6State1Ev

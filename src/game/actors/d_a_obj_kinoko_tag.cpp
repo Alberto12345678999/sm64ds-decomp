@@ -19,8 +19,6 @@
  * - dCcAc_c::Init 6az: InitResources passes Fix12<int> by value; the header
  *   method form size-DIFFs (notes/mwccarm-codegen.md 6az).
  * - KinokoPositionWords: a local Vector3 would emit vague-linkage ~Vector3.
- * - *(Vector3 *)&mPosX addressing shape (a Vector3 member at 0x05c is a
- *   dActor_c campaign, not this leaf).
  * - data_ov002_0210da30 is the ov002 SharedFilePtr handle; symbols.txt has
  *   no recovered name, so it is not coined. SharedFilePtr.h has no fields.
  * - PILE / daObjPile_c.h +0x32c backlink (actor ID 0x1b).
@@ -112,8 +110,7 @@ s32 daObjKinokoTag_c::Behavior()
         if (!mSearchedForPile) {
             other = FindWithActorID(0x1b, 0);
             while (other != 0) {
-                if (Vec3_Dist((Vector3 *)&mPosX,
-                              (Vector3 *)&other->mPosX) < 0x96000) {
+                if (Vec3_Dist(&mPos, &other->mPos) < 0x96000) {
                     mHasLinkedPile = 1;
                     /* PILE / daObjPile_c.h +0x32c */
                     *(dActor_c **)((u8 *)other + 0x32c) = this;
@@ -185,9 +182,7 @@ void daObjKinokoTag_c::SpawnMegaMushroom()
             spawnPos.z = tagPos->z;
 
             LandingDustAt(*(Vector3 *)&spawnPos, true);
-            dActor_c *mushroom = Spawn(
-                0x115, 0xd, *(Vector3 *)&tag->mPosX,
-                0, mAreaId, -1);
+            dActor_c *mushroom = Spawn(0x115, 0xd, tag->mPos, 0, mAreaId, -1);
             mushroom->mVertSpeed = 0x28000;
 
             tag->KillAndTrackInDeathTable();

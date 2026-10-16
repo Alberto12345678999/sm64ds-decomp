@@ -122,7 +122,7 @@ s32 daObjClockHuriko_c::Behavior()
         *angleZ = (s16)(*angleZ + mAngSpeed);
         s16 speed = mAngSpeed;
         if (speed == 0x10 || speed == -0x10) {
-            Sound::PlayBank3(0x16, *(const Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x16, mCamSpacePos);
         }
     }
     func_ov013_02111238(this);

@@ -147,7 +147,7 @@ int daKrpa_c::InitResources()
     *(M48 *)&mMatrix = *(M48 *)IDENTITY_MATRIX4X3;
 
     dBgCh_Gnd ground;
-    ground.SetObjAndPos(*(Vector3 *)&mPosX, this);
+    ground.SetObjAndPos(mPos, this);
     if (ground.DetectClsn())
         groundDistance = (mPosY - ground.clsnY) + 0x1e000;
     else
@@ -168,7 +168,7 @@ int daKrpa_c::Behavior()
 // @symbol _ZN8daKrpa_c6RenderEv
 int daKrpa_c::Render()
 {
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -280,9 +280,8 @@ int daKrpa_c::func_ov070_0212156c() {
         firePos.x = x;
         firePos.z = z;
         firePos.y = y;
-        dActor_c::Spawn(0x10f, 0, firePos,
-            (Vector3_16 *)&this->mAngleX, this->mAreaId, -1);
-        func_0201267c(0x105, (Vector3 *)&this->mCamSpacePosX);
+        dActor_c::Spawn(0x10f, 0, firePos, &this->mAngle, this->mAreaId, -1);
+        func_0201267c(0x105, &this->mCamSpacePos);
     }
     if (this->mFrameController.cursor == this->mFrameController.count)
         this->func_ov070_02121880(0);
@@ -327,7 +326,7 @@ extern "C" u32 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
 
 int daKrpa_c::func_ov070_02121438()
 {
-    Sound::PlayBank0(9, *(Vector3 *)&this->mCamSpacePosX);
+    Sound::PlayBank0(9, this->mCamSpacePos);
     this->mFlags &= ~1;
     this->mVertAccel = -0x2000;
     this->mTerminalVelocity = -0x3c000;

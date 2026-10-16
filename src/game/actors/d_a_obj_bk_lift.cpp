@@ -342,7 +342,7 @@ void daObjBk_Lift_c::Kill()
     dustPos.y = mPosY;
     dustPos.z = mPosZ;
     PoofDustAt(dustPos);
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();
 }
 

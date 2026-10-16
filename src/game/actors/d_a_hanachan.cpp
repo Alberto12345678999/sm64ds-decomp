@@ -311,7 +311,7 @@ void daHanachan_c::StateDeadMain()
         starPos.y = py;
         starPos.z = pz;
     }
-    UntrackAndSpawnStar((s8 &)mStarTrackID, mStarID, *(const Vector3 *)&mPosX, 4);
+    UntrackAndSpawnStar((s8 &)mStarTrackID, mStarID, mPos, 4);
     _ZN5Sound22StopLoadedMusic_Layer3Ev();
     SetState(3);
 }
@@ -776,7 +776,7 @@ void daHanachan_c::HandlePlayerHits()
         isPlayer = type == 0xbf;
         if (isPlayer == 0)
             continue;
-        src = (Vector3 *)&a->mPosX;
+        src = &a->mPos;
         playerPos.x = src->x;
         playerPos.y = src->y;
         playerPos.z = src->z;

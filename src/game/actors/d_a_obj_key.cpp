@@ -293,8 +293,8 @@ void daObjKey_c::func_ov089_02130fb4(Vector3 *target, int height)
         mVertSpeed = (dy + 1) * a;
     }
     mTerminalVelocity = TERMINAL_VY;
-    mHorzSpeed = Vec3_HorzDist((Vector3 *)&mPosX, target) / JUMP_FRAMES;
-    mPrevAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, target);
+    mHorzSpeed = Vec3_HorzDist(&mPos, target) / JUMP_FRAMES;
+    mPrevAngleY = Vec3_HorzAngle(&mPos, target);
 }
 
 /* UnloadKeyModels, 0x021310cc */
@@ -382,13 +382,13 @@ void daObjKey_c::StateFlyToCenter()
                 break;
             mStep++;
             *timer = 0;
-            Sound::PlayBank3(SND_FLY, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(SND_FLY, mCamSpacePos);
             center1.x = 0;
             center1.y = 0;
             center1.z = 0;
             mVertSpeed = FLY_VY;
-            mHorzSpeed = Vec3_HorzDist((Vector3 *)&mPosX, &center1) / 80;
-            mPrevAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, &center1);
+            mHorzSpeed = Vec3_HorzDist(&mPos, &center1) / 80;
+            mPrevAngleY = Vec3_HorzAngle(&mPos, &center1);
             mBounceCount = 0;
             mVertAccel = GRAVITY;
             Message::EndTalk();
@@ -414,7 +414,7 @@ void daObjKey_c::StateFlyToCenter()
                     mVertSpeed = BOUNCE_VY;
                     mHorzSpeed = 0;
                     mBounceCount++;
-                    Sound::PlayBank3(SND_BOUNCE, *(Vector3 *)&mCamSpacePosX);
+                    Sound::PlayBank3(SND_BOUNCE, mCamSpacePos);
                 }
             }
         } else {
@@ -549,7 +549,7 @@ void daObjKey_c::StateStarJump()
 
     case 1:
         cam->SetLookAt(v);
-        if (Vec3_HorzDist((Vector3 *)&mPosX, &mJumpTarget) >= mHorzSpeed)
+        if (Vec3_HorzDist(&mPos, &mJumpTarget) >= mHorzSpeed)
             return;
         mPosX = mJumpTarget.x;
         mPosY = mJumpTarget.y;
@@ -565,7 +565,7 @@ void daObjKey_c::StateStarJump()
         cam->SetLookAt(v);
         if (mWithMeshClsn.JustHitGround()) {
             mVertSpeed = -mVertSpeed >> 1;
-            func_02012694(SND_LAND, (Vector3 *)&mCamSpacePosX);
+            func_02012694(SND_LAND, &mCamSpacePos);
             return;
         }
         if (mWithMeshClsn.IsOnGround() == 0)
@@ -670,7 +670,7 @@ void daObjKey_c::StateDrop()
             mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
         if (mWithMeshClsn.JustHitGround()) {
             mVertSpeed = -mVertSpeed >> 1;
-            func_02012694(SND_LAND, (Vector3 *)&mCamSpacePosX);
+            func_02012694(SND_LAND, &mCamSpacePos);
             return;
         }
         if (mWithMeshClsn.IsOnGround() == 0)
@@ -809,7 +809,7 @@ int daObjKey_c::Render()
     if (mAnimID != 0) {
         mModelAnim.Render(0);
     } else {
-        mModelAnim.Render((Vector3 *)&mScaleX);
+        mModelAnim.Render(&mScale);
         /* mAnimID == 0 is already the else; the second test is in the ROM. */
         if (data_ov089_021328b4[mState] != 0 && mAnimID == 0)
             mModel.Render(0);
@@ -924,7 +924,7 @@ int daObjKey_c::InitResources()
         _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, STAR_CLSN_R, 0, 0, 0);
         mSpinSpeed = SPIN_FAST;
         mVertAccel = 0;
-        Sound::PlayBank3(SND_APPEAR, *(Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(SND_APPEAR, mCamSpacePos);
     } else {
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c60);
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);

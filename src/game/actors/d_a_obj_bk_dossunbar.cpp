@@ -232,7 +232,7 @@ extern "C" void func_ov015_02111f6c(daObjBk_Dossunbar_c *self)
 extern "C" void func_ov015_02111f4c(daObjBk_Dossunbar_c *self)
 {
     self->mStateTimer = 10;
-    Sound::PlayBank3(0xc3, *(Vector3 *)&self->mCamSpacePosX);
+    Sound::PlayBank3(0xc3, self->mCamSpacePos);
 }
 
 /* State 1 body: ease X towards home minus 0x168000, then wait-mid. */
@@ -273,7 +273,7 @@ extern "C" void func_ov015_02111e80(daObjBk_Dossunbar_c *self)
 extern "C" void func_ov015_02111e60(daObjBk_Dossunbar_c *self)
 {
     self->mStateTimer = 0x18;
-    Sound::PlayBank3(0xc3, *(Vector3 *)&self->mCamSpacePosX);
+    Sound::PlayBank3(0xc3, self->mCamSpacePos);
 }
 
 /* State 3 body: ease X back to home, then wait-home. */
@@ -295,7 +295,7 @@ extern "C" void func_ov015_02111df4(daObjBk_Dossunbar_c *self)
 extern "C" void func_ov015_02111dd4(daObjBk_Dossunbar_c *self)
 {
     self->unk_0a4 = 0xf000;
-    Sound::PlayBank3(0xc3, *(Vector3 *)&self->mCamSpacePosX);
+    Sound::PlayBank3(0xc3, self->mCamSpacePos);
 }
 
 /* State 4 body: coast until X reaches home, then wait-home. */
@@ -331,7 +331,7 @@ extern "C" void func_ov015_02111d4c(daObjBk_Dossunbar_c *self)
 extern "C" void func_ov015_02111d28(daObjBk_Dossunbar_c *self)
 {
     self->unk_0a4 = -0x14000;
-    Sound::PlayBank3(0xc3, *(Vector3 *)&self->mCamSpacePosX);
+    Sound::PlayBank3(0xc3, self->mCamSpacePos);
 }
 
 /* State 6 body: travel until X is 0x1ea000 below home, then wait-out. */
@@ -367,7 +367,7 @@ void daObjBk_Dossunbar_c::Kill()
     dustPos.y = pos.y;
     dustPos.z = pos.z;
     PoofDustAt(dustPos);
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();
 }
 

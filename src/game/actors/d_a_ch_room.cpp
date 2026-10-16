@@ -61,7 +61,7 @@ int daChRoom_c::Behavior()
     int distX;
 
     player = data_0209f394[data_0209f250];
-    Vec3_Sub(&delta, (Vector3*)&player->mPosX, (Vector3*)&mPosX);
+    Vec3_Sub(&delta, &player->mPos, &mPos);
     Vec3_RotateYAndTranslate(&local, &data_020a0ebc, mAngleY, &delta);
 
     distX = local.x;

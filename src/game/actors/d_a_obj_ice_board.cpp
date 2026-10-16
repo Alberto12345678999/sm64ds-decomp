@@ -157,13 +157,10 @@ void daObjIceBoard_c::OnGroundPounded(dActor_c &other)
  * all, rather than loading the triple once into callee-saved registers.
  * Hoisting them into locals is one instruction shorter per call and does not
  * reproduce; naming the fields at each call site is what asks for the loads
- * the cartridge has.
- *
- * mCamSpacePos is read as a Vector3 through its first member, which is how
- * the rest of the tree spells that triple. */
+ * the cartridge has. */
 void daObjIceBoard_c::Kill()
 {
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x74, mPosX, mPosY, mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x75, mPosX, mPosY, mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x76, mPosX, mPosY, mPosZ);

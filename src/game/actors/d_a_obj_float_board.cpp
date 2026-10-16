@@ -223,7 +223,7 @@ int daObjFloatBoard_c::Behavior()
             /* The rider's position as one address: spelling the three loads
                as rider->mPosX/Y/Z instead of [riderPos+0/4/8] costs an
                instruction and DIFFs. */
-            Vector3 *riderPos = (Vector3 *)&mRider->mPosX;
+            Vector3 *riderPos = &mRider->mPos;
             tpos.x = riderPos->x;
             tpos.y = riderPos->y;
             tpos.z = riderPos->z;

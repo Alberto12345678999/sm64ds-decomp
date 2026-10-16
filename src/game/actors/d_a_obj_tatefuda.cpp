@@ -74,6 +74,7 @@ enum daObjTatefuda_c_AssetId {
 #include "dBgActor_c.h"
 #include "Player.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "decl_common.h"
 #include "dBgW.h"
 #include "SharedFilePtr.h"
@@ -147,8 +148,6 @@ enum {
     ACTOR_PLAYER  = 191,   /* 0xbf */
     ACTOR_BOMBHEI = 206    /* 0xce */
 };
-
-#define FIXMUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int b, int d, unsigned int e, unsigned int f);
@@ -801,12 +800,12 @@ void daObjTatefuda_c::Talk()
 
     ang = (s32) * (u16 *)&mAngleY;
     sinV = data_02082214[(ang >> 4) * 2];
-    tx = tx + FIXMUL(scale, sinV);
+    tx = tx + FX_MUL(scale, sinV);
     tgt.x = tx;
 
     ang = (s32) * (u16 *)&mAngleY;
     cosV = data_02082214[(ang >> 4) * 2 + 1];
-    tz = tz + FIXMUL(scale, cosV);
+    tz = tz + FX_MUL(scale, cosV);
     tgt.z = tz;
 
     {
@@ -836,7 +835,7 @@ void daObjTatefuda_c::Talk()
             }
             break;
         case 1:
-            if (Vec3_ApproachHorz((struct Vector3 *)&player->mPosX, &tgt, 0xa000) != 0) {
+            if (Vec3_ApproachHorz(&player->mPos, &tgt, 0xa000) != 0) {
                 talkStep = &mTalkStep;
                 *talkStep = (u8)(*talkStep + 1);
             }
@@ -924,7 +923,7 @@ int daObjTatefuda_c::TryStartTalk() {
     fail:
         return 0;
     success: {
-        int ang = Vec3_HorzAngle((struct Vector3 *)&mPosX, (struct Vector3 *)&other->mPosX);
+        int ang = Vec3_HorzAngle(&mPos, &other->mPos);
         if (AngleDiff(ang, mAngleY) > 0x4000)
             return 0;
         mTalkingPlayer = (Player *)other;
@@ -951,30 +950,36 @@ int daObjTatefuda_c::TryStartTalk() {
  * it in front), hit-flag bit 0x1000 (grab, in that table) must be set, and
  * Player::TryGrab must accept; then the player becomes mHoldingPlayer and the
  * sign enters CARRIED. */
-void daObjTatefuda_c::CheckGrabOrBreak(){
-  dActor_c* other;
-  unsigned int id = mdCcAc_c.otherOwner;
-  if (id == 0) return;
-  other = dActor_c::FindWithID(id);
-  if (other == 0) return;
-  {
-    int b = (int)(other->actorID == ACTOR_PLAYER);
-    if (b == 0) return;
-  }
-  if ((mdCcAc_c.hitFlags & 0x40000) != 0) {
-    mBreakTimer = 0x3c;
-    return;
-  }
-  {
-    int ang = Vec3_HorzAngle((struct Vector3*)&mPosX, (struct Vector3*)&other->mPosX);
-    if (other->param1 != 2) return;
-    if (AngleDiff(ang, mAngleY) <= 0x4000) return;
-  }
-  if ((mdCcAc_c.hitFlags & 0x1000) == 0) return;
-  if (((Player *)other)->TryGrab(*this) == 0)
-      return;
-  mHoldingPlayer = (Player *)other;
-  SetState(STATE_CARRIED);
+void daObjTatefuda_c::CheckGrabOrBreak() {
+    dActor_c *other;
+    unsigned int id = mdCcAc_c.otherOwner;
+    if (id == 0)
+        return;
+    other = dActor_c::FindWithID(id);
+    if (other == 0)
+        return;
+    {
+        int b = (int)(other->actorID == ACTOR_PLAYER);
+        if (b == 0)
+            return;
+    }
+    if ((mdCcAc_c.hitFlags & 0x40000) != 0) {
+        mBreakTimer = 0x3c;
+        return;
+    }
+    {
+        int ang = Vec3_HorzAngle(&mPos, &other->mPos);
+        if (other->param1 != 2)
+            return;
+        if (AngleDiff(ang, mAngleY) <= 0x4000)
+            return;
+    }
+    if ((mdCcAc_c.hitFlags & 0x1000) == 0)
+        return;
+    if (((Player *)other)->TryGrab(*this) == 0)
+        return;
+    mHoldingPlayer = (Player *)other;
+    SetState(STATE_CARRIED);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1020,7 +1025,7 @@ void daObjTatefuda_c::Kill()
     dustPos.y = pos.y;
     dustPos.z = pos.z;
     DisappearPoofDustAt(dustPos);
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     Reset();
 }
 
@@ -1072,7 +1077,7 @@ void daObjTatefuda_c::OnGroundPounded(dActor_c &other)
 {
     if (mPoundsLeft == 0) return;
     if (mPoundCooldown != 0) return;
-    Sound::PlayBank3(0x62, *(const Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x62, mCamSpacePos);
     if (other.param1 == 2 || ((Player &)other).mIsMega != 0) {
         mPosY -= (mPoundsLeft * 0x2d) << 12;
         mPoundsLeft = 0;
@@ -1186,7 +1191,7 @@ void AttachToHolder(struct daObjTatefuda_c *self)
  * Called by DROPPED's update, and by Behavior while the state is THROWN. */
 void RebuildModelMatrix(struct daObjTatefuda_c* self){
     struct Vector3 v;
-    Vec3_Asr(&v, (struct Vector3*)&self->mPosX, 3);
+    Vec3_Asr(&v, &self->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x8c00, 0);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68,

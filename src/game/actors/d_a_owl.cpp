@@ -74,6 +74,7 @@ enum daOwl_c_AssetId {
 #include "daOwl_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 /* Resource handles the static initializer constructs. The wrapper spellings
  * are reconstructed; the constructor and destructor addresses, the file IDs
@@ -266,7 +267,7 @@ int daOwl_c::func_ov094_021358b4()
             mPosY += 0x64000;
         }
     } else {
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE((Vector3 *)&mPosX, (Vector3 *)&mAnchorX, 0x2000);
+        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mPos, (Vector3 *)&mAnchorX, 0x2000);
         if (mOpacity < OPACITY_MAX) {
             mOpacity++;
         } else {
@@ -380,7 +381,7 @@ int daOwl_c::func_ov094_02135c28()
             if (player != 0) {
                 if ((u16)(player->mStateFlags & 0x800) == 0) {
                     if (player->StartTalk(*this, 1) != 0) {
-                        if (mTalkTarget->ShowMessage(*this, 0xa2, (const Vector3 *)&mPosX, 0, 0) == 1) {
+                        if (mTalkTarget->ShowMessage(*this, 0xa2, &mPos, 0, 0) == 1) {
                             func_02012694(0x176, &mCamSpacePosX);
                             mTalkState = TALK_TALKING;
                             func_ov094_02136188(OWL_STATE_TALK);
@@ -415,7 +416,7 @@ int daOwl_c::func_ov094_02135c28()
     ang = unk_3e8;
     idx = ((u16)(short)ang >> 4) * 2;
     tbl = data_02082214[idx];
-    result = (int)(((long long)tbl * 0x64000 + 0x800) >> 12);
+    result = FX_MUL(tbl, 0x64000);
     _Z14ApproachLinearRiii(&mPosY, mAnchorY + result, 0x3000);
 
     Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
@@ -546,7 +547,7 @@ void daOwl_c::func_ov094_021361d8()
 {
     Matrix4x3 out;
     OwlVec v;
-    Vec3_Asr((Vector3 *)&v, (Vector3 *)&mPosX, 3);
+    Vec3_Asr((Vector3 *)&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         mAngleX, mAngleY, mAngleZ);

@@ -118,7 +118,7 @@ void daObjSm_Lift_c::OnHitByMegaChar(Player &player)
 void daObjSm_Lift_c::func_ov018_02111278()
 {
     Vector3 t;
-    Vec3_Asr(&t, (Vector3 *)&mPosX, 3);
+    Vec3_Asr(&t, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);

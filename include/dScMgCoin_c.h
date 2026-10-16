@@ -118,7 +118,7 @@ struct dScMgCoin_Bouncer {
     u16 countdown;    /* 0x12 */
     u8 active;        /* 0x14 */
     u8 shown;         /* 0x15 */
-    u8 sprite;        /* 0x16 -- into data_ov006_02134b4c (Bag_Draw) */
+    u8 sprite;        /* 0x16 -- into sCoinBagSprites (Bag_Draw) */
     u8 state;         /* 0x17 */
     u8 bouncesLeft;   /* 0x18 */
     u8 stage;         /* 0x19 */

@@ -37,40 +37,40 @@ extern struct Pair pmf_dScMgBomroom_c_TopDoor_StateOpening;
 extern struct Pair pmf_dScMgBomroom_c_TopDoor_StateOpen;
 extern struct Pair pmf_dScMgBomroom_c_TopDoor_StateClosing;
 
-extern struct Dst5 data_ov006_021416e0;
-extern struct Dst4 data_ov006_021416a0;
-extern struct Dst7 data_ov006_02141730;
-extern struct Dst5 data_ov006_02141708;
+extern struct Dst5 sBomroomRoundStateTable;
+extern struct Dst4 sBomroomRoundEndTable;
+extern struct Dst7 sBomroomBombStateTable;
+extern struct Dst5 sBomroomBombMarchTable;
 extern struct Dst4 sBomroomHatchPanelStateTable;
 extern struct Dst4 sBomroomPenGateStateTable;
 extern struct Dst4 sBomroomTopDoorStateTable;
 
 void __sinit_ov006_0212fd48(void)
 {
-    data_ov006_021416e0.p0 = pmf_dScMgBomroom_c_Round_StateSetup;
-    data_ov006_021416e0.p1 = pmf_dScMgBomroom_c_Round_StateStart;
-    data_ov006_021416e0.p2 = pmf_dScMgBomroom_c_Round_StatePlay;
-    data_ov006_021416e0.p3 = pmf_dScMgBomroom_c_Round_StateEnd;
-    data_ov006_021416e0.p4 = pmf_dScMgBomroom_c_Round_StateGameOver;
+    sBomroomRoundStateTable.p0 = pmf_dScMgBomroom_c_Round_StateSetup;
+    sBomroomRoundStateTable.p1 = pmf_dScMgBomroom_c_Round_StateStart;
+    sBomroomRoundStateTable.p2 = pmf_dScMgBomroom_c_Round_StatePlay;
+    sBomroomRoundStateTable.p3 = pmf_dScMgBomroom_c_Round_StateEnd;
+    sBomroomRoundStateTable.p4 = pmf_dScMgBomroom_c_Round_StateGameOver;
 
-    data_ov006_021416a0.p0 = pmf_dScMgBomroom_c_RoundEnd_StartMarch;
-    data_ov006_021416a0.p1 = pmf_dScMgBomroom_c_RoundEnd_WaitLinedUp;
-    data_ov006_021416a0.p2 = pmf_dScMgBomroom_c_RoundEnd_Tally;
-    data_ov006_021416a0.p3 = pmf_dScMgBomroom_c_RoundEnd_Finish;
+    sBomroomRoundEndTable.p0 = pmf_dScMgBomroom_c_RoundEnd_StartMarch;
+    sBomroomRoundEndTable.p1 = pmf_dScMgBomroom_c_RoundEnd_WaitLinedUp;
+    sBomroomRoundEndTable.p2 = pmf_dScMgBomroom_c_RoundEnd_Tally;
+    sBomroomRoundEndTable.p3 = pmf_dScMgBomroom_c_RoundEnd_Finish;
 
-    data_ov006_02141730.p0 = pmf_dScMgBomroom_c_Bomb_StateWaiting;
-    data_ov006_02141730.p1 = pmf_dScMgBomroom_c_Bomb_StateWalk;
-    data_ov006_02141730.p2 = pmf_dScMgBomroom_c_Bomb_StateHeld;
-    data_ov006_02141730.p3 = pmf_dScMgBomroom_c_Bomb_StateChainDelay;
-    data_ov006_02141730.p4 = pmf_dScMgBomroom_c_Bomb_StateExploding;
-    data_ov006_02141730.p5 = pmf_dScMgBomroom_c_Bomb_StateInPen;
-    data_ov006_02141730.p6 = pmf_dScMgBomroom_c_Bomb_StateMarch;
+    sBomroomBombStateTable.p0 = pmf_dScMgBomroom_c_Bomb_StateWaiting;
+    sBomroomBombStateTable.p1 = pmf_dScMgBomroom_c_Bomb_StateWalk;
+    sBomroomBombStateTable.p2 = pmf_dScMgBomroom_c_Bomb_StateHeld;
+    sBomroomBombStateTable.p3 = pmf_dScMgBomroom_c_Bomb_StateChainDelay;
+    sBomroomBombStateTable.p4 = pmf_dScMgBomroom_c_Bomb_StateExploding;
+    sBomroomBombStateTable.p5 = pmf_dScMgBomroom_c_Bomb_StateInPen;
+    sBomroomBombStateTable.p6 = pmf_dScMgBomroom_c_Bomb_StateMarch;
 
-    data_ov006_02141708.p0 = pmf_dScMgBomroom_c_BombMarch_ToGate;
-    data_ov006_02141708.p1 = pmf_dScMgBomroom_c_BombMarch_Exit;
-    data_ov006_02141708.p2 = pmf_dScMgBomroom_c_BombMarch_Offscreen;
-    data_ov006_02141708.p3 = pmf_dScMgBomroom_c_BombMarch_ToLine;
-    data_ov006_02141708.p4 = pmf_dScMgBomroom_c_BombMarch_LinedUp;
+    sBomroomBombMarchTable.p0 = pmf_dScMgBomroom_c_BombMarch_ToGate;
+    sBomroomBombMarchTable.p1 = pmf_dScMgBomroom_c_BombMarch_Exit;
+    sBomroomBombMarchTable.p2 = pmf_dScMgBomroom_c_BombMarch_Offscreen;
+    sBomroomBombMarchTable.p3 = pmf_dScMgBomroom_c_BombMarch_ToLine;
+    sBomroomBombMarchTable.p4 = pmf_dScMgBomroom_c_BombMarch_LinedUp;
 
     sBomroomHatchPanelStateTable.p0 = pmf_dScMgBomroom_c_HatchPanel_StateIdle;
     sBomroomHatchPanelStateTable.p1 = pmf_dScMgBomroom_c_HatchPanel_StateAnimate;

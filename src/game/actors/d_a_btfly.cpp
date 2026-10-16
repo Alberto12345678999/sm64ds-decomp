@@ -181,8 +181,7 @@ void daBtfly_c::State7()
     Player *player = ClosestPlayer();
     if (player != 0) {
         ApproachLinear(mPrevAngleY, HorzAngleToCPlayer(), 0x320);
-        ApproachLinear(mPrevAngleX,
-            Vec3_VertAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX), 0x320);
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, &player->mPos), 0x320);
     }
 
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
@@ -241,7 +240,7 @@ void daBtfly_c::State6()
             mUseAnimModel = 0;
             return;
         }
-        dActor_c::Spawn(0x114, 0, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+        dActor_c::Spawn(0x114, 0, mPos, 0, mAreaId, -1);
         MarkForDestruction();
         return;
     }
@@ -323,8 +322,7 @@ void daBtfly_c::State4()
                 else
                     sel = three;
                 rot.w[1] = (s16)((s16)rot.w[1] + (s16)((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10));
-                dActor_c::Spawn(0x150, mask | (sel << 6), *(Vector3 *)&mPosX,
-                    (Vector3_16 *)&rot, mAreaId, -1);
+                dActor_c::Spawn(0x150, mask | (sel << 6), mPos, (Vector3_16 *)&rot, mAreaId, -1);
             }
             if (sb == 0)
                 mKind = 1;
@@ -346,7 +344,7 @@ void daBtfly_c::State4()
 void daBtfly_c::State3()
 {
     ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPosX, &mHomePosX), 0x800);
-    ApproachLinear(mPrevAngleX, Vec3_VertAngle((Vector3 *)&mPosX, (Vector3 *)&mHomePosX), 0x50);
+    ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, (Vector3 *)&mHomePosX), 0x50);
     UpdatePos(0);
 
     {
@@ -417,7 +415,7 @@ void daBtfly_c::State2()
         v.y = py;
         v.z = pp[2];
         v.y = py + ((mStateTimer * five + 0x100) << 12) / 4;
-        ApproachLinear(mPrevAngleX, Vec3_VertAngle((Vector3 *)&mPosX, &v), 0x500);
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, &v), 0x500);
 
         UpdatePos(0);
 
@@ -521,21 +519,15 @@ int daBtfly_c::Behavior()
         {
             int s = mHorzSpeed;
             int idx = ((unsigned short)mPrevAngleX >> 4) << 1;
-            long long p;
-            p = (long long)(-(int)data_02082214[idx]) * s;
-            mVertSpeed = (int)((p + 0x800) >> 0xc);
-            p = (long long)(int)data_02082214[idx + 1] * s;
-            int horiz = (int)((p + 0x800) >> 0xc);
-            {
-                int idx2 = ((unsigned short)mPrevAngleY >> 4) << 1;
-                p = (long long)horiz * (int)data_02082214[idx2];
-                unk_0a4 = (int)((p + 0x800) >> 0xc);
-            }
-            {
-                int idx3 = (((unsigned short)mPrevAngleY >> 4) << 1) + 1;
-                p = (long long)horiz * (int)data_02082214[idx3];
-                unk_0ac = (int)((p + 0x800) >> 0xc);
-            }
+            int velY = FX_MUL(-(int)data_02082214[idx], s);
+            mVertSpeed = velY;
+            int horiz = FX_MUL((int)data_02082214[idx + 1], s);
+            int idx2 = ((unsigned short)mPrevAngleY >> 4) << 1;
+            int velX = FX_MUL(horiz, (int)data_02082214[idx2]);
+            unk_0a4 = velX;
+            int idx3 = (((unsigned short)mPrevAngleY >> 4) << 1) + 1;
+            int velZ = FX_MUL(horiz, (int)data_02082214[idx3]);
+            unk_0ac = velZ;
         }
         UpdatePosWithOnlySpeed(0);
         mStateTimer++;

@@ -81,6 +81,7 @@
 #include "Model.h"
 #include "SharedFilePtr.h"
 #include "dClipper.h"
+#include "nitro/fx/fx.h"
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c19BeforeInitResourcesEv
@@ -178,10 +179,10 @@ int dActor_c::BeforeBehavior()
             tmp.x = mPosX >> 3;
             tmp.y = (mPosY + mClipOffsetY) >> 3;
             tmp.z = mPosZ >> 3;
-            MulVec3Mat4x3(&tmp, &data_0209b3ec, (Vector3 *)&mCamSpacePosX);
+            MulVec3Mat4x3(&tmp, &data_0209b3ec, &mCamSpacePos);
         }
         if (mFlags & 0x10003) {
-            int r = data_0209f43c.ClipSphere(*(Vector3 *)&mCamSpacePosX, mClipRadius, &mClipResult);
+            int r = data_0209f43c.ClipSphere(mCamSpacePos, mClipRadius, &mClipResult);
             int thresh = mClipDistance;
             if (data_0209f274)
                 thresh <<= 1;
@@ -420,11 +421,11 @@ void dActor_c::UpdatePosWithHorzSpeedAndAng(){
         a8 = *(s32*)((char*)c+0xa8);
         v9c = *(s32*)((char*)c+0x9c);
         a0 = *(s32*)((char*)c+0xa0);
-        px = ((s64)v98 * sinv + 0x800) >> 12;
+        px = FX_MUL(v98, sinv);
         nx = a8 + v9c;
         if (nx >= a0) a0 = nx;
         cosv = data_02082214[j];
-        pz = ((s64)v98 * cosv + 0x800) >> 12;
+        pz = FX_MUL(v98, cosv);
         *(s32*)((char*)c+0xa4) = (s32)pz;
         *(s32*)((char*)c+0xa8) = a0;
         *(s32*)((char*)c+0xac) = (s32)px;
@@ -552,8 +553,7 @@ s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 s16 dActor_c::HorzAngleToCPlayer()
 {
     ClosestPlayer();
-    return Vec3_HorzAngle((Vector3 *)&mPosX,
-                          (Vector3 *)&((dActor_c *)data_0209b458)->mPosX);
+    return Vec3_HorzAngle(&mPos, &((dActor_c *)data_0209b458)->mPos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -569,7 +569,7 @@ s16 dActor_c::HorzAngleToCPlayerOrAng()
     if (player == 0)
         return mAngleY;
 
-    return Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
+    return Vec3_HorzAngle(&mPos, &player->mPos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -589,8 +589,7 @@ Player *dActor_c::FarthestPlayer()
 s16 dActor_c::HorzAngleToFPlayer()
 {
     ClosestPlayer();
-    return Vec3_HorzAngle((Vector3 *)&mPosX,
-                          (Vector3 *)&((dActor_c *)data_0209b450)->mPosX);
+    return Vec3_HorzAngle(&mPos, &((dActor_c *)data_0209b450)->mPos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -609,8 +608,7 @@ dActor_c *dActor_c::ClosestWithActorID(u32 actorID)
             break;
 
         if (actor != this) {
-            Fix12i dist = Vec3_Dist((const Vector3 *)&mPosX,
-                                    (const Vector3 *)&actor->mPosX);
+            Fix12i dist = Vec3_Dist(&mPos, &actor->mPos);
             if (dist < closestDist) {
                 closestDist = dist;
                 closest = actor;
@@ -637,9 +635,8 @@ extern "C" s32 func_02010844(void* unused, Vector3* v, s16 angle)
     dir = _ZN4cstd5atan2E5Fix12IiES1_(v->x, v->z);
     angle = (s16)(dir - angle);
     horzLen = Vec3_HorzLen(v);
-    return _ZN4cstd5atan2E5Fix12IiES1_(
-        (s32)(((s64)horzLen * data_02082214[((u16)angle >> 4) * 2 + 1] + 0x800) >> 12),
-        v->y);
+    return _ZN4cstd5atan2E5Fix12IiES1_(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]),
+                                       v->y);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -720,9 +717,9 @@ void dActor_c::GivePlayerCoins(Player &player, u8 count, u32 coinKind)
         return;
 
     if (player.mIsUnderwater)
-        Sound::PlayBank3(0x12, *(const Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(0x12, mCamSpacePos);
     else
-        Sound::PlayBank3(0x11, *(const Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank3(0x11, mCamSpacePos);
 
     s32 amount = count * data_02075238[coinKind];
     GiveCoins(player.mPlayerNo, amount);
@@ -732,7 +729,7 @@ void dActor_c::GivePlayerCoins(Player &player, u8 count, u32 coinKind)
        `add r2, r5, #0x5c` once and loads [r2], [r2,#4], [r2,#8] off it.
        Reading player.mPosX/Y/Z directly costs one instruction less (0xf4, not
        0xf8) because the offsets fold into r5. */
-    const Vector3 *src = (const Vector3 *)&player.mPosX;
+    const Vector3 *src = &player.mPos;
     Vector3 spawnPos;
     spawnPos.x = src->x;
     spawnPos.y = src->y;
@@ -756,12 +753,12 @@ extern "C" void func_020105cc(struct dActor_c *thiz, u32 flags)
 {
     if (flags & 0x380)
     {
-        _ZN5Sound9PlayBank0EjRK7Vector3(0xa, (const Vector3 *)&thiz->mCamSpacePosX);
+        _ZN5Sound9PlayBank0EjRK7Vector3(0xa, &thiz->mCamSpacePos);
         return;
     }
     if (flags & 0x40)
     {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, (const Vector3 *)&thiz->mCamSpacePosX);
+        _ZN5Sound9PlayBank0EjRK7Vector3(9, &thiz->mCamSpacePos);
         return;
     }
 }
@@ -810,7 +807,7 @@ bool dActor_c::IsPlayerInRange(s32 maxDist)
 {
     Player *closest = ClosestPlayer();
 
-    return Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&closest->mPosX) < (maxDist << 12);
+    return Vec3_Dist(&mPos, &closest->mPos) < (maxDist << 12);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -823,7 +820,7 @@ extern "C" int _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i(struct dActor_c *s
     pos.y = posY;
     pos.z = posZ;
     struct dActor_c *closest = (struct dActor_c *)self->ClosestPlayer();
-    return Vec3_Dist(&pos, (struct Vector3 *)&closest->mPosX) < (maxDist << 12);
+    return Vec3_Dist(&pos, &closest->mPos) < (maxDist << 12);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -834,7 +831,7 @@ bool dActor_c::IsPlayerInRange(const Vector3 &pos, s32 maxDist)
 {
     Player *closest = ClosestPlayer();
 
-    return Vec3_Dist(&pos, (Vector3 *)&closest->mPosX) < (maxDist << 12);
+    return Vec3_Dist(&pos, &closest->mPos) < (maxDist << 12);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1506,9 +1503,7 @@ void dActor_c::KillAndTrackInDeathTable()
  * 0x0200f97c  size 0x3c */
 void dActor_c::SpawnSoundObj(u32 soundObjParam)
 {
-    Spawn(
-        0x167, soundObjParam, *(const Vector3 *)&mPosX, 0,
-        mAreaId, -1);
+    Spawn(0x167, soundObjParam, mPos, 0, mAreaId, -1);
 }
 
 /* -------------------------------------------------------------------------- */
