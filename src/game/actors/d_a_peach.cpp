@@ -11,6 +11,7 @@
 // - Offsets 0xa4 and 0xac are dActor_c's unk_0a4 and unk_0ac. Offset 0xe8
 //   sits inside the model's ModelComponents and is still read through words[].
 #include "common.h"
+#include "nitro/fx/fx.h"
 #include "daPeach_c.h"
 #include "dActor_c.h"
 #include "Player.h"
@@ -152,10 +153,8 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(clsn) + 4))->CopyNormalTo(*(Vector3 *)floorN);
         if (floorN[1] != 0) {
-            long long xProd = (long long)floorN[0] * (long long)words[0xa4 / 4];
-            long long zProd = (long long)floorN[2] * (long long)words[0xac / 4];
-            int x = (int)((xProd + 0x800) >> 12);
-            int z = (int)((zProd + 0x800) >> 12);
+            int x = FX_MUL(floorN[0], words[0xa4 / 4]);
+            int z = FX_MUL(floorN[2], words[0xac / 4]);
             mVertSpeed = -(_ZN4cstd4fdivEii(x + z, floorN[1]) + 0x8000);
         }
     }

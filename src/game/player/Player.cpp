@@ -1839,8 +1839,7 @@ extern "C" {
 int func_ov002_020bf224(int a, int b, int c)
 {
     extern struct Entry18 data_0209f4a0[];
-    s64 p = (s64)b * data_0209f4a0[gActivePlayerSlot].val;
-    b = (int)((p + 0x800) >> 12);
+    b = FX_MUL(b, data_0209f4a0[gActivePlayerSlot].val);
     if (b < c)
         b = c;
     return b;
@@ -2674,7 +2673,6 @@ int Player::func_ov002_020c0688(){
 /* ROM ordinal 78 -- _ZN6Player19func_ov002_020c06fcEi, 0x020c06fc, size 0x5c0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c06fcEi
-#define FX(a, k) ((int)(((long long)(a) * (k) + 0x800) >> 12))
 extern "C" {
 int Player::func_ov002_020c06fc(int arg)
 {
@@ -2725,14 +2723,14 @@ int Player::func_ov002_020c06fc(int arg)
     }
 
     t = func_ov002_020f030c(this->func_ov002_020c031c());
-    t = t + FX(*(s16 *)((char *)data_0209f4a0 + gActivePlayerSlot * 0x18), FX(a, 0x52LL));
+    t = t + FX_MUL(*(s16 *)((char *)data_0209f4a0 + gActivePlayerSlot * 0x18), FX_MUL(a, 0x52));
 
     v = func_ov002_020f02c8(this->func_ov002_020c031c());
     {
         int j = (*(u16 *)(c + 0x94) >> 4) * 2;
         spd = this->mHorzSpeed;
-        r5v = FX(spd, (int)data_02082214[j]);
-        r4v = FX(spd, (int)data_02082214[j + 1]);
+        r5v = FX_MUL(spd, (int)data_02082214[j]);
+        r4v = FX_MUL(spd, (int)data_02082214[j + 1]);
     }
 
     if (this->mSlideType != 0) {
@@ -2743,26 +2741,26 @@ int Player::func_ov002_020c06fc(int arg)
                 b = 0;
             s2 = *(s16 *)((char *)data_0209f4a0 + gActivePlayerSlot * 0x18);
             if (s2 < 0x400)
-                *(u16 *)(c + 0x69c) = FX(b, 0x64LL);
+                *(u16 *)(c + 0x69c) = FX_MUL(b, 0x64);
             else if (s2 < 0x800)
-                *(u16 *)(c + 0x69c) = FX(b, 0xC8LL);
+                *(u16 *)(c + 0x69c) = FX_MUL(b, 0xC8);
             else if (s2 < 0xC00)
-                *(u16 *)(c + 0x69c) = FX(b, 0x190LL);
+                *(u16 *)(c + 0x69c) = FX_MUL(b, 0x190);
             else
-                *(u16 *)(c + 0x69c) = FX(b, 0x300LL);
+                *(u16 *)(c + 0x69c) = FX_MUL(b, 0x300);
         } else {
-            *(u16 *)(c + 0x69c) = FX(b, 0x220LL);
+            *(u16 *)(c + 0x69c) = FX_MUL(b, 0x220);
         }
     } else {
         *(u16 *)(c + 0x69c) = (int)((((long long)b << 8) + 0x800) >> 12);
     }
 
-    f.v0.x = FX(v, (int)data_02082214[(*(u16 *)(c + 0x69a) >> 4) * 2]);
-    f.v0.z = FX(v, (int)data_02082214[(*(u16 *)(c + 0x69a) >> 4) * 2 + 1]);
+    f.v0.x = FX_MUL(v, (int)data_02082214[(*(u16 *)(c + 0x69a) >> 4) * 2]);
+    f.v0.z = FX_MUL(v, (int)data_02082214[(*(u16 *)(c + 0x69a) >> 4) * 2 + 1]);
     {
         int len = Vec3_HorzLen(c + 0x554);
-        f.v0.x = FX(f.v0.x, len);
-        f.v0.z = FX(f.v0.z, len);
+        f.v0.x = FX_MUL(f.v0.x, len);
+        f.v0.z = FX_MUL(f.v0.z, len);
     }
 
     if ((this->mClsnFlags & 2) != 0 && (u16)(this->mStateFlags & 1) == 0 && this->mHorzSpeed <= 0x10000) {
@@ -2793,8 +2791,8 @@ int Player::func_ov002_020c06fc(int arg)
     {
         int s1 = r5v + f.v0.x;
         int s2 = r4v + f.v0.z;
-        int fx = FX(s1, t);
-        int fz = FX(s2, t);
+        int fx = FX_MUL(s1, t);
+        int fz = FX_MUL(s2, t);
         f.v3.x = fx;
         f.v3.z = fz;
         ang = _ZN4cstd5atan2E5Fix12IiES1_(fx, fz);
@@ -2825,7 +2823,6 @@ int Player::func_ov002_020c06fc(int arg)
     return 1;
 }
 }
-#undef FX
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 79 -- func_ov002_020c0cbc, 0x020c0cbc, size 0xd4 */
@@ -3380,8 +3377,8 @@ void func_ov002_020c18b0(char *self, int p1)
     {
         int r0v = Player_ScaleByCharFactor(self, 0x28000);
         int divr = __aeabi_idiv(*(int *)(self + 0x98) << 12, r0v);
-        *(short *)(self + 0x8c) = (short)(int)(((long long)*(short *)(self + 0x8c) * divr + 0x800) >> 12);
-        *(short *)(self + 0x90) = (short)(int)(((long long)*(short *)(self + 0x90) * divr + 0x800) >> 12);
+        *(short *)(self + 0x8c) = (short)FX_MUL(*(short *)(self + 0x8c), divr);
+        *(short *)(self + 0x90) = (short)FX_MUL(*(short *)(self + 0x90), divr);
     }
 }
 }
@@ -3531,7 +3528,7 @@ int Player::func_ov002_020c1c84(int arg)
 extern "C" {
 int func_ov002_020c1e44(void* a, int x) {
   *(short*)((char*)a+0x94) = (short)((x << 1) - *(short*)((char*)a+0x94) + 0x8000);
-  *(int*)((char*)a+0x98) = (int)(((long long)*(int*)((char*)a+0x98) * 0xe00 + 0x800) >> 12);
+  *(int *)((char *)a + 0x98) = FX_MUL(*(int *)((char *)a + 0x98), 0xe00);
   if (*(int*)((char*)a+0x98) < 0x4000) *(int*)((char*)a+0x98) = 0x4000;
   return 1;
 }
@@ -3932,7 +3929,8 @@ int Player::func_ov002_020c25a8(int arg1)
         if (*(unsigned char*)(c + 0x706) == 0 && ret != 1) {
             _ZNK11SurfaceInfo12CopyNormalToER7Vector3(fr + 4, &v);
             if (v.y != 0) {
-                int t = _ZN4cstd4fdivEii( (int)(((long long)v.x * *(int*)(c + 0xa4) + 0x800) >> 12) + (int)(((long long)v.z * *(int*)(c + 0xac) + 0x800) >> 12), v.y);
+                int t = _ZN4cstd4fdivEii(
+                    FX_MUL(v.x, *(int *)(c + 0xa4)) + FX_MUL(v.z, *(int *)(c + 0xac)), v.y);
                 t = -(t + 0x8000);
                 if (t < 0)
                     *(int*)(c + 0xa8) = t;
@@ -7818,7 +7816,7 @@ int Player::func_ov002_020c8714()
     if (mStateArg == 0) {
         _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
         if (mStateTimer == 0) {
-            this->mHorzSpeed = (int)((this->mHorzSpeed * 0xf60LL + 0x800) >> 12);
+            this->mHorzSpeed = FX_MUL(this->mHorzSpeed, 0xf60);
             if (mIsAirborne == 0) {
                 this->mHorzSpeed = 0;
                 this->mVertSpeed = 0;
@@ -10344,7 +10342,7 @@ void func_ov002_020cc05c(char *self)
     extern void func_ov002_020cc05c(void*, unsigned short);
     int idx = gActivePlayerSlot * 0x18;
     s16 curval = *(s16*)((int)self + 0x69c);
-    *(s16*)((int)self + 0x69c) = curval + (s16)(int)(((s64)*(s16*)((char*)data_0209f4a2 + idx) * 0x80 + 0x800) >> 12);
+    *(s16 *)((int)self + 0x69c) = curval + (s16)FX_MUL(*(s16 *)((char *)data_0209f4a2 + idx), 0x80);
     {
         s16 tv2 = *(s16*)((char*)data_0209f4a2 + idx);
     {
@@ -10593,12 +10591,12 @@ void func_ov002_020cc660(char *self, int angle){
  s16 v,w; int delta; int third;
  delta=angle-*(s16*)(self+0x94);
  third=*(int*)(self+0x98)/12;
- v=(s16)(int)(((long long)delta*third+0x800)>>12);
+ v = (s16)FX_MUL(delta, third);
  if(v<-0x1800)v=-0x1800; else if(v>0x1800)v=0x1800;
  ApproachAngle((s16*)(self+0x75e),v,8,0x200,0x20);
  *(s16*)(self+0x762)=-*(s16*)(self+0x75e);
  *(s16*)(self+0x90)=*(s16*)(self+0x75e);
- w=(s16)(int)(((long long)*(int*)(self+0x98)*0xaa+0x800)>>12);
+ w = (s16)FX_MUL(*(int *)(self + 0x98), 0xaa);
  if(w<0)w=0; else if(w>0x1000)w=0x1000;
  ApproachAngle((s16*)(self+0x760),w,8,0x200,0x20);
  *(u8*)(self+0x742)=1;
@@ -11157,7 +11155,7 @@ void func_ov002_020cd550(char* c)
     short lim, v, w, a;
     int step, idx;
 
-    lim = (short)(int)((((long long)data_0209f4a4[gActivePlayerSlot].f0 * -0x3f00LL) + 0x800) >> 12);
+    lim = (short)FX_MUL(data_0209f4a4[gActivePlayerSlot].f0, -0x3f00);
     lim &= 0xfff0;
 
     step = self->mPrevAngleX > 0 ? 0x100 : 0x200;
@@ -11178,7 +11176,7 @@ void func_ov002_020cd550(char* c)
     self->unk_690 = 0;
     w = self->mAngleX;
     if (w >= 0)
-        self->unk_690 = (int)((((long long)w * 0xc000LL) + 0x800) >> 12);
+        self->unk_690 = FX_MUL(w, 0xc000);
 
     a = (short)(self->mAngleX - 0x2000);
     if (a < -0x2000) a = -0x2000;
@@ -11208,11 +11206,11 @@ void func_ov002_020cd71c(char *self)
     s16 step = (s16)((((long long)ip << 5) + 0x800) >> 12);
     int b = FX_MUL(ip, 0x240);
     int e = *(short *)((char *)data_0209f4a2 + gActivePlayerSlot * 0x18);
-    s16 target = (s16)(((long long)(-b) * e + 0x800) >> 12);
+    s16 target = (s16)FX_MUL(-b, e);
 
     if (player->mPrevVertSpeed == 0) {
         step = (s16)((((long long)ip << 6) + 0x800) >> 12);
-        target = (s16)(((long long)(-a) * e + 0x800) >> 12);
+        target = (s16)FX_MUL(-a, e);
     }
 
     if (target > 0) {
@@ -13911,7 +13909,7 @@ int Player::St_HoldLight_Main()
 
     if (*((u8*)data_0209f4ac + gActivePlayerSlot * 0x18) == 0) {
         if (!(*(u16*)((char*)data_0209f49c + gActivePlayerSlot * 0x18) & 0x800)) {
-            var_r4 = (s32)(((s64)var_r4 * 0xa00 + 0x800) >> 0xc);
+            var_r4 = FX_MUL(var_r4, 0xa00);
         }
     } else {
         var_r4 = func_ov002_020bf224(((char*)this), var_r4, 0);
@@ -15202,7 +15200,7 @@ int func_ov002_020d3b9c(char *c)
       {
         u8 *p = (u8 *) (((char *) c) + 0x6ED);
         *p = (u8) ((*p) - 1);
-        spd = (int) (((((long long) spd) * 0x1333LL) + 0x800) >> 12);
+        spd = FX_MUL(spd, 0x1333);
         acc = 0x1e000;
         _ZN6Player19func_ov002_020bf88cEv(c);
       }
@@ -15216,7 +15214,7 @@ int func_ov002_020d3b9c(char *c)
       if (v > 0xa000)
       {
         int q = 0x6400 / (v >> 12);
-        spd = (int) (((((long long) spd) * q) + 0x800) >> 12);
+        spd = FX_MUL(spd, q);
       }
     }
     *((int *) (c + 0x690)) = 0;
@@ -21333,8 +21331,8 @@ void func_ov002_020dcafc(char* c) {
         idx = gActivePlayerSlot * 0x18;
         a = *(short*)((char*)data_0209f4a2 + idx);
         b = *(short*)((char*)data_0209f4a4 + idx);
-        v5 = (s16)(((long long)a * 0xaab + 0x800) >> 12);
-        v4 = (s16)(((long long)(-b) * 0x1555 + 0x800) >> 12);
+        v5 = (s16)FX_MUL(a, 0xaab);
+        v4 = (s16)FX_MUL(-b, 0x1555);
     }
 
     if (AngleDiff(*(s16*)(c + 0x8e), *(s16*)(c + 0x94)) >= 0x4000) {
@@ -21649,7 +21647,7 @@ int func_ov002_020dd2f4(char* c)
     if (AngleDiff(atan, *(s16*)(c + 0x94)) < 0x6000) return 0;
 
     if (_ZN6Player19func_ov002_020c0cbcEv(c) != 0) {
-        *(int*)(c + 0x98) = (int)(((long long)*(int*)(c + 0x98) * 0xe66 + 0x800) >> 12);
+        *(int *)(c + 0x98) = FX_MUL(*(int *)(c + 0x98), 0xe66);
         if (*(int*)(c + 0x98) < 0x4000) *(int*)(c + 0x98) = 0x4000;
         *(s16*)(c + 0x94) = atan - (s16)(*(s16*)(c + 0x94) - atan) + 0x8000;
     }
@@ -22204,8 +22202,8 @@ int Player::St_TornadoSpin_Main()
     struct dBgCh_Gnd rc;
     int dx = mPosX - ((dActor_c*)mAttachedActor)->mPosX;
     int dz = mPosZ - ((dActor_c*)mAttachedActor)->mPosZ;
-    int sx = (int)((dx * 0xf33LL + 0x800) >> 12);
-    int sz = (int)((dz * 0xf33LL + 0x800) >> 12);
+    int sx = FX_MUL(dx, 0xf33);
+    int sz = FX_MUL(dz, 0xf33);
     int spd = mVertSpeed;
     if (spd < 0) {
         mVertSpeed = 0x1000;
@@ -22461,8 +22459,8 @@ s32 Player::St_Balloon_Main()
             s32 v1 = FX_MUL(mHorzSpeed, t0);
             s32 v = FX_MUL(v1, 0xa0);
             s16 t1 = data_02082214[idx];
-            mAngleYSpeed = (s16)(((long long)t1 * v + 0x800) >> 12);
-            unk_69e = (s16)(((long long)t0 * v + 0x800) >> 12);
+            mAngleYSpeed = (s16)FX_MUL(t1, v);
+            unk_69e = (s16)FX_MUL(t0, v);
         }
     }
 
@@ -22729,8 +22727,7 @@ int Player::St_JumpQuicksand_Main()
     u8 t = mStateWork;
     (*(u8 *)(int)((char *)&mStateWork))++;
     if (t < 6) {
-        (*(int *)(int)((char *)&mSinkDepth)) -=
-            (int)((((7 - mStateWork) << 12) * 0xcccLL + 0x800) >> 12);
+        (*(int *)(int)((char *)&mSinkDepth)) -= FX_MUL((7 - mStateWork) << 12, 0xccc);
         if (mSinkDepth < 0x1000)
             mSinkDepth = 0x1100;
     } else {
@@ -23313,8 +23310,9 @@ void func_ov002_020df8f0(char* c)
     if (*(s16*)(c + 0x92) > 0x2aaa) *(s16*)(c + 0x92) = 0x2aaa;
     if (*(s16*)(c + 0x92) < (s16)0xd556) *(s16*)(c + 0x92) = (s16)0xd556;
 
-    *(int*)(c + 0xa8) = (int)(((s64)*(int*)(c + 0x640) * data_02082214[(*(u16*)(c + 0x92) >> 4) * 2] + 0x800) >> 12);
-    *(int*)(c + 0x98) = (int)(((s64)*(int*)(c + 0x640) * data_02082214[(*(u16*)(c + 0x92) >> 4) * 2 + 1] + 0x800) >> 12);
+    *(int *)(c + 0xa8) = FX_MUL(*(int *)(c + 0x640), data_02082214[(*(u16 *)(c + 0x92) >> 4) * 2]);
+    *(int *)(c + 0x98) =
+        FX_MUL(*(int *)(c + 0x640), data_02082214[(*(u16 *)(c + 0x92) >> 4) * 2 + 1]);
 
     {
         *(s16*)(c + 0x8c) = *(s16*)(c + 0x92);
@@ -23426,10 +23424,10 @@ skip:
         s16 n = data_02082214[(*(u16 *)(c + 0x92) >> 4) * 2 + 1];
         s32 r0 = (s16)-n;
         s16 t = data_02082214[(*(u16 *)(c + 0x8e) >> 4) * 2];
-        spC = (s16)(((s64)r0 * t + 0x800) >> 0xc);
+        spC = (s16)FX_MUL(r0, t);
         spE = data_02082214[(*(u16 *)(c + 0x8c) >> 4) * 2];
         s16 t2 = data_02082214[(*(u16 *)(c + 0x8e) >> 4) * 2 + 1];
-        sp10 = (s16)(((s64)r0 * t2 + 0x800) >> 0xc);
+        sp10 = (s16)FX_MUL(r0, t2);
     }
 
     if (mPrevVertSpeed >= 0x28000) {
@@ -23913,7 +23911,7 @@ int Player::St_SlopeJump_Init()
   mVertSpeed=0x2a000;
   func_ov002_020e2ad0(((char*)this));
   if(mHorzSpeed>0){
-    mHorzSpeed=(int)(((long long)mHorzSpeed*0xc00+0x800)>>12);
+      mHorzSpeed = FX_MUL(mHorzSpeed, 0xc00);
   }
   func_ov002_020e25f0(((char*)this),0);
   return 1;
@@ -24682,7 +24680,7 @@ void func_ov002_020e1c20(char *c)
         *((int *) (c + 0xa8)) = -0x20000;
       }
       *((int *) (c + 0x620)) = func_02012120(*((int *) (c + 0x620)), *((unsigned char *) (c + 0x6d9)), 0x18, (const struct Vector3 *) (c + 0x74), 0);
-      *((int *) (c + 0x98)) = (int) (((((long long) (*((int *) (c + 0x98)))) * 0xf00) + 0x800) >> 12);
+      *((int *)(c + 0x98)) = FX_MUL(*((int *)(c + 0x98)), 0xf00);
       if ((*((int *) (c + 0xa8))) < 0)
       {
         int *p = (int *) (((long long) (c + 0xa8)));
@@ -25228,7 +25226,7 @@ void func_ov002_020e2ad0(char* p)
 {
     if (*(int*)(p + 0x68c) <= 0x1000) return;
     if (*(unsigned short*)(p + 0x6c4) == 0) {
-        *(int*)(p + 0xa8) = (int)(((long long)*(int*)(p + 0xa8) * 0x900 + 0x800) >> 12);
+        *(int *)(p + 0xa8) = FX_MUL(*(int *)(p + 0xa8), 0x900);
         *(int*)(p + 0x98) >>= 1;
         *(char*)(p + 0x71b) = 1;
     } else {

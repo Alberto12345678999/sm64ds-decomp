@@ -1358,7 +1358,7 @@ void daBtn_c::func_ov079_02124638()
         {
             s32 amp = (s32)((t - 0x50) << 6);
             u16 ang = (u16)(s16)(t << 13);
-            mAngleX = (s16)(((s64)amp * data_02082214[(ang >> 4) * 2] + 0x800) >> 12);
+            mAngleX = (s16)FX_MUL(amp, data_02082214[(ang >> 4) * 2]);
         }
         return;
     }
@@ -1448,8 +1448,6 @@ int daBtn_c::func_ov079_021243e0(int range)
     return 0;
 }
 
-#define FX12(a,b) (int)(((long long)(a) * (int)(b) + 0x800) >> 12)
-
 // @symbol _ZN7daBtn_c19func_ov079_02124188Ev
 /* Pose the model from the actor (raised by mTipLift), read the first
    bone's rotation back into mBodyPitch/Yaw/Roll, and drop the shadow: its
@@ -1490,8 +1488,8 @@ void daBtn_c::func_ov079_02124188()
         shadowRad = cosv * 0xd2 + 0x64000;
     }
 
-    pos.x += FX12(sinComp, data_02082214[((unsigned short)mAngleY >> 4) << 1]);
-    pos.z += FX12(sinComp, data_02082214[(((unsigned short)mAngleY >> 4) << 1) + 1]);
+    pos.x += FX_MUL(sinComp, data_02082214[((unsigned short)mAngleY >> 4) << 1]);
+    pos.z += FX_MUL(sinComp, data_02082214[(((unsigned short)mAngleY >> 4) << 1) + 1]);
 
     Vec3_Asr(&asr, &pos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
@@ -1513,7 +1511,6 @@ void daBtn_c::func_ov079_02124188()
     return;
 }
 
-#undef FX12
 
 // @symbol _ZN7daBtn_c19func_ov079_02124008Ev
 /* Pose the collision mesh: the model's matrix turned by the body's bone

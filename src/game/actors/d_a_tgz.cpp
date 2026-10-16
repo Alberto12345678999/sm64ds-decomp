@@ -41,6 +41,7 @@
  *   overloading, so those four cast.
  */
 #include "decl_common.h"
+#include "nitro/fx/fx.h"
 #include "daTgz_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -211,10 +212,10 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
-                self->mVertSpeed = -(_ZN4cstd4fdivEii(
-                    (int)(((long long)normal.x * self->unk_0a4 + 0x800) >> 12)
-                  + (int)(((long long)normal.z * self->unk_0ac + 0x800) >> 12),
-                    normal.y) + 0x8000);
+                self->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(normal.x, self->unk_0a4) +
+                                                          FX_MUL(normal.z, self->unk_0ac),
+                                                      normal.y) +
+                                     0x8000);
             }
             self->mAngleX = func_02010844(self, &normal, self->mAngleY);
             self->mAngleZ = func_02010844(self, &normal, (s16)(self->mAngleY - 0x4000));
@@ -515,11 +516,11 @@ extern "C" int func_ov077_021256b4(daTgz_c *self)
 
     idx = ((int)(u16)self->mAngleY) >> 4;
     sinv = data_02082214[idx * 2];
-    self->mPosX = self->mPosX + (int)(((s64)sinv * 0x3c000 + 0x800) >> 12);
+    self->mPosX = self->mPosX + FX_MUL(sinv, 0x3c000);
     self->mPosY = self->mPosY + 0x85000;
     idx = ((int)(u16)self->mAngleY) >> 4;
     cosv = data_02082214[idx * 2 + 1];
-    self->mPosZ = self->mPosZ + (int)(((s64)cosv * 0x3c000 + 0x800) >> 12);
+    self->mPosZ = self->mPosZ + FX_MUL(cosv, 0x3c000);
 
     carrier = self->mCarrier;
     {

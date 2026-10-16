@@ -50,6 +50,7 @@
 #include "Model.h"
 #include "SharedFilePtr.h"
 #include "private/Ov080Mat.h"
+#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off
 
@@ -393,7 +394,6 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
     int r5res, r4res, sum, idx;
     Fix12i f;
     short tv;
-    long long prod;
 
     if (r4 == 0)
         return 0;
@@ -412,15 +412,13 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
     r4res = func_ov080_02125cd4(mWaveParams->duration - mWaveTimer);
 
     f = _ZN4cstd4fdivEii(r4res, mWaveParams->unk_0c);
-    prod = (long long)(-f) * (long long)r6;
-    sum = r4res + (int)((prod + 0x800) >> 12);
+    sum = r4res + FX_MUL(-f, r6);
     if (sum < 0)
         sum = 0;
 
     idx = (unsigned short)r5res >> 4;
     tv = *(short *)((char *)data_02082214 + (idx << 2));
-    prod = (long long)tv * (long long)sum;
-    return (int)((prod + 0x800) >> 12);
+    return FX_MUL(tv, sum);
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125cd4Ei
@@ -440,8 +438,7 @@ s32 daPicGate_c::func_ov080_02125d08(s32 frames)
 {
     int *obj = (int *)mWaveParams;
     Fix12i speed = _ZN4cstd4fdivEii(0xffff, obj[2]);
-    long long prod = (long long)frames * (long long)speed;
-    int result = (int)((prod + 0x800) >> 12);
+    int result = FX_MUL(frames, speed);
     s16 cur = mWavePhase;
     return (s16)(result - cur);
 }

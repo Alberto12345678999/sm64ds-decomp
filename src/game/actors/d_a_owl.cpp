@@ -74,6 +74,7 @@ enum daOwl_c_AssetId {
 #include "daOwl_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "nitro/fx/fx.h"
 
 /* Resource handles the static initializer constructs. The wrapper spellings
  * are reconstructed; the constructor and destructor addresses, the file IDs
@@ -418,7 +419,7 @@ int daOwl_c::func_ov094_02135c28()
     ang = unk_3e8;
     idx = ((u16)(short)ang >> 4) * 2;
     tbl = data_02082214[idx];
-    result = (int)(((long long)tbl * 0x64000 + 0x800) >> 12);
+    result = FX_MUL(tbl, 0x64000);
     _Z14ApproachLinearRiii(&mPosY, mAnchorY + result, 0x3000);
 
     Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);

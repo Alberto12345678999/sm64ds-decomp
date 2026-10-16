@@ -54,6 +54,7 @@
  *     recovered.
  */
 #include "dEnemyBase_c.h"
+#include "nitro/fx/fx.h"
 #include "decl_dBgPi.h"
 #include "dBgCh_Lin.h"
 #include "Player.h"
@@ -131,9 +132,9 @@ void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr & clsn_, unsigned int sel)
                 int vx = unk_0a4;
                 int nz = mFloorNormalZ;
                 int vz = unk_0ac;
-                long long a = (long long)nx * vx + 0x800;
-                long long b = (long long)nz * vz + 0x800;
-                int num = (int)(a >> 12) + (int)(b >> 12);
+                int a = FX_MUL(nx, vx);
+                int b = FX_MUL(nz, vz);
+                int num = a + b;
                 int q = _ZN4cstd4fdivEii(num, dz);
                 mVertSpeed = -(q + 0x8000);
             }
@@ -711,8 +712,8 @@ int dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr & clsn_)
             if (v >= 0x14000)
                 *(int *)(self + 0x98) = v + 0xa000;
             else
-                *(int *)(self + 0x98) = (int)(((long long)v * 0x800 + 0x800) >> 12) + 0x14000;
-            *(int *)(self + 0x98) = (int)(((long long)*(int *)(self + 0x98) * 0x14cc + 0x800) >> 12);
+                *(int *)(self + 0x98) = FX_MUL(v, 0x800) + 0x14000;
+            *(int *)(self + 0x98) = FX_MUL(*(int *)(self + 0x98), 0x14cc);
             *(int *)(self + 0xa8) = 0xc000;
             *(int *)(self + 0xd0) = 0;
         }
@@ -839,10 +840,10 @@ void dEnemyBase_c::SpawnMegaCharParticles(dActor_c &a, char *p)
         iX = (u16)aX >> 4;
         iY = (u16)aY >> 4;
 
-        s = (s32)(((long long)w * data_02082214[iY * 2 + 1] + 0x800) >> 12);
-        dst.x += (s32)(((long long)s * data_02082214[iX * 2] + 0x800) >> 12);
-        dst.y += (s32)(((long long)w * data_02082214[iY * 2] + 0x800) >> 12);
-        dst.z += (s32)(((long long)s * data_02082214[iX * 2 + 1] + 0x800) >> 12);
+        s = FX_MUL(w, data_02082214[iY * 2 + 1]);
+        dst.x += FX_MUL(s, data_02082214[iX * 2]);
+        dst.y += FX_MUL(w, data_02082214[iY * 2]);
+        dst.z += FX_MUL(s, data_02082214[iX * 2 + 1]);
 
         dst.y += (*(s32 *)(p + 8)) >> 1;
     } else {

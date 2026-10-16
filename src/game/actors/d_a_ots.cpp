@@ -933,22 +933,10 @@ void daOts_c::func_ov064_02115f98(char* a1)
     cosH = data_02082214[idxH * 2 + 1];
     sinH = data_02082214[idxH * 2];
 
-    {
-        s64 p = (s64)scale * cosV;
-        lenfix = (int)((p + 0x800) >> 12);
-    }
-    {
-        s64 p = (s64)scale * sinV;
-        ycomp = (int)((p + 0x800) >> 12);
-    }
-    {
-        s64 p = (s64)lenfix * sinH;
-        t0 = (int)((p + 0x800) >> 12);
-    }
-    {
-        s64 p = (s64)lenfix * cosH;
-        t1 = (int)((p + 0x800) >> 12);
-    }
+    lenfix = FX_MUL(scale, cosV);
+    ycomp = FX_MUL(scale, sinV);
+    t0 = FX_MUL(lenfix, sinH);
+    t1 = FX_MUL(lenfix, cosH);
 
     pos0[0] = pos0[0] + t0;
     pos0[1] = pos0[1] + ycomp;

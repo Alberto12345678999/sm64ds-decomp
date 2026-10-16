@@ -73,6 +73,7 @@
 
 #include "daWanwan2_c.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
@@ -468,8 +469,8 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
         delta.x = vel->x + (pos->x - src->x);
         delta.z = vel->z + (pos->z - src->z);
         idx = ((unsigned short)(short)(angOff + (thisx->mChainTimer << 12))) >> 4;
-        val = (pos->y + vel->y) - 0x2000     /* 2 units down */
-            + (int)(((s64)data_02082214[idx * 2] * (-0xa000) + 0x800) >> 12);
+        val = (pos->y + vel->y) - 0x2000 /* 2 units down */
+              + FX_MUL(data_02082214[idx * 2], -0xa000);
         if (val <= *heights) val = *heights;
         delta.y = val - src->y;
         ang = _ZN4cstd5atan2E5Fix12IiES1_(delta.x, delta.z);

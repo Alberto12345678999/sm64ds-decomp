@@ -29,6 +29,7 @@ enum d_a_pg_mthr_AssetId {
 #include "common.h"
 #include "daPgMthr_c.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "decl_common.h"
 #include "SharedFilePtr.h"
 #include "TextureSequence.h"
@@ -460,8 +461,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
         dBgPi *floor = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(w);
         floor->surface.CopyNormalTo(n);
         if (n.y != 0) {
-            int s = (int)(((long long)n.x * self->unk_0a4 + 0x800) >> 0xc)
-                  + (int)(((long long)n.z * self->unk_0ac + 0x800) >> 0xc);
+            int s = FX_MUL(n.x, self->unk_0a4) + FX_MUL(n.z, self->unk_0ac);
             self->mVertSpeed = -(_ZN4cstd4fdivEii(s, n.y) + 0x8000);
         }
     }

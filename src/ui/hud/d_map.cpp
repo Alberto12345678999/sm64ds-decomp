@@ -36,11 +36,11 @@
 #include "dMap_c.h"
 #include "decl_common.h"
 #include "types.h"
+#include "nitro/fx/fx.h"
 #include "PlayerInput.h"
 #include "Player.h"
 #include "dActor_c.h"
 #include "dCamera_c.h"
-#include "nitro/fx/fx.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which makes its
@@ -404,9 +404,9 @@ int dMap_c::Render()
                 u16 ang = (s16)this->mAngle + ((player->mAngleY ^ 0xffff) + 0x8001);
                 int angIdx = ((u16)(s16)ang >> 4) * 2;
                 s16 sn = data_02082214[angIdx + 1];
-                this->mArrowMatrixA = (s16)(((s64)sn * this->mArrowScale + 0x800) >> 0xc);
+                this->mArrowMatrixA = (s16)FX_MUL(sn, this->mArrowScale);
                 s16 cn = data_02082214[angIdx];
-                this->mArrowMatrixB = (s16)(((s64)cn * this->mArrowScale + 0x800) >> 0xc);
+                this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                 this->mArrowMatrixC = -this->mArrowMatrixB;
                 this->mArrowMatrixD = this->mArrowMatrixA;
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, _ZN3OAM8MM_ARROWE,
@@ -454,9 +454,9 @@ int dMap_c::Render()
                         {
                             int angIdx = ((u16)(s16)ang >> 4) * 2;
                             s16 sn = data_02082214[angIdx + 1];
-                            this->mArrowMatrixA = (s16)(((s64)sn * this->mArrowScale + 0x800) >> 0xc);
+                            this->mArrowMatrixA = (s16)FX_MUL(sn, this->mArrowScale);
                             s16 cn = data_02082214[angIdx];
-                            this->mArrowMatrixB = (s16)(((s64)cn * this->mArrowScale + 0x800) >> 0xc);
+                            this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                             this->mArrowMatrixC = -this->mArrowMatrixB;
                             this->mArrowMatrixD = this->mArrowMatrixA;
                             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, _ZN3OAM8MM_ARROWE,
