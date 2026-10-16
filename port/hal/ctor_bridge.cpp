@@ -110,8 +110,9 @@ ModelBase::~ModelBase()
     abort();
 }
 
-// src/func_0203cbc0.c is a tail-call veneer to _ZdlPv, the DS global operator
-// delete, and Model's destructor calls it. The veneer is sliced now, so its
-// target routes through the Memory layer here -- matching how _Znwj is
-// handled in hal/cxxname_bridge.cpp.
+// _ZdlPv is the DS global operator delete. Its delete veneer, func_0203cbc0,
+// which Model's destructor calls, now comes from src/engine/heap/Heap.cpp with
+// a host body over the default heap; this keeps the _ZdlPv spelling itself
+// routed through the Memory layer -- matching how _Znwj is handled in
+// hal/cxxname_bridge.cpp.
 extern "C" void _ZdlPv(void *p) { _ZN6Memory10DeallocateEPv(p); }
