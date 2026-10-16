@@ -55,8 +55,10 @@
  *   the settle step, the merry-go-round occupancy test and the book-switch
  *   callback keep the C linkage they matched with as separate files; they
  *   take the daTrsTrap_c and read its members.
- * - The trapdoor state adds mAngVelX to mAngleX through *(s16 *)(this + 0x8c):
- *   the member spelling, and *(s16 *)&mAngleX, both change its codegen.
+ * - The trapdoor state adds mAngVelX to mAngleX through a
+ *   `(long long)(int)&mAngleX` launder. The plain member, `+=`,
+ *   *(s16 *)&mAngleX, `(int)&mAngleX` and a pointer local all change its
+ *   codegen.
  * - Behavior names mStateTimer directly at both sites (TRAP-2709
  *   experiment: unified spelling matches).
  * - +0x418 on the spawned BOOK_SWITCH is daBookGen_c's, which has no header;
@@ -321,13 +323,13 @@ extern "C" void func_ov063_0211cae8(daTrsTrap_c *c, int m) {
 /* Trapdoor state. While an actor stands on it, mAngVelX tilts toward the
    rider's z offset; with nobody on it the door swings back and stops at
    level. The tilt is applied twice in the standing case, as in the ROM.
-   mAngleX is written through its raw address (see the banner). */
+   mAngleX is written through a laundered address (see the banner). */
 // @symbol _ZN11daTrsTrap_c19func_ov063_0211cb54Ev
 void daTrsTrap_c::func_ov063_0211cb54()
 {
     if (mStandingActor != 0) {
         mAngVelX = (s16)((mStandingActor->mPosZ - mPosZ) >> 0xc);
-        *(s16 *)((int)this + 0x8c) = *(s16 *)((int)this + 0x8c) + mAngVelX;
+        *(s16 *)((long long)(int)&mAngleX) = *(s16 *)((long long)(int)&mAngleX) + mAngVelX;
     } else {
         int a = mAngleX;
         if (a < 0) a = -a;
@@ -344,7 +346,7 @@ void daTrsTrap_c::func_ov063_0211cb54()
             }
         }
     }
-    *(s16 *)((int)this + 0x8c) = *(s16 *)((int)this + 0x8c) + mAngVelX;
+    *(s16 *)((long long)(int)&mAngleX) = *(s16 *)((long long)(int)&mAngleX) + mAngVelX;
 }
 
 /* Staircase rise state. Waits until the master step (or this one, for the

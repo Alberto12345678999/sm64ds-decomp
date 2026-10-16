@@ -23,13 +23,12 @@
  *   unk_394       turn cooldown
  *   unk_396       post-turn hold
  *   unk_398       heading-jitter timer
- *   unk_39a       target heading
  *   unk_39c       on the water line this frame
  *   unk_3a1       death tumble (3 pitches down and yaws)
  *   unk_3a4       playback rate, copied into the frame controller
  *   unk_3a8       floor height from the ground probe
  *   unk_3ac       water line
- *   pad_380       four ripple-particle ids, then the anim-loop counter
+ *   pad_380       four ripple-particle ids
  *   pad_39d       chase / far / wall / missed-probe latches
  *
  * common.h is included first so Matrix4x3 is the flat twelve words the two
@@ -38,12 +37,6 @@
  * opt_common_subs is off except around the ground probe and Behavior.
  *
  * deslop leftovers:
- * - func_ov090_02131584, func_ov090_02131648 and func_ov090_02131c48: the
- *   anim-loop counter lives at 0x390, which is MenboRipples::loops. Adding
- *   through that member is `add this, #0x380` then `add #0x10`. The ROM adds
- *   #0x390 once, and each function grew 4 bytes. Zeroing the member and
- *   reloading it for the compare both match; only the increment stays
- *   `*(int *)((int)this + 0x390)`.
  * - func_ov090_02131ac4: `mStateTimer == 0` is ldrsh. The ROM is ldrh, one
  *   word. `*(unsigned short *)&mStateTimer` matches.
  * - func_ov090_02131608: ModelAnim::SetAnim with a Fix12<int> rate is 0x4c
@@ -99,10 +92,9 @@ struct MenboAnimationFilePtr : SharedFilePtr {
     ~MenboAnimationFilePtr();
 };
 
-/* Fills pad_380 exactly: four ids, then the loop counter at 0x390. */
+/* Fills pad_380 exactly: the four ripple-particle ids. */
 struct MenboRipples {
     u32 id[4];
-    s32 loops;
 };
 /* Fills pad_39d exactly. */
 struct MenboLatches {
@@ -403,7 +395,7 @@ int func_ov090_021314a0(daMenbo_c *c)
             w[0] = v[0];
             w[1] = v[1];
             w[2] = v[2];
-            c->unk_39a = (u16)Vec3_HorzAngle(&c->mPos, (const Vector3 *)w);
+            c->mTargetAngleY = (u16)Vec3_HorzAngle(&c->mPos, (const Vector3 *)w);
             MENBO_LATCH(c)->chase = 1;
             return 1;
         }
@@ -411,7 +403,7 @@ int func_ov090_021314a0(daMenbo_c *c)
     if (MENBO_LATCH(c)->chase == 1) {
         c->mHorzSpeed = 0x9000;
         MENBO_LATCH(c)->chase = 0;
-        c->unk_39a = (u16)Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->unk_374);
+        c->mTargetAngleY = (u16)Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->unk_374);
     }
     return 0;
 }
@@ -425,8 +417,8 @@ int daMenbo_c::func_ov090_02131584()
     mHorzSpeed = 0;
     v = ((unsigned int)static_cast<dExtFrameCtrl_c &>(mModelAnim).currFrame << 4) >> 0x10;
     if (v >= 0x3b)
-        *(int *)((int)this + 0x390) += 1;
-    if (MENBO_RIPPLES(this)->loops > 2 || func_ov090_021314a0(this) == 1)
+        mAnimLoops += 1;
+    if (mAnimLoops > 2 || func_ov090_021314a0(this) == 1)
         func_ov090_02131e00((MenboState *)this, data_ov090_02134514);
     if (unk_39c == 1)
         func_ov090_02131e00((MenboState *)this, data_ov090_02134504);
@@ -437,7 +429,7 @@ int daMenbo_c::func_ov090_02131584()
 /* Idle entry. */
 int daMenbo_c::func_ov090_02131608()
 {
-    MENBO_RIPPLES(this)->loops = 0;
+    mAnimLoops = 0;
     unk_3a4 = 0x1000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, MENBO_BCA(data_ov090_02134498), 0, 0x1000, 0);
     return 1;
@@ -447,7 +439,7 @@ int daMenbo_c::func_ov090_02131608()
 /* Patrol. A line probe ahead, the distance back to the anchor, and a wall
  * each turn it around, and each latches so the turn only fires on the edge.
  * A turn reloads the three timers and snaps the position back to last
- * frame's. The heading then eases toward unk_39a. Close to a player, the
+ * frame's. The heading then eases toward mTargetAngleY. Close to a player, the
  * playback rate and the speed both double for a bit. */
 int daMenbo_c::func_ov090_02131648()
 {
@@ -502,8 +494,8 @@ int daMenbo_c::func_ov090_02131648()
         if (MENBO_LATCH(self)->probe == 0) {
             ha = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->unk_374);
             sh = (rnd & 3) << 0xc;
-            self->unk_39a = (u16)ha;
-            p39a = (s16 *)&self->unk_39a;
+            self->mTargetAngleY = (u16)ha;
+            p39a = (s16 *)&self->mTargetAngleY;
             angleSet = 1;
             *p39a = *p39a + (0x1800 - sh);
             self->mPosX = self->mPrevPosX;
@@ -518,7 +510,7 @@ int daMenbo_c::func_ov090_02131648()
     if (dist > 0x3c0000) {
         if (MENBO_LATCH(self)->far == 0 && MENBO_LATCH(self)->probe == 0) {
             ha = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->unk_374);
-            self->unk_39a = (u16)ha;
+            self->mTargetAngleY = (u16)ha;
             angleSet = 1;
             self->mPosX = self->mPrevPosX;
             self->mPosY = self->mPrevPosY;
@@ -533,8 +525,8 @@ int daMenbo_c::func_ov090_02131648()
         if (MENBO_LATCH(self)->wall == 0 && MENBO_LATCH(self)->far == 0 && MENBO_LATCH(self)->probe == 0) {
             ha = Vec3_HorzAngle(&self->mPos, (Vector3 *)&self->unk_374);
             sh = (rnd & 3) << 0xc;
-            self->unk_39a = (u16)ha;
-            p39a = (s16 *)&self->unk_39a;
+            self->mTargetAngleY = (u16)ha;
+            p39a = (s16 *)&self->mTargetAngleY;
             angleSet = 1;
             *p39a = *p39a + (0x1800 - sh);
             self->mPosX = self->mPrevPosX;
@@ -548,7 +540,7 @@ int daMenbo_c::func_ov090_02131648()
 
     if (self->unk_398 == 0 && MENBO_LATCH(self)->wall == 0 && MENBO_LATCH(self)->far == 0 && MENBO_LATCH(self)->probe == 0) {
         self->unk_398 = (u16)((rnd + 0x32) & 0x3f);
-        p39a = (s16 *)&self->unk_39a;
+        p39a = (s16 *)&self->mTargetAngleY;
         *p39a = *p39a + (0x1800 - ((rnd & 3) << 0xc));
     }
 
@@ -560,7 +552,7 @@ int daMenbo_c::func_ov090_02131648()
         self->unk_3a4 = 0x1000;
     }
 
-    ApproachLinear(self->mPrevAngleY, (s16)self->unk_39a, 0x500);
+    ApproachLinear(self->mPrevAngleY, (s16)self->mTargetAngleY, 0x500);
 
     if (self->unk_394 == 0 && self->unk_396 == 0) {
         self->unk_3a4 = 0x1000;
@@ -574,11 +566,11 @@ int daMenbo_c::func_ov090_02131648()
     }
 
     if (((u32)(((u32)static_cast<dExtFrameCtrl_c &>(self->mModelAnim).currFrame) << 4) >> 0x10) >= 0x10) {
-        p390 = (s32 *)((int)self + 0x390);
+        p390 = &self->mAnimLoops;
         *p390 = *p390 + 1;
     }
 
-    if (MENBO_RIPPLES(self)->loops > 0x1e && MENBO_LATCH(self)->far == 0) {
+    if (self->mAnimLoops > 0x1e && MENBO_LATCH(self)->far == 0) {
         func_ov090_02131e00((MenboState *)self, data_ov090_021344e4);
     }
 
@@ -596,7 +588,7 @@ int daMenbo_c::func_ov090_02131a74()
     unk_3a4 = 0x1000;
     unk_396 = 0;
     unk_398 = 0x32;
-    MENBO_RIPPLES(this)->loops = 0;
+    mAnimLoops = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, MENBO_BCA(data_ov090_02134480), 0, 0x1000, 0);
     return 1;
 }
@@ -614,10 +606,10 @@ int daMenbo_c::func_ov090_02131ac4()
         unk_374 = mPosX;
         unk_378 = mPosY;
         unk_37c = mPosZ;
-        unk_39a = (u16)(((unsigned int)RandomIntInternal(&data_0209e650) >> 8) << 0xd);
+        mTargetAngleY = (u16)(((unsigned int)RandomIntInternal(&data_0209e650) >> 8) << 0xd);
         func_ov090_02131e00((MenboState *)this, data_ov090_021344e4);
     }
-    ApproachAngle(&mPrevAngleY, (s16)unk_39a, 1, 0x100, 0x100);
+    ApproachAngle(&mPrevAngleY, (s16)mTargetAngleY, 1, 0x100, 0x100);
     if (*(unsigned short *)&mStateTimer == 0)
         func_ov090_02131e00((MenboState *)this, data_ov090_021344f4);
     return 1;
@@ -631,10 +623,10 @@ int daMenbo_c::func_ov090_02131b94()
     unsigned int r;
     short *s;
     r = (unsigned)RandomIntInternal(&data_0209e650);
-    s = (short *)((unsigned int)this + 0x39a);
+    s = (short *)&mTargetAngleY;
     *s = (short)(*s + ((int)(((r >> 8) & 3) << 0x1e) >> 16));
     r = (unsigned)RandomIntInternal(&data_0209e650);
-    s = (short *)((char *)this + 0x39a);
+    s = (short *)&mTargetAngleY;
     *s = (short)(*s + ((int)(((r >> 8) & 7) << 0x1d) >> 16));
     r = (unsigned)RandomIntInternal(&data_0209e650);
     mStateTimer = (short)(((r >> 8) & 0x1f) + 0x96);
@@ -655,21 +647,20 @@ int daMenbo_c::func_ov090_02131c48()
     if ((((unsigned)static_cast<dExtFrameCtrl_c &>(mModelAnim).currFrame) << 4) >> 16 == 4)
         func_02012694(0xfd, &mCamSpacePos);
 
-    if (unk_394 == 0
-        && mWithMeshClsn.IsOnWall()
-        && AngleDiff(mPrevAngleY, (s16)unk_39a) < 0x200) {
-        s16 *p = (s16 *)&unk_39a;
+    if (unk_394 == 0 && mWithMeshClsn.IsOnWall() &&
+        AngleDiff(mPrevAngleY, (s16)mTargetAngleY) < 0x200) {
+        s16 *p = (s16 *)&mTargetAngleY;
         *p = *p + 0x4000;
         unk_394 = 8;
     }
 
     if (unk_394 != 0) {
-        ApproachAngle(&mPrevAngleY, (s16)unk_39a, 1, 0x1000, 0x1000);
+        ApproachAngle(&mPrevAngleY, (s16)mTargetAngleY, 1, 0x1000, 0x1000);
     } else {
         if (static_cast<dExtFrameCtrl_c &>(mModelAnim).Finished()) {
-            s32 *q = (s32 *)((int)this + 0x390);
+            s32 *q = &mAnimLoops;
             *q = *q + 1;
-            if (MENBO_RIPPLES(this)->loops > 0x14)
+            if (mAnimLoops > 0x14)
                 func_ov090_02131e00((MenboState *)this, data_ov090_02134504);
         }
     }
@@ -678,7 +669,7 @@ int daMenbo_c::func_ov090_02131c48()
         unk_374 = mPosX;
         unk_378 = mPosY;
         unk_37c = mPosZ;
-        unk_39a = (u16)(((unsigned)RandomIntInternal(&data_0209e650) >> 8) << 13);
+        mTargetAngleY = (u16)(((unsigned)RandomIntInternal(&data_0209e650) >> 8) << 13);
         func_ov090_02131e00((MenboState *)this, data_ov090_021344e4);
     }
 
@@ -691,7 +682,7 @@ int daMenbo_c::func_ov090_02131db0()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, MENBO_BCA(data_ov090_02134488), 0x40000000, 0x1000, 0);
     unk_3a4 = 0x1000;
-    MENBO_RIPPLES(this)->loops = 0;
+    mAnimLoops = 0;
     return 1;
 }
 
@@ -947,8 +938,8 @@ int daMenbo_c::InitResources()
         {
             r = RandomIntInternal(&data_0209e650);
             short ang = (short)((((unsigned int)r >> 8) & 0xf) << 12);
-            *(short *)&unk_39a = ang;
-            mPrevAngleY = *(short *)&unk_39a;
+            *(short *)&mTargetAngleY = ang;
+            mPrevAngleY = *(short *)&mTargetAngleY;
             mAngleY = mPrevAngleY;
         }
         func_ov090_02131e00((MenboState *)this, data_ov090_021344e4);

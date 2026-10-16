@@ -91,8 +91,8 @@ struct daCoin_c : dActor_c {
     s8  mTrackStarID;            /* 0x3ac */
     u8  pad_3ad[0x1];
     /* Packed flags; the bit layout is CoinFlagBits in d_a_coin.cpp. Bit 0
-       gates Render entirely; Behavior tests bits 0 and 1. The read-modify-write
-       sites keep a raw `*(u8*)((int)this + 0x3ae)` spelling. */
+       gates Render entirely; Behavior tests bits 0 and 1. InitResources'
+       three masked stores keep a `*(u8 *)((int)&mCoinFlags)` launder. */
     u8  mCoinFlags;            /* 0x3ae */
     /* Set to 1 by func_ov002_020b1008 once it has looked for a BLOCK_L
        actor near a red coin, so the search runs one time. */

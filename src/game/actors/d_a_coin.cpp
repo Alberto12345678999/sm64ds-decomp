@@ -527,7 +527,7 @@ void daCoin_c::func_ov002_020b1a60()
         mPosZ = targetPos[2];
     }
     {
-        int *posY = (int *)((int)this + 0x60);
+        int *posY = &mPosY;
         *posY += 0xc8000;
     }
     if (mDisappearTimer < 0x41) return;
@@ -842,7 +842,7 @@ int daCoin_c::Behavior()
     extern unsigned char data_0209f2d8;
 
     if ((unsigned int)(mCoinFlags << 0x1e) >> 0x1f) {
-        *(unsigned char *)((int)this + 0x3ae) &= ~2;
+        mCoinFlags &= ~2;
         _ZN5Sound9PlayBank3EjRK7Vector3(0x30, mCamSpacePos);
     }
     if ((int)(actorID == 0x122) != 0) {
@@ -850,7 +850,7 @@ int daCoin_c::Behavior()
             mAreaId = -1;
     }
     if (func_ov002_020b10a0() != 0) return 1;
-    *(short *)((int)this + 0x8e) += 0xc00;
+    mAngleY += 0xc00;
     if (func_ov002_020b12ec() != 0) {
         func_ov002_020b14d8();
         mdCc_c.Clear();
@@ -886,7 +886,7 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* th
 }
 s32 daCoin_c::InitResources()
 {
-    /* Vtable slot 0. mBehaviorType is the low nibble of param1 (9..15 become 1)
+/* Vtable slot 0. mBehaviorType is the low nibble of param1 (9..15 become 1)
      * and selects the physics (launch speed, gravity, terminal velocity), the
      * floor state and the flag bits in mCoinFlags. The actor ID picks the coin
      * type (0x121 red, 0x122 blue, else yellow), which decides the models
@@ -894,16 +894,14 @@ s32 daCoin_c::InitResources()
      * the two models, the shadow cylinder, the actor collider and the mesh
      * collider, then sets the disappear and no-collision timers.
      *
-     * Raw offsets kept:
-     *  - Every read-modify-write of mCoinFlags is spelled
-     *    `*(u8*)((int)this + 0x3ae)`; spelled as the member, InitResources
-     *    changes size (measured). The launder is per site, not per field.
-     *  - `*(s32*)((int)this + 0x190) |= 1` sets flags bit 0 of mdCc_c
-     *    (dCc_c::flags at +0x18 of the sub-object at 0x178).
+     * Launders kept: the three `mCoinFlags = (mCoinFlags & ~m) | v` stores
+     * go through `*(u8 *)((int)&mCoinFlags)`. Spelled as the plain member,
+     * each one changes the code (measured per site); the plain `&=`/`|=`
+     * sites take the member as is.
      *
      * `#pragma opt_common_subs off` is load-bearing: the ROM re-issues loads
      * this compiler would otherwise CSE. */
-    #pragma opt_common_subs off
+#pragma opt_common_subs off
 
     typedef struct { void* sfp; void* bmd; } FileEntry;
     extern Matrix4x3 IDENTITY_MATRIX4X3;
@@ -936,8 +934,7 @@ s32 daCoin_c::InitResources()
         mVertSpeed = 0x14000;
         mVertAccel = -0x4000;
         mTerminalVelocity = -0x37000;
-        *(u8*)((int)this + 0x3ae) =
-            (*(u8*)((int)this + 0x3ae) & ~0xe0) | (FLOOR_NO_SHADOW << 5);
+        *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~0xe0) | (FLOOR_NO_SHADOW << 5);
         goto common;
     }
     if (behavior == 1 || behavior == 7) {
@@ -948,7 +945,7 @@ s32 daCoin_c::InitResources()
     }
     /* default */
     mVertSpeed = 0x24000;
-    *(u8*)((int)this + 0x3ae) |= 2;
+    mCoinFlags |= 2;
     goto gravity;
 facing:
     {
@@ -962,11 +959,10 @@ facing:
 gravity:
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x37000;
-    *(u8*)((int)this + 0x3ae) &= ~0xe0;
+    mCoinFlags &= ~0xe0;
     goto common;
 unprobedFloor:
-    *(u8*)((int)this + 0x3ae) =
-        (*(u8*)((int)this + 0x3ae) & ~0xe0) | (FLOOR_UNPROBED << 5);
+    *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~0xe0) | (FLOOR_UNPROBED << 5);
     mFloorPosY = mPosY - 0x1f4000;
     if (mBehaviorType == 7) {
         ccRadius = 0x32000;
@@ -1045,7 +1041,7 @@ common:;
     behavior = mBehaviorType;
     if (behavior == 8) {
         mDisappearTimer = 0x2d;
-        *(s32*)((int)this + 0x190) |= 1;
+        mdCc_c.flags |= 1;
     } else {
         if (behavior == 6) {
             int inMode1;
@@ -1053,7 +1049,7 @@ common:;
             inMode1 = (inMode1 == 1);
             if (inMode1 == 0) {
                 mDisappearTimer = 0xffffu;
-                *(s32*)((int)this + 0x190) |= 1;
+                mdCc_c.flags |= 1;
                 goto timerSet;
             }
         }
@@ -1061,8 +1057,7 @@ common:;
     timerSet:;
     }
 
-    *(u8*)((int)this + 0x3ae) =
-        (*(u8*)((int)this + 0x3ae) & ~1) | 1;
+    *(u8 *)((int)&mCoinFlags) = (*(u8 *)((int)&mCoinFlags) & ~1) | 1;
 
     behavior = mBehaviorType;
     if (behavior == 1 || behavior == 7) {
@@ -1077,12 +1072,12 @@ common:;
 floorBound:
     mNoClsnTimer = 0;
     if (mCoinType == COIN_BLUE && (u32)mSpawnFilter < 8) {
-        *(u8*)((int)this + 0x3ae) &= ~1;
-        *(s32*)((int)this + 0x190) |= 1;
+        mCoinFlags &= ~1;
+        mdCc_c.flags |= 1;
     }
 flagsDone:;
 
-    *(u8*)((int)this + 0x3ae) &= ~0x1c;
+    mCoinFlags &= ~0x1c;
     mPuzzleManagerID = 0;
     return 1;
 }
