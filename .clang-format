@@ -13,7 +13,7 @@ SortIncludes:
   Enabled: false
 IncludeBlocks: Preserve
 SortUsingDeclarations: Never
-ReflowComments: Never
+ReflowComments: false
 FixNamespaceComments: false
 InsertBraces: false
 RemoveBracesLLVM: false
