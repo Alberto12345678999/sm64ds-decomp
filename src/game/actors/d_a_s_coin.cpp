@@ -9,8 +9,8 @@
  * deslop leftovers:
  * - dCcAc_c::Init stays a scalar extern: it takes Fix12<int> by value and
  *   the member form size-DIFFs (mwccarm-codegen wall 6az).
- * - SpawnStar reads the marker's position through int* at +0x5c: named
- *   mPosX/Y/Z on the daStarBase_c* size-DIFFs. dActor_c has no Pos().
+ * - SpawnStar copies the marker's position through an int * at its mPosX:
+ *   member reads (marker->mPos.x or marker->mPosX, ...) size-DIFF.
  * - LinkToBlock's ID tests go through the int-returning HasActorID: a
  *   direct `actorID == id` in the for/else-if loop size-DIFFs.
  * - data_ov002_0210d9a8 (the ov002 SharedFilePtr handle) and func_02012790
@@ -18,6 +18,7 @@
  */
 
 #include "daSCoin_c.h"
+#include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "Model.h"
 #include "daStar_c.h"
@@ -36,22 +37,6 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
 extern SharedFilePtr data_ov002_0210d9a8;
 }
 
-/* The typed 0x1c actor profile: fBase_c reads the halfwords at +4/+6 as
- * behavior/render priorities. dActor_c reads actor flags at +8 and passes
- * the words at +0xc/+0x10/+0x14/+0x18 to SetRanges. */
-struct SCoinSpawnInfo {
-    daSCoin_c *(*classInit)();
-    s16 behaviorPriority;   /* 0x0149 */
-    s16 renderPriority;     /* 0x014a */
-    u32 actorFlags;
-    s32 clipOffsetY;
-    s32 clipRadius;
-    s32 clipDistance;
-    s32 farDistance;
-};
-typedef char SCoinSpawnInfo_size_must_be_0x1c[
-    sizeof(SCoinSpawnInfo) == 0x1c ? 1 : -1];
-
 /* int-returning, so the ROM materializes the 0/1 of each ID test before
  * branching on it; a direct `actorID == id` does not. */
 static inline int HasActorID(dActor_c *actor, unsigned int id) {
@@ -65,7 +50,7 @@ extern "C" daSCoin_c *daSCoin_c_classInit()
 }
 
 // @symbol g_profile_SECRET_COIN
-extern "C" SCoinSpawnInfo g_profile_SECRET_COIN = {
+extern "C" SpawnInfo<daSCoin_c> g_profile_SECRET_COIN = {
     daSCoin_c_classInit, 0x0149, 0x014a, 0x00000000,
     0x00000000, 0x00320000, 0x01f40000, 0x00050000
 };
@@ -144,7 +129,7 @@ void daSCoin_c::SpawnStar()
         marker = (daStarBase_c *)dActor_c::FindWithActorID(0xb4, marker);
         if (marker == 0) return;
         if (mStarID == marker->mStarID) {
-            int *base = (int *)((char *)marker + 0x5c);
+            int *base = &marker->mPosX;
             Vector3 pos;
             pos.x = base[0];
             pos.y = base[1];
@@ -171,13 +156,13 @@ void daSCoin_c::LinkToBlock()
     if (mBlockScanDone != 0) return;
     for (dActor_c *other = dActor_c::Next(0); other != 0; other = dActor_c::Next(other)) {
         if (HasActorID(other, 0x14) || HasActorID(other, 0x15)) {
-            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+            if (Vec3_Dist(&mPos, &other->mPos) < 0xc8000) {
                 mClsnDisabled = 1;
                 ((daObjHatenaBlock_c *)other)->mHeldActor = this;
                 break;
             }
         } else if (HasActorID(other, 0xc0)) {
-            if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
+            if (Vec3_Dist(&mPos, &other->mPos) < 0xc8000) {
                 mClsnDisabled = 1;
                 ((daObjPushblock_c *)other)->mLinkedActor = this;
                 break;

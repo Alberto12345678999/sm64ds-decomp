@@ -40,7 +40,7 @@
 /* The array runtime passes each element address and ignores callback results.
  * The casts below adapt the existing lifecycle entries at that ABI boundary. */
 extern "C" void __cxa_vec_cleanup(void *base, unsigned int count, unsigned int stride,
-                       void (*dtor)(void *));
+                                  void (*dtor)(void *));
 extern "C" void _ZN5ModelD1Ev(void *p);
 extern "C" int Heyho_Destruct(int *object);
 extern "C" void Jump2Popup_ElemDtor(void *object);
@@ -64,8 +64,8 @@ struct dScMgJump2_c : dScMgD3DBase_c {
         __cxa_vec_cleanup(mArray3, 0x10, 0x24, Jump2Popup_ElemDtor);
         __cxa_vec_cleanup(mArray2, 6, 0xf0, (void (*)(void *))Heyho_Destruct);
     }
-    virtual void StartRound(int arg);               /* slot 18 */
-    virtual int  CanEndState(int mode);              /* slot 19 */
+    virtual void StartRound(int arg);  /* slot 18 */
+    virtual int CanEndState(int mode); /* slot 19 */
 
     /* 0x5004 -- the state callback, a pointer-to-member of this class, which
        is mwccarm's eight bytes exactly. Behavior calls through it every frame:
@@ -75,17 +75,17 @@ struct dScMgJump2_c : dScMgD3DBase_c {
        the function carries its real name. Left as bytes rather than declared
        as the member pointer: naming it would fix a signature for every state
        function in the table, and none of them is recovered. */
-    u8  pad_5004[0x8];   /* 0x5004 -- the state callback; see the block above */
+    u8 pad_5004[0x8];             /* 0x5004 -- the state callback; see the block above */
     dMgJump3DMario_c mPlayers[3]; /* 0x500c -- RTTI-proven element type */
-    u8  mArray2[0x5a0];   /* 0x5234 -- 6 * 0xf0,  elem dtor Heyho_Destruct */
-    u8  mArray3[0x240];   /* 0x57d4 -- 0x10 * 0x24, elem dtor Jump2Popup_ElemDtor */
-    u8  mModel[0x50];     /* 0x5a14 -- a real Model, raw bytes; see banner */
-    s32 mAnimPhase;       /* 0x5a64 -- scroll phase; feeds the model's anim clock */
-    s32 mAnimRate;        /* 0x5a68 -- phase advance rate, applied >> 12 */
-    u32 mParticleId;      /* 0x5a6c -- Particle::System unique ID */
-    u8  pad_5a70[0x4];    /* 0x5a70 -- no matched access */
-    s16 mStateTimer;      /* 0x5a74 -- the state functions' countdown */
-    u16 pad_5a76;         /* 0x5a76 */
+    u8 mArray2[0x5a0];            /* 0x5234 -- 6 * 0xf0,  elem dtor Heyho_Destruct */
+    u8 mArray3[0x240];            /* 0x57d4 -- 0x10 * 0x24, elem dtor Jump2Popup_ElemDtor */
+    u8 mModel[0x50];              /* 0x5a14 -- a real Model, raw bytes; see banner */
+    s32 mTextureOffsetT;          /* 0x5a64 -- T texture-coordinate offset for material 0 */
+    s32 mTextureScrollRate;       /* 0x5a68 -- texture scroll rate, applied >> 12 */
+    u32 mParticleID;              /* 0x5a6c -- particle system unique ID */
+    u8 pad_5a70[0x4];             /* 0x5a70 -- no matched access */
+    s16 mStateTimer;              /* 0x5a74 -- the state functions' countdown */
+    u16 pad_5a76;                 /* 0x5a76 */
 
     /* The PMF state machine. pmf_dScMgJump2_c_State_Idle..9c are the eight-byte
        records the state functions copy into pad_5004 whole; their first
@@ -104,14 +104,14 @@ struct dScMgJump2_c : dScMgD3DBase_c {
     /* --- this class's own vtable overrides, defined out of line under their
        own mangled names. Each re-uses a slot fBase_c already holds rather
        than appending one, and none adds a field, so the size assert below is
-       untouched. The destructor above stays the key function, so no
-       translation unit starts emitting _ZTV12dScMgJump2_c because of these.
+       untouched. StartRound remains the key function; these declarations
+       do not change ownership of _ZTV12dScMgJump2_c.
        Signatures are include/fBase_c.h's and include/dScMgBase_c.h's own,
        copied unchanged. --- */
-    s32 InitResources();      /* slot 0 -- src/_ZN12dScMgJump2_c13InitResourcesEv.cpp */
-    s32 CleanupResources();   /* slot 3 -- ov006 0x020ef110 */
-    s32 Behavior();           /* slot 6 -- ov006 0x020ef3e0 */
-    s32 Render();             /* slot 9 -- ov006 0x020ef148 */
+    s32 InitResources();    /* slot 0 -- src/_ZN12dScMgJump2_c13InitResourcesEv.cpp */
+    s32 CleanupResources(); /* slot 3 -- ov006 0x020ef110 */
+    s32 Behavior();         /* slot 6 -- ov006 0x020ef3e0 */
+    s32 Render();           /* slot 9 -- ov006 0x020ef148 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

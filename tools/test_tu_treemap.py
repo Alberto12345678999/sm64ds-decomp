@@ -62,10 +62,38 @@ class TuTreemapTests(unittest.TestCase):
         self.assertEqual(group["missing"], 1)
         self.assertEqual(group["bytes"], 48)
 
-    def test_duplicate_membership_and_duplicate_db_are_rejected(self):
+    def test_overlap_uses_only_the_sole_fully_enrolled_claimant(self):
+        historical = dict(self.entry, id="main/Old", source="src/Deleted.cpp",
+                          promoted_source="src/Deleted.cpp")
+        for entries in ([self.entry, historical], [historical, self.entry]):
+            groups = self.gather(entries=entries)
+            active = next(g for g in groups if g["id"] == self.entry["id"])
+            old = next(g for g in groups if g["id"] == historical["id"])
+            self.assertEqual(active["state"], "production")
+            self.assertEqual(active["bytes"], 48)
+            self.assertEqual(old["bytes"], 0)
+            self.assertEqual(sum(g["bytes"] for g in groups), 56)
+            self.assertEqual(sum(len(g["functions"]) for g in groups), 3)
+            _, boxes = TT.layout(groups)
+            self.assertTrue(all(groups[b["index"]]["bytes"] > 0 for b in boxes))
+
+    def test_ambiguous_overlap_remains_unassigned(self):
         other = dict(self.entry, id="main/Other")
-        with self.assertRaisesRegex(ValueError, "claimed by both"):
-            self.gather(entries=[self.entry, other])
+        for owners in (self.owners, {}):
+            groups = self.gather(entries=[self.entry, other], owners=owners)
+            assigned = [g for g in groups if g["state"] != "unassigned"]
+            self.assertTrue(all(g["bytes"] == 0 for g in assigned))
+            self.assertEqual(sum(g["bytes"] for g in groups), 56)
+            self.assertEqual(sum(len(g["functions"]) for g in groups), 3)
+            self.assertTrue(all(g["state"] != "production" for g in groups))
+
+    def test_partial_owner_cannot_resolve_overlapping_manifests(self):
+        other = dict(self.entry, id="main/Old", promoted_source="src/Deleted.cpp")
+        owners = {("arm9", 4096): "src/Tree.cpp"}
+        groups = self.gather(entries=[self.entry, other], owners=owners)
+        self.assertEqual(sum(g["bytes"] for g in groups if g["state"] == "unassigned"), 56)
+
+    def test_duplicate_db_addresses_are_rejected(self):
         self.db["functions"].append(self.db["functions"][0])
         with self.assertRaisesRegex(ValueError, "duplicate function"):
             self.gather()

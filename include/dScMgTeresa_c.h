@@ -16,7 +16,7 @@
    declared and reconstructed tree-wide now -- `PaintSquare(int, int, int, int)`,
    the family's pixel brush.  The guess recorded here, "draws a dMeter_c
    digit/glyph", was right: this class's override stamps a shape by testing
-   data_ov006_0213f9e4[row] one bit per column, so it paints a stipple pattern
+   sTeresaPaintMask[row] one bit per column, so it paints a stipple pattern
    rather than a solid square, and it really does barely touch `this` -- the
    object pointer arrives and is never read, because unlike the base it always
    draws into sub BG0 instead of consulting the layer index at +0x6c.  Fields below

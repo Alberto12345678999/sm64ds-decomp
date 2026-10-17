@@ -212,7 +212,7 @@ int daBasabasa_c::ExecuteReturn()
     v.z = 0;
     int dist = Vec3_Dist(&mPosX, &mHomePosX);
     if (dist > 0x1f4000 || mWithMeshClsn.IsOnWall() != 0) {
-        mTargetAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mHomePosX);
+        mTargetAngleY = Vec3_HorzAngle(&mPos, (Vector3 *)&mHomePosX);
         /* The states read mStateTimer unsigned (ldrh). */
         if ((u16)mStateTimer < 0x14) mStateTimer = 0x14;
     }
@@ -369,7 +369,7 @@ int daBasabasa_c::SetState(State *state)
 void daBasabasa_c::func_ov065_02117994()
 {
     Vector3 v;
-    Vec3_Asr(&v, (Vector3 *)&mPosX, 3);
+    Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         mAngleX, mAngleY, mAngleZ);

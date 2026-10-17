@@ -317,7 +317,7 @@ int daRNk_c::Behavior()
 int daRNk_c::Render()
 {
   mModelAnim.HideMaterial(0, 1);
-  mModelAnim.Render((const Vector3 *)&mScaleX);
+  mModelAnim.Render(&mScale);
   return 1;
 }
 
@@ -359,12 +359,12 @@ void daRNk_c::func_ov062_0211a9c4()
     if (this->mPlayer == 0)
         return;
 
-    sp = (struct Vector3 *)&this->mPlayer->mPosX;
+    sp = &this->mPlayer->mPos;
     v.x = sp->x;
     v.y = sp->y;
     v.z = sp->z;
 
-    if (Vec3_Dist((struct Vector3 *)&this->mPosX, &v) >= kStartTalkDist)
+    if (Vec3_Dist(&this->mPos, &v) >= kStartTalkDist)
         return;
 
     if (this->mPlayer->StartTalk(*this, true) == 0)
@@ -377,7 +377,7 @@ void daRNk_c::func_ov062_0211a9c4()
     this->mFlagID = flag->uniqueID;
     flag->mHasTouchedFlag = 0;
     this->mState = daRNk_c::STATE_OFFER_RACE;
-    this->mTargetAngleY = Vec3_HorzAngle((struct Vector3 *)&this->mPosX, &v);
+    this->mTargetAngleY = Vec3_HorzAngle(&this->mPos, &v);
     this->mStep = 0;
 }
 
@@ -552,8 +552,7 @@ void daRNk_c::func_ov062_0211a1f4()
             daRFlag_c *flag = (daRFlag_c *)dActor_c::FindWithID(this->mFlagID);
             if (flag != 0) {
                 if (flag->mHasTouchedFlag != 0 &&
-                    Vec3_Dist((const Vector3 *)&this->mPosX,
-                              (const Vector3 *)&this->mPlayer->mPosX) > kCatchUpDist)
+                    Vec3_Dist(&this->mPos, &this->mPlayer->mPos) > kCatchUpDist)
                     speedMul = 8;
                 else if (data_0209f2f8 == kAltLevelID)
                     speedMul = 6;
@@ -671,19 +670,18 @@ void daRNk_c::func_ov062_0211a0f0()
  *           another talk, go on
  *   steps 5-8  turn to face the player, show a chatter message, and return
  *           to step 4 when it ends */
-void daRNk_c::func_ov062_02119be0()
-{
+void daRNk_c::func_ov062_02119be0() {
     Vector3 playerPos;
     Vector3 msgPos;
     Vector3 starPos;
     unsigned int msg;
     unsigned short t;
-    unsigned short* tp;
+    unsigned short *tp;
     int x;
     int y;
     int z;
 
-    tp = (unsigned short*)&this->mStateTimer;
+    tp = (unsigned short *)&this->mStateTimer;
     t = *tp;
     if (t != 0) {
         t--;
@@ -692,19 +690,19 @@ void daRNk_c::func_ov062_02119be0()
 
     switch (this->mStep) {
     case 0:
-        if (*(unsigned short*)&this->mStateTimer != 0)
+        if (*(unsigned short *)&this->mStateTimer != 0)
             return;
         {
-            Vector3* pp = (Vector3 *)&this->mPlayer->mPosX;
+            Vector3 *pp = &this->mPlayer->mPos;
             playerPos.x = pp->x;
             playerPos.y = pp->y;
             playerPos.z = pp->z;
         }
-        if (Vec3_Dist((Vector3*)&this->mPosX, &playerPos) >= kChatDist)
+        if (Vec3_Dist(&this->mPos, &playerPos) >= kChatDist)
             return;
         if (this->mPlayer->StartTalk(*this, 1) == 0)
             return;
-        this->mTargetAngleY = Vec3_HorzAngle((Vector3*)&this->mPosX, &playerPos);
+        this->mTargetAngleY = Vec3_HorzAngle(&this->mPos, &playerPos);
         this->mStep++;
         SET_ANIM(this, ANIM_TALK, kAnimLoop);
         if (this->mHasFinished == 0) {
@@ -768,14 +766,13 @@ void daRNk_c::func_ov062_02119be0()
             this->mStep = 0;
         }
         return;
-    case 4:
-        {
-            Vector3* pp = (Vector3 *)&this->mPlayer->mPosX;
-            playerPos.x = pp->x;
-            playerPos.y = pp->y;
-            playerPos.z = pp->z;
-        }
-        if (Vec3_Dist((Vector3*)&this->mPosX, &playerPos) >= kChatDist)
+    case 4: {
+        Vector3 *pp = &this->mPlayer->mPos;
+        playerPos.x = pp->x;
+        playerPos.y = pp->y;
+        playerPos.z = pp->z;
+    }
+        if (Vec3_Dist(&this->mPos, &playerPos) >= kChatDist)
             return;
         if (this->mPlayer->StartTalk(*this, 0) != 0)
             this->mStep++;
@@ -783,7 +780,7 @@ void daRNk_c::func_ov062_02119be0()
     case 5:
         if (this->mPlayer->GetTalkState() != 0)
             return;
-        this->mTargetAngleY = Vec3_HorzAngle((Vector3*)&this->mPosX, (Vector3*)&this->mPlayer->mPosX);
+        this->mTargetAngleY = Vec3_HorzAngle(&this->mPos, &this->mPlayer->mPos);
         SET_ANIM(this, ANIM_TALK, kAnimLoop);
         this->mStep++;
         return;
@@ -792,17 +789,16 @@ void daRNk_c::func_ov062_02119be0()
             this->mStep++;
         this->mAngleY = this->mPrevAngleY;
         return;
-    case 7:
-        {
-            Player* p = this->mPlayer;
-            if (p->param1 == 0)
-                msg = MSG_CHAT_MARIO;
-            else
-                msg = MSG_CHAT_NOT_MARIO;
-            x = p->GetTalkState();
-            if (x != 0)
-                return;
-        }
+    case 7: {
+        Player *p = this->mPlayer;
+        if (p->param1 == 0)
+            msg = MSG_CHAT_MARIO;
+        else
+            msg = MSG_CHAT_NOT_MARIO;
+        x = p->GetTalkState();
+        if (x != 0)
+            return;
+    }
         x = this->mPosX;
         z = this->mPosZ;
         y = this->mPosY + kMsgAnchorHeight;
@@ -854,7 +850,7 @@ int daRNk_c::func_ov062_02119af0() {
     dzc = targetZ - prevZ;
     p->mTargetAngleY = (short)_ZN4cstd5atan2E5Fix12IiES1_(dx, dz);
     int dot = (dxc >> 0xc) * (dx >> 0xc) + (dzc >> 0xc) * (dz >> 0xc);
-    if (dot <= 0 || Vec3_Dist((Vector3 *)&p->mPosX, (Vector3 *)&p->mPathTarget) < (p->mHorzSpeed >> 1)) {
+    if (dot <= 0 || Vec3_Dist(&p->mPos, (Vector3 *)&p->mPathTarget) < (p->mHorzSpeed >> 1)) {
         int v = p->mPathTarget.x;
         int *cnt = &p->mCurPathPt;
         p->mPrevPathPt.x = v;
@@ -904,8 +900,8 @@ int daRNk_c::func_ov062_021199ac()
     if (other->mVariant != 2)
         goto ret0;
 
-    angle = Vec3_HorzAngle((const struct Vector3 *)&this->mPosX, (const struct Vector3 *)&other->mPosX);
-    dist = Vec3_Dist((const struct Vector3 *)&this->mPosX, (const struct Vector3 *)&other->mPosX);
+    angle = Vec3_HorzAngle(&this->mPos, &other->mPos);
+    dist = Vec3_Dist(&this->mPos, &other->mPos);
     selfAngle = this->mPrevAngleY;
     otherAngle = other->mPrevAngleY;
     idx = (u16)(s16)(otherAngle - selfAngle);

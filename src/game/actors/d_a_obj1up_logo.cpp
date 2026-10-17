@@ -14,8 +14,8 @@
  *   BMD and BTP at +4 of data_ov002_02110aa4 and 02110a9c.
  * - Behavior keeps a volatile read of mPosY and of pos.z. A plain
  *   read is folded into the add and the stores above it.
- * - The follow target's position stays (Vector3 *)&mPosX. dActor_c
- *   has no Pos(), and naming that actor's mPosX/Y/Z DIFFs.
+ * - The follow target's position is read through &mPos. Naming that
+ *   actor's mPosX/Y/Z DIFFs.
  * - func_ov002_020f0e54 keeps the char * parameters decl_common.h
  *   declares. It is Player::IncMegaKillCount's attach helper.
  */
@@ -153,8 +153,8 @@ s32 daObj1UpLogo_c::Behavior()
     if (mOwnerUniqueID != 0) {
         dActor_c *other = FindWithID(mOwnerUniqueID);
         if (other != 0) {
-            /* dActor_c has no Pos(). Naming these three scalars DIFFs. */
-            Vector3 *otherPos = (Vector3 *)&other->mPosX;
+            /* Naming other's three position scalars DIFFs. */
+            Vector3 *otherPos = &other->mPos;
             s32 otherY;
             pos.x = otherPos->x;
             pos.y = otherY = otherPos->y;

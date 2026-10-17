@@ -15,12 +15,12 @@
  *   only take their address.
  * - CleanupResources keeps both null checks. The second is the
  *   inlined deleting destructor.
- * - Render's C body writes dView_c's matrix through (char *)self + 0x50.
  * - The handlers below 0x0200bec4 stay out of this file.
  *   func_0200bb28 needs opt_common_subs off, and that pragma is
  *   TU-global, while Behavior needs it on.
  */
 #include "dCamera_c.h"
+#include "Player.h"
 #include "dBgCh_Lin.h"
 #include "Memory.h"
 #include "decl_common.h"
@@ -230,19 +230,19 @@ int dCamera_c::InitResources()
         if (v->type == 7) {
             s32 *p;
             s16 x, y, z;
-            *(void**)((char*)thiz+0x148) = _Znwj(0xc);
+            thiz->mFixedViewPos = _Znwj(0xc);
             x = v->x; z = v->z; y = v->y;
-            p = *(s32**)((char*)thiz+0x148);
+            p = (s32 *)thiz->mFixedViewPos;
             p[0] = x << 0xc;
             p[1] = y << 0xc;
             p[2] = z << 0xc;
         }
     }
-    *(int*)((char*)thiz+0x168) = 0;
-    *(void**)((char*)thiz+0x110) = data_0209f394[data_0209f250];
-    ChangeArea(*(signed char*)(*(char**)((char*)thiz+0x110)+0xcc));
-    *(int*)((char*)thiz+0x114) = 0;
-    *(int*)((char*)thiz+0x118) = 0;
+    thiz->mFovBlend = 0;
+    thiz->mTargetPlayer = (s32)data_0209f394[data_0209f250];
+    ChangeArea(((dActor_c *)thiz->mTargetPlayer)->mAreaId);
+    thiz->mFramedActor = 0;
+    thiz->mFocusActor = 0;
     ChangeState((State *)&data_0209b008);
     func_0200cf40((char *)thiz);
     if (StartWithFarCamera() != 0)
@@ -341,22 +341,22 @@ block_7:
             } else {
                 flag = IsUnderwater();
             }
-            *(u32 *)(c + 0x15c) = _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
-                *(u32 *)(c + 0x15c), (u32)r5, spVec[0], spVec[1], spVec[2], 0, flag);
+            mWeather = _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
+                mWeather, (u32)r5, spVec[0], spVec[1], spVec[2], 0, flag);
             if (r5 == 0x86) {
-                *(u32 *)(c + 0x160) = _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
-                    *(u32 *)(c + 0x160), 0x87, spVec[0], spVec[1], spVec[2], 0, 1);
+                mWeather2 = _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
+                    mWeather2, 0x87, spVec[0], spVec[1], spVec[2], 0, 1);
             }
         }
     }
 
     {
-        char *m = *(char **)(c + 0x110);
-        enum Bool isBf = (enum Bool)(*(u16 *)(m + 0xc) == 0xbf);
+        Player *m = *(Player **)(c + 0x110);
+        enum Bool isBf = (enum Bool)(m->actorID == 0xbf);
         if (isBf != FALSE) {
             s32 t2 = data_0209f32c - (data_02082214[(*(u16 *)(c + 0x17e) >> 4) * 2] * 0x10);
             if (!(*(s32 *)(c + 0x154) & 1)) {
-                if (*(u8 *)(m + 0x706) != 0 || *(u8 *)(m + 0x707) != 0) {
+                if (m->mIsUnderwater != 0 || m->mIsInShallowWater != 0) {
                     if (*(s32 *)(c + 0x90) <= t2) {
                         *(u32 *)(c + 0x154) |= 1u;
                     }
@@ -369,12 +369,12 @@ block_7:
     {
         u32 *pf = (u32 *)(c + 0x154);
         *pf &= 0xfff8fdfbu;
-        if (*(s32 *)(c + 0x118) != 0) {
-            *(s32 *)(c + 0x118) = 0;
+        if (mFocusActor != 0) {
+            mFocusActor = 0;
             *pf |= 4u;
         }
     }
-    *(s32 *)(c + 0x114) = 0;
+    mFramedActor = 0;
     func_0203dafc((short)(*(s16 *)(c + 0x17c) + *(s16 *)(c + 0x188)));
     _Z15ApproachLinear2Rsss((short *)(c + 0x188), 0, 0x400);
     return 1;
@@ -388,40 +388,40 @@ int dCamera_c::Render()
     s16 sp18;
     s16 var_r4;
 
-    sp[0] = *(s32 *)((char *)self + 0x80);
-    sp[1] = *(s32 *)((char *)self + 0x84);
-    sp[2] = *(s32 *)((char *)self + 0x88);
-    sp[3] = *(s32 *)((char *)self + 0x8c);
-    sp[4] = *(s32 *)((char *)self + 0x90);
-    sp[5] = *(s32 *)((char *)self + 0x94);
-    sp18 = *(s16 *)((char *)self + 0x17a);
-    var_r4 = *(s16 *)((char *)self + 0x178);
+    sp[0] = self->lookAt.x;
+    sp[1] = self->lookAt.y;
+    sp[2] = self->lookAt.z;
+    sp[3] = self->pos.x;
+    sp[4] = self->pos.y;
+    sp[5] = self->pos.z;
+    sp18 = self->mFovAngle;
+    var_r4 = self->mAngleZ;
 
-    if (Vec3_Dist((Vector3 *)&sp[0], (Vector3 *)((char *)self + 0xc8)) < 0x1000 &&
-        Vec3_Dist((Vector3 *)&sp[3], (Vector3 *)((char *)self + 0xd4)) < 0x1000) {
-        sp[0] = *(s32 *)((char *)self + 0xc8);
-        sp[1] = *(s32 *)((char *)self + 0xcc);
-        sp[2] = *(s32 *)((char *)self + 0xd0);
-        sp[3] = *(s32 *)((char *)self + 0xd4);
-        sp[4] = *(s32 *)((char *)self + 0xd8);
-        sp[5] = *(s32 *)((char *)self + 0xdc);
+    if (Vec3_Dist((Vector3 *)&sp[0], &self->mPrevLookAt) < 0x1000 &&
+        Vec3_Dist((Vector3 *)&sp[3], &self->mPrevPos) < 0x1000) {
+        sp[0] = self->mPrevLookAt.x;
+        sp[1] = self->mPrevLookAt.y;
+        sp[2] = self->mPrevLookAt.z;
+        sp[3] = self->mPrevPos.x;
+        sp[4] = self->mPrevPos.y;
+        sp[5] = self->mPrevPos.z;
     }
 
     if (!(data_0209fc48 != 0 ? 1 : 0)) {
-        s32 f = *(s32 *)((char *)self + 0x154);
+        s32 f = self->mFlags;
         if (!(f & 8)) {
-            if (*(u8 **)((char *)self + 0x13c) == &data_0208738c) {
+            if ((u8 *)self->mState_13c == &data_0208738c) {
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)&data_ov002_0210c3b0, 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
                 G2x::SetBlendAlpha((volatile unsigned short *)0x04000050, 0x10, 0x2f, 0xc, 6);
             } else {
                 if (f & 0x20) {
                     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)data_ov002_0210c3e0[0], 0x14, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
                 }
-                if (*(s32 *)((char *)self + 0x154) & 0x40) {
+                if (self->mFlags & 0x40) {
                     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)data_ov002_0210c3e0[1], 0xec, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
                 }
             }
-            s32 t = *(s32 *)((char *)self + 0x168);
+            s32 t = self->mFovBlend;
             if (t != 0x1000) {
                 s32 d = 0xaaa - sp18;
                 sp18 = (s16)(sp18 + (s16)FX_MUL(d, t));
@@ -433,16 +433,16 @@ int dCamera_c::Render()
         }
     }
 
-    sp[1] += *(s32 *)((char *)self + 0x134);
-    sp[4] += *(s32 *)((char *)self + 0x134);
+    sp[1] += self->mShakeY;
+    sp[4] += self->mShakeY;
 
-    s16 tr3 = *(s16 *)((char *)self + 0x18c);
+    s16 tr3 = self->mRollShake;
     if (tr3 != 0) {
         s16 c = data_02082214[((s32)*(u16 *)((char *)self + 0x18a) >> 4) * 2];
         var_r4 = (s16)(var_r4 + (s16)FX_MUL(tr3, c));
     }
 
-    s16 tr0 = *(s16 *)((char *)self + 0x18e);
+    s16 tr0 = self->mFovShake;
     if (tr0 != 0) {
         s16 c = data_02082214[((s32)*(u16 *)((char *)self + 0x192) >> 4) * 2 + 1];
         s32 m = FX_MUL(c, 0x360);
@@ -451,11 +451,8 @@ int dCamera_c::Render()
 
     func_0200d954((char *)self, sp18);
 
-    *(volatile s32 *)0x04000580 =
-        *(u8 *)((char *)self + 0x10c) |
-        (*(u8 *)((char *)self + 0x10d) << 8) |
-        (*(u8 *)((char *)self + 0x10e) << 16) |
-        (*(u8 *)((char *)self + 0x10f) << 24);
+    *(volatile s32 *)0x04000580 = self->mViewport[0] | (self->mViewport[1] << 8) |
+                                  (self->mViewport[2] << 16) | (self->mViewport[3] << 24);
 
     s32 var_r6;
     if (data_0209f2f8 == 0x28) {
@@ -465,7 +462,9 @@ int dCamera_c::Render()
     }
 
     s32 idx = ((s32)(u16)sp18 >> 4) * 2;
-    _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(data_02082214[idx], data_02082214[idx + 1], *(s32 *)((char *)self + 0xf8), *(s32 *)((char *)self + 0xfc), *(s32 *)((char *)self + 0x100), var_r6, 1, (Matrix4x3 *)0);
+    _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
+        data_02082214[idx], data_02082214[idx + 1], self->mAspect, self->mNear, self->mFar, var_r6,
+        1, (Matrix4x3 *)0);
 
     {
         s32 s2 = (s32)(sp[2] + 4) >> 3;
@@ -484,11 +483,11 @@ int dCamera_c::Render()
     if (Vec3_HorzDist((Vector3 *)&sp[0], (Vector3 *)&sp[3]) == 0) {
         lookdir = &data_02086f08;
     }
-    G3i::LookAt_((Vector3 *)&sp[3], (Vector3 *)lookdir, (Vector3 *)&sp[0], 1, (Matrix4x3 *)((char *)self + 0x50));
+    G3i::LookAt_((Vector3 *)&sp[3], (Vector3 *)lookdir, (Vector3 *)&sp[0], 1, &self->viewMat);
 
     if (var_r4 != 0) {
         Matrix4x3_FromRotationZ(&data_020a0e68, var_r4);
-        MulMat4x3Mat4x3((Matrix4x3 *)((char *)self + 0x50), &data_020a0e68, (Matrix4x3 *)((char *)self + 0x50));
+        MulMat4x3Mat4x3(&self->viewMat, &data_020a0e68, &self->viewMat);
     }
 
     dView_c::Render();
@@ -584,8 +583,9 @@ int dCamera_c::IsUnderwater() const
 // @symbol func_0200d858
 void func_0200d858(void *self, const struct Vector3 *offset)
 {
-    AddVec3((Vec3 *)((char *)self + 0x80), offset, (Vec3 *)((char *)self + 0x80));
-    AddVec3((Vec3 *)((char *)self + 0x8c), offset, (Vec3 *)((char *)self + 0x8c));
+    struct dCamera_c *cam = (struct dCamera_c *)self;
+    AddVec3(&cam->lookAt, offset, &cam->lookAt);
+    AddVec3(&cam->pos, offset, &cam->pos);
 }
 
 // @symbol func_0200d81c
@@ -703,10 +703,10 @@ void func_0200d4b0(char* self, unsigned int playerID, int arg2)
     if (playerID == tmp)
     {
         volatile int dummy;
-        char* other;
-        *(short*)(self + 0x19a) = *(short*)(self + 0x17c);
-        other = *(char**)(self + 0x110);
-        *(int*)(((int)other + 0xb0)) |= 0x20000000;
+        struct dActor_c *other;
+        ((struct dCamera_c *)self)->mOrbitTargetYaw = ((struct dCamera_c *)self)->mAngleY;
+        other = *(struct dActor_c **)(self + 0x110);
+        other->mFlags |= 0x20000000;
         func_0200ee8c(arg2);
     }
 }
@@ -731,7 +731,7 @@ void func_0200d3f8(void *thiz, unsigned char playerID, void *ptr)
     unsigned char tmp = *(unsigned char *)&data_0209f250;
     if (playerID != tmp)
         return;
-    *(void **)((char *)thiz + 0x11c) = ptr;
+    ((struct dCamera_c *)thiz)->mLookTarget = (s32 *)ptr;
     _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b0d8);
 }
 #pragma cplusplus on
@@ -753,7 +753,7 @@ void dCamera_c::GoBehindPlayer(unsigned int j)
 
     slot4 = mState_13c;
     slotc = 0;
-    func_0200c66c((void *)((int)this), (void *)(mTargetPlayer + 0x5c), &slot8, &slot4, &slotc);
+    func_0200c66c((void *)((int)this), &((dActor_c *)mTargetPlayer)->mPos, &slot8, &slot4, &slotc);
     if (slot4 == (int)&data_020873dc)
         return;
     if (slot4 == (int)&data_0208742c)
@@ -765,8 +765,9 @@ void dCamera_c::GoBehindPlayer(unsigned int j)
 // @symbol func_0200d1e4
 void func_0200d1e4(char *self)
 {
-    char *info = *(char **)(self + 0x110);
-    char *base = (char *)(info + 0x5c);
+    struct dCamera_c *cam = (struct dCamera_c *)self;
+    struct dActor_c *info = *(struct dActor_c **)(self + 0x110);
+    Vector3 *base = &info->mPos;
     int v1;
     unsigned int r0;
     s32 temp1[3];
@@ -777,9 +778,9 @@ void func_0200d1e4(char *self)
     unsigned int r0b;
     s32 temp2[3];
 
-    *(s32 *)(self + 0x98) = *(s32 *)(base + 0);
-    *(s32 *)(self + 0x9c) = *(s32 *)(base + 4);
-    *(s32 *)(self + 0xa0) = *(s32 *)(base + 8);
+    cam->mTargetPos.x = base->x;
+    cam->mTargetPos.y = base->y;
+    cam->mTargetPos.z = base->z;
 
     v1 = *(s32 *)(*(char **)(self + 0x13c) + 0x14);
     r0 = func_020093f4(self, v1);
@@ -789,8 +790,8 @@ void func_0200d1e4(char *self)
     temp1[2] = r0;
     data_02086f2c.z = r0;
 
-    angle = *(short *)(*(char **)(self + 0x110) + 0x8e);
-    Vec3_RotateYAndTranslate(self + 0x80, self + 0x98, angle, temp1);
+    angle = (*(struct dActor_c **)(self + 0x110))->mAngleY;
+    Vec3_RotateYAndTranslate(self + 0x80, &cam->mTargetPos, angle, temp1);
 
     v2 = *(s32 *)(*(char **)(self + 0x13c) + 0x10);
     dResult = func_020093d4(self, v2);
@@ -804,16 +805,16 @@ void func_0200d1e4(char *self)
     temp2[1] = data_02086f14[1];
     temp2[2] = r0b;
 
-    angle = *(short *)(*(char **)(self + 0x110) + 0x8e);
+    angle = (*(struct dActor_c **)(self + 0x110))->mAngleY;
     Vec3_RotateYAndTranslate(self + 0x8c, self + 0x80, angle, temp2);
 
     *(s32 *)(self + 0x90) += (int)(dResult - 0x8b000);
 
-    *(s32 *)(self + 0xa4) = 0;
-    *(s32 *)(self + 0xa8) = 0xc3f9d;
-    *(s32 *)(self + 0xac) = 0;
+    cam->mLookAtOffset.x = 0;
+    cam->mLookAtOffset.y = 0xc3f9d;
+    cam->mLookAtOffset.z = 0;
 
-    ChangeArea(*(signed char *)(*(char **)(self + 0x110) + 0xcc));
+    ChangeArea((*(struct dActor_c **)(self + 0x110))->mAreaId);
 }
 #pragma cplusplus on
 
@@ -821,19 +822,15 @@ void func_0200d1e4(char *self)
 void dCamera_c::LookAtExit(dActor_c &actor)
 {
     int *src;
-    char *a = (char *)&actor;
 
-    *(int **)((char *)this + 0x11c) = (int *)(a + 0x5c);
-    src = *(int **)((char *)this + 0x11c);
-    *(int *)((char *)this + 0x120) = src[0];
-    *(int *)((char *)this + 0x124) = src[1];
-    *(int *)((char *)this + 0x128) = src[2];
-    *(s16 *)((char *)this + 0x186) = -*(s16 *)(a + 0x8e);
+    mLookTarget = &actor.mPosX;
+    src = mLookTarget;
+    mLookTargetPos.x = src[0];
+    mLookTargetPos.y = src[1];
+    mLookTargetPos.z = src[2];
+    mTargetAngleY = -actor.mAngleY;
     ChangeState((State *)&data_0209b0f8);
-    {
-        int *fp = (int *)(((int)this + 0x154));
-        *fp |= 0x10;
-    }
+    mFlags |= 0x10;
 }
 
 #pragma cplusplus off
@@ -886,7 +883,7 @@ void func_0200d064(void *param_1, unsigned char param_2)
 // @symbol _ZN9dCamera_c9SetFlag_3Ev
 void dCamera_c::SetFlag_3()
 {
-    u32 *p = (u32 *)(((int)this + 0x154));
+    u32 *p = &mFlags;
     u32 v = *p | 8;
     *p = v;
     ((void (*)(u32))FUN_02029a68)(v);
@@ -908,7 +905,7 @@ void func_0200cf40(char *c)
   *((int *) (c + 0xfc)) = 0x1000;
   *((int *) (c + 0x100)) = 0x1388000;
   *((int *) (c + 0x140)) = (int) (&data_0208715c);
-  *((int *) (c + 0x144)) = 0;
+  ((struct dCamera_c *)c)->mViewObj = 0;
   if ((*((int *) (c + 8))) != 0xf)
   {
     CamEntryE *v;
@@ -927,7 +924,7 @@ void func_0200cf40(char *c)
     *((int *) (c + 0x8c)) = x << 12;
     *((int *) (c + 0x90)) = y << 12;
     *((int *) (c + 0x94)) = new_var;
-    *((s16 *) (c + 0x182)) = v->fa + 0x8000;
+    ((struct dCamera_c *)c)->mBaseAngleY = v->fa + 0x8000;
     return;
   }
   func_0200cb58(c, 9);
@@ -946,10 +943,10 @@ extern "C" void func_0200cce4(char* cam)
     u32 d;
 
     if (*(char**)(cam + 0x110) != 0) {
-        Vec3* p = (Vec3*)(((int)*(char**)(cam + 0x110) + 0x5c));
-        *(int*)(cam + 0x98) = p->x;
-        *(int*)(cam + 0x9c) = p->y;
-        *(int*)(cam + 0xa0) = p->z;
+        Vec3 *p = (Vec3 *)&(*(dActor_c **)(cam + 0x110))->mPos;
+        ((dCamera_c *)cam)->mTargetPos.x = p->x;
+        ((dCamera_c *)cam)->mTargetPos.y = p->y;
+        ((dCamera_c *)cam)->mTargetPos.z = p->z;
 
         {
             u32 d1 = func_020093f4(cam, *(int*)(*(char**)(cam + 0x13c) + 0x14));
@@ -958,8 +955,8 @@ extern "C" void func_0200cce4(char* cam)
             tmp1.y = data_02086f2c.y;
             data_02086f2c.z = d1;
         }
-        Vec3_RotateYAndTranslate((Vec3*)(cam + 0x80), (Vec3*)(cam + 0x98),
-            *(s16*)(*(char**)(cam + 0x110) + 0x8e), &tmp1);
+        Vec3_RotateYAndTranslate((Vec3 *)(cam + 0x80), &((dCamera_c *)cam)->mTargetPos,
+                                 (*(dActor_c **)(cam + 0x110))->mAngleY, &tmp1);
 
         d = func_020093d4(cam, *(int*)(*(char**)(cam + 0x13c) + 0x10));
         *(int*)(((int)cam + 0x84)) += d;
@@ -971,8 +968,8 @@ extern "C" void func_0200cce4(char* cam)
             tmp2.x = data_02086f20.x;
             tmp2.y = data_02086f20.y;
         }
-        Vec3_RotateYAndTranslate((Vec3*)(cam + 0x8c), (Vec3*)(cam + 0x80),
-            *(s16*)(*(char**)(cam + 0x110) + 0x8e), &tmp2);
+        Vec3_RotateYAndTranslate((Vec3 *)(cam + 0x8c), (Vec3 *)(cam + 0x80),
+                                 (*(dActor_c **)(cam + 0x110))->mAngleY, &tmp2);
 
         dBgCh_Lin line;
         func_0200897c(cam, &line);
@@ -1017,12 +1014,12 @@ extern "C" void func_0200cce4(char* cam)
         }
         {
             u32 t = func_020093d4(cam, *(int*)(*(char**)(cam + 0x13c) + 0x10));
-            *(int*)(cam + 0xa4) = 0;
-            *(int*)(cam + 0xa8) = t;
-            *(int*)(cam + 0xac) = 0;
+            ((dCamera_c *)cam)->mLookAtOffset.x = 0;
+            ((dCamera_c *)cam)->mLookAtOffset.y = t;
+            ((dCamera_c *)cam)->mLookAtOffset.z = 0;
         }
         func_0200928c(cam);
-        ChangeArea(*(s8*)(*(char**)(cam + 0x110) + 0xcc));
+        ChangeArea((*(dActor_c **)(cam + 0x110))->mAreaId);
         _ZN9dBgCh_GndD1Ev(&ground);
 
     }
@@ -1049,38 +1046,38 @@ void dCamera_c::SetPos(const Vector3 & pos_)
 // @symbol _ZN9dCamera_c25SaveCameraStateBeforeTalkEv
 void dCamera_c::SaveCameraStateBeforeTalk()
 {
-    if (*(unsigned int *)((char *)&mFlags) & 0x4000U) return;
-    *(unsigned int *)((char *)&savedLookAt.x) = *(unsigned int *)((char *)&lookAt.x);
-    *(unsigned int *)((char *)&savedLookAt.y) = *(unsigned int *)((char *)&lookAt.y);
-    *(unsigned int *)((char *)&savedLookAt.z) = *(unsigned int *)((char *)&lookAt.z);
-    *(unsigned int *)((char *)&savedPos.x) = *(unsigned int *)((char *)&pos.x);
-    *(unsigned int *)((char *)&savedPos.y) = *(unsigned int *)((char *)&pos.y);
-    *(unsigned int *)((char *)&savedPos.z) = *(unsigned int *)((char *)&pos.z);
-    *(unsigned int *)((int *)(((int)((void *)this) + 0x154))) |= 0x4000U;
+    if (mFlags & 0x4000U)
+        return;
+    savedLookAt.x = lookAt.x;
+    savedLookAt.y = lookAt.y;
+    savedLookAt.z = lookAt.z;
+    savedPos.x = pos.x;
+    savedPos.y = pos.y;
+    savedPos.z = pos.z;
+    mFlags |= 0x4000U;
 }
 
 #pragma cplusplus off
 // @symbol func_0200cbe0
 void func_0200cbe0(void *self)
 {
-    int r1 = func_020092c4(self, (Vec3 *)((char *)self + 0x80), (Vec3 *)((char *)self + 0xb0));
-    int r2 = func_020092c4(self, (Vec3 *)((char *)self + 0x8c), (Vec3 *)((char *)self + 0xbc));
+    struct dCamera_c *cam = (struct dCamera_c *)self;
+    int r1 = func_020092c4(cam, (Vec3 *)&cam->lookAt, (Vec3 *)&cam->savedLookAt);
+    int r2 = func_020092c4(cam, (Vec3 *)&cam->pos, (Vec3 *)&cam->savedPos);
     short h;
     short v;
 
     if (r2 != 0) {
         if (r1 != 0) {
-            *(int *)((char *)self + 0x154) &= ~0x8000;
+            cam->mFlags &= ~0x8000;
         }
     }
 
-    h = Vec3_HorzAngle((const Vec3 *)((char *)self + 0x80),
-                             (const Vec3 *)((char *)self + 0x8c));
-    *((short *)((char *)self + 0x100 + 0x7c)) = h;
+    h = Vec3_HorzAngle(&cam->lookAt, &cam->pos);
+    cam->mAngleY = h;
 
-    v = Vec3_VertAngle((const Vec3 *)((char *)self + 0x80),
-                             (const Vec3 *)((char *)self + 0x8c));
-    *((short *)((char *)self + 0x100 + 0x7e)) = v;
+    v = Vec3_VertAngle(&cam->lookAt, &cam->pos);
+    cam->mAngleX = v;
 }
 #pragma cplusplus on
 
@@ -1099,7 +1096,7 @@ int dCamera_c::ChangeState(State * state)
             func_020089f8(this);
         }
         mState = state;
-        unk_1a6 = 0;
+        mTurningToTarget = 0;
     }
     return func_0200cae4(this);
 }
@@ -1197,25 +1194,26 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
     int hval;
     int col1;
     int col2;
-    char* p;
-    void* obj;
+    Player *p;
+    Player *obj;
     int res;
 
-    p = *(char**)(self + 0x110);
+    p = *(Player **)(self + 0x110);
     obj = 0;
     {
-        int b = *(u16*)(p + 0xc);
+        int b = p->actorID;
         b = b == 0xbf;
         if (b != 0) {
-            res = *(int*)(p + 0x644);
-            if ((u32)res == 0x80000000) res = *(int*)(p + 0x60);
+            res = p->mGroundY;
+            if ((u32)res == 0x80000000)
+                res = p->mPosY;
             obj = p;
         }
     }
 
     if (obj != 0 && data_0209f2f8 != 0x1c) {
-        col1 = *(int*)((char*)obj + 0x65c) & 0xff;
-        col2 = *(int*)((char*)obj + 0x660) & 0xff;
+        col1 = obj->mClpsBits15_18 & 0xff;
+        col2 = obj->mClpsBits6_11 & 0xff;
         hval = res;
     } else {
         dBgCh_Lin line;
@@ -1256,7 +1254,8 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
     if (col1 == 0 || (*(u32*)(self + 0x154) & 0x400) != 0) {
         if (*(u16*)(*(char**)(self + 0x13c) + 0x26) & 0x10) {
             if (*(void**)(self + 0x140)) *out1 = *(void**)(self + 0x140);
-            if (*(void**)(self + 0x144)) *out2 = *(void**)(self + 0x144);
+            if (((dCamera_c *)self)->mViewObj)
+                *out2 = ((dCamera_c *)self)->mViewObj;
         }
     } else {
         int b0;
@@ -1283,9 +1282,12 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
                     if ((*(u16*)(*(char**)(self + 0x13c) + 0x26) & 4) == 0) {
                         if (b0 == 0) {
                             if (*out1 == (void*)&data_02087274 && data_0209f2f8 == 0x2d) {
-                                *(int*)(self + 0x120) = *(int*)(self + 0x98);
-                                *(int*)(self + 0x124) = *(int*)(self + 0x9c);
-                                *(int*)(self + 0x128) = *(int*)(self + 0xa0);
+                                ((dCamera_c *)self)->mLookTargetPos.x =
+                                    ((dCamera_c *)self)->mTargetPos.x;
+                                ((dCamera_c *)self)->mLookTargetPos.y =
+                                    ((dCamera_c *)self)->mTargetPos.y;
+                                ((dCamera_c *)self)->mLookTargetPos.z =
+                                    ((dCamera_c *)self)->mTargetPos.z;
                             }
                             *out1 = (void*)&data_020871ac;
                         } else if (b0 == 1) {
@@ -1301,7 +1303,7 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
         if (*out1 != (void*)&data_02087094) *(void**)(self + 0x140) = *out1;
         if (*out1 != (void*)&data_0208733c) {
             if (*out2 != 0 && *(unsigned char*)(*out2) != 2)
-                *(void**)(self + 0x144) = *out2;
+                ((dCamera_c *)self)->mViewObj = *out2;
         }
     }
 
@@ -1313,6 +1315,7 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
 int func_0200c394(void *self_, int a1, void *a2_, void *a3, void **a5, int *a6)
 {
     char *self = (char *)self_;
+    struct dCamera_c *cam = (struct dCamera_c *)self_;
     unsigned char *a2 = (unsigned char *)a2_;
     void *p = *(void **)(self + 0x13c);
     Vec3 local, local2;
@@ -1329,52 +1332,55 @@ int func_0200c394(void *self_, int a1, void *a2_, void *a3, void **a5, int *a6)
 body:
     {
             if (a1 == 7) {
-                void *o = *(void **)(self + 0x114);
+                struct dActor_c *o = cam->mFramedActor;
                 if (o == 0) {
                     if (a2 == 0) goto other;
                     if (a2[0] != 3) goto other;
                 }
                 *a6 = 1;
-                o = *(void **)(self + 0x114);
+                o = cam->mFramedActor;
                 if (o) {
-                    int qb = (int)o + 0x5c;
-                    *(int *)(self + 0x120) = *(int *)(qb);
-                    *(int *)(self + 0x124) = *(int *)(qb + 4);
-                    *(int *)(self + 0x128) = *(int *)(qb + 8);
+                    Vector3 *q = &o->mPos;
+                    cam->mLookTargetPos.x = q->x;
+                    cam->mLookTargetPos.y = q->y;
+                    cam->mLookTargetPos.z = q->z;
                 } else {
                     Vec3 t;
                     sx = *(short *)(a2 + 2);
                     sz = *(short *)(a2 + 6);
                     sy = *(short *)(a2 + 4);
                     t.x = sx << 12; t.z = sz << 12; t.y = sy << 12;
-                    *(int *)(self + 0x120) = t.x;
-                    *(int *)(self + 0x124) = t.y;
-                    *(int *)(self + 0x128) = t.z;
+                    cam->mLookTargetPos.x = t.x;
+                    cam->mLookTargetPos.y = t.y;
+                    cam->mLookTargetPos.z = t.z;
                 }
-                Vec3_Sub(&local, (Vec3 *)(self + 0x120), a3);
-                *(int *)(self + 0x12c) = LenVec3(&local) >> 1;
+                Vec3_Sub(&local, (Vec3 *)&cam->mLookTargetPos, a3);
+                cam->mFocusDist = LenVec3(&local) >> 1;
                 g = data_0209f2f8;
                 v = (g == 0x2d);
                 if (v) {
-                    if (*(int *)(self + 0x12c) < 0x100000) *(int *)(self + 0x12c) = 0x100000;
-                    else if (*(int *)(self + 0x12c) > 0x180000) *(int *)(self + 0x12c) = 0x180000;
+                    if (cam->mFocusDist < 0x100000)
+                        cam->mFocusDist = 0x100000;
+                    else if (cam->mFocusDist > 0x180000)
+                        cam->mFocusDist = 0x180000;
                 } else {
-                    if (*(int *)(self + 0x12c) < 0x180000) *(int *)(self + 0x12c) = 0x180000;
+                    if (cam->mFocusDist < 0x180000)
+                        cam->mFocusDist = 0x180000;
                 }
                 if (*(int *)(self + 0x154) & 2) {
-                    *(int *)(self + 0x12c) = FX_MUL(*(int *)(self + 0x12c), 0x1800);
+                    cam->mFocusDist = FX_MUL(cam->mFocusDist, 0x1800);
                 }
-                if (g == 0x2f && *(int *)(self + 0x12c) > 0xc0000) {
-                    int s = _ZN4cstd4fdivEii(0xc0000, *(int *)(self + 0x12c) << 1);
+                if (g == 0x2f && cam->mFocusDist > 0xc0000) {
+                    int s = _ZN4cstd4fdivEii(0xc0000, cam->mFocusDist << 1);
                     Vec3_MulScalarInPlace(&local, s);
                     Vec3_Add(&local2, a3, &local);
-                    *(int *)(self + 0x120) = local2.x;
-                    *(int *)(self + 0x124) = local2.y;
-                    *(int *)(self + 0x128) = local2.z;
-                    *(int *)(self + 0x12c) = 0xc0000;
+                    cam->mLookTargetPos.x = local2.x;
+                    cam->mLookTargetPos.y = local2.y;
+                    cam->mLookTargetPos.z = local2.z;
+                    cam->mFocusDist = 0xc0000;
                 } else {
-                    AddVec3((Vec3 *)(self + 0x120), a3, (Vec3 *)(self + 0x120));
-                    Vec3_AsrInPlace((Vec3 *)(self + 0x120), 1);
+                    AddVec3((Vec3 *)&cam->mLookTargetPos, a3, (Vec3 *)&cam->mLookTargetPos);
+                    Vec3_AsrInPlace((Vec3 *)&cam->mLookTargetPos, 1);
                 }
                 *a5 = &data_02087274;
                 return v;
@@ -1401,6 +1407,7 @@ body:
 #pragma cplusplus on
 extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int arg4)
 {
+    dCamera_c *cam = (dCamera_c *)self;
     int r5 = arg4;
     Vec3 sp8;
     Vec3 sp14;
@@ -1416,7 +1423,7 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
     data_02086f2c.z = sp44.z;
     sp44.x = data_02086f2c.x;
     sp44.y = data_02086f2c.y;
-    Vec3_RotateYAndTranslate(&sp8, arg1, *(short*)(*(char**)(self + 0x110) + 0x8e), (int*)&sp44);
+    Vec3_RotateYAndTranslate(&sp8, arg1, (*(dActor_c **)(self + 0x110))->mAngleY, (int *)&sp44);
     dBgCh_Lin line;
     sp14.x = sp8.x;
     sp14.y = sp8.y + 0x32000;
@@ -1471,20 +1478,20 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
     sp8.y += func_020093d4(self, t);
     sl = Vec3_HorzLen(&sp8);
     Vec3 sp68;
-    Vec3_MulScalar(&sp68, self + 0x120, *(int*)(self + 0x130));
+    Vec3_MulScalar(&sp68, &cam->mLookTargetPos, cam->mFocusBlend);
     AddVec3(&sp8, &sp68, &sp8);
     if (*(int*)(self + 0x154) & 4) {
-        *(int*)(self + 0xa4) = sp8.x;
-        *(int*)(self + 0xa8) = sp8.y;
-        *(int*)(self + 0xac) = sp8.z;
+        cam->mLookAtOffset.x = sp8.x;
+        cam->mLookAtOffset.y = sp8.y;
+        cam->mLookAtOffset.z = sp8.z;
     } else {
-        int hl = Vec3_HorzLen(self + 0xa4) - sl;
+        int hl = Vec3_HorzLen(&cam->mLookAtOffset) - sl;
         if (*(unsigned short*)(arg3 + 0x26) & 0x40) {
             r5 = 0x10000;
         } else if (hl > 0) {
             r5 += FX_MUL(hl, 0x400);
         }
-        Vec3_Sub(&sp38, &sp8, self + 0xa4);
+        Vec3_Sub(&sp38, &sp8, &cam->mLookAtOffset);
         sl = Vec3_HorzLen(&sp38);
         {
             int f = sl;
@@ -1492,14 +1499,14 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             if (sl != 0) {
                 Math_Function_0203b14c(&f, 0, 0x100, FX_MUL(r5, 0x600), 0x1000);
                 fd = _ZN4cstd4fdivEii(f, sl);
-                *(int *)(self + 0xa4) = sp8.x - FX_MUL(sp38.x, fd);
-                *(int *)(self + 0xac) = sp8.z - FX_MUL(sp38.z, fd);
+                cam->mLookAtOffset.x = sp8.x - FX_MUL(sp38.x, fd);
+                cam->mLookAtOffset.z = sp8.z - FX_MUL(sp38.z, fd);
             }
         }
         {
-            int a8 = *(int*)(self + 0xa8);
+            int a8 = cam->mLookAtOffset.y;
             int diff = sp8.y - a8;
-            *(int *)(self + 0xa8) = sp8.y - FX_MUL(diff, 0xf80);
+            cam->mLookAtOffset.y = sp8.y - FX_MUL(diff, 0xf80);
         }
         if (*(int*)(self + 0x154) & 0x400) {
             _ZN9dBgCh_GndD1Ev(spEC);
@@ -1507,10 +1514,10 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             return r4;
         }
     }
-    *(int*)(self + 0x80) = arg1[0] + *(int*)(self + 0xa4);
-    *(int*)(self + 0x88) = arg1[2] + *(int*)(self + 0xac);
+    *(int *)(self + 0x80) = arg1[0] + cam->mLookAtOffset.x;
+    *(int *)(self + 0x88) = arg1[2] + cam->mLookAtOffset.z;
     {
-        int sl2 = arg1[1] + *(int*)(self + 0xa8);
+        int sl2 = arg1[1] + cam->mLookAtOffset.y;
         int r5b = sl2 - *(int*)(self + 0x84);
         if (r5b < (int)func_020093d4(self, *(int*)(arg3 + 0x18))) {
             _Z14ApproachLinearRiii((int*)(self + 0x84), sl2, 0x64000);

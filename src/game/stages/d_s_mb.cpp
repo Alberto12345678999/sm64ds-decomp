@@ -16,11 +16,10 @@
  */
 
 // leftovers: OAM::Render stays mangled (Fix12 by value -- this TU's render
-// calls). func_02034d34 calls the fader at +0x50 through the ScMbFader view
-// because dFdColor_c's header does not declare slots m2/m5. func_02034b1c
-// writes the global graphCallback_c by offset (that object's initializer, not
-// a dScMB_c method). func_02034fbc stays free (no receiver). classInit stays
-// the literal construction sequence (`return new` inlines a different fader
+// calls). func_02034b1c initialises the global graph callback, retaining
+// the raw store to its unmodelled byte at +0x0f. func_02034fbc stays free
+// (no receiver). classInit keeps the literal construction sequence
+// (`return new` inlines a different fader
 // constructor).
 #include "dScMB_c.h"
 #include "decl_common.h"
@@ -44,8 +43,10 @@ extern void *data_020a0c5c;
 extern int OVERLAY_100_ID;
 extern int OVERLAY_102_ID;
 
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, void *attr, int x, int y, int a, int cc, int fx, int mode);
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc, int fx0, int fy0, int rot, int mode);
+void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, void *attr, int x, int y, int a, int cc,
+                                             int fx, int mode);
+void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc,
+                                                 int fx0, int fy0, int rot, int mode);
 extern struct OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
 
@@ -63,86 +64,76 @@ extern int _ZTV15dFdBrightness_c[];
 extern int _ZTV10dFdColor_c[];
 }
 
-/* Fader at dScMB_c+0x50. Slots 5 and 2 are what this TU calls; the header's
- * dFdColor_c does not declare them. */
-struct ScMbFader {
-    virtual int v0();
-    virtual int v1();
-    virtual int m2();
-    virtual int v3();
-    virtual int v4();
-    virtual int m5();
-};
-
 #pragma defer_codegen off
 
 // @symbol _ZN7dScMB_cD1Ev
-dScMB_c::~dScMB_c()
-{
-}
+dScMB_c::~dScMB_c() {}
 
 // @symbol func_02034b1c
-void func_02034b1c(void *c, int a)
-{
-    *(int *)((char *)c + 4) = a;
-    *(int *)((char *)c + 8) = 0;
-    *(unsigned char *)((char *)c + 0xc) = 0;
-    *(unsigned char *)((char *)c + 0xd) = 1;
-    *(unsigned char *)((char *)c + 0xe) = 1;
-    *(unsigned char *)((char *)c + 0xf) = 0;
+void func_02034b1c(void *c, int owner) {
+    dScMB_c::graphCallback_c *callback = (dScMB_c::graphCallback_c *)c;
+    callback->mOwner = (void *)owner;
+    callback->mSpinAngle = 0;
+    callback->mStillTimer = 0;
+    callback->mEnabled = 1;
+    callback->mAdvancing = 1;
+    *(u8 *)((char *)c + 0xf) = 0;
 }
 
 // @symbol _ZN7dScMB_c15graphCallback_c14GraphCallback3Ev
-int dScMB_c::graphCallback_c::GraphCallback3()
-{
+int dScMB_c::graphCallback_c::GraphCallback3() {
     if (mOwner != 0) {
         ((dScMB_c *)mOwner)->func_02034d34();
     }
     OAM::Reset();
 
     if (mEnabled != 0) {
-        int id = func_0200f0bc();
-        void *attr = data_0208a0f8[id];
+        int language = func_0200f0bc();
+        void *sprite = data_0208a0f8[language];
 
         if (mStillTimer == 0) {
-            int sb = mSpinAngle;
+            int spriteAngle = mSpinAngle;
             int x = 0x80;
             int one = 1;
-            int arr[3];
-            arr[0] = 0;
-            arr[1] = 0;
-            arr[2] = 0;
+            int drawFlags[3];
+            drawFlags[0] = 0;
+            drawFlags[1] = 0;
+            drawFlags[2] = 0;
 
             do {
                 int y;
-                if (sb >= 0 && sb < 0x10000) {
-                    u16 t = (u16)sb;
-                    s16 ang = (s16)t;
-                    u16 t2 = (u16)ang;
-                    y = data_02082214[(t2 >> 4) * 2];
+                if (spriteAngle >= 0 && spriteAngle < 0x10000) {
+                    // Preserve the narrowing sequence: collapsing it removes 16 ROM bytes.
+                    u16 angleBits = (u16)spriteAngle;
+                    s16 signedAngle = (s16)angleBits;
+                    u16 tableAngle = (u16)signedAngle;
+                    y = data_02082214[(tableAngle >> 4) * 2];
                     y = (y >> 10) + 0x80;
-                    arr[0] = one;
+                    drawFlags[0] = one;
                 } else {
                     y = x;
                 }
 
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(arr[1], attr, x, y, -1, -1, 0x1000, arr[1]);
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(one, attr, x, y, -1, -1, 0x1000, arr[2]);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(drawFlags[1], sprite, x, y, -1, -1, 0x1000,
+                                                        drawFlags[1]);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(one, sprite, x, y, -1, -1, 0x1000,
+                                                        drawFlags[2]);
 
-                if (*(u16 *)((char *)attr + 6) == 0xffff)
+                if (*(u16 *)((char *)sprite + 6) == 0xffff)
                     break;
-                attr = (char *)attr + 8;
-                sb -= 0x2000;
+                sprite = (char *)sprite + 8;
+                spriteAngle -= 0x2000;
             } while (1);
 
             if (mAdvancing != 0) {
                 mSpinAngle += (data_0208ee44 << 10);
-                if (arr[0] == 0)
+                if (drawFlags[0] == 0)
                     mStillTimer = 0x78;
             }
         } else {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, attr, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
-            OAM::RenderSub((OamAttr *)attr, 0x80, 0x80);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, sprite, 0x80, 0x80, -1, -1, 0x1000,
+                                                        0x1000, 0, -1);
+            OAM::RenderSub((OamAttr *)sprite, 0x80, 0x80);
             mStillTimer -= data_0208ee44;
             mSpinAngle = 0;
         }
@@ -155,45 +146,41 @@ int dScMB_c::graphCallback_c::GraphCallback3()
 }
 
 // @symbol _ZN7dScMB_c15graphCallback_c14GraphCallback2Ev
-int dScMB_c::graphCallback_c::GraphCallback2()
-{
+int dScMB_c::graphCallback_c::GraphCallback2() {
     return 0;
 }
 
 // @symbol _ZN7dScMB_c15graphCallback_c14GraphCallback0Ev
-int dScMB_c::graphCallback_c::GraphCallback0()
-{
+int dScMB_c::graphCallback_c::GraphCallback0() {
     return 0;
 }
 
 // @symbol _ZN7dScMB_c13func_02034d34Ev
-int dScMB_c::func_02034d34()
-{
-    int r = ((ScMbFader *)((char *)this + 0x50))->m5();
-    if (r) return r;
-    return ((ScMbFader *)((char *)this + 0x50))->m2();
+// Its sole caller ignores the result; AdvanceFade itself returns void.
+void dScMB_c::func_02034d34() {
+    if (fader.IsAtStart())
+        return;
+    fader.AdvanceFade();
 }
 
 // @symbol _ZN7dScMB_c16CleanupResourcesEv
-s32 dScMB_c::CleanupResources()
-{
+s32 dScMB_c::CleanupResources() {
     data_0209d4a8 = 0;
     dScene_c::SetAndStopColorFader();
     return 1;
 }
 
 // @symbol _ZN7dScMB_c6RenderEv
-s32 dScMB_c::Render()
-{
+s32 dScMB_c::Render() {
     return 1;
 }
 
 // @symbol _ZN7dScMB_c8BehaviorEv
-s32 dScMB_c::Behavior()
-{
+s32 dScMB_c::Behavior() {
     switch (mStep) {
     case 0:
-        if (func_0203d8fc() == 0) break;
+        if (func_0203d8fc() == 0)
+            break;
         DecompressLZ16((int)data_0208a0e4[func_0200f0bc()], (void *)0x6400000);
         DecompressLZ16((int)data_0208a0e4[func_0200f0bc()], (void *)0x6600000);
         data_0209d45c = 0x10;
@@ -203,12 +190,12 @@ s32 dScMB_c::Behavior()
         mStep++;
         break;
 
-    case 1:
-        {
-            int r = func_0201a1bc();
-            *(int *)&data_020a0c64 = r;
-            if (r == 0) break;
-        }
+    case 1: {
+        int r = func_0201a1bc();
+        *(int *)&data_020a0c64 = r;
+        if (r == 0)
+            break;
+    }
         mStep++;
         /* fallthrough */
     case 2:
@@ -222,11 +209,13 @@ s32 dScMB_c::Behavior()
         mStep++;
         /* fallthrough */
     case 5:
-        if (func_0201a1bc() == 0) break;
+        if (func_0201a1bc() == 0)
+            break;
         mStep++;
         /* fallthrough */
     case 6:
-        if (func_0203d7b8() != 0) break;
+        if (func_0203d7b8() != 0)
+            break;
         func_0200f220();
         func_0200f13c();
         func_0203d930();
@@ -234,7 +223,8 @@ s32 dScMB_c::Behavior()
         mStep++;
         /* fallthrough */
     case 7:
-        if (func_020308a8() == 0) break;
+        if (func_020308a8() == 0)
+            break;
         dScene_c::StartSceneFade(6, 0, 0x7fff);
         func_02012790(0x11f);
         mStep++;
@@ -252,8 +242,7 @@ s32 dScMB_c::Behavior()
 }
 
 // @symbol func_02034fbc
-void func_02034fbc(void)
-{
+void func_02034fbc(void) {
     void *h;
 
     LoadArchive(0);
@@ -274,8 +263,7 @@ void func_02034fbc(void)
 }
 
 // @symbol _ZN7dScMB_c13InitResourcesEv
-s32 dScMB_c::InitResources()
-{
+s32 dScMB_c::InitResources() {
     volatile u16 fillMain;
     volatile u16 fillSub;
 
@@ -332,8 +320,7 @@ s32 dScMB_c::InitResources()
 }
 
 // @symbol dScMB_c_classInit
-extern "C" void *dScMB_c_classInit(void)
-{
+extern "C" void *dScMB_c_classInit(void) {
     char *p = (char *)_ZN7fBase_cnwEj(0x68);
     if (p) {
         _ZN7fBase_cC2Ev(p);

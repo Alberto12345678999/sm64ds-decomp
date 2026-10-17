@@ -150,7 +150,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        remains int. See issue #2492 for caller coverage and proof limits. */
     virtual void OnNewRecord();                          /* slot 20 */
     /* Slot 21 -- OnDealDone, a low-confidence name. Its one caller is
-       Dealer_StateDeal in unit020bfec0.cpp, the presenter model's
+       Dealer_StateShuffle in unit020bfec0.cpp, the presenter model's
        reaction animation, which calls it on the last repeat of that
        animation. The base is empty; BSC/Card branch on mHudScore, and the two Memory
        overrides forward a component of this scene. These bodies alone do
@@ -877,7 +877,6 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        functions, pushes the descendant's own down one index, and regresses its
        table to DIFFERS with rombuild still green -- only romdata_check sees
        it.  Reconcile in the same commit, and remember the rename has to reach
-       config/converted-baseline.json (the ratchet has no rename detection) and
        any prose path that names the file. */
 
     s32 mTallyShown;            /* 0x050 */

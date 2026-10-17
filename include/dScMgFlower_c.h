@@ -8,10 +8,10 @@
  * (dScMgFlower_c_classInit, at the end of src/minigames/d_s_mg_flower.cpp).
  *
  * FACTORY AND DESTRUCTOR AGREE MEMBER FOR MEMBER. The factory builds
- * mArray at 0x4f38 (0x16 elements of 0x20, element ctor
+ * mPetals at 0x4f38 (0x16 elements of 0x20, element ctor
  * Petal_ElemCtor) and then an object at 0x51f8
  * (FlowerFace_Construct); the destructor destroys the 0x51f8 object first
- * (FlowerFace_Destruct), then mArray (element dtor Petal_ElemDtor).
+ * (FlowerFace_Destruct), then mPetals (element dtor Petal_ElemDtor).
  * Nothing is left over either way.
  *
  * THE 0x51f8 OBJECT is opaque: nothing reads inside it, so its size is
@@ -107,14 +107,14 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
     /* Declared first and defined out of line, in src/minigames/d_s_mg_flower.cpp:
        see the file banner for the four rounds that settled the form. Its body's
        two explicit calls are the ROM's own order -- the 0x51f8 object, then
-       mArray -- the reverse of the factory's construction order. Everything
+       mPetals -- the reverse of the factory's construction order. Everything
        after them in the emitted body (the own-vtable store, mSysTracker's
        destruction and the chain to ~dScMgBase_c) is the compiler's own inlining
        of dScMgSingle3DBase_c's already-inline destructor. */
     virtual ~dScMgFlower_c();
 
     /* Defined inline at the end of src/minigames/d_s_mg_flower.cpp, where the
-       factory's `new` expands it: mArray through __cxa_vec_ctor, then the
+       factory's `new` expands it: mPetals through __cxa_vec_ctor, then the
        0x51f8 object. */
     dScMgFlower_c();
 
@@ -132,59 +132,65 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
        holds. The destructor above is declared first and out of line, so it is
        this class's KEY FUNCTION and the TU that DEFINES it -- and only that one
        -- emits _ZTV13dScMgFlower_c. See the banner. */
-    s32 InitResources();   /* slot  0 */
-    virtual void StartRound(int arg);               /* slot 18 */
-    s32 Behavior();        /* slot  6 */
-    s32 Render();          /* slot  9 */
+    s32 InitResources();              /* slot  0 */
+    virtual void StartRound(int arg); /* slot 18 */
+    s32 Behavior();                   /* slot  6 */
+    s32 Render();                     /* slot  9 */
 
     /* scene helpers */
-    void UpdatePetals();           /* per-frame petal update */
-    void DealPetals();           /* round setup / restart */
+    void UpdatePetals(); /* per-frame petal update */
+    void DealPetals();   /* round setup / restart */
 
-    u8  mArray[0x2c0];     /* 0x4f38 -- 0x16 * 0x20, elem dtor Petal_ElemDtor.
-                              One 0x20-byte petal record, as DealPetals
-                              (the round setup) and Behavior read it:
-                                +0x00 u8   active        +0x04 Vec2 pos (Fix12 x, y)
-                                +0x01 u8   unk1          +0x0c s32  unk0c
-                                +0x02 u8   unk2          +0x10 s32  unk10
-                                +0x03 u8   unk3          +0x14 s32  unk14
-                                +0x1c s16  angle         +0x18 s32  unk18
-                              Left as bytes on purpose: ~dScMgFlower_c() destroys
-                              the elements itself through __cxa_vec_cleanup, and a
-                              typed member with Vec2's destructor inside would
-                              make the compiler add a second, implicit pass. */
-    u8  pad_51f8[0xdc0];   /* 0x51f8 -- opaque object, see file banner */
-    s32 mCursorX;          /* 0x5fb8 -- Fix12 stylus position, from the touch
+    /* A plain record: lifecycle callbacks are still explicit in the scene
+       constructor/destructor. Using Vec2 here would add an implicit cleanup. */
+    struct Petal {
+        u8 active;       /* 0x00 */
+        u8 released;     /* 0x01, detached from the flower */
+        u8 held;         /* 0x02, follows the stylus */
+        u8 counted;      /* 0x03, pull already counted in the round */
+        s32 x;           /* 0x04, Fix12 screen position */
+        s32 y;           /* 0x08 */
+        s32 driftX;      /* 0x0c */
+        s32 fallSpeed;   /* 0x10 */
+        s32 touchStartX; /* 0x14, cursor position when picked up */
+        s32 touchStartY; /* 0x18 */
+        s16 angle;       /* 0x1c */
+        u8 pad_1e[2];
+    };
+    Petal mPetals[22];  /* 0x4f38, 0x20-byte records */
+    u8 pad_51f8[0xdc0]; /* 0x51f8 -- opaque object, see file banner */
+    s32 mCursorX;       /* 0x5fb8 -- Fix12 stylus position, from the touch
                               sample gTouchX/gTouchY << 12 */
-    s32 mCursorY;          /* 0x5fbc */
-    s32 mPrevCursorX;      /* 0x5fc0 -- last tick's mCursor; the drag delta */
-    s32 mPrevCursorY;      /* 0x5fc4 */
-    s32 mHeldPetal;        /* 0x5fc8 -- mArray index being dragged, -1 for none */
-    u8  mPetalToggle;      /* 0x5fcc -- flips on every petal pulled; picks the
+    s32 mCursorY;       /* 0x5fbc */
+    s32 mPrevCursorX;   /* 0x5fc0 -- last tick's mCursor; the drag delta */
+    s32 mPrevCursorY;   /* 0x5fc4 */
+    s32 mHeldPetal;     /* 0x5fc8 -- mPetals index being dragged, -1 for none */
+    u8 mPetalToggle;    /* 0x5fcc -- flips on every petal pulled; picks the
                               "loves me" or "loves me not" banner and sound */
-    u8  unk_5fcd;          /* 0x5fcd */
-    u8  pad_5fce[0x2];     /* 0x5fce */
-    s32 mHintTimer;        /* 0x5fd0 -- held at 0x3c while a petal is dragged,
+    u8 mPetalsSettled;  /* 0x5fcd, no attached, held or falling petals */
+    u8 pad_5fce[0x2];   /* 0x5fce */
+    s32 mHintTimer;     /* 0x5fd0 -- held at 0x3c while a petal is dragged,
                               counts down otherwise */
-    s32 mResultTimer;      /* 0x5fd4 -- 0x3c frames the banner stays up */
-    s32 mPetalsLeft;       /* 0x5fd8 -- petals still on the flower; one goes on
+    s32 mResultTimer;   /* 0x5fd4 -- 0x3c frames the banner stays up */
+    s32 mPetalsLeft;    /* 0x5fd8 -- petals still on the flower; one goes on
                               each pull, 0 ends the round */
-    s32 mWinStreak;        /* 0x5fdc -- consecutive "loves me" petals; at 3 the
-                              payout is 3 points instead of 1 */
-    s32 mLoseStreak;       /* 0x5fe0 -- the mirror count, pays nothing */
-    s32 mHoldTimer;        /* 0x5fe4 -- StartRound counts it up to
-                              0x15 and resets; above 0x14 means "held" */
-    s32 mState;            /* 0x5fe8 -- 0 playing, 1 over */
-    s32 mFaceSprite;       /* 0x5fec -- index into data_ov006_0213ab94, the
+    s32 mWinStreak;     /* 0x5fdc -- consecutive "loves me" rounds; at 3 the
+                              round payout is 3 points instead of 1 */
+    s32 mLoseStreak;    /* 0x5fe0 -- the mirror count, pays nothing */
+    s32 mHoldTimer;     /* 0x5fe4 -- incremented by StartRound;
+                              above 0x14 triggers the special round */
+    s32 mState;         /* 0x5fe8 -- 0 playing, 1 over */
+    s32 mFaceSprite;    /* 0x5fec -- index into sFlowerFaceSprites, the
                               flower's face */
-    s32 mScore;            /* 0x5ff0 -- clamped to 9999 */
-    u16 mBgScrollPhase;    /* 0x5ff4 -- += 0xc0 a frame; indexes the sine table
+    s32 mScore;         /* 0x5ff0 -- clamped to 9999 */
+    u16 mBgScrollPhase; /* 0x5ff4 -- += 0xc0 a frame; indexes the sine table
                               for both background layers */
-    u8  pad_5ff6[0x2];     /* 0x5ff6 -- rounds up to the 0x5ff8 boundary */
+    u8 pad_5ff6[0x2];   /* 0x5ff6 -- rounds up to the 0x5ff8 boundary */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char dScMgFlower_c_petal_size_must_be_0x20[sizeof(dScMgFlower_c::Petal) == 0x20 ? 1 : -1];
 typedef char dScMgFlower_c_size_must_be_0x5ff8[sizeof(dScMgFlower_c) == 0x5ff8 ? 1 : -1];
 #endif
 

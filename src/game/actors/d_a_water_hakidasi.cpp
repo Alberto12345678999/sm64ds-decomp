@@ -188,7 +188,8 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
                     vr->x = (u16)tx;
                 }
                 /* Registry slot 0xf4 constructs daWater_Ring_c. */
-                ring = static_cast<daWater_Ring_c *>(dActor_c::Spawn(0xf4, 2, *(Vector3 *)&mPosX, (Vector3_16 *)&rot, mAreaId, -1));
+                ring = static_cast<daWater_Ring_c *>(
+                    dActor_c::Spawn(0xf4, 2, mPos, (Vector3_16 *)&rot, mAreaId, -1));
                 if (ring != 0) {
                     mSpawnedIDs[mSpawnedHead] = ring->uniqueID;
                     headp = (int *)(int)M(&mSpawnedHead);
@@ -271,7 +272,7 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
         rewardPos.y = rewardPos.y - 0x64000;
         *timerp = *timerp + 1;
         if (mRewardTimer > 0x1e) {
-            dActor_c::Spawn(0xb2, unk_314 | 0x40, *(Vector3 *)&rewardPos, (Vector3_16 *)&mAngleX, mAreaId, -1);
+            dActor_c::Spawn(0xb2, unk_314 | 0x40, *(Vector3 *)&rewardPos, &mAngle, mAreaId, -1);
             mRingsPassed = 0xa;
         }
     }

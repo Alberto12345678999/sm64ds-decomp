@@ -27,58 +27,80 @@
  * pointer-to-member state tables in src/game/stages/d_ent_obj.cpp; the fields
  * after them are named from what those states read and write. */
 struct UnknownVsPlayer {
-    BlendModelAnim mModel;             /* 0x000 */
-    ModelAnim mAnimation;              /* 0x070 */
-    TextureSequence mTextureSequence;  /* 0x0d4 */
-    dExtShadowModel_c mShadow;               /* 0x0e8 */
-    s32 mMoveState;                    /* 0x110 */
-    s32 mAnimState;                    /* 0x114 */
-    Vector3 mPosition;                 /* 0x118 */
-    Vector3 mTargetPos;                /* 0x124 - walk target */
-    Vector3 mExitPos;                  /* 0x130 - jump-off target */
-    s32 mSpeed;                        /* 0x13c */
-    s32 mMaxSpeed;                     /* 0x140 */
-    s32 mVertSpeed;                    /* 0x144 */
-    s32 mMaterialColor;                /* 0x148 - written to +0x20 of every material each
+    enum MovementState {
+        MOVE_IDLE = 0,
+        MOVE_TO_SLOT,
+        MOVE_WAIT_FOR_EXIT,
+        MOVE_TURN_TO_EXIT,
+        MOVE_AT_EXIT,
+        MOVE_RUN_OFF_STAGE,
+        MOVE_FINISHED,
+        MOVE_CHOOSE_POSE,
+        MOVE_WAIT_FOR_POSE_SOUND,
+        MOVE_POSE_PARTICLES
+    };
+
+    enum AnimationState {
+        ANIM_NONE = 0,
+        ANIM_WALK_SOUNDS,
+        ANIM_WAIT_FOR_NEXT,
+        ANIM_WAIT_FOR_IDLE,
+        ANIM_SLOW_GAIT,
+        ANIM_FAST_GAIT
+    };
+
+    BlendModelAnim mModel;            /* 0x000 */
+    ModelAnim mAnimation;             /* 0x070 */
+    TextureSequence mTextureSequence; /* 0x0d4 */
+    dExtShadowModel_c mShadow;        /* 0x0e8 */
+    s32 mMoveState;                   /* 0x110 */
+    s32 mAnimState;                   /* 0x114 */
+    Vector3 mPosition;                /* 0x118 */
+    Vector3 mTargetPos;               /* 0x124 - walk target */
+    Vector3 mExitPos;                 /* 0x130 - jump-off target */
+    s32 mSpeed;                       /* 0x13c */
+    s32 mMaxSpeed;                    /* 0x140 */
+    s32 mVertSpeed;                   /* 0x144 */
+    s32 mMaterialColor;               /* 0x148 - written to +0x20 of every material each
                                           frame; materials[0]'s value + 2 * mPlayerNo */
-    u32 mParticleHandle;               /* 0x14c */
-    s16 mAngleY;                       /* 0x150 */
-    u8 mPlayerNo;                      /* 0x152 - slot in dEntObj_c::mPlayers */
-    u8 mInAir;                         /* 0x153 - also a once-flag in movement state 8 */
-    u8 mFellOff;                       /* 0x154 */
-    u8 unk_155;                        /* 0x155 - set the frame it falls off */
-    u8 mWaitTimer;                     /* 0x156 */
+    u32 mParticleHandle;              /* 0x14c */
+    s16 mAngleY;                      /* 0x150 */
+    u8 mPlayerNo;                     /* 0x152 - slot in dEntObj_c::mPlayers */
+    u8 mInAir;                        /* 0x153 - also a once-flag in movement state 8 */
+    u8 mFellOff;                      /* 0x154 */
+    u8 mFellOffThisFrame;             /* 0x155 - event when crossing the exit depth */
+    u8 mWaitTimer;                    /* 0x156 */
     u8 pad_157;
 
     UnknownVsPlayer();
     ~UnknownVsPlayer();
 
     /* The mMoveState handlers (data_ov075_0211d56c's indices). */
-    void func_ov075_021147d4();        /* 1 */
-    void func_ov075_0211478c();        /* 2 */
-    void func_ov075_0211473c();        /* 3 */
-    void func_ov075_02114560();        /* 5 */
-    void func_ov075_021143e4();        /* 7 */
-    void func_ov075_02114390();        /* 8 */
-    void func_ov075_02114300();        /* 9 */
+    void func_ov075_021147d4(); /* 1 */
+    void func_ov075_0211478c(); /* 2 */
+    void func_ov075_0211473c(); /* 3 */
+    void func_ov075_02114560(); /* 5 */
+    void func_ov075_021143e4(); /* 7 */
+    void func_ov075_02114390(); /* 8 */
+    void func_ov075_02114300(); /* 9 */
     /* The mAnimState handlers (data_ov075_0211d53c's indices). */
-    int func_ov075_0211427c();         /* 1 */
-    int func_ov075_02114218();         /* 2 */
-    int func_ov075_021141b8();         /* 3 */
-    void func_ov075_021140e4();        /* 4 */
-    void func_ov075_02114010();        /* 5 */
+    int func_ov075_0211427c();  /* 1 */
+    int func_ov075_02114218();  /* 2 */
+    int func_ov075_021141b8();  /* 3 */
+    void func_ov075_021140e4(); /* 4 */
+    void func_ov075_02114010(); /* 5 */
     /* The empty handler both tables' unused indices point at. */
     void func_ov075_02114890();
     void func_ov075_021142fc();
 
     /* Send the figure toward its exit slot at x = exitX. */
     void func_ov075_02114904(int exitX);
-    /* The selection one-shot on this figure; returns 1 when armed. */
+    /* The selection one-shot on this figure; returns animation state 3. */
     int func_ov075_02114988();
     /* Walk the figure toward x = targetX. */
     void func_ov075_021149d0(int targetX);
-    int func_ov075_02114a58();         /* movement state == 0 (idle) */
-    int func_ov075_02114a6c();         /* go idle in the standing animation */
+    int func_ov075_02114a58(); /* movement state == 0 (idle) */
+    int func_ov075_02114a6c(); /* go idle in the standing animation */
     /* dCamera_c follow for the focused figure; nonzero when the view needs
        rebuilding. */
     int func_ov075_02114ac4(Vector3 *at, Vector3 *pos);
@@ -95,28 +117,29 @@ struct UnknownVsPlayer {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char UnknownVsPlayer_size_must_be_0x158[
-    sizeof(UnknownVsPlayer) == 0x158 ? 1 : -1];
+typedef char UnknownVsPlayer_size_must_be_0x158[sizeof(UnknownVsPlayer) == 0x158 ? 1 : -1];
 #endif
 
 struct dEntObj_c : dBase_c {
-    Particle::SysTracker mParticles;   /* 0x050 */
-    Model mModel;                      /* 0x86c */
-    ModelAnim mModelAnim;              /* 0x8bc */
-    UnknownVsPlayer mPlayers[4];       /* 0x920 */
-    u8 unk_e80;                        /* 0xe80 */
+    enum SceneState { STATE_IDLE = 0, STATE_WAIT_FOR_EXIT, STATE_RUN_OFF_STAGE };
+
+    Particle::SysTracker mParticles; /* 0x050 */
+    Model mModel;                    /* 0x86c */
+    ModelAnim mModelAnim;            /* 0x8bc */
+    UnknownVsPlayer mPlayers[4];     /* 0x920 */
+    u8 unk_e80;                      /* 0xe80 */
     u8 pad_e81[0xa7];
-    s32 mCamPosX;                      /* 0xf28 */
-    s32 mCamPosY;                      /* 0xf2c */
-    s32 mCamPosZ;                      /* 0xf30 */
-    s32 mCamTargetX;                   /* 0xf34 */
-    s32 mCamTargetY;                   /* 0xf38 */
-    s32 mCamTargetZ;                   /* 0xf3c */
-    u8 mAnimActive;                    /* 0xf40 */
-    u8 mState;                         /* 0xf41 */
-    u8 mFocusedPlayer;                 /* 0xf42 */
-    u8 mPlayerCount;                   /* 0xf43 */
-    u8 mSuspended;                     /* 0xf44 */
+    s32 mCamPosX;      /* 0xf28 */
+    s32 mCamPosY;      /* 0xf2c */
+    s32 mCamPosZ;      /* 0xf30 */
+    s32 mCamTargetX;   /* 0xf34 */
+    s32 mCamTargetY;   /* 0xf38 */
+    s32 mCamTargetZ;   /* 0xf3c */
+    u8 mAnimActive;    /* 0xf40 */
+    u8 mState;         /* 0xf41 */
+    u8 mFocusedPlayer; /* 0xf42 */
+    u8 mPlayerCount;   /* 0xf43 */
+    u8 mSuspended;     /* 0xf44 */
 
     virtual ~dEntObj_c();
     virtual int InitResources();
@@ -140,7 +163,7 @@ struct dEntObj_c : dBase_c {
     int func_ov075_0211524c(int playerNo);
     /* The slot x for figure playerNo under the current player count. */
     int func_ov075_02115290(int playerNo);
-    /* Copy the camera target/position fields into the shared block. */
+    /* Rebuild the projection and view from the camera eye and target. */
     void func_ov075_021152d4();
 };
 

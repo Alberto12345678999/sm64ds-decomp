@@ -26,6 +26,16 @@ def intact_proof(sections):
 
 
 class IntactPromotion(unittest.TestCase):
+    def test_delinks_path_puts_tcm_modules_beside_arm9(self):
+        config = pathlib.Path("cfg")
+        with mock.patch.object(TP, "CONFIG", config):
+            self.assertEqual(TP.delinks_path("arm9"), config / "arm9/delinks.txt")
+            self.assertEqual(TP.delinks_path("main"), config / "arm9/delinks.txt")
+            self.assertEqual(TP.delinks_path("itcm"), config / "arm9/itcm/delinks.txt")
+            self.assertEqual(TP.delinks_path("dtcm"), config / "arm9/dtcm/delinks.txt")
+            self.assertEqual(TP.delinks_path("ov047"),
+                             config / "arm9/overlays/ov047/delinks.txt")
+
     def test_batch_preflight_refuses_shared_legacy_before_mutation(self):
         with tempfile.TemporaryDirectory() as td:
             root = pathlib.Path(td)
@@ -71,49 +81,6 @@ class IntactPromotion(unittest.TestCase):
             with mock.patch.object(TP, "REPO", root):
                 with self.assertRaisesRegex(TP.PromoteError, "overlaps"):
                     TP.batch_preflight(plans)
-
-    def test_converted_baseline_moves_only_banked_members_to_promoted_tu(self):
-        with tempfile.TemporaryDirectory() as td:
-            root = pathlib.Path(td)
-            config = root / "config"
-            config.mkdir()
-            baseline = config / "converted-baseline.json"
-            baseline.write_text(
-                '{"_note":"old","criteria":[],"count":2,"converted":['
-                '"src/First.cpp","src/Unrelated.cpp"]}\n', encoding="utf-8")
-            original = baseline.read_text(encoding="utf-8")
-            plans = [{
-                "dest": "src/actors/TU.cpp",
-                "functions": [
-                    {"symbol": "First", "legacy_source": "src/First.cpp"},
-                    {"symbol": "Second", "legacy_source": "src/Second.cpp"},
-                ],
-            }]
-            with mock.patch.object(TP, "CONFIG", config):
-                prepared = TP.converted_baseline_update(plans)
-                self.assertEqual(baseline.read_text(encoding="utf-8"), original)
-                moved = TP.rewrite_converted_baseline(plans, prepared)
-
-            data = json.loads(baseline.read_text(encoding="utf-8"))
-            self.assertEqual(moved, 1)
-            self.assertEqual(data["count"], 2)
-            self.assertEqual(data["converted"], [
-                "src/actors/TU.cpp#First", "src/Unrelated.cpp"])
-            self.assertEqual(data["_note"], TP.TR.NOTE)
-
-    def test_single_member_converted_identity_stays_path_based(self):
-        with tempfile.TemporaryDirectory() as td:
-            config = pathlib.Path(td) / "config"
-            config.mkdir()
-            baseline = config / "converted-baseline.json"
-            baseline.write_text(
-                '{"converted":["src/Only.cpp"],"count":1}\n', encoding="utf-8")
-            plans = [{"dest": "src/actors/Only.cpp", "functions": [
-                {"symbol": "Only", "legacy_source": "src/Only.cpp"}]}]
-            with mock.patch.object(TP, "CONFIG", config):
-                TP.rewrite_converted_baseline(plans)
-            data = json.loads(baseline.read_text(encoding="utf-8"))
-            self.assertEqual(data["converted"], ["src/actors/Only.cpp"])
 
     def test_plan_and_rewrite_keep_nontext_claims_for_intact_object(self):
         with tempfile.TemporaryDirectory() as td:

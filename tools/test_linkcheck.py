@@ -442,7 +442,11 @@ class DraftClassificationIntegration(unittest.TestCase):
     def test_check_file_carries_sizes_and_keeps_sibling_missing_symbol_hard(self):
         self.compiled.return_value = _draft_object()
         idx = {name: [(self.ADDR, 8, "arm9")] for name in ("wanted", "missing")}
-        with mock.patch.object(self.PL.SP, "symbols_for", return_value=list(idx)):
+        # This fixture exercises the legacy draft path, not ROM-backed production
+        # admission. Keep its fake source independent of private checkout inputs.
+        with mock.patch.object(self.PL.SP, "symbols_for", return_value=list(idx)), \
+                mock.patch.object(self.PL, "_production_context",
+                                  return_value={"intact": {}, "compiler_only": {}}):
             rep = self.PL.check_file("src/draft.cpp", idx, {})
         self.assertEqual([r["verdict"] for r in rep["results"]], ["NO-REPRO", "NO-SYM"])
         self.assertEqual(rep["results"][0]["emitted_sizes"], [4])
@@ -570,6 +574,119 @@ class WinningObjectSourceName(unittest.TestCase):
             path.write_text("//cpp\nvoid wanted() {}\n", encoding="utf-8")
             seen = self.compiled_names([], candidate=path)
         self.assertEqual([name for name, _ in seen], ["workbench.cpp"])
+
+
+class OverlayLinkerConstants(unittest.TestCase):
+    def constants(self, text):
+        import tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            config = pathlib.Path(directory) / "config.yaml"
+            config.write_text(text, encoding="utf-8")
+            return RA._overlay_id_constants(config)
+
+    def test_only_configured_ids_have_exact_linker_values(self):
+        index = self.constants("overlays:\n  - id: 60\n    name: arbitrary\n  - id: 100\n  - id: 102\n")
+        self.assertEqual(RA.resolve_candidate("OVERLAY_60_ID", index), ("arm9", 60))
+        self.assertEqual(RA.resolve_candidate("OVERLAY_100_ID", index), ("arm9", 100))
+        self.assertEqual(RA.resolve_candidate("OVERLAY_102_ID", index), ("arm9", 102))
+        for name in ("OVERLAY_98_ID", "OVERLAY_060_ID", "OVERLAY_60_ID_extra", "overlay_60"):
+            self.assertIsNone(RA.resolve_candidate(name, index))
+
+    def test_absent_config_does_not_invent_constants(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as directory:
+            self.assertEqual(RA._overlay_id_constants(pathlib.Path(directory) / "absent.yaml"), {})
+
+    def test_invalid_and_duplicate_ids_are_refused(self):
+        for value in ("true", "-1", "4294967296", "'60'", "null"):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.constants("overlays:\n  - id: " + value + "\n")
+        with self.assertRaisesRegex(ValueError, "duplicate"):
+            self.constants("overlays:\n  - id: 60\n  - id: 60\n")
+
+    def test_generated_block_comments_boundaries_and_empty_list(self):
+        text = ("main_module:\n  id: 7\noverlays: # configured linker values\n"
+                "  # first row\n\n  - id: 0 # zero is valid\n    name: ov000\n"
+                "    object: ../../build/arm9_ov000.bin # generated path\n"
+                "  - id: 4294967295\nother:\n  id: 98\n")
+        self.assertEqual(self.constants(text), {
+            "OVERLAY_0_ID": ("arm9", 0), "OVERLAY_4294967295_ID": ("arm9", 4294967295)})
+        self.assertEqual(self.constants("overlays: [] # no overlays\n"), {})
+        self.assertEqual(self.constants("main_module:\n  id: 60\n"), {})
+
+    def test_unsupported_or_malformed_yaml_is_not_partially_admitted(self):
+        bad = [
+            "overlays:\n", "overlays: null\n", "overlays: {}\n",
+            "overlays: [{id: 60}]\n", "overlays: &rows\n  - id: 60\n",
+            "overlays:\n- id: 60\n", "overlays:\n  - name: missing_id\n",
+            "overlays:\n  - id: 060\n", "overlays:\n  - id: 0x3c\n",
+            "overlays:\n  - id: 60\n    id: 98\n",
+            "overlays:\n  - id: 60\n    name: first\n    name: second\n",
+            "overlays:\n  - id: 60\n    extra: {id: 98}\n",
+            "overlays:\n  - id: 60\n      id: 98\n",
+            "overlays:\n  - id: 60\n  - broken\n",
+            "overlays:\n  - id: 60\noverlays:\n  - id: 98\n",
+            "overlays: []\n  - id: 60\n", "overlays:\n\t- id: 60\n",
+        ]
+        for text in bad:
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                self.constants(text)
+
+    def test_multiline_values_cannot_invent_an_overlays_section(self):
+        for prefix in ('foo: "start', 'main_module:\n  name: "start',
+                       'foo: &anchor', 'main_module:\n  name: >'):
+            text = prefix + '\noverlays:\n  - id: 60\nbar: finish"\n'
+            with self.subTest(prefix=prefix), self.assertRaises(ValueError):
+                self.constants(text)
+
+    def test_worker_name_index_without_pyyaml(self):
+        # A fresh process prevents an already imported yaml from hiding the worker
+        # failure. Keep the existing pyelftools dependency available, as on workers.
+        import subprocess
+        code = """
+import builtins, pathlib, sys
+real_import = builtins.__import__
+def no_yaml(name, *args, **kwargs):
+    if name == 'yaml' or name.startswith('yaml.'):
+        raise ModuleNotFoundError("No module named 'yaml'")
+    return real_import(name, *args, **kwargs)
+builtins.__import__ = no_yaml
+sys.path.insert(0, str(pathlib.Path('tools').resolve()))
+import reloc_audit as audit
+constants = audit._overlay_id_constants(pathlib.Path('config/arm9/config.yaml'))
+assert constants
+index = audit.build_name_index()
+assert all(index[name] == value for name, value in constants.items())
+assert audit.resolve_candidate('OVERLAY_4294967295_ID', index) is None
+print('configured overlay constants:', len(constants))
+"""
+        result = subprocess.run([sys.executable, "-c", code], cwd=RA.REPO,
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_name_index_includes_configured_values_and_rejects_conflicts(self):
+        with mock.patch.object(RA.R, "iter_symbol_files", return_value=[]), \
+                mock.patch.object(RA, "_overlay_id_constants", return_value={"OVERLAY_60_ID": ("arm9", 60)}):
+            self.assertEqual(RA.build_name_index(), {"OVERLAY_60_ID": ("arm9", 60)})
+        with mock.patch.object(RA.R, "iter_symbol_files", return_value=[("arm9", "unused")]), \
+                mock.patch.object(RA.R, "iter_syms_pairs", return_value=[("OVERLAY_60_ID", ("arm9", 61))]), \
+                mock.patch.object(RA, "_overlay_id_constants", return_value={"OVERLAY_60_ID": ("arm9", 60)}):
+            with self.assertRaisesRegex(ValueError, "conflicts"):
+                RA.build_name_index()
+
+    def test_a_wrong_overlay_constant_still_reports_wrong(self):
+        index = self.constants("overlays:\n  - id: 60\n  - id: 98\n")
+        for name, expected in (("OVERLAY_60_ID", "VERIFIED"), ("OVERLAY_98_ID", "WRONG")):
+            relocation = {"off": 0, "type": LC.R_ARM_ABS32, "sym": name,
+                          "addr": RA.resolve_candidate(name, index)[1], "add": 0}
+            with mock.patch.object(LC.M, "extract_func", return_value=(bytes(4), set())), \
+                    mock.patch.object(LC, "func_relocs_typed", return_value=[relocation]), \
+                    mock.patch.object(RV, "rom_bytes", return_value=struct.pack("<I", 60)), \
+                    mock.patch.object(LC, "is_benign", return_value=False), \
+                    mock.patch.object(LC, "is_interwork", return_value=False), \
+                    mock.patch.object(LC, "is_thumb_pointer", return_value=False):
+                result = LC.linkcheck("owned", 0x02000000, 4, "arm9", index, obj=b"OBJ", sym="owned")
+            self.assertEqual(result["verdict"], expected)
 
 
 if __name__ == "__main__":

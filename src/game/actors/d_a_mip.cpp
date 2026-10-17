@@ -17,14 +17,13 @@
  *   the player position through V3Blk for the same reason.
  *   TestWaterBelow's ground probe stays a stack buffer; clsnY is
  *   detect[12].
- * - UpdateCarriedMatrix reads the carrier at +0xc8, inside
- *   dActor_c::pad_0c5. Render stores the colour at BMD_Material+0x20,
+ * - Render stores the colour at BMD_Material+0x20,
  *   which is pad, and walks materials as an int**. Naming that walk
  *   off modelFile shrinks Render.
  * - UpdateMirrorShadow keeps its Obj overlay. Spelling the position
  *   and a Mtx43* at pad_3e8 moves 34 words.
- * - StateSaveTalkMain and StateCaughtMain write player+0x6ce as an
- *   unsigned short. The mStateFlags member form changes the size.
+ * - StateSaveTalkMain and StateCaughtMain write the player's mStateFlags
+ *   through a u16 pointer. The direct member form changes the size.
  *   StateIdleMain updates mTargetAngY through a pointer, and
  *   Behavior increments mEatenTimer through (long long)(int)&.
  * - unk_426 is the header's name: 2 the frame Yoshi eats the rabbit,
@@ -347,7 +346,7 @@ int daMip_c::StateSaveTalkMain()
             } else if (gb == 2) {
                 func_02012790(0x98);
                 {
-                    unsigned short *hp = (unsigned short *)((char *)player + 0x6ce);
+                    unsigned short *hp = &player->mStateFlags;
                     *hp &= ~0x800;
                 }
                 Message::EndTalk();
@@ -357,7 +356,7 @@ int daMip_c::StateSaveTalkMain()
         break;
     case 2:
         if (data_0209d660 == 0) {
-            unsigned short *hp = (unsigned short *)((char *)player + 0x6ce);
+            unsigned short *hp = &player->mStateFlags;
             *hp &= ~0x800;
             Message::EndTalk();
             SetState(&data_ov085_021306bc);
@@ -560,7 +559,7 @@ int daMip_c::StateCaughtMain()
         }
 
         if (unk_426 != 0) {
-            s16 ang = Vec3_HorzAngle((Vector3 *)&mPosX, &pv);
+            s16 ang = Vec3_HorzAngle(&mPos, &pv);
             ApproachLinear(mPrevAngleY, ang, 0x800);
             if (AngleDiff(mPrevAngleY, ang) > 0x200)
                 return 1;
@@ -644,7 +643,7 @@ int daMip_c::StateCaughtMain()
                 if (pl->ShowMessage(*this, (u32)msg, (::Vector3 *)&pos, zero, zero) == 1) {
                     mActionStep = 1;
                     if (soundId != 0)
-                        func_02012694(soundId, (const ::Vector3 *)&mCamSpacePosX);
+                        func_02012694(soundId, &mCamSpacePos);
                 }
             }
             return 1;
@@ -675,7 +674,8 @@ int daMip_c::StateCaughtMain()
         {
             s8 cc = mAreaId;
             int m1 = -1;
-            dActor_c *spawned = dActor_c::Spawn(0xe5, mRabbitId, *(::Vector3 *)&pos7, (Vector3_16 *)&mAngleX, cc, m1);
+            dActor_c *spawned =
+                dActor_c::Spawn(0xe5, mRabbitId, *(::Vector3 *)&pos7, &mAngle, cc, m1);
             if (spawned != 0)
                 ((daObj_Mip_Key_c *)spawned)->unk_190 = uniqueID;
         }
@@ -708,14 +708,14 @@ int daMip_c::StateCaughtMain()
             func_02012790(0xa);
             mTalkState = 0;
             {
-                u16 *pf = (u16 *)((char *)pl + 0x6ce);
+                u16 *pf = &pl->mStateFlags;
                 *pf = (u16)(*pf | 0x800);
             }
         }
     } else {
         if (mTalkState == 2) {
             {
-                u16 *pf = (u16 *)((char *)pl + 0x6ce);
+                u16 *pf = &pl->mStateFlags;
                 *pf = (u16)(*pf & ~0x800);
             }
             mTalkState = 0;
@@ -732,7 +732,7 @@ int daMip_c::StateCaughtMain()
         SetState(&data_ov085_021306bc);
     } else {
         {
-            u16 *pf = (u16 *)((char *)pl + 0x6ce);
+            u16 *pf = &pl->mStateFlags;
             *pf = (u16)(*pf | 0x800);
         }
         mSaveTalkPlayer = pl;
@@ -776,12 +776,15 @@ int daMip_c::StateRestInit()
 // @symbol _ZN7daMip_c13StateFleeMainEv
 /* Runs the path away from the player. Dust or splash at a node, steps
    mPathDir, and falls back to Rest past 0x4b0000. */
-int daMip_c::StateFleeMain()
-{
+int daMip_c::StateFleeMain() {
     /* POD triples. V3Blk's array member is what makes the player-position
        copy a block move; a three-scalar struct scalarises. */
-    struct Vector3 { s32 x, y, z; };
-    struct V3Blk   { s32 w[3]; };
+    struct Vector3 {
+        s32 x, y, z;
+    };
+    struct V3Blk {
+        s32 w[3];
+    };
     extern MipStatePair data_ov085_0213069c;
 
     Player *pl;
@@ -798,115 +801,97 @@ int daMip_c::StateFleeMain()
     int idx;
     int ysave;
     pl = ClosestPlayer();
-    if (pl != 0)
-    {
-      v = *((struct V3Blk *)&pl->mPosX);
-      if (Vec3_Dist((struct Vector3 *)&mPosX, &v) > 0x4b0000)
-      {
-        SetState(&data_ov085_0213069c);
-        return 1;
-      }
+    if (pl != 0) {
+        v = *((struct V3Blk *)&pl->mPosX);
+        if (Vec3_Dist(&mPos, &v) > 0x4b0000) {
+            SetState(&data_ov085_0213069c);
+            return 1;
+        }
     }
     {
-      s32 t = mModelAnim.currFrame >> 12;
-      if (((u16) t) == 0)
-      {
-        if (TestWaterBelow() == 1)
-        {
-          func_02012694(0x124, (const ::Vector3 *)&mCamSpacePosX);
-          func_02022a4c(mPosX, mFloorY + 0x3000, mPosZ);
+        s32 t = mModelAnim.currFrame >> 12;
+        if (((u16)t) == 0) {
+            if (TestWaterBelow() == 1) {
+                func_02012694(0x124, &mCamSpacePos);
+                func_02022a4c(mPosX, mFloorY + 0x3000, mPosZ);
+            } else {
+                func_02012694(0x123, &mCamSpacePos);
+            }
         }
-        else
-        {
-          func_02012694(0x123, (const ::Vector3 *)&mCamSpacePosX);
-        }
-      }
     }
 
-    if (TestWaterBelow() == 1)
-    {
-      s32 pair[2];
-      pair[0] = mPosX;
-      pair[1] = mFloorY;
-      {
-        s32 z = mPosZ;
-        s32 y = pair[1] + 0x3000;
-        s32 x = pair[0];
-        *((volatile s32 *)(&pos.x)) = x;
-        *((volatile s32 *)(&pos.y)) = y;
-        *((volatile s32 *)(&pos.z)) = z;
-        mDustParticle = func_02022cbc(mDustParticle, 0xe8, *((volatile s32 *)(&pos.x)), *(&pos.y), z, 0);
-      }
+    if (TestWaterBelow() == 1) {
+        s32 pair[2];
+        pair[0] = mPosX;
+        pair[1] = mFloorY;
+        {
+            s32 z = mPosZ;
+            s32 y = pair[1] + 0x3000;
+            s32 x = pair[0];
+            *((volatile s32 *)(&pos.x)) = x;
+            *((volatile s32 *)(&pos.y)) = y;
+            *((volatile s32 *)(&pos.z)) = z;
+            mDustParticle =
+                func_02022cbc(mDustParticle, 0xe8, *((volatile s32 *)(&pos.x)), *(&pos.y), z, 0);
+        }
     }
 
     _ZN7PathPtrC1Ev(pathptr);
     ((PathPtr *)pathptr)->FromID(mPathId);
     ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&node, mPathNodeIndex);
-    ang = Vec3_HorzAngle((struct Vector3 *)&mPosX, &node);
+    ang = Vec3_HorzAngle(&mPos, &node);
     ApproachAngle(&mPrevAngleY, ang, 1, 0x1000, 0x1000);
     idx = mPathNodeIndex + mPathDir;
-    if (idx < 0)
-    {
-      idx = mNumPathNodes - 1;
+    if (idx < 0) {
+        idx = mNumPathNodes - 1;
     }
-    if (idx >= mNumPathNodes)
-    {
-      idx = 0;
+    if (idx >= mNumPathNodes) {
+        idx = 0;
     }
     ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&node2, (u32)idx);
     lim = 0x26000;
-    if (mRabbitId == 7)
-    {
-      lim = lim >> 1;
+    if (mRabbitId == 7) {
+        lim = lim >> 1;
     }
     {
-      s32 y = mPosY;
-      node.y = y;
-      Vec3_Sub(&delta, (struct Vector3 *)&mPosX, &node);
-      len = LenVec3(&delta);
+        s32 y = mPosY;
+        node.y = y;
+        Vec3_Sub(&delta, &mPos, &node);
+        len = LenVec3(&delta);
     }
-    if ((len == 0) || (len <= lim))
-    {
-      mPosX = node.x;
-      mPosY = node.y;
-      mPosZ = node.z;
-      {
-        s32 *p = &mPathNodeIndex;
-        *p = (*p) + mPathDir;
-      }
-      if (mPathNodeIndex >= mNumPathNodes)
-      {
-        mPathNodeIndex = 0;
-      }
-      if (mPathNodeIndex < 0)
-      {
-        mPathNodeIndex = mNumPathNodes - 1;
-      }
-    }
-    else
-    {
-      ang = Vec3_HorzAngle((struct Vector3 *)&mPosX, &node);
-      if (AngleDiff(ang, mPrevAngleY) < 0x2000)
-      {
-        ysave = mPosY;
+    if ((len == 0) || (len <= lim)) {
+        mPosX = node.x;
+        mPosY = node.y;
+        mPosZ = node.z;
         {
-          int s = _ZN4cstd4fdivEii(lim, len);
-          Vec3_MulScalar(&scaled, &delta, s);
-          SubVec3((struct Vector3 *)&mPosX, &scaled, (struct Vector3 *)&mPosX);
+            s32 *p = &mPathNodeIndex;
+            *p = (*p) + mPathDir;
         }
-        if (mVertSpeed > 0)
-        {
-          mPosY = ysave;
+        if (mPathNodeIndex >= mNumPathNodes) {
+            mPathNodeIndex = 0;
         }
-        if (mActionStep == 0)
-        {
-          if (mWithMeshClsn.IsOnWall() != 0)
-          {
-            mVertSpeed = 0xa000;
-            mActionStep = 1;
-          }
+        if (mPathNodeIndex < 0) {
+            mPathNodeIndex = mNumPathNodes - 1;
         }
-      }
+    } else {
+        ang = Vec3_HorzAngle(&mPos, &node);
+        if (AngleDiff(ang, mPrevAngleY) < 0x2000) {
+            ysave = mPosY;
+            {
+                int s = _ZN4cstd4fdivEii(lim, len);
+                Vec3_MulScalar(&scaled, &delta, s);
+                SubVec3(&mPos, &scaled, &mPos);
+            }
+            if (mVertSpeed > 0) {
+                mPosY = ysave;
+            }
+            if (mActionStep == 0) {
+                if (mWithMeshClsn.IsOnWall() != 0) {
+                    mVertSpeed = 0xa000;
+                    mActionStep = 1;
+                }
+            }
+        }
     }
     return 1;
 }
@@ -1013,14 +998,14 @@ int daMip_c::StateIdleMain()
     }
 
     Vector3 pp;
-    Vector3* ppp = (Vector3*)&player->mPosX;
+    const ::Vector3 *ppp = &player->mPos;
     pp.x = ppp->x;
     pp.y = ppp->y;
     pp.z = ppp->z;
     int lim = 0x3e8000;
     if (mRabbitId == 7) lim = 0x2ee000;
 
-    if (Vec3_HorzDist((Vector3*)&mPosX, &pp) < lim) {
+    if (Vec3_HorzDist(&mPos, &pp) < lim) {
         int t = mRabbitId;
         int cond = 0;
         if (t == 7 || t == 1 ||
@@ -1037,8 +1022,8 @@ int daMip_c::StateIdleMain()
 
     u32 r = (u32)RandomIntInternal(data_0209e650) >> 8;
     if (mRabbitId == 1) {
-        if (Vec3_HorzDist((Vector3*)&mPosX, &pp) < 0x4b0000) {
-            mTargetAngY = Vec3_HorzAngle((Vector3*)&mPosX, &pp) + 0x8000;
+        if (Vec3_HorzDist(&mPos, &pp) < 0x4b0000) {
+            mTargetAngY = Vec3_HorzAngle(&mPos, &pp) + 0x8000;
             mStateTimer = 0x1e;
         }
     }
@@ -1064,7 +1049,7 @@ int daMip_c::StateIdleMain()
     }
 
     if (mActionStep == 0 && *(u16 *)&mStateTimer == 0) {
-        mTargetAngY = Vec3_HorzAngle((Vector3*)&mPosX, (Vector3*)&mIdlePosX);
+        mTargetAngY = Vec3_HorzAngle(&mPos, (Vector3 *)&mIdlePosX);
         {
             s16 *ang = &mTargetAngY;
             *ang = *ang + (0x1800 - ((r & 3) << 12));
@@ -1112,7 +1097,7 @@ void daMip_c::UpdateMatrixAndShadow()
 
     char tmp[0x30];
     struct Vector3 t;
-    Vec3_Asr(&t, (struct Vector3*)&mPosX, 3);
+    Vec3_Asr(&t, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     *(struct Mtx43 *)&mModelAnim.mat4x3 = data_020a0e68;
@@ -1128,8 +1113,7 @@ void daMip_c::UpdateMatrixAndShadow()
 
 // @symbol _ZN7daMip_c19UpdateCarriedMatrixEv
 /* While carried, the matrix comes from UpdateCarry plus one of four hold
-   offsets at data_ov085_021306ec. Sliding and param1 == 2 pick the slot.
-   The carrier's +0xc8 word is unnamed on Player. */
+   offsets at data_ov085_021306ec. Sliding and param1 == 2 pick the slot. */
 void daMip_c::UpdateCarriedMatrix()
 {
     struct Mtx43 { s32 m[12]; };
@@ -1139,7 +1123,8 @@ void daMip_c::UpdateCarriedMatrix()
     int idx;
     void* res;
     if (!mTalkingPlayer) return;
-    if (!*(int *)((char *)mTalkingPlayer + 0xc8)) return;
+    if (!mTalkingPlayer->mCarryMatrix)
+        return;
     idx = 0;
     if (mTalkingPlayer->IsFrontSliding() || mTalkingPlayer->LostGrabbedObject()) {
         idx = 1;
@@ -1265,7 +1250,7 @@ int daMip_c::Render()
         RenderMirrorImage();
     }
 
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -1286,7 +1271,7 @@ void daMip_c::RenderMirrorImage()
     MulMat3x3Mat3x3(&mModelAnim.mat4x3, &data_020a0e68, &mModelAnim.mat4x3);
     func_02016acc(&mModelAnim, 0x80);
     func_02016b24(&mModelAnim, 0x40);
-    mModelAnim.ModelAnim::Render((const Vector3 *)&mScaleX);
+    mModelAnim.ModelAnim::Render(&mScale);
     mModelAnim.ApplyOpacity(0xff, 0);
     func_02016b24(&mModelAnim, 0x80);
     func_02016acc(&mModelAnim, 0x40);
@@ -1408,7 +1393,7 @@ int daMip_c::Behavior()
                         }
                         pos.y += 0x64000;
                         if (((Player *)talker)->ShowMessage(*(fBase_c *)c, messageId, 0, 0, 0) == 1) {
-                            func_02012694(soundId, (const ::Vector3 *)(&mCamSpacePosX));
+                            func_02012694(soundId, &mCamSpacePos);
                             mTalkState = 1;
                         }
                     } else if (talkStep == 1 && ((Player *)talker)->GetTalkState() == -1) {
@@ -1569,7 +1554,7 @@ int daMip_c::InitResources()
         PathPtr path;
         path.FromID(mPathId);
         mPathNodeIndex = 1;
-        path.GetNode(*(Vector3 *)&mPosX, mPathNodeIndex);
+        path.GetNode(mPos, mPathNodeIndex);
         mNumPathNodes = path.NumNodes();
     }
     UpdateMatrixAndShadow();

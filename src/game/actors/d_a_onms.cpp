@@ -78,8 +78,8 @@ struct daOnms_cStateEntry { daOnms_cState state; };
 /* Vec3, not Vector3: Vec3_Asr would emit ~Vector3 if the arg were Vector3. */
 typedef struct { int x, y, z; } Vec3;
 
-#define ActorPos(actor) ((Vector3 *)&(actor)->mPosX)
-#define CamPos(actor)   ((const Vector3 *)&(actor)->mCamSpacePosX)
+#define ActorPos(actor) (&(actor)->mPos)
+#define CamPos(actor)   (&(actor)->mCamSpacePos)
 
 /* The retail static initializer constructs these two 8-byte resource handles
  * in source order (model 0x3c9, collision 0x3ca) and lets the C++ runtime

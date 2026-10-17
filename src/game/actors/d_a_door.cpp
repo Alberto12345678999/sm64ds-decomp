@@ -697,8 +697,8 @@ int daDoor_c::func_ov100_02144a38(Player *p)
     Vec3_RotateYAndTranslate(&pos, &p->mPosX, p->mAngleY, &data_ov100_021487f0);
 
     {
-        void *actor = dActor_c::Spawn(ACTOR_OBJ_KEY, (u32)e->keyIndex, *(Vector3 *)&pos,
-                                      (Vector3_16 *)&p->mAngleX, p->mAreaId, -1);
+        void *actor = dActor_c::Spawn(ACTOR_OBJ_KEY, (u32)e->keyIndex, *(Vector3 *)&pos, &p->mAngle,
+                                      p->mAreaId, -1);
         if (actor != 0) {
             ((daObjKey_c *)actor)->func_ov089_0213115c(2);
         }

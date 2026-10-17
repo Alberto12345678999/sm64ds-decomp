@@ -24,10 +24,9 @@
  *   would need the class constructor, which is not reconstructed.
  *   Its __cxa_vec_ctor calls take the icon_c and OamAnimation
  *   structors by address, which C++ cannot spell.
- * - Render and Behavior read the per-frame and per-render steps
- *   and the icon count through dScEntryStepView. The header still
- *   holds 0x50..0x70 and 0x264..0x283 as opaque storage.
- * - InitResources keeps its `int b = (actorID == 7)' flag locals.
+ * - The header holds 0x50, 0x6c..0x70 and 0x264..0x280 as opaque
+ *   storage.
+ * - InitResources keeps its `int isResult = (actorID == 7)' flag locals.
  *   Folding the first one into its condition rewrites the function
  *   (999 words, measured).
  * - The helpers it calls stay func_ov075_* and the arm9 globals keep
@@ -48,6 +47,7 @@
 #include "Sound.h"
 #include "decl_common.h"
 #include "dScEntry_c.h"
+#include "dFdBrightness_c.h"
 
 /* The Nitro SDK's sub-engine palette loader. No header in the tree
  * declares the namespace yet; d_s_star_sel_methods.cpp spells it the
@@ -92,28 +92,8 @@ extern u8 data_0209d454;
 extern u8 data_0209f4ae[];
 extern s32 data_0208ee44;
 
-/* The scene's two pointer-to-member steps: Behavior runs the one at
- * 0x5c every frame, Render the one at 0x64. */
-struct dScEntryStepView;
-typedef void (dScEntryStepView::*dScEntryStep)();
-struct dScEntryStepView {
-    u8 pad0[0x5c];
-    dScEntryStep behaviorStep; /* 0x5c */
-    dScEntryStep renderStep;   /* 0x64 */
-    u8 pad6c[0x280 - 0x6c];
-    u8 iconCount; /* 0x280 */
-};
-
 /* The scene manager Behavior polls through its slot 5. */
-struct VObj {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual int v5();
-};
-extern "C" VObj *data_0209f5bc;
+extern "C" dFdBrightness_c *data_0209f5bc;
 
 /* Slot 3. Releases the level-entry scratch buffer, unregisters the
  * graph callback, drops the voice group and clears the shared
@@ -138,11 +118,8 @@ void dScEntry_c::OnPendingDestroy() {}
 /* Slot 9. */
 // @symbol _ZN10dScEntry_c6RenderEv
 s32 dScEntry_c::Render() {
-    dScEntryStepView *c = (dScEntryStepView *)this;
-    if (*(int *)&c->renderStep != 0) {
-        dScEntryStep *p = &c->renderStep;
-        (c->**p)();
-    }
+    if (mRenderStep != 0)
+        (this->*mRenderStep)();
     func_0203083c();
     return 1;
 }
@@ -151,8 +128,6 @@ s32 dScEntry_c::Render() {
  * per-frame step, then every live icon. */
 // @symbol _ZN10dScEntry_c8BehaviorEv
 s32 dScEntry_c::Behavior() {
-    dScEntryStepView *c = (dScEntryStepView *)this;
-
     if (mIsFading != 0) {
         mFadeTick++;
         if ((mFadeTick & 1) == 0) {
@@ -166,30 +141,28 @@ s32 dScEntry_c::Behavior() {
         }
     }
 
-    if (data_0209f5bc->v5() == 0 || mIsFading != 0)
+    if (data_0209f5bc->IsAtStart() == 0 || mIsFading != 0)
         return 1;
 
     if (data_0209fc68 != 0) {
         int t = (data_0209fc68 == 6);
         if (t != 0)
-            func_ov075_02119dc4(c, &data_ov075_0211d930);
+            func_ov075_02119dc4(this, &data_ov075_0211d930);
     }
 
-    if (*(volatile int *)&c->behaviorStep != 0) {
-        dScEntryStep *p = &c->behaviorStep;
-        (c->**p)();
-    }
+    if (mBehaviorStep != 0)
+        (this->*mBehaviorStep)();
 
     {
         int i = 0;
-        int n = c->iconCount;
+        int n = mIconCount;
         if (n > 0) {
             icon_c *o = mIcons;
             do {
                 o->Behavior();
                 i++;
                 o++;
-            } while (i < c->iconCount);
+            } while (i < mIconCount);
         }
     }
     return 1;
@@ -198,13 +171,13 @@ s32 dScEntry_c::Behavior() {
 /* Slot 0. */
 // @symbol _ZN10dScEntry_c13InitResourcesEv
 s32 dScEntry_c::InitResources() {
-    char *c = (char *)this;
+    char *rawScene = (char *)this;
     Enable3dEngines();
     func_0200f2cc();
 
     {
-        int b = (actorID == 7);
-        if (b || param1 != 0 || func_0203d9b4() != 0) {
+        int isResult = (actorID == 7);
+        if (isResult || param1 != 0 || func_0203d9b4() != 0) {
             LoadTextNarcs();
             LoadArchive(0);
             LoadArchive(1);
@@ -213,14 +186,14 @@ s32 dScEntry_c::InitResources() {
     }
 
     {
-        void *f = (void *)LoadFile(0x9807);
-        GXS::LoadBGPltt(f, 0, 0xe0);
-        Deallocate(f);
+        void *paletteData = (void *)LoadFile(0x9807);
+        GXS::LoadBGPltt(paletteData, 0, 0xe0);
+        Deallocate(paletteData);
     }
     {
-        void *f = (void *)LoadFile(0x8406);
-        GXS::LoadBGPltt(f, 0xe0, 0x120);
-        Deallocate(f);
+        void *paletteData = (void *)LoadFile(0x8406);
+        GXS::LoadBGPltt(paletteData, 0xe0, 0x120);
+        Deallocate(paletteData);
     }
 
     *(u16 *)0x4000008 = (*(u16 *)0x4000008 & ~3) | 3;
@@ -251,9 +224,9 @@ s32 dScEntry_c::InitResources() {
     LoadFont3D();
 
     {
-        int b6 = (actorID == 6);
-        if (b6) {
-            func_ov075_02116ad4(c);
+        int isEntry = (actorID == 6);
+        if (isEntry) {
+            func_ov075_02116ad4(rawScene);
             if (param1 == 0) {
                 if (func_0203da3c() == 0) {
                     data_0209b2e8 = (void *)LoadFile(0x8409);
@@ -261,22 +234,22 @@ s32 dScEntry_c::InitResources() {
                     func_02030aa4(3);
                 }
                 {
-                    int r = func_0203da9c();
-                    func_02020028(r, data_0209f4ae[gActivePlayerSlot * 0x18]);
+                    int localPlayer = func_0203da9c();
+                    func_02020028(localPlayer, data_0209f4ae[gActivePlayerSlot * 0x18]);
                 }
             }
         } else {
-            func_ov075_02116818(c);
+            func_ov075_02116818(rawScene);
         }
     }
 
-    func_ov075_0211601c((char *)&data_ov075_0211d71c, (int)c, 1);
+    func_ov075_0211601c((char *)&data_ov075_0211d71c, (int)rawScene, 1);
     data_0209d4a8 = &data_ov075_0211d71c;
     Sound::LoadInitialGroup(0x2b);
 
     {
-        int b6b = (actorID == 6);
-        if (b6b) {
+        int isEntry = (actorID == 6);
+        if (isEntry) {
             if (param1 < 2) {
                 Sound::LoadAndSetMusic_Layer1(0x4c);
             }
@@ -333,8 +306,8 @@ extern OamAnimation *_ZN12OamAnimationC1Ev(OamAnimation *object);
 void *dScEntry_c_classInit_RESULT(void) {
     /* The raw byte pointer preserves the ROM factory's address-expression
        tree; typed member expressions fold five instructions in mwccarm.
-       Members cast through it (pauseFlags, mIcons, mOamAnimations) are
-       byte-neutral; 0x54..0x6c have no header names. */
+       Members cast through it (pauseFlags, the three steps, mIcons,
+       mOamAnimations) are byte-neutral. */
     char *p = (char *)_ZN7fBase_cnwEj(sizeof(dScEntry_c));
     if (p) {
         struct P2 v;
@@ -350,9 +323,9 @@ void *dScEntry_c_classInit_RESULT(void) {
         /* Array-member copies preserve the original C aggregate-copy schedule
            in C++ without changing the two-word value's type or layout. */
         *(struct P2Copy *)&v = *(struct P2Copy *)&data_02086b58;
-        *(struct P2Copy *)(p + 0x54) = *(struct P2Copy *)&v;
-        *(struct P2Copy *)(p + 0x5c) = *(struct P2Copy *)&v;
-        *(struct P2Copy *)(p + 0x64) = *(struct P2Copy *)&v;
+        *(struct P2Copy *)&((dScEntry_c *)p)->mEnterStep = *(struct P2Copy *)&v;
+        *(struct P2Copy *)&((dScEntry_c *)p)->mBehaviorStep = *(struct P2Copy *)&v;
+        *(struct P2Copy *)&((dScEntry_c *)p)->mRenderStep = *(struct P2Copy *)&v;
         __cxa_vec_ctor(((dScEntry_c *)p)->mIcons, 9, sizeof(dScEntry_c::icon_c),
                        (void (*)(void *))_ZN10dScEntry_c6icon_cC1Ev,
                        (void (*)(void *))_ZN10dScEntry_c6icon_cD1Ev);

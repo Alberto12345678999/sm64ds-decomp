@@ -423,8 +423,7 @@ int Scuttlebug::func_ov071_02120028()
 // @symbol _ZN10Scuttlebug19func_ov071_0211ff84Ev
 int Scuttlebug::func_ov071_0211ff84()
 {
-    if (Vec3_Dist((Vector3 *)&mPosX,
-                  (Vector3 *)&mAnchorX) > 0x5dc000) {
+    if (Vec3_Dist(&mPos, (Vector3 *)&mAnchorX) > 0x5dc000) {
         SetState(5);
         return 1;
     }
@@ -544,13 +543,11 @@ int Scuttlebug::func_ov071_0211fbf4()
 // @symbol _ZN10Scuttlebug19func_ov071_0211fb24Ev
 int Scuttlebug::func_ov071_0211fb24()
 {
-    short ang = Vec3_HorzAngle((Vector3 *)&mPosX,
-                               (Vector3 *)&mAnchorX);
+    short ang = Vec3_HorzAngle(&mPos, (Vector3 *)&mAnchorX);
     ApproachLinear(mAngleY, ang, 0x2bc);
     mPrevAngleY = mAngleY;
     mModelAnim.Advance();
-    if (Vec3_Dist((Vector3 *)&mPosX,
-                  (Vector3 *)&mAnchorX) < 0x12c000)
+    if (Vec3_Dist(&mPos, (Vector3 *)&mAnchorX) < 0x12c000)
         SetState(2);
     func_ov071_0211f0b4();
     UpdatePos(&mdCcAc_c);
@@ -630,7 +627,7 @@ int Scuttlebug::func_ov071_0211f8d0()
     *pb0 = (*pb0) & 0xfff7fffe;
 
     parent = (char *)mParent;
-    pos = (Vector3 *)&mPosX;
+    pos = &mPos;
     mul = 0x5a000;
     mHorzSpeed = ((dActor_c *)parent)->mHorzSpeed + 0x7000;
     mVertSpeed = zero;
@@ -644,7 +641,7 @@ int Scuttlebug::func_ov071_0211f8d0()
 
     parent = (char *)mParent;
     one = 1;
-    srcv = (Vector3 *)&((dActor_c *)parent)->mPosX;
+    srcv = &((dActor_c *)parent)->mPos;
     mPosX = srcv->x;
     mPosY = srcv->y;
     mPosZ = srcv->z;
@@ -831,9 +828,7 @@ void Scuttlebug::func_ov071_0211f29c()
     }
 
     if (mdCcAc_c.hitFlags & 0x10) {
-        mPrevAngleY = Vec3_HorzAngle(
-            (Vector3 *)&hitPlayer->mPosX,
-            (Vector3 *)&mPosX);
+        mPrevAngleY = Vec3_HorzAngle(&hitPlayer->mPos, &mPos);
         mAngleY = (short)(mPrevAngleY + 0x8000);
         hitPlayer->IncMegaKillCount();
         SetState(8);
@@ -909,9 +904,9 @@ void Scuttlebug::func_ov071_0211f0b4()
     if (mTimer != 0) return;
     p = (dActor_c *)ClosestNonVanishPlayer();
     if (p == 0) return;
-    d = Vec3_Dist((const Vector3 *)&mPosX, (const Vector3 *)&p->mPosX);
+    d = Vec3_Dist(&mPos, &p->mPos);
     if (d > 0x5dc000) return;
-    ang = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&p->mPosX);
+    ang = Vec3_HorzAngle(&mPos, &p->mPos);
     if (AngleDiff(ang, mAngleY) > 0x12c) return;
     mLeapDist = d;
     mLeapAngle = ang;

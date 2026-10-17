@@ -5,7 +5,7 @@ This deliberately does not copy progress numbers out of prose.  It derives them 
 the inputs that the build and TU workflow actually consume:
 
 * ``progress.synced_from_src`` (committed-source matching progress),
-* ``tiers.converted`` and ``langmode_audit.audit`` (readability and semantic C++),
+* ``langmode_audit.audit`` (semantic C++),
 * git's tracked ``src/**/*.c|cpp`` set (physical source inventory),
 * ``config/**/symbols.txt`` plus sibling ``delinks.txt`` files (production ownership),
 * ``config/tu_manifest.d/`` (shadow/reconstruction evidence),
@@ -32,7 +32,6 @@ NOTE = REPO / "notes" / "cpp-tu-current-state.md"
 sys.path.insert(0, str(REPO / "tools"))
 import langmode_audit as LANGMODE  # noqa: E402
 import progress as PROGRESS  # noqa: E402
-import tiers as TIERS  # noqa: E402
 import cpp_tu_compat as TU_COMPAT  # noqa: E402
 import tu_manifest as TUM  # noqa: E402
 
@@ -205,21 +204,8 @@ def _matching_progress(reader) -> dict[str, int | float]:
     }
 
 
-def _converted_tier(reader) -> dict:
-    converted = reader()
-    source_functions = converted.get("functions", converted.get("files", 0))
-    source_files = converted.get("source_files", converted.get("files", 0))
-    return {
-        "strict_converted_functions": converted["converted"],
-        "source_functions": source_functions,
-        "source_files": source_files,
-        "percent": converted["pct"],
-        "criteria": converted["criteria"],
-    }
-
-
 def collect(repo: pathlib.Path = REPO, *, progress_reader=None,
-            converted_reader=None, language_mode_reader=None,
+            language_mode_reader=None,
             compatibility_reader=None, require_clean_inputs=True) -> dict:
     repo = pathlib.Path(repo)
     dirty_inputs = dirty_authority_inputs(repo) if require_clean_inputs else []
@@ -233,8 +219,6 @@ def collect(repo: pathlib.Path = REPO, *, progress_reader=None,
         if repo.resolve() != REPO.resolve():
             raise StateError("a non-default repo requires progress_reader")
         progress_reader = PROGRESS.synced_from_src
-    if converted_reader is None:
-        converted_reader = lambda: TIERS.converted(repo / "src")
     if language_mode_reader is None:
         language_mode_reader = lambda: semantic_language_mode(repo)
     if compatibility_reader is None:
@@ -303,14 +287,12 @@ def collect(repo: pathlib.Path = REPO, *, progress_reader=None,
         "snapshot": {"authority_inputs_clean": not dirty_inputs},
         "inputs": {
             "matching_progress": "progress.synced_from_src() over committed config + src",
-            "strict_converted": "tiers.converted(src)",
             "semantic_language_mode": "langmode_audit.audit()",
             "tracked_sources": "git ls-files -- src src_tu",
             "production_ownership": "config/**/symbols.txt + sibling delinks.txt",
             "tu_evidence": "config/tu_manifest.d",
         },
         "matching_progress": _matching_progress(progress_reader),
-        "converted_tier": _converted_tier(converted_reader),
         "source_files": {
             "production": production_counts,
             "shadow": _suffix_counts(shadow_tracked),
@@ -366,7 +348,6 @@ def _table(rows: list[tuple[str, object]]) -> list[str]:
 
 def render_markdown(report: dict) -> str:
     progress = report["matching_progress"]
-    converted = report["converted_tier"]
     src = report["source_files"]
     language = report["semantic_language_mode"]
     ownership = report["production_path_ownership"]
@@ -398,19 +379,15 @@ def render_markdown(report: dict) -> str:
         report["commands"]["check_this_note"],
         "```",
         "",
-        "## Project progress and strict readability",
+        "## Project progress",
         "",
         *_table([
             ("MATCHED functions", f"{progress['matched_functions']} / {progress['total_functions']} ({progress['function_percent']:.2f}%)"),
             ("MATCHED code bytes", f"{progress['matched_bytes']} / {progress['total_bytes']} ({progress['byte_percent']:.2f}%)"),
-            ("Strict CONVERTED source functions", f"{converted['strict_converted_functions']} / {converted['source_functions']} ({converted['percent']:.2f}%)"),
-            ("Physical production source files", converted["source_files"]),
         ]),
         "",
         "MATCHED is recomputed from committed config symbols and `src/` through",
         "`progress.synced_from_src()`; no ambient or gitignored chaos database is accepted.",
-        "CONVERTED is the strict five-criterion result from `tiers.converted(src)`,",
-        "weighted by enrolled function ownership so TU consolidation does not move it.",
         "",
         "## Production source and enrollment",
         "",
@@ -491,7 +468,6 @@ def render_markdown(report: dict) -> str:
         "| Question | Authority / command |",
         "| --- | --- |",
         f"| How much matching is done? | `{report['inputs']['matching_progress']}`; display with `{report['commands']['matching_progress']}` |",
-        f"| How much source is strictly readable? | `{report['inputs']['strict_converted']}` |",
         f"| Which source does the ROM build compile? | `{report['inputs']['production_ownership']}` |",
         f"| What TU evidence has been recovered? | `{report['inputs']['tu_evidence']}` |",
         f"| Can one production source safely own two functions? | `{report['commands']['production_tu_compatibility']}` |",

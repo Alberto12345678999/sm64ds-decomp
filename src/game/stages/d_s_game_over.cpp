@@ -57,6 +57,7 @@ enum dScGameOver_c_AssetId {
 #include "OamAttr.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "dFdBrightness_c.h"
 
 /* File scope is the only place this pragma works. 0x020b060c needs
  * `#pragma opt_strength_reduction off`: it walks the eight glyphs with an
@@ -69,12 +70,7 @@ enum dScGameOver_c_AssetId {
  * here, all 10 members verify, so it costs the other nine nothing. */
 #pragma opt_strength_reduction off
 
-/* The active scene at data_0209f5bc, which gates Behavior. Only its call
- * shape is proven -- a virtual call through slot 5 taking itself as the
- * receiver and returning a truth value -- so the class spells six virtuals
- * and Behavior calls f05. It has no ROM RTTI identity to name it with. Same
- * slot as d_s_mg_base.cpp's SceneVCall6. */
-struct SceneGate { virtual int f00(); virtual int f01(); virtual int f02(); virtual int f03(); virtual int f04(); virtual int f05(); };
+/* SetFaders stores the fade controller here; slot 5 waits for the entrance fade. */
 
 /* ROM symbols this TU references that no header in the tree declares yet.
  * Spelt by their exact final names under C linkage, the way decl_common.h
@@ -84,7 +80,7 @@ extern "C" {
 extern short data_ov003_020b1774[];
 extern unsigned short data_ov003_020b174c[];
 extern OamAttr *data_ov003_020b1824[];
-extern SceneGate *data_0209f5bc;
+extern dFdBrightness_c *data_0209f5bc;
 extern int data_0208ee44;
 /* Scalars, not tables: the two BG-enable bit registers, main and sub --
  * the spelling the rest of the tree uses for this pair. */
@@ -108,10 +104,9 @@ void _ZN2GX16SetBankForSubOBJEt(u16 v);
 void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
 void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-s32 sub, OamAttr *data, s32 x, s32 y,
-s32 palette, s32 priority, Fix12i scaleX, Fix12i scaleY,
-s32 rotation, s32 mode);
+void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette,
+                                                 s32 priority, Fix12i scaleX, Fix12i scaleY,
+                                                 s32 rotation, s32 mode);
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
@@ -140,19 +135,17 @@ static inline int IsTouchStarted() {
  * vptrs, ORs pauseFlags 1 and 4 (dScene_c::dScene_c), then stores this
  * class's vptr. The null check is the one `new` itself emits. */
 // @symbol dScGameOver_c_classInit
-extern "C" dScGameOver_c *dScGameOver_c_classInit(void)
-{
+extern "C" dScGameOver_c *dScGameOver_c_classInit(void) {
     return new dScGameOver_c();
 }
 
 /* [8] 0x020b0b3c -- vtable slot 0, KEY FUNCTION */
- // @symbol _ZN13dScGameOver_c13InitResourcesEv
+// @symbol _ZN13dScGameOver_c13InitResourcesEv
 /* Brings both engines up for the game-over screen, loads the
  * language-specific "GAME OVER" art (five language variants on both
  * screens), then zeroes the cursor FSM and lays the eight glyphs out along
  * mGlyphX/mGlyphY with a fixed scale and no rotation. */
-s32 dScGameOver_c::InitResources()
-{
+s32 dScGameOver_c::InitResources() {
     int f;
 
     func_02019028();
@@ -299,9 +292,8 @@ s32 dScGameOver_c::InitResources()
 
 /* [7] 0x020b0b34 -- vtable slot 3. Owns no allocation: everything drawn is
  * OAM data belonging to the overlay, so there is nothing to release. */
- // @symbol _ZN13dScGameOver_c16CleanupResourcesEv
-s32 dScGameOver_c::CleanupResources()
-{
+// @symbol _ZN13dScGameOver_c16CleanupResourcesEv
+s32 dScGameOver_c::CleanupResources() {
     return 1;
 }
 
@@ -311,9 +303,8 @@ s32 dScGameOver_c::CleanupResources()
  * scene fade back out on "no". mIntroPhase gates all of it until the intro
  * is in. */
 // @symbol _ZN13dScGameOver_c8BehaviorEv
-s32 dScGameOver_c::Behavior()
-{
-    if (data_0209f5bc->f05() != 0) {
+s32 dScGameOver_c::Behavior() {
+    if (data_0209f5bc->IsAtStart() != 0) {
         func_ov003_020b060c();
 
         if (mIntroPhase < 2)
@@ -376,15 +367,12 @@ s32 dScGameOver_c::Behavior()
 /* [5] 0x020b0814 -- vtable slot 9. Draws the eight "GAME OVER" glyph
  * sprites from the per-glyph x/y arrays InitResources laid out, then lets
  * dScStage_c draw the yes/no bouncing arrows once the cursor is live. */
- // @symbol _ZN13dScGameOver_c6RenderEv
-s32 dScGameOver_c::Render()
-{
+// @symbol _ZN13dScGameOver_c6RenderEv
+s32 dScGameOver_c::Render() {
     int i;
     for (i = 0; i < 8; i++) {
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-            0, data_ov003_020b1824[i],
-            mGlyphX[i], mGlyphY[i],
-            -1, -1, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov003_020b1824[i], mGlyphX[i],
+                                                    mGlyphY[i], -1, -1, 0x1000, 0x1000, 0, -1);
     }
     if (mIntroPhase >= 2)
         dScStage_c::RenderBouncingArrows();
@@ -393,48 +381,40 @@ s32 dScGameOver_c::Render()
 
 /* [4] 0x020b0810 -- vtable slot 12. Nothing to unwind; the slot exists only
  * so dScene_c's teardown has something to call. */
- // @symbol _ZN13dScGameOver_c16OnPendingDestroyEv
-void dScGameOver_c::OnPendingDestroy()
-{
-}
+// @symbol _ZN13dScGameOver_c16OnPendingDestroyEv
+void dScGameOver_c::OnPendingDestroy() {}
 
 /* [3] 0x020b0730 -- repaints the sub-screen BG1 palette bank over the two
  * yes/no boxes: two 0x20-by-4 rectangles whose screen-map origins come from
  * data_ov003_020b174c. `arg` non-zero forces both back to the unselected
  * bank; zero picks the highlighted bank for whichever box mSelection names,
  * and only while the mFlashTimer has run out. */
- // @symbol _ZN13dScGameOver_c19func_ov003_020b0730Ei
-void dScGameOver_c::func_ov003_020b0730(int arg)
-{
-  int i;
-  for (i = 0; i < 2; i++)
-  {
-    unsigned int v;
-    int j;
-    unsigned short *p = _ZN3G2S12GetBG1ScrPtrEv();
-    p += data_ov003_020b174c[i];
-    if (arg)
-    {
-      v = 0x1000;
+// @symbol _ZN13dScGameOver_c19func_ov003_020b0730Ei
+void dScGameOver_c::func_ov003_020b0730(int arg) {
+    int i;
+    for (i = 0; i < 2; i++) {
+        unsigned int v;
+        int j;
+        unsigned short *p = _ZN3G2S12GetBG1ScrPtrEv();
+        p += data_ov003_020b174c[i];
+        if (arg) {
+            v = 0x1000;
+        } else {
+            unsigned int w;
+            if ((mSelection == i) && (mFlashTimer == 0))
+                w = 0x2000;
+            else
+                w = 0x1000;
+            v = (unsigned short)w;
+        }
+        for (j = 0; j < 0x20; j++) {
+            p[0] = (p[0] & 0x3ff) | v;
+            p[0x20] = (p[0x20] & 0x3ff) | v;
+            p[0x40] = (p[0x40] & 0x3ff) | v;
+            p[0x60] = (p[0x60] & 0x3ff) | v;
+            p += 1;
+        }
     }
-    else
-    {
-      unsigned int w;
-      if ((mSelection == i) && (mFlashTimer == 0))
-        w = 0x2000;
-      else
-        w = 0x1000;
-      v = (unsigned short) w;
-    }
-    for (j = 0; j < 0x20; j++)
-    {
-      p[0] = (p[0] & 0x3ff) | v;
-      p[0x20] = (p[0x20] & 0x3ff) | v;
-      p[0x40] = (p[0x40] & 0x3ff) | v;
-      p[0x60] = (p[0x60] & 0x3ff) | v;
-      p += 1;
-    }
-  }
 }
 
 /* [2] 0x020b060c -- the glyph drop-in step, one frame per call. */
@@ -471,8 +451,7 @@ void dScGameOver_c::func_ov003_020b0730(int arg)
  * notes/experiments/gameover-2711-case1-gooff-spelling.md) are the ROM's own
  * shape too. */
 // @symbol _ZN13dScGameOver_c19func_ov003_020b060cEv
-void dScGameOver_c::func_ov003_020b060c()
-{
+void dScGameOver_c::func_ov003_020b060c() {
     unsigned char s = this->mIntroPhase;
     int i;
     int ip;

@@ -22,25 +22,29 @@ extern "C" int Dealer_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" int Dealer_Construct(char *sharedState);
 
 struct dMgMemory2SharedState_c {
-    dMgMemory2SharedState_c() { Dealer_Construct((char *)this); }
-    ~dMgMemory2SharedState_c() { Dealer_Destruct((char *)this); }
+    dMgMemory2SharedState_c() {
+        Dealer_Construct((char *)this);
+    }
+    ~dMgMemory2SharedState_c() {
+        Dealer_Destruct((char *)this);
+    }
 
-    u8  pad_000[0x1a];        /* 0x000 */
-    s16 unk_01a;              /* 0x01a -- Dealer_Construct stores 0 */
-    u8  blendModelAnim[0x70]; /* 0x01c -- BlendModelAnim */
-    u8  model[0x50];          /* 0x08c -- Model */
+    u8 pad_000[0x1a];        /* 0x000 */
+    s16 unk_01a;             /* 0x01a -- Dealer_Construct stores 0 */
+    u8 blendModelAnim[0x70]; /* 0x01c -- BlendModelAnim */
+    u8 model[0x50];          /* 0x08c -- Model */
     /* MascotWalker_Construct: file handles, a second BlendModelAnim at +0x18,
        dExtShadowModel_c at +0x88. */
-    u8  at_0dc[0xf8];         /* 0x0dc */
-    u8  pad_1d4[0x8];         /* 0x1d4 */
-    s16 unk_1dc;              /* 0x1dc -- Dealer_Construct stores 0 */
-    u8  pad_1de[0x8];         /* 0x1de */
-    s16 ready;                /* 0x1e6 */
-    u8  filePtr[0x78];        /* 0x1e8 -- 15 SharedFilePtr, through +0x258 */
-    s32 unk_260;              /* 0x260 */
-    s32 unk_264;              /* 0x264 */
-    s32 unk_268;              /* 0x268 */
-    s32 unk_26c;              /* 0x26c */
+    u8 at_0dc[0xf8];  /* 0x0dc */
+    u8 pad_1d4[0x8];  /* 0x1d4 */
+    s16 unk_1dc;      /* 0x1dc -- Dealer_Construct stores 0 */
+    u8 pad_1de[0x8];  /* 0x1de */
+    s16 ready;        /* 0x1e6 */
+    u8 filePtr[0x78]; /* 0x1e8 -- 15 SharedFilePtr, through +0x258 */
+    s32 unk_260;      /* 0x260 */
+    s32 unk_264;      /* 0x264 */
+    s32 unk_268;      /* 0x268 */
+    s32 unk_26c;      /* 0x26c */
 };
 
 struct dMgMemory2Card_c {
@@ -84,7 +88,8 @@ struct dMgMemory2Cursor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char dMgMemory2SharedState_c_size_must_be_0x270[sizeof(dMgMemory2SharedState_c) == 0x270 ? 1 : -1];
+typedef char
+    dMgMemory2SharedState_c_size_must_be_0x270[sizeof(dMgMemory2SharedState_c) == 0x270 ? 1 : -1];
 typedef char dMgMemory2Card_c_size_must_be_0x18[sizeof(dMgMemory2Card_c) == 0x18 ? 1 : -1];
 typedef char dMgMemory2Player_c_size_must_be_0x14[sizeof(dMgMemory2Player_c) == 0x14 ? 1 : -1];
 typedef char dMgMemory2Cursor_c_size_must_be_0x10[sizeof(dMgMemory2Cursor_c) == 0x10 ? 1 : -1];
@@ -97,12 +102,42 @@ struct dScMgMemory2_c : dScMgSingle3DBase_c {
        _ZTV/_ZTI/_ZTS14dScMgMemory2_c as compiler-only output; the manifest
        licenses the cartridge copies at 0x0213d4d4, 0x0213d350 and 0x0213d35c
        as deadstrip data. */
-    s32 InitResources();   /* slot  0 -- 0x020f74b4 */
-    virtual void StartRound(int arg);               /* slot 18 */
-    virtual int  CanEndState(int mode);              /* slot 19 */
-    virtual void OnDealDone();                    /* slot 21 */
-    s32 Behavior();        /* slot  6 -- 0x020f7458 */
-    s32 Render();          /* slot  9 -- 0x020f73f4 */
+    s32 InitResources();               /* slot  0 -- 0x020f74b4 */
+    virtual void StartRound(int arg);  /* slot 18 */
+    virtual int CanEndState(int mode); /* slot 19 */
+    virtual void OnDealDone();         /* slot 21 */
+    s32 Behavior();                    /* slot  6 -- 0x020f7458 */
+    s32 Render();                      /* slot  9 -- 0x020f73f4 */
+
+    /* Numeric order follows the five pointer-to-member dispatch tables. */
+    enum SceneState { STATE_SETUP = 0, STATE_PLAY, STATE_JUDGE_PAIRS, STATE_RESULT, STATE_EXIT };
+
+    enum CardState {
+        CARD_MOVE = 0,
+        CARD_IDLE,
+        CARD_SELECT,
+        CARD_FLIP_UP,
+        CARD_WAIT,
+        CARD_FLIP_DOWN,
+        CARD_FLY_AWAY
+    };
+
+    enum PlayerState { PLAYER_DROP = 0, PLAYER_MOVE, PLAYER_WAIT };
+
+    enum RoundState {
+        ROUND_START = 0,
+        ROUND_DEAL_EASY,
+        ROUND_DEAL_NORMAL,
+        ROUND_DEAL_HARD,
+        ROUND_DEAL_FOURTH,
+        ROUND_SHOW_CARDS,
+        ROUND_HIDE_CARDS,
+        ROUND_READY_CARDS,
+        ROUND_WAIT_DEAL,
+        ROUND_REVEAL
+    };
+
+    enum ResultState { RESULT_WAIT = 0, RESULT_REWARD, RESULT_TURN_CARDS, RESULT_FINISH };
 
     void DrawMessage();
     void DrawCursor();
@@ -164,8 +199,8 @@ struct dScMgMemory2_c : dScMgSingle3DBase_c {
     u16 mRoundTimer;                 /* 0x53e0 */
     u16 mCardTimer;                  /* 0x53e2 */
     u16 mResultTimer;                /* 0x53e4 */
-    s16 mReadyCount;                 /* 0x53e6 */
-    s16 mDealCount;                  /* 0x53e8 */
+    s16 mDealSignals;                /* 0x53e6 -- incremented by the dealer animation */
+    s16 mCardsDealt;                 /* 0x53e8 -- cards activated by round-deal states */
     u16 mTargetPairs;                /* 0x53ea */
     u16 mPreviewTimer;               /* 0x53ec */
     u8 mSelectedValues[2];           /* 0x53ee */

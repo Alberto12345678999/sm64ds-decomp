@@ -46,12 +46,32 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/brq-sinit1015.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
+   "file": "notes/agents/handoffs/daYurei_Mucho_c-ov065.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/draft-verdict-repair-0918.md",
    "ref": "src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp"
   },
   {
+   "file": "notes/agents/handoffs/enemy-switch-tu-1003.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/eykn-sinit1015.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/five-cpp-cleanups-0919.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "config/converted-baseline.json"
   },
   {
    "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
@@ -66,6 +86,14 @@
    "ref": "src/engine/collision/dBgPc.cpp"
   },
   {
+   "file": "notes/agents/handoffs/fold-arm9-g2x-1021.md",
+   "ref": "notes/converted-tier.md"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-oam-1017.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
    "file": "notes/agents/handoffs/fold-ov006-curling2-1005.md",
    "ref": "config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json"
   },
@@ -76,6 +104,10 @@
   {
    "file": "notes/agents/handoffs/fold-ov009-sbird-1008.md",
    "ref": "src/unnamed/ov009/func_ov009_0211145c.c"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2410-daMky_c.md",
+   "ref": "config/converted-baseline.json"
   },
   {
    "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
@@ -99,7 +131,27 @@
   },
   {
    "file": "notes/agents/handoffs/issue-2411.md",
+   "ref": "config/converted-backslide-exceptions.jsonl"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2411.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2411.md",
    "ref": "tools/check_src_tu.py"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2411.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2412-daGmch_c.md",
+   "ref": "config/converted-backslide-exceptions.jsonl"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2412-daGmch_c.md",
+   "ref": "config/converted-baseline.json"
   },
   {
    "file": "notes/agents/handoffs/issue-2412-humanizer-2.md",
@@ -107,15 +159,31 @@
   },
   {
    "file": "notes/agents/handoffs/issue-2413.md",
+   "ref": "config/converted-backslide-exceptions.jsonl"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2413.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2413.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2414.md",
+   "ref": "config/converted-backslide-exceptions.jsonl"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2414.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
-   "ref": "src/d_s_mg_curling2.cpp"
-  },
-  {
-   "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
-   "ref": "tools/check_src_tu_compiles.py"
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
@@ -154,28 +222,8 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
-   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
-   "ref": "src/d_s_mg_bomroom.c"
-  },
-  {
-   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
-   "ref": "src/d_s_mg_curling.c"
-  },
-  {
-   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
-   "ref": "src/d_s_mg_curling2.c"
-  },
-  {
-   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
-   "ref": "src/d_s_mg_pachinko.c"
-  },
-  {
-   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
-   "ref": "src/d_s_mg_panel.c"
-  },
-  {
-   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
-   "ref": "src/d_s_mg_teresa.c"
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
@@ -186,8 +234,16 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/mg-p1-s3dbase-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-s3dbase-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-tamaire-0925.md",
@@ -215,27 +271,43 @@
   },
   {
    "file": "notes/agents/handoffs/mg-p1-tamaire-0925.md",
-   "ref": "src/d_s_mg_pachinko2.c"
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-tamaire-0925.md",
-   "ref": "tools/check_src_tu_compiles.py"
-  },
-  {
-   "file": "notes/agents/handoffs/mg-tool-ztv-single-0925.md",
-   "ref": "src/d_s_mg_pachinko2.c"
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/mg-tool-ztv-single-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-tool-ztv-single-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/mg-tu-tamaire-0926.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/mg-tu-tamaire-0926.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/minigame-esp-state-readable-0922.md",
    "ref": "src/func_ov006_020e7f5c.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/ov078-daBombking_c-recovery.md",
+   "ref": "config/converted-backslide-exceptions.jsonl"
+  },
+  {
+   "file": "notes/agents/handoffs/ov078-daBombking_c-recovery.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/ov078-daBombking_c-recovery.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/pr-2708-source-review-fixes.md",
@@ -243,7 +315,19 @@
   },
   {
    "file": "notes/agents/handoffs/pr2231-rescue-ov002-batch1.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/pr2231-rescue-ov002-batch1.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/pr2231-rescue-ov022-ov013-batch2.md",
+   "ref": "config/converted-backslide-exceptions.jsonl"
+  },
+  {
+   "file": "notes/agents/handoffs/pr2231-rescue-ov022-ov013-batch2.md",
+   "ref": "config/converted-baseline.json"
   },
   {
    "file": "notes/agents/handoffs/pr2231-rescue-ov022-ov013-batch2.md",
@@ -259,27 +343,67 @@
   },
   {
    "file": "notes/agents/handoffs/prod-dossunbar-0907-daObjBk_Dossunbar_c.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/prod-dossunbar-0907-daObjBk_Dossunbar_c.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/prod-kuruma-0907-daObjKm1_Kurumajiku_c.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/prod-sanbo-0907-daSanbo_c.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/prod-sanbo-0907-daSanbo_c.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/prod-snmbdy-0907.md",
-   "ref": "src/game/actors/d_a_bg_snwmn.cpp"
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/prod-ukishima-0907-daObjKm2_Ukishima_c.md",
+   "ref": "config/converted-baseline.json"
   },
   {
    "file": "notes/agents/handoffs/promote-ov021-newslift-0923.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov021-newslift-0923.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov025-dpbrock-0924.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
    "file": "notes/agents/handoffs/promote-ov025-dpbrock-0924.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov025-dpbrock-0924.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
-   "ref": "src/d_a_luigi.cpp"
+   "ref": "config/converted-baseline.json"
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
+   "ref": "notes/converted-tier.md"
   },
   {
    "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
@@ -288,6 +412,14 @@
   {
    "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "config/converted-baseline.json"
   },
   {
    "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
@@ -306,8 +438,20 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov098-wbm-0924.md",
+   "ref": "config/converted-baseline.json"
+  },
+  {
    "file": "notes/agents/handoffs/promote-ov098-wbm-0924.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov098-wbm-0924.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
@@ -322,6 +466,10 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
    "ref": "src/func_020393d4.c"
   },
@@ -334,12 +482,16 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov034-hanachan-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
-   "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
-   "ref": "src/d_a_luigi.cpp"
+   "file": "notes/agents/handoffs/readable-ov034-hanachan-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
@@ -350,8 +502,16 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov065-basabasa-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov065-basabasa-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov071-casket-0925.md",
@@ -362,16 +522,32 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov071-casket-0925.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov071-eykn-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov071-eykn-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov084-fpkn-0925b.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov084-fpkn-0925b.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov084-pkn-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov084-pkn-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov089-objkey-0925.md",
@@ -380,6 +556,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov089-objkey-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov089-objkey-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
@@ -391,19 +571,27 @@
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
-   "ref": "src/d_a_onms.cpp"
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
-   "ref": "tools/check_src_tu_compiles.py"
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov095-udlift-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov095-udlift-0925.md",
+   "ref": "tools/tiers_ratchet.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov098-wbm-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov098-wbm-0925.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
@@ -468,6 +656,10 @@
   {
    "file": "notes/agents/handoffs/tu-ov063-trs-0927.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/tu-ov063-trs-0927.md",
+   "ref": "tools/tiers_ratchet.py"
   },
   {
    "file": "notes/agents/references/builder-v1.md",
@@ -982,10 +1174,6 @@
    "ref": "src/func_ov006_02110a20.c"
   },
   {
-   "file": "notes/minigames/themes.md",
-   "ref": "src/d_s_mg_curling2.cpp"
-  },
-  {
    "file": "notes/mwccarm-codegen.md",
    "ref": "docs/_private/CodeWarrior/mwccarm.help.txt"
   },
@@ -1088,14 +1276,6 @@
   {
    "file": "notes/smartball-provenance.md",
    "ref": "include/cMgSmartball_"
-  },
-  {
-   "file": "notes/src-domain-buckets.md",
-   "ref": "src/runtime/graphics/fader"
-  },
-  {
-   "file": "notes/src-domain-buckets.md",
-   "ref": "src/ui/messages"
   },
   {
    "file": "notes/src-domain-buckets.md",

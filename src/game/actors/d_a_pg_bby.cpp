@@ -129,7 +129,7 @@ s32 daPgBby_c::Render()
     unsigned int f = mFlags;
     int b = ((f & 0x40000) != 0);
     if (b) return 1;
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -197,10 +197,10 @@ int daPgBby_c::func_ov072_02121a84()
     int frame;
 
     player = ClosestPlayer();
-    dist = Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
+    dist = Vec3_Dist(&mPos, &player->mPos);
     switch (mSubState) {
     case 0:
-        angle = (short)(Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX) + 0x8000);
+        angle = (short)(Vec3_HorzAngle(&mPos, &player->mPos) + 0x8000);
         ApproachLinear(mAngleY, angle, 0x514);
         mPrevAngleY = mAngleY;
         mHorzSpeed = 0x5000;
@@ -209,7 +209,7 @@ int daPgBby_c::func_ov072_02121a84()
         }
         break;
     case 1:
-        angle = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&player->mPosX);
+        angle = Vec3_HorzAngle(&mPos, &player->mPos);
         ApproachLinear(mAngleY, angle, 0x514);
         mPrevAngleY = mAngleY;
         mHorzSpeed = 0x5000;
@@ -248,7 +248,7 @@ int daPgBby_c::func_ov072_02121a84()
     if ((int)mModelAnim.file == data_ov072_02122cbc[1]) {
         frame = (int)(((u32)mModelAnim.currFrame << 4) >> 16);
         if (frame == 9 || frame == 0x15) {
-            func_0201267c(0xf3, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf3, &mCamSpacePos);
         }
     }
     return 1;
@@ -336,7 +336,7 @@ int daPgBby_c::func_ov072_021217ac()
         from.x = x;
         from.y = aboveY;
         from.z = z;
-        DetectRaycastClsn(from, *(Vector3 *)&mPosX, true);
+        DetectRaycastClsn(from, mPos, true);
         mCarrier = 0;
         func_ov072_02121d50(0);
     }
@@ -346,7 +346,7 @@ animate:
     if (param1 == 0) {
         u32 frame = (u32)(mModelAnim.currFrame << 4) >> 16;
         if (frame == 0x10 || frame == 0x25) {
-            func_0201267c(0xf2, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf2, &mCamSpacePos);
         }
     }
     return 1;
@@ -368,12 +368,12 @@ int daPgBby_c::func_ov072_02121758()
    units from her. */
 int daPgBby_c::func_ov072_02121670()
 {
-    int dist = Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&mMother->mPosX);
+    int dist = Vec3_Dist(&mPos, &mMother->mPos);
     short tgt = mAngleY;
     if (dist > 0xdc000) {
-        tgt = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mMother->mPosX);
+        tgt = Vec3_HorzAngle(&mPos, &mMother->mPos);
     } else if (dist < 0xc8000) {
-        tgt = (short)(Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mMother->mPosX) + 0x8000);
+        tgt = (short)(Vec3_HorzAngle(&mPos, &mMother->mPos) + 0x8000);
     }
     ApproachLinear(mAngleY, tgt, 0x2bc);
     mPrevAngleY = mAngleY;
@@ -387,7 +387,7 @@ int daPgBby_c::func_ov072_02121670()
     {
         int frame = (int)((unsigned)(mModelAnim.currFrame << 4) >> 16);
         if (frame == 9 || frame == 0x15) {
-            func_0201267c(0xf3, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf3, &mCamSpacePos);
         }
     }
     return 1;
@@ -428,7 +428,7 @@ int daPgBby_c::func_ov072_021214dc()
     case 1:
     {
         if (mCarrier->ShowMessage(*this, 0xb2, 0, 0, 0)) {
-            func_0201267c(0xf2, (Vector3 *)&mCamSpacePosX);
+            func_0201267c(0xf2, &mCamSpacePos);
             mSubState++;
         }
         int spat = (mFlags & 0x80000) != 0;
@@ -560,7 +560,7 @@ void daPgBby_c::func_ov072_021210c4()
     int shadowHeight;
     int shadowRadius;
 
-    if (mCarrier && ((mFlags & 0x4000) ? 1 : 0) && *(int *)((char *)mCarrier + 0xc8)) {
+    if (mCarrier && ((mFlags & 0x4000) ? 1 : 0) && mCarrier->mCarryMatrix) {
         idx = 0;
         if (mCarrier->IsFrontSliding() || mCarrier->LostGrabbedObject()) {
             idx = 1;
@@ -696,7 +696,7 @@ void daPgBby_c::func_ov072_02120ddc()
     dActor_c *mother = mMother;
     if (mother == 0)
         return;
-    if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&mother->mPosX) >= 0x190000)
+    if (Vec3_Dist(&mPos, &mother->mPos) >= 0x190000)
         return;
     func_ov072_02121d50(3);
 }
@@ -710,7 +710,8 @@ void daPgBby_c::func_ov072_02120d04()
     Vector3 tmp;
     if (mStateId == 3) return;
     if ((unsigned)mPosY > (unsigned)(-0x1800000)) {
-        if (Vec3_Dist((Vector3 *)&mSpawnPosX, (Vector3 *)&mPosX) < 0x190000) return;
+        if (Vec3_Dist((Vector3 *)&mSpawnPosX, &mPos) < 0x190000)
+            return;
         if (DecIfAbove0_Short(&mRespawnTimer) != 0) return;
     }
     Vec3_Asr(&tmp, (Vector3 *)&mSpawnPosX, 3);

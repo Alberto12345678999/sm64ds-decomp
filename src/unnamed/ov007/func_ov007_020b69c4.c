@@ -1,7 +1,7 @@
 #include "types.h"
 extern u8 *data_ov007_0210342c;
 
-extern void *func_ov007_020c9388(void *self);
+extern void *func_ov007_020c9388(int initialState);
 extern void *func_ov007_020c946c(void *r5);
 
 #pragma opt_strength_reduction off
@@ -22,7 +22,7 @@ void func_ov007_020b69c4(void)
         i++;
     } while (i < 2);
 
-    *(void **)(data_ov007_0210342c + 0x40) = func_ov007_020c9388((void *)0);
+    *(void **)(data_ov007_0210342c + 0x40) = func_ov007_020c9388(0);
 
     arg = 0;
     i = 0;

@@ -49,11 +49,11 @@ struct FileSaveData {
     u32 flags2;
     u32 minigameRabbits;
     u32 cannonUnlocked;
-    u8  stars[30];
-    u8  coinRecords[15];
-    u8  currentCharacter;
-    u8  controllerMode;
-    u8  unk43;
+    u8 stars[30];
+    u8 coinRecords[15];
+    u8 currentCharacter;
+    u8 controllerMode;
+    u8 unk43;
 };
 
 extern "C" {
@@ -78,8 +78,8 @@ extern int OVERLAY_102_ID;
 
 FileSaveData *func_ov007_020cc0cc(int idx);
 void func_ov007_020cc0e4(FileSaveData *files);
-int func_ov007_020cc118(int a, unsigned int b);
-void func_ov007_020cc168(u32 idx);
+int func_ov007_020cc118(int musicId, unsigned int delayFrames);
+void func_ov007_020cc168(u32 saveSlot);
 int func_ov007_020b7090(u16 a0, u16 a1, u16 a2, u16 a3, int arg4);
 void func_ov007_020b6eb4(void *callback);
 void func_0203cbc0(void *buffer);
@@ -107,8 +107,7 @@ void DisableAllBanks();
  * bits, graphCallback vptr pair, dFdDummy_c member). `new` would not spell
  * the same arm9 C1 call. */
 // @symbol dScDSMT_c_classInit
-extern "C" int *dScDSMT_c_classInit(void)
-{
+extern "C" int *dScDSMT_c_classInit(void) {
     int *p = (int *)_ZN7fBase_cnwEj(0x64);
     if (p) {
         unsigned char *f;
@@ -157,96 +156,94 @@ extern "C" void func_ov007_020cca68(void *p) {
 
 /* Client command dispatcher: sound/backlight/save-file/minigame codes. */
 // @symbol func_ov007_020cc600
-extern "C" u8 func_ov007_020cc600(s32 arg)
-{
-    u8 r = 0;
+extern "C" u8 func_ov007_020cc600(s32 command) {
+    u8 failed = 0;
 
-    if (arg == 1) {
+    if (command == 1) {
         SetSoundMode(2);
-    } else if (arg == 2) {
+    } else if (command == 2) {
         SetSoundMode(0);
-    } else if (arg == 3) {
+    } else if (command == 3) {
         SetSoundMode(1);
-    } else if (arg == 4) {
+    } else if (command == 4) {
         TurnBacklightOn();
-    } else if (arg == 5) {
+    } else if (command == 5) {
         TurnBacklightOff();
-    } else if (arg == 8) {
+    } else if (command == 8) {
         SaveData::EraseSaveFile(0, (char *)func_ov007_020cc0cc(0));
         func_02013c84(0, func_ov007_020cc0cc(0), -1, data_0209caa0);
-    } else if (arg == 9) {
+    } else if (command == 9) {
         SaveData::EraseSaveFile(1, (char *)func_ov007_020cc0cc(1));
         func_02013c84(1, func_ov007_020cc0cc(1), -1, data_0209caa0);
-    } else if (arg == 10) {
+    } else if (command == 10) {
         SaveData::EraseSaveFile(2, (char *)func_ov007_020cc0cc(2));
         func_02013c84(2, func_ov007_020cc0cc(2), -1, data_0209caa0);
-    } else if (arg == 11) {
-        FileSaveData *p = func_ov007_020cc0cc(0);
-        if (func_02013c84(0, p, 1, func_ov007_020cc0cc(1)) == 0)
-            r = 1;
+    } else if (command == 11) {
+        FileSaveData *fileBuffer = func_ov007_020cc0cc(0);
+        if (func_02013c84(0, fileBuffer, 1, func_ov007_020cc0cc(1)) == 0)
+            failed = 1;
         func_02013c84(1, func_ov007_020cc0cc(1), -1, data_0209caa0);
-    } else if (arg == 12) {
-        FileSaveData *p = func_ov007_020cc0cc(0);
-        if (func_02013c84(0, p, 2, func_ov007_020cc0cc(2)) == 0)
-            r = 1;
+    } else if (command == 12) {
+        FileSaveData *fileBuffer = func_ov007_020cc0cc(0);
+        if (func_02013c84(0, fileBuffer, 2, func_ov007_020cc0cc(2)) == 0)
+            failed = 1;
         func_02013c84(2, func_ov007_020cc0cc(2), -1, data_0209caa0);
-    } else if (arg == 13) {
-        FileSaveData *p = func_ov007_020cc0cc(1);
-        if (func_02013c84(1, p, 0, func_ov007_020cc0cc(0)) == 0)
-            r = 1;
+    } else if (command == 13) {
+        FileSaveData *fileBuffer = func_ov007_020cc0cc(1);
+        if (func_02013c84(1, fileBuffer, 0, func_ov007_020cc0cc(0)) == 0)
+            failed = 1;
         func_02013c84(0, func_ov007_020cc0cc(0), -1, data_0209caa0);
-    } else if (arg == 14) {
-        FileSaveData *p = func_ov007_020cc0cc(1);
-        if (func_02013c84(1, p, 2, func_ov007_020cc0cc(2)) == 0)
-            r = 1;
+    } else if (command == 14) {
+        FileSaveData *fileBuffer = func_ov007_020cc0cc(1);
+        if (func_02013c84(1, fileBuffer, 2, func_ov007_020cc0cc(2)) == 0)
+            failed = 1;
         func_02013c84(2, func_ov007_020cc0cc(2), -1, data_0209caa0);
-    } else if (arg == 15) {
-        FileSaveData *p = func_ov007_020cc0cc(2);
-        if (func_02013c84(2, p, 0, func_ov007_020cc0cc(0)) == 0)
-            r = 1;
+    } else if (command == 15) {
+        FileSaveData *fileBuffer = func_ov007_020cc0cc(2);
+        if (func_02013c84(2, fileBuffer, 0, func_ov007_020cc0cc(0)) == 0)
+            failed = 1;
         func_02013c84(0, func_ov007_020cc0cc(0), -1, data_0209caa0);
-    } else if (arg == 16) {
-        FileSaveData *p = func_ov007_020cc0cc(2);
-        if (func_02013c84(2, p, 1, func_ov007_020cc0cc(1)) == 0)
-            r = 1;
+    } else if (command == 16) {
+        FileSaveData *fileBuffer = func_ov007_020cc0cc(2);
+        if (func_02013c84(2, fileBuffer, 1, func_ov007_020cc0cc(1)) == 0)
+            failed = 1;
         func_02013c84(1, func_ov007_020cc0cc(1), -1, data_0209caa0);
-    } else if (arg == 17) {
+    } else if (command == 17) {
         func_ov007_020cc118(0x37, 8);
-    } else if (arg == 18) {
+    } else if (command == 18) {
         func_ov007_020cc118(0x38, 8);
-    } else if (arg == 20) {
-        u8 *sb = (u8 *)_ZN6Memory13operator_new2Ej(0xcc);
-        u32 i;
-        func_ov007_020cc0e4((FileSaveData *)sb);
-        for (i = 0; (s32)i < 3; i++, sb += 0x44) {
-            if (SaveData::ReadFileData(i, (FileSaveData *)sb) == 0)
-                r = 1;
-            func_02013c84(i, sb, -1, data_0209caa0);
-            func_ov007_020cc168(i);
+    } else if (command == 20) {
+        u8 *fileBytes = (u8 *)_ZN6Memory13operator_new2Ej(0xcc);
+        u32 saveSlot;
+        func_ov007_020cc0e4((FileSaveData *)fileBytes);
+        for (saveSlot = 0; (s32)saveSlot < 3; saveSlot++, fileBytes += 0x44) {
+            if (SaveData::ReadFileData(saveSlot, (FileSaveData *)fileBytes) == 0)
+                failed = 1;
+            func_02013c84(saveSlot, fileBytes, -1, data_0209caa0);
+            func_ov007_020cc168(saveSlot);
         }
-    } else if (arg == 21) {
+    } else if (command == 21) {
         if (SaveData::ReadMinigameData((MinigameSaveData *)data_0209cae4) == 0)
-            r = 1;
-    } else if (arg == 22) {
-        s32 i;
-        for (i = 0; i < 3; i++) {
-            FileSaveData *e = func_ov007_020cc0cc(i);
-            if ((e->flags1 & 1) == 0)
-                SaveData::EraseSaveFile(i, (char *)e);
+            failed = 1;
+    } else if (command == 22) {
+        s32 saveSlot;
+        for (saveSlot = 0; saveSlot < 3; saveSlot++) {
+            FileSaveData *fileBuffer = func_ov007_020cc0cc(saveSlot);
+            if ((fileBuffer->flags1 & 1) == 0)
+                SaveData::EraseSaveFile(saveSlot, (char *)fileBuffer);
         }
-    } else if (arg == 23) {
+    } else if (command == 23) {
         SaveData::SaveMinigames((MinigameSaveData *)data_0209cae4);
-    } else if (arg == 19) {
+    } else if (command == 19) {
         Sound::StopLoadedMusic_Layer1(0x3c);
     }
     func_ov007_020cc168(((u8 *)data_0209caa0)[0x328]);
-    return r;
+    return failed;
 }
 
 /* InitResources (key function): engines on, graph callback registered, session seeded. */
 // @symbol _ZN9dScDSMT_c13InitResourcesEv
-s32 dScDSMT_c::InitResources()
-{
+s32 dScDSMT_c::InitResources() {
     if (data_0209f1e0 != 0)
         data_0209b340[1] = 1;
 
@@ -259,8 +256,7 @@ s32 dScDSMT_c::InitResources()
         func_0201a428();
 
     data_0209b340[0x27] = data_0209d6fc;
-    *(volatile u16 *)0x4000304 =
-        (*(volatile u16 *)0x4000304 & 0xfffffdf1) | 0x20e;
+    *(volatile u16 *)0x4000304 = (*(volatile u16 *)0x4000304 & 0xfffffdf1) | 0x20e;
     GX::DispOn();
     *(volatile u32 *)0x4001000 |= 0x10000;
     Enable3dEngines();
@@ -278,8 +274,7 @@ s32 dScDSMT_c::InitResources()
 
 /* CleanupResources: unregister callback, record exit reason, release voice group. */
 // @symbol _ZN9dScDSMT_c16CleanupResourcesEv
-s32 dScDSMT_c::CleanupResources()
-{
+s32 dScDSMT_c::CleanupResources() {
     data_0209d4a8 = 0;
     dScene_c::SetAndStopColorFader();
     data_0209b340[0] = func_ov007_020b6f4c();
@@ -292,8 +287,7 @@ s32 dScDSMT_c::CleanupResources()
 
 /* Behavior: pump the session state machine and dispatch its return code. */
 // @symbol _ZN9dScDSMT_c8BehaviorEv
-s32 dScDSMT_c::Behavior()
-{
+s32 dScDSMT_c::Behavior() {
     int result;
 
     if (data_ov007_02103260 >= 0 && DecIfAbove0_Short(&data_ov007_02104c28) == 0) {
@@ -311,22 +305,22 @@ s32 dScDSMT_c::Behavior()
     }
 
     if ((unsigned int)(result - 3) <= 2) {
-        int idx = 0;
+        int saveSlot = 0;
         if (result == 4) {
-            idx = 1;
+            saveSlot = 1;
         } else if (result == 5) {
-            idx = 2;
+            saveSlot = 2;
         }
-        func_02013c84(idx, data_0209b33c + idx, -1, data_0209caa0);
+        func_02013c84(saveSlot, data_0209b33c + saveSlot, -1, data_0209caa0);
         StartFile(1, 0);
     } else if (result == 6) {
         if (data_0209d524 == 0) {
-            Heap *h1 = (Heap *)func_0201a458();
-            Heap *h2 = h1->SetDefault();
+            Heap *archiveHeap = (Heap *)func_0201a458();
+            Heap *previousHeap = archiveHeap->SetDefault();
             LoadArchive(1);
             LoadTextNarcs();
-            h1->Rescue();
-            h2->SetDefault();
+            archiveHeap->Rescue();
+            previousHeap->SetDefault();
             LoadOverlay((int)&OVERLAY_100_ID);
             LoadOverlay((int)&OVERLAY_102_ID);
         }
@@ -343,26 +337,22 @@ s32 dScDSMT_c::Behavior()
 
 /* Render: forward to the overlay's draw routine. */
 // @symbol _ZN9dScDSMT_c6RenderEv
-s32 dScDSMT_c::Render()
-{
+s32 dScDSMT_c::Render() {
     func_ov007_020b7040(this);
     return 1;
 }
 
 /* OnPendingDestroy: no unwind; the slot exists for dScene_c's teardown. */
 // @symbol _ZN9dScDSMT_c16OnPendingDestroyEv
-void dScDSMT_c::OnPendingDestroy()
-{
-}
+void dScDSMT_c::OnPendingDestroy() {}
 
-/* Fill guest slot `idx` of the download-play record table (bytes into the word-read array). */
+/* Fill the selected save slot's download-play summary in the byte-packed table. */
 // @symbol func_ov007_020cc168
-extern "C" void func_ov007_020cc168(u32 idx)
-{
-    int chr;
-    int i;
-    int j;
-    u8 *rec;
+extern "C" void func_ov007_020cc168(u32 saveSlot) {
+    int highestUnlockedPlusOne;
+    int character;
+    int course;
+    u8 *courseBytes;
 
     if (GetSoundMode() == 0) {
         ((u8 *)data_0209b340)[8] = 1;
@@ -373,66 +363,61 @@ extern "C" void func_ov007_020cc168(u32 idx)
     }
 
     ((u8 *)data_0209b340)[9] = data_0208ee3c[0];
-    data_0209b34b[idx] = (data_0209caa0[1] & 1) != 0;
+    data_0209b34b[saveSlot] = (data_0209caa0[1] & 1) != 0;
 
-    chr = 3;
-    i = 2;
+    highestUnlockedPlusOne = 3;
+    character = 2;
     do {
-        if (SaveData::IsCharacterUnlocked((u32)i)) break;
-        chr--;
-        i--;
-    } while (i >= 0);
-    data_0209b34e[idx] = chr;
-
-    rec = &((u8 *)data_0209b340)[idx * 0xf];
-    for (j = 0; j < 0xf; j++) {
-        rec[0x6b] = IsStarCollected(j, 0) != 0;
-        rec[0x11] = CountStarsCollectedInLevelToDisplay(j) - rec[0x6b];
-        rec[0x3e] = SaveData::GetCoinRecord((u32)j);
-        rec++;
+        if (SaveData::IsCharacterUnlocked((u32)character))
+            break;
+        highestUnlockedPlusOne--;
+        character--;
+    } while (character >= 0);
+    data_0209b34e[saveSlot] = highestUnlockedPlusOne;
+    courseBytes = &((u8 *)data_0209b340)[saveSlot * 0xf];
+    for (course = 0; course < 0xf; course++) {
+        courseBytes[0x6b] = IsStarCollected(course, 0) != 0;
+        courseBytes[0x11] = CountStarsCollectedInLevelToDisplay(course) - courseBytes[0x6b];
+        courseBytes[0x3e] = SaveData ::GetCoinRecord((u32)course);
+        courseBytes++;
     }
 
-    data_0209b3d8[idx] = CountStarsCollectedInLevelToDisplay(0x1d);
+    data_0209b3d8[saveSlot] = CountStarsCollectedInLevelToDisplay(0x1d);
 }
 
 /* Arm the deferred music change Behavior commits. Declines if one is pending. */
 // @symbol func_ov007_020cc118
-extern "C" int func_ov007_020cc118(int a, unsigned int b)
-{
+extern "C" int func_ov007_020cc118(int musicId, unsigned int delayFrames) {
     if (data_ov007_02103260 >= 0) {
         return 0;
     }
-    data_ov007_02103260 = a;
-    data_ov007_02104c28 = (unsigned short)b;
-    Sound::StopLoadedMusic_Layer1(b);
+    data_ov007_02103260 = musicId;
+    data_ov007_02104c28 = (unsigned short)delayFrames;
+    Sound::StopLoadedMusic_Layer1(delayFrames);
     return 1;
 }
 
 /* graphCallback_c slot 0: decline (`mov r0,#0`), against dGraph_c's default 1. */
 // @symbol _ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev
-int dScDSMT_c::graphCallback_c::GraphCallback0()
-{
+int dScDSMT_c::graphCallback_c::GraphCallback0() {
     return 0;
 }
 
 /* graphCallback_c slot 2: hand the callback object to the ov007 routine. */
 // @symbol _ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev
-int dScDSMT_c::graphCallback_c::GraphCallback2()
-{
+int dScDSMT_c::graphCallback_c::GraphCallback2() {
     func_ov007_020b6eb4(this);
     return 0;
 }
 
 /* Install the save-slot buffer pointer. */
 // @symbol func_ov007_020cc0e4
-extern "C" void func_ov007_020cc0e4(FileSaveData *files)
-{
+extern "C" void func_ov007_020cc0e4(FileSaveData *files) {
     data_0209b33c = files;
 }
 
 /* Address of save-slot record `idx` (0x44 stride is in the ROM's mla). */
 // @symbol func_ov007_020cc0cc
-extern "C" FileSaveData *func_ov007_020cc0cc(int idx)
-{
+extern "C" FileSaveData *func_ov007_020cc0cc(int idx) {
     return &data_0209b33c[idx];
 }

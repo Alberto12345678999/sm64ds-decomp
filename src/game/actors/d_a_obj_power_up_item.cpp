@@ -218,7 +218,7 @@ void daObjPowerUpItem_c::BeginOpening()
     ((int *)&pos)[2] = z;
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
         0x102, ((int *)&pos)[0], ((int *)&pos)[1], ((int *)&pos)[2]);
-    func_02012694(0x7d, (const Vector3 *)&mCamSpacePosX);
+    func_02012694(0x7d, &mCamSpacePos);
     mEffectHandle = 0;
     mAngleY = *(short *)((char *)data_0209f318 + 0x17c);
     mWobbleTimer = 0x1b;
@@ -300,7 +300,7 @@ void daObjPowerUpItem_c::StateLaunched()
 // @symbol _ZN18daObjPowerUpItem_c13BeginLaunchedEv
 void daObjPowerUpItem_c::BeginLaunched()
 {
-    func_02012694(0x7c, (const Vector3*)&mCamSpacePosX);
+    func_02012694(0x7c, &mCamSpacePos);
     mEffectHandle = 0;
     mVertAccel = 0xfffff998;
     mTerminalVelocity = -0xf000;
@@ -443,9 +443,15 @@ int daObjPowerUpItem_c::Render()
   unsigned char st = mLifeTimer;
   if (st < 0x2d && (st & 1)) return 1;
   switch (mState) {
-  case FLOWER_STATE_LAUNCHED: mCloseModel.Render((const Vector3 *)&mScaleX); break;
-  case FLOWER_STATE_OPENING: mOpenModel.Render((const Vector3 *)&mScaleX); break;
-  case FLOWER_STATE_RESTING: mOpenModel.Render((const Vector3 *)&mScaleX); break;
+  case FLOWER_STATE_LAUNCHED:
+      mCloseModel.Render(&mScale);
+      break;
+  case FLOWER_STATE_OPENING:
+      mOpenModel.Render(&mScale);
+      break;
+  case FLOWER_STATE_RESTING:
+      mOpenModel.Render(&mScale);
+      break;
   }
   return 1;
 }
@@ -493,8 +499,9 @@ int daObjPowerUpItem_c::InitResources()
     mScaleY = 0xfa0;
     mScaleZ = 0xfa0;
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(((char *)this) + 0x1cc, ((char *)this), 0x32000, 0x64000, 0x800002, 0x8000);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(((char *)this) + 0x200, ((char *)this), 0x3c000, 0x3c000, 0, 0);
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x64000, 0x800002, 0x8000);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x3c000,
+                                                                0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 
     /* ground probe: a ray starting 0x14000 above the flower */

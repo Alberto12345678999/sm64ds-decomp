@@ -22,7 +22,7 @@
  *   form.
  * - dCcAc_c::Init, ModelAnim::SetAnim, DropShadowRadHeight and
  *   Sound::PlaySub stay mangled: by-value Fix12<int> is wall 6az. The
- *   companion Spawn keeps its Vector3 pun (a real Vector3 local changes
+ *   companion Spawn passes mPos itself (a real Vector3 local changes
  *   codegen, unlike the star Spawn's).
  * - Vec3_* helpers, func_020138dc / func_02013a44,
  *   ObjectMessageIDToActualMessageID, IsStarCollectedInCurLevel,
@@ -350,7 +350,7 @@ void daKinopio_c::UpdateModelPose()
 {
     char *c = (char *)this;
     Matrix4x3 *dst;
-    void *actor;
+    dActor_c *actor;
     u32 id;
     int x, y, z;
 
@@ -389,10 +389,10 @@ void daKinopio_c::UpdateModelPose()
             y <<= 3;
             x <<= 3;
             z <<= 3;
-            *(s32 *)((char *)actor + 0x5c) = x;
-            *(s32 *)((char *)actor + 0x60) = y;
-            *(s32 *)((char *)actor + 0x64) = z;
-            *(void **)((char *)actor + 0xc8) = c + 0x194;
+            actor->mPosX = x;
+            actor->mPosY = y;
+            actor->mPosZ = z;
+            actor->mCarryMatrix = &mCapTransform;
         }
     }
 
@@ -468,7 +468,7 @@ int daKinopio_c::Behavior()
         if (data_0209f2f8 == 0x32)
             threshold = 0x1f4000;
 
-        Vector3 *psrc = (Vector3 *)&player->mPosX;
+        Vector3 *psrc = &player->mPos;
         Vector3 playerPos;
         playerPos.x = psrc->x;
         playerPos.y = psrc->y;
@@ -584,11 +584,11 @@ int daKinopio_c::InitResources()
             Player *player = ClosestPlayer();
             if (player != 0) {
                 u32 k = 0xd;
-                u8 character = *(u8 *)((char *)player + 0x6d9);
+                u8 character = player->mCharacter;
                 s8 area = mAreaId;
                 s16 m1 = -1;
-                void *spawned = dActor_c::Spawn(
-                    0x10d, k | ((u32)character << 8), *(Vector3 *)&mPosX, 0, area, m1);
+                void *spawned =
+                    dActor_c::Spawn(0x10d, k | ((u32)character << 8), mPos, 0, area, m1);
                 if (spawned != 0)
                     mCapUniqueID = *(s32 *)((char *)spawned + 4);
             }

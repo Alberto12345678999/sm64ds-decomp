@@ -194,7 +194,7 @@ void daObjPile_c::OnGroundPounded(dActor_c &other)
         return;
     if (mAttackCooldown)
         return;
-    Sound::PlayBank3(0x62, *(const Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x62, mCamSpacePos);
     int f = 0;
     if (other.param1 == 2 || ((Player &)other).mIsMega != 0)
         f = 1;

@@ -5482,9 +5482,8 @@ of 191 words differing: the 64-bit promotion perturbs the surrounding schedule.
 REACH FOR THE PLAIN REDUNDANT CAST FIRST, NOT CVCAST -- added 2026-09-09, run link100
 lane MATCH3B. CVCAST reads well and is the one `tools/delaunder.py` re-tests
 automatically (idiom name CVCAST), but it spells the fix with a `volatile` token, and
-`tools/tiers.py`'s CONVERTED classifier scores a bare `volatile` object or cast
-round-trip as a MATCH HACK (the regex is `\bvolatile\b(?![\s\w:]*\*)`, tools/tiers.py
-:164; it does not distinguish "steers codegen" from "the only way to touch this piece of
+the retired CONVERTED classifier scored a bare `volatile` object or cast
+round-trip as a MATCH HACK (it did not distinguish "steers codegen" from "the only way to touch this piece of
 hardware" -- a pointer-to-volatile like `(volatile Obj *)&x` reads as MMIO and is exempt,
 a volatile-then-discard cast on a plain scalar is not, and PR #2523 failed the converted
 ratchet on exactly this reading on all three sites below). A same-type redundant cast
@@ -8015,10 +8014,11 @@ was the right axis; the answer was the parameter's type class inside the definit
 byte gate cannot see through the mangled name. The four callee signatures were inert here (the
 body was already exact).
 
-**Cost and shape.** The .cpp gives way to a .c: the file scores real_name / no_raw_offset /
-no_unk_field / no_codegen_trick but fails no_mangled_refs (the four callees through their
-mangled names), so the CONVERTED identity leaves the baseline through the ratchet's own
-`--update --reason` road and the trade is recorded in config/converted-backslide-exceptions.jsonl.
+**Cost and shape.** The .cpp gives way to a .c: the file uses real names and no raw
+offsets or `unk_` fields, but calls the four callees through their
+mangled names, so under the retired CONVERTED tier its identity left the baseline
+through the ratchet's own `--update --reason` road and the trade was recorded in
+the backslide-exceptions ledger.
 Byte-match outranks readability (the ratchet's own docstring). The three unscoped pragma offs
 stay load-bearing (6ay, CRK-N). A delinks entry for 0x02020994..0x02021024 is added: the
 NONMATCHING draft never had one.

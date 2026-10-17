@@ -47,6 +47,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 import match as M          # noqa: E402
 import relocs as R         # noqa: E402
+import tu_manifest as TUM  # noqa: E402
 # reverify_corpus is imported lazily inside winning_object(): it pulls in the ROM
 # and compile harness, and importing it at top level would create a cycle for
 # gate code (match/reverify) that wants only the pure checker below.
@@ -55,15 +56,98 @@ import relocs as R         # noqa: E402
 _FUNC_RE = re.compile(r"func_(?:ov(\d+)_)?([0-9a-fA-F]{8})\b")
 
 
-def build_name_index():
-    """name -> (module, addr) from every checked-in symbols.txt.
+def _overlay_id_constants(config):
+    """The absolute OVERLAY_<id>_ID values dsd emits from configured overlays.
 
+    These are linker values, not ROM addresses. Read the configured numeric IDs,
+    never infer an arbitrary constant from an unresolved import's spelling.
+    """
+    # This worker intentionally has no YAML dependency. Accept the generated dsd
+    # block form only: `overlays:`, `  - id: <decimal u32>`, then flat four-space
+    # metadata fields. Blank lines and whitespace-separated comments are allowed.
+    # Reject other YAML forms rather than partially extracting plausible IDs.
+    # Also bound skipped fields to plain generated scalars: multiline YAML
+    # strings must never masquerade as a root overlays block. dsd still owns
+    # semantic validation of the unrelated build/module settings.
+    config = pathlib.Path(config)
+    if not config.is_file():
+        return {}
+    out, top_keys, row_keys = {}, set(), set()
+    in_overlays = False
+    block_overlays = False
+    metadata = {"name", "object", "hash", "delinks", "symbols", "relocations"}
+    scalar = r"[A-Za-z0-9_./][A-Za-z0-9_./-]*"
+    for lineno, raw in enumerate(config.read_text(encoding="utf-8").splitlines(), 1):
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        line = re.sub(r"\s+#.*$", "", raw).rstrip()
+        if "\t" in line:
+            raise ValueError(f"unsupported configured overlay YAML at line {lineno}: tabs")
+        if not line.startswith(" "):
+            top = re.fullmatch(r"([A-Za-z_][A-Za-z_0-9]*):(?: +(.*))?", line)
+            if not top:
+                raise ValueError(f"unsupported configured overlay YAML at line {lineno}")
+            key, value = top.groups()
+            if value not in (None, "[]") and not re.fullmatch(scalar, value):
+                raise ValueError(f"unsupported configured overlay YAML scalar at line {lineno}")
+            if key in top_keys:
+                raise ValueError(f"duplicate configured YAML key: {key}")
+            top_keys.add(key)
+            if in_overlays and block_overlays and not out:
+                raise ValueError("configured overlays must be a list, not an empty block")
+            in_overlays = key == "overlays"
+            if in_overlays:
+                if value not in (None, "[]"):
+                    raise ValueError("unsupported configured overlay YAML: expected block list or []")
+                block_overlays = value is None
+            continue
+        if not in_overlays:
+            if not re.fullmatch(r"(?:  (?:- )?|    )[A-Za-z_][A-Za-z_0-9]*: " + scalar, line):
+                raise ValueError(f"unsupported configured YAML field at line {lineno}")
+            continue
+        if not block_overlays:
+            raise ValueError(f"unsupported configured overlay YAML after [] at line {lineno}")
+        row = re.fullmatch(r"  - id: (0|[1-9][0-9]*)", line)
+        if row:
+            ident = int(row.group(1))
+            if ident > 0xffffffff:
+                raise ValueError(f"invalid configured overlay ID: {ident}")
+            name = f"OVERLAY_{ident}_ID"
+            if name in out:
+                raise ValueError(f"duplicate configured overlay ID: {ident}")
+            out[name] = ("arm9", ident)
+            row_keys = {"id"}
+            continue
+        field = re.fullmatch(r"    ([A-Za-z_][A-Za-z_0-9]*): ([A-Za-z0-9_./-]+)", line)
+        if field and row_keys:
+            key = field.group(1)
+            if key in row_keys:
+                raise ValueError(f"duplicate configured overlay field: {key}")
+            if key in metadata:
+                row_keys.add(key)
+                continue
+        raise ValueError(f"unsupported configured overlay YAML at line {lineno}: "
+                         "expected an id-first block row with flat scalar metadata")
+    if in_overlays and block_overlays and not out:
+        raise ValueError("configured overlays must be a list, not an empty block")
+    return out
+
+
+def build_name_index():
+    """name -> (module, value), including configured absolute overlay ID constants.
+
+    ROM addresses come from checked-in symbols.txt; overlay IDs come from the
+    same config.yaml inputs dsd uses to generate the linker command file.
     Names are not globally unique (overlays reuse them), so this is a best-effort
     fallback used only for symbols whose address is NOT encoded in the name."""
     idx = {}
     for module, path in R.iter_symbol_files(include_itcm_dtcm=True):
         for name, (mod, addr) in R.iter_syms_pairs(path, module):
             idx.setdefault(name, (mod, addr))
+    for name, value in _overlay_id_constants(REPO / "config/arm9/config.yaml").items():
+        if name in idx and idx[name] != value:
+            raise ValueError(f"configured symbol conflicts with linker constant {name}")
+        idx[name] = value
     return idx
 
 
@@ -219,6 +303,40 @@ def object_reloc_dests(obj, func, name_index, vt_form="raw"):
     return dests, size
 
 
+def function_rename_homes():
+    """Full unique-home facts, never the best-effort first-match name index."""
+    homes = {}
+    for path, module in R.module_universe():
+        for row in TUM.function_rename_registry_rows(path.read_text(encoding="utf-8"), R.normalize_module(module)):
+            homes.setdefault(row["symbol"], []).append(row)
+    return homes
+
+
+def validated_defined_symbol_rename_plan(obj, entry, homes=None):
+    """Shared pure admission plus this route's explicit ELF/registry read inputs."""
+    rows = entry.get("defined_symbol_renames") or []
+    needs_function = isinstance(rows, list) and any(isinstance(r, dict) and "owned_function" in r for r in rows)
+    if not needs_function:
+        return TUM.defined_symbol_rename_plan(entry)
+    try:
+        elf = ELFFile(io.BytesIO(obj))
+        if elf.elfclass != 32 or not elf.little_endian or elf["e_machine"] != "EM_ARM" or elf["e_type"] != "ET_REL":
+            return {}, [], ["owned function rename requires an ARM32 little-endian relocatable object"]
+        table = elf.get_section_by_name(".symtab")
+        if table is None:
+            return {}, [], ["owned function rename requires a symbol table"]
+        symbols = [{"ordinal": i, "name": s.name, "type": s["st_info"]["type"],
+                    "binding": s["st_info"]["bind"], "size": s["st_size"],
+                    "value": s["st_value"], "section": s["st_shndx"]}
+                   for i, s in enumerate(table.iter_symbols())]
+        sections = {i: {"type": s["sh_type"], "flags": s["sh_flags"], "size": s["sh_size"]}
+                    for i, s in enumerate(elf.iter_sections())}
+        return TUM.defined_symbol_rename_plan(entry, symbols, sections,
+                                            function_rename_homes() if homes is None else homes)
+    except (ValueError, TypeError, KeyError, OSError) as exc:
+        return {}, [], [f"owned function rename inputs refused: {exc}"]
+
+
 _RENAME_POLICIES = None
 
 
@@ -238,7 +356,10 @@ def _defined_symbol_rename_policies():
             funcs = frozenset(row["symbol"] for row in entry.get("functions") or []
                               if isinstance(row, dict) and row.get("symbol"))
             if mapping and funcs:
-                policies.append((funcs, mapping))
+                if any(isinstance(row, dict) and "owned_function" in row for row in rows):
+                    policies.append((funcs, mapping, entry))
+                else:
+                    policies.append((funcs, mapping))
         _RENAME_POLICIES = policies
     return _RENAME_POLICIES
 
@@ -264,11 +385,23 @@ def _with_manifest_renames(obj):
                    if s.name and s["st_shndx"] != "SHN_UNDEF"}
     except Exception:                                             # noqa: BLE001
         return obj
-    for funcs, mapping in policies:
-        if funcs <= defined and set(mapping) <= defined:
-            import objisolate as OI
-            out, _plan = OI.rename_defined_symbols(obj, mapping)
-            return obj if out is None else out
+    for policy in policies:
+        funcs, mapping = policy[:2]
+        if len(policy) == 3:
+            entry = policy[2]
+            expected = TUM.defined_function_preimage(entry, mapping)
+            # A canonical object passes through unchanged; TB deliberately still
+            # refuses missing raw source names when explicitly asked to prepare it.
+            if not expected <= defined or not set(mapping) <= defined:
+                continue
+            checked_mapping, _requested, reasons = validated_defined_symbol_rename_plan(obj, entry)
+            if reasons or checked_mapping != mapping:
+                return obj
+        elif not funcs <= defined or not set(mapping) <= defined:
+            continue
+        import objisolate as OI
+        out, _plan = OI.rename_defined_symbols(obj, mapping)
+        return obj if out is None else out
     return obj
 
 

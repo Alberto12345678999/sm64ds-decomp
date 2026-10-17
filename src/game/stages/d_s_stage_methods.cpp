@@ -47,11 +47,10 @@
 // - func_0202a850 keeps `#pragma opt_dead_assignments off` around its pair of
 //   stores the ROM writes twice.
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum dScStage_c_AssetId {
-    ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a
-};
+enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a };
 
 #include "types.h"
+#include "dFdBrightness_c.h"
 #include "dScStage_c.h"
 #include "Timer.h"
 #include "decl_common.h"
@@ -82,7 +81,19 @@ enum dScStage_c_AssetId {
 #include "Heap.h"
 
 struct OamAttr;
-struct Matrix2x2;
+struct Matrix2x2 {
+    int m[4];
+};
+
+// Partial view of the graph callback object, not the playable scene.
+struct StageGraphCallbackView {
+    void *vtable;
+    Matrix2x2 matrix;
+    s32 originX;
+    s32 originY;
+    s32 targetX;
+    s32 targetY;
+};
 
 /* TU-local overlay of the per-controller input records at data_0209f498,
  * 0x18 apart. CheckInput fills them from the pad and the touch screen each
@@ -146,7 +157,8 @@ void _ZN7Message7DisplayEj(int m);
 void _ZN7Message11DisplayTextEt(int m);
 // local extern: Message.h's u16 parameter changes the sign-extended (s16) argument codegen (PS_Update differs).
 void _ZN7Message22DisplayOptionsMenuTextEt(int m);
-bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
+bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int fix,
+                                     int e);
 unsigned int _ZN5Sound12PlayBank3_2DEj(unsigned int a);
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a);
 // local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
@@ -154,7 +166,8 @@ void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
 void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
 void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, unsigned int a, unsigned int b);
 void _ZN3OAM14BOUNCING_ARROWE(void);
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc, int fx, int fy, int rot, int mode);
+void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc,
+                                                 int fx, int fy, int rot, int mode);
 int __aeabi_idiv(int a, int b);
 
 extern int data_0208ee44;
@@ -293,16 +306,6 @@ struct LevelInfo {
     LevelTexAnim *entries;
     unsigned char count;
 };
-struct UnkVis {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual int v5();
-    virtual void v6();
-    virtual int v7();
-};
 
 extern "C" {
 extern int OVERLAY_60_ID;
@@ -386,7 +389,7 @@ extern MinimapDesc data_0209f3c8;
 extern int data_0209f3e8[];
 extern int data_0209f40c[];
 extern u32 data_0209f4f8[][16];
-extern UnkVis *data_0209f5bc;
+extern dFdBrightness_c *data_0209f5bc;
 extern unsigned short data_0209f5e8;
 extern int data_0209fc48;
 extern u8 data_0209fcc8;
@@ -530,13 +533,10 @@ void SetMusic(u32 player, u32 music);
  * delete -- declared there rather than on dBase_c, because mwcc only inlines
  * it when found on the class itself or its IMMEDIATE base, which for
  * dScStage_c is dScene_c. One definition emits both. */
-dScStage_c::~dScStage_c()
-{
-}
+dScStage_c::~dScStage_c() {}
 
 // @symbol _ZN10dScStage_c9VE_UpdateEv
-void dScStage_c::VE_Update()
-{
+void dScStage_c::VE_Update() {
     u8 t = data_0209f244;
     u8 t2;
     u8 s;
@@ -561,16 +561,18 @@ void dScStage_c::VE_Update()
         int off2;
         u8 a;
         if (gTouchHeld[idx * 4]) {
-            if (gTouchEdge[off]) ok = 1;
+            if (gTouchEdge[off])
+                ok = 1;
         }
         if (ok == 0) {
-            if (IsButtonInputValid() == 0) return;
+            if (IsButtonInputValid() == 0)
+                return;
         }
         idx2 = gActivePlayerSlot;
         a = gTouchX[idx2 * 4];
         off2 = idx2 * 4;
-        if (((u8)(a - 8) < 0xf0 && (u8)(gTouchY[off2] - 0x38) < 0x20)
-            || IsButtonInputValid() != 0) {
+        if (((u8)(a - 8) < 0xf0 && (u8)(gTouchY[off2] - 0x38) < 0x20) ||
+            IsButtonInputValid() != 0) {
             if (data_0209f2e0 == 0) {
                 data_0209f244 = data_0208ee44 << 2;
             }
@@ -580,13 +582,16 @@ void dScStage_c::VE_Update()
             data_0209f290 = 1;
             data_ov002_02111150 = 1;
             func_02012790(0x9a);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0xb0) return;
+            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0xb0)
+                return;
             return;
         } else {
             u8 idx3 = gActivePlayerSlot;
             int off3 = idx3 * 4;
-            if ((u8)(gTouchX[idx3 * 4] - 8) >= 0xf0) return;
-            if ((u8)(gTouchY[off3] - 0x68) >= 0x20) return;
+            if ((u8)(gTouchX[idx3 * 4] - 8) >= 0xf0)
+                return;
+            if ((u8)(gTouchY[off3] - 0x68) >= 0x20)
+                return;
             if (data_0209f2e0 == 1) {
                 data_0209f244 = data_0208ee44 << 2;
             }
@@ -596,7 +601,8 @@ void dScStage_c::VE_Update()
             data_0209f290 = 1;
             data_ov002_02111150 = 1;
             func_02012790(0x9b);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0) return;
+            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                return;
             return;
         }
     }
@@ -616,8 +622,7 @@ void dScStage_c::VE_Update()
     }
 }
 // @symbol _ZN10dScStage_c7VE_InitEv
-void dScStage_c::VE_Init()
-{
+void dScStage_c::VE_Init() {
     unsigned int a;
     unsigned int b;
 
@@ -653,24 +658,20 @@ void dScStage_c::RenderBouncingArrows() {
         r4 = (data_020a0db0 & 8) ? 0xae : 0xb0;
     }
     A = data_0209f2c4;
-    if (A == 0 && data_0209f284 != 0) {
-        int t = (data_0209f2d8 == 1);
-        if (t == 0) goto draw1;
+    if ((A == 0 && data_0209f284 != 0 && (int)(data_0209f2d8 == 1) == 0) ||
+        (A != 0 && (unsigned char)(data_0209f248 + 0xf7) <= 2u)) {
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)_ZN3OAM14BOUNCING_ARROWE, 0x40, r4,
+                                                    -1, -1, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)_ZN3OAM14BOUNCING_ARROWE, 0x80, r4,
+                                                    -1, -1, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)_ZN3OAM14BOUNCING_ARROWE, 0xc0, r4,
+                                                    -1, -1, 0x1000, 0x1000, 0, -1);
+    } else {
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)_ZN3OAM14BOUNCING_ARROWE, 0xc, r4,
+                                                    -1, -1, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)_ZN3OAM14BOUNCING_ARROWE, 0xf4, r4,
+                                                    -1, -1, 0x1000, 0x1000, 0, -1);
     }
-    if (A == 0) goto draw2;
-    {
-        unsigned char d = data_0209f248;
-        if ((unsigned char)(d + 0xf7) > 2u) goto draw2;
-    }
-draw1:
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0x40, r4, -1, -1, 0x1000, 0x1000, 0, -1);
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0x80, r4, -1, -1, 0x1000, 0x1000, 0, -1);
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0xc0, r4, -1, -1, 0x1000, 0x1000, 0, -1);
-    return;
-draw2:
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0xc, r4, -1, -1, 0x1000, 0x1000, 0, -1);
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0xf4, r4, -1, -1, 0x1000, 0x1000, 0, -1);
-    return;
 }
 // @symbol _ZN10dScStage_c9LC_RenderEv
 void dScStage_c::LC_Render() {
@@ -682,47 +683,63 @@ void dScStage_c::LC_Render() {
         return;
 
     {
-        void* p = (void*)LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
-        _ZN2GX11LoadOBJPlttEPKvjj((void*)((char*)p + (((unsigned int)data_0209f2a8 >> 2) << 5)), 0x1c0, 0x10);
+        void *p = (void *)LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
+        _ZN2GX11LoadOBJPlttEPKvjj((void *)((char *)p + (((unsigned int)data_0209f2a8 >> 2) << 5)),
+                                  0x1c0, 0x10);
         Deallocate(p);
     }
 
     if (SublevelToLevel(data_02092124) >= 0xf && SublevelToLevel(data_02092124) < 0x15) {
         if (GetOwnerLanguage() == 5)
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cea8, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cea8, 0x80, 0x38,
+                                                        -1, -1, 0x1000, 0x1000, 0, -1);
         else if (GetOwnerLanguage() == 4)
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cee8, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cee8, 0x80, 0x38,
+                                                        -1, -1, 0x1000, 0x1000, 0, -1);
         else if (GetOwnerLanguage() == 3)
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf28, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cf28, 0x80, 0x38,
+                                                        -1, -1, 0x1000, 0x1000, 0, -1);
         else if (GetOwnerLanguage() == 2)
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf78, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cf78, 0x80, 0x38,
+                                                        -1, -1, 0x1000, 0x1000, 0, -1);
         else
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cb14, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cb14, 0x80, 0x38,
+                                                        -1, -1, 0x1000, 0x1000, 0, -1);
     }
 
     if (data_0209f2b0 != 0) {
         if (data_0209f20c != 0 && SublevelToLevel(data_02092124) >= 0xf) {
             if (GetOwnerLanguage() == 5)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ce90, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210ce90, 0x80,
+                                                            0x70, -1, -1, 0x1000, 0x1000, 0, -1);
             else if (GetOwnerLanguage() == 4)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ced0, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210ced0, 0x80,
+                                                            0x70, -1, -1, 0x1000, 0x1000, 0, -1);
             else if (GetOwnerLanguage() == 3)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf08, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cf08, 0x80,
+                                                            0x70, -1, -1, 0x1000, 0x1000, 0, -1);
             else if (GetOwnerLanguage() == 2)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cfa0, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cfa0, 0x80,
+                                                            0x70, -1, -1, 0x1000, 0x1000, 0, -1);
             else
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210caf4, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210caf4, 0x80,
+                                                            0x70, -1, -1, 0x1000, 0x1000, 0, -1);
         } else {
             if (GetOwnerLanguage() == 5)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ce90, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210ce90, 0x80,
+                                                            0x80, -1, -1, 0x1000, 0x1000, 0, -1);
             else if (GetOwnerLanguage() == 4)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ced0, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210ced0, 0x80,
+                                                            0x80, -1, -1, 0x1000, 0x1000, 0, -1);
             else if (GetOwnerLanguage() == 3)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf08, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cf08, 0x80,
+                                                            0x80, -1, -1, 0x1000, 0x1000, 0, -1);
             else if (GetOwnerLanguage() == 2)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cfa0, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210cfa0, 0x80,
+                                                            0x80, -1, -1, 0x1000, 0x1000, 0, -1);
             else
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210caf4, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void *)&data_ov002_0210caf4, 0x80,
+                                                            0x80, -1, -1, 0x1000, 0x1000, 0, -1);
         }
     }
 
@@ -730,8 +747,7 @@ void dScStage_c::LC_Render() {
         RenderBouncingArrows();
 }
 // @symbol _ZN10dScStage_c9LC_UpdateEv
-void dScStage_c::LC_Update()
-{
+void dScStage_c::LC_Update() {
     if (data_0209f244 != 0) {
         data_0209f244 = data_0209f244 - data_0208ee44;
         if (data_0209f244 == 0)
@@ -846,56 +862,41 @@ void dScStage_c::LC_Update()
         }
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x28) < 0x20)
-                goto sel3_0;
-            if (data_0209f2e0 == 0 && IsButtonInputValid() != 0)
-                goto sel3_0;
-            goto chk3_1;
-        sel3_0:
-            if (data_0209f2e0 == 0)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 0;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            func_02012790(0x57);
-            data_0209f2d4 = 4;
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x28) < 0x20) ||
+                (data_0209f2e0 == 0 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 0)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 0;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                func_02012790(0x57);
+                data_0209f2d4 = 4;
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk3_1:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x50) < 0x20)
-                goto sel3_1;
-            if (data_0209f2e0 == 1 && IsButtonInputValid() != 0)
-                goto sel3_1;
-            goto chk3_2;
-        sel3_1:
-            if (data_0209f2e0 == 1)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 1;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            func_02012790(0x58);
-            data_0209f2d4 = 4;
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x50) < 0x20) ||
+                (data_0209f2e0 == 1 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 1)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 1;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                func_02012790(0x58);
+                data_0209f2d4 = 4;
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk3_2:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x78) < 0x20)
-                goto sel3_2;
-            if (data_0209f2e0 != 2)
+            if (!((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x78) < 0x20) &&
+                (data_0209f2e0 != 2 || IsButtonInputValid() == 0))
                 return;
-            if (IsButtonInputValid() == 0)
-                return;
-        sel3_2:
             if (data_0209f2e0 == 2)
                 data_0209f244 = data_0208ee44 << 2;
             data_0209f2e0 = 2;
@@ -958,106 +959,128 @@ void dScStage_c::LC_Update()
 }
 // @symbol _ZN10dScStage_c16CheckCameraInputEv
 #pragma opt_strength_reduction off
-void dScStage_c::CheckCameraInput()
-{
-    CamInput* cam = (CamInput *)data_0209f498;
+void dScStage_c::CheckCameraInput() {
+    CamInput *cam = (CamInput *)data_0209f498;
     if ((u8)(data_0209f294 | (data_0209f2c4 | data_0209f20c)) == 0 && data_0209d660 == 0) {
         int i = 0;
         int n1 = data_0209f21c;
         if (n1 > 0) {
-        u8* st = data_0209f350;
-        do {
-            cam->pressed = 0;
-            cam->held = 0;
-            if (((TouchInfo *)gTouchHeld)[i].held != 0) {
-                if (*(int *)((u8 *)data_0209f318 + 0x154) & 0x1000) {
-                    u8 state = *((u8*)data_0209f498 + i * 0x18 + 0x16);
-                    if ((state == 0 && ((((TouchInfo *)gTouchHeld)[i].x <= 0x58 && ((TouchInfo *)gTouchHeld)[i].y >= 0x8a) || (((TouchInfo *)gTouchHeld)[i].x >= 0xa7 && ((TouchInfo *)gTouchHeld)[i].y >= 0x8a)))
-                        || (state == 2 && ((TouchInfo *)gTouchHeld)[i].x >= 0xa7 && ((TouchInfo *)gTouchHeld)[i].y >= 0x9a)) {
-                        if (((((TouchInfo *)gTouchHeld)[i].held && ((TouchInfo *)gTouchHeld)[i].edge) ? 1 : 0) || *st == 1) {
-                            u16 mask;
-                            if ((state == 0 && ((TouchInfo *)gTouchHeld)[i].x < 0x2b) || (((TouchInfo *)gTouchHeld)[i].x >= 0xa7 && ((TouchInfo *)gTouchHeld)[i].x < 0xd1))
-                                mask = 0x200;
-                            else if ((state == 0 && ((TouchInfo *)gTouchHeld)[i].x >= 0x30 && ((TouchInfo *)gTouchHeld)[i].x <= 0x58) || ((TouchInfo *)gTouchHeld)[i].x >= 0xd6)
-                                mask = 0x100;
-                            else {
-                                mask = data_0209f368[i];
-                                if (mask == 0) mask = 0x200;
+            u8 *st = data_0209f350;
+            do {
+                cam->pressed = 0;
+                cam->held = 0;
+                if (((TouchInfo *)gTouchHeld)[i].held != 0) {
+                    if (*(int *)((u8 *)data_0209f318 + 0x154) & 0x1000) {
+                        u8 state = *((u8 *)data_0209f498 + i * 0x18 + 0x16);
+                        if ((state == 0 && ((((TouchInfo *)gTouchHeld)[i].x <= 0x58 &&
+                                             ((TouchInfo *)gTouchHeld)[i].y >= 0x8a) ||
+                                            (((TouchInfo *)gTouchHeld)[i].x >= 0xa7 &&
+                                             ((TouchInfo *)gTouchHeld)[i].y >= 0x8a))) ||
+                            (state == 2 && ((TouchInfo *)gTouchHeld)[i].x >= 0xa7 &&
+                             ((TouchInfo *)gTouchHeld)[i].y >= 0x9a)) {
+                            if (((((TouchInfo *)gTouchHeld)[i].held &&
+                                  ((TouchInfo *)gTouchHeld)[i].edge)
+                                     ? 1
+                                     : 0) ||
+                                *st == 1) {
+                                u16 mask;
+                                if ((state == 0 && ((TouchInfo *)gTouchHeld)[i].x < 0x2b) ||
+                                    (((TouchInfo *)gTouchHeld)[i].x >= 0xa7 &&
+                                     ((TouchInfo *)gTouchHeld)[i].x < 0xd1))
+                                    mask = 0x200;
+                                else if ((state == 0 && ((TouchInfo *)gTouchHeld)[i].x >= 0x30 &&
+                                          ((TouchInfo *)gTouchHeld)[i].x <= 0x58) ||
+                                         ((TouchInfo *)gTouchHeld)[i].x >= 0xd6)
+                                    mask = 0x100;
+                                else {
+                                    mask = data_0209f368[i];
+                                    if (mask == 0)
+                                        mask = 0x200;
+                                }
+                                if ((((TouchInfo *)gTouchHeld)[i].held &&
+                                     ((TouchInfo *)gTouchHeld)[i].edge)
+                                        ? 1
+                                        : 0)
+                                    *(u16 *)(((int)cam + 6)) |= mask;
+                                else
+                                    *(u16 *)(((int)cam + 6)) |= mask & (mask ^ data_0209f368[i]);
+                                data_0209f368[i] = mask;
+                                *(u16 *)(((int)cam + 4)) |= mask;
+                                *st = 1;
                             }
-                            if ((((TouchInfo *)gTouchHeld)[i].held && ((TouchInfo *)gTouchHeld)[i].edge) ? 1 : 0)
-                                *(u16*)(((int)cam + 6)) |= mask;
-                            else
-                                *(u16*)(((int)cam + 6)) |= mask & (mask ^ data_0209f368[i]);
-                            data_0209f368[i] = mask;
-                            *(u16*)(((int)cam + 4)) |= mask;
-                            *st = 1;
-                        }
-                    } else if (*st == 1) {
-                        *st = 0;
-                        data_0209f368[i] = 0;
-                    }
-                }
-            } else {
-                if (*st == 1) *st = 0;
-                data_0209f368[i] = 0;
-            }
-            {
-                u8 state2 = *((u8*)data_0209f498 + i * 0x18 + 0x16);
-                if (state2 != 0) {
-                    if (((*((u8*)gTouchHeld + i * 4) && ((TouchInfo *)gTouchHeld)[i].edge) ? 1 : 0)
-                        && ((state2 == 1 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd7 && ((TouchInfo *)gTouchHeld)[i].y >= 0x8d)
-                            || (state2 == 2 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd7 && ((TouchInfo *)gTouchHeld)[i].y >= 0x73 && ((TouchInfo *)gTouchHeld)[i].y < 0x97))) {
-                        data_ov002_02111180 = 0x10;
-                        *(u16*)(((int)cam + 6)) |= 0x8000;
-                        *st = 2;
-                        cam->touching = 0;
-                    } else if (*st == 2) {
-                        if ((state2 == 1 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd5 && ((TouchInfo *)gTouchHeld)[i].y >= 0x8d)
-                            || (state2 == 2 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd5 && ((TouchInfo *)gTouchHeld)[i].y >= 0x73 && ((TouchInfo *)gTouchHeld)[i].y < 0x97)) {
-                            cam->touching = 0;
-                        } else {
+                        } else if (*st == 1) {
                             *st = 0;
+                            data_0209f368[i] = 0;
+                        }
+                    }
+                } else {
+                    if (*st == 1)
+                        *st = 0;
+                    data_0209f368[i] = 0;
+                }
+                {
+                    u8 state2 = *((u8 *)data_0209f498 + i * 0x18 + 0x16);
+                    if (state2 != 0) {
+                        if (((*((u8 *)gTouchHeld + i * 4) && ((TouchInfo *)gTouchHeld)[i].edge)
+                                 ? 1
+                                 : 0) &&
+                            ((state2 == 1 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd7 &&
+                              ((TouchInfo *)gTouchHeld)[i].y >= 0x8d) ||
+                             (state2 == 2 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd7 &&
+                              ((TouchInfo *)gTouchHeld)[i].y >= 0x73 &&
+                              ((TouchInfo *)gTouchHeld)[i].y < 0x97))) {
+                            data_ov002_02111180 = 0x10;
+                            *(u16 *)(((int)cam + 6)) |= 0x8000;
+                            *st = 2;
+                            cam->touching = 0;
+                        } else if (*st == 2) {
+                            if ((state2 == 1 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd5 &&
+                                 ((TouchInfo *)gTouchHeld)[i].y >= 0x8d) ||
+                                (state2 == 2 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd5 &&
+                                 ((TouchInfo *)gTouchHeld)[i].y >= 0x73 &&
+                                 ((TouchInfo *)gTouchHeld)[i].y < 0x97)) {
+                                cam->touching = 0;
+                            } else {
+                                *st = 0;
+                            }
                         }
                     }
                 }
-            }
-            i++; cam++; st++;
-        } while (i < data_0209f21c);
+                i++;
+                cam++;
+                st++;
+            } while (i < data_0209f21c);
         }
     } else {
         int i = 0;
-        u8* st;
+        u8 *st;
         int n = data_0209f21c;
         if (n > 0) {
-        st = data_0209f350;
-        do {
-            cam->pressed = 0;
-            cam->held = 0;
-            *st = 0;
-            i++; cam++; st++;
-        } while (i < n);
+            st = data_0209f350;
+            do {
+                cam->pressed = 0;
+                cam->held = 0;
+                *st = 0;
+                i++;
+                cam++;
+                st++;
+            } while (i < n);
         }
     }
 }
 #pragma opt_strength_reduction on
 // @symbol _ZN10dScStage_c12RenderNumberEhiibi
-void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5)
-{
+void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5) {
     int leading = 0;
     Matrix2x2 *mtx = 0;
     int i;
 
-    for (i = 0; i < 3; i++)
-    {
+    for (i = 0; i < 3; i++) {
         int digit = __aeabi_idiv(num, data_020755b8[i]);
-        if (digit != 0 || leading != 0 || i == 2)
-        {
-            if (b == 0)
-            {
+        if (digit != 0 || leading != 0 || i == 2) {
+            if (b == 0) {
                 OAM::Render(true, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, mtx);
-            }
-            else
-            {
+            } else {
                 OAM::Render(false, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, 0);
             }
             leading = 1;
@@ -1067,17 +1090,17 @@ void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5)
     }
 }
 // @symbol _ZN10dScStage_c9PS_RenderEv
-void dScStage_c::PS_Render()
-{
-    if (func_02029408() != 0 && data_02092144[data_0209f250] != 0 &&
-        data_0209f248 != 0xb && data_0209f248 != 0xe && data_0209f248 != 0xf &&
+void dScStage_c::PS_Render() {
+    if (func_02029408() != 0 && data_02092144[data_0209f250] != 0 && data_0209f248 != 0xb &&
+        data_0209f248 != 0xe && data_0209f248 != 0xf &&
         ((unsigned int)data_0209f248 < 7U || (unsigned int)data_0209f248 > 8U)) {
         dScStage_c::RenderBouncingArrows();
     }
 
     int r0v = (data_0209f2d8 == 1);
     if (r0v != 0 && data_0209fc68 == 0) {
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM8VS_PAUSEE, 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM8VS_PAUSEE, 0x80, 0x60, -1, -1,
+                                                    0x1000, 0x1000, 0, -1);
     } else if (data_0209f248 == 1 ||
                (SublevelToLevel(data_0209f2f8) == 0x1d &&
                 ((unsigned int)data_0209f248 < 7U || (unsigned int)data_0209f248 > 8U))) {
@@ -1094,17 +1117,21 @@ void dScStage_c::PS_Render()
         }
         if (data_0209f248 == 1 && data_0209f2f0 == 0) {
             if (data_0209f238 == 1) {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x12,
+                                                            0x60, -1, -1, 0x1000, 0x1000, 0, -1);
                 OAM::RenderSub((OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x10);
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x14,
+                                                            0x60, -1, -1, 0x1000, 0x1000, 0, -1);
                 OAM::RenderSub((OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x10);
             }
             if (data_0209f238 == 2) {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+                    0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
                 OAM::RenderSub((OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x10);
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+                    0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
                 OAM::RenderSub((OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x10);
             }
         }
@@ -1180,22 +1207,28 @@ void dScStage_c::PS_Render()
                         -1, -1, 0);
         }
         if (GetOwnerLanguage() == 5) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020abd98[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020abd98[data_0209f2dc], 0x80,
+                                                        0x60, -1, -1, 0x1000, 0x1000, 0, -1);
             return;
         }
         if (GetOwnerLanguage() == 4) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020ac218[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020ac218[data_0209f2dc], 0x80,
+                                                        0x60, -1, -1, 0x1000, 0x1000, 0, -1);
             return;
         }
         if (GetOwnerLanguage() == 3) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020ac64c[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020ac64c[data_0209f2dc], 0x80,
+                                                        0x60, -1, -1, 0x1000, 0x1000, 0, -1);
             return;
         }
         if (GetOwnerLanguage() == 2) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020acb68[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020acb68[data_0209f2dc], 0x80,
+                                                        0x60, -1, -1, 0x1000, 0x1000, 0, -1);
             return;
         }
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM21CONTROLLER_MODE_TEXTSE[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0,
+                                                    _ZN3OAM21CONTROLLER_MODE_TEXTSE[data_0209f2dc],
+                                                    0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
         return;
     }
 
@@ -1247,8 +1280,7 @@ void dScStage_c::PS_Render()
  * exactly the ROM. Do NOT reintroduce a named pointer and do NOT drop the volatile;
  * either one alone regresses. Link-verified: VERIFIED, 0 diffs, 0 blind.
  */
-void dScStage_c::PS_UpdateOkAndBackButtons(bool b)
-{
+void dScStage_c::PS_UpdateOkAndBackButtons(bool b) {
     int sl;
     int i;
     int base;
@@ -1289,39 +1321,34 @@ void dScStage_c::PS_UpdateOkAndBackButtons(bool b)
     }
 }
 // @symbol _ZN10dScStage_c17PS_UpdateSaveMenuEb
-void dScStage_c::PS_UpdateSaveMenu(bool b)
-{
-  u16 v;
-  int i;
-  for (i = 0; i < 2; i++)
-  {
-    int j;
-    u16 *p;
-    if (b != 0)
-    {
-      v = 0x1000;
+void dScStage_c::PS_UpdateSaveMenu(bool b) {
+    u16 v;
+    int i;
+    for (i = 0; i < 2; i++) {
+        int j;
+        u16 *p;
+        if (b != 0) {
+            v = 0x1000;
+        } else {
+            unsigned int t;
+            if (data_0209f2e0 == i && data_0209f244 == 0)
+                t = 0x2000;
+            else
+                t = 0x1000;
+            v = (u16)t;
+        }
+        p = G2S::GetBG1ScrPtr() + data_020755c8[i];
+        for (j = 0; j < 10; j++) {
+            p[0] = (p[0] & 0x3ff) | v;
+            p[0x20] = (p[0x20] & 0x3ff) | v;
+            p[0x40] = (p[0x40] & 0x3ff) | v;
+            p[0x60] = (p[0x60] & 0x3ff) | v;
+            p++;
+        }
     }
-    else
-    {
-      unsigned int t;
-      if (data_0209f2e0 == i && data_0209f244 == 0) t = 0x2000;
-      else t = 0x1000;
-      v = (u16) t;
-    }
-    p = G2S::GetBG1ScrPtr() + data_020755c8[i];
-    for (j = 0; j < 10; j++)
-    {
-      p[0] = (p[0] & 0x3ff) | v;
-      p[0x20] = (p[0x20] & 0x3ff) | v;
-      p[0x40] = (p[0x40] & 0x3ff) | v;
-      p[0x60] = (p[0x60] & 0x3ff) | v;
-      p++;
-    }
-  }
 }
 // @symbol _ZN10dScStage_c20PS_UpdateOptionsMenuEv
-void dScStage_c::PS_UpdateOptionsMenu()
-{
+void dScStage_c::PS_UpdateOptionsMenu() {
     int i;
     int j;
     int counter;
@@ -1332,7 +1359,7 @@ void dScStage_c::PS_UpdateOptionsMenu()
     sel = (data_0209f2e4 != 0) ? 0x5000 : 0x6000;
     scr = G2S::GetBG1ScrPtr() + 0xae;
     for (j = 0; j < 0xf; j++) {
-        scr[0]    = (scr[0]    & 0x3ff) | sel;
+        scr[0] = (scr[0] & 0x3ff) | sel;
         scr[0x20] = (scr[0x20] & 0x3ff) | sel;
         scr[0x40] = (scr[0x40] & 0x3ff) | sel;
         scr[0x60] = (scr[0x60] & 0x3ff) | sel;
@@ -1344,7 +1371,7 @@ void dScStage_c::PS_UpdateOptionsMenu()
         v = (data_0209f2e0 == j) ? 0x4000 : 0x3000;
         counter = 0;
         for (; counter < 0xa; counter++) {
-            scr[0]    = (scr[0]    & 0x3ff) | v;
+            scr[0] = (scr[0] & 0x3ff) | v;
             scr[0x20] = (scr[0x20] & 0x3ff) | v;
             scr++;
         }
@@ -1355,7 +1382,7 @@ void dScStage_c::PS_UpdateOptionsMenu()
         v = (data_0209f2ec == i && data_0209f2cc == 0) ? 0x6000 : 0x5000;
         counter = 0;
         for (; counter < 7; counter++) {
-            scr[0]    = (scr[0]    & 0x3ff) | v;
+            scr[0] = (scr[0] & 0x3ff) | v;
             scr[0x20] = (scr[0x20] & 0x3ff) | v;
             scr[0x40] = (scr[0x40] & 0x3ff) | v;
             scr[0x60] = (scr[0x60] & 0x3ff) | v;
@@ -1364,80 +1391,75 @@ void dScStage_c::PS_UpdateOptionsMenu()
     }
 }
 // @symbol _ZN10dScStage_c17UpdateMenuButtonsEb
-    void dScStage_c::UpdateMenuButtons(bool b)
-    {
-      int i;
-      for (i = 0; i < data_0209f2b4; i++)
-      {
+void dScStage_c::UpdateMenuButtons(bool b) {
+    int i;
+    for (i = 0; i < data_0209f2b4; i++) {
         unsigned int v;
         int j;
         u16 *p;
         p = G2S::GetBG1ScrPtr() + data_0209f360[i];
-        if (b == 0)
-        {
-          if (data_0209f2e0 == i && data_0209f244 == 0)
-          {
-            v = 0x2000;
-          }
-          else
-          {
+        if (b == 0) {
+            if (data_0209f2e0 == i && data_0209f244 == 0) {
+                v = 0x2000;
+            } else {
+                v = 0x1000;
+            }
+            v = (u16)v;
+        } else {
             v = 0x1000;
-          }
-          v = (u16) v;
         }
-        else
-        {
-          v = 0x1000;
+        if (data_0209f2c4 != 0) {
+            u8 t = (u8)(data_0209f248 + 0xf9);
+            if (t <= 1) {
+                v = (u16)(v + 0x4000);
+            }
         }
-        if (data_0209f2c4 != 0)
-        {
-          u8 t = (u8) (data_0209f248 + 0xf9);
-          if (t <= 1)
-          {
-            v = (u16) (v + 0x4000);
-          }
+        for (j = 0; j < 0x20; j++) {
+            p[0] = (p[0] & 0x3ff) | v;
+            p[0x20] = (p[0x20] & 0x3ff) | v;
+            p[0x40] = (p[0x40] & 0x3ff) | v;
+            p[0x60] = (p[0x60] & 0x3ff) | v;
+            p++;
         }
-        for (j = 0; j < 0x20; j++)
-        {
-          p[0] = (p[0] & 0x3ff) | v;
-          p[0x20] = (p[0x20] & 0x3ff) | v;
-          p[0x40] = (p[0x40] & 0x3ff) | v;
-          p[0x60] = (p[0x60] & 0x3ff) | v;
-          p++;
-        }
-
-      }
-
     }
+}
 // @symbol _ZN10dScStage_c10PS_CleanupEv
 /* Static, like the rest of the PS_ group: restarts the timer, unpauses or
  * stops the music and clears the blend registers, all through globals. */
-void dScStage_c::PS_Cleanup(){
-  if(data_0209f2a0[0]){
-    data_0209d4c8.StartTimer();
-    data_0209f2a0[0]=0;
-  }
-  data_0209d45c &= ~0xe;
-  data_0209d454 &= ~3;
-  if(data_0209f280==0) Sound::UnpauseMusic();
-  else Sound::StopLoadedMusic_Layer1(0x3c);
-  data_0209f300=0xf;
-  *(short*)0x4000050=0;
-  *(short*)0x4001050=0;
-  data_0209f280=0;
-  data_0209f2c4=0;
+void dScStage_c::PS_Cleanup() {
+    if (data_0209f2a0[0]) {
+        data_0209d4c8.StartTimer();
+        data_0209f2a0[0] = 0;
+    }
+    data_0209d45c &= ~0xe;
+    data_0209d454 &= ~3;
+    if (data_0209f280 == 0)
+        Sound::UnpauseMusic();
+    else
+        Sound::StopLoadedMusic_Layer1(0x3c);
+    data_0209f300 = 0xf;
+    *(short *)0x4000050 = 0;
+    *(short *)0x4001050 = 0;
+    data_0209f280 = 0;
+    data_0209f2c4 = 0;
+}
+// Pen-down edge on a held touch. An int-returning inline because the ROM
+// materializes this 0/1 before testing it (the controller-mode rows, case 8).
+static inline int IsTouchPressed(u8 held, u8 slot) {
+    return held != 0 && gTouchEdge[slot * 4] != 0;
 }
 // @symbol _ZN10dScStage_c9PS_UpdateEv
-/* Pause-screen update. Three spellings below are load-bearing for the
- * emitted code: sel3_0 stores data_0209f2c4 (not data_0209f1ec); the
- * backlight_on guard reuses the stale tmpv left by the snd_next chain guard
- * (tmpv = tx - 0x6e); the first gTouchY check indexes with a fresh
- * gActivePlayerSlot load; and the f238 store sits in the unconditional scope
+/* Pause-screen update. Four spellings below are load-bearing for the
+ * emitted code: case 3's first row stores data_0209f2c4 (not data_0209f1ec);
+ * the backlight-on guard reuses the stale tmpv left by the sound-mode
+ * hit-test chain (tmpv = tx - 0x6e, assigned inside that chain's condition,
+ * as are ty2 and t6: with opt_common_subs off, hoisting them reorders the
+ * code and reloading gTouchY adds four instructions); the first gTouchY check
+ * indexes with a fresh gActivePlayerSlot load; and the f238 store sits in the unconditional scope
  * after the displayed-level normalization so the case-1 literal loads keep
  * ROM order. */
 #pragma opt_common_subs off
-void dScStage_c::PS_Update()
-{
+void dScStage_c::PS_Update() {
     register u8 var_sl;
     register u8 var_fp;
     s32 sp0;
@@ -1557,88 +1579,68 @@ void dScStage_c::PS_Update()
         }
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x20) < 0x20)
-                goto sel1_0;
-            if (data_0209f2e0 == 0 && IsButtonInputValid() != 0)
-                goto sel1_0;
-            goto chk1_1;
-        sel1_0:
-            if (data_0209f2e0 == 0)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 0;
-            data_0209f22c = data_0208ee44 << 3;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f2c4 = 2;
-            func_02012790(3);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0xb0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x20) < 0x20) ||
+                (data_0209f2e0 == 0 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 0)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 0;
+                data_0209f22c = data_0208ee44 << 3;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f2c4 = 2;
+                func_02012790(3);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0xb0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk1_1:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x48) < 0x20)
-                goto sel1_1;
-            if (data_0209f2e0 == 1 && IsButtonInputValid() != 0)
-                goto sel1_1;
-            goto chk1_2;
-        sel1_1:
-            if (data_0209f2e0 == 1)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 1;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f1ec = 7;
-            func_02012790(0x53);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x48) < 0x20) ||
+                (data_0209f2e0 == 1 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 1)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 1;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f1ec = 7;
+                func_02012790(0x53);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk1_2:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x70) < 0x20)
-                goto sel1_2;
-            if (data_0209f2e0 == 2 && IsButtonInputValid() != 0)
-                goto sel1_2;
-            goto chk1_3;
-        sel1_2:
-            if (data_0209f2e0 == 2)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 2;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f1ec = 9;
-            func_02012790(0x54);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x70) < 0x20) ||
+                (data_0209f2e0 == 2 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 2)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 2;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f1ec = 9;
+                func_02012790(0x54);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk1_3:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x98) < 0x20)
-                goto sel1_3;
-            if (data_0209f2e0 == 3 && IsButtonInputValid() != 0)
-                goto sel1_3;
-            goto chk1_arrows;
-        sel1_3:
-            if (data_0209f2e0 == 3)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 3;
-            data_0209f22c = data_0208ee44 << 3;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f1ec = 0xc;
-            func_02012790(0x55);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0xb0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x98) < 0x20) ||
+                (data_0209f2e0 == 3 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 3)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 3;
+                data_0209f22c = data_0208ee44 << 3;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f1ec = 0xc;
+                func_02012790(0x55);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0xb0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk1_arrows:
         if (data_0209f2f0 != 0)
             return;
         {
@@ -1672,7 +1674,8 @@ void dScStage_c::PS_Update()
                 if ((a != 0) && (TOUCHP(de_off)[1] != 0)) {
                     var_r0 = 1;
                 }
-                if ((var_r0 != 0) && ((u32)(vx = TOUCHP(sl2 * 4)[2]) < 0x38U) && ((u32)TOUCHP(sl2 * 4)[3] < 0x20U)) {
+                if ((var_r0 != 0) && ((u32)(vx = TOUCHP(sl2 * 4)[2]) < 0x38U) &&
+                    ((u32)TOUCHP(sl2 * 4)[3] < 0x20U)) {
                     u8 t;
                     data_0209f2c8 = (u8)(data_0209f2c8 - 1);
                     var_fp = 1;
@@ -1694,7 +1697,8 @@ void dScStage_c::PS_Update()
                         var_r0_2 = sp4;
                     }
                     if (var_r0_2 != 0) {
-                        if (((u32)(u8)(TOUCHP(sl2 * 4)[2] - 0xC8) < 0x38U) && ((u32)TOUCHP(sl2 * 4)[3] < 0x20U)) {
+                        if (((u32)(u8)(TOUCHP(sl2 * 4)[2] - 0xC8) < 0x38U) &&
+                            ((u32)TOUCHP(sl2 * 4)[3] < 0x20U)) {
                             data_0209f2c8 = (u8)(data_0209f2c8 + 1);
                             data_0209f238 = 2;
                             var_fp = 1;
@@ -1705,7 +1709,8 @@ void dScStage_c::PS_Update()
                         }
                     }
                 }
-                if ((data_0209f2c8 == 0xF) || (CountStarsCollectedInLevelToDisplay(data_0209f2c8) != 0)) {
+                if ((data_0209f2c8 == 0xF) ||
+                    (CountStarsCollectedInLevelToDisplay(data_0209f2c8) != 0)) {
                     var_sl = 1;
                     if (data_0209f238 == 1) {
                         func_02012790(spC);
@@ -1763,77 +1768,57 @@ void dScStage_c::PS_Update()
         }
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x18) < 0x20)
-                goto sel3_0;
-            if (data_0209f2e0 == 0 && IsButtonInputValid() != 0)
-                goto sel3_0;
-            goto chk3_1;
-        sel3_0:
-            if (data_0209f2e0 == 0)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 0;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f2c4 = 2;
-            func_02012790(3);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x18) < 0x20) ||
+                (data_0209f2e0 == 0 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 0)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 0;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f2c4 = 2;
+                func_02012790(3);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk3_1:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x40) < 0x20)
-                goto sel3_1;
-            if (data_0209f2e0 == 1 && IsButtonInputValid() != 0)
-                goto sel3_1;
-            goto chk3_2;
-        sel3_1:
-            if (data_0209f2e0 == 1)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 1;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f1ec = 7;
-            func_02012790(0x53);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x40) < 0x20) ||
+                (data_0209f2e0 == 1 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 1)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 1;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f1ec = 7;
+                func_02012790(0x53);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk3_2:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x68) < 0x20)
-                goto sel3_2;
-            if (data_0209f2e0 == 2 && IsButtonInputValid() != 0)
-                goto sel3_2;
-            goto chk3_3;
-        sel3_2:
-            if (data_0209f2e0 == 2)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 2;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f1ec = 9;
-            func_02012790(0x54);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x68) < 0x20) ||
+                (data_0209f2e0 == 2 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 2)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 2;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f1ec = 9;
+                func_02012790(0x54);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk3_3:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x90) < 0x20)
-                goto sel3_3;
-            if (data_0209f2e0 != 3)
+            if (!((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x90) < 0x20) &&
+                (data_0209f2e0 != 3 || IsButtonInputValid() == 0))
                 return;
-            if (IsButtonInputValid() == 0)
-                return;
-        sel3_3:
             if (data_0209f2e0 == 3)
                 data_0209f244 = data_0208ee44 << 2;
             data_0209f2e0 = 3;
@@ -1885,55 +1870,40 @@ void dScStage_c::PS_Update()
         }
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x28) < 0x20)
-                goto sel5_0;
-            if (data_0209f2e0 == 0 && IsButtonInputValid() != 0)
-                goto sel5_0;
-            goto chk5_1;
-        sel5_0:
-            if (data_0209f2e0 == 0)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 0;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f2c4 = 2;
-            func_02012790(3);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x28) < 0x20) ||
+                (data_0209f2e0 == 0 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 0)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 0;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f2c4 = 2;
+                func_02012790(3);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chk5_1:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x50) < 0x20)
-                goto sel5_1;
-            if (data_0209f2e0 == 1 && IsButtonInputValid() != 0)
-                goto sel5_1;
-            goto chk5_2;
-        sel5_1:
-            if (data_0209f2e0 == 1)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 1;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f1ec = 0x13;
-            data_ov002_02111150 = 1;
-            func_02012790(0x56);
-            return;
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x50) < 0x20) ||
+                (data_0209f2e0 == 1 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 1)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 1;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f1ec = 0x13;
+                data_ov002_02111150 = 1;
+                func_02012790(0x56);
+                return;
+            }
         }
-    chk5_2:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x78) < 0x20)
-                goto sel5_2;
-            if (data_0209f2e0 != 2)
+            if (!((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x78) < 0x20) &&
+                (data_0209f2e0 != 2 || IsButtonInputValid() == 0))
                 return;
-            if (IsButtonInputValid() == 0)
-                return;
-        sel5_2:
             if (data_0209f2e0 == 2)
                 data_0209f244 = data_0208ee44 << 2;
             data_0209f2e0 = 2;
@@ -2054,29 +2024,19 @@ void dScStage_c::PS_Update()
             REG16(0x400000c) = (REG16(0x400000c) & 0x43) | 0xd10;
             data_0209f244 = data_0208ee44 << 2;
             {
-                int t = 1;
                 u8 a = gTouchHeld[slot * 4];
-                if (a == 0)
-                    goto mode0_change;
-                if (!(a != 0 && gTouchEdge[slot * 4] != 0))
-                    t = 0;
-                if (t == 0)
-                    goto mode0_keep;
-                if (data_0209f2dc != 0)
-                    goto mode0_keep;
-            mode0_change:
-                data_0209f2dc = 0;
-                SetControllerMode(0);
-                data_0209f22c = data_0208ee44 << 3;
-                func_02012790(0x116);
-                data_0209f2c4 = 2;
-                goto mode0_done;
-            mode0_keep:
-                data_0209f2dc = 0;
-                data_0209f240 = 0;
-                dScStage_c::PS_UpdateOkAndBackButtons(0);
-                func_02012790(0x5b);
-            mode0_done:
+                if (a == 0 || (IsTouchPressed(a, slot) && data_0209f2dc == 0)) {
+                    data_0209f2dc = 0;
+                    SetControllerMode(0);
+                    data_0209f22c = data_0208ee44 << 3;
+                    func_02012790(0x116);
+                    data_0209f2c4 = 2;
+                } else {
+                    data_0209f2dc = 0;
+                    data_0209f240 = 0;
+                    dScStage_c::PS_UpdateOkAndBackButtons(0);
+                    func_02012790(0x5b);
+                }
                 data_0209f2e0 = 0;
                 dScStage_c::UpdateMenuButtons(0);
                 return;
@@ -2097,28 +2057,19 @@ void dScStage_c::PS_Update()
             REG16(0x400000c) = (REG16(0x400000c) & 0x43) | 0xe10;
             data_0209f244 = data_0208ee44 << 2;
             {
-                int t;
                 u8 a = gTouchHeld[slot * 4];
-                if (a == 0)
-                    goto mode1_change;
-                t = (a != 0 && gTouchEdge[slot * 4] != 0);
-                if (t == 0)
-                    goto mode1_keep;
-                if (data_0209f2dc != 1)
-                    goto mode1_keep;
-            mode1_change:
-                data_0209f2dc = 1;
-                SetControllerMode(1);
-                data_0209f22c = data_0208ee44 << 3;
-                func_02012790(0x116);
-                data_0209f2c4 = 2;
-                goto mode1_done;
-            mode1_keep:
-                data_0209f2dc = 1;
-                data_0209f240 = 0;
-                dScStage_c::PS_UpdateOkAndBackButtons(0);
-                func_02012790(0x5b);
-            mode1_done:
+                if (a == 0 || (IsTouchPressed(a, slot) && data_0209f2dc == 1)) {
+                    data_0209f2dc = 1;
+                    SetControllerMode(1);
+                    data_0209f22c = data_0208ee44 << 3;
+                    func_02012790(0x116);
+                    data_0209f2c4 = 2;
+                } else {
+                    data_0209f2dc = 1;
+                    data_0209f240 = 0;
+                    dScStage_c::PS_UpdateOkAndBackButtons(0);
+                    func_02012790(0x5b);
+                }
                 data_0209f2e0 = 1;
                 dScStage_c::UpdateMenuButtons(0);
                 return;
@@ -2139,28 +2090,19 @@ void dScStage_c::PS_Update()
             REG16(0x400000c) = (REG16(0x400000c) & 0x43) | 0xf10;
             data_0209f244 = data_0208ee44 << 2;
             {
-                int t;
                 u8 a = gTouchHeld[slot * 4];
-                if (a == 0)
-                    goto mode2_change;
-                t = (a != 0 && gTouchEdge[slot * 4] != 0);
-                if (t == 0)
-                    goto mode2_keep;
-                if (data_0209f2dc != 2)
-                    goto mode2_keep;
-            mode2_change:
-                data_0209f2dc = 2;
-                SetControllerMode(2);
-                data_0209f22c = data_0208ee44 << 3;
-                func_02012790(0x116);
-                data_0209f2c4 = 2;
-                goto mode2_done;
-            mode2_keep:
-                data_0209f2dc = 2;
-                data_0209f240 = 0;
-                dScStage_c::PS_UpdateOkAndBackButtons(0);
-                func_02012790(0x5b);
-            mode2_done:
+                if (a == 0 || (IsTouchPressed(a, slot) && data_0209f2dc == 2)) {
+                    data_0209f2dc = 2;
+                    SetControllerMode(2);
+                    data_0209f22c = data_0208ee44 << 3;
+                    func_02012790(0x116);
+                    data_0209f2c4 = 2;
+                } else {
+                    data_0209f2dc = 2;
+                    data_0209f240 = 0;
+                    dScStage_c::PS_UpdateOkAndBackButtons(0);
+                    func_02012790(0x5b);
+                }
                 data_0209f2e0 = 2;
                 dScStage_c::UpdateMenuButtons(0);
                 return;
@@ -2172,62 +2114,39 @@ void dScStage_c::PS_Update()
                 if (gTouchEdge[idxa] != 0)
                     t = 1;
             }
-            if (t == 0)
-                goto chk218;
-            if (relx >= firstw)
-                goto chk218;
-            if ((u8)(ty - 0x98) < 0x20)
-                goto okback;
-        chk218:
-            if (data_0209f218 == 0) {
-                int t2;
-                t2 = (a0 != 0 && gTouchEdge[slot * 4] != 0);
-                if (t2 == 0)
-                    goto biv8;
-                if ((u8)(tx - 0xd8) >= 0x20)
-                    goto biv8;
-                if ((u8)(ty - 0x98) < 0x20)
-                    goto okback;
-            }
-        biv8:
-            if (IsButtonInputValid() == 0)
-                goto fail8;
-        okback:
-            if (relx < firstw) {
-                u8 slot2 = gActivePlayerSlot;
-                if ((u8)(gTouchY[slot2 * 4] - 0x98) < 0x20 &&
+            if ((t != 0 && relx < firstw && (u8)(ty - 0x98) < 0x20) ||
+                (data_0209f218 == 0 && IsTouchPressed(a0, slot) && (u8)(tx - 0xd8) < 0x20 &&
+                 (u8)(ty - 0x98) < 0x20) ||
+                IsButtonInputValid() != 0) {
+                if (relx < firstw && (u8)(gTouchY[gActivePlayerSlot * 4] - 0x98) < 0x20 &&
                     IsButtonInputValid() != 0) {
                     data_0209f29c = 0;
-                    goto okback_go;
+                } else {
+                    u8 slot2 = gActivePlayerSlot;
+                    if ((u8)(gTouchX[slot2 * 4] - 0xd8) < 0x20 &&
+                        (u8)(gTouchY[slot2 * 4] - 0x98) < 0x20) {
+                        data_0209f29c = 1;
+                    }
                 }
-            }
-            {
-                u8 slot2 = gActivePlayerSlot;
-                if ((u8)(gTouchX[slot2 * 4] - 0xd8) < 0x20 &&
-                    (u8)(gTouchY[slot2 * 4] - 0x98) < 0x20) {
-                    data_0209f29c = 1;
+                data_0209f2e0 = 3;
+                SetControllerMode(data_0209f2dc);
+                data_0209f240 = 1;
+                data_0209f244 = data_0208ee44 << 2;
+                dScStage_c::PS_UpdateOkAndBackButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                if (data_0209f29c == 0) {
+                    data_0209f2c4 = 2;
+                    func_02012790(0x116);
+                    return;
                 }
-            }
-        okback_go:
-            data_0209f2e0 = 3;
-            SetControllerMode(data_0209f2dc);
-            data_0209f240 = 1;
-            data_0209f244 = data_0208ee44 << 2;
-            dScStage_c::PS_UpdateOkAndBackButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            if (data_0209f29c == 0) {
-                data_0209f2c4 = 2;
-                func_02012790(0x116);
+                func_02012790(0x5c);
+                if (SublevelToLevel(data_0209f2f8) == 0x1d) {
+                    data_0209f1ec = 0;
+                } else {
+                    data_0209f1ec = 2;
+                }
                 return;
             }
-            func_02012790(0x5c);
-            if (SublevelToLevel(data_0209f2f8) == 0x1d) {
-                data_0209f1ec = 0;
-            } else {
-                data_0209f1ec = 2;
-            }
-            return;
-        fail8:
             data_0209f2a4 = 0;
             return;
         }
@@ -2318,85 +2237,14 @@ void dScStage_c::PS_Update()
             u8 ty2;
             int t6;
             int tmpv;
-            if ((u8)(tx - 0xea) < 0x14) {
-                ty2 = gTouchY[slot * 4];
-                if ((u8)(ty2 - 0x2e) < 0x14)
-                    goto snd_next;
-            }
-            tmpv = tx - 0x6e;
-            if ((u8)tmpv < 0x7c) {
-                ty2 = gTouchY[slot * 4];
-                if ((u8)(ty2 - 0x26) < 0x24)
-                    goto snd_next;
-            }
-            t6 = tx - 6;
-            if ((u8)t6 < 0x3c) {
-                ty2 = gTouchY[slot * 4];
-                if ((u8)(ty2 - 0x26) < 0x24)
-                    goto snd_next;
-            }
-            goto backlight_on;
-        snd_next:
-            if ((u8)(tx - 0xec) < 0x10) {
-                if ((u8)(ty2 - 0x30) < 0x10)
-                    goto snd_next_go;
-            }
-            if ((u8)(tx - 0x70) < 0x78) {
-                if ((u8)(ty2 - 0x28) < 0x20)
-                    goto snd_next_go;
-            }
-            if ((u8)(tx - 8) >= 0x38)
-                return;
-            if ((u8)(ty2 - 0x28) >= 0x20)
-                return;
-        snd_next_go:
-            if (data_0209f2a4 == 2) {
-                int t = 0;
-                if (gTouchHeld[slot * 4] != 0) {
-                    if (gTouchEdge[slot * 4] != 0)
-                        t = 1;
-                }
-                if (t == 0)
+            if (((u8)(tx - 0xea) < 0x14 && (u8)((ty2 = gTouchY[slot * 4]) - 0x2e) < 0x14) ||
+                ((u8)(tmpv = tx - 0x6e) < 0x7c && (u8)((ty2 = gTouchY[slot * 4]) - 0x26) < 0x24) ||
+                ((u8)(t6 = tx - 6) < 0x3c && (u8)((ty2 = gTouchY[slot * 4]) - 0x26) < 0x24)) {
+                if (!((u8)(tx - 0xec) < 0x10 && (u8)(ty2 - 0x30) < 0x10) &&
+                    !((u8)(tx - 0x70) < 0x78 && (u8)(ty2 - 0x28) < 0x20) &&
+                    ((u8)(tx - 8) >= 0x38 || (u8)(ty2 - 0x28) >= 0x20))
                     return;
-            }
-            data_0209f2a4 = 2;
-            data_0209f234 = data_0209f234 + 1;
-            if (data_0209f234 == 3)
-                data_0209f234 = 0;
-            data_0209f238 = 1;
-            data_0209f210 = data_0208ee44 * 3;
-            data_0209f2e0 = 0;
-            SetSoundMode(data_0209f234);
-            func_02012790(0x64);
-            data_0209f2e4 = 8;
-            dScStage_c::PS_UpdateOptionsMenu();
-            _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
-            {
-                u8 s3 = gActivePlayerSlot;
-                u8 x3 = gTouchX[s3 * 4];
-                if ((u8)(x3 - 0xec) < 0x10) {
-                    if ((u8)(gTouchY[s3 * 4] - 0x28) < 0x10)
-                        return;
-                }
-                if ((u8)(x3 - 0x70) < 0x78) {
-                    if ((u8)(gTouchY[s3 * 4] - 0x20) < 0x20)
-                        return;
-                }
-                if ((u8)(x3 - 8) < 0x38)
-                    return;
-                return;
-            }
-        backlight_on:
-            if ((u8)tmpv < 0x3c) {
-                u8 ty2b = gTouchY[slot * 4];
-                if ((u8)(ty2b - 0x56) < 0x24) {
-                tmpv = tx - 0x70;
-                if ((u8)tmpv >= 0x38)
-                    return;
-                tmpv = ty2b - 0x58;
-                if ((u8)tmpv >= 0x20)
-                    return;
-                if (data_0209f2a4 == 3) {
+                if (data_0209f2a4 == 2) {
                     int t = 0;
                     if (gTouchHeld[slot * 4] != 0) {
                         if (gTouchEdge[slot * 4] != 0)
@@ -2405,23 +2253,68 @@ void dScStage_c::PS_Update()
                     if (t == 0)
                         return;
                 }
-                data_0209f2a4 = 3;
-                if (data_0209f2ec != 0) {
-                    func_02012790(0x66);
-                    TurnBacklightOn();
-                } else {
-                    data_0209f2cc = data_0208ee44 << 2;
-                    func_02012790(0x67);
-                }
-                data_0209f2ec = 0;
-                data_0209f2e0 = 1;
+                data_0209f2a4 = 2;
+                data_0209f234 = data_0209f234 + 1;
+                if (data_0209f234 == 3)
+                    data_0209f234 = 0;
+                data_0209f238 = 1;
+                data_0209f210 = data_0208ee44 * 3;
+                data_0209f2e0 = 0;
+                SetSoundMode(data_0209f234);
+                func_02012790(0x64);
+                data_0209f2e4 = 8;
                 dScStage_c::PS_UpdateOptionsMenu();
-                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x70) < 0x38)
+                _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
+                {
+                    u8 s3 = gActivePlayerSlot;
+                    u8 x3 = gTouchX[s3 * 4];
+                    if ((u8)(x3 - 0xec) < 0x10) {
+                        if ((u8)(gTouchY[s3 * 4] - 0x28) < 0x10)
+                            return;
+                    }
+                    if ((u8)(x3 - 0x70) < 0x78) {
+                        if ((u8)(gTouchY[s3 * 4] - 0x20) < 0x20)
+                            return;
+                    }
+                    if ((u8)(x3 - 8) < 0x38)
+                        return;
                     return;
-                return;
                 }
             }
-        chk_bl_off:
+            if ((u8)tmpv < 0x3c) {
+                u8 ty2b = gTouchY[slot * 4];
+                if ((u8)(ty2b - 0x56) < 0x24) {
+                    tmpv = tx - 0x70;
+                    if ((u8)tmpv >= 0x38)
+                        return;
+                    tmpv = ty2b - 0x58;
+                    if ((u8)tmpv >= 0x20)
+                        return;
+                    if (data_0209f2a4 == 3) {
+                        int t = 0;
+                        if (gTouchHeld[slot * 4] != 0) {
+                            if (gTouchEdge[slot * 4] != 0)
+                                t = 1;
+                        }
+                        if (t == 0)
+                            return;
+                    }
+                    data_0209f2a4 = 3;
+                    if (data_0209f2ec != 0) {
+                        func_02012790(0x66);
+                        TurnBacklightOn();
+                    } else {
+                        data_0209f2cc = data_0208ee44 << 2;
+                        func_02012790(0x67);
+                    }
+                    data_0209f2ec = 0;
+                    data_0209f2e0 = 1;
+                    dScStage_c::PS_UpdateOptionsMenu();
+                    if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x70) < 0x38)
+                        return;
+                    return;
+                }
+            }
             if ((u8)(tx - 0xae) < 0x3c) {
                 u8 ty3 = gTouchY[slot * 4];
                 if ((u8)(ty3 - 0x56) < 0x24) {
@@ -2456,7 +2349,6 @@ void dScStage_c::PS_Update()
                     return;
                 }
             }
-        chk_bl_off2:
             if ((u8)t6 < 0x4c) {
                 u8 ty4 = gTouchY[slot * 4];
                 if ((u8)(ty4 - 0x56) < 0x24) {
@@ -2498,38 +2390,22 @@ void dScStage_c::PS_Update()
                     if (gTouchEdge[slot * 4] != 0)
                         t = 1;
                 }
-                if (t == 0)
-                    goto biv_a;
-                if (relx >= firstw)
-                    goto chk_dx;
-                if ((u8)(gTouchY[slot * 4] - 0x98) < 0x20)
-                    goto opt_okback;
-            chk_dx:
-                if ((u8)(tx - 0xd8) < 0x20) {
-                    if ((u8)(gTouchY[slot * 4] - 0x98) < 0x20)
-                        goto opt_okback;
+                if (t == 0 ||
+                    !((relx < firstw && (u8)(gTouchY[slot * 4] - 0x98) < 0x20) ||
+                      ((u8)(tx - 0xd8) < 0x20 && (u8)(gTouchY[slot * 4] - 0x98) < 0x20))) {
+                    if (IsButtonInputValid() == 0)
+                        return;
                 }
-            biv_a:
-                if (IsButtonInputValid() == 0)
-                    return;
-            opt_okback:
-                if (relx < firstw) {
-                    if ((u8)(gTouchY[gActivePlayerSlot * 4] - 0x98) < 0x20)
-                        goto set29c;
-                }
-                if (IsButtonInputValid() != 0) {
-                set29c:
+                if ((relx < firstw && (u8)(gTouchY[gActivePlayerSlot * 4] - 0x98) < 0x20) ||
+                    IsButtonInputValid() != 0) {
                     data_0209f29c = 0;
-                    goto opt_go;
-                }
-                {
+                } else {
                     u8 s4 = gActivePlayerSlot;
                     if ((u8)(gTouchX[s4 * 4] - 0xd8) < 0x20 &&
                         (u8)(gTouchY[s4 * 4] - 0x98) < 0x20) {
                         data_0209f29c = 1;
                     }
                 }
-            opt_go:
                 data_0209f2e0 = 2;
                 data_0209f22c = data_0208ee44 << 3;
                 dScStage_c::PS_UpdateOptionsMenu();
@@ -2594,56 +2470,41 @@ void dScStage_c::PS_Update()
         }
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x28) < 0x20)
-                goto seld_0;
-            if (data_0209f2e0 == 0 && IsButtonInputValid() != 0)
-                goto seld_0;
-            goto chkd_1;
-        seld_0:
-            if (data_0209f2e0 == 0)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 0;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f2c4 = 2;
-            func_02012790(3);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x28) < 0x20) ||
+                (data_0209f2e0 == 0 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 0)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 0;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f2c4 = 2;
+                func_02012790(3);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chkd_1:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x50) < 0x20)
-                goto seld_1;
-            if (data_0209f2e0 == 1 && IsButtonInputValid() != 0)
-                goto seld_1;
-            goto chkd_2;
-        seld_1:
-            if (data_0209f2e0 == 1)
-                data_0209f244 = data_0208ee44 << 2;
-            data_0209f2e0 = 1;
-            dScStage_c::UpdateMenuButtons(0);
-            data_0209f22c = data_0208ee44 << 3;
-            data_0209f1ec = 0xe;
-            func_02012790(0x5e);
-            if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+            if (((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x50) < 0x20) ||
+                (data_0209f2e0 == 1 && IsButtonInputValid() != 0)) {
+                if (data_0209f2e0 == 1)
+                    data_0209f244 = data_0208ee44 << 2;
+                data_0209f2e0 = 1;
+                dScStage_c::UpdateMenuButtons(0);
+                data_0209f22c = data_0208ee44 << 3;
+                data_0209f1ec = 0xe;
+                func_02012790(0x5e);
+                if ((u8)(gTouchX[gActivePlayerSlot * 4] - 8) < 0xf0)
+                    return;
                 return;
-            return;
+            }
         }
-    chkd_2:
         {
             u8 slot = gActivePlayerSlot;
-            if ((u8)(gTouchX[slot * 4] - 8) < 0xf0 &&
-                (u8)(gTouchY[slot * 4] - 0x78) < 0x20)
-                goto seld_2;
-            if (data_0209f2e0 != 2)
+            if (!((u8)(gTouchX[slot * 4] - 8) < 0xf0 && (u8)(gTouchY[slot * 4] - 0x78) < 0x20) &&
+                (data_0209f2e0 != 2 || IsButtonInputValid() == 0))
                 return;
-            if (IsButtonInputValid() == 0)
-                return;
-        seld_2:
             if (data_0209f2e0 == 2)
                 data_0209f244 = data_0208ee44 << 2;
             data_0209f2e0 = 2;
@@ -2807,23 +2668,23 @@ extern "C" int func_02029408(void) {
  * Behavior calls it with nothing in r0. SetBlendBrightness is reached through
  * its mangled symbol `_ZN3G2x18SetBlendBrightnessEPVtts` (declared above). */
 void dScStage_c::PS_Init() {
-    int sl;
-    u8 r7;
-    u8 r8;
-    u8 sb;
-    int r5;
-    int r4;
+    int isVsMode;
+    u8 specialPauseState;
+    u8 mainLayers;
+    u8 subLayers;
+    int mainBlendTargets;
+    int subBlendTargets;
 
-    sb = data_0209d454;
-    if (sb & 4) {
-        data_0209d454 = sb & ~4;
-        sb = data_0209d454;
-        *(volatile s32 *)0x04001000 = (*(volatile s32 *)0x04001000 & ~0x1f00) | (sb << 8);
+    subLayers = data_0209d454;
+    if (subLayers & 4) {
+        data_0209d454 = subLayers & ~4;
+        subLayers = data_0209d454;
+        *(volatile s32 *)0x04001000 = (*(volatile s32 *)0x04001000 & ~0x1f00) | (subLayers << 8);
     }
 
-    r7 = data_0209f218;
-    r8 = data_0209d45c;
-    sl = 0;
+    specialPauseState = data_0209f218;
+    mainLayers = data_0209d45c;
+    isVsMode = 0;
 
     data_0209f248 = 0;
     data_0209f2e0 = 0;
@@ -2841,15 +2702,15 @@ void dScStage_c::PS_Init() {
     data_0209f29c = 0;
     data_0209f280 = 0;
 
-    r5 = r8 ^ 0x10;
-    r4 = sb ^ 0x10;
+    mainBlendTargets = mainLayers ^ 0x10;
+    subBlendTargets = subLayers ^ 0x10;
 
-    if (r7 != 0) {
+    if (specialPauseState != 0) {
         data_0209f1ec = 7;
     } else {
         if (data_0209f2d8 == 1)
-            sl = 1;
-        if (sl != 0 && data_0209fc68 == 0) {
+            isVsMode = 1;
+        if (isVsMode != 0 && data_0209fc68 == 0) {
             data_0209f1ec = 4;
         } else {
             if (SublevelToLevel(data_0209f2f8) == 0x1d)
@@ -2860,8 +2721,8 @@ void dScStage_c::PS_Init() {
     }
 
     Sound::PauseMusic();
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04000050, r5 | 0x20, -7);
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04001050, r4 | 0x20, -7);
+    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04000050, mainBlendTargets | 0x20, -7);
+    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04001050, subBlendTargets | 0x20, -7);
 }
 
 // @symbol func_02029600
@@ -2884,30 +2745,26 @@ int IsButtonInputValid(void) {
     int mode;
     int val;
 
-    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) != 0)
-        goto special;
-    if (data_0209f204 != 0)
-        goto special;
-    if (data_0209f294 != 0)
-        goto special;
-    mode = data_0209caa0[0x42];
-    if (mode == 0) {
-        val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
-        if (val & 0xf)
-            return 1;
+    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) == 0 && data_0209f204 == 0 &&
+        data_0209f294 == 0) {
+        mode = data_0209caa0[0x42];
+        if (mode == 0) {
+            val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
+            if (val & 0xf)
+                return 1;
+        }
+        if (mode == 1) {
+            val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
+            if (val & 0xc0f)
+                return 1;
+        }
+        if (mode == 2) {
+            val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
+            if (val & 0xcff)
+                return 1;
+        }
+        return 0;
     }
-    if (mode == 1) {
-        val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
-        if (val & 0xc0f)
-            return 1;
-    }
-    if (mode == 2) {
-        val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
-        if (val & 0xcff)
-            return 1;
-    }
-    return 0;
-special:
     val = *(unsigned short *)((char *)&data_020a0e5a + (gActivePlayerSlot << 2));
     if (val & 0xc) {
         data_0209f27c = 0;
@@ -2948,9 +2805,9 @@ struct SceneRelated {
    r0 = the callback object and r1 never set as an argument. Sets the BG3
    affine transform from the object's matrix. */
 s32 dScStage_c::GraphCallback2() {
-    SceneRelated *scene = (SceneRelated *)this;
-    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, (Matrix2x2 *)&scene->unk4,
-                      scene->unk14, scene->unk18, scene->unk1c, scene->unk20);
+    StageGraphCallbackView *callback = (StageGraphCallbackView *)this;
+    G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, &callback->matrix, callback->originX,
+                      callback->originY, callback->targetX, callback->targetY);
     return 1;
 }
 
@@ -2998,8 +2855,8 @@ extern "C" void StartExitFaderWipe(int index) {
 
 // @symbol FUN_02029934
 extern "C" void FUN_02029934(void) {
-    UnkVis *o = data_0209f5bc;
-    if (o->v7() == 0) {
+    dFdBrightness_c *o = data_0209f5bc;
+    if (o->IsBetweenStartAndEnd() == 0) {
         data_0209d4b0 = 0;
         *(volatile unsigned short *)0x4000050 = 0;
     }
@@ -3022,7 +2879,7 @@ struct WipeFader {
     virtual void w9();
 };
 extern "C" void FUN_02029980(void) {
-    if (data_0209f5bc->v7() != 0)
+    if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
         return;
     WipeFader *o2 = (WipeFader *)((dFdWipe_c *)data_0209f324 + 6);
     data_0209d4b0 = (int)o2;
@@ -3032,7 +2889,7 @@ extern "C" void FUN_02029980(void) {
 
 // @symbol FUN_020299f4
 extern "C" void FUN_020299f4(void) {
-    if (data_0209f5bc->v7() != 0)
+    if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
         return;
     WipeFader *o2 = (WipeFader *)((dFdWipe_c *)data_0209f324 + 6);
     data_0209d4b0 = (int)o2;
@@ -3263,12 +3120,12 @@ void dScStage_c::RenderVsModeCountdown() {
     int i;
     for (i = 0; i < 4; i++) {
         if (data_0209f394[i]) {
-            int t = (((u8 *)data_0209f394[i])[0x711] != 0);
+            int t = (((Player *)data_0209f394[i])->mLevelEntryDone != 0);
             if (t == 1)
                 count++;
         }
     }
-    if (data_0209f5bc->v5() == 0)
+    if (((dFdBrightness_c *)data_0209f5bc)->IsAtStart() == 0)
         return;
     if (count < data_0209fc50)
         return;
@@ -3646,35 +3503,31 @@ extern "C" void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 
         data_0209f1f0 = (u8)starID;
     SetNextStar();
     data_0209f26c = arg3;
-    if (returnState < 0)
-        goto no_return;
-    data_0209211c = data_0209f2f8;
-    data_0209f200 = (u8)returnState;
-    chk = data_02092118;
-    if (chk < 0)
-        return;
-    cur = SublevelToLevel(data_02092110);
-    chk = SublevelToLevel(chk);
-    if (cur != chk) {
-        data_02092118 = -1;
-        return;
+    if (returnState >= 0) {
+        data_0209211c = data_0209f2f8;
+        data_0209f200 = (u8)returnState;
+        chk = data_02092118;
+        if (chk < 0)
+            return;
+        cur = SublevelToLevel(data_02092110);
+        chk = SublevelToLevel(chk);
+        if (cur != chk) {
+            data_02092118 = -1;
+            return;
+        }
+        data_02092110 = data_02092118;
+        data_0209f268 = data_0209f24c;
+        data_0209f1f0 = data_0209f270;
+    } else {
+        cur = SublevelToLevel(data_0209f2f8);
+        if (data_0209211c >= 0 && (cur == 6 || cur == 7 || cur == 0xb)) {
+            data_02092118 = data_02092110;
+            data_0209f24c = data_0209f268;
+            data_0209f270 = data_0209f1f0;
+        } else {
+            data_02092118 = -1;
+        }
     }
-    data_02092110 = data_02092118;
-    data_0209f268 = data_0209f24c;
-    data_0209f1f0 = data_0209f270;
-    return;
-no_return:
-    cur = SublevelToLevel(data_0209f2f8);
-    if (data_0209211c < 0)
-        goto done;
-    if (cur == 6 || cur == 7 || cur == 0xb) {
-        data_02092118 = data_02092110;
-        data_0209f24c = data_0209f268;
-        data_0209f270 = data_0209f1f0;
-        return;
-    }
-done:
-    data_02092118 = -1;
 }
 
 // @symbol LoadLevelNoReturn
@@ -3795,31 +3648,23 @@ extern "C" int GetMinimapID(struct Obj *obj, int arg) {
     if (idx < 0)
         idx = data_02092120;
     g = (char *)data_0209f314;
-    if (g == 0)
-        goto tail;
-    node = (MinimapChangeNode *)((StageTexAnimSlot *)(g + idx * 0xc))->mBlockList;
-    if (node == 0)
-        goto tail;
-    val = obj->f60;
-    if (node == 0)
-        goto L74;
-
-    do {
-        int d = val - node->f0;
-        if (d <= 0)
-            goto L68;
-        if (arg < 0)
-            goto L74;
-        if (d >= 0xc8000)
-            goto L74;
-        return arg;
-    L68:
-        node = node->fc;
-    } while (node != 0);
-L74:
-    if (node != 0)
-        return node->f4;
-tail:
+    if (g != 0) {
+        node = (MinimapChangeNode *)((StageTexAnimSlot *)(g + idx * 0xc))->mBlockList;
+        if (node != 0) {
+            val = obj->f60;
+            while (node != 0) {
+                int d = val - node->f0;
+                if (d > 0) {
+                    if (arg >= 0 && d < 0xc8000)
+                        return arg;
+                    break;
+                }
+                node = node->fc;
+            }
+            if (node != 0)
+                return node->f4;
+        }
+    }
     return *(s8 *)(*(char **)(data_0209f340 + 0x10) + idx * 0xc + 8);
 }
 
@@ -3934,70 +3779,78 @@ struct LocalModelComponents {
 };
 
 void dScStage_c::RenderModelTransparent() {
-    LocalModelComponents *mc = (LocalModelComponents *)&mModel.data;
-    Inner *arr = *(Inner **)((char *)mc->sub + 8);
-    StageTexAnimSlot *q = mTexAnimSlots;
-    int i;
-    for (i = 0; i < ((LevelInfo *)data_0209f340)->count; i++, q++, arr++) {
-        if (q->mActive != 0) {
-            u8 *bp = arr->ids;
-            u16 j;
-            for (j = 0; j < arr->count; j++) {
-                Component *e = (Component *)((char *)mc->components + *bp * 0x30);
-                if ((e->flags & 0x1f0000) != 0x1f0000)
-                    e->flags &= ~0x80000000;
+    // The material count at bone +0x30 is still opaque in BMD_Bone.
+    ModelComponents *components = &mModel.data;
+    BMD_Bone *bone = components->modelFile->bones;
+    StageTexAnimSlot *slot = mTexAnimSlots;
+    int slotIndex;
+    for (slotIndex = 0; slotIndex < ((LevelInfo *)data_0209f340)->count;
+         slotIndex++, slot++, bone++) {
+        if (slot->mActive != 0) {
+            u8 *materialIds = bone->materialIds;
+            u16 materialIndex;
+            for (materialIndex = 0; materialIndex < *(u16 *)((char *)bone + 0x30);
+                 materialIndex++) {
+                BMD_Material *material = &components->materials[*materialIds];
+                if ((material->flags & 0x1f0000) != 0x1f0000)
+                    material->flags &= ~0x80000000;
                 else
-                    e->flags |= 0x80000000;
-                bp++;
+                    material->flags |= 0x80000000;
+                materialIds++;
             }
         }
     }
-    ((LocalModelVtableShape *)((char *)&mModel))->Render(&data_020755d4);
+    Model *model = &mModel;
+    model->Render((const Vector3 *)&data_020755d4);
 }
 
 // @symbol _ZN10dScStage_c11RenderModelEv
 void dScStage_c::RenderModel() {
-    LocalModelComponents *mc = (LocalModelComponents *)((char *)&mModel.data);
-    Inner *inner = *(Inner **)((char *)mc->sub + 8);
+    // The material count at bone +0x30 is still opaque in BMD_Bone.
+    ModelComponents *components = &mModel.data;
+    BMD_Bone *bone = components->modelFile->bones;
     StageTexAnimSlot *slot = mTexAnimSlots;
-    int i;
+    int slotIndex;
 
-    for (i = 0; i < ((LevelInfo *)data_0209f340)->count; i++) {
-        u8 flag = slot->mActive;
-        u8 *idx = inner->ids;
+    for (slotIndex = 0; slotIndex < ((LevelInfo *)data_0209f340)->count; slotIndex++) {
+        u8 active = slot->mActive;
+        u8 *materialIds = bone->materialIds;
 
-        if (flag != 0) {
-            u16 j;
-            for (j = 0; j < inner->count; j++) {
-                u8 id = *idx;
-                Component *comp = (Component *)((char *)mc->components + id * 0x30);
-                idx++;
-                u32 flagsTest = *(volatile u32 *)&comp->flags;
+        if (active != 0) {
+            u16 materialIndex;
+            for (materialIndex = 0; materialIndex < *(u16 *)((char *)bone + 0x30);
+                 materialIndex++) {
+                u8 materialId = *materialIds;
+                BMD_Material *material = &components->materials[materialId];
+                materialIds++;
+                u32 flagsTest = *(volatile u32 *)&material->flags;
                 if ((flagsTest & 0x1f0000) == 0x1f0000) {
-                    u32 *p = &comp->flags;
-                    *p &= ~0x80000000;
+                    u32 *flags = &material->flags;
+                    *flags &= ~0x80000000;
                 } else {
-                    u32 *p = &comp->flags;
-                    *p |= 0x80000000;
+                    u32 *flags = &material->flags;
+                    *flags |= 0x80000000;
                 }
             }
             if (slot->mTransformer != 0)
                 ((TextureTransformer *)slot->mTransformer)->Update(mModel.data);
         } else {
-            u16 j;
-            for (j = 0; j < inner->count; j++) {
-                u8 id = *idx;
-                Component *comp = (Component *)((char *)mc->components + id * 0x30);
-                comp->flags |= 0x80000000;
-                idx++;
+            u16 materialIndex;
+            for (materialIndex = 0; materialIndex < *(u16 *)((char *)bone + 0x30);
+                 materialIndex++) {
+                u8 materialId = *materialIds;
+                BMD_Material *material = &components->materials[materialId];
+                material->flags |= 0x80000000;
+                materialIds++;
             }
         }
 
         slot++;
-        inner++;
+        bone++;
     }
 
-    ((LocalModelVtableShape *)((char *)&mModel))->Render(&data_020755d4);
+    Model *model = &mModel;
+    model->Render((const Vector3 *)&data_020755d4);
 }
 
 // @symbol CopyTexPalFromLevelModel
@@ -4080,21 +3933,22 @@ extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void *self, vo
 }
 
 void dScStage_c::LoadTextureTransformers() {
-    struct LevelTexAnim *e = ((LevelInfo *)data_0209f340)->entries;
+    struct LevelTexAnim *entry = ((LevelInfo *)data_0209f340)->entries;
     StageTexAnimSlot *slot = mTexAnimSlots;
-    void *bmd = *(void **)((char *)&mModel.data);
-    int i;
-    for (i = 0; i < (int)((LevelInfo *)data_0209f340)->count; i++) {
-        if (e->bta) {
-            TextureTransformer::Prepare(*(BMD_File *)bmd, *(BTA_File *)e->bta);
-            void *t = _Znwj(0x14);
-            if (t)
-                t = _ZN18TextureTransformerC1Ev(t);
-            slot->mTransformer = t;
-            _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(slot->mTransformer, e->bta, 0,
+    BMD_File *modelFile = mModel.data.modelFile;
+    int slotIndex;
+    for (slotIndex = 0; slotIndex < (int)((LevelInfo *)data_0209f340)->count; slotIndex++) {
+        if (entry->bta) {
+            TextureTransformer::Prepare(*modelFile, *(BTA_File *)entry->bta);
+            // The ROM calls _Znwj; a C++ new expression selects _Znwm under this pin.
+            void *transformer = _Znwj(0x14);
+            if (transformer)
+                transformer = _ZN18TextureTransformerC1Ev(transformer);
+            slot->mTransformer = transformer;
+            _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(slot->mTransformer, entry->bta, 0,
                                                                   0x1000, 0);
         }
-        e++;
+        entry++;
         slot++;
     }
 }
@@ -4102,26 +3956,26 @@ void dScStage_c::LoadTextureTransformers() {
 // @symbol _ZN10dScStage_c9LoadModelEv
 void dScStage_c::LoadModel() {
     mModel.LoadAndSetFile(*(unsigned short *)(*(char **)&data_0209f340 + 8), 1, -1);
-    struct TexPalModel *list;
-    unsigned int count;
-    Component *node;
-    unsigned int i;
-    LocalModelComponents *p;
+    BMD_File *modelFile;
+    unsigned int materialCount;
+    BMD_Material *material;
+    unsigned int materialIndex;
+    ModelComponents *components;
 
-    p = (LocalModelComponents *)&mModel.data;
-    list = (struct TexPalModel *)p->sub;
-    node = p->components;
-    count = list->count;
-    i = 0;
-    while (i < count) {
-        unsigned int v = node->flags;
-        i++;
-        if ((v & 0x1f0000) != 0x1f0000) {
-            node->flags = (v & ~0x3f000000) | 0x13000000;
+    components = &mModel.data;
+    modelFile = components->modelFile;
+    material = components->materials;
+    materialCount = modelFile->numMaterials;
+    materialIndex = 0;
+    while (materialIndex < materialCount) {
+        unsigned int flags = material->flags;
+        materialIndex++;
+        if ((flags & 0x1f0000) != 0x1f0000) {
+            material->flags = (flags & ~0x3f000000) | 0x13000000;
         }
-        node++;
+        material++;
     }
-    data_0209f320 = (int)p;
+    data_0209f320 = (int)components;
 }
 
 // @symbol _ZN10dScStage_c9RenderFogEv
@@ -4136,9 +3990,9 @@ void dScStage_c::RenderFog() {
     if (data_0209f2f8 == 5)
         fog = (Fog *)func_ov002_020f1c20();
     if (fog == 0) {
-        void *cam = data_0209f318;
+        dCamera_c *camera = (dCamera_c *)data_0209f318;
         fog = mFog;
-        if (((dCamera_c *)cam)->IsUnderwater())
+        if (camera->IsUnderwater())
             fog++;
     }
     _ZN3G3X6SetFogEbiii(fog->mEnabled, 0, fog->mShift, fog->mOffset);
@@ -4155,14 +4009,14 @@ extern void _ZN3Fog4InitEt5Fix12IiES1_(Fog *self, unsigned short color, int near
 }
 
 void dScStage_c::LoadFog() {
-    unsigned char a = 0;
-    unsigned char b = 0x28;
-    int i;
-    for (i = 0; i < 0x20; i++) {
-        mFog[0].mDensity[i] = a;
-        mFog[1].mDensity[i] = b;
-        a += 4;
-        b += 2;
+    unsigned char normalDensity = 0;
+    unsigned char underwaterDensity = 0x28;
+    int densityIndex;
+    for (densityIndex = 0; densityIndex < 0x20; densityIndex++) {
+        mFog[0].mDensity[densityIndex] = normalDensity;
+        mFog[1].mDensity[densityIndex] = underwaterDensity;
+        normalDensity += 4;
+        underwaterDensity += 2;
     }
     mFog[0].mEnabled = 0;
     mFog[1].mEnabled = 1;
@@ -4173,20 +4027,20 @@ void dScStage_c::LoadFog() {
         return;
     }
     {
-        unsigned char *src = (unsigned char *)data_0209f31c;
-        Fog *dst = mFog;
-        int j;
-        for (j = 0; j < data_0209f258; j++) {
-            if (src[0] != 1) {
-                dst->mEnabled = 0;
+        unsigned char *fogRecord = (unsigned char *)data_0209f31c;
+        Fog *fog = mFog;
+        int fogIndex;
+        for (fogIndex = 0; fogIndex < data_0209f258; fogIndex++) {
+            if (fogRecord[0] != 1) {
+                fog->mEnabled = 0;
             } else {
-                unsigned short color =
-                    ((src[1] >> 3) | ((src[2] >> 3) << 5)) | ((src[3] >> 3) << 10);
-                _ZN3Fog4InitEt5Fix12IiES1_(dst, color, *((unsigned short *)(src + 4)),
-                                           *((unsigned short *)(src + 6)));
+                unsigned short color = ((fogRecord[1] >> 3) | ((fogRecord[2] >> 3) << 5)) |
+                                       ((fogRecord[3] >> 3) << 10);
+                _ZN3Fog4InitEt5Fix12IiES1_(fog, color, *((unsigned short *)(fogRecord + 4)),
+                                           *((unsigned short *)(fogRecord + 6)));
             }
-            src += 8;
-            dst++;
+            fogRecord += 8;
+            fog++;
         }
     }
 }
@@ -4225,24 +4079,24 @@ void func_0203db3c(int i, int v);
 
 int dScStage_c::Render() {
     if (((data_0209f294 | (data_0209f2c4 | data_0209f20c)) & 0xff) == 0) {
-        StageTexAnimSlot *s = mTexAnimSlots;
-        int i;
-        for (i = 0; i < ((LevelInfo *)data_0209f340)->count; i++, s++) {
-            if (s->mActive != 0 && s->mTransformer != 0)
-                ((TextureTransformer *)s->mTransformer)->Advance();
+        StageTexAnimSlot *slot = mTexAnimSlots;
+        int slotIndex;
+        for (slotIndex = 0; slotIndex < ((LevelInfo *)data_0209f340)->count; slotIndex++, slot++) {
+            if (slot->mActive != 0 && slot->mTransformer != 0)
+                ((dExtFrameCtrl_c *)slot->mTransformer)->Advance();
         }
         mSysTracker.Update();
     }
     func_020391f0();
     RenderFog();
     {
-        Model *t = mSkyboxModel;
-        if (t != 0) {
-            int *dst = (int *)&t->mat4x3;
-            int *src = (int *)((long long)(int)&((dCamera_c *)data_0209f318)->pos);
-            dst[9] = src[0] >> 3;
-            dst[10] = src[1] >> 3;
-            dst[11] = src[2] >> 3;
+        Model *skybox = mSkyboxModel;
+        if (skybox != 0) {
+            Matrix4x3 *transform = &skybox->mat4x3;
+            Vector3 *cameraPosition = &((dCamera_c *)data_0209f318)->pos;
+            transform->t.x = cameraPosition->x >> 3;
+            transform->t.y = cameraPosition->y >> 3;
+            transform->t.z = cameraPosition->z >> 3;
             mSkyboxModel->Render(0);
         }
     }
@@ -4250,8 +4104,8 @@ int dScStage_c::Render() {
     dExtShadowModel_c::RenderAll();
     RenderModelTransparent();
     {
-        int b = (data_0209f2d8 == 1);
-        if (b) {
+        int isVsMode = (data_0209f2d8 == 1);
+        if (isVsMode) {
             if (data_0209fc9c == 0 && data_0209f2c4 == 0) {
                 RenderVsModeCountdown();
                 RenderVsModeNewStar();
@@ -4264,31 +4118,31 @@ int dScStage_c::Render() {
     dCc_c::Process();
     func_ov001_020aaf40();
     {
-        int x = 0;
-        int y = 0;
-        int j = 0;
-        int n = data_0209f21c;
-        for (; j < n; j++) {
-            Player *p = (Player *)data_0209f394[j];
-            if (p != 0) {
-                u8 bit = p->mHasWings;
-                int *q = (int *)((long long)(int)&p->mPosX);
-                x ^= (u8)(q[2] ^ (q[0] ^ q[1]));
-                y |= (u8)((bit & 1) << j);
+        int positionXor = 0;
+        int playerFlagBits = 0;
+        int playerIndex = 0;
+        int playerCount = data_0209f21c;
+        for (; playerIndex < playerCount; playerIndex++) {
+            Player *player = (Player *)data_0209f394[playerIndex];
+            if (player != 0) {
+                u8 playerFlags = player->mHasWings;
+                int *position = (int *)((long long)(int)&player->mPosX);
+                positionXor ^= (u8)(position[2] ^ (position[0] ^ position[1]));
+                playerFlagBits |= (u8)((playerFlags & 1) << playerIndex);
             }
         }
-        func_0203db3c(0x10, x);
-        func_0203db3c(0x10, y);
+        func_0203db3c(0x10, positionXor);
+        func_0203db3c(0x10, playerFlagBits);
     }
     if (data_0209f2c4 != 0) {
         PS_Render();
     } else if (data_0209f20c != 0 && data_0209f2d4 != 0) {
-        int v = (SublevelToLevel(data_02092124) < 0xf) ? 0x80 : 0x70;
+        int coinCounterY = (SublevelToLevel(data_02092124) < 0xf) ? 0x80 : 0x70;
         if (data_0209f2b0 != 0)
-            v += 0x10;
-        OAM::Render(0, &_ZN3OAM4COINE, 0x68, v, -1, -1, 0);
-        OAM::Render(0, &_ZN3OAM5TIMESE, 0x78, v + 8, -1, -1, 0);
-        RenderNumber(data_0209f260, 0x80, v, 1, 8);
+            coinCounterY += 0x10;
+        OAM::Render(0, &_ZN3OAM4COINE, 0x68, coinCounterY, -1, -1, 0);
+        OAM::Render(0, &_ZN3OAM5TIMESE, 0x78, coinCounterY + 8, -1, -1, 0);
+        RenderNumber(data_0209f260, 0x80, coinCounterY, 1, 8);
     }
     LC_Render();
     return 1;
@@ -4320,7 +4174,7 @@ int dScStage_c::Behavior() {
     if (data_0209f2c4 == 2 && data_0209f22c == 0)
         PS_Cleanup();
     ProcessKuppaScript();
-    if (data_0209f5bc->v5() == 0) {
+    if (data_0209f5bc->IsAtStart() == 0) {
         dExtShadowModel_c::CleanAll();
         return 1;
     }
@@ -4355,7 +4209,7 @@ int dScStage_c::Behavior() {
                 for (i = 0; i < 4; i++) {
                     char *p = (char *)data_0209f394[i];
                     if (p != 0) {
-                        int t = (*(u8 *)(p + 0x711) != 0) ? 1 : 0;
+                        int t = (((Player *)p)->mLevelEntryDone != 0) ? 1 : 0;
                         if (t == 1)
                             cnt++;
                     }
@@ -4477,167 +4331,160 @@ s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 }
 
 void dScStage_c::CheckInput() {
-    u8 m = data_0209f2d8;
-    int b1 = (m == 1);
-    if (b1 == false) {
-        int b2 = (m == 2);
-        if (b2 == false && (((SaveData *)data_0209caa0)->flags2 & 0x80)) {
-            if (data_0209d660 == 0) {
-                int b3 = (data_0209fc48 != 0);
-                if (b3 == false)
-                    goto main_part;
-            } else {
-                goto main_part;
-            }
-        }
-        {
-            CamInput *q = (CamInput *)data_0209f498;
-            int k;
-            for (k = 0; k < 4; k++) {
-                q->touching = 0;
-                q->delay = 0;
-                q->cnt = 0;
-                q->mag = 0;
-                q->nx = 0;
-                q->ny = 0;
-                q->ang = 0;
-                q->held = 0;
-                q->pressed = 0;
-                q++;
-            }
-        }
-        return;
-    }
-main_part: {
-    CamInput *p = (CamInput *)data_0209f498;
-    int i = 0;
-    int cnt = data_0209f21c;
-    int newx;
-    int newy;
-    u8 *st;
-    if (cnt <= 0)
-        return;
-    st = data_0209f350;
-    do {
-        u32 held = data_020a0e58[i].held;
-        u32 pressed = data_020a0e58[i].pressed;
-        u8 touched = TOUCH_DATA[i].held;
-        if ((touched != 0 && data_0209d660 != 0) || (*st != 1 && touched != 0)) {
-            p->touching = 1;
-            DecIfAbove0_Byte(&p->cnt);
+    u8 mode = data_0209f2d8;
+    int isVsMode = (mode == 1);
+    if (isVsMode == false) {
+        int modeIsTwo = (mode == 2);
+        if (modeIsTwo != false || !(((SaveData *)data_0209caa0)->flags2 & 0x80) ||
+            (data_0209d660 == 0 && (int)(data_0209fc48 != 0) != false)) {
             {
-                int b = (TOUCH_DATA[i].held != 0 && TOUCH_DATA[i].edge != 0);
-                if (b != false) {
-                    if (p->cnt != 0) {
-                        int ty2 = TOUCH_DATA[i].y - p->dy;
-                        int tx2 = TOUCH_DATA[i].x - p->dx;
-                        if (tx2 < 0)
-                            tx2 = 0;
-                        else if (tx2 > 0xff)
-                            tx2 = 0xff;
-                        if (ty2 < 0)
-                            ty2 = 0;
-                        else if (ty2 > 0xbf)
-                            ty2 = 0xbf;
-                        p->tx = tx2;
-                        p->ty = ty2;
+                CamInput *control = (CamInput *)data_0209f498;
+                int playerIndex;
+                for (playerIndex = 0; playerIndex < 4; playerIndex++) {
+                    control->touching = 0;
+                    control->delay = 0;
+                    control->cnt = 0;
+                    control->mag = 0;
+                    control->nx = 0;
+                    control->ny = 0;
+                    control->ang = 0;
+                    control->held = 0;
+                    control->pressed = 0;
+                    control++;
+                }
+            }
+            return;
+        }
+    }
+    CamInput *control = (CamInput *)data_0209f498;
+    int playerIndex = 0;
+    int playerCount = data_0209f21c;
+    int touchX;
+    int touchY;
+    u8 *playerInputState;
+    if (playerCount <= 0)
+        return;
+    playerInputState = data_0209f350;
+    do {
+        u32 held = data_020a0e58[playerIndex].held;
+        u32 pressed = data_020a0e58[playerIndex].pressed;
+        u8 touched = TOUCH_DATA[playerIndex].held;
+        if ((touched != 0 && data_0209d660 != 0) || (*playerInputState != 1 && touched != 0)) {
+            control->touching = 1;
+            DecIfAbove0_Byte(&control->cnt);
+            {
+                int touchStarted =
+                    (TOUCH_DATA[playerIndex].held != 0 && TOUCH_DATA[playerIndex].edge != 0);
+                if (touchStarted != false) {
+                    if (control->cnt != 0) {
+                        int originY = TOUCH_DATA[playerIndex].y - control->dy;
+                        int originX = TOUCH_DATA[playerIndex].x - control->dx;
+                        if (originX < 0)
+                            originX = 0;
+                        else if (originX > 0xff)
+                            originX = 0xff;
+                        if (originY < 0)
+                            originY = 0;
+                        else if (originY > 0xbf)
+                            originY = 0xbf;
+                        control->tx = originX;
+                        control->ty = originY;
                     } else {
-                        p->delay = 5;
+                        control->delay = 5;
                     }
                 }
             }
-            if (DecIfAbove0_Byte(&p->delay) != 0) {
-                p->tx = TOUCH_DATA[i].x;
-                p->ty = TOUCH_DATA[i].y;
-                p->mag = 0;
-                p->nx = 0;
-                p->ny = 0;
-                p->ang = 0;
+            if (DecIfAbove0_Byte(&control->delay) != 0) {
+                control->tx = TOUCH_DATA[playerIndex].x;
+                control->ty = TOUCH_DATA[playerIndex].y;
+                control->mag = 0;
+                control->nx = 0;
+                control->ny = 0;
+                control->ang = 0;
             } else {
-                int dx;
-                int dy;
-                int len;
-                int max;
-                newx = TOUCH_DATA[i].x;
-                newy = TOUCH_DATA[i].y;
-                dx = newx - p->tx;
-                dy = newy - p->ty;
-                p->dx = dx;
-                p->dy = dy;
+                int deltaX;
+                int deltaY;
+                int distance;
+                int maxDistance;
+                touchX = TOUCH_DATA[playerIndex].x;
+                touchY = TOUCH_DATA[playerIndex].y;
+                deltaX = touchX - control->tx;
+                deltaY = touchY - control->ty;
+                control->dx = deltaX;
+                control->dy = deltaY;
                 {
-                    s64 sq = (s64)dx * dx;
-                    sq += (s64)dy * dy;
-                    len = cstd::sqrt(sq);
+                    s64 distanceSquared = (s64)deltaX * deltaX;
+                    distanceSquared += (s64)deltaY * deltaY;
+                    distance = cstd::sqrt(distanceSquared);
                 }
-                if (p->mode == 2)
-                    max = 0x30;
+                if (control->mode == 2)
+                    maxDistance = 0x30;
                 else
-                    max = 0x24;
-                if (len > max) {
-                    int quot = cstd::fdiv(max, len);
-                    dx = FX_MUL(dx, quot);
-                    p->tx = newx - dx;
-                    dy = FX_MUL(dy, quot);
-                    p->ty = newy - dy;
-                    len = max;
-                } else if (len < 4) {
-                    len = 0;
+                    maxDistance = 0x24;
+                if (distance > maxDistance) {
+                    int scale = cstd::fdiv(maxDistance, distance);
+                    deltaX = FX_MUL(deltaX, scale);
+                    control->tx = touchX - deltaX;
+                    deltaY = FX_MUL(deltaY, scale);
+                    control->ty = touchY - deltaY;
+                    distance = maxDistance;
+                } else if (distance < 4) {
+                    distance = 0;
                 }
-                p->mag = (len << 12) / max;
-                p->nx = (dx << 12) / max;
-                p->ny = (dy << 12) / max;
-                p->ang = _ZN4cstd5atan2E5Fix12IiES1_(dx, dy);
+                control->mag = (distance << 12) / maxDistance;
+                control->nx = (deltaX << 12) / maxDistance;
+                control->ny = (deltaY << 12) / maxDistance;
+                control->ang = _ZN4cstd5atan2E5Fix12IiES1_(deltaX, deltaY);
             }
         } else {
-            int b2;
-            int dirs;
-            b2 = (touched == 0 && TOUCH_DATA[i].edge != 0);
-            if (b2 != false)
-                p->cnt = 5;
-            DecIfAbove0_Byte(&p->cnt);
-            p->touching = 0;
-            dirs = 0;
-            if (p->mode == 0)
-                dirs = data_020a0e58[i].held & 0xf0;
-            p->ang = data_020756b0[dirs >> 4];
-            if (dirs != 0) {
-                p->mag = 0x1000;
-                p->nx = data_02082214[((u16)p->ang >> 4) * 2];
-                p->ny = data_02082214[((u16)p->ang >> 4) * 2 + 1];
+            int touchEnded;
+            int directionButtons;
+            touchEnded = (touched == 0 && TOUCH_DATA[playerIndex].edge != 0);
+            if (touchEnded != false)
+                control->cnt = 5;
+            DecIfAbove0_Byte(&control->cnt);
+            control->touching = 0;
+            directionButtons = 0;
+            if (control->mode == 0)
+                directionButtons = data_020a0e58[playerIndex].held & 0xf0;
+            control->ang = data_020756b0[directionButtons >> 4];
+            if (directionButtons != 0) {
+                control->mag = 0x1000;
+                control->nx = data_02082214[((u16)control->ang >> 4) * 2];
+                control->ny = data_02082214[((u16)control->ang >> 4) * 2 + 1];
             } else {
-                p->mag = 0;
-                p->nx = 0;
-                p->ny = 0;
+                control->mag = 0;
+                control->nx = 0;
+                control->ny = 0;
             }
         }
         {
-            int b3 = (data_0209fc48 != 0);
-            if (b3 == false) {
-                u16 *map = data_0209214c[p->mode];
-                u32 j = 0;
+            int skipButtonMapping = (data_0209fc48 != 0);
+            if (skipButtonMapping == false) {
+                u16 *buttonMap = data_0209214c[control->mode];
+                u32 buttonIndex = 0;
                 do {
                     if (held & 1)
-                        p->held |= *map;
+                        control->held |= *buttonMap;
                     held >>= 1;
                     if (pressed & 1)
-                        p->pressed |= *map;
+                        control->pressed |= *buttonMap;
                     pressed >>= 1;
-                    map++;
-                    j++;
-                } while (j < 0x10);
-                if (p->mode != 2 && (p->held & 0x300) == 0x300) {
-                    *(u16 *)((int)p + 4) |= 0x4000;
-                    if (p->pressed & 0x300) {
-                        *(u16 *)((int)p + 6) |= 0x4000;
+                    buttonMap++;
+                    buttonIndex++;
+                } while (buttonIndex < 0x10);
+                if (control->mode != 2 && (control->held & 0x300) == 0x300) {
+                    control->held |= 0x4000;
+                    if (control->pressed & 0x300) {
+                        control->pressed |= 0x4000;
                     }
                 }
             }
         }
-        st++;
-        i++;
-        p++;
-    } while (i < data_0209f21c);
-}
+        playerInputState++;
+        playerIndex++;
+        control++;
+    } while (playerIndex < data_0209f21c);
 }
 
 // @symbol _ZN3Fog4InitEt5Fix12IiES1_
@@ -4726,10 +4573,10 @@ static inline void DestroyVirt(void **o) {
 }
 
 int dScStage_c::CleanupResources() {
-    u32 i;
+    u32 fileIndex;
 
-    for (i = 0; i < 12; i++)
-        ((SharedFilePtr *)(data_020756f0[i]))->Release();
+    for (fileIndex = 0; fileIndex < 12; fileIndex++)
+        ((SharedFilePtr *)(data_020756f0[fileIndex]))->Release();
 
     {
         int atEnd = (data_0209f2d8 == 2);
@@ -4740,27 +4587,24 @@ int dScStage_c::CleanupResources() {
     data_0209d4a8 = 0;
 
     {
-        /* Was `*(void ***)((char *)&unk_9bc)` -- reading a pointer back out of
-           a field the header declared as one byte. include/dScStage_c.h types it now;
-           this read and LoadSkybox's store are the two ends of the evidence. */
-        void **o = (void **)mSkyboxModel;
-        if (o)
-            DestroyVirt(o);
+        Model *skybox = mSkyboxModel;
+        if (skybox)
+            delete skybox;
     }
 
     {
-        StageTexAnimSlot *e = mTexAnimSlots;
-        int j;
-        for (j = 0; j < ((LevelInfo *)data_0209f340)->count; j++, e++) {
-            void **o = (void **)e->mTransformer;
-            if (o)
-                DestroyVirt(o);
+        StageTexAnimSlot *slot = mTexAnimSlots;
+        int slotIndex;
+        for (slotIndex = 0; slotIndex < ((LevelInfo *)data_0209f340)->count; slotIndex++, slot++) {
+            TextureTransformer *transformer = (TextureTransformer *)slot->mTransformer;
+            if (transformer)
+                delete transformer;
             {
-                char *p = (char *)e->mBlockList;
-                while (p) {
-                    char *next = *(char **)(p + 0xc);
-                    Memory::operator_delete2(p);
-                    p = next;
+                char *block = (char *)slot->mBlockList;
+                while (block) {
+                    char *next = *(char **)(block + 0xc);
+                    Memory::operator_delete2(block);
+                    block = next;
                 }
             }
         }
@@ -4773,7 +4617,7 @@ int dScStage_c::CleanupResources() {
     func_02073244(data_0209f324, 0x60, 8, _ZN9dFdWipe_cD1Ev);
     data_0209f324 = 0;
     CleanCommonModelDataArr();
-    ((dBgW *)((char *)&mMeshCollider))->Disable();
+    mMeshCollider.Disable();
     dScStage_c::ResetMeshColliders();
     Deallocate(func_01ffb0c8(&mMeshCollider));
     UnloadLevelOverlays(data_0209f2f8);
@@ -4781,9 +4625,9 @@ int dScStage_c::CleanupResources() {
         UnloadArchive(7);
 
     {
-        int k;
-        for (k = 0; k < 4; k++)
-            data_0209f394[k] = 0;
+        int playerIndex;
+        for (playerIndex = 0; playerIndex < 4; playerIndex++)
+            data_0209f394[playerIndex] = 0;
     }
     data_0209f318 = 0;
     data_0209f2c4 = 0;
@@ -4791,15 +4635,15 @@ int dScStage_c::CleanupResources() {
 
     {
         u8 mode = data_0209f2d8;
-        int music = 0;
+        int resetSequenceCounts = 0;
         data_0209f2e0 = 0;
         data_0209f2d4 = 0;
         data_0209f244 = 0;
         data_0209f2b0 = 0;
         data_0209f20c = 0;
         if (mode == 1)
-            music = 1;
-        if (music) {
+            resetSequenceCounts = 1;
+        if (resetSequenceCounts) {
             Sound::Player::SetPlayableSeqCount(2, 2);
             Sound::Player::SetPlayableSeqCount(3, 1);
         }
@@ -4863,15 +4707,15 @@ void _ZN10dScStage_c14LoadGraphics2DEbi(int e3d, int level);
 }
 
 int dScStage_c::InitResources() {
-    dScStage_c *thiz = this;
+    dScStage_c *scene = this;
 
-    if (thiz->mWaitingForLoad == 0) {
-        u8 modeByte = data_0209f2d8;
-        int v0 = (modeByte == 1) ? 1 : 0;
-        if (v0) {
+    if (scene->mWaitingForLoad == 0) {
+        u8 mode = data_0209f2d8;
+        int isVsMode = (mode == 1) ? 1 : 0;
+        if (isVsMode) {
             Sound::Player::SetPlayableSeqCount(2, 5);
-            int n = 3;
-            Sound::Player::SetPlayableSeqCount(n, n);
+            int sequenceCount = 3;
+            Sound::Player::SetPlayableSeqCount(sequenceCount, sequenceCount);
         }
         dScene_c::Initialise3dGraphics();
         Enable3dEngines();
@@ -4880,45 +4724,46 @@ int dScStage_c::InitResources() {
         ResetInput();
         data_0209f2c4 = 0;
 
-        int temp_r4 = SublevelToLevel(data_02092110);
-        int temp_r0 = SublevelToLevel(data_0209f2f8);
-        u32 bits = ((u8)data_02092110 + 0xDC) & 0xFF;
-        int v1 = 0;
-        if (bits <= 0xD) {
-            if ((1 << bits) & 0x2A15)
-                v1 = 1;
+        int nextLevel = SublevelToLevel(data_02092110);
+        int previousLevel = SublevelToLevel(data_0209f2f8);
+        u32 sublevelBit = ((u8)data_02092110 + 0xDC) & 0xFF;
+        int specialSublevel = 0;
+        if (sublevelBit <= 0xD) {
+            if ((1 << sublevelBit) & 0x2A15)
+                specialSublevel = 1;
         }
-        modeByte = data_0209f2d8;
-        int b1 = (modeByte == 1) ? 1 : 0;
+        mode = data_0209f2d8;
+        int vsModeReset = (mode == 1) ? 1 : 0;
 
-        if (b1 || data_0209f26c == 2 || v1 || temp_r4 == 0x1D || temp_r4 != temp_r0) {
-            int r8 = 0;
+        if (vsModeReset || data_0209f26c == 2 || specialSublevel || nextLevel == 0x1D ||
+            nextLevel != previousLevel) {
+            int row = 0;
             data_0209f34c = 0;
             do {
-                int r7 = 0;
+                int column = 0;
                 do {
-                    data_0209f4f8[r8][r7] = 0;
-                    r7 += 1;
-                } while (r7 < 0x10);
-                r8 += 1;
-            } while (r8 < 3);
+                    data_0209f4f8[row][column] = 0;
+                    column += 1;
+                } while (column < 0x10);
+                row += 1;
+            } while (row < 3);
 
             if ((s32)data_0209f21c > 0) {
                 int count = data_0209f21c;
                 int idx = 0;
                 u8 *p1 = (u8 *)data_0209f30c;
-                u8 *p2 = (u8 *)data_0209f310;
-                int sl = (modeByte == 1) ? 1 : 0;
-                u8 f26c = data_0209f26c;
+                u8 *vsStars = (u8 *)data_0209f310;
+                int vsModeCounters = (mode == 1) ? 1 : 0;
+                u8 loadMode = data_0209f26c;
                 do {
-                    if (sl || (v1 == 0 && f26c != 1)) {
+                    if (vsModeCounters || (specialSublevel == 0 && loadMode != 1)) {
                         data_0209f358[idx] = 0;
                     }
                     *p1 = 0;
-                    *p2 = 0;
+                    *vsStars = 0;
                     idx += 1;
                     p1 += 1;
-                    p2 += 1;
+                    vsStars += 1;
                 } while (idx < count);
             }
         }
@@ -4929,43 +4774,43 @@ int dScStage_c::InitResources() {
             data_02092118 = -1;
         }
 
-        s8 prevLevel = data_0209f2f8;
+        s8 previousSublevel = data_0209f2f8;
         data_0209f2f8 = data_02092110;
         data_0209f264 = data_0209f268;
         data_0209f220 = data_0209f1f0;
         data_02092120 = -1;
-        data_0209f314 = (int)thiz->mTexAnimSlots;
+        data_0209f314 = (int)scene->mTexAnimSlots;
         data_0209f32c = 0x80000000;
         data_0209f274 = 0;
         SublevelToLevel(data_0209f2f8);
 
-        s32 archiveIdx = 0xBF;
+        s32 levelArchive = 0xBF;
         if (data_0209f2f8 == 0x33)
-            archiveIdx = 2;
+            levelArchive = 2;
         else if (data_0209f2f8 == 0x2B)
-            archiveIdx = 3;
+            levelArchive = 3;
         else if (data_0209f2f8 == 0x1D)
-            archiveIdx = 4;
+            levelArchive = 4;
         else if (data_0209f2f8 == 0x2A)
-            archiveIdx = 5;
+            levelArchive = 5;
 
-        u32 r7_2 = 2;
+        u32 archiveToUnload = 2;
         do {
-            if (r7_2 != (u32)archiveIdx) {
-                UnloadArchive(r7_2);
+            if (archiveToUnload != (u32)levelArchive) {
+                UnloadArchive(archiveToUnload);
             }
-            r7_2 += 1;
-        } while (r7_2 <= 5);
+            archiveToUnload += 1;
+        } while (archiveToUnload <= 5);
 
         LoadTextNarcs();
         LoadArchive(0);
         if (data_0209f2f8 == 1) {
-            mHeap::Heap_t *saved = ((mHeap::Heap_t *)data_020a0eac)->SetDefault();
+            mHeap::Heap_t *previousHeap = ((mHeap::Heap_t *)data_020a0eac)->SetDefault();
             LoadArchive(7);
-            saved->SetDefault();
+            previousHeap->SetDefault();
         }
-        if (archiveIdx != 0xBF) {
-            LoadArchive(archiveIdx);
+        if (levelArchive != 0xBF) {
+            LoadArchive(levelArchive);
         }
 
         ::Initialise3dGraphics(0x1F);
@@ -4985,10 +4830,10 @@ int dScStage_c::InitResources() {
         *p1 |= 0x10000;
         InitialiseVramGlobals();
 
-        volatile u16 *pVram = (volatile u16 *)0x0400000A;
-        *pVram = *pVram & ~3;
-        *pVram = (*pVram & 0x43) | 0x1F1C;
-        *pVram = *pVram & ~0x40;
+        volatile u16 *bg1Control = (volatile u16 *)0x0400000A;
+        *bg1Control = *bg1Control & ~3;
+        *bg1Control = (*bg1Control & 0x43) | 0x1F1C;
+        *bg1Control = *bg1Control & ~0x40;
         data_0209d454 = 0x18;
         data_0209f204 = 0;
         data_0209d4a8 = (void *)&data_0209f3c4;
@@ -4996,17 +4841,15 @@ int dScStage_c::InitResources() {
         func_02039218();
         ResetKuppaScript();
 
-        int v0_3 = (data_0209f2d8 == 1) ? 1 : 0;
-        if (v0_3 == 0)
-            goto L_zero304;
-        data_0209f2bc = 3;
-        data_0209f304 = 0x28;
-        data_0209f308 = 0;
-        goto L_after304;
-    L_zero304:
-        data_0209f2bc = 0;
-        data_0209f304 = 0;
-    L_after304:;
+        int vsModeTimers = (data_0209f2d8 == 1) ? 1 : 0;
+        if (vsModeTimers != 0) {
+            data_0209f2bc = 3;
+            data_0209f304 = 0x28;
+            data_0209f308 = 0;
+        } else {
+            data_0209f2bc = 0;
+            data_0209f304 = 0;
+        }
 
         {
             int i;
@@ -5037,32 +4880,32 @@ int dScStage_c::InitResources() {
         data_02092134 = 0x44444444;
         LoadLevelOverlays(data_0209f2f8);
 
-        int v0_4 = (data_0209f2d8 == 2) ? 1 : 0;
-        if (v0_4 == 0) {
-            s8 level2 = *(s8 *)(unsigned)(((unsigned long long)(unsigned)&data_0209f2f8) & ~0ULL);
+        int skipSoundGroup = (data_0209f2d8 == 2) ? 1 : 0;
+        if (skipSoundGroup == 0) {
+            s8 sublevel = *(s8 *)(unsigned)(((unsigned long long)(unsigned)&data_0209f2f8) & ~0ULL);
             int soundGroup = 0;
             u8 bank = 0x36;
             if (data_0209f220 == 2) {
-                if (level2 == 1 || level2 == 0x33)
+                if (sublevel == 1 || sublevel == 0x33)
                     soundGroup = 0x2B;
-                else if (level2 == 0x1D)
+                else if (sublevel == 0x1D)
                     soundGroup = 0x2E;
-                else if (level2 == 0x2A)
+                else if (sublevel == 0x2A)
                     soundGroup = 0x2C;
-                else if (level2 == 0x2B)
+                else if (sublevel == 0x2B)
                     soundGroup = 0x2D;
             }
             if (soundGroup == 0) {
-                int idx = level2 * 3;
-                soundGroup = GetSoundGroupID(level2, data_0209f220);
+                int idx = sublevel * 3;
+                soundGroup = GetSoundGroupID(sublevel, data_0209f220);
                 bank = data_02075769[idx];
             }
             Sound::LoadGroupAndSetBank(soundGroup, bank);
         }
 
         *(volatile u16 *)0x04000008 = (*(volatile u16 *)0x04000008 & ~3) | 2;
-        int v0_6 = (data_0209f2d8 == 1) ? 1 : 0;
-        _ZN10dScStage_c14LoadGraphics2DEbi(v0_6, data_0209f2f8);
+        int vsModeGraphics = (data_0209f2d8 == 1) ? 1 : 0;
+        _ZN10dScStage_c14LoadGraphics2DEbi(vsModeGraphics, data_0209f2f8);
 
         {
             u32 i;
@@ -5071,44 +4914,45 @@ int dScStage_c::InitResources() {
             }
         }
 
-        int v0_7 = (data_0209f2d8 == 1) ? 1 : 0;
-        u16 *faderTbl;
-        if (v0_7 && archiveIdx != 0xBF) {
-            faderTbl = data_02075600;
+        int vsModeFaders = (data_0209f2d8 == 1) ? 1 : 0;
+        u16 *faderFileIds;
+        if (vsModeFaders && levelArchive != 0xBF) {
+            faderFileIds = data_02075600;
         } else if (data_0209f2f8 == 5) {
-            faderTbl = data_020755f0;
+            faderFileIds = data_020755f0;
         } else {
-            faderTbl = data_020755e0;
+            faderFileIds = data_020755e0;
         }
 
         data_0209f324 =
             func_02073470(7, 0x60, 8, (void *)&_ZN9dFdWipe_cC1Ev, (void *)&_ZN9dFdWipe_cD1Ev);
-        int r8_4 = 0;
-        int r7_3 = 0;
+        int faderIndex = 0;
+        int faderOffset = 0;
         do {
-            ((dFdWipe_c *)((char *)data_0209f324 + r7_3))->LoadAndSetFile(faderTbl[r8_4]);
-            r8_4 += 1;
-            r7_3 += 0x60;
-        } while (r8_4 < 7);
+            ((dFdWipe_c *)((char *)data_0209f324 + faderOffset))
+                ->LoadAndSetFile(faderFileIds[faderIndex]);
+            faderIndex += 1;
+            faderOffset += 0x60;
+        } while (faderIndex < 7);
 
         data_0209f340 = (char *)data_02092208[data_0209f2f8];
-        thiz->LoadModel();
+        scene->LoadModel();
         data_0208ee44 = 2;
         dScStage_c::LoadClsnAndObjects(*(LVL_Overlay *)data_0209f340, data_0209f264,
-                                       thiz->mMeshCollider);
+                                       scene->mMeshCollider);
 
-        int v0_8 = (data_0209f2d8 == 1) ? 1 : 0;
-        if (v0_8 == 0) {
-            int nofc = (data_0209fc48 != 0) ? 1 : 0;
-            if (nofc == 0) {
-                if (!IsLevelInsideCastle(data_0209f2f8) || !IsLevelInsideCastle(prevLevel)) {
+        int vsModeMusic = (data_0209f2d8 == 1) ? 1 : 0;
+        if (vsModeMusic == 0) {
+            int skipMusicSetup = (data_0209fc48 != 0) ? 1 : 0;
+            if (skipMusicSetup == 0) {
+                if (!IsLevelInsideCastle(data_0209f2f8) || !IsLevelInsideCastle(previousSublevel)) {
                     if (!IsLevelTinyHugeIslandOutside(data_0209f2f8) ||
-                        !IsLevelTinyHugeIslandOutside(prevLevel)) {
+                        !IsLevelTinyHugeIslandOutside(previousSublevel)) {
                         if (data_0209f2f8 != 2 || (((SaveData *)data_0209caa0)->flags2 & 0x200)) {
                             Sound::LoadAndSetMusic_Layer1(data_0207576a[data_0209f2f8 * 3]);
-                            u8 sndIdx = data_0209f250;
-                            if (((u8 *)data_0209f394[sndIdx])[0x6ff] != 0) {
-                                Sound::SetMusic(sndIdx, 0x33);
+                            u8 localPlayer = data_0209f250;
+                            if (((u8 *)data_0209f394[localPlayer])[0x6ff] != 0) {
+                                Sound::SetMusic(localPlayer, 0x33);
                             }
                         }
                     }
@@ -5116,15 +4960,15 @@ int dScStage_c::InitResources() {
             }
         }
 
-        if (func_0203da3c() != 2 && archiveIdx != 0xBF) {
-            UnloadArchive(archiveIdx);
+        if (func_0203da3c() != 2 && levelArchive != 0xBF) {
+            UnloadArchive(levelArchive);
         }
         LoadDebugFont();
-        thiz->LoadFog();
-        thiz->LoadTextureTransformers();
-        thiz->LoadSkybox();
+        scene->LoadFog();
+        scene->LoadTextureTransformers();
+        scene->LoadSkybox();
         data_0209cef0 = 1;
-        thiz->mSysTracker.Initialise();
+        scene->mSysTracker.Initialise();
 
         u8 f2fc = data_0209f2fc;
         data_0209f294 = 0;
@@ -5138,8 +4982,8 @@ int dScStage_c::InitResources() {
         data_0209d45c = 0x11;
 
         *p0 = (*p0 & ~0x1F00) | 0x1100;
-        int v0_9 = (data_0209f2d8 == 2) ? 1 : 0;
-        if (v0_9 == 0) {
+        int skipSubDisplayLayers = (data_0209f2d8 == 2) ? 1 : 0;
+        if (skipSubDisplayLayers == 0) {
             *p1 = (*p1 & ~0x1F00) | (data_0209d454 << 8);
         }
         data_0209cee8 = 0;
@@ -5147,11 +4991,11 @@ int dScStage_c::InitResources() {
         data_02092110 = -1;
 
         if (data_0209fc68 != 0) {
-            thiz->mWaitingForLoad = 1;
+            scene->mWaitingForLoad = 1;
         }
     }
 
-    if (thiz->mWaitingForLoad != 0) {
+    if (scene->mWaitingForLoad != 0) {
         if (func_020308a8() == 0)
             return -1;
     }
@@ -5201,9 +5045,9 @@ void SetSubBg2Offset(int a, int b);
 #define BG1CNT_SUB (*(volatile u16 *)0x400100a)
 #define BG2CNT_SUB (*(volatile u16 *)0x400100c)
 
-void dScStage_c::LoadGraphics2D(bool b, int i) {
-    char *r4;
-    char *r7;
+void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
+    char *screenMap;
+    char *subBg2Screen;
 
     BG3CNT &= ~3;
     BG3CNT = (BG3CNT & 0x43) | 0x1100;
@@ -5214,7 +5058,7 @@ void dScStage_c::LoadGraphics2D(bool b, int i) {
     BG2CNT &= ~0x40;
     BG2CNT = (BG2CNT & 0x43) | 0xd10;
 
-    if (b == 0) {
+    if (vsMode == 0) {
         LoadFont(0);
         if (GetOwnerLanguage() == 5) {
             LoadCompressedFileAt(0xb00f, _ZN2G213GetBG2CharPtrEv());
@@ -5228,10 +5072,10 @@ void dScStage_c::LoadGraphics2D(bool b, int i) {
             LoadCompressedFileAt(0xa00f, _ZN2G213GetBG2CharPtrEv());
         }
         LoadFileAt(0x980b, 0x5000000);
-        r4 = _ZN2G212GetBG2ScrPtrEv();
-        LoadCompressedFileAt(0x9808, r4);
-        LoadCompressedFileAt(0x9809, r4 + 0x800);
-        LoadCompressedFileAt(0x980a, r4 + 0x1000);
+        screenMap = _ZN2G212GetBG2ScrPtrEv();
+        LoadCompressedFileAt(0x9808, screenMap);
+        LoadCompressedFileAt(0x9809, screenMap + 0x800);
+        LoadCompressedFileAt(0x980a, screenMap + 0x1000);
         LoadControllerModeText(0x280);
     } else {
         LoadFont3D();
@@ -5256,9 +5100,9 @@ void dScStage_c::LoadGraphics2D(bool b, int i) {
         LoadCompressedFileAt(ASSET_D_2D_OP_OBJ_CL_NCG_BIN, (void *)0x6600000);
         LoadFileAt(ASSET_D_2D_OP_OBJ_CL_NCL_BIN, 0x5000600);
         {
-            char *scr2 = G2S::GetBG2ScrPtr();
-            volatile u16 sp0 = 0x10d0;
-            MultiStore16(sp0, scr2, 0x800);
+            char *clearScreenMap = G2S::GetBG2ScrPtr();
+            volatile u16 fillTile = 0x10d0;
+            MultiStore16(fillTile, clearScreenMap, 0x800);
         }
         data_0209d454 = 0x17;
         SetSubBg0Offset(0, 0);
@@ -5290,32 +5134,32 @@ void dScStage_c::LoadGraphics2D(bool b, int i) {
     }
 
     LoadFileAt(0x9807, 0x5000400);
-    r4 = (char *)G2S::GetBG1ScrPtr();
-    LoadCompressedFileAt(0x9804, r4 + 0x800);
-    LoadCompressedFileAt(0x9803, r4 + 0x1000);
+    screenMap = (char *)G2S::GetBG1ScrPtr();
+    LoadCompressedFileAt(0x9804, screenMap + 0x800);
+    LoadCompressedFileAt(0x9803, screenMap + 0x1000);
 
     if (GetOwnerLanguage() == 5) {
-        LoadCompressedFileAt(0xb009, r4 + 0x1800);
-        LoadCompressedFileAt(0xb00b, r4 + 0x2000);
+        LoadCompressedFileAt(0xb009, screenMap + 0x1800);
+        LoadCompressedFileAt(0xb00b, screenMap + 0x2000);
     } else if (GetOwnerLanguage() == 4) {
-        LoadCompressedFileAt(0xac09, r4 + 0x1800);
-        LoadCompressedFileAt(0xac0b, r4 + 0x2000);
+        LoadCompressedFileAt(0xac09, screenMap + 0x1800);
+        LoadCompressedFileAt(0xac0b, screenMap + 0x2000);
     } else if (GetOwnerLanguage() == 3) {
-        LoadCompressedFileAt(0xa809, r4 + 0x1800);
-        LoadCompressedFileAt(0xa80b, r4 + 0x2000);
+        LoadCompressedFileAt(0xa809, screenMap + 0x1800);
+        LoadCompressedFileAt(0xa80b, screenMap + 0x2000);
     } else if (GetOwnerLanguage() == 2) {
-        LoadCompressedFileAt(0xa409, r4 + 0x1800);
-        LoadCompressedFileAt(0xa40b, r4 + 0x2000);
+        LoadCompressedFileAt(0xa409, screenMap + 0x1800);
+        LoadCompressedFileAt(0xa40b, screenMap + 0x2000);
     } else {
-        LoadCompressedFileAt(0xa009, r4 + 0x1800);
-        LoadCompressedFileAt(0xa00b, r4 + 0x2000);
+        LoadCompressedFileAt(0xa009, screenMap + 0x1800);
+        LoadCompressedFileAt(0xa00b, screenMap + 0x2000);
     }
 
-    r7 = G2S::GetBG2ScrPtr();
-    LoadCompressedFileAt(0x9805, r7);
-    LoadCompressedFileAt(0x9806, r7 + 0x1000);
+    subBg2Screen = G2S::GetBG2ScrPtr();
+    LoadCompressedFileAt(0x9805, subBg2Screen);
+    LoadCompressedFileAt(0x9806, subBg2Screen + 0x1000);
 
-    if (b != 0) {
+    if (vsMode != 0) {
         if (data_0209fc68 != 0) {
             return;
         }
@@ -5333,23 +5177,23 @@ void dScStage_c::LoadGraphics2D(bool b, int i) {
         LoadFileAt(0x980b, 0x5000000);
         LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN,
                              _ZN2G212GetBG2ScrPtrEv() + 0x1800);
-        LoadCompressedFileAt(0x9801, r4 + 0x2800);
+        LoadCompressedFileAt(0x9801, screenMap + 0x2800);
         return;
     }
 
-    if (SublevelToLevel(i) == 0x1d) {
-        volatile u16 sp2 = 0;
-        MultiStore16(sp2, r4, 0x40);
-        LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, r4 + 0x40);
+    if (SublevelToLevel(sublevel) == 0x1d) {
+        volatile u16 blankTile = 0;
+        MultiStore16(blankTile, screenMap, 0x40);
+        LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, screenMap + 0x40);
         LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_PAGE_NSC_BIN, _ZN2G212GetBG2ScrPtrEv() + 0x1800);
         LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN,
                              _ZN2G212GetBG2ScrPtrEv() + 0x2800);
-        LoadCompressedFileAt(0x9802, r4 + 0x2800);
+        LoadCompressedFileAt(0x9802, screenMap + 0x2800);
         return;
     }
 
     LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN, _ZN2G212GetBG2ScrPtrEv() + 0x1800);
-    LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, r4);
+    LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, screenMap);
 }
 
 // @symbol _ZN10dScStage_c19BeforeInitResourcesEv

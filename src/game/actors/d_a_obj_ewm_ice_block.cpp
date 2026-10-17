@@ -108,17 +108,17 @@ int daObjEwmIceBlock_c::Behavior()
     }
 
     mPath.GetNode(prev, mPathNodeIdx);
-    Vec3_Sub(&diff, (Vector3 *)&mPosX, &prev);
+    Vec3_Sub(&diff, &mPos, &prev);
     len = LenVec3(&diff);
     if (len == 0 || len <= mHorzSpeed) {
         int q = cstd::fdiv(mHorzSpeed, len);
         Vec3_MulScalar(&scaled1, &diff, q);
-        SubVec3((Vector3 *)&mPosX, &scaled1, (Vector3 *)&mPosX);
+        SubVec3(&mPos, &scaled1, &mPos);
         looped = 1;
     } else {
         int q = cstd::fdiv(mHorzSpeed, len);
         Vec3_MulScalar(&scaled2, &diff, q);
-        SubVec3((Vector3 *)&mPosX, &scaled2, (Vector3 *)&mPosX);
+        SubVec3(&mPos, &scaled2, &mPos);
     }
 
     if (looped) {

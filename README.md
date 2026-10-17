@@ -16,85 +16,7 @@ machine and is git-ignored.
 
 ## Credits
 
-A lot of people have put real time into this. Thank you to everyone below.
-
-### Symbol names and reverse engineering
-
-Over a thousand of the function and data names in this repo come from the SM64DS modding
-community, along with much of what we know about the game's structs and actor system.
-
-- **[SplattyDS](https://github.com/SplattyDS)**, for the symbol names and struct layouts in
-  [DynamicAllocationDecomp](https://github.com/SplattyDS/DynamicAllocationDecomp) and
-  [SM64DS-ASM-Reference](https://github.com/SplattyDS/SM64DS-ASM-Reference).
-- **[Gota7](https://github.com/Gota7)**, for decompiled objects and game documentation on
-  Splatty's repos, and for MoreObjectsMod.
-- **[pants64DS](https://github.com/pants64DS)**, for the shared object resource system and
-  game documentation.
-- **[hayashi-stl](https://github.com/hayashi-stl)**, for the DL format and game
-  documentation.
-- **[Arisotura](https://github.com/Arisotura)**, for SM64DSe, which a lot of this
-  knowledge traces back to.
-
-We use their names and field offsets as reference facts only. Every line of code in `src/`
-was written from scratch against our own ROM, none of their code is in this repo, and they
-are not involved in this project.
-
-### Decompilation
-
-- **[tangosdev](https://github.com/tangosdev)** (Tango), project lead. Most of the matched
-  functions, the tooling and CI, the PC port, and tangOS Console.
-- **[andrewboudreau](https://github.com/andrewboudreau)**, the second largest share of
-  matches, spread across arm9 and many overlays. Also built the source review gate and the
-  multi-agent work protocol, added the relocation destination audit, wrote codegen notes on
-  boolean materialization and predicated selects, and keeps the PC port's smoke build
-  working.
-- **[lunavyqo](https://github.com/lunavyqo)**, matches across ov001 and a wide spread of the
-  scene overlays, and most of the translation unit promotion work that merges one-function
-  files back into the real C++ files they came from.
-- **[ruspecial](https://github.com/ruspecial)**, large batches across ov002, ov006 and the
-  arm9 BIOS stubs, 174 banked near misses with the triage notes behind them, and the fix
-  for two Bowser holes in the PC port.
-- **[RyanCopley](https://github.com/RyanCopley)**, the first outside contribution (PR #1):
-  functions across ov002, ov006, arm9 and ov034, including the first ones in ov034.
-- **[lplaat](https://github.com/lplaat)**, arm9 flag setters, thunks and helpers, plus a set
-  of ov002 cleanups.
-- **[ai-tdd-labs](https://github.com/ai-tdd-labs)**, a long run of small matched batches
-  across arm9 and the overlays, and a worklist generator fix.
-- **[mitchellcairns](https://github.com/mitchellcairns)**, matches including the cut crash
-  screen, the C++ decompilation index and renaming tools, and the C/C++ language mode
-  ratchet.
-- **[natbree](https://github.com/natbree)**, matches in arm9 and ov075.
-- **[NitroShellMKDS](https://github.com/NitroShellMKDS)**, matches in ov006.
-- **[mitch030504](https://github.com/mitch030504)**, matches across arm9 and the overlays.
-- **[Moundistz](https://github.com/Moundistz)**, matches, floor entries, and a callee rename
-  pass across arm9.
-
-### Tooling and docs
-
-- **[webheadvr](https://github.com/webheadvr)**, made the relocation symbol resolver
-  overlay-aware and added ITCM/DTCM symbol support.
-- **[liveteklol](https://github.com/liveteklol)**, got the compiler recovery script running
-  on Linux and mapped one of the hardest codegen walls in ov080.
-- **[Alberto12345678999](https://github.com/Alberto12345678999)**, cleaned up markdown across
-  the notes tree and ran the passes that link every named symbol in the notes to its record.
-
-### tangOS Console
-
-- **[andrewboudreau](https://github.com/andrewboudreau)**, the guard that stops a raw
-  assembly transcription from ever being counted as a match.
-- **[lunavyqo](https://github.com/lunavyqo)**, match conventions, the prior tries view, and
-  attempt tree logging.
-
-### Inspiration
-
-The `tools/coddog.py` similarity scheduler came out of
-[Chris Lewis's writeup](https://blog.chrislewis.au/the-long-tail-of-llm-assisted-decompilation/)
-on LLM-assisted decompilation and the Coddog tool it describes.
-
-[CREDITS.md](CREDITS.md) has the longer version with PR numbers, and
-[contributions.json](contributions.json) has live per-person match counts. The house rule
-for outside knowledge is import knowledge, write code: known names and field offsets are
-fair to use, but all source is written from scratch against your own ROM.
+A lot of people have put real time into this. Thank you to everyone in [CREDITS.md](CREDITS.md); [contributions.json](contributions.json) has live per-person match counts.
 
 ## Progress
 
@@ -108,9 +30,8 @@ Code size  ███████████████████████
 <!-- tiers:start -->
 ```
 MATCHED    ██████████████████████████████  100.0%   11,389 / 11,389 functions
-           of which 108 are byte-exact assembly (hand-written in the original, not C)
-CONVERTED  ████████████░░░░░░░░░░░░░░░░░░  39.6%   4,509 / 11,386 functions
-LINKED     ████████████████████████████░░  93.5%   10,595 / 11,328 matched TUs
+           of which 109 are byte-exact assembly (hand-written in the original, not C)
+LINKED     █████████████████████████████░  96.2%   10,957 / 11,389 functions
 ```
 <!-- tiers:end -->
 
@@ -121,15 +42,12 @@ size, and status, see the [progress treemap on GitHub Pages](https://tangosdev.g
 The [recovered TU treemap](https://tangosdev.github.io/sm64ds-decomp/tu-treemap.html)
 groups code by reconstructed translation unit, with links to each source file and TU manifest.
 
-The three bars measure different things:
+The two bars measure different things:
 
 - **MATCHED** means the source compiles to the cartridge's exact bytes. This is the
   classic decomp number.
-- **CONVERTED** means a person can read that source without the ROM open next to them:
-  real C++ classes with their real names, bases and vtables instead of flat C full of
-  offsets.
-- **LINKED** means the matched file is compiled straight into the PC port, replacing the
-  stand-in the port used before.
+- **LINKED** means the function's matched file is compiled straight into the PC port,
+  replacing the stand-in the port used before. Both bars count functions.
 
 ## Where things stand
 
@@ -139,7 +57,7 @@ functions in the game, the ones everything else was matched around, plus a handf
 sit at documented floors where every spelling we have tried lands on the same small
 difference. Those are written down rather than ground on again.
 
-Most of the work now goes into the other two bars. The readable source push turns matched
+Most of the work now goes into the other bar. The readable source push turns matched
 files into real C++ class by class. The actor tree (`fBase_c`, `dBase_c`, `dActor_c`,
 `dBgActor_c`, `dEnemyBase_c` and every `daObj*_c` scene actor) is declared in `include/`
 as actual C++, named from the ROM's own RTTI, and finished classes get merged back into

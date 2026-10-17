@@ -121,8 +121,8 @@ int daPiano_c::InitResources()
         /* Sensor cylinders, 155.0 radius by 250.0 tall, tracking mPos.
          * 0x200004 is enemy | char-projectile: what can hit the piano.
          * Players are Hurt manually (func_ov063_0211d8cc), not via dCc. */
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            cylinder, this, (const Vector3 *)&mPosX, 0x9b000, 0xfa000, 0x200004, 0);
+        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cylinder, this, &mPos, 0x9b000,
+                                                                0xfa000, 0x200004, 0);
         cylinder++;
     }
     f = dBgW_Kc::LoadFile(gPianoCollisionFile);
@@ -141,7 +141,7 @@ int daPiano_c::Behavior()
 {
     func_ov063_0211ddf4(this);
     UpdatePos(0);
-    if (Vec3_HorzDist(&mHomePos, (const Vector3 *)&mPosX) > 0x180000) {
+    if (Vec3_HorzDist(&mHomePos, &mPos) > 0x180000) {
         mPosX = mPrevPosX;
         mPosY = mPrevPosY;
         mPosZ = mPrevPosZ;
@@ -366,16 +366,13 @@ void daPiano_c::func_ov063_0211d8cc()
     }
 
     if ((u16)(this->mModelAnim.currFrame >> 12) == 0)
-        func_0201267c(0x106, (const Vector3 *)&this->mCamSpacePosX);
+        func_0201267c(0x106, &this->mCamSpacePos);
 
     target = this->mTarget;
     if (target != 0) {
         Vec3_Sub((Vec3*)&tmp, (Vec3*)&this->mPosX, (Vec3*)&target->mPosX);
         dist = LenVec3((Vec3*)&tmp);
-        ApproachLinear(
-            this->mPrevAngleY,
-            Vec3_HorzAngle((Vector3*)&this->mPosX, (Vector3*)&this->mTarget->mPosX),
-            0x200);
+        ApproachLinear(this->mPrevAngleY, Vec3_HorzAngle(&this->mPos, &this->mTarget->mPos), 0x200);
         this->mAngleY = this->mPrevAngleY;
         if (dist > 0x3ab000) {
             if ((u16)(this->mModelAnim.currFrame >> 12) == 0) {
@@ -472,7 +469,7 @@ void func_ov063_0211d5f4(daPiano_c *self)
     in.z = -0x10000;
     Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
     MulVec3Mat4x3(&in, &data_020a0e68, &out);
-    AddVec3(&out, (Vector3*)&self->mPosX, &out);
+    AddVec3(&out, &self->mPos, &out);
     Matrix4x3_FromRotationY(&self->mShadowMats[2], self->mAngleY);
     self->mShadowMats[2].m[9] = out.x >> 3;
     self->mShadowMats[2].m[10] = self->mPosY >> 3;
@@ -486,7 +483,7 @@ void func_ov063_0211d5f4(daPiano_c *self)
     in.x = -0x60000;
     Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
     MulVec3Mat4x3(&in, &data_020a0e68, &out);
-    AddVec3(&out, (Vector3*)&self->mPosX, &out);
+    AddVec3(&out, &self->mPos, &out);
     Matrix4x3_FromRotationY(&self->mShadowMats[0], self->mAngleY);
     self->mShadowMats[0].m[9] = out.x >> 3;
     self->mShadowMats[0].m[10] = self->mPosY >> 3;
@@ -500,7 +497,7 @@ void func_ov063_0211d5f4(daPiano_c *self)
     in.z = -0x10000;
     Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
     MulVec3Mat4x3(&in, &data_020a0e68, &out);
-    AddVec3(&out, (Vector3*)&self->mPosX, &out);
+    AddVec3(&out, &self->mPos, &out);
     Matrix4x3_FromRotationY(&self->mShadowMats[1], self->mAngleY);
     self->mShadowMats[1].m[9] = out.x >> 3;
     self->mShadowMats[1].m[10] = self->mPosY >> 3;

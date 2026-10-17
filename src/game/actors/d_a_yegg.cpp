@@ -55,13 +55,11 @@
  *   stay spelled as mangled extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az).
- * - still raw offsets: the DOSUN byte at +0x3a2 in func_ov002_020ec670
- *   and the word at Player+0xc8 in func_ov002_020ed998. Spawned coins use
- *   dActor_c's existing previous-angle and horizontal-speed fields.
+ * - the DOSUN byte at +0x3a2 in func_ov002_020ec670 remains a raw offset.
+ *   Spawned coins use dActor_c's existing previous-angle and horizontal-speed fields.
  * - mSpawnPos is named in daYegg_c.h but its purpose is not known
  *   (written once, never read here); unk_41e and the 4-byte gap at 0x3f8 are
- *   unnamed. dActor_c::unk_0a4/unk_0ac and Player::unk_37c are read through
- *   their unk_ names, and func_ov002_020ed738 reads the floor result +4 raw.
+ *   unnamed. dActor_c::unk_0a4/unk_0ac are read through their unk_ names.
  * - this list is representative, not exhaustive: the flag and mask
  *   literals (mFlags 0x40000/0x10000000/0x8, the hit flags 0x8000/0x26fe0,
  *   the cylinder words 0x202000/0x200002/0xa08000) are also left numeric, and
@@ -713,29 +711,30 @@ void daYegg_c::func_ov002_020ecf94()
  * cylinder is re-initialised with radius 0x64000 (100 units), height 0xc8000
  * (200 units), own flags 0x202000 and hit mask 0 -- in dCc_c.h's bit table
  * that is the enemy and egg bits, with nothing able to hit it. */
-void daYegg_c::func_ov002_020ecfc8(){
-  dActor_c* r5;
-  mTargetId = 0;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)(data_ov002_0210e6b0 + 4), 0, 0x1000, 0);
-  mHorzSpeed = 0x64000;
-  if (!func_ov002_020ec654()){
-    mVertAccel = 0;
-    r5 = (dActor_c*)func_ov002_020edb3c(0, 0x7d0000);
-    func_0203568c(&mWithMeshClsn, 0x2a000);
-  } else {
-    mVertAccel = -0xa000;
-    r5 = (dActor_c*)func_ov002_020edb3c(0, 0xfa0000);
-  }
-  if (r5){
-    mAngleY = Vec3_HorzAngle((struct Vector3*)&mPosX, (struct Vector3*)&r5->mPosX);
-  } else {
-    if (mTargetedCount){
-      if (!func_ov002_020ec654())
-        func_ov002_020edca4(this);
+void daYegg_c::func_ov002_020ecfc8() {
+    dActor_c *r5;
+    mTargetId = 0;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)(data_ov002_0210e6b0 + 4), 0,
+                                                0x1000, 0);
+    mHorzSpeed = 0x64000;
+    if (!func_ov002_020ec654()) {
+        mVertAccel = 0;
+        r5 = (dActor_c *)func_ov002_020edb3c(0, 0x7d0000);
+        func_0203568c(&mWithMeshClsn, 0x2a000);
+    } else {
+        mVertAccel = -0xa000;
+        r5 = (dActor_c *)func_ov002_020edb3c(0, 0xfa0000);
     }
-  }
-  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0xc8000, 0x202000, 0);
-  mPrevAngleY = mAngleY;
+    if (r5) {
+        mAngleY = Vec3_HorzAngle(&mPos, &r5->mPos);
+    } else {
+        if (mTargetedCount) {
+            if (!func_ov002_020ec654())
+                func_ov002_020edca4(this);
+        }
+    }
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0xc8000, 0x202000, 0);
+    mPrevAngleY = mAngleY;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -800,9 +799,8 @@ void daYegg_c::func_ov002_020ed0d4()
         Matrix4x3_FromRotationZXYExt(&data_020a0e68, mEasedAngleX, mEasedAngleY, mEasedAngleZ);
         MulVec3Mat4x3(&in, &data_020a0e68, &out);
 
-        if (*(int*)&mPlayer->unk_37c != 0
-            || func_ov002_020cf700(mPlayer) != 0
-            || func_ov002_020d0d2c(mPlayer) != 0) {
+        if (mPlayer->mClimbClsn != 0 || func_ov002_020cf700(mPlayer) != 0 ||
+            func_ov002_020d0d2c(mPlayer) != 0) {
             if (mWithMeshClsn.IsOnGround() != 0) {
                 mGoalAngleX = mPlayer->mAngleX;
                 mGoalAngleZ = mPlayer->mAngleZ;
@@ -979,17 +977,19 @@ void daYegg_c::func_ov002_020ed684() { int j = mState; (this->*data_ov002_02110a
  * after 15 shorter moves in a row; it stays 1 while the egg stays put), else
  * 0. */
 int daYegg_c::func_ov002_020ed6cc() {
-  Fix12i d = Vec3_HorzDist((struct Vector3*)&mLastPosX, (struct Vector3*)&mPosX);
-  mLastPosX = mPosX;
-  mLastPosY = mPosY;
-  mLastPosZ = mPosZ;
-  if (d >= 0x32000) goto fail;
-  if (DecIfAbove0_Byte(&mStallTimer)) goto ret0;
-  return 1;
+    Fix12i d = Vec3_HorzDist((struct Vector3 *)&mLastPosX, &mPos);
+    mLastPosX = mPosX;
+    mLastPosY = mPosY;
+    mLastPosZ = mPosZ;
+    if (d >= 0x32000)
+        goto fail;
+    if (DecIfAbove0_Byte(&mStallTimer))
+        goto ret0;
+    return 1;
 fail:
-  mStallTimer = 0xf;
+    mStallTimer = 0xf;
 ret0:
-  return 0;
+    return 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1008,8 +1008,8 @@ void daYegg_c::func_ov002_020ed738() {
     int e6 = 0;
     if (mWithMeshClsn.IsOnGround()) {
         struct Vector3 n;
-        void *fr = mWithMeshClsn.GetFloorResult();
-        ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(n);
+        dBgPi *fr = static_cast<dBgPi *>(mWithMeshClsn.GetFloorResult());
+        fr->surface.CopyNormalTo(n);
         e4 = func_02010844(this, &n, mAngleY);
         e6 = func_02010844(this, &n, (short)(mAngleY - 0x4000));
     } else {
@@ -1068,11 +1068,8 @@ void daYegg_c::func_ov002_020ed7f8()
     mShadowMtx[10] = mPosY >> 3;
     mShadowMtx[11] = mPosZ >> 3;
     b = (mFlags & 0x40000) ? 1 : 0;
-    if (b == 0
-        && *(int*)&mPlayer->unk_37c == 0
-        && !func_ov002_020cf700(mPlayer)
-        && !func_ov002_020d0d2c(mPlayer))
-    {
+    if (b == 0 && mPlayer->mClimbClsn == 0 && !func_ov002_020cf700(mPlayer) &&
+        !func_ov002_020d0d2c(mPlayer)) {
         if (func_ov002_020ec654() == 0) {
             _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
                 this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, 0xf);
@@ -1088,8 +1085,8 @@ void daYegg_c::func_ov002_020ed7f8()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c19func_ov002_020ed998Ev
 /* Places the egg's model matrix, called from Behavior. With
- * daYegg_FLAG_ATTACHED set and a Player, it copies the 12-word matrix the
- * word at Player+0xc8 points to (that field is padding in dActor_c.h), shifts
+ * daYegg_FLAG_ATTACHED set and a Player, it copies the 12-word matrix
+ * pointed to by the Player's mCarryMatrix, shifts
  * its translation by (0x3f, 9, 0xb) and applies a ZXY rotation of
  * (-0x49f5, -0xc17, -0x293f), then moves the egg's mPos to the resulting
  * translation << 3 and returns; matrix units are mPos >> 3 throughout.
@@ -1106,7 +1103,7 @@ void daYegg_c::func_ov002_020ed998()
         v.x = 0;
         v.y = 0;
         v.z = 0;
-        data_020a0e68 = *(M48 *)(*(char **)((char *)mPlayer + 0xc8));
+        data_020a0e68 = *(M48 *)mPlayer->mCarryMatrix;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0x3f, 9, 0xb);
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, 0xffffb60b, 0xfffff3e9, 0xffffd6c1);
         t9  = ((volatile M48 *)&data_020a0e68)->w[9];
@@ -1248,7 +1245,7 @@ void func_ov002_020edca4(daYegg_c* self)
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x41, self->mPosX, self->mPosY, self->mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x42, self->mPosX, self->mPosY, self->mPosZ);
     self->MarkForDestruction();
-    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, (const struct Vector3*)&self->mCamSpacePosX);
+    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, &self->mCamSpacePos);
 
     self->mBurstDone = 1;
 }

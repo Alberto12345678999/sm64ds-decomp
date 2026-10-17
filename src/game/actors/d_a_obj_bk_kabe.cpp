@@ -28,7 +28,7 @@
  * - Kill: folding the test into `if (actorID == kBreakableActor)` is a
  *   size-DIFF, 0x60 to 0x54. The compare stays a 0/1 local.
  * - Kill: a Vector3 built from mCamSpacePosX/Y/Z for PlayBank3 is a
- *   size-DIFF, 0x60 to 0x84. The call keeps the address of mCamSpacePosX.
+ *   size-DIFF, 0x60 to 0x84. The call passes mCamSpacePos.
  * - Kill: Particle::System::NewSimple(kBreakParticle, mPosX, mPosY, mPosZ)
  *   does not compile (int does not convert to Fix12<int>). Fix12<int>
  *   locals are a size-DIFF, 0x60 to 0x90. The scalar extern stays.
@@ -126,7 +126,7 @@ daObjBk_Kabe_c::~daObjBk_Kabe_c()
 // @symbol _ZN14daObjBk_Kabe_c4KillEv
 void daObjBk_Kabe_c::Kill()
 {
-    Sound::PlayBank3(kBreakSound, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(kBreakSound, mCamSpacePos);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kBreakParticle, mPosX, mPosY, mPosZ);
     int isBreakable = (actorID == kBreakableActor);
     if (isBreakable) {

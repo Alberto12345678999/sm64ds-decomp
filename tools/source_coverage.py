@@ -70,7 +70,8 @@ question is what THIS branch removed relative to the tree it forked from, so
 `--merge-base` is the mode CI uses for pull requests. `--base` takes a literal ref for
 the push-to-main job, which asks the different and equally necessary question: did main
 lose bytes at the moment this merged? A PR can be green against a stale base and desync
-main on merge; that exact failure happened to the converted ratchet on 2026-08-30.
+main on merge; that exact failure happened to the converted ratchet (retired with
+the CONVERTED tier) on 2026-08-30.
 
 SECTIONS, AND THE HONEST STORY ABOUT ROM DATA
 ----------------------------------------------
@@ -96,7 +97,7 @@ because its "match" turned out to be a relocation artefact, an entry removed bec
 range belonged to another module -- all of those are the tree getting MORE honest while
 this number goes down, and a gate with no way to say so would be pressure to leave a
 known-bad match enrolled. So the escape hatch is a real mechanism, and like
-`config/layout-known-issues.txt` and `config/converted-backslide-exceptions.jsonl` it
+`config/layout-known-issues.txt` it
 lives in the tree, in your diff, with a `git blame` behind it:
 
     config/source-coverage-exceptions.jsonl     one JSON object per line

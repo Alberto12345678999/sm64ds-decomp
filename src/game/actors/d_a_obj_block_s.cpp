@@ -62,13 +62,11 @@
  * Leftover: what func_02035638 tests beyond being a sibling of IsOnWall, what
  *   func_ov002_020ef228 / func_ov002_020e496c compute, the result of
  *   func_ov002_020f030c (Player.h names it a slide loss factor; the value
- *   is discarded here), the player word at
- *   0xc8, the extra arguments of Math_Function_0203b14c and
+ *   is discarded here), the extra arguments of Math_Function_0203b14c and
  *   IsClsnInRangeOnScreen, the 0x199 passed to dBgW_KcMbg::SetFile, and what
  *   Player::Hurt's trailing arguments select.
- * Leftover: three reads of another actor's id still go through `(char *)a + 0xc`
- *   (dActor_c's actorID field), and the SurfaceInfo inside a dBgCh_Actr
- *   result is reached as `(char *)fr + 4`; both stay as they were.
+ * Leftover: the SurfaceInfo inside a dBgCh_Actr result is reached as
+ *   `(char *)fr + 4`.
  * Leftover: the state names STATE_IN_MOUTH and STATE_SPIT_OUT rest on how the
  *   handlers use mFlags bit 0x80000 and the 0x20000 / 0x40000 bits (nothing
  *   in this file sets 0x80000); mSlideSoundHandle rests on PlayLong's id
@@ -360,7 +358,7 @@ void daObjBlockS_c::func_ov098_02138344()
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
     if (mWithMeshClsn.IsOnGround() != 0) {
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x51, (struct Vector3 *)&mCamSpacePosX);
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
         DecIfAbove0_Byte(&mBounceCount);
         mVertSpeed = mBounceCount * 0xa000;
         mHorzSpeed = mBounceCount * 0x5000;
@@ -713,7 +711,7 @@ int daObjBlockS_c::func_ov098_02138bfc()
         return 0;
     a = dActor_c::FindWithID((unsigned int)((dBgPi *)r)->GetClsnID());
     if (!a) return 0;
-    type = *(unsigned short *)((char *)a + 0xc);
+    type = ((dActor_c *)a)->actorID;
     {
         Bool b;
         b = (Bool)(type == ACTOR_ONIMASU); if (b) goto out;
@@ -840,7 +838,7 @@ void daObjBlockS_c::func_ov098_02138e6c()
     a = dActor_c::FindWithID(mdCcAcPos_c1.otherOwner);
     if (a == 0) return;
     {
-        int bf = (int)(*(u16 *)((char *)a + 0xc) == ACTOR_PLAYER);
+        int bf = (int)(((dActor_c *)a)->actorID == ACTOR_PLAYER);
         if (bf == 0) return;
     }
 
@@ -898,7 +896,7 @@ void daObjBlockS_c::Kill()
     ((int *)&vec2)[1] = ((int *)&vec)[1];
     ((int *)&vec2)[2] = ((int *)&vec)[2];
     _ZN8dActor_c19DisappearPoofDustAtERK7Vector3((char *)this, &vec2);
-    _ZN5Sound9PlayBank3EjRK7Vector3(0x41, (Vector3 *)&mCamSpacePosX);
+    _ZN5Sound9PlayBank3EjRK7Vector3(0x41, &mCamSpacePos);
     Crate_SetState(this, STATE_BROKEN);
 }
 
@@ -921,7 +919,7 @@ void daObjBlockS_c::func_ov098_021390ec()
         if (wr->GetClsnID() != -1) {
             dActor_c *a = dActor_c::FindWithID((u32)wr->GetClsnID());
             if (a != 0) {
-                int isF = (*(unsigned short *)((char *)a + 0xc) == ACTOR_BLOCK_L);
+                int isF = (a->actorID == ACTOR_BLOCK_L);
                 if (isF == 0) {
                     Kill();
                     return;
@@ -1086,7 +1084,7 @@ int daObjBlockS_c::func_ov098_02139228()
                 sd = _ZN4cstd4fdivEii(FX_MUL(v, 8), 0xa);
                 if (sd < 0) sd = -sd;
                 if (mVertSpeed > 0xa000)
-                    _ZN5Sound9PlayBank3EjRK7Vector3(0x51, (Vector3 *)&mCamSpacePosX);
+                    _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
                 if (mVertSpeed > sd)
                     mVertSpeed = sd;
             }
@@ -1097,7 +1095,8 @@ int daObjBlockS_c::func_ov098_02139228()
         && mClsnYOffsetTarget != 0xa0
         && mHorzSpeed > 0xa000) {
         _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
-        mSlideSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, (Vector3 *)&mCamSpacePosX, 0);
+        mSlideSoundHandle =
+            _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, &mCamSpacePos, 0);
     }
 
     {
@@ -1171,7 +1170,7 @@ void daObjBlockS_c::func_ov098_021397c8()
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_02139850Ev
 /* Model matrix. When mHoldingPlayer is set, mFlags bit 0x4000 is set and the
- * player's word at 0xc8 (a dActor_c word not yet named) is nonzero, the
+ * player's mCarryMatrix is nonzero, the
  * crate follows the player's hand: it picks a row r5 of the carry-offset
  * table (data_ov098_0213bf60 / 64 / 68 are its x / y / z columns, stride 12
  * bytes) -- 0 normally, 1 if the player is front-sliding, or if it has lost its grabbed
@@ -1192,7 +1191,8 @@ void daObjBlockS_c::func_ov098_02139850()
     if (obj == 0) goto other;
     b = (int)((mFlags & 0x4000) != 0);
     if (b == 0) goto other;
-    if (*(int *)((char *)obj + 0xc8) == 0) goto other;
+    if (obj->mCarryMatrix == 0)
+        goto other;
 
     {
         char *r4 = (char *)func_ov002_020e496c((char *)obj);
@@ -1304,9 +1304,8 @@ int daObjBlockS_c::Behavior()
     }
 
     b2 = (enum Bool)((mFlags & ACTOR_FLAG_OFF_SCREEN) != 0);
-    if (b2 != FALSE
-        && Vec3_HorzDist((struct Vector3 *)&mPosX, (const struct Vector3 *)&mHomePosX)
-        && DistToCPlayer() > 0x7d0000) {
+    if (b2 != FALSE && Vec3_HorzDist(&mPos, (const struct Vector3 *)&mHomePosX) &&
+        DistToCPlayer() > 0x7d0000) {
         Crate_SetState(this, STATE_BROKEN);
         return 1;
     }

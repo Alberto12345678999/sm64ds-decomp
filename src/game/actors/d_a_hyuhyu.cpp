@@ -282,7 +282,7 @@ int daHyuhyu_c::CleanupResources()
 void daHyuhyu_c::func_ov091_02134094()
 {
     Vector3 pos;
-    Vec3_Asr(&pos, (Vector3 *)&this->mPosX, 3);
+    Vec3_Asr(&pos, &this->mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, pos.x, pos.y, pos.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         this->mAngleX, this->mAngleY, this->mAngleZ);
@@ -321,14 +321,14 @@ int daHyuhyu_c::func_ov091_02133f60()
         Vector3 target;
         s16 angle;
         {
-            Vector3 *pos = (Vector3 *)&player->mPosX;
+            Vector3 *pos = &player->mPos;
             target.x = pos->x;
             target.y = pos->y;
             target.z = pos->z;
         }
-        angle = Vec3_HorzAngle((Vector3 *)&this->mPosX, &target);
+        angle = Vec3_HorzAngle(&this->mPos, &target);
         ApproachAngle(&this->mPrevAngleY, angle, 0xa, 0x200, 0x100);
-        if ((u16)this->mStateTimer == 0 && Vec3_Dist((Vector3 *)&this->mPosX, &target) < 0x3e8000 &&
+        if ((u16)this->mStateTimer == 0 && Vec3_Dist(&this->mPos, &target) < 0x3e8000 &&
             angle < 0x1000)
             func_ov091_02134044(&data_ov091_021356b0);
     }
@@ -378,11 +378,11 @@ int daHyuhyu_c::func_ov091_02133d30()
             this->mGustParticle2, 0x73, pos.x, pos.y, pos.z, &rot, 0);
 
         if (!((u16)(this->mModelAnim.currFrame >> 12) & 1)) {
-            gust = dActor_c::Spawn(0xe7, 1, *(Vector3 *)&this->mPosX, 0, this->mAreaId, -1);
+            gust = dActor_c::Spawn(0xe7, 1, this->mPos, 0, this->mAreaId, -1);
             if (gust != 0) {
                 player = this->ClosestPlayer();
                 if (player != 0) {
-                    Vector3 *ppos = (Vector3 *)&player->mPosX;
+                    Vector3 *ppos = &player->mPos;
                     target.x = ppos->x;
                     target.y = ppos->y;
                     target.z = ppos->z;
@@ -393,7 +393,7 @@ int daHyuhyu_c::func_ov091_02133d30()
                         heading = base + (s16)(0x2000 - ((((u32)RandomIntInternal(&data_0209e650) >> 8) & 3) << 0xc));
                     }
 
-                    gust->mPrevAngleX = Vec3_VertAngle((Vector3 *)&this->mPosX, &target);
+                    gust->mPrevAngleX = Vec3_VertAngle(&this->mPos, &target);
                     gust->mPrevAngleY = heading;
                     gust->mPrevAngleZ = 0;
                 }
@@ -521,8 +521,7 @@ void daHyuhyu_c::func_ov091_021339fc()
                 rot.z = 0;
                 rot.y = this->mPrevAngleY;
                 capParam = capParam | (capChar << 8);
-                cap = dActor_c::Spawn(0x10d, capParam, *(Vector3 *)&this->mPosX, &rot,
-                    this->mAreaId, -1);
+                cap = dActor_c::Spawn(0x10d, capParam, this->mPos, &rot, this->mAreaId, -1);
                 if (cap == 0)
                     return;
                 cap->mHorzSpeed = 0x32000;

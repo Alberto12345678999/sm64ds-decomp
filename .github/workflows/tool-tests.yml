@@ -1,7 +1,7 @@
 # Who tests the tools that nobody runs?
 #
-# `tools/` holds 63 `test_*.py` modules. Before this workflow, SIX of them ran in CI:
-# test_tiers (converted-ratchet.yml), test_check_dead_references (dead-references.yml),
+# `tools/` holds 63 `test_*.py` modules. Before this workflow, FIVE of them ran in CI:
+# test_check_dead_references (dead-references.yml),
 # test_check_header_offsets (header-offsets.yml), test_check_python_names
 # (python-names.yml), test_source_coverage (source-coverage.yml) and test_check_src_tu
 # (src-tu-refs.yml). The other 53 ran only when a human remembered to run them.
@@ -100,8 +100,7 @@
 # nothing compiles). They are mock- and tempdir-based and touch neither the network nor
 # the tree.
 # The whole-suite timings are dominated by Windows filesystem overhead and do not
-# apply here -- test_tiers alone takes 71s on a Windows checkout and 1.3s on Linux.
-# test_symrecords needs none of the three inputs either: it reads only tracked text
+# apply here. test_symrecords needs none of the three inputs either: it reads only tracked text
 # (config/**/symbols.txt, symbols/verified.tsv) and imports nothing outside the stdlib.
 #
 # NINE SKIPS ARE EXPECTED and are honest ones that name their own reason: four in
@@ -114,7 +113,6 @@
 # test_tubuild_owned_relocs add none anywhere.
 # The counting-rule work of 2026-09-09 adds 32 assertions to that historical total:
 # +10 test_asm_policy, +16 test_bytegate, +3 test_progress, +3 test_validate_merge.
-# None of them skips. test_tiers gains 6 more and runs in converted-ratchet.yml.
 # 505 of the 514 assert something. test_tubuild_vtable_partitions adds four to both
 # halves of that -- all four assert and none skips -- but the 514 was measured in the
 # container and the +4 is arithmetic on it, not a re-measurement. On a Windows tree
@@ -206,6 +204,7 @@ jobs:
             tools.test_asm_policy \
             tools.test_asset_catalog \
             tools.test_bytegate \
+            tools.test_chaos_db_tiers \
             tools.test_check_call_arity \
             tools.test_check_data_definitions \
             tools.test_check_literal_load \
@@ -267,6 +266,11 @@ jobs:
 #                                      alias_names, which decides whether a source filed
 #                                      under a second name is found. Also drives the real
 #                                      chaos_db_ci over a fake repo for the counting rule.
+#   test_chaos_db_tiers         (31)   chaos_db_ci.py's per-function tier columns -- converted
+#                                      (per-symbol readings must sum to the stats.tiers
+#                                      headline), linked (the LINKED bar counts functions; a list
+#                                      from another port build than the stamp is refused),
+#                                      class and tuId/tuState.
 #   test_check_call_arity       (19)   check_call_arity.py -- the census of calls that
 #                                      pass fewer arguments than the callee declares:
 #                                      the matched-but-wrong signature, invisible to
@@ -505,12 +509,8 @@ jobs:
 #                                      36 run in CI, none skips, 0.04s -- measured in a
 #                                      `git archive HEAD tools config` export with none
 #                                      of the three private inputs present.
-#   test_tu_promote              (9)   tu_promote.py -- TU promotion, including the
-#                                      per-member scoring #2052 changed and the baseline
-#                                      self-contradiction check #2053 added. Promotion
-#                                      dilutes the CONVERTED tier, so a scoring bug here
-#                                      moves a published number with nothing else
-#                                      noticing. Pure mock; 9 of 9 run in CI.
+#   test_tu_promote              (6)   tu_promote.py -- TU promotion bookkeeping.
+#                                      Pure mock; 6 of 6 run in CI.
 #   test_tubuild_owned_relocs    (6)   tubuild.verify_owned_sections' non-text
 #                                      relocation verdict ladder -- specifically the
 #                                      fail-closed `else None` #2059 added for a

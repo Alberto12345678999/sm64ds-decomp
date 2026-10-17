@@ -20,7 +20,6 @@
  *   InitResources passes 0xf0000 / 0x8c000 / 0x4800002)
  * - HikariVec3 POD locals; Vector3's empty destructor would add
  *   _ZN7Vector3D1Ev to this TU
- * - (Vector3 *)&mPosX; dActor_c has no Pos() on this branch (S18)
  * - gC1HikariModelFile is the model SharedFilePtr this Init LoadFile's,
  *   defined at the end of this file (constructed as file ID 1453)
  * - data_0209caa0[1] & 0x80000000; this Init is the consumer, no recovered
@@ -111,8 +110,8 @@ int daObjC1Hikari_c::InitResources()
     if (data_0209caa0[1] & 0x80000000)
         return 0;
     mModel.SetFile((BMD_File *)gC1HikariModelFile.file, 1, 0x13);
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mCylinder, this, (const Vector3 *)&mPosX, 0xf0000, 0x8c000, 0x4800002, 0);
+    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mCylinder, this, &mPos, 0xf0000,
+                                                            0x8c000, 0x4800002, 0);
     UpdateModelTransform();
     return 1;
 }
@@ -162,7 +161,7 @@ int daObjC1Hikari_c::Behavior()
                 if (b) {
                     HikariVec3 *op = (HikariVec3 *)&o->mPosX;
                     hv = *op;
-                    if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&hv), mAngleY) < 0x4000) {
+                    if (AngleDiff(Vec3_HorzAngle(&mPos, (const Vector3 *)&hv), mAngleY) < 0x4000) {
                         if (((Player *)o)->mSurfaceType == 0xd) {
                             if (((Player *)o)->StartTalk(*this, false)) {
                                 mTalkPlayer = o;

@@ -3,9 +3,6 @@
  * func_02014a20 stays a free helper under its address name: the cartridge
  * record carries the linker's tail-call veneer to dCcAc_c::GetOwnerID, not a
  * member body (dCcAcPos_c.h slot-3 note).
- * GetPos and SetPosRelativeToActor read the owner through (Vector3 *)&mPosX:
- * the shared header has no dActor_c::Pos() yet, and adding it ripples beyond
- * this TU.
  * The three Init definitions stay mangled free functions: the real signatures
  * carry Fix12<int> by value (wall 6az); dCcAc_c.h and dCcAcPos_c.h keep the
  * real declarations for callers.
@@ -59,12 +56,10 @@ dCcAc_c::~dCcAc_c()
 
 // @symbol _ZN7dCcAc_c6GetPosEv
 /* Slot 2. Returns the OWNER's position (dActor_c + 0x5c), not a field of this
-   object -- a moving cylinder tracks its dActor_c instead of storing a copy.
-   The (Vector3 *)&mPosX pun stays until dActor_c::Pos() is on the shared
-   header. */
+   object -- a moving cylinder tracks its dActor_c instead of storing a copy. */
 Vector3 &dCcAc_c::GetPos()
 {
-    return *(Vector3 *)&owner->mPosX;
+    return owner->mPos;
 }
 
 // @symbol _ZN7dCcAc_c10GetOwnerIDEv
@@ -109,5 +104,5 @@ extern "C" void Vec3_RotateYAndTranslate(Vector3 *res, const Vector3 *translatio
 void dCcAcPos_c::SetPosRelativeToActor(const Vector3 &offset)
 {
     dActor_c *actor = owner;
-    Vec3_RotateYAndTranslate(&pos, (const Vector3 *)&actor->mPosX, actor->mAngleY, &offset);
+    Vec3_RotateYAndTranslate(&pos, &actor->mPos, actor->mAngleY, &offset);
 }

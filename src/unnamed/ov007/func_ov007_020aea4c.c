@@ -1,4 +1,4 @@
-extern int func_ov007_020c937c(void*);
+extern void func_ov007_020c937c(void *state);
 extern int func_ov007_020c3d1c(void*);
 
 int func_ov007_020aea4c(char* c) {

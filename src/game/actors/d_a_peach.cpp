@@ -121,7 +121,7 @@ void daPeach_c::UpdateLookAt()
     if (player == 0)
         return;
     Vector3 target;
-    Vector3 *playerPos = (Vector3 *)(((long long)(int)((char *)player + 0x5c)));
+    Vector3 *playerPos = (Vector3 *)(((long long)(int)&player->mPosX));
     target = *playerPos;
     int dist = Vec3_HorzDist(&mPosX, &target);
     target.y = target.y - 0x1e000;
@@ -275,10 +275,7 @@ int daPeach_c::State3()
             mTalkState += 1;
         break;
     case 1:
-        if (ApproachLinear(mAngleY,
-                Vec3_HorzAngle((Vector3 *)&mPosX,
-                               (Vector3 *)&mTalkPlayer->mPosX),
-                0x514) != 0) {
+        if (ApproachLinear(mAngleY, Vec3_HorzAngle(&mPos, &mTalkPlayer->mPos), 0x514) != 0) {
             msgPos.x = mPosX;
             msgPos.y = mPosY;
             msgPos.z = mPosZ;

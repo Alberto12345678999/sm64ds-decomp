@@ -28,8 +28,6 @@
  *   BattanVector3: a local Vector3 would emit vague-linkage ~Vector3.
  *   common.h first (via dBgActor_c.h): Matrix4x3 is s32 m[12], so the
  *   translation stays m[9]/m[10]/m[11].
- *   *(Vector3 *)&mCamSpacePosX: a Vector3 member at 0x074 is a dActor_c
- *   change, not this leaf's.
  *
  * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS (Fix12<int> by value, see
  * notes/mwccarm-codegen.md 6az; the header method form changes the code
@@ -185,7 +183,7 @@ int daObjFm_Battan_c::Behavior()
     case 0:
         if (DistToCPlayer() < 0x3e8000) {
             mState++;
-            Sound::PlayBank3(0x43, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x43, mCamSpacePos);
         }
         break;
 
@@ -211,7 +209,7 @@ int daObjFm_Battan_c::Behavior()
             /* MEASURED: by-value Fix12<int> (notes/mwccarm-codegen.md 6az). */
             _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
                 this, &pos, 0x04000000);
-            Sound::PlayBank3(0x44, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x44, mCamSpacePos);
 
             sinY = data_02082214[((u16)mAngleY >> 4) * 2];
             offset.x = FX_MUL(sinY, -0x190000);
@@ -231,7 +229,7 @@ int daObjFm_Battan_c::Behavior()
         if (mStateTimer >= 0x3c) {
             mAngVelX = 0x80;
             mState++;
-            Sound::PlayBank3(0x45, *(Vector3 *)&mCamSpacePosX);
+            Sound::PlayBank3(0x45, mCamSpacePos);
         } else {
             mStateTimer++;
         }

@@ -42,7 +42,7 @@ answers.**
 |---|---|---|
 | **codegen** | the member compiles as a method but the bytes move | usually unfixable here; leave it C |
 | **scope** | it byte-matches, but an unpromoted shard still calls the C name | let `mwldarm` enumerate it -- `dScMgCurling2_c`: 29/29 byte-neutral, 12 refused |
-| **naming** | the member has an auto-generated `func_ovNNN_*` name, so converting it *is* a rename | the rename must reach `symbols.txt` in the same commit, and every external namer must move with it -- [ov071](../../../config/arm9/overlays/ov071/symbols.txt)/`Scuttlebug`: all 27 unconverted members |
+| **naming** | the member has an auto-generated `func_ovNNN_*` name, so renaming it *is* real progress | the rename must reach `symbols.txt` in the same commit, and every external namer must move with it -- [ov071](../../../config/arm9/overlays/ov071/symbols.txt)/`Scuttlebug`: all 27 still-unrenamed members |
 
 Reporting "10/37" without naming the wall is not a result. The three are not
 interchangeable: a scope wall is enumerated for you by the linker, a naming wall
@@ -53,7 +53,7 @@ This may run as a separate pass on the same branch after stages 2 and 3 have
 already pushed. Whenever you report a promotion, give the method count next to the
 match count: "31/31 MATCH" hides "1 of 31 is a method".
 
-**The rename is ONE edit.** A converted member gets a new mangled name, and any
+**The rename is ONE edit.** A renamed member gets a new mangled name, and any
 pointer-to-member record in unowned `.data` that still spells the target `func_*`
 then links as `0x00000000` -- dsd resolves those records by NAME. `symbols.txt` and
 the manifest's `functions[]` move in the same commit. No byte gate at stage 2 or 3
@@ -267,36 +267,9 @@ steps the dry-run does not print:
    on an apostrophe in prose and eats doubled backslashes; write the script to a
    file and run it.) `verify` does not do this, and `promote --dry-run` refuses to run at
    all while `status` is still `text-verified`. **This is not cosmetic and the
-   damage is permanent.** `tiers_ratchet.promoted_moves()` skips every manifest
-   entry whose status is not exactly `promoted`, so leaving it means your
-   absorbed shards resolve as `GONE -- not a tracked source file any more`
-   instead of `MOVED -- absorbed into ...`, and `--update` writes a **fake
-   backslide row** into `converted-backslide-exceptions.jsonl` for each one,
-   blaming a readability loss on a file that was absorbed cleanly. Measured on
-   `dBgActor_c`: `text-verified` gave 939 moves with zero for the class and four
-   bogus `GONE` rows; flipping the one field gave 10 moves and four correct
-   `MOVED` rows. It is invisible once written. (`tubuild.py:4543` reads status
-   too, but only for intact-object TUs — that reader is not the one that bites.)
-4. **`python tools/tiers_ratchet.py --update --reason "<why>"` — never hand-edit
-   `converted-baseline.json`.** The tool also writes
-   `config/converted-backslide-exceptions.jsonl`, re-sorts the array, and adds
-   `src/game/<dir>/<file>.cpp#<symbol>` member rows for members still passing all
-   five criteria. A hand edit gets the count right and the **set** wrong.
-
-   **But check set membership BEFORE you run it at all.** This step used to read
-   as "always `--update`", which contradicts `builder.md`'s "if `--check` passes,
-   do NOT `--update`". Both were partly wrong. The real test is whether **your
-   own files are in the CONVERTED baseline set**: open
-   `config/converted-baseline.json`, look for rows in your class's address range,
-   and if there are none the promotion is **ratchet-neutral and there is nothing
-   to bank**. `dScMgBomroom_c` had 0 of 41 shards in the set; running `--update`
-   anyway banked an unrelated `+1` for the `_ZN12dScStarSel_c8BehaviorEv` shard
-   (since folded into `src/game/stages/d_s_star_sel_methods.cpp`),
-   pre-existing drift on `main` that has nothing to do with the class. Two
-   separate writers hit that same stray row on the same day. `--update`
-   re-derives the whole set, so it sweeps up any drift sitting on your base, and
-   `append_exceptions` opens the file `"a"` — the append is permanent. Bank only
-   when your files are actually in the set, and say which rows you banked.
+   damage is permanent.** Manifest readers skip every entry whose status is not
+   exactly `promoted`, so leaving it means your
+   absorbed shards resolve as gone instead of moved.
 4b. **A near-miss recovery and the promotion cannot be one commit.** `linkcheck`
    hard-refuses at `[1/8]` — *"substituting the TU would change enrollment and
    byte provenance in the same step"* — for any shard whose `delinks.txt` entry
@@ -412,7 +385,7 @@ match the tree: `daObjFallBlock_c`'s manifest today carries **14** rows — 11
 `deadstrip-data` plus 3 `deadstrip-duplicate` — with `externalized_output`
 empty. Read it for the mechanism, not the arithmetic.)
 `daObjFallBlock_c` first wrote 10 rows there and could not
-promote; every one had a configured home, so all 10 converted to `deadstrip-data`
+promote; every one had a configured home, so all 10 changed to `deadstrip-data`
 and the class promoted. If you find yourself filling this block, check first
 whether those addresses are actually homed — most are.
 

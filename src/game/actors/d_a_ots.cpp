@@ -603,7 +603,7 @@ void daOts_c::func_ov064_02116754()
 int daOts_c::func_ov064_021166f0()
 {
     Vector3 v;
-    tail().mHomeAngle = Vec3_HorzAngle((Vector3 *)&this->mPosX, (Vector3 *)&tail().mHomePosX);
+    tail().mHomeAngle = Vec3_HorzAngle(&this->mPos, (Vector3 *)&tail().mHomePosX);
     ApproachLinear(this->mPrevAngleY, tail().mHomeAngle, 0x140);
     v.x = tail().mHomePosX;
     v.y = tail().mHomePosY;
@@ -754,7 +754,7 @@ void daOts_c::PlayStepSound()
         if (mModelAnim.WillHitFrame(7) == 0)
             return;
     }
-    func_0201267c(kSfxStep, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(kSfxStep, &mCamSpacePos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -762,7 +762,7 @@ void daOts_c::PlayStepSound()
 /* Slot 34. Called when the actor is struck or enters STATE_KNOCKED_BACK. */
 void daOts_c::PlayHitSound()
 {
-    func_0201267c(kSfxHit, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(kSfxHit, &mCamSpacePos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -777,7 +777,7 @@ void daOts_c::PlayShellHitSound()
 /* Slot 36. Called when the actor enters STATE_DYING. */
 void daOts_c::PlayDeathSound()
 {
-    func_0201267c(kSfxDeath, (const Vector3 *)&mCamSpacePosX);
+    func_0201267c(kSfxDeath, &mCamSpacePos);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -865,7 +865,7 @@ int daOts_c::func_ov064_0211616c() {
 int daOts_c::func_ov064_02116110(short step){
     dActor_c *p = (dActor_c *)this->ClosestPlayer();
     if(p != 0){
-        short ang = Vec3_HorzAngle((const Vector3*)&this->mPosX,(const Vector3*)&p->mPosX);
+        short ang = Vec3_HorzAngle(&this->mPos, &p->mPos);
         if(ApproachLinear(this->mPrevAngleY, ang, step)) return 1;
     }
     return 0;

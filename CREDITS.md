@@ -2,6 +2,10 @@
 
 This decompilation builds on reverse-engineering knowledge from the SM64DS community.
 
+## Project lead
+- **tangosdev / Tango** (https://github.com/tangosdev) - most of the matched
+  functions, the tooling and CI, the PC port, and tangOS Console.
+
 ## Symbol names & struct layouts
 - **SplattyDS / DynamicAllocationDecomp** (https://github.com/SplattyDS/DynamicAllocationDecomp),
   source of verified function and data symbol names (`symbols.x`) and struct and

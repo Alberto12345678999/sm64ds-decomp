@@ -39,8 +39,6 @@
  *    func_ov060_021132a4, func_ov060_02112ee0 and func_ov060_02112bfc; the gotos
  *    in func_ov060_02115c1c; the data_ov060_02119294/6/8 + offset reads; and the
  *    opaque Obj view in Bowser_IsAnimAtLastFrame.
- *  - Behavior stores `this` at +0x114 of the object at data_0209f318 (a dCamera_c);
- *    dCamera_c.h has no member there, so it stays a byte offset.
  *  - Callees known only by address, whose purpose this file does not establish:
  *    func_020092c4, func_0200fa04, func_ov002_020c56f0, func_ov060_02117a3c,
  *    func_02038408, func_02011d50, func_02011cfc. Likewise the trailing arguments
@@ -339,8 +337,7 @@ bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &value, int target, int step);
 
 extern "C" {
-/* dCamera_c base pointer; Bowser publishes itself into the target slot at +0x114,
- * so the offset is a byte offset from this base, not a field of a known class. */
+/* The dCamera_c; Bowser publishes himself into its mFramedActor. */
 extern char *data_0209f318;
 extern short data_02082214[];
 extern int Vec3_HorzDist(const struct Vector3*, const struct Vector3*);
@@ -733,10 +730,12 @@ int daKpa_c::InitResources()
     /* Spawn takes the three position words as one Vector3. dActor_c stores them as
      * mPosX/Y/Z at 0x5c, so the argument is the vector, not a pointer to the first
      * scalar. */
-    fire = (daKpaFire_c *)dActor_c::Spawn(BOWSER_ACTOR_KOOPAFIRE, 0, *((Vector3 *)&this->mPosX), 0, this->mAreaId, -1);
+    fire =
+        (daKpaFire_c *)dActor_c::Spawn(BOWSER_ACTOR_KOOPAFIRE, 0, this->mPos, 0, this->mAreaId, -1);
     fire->mKpaUniqueID = this->uniqueID;
 
-    tail = (daKpaTail_c *)dActor_c::Spawn(BOWSER_ACTOR_KOOPATAIL, 0, *((Vector3 *)&this->mPosX), 0, this->mAreaId, -1);
+    tail =
+        (daKpaTail_c *)dActor_c::Spawn(BOWSER_ACTOR_KOOPATAIL, 0, this->mPos, 0, this->mAreaId, -1);
     this->mTailUniqueID = tail->uniqueID;
     tail->mBowserUniqueID = this->uniqueID;
     this->mVanishChance = 5;
@@ -798,13 +797,13 @@ find the closest Player and record the angle and the horizontal distance to him
 (condition flags, hold-state handler, opacity fade); func_ov060_02111a28
 (footfall effects); copy mAngleY to mPrevAngleY; advance the model animation at
 mAnimSpeed; func_ov060_0211577c (model matrix, foot points, shadow); store this
-actor at offset 0x114 of the camera object; clear and refresh the body collider,
+actor in the camera's mFramedActor; clear and refresh the body collider,
 offset (0, 0, 0x50000) = 80 units on Z relative to the actor; and drop
 mCapActorAlive once no cap actor exists any more. Always returns 1. */
 /*
  * One frame of the fight: pick the closest player and record the angle and distance
  * to him, run the two state workers, advance the animation, publish `this` into the
- * global at data_0209f318+0x114, then rebuild the body cylinder 0x50000 in front of
+ * camera's mFramedActor, then rebuild the body cylinder 0x50000 in front of
  * the actor. mdCcAcPos_c is a dCc_c by inheritance (dCcAcPos_c -> dCcAc_c ->
  * dCc_c), so Clear() and Update() are its own. The animation speed written here
  * (0x130) is the `speed` of the dExtFrameCtrl_c base inside mModelAnim (+0x50,
@@ -815,8 +814,8 @@ int daKpa_c::Behavior()
     RandomIntInternal(&data_0209e650);
     mTargetPlayer = (dActor_c *)ClosestPlayer();
     if (mTargetPlayer != 0) {
-        mAngleToTarget = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3*)&mTargetPlayer->mPosX);
-        mDistToTarget = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3*)&mTargetPlayer->mPosX);
+        mAngleToTarget = Vec3_HorzAngle(&mPos, &mTargetPlayer->mPos);
+        mDistToTarget = Vec3_HorzDist(&mPos, &mTargetPlayer->mPos);
     } else {
         mAngleToTarget = mAngleY;
         mDistToTarget = ~0x80000000;
@@ -827,7 +826,7 @@ int daKpa_c::Behavior()
     mModelAnim.speed = mAnimSpeed;
     mModelAnim.Advance();
     func_ov060_0211577c();
-    *(char**)(data_0209f318 + 0x114) = (char *)this;
+    ((dCamera_c *)data_0209f318)->mFramedActor = this;
     mdCcAcPos_c.Clear();
     Vector3 v;
     v.z = 0x50000;
@@ -868,7 +867,7 @@ int daKpa_c::Render()
     mTextureSequence.Update(mModelAnim.data);
     /* ModelAnim's slot-5 Render(const Vector3 *) takes the scale vector;
      * daKpa2Bg_c::Render makes the same call on its mModel2. */
-    mModelAnim.Render((const Vector3 *)&mScaleX);
+    mModelAnim.Render(&mScale);
     return 1;
 }
 
@@ -1846,7 +1845,8 @@ void daKpa_c::func_ov060_02114858(){
             this->mSoundHandle = 0;
         }
         this->mSoundID = BOWSER_SND_FIRE_LOOP;
-        this->mSoundHandle = Sound::PlayLong(this->mSoundHandle, 3, this->mSoundID, *(const Vector3 *)&this->mCamSpacePosX, 0);
+        this->mSoundHandle =
+            Sound::PlayLong(this->mSoundHandle, 3, this->mSoundID, this->mCamSpacePos, 0);
         u16 t = this->mFireTimer;
         if ((t % 5) == 0)
         {
@@ -2823,8 +2823,8 @@ int daKpa_c::func_ov060_021132a4(){
         if (this->mSoundID != BOWSER_SND_SHRINK_LOOP)
             this->mSoundHandle = 0;
         this->mSoundID = BOWSER_SND_SHRINK_LOOP;
-        this->mSoundHandle = Sound::PlayLong(
-            this->mSoundHandle, 3, this->mSoundID, *(const Vector3 *)&this->mCamSpacePosX, 0);
+        this->mSoundHandle =
+            Sound::PlayLong(this->mSoundHandle, 3, this->mSoundID, this->mCamSpacePos, 0);
     }
     return done;
 }
@@ -3268,7 +3268,7 @@ void daKpa_c::func_ov060_02112724(){
     this->mAngleX = -v;
     this->mAngleY = a;
 
-    s = (Vector3 *)&this->mGrabbedPlayer->mPosX;
+    s = &this->mGrabbedPlayer->mPos;
     this->mPosX = s->x;
     this->mPosY = s->y;
     this->mPosZ = s->z;
@@ -3344,8 +3344,8 @@ void daKpa_c::func_ov060_02112434(){
     zero.x = 0;
     zero.y = 0;
     zero.z = 0;
-    this->mDistToCenter = Vec3_HorzDist((Vector3*)&this->mPosX, &zero);
-    this->mAngleToCenter = Vec3_HorzAngle((Vector3*)&this->mPosX, &zero);
+    this->mDistToCenter = Vec3_HorzDist(&this->mPos, &zero);
+    this->mAngleToCenter = Vec3_HorzAngle(&this->mPos, &zero);
 
     int toTarget = this->GetSubtraction(this->mAngleY, this->mAngleToTarget);
     int toCenter = this->GetSubtraction(this->mAngleY, this->mAngleToCenter);
@@ -3709,7 +3709,7 @@ void daKpa_c::func_ov060_02111a28(){
         dust.z = this->mFootPosBZ;
         this->HugeLandingDustAt(dust, 0);
     }
-    Sound::Play(3, BOWSER_SND_FOOTFALL, *(Vector3 *)&this->mCamSpacePosX);
+    Sound::Play(3, BOWSER_SND_FOOTFALL, this->mCamSpacePos);
     {
         Vector3 quake;
         quake.x = this->mPosX;

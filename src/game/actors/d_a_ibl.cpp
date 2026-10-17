@@ -727,8 +727,7 @@ void daIbl_c::func_ov100_02142b90()
     {
         daIbl_c *a;
         int cc = mAreaId;
-        a = (daIbl_c *)dActor_c::Spawn(daIbl_ACTOR_IRONBALL, param1,
-            *(const Vector3 *)&mPosX, (const Vector3_16 *)&mPrevAngleX, cc, -1);
+        a = (daIbl_c *)dActor_c::Spawn(daIbl_ACTOR_IRONBALL, param1, mPos, &mPrevAngle, cc, -1);
         if (a == 0) return;
         {
             u8 *cnt = &mLiveBalls;

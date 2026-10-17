@@ -7,9 +7,9 @@
  *   - dScMgHanachan_c has no constructor declared, so the factory builds
  *     the object by hand: operator new, base constructor, vtable word
  *     (data_ov006_0213cab8 is _ZTV15dScMgHanachan_c), array construction.
- *   - The element and entry types are not recovered, so their
- *     constructors keep linker names and the entries stay at raw offset
- *     0x18.
+ *   - The plain Wiggler and Point records describe the observed layout.
+ *     Their lifecycle callbacks retain their scalar ABI and manual array
+ *     construction; the five points begin at +0x18.
  */
 
 #include "dScMgHanachan_c.h"
@@ -26,9 +26,9 @@ extern void func_0203d738(void);
 }
 
 // @symbol Wiggler_Construct
-extern "C" void* Wiggler_Construct(char* elem)
-{
-    __cxa_vec_ctor(elem + 0x18, 5, 8, (void*)func_0203d738, (void*)NullDestructor_0203d47c);
+extern "C" void *Wiggler_Construct(char *elem) {
+    __cxa_vec_ctor(((dScMgHanachan_c::Wiggler *)elem)->seg, 5, 8, (void *)func_0203d738,
+                   (void *)NullDestructor_0203d47c);
     return elem;
 }
 
@@ -38,7 +38,8 @@ extern "C" void *dScMgHanachan_c_classInit(void) {
     if (scene != 0) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)data_ov006_0213cab8;
-        __cxa_vec_ctor(scene + 0x4678, 0xf, 0x98, (void *)Wiggler_Construct, (void *)Wiggler_Destroy);
+        __cxa_vec_ctor(((dScMgHanachan_c *)scene)->mWiggler, 0xf, 0x98, (void *)Wiggler_Construct,
+                       (void *)Wiggler_Destroy);
     }
     return scene;
 }

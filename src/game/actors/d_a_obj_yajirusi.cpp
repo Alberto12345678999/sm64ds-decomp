@@ -234,7 +234,7 @@ void daObjYajirusi_c::Kill()
     dustPos.y = pos.y;
     dustPos.z = pos.z;
     DisappearPoofDustAt(dustPos);
-    Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();
 }
 

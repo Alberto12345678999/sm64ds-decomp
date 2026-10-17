@@ -169,10 +169,9 @@ int daObjPathLift_c::Behavior()
 {
     UpdatePathModels();
     BaseBehavior();
-    if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&mPrevPosX) != 0) {
+    if (Vec3_Dist(&mPos, &mPrevPos) != 0) {
         if (DecIfAbove0_Byte(&mTimer) == 0) {
-            mSoundHandle = Sound::PlayLong(
-                mSoundHandle, 3, 0x82, *(Vector3 *)&mCamSpacePosX, 0);
+            mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x82, mCamSpacePos, 0);
         }
     }
     func_ov100_0214700c(this);

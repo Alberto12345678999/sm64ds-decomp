@@ -126,7 +126,7 @@ void daFPknBall_c::func_ov002_020f88ec()
 {
     dActor_c* coin;
     if (((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10 >= 4) return;
-    coin = dActor_c::Spawn(ACTOR_COIN, 0, *(Vector3*)&mPosX, 0, mAreaId, -1);
+    coin = dActor_c::Spawn(ACTOR_COIN, 0, mPos, 0, mAreaId, -1);
     if (coin != 0) {
         coin->unk_0a4 = 0;
         coin->mVertSpeed = 0;
@@ -163,9 +163,8 @@ void daFPknBall_c::func_ov002_020f897c()
             do {
                 idx = ((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 3;
             } while ((unlocked & (1 << idx)) == 0);
-            if (dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
-                    *(Vector3*)&mPosX, (Vector3_16*)&mAngleX,
-                    mAreaId, -1) != 0) {
+            if (dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb, mPos, &mAngle, mAreaId,
+                                -1) != 0) {
                 *(u8*)(koopa + 0x42b) = 1;
                 return;
             }
@@ -173,8 +172,7 @@ void daFPknBall_c::func_ov002_020f897c()
     }
     if (roll >= 4) return;
     {
-        dActor_c* coin = dActor_c::Spawn(ACTOR_COIN, 0,
-            *(Vector3*)&mPosX, 0, mAreaId, -1);
+        dActor_c *coin = dActor_c::Spawn(ACTOR_COIN, 0, mPos, 0, mAreaId, -1);
         if (coin != 0) {
             coin->unk_0a4 = 0;
             coin->mVertSpeed = 0;
@@ -303,7 +301,7 @@ int daFPknBall_c::Behavior() {
                 if (mdCcAc_c.hitFlags & HIT_MEGA_CHARACTER) {
                     /* Knocked away from the hitter: a short hop into death state 8. */
                     mFlags &= ~0x10000001;
-                    mPrevAngleY = Vec3_HorzAngle((char*)hitActor + 0x5c, &mPosX);
+                    mPrevAngleY = Vec3_HorzAngle(&((dActor_c *)hitActor)->mPosX, &mPosX);
                     mHorzSpeed = 0xa000;
                     mVertSpeed = 0x28000;
                     mDeathTimer = 0x1e;
@@ -313,7 +311,7 @@ int daFPknBall_c::Behavior() {
                     mDeathState = 8;
                     mVertAccel = -0x2000;
                     mTerminalVelocity = -0x32000;
-                    Sound::PlayBank0(9, *(Vector3*)&mCamSpacePosX);
+                    Sound::PlayBank0(9, mCamSpacePos);
                     sparkPos.x = mPosX;
                     sparkPos.y = mPosY;
                     sparkPos.z = mPosZ;

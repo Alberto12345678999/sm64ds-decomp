@@ -794,149 +794,149 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@675",
-      "to": "@661",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@676",
-      "to": "@662",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
       "from": "@677",
-      "to": "@663",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@661",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@678",
-      "to": "@664",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@662",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@679",
-      "to": "@665",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@663",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@680",
-      "to": "@666",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@664",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@681",
-      "to": "@667",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@665",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@682",
-      "to": "@668",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@666",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@683",
-      "to": "@669",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@667",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@684",
-      "to": "@670",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@687",
-      "to": "@673",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@688",
-      "to": "@674",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@689",
-      "to": "@79",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@668",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@685",
-      "to": "@988",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@669",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@686",
+      "to": "@670",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
+    },
+    {
+      "from": "@689",
+      "to": "@673",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
+    },
+    {
+      "from": "@690",
+      "to": "@674",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
+    },
+    {
+      "from": "@691",
+      "to": "@79",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
+    },
+    {
+      "from": "@687",
+      "to": "@988",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
+    },
+    {
+      "from": "@688",
       "to": "@989",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@2113",
-      "to": "@2061",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@2114",
-      "to": "@2062",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2115",
-      "to": "@2063",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2061",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2116",
-      "to": "@2064",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2062",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2117",
-      "to": "@2065",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2063",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2118",
-      "to": "@2066",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2064",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2119",
-      "to": "@2067",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2065",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2120",
-      "to": "@2068",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2066",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2121",
-      "to": "@2069",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2067",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2122",
-      "to": "@2070",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2068",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2123",
-      "to": "@2071",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2069",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2124",
-      "to": "@2072",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2070",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2125",
-      "to": "@2073",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@2071",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     },
     {
       "from": "@2126",
+      "to": "@2072",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
+    },
+    {
+      "from": "@2127",
+      "to": "@2073",
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
+    },
+    {
+      "from": "@2128",
       "to": "@2074",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Header method declarations renumbered this compiler temporary; preserve the prior raw-object ordering and canonical identity. Production-owned data and initializer relocation targets reverified."
     }
   ],
   "symbol_binding_rewrites": [

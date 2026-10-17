@@ -14,7 +14,6 @@
  * Leftover: func_ov002_020bec9c is still the linker name of the
  *   Player SetAnim wrapper owned by the Player TU. Naming belongs there.
  * Leftover: data_02082214 is the shared arm9 sine table.
- * Leftover: target + 0x8e is a Player short with no named header field.
  * Leftover: the (s16)mMessageID / (u16 *)&mAngleY casts are
  *   load-bearing (sign-extends / zero-extends the halfword load).
  */
@@ -125,19 +124,19 @@ int daObjKanban_c::Behavior()
             case 0:
                 if (Vec3_HorzDist(&tpos, &pos) < 0x32000) {
                     mState += 1;
-                } else if (ApproachLinear(*(short *)((char *)tgt + 0x8e), Vec3_HorzAngle(&tpos, &pos), 0x800)) {
+                } else if (ApproachLinear(tgt->mAngleY, Vec3_HorzAngle(&tpos, &pos), 0x800)) {
                     mState += 1;
                     func_ov002_020bec9c(tgt, 1, 0, 0x1000, 0);
                 }
                 break;
             case 1:
-                if (Vec3_ApproachHorz((Vector3 *)&tgt->mPosX, &pos, 0xa000)) {
+                if (Vec3_ApproachHorz(&tgt->mPos, &pos, 0xa000)) {
                     func_ov002_020bec9c(tgt, 0, 0, 0x1000, 0);
                     mState += 1;
                 }
                 break;
             case 2:
-                if (ApproachLinear(*(short *)((char *)tgt + 0x8e), (s16)(mAngleY + 0x8000), 0x800)) {
+                if (ApproachLinear(tgt->mAngleY, (s16)(mAngleY + 0x8000), 0x800)) {
                     mMessageID = 0;
                     if (param1 != 0xffff)
                         mMessageID = (s16)param1;
@@ -170,7 +169,7 @@ int daObjKanban_c::Behavior()
                     opos.x = pO[0];
                     opos.y = pO[1];
                     opos.z = pO[2];
-                    if (AngleDiff(Vec3_HorzAngle((Vector3 *)&mPosX, &opos), mAngleY) < 0x4000) {
+                    if (AngleDiff(Vec3_HorzAngle(&mPos, &opos), mAngleY) < 0x4000) {
                         if (((Player *)other)->StartTalk(*this, 0))
                             mTalkingPlayer = (Player *)other;
                     }

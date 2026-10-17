@@ -153,7 +153,7 @@ old file's debt. A newly copied or added file does not inherit another file's de
 These rules do not parse C++, prove a shadow layout, detect all indirect dispatch,
 or decide whether an encoded name denotes a namespace or member. Other macros are
 not preprocessed; only the existing `_MSC_VER` arm helper is applied. The existing
-CONVERTED and language-mode ratchets retain their own definitions and checks.
+language-mode ratchet retains its own definition and checks.
 
 When a newly introduced recognized pattern is required, add a reviewed entry to
 `config/source-style-exceptions.json` with exact `path`, `rule`, normalized `match`,

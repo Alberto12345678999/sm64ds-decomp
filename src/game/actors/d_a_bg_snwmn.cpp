@@ -110,8 +110,7 @@ s32 daBgSnwmn_c::InitResources()
     void *model;
 
     if (IsStarCollectedInLevel(0xa, 5) == 0) {
-        dActor_c::Spawn(0x111, 0, *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX,
-                        mAreaId, -1);
+        dActor_c::Spawn(0x111, 0, mPos, &mAngle, mAreaId, -1);
         MarkForDestruction();
     }
 
@@ -167,8 +166,8 @@ s32 daBgSnwmn_c::Behavior()
 s32 daBgSnwmn_c::Render()
 {
     mTexSeq.Update(mModel1.data);
-    mModel1.Render((Vector3 *)&mScaleX);
-    mModel2.Render((Vector3 *)&mScaleX);
+    mModel1.Render(&mScale);
+    mModel2.Render(&mScale);
     return 1;
 }
 

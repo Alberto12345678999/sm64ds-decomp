@@ -840,7 +840,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov006",
       "canonical_address": "0x0214000c",
-      "reason": "The vtable this TU is the key function for. dScMgSnowball_c declares its destructor out of line and this file is the only definition, so mwccarm anchors the vague-linkage group here. ROM home ov006:0x0214000c (config/arm9/overlays/ov006/symbols.txt); the next configured symbol is data_ov006_0214009c, so the cartridge copy is 0x90 while this object emits 0x98 -- the two extra words are the trailing null slots the cartridge table drops. D1/D0 and the class's own overrides odr-use this copy for their vptr stores; production isolation rebinds those relocations to the ROM home and deadstrips the duplicate."
+      "reason": "The vtable this TU is the key function for. dScMgSnowball_c declares its destructor out of line and this file is the only definition, so mwccarm anchors the vague-linkage group here. ROM home ov006:0x0214000c (config/arm9/overlays/ov006/symbols.txt); the next configured symbol is sSnowballBgNclPath, so the cartridge copy is 0x90 while this object emits 0x98 -- the two extra words are the trailing null slots the cartridge table drops. D1/D0 and the class's own overrides odr-use this copy for their vptr stores; production isolation rebinds those relocations to the ROM home and deadstrips the duplicate."
     },
     {
       "symbol": "_ZTI15dScMgSnowball_c",

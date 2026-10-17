@@ -33,9 +33,8 @@ open at once, and it exists purely because the validator is one box. See
 fresh base and proves that the composition changed nothing.
 
 dScStage_c 2 is wider than its one row suggests. Besides the source and manifest, a
-promotion edits `delinks.txt`, `converted-baseline.json` (via `tiers_ratchet
---update`, never by hand), `converted-backslide-exceptions.jsonl`, any `port/`
-slice manifest naming a deleted shard, and any prose naming one. Six non-source
+promotion edits `delinks.txt`, any `port/`
+slice manifest naming a deleted shard, and any prose naming one. Four non-source
 files is typical.
 
 The writer is **gathering, not authoring**: 387 of 429 classes already have a
@@ -80,7 +79,7 @@ carrying a mangled name converts as a codegen question -- does it byte-match.
 A member carrying an auto-generated `func_ovNNN_*` name converts only by being
 **renamed**, which is a different, larger, and riskier act: the new name must
 reach `symbols.txt` in the same commit (see below), and every external caller
-must move with it. Measured on [ov071](../../../config/arm9/overlays/ov071/symbols.txt)/`Scuttlebug`, all 27 unconverted members
+must move with it. Measured on [ov071](../../../config/arm9/overlays/ov071/symbols.txt)/`Scuttlebug`, all 27 still-unrenamed members
 were auto-named, so its ceiling was **name recovery, not codegen and not
 scope** -- a different wall from `dScMgCurling2_c`'s, where all 29 compiled
 byte-neutrally and 12 were refused for scope alone.

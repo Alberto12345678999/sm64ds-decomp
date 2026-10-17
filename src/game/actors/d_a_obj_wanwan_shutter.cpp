@@ -148,7 +148,7 @@ int daObjWanwanShutter_c::CleanupResources()
 extern "C" void func_ov014_02112ea8(daObjWanwanShutter_c *a)
 {
     Vector3 v[2];
-    Sound::PlayBank3(0xf, *(Vector3 *)&a->mCamSpacePosX);
+    Sound::PlayBank3(0xf, a->mCamSpacePos);
     {
         int ty = a->mPosY;
         int tz = a->mPosZ;

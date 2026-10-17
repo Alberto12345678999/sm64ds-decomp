@@ -22,7 +22,7 @@
 # invents losses (measured 2026-08-30: three PRs each appeared to lose 4,028 bytes that
 # way and lost exactly zero against their fork points). But a PR that is green against a
 # stale base can still desync main the moment it merges, which is precisely what happened
-# to the converted ratchet on 2026-08-30. So main is also checked against its own
+# to the converted ratchet (retired with the CONVERTED tier) on 2026-08-30. So main is also checked against its own
 # previous tip on every push, which is the check nothing else in this repo performs.
 #
 # WHY IT RUNS ON A GITHUB RUNNER AND NOT THE BUILD BOX. It compiles nothing and reads no

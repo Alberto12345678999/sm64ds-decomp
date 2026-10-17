@@ -100,7 +100,7 @@ int daObjTtWater_c::Behavior()
                 MarkForDestruction();
         } else {
             mPosY -= 0x1000;
-            mSoundID = Sound::PlayLong(mSoundID, 3, 0x96, *(const Vector3 *)&mCamSpacePosX, 0);
+            mSoundID = Sound::PlayLong(mSoundID, 3, 0x96, mCamSpacePos, 0);
             if (mPosY <= mMinPosY) {
                 mPosY = mMinPosY;
                 dMap_c::UpdateLevelSpecific();
