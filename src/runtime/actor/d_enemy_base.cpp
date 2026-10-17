@@ -764,7 +764,7 @@ int dEnemyBase_c::SpawnParticlesIfHitOtherObj(dCc_c & clsn_)
         if (id != 0) {
             void* a = dActor_c::FindWithID(id);
             if (a != 0) {
-                unsigned short t = *(unsigned short*)((char*)a+0xc);
+                unsigned short t = ((dActor_c *)a)->actorID;
                 int e1 = (t == 0x120);
                 if (e1 == 0) {
                     int e2 = (t == 0x121);
