@@ -109,19 +109,27 @@ extern void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *);
 extern int _ZN4cstd4fdivEii(int, int);
 }
 
-void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr & clsn_, unsigned int sel)
-{
+void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr &clsn_, unsigned int sel) {
     dBgCh_Actr *clsn = &clsn_;
 
     switch (sel) {
-    case 1: func_020383f0(clsn); break;
-    case 2: dBgCh_Actr_UpdateDiscreteNoLava_veneer(clsn); break;
-    case 3: func_02038414(clsn); break;
-    default: dBgCh_Actr_UpdateContinuous_Veneer(clsn); break;
+    case 1:
+        func_020383f0(clsn);
+        break;
+    case 2:
+        dBgCh_Actr_UpdateDiscreteNoLava_veneer(clsn);
+        break;
+    case 3:
+        func_02038414(clsn);
+        break;
+    default:
+        dBgCh_Actr_UpdateContinuous_Veneer(clsn);
+        break;
     }
     if (clsn->IsOnGround()) {
 
-        ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)&mFloorNormalX);
+        static_cast<dBgPi *>(clsn->GetFloorResult())
+            ->surface.CopyNormalTo(*(Vector3 *)&mFloorNormalX);
         if (clsn->GetLimMovFlag() == 0) {
             int dz = mFloorNormalY;
             if (dz != 0) {
@@ -138,9 +146,9 @@ void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr & clsn_, unsigned int sel)
         }
     }
     if (clsn->IsOnWall()) {
-        ((dBgPi *)clsn->GetWallResult())->surface.CopyNormalTo(*(Vector3 *)&mWallNormalX);
+        static_cast<dBgPi *>(clsn->GetWallResult())
+            ->surface.CopyNormalTo(*(Vector3 *)&mWallNormalX);
     }
-
 }
 
 /* Its legacy file built this from a local `struct dEnemyBase_c : dActor_c` shadow with a
