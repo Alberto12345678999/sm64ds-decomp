@@ -1,4 +1,4 @@
-extern void func_ov007_020c937c(int a);
+extern void func_ov007_020c937c(void *state);
 extern void func_ov007_020c020c(void *a);
 extern void func_ov007_020c2410(int a);
 extern void func_ov007_020c2018(int a);
@@ -22,15 +22,15 @@ void func_ov007_020b65e0(void)
     int i;
 
     if (*(int *)(data_ov007_0210342c + 4) != 0) {
-        func_ov007_020c937c(*(int *)(data_ov007_0210342c + 4));
+        func_ov007_020c937c((void *)*(int *)(data_ov007_0210342c + 4));
         *(int *)(data_ov007_0210342c + 4) = 0;
     }
     if (*(int *)(data_ov007_0210342c + 8) != 0) {
-        func_ov007_020c937c(*(int *)(data_ov007_0210342c + 8));
+        func_ov007_020c937c((void *)*(int *)(data_ov007_0210342c + 8));
         *(int *)(data_ov007_0210342c + 8) = 0;
     }
     if (*(int *)(data_ov007_0210342c + 0xc) != 0) {
-        func_ov007_020c937c(*(int *)(data_ov007_0210342c + 0xc));
+        func_ov007_020c937c((void *)*(int *)(data_ov007_0210342c + 0xc));
         *(int *)(data_ov007_0210342c + 0xc) = 0;
     }
     if (*(int *)(data_ov007_0210342c + 0x30) != 0) {
@@ -80,7 +80,7 @@ void func_ov007_020b65e0(void)
     func_ov007_020b3edc(0x16);
 
     if (*(int *)(data_ov007_0210342c + 0x40) != 0) {
-        func_ov007_020c937c(*(int *)(data_ov007_0210342c + 0x40));
+        func_ov007_020c937c((void *)*(int *)(data_ov007_0210342c + 0x40));
         *(int *)(data_ov007_0210342c + 0x40) = 0;
     }
 

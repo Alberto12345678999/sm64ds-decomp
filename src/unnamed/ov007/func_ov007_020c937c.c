@@ -1,9 +1,8 @@
-// Long-branch veneer. #pragma long_calls makes mwccarm emit the pooled
-// `ldr ip,[pc]; bx ip` absolute tail-call the ROM uses to reach the target.
+/* The state object pointer is forwarded in r0 to the installed free callback.
+ * Keep the long-call veneer: retail uses an absolute pooled tail branch. */
 #pragma long_calls on
-extern int func_ov007_020c3d1c(void);
+extern void func_ov007_020c3d1c(void *memory);
 
-int func_ov007_020c937c(void)
-{
-    return func_ov007_020c3d1c();
+void func_ov007_020c937c(void *state) {
+    func_ov007_020c3d1c(state);
 }

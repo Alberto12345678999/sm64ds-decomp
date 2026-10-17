@@ -1,6 +1,6 @@
 //cpp
 extern "C" void func_ov007_020c6684(int c);
-extern "C" void func_ov007_020c937c(int);
+extern "C" void func_ov007_020c937c(void *state);
 extern "C" void func_ov007_020c9080(int);
 extern "C" int func_ov007_020c44c4(int r4);
 extern "C" void func_ov007_020c3d1c(void *);
@@ -16,10 +16,10 @@ extern "C" void func_ov007_020b9770(void)
     return;
 
   func_ov007_020c6684(data_ov007_02104ba0[0]);
-  func_ov007_020c937c(data_ov007_02104ba0[1]);
-  func_ov007_020c937c(data_ov007_02104ba0[2]);
-  func_ov007_020c937c(data_ov007_02104ba0[3]);
-  func_ov007_020c937c(data_ov007_02104ba0[4]);
+  func_ov007_020c937c((void *)data_ov007_02104ba0[1]);
+  func_ov007_020c937c((void *)data_ov007_02104ba0[2]);
+  func_ov007_020c937c((void *)data_ov007_02104ba0[3]);
+  func_ov007_020c937c((void *)data_ov007_02104ba0[4]);
   func_ov007_020c9080(data_ov007_02104ba0[0x11]);
   func_ov007_020c9080(data_ov007_02104ba0[0x12]);
 

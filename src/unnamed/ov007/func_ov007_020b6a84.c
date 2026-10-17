@@ -1,4 +1,4 @@
-extern void *func_ov007_020c9388(void *self);
+extern void *func_ov007_020c9388(int initialState);
 extern char *func_ov007_020c023c(void);
 extern int func_ov007_020c241c(int a);
 extern char *func_ov007_020c2068(void);
@@ -13,9 +13,9 @@ void func_ov007_020b6a84(void)
     unsigned char buf[0x54];
     int v;
 
-    *(void **)(data_ov007_0210342c + 4) = func_ov007_020c9388((void *)0);
-    *(void **)(data_ov007_0210342c + 8) = func_ov007_020c9388((void *)-1);
-    *(void **)(data_ov007_0210342c + 0xc) = func_ov007_020c9388((void *)1);
+    *(void **)(data_ov007_0210342c + 4) = func_ov007_020c9388(0);
+    *(void **)(data_ov007_0210342c + 8) = func_ov007_020c9388(-1);
+    *(void **)(data_ov007_0210342c + 0xc) = func_ov007_020c9388(1);
     *(char **)(data_ov007_0210342c + 0x30) = func_ov007_020c023c();
     *(char **)(data_ov007_0210342c + 0x34) = func_ov007_020c023c();
     *(int *)(data_ov007_0210342c + 0x38) = func_ov007_020c241c(0);

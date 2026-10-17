@@ -1,25 +1,29 @@
-void func_ov007_020c92d0(char *state)
-{
-    short pending = *(short *)(state + 2);
+#include "Ov007MenuState.h"
+
+/* Consume a pending request, detect entry (including direct state changes),
+ * then advance the saturating state timer. Requesting the current state does
+ * not restart it. The previous entered state survives subsequent ticks. */
+void func_ov007_020c92d0(char *record) {
+    Ov007MenuState *state = (Ov007MenuState *)record;
+    s16 pending = state->requestedState;
 
     if (pending != -1) {
-        short current = *(short *)state;
+        s16 current = state->currentState;
 
         if (pending != current) {
-            *(short *)(state + 8) = current;
-            *(short *)state = *(short *)(state + 2);
+            state->lastTickState = current;
+            state->currentState = state->requestedState;
         }
-        *(short *)(state + 2) = -1;
+        state->requestedState = -1;
     }
 
-    if (*(short *)state != *(short *)(state + 8)) {
-        *(int *)(state + 12) = 0;
-        *(short *)(state + 10) = *(short *)(state + 8);
-        *(int *)(state + 4) = 0;
-    } else if ((unsigned int)*(int *)(state + 12) < 0xffffffffU) {
-        int *counter = (int *)(((long long)((int)state + 12)));
-        ++*counter;
+    if (state->currentState != state->lastTickState) {
+        state->stateTicks = 0;
+        state->previousState = state->lastTickState;
+        state->stateWork = 0;
+    } else if (state->stateTicks < 0xffffffffU) {
+        ++state->stateTicks;
     }
 
-    *(short *)(state + 8) = *(short *)state;
+    state->lastTickState = state->currentState;
 }
