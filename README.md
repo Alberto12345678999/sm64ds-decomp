@@ -30,7 +30,7 @@ Code size  ███████████████████████
 <!-- tiers:start -->
 ```
 MATCHED    ██████████████████████████████  100.0%   11,389 / 11,389 functions
-           of which 108 are byte-exact assembly (hand-written in the original, not C)
+           of which 109 are byte-exact assembly (hand-written in the original, not C)
 LINKED     █████████████████████████████░  96.2%   10,957 / 11,389 functions
 ```
 <!-- tiers:end -->
