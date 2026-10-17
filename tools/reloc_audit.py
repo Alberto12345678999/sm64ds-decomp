@@ -62,23 +62,74 @@ def _overlay_id_constants(config):
     These are linker values, not ROM addresses. Read the configured numeric IDs,
     never infer an arbitrary constant from an unresolved import's spelling.
     """
-    import yaml
+    # This worker intentionally has no YAML dependency. Accept the generated dsd
+    # block form only: `overlays:`, `  - id: <decimal u32>`, then flat four-space
+    # metadata fields. Blank lines and whitespace-separated comments are allowed.
+    # Reject other YAML forms rather than partially extracting plausible IDs.
+    # Also bound skipped fields to plain generated scalars: multiline YAML
+    # strings must never masquerade as a root overlays block. dsd still owns
+    # semantic validation of the unrelated build/module settings.
     config = pathlib.Path(config)
     if not config.is_file():
         return {}
-    data = yaml.safe_load(config.read_text(encoding="utf-8"))
-    overlays = data.get("overlays", [])
-    if not isinstance(overlays, list):
-        raise ValueError("configured overlays must be a list")
-    out = {}
-    for row in overlays:
-        ident = row.get("id") if isinstance(row, dict) else None
-        if type(ident) is not int or not 0 <= ident <= 0xffffffff:
-            raise ValueError(f"invalid configured overlay ID: {ident!r}")
-        name = f"OVERLAY_{ident}_ID"
-        if name in out:
-            raise ValueError(f"duplicate configured overlay ID: {ident}")
-        out[name] = ("arm9", ident)
+    out, top_keys, row_keys = {}, set(), set()
+    in_overlays = False
+    block_overlays = False
+    metadata = {"name", "object", "hash", "delinks", "symbols", "relocations"}
+    scalar = r"[A-Za-z0-9_./][A-Za-z0-9_./-]*"
+    for lineno, raw in enumerate(config.read_text(encoding="utf-8").splitlines(), 1):
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        line = re.sub(r"\s+#.*$", "", raw).rstrip()
+        if "\t" in line:
+            raise ValueError(f"unsupported configured overlay YAML at line {lineno}: tabs")
+        if not line.startswith(" "):
+            top = re.fullmatch(r"([A-Za-z_][A-Za-z_0-9]*):(?: +(.*))?", line)
+            if not top:
+                raise ValueError(f"unsupported configured overlay YAML at line {lineno}")
+            key, value = top.groups()
+            if value not in (None, "[]") and not re.fullmatch(scalar, value):
+                raise ValueError(f"unsupported configured overlay YAML scalar at line {lineno}")
+            if key in top_keys:
+                raise ValueError(f"duplicate configured YAML key: {key}")
+            top_keys.add(key)
+            if in_overlays and block_overlays and not out:
+                raise ValueError("configured overlays must be a list, not an empty block")
+            in_overlays = key == "overlays"
+            if in_overlays:
+                if value not in (None, "[]"):
+                    raise ValueError("unsupported configured overlay YAML: expected block list or []")
+                block_overlays = value is None
+            continue
+        if not in_overlays:
+            if not re.fullmatch(r"(?:  (?:- )?|    )[A-Za-z_][A-Za-z_0-9]*: " + scalar, line):
+                raise ValueError(f"unsupported configured YAML field at line {lineno}")
+            continue
+        if not block_overlays:
+            raise ValueError(f"unsupported configured overlay YAML after [] at line {lineno}")
+        row = re.fullmatch(r"  - id: (0|[1-9][0-9]*)", line)
+        if row:
+            ident = int(row.group(1))
+            if ident > 0xffffffff:
+                raise ValueError(f"invalid configured overlay ID: {ident}")
+            name = f"OVERLAY_{ident}_ID"
+            if name in out:
+                raise ValueError(f"duplicate configured overlay ID: {ident}")
+            out[name] = ("arm9", ident)
+            row_keys = {"id"}
+            continue
+        field = re.fullmatch(r"    ([A-Za-z_][A-Za-z_0-9]*): ([A-Za-z0-9_./-]+)", line)
+        if field and row_keys:
+            key = field.group(1)
+            if key in row_keys:
+                raise ValueError(f"duplicate configured overlay field: {key}")
+            if key in metadata:
+                row_keys.add(key)
+                continue
+        raise ValueError(f"unsupported configured overlay YAML at line {lineno}: "
+                         "expected an id-first block row with flat scalar metadata")
+    if in_overlays and block_overlays and not out:
+        raise ValueError("configured overlays must be a list, not an empty block")
     return out
 
 
