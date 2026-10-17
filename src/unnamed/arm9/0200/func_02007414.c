@@ -1,50 +1,40 @@
-/* File-local views (the class headers are C++): only the fields this state
- * entry touches. Camera names follow include/dCamera_c.h; the player's follow
- * include/dActor_c.h. */
-typedef struct {
+#include "types.h"
+
+/* The fields used here, named as in include/dActor_c.h and include/dCamera_c.h. */
+struct dActor_c {
     char pad_000[0x60];
-    int mPosY; /* 0x060 */
-} PlayerView;
+    s32 mPosY; /* 0x060 */
+};
 
-typedef struct {
-    int x, y, z;
-} Vec3;
-
-typedef struct {
+struct dCamera_c {
     char pad_000[0x80];
-    Vec3 lookAt; /* 0x080 */
-    char pad_08c[0x24];
-    Vec3 savedLookAt; /* 0x0b0 */
-    Vec3 savedPos;    /* 0x0bc */
-    char pad_0c8[0x48];
-    PlayerView *mTargetPlayer; /* 0x110 */
-} CameraView;
+    Vector3 lookAt; /* 0x080 */
+    char pad_08c[0xb0 - 0x8c];
+    Vector3 savedLookAt; /* 0x0b0 */
+    Vector3 savedPos;    /* 0x0bc */
+    char pad_0c8[0x110 - 0xc8];
+    struct dActor_c *mTargetPlayer; /* 0x110 */
+    char pad_114[0x170 - 0x114];
+    s32 mScriptParam; /* 0x170 */
+    s32 mRampSpeed;   /* 0x174 */
+};
 
-int func_02007414(void *c)
-{
-    CameraView *cam = (CameraView *)c;
+/* Script op: clears savedLookAt, sets savedPos to (0, lookAt's height above
+   the target player, 0), and clears mScriptParam and mRampSpeed. */
+int func_02007414(struct dCamera_c *c) {
+    c->savedLookAt.x = 0;
+    c->savedLookAt.y = 0;
+    c->savedLookAt.z = 0;
 
-    /* zero some fields */
-    cam->savedLookAt.x = 0;
-    cam->savedLookAt.y = 0;
-    cam->savedLookAt.z = 0;
+    struct dActor_c *player = c->mTargetPlayer;
+    int lookAtY = c->lookAt.y;
+    int playerY = player->mPosY;
 
-    /* load pointers/values */
-    PlayerView *p1 = cam->mTargetPlayer;
-    int r2 = cam->lookAt.y;
-    int r1 = p1->mPosY;
-
-    /* store more zeros */
-    cam->savedPos.x = 0;
-
-    /* compute and store result */
-    r1 = r2 - r1;
-    cam->savedPos.y = r1;
-
-    cam->savedPos.z = 0;
-    /* Words 0x170 and 0x174 stay raw: per-state scalars with no one role. */
-    *(int *)((char *)c + 0x170) = 0;
-    *(int *)((char *)c + 0x174) = 0;
+    c->savedPos.x = 0;
+    c->savedPos.y = lookAtY - playerY;
+    c->savedPos.z = 0;
+    c->mScriptParam = 0;
+    c->mRampSpeed = 0;
 
     return 1;
 }

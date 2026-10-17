@@ -10,22 +10,19 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *m, short ang);
 extern void MulVec3Mat4x3(struct Vector3 *v, struct Matrix4x3 *m, struct Vector3 *res);
 extern struct Matrix4x3 data_020a0e68;
 
-/* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields
- * this camera step touches, under that header's names. */
-typedef struct {
-    u8 pad_000[0x80];
+/* The fields used here, named as in include/dCamera_c.h. */
+struct dCamera_c {
+    char pad_000[0x80];
     struct Vector3 lookAt; /* 0x080 */
     struct Vector3 pos;    /* 0x08c */
-    u8 pad_098[0x78];
-    char *mTargetPlayer; /* 0x110 */
-    u8 pad_114[0x68];
+    char pad_098[0x17c - 0x98];
     s16 mAngleY; /* 0x17c */
-    s16 mAngleX; /* 0x17e -- the pitch rotation applied after mAngleY */
-} CameraView;
+    s16 mAngleX; /* 0x17e */
+};
 
 int func_02009138(int *thiz, int arg)
 {
-    CameraView *cam = (CameraView *)thiz;
+    struct dCamera_c *cam = (struct dCamera_c *)thiz;
     struct Vector3 v;
     int len;
     int r;

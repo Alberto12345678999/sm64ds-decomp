@@ -1,26 +1,20 @@
-struct dCamera_c;
+#include "types.h"
+
+/* The fields used here, named as in include/dCamera_c.h. */
+struct dCamera_c {
+    char pad_000[0x8c];
+    Vector3 pos; /* 0x08c */
+    char pad_098[0xb0 - 0x98];
+    Vector3 savedLookAt; /* 0x0b0 */
+    char pad_0bc[0x186 - 0xbc];
+    s16 mTargetAngleY; /* 0x186 */
+};
 
 extern void Vec3_RotateYAndTranslate(void *dst, void *src, short angle, void *unk);
 
-/* File-local view of dCamera_c (include/dCamera_c.h is C++). */
-typedef struct {
-    int x, y, z;
-} Vec3;
-
-typedef struct {
-    unsigned char pad_000[0x8c];
-    Vec3 pos; /* 0x08c */
-    unsigned char pad_098[0x18];
-    Vec3 savedLookAt; /* 0x0b0 */
-    unsigned char pad_0bc[0xca];
-    /* The yaw func_020091f8 eases mAngleY toward. */
-    short mTargetAngleY; /* 0x186 */
-} CameraView;
-
 int func_02007450(struct dCamera_c *cam)
 {
-    CameraView *view = (CameraView *)cam;
-    short angle = view->mTargetAngleY;
-    Vec3_RotateYAndTranslate(&view->pos, &view->pos, angle, &view->savedLookAt);
+    short angle = cam->mTargetAngleY;
+    Vec3_RotateYAndTranslate(&cam->pos, &cam->pos, angle, &cam->savedLookAt);
     return 1;
 }

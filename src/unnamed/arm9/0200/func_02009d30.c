@@ -1,38 +1,41 @@
-extern int data_0208729c;
+#include "types.h"
 
-/* File-local views (the class headers are C++): only the fields this state
- * entry touches. Camera names follow include/dCamera_c.h; the player's follow
- * include/dActor_c.h. */
-typedef struct {
+/* The fields used here, named as in include/dActor_c.h and include/dCamera_c.h. */
+struct dActor_c {
     char pad_000[0x8e];
-    short mAngleY; /* 0x08e */
-} PlayerView;
+    s16 mAngleY; /* 0x08e */
+};
 
-typedef struct {
+struct dCamera_c {
     char pad_000[0x110];
-    PlayerView *mTargetPlayer; /* 0x110 */
-    char pad_114[0x28];
-    int *mState_13c; /* 0x13c */
-    char pad_140[0x14];
-    unsigned int mFlags; /* 0x154 */
-    char pad_158[0x2e];
-    /* The yaw func_020091f8 eases mAngleY toward; here, behind the player. */
-    short mTargetAngleY; /* 0x186 */
-} CameraView;
+    struct dActor_c *mTargetPlayer; /* 0x110 */
+    char pad_114[0x13c - 0x114];
+    s32 mState_13c; /* 0x13c */
+    char pad_140[0x154 - 0x140];
+    u32 mFlags; /* 0x154 */
+    char pad_158[0x186 - 0x158];
+    s16 mTargetAngleY; /* 0x186 */
+    char pad_188[0x1a6 - 0x188];
+    u8 mTurningToTarget; /* 0x1a6 */
+};
+
+extern int data_0208729c;
 
 int func_02009d30(int *p)
 {
-    CameraView *cam = (CameraView *)p;
+    struct dCamera_c *cam = (struct dCamera_c *)p;
     int one = 1;
 
-    cam->mState_13c = &data_0208729c;
+    cam->mState_13c = (int)&data_0208729c;
 
-    /* 0x1a6 (the header's unk_1a6) stays raw: set here on entering the state,
-       cleared once func_020091f8 reports the camera has arrived. */
-    *(unsigned char *)((char *)p + 0x1a6) = (unsigned char)one;
+    cam->mTurningToTarget = (unsigned char)one;
 
-    cam->mTargetAngleY = (short)(cam->mTargetPlayer->mAngleY + 0x8000);
-    cam->mFlags &= ~0x100u;
+    {
+        struct dActor_c *player = cam->mTargetPlayer;
+        short h = player->mAngleY;
+        cam->mTargetAngleY = (short)(h + 0x8000);
+        cam->mFlags &= ~0x100u;
+    }
 
     return one;
 }
