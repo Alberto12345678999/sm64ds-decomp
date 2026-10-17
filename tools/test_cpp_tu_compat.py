@@ -18,7 +18,7 @@ class CppTuCompatibility(unittest.TestCase):
     def test_contract_covers_every_path_sensitive_surface(self):
         self.assertEqual(set(self.rows), {
             "srcpath", "enroll", "eligible", "rombuild", "validate_merge",
-            "tiers", "langmode_audit", "attribution", "port_refcheck",
+            "langmode_audit", "attribution", "port_refcheck",
         })
 
     def test_current_readiness_is_explicit_and_behavior_backed(self):
@@ -30,7 +30,6 @@ class CppTuCompatibility(unittest.TestCase):
                 "eligible": "ready",
                 "rombuild": "ready",
                 "validate_merge": "ready",
-                "tiers": "ready",
                 "langmode_audit": "ready",
                 "attribution": "ready",
                 "port_refcheck": "ready",
@@ -55,12 +54,6 @@ class CppTuCompatibility(unittest.TestCase):
                          [list(CTC.SYMBOLS)])
         self.assertEqual(self.rows["validate_merge"]["evidence"]["sourceFunctions"], 2)
         self.assertEqual(self.rows["validate_merge"]["evidence"]["completeRanges"], 1)
-        self.assertEqual(self.rows["tiers"]["evidence"]["legacyFiles"], 2)
-        self.assertEqual(self.rows["tiers"]["evidence"]["mergedFiles"], 1)
-        self.assertEqual(self.rows["tiers"]["evidence"]["legacyFunctions"], 2)
-        self.assertEqual(self.rows["tiers"]["evidence"]["mergedFunctions"], 2)
-        self.assertEqual(self.rows["tiers"]["evidence"]["legacyConverted"], 2)
-        self.assertEqual(self.rows["tiers"]["evidence"]["mergedConverted"], 2)
         self.assertEqual(
             self.rows["langmode_audit"]["evidence"]["mangledDefinitionsCounted"], 2)
         self.assertEqual(

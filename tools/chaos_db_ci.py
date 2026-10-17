@@ -13,13 +13,12 @@ Derived the same way as progress.py --write-readme:
   author     function-authors.json, keyed by module and address. That file is the
              only credit record. Git history is not consulted.
   project    tools/chaosviewer.config.json (committed branding/prompt config)
-  tiers      per-function ``converted`` (tools/tiers.py, the same readings the CONVERTED
-             headline is made of), ``linked`` (config/port_linked_functions.txt, see
-             tools/port_linked_functions.py; stats.tiers.linked counts these functions), ``class`` (demangled owner of a method) and
-             ``tuId`` / ``tuState`` (config/tu_manifest.d). All five are OPTIONAL and
+  tiers      per-function ``linked`` (config/port_linked_functions.txt),
+             ``class`` (demangled owner), and ``tuId`` / ``tuState`` (TU manifest).
+             All four are OPTIONAL and
              SPARSE: a record carries one only when it is true or known, exactly like
              ``verified``, and a reader treats an absent key as "no" (or "unknown" for
-             ``linked`` when stats.tiers has no ``linked``). ``stats.tiers`` is unchanged.
+             ``linked`` when stats.tiers has no ``linked``).
 
 Not derivable without the ROM (left to local regens): disasm/callee detail
 chunks, coddog sim/sibling. The details/ directory on the chaos-data branch is
@@ -148,41 +147,29 @@ def enrollment_of(label, addr, src_path, enrolled, blocks):
     return "unenrolled" if src_path and src_path in blocks else "no_block"
 
 
-def tier_stats(conv=None, linked_n=None, total=None):
-    """The CONVERTED and LINKED tiers, flattened for the stats block.
+def tier_stats(linked_n=None, total=None):
+    """The LINKED tier, flattened for the stats block.
 
     Flat rather than nested because the two consumers downstream are a shell
     script's python one-liner and a C# record, and neither gains anything from
     nesting. MATCHED is not repeated here; it is already the block above.
 
-    ``conv`` is a tiers.converted() result the caller already has (main() asks for the
-    per-function breakdown once and shares it, because scoring the tree twice is the
-    slowest thing in this block). Left out, it is computed here, as it always was.
-
-    LINKED counts functions, like the other two bars: ``linked_n`` records carry
-    ``linked`` out of ``total`` records, so all three share one denominator. When no
+    LINKED counts functions, like MATCHED: ``linked_n`` records carry
+    ``linked`` out of ``total`` records, so both share one denominator. When no
     per-function list backs the stamp (an older stamp), it falls back to the stamped
     count of matched translation units, as before. The stamp's own translation-unit
     figures ride along as ``linkedUnits`` / ``linkedUnitsOf`` either way.
 
     Never raises. This runs inside the generator whose output pays the coin
-    ledger, and a readability scan is not worth killing a refresh over -- a run
-    that dies here would leave contributions.json unmoved and every match landed
-    since the last refresh uncredited. On failure the key is simply absent, and
+    ledger. On failure the key is simply absent, and
     the site falls back to showing MATCHED alone.
     """
     try:
-        c = conv if conv is not None else TIERS.converted()
         k = TIERS.linked()
     except Exception as e:  # noqa: BLE001 - see docstring
         print(f"  tiers: SKIPPED ({e})")
         return None
-    out = {
-        "converted": c["converted"],
-        "convertedOf": c["functions"],
-        "convertedSourceFiles": c["source_files"],
-        "convertedPct": c["pct"],
-    }
+    out = {}
     if k:
         per_function = k["unit"] == "functions" and linked_n is not None and total
         n, of = (linked_n, total) if per_function else (k["linked"], k["of"])
@@ -197,18 +184,6 @@ def tier_stats(conv=None, linked_n=None, total=None):
             "linkedCommit": k["commit"],
         })
     return out
-
-
-def converted_by_symbol():
-    """``(tiers.converted() result with by_symbol, None)``, or ``(None, reason)``.
-
-    Never raises, for the reason tier_stats gives: this runs inside the generator that
-    pays the coin ledger. Without it no record carries ``converted`` and stats.tiers
-    falls back to its own (equally guarded) call."""
-    try:
-        return TIERS.converted(per_symbol=True), None
-    except Exception as e:  # noqa: BLE001
-        return None, str(e)
 
 
 def class_of(name):
@@ -404,12 +379,7 @@ def main():
     # committed config, in one pass, for the same reason the set above is.
     alias_srcnames = BG.alias_names(RL.module_universe)
     wont_build = BG.excluded_paths()
-    # The tier columns, each read once. converted_by_symbol() scores the whole tree, so
-    # it runs here and tier_stats() below reuses the result instead of scoring again.
-    conv, conv_err = converted_by_symbol()
-    if conv_err:
-        print(f"  converted: per-function flag SKIPPED ({conv_err})")
-    conv_map = (conv or {}).get("by_symbol", {})
+    # Read the remaining per-function metadata once.
     units = unit_index()
     linked_keys = linked_functions()
     tier_n = collections.Counter()
@@ -533,14 +503,6 @@ def main():
             enrollment_n[(rec["enrollment"], matched)] += 1
             # Tier columns, appended after `enrollment` for the same reason: no existing
             # key moves. Sparse like `verified`: present only when true / known.
-            # `converted` is the symbol's own reading from the file that owns it; for a
-            # function filed under an alias name the alias is asked as well.
-            if src_path:
-                owned = conv_map.get(src_path, {})
-                if owned.get(name) or any(
-                        owned.get(a) for a in alias_srcnames.get((label, addr), ())):
-                    rec["converted"] = True
-                    tier_n["converted"] += 1
             if linked_keys is not None and rec["id"] in linked_keys:
                 rec["linked"] = True
                 tier_n["linked"] += 1
@@ -592,13 +554,13 @@ def main():
             "handAsmFunctions": handasm_n,
             "handAsmBytes": handasm_b,
             "moduleCount": len({f["module"] for f in functions}),
-            # The other two tiers ride along here so every consumer reads ONE file.
+            # The LINKED tier rides along here so every consumer reads ONE file.
             # romstats-sync.sh on the VPS fetches this db and nothing else, and the
             # backend stores what it is told rather than walking any repository, so a
-            # tier that is not in this block does not reach the site at all. Both are
-            # computed from committed source with no ROM and no build, which is what
+            # tier that is not in this block does not reach the site at all. It is
+            # read from committed provenance with no ROM and no build, which is what
             # keeps this generator CI-safe.
-            "tiers": tier_stats(conv, tier_n["linked"] if linked_keys is not None else None, len(functions)),
+            "tiers": tier_stats(tier_n["linked"] if linked_keys is not None else None, len(functions)),
         },
         "functions": functions,
     }
@@ -626,15 +588,8 @@ def main():
     print("  enrollment: " + ", ".join(
         f"{k[0]}{'/matched' if k[1] else ''}={n}"
         for k, n in sorted(enrollment_n.items(), key=lambda kv: (kv[0][0], not kv[0][1]))))
-    # The per-function tier columns, in the log next to the stats.tiers headline they
-    # annotate. `converted` is a function count and matches stats.tiers.converted when
-    # every source-owned function is also a record; `linked` counts functions whose TU
-    # the port build links, a different denominator from the stamped TU count by design.
-    # A gap is printed, not hidden.
-    tiers_block = db["stats"].get("tiers") or {}
-    print(f"  tiers per function: converted={tier_n['converted']} "
-          f"(stats.tiers.converted={tiers_block.get('converted')}), "
-          f"linked={tier_n['linked'] if linked_keys is not None else 'n/a'}, "
+    # Report the remaining optional columns alongside the headline.
+    print(f"  tiers per function: linked={tier_n['linked'] if linked_keys is not None else 'n/a'}, "
           f"class={tier_n['class']}, in a TU manifest entry={tier_n['tu']}")
     # The policy-D subtraction, in the log next to the number it explains. A silent
     # exclusion is the same mistake the enrollment split was added to fix.

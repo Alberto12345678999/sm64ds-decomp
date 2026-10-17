@@ -25,7 +25,7 @@ import msvc_arms
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FORMAT_VERSION = "19.1.7"
 SUFFIXES = {".c", ".cpp", ".h", ".hpp"}
-# Deliberately narrow patterns, independent of the published CONVERTED metric.
+# Deliberately narrow patterns, independent of any published readability metric.
 RULES = {
     "raw-offset": re.compile(
         r"\(\s*(?:(?:unsigned|signed)\s+)?\w+\s*\*\s*\)\s*\(\s*\w+\s*\+\s*0x[0-9a-fA-F]+"

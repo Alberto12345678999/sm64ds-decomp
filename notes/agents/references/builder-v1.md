@@ -10,9 +10,8 @@ yourself, in your own worktree, at a named ref.
 
 ## Gate order
 
-The order matters and is not the order you would guess. `tiers_ratchet --update`
-edits tracked files, and `check_references.py` refuses any eligibility report
-that does not match `HEAD` — so the ratchet and its commit must come **before**
+The order matters and is not the order you would guess. `check_references.py` refuses any eligibility report
+that does not match `HEAD`, so commit ledger changes **before**
 `eligible.py`, not after it. Run them the other way round and you get
 `report describes 8f39bae00019, HEAD is 636ee89d5940` and have to redo both.
 
@@ -39,14 +38,7 @@ not merely once after the rebase.
     python tools/romdata_check.py --files src/game/<dir>/<file>.cpp
     python tools/tu_order_check.py <ov>/<Class>      # takes positional ids
 
-    # 2. ratchet, then COMMIT — before anything reads an eligibility report
-    python tools/tiers_ratchet.py --check
-    #    ^ if this PASSES, do NOT --update. The writer already banked, and
-    #      --update appends rather than replaces, so running it anyway commits
-    #      exactly the double-banking defect described below. Audit instead:
-    #      count byte-identical whole records, and set-diff
-    #      converted-baseline.json["converted"] against the base.
-    python tools/tiers_ratchet.py --update --reason "<why>"   # only if --check FAILED
+    # 2. ledgers, then COMMIT — before anything reads an eligibility report
     git add -A && git commit
 
     # 3. everything that reads HEAD or a report
@@ -261,14 +253,6 @@ error.
 
 ## What actually goes red on a promotion
 
-- **`tiers_ratchet --check`** goes red only when the rows are **not already
-  banked** — after a rebase that restored the base's copies of the ledger files.
-  It is *not* red by construction, which is how this file used to put it: the
-  writer normally banks correctly and `--check` then **passes** (measured on
-  `daObjCtMecha03_c`, `daObjFallBlock_c` and `daDsnBase_c`, all PASS 2674/2674).
-  **If it passes, skip `--update` entirely** — running it anyway appends
-  duplicate rows on an unmoved base, which is the same defect as the rebase
-  case below and not only a rebase hazard.
 - **`check_dead_references.py`** goes red whenever prose named a shard you
   deleted. This is the common one: it fired on `notes/bgobject-provenance.md`
   naming seven. Remedy: remove the literal token, not just the sentence around
@@ -276,41 +260,6 @@ error.
 - **`port_refcheck.py`** has now come back **green** on three consecutive
   promotions (402 checked, 0 stale). Check it, but do not expect it to fire or
   go looking for a remedy it does not need.
-
-### `tiers_ratchet --update --reason` does not dedupe
-
-If the writer already banked rows and you then take `main`'s copy of the ledger
-files — which the rebase rule requires — a second `--update --reason` **appends
-duplicate rows for the same paths** rather than replacing them. Nothing warns
-you. The working recipe is to restore both files first and update exactly once:
-
-    git checkout <the-new-base> -- config/converted-backslide-exceptions.jsonl                                    config/converted-baseline.json
-    python tools/tiers_ratchet.py --update --reason "<why>"
-
-**`<the-new-base>` is whatever you rebased onto — not always `origin/main`.**
-When you are stacked on a sibling class branch, `git checkout origin/main --`
-**permanently destroys the sibling's rows**: `write_baseline` regenerates the
-whole `converted` set from the tree so the loud file self-heals, but
-`append_exceptions` opens the exceptions file `"a"` and only ever appends, so
-what you drop there never comes back. That asymmetry is also why the silently
-auto-merging file is the dangerous one and the loudly conflicting one is safe.
-
-**Detect the damage, do not just apply the remedy.** `git merge-tree
---write-tree <base> <head>` shows you the silent auto-merge before it lands, and
-an identical-whole-record count over the exceptions file shows you double-banking.
-
-**But do not use `merge-tree` to decide whether a PR will merge.** For
-`config/converted-backslide-exceptions.jsonl` it is exactly the tool that says
-**clean** where GitHub says **CONFLICTING**, because the file is declared
-`merge=union` in `.gitattributes` and GitHub ignores the driver. Use it to
-inspect content; use `gh pr view <n> --json mergeable` to decide mergeability.
-Every local compose prediction made with `merge-tree` in this pipeline has
-under-reported conflicts.
-
-**Dedupe by whole record, never by path.** Rows are `{path, reason}` and one
-path legitimately recurs under different reasons — `main` carries 66 such rows
-from past promotions. Only byte-identical repetition is the defect. A builder
-who deduped by path would delete real history.
 
 ## Authors do not come from git history
 
@@ -373,63 +322,13 @@ that costs an add/add conflict on the promoted `.cpp`. Rebase (or the
 reset-and-cherry-pick above) is only for a branch that has never left this
 machine.
 
-Either way **the two ratchet files behave differently and only one of them tells
-you**:
+Either way **shared ledgers still conflict and only some of them tell
+you**: `attribution.json` conflicts loudly on overlapping promotions, which is
+the safe one. Do not infer "no conflict, therefore no promotion landed".
 
-- `config/converted-baseline.json` **conflicts loudly — but only when the landed
-  promotion actually changed the CONVERTED set.** It is regenerated whole per
-  promotion, so an overlapping change collides, and that is the safe one. The
-  guarantee is conditional and the condition is easy to miss: a promotion whose
-  absorbed shards were all *below* CONVERTED tier banks nothing, leaving the file
-  byte-identical and unable to collide. Measured — `dScMgRoulette_c` (#2312), a
-  40-member promotion, changed **neither** ledger file and put zero rows in the
-  exceptions file. Do not infer "no conflict, therefore no promotion landed".
-- `config/converted-backslide-exceptions.jsonl` **auto-merges silently and
-  reintroduces stale rows** — under a merge exactly as under a cherry-pick, since
-  it is the union driver doing it, not the replay. Measured here: a cherry-pick
-  re-added five
-  `ShipWing` rows naming the former actor-directory location for
-  `d_a_obj_rc_hane.cpp`; `main` had since moved it under `src/game/actors/`.
-  Nothing flagged it. No gate reads those paths — which is also why this file
-  writes that filename bare rather than repo-rooted: quoting the dead path in
-  full would fail `check_dead_references`, the gate this paragraph is about.
-
-**Trust `gh pr view --json mergeable` over a local merge test for these two
-files.** `config/converted-backslide-exceptions.jsonl` is declared `merge=union`
-in `.gitattributes`, which that file itself warns GitHub ignores. So
-`git merge-tree` honours the driver and reports **clean** while GitHub reports
-**CONFLICTING** on the very same pair. A green PR can flip to CONFLICTING with
-nobody pushing anything, purely because the base moved — and a local compose test
-will not have predicted it.
-
-**These two rules look contradictory — here is the reconciliation.** Above, "if
-`--check` passes, skip `--update`". Here, "restore both files and re-run
-`--update`". Both are right; the rebase case needs the *damage detection*, not a
-second banking. Do it non-destructively: copy the post-cherry-pick files aside,
-`git checkout <newbase> --` both, run `--update` once, then
-`git diff --no-index` the regenerated files against your copies. Identical means
-the auto-merge was correct — `git checkout HEAD --` both and commit nothing.
-Different means the silent merge lost or duplicated rows, and the regenerated
-version is the one to keep.
-
-**The recipe is missing its last step, and the omission is dangerous.**
-`--update` *appends* to the exceptions file, so by the time you have diffed and
-decided "my copy is the one to keep", the tool has **already overwritten the
-working file**. Restoring your copy is a separate, explicit action —
-`git checkout HEAD --` it, or copy it back. Deciding is not restoring.
-
-**And `--check` goes red on a narrower trigger than stated.** Measured: red after
-restoring **only** `config/converted-baseline.json`. The exceptions file plays no
-part in the backslide verdict at all, so do not restore it "to make the check
-pass" — that only risks the rows.
-
-**Committing the regenerated exceptions file destroys the writers' reasons.**
-Rows carry whatever string you pass to `--reason`, so regenerating from a clean
-base and committing the result replaces N informative per-class reasons with N
-identical generic ones. Nothing reads those strings, so no gate goes red and no
-reviewer diff makes it obvious — it is silent data loss. This is the second half
-of the non-destructive recipe above: when the regenerated file differs from your
-copy *only in the `reason` strings*, your copy is the one to keep.
+**Trust `gh pr view --json mergeable` over a local merge test.** A green PR can
+flip to CONFLICTING with nobody pushing anything, purely because the base
+moved — and a local compose test will not have predicted it.
 
 **A third file conflicts on a rebase and this section used to omit it:
 `notes/cpp-tu-current-state.md`.** It is generated, every promotion rewrites it,
@@ -439,28 +338,10 @@ files merged silently. Same rule as the ledgers — regenerate, never resolve:
 `python tools/cpp_tu_state.py --write-note`.
 
 **In a merge train the conflict set is bigger than one file, and every builder
-hit the same three.** Across six promotions rebased onto each other in one
-afternoon, the recurring `UU` set was `notes/cpp-tu-current-state.md`,
-`attribution.json`, and, on the larger folds, **`config/converted-baseline.json`**.
+hit the same two.** Across six promotions rebased onto each other in one
+afternoon, the recurring `UU` set was `notes/cpp-tu-current-state.md` and
+`attribution.json`.
 Do not edit `attribution.json` for credit. If it conflicts, keep main.
-`converted-baseline.json` is a sorted, keyed **set**, so resolve it as a **union**, line-wise,
-and never re-serialise: a reorder conflicts with every other open PR in the train.
-The audit to run afterwards is `resolved == exact union of both parents` with
-0 missing, 0 invented, 0 value conflicts and 0 duplicate keys — three builders ran
-it and all three came out exact (2,307 = 2,277 + 2,267 on one; 2,340 = 2,307 + 33
-on the next). For `converted-baseline.json`, check the count *and* the swap: one
-fold showed 2,681 held constant with 21 shard paths replaced by 21
-`<Class>.cpp#symbol` rows.
-
-**And `converted-baseline.json` is the dangerous one precisely because it often
-merges silently.** On the 52-member `dScMgMemory2_c` fold it auto-merged with no
-conflict at all — run the count-and-swap audit anyway. **The swap does not have
-to balance**: that fold went 4 shard paths out against 3 member rows in, net −1,
-because `D0` legitimately fails the readability criteria in merged form. An
-unbalanced swap is normal, and the rows in `converted-backslide-exceptions.jsonl`
-are exactly what banks the difference — `tiers_ratchet --check` then passes at the
-lower count. Assert the shape (every removal a plain shard path, every addition a
-TU member row, main's other rows untouched), not the arithmetic.
 
 **Expect `main` to move under you far more than this file used to claim.** It
 said twice is normal and six is the record; during a single afternoon's train it
@@ -479,18 +360,6 @@ later, because another agent's fetch advanced the shared ref. A pre-flight
 `git merge-base HEAD origin/main` equal to `HEAD~N`, and
 `git log --oneline HEAD..origin/main` empty.
 
-**Restore BOTH files to `main`'s version and re-run `tiers_ratchet --update`.**
-Never resolve either by hand and never let the merge resolve them for you — the
-tool regenerates them correctly from the current tree, and a merged result is
-wrong in a way that survives every gate.
-
-Keep `main`'s version of `notes/data/c-cpp-classification.tsv` and
-`notes/data/tu-merge-candidates.json` too; those carry `main`'s own changes.
-
-**`converted-baseline.json` is a dict, not a list.** Any "did I clobber main's
-rows?" set-diff has to unwrap `["converted"]`; comparing top-level keys silently
-reports no difference.
-
 **Re-fetch `main` and re-verify more than once.** It moved twice during a single
 `daPgDfdr_c` build, and the second move landed *that class's own direct base*
 (`dBgActor_c`, #2269). **Twice is the old rate: a later `dScMgBomroom_c` build
@@ -500,8 +369,7 @@ immediately before opening the PR, not only at the start.
 
 **Re-check the base immediately before you push.** The validator test-merges
 against the *exact current base* and rejects with `test merge conflicts with
-exact base <sha>`. `converted-baseline.json` is rewritten by every promotion
-**and** by the automated `[skip ci]` progress refresh, so an hour-old rebase is
+exact base <sha>`. An hour-old rebase is
 already stale. Getting this wrong costs a full validation cycle.
 
 ## Gates that lie

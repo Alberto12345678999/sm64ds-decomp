@@ -299,7 +299,7 @@ class DowngradeTests(SandboxCase):
     def test_a_gain_does_not_offset_a_loss(self):
         """A net-positive PR that also drops a range must still fail, and name it.
 
-        This is the count-ratchet trap the CONVERTED ratchet documents: a total that only
+        This is the count-ratchet trap: a total that only
         has to not fall is satisfied by wrecking one range while adding a bigger one.
         """
         self.sb.delinks(BASE_DELINKS

@@ -877,7 +877,6 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        functions, pushes the descendant's own down one index, and regresses its
        table to DIFFERS with rombuild still green -- only romdata_check sees
        it.  Reconcile in the same commit, and remember the rename has to reach
-       config/converted-baseline.json (the ratchet has no rename detection) and
        any prose path that names the file. */
 
     s32 mTallyShown;            /* 0x050 */

@@ -50,7 +50,8 @@ only what text can answer. The two do not overlap; they do not even share a ques
 THIS IS NOT HYPOTHETICAL
 ------------------------
 Run by hand on 2026-08-29 against PR #2001: green on its own PR, clean-merging, no
-conflict. The merge result turned `converted-ratchet` RED, because
+conflict. The merge result turned `converted-ratchet` RED (that gate has since
+been retired with the CONVERTED tier), because
 `src/runtime/actor/ActorDerived.cpp` had landed in one of the sixteen commits the PR was
 behind. Neither side shows this. The PR's tree is green. Main is green. Only the
 tree that does not yet exist is red.
@@ -86,8 +87,8 @@ parsing.
 
 The cost of that is stated honestly rather than hidden: this tool cannot see a byte
 regression. A merge result that breaks the ROM link, or that makes a function stop
-reproducing, is invisible here and always will be. What it sees is the eight static
-gates, which is eight more than run today.
+reproducing, is invisible here and always will be. What it sees is the seven static
+gates, which is seven more than run today.
 
 THE OTHER BLIND SPOT: THE MERGE TREE'S OWN GATES ARE WHAT RUN
 --------------------------------------------------------------
@@ -108,21 +109,14 @@ Each was read before inclusion, because several tools in this tree self-`return`
 when the compiler or `extracted/` is missing and report a PASS rather than a skip --
 a fast green that means nothing. Included:
 
-  converted-ratchet   tools/tiers_ratchet.py --check
-                      Pure. `tiers.py` imports `delaunder` for `code_mask` only and
-                      `demangle` for string work; neither reads a ROM. Needs
-                      `git ls-files src` -- see THE `git init` STEP. Refuses an
-                      absent baseline with exit 2 rather than treating it as an
-                      empty set, so it cannot pass vacuously. ~70s, the slow one.
-
   source-coverage     tools/source_coverage.py --check --base <base> --ref <tree>
                       A DELTA gate, handled specially: see BYTES, BELOW.
 
   langmode-ratchet    tools/langmode_audit.py --check langmode-baseline.json
                       Pure text over `git ls-files` and the tree. A ratchet against a
                       banked baseline, which is exactly the class of gate a moved base
-                      breaks, so it belongs here more than most. ~70s, the other slow
-                      one -- this gate and converted-ratchet are essentially the whole
+                      breaks, so it belongs here more than most. ~70s, the slow
+                      one -- this gate is essentially the whole
                       runtime. See THE LANGMODE BASELINE IS NOT ALWAYS THERE.
 
   dead-references     tools/check_dead_references.py
@@ -323,7 +317,7 @@ import time
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 
-# Per-gate wall clock. converted-ratchet and langmode-ratchet are ~70s each on this
+# Per-gate wall clock. langmode-ratchet is ~70s on this
 # tree; the rest are seconds.
 GATE_TIMEOUT = 900
 
@@ -393,11 +387,6 @@ def _langmode_commands(tree):
 
 
 GATES = [
-    {
-        "key": "converted-ratchet",
-        "commands": lambda t: [[sys.executable, "tools/tiers_ratchet.py", "--check"]],
-        "note": "pure python; needs git ls-files; refuses an absent baseline",
-    },
     {
         "key": "langmode-ratchet",
         "commands": _langmode_commands,
@@ -892,7 +881,7 @@ def run_gate(gate, tree):
 
 
 # The line a reader wants when a gate goes red. The LAST line is right for a gate
-# that ends with a verdict (`CONVERTED backslide: ...`, `N unresolved`)
+# that ends with a verdict (`langmode backslide: ...`, `N unresolved`)
 # and useless for a batched one -- header-offsets ends on whichever header happened
 # to sort last, which says nothing about why it failed. So on a red gate the first
 # line that looks like the complaint wins, and the last line is the fallback.

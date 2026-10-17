@@ -6,7 +6,7 @@
 # AGENT sent to redo landed work. That happened on 2026-09-18: daObjTh_Fall_Block_c had
 # been promoted four days earlier, the queue still said `no`, and the agent dispatched
 # against it found the TU already on main -- manifest `status: promoted`, one `complete`
-# span in delinks.txt, all four symbols already re-keyed in converted-baseline.json. It
+# span in delinks.txt. It
 # produced no commit because there was nothing to do. daTrsTrap_c, promoted the same day,
 # was the next candidate on the same screen.
 #
@@ -28,7 +28,7 @@
 #
 # WHOLE-TREE, no `paths:` filter, and the reason is the failure itself. The change that
 # breaks this correspondence is a PROMOTION, and a promotion writes
-# config/tu_manifest.d/<ov>/<Class>.json, src/, delinks.txt and converted-baseline.json
+# config/tu_manifest.d/<ov>/<Class>.json, src/ and delinks.txt
 # -- it does not open notes/data/tu-promotion-queue.tsv at all. A filter listing that TSV
 # would let through precisely the change that invalidates it, which is the only failure
 # this gate exists to catch. Measured: #2760 promoted daObjWlPolelift_c and touched no

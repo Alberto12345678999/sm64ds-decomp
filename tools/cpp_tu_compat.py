@@ -37,7 +37,6 @@ import langmode_audit as LM  # noqa: E402
 import port_refcheck as PR  # noqa: E402
 import rombuild as RB  # noqa: E402
 import srcpath as SP  # noqa: E402
-import tiers as TI  # noqa: E402
 import validate_merge as VM  # noqa: E402
 
 
@@ -317,24 +316,6 @@ def _probe_validate_merge(repo):
         if ok else "Merge validation loses function or source-built coverage after consolidation.")
 
 
-def _probe_tiers(repo):
-    before = TI.converted(repo / "legacy-src")
-    after = TI.converted(repo / "src")
-    ok = (before["functions"] == after["functions"]
-          and before["converted"] == after["converted"])
-    return _row(
-        "tiers", "ready" if ok else "gap",
-        {"legacyFiles": before["source_files"], "legacyFunctions": before["functions"],
-         "legacyConverted": before["converted"],
-         "mergedFiles": after["source_files"], "mergedFunctions": after["functions"],
-         "mergedConverted": after["converted"],
-         "fixtureFunctions": len(SYMBOLS)},
-        "Physical-file scoring drops both numerator and denominator from two readable "
-        "functions to one readable file, so consolidation changes progress without "
-        "changing recovered behavior." if not ok else
-        "The readability metric preserves function units across source consolidation.")
-
-
 def _probe_langmode():
     with mock.patch.object(LM, "tracked_sources", return_value=[SOURCE]):
         result = LM.audit()
@@ -408,7 +389,6 @@ def audit():
             _probe_eligible(),
             _probe_rombuild(fixture),
             _probe_validate_merge(fixture.repo),
-            _probe_tiers(fixture.repo),
             _probe_langmode(),
             _probe_attribution(fixture.repo),
             _probe_port_refs(fixture),

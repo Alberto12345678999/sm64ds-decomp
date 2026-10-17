@@ -540,7 +540,7 @@ _PRAGMA_LINE_RE = re.compile(r'^\s*#\s*pragma\b.*$')
 _LONG_CALLS_ON_RE = re.compile(r'^\s*#\s*pragma\s+long_calls\s+on\b')
 _AT_SYMBOL_RE = re.compile(r'^\s*//\s*@symbol\s+(\S+)', re.M)
 # The compiler-generated destructor group is the one documented exception: it is
-# scored by tiers._lifecycle_member_fragment from the class header, not from a
+# scored from the class header, not from a
 # marker, so marking it here would cut a fragment nothing reads.
 _DTOR_VARIANT_RE = re.compile(r'D[012]Ev$')
 _INCLUDE_RE = re.compile(r'^\s*#\s*include\s*.+$')
@@ -6498,7 +6498,7 @@ def _record_linkcheck(data, entry, report, baseline):
 # these files. A promotion does not edit that author file for a move.
 _PROMOTE_TRACKERS_LIVE = (
     "config/rombuild-versions.txt", "config/rombuild-exclude.txt",
-    "config/layout-known-issues.txt", "config/converted-baseline.json",
+    "config/layout-known-issues.txt",
     "config/unresolved-baseline.json", "config/port_linkage.json",
     "langmode-baseline.json",
     "stranding-baseline.json",

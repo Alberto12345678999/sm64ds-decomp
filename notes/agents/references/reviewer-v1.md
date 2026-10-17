@@ -36,10 +36,9 @@ that the evidence means what it claims.
    author hunting for changes that do not exist. Check whether the head SHA
    actually moved before describing it.
 8. **`status: promoted` in the manifest is not cosmetic.**
-   `tiers_ratchet.promoted_moves()` skips any entry not exactly `promoted`, so a
-   TU left on `text-verified` writes a **fake backslide row** per absorbed shard
-   into `converted-backslide-exceptions.jsonl`, blaming readability loss on files
-   that were absorbed cleanly. Invisible once written. Check the field.
+   Manifest readers skip any entry not exactly `promoted`, so a
+   TU left on `text-verified` misreports its absorbed shards.
+   Invisible once merged. Check the field.
 9. **The merge tree, not the branch.** `premerge_check` gates each PR alone. Two
    individually-green PRs can produce a red main. Compose the merge yourself and
    verify before landing.

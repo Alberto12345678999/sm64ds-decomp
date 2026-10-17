@@ -16,9 +16,7 @@ The mechanical steps, all of which this performs and none of which it guesses at
 * ``git mv`` the ``src_tu/`` source to its ``promoted_source`` path (R100, so the
   file's own credit follows) and ``git rm`` every ``legacy_source``;
 * rewrite the manifest entry to ``status: promoted`` with ``source`` at the
-  production path, matching the entries already enrolled;
-* migrate banked CONVERTED legacy paths to ``promoted-path#symbol`` identities,
-  preserving the readability ratchet at function rather than physical-file granularity.
+  production path, matching the entries already enrolled.
 
 It deliberately does NOT compile anything. It preflights the tracked full-ROM proof;
 after promotion, refresh the content-bound stock control, then require ``rombuild.py``
@@ -40,7 +38,6 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 
 import tu_manifest as TUM  # noqa: E402
-import tiers_ratchet as TR  # noqa: E402
 import rombuild as RB  # noqa: E402
 import tubuild as TB  # noqa: E402
 
@@ -182,55 +179,6 @@ def rewrite_manifest(entry, p):
                     encoding="utf-8", newline="")
 
 
-def converted_baseline_update(plans):
-    """Prepare a CONVERTED identity rewrite without changing the worktree.
-
-    The baseline historically keyed one-function intake by path. Consolidation deletes
-    those paths, while ``tiers.py`` continues counting the functions inside the promoted
-    TU. Only already-banked legacy identities move; an unbanked function does not become
-    readable merely because it now shares a file with one that was.
-    """
-    path = CONFIG / "converted-baseline.json"
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise PromoteError(f"converted baseline is unreadable: {exc}") from exc
-    rows = data.get("converted")
-    if not isinstance(rows, list) or len(rows) != len(set(rows)):
-        raise PromoteError("converted baseline must contain a unique converted list")
-
-    converted = list(rows)
-    moved = 0
-    for p in plans:
-        for f in p["functions"]:
-            legacy = f["legacy_source"]
-            symbol = f["symbol"]
-            old_keys = (legacy, f"{legacy}#{symbol}")
-            positions = [converted.index(key) for key in old_keys if key in converted]
-            if not positions:
-                continue
-            insert_at = min(positions)
-            converted = [key for key in converted if key not in old_keys]
-            target = p["dest"] if len(p["functions"]) == 1 \
-                else f"{p['dest']}#{symbol}"
-            if target not in converted:
-                converted.insert(min(insert_at, len(converted)), target)
-            moved += 1
-
-    data["_note"] = TR.NOTE
-    data["count"] = len(converted)
-    data["converted"] = converted
-    return path, data, moved
-
-
-def rewrite_converted_baseline(plans, prepared=None):
-    """Write a preflighted CONVERTED identity rewrite."""
-    path, data, moved = prepared or converted_baseline_update(plans)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n",
-                    encoding="utf-8", newline="")
-    return moved
-
-
 def git(*args):
     subprocess.run(["git", *args], cwd=REPO, check=True,
                    stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
@@ -344,17 +292,9 @@ def main():
     for p in plans:
         print(f"  promote  {p['id']:38s} {len(p['functions'])} function(s), "
               f"{len(p['legacy'])} legacy source(s) -> {p['dest']}")
-    try:
-        converted_update = converted_baseline_update(plans)
-    except PromoteError as exc:
-        print(f"  refused  {exc}")
-        for p in plans:
-            verdicts[p["id"]] = ("refused", {"reason": "converted-baseline"})
-        return emit_verdicts(1)
     if args.dry_run:
-        print(f"tu_promote: {len(plans)} entry(ies) would be promoted and "
-              f"{converted_update[2]} CONVERTED member identity/identities retained "
-              "(dry run).")
+        print(f"tu_promote: {len(plans)} entry(ies) would be promoted "
+              f"(dry run).")
         return emit_verdicts(0)
 
     for p, entry in zip(plans, entries):
@@ -366,10 +306,8 @@ def main():
         for source in p["legacy"]:
             git("rm", "-q", source)
         rewrite_manifest(entry, p)
-    converted = rewrite_converted_baseline(plans, converted_update)
     print(f"tu_promote: {len(plans)} entry(ies) promoted, "
-          f"{sum(len(p['functions']) for p in plans)} function(s) consolidated, "
-          f"{converted} CONVERTED member identity/identities retained.")
+          f"{sum(len(p['functions']) for p in plans)} function(s) consolidated.")
     print("tu_promote: now refresh the content-bound control with "
           f"`python tools/tubuild.py linkcheck --baseline --module "
           f"{plans[0]['module']} -j16 --clean`, then run "

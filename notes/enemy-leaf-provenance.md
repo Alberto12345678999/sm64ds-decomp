@@ -131,7 +131,7 @@ Byte-neutral cleanups (each re-verified, `2004/b56`):
 The promoted TU `src/game/actors/d_a_wanwan.cpp` carries the same renames. rombuild
 cannot see a stale spelling — `(char *)mLinkModels` and `((char *)this) + 0x1dc`
 compile to the same bytes — so what caught the one the reconstruction still
-carried was the readability ratchet (`tools/tiers_ratchet.py --check`), which
+carried was the readability ratchet (retired with the CONVERTED tier), which
 scores the source text and read the raw-offset cast as a backslide.
 
 ---

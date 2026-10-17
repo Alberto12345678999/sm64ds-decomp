@@ -11,8 +11,8 @@ a host-only arm:
     #endif
 
 mwccarm never defines `_MSC_VER`, so the ROM is built from the `#else` side alone. The
-scoreboards that read source as text (tools/tiers.py for CONVERTED, and
-tools/langmode_audit.py for the language-mode counts) are questions about the decomp
+scoreboards that read source as text (tools/langmode_audit.py for the language-mode
+counts) are questions about the decomp
 source, so they read the file through `mwcc_side()`: the side mwccarm compiles, and
 nothing the host build alone sees.
 

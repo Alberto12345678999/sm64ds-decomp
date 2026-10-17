@@ -56,39 +56,8 @@ Everything else — the TU `.cpp`, the deleted shards, `delinks.txt`,
 ## Ledger reconciliation, once, at the end
 
 This is the step that goes wrong, and the failure is silent in both directions.
-Do it non-destructively:
-
-1. Copy `config/converted-baseline.json` and
-   `config/converted-backslide-exceptions.jsonl` aside.
-2. `git checkout origin/main --` both.
-3. Run `python tools/tiers_ratchet.py --update --reason "<why>"` **once**.
-4. `git diff --no-index` the regenerated files against your copies.
-
-Read the diff, do not just look at the exit code:
-
-- **Identical** — the composed tree already carried the right rows.
-  `git checkout HEAD --` both and commit nothing.
-- **Differs only in `reason` strings** — your copies win. The writers wrote one
-  informative reason per class; a regeneration replaces all of them with N
-  copies of your single `--reason`. Nothing reads those strings, so no gate goes
-  red. It is real data loss with no alarm.
-- **Differs in the path MULTISET** — the regenerated file wins, and say so in
-  the PR body with the count.
-
-**Order and position are NOT discriminators — strike them from that test.**
-`append_exceptions` (`tools/tiers_ratchet.py:313`) opens the file `"a"` and only
-ever appends, so a regeneration **always** relocates your row to true EOF
-whenever anything was appended after it. Measured: a writer's row went in at line
-336 of 336; an `origin/main` merge then appended seven rows behind it, and the
-regeneration moved it to 343. That is guaranteed by construction, not merge
-damage. An earlier version of this file listed position as a "regenerated wins"
-signal — following it would have committed the regenerated file and destroyed
-the writer's per-class reason every single time.
-
-Then audit what you are shipping: **count byte-identical whole records** in the
-exceptions file. Zero is the target. Dedupe by *whole record*, never by path —
-one path legitimately recurs under different reasons, and `main` carries dozens
-of such rows from past promotions. A path-based dedupe deletes real history.
+Reconcile the shared ledgers (`attribution.json`, manifest entries) once at the
+end, non-destructively, and read the diff — do not just look at the exit code.
 
 ## Prove the composition, not the classes
 
@@ -101,7 +70,6 @@ an earlier green head is not evidence for the new merge commit.
     python tools/tubuild.py verify <ov>/<Class>        # once per class
     python tools/rombuild.py -j 16                     # 106/106 exact + retail NDS
     python tools/romdata_check.py --files src/game/<dir>/<file>.cpp   # per class
-    python tools/tiers_ratchet.py --check              # PASS
     python tools/cpp_tu_state.py --check-note
     python tools/source_coverage.py --check --base origin/main
 
@@ -133,8 +101,8 @@ Body must carry, because none of it is recoverable from the diff:
 - the ledger verdict from step 4 above, with the identical-record count,
 - the source-coverage verdict (`0 B handed back to the cartridge`). A credit
   note in the validation report does not fail the merge,
-- one gate block per class, plus the single `rombuild` and `tiers_ratchet` lines
-  that cover the whole batch.
+- one gate block per class, plus the single `rombuild` line
+  that covers the whole batch.
 
 When it merges, **close the source PRs as superseded** with a comment naming the
 integration PR. They will not close themselves, and a stale open PR whose work

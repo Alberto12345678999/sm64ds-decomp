@@ -1,12 +1,4 @@
-"""The per-function tier columns chaos_db_ci publishes: converted, linked, class, tuId, tuState.
-
-The headline numbers in stats.tiers are old and have their own tests. What is new is that the
-same facts now ride on every function record, and the failure that matters is the two
-disagreeing: an Atlas that paints 4,500 tiles "converted" under a bar that says 4,531. So the
-first class pins the per-symbol readings to the headline on the real tree, and the rest pin the
-sparse-column contract (a key is present only when true or known) and the one refusal that keeps
-two port builds from mixing in one file.
-"""
+"""Optional linked, class and TU columns retain their provenance checks."""
 import json
 import pathlib
 import sys
@@ -18,30 +10,6 @@ import chaos_db_ci as CDB  # noqa: E402
 import tiers  # noqa: E402
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
-
-
-class ConvertedPerSymbolMatchesTheHeadline(unittest.TestCase):
-    """converted(per_symbol=True) is the headline's own readings, not a second opinion."""
-
-    @classmethod
-    def setUpClass(cls):
-        cls.plain = tiers.converted()
-        cls.detail = tiers.converted(per_symbol=True)
-
-    def test_default_call_is_unchanged(self):
-        self.assertNotIn("by_symbol", self.plain)
-
-    def test_headline_is_identical_with_or_without_the_breakdown(self):
-        d = {k: v for k, v in self.detail.items() if k != "by_symbol"}
-        self.assertEqual(d, self.plain)
-
-    def test_true_readings_sum_to_the_headline(self):
-        n = sum(1 for syms in self.detail["by_symbol"].values() for ok in syms.values() if ok)
-        self.assertEqual(n, self.plain["converted"])
-
-    def test_every_source_owned_function_has_a_reading(self):
-        n = sum(len(syms) for syms in self.detail["by_symbol"].values())
-        self.assertEqual(n, self.plain["functions"])
 
 
 class ClassOf(unittest.TestCase):
@@ -121,7 +89,7 @@ class LinkedList(Scratch):
 
 
 class LinkedBarCountsFunctions(Scratch):
-    """The LINKED bar counts functions, like MATCHED and CONVERTED; units are detail."""
+    """The LINKED bar counts functions, like MATCHED; units are detail."""
 
     def setUp(self):
         super().setUp()
@@ -167,22 +135,20 @@ class LinkedBarCountsFunctions(Scratch):
     def test_the_published_tier_shares_the_function_denominator(self):
         self.stamp()
         self.listing()
-        conv = {"converted": 1, "functions": 10, "source_files": 4, "pct": 10.0}
-        t = CDB.tier_stats(conv, linked_n=2, total=7)
+        t = CDB.tier_stats(linked_n=2, total=7)
         self.assertEqual((t["linked"], t["linkedOf"], t["linkedPct"]), (2, 7, 28.57))
         self.assertEqual((t["linkedUnits"], t["linkedUnitsOf"]), (2, 3))
-        self.assertEqual((t["converted"], t["convertedOf"]), (1, 10))
+        self.assertFalse(any(k.startswith("converted") for k in t))
 
     def test_the_published_tier_falls_back_to_units_without_a_list(self):
         self.stamp()
-        conv = {"converted": 1, "functions": 10, "source_files": 4, "pct": 10.0}
-        t = CDB.tier_stats(conv, linked_n=None, total=7)
+        t = CDB.tier_stats(linked_n=None, total=7)
         self.assertEqual((t["linked"], t["linkedOf"]), (2, 3))
 
     def test_the_readme_row_says_functions_or_tus(self):
         self.stamp()
         self.listing()
-        row = lambda: tiers.bar_block({"matched": None, "converted": {"converted": 1, "functions": 10, "pct": 10.0},
+        row = lambda: tiers.bar_block({"matched": None,
                                        "linked": tiers.linked()}).splitlines()[-2]
         self.assertTrue(row().endswith("2 / 5 functions"), row())
         (self.root / "config" / "port_linked_functions.txt").unlink()

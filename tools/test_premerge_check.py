@@ -624,9 +624,9 @@ class SummariseTests(unittest.TestCase):
 
     def test_a_passing_gate_is_summarised_by_its_last_line(self):
         self.assertEqual(
-            P.summarise(["scanning...", "CONVERTED ratchet PASS   baseline 2553"],
+            P.summarise(["scanning...", "langmode ratchet PASS   baseline 2553"],
                         "pass"),
-            "CONVERTED ratchet PASS   baseline 2553")
+            "langmode ratchet PASS   baseline 2553")
 
     def test_a_red_batched_gate_reports_the_complaint_not_the_last_line(self):
         # header-offsets prints one line per header and ends on whichever sorted
@@ -674,8 +674,8 @@ class ExportTreeTests(unittest.TestCase):
             # Assert on a file the export is guaranteed to carry. Not this file: the
             # export is of HEAD^{tree}, so an uncommitted premerge_check.py is
             # legitimately absent and asserting on it would fail for the wrong reason.
-            self.assertIn("tools/tiers_ratchet.py", out.stdout)
-            self.assertTrue((dest / "tools" / "tiers_ratchet.py").is_file())
+            self.assertIn("tools/tiers.py", out.stdout)
+            self.assertTrue((dest / "tools" / "tiers.py").is_file())
 
     # The three below run against a THROWAWAY three-file repository rather than this
     # one: they are about export_tree's own bookkeeping, and exporting ~12,700 files
@@ -891,17 +891,17 @@ class MainTests(unittest.TestCase):
         # `backslide: 1 file` on the base and `backslide: 500 files` on the merge
         # result read identically. The exit code is unchanged; what is printed is not.
         self._gates = iter([
-            {"converted-ratchet": {"status": "fail", "rc": 1, "output": "",
-                                   "summary": "CONVERTED backslide: 1 file"}},
-            {"converted-ratchet": {"status": "fail", "rc": 1, "output": "",
-                                   "summary": "CONVERTED backslide: 500 files"}}])
+            {"langmode-ratchet": {"status": "fail", "rc": 1, "output": "",
+                                   "summary": "langmode backslide: 1 file"}},
+            {"langmode-ratchet": {"status": "fail", "rc": 1, "output": "",
+                                   "summary": "langmode backslide: 500 files"}}])
         try:
             rc, out = self._run(self.COV_OK, argv=[self.HEAD])
         finally:
             del self._gates
         self.assertEqual(rc, 0)                       # pre-existing: still exit 0
-        self.assertIn("CONVERTED backslide: 1 file", out)
-        self.assertIn("CONVERTED backslide: 500 files", out)
+        self.assertIn("langmode backslide: 1 file", out)
+        self.assertIn("langmode backslide: 500 files", out)
         self.assertIn("not in the same way", out)
 
     def test_a_stale_base_is_named(self):

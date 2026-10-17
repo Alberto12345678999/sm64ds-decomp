@@ -1792,8 +1792,7 @@ def build_report(base, head, base_rom=None, head_rom=None, link_rows=None,
     # Treating both as loss made the gate reward the lie: a file that compiles to 916
     # bytes where the ROM has 912 was never a match, and bannering it -- the only
     # mechanism this repo HAS for saying so -- was the one edit that could not land.
-    # Same shape as the CONVERTED defect, where un-converting a class was the only way
-    # to score. See tools/bytegate.py: policy D already stopped counting the
+    # See tools/bytegate.py: policy D already stopped counting the
     # unevidenced half of `matched`; this is the same judgement at the PR gate.
     #
     # WITHDRAWN is restricted to functions that were NOT byte-verified in the base.

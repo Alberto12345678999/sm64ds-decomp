@@ -14,19 +14,15 @@ python tools/cpp_tu_state.py --write-note
 python tools/cpp_tu_state.py --check-note
 ```
 
-## Project progress and strict readability
+## Project progress
 
 | Measure | Live value |
 | --- | ---: |
 | MATCHED functions | 11342 / 11390 (99.58%) |
 | MATCHED code bytes | 2191568 / 2238108 (97.92%) |
-| Strict CONVERTED source functions | 2716 / 11357 (23.91%) |
-| Physical production source files | 8930 |
 
 MATCHED is recomputed from committed config symbols and `src/` through
 `progress.synced_from_src()`; no ambient or gitignored chaos database is accepted.
-CONVERTED is the strict five-criterion result from `tiers.converted(src)`,
-weighted by enrolled function ownership so TU consolidation does not move it.
 
 ## Production source and enrollment
 
@@ -103,7 +99,6 @@ Current policy/metric gaps: none.
 | Question | Authority / command |
 | --- | --- |
 | How much matching is done? | `progress.synced_from_src() over committed config + src`; display with `python tools/progress.py --bar --from-src` |
-| How much source is strictly readable? | `tiers.converted(src)` |
 | Which source does the ROM build compile? | `config/**/symbols.txt + sibling delinks.txt` |
 | What TU evidence has been recovered? | `config/tu_manifest.d` |
 | Can one production source safely own two functions? | `python tools/cpp_tu_compat.py` |

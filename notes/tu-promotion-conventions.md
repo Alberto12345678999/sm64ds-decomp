@@ -47,8 +47,8 @@ a `promoted` manifest does not certify that the class is fully reconstructed.
    emitted object, including lifecycle variants, RTTI, vtables and static data.
 4. **Promote with the actual tool.** Review `tu_promote.py`'s dry-run, then apply
    it in the same workstream once the candidate is proved. It moves the source,
-   removes absorbed legacy files, updates delinks and the manifest, preserves
-   `attribution.json` `path#symbol` overrides, and migrates CONVERTED identities.
+   removes absorbed legacy files, updates delinks and the manifest, and preserves
+   `attribution.json` `path#symbol` overrides.
    Check the proposed destination against `srcpath` and the repository conventions.
    A successful plan is mechanical readiness, not byte or source approval.
 5. **Verify the production result.** Inspect the diff and normal build's source
@@ -394,23 +394,18 @@ machine-read `legacy_source` fields, which are the historical record.
 
 ## 5. Serialize shared ledger updates and regenerate the composed result
 
-Every promotion touches `config/converted-baseline.json` and its overlay's `delinks.txt`
+Every promotion touches its overlay's `delinks.txt`
 and `symbols.txt`.
 
 - The repo's `merge=union` driver **only runs on a local `git merge`.** GitHub's
   server-side merge — the thing that actually lands a PR — ignores it. That is written
   into `.gitattributes` in as many words.
-- And none of these three files are union-merged in the first place. They conflict
+- And none of these files are union-merged in the first place. They conflict
   outright the instant two promotions touch the same overlay.
-- `config/converted-baseline.json` is a **SET ratchet, not a count**. `tools/tiers_ratchet.py`
-  enforces `count == len(converted) == len(set(converted))`, and the identities are now
-  per-member `path#symbol`. A hand-resolved merge produces a baseline that is neither
-  branch's and still passes a casual read.
 
 **The rule.** Reserve and serialize shared bookkeeping through the integrator.
-Regenerate with `python tools/tiers_ratchet.py --update` after composing the
-accepted source changes; inspect symbol identities and credit, not just counts.
-Never resolve the baseline array by blindly taking one side or unioning text.
+Inspect symbol identities and credit, not just counts.
+Never resolve a ledger array by blindly taking one side or unioning text.
 
 Independently accepted, coherent promotions may share an integration PR under
 [PIPELINE](agents/PIPELINE.md#integration-and-completion). Reprove the resulting
@@ -421,11 +416,11 @@ dependencies; a ledger overlap does not mandate a preliminary staging PR.
 
 ## 6. Mark every hand-written member with `// @symbol`
 
-A promoted TU is scored **per member**, not per file. The only thing that tells
-`tools/tiers.py` where one member's text ends and the next begins is a marker comment.
-Leave it out and that member is scored against the entire file, so any other member's
-defect becomes its defect. This is the cheapest rule in this note to satisfy and the
-most expensive one to skip.
+A promoted TU owns several functions, and the only thing that tells tooling
+(`tools/tubuild.py`, `tools/tu_promote.py`) where one member's text ends and
+the next begins is a marker comment. Leave it out and a member's text cannot be
+attributed or sliced on its own. This is the cheapest rule in this note to
+satisfy and the most expensive one to skip.
 
 ### The rule
 
@@ -433,50 +428,15 @@ most expensive one to skip.
 > own line, immediately above its definition, spelled exactly as the manifest's
 > `functions[].symbol` spells it.**
 
-`tools/tiers.py:74` is the entire recognizer:
+`tools/tiers.py` holds the entire recognizer:
 
     SYMBOL = re.compile(r"//\s*@symbol\s+(\S+)")
 
 ### Why — the fallback is the whole file
 
-`score_member` (`tools/tiers.py:406`) tries three things in order, and its own docstring
-states the last one plainly:
-
-> Hand-written members use exact ``@symbol`` boundaries.  Compiler-generated
-> ctor/dtor variants use the inline lifecycle definition in a directly included
-> class header.  **Anything without either form of evidence is scored against the
-> entire file, preserving the old conservative behavior.**
-
-`_marked_member_fragment` (line 309) slices from the end of this member's marker to the
-start of the next marker, and `score_file` sees only that slice. With no marker and no
-lifecycle fallback, `score_file` is handed the whole TU.
-
-Four of the five CONVERTED criteria read that fragment, so all four are poisonable by
-text belonging to some other member: `no_raw_offset`, `no_unk_field`, `no_codegen_trick`,
-`no_mangled_refs`. The other two readings are not, because `score_member` overwrites them
-after scoring — `real_name` is recomputed from the symbol and `shared_header` from the
-whole file regardless. So one `volatile` object, one `unk_<off>` field or one mangled
-call anywhere in a promoted TU strips the tier from every clean member in it.
-
-### The landed measurement
-
-Scored with `tools/tiers.py` against this tree:
-
-| promoted TU | members | `@symbol` markers | members at 5/5 | banked |
-| --- | --- | --- | --- | --- |
-| `src/game/actors/d_a_obj_kinoko_tag.cpp` | 9 | 7 | 6 | 6 |
-| `src/game/actors/d_a_obj_fm_battan.cpp` | 9 | 7 | 5 | 5 |
-| `src/game/actors/d_a_obj_km3_kurumajiku.cpp` | 5 | 3 | 4 | 4 |
-| `src/game/actors/d_a_ey_bm.cpp` | 13 | **0** | 2 | 2 |
-
-"banked" is the count of `promoted-path#symbol` identities in
-`config/converted-baseline.json`. In the first three TUs the unmarked members are exactly
-the two destructor variants, which the lifecycle path covers. `daEyBm_c` marks nothing:
-eleven of its thirteen members fall to the whole-file fallback and every one of them
-fails the same two criteria, `no_unk_field` and `no_mangled_refs` — properties of the
-factory and of `Behavior`, not of the members being scored. Inserting the eleven marker
-lines locally and changing nothing else raises the TU from two members at 5/5 to four.
-That promotion also spent five rows in `config/converted-backslide-exceptions.jsonl`.
+`_marked_member_fragment` slices from the end of this member's marker to the
+start of the next marker. With no marker, tooling falls back to the whole TU,
+so one member's text can no longer be told apart from another's.
 
 ### The marker must be unique in the file
 
@@ -489,7 +449,7 @@ That promotion also spent five rows in `config/converted-backslide-exceptions.js
 ```
 A marker copy-pasted from the member above, or repeated on both a forward declaration and
 the definition, silently re-enables the whole-file fallback for that member. Nothing warns
-and nothing goes red; the member simply scores as if it were unmarked.
+and nothing goes red; the member is simply treated as unmarked.
 
 ### Keep shared mangled externs above the first marker
 
@@ -524,12 +484,7 @@ lets the vtable's slots 16 and 17 odr-use D1 then D0 in ROM order, and deletes t
 homeless D2.
 
 So the rule for structors is: **do not mark them, and do keep the inline definition in a
-directly included header.** What to check is that the fragment still exists.
-`_balanced_lifecycle_fragment` (line 328) needs exactly one occurrence of the class-name
-token followed by `(` in the masked header text, plus a brace-balanced body; a
-declaration alone returns `None`, and so does a second overload. If a promotion genuinely
-must move the destructor out of line, its two variants fall back to whole-file scoring —
-and only then can they carry markers, above their out-of-line definitions.
+directly included header.**
 
 ### Put the inline structor's opening brace on the signature line
 
@@ -582,59 +537,46 @@ on a single line, so nothing has exercised this before; the inline-destructor wa
 exercise it repeatedly. This is a defect in the gate rather than in the style, and it is
 recorded as one -- but until the gate is fixed, brace position is load-bearing.
 
-### A marker on a still-unnamed member buys nothing
+### A marker on a still-unnamed member still protects its neighbour
 
-`score_member` recomputes `real_name` from the symbol, not from the fragment, so a member
-still called [LoadCard2SubBg3](../src/minigames/d_s_mg_single3d_base.cpp) (ROM Ordinal 2 used to assemble TU) fails that criterion whichever text it is scored
-against. Marking it is still worth doing, because the boundary it creates is what protects
-its *neighbour* — that is the whole point of the rule above — but do not expect the marker
-to move that member's own score. Renaming it is the thing that does.
+A member still called [LoadCard2SubBg3](../src/minigames/d_s_mg_single3d_base.cpp) (ROM Ordinal 2 used to assemble TU) has no recovered name yet. Marking it is still worth doing, because the boundary it creates is what protects
+its *neighbour* — that is the whole point of the rule above. Renaming it is the separate job that gives it a real name.
 
 ### Markers cannot move a ROM byte
 
-`_code_only` (line 198) blanks comments before three of the five criteria run, and the
-preprocessor deletes them before mwccarm sees the TU. Adding markers to an already
-byte-proven TU cannot change an instruction and needs no new byte proof. It does change
-the CONVERTED count, so regenerate `config/converted-baseline.json` per rule 5 in the same
-PR.
+Markers are comments, and the preprocessor deletes them before mwccarm sees the TU. Adding markers to an already
+byte-proven TU cannot change an instruction and needs no new byte proof.
 
 ### The failure mode, concretely
 
-An unmarked promotion is *green*. Every byte gate passes, because the bytes are right. The
-CONVERTED count drops, the author covers the drop with one backslide-exception row per
-lost member, writes a true-sounding reason on each, and the PR merges. What actually
-happened is that comment lines were traded for ledger rows.
+An unmarked promotion is *green*. Every byte gate passes, because the bytes are right. What actually
+happened is that one member's defect text becomes every member's text.
 
-- **#2062** (`daObjHatenaSwitch_c`, thirteen functions) adds **zero** markers. Its diff
-  moves `config/converted-baseline.json` from `"count": 2568` to `"count": 2560` and adds
-  **eight** rows to `config/converted-backslide-exceptions.jsonl`, one per lost member.
-  Every row carries the same reason, and that reason names the cause without naming the
-  fix: the TU "needs the volatile stack value to avoid a 17-word codegen mismatch". The
-  `volatile` is in one member. The other eight paid for it.
-- **#2064** (`dScMgSingle3DBase_c`, nine functions) adds **six** markers and **zero**
-  backslide-exception rows. The three it leaves unmarked are the two destructor variants,
+- **#2062** (`daObjHatenaSwitch_c`, thirteen functions) adds **zero** markers. The
+  `volatile` is in one member, but with no boundaries the other members' slices all
+  include it.
+- **#2064** (`dScMgSingle3DBase_c`, nine functions) adds **six** markers. The three it leaves unmarked are the two destructor variants,
   which is right, and one member still named [LoadCard2SubBg3](../src/minigames/d_s_mg_single3d_base.cpp), which is not.
-  Nothing backslides — neither it nor its neighbour was CONVERTED before — but the
+  Nothing moves — neither it nor its neighbour was renamed before — but the
   omission still costs, and it costs the *other* member: with no marker after it, the
   preceding slot-26 fragment -- [func_ov006_0210a600](../src/minigames/d_s_mg_single3d_base.cpp) (ROM Ordinal 3 used to assemble TU) at the time, since renamed to
   `_ZN19dScMgSingle3DBase_c14GetDisplayModeEv` and written as a real member
   definition -- runs from its own marker to end of file and swallows a534's `volatile`
-  body and raw addresses. That member is an eight-byte `return 1;` that can never score
-  readable while that is true. This is the
+  body and raw addresses. That member is an eight-byte `return 1;` whose slice wrongly
+  includes that text. This is the
   general shape of the omission — the member that pays is rarely the member you left
   unmarked.
 
 Both are open at the time of writing, so neither is landed precedent in the sense section
 1 uses. They are cited here as the worked pair: same operation, same gates, one of them
-paying eight ledger rows for the omission.
+with boundaries and one without.
 
 ### Reviewer check
 
 Count the `@symbol` lines in the promoted TU against the length of the manifest's
 `functions` array. The difference should be the ctor/dtor variants and nothing else. If a
-promotion adds backslide-exception rows for members of
-its own destination TU, check for markers before reading the reasons — the reasons will be
-about codegen and the cause will be a boundary.
+promotion leaves members unmarked, check for markers before reading further — the cause
+will be a boundary.
 
 ---
 
@@ -649,12 +591,10 @@ about codegen and the cause will be a boundary.
    unkeepable by the restore test.
 4. Every renamed `func_<module>_<addr>` declaration is gone from `include/decl_common.h`.
 5. No comment in the diff names a file the diff deletes.
-6. The PR is alone in the ledger queue, and the baseline was regenerated rather than
-   merged.
+6. The PR is alone in the ledger queue.
 7. Every hand-written member of the promoted TU carries a unique `// @symbol` line, the
-   shared mangled externs sit above the first marker, the destructor is inline in a
-   directly included header and unmarked, and no backslide-exception row is covering a
-   member a marker would have saved.
+   shared mangled externs sit above the first marker, and the destructor is inline in a
+   directly included header and unmarked.
 
 ## Known open items at the time of writing
 

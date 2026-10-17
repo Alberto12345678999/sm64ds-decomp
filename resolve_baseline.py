@@ -32,14 +32,6 @@ def dump_json(obj, path, ref_text):
     with io.open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(txt)
 
-def merge_converted(ours, theirs):
-    rows = sorted(set(ours["converted"]) | set(theirs["converted"]))
-    out = dict(ours)
-    out["converted"] = rows
-    if "count" in out:
-        out["count"] = len(rows)
-    return out
-
 def merge_decl(ours, theirs):
     out = dict(ours)
     known = dict(ours.get("known", {}))
@@ -80,8 +72,6 @@ def resolve(path):
     elif path == "attribution.json":
         with io.open(path, "w", encoding="utf-8", newline="\n") as f:
             f.write(ours_t)
-    elif path.endswith("converted-baseline.json"):
-        dump_json(merge_converted(json.loads(ours_t), json.loads(theirs_t)), path, ours_t)
     elif path.endswith("decl-agreement-baseline.json"):
         dump_json(merge_decl(json.loads(ours_t), json.loads(theirs_t)), path, ours_t)
     elif path.endswith("dead-reference-baseline.json"):
