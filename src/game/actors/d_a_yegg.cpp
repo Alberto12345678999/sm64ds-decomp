@@ -55,13 +55,11 @@
  *   stay spelled as mangled extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az).
- * - still raw offsets: the DOSUN byte at +0x3a2 in func_ov002_020ec670
- *   and the word at Player+0xc8 in func_ov002_020ed998. Spawned coins use
- *   dActor_c's existing previous-angle and horizontal-speed fields.
+ * - the DOSUN byte at +0x3a2 in func_ov002_020ec670 remains a raw offset.
+ *   Spawned coins use dActor_c's existing previous-angle and horizontal-speed fields.
  * - mSpawnPos is named in daYegg_c.h but its purpose is not known
  *   (written once, never read here); unk_41e and the 4-byte gap at 0x3f8 are
- *   unnamed. dActor_c::unk_0a4/unk_0ac are read through
- *   their unk_ names, and func_ov002_020ed738 reads the floor result +4 raw.
+ *   unnamed. dActor_c::unk_0a4/unk_0ac are read through their unk_ names.
  * - this list is representative, not exhaustive: the flag and mask
  *   literals (mFlags 0x40000/0x10000000/0x8, the hit flags 0x8000/0x26fe0,
  *   the cylinder words 0x202000/0x200002/0xa08000) are also left numeric, and
@@ -1010,8 +1008,8 @@ void daYegg_c::func_ov002_020ed738() {
     int e6 = 0;
     if (mWithMeshClsn.IsOnGround()) {
         struct Vector3 n;
-        void *fr = mWithMeshClsn.GetFloorResult();
-        ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(n);
+        dBgPi *fr = static_cast<dBgPi *>(mWithMeshClsn.GetFloorResult());
+        fr->surface.CopyNormalTo(n);
         e4 = func_02010844(this, &n, mAngleY);
         e6 = func_02010844(this, &n, (short)(mAngleY - 0x4000));
     } else {
@@ -1087,8 +1085,8 @@ void daYegg_c::func_ov002_020ed7f8()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c19func_ov002_020ed998Ev
 /* Places the egg's model matrix, called from Behavior. With
- * daYegg_FLAG_ATTACHED set and a Player, it copies the 12-word matrix the
- * word at Player+0xc8 points to (that field is padding in dActor_c.h), shifts
+ * daYegg_FLAG_ATTACHED set and a Player, it copies the 12-word matrix
+ * pointed to by the Player's mCarryMatrix, shifts
  * its translation by (0x3f, 9, 0xb) and applies a ZXY rotation of
  * (-0x49f5, -0xc17, -0x293f), then moves the egg's mPos to the resulting
  * translation << 3 and returns; matrix units are mPos >> 3 throughout.
@@ -1105,7 +1103,7 @@ void daYegg_c::func_ov002_020ed998()
         v.x = 0;
         v.y = 0;
         v.z = 0;
-        data_020a0e68 = *(M48 *)(*(char **)((char *)mPlayer + 0xc8));
+        data_020a0e68 = *(M48 *)mPlayer->mCarryMatrix;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0x3f, 9, 0xb);
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, 0xffffb60b, 0xfffff3e9, 0xffffd6c1);
         t9  = ((volatile M48 *)&data_020a0e68)->w[9];

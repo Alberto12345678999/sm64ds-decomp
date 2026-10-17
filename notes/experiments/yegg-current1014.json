@@ -485,5 +485,303 @@
       "path": "build/yegg-current1014/prior-source-acceptance-summary.json",
       "sha256": "e6fb133f19c4b1b7dc475f04de08dbe7be65750fb49693a0c679a542f2662a38"
     }
-  ]
+  ],
+  "typed_result_access_checkpoint_2026_10_16": {
+    "date": "2026-10-16",
+    "task_id": "yegg-native-current-dfd-continuation1016",
+    "producer": "Codex Astra / codex-yegg-native-current-dfd-astra-producer1016",
+    "base_commit": "dfd9500e1662260bc9e3a4fc757f779899fe783c",
+    "status": "bounded producer checkpoint; independent verification pending",
+    "source_path": "src/game/actors/d_a_yegg.cpp",
+    "source_physical_sha256": "0ee6537267098a45b4b781d4909bdc9f80efa26de5c6468ebfad78615db9d908",
+    "changes": [
+      "Borrow the actual dBgPi floor result and call its inherited surface.CopyNormalTo, retaining the existing void-pointer API boundary.",
+      "Load the existing Player mCarryMatrix member while retaining the M48 copy view, guard, volatile workspace and ordering.",
+      "Remove only the corresponding stale raw-offset and padding descriptions."
+    ],
+    "unchanged_scope": "No shared header, manifest, compiler policy, callee declaration, layout or lifecycle change. Remaining Yegg reconstruction is partial.",
+    "validation": {
+      "compiler": "2004/b56",
+      "initial_fresh_compiles": {
+        "untouched_base_control": 1,
+        "candidate": 1
+      },
+      "whole_RAW": {
+        "bytes": 26808,
+        "control_equals_candidate": true,
+        "sha256": "ed175da7ffd0772481935afbc654c750d459e9724362654c46a333bc32af1fa4"
+      },
+      "whole_prepared": {
+        "bytes": 26808,
+        "control_equals_candidate": true,
+        "sha256": "b5358c2475f7bd8f4e76b92a3479ef64d57fc80d687a3e12830ff820f62a87da"
+      },
+      "saved_object_link_checks": {
+        "each_epoch_checked": 34,
+        "each_epoch_VERIFIED": 34,
+        "blind": 0,
+        "diffs": 0
+      },
+      "standard_TU_CLI": {
+        "command": "python tools/tubuild.py verify ov002/daYegg_c --no-write",
+        "exit_code": 1,
+        "text_MATCH": 33,
+        "objisolate_and_relocation_destinations": "clean",
+        "refusal": "Raw .text __sinit_d_a_yegg.cpp, size0xdc, is classified EXTRA despite existing manifest.init ownership.",
+        "independent_untouched_base_control": "Same exit1, byte-identical complete stdout and RAW object; no tool/policy waiver or retry.",
+        "normal_route_34_checks_remain_separate": true
+      },
+      "full_build": {
+        "command": "python tools/rombuild.py -j16 --no-rom",
+        "exit_code": 0,
+        "seconds": 161.85899999999674,
+        "modules_exact": 106,
+        "modules_total": 106,
+        "functions_reproducing": 11334,
+        "functions_mismatching": 0,
+        "objects_cached": 2506,
+        "objects_freshly_compiled": 1,
+        "owned_data_exact": 338,
+        "BSS_claims": 245,
+        "BSS_bytes": 31216,
+        "intact_new_symbol_errors": 0,
+        "inherited_baseline_symbol_errors": 9,
+        "broader_data_diagnostic": {
+          "verified": 974,
+          "partial": 1559,
+          "differ": 1,
+          "unnamed": 15
+        }
+      },
+      "postcommit_scoped_gates": {
+        "tested_Source_commit": "16d8bd92f1b2d7f880783be598032ed4e5f42650",
+        "prepush_linkcheck": {
+          "command": "python tools/prepush_linkcheck.py --range dfd9500e1662260bc9e3a4fc757f779899fe783c..16d8bd92f1b2d7f880783be598032ed4e5f42650",
+          "exit_code": 0,
+          "checked": 34,
+          "VERIFIED": 34,
+          "blind": 0,
+          "warnings": 0,
+          "blocking": 0,
+          "seconds": 32.0
+        },
+        "declaration_agreement": {
+          "command": "python tools/check_decl_agreement.py --changed dfd9500e1662260bc9e3a4fc757f779899fe783c",
+          "exit_code": 0,
+          "new_disagreements": 0,
+          "new_local_redeclarations": 0
+        },
+        "source_style": {
+          "command": "python tools/source_style.py --base dfd9500e1662260bc9e3a4fc757f779899fe783c",
+          "exit_code": 0,
+          "files": 1,
+          "findings": 0,
+          "formatting_deferrals": 0,
+          "patterns_only": false
+        },
+        "whitespace": {
+          "command": "git diff --check dfd9500e1662260bc9e3a4fc757f779899fe783c..16d8bd92f1b2d7f880783be598032ed4e5f42650",
+          "exit_code": 0
+        },
+        "finalization": "Report-only recording of completed checks; Source and all production inputs remain literal to tested Source commit. No duplicate byte build for this note-only update."
+      }
+    },
+    "historical_attribution_erratum": {
+      "finding_id": "YEGG-CURRENT9893-PRODUCER-PROVENANCE-01",
+      "kind": "provenance",
+      "original_finding_verbatim": {
+        "disposition": "unresolved",
+        "id": "YEGG-CURRENT9893-PRODUCER-PROVENANCE-01",
+        "kind": "provenance",
+        "location": "notes/experiments/yegg-current9893-1014.json:13",
+        "reason": "actual_composition_report_producer reads Codex /root, claude-producer-0930d; the actual new task producer is Codex /root, codex-yegg-current9893-root-producer1014. Root confirmed the generator incorrectly selected first inherited session. Producer inheritance is not authorship of this report.",
+        "summary": "New composition report attributes its producer session to an unrelated inherited historical Claude label."
+      },
+      "rejected_report": {
+        "commit": "e3fb4b8d5fabe6f57b67b5d6fce3db8249831ee5",
+        "path": "notes/experiments/yegg-current9893-1014.json",
+        "Git_LF_sha256": "f52b66dc0eb5e64f42a76f2c663a259d3159dc4b73294fccb3cc8b44a4e12454",
+        "incorrect_actual_composition_report_producer": "Codex /root, claude-producer-0930d"
+      },
+      "already_repaired_historical_report": {
+        "commit": "09ffcc9873ac4cef9d80d70e14175df9b94f85b2",
+        "path": "notes/experiments/yegg-current9893-1014.json",
+        "Git_LF_sha256": "4986c221f9b76c6cab5548c6e54ce9ebc93bc494f1597f8e591f9203f6dc5c4a",
+        "actual_composition_report_producer": "Codex /root, codex-yegg-current9893-root-producer1014"
+      },
+      "separate_current_resolution": "The historical09ff report already corrected only its producer attribution and received independent partial review. This dated erratum reconciles that fact while preserving the original unresolved dictionary. Exact current appended bytes and immutable candidate await independent review; no new historical byte proof or original-packet rewrite is claimed.",
+      "historical_identity_preserved": "The original yegg-current1014.json identity belongs to the different47aa composition and codex-yegg-current-producer1014; it remains unchanged."
+    },
+    "remaining_reconstruction_original_finding_verbatim": {
+      "disposition": "deferred",
+      "id": "YEGG-RECONSTRUCTION-01",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3847",
+      "kind": "reconstruction",
+      "location": "src/actors/daYegg_c.cpp and include/daYegg_c.h",
+      "owner": "codex-yegg-readable-producer1014 and codex-yegg-readable-coordinator1014 reconstruction followup",
+      "reason": "Candidate retains Fix12 scalar bridges and other raw/POD array-backed math workspaces, spawned-coin field writes, DOSUN byte, Player+0xc8 access, floor-result+4 view, unknown fields/numeric flags and address-based helper names. Existing two free Player-entry helpers and constructor/factory alias boundaries remain. Historic compiler measurements are not newly generalized; no original method/field/file identifiers recovered. New34strict/storage/metadata proof accepts this slice with existing ownership policy, not completion of every class or caller ABI.",
+      "summary": "Yegg remains a partial reconstructed class despite three genuine interface/lifetime replacements and intact owned TU storage."
+    },
+    "remaining_reconstruction_current_disposition": "partial/deferred; these two reads are resolved in this candidate, while all other recorded limitations remain",
+    "obligations": {
+      "original_Source": 257,
+      "original_proof_dependencies": 50,
+      "original_total": 307,
+      "accepted_Source": 208,
+      "separate_foundations": 4,
+      "remaining_migrations": 45,
+      "accepted_proof_dependencies": 30,
+      "remaining_proof_dependencies": 20,
+      "counter_increment": 0,
+      "full307_or_current_main_acceptance": false,
+      "foreign_handoffs_accepted": false
+    }
+  },
+  "current02cdf_composition_checkpoint_2026_10_16": {
+    "date_utc": "2026-10-17",
+    "actual_producer": "codex-yegg-native-current-dfd-astra-producer1016",
+    "source_authority_task": "yegg-native-current-dfd-continuation1016",
+    "class_history_issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3847",
+    "current_base": "02cdf40f9b02816fb647799077d90f1d70111a87",
+    "retained_PR3994_head": "84535386403b12a3f292430a85ac1992216ad79e",
+    "tested_composition_commit": "3367f819b2cbb36099d0de3f4c32379cecff7a02",
+    "composition_parents": [
+      "84535386403b12a3f292430a85ac1992216ad79e",
+      "02cdf40f9b02816fb647799077d90f1d70111a87"
+    ],
+    "scope": "Current-base continuation of the two existing typed result/member reads and their five authored Source/prose spans; all other current-main changes retained.",
+    "source": "src/game/actors/d_a_yegg.cpp",
+    "source_physical_sha256": "577d4ccb2322d137d9e325553329d0b62ffbd4f6b2a084167f3c1b6b3e565d07",
+    "preserved_landed_changes": [
+      "func_ov002_020ecfc8 uses Vec3_HorzAngle(&mPos, &r5->mPos).",
+      "func_ov002_020ed6cc uses &mPos as the second Vec3_HorzDist operand.",
+      "func_ov002_020edca4 passes &self->mCamSpacePos to PlayCharVoice."
+    ],
+    "pending_PR3995": "Its Player.h and mClimbClsn Source changes are not adopted.",
+    "typed_receiver_evidence": "The existing floor-result getter returns a borrowed dBgPi; its inherited dBgPc::surface is used directly. The Player inherits the already-declared Matrix4x3* mCarryMatrix at0xc8; its load retains the original M48 copy view, guards and volatile accesses. No header or object-lifetime reconstruction is added.",
+    "fresh_proof": {
+      "compiler": "2004/b56",
+      "control_compiles": 1,
+      "candidate_compiles": 1,
+      "source_basename": "d_a_yegg.cpp",
+      "functions": {
+        "count": 33,
+        "verified": 33,
+        "blind": 0,
+        "diffs": 0
+      },
+      "separate_initializer": {
+        "symbol": "__sinit_d_a_yegg.cpp",
+        "address": "0x02107118",
+        "bytes": 220,
+        "verdict": "VERIFIED",
+        "blind": 0,
+        "diffs": 0
+      },
+      "RAW": {
+        "bytes": 26808,
+        "sha256": "ed175da7ffd0772481935afbc654c750d459e9724362654c46a333bc32af1fa4",
+        "counts": {
+          "sections": 107,
+          "symbols": 236,
+          "typed_references": 292,
+          "sized_function_symbols": 36,
+          "sized_object_symbols": 21
+        }
+      },
+      "ordinary": {
+        "bytes": 26808,
+        "sha256": "b5358c2475f7bd8f4e76b92a3479ef64d57fc80d687a3e12830ff820f62a87da",
+        "counts": {
+          "sections": 107,
+          "symbols": 236,
+          "typed_references": 240,
+          "sized_function_symbols": 34,
+          "sized_object_symbols": 10
+        }
+      },
+      "whole_RAW_ordinary_inventory_and_typed_graphs_literal": true,
+      "complete_input_bracket_unchanged": true,
+      "route": "Existing current production intact-object preparation and all configured policy rows unchanged. Full inventories retain every emitted helper, metadata, storage section and typed reference; only configured33+INIT are counted as34 strict bodies.",
+      "elapsed_seconds": 38.187999999994645
+    },
+    "full_build": {
+      "command": "python tools/rombuild.py -j16 --no-rom",
+      "exit_code": 0,
+      "seconds": 136.18700000000536,
+      "modules_exact": 106,
+      "modules_total": 106,
+      "reproducing_functions": 11334,
+      "function_mismatches": 0,
+      "source_owned_data_claims": 338,
+      "source_owned_BSS_claims": 245,
+      "compile_log_lines": [
+        "2206 reused from cache, 0 compiled, 0 failed (20.8s)",
+        "2469 reused from cache, 1 compiled"
+      ],
+      "baseline_symbol_error_rows": [
+        "| [ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "| [ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary",
+        "| [ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "| [ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "| [ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "| [ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "| [ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "| [ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "| [ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary"
+      ],
+      "broader_data_diagnostic": {
+        "verified": 974,
+        "partial": 1559,
+        "differ": 1,
+        "unnamed": 15
+      },
+      "qualification": "The default build succeeded with exact modules and zero new symbol errors; inherited baseline symbol diagnostics and broader partial/differ/unnamed data remain. No extra stock CLI or historical failing TU CLI was replayed."
+    },
+    "scoped_gates": {
+      "tested_commit": "3367f819b2cbb36099d0de3f4c32379cecff7a02",
+      "prepush": {
+        "command": "python tools/prepush_linkcheck.py --range 02cdf40f9b02816fb647799077d90f1d70111a87..HEAD",
+        "exit_code": 0,
+        "checked": 34,
+        "verified": 34,
+        "warnings": 0,
+        "blocking": 0,
+        "seconds": 24.14100000000326,
+        "compile_accounting": "Generic CLI compile/cache/retry internals are not instrumented; no additional fresh probe credit claimed."
+      },
+      "declaration": {
+        "command": "python tools/check_decl_agreement.py --changed 02cdf40f9b02816fb647799077d90f1d70111a87",
+        "exit_code": 0,
+        "seconds": 9.76600000000326
+      },
+      "full_style": {
+        "command": "python tools/source_style.py --base 02cdf40f9b02816fb647799077d90f1d70111a87",
+        "exit_code": 0,
+        "findings": 0,
+        "format_deferrals": 0,
+        "patterns_only": false,
+        "seconds": 0.7650000000139698
+      },
+      "whitespace_exit_code": 0
+    },
+    "historical_retention": "All17 original current-main report values/order and the entire845 typed_result_access_checkpoint_2026_10_16 remain literal. Its DFD measurements, TU CLI refusal, attribution erratum and original finding dictionaries are historical and are not relabeled as current-base evidence.",
+    "remaining_reconstruction": "Partial/deferred: M48 copy view, Fix12 bridges, raw DOSUN access, unknown fields/numeric flags/helper names and the previously recorded ABI/lifetime limits remain. Existing actor union views are not newly proven genuine Vector3 lifetimes.",
+    "acceptance_limits": {
+      "producer_only": true,
+      "independent_current_composition_verification_pending": true,
+      "Source_consumers_accepted": 208,
+      "foundations": 4,
+      "remaining_migrations": 45,
+      "proof_dependencies_accepted": 30,
+      "proof_dependencies_remaining": 20,
+      "original_total": 307,
+      "full307_acceptance": false,
+      "counter_increment": 0,
+      "foreign_pending_Source_adopted": false,
+      "parent_formal_input_changed": false,
+      "queue_publish_release_or_public_push": false
+    },
+    "report_only_finalization": "This appendix follows the tested local merge; Source and all production trees remain literal to that tested merge."
+  }
 }
