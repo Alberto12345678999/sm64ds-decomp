@@ -15,7 +15,7 @@ Derived the same way as progress.py --write-readme:
   project    tools/chaosviewer.config.json (committed branding/prompt config)
   tiers      per-function ``converted`` (tools/tiers.py, the same readings the CONVERTED
              headline is made of), ``linked`` (config/port_linked_functions.txt, see
-             tools/port_linked_functions.py), ``class`` (demangled owner of a method) and
+             tools/port_linked_functions.py; stats.tiers.linked counts these functions), ``class`` (demangled owner of a method) and
              ``tuId`` / ``tuState`` (config/tu_manifest.d). All five are OPTIONAL and
              SPARSE: a record carries one only when it is true or known, exactly like
              ``verified``, and a reader treats an absent key as "no" (or "unknown" for
@@ -148,16 +148,22 @@ def enrollment_of(label, addr, src_path, enrolled, blocks):
     return "unenrolled" if src_path and src_path in blocks else "no_block"
 
 
-def tier_stats(conv=None):
+def tier_stats(conv=None, linked_n=None, total=None):
     """The CONVERTED and LINKED tiers, flattened for the stats block.
+
+    Flat rather than nested because the two consumers downstream are a shell
+    script's python one-liner and a C# record, and neither gains anything from
+    nesting. MATCHED is not repeated here; it is already the block above.
 
     ``conv`` is a tiers.converted() result the caller already has (main() asks for the
     per-function breakdown once and shares it, because scoring the tree twice is the
     slowest thing in this block). Left out, it is computed here, as it always was.
 
-    Flat rather than nested because the two consumers downstream are a shell
-    script's python one-liner and a C# record, and neither gains anything from
-    nesting. MATCHED is not repeated here; it is already the block above.
+    LINKED counts functions, like the other two bars: ``linked_n`` records carry
+    ``linked`` out of ``total`` records, so all three share one denominator. When no
+    per-function list backs the stamp (an older stamp), it falls back to the stamped
+    count of matched translation units, as before. The stamp's own translation-unit
+    figures ride along as ``linkedUnits`` / ``linkedUnitsOf`` either way.
 
     Never raises. This runs inside the generator whose output pays the coin
     ledger, and a readability scan is not worth killing a refresh over -- a run
@@ -178,15 +184,20 @@ def tier_stats(conv=None):
         "convertedPct": c["pct"],
     }
     if k:
+        per_function = k["unit"] == "functions" and linked_n is not None and total
+        n, of = (linked_n, total) if per_function else (k["linked"], k["of"])
         out.update({
-            "linked": k["linked"],
-            "linkedOf": k["matchedTus"],
-            "linkedPct": k["pct"],
+            "linked": n,
+            "linkedOf": of,
+            "linkedPct": round(100.0 * n / of, 2) if of else 0.0,
+            "linkedUnits": k["linkedTus"],
+            "linkedUnitsOf": k["matchedTus"],
             "linkedMeasuredAt": k["measuredAt"],
             "linkedBranch": k["branch"],
             "linkedCommit": k["commit"],
         })
     return out
+
 
 def converted_by_symbol():
     """``(tiers.converted() result with by_symbol, None)``, or ``(None, reason)``.
@@ -247,29 +258,18 @@ def unit_index():
 def linked_functions():
     """The set of ``module:0xaddr`` keys the port build links, or None if untrusted.
 
-    config/port_linked_functions.txt is written by tools/port_linked_functions.py from a
-    port build's walk_window.map. It is only believed when its ``# commit:`` line equals
-    the commit in config/port_linkage.json, the stamp stats.tiers.linked comes from:
-    two different port builds must never be mixed in one file, and a list without the
-    stamp's provenance is a number nobody can trace (the same rule tiers.linked() holds
-    its stamp to). On any mismatch the per-function flag is left off and the log says
-    why; stats.tiers is unaffected."""
+    tiers.linked_functions() holds the rule: config/port_linked_functions.txt is
+    believed only while its ``# commit:`` equals the commit of the stamp in
+    config/port_linkage.json. On a mismatch the per-function flag is left off and
+    the log says why; stats.tiers then falls back to the stamp's unit count."""
     path = REPO / "config" / "port_linked_functions.txt"
     if not path.is_file():
         return None
-    stamp = TIERS.linked(REPO / "config" / "port_linkage.json")
-    keys, commit = set(), None
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line.startswith("# commit:"):
-            commit = line.split(":", 1)[1].strip()
-        elif line and not line.startswith("#"):
-            keys.add(line)
-    if not stamp or not commit or commit != stamp["commit"]:
-        print(f"  linked: per-function list IGNORED (list commit {commit!r}, stamp "
-              f"commit {stamp['commit'] if stamp else None!r}); re-run "
+    stamp = TIERS.linked_stamp(REPO / "config" / "port_linkage.json")
+    keys, why = TIERS.linked_functions(stamp, path)
+    if keys is None:
+        print(f"  linked: per-function list IGNORED ({why}); re-run "
               f"tools/port_linked_functions.py against the stamped build")
-        return None
     return keys
 
 
@@ -598,7 +598,7 @@ def main():
             # tier that is not in this block does not reach the site at all. Both are
             # computed from committed source with no ROM and no build, which is what
             # keeps this generator CI-safe.
-            "tiers": tier_stats(conv),
+            "tiers": tier_stats(conv, tier_n["linked"] if linked_keys is not None else None, len(functions)),
         },
         "functions": functions,
     }

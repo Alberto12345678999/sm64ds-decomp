@@ -1,7 +1,10 @@
 {
   "_comment": [
-    "The stamped LINKED tier: how many matched translation units actually reach the",
-    "PC port's binary. This is a STAMP, not a live counter, and it cannot be anything",
+    "The stamped LINKED tier: how much of the game actually reaches the PC port's",
+    "binary. The published LINKED bar counts FUNCTIONS (like MATCHED and CONVERTED),",
+    "read from config/port_linked_functions.txt; linkedTus / matchedTus below are the",
+    "same build counted in translation units, kept as detail, and are what an older",
+    "stamp with no per-function list still reports. This is a STAMP, not a live counter, and it cannot be anything",
     "else from main: port/tools/linkage.py reads build/port/walk_window.map, which only",
     "exists after an MSVC build of the port, and CI on main has no such build.",
     "",
@@ -37,5 +40,5 @@
   "branch": "port/h8-int093s",
   "commit": "e9e2246f2a6",
   "stale": false,
-  "basis": "Integration branch port/h8-int093s at e9e2246f2a6 (the 0.9.3 line), a cold build of walk_window from a clean tree of that commit, measured with port/tools/linkage.py against the map that build wrote (tuatlas1-b1: walk_window linked, 2445 of 2827 exact). The denominator is distinct TU stems in that tree's src/ (2827), not one per function: the port line has folded part of main's one-function files into class TUs, so this figure is NOT comparable with the 2026-09-13 stamp (10595 of 11328, one stem per function) and the percentage fell because the TUs are bigger, not because anything unlinked. It moves again as the port line catches up with main's TU folding (main has 2521 source files, the port line 2827). config/port_linked_functions.txt is the same build seen per function (10957 of the 11389 functions in chaos-db sit in a linked TU), written by tools/port_linked_functions.py."
+  "basis": "Integration branch port/h8-int093s at e9e2246f2a6 (the 0.9.3 line), a cold build of walk_window from a clean tree of that commit, measured with port/tools/linkage.py against the map that build wrote (tuatlas1-b1: walk_window linked, 2445 of 2827 exact). The denominator is distinct TU stems in that tree's src/ (2827), not one per function: the port line has folded part of main's one-function files into class TUs, so this figure is NOT comparable with the 2026-09-13 stamp (10595 of 11328, one stem per function) and the percentage fell because the TUs are bigger, not because anything unlinked. It moves again as the port line catches up with main's TU folding (main has 2521 source files, the port line 2827). config/port_linked_functions.txt is the same build seen per function (10957 of the 11389 functions in chaos-db sit in a linked TU), written by tools/port_linked_functions.py. The LINKED bar reads that list: 10957 of 11389 functions (96.2%); linkedTus and matchedTus stay as the unit view of the same build."
 }

@@ -9,6 +9,7 @@
 # linkedTus: 2445
 # matchedTus: 2827
 # functions: 10957
+# universe: 11389
 arm9:0x02005000
 arm9:0x02005060
 arm9:0x02005098

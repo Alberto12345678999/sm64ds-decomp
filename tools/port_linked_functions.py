@@ -101,13 +101,14 @@ def main():
     import relocs as RL  # noqa: E402
     import srcpath as SP  # noqa: E402
 
-    keys = set()
+    keys, universe = set(), set()
     for sym, label in RL.module_universe():
         for line in sym.read_text(errors="ignore").splitlines():
             m = FUNC_RE.match(line)
             if not m:
                 continue
             addr = int(m.group(3), 16)
+            universe.add(f"{label}:0x{addr:08x}")
             f = SP.path_for(m.group(1))
             if f is not None and pathlib.Path(f).stem in linked_stems:
                 keys.add(f"{label}:0x{addr:08x}")
@@ -117,9 +118,9 @@ def main():
         HEADER
         + f"# branch: {args.branch}\n# commit: {commit}\n# measuredAt: {measured}\n"
         + f"# linkedTus: {len(linked_stems)}\n# matchedTus: {len(matched)}\n"
-        + f"# functions: {len(keys)}\n"
+        + f"# functions: {len(keys)}\n# universe: {len(universe)}\n"
         + "\n".join(sorted(keys)) + "\n", encoding="utf-8", newline="\n")
-    print(f"wrote {out}: {len(keys)} functions across {len(linked_stems)} linked of "
+    print(f"wrote {out}: {len(keys)} of {len(universe)} functions ({100.0 * len(keys) / len(universe):.2f}%) across {len(linked_stems)} linked of "
           f"{len(matched)} matched TUs ({100.0 * len(linked_stems) / len(matched):.2f}%) "
           f"@ {args.branch} {commit}, map of {measured}")
 
