@@ -462,11 +462,11 @@ struct Player : dActor_c {
     /* fx12 weight, 0..0x1000: raised by 0x199 a frame in cap phase 2,
        lowered in phase 6, and passed every frame to func_ov002_020e6a78,
        which runs Color_Interp over 0x20 palette entries with it. */
-    u16 mCapPaletteBlend;   /* 0x740 */
+    u16 mCapPaletteBlend; /* 0x740 */
     /* How func_ov002_020e640c applies mHeadRot to body bone 15 (face_1):
        0 off, 1 add, 2 set, 3 set swizzled (and mSpineRot to bone 8),
        4 ease back to the animated pose. func_ov002_020e6780 zeroes it. */
-    u8 mHeadRotMode;        /* 0x742 */
+    u8 mHeadRotMode; /* 0x742 */
     /* Root motion for body bone 1, run by func_ov002_020e640c: 0 off; an odd
        value (1 horizontal, 3 with Y) latches the bone's translation into
        mStateTarget and mStateAnchor and steps to the even value, which then
