@@ -83,15 +83,15 @@ def gather(db, entries, owners, repo=REPO):
             raise ValueError(f"duplicate function address: {key}")
         functions[key] = f
     claims, groups = {}, []
+    memberships = collections.defaultdict(list)
+    declared = {}
     for entry in sorted(entries, key=lambda e: e["id"]):
         module = module_label(entry["module"])
         keys = {(module, number(f["address"])) for f in entry.get("functions", [])}
         present = keys & functions.keys()
+        declared[entry["id"]] = keys
         for key in present:
-            if key in claims:
-                raise ValueError(f"{key} claimed by both {claims[key]} and {entry['id']}")
-            claims[key] = entry["id"]
-        rows = [functions[key] for key in sorted(present)]
+            memberships[key].append(len(groups))
         promoted = entry.get("promoted_source")
         enrolled = bool(keys) and keys == present and bool(source_link(promoted, repo)) and all(
             owners.get(key) == promoted for key in keys)
@@ -102,8 +102,21 @@ def gather(db, entries, owners, repo=REPO):
             "manifestUrl": GITHUB + quote("config/tu_manifest.d/" + TUM.slug(entry["id"]), safe="/"),
             "status": entry.get("status", "unknown"), "confidence": entry.get("boundary_confidence", "unknown"),
             "state": "production" if enrolled else "reconstructed", "missing": len(keys - present),
-            "functions": rows,
+            "functions": [],
         })
+    # Historical manifests can overlap a newer consolidated TU. Only a sole
+    # fully enrolled claimant can disambiguate that membership. Otherwise keep
+    # the bytes visible as Unassigned instead of choosing by manifest order.
+    for key, candidates in memberships.items():
+        if len(candidates) > 1:
+            candidates = [i for i in candidates if groups[i]["state"] == "production"]
+        if len(candidates) == 1:
+            group = groups[candidates[0]]
+            group["functions"].append(functions[key])
+            claims[key] = group["id"]
+    for group in groups:
+        if len(group["functions"]) != len(declared[group["id"]]):
+            group["state"] = "reconstructed"
     # Manifests may license only .text while the same compiled source also owns
     # .init functions. Attach those by complete production ownership, never by
     # proximity, a class label, or a manifest's promoted status alone.
@@ -114,7 +127,7 @@ def gather(db, entries, owners, repo=REPO):
         if promoted:
             by_source[(group["module"], promoted)].append(group)
     for key, f in functions.items():
-        if key in claims:
+        if key in memberships:
             continue
         candidates = by_source.get((key[0], owners.get(key)), [])
         if len(candidates) == 1 and candidates[0]["state"] == "production":
