@@ -14,8 +14,9 @@
  * THE CARD TABLE at 0x51a8, 2 elements of 8 bytes, spelled as two s32
  * positions per card now that this class's own state handlers name the
  * shape: StateDealCards starts each card at x = 0x80000, y = -0x40000
- * (0x021250e4), StateMoveCards approaches x toward 0x90000 and y toward
- * 0x30000 (0x02124e1c), StateWaitDeal runs both halves through
+ * (0x021250e4). StateMoveCards approaches the chosen card's y toward
+ * 0x90000 and the other card's y toward 0x30000 (0x02124e1c).
+ * StateWaitDeal runs both halves through
  * Math_Function_0203b14c as coordinates (0x02124fd8), and Render reads
  * them back with `>> 12` for the dMeter_c -- 1:4096 fixed-point screen
  * positions, spelled s32 like the camera fields in
@@ -29,8 +30,8 @@
  * indexes the member-pointer state table sBSCStateTable (filled at
  * startup by __sinit_ov006_0213326c from the fourteen pair globals at
  * 0x0213fd0c..0x0213fd84); the state handlers below are that table's
- * entries. mStateTimer, mChosenCard, mOtherCard, mDealCount, mCardValue,
- * mCardFrame and mRevealStep are the deal/reveal/judge working state
+ * entries. mStateTimer, mChosenCard, mOtherCard, mCardsDealt, mCardValue,
+ * mCardFrame and mRevealTick are the deal/reveal/judge working state
  * those handlers read and write.
  *
  * THE DESTRUCTOR IS DEFINED INLINE, in the class body, and the ROM's own
@@ -56,14 +57,16 @@
 #define DSCMGBSC_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int  Dealer_Destruct(char *t); /* decl_common.h's own signature */
+extern "C" int Dealer_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void NullDestructor_0203d47c(void);
 
 /* The type name is reconstructed; the 0x270-byte extent and teardown are
    measured. A real member lets C++ own this part of the scene lifecycle. */
 struct dMgBSCSharedState_c {
-    ~dMgBSCSharedState_c() { Dealer_Destruct((char *)this); }
+    ~dMgBSCSharedState_c() {
+        Dealer_Destruct((char *)this);
+    }
 
     u8 data[0x270];
 };
@@ -83,8 +86,8 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
        table stays the base's width and no field moves. Declared AFTER the
        destructor so the destructor is still the first virtual declared. */
     virtual s32 InitResources(); /* slot 0 -- ov006 0x0212551c */
-    virtual s32 Behavior();   /* slot 6 -- ov006 0x021254c0 */
-    virtual s32 Render();     /* slot 9 -- ov006 0x021253bc */
+    virtual s32 Behavior();      /* slot 6 -- ov006 0x021254c0 */
+    virtual s32 Render();        /* slot 9 -- ov006 0x021253bc */
 
     /* --- event handlers, this class's vtable slots 18/19/21 ---
        Named from the table (tools/rtti_vtables.py --own dScMgBSC_c), under
@@ -100,9 +103,26 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
        base's measured int (its ov004 base body ends `return 1;`).
        Slot 21 is also declared by dScMgBase_c, so OnDealDone is a
        void override. */
-    virtual void StartRound(int mode);  /* slot 18 -- ov006 0x02125364 */
-    virtual s32 CanEndState(int mode);  /* slot 19 -- ov006 0x0212527c */
-    virtual void OnDealDone(); /* slot 21 -- ov006 0x02125248 */
+    virtual void StartRound(int mode); /* slot 18 -- ov006 0x02125364 */
+    virtual s32 CanEndState(int mode); /* slot 19 -- ov006 0x0212527c */
+    virtual void OnDealDone();         /* slot 21 -- ov006 0x02125248 */
+
+    enum State {
+        STATE_DEAL_CARDS = 0,
+        STATE_WAIT_DEAL,
+        STATE_CHOOSE_CARD,
+        STATE_MOVE_CARDS,
+        STATE_WAIT_MOVE,
+        STATE_REVEAL_CARDS,
+        STATE_JUDGE_CARDS,
+        STATE_WIN_REACTION,
+        STATE_LOSE_REACTION,
+        STATE_WAIT_WIN,
+        STATE_WAIT_LOSE,
+        STATE_RETURN_CARDS,
+        STATE_WAIT_COINS,
+        STATE_WAIT_RESULT
+    };
 
     /* --- the state machine ---
        Fourteen entries of the member-pointer table sBSCStateTable,
@@ -133,16 +153,17 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
     };
 
     dMgBSCSharedState_c mShared; /* 0x4f38..0x51a8 */
-    CardPos mCardPos[2];  /* 0x51a8 -- ctor __cxa_vec_ctor via func_0203d738, dtor NullDestructor_0203d47c */
-    s32 mState;           /* 0x51b8 -- index into sBSCStateTable */
+    /* ctor __cxa_vec_ctor via func_0203d738, dtor NullDestructor_0203d47c */
+    CardPos mCardPos[2]; /* 0x51a8 */
+    s32 mState;          /* 0x51b8 -- index into sBSCStateTable */
     s32 mStateTimer;     /* 0x51bc */
     s32 mChosenCard;     /* 0x51c0 */
     s32 mOtherCard;      /* 0x51c4 */
-    s16 mDealCount;      /* 0x51c8 */
-    u8  mCardValue[2];   /* 0x51ca */
-    u8  mCardFrame[2];   /* 0x51cc */
-    u8  mRevealStep;     /* 0x51ce */
-    u8  pad_51cf[1];      /* 0x51cf */
+    s16 mCardsDealt;     /* 0x51c8 -- counter incremented by the dealer animation */
+    u8 mCardValue[2];    /* 0x51ca */
+    u8 mCardFrame[2];    /* 0x51cc */
+    u8 mRevealTick;      /* 0x51ce -- advances the card frame every four ticks */
+    u8 pad_51cf[1];      /* 0x51cf */
 };
 
 #ifndef SM64DS_PLATFORM_PC

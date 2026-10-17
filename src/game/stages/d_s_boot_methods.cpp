@@ -16,9 +16,7 @@
  * and InitResources.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum dScBoot_c_AssetId {
-    ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN = 0x022d
-};
+enum dScBoot_c_AssetId { ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN = 0x022d };
 
 #include "dScBoot_c.h"
 
@@ -62,6 +60,18 @@ u32 _ZN3G2S12GetBG2ScrPtrEv(void);
 int func_0201a244(int fn, int a, int b, int c, int d);
 }
 
+/* These names describe the observed transitions; original state names are unknown. */
+enum BootMenuState {
+    STATE_BOOT_WAIT = 0,
+    STATE_CONFIRM_ERASE = 1,
+    STATE_OPEN_FINAL_CONFIRM = 2,
+    STATE_FINAL_CONFIRM = 3,
+    STATE_BEGIN_ERASE = 4,
+    STATE_ERASING = 5,
+    STATE_CANCEL_ERASE = 6,
+    STATE_POST_ERASE_WAIT = 7
+};
+
 #define LADR(p) ((void *)(unsigned int)(p))
 
 // @symbol _ZN9dScBoot_c13InitResourcesEv
@@ -78,8 +88,7 @@ int func_0201a244(int fn, int a, int b, int c, int d);
  * block: this tree has no register header, and the read-modify-write masks
  * are the ROM's own.
  */
-s32 dScBoot_c::InitResources()
-{
+s32 dScBoot_c::InitResources() {
     _ZN2GX15DisableAllBanksEv();
     _ZN2GX12SetBankForBGEt(1);
     _ZN2GX13SetBankForOBJEt(2);
@@ -134,7 +143,7 @@ s32 dScBoot_c::InitResources()
     *(volatile u32 *)0x4001000 = (*(volatile u32 *)0x4001000 & ~0x1f00) | 0x400;
 
     mFadeTimer = 0x3c;
-    mState = 0;
+    mState = STATE_BOOT_WAIT;
     mButtonFlashTimer = 0;
     mInputLockTimer = 0;
     data_0208ee44 = 1;
@@ -150,54 +159,52 @@ s32 dScBoot_c::InitResources()
 /* dScBoot_c::Behavior -- vtable slot 6.
  *
  * The boot menu's state machine, in mState: wait out the fade (0/7), watch
- * the touch screen for the two language/erase buttons (1/3), confirm (2/6),
+ * the touch screen for the two confirmation buttons (1/3), confirm (2/6),
  * and run the "erase all save data" countdown (4/5). data_0208ee44 is the
  * frame step, so every countdown decrements by it rather than by one.
  */
-s32 dScBoot_c::Behavior()
-{
+s32 dScBoot_c::Behavior() {
     u16 keysHeld, keysPressed;
-    int r4;
+    int frameStep;
 
-    r4 = data_0208ee44;
+    frameStep = data_0208ee44;
     keysHeld = *(u16 *)((char *)data_020a0e58 + gActivePlayerSlot * 4);
     keysPressed = *(u16 *)((char *)data_020a0e5a + gActivePlayerSlot * 4);
 
     if (data_0209f1e8 == 0) {
         data_0209f1e8 = (u8)func_0201a1bc();
         if (data_0209f1e8 == 0) {
-            if ((int)*(volatile u16 *)&mFadeTimer > (int)(r4 * 2)) {
-                *(u16 *)LADR(&mFadeTimer) -= r4;
+            if ((int)*(volatile u16 *)&mFadeTimer > (int)(frameStep * 2)) {
+                *(u16 *)LADR(&mFadeTimer) -= frameStep;
             }
             return 1;
         }
         LoadMessageBankForLanguage();
     }
 
-    {
     if (data_0209f5bc->IsAtStart() != 0) {
         int state;
 
         if (*(volatile u8 *)&mButtonFlashTimer != 0) {
-            *(u8 *)LADR(&mButtonFlashTimer) -= r4;
+            *(u8 *)LADR(&mButtonFlashTimer) -= frameStep;
             if (mButtonFlashTimer == 0) {
                 func_02005348();
             }
         }
         if (*(volatile u8 *)&mInputLockTimer != 0) {
-            *(u8 *)LADR(&mInputLockTimer) -= r4;
+            *(u8 *)LADR(&mInputLockTimer) -= frameStep;
             return 1;
         }
 
         state = mState;
         switch (state) {
-        case 0:
-        case 7:
+        case STATE_BOOT_WAIT:
+        case STATE_POST_ERASE_WAIT:
             if (*(volatile u16 *)&mFadeTimer != 0) {
-                *(u16 *)LADR(&mFadeTimer) -= r4;
+                *(u16 *)LADR(&mFadeTimer) -= frameStep;
                 if (mFadeTimer == 0) {
                     StartSceneFade(func_0203da3c() != 0 ? 6 : 1, 0, 0);
-                } else if (mState == 0 && keysHeld == 0xf03) { /* A+B+X+Y+L+R */
+                } else if (mState == STATE_BOOT_WAIT && keysHeld == 0xf03) { /* A+B+X+Y+L+R */
                     u16 langFileID;
                     int palette;
 
@@ -216,7 +223,8 @@ s32 dScBoot_c::Behavior()
                     palette = LoadFile(0x9807);
                     _ZN3GXS10LoadBGPlttEPKvjj((const void *)palette, 0, 0x1c0);
                     Deallocate((void *)palette);
-                    LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN, (void *)_ZN3G2S12GetBG1ScrPtrEv());
+                    LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN,
+                                         (void *)_ZN3G2S12GetBG1ScrPtrEv());
                     LoadCompressedFileAt(0x9803, (char *)_ZN3G2S12GetBG1ScrPtrEv() + 0x800);
                     func_0201cd08(0x29a);
                     mSelectedButton = 1;
@@ -225,63 +233,60 @@ s32 dScBoot_c::Behavior()
                     SetSubBg1Offset(0, 0);
                     data_0209d454 |= 3;
                     data_0209d454 &= ~4;
-                    mState = 1;
+                    mState = STATE_CONFIRM_ERASE;
                 }
             }
             break;
 
-        case 1:
-        case 3:
-        {
-            int padIndex = gActivePlayerSlot;
+        case STATE_CONFIRM_ERASE:
+        case STATE_FINAL_CONFIRM: {
+            int playerSlot = gActivePlayerSlot;
             u8 touchDown;
 
-            r4 = 0;
-            touchDown = gTouchHeld[padIndex * 4];
-            if (touchDown != 0 && gTouchEdge[padIndex * 4] != 0) {
-                r4 = 1;
+            int touchStarted = 0;
+            touchDown = gTouchHeld[playerSlot * 4];
+            if (touchDown != 0 && gTouchEdge[playerSlot * 4] != 0) {
+                touchStarted = 1;
             }
-            if (r4 != 0 || (keysPressed & 0x39)) {
-                int ok2;
+            if (touchStarted != 0 || (keysPressed & 0x39)) {
+                int leftTouchStarted;
 
-                if (touchDown != 0 && gTouchEdge[padIndex * 4] != 0) {
-                    ok2 = 1;
+                if (touchDown != 0 && gTouchEdge[playerSlot * 4] != 0) {
+                    leftTouchStarted = 1;
                 } else {
-                    ok2 = 0;
+                    leftTouchStarted = 0;
                 }
                 /* left button: touch x 0x28..0x78, y 0x98..0xb8, or Left */
-                if ((ok2 != 0
-                     && (u8)(gTouchX[padIndex * 4] - 0x28) < 0x50
-                     && (u8)(gTouchY[padIndex * 4] - 0x98) < 0x20)
-                    || (keysPressed & 0x20)) {
+                if ((leftTouchStarted != 0 && (u8)(gTouchX[playerSlot * 4] - 0x28) < 0x50 &&
+                     (u8)(gTouchY[playerSlot * 4] - 0x98) < 0x20) ||
+                    (keysPressed & 0x20)) {
                     if (mSelectedButton == 0) {
                         mButtonFlashTimer = 0x10;
                     }
                     mSelectedButton = 0;
                     func_02005348();
                     func_02012790(0);
-                    if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0x50
-                        && (u8)(gTouchY[gActivePlayerSlot * 4] - 0x98) < 0x20) {
+                    if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x28) < 0x50 &&
+                        (u8)(gTouchY[gActivePlayerSlot * 4] - 0x98) < 0x20) {
                         mInputLockTimer = 0x20;
-                        if (mState == 1) {
-                            mState = 2;
+                        if (mState == STATE_CONFIRM_ERASE) {
+                            mState = STATE_OPEN_FINAL_CONFIRM;
                         } else {
-                            mState = 4;
+                            mState = STATE_BEGIN_ERASE;
                         }
                     }
                 } else {
-                    int ok3;
+                    int rightTouchStarted;
 
-                    if (touchDown != 0 && gTouchEdge[padIndex * 4] != 0) {
-                        ok3 = 1;
+                    if (touchDown != 0 && gTouchEdge[playerSlot * 4] != 0) {
+                        rightTouchStarted = 1;
                     } else {
-                        ok3 = 0;
+                        rightTouchStarted = 0;
                     }
                     /* right button: touch x 0x88..0xd8, same rows, or Right */
-                    if ((ok3 != 0
-                         && (u8)(gTouchX[padIndex * 4] - 0x88) < 0x50
-                         && (u8)(gTouchY[padIndex * 4] - 0x98) < 0x20)
-                        || (keysPressed & 0x10)) {
+                    if ((rightTouchStarted != 0 && (u8)(gTouchX[playerSlot * 4] - 0x88) < 0x50 &&
+                         (u8)(gTouchY[playerSlot * 4] - 0x98) < 0x20) ||
+                        (keysPressed & 0x10)) {
                         if (mSelectedButton == 1) {
                             mButtonFlashTimer = 0x10;
                         }
@@ -291,7 +296,7 @@ s32 dScBoot_c::Behavior()
                         if ((u8)(gTouchX[gActivePlayerSlot * 4] - 0x88) < 0x50) {
                             if ((u8)(gTouchY[gActivePlayerSlot * 4] - 0x98) < 0x20) {
                                 mInputLockTimer = 0x20;
-                                mState = 6;
+                                mState = STATE_CANCEL_ERASE;
                             }
                         }
                     } else if (keysPressed & 9) {
@@ -300,13 +305,13 @@ s32 dScBoot_c::Behavior()
                         func_02005348();
                         func_02012790(0);
                         if (mSelectedButton == 0) {
-                            if (mState == 1) {
-                                mState = 2;
+                            if (mState == STATE_CONFIRM_ERASE) {
+                                mState = STATE_OPEN_FINAL_CONFIRM;
                             } else {
-                                mState = 4;
+                                mState = STATE_BEGIN_ERASE;
                             }
                         } else {
-                            mState = 6;
+                            mState = STATE_CANCEL_ERASE;
                         }
                     }
                 }
@@ -314,85 +319,77 @@ s32 dScBoot_c::Behavior()
             break;
         }
 
-        case 2:
+        case STATE_OPEN_FINAL_CONFIRM:
             func_0201cd08(0x29b);
             mSelectedButton = 1;
             func_02005348();
-            mState = 3;
+            mState = STATE_FINAL_CONFIRM;
             break;
 
-        case 4:
+        case STATE_BEGIN_ERASE:
             *(volatile u16 *)0x0400100a = (u16)((*(volatile u16 *)0x0400100a & 0x43) | 0x218);
             Message::DisplaySaveStatusText(0x29c);
             mEraseEffectTimer = 0x78;
-            mState = 5;
+            mState = STATE_ERASING;
             break;
 
-        case 5:
+        case STATE_ERASING:
             if (mEraseEffectTimer == 0x3c) {
                 SaveData::EraseAllSaveData();
             }
             if (*(volatile u8 *)&mEraseEffectTimer != 0) {
-                u8 t;
+                u8 eraseFramesLeft;
 
-                *(u8 *)LADR(&mEraseEffectTimer) -= r4;
-                t = mEraseEffectTimer;
-                if (t == 0x3c) {
+                *(u8 *)LADR(&mEraseEffectTimer) -= frameStep;
+                eraseFramesLeft = mEraseEffectTimer;
+                if (eraseFramesLeft == 0x3c) {
                     Message::DisplaySaveStatusText(0x29d);
-                } else if (t == 0) {
+                } else if (eraseFramesLeft == 0) {
                     data_0209d454 &= ~3;
                     data_0209d454 |= 4;
                     mFadeTimer = 0x3c;
-                    mState = 7;
+                    mState = STATE_POST_ERASE_WAIT;
                 }
             }
             break;
 
-        case 6:
+        case STATE_CANCEL_ERASE:
             data_0209d454 &= ~3;
             data_0209d454 |= 4;
             mFadeTimer = 0x3c;
-            mState = 0;
+            mState = STATE_BOOT_WAIT;
             break;
         }
-    }
     }
     return 1;
 }
 
 // @symbol _ZN9dScBoot_c13func_02005348Ev
-/* Repaints the two menu buttons on the sub screen's BG1 tilemap: the 0x10-tile
- * strip at +0x4c0, two rows of four palette layers. The selected row's tiles
- * get palette bank 2 while the flash timer is up, bank 1 otherwise; the
- * unselected row keeps bank 1. */
-void dScBoot_c::func_02005348()
-{
-    int i;
-    unsigned int new_var;
-    for (i = 0; i < 2; i++)
-    {
-        int v;
-        unsigned short *base;
-        unsigned short *row;
-        int j;
-        if ((i == mSelectedButton) && (mButtonFlashTimer == 0))
-        {
-            v = 0x2000;
+/* Repaints two 16-by-4-tile buttons on the sub screen's BG1 map at +0x4c0.
+ * They sit side by side in a 32-tile-wide map. The selected button uses
+ * palette bank 2 when the flash timer is zero; all other tiles use bank 1. */
+void dScBoot_c::func_02005348() {
+    int button;
+    unsigned int paletteBits;
+    for (button = 0; button < 2; button++) {
+        int selectedPaletteBits;
+        unsigned short *buttonMap;
+        unsigned short *tiles;
+        int column;
+        if ((button == mSelectedButton) && (mButtonFlashTimer == 0)) {
+            selectedPaletteBits = 0x2000;
+        } else {
+            selectedPaletteBits = 0x1000;
         }
-        else
-        {
-            v = 0x1000;
-        }
-        v = (unsigned short) v;
-        base = (unsigned short *) (((char *) _ZN3G2S12GetBG1ScrPtrEv()) + 0x4c0);
-        new_var = v;
-        row = base + (i * 0x10);
-        for (j = 0; j < 0x10; j++)
-        {
-            row[j] = v + (row[j] & 0x3ff);
-            (&row[j])[0x20] = new_var + ((&row[j])[0x20] & 0x3ff);
-            (&row[j])[0x40] = new_var + ((&row[j])[0x40] & 0x3ff);
-            (&row[j])[0x60] = v + ((&row[j])[0x60] & 0x3ff);
+        selectedPaletteBits = (unsigned short)selectedPaletteBits;
+        buttonMap = (unsigned short *)(((char *)_ZN3G2S12GetBG1ScrPtrEv()) + 0x4c0);
+        paletteBits = selectedPaletteBits;
+        tiles = buttonMap + (button * 0x10);
+        for (column = 0; column < 0x10; column++) {
+            tiles[column] = selectedPaletteBits + (tiles[column] & 0x3ff);
+            (&tiles[column])[0x20] = paletteBits + ((&tiles[column])[0x20] & 0x3ff);
+            (&tiles[column])[0x40] = paletteBits + ((&tiles[column])[0x40] & 0x3ff);
+            (&tiles[column])[0x60] = selectedPaletteBits + ((&tiles[column])[0x60] & 0x3ff);
         }
     }
 }
@@ -404,8 +401,7 @@ void dScBoot_c::func_02005348()
  * source order, so the lead body lands at the run's left edge. The camera
  * call is spelled as the member it is (dCamera_c.h); func_0200cb58 comes
  * from decl_common.h. */
-extern "C" int func_02005324(void *p)
-{
+extern "C" int func_02005324(void *p) {
     ((dCamera_c *)p)->SaveCameraStateBeforeTalk();
     func_0200cb58(p, 0x19);
     return 1;

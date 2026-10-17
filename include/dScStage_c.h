@@ -24,10 +24,10 @@ struct LVL_Overlay;
  * the transformer through its vtable and then walks the list at +0x08, whose
  * next pointer is at +0x0c, freeing every block. */
 struct StageTexAnimSlot {
-    void *mTransformer;     /* 0x00 - TextureTransformer, 0x14 bytes, heap */
-    u8  mActive;            /* 0x04 */
-    u8  pad_05[0x3];
-    void *mBlockList;       /* 0x08 - singly linked, next pointer at +0x0c */
+    void *mTransformer; /* 0x00 - TextureTransformer, 0x14 bytes, heap */
+    u8 mActive;         /* 0x04 */
+    u8 pad_05[0x3];
+    void *mBlockList; /* 0x08 - singly linked, next pointer at +0x0c */
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -48,26 +48,26 @@ typedef char StageTexAnimSlot_size_must_be_0xc[sizeof(struct StageTexAnimSlot) =
  */
 struct dScStage_c : dScene_c {
     Particle::SysTracker mSysTracker;  /* 0x050 */
-    Model mModel;             /* 0x86c */
-    StageTexAnimSlot mTexAnimSlots[8];  /* 0x8bc - Model ends here, and dBgW_Kc
+    Model mModel;                      /* 0x86c */
+    StageTexAnimSlot mTexAnimSlots[8]; /* 0x8bc - Model ends here, and dBgW_Kc
                                            does not start until 0x91c */
-    dBgW_Kc mMeshCollider; /* 0x91c */
+    dBgW_Kc mMeshCollider;             /* 0x91c */
     /* Two fog setups, 0x28 apart: LoadFog fills both by hand and then walks
        this array with `dst += 0x28` per level fog record. */
-    Fog mFog[2];            /* 0x96c */
+    Fog mFog[2]; /* 0x96c */
     /* Allocated by LoadSkybox, destroyed through its vtable by CleanupResources. */
-    Model *mSkyboxModel;    /* 0x9bc */
+    Model *mSkyboxModel; /* 0x9bc */
 
     /* Declared first, deliberately: makes ~dScStage_c the key function. */
     virtual ~dScStage_c();
 
     /* --- overrides, in _ZTV10dScStage_c order --- */
-    virtual s32  InitResources();                      /* slot  0 */
-    virtual bool BeforeInitResources();                /* slot  1 */
-    virtual s32  CleanupResources();                   /* slot  3 */
-    virtual s32  Behavior();                           /* slot  6 */
-    virtual s32  Render();                             /* slot  9 */
-    virtual void OnPendingDestroy();                   /* slot 12 */
+    virtual s32 InitResources();        /* slot  0 */
+    virtual bool BeforeInitResources(); /* slot  1 */
+    virtual s32 CleanupResources();     /* slot  3 */
+    virtual s32 Behavior();             /* slot  6 */
+    virtual s32 Render();               /* slot  9 */
+    virtual void OnPendingDestroy();    /* slot 12 */
 
     /* --- non-virtual, and take `this` --- */
     void LoadFog();
@@ -106,23 +106,23 @@ struct dScStage_c : dScene_c {
     static void RenderNumber(u8 h, int i, int i2, bool b, int i3);
     static void LoadGraphics2D(bool e3d, int level);
     static void PS_Update();
-    static int  IsPauseDisabled();
-    static int  CanPause();
+    static int IsPauseDisabled();
+    static int CanPause();
     static void UpdateMessage();
     /* Trailing extent the ROM's `new dScStage_c` size literal proves; see
        tools/opnew_sizes.py. */
-    u8  pad_9c0[0x4];
+    u8 pad_9c0[0x4];
     /* Latches the two-phase level load. InitResources runs its whole first
        block only while this is zero, sets it when data_0209fc68 says a wait is
        needed, and from then on returns -1 -- "call me again" -- until
        func_020308a8 reports the load finished. */
-    s32 mWaitingForLoad;    /* 0x9c4 */
+    s32 mWaitingForLoad; /* 0x9c4 */
 
     /* Scene-graph hooks: vtable slots 1/2 of dScStage_c::graphCallback_c.
        Non-virtual on purpose -- declaring them virtual would make this TU emit
        a vtable the delink ranges do not own. */
-    int  GraphCallback1();
-    int  GraphCallback2();
+    int GraphCallback1();
+    int GraphCallback2();
 };
 
 #ifndef SM64DS_PLATFORM_PC

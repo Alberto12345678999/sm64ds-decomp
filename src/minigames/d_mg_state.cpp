@@ -50,10 +50,9 @@
  *   - The .data member-pointer records keep their data_ov004_* names and
  *     are declared as dMgState_c::Callback; the comment on each extern names
  *     the member it points at.
- *   - Base (the scene) and Obj (the fader) are TU-local views; each says
- *     why it is not the shared header's class. Their names, and the W2 type
- *     of data_02086b58, are the spellings config/decl-agreement-baseline.json
- *     records for those externs.
+ *   - Base (the scene) and FaderCallView (the fader) are TU-local views; each says
+ *     why it retains a separate call shape. W2 preserves the two-word
+ *     storage view of data_02086b58.
  *   - mState doubles as the id passed to the scene's CanEndState and,
  *     through Mg_CallStartRound, to its StartRound. The `(void *)mState`
  *     spelling follows that helper's declaration.
@@ -116,7 +115,9 @@
 
 extern int ApproachLinear(s32 &value, s32 target, s32 step);
 /* local extern: including Sound.h renumbers SetState's local static. */
-namespace Sound { u32 PlayBank2_2D(u32); }
+namespace Sound {
+u32 PlayBank2_2D(u32);
+}
 
 /* The minigame scene at gMgScene, seen through the two virtuals
    this unit calls and the one field it reads, under dScMgBase_c.h's names.
@@ -125,41 +126,55 @@ namespace Sound { u32 PlayBank2_2D(u32); }
    parameters declared above SetState move that number too (measured: one
    name fewer gives $183), so these two views keep five between them. */
 struct Base {
-    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
-    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
-    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
-    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
-    virtual void v16(); virtual void v17();
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
     virtual void StartRound(int);      /* slot 18, reached via Mg_CallStartRound */
-    virtual int CanEndState(int mode);  /* slot 19 */
-    virtual void OnNewRecord();             /* slot 20 */
+    virtual int CanEndState(int mode); /* slot 19 */
+    virtual void OnNewRecord();        /* slot 20 */
     char pad[0xa4];
-    s32 mCredits;                          /* 0x0a8 */
+    s32 mCredits; /* 0x0a8 */
 };
-/* The installed screen fader at data_0209f5bc (a dFader_c), under
-   dFader_c.h's slot names. The ROM sets r2 = 0 at every SetBackwardTime and
-   SetForwardTime call here, which the header's one-argument spelling does
-   not do, so this view declares the second argument. */
-struct Obj {
-    virtual void v0(); virtual void v1();
-    virtual void AdvanceFade();                        /* slot 2 */
-    virtual int SetBackwardTime(u32 frames, int arg);  /* slot 3 */
-    virtual int SetForwardTime(u32 frames, int arg);   /* slot 4 */
-    virtual int IsAtStart();                           /* slot 5 */
-    virtual int IsAtEnd();                             /* slot 6 */
-    virtual int IsBetweenStartAndEnd();                /* slot 7 */
+/* Call view of the installed dFdBrightness_c at data_0209f5bc.
+   The ROM sets r2 = 0 at each timing call here; the shared declarations take
+   only frames. Keep the extra-argument call shape without changing the
+   shared fader interface. The original purpose of r2 is unknown. */
+struct FaderCallView {
+    virtual void v0();
+    virtual void v1();
+    virtual void AdvanceFade();                       /* slot 2 */
+    virtual int SetBackwardTime(u32 frames, int arg); /* slot 3 */
+    virtual int SetForwardTime(u32 frames, int arg);  /* slot 4 */
+    virtual int IsAtStart();                          /* slot 5 */
+    virtual int IsAtEnd();                            /* slot 6 */
+    virtual int IsBetweenStartAndEnd();               /* slot 7 */
 };
 
 extern "C" {
 extern void FreeGfxSlotsById(int arg);
 extern int GetGameLanguage(void);
 extern unsigned int func_02012790(unsigned int x);
-extern void func_02012dd0(void* c);
+extern void func_02012dd0(void *c);
 extern void Mg_CommitRecords(void);
 extern int Mg_GetSubmittedScore(void);
 extern int Mg_IsNewRecord(void);
 extern void Mg_RestoreMusic(void);
-extern void Mg_PlayJingle(void* c);
+extern void Mg_PlayJingle(void *c);
 extern void Mg_StartMusic(void);
 extern void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *d);
 extern int Mg_GetTopScreenYOffset(void);
@@ -168,15 +183,17 @@ extern void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 extern void Mg_DrawBlinkSprite(void *, int, int);
 extern void Mg_DrawRecordTable(void *);
 extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
-extern void Mg_CallStartRound(void* c, void* arg);
+extern void Mg_CallStartRound(void *c, void *arg);
 extern void Mg_SetNextBanner(int);
 }
 
-struct W2 { int w[2]; };
-extern W2 data_02086b58;  /* __ptmf_null's address: the null member pointer */
-extern Obj* data_0209f5bc;
+struct W2 {
+    int w[2];
+};
+extern W2 data_02086b58; /* __ptmf_null's address: the null member pointer */
+extern dFdBrightness_c *data_0209f5bc;
 extern dWipe_c data_0209f61c;
-extern Base* gMgScene;  /* local extern: seen through the TU-local Base view (see Base above) */
+extern Base *gMgScene; /* local extern: seen through the TU-local Base view (see Base above) */
 extern int sMgTopScreenYOffset;
 extern int sMgBannerButtonsArmed;
 extern int gMgCoinsShowDelta;
@@ -213,35 +230,35 @@ extern unsigned char *sMgStateTextSpritesByLanguage[];
 
 /* Behavior and render records. Each comment names the member the record
    points at (ov004 relocs.txt). */
-extern dMgState_c::Callback pmf_dMgState_c_NextRound_Update;    /* NextRound_Update */
-extern dMgState_c::Callback pmf_dMgState_c_RoundBanner5_Update; /* RoundBanner5_Update */
-extern dMgState_c::Callback pmf_dMgState_c_DrawScore;  /* DrawScore */
-extern dMgState_c::Callback pmf_dMgState_c_RetryPrompt_Update;  /* RetryPrompt_Update */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut;  /* UpdateRetryFadeOut */
-extern dMgState_c::Callback pmf_dMgState_c_Results_Update;      /* Results_Update */
-extern dMgState_c::Callback pmf_dMgState_c_Win_Update;          /* Win_Update */
-extern dMgState_c::Callback pmf_dMgState_c_Lose_Update;         /* Lose_Update */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryPrompt;  /* UpdateRetryPrompt */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateGameOverToMenu;  /* UpdateGameOverToMenu */
-extern dMgState_c::Callback pmf_dMgState_c_LoseResume_Update;     /* LoseResume_Update */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut_2;  /* UpdateRetryFadeOut */
-extern dMgState_c::Callback pmf_dMgState_c_DrawRecordTable;  /* DrawRecordTable */
-extern dMgState_c::Callback pmf_dMgState_c_GameOver_Update;  /* GameOver_Update */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateAfterHidden;  /* UpdateAfterHidden */
+extern dMgState_c::Callback pmf_dMgState_c_NextRound_Update;        /* NextRound_Update */
+extern dMgState_c::Callback pmf_dMgState_c_RoundBanner5_Update;     /* RoundBanner5_Update */
+extern dMgState_c::Callback pmf_dMgState_c_DrawScore;               /* DrawScore */
+extern dMgState_c::Callback pmf_dMgState_c_RetryPrompt_Update;      /* RetryPrompt_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut;      /* UpdateRetryFadeOut */
+extern dMgState_c::Callback pmf_dMgState_c_Results_Update;          /* Results_Update */
+extern dMgState_c::Callback pmf_dMgState_c_Win_Update;              /* Win_Update */
+extern dMgState_c::Callback pmf_dMgState_c_Lose_Update;             /* Lose_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryPrompt;       /* UpdateRetryPrompt */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateGameOverToMenu;    /* UpdateGameOverToMenu */
+extern dMgState_c::Callback pmf_dMgState_c_LoseResume_Update;       /* LoseResume_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut_2;    /* UpdateRetryFadeOut */
+extern dMgState_c::Callback pmf_dMgState_c_DrawRecordTable;         /* DrawRecordTable */
+extern dMgState_c::Callback pmf_dMgState_c_GameOver_Update;         /* GameOver_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateAfterHidden;       /* UpdateAfterHidden */
 extern dMgState_c::Callback pmf_dMgState_c_UpdateGameOverToMenu_2;  /* UpdateGameOverToMenu */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateFadeThenResume;  /* UpdateFadeThenResume */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateWaitThenResume;  /* UpdateWaitThenResume */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateFadeThenResume;    /* UpdateFadeThenResume */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateWaitThenResume;    /* UpdateWaitThenResume */
 extern dMgState_c::Callback pmf_dMgState_c_UpdateWaitThenResume_2;  /* UpdateWaitThenResume */
-extern dMgState_c::Callback pmf_dMgState_c_DrawScoreDigits;  /* DrawScoreDigits */
+extern dMgState_c::Callback pmf_dMgState_c_DrawScoreDigits;         /* DrawScoreDigits */
 extern dMgState_c::Callback pmf_dMgState_c_ResultsNewRecord_Update; /* ResultsNewRecord_Update */
 extern dMgState_c::Callback pmf_dMgState_c_RoundClearTop_Update;    /* RoundClearTop_Update */
 extern dMgState_c::Callback pmf_dMgState_c_RetryPromptB_Update;     /* RetryPromptB_Update */
 extern dMgState_c::Callback pmf_dMgState_c_UpdateFadeThenResume_2;  /* UpdateFadeThenResume */
-extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut_3;  /* UpdateRetryFadeOut */
-extern dMgState_c::Callback pmf_dMgState_c_RoundClear_Update;     /* RoundClear_Update */
-extern dMgState_c::Callback pmf_dMgState_c_ScoreThenRound_Update; /* ScoreThenRound_Update */
-extern dMgState_c::Callback pmf_dMgState_c_DrawRecordTable_2;  /* DrawRecordTable */
-extern dMgState_c::Callback pmf_dMgState_c_Finished_Update;    /* Finished_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut_3;    /* UpdateRetryFadeOut */
+extern dMgState_c::Callback pmf_dMgState_c_RoundClear_Update;       /* RoundClear_Update */
+extern dMgState_c::Callback pmf_dMgState_c_ScoreThenRound_Update;   /* ScoreThenRound_Update */
+extern dMgState_c::Callback pmf_dMgState_c_DrawRecordTable_2;       /* DrawRecordTable */
+extern dMgState_c::Callback pmf_dMgState_c_Finished_Update;         /* Finished_Update */
 
 /* The per-state enter handlers, in state order. These are pointer-to-member
  * constants that mwccarm laid down in ov004's .data; the states they belong to
@@ -303,8 +320,7 @@ extern "C" void Mg_ResetBannerLayout(void) {
 dMgState_c::dMgState_c() : mState(-1), mTimer(0), unk_020(0), mSuspended(0) {}
 
 // @symbol _ZN10dMgState_c8SetStateEi
-void dMgState_c::SetState(s32 state)
-{
+void dMgState_c::SetState(s32 state) {
     static Callback sEnterTable[20] = {
         pmf_dMgState_c_RoundClear_Enter,       /*  0: RoundClear_Enter */
         pmf_dMgState_c_NextRound_Enter,        /*  1: NextRound_Enter */
@@ -336,8 +352,7 @@ void dMgState_c::SetState(s32 state)
 }
 
 // @symbol _ZN10dMgState_c8BehaviorEv
-void dMgState_c::Behavior()
-{
+void dMgState_c::Behavior() {
     if (mState == -1)
         return;
     ApproachLinear(mTimer, 0, 1);
@@ -347,8 +362,7 @@ void dMgState_c::Behavior()
 }
 
 // @symbol _ZN10dMgState_c6RenderEv
-void dMgState_c::Render()
-{
+void dMgState_c::Render() {
     if (mState == -1)
         return;
     if (mRender == 0)
@@ -375,7 +389,7 @@ void dMgState_c::RoundClear_Enter() {
 void dMgState_c::RoundClear_Update() {
     Base *scene = gMgScene;
     if (data_0209f5bc->IsAtEnd()) {
-        data_0209f5bc->SetBackwardTime(0x1e, 0);
+        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_RestoreMusic();
         Mg_StartMusic();
@@ -393,7 +407,7 @@ void dMgState_c::RoundClear_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        data_0209f5bc->SetForwardTime(0x1e, 0);
+        ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -411,7 +425,7 @@ void dMgState_c::NextRound_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        data_0209f5bc->SetBackwardTime(0x1e, 0);
+        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_CallStartRound(scene, (void *)mState);
         mTimer = 0;
@@ -423,7 +437,7 @@ void dMgState_c::NextRound_Update() {
             return;
         if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
             return;
-        data_0209f5bc->SetForwardTime(0x1e, 0);
+        ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -443,7 +457,7 @@ void dMgState_c::RoundBanner5_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        data_0209f5bc->SetBackwardTime(0x1e, 0);
+        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_RestoreMusic();
         Mg_StartMusic();
@@ -456,7 +470,7 @@ void dMgState_c::RoundBanner5_Update() {
         if (mTimer != 0)
             return;
         if (data_0209f5bc->IsBetweenStartAndEnd() == 0)
-            data_0209f5bc->SetForwardTime(0x1e, 0);
+            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -476,17 +490,17 @@ void dMgState_c::RetryPrompt_Enter() {
 }
 
 // @symbol _ZN10dMgState_c18RetryPrompt_UpdateEv
-void dMgState_c::RetryPrompt_Update() {
-    Obj *obj;
+void dMgState_c ::RetryPrompt_Update() {
+    dFdBrightness_c *fader;
     if (Mg_CheckBannerButton(0)) {
-        obj = data_0209f5bc;
-        obj->SetForwardTime(0x1e, 0);
+        fader = data_0209f5bc;
+        ((FaderCallView *)fader)->SetForwardTime(0x1e, 0);
         mBehavior = pmf_dMgState_c_UpdateRetryFadeOut;
         return;
     }
     if (Mg_CheckBannerButton(2) || Mg_CheckBannerButton(1)) {
-        obj = data_0209f5bc;
-        if (obj->IsBetweenStartAndEnd())
+        fader = data_0209f5bc;
+        if (fader->IsBetweenStartAndEnd())
             return;
         dScene_c::SetFaders(&data_0209f61c);
         data_0209f61c.func_0202ec9c(2);
@@ -502,20 +516,20 @@ void dMgState_c::RetryPrompt_Update() {
 
 // @symbol _ZN10dMgState_c18UpdateRetryFadeOutEv
 void dMgState_c::UpdateRetryFadeOut() {
-  if (data_0209f5bc->IsAtEnd() == 0)
-    return;
-  void* scene = gMgScene;
-  if (scene == 0)
-    return;
-  data_0209f5bc->SetBackwardTime(0x1e, 0);
-  FreeGfxSlotsById(0x1d);
-  Mg_RestoreMusic();
-  Mg_StartMusic();
-  Mg_CallStartRound(scene, (void *)mState);
-  mTimer = 0;
-  mState = -1;
-  unk_020 = 0;
-  mSuspended = 0;
+    if (data_0209f5bc->IsAtEnd() == 0)
+        return;
+    void *scene = gMgScene;
+    if (scene == 0)
+        return;
+    ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+    FreeGfxSlotsById(0x1d);
+    Mg_RestoreMusic();
+    Mg_StartMusic();
+    Mg_CallStartRound(scene, (void *)mState);
+    mTimer = 0;
+    mState = -1;
+    unk_020 = 0;
+    mSuspended = 0;
 }
 
 // @symbol _ZN10dMgState_c9Win_EnterEv
@@ -604,20 +618,22 @@ void dMgState_c::Lose_Update() {
 
 // @symbol _ZN10dMgState_c20UpdateGameOverToMenuEv
 void dMgState_c::UpdateGameOverToMenu() {
-    Obj* obj;
+    dFdBrightness_c *fader;
     int v = mTimer;
     if (v == 0xb3) {
         Mg_ShowBanner(8, sMgMainBannerX, sMgMainBannerY, -1, -1, 0xd);
-        Mg_PlayJingle((void*)3);
+        Mg_PlayJingle((void *)3);
         return;
     }
-    if (v != 0) return;
-    obj = data_0209f5bc;
-    if (obj->IsBetweenStartAndEnd() != 0) return;
+    if (v != 0)
+        return;
+    fader = data_0209f5bc;
+    if (fader->IsBetweenStartAndEnd() != 0)
+        return;
     dScene_c::SetFaders(&data_0209f61c);
     data_0209f61c.func_0202ec9c(2);
     dScene_c::StartSceneFade(5, 0, 0);
-    func_02012dd0((void*)0x3c);
+    func_02012dd0((void *)0x3c);
 }
 
 // @symbol _ZN10dMgState_c16LoseResume_EnterEv
@@ -648,16 +664,20 @@ void dMgState_c::UpdateAfterHidden() {
     int cond = g ? g->mCredits : 0;
     if (cond == 0) {
         g = gMgScene;
-        if (!g) return;
-        if (!g->CanEndState(mState)) return;
+        if (!g)
+            return;
+        if (!g->CanEndState(mState))
+            return;
         Mg_RestoreMusic();
         mTimer = 0xb4;
         mBehavior = pmf_dMgState_c_UpdateGameOverToMenu_2;
         return;
     }
     g = gMgScene;
-    if (!g) return;
-    if (!g->CanEndState(mState)) return;
+    if (!g)
+        return;
+    if (!g->CanEndState(mState))
+        return;
     Mg_RestoreMusic();
     Mg_StartMusic();
     Mg_CallStartRound(g, (void *)mState);
@@ -682,26 +702,32 @@ void dMgState_c::Tie_Enter() {
 
 // @symbol _ZN10dMgState_c20UpdateWaitThenResumeEv
 void dMgState_c::UpdateWaitThenResume() {
-  Base* scene;
-  if (mTimer != 0) return;
-  scene = gMgScene;
-  if (scene == 0) return;
-  if (scene->CanEndState(mState) == 0) return;
-  FreeGfxSlotsById(0x1d);
-  Mg_CallStartRound(scene, (void *)mState);
-  mTimer = 0;
-  mState = -1;
-  unk_020 = 0;
-  mSuspended = 0;
+    Base *scene;
+    if (mTimer != 0)
+        return;
+    scene = gMgScene;
+    if (scene == 0)
+        return;
+    if (scene->CanEndState(mState) == 0)
+        return;
+    FreeGfxSlotsById(0x1d);
+    Mg_CallStartRound(scene, (void *)mState);
+    mTimer = 0;
+    mState = -1;
+    unk_020 = 0;
+    mSuspended = 0;
 }
 
 // @symbol _ZN10dMgState_c19RoundClearTop_EnterEv
 void dMgState_c::RoundClearTop_Enter() {
     int id;
     mTimer = 0xb4;
-    Mg_PlayJingle((void*)4);
+    Mg_PlayJingle((void *)4);
     id = 3;
-    if (sMgNextBanner != 0x1d) { id = sMgNextBanner; sMgNextBanner = 0x1d; }
+    if (sMgNextBanner != 0x1d) {
+        id = sMgNextBanner;
+        sMgNextBanner = 0x1d;
+    }
     Mg_ShowBanner(id, sMgTopBannerX, sMgTopBannerY - (sMgTopScreenYOffset + 0xc0), -1, -1, 0xa);
     mBehavior = pmf_dMgState_c_RoundClearTop_Update;
 }
@@ -734,17 +760,17 @@ void dMgState_c::RetryPromptB_Enter() {
 }
 
 // @symbol _ZN10dMgState_c19RetryPromptB_UpdateEv
-void dMgState_c::RetryPromptB_Update() {
-    Obj *obj;
+void dMgState_c ::RetryPromptB_Update() {
+    dFdBrightness_c *fader;
     if (Mg_CheckBannerButton(0)) {
-        obj = data_0209f5bc;
-        obj->SetForwardTime(0x1e, 0);
+        fader = data_0209f5bc;
+        ((FaderCallView *)fader)->SetForwardTime(0x1e, 0);
         mBehavior = pmf_dMgState_c_UpdateRetryFadeOut_3;
         return;
     }
     if (Mg_CheckBannerButton(2) || Mg_CheckBannerButton(1)) {
-        obj = data_0209f5bc;
-        if (obj->IsBetweenStartAndEnd())
+        fader = data_0209f5bc;
+        if (fader->IsBetweenStartAndEnd())
             return;
         dScene_c::SetFaders(&data_0209f61c);
         data_0209f61c.func_0202ec9c(2);
@@ -774,7 +800,7 @@ void dMgState_c::ScoreThenRound_Update() {
             return;
         if (scene->CanEndState(mState) == 0)
             return;
-        data_0209f5bc->SetBackwardTime(0x1e, 0);
+        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
         FreeGfxSlotsById(0x1d);
         Mg_RestoreMusic();
         Mg_StartMusic();
@@ -787,7 +813,7 @@ void dMgState_c::ScoreThenRound_Update() {
         if (mTimer != 0)
             return;
         if (data_0209f5bc->IsBetweenStartAndEnd() == 0)
-            data_0209f5bc->SetForwardTime(0x1e, 0);
+            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
     }
 }
 
@@ -804,27 +830,27 @@ void dMgState_c::RetryPromptWideB_Enter() {
 
 // @symbol _ZN10dMgState_c17UpdateRetryPromptEv
 void dMgState_c::UpdateRetryPrompt() {
-  if (mTimer == 0) {
-    if (Mg_CheckBannerButton(0) != 0) {
-      data_0209f5bc->SetForwardTime(0x1e, 0);
-      mBehavior = pmf_dMgState_c_UpdateRetryFadeOut_2;
-      return;
-    }
-    if (Mg_CheckBannerButton(2) == 0) {
-      if (Mg_CheckBannerButton(1) == 0)
+    if (mTimer == 0) {
+        if (Mg_CheckBannerButton(0) != 0) {
+            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+            mBehavior = pmf_dMgState_c_UpdateRetryFadeOut_2;
+            return;
+        }
+        if (Mg_CheckBannerButton(2) == 0) {
+            if (Mg_CheckBannerButton(1) == 0)
+                return;
+        }
+        if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
+            return;
+        dScene_c::SetFaders(&data_0209f61c);
+        data_0209f61c.func_0202ec9c(2);
+        dScene_c::StartSceneFade(5, 0, 0);
+        func_02012dd0((void *)0x3c);
         return;
     }
-    if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
-      return;
-    dScene_c::SetFaders(&data_0209f61c);
-    data_0209f61c.func_0202ec9c(2);
-    dScene_c::StartSceneFade(5, 0, 0);
-    func_02012dd0((void*)0x3c);
-    return;
-  }
-  Mg_ShowBanner(0, sMgPlayAgainX, sMgPlayAgainY, -1, -1, 0xd);
-  Mg_ShowBanner(2, sMgQuitX, sMgQuitY, -1, -1, 0xd);
-  mTimer = 0;
+    Mg_ShowBanner(0, sMgPlayAgainX, sMgPlayAgainY, -1, -1, 0xd);
+    Mg_ShowBanner(2, sMgQuitX, sMgQuitY, -1, -1, 0xd);
+    mTimer = 0;
 }
 
 // @symbol _ZN10dMgState_c21DigitsThenRound_EnterEv
@@ -838,27 +864,27 @@ void dMgState_c::DigitsThenRound_Enter() {
 
 // @symbol _ZN10dMgState_c20UpdateFadeThenResumeEv
 void dMgState_c::UpdateFadeThenResume() {
-  if (data_0209f5bc->IsAtEnd()) {
-    Base* scene = gMgScene;
-    if (scene == 0)
-      return;
-    if (scene->CanEndState(mState) == 0)
-      return;
-    data_0209f5bc->SetBackwardTime(0x1e, 0);
-    Mg_RestoreMusic();
-    Mg_StartMusic();
-    Mg_CallStartRound(scene, (void *)mState);
-    FreeGfxSlotsById(0x1d);
-    mTimer = 0;
-    mState = -1;
-    unk_020 = 0;
-    mSuspended = 0;
-  } else {
-    if (mTimer != 0)
-      return;
-    if (data_0209f5bc->IsBetweenStartAndEnd() == 0)
-      data_0209f5bc->SetForwardTime(0x1e, 0);
-  }
+    if (data_0209f5bc->IsAtEnd()) {
+        Base *scene = gMgScene;
+        if (scene == 0)
+            return;
+        if (scene->CanEndState(mState) == 0)
+            return;
+        ((FaderCallView *)data_0209f5bc)->SetBackwardTime(0x1e, 0);
+        Mg_RestoreMusic();
+        Mg_StartMusic();
+        Mg_CallStartRound(scene, (void *)mState);
+        FreeGfxSlotsById(0x1d);
+        mTimer = 0;
+        mState = -1;
+        unk_020 = 0;
+        mSuspended = 0;
+    } else {
+        if (mTimer != 0)
+            return;
+        if (data_0209f5bc->IsBetweenStartAndEnd() == 0)
+            ((FaderCallView *)data_0209f5bc)->SetForwardTime(0x1e, 0);
+    }
 }
 
 // @symbol _ZN10dMgState_c22BannerEThenRound_EnterEv
@@ -957,7 +983,7 @@ void dMgState_c::ResultsNewRecord_Update() {
         s -= Mg_GetTopScreenYOffset();
 
     Mg_ShowBanner(id, sMgResultsBannerX, s, -1, -1, 0xd);
-    Mg_PlayJingle((void*)1);
+    Mg_PlayJingle((void *)1);
 }
 
 // @symbol _ZN10dMgState_c14GameOver_EnterEv
@@ -977,7 +1003,8 @@ void dMgState_c::GameOver_Update() {
         int off = idx * 4;
         int ok = 0;
         if (gTouchHeld[off]) {
-            if (gTouchEdge[off]) ok = 1;
+            if (gTouchEdge[off])
+                ok = 1;
         }
         if (ok == 0)
             return;
@@ -1017,7 +1044,8 @@ void dMgState_c::Finished_Update() {
         int off = idx * 4;
         int ok = 0;
         if (gTouchHeld[off]) {
-            if (gTouchEdge[off]) ok = 1;
+            if (gTouchEdge[off])
+                ok = 1;
         }
         if (ok == 0)
             return;
@@ -1036,7 +1064,8 @@ void dMgState_c::Finished_Update() {
 // @symbol _ZN10dMgState_c9DrawScoreEv
 void dMgState_c::DrawScore() {
     int r;
-    if (gMgScene == 0) return;
+    if (gMgScene == 0)
+        return;
     r = Mg_GetSubmittedScore();
     Mg_DrawBigNumber(sMgScoreX, sMgScoreY, r, -1, -1, 0, 0);
 }
@@ -1046,7 +1075,8 @@ void dMgState_c::DrawScoreDigits() {
     unsigned int r;
     int idx;
 
-    if (gMgScene == 0) return;
+    if (gMgScene == 0)
+        return;
 
     r = Mg_GetSubmittedScore();
     Mg_DrawBigNumber(sMgScoreDigitsX + 4, sMgScoreDigitsY, r / 100, -1, -1, 1, 0);
@@ -1069,15 +1099,16 @@ void dMgState_c::DrawScoreDigits() {
 // @symbol _ZN10dMgState_c15DrawRecordTableEv
 void dMgState_c::DrawRecordTable() {
     void *g = gMgScene;
-    if (g == 0) return;
+    if (g == 0)
+        return;
     Mg_DrawRecordTable(g);
-    if (mTimer > 0) return;
+    if (mTimer > 0)
+        return;
     Mg_DrawBlinkSprite(g, 0xe0, 0xa0);
 }
 
 // @symbol Mg_PlaceBannersOnTopScreen
-extern "C" void Mg_PlaceBannersOnTopScreen(void)
-{
+extern "C" void Mg_PlaceBannersOnTopScreen(void) {
     int v1 = -0x1c - Mg_GetTopScreenYOffset();
     sMgWinBannerX = 0x80;
     sMgWinBannerY = v1;
@@ -1098,8 +1129,7 @@ extern "C" void Mg_PlaceBannersOnTopScreen(void)
 }
 
 // @symbol Mg_ResetRecordBannerPos
-extern "C" void Mg_ResetRecordBannerPos(void)
-{
+extern "C" void Mg_ResetRecordBannerPos(void) {
     sMgResultsBannerX = 0x80;
     sMgResultsBannerY = -0x1c;
 }
@@ -1110,4 +1140,6 @@ extern "C" void Mg_SetPerfectBanner(void) {
 }
 
 // @symbol Mg_SetNextBanner
-extern "C" void Mg_SetNextBanner(int v) { sMgNextBanner = v; }
+extern "C" void Mg_SetNextBanner(int v) {
+    sMgNextBanner = v;
+}

@@ -9,99 +9,103 @@
 /* One curling stone, 0x30 bytes, eleven of them at 0x4660 (dScMgCurling_c's
  * stone is the same record at 0x2c; this one carries four more bytes). */
 struct dScMgCurling2_stone {
-    s32 x;              /* 0x00 */
-    s32 y;              /* 0x04 */
-    s32 speed;          /* 0x08 */
-    s32 prevX;          /* 0x0c, snapshot of x before this frame's step */
-    s32 prevY;          /* 0x10 */
-    s32 velX;           /* 0x14, per-frame step while the stylus steers */
-    s32 velY;           /* 0x18 */
-    s32 snd;            /* 0x1c, rolling-sound slot for func_02012468 */
-    u16 timer;          /* 0x20, counts down while the stone is active */
-    u16 spinVel;        /* 0x22, sprite spin rate, written from speed and angle */
-    u16 spinAngle;      /* 0x24, accumulates spinVel */
-    u16 angle;          /* 0x26, travel heading */
-    u8  state;          /* 0x28 */
-    u8  active;         /* 0x29 */
-    u8  visible;        /* 0x2a, draw gate */
-    u8  fast;           /* 0x2b, speed >= 0x3800 after a hit */
-    u8  unk2c;          /* 0x2c */
-    u8  target;         /* 0x2d, a house stone: alt sprite, x100 score */
-    u8  unk2e[0x2];     /* 0x2e */
+    s32 x;         /* 0x00 */
+    s32 y;         /* 0x04 */
+    s32 speed;     /* 0x08 */
+    s32 prevX;     /* 0x0c, snapshot of x before this frame's step */
+    s32 prevY;     /* 0x10 */
+    s32 grabX;     /* 0x14, stone position minus stylus position, in Fix12 */
+    s32 grabY;     /* 0x18 */
+    s32 snd;       /* 0x1c, rolling-sound slot for func_02012468 */
+    u16 timer;     /* 0x20, counts down while the stone is active */
+    u16 spinVel;   /* 0x22, sprite spin rate, written from speed and angle */
+    u16 spinAngle; /* 0x24, accumulates spinVel */
+    u16 angle;     /* 0x26, travel heading */
+    u8 state;      /* 0x28 */
+    u8 active;     /* 0x29 */
+    u8 visible;    /* 0x2a, draw gate */
+    u8 fast;       /* 0x2b, speed >= 0x3800 after a hit */
+    u8 unk2c;      /* 0x2c */
+    u8 target;     /* 0x2d, a house stone: alt sprite, x100 score */
+    u8 unk2e[0x2]; /* 0x2e */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char dScMgCurling2_stone_size_must_be_0x30[sizeof(struct dScMgCurling2_stone) == 0x30 ? 1 : -1];
+typedef char
+    dScMgCurling2_stone_size_must_be_0x30[sizeof(struct dScMgCurling2_stone) == 0x30 ? 1 : -1];
 #endif
 
 /* Falling piece, 0x24 bytes, 0x32 of them at 0x48c0. Seeded across the top
  * of the screen and recycled once y passes 0xc8. */
 struct dScMgCurling2_piece {
-    s32 x;              /* 0x00, 20.12 */
-    s32 y;              /* 0x04, 20.12 */
-    s32 xInc;           /* 0x08 */
-    s32 yInc;           /* 0x0c */
-    s32 yTarget;        /* 0x10, the value yInc ramps toward */
-    u16 countdown;      /* 0x14 */
-    u16 countdown2;     /* 0x16 */
-    u16 countdown3;     /* 0x18 */
-    u8  pad1a[2];       /* 0x1a */
-    u8  updateEnable;   /* 0x1c */
-    u8 modeIndex;       /* 0x1d, into sCurling2StepModeTable */
-    u8 xIndex;          /* 0x1e, into sCurling2StepXTable or _021419b8 */
-    u8 yIndex;          /* 0x1f, into sCurling2StepYTable */
-    u8  drawEnable;     /* 0x20 */
-    u8 sprite0;         /* 0x21, into sCurlingBitSprites */
-    u8  sprite1;        /* 0x22 */
-    u8  pad23;          /* 0x23 */
+    s32 x;           /* 0x00, 20.12 */
+    s32 y;           /* 0x04, 20.12 */
+    s32 xInc;        /* 0x08 */
+    s32 yInc;        /* 0x0c */
+    s32 yTarget;     /* 0x10, the value yInc ramps toward */
+    u16 countdown;   /* 0x14 */
+    u16 countdown2;  /* 0x16 */
+    u16 countdown3;  /* 0x18 */
+    u8 pad1a[2];     /* 0x1a */
+    u8 updateEnable; /* 0x1c */
+    u8 modeIndex;    /* 0x1d, into sCurling2StepModeTable */
+    u8 xIndex;       /* 0x1e, into sCurling2StepXTable or _021419b8 */
+    u8 yIndex;       /* 0x1f, into sCurling2StepYTable */
+    u8 drawEnable;   /* 0x20 */
+    u8 sprite0;      /* 0x21, into sCurlingBitSprites */
+    u8 sprite1;      /* 0x22 */
+    u8 pad23;        /* 0x23 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char dScMgCurling2_piece_size_must_be_0x24[sizeof(struct dScMgCurling2_piece) == 0x24 ? 1 : -1];
+typedef char
+    dScMgCurling2_piece_size_must_be_0x24[sizeof(struct dScMgCurling2_piece) == 0x24 ? 1 : -1];
 #endif
 
 /* Number spawned between two stones when they collide, 0x18 bytes,
  * 0x3c of them at 0x4fe0. */
 struct dScMgCurling2_value {
-    s32 x;              /* 0x00, 20.12 */
-    s32 y;              /* 0x04, 20.12 */
-    s32 xInc;           /* 0x08, zeroed at spawn and never read */
-    s32 yInc;           /* 0x0c, decays by 0x40 a frame */
-    u16 lifetime;       /* 0x10 */
-    u16 value;          /* 0x12, drawn as the sprite's number */
-    u8  live;           /* 0x14 */
-    u8  mode;           /* 0x15, 1 or 2 */
-    u8  pad16[2];       /* 0x16 */
+    s32 x;        /* 0x00, 20.12 */
+    s32 y;        /* 0x04, 20.12 */
+    s32 xInc;     /* 0x08, zeroed at spawn and never read */
+    s32 yInc;     /* 0x0c, decays by 0x40 a frame */
+    u16 lifetime; /* 0x10 */
+    u16 value;    /* 0x12, drawn as the sprite's number */
+    u8 live;      /* 0x14 */
+    u8 mode;      /* 0x15, 1 or 2 */
+    u8 pad16[2];  /* 0x16 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char dScMgCurling2_value_size_must_be_0x18[sizeof(struct dScMgCurling2_value) == 0x18 ? 1 : -1];
+typedef char
+    dScMgCurling2_value_size_must_be_0x18[sizeof(struct dScMgCurling2_value) == 0x18 ? 1 : -1];
 #endif
 
 /* Per-throw score marker, 0x10 bytes, five of them at 0x4870 -- one per
  * thrown stone. The caption is drawn once the countdown expires. */
 struct dScMgCurling2_mark {
-    s32 x;              /* 0x00, 20.12 */
-    s32 y;              /* 0x04 */
-    u16 value;          /* 0x08, the caption */
-    u16 countdown;      /* 0x0a, frames until the caption shows */
-    u8  enable;         /* 0x0c, the countdown runs while set */
-    u8  drawn;          /* 0x0d, set on expiry; DrawMarks gates on it */
-    u8  unk0e[0x2];     /* 0x0e */
+    s32 x;         /* 0x00, 20.12 */
+    s32 y;         /* 0x04 */
+    u16 value;     /* 0x08, the caption */
+    u16 countdown; /* 0x0a, frames until the caption shows */
+    u8 enable;     /* 0x0c, the countdown runs while set */
+    u8 drawn;      /* 0x0d, set on expiry; DrawMarks gates on it */
+    u8 unk0e[0x2]; /* 0x0e */
 };
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char dScMgCurling2_mark_size_must_be_0x10[sizeof(struct dScMgCurling2_mark) == 0x10 ? 1 : -1];
+typedef char
+    dScMgCurling2_mark_size_must_be_0x10[sizeof(struct dScMgCurling2_mark) == 0x10 ? 1 : -1];
 #endif
 
 struct dScMgCurling2_c : dScMgBase_c {
     virtual ~dScMgCurling2_c();
 
-    virtual s32 InitResources();  /* slot 0 */
-    virtual s32 Behavior();       /* slot 6 */
-    virtual s32 Render();         /* slot 9 */
-    virtual void StartRound(int arg);               /* slot 18 */
+    virtual s32 InitResources();      /* slot 0 */
+    virtual s32 Behavior();           /* slot 6 */
+    virtual s32 Render();             /* slot 9 */
+    virtual void StartRound(int arg); /* slot 18 */
 
     /* Slot 18 left unnamed -- same reasoning as dScMgCurling_c.h. */
 
@@ -165,16 +169,16 @@ struct dScMgCurling2_c : dScMgBase_c {
      * stone-state handlers ride sCurling2StoneTable on mStone[i].state, and
      * the remaining helpers take the object as their first argument. These
      * names are coined too; the ROM does not carry them. */
-    void BeginRound();                 /* Behavior state 0 */
-    void Play();                       /* Behavior state 1 */
-    void NextThrow();                  /* Behavior state 2 */
-    void EndRound();                   /* Behavior state 3 */
-    void Idle();                       /* Behavior state 4 */
+    void BeginRound(); /* Behavior state 0 */
+    void Play();       /* Behavior state 1 */
+    void NextThrow();  /* Behavior state 2 */
+    void EndRound();   /* Behavior state 3 */
+    void Idle();       /* Behavior state 4 */
 
-    void StoneWait(int i);             /* stone state 0 */
-    void StoneSlide(int i);            /* stone state 1 */
-    void StoneRest(int i);             /* stone state 2 */
-    void StoneSteer(int i);            /* stone state 3 */
+    void StoneWait(int i);  /* stone state 0 */
+    void StoneSlide(int i); /* stone state 1 */
+    void StoneRest(int i);  /* stone state 2 */
+    void StoneSteer(int i); /* stone state 3 */
 
     void StoneSpin(int i);
     void NextStone();
@@ -208,33 +212,33 @@ struct dScMgCurling2_c : dScMgBase_c {
     u8 pad_4fdc[0x4];
     dScMgCurling2_value mValue[0x3c]; /* 0x4fe0 */
     s32 mState;                       /* 0x5580, Behavior state, indexes sCurling2BehaviorTable */
-    s32 mDragX;                       /* 0x5584, drag point x (fx32) */
-    s32 mDragY;                       /* 0x5588, drag point y */
-    s32 mGrabX;                       /* 0x558c, drag x + grab offset, latched at the grab */
-    s32 mTurnY;                       /* 0x5590, drag y at the last direction change */
-    s32 mDragOffsetX;                 /* 0x5594, drag point x offset from the stylus */
-    s32 mDragOffsetY;                 /* 0x5598, drag point y offset */
-    s32 mThrowPower;                  /* 0x559c, throw power, capped at 0xc000 */
+    s32 mDragX;                       /* 0x5584, drag x (fx32) */
+    s32 mDragY;                       /* 0x5588, drag y */
+    s32 mGrabX;                       /* 0x558c, drag x + grab x latch */
+    s32 mSwingReferenceY;             /* 0x5590, drag y at the last direction change */
+    s32 mGrabOffsetX;                 /* 0x5594, drag x offset from the stylus */
+    s32 mGrabOffsetY;                 /* 0x5598, drag y offset */
+    s32 mThrowSpeed;                  /* 0x559c, throw power, capped at 0xc000 */
     s32 unk_55a0;                     /* 0x55a0 */
     s32 unk_55a4;                     /* 0x55a4 */
-    s32 mLastDragDy;                  /* 0x55a8, last vertical drag step */
-    s32 mTopRecord;                   /* 0x55ac, Mg_GetTopRecord() at round start */
+    s32 mLastSwingDeltaY;             /* 0x55a8, last drag dy */
+    s32 mTopRecord;                   /* 0x55ac, cached Mg_GetTopRecord result */
     u16 unk_55b0;                     /* 0x55b0 */
     u16 mThrowAngle;                  /* 0x55b2, throw angle, clamped to 0x9800..0xe800 */
     u16 mSpawnTimer;                  /* 0x55b4, counts down to the next stone */
     u16 mStateTimer;                  /* 0x55b6, state-entry countdown */
     u8 mDragState;                    /* 0x55b8, drag-state index into sCurling2DragTable */
-    u8 mShowCursor;                   /* 0x55b9, DrawCursor draws while set */
+    u8 mCursorVisible;                /* 0x55b9, enables DrawCursor */
     u8 thrown;                        /* 0x55ba, stones thrown this round (0..5) */
     u8 spawning;                      /* 0x55bb, a stone is queued to spawn */
     u8 gameOver;                      /* 0x55bc, set once the last stone is thrown */
     u8 sndCooldown;                   /* 0x55bd, scrape-sound throttle */
-    u8 mDragPhase;                    /* 0x55be, vertical direction-change phase */
+    u8 mSwingState;                   /* 0x55be, drag phase */
     u8 combo;                         /* 0x55bf, collision-streak counter for SpawnValue */
     u8 unk_55c0;                      /* 0x55c0 */
     u8 unk_55c1;                      /* 0x55c1 */
     u8 unk_55c2;                      /* 0x55c2 */
-    u8 mShowCounter;                  /* 0x55c3, DrawCounter draws while set */
+    u8 mCounterVisible;               /* 0x55c3, enables DrawCounter */
 };
 
 #ifndef SM64DS_PLATFORM_PC

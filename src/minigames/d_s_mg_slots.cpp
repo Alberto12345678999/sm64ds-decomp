@@ -17,11 +17,7 @@
 // leftovers:
 // - Slot1 InitResources fills the reel strips through a raw char* cursor
 //   over 0x46c0..0x46ff: the member-indexed form DIFFs (measured), so only
-//   the scalar stores use the mReelStop/mReelScroll/mReelSpinning members.
-// - The SlotReels view (reel strips, stops, matchSymbol, wilds) is local:
-//   the strip lengths and win state on dScMgSlot1_c.h/dScMgSlot3_c.h are
-//   still pads, so the reel helpers index through it (callers: the Slot3
-//   state-table handlers dispatching through sSlot3StateTable).
+//   the scalar stores use the mSymbolIndex/mReelScroll/mReelSpinning members.
 // - The ROM PMF constants the Slot3 state table copies (data_ov006_0213e5xx)
 //   come from unlicensed .data, in retail copy order.
 // - SaveScreenForMenu/RestoreScreenFromMenu keep slot-identity names from
@@ -58,7 +54,6 @@ enum dScMgSlots_AssetId {
 #include "OAM.h"
 #include "dScMgBase_c.h"
 #include "decl_common.h"
-#include "private/ov006_slotgrid.h"
 #include "types.h"
 #include "PlayerInput.h"
 #include "dWipe_c.h"
@@ -71,36 +66,32 @@ enum dScMgSlots_AssetId {
  * then emitted in SOURCE order, so this file is written in ASCENDING ROM order.
  */
 
-struct G2 { static void* GetBG1ScrPtr(); };
+struct G2 {
+    static void *GetBG1ScrPtr();
+};
 
 typedef void (dScMgSlot3_c::*SlotState)();
 
 /* One player's 4-byte touch record (PlayerInput.h): Slot1 Behavior reads
  * x/y through this view so the compiler, not the source, hoists them. */
-struct TouchRec { u8 held; u8 edge; u8 x; u8 y; };
-
-struct SlotReels {
-    u8 pad[0x46c0];
-    u8 reels[3][0x15];  /* symbol strip per reel */
-    u8 stops[3];        /* where each reel stopped */
-    u8 pad2[6];
-    u8 speedLevel;
-    u8 matchSymbol;
-    u8 pad3;
-    u8 wilds;           /* count of symbol 5, which matches anything */
+struct TouchRec {
+    u8 held;
+    u8 edge;
+    u8 x;
+    u8 y;
 };
 
 extern "C" {
 extern int sMgMainBannerY;
 void SetBg1Offset(int a, int b);
 int GetGameLanguage(void);
-void* func_02054ea8(void);
+void *func_02054ea8(void);
 // Retained caller ABI: narrowing to the definition's u16 adds a mask in InitMainScreenBg.
-unsigned int LoadCompressedFileAt(int fileID, void* target);
+unsigned int LoadCompressedFileAt(int fileID, void *target);
 extern unsigned char data_0209d45c;
-extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-void Mg_AddCredits(void* c, int delta);
-void Mg_SubCredits(void* c, int val);
+extern unsigned char DecIfAbove0_Byte(unsigned char *p);
+void Mg_AddCredits(void *c, int delta);
+void Mg_SubCredits(void *c, int val);
 extern unsigned int func_02012790(unsigned int arg);
 extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
@@ -109,7 +100,8 @@ extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 extern int Sound_PlayIfNotActive(int, int, int, int);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);
+void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int a2, int a3, int a4, int a5,
+                                                 int a6, int a7, int a8, int a9);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
 void Mg_DrawScoreTally(char *a0, int a1, int a2, int a3);
@@ -141,23 +133,23 @@ extern void _ZN8Particle10SysTrackerC1Ev(void *);
 extern int Mascot_Construct(char *t);
 extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV12dScMgSlot3_c[];
-extern void RenderOamMainScreen(void*, int, int, int, int);
+extern void RenderOamMainScreen(void *, int, int, int, int);
 extern void *sSlotsSlotBlinkSprites;
 extern void Mg_LoseCredits(void *c);
 extern void func_ov001_020ab3f0(void *c);
-void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
-extern void* data_ov006_0213e528[];
+void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *m);
+extern void *data_ov006_0213e528[];
 int TouchArea_Update(void *c, int x);
 void SlotBet_OnTouch(void *c);
 void Mg_GainCredits(int x);
-extern void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
+extern void func_ov001_020ab5b0(char *r0, int r1, short r2, short r3, short s4, short s5);
 extern int Mg_GetSavedRecord0(void);
 extern int sSlot1ReelPos[][2];
 extern void *sSlot1Sprites[];
 extern unsigned char sSlot1Payouts[];
 extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
-extern void Mg_RenderSubSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5);
-extern void SlotBlink_Draw(unsigned char* o);
+extern void Mg_RenderSubSpritePalMtx(void *a0, int a1, int a2, int a3, int a4, void *a5);
+extern void SlotBlink_Draw(unsigned char *o);
 extern void Mg_SaveRecordPair(int a, int b);
 extern void Mg_PlayJingle(void *c);
 extern void SlotLamp_Start(void *o);
@@ -182,7 +174,8 @@ extern char *_ZN3G2S13GetBG0CharPtrEv(void);
 extern char *_ZN3G2S12GetBG0ScrPtrEv(void);
 extern char *_ZN3G2S12GetBG1ScrPtrEv(void);
 extern char *_ZN3G2S12GetBG3ScrPtrEv(void);
-extern void Mg_RenderSubSpriteScaled(void* a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
+extern void Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5,
+                                     unsigned short a6);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 }
 
@@ -191,16 +184,13 @@ extern void MultiStore16(u16 val, char *dst, int nbytes);
    original ownership model: the compiler destroys the typed mBetIcon member,
    emitting betIcon_c's then dThIcon_c's vtable writes, before chaining to the
    dScMgBase_c base destructor. */
-dScMgSlot1_c::~dScMgSlot1_c()
-{
-}
+dScMgSlot1_c::~dScMgSlot1_c() {}
 
 // @symbol _ZN12dScMgSlot1_cD0Ev
 /* The compiler emits D0 from the complete-object destructor above. */
 
 // @symbol _ZN12dScMgSlot3_cD1Ev
-dScMgSlot3_c::~dScMgSlot3_c()
-{
+dScMgSlot3_c::~dScMgSlot3_c() {
     Mascot_Destruct((char *)this + 0x4f38);
 }
 
@@ -212,11 +202,10 @@ dScMgSlot3_c::~dScMgSlot3_c()
    back, then runs the base restore. This body is the arity witness cited
    in include/dScMgBase_c.h's slot-30 block.  The read-modify-write below clobbers
    r1 before the tail call, so the base cannot be taking a second argument. */
-void dScMgSlot3_c::RestoreScreenFromMenu()
-{
+void dScMgSlot3_c::RestoreScreenFromMenu() {
     void *a = (void *)this;
 
-    *(volatile unsigned short*)0x400000A = (*(volatile unsigned short*)0x400000A & 0x43) | 0x1118;
+    *(volatile unsigned short *)0x400000A = (*(volatile unsigned short *)0x400000A & 0x43) | 0x1118;
     ((dScMgBase_c *)a)->dScMgBase_c::RestoreScreenFromMenu();
 }
 
@@ -229,11 +218,10 @@ void dScMgSlot3_c::RestoreScreenFromMenu()
    strh` -- and only then tail-branches into the base with `bx ip`.  A second
    argument passed in r1 would reach dScMgBase_c::SaveScreenForMenu as a
    display-control word, so the base cannot be reading one. */
-int dScMgSlot3_c::SaveScreenForMenu()
-{
+int dScMgSlot3_c::SaveScreenForMenu() {
     void *a = (void *)this;
 
-    *(volatile unsigned short*)0x400000A = (*(volatile unsigned short*)0x400000A & 0x43) | 0x1000;
+    *(volatile unsigned short *)0x400000A = (*(volatile unsigned short *)0x400000A & 0x43) | 0x1000;
     return ((dScMgBase_c *)a)->dScMgBase_c::SaveScreenForMenu();
 }
 
@@ -249,13 +237,12 @@ int dScMgSlot3_c::SaveScreenForMenu()
    the shared screen map -- and then one more write, leaving BG1CNT at 0x1118
    instead of 0x1000: the same layer, pointed at this minigame's own character
    and screen base blocks. */
-void dScMgSlot3_c::InitMainScreenBg()
-{
+void dScMgSlot3_c::InitMainScreenBg() {
     int idx;
 
-    *(volatile unsigned short*)0x400000a &= ~3;
-    *(volatile unsigned short*)0x400000a = (*(volatile unsigned short*)0x400000a & 0x43) | 0x1000;
-    *(volatile unsigned short*)0x400000a &= ~0x40;
+    *(volatile unsigned short *)0x400000a &= ~3;
+    *(volatile unsigned short *)0x400000a = (*(volatile unsigned short *)0x400000a & 0x43) | 0x1000;
+    *(volatile unsigned short *)0x400000a &= ~0x40;
 
     SetBg1Offset(0, 0);
 
@@ -265,46 +252,47 @@ void dScMgSlot3_c::InitMainScreenBg()
     LoadCompressedFileAt(sSlotPauseBgNcgByLanguage[idx], func_02054ea8());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_PAUSE_NSC_BIN, G2::GetBG1ScrPtr());
 
-    *(volatile unsigned short*)0x400000a = (*(volatile unsigned short*)0x400000a & 0x43) | 0x1118;
+    *(volatile unsigned short *)0x400000a = (*(volatile unsigned short *)0x400000a & 0x43) | 0x1118;
 }
 
 // @symbol Slot3_ReelDigits
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void Slot3_ReelDigits(char *c, int idx);
-void Slot3_ReelDigits(char *c, int idx){
-    int d = (*(int*)(c + idx*4 + 0x4fe4) >> 12) / 80;
-    int i;
-    char *dst = c + idx*3;
-    char *src = c + idx*5;
-    for (i = 0; i < 3; i++) {
-        *(unsigned char*)(dst + 0x5031) = *(unsigned char*)(src + d + 0x501c);
-        d = (d + 1) % *(unsigned char*)(c + 0x503a);
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void Slot3_ReelDigits(char *sceneBytes, int reelIndex);
+// Keep the strided byte cursors: a native mStripLength read grows this body by 8 bytes.
+void Slot3_ReelDigits(char *c, int reelIndex) {
+    int symbolIndex = (*(int *)(c + reelIndex * 4 + 0x4fe4) >> 12) / 80;
+    int column;
+    char *dst = c + reelIndex * 3;
+    char *stripBytes = c + reelIndex * 5;
+    for (column = 0; column < 3; column++) {
+        *(unsigned char *)(dst + 0x5031) = *(unsigned char *)(stripBytes + symbolIndex + 0x501c);
+        symbolIndex = (symbolIndex + 1) % *(unsigned char *)(c + 0x503a);
         dst += 1;
     }
 }
 }
 
 // @symbol Slot3_StateDone
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_StateDone(void) {}
 }
 
 // @symbol Slot3_StateGameOver
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 
 void Slot3_StateGameOver(char *c) {
     dScMgSlot3_c *self = (dScMgSlot3_c *)c;
-    if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
+    if (DecIfAbove0_Byte(&self->mStateTimer) == 0) {
         self->mState = 7;
         Mg_SetSharedState(MG_STATE_GAME_OVER);
-        self->mDifficulty = 0;
+        self->mReelDifficulty = 0;
     }
-    if (self->mTimer >= 0x3c)
+    if (self->mStateTimer >= 0x3c)
         return;
     {
-        int* a = &self->mReelWinPos[0];
-        int* b = &self->mReelWinPos[1];
-        int* d = &self->mReelWinPos[2];
+        int *a = &self->mReelWinPos[0];
+        int *b = &self->mReelWinPos[1];
+        int *d = &self->mReelWinPos[2];
         *a = *a + 0x10000;
         *b = *b - 0x10000;
         *d = *d + 0x10000;
@@ -313,46 +301,47 @@ void Slot3_StateGameOver(char *c) {
 }
 
 // @symbol Slot3_StateWait
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_StateWait(void) {}
 }
 
 // @symbol Slot3_StatePayout
 extern "C" void Slot3_StatePayout(char *c) {
-    if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
-        if (*(int*)(c + 0x5000) == 3) {
-            if (*(int*)(c + 0xb4) < 0x270f)
-                *(int*)(((int)c + 0xb4)) += 1;
-            if (*(int*)(c + 0xb4) > *(int*)(c + 0xb8))
-                *(int*)(c + 0xb8) = *(int*)(c + 0xb4);
-            ((dScMgSlot3_c*)c)->StartRound(4);
+    dScMgSlot3_c *self = (dScMgSlot3_c *)c;
+    if (DecIfAbove0_Byte(&self->mStateTimer) == 0) {
+        if (self->mState == 3) {
+            if (self->mHudScore < 0x270f)
+                self->mHudScore += 1;
+            if (self->mHudScore > self->mBestHudScore)
+                self->mBestHudScore = self->mHudScore;
+            self->StartRound(4);
         } else {
-            if (*(int*)(c + 0xa8) <= 0) {
-                *(unsigned char*)(c + 0x503e) = 0x78;
-                *(int*)(c + 0x5000) = 6;
+            if (self->mCredits <= 0) {
+                self->mStateTimer = 0x78;
+                self->mState = 6;
             } else {
-                ((dScMgSlot3_c*)c)->StartRound(5);
+                self->StartRound(5);
             }
         }
     }
 
-    if (*(int*)(c + 0x5000) == 3) {
-        if (*(unsigned char*)(c + 0x503e) != 0x14)
+    if (self->mState == 3) {
+        if (self->mStateTimer != 0x14)
             return;
-        if (*(int*)(c + 0x5014) <= 0)
+        if (self->mPayoutRemaining <= 0)
             return;
-        *(int*)(((int)c + 0x5014)) -= 1;
+        self->mPayoutRemaining -= 1;
         Mg_AddCredits(c, 1);
         Sound::PlayBank2_2D(0x149);
-        *(unsigned char*)(((int)c + 0x503e)) += 5;
+        self->mStateTimer += 5;
         return;
     }
 
-    if (*(int*)(c + 0x5000) != 4)
+    if (self->mState != 4)
         return;
 
     {
-        unsigned char b = *(unsigned char*)(c + 0x503e);
+        unsigned char b = self->mStateTimer;
         if (b != 0x14 && b != 0x28 && b != 0x3c)
             return;
     }
@@ -362,65 +351,69 @@ extern "C" void Slot3_StatePayout(char *c) {
 }
 
 // @symbol Slot3_StateJudge
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_StateJudge(char *c) {
-    unsigned char buf[3];
-    int i;
-    int total;
-    int arg;
+    unsigned char columnSymbols[3];
+    int column;
+    int payout;
+    int score;
     char *self;
+    dScMgSlot3_c *scene = (dScMgSlot3_c *)c;
 
-    if (DecIfAbove0_Byte((unsigned char *)(c + 0x503e)) != 0)
+    if (DecIfAbove0_Byte(&scene->mStateTimer) != 0)
         return;
 
     self = c;
-    for (i = 0; i < 3; i++) {
-        int j;
-        buf[i] = *(unsigned char *)(self + 0x5031 + i);
-        j = 1;
+    for (column = 0; column < 3; column++) {
+        int reelIndex;
+        columnSymbols[column] = ((dScMgSlot3_c *)self)->mResultSymbols[0][column];
+        reelIndex = 1;
         do {
-            int rem = (i + (((int *)(self + 0x4fe4))[j] >> 12) / 80) % *(unsigned char *)(self + 0x503a);
-            if (buf[i] != ((SlotGrid *)self)->sym[j][rem]) {
-                buf[i] = 5;
+            int symbolIndex = (column + (((dScMgSlot3_c *)self)->mReelPos[reelIndex] >> 12) / 80) %
+                              ((dScMgSlot3_c *)self)->mStripLength;
+            if (columnSymbols[column] !=
+                ((dScMgSlot3_c *)self)->mReelStrip[reelIndex][symbolIndex]) {
+                columnSymbols[column] = 5;
                 break;
             }
-        } while (++j < 3);
-        self = (char *)((unsigned)self | (unsigned)(i - i));
+        } while (++reelIndex < 3);
+        // Retain the compiler address barrier; deleting it grows this body by 32 bytes.
+        self = (char *)((unsigned)self | (unsigned)(column - column));
     }
 
-    *(int *)(c + 0x5010) = -1;
-    total = 0;
+    scene->mWinColumn = -1;
+    payout = 0;
     {
-        int k;
-        for (k = 0; k < 3; k++) {
-            if (buf[k] == *(unsigned char *)(c + 0x503b)) {
-                if (k == 1) {
-                    *(int *)(c + 0x5010) = k;
-                    total += 6;
-                } else if (k == 0 || k == 2) {
-                    *(int *)(c + 0x5010) = k;
-                    total += 3;
+        int columnIndex;
+        for (columnIndex = 0; columnIndex < 3; columnIndex++) {
+            if (columnSymbols[columnIndex] == scene->mWinSymbol) {
+                if (columnIndex == 1) {
+                    scene->mWinColumn = columnIndex;
+                    payout += 6;
+                } else if (columnIndex == 0 || columnIndex == 2) {
+                    scene->mWinColumn = columnIndex;
+                    payout += 3;
                 }
                 break;
             }
         }
     }
 
-    arg = *(int *)(c + 0xb4);
-    if (total > 0) {
-        *(int *)(c + 0x5014) = total;
-        *(int *)(c + 0x5000) = 3;
+    score = scene->mHudScore;
+    if (payout > 0) {
+        scene->mPayoutRemaining = payout;
+        scene->mState = 3;
         func_02012790(0x26);
-        *(unsigned char *)(c + 0x503e) = 0x28;
-        arg += 1;
+        scene->mStateTimer = 0x28;
+        score += 1;
     } else {
-        *(int *)(c + 0x5000) = 4;
+        scene->mState = 4;
         func_02012790(0xe);
-        *(unsigned char *)(c + 0x503e) = 0x50;
+        scene->mStateTimer = 0x50;
     }
-    Mg_SubmitScore(arg);
+    Mg_SubmitScore(score);
 
-    *(unsigned char *)(c + 0xc3) = 0;
+    scene->mPromptEnabled = 0;
 }
 }
 
@@ -430,85 +423,79 @@ void Slot3_StateJudge(char *c) {
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 // @symbol Slot3_StateSpin
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
+/* Indexed address construction is byte-sensitive: direct member indexing of
+ * the stopped flags, scroll and direction adds 8 bytes. Scalar fields are native. */
 void Slot3_StateSpin(char *c) {
-    u8 idx;
-    int ok;
-    int off;
-    int i;
-    int new_var;
-    int *tab;
-    idx = gActivePlayerSlot;
-    ok = 0;
-    off = idx * 4;
-    new_var = 1;
-    if (gTouchHeld[idx * 4]) {
-        if (gTouchEdge[off]) {
-            ok = 1;
+    dScMgSlot3_c *scene = (dScMgSlot3_c *)c;
+    u8 playerSlot;
+    int touchPressed;
+    int touchOffset;
+    int reelIndex;
+    int one;
+    int *speedTable;
+    playerSlot = gActivePlayerSlot;
+    touchPressed = 0;
+    touchOffset = playerSlot * 4;
+    one = 1;
+    if (gTouchHeld[playerSlot * 4]) {
+        if (gTouchEdge[touchOffset]) {
+            touchPressed = 1;
         }
     }
-    if (ok != 0) {
-        unsigned int v = gTouchY[idx * 4];
-        if ((v >= 0x40) && (v < 0x58)) {
-            if ((*((u8 *)(c + 0x502b))) == new_var) {
-                *((u8 *)(c + 0x502b)) = 0;
-            }
-        } else if ((v >= 0x58) && (v < 0x70)) {
-            if ((*((u8 *)(c + 0x502c))) == 1) {
-                *((u8 *)(c + 0x502c)) = 0;
-            }
-        } else if ((v >= 0x70) && (v < 0x88)) {
-            if ((*((u8 *)(c + 0x502d))) == new_var) {
-                *((u8 *)(c + 0x502d)) = 0;
-            }
+    if (touchPressed != 0) {
+        unsigned int touchY = gTouchY[playerSlot * 4];
+        if (touchY >= 0x40 && touchY < 0x58) {
+            if (scene->mReelSpinning[0] == one)
+                scene->mReelSpinning[0] = 0;
+        } else if (touchY >= 0x58 && touchY < 0x70) {
+            if (scene->mReelSpinning[1] == 1)
+                scene->mReelSpinning[1] = 0;
+        } else if (touchY >= 0x70 && touchY < 0x88) {
+            if (scene->mReelSpinning[2] == one)
+                scene->mReelSpinning[2] = 0;
         }
     }
-    i = 0;
-    for (; i < 3; i++) {
-        if ((*((u8 *)((int)(((long long)((int)((c + i) + 0x502e))))))) == 0) {
-            int *p = (int *)(c + (i * 4));
-            int val;
-            int q;
-            int q2;
-            u8 *dir;
-            tab = data_ov006_0213e948;
-            p = (int *)((int)(((long long)((int)(((int)p) + 0x4fe4)))));
-            val = *p;
-            ;
-            q = (val >> 12) / 0x50;
-            if ((*((u8 *)((int)(((long long)((int)((c + i) + 0x5040))))))) == 1) {
-                *p = val - tab[((*((u8 *)(c + 0x503d))) * 3) + i];
-                if ((*p) < 0) {
-                    *p += *((int *)(c + 0x4ff0));
-                }
+    reelIndex = 0;
+    for (; reelIndex < 3; reelIndex++) {
+        if (*(u8 *)(int)(c + reelIndex + 0x502e) == 0) {
+            int *scroll = (int *)(c + reelIndex * 4);
+            int oldScroll;
+            int oldSymbol;
+            int newSymbol;
+            speedTable = data_ov006_0213e948;
+            scroll = (int *)(int)((int)scroll + 0x4fe4);
+            oldScroll = *scroll;
+            oldSymbol = (oldScroll >> 12) / 0x50;
+            if (*(u8 *)(int)(c + reelIndex + 0x5040) == 1) {
+                *scroll = oldScroll - speedTable[scene->mStoppedReelCount * 3 + reelIndex];
+                if (*scroll < 0)
+                    *scroll += scene->mReelPeriod;
             } else {
-                *p = val + tab[((*((u8 *)(c + 0x503d))) * 3) + i];
-                if ((*p) >= (*((int *)(c + 0x4ff0)))) {
-                    *p -= *((int *)(c + 0x4ff0));
-                }
+                *scroll = oldScroll + speedTable[scene->mStoppedReelCount * 3 + reelIndex];
+                if (*scroll >= scene->mReelPeriod)
+                    *scroll -= scene->mReelPeriod;
             }
-            if ((*((u8 *)((c + i) + 0x502b))) == 0) {
-                q2 = ((*p) >> 12) / 0x50;
-                if (q2 != q) {
-                    if ((*((u8 *)((int)(((long long)((int)((c + i) + 0x5040))))))) == new_var) {
-                        *p = (q * 0x50) << 12;
-                    } else {
-                        *p = (q2 * 0x50) << 12;
-                    }
-                    Slot3_ReelDigits(c, i);
-                    *((u8 *)((int)(((long long)((int)((c + i) + 0x502e)))))) = 1;
-                    *((u8 *)((int)(((long long)((int)(c + 0x503d)))))) += new_var;
-                    *((u8 *)(c + 0x503f)) = 0;
+            if (*(u8 *)(c + reelIndex + 0x502b) == 0) {
+                newSymbol = (*scroll >> 12) / 0x50;
+                if (newSymbol != oldSymbol) {
+                    if (*(u8 *)(int)(c + reelIndex + 0x5040) == one)
+                        *scroll = (oldSymbol * 0x50) << 12;
+                    else
+                        *scroll = (newSymbol * 0x50) << 12;
+                    Slot3_ReelDigits(c, reelIndex);
+                    *(u8 *)(int)(c + reelIndex + 0x502e) = 1;
+                    scene->mStoppedReelCount += one;
+                    scene->mFrameCounter = 0;
                     _ZN5Sound12PlayBank2_2DEj(0x1a9);
                 }
             }
         }
     }
-
-    *((int *)(c + 0x5008)) = Sound_PlayIfNotActive(*((int *)(c + 0x5008)), 2, 0x1a8, 0);
-    if ((*((u8 *)(c + 0x503d))) >= 3u) {
-        *((u8 *)(c + 0x503e)) = 0x1e;
-        *((int *)(c + 0x5000)) = 2;
+    scene->mSpinSoundHandle = Sound_PlayIfNotActive(scene->mSpinSoundHandle, 2, 0x1a8, 0);
+    if (scene->mStoppedReelCount >= 3u) {
+        scene->mStateTimer = 0x1e;
+        scene->mState = 2;
     }
 }
 }
@@ -517,41 +504,42 @@ void Slot3_StateSpin(char *c) {
 #pragma opt_strength_reduction on
 
 // @symbol Slot3_StateIntro
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 void Mascot_LookAt(char *c, int *src);
 void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 void Mascot_StopLooking(int *p);
 void FreeGfxSlotsById(int arg);
 
 void Slot3_StateIntro(char *p) {
-    if (*(int *)(p + 0x500c) == 0x50) {
+    dScMgSlot3_c *scene = (dScMgSlot3_c *)p;
+    if (scene->mReelDrawY == 0x50) {
         Mascot_LookAt(p + 0x4f38, 0);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
-    if (*(int *)(p + 0x500c) > 0) {
-        *(int *)(((int)p + 0x500c)) -= 1;
-        if (*(int *)(p + 0x500c) != 0)
+    if (scene->mReelDrawY > 0) {
+        scene->mReelDrawY -= 1;
+        if (scene->mReelDrawY != 0)
             return;
-        *(unsigned char *)(p + 0x503b) = *(unsigned char *)(p + 0x503c);
+        scene->mWinSymbol = scene->mNextWinSymbol;
         Mascot_StopLooking((int *)(p + 0x4f38));
         return;
     }
 
-    *(unsigned char *)(((int)p + 0x503e)) -= 1;
-    if (*(unsigned char *)(p + 0x503e) != 0)
+    scene->mStateTimer -= 1;
+    if (scene->mStateTimer != 0)
         return;
 
     FreeGfxSlotsById(0x1d);
 
     {
-        int *q = (int *)(p + 0x5000);
-        if (*(unsigned char *)(p + 0xc4) == 0) {
-            *(unsigned char *)(p + 0xc3) = 1;
-            *(unsigned char *)(p + 0xc4) = 1;
-            *(short *)(p + 0xc0) = 0;
+        int *state = &scene->mState;
+        if (scene->mPromptBlinkCount == 0) {
+            scene->mPromptEnabled = 1;
+            scene->mPromptBlinkCount = 1;
+            scene->mPromptBlinkTimer = 0;
         }
-        *q += 1;
+        *state += 1;
     }
 }
 }
@@ -561,14 +549,13 @@ void Slot3_StateIntro(char *p) {
 // the members outside them DIFF with them applied file-wide.
 #pragma opt_strength_reduction off
 // @symbol _ZN12dScMgSlot3_c10StartRoundEi
-void dScMgSlot3_c::StartRound(int mode)
-{
+void dScMgSlot3_c::StartRound(int mode) {
     char *c = (char *)this;
 
     if (mode == 3 || mode == 0x12) {
         mCredits = 0xc;
         mCreditsShown = mCredits;
-        mLevel = mDifficulty;
+        mLevel = mReelDifficulty;
         if (mLevel > 0x270e) {
             mLevel = 0x270e;
         }
@@ -576,7 +563,7 @@ void dScMgSlot3_c::StartRound(int mode)
         Mg_SubmitScore(mHudScore);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     } else if (mode == 4) {
-        if (mDifficulty < 5) {
+        if (mReelDifficulty < 5) {
             *(int *)(int)(c + 0x5004) += 1;
         }
         *(int *)(int)(c + 0xbc) += 1;
@@ -593,7 +580,7 @@ void dScMgSlot3_c::StartRound(int mode)
         u8 k;
         int m;
 
-        v = mDifficulty;
+        v = mReelDifficulty;
         if (v <= 0) {
             mStripLength = 3;
         } else if (v <= 2) {
@@ -602,15 +589,15 @@ void dScMgSlot3_c::StartRound(int mode)
             mStripLength = 5;
         }
 
-        v2 = mDifficulty;
+        v2 = mReelDifficulty;
         if (v2 <= 0 || v2 == 1 || v2 == 3) {
-            mReelReverse0 = 0;
-            mReelReverse1 = 1;
-            mReelReverse2 = 0;
+            mReelReverse[0] = 0;
+            mReelReverse[1] = 1;
+            mReelReverse[2] = 0;
         } else if (v2 == 2 || v2 == 4) {
-            mReelReverse0 = 1;
-            mReelReverse1 = 0;
-            mReelReverse2 = 1;
+            mReelReverse[0] = 1;
+            mReelReverse[1] = 0;
+            mReelReverse[2] = 1;
         } else {
             for (i = 0; i < 3; i++) {
                 if ((u8)(((u32)RandomIntInternal(&data_0209e650) >> 16) & 1)) {
@@ -621,10 +608,10 @@ void dScMgSlot3_c::StartRound(int mode)
             }
         }
 
-        mTargetFace = ((u32)RandomIntInternal(&data_0209e650) >> 16) % mStripLength;
+        mNextWinSymbol = ((u32)RandomIntInternal(&data_0209e650) >> 16) % mStripLength;
         if (mode != 4) {
             mReelDrawY = 0;
-            mWinSymbol = mTargetFace;
+            mWinSymbol = mNextWinSymbol;
         } else {
             mReelDrawY = 0x50;
             func_02012790(0x1aa);
@@ -642,7 +629,7 @@ void dScMgSlot3_c::StartRound(int mode)
                 }
             }
         }
-        mStripSpan = (mStripLength * 0x50) << 12;
+        mReelPeriod = (mStripLength * 0x50) << 12;
     }
 
     {
@@ -660,11 +647,11 @@ void dScMgSlot3_c::StartRound(int mode)
         for (m2 = 0; m2 < 3; m2++) {
             mReelWinPos[m2] = 0;
         }
-        mRowsStopped = 0;
-        mTimer = 0x3c;
+        mStoppedReelCount = 0;
+        mStateTimer = 0x3c;
         mState = 0;
         mWinColumn = -1;
-        mPayoutLeft = 0;
+        mPayoutRemaining = 0;
     }
 }
 
@@ -688,8 +675,7 @@ void dScMgSlot3_c::StartRound(int mode)
  * The pragma is load-bearing, not tidying; the `(int)` launder on the two indexed
  * reads at 0x4fe4/0x4ff4 is there for the same reason. Only the receiver changed:
  * `self` is `this` now instead of a char* parameter cast back to the class. */
-s32 dScMgSlot3_c::Render()
-{
+s32 dScMgSlot3_c::Render() {
     char *c = (char *)this;
     struct dScMgSlot3_c *self = this;
     int i, j;
@@ -705,8 +691,8 @@ s32 dScMgSlot3_c::Render()
         }
         for (i = 0; i < 3; i++) {
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-                0, sSlot3FaceSprites[self->mTargetFace * 3 + i], 0x80, self->mReelDrawY + 0x60, -1,
-                2, 0x1000, 0x1000, 0, 1);
+                0, sSlot3FaceSprites[self->mNextWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x60,
+                -1, 2, 0x1000, 0x1000, 0, 1);
         }
     } else {
         for (i = 0; i < 3; i++) {
@@ -749,7 +735,7 @@ s32 dScMgSlot3_c::Render()
         }
     }
 
-    if (self->mRowsStopped < 3 && (self->mFrameCounter & 0x20)) {
+    if (self->mStoppedReelCount < 3 && (self->mFrameCounter & 0x20)) {
         int slot = 3;
         int ok = 1;
         int i3, j3;
@@ -833,8 +819,7 @@ s32 dScMgSlot3_c::Render()
  *
  * The state table uses this class's pointer-to-member type.
  */
-s32 dScMgSlot3_c::Behavior()
-{
+s32 dScMgSlot3_c::Behavior() {
     dScMgSlot3_c *self = this;
     int i;
     unsigned char t;
@@ -870,8 +855,7 @@ s32 dScMgSlot3_c::Behavior()
 
 // @symbol _ZN12dScMgSlot3_c13InitResourcesEv
 /* Load the reel assets and initialise the scene state. */
-s32 dScMgSlot3_c::InitResources()
-{
+s32 dScMgSlot3_c::InitResources() {
     char *c = (char *)this;
 
     *(volatile u16 *)0x400000a = (*(volatile u16 *)0x400000a & 0x43) | 0x1118;
@@ -929,11 +913,11 @@ s32 dScMgSlot3_c::InitResources()
     Mascot_Load(c + 0x4f38);
     Camera_InitSlotsView(c + 0x4660);
 
-    mDifficulty = (int)mLevel;
+    mReelDifficulty = (int)mLevel;
 
     ((dScMgSlot3_c *)c)->StartRound(3);
 
-    mWinSymbol = mTargetFace;
+    mWinSymbol = mNextWinSymbol;
     mReelDrawY = 0;
 
     for (int i = 0; i < 3; i++) {
@@ -973,9 +957,8 @@ s32 dScMgSlot3_c::InitResources()
  * allocation size, vtable identity, and the MG_SLOT3 registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: func_ov006_0210c120. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *dScMgSlot3_c_classInit(void)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+int *dScMgSlot3_c_classInit(void) {
     int *p = (int *)_ZN7fBase_cnwEj(0x5044);
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
@@ -990,8 +973,8 @@ int *dScMgSlot3_c_classInit(void)
 }
 
 // @symbol SlotLamp_Start
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotLamp_Start(void *raw){
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotLamp_Start(void *raw) {
     char *blink = (char *)raw;
     *(int *)blink = 0x48;
     *(u8 *)(blink + 4) = 1;
@@ -1000,9 +983,8 @@ void SlotLamp_Start(void *raw){
 }
 
 // @symbol SlotLamp_Tick
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotLamp_Tick(void *o_)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotLamp_Tick(void *o_) {
     int *timer = (int *)o_;
     if (*timer <= 0)
         return;
@@ -1020,18 +1002,16 @@ void SlotLamp_Tick(void *o_)
 // @symbol SlotLamp_Clear
 /* 0x469c blinks bit 1 of data_0209d454 the same way: a timer and an on
  * flag. This clears it, 0210c180 starts it and 0210c1a8 ticks it. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotLamp_Clear(char *blink)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotLamp_Clear(char *blink) {
     *(int *)(blink + 0x0) = 0;
     *(char *)(blink + 0x4) = 0;
 }
 }
 
 // @symbol SlotBlink_Start
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotBlink_Start(void *raw, s16 x, s16 y)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotBlink_Start(void *raw, s16 x, s16 y) {
     u8 *sprite = (u8 *)raw;
     *(u16 *)(sprite + 0) = x;
     *(u16 *)(sprite + 2) = y;
@@ -1041,19 +1021,20 @@ void SlotBlink_Start(void *raw, s16 x, s16 y)
 }
 
 // @symbol SlotBlink_Draw
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotBlink_Draw(unsigned char* raw){
-    if (*(u8 *)(raw + 8) == 0) return;
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotBlink_Draw(unsigned char *raw) {
+    if (*(u8 *)(raw + 8) == 0)
+        return;
     RenderOamMainScreen(&sSlotsSlotBlinkSprites, *(short *)raw, *(short *)(raw + 2), -1, -1);
 }
 }
 
 // @symbol SlotBlink_Tick
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotBlink_Tick(void *o_)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotBlink_Tick(void *o_) {
     u8 *raw = (u8 *)o_;
-    if (*(int *)(raw + 4) <= 0) return;
+    if (*(int *)(raw + 4) <= 0)
+        return;
     int *timer = (int *)(raw + 4);
     *timer -= 1;
     if ((*(int *)(raw + 4) & 7) == 0) {
@@ -1066,16 +1047,15 @@ void SlotBlink_Tick(void *o_)
 /* 0x4684 and 0x4690 each hold a blinking sprite: s16 x and y, a timer at
  * +4 and a visible flag at +8. This clears one, 0210c218 starts one, 0210c278
  * ticks it and 0210c234 draws it. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotBlink_Clear(char *sprite)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotBlink_Clear(char *sprite) {
     *(int *)(sprite + 0x4) = 0;
     *(char *)(sprite + 0x8) = 0;
 }
 }
 
 // @symbol SlotReel_SetSpeed
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotReel_SetSpeed(void *raw, int value) {
     int *words = (int *)raw;
     words[8] = (words[7] * value) << 2;
@@ -1083,9 +1063,8 @@ void SlotReel_SetSpeed(void *raw, int value) {
 }
 
 // @symbol SlotBet_OnTouch
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotBet_OnTouch(void *c_)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotBet_OnTouch(void *c_) {
     dThIcon_c *icon = (dThIcon_c *)c_;
     void *scene;
     int count;
@@ -1111,9 +1090,8 @@ void SlotBet_OnTouch(void *c_)
 }
 
 // @symbol SlotBet_Reset
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void SlotBet_Reset(void *raw)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void SlotBet_Reset(void *raw) {
     dThIcon_c *icon = (dThIcon_c *)raw;
     icon->unk_01c = 0;
     icon->unk_020 = 0;
@@ -1123,8 +1101,7 @@ void SlotBet_Reset(void *raw)
 }
 
 // @symbol _ZN12dScMgSlot1_c9betIcon_c6RenderEv
-void dScMgSlot1_c::betIcon_c::Render()
-{
+void dScMgSlot1_c::betIcon_c::Render() {
     OAM::RenderSub((OamAttr *)data_ov006_0213e528[unk_010], unk_004, unk_006, -1, 1);
     int i;
     int y = 0xb0;
@@ -1136,8 +1113,7 @@ void dScMgSlot1_c::betIcon_c::Render()
 }
 
 // @symbol _ZN12dScMgSlot1_c9betIcon_c8BehaviorEv
-void dScMgSlot1_c::betIcon_c::Behavior()
-{
+void dScMgSlot1_c::betIcon_c::Behavior() {
     int val;
     if (TouchArea_Update(this, -1))
         SlotBet_OnTouch(this);
@@ -1153,7 +1129,7 @@ void dScMgSlot1_c::betIcon_c::Behavior()
 }
 
 // @symbol SlotBet_Place
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBet_Place(char *icon) {
     func_ov001_020ab5b0(icon, 1, 0x90, 0xb0, 0x10, 8);
     *(int *)(icon + 0x18) = 6;
@@ -1162,8 +1138,7 @@ void SlotBet_Place(char *icon) {
 
 // @symbol _ZN12dScMgSlot1_c9CloseMenuEv
 
-int dScMgSlot1_c::CloseMenu()
-{
+int dScMgSlot1_c::CloseMenu() {
     dScMgBase_c::CloseMenu();
     SetSubBg1Offset(0x100, 0);
 }
@@ -1171,63 +1146,59 @@ int dScMgSlot1_c::CloseMenu()
 // @symbol _ZN12dScMgSlot1_c8OpenMenuEv
 /* Slot 27. Takes no argument: the ROM body never reads r1. The qualified
  * base call is the ROM's direct branch. */
-void dScMgSlot1_c::OpenMenu()
-{
+void dScMgSlot1_c::OpenMenu() {
     SetSubBg1Offset(0, 0);
     dScMgBase_c::OpenMenu();
 }
 
 // @symbol SlotReels_CheckStopped
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-int SlotReels_CheckStopped(void *self)
-{
-    struct SlotReels *p = (struct SlotReels *)self;
-    int ok;
-    int lead;
-    int i;
+extern "C" { /* .c-derived member: C linkage for the whole block */
+int SlotReels_CheckStopped(void *self) {
+    dScMgSlot1_c *scene = (dScMgSlot1_c *)self;
+    int matches;
+    int matchedSymbol;
+    int reelIndex;
 
-    p->wilds = 0;
-    ok = 1;
-    for (i = 0; i < 3; i++) {
-        if (p->reels[i][p->stops[i]] == 5) {
-            p->wilds++;
+    scene->mWildCount = 0;
+    matches = 1;
+    for (reelIndex = 0; reelIndex < 3; reelIndex++) {
+        if (scene->mReelStrip[reelIndex][scene->mSymbolIndex[reelIndex]] == 5) {
+            scene->mWildCount++;
         } else {
-            lead = p->reels[i][p->stops[i]];
+            matchedSymbol = scene->mReelStrip[reelIndex][scene->mSymbolIndex[reelIndex]];
             break;
         }
     }
-    if (p->wilds >= 3) {
-        lead = 5;
-    } else if (i < 2) {
-        for (i = i + 1; i < 3; i++) {
-            u8 sym = p->reels[i][p->stops[i]];
-            if (sym == 5) {
-                p->wilds++;
-            } else if (lead != sym) {
-                ok = 0;
+    if (scene->mWildCount >= 3) {
+        matchedSymbol = 5;
+    } else if (reelIndex < 2) {
+        for (reelIndex = reelIndex + 1; reelIndex < 3; reelIndex++) {
+            u8 symbol = scene->mReelStrip[reelIndex][scene->mSymbolIndex[reelIndex]];
+            if (symbol == 5) {
+                scene->mWildCount++;
+            } else if (matchedSymbol != symbol) {
+                matches = 0;
             }
         }
     }
-    if (ok) {
-        if (p->speedLevel < 2) {
-            u8 *q = (u8 *)p + 0x4708;
-            *q += 1;
+    if (matches) {
+        if (scene->mSpeedTableOffset < 2) {
+            scene->mSpeedTableOffset += 1;
         }
-        p->matchSymbol = lead;
+        scene->mMatchedSymbol = matchedSymbol;
     }
-    return ok;
+    return matches;
 }
 }
 
 // @symbol Slot1_InitHud
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void Slot1_InitHud(void *self)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void Slot1_InitHud(void *self) {
     char *raw = (char *)self;
     *(s8 *)(raw + 0x4706) = -1;
     *(u8 *)(raw + 0x4707) = 1;
-    *(u8 *)(raw + 0x4708) = 0;
     dScMgSlot1_c *scene = (dScMgSlot1_c *)self;
+    scene->mSpeedTableOffset = 0;
     scene->mCredits = Mg_GetSavedRecord0();
     scene->mCreditsShown = scene->mCredits;
 }
@@ -1235,17 +1206,16 @@ void Slot1_InitHud(void *self)
 
 // @symbol _ZN12dScMgSlot1_c10StartRoundEi
 /* Slot 18. 0x4706 is padding in the header, so it is written by offset. */
-void dScMgSlot1_c::StartRound(int i)
-{
+void dScMgSlot1_c::StartRound(int i) {
     char *raw = (char *)this;
 
     if (i == 4) {
-        *(u8 *)(raw + 0x4706) = mMatchSymbol;
+        *(u8 *)(raw + 0x4706) = mMatchedSymbol;
     } else if (i == 3) {
         Slot1_InitHud(raw);
     }
     SlotBet_Reset(&mBetIcon);
-    mStep = 0;
+    mState = 0;
 }
 
 #pragma opt_strength_reduction off
@@ -1257,55 +1227,55 @@ void dScMgSlot1_c::StartRound(int i)
    virtual call through the typed nested betIcon_c member at 0x4660.
    `this+0xa8` is inherited from further up the hierarchy than dScMgBase_c,
    so it stays a raw offset on an unsigned char* cast. */
-s32 dScMgSlot1_c::Render()
-{
-    unsigned char* t = (unsigned char*)this;
-    int i, pos, x, j;
-    unsigned char* cur = t;
-    unsigned char b;
+s32 dScMgSlot1_c::Render() {
+    unsigned char *sceneBytes = (unsigned char *)this;
+    int i, pos, drawY, j;
+    unsigned char *reelBytes = sceneBytes;
+    unsigned char wildCount;
     for (i = 0; i < 3; i++) {
-        pos = *(t + i + 0x46ff);
-        x = sSlot1ReelPos[i][1] - (*(int *)(t + (i << 2) + 0x46a4) >> 12);
+        pos = mSymbolIndex[i];
+        drawY = sSlot1ReelPos[i][1] - ((s32)mReelScroll[i] >> 12);
         for (j = 0; j < 2; j++) {
-            Hud_RenderSprite(sSlot1Sprites[*(cur + pos + 0x46c0)], sSlot1ReelPos[i][0], x, -1, 3);
+            Hud_RenderSprite(sSlot1Sprites[*(reelBytes + pos + 0x46c0)], sSlot1ReelPos[i][0], drawY,
+                             -1, 3);
             pos--;
-            x += 0x40;
+            drawY += 0x40;
             if (pos < 0)
                 pos += 0x15;
         }
-        cur += 0x15;
+        reelBytes += 0x15;
     }
     mBetIcon.Render();
     Mg_DrawBigNumber(0x70, 0xb0, mCredits, 0, 1, 1, 0x14);
-    if (mStep >= 5 && (*(t + 0x470a) != 0 || (*(t + 0x470b) != 0 && *(t + 0x470b) < 3))) {
-        b = *(t + 0x470b);
-        if (b != 0 && b < 3) {
+    if (mState >= 5 && (mHasMatch != 0 || (mWildCount != 0 && mWildCount < 3))) {
+        wildCount = mWildCount;
+        if (wildCount != 0 && wildCount < 3) {
             i = 0;
-            if ((int)b > 0) {
+            if ((int)wildCount > 0) {
                 pos = 0x18;
                 do {
                     Mg_RenderSubSpriteScaled(sSlot1Sprites[0xb], pos, 0x30, -1, 2, 0x1000, 0);
                     pos += 0x10;
                     i++;
-                } while (i < *(t + 0x470b));
+                } while (i < mWildCount);
             }
             Mg_RenderSubSpritePalMtx(sSlotLangSprites[GetGameLanguage()][1], 0x50, 0x30, -1, 2, 0);
-            Mg_DrawBigNumber(0x60, 0x30, *(t + 0x470b) * 2, 0, 2, 2, 0x14);
+            Mg_DrawBigNumber(0x60, 0x30, mWildCount * 2, 0, 2, 2, 0x14);
         }
-        if (*(t + 0x470a) != 0) {
+        if (mHasMatch != 0) {
             i = 0;
             pos = 0x18;
             for (; i < 3; i++) {
-                Mg_RenderSubSpriteScaled(sSlot1Sprites[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000,
-                                         0);
+                Mg_RenderSubSpriteScaled(sSlot1Sprites[mMatchedSymbol + 6], pos, 0x40, -1, 2,
+                                         0x1000, 0);
                 pos += 0x10;
             }
             Mg_RenderSubSpritePalMtx(sSlotLangSprites[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
-            Mg_DrawBigNumber(0x60, 0x40, sSlot1Payouts[*(t + 0x4709)], 0, 2, 2, 0x14);
+            Mg_DrawBigNumber(0x60, 0x40, sSlot1Payouts[mMatchedSymbol], 0, 2, 2, 0x14);
         }
     }
-    SlotBlink_Draw(t + 0x4684);
-    SlotBlink_Draw(t + 0x4690);
+    SlotBlink_Draw(sceneBytes + 0x4684);
+    SlotBlink_Draw(sceneBytes + 0x4690);
     return 1;
 }
 
@@ -1323,37 +1293,36 @@ s32 dScMgSlot1_c::Render()
  * walks the reel-symbol rows with a strided copy of `this` (mov r5, r4).
  * The touch x/y are read INSIDE the hit loop through TouchRec, not hoisted
  * by hand; the compiler hoists them and that colours the loop. */
-s32 dScMgSlot1_c::Behavior()
-{
+s32 dScMgSlot1_c::Behavior() {
     int i;
 
-    switch (mStep) {
+    switch (mState) {
     case 0:
         for (i = 0; i < 3; i++) {
             mReelSpinning[i] = 1;
         }
-        mReelsStopped = 0;
-        mLineMatched = 0;
-        mWilds = 0;
-        mStep = 1;
+        mStoppedReelCount = 0;
+        mHasMatch = 0;
+        mWildCount = 0;
+        mState = 1;
         SlotBet_OnTouch(&mBetIcon);
         if (mPromptBlinkCount == 0) {
             mPromptEnabled = 1;
             mPromptBlinkCount = 1;
             mPromptBlinkTimer = 0;
         }
-        mTimer = 0x3c;
+        mStateTimer = 0x3c;
         break;
     case 1:
-        if (DecIfAbove0_Byte(&mTimer) == 0) {
+        if (DecIfAbove0_Byte(&mStateTimer) == 0) {
             Sound::PlayBank2_2D(0x160);
-            mTimer = 0x1e;
-            mStep = 2;
+            mStateTimer = 0x1e;
+            mState = 2;
         }
         break;
     case 2:
-        if (DecIfAbove0_Byte(&mTimer) == 0) {
-            mStep = 3;
+        if (DecIfAbove0_Byte(&mStateTimer) == 0) {
+            mState = 3;
         }
         break;
     case 3: {
@@ -1361,11 +1330,11 @@ s32 dScMgSlot1_c::Behavior()
         for (i = 0; i < 3; i++) {
             if (mReelSpinning[i] == 1 || mReelScroll[i] != 0) {
                 moving++;
-                mReelScroll[i] -= sSlotReelScrollSpeeds[mSpeedLevel + i];
+                mReelScroll[i] -= sSlotReelScrollSpeeds[mSpeedTableOffset + i];
                 if ((int)mReelScroll[i] < 0) {
                     if (mReelSpinning[i] == 1) {
-                        mReelStop[i]++;
-                        mReelStop[i] %= 21;
+                        mSymbolIndex[i]++;
+                        mSymbolIndex[i] %= 21;
                         mReelScroll[i] += 0x40000;
                     } else {
                         mReelScroll[i] = 0;
@@ -1374,9 +1343,9 @@ s32 dScMgSlot1_c::Behavior()
             }
         }
         if (moving != 0) {
-            mSpinSound = Sound_PlayIfNotActive(mSpinSound, 2, 0x161, 0);
+            mSpinSoundHandle = Sound_PlayIfNotActive(mSpinSoundHandle, 2, 0x161, 0);
         }
-        if (mReelsStopped < 3) {
+        if (mStoppedReelCount < 3) {
             int hit = 0;
             u8 idx = gActivePlayerSlot;
             if (gTouchHeld[idx * 4] != 0) {
@@ -1391,7 +1360,7 @@ s32 dScMgSlot1_c::Behavior()
                         int dy = ((TouchRec *)gTouchHeld)[idx].y - sSlot1ReelPos[i][1];
                         if (dx <= 0x20 && dx >= -0x20 && dy <= 0x20 && dy >= -0x20) {
                             mReelSpinning[i] = 0;
-                            mReelsStopped++;
+                            mStoppedReelCount++;
                             if (mBetIcon.unk_011 != 0) {
                                 mBetIcon.unk_011 = 0;
                                 Mg_SaveRecordPair(mCredits, mHudScore);
@@ -1411,63 +1380,63 @@ s32 dScMgSlot1_c::Behavior()
                 }
             }
             if (stopped == 1) {
-                mLineMatched = SlotReels_CheckStopped(this);
-                mPayout = 0;
-                if (mLineMatched != 0) {
-                    mPayout += sSlot1Payouts[mMatchSymbol];
+                mHasMatch = SlotReels_CheckStopped(this);
+                mPayoutMultiplier = 0;
+                if (mHasMatch != 0) {
+                    mPayoutMultiplier += sSlot1Payouts[mMatchedSymbol];
                 }
-                if (mWilds != 0 && mWilds < 3) {
-                    mPayout += mWilds << 1;
+                if (mWildCount != 0 && mWildCount < 3) {
+                    mPayoutMultiplier += mWildCount << 1;
                 }
-                Mg_SaveRecordPair(mCredits + mPayout * mBetIcon.unk_01c, mHudScore);
-                mStep = 4;
-                mTimer = 0x3c;
+                Mg_SaveRecordPair(mCredits + mPayoutMultiplier * mBetIcon.unk_01c, mHudScore);
+                mState = 4;
+                mStateTimer = 0x3c;
             }
         }
         break;
     }
     case 4:
-        if (DecIfAbove0_Byte(&mTimer) == 0) {
-            if (mLineMatched != 0) {
-                SlotBlink_Start(pad_4684, sSlotMatchBlinkX[mMatchSymbol][0],
-                                sSlotMatchBlinkY[mMatchSymbol][0]);
+        if (DecIfAbove0_Byte(&mStateTimer) == 0) {
+            if (mHasMatch != 0) {
+                SlotBlink_Start(pad_4684, sSlotMatchBlinkX[mMatchedSymbol][0],
+                                sSlotMatchBlinkY[mMatchedSymbol][0]);
             }
-            if (mWilds != 0 && mWilds < 3) {
-                SlotBlink_Start(pad_4690, sSlotWildBlinkX[mWilds - 1][0],
-                                sSlotWildBlinkY[mWilds - 1][0]);
+            if (mWildCount != 0 && mWildCount < 3) {
+                SlotBlink_Start(pad_4690, sSlotWildBlinkX[mWildCount - 1][0],
+                                sSlotWildBlinkY[mWildCount - 1][0]);
             }
-            if (mPayout != 0) {
-                mStep = 5;
-                mTimer = 0x64;
+            if (mPayoutMultiplier != 0) {
+                mState = 5;
+                mStateTimer = 0x64;
                 SlotLamp_Start(pad_469c);
                 func_02012790(0x26);
             } else {
-                mStep = 7;
-                mTimer = 0x3c;
+                mState = 7;
+                mStateTimer = 0x3c;
                 func_02012790(0xe);
             }
             mPromptEnabled = 0;
         }
         break;
     case 5:
-        if (DecIfAbove0_Byte(&mTimer) == 0) {
-            SlotReel_SetSpeed(&mBetIcon, mPayout);
-            mTimer = 0x3c;
-            mStep = 6;
+        if (DecIfAbove0_Byte(&mStateTimer) == 0) {
+            SlotReel_SetSpeed(&mBetIcon, mPayoutMultiplier);
+            mStateTimer = 0x3c;
+            mState = 6;
         }
         break;
     case 6: {
         int done = (mBetIcon.unk_020 == 0) ? 1 : 0;
         if (done != 0) {
             Mg_SubmitScore(mCredits);
-            if (DecIfAbove0_Byte(&mTimer) == 0) {
+            if (DecIfAbove0_Byte(&mStateTimer) == 0) {
                 StartRound(4);
             }
         }
         break;
     }
     case 7:
-        if (DecIfAbove0_Byte(&mTimer) == 0) {
+        if (DecIfAbove0_Byte(&mStateTimer) == 0) {
             if (mCredits > 0) {
                 StartRound(5);
             } else {
@@ -1475,26 +1444,26 @@ s32 dScMgSlot1_c::Behavior()
                 char *p = (char *)this;
                 for (j = 0; j < 3; j++) {
                     mReelScroll[j] += 0x40000;
-                    mReelStop[j]++;
-                    mReelStop[j] %= 21;
-                    *(u8 *)(p + mReelStop[j] + 0x46c0) = 0xd;
+                    mSymbolIndex[j]++;
+                    mSymbolIndex[j] %= 21;
+                    *(u8 *)(p + mSymbolIndex[j] + 0x46c0) = 0xd;
                     p += 0x15;
                 }
-                mStep = 9;
+                mState = 9;
             }
         }
         break;
     case 9:
     case 11: {
-        int idx = (mStep - 9) >> 1;
+        int idx = (mState - 9) >> 1;
         mReelScroll[idx] -= 0x2000;
         if ((int)mReelScroll[idx] < 0) {
             mReelScroll[idx] = 0;
-            mTimer = 0xa;
-            mStep++;
+            mStateTimer = 0xa;
+            mState++;
             func_02012718(0x164, sSlot1ReelPos[idx][0] << 12);
             if (idx == 0) {
-                Mg_PlayJingle((void *) 2);
+                Mg_PlayJingle((void *)2);
             }
         }
         break;
@@ -1503,13 +1472,13 @@ s32 dScMgSlot1_c::Behavior()
         mReelScroll[2] -= 0x2000;
         if ((int)mReelScroll[2] < 0) {
             mReelScroll[2] = 0;
-            mTimer = 0x3c;
-            mStep = 8;
+            mStateTimer = 0x3c;
+            mState = 8;
             func_02012718(0x164, sSlot1ReelPos[2][0] << 12);
         }
         break;
     case 8:
-        if (DecIfAbove0_Byte(&mTimer) == 0) {
+        if (DecIfAbove0_Byte(&mStateTimer) == 0) {
             dScene_c::SetFaders(&data_0209f61c);
             data_0209f61c.func_0202ec9c(2);
             dScene_c::StartSceneFade(5, 0, 0);
@@ -1517,8 +1486,8 @@ s32 dScMgSlot1_c::Behavior()
         break;
     case 10:
     case 12:
-        if (DecIfAbove0_Byte(&mTimer) == 0) {
-            mStep++;
+        if (DecIfAbove0_Byte(&mStateTimer) == 0) {
+            mState++;
         }
         break;
     }
@@ -1533,8 +1502,7 @@ s32 dScMgSlot1_c::Behavior()
 /* The ov004 scroll words (sMgScoreDigitsX..sMgMainBannerX) name
  * no struct; they are stored raw. The reel-table fill stays a raw char*
  * cursor over 0x46c0..0x46ff (see leftovers). */
-s32 dScMgSlot1_c::InitResources()
-{
+s32 dScMgSlot1_c::InitResources() {
     char *c = (char *)this;
     volatile unsigned short fill;
     int i, j;
@@ -1618,7 +1586,7 @@ s32 dScMgSlot1_c::InitResources()
             for (i = 0; i < 0x15; i++) {
                 *(u8 *)(p + 0x46c0 + i) = tbl[i];
             }
-            mReelStop[j] = 0;
+            mSymbolIndex[j] = 0;
             mReelScroll[j] = 0x40000;
             mReelSpinning[j] = 1;
             tbl += 0x15;
@@ -1632,7 +1600,7 @@ s32 dScMgSlot1_c::InitResources()
             for (i = 0; i < 0x15; i++) {
                 *(u8 *)(p + 0x46c0 + i) = tbl[i];
             }
-            mReelStop[k] = 0;
+            mSymbolIndex[k] = 0;
             mReelScroll[k] = 0x40000;
             mReelSpinning[k] = 1;
             tbl += 0x15;
@@ -1640,7 +1608,7 @@ s32 dScMgSlot1_c::InitResources()
         }
     }
 
-    mMatchSymbol = 5;
+    mMatchedSymbol = 5;
     mStartCredits = 0xa;
     Mg_SubmitScore(mStartCredits);
     SlotBet_Place((char *)&mBetIcon);
@@ -1657,11 +1625,9 @@ s32 dScMgSlot1_c::InitResources()
  * link. This TU emits _ZTV12dScMgSlot1_c and the betIcon_c vtable itself, so
  * their stores take the object-relative +8 the Slot3 factory above uses;
  * dThIcon_c's table is ov001's and is stored by its configured address. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void *dScMgSlot1_c_classInit(void)
-{
-    dScMgSlot1_c *scene =
-        (dScMgSlot1_c *)_ZN7fBase_cnwEj(sizeof(dScMgSlot1_c));
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void *dScMgSlot1_c_classInit(void) {
+    dScMgSlot1_c *scene = (dScMgSlot1_c *)_ZN7fBase_cnwEj(sizeof(dScMgSlot1_c));
     if (scene) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)&_ZTV12dScMgSlot1_c[2];

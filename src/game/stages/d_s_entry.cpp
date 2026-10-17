@@ -4,7 +4,7 @@
  *
  * ov075 hosts ENTRY(6) and RESULT(7); both spawn dScEntry_c. Nested
  * icon_c (nine dThIcon_c leaves) and graphCallback_c (dGraph_c::callback_c
- * leaf). GraphCallback2 writes sub BG2 priority, decompresses the screen,
+ * leaf). GraphCallback2 writes the sub BG2 screen base, decompresses the screen,
  * then steps every live icon through Render. icon_c::Behavior bobs the
  * selected character; icon_c::Render draws course, arrow and character
  * OAM.
@@ -73,11 +73,12 @@ void Deallocate(void *);
 int _Z15ApproachLinear2Rsss(short *, short, short);
 extern unsigned char data_0209b2e4;
 
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int a, void *oam, int b, int c, int d, int e, int f, int g, int h, int i);
+extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int a, void *oam, int b, int c, int d,
+                                                        int e, int f, int g, int h, int i);
 extern int func_0203d974(void);
 
 int func_0200f0bc(void);
-void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
+void func_ov001_020ab5b0(char *r0, int r1, short r2, short r3, short s4, short s5);
 
 extern int data_ov075_0211cb64[];
 extern char data_ov075_0211c720[];
@@ -93,44 +94,37 @@ extern short data_ov075_0211d948[];
 extern short data_ov075_0211d94a[];
 }
 
-#define SH(base,i) (*(short*)((char*)(base) + (i)*4))
+#define SH(base, i) (*(short*)((char*)(base) + (i)*4))
 
-extern "C" void func_ov075_021160dc(char* c);
+extern "C" void func_ov075_021160dc(char *c);
 
 /* Written first so D1 and D0 are emitted first, as in the cartridge. The
  * body is empty: tearing down the four OamAnimations and the nine icon_c
  * leaves in reverse declaration order, then chaining to dScene_c, is all
  * compiler-generated. */
 // @symbol _ZN10dScEntry_cD1Ev
-dScEntry_c::~dScEntry_c()
-{
-}
+dScEntry_c::~dScEntry_c() {}
 
 // @symbol _ZN10dScEntry_cD0Ev
 /* The deleting destructor (D0) has no source of its own: the compiler emits
    it from the definition above. */
 
 // @symbol _ZN10dScEntry_c6icon_cD1Ev
-dScEntry_c::icon_c::~icon_c()
-{
-}
+dScEntry_c::icon_c::~icon_c() {}
 
 // @symbol _ZN12OamAnimationD1Ev
-OamAnimation::~OamAnimation()
-{
-}
+OamAnimation::~OamAnimation() {}
 
 // @symbol _ZN10dScEntry_c6icon_c6RenderEv
-void dScEntry_c::icon_c::Render()
-{
+void dScEntry_c::icon_c::Render() {
     volatile s16 xy[2];
-    u16 *p;
-    int mask;
+    u16 *screenMap;
+    int paletteBits;
     int row;
-    int col;
-    int w;
-    int h;
-    void *oam;
+    int column;
+    int halfWidth;
+    int halfHeight;
+    void *sprite;
     int y;
     int x;
 
@@ -138,36 +132,36 @@ void dScEntry_c::icon_c::Render()
     xy[1] = unk_006;
 
     switch (unk_01c) {
-    case 7:
-    {
-        int idx;
-        void *ptr;
-        int v;
+    case 7: {
+        int spriteIndex;
+        void *spriteData;
+        int scale;
 
-        idx = unk_020;
+        spriteIndex = unk_020;
         if (unk_010 == 0) {
             if (unk_011 != 0)
-                idx += 4;
+                spriteIndex += 4;
         }
-        ptr = (void *)data_ov075_0211cb64[idx];
+        spriteData = (void *)data_ov075_0211cb64[spriteIndex];
 
-        v = unk_00c;
-        if (v <= 0) {
-            v = 0x1000;
-        } else if (v < 4) {
-            v = (v << 8) + 0x1000;
+        scale = unk_00c;
+        if (scale <= 0) {
+            scale = 0x1000;
+        } else if (scale < 4) {
+            scale = (scale << 8) + 0x1000;
         } else {
-            v = ((8 - v) << 8) + 0x1000;
+            scale = ((8 - scale) << 8) + 0x1000;
         }
 
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(1, ptr, xy[0], xy[1], -1, -1, v, v, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(1, spriteData, xy[0], xy[1], -1, -1, scale,
+                                                    scale, 0, -1);
         return;
     }
 
     case 0:
     case 1:
     case 2:
-        mask = (unk_010 != 0) ? 0x6000 : 0x5000;
+        paletteBits = (unk_010 != 0) ? 0x6000 : 0x5000;
         /* The ROM's case 0..2 block branches into case 8..11's fill loop.
          * A shared inline helper (void or int-returning), one merged
          * case, a do/while(0) that breaks out of a merged case, a fill
@@ -175,49 +169,50 @@ void dScEntry_c::icon_c::Render()
          * all miss it: mwccarm merges no tails, and merging the cases
          * adds an unk_01c compare. `if (0) { case 8: ... }' matches,
          * but it is this jump spelled less plainly, so the jump stays. */
+
         goto fill;
 
     case 8:
     case 9:
     case 10:
     case 11:
-        mask = (unk_010 != 0) ? 0x2000 : 0x1000;
+        paletteBits = (unk_010 != 0) ? 0x2000 : 0x1000;
     fill:
-        w = unk_008;
-        p = (u16 *)_ZN3G2S12GetBG2ScrPtrEv();
+        halfWidth = unk_008;
+        screenMap = (u16 *)_ZN3G2S12GetBG2ScrPtrEv();
         x = unk_004;
-        h = unk_00a;
-        x -= w;
+        halfHeight = unk_00a;
+        x -= halfWidth;
         x >>= 3;
-        p += x;
+        screenMap += x;
         y = unk_006;
-        y -= h;
-        p += (y >> 3) << 5;
+        y -= halfHeight;
+        screenMap += (y >> 3) << 5;
         for (row = 0; row < unk_00a >> 2; row++) {
-            for (col = 0; col < w >> 2; col++) {
-                p[col] = (u16)(mask | (p[col] & 0xfff));
-                w = unk_008;
+            for (column = 0; column < halfWidth >> 2; column++) {
+                screenMap[column] = (u16)(paletteBits | (screenMap[column] & 0xfff));
+                halfWidth = unk_008;
             }
-            p += 0x20;
+            screenMap += 0x20;
         }
         return;
 
     case 3:
         if (unk_010 != 0)
             xy[0] = (s16)(xy[0] - 2);
-        oam = data_ov075_0211c720;
+        sprite = data_ov075_0211c720;
         break;
 
     case 4:
         if (unk_010 != 0)
             xy[0] = (s16)(xy[0] + 2);
-        oam = data_ov075_0211c730;
+        sprite = data_ov075_0211c730;
         break;
 
     case 13:
         if (func_0203d974() != 0 && unk_020 >= 4)
             return;
-        oam = data_ov075_0211c954[unk_020];
+        sprite = data_ov075_0211c954[unk_020];
         break;
 
     case 5:
@@ -227,12 +222,11 @@ void dScEntry_c::icon_c::Render()
         return;
     }
 
-    OAM::RenderSub((OamAttr *)oam, xy[0], xy[1]);
+    OAM ::RenderSub((OamAttr *)sprite, xy[0], xy[1]);
 }
 
 // @symbol _ZN10dScEntry_c6icon_c8BehaviorEv
-void dScEntry_c::icon_c::Behavior()
-{
+void dScEntry_c::icon_c::Behavior() {
     if (unk_01c == 0xd) {
         if (unk_020 == data_0209b2e4) {
             _Z15ApproachLinear2Rsss(&unk_006, 0x14, 8);
@@ -247,63 +241,60 @@ void dScEntry_c::icon_c::Behavior()
 extern "C" {
 
 // @symbol func_ov075_02115e8c
-void func_ov075_02115e8c(char* self, int a, int b, short c, short e)
-{
-    int kind;
-    int i, j;
-    *(int*)(self + 0x1c) = a;
-    *(int*)(self + 0x20) = b;
-    kind = (*(int*)(self + 0x1c) < 7) ? 2 : (*(int*)(self + 0x1c) < 0xd) ? 1 : 0;
-    if (a == 5) {
-        i = func_0200f0bc();
-        j = func_0200f0bc();
-        func_ov001_020ab5b0(self, kind, c, e,
-                            SH(data_ov075_0211d72c, i), SH(data_ov075_0211d72e, j));
-    } else if (a == 6) {
-        i = func_0200f0bc();
-        j = func_0200f0bc();
-        func_ov001_020ab5b0(self, kind, c, e,
-                            SH(data_ov075_0211d740, i), SH(data_ov075_0211d742, j));
-    } else if (a == 0xb) {
-        i = func_0200f0bc();
-        j = func_0200f0bc();
-        func_ov001_020ab5b0(self, kind, c, e,
-                            SH(data_ov075_0211d754, i), SH(data_ov075_0211d756, j));
+void func_ov075_02115e8c(char *rawIcon, int iconType, int iconIndex, short x, short y) {
+    dScEntry_c::icon_c *icon = (dScEntry_c::icon_c *)rawIcon;
+    int touchKind;
+    int widthLanguage, heightLanguage;
+    icon->unk_01c = iconType;
+    icon->unk_020 = iconIndex;
+    touchKind = (icon->unk_01c < 7) ? 2 : (icon->unk_01c < 0xd) ? 1 : 0;
+    if (iconType == 5) {
+        widthLanguage = func_0200f0bc();
+        heightLanguage = func_0200f0bc();
+        func_ov001_020ab5b0(rawIcon, touchKind, x, y, SH(data_ov075_0211d72c, widthLanguage),
+                            SH(data_ov075_0211d72e, heightLanguage));
+    } else if (iconType == 6) {
+        widthLanguage = func_0200f0bc();
+        heightLanguage = func_0200f0bc();
+        func_ov001_020ab5b0(rawIcon, touchKind, x, y, SH(data_ov075_0211d740, widthLanguage),
+                            SH(data_ov075_0211d742, heightLanguage));
+    } else if (iconType == 0xb) {
+        widthLanguage = func_0200f0bc();
+        heightLanguage = func_0200f0bc();
+        func_ov001_020ab5b0(rawIcon, touchKind, x, y, SH(data_ov075_0211d754, widthLanguage),
+                            SH(data_ov075_0211d756, heightLanguage));
     } else {
-        func_ov001_020ab5b0(self, kind, c, e,
-                            SH(data_ov075_0211d948, a), SH(data_ov075_0211d94a, a));
+        func_ov001_020ab5b0(rawIcon, touchKind, x, y, SH(data_ov075_0211d948, iconType),
+                            SH(data_ov075_0211d94a, iconType));
     }
 }
 
 // @symbol func_ov075_0211601c
-void func_ov075_0211601c(char* c, int a, int b) {
-    dScEntry_c::graphCallback_c *cb = (dScEntry_c::graphCallback_c *)c;
-    cb->entryScene = (void *)a;
-    cb->bg2Priority = b;
+void func_ov075_0211601c(char *object, int scene, int screenBase) {
+    dScEntry_c::graphCallback_c *callback = (dScEntry_c::graphCallback_c *)object;
+    callback->entryScene = (void *)scene;
+    callback->bg2ScreenBase = screenBase;
 }
 
 // @symbol func_ov075_02116028
-void func_ov075_02116028(int *p, int v)
-{
-    ((dScEntry_c::graphCallback_c *)p)->bg2Priority = v;
+void func_ov075_02116028(int *object, int screenBase) {
+    dScEntry_c::graphCallback_c *callback = (dScEntry_c::graphCallback_c *)object;
+    callback->bg2ScreenBase = screenBase;
 }
 
 // @symbol func_ov075_02116030
-void func_ov075_02116030(void *c, int v)
-{
-    dScEntry_c::graphCallback_c *cb = (dScEntry_c::graphCallback_c *)c;
-    if (cb->compressedBg2Screen == 0)
-        cb->compressedBg2Screen = (void *)v;
+void func_ov075_02116030(void *object, int screen) {
+    dScEntry_c::graphCallback_c *callback = (dScEntry_c::graphCallback_c *)object;
+    if (callback->compressedBg2Screen == 0)
+        callback->compressedBg2Screen = (void *)screen;
 }
-
 }
 
 // @symbol _ZN10dScEntry_c15graphCallback_c14GraphCallback2Ev
-int dScEntry_c::graphCallback_c::GraphCallback2()
-{
+int dScEntry_c::graphCallback_c::GraphCallback2() {
     volatile unsigned short *reg = (volatile unsigned short *)0x400100c;
     unsigned short value = (unsigned short)(*reg & ~0x1f00);
-    *reg = value | (bg2Priority << 8);
+    *reg = value | (bg2ScreenBase << 8);
 
     if (compressedBg2Screen != 0) {
         unsigned short *screen = (unsigned short *)_ZN3G2S12GetBG2ScrPtrEv();
@@ -319,24 +310,22 @@ int dScEntry_c::graphCallback_c::GraphCallback2()
 }
 
 // @symbol _ZN10dScEntry_c15graphCallback_cC1Ev
-dScEntry_c::graphCallback_c::graphCallback_c()
-    : compressedBg2Screen(0), entryScene(0)
-{
-}
+dScEntry_c::graphCallback_c::graphCallback_c() : compressedBg2Screen(0), entryScene(0) {}
 
 // @symbol func_ov075_021160dc
-extern "C" void func_ov075_021160dc(char* c) {
-    dScEntry_c *scene = (dScEntry_c *)c;
-    int count = scene->mIconCount;
-    int i = 0;
-    if (count <= 0) return;
-    dScEntry_c::icon_c *elem = scene->mIcons;
+extern "C" void func_ov075_021160dc(char *rawScene) {
+    dScEntry_c *scene = (dScEntry_c *)rawScene;
+    int iconCount = scene->mIconCount;
+    int iconIndex = 0;
+    if (iconCount <= 0)
+        return;
+    dScEntry_c::icon_c *icon = scene->mIcons;
     do {
-        elem->Render();
-        count = scene->mIconCount;
-        i++;
-        elem++;
-    } while (i < count);
+        icon->Render();
+        iconCount = scene->mIconCount;
+        iconIndex++;
+        icon++;
+    } while (iconIndex < iconCount);
 }
 
 // @symbol func_ov075_02116128

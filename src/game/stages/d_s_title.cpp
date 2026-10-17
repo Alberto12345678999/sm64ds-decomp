@@ -30,16 +30,9 @@
  *   spelled `void *` -- the one spelling neither call site has to cast away
  *   from. Until the ownership is narrowed, the original form stays
  *   uncertain, and the free form is only what this TU reproduces.
- * - OAM::EnableSubOAM stays mangled with a local one-int shadow parameter
- *   type: the ROM name carries by-value class parameters that mwccarm
- *   passes differently at the call site, so declaring the true types breaks
- *   the byte match (notes/mwccarm-codegen.md 6az). Carried verbatim from
- *   the legacy Render source, unchanged.
- * - data_0209f5bc (the active scene) gates Behavior through a plain virtual
- *   call on slot 5; the tree's spellings disagree with each other and none
- *   has a ROM RTTI identity, so the TU-local shadow spells six virtuals and
- *   Behavior calls v5. Same slot as d_s_mg_base.cpp's SceneVCall6 and
- *   src/game/stages/d_s_game_over.cpp's SceneGate.
+ * - OAM::EnableSubOAM keeps its legacy call-site declaration: Render
+ *   passes the address of a stack slot in r0 even though the canonical
+ *   static function takes no arguments. This is a call-site ABI leftover.
  * - The GX/G2 shadow namespaces have no header in the tree yet; they are
  *   carried from the legacy InitResources source unchanged.
  * - unk_050: the one own field, a repeat-delay counter. See dScTitle_c.h.
@@ -49,34 +42,21 @@
 #include "decl_common.h"
 #include "Sound.h"
 #include "PlayerInput.h"
+#include "dFdBrightness_c.h"
 
-/* The active scene at data_0209f5bc, which gates Behavior. Only its call
- * shape is proven -- a virtual call through slot 5 taking itself as the
- * receiver and returning a truth value -- so the class spells six virtuals
- * and Behavior calls v5. It has no ROM RTTI identity to name it with. */
-struct VObj {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual int v5();
+/* SetFaders stores the fade controller here; slot 5 waits for the entrance fade. */
+
+/* Stack slot whose address is retained by the matched Render call. */
+struct OamTmp {
+    int x;
 };
 
-/* OAM::EnableSubOAM's receiver. A one-int stand-in carried verbatim from
- * the legacy Render source: the point of the local type is that the true
- * by-value class parameter is what mwccarm passes differently. */
-struct OamTmp { int x; };
-
-namespace OAM { void EnableSubOAM(OamTmp*);
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
+namespace OAM {
+void EnableSubOAM(OamTmp *);
 /* local extern: the matched Render passes &tmp in r0; the header's
    static EnableSubOAM() takes no argument */
-extern "C" void _ZN3OAM12EnableSubOAMEv(OamTmp*);
- }
+extern "C" void _ZN3OAM12EnableSubOAMEv(OamTmp *);
+}
 
 /* No header in the tree declares this namespace yet. Carried from the
  * legacy InitResources source unchanged. Its sibling `namespace G2` could
@@ -86,14 +66,14 @@ extern "C" void _ZN3OAM12EnableSubOAMEv(OamTmp*);
  * includes that header. G2::GetBG0ScrPtr is therefore spelt by its final
  * mangled name in the block below, the way the rest of the tree spells it. */
 namespace GX {
-    void DisableAllBanks();
-    void SetBankForBG(unsigned short);
-    void SetBankForOBJ(unsigned short);
-    void SetGraphicsMode(int, int, int);
-    void LoadBG0Char(void const *, unsigned int, unsigned int);
-    void LoadBGPltt(void const *, unsigned int, unsigned int);
-    void LoadOBJ(void const *, unsigned int, unsigned int);
-    void LoadOBJPltt(void const *, unsigned int, unsigned int);
+void DisableAllBanks();
+void SetBankForBG(unsigned short);
+void SetBankForOBJ(unsigned short);
+void SetGraphicsMode(int, int, int);
+void LoadBG0Char(void const *, unsigned int, unsigned int);
+void LoadBGPltt(void const *, unsigned int, unsigned int);
+void LoadOBJ(void const *, unsigned int, unsigned int);
+void LoadOBJPltt(void const *, unsigned int, unsigned int);
 }
 
 /* ROM symbols this TU references that no header in the tree declares yet,
@@ -110,7 +90,7 @@ extern "C" {
  * ever read at [0]. */
 extern u32 data_0209b2f4;
 extern char data_0209e674[];
-extern VObj *data_0209f5bc;
+extern dFdBrightness_c *data_0209f5bc;
 extern u16 data_020a0e58[];
 extern u8 data_0209f2d8;
 extern u16 data_0209f5e8[];
@@ -158,8 +138,7 @@ static inline int IsTouchStarted() {
  * through MultiStore16 from a volatile temporary, five of them; that is the
  * spelling the bytes need. */
 // @symbol func_ov003_020adcbc
-extern "C" void func_ov003_020adcbc(int level, int row, int col)
-{
+extern "C" void func_ov003_020adcbc(int level, int row, int col) {
     volatile u16 t0, t1, t2, t3, t4;
     int tens = level / 10;
     int ones = level % 10;
@@ -193,10 +172,10 @@ extern "C" void func_ov003_020adcbc(int level, int row, int col)
  * at (row, col), one tile per character. Called only from
  * func_ov003_020ad6ec, for the caption. */
 // @symbol func_ov003_020adc74
-extern "C" void func_ov003_020adc74(signed char *s, int row, int col)
-{
+extern "C" void func_ov003_020adc74(signed char *s, int row, int col) {
     short *p = (short *)_ZN2G212GetBG0ScrPtrEv() + (col + (row << 5));
-    if (*s == 0) return;
+    if (*s == 0)
+        return;
     do {
         *p++ = (short)*s++;
     } while (*s != 0);
@@ -213,8 +192,7 @@ extern "C" void func_ov003_020adc74(signed char *s, int row, int col)
  * vptrs, ORs pauseFlags 1 and 4 (dScene_c::dScene_c), then stores this
  * class's vptr. The null check is the one `new` itself emits. */
 // @symbol dScTitle_c_classInit
-extern "C" dScTitle_c *dScTitle_c_classInit(void)
-{
+extern "C" dScTitle_c *dScTitle_c_classInit(void) {
     return new dScTitle_c();
 }
 
@@ -223,36 +201,38 @@ extern "C" dScTitle_c *dScTitle_c_classInit(void)
  * set, blanks the BG0 screen map, then seeds the scroll window from the
  * cursor and starts the title music. */
 // @symbol _ZN10dScTitle_c13InitResourcesEv
-s32 dScTitle_c::InitResources()
-{
+s32 dScTitle_c::InitResources() {
     UnloadArchives();
     Enable3dEngines();
     GX::DisableAllBanks();
     GX::SetBankForBG(8);
     GX::SetBankForOBJ(1);
-    *(volatile u32*)0x4000000 &= 0xffcfffef;
+    *(volatile u32 *)0x4000000 &= 0xffcfffef;
     GX::SetGraphicsMode(1, 0, 0);
-    *(volatile u32*)0x4001000 |= 0x10000;
+    *(volatile u32 *)0x4001000 |= 0x10000;
     func_020233f4();
-    *(volatile u16*)0x4000008 &= ~3;
-    *(volatile u16*)0x4000008 = (*(volatile u16*)0x4000008 & 0x43) | 0x1f00;
-    *(volatile u16*)0x4000008 &= ~0x40;
+    *(volatile u16 *)0x4000008 &= ~3;
+    *(volatile u16 *)0x4000008 = (*(volatile u16 *)0x4000008 & 0x43) | 0x1f00;
+    *(volatile u16 *)0x4000008 &= ~0x40;
     GX::LoadBG0Char(data_0208a178, 0, 0x2000);
     GX::LoadBGPltt(data_0208c178, 0, 0x200);
     {
         u16 *scr = (u16 *)_ZN2G212GetBG0ScrPtrEv();
         int i = 0;
-        do { *scr++ = 0xff; i++; } while (i < 0x1800);
+        do {
+            *scr++ = 0xff;
+            i++;
+        } while (i < 0x1800);
     }
     GX::LoadOBJ(data_0208c378, 0, 0x2000);
     GX::LoadOBJPltt(data_0208c178, 0, 0x200);
-    *(u8*)data_0209d45c = 0x11;
-    *(volatile u32*)0x4000000 = (*(volatile u32*)0x4000000 & ~0x1f00) | 0x1100;
-    *(int*)data_0208ee44 = 2;
+    *(u8 *)data_0209d45c = 0x11;
+    *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x1f00) | 0x1100;
+    *(int *)data_0208ee44 = 2;
     func_ov003_020ad6ec(this);
-    *(volatile u32*)0x4000010 = 0;
-    *(u8*)(data_0209ee90 + 0x340) = 0;
-    *(u8*)(data_0209ee90 + 0x341) = 0;
+    *(volatile u32 *)0x4000010 = 0;
+    *(u8 *)(data_0209ee90 + 0x340) = 0;
+    *(u8 *)(data_0209ee90 + 0x341) = 0;
     Sound::LoadInitialGroup(2);
     Sound::LoadAndSetMusic_Layer1(0x38);
     return 1;
@@ -261,8 +241,7 @@ s32 dScTitle_c::InitResources()
 /* [6] 0x020ada80 -- vtable slot 3. The title scene owns only its voice
  * group; releasing that is the whole teardown. */
 // @symbol _ZN10dScTitle_c16CleanupResourcesEv
-s32 dScTitle_c::CleanupResources()
-{
+s32 dScTitle_c::CleanupResources() {
     Sound::UnsetPlayerVoiceGroup();
     return 1;
 }
@@ -273,9 +252,8 @@ s32 dScTitle_c::CleanupResources()
  * cursor by row (+0x35) or column (+1) with repeat delay at unk_050,
  * wrapping the index modulo 0x36. */
 // @symbol _ZN10dScTitle_c8BehaviorEv
-s32 dScTitle_c::Behavior()
-{
-    if (data_0209f5bc->v5() && ((data_020a0e58[1] & 9) | IsTouchStarted()) != 0) {
+s32 dScTitle_c::Behavior() {
+    if (data_0209f5bc->IsAtStart() && ((data_020a0e58[1] & 9) | IsTouchStarted()) != 0) {
         u32 i;
         s8 t;
         func_02012790(1);
@@ -323,16 +301,15 @@ s32 dScTitle_c::Behavior()
 /* [4] 0x020ad7a4 -- vtable slot 9. Real C++ method over the shared header;
  * this body never touches its own fields. */
 // @symbol _ZN10dScTitle_c6RenderEv
-s32 dScTitle_c::Render()
-{
+s32 dScTitle_c::Render() {
     OamTmp tmp;
     OAM::_ZN3OAM12EnableSubOAMEv(&tmp);
     {
         int idx = data_0209e664;
         unsigned int v = ((data_0209b2f4 - data_0209b2f8 + 2) << 3) & 0xff;
-        char* p = data_0209e674 + (idx << 3);
-        *(int*)p = v | 0x80000;
-        *(short*)(p + 4) = 0;
+        char *p = data_0209e674 + (idx << 3);
+        *(int *)p = v | 0x80000;
+        *(short *)(p + 4) = 0;
     }
     return 1;
 }
@@ -340,9 +317,7 @@ s32 dScTitle_c::Render()
 /* [3] 0x020ad7a0 -- vtable slot 12. Nothing to unwind; the slot exists only
  * so dScene_c's teardown has something to call. */
 // @symbol _ZN10dScTitle_c16OnPendingDestroyEv
-void dScTitle_c::OnPendingDestroy()
-{
-}
+void dScTitle_c::OnPendingDestroy() {}
 
 /* [2] 0x020ad6ec -- scrolls the level-grid window so the cursor stays on
  * screen: clamps the origin at data_0209b2f8, redraws the visible rows
@@ -354,9 +329,8 @@ void dScTitle_c::OnPendingDestroy()
  * the legacy `int[]` spelling is dropped in favour of the header's scalar
  * and the `[0]` subscripts became scalar accesses. */
 // @symbol func_ov003_020ad6ec
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov003_020ad6ec(void *)
-{
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov003_020ad6ec(void *) {
     int v = data_0209b2f4;
     int nv = v - 0xa;
     data_0209b2f8 = nv;
@@ -364,11 +338,13 @@ void func_ov003_020ad6ec(void *)
     if (t > 0x36) {
         data_0209b2f8 = nv - (t - 0x36);
     }
-    if (data_0209b2f8 < 0) data_0209b2f8 = 0;
+    if (data_0209b2f8 < 0)
+        data_0209b2f8 = 0;
     int s = data_0209b2f8;
     int cnt = 0x36 - s;
     int end = cnt + 2;
-    if (end > 0x17) end = 0x17;
+    if (end > 0x17)
+        end = 0x17;
     int i;
     int j = s;
     for (i = 2; i < end; i++) {

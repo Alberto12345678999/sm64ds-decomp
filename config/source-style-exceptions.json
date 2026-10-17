@@ -352,6 +352,118 @@
       "count": 2,
       "reason": "Retained flat bindings initialize the existing KrbFreeHandler descriptor union. Direct member-pointer globals, including const globals, add four descriptor-copy sequences and expand the retail initializer from 0x1fc to 0x23c. Follow-up: recover a member-pointer descriptor construction that retains the retail initializer.",
       "evidence": "PR #3737 repair: pinned 2004/b56 direct and const member-pointer experiments; restored union with WALK targeting wrapper 0x0212b2dc passes production object preparation, all 36 relocated functions including the 0x1fc initializer, and full ROM build (106/106 modules exact)."
+    },
+    {
+      "path": "src/engine/collision/d_bg_w.cpp",
+      "rule": "unknown-field",
+      "match": "unk_44",
+      "count": 1,
+      "reason": "Use the existing dBgW_Kc member instead of raw int index17; its s32/Fix12i width and +0x44 address are unchanged. The shared header name remains intentionally unknown pending collision ownership handoff.",
+      "evidence": "df88a655 func_020396d0; include/dBgW_Kc.h +0x44; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/engine/collision/d_bg_w.cpp",
+      "rule": "unknown-field",
+      "match": "unk_48",
+      "count": 1,
+      "reason": "Use the existing dBgW_Kc member instead of raw +0x48 store; the s32 width and zero clamp are unchanged. The shared header name remains intentionally unknown pending collision ownership handoff.",
+      "evidence": "df88a655 func_020396c0; include/dBgW_Kc.h +0x48; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/game/stages/d_s_entry.cpp",
+      "rule": "unknown-field",
+      "match": "unk_01c",
+      "count": 5,
+      "reason": "Use the existing icon base member instead of raw +0x1c s32 accesses. Do not invent a shared field identity from this entry-screen reader; retain the documented partial header until all consumers agree.",
+      "evidence": "df88a655 func_ov075_02115e8c; include/dThIcon_c.h s32 unk_01c; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/game/stages/d_s_entry.cpp",
+      "rule": "unknown-field",
+      "match": "unk_020",
+      "count": 6,
+      "reason": "Use the existing icon base member instead of raw +0x20 s32 store. The shared field remains unnamed pending agreement across icon consumers.",
+      "evidence": "df88a655 func_ov075_02115e8c; include/dThIcon_c.h s32 unk_020; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/d_s_mg_pachinko2.cpp",
+      "rule": "unknown-field",
+      "match": "unk_0c",
+      "count": 2,
+      "reason": "The recovered 0x18-byte score popup record retains an unnamed s32 at +0x0c. This replaces the original s32 store at scene+0x54ac+i*0x18 without guessing its meaning; name it only after its readers establish a role.",
+      "evidence": "df88a655 score-popup initialization; include/dScMgPachinko2_c.h mScorePops at0x54a0 and s32 unk_0c; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/game/stages/d_s_stage_methods.cpp",
+      "rule": "raw-offset",
+      "match": "(char*)bone+0x30",
+      "count": 3,
+      "reason": "Real BMD_Bone and BMD_Material access replaces local shadow records. The material count remains a u16 at bone+0x30, inside BMD_Bone padding; the old local Inner record read the same u16 count. Retire this offset when the shared file-format header names that member.",
+      "evidence": "df88a655 RenderModel/RenderModelTransparent local Inner::count; include/BMD_File.h BMD_Bone pad_08 spans0x08..0x33; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
+      "rule": "raw-offset",
+      "match": "(ModelAnim*)(self+0x78",
+      "count": 2,
+      "reason": "The real ModelAnim API replaces shadow calls for the embedded model at +0x78. The address and model storage are inherited from Trmp2Mario; the enclosing record remains partial. Retire this cast when its model member is represented without changing lifecycle codegen.",
+      "evidence": "df88a655 Trmp2Mario_Draw and Trmp2Mario_UpdateMatrix model at+0x78; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
+      "rule": "raw-offset",
+      "match": "(ModelAnim*)(self+0x6c",
+      "count": 2,
+      "reason": "The real ModelAnim API replaces shadow calls for the embedded model at +0x6c. The address and model storage are inherited from Trmp3DMario; the enclosing record remains partial. Retire this cast when its model member is represented without changing lifecycle codegen.",
+      "evidence": "df88a655 Trmp3DMario_Draw and Trmp3DMario_UpdateMatrix model at+0x6c; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/d_s_mg_roulette_methods.cpp",
+      "rule": "raw-offset",
+      "match": "(RouletteSliderView*)(c+0x530c",
+      "count": 1,
+      "reason": "RouletteSliderView replaces the opaque local C type at the same scene+0x530c address. It is a partial view, not a complete enclosing scene layout; retire the offset when the scene member is reconstructed.",
+      "evidence": "df88a655 Behavior RouletteBoard_Update((C*)(c+0x530c)); recovered local RouletteSliderView; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/unit020cd744.cpp",
+      "rule": "raw-offset",
+      "match": "(TextureTransformer*)(self+0x194",
+      "count": 1,
+      "reason": "Call the real TextureTransformer API on the existing embedded object at item+0x194. Main already used the same embedded-object address through receiver c; this change uses the real typed API and model update migration uses self. Retire the raw expression when the containing item lifecycle/layout can name this member.",
+      "evidence": "df88a655 TrmpItem_UpdateMatrix handspelled TextureTransformer::Update at c+0x194; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/unit020cd744.cpp",
+      "rule": "raw-offset",
+      "match": "(TextureTransformer*)(item+0x194",
+      "count": 1,
+      "reason": "Call the real TextureTransformer API on the existing embedded object at item+0x194. Main already used the same embedded-object address through receiver c; this change uses the real typed API and the native update uses item. Retire the raw expression when the containing item lifecycle/layout can name this member.",
+      "evidence": "df88a655 TrmpItem_Update handspelled dExtFrameCtrl_c::Advance at c+0x194; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/d_s_mg_roulette_methods.cpp",
+      "rule": "raw-offset",
+      "match": "(Model*)(slider+0x10",
+      "count": 1,
+      "reason": "Use real Model calls for the embedded model at slider+0x10; main already used ModelBase/Sub views at the same address. The containing slider remains partial; name the model member only once lifecycle and complete layout are established.",
+      "evidence": "df88a655 Roulette slider render ModelBase/Sub at+0x10; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "src/minigames/d_s_mg_roulette_methods.cpp",
+      "rule": "raw-offset",
+      "match": "(Model*)(slider+0x60",
+      "count": 1,
+      "reason": "Use real Model calls for the embedded model at slider+0x60; main already used ModelBase/Sub views at the same address. The containing slider remains partial; name the model member only once lifecycle and complete layout are established.",
+      "evidence": "df88a655 Roulette slider render ModelBase/Sub at+0x60; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+    },
+    {
+      "path": "include/cMgSmartball_wing_c.h",
+      "rule": "unknown-field",
+      "match": "unk_032",
+      "count": 1,
+      "reason": "The wing-only GetAngle accessor reads the existing byte pair at base+0x32 as s16. The base deliberately stores u8 bytes because ana, board, wing and propeller require different views; renaming this shared byte as a signed angle would misstate those readers. Keep this one explicit boundary until a shared representation justified by every consumer exists.",
+      "evidence": "include/cMgSmartball_object_c.h documents per-reader signedness across0x031..0x033; cMgSmartball_wing_c::GetAngle casts the named byte storage. Fresh b56 compile preserves the entire production-prepared Smartball object byte-for-byte versus a317608eec;132/132 owned strict function checks VERIFIED; build/review3955-smartball-proof/proof.json."
     }
   ]
 }

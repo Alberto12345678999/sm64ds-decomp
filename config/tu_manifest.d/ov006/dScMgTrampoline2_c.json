@@ -2303,9 +2303,9 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@1100",
+      "from": "@1111",
       "to": "@1086",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1100 now; licensed under the existing pin @1086"
+      "evidence": "Compiler-local object retains its canonical pin @1086. Including dFdBrightness_c.h shifts the compiler spelling from @1100 to @1111; both are STB_LOCAL/STT_OBJECT at the same .bss section +0, size 12. Complete allocated sections and named relocation records are identical after applying the old and new mappings respectively (notes/experiments/scene-physics3955-review.md)."
     }
   ]
 }

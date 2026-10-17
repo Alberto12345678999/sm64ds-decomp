@@ -26,7 +26,7 @@
  *   structors by address, which C++ cannot spell.
  * - The header holds 0x50, 0x6c..0x70 and 0x264..0x280 as opaque
  *   storage.
- * - InitResources keeps its `int b = (actorID == 7)' flag locals.
+ * - InitResources keeps its `int isResult = (actorID == 7)' flag locals.
  *   Folding the first one into its condition rewrites the function
  *   (999 words, measured).
  * - The helpers it calls stay func_ov075_* and the arm9 globals keep
@@ -47,6 +47,7 @@
 #include "Sound.h"
 #include "decl_common.h"
 #include "dScEntry_c.h"
+#include "dFdBrightness_c.h"
 
 /* The Nitro SDK's sub-engine palette loader. No header in the tree
  * declares the namespace yet; d_s_star_sel_methods.cpp spells it the
@@ -92,15 +93,7 @@ extern u8 data_0209f4ae[];
 extern s32 data_0208ee44;
 
 /* The scene manager Behavior polls through its slot 5. */
-struct VObj {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual int v5();
-};
-extern "C" VObj *data_0209f5bc;
+extern "C" dFdBrightness_c *data_0209f5bc;
 
 /* Slot 3. Releases the level-entry scratch buffer, unregisters the
  * graph callback, drops the voice group and clears the shared
@@ -148,7 +141,7 @@ s32 dScEntry_c::Behavior() {
         }
     }
 
-    if (data_0209f5bc->v5() == 0 || mIsFading != 0)
+    if (data_0209f5bc->IsAtStart() == 0 || mIsFading != 0)
         return 1;
 
     if (data_0209fc68 != 0) {
@@ -178,13 +171,13 @@ s32 dScEntry_c::Behavior() {
 /* Slot 0. */
 // @symbol _ZN10dScEntry_c13InitResourcesEv
 s32 dScEntry_c::InitResources() {
-    char *c = (char *)this;
+    char *rawScene = (char *)this;
     Enable3dEngines();
     func_0200f2cc();
 
     {
-        int b = (actorID == 7);
-        if (b || param1 != 0 || func_0203d9b4() != 0) {
+        int isResult = (actorID == 7);
+        if (isResult || param1 != 0 || func_0203d9b4() != 0) {
             LoadTextNarcs();
             LoadArchive(0);
             LoadArchive(1);
@@ -193,14 +186,14 @@ s32 dScEntry_c::InitResources() {
     }
 
     {
-        void *f = (void *)LoadFile(0x9807);
-        GXS::LoadBGPltt(f, 0, 0xe0);
-        Deallocate(f);
+        void *paletteData = (void *)LoadFile(0x9807);
+        GXS::LoadBGPltt(paletteData, 0, 0xe0);
+        Deallocate(paletteData);
     }
     {
-        void *f = (void *)LoadFile(0x8406);
-        GXS::LoadBGPltt(f, 0xe0, 0x120);
-        Deallocate(f);
+        void *paletteData = (void *)LoadFile(0x8406);
+        GXS::LoadBGPltt(paletteData, 0xe0, 0x120);
+        Deallocate(paletteData);
     }
 
     *(u16 *)0x4000008 = (*(u16 *)0x4000008 & ~3) | 3;
@@ -231,9 +224,9 @@ s32 dScEntry_c::InitResources() {
     LoadFont3D();
 
     {
-        int b6 = (actorID == 6);
-        if (b6) {
-            func_ov075_02116ad4(c);
+        int isEntry = (actorID == 6);
+        if (isEntry) {
+            func_ov075_02116ad4(rawScene);
             if (param1 == 0) {
                 if (func_0203da3c() == 0) {
                     data_0209b2e8 = (void *)LoadFile(0x8409);
@@ -241,22 +234,22 @@ s32 dScEntry_c::InitResources() {
                     func_02030aa4(3);
                 }
                 {
-                    int r = func_0203da9c();
-                    func_02020028(r, data_0209f4ae[gActivePlayerSlot * 0x18]);
+                    int localPlayer = func_0203da9c();
+                    func_02020028(localPlayer, data_0209f4ae[gActivePlayerSlot * 0x18]);
                 }
             }
         } else {
-            func_ov075_02116818(c);
+            func_ov075_02116818(rawScene);
         }
     }
 
-    func_ov075_0211601c((char *)&data_ov075_0211d71c, (int)c, 1);
+    func_ov075_0211601c((char *)&data_ov075_0211d71c, (int)rawScene, 1);
     data_0209d4a8 = &data_ov075_0211d71c;
     Sound::LoadInitialGroup(0x2b);
 
     {
-        int b6b = (actorID == 6);
-        if (b6b) {
+        int isEntry = (actorID == 6);
+        if (isEntry) {
             if (param1 < 2) {
                 Sound::LoadAndSetMusic_Layer1(0x4c);
             }

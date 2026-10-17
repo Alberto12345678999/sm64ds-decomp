@@ -28,9 +28,9 @@
  * (head sMCarloCards, tail sMCarloCardsTail; sMCarloFirstPick /
  * _02142508 are the first/second pick).
  *
- * OWN TAIL, 0x60a8..0x60b0: three fields carried over verbatim from this
- * header's previous auto-generated form, real matched access out of
- * dScMgMCarlo_c's own methods, and the last of them closes exactly on the
+ * OWN TAIL, 0x60a8..0x60b0: the round state, timer and progress counter,
+ * named from dScMgMCarlo_c's own methods. Progress counts dealer signals
+ * during play and hidden cards during exit. The last field closes on the
  * factory's allocation literal. The two fields the old header declared
  * below 0x4f38 (0x0a8, 0x0ac) are dropped: both are dScMgBase_c's own and
  * are already declared there.
@@ -47,24 +47,27 @@
 #define DSCMGMCARLO_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int  Dealer_Destruct(char *t); /* decl_common.h's own signature */
+extern "C" int Dealer_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void _ZN18dMgMCarloCardObj_cD1Ev(void *elem);
 
 /* The shared state name is reconstructed; its 0x270 layout and destructor
    behavior are measured. A real member lets C++ spell the scene teardown. */
 struct dMgMCarloSharedState_c {
-    ~dMgMCarloSharedState_c() { Dealer_Destruct((char *)this); }
+    ~dMgMCarloSharedState_c() {
+        Dealer_Destruct((char *)this);
+    }
 
-    u8  pad_000[0x1a];
+    u8 pad_000[0x1a];
     s16 unk_01a;
-    u8  pad_01c[0x1ca];
+    u8 pad_01c[0x1ca];
     s16 unk_1e6;
-    u8  pad_1e8[0x88];
+    u8 pad_1e8[0x88];
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char dMgMCarloSharedState_c_size_must_be_0x270[sizeof(dMgMCarloSharedState_c) == 0x270 ? 1 : -1];
+typedef char
+    dMgMCarloSharedState_c_size_must_be_0x270[sizeof(dMgMCarloSharedState_c) == 0x270 ? 1 : -1];
 #endif
 
 /* --- the board-card element class ------------------------------------------
@@ -108,27 +111,27 @@ struct dMgMCarloCardObj_c {
     virtual void Update(int event); /* slot 1 -- ov006 0x020f7ee4 */
 
     /* board helpers reached on one card (not virtual, no table entry) */
-    int  HitTest();                                  /* ov006 0x020f8154 */
-    int  IsPairWith(dMgMCarloCardObj_c *other);      /* ov006 0x020f8224 */
-    void FlipAway(int n);                            /* ov006 0x020f82d0 */
-    void DealIn(int m);                              /* ov006 0x020f8320 */
-    void Init(int n);                                /* ov006 0x020f84a8 */
+    int HitTest();                             /* ov006 0x020f8154 */
+    int IsPairWith(dMgMCarloCardObj_c *other); /* ov006 0x020f8224 */
+    void FlipAway(int n);                      /* ov006 0x020f82d0 */
+    void DealIn(int m);                        /* ov006 0x020f8320 */
+    void Init(int n);                          /* ov006 0x020f84a8 */
 
     dMgMCarloCardObj_c *mPrev; /* 0x04 -- the board list runs tail-to-head */
     dMgMCarloCardObj_c *mNext; /* 0x08                                  */
-    s32 mX;                   /* 0x0c -- 1:4096 fixed-point */
-    s32 mY;                   /* 0x10 */
-    s32 mTargetX;             /* 0x14 -- board slot m's column/row target */
-    s32 mTargetY;             /* 0x18 */
-    s32 mXStep;               /* 0x1c -- ApproachLinear's per-frame step */
-    s32 mYStep;               /* 0x20 */
-    s32 mLift;                /* 0x24 -- 0x4000 = fully raised */
-    s16 mDealDelay;           /* 0x28 -- deal/flip stagger countdown */
-    s16 mSlot;                /* 0x2a -- board slot, %5//5 = col/row */
-    u8  mFace;                /* 0x2c -- weighted 0..7 draw, pair match key */
-    u8  mState;               /* 0x2d -- 0 wait, 1/4 fly-in, 2 idle, 3 pick, 5 flip-away */
-    u8  mVisible;             /* 0x2e */
-    u8  pad_2f;               /* 0x2f */
+    s32 mX;                    /* 0x0c -- 1:4096 fixed-point */
+    s32 mY;                    /* 0x10 */
+    s32 mTargetX;              /* 0x14 -- board slot m's column/row target */
+    s32 mTargetY;              /* 0x18 */
+    s32 mXStep;                /* 0x1c -- ApproachLinear's per-frame step */
+    s32 mYStep;                /* 0x20 */
+    s32 mLift;                 /* 0x24 -- 0x4000 = fully raised */
+    s16 mDealDelay;            /* 0x28 -- deal/flip stagger countdown */
+    s16 mSlot;                 /* 0x2a -- board slot, %5//5 = col/row */
+    u8 mFace;                  /* 0x2c -- weighted 0..7 draw, pair match key */
+    u8 mState;                 /* 0x2d -- 0 wait, 1/4 fly-in, 2 idle, 3 pick, 5 flip-away */
+    u8 mVisible;               /* 0x2e */
+    u8 pad_2f;                 /* 0x2f */
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -137,6 +140,17 @@ typedef char dMgMCarloCardObj_c_size_must_be_0x30[sizeof(dMgMCarloCardObj_c) == 
 #endif
 
 struct dScMgMCarlo_c : dScMgSingle3DBase_c {
+    enum RoundState {
+        STATE_START_PROMPT = 1,
+        STATE_INITIAL_DEAL,
+        STATE_PLAY,
+        STATE_FREE_GFX,
+        STATE_WAIT_DEALER,
+        STATE_HIDE_CARDS,
+        STATE_FLIP_CARDS,
+        STATE_EXIT_DELAY
+    };
+
     virtual ~dScMgMCarlo_c() {}
 
     /* This class's own override, read off the ROM's vtable: the one slot where
@@ -148,11 +162,11 @@ struct dScMgMCarlo_c : dScMgSingle3DBase_c {
        the first of these and the first non-inline virtual declared after the
        inline destructor, is this class's KEY FUNCTION -- so the TU that defines
        it is the one that emits _ZTV13dScMgMCarlo_c. */
-    s32 InitResources();   /* slot  0 -- ov006 0x020f8d08 */
-    s32 Render();          /* slot  9 -- ov006 0x020f85b0 */
-    virtual void StartRound(int arg);               /* slot 18 */
-    virtual int  CanEndState(int mode);              /* slot 19 */
-    s32 Behavior();        /* slot  6 -- ov006 0x020f869c */
+    s32 InitResources();               /* slot  0 -- ov006 0x020f8d08 */
+    s32 Render();                      /* slot  9 -- ov006 0x020f85b0 */
+    virtual void StartRound(int arg);  /* slot 18 */
+    virtual int CanEndState(int mode); /* slot 19 */
+    s32 Behavior();                    /* slot  6 -- ov006 0x020f869c */
 
     /* --- the round state machine's helpers, all static: none reads this.
        The register shape is the evidence -- r0 is either untouched or
@@ -162,19 +176,19 @@ struct dScMgMCarlo_c : dScMgSingle3DBase_c {
        see each definition in src/minigames/d_s_mg_m_carlo.cpp. */
     static void UpdateBoard();                         /* ov006 0x020f7740 */
     static void FlipDealtCards();                      /* ov006 0x020f7994 */
-    static int  DrawCardValue();                       /* ov006 0x020f7a00 */
-    static int  BoardReady();                          /* ov006 0x020f7a90 */
-    static int  BoardBusy();                           /* ov006 0x020f7b10 */
-    static int  HasRemovablePair();                    /* ov006 0x020f7b90 */
+    static int DrawCardValue();                        /* ov006 0x020f7a00 */
+    static int BoardReady();                           /* ov006 0x020f7a90 */
+    static int BoardBusy();                            /* ov006 0x020f7b10 */
+    static int HasRemovablePair();                     /* ov006 0x020f7b90 */
     static void SetupBoard(dMgMCarloCardObj_c *cards); /* ov006 0x020f7c10 */
     void RenderHud();                                  /* ov006 0x020f8540 */
 
-    dMgMCarloSharedState_c mShared; /* 0x4f38..0x51a8 */
+    dMgMCarloSharedState_c mShared;  /* 0x4f38..0x51a8 */
     dMgMCarloCardObj_c mArray[0x50]; /* 0x51a8..0x60a8 */
-    s16 mRoundState;                 /* 0x60a8 -- the round's step; Behavior switches on it */
-    s16 mTimer;                      /* 0x60aa -- step timer (ApproachLinear2 to 0) */
-    u8  pad_60ac[0x2];     /* 0x60ac */
-    s16 mDealCount;        /* 0x60ae -- cards dealt so far; Dealer_StartShuffle counts it */
+    s16 mRoundState;                 /* 0x60a8 - shared by play and exit handlers */
+    s16 mRoundTimer;                 /* 0x60aa - card-hide interval / final delay */
+    u8 pad_60ac[0x2];                /* 0x60ac */
+    s16 mRoundProgress;              /* 0x60ae - dealer signals, then exit hide index */
 };
 
 #ifndef SM64DS_PLATFORM_PC
