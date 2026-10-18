@@ -14,6 +14,7 @@
  * reconstructed. Six states, declared on daPgBby_c.h.
  */
 #include "daPgBby_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
@@ -801,3 +802,10 @@ Vector3 gPenguinBabyCarryOffsets[4] = {
     Vector3(0x2b000, 0, 0x1e000),
     Vector3(0x30000, 0, 0x32000),
 };
+
+/* The registry's typed factory and the actor profile consumed by dActor_c. */
+extern "C" {
+SpawnInfo<daPgBby_c> g_profile_PENGUIN_BABY = {
+    daPgBby_c_classInit, 0x0100, 0x0072, 0x00808282, 0x00028000, 0x00028000, 0x01000000, 0x01000000,
+};
+}
