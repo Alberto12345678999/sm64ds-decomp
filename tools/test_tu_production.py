@@ -3,11 +3,345 @@ import pathlib
 import sys
 import tempfile
 import unittest
+import copy
+import io
+import struct
 from unittest import mock
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import rombuild as RB  # noqa: E402
 import tu_production as TP  # noqa: E402
+import initialized_boundaries as IB  # noqa: E402
+import tubuild as TB  # noqa: E402
+from elftools.elf.elffile import ELFFile
+
+
+class InitializedBoundaryAdmission(unittest.TestCase):
+    def entry(self):
+        sections = [
+            {"name": ".text", "start": "0x1000", "end": "0x1010"},
+            {"name": ".data", "start": "0x2000", "end": "0x201c"},
+        ]
+        return {
+            "id": "ov074/Test",
+            "module": "ov074",
+            "status": "promoted",
+            "production_mode": "intact-object",
+            "source": "src/Test.cpp",
+            "sections": sections,
+            "verification": {
+                "linkcheck": {
+                    "result": "scratch-data-verified",
+                    "phases": {
+                        key: True
+                        for key in (
+                            "delink",
+                            "lcf",
+                            "compile",
+                            "link",
+                            "checkModules",
+                            "rom",
+                        )
+                    },
+                    "symbolCheckNewVsBaseline": [],
+                    "symbolCheckErrors": [],
+                    "symbolCheckBaselineErrors": [],
+                    "tuRanges": [
+                        {
+                            "section": row["name"],
+                            "start": row["start"],
+                            "end": row["end"],
+                            "differingBytes": 0,
+                        }
+                        for row in sections
+                    ],
+                    "rom": {"sha256": "a" * 64, "matchesStockRom": True},
+                }
+            },
+        }
+
+    def test_normal_and_scratch_reject_malformed_opt_in_before_link_inputs(self):
+        for mutate in (
+            lambda e: e["sections"][1].update(terminal_linker_fill=None),
+            lambda e: e["sections"][1].update(
+                terminal_linker_fill={"alignment": 4, "value": 255}
+            ),
+            lambda e: e.update(
+                initialized_prefix_aliases=[{"symbol": "alias", "vtable": "bad"}]
+            ),
+            lambda e: e.update(initialized_prefix_aliases=None),
+        ):
+            entry = self.entry()
+            mutate(entry)
+            with self.subTest(entry=entry):
+                with self.assertRaises(RB.BuildError) as raised:
+                    RB.intact_tu_policies(
+                        {"src/Test.cpp"}, manifest={"entries": [entry]}
+                    )
+                self.assertIn(
+                    "invalid initialized boundary policy", raised.exception.output
+                )
+                self.assertTrue(TB.manifest_section_claims(entry)[1])
+                with self.assertRaises(ValueError):
+                    IB.link_plan(
+                        [entry], "absent-objects", "absent-lcf", "absent-config"
+                    )
+
+    def test_no_source_baseline_has_no_boundary_requests_or_input_access(self):
+        self.assertEqual(
+            IB.link_plan([], "absent-objects", "absent-lcf", "absent-config"),
+            {"prefixes": [], "terminalFill": []},
+        )
+
+    def test_normal_policy_keeps_explicit_request_for_later_actual_link_proof(self):
+        entry = self.entry()
+        entry["sections"][1]["terminal_linker_fill"] = {"alignment": 4, "value": 0}
+        self.assertEqual(
+            RB.intact_tu_policies({"src/Test.cpp"}, manifest={"entries": [entry]}),
+            {"src/Test.cpp": entry},
+        )
+
+
+def _prefix_fixture():
+    """Synthetic ARM ELF; exact bytes/relocations, no compiler or ROM dependency."""
+    vt, ti = "_ZTV5Thing", "_ZTI5Thing"
+    strings = b"\0" + vt.encode() + b"\0" + ti.encode() + b"\0donor\0"
+    ti_name = 2 + len(vt)
+    names = [".data.vt", ".data.ti", ".rela.data.vt", ".symtab", ".strtab", ".shstrtab"]
+    section_strings = b"\0"
+    name_offsets = {}
+    for name in names:
+        name_offsets[name] = len(section_strings)
+        section_strings += name.encode() + b"\0"
+    symbols = bytes(16)
+    symbols += struct.pack("<IIIBBH", 1, 8, 24, 0x11, 0, 1)
+    symbols += struct.pack("<IIIBBH", ti_name, 0, 12, 0xD1, 0, 2)
+    symbols += struct.pack("<IIIBBH", ti_name + len(ti) + 1, 0, 0, 0x10, 0, 0)
+    payloads = [
+        bytes(32),
+        bytes(12),
+        struct.pack("<IIi", 4, (2 << 8) | 2, 0),
+        symbols,
+        strings,
+        section_strings,
+    ]
+    rows = [
+        (1, 3, 0, 0, 4, 0),
+        (1, 3, 0, 0, 4, 0),
+        (4, 0, 4, 1, 4, 12),
+        (2, 0, 5, 1, 4, 16),
+        (3, 0, 0, 0, 1, 0),
+        (3, 0, 0, 0, 1, 0),
+    ]
+    body, headers = bytearray(), bytes(40)
+    for name, payload, (kind, flags, link, info, align, entsize) in zip(
+        names, payloads, rows
+    ):
+        offset = 52 + len(body)
+        body.extend(payload)
+        headers += struct.pack(
+            "<IIIIIIIIII",
+            name_offsets[name],
+            kind,
+            flags,
+            0,
+            offset,
+            len(payload),
+            link,
+            info,
+            align,
+            entsize,
+        )
+    header = b"\x7fELF\x01\x01\x01" + bytes(9)
+    header += struct.pack(
+        "<HHIIIIIHHHHHH", 1, 40, 1, 0, 0, 52 + len(body), 0, 52, 0, 0, 40, 7, 6
+    )
+    raw = header + body + headers
+    entry = dict(
+        module="ov999",
+        source="src/actors/Thing.cpp",
+        production_mode="intact-object",
+        functions=[],
+        sections=[
+            dict(name=".text", start=0x1000, end=0x1004),
+            dict(name=".data.vt", input_section=".data", start=0x2000, end=0x2020),
+            dict(name=".data.ti", input_section=".data", start=0x2100, end=0x210C),
+        ],
+        data=[
+            dict(
+                symbol=vt,
+                address=0x2008,
+                emitted_storage_address=0x2000,
+                address_point_bias=8,
+                size=32,
+                binding="STB_GLOBAL",
+            ),
+            dict(symbol=ti, address=0x2100, size=12, binding="STB_LOPROC"),
+        ],
+        relocations=[
+            dict(
+                section=".data.vt",
+                source=0x2004,
+                type="R_ARM_ABS32",
+                kind="load",
+                symbol=ti,
+                addend=0,
+                target_module="ov999",
+                target_address=0x2100,
+            )
+        ],
+    )
+    claims, errors = TP.TB.manifest_section_claims(entry)
+    assert not errors, errors
+    homes = {
+        vt: [("ov999", 0x2008)],
+        ti: [("ov999", 0x2100)],
+        "prefix": [("ov999", 0x2000)],
+    }
+
+    def target_reader(module, start, size):
+        if start == 0x2000:
+            return bytes(4) + struct.pack("<I", 0x2100) + bytes(24)
+        return bytes(size)
+
+    owned = TP.TB.verify_owned_sections(
+        raw,
+        entry,
+        claims,
+        name_index={},
+        config_relocs={"ov999": {0x2004: ("load", 0x2100, "ov999")}},
+        sym_index={},
+        target_reader=target_reader,
+        symbol_homes=homes,
+        bss_boundaries=set(),
+        public_address_points=True,
+        normalized_undefined_vtables=True,
+    )
+    assert owned["ok"], owned
+    return raw, entry, claims, homes, owned
+
+
+class InitializedPrefixProof(unittest.TestCase):
+    def setUp(self):
+        self.raw, self.entry, self.claims, self.homes, self.owned = _prefix_fixture()
+        self.path = pathlib.Path("/synthetic/src/actors/Thing.o")
+        self.receipt = IB.prepared_receipt(
+            self.raw, self.entry, self.claims, self.owned
+        )
+        self.extents = [
+            dict(symbol=name, module=module, address=address, size=0, initialized=True)
+            for name, rows in self.homes.items()
+            for module, address in rows
+        ]
+
+    def prove(self, raw=None, refresh=False, objects=None):
+        raw = self.raw if raw is None else raw
+        proof = (
+            IB.prepared_receipt(raw, self.entry, self.claims, self.owned)
+            if refresh
+            else self.receipt
+        )
+        return IB.prefix_storage_license(
+            objects or [(self.path, raw)],
+            self.entry,
+            self.claims,
+            self.homes,
+            vtable="_ZTV5Thing",
+            alias="prefix",
+            preparation_proofs={str(self.path): proof},
+            configured_extents=self.extents,
+        )
+
+    def mutate_symbol(self, index, offset, value, fmt):
+        elf = ELFFile(io.BytesIO(self.raw))
+        raw = bytearray(self.raw)
+        struct.pack_into(
+            fmt,
+            raw,
+            elf.get_section_by_name(".symtab")["sh_offset"] + index * 16 + offset,
+            value,
+        )
+        return bytes(raw)
+
+    def test_complete_native_prefix_is_zero_size_identity(self):
+        result = self.prove()
+        self.assertEqual(
+            (
+                result["identitySize"],
+                result["licensedStoragePrefixBytes"],
+                result["fullStorageBytes"],
+                result["publicBytes"],
+            ),
+            (0, 8, 32, 24),
+        )
+
+    def test_stale_object_and_claim_proofs_refuse(self):
+        with self.assertRaisesRegex(ValueError, "stale"):
+            self.prove(self.raw + b"\0")
+        self.claims[0]["end"] += 4
+        with self.assertRaisesRegex(ValueError, "stale"):
+            self.prove()
+
+    def test_failed_owned_proof_refuses(self):
+        with self.assertRaises(ValueError):
+            IB.prepared_receipt(self.raw, self.entry, self.claims, {"ok": False})
+
+    def test_actual_layout_not_just_manifest_address(self):
+        self.claims[1]["start"] -= 4
+        with self.assertRaisesRegex(ValueError, "actual prepared section layout"):
+            self.prove(refresh=True)
+
+    def test_non_dedicated_offset_and_local_label_refuse(self):
+        for raw in (
+            self.mutate_symbol(1, 4, 12, "<I"),
+            self.mutate_symbol(3, 14, 1, "<H"),
+        ):
+            with self.subTest(), self.assertRaises(ValueError):
+                self.prove(raw, refresh=True)
+
+    def test_duplicate_provider_and_wrong_source_refuse(self):
+        for objects in (
+            [(self.path, self.raw)] * 2,
+            [(self.path.with_name("Other.o"), self.raw)],
+        ):
+            with self.subTest(), self.assertRaises(ValueError):
+                self.prove(objects=objects)
+
+    def test_wrong_module_and_ambiguous_homes_refuse(self):
+        for homes in ([("ov998", 0x2000)], [("ov999", 0x2000), ("ov998", 0x2000)]):
+            self.homes["prefix"] = homes
+            with self.subTest(), self.assertRaises(ValueError):
+                self.prove()
+
+    def test_configured_competing_identity_refuses(self):
+        for address, size in ((0x2004, 0), (0x1FFC, 8)):
+            self.extents.append(
+                dict(symbol="other", module="ov999", address=address, size=size)
+            )
+            with self.subTest(), self.assertRaises(ValueError):
+                self.prove()
+            self.extents.pop()
+
+    def test_rtti_binding_visibility_and_unique_claim_refuse(self):
+        for raw in (
+            self.mutate_symbol(2, 12, 0x11, "<B"),
+            self.mutate_symbol(2, 13, 2, "<B"),
+        ):
+            with self.subTest(), self.assertRaises(ValueError):
+                self.prove(raw, refresh=True)
+        self.claims.append(copy.deepcopy(self.claims[2]))
+        with self.assertRaises(ValueError):
+            self.prove(refresh=True)
+
+    def test_malformed_section_and_relocation_refuse(self):
+        with self.assertRaises(ValueError):
+            self.prove(self.mutate_symbol(2, 14, 0xFF00, "<H"), refresh=True)
+        elf = ELFFile(io.BytesIO(self.raw))
+        for offset, value in ((4, 0xFFFF0002), (0, 6)):
+            raw = bytearray(self.raw)
+            struct.pack_into("<I", raw, elf.get_section(3)["sh_offset"] + offset, value)
+            with self.subTest(), self.assertRaises(ValueError):
+                self.prove(bytes(raw), refresh=True)
 
 
 class ProductionTuAdmission(unittest.TestCase):

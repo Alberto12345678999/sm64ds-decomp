@@ -67,6 +67,7 @@ import relocs as RL  # noqa: E402
 import tu_manifest as TUM  # noqa: E402
 import dsd_pin as DSP  # noqa: E402
 import data_section_routes as DSR  # noqa: E402
+import initialized_boundaries as IB  # noqa: E402
 
 # Default compiler for the ROM build — same as the matching pin (tools/match.py
 # CANONICAL / notes/rom-build.md). config/rombuild-versions.txt carries per-file
@@ -851,6 +852,13 @@ def intact_tu_policies(enrolled=None, manifest=None):
         if not isinstance(section_rows, list):
             errors.append(f"{label}: intact-object section claims must be a list")
             section_rows = []
+        try:
+            IB.prefix_policies(entry)
+            for row in section_rows:
+                if isinstance(row, dict):
+                    IB.terminal_policy(row)
+        except (KeyError, TypeError, ValueError) as exc:
+            errors.append(f"{label}: invalid initialized boundary policy: {exc}")
         section_names = {row.get("name") for row in section_rows
                          if isinstance(row, dict) and isinstance(row.get("name"), str)}
         if ".text" not in section_names or not (section_names - {".text"}):
@@ -1385,7 +1393,14 @@ def main():
                 cache.prune(args.cache_max_mb * 1024 * 1024)
         report["phases"].append("mwccarm")
 
-        defined_interior = LI.patch(BUILD / "arm9.lcf", BUILD / "objects.txt", config_root)
+        try:
+            boundaries = IB.link_plan(list(intact_tus.values()), BUILD / "objects.txt",
+                                      BUILD / "arm9.lcf", config_root)
+            report["initializedBoundaries"] = boundaries
+            defined_interior = LI.patch(BUILD / "arm9.lcf", BUILD / "objects.txt", config_root,
+                                        initialized_prefixes=boundaries["prefixes"])
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            raise BuildError("initialized boundary proof", 1, str(exc)) from exc
         if defined_interior:
             print(f"      lcf: defined {len(defined_interior)} interior row(s) at their ROM "
                   f"address ({', '.join(n for n, _a in defined_interior)})")

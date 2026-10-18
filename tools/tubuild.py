@@ -65,6 +65,7 @@ import data_section_routes as DSR  # noqa: E402
 import enroll as EN             # noqa: E402
 import lcf_interior as LI       # noqa: E402
 import linker_alignment as LA   # noqa: E402
+import initialized_boundaries as IB  # noqa: E402
 import match as M               # noqa: E402
 import modules as MOD           # noqa: E402
 import objisolate as OI         # noqa: E402
@@ -1706,8 +1707,15 @@ def manifest_section_claims(entry):
             reasons.append(f"sections[{i}] {name} is empty/reversed: "
                            f"0x{start:08x}..0x{end:08x}")
             continue
-        rows.append({"name": name, "module_section": module_section,
-                     "start": start, "end": end})
+        normalized = {"name": name, "module_section": module_section,
+                      "start": start, "end": end}
+        try:
+            policy = IB.terminal_policy(claim)
+            if policy is not None:
+                normalized["terminal_linker_fill"] = policy
+        except (KeyError, TypeError, ValueError) as exc:
+            reasons.append(f"sections[{i}] {name}: {exc}")
+        rows.append(normalized)
 
     if sum(1 for r in rows if r["name"] == ".text") != 1:
         reasons.append("manifest must claim exactly one .text contribution")
@@ -1717,6 +1725,10 @@ def manifest_section_claims(entry):
             reasons.append(f"manifest section claims overlap: {left['name']} "
                            f"0x{left['start']:08x}..0x{left['end']:08x} and "
                            f"{right['name']} 0x{right['start']:08x}..0x{right['end']:08x}")
+    try:
+        IB.prefix_policies(entry)
+    except ValueError as exc:
+        reasons.append(str(exc))
     return rows, reasons
 
 
@@ -1736,6 +1748,8 @@ def validate_claims_in_module(delinks_path, claims):
                        f"{c['name']} -> {output_name}")
             reasons.append(f"{mapping} claim 0x{c['start']:08x}..0x{c['end']:08x} is "
                            f"not wholly inside exactly one declared module section")
+        elif IB.terminal_policy(c) is not None and homes[0] != (c["start"], c["end"]):
+            reasons.append(f"{c['name']} terminal fill requires complete logical module section ownership")
     return reasons
 
 
@@ -3318,12 +3332,19 @@ def prepare_owned_nontext_section_order(obj_bytes, entry, claims):
                                f"0x{cursor:08x}, manifest anchors require "
                                f"0x{bases[shndx]:08x}")
             cursor += sec.header["sh_size"]
-        if cursor != claim["end"]:
+        terminal = None
+        if "terminal_linker_fill" in claim:
+            try:
+                terminal = IB.terminal_extent(claim, cursor)
+            except ValueError as exc:
+                reasons.append(f"manifest-ordered {name}: {exc}")
+        elif cursor != claim["end"]:
             reasons.append(f"manifest-ordered {name} contribution ends at "
                            f"0x{cursor:08x}, claim ends at 0x{claim['end']:08x}")
 
         groups.append({"section": name, "original": selected,
-                       "desired": desired, "anchors": anchors})
+                       "desired": desired, "anchors": anchors,
+                       "terminalLinkerFillBytes": terminal or 0})
         if desired != selected:
             requested.append({"section": name, "indices": desired})
 
@@ -3547,7 +3568,8 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
                           config_relocs=None, sym_index=None, target_reader=None,
                           symbol_homes=None, bss_boundaries=None,
                           public_address_points=False,
-                          normalized_undefined_vtables=False):
+                          normalized_undefined_vtables=False,
+                          boundary_config_root=None):
     """Verify licensed non-text layout, bytes, symbols, and relocation destinations.
 
     Relocated words are wildcarded only after every relocation is independently tied
@@ -3582,6 +3604,15 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
             reasons.append(error)
             rows.append({"section": claim["name"], "ok": False, "error": error})
             continue
+        physical_size = len(layout["bytes"])
+        terminal = None
+        try:
+            layout, terminal = IB.finalize_layout(
+                entry, claim, layout, boundary_config_root or CFG_ARM9, target_reader)
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            reasons.append(f"{claim['name']} terminal linker fill: {exc}")
+            rows.append({"section": claim["name"], "ok": False, "error": str(exc)})
+            continue
         layouts[claim["name"]] = layout
         want = claim["end"] - claim["start"]
         size_ok = len(layout["bytes"]) == want
@@ -3596,9 +3627,11 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
         elif not size_ok:
             byte_ok, ndiff = False, 999
         rows.append({"section": claim["name"], "start": f"0x{claim['start']:08x}",
-                     "end": f"0x{claim['end']:08x}", "emittedBytes": len(layout["bytes"]),
+                     "end": f"0x{claim['end']:08x}", "emittedBytes": physical_size,
                      "sizeOk": size_ok, "bytesOk": byte_ok,
                      "differingWords": ndiff, "relocCount": len(layout["relocs"])})
+        if terminal is not None:
+            rows[-1].update(linkedBytes=len(layout["bytes"]), terminalLinkerFill=terminal)
         if not size_ok:
             reasons.append(f"{claim['name']} emits 0x{len(layout['bytes']):x} bytes, "
                            f"manifest claims 0x{want:x}")
@@ -4004,7 +4037,8 @@ def content_tree_sha256(root):
 
 BASELINE_CONTROL_TOOLS = tuple(
     REPO / "tools" / name for name in (
-        "dsd_pin.py", "linker_alignment.py", "data_section_routes.py", "objisolate.py", "reloc_audit.py",
+        "dsd_pin.py", "linker_alignment.py", "data_section_routes.py", "initialized_boundaries.py",
+        "lcf_interior.py", "objisolate.py", "reloc_audit.py",
         "rombuild.py", "rombuild_cache.py",
         "rombuild_check.py", "rombuild_profile.py", "tu_manifest.py",
         "tu_production.py", "tubuild.py"))
@@ -5963,7 +5997,21 @@ def cmd_linkcheck(args):
                   "were resolved.")
 
     # -------------------------------------------------------------------------- link
-    defined_interior = LI.patch(scratch / "arm9.lcf", scratch / "objects.txt", cfg_root)
+    try:
+        boundary_entries = ([] if baseline else list(
+            (intact_override if intact_override is not None else RB.intact_tu_policies(srcs)).values()))
+        if not baseline and entry is not None and not any(row is entry for row in boundary_entries):
+            boundary_entries.append(entry)
+        boundaries = IB.link_plan(boundary_entries, scratch / "objects.txt",
+                                  scratch / "arm9.lcf", cfg_root)
+        report["initializedBoundaries"] = boundaries
+        defined_interior = LI.patch(scratch / "arm9.lcf", scratch / "objects.txt", cfg_root,
+                                    initialized_prefixes=boundaries["prefixes"])
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        report["initializedBoundaryError"] = str(exc)
+        _write_link_report(scratch, report)
+        print(f"REFUSED -- initialized boundary proof: {exc}")
+        return 1
     if defined_interior:
         print(f"      lcf: defined {len(defined_interior)} interior row(s) at their ROM "
               f"address ({', '.join(n for n, _a in defined_interior)})")

@@ -230,5 +230,309 @@ class OwnedRelocationDestination(unittest.TestCase):
         self.assertFalse(result["ok"])
 
 
+
+
+# Initialized linker boundaries share the same owned-byte verdict path.
+import initialized_boundaries as P
+import tempfile
+
+
+class TerminalTests(unittest.TestCase):
+    def setUp(self):
+        self.claim = dict(
+            name=".data.kuriMeta0",
+            start=0x2122E30,
+            end=0x2122E4C,
+            terminal_linker_fill=dict(alignment=4, value=0),
+        )
+        self.module = dict(name=".data.kuriMeta0", start=0x2122E30, end=0x2122E4C)
+        self.kw = dict(
+            configured_symbols=[
+                dict(address=0x2122E30, size=12),
+                dict(address=0x2122E3C, size=15),
+            ],
+            relocations=[dict(site=0x2122E34, size=4, target=0x2122E3C)],
+            retail_fill=b"\0",
+        )
+
+    def license(self, **kw):
+        return P.license_terminal_fill(
+            self.claim, self.module, kw.pop("emitted_end", 0x2122E4B), **(self.kw | kw)
+        )
+
+    def test_native27_linked28(self):
+        row = self.license()
+        self.assertEqual(
+            (row["emittedBytes"], row["linkedBytes"], row["linkerFillBytes"]),
+            (27, 28, 1),
+        )
+
+    def test_baseline_binds_boundary_and_alias_helpers(self):
+        names = {path.name for path in TB.BASELINE_CONTROL_TOOLS}
+        self.assertTrue(
+            {"initialized_boundaries.py", "lcf_interior.py", "linker_alignment.py"}
+            <= names
+        )
+
+    def test_absent_policy(self):
+        del self.claim["terminal_linker_fill"]
+        with self.assertRaises(ValueError):
+            self.license()
+
+    def test_policy_shape(self):
+        for policy in (
+            True,
+            {},
+            dict(alignment=8, value=0),
+            dict(alignment=4, value=1),
+            dict(alignment=4, value=False),
+            dict(alignment=4, value=0, extra=0),
+        ):
+            with self.subTest(policy=policy), self.assertRaises(ValueError):
+                self.claim["terminal_linker_fill"] = policy
+                self.license()
+
+    def test_bss_text_wrong_route(self):
+        for name in (".bss", ".text", ".data;INJECT"):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                self.claim["name"] = name
+                self.license()
+
+    def test_partial_module_owner(self):
+        for key in ("start", "end"):
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.module = dict(
+                    name=".data.kuriMeta0", start=0x2122E30, end=0x2122E4C
+                )
+                self.module[key] += 4
+                self.license()
+
+    def test_extent(self):
+        for end in (0x2122E4C, 0x2122E48, 0x2122E4D):
+            with self.subTest(end=end), self.assertRaises(ValueError):
+                self.license(emitted_end=end)
+
+    def test_nonzero_or_wrong_retail_size(self):
+        for body in (b"\xff", b"", b"\0\0"):
+            with self.subTest(body=body), self.assertRaises(ValueError):
+                self.license(retail_fill=body)
+
+    def test_configured_alias_in_fill(self):
+        with self.assertRaises(ValueError):
+            self.license(configured_symbols=[dict(address=0x2122E4B, size=0)])
+
+    def test_configured_object_crossing_fill(self):
+        with self.assertRaises(ValueError):
+            self.license(configured_symbols=[dict(address=0x2122E3C, size=16)])
+
+    def test_unsized_final_initialized_object_cannot_be_zero_storage(self):
+        rows = [dict(address=0x2122E30, size=0, unknown_initialized_extent=True),
+                dict(address=0x2122E3C, size=0, unknown_initialized_extent=True)]
+        with self.assertRaisesRegex(ValueError, "configured symbol occupies"):
+            self.license(configured_symbols=rows)
+
+    def test_unsized_rtti_bounded_by_explicit_name_is_valid(self):
+        rows = [dict(address=0x2122E30, size=0, unknown_initialized_extent=True),
+                dict(address=0x2122E3C, size=15)]
+        self.assertEqual(self.license(configured_symbols=rows)["linkerFillBytes"], 1)
+
+    def test_census_distinguishes_unknown_from_explicit_zero(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "symbols.txt").write_text(
+                "unsized kind:data(any) addr:0x02000000\n"
+                "zero kind:data(byte[0]) addr:0x02000004\n"
+                "fixed kind:data(byte[15]) addr:0x02000008\n")
+            _, rows, _ = P.config_population(root)
+            self.assertEqual([row["unknown_initialized_extent"] for row in rows],
+                             [True, False, False])
+
+    def test_relocation_in_or_to_fill(self):
+        for row in (
+            dict(site=0x2122E48, size=4, target=0),
+            dict(site=0, size=4, target=0x2122E4B),
+        ):
+            with self.subTest(row=row), self.assertRaises(ValueError):
+                self.license(relocations=[row])
+
+    def test_allthree_lengths(self):
+        for size in (1, 2, 3):
+            row = self.license(
+                emitted_end=self.module["end"] - size,
+                retail_fill=bytes(size),
+                configured_symbols=[],
+                relocations=[],
+            )
+            self.assertEqual(row["linkerFillBytes"], size)
+
+    def test_owned_verifier_keeps_emitted_and_linked_sizes_distinct(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            module = root / "overlays/ov999"
+            module.mkdir(parents=True)
+            (module / "symbols.txt").write_text(
+                "head kind:data(any) addr:0x02122e30\n"
+                "name kind:data(byte[15]) addr:0x02122e3c\n"
+            )
+            (module / "relocs.txt").write_text("")
+            (module / "delinks.txt").write_text(
+                "    .data.kuriMeta0 start:0x02122e30 end:0x02122e4c kind:data align:4\n"
+            )
+            entry = dict(
+                module="ov999",
+                functions=[],
+                data=[
+                    dict(symbol="head", address=0x2122E30, size=12),
+                    dict(symbol="name", address=0x2122E3C, size=15),
+                ],
+            )
+            entry["sections"] = [
+                dict(name=".text", start=0x1000, end=0x1004),
+                dict(self.claim, input_section=".data"),
+            ]
+            claims, errors = TB.manifest_section_claims(entry)
+            self.assertEqual(errors, [])
+            layout = dict(
+                bytes=bytes(27),
+                relocs=[],
+                inputSections=[1, 2],
+                symbols={
+                    name: dict(
+                        address=address, size=size, bind="STB_GLOBAL", type="STT_OBJECT"
+                    )
+                    for name, address, size in [
+                        ("head", 0x2122E30, 12),
+                        ("name", 0x2122E3C, 15),
+                    ]
+                },
+            )
+            with mock.patch.object(
+                TB, "section_contribution", return_value=(layout, None)
+            ):
+                result = TB.verify_owned_sections(
+                    b"",
+                    entry,
+                    claims,
+                    name_index={},
+                    config_relocs={},
+                    sym_index={},
+                    symbol_homes={},
+                    bss_boundaries=set(),
+                    boundary_config_root=root,
+                    target_reader=lambda module, start, size: bytes(size),
+                )
+            self.assertTrue(result["ok"], result["errors"])
+            self.assertEqual(
+                (result["rows"][0]["emittedBytes"], result["rows"][0]["linkedBytes"]),
+                (27, 28),
+            )
+            self.assertEqual(len(layout["bytes"]), 27)
+
+
+class LcfTests(unittest.TestCase):
+    def text(self, body=None):
+        body = body or (
+            ". = ALIGN(4); OV074_DATA.KURIMETA0_START = .;\n"
+            " d_a_kuri_king.o(.data.kuriMeta0)\n"
+            " . = ALIGN(4); OV074_DATA.KURIMETA0_END = .;"
+        )
+        return (
+            "MEMORY {\n OV074 : ORIGIN = 0x2122e30 > ov074.bin\n}\nSECTIONS {\n.ov074 : {\n ALIGNALL(4);\n"
+            + body
+            + "\n} > OV074\n}\n"
+        )
+
+    def verify(self, text):
+        with tempfile.TemporaryDirectory() as d:
+            p = pathlib.Path(d) / "test.lcf"
+            p.write_text(text)
+            return P.verify_terminal_lcf(
+                p, module="OV074", section=".data.kuriMeta0", provider="d_a_kuri_king.o"
+            )
+
+    def test_actual_generated_shape(self):
+        self.assertEqual(self.verify(self.text())["fill"], 0)
+
+    def test_wrong_align(self):
+        with self.assertRaises(ValueError):
+            self.verify(self.text().replace("ALIGN(4)", "ALIGN(8)"))
+
+    def test_missing_terminal_align(self):
+        with self.assertRaises(ValueError):
+            self.verify(
+                self.text().replace(
+                    ". = ALIGN(4); OV074_DATA.KURIMETA0_END", "OV074_DATA.KURIMETA0_END"
+                )
+            )
+
+    def test_intervening_provider(self):
+        with self.assertRaises(ValueError):
+            self.verify(
+                self.text().replace(
+                    " . = ALIGN(4); OV074_DATA.KURIMETA0_END",
+                    " gap.o(.data.kuriMeta0)\n . = ALIGN(4); OV074_DATA.KURIMETA0_END",
+                )
+            )
+
+    def test_nonzero_fill(self):
+        with self.assertRaises(ValueError):
+            self.verify(self.text().replace("ALIGNALL(4);", "ALIGNALL(4); FILL(255);"))
+
+    def test_output_fill_suffix(self):
+        with self.assertRaises(ValueError):
+            self.verify(self.text().replace("} > OV074", "} > OV074 = 255"))
+
+    def test_wrong_output(self):
+        with self.assertRaises(ValueError):
+            self.verify(self.text().replace("OV074", "OV071"))
+
+    def test_duplicate_provider(self):
+        with self.assertRaises(ValueError):
+            self.verify(
+                self.text().replace(
+                    "ALIGNALL(4);", "ALIGNALL(4); d_a_kuri_king.o(.data.kuriMeta0)"
+                )
+            )
+
+    def test_other_provider_outside_markers(self):
+        with self.assertRaises(ValueError):
+            self.verify(
+                self.text().replace(
+                    "ALIGNALL(4);", "ALIGNALL(4); other.o(.data.kuriMeta0)"
+                )
+            )
+
+    def test_wildcard_outside_markers(self):
+        with self.assertRaises(ValueError):
+            self.verify(
+                self.text().replace("ALIGNALL(4);", "ALIGNALL(4); *(.data.kuriMeta0)")
+            )
+
+    def test_section_patterns_and_lists_refuse_outside_markers(self):
+        for selector in (
+            "*(.data*)",
+            "other.o(.data*)",
+            "other.o(.data?)",
+            "other.o(.data[.]kuriMeta0)",
+            "other.o(.text .data.kuriMeta0)",
+            "other.o(.text,.data.kuriMeta0)",
+            "KEEP(other.o(.data.kuriMeta0))",
+        ):
+            with self.subTest(selector=selector), self.assertRaises(ValueError):
+                self.verify(
+                    self.text().replace("ALIGNALL(4);", "ALIGNALL(4); " + selector)
+                )
+
+    def test_missing_or_duplicate_marker(self):
+        for text in (
+            self.text().replace("KURIMETA0_END", "OTHER_END"),
+            self.text().replace(
+                "ALIGNALL(4);", "ALIGNALL(4); OV074_DATA.KURIMETA0_END = .;"
+            ),
+        ):
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                self.verify(text)
+
+
 if __name__ == "__main__":
     unittest.main()

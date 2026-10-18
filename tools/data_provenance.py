@@ -263,7 +263,8 @@ def snapshot_link_inputs(repo, build_root, requests, module_images):
         inputs.update(directory / name for name in ("symbols.txt", "delinks.txt", "relocs.txt"))
     tool_dir = pathlib.Path(__file__).resolve().parent
     inputs.update(tool_dir / name for name in (
-        "data_provenance.py", "data_section_routes.py", "enroll.py", "relocs.py"))
+        "data_provenance.py", "data_section_routes.py", "initialized_boundaries.py",
+        "lcf_interior.py", "linker_alignment.py", "enroll.py", "relocs.py"))
     linker = repo / "tools" / "mwccarm" / "1.2" / "sp2p3" / "mwldarm.exe"
     if linker.is_file():
         inputs.add(linker)

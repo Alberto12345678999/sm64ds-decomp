@@ -329,6 +329,12 @@ src/thing.cpp:
         self.assertTrue(report["input_sha256"])
         self.assertTrue(report["artifact_sha256"])
 
+    def test_initialized_boundary_policies_are_bound_inputs(self):
+        snapshot = self.snapshot()
+        for name in ('initialized_boundaries.py', 'lcf_interior.py', 'linker_alignment.py'):
+            path = pathlib.Path(DP.__file__).resolve().with_name(name)
+            self.assertIn(str(path), snapshot['input_sha256'])
+
     def test_named_initialized_slice_requires_its_actual_compiler_provider(self):
         section = '.data.clps0'
         self.request['section'] = section
