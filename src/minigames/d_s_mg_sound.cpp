@@ -131,12 +131,17 @@ extern Pmf pmf_dScMgSound_c_Pop12_Finish;
 extern "C" {
 extern int Hud_RenderSprite(int a, int b, int c, int d, int e);
 extern int sSoundWinSpriteBSprites[];
-extern unsigned short sSoundWinSpriteBTimes[];
+/* WinSpriteB reads indices 0 through 2; the fourth stored value is unused here. */
+extern const u16 sSoundWinSpriteBTimes[4] = {50, 3, 3, 50};
 extern int sSoundWinSpriteASprites[];
-extern u16 sSoundWinSpriteATimes[];
+/* Stored timing suffixes are retained; WinSpriteA reads only indices 0 and 1. */
+extern const u16 sSoundWinSpriteATimes[4] = {50, 4, 50, 0};
 extern void Mg_DrawStockCounter(int a, int b);
 extern const short data_02082214[];
-extern void *sSoundPopsSprites[];
+extern u8 data_ov006_0213f54c[];
+extern u8 data_ov006_0213f544[];
+extern u8 data_ov006_0213f65c[];
+void *sSoundPopsSprites[3] = {data_ov006_0213f54c, data_ov006_0213f544, data_ov006_0213f65c};
 extern const int sSoundPop12XOffsets[3] = {0, 32768, -32768};
 extern const int sSoundPop12VX[3] = {0, 2560, -2560};
 extern const int sSoundPop11XOffsets[3] = {0, 32768, -32768};
@@ -158,8 +163,10 @@ extern const int sSoundPop01XOffsets[3] = {0, 32768, -32768};
 extern const int sSoundPop01VX[3] = {0, 1536, -1536};
 extern const int sSoundPop00XOffsets[3] = {0, 32768, -32768};
 extern const int sSoundPop00VX[3] = {4096, 8192, -8192};
-extern unsigned char sSoundPop00Dirs[];
-extern u8 data_ov006_0212ee30[];
+extern const u8 sSoundPop00Dirs[3] = {0, 0, 1};
+/* SpawnPops consumes the first three selectors. The other two stored values
+ * are retained; their original grouping is unknown. */
+extern const u8 sSoundPopSpawnKinds[5] = {0, 1, 2, 2, 1};
 extern void func_02012790(int);
 extern void Presenter_PlayMatch(void *c);
 extern void Presenter_PlayMiss(char *c);
@@ -167,20 +174,36 @@ extern int sSoundRowLengthAlt[];
 extern int sSoundRowLength[];
 extern int sSoundScrollRowLengthAlt[];
 extern int sSoundScrollRowLength[];
-extern unsigned short sSoundNoteClosingTimes[];
+/* Note frames use indices 0 through 6. The final stored timing value in each
+ * array is retained without asserting its original purpose or declared bound. */
+extern const u16 sSoundNoteClosingTimes[8] = {2, 2, 3, 4, 4, 4, 4, 4};
 void Presenter_PlayCheerLoop(char *p);
 void func_02012174(u32 bank, u32 id);
-extern u16 sSoundNoteOpeningTimes[];
-extern u16 data_ov006_0213f794[];
-extern u16 sSoundNoteSfx[];
+extern const u16 sSoundNoteOpeningTimes[8] = {2, 2, 3, 4, 4, 4, 6, 4};
+/* Parallel playback selectors and sound IDs retain all 42 stored entries.
+ * Some entries are not exercised by the current deal logic. */
+u16 sSoundNotePlaybackKinds[42] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+                                   2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+u16 sSoundNoteSfx[42] = {70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  56,  57,  58,  59,
+                         169, 170, 171, 172, 173, 174, 176, 177, 178, 266, 267, 268, 56,  120,
+                         184, 248, 57,  121, 185, 249, 58,  122, 186, 250, 59,  123, 187, 251};
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
-extern u8 sSoundDealSpeeds[];
-extern u8 sSoundDealCounts[];
-extern u8 data_ov006_0212ee20[];
-extern int sSoundPairNoteOffsets[];
-extern int sSoundBankByLevel[];
-extern u16 *sSoundNotePositions[];
+extern const u8 sSoundPitchCounts[5] = {10, 4, 10, 4, 14};
+extern const u8 sSoundDealCounts[5] = {6, 6, 8, 6, 8};
+extern const u8 sSoundNoteLayoutByPattern[5] = {0, 0, 1, 0, 1};
+extern const int sSoundPairNoteOffsets[5] = {0, 10, 0, 14, 0};
+/* The level selector uses indices 0 through 3; the fifth stored bank is retained. */
+extern const int sSoundBankByLevel[5] = {3, 0, 1, 2, 3};
+/* Interleaved x/y pairs for the six-, eight- and ten-note layouts.
+ * The pointer table retains the ten-note layout although current dealing
+ * selects only the first two. These descriptive names are reconstructed. */
+u16 sSoundNotePositions6[12] = {64, 32, 128, 32, 192, 32, 64, 112, 128, 112, 192, 112};
+u16 sSoundNotePositions8[16] = {32, 32,  96, 32,  160, 32,  224, 32,
+                                32, 112, 96, 112, 160, 112, 224, 112};
+u16 sSoundNotePositions10[20] = {32, 32,  80, 32,  128, 32,  176, 32,  224, 32,
+                                 32, 112, 80, 112, 128, 112, 176, 112, 224, 112};
+u16 *sSoundNotePositions[3] = {sSoundNotePositions6, sSoundNotePositions8, sSoundNotePositions10};
 extern void Presenter_ResetPose(char *c);
 extern void Presenter_PlayCheer(void *c);
 extern "C" void Mg_DrawScoreTally(void *c, int a, int b, int d);
@@ -600,7 +623,7 @@ void dScMgSound_c::DealNotes() {
     mPattern = selectedPattern;
     pattern = mPattern;
     noteCount = sSoundDealCounts[pattern];
-    pitchCount = sSoundDealSpeeds[pattern];
+    pitchCount = sSoundPitchCounts[pattern];
     if (pattern == 3) {
         int pitchGroup = (u32)(RND << 2) >> 15;
         int firstPitch = (u32)(RND * 3) >> 15;
@@ -662,7 +685,7 @@ void dScMgSound_c::DealNotes() {
         noteCursor = (char *)this;
         do {
             dMgSoundNoteCur *note = (dMgSoundNoteCur *)noteCursor;
-            layout = data_ov006_0212ee20[mPattern];
+            layout = sSoundNoteLayoutByPattern[mPattern];
             note->note.x = sSoundNotePositions[layout][xIndex] << 12;
             note->note.y = (*(u16 *volatile *)&sSoundNotePositions[layout])[yIndex] << 12;
             note->note.timer = 0;
@@ -767,7 +790,7 @@ void dScMgSound_c::Note_StateOpening(int idx) {
     if (IsAltVariant()) {
         pattern = mPattern;
         if (pattern == 0 || pattern == 2) {
-            if (data_ov006_0213f794[note] == 2) {
+            if (sSoundNotePlaybackKinds[note] == 2) {
                 func_02012790(sSoundNoteSfx[note]);
             } else {
                 func_02012174(mBank, sSoundNoteSfx[note]);
@@ -790,7 +813,7 @@ void dScMgSound_c::Note_StateOpening(int idx) {
         } else if (pattern == 1) {
             func_02012174(mBank, sSoundNoteSfx[note]);
         } else if (pattern == 4) {
-            if (data_ov006_0213f794[note] == 2) {
+            if (sSoundNotePlaybackKinds[note] == 2) {
                 Sound::PlayBank2_2D(sSoundNoteSfx[note]);
             } else {
                 func_02012174(mBank, sSoundNoteSfx[note]);
@@ -974,7 +997,7 @@ void dScMgSound_c::CheckRoundOver() {
 void dScMgSound_c::SpawnPops(int noteSlot) {
     int spawnIndex;
     int popSlot;
-    u8 *spriteEntry = data_ov006_0212ee30;
+    const u8 *spriteEntry = sSoundPopSpawnKinds;
 
     for (spawnIndex = 0; spawnIndex < 3; spriteEntry++, spawnIndex++) {
         for (popSlot = 0; popSlot < 30; popSlot++) {
@@ -1610,7 +1633,16 @@ void dScMgSound_c::DrawPops() {
 }
 
 // @symbol _ZN12dScMgSound_c9DrawNotesEv
-extern void *sSoundNotesSprites[];
+extern u8 data_ov006_02133c58[];
+extern u8 data_ov006_02133c40[];
+extern u8 data_ov006_02133c10[];
+extern u8 data_ov006_02133c28[];
+extern u8 data_ov006_02133bf0[];
+extern u8 data_ov006_02133be0[];
+extern u8 data_ov006_02133c00[];
+void *sSoundNotesSprites[7] = {data_ov006_02133c58, data_ov006_02133c40, data_ov006_02133c10,
+                               data_ov006_02133c28, data_ov006_02133bf0, data_ov006_02133be0,
+                               data_ov006_02133c00};
 void dScMgSound_c::DrawNotes() {
     char *sceneBytes = (char *)this;
     int slot;

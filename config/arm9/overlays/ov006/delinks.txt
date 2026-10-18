@@ -1,5 +1,9 @@
     .text       start:0x020bfec0 end:0x0212b890 kind:code align:32
-    .rodata     start:0x0212b890 end:0x0212f4c4 kind:rodata align:4
+    .rodata start:0x0212b890 end:0x0212ee0c kind:rodata align:4
+    .rodata.sound_tables start:0x0212ee0c end:0x0212ef5c kind:rodata align:4
+    .rodata.sound_row_views start:0x0212ef5c end:0x0212ef9c kind:rodata align:4
+    .rodata.sound_note_offsets start:0x0212ef9c end:0x0212efc4 kind:rodata align:4
+    .rodata.after_sound start:0x0212efc4 end:0x0212f4c4 kind:rodata align:4
     .init       start:0x0212f4c4 end:0x0213356c kind:code align:4
     .ctor       start:0x0213356c end:0x021335e8 kind:rodata align:4
     .data       start:0x02133600 end:0x021402e0 kind:data align:32
@@ -204,7 +208,9 @@ src/minigames/d_s_mg_smartball.cpp:
 
 src/minigames/d_s_mg_sound.cpp:
     complete
-    .rodata start:0x0212ee40 end:0x0212ef3c
+    .data start:0x0213f6e4 end:0x0213f8d4
+    .rodata.sound_tables start:0x0212ee0c end:0x0212ef5c
+    .rodata.sound_note_offsets start:0x0212ef9c end:0x0212efc4
     .text start:0x02119904 end:0x0211cbd0
     .init start:0x02132970 end:0x02132f68
     .ctor start:0x021335d4 end:0x021335d8
