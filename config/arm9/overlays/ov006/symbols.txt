@@ -3762,40 +3762,40 @@ sLuigiPlaceLimits kind:data(any) addr:0x0213cee0
 data_ov006_0213cf10 kind:data(any) addr:0x0213cf10
 _ZTV12dScMgLuigi_c kind:data(any) addr:0x0213cf10
 sLuigiBg1NcgPath kind:data(any) addr:0x0213cfa0
-pmf_dScMgMemory_c_StatePlay kind:data(any) addr:0x0213cfc0
-pmf_dScMgMemory_c_CardFlipUp kind:data(any) addr:0x0213cfc8
-pmf_dScMgMemory_c_StateSetup kind:data(any) addr:0x0213cfd0
+pmf_dScMgMemory_c_StatePlay kind:data(any) addr:0x0213cfc0 local
+pmf_dScMgMemory_c_CardFlipUp kind:data(any) addr:0x0213cfc8 local
+pmf_dScMgMemory_c_StateSetup kind:data(any) addr:0x0213cfd0 local
 g_profile_MG_MEMORY kind:data(any) addr:0x0213cfd8 ambiguous
-pmf_dScMgMemory_c_RoundReveal kind:data(any) addr:0x0213cfe0
-pmf_dScMgMemory_c_CardSelect kind:data(any) addr:0x0213cfe8
-pmf_dScMgMemory_c_CardIdle kind:data(any) addr:0x0213cff0
-pmf_dScMgMemory_c_PlayerDrop kind:data(any) addr:0x0213cff8
-pmf_dScMgMemory_c_RoundWaitDeal kind:data(any) addr:0x0213d000
-pmf_dScMgMemory_c_CardFlipDown kind:data(any) addr:0x0213d008
-pmf_dScMgMemory_c_CardWait kind:data(any) addr:0x0213d010
-pmf_dScMgMemory_c_CardMove kind:data(any) addr:0x0213d018
-pmf_dScMgMemory_c_ResultReward kind:data(any) addr:0x0213d020
-pmf_dScMgMemory_c_ResultFinish kind:data(any) addr:0x0213d028
-pmf_dScMgMemory_c_ResultTurnCards kind:data(any) addr:0x0213d030
-pmf_dScMgMemory_c_ResultWait kind:data(any) addr:0x0213d038
-pmf_dScMgMemory_c_PlayerWait kind:data(any) addr:0x0213d040
-pmf_dScMgMemory_c_PlayerMove kind:data(any) addr:0x0213d048
-pmf_dScMgMemory_c_RoundDealHard kind:data(any) addr:0x0213d050
-pmf_dScMgMemory_c_RoundDealNormal kind:data(any) addr:0x0213d058
-pmf_dScMgMemory_c_RoundDealEasy kind:data(any) addr:0x0213d060
-pmf_dScMgMemory_c_RoundStart kind:data(any) addr:0x0213d068
-pmf_dScMgMemory_c_CardFlyAway kind:data(any) addr:0x0213d070
-pmf_dScMgMemory_c_StateExit kind:data(any) addr:0x0213d078
-pmf_dScMgMemory_c_StateResult kind:data(any) addr:0x0213d080
-pmf_dScMgMemory_c_StateJudge kind:data(any) addr:0x0213d088
+pmf_dScMgMemory_c_RoundReveal kind:data(any) addr:0x0213cfe0 local
+pmf_dScMgMemory_c_CardSelect kind:data(any) addr:0x0213cfe8 local
+pmf_dScMgMemory_c_CardIdle kind:data(any) addr:0x0213cff0 local
+pmf_dScMgMemory_c_PlayerDrop kind:data(any) addr:0x0213cff8 local
+pmf_dScMgMemory_c_RoundWaitDeal kind:data(any) addr:0x0213d000 local
+pmf_dScMgMemory_c_CardFlipDown kind:data(any) addr:0x0213d008 local
+pmf_dScMgMemory_c_CardWait kind:data(any) addr:0x0213d010 local
+pmf_dScMgMemory_c_CardMove kind:data(any) addr:0x0213d018 local
+pmf_dScMgMemory_c_ResultReward kind:data(any) addr:0x0213d020 local
+pmf_dScMgMemory_c_ResultFinish kind:data(any) addr:0x0213d028 local
+pmf_dScMgMemory_c_ResultTurnCards kind:data(any) addr:0x0213d030 local
+pmf_dScMgMemory_c_ResultWait kind:data(any) addr:0x0213d038 local
+pmf_dScMgMemory_c_PlayerWait kind:data(any) addr:0x0213d040 local
+pmf_dScMgMemory_c_PlayerMove kind:data(any) addr:0x0213d048 local
+pmf_dScMgMemory_c_RoundDealHard kind:data(any) addr:0x0213d050 local
+pmf_dScMgMemory_c_RoundDealNormal kind:data(any) addr:0x0213d058 local
+pmf_dScMgMemory_c_RoundDealEasy kind:data(any) addr:0x0213d060 local
+pmf_dScMgMemory_c_RoundStart kind:data(any) addr:0x0213d068 local
+pmf_dScMgMemory_c_CardFlyAway kind:data(any) addr:0x0213d070 local
+pmf_dScMgMemory_c_StateExit kind:data(any) addr:0x0213d078 local
+pmf_dScMgMemory_c_StateResult kind:data(any) addr:0x0213d080 local
+pmf_dScMgMemory_c_StateJudge kind:data(any) addr:0x0213d088 local
 _ZTI13dScMgMemory_c kind:data(any) addr:0x0213d090
 sMemoryCardPositionsPerDifficulty kind:data(any) addr:0x0213d09c
 sMemoryFlipFrameTimes kind:data(any) addr:0x0213d0a8
 _ZTS13dScMgMemory_c kind:data(any) addr:0x0213d0b4
 sMemoryCardNcgByLanguage kind:data(any) addr:0x0213d0c4
-data_ov006_0213d0d8 kind:data(any) addr:0x0213d0d8
-data_ov006_0213d108 kind:data(any) addr:0x0213d108
-data_ov006_0213d138 kind:data(any) addr:0x0213d138
+sMemoryCardPositionsEasy kind:data(any) addr:0x0213d0d8
+sMemoryCardPositionsNormal kind:data(any) addr:0x0213d108
+sMemoryCardPositionsHard kind:data(any) addr:0x0213d138
 sMemoryCardFrameSprites kind:data(any) addr:0x0213d168
 _ZTV13dScMgMemory_c kind:data(any) addr:0x0213d1b8
 pmf_dScMgMemory2_c_ResultWait kind:data(any) addr:0x0213d248
