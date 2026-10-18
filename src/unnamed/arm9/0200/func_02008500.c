@@ -1,15 +1,8 @@
-typedef short s16;
-typedef int Fix12i;
-
-struct Vector3 {
-    Fix12i x;
-    Fix12i y;
-    Fix12i z;
-};
+#include "types.h"
 
 struct dActor_c {
     unsigned char pad0[0x80];
-    struct Vector3 scale; /* @0x80 */
+    Vector3 scale; /* @0x80 */
 };
 
 extern s16 ReadUnalignedShort(const char *from);

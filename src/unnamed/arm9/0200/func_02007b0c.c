@@ -5,15 +5,7 @@
 // by the owner's position into a result vector, then approaches the camera's
 // field_0x80 Vector3 toward that result with a per-axis step (byte6 << 4).
 
-typedef int Fix12i;
-
-typedef struct Vector3 {
-    Fix12i x, y, z;
-} Vector3;
-
-typedef struct Vector3_16 {
-    short x, y, z;
-} Vector3_16;
+#include "common.h"
 
 typedef struct dActor_c {
     char _pad0[0x5c];

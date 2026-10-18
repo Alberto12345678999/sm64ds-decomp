@@ -1,14 +1,11 @@
+#include "types.h"
 extern void _Z14ApproachLinearRiii(int *p, int value, int speed);
 
 /* File-local view of dCamera_c (include/dCamera_c.h is C++). */
 typedef struct {
-    int x, y, z;
-} Vec3;
-
-typedef struct {
     unsigned char pad_000[0xb0];
-    Vec3 savedLookAt; /* 0x0b0 */
-    Vec3 savedPos;    /* 0x0bc */
+    Vector3 savedLookAt; /* 0x0b0 */
+    Vector3 savedPos;    /* 0x0bc */
 } CameraView;
 
 int func_020072c4(char *self)

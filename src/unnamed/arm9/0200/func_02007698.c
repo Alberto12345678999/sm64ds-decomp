@@ -1,16 +1,8 @@
 /* func_02007698 at 0x02007698
  *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
+ * Matched byte-for-byte with mwccarm 2004/b56 (arm9 main).
  */
-typedef int Fix12i;
-
-typedef struct Vector3 {
-    Fix12i x, y, z;
-} Vector3;
-
-typedef struct Vector3_16 {
-    short x, y, z;
-} Vector3_16;
+#include "common.h"
 
 typedef struct dActor_c {
     char _pad0[0x5c];
