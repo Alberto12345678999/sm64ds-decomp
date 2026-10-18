@@ -1,75 +1,68 @@
 //cpp
-// Retain the configured address-named export while its callers are reconstructed.
+// Find the first point at each axis minimum and maximum.
+// points must contain at least one point; each output index is optional.
 namespace {
-// Local coordinate record; this does not introduce a shared Vector3 type.
+// Plain coordinate values: shared Vector3 has nontrivial construction and
+// destruction, changing these copies (280 bytes instead of the required 320).
 struct Vec3 {
-    int coord[3];
+    int x, y, z;
 };
 }
 
 extern "C" {
-void func_ov007_020c2f14(struct Vec3 *points, int count, int *minIdxX, int *maxIdxX, int *minIdxY,
-                         int *maxIdxY, int *minIdxZ, int *maxIdxZ) {
-    struct Vec3 mx;
-    struct Vec3 mn;
-    struct Vec3 tmp;
+void func_ov007_020c2f14(struct Vec3 *points, int pointCount, int *outMinX, int *outMaxX,
+                         int *outMinY, int *outMaxY, int *outMinZ, int *outMaxZ) {
+    Vec3 maximum = points[0];
+    Vec3 minimum = points[0];
     int i;
-    int miX;
-    int mxX;
-    int miY;
-    int mxY;
-    int miZ;
-    int mxZ;
-    tmp = points[0];
-    mx = tmp;
-    mn = tmp;
-    mxZ = 0;
-    miZ = 0;
-    mxY = 0;
-    miY = 0;
-    mxX = 0;
-    miX = 0;
-    for (i = 1; i < count; i++) {
-        if (points[i].coord[0] < mn.coord[0]) {
-            miX = i;
-            mn.coord[0] = points[i].coord[0];
-        } else if (points[i].coord[0] > mx.coord[0]) {
-            mxX = i;
-            mx.coord[0] = points[i].coord[0];
+    int minXIndex, maxXIndex, minYIndex, maxYIndex, minZIndex, maxZIndex;
+    maxZIndex = 0;
+    minZIndex = 0;
+    maxYIndex = 0;
+    minYIndex = 0;
+    maxXIndex = 0;
+    minXIndex = 0;
+    for (i = 1; i < pointCount; i++) {
+        if (points[i].x < minimum.x) {
+            minXIndex = i;
+            minimum.x = points[i].x;
+        } else if (points[i].x > maximum.x) {
+            maxXIndex = i;
+            maximum.x = points[i].x;
         }
-        if (points[i].coord[1] < mn.coord[1]) {
-            miY = i;
-            mn.coord[1] = points[i].coord[1];
-        } else if (points[i].coord[1] > mx.coord[1]) {
-            mxY = i;
-            mx.coord[1] = points[i].coord[1];
+        if (points[i].y < minimum.y) {
+            minYIndex = i;
+            minimum.y = points[i].y;
+        } else if (points[i].y > maximum.y) {
+            maxYIndex = i;
+            maximum.y = points[i].y;
         }
-        if (points[i].coord[2] < mn.coord[2]) {
-            miZ = i;
-            mn.coord[2] = points[i].coord[2];
-        } else if (points[i].coord[2] > mx.coord[2]) {
-            mxZ = i;
-            mx.coord[2] = points[i].coord[2];
+        if (points[i].z < minimum.z) {
+            minZIndex = i;
+            minimum.z = points[i].z;
+        } else if (points[i].z > maximum.z) {
+            maxZIndex = i;
+            maximum.z = points[i].z;
         }
     }
 
-    if (minIdxX) {
-        *minIdxX = miX;
+    if (outMinX) {
+        *outMinX = minXIndex;
     }
-    if (minIdxY) {
-        *minIdxY = miY;
+    if (outMinY) {
+        *outMinY = minYIndex;
     }
-    if (minIdxZ) {
-        *minIdxZ = miZ;
+    if (outMinZ) {
+        *outMinZ = minZIndex;
     }
-    if (maxIdxX) {
-        *maxIdxX = mxX;
+    if (outMaxX) {
+        *outMaxX = maxXIndex;
     }
-    if (maxIdxY) {
-        *maxIdxY = mxY;
+    if (outMaxY) {
+        *outMaxY = maxYIndex;
     }
-    if (maxIdxZ) {
-        *maxIdxZ = mxZ;
+    if (outMaxZ) {
+        *outMaxZ = maxZIndex;
     }
 }
 }
