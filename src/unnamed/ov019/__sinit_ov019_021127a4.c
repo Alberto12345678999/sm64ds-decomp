@@ -1,3 +1,4 @@
+#include "types.h"
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov019_021127a4_AssetId {
     ASSET_PENGUIN_BMD = 0x03fb,
@@ -60,11 +61,10 @@ extern struct P2 data_ov019_02113298;
 extern struct P2 data_ov019_02113270;
 extern struct P2 data_ov019_021132c8;
 
-typedef struct { int x, y, z; } V3;
-extern V3 data_ov019_021134e8;
+extern Vector3 data_ov019_021134e8;
 extern void* data_ov019_021134d0;
 
-extern V3 data_ov019_0211353c;
+extern Vector3 data_ov019_0211353c;
 extern void* data_ov019_02113518;
 
 void __sinit_ov019_021127a4(void)

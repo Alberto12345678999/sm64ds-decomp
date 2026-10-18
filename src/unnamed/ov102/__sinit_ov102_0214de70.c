@@ -1,3 +1,4 @@
+#include "types.h"
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov102_0214de70_AssetId {
     ASSET_BOMBHEI_CARRY_BCA = 0x02b7,
@@ -17,11 +18,10 @@ extern int data_ov102_0214e9f4[];
 extern int data_ov102_0214ea00[];
 extern int data_ov102_0214e9e8[];
 
-typedef struct { int x, y, z; } V3;
-extern V3 data_ov102_0214ea18;
-extern V3 data_ov102_0214ea24;
-extern V3 data_ov102_0214ea30;
-extern V3 data_ov102_0214ea3c;
+extern Vector3 data_ov102_0214ea18;
+extern Vector3 data_ov102_0214ea24;
+extern Vector3 data_ov102_0214ea30;
+extern Vector3 data_ov102_0214ea3c;
 
 void __sinit_ov102_0214de70(void)
 {
@@ -35,12 +35,27 @@ void __sinit_ov102_0214de70(void)
     data_ov102_0214ea18.z = 0x28000;
     func_020731dc(&data_ov102_0214ea18, _ZN7Vector3D1Ev, data_ov102_0214ea0c);
 
-    { volatile V3* p = (volatile V3*)&data_ov102_0214ea24; p->x = 0x1c000; p->y = -0x14000; p->z = 0x3c000; }
+    {
+        volatile Vector3 *p = (volatile Vector3 *)&data_ov102_0214ea24;
+        p->x = 0x1c000;
+        p->y = -0x14000;
+        p->z = 0x3c000;
+    }
     func_020731dc(&data_ov102_0214ea24, _ZN7Vector3D1Ev, data_ov102_0214e9f4);
 
-    { volatile V3* p = (volatile V3*)&data_ov102_0214ea30; p->x = 0x2b000; p->y = -0xa000; p->z = -0x14000; }
+    {
+        volatile Vector3 *p = (volatile Vector3 *)&data_ov102_0214ea30;
+        p->x = 0x2b000;
+        p->y = -0xa000;
+        p->z = -0x14000;
+    }
     func_020731dc(&data_ov102_0214ea30, _ZN7Vector3D1Ev, data_ov102_0214ea00);
 
-    { volatile V3* p = (volatile V3*)&data_ov102_0214ea3c; p->x = 0x30000; p->y = -0x1e000; p->z = 0x3c000; }
+    {
+        volatile Vector3 *p = (volatile Vector3 *)&data_ov102_0214ea3c;
+        p->x = 0x30000;
+        p->y = -0x1e000;
+        p->z = 0x3c000;
+    }
     func_020731dc(&data_ov102_0214ea3c, _ZN7Vector3D1Ev, data_ov102_0214e9e8);
 }

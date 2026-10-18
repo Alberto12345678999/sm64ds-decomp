@@ -1,3 +1,4 @@
+#include "types.h"
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov078_02126660_AssetId {
     ASSET_BOMBKING_DAMAGE_BCA = 0x02bb,
@@ -53,10 +54,9 @@ extern void* data_ov078_02126fcc;
 extern struct BombkingAnimFile gBombkingStartAnimationFile;
 extern void* data_ov078_02126fd8;
 
-typedef struct { int x, y, z; } V3;
-extern V3 data_ov078_0212711c;
+extern Vector3 data_ov078_0212711c;
 extern void* data_ov078_02126fe4;
-extern V3 data_ov078_02127128;
+extern Vector3 data_ov078_02127128;
 extern void* data_ov078_02126ff0;
 
 struct P2 { int a, b; };

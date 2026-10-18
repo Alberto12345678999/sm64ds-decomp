@@ -15545,7 +15545,7 @@
     },
     "sTrmpGoalSlots": {
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:V3"
+        "return:Vector3"
       ]
     },
     "sTrmpItems": {
@@ -16641,16 +16641,6 @@
         "return:SharedFilePtr"
       ]
     },
-    "data_ov019_021134e8": {
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "return:V3"
-      ]
-    },
-    "data_ov019_0211353c": {
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "return:V3"
-      ]
-    },
     "data_ov019_021135d8": {
       "src/unnamed/ov019/__sinit_ov019_02112b14.c": [
         "return:int []"
@@ -16704,7 +16694,7 @@
         "return:Vector3 []"
       ],
       "src/unnamed/ov021/__sinit_ov021_02113500.c": [
-        "return:V3"
+        "return:Vector3"
       ]
     },
     "data_ov021_02114a50": {
@@ -17445,7 +17435,7 @@
     },
     "data_ov062_0211df10": {
       "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
-        "return:V3"
+        "return:Vector3"
       ]
     },
     "data_ov062_0211e004": {
