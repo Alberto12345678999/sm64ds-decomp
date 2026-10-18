@@ -51,7 +51,8 @@
  * this ascending file, it emits D1, D0, D2 -- the cartridge's order --
  * and the unreferenced D2 is dropped at link. The destructor is the key
  * function, so this file also emits the vtable and the typeinfo chain;
- * the cartridge's copies stay canonical.
+ * its own and nested-class metadata now use complete native data ranges;
+ * ancestor copies retain their separately configured homes.
  *
  * .text 0x02115ab8..0x021165b0, 15 functions. The unit goes on to
  * 0x0211a854 (82 functions): 58 remaining func_ov075_* helpers, each still its own
@@ -64,6 +65,7 @@
 
 #include "dScEntry_c.h"
 #include "OAM.h"
+#include "OamAttr.h"
 
 extern "C" {
 unsigned int _ZN3G2S12GetBG2ScrPtrEv();
@@ -527,4 +529,22 @@ extern "C" void func_ov075_0211621c(char *c) {
             } while (i < count);
         }
     }
+}
+
+/* Sprite-template lists reached through the Entry animation tables.
+ * Both entries are drawn; attr3 == 0xffff ends the list after its last sprite.
+ * Original list identifiers and artwork roles remain unproven. */
+extern "C" {
+OamAttr data_ov075_0211c914[2] = {
+    {0x8018, 0x0008, 0xe282, 0x0000},
+    {0x0018, 0x41f8, 0xe280, 0xffff},
+};
+OamAttr data_ov075_0211c924[2] = {
+    {0x0010, 0x001d, 0xe11d, 0x0000},
+    {0x0009, 0x0013, 0xe11e, 0xffff},
+};
+OamAttr data_ov075_0211c934[2] = {
+    {0x0010, 0x11cb, 0xe11d, 0x0000},
+    {0x0009, 0x11d5, 0xe11e, 0xffff},
+};
 }

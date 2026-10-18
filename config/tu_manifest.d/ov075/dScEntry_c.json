@@ -9,6 +9,30 @@
       "name": ".text",
       "start": "0x02115ab8",
       "end": "0x021165b0"
+    },
+    {
+      "name": ".data.entry_meta0",
+      "input_section": ".data",
+      "start": "0x0211c8e0",
+      "end": "0x0211c954"
+    },
+    {
+      "name": ".data.entry_meta2",
+      "input_section": ".data",
+      "start": "0x0211ca1c",
+      "end": "0x0211ca4c"
+    },
+    {
+      "name": ".data.entry_meta3",
+      "input_section": ".data",
+      "start": "0x0211cb44",
+      "end": "0x0211cb64"
+    },
+    {
+      "name": ".data.entry_meta4",
+      "input_section": ".data",
+      "start": "0x0211d2fc",
+      "end": "0x0211d34c"
     }
   ],
   "functions": [
@@ -118,7 +142,550 @@
       "ordinal": 14
     }
   ],
-  "verification": {
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN10dScEntry_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Compiler-generated base-object destructor. dScEntry_c declares its destructor out of line, so mwccarm emits all three variants; under this file's `#pragma defer_codegen off` the group emits D1, D0, D2, and D1/D0 reproduce the cartridge byte for byte at 0x02115ab8 and 0x02115b28. Nothing in the object references D2: the vtable's slots 16 and 17 name D1 and D0. config/arm9/overlays/*/symbols.txt gives _ZN10dScEntry_cD2Ev no home anywhere in the ROM, which is the cartridge saying the retail link dead-stripped the same unreferenced variant. Homeless, so a plain deadstrip rather than deadstrip-duplicate."
+    },
+    {
+      "symbol": "_ZTI8dScene_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020914d4",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x020914d4 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTS8dScene_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020914b0",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x020914b0 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x02086e78 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x02086e54 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x02086d70 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x02086e60 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZN10dScEntry_c15graphCallback_cC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Compiler-generated base-object constructor variant for the nested graphCallback_c. The cartridge defines only the complete-object C1 at 0x021160b4; graphCallback_c is never constructed as a base subobject, so no C2 exists in the ROM."
+    },
+    {
+      "symbol": "_ZN10dScEntry_c6icon_cD0Ev",
+      "disposition": "deadstrip",
+      "reason": "Compiler-generated deleting destructor variant for the nested icon_c. icon_c instances live only as the 9-element array member at dScEntry_c+0x70 and are destroyed as an array, never individually deleted, so the cartridge never emitted a D0 for it."
+    },
+    {
+      "symbol": "_ZN10dScEntry_c6icon_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Compiler-generated base-object destructor variant for the nested icon_c. The cartridge defines only _ZN10dScEntry_c6icon_cD1Ev (0x02115bac); no symbols.txt in the tree defines a D2 and nothing relocates to one."
+    },
+    {
+      "symbol": "_ZN12OamAnimationD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Compiler-generated base-object destructor variant for OamAnimation. The cartridge defines only _ZN12OamAnimationD1Ev (0x02115bc8); no D2 exists in the ROM."
+    },
+    {
+      "symbol": "_ZTI9dThIcon_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov001",
+      "canonical_address": "0x020ad478",
+      "reason": "Ancestor ABI metadata whose canonical ov001 home 0x020ad478 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTS9dThIcon_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov001",
+      "canonical_address": "0x020ad480",
+      "reason": "Ancestor ABI metadata whose canonical ov001 home 0x020ad480 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTIN8dGraph_c10callback_cE",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208ee04",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x0208ee04 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    },
+    {
+      "symbol": "_ZTSN8dGraph_c10callback_cE",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208ee24",
+      "reason": "Ancestor ABI metadata whose canonical arm9 home 0x0208ee24 is outside this Entry source ownership. Preserve the existing duplicate-output policy; native Entry and nested-class metadata are enrolled separately."
+    }
+  ],
+  "promoted_source": "src/game/stages/d_s_entry.cpp",
+  "boundary_evidence": [
+    "PARTIAL PROMOTION. The linker run holding dScEntry_c is ov075 0x02115ab8..0x0211a854, 82 functions shared with OamAnimation (build/tu_map.json, tools/tu_map.py; `tubuild list` names it ov075/OamAnimation+dScEntry_c). src/game/stages/d_s_entry.cpp licenses the contiguous sub-range 0x02115ab8..0x02116128 -- thirteen of those 82, from dScEntry_c's own D1 to func_ov075_021160dc. The class's scene methods, the RESULT factory and the OamAnimation/icon_c constructors at 0x0211a210..0x0211a854 are src/game/stages/d_s_entry_methods.cpp (manifest ov075/d_s_entry_methods), on the far side of the hole.",
+    "WHY THE UPPER SIXTY-NINE CANNOT JOIN: the next function, func_ov075_02116128 (0xf4), does not match. It is the recorded register-allocation near-miss of notes/mwccarm-codegen.md 6bo (div 20, ~60,000 compiles, the shared-TU hypothesis measured in both forms), and its source carries a NONMATCHING banner. config/arm9/overlays/ov075/delinks.txt has NO entry covering 0x02116128..0x021165b0 -- that function and func_ov075_0211621c -- so dsd serves those bytes from the ROM. src/unnamed/ov075/func_ov075_02117bc4.c is enrolled but carries no `complete` marker. A delinks entry is a single contiguous .text claim (zero of the tree's entries carry two), so a licensed range cannot step over 0x02116128; everything above it, the factories included, keeps its own shard until that function closes.",
+    "DESTRUCTOR FORM. The cartridge places dScEntry_c's D1 (0x02115ab8) BELOW its D0 (0x02115b28). Under deferred codegen the out-of-line `dScEntry_c::~dScEntry_c() {}` emitted D0 before D1 (measured at the original promotion: 13/13 bytes, but `licensed .text functions are not emitted in ROM address order`), and the in-class form emitted no pair at all because no factory is in range to instantiate the class. The form shipped here is ov003/dScStarSel_c's and ov006/dScMgFlower_c's: `#pragma defer_codegen off` above every function, the file rewritten in ROM-ascending order, and the unchanged out-of-line destructor defined first. It emits D1, D0, D2; D1 and D0 reproduce the cartridge and D2 is unreferenced and deadstripped. The destructor is dScEntry_c's first declared non-inline virtual, so this TU is the key function and now also emits _ZTV10dScEntry_c and the typeinfo chain up to fBase_c, each deadstrip-data against its cartridge home.",
+    "WHAT THE WIDENED RANGE PROVED. `python tools/tubuild.py verify ov075/dScEntry_c`: 13/13 MATCH, objisolate clean, reloc-destinations clean, all 13 in ROM-ascending emission order, compiler-only policy accepted. `tubuild linkcheck` refuses an already-enrolled text-only TU (see verification.linkcheck), so the link proof is the full `python tools/rombuild.py -j8`: 106/106 modules exact, 0 mismatching, ROM-build analysis PASS. The original promotion's SCRATCH-LINK-VERIFIED record for 0x02115bac..0x02116128 is kept in verification.linkcheck; `dsd check symbols --fail` failed there on 9 error lines, all 9 present in the baseline control too, so it was not green then and is not reported as such now.",
+    "THE FIVE HOMELESS COMPILER-ONLY FUNCTIONS ARE NOT DUPLICATES. _ZN10dScEntry_cD2Ev, _ZN10dScEntry_c6icon_cD2Ev, _ZN10dScEntry_c6icon_cD0Ev, _ZN12OamAnimationD2Ev and _ZN10dScEntry_c15graphCallback_cC2Ev are emitted by mwccarm and defined by no symbols.txt in the tree, so they take a plain `deadstrip`, not `deadstrip-duplicate` (which requires a configured ROM home another source owns). The nineteen RTTI/vtable records take `deadstrip-data`; every canonical home is in .data, outside the claimed .text run.",
+    "UPDATE 2026-10-15, SUPERSEDES THE NEAR-MISS REASON ABOVE: func_ov075_02116128 now matches (commit 9a3ed3a8a5; notes/mwccarm-codegen.md '6bo resolved'), and every function in 0x02116128..0x0211a210 has its own `complete` delinks entry -- 69 one-function sources, a mix of .c and .cpp. What keeps this range from widening is no longer a mismatch: joining the two parts means folding those 69 files into one C++ source. Referrer census over every relocs.txt: no code outside this class reaches any of them; they are called from dScEntry_c::InitResources/Behavior, from one another, or reached through the step tables __sinit_ov075_0211bb00 copies into .bss, and that initializer also constructs dScEntry_c::graphCallback_c, so it belongs to this unit.",
+    "2026-10-16: extend the existing scene input through 0x021165b0 with its border-palette and player-row helpers. All configured inbound relocations to the 60 helpers in 0x02116128..0x0211a210 originate in this scene code or its step tables. This is partial consolidation, not a claim that the separate dEntObj embedded mesh at 0x0211a948 belongs to dScEntry.",
+    "2026-10-18 native metadata and sprite enrollment: nine Entry/icon/callback RTTI-name-vtable objects and three consumer-proven OamAttr[2] lists own four named data slices totaling276 bytes (271 object bytes and five natural internal alignment bytes). Preliminary225-byte metadata-only routing passed the helper but failed the stock link control because DSD aligns section ends to four bytes; its three-byte following gap shifted later data. The complete native sprite lists make that alignment internal, without fabricated padding storage. Earlier verification/near-miss records remain historical. The58 loose helpers and upper methods/factories/initializer remain required split-source continuation."
+  ],
+  "reconstruction_followup": "The gap contained 60 loose helpers, not 69 (nine upper functions already promoted). Two absorbed here; 58 remain. The next helper 021165b0 overlaps PR #3947. Mesh helpers are a separate dEntObj embedded object. Historical proof records retain their original ranges.",
+  "data": [
+    {
+      "symbol": "_ZTIN10dScEntry_c6icon_cE",
+      "address": "0x0211c8e0",
+      "size": "0xc"
+    },
+    {
+      "symbol": "_ZTIN10dScEntry_c15graphCallback_cE",
+      "address": "0x0211c8ec",
+      "size": "0xc"
+    },
+    {
+      "symbol": "_ZTI10dScEntry_c",
+      "address": "0x0211c8f8",
+      "size": "0xc"
+    },
+    {
+      "symbol": "_ZTS10dScEntry_c",
+      "address": "0x0211c904",
+      "size": "0xd"
+    },
+    {
+      "symbol": "data_ov075_0211c914",
+      "address": "0x0211c914",
+      "size": "0x10"
+    },
+    {
+      "symbol": "data_ov075_0211c924",
+      "address": "0x0211c924",
+      "size": "0x10"
+    },
+    {
+      "symbol": "data_ov075_0211c934",
+      "address": "0x0211c934",
+      "size": "0x10"
+    },
+    {
+      "symbol": "_ZTVN10dScEntry_c6icon_cE",
+      "address": "0x0211c94c",
+      "size": "0x10",
+      "emitted_storage_address": "0x0211c944",
+      "emitted_storage_size": "0x10",
+      "address_point_bias": 8
+    },
+    {
+      "symbol": "_ZTSN10dScEntry_c6icon_cE",
+      "address": "0x0211ca1c",
+      "size": "0x16"
+    },
+    {
+      "symbol": "_ZTVN10dScEntry_c15graphCallback_cE",
+      "address": "0x0211ca3c",
+      "size": "0x18",
+      "emitted_storage_address": "0x0211ca34",
+      "emitted_storage_size": "0x18",
+      "address_point_bias": 8
+    },
+    {
+      "symbol": "_ZTSN10dScEntry_c15graphCallback_cE",
+      "address": "0x0211cb44",
+      "size": "0x20"
+    },
+    {
+      "symbol": "_ZTV10dScEntry_c",
+      "address": "0x0211d304",
+      "size": "0x50",
+      "emitted_storage_address": "0x0211d2fc",
+      "emitted_storage_size": "0x50",
+      "address_point_bias": 8
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d300",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI10dScEntry_c",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211c8f8"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d304",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211a410"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d308",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211a734"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d30c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e62c"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d310",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211a210"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d314",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e5f0"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d318",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e5d0"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d31c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211a2b8"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d320",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e3d4"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d324",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e3c8"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d328",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c6RenderEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211a26c"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d32c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e3a4"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d330",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e398"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d334",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211a268"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d338",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204357c"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d33c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204349c"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d340",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043494"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d344",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_cD1Ev",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x02115ab8"
+    },
+    {
+      "section": ".data.entry_meta4",
+      "source": "0x0211d348",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_cD0Ev",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x02115b28"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c948",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTIN10dScEntry_c6icon_cE",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211c8e0"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c94c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c6icon_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x02115e1c"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c950",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c6icon_c6RenderEv",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x02115bcc"
+    },
+    {
+      "section": ".data.entry_meta2",
+      "source": "0x0211ca38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTIN10dScEntry_c15graphCallback_cE",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211c8ec"
+    },
+    {
+      "section": ".data.entry_meta2",
+      "source": "0x0211ca3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dGraph_c10callback_c14GraphCallback0Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02018eb8"
+    },
+    {
+      "section": ".data.entry_meta2",
+      "source": "0x0211ca40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dGraph_c10callback_c14GraphCallback1Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02018eb0"
+    },
+    {
+      "section": ".data.entry_meta2",
+      "source": "0x0211ca44",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dScEntry_c15graphCallback_c14GraphCallback2Ev",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x02116040"
+    },
+    {
+      "section": ".data.entry_meta2",
+      "source": "0x0211ca48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dGraph_c10callback_c14GraphCallback3Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02018ea0"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8ec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTSN10dScEntry_c15graphCallback_cE",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211cb44"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTIN8dGraph_c10callback_cE",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0208ee04"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8f8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS10dScEntry_c",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211c904"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c900",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI8dScene_c",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x020914d4"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8e0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8e4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTSN10dScEntry_c6icon_cE",
+      "addend": 0,
+      "target_module": "ov075",
+      "target_address": "0x0211ca1c"
+    },
+    {
+      "section": ".data.entry_meta0",
+      "source": "0x0211c8e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI9dThIcon_c",
+      "addend": 0,
+      "target_module": "overlays(0,1)",
+      "target_address": "0x020ad478"
+    }
+  ],
+  "production_mode": "intact-object",
+  "historical_text_verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
@@ -237,175 +804,215 @@
       "relocation_destinations_verified": "PASS"
     }
   },
-  "compiler_only_output": [
-    {
-      "symbol": "_ZN10dScEntry_cD2Ev",
-      "disposition": "deadstrip",
-      "reason": "Compiler-generated base-object destructor. dScEntry_c declares its destructor out of line, so mwccarm emits all three variants; under this file's `#pragma defer_codegen off` the group emits D1, D0, D2, and D1/D0 reproduce the cartridge byte for byte at 0x02115ab8 and 0x02115b28. Nothing in the object references D2: the vtable's slots 16 and 17 name D1 and D0. config/arm9/overlays/*/symbols.txt gives _ZN10dScEntry_cD2Ev no home anywhere in the ROM, which is the cartridge saying the retail link dead-stripped the same unreferenced variant. Homeless, so a plain deadstrip rather than deadstrip-duplicate."
-    },
-    {
-      "symbol": "_ZTV10dScEntry_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211d304",
-      "reason": "This class's own record. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at ov075:0x0211d304, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTI10dScEntry_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211c8f8",
-      "reason": "This class's own record. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at ov075:0x0211c8f8, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTS10dScEntry_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211c904",
-      "reason": "This class's own record. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at ov075:0x0211c904, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTI8dScene_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020914d4",
-      "reason": "Ancestor passenger. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x020914d4, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTS8dScene_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020914b0",
-      "reason": "Ancestor passenger. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x020914b0, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTI7dBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e78",
-      "reason": "Ancestor passenger. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e78, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTS7dBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e54",
-      "reason": "Ancestor passenger. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e54, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTI7fBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086d70",
-      "reason": "Ancestor passenger. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086d70, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZTS7fBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e60",
-      "reason": "Ancestor passenger. This TU defines dScEntry_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e60, outside this TU's only licensed range (.text 0x02115ab8-0x02116128), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it."
-    },
-    {
-      "symbol": "_ZN10dScEntry_c15graphCallback_cC2Ev",
-      "disposition": "deadstrip",
-      "reason": "Compiler-generated base-object constructor variant for the nested graphCallback_c. The cartridge defines only the complete-object C1 at 0x021160b4; graphCallback_c is never constructed as a base subobject, so no C2 exists in the ROM."
-    },
-    {
-      "symbol": "_ZN10dScEntry_c6icon_cD0Ev",
-      "disposition": "deadstrip",
-      "reason": "Compiler-generated deleting destructor variant for the nested icon_c. icon_c instances live only as the 9-element array member at dScEntry_c+0x70 and are destroyed as an array, never individually deleted, so the cartridge never emitted a D0 for it."
-    },
-    {
-      "symbol": "_ZN10dScEntry_c6icon_cD2Ev",
-      "disposition": "deadstrip",
-      "reason": "Compiler-generated base-object destructor variant for the nested icon_c. The cartridge defines only _ZN10dScEntry_c6icon_cD1Ev (0x02115bac); no symbols.txt in the tree defines a D2 and nothing relocates to one."
-    },
-    {
-      "symbol": "_ZN12OamAnimationD2Ev",
-      "disposition": "deadstrip",
-      "reason": "Compiler-generated base-object destructor variant for OamAnimation. The cartridge defines only _ZN12OamAnimationD1Ev (0x02115bc8); no D2 exists in the ROM."
-    },
-    {
-      "symbol": "_ZTI9dThIcon_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov001",
-      "canonical_address": "0x020ad478",
-      "reason": "Vague-linkage typeinfo record for an inherited base, re-emitted by every TU that names this class's RTTI. The cartridge's own copy lives at ov001:0x020ad478, outside every range this entry claims."
-    },
-    {
-      "symbol": "_ZTS9dThIcon_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov001",
-      "canonical_address": "0x020ad480",
-      "reason": "Vague-linkage typeinfo NAME string for an inherited base, re-emitted by every TU that names this class's RTTI. The cartridge's own copy lives at ov001:0x020ad480, outside every range this entry claims."
-    },
-    {
-      "symbol": "_ZTIN8dGraph_c10callback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0208ee04",
-      "reason": "Vague-linkage typeinfo record for an inherited base, re-emitted by every TU that names this class's RTTI. The cartridge's own copy lives at arm9:0x0208ee04, outside every range this entry claims."
-    },
-    {
-      "symbol": "_ZTSN8dGraph_c10callback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0208ee24",
-      "reason": "Vague-linkage typeinfo NAME string for an inherited base, re-emitted by every TU that names this class's RTTI. The cartridge's own copy lives at arm9:0x0208ee24, outside every range this entry claims."
-    },
-    {
-      "symbol": "_ZTIN10dScEntry_c6icon_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211c8e0",
-      "reason": "Typeinfo record for a class this TU defines out of line, so mwccarm anchors the record here. Its cartridge home is ov075:0x0211c8e0, in .data -- outside the 0x02115ab8..0x02116128 .text run this entry claims."
-    },
-    {
-      "symbol": "_ZTSN10dScEntry_c6icon_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211ca1c",
-      "reason": "Typeinfo name string for a class this TU defines out of line, so mwccarm anchors the record here. Its cartridge home is ov075:0x0211ca1c, in .data -- outside the 0x02115ab8..0x02116128 .text run this entry claims."
-    },
-    {
-      "symbol": "_ZTVN10dScEntry_c6icon_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211c94c",
-      "reason": "Vtable for a class this TU defines out of line, so mwccarm anchors the record here. Its cartridge home is ov075:0x0211c94c, in .data -- outside the 0x02115ab8..0x02116128 .text run this entry claims."
-    },
-    {
-      "symbol": "_ZTIN10dScEntry_c15graphCallback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211c8ec",
-      "reason": "Typeinfo record for a class this TU defines out of line, so mwccarm anchors the record here. Its cartridge home is ov075:0x0211c8ec, in .data -- outside the 0x02115ab8..0x02116128 .text run this entry claims."
-    },
-    {
-      "symbol": "_ZTSN10dScEntry_c15graphCallback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211cb44",
-      "reason": "Typeinfo name string for a class this TU defines out of line, so mwccarm anchors the record here. Its cartridge home is ov075:0x0211cb44, in .data -- outside the 0x02115ab8..0x02116128 .text run this entry claims."
-    },
-    {
-      "symbol": "_ZTVN10dScEntry_c15graphCallback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov075",
-      "canonical_address": "0x0211ca3c",
-      "reason": "Vtable for a class this TU defines out of line, so mwccarm anchors the record here. Its cartridge home is ov075:0x0211ca3c, in .data -- outside the 0x02115ab8..0x02116128 .text run this entry claims."
+  "verification": {
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov075-dScEntry_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x02115ab8",
+        "end": "0x021165b0",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x02115ab8",
+          "end": "0x021165b0",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.entry_meta0",
+          "start": "0x0211c8e0",
+          "end": "0x0211c954",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.entry_meta2",
+          "start": "0x0211ca1c",
+          "end": "0x0211ca4c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.entry_meta3",
+          "start": "0x0211cb44",
+          "end": "0x0211cb64",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.entry_meta4",
+          "start": "0x0211d2fc",
+          "end": "0x0211d34c",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 27
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".data.entry_meta0",
+            "original": [
+              39,
+              40,
+              41,
+              45,
+              49,
+              50,
+              52,
+              55
+            ],
+            "desired": [
+              55,
+              45,
+              50,
+              49,
+              39,
+              40,
+              41,
+              52
+            ]
+          },
+          {
+            "section": ".data.entry_meta2",
+            "original": [
+              42,
+              54
+            ],
+            "desired": [
+              54,
+              42
+            ]
+          },
+          {
+            "section": ".data.entry_meta3",
+            "original": [
+              44
+            ],
+            "desired": [
+              44
+            ]
+          },
+          {
+            "section": ".data.entry_meta4",
+            "original": [
+              47
+            ],
+            "desired": [
+              47
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data.entry_meta0",
+              "original": [
+                39,
+                40,
+                41,
+                45,
+                49,
+                50,
+                52,
+                55
+              ],
+              "desired": [
+                55,
+                45,
+                50,
+                49,
+                39,
+                40,
+                41,
+                52
+              ],
+              "slots": [
+                39,
+                40,
+                41,
+                45,
+                49,
+                50,
+                52,
+                55
+              ]
+            },
+            {
+              "section": ".data.entry_meta2",
+              "original": [
+                42,
+                54
+              ],
+              "desired": [
+                54,
+                42
+              ],
+              "slots": [
+                42,
+                54
+              ]
+            }
+          ],
+          "symbolIndices": 10,
+          "sectionLinks": 0,
+          "sectionInfos": 5,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
-  ],
-  "promoted_source": "src/game/stages/d_s_entry.cpp",
-  "boundary_evidence": [
-    "PARTIAL PROMOTION. The linker run holding dScEntry_c is ov075 0x02115ab8..0x0211a854, 82 functions shared with OamAnimation (build/tu_map.json, tools/tu_map.py; `tubuild list` names it ov075/OamAnimation+dScEntry_c). src/game/stages/d_s_entry.cpp licenses the contiguous sub-range 0x02115ab8..0x02116128 -- thirteen of those 82, from dScEntry_c's own D1 to func_ov075_021160dc. The class's scene methods, the RESULT factory and the OamAnimation/icon_c constructors at 0x0211a210..0x0211a854 are src/game/stages/d_s_entry_methods.cpp (manifest ov075/d_s_entry_methods), on the far side of the hole.",
-    "WHY THE UPPER SIXTY-NINE CANNOT JOIN: the next function, func_ov075_02116128 (0xf4), does not match. It is the recorded register-allocation near-miss of notes/mwccarm-codegen.md 6bo (div 20, ~60,000 compiles, the shared-TU hypothesis measured in both forms), and its source carries a NONMATCHING banner. config/arm9/overlays/ov075/delinks.txt has NO entry covering 0x02116128..0x021165b0 -- that function and func_ov075_0211621c -- so dsd serves those bytes from the ROM. src/unnamed/ov075/func_ov075_02117bc4.c is enrolled but carries no `complete` marker. A delinks entry is a single contiguous .text claim (zero of the tree's entries carry two), so a licensed range cannot step over 0x02116128; everything above it, the factories included, keeps its own shard until that function closes.",
-    "DESTRUCTOR FORM. The cartridge places dScEntry_c's D1 (0x02115ab8) BELOW its D0 (0x02115b28). Under deferred codegen the out-of-line `dScEntry_c::~dScEntry_c() {}` emitted D0 before D1 (measured at the original promotion: 13/13 bytes, but `licensed .text functions are not emitted in ROM address order`), and the in-class form emitted no pair at all because no factory is in range to instantiate the class. The form shipped here is ov003/dScStarSel_c's and ov006/dScMgFlower_c's: `#pragma defer_codegen off` above every function, the file rewritten in ROM-ascending order, and the unchanged out-of-line destructor defined first. It emits D1, D0, D2; D1 and D0 reproduce the cartridge and D2 is unreferenced and deadstripped. The destructor is dScEntry_c's first declared non-inline virtual, so this TU is the key function and now also emits _ZTV10dScEntry_c and the typeinfo chain up to fBase_c, each deadstrip-data against its cartridge home.",
-    "WHAT THE WIDENED RANGE PROVED. `python tools/tubuild.py verify ov075/dScEntry_c`: 13/13 MATCH, objisolate clean, reloc-destinations clean, all 13 in ROM-ascending emission order, compiler-only policy accepted. `tubuild linkcheck` refuses an already-enrolled text-only TU (see verification.linkcheck), so the link proof is the full `python tools/rombuild.py -j8`: 106/106 modules exact, 0 mismatching, ROM-build analysis PASS. The original promotion's SCRATCH-LINK-VERIFIED record for 0x02115bac..0x02116128 is kept in verification.linkcheck; `dsd check symbols --fail` failed there on 9 error lines, all 9 present in the baseline control too, so it was not green then and is not reported as such now.",
-    "THE FIVE HOMELESS COMPILER-ONLY FUNCTIONS ARE NOT DUPLICATES. _ZN10dScEntry_cD2Ev, _ZN10dScEntry_c6icon_cD2Ev, _ZN10dScEntry_c6icon_cD0Ev, _ZN12OamAnimationD2Ev and _ZN10dScEntry_c15graphCallback_cC2Ev are emitted by mwccarm and defined by no symbols.txt in the tree, so they take a plain `deadstrip`, not `deadstrip-duplicate` (which requires a configured ROM home another source owns). The nineteen RTTI/vtable records take `deadstrip-data`; every canonical home is in .data, outside the claimed .text run.",
-    "UPDATE 2026-10-15, SUPERSEDES THE NEAR-MISS REASON ABOVE: func_ov075_02116128 now matches (commit 9a3ed3a8a5; notes/mwccarm-codegen.md '6bo resolved'), and every function in 0x02116128..0x0211a210 has its own `complete` delinks entry -- 69 one-function sources, a mix of .c and .cpp. What keeps this range from widening is no longer a mismatch: joining the two parts means folding those 69 files into one C++ source. Referrer census over every relocs.txt: no code outside this class reaches any of them; they are called from dScEntry_c::InitResources/Behavior, from one another, or reached through the step tables __sinit_ov075_0211bb00 copies into .bss, and that initializer also constructs dScEntry_c::graphCallback_c, so it belongs to this unit.",
-    "2026-10-16: extend the existing scene input through 0x021165b0 with its border-palette and player-row helpers. All configured inbound relocations to the 60 helpers in 0x02116128..0x0211a210 originate in this scene code or its step tables. This is partial consolidation, not a claim that the separate dEntObj embedded mesh at 0x0211a948 belongs to dScEntry."
-  ],
-  "reconstruction_followup": "The gap contained 60 loose helpers, not 69 (nine upper functions already promoted). Two absorbed here; 58 remain. The next helper 021165b0 overlaps PR #3947. Mesh helpers are a separate dEntObj embedded object. Historical proof records retain their original ranges."
+  }
 }

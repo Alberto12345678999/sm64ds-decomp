@@ -2,7 +2,15 @@
     .rodata     start:0x0211b524 end:0x0211b5e0 kind:rodata align:4
     .init       start:0x0211b5e0 end:0x0211c5a4 kind:code align:4
     .ctor       start:0x0211c5a4 end:0x0211c5b0 kind:rodata align:4
-    .data       start:0x0211c5c0 end:0x0211d380 kind:data align:32
+    .data start:0x0211c5c0 end:0x0211c8e0 kind:data align:32
+    .data.entry_meta0 start:0x0211c8e0 end:0x0211c954 kind:data align:4
+    .data.entry_gap1 start:0x0211c954 end:0x0211ca1c kind:data align:4
+    .data.entry_meta2 start:0x0211ca1c end:0x0211ca4c kind:data align:4
+    .data.entry_gap2 start:0x0211ca4c end:0x0211cb44 kind:data align:4
+    .data.entry_meta3 start:0x0211cb44 end:0x0211cb64 kind:data align:4
+    .data.entry_gap3 start:0x0211cb64 end:0x0211d2fc kind:data align:4
+    .data.entry_meta4 start:0x0211d2fc end:0x0211d34c kind:data align:4
+    .data.entry_tail start:0x0211d34c end:0x0211d380 kind:data align:4
     .bss        start:0x0211d380 end:0x0211d9c0 kind:bss align:32
 src/game/stages/d_ent_obj.cpp:
     complete
@@ -15,6 +23,10 @@ src/game/stages/d_ent_obj.cpp:
 src/game/stages/d_s_entry.cpp:
     complete
     .text start:0x02115ab8 end:0x021165b0
+    .data.entry_meta0 start:0x0211c8e0 end:0x0211c954
+    .data.entry_meta2 start:0x0211ca1c end:0x0211ca4c
+    .data.entry_meta3 start:0x0211cb44 end:0x0211cb64
+    .data.entry_meta4 start:0x0211d2fc end:0x0211d34c
 
 src/unnamed/ov075/func_ov075_021165b0.c:
     complete
