@@ -53,7 +53,7 @@ enum d_s_mg_trampoline2_AssetId {
 
 extern int _ZTV18dScMgTrampoline2_c[];
 
-/* C, Obj, P2, S2, T, SpawnDef and the forward declarations below are
+/* C, Obj, P2, S2, T and the forward declarations below are
  * local stand-ins for types that have no header yet (issue #2497). */
 struct C {
     virtual void v0();
@@ -109,13 +109,15 @@ typedef unsigned char u8;
 
 typedef unsigned short u16;
 
-typedef struct {
+/* A scripted wave supplies one position and three parameters per item.
+ * Positions are Q12; angles rotate the item's forward vector in the XY plane. */
+struct Trampoline2WaveDef {
     int count;
-    int base;
-    short *a;
-    short *b;
-    short *c;
-} SpawnDef;
+    const Vec3i *positions;
+    const short *angles;
+    const short *itemTypes;
+    const short *motionTypes;
+};
 
 struct S2 {
     int words[2];
@@ -149,7 +151,7 @@ extern char *_ZN2G212GetBG0ScrPtrEv(void);
 extern char *_ZN2G212GetBG2ScrPtrEv(void);
 extern char *_ZN2G212GetBG3ScrPtrEv(void);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
-extern const unsigned char sTrmp2BrushPltt[];
+extern const u16 sTrmp2BrushPltt[];
 extern dFdBrightness_c *data_0209f5bc;
 extern int sTrmp2TouchBlocked;
 unsigned int func_02012790(unsigned int a);
@@ -164,7 +166,7 @@ unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3
 void Jump2Popup_UpdateAll(void);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern int sTrmp2ItemKinds;
+extern const Vec3i sTrmp2RandomSpawnPositions[];
 extern int Trmp2_ColumnForKind(int kind);
 extern unsigned short Trmp2_OccupancyBits(int column, int side);
 extern int Trmp2_PickFaceA(int kind);
@@ -186,7 +188,7 @@ extern int sTrmp2Score;
 extern int sTrmp2MarioCount;
 extern int sTrmpItemsActive;
 extern int sTrmp2ScoreGates[];
-extern SpawnDef sTrmp2SpawnDefs[];
+extern const Trampoline2WaveDef sTrmp2SpawnDefs[];
 extern void TrmpLine_UpdateAll(void);
 extern void Trmp2Mario_UpdateAll(void);
 extern void Trmp2Mario_SetTuning(int a);
@@ -603,15 +605,15 @@ void dScMgTrampoline2_c::StatePlay() {
     if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
     if (mScriptDone == 0) {
-        SpawnDef *d = &sTrmp2SpawnDefs[mPattern];
+        const Trampoline2WaveDef *d = &sTrmp2SpawnDefs[mPattern];
         int i;
         Vec3i vecA;
         for (i = 0; i < d->count; i++) {
             vecA.x = 0;
             vecA.y = 0x1000;
             vecA.z = 0;
-            func_0203cc28((int *)&vecA, d->a[i]);
-            TrmpItem_Spawn(d->base + i * 0xc, (int *)&vecA, d->b[i], d->c[i]);
+            func_0203cc28((int *)&vecA, d->angles[i]);
+            TrmpItem_Spawn((int)&d->positions[i], (int *)&vecA, d->itemTypes[i], d->motionTypes[i]);
         }
         if (ApproachLinear(mPattern, 6, 1)) {
             mScriptDone = 1;
@@ -620,15 +622,16 @@ void dScMgTrampoline2_c::StatePlay() {
     } else {
         if (ApproachLinear(mWaveStep, 4, 1)) {
             unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff;
-            SpawnDef *d = &sTrmp2SpawnDefs[(int)((rnd >> 19) * 6) >> 12];
+            const Trampoline2WaveDef *d = &sTrmp2SpawnDefs[(int)((rnd >> 19) * 6) >> 12];
             int i;
             Vec3i vecB;
             for (i = 0; i < d->count; i++) {
                 vecB.x = 0;
                 vecB.y = 0x1000;
                 vecB.z = 0;
-                func_0203cc28((int *)&vecB, d->a[i]);
-                TrmpItem_Spawn(d->base + i * 0xc, (int *)&vecB, d->b[i], d->c[i]);
+                func_0203cc28((int *)&vecB, d->angles[i]);
+                TrmpItem_Spawn((int)&d->positions[i], (int *)&vecB, d->itemTypes[i],
+                               d->motionTypes[i]);
             }
             mWaveStep = 0;
         } else {
@@ -913,7 +916,7 @@ void dScMgTrampoline2_c::SpawnWave() {
         variant = 1;
         if (faces[i] == 6)
             variant = 2;
-        TrmpItem_Spawn((int)&sTrmp2ItemKinds + kinds[i] * 0xc, (int *)&up, variant, faces[i]);
+        TrmpItem_Spawn((int)&sTrmp2RandomSpawnPositions[kinds[i]], (int *)&up, variant, faces[i]);
     }
 }
 
@@ -1283,7 +1286,7 @@ extern "C" void Trmp2Spinner_SetModel(void *raw) {
 
 extern "C" {
 extern struct Tbl sTrmp2SpinnerSpeeds;
-extern unsigned short sTrmp2SpinnerColors[];
+extern const u16 sTrmp2SpinnerColors[];
 extern int RandomIntInternal(int *seed);
 extern void func_020169f4(char *self, int kind);
 
@@ -1379,3 +1382,59 @@ int Trmp2_DestructJumperModels(char *raw) {
  * defined here at the end of the file (constructed as file ID 537) so its
  * constructor does not enter .text. */
 Trampoline2ModelFilePtr sTrmp2StarModelFile(ASSET_MINI_STAR_BMD);
+
+/* Scripted wave constants and random-wave positions. The array lengths follow
+ * the observed consumers; original declaration grouping is not recovered.
+ * The pinned linker's ALIGNALL(4) separates odd-length short arrays naturally.
+ * Palette and spinner colors use the native 16-bit DS palette format. */
+extern const short sTrmp2Wave3MotionTypes[2] = {2, 2};
+extern const short sTrmp2Wave3Angles[2] = {0x4000, 0x4000};
+extern const short sTrmp2Wave3ItemTypes[2] = {2, 2};
+extern const short sTrmp2Wave4Angles[3] = {0, 0, 0};
+extern const short sTrmp2Wave4MotionTypes[3] = {3, 3, 3};
+extern const short sTrmp2Wave0Angles[3] = {0x4000, 0x4000, 0x4000};
+extern const short sTrmp2Wave0ItemTypes[3] = {2, 1, 2};
+extern const short sTrmp2Wave1ItemTypes[3] = {2, 1, 2};
+extern const short sTrmp2Wave4ItemTypes[3] = {1, 1, 1};
+extern const short sTrmp2Wave0MotionTypes[3] = {0, 0, 0};
+extern const short sTrmp2Wave1MotionTypes[3] = {0, 0, 0};
+extern const short sTrmp2Wave1Angles[3] = {0x4000, 0x4000, 0x4000};
+extern const u16 sTrmp2SpinnerColors[4] = {0x7fff, 0x03ff, 0x001f, 0x7c00};
+extern const short sTrmp2Wave2Angles[5] = {0, 0, 0, 0, 0};
+extern const short sTrmp2Wave5Angles[5] = {-0x2000, -0x2000, -0x2000, -0x2000, -0x2000};
+extern const short sTrmp2Wave2ItemTypes[5] = {2, 1, 2, 1, 0};
+extern const short sTrmp2Wave5ItemTypes[5] = {2, 2, 2, 2, 2};
+extern const short sTrmp2Wave2MotionTypes[5] = {1, 1, 1, 1, 1};
+extern const short sTrmp2Wave5MotionTypes[5] = {0, 0, 0, 0, 0};
+extern const Vec3i sTrmp2Wave3Positions[2] = {{0x54000, 0x70000, 0x0}, {-0x54000, 0x70000, 0x0}};
+extern const u16 sTrmp2BrushPltt[16] = {0x0000, 0x0000, 0x7fff, 0x0000, 0x0000, 0x0000,
+                                        0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+                                        0x0000, 0x0000, 0x0000, 0x0000};
+extern const Vec3i sTrmp2Wave0Positions[3] = {
+    {0x40000, 0x48000, 0x0}, {0x40000, 0xb0000, 0x0}, {0x40000, -0x30000, 0x0}};
+extern const Vec3i sTrmp2Wave1Positions[3] = {
+    {-0x40000, 0x48000, 0x0}, {-0x40000, 0xb0000, 0x0}, {-0x40000, -0x30000, 0x0}};
+extern const Vec3i sTrmp2Wave4Positions[3] = {
+    {-0x40000, 0x50000, 0x0}, {0x0, 0x88000, 0x0}, {0x40000, 0x50000, 0x0}};
+extern const Vec3i sTrmp2Wave2Positions[5] = {{-0x38000, 0x30000, 0x0},
+                                              {0x40000, 0x48000, 0x0},
+                                              {-0x38000, 0x60000, 0x0},
+                                              {0x40000, 0x78000, 0x0},
+                                              {-0x48000, 0x90000, 0x0}};
+extern const Vec3i sTrmp2Wave5Positions[5] = {{-0x3c000, 0x38000, 0x0},
+                                              {-0x1e000, 0x56000, 0x0},
+                                              {0x0, 0x74000, 0x0},
+                                              {0x1e000, 0x92000, 0x0},
+                                              {0x3c000, 0xb0000, 0x0}};
+extern const Vec3i sTrmp2RandomSpawnPositions[11] = {
+    {0x0, 0xc0000, 0x0},      {0x0, 0x9a000, 0x0},       {0x0, 0x74000, 0x0},
+    {0x0, 0x4e000, 0x0},      {0x0, 0x28000, 0x0},       {-0x50000, 0x98000, 0x0},
+    {-0x50000, 0x3c000, 0x0}, {-0x50000, -0x20000, 0x0}, {0x50000, 0x98000, 0x0},
+    {0x50000, 0x3c000, 0x0},  {0x50000, -0x20000, 0x0}};
+extern const Trampoline2WaveDef sTrmp2SpawnDefs[6] = {
+    {3, sTrmp2Wave0Positions, sTrmp2Wave0Angles, sTrmp2Wave0ItemTypes, sTrmp2Wave0MotionTypes},
+    {3, sTrmp2Wave1Positions, sTrmp2Wave1Angles, sTrmp2Wave1ItemTypes, sTrmp2Wave1MotionTypes},
+    {5, sTrmp2Wave2Positions, sTrmp2Wave2Angles, sTrmp2Wave2ItemTypes, sTrmp2Wave2MotionTypes},
+    {2, sTrmp2Wave3Positions, sTrmp2Wave3Angles, sTrmp2Wave3ItemTypes, sTrmp2Wave3MotionTypes},
+    {3, sTrmp2Wave4Positions, sTrmp2Wave4Angles, sTrmp2Wave4ItemTypes, sTrmp2Wave4MotionTypes},
+    {5, sTrmp2Wave5Positions, sTrmp2Wave5Angles, sTrmp2Wave5ItemTypes, sTrmp2Wave5MotionTypes}};
