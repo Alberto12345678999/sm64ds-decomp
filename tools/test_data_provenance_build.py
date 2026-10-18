@@ -180,6 +180,10 @@ src/example.cpp:
         events = []
 
         def run(command, phase, **kwargs):
+            if phase == "dsd lcf":
+                self.write("build/arm9.lcf", "MEMORY {\n"
+                           " ARM9 : ORIGIN = 0x1000 > arm9.bin\n}\n"
+                           "SECTIONS {\n .arm9 : { ALIGNALL(4); } > ARM9\n}\n")
             if phase == "mwldarm":
                 events.append("link")
                 if link_fails:

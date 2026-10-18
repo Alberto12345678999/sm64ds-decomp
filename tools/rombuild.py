@@ -60,6 +60,7 @@ import rombuild_check as RBC  # noqa: E402
 import romdata_check as RDC  # noqa: E402
 import layout_check as LAY  # noqa: E402
 import lcf_interior as LI  # noqa: E402
+import linker_alignment as LA  # noqa: E402
 import rombuild_profile as RP  # noqa: E402
 import srcpath as SP  # noqa: E402
 import relocs as RL  # noqa: E402
@@ -1283,6 +1284,10 @@ def main():
         print("[2/6] dsd lcf")
         run([str(DSD), "lcf", "-c", str(config_yaml)], "dsd lcf")
         report["phases"].append("dsd lcf")
+        try:
+            report["linkerAlignment"] = LA.verify_lcf(BUILD / "arm9.lcf")
+        except ValueError as error:
+            raise BuildError("linker alignment policy", 1, str(error)) from error
 
         # A partitioned TU's delinks name its src_tu/ merged file; widen the allowed
         # source roots so it enrolls like any other complete entry.
