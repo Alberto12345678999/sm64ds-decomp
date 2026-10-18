@@ -49,18 +49,18 @@ __sinit_d_a_sanbo.cpp kind:function(arm,size=0x188) addr:0x0213770c
 __sinit_d_a_tor.cpp kind:function(arm,size=0x6c) addr:0x02137894
 .p__sinit_d_a_sanbo.cpp kind:data(word) addr:0x02137900
 .p__sinit_d_a_tor.cpp kind:data(word) addr:0x02137904
-data_ov096_02137920 kind:data(any) addr:0x02137920
-data_ov096_02137928 kind:data(any) addr:0x02137928
-data_ov096_02137930 kind:data(any) addr:0x02137930
-data_ov096_02137938 kind:data(any) addr:0x02137938
-data_ov096_02137940 kind:data(any) addr:0x02137940
-data_ov096_02137948 kind:data(any) addr:0x02137948
-data_ov096_02137950 kind:data(any) addr:0x02137950
-data_ov096_02137958 kind:data(any) addr:0x02137958
-data_ov096_02137960 kind:data(any) addr:0x02137960
-data_ov096_02137968 kind:data(any) addr:0x02137968
-data_ov096_02137970 kind:data(any) addr:0x02137970
-data_ov096_02137978 kind:data(any) addr:0x02137978
+data_ov096_02137920 kind:data(any) addr:0x02137920 local
+data_ov096_02137928 kind:data(any) addr:0x02137928 local
+data_ov096_02137930 kind:data(any) addr:0x02137930 local
+data_ov096_02137938 kind:data(any) addr:0x02137938 local
+data_ov096_02137940 kind:data(any) addr:0x02137940 local
+data_ov096_02137948 kind:data(any) addr:0x02137948 local
+data_ov096_02137950 kind:data(any) addr:0x02137950 local
+data_ov096_02137958 kind:data(any) addr:0x02137958 local
+data_ov096_02137960 kind:data(any) addr:0x02137960 local
+data_ov096_02137968 kind:data(any) addr:0x02137968 local
+data_ov096_02137970 kind:data(any) addr:0x02137970 local
+data_ov096_02137978 kind:data(any) addr:0x02137978 local
 _ZTS9daSanbo_c kind:data(any) addr:0x02137980
 _ZTI9daSanbo_c kind:data(any) addr:0x0213798c
 g_profile_SANBO kind:data(any) addr:0x02137998 ambiguous
