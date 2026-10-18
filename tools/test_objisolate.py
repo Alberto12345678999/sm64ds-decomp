@@ -59,7 +59,7 @@ class Isolate(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def _assert_rename_preserves_object(self, raw, aliases, defined):
+    def _assert_rename_preserves_object(self, raw, aliases, defined, growth=False):
         import io
         from elftools.elf.elffile import ELFFile
 
@@ -72,16 +72,58 @@ class Isolate(unittest.TestCase):
         renamed = list(after.get_section_by_name(".symtab").iter_symbols())
         self.assertEqual([sym.name for sym in renamed],
                          [aliases.get(sym.name, sym.name) for sym in original])
-        # References use table indices. Names may change; the complete symbol
-        # records, data/code and relocation bytes must retain their identities.
-        self.assertEqual([sym.entry for sym in renamed],
-                         [sym.entry for sym in original])
+        # Only appended names need a new st_name; all relocation targets retain
+        # their indices, sections, values, sizes, types and bindings.
+        for old, new in zip(original, renamed):
+            expected = dict(old.entry)
+            if len(aliases.get(old.name, old.name).encode()) > len(old.name.encode()):
+                self.assertGreaterEqual(new["st_name"],
+                                        before.get_section_by_name(".strtab")["sh_size"])
+                expected["st_name"] = new["st_name"]
+            self.assertEqual(dict(new.entry), expected)
+        shift = len(out) - len(raw)
+        self.assertEqual(shift > 0, growth)
+        insertion = (before.get_section_by_name(".strtab")["sh_offset"]
+                     + before.get_section_by_name(".strtab")["sh_size"])
+        expected_header = dict(before.header)
+        if expected_header["e_shoff"] >= insertion:
+            expected_header["e_shoff"] += shift
+        self.assertEqual(dict(after.header), expected_header)
         self.assertEqual(after.num_sections(), before.num_sections())
         for old, new in zip(before.iter_sections(), after.iter_sections()):
-            self.assertEqual(old.header, new.header)
-            if old.name != ".strtab":
+            expected = dict(old.header)
+            if old.name == ".strtab":
+                expected["sh_size"] += shift
+            elif expected["sh_offset"] and expected["sh_offset"] >= insertion:
+                expected["sh_offset"] += shift
+            self.assertEqual(dict(new.header), expected)
+            if old.name not in (".strtab", ".symtab"):
                 self.assertEqual(old.data(), new.data(), old.name)
+            elif old.name == ".symtab" and not growth:
+                self.assertEqual(old.data(), new.data())
+        self.assertEqual(OI.rename_symbols(raw, aliases, defined)[0], out)
         return out
+
+    def test_long_defined_names_preserve_payloads_and_relocation_indices(self):
+        raw = self.build('extern "C" { int x = 7; int y = 11; '
+                         'int *ptr = &x; int read_pair() { return *ptr - y; } }').read_bytes()
+        self._assert_rename_preserves_object(
+            raw, {"x": "descriptive_first_global", "y": "descriptive_second_global"},
+            True, growth=True)
+
+    def test_long_undefined_alias_preserves_import_relocation_indices(self):
+        raw = self.build('extern "C" { extern int x; '
+                         'int read_one() { return x; } }').read_bytes()
+        self._assert_rename_preserves_object(raw, {"x": "descriptive_import"},
+                                           False, growth=True)
+
+    def test_mixed_length_simultaneous_swap_and_chain(self):
+        raw = self.build('extern "C" { int x = 7; int second = 11; '
+                         'int read_pair() { return x - second; } }').read_bytes()
+        for aliases in ({"x": "second", "second": "x"},
+                        {"x": "second", "second": "replacement_second"}):
+            with self.subTest(aliases=aliases):
+                self._assert_rename_preserves_object(raw, aliases, True, growth=True)
 
     def test_defined_rename_swap_preserves_payloads_and_relocation_indices(self):
         raw = self.build('extern "C" { int first1 = 7; int first2 = 11; '
