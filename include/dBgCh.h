@@ -36,7 +36,7 @@
  * 2 = water (StartDetectingWater), 8 = toxic (StartDetectingToxic); 4, 0x20
  * and 0x40 gate further surface classes whose names are not settled.
  *
- * 0x08/0x0c are the querying actor: func_020353b0 (every SetObjAnd* entry
+ * 0x08/0x0c are the querying actor: SetActor (every SetObjAnd* entry
  * point) stores the actor and its fBase_c uniqueID there, or (0, -1) for no
  * actor -- the same pair, written the same way, that dBgW names
  * owner/ownerUniqueID (func_020395fc). func_02035354 matches both words
@@ -115,6 +115,8 @@ struct dBgCh {
        function means. */
     static bool ShouldPassThroughImpl(void *p, const CLPS &clps, const dBgCh &bg, bool flag);
 
+    /* Inferred name: bind the querying actor and its unique ID, or clear both. */
+    void SetActor(dActor_c *actor);
     void StartDetectingToxic();
     void StartDetectingWater();
     void StopDetectingOrdinary();

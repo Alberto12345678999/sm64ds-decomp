@@ -277,7 +277,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray) {
 
 int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere) {
     Vector3 localCentre;
-    /* The local query's broad-phase bounds, and the same bounds scaled back out. */
+    /* The local query's push-out bounds, and the same bounds scaled back out. */
     struct {
         RawVector3 localMin, localMax;
         RawVector3 scaledMin, scaledMax;
@@ -300,7 +300,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere) {
         bounds.scaledMax.x = FX_MUL(bounds.localMax.x, scale);
         bounds.scaledMax.y = FX_MUL(bounds.localMax.y, scale);
         bounds.scaledMax.z = FX_MUL(bounds.localMax.z, scale);
-        sphere.func_02037a6c(bounds.scaledMin.x, bounds.scaledMin.y, bounds.scaledMin.z,
+        sphere.ExpandPushOutBounds(bounds.scaledMin.x, bounds.scaledMin.y, bounds.scaledMin.z,
                              bounds.scaledMax.x, bounds.scaledMax.y, bounds.scaledMax.z);
         (dBgPi &)sphere = (dBgPi &)localSphere;
         sphere.flags |= 1;

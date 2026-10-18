@@ -8,8 +8,6 @@
 //   - SetObjAndSphere is defined by its mangled name: the real signature
 //     carries Fix12<int> by value and the member form changes codegen under
 //     2004/b56. The header declaration is the real one; callers use it.
-//   - func_020353b0 stays a free extern: the shared dBgCh-side bind helper is
-//     owned by its own shard and called by the Gnd/Lin query TUs as well.
 //   - unk_0ec and unk_0fc/unk_100/unk_104 keep their unk_ spellings: their
 //     roles (wall-rejection half extent; floor normal) are documented in the
 //     class header, and the rename has to move with their users in
@@ -17,8 +15,6 @@
 #include "dBgCh_SphCrr.h"
 
 extern "C" {
-void func_020353b0(char *c, int *p);    /* local extern: shared bind helper,
-   writes the bound actor + its uniqueID into the query's dBgCh tail */
 /* local extern: dBgPi::RecordHit by its mangled name -- the forwarders take
    int triID byte-required; the member's s16 parameter emits sxth here. */
 void _ZN5dBgPi9RecordHitEsP11SurfaceInfo(void *res, int triID, void *info);
@@ -43,7 +39,7 @@ extern "C" void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c
     /* through the REFERENCE: a pointer-level upcast makes mwcc emit the
        null-checked MI adjustment (movs/addne), the ROM's is unconditional */
     ((dM3dGSph &)*self).Set(*pos, radius);
-    func_020353b0((char *)self, (int *)actor);
+    self->SetActor(actor);
     self->func_02037b5c();
     self->mScale = 0x1000;
 }
@@ -53,7 +49,7 @@ extern "C" void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c
 // @symbol _ZN12dBgCh_SphCrr13func_02037b5cEv
 void dBgCh_SphCrr::func_02037b5c()
 {
-    func_02037b1c();
+    ResetDisplacement();
     flags &= ~1;
     flags &= ~4;
     flags &= ~8;
@@ -71,8 +67,8 @@ void dBgCh_SphCrr::func_02037b5c()
 }
 
 /* Clear the displacement and the push-out range the scan accumulates. */
-// @symbol _ZN12dBgCh_SphCrr13func_02037b1cEv
-void dBgCh_SphCrr::func_02037b1c()
+// @symbol _ZN12dBgCh_SphCrr17ResetDisplacementEv
+void dBgCh_SphCrr::ResetDisplacement()
 {
     disp.x = disp.y = disp.z = 0;
     aabbMin.x = aabbMax.x = 0;
@@ -81,8 +77,8 @@ void dBgCh_SphCrr::func_02037b1c()
 }
 
 /* Widen the push-out range to cover a scan's lowest and highest pushes. */
-// @symbol _ZN12dBgCh_SphCrr13func_02037a6cEiiiiii
-void dBgCh_SphCrr::func_02037a6c(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ)
+// @symbol _ZN12dBgCh_SphCrr19ExpandPushOutBoundsEiiiiii
+void dBgCh_SphCrr::ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ)
 {
     if (aabbMin.x > minX) aabbMin.x = minX;
     if (aabbMax.x < minX) aabbMax.x = minX;
