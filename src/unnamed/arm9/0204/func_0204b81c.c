@@ -1,6 +1,5 @@
-#include "types.h"
+#include "common.h"
 #include "nitro/fx/fx.h"
-typedef struct { int x, y, z; } Vec3;
 
 typedef struct {
     u32 start : 6;
@@ -54,7 +53,7 @@ typedef struct {
     int p14;
     int p18;
     int p1c;
-    Vec3 v20;
+    Vector3 v20;
     char _pad2c[4];
     int p30;
     s16 p34;
@@ -72,11 +71,17 @@ typedef struct {
     int *p38;
 } Self;
 
-extern void CrossVec3(Vec3 *a, Vec3 *b, Vec3 *out);
-extern void NormalizeVec3(Vec3 *a, Vec3 *b);
+/* No header declares these; each is spelled as its definition spells it
+   (CrossVec3's vector is a Vec3_Fix12, NormalizeVec3 and MulVec3Mat3x3 take
+   int*), so the calls below cast. */
+typedef struct {
+    Fix12i x, y, z;
+} Vec3_Fix12;
+extern void CrossVec3(const Vec3_Fix12 *a, const Vec3_Fix12 *b, Vec3_Fix12 *out);
+extern void NormalizeVec3(int *v, int *out);
 extern void Copy36Bytes(int *src, int *dst);
-extern void MulVec3Mat3x3(int *in, int *m, int *out);
-extern void MulVec3Mat4x3(Vec3 *v, int *m, Vec3 *dst);
+extern void MulVec3Mat3x3(const int *in, const int *m, int *out);
+extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern void func_02055388(int *m);
 extern void func_0204c24c(u8 a, u8 b);
 
@@ -86,10 +91,10 @@ void func_0204b81c(Self *self, Node *node)
     s16 q = c->p18->p0->q20;
     int scale = (node->p40.lo * (node->p40.hi + 1)) >> 5;
     int *mtx = self->p38;
-    Vec3 nv;
-    Vec3 trans;
-    Vec3 cr;
-    Vec3 col;
+    Vector3 nv;
+    Vector3 trans;
+    Vector3 cr;
+    Vector3 col;
     int tmp[9];
     int mat[12];
     u32 f2;
@@ -123,17 +128,17 @@ void func_0204b81c(Self *self, Node *node)
     col.x = mtx[2];
     col.y = mtx[5];
     col.z = mtx[8];
-    CrossVec3(&cr, &col, &cr);
+    CrossVec3((Vec3_Fix12 *)&cr, (Vec3_Fix12 *)&col, (Vec3_Fix12 *)&cr);
 
     if (cr.x == 0 && cr.y == 0 && cr.z == 0)
         return;
 
-    NormalizeVec3(&cr, &cr);
+    NormalizeVec3((int *)&cr, (int *)&cr);
     Copy36Bytes(mtx, tmp);
     MulVec3Mat3x3((int *)&cr, tmp, (int *)&cr);
-    MulVec3Mat4x3(&trans, mtx, &trans);
+    MulVec3Mat4x3(&trans, (Matrix4x3 *)mtx, &trans);
     nv = node->v20;
-    NormalizeVec3(&nv, &nv);
+    NormalizeVec3((int *)&nv, (int *)&nv);
 
     {
         int d = FX_MUL(nv.x, -mtx[2]) + FX_MUL(nv.y, -mtx[5]) + FX_MUL(nv.z, -mtx[8]);

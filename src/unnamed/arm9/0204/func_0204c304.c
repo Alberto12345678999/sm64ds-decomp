@@ -1,5 +1,4 @@
 #include "types.h"
-typedef struct Vec3 { int x, y, z; } Vec3;
 
 typedef struct Node { struct Node *next; struct Node *prev; } Node;
 typedef struct List { Node *head; int count; } List;
@@ -12,8 +11,8 @@ typedef struct Bf40 {
 
 typedef struct Particle {
     u8 pad0[8];   /* 0x0 */
-    Vec3 v8;      /* 0x8 */
-    Vec3 v14;     /* 0x14 */
+    Vector3 v8;   /* 0x8 */
+    Vector3 v14;  /* 0x14 */
     int i20;      /* 0x20 */
     int i24;      /* 0x24 */
     int i28;      /* 0x28 */

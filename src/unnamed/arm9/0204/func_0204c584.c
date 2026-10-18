@@ -1,12 +1,5 @@
+#include "types.h"
 #include "nitro/fx/fx.h"
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed short s16;
-typedef unsigned int u32;
-typedef int s32;
-typedef long long s64;
-
-typedef struct Vector3 { int x, y, z; } Vector3;
 
 typedef struct Node { struct Node *next; struct Node *prev; } Node;
 typedef struct List { Node *head; int count; } List;
@@ -118,7 +111,7 @@ extern void func_0204d9a0(List *list, Node *node);
 extern void func_0204da4c(Vector3 *out);
 extern void func_0204d9f0(Vector3 *out);
 extern void func_0204cd5c(int *out, int *in, int sel, s16 *m);
-extern void NormalizeVec3(Vector3 *src, Vector3 *dst);
+extern void NormalizeVec3(int *v, int *out); /* as defined; the call casts */
 
 extern u32 data_020a4d30;
 extern s16 data_02082214[];
@@ -249,7 +242,7 @@ void func_0204c584(u8 *self, List *list)
         if (p->offset.x == 0 && p->offset.y == 0 && p->offset.z == 0)
             func_0204da4c(&nrm);
         else
-            NormalizeVec3(&p->offset, &nrm);
+            NormalizeVec3((int *)&p->offset, (int *)&nrm);
         p->velocity.x = (nrm.x * mag1 + sys->direction[0] * mag2) >> 0xc;
         p->velocity.y = (nrm.y * mag1 + sys->direction[1] * mag2) >> 0xc;
         p->velocity.z = (nrm.z * mag1 + sys->direction[2] * mag2) >> 0xc;
