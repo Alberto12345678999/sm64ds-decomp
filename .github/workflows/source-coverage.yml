@@ -52,6 +52,7 @@ on:
       # one.
       - "mods/**"
       - "tools/source_coverage.py"
+      - "tools/data_section_routes.py"
       - "tools/test_source_coverage.py"
       - ".github/workflows/source-coverage.yml"
   push:
@@ -62,6 +63,7 @@ on:
       - "src/**"
       - "mods/**"
       - "tools/source_coverage.py"
+      - "tools/data_section_routes.py"
       - "tools/test_source_coverage.py"
       - ".github/workflows/source-coverage.yml"
   workflow_dispatch:

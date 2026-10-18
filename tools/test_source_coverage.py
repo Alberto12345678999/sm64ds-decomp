@@ -417,6 +417,133 @@ src/other.c:
         self.assertIn("newly built from source: 256", out)
 
 
+class NamedSectionCoverageTests(SandboxCase):
+    """A route name must neither hide a loss nor invent one when bytes stay owned."""
+
+    def snapshot(self, message):
+        self.sb.git("add", "-A")
+        self.sb.git("commit", "--allow-empty", "-q", "-m", message)
+        return self.sb.git("rev-parse", "HEAD").strip()
+
+    def seed_range(self, family, named=True):
+        name = family + ".first" if named else family
+        text = (f"    {name} start:0x02010000 end:0x02010100 kind:data align:4\n"
+                "src/native.cpp:\n    complete\n"
+                f"    {name} start:0x02010000 end:0x02010040\n")
+        self.sb.delinks(text)
+        self.sb.sources("native.cpp")
+        return self.snapshot("native range"), text
+
+    def compare(self, base, *extra, exceptions=None):
+        code, out = self.sb.run("--check", "--base", base, "--json", *extra,
+                                exceptions=exceptions)
+        return code, json.loads(out)
+
+    def test_new_named_ranges_are_counted(self):
+        for family in (".data", ".rodata"):
+            with self.subTest(family=family):
+                self.sb.delinks(BASE_DELINKS)
+                base = self.snapshot("text only")
+                self.sb.sources("native.cpp")
+                self.sb.delinks(BASE_DELINKS + "\nsrc/native.cpp:\n    complete\n"
+                                f"    {family}.newRange start:0x02010000 end:0x02010040\n")
+                code, result = self.compare(base)
+                self.assertEqual(code, 0, result)
+                self.assertEqual(result["gainedBytes"], 64)
+                self.assertEqual(result["bySection"][family], 64)
+
+    def test_losing_named_ownership_fails(self):
+        for family in (".data", ".rodata"):
+            for change in ("incomplete", "deleted", "missing", "narrowed"):
+                with self.subTest(family=family, change=change):
+                    base, text = self.seed_range(family)
+                    if change == "incomplete":
+                        self.sb.delinks(text.replace("    complete\n", ""))
+                    elif change == "deleted":
+                        self.sb.delinks(text.split("src/native.cpp:")[0])
+                    elif change == "missing":
+                        (self.sb.root / "src/native.cpp").unlink()
+                    else:
+                        self.sb.delinks(text.replace("end:0x02010040", "end:0x02010020"))
+                    code, result = self.compare(base)
+                    self.assertEqual(code, 1, result)
+                    self.assertEqual(result["unwaivedLostBytes"], 32 if change == "narrowed" else 64)
+                    lost = result["lost"][0]
+                    self.assertEqual((lost["module"], lost["section"]), ("arm9", family))
+                    self.assertEqual(lost["owners"][0]["path"], "src/native.cpp")
+
+    def test_renaming_and_repartitioning_routes_is_neutral(self):
+        for family in (".data", ".rodata"):
+            for named in (False, True):
+                with self.subTest(family=family, originally_named=named):
+                    base, _ = self.seed_range(family, named)
+                    self.sb.sources("left.cpp", "right.cpp")
+                    self.sb.delinks(
+                        "src/left.cpp:\n    complete\n"
+                        f"    {family}.left start:0x02010000 end:0x02010020\n"
+                        "src/right.cpp:\n    complete\n"
+                        f"    {family}.right start:0x02010020 end:0x02010040\n")
+                    head = self.sb.commit("same bytes in two routes")
+                    for extra in ((), ("--ref", head)):
+                        code, result = self.compare(base, *extra)
+                        self.assertEqual(code, 0, result)
+                        self.assertEqual((result["baseBytes"], result["currentBytes"]), (64, 64))
+                        self.assertEqual((result["lostBytes"], result["gainedBytes"]), (0, 0))
+
+    def test_named_and_plain_overlap_counts_once(self):
+        base, text = self.seed_range(".data", named=False)
+        self.sb.sources("overlap.cpp")
+        self.sb.delinks(text + "src/overlap.cpp:\n    complete\n"
+                        "    .data.shared start:0x02010010 end:0x02010030\n")
+        code, result = self.compare(base)
+        self.assertEqual(code, 0, result)
+        self.assertEqual(result["currentBytes"], 64)
+        self.assertEqual(result["gainedBytes"], 0)
+
+    def test_data_and_rodata_remain_distinct(self):
+        base, text = self.seed_range(".data")
+        self.sb.delinks(text.replace(".data.first", ".rodata.first"))
+        code, result = self.compare(base)
+        self.assertEqual(code, 1, result)
+        self.assertEqual((result["lostBytes"], result["gainedBytes"]), (64, 64))
+
+    def test_unsupported_names_do_not_inherit_a_data_family(self):
+        for name in (".data.bad.extra", ".rodata.9invalid", ".custom.route"):
+            with self.subTest(name=name):
+                entries = SC.parse_delinks("src/native.cpp:\n    complete\n"
+                                           f"    {name} start:0x02010000 end:0x02010040\n",
+                                           "config/arm9/delinks.txt")
+                built = SC.built_ranges(entries, {"src/native.cpp"})
+                self.assertEqual([(m, s, a, b) for m, s, _, a, b in built],
+                                 [("arm9", name, 0x02010000, 0x02010040)])
+
+    def test_waivers_keep_family_module_and_extent_boundaries(self):
+        base, text = self.seed_range(".data")
+        self.sb.delinks(text.replace("    complete\n", ""))
+        for module, section, end, remaining in (
+                ("arm9", ".data.first", "0x02010020", 32),
+                ("arm9", ".data", "0x02010040", 0),
+                ("arm9", ".rodata.first", "0x02010040", 64),
+                ("ov007", ".data.first", "0x02010040", 64)):
+            with self.subTest(module=module, section=section, end=end):
+                waiver = self.sb.write("waiver.jsonl", json.dumps({
+                    "module": module, "section": section, "start": "0x02010000",
+                    "end": end, "reason": "explicit measured fixture retraction"}) + "\n")
+                code, result = self.compare(base, exceptions=str(waiver))
+                self.assertEqual(code, int(remaining != 0), result)
+                self.assertEqual(result["unwaivedLostBytes"], remaining)
+
+    def test_identical_addresses_in_another_module_do_not_replace_ownership(self):
+        base, text = self.seed_range(".data")
+        self.sb.delinks("")
+        self.sb.write("config/arm9/overlays/ov007/delinks.txt", text)
+        code, result = self.compare(base)
+        self.assertEqual(code, 1, result)
+        self.assertEqual((result["lostBytes"], result["gainedBytes"]), (64, 64))
+        self.assertEqual(result["lost"][0]["module"], "arm9")
+        self.assertEqual(result["gained"][0]["module"], "ov007")
+
+
 class RealTreeTests(unittest.TestCase):
     """One end-to-end pass over the actual repo, so the parse cannot rot unnoticed."""
 
