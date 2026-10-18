@@ -9,6 +9,10 @@ whenever sources were merged would refuse the promotions on principle.
 import sys
 import pathlib
 import unittest
+from unittest import mock
+import io
+import struct
+import tempfile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import romdata_check as RDC  # noqa: E402
@@ -305,6 +309,122 @@ class PreambleIsGatedOnTheCartridge(unittest.TestCase):
                 return None
         with unittest.mock.patch.object(RDC, "RV", FakeRV):
             self.assertFalse(RDC._vtable_preamble_at("ov006", 0x200, frozenset()))
+
+class ObjectLocalDataRenames(unittest.TestCase):
+    """Real ELF relocations must use this source's identity, not a global temp."""
+
+    def setUp(self):
+        from test_reloc_audit_renames import _elf_with_temp
+        from elftools.elf.elffile import ELFFile
+        raw = bytearray(_elf_with_temp())
+        table = ELFFile(io.BytesIO(raw)).get_section_by_name('.symtab')
+        # The first object is a native local literal; alpha is its pointer table.
+        raw[table['sh_offset'] + 16 + 12] = 1
+        raw[table['sh_offset'] + 32 + 12] = 0x11
+        self.raw = bytes(raw)
+        self.entry = dict(module='ov002', source='src/table.cpp', functions=[],
+                          data=[dict(symbol='@999')],
+                          defined_symbol_renames=[dict(
+                              **{'from': '@653', 'to': '@999'}, evidence='exact literal')])
+        self.names = {'alpha': ('ov002', 0x2000),
+                      '@653': ('ov079', 0x9000), '@999': ('ov079', 0x9900)}
+        self.registry = {('ov002', 'alpha'): (0x2000, 4),
+                         ('ov002', '@999'): (0x3000, 4)}
+        self.saved = RDC._source_manifests
+        RDC._source_manifests = {'src/table.cpp': [self.entry]}
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = pathlib.Path(self.tmp.name) / 'table.o'
+        self.path.write_bytes(self.raw)
+
+    def tearDown(self):
+        RDC._source_manifests = self.saved
+        self.tmp.cleanup()
+
+    def check(self, rel='src/table.cpp'):
+        with mock.patch.object(RDC, 'rom_data_index', return_value=self.registry), \
+                mock.patch.object(RDC.RV, 'rom_bytes', return_value=struct.pack('<I', 0x3000)):
+            return RDC.check_object(self.path, rel, self.names)
+
+    def test_local_literal_uses_validated_mapping_and_own_module(self):
+        rows = self.check()
+        self.assertEqual(len(rows), 1)  # native local literal is not a global claim
+        self.assertEqual((rows[0]['symbol'], rows[0]['verdict'], rows[0]['bytes'],
+                          rows[0]['blindWords']), ('alpha', RDC.VERIFIED, 4, 0))
+        self.assertEqual(self.path.read_bytes(), self.raw)
+        self.assertEqual(self.names['@653'], ('ov079', 0x9000))
+
+    def test_other_source_does_not_receive_this_mapping(self):
+        self.assertEqual(self.check('src/other.cpp')[0]['verdict'], RDC.DIFFERS)
+
+    def test_missing_canonical_home_is_blind_not_other_overlay(self):
+        del self.registry[('ov002', '@999')]
+        row = self.check()[0]
+        self.assertEqual((row['verdict'], row['bytes'], row['blindWords']),
+                         (RDC.PARTIAL, 0, 1))
+
+    def test_unowned_rename_is_explicit_refusal(self):
+        self.entry['data'] = []
+        rows = self.check()
+        row = rows[0]
+        self.assertEqual(row['verdict'], RDC.UNNAMED)
+        self.assertIn('policy refused', row['note'])
+        self.assertEqual(rows[1]['verdict'], RDC.DIFFERS)
+
+    def test_missing_raw_definition_is_explicit_refusal(self):
+        self.entry['defined_symbol_renames'][0]['from'] = '@652'
+        row = self.check()[0]
+        self.assertEqual(row['verdict'], RDC.UNNAMED)
+        self.assertIn('rename refused', row['note'])
+
+    def test_missing_function_population_is_explicit_refusal(self):
+        self.entry['functions'] = [dict(symbol='not_this_TU')]
+        self.assertIn('missing manifest function', self.check()[0]['note'])
+
+    def test_two_source_policies_are_ambiguous(self):
+        RDC._source_manifests['src/table.cpp'].append(dict(self.entry))
+        self.assertIn('ambiguous', self.check()[0]['note'])
+
+    def test_source_path_separators_do_not_change_identity(self):
+        self.assertEqual(self.check('src\\table.cpp')[0]['verdict'], RDC.VERIFIED)
+
+    def test_unmapped_local_does_not_borrow_global_home(self):
+        # An unrelated licensed rename must not bless an unlicensed local temp.
+        self.entry['data'] = [dict(symbol='beta')]
+        self.entry['defined_symbol_renames'] = [dict(
+            **{'from': 'alpha', 'to': 'beta'}, evidence='owned table')]
+        self.names['beta'] = ('ov002', 0x2000)
+        self.registry[('ov002', 'beta')] = (0x2000, 4)
+        row = self.check()[0]
+        self.assertEqual((row['verdict'], row['bytes'], row['blindWords']),
+                         (RDC.PARTIAL, 0, 1))
+
+    def _named_local_policy(self):
+        self.entry['data'] = [dict(symbol='beta'),
+                              dict(symbol='@653', address='0x3000', size='0x4')]
+        self.entry['defined_symbol_renames'] = [dict(
+            **{'from': 'alpha', 'to': 'beta'}, evidence='owned table')]
+        self.registry[('ov002', 'beta')] = (0x2000, 4)
+        self.registry[('ov002', '@653')] = (0x3000, 4)
+
+    def test_owned_local_without_rename_uses_exact_module_home(self):
+        self._named_local_policy()
+        self.assertEqual(self.check()[0]['verdict'], RDC.VERIFIED)
+
+    def test_owned_local_wrong_size_stays_blind(self):
+        self._named_local_policy()
+        self.entry['data'][1]['size'] = '0x8'
+        self.assertEqual(self.check()[0]['blindWords'], 1)
+
+    def test_owned_local_wrong_address_stays_blind(self):
+        self._named_local_policy()
+        self.entry['data'][1]['address'] = '0x9000'
+        self.assertEqual(self.check()[0]['blindWords'], 1)
+
+    def test_duplicate_owned_local_rows_stay_blind(self):
+        self._named_local_policy()
+        self.entry['data'].append(dict(self.entry['data'][1]))
+        self.assertEqual(self.check()[0]['blindWords'], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
