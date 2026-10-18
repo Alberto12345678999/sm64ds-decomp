@@ -8,13 +8,19 @@
   "boundary_evidence": [
     "contiguous linker run: 0x20ab110..0x20ab41c, 7 function(s), from build/tu_map.json (tools/tu_map.py) plus the absorbed forward neighbour func_ov001_020ab3f0",
     "class label(s): dCapIcon_c",
-    "module sinit corroboration: 0 sinit(s) / 0 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 0 sinit(s) / 0 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "Native ABI ownership: unchanged class source emits RTTI8/name13/full vtable16 bytes; 3 internal linker-alignment bytes complete ov001:020ad450..020ad478. This is a reconstructed production assignment, not proof of every original TU data boundary. Adjacent dThIcon metadata, ARM9 slot table and shared CapIconMgr BSS remain excluded."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020ab110",
       "end": "0x020ab41c"
+    },
+    {
+      "name": ".data",
+      "start": "0x020ad450",
+      "end": "0x020ad478"
     }
   ],
   "functions": [
@@ -68,19 +74,109 @@
       "ordinal": 6
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "symbol": "_ZTI10dCapIcon_c",
+      "address": "0x20ad450",
+      "size": "0x8",
+      "binding": "STB_LOPROC",
+      "evidence": "Unchanged pinned b56 object and retail relocation-aware bytes; native binding retained. See notes/agents/data-capicon-native1018.md."
+    },
+    {
+      "symbol": "_ZTS10dCapIcon_c",
+      "address": "0x20ad458",
+      "size": "0xd",
+      "binding": "STB_LOPROC",
+      "evidence": "Unchanged pinned b56 object and retail relocation-aware bytes; native binding retained. See notes/agents/data-capicon-native1018.md."
+    },
+    {
+      "symbol": "_ZTV10dCapIcon_c",
+      "address": "0x020ad470",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "emitted_storage_address": "0x020ad468",
+      "address_point_bias": 8,
+      "evidence": "Unchanged pinned b56 object and retail relocation-aware bytes; native binding retained. See notes/agents/data-capicon-native1018.md."
+    }
+  ],
   "bss": [],
   "notes": [
     "Reconstructed by tools/tubuild.py create and then reconciled by hand. The file's own header comment records the two decisions that are load-bearing: `#pragma defer_codegen off` over ordinals 0 and 1 so the `opt_common_subs off` bracket binds to ordinal 1 alone, and the resulting split emission order (parse-time half ascending, deferred half descending).",
     "tubuild create reported one declaration CONFLICT, `func_ov001_020aa6cc`, declared `void func_ov001_020aa6cc(int r0)` by the legacy source for ordinal 1 and `void func_ov001_020aa6cc(int character)` by the one for ordinal 0. The two spellings differ only in the parameter name, so the merged TU keeps one declaration; nothing was left commented out.",
     "The head array data_ov001_020ad634 was declared three ways across the legacy shards (`dCapIcon_c *[]`, `void *[]`, `int[]`). The node-pointer view is the complete one -- ordinal 0 walks the nodes -- and is the one the TU keeps; ordinal 1 takes one added cast at its store and is byte-identical with it.",
-    "Five extern declarations were reconciled against the rest of the tree after tools/check_decl_agreement.py flagged them: data_0209f3e8 is spelt `int[]` (the plurality) with the dActor_c* view moved to a cast at the use site, data_ov001_020ad620 and data_ov001_020ad624 are scalars rather than arrays, func_ov001_020aa6b0 takes `int *` as its definition does, and SaveData::IsCharacterUnlocked is called through include/SaveData.h instead of a flat mangled extern. The cast on the slot-table compare has to be on the LEFT operand: `data_0209f3e8[mSlot] == (int)mOwner` swaps two register assignments in ordinal 0 and costs three words. All six functions were re-verified byte-exact afterwards, and tools/rombuild.py rebuilt the full ROM to the same sha256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 as the source-independent control. The verification.linkcheck record below predates that reconciliation; the full-ROM rombuild run is what proves the final source."
+    "Historical six-function declaration reconciliation (before the seventh pulse helper was absorbed): Five extern declarations were reconciled against the rest of the tree after tools/check_decl_agreement.py flagged them: data_0209f3e8 is spelt `int[]` (the plurality) with the dActor_c* view moved to a cast at the use site, data_ov001_020ad620 and data_ov001_020ad624 are scalars rather than arrays, func_ov001_020aa6b0 takes `int *` as its definition does, and SaveData::IsCharacterUnlocked is called through include/SaveData.h instead of a flat mangled extern. The cast on the slot-table compare has to be on the LEFT operand: `data_0209f3e8[mSlot] == (int)mOwner` swaps two register assignments in ordinal 0 and costs three words. All six functions were re-verified byte-exact afterwards, and tools/rombuild.py rebuilt the full ROM to the same sha256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 as the source-independent control. Its earlier standalone/link receipts are retained in the task research history; current verification below is regenerated for native metadata ownership. The plurality-based slot declaration is an inherited reconstruction choice, not recovered original type evidence.",
+    "Native ABI names and bindings are compiler-generated identities, not newly proposed identifiers. The vtable public address 020ad470 has 8 bytes of dispatch slots; its complete compiler storage is 16 bytes from 020ad468. Preserve numeric public alias data_ov001_020ad470 as an identity, not separate storage. Raw RTTI+0 names _ZTVN3abi17__class_type_infoE with addend 8. Its storage-prefix address 0209a76c plus 8 explains the retail pointer 0209a774. Actual prepared-object normalization retains that public ABI symbol and changes its addend to 0; it does not import the numeric storage-prefix alias. There is no native initializer or ctor entry in this TU."
+  ],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN10dCapIcon_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Unconfigured compiler-generated base destructor variant; the configured complete and deleting variants remain owned at020ab3a0 and020ab374. Current TU licenses seven functions. No D2 ROM home is established."
+    },
+    {
+      "symbol": "_ZN10dCapIcon_cC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Unconfigured compiler-generated base constructor variant; the complete constructor is owned at020ab3c4. No C2 ROM home is established; retain deadstrip without assigning a speculative address."
+    }
+  ],
+  "production_mode": "intact-object",
+  "relocations": [
+    {
+      "section": ".data",
+      "source": "0x20ad450",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi17__class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x209a774"
+    },
+    {
+      "section": ".data",
+      "source": "0x20ad454",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS10dCapIcon_c",
+      "addend": 0,
+      "target_module": "ov001",
+      "target_address": "0x20ad458"
+    },
+    {
+      "section": ".data",
+      "source": "0x20ad46c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI10dCapIcon_c",
+      "addend": 0,
+      "target_module": "ov001",
+      "target_address": "0x20ad450"
+    },
+    {
+      "section": ".data",
+      "source": "0x20ad470",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dCapIcon_cD1Ev",
+      "addend": 0,
+      "target_module": "ov001",
+      "target_address": "0x20ab3a0"
+    },
+    {
+      "section": ".data",
+      "source": "0x20ad474",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN10dCapIcon_cD0Ev",
+      "addend": 0,
+      "target_module": "ov001",
+      "target_address": "0x20ab374"
+    }
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov001-dCapIcon_c/dCapIcon_c.o (gitignored)",
+    "object": "build/tu/ov001-dCapIcon_c/d_cap_icon.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 7,
     "functions_declared": 7,
@@ -94,26 +190,14 @@
         "_ZN10dCapIcon_cD2Ev"
       ],
       "droppedSections": [
-        9,
-        10,
-        11,
-        12,
-        13,
         16,
         17,
         24,
         25
       ],
-      "data": [
-        "_ZTV10dCapIcon_c",
-        "_ZTI10dCapIcon_c",
-        "_ZTS10dCapIcon_c"
-      ],
-      "dataExternalized": [
-        "_ZTI10dCapIcon_c",
-        "_ZTS10dCapIcon_c",
-        "_ZTV10dCapIcon_c"
-      ]
+      "data": [],
+      "dataExternalized": [],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -124,7 +208,7 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov001-dCapIcon_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -137,7 +221,7 @@
       },
       "tuRange": {
         "start": "0x020ab110",
-        "end": "0x020ab3f0",
+        "end": "0x020ab41c",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -145,22 +229,68 @@
         {
           "section": ".text",
           "start": "0x020ab110",
-          "end": "0x020ab3f0",
+          "end": "0x020ab41c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x020ad450",
+          "end": "0x020ad478",
           "differingBytes": 0,
           "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 6
+          "LICENSED": 10
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
+        "groups": [
+          {
+            "section": ".data",
+            "original": [
+              9,
+              11,
+              12
+            ],
+            "desired": [
+              12,
+              11,
+              9
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                9,
+                11,
+                12
+              ],
+              "desired": [
+                12,
+                11,
+                9
+              ],
+              "slots": [
+                9,
+                11,
+                12
+              ]
+            }
+          ],
+          "symbolIndices": 3,
+          "sectionLinks": 0,
+          "sectionInfos": 2,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
@@ -195,39 +325,5 @@
       },
       "linkerOutput": null
     }
-  },
-  "compiler_only_output": [
-    {
-      "symbol": "_ZTV10dCapIcon_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov001",
-      "canonical_address": "0x020ad470",
-      "reason": "The vtable this TU is the key function for: dCapIcon_c's only virtual is its destructor and this TU defines it out of line, so mwccarm anchors the vague-linkage group here. config/arm9/overlays/ov001/symbols.txt rows _ZTV10dCapIcon_c at ov001:0x020ad470, and verify's EXTRA line independently reports size=0x10 -- four words, i.e. the two-word RTTI prologue plus the two dispatch slots the cartridge fills with D1 (0x020ab3a0) and D0 (0x020ab374). The constructor and both destructor variants odr-use this copy for their vptr stores; production isolation rebinds those relocations to the ROM home and deadstrips the duplicate."
-    },
-    {
-      "symbol": "_ZTI10dCapIcon_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov001",
-      "canonical_address": "0x020ad450",
-      "reason": "This class's own __class_type_info, emitted as a passenger beside the vtable. ROM home ov001:0x020ad450, which is the record that proves the class name this TU uses -- the cartridge pairs it with the string below."
-    },
-    {
-      "symbol": "_ZTS10dCapIcon_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov001",
-      "canonical_address": "0x020ad458",
-      "reason": "Type-name string `10dCapIcon_c\u0000`, 0xd bytes -- the exact size verify reports for the copy in this object. ROM home ov001:0x020ad458."
-    },
-    {
-      "symbol": "_ZN10dCapIcon_cD2Ev",
-      "disposition": "deadstrip",
-      "reason": "Homeless. One out-of-line destructor definition makes mwcc emit three variants -- in the deferred half of this file, in the order D2, D0, D1 -- but the cartridge carries only D0 (0x020ab374, 0x2c) and D1 (0x020ab3a0, 0x24). config/arm9/overlays/ov001/symbols.txt has no D2 row for this class and no address anywhere in config/ names one, so it has no ROM home: plain `deadstrip`, not `deadstrip-duplicate`. It is emitted between ordinal 2 and ordinal 3, so it does not disturb the licensed run -- verify reports all 6 licensed functions in the expected ROM-ascending section order with it present."
-    },
-    {
-      "symbol": "_ZN10dCapIcon_cC2Ev",
-      "disposition": "deadstrip",
-      "reason": "Homeless, for the same reason as the D2 above: one constructor definition emits both the complete C1 and the base C2, and the cartridge carries only C1 (0x020ab3c4, 0x2c). symbols.txt has no C2 row for this class. It is emitted after ordinal 5, i.e. past the end of the licensed run."
-    }
-  ],
-  "production_mode": "text-only"
+  }
 }
