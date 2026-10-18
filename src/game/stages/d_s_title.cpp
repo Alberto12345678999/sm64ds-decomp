@@ -1,10 +1,11 @@
 //cpp
 /* dScTitle_c -- the title / level-select screen, ov003.
  *
- * The screen the game boots into: a 0x36-cell level grid with a cursor the
+ * A 0x36-cell level-select grid with a cursor the
  * D-pad walks by row (+0x35) or column (+1), a confirm that either fades to
  * the picked level or hands off to one of the two special entries, and a
- * scrolling window that keeps the cursor on screen. 11 functions,
+ * scrolling window that keeps the cursor on screen. Its startup use is not
+ * established by these consumers. 11 functions,
  * .text 0x020ad660..0x020addfc: the seven dScene_c slots every direct child
  * overrides (0, 3, 6, 9, 12, 16, 17 -- the class adds no new virtual), the
  * free scroll helper func_ov003_020ad6ec, the factory dScTitle_c_classInit,
@@ -39,6 +40,7 @@
  */
 
 #include "dScTitle_c.h"
+#include "SpawnInfo.h"
 #include "decl_common.h"
 #include "Sound.h"
 #include "PlayerInput.h"
@@ -103,13 +105,41 @@ extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(u32 a);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern void Enable3dEngines(void);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
-/* One row of the level-name table the grid rows print from; only the name
- * pointer is read. */
-struct TitleLevelName {
-    volatile signed char *name;
-    int pad;
+/* The print helper reads name; Behavior reads the signed level ID and entrance.
+ * IDs -2 and -1 select the versus and minigame scenes. The two trailing bytes
+ * are natural alignment padding; no observed consumer reads them. These type
+ * and field names describe the consumers, not recovered original spellings. */
+struct TitleLevelEntry {
+    const char *name;
+    s8 levelID;
+    u8 entranceID;
 };
-extern TitleLevelName data_ov003_020b117c[];
+#ifndef SM64DS_PLATFORM_PC
+typedef char TitleLevelEntry_size_must_be_0x08[sizeof(TitleLevelEntry) == 0x08 ? 1 : -1];
+#endif
+
+/* Displayed strings retain their exact cartridge spelling. The compiler owns
+ * the literal pool; the manifest binds its generated names to address labels. */
+extern const TitleLevelEntry sTitleLevelEntries[] = {
+    {"Test Map", 0, 0},        {"Main Castle Map", 1, 0}, {"Castle 1F", 2, 0},
+    {"Main Garden Map", 3, 0}, {"Castle B1", 4, 0},       {"Castle 2F", 5, 0},
+    {"BombHei Map", 6, 0},     {"Battan King Map", 7, 0}, {"Kaizoku Irie", 8, 0},
+    {"Kaizoku Ship", 9, 0},    {"Snow Mt", 10, 0},        {"Snow Slider", 11, 0},
+    {"Teresa House", 12, 0},   {"Cave", 13, 0},           {"Fire Land", 14, 0},
+    {"Fire Mt", 15, 0},        {"Desert Land", 16, 0},    {"Desert Py", 17, 0},
+    {"Water Land", 18, 0},     {"Snow Land", 19, 0},      {"Snow Kama", 20, 0},
+    {"Water City", 21, 0},     {"Hight Mt", 22, 0},       {"High Slider", 23, 0},
+    {"Tibi Deka D", 24, 0},    {"Tibi Deka T", 25, 0},    {"Tibi Deka In", 26, 0},
+    {"Clock Tower", 27, 0},    {"Rainbow Cruise", 28, 0}, {"Peach Slider Map", 29, 0},
+    {"Suisou", 30, 0},         {"Habatake", 31, 0},       {"Horisoko", 32, 0},
+    {"Metal Switch", 33, 0},   {"Rainbow Mario", 34, 0},  {"Koopa1 Map", 35, 0},
+    {"Koopa1 Boss", 36, 0},    {"Koopa2 Map", 37, 0},     {"Koopa2 Boss", 38, 0},
+    {"Koopa3 Map", 39, 0},     {"Koopa3 Boss", 40, 0},    {"Onimasu Test Map", 41, 0},
+    {"Vs Cross", 42, 0},       {"Vs Island", 43, 0},      {"Ex Mario Map", 44, 0},
+    {"Ex Mario Boss", 45, 0},  {"Ex Luigi Map", 46, 0},   {"Ex Luigi Boss", 47, 0},
+    {"Ex Wario Map", 48, 0},   {"Ex Wario Boss", 49, 0},  {"Play Room", 50, 0},
+    {"Vs Main", 51, 0},        {"VS Entry", -2, 0},       {"Mini Game", -1, 0},
+};
 /* `void *` is the tree's plurality spelling for this one (it is declared
  * five different ways across five files); the cast at the one call site is
  * free. */
@@ -133,7 +163,7 @@ static inline int IsTouchStarted() {
 
 /* [10] 0x020adcbc -- prints one row of the level grid into the BG0 screen
  * map at (row, col): the level number in two digits (a blank for a leading
- * zero), a blank, the level's name from data_ov003_020b117c, then blanks out
+ * zero), a blank, the level's name from sTitleLevelEntries, then blanks out
  * to column 0x1d. Called only from func_ov003_020ad6ec. Each tile goes
  * through MultiStore16 from a volatile temporary, five of them; that is the
  * spelling the bytes need. */
@@ -153,7 +183,8 @@ extern "C" void func_ov003_020adcbc(int level, int row, int col) {
     d += 3;
     MultiStore16(t2, (char *)d2, 2);
     int cnt = 0x1d - col;
-    volatile signed char *s = data_ov003_020b117c[level].name;
+    volatile const signed char *s =
+        reinterpret_cast<volatile const signed char *>(sTitleLevelEntries[level].name);
     while (*s != 0) {
         t3 = *s;
         MultiStore16(t3, (char *)d, 2);
@@ -248,7 +279,7 @@ s32 dScTitle_c::CleanupResources() {
 
 /* [5] 0x020ad814 -- vtable slot 6. Level-select cursor update: on confirm
  * (or minigame-active flag) starts the scene fade / loads the picked level
- * from the 8-byte entry table at data_ov003_020b1180; otherwise moves the
+ * from sTitleLevelEntries; otherwise moves the
  * cursor by row (+0x35) or column (+1) with repeat delay at unk_050,
  * wrapping the index modulo 0x36. */
 // @symbol _ZN10dScTitle_c8BehaviorEv
@@ -258,7 +289,7 @@ s32 dScTitle_c::Behavior() {
         s8 t;
         func_02012790(1);
         i = data_0209b2f4;
-        t = data_ov003_020b1180[i * 8];
+        t = sTitleLevelEntries[i].levelID;
         if (t == -1 || IsTouchStarted()) {
             dScene_c::StartSceneFade(5, 0, 0);
             _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
@@ -267,7 +298,7 @@ s32 dScTitle_c::Behavior() {
             _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
         } else {
             data_0209f2d8 = 0;
-            LoadLevelNoReturn(t, data_ov003_020b1181[i << 3], 1, 0);
+            LoadLevelNoReturn(t, sTitleLevelEntries[i].entranceID, 1, 0);
             SetPlayerGlobals();
             SetNumPlayers(1);
             dScene_c::StartSceneFade(4, 0, 0);
@@ -363,3 +394,6 @@ void func_ov003_020ad6ec(void *) {
  * 16/17 odr-use both halves. The empty bodies still reproduce all 0x8c
  * bytes: three inlined vptr stores plus fBase_c::~fBase_c, and D0's
  * inherited operator delete. See include/dScTitle_c.h. */
+
+/* Non-actor registry profile: allocating factory, behavior and render priorities. */
+extern "C" BaseSpawnInfo<dScTitle_c> g_profile_TITLE = {dScTitle_c_classInit, 2, 4};

@@ -6,6 +6,8 @@
 src/game/stages/d_s_title.cpp:
     complete
     .text start:0x020ad660 end:0x020addfc
+    .rodata start:0x020b117c end:0x020b132c
+    .data start:0x020b1360 end:0x020b1698
 
 src/game/stages/d_s_star_sel_methods.cpp:
     complete
