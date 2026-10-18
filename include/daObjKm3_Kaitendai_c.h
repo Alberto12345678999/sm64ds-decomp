@@ -11,8 +11,9 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  * sizeof(daObjKm3_Kaitendai_c) == 0x320 == sizeof(dBgActor_c).
  * Overrides the two slots the base leaves null (InitResources,
  * CleanupResources) and hands this overlay's model/collision
- * descriptor to the shared ov002 helpers. Start angle is one of two
- * statics, chosen by param1's low byte.
+ * descriptor to the shared ov002 helpers. The default per-frame rotation
+ * increment is one of two statics, chosen by param1's low byte. Shared setup
+ * can override it with a nonzero spawn mAngleZ.
  *
  * `daObjKm3_Kaitendai_c` is the RTTI name.
  */

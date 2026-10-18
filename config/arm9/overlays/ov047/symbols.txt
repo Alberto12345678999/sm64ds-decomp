@@ -57,7 +57,7 @@ data_ov047_02111b94 kind:data(any) addr:0x02111b94
 data_ov047_02111bb4 kind:data(any) addr:0x02111bb4
 data_ov047_02111bd4 kind:data(any) addr:0x02111bd4
 data_ov047_02111be0 kind:data(any) addr:0x02111be0 ambiguous
-data_ov047_02111bf4 kind:data(any) addr:0x02111bf4
+gKm3KaitendaiClps kind:data(any) addr:0x02111bf4
 data_ov047_02111c14 kind:data(any) addr:0x02111c14
 data_ov047_02111c20 kind:data(any) addr:0x02111c20 ambiguous
 data_ov047_02111c4c kind:data(any) addr:0x02111c4c
@@ -88,8 +88,8 @@ data_ov047_02112258 kind:data(any) addr:0x02112258
 _ZTS21daObjKm3_Kurumajiku_c kind:data(any) addr:0x02112264
 g_profile_KM3_KURUMAJIKU kind:data(any) addr:0x0211227c ambiguous
 _ZTV21daObjKm3_Kurumajiku_c kind:data(any) addr:0x021122a0
-data_ov047_02112320 kind:data(any) addr:0x02112320
-data_ov047_02112324 kind:data(any) addr:0x02112324
+gKm3KaitendaiRotationIncrement kind:data(any) addr:0x02112320
+gKm3KaitendaiAlternateRotationIncrement kind:data(any) addr:0x02112324
 _ZTI20daObjKm3_Kaitendai_c kind:data(any) addr:0x02112328
 data_ov047_02112334 kind:data(any) addr:0x02112334
 _ZTS20daObjKm3_Kaitendai_c kind:data(any) addr:0x02112340

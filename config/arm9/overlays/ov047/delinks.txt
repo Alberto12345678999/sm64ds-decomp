@@ -3,7 +3,9 @@
     .ctor       start:0x021119c4 end:0x021119d4 kind:rodata align:4
     .data_pre   start:0x021119e0 end:0x02111ab4 kind:data align:32
     .rodata     start:0x02111ab4 end:0x02111ac4 kind:rodata align:4
-    .data       start:0x02111ac4 end:0x021125e0 kind:data align:4
+    .data_mid   start:0x02111ac4 end:0x02111bf4 kind:data align:4
+    .rodata.kaitendai start:0x02111bf4 end:0x02111c0c kind:rodata align:4
+    .data       start:0x02111c0c end:0x021125e0 kind:data align:4
     .bss        start:0x021125e0 end:0x02112720 kind:bss align:32
 src/game/actors/d_a_obj_km3_kurumajiku.cpp:
     complete
@@ -18,7 +20,8 @@ src/game/actors/d_a_obj_km3_kaitendai.cpp:
     .text start:0x021112bc end:0x021113f8
     .init start:0x02111748 end:0x021117b4
     .ctor start:0x021119c8 end:0x021119cc
-    .data start:0x02112328 end:0x021123fc
+    .rodata.kaitendai start:0x02111bf4 end:0x02111c0c
+    .data start:0x02112320 end:0x021123fc
     .bss start:0x02112608 end:0x02112630
 
 src/game/actors/d_a_obj_km3_kuruma.cpp:
