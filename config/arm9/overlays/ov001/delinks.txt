@@ -6,6 +6,7 @@
 src/ui/hud/CapIconMgr.cpp:
     complete
     .text start:0x020aa420 end:0x020ab110
+    .bss start:0x020ad620 end:0x020ad640
 
 src/ui/hud/d_cap_icon.cpp:
     complete

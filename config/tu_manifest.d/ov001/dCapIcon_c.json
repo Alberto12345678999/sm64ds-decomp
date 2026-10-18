@@ -101,11 +101,12 @@
   ],
   "bss": [],
   "notes": [
-    "Reconstructed by tools/tubuild.py create and then reconciled by hand. The file's own header comment records the two decisions that are load-bearing: `#pragma defer_codegen off` over ordinals 0 and 1 so the `opt_common_subs off` bracket binds to ordinal 1 alone, and the resulting split emission order (parse-time half ascending, deferred half descending).",
+    "Historical node-pointer declaration reconciliation: numeric data_ov001_020ad634 had three legacy views (dCapIcon_c*[], void*[], int[]). The shared list state now uses CapIconMgr.h and manager-owned gCapIconListHeads[3]; all original method bytes and eleven node references to the six shared globals remain identical after exact target-name mapping.",
     "tubuild create reported one declaration CONFLICT, `func_ov001_020aa6cc`, declared `void func_ov001_020aa6cc(int r0)` by the legacy source for ordinal 1 and `void func_ov001_020aa6cc(int character)` by the one for ordinal 0. The two spellings differ only in the parameter name, so the merged TU keeps one declaration; nothing was left commented out.",
     "The head array data_ov001_020ad634 was declared three ways across the legacy shards (`dCapIcon_c *[]`, `void *[]`, `int[]`). The node-pointer view is the complete one -- ordinal 0 walks the nodes -- and is the one the TU keeps; ordinal 1 takes one added cast at its store and is byte-identical with it.",
     "Historical six-function declaration reconciliation (before the seventh pulse helper was absorbed): Five extern declarations were reconciled against the rest of the tree after tools/check_decl_agreement.py flagged them: data_0209f3e8 is spelt `int[]` (the plurality) with the dActor_c* view moved to a cast at the use site, data_ov001_020ad620 and data_ov001_020ad624 are scalars rather than arrays, func_ov001_020aa6b0 takes `int *` as its definition does, and SaveData::IsCharacterUnlocked is called through include/SaveData.h instead of a flat mangled extern. The cast on the slot-table compare has to be on the LEFT operand: `data_0209f3e8[mSlot] == (int)mOwner` swaps two register assignments in ordinal 0 and costs three words. All six functions were re-verified byte-exact afterwards, and tools/rombuild.py rebuilt the full ROM to the same sha256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 as the source-independent control. Its earlier standalone/link receipts are retained in the task research history; current verification below is regenerated for native metadata ownership. The plurality-based slot declaration is an inherited reconstruction choice, not recovered original type evidence.",
-    "Native ABI names and bindings are compiler-generated identities, not newly proposed identifiers. The vtable public address 020ad470 has 8 bytes of dispatch slots; its complete compiler storage is 16 bytes from 020ad468. Preserve numeric public alias data_ov001_020ad470 as an identity, not separate storage. Raw RTTI+0 names _ZTVN3abi17__class_type_infoE with addend 8. Its storage-prefix address 0209a76c plus 8 explains the retail pointer 0209a774. Actual prepared-object normalization retains that public ABI symbol and changes its addend to 0; it does not import the numeric storage-prefix alias. There is no native initializer or ctor entry in this TU."
+    "Native ABI names and bindings are compiler-generated identities, not newly proposed identifiers. The vtable public address 020ad470 has 8 bytes of dispatch slots; its complete compiler storage is 16 bytes from 020ad468. Preserve numeric public alias data_ov001_020ad470 as an identity, not separate storage. Raw RTTI+0 names _ZTVN3abi17__class_type_infoE with addend 8. Its storage-prefix address 0209a76c plus 8 explains the retail pointer 0209a774. Actual prepared-object normalization retains that public ABI symbol and changes its addend to 0; it does not import the numeric storage-prefix alias. There is no native initializer or ctor entry in this TU.",
+    "BSS continuation preserves all native class metadata, vtable bias/public alias and compiler-only policies. The new shared header is consumed only by this node TU and CapIconMgr.cpp. Six global names are descriptive reconstructions; their module/address identities are unchanged. Current standalone fields are preserved separately as historical_standalone_verification; intact admission and default production are distinct evidence."
   ],
   "compiler_only_output": [
     {
@@ -173,39 +174,7 @@
     }
   ],
   "verification": {
-    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
-    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
-    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov001-dCapIcon_c/d_cap_icon.o (gitignored)",
-    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 7,
-    "functions_declared": 7,
-    "compilerOnlyOutput": {
-      "requested": [
-        "_ZN10dCapIcon_cD2Ev",
-        "_ZN10dCapIcon_cC2Ev"
-      ],
-      "deadstripped": [
-        "_ZN10dCapIcon_cC2Ev",
-        "_ZN10dCapIcon_cD2Ev"
-      ],
-      "droppedSections": [
-        16,
-        17,
-        24,
-        25
-      ],
-      "data": [],
-      "dataExternalized": [],
-      "canonicalDuplicates": []
-    },
-    "criteria": {
-      "every_declared_function_defined": "PASS",
-      "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
-      "functions_occur_in_expected_order": "PASS",
-      "relocation_destinations_verified": "PASS"
-    },
+    "round": "Current intact-object source storage: standalone functions remain byte/relocation verified; fresh complete-range scratch admission is recorded below and normal actual-provider proof is separate.",
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
       "result": "scratch-data-verified",
@@ -324,6 +293,41 @@
         "matchesStockRom": true
       },
       "linkerOutput": null
+    }
+  },
+  "historical_standalone_verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov001-dCapIcon_c/d_cap_icon.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 7,
+    "functions_declared": 7,
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN10dCapIcon_cD2Ev",
+        "_ZN10dCapIcon_cC2Ev"
+      ],
+      "deadstripped": [
+        "_ZN10dCapIcon_cC2Ev",
+        "_ZN10dCapIcon_cD2Ev"
+      ],
+      "droppedSections": [
+        16,
+        17,
+        24,
+        25
+      ],
+      "data": [],
+      "dataExternalized": [],
+      "canonicalDuplicates": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
     }
   }
 }

@@ -26,25 +26,19 @@
  * Leftover: unk_19 / unk_1a. The link helper stores its 4th argument
  *   into unk_19 and special-cases it against 3; Unlink zeros unk_19.
  *   Original names are not in the cartridge.
- * Leftover: data_0209f3e8 / data_ov001_020ad* stay the linker names
- *   (S14 data outside this .text).
+ * Shared list state is declared in CapIconMgr.h and defined by the manager.
+ * Leftover: data_0209f3e8 remains an external slot-table linker name.
  */
 #pragma defer_codegen off
 
-#include "CapIcon.h"
+#include "CapIconMgr.h"
 #include "SaveData.h"
 
 extern "C" {
 
 extern int data_0209f3e8[];
 
-extern dCapIcon_c *data_ov001_020ad634[];
-extern u8 data_ov001_020ad630[];
-extern u8 data_ov001_020ad62c[];
-extern u8 data_ov001_020ad628[];
 
-extern u8 data_ov001_020ad624;
-extern u8 data_ov001_020ad620;
 
 extern void func_ov001_020aa6b0(int *icon, int value);
 extern void func_ov001_020aa6cc(int character);
@@ -67,8 +61,8 @@ void dCapIcon_c::Unlink()
 
     if (mPrev)
         mPrev->mNext = mNext;
-    else if (data_ov001_020ad634[mCharacter] == this)
-        data_ov001_020ad634[mCharacter] = mNext;
+    else if (gCapIconListHeads[mCharacter] == this)
+        gCapIconListHeads[mCharacter] = mNext;
 
     if (mNext)
         mNext->mPrev = mPrev;
@@ -84,8 +78,8 @@ void dCapIcon_c::Unlink()
     mCharacter = 3;
     unk_19 = 0;
 
-    if (data_ov001_020ad630[mCharacter])
-        --data_ov001_020ad630[mCharacter];
+    if (gCapIconCounts[mCharacter])
+        --gCapIconCounts[mCharacter];
 }
 
 // @symbol _ZN10dCapIcon_c19func_ov001_020ab228EPciih
@@ -100,13 +94,13 @@ void dCapIcon_c::func_ov001_020ab228(char *a1, int idx, int a3,
     mOwner = (dActor_c *)a1;
     mOwnerUniqueID = *(u32 *)(a1 + 4);
     unk_19 = (unsigned char)a3;
-    mNext = data_ov001_020ad634[idx];
-    if (data_ov001_020ad634[idx])
-        data_ov001_020ad634[idx]->mPrev = this;
-    data_ov001_020ad634[idx] = this;
-    data_ov001_020ad630[idx]++;
+    mNext = gCapIconListHeads[idx];
+    if (gCapIconListHeads[idx])
+        gCapIconListHeads[idx]->mPrev = this;
+    gCapIconListHeads[idx] = this;
+    gCapIconCounts[idx]++;
     if (a3 == 3)
-        data_ov001_020ad628[idx] |= 8;
+        gCapIconRequestFlags[idx] |= 8;
     unk_1a = 0;
     mFlags = 0;
     {
@@ -156,13 +150,13 @@ extern "C" void func_ov001_020ab2e4(void)
 {
     int i;
     for (i = 0; i < 3; i++) {
-        data_ov001_020ad634[i] = 0;
-        data_ov001_020ad62c[i] = 0;
-        data_ov001_020ad628[i] = 0;
+        gCapIconListHeads[i] = 0;
+        gCapIconDispatchFlags[i] = 0;
+        gCapIconRequestFlags[i] = 0;
         if (SaveData::IsCharacterUnlocked(i))
-            data_ov001_020ad628[i] |= 0x10;
-        data_ov001_020ad630[i] = 0;
+            gCapIconRequestFlags[i] |= 0x10;
+        gCapIconCounts[i] = 0;
     }
-    data_ov001_020ad620 = 0;
-    data_ov001_020ad624 = 0;
+    gCapIconFlashTimer = 0;
+    gCapIconDispatchLocked = 0;
 }
