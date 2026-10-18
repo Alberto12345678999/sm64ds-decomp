@@ -4,7 +4,7 @@
   "source": "src/game/stages/d_s_dsmt.cpp",
   "promoted_source": "src/game/stages/d_s_dsmt.cpp",
   "status": "promoted",
-  "production_mode": "text-only",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x20cc028..0x20ccb54, 20 function(s): build/tu_map.json units 0x20cc028..0x20cc600 (13, class label dScDSMT_c) and 0x20cc600..0x20ccb54 (7, unlabelled) are ONE TU -- func_ov007_020cc600 calls this run's func_ov007_020cc0cc/020cc0e4/020cc118/020cc168, and dScDSMT_c_classInit at the run's end stores _ZTV9dScDSMT_c and the graphCallback_c vptr pair",
@@ -12,13 +12,26 @@
     "module sinit corroboration: 0 sinit(s) / 0 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
     "ALL TWENTY MATCH: written as one file (destructor inline in the class body, InitResources as key function, reverse source order), tools/match.py reports 20/20 MATCH on 2004/b56, every function in ROM-ascending order.",
     "The earlier partial fold stopped at 0x020cc2cc because Behavior's and InitResources' FS_OVERLAY_ID operands (the cartridge's pool words 0x64/0x66 at 0x020cc450/0x020cc454 and inside InitResources) then had no linkable definition. They now spell `(int)&OVERLAY_100_ID` / `(int)&OVERLAY_102_ID` -- the absolute linker constants the generated arm9.lcf defines (OVERLAY_100_ID = 100 = 0x64, OVERLAY_102_ID = 102 = 0x66), the same form arm9's dScMB_c uses. config/arm9/symbols.txt's `overlay_100`/`overlay_102` rows are dsd bookkeeping names only; the lcf emits no definition for them, so `&overlay_N` can never link.",
-    "DESTRUCTOR FORM: the cartridge puts D1 (0x020cc028) below D0 (0x020cc070). With the destructor inline in the class body (the dScTitle_c form) mwccarm emits D1, D0 in that order -- the ROM's -- from this TU, which owns the key function InitResources and so emits both vtables. The promoted header flips `virtual ~dScDSMT_c();` to `virtual ~dScDSMT_c() {}` for it, and the out-of-line D2 the partial file deadstripped is gone."
+    "DESTRUCTOR FORM: the cartridge puts D1 (0x020cc028) below D0 (0x020cc070). With the destructor inline in the class body (the dScTitle_c form) mwccarm emits D1, D0 in that order -- the ROM's -- from this TU, which owns the key function InitResources and so emits both vtables. The promoted header flips `virtual ~dScDSMT_c();` to `virtual ~dScDSMT_c() {}` for it, and the out-of-line D2 the partial file deadstripped is gone.",
+    "Current native data reconstruction owns two complete named initialized sections totaling184 bytes (181 native object bytes plus3 internal alignment bytes), with full24/80-byte callback/scene vtables. The middle24-byte callback interface table and trailing16 unknown bytes remain ROM-owned; current ownership does not establish original TU boundaries."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020cc028",
       "end": "0x020ccb54"
+    },
+    {
+      "name": ".data.dsmtMeta0",
+      "input_section": ".data",
+      "start": "0x02103260",
+      "end": "0x02103290"
+    },
+    {
+      "name": ".data.dsmtMeta1",
+      "input_section": ".data",
+      "start": "0x021032a8",
+      "end": "0x02103330"
     }
   ],
   "functions": [
@@ -163,20 +176,82 @@
       "ordinal": 19
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "symbol": "data_ov007_02103260",
+      "address": "0x02103260",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven."
+    },
+    {
+      "symbol": "g_profile_DSMT",
+      "address": "0x02103264",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven."
+    },
+    {
+      "symbol": "_ZTS9dScDSMT_c",
+      "address": "0x0210326c",
+      "size": "0xb",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven."
+    },
+    {
+      "symbol": "_ZTI9dScDSMT_c",
+      "address": "0x02103278",
+      "size": "0xc",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven."
+    },
+    {
+      "symbol": "_ZTIN9dScDSMT_c15graphCallback_cE",
+      "address": "0x02103284",
+      "size": "0xc",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven."
+    },
+    {
+      "symbol": "_ZTVN9dScDSMT_c15graphCallback_cE",
+      "address": "0x021032b0",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven.",
+      "emitted_storage_address": "0x021032a8",
+      "address_point_bias": 8
+    },
+    {
+      "symbol": "_ZTSN9dScDSMT_c15graphCallback_cE",
+      "address": "0x021032c0",
+      "size": "0x1e",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven."
+    },
+    {
+      "symbol": "_ZTV9dScDSMT_c",
+      "address": "0x021032e8",
+      "size": "0x50",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native object. RTTI/class identities are ABI evidence; pending-music role and profile priorities are consumer-backed. Original identifiers and TU grouping remain unproven.",
+      "emitted_storage_address": "0x021032e0",
+      "address_point_bias": 8
+    }
+  ],
   "bss": [],
   "notes": [
-    "FOLLOW-UP DONE: header flipped to `virtual ~dScDSMT_c() {}`, defer_codegen dropped, file written in reverse ROM order, all ten remaining files folded in, licensed .text extended to 0x020cc028..0x020ccb54, D2 deadstrip row dropped.",
-    "classInit is the literal construction bridge (_ZN10dFdDummy_cC1Ev is dFdDummy_c's out-of-line constructor, so `return new dScDSMT_c()` would inline a different fader constructor), storing the vptr addresses through their data_ov007_021032e8 / data_ov007_021032b0 aliases of _ZTV9dScDSMT_c and _ZTVN9dScDSMT_c15graphCallback_cE (see the symbolRename note) -- this TU emits both vtables. ov007's _ZTV rows sit AT the vtable address point (0x021032e8 = slot 0 InitResources), so the address-point spelling is plain `_ZTV`, not the `&_ZTV[2]` storage-start convention other modules use.",
-    "The five wrappers func_ov007_020cca68..020ccab4 are `bx ip` sibcall veneers under -interworking: Deallocate/LoadFile through #pragma long_calls' pooled branch, and Heap::Allocate/_Deallocate/MaxAllocationUnitSize member calls on the game heap at data_020a0ea0. func_ov007_020cca68's Deallocate signature is decl_common.h's `void Deallocate(void*)`, so the veneer takes and forwards `void *p` -- the arg lands in r0 either way and the tail branch is identical.",
-    "Declaration reconciliations recorded on the previous revision still stand: data_0209b340 stays decl_common.h's `int[]` with byte-view casts in func_ov007_020cc168; data_0209caa0 stays `int[]` (the dispatcher's trailing `data_0209caa0[0x328]` byte read is spelt ((u8*)data_0209caa0)[0x328]); data_0209b33c is `FileSaveData *` (the dispatcher needs flags1, so the opaque `struct E` gave way to the recovered 0x44 layout already used by the pre-fold file); func_ov007_020b7090 takes (u16,u16,u16,u16,int).",
-    "overlay_100/overlay_102 remain two of the pre-existing `dsd check symbols` errors (absolute ARM9-main rows at 0x64/0x66 outside every module's sections) -- baseline errors, unchanged by this fold. The TU does not reference them: its overlay operands are the lcf-defined OVERLAY_100_ID / OVERLAY_102_ID linker constants, declared `extern int` locally exactly as src/game/stages/d_s_mb.cpp does."
+    "Historical text-only promotion evidence: FOLLOW-UP DONE: header flipped to `virtual ~dScDSMT_c() {}`, defer_codegen dropped, file written in reverse ROM order, all ten remaining files folded in, licensed .text extended to 0x020cc028..0x020ccb54, D2 deadstrip row dropped.",
+    "Historical text-only promotion evidence: classInit is the literal construction bridge (_ZN10dFdDummy_cC1Ev is dFdDummy_c's out-of-line constructor, so `return new dScDSMT_c()` would inline a different fader constructor), storing the vptr addresses through their data_ov007_021032e8 / data_ov007_021032b0 aliases of _ZTV9dScDSMT_c and _ZTVN9dScDSMT_c15graphCallback_cE (see the symbolRename note) -- this TU emits both vtables. ov007's _ZTV rows sit AT the vtable address point (0x021032e8 = slot 0 InitResources), so the address-point spelling is plain `_ZTV`, not the `&_ZTV[2]` storage-start convention other modules use.",
+    "Historical text-only promotion evidence: The five wrappers func_ov007_020cca68..020ccab4 are `bx ip` sibcall veneers under -interworking: Deallocate/LoadFile through #pragma long_calls' pooled branch, and Heap::Allocate/_Deallocate/MaxAllocationUnitSize member calls on the game heap at data_020a0ea0. func_ov007_020cca68's Deallocate signature is decl_common.h's `void Deallocate(void*)`, so the veneer takes and forwards `void *p` -- the arg lands in r0 either way and the tail branch is identical.",
+    "Historical text-only promotion evidence: Declaration reconciliations recorded on the previous revision still stand: data_0209b340 stays decl_common.h's `int[]` with byte-view casts in func_ov007_020cc168; data_0209caa0 stays `int[]` (the dispatcher's trailing `data_0209caa0[0x328]` byte read is spelt ((u8*)data_0209caa0)[0x328]); data_0209b33c is `FileSaveData *` (the dispatcher needs flags1, so the opaque `struct E` gave way to the recovered 0x44 layout already used by the pre-fold file); func_ov007_020b7090 takes (u16,u16,u16,u16,int).",
+    "Historical text-only promotion evidence: overlay_100/overlay_102 remain two of the pre-existing `dsd check symbols` errors (absolute ARM9-main rows at 0x64/0x66 outside every module's sections) -- baseline errors, unchanged by this fold. The TU does not reference them: its overlay operands are the lcf-defined OVERLAY_100_ID / OVERLAY_102_ID linker constants, declared `extern int` locally exactly as src/game/stages/d_s_mb.cpp does.",
+    "Current data ownership uses compiler-native RTTI, names and vtables plus a typed BaseSpawnInfo<dScDSMT_c> and int pending-music definition. The profile has priorities1 and3; factory remains manual construction with a typed return. Existing public numeric vtable aliases are zero-extra-storage identities. Native bindings are retained; no symbol-binding rewrite or integer vtable is introduced."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov007-dScDSMT_c/dScDSMT_c.o (gitignored)",
+    "object": "build/tu/ov007-dScDSMT_c/d_s_dsmt.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 20,
     "functions_declared": 20,
@@ -184,27 +259,17 @@
       "requested": [],
       "deadstripped": [],
       "droppedSections": [
-        5,
         6,
         7,
-        8,
-        9,
         10,
         11,
         12,
         13,
         14,
-        15,
-        16,
-        17,
         18,
         19,
         20,
         21,
-        22,
-        23,
-        24,
-        25,
         26
       ],
       "data": [
@@ -215,30 +280,19 @@
         "_ZTS8dScene_c",
         "_ZTI8dScene_c",
         "_ZTIN8dGraph_c10callback_cE",
-        "_ZTSN8dGraph_c10callback_cE",
-        "_ZTI9dScDSMT_c",
-        "_ZTS9dScDSMT_c",
-        "_ZTV9dScDSMT_c",
-        "_ZTIN9dScDSMT_c15graphCallback_cE",
-        "_ZTSN9dScDSMT_c15graphCallback_cE",
-        "_ZTVN9dScDSMT_c15graphCallback_cE"
+        "_ZTSN8dGraph_c10callback_cE"
       ],
       "dataExternalized": [
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
         "_ZTI8dScene_c",
-        "_ZTI9dScDSMT_c",
         "_ZTIN8dGraph_c10callback_cE",
-        "_ZTIN9dScDSMT_c15graphCallback_cE",
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
         "_ZTS8dScene_c",
-        "_ZTS9dScDSMT_c",
-        "_ZTSN8dGraph_c10callback_cE",
-        "_ZTSN9dScDSMT_c15graphCallback_cE",
-        "_ZTV9dScDSMT_c",
-        "_ZTVN9dScDSMT_c15graphCallback_cE"
-      ]
+        "_ZTSN8dGraph_c10callback_cE"
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -249,17 +303,152 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "superseded-by-production-rombuild",
-      "note": "the prior scratch-link-verified record covered the narrower pre-fold claim 0x020cc028..0x020cc2cc (10 functions). This fold widened the enrolled complete claim to 0x020cc028..0x020ccb54 (20 functions) -- Behavior, CleanupResources, InitResources (the key function, so the object now emits both class RTTI/vtables and is consumed through the text-only path), func_ov007_020cc600, the five wrappers, and classInit -- so the object is verified by the production build below. As an already-enrolled text-only TU it hits the pre-existing tu_production gap documented in ov074/daKuriKing_c, ov091/daObjSimpleLift_c and arm9/dScEntry: `tubuild.py linkcheck` forces the intact-candidate path and refuses 'intact production requires one .text claim and at least one non-text claim', even on unmodified landed controls.",
-      "rombuild": {
-        "round": "python tools/rombuild.py -j16 --no-rom",
-        "result": "PASS -- 4837 enrolled sources compiled, 0 failed; mwldarm link ok; intact TU gates PASS (dsd modules PASS, zero new symbol errors, storage aliases exact); module fidelity 106/106 exact, 100.000000%; 11,262 source-built functions reproducing, 0 mismatching; ov007's licensed range 0x020cc028..0x020ccb54 is built from this source and byte-exact."
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov007-dScDSMT_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
       },
-      "baselineControl": {
-        "round": "python tools/tubuild.py linkcheck --baseline --module ov002 -j16 (regenerated with the strict control's own ROM staged as build/sm64ds.nds, after the first --clean run proved 106/106 modules and produced sha ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40)",
-        "result": "PASS -- 106/106 modules exact, ROM built ddab9300... identical to build/sm64ds.nds (matchesStockRom: true); dsd check symbols --fail still reports the same nine pre-existing errors (overlay_100, overlay_102, data_020ad524, data_020ad560, func_01ff98f4, func_01ff99a4, func_01ff9d40, _deq, func_01ff9e2c), unchanged by this fold. NOTE for reviewers on a clean worker: the strict control compares its ROM SHA against the intact manifests' admitted sha d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8, which predates the tree's current ROM image ddab9300 -- a pre-existing tooling gap that fires only when no build/sm64ds.nds exists. The current control's executable-module fingerprint f9852ffaf80ef196 still equals the admitted proof, so the drift is confined to non-module bytes; staging the control's own sm64ds-tu.nds as build/sm64ds.nds re-enables the same-worker comparison and the gate passes."
+      "tuRange": {
+        "start": "0x020cc028",
+        "end": "0x020ccb54",
+        "differingBytes": 0,
+        "firstDiff": null
       },
-      "symbolRename": "the classInit vptr stores name the data_ov007_021032e8 / data_ov007_021032b0 aliases of _ZTV9dScDSMT_c / _ZTVN9dScDSMT_c15graphCallback_cE (same addresses -- ov007's _ZTV rows sit at the vtable address point, slot 0 = InitResources). A defined-then-externalised _ZTV store spelled by name emits addend 0 and trips objisolate.plan()'s defined-symbol survey, which only covers mwcc's implicit addend>=8 form; the data_ alias is the shard's original spelling and the same aliasing arm9/dScMB_c uses for _ZTV7dScMB_c/data_020943c4."
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x020cc028",
+          "end": "0x020ccb54",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.dsmtMeta0",
+          "start": "0x02103260",
+          "end": "0x02103290",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.dsmtMeta1",
+          "start": "0x021032a8",
+          "end": "0x02103330",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 28
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".data.dsmtMeta0",
+            "original": [
+              5,
+              8,
+              15,
+              16,
+              22
+            ],
+            "desired": [
+              5,
+              8,
+              15,
+              22,
+              16
+            ]
+          },
+          {
+            "section": ".data.dsmtMeta1",
+            "original": [
+              24,
+              27,
+              28
+            ],
+            "desired": [
+              24,
+              27,
+              28
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data.dsmtMeta0",
+              "original": [
+                5,
+                8,
+                15,
+                16,
+                22
+              ],
+              "desired": [
+                5,
+                8,
+                15,
+                22,
+                16
+              ],
+              "slots": [
+                5,
+                8,
+                15,
+                16,
+                22
+              ]
+            }
+          ],
+          "symbolIndices": 5,
+          "sectionLinks": 0,
+          "sectionInfos": 3,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
   },
   "compiler_only_output": [
@@ -318,48 +507,318 @@
       "canonical_module": "arm9",
       "canonical_address": "0x0208ee24",
       "reason": "Vague-linkage typeinfo NAME string for an inherited base, re-emitted by every TU that names this class's RTTI. The cartridge's own copy lives at arm9:0x0208ee24, outside every range this entry claims."
+    }
+  ],
+  "relocations": [
+    {
+      "source": "0x02103264",
+      "section": ".data.dsmtMeta0",
+      "kind": "load",
+      "symbol": "dScDSMT_c_classInit",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020ccad0",
+      "target_module": "ov007"
     },
     {
-      "symbol": "_ZTI9dScDSMT_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov007",
-      "canonical_address": "0x02103278",
-      "reason": "Typeinfo record for dScDSMT_c, emitted here because this TU defines the key function (InitResources). Its cartridge home is ov007:0x02103278, in .data -- outside the 0x020cc028..0x020ccb54 .text run this entry claims."
+      "source": "0x02103278",
+      "section": ".data.dsmtMeta0",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "type": "R_ARM_ABS32",
+      "addend": 8,
+      "target_address": "0x0209a764",
+      "target_module": "arm9"
     },
     {
+      "source": "0x0210327c",
+      "section": ".data.dsmtMeta0",
+      "kind": "load",
       "symbol": "_ZTS9dScDSMT_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov007",
-      "canonical_address": "0x0210326c",
-      "reason": "Typeinfo name string for dScDSMT_c, emitted here because this TU defines the key function (InitResources). Its cartridge home is ov007:0x0210326c, in .data -- outside the 0x020cc028..0x020ccb54 .text run this entry claims."
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0210326c",
+      "target_module": "ov007"
     },
     {
-      "symbol": "_ZTV9dScDSMT_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov007",
-      "canonical_address": "0x021032e8",
-      "reason": "Vtable for dScDSMT_c, emitted here because this TU defines the key function (InitResources). Its cartridge home is ov007:0x021032e8, in .data -- outside the 0x020cc028..0x020ccb54 .text run this entry claims."
+      "source": "0x02103280",
+      "section": ".data.dsmtMeta0",
+      "kind": "load",
+      "symbol": "_ZTI8dScene_c",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020914d4",
+      "target_module": "arm9"
     },
     {
-      "symbol": "_ZTIN9dScDSMT_c15graphCallback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov007",
-      "canonical_address": "0x02103284",
-      "reason": "Typeinfo record for dScDSMT_c::graphCallback_c, emitted here because this TU defines the key function (GraphCallback0). Its cartridge home is ov007:0x02103284, in .data -- outside the 0x020cc028..0x020ccb54 .text run this entry claims."
+      "source": "0x02103284",
+      "section": ".data.dsmtMeta0",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "type": "R_ARM_ABS32",
+      "addend": 8,
+      "target_address": "0x0209a764",
+      "target_module": "arm9"
     },
     {
+      "source": "0x02103288",
+      "section": ".data.dsmtMeta0",
+      "kind": "load",
       "symbol": "_ZTSN9dScDSMT_c15graphCallback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov007",
-      "canonical_address": "0x021032c0",
-      "reason": "Typeinfo name string for dScDSMT_c::graphCallback_c, emitted here because this TU defines the key function (GraphCallback0). Its cartridge home is ov007:0x021032c0, in .data -- outside the 0x020cc028..0x020ccb54 .text run this entry claims."
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x021032c0",
+      "target_module": "ov007"
     },
     {
-      "symbol": "_ZTVN9dScDSMT_c15graphCallback_cE",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov007",
-      "canonical_address": "0x021032b0",
-      "reason": "Vtable for dScDSMT_c::graphCallback_c, emitted here because this TU defines the key function (GraphCallback0). Its cartridge home is ov007:0x021032b0, in .data -- outside the 0x020cc028..0x020ccb54 .text run this entry claims."
+      "source": "0x0210328c",
+      "section": ".data.dsmtMeta0",
+      "kind": "load",
+      "symbol": "_ZTIN8dGraph_c10callback_cE",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0208ee04",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x021032ac",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZTIN9dScDSMT_c15graphCallback_cE",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x02103284",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x021032b0",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc110",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x021032b4",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dGraph_c10callback_c14GraphCallback1Ev",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x02018eb0",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x021032b8",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc0f4",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x021032bc",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dGraph_c10callback_c14GraphCallback3Ev",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x02018ea0",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x021032e4",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZTI9dScDSMT_c",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x02103278",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x021032e8",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_c13InitResourcesEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc4c0",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x021032ec",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c19BeforeInitResourcesEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e638",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x021032f0",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c18AfterInitResourcesEj",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e62c",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x021032f4",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_c16CleanupResourcesEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc45c",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x021032f8",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c22BeforeCleanupResourcesEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e5f0",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x021032fc",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c21AfterCleanupResourcesEj",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e5d0",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x02103300",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_c8BehaviorEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc2cc",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x02103304",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c14BeforeBehaviorEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e3d4",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x02103308",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c13AfterBehaviorEj",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e3c8",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x0210330c",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_c6RenderEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc2b0",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x02103310",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c12BeforeRenderEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e3a4",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x02103314",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c11AfterRenderEj",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0202e398",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x02103318",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_c16OnPendingDestroyEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc2ac",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x0210331c",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0204357c",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x02103320",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x0204349c",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x02103324",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x02043494",
+      "target_module": "arm9"
+    },
+    {
+      "source": "0x02103328",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_cD1Ev",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc028",
+      "target_module": "ov007"
+    },
+    {
+      "source": "0x0210332c",
+      "section": ".data.dsmtMeta1",
+      "kind": "load",
+      "symbol": "_ZN9dScDSMT_cD0Ev",
+      "type": "R_ARM_ABS32",
+      "addend": 0,
+      "target_address": "0x020cc070",
+      "target_module": "ov007"
     }
   ]
 }

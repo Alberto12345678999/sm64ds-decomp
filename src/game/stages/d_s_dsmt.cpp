@@ -34,6 +34,7 @@
 // would compile to mov, and decl_common.h's overlay_N names do not link.
 
 #include "dScDSMT_c.h"
+#include "SpawnInfo.h"
 #include "types.h"
 #include "Sound.h"
 #include "SaveData.h"
@@ -107,7 +108,7 @@ void DisableAllBanks();
  * bits, graphCallback vptr pair, dFdDummy_c member). `new` would not spell
  * the same arm9 C1 call. */
 // @symbol dScDSMT_c_classInit
-extern "C" int *dScDSMT_c_classInit(void) {
+extern "C" dScDSMT_c *dScDSMT_c_classInit(void) {
     int *p = (int *)_ZN7fBase_cnwEj(0x64);
     if (p) {
         unsigned char *f;
@@ -122,7 +123,7 @@ extern "C" int *dScDSMT_c_classInit(void) {
         p[0x50 / 4] = (int)data_ov007_021032b0;
         _ZN10dFdDummy_cC1Ev((struct dFdDummy_c *)((char *)p + 0x54));
     }
-    return p;
+    return (dScDSMT_c *)p;
 }
 
 /* Heap thunks onto the game heap; `bx ip` sibcalls. */
@@ -420,4 +421,11 @@ extern "C" void func_ov007_020cc0e4(FileSaveData *files) {
 // @symbol func_ov007_020cc0cc
 extern "C" FileSaveData *func_ov007_020cc0cc(int idx) {
     return &data_0209b33c[idx];
+}
+
+extern "C" {
+/* Behavior consumes a nonnegative pending music ID after the delay; -1 is idle.
+ * Keep the configured identity while its shared declaration is reserved. */
+int data_ov007_02103260 = -1;
+BaseSpawnInfo<dScDSMT_c> g_profile_DSMT = {dScDSMT_c_classInit, 1, 3};
 }

@@ -1,7 +1,11 @@
     .text       start:0x020ad660 end:0x020ccb54 kind:code align:32
     .rodata     start:0x020ccb54 end:0x020d7db8 kind:rodata align:4
     .ctor       start:0x020d7db8 end:0x020d7db8 kind:rodata align:4
-    .data       start:0x020d7dc0 end:0x02103340 kind:data align:32
+    .data       start:0x020d7dc0 end:0x02103260 kind:data align:32
+    .data.dsmtMeta0 start:0x02103260 end:0x02103290 kind:data align:4
+    .data.dsmtCallbacks start:0x02103290 end:0x021032a8 kind:data align:4
+    .data.dsmtMeta1 start:0x021032a8 end:0x02103330 kind:data align:4
+    .data.dsmtUnknownTail start:0x02103330 end:0x02103340 kind:data align:4
     .bss        start:0x02103340 end:0x02104c40 kind:bss align:32
 src/unnamed/ov007/func_ov007_020ad660.c:
     complete
@@ -2118,3 +2122,5 @@ src/unnamed/ov007/func_ov007_020cbf8c.c:
 src/game/stages/d_s_dsmt.cpp:
     complete
     .text start:0x020cc028 end:0x020ccb54
+    .data.dsmtMeta0 start:0x02103260 end:0x02103290
+    .data.dsmtMeta1 start:0x021032a8 end:0x02103330
