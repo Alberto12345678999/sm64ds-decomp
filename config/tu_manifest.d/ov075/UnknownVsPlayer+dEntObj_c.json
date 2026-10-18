@@ -8,13 +8,19 @@
   "boundary_evidence": [
     "contiguous linker run: 0x2113ee0..0x2115ab8, 43 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): UnknownVsPlayer, dEntObj_c",
-    "module sinit corroboration: 3 sinit(s) / 3 .ctor entries, sinit_vs_tu=ok, corroborated=True (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 3 sinit(s) / 3 .ctor entries, sinit_vs_tu=ok, corroborated=True (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "2026-10-18 movement-table continuation: four native const int objects exactly tile160 bytes [ov0750211b534,0211b5d4), with no guessed padding. The preceding turn-step/shared-declaration and selector-extent work, following unknown12-byte tail, remaining vectors and class metadata stay outside this claim. Existing methods, initializer, data and BSS ownership remain unchanged."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02113ee0",
       "end": "0x02115ab8"
+    },
+    {
+      "name": ".rodata",
+      "start": "0x0211b534",
+      "end": "0x0211b5d4"
     },
     {
       "name": ".init",
@@ -818,7 +824,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov075-UnknownVsPlayer+dEntObj_c/dEntObj_c.o (gitignored)",
+    "object": "build/tu/ov075-UnknownVsPlayer+dEntObj_c/d_ent_obj.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 43,
     "functions_declared": 43,
@@ -838,25 +844,25 @@
         "_ZN9dEntObj_cD2Ev"
       ],
       "droppedSections": [
-        9,
-        10,
         13,
         14,
         17,
-        79,
-        90,
-        91,
-        174,
-        175,
-        176,
-        177,
+        18,
+        21,
+        83,
+        94,
+        95,
         178,
         179,
         180,
         181,
         182,
         183,
-        184
+        184,
+        185,
+        186,
+        187,
+        188
       ],
       "data": [
         "_ZTV9dEntObj_c",
@@ -875,7 +881,8 @@
         "_ZTS7fBase_c",
         "_ZTS9dEntObj_c",
         "_ZTV9dEntObj_c"
-      ]
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -912,6 +919,13 @@
           "firstDiff": null
         },
         {
+          "section": ".rodata",
+          "start": "0x0211b534",
+          "end": "0x0211b5d4",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
           "section": ".init",
           "start": "0x0211b5e0",
           "end": "0x0211bb00",
@@ -941,7 +955,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 108
+          "LICENSED": 112
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -950,28 +964,41 @@
       "nontextSectionOrder": {
         "groups": [
           {
-            "section": ".init",
+            "section": ".rodata",
             "original": [
-              187
+              5,
+              6,
+              7,
+              8
             ],
             "desired": [
-              187
+              5,
+              6,
+              7,
+              8
+            ]
+          },
+          {
+            "section": ".init",
+            "original": [
+              191
+            ],
+            "desired": [
+              191
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              185
+              189
             ],
             "desired": [
-              185
+              189
             ]
           },
           {
             "section": ".data",
             "original": [
-              138,
-              140,
               142,
               144,
               146,
@@ -981,40 +1008,38 @@
               154,
               156,
               158,
-              161,
-              163,
+              160,
+              162,
               165,
               167,
               169,
-              171
+              171,
+              173,
+              175
             ],
             "desired": [
-              142,
+              146,
+              162,
+              144,
               158,
-              140,
-              154,
-              156,
-              148,
+              160,
+              152,
+              171,
+              169,
               167,
               165,
-              163,
-              161,
-              138,
-              144,
-              150,
-              171,
-              152,
-              169,
-              146
+              142,
+              148,
+              154,
+              175,
+              156,
+              173,
+              150
             ]
           },
           {
             "section": ".bss",
             "original": [
-              94,
-              95,
-              96,
-              97,
               98,
               99,
               100,
@@ -1055,34 +1080,36 @@
               135,
               136,
               137,
-              160,
-              173
+              138,
+              139,
+              140,
+              141,
+              164,
+              177
             ],
             "desired": [
-              127,
-              125,
-              107,
+              131,
+              129,
               111,
               115,
               119,
-              121,
-              97,
-              103,
-              109,
-              113,
-              137,
-              99,
-              117,
               123,
-              95,
+              125,
               101,
-              135,
+              107,
+              113,
+              117,
+              141,
+              103,
+              121,
+              127,
+              99,
               105,
+              139,
+              109,
+              137,
               133,
-              129,
-              131,
-              116,
-              118,
+              135,
               120,
               122,
               124,
@@ -1090,21 +1117,23 @@
               128,
               130,
               132,
-              114,
-              94,
-              112,
               134,
-              96,
-              98,
               136,
+              118,
+              98,
+              116,
+              138,
               100,
               102,
+              140,
               104,
               106,
               108,
               110,
-              173,
-              160
+              112,
+              114,
+              177,
+              164
             ]
           }
         ],
@@ -1113,8 +1142,6 @@
             {
               "section": ".data",
               "original": [
-                138,
-                140,
                 142,
                 144,
                 146,
@@ -1124,35 +1151,35 @@
                 154,
                 156,
                 158,
-                161,
-                163,
+                160,
+                162,
                 165,
                 167,
                 169,
-                171
+                171,
+                173,
+                175
               ],
               "desired": [
-                142,
+                146,
+                162,
+                144,
                 158,
-                140,
-                154,
-                156,
-                148,
+                160,
+                152,
+                171,
+                169,
                 167,
                 165,
-                163,
-                161,
-                138,
-                144,
-                150,
-                171,
-                152,
-                169,
-                146
+                142,
+                148,
+                154,
+                175,
+                156,
+                173,
+                150
               ],
               "slots": [
-                138,
-                140,
                 142,
                 144,
                 146,
@@ -1162,21 +1189,19 @@
                 154,
                 156,
                 158,
-                161,
-                163,
+                160,
+                162,
                 165,
                 167,
                 169,
-                171
+                171,
+                173,
+                175
               ]
             },
             {
               "section": ".bss",
               "original": [
-                94,
-                95,
-                96,
-                97,
                 98,
                 99,
                 100,
@@ -1217,34 +1242,36 @@
                 135,
                 136,
                 137,
-                160,
-                173
+                138,
+                139,
+                140,
+                141,
+                164,
+                177
               ],
               "desired": [
-                127,
-                125,
-                107,
+                131,
+                129,
                 111,
                 115,
                 119,
-                121,
-                97,
-                103,
-                109,
-                113,
-                137,
-                99,
-                117,
                 123,
-                95,
+                125,
                 101,
-                135,
+                107,
+                113,
+                117,
+                141,
+                103,
+                121,
+                127,
+                99,
                 105,
+                139,
+                109,
+                137,
                 133,
-                129,
-                131,
-                116,
-                118,
+                135,
                 120,
                 122,
                 124,
@@ -1252,27 +1279,25 @@
                 128,
                 130,
                 132,
-                114,
-                94,
-                112,
                 134,
-                96,
-                98,
                 136,
+                118,
+                98,
+                116,
+                138,
                 100,
                 102,
+                140,
                 104,
                 106,
                 108,
                 110,
-                173,
-                160
+                112,
+                114,
+                177,
+                164
               ],
               "slots": [
-                94,
-                95,
-                96,
-                97,
                 98,
                 99,
                 100,
@@ -1313,8 +1338,12 @@
                 135,
                 136,
                 137,
-                160,
-                173
+                138,
+                139,
+                140,
+                141,
+                164,
+                177
               ]
             }
           ],
@@ -3210,6 +3239,32 @@
       "addend": 0,
       "target_module": "ov075",
       "target_address": "0x021159f4"
+    }
+  ],
+  "rodata": [
+    {
+      "symbol": "sVsPlayerTakeoffZ",
+      "address": "0x211b534",
+      "size": "0x10",
+      "evidence": "Native signed32 Q12 constant table; consumer-derived role and observed four-player indexing. Original identifier and original declaration syntax are not recovered."
+    },
+    {
+      "symbol": "sVsPlayerMaxSpeeds",
+      "address": "0x211b544",
+      "size": "0x10",
+      "evidence": "Native signed32 Q12 constant table; consumer-derived role and observed four-player indexing. Original identifier and original declaration syntax are not recovered."
+    },
+    {
+      "symbol": "sVsPlayerStandingX",
+      "address": "0x211b554",
+      "size": "0x40",
+      "evidence": "Native signed32 Q12 constant table; consumer-derived role and observed four-player indexing. Original identifier and original declaration syntax are not recovered."
+    },
+    {
+      "symbol": "sVsPlayerExitX",
+      "address": "0x211b594",
+      "size": "0x40",
+      "evidence": "Native signed32 Q12 constant table; consumer-derived role and observed four-player indexing. Original identifier and original declaration syntax are not recovered."
     }
   ]
 }

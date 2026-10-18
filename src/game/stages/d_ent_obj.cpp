@@ -167,10 +167,21 @@ extern int *data_ov075_0211c678[];
 extern int *data_ov075_0211c688[];
 
 extern unsigned char data_ov075_0211b524[];
-extern int data_ov075_0211b534[];
-extern int data_ov075_0211b544[];
-extern int data_ov075_0211b554[][4];
-extern int data_ov075_0211b594[];
+/* Q12 takeoff thresholds and speed limits, indexed by the four player slots.
+ * These descriptive names are inferred from the consumers. */
+extern const int sVsPlayerTakeoffZ[4] = {-2662400, -2703360, -2867200, -2785280};
+extern const int sVsPlayerMaxSpeeds[4] = {81920, 61440, 49152, 73728};
+/* X positions by player-count row and compacted player column. Unused
+ * columns retain their stored positions. */
+extern const int sVsPlayerStandingX[4][4] = {{0, 1843200, 1843200, 1843200},
+                                             {-409600, 409600, 1843200, 1843200},
+                                             {-737280, 0, 737280, 1843200},
+                                             {-983040, -327680, 327680, 983040}};
+/* The exit positions use the same logical rows. Keep the flat storage view
+ * used by the matching byte-offset consumer below. */
+extern const int sVsPlayerExitX[16] = {0,       1843200, 1843200, 1843200, -204800, 204800,
+                                       1843200, 1843200, -368640, 0,       368640,  1843200,
+                                       -491520, -163840, 163840,  491520};
 
 extern void *_ZN7fBase_cnwEj(unsigned int size);
 extern void *_ZN7fBase_cC2Ev(void *p);
@@ -382,7 +393,7 @@ void UnknownVsPlayer::func_ov075_021143e4() {
  * The vertical position is clamped at zero independently. */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114560Ev
 void UnknownVsPlayer::func_ov075_02114560() {
-    if (mPosition.z < data_ov075_0211b534[mPlayerNo] && mInAir == 0) {
+    if (mPosition.z < sVsPlayerTakeoffZ[mPlayerNo] && mInAir == 0) {
         mVertSpeed = 0x2a000;
         mInAir = 1;
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d41c.ptr,
@@ -723,7 +734,7 @@ int UnknownVsPlayer::func_ov075_02114ddc(unsigned char kind, unsigned char playe
     mTargetPos.x = mPosition.x;
     mTargetPos.y = mPosition.y;
     mTargetPos.z = mPosition.z;
-    mMaxSpeed = data_ov075_0211b544[playerNo];
+    mMaxSpeed = sVsPlayerMaxSpeeds[playerNo];
     mAnimState = ANIM_NONE;
     mPlayerNo = playerNo;
     return 1;
@@ -842,7 +853,7 @@ int dEntObj_c::func_ov075_0211524c(int playerNo) {
         if (playerNo < 0)
             playerNo = 3;
     }
-    return *(int *)((char *)data_ov075_0211b594 + row * 16 + playerNo * 4);
+    return *(const int *)((const char *)sVsPlayerExitX + row * 16 + playerNo * 4);
 }
 
 // @symbol _ZN9dEntObj_c19func_ov075_02115290Ei
@@ -859,7 +870,7 @@ int dEntObj_c::func_ov075_02115290(int playerNo) {
         if (playerNo < 0)
             playerNo = 3;
     }
-    return data_ov075_0211b554[row][playerNo];
+    return sVsPlayerStandingX[row][playerNo];
 }
 
 // @symbol _ZN9dEntObj_c19func_ov075_021152d4Ev
