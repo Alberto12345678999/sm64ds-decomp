@@ -47,7 +47,7 @@ data_ov047_02111af4 kind:data(any) addr:0x02111af4 ambiguous
 data_ov047_02111b14 kind:data(any) addr:0x02111b14 ambiguous
 data_ov047_02111b34 kind:data(any) addr:0x02111b34 ambiguous
 data_ov047_02111b44 kind:data(any) addr:0x02111b44 ambiguous
-data_ov047_02111b54 kind:data(any) addr:0x02111b54
+gKm3KurumajikuClps kind:data(any) addr:0x02111b54
 data_ov047_02111b64 kind:data(any) addr:0x02111b64 ambiguous
 data_ov047_02111b68 kind:data(any) addr:0x02111b68 ambiguous
 data_ov047_02111b6c kind:data(any) addr:0x02111b6c ambiguous
@@ -84,7 +84,7 @@ data_ov047_021121c0 kind:data(any) addr:0x021121c0 ambiguous
 data_ov047_021121dc kind:data(any) addr:0x021121dc ambiguous
 data_ov047_021121f8 kind:data(any) addr:0x021121f8 ambiguous
 _ZTI21daObjKm3_Kurumajiku_c kind:data(any) addr:0x0211224c
-data_ov047_02112258 kind:data(any) addr:0x02112258
+gKm3KurumajikuResources kind:data(any) addr:0x02112258
 _ZTS21daObjKm3_Kurumajiku_c kind:data(any) addr:0x02112264
 g_profile_KM3_KURUMAJIKU kind:data(any) addr:0x0211227c ambiguous
 _ZTV21daObjKm3_Kurumajiku_c kind:data(any) addr:0x021122a0
@@ -112,8 +112,8 @@ _ZTV17daObjKm3_Dorifu_c kind:data(any) addr:0x0211254c
 data_ov047_02112570 kind:data(any) addr:0x02112570 ambiguous
 data_ov047_02112590 kind:data(any) addr:0x02112590 ambiguous
 data_ov047_021125cc kind:data(any) addr:0x021125cc ambiguous
-data_ov047_021125e0 kind:bss addr:0x021125e0
-data_ov047_021125e8 kind:bss addr:0x021125e8
+gKm3KurumajikuCollisionFile kind:bss addr:0x021125e0
+gKm3KurumajikuModelFile kind:bss addr:0x021125e8
 @977 kind:bss addr:0x021125f0
 @980 kind:bss addr:0x021125fc
 data_ov047_02112608 kind:bss addr:0x02112608
