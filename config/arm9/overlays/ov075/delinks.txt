@@ -2,13 +2,33 @@
     .rodata     start:0x0211b524 end:0x0211b5e0 kind:rodata align:4
     .init       start:0x0211b5e0 end:0x0211c5a4 kind:code align:4
     .ctor       start:0x0211c5a4 end:0x0211c5b0 kind:rodata align:4
-    .data start:0x0211c5c0 end:0x0211c8e0 kind:data align:32
-    .data.entry_meta0 start:0x0211c8e0 end:0x0211c954 kind:data align:4
-    .data.entry_gap1 start:0x0211c954 end:0x0211ca1c kind:data align:4
+    .data start:0x0211c5c0 end:0x0211c6f0 kind:data align:32
+    .data.entry_sprites0 start:0x0211c6f0 end:0x0211c6f8 kind:data align:4
+    .data.entry_sprite_gap0 start:0x0211c6f8 end:0x0211c708 kind:data align:4
+    .data.entry_sprites1 start:0x0211c708 end:0x0211c710 kind:data align:4
+    .data.entry_sprite_gap1 start:0x0211c710 end:0x0211c720 kind:data align:4
+    .data.entry_sprites2 start:0x0211c720 end:0x0211c728 kind:data align:4
+    .data.entry_sprite_gap2 start:0x0211c728 end:0x0211c730 kind:data align:4
+    .data.entry_sprites3 start:0x0211c730 end:0x0211c738 kind:data align:4
+    .data.entry_sprite_gap3 start:0x0211c738 end:0x0211c778 kind:data align:4
+    .data.entry_sprites4 start:0x0211c778 end:0x0211c780 kind:data align:4
+    .data.entry_sprite_gap4 start:0x0211c780 end:0x0211c7c0 kind:data align:4
+    .data.entry_sprites5 start:0x0211c7c0 end:0x0211c7c8 kind:data align:4
+    .data.entry_sprite_gap5 start:0x0211c7c8 end:0x0211c870 kind:data align:4
+    .data.entry_sprites6 start:0x0211c870 end:0x0211c878 kind:data align:4
+    .data.entry_sprite_gap6 start:0x0211c878 end:0x0211c890 kind:data align:4
+    .data.entry_sprites7 start:0x0211c890 end:0x0211c898 kind:data align:4
+    .data.entry_sprite_gap7 start:0x0211c898 end:0x0211c8e0 kind:data align:4
+    .data.entry_meta0 start:0x0211c8e0 end:0x0211c968 kind:data align:4
+    .data.entry_sprite_gap8 start:0x0211c968 end:0x0211ca1c kind:data align:4
     .data.entry_meta2 start:0x0211ca1c end:0x0211ca4c kind:data align:4
-    .data.entry_gap2 start:0x0211ca4c end:0x0211cb44 kind:data align:4
-    .data.entry_meta3 start:0x0211cb44 end:0x0211cb64 kind:data align:4
-    .data.entry_gap3 start:0x0211cb64 end:0x0211d2fc kind:data align:4
+    .data.entry_gap2 start:0x0211ca4c end:0x0211cac4 kind:data align:4
+    .data.entry_meta3 start:0x0211cac4 end:0x0211cb84 kind:data align:4
+    .data.entry_sprite_gap9 start:0x0211cb84 end:0x0211d084 kind:data align:4
+    .data.entry_sprites11 start:0x0211d084 end:0x0211d0c4 kind:data align:4
+    .data.entry_sprite_gap10 start:0x0211d0c4 end:0x0211d144 kind:data align:4
+    .data.entry_sprites12 start:0x0211d144 end:0x0211d264 kind:data align:4
+    .data.entry_sprite_gap11 start:0x0211d264 end:0x0211d2fc kind:data align:4
     .data.entry_meta4 start:0x0211d2fc end:0x0211d34c kind:data align:4
     .data.entry_tail start:0x0211d34c end:0x0211d380 kind:data align:4
     .bss        start:0x0211d380 end:0x0211d9c0 kind:bss align:32
@@ -24,10 +44,20 @@ src/game/stages/d_ent_obj.cpp:
 src/game/stages/d_s_entry.cpp:
     complete
     .text start:0x02115ab8 end:0x021165b0
-    .data.entry_meta0 start:0x0211c8e0 end:0x0211c954
-    .data.entry_meta2 start:0x0211ca1c end:0x0211ca4c
-    .data.entry_meta3 start:0x0211cb44 end:0x0211cb64
-    .data.entry_meta4 start:0x0211d2fc end:0x0211d34c
+    .data.entry_sprites0 start:0x211c6f0 end:0x211c6f8
+    .data.entry_sprites1 start:0x211c708 end:0x211c710
+    .data.entry_sprites2 start:0x211c720 end:0x211c728
+    .data.entry_sprites3 start:0x211c730 end:0x211c738
+    .data.entry_sprites4 start:0x211c778 end:0x211c780
+    .data.entry_sprites5 start:0x211c7c0 end:0x211c7c8
+    .data.entry_sprites6 start:0x211c870 end:0x211c878
+    .data.entry_sprites7 start:0x211c890 end:0x211c898
+    .data.entry_meta0 start:0x211c8e0 end:0x211c968
+    .data.entry_meta2 start:0x211ca1c end:0x211ca4c
+    .data.entry_meta3 start:0x211cac4 end:0x211cb84
+    .data.entry_sprites11 start:0x211d084 end:0x211d0c4
+    .data.entry_sprites12 start:0x211d144 end:0x211d264
+    .data.entry_meta4 start:0x211d2fc end:0x211d34c
 
 src/unnamed/ov075/func_ov075_021165b0.c:
     complete
