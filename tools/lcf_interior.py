@@ -20,9 +20,9 @@ none defines, it adds `name = 0x<addr>;` to the linker command file. Those
 modules never move, so the address in symbols.txt is the address the linked
 code is at. Overlay code entry points are left alone.
 
-BSS interior labels, including overlay labels, are handled separately: a live
-import must have one configured home strictly inside one actual source-defined
-NOBITS object, with that whole object covered by a complete BSS entry. The LCF
+BSS interior labels, including overlay labels, retain configured identities even
+without live imports when one actual source provider proves the complete NOBITS
+object. The older imported-label path remains available. The LCF
 defines the canonical label inside its enclosing output module. This preserves aliases
 without adding storage, changing object bytes, or assuming an overlay base.
 
@@ -42,10 +42,18 @@ import struct
 
 
 def initialized_interior_rows(config_root, objects_txt, definitions):
-    """Configured labels inside complete, actual source-defined data objects.
+    return _source_storage_interior_rows(config_root, objects_txt, definitions)
+
+
+def source_bss_interior_rows(config_root, objects_txt, definitions):
+    return _source_storage_interior_rows(config_root, objects_txt, definitions, bss=True)
+
+
+def _source_storage_interior_rows(config_root, objects_txt, definitions, bss=False):
+    """Configured labels inside complete, actual source-defined storage objects.
 
     Unlike an unresolved import, an unreferenced configured interior label still
-    needs an ELF identity for symbol validation. Only initialized OBJECT storage
+    needs an ELF identity for symbol validation. Only matching OBJECT storage
     in the same section, module and source provider can justify that identity.
     This adds no storage and does not infer an object's extent from the next label.
     """
@@ -53,10 +61,13 @@ def initialized_interior_rows(config_root, objects_txt, definitions):
     from elftools.elf.elffile import ELFFile
 
     root = pathlib.Path(config_root)
+    sections = (".bss",) if bss else (".data", ".rodata")
+    storage_type = "SHT_NOBITS" if bss else "SHT_PROGBITS"
     homes, claims = {}, []
     symbol_row = re.compile(r"^(\S+)\s+kind:(\S+)\s+addr:0x([0-9a-fA-F]+)")
     section_row = re.compile(
-        r"^\s+(\.data|\.rodata)\s+start:0x([0-9a-fA-F]+)\s+end:0x([0-9a-fA-F]+)")
+        r"^\s+(" + "|".join(re.escape(s) for s in sections) +
+        r")\s+start:0x([0-9a-fA-F]+)\s+end:0x([0-9a-fA-F]+)")
     for symbols in sorted(root.rglob("symbols.txt")):
         module = symbols.parent.relative_to(root).as_posix()
         for line in symbols.read_text(encoding="utf-8").splitlines():
@@ -64,9 +75,11 @@ def initialized_interior_rows(config_root, objects_txt, definitions):
             if match:
                 name, kind, address = match.groups()
                 size = re.search(r"\bsize=(0x[0-9a-fA-F]+|[0-9]+)", kind)
+                valid_kind = (re.fullmatch(r"bss(?:\(size=(?:0x[0-9a-fA-F]+|[0-9]+)\))?", kind)
+                              is not None) if bss else kind.startswith("data(")
                 homes.setdefault(name, []).append((
-                    module, int(address, 16), kind.startswith("data("),
-                    int(size[1], 0) if size else 0))
+                    module, int(address, 16), valid_kind,
+                    int(size[1], 0) if size else (None if bss else 0)))
         delinks = symbols.with_name("delinks.txt")
         if not delinks.is_file():
             continue
@@ -114,8 +127,8 @@ def initialized_interior_rows(config_root, objects_txt, definitions):
                 continue
             section = elf.get_section(index)
             size, value = symbol["st_size"], symbol["st_value"]
-            if (section["sh_type"] != "SHT_PROGBITS"
-                    or section.name not in (".data", ".rodata")
+            if (section["sh_type"] != storage_type
+                    or section.name not in sections
                     or not size or value + size > section["sh_size"]):
                 continue
             objects.setdefault(symbol.name, []).append((path, section.name, size))
@@ -128,7 +141,8 @@ def initialized_interior_rows(config_root, objects_txt, definitions):
             continue
         path, section, size = rows[0]
         module, address, is_data, declared_size = locations[0]
-        if not is_data or declared_size and declared_size != size:
+        if not is_data or (((bss and declared_size is not None) or declared_size)
+                           and declared_size != size):
             continue
         matching = [(source, start, end) for mod, source, sec, start, end in claims
                     if mod == module and sec == section
@@ -146,7 +160,7 @@ def initialized_interior_rows(config_root, objects_txt, definitions):
             continue
         enclosing = [(owner, base) for owner, mod, base, size in owners
                      if mod == module and base < address < base + size
-                     and address + declared_size <= base + size]
+                     and address + (declared_size or 0) <= base + size]
         if len(enclosing) == 1:
             owner, base = enclosing[0]
             out.append((name, address, owner, address - base, module))
@@ -358,11 +372,13 @@ def patch(lcf_path, objects_txt, config_root):
     """Add the missing interior definitions and linker constants to `lcf_path`;
     return [(name, addr)].
 
-    Code/BSS labels require an import. Initialized-data interior labels also
+    Code labels require an import. Source-proven storage interior labels also
     preserve configured identities checked by dsd, even without an import."""
     defined, imported, bss = _link_inventory(objects_txt)
     aliases = bss_interior_rows(config_root, defined, imported, bss)
     aliases += initialized_interior_rows(config_root, objects_txt, defined)
+    aliases += source_bss_interior_rows(config_root, objects_txt, defined)
+    aliases = sorted(set(aliases))
     rows = interior_rows(config_root) + list(LINKER_CONSTANTS.items())
     missing = sorted({(n, a) for n, a in rows
                       if n in imported and n not in defined}, key=lambda r: r[1])

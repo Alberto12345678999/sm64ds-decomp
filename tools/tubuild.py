@@ -3470,7 +3470,7 @@ def _configured_terminal_bss_end(module, claim, layout, owned_rows):
                 return None, [f"terminal BSS anchor has malformed BSS kind at symbols.txt:{number}"]
             if match.group(1) is not None:
                 size = int(match.group(1), 16 if match.group(1).startswith("0x") else 10)
-                if size <= 0 or address + size > 0x100000000:
+                if size < 0 or address + size > 0x100000000:
                     return None, [f"terminal BSS anchor has invalid size for {name}"]
                 if address < module_end and address + size > end:
                     return None, [f"configured BSS object {name} crosses the proposed end"]
@@ -3494,13 +3494,26 @@ def _configured_terminal_bss_end(module, claim, layout, owned_rows):
     _name, kind, address, size = configured[0]
     if not kind.startswith("bss(") or size is None:
         return None, [f"terminal BSS object {name} needs an explicit configured BSS size"]
+    if size == 0:
+        return None, [f"terminal BSS anchor cannot use zero-sized object {name}"]
     if address != emitted["address"] or size != emitted["size"]:
         return None, [f"terminal BSS object {name} disagrees with its configured address/size"]
     # A second configured label at the terminal address is ambiguous evidence.
     if sum(record[2] == address for record in records) != 1:
         return None, [f"terminal BSS object {name} has ambiguous configured aliases"]
-    if any(address < record[2] < end for record in records):
-        return None, [f"terminal BSS object {name} contains another configured symbol"]
+    # A native array may retain configured labels for its elements or fields.
+    # Only explicit zero-storage BSS aliases can coexist with this terminal extent;
+    # a positive size would overlap the full parent in DSD's baseline object.
+    # They cannot establish the end or describe another emitted/owned object.
+    for interior_name, interior_kind, interior_address, interior_size in records:
+        if not address < interior_address < end:
+            continue
+        if (not interior_kind.startswith("bss(") or interior_size != 0
+                or sum(r[0] == interior_name for r in records) != 1
+                or sum(r[2] == interior_address for r in records) != 1
+                or interior_name in layout.get("symbols", {})
+                or any(row.get("symbol") == interior_name for _section, row in owned_rows)):
+            return None, [f"terminal BSS object {name} contains another configured symbol"]
     declared = [row for section, row in owned_rows
                 if section == ".bss" and row.get("symbol") == name]
     if len(declared) != 1:

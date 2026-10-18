@@ -148,6 +148,37 @@ class TerminalBssBoundary(unittest.TestCase):
         self.symbols += "interior kind:bss addr:0x1018\n"
         self.refused("contains another configured symbol")
 
+    def test_zero_storage_interior_alias_preserves_terminal_boundary(self):
+        self.symbols += "interior kind:bss(size=0) addr:0x1014\n"
+        result = self.verify()
+        self.assertTrue(result["ok"], result)
+        self.assertEqual(result["rows"][0]["terminalBssAnchor"]["unclaimedTailBytes"], 4)
+
+    def test_interior_field_may_not_cross_terminal_end(self):
+        self.symbols += "interior kind:bss(size=8) addr:0x1018\n"
+        self.refused("crosses the proposed end")
+
+    def test_positive_sized_interior_object_overlaps_full_parent(self):
+        self.symbols += "interior kind:bss(size=8) addr:0x1014\n"
+        self.refused("contains another configured symbol")
+
+    def test_interior_field_cannot_hide_an_emitted_or_declared_object(self):
+        self.symbols += "interior kind:bss(size=0) addr:0x1014\n"
+        self.layout["symbols"]["interior"] = dict(self.layout["symbols"]["terminal"],
+                                                   address=0x1014, size=4)
+        self.refused("contains another configured symbol")
+        del self.layout["symbols"]["interior"]
+        self.entry["bss"].append({"symbol": "interior", "address": "0x1014", "size": "8"})
+        self.refused("contains another configured symbol")
+
+    def test_duplicate_interior_name_or_address_is_rejected(self):
+        original = self.symbols + "interior kind:bss(size=0) addr:0x1014\n"
+        for extra in ("interior kind:bss(size=0) addr:0x1018\n",
+                      "another kind:bss(size=0) addr:0x1014\n"):
+            with self.subTest(extra=extra):
+                self.symbols = original + extra
+                self.refused("contains another configured symbol")
+
     def test_duplicate_symbol_row_or_alias_is_ambiguous(self):
         original = self.symbols
         self.symbols += original

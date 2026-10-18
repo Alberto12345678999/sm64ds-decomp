@@ -398,5 +398,75 @@ class InitializedInteriorTests(unittest.TestCase):
             self.assertEqual(self.lcf.read_bytes(), before)
 
 
+class SourceBssInteriorTests(unittest.TestCase):
+    def setUp(self):
+        InitializedInteriorTests.setUp(self)
+        self.symbols.write_text("block kind:bss(size=16) addr:0x02111ab4\n"
+                                "entry kind:bss(size=8) addr:0x02111abc\n")
+        self.delinks.write_text(self.delinks.read_text().replace(".rodata", ".bss"))
+        self.raw = bytearray(_data_elf(".bss"))
+        self.shoff = struct.unpack_from("<I", self.raw, 0x20)[0]
+        struct.pack_into("<I", self.raw, self.shoff + 40 + 4, 8)
+        self.obj.write_bytes(self.raw)
+
+    def rows(self):
+        return LI.source_bss_interior_rows(self.config, self.objects, {"block"})
+
+    def test_unimported_sized_field_retains_identity_without_storage(self):
+        self.assertEqual(self.rows(), [("entry", 0x02111abc, "block", 8, "overlays/ov047")])
+        self.assertEqual(LI.patch(self.lcf, self.objects, self.config), [("entry", 0x02111abc)])
+        self.assertEqual(self.obj.read_bytes(), self.raw)
+        self.assertIn("entry = 0x02111abc;", self.lcf.read_text())
+
+    def test_unsized_interior_label_uses_actual_parent_extent(self):
+        self.symbols.write_text(self.symbols.read_text().replace("entry kind:bss(size=8)",
+                                                                "entry kind:bss"))
+        self.assertEqual(len(self.rows()), 1)
+
+    def test_zero_storage_interior_alias_is_preserved(self):
+        self.symbols.write_text(self.symbols.read_text().replace("entry kind:bss(size=8)",
+                                                                "entry kind:bss(size=0)"))
+        self.assertEqual(len(self.rows()), 1)
+
+    def test_wrong_kind_zero_size_and_out_of_bounds_extents_fail(self):
+        original = self.symbols.read_text()
+        for altered in (original.replace("block kind:bss(size=16)", "block kind:bss(size=12)"),
+                        original.replace("entry kind:bss(size=8)", "entry kind:bss(size=12)"),
+                        original.replace("block kind:bss(size=16)", "block kind:bss(size=0)"),
+                        original.replace("entry kind:bss(size=8)", "entry kind:data(any)"),
+                        original.replace("entry kind:bss(size=8)", "entry kind:bss(size=bad)")):
+            with self.subTest(symbols=altered):
+                self.symbols.write_text(altered)
+                self.assertEqual(self.rows(), [])
+
+    def test_requires_nobits_arm_relocatable_object(self):
+        for offset, fmt, value in ((self.shoff + 44, "<I", 1), (16, "<H", 2), (18, "<H", 3)):
+            with self.subTest(offset=offset):
+                changed = bytearray(self.raw)
+                struct.pack_into(fmt, changed, offset, value)
+                self.obj.write_bytes(changed)
+                self.assertEqual(self.rows(), [])
+
+    def test_requires_exact_complete_provider_and_extent(self):
+        original = self.delinks.read_text()
+        for altered in (original.replace("    complete\n", ""),
+                        original.replace("src/cart.cpp", "src/other.cpp"),
+                        original.replace("end:0x02111ac4", "end:0x02111ac0"),
+                        original.replace(".bss", ".data")):
+            with self.subTest(delinks=altered):
+                self.delinks.write_text(altered)
+                self.assertEqual(self.rows(), [])
+
+    def test_duplicate_definition_or_cross_module_home_is_ambiguous(self):
+        self.objects.write_text((str(self.obj) + "\n") * 2)
+        self.assertEqual(self.rows(), [])
+        self.objects.write_text(str(self.obj) + "\n")
+        other = self.config / "overlays/ov048"
+        other.mkdir(parents=True)
+        for symbol, address in (("entry", "0x02111abc"), ("block", "0x02111ab4")):
+            (other / "symbols.txt").write_text(f"{symbol} kind:bss addr:{address}\n")
+            self.assertEqual(self.rows(), [])
+
+
 if __name__ == "__main__":
     unittest.main()
