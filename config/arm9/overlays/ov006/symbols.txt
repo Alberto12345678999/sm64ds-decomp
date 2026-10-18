@@ -3394,9 +3394,9 @@ g_profile_MG_AMIDA kind:data(any) addr:0x0213b814
 _ZTI12dScMgAmida_c kind:data(any) addr:0x0213b81c
 _ZTS12dScMgAmida_c kind:data(any) addr:0x0213b828
 sAmidaOptionNcgByLanguage kind:data(any) addr:0x0213b838
-data_ov006_0213b84c kind:data(any) addr:0x0213b84c
+sAmidaBoardAnimationFrames kind:data(any) addr:0x0213b84c
 sAmidaRenderPeriods kind:data(any) addr:0x0213b880
-data_ov006_0213b8b8 kind:data(any) addr:0x0213b8b8
+sAmidaInitialRungPositions kind:data(any) addr:0x0213b8b8
 data_ov006_0213b918 kind:data(any) addr:0x0213b918
 _ZTV12dScMgAmida_c kind:data(any) addr:0x0213b918
 data_ov006_0213b9ac kind:data(any) addr:0x0213b9ac

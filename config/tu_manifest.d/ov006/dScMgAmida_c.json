@@ -14,15 +14,21 @@
     "VTABLE SLOTS 0 AND 3: THE ABSTRACT HYPOTHESIS IS REFUTED ON THIS CLASS, and is recorded here as a refutation. Read out of extracted/overlays/overlay_0006.bin, slot 0 at 0x0213b918 is 0x020d5384 and slot 3 at 0x0213b924 is 0x02043bf0. Neither is a bare zero word and both carry a relocation: slot 0 a load to 0x020d5384 in module overlay(6), the class's own InitResources, and slot 3 a load to 0x02043bf0 in module main, an inherited override. dScMgAmida_c is not abstract at 0 or at 3, so an abstract slot is NOT the mechanism behind tu_map's undercount here. The undercount is at the TOP edge only, and its mechanism is that tu_map's right boundary stops at the last mangled member.",
     "VTABLE LENGTH: 37 pointer slots (0..36), terminating at 0x0213b9ac where the next word reads 0x00000100 and is not a code address. The 31-words=dActor_c / 32-words=dBgActor_c rule DOES NOT APPLY to this class and was not used: dScMgAmida_c is a dScMgBase_c leaf, not an actor. Measured control in the same overlay: _ZTV14dScMgBomroom_c 36 slots, _ZTV11dScMgCard_c 37, _ZTV11dScMgCoin_c 36, _ZTV16dMgJump3DMario_c 8, _ZTV12dMgCardObj_c 3. The minigame-scene family sits at 36-37 and the 31/32 test does not separate its members.",
     "WIDENED from the earlier 13-function claim 0x020d3624..0x020d5a54. The function that split the run, func_ov006_020d27dc (ordinal 14, 0x020d27dc, 0xe48), was a NONMATCHING draft; it byte-matched in its own file first (commit 'Match func_ov006_020d27dc'), and with it the run is one piece. 15 one-function files were folded: D1, D0, AmidaPiece_ElemDtor, Virtual8C, IsVariant2, Virtual7C, func_ov006_020d122c, func_ov006_020d1450, Virtual88, func_ov006_020d1958, func_ov006_020d1a3c, func_ov006_020d1ba0, func_ov006_020d2580, func_ov006_020d25fc and func_ov006_020d27dc.",
-    "KEY FUNCTION. The out-of-line ~dScMgAmida_c() is the class's first declared virtual, so this TU now emits _ZTV/_ZTI/_ZTS12dScMgAmida_c and the ancestor RTTI chain (fBase_c, dBase_c, dScene_c, dScMgBase_c). Each is a deadstrip-data row with its canonical symbols.txt home; ov006 .data stays ROM-owned, so the TU stays text-only. dScMgAmida_c_classInit now stores the vptr as &_ZTV12dScMgAmida_c[2], the emitting-TU spelling, instead of &data_ov006_0213b918.",
+    "KEY FUNCTION. The out-of-line ~dScMgAmida_c() is the class's first declared virtual, so this TU now emits _ZTV/_ZTI/_ZTS12dScMgAmida_c and the ancestor RTTI chain (fBase_c, dBase_c, dScene_c, dScMgBase_c). Historically each had a deadstrip-data row and the TU was text-only. This continuation licenses the class metadata and retains only ancestor RTTI passengers as canonical external data. dScMgAmida_c_classInit now stores the vptr as &_ZTV12dScMgAmida_c[2], the emitting-TU spelling, instead of &data_ov006_0213b918.",
     "DESTRUCTOR ORDER. The cartridge has D1 at 0x020d1018 (0xa0) below D0 at 0x020d10b8 (0xb4) and no D2 for this class anywhere in the image: D1 ends exactly where D0 begins, and D0 ends exactly at AmidaPiece_ElemDtor. One out-of-line ~dScMgAmida_c() under #pragma defer_codegen off emits D1 then D0 in that order; the D2 mwccarm also emits, and the 4-byte vague-linkage D1 of dScMgAmida_c::Point, are compiler_only_output deadstrip rows. No relocation in the object references either.",
-    "EMISSION ORDER. Source order is ROM-ASCENDING under #pragma defer_codegen off; tubuild verify reports all 28 functions in the expected ROM-ascending section order. Optimisation pragmas are positional push/off/pop brackets: opt_strength_reduction off on func_ov006_020d122c, func_ov006_020d27dc, func_ov006_020d3ba0, func_ov006_020d452c, func_ov006_020d47f4, Render and Behavior; opt_common_subs off on func_ov006_020d25fc, func_ov006_020d27dc, func_ov006_020d452c, func_ov006_020d47f4 and Render."
+    "EMISSION ORDER. Source order is ROM-ASCENDING under #pragma defer_codegen off; tubuild verify reports all 28 functions in the expected ROM-ascending section order. Optimisation pragmas are positional push/off/pop brackets: opt_strength_reduction off on func_ov006_020d122c, func_ov006_020d27dc, func_ov006_020d3ba0, func_ov006_020d452c, func_ov006_020d47f4, Render and Behavior; opt_common_subs off on func_ov006_020d25fc, func_ov006_020d27dc, func_ov006_020d452c, func_ov006_020d47f4 and Render.",
+    "data-amida-native1017: eight native objects407bytes plus one zero alignment byte and42relocations fill .data0x0213b814..0x0213b9ac. Complete compiler-owned metadata and consumer-backed tables establish this production assignment; original source grouping/TU boundaries remain inferred. The numeric vtable alias at0x0213b918 is preserved through actual-object same-address alias handling."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020d1018",
       "end": "0x020d5a54"
+    },
+    {
+      "name": ".data",
+      "start": "0x0213b814",
+      "end": "0x0213b9ac"
     }
   ],
   "functions": [
@@ -223,7 +229,58 @@
       "ordinal": 27
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "symbol": "g_profile_MG_AMIDA",
+      "address": "0x0213b814",
+      "size": "0x8",
+      "evidence": "BaseSpawnInfo<void> preserves existing void* factory declaration and priorities371/371."
+    },
+    {
+      "symbol": "_ZTI12dScMgAmida_c",
+      "address": "0x0213b81c",
+      "size": "0xc",
+      "evidence": "Compiler-generated current class RTTI; all three relocation destinations verified."
+    },
+    {
+      "symbol": "_ZTS12dScMgAmida_c",
+      "address": "0x0213b828",
+      "size": "0xf",
+      "evidence": "Compiler-generated class name; one following zero alignment byte precedes the language table."
+    },
+    {
+      "symbol": "sAmidaOptionNcgByLanguage",
+      "address": "0x0213b838",
+      "size": "0x14",
+      "evidence": "Five int runtime asset handles indexed by GetGameLanguage; existing shared declaration remains compatible."
+    },
+    {
+      "symbol": "sAmidaBoardAnimationFrames",
+      "address": "0x0213b84c",
+      "size": "0x34",
+      "evidence": "Thirteen int frame selectors copied completely by RenderBoard and used to select board animation sprites; role name inferred."
+    },
+    {
+      "symbol": "sAmidaRenderPeriods",
+      "address": "0x0213b880",
+      "size": "0x38",
+      "evidence": "Fourteen-word block copied completely by Render; current lane-based indexing preserved. Original grouping beyond observed accesses remains uncertain."
+    },
+    {
+      "symbol": "sAmidaInitialRungPositions",
+      "address": "0x0213b8b8",
+      "size": "0x58",
+      "evidence": "Eleven pairs of int x/y coordinates copied completely and consumed by the five/eleven-rung drawing loops; role name inferred."
+    },
+    {
+      "symbol": "_ZTV12dScMgAmida_c",
+      "address": "0x0213b918",
+      "size": "0x9c",
+      "evidence": "Complete native vtable includes two header words and37function slots; public address point is storage+8.",
+      "emitted_storage_address": "0x0213b910",
+      "address_point_bias": "0x8"
+    }
+  ],
   "bss": [],
   "compiler_only_output": [
     {
@@ -291,40 +348,21 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020914d4",
       "reason": "ancestor RTTI passenger; the canonical cartridge copy is independently enrolled"
-    },
-    {
-      "symbol": "_ZTI12dScMgAmida_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov006",
-      "canonical_address": "0x0213b81c",
-      "reason": "this class RTTI record; the canonical cartridge copy remains ROM-gap owned"
-    },
-    {
-      "symbol": "_ZTS12dScMgAmida_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov006",
-      "canonical_address": "0x0213b828",
-      "reason": "this class RTTI name; the canonical cartridge copy remains ROM-gap owned"
-    },
-    {
-      "symbol": "_ZTV12dScMgAmida_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov006",
-      "canonical_address": "0x0213b918",
-      "reason": "this class vtable; the canonical cartridge copy remains ROM-gap owned"
     }
   ],
   "notes": [
     "Assembled by hand: first from the thirteen one-function sources above the old hole (tubuild.py create refuses shards that wrap their bodies in an extern \"C\" block), then widened by hand over the fifteen below it. See the file's own header comment.",
     "Declaration reconciliation, all of it codegen-free and all of it settled by the 13/13 byte match rather than by argument. Where two shards spelled one interface differently the more complete observation was kept and the narrower call site took the implicit conversion. func_02054efc returns void* per include/decl_common.h and three shards had re-declared it as char*, so those call sites now cast. _ZN11dScMgBase_cC2Ev returns void per decl_common.h and classInit had declared it int, whose result it discarded. data_ov006_0213b918 is a scalar in decl_common.h and classInit had declared it an int array, so its address is now taken with &. MultiStore16 takes void*, so the char* call site converts implicitly. sAmidaPatterns is char[], which both shards then do byte arithmetic on. func_ov006_020d36a4 keeps its own definition's dScMgAmida_c* parameter and its two callers pass this and a cast pointer. Amida_SaveBgChars's definition took NO parameter while its one call site passes the scene pointer; under C linkage only one prototype can exist, so it now declares an unnamed, unread void* parameter.",
     "Declaration reconciliation for the widen, all of it checked by the 28/28 byte match. One extern \"C\" declaration per symbol at file scope; where a shard had spelled a parameter differently, the call casts. Amida_RestoreBgChars now declares an unnamed, unread void* parameter, because func_ov006_020d1450 and the pen handler pass the scene. func_ov006_020d2580 takes the two rung ends as by-value dScMgAmida_c::Point, the form the pen handler declared; its old C definition read them through int pointers, which is the same calling convention. LoadCompressedFileAt is declared (int, void *): Virtual7C passes a word from sAmidaOptionNcgByLanguage without truncating it, and a u16 parameter adds two words there. data_020a0e40 is a scalar and data_020a0dea/deb are u8[][4]: func_ov006_020d1958 needs the row form (flat indexing costs it four words), and func_ov006_020d1a3c and func_ov006_020d1ba0 compile identically either way. func_02012718 uses the (int, int) declaration in include/decl_common.h; func_ov006_020d27dc's (void *) casts on its first argument are gone with no byte change.",
-    "Every slot-36 call in the unit goes through dScMgAmida_c::IsVariant2(). Four of the folded shards (func_ov006_020d122c, func_ov006_020d1958, func_ov006_020d1a3c, func_ov006_020d27dc) called it through a local 37-slot stand-in struct; the bytes are unchanged."
+    "Every slot-36 call in the unit goes through dScMgAmida_c::IsVariant2(). Four of the folded shards (func_ov006_020d122c, func_ov006_020d1958, func_ov006_020d1a3c, func_ov006_020d27dc) called it through a local 37-slot stand-in struct; the bytes are unchanged.",
+    "Native data continuation from preserved PR3937 DD092/DDR011 commit3cda54abf4cefd5015446a7d4805965d0f922508 (lunavyqo, coauthorCursor), using current source and headers. The earlier252byte candidate boundary ended at the vtable address point; this coherent408byte range includes the full vtable storage instead. Existing void* factory and lane-indexed render-period interpretation are retained, and documented raw-offset/helper/compiler constraints remain partial reconstruction on issue4044.",
+    "Historical verification.linkcheck reported text-only refusal before this data continuation. Current intact-object production admission must be established by fresh final-configuration baseline/candidate and provider/full-ROM gates."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov006-dScMgAmida_c/dScMgAmida_c.o (gitignored)",
+    "object": "build/tu/ov006-dScMgAmida_c/d_s_mg_amida.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 28,
     "functions_declared": 28,
@@ -341,23 +379,18 @@
         9,
         10,
         28,
-        60,
-        61,
-        62,
-        63,
-        64,
-        65,
-        66,
-        67,
-        68,
-        69,
-        70,
         71,
         72,
         73,
         74,
         75,
-        76
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -367,24 +400,19 @@
         "_ZTI7dBase_c",
         "_ZTI11dScMgBase_c",
         "_ZTS11dScMgBase_c",
-        "_ZTI8dScene_c",
-        "_ZTI12dScMgAmida_c",
-        "_ZTS12dScMgAmida_c",
-        "_ZTV12dScMgAmida_c"
+        "_ZTI8dScene_c"
       ],
       "dataExternalized": [
         "_ZTI11dScMgBase_c",
-        "_ZTI12dScMgAmida_c",
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
         "_ZTI8dScene_c",
         "_ZTS11dScMgBase_c",
-        "_ZTS12dScMgAmida_c",
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
-        "_ZTS8dScene_c",
-        "_ZTV12dScMgAmida_c"
-      ]
+        "_ZTS8dScene_c"
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -394,8 +422,571 @@
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
-      "result": "unavailable-for-this-TU",
-      "why": "tools/tubuild.py linkcheck routes a promoted TU down the intact-object path and refuses at [4/8] because this TU is text-only (data: [], bss: []). The whole-tree production build (python tools/rombuild.py) is the link proof for the widened range; the earlier link-verified record covered only 0x020d3624..0x020d5a54 and is replaced."
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov006-dScMgAmida_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x020d1018",
+        "end": "0x020d5a54",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x020d1018",
+          "end": "0x020d5a54",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x0213b814",
+          "end": "0x0213b9ac",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 36
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".data",
+            "original": [
+              60,
+              61,
+              62,
+              63,
+              64,
+              66,
+              68,
+              69
+            ],
+            "desired": [
+              64,
+              69,
+              68,
+              60,
+              61,
+              62,
+              63,
+              66
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                60,
+                61,
+                62,
+                63,
+                64,
+                66,
+                68,
+                69
+              ],
+              "desired": [
+                64,
+                69,
+                68,
+                60,
+                61,
+                62,
+                63,
+                66
+              ],
+              "slots": [
+                60,
+                61,
+                62,
+                63,
+                64,
+                66,
+                68,
+                69
+              ]
+            }
+          ],
+          "symbolIndices": 8,
+          "sectionLinks": 0,
+          "sectionInfos": 3,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
-  }
+  },
+  "production_mode": "intact-object",
+  "relocations": [
+    {
+      "section": ".data",
+      "source": "0x0213b814",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "dScMgAmida_c_classInit",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d5974"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b81c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "main",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b820",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS12dScMgAmida_c",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x0213b828"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b824",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI11dScMgBase_c",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020bbf6c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b914",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI12dScMgAmida_c",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x0213b81c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b918",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d5384"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b91c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b0930"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b920",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b08f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b924",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02043bf0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b928",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0202e5f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b92c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d5924"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b930",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d4b7c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b934",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b0620"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b938",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0202e3c8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b93c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c6RenderEv",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d48dc"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b940",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b04f4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b944",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0202e398"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b948",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b04e8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b94c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0204357c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b950",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0204349c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b954",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02043494"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b958",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_cD1Ev",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d1018"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b95c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_cD0Ev",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d10b8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b960",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c10StartRoundEi",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d52f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b964",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c11CanEndStateEi",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b2994"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b968",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c11OnNewRecordEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b2990"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b96c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c10OnDealDoneEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b298c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b970",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback1Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae198"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b974",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback0Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae1a0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b978",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback2Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae140"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b97c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback3Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae128"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b980",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c14GetDisplayModeEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b04e0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b984",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c8OpenMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020af27c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b988",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c9CloseMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020af04c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b98c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c17SaveScreenForMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020af094"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b990",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c21RestoreScreenFromMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020aeed8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b994",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c15InitSubScreenBgEv",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d11a0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b998",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16InitMainScreenBgEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b27f4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b99c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c11InitEnginesEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b265c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b9a0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c11PaintSquareEiiii",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d14c0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b9a4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c12IsAltVariantEv",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d1170"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213b9a8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScMgAmida_c10IsVariant2Ev",
+      "addend": 0,
+      "target_module": "overlay(6)",
+      "target_address": "0x020d1188"
+    }
+  ]
 }
