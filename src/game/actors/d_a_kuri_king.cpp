@@ -9,8 +9,8 @@
  * emits D1 then D0 at the head of this TU, so source order is ROM order.
  * The definition also emits an unused D2, licensed `deadstrip`. The
  * Vector3 lifecycle helpers reuse the original ARM9 callbacks through
- * duplicate policies. The emitted RTTI/vtable sections are `deadstrip-data`
- * rebound to the ROM's copy. The unit spans ov074 .text 0x0211f000..
+ * duplicate policies. This TU supplies its own native RTTI and vtable;
+ * inherited metadata keeps its canonical owner. It spans ov074 .text 0x0211f000..
  * 0x0212290c and ends with the two registry factories (KURIKING_VANISH,
  * then KURIKING).
  *
@@ -90,6 +90,7 @@ enum daKuriKing_c_AssetId {
 #include "daKuriKing_c.h"
 #include "types.h"
 #include "SharedFilePtr.h"
+#include "SpawnInfo.h"
 #include "MaterialChanger.h"
 #include "TextureSequence.h"
 #include "dBgCh_Gnd.h"
@@ -2077,3 +2078,23 @@ SharedFilePtr *const sKurikingAnimationFiles[12] = {
     &gKurikingWalkAnimationFile,      &gKurikingWalkEndAnimationFile,
     &gKurikingWalkStartAnimationFile, &gKurikingSpawnAnimationFile,
 };
+
+/* The two registry entries share the class, with distinct factories and flags.
+ * SpawnInfo field names describe the framework consumers, not original names. */
+SpawnInfo<daKuriKing_c> g_profile_KURIKING = {daKuriKing_c_classInit_KURIKING,
+                                              0x00c6,
+                                              0x0016,
+                                              0x34800000,
+                                              0,
+                                              0x00100000,
+                                              0x03000000,
+                                              0x03000000};
+
+SpawnInfo<daKuriKing_c> g_profile_KURIKING_VANISH = {daKuriKing_c_classInit_KURIKING_VANISH,
+                                                     0x00c7,
+                                                     0x0017,
+                                                     0x24800002,
+                                                     0,
+                                                     0x00100000,
+                                                     0x03000000,
+                                                     0x03000000};

@@ -12,7 +12,8 @@
     "module sinit corroboration: 1 sinit(s) / 1 .ctor entries, sinit_vs_tu=ok (module-wide).",
     "static-initializer fold: the compiler-generated __sinit_d_a_kuri_king.cpp is byte-identical to retail __sinit_ov074_02122978 (0x3f8, match.py strict-relocs MATCH). It constructs the fourteen resource handles (model file 917, texture-sequence file 912, twelve animation files) with destructor registrations, then copies the eighteen 8-byte descriptors (fifteen member PMFs the compiler materializes as temporaries, three free-stub unions) into the nine-entry BSS state table at 0x021230f8 in slot order. The ctor word at 0x02122d70 points at that initializer. The handwritten src/unnamed/ov074/__sinit_ov074_02122978.c is retired.",
     "CLASSINIT TAIL FOLD (2026-10-10): the run 0x02122764..0x0212290c (daKuriKing_c_classInit_KURIKING_VANISH 0xd4, daKuriKing_c_classInit_KURIKING 0xd4) abuts this TU's old .text end (0x02122764) with no gap and is now inside it; it runs to the end of ov074 .text (0x0212290c). Membership: both factories call fBase_c::operator new(0x610) = sizeof(daKuriKing_c), run dEnemyBase_c's base constructor, store the vptr _ZTV12daKuriKing_c (ov074:0x02122eb8, the vtable this TU emits) and construct exactly the members this class declares (dCcAcPos_c[4] @0x110, ModelAnim @0x210, dExtShadowModel_c[3] @0x274, Vector3[3] @0x3ac, MaterialChanger, TextureSequence, TextureTransformer, dBgCh_Actr @0x40c); KURIKING_VANISH and KURIKING are the two registry profiles of the one class. Both factories now use native `return new daKuriKing_c;` construction. The compiler-generated Vector3 array callback is byte-identical to the original arm9:0x0203d384 callback; its dedicated four-byte relocation-free body is externalized under the canonical duplicate policy. All three mCylClsnPos elements retain stride 12 and the Vector3 destructor callback. Appended last in the file, KURIKING_VANISH first (this TU emits .text in source order under #pragma defer_codegen off).",
-    "Animation-handle pointer lists are now compiled from this existing reconstructed TU and enrolled as the complete listed .rodata range. Consumer loops and exact relocated retail bytes establish their roles and full extents; this assignment does not prove the historical source filename or original TU boundary."
+    "Animation-handle pointer lists are now compiled from this existing reconstructed TU and enrolled as the complete listed .rodata range. Consumer loops and exact relocated retail bytes establish their roles and full extents; this assignment does not prove the historical source filename or original TU boundary.",
+    "Native metadata/profile grouping is a reconstruction supported by class RTTI, emitted ownership and typed factory consumers; no original source filename or complete historical TU boundary is established."
   ],
   "sections": [
     {
@@ -44,6 +45,22 @@
       "name": ".bss",
       "start": "0x02122fe0",
       "end": "0x021231a0"
+    },
+    {
+      "name": ".data.kuriMeta0",
+      "input_section": ".data",
+      "start": "0x02122e30",
+      "end": "0x02122e4c",
+      "terminal_linker_fill": {
+        "alignment": 4,
+        "value": 0
+      }
+    },
+    {
+      "name": ".data.kuriMeta1",
+      "input_section": ".data",
+      "start": "0x02122e78",
+      "end": "0x02122f34"
     }
   ],
   "functions": [
@@ -591,6 +608,43 @@
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "anonymous state-table enter descriptor for daKuriKing_c::func_ov074_0211fb84; retail first word is 0x0211fb84"
+    },
+    {
+      "symbol": "_ZTI12daKuriKing_c",
+      "address": "0x02122e30",
+      "size": "0xc",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete compiler-native object. Class spelling is RTTI-backed; typed profile fields follow framework consumers. Original identifiers and TU boundaries remain uncertain."
+    },
+    {
+      "symbol": "_ZTS12daKuriKing_c",
+      "address": "0x02122e3c",
+      "size": "0xf",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete compiler-native object. Class spelling is RTTI-backed; typed profile fields follow framework consumers. Original identifiers and TU boundaries remain uncertain."
+    },
+    {
+      "symbol": "g_profile_KURIKING",
+      "address": "0x02122e78",
+      "size": "0x1c",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete compiler-native object. Class spelling is RTTI-backed; typed profile fields follow framework consumers. Original identifiers and TU boundaries remain uncertain."
+    },
+    {
+      "symbol": "g_profile_KURIKING_VANISH",
+      "address": "0x02122e94",
+      "size": "0x1c",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete compiler-native object. Class spelling is RTTI-backed; typed profile fields follow framework consumers. Original identifiers and TU boundaries remain uncertain."
+    },
+    {
+      "symbol": "_ZTV12daKuriKing_c",
+      "address": "0x02122eb8",
+      "size": "0x84",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete compiler-native object. Class spelling is RTTI-backed; typed profile fields follow framework consumers. Original identifiers and TU boundaries remain uncertain.",
+      "emitted_storage_address": "0x02122eb0",
+      "address_point_bias": 8
     }
   ],
   "bss": [
@@ -950,13 +1004,13 @@
       "symbol": "__sinit_d_a_kuri_king.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+      "evidence": "mwcc emits the TU initializer with local binding. Preserve the existing configured GLOBAL identity and exact relocation destination; this is a compatibility choice for this manifest, not a DSD limitation on local symbols."
     },
     {
       "symbol": ".p__sinit_d_a_kuri_king.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+      "evidence": "mwcc emits the ctor-table object with local binding. Preserve the existing configured GLOBAL identity and exact four-byte ctor entry; DSD supports local symbols, so local syntax is not the reason for this retained rewrite."
     },
     {
       "symbol": "@668",
@@ -2293,6 +2347,376 @@
       "addend": 0,
       "target_module": "ov074",
       "target_address": "0x02123010"
+    },
+    {
+      "section": ".data.kuriMeta0",
+      "source": "0x02122e30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data.kuriMeta0",
+      "source": "0x02122e34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS12daKuriKing_c",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02122e3c"
+    },
+    {
+      "section": ".data.kuriMeta0",
+      "source": "0x02122e38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI12dEnemyBase_c",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x021081c0"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122e78",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daKuriKing_c_classInit_KURIKING",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02122838"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122e94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daKuriKing_c_classInit_KURIKING_VANISH",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02122764"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122eb4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI12daKuriKing_c",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02122e30"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122eb8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daKuriKing_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02121e98"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ebc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011268"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ec0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011244"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ec4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daKuriKing_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02121abc"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ec8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011220"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ecc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011214"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ed0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daKuriKing_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02121bf0"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ed4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010fd4"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ed8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010fc8"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122edc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daKuriKing_c6RenderEv",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x02121b70"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ee0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010f78"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ee4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010f6c"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ee8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043ac0"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122eec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204357c"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ef0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204349c"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ef4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043494"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122ef8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daKuriKing_cD1Ev",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x0211f000"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122efc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daKuriKing_cD0Ev",
+      "addend": 0,
+      "target_module": "ov074",
+      "target_address": "0x0211f0a0"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c13OnYoshiTryEatEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010160"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f04",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c13OnTurnIntoEggER6Player",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010154"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f08",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c9Virtual50Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201014c"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f0c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnGroundPoundedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010148"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f10",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked1ERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010144"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f14",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked2ERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010140"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f18",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnKickedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201013c"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f1c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnPushedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010138"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f20",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c24OnHitByCannonBlastedCharERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010134"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f24",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnHitByMegaCharER6Player",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010130"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f28",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19OnHitFromUnderneathERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201012c"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f2c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c16OnAimedAtWithEggEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010124"
+    },
+    {
+      "section": ".data.kuriMeta1",
+      "source": "0x02122f30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c25OnAimedAtWithEggReturnVecEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x020100dc"
     }
   ],
   "undefined_symbol_aliases": [
@@ -2420,80 +2844,87 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_020a0e68' differs between the legacy file that used to hold func_ov074_02121270 and the one that held func_ov074_021222e0; kept the first, the other is commented out for review The merged TU carries ONE declaration per symbol: every intra-TU member is declared once from its own definition in the forward-declaration block, and every external symbol keeps the spelling include/decl_common.h or the real header gives it, with a cast at the call site where a shard disagreed. Both alternates are gone from the source and the TU is 36/36 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 's16') differs between the legacy file that used to hold func_ov074_0211f5b8 and the one that held func_ov074_021207b8; kept the first, the other is commented out for review The merged TU carries ONE declaration per symbol: every intra-TU member is declared once from its own definition in the forward-declaration block, and every external symbol keeps the spelling include/decl_common.h or the real header gives it, with a cast at the call site where a shard disagreed. Both alternates are gone from the source and the TU is 36/36 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 's16') differs between the legacy file that used to hold func_ov074_0211f5b8 and the one that held func_ov074_02120bb8; kept the first, the other is commented out for review The merged TU carries ONE declaration per symbol: every intra-TU member is declared once from its own definition in the forward-declaration block, and every external symbol keeps the spelling include/decl_common.h or the real header gives it, with a cast at the call site where a shard disagreed. Both alternates are gone from the source and the TU is 36/36 MATCH.",
-    "Static-initializer fold: src/unnamed/ov074/__sinit_ov074_02122978.c is retired; its fourteen handles, fourteen registration nodes, eighteen descriptors, two parameter arrays and the state table are now defined in this TU, whose delinks claim widens to .init/.ctor/.data/.bss. tubuild verify: 53/53 MATCH, objisolate clean, reloc-destinations clean. The handwritten source's credit (tangosdev) carries in attribution.json as a path#symbol override on __sinit_d_a_kuri_king.cpp. The TU's own _ZTI/_ZTS/_ZTV stay externalized; this claim stops at 0x02122e24, where _ZTI12daKuriKing_c begins, and the BSS claim stops at the section end 0x021231a0: the table itself ends at 0x02123188 and carries 0x18 of alignment fill because dsd sizes the trailing symbol to the section end and the intact tooling requires the licensed rows to tile the claim."
+    "Historical pre-metadata ownership: Static-initializer fold: src/unnamed/ov074/__sinit_ov074_02122978.c is retired; its fourteen handles, fourteen registration nodes, eighteen descriptors, two parameter arrays and the state table are now defined in this TU, whose delinks claim widens to .init/.ctor/.data/.bss. tubuild verify: 53/53 MATCH, objisolate clean, reloc-destinations clean. The handwritten source's credit (tangosdev) carries in attribution.json as a path#symbol override on __sinit_d_a_kuri_king.cpp. The TU's own _ZTI/_ZTS/_ZTV stay externalized; this claim stops at 0x02122e24, where _ZTI12daKuriKing_c begins, and the BSS claim stops at the section end 0x021231a0: the table itself ends at 0x02123188 and carries 0x18 of alignment fill because dsd sizes the trailing symbol to the section end and the intact tooling requires the licensed rows to tile the claim.",
+    "Native metadata owns216 linked bytes: five compiler objects totaling215 bytes and one explicitly licensed terminal ALIGN4 zero byte. The RTTI is12 bytes and its type name remains15 bytes; neither compiler object is padded or widened. Complete132-byte native vtable storage retains its124-byte public address point; data_ov074_02122eb0 is a zero-size LCF identity for the existing8-byte prefix, not another emitted object. The earlier216 exact-emission refusal and215 misaligned-ROM-gap trial remain historical failed experiments. Two typed SpawnInfo profiles and the native metadata are covered by complete source claims. Existing lifecycle,rodata,data,BSS claims remain unchanged. The32-byte rodata remainder and intervening/trailing data remain reconstruction work; their ownership is not inferred as padding. The boundary-tool runtime dependency is 09da716a1d67ad6b93b40c046fa83f9fa135be5e; independent tool and source acceptance are required before publication. Historical correction: the prior note misidentified 0x02122e24 as the RTTI start; the RTTI starts at 0x02122e30 after the 12-byte bone-index array."
   ],
   "verification": {
-    "round": "Current standalone text-function audit; native initializer classification refusal is separate from complete six-section scratch proof.",
-    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
-    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov074-daKuriKing_c/daKuriKing_c.o (gitignored)",
-    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 55,
-    "functions_declared": 55,
-    "compilerOnlyOutput": {
-      "requested": [
-        "_ZN12daKuriKing_cD2Ev",
-        "_ZN7Vector3D1Ev"
-      ],
-      "deadstripped": [
-        "_ZN12daKuriKing_cD2Ev",
-        "_ZN7Vector3D1Ev"
-      ],
-      "droppedSections": [
-        39,
-        40,
-        41,
-        180,
-        181,
-        182,
-        183,
-        184,
-        185,
-        186,
-        187,
-        188,
-        189,
-        190,
-        191,
-        192,
-        193,
-        194,
-        195,
-        196
-      ],
-      "data": [
-        "_ZTV12daKuriKing_c",
-        "_ZTI12daKuriKing_c",
-        "_ZTS12daKuriKing_c",
-        "_ZTI12dEnemyBase_c",
-        "_ZTS12dEnemyBase_c",
-        "_ZTI8dActor_c",
-        "_ZTS8dActor_c",
-        "_ZTI7dBase_c",
-        "_ZTS7dBase_c",
-        "_ZTI7fBase_c",
-        "_ZTS7fBase_c"
-      ],
-      "dataExternalized": [
-        "_ZTI12dEnemyBase_c",
-        "_ZTI12daKuriKing_c",
-        "_ZTI7dBase_c",
-        "_ZTI7fBase_c",
-        "_ZTI8dActor_c",
-        "_ZTS12dEnemyBase_c",
-        "_ZTS12daKuriKing_c",
-        "_ZTS7dBase_c",
-        "_ZTS7fBase_c",
-        "_ZTS8dActor_c",
-        "_ZTV12daKuriKing_c"
-      ]
-    },
-    "criteria": {
-      "every_declared_function_defined": "PASS",
-      "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
-      "functions_occur_in_expected_order": "PASS",
-      "relocation_destinations_verified": "PASS"
+    "round": "Current eight-range scratch linkcheck admission; the pre-metadata standalone snapshot is retained explicitly as history, not current native ownership. Normal production provider evidence is recorded separately.",
+    "historicalStandalone": {
+      "status": "Historical pre-metadata standalone audit; its compiler-only output and six-section description are superseded.",
+      "snapshot": {
+        "round": "Current standalone text-function audit; native initializer classification refusal is separate from complete six-section scratch proof.",
+        "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+        "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+        "object": "build/tu/ov074-daKuriKing_c/daKuriKing_c.o (gitignored)",
+        "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+        "functions_matched": 55,
+        "functions_declared": 55,
+        "compilerOnlyOutput": {
+          "requested": [
+            "_ZN12daKuriKing_cD2Ev",
+            "_ZN7Vector3D1Ev"
+          ],
+          "deadstripped": [
+            "_ZN12daKuriKing_cD2Ev",
+            "_ZN7Vector3D1Ev"
+          ],
+          "droppedSections": [
+            39,
+            40,
+            41,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196
+          ],
+          "data": [
+            "_ZTV12daKuriKing_c",
+            "_ZTI12daKuriKing_c",
+            "_ZTS12daKuriKing_c",
+            "_ZTI12dEnemyBase_c",
+            "_ZTS12dEnemyBase_c",
+            "_ZTI8dActor_c",
+            "_ZTS8dActor_c",
+            "_ZTI7dBase_c",
+            "_ZTS7dBase_c",
+            "_ZTI7fBase_c",
+            "_ZTS7fBase_c"
+          ],
+          "dataExternalized": [
+            "_ZTI12dEnemyBase_c",
+            "_ZTI12daKuriKing_c",
+            "_ZTI7dBase_c",
+            "_ZTI7fBase_c",
+            "_ZTI8dActor_c",
+            "_ZTS12dEnemyBase_c",
+            "_ZTS12daKuriKing_c",
+            "_ZTS7dBase_c",
+            "_ZTS7fBase_c",
+            "_ZTS8dActor_c",
+            "_ZTV12daKuriKing_c"
+          ]
+        },
+        "criteria": {
+          "every_declared_function_defined": "PASS",
+          "every_declared_function_bytes_match": "PASS",
+          "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+          "functions_occur_in_expected_order": "PASS",
+          "relocation_destinations_verified": "PASS"
+        }
+      }
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
@@ -2555,11 +2986,25 @@
           "start": "0x02122fe0",
           "end": "0x021231a0",
           "comparison": "NOBITS -- symbol/module gates"
+        },
+        {
+          "section": ".data.kuriMeta0",
+          "start": "0x02122e30",
+          "end": "0x02122e4c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.kuriMeta1",
+          "start": "0x02122e78",
+          "end": "0x02122f34",
+          "differingBytes": 0,
+          "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 108
+          "LICENSED": 113
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -2581,19 +3026,19 @@
           {
             "section": ".init",
             "original": [
-              204
+              208
             ],
             "desired": [
-              204
+              208
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              202
+              206
             ],
             "desired": [
-              202
+              206
             ]
           },
           {
@@ -2706,6 +3151,30 @@
               141,
               143,
               175
+            ]
+          },
+          {
+            "section": ".data.kuriMeta0",
+            "original": [
+              191,
+              192
+            ],
+            "desired": [
+              192,
+              191
+            ]
+          },
+          {
+            "section": ".data.kuriMeta1",
+            "original": [
+              185,
+              187,
+              189
+            ],
+            "desired": [
+              185,
+              187,
+              189
             ]
           }
         ],
@@ -2875,11 +3344,26 @@
                 166,
                 175
               ]
+            },
+            {
+              "section": ".data.kuriMeta0",
+              "original": [
+                191,
+                192
+              ],
+              "desired": [
+                192,
+                191
+              ],
+              "slots": [
+                191,
+                192
+              ]
             }
           ],
-          "symbolIndices": 49,
+          "symbolIndices": 51,
           "sectionLinks": 0,
-          "sectionInfos": 18,
+          "sectionInfos": 19,
           "error": null
         },
         "errors": null
@@ -2929,27 +3413,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "Vector3's four-byte inline destructor, emitted as vague linkage because several members of this TU take Vector3 locals. The cartridge owns it at arm9:0x020072c0, an enrolled source already reaches it, and it is outside this entry's licensed range."
-    },
-    {
-      "symbol": "_ZTV12daKuriKing_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov074",
-      "canonical_address": "0x02122eb8",
-      "reason": "The vtable this TU is the key function for: ~daKuriKing_c is the out-of-line destructor, so mwccarm anchors the vague-linkage group here. symbols.txt rows _ZTV12daKuriKing_c at ov074:0x02122eb8; the emitted copy is 132 bytes (2-word prologue + 31 slots). Production isolation rebinds relocations to the ROM home and deadstrips the duplicate."
-    },
-    {
-      "symbol": "_ZTI12daKuriKing_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov074",
-      "canonical_address": "0x02122e30",
-      "reason": "This class's own __class_type_info, emitted beside the vtable. ROM home ov074:0x02122e30 -- the record that proves the cartridge's spelling of the class name."
-    },
-    {
-      "symbol": "_ZTS12daKuriKing_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov074",
-      "canonical_address": "0x02122e3c",
-      "reason": "Type-name string `12daKuriKing_c\u0000`, 0xf bytes. ROM home ov074:0x02122e3c."
     },
     {
       "symbol": "_ZTI12dEnemyBase_c",
@@ -3031,6 +3494,12 @@
       "size": "0x30",
       "binding": "STB_GLOBAL",
       "evidence": "Native const-pointer list of mutable SharedFilePtr resources. Every entry is a compiler relocation to the actual handle object; all list bytes and destinations match retail. Reconstructed semantic name, not an original-identifier claim."
+    }
+  ],
+  "initialized_prefix_aliases": [
+    {
+      "symbol": "data_ov074_02122eb0",
+      "vtable": "_ZTV12daKuriKing_c"
     }
   ]
 }
