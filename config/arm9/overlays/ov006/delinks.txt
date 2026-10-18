@@ -94,6 +94,7 @@ src/minigames/d_s_mg_hanachan_methods.cpp:
     .text start:0x020ea280 end:0x020ede18
     .init start:0x02130df8 end:0x02130e9c
     .ctor start:0x021335a0 end:0x021335a4
+    .data start:0x0213c95c end:0x0213ca7c
     .bss start:0x02142018 end:0x02142044
 
 src/minigames/d_s_mg_hanachan.cpp:
