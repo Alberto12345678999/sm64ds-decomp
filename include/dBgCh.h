@@ -116,7 +116,7 @@ struct dBgCh {
     static bool ShouldPassThroughImpl(void *p, const CLPS &clps, const dBgCh &bg, bool flag);
 
     /* Inferred name: bind the querying actor and its unique ID, or clear both. */
-    void SetActor(dActor_c *actor);
+    void SetActor(dActor_c *);
     void StartDetectingToxic();
     void StartDetectingWater();
     void StopDetectingOrdinary();

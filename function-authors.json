@@ -4863,7 +4863,7 @@
     },
     "arm9:0x020353b0": {
       "author": "tangosdev",
-      "name": "func_020353b0"
+      "name": "_ZN5dBgCh8SetActorEP8dActor_c"
     },
     "arm9:0x020353d4": {
       "author": "tangosdev",
@@ -5315,11 +5315,11 @@
     },
     "arm9:0x02037a6c": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_02037a6cEiiiiii"
+      "name": "_ZN12dBgCh_SphCrr19ExpandPushOutBoundsEiiiiii"
     },
     "arm9:0x02037b1c": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_02037b1cEv"
+      "name": "_ZN12dBgCh_SphCrr17ResetDisplacementEv"
     },
     "arm9:0x02037b5c": {
       "author": "tangosdev",
