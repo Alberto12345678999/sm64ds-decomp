@@ -26,8 +26,8 @@ object. The older imported-label path remains available. The LCF
 defines the canonical label inside its enclosing output module. This preserves aliases
 without adding storage, changing object bytes, or assuming an overlay base.
 
-Initialized-data interior labels are retained even without live imports, because
-dsd validates configured identities. Each alias needs one actual PROGBITS OBJECT
+Initialized-data labels at an object's start or inside it are retained even without
+live imports, because dsd validates configured identities. Each alias needs one actual PROGBITS OBJECT
 definition from its complete source provider, a unique configured module home,
 and a matching .data/.rodata range covering the entire emitted object.
 
@@ -42,6 +42,7 @@ import struct
 
 
 def initialized_interior_rows(config_root, objects_txt, definitions):
+    """Initialized-object aliases, including another name at the object's start."""
     return _source_storage_interior_rows(config_root, objects_txt, definitions)
 
 
@@ -159,7 +160,8 @@ def _source_storage_interior_rows(config_root, objects_txt, definitions, bss=Fal
         if not is_data:
             continue
         enclosing = [(owner, base) for owner, mod, base, size in owners
-                     if mod == module and base < address < base + size
+                     if mod == module and base <= address < base + size
+                     and (not bss or base < address)
                      and address + (declared_size or 0) <= base + size]
         if len(enclosing) == 1:
             owner, base = enclosing[0]
