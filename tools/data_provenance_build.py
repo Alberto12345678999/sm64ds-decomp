@@ -9,6 +9,7 @@ import json
 import pathlib
 
 import data_evidence as DE
+import data_section_routes as DSR
 
 
 def input_hashes(repo, extra_paths=(), extra_roots=()):
@@ -74,7 +75,7 @@ def prepare(repo, build_root, request_path, tool_paths=()):
             raise ValueError(f"{key}: requested size disagrees with configured size")
         record = index.record(symbol, size)
         section = record["section"]["name"]
-        if section not in (".data", ".rodata", ".bss"):
+        if section != ".bss" and DSR.initialized_kind(section) is None:
             raise ValueError(f"{key}: unsupported data section {section}")
         owners = record["declared_owners"]
         if (len(owners) != 1 or owners[0]["source"] != str(source)

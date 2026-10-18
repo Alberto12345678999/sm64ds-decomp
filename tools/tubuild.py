@@ -61,6 +61,7 @@ sys.path.insert(0, str(TOOLS))
 
 import build_pin as BP          # noqa: E402
 import dsd_pin as DSP            # noqa: E402
+import data_section_routes as DSR  # noqa: E402
 import enroll as EN             # noqa: E402
 import lcf_interior as LI       # noqa: E402
 import linker_alignment as LA   # noqa: E402
@@ -1661,13 +1662,15 @@ def manifest_section_claims(entry):
     for ordinary linker mappings such as input ``.rodata`` being placed in output
     ``.data``; it does not weaken the byte, symbol, or relocation checks on the input.
 
-    One claim per input section name is deliberate for this first data phase:
-    mwldarm concatenates a TU's repeated input sections of the same name into one
-    contribution, while two disjoint ranges would need an explicit input-section
-    partition the manifest cannot yet express.  Refusing that ambiguity is safer than
-    assigning output by list position.
+    One claim per input section name is deliberate: mwldarm concatenates repeated
+    input sections of the same name. Explicit initialized routes can give complete
+    native sections unique names using ``input_section``; they never split an input
+    section or claim intervening gap bytes.
     """
     rows, reasons, seen = [], [], set()
+    named_routes, routing_errors = DSR.routes(entry)
+    reasons.extend(routing_errors)
+    route_names = {row["name"] for row in named_routes}
     raw = entry.get("sections")
     if not isinstance(raw, list) or not raw:
         return [], ["manifest has no section claims"]
@@ -1676,12 +1679,12 @@ def manifest_section_claims(entry):
             reasons.append(f"sections[{i}] is not an object")
             continue
         name = claim.get("name")
-        if name not in _TU_SECTION_NAMES:
+        if not isinstance(name, str) or (name not in _TU_SECTION_NAMES and name not in route_names):
             reasons.append(f"sections[{i}] has unsupported name {name!r}; expected one "
                            f"of {list(_TU_SECTION_NAMES)}")
             continue
         module_section = claim.get("module_section", name)
-        if module_section not in _TU_SECTION_NAMES:
+        if not isinstance(module_section, str) or (module_section not in _TU_SECTION_NAMES and module_section not in route_names):
             reasons.append(f"sections[{i}] has unsupported module_section "
                            f"{module_section!r}; expected one of "
                            f"{list(_TU_SECTION_NAMES)}")
@@ -2227,7 +2230,7 @@ def manifest_owned_symbol_rows(entry):
             continue
         for row in rows:
             if isinstance(row, dict) and row.get("symbol"):
-                out.append((section, row))
+                out.append((DSR.owned_section(entry, section, row), row))
     return out
 
 
@@ -3213,6 +3216,9 @@ def prepare_owned_nontext_section_order(obj_bytes, entry, claims):
     byte/symbol/relocation verifier.  This helper never guesses from symbol spelling or
     payload bytes and never changes content or relocation records.
     """
+    obj_bytes, routing, routing_errors = DSR.apply(obj_bytes, entry)
+    if routing_errors:
+        return None, {"groups": [], "objisolate": None, "routing": routing}, routing_errors
     nontext = [claim for claim in claims if claim["name"] != ".text"]
     if not nontext:
         return obj_bytes, {"groups": [], "objisolate": None}, []
@@ -3321,7 +3327,7 @@ def prepare_owned_nontext_section_order(obj_bytes, entry, claims):
         if desired != selected:
             requested.append({"section": name, "indices": desired})
 
-    report = {"groups": groups, "objisolate": None}
+    report = {"groups": groups, "objisolate": None, "routing": routing}
     if reasons:
         return None, report, reasons
     if not requested:
@@ -3998,7 +4004,7 @@ def content_tree_sha256(root):
 
 BASELINE_CONTROL_TOOLS = tuple(
     REPO / "tools" / name for name in (
-        "dsd_pin.py", "linker_alignment.py", "objisolate.py", "reloc_audit.py",
+        "dsd_pin.py", "linker_alignment.py", "data_section_routes.py", "objisolate.py", "reloc_audit.py",
         "rombuild.py", "rombuild_cache.py",
         "rombuild_check.py", "rombuild_profile.py", "tu_manifest.py",
         "tu_production.py", "tubuild.py"))

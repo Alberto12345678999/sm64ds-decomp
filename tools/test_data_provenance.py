@@ -329,6 +329,21 @@ src/thing.cpp:
         self.assertTrue(report["input_sha256"])
         self.assertTrue(report["artifact_sha256"])
 
+    def test_named_initialized_slice_requires_its_actual_compiler_provider(self):
+        section = '.data.clps0'
+        self.request['section'] = section
+        self.obj.write_bytes(symbol_elf(section=section))
+        self.delinks.write_text(self.delinks.read_text().replace('.data', section))
+        self.lcf.write_text(lcf_text(section=section))
+        snapshot = self.snapshot()
+        self.linked_outputs()
+        self.map.write_text(map_text(section=section))
+        self.assertIn(str(pathlib.Path(DP.__file__).resolve().with_name('data_section_routes.py')),
+                      snapshot['input_sha256'])
+        self.assertTrue(DP.audit_link(snapshot)['ok'])
+        self.map.write_text(map_text(section=section, provider='_dsd_gap@ov047_0.o'))
+        self.assertFalse(DP.audit_link(snapshot)['ok'])
+
     def test_existing_link_outputs_are_not_accepted_as_a_fresh_run(self):
         for artifact in (self.linked, self.map, self.built):
             with self.subTest(artifact=artifact.name):

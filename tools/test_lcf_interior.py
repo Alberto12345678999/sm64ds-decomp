@@ -325,6 +325,16 @@ class InitializedInteriorTests(unittest.TestCase):
         self.delinks.write_text(self.delinks.read_text().replace(".rodata", ".data"))
         self.assertEqual(len(self.rows()), 1)
 
+    def test_named_initialized_slice_keeps_exact_provider_and_extent_guards(self):
+        self.obj.write_bytes(_data_elf('.data.clps0'))
+        self.delinks.write_text(self.delinks.read_text().replace('.rodata', '.data.clps0'))
+        self.assertEqual(self.rows(), [('entry', 0x02111abc, 'block', 8, 'overlays/ov047')])
+        original = self.delinks.read_text()
+        self.delinks.write_text(original.replace('end:0x02111ac4', 'end:0x02111ac0'))
+        self.assertEqual(self.rows(), [])
+        self.delinks.write_text(original.replace('src/cart.cpp:', 'src/another.cpp:'))
+        self.assertEqual(self.rows(), [])
+
     def test_unimported_start_alias_keeps_identity_without_storage(self):
         self.symbols.write_text(self.symbols.read_text().replace("0x02111abc", "0x02111ab4"))
         expected = [("entry", 0x02111ab4, "block", 0, "overlays/ov047")]

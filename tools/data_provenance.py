@@ -18,6 +18,7 @@ from elftools.common.exceptions import ELFError
 
 import enroll
 import relocs
+import data_section_routes as DSR
 
 
 _MODULE = r"(?:arm9|itcm|dtcm|ov\d+)"
@@ -177,8 +178,8 @@ def _normalize_request(raw, repo, build_root):
     if start < 0 or size <= 0 or start + size > 0x100000000:
         raise ValueError("requested data range must be nonempty and fit a 32-bit address space")
     section = request["section"]
-    if section not in (".data", ".rodata", ".bss"):
-        raise ValueError("only .data, .rodata, and .bss are supported")
+    if section != ".bss" and DSR.initialized_kind(section) is None:
+        raise ValueError("only .data, .rodata, their named slices, and .bss are supported")
     source = str(request["source"]).replace("\\", "/")
     rel = pathlib.PurePosixPath(source)
     if rel.is_absolute() or ".." in rel.parts or not rel.parts or rel.parts[0] != "src" \
@@ -261,7 +262,8 @@ def snapshot_link_inputs(repo, build_root, requests, module_images):
         directory = pathlib.Path(request["config_directory"])
         inputs.update(directory / name for name in ("symbols.txt", "delinks.txt", "relocs.txt"))
     tool_dir = pathlib.Path(__file__).resolve().parent
-    inputs.update(tool_dir / name for name in ("data_provenance.py", "enroll.py", "relocs.py"))
+    inputs.update(tool_dir / name for name in (
+        "data_provenance.py", "data_section_routes.py", "enroll.py", "relocs.py"))
     linker = repo / "tools" / "mwccarm" / "1.2" / "sp2p3" / "mwldarm.exe"
     if linker.is_file():
         inputs.add(linker)
