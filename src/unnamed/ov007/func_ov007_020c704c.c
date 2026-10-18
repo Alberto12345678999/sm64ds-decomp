@@ -1,17 +1,11 @@
+#include "types.h"
 #include "nitro/fx/fx.h"
-typedef long long s64;
 
 extern int func_020531a4(int a);
 extern int _ZN4cstd4fdivEii(int a, int b);
 
-typedef struct Vec3 {
-    int x;
-    int y;
-    int z;
-} Vec3;
-
 typedef struct S {
-    Vec3 *p;
+    Vector3 *p;
     int f4;
     int f8;
     int fc;
@@ -20,8 +14,7 @@ typedef struct S {
     int f18;
 } S;
 
-int func_ov007_020c704c(S *self, Vec3 *b, int r2arg, int r3arg, int radius)
-{
+int func_ov007_020c704c(S *self, Vector3 *b, int r2arg, int r3arg, int radius) {
     int dx, dy, sum, spd, ratio;
     s64 sdx, sdy;
 

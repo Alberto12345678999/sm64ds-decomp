@@ -1,11 +1,34 @@
-struct Vec3 { int x; int y; int z; };
+#include "types.h"
 
 #define LAUNDER(p) (p)
 
+/* AddVec3 still defines its vector as its own struct Vec3;
+   declared as defined, the call casts. */
+struct Vec3;
 extern void AddVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 
-void func_ov007_020c5948(char *self, struct Vec3 *src)
-{
+/* Only the fields this function touches are named. */
+typedef struct {
+    int pad_00;
+    int mode; /* 0x04 */
+    u8 pad_08[0x34];
+    int **tab; /* 0x3c */
+    u8 pad_40[0x18];
+    int i;          /* 0x58 */
+    int j;          /* 0x5c */
+    Vector3 offset; /* 0x60 */
+    int pad_6c;
+    Vector3 pos; /* 0x70 */
+    u8 pad_7c[0x1c];
+    Vector3 pos2; /* 0x98 */
+    u8 pad_a4[0x14];
+    int hi[2]; /* 0xb8 */
+    int pad_c0;
+    int lo[2]; /* 0xc4 */
+} Self;
+
+void func_ov007_020c5948(char *self, Vector3 *src) {
+    Self *s = (Self *)self;
     int i;
     int j;
     int **tab;
@@ -16,14 +39,14 @@ void func_ov007_020c5948(char *self, struct Vec3 *src)
     int *hi;
     int *lo;
 
-    i = *(int *)(self + 0x58);
+    i = s->i;
     if (i == -1)
         return;
-    j = *(int *)(self + 0x5c);
+    j = s->j;
     if (j == -1)
         return;
 
-    tab = *(int ***)(self + 0x3c);
+    tab = s->tab;
     obj = (*(int ***)tab[i])[j];
     vec = (int *)obj[0];
 
@@ -37,16 +60,16 @@ void func_ov007_020c5948(char *self, struct Vec3 *src)
     vec[0] = src->x;
     vec[1] = src->y;
 
-    mode = *(int *)(self + 4);
+    mode = s->mode;
     switch (mode) {
     case 0:
-        *(struct Vec3 *)(self + 0x70) = *src;
+        s->pos = *src;
         break;
     case 1:
-        dst = (int *)(int)LAUNDER(self + 0x70);
-        hi = (int *)(int)LAUNDER(self + 0xb8);
-        lo = (int *)(int)LAUNDER(self + 0xc4);
-        AddVec3(src, (struct Vec3 *)(self + 0x60), (struct Vec3 *)dst);
+        dst = (int *)(int)LAUNDER(&s->pos);
+        hi = (int *)(int)LAUNDER(s->hi);
+        lo = (int *)(int)LAUNDER(s->lo);
+        AddVec3((struct Vec3 *)src, (struct Vec3 *)&s->offset, (struct Vec3 *)dst);
         if (hi[0] > dst[0])
             dst[0] = hi[0];
         if (lo[0] < dst[0])
@@ -57,7 +80,7 @@ void func_ov007_020c5948(char *self, struct Vec3 *src)
             dst[1] = lo[1];
         break;
     case 2:
-        *(struct Vec3 *)(self + 0x98) = *src;
+        s->pos2 = *src;
         break;
     }
 }
