@@ -97,6 +97,101 @@ python tools/affected_src.py include/<Class>.h
 If the ownership graph is incomplete, migrate a smaller method-only slice or
 stop. Do not guess shared layout.
 
+## Small library and runtime workstream
+
+This workstream improves small library and runtime sources while preserving their
+production output. Actors and minigames are outside its scope. Ordinary C and
+hardware assembly remain appropriate where the evidence supports them; a C++
+extension or a lower audit count is not the objective.
+
+Start with one understandable operation or interface: fade interpolation, a matrix
+helper, or a cache/palette upload boundary. Prefer named members, coherent
+declarations, and compiler-spelled calls over duplicate layouts, raw mangled calls,
+and unnecessary casts. Do not invent a type, original name, or TU boundary to make
+the source look finished.
+
+### Working method
+
+1. Read the current [v2 queue](agents/queue-v2.md), accepted handoff, and immutable
+   base. Reserve the exact sources, shared headers, and ranges through the existing
+   protocol before editing. The candidate list below grants no ownership.
+2. Trace the chosen operation through its callers, declarations, and definition.
+   Include an existing canonical header. If none exists, a narrow native
+   declaration matching the definition is a useful first experiment; a new shared
+   header must serve the selected consumers and contain no speculative API or types.
+3. Separate name evidence: [RTTI proves stored class names and base relationships;
+   method names and parameter spellings need their own
+   evidence](symbol-name-provenance.md). A hand-spelled mangled call can indicate
+   declaration debt or a compiler limitation; it does not establish either one.
+4. Form a small source hypothesis and compare baseline/candidate objects under the
+   same pinned compiler and flags. Inspect all relevant sections, symbols, and
+   relocations, including generated data and lifecycle output. Identical whole
+   objects are strong evidence for a local cleanup; a text-only match is narrower.
+5. Apply [candidate proof](#5-prove-each-candidate-before-growing-the-batch) and
+   [consumer checks](#6-verify-migration-side-effects), including declaration
+   agreement and actual `complete` delinks ownership. Obtain independent source
+   review and final production validation through the existing workflow. Report
+   pre-existing failures separately from failures introduced by the candidate.
+6. Update the log below with the immutable candidate, measured result, remaining
+   limitation, review/proof state, and next scope. Refresh evidence when the base,
+   compiler inputs, shared headers, or candidate changes. Reference private artifact paths in
+   the handoff; do not turn this guide into a second queue or validation database.
+
+Treat recipes and old "required for codegen" comments as hypotheses to retest.
+Remove a stale claim when the experiment disproves it, and retain the precise
+boundary of any limitation that remains. A successful cast cleanup does not prove
+that every cast is removable or that the reconstructed type is historically exact.
+
+### Candidate order
+
+These are review leads as of 2026-10-18. Recheck current source and live ownership
+before adopting any row; do not expand a small slice into a whole-tree header pass.
+
+| Order | Scope | Question to settle |
+| --- | --- | --- |
+| Current | `src/runtime/graphics/fader/d_fader.cpp` | Remove avoidable field-access casts, use native helper declarations where proved, and correct stale leftover comments. |
+| Next | `Matrix4x3_FromTranslation.c`, `Matrix4x3_ApplyInPlaceToScale.c`, `Matrix4x3_ApplyInPlaceToRotationX.c` under `src/` | Can the tiny helpers share an evidenced trivial matrix view and agree with their callers? `common.h` and `math/Matrix.h` have different source shapes; the latter contains a nontrivial `Vector3`, so changing the include can change lifetime output. |
+| Next | `src/cstd.cpp` / `src/ApproachAngle.cpp` caller boundary | Establish narrowly shared declarations if useful. The current integer `ApproachLinear` definition returns `int`; do not preserve a caller's `void` declaration merely because its result is ignored. |
+| Next | CP15 and GX/GXS cache/palette upload boundary | Replace avoidable manually mangled calls using the existing native definitions; add only declarations supported by this consumer scope. Preserve hardware-required assembly. |
+| Later | `src/runtime/graphics/fader/d_wipe.cpp` | Review the separate IRQ/scanline-table implementation as its own slice, after the smaller fader work. |
+
+### Running evidence log
+
+**2026-10-18 - fader cleanup, locally proved.** Baseline:
+`39e85ae247da338885b6063c69bf7fef40e99454`. Candidate: this commit; its immutable
+SHA and independent review are recorded by queue task `fader-clean1018`.
+See the [handoff](agents/handoffs/fader-clean1018.md) and
+[experiment record](experiments/fader-clean1018.json) for commands and limitations.
+
+- All seven cast-through-`char*` field accesses now use direct members. Five helper
+  interfaces use native declarations/calls, `ApproachLinear` agrees with its
+  definition's `int` return and reference parameter, and three matrix declarations
+  use `Matrix4x3*`. The entire final 12,920-byte object is identical to baseline:
+  SHA-256 `93cfa557e878e4ef846d30012690703b06c50d919cbfc3793f19f8887e270f49`.
+  Those particular alias casts were unnecessary. A host divider forwarder keeps
+  native fader calls working in MSVC; the Win32 Release smoke test passes.
+- Using `G2x.h`'s existing `short` brightness parameter at the currently `int`-typed
+  boundary grew `dFdWipe_c::AdvanceFade` from 320 to 328 bytes and
+  `dFdColor_c::AdvanceFade` from 148 to 156 bytes. Fifteen plausible native-call
+  variants did not match. These bounded failures do not establish impossibility
+  or the original parameter width. The explicit bridge remains pending a
+  callee/caller audit; no shared signature was changed to hide the disagreement.
+- Strict relocation proof passed all 30 enrolled functions without blind spots.
+  The production run reproduced all 106 ARM9 modules, 11,334 functions, and 348
+  data claims, with no new errors. Nine inherited symbol errors and one differing
+  broad data advisory remain; this is not a clean whole-tree source audit.
+  `--no-rom` skips candidate container packaging. Declaration disagreements fell
+  by two without a baseline edit. Independent acceptance must be read from the
+  queue record for the exact candidate; producer results are not that acceptance.
+- Next: review the three small matrix helper interfaces, then narrowly selected
+  math and hardware helper declarations. Do not expand into actors or minigames.
+  The base-header allocator bridge and scene/frame manual dispatch remain outside
+  this candidate. This is a proved partial cleanup, not a completed fader family.
+
+For each later entry, record **date; base/candidate SHA; reserved scope; source
+change; A/B evidence; remaining limitation; independent review; production result;
+next step**. Keep a result pending until the corresponding gate has actually run.
+
 ## 3. Write real class-form source
 
 For measured destructor, vtable, constructor and language-mode behavior, consult
