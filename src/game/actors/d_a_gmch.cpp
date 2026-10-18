@@ -58,6 +58,7 @@ enum daGmch_c_AssetId {
 #include "Model.h"
 #include "dExtFrameCtrl_c.h"
 #include "SharedFilePtr.h"
+#include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -966,3 +967,7 @@ StatePair data_ov081_02128f40[9] = {
 extern Vector3 data_ov081_02128ef8;
 GmchDrawReg gmchDrawReg(data_ov081_02128ef8);
 Vector3 data_ov081_02128ef8;
+
+/* Registry priorities, flags and clipping ranges use the shared actor profile contract. */
+extern "C" SpawnInfo<daGmch_c> g_profile_GAMAGUCHI = {
+    daGmch_c_classInit, 0x105, 0x77, 0x10000007, 0x3f000, 0x50000, 0x1000000, 0xa28000};
