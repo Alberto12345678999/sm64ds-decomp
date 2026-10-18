@@ -1,5 +1,7 @@
     .text       start:0x020bfec0 end:0x0212b890 kind:code align:32
-    .rodata start:0x0212b890 end:0x0212ee0c kind:rodata align:4
+    .rodata.before_coin_tables start:0x0212b890 end:0x0212e308 kind:rodata align:4
+    .rodata.coin_tables start:0x0212e308 end:0x0212e450 kind:rodata align:4
+    .rodata start:0x0212e450 end:0x0212ee0c kind:rodata align:4
     .rodata.sound_tables start:0x0212ee0c end:0x0212ef5c kind:rodata align:4
     .rodata.sound_row_views start:0x0212ef5c end:0x0212ef9c kind:rodata align:4
     .rodata.sound_note_offsets start:0x0212ef9c end:0x0212efc4 kind:rodata align:4
@@ -56,6 +58,7 @@ src/minigames/d_s_mg_card.cpp:
 
 src/minigames/d_s_mg_coin.cpp:
     complete
+    .rodata.coin_tables start:0x0212e308 end:0x0212e450
     .text start:0x020dbe40 end:0x020de988
     .init start:0x0213014c end:0x021303d0
     .ctor start:0x02133588 end:0x0213358c

@@ -1968,7 +1968,7 @@ sCoinBlockWanderRowY kind:data(any) addr:0x0212e3d0
 sCoinBlockWanderRowHeight kind:data(any) addr:0x0212e3e8
 sCoinBlockDropRowY kind:data(any) addr:0x0212e400
 sCoinBlockFallRowY kind:data(any) addr:0x0212e418
-data_ov006_0212e430 kind:data(any) addr:0x0212e430
+sCoinSparkleSpawnOffsets kind:data(any) addr:0x0212e430
 sCurlingBitAStates kind:data(any) addr:0x0212e450
 sCurlingBitBStates kind:data(any) addr:0x0212e454
 sCurlingScoreDelays kind:data(any) addr:0x0212e458
