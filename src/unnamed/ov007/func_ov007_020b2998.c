@@ -43,18 +43,11 @@ struct dScene_c
   struct Widget *f_108[3];
 };
 
-struct Vec3
-{
-  int x;
-  int y;
-  int z;
-};
-
 extern struct dScene_c *data_ov007_0210342c;
 extern void func_ov007_020b283c(void);
 extern int func_ov007_020b2bd4(int a, int b);
 extern int func_ov007_020beaa0(int a, int b);
-extern void func_ov007_020b7708(int idx, struct Vec3 *pos);
+extern void func_ov007_020b7708(int idx, void *pos);
 extern struct Widget *func_ov007_020c44e4(int n);
 extern void func_ov007_020c43bc(struct Widget *w, int r1);
 extern void func_ov007_020c4388(struct Widget *w, int r1);
@@ -63,7 +56,7 @@ void func_ov007_020b2998(void)
 {
   int i;
   struct Widget *w;
-  struct Vec3 pos;
+  Vector3 pos;
 
   func_ov007_020b283c();
   data_ov007_0210342c->f_f4 = func_ov007_020b2bd4(data_ov007_0210342c->f_ec,

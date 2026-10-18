@@ -1,19 +1,13 @@
+#include "types.h"
 #include "nitro/fx/fx.h"
-typedef short s16;
-typedef int s32;
-typedef long long s64;
 
-typedef struct {
-    s16 x, y, z;
-} Vec3s;
-
-extern Vec3s data_02099fc4;
-extern void func_02053380(void *a, Vec3s *b);
+extern Vector3s data_02099fc4;
+extern void func_02053380(void *a, Vector3s *b);
 
 void func_0204cebc(void *c)
 {
-    Vec3s vecA;
-    Vec3s vecB;
+    Vector3s vecA;
+    Vector3s vecB;
 
     vecA = data_02099fc4;
     func_02053380((char *)c + 0x3c, &vecB);

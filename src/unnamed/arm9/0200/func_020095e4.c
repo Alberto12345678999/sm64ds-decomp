@@ -1,3 +1,4 @@
+#include "types.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 extern void FUN_02029ab0(void);
@@ -22,13 +23,9 @@ typedef struct {
 } PlayerView;
 
 typedef struct {
-    int x, y, z;
-} Vec3;
-
-typedef struct {
     char pad_000[0x80];
-    Vec3 lookAt; /* 0x080 */
-    Vec3 pos;    /* 0x08c */
+    Vector3 lookAt; /* 0x080 */
+    Vector3 pos;    /* 0x08c */
     char pad_098[0x78];
     PlayerView *mTargetPlayer; /* 0x110 */
     char pad_114[0x44];
@@ -47,7 +44,7 @@ typedef struct {
 int func_020095e4(void *cam)
 {
     CameraView *view = (CameraView *)cam;
-    int v[3];
+    Vector3 v;
     int off;
     int r7;
     short old186, old17e;
@@ -84,13 +81,13 @@ int func_020095e4(void *cam)
         }
     }
 
-    v[0] = 0;
-    v[1] = 0;
-    v[2] = -0x280000;
+    v.x = 0;
+    v.y = 0;
+    v.z = -0x280000;
     Matrix4x3_FromTranslation(data_020a0e68, view->pos.x, view->pos.y, view->pos.z);
     Matrix4x3_ApplyInPlaceToRotationY(data_020a0e68, view->mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, view->mAngleX);
-    MulVec3Mat4x3(v, data_020a0e68, &view->lookAt);
+    MulVec3Mat4x3(&v, data_020a0e68, &view->lookAt);
     view->mTargetPlayer->mAngleY = view->mAngleY - 0x8000;
     return 1;
 }

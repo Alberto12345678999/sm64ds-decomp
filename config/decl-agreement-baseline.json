@@ -10924,8 +10924,8 @@
         "param:#3 Vec3 *"
       ],
       "src/unnamed/arm9/0200/func_0200b990.c": [
-        "param:#2 V3 *",
-        "param:#3 V3 *"
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ],
       "src/unnamed/ov002/func_ov002_020d8a50.c": [
         "param:#2 Vector3 *",
@@ -11028,7 +11028,7 @@
         "param:#2 Vector3 *"
       ],
       "src/unnamed/arm9/0200/func_0200b990.c": [
-        "param:#2 V3 *"
+        "param:#2 Vector3 *"
       ],
       "src/unnamed/ov002/func_ov002_020d6dac.c": [
         "param:#2 void *"
@@ -24099,7 +24099,7 @@
     },
     "func_02053380": {
       "src/unnamed/arm9/0204/func_0204cebc.c": [
-        "param:#2 Vec3s *"
+        "param:#2 Vector3s *"
       ]
     },
     "func_02053ec0": {

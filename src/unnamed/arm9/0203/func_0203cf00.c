@@ -1,16 +1,9 @@
-typedef int s32;
+#include "types.h"
 
-struct Vector3 {
-    int x;
-    int y;
-    int z;
-};
+extern void CrossVec3(Vector3 *a, Vector3 *b, Vector3 *result);
 
-extern void CrossVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *result);
-
-void func_0203cf00(struct Vector3 *out, struct Vector3 *a, struct Vector3 *b)
-{
-    struct Vector3 tmp;
+void func_0203cf00(Vector3 *out, Vector3 *a, Vector3 *b) {
+    Vector3 tmp;
     CrossVec3(a, b, &tmp);
     out->x = tmp.x;
     out->y = tmp.y;
