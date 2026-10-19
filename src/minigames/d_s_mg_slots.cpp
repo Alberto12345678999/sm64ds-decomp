@@ -1073,7 +1073,7 @@ void SlotBet_OnTouch(void *c_) {
     if (icon->unk_01c >= 3) {
         return;
     }
-    if (icon->unk_010 != 0) {
+    if (icon->mOn != 0) {
         return;
     }
     scene = gMgScene;
@@ -1095,14 +1095,14 @@ void SlotBet_Reset(void *raw) {
     dThIcon_c *icon = (dThIcon_c *)raw;
     icon->unk_01c = 0;
     icon->unk_020 = 0;
-    if (icon->unk_014 >= 1)
-        icon->unk_011 = 1;
+    if (icon->mTouchKind >= 1)
+        icon->mReady = 1;
 }
 }
 
 // @symbol _ZN12dScMgSlot1_c9betIcon_c6RenderEv
 void dScMgSlot1_c::betIcon_c::Render() {
-    OAM::RenderSub((OamAttr *)data_ov006_0213e528[unk_010], unk_004, unk_006, -1, 1);
+    OAM::RenderSub((OamAttr *)data_ov006_0213e528[mOn], mX, mY, -1, 1);
     int i;
     int y = 0xb0;
     int zero = 0;
@@ -1132,7 +1132,7 @@ void dScMgSlot1_c::betIcon_c::Behavior() {
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBet_Place(char *icon) {
     func_ov001_020ab5b0(icon, 1, 0x90, 0xb0, 0x10, 8);
-    *(int *)(icon + 0x18) = 6;
+    ((dThIcon_c *)icon)->mPressTime = 6;
 }
 }
 
@@ -1361,8 +1361,8 @@ s32 dScMgSlot1_c::Behavior() {
                         if (dx <= 0x20 && dx >= -0x20 && dy <= 0x20 && dy >= -0x20) {
                             mReelSpinning[i] = 0;
                             mStoppedReelCount++;
-                            if (mBetIcon.unk_011 != 0) {
-                                mBetIcon.unk_011 = 0;
+                            if (mBetIcon.mReady != 0) {
+                                mBetIcon.mReady = 0;
                                 Mg_SaveRecordPair(mCredits, mHudScore);
                             }
                             func_02012718(0x162, sSlot1ReelPos[i][0] << 12);
