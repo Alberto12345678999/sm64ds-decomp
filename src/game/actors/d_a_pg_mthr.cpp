@@ -432,11 +432,14 @@ void daPgMthr_c::func_ov018_02111d28()
 
 extern "C" {
 /* dBgPi is 0x28. The copy below is not dBgPi::CopyTo: `b ? a : a` is the
-   load that matches, and a real dBgPi local would run the constructor. */
+   load that matches, and a real dBgPi local would run the constructor.
+   A view of dBgPi past its vptr, flattened: nesting the real SurfaceInfo
+   (whose Vector3 has a constructor) renumbers every @NNN in this file. */
 struct dBgPiRawBody {
-    int a, b, c, d, e;
-    unsigned short f, g;
-    int h, i, j;
+    int clpsW0, clpsW1;            /* surface.clps.w0/w1 */
+    int normalX, normalY, normalZ; /* surface.normal */
+    unsigned short triangleID, colliderIdx;
+    int clsnID, owner, collider;
 };
 struct dBgPiRaw {
     void *vt;
@@ -467,24 +470,24 @@ void func_ov018_02111bf0(void *cv, void *wv)
         struct dBgPiRaw cr;
         Vector3 wn;
         struct dBgPiRawBody *dst = &cr.info;
-        int a = *(int *)((char *)src + 4);
-        int b = *(int *)((char *)src + 8);
+        int a = src->info.clpsW0;
+        int b = src->info.clpsW1;
         /* `= a` DIFFs. The tautology is the load. */
-        *(int *)((char *)dst + 0) = b ? a : a;
-        *(int *)((char *)dst + 4) = b;
-        int t = *(int *)((char *)src + 0xc);
+        dst->clpsW0 = b ? a : a;
+        dst->clpsW1 = b;
+        int t = src->info.normalX;
         void *vt = (void *)data_02099368;
-        *(int *)((char *)dst + 8) = t;
-        t = *(int *)((char *)src + 0x10);
-        *(int *)((char *)dst + 0xc) = t;
-        t = *(int *)((char *)src + 0x14);
-        *(int *)((char *)dst + 0x10) = t;
+        dst->normalX = t;
+        t = src->info.normalY;
+        dst->normalY = t;
+        t = src->info.normalZ;
+        dst->normalZ = t;
         cr.vt = vt;
-        cr.info.f = *(unsigned short *)((char *)src + 0x18);
-        cr.info.g = *(unsigned short *)((char *)src + 0x1a);
-        cr.info.h = *(int *)((char *)src + 0x1c);
-        cr.info.i = *(int *)((char *)src + 0x20);
-        cr.info.j = *(int *)((char *)src + 0x24);
+        cr.info.triangleID = src->info.triangleID;
+        cr.info.colliderIdx = src->info.colliderIdx;
+        cr.info.clsnID = src->info.clsnID;
+        cr.info.owner = src->info.owner;
+        cr.info.collider = src->info.collider;
         ((SurfaceInfo *)dst)->CopyNormalTo(wn);
         _ZN5dBgPiD1Ev(&cr);
     }

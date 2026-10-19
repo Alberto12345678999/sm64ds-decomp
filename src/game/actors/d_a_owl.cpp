@@ -485,7 +485,7 @@ int daOwl_c::func_ov094_02135fe0()
 int daOwl_c::func_ov094_02136024()
 {
     Player *p = ClosestPlayer();
-    if (p != 0 && *(int *)((char *)p + 0x37c) != 0) {
+    if (p != 0 && p->mClimbClsn != 0) {
         char *ip = (char *)&p->mPosX;
         OwlVec pp;
         OwlVec d;

@@ -13,9 +13,6 @@ struct dActor_c;
  * head's +0x0c. Unlink agrees.
  *
  * deslop leftovers:
- * - unk_19 / unk_1a: this class's TU stores the 4th link argument into
- *   unk_19 and special-cases it against 3; Unlink zeros unk_19. Original
- *   names are not in the cartridge.
  * - Bit 0 of mFlags is the cap bank (AddCap). Bit 1 is tested by
  *   GetCapState. Bit 2 means "not linked".
  */
@@ -36,8 +33,14 @@ struct dCapIcon_c {
     s32 mSlot;                    /* 0x14 */
     /* Which character's list this node is in. Unlink parks it at 3. */
     u8 mCharacter;                /* 0x18 */
-    u8 unk_19;                    /* 0x19 */
-    u8 unk_1a;                    /* 0x1a */
+    /* The link helper's 4th argument (daObjMarioCap_c passes its mIconKind);
+       Unlink zeros it. Kind 3 raises request flag 8 on link, kind 4 is the
+       one the reset pass commits, and the dispatchers keep the highest kind
+       of a list as its priority. */
+    u8 mIconKind; /* 0x19 */
+    /* Zeroed on link. The commit (func_ov001_020aa6e4) stores 0x3c here and
+       copies it into gCapIconFlashTimer, the HUD flash countdown. */
+    u8 mFlashFrames;              /* 0x1a */
     u8 mFlags;                    /* 0x1b */
 
     dCapIcon_c();
@@ -63,8 +66,8 @@ struct CapIcon {
     struct CapIcon *mNext;        /* 0x10 */
     s32 mSlot;                    /* 0x14 */
     u8 mCharacter;                /* 0x18 */
-    u8 unk_19;                    /* 0x19 */
-    u8 unk_1a;                    /* 0x1a */
+    u8 mIconKind;                 /* 0x19 */
+    u8 mFlashFrames;              /* 0x1a */
     u8 mFlags;                    /* 0x1b */
 };
 typedef struct CapIcon CapIcon;
