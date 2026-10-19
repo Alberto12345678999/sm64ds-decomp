@@ -91,19 +91,24 @@ struct dScMgSnowball_bit {
                        goes to 3 (_StateDriftStop) */
     u16 fallTimer;  /* 0x18 Bit_StateFallStart arms it; _StateFallSpeedUp and
                        _StateFallSlowDown count it down */
-    u8  active;     /* 0x1a Bit_UpdateAll runs only active bits; Bit_InitAll
+    u8 active;      /* 0x1a Bit_UpdateAll runs only active bits; Bit_InitAll
                        sets it */
-    u8  kind;       /* 0x1b sSnowballBitKindTable index; Bit_PickKind sets it */
-    u8  driftState; /* 0x1c sSnowballBitAStateTable / sSnowballBitBStateTable
+    u8 kind;        /* 0x1b sSnowballBitKindTable index; Bit_PickKind sets it */
+    u8 driftState;  /* 0x1c sSnowballBitAStateTable / sSnowballBitBStateTable
                        index (Bit_RunKindA, Bit_RunKindB) */
-    u8  fallState;  /* 0x1d sSnowballBitStateTable index (Bit_RunKindA); the
+    u8 fallState;   /* 0x1d sSnowballBitStateTable index (Bit_RunKindA); the
                        fall states step it 0 -> 1 -> 2 -> 0 */
-    u8  visible;    /* 0x1e Bit_DrawAll draws only with it set; Bit_InitAll sets it */
-    u8  spriteA;    /* 0x1f sSnowballBitSprites index, Mg_RenderSubSpriteMtx */
-    u8  spriteB;    /* 0x20 sSnowballBitSprites index, DrawOamSprite; Bit_InitAll
+    u8 visible;     /* 0x1e Bit_DrawAll draws only with it set; Bit_InitAll sets it */
+    u8 spriteA;     /* 0x1f sSnowballBitSprites index, Mg_RenderSubSpriteMtx */
+    u8 spriteB;     /* 0x20 sSnowballBitSprites index, DrawOamSprite; Bit_InitAll
                        picks it 1..4 entries past spriteA, mod 5 */
-    u8  pad21[3];
+    u8 pad21[3];
 };
+
+#ifndef SM64DS_PLATFORM_PC
+/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char dScMgSnowball_bit_size_must_be_0x24[sizeof(dScMgSnowball_bit) == 0x24 ? 1 : -1];
+#endif
 
 struct dScMgSnowball_c : dScMgSingle3DBase_c {
     /* The 2-vector value type the collision ring carries the last hit in
@@ -152,7 +157,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
 
     /* mBits records: the 50 on-course objects, dispatched by the four
        sinit-built PMF tables at sSnowballBitStateTable/38/50/70 */
-    void Bit_DrawAll();           /* render live mBits records */
+    void Bit_DrawAll();                   /* render live mBits records */
     void Bit_StateFallSlowDown(int idx);  /* table 02143020 entry 2: cooldown tick */
     void Bit_StateFallSpeedUp(int idx);   /* table 02143020 entry 1 */
     void Bit_StateFallStart(int i);       /* table 02143020 entry 0 */
@@ -167,8 +172,8 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     void BitB_StatePause(int idx);        /* table 02143050 entry 0 */
     void Bit_RunKindB(int idx);    /* table 02143038 entry 1: dispatches 02143050 on state */
     void Bit_PickKind(int idx);    /* table 02143038 entry 0 */
-    void Bit_UpdateAll();           /* walk mBits, dispatch table 02143038 */
-    void Bit_InitAll();           /* reset the mBits records */
+    void Bit_UpdateAll();          /* walk mBits, dispatch table 02143038 */
+    void Bit_InitAll();            /* reset the mBits records */
 
     /* 0x4f38 -- the generated course, 0x10 lanes of 0x2e0 rows. The stride
        is the lane's: BuildCourse writes every tile as
