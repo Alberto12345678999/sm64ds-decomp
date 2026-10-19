@@ -318,98 +318,109 @@ dActor_c *dActor_c::Spawn(u32 actorID, u32 spawnParam, const Vector3 &pos,
 // @symbol _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
 /* ROM ordinal 77 -- _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
  * 0x02010e08  size 0x24 */
-extern "C" {
-void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(struct dActor_c *self, int a, int b, int c, int d) {
-self->mClipOffsetY=a;
-self->mClipRadius=b>>3;
-self->mClipDistance=c>>3;
-self->mFarDistance=d>>3;
-}
+/* Fix12<int> by value: defined by its symbol, see the header. The three
+   ranges are stored at 1/8 scale, the scale BeforeBehavior projects into. */
+extern "C" void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, s32 clipOffsetY,
+                                                          s32 clipRadius, s32 clipDistance,
+                                                          s32 farDistance) {
+    self->mClipOffsetY = clipOffsetY;
+    self->mClipRadius = clipRadius >> 3;
+    self->mClipDistance = clipDistance >> 3;
+    self->mFarDistance = farDistance >> 3;
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol func_02010da4
 /* ROM ordinal 76 -- func_02010da4
  * 0x02010da4  size 0x64 */
-extern "C" void func_02010da4(int* p)
-{
-    int v;
-    v = p[0x5c / 4];
-    if (v < -0x7d00000) p[0x5c / 4] = -0x7d00000;
-    else if (v > 0x7d00000) p[0x5c / 4] = 0x7d00000;
-    v = p[0x60 / 4];
-    if (v < -0x7d00000) p[0x60 / 4] = -0x7d00000;
-    else if (v > 0x7d00000) p[0x60 / 4] = 0x7d00000;
-    v = p[0x64 / 4];
-    if (v < -0x7d00000) p[0x64 / 4] = -0x7d00000;
-    else if (v > 0x7d00000) p[0x64 / 4] = 0x7d00000;
+/* Clamps each axis of mPos to +-32000.0, the edge of the world. */
+extern "C" void func_02010da4(dActor_c *actor) {
+    s32 v;
+    v = actor->mPosX;
+    if (v < -0x7d00000)
+        actor->mPosX = -0x7d00000;
+    else if (v > 0x7d00000)
+        actor->mPosX = 0x7d00000;
+    v = actor->mPosY;
+    if (v < -0x7d00000)
+        actor->mPosY = -0x7d00000;
+    else if (v > 0x7d00000)
+        actor->mPosY = 0x7d00000;
+    v = actor->mPosZ;
+    if (v < -0x7d00000)
+        actor->mPosZ = -0x7d00000;
+    else if (v > 0x7d00000)
+        actor->mPosZ = 0x7d00000;
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c
 /* ROM ordinal 75 -- _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c
  * 0x02010d40  size 0x64 */
-typedef int s32;
-struct Vec3 { s32 x, y, z; };
+/* AddVec3's own definition (src/AddVec3.c) spells its operands with this
+   three-int struct, not Vector3; declared to agree with it. */
+struct Vec3 {
+    s32 x, y, z;
+};
 extern "C" {
 void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-void func_02010da4(int *p);
+void func_02010da4(dActor_c *actor);
 }
+/* Adds the velocity (unk_0a4, mVertSpeed, unk_0ac) to mPos, then the
+   cylinder's horizontal push-out, then clamps to the world bounds. */
 void dActor_c::UpdatePosWithOnlySpeed(dCc_c *clsn) {
-    AddVec3((Vec3 *)&mPosX, (Vec3 *)&unk_0a4, (Vec3 *)&mPosX);
+    AddVec3((Vec3 *)&mPos, (Vec3 *)&unk_0a4, (Vec3 *)&mPos);
     if (clsn != 0) {
-        *(s32 *)(&mPosX) += clsn->pushback.x;
-        *(s32 *)(&mPosZ) += clsn->pushback.z;
+        mPosX += clsn->pushback.x;
+        mPosZ += clsn->pushback.z;
     }
-    func_02010da4((int *)this);
+    func_02010da4(this);
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv
 /* ROM ordinal 74 -- _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv
  * 0x02010c5c  size 0xe4 */
-typedef short s16;
-typedef long long s64;
 extern "C" {
-extern "C" s16 data_02082214[];
+extern s16 data_02082214[]; /* NitroSDK FX_SinCosTable_: {sin, cos} per angle >> 4 */
 }
-void dActor_c::UpdatePosWithHorzSpeedAndAng(){
-    void *c = this;
-    s32 v98 = ((dActor_c *)c)->mHorzSpeed;
-    if (v98 == 0) {
-        s32 a8 = *(s32*)((char*)c+0xa8);
-        s32 v9c = *(s32*)((char*)c+0x9c);
-        s32 a0 = *(s32*)((char*)c+0xa0);
-        s32 nx = a8 + v9c;
-        if (nx >= a0) a0 = nx;
-        *(s32*)((char*)c+0xa4) = 0;
-        *(s32*)((char*)c+0xa8) = a0;
-        *(s32*)((char*)c+0xac) = 0;
-        return;
+/* Splits mHorzSpeed along mPrevAngleY (the heading the velocity follows) into
+   the x/z velocity words, x by sin and z by cos, and applies mVertAccel to
+   mVertSpeed, clamped at mTerminalVelocity. */
+void dActor_c::UpdatePosWithHorzSpeedAndAng() {
+    s32 horzSpeed = mHorzSpeed;
+    if (horzSpeed == 0) {
+        s32 vertSpeed = mVertSpeed + mVertAccel;
+        s32 terminal = mTerminalVelocity;
+        if (vertSpeed >= terminal)
+            terminal = vertSpeed;
+        unk_0a4 = 0;
+        mVertSpeed = terminal;
+        unk_0ac = 0;
     } else {
-        s32 a8;
-        s32 v9c;
-        s32 a0;
-        s64 px;
-        s32 j;
-        s16 sinv;
-        s32 nx;
+        s32 vertSpeed;
+        s32 accel;
+        s32 terminal;
+        s32 speedZ;
+        s32 idx;
         s16 cosv;
-        s64 pz;
-        j = ((s32)*(unsigned short*)((char*)c+0x94) >> 4) << 1;
-        sinv = data_02082214[j + 1];
-        a8 = *(s32*)((char*)c+0xa8);
-        v9c = *(s32*)((char*)c+0x9c);
-        a0 = *(s32*)((char*)c+0xa0);
-        px = FX_MUL(v98, sinv);
-        nx = a8 + v9c;
-        if (nx >= a0) a0 = nx;
-        cosv = data_02082214[j];
-        pz = FX_MUL(v98, cosv);
-        *(s32*)((char*)c+0xa4) = (s32)pz;
-        *(s32*)((char*)c+0xa8) = a0;
-        *(s32*)((char*)c+0xac) = (s32)px;
-        return;
+        s32 next;
+        s16 sinv;
+        s32 speedX;
+        idx = ((u16)mPrevAngleY >> 4) * 2;
+        cosv = data_02082214[idx + 1];
+        vertSpeed = mVertSpeed;
+        accel = mVertAccel;
+        terminal = mTerminalVelocity;
+        speedZ = FX_MUL(horzSpeed, cosv);
+        next = vertSpeed + accel;
+        if (next >= terminal)
+            terminal = next;
+        sinv = data_02082214[idx];
+        speedX = FX_MUL(horzSpeed, sinv);
+        unk_0a4 = speedX;
+        mVertSpeed = terminal;
+        unk_0ac = speedZ;
     }
 }
 
