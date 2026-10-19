@@ -89,23 +89,15 @@
  * 0x02011268  size 0x60 */
 bool dActor_c::BeforeInitResources()
 {
-    int spawnEvenIfKilledBefore;
+    int spawnEvenIfKilledBefore = (mFlags & 0x8000000) ? 1 : 0;
 
-    spawnEvenIfKilledBefore = (mFlags & 0x8000000) ? 1 : 0;
-    if (spawnEvenIfKilledBefore != 0) {
-        goto skip;
-    }
-    if (GetBitInDeathTable() == 0) {
-        goto skip;
-    }
-    MarkForDestruction();
-    return true;
-skip:;
-    {
-        int r = fBase_c::BeforeInitResources();
-        if (r == 0) return false;
+    if (spawnEvenIfKilledBefore == 0 && GetBitInDeathTable() != 0) {
+        MarkForDestruction();
         return true;
     }
+    if (!fBase_c::BeforeInitResources())
+        return false;
+    return true;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -201,16 +193,11 @@ int dActor_c::BeforeBehavior()
         }
     }
 
-    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) == 0) {
-        u32 f = mFlags;
-        if ((f & 9) != 9 && (data_0209b464 == 0 || (f & data_0209b464) != 0))
-            goto do_copy;
-        if (data_0209fc68 != 0)
-            goto do_copy;
-    }
-    return 0;
+    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) != 0 ||
+        (((mFlags & 9) == 9 || (data_0209b464 != 0 && (mFlags & data_0209b464) == 0)) &&
+         data_0209fc68 == 0))
+        return 0;
 
-do_copy:
     mPrevPosX = mPosX;
     mPrevPosY = mPosY;
     mPrevPosZ = mPosZ;
@@ -238,15 +225,8 @@ int dActor_c::BeforeRender()
         return 0;
 
     flags = mFlags;
-    if (flags & 0x20)
-        goto ret0;
-    if (!(flags & 8))
-        goto ret1;
-    if (!(flags & 2))
-        goto ret1;
-ret0:
-    return 0;
-ret1:
+    if ((flags & 0x20) || ((flags & 8) && (flags & 2)))
+        return 0;
     return 1;
 }
 
@@ -1516,17 +1496,13 @@ namespace Sound {
 
 int PlaySecretSound(dActor_c* actor, u16* counter)
 {
-    int ret = 0;
-    (void)actor;
     if (*counter < 0x4b) {
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-        goto done;
-    }
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x7f, 0, kPoolDist, 0))
+    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x7f, 0, kPoolDist, 0)) {
         return 1;
-done:
-    return ret;
+    }
+    return 0;
 }
 
 }
@@ -1539,17 +1515,13 @@ namespace Sound {
 
 int PlaySmallSecretSound(dActor_c* actor, u16* counter)
 {
-    int ret = 0;
-    (void)actor;
     if (*counter < 0x19) {
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-        goto done;
-    }
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x7f, 0, kPoolDist, 0))
+    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x7f, 0, kPoolDist, 0)) {
         return 1;
-done:
-    return ret;
+    }
+    return 0;
 }
 
 }
@@ -1560,17 +1532,13 @@ done:
  * 0x0200f7f0  size 0x84 */
 extern "C" int func_0200f7f0(struct dActor_c *actor, u16 *counter)
 {
-    int ret = 0;
-    (void)actor;
     if (*counter < 0x69) {
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-        goto done;
-    }
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x7f, 0, kPoolDist, 0))
+    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x7f, 0, kPoolDist, 0)) {
         return 1;
-done:
-    return ret;
+    }
+    return 0;
 }
 
 /* -------------------------------------------------------------------------- */
