@@ -330,7 +330,7 @@ struct dActor_c : dBase_c {
        class parameter must never be DEFINED as methods -- CW homes those to the
        stack, costing +0x14. See notes/mwccarm-codegen.md 6az. */
     void SpawnFireball(const Vector3 &pos, const Vector3_16 *rot,
-                        Fix12<int> horzSpeed, Fix12<int> unk35c, u32 param1);
+                        Fix12<int> horzSpeed, Fix12<int> targetSpeed, u32 param1);
     bool IsPlayerInRange(Fix12<int> posX, Fix12<int> posY, Fix12<int> posZ,
                           s32 maxDist);
     void DropShadowScaleXYZ(dExtShadowModel_c &, Matrix4x3 &matrix, Fix12<int> scaleX,

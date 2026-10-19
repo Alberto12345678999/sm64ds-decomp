@@ -68,7 +68,9 @@
 
 /* Includes: union of the admitted legacy files', first-seen in emission
  * order. Header-guarded, so the union is safe; ordering constraints are
- * not otherwise checked. */
+ * not otherwise checked. daFPknBall_c.h, daObjNumber_c.h and daCoin_c.h
+ * came later, for the classes SpawnFireball, SpawnNumber and
+ * GivePlayerCoins spawn. */
 #include "types.h"
 #include "decl_common.h"
 #include "dActor_c.h"
