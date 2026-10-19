@@ -100,3 +100,40 @@ def test_fix12_scalar_suggestion_never_retypes_a_reference_in_a_mixed_signature(
     symbol = "_ZN7daBar_c4TestER5Fix12IiE5Fix12IiE"
     assert CS.scalar_fix12_mangling(symbol) is None
     assert "Ask tools/mangle.py" in "\n".join(CS.fix12_wall_note(symbol))
+
+
+def _tu_map_with(tmp_path, fingerprint):
+    meta = {"under_segmented": []}
+    if fingerprint is not None:
+        meta["rtti_vtables_fingerprint"] = fingerprint
+    path = tmp_path / "tu_map.json"
+    path.write_text(json.dumps({"meta": meta, "modules": {"ov002": {"units": [
+        {"start": "0x02001000", "end": "0x02001100"}]}}}), encoding="utf-8")
+    return path
+
+
+def test_tu_unit_refuses_a_map_built_from_other_rom_images(tmp_path, monkeypatch):
+    import class_scaffold as CS
+    import rom_fingerprint as RF
+    monkeypatch.setattr(CS, "TU_MAP", _tu_map_with(
+        tmp_path, {"scheme": RF.SCHEME, "sha256": "0" * 64}))
+    monkeypatch.setattr(RF, "fingerprint",
+                        lambda repo=None: {"scheme": RF.SCHEME, "sha256": "1" * 64})
+    with pytest.raises(SystemExit, match="different ROM images"):
+        CS.tu_unit("ov002", [0x02001010])
+
+
+def test_tu_unit_accepts_a_matching_map_and_warns_on_an_old_one(tmp_path, monkeypatch, capsys):
+    import class_scaffold as CS
+    import rom_fingerprint as RF
+    here = {"scheme": RF.SCHEME, "sha256": "1" * 64}
+    monkeypatch.setattr(RF, "fingerprint", lambda repo=None: here)
+    monkeypatch.setattr(CS, "TU_MAP", _tu_map_with(tmp_path, dict(here)))
+    unit, _under = CS.tu_unit("ov002", [0x02001010])
+    assert unit["start"] == "0x02001000"
+    assert capsys.readouterr().err == ""
+    RF._warned.clear()
+    monkeypatch.setattr(CS, "TU_MAP", _tu_map_with(tmp_path, None))
+    unit, _under = CS.tu_unit("ov002", [0x02001010])
+    assert unit["start"] == "0x02001000"      # warned, not refused
+    assert "no ROM fingerprint" in capsys.readouterr().err

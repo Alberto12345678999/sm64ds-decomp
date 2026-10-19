@@ -70,6 +70,7 @@ sys.path.insert(0, str(REPO / "tools"))
 
 import build_pin as BP     # noqa: E402
 import demangle as DM      # noqa: E402
+import rom_fingerprint as RF  # noqa: E402
 import srcpath as SP       # noqa: E402
 import tu_manifest as TUM  # noqa: E402
 import tu_names as TN      # noqa: E402
@@ -360,6 +361,13 @@ def tu_unit(module, addrs):
     if not TU_MAP.is_file():
         return None, None
     data = json.loads(TU_MAP.read_text(encoding="utf-8"))
+    # build/tu_map.json is labelled from build/rtti_vtables.json, so it carries that
+    # file's ROM fingerprint. A map made from other ROM images than this tree's is
+    # refused: its boundaries are the ones a stale extraction gave. The vtable and
+    # size evidence above is read from the ROM itself and does not depend on it.
+    RF.guard(data.get("meta", {}).get("rtti_vtables_fingerprint"), "build/tu_map.json",
+             "python tools/rtti_vtables.py --out build/rtti_vtables.json; "
+             "python tools/tu_map.py")
     label = "main" if module == "arm9" else module
     rec = data.get("modules", {}).get(label)
     if not rec:
