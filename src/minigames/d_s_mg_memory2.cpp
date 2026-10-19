@@ -1103,7 +1103,7 @@ void dScMgMemory2_c::ResetGame() {
     mPairsFound = 0;
     mSelectedCount = 0;
     *(char *)(p + 0x407) = 0; /* 0x5407: only ever cleared, no name */
-    /* mMisses; spelled as the member, @NNN labels later in the file renumber. */
+    /* 0x5408 is mMisses; the member spelling renumbers later @NNN labels. */
     *(char *)(p + 0x408) = 0;
     i = 0;
     do {
