@@ -91,7 +91,8 @@ struct MgEntry {
     u16 id; u16 pad;
     s32 sceneParam, unk8, unkc, unk10;
     MgMid mid;
-    s32 unk28, unk2c, unk30;
+    s32 unk28, unk2c;
+    s32 level; /* +0x30, dScMgBase_c's constructor loads it into mLevel */
 };
 typedef char MgEntry_size_must_be_0x34[sizeof(MgEntry) == 0x34 ? 1 : -1];
 typedef struct Entry {
@@ -388,7 +389,7 @@ s32 dScMiniGm_c::InitResources()
     mNextPageTimer = 0;
     mExitTimer = 0;
     mIconBlinkPhase = 0;
-    unk_05c = 0;
+    mStartLevel = 0;
     unk_060 = 0;
     unk_0a4 = 0;
     unk_0a8 = 0;
@@ -567,7 +568,7 @@ void MiniGm_LoadIconPalette(char *self, int index)
 {
     char *file = LoadFile(sMiniGmIconPalettes[index]);
     _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)file, 0x200);
-    u32 slot = *(u32 *)(self + (index / 4) * 4 + 0x68);
+    u32 slot = ((dScMiniGm_c *)self)->mGfxSlots[index / 4];
     _ZN3GXS10LoadBGPlttEPKvjj(file + 0x20, slot << 5, 0x20);
     Deallocate(file);
 }
@@ -1059,13 +1060,13 @@ void dScMiniGm_c::UpdateGameSelect()
         gMgMenuRowMid = src->mid;
         gMgMenuRow.unk28 = src->unk28;
         gMgMenuRow.unk2c = src->unk2c;
-        gMgMenuRow.unk30 = src->unk30;
+        gMgMenuRow.level = src->level;
     }
     MiniGm_LoadIconPalette((char *)this, sel);
     func_02012790(0x1e);
     _ZN8dScene_c9SetFadersEP15dFdBrightness_c(&data_0209f61c);
     data_0209f61c.func_0202ec9c(0);
-    gMgMenuRow.unk30 = unk_05c;
+    gMgMenuRow.level = mStartLevel;
     dScene_c::StartSceneFade(sMiniGmRows[gMgLastSelected[0]].id,
                              sMiniGmRows[gMgLastSelected[0]].sceneParam, 0);
     _ZN5Sound22StopLoadedMusic_Layer1Ej(0x1e);
