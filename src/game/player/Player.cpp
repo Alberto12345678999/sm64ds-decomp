@@ -26057,7 +26057,7 @@ int Player::Render()
                         char* rec = (char*)p[1];
                         u32 i2;
                         for (i2 = 0; i2 < *(u32*)(hdr + 0x24); i2++) {
-                            *(int*)(rec + 0x20) = unk_61c;
+                            *(int *)(rec + 0x20) = mVsYoshiMaterialParam;
                             rec += 0x30;
                         }
                     }
@@ -26100,7 +26100,7 @@ int Player::Render()
                             char* rec = (char*)p[1];
                             u32 i2;
                             for (i2 = 0; i2 < *(u32*)(hdr + 0x24); i2++) {
-                                *(int*)(rec + 0x20) = unk_61c;
+                                *(int *)(rec + 0x20) = mVsYoshiMaterialParam;
                                 rec += 0x30;
                             }
                         }
@@ -27532,7 +27532,7 @@ void func_ov002_020e5948(void* arg0)
         u8 pid = player->mPlayerNo;
         t = *(void**)((char*)ma + 0xC);
         t2 = *(s32*)((char*)t + 0x20);
-        *(s32*)(c + 0x61C) = t2 + (pid << 1);
+        player->mVsYoshiMaterialParam = t2 + (pid << 1);
     }
 
     n = 0;
