@@ -59,6 +59,24 @@ def test_scaffold_reproduces_the_hand_made_dabar_manifest_shape():
     assert plan["vtable"][0]["symbol"] == "_ZN7daBar_c13InitResourcesEv"
 
 
+def test_dry_run_plan_points_at_the_class_form_note(capsys):
+    """The scaffold's plan output ends by sending the writer to notes/cpp-class-form.md,
+    the measured destructor / vtable / struct-copy source forms (no inputs needed)."""
+    import class_scaffold as CS
+    plan = {"class": "daBar_c", "tree_name": "daBar_c", "module": "ov002",
+            "record": {"kind": "class", "mangled": "7daBar_c", "addr": "0x0", "ztv": None,
+                       "vtable": "0x0"},
+            "bases": [], "size": None, "vtable": [], "base_slots": 0, "members": [],
+            "lifecycle": "none", "warnings": [], "already_in_manifest": [],
+            "destination": None, "destination_reason": "-", "existing_header": None,
+            "files": []}
+    CS.print_plan(plan)
+    out = capsys.readouterr().out.rstrip().splitlines()
+    assert out[-1].startswith("class form ")
+    assert "notes/cpp-class-form.md" in out[-1]
+    assert (REPO / "notes" / "cpp-class-form.md").is_file()
+
+
 def test_scalar_fix12_mangling_rewrites_only_the_simple_shape():
     import class_scaffold as CS
     assert CS.scalar_fix12_mangling("_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt") == \
@@ -82,6 +100,8 @@ def test_scaffold_output_passes_the_source_style_patterns():
                 continue
             assert not re.search(r"\bunk_[0-9a-fA-F]+", text), path
             assert not re.search(r"\)\s*\n\{", text), path
+        tu_text = next(t for p, t in plan["files"].items() if p.endswith(".cpp"))
+        assert "notes/cpp-class-form.md" in tu_text
         if name == "dExtAnm2Model_c":
             tu = next(t for p, t in plan["files"].items() if p.endswith(".cpp"))
             assert "WALL 6az" in tu and "_ZN10ModelAnim213Func_020162C4Ejiit" in tu
