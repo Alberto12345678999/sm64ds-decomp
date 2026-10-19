@@ -45,9 +45,11 @@
  * - BeginResult, `Wiggler *p = (Wiggler *)mWiggler; p->alive = 0; p++`
  *   and mHit / mPhaseTimer, DIFF. The measured raw loop stays; the phase
  *   assignment now uses its native member-pointer field.
- * - Wiggler_StateMoveA, Wiggler_StateWait, Wiggler_StateMoveB,
- *   Wiggler_UpdateSway: earlier full field rewrites (flower, seg, hold, bob)
- *   differed. Those raw accesses remain; callback fields are now native.
+ * - Wiggler_StateMoveA, Wiggler_StateWait, Wiggler_StateMoveB: earlier
+ *   full field rewrites (flower, seg, hold, bob) differed. Those raw accesses
+ *   remain; callback fields are now native. Wiggler_UpdateSway reads its
+ *   fields through a typed Wiggler local; its state test keeps the (Wiggler *)raw
+ *   spelling (thiz->state renumbers the pinned @NNN labels).
  * - Wiggler_StepSegmentsA, Wiggler_StepSegmentsB, Wiggler_StepSegmentsC,
  *   Wiggler_MoveBounce, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
@@ -317,8 +319,7 @@ extern "C" void StarPopup_Draw(void) {
     x = ((int *)sHanaStarPopup)[0] >> 12;
     y = new_var[1] >> 12;
     r = GetGameLanguage();
-    Mg_RenderSubSpriteMtx(*((void **)(((char *)sHanaTextSpritesByLanguage[r]) + 0x34)), x - 8, y,
-                          0);
+    Mg_RenderSubSpriteMtx(((void **)sHanaTextSpritesByLanguage[r])[13], x - 8, y, 0);
     Mg_RenderSubSpriteMtx(*((void **)(sMgDigitSprites + 0x64)), x + 8, y, 0);
 }
 
@@ -444,7 +445,7 @@ extern "C" void HanaPopup_DrawAll(void) {
             int r8 = e->y >> 12;
             int idx = GetGameLanguage();
             void *obj = sHanaTextSpritesByLanguage[idx];
-            Mg_RenderSubSpriteMtx(*(void **)((char *)obj + 0x38), sb - 0x10, r8, a);
+            Mg_RenderSubSpriteMtx(((void **)obj)[14], sb - 0x10, r8, a);
             Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa4), sb, r8, b);
             Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa0), sb + 0x10, r8, c);
         }
@@ -916,19 +917,17 @@ void dScMgHanachan_c::Wiggler::StateMoveB() {
 // @symbol Wiggler_UpdateSway
 /* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawField. */
 extern "C" void Wiggler_UpdateSway(char *raw) {
-    int *thiz = (int *)raw;
-    if (((Wiggler *)raw)->state == &Wiggler::TurnTowardAim && thiz[0x70 / 4] == 0) {
-        short h = *(short *)((char *)thiz + 0x84);
-        if (h < 0 && (short)(h + *(short *)((char *)thiz + 0x86)) > 0) {
+    Wiggler *thiz = (Wiggler *)raw;
+    /* thiz->state here renumbers the TU's pinned @NNN member-pointer labels. */
+    if (((Wiggler *)raw)->state == &Wiggler::TurnTowardAim && thiz->decoy == 0) {
+        short h = thiz->bob;
+        if (h < 0 && (short)(h + thiz->bobRate) > 0) {
             Sound::PlayBank2_2D(0x1e8);
-        } else if (h > 0 && (short)(h + *(short *)((char *)thiz + 0x86)) < 0) {
+        } else if (h > 0 && (short)(h + thiz->bobRate) < 0) {
             Sound::PlayBank2_2D(0x1e7);
         }
     }
-    {
-        short *p = (short *)((int)thiz + 0x84);
-        *p = *p + *(short *)((char *)thiz + 0x86);
-    }
+    thiz->bob += thiz->bobRate;
 }
 
 // @symbol Wiggler_Move
@@ -1856,7 +1855,7 @@ tail:
         if (mPhase != &dScMgHanachan_c::Phase_WaitIntro) {
             int idx = GetGameLanguage();
             void *e = sHanaTextSpritesByLanguage[idx];
-            void *f = *(void **)((char *)e + 0xc);
+            void *f = ((void **)e)[3];
             DrawOamSprite(f, 0x80, 0x10, 0);
             Mg_DrawNumberRotated(0x80, 0x28, (void *)mTimeLeft, 1, -1, 0x800, 0);
         }
@@ -1994,7 +1993,7 @@ void dScMgHanachan_c::Phase_Play() {
         a.x = gTouchX[(unsigned int)idx * 4] << 12;
         a.y = gTouchY[(unsigned int)idx * 4] << 12;
         p = (Thing *)s->mTarget;
-        src = (V2 *)(int)((char *)p + 0x18);
+        src = ((Wiggler *)p)->seg;
         vec[0] = src->x;
         vec[1] = src->y;
 
@@ -2064,7 +2063,7 @@ void dScMgHanachan_c::Phase_Play() {
 
                 func_02012790(0xe);
                 {
-                    V2 *s3 = (V2 *)(int)((char *)sel + 0x18);
+                    V2 *s3 = ((Wiggler *)sel)->seg;
                     vec[2] = s3->x;
                     vec[3] = s3->y;
                 }

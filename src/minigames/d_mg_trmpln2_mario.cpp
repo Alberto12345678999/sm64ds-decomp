@@ -1092,7 +1092,7 @@ extern void Trmp2Mario_StateFall(void *self);
 
 // @symbol Trmp2Mario_EnterFall
 void Trmp2Mario_EnterFall(void *self) {
-    *(W2 *)((char *)self + 0x70) = *(W2 *)&pmf_Trmp2Mario_StateFall;
+    *(W2 *)MARIO2(self)->mState = *(W2 *)&pmf_Trmp2Mario_StateFall;
     Trmp2Mario_StateFall(self);
 }
 }
@@ -1303,7 +1303,7 @@ extern "C" void *Trmp2Mario_Destruct(int *c) {
     sTrmpAnimStruggle = 0;
     sTrmpAnimSdown = 0;
     // Destroy the embedded member directly, without virtual dispatch.
-    ((ModelAnim *)((char *)c + 0x78))->ModelAnim::~ModelAnim();
+    ((ModelAnim *)MARIO2(c)->mModelAnim)->ModelAnim::~ModelAnim();
     *c = (int)&data_ov006_0213b3e0;
     *c = (int)&data_ov006_0213b3c4;
     return c;
@@ -1337,7 +1337,7 @@ extern "C" int sTrmp2MarioOps[];
 extern "C" int *Trmp2Mario_Construct(int *self) {
     TrmpRingObjAdapter_Construct(self);
     self[0] = (int)sTrmp2MarioOps;
-    _ZN9ModelAnimC1Ev((char *)self + 0x78);
+    _ZN9ModelAnimC1Ev(MARIO2(self)->mModelAnim);
     return self;
 }
 }
@@ -1814,9 +1814,9 @@ extern "C" {
 extern int Trmp3DMario_EnterOffstage(void *c);
 // @symbol Trmp3DMario_StateKnockedOut
 void Trmp3DMario_StateKnockedOut(int *c) {
-    if (*(int *)((char *)c + 0x20) >= -0x120000)
+    if (MARIO3D(c)->mPos.y >= -0x120000)
         return;
-    *(int *)((char *)c + 0x38) = 0;
+    MARIO3D(c)->mVel.y = 0;
     Trmp3DMario_EnterOffstage(c);
 }
 }
@@ -2869,7 +2869,7 @@ extern void Trmp3DMario_StateFall(void *self);
 
 // @symbol Trmp3DMario_EnterFall
 void Trmp3DMario_EnterFall(void *self) {
-    *(W2 *)((char *)self + 0x64) = *(W2 *)&pmf_Trmp3DMario_StateFall;
+    *(W2 *)MARIO3D(self)->mState = *(W2 *)&pmf_Trmp3DMario_StateFall;
     Trmp3DMario_StateFall(self);
 }
 }
@@ -2882,9 +2882,9 @@ extern "C" int sTrmpMariosOnLedges;
 extern void Trmp3DMario_JumpOff(int *c);
 // @symbol Trmp3DMario_StateWalkBack
 void Trmp3DMario_StateWalkBack(int *c) {
-    short idx = *(short *)((char *)c + 0x52);
-    *(int *)((char *)c + 0x20) = sTrmpRowHeights[idx];
-    if (*(int *)((char *)c + 0x1c) >= 0x5bff8)
+    short idx = MARIO3D(c)->mHeightRow;
+    MARIO3D(c)->mPos.y = sTrmpRowHeights[idx];
+    if (MARIO3D(c)->mPos.x >= 0x5bff8)
         return;
     sTrmpMariosOnLedges--;
     Trmp3DMario_JumpOff(c);
@@ -3022,8 +3022,8 @@ extern "C" int sTrmpRowHeights;
 extern void Trmp3DMario_JumpOff(int *c);
 // @symbol Trmp3DMario_StateWalkIn
 void Trmp3DMario_StateWalkIn(int *c) {
-    *(int *)((char *)c + 0x20) = sTrmpRowHeights;
-    if (*(int *)((char *)c + 0x1c) <= -0x5c008)
+    MARIO3D(c)->mPos.y = sTrmpRowHeights;
+    if (MARIO3D(c)->mPos.x <= -0x5c008)
         return;
     Trmp3DMario_JumpOff(c);
 }
@@ -3332,7 +3332,7 @@ extern "C" void *Trmp3DMario_Destruct(int *c) {
     sTrmpAnimBounce = 0;
     sTrmpAnimStruggle = 0;
     // Destroy the embedded member directly, without virtual dispatch.
-    ((ModelAnim *)((char *)c + 0x6c))->ModelAnim::~ModelAnim();
+    ((ModelAnim *)MARIO3D(c)->mModelAnim)->ModelAnim::~ModelAnim();
     *c = (int)&data_ov006_0213b3c4;
     return c;
 }
@@ -3349,7 +3349,7 @@ extern void TrmpObjAdapter_Construct(int *c);
 int *Trmp3DMario_Construct(int *t) {
     TrmpObjAdapter_Construct(t);
     t[0] = (int)sTrmp3DMarioOps;
-    _ZN9ModelAnimC1Ev((char *)t + 0x6c);
+    _ZN9ModelAnimC1Ev(MARIO3D(t)->mModelAnim);
     return t;
 }
 }
@@ -3595,6 +3595,7 @@ extern void TrmpObjAdapter_Clear(short *p);
 // @symbol TrmpRingObjAdapter_Clear
 void TrmpRingObjAdapter_Clear(short *c) {
     TrmpObjAdapter_Clear(c);
+    /* dMgTrmpRingObjAdapter_c has no layout header; its +0x20 has no established role. */
     *(short *)((char *)c + 0x20) = 0;
 }
 }
@@ -3608,6 +3609,7 @@ extern "C" int data_ov006_0213b3e0[];
 int *TrmpRingObjAdapter_Construct(int *c) {
     TrmpObjAdapter_Construct(c);
     *c = (int)data_ov006_0213b3e0;
+    /* dMgTrmpRingObjAdapter_c has no layout header; its +0x20 has no established role. */
     *(short *)((char *)c + 0x20) = 0;
     return c;
 }
@@ -3629,6 +3631,8 @@ extern "C" int data_ov006_0213b3c4[];
 // @symbol TrmpObjAdapter_Construct
 void TrmpObjAdapter_Construct(int *c) {
     *c = (int)data_ov006_0213b3c4;
+    /* The jumper contact both Mario headers call mContact; dMgTrmpObjAdapter_c,
+       the base this constructs, has no layout header of its own. */
     *(short *)((char *)c + 0x18) = 0;
 }
 }
