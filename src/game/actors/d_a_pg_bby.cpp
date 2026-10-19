@@ -3,12 +3,9 @@
  * - SetAnim, DropShadowRadHeight, IsTooFarAwayFromPlayer,
  *   dCcAc_c::Init and dBgCh_Actr::Init stay
  *   mangled. Each takes Fix12<int> by value.
- * - The state table data_ov072_02122d6c, the carry offsets
- *   data_ov072_02122d3c and the file handles are built by
- *   __sinit_ov072_02122414. SharedFilePtr.h declares no fields, so
- *   the handles are read as words.
- * - func_ov072_021210c4 reads the carrier at Player +0xc8. dActor_c.h
- *   still calls that word padding.
+ * - Local file-handle wrappers retain the measured eight-byte layout while
+ *   SharedFilePtr.h remains fieldless. Their constructor/destructor veneers
+ *   are mapped to the retail destinations in this TU's manifest.
  * - The state steps stay func_ov072_*. The cartridge has no names
  *   for them.
  *
@@ -17,6 +14,7 @@
  * reconstructed. Six states, declared on daPgBby_c.h.
  */
 #include "daPgBby_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
@@ -30,6 +28,32 @@ bool ApproachLinear(short &value, short target, short step);
 struct PgBbyMtx {
     s32 m[12];
 };
+
+/* Descriptive local types and object names, not recovered source spellings.
+ * SharedFilePtr.cpp proves fileID at +0, numRefs at +2, and filePtr at +4.
+ * Byte +3 is padding. Model and animation handles use different veneers. */
+struct PgBbyModelFile : SharedFilePtr {
+    u16 fileID;
+    u8 numRefs;
+    u8 padding;
+    BMD_File *filePtr;
+
+    PgBbyModelFile(u32 fileID);
+    ~PgBbyModelFile();
+};
+
+struct PgBbyAnimationFile : SharedFilePtr {
+    u16 fileID;
+    u8 numRefs;
+    u8 padding;
+    BCA_File *filePtr;
+
+    PgBbyAnimationFile(u32 fileID);
+    ~PgBbyAnimationFile();
+};
+
+typedef char PgBbyModelFile_size_must_be_0x08[sizeof(PgBbyModelFile) == 0x08 ? 1 : -1];
+typedef char PgBbyAnimationFile_size_must_be_0x08[sizeof(PgBbyAnimationFile) == 0x08 ? 1 : -1];
 
 extern "C" {
 /* Fix12<int> by-value walls (notes/mwccarm-codegen.md 6az). */
@@ -56,17 +80,15 @@ extern short data_02082214[];   /* sine/cosine table */
 extern dClipper data_0209f43c;
 extern Matrix4x3 data_0209b3ec;
 
-/* Overlay file handles: the BMD, and the five BCA handles through the
-   pointer table at 0x02122004 (word 1 of each handle is the loaded file). */
-extern SharedFilePtr data_ov072_02122cb4;
-extern SharedFilePtr *data_ov072_02122004[];
-extern int data_ov072_02122c94[];
-extern int data_ov072_02122c9c[];
-extern int data_ov072_02122ca4[];
-extern int data_ov072_02122cac[];
-extern int data_ov072_02122cbc[];
-extern Vector3 data_ov072_02122d3c[];   /* the four carry offsets */
-extern daPgBby_c::State data_ov072_02122d6c[];/* the six states */
+extern PgBbyModelFile gPenguinBabyModelFile;
+extern PgBbyAnimationFile gPenguinBabyDiveAnimationFile;
+extern PgBbyAnimationFile gPenguinBabyWaitAnimationFile;
+extern PgBbyAnimationFile gPenguinBabyStandUpAnimationFile;
+extern PgBbyAnimationFile gPenguinBabySlideAnimationFile;
+extern PgBbyAnimationFile gPenguinBabyWalkAnimationFile;
+extern SharedFilePtr *const gPenguinBabyAnimationFiles[5];
+extern Vector3 gPenguinBabyCarryOffsets[4];
+extern daPgBby_c::State gPenguinBabyStates[6];
 }
 
 // @symbol daPgBby_c_classInit
@@ -84,11 +106,11 @@ void daPgBby_c::OnTurnIntoEgg(Player &player)
 // @symbol _ZN9daPgBby_c13InitResourcesEv
 s32 daPgBby_c::InitResources()
 {
-    BMD_File *f = (BMD_File *)Model::LoadFile(data_ov072_02122cb4);
+    BMD_File *f = (BMD_File *)Model::LoadFile(gPenguinBabyModelFile);
     mModelAnim.SetFile(f, 1, -1);
     int i;
     for (i = 0; i < 5; i++) {
-        dExtFrameCtrl_c::LoadFile(*data_ov072_02122004[i]);
+        dExtFrameCtrl_c::LoadFile(*gPenguinBabyAnimationFiles[i]);
     }
     if (mShadowModel.InitCylinder() == 0) return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylClsn, this, 0x28000, 0x50000, 0x800004, 0x9000);
@@ -141,11 +163,11 @@ void daPgBby_c::OnPendingDestroy()
 // @symbol _ZN9daPgBby_c16CleanupResourcesEv
 s32 daPgBby_c::CleanupResources()
 {
-    data_ov072_02122cb4.Release();
+    gPenguinBabyModelFile.Release();
 
     int i = 0;
     do {
-        data_ov072_02122004[i]->Release();
+        gPenguinBabyAnimationFiles[i]->Release();
         i++;
     } while (i < 5);
 
@@ -156,7 +178,7 @@ s32 daPgBby_c::CleanupResources()
 /* Switch to state `state` and run its enter step. */
 void daPgBby_c::func_ov072_02121d50(int state)
 {
-    mState = &data_ov072_02122d6c[state];
+    mState = &gPenguinBabyStates[state];
     func_ov072_02121d18();
 }
 
@@ -181,7 +203,8 @@ void daPgBby_c::func_ov072_02121cdc()
 int daPgBby_c::func_ov072_02121c94()
 {
     mSubState = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122c9c[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gPenguinBabyWaitAnimationFile.filePtr,
+                                                0, 0x1000, 0);
     mStateId = 0;
     return 1;
 }
@@ -231,9 +254,11 @@ int daPgBby_c::func_ov072_02121a84()
         break;
     }
     if (mHorzSpeed != 0) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122cbc[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            &mModelAnim, gPenguinBabyWalkAnimationFile.filePtr, 0, 0x1000, 0);
     } else {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122c9c[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            &mModelAnim, gPenguinBabyWaitAnimationFile.filePtr, 0, 0x1000, 0);
     }
     mModelAnim.speed = 0x1000;
     mModelAnim.Advance();
@@ -245,7 +270,7 @@ int daPgBby_c::func_ov072_02121a84()
     func_ov072_02120e50();
     mCylClsn.Clear();
     mCylClsn.Update();
-    if ((int)mModelAnim.file == data_ov072_02122cbc[1]) {
+    if (mModelAnim.file == gPenguinBabyWalkAnimationFile.filePtr) {
         frame = (int)(((u32)mModelAnim.currFrame << 4) >> 16);
         if (frame == 9 || frame == 0x15) {
             func_0201267c(0xf3, &mCamSpacePos);
@@ -260,7 +285,8 @@ int daPgBby_c::func_ov072_02121a28()
 {
     mHorzSpeed = 0x19000;
     mVertSpeed = 0xc000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122c94[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gPenguinBabyDiveAnimationFile.filePtr,
+                                                0x40000000, 0x1000, 0);
     mSubState = 0;
     mStateId = 1;
     return 1;
@@ -273,7 +299,8 @@ int daPgBby_c::func_ov072_021218dc()
     switch (mSubState) {
     case 0:
         if (mModelAnim.Finished()) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122cac[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                &mModelAnim, gPenguinBabySlideAnimationFile.filePtr, 0, 0x1000, 0);
             mModelAnim.speed = 0x1000;
             mSubState++;
         }
@@ -281,7 +308,8 @@ int daPgBby_c::func_ov072_021218dc()
     case 1:
         mHorzSpeed -= 0x3000;
         if (mHorzSpeed < 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122ca4[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                &mModelAnim, gPenguinBabyStandUpAnimationFile.filePtr, 0x40000000, 0x1000, 0);
             mHorzSpeed = 0;
             mSubState++;
         }
@@ -306,7 +334,8 @@ int daPgBby_c::func_ov072_021218dc()
 /* State 2, enter: picked up. */
 int daPgBby_c::func_ov072_02121890()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122c9c[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gPenguinBabyWaitAnimationFile.filePtr,
+                                                0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mStateId = 2;
     return 1;
@@ -356,7 +385,8 @@ animate:
 /* State 3, enter. */
 int daPgBby_c::func_ov072_02121758()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov072_02122cbc[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gPenguinBabyWalkAnimationFile.filePtr,
+                                                0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0x5000;
     mStateId = 3;
@@ -568,7 +598,7 @@ void daPgBby_c::func_ov072_021210c4()
         if (mCarrier->param1 == 2) {
             idx = (idx + 2) & 0xff;
         }
-        carry = UpdateCarry(*mCarrier, data_ov072_02122d3c[idx]);
+        carry = UpdateCarry(*mCarrier, gPenguinBabyCarryOffsets[idx]);
         *(PgBbyMtx *)&mModelAnim.mat4x3 = *(PgBbyMtx *)carry;
     } else {
         Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
@@ -732,3 +762,50 @@ s32 daPgBby_c::OnYoshiTryEat()
    emits D1 then D0 -- the cartridge's order -- and no D2. */
 // @symbol _ZN9daPgBby_cD1Ev
 // @symbol _ZN9daPgBby_cD0Ev
+
+/* Runtime asset handles, distinct from NitroFS file IDs. Construction order
+ * follows the retail initializer, including each destructor registration. */
+enum PenguinBabyAssetId {
+    ASSET_PENGUIN_CHILD_BMD = 0x03ff,
+    ASSET_PENGUIN_DIVE_BCA = 0x0400,
+    ASSET_PENGUIN_SLIDER_BCA = 0x0403,
+    ASSET_PENGUIN_STAND_UP_BCA = 0x0405,
+    ASSET_PENGUIN_WAIT1_BCA = 0x0406,
+    ASSET_PENGUIN_WALK_BCA = 0x0408
+};
+
+PgBbyModelFile gPenguinBabyModelFile(ASSET_PENGUIN_CHILD_BMD);
+PgBbyAnimationFile gPenguinBabyWaitAnimationFile(ASSET_PENGUIN_WAIT1_BCA);
+PgBbyAnimationFile gPenguinBabyWalkAnimationFile(ASSET_PENGUIN_WALK_BCA);
+PgBbyAnimationFile gPenguinBabyDiveAnimationFile(ASSET_PENGUIN_DIVE_BCA);
+PgBbyAnimationFile gPenguinBabySlideAnimationFile(ASSET_PENGUIN_SLIDER_BCA);
+PgBbyAnimationFile gPenguinBabyStandUpAnimationFile(ASSET_PENGUIN_STAND_UP_BCA);
+
+SharedFilePtr *const gPenguinBabyAnimationFiles[5] = {
+    &gPenguinBabyWaitAnimationFile,    &gPenguinBabyWalkAnimationFile,
+    &gPenguinBabyDiveAnimationFile,    &gPenguinBabySlideAnimationFile,
+    &gPenguinBabyStandUpAnimationFile,
+};
+
+daPgBby_c::State gPenguinBabyStates[6] = {
+    {&daPgBby_c::func_ov072_02121c94, &daPgBby_c::func_ov072_02121a84},
+    {&daPgBby_c::func_ov072_02121a28, &daPgBby_c::func_ov072_021218dc},
+    {&daPgBby_c::func_ov072_02121890, &daPgBby_c::func_ov072_021217ac},
+    {&daPgBby_c::func_ov072_02121758, &daPgBby_c::func_ov072_02121670},
+    {&daPgBby_c::func_ov072_02121640, &daPgBby_c::func_ov072_021214dc},
+    {&daPgBby_c::func_ov072_02121368, &daPgBby_c::func_ov072_021212c0},
+};
+
+Vector3 gPenguinBabyCarryOffsets[4] = {
+    Vector3(0x1c000, 0, 0x1e000),
+    Vector3(0x1c000, 0, 0x1e000),
+    Vector3(0x2b000, 0, 0x1e000),
+    Vector3(0x30000, 0, 0x32000),
+};
+
+/* The registry's typed factory and the actor profile consumed by dActor_c. */
+extern "C" {
+SpawnInfo<daPgBby_c> g_profile_PENGUIN_BABY = {
+    daPgBby_c_classInit, 0x0100, 0x0072, 0x00808282, 0x00028000, 0x00028000, 0x01000000, 0x01000000,
+};
+}

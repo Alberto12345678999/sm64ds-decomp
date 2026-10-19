@@ -1,13 +1,12 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
-/* func_0204a730 @ 0x0204a730 (arm9, size 0x6fc)   [mwccarm 1.2/sp2p3]
+/* func_0204a730 @ 0x0204a730 (arm9, size 0x6fc)   [mwccarm 2004/b56]
  * Levers that matched (notes 6ap): group B = u32 byte-hoist at function scope with
  * s32 k demoted into the loop block after var_r5; group A = flags declared plain u32
  * but WRITTEN through a volatile cast - the volatile-touched object lands in the
  * stack hole at [sp,#0x2c] while the plain reads stay value-numberable, which blocks
  * the lsl/lsr re-fold. Do not "simplify" the volatile store or the shifts re-fold.
  */
-typedef struct { s32 x, y, z; } Vec3;
 
 extern void func_0204c584(void *self, void *arg);
 extern void func_0204c304(void *node, void *self, void *arg);
@@ -35,9 +34,9 @@ typedef struct {
 typedef struct PtclNode {
     struct PtclNode *next; /* 0x00 */
     void *prev;            /* 0x04 */
-    Vec3 basePosition;     /* 0x08 */
-    Vec3 offset;           /* 0x14 */
-    Vec3 velocity;         /* 0x20 */
+    Vector3 basePosition;  /* 0x08 */
+    Vector3 offset;        /* 0x14 */
+    Vector3 velocity;      /* 0x20 */
     u16 lifetime;          /* 0x2c */
     u16 age;               /* 0x2e */
     u8 pad_30[0x6];
@@ -86,8 +85,8 @@ typedef struct {
     PtclList particles2; /* 0x10 */
     PtclDef *def;        /* 0x18 */
     s32 callbackFlags;   /* 0x1c */
-    Vec3 position;       /* 0x20 */
-    Vec3 velocity;       /* 0x2c -- added to every particle's offset each frame */
+    Vector3 position;    /* 0x20 */
+    Vector3 velocity;    /* 0x2c -- added to every particle's offset each frame */
     u16 age;             /* 0x38 */
     u8 pad_3a[0x1e];
     u8 emitInterval; /* 0x58 */

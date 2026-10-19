@@ -72,17 +72,17 @@ struct daObjHatenaBlock_c : dBgActor_c {
        staying free (the block is its second argument). */
     int func_ov102_02149078();
     void func_ov102_02149100(Vector3 *pos, int n, unsigned int speed, short baseAngle);
-    void *func_ov102_02149220();
+    void func_ov102_02149220();
     void func_ov102_02149288();
     void func_ov102_021492d4();
-    void *func_ov102_02149384();
+    void func_ov102_02149384();
     void func_ov102_021493dc();
     void func_ov102_02149428();
     void func_ov102_02149478();
     void func_ov102_021494cc();
     void func_ov102_0214953c(int p1, int p2);
     int func_ov102_02149610();
-    int func_ov102_02149878();
+    void func_ov102_02149878();
     void func_ov102_021498c4();
     void func_ov102_021498e0();
     void func_ov102_02149c78();

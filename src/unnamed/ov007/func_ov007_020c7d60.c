@@ -1,27 +1,24 @@
+#include "types.h"
 #include "nitro/fx/fx.h"
-typedef long long s64;
-typedef unsigned long long u64;
-typedef unsigned short u16;
 
-struct Vec3 { int x, y, z; };
-
+/* SubVec3 still defines its vector as its own struct Vec3;
+   declared as defined, the call casts. */
+struct Vec3;
 extern void SubVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 extern void func_02053320(int s, int *a, int *b, int *out);
-extern int DotVec3(const struct Vec3 *a, const struct Vec3 *b);
+extern int DotVec3(const Vector3 *a, const Vector3 *b);
 
 void func_ov007_020c7d60(char **self, int r5, int r4)
 {
-    struct Vec3 d;
+    Vector3 d;
     s64 sq;
     volatile u16 *ime;
     u16 saved;
     int sqrt_raw, len, dot, s, rest, *p_sqrt;
-    struct Vec3 v1, v2;
+    Vector3 v1, v2;
     int delta;
 
-    SubVec3((struct Vec3 *)*(void **)self[0],
-            (struct Vec3 *)*(void **)self[1],
-            &d);
+    SubVec3((struct Vec3 *)*(void **)self[0], (struct Vec3 *)*(void **)self[1], (struct Vec3 *)&d);
 
     /* x-first in source; mwccarm emits y-first loads (same as Vec3_DistSq) */
     sq = (s64)(d.x) * (d.x);
@@ -63,12 +60,12 @@ void func_ov007_020c7d60(char **self, int r5, int r4)
     func_02053320(r5, (int *)&d, (int *)(self[0] + 0x10), (int *)(self[0] + 0x10));
     func_02053320(-r5, (int *)&d, (int *)(self[1] + 0x10), (int *)(self[1] + 0x10));
 
-    dot = DotVec3(&d, (struct Vec3 *)(self[0] + 4));
+    dot = DotVec3(&d, (Vector3 *)(self[0] + 4));
     v1.x = (int)(((s64)dot * d.x) >> 12);
     v1.y = (int)(((s64)dot * d.y) >> 12);
     v1.z = (int)(((s64)dot * d.z) >> 12);
 
-    dot = DotVec3(&d, (struct Vec3 *)(self[1] + 4));
+    dot = DotVec3(&d, (Vector3 *)(self[1] + 4));
     v2.x = (int)(((s64)dot * d.x) >> 12);
     v2.y = (int)(((s64)dot * d.y) >> 12);
     v2.z = (int)(((s64)dot * d.z) >> 12);

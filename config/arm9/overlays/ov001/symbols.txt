@@ -147,11 +147,11 @@ data_ov001_020ad524 kind:data(any) addr:0x020ad524 ambiguous
 data_ov001_020ad560 kind:data(any) addr:0x020ad560 ambiguous
 data_ov001_020ad59c kind:data(any) addr:0x020ad59c
 data_ov001_020ad5dc kind:data(any) addr:0x020ad5dc
-data_ov001_020ad620 kind:bss addr:0x020ad620
-data_ov001_020ad624 kind:bss addr:0x020ad624
-data_ov001_020ad628 kind:bss addr:0x020ad628
-data_ov001_020ad62c kind:bss addr:0x020ad62c
-data_ov001_020ad630 kind:bss addr:0x020ad630
-data_ov001_020ad634 kind:bss addr:0x020ad634
+gCapIconFlashTimer kind:bss addr:0x020ad620
+gCapIconDispatchLocked kind:bss addr:0x020ad624
+gCapIconRequestFlags kind:bss addr:0x020ad628
+gCapIconDispatchFlags kind:bss addr:0x020ad62c
+gCapIconCounts kind:bss addr:0x020ad630
+gCapIconListHeads kind:bss addr:0x020ad634
 data_ov001_020ad640 kind:bss addr:0x020ad640
 data_ov001_020ad644 kind:bss addr:0x020ad644

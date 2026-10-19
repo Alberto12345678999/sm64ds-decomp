@@ -1,5 +1,5 @@
 // func_ov007_020c9d90 at 0x020c9d90 (ov007)
-typedef struct Vec3 { int x, y, z; } Vec3;
+#include "types.h"
 
 typedef struct Obj { int f0; int f4; int f8; } Obj;
 typedef struct Cell { Obj* obj; } Cell;
@@ -7,7 +7,7 @@ typedef struct Row { Cell** cells; } Row;
 typedef struct Grid { int w; int h; Row** rows; } Grid;
 
 typedef struct Ctx {
-    Vec3* arr;      // 0x00
+    Vector3 *arr;   // 0x00
     Grid* grid;     // 0x04
     int pad08[6];   // 0x08
     int f20;        // 0x20
@@ -17,17 +17,17 @@ typedef struct Self {
     Ctx* ctx;       // 0x00
     int pad04;      // 0x04
     int f8;         // 0x08
-    Vec3 vC;        // 0x0c
+    Vector3 vC;     // 0x0c
     int pad18[2];   // 0x18
-    Vec3 v20[2];    // 0x20
-    Vec3 v38[2];    // 0x38
+    Vector3 v20[2]; // 0x20
+    Vector3 v38[2]; // 0x38
     int f50[2];     // 0x50
     int f58[2];     // 0x58
     int f60[2];     // 0x60
     int f68[2];     // 0x68
 } Self;
 
-extern int func_ov007_020c30ac(Vec3* arr, int count, Vec3* target, int arg4, int* out);
+extern int func_ov007_020c30ac(Vector3 *arr, int count, Vector3 *target, int arg4, int *out);
 extern int _ZN4cstd3modEii(int a, int b);
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020c8010(int a, int b, Cell* c);

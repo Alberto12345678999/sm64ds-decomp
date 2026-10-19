@@ -14,13 +14,20 @@
     "SOURCE ORDER IS ROM-ASCENDING, lowest address first, under #pragma defer_codegen off; tubuild verify reports all 62 in ROM-ascending emission order.",
     "OUTPUT PATH: src/minigames/d_s_mg_coin.cpp, unchanged.",
     "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "CLASSINIT TAIL FOLD (2026-10-10): the one-function source right of this unit, dScMgCoin_c_classInit (0x020de940, size 0x48, formerly src/d_s_mg_coin.cpp), abuts its .text end with no gap and is now inside it; the next ov006 delinks entry, src/minigames/d_s_mg_cup.cpp, starts exactly at its end 0x020de988. It is this class's factory: it calls fBase_c::operator new(0x51e0) -- sizeof(dScMgCoin_c), asserted in include/dScMgCoin_c.h -- runs dScMgBase_c's C2, stores _ZTV11dScMgCoin_c (0x0213bf50), the vtable this TU emits as its key-function owner, and seeds the word at +0x51c4 with func_0203b9b4(p, 1). It is the MG_COIN registry profile's factory. Written last as \return new dScMgCoin_c;: the header now declares a constructor (defined inline in this TU, above the factory) whose body is that one seed call, and the 0x51c4 pad is named mSeed, the same shape as daFish_c's constructor. defer_codegen off emits .text in source order."
+    "CLASSINIT TAIL FOLD (2026-10-10): the one-function source right of this unit, dScMgCoin_c_classInit (0x020de940, size 0x48, formerly src/d_s_mg_coin.cpp), abuts its .text end with no gap and is now inside it; the next ov006 delinks entry, src/minigames/d_s_mg_cup.cpp, starts exactly at its end 0x020de988. It is this class's factory: it calls fBase_c::operator new(0x51e0) -- sizeof(dScMgCoin_c), asserted in include/dScMgCoin_c.h -- runs dScMgBase_c's C2, stores _ZTV11dScMgCoin_c (0x0213bf50), the vtable this TU emits as its key-function owner, and seeds the word at +0x51c4 with func_0203b9b4(p, 1). It is the MG_COIN registry profile's factory. Written last as \return new dScMgCoin_c;: the header now declares a constructor (defined inline in this TU, above the factory) whose body is that one seed call, and the 0x51c4 pad is named mSeed, the same shape as daFish_c's constructor. defer_codegen off emits .text in source order.",
+    "CURRENT SCALAR DATA:22 native const arrays own324 object bytes plus4 natural internal alignment bytes in .rodata.coin_tables [0212e308,0212e450). Earlier text-only snapshots predate the existing native initializer/BSS and this rodata claim. All prior method, initializer, ctor and BSS contributions remain unchanged; own .data metadata,24 imported PMFs and external sprite tables remain required continuation."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020dbe40",
       "end": "0x020de988"
+    },
+    {
+      "name": ".rodata.coin_tables",
+      "input_section": ".rodata",
+      "start": "0x0212e308",
+      "end": "0x0212e450"
     },
     {
       "name": ".init",
@@ -530,7 +537,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov006-dScMgCoin_c/dScMgCoin_c.o (gitignored)",
+    "object": "build/tu/ov006-dScMgCoin_c/d_s_mg_coin.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 63,
     "functions_declared": 63,
@@ -544,23 +551,23 @@
       "droppedSections": [
         14,
         15,
-        120,
-        121,
-        122,
-        123,
-        124,
-        125,
-        126,
-        127,
-        128,
-        129,
-        130,
-        131,
-        132,
-        133,
-        134,
-        135,
-        136
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -587,14 +594,15 @@
         "_ZTS7fBase_c",
         "_ZTS8dScene_c",
         "_ZTV11dScMgCoin_c"
-      ]
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
-      "relocation_destinations_verified": "PASS"
+      "relocation_destinations_verified": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
@@ -624,6 +632,13 @@
           "firstDiff": null
         },
         {
+          "section": ".rodata.coin_tables",
+          "start": "0x0212e308",
+          "end": "0x0212e450",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
           "section": ".init",
           "start": "0x0213014c",
           "end": "0x021303d0",
@@ -646,7 +661,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 70
+          "LICENSED": 92
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -655,21 +670,72 @@
       "nontextSectionOrder": {
         "groups": [
           {
-            "section": ".init",
+            "section": ".rodata.coin_tables",
             "original": [
-              139
+              120,
+              121,
+              122,
+              123,
+              124,
+              125,
+              126,
+              127,
+              128,
+              129,
+              130,
+              131,
+              132,
+              133,
+              134,
+              135,
+              136,
+              137,
+              138,
+              139,
+              140,
+              141
             ],
             "desired": [
-              139
+              120,
+              121,
+              122,
+              123,
+              124,
+              125,
+              126,
+              127,
+              128,
+              129,
+              130,
+              131,
+              132,
+              133,
+              134,
+              135,
+              136,
+              137,
+              138,
+              139,
+              140,
+              141
+            ]
+          },
+          {
+            "section": ".init",
+            "original": [
+              161
+            ],
+            "desired": [
+              161
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              137
+              159
             ],
             "desired": [
-              137
+              159
             ]
           },
           {
@@ -835,13 +901,13 @@
       "symbol": "__sinit_d_s_mg_coin.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+      "evidence": "The compiler emits this existing initializer/constructor-slot identity locally; preserve its established configured global identity through this guarded rewrite. DSD can encode local symbols; this is compatibility with the current configuration, not a format limitation."
     },
     {
       "symbol": ".p__sinit_d_s_mg_coin.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+      "evidence": "The compiler emits this existing initializer/constructor-slot identity locally; preserve its established configured global identity through this guarded rewrite. DSD can encode local symbols; this is compatibility with the current configuration, not a format limitation."
     }
   ],
   "relocations": [
@@ -1144,6 +1210,162 @@
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021417c8"
+    }
+  ],
+  "rodata": [
+    {
+      "symbol": "sCoinCaptionBlinkTimes",
+      "address": "0x212e308",
+      "size": "0x2",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const unsigned char[2] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinCaptionBlinkSprites",
+      "address": "0x212e30c",
+      "size": "0x2",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const unsigned char[2] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinCaptionCountInSprites",
+      "address": "0x212e310",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const u8[4] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockFrameSprites",
+      "address": "0x212e314",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const u16[4] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinCaptionLoopSprites",
+      "address": "0x212e31c",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const unsigned char[8] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinCaptionLoopTimes",
+      "address": "0x212e324",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const unsigned char[8] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockFrameTimes",
+      "address": "0x212e32c",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const u16[4] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinSparkleAngles",
+      "address": "0x212e334",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const u16[4] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinCaptionCountInTimes",
+      "address": "0x212e33c",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const u16[4] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBagHopVX",
+      "address": "0x212e344",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[2] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockHopVX",
+      "address": "0x212e34c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[3] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinRowY",
+      "address": "0x212e358",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[3] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinPopupY",
+      "address": "0x212e364",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[3] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBagRowTopY",
+      "address": "0x212e370",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBagRowHeight",
+      "address": "0x212e388",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockHopRowY",
+      "address": "0x212e3a0",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockHopRowHeight",
+      "address": "0x212e3b8",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockWanderRowY",
+      "address": "0x212e3d0",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockWanderRowHeight",
+      "address": "0x212e3e8",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockDropRowY",
+      "address": "0x212e400",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinBlockFallRowY",
+      "address": "0x212e418",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[6] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
+    },
+    {
+      "symbol": "sCoinSparkleSpawnOffsets",
+      "address": "0x212e430",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "Native const int[8] from the measured consumer indexing and retail bytes; exact original declaration spelling is unknown."
     }
   ]
 }

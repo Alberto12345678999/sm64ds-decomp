@@ -1,17 +1,12 @@
-typedef short s16;
-typedef long long s64;
-
-struct Vec3
-{
-  int x;
-  int y;
-  int z;
-};
+#include "types.h"
 
 extern void func_ov007_020c90c0(void *self);
+/* SubVec3/LenVec3 still define their vector as their own struct Vec3;
+   declared as defined, the calls cast. */
+struct Vec3;
 extern void SubVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 extern int LenVec3(struct Vec3 *v);
-extern void NormalizeVec3(struct Vec3 *a, struct Vec3 *b);
+extern void NormalizeVec3(int *v, int *out); /* as defined */
 extern void func_02053320(int s, int *a, int *b, int *out);
 
 struct T
@@ -31,7 +26,7 @@ struct T
 };
 
 int func_ov007_020c8de0(struct T *o) {
-    struct Vec3 tmp;
+    Vector3 tmp;
     if (o->state == 2) {
         o->state = 3;
     }
@@ -79,12 +74,12 @@ int func_ov007_020c8de0(struct T *o) {
             int *dst = o->f10;
             int r5 = *((int *)(((char *)o) + 8));
             int ok; /* stays a flag: setting state inside the arm shrinks it (0x170) */
-            SubVec3((struct Vec3 *)(&o->f20), (struct Vec3 *)dst, &tmp);
-            if (LenVec3(&tmp) <= r5) {
-                *((struct Vec3 *)dst) = *((struct Vec3 *)(&o->f20));
+            SubVec3((struct Vec3 *)(&o->f20), (struct Vec3 *)dst, (struct Vec3 *)&tmp);
+            if (LenVec3((struct Vec3 *)&tmp) <= r5) {
+                *((Vector3 *)dst) = *((Vector3 *)(&o->f20));
                 ok = 1;
             } else {
-                NormalizeVec3(&tmp, &tmp);
+                NormalizeVec3((int *)&tmp, (int *)&tmp);
                 func_02053320(r5, (int *)(&tmp), dst, dst);
                 ok = 0;
             }

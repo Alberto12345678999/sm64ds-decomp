@@ -325,7 +325,7 @@ Examples:
 | [data_ov016_02114d4c](../config/arm9/overlays/ov016/symbols.txt) | 0x02114d4c | 0x0c | `src/game/actors/d_a_moray.cpp` |
 | [data_ov026_02113f4c](../config/arm9/overlays/ov026/symbols.txt) | 0x02113f4c | 0x0c | `src/game/actors/d_a_water_suikomi.cpp` |
 | [data_ov006_02140518](../config/arm9/overlays/ov006/symbols.txt) | 0x02140518 | 0x20 | `src/minigames/unit020c8a30.cpp` (func_ov006_020c8a30) |
-| [data_ov007_02103f98](../config/arm9/overlays/ov007/symbols.txt) | 0x02103f98 | 0x600 | [src/unnamed/ov007/func_ov007_020b8548.c](../src/unnamed/ov007/func_ov007_020b8548.c) |
+| [data_ov007_02103f98](../config/arm9/overlays/ov007/symbols.txt) | 0x02103f98 | 0x600 | [src/unnamed/ov007/func_ov007_020b8548.cpp](../src/unnamed/ov007/func_ov007_020b8548.cpp) |
 
 
 Every one is named `data_<module>_<addr>`; **zero** carry a recovered name. So the

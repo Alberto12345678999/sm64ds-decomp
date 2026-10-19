@@ -40,14 +40,14 @@ data_ov047_02111a58 kind:data(any) addr:0x02111a58 ambiguous
 data_ov047_02111a74 kind:data(any) addr:0x02111a74
 data_ov047_02111a78 kind:data(any) addr:0x02111a78 ambiguous
 data_ov047_02111a94 kind:data(any) addr:0x02111a94
-data_ov047_02111ab4 kind:data(any) addr:0x02111ab4
+gKm3KurumaClps kind:data(any) addr:0x02111ab4
 data_ov047_02111abc kind:data(any) addr:0x02111abc ambiguous
 data_ov047_02111ad4 kind:data(any) addr:0x02111ad4 ambiguous
 data_ov047_02111af4 kind:data(any) addr:0x02111af4 ambiguous
 data_ov047_02111b14 kind:data(any) addr:0x02111b14 ambiguous
 data_ov047_02111b34 kind:data(any) addr:0x02111b34 ambiguous
 data_ov047_02111b44 kind:data(any) addr:0x02111b44 ambiguous
-data_ov047_02111b54 kind:data(any) addr:0x02111b54
+gKm3KurumajikuClps kind:data(any) addr:0x02111b54
 data_ov047_02111b64 kind:data(any) addr:0x02111b64 ambiguous
 data_ov047_02111b68 kind:data(any) addr:0x02111b68 ambiguous
 data_ov047_02111b6c kind:data(any) addr:0x02111b6c ambiguous
@@ -57,7 +57,7 @@ data_ov047_02111b94 kind:data(any) addr:0x02111b94
 data_ov047_02111bb4 kind:data(any) addr:0x02111bb4
 data_ov047_02111bd4 kind:data(any) addr:0x02111bd4
 data_ov047_02111be0 kind:data(any) addr:0x02111be0 ambiguous
-data_ov047_02111bf4 kind:data(any) addr:0x02111bf4
+gKm3KaitendaiClps kind:data(any) addr:0x02111bf4
 data_ov047_02111c14 kind:data(any) addr:0x02111c14
 data_ov047_02111c20 kind:data(any) addr:0x02111c20 ambiguous
 data_ov047_02111c4c kind:data(any) addr:0x02111c4c
@@ -84,19 +84,19 @@ data_ov047_021121c0 kind:data(any) addr:0x021121c0 ambiguous
 data_ov047_021121dc kind:data(any) addr:0x021121dc ambiguous
 data_ov047_021121f8 kind:data(any) addr:0x021121f8 ambiguous
 _ZTI21daObjKm3_Kurumajiku_c kind:data(any) addr:0x0211224c
-data_ov047_02112258 kind:data(any) addr:0x02112258
+gKm3KurumajikuResources kind:data(any) addr:0x02112258
 _ZTS21daObjKm3_Kurumajiku_c kind:data(any) addr:0x02112264
 g_profile_KM3_KURUMAJIKU kind:data(any) addr:0x0211227c ambiguous
 _ZTV21daObjKm3_Kurumajiku_c kind:data(any) addr:0x021122a0
-data_ov047_02112320 kind:data(any) addr:0x02112320
-data_ov047_02112324 kind:data(any) addr:0x02112324
+gKm3KaitendaiRotationIncrement kind:data(any) addr:0x02112320
+gKm3KaitendaiAlternateRotationIncrement kind:data(any) addr:0x02112324
 _ZTI20daObjKm3_Kaitendai_c kind:data(any) addr:0x02112328
 data_ov047_02112334 kind:data(any) addr:0x02112334
 _ZTS20daObjKm3_Kaitendai_c kind:data(any) addr:0x02112340
 g_profile_KM3_KAITENDAI kind:data(any) addr:0x02112358
 _ZTV20daObjKm3_Kaitendai_c kind:data(any) addr:0x0211237c
 _ZTI17daObjKm3_Kuruma_c kind:data(any) addr:0x021123fc
-data_ov047_02112408 kind:data(any) addr:0x02112408
+gKm3KurumaResources kind:data(any) addr:0x02112408
 _ZTS17daObjKm3_Kuruma_c kind:data(any) addr:0x02112414
 g_profile_KM3_KURUMA kind:data(any) addr:0x02112428 ambiguous
 _ZTV17daObjKm3_Kuruma_c kind:data(any) addr:0x0211244c
@@ -112,16 +112,16 @@ _ZTV17daObjKm3_Dorifu_c kind:data(any) addr:0x0211254c
 data_ov047_02112570 kind:data(any) addr:0x02112570 ambiguous
 data_ov047_02112590 kind:data(any) addr:0x02112590 ambiguous
 data_ov047_021125cc kind:data(any) addr:0x021125cc ambiguous
-data_ov047_021125e0 kind:bss addr:0x021125e0
-data_ov047_021125e8 kind:bss addr:0x021125e8
+gKm3KurumajikuCollisionFile kind:bss addr:0x021125e0
+gKm3KurumajikuModelFile kind:bss addr:0x021125e8
 @977 kind:bss addr:0x021125f0
 @980 kind:bss addr:0x021125fc
 data_ov047_02112608 kind:bss addr:0x02112608
 data_ov047_02112610 kind:bss addr:0x02112610
 @955 kind:bss addr:0x02112618
 @957 kind:bss addr:0x02112624
-data_ov047_02112630 kind:bss addr:0x02112630
-data_ov047_02112638 kind:bss addr:0x02112638
+gKm3KurumaCollisionFile kind:bss addr:0x02112630
+gKm3KurumaModelFile kind:bss addr:0x02112638
 @969 kind:bss addr:0x02112640
 @971 kind:bss addr:0x0211264c
 gKm3Dan1CollisionFile kind:bss addr:0x02112658

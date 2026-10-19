@@ -8,13 +8,19 @@
   "boundary_evidence": [
     "contiguous linker run: 0x20aa420..0x20ab110, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): none (free-function manager module; queue row UNATTRIBUTED)",
-    "the run ends exactly where dCapIcon_c's TU begins at 0x20ab110; dCapIcon_c's own header comment names these functions the other TU"
+    "the run ends exactly where dCapIcon_c's TU begins at 0x20ab110; dCapIcon_c's own header comment names these functions the other TU",
+    "Shared BSS [020ad620,020ad640) has six native objects24B plus8 internal ALIGNALL(4) bytes. Assignment to this manager follows20 of31 configured incoming sites and its request/dispatch role; equivalent node-TU probes mean original ownership is not established."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020aa420",
       "end": "0x020ab110"
+    },
+    {
+      "name": ".bss",
+      "start": "0x020ad620",
+      "end": "0x020ad640"
     }
   ],
   "functions": [
@@ -97,15 +103,211 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "gCapIconFlashTimer",
+      "address": "0x020ad620",
+      "size": "0x1",
+      "binding": "STB_GLOBAL"
+    },
+    {
+      "symbol": "gCapIconDispatchLocked",
+      "address": "0x020ad624",
+      "size": "0x1",
+      "binding": "STB_GLOBAL"
+    },
+    {
+      "symbol": "gCapIconRequestFlags",
+      "address": "0x020ad628",
+      "size": "0x3",
+      "binding": "STB_GLOBAL"
+    },
+    {
+      "symbol": "gCapIconDispatchFlags",
+      "address": "0x020ad62c",
+      "size": "0x3",
+      "binding": "STB_GLOBAL"
+    },
+    {
+      "symbol": "gCapIconCounts",
+      "address": "0x020ad630",
+      "size": "0x4",
+      "binding": "STB_GLOBAL"
+    },
+    {
+      "symbol": "gCapIconListHeads",
+      "address": "0x020ad634",
+      "size": "0xc",
+      "binding": "STB_GLOBAL"
+    }
+  ],
   "notes": [
     "Free-function manager module folded from eleven one-function sources: the cap-icon request/dispatch state machine that runs the per-character dCapIcon_c lists. Definitions are written in reverse ROM order; mwccarm emits .text ascending to match the cartridge.",
     "The shards disagreed about two declaration shapes. data_0209f394 was declared as a scalar pointer by the dispatchers and as a void*[] by the eligibility tests; the TU keeps the array spelling and indexes [0] where the scalar read was meant -- same ldr. func_ov001_020aa858 was declared with five parameters by its caller and defined with four; the TU keeps the four-parameter definition and makes the fifth argument explicit with a call-site cast, which preserves the pushed r7 the ROM emits.",
-    "No class is defined in this TU, so the object emits only the eleven licensed .text sections: no vtable, no RTTI, nothing to externalize."
+    "No class is defined in this TU, so it emits no vtable or RTTI. The eleven licensed functions and six reconstructed shared BSS globals are native production output.",
+    "Flag arrays use the three observed character indices; original3/4 extent remains ambiguous. Counts retains four bytes because Unlink stores sentinel3 before indexing; no behavior correction is made. Following32B at020ad640 remains ROM/DSD-owned, including independent shadow-model references."
   ],
   "compiler_only_output": [],
-  "production_mode": "text-only",
+  "production_mode": "intact-object",
+  "historical_text_verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov001-CapIconMgr/CapIconMgr.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 11,
+    "functions_declared": 11,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  },
   "verification": {
+    "round": "Current intact-object source storage: standalone functions remain byte/relocation verified; fresh complete-range scratch admission is recorded below and normal actual-provider proof is separate.",
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov001-CapIconMgr/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x020aa420",
+        "end": "0x020ab110",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x020aa420",
+          "end": "0x020ab110",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x020ad620",
+          "end": "0x020ad640",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 17
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".bss",
+            "original": [
+              5,
+              6,
+              7,
+              8,
+              9,
+              10
+            ],
+            "desired": [
+              6,
+              5,
+              8,
+              7,
+              9,
+              10
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".bss",
+              "original": [
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ],
+              "desired": [
+                6,
+                5,
+                8,
+                7,
+                9,
+                10
+              ],
+              "slots": [
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ]
+            }
+          ],
+          "symbolIndices": 6,
+          "sectionLinks": 0,
+          "sectionInfos": 0,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
+    }
+  },
+  "historical_standalone_verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",

@@ -70,9 +70,9 @@
  *   The func_ov102_* helpers keep their linker names -- no semantic names
  *   are known. All take the block as arg0 and are declared as members on
  *   daObjHatenaBlock_c except func_ov102_02149684, which takes it as arg1
- *   (the out-param is arg0) and stays free. The state and prize tables are
- *   dispatched through the opaque stand-in `C` (pointer-to-member calls),
- *   not daObjHatenaBlock_c.
+ *   (the out-param is arg0) and stays free. The state and prize tables use
+ *   native daObjHatenaBlock_c member pointers. All observed callers discard
+ *   the three corrected handlers' return values.
  *   None is coined.
  *   Unrecovered meanings: SaveData::flags1 bit 31 (SAVE_FLAGS1_BIT31); the
  *   LEVEL_ID values 0x1c / 0x1f / 0x21 this class special-cases (0x15 is
@@ -90,31 +90,27 @@
  *   PowerFlower share, and check_decl_agreement would flag those files; and
  *   Init's LoadFile still treats each slot as the model handle.
  *
+ * Native file-handle and dispatch-table storage is owned in .bss and
+ * initialized by this TU. Its complete RTTI, six SpawnInfo profiles and
+ * vtable are owned in .data, together with all 42 native member-pointer
+ * descriptors. Their address labels remain configuration identities.
+ *
  * NOT OWNED BY THIS TU (named where they live, not here):
  *   func_ov102_0214ad14 / 0214b384 -- daBmb_c helpers, called by
  *     func_ov102_02149220 on the Bob-omb it spawns.
  *   daSCoin_c::Collect -- ov002; the bounce end calls it on a held
  *     SECRET_COIN (actorID 0x149).
- *   data_ov102_0214e7d0..808 -- this overlay's KCL/BMD/BCA handles. ov102's
- *     sinit constructs them; this TU does not own .bss.
  *   data_ov002_0210d9* / da40 / d954 -- ov002 BMD/CLPS handles loaded for
  *     the caps and contents.
- *   data_ov102_0214e890 / e870 / e8c0 -- sinit-owned PMF tables.
  *   data_02082214 -- NitroSDK FX_SinCosTable_; the bounce squash indexes it
  *     by mBounceAng.
  *   data_0209caa0 / 0209f2d8 / 0209f2f8 / 0209f32c / 0209f318 / 0209e650 /
  *     020a0edc -- arm9 globals.
- *   g_profile_HATENA_BLOCK / ITEM_BLOCK / VS_ITEM_BLOCK / CAP_BLOCK_* (overlay
- *   data).
  *
  * deslop leftovers:
  * - func_ov102_02149684 stays free: it writes the prize point into a
  *   caller's buffer in arg0 and takes the block in arg1, so member form
  *   would swap the register operands.
- * - The state/prize dispatch tables stay pointer-to-member records on the
- *   non-virtual stand-in C: daObjHatenaBlock_c has virtuals, so a real
- *   daObjHatenaBlock_c::* is wider than the 8-byte entries the sinit
- *   copies into data_ov102_0214e890/e870/e8c0.
  * - The (Vector3 *) prize-point casts around func_ov102_02149684's int
  *   buffers stay: they are local ints, and a real Vector3 local emits a
  *   Vector3 D1 deadstrip.
@@ -132,6 +128,7 @@ enum daObjHatenaBlock_c_AssetId {
 };
 
 #include "common.h"
+#include "SpawnInfo.h"
 #include "types.h"
 #include "daObjHatenaBlock_c.h"
 #include "dBgCh_Gnd.h"
@@ -154,15 +151,11 @@ struct V3 {
   V3() {}
 };
 
-/* The two pointer-to-member tables are typed against this opaque stand-in for
-   the block (PMF receiver), not daObjHatenaBlock_c: a row is {enter, update}
-   for mState (data_ov102_0214e890), or four columns of prize spawners
-   (data_ov102_0214e8c0 / e870). Each entry is a plain function address with a
-   zero adjustment word. */
-struct C;
-typedef void (C::*PMF)();
+/* State entries pair enter/update handlers; prize rows contain four handlers.
+ * All dispatches discard results. These native member pointers are eight
+ * bytes under the pinned compiler, including the this-adjustment word. */
+typedef void (daObjHatenaBlock_c::*PMF)();
 struct Entry { PMF pmf[2]; };
-struct C {};
 
 /* Actor IDs, as symbols/actor_debug_names.tsv lists them. */
 enum {
@@ -278,71 +271,38 @@ HatenaBlockModelFilePtr   data_ov102_0214e7e0(ASSET_OBJ_CAP_BOX_W_BMD);  /* CAP_
 HatenaBlockAnimFileHandle data_ov102_0214e7f8(ASSET_HATENA_KARABOX_BCA);  /* HATENA BCA */
 HatenaBlockClsnFileHandle data_ov102_0214e7d0(0x800d); /* KCL */
 
-/* The pointer-to-member constants the initializer copies into the tables
-   below (0x0214e258..0x0214e3a0 in .data, an unclaimed run). */
-extern PMF data_ov102_0214e278;
-extern PMF data_ov102_0214e260;
-extern PMF data_ov102_0214e268;
-extern PMF data_ov102_0214e258;
-extern PMF data_ov102_0214e3a0;
-extern PMF data_ov102_0214e398;
-extern PMF data_ov102_0214e388;
-extern PMF data_ov102_0214e380;
-extern PMF data_ov102_0214e378;
-extern PMF data_ov102_0214e370;
-extern PMF data_ov102_0214e368;
-extern PMF data_ov102_0214e360;
-extern PMF data_ov102_0214e358;
-extern PMF data_ov102_0214e350;
-extern PMF data_ov102_0214e348;
-extern PMF data_ov102_0214e340;
-extern PMF data_ov102_0214e320;
-extern PMF data_ov102_0214e288;
-extern PMF data_ov102_0214e338;
-extern PMF data_ov102_0214e330;
-extern PMF data_ov102_0214e280;
-extern PMF data_ov102_0214e318;
-extern PMF data_ov102_0214e2a8;
-extern PMF data_ov102_0214e2b0;
-extern PMF data_ov102_0214e270;
-extern PMF data_ov102_0214e298;
-extern PMF data_ov102_0214e2a0;
-extern PMF data_ov102_0214e2f8;
-extern PMF data_ov102_0214e2f0;
-extern PMF data_ov102_0214e2e8;
-extern PMF data_ov102_0214e390;
-extern PMF data_ov102_0214e2d8;
-extern PMF data_ov102_0214e2d0;
-extern PMF data_ov102_0214e2c8;
-extern PMF data_ov102_0214e2c0;
-extern PMF data_ov102_0214e2b8;
-extern PMF data_ov102_0214e2e0;
-extern PMF data_ov102_0214e328;
-extern PMF data_ov102_0214e310;
-extern PMF data_ov102_0214e308;
-extern PMF data_ov102_0214e300;
-extern PMF data_ov102_0214e290;
+/* The initializer copies native member-pointer constants into the tables
+   below. Their complete .data contribution is 0x0214e258..0x0214e3a8. */
 
 /* The three PMF tables, in static-initializer order: the mState {enter,
    update} rows, the per-content spawner grid (eight rows of four columns,
    each column pair copied from one record), then the VS rows. */
 Entry data_ov102_0214e890[3] = {
-    {data_ov102_0214e278, data_ov102_0214e260},
-    {data_ov102_0214e268, data_ov102_0214e258},
-    {data_ov102_0214e3a0, data_ov102_0214e398},
+    {&daObjHatenaBlock_c::func_ov102_02149d80, &daObjHatenaBlock_c::func_ov102_02149ccc},
+    {&daObjHatenaBlock_c::func_ov102_02149c78, &daObjHatenaBlock_c::func_ov102_021498e0},
+    {&daObjHatenaBlock_c::func_ov102_021498c4, &daObjHatenaBlock_c::func_ov102_02149878},
 };
 PMF data_ov102_0214e8c0[8][4] = {
-    {data_ov102_0214e388, data_ov102_0214e380, data_ov102_0214e378, data_ov102_0214e370},
-    {data_ov102_0214e368, data_ov102_0214e360, data_ov102_0214e358, data_ov102_0214e350},
-    {data_ov102_0214e348, data_ov102_0214e340, data_ov102_0214e320, data_ov102_0214e288},
-    {data_ov102_0214e338, data_ov102_0214e330, data_ov102_0214e280, data_ov102_0214e318},
-    {data_ov102_0214e2a8, data_ov102_0214e2b0, data_ov102_0214e270, data_ov102_0214e298},
-    {data_ov102_0214e2a0, data_ov102_0214e2f8, data_ov102_0214e2f0, data_ov102_0214e2e8},
-    {data_ov102_0214e390, data_ov102_0214e2d8, data_ov102_0214e2d0, data_ov102_0214e2c8},
-    {data_ov102_0214e2c0, data_ov102_0214e2b8, data_ov102_0214e2e0, data_ov102_0214e328},
+    {&daObjHatenaBlock_c::func_ov102_021494cc, &daObjHatenaBlock_c::func_ov102_021494cc,
+     &daObjHatenaBlock_c::func_ov102_021494cc, &daObjHatenaBlock_c::func_ov102_021494cc},
+    {&daObjHatenaBlock_c::func_ov102_02149478, &daObjHatenaBlock_c::func_ov102_02149478,
+     &daObjHatenaBlock_c::func_ov102_02149478, &daObjHatenaBlock_c::func_ov102_02149478},
+    {&daObjHatenaBlock_c::func_ov102_02149428, &daObjHatenaBlock_c::func_ov102_02149428,
+     &daObjHatenaBlock_c::func_ov102_02149428, &daObjHatenaBlock_c::func_ov102_02149428},
+    {&daObjHatenaBlock_c::func_ov102_02149384, &daObjHatenaBlock_c::func_ov102_02149384,
+     &daObjHatenaBlock_c::func_ov102_02149384, &daObjHatenaBlock_c::func_ov102_02149384},
+    {&daObjHatenaBlock_c::func_ov102_021493dc, &daObjHatenaBlock_c::func_ov102_021493dc,
+     &daObjHatenaBlock_c::func_ov102_021493dc, &daObjHatenaBlock_c::func_ov102_021493dc},
+    {&daObjHatenaBlock_c::func_ov102_021492d4, &daObjHatenaBlock_c::func_ov102_02149288,
+     &daObjHatenaBlock_c::func_ov102_02149288, &daObjHatenaBlock_c::func_ov102_02149288},
+    {&daObjHatenaBlock_c::func_ov102_02149288, &daObjHatenaBlock_c::func_ov102_02149288,
+     &daObjHatenaBlock_c::func_ov102_02149288, &daObjHatenaBlock_c::func_ov102_02149288},
+    {&daObjHatenaBlock_c::func_ov102_02149220, &daObjHatenaBlock_c::func_ov102_02149288,
+     &daObjHatenaBlock_c::func_ov102_02149288, &daObjHatenaBlock_c::func_ov102_02149288},
 };
 PMF data_ov102_0214e870[1][4] = {
-    {data_ov102_0214e310, data_ov102_0214e308, data_ov102_0214e300, data_ov102_0214e290},
+    {&daObjHatenaBlock_c::func_ov102_021492d4, &daObjHatenaBlock_c::func_ov102_021492d4,
+     &daObjHatenaBlock_c::func_ov102_021492d4, &daObjHatenaBlock_c::func_ov102_021492d4},
 };
 
 // @symbol daObjHatenaBlock_c_classInit_VS_ITEM_BLOCK
@@ -753,12 +713,19 @@ void daObjHatenaBlock_c::func_ov102_02149e38(){
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149df0Ev
 /* Runs the update routine (column 1) of mState's row in the state table. */
-void daObjHatenaBlock_c::func_ov102_02149df0() { int j = mState; (((C *)this)->*data_ov102_0214e890[j].pmf[1])(); }
+void daObjHatenaBlock_c::func_ov102_02149df0() {
+    int j = mState;
+    (this->*data_ov102_0214e890[j].pmf[1])();
+}
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149da8Ei
 /* Enters state i: stores it in mState, then runs that row's enter routine
    (column 0). */
-void daObjHatenaBlock_c::func_ov102_02149da8(int i) { mState = i; int j = mState; (((C *)this)->*data_ov102_0214e890[j].pmf[0])(); }
+void daObjHatenaBlock_c::func_ov102_02149da8(int i) {
+    mState = i;
+    int j = mState;
+    (this->*data_ov102_0214e890[j].pmf[0])();
+}
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149d80Ev
 /* STATE_IDLE enter routine: no bounce offset, unit scale, vertical
@@ -847,7 +814,7 @@ void daObjHatenaBlock_c::func_ov102_02149c78()
  * The `ch >= 4` tests below cannot fire: ch was clamped to 3 above. */
 void daObjHatenaBlock_c::func_ov102_021498e0()
 {
-    C *self = (C *)this;
+    daObjHatenaBlock_c *self = this;
     Vector3 pos;
     int ch;
     u16 typ;
@@ -945,16 +912,16 @@ void daObjHatenaBlock_c::func_ov102_021498c4() {
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149878Ev
 /* STATE_POPPED update routine. Counts mBounceTimer down; once it reads 0 and
-   the closest player is 0x64000 (100 units) away or less, returns that
-   distance; farther than that, the block re-enters STATE_IDLE. (The
-   function falls off its end with no value on that path, as the retail
-   code does.) */
-int daObjHatenaBlock_c::func_ov102_02149878()
-{
+   the closest player is 0x64000 (100 units) away or less, returns
+   without changing state; farther than that, the block re-enters STATE_IDLE.
+   The state dispatcher does not consume a return value. */
+void daObjHatenaBlock_c::func_ov102_02149878() {
     int r = DecIfAbove0_Short(&mBounceTimer);
-    if (r != 0) return r;
+    if (r != 0)
+        return;
     r = DistToCPlayer();
-    if (r <= 0x64000) return r;
+    if (r <= 0x64000)
+        return;
     func_ov102_02149da8(STATE_IDLE);
 }
 
@@ -1137,13 +1104,13 @@ void daObjHatenaBlock_c::func_ov102_021493dc() {
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149384Ev
 /* CONTENT_SHELL prize: spawns a SHELL at the prize point and, if it spawned,
-   sets the new shell's mDespawnTimer to 0xb4 (180). Returns the new actor. */
-void* daObjHatenaBlock_c::func_ov102_02149384(){
-  Vector3 v;
-  func_ov102_02149684((int *)&v, this);
-  void* a=dActor_c::Spawn(ACTOR_SHELL,0,v,0,mAreaId,-1);
-  if(a) ((daShl_c *)a)->mDespawnTimer=0xb4;
-  return a;
+   sets the new shell's mDespawnTimer to 0xb4 (180). */
+void daObjHatenaBlock_c::func_ov102_02149384() {
+    Vector3 v;
+    func_ov102_02149684((int *)&v, this);
+    void *a = dActor_c::Spawn(ACTOR_SHELL, 0, v, 0, mAreaId, -1);
+    if (a)
+        ((daShl_c *)a)->mDespawnTimer = 0xb4;
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_021492d4Ev
@@ -1178,15 +1145,16 @@ void daObjHatenaBlock_c::func_ov102_02149288(){
 /* Bob-omb prize: spawns a BOMBHEI (param 4) at the prize point; if it
    spawned, func_ov102_0214ad14 (daBmb_c: stores ClosestPlayer as its chase
    target) and func_ov102_0214b384(a, 0x3c) (daBmb_c.h: only shortens the
-   fuse). Returns the result of the last call, or 0. */
+   fuse). Callers discard the result of that helper. */
 extern "C" void* func_ov102_0214b384(void*, int);
-void* daObjHatenaBlock_c::func_ov102_02149220(){
-  Vector3 v;
-  func_ov102_02149684((int *)&v, this);
-  void* a = dActor_c::Spawn(ACTOR_BOMBHEI, 4, v, 0, mAreaId, -1);
-  if(a == 0) return a;
-  func_ov102_0214ad14(a);
-  return func_ov102_0214b384(a, 0x3c);
+void daObjHatenaBlock_c::func_ov102_02149220() {
+    Vector3 v;
+    func_ov102_02149684((int *)&v, this);
+    void *a = dActor_c::Spawn(ACTOR_BOMBHEI, 4, v, 0, mAreaId, -1);
+    if (a == 0)
+        return;
+    func_ov102_0214ad14(a);
+    func_ov102_0214b384(a, 0x3c);
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149100EP7Vector3ijs
@@ -1247,3 +1215,63 @@ int daObjHatenaBlock_c::func_ov102_02149078()
     }
     return 0;
 }
+
+extern "C" SpawnInfo<daObjHatenaBlock_c> g_profile_VS_ITEM_BLOCK = {
+    daObjHatenaBlock_c_classInit_VS_ITEM_BLOCK,
+    0x16,
+    0x28,
+    0x2,
+    0x60000,
+    0x100000,
+    0x1000000,
+    0x1000000};
+
+extern "C" SpawnInfo<daObjHatenaBlock_c> g_profile_HATENA_BLOCK = {
+    daObjHatenaBlock_c_classInit_HATENA_BLOCK,
+    0x14,
+    0x26,
+    0x2,
+    0x60000,
+    0x100000,
+    0x1000000,
+    0x1000000};
+
+extern "C" SpawnInfo<daObjHatenaBlock_c> g_profile_ITEM_BLOCK = {
+    daObjHatenaBlock_c_classInit_ITEM_BLOCK,
+    0x15,
+    0x27,
+    0x2,
+    0x60000,
+    0x100000,
+    0x1000000,
+    0x1000000};
+
+extern "C" SpawnInfo<daObjHatenaBlock_c> g_profile_CAP_BLOCK_M = {
+    daObjHatenaBlock_c_classInit_CAP_BLOCK_M,
+    0x17,
+    0x29,
+    0x2,
+    0x60000,
+    0x100000,
+    0x1000000,
+    0x1000000};
+
+extern "C" SpawnInfo<daObjHatenaBlock_c> g_profile_CAP_BLOCK_L = {
+    daObjHatenaBlock_c_classInit_CAP_BLOCK_L,
+    0x19,
+    0x2b,
+    0x2,
+    0x60000,
+    0x100000,
+    0x1000000,
+    0x1000000};
+
+extern "C" SpawnInfo<daObjHatenaBlock_c> g_profile_CAP_BLOCK_W = {
+    daObjHatenaBlock_c_classInit_CAP_BLOCK_W,
+    0x18,
+    0x2a,
+    0x2,
+    0x60000,
+    0x100000,
+    0x1000000,
+    0x1000000};

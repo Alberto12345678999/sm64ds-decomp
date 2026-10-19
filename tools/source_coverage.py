@@ -80,6 +80,12 @@ This counts EVERY section a `complete` entry names, not just `.text`. That inclu
 translation units. Sections are counted and reported separately, so a non-text claim
 cannot disappear behind growth in code coverage.
 
+Supported named initialized sections (for example `.data.entry_meta0`) count in
+their `.data` or `.rodata` family, using the build router's name rules. Splitting or
+renaming those sections does not change ownership of the same bytes. Other section
+names remain distinct. Waivers use the same families, module boundaries and extents.
+This accounting does not prove which object supplied bytes in the linked ROM.
+
 MOST ROM DATA IS STILL NOT SOURCE-BUILT. Ordinary per-function objects have their
 compiler-emitted vtables, typeinfo and other content measured and then isolated away;
 DSD gap objects supply those addresses from the cartridge. Promoted intact TUs are the
@@ -131,6 +137,8 @@ import re
 import subprocess
 import sys
 
+import data_section_routes as DSR
+
 REPO = pathlib.Path(__file__).resolve().parent.parent
 CONFIG_DIR = "config"
 EXCEPTIONS = REPO / "config" / "source-coverage-exceptions.jsonl"
@@ -141,7 +149,7 @@ EXCEPTIONS = REPO / "config" / "source-coverage-exceptions.jsonl"
 # the object from ROM bytes.
 _ENTRY_RE = re.compile(r"^(\S+):\s*$")
 _SECTION_RE = re.compile(
-    r"^(\.\w+)\s+start:(0x[0-9a-fA-F]+)\s+end:(0x[0-9a-fA-F]+)")
+    r"^(\.\S+)\s+start:(0x[0-9a-fA-F]+)\s+end:(0x[0-9a-fA-F]+)")
 _MODULE_RE = re.compile(r"overlays/(ov\d+)/delinks\.txt$")
 
 
@@ -198,7 +206,8 @@ def parse_delinks(text, delinks_path):
         sec = _SECTION_RE.match(stripped)
         if sec:
             cur.sections.append(
-                (sec.group(1), int(sec.group(2), 16), int(sec.group(3), 16)))
+                (DSR.initialized_kind(sec.group(1)) or sec.group(1),
+                 int(sec.group(2), 16), int(sec.group(3), 16)))
     return out
 
 
@@ -385,7 +394,8 @@ def load_exceptions(path=None):
             start, end = int(str(row["start"]), 16), int(str(row["end"]), 16)
         except ValueError as exc:
             raise ValueError(f"{p}:{n}: start/end must be hex addresses: {exc}") from exc
-        out.append((row["module"], row["section"], start, end, row["reason"]))
+        section = DSR.initialized_kind(row["section"]) or row["section"]
+        out.append((row["module"], section, start, end, row["reason"]))
     return out
 
 

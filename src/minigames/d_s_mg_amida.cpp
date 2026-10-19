@@ -10,6 +10,8 @@
  * at 0x020d5974; the relocation census in the manifest shows that the
  * factory and AmidaPiece_ElemCtor above it belong to it too. The destructor
  * is the key function, so this file also emits the vtable and RTTI.
+ * The native profile, tables and metadata now own .data 0x0213b814..0x0213b9ac.
+ * This production assignment does not establish the original source-file cut.
  *
  * The fifteen functions below Amida_RestoreBgChars came from one-function
  * files. Their bodies are kept as they matched there, with these changes:
@@ -70,12 +72,18 @@ enum dScMgAmida_c_AssetId {
     ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCG_BIN = 0x001f,
     ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCL_BIN = 0x0020,
     ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NSC_BIN = 0x0021,
-    ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b
+    ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b,
+    ASSET_D_2D_MG_OPTION_F_NCG_BIN = 0x00db,
+    ASSET_D_2D_MG_OPTION_G_NCG_BIN = 0x00dc,
+    ASSET_D_2D_MG_OPTION_I_NCG_BIN = 0x00dd,
+    ASSET_D_2D_MG_OPTION_NCG_BIN = 0x00de,
+    ASSET_D_2D_MG_OPTION_S_NCG_BIN = 0x00df
 };
 
 #include "types.h"
 #include "decl_common.h"
 #include "dScMgAmida_c.h"
+#include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
 
 extern "C" {
@@ -139,7 +147,7 @@ extern void *sAmidaLaneAnimSprites[];
 extern void *sAmidaWalkerSprites[];
 extern int sAmidaLaneResultSprites[];
 extern int sAmidaLaneWantSprites[];
-extern int data_ov006_0213b84c[13];
+extern int sAmidaBoardAnimationFrames[13];
 extern s32 sAmidaLaneTargets[];
 extern s32 sAmidaLaneSaved[];
 }
@@ -175,15 +183,15 @@ void Deallocate(void *ptr);
 }
 
 typedef struct {
-    int a;
-    int b;
-} Pair;
-extern Pair data_ov006_0213b8b8[11];
+    int x;
+    int y;
+} AmidaRungPosition;
+extern AmidaRungPosition sAmidaInitialRungPositions[11];
 
 typedef struct {
-    int v[14];
-} Buf14;
-extern Buf14 sAmidaRenderPeriods;
+    int values[14];
+} AmidaRenderPeriods;
+extern AmidaRenderPeriods sAmidaRenderPeriods;
 
 #define PIECE_AT(p) ((dScMgAmida_c_Piece *)((p) + 0x4768))
 
@@ -1529,7 +1537,7 @@ void dScMgAmida_c::SetupRound() {
     char *raw = (char *)this;
     int level;
     int shuffle;
-    Pair rungs[11];
+    AmidaRungPosition rungs[11];
     int skip[11];
 
     mFinished = 0;
@@ -1642,9 +1650,9 @@ void dScMgAmida_c::SetupRound() {
     mLineCount++;
     {
         typedef struct {
-            Pair e[11];
+            AmidaRungPosition e[11];
         } Blk88;
-        *(Blk88 *)rungs = *(Blk88 *)data_ov006_0213b8b8;
+        *(Blk88 *)rungs = *(Blk88 *)sAmidaInitialRungPositions;
     }
 
     {
@@ -1723,8 +1731,8 @@ void dScMgAmida_c::SetupRound() {
             int i;
             for (i = 0; i < 5; i++) {
                 if (skip[i] == 0) {
-                    int x = rungs[i].a;
-                    int y = rungs[i].b - 0x20;
+                    int x = rungs[i].x;
+                    int y = rungs[i].y - 0x20;
                     Mg_DrawLine(this, x, y, x + 0x40, y, mLineColor, 1);
                 }
             }
@@ -1735,8 +1743,8 @@ void dScMgAmida_c::SetupRound() {
             int i;
             for (i = 0; i < 0xb; i++) {
                 if (skip[i] == 0) {
-                    int x = rungs[i].a;
-                    int y = rungs[i].b - 0x20;
+                    int x = rungs[i].x;
+                    int y = rungs[i].y - 0x20;
                     Mg_DrawLine(this, x, y, x + 0x40, y, mLineColor, 1);
                 }
             }
@@ -1878,7 +1886,7 @@ void dScMgAmida_c::RenderBoard() {
                     (*frame)++;
                 }
             }
-            *(T13 *)frames = *(T13 *)data_ov006_0213b84c;
+            *(T13 *)frames = *(T13 *)sAmidaBoardAnimationFrames;
             Mg_RenderSpriteBoth(sAmidaBoardAnimSprites[frames[*frame]], y, 0xb8, noPalette, 0);
         }
     }
@@ -1944,8 +1952,8 @@ s32 dScMgAmida_c::Render() {
                 if (mLaneResult[i] != 0) {
                     int *counterA = (int *)(raw + i * 4 + 0x539c);
                     (*counterA)++;
-                    Buf14 periods = sAmidaRenderPeriods;
-                    if (*counterA >= periods.v[i]) {
+                    AmidaRenderPeriods periods = sAmidaRenderPeriods;
+                    if (*counterA >= periods.values[i]) {
                         int *counterB;
                         *counterA = 0;
                         counterB = (int *)(raw + i * 4 + 0x53ac);
@@ -2366,3 +2374,30 @@ extern "C" void *dScMgAmida_c_classInit(void) {
 // @symbol AmidaPiece_ElemCtor
 /* Element constructor for the 0x80 falling pieces. */
 extern "C" void AmidaPiece_ElemCtor(void) {}
+
+/* Runtime asset handles in GetGameLanguage order. These are IDs in the
+ * overlay 0 file table, not NitroFS file numbers. */
+int sAmidaOptionNcgByLanguage[5] = {
+    ASSET_D_2D_MG_OPTION_NCG_BIN,   ASSET_D_2D_MG_OPTION_S_NCG_BIN, ASSET_D_2D_MG_OPTION_F_NCG_BIN,
+    ASSET_D_2D_MG_OPTION_G_NCG_BIN, ASSET_D_2D_MG_OPTION_I_NCG_BIN,
+};
+
+/* RenderBoard copies all thirteen frame selectors before drawing. */
+int sAmidaBoardAnimationFrames[13] = {0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0};
+
+/* Render copies this entire block, then indexes it by lane. That access
+ * and the fourteen-word extent are preserved; the original grouping of
+ * these values is not established by the observed lane accesses alone. */
+AmidaRenderPeriods sAmidaRenderPeriods = {{2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1}};
+
+/* Initial rung endpoints used by the five- and eleven-rung line loops. */
+AmidaRungPosition sAmidaInitialRungPositions[11] = {
+    {32, -135}, {160, -135}, {96, -90}, {32, -45},  {160, -45}, {96, -120},
+    {32, -105}, {160, -105}, {32, -75}, {160, -75}, {96, -60},
+};
+
+/* Match the existing void* factory declaration; its original return type
+ * remains a separate source-reconstruction question. */
+extern "C" {
+BaseSpawnInfo<void> g_profile_MG_AMIDA = {dScMgAmida_c_classInit, 371, 371};
+}

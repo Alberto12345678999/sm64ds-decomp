@@ -209,9 +209,47 @@ class OwnedFunctionRenames(unittest.TestCase):
         for rows in [{},"bad",[None]]:
             e=entry();e["defined_symbol_renames"]=rows;self.assert_refused(e=e)
 
-    def test_rename_growth_suffix_alias_and_wrong_ELF_machine_refuse(self):
+    def test_rename_growth_preserves_owned_function_policy_and_object(self):
         e=entry();e["defined_symbol_renames"][-1]["from"]="x"
-        self.assert_refused(raw=fixture(helper_name="x"),e=e)
+        raw=fixture(helper_name="x")
+        out, report, errors=self.prepare(raw=raw,e=e)
+        self.assertEqual(errors, [])
+        # Exercise the same structural proof on a synthetic ELF without mwcc.
+        from test_objisolate import Isolate
+        checked=Isolate()._assert_rename_preserves_object(
+            raw, {r["from"]: r["to"] for r in e["defined_symbol_renames"]},
+            True, growth=True)
+        self.assertEqual(out, checked)
+        self.policy(e)
+        self.assertEqual(RA._with_manifest_renames(raw), out)
+
+    def test_long_rename_keeps_shared_suffix_and_original_string_storage(self):
+        raw=bytearray(fixture(helper_name="prefix", extra=[("alias",0,0,0,0,0)]))
+        elf=ELFFile(io.BytesIO(raw));table=elf.get_section_by_name(".symtab");symbols=list(table.iter_symbols())
+        struct.pack_into("<I",raw,table["sh_offset"]+(len(symbols)-1)*16,symbols[3]["st_name"]+3)
+        raw=bytes(raw)
+        from test_objisolate import Isolate
+        out=Isolate()._assert_rename_preserves_object(
+            raw, {"prefix": "descriptive_function_name"}, True, growth=True)
+        before=ELFFile(io.BytesIO(raw)).get_section_by_name(".strtab").data()
+        after=ELFFile(io.BytesIO(out))
+        self.assertEqual(after.get_section_by_name(".strtab").data()[:len(before)],before)
+        self.assertEqual(list(after.get_section_by_name(".symtab").iter_symbols())[-1].name,"fix")
+
+    def test_growth_refuses_collisions_nul_names_and_unsupported_headers(self):
+        raw=fixture(helper_name="x")
+        for aliases in ({"x":"alpha"}, {"x":"long_name", "@333":"long_name"},
+                        {"x":"bad\0name"}):
+            out, report=OI.rename_defined_symbols(raw, aliases)
+            self.assertIsNone(out)
+            self.assertTrue(report["error"])
+        malformed=bytearray(raw)
+        struct.pack_into("<H",malformed,16,2)  # ET_EXEC is outside the growth contract.
+        out, report=OI.rename_defined_symbols(bytes(malformed), {"x":"long_name"})
+        self.assertIsNone(out)
+        self.assertIn("ELF32 ET_REL",report["error"])
+
+    def test_short_rename_suffix_alias_and_wrong_ELF_machine_refuse(self):
         raw=bytearray(fixture(extra=[("alias",0,0,0,0,0)]))
         elf=ELFFile(io.BytesIO(raw));table=elf.get_section_by_name(".symtab");symbols=list(table.iter_symbols())
         struct.pack_into("<I",raw,table["sh_offset"]+(len(symbols)-1)*16,symbols[3]["st_name"]+2)

@@ -60,10 +60,14 @@ import rombuild_check as RBC  # noqa: E402
 import romdata_check as RDC  # noqa: E402
 import layout_check as LAY  # noqa: E402
 import lcf_interior as LI  # noqa: E402
+import linker_alignment as LA  # noqa: E402
 import rombuild_profile as RP  # noqa: E402
 import srcpath as SP  # noqa: E402
 import relocs as RL  # noqa: E402
 import tu_manifest as TUM  # noqa: E402
+import dsd_pin as DSP  # noqa: E402
+import data_section_routes as DSR  # noqa: E402
+import initialized_boundaries as IB  # noqa: E402
 
 # Default compiler for the ROM build — same as the matching pin (tools/match.py
 # CANONICAL / notes/rom-build.md). config/rombuild-versions.txt carries per-file
@@ -844,13 +848,24 @@ def intact_tu_policies(enrolled=None, manifest=None):
             continue
         if entry.get("status") != "promoted":
             errors.append(f"{label}: enrolled intact-object entry is not promoted")
-        section_names = {row.get("name") for row in entry.get("sections", [])
-                         if isinstance(row, dict)}
+        section_rows = entry.get("sections", [])
+        if not isinstance(section_rows, list):
+            errors.append(f"{label}: intact-object section claims must be a list")
+            section_rows = []
+        try:
+            IB.prefix_policies(entry)
+            for row in section_rows:
+                if isinstance(row, dict):
+                    IB.terminal_policy(row)
+        except (KeyError, TypeError, ValueError) as exc:
+            errors.append(f"{label}: invalid initialized boundary policy: {exc}")
+        section_names = {row.get("name") for row in section_rows
+                         if isinstance(row, dict) and isinstance(row.get("name"), str)}
         if ".text" not in section_names or not (section_names - {".text"}):
             errors.append(f"{label}: intact-object policy needs .text and non-text claims")
         mapped_sections = [
             f"{row.get('name')} -> {row.get('module_section')}"
-            for row in entry.get("sections", []) if isinstance(row, dict)
+            for row in section_rows if isinstance(row, dict)
             and row.get("module_section", row.get("name")) != row.get("name")]
         if mapped_sections:
             errors.append(f"{label}: intact-object input-section retargeting is not "
@@ -888,7 +903,10 @@ def intact_tu_policies(enrolled=None, manifest=None):
         ranges = linkcheck.get("tuRanges") or []
         expected_ranges = []
         seen_sections = set()
-        for row in entry.get("sections", []):
+        named_routes, routing_errors = DSR.routes(entry)
+        errors.extend(f"{label}: {error}" for error in routing_errors)
+        route_names = {row["name"] for row in named_routes}
+        for row in section_rows:
             try:
                 name = row["name"]
                 start, end = int(row["start"], 16), int(row["end"], 16)
@@ -897,8 +915,11 @@ def intact_tu_policies(enrolled=None, manifest=None):
                 continue
             # Duplicated from tubuild._TU_SECTION_NAMES on purpose: tubuild imports
             # this module, so the dependency cannot run the other way. Widen both.
-            if name not in (".text", ".rodata", ".init", ".ctor", ".data", ".bss",
-                            ".exception", ".exceptix") \
+            if not isinstance(name, str):
+                errors.append(f"{label}: intact-object manifest has an invalid section name")
+                continue
+            if (name not in (".text", ".rodata", ".init", ".ctor", ".data", ".bss",
+                             ".exception", ".exceptix") and name not in route_names) \
                     or start >= end:
                 errors.append(f"{label}: intact-object manifest has unsupported/invalid "
                               f"section claim {name!r}")
@@ -1164,6 +1185,9 @@ def main():
     ap.add_argument("--no-check", action="store_true",
                     help="skip module/source fidelity analysis; report status is unchecked")
     ap.add_argument("--data-json", help="dump every ROM-data verdict record as JSON")
+    ap.add_argument("--data-provenance-requests", metavar="JSON",
+                    help="verify requested source data providers and final bytes/layout; "
+                         "JSON rows contain module, symbol, source, size (stock profile only)")
     ap.add_argument("--no-data-check", action="store_true",
                     help="skip comparing emitted vtable/RTTI data against the ROM "
                          "(see tools/romdata_check.py); never affects the link")
@@ -1183,6 +1207,8 @@ def main():
         ap.error("--partitioned-tu currently supports only the stock profile")
     if args.partitioned_tu and args.no_check:
         ap.error("--partitioned-tu cannot be combined with --no-check")
+    if args.data_provenance_requests and (args.profile != "stock" or args.no_check):
+        ap.error("--data-provenance-requests requires the checked stock profile")
 
     report_path = pathlib.Path(args.report_json or
                                BUILD / ("rombuild-report.json" if args.profile == "stock"
@@ -1198,6 +1224,10 @@ def main():
                                encoding="utf-8", newline="\n")
 
     try:
+        try:
+            report["dsdTool"] = DSP.check(DSD)
+        except DSP.DsdPinError as exc:
+            raise BuildError("preflight", 1, str(exc)) from exc
         for tool in (DSD, MW / VERSION / "mwccarm.exe", MW / LD_VERSION / "mwldarm.exe"):
             if not tool.is_file():
                 raise BuildError("preflight", 1,
@@ -1205,6 +1235,18 @@ def main():
         if not (REPO / "extracted" / "dsd" / "config.yaml").is_file():
             raise BuildError("preflight", 1,
                              "no extracted ROM - run tools/unpack.py on your own dump first")
+
+        data_provenance_plan = None
+        if args.data_provenance_requests:
+            import data_provenance_build as DPB
+            try:
+                data_provenance_plan = DPB.prepare(
+                    REPO, BUILD, args.data_provenance_requests,
+                    [DSD, MW / LD_VERSION / "mwldarm.exe", *MW.rglob("mwccarm.exe")])
+            except (ValueError, OSError) as exc:
+                raise BuildError("data provenance preparation", 1, str(exc)) from exc
+            report["dataProvenance"] = {
+                "status": "not-run", "requests": data_provenance_plan["requests"]}
 
         # Layout gate, before the compile rather than after: a delinks.txt naming a path
         # with no file there does NOT fail this build. dsd fills that range with retail
@@ -1244,6 +1286,11 @@ def main():
         report["profileConfig"] = str(config_root.relative_to(REPO))
         report["modReplacements"] = profile["modReplacements"]
         report["modGapFallbacks"] = profile["modGapFallbacks"]
+        if data_provenance_plan:
+            try:
+                DPB.bind_generated_config(data_provenance_plan, config_root)
+            except (ValueError, OSError) as exc:
+                raise BuildError("data provenance configuration", 1, str(exc)) from exc
 
         # Gap objects first: delinks.txt drives which ranges dsd carves out for us.
         print(f"profile: {args.profile} ({len(profile['modReplacements'])} mod source replacement(s), "
@@ -1256,6 +1303,10 @@ def main():
         print("[2/6] dsd lcf")
         run([str(DSD), "lcf", "-c", str(config_yaml)], "dsd lcf")
         report["phases"].append("dsd lcf")
+        try:
+            report["linkerAlignment"] = LA.verify_lcf(BUILD / "arm9.lcf")
+        except ValueError as error:
+            raise BuildError("linker alignment policy", 1, str(error)) from error
 
         # A partitioned TU's delinks name its src_tu/ merged file; widen the allowed
         # source roots so it enrolls like any other complete entry.
@@ -1342,15 +1393,39 @@ def main():
                 cache.prune(args.cache_max_mb * 1024 * 1024)
         report["phases"].append("mwccarm")
 
-        defined_interior = LI.patch(BUILD / "arm9.lcf", BUILD / "objects.txt", config_root)
+        try:
+            boundaries = IB.link_plan(list(intact_tus.values()), BUILD / "objects.txt",
+                                      BUILD / "arm9.lcf", config_root)
+            report["initializedBoundaries"] = boundaries
+            defined_interior = LI.patch(BUILD / "arm9.lcf", BUILD / "objects.txt", config_root,
+                                        initialized_prefixes=boundaries["prefixes"])
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            raise BuildError("initialized boundary proof", 1, str(exc)) from exc
         if defined_interior:
             print(f"      lcf: defined {len(defined_interior)} interior row(s) at their ROM "
                   f"address ({', '.join(n for n, _a in defined_interior)})")
+        data_provenance_snapshot = None
+        if data_provenance_plan:
+            try:
+                data_provenance_snapshot = DPB.before_link(data_provenance_plan)
+            except (ValueError, OSError) as exc:
+                raise BuildError("data provenance inputs", 1, str(exc)) from exc
         print("[4/6] mwldarm")
         run([*launcher(), str(MW / LD_VERSION / "mwldarm.exe"), *LDFLAGS.split(),
              f"@{BUILD / 'objects.txt'}", str(BUILD / "arm9.lcf"),
              "-o", str(BUILD / "final_link.o")], "mwldarm")
         report["phases"].append("mwldarm")
+        if data_provenance_plan:
+            try:
+                proof = DPB.after_link(data_provenance_plan, data_provenance_snapshot)
+            except (ValueError, OSError) as exc:
+                raise BuildError("data provenance verification", 1, str(exc)) from exc
+            report["dataProvenance"] = proof
+            if not proof["ok"]:
+                raise BuildError("data provenance verification", 1,
+                                 json.dumps({"errors": proof.get("errors", []),
+                                             "objects": proof["objects"]}, indent=2))
+            print(f"      data provenance: {len(proof['objects'])} requested range(s) verified")
 
         if tu_prepared:
             verification = TP.verify_link(config_yaml, BUILD / "final_link.o", tu_prepared)

@@ -72,6 +72,7 @@ import objisolate as OI  # noqa: E402
 import relocs as RL  # noqa: E402
 import reloc_audit as RA  # noqa: E402
 import reverify_corpus as RV  # noqa: E402
+import tu_manifest as TUM  # noqa: E402
 # `rombuild` is imported lazily inside _compile/main, never at module scope: rombuild
 # imports THIS module so it can measure each object while it is still raw, and a
 # top-level import here would close that cycle. Nothing above _compile needs it.
@@ -89,6 +90,77 @@ _index_lock = threading.Lock()
 _index = None
 _names_lock = threading.Lock()
 _names = None
+_manifest_lock = threading.Lock()
+_source_manifests = None
+
+
+def _rename_manifest(rel):
+    """An exact source-path match, never a guess from a compiler-local name."""
+    global _source_manifests
+    with _manifest_lock:
+        if _source_manifests is None:
+            by_source = collections.defaultdict(list)
+            for entry in TUM.load()["entries"]:
+                source = entry.get("promoted_source") or entry.get("source")
+                if source and entry.get("defined_symbol_renames"):
+                    by_source[str(source).replace("\\", "/")].append(entry)
+            _source_manifests = by_source
+        entries = _source_manifests.get(str(rel).replace("\\", "/"), [])
+    if len(entries) > 1:
+        raise ValueError(f"ambiguous data rename manifests for {rel}")
+    return entries[0] if entries else None
+
+
+def _measurement_object(raw, rel, names):
+    """Use production's validated definition names on an in-memory audit copy.
+
+    Raw @NNN names are numbered independently by each compiler invocation. A
+    global name-index hit is not evidence that two such definitions are the same
+    object. The source's manifest and the shared rename admission rule establish
+    that identity; a refused policy produces an explicit measurement error.
+    Nothing is written back to the compiler output or supplied to the linker.
+    """
+    entry = _rename_manifest(rel)
+    if entry is None:
+        return raw, names
+    mapping, _requested, reasons = RA.validated_defined_symbol_rename_plan(raw, entry)
+    if reasons:
+        raise ValueError("data rename policy refused: " + "; ".join(reasons))
+    table = ELFFile(io.BytesIO(raw)).get_section_by_name(".symtab")
+    defined = {s.name for s in table.iter_symbols()
+               if s.name and s["st_shndx"] not in ("SHN_UNDEF", "SHN_ABS")}
+    if not TUM.defined_function_preimage(entry, mapping) <= defined:
+        raise ValueError("data rename object is missing manifest function definitions")
+    renamed, plan = OI.rename_defined_symbols(raw, mapping)
+    if renamed is None:
+        raise ValueError(f"data rename refused: {plan.get('error')}")
+    contextual = dict(names)
+    module = RL.normalize_module(entry["module"])
+    registry = rom_data_index()
+    # Resolve canonical targets in this manifest's module, not the first other
+    # overlay to use the same spelling. An absent target stays unresolved.
+    for target in mapping.values():
+        home = registry.get((module, target))
+        contextual[target] = (module, home[0]) if home else (None, None)
+    owned = collections.defaultdict(list)
+    for field in ("rodata", "init", "ctor", "data", "bss", "exception", "exceptix"):
+        for row in entry.get(field, []) or []:
+            owned[row["symbol"]].append(row)
+    table = ELFFile(io.BytesIO(renamed)).get_section_by_name(".symtab")
+    for symbol in table.iter_symbols():
+        if (symbol.name and symbol["st_info"]["bind"] == "STB_LOCAL"
+                and symbol.name not in mapping.values()):
+            contextual[symbol.name] = (None, None)
+            rows = owned.get(symbol.name, [])
+            home = registry.get((module, symbol.name))
+            # Named local strings need no rename. Admit them only when this
+            # object's definition, its sole owned row and the registry agree.
+            if (len(rows) == 1 and home and symbol["st_info"]["type"] == "STT_OBJECT"
+                    and symbol["st_shndx"] not in ("SHN_UNDEF", "SHN_ABS")
+                    and int(str(rows[0].get("address", "-1")), 0) == home[0]
+                    and int(str(rows[0].get("size", "-1")), 0) == symbol["st_size"]):
+                contextual[symbol.name] = (module, home[0])
+    return renamed, contextual
 
 
 def name_index():
@@ -249,25 +321,31 @@ def verify_data_symbol(raw, name, shndx, value, size, names=None):
             rl["add"] -= OI.VTABLE_PREAMBLE
     linked, blind = LC.link_function(body, addr - preamble, relocs)
     linked = linked[preamble:]
-    blind = {o - preamble for o in blind if o >= preamble}
+    blind = {o - preamble for o in blind if o + 4 > preamble}
+    # A blind offset masks its entire word, including any bytes in a short tail.
+    # Expand after trimming the vtable preamble so coverage and differences are
+    # measured in bytes, not rounded down (or up) to whole words.
+    blind_bytes = {off for start in blind
+                   for off in range(max(0, start), min(len(linked), start + 4))}
 
     retail = RV.rom_bytes(module, addr, len(linked))
     if retail is None or len(retail) < len(linked):
         return {"symbol": name, "verdict": PARTIAL, "bytes": 0, "module": module,
                 "addr": addr, "note": "module image shorter than the emitted symbol"}
     compared = differing = 0
-    for off in range(0, len(linked) & ~3, 4):
-        if off in blind:
+    for off in range(len(linked)):
+        if off in blind_bytes:
             continue
-        compared += 4
-        if linked[off:off + 4] != retail[off:off + 4]:
-            differing += 4
+        compared += 1
+        if linked[off] != retail[off]:
+            differing += 1
     rec = {"symbol": name, "module": module, "addr": addr, "bytes": compared,
            "emitted": len(linked), "romExtent": extent, "blindWords": len(blind)}
     if differing:
         rec["verdict"] = DIFFERS
         rec["differingBytes"] = differing
-    elif compared and not blind and extent is not None and len(linked) >= extent:
+    elif (compared and compared == len(linked) and not blind
+          and extent is not None and compared >= extent):
         rec["verdict"] = VERIFIED
     else:
         rec["verdict"] = PARTIAL
@@ -283,7 +361,15 @@ def check_object(obj_path, rel, names=None):
     """
     try:
         raw = pathlib.Path(obj_path).read_bytes()
+        names = names if names is not None else name_index()
         out = []
+        try:
+            raw, names = _measurement_object(raw, rel, names)
+        except (ValueError, TypeError, KeyError) as exc:
+            # A refused mapping must not hide a pre-existing differing body.
+            # Retain the original measurement as well as the explicit refusal.
+            out.append({"src": rel, "symbol": "?", "verdict": UNNAMED,
+                        "bytes": 0, "note": f"{type(exc).__name__}: {exc}"})
         for name, shndx, value, size in emitted_data_symbols(raw):
             rec = verify_data_symbol(raw, name, shndx, value, size, names)
             rec["src"] = rel

@@ -9,8 +9,8 @@
  * emits D1 then D0 at the head of this TU, so source order is ROM order.
  * The definition also emits an unused D2, licensed `deadstrip`. The
  * Vector3 lifecycle helpers reuse the original ARM9 callbacks through
- * duplicate policies. The emitted RTTI/vtable sections are `deadstrip-data`
- * rebound to the ROM's copy. The unit spans ov074 .text 0x0211f000..
+ * duplicate policies. This TU supplies its own native RTTI and vtable;
+ * inherited metadata keeps its canonical owner. It spans ov074 .text 0x0211f000..
  * 0x0212290c and ends with the two registry factories (KURIKING_VANISH,
  * then KURIKING).
  *
@@ -90,6 +90,7 @@ enum daKuriKing_c_AssetId {
 #include "daKuriKing_c.h"
 #include "types.h"
 #include "SharedFilePtr.h"
+#include "SpawnInfo.h"
 #include "MaterialChanger.h"
 #include "TextureSequence.h"
 #include "dBgCh_Gnd.h"
@@ -221,12 +222,12 @@ extern "C" u8 data_ov074_02122d80[];
 extern SharedFilePtr data_ov002_0210da30;
 extern SharedFilePtr data_ov084_02130cf8;
 extern SharedFilePtr data_ov084_0213089c;
-extern SharedFilePtr data_ov084_02130cc8;
+extern KrbAnimationFileHandle data_ov084_02130cc8;
 extern KuriKingModelFilePtr gKurikingModelModelFile;
 extern KuriKingTexSeqFilePtr gKurikingAngerTextureSequenceFile;
 extern KuriKingAnimationFilePtr data_ov074_02123030;
-extern SharedFilePtr *data_ov074_0212292c[];
-extern SharedFilePtr *data_ov074_02122948[];
+extern SharedFilePtr *const sKurikingMinionAnimationFiles[7];
+extern SharedFilePtr *const sKurikingAnimationFiles[12];
 
 /* Intra-TU forward decls: calls run both ways across the file. */
 extern "C" void func_ov074_02121270(Vector3* out, daKuriKing_c* self, int bone);
@@ -1602,10 +1603,10 @@ int daKuriKing_c::CleanupResources()
     UnloadKeyModels(2);
     data_ov084_02130cf8.Release();
     for (i = 0; i < 7; i++)
-        data_ov074_0212292c[i]->Release();
+        sKurikingMinionAnimationFiles[i]->Release();
     gKurikingModelModelFile.Release();
     for (i = 0; i < 0xc; i++)
-        data_ov074_02122948[i]->Release();
+        sKurikingAnimationFiles[i]->Release();
     gKurikingAngerTextureSequenceFile.Release();
     return 1;
 }
@@ -1737,13 +1738,13 @@ int daKuriKing_c::InitResources()
 
     i = 0;
     do {
-        dExtFrameCtrl_c::LoadFile(*data_ov074_0212292c[i]);
+        dExtFrameCtrl_c::LoadFile(*sKurikingMinionAnimationFiles[i]);
         i++;
     } while (i < 7);
 
     i = 0;
     do {
-        dExtFrameCtrl_c::LoadFile(*data_ov074_02122948[i]);
+        dExtFrameCtrl_c::LoadFile(*sKurikingAnimationFiles[i]);
         i++;
     } while (i < 0xc);
 
@@ -1844,7 +1845,7 @@ int daKuriKing_c::func_ov074_0212229c()
     data_ov084_02130cf8.Release();
     int i = 0;
     do {
-        data_ov074_0212292c[i]->Release();
+        sKurikingMinionAnimationFiles[i]->Release();
         i++;
     } while (i < 7);
     return 1;
@@ -1961,7 +1962,7 @@ int daKuriKing_c::func_ov074_02122634()
 
     Model::LoadFile(data_ov084_02130cf8);
     for (i = 0; i < 7; i++)
-        dExtFrameCtrl_c::LoadFile(*data_ov074_0212292c[i]);
+        dExtFrameCtrl_c::LoadFile(*sKurikingMinionAnimationFiles[i]);
 
     if (this->mModelAnim.SetFile((BMD_File *)FileOf(data_ov084_02130cf8), 1, 1) == 0)
         return 0;
@@ -2054,7 +2055,46 @@ extern "C" daKuriKing_c *daKuriKing_c_classInit_KURIKING_VANISH(void)
  * allocation size, vtable identity, and the KURIKING registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Goomboss_Spawn. */
-extern "C" daKuriKing_c *daKuriKing_c_classInit_KURIKING(void)
-{
+extern "C" daKuriKing_c *daKuriKing_c_classInit_KURIKING(void) {
     return new daKuriKing_c;
 }
+extern "C" KrbAnimationFileHandle data_ov084_02130ce8;
+extern "C" KrbAnimationFileHandle data_ov084_02130ce0;
+extern "C" KrbAnimationFileHandle data_ov084_02130cd0;
+extern "C" KrbAnimationFileHandle data_ov084_02130cc0;
+extern "C" KrbAnimationFileHandle gKuriboRecoverAnimationFile;
+extern "C" KrbAnimationFileHandle data_ov084_02130cf0;
+
+SharedFilePtr *const sKurikingMinionAnimationFiles[7] = {
+    &data_ov084_02130ce8,         &data_ov084_02130ce0, &data_ov084_02130cd0, &data_ov084_02130cc0,
+    &gKuriboRecoverAnimationFile, &data_ov084_02130cc8, &data_ov084_02130cf0,
+};
+
+SharedFilePtr *const sKurikingAnimationFiles[12] = {
+    &gKurikingAngerAnimationFile,     &gKurikingDamageBAnimationFile,
+    &gKurikingDamageFAnimationFile,   &gKurikingDownStartAnimationFile,
+    &gKurikingDownAnimationFile,      &gKurikingSerchWaitAnimationFile,
+    &gKurikingTurnAnimationFile,      &data_ov074_02123030,
+    &gKurikingWalkAnimationFile,      &gKurikingWalkEndAnimationFile,
+    &gKurikingWalkStartAnimationFile, &gKurikingSpawnAnimationFile,
+};
+
+/* The two registry entries share the class, with distinct factories and flags.
+ * SpawnInfo field names describe the framework consumers, not original names. */
+SpawnInfo<daKuriKing_c> g_profile_KURIKING = {daKuriKing_c_classInit_KURIKING,
+                                              0x00c6,
+                                              0x0016,
+                                              0x34800000,
+                                              0,
+                                              0x00100000,
+                                              0x03000000,
+                                              0x03000000};
+
+SpawnInfo<daKuriKing_c> g_profile_KURIKING_VANISH = {daKuriKing_c_classInit_KURIKING_VANISH,
+                                                     0x00c7,
+                                                     0x0017,
+                                                     0x24800002,
+                                                     0,
+                                                     0x00100000,
+                                                     0x03000000,
+                                                     0x03000000};

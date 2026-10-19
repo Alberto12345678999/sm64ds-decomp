@@ -54,24 +54,25 @@ from elftools.elf.relocation import RelocationSection
 
 
 def rename_undefined_symbols(raw, aliases):
-    """Rename exact undefined imports in place without touching symbol indices.
+    """Rename exact undefined imports without touching symbol indices.
 
     Reconstructed C++ wrapper types can make mwcc emit a source-authentic member
     spelling for a ROM function that this project still names by an address alias.
     The linker needs one spelling.  This operation changes only the corresponding
-    NUL-terminated string-table bytes, and only when the replacement is no longer
-    than the original and no other symbol points into that string.  Relocations,
-    section contents, symbol values/bindings/types, and table indices are unchanged.
+    NUL-terminated string-table bytes when the replacement fits and no other
+    symbol points into that string. Longer names are appended and their symbols'
+    st_name offsets updated. File offsets may move; relocation records, code/data,
+    symbol values/bindings/types, and table indices are unchanged.
     """
     return rename_symbols(raw, aliases, defined=False)
 
 
 def rename_defined_symbols(raw, aliases):
-    """Renumber exact compiler-local definitions in place under the same string-table rules.
+    """Rename exact compiler-local definitions under the same string-table rules.
 
     mwcc numbers anonymous data (``@NNN``) per translation unit, so two TUs can each
     define the same name as a global and collide in the scratch link. The caller's
-    manifest licenses a fleet-unique replacement; only that symbol's name bytes change.
+    manifest licenses a fleet-unique replacement; only symbol names change.
     """
     return rename_symbols(raw, aliases, defined=True)
 
@@ -80,9 +81,10 @@ def rename_symbols(raw, aliases, defined):
     requested = dict(aliases or {})
     if not requested:
         return bytes(raw), {"renamed": [], "error": None}
-    if any(not isinstance(old, str) or not old or not isinstance(new, str) or not new
+    if any(not isinstance(old, str) or not old or "\0" in old
+           or not isinstance(new, str) or not new or "\0" in new
            for old, new in requested.items()):
-        return None, {"renamed": [], "error": "symbol aliases must be non-empty strings"}
+        return None, {"renamed": [], "error": "symbol aliases must be non-empty NUL-free strings"}
     if len(set(requested.values())) != len(requested):
         return None, {"renamed": [], "error": "canonical symbol aliases must be unique"}
 
@@ -98,6 +100,7 @@ def rename_symbols(raw, aliases, defined):
     syms = list(symtab.iter_symbols())
     names = {sym.name for sym in syms if sym.name}
     rows = []
+    appended = []
     out = bytearray(raw)
     offsets = [int(sym.entry["st_name"]) for sym in syms]
     for old, new in requested.items():
@@ -116,8 +119,11 @@ def rename_symbols(raw, aliases, defined):
                           f"{new} already exists in object"}
         old_bytes, new_bytes = old.encode("utf-8"), new.encode("utf-8")
         if len(new_bytes) > len(old_bytes):
-            return None, {"renamed": rows, "error":
-                          f"canonical alias destination {new} is longer than {old}"}
+            # Leave the original string intact, including any suffix shared by
+            # another symbol. Indices and every other symbol field stay fixed.
+            appended.append((index, new_bytes))
+            rows.append({"symbolIndex": index, "from": old, "to": new})
+            continue
         name_offset = int(sym.entry["st_name"])
         interior = [other for ordinal, other in enumerate(offsets)
                     if ordinal != index and name_offset < other <= name_offset + len(old_bytes)]
@@ -132,6 +138,22 @@ def rename_symbols(raw, aliases, defined):
         out[file_offset:file_offset + len(old_bytes) + 1] = \
             new_bytes + b"\0" * (len(old_bytes) + 1 - len(new_bytes))
         rows.append({"symbolIndex": index, "from": old, "to": new})
+
+    if appended:
+        if symtab.header["sh_entsize"] != 16:
+            return None, {"renamed": rows, "error": "no standard Elf32 symbol table"}
+        grown, name_offsets, growth = _grow_string_table(
+            bytes(out), strtab_index, [name for _, name in appended])
+        if grown is None:
+            return None, {"renamed": rows, "error": growth["error"]}
+        import struct
+        moved = ELFFile(io.BytesIO(grown)).get_section_by_name(".symtab")
+        out = bytearray(grown)
+        endian = "<" if elf.little_endian else ">"
+        for (index, _), name_offset in zip(appended, name_offsets):
+            struct.pack_into(endian + "I", out,
+                             moved["sh_offset"] + index * moved["sh_entsize"],
+                             name_offset)
 
     check = ELFFile(io.BytesIO(bytes(out))).get_section_by_name(".symtab")
     got = [sym.name for sym in check.iter_symbols()]

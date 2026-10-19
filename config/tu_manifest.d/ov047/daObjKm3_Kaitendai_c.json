@@ -28,8 +28,14 @@
       "end": "0x021119cc"
     },
     {
+      "name": ".rodata.kaitendai",
+      "input_section": ".rodata",
+      "start": "0x02111bf4",
+      "end": "0x02111c0c"
+    },
+    {
       "name": ".data",
-      "start": "0x02112328",
+      "start": "0x02112320",
       "end": "0x021123fc"
     },
     {
@@ -77,6 +83,18 @@
   ],
   "data": [
     {
+      "symbol": "gKm3KaitendaiRotationIncrement",
+      "address": "0x02112320",
+      "size": "0x2",
+      "evidence": "Native signed 16-bit rotation increment 312; shared setup stores it and Behavior adds it each frame. Native section alignment 2 plus actual ALIGNALL(4) supplies the two-byte spacing. Identifier inferred from consumers."
+    },
+    {
+      "symbol": "gKm3KaitendaiAlternateRotationIncrement",
+      "address": "0x02112324",
+      "size": "0x2",
+      "evidence": "Native signed 16-bit rotation increment 624; shared setup stores it and Behavior adds it each frame. Native section alignment 2 plus actual ALIGNALL(4) supplies the two-byte spacing. Identifier inferred from consumers."
+    },
+    {
       "symbol": "_ZTI20daObjKm3_Kaitendai_c",
       "address": "0x02112328",
       "size": "0xc",
@@ -109,7 +127,14 @@
       "evidence": "compiler storage includes the two-word vtable preamble at 0x02112374; the configured public address point is eight bytes later and all 32 slot relocations match without inventing a second name for the ABI preamble"
     }
   ],
-  "rodata": [],
+  "rodata": [
+    {
+      "symbol": "gKm3KaitendaiClps",
+      "address": "0x02111bf4",
+      "size": "0x18",
+      "evidence": "Native CLPS header plus two eight-byte entries. Header entryCount=2 and all 44 KCL prisms use indices 0 or 1; the following eight FF bytes are excluded, not asserted to be padding."
+    }
+  ],
   "bss": [
     {
       "symbol": "data_ov047_02112608",
@@ -196,7 +221,7 @@
       "source": "0x0211233c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov047_02111bf4",
+      "symbol": "gKm3KaitendaiClps",
       "addend": 0,
       "target_module": "ov047",
       "target_address": "0x02111bf4"
@@ -908,13 +933,14 @@
     }
   ],
   "notes": [
-    "The original four-function generated candidate was incomplete. The adjacent unnamed factory and its actor-descriptor relocation establish the corrected five-function boundary; the function keeps its address name because no stronger retail name provenance exists.",
-    "This TU owns the contiguous data band 0x02112328..0x021123fc: its compiler-emitted RTTI and type-name records, resource descriptor, actor descriptor, and vtable storage. Only inherited vague RTTI copies remain exact-symbol externalized.",
-    "The two s16 setup parameters at 0x02112320 and 0x02112324 remain gap-owned. They are referenced by InitResources but are not claimed here because their independent TU ownership and compiler section placement have not been established.",
+    "HISTORICAL BOUNDARY CORRECTION: the original four-function generated candidate omitted the adjacent factory. Its actor-descriptor relocation establishes the corrected five-function boundary. The current daObjKm3_Kaitendai_c_classInit spelling is reconstructed, as the source documents.",
+    "This TU owns the data band 0x02112320..0x021123fc and collision-property block 0x02111bf4..0x02111c0c. The added storage is a consumer-backed modern reconstruction assignment, not recovered original TU-boundary evidence.",
+    "Two native s16 rotation increments (312 and 624) occupy 0x02112320 and 0x02112324, with the measured linker ALIGNALL(4) supplying spacing. InitResources selects the alternate when param1 low byte is 1. The shared implementation consumes these as per-frame increments, not start angles.",
     "The inline class-body destructor makes mwccarm emit only D1 then D0 in retail order; the vtable is emitted at storage 0x02112374 and rebased to the repository's public address-point symbol 0x0211237c without inventing a second name for the ABI preamble.",
     "Production uses the fail-closed intact-object path: manifest-owned non-text ordering, exact inherited-output externalization, and address-point rebias are applied before the ordinary link verifies this source's complete text and data claims.",
     "Folded __sinit_ov047_02111748 into this TU. The model handle data_ov047_02112610 (file 1661) and the collision handle data_ov047_02112608 (file 1662) are the two objects it constructs. Registration nodes @366 and @367 were renamed to @955 and @957 because ov036 already owns those temps. No new data was added.",
-    "LOCAL WORKER NOTE: this machine stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to this tree stock build and to the strict control, while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container fields outside every module range. The content proof is the same either way: moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, and the five owned ranges identical."
+    "HISTORICAL WORKER OBSERVATION (prior initializer promotion; current proof is recorded separately): LOCAL WORKER NOTE: this machine stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to this tree stock build and to the strict control, while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container fields outside every module range. The content proof is the same either way: moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, and the five owned ranges identical.",
+    "Data naming map is recorded in notes/experiments/data-kaitendai-native1017.json. No existing ov047 ledger chain covers these three numeric identities; reserved decl_common.h retains unused matching s16 declarations and is unchanged. Shared base source remains reserved and unchanged."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -927,7 +953,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 13 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 11 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -973,8 +999,15 @@
           "firstDiff": null
         },
         {
+          "section": ".rodata.kaitendai",
+          "start": "0x02111bf4",
+          "end": "0x02111c0c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
           "section": ".data",
-          "start": "0x02112328",
+          "start": "0x02112320",
           "end": "0x021123fc",
           "differingBytes": 0,
           "firstDiff": null
@@ -988,7 +1021,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 16
+          "LICENSED": 19
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -999,55 +1032,126 @@
           {
             "section": ".init",
             "original": [
-              49
+              52
             ],
             "desired": [
-              49
+              52
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              47
+              50
             ],
             "desired": [
-              47
+              50
+            ]
+          },
+          {
+            "section": ".rodata.kaitendai",
+            "original": [
+              31
+            ],
+            "desired": [
+              31
             ]
           },
           {
             "section": ".data",
             "original": [
-              16,
+              5,
+              6,
               20,
-              28,
-              29,
-              31
+              22,
+              30,
+              32,
+              34
             ],
             "desired": [
-              16,
+              6,
+              5,
               20,
-              28,
-              29,
-              31
+              22,
+              30,
+              32,
+              34
             ]
           },
           {
             "section": ".bss",
             "original": [
-              5,
-              6,
+              9,
+              10,
               24,
-              25
+              27
             ],
             "desired": [
-              5,
-              6,
-              24,
-              25
+              9,
+              10,
+              27,
+              24
             ]
           }
         ],
-        "objisolate": null,
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                5,
+                6,
+                20,
+                22,
+                30,
+                32,
+                34
+              ],
+              "desired": [
+                6,
+                5,
+                20,
+                22,
+                30,
+                32,
+                34
+              ],
+              "slots": [
+                5,
+                6,
+                20,
+                22,
+                30,
+                32,
+                34
+              ]
+            },
+            {
+              "section": ".bss",
+              "original": [
+                9,
+                10,
+                24,
+                27
+              ],
+              "desired": [
+                9,
+                10,
+                27,
+                24
+              ],
+              "slots": [
+                9,
+                10,
+                24,
+                27
+              ]
+            }
+          ],
+          "symbolIndices": 11,
+          "sectionLinks": 0,
+          "sectionInfos": 4,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
@@ -1937,12 +2041,12 @@
     {
       "from": "@380",
       "to": "@955",
-      "evidence": "mwcc numbers this model registration node @366 per TU and ov036 already defines a global @366, so the scratch link would multiply-define it"
+      "evidence": "Current pinned compiler emits model destructor-registration node @380; canonical configured identity is @955. Earlier promotion used @366/@367, which conflicted with ov036; those old temporary ordinals are historical, not current output. Complete native initializer relocation sites preserve the mapping."
     },
     {
       "from": "@381",
       "to": "@957",
-      "evidence": "mwcc numbers this collision registration node @367 per TU and ov036 already defines a global @367, so the scratch link would multiply-define it"
+      "evidence": "Current pinned compiler emits collision destructor-registration node @381; canonical configured identity is @957. Earlier promotion used @366/@367, which conflicted with ov036; those old temporary ordinals are historical, not current output. Complete native initializer relocation sites preserve the mapping."
     }
   ],
   "symbol_binding_rewrites": [
@@ -1950,13 +2054,13 @@
       "symbol": "__sinit_d_a_obj_km3_kaitendai.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+      "evidence": "Retained prior enrollment policy promotes this compiler-local lifecycle symbol to its configured global identity at the same exact address. This is not a claim that DSD cannot represent local symbols; changing the established binding policy is outside this data slice."
     },
     {
       "symbol": ".p__sinit_d_a_obj_km3_kaitendai.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+      "evidence": "Retained prior enrollment policy promotes this compiler-local lifecycle symbol to its configured global identity at the same exact address. This is not a claim that DSD cannot represent local symbols; changing the established binding policy is outside this data slice."
     },
     {
       "symbol": "@955",

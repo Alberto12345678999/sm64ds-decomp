@@ -163,6 +163,7 @@ _ZTV10daSnmBth_c kind:data(any) addr:0x02113b50
 data_ov027_02113b7c kind:data(any) addr:0x02113b7c ambiguous
 data_ov027_02113b80 kind:data(any) addr:0x02113b80 ambiguous
 data_ov027_02113b90 kind:data(any) addr:0x02113b90 ambiguous
+data_ov027_02113bcc kind:data(any) addr:0x02113bcc
 data_ov027_02113be0 kind:bss addr:0x02113be0
 data_ov027_02113be8 kind:bss addr:0x02113be8
 @672 kind:bss addr:0x02113bf0

@@ -11,7 +11,8 @@
     "Historical pre-fold tu_map segmentation: 0x2135700..0x2136d10, 34 functions; the contiguous two-factory extension above defines this manifest's 36-function run.",
     "class label(s): daSanbo_c",
     "module sinit corroboration: 2 sinit(s) / 2 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "boundary_confidence stays \"medium\" deliberately. tools/tubuild.py reuses tu_map.boundary_confidence exactly -- it is a mechanical per-BOUNDARY score taken as the worse of this TU's two edges, not a place to record how good the evidence above is. Raising it would overwrite a tu_map reading with a human judgement the field does not mean. The landed precedents agree: ov102/daBmb_c and ov081/daGmch_c both extended their run over a factory tu_map had cut off, on the same kind of cartridge evidence, and both kept \"medium\"."
+    "boundary_confidence stays \"medium\" deliberately. tools/tubuild.py reuses tu_map.boundary_confidence exactly -- it is a mechanical per-BOUNDARY score taken as the worse of this TU's two edges, not a place to record how good the evidence above is. Raising it would overwrite a tu_map reading with a human judgement the field does not mean. The landed precedents agree: ov102/daBmb_c and ov081/daGmch_c both extended their run over a factory tu_map had cut off, on the same kind of cartridge evidence, and both kept \"medium\".",
+    "Native data enrollment data-sanbo-native1018 owns ov096:0x02137920..0x02137a54: twelve PMF constants, own RTTI/name, two complete SpawnInfo profiles and full vtable storage. This is a reconstruction assignment backed by code/initializer consumers and complete production proof, not recovery of one unique original source file."
   ],
   "sections": [
     {
@@ -28,6 +29,11 @@
       "name": ".ctor",
       "start": "0x02137900",
       "end": "0x02137904"
+    },
+    {
+      "name": ".data",
+      "start": "0x02137920",
+      "end": "0x02137a54"
     },
     {
       "name": ".bss",
@@ -289,7 +295,129 @@
       "ordinal": 35
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "symbol": "data_ov096_02137920",
+      "address": "0x02137920",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137928",
+      "address": "0x02137928",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137930",
+      "address": "0x02137930",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137938",
+      "address": "0x02137938",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137940",
+      "address": "0x02137940",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137948",
+      "address": "0x02137948",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137950",
+      "address": "0x02137950",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137958",
+      "address": "0x02137958",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137960",
+      "address": "0x02137960",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137968",
+      "address": "0x02137968",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137970",
+      "address": "0x02137970",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "data_ov096_02137978",
+      "address": "0x02137978",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "_ZTS9daSanbo_c",
+      "address": "0x02137980",
+      "size": "0xb",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "_ZTI9daSanbo_c",
+      "address": "0x0213798c",
+      "size": "0xc",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "g_profile_SANBO",
+      "address": "0x02137998",
+      "size": "0x1c",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "g_profile_SANBO_BODY",
+      "address": "0x021379b4",
+      "size": "0x1c",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md."
+    },
+    {
+      "symbol": "_ZTV9daSanbo_c",
+      "address": "0x021379d8",
+      "size": "0x84",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native object in the 308-byte Sanbo family. Native PMF constants retain local binding; vtable record begins at its public address point, with the preceding eight-byte ABI header included in the owned section. See notes/agents/data-sanbo-native1018.md.",
+      "emitted_storage_address": "0x021379d0",
+      "address_point_bias": 8
+    }
+  ],
   "bss": [
     {
       "symbol": "gSanboHeadModelFile",
@@ -324,7 +452,7 @@
       "address": "0x02137b48",
       "size": "0x60",
       "binding": "STB_GLOBAL",
-      "evidence": "twelve-entry daSanbo_c::StateFunc state table: six init/update pairs copied at static-init time from the ROM PMF descriptors at 0x02137920..0x02137980"
+      "evidence": "Twelve native int-return member pointers, six entry/update pairs, initialized from compiler-emitted descriptors in this TU; dispatcher ignores the result. Historical return type remains unproven."
     }
   ],
   "notes": [
@@ -339,7 +467,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Vec3_HorzAngle' differs between the legacy file that used to hold func_ov096_02136134 and the one that held func_ov096_02136534; kept the first, widened to `extern short Vec3_HorzAngle(const void *a, const void *b)`. The kept declaration was `short (void *, void *)` and the loser was `extern \"C\" short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1)`; the live spelling takes const from the loser and keeps void * as the retained legacy bridge spelling; Vector3 is available and narrowing that bridge remains reconstruction work. One declaration survives.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov096_02136928' differs between the legacy file that used to hold func_ov096_02136264 and the one that held _ZN9daSanbo_c13InitResourcesEv; kept the first, then dropped entirely. func_ov096_02136928 is a MEMBER of this fold, defined at ROM ordinal 27 (0x02136928), so the TU needs no declaration of it at all and the disagreement between the two legacy externs is moot. Its one live signature is the definition, `void func_ov096_02136928(void *cc, int a)`, which conforms to the void * receiver include/decl_common.h already declares.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'Obj') differs between the legacy file that used to hold func_ov096_02136134 and the one that held _ZN9daSanbo_c6RenderEv; kept the first during the initial import, which separated the two observations as Obj and RenderView/RenderModel. The later source repair removed all of these shadows: the helper uses daSanbo_c::OnAimedAtWithEgg, and Render uses mFlags, mModel and the existing virtual Model::Render interface. This record preserves the historical conflict; none of those local shadow types remains.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
+    "Historical earlier worker packaging observation (not the current run): LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
   ],
   "source_review_checkpoint": {
     "status": "partial-awaiting-independent-review",
@@ -368,7 +496,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov096-daSanbo_c/daSanbo_c.o (gitignored)",
+    "object": "build/tu/ov096-daSanbo_c/d_a_sanbo.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 36,
     "functions_declared": 36,
@@ -380,26 +508,18 @@
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        16,
-        17,
-        18,
-        19,
+        21,
         22,
-        23,
-        41
+        33,
+        34,
+        35,
+        41,
+        42,
+        43,
+        44,
+        69
       ],
       "data": [
-        "_ZTV9daSanbo_c",
-        "_ZTI9daSanbo_c",
-        "_ZTS9daSanbo_c",
         "_ZTI8dActor_c",
         "_ZTS8dActor_c",
         "_ZTI7dBase_c",
@@ -411,18 +531,16 @@
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
         "_ZTI8dActor_c",
-        "_ZTI9daSanbo_c",
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
-        "_ZTS8dActor_c",
-        "_ZTS9daSanbo_c",
-        "_ZTV9daSanbo_c"
-      ]
+        "_ZTS8dActor_c"
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 17 unlicensed section/symbol(s), 1 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -468,6 +586,13 @@
           "firstDiff": null
         },
         {
+          "section": ".data",
+          "start": "0x02137920",
+          "end": "0x02137a54",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
           "section": ".bss",
           "start": "0x02137b20",
           "end": "0x02137ba8",
@@ -476,7 +601,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 43
+          "LICENSED": 60
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -487,69 +612,170 @@
           {
             "section": ".init",
             "original": [
-              89
+              117
             ],
             "desired": [
-              89
+              117
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              87
+              115
             ],
             "desired": [
-              87
+              115
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              5,
+              7,
+              9,
+              11,
+              13,
+              15,
+              18,
+              23,
+              25,
+              27,
+              29,
+              31,
+              36,
+              38,
+              45,
+              47,
+              50
+            ],
+            "desired": [
+              7,
+              13,
+              18,
+              31,
+              27,
+              23,
+              15,
+              11,
+              25,
+              29,
+              5,
+              9,
+              36,
+              38,
+              45,
+              47,
+              50
             ]
           },
           {
             "section": ".bss",
             "original": [
-              5,
-              6,
-              15,
+              17,
               20,
-              21
+              37,
+              40,
+              49
             ],
             "desired": [
-              6,
-              5,
               20,
-              15,
-              21
+              17,
+              37,
+              40,
+              49
             ]
           }
         ],
         "objisolate": {
           "reordered": [
             {
-              "section": ".bss",
+              "section": ".data",
               "original": [
                 5,
-                6,
+                7,
+                9,
+                11,
+                13,
                 15,
-                20,
-                21
+                18,
+                23,
+                25,
+                27,
+                29,
+                31,
+                36,
+                38,
+                45,
+                47,
+                50
               ],
               "desired": [
-                6,
-                5,
-                20,
+                7,
+                13,
+                18,
+                31,
+                27,
+                23,
                 15,
-                21
+                11,
+                25,
+                29,
+                5,
+                9,
+                36,
+                38,
+                45,
+                47,
+                50
               ],
               "slots": [
                 5,
-                6,
+                7,
+                9,
+                11,
+                13,
                 15,
+                18,
+                23,
+                25,
+                27,
+                29,
+                31,
+                36,
+                38,
+                45,
+                47,
+                50
+              ]
+            },
+            {
+              "section": ".bss",
+              "original": [
+                17,
                 20,
-                21
+                37,
+                40,
+                49
+              ],
+              "desired": [
+                20,
+                17,
+                37,
+                40,
+                49
+              ],
+              "slots": [
+                17,
+                20,
+                37,
+                40,
+                49
               ]
             }
           ],
-          "symbolIndices": 5,
+          "symbolIndices": 22,
           "sectionLinks": 0,
-          "sectionInfos": 0,
+          "sectionInfos": 16,
           "error": null
         },
         "errors": null
@@ -594,27 +820,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "Vector3's four-byte inline destructor, emitted as vague linkage because InitResources, Behavior and several func_ov096_* members take Vector3 locals. The cartridge owns it at arm9:0x020072c0 and an enrolled source already reaches it, so this object's copy is a byte-identical duplicate that production isolation discards. It lies outside this entry's licensed range (.text 0x02135700-0x02136db0)."
-    },
-    {
-      "symbol": "_ZTV9daSanbo_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov096",
-      "canonical_address": "0x021379d8",
-      "reason": "This TU defines every virtual daSanbo_c declares -- eight ordinary overrides plus the D1/D0 pair from the inline destructor in include/daSanbo_c.h -- so mwcc anchors the complete 0x84-byte vtable storage here whatever the declaration order. The cartridge keeps it in ov096 .data: the object begins at 0x021379d0 with the offset-to-top and typeinfo words, and symbols.txt names the address point eight bytes later at 0x021379d8, which is the spelling this row must carry and the spelling romdata_check corrects for. ov096 delinks no .data at all, so nothing this entry claims (.text 0x02135700-0x02136db0) reaches those bytes; dsd supplies them from the cartridge and production isolation discards the emitted duplicate. 31 slots."
-    },
-    {
-      "symbol": "_ZTI9daSanbo_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov096",
-      "canonical_address": "0x0213798c",
-      "reason": "This class's own __si_class_type_info record, emitted alongside the vtable. The cartridge's copy at ov096:0x0213798c is three words -- the __si_class_type_info vtable at 0x0209a764, the name pointer to 0x02137980, and the single base _ZTI8dActor_c at arm9:0x0208e390 -- which is the same single-inheritance chain this TU's class declaration states. Outside this entry's licensed range (.text 0x02135700-0x02136db0)."
-    },
-    {
-      "symbol": "_ZTS9daSanbo_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov096",
-      "canonical_address": "0x02137980",
-      "reason": "This class's own type-name string. The cartridge holds ten visible bytes '9daSanbo_c' plus its NUL terminator, eleven bytes total at ov096:0x02137980 and the compiler emits size 0xb here, so the record is the cartridge's own length-prefixed spelling and no band shifts. That equality is the whole reason the class had to be renamed off the coined 'Pokey' first: a coined name emits '5Pokey' plus its terminator, seven bytes, which reaches no configured home and would be dropped unverified. Outside this entry's licensed range (.text 0x02135700-0x02136db0)."
     },
     {
       "symbol": "_ZTI8dActor_c",
@@ -705,13 +910,13 @@
       "symbol": "__sinit_d_a_sanbo.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+      "evidence": "Preserve the existing configured global initializer identity at ov096:0x0213770c while mwcc emits this TU-local definition. This compatibility policy is not a claim that DSD lacks local-symbol support."
     },
     {
       "symbol": ".p__sinit_d_a_sanbo.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+      "evidence": "Preserve the existing configured global constructor-slot identity at ov096:0x02137900 while mwcc emits a local slot. Native PMF descriptors retain local binding; DSD supports explicit local rows."
     },
     {
       "symbol": "@1043",
@@ -956,6 +1161,496 @@
       "addend": 0,
       "target_module": "ov096",
       "target_address": "0x02137958"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137920",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_02136434Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136434"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137928",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_021365d4Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021365d4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137930",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_02136534Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136534"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137938",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_021363b4Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021363b4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137940",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_02136754Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136754"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137948",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_021368a4Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021368a4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137950",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_0213670cEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x0213670c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137958",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_021360c4Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021360c4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137960",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_02136134Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136134"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137968",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_02136264Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136264"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137970",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_021363c4Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021363c4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137978",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c19func_ov096_0213640cEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x0213640c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213798c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137990",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS9daSanbo_c",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02137980"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137994",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI8dActor_c",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0208e390"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137998",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daSanbo_c_classInit_SANBO",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136d60"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379b4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daSanbo_c_classInit_SANBO_BODY",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136d10"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379d4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI9daSanbo_c",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x0213798c"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379d8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136ab0"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379dc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011268"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379e0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011244"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379e4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136944"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011220"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379ec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011214"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136a50"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010fd4"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379f8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010fc8"
+    },
+    {
+      "section": ".data",
+      "source": "0x021379fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c6RenderEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021369fc"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010f78"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a04",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010f6c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a08",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021369b0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a0c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204357c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a10",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204349c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a14",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043494"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a18",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_cD1Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02135700"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a1c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_cD0Ev",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02135748"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a20",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c13OnYoshiTryEatEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021357a4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a24",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c13OnTurnIntoEggER6Player",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x02136cd0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a28",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c9Virtual50Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201014c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a2c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnGroundPoundedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010148"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked1ERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010144"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked2ERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010140"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnKickedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201013c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnPushedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010138"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c24OnHitByCannonBlastedCharERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010134"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a44",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnHitByMegaCharER6Player",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010130"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19OnHitFromUnderneathERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201012c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a4c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daSanbo_c16OnAimedAtWithEggEv",
+      "addend": 0,
+      "target_module": "ov096",
+      "target_address": "0x021357ac"
+    },
+    {
+      "section": ".data",
+      "source": "0x02137a50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c25OnAimedAtWithEggReturnVecEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x020100dc"
     }
   ],
   "externalized_output": [],
@@ -969,6 +1664,66 @@
       "from": "@1058",
       "to": "@1044",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+    },
+    {
+      "to": "data_ov096_02137970",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1074"
+    },
+    {
+      "to": "data_ov096_02137920",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1070"
+    },
+    {
+      "to": "data_ov096_02137978",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1072"
+    },
+    {
+      "to": "data_ov096_02137958",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1082"
+    },
+    {
+      "to": "data_ov096_02137928",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1066"
+    },
+    {
+      "to": "data_ov096_02137950",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1064"
+    },
+    {
+      "to": "data_ov096_02137930",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1068"
+    },
+    {
+      "to": "data_ov096_02137948",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1060"
+    },
+    {
+      "to": "data_ov096_02137960",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1080"
+    },
+    {
+      "to": "data_ov096_02137940",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1062"
+    },
+    {
+      "to": "data_ov096_02137968",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1078"
+    },
+    {
+      "to": "data_ov096_02137938",
+      "evidence": "Native int-return member-pointer descriptor; exact method target and zero this adjustment map the compiler-local literal to the existing ov096 identity. See data-sanbo-native1018 evidence.",
+      "from": "@1076"
     }
   ]
 }

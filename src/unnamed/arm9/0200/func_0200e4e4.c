@@ -1,8 +1,4 @@
-typedef unsigned int u32;
-typedef int s32;
-
-typedef struct { int x, y, z; } Vector3;
-typedef struct { short x, y, z; } Vector3_16;
+#include "common.h"
 
 struct dActor_c {
     u32 vtable;     /* 0x0 */

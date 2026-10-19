@@ -1,11 +1,14 @@
-typedef struct Vec3 { int x, y, z; } Vec3;
-extern void SubVec3(Vec3 *a, Vec3 *b, Vec3 *c);
+#include "types.h"
+/* SubVec3 still defines its vector as its own struct Vec3;
+   declared as defined, the calls cast. */
+struct Vec3;
+extern void SubVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 extern int func_020538b8(int x, int y);
 extern int _ZN4cstd3divEii(int a, int b);
 
 void func_ov007_020c9a84(char *o, int *w, short *ox, short *oy)
 {
-    Vec3 d;
+    Vector3 d;
     int ra, rb;
     short a1, a2;
     int aa, ab, t1, t2, q1, q2;
@@ -17,9 +20,9 @@ void func_ov007_020c9a84(char *o, int *w, short *ox, short *oy)
         int n = *(int *)(p + 4) - 1;
         w[1] = *(int *)(base + n * 12 + 4);
     }
-    SubVec3((Vec3 *)(o + 0x20), (Vec3 *)(o + 0x2c), &d);
+    SubVec3((struct Vec3 *)(o + 0x20), (struct Vec3 *)(o + 0x2c), (struct Vec3 *)&d);
     ra = func_020538b8(d.x, d.z);
-    SubVec3((Vec3 *)(o + 0x38), (Vec3 *)(o + 0x44), &d);
+    SubVec3((struct Vec3 *)(o + 0x38), (struct Vec3 *)(o + 0x44), (struct Vec3 *)&d);
     rb = func_020538b8(d.z, d.y);
     a1 = (unsigned short)(ra + 0x3fff);
     a2 = (unsigned short)(rb + 0x7fff);

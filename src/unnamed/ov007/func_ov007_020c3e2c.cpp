@@ -1,0 +1,9 @@
+//cpp
+
+extern "C" {
+typedef void (*FP)(void *);
+extern FP data_ov007_02103254;
+void func_ov007_020c3e2c(int v) {
+    data_ov007_02103254 = reinterpret_cast<FP>(v);
+}
+}

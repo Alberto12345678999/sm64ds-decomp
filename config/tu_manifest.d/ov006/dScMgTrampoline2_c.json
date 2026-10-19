@@ -38,6 +38,12 @@
       "name": ".bss",
       "start": "0x02142f80",
       "end": "0x02142f94"
+    },
+    {
+      "name": ".rodata.after_sound",
+      "input_section": ".rodata",
+      "start": "0x0212f0f0",
+      "end": "0x0212f3ac"
     }
   ],
   "init": [
@@ -1272,6 +1278,246 @@
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213322c"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2b4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave0Positions",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f1cc"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2b8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave0Angles",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f10c"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2bc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave0ItemTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f114"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2c0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave0MotionTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f12c"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2c8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave1Positions",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f1f0"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2cc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave1Angles",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f13c"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2d0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave1ItemTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f11c"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2d4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave1MotionTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f134"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2dc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave2Positions",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f238"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2e0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave2Angles",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f14c"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2e4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave2ItemTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f164"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave2MotionTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f17c"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave3Positions",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f194"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave3Angles",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f0f4"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2f8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave3ItemTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f0f8"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f2fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave3MotionTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f0f0"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f304",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave4Positions",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f214"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f308",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave4Angles",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f0fc"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f30c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave4ItemTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f124"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f310",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave4MotionTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f104"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f318",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave5Positions",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f274"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f31c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave5Angles",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f158"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f320",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave5ItemTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f170"
+    },
+    {
+      "section": ".rodata.after_sound",
+      "source": "0x0212f324",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sTrmp2Wave5MotionTypes",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0212f188"
     }
   ],
   "symbol_binding_rewrites": [
@@ -1391,7 +1637,8 @@
     "tubuild create warning: CONFLICT: extern declaration 'MultiStore16' differs between the legacy file that used to hold func_ov006_02122e20 and the one that held func_ov006_021245a8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN2GX10LoadBGPlttEPKvjj' differs between the legacy file that used to hold func_ov006_02122e20 and the one that held func_ov006_021245a8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('struct', 'Model') differs between the legacy file that used to hold Trmp2Spinner_SetModel and the one that held Trmp2Spinner_Destruct; kept the first, the other is commented out for review",
-    "Data-boundary reconstruction: all 0x148 bytes of 0x0213fbc4..0x0213fd0c are tiled by compiler-emitted objects from this TU; all 56 relocated words are licensed by exact raw symbol, addend, configured module set, and destination before byte comparison."
+    "Data-boundary reconstruction: all 0x148 bytes of 0x0213fbc4..0x0213fd0c are tiled by compiler-emitted objects from this TU; all 56 relocated words are licensed by exact raw symbol, addend, configured module set, and destination before byte comparison.",
+    "data-trampoline2-wave-tables1017 adds complete700-byte rodata ownership [0212f0f0,0212f3ac):28 native objects670bytes and30 linker-alignment bytes, including six typed scripted waves, observed short-array counts2/3/5, four spinnercolors,16colorbrushpalette and11randompositions. Names/types express consumer evidence; original array lengths/grouping/identifier spelling and historicalTU are not claimed. No source alignment attributes or paddingobjects. Existing raw state/lifecycle findings remain partial."
   ],
   "partial_isolation": {
     "round": "tools/tubuild.py partial -- one compile of the consolidated source, objisolate.derive per licensed function, compared against rombuild.compile_one + objisolate.isolate of each legacy source",
@@ -1426,20 +1673,21 @@
       "requested": [],
       "deadstripped": [],
       "droppedSections": [
-        32,
-        33
+        53,
+        54
       ],
       "data": [
         "_ZTI14dScMgD3DBase_c"
       ],
       "dataExternalized": [
         "_ZTI14dScMgD3DBase_c"
-      ]
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 9 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 10 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -1496,11 +1744,18 @@
           "start": "0x02142f80",
           "end": "0x02142f94",
           "comparison": "NOBITS -- symbol/module gates"
+        },
+        {
+          "section": ".rodata.after_sound",
+          "start": "0x0212f0f0",
+          "end": "0x0212f3ac",
+          "differingBytes": 0,
+          "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 61
+          "LICENSED": 89
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -1511,209 +1766,131 @@
           {
             "section": ".data",
             "original": [
-              5,
               6,
-              8,
-              10,
-              13,
-              17,
-              19,
-              29,
-              31,
-              37,
-              39,
-              41,
-              42,
-              44,
-              45
+              21,
+              24,
+              26,
+              28,
+              30,
+              32,
+              45,
+              48,
+              56,
+              58,
+              60,
+              61,
+              63,
+              74
             ],
             "desired": [
-              5,
               6,
-              10,
-              19,
-              13,
-              17,
-              8,
-              31,
-              29,
-              37,
-              39,
-              41,
-              42,
-              44,
-              45
-            ],
-            "anchors": {
-              "5": [
-                {
-                  "symbol": "sTrmp2TouchBlocked",
-                  "address": 34864068,
-                  "sectionBase": 34864068
-                }
-              ],
-              "6": [
-                {
-                  "symbol": "g_profile_MG_TRAMPOLINE2",
-                  "address": 34864072,
-                  "sectionBase": 34864072
-                }
-              ],
-              "8": [
-                {
-                  "symbol": "pmf_dScMgTrampoline2_c_StateResults",
-                  "address": 34864112,
-                  "sectionBase": 34864112
-                }
-              ],
-              "10": [
-                {
-                  "symbol": "pmf_dScMgTrampoline2_c_StateDone",
-                  "address": 34864080,
-                  "sectionBase": 34864080
-                }
-              ],
-              "13": [
-                {
-                  "symbol": "pmf_dScMgTrampoline2_c_StateWaitExit",
-                  "address": 34864096,
-                  "sectionBase": 34864096
-                }
-              ],
-              "17": [
-                {
-                  "symbol": "pmf_dScMgTrampoline2_c_StatePlay",
-                  "address": 34864104,
-                  "sectionBase": 34864104
-                }
-              ],
-              "19": [
-                {
-                  "symbol": "pmf_dScMgTrampoline2_c_StateIntro",
-                  "address": 34864088,
-                  "sectionBase": 34864088
-                }
-              ],
-              "29": [
-                {
-                  "symbol": "_ZTI18dScMgTrampoline2_c",
-                  "address": 34864132,
-                  "sectionBase": 34864132
-                }
-              ],
-              "31": [
-                {
-                  "symbol": "sTrmp2SpinnerSpeeds",
-                  "address": 34864120,
-                  "sectionBase": 34864120
-                }
-              ],
-              "37": [
-                {
-                  "symbol": "sTrmp2ScoreGates",
-                  "address": 34864144,
-                  "sectionBase": 34864144
-                }
-              ],
-              "39": [
-                {
-                  "symbol": "sTrmp2PuffXByLanguage",
-                  "address": 34864160,
-                  "sectionBase": 34864160
-                }
-              ],
-              "41": [
-                {
-                  "symbol": "sTrmp2NcgByLanguage",
-                  "address": 34864180,
-                  "sectionBase": 34864180
-                }
-              ],
-              "42": [
-                {
-                  "symbol": "sTrmp2TextSpritesByLanguage",
-                  "address": 34864200,
-                  "sectionBase": 34864200
-                }
-              ],
-              "44": [
-                {
-                  "symbol": "_ZTS18dScMgTrampoline2_c",
-                  "address": 34864220,
-                  "sectionBase": 34864220
-                }
-              ],
-              "45": [
-                {
-                  "symbol": "_ZTV18dScMgTrampoline2_c",
-                  "address": 34864244,
-                  "sectionBase": 34864244
-                }
-              ]
-            }
+              21,
+              26,
+              28,
+              30,
+              24,
+              32,
+              45,
+              48,
+              56,
+              58,
+              60,
+              61,
+              63,
+              74
+            ]
           },
           {
             "section": ".init",
             "original": [
-              130
+              159
             ],
             "desired": [
-              130
-            ],
-            "anchors": {
-              "130": [
-                {
-                  "symbol": "__sinit_d_s_mg_trampoline2.cpp",
-                  "address": 34812460,
-                  "sectionBase": 34812460
-                }
-              ]
-            }
+              159
+            ]
           },
           {
             "section": ".ctor",
             "original": [
-              128
+              157
             ],
             "desired": [
-              128
-            ],
-            "anchors": {
-              "128": [
-                {
-                  "symbol": ".p__sinit_d_s_mg_trampoline2.cpp",
-                  "address": 34813404,
-                  "sectionBase": 34813404
-                }
-              ]
-            }
+              157
+            ]
           },
           {
             "section": ".bss",
             "original": [
-              12,
-              24
+              23,
+              50
             ],
             "desired": [
+              23,
+              50
+            ]
+          },
+          {
+            "section": ".rodata.after_sound",
+            "original": [
+              5,
+              7,
+              8,
+              9,
+              10,
+              11,
               12,
-              24
+              13,
+              14,
+              15,
+              16,
+              17,
+              20,
+              36,
+              37,
+              38,
+              40,
+              41,
+              42,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              73
             ],
-            "anchors": {
-              "12": [
-                {
-                  "symbol": "sTrmp2StarModelFile",
-                  "address": 34877312,
-                  "sectionBase": 34877312
-                }
-              ],
-              "24": [
-                {
-                  "symbol": "@1086",
-                  "address": 34877320,
-                  "sectionBase": 34877320
-                }
-              ]
-            }
+            "desired": [
+              7,
+              5,
+              8,
+              13,
+              15,
+              12,
+              11,
+              17,
+              9,
+              14,
+              16,
+              10,
+              20,
+              36,
+              37,
+              38,
+              40,
+              41,
+              42,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              73
+            ]
           }
         ],
         "objisolate": {
@@ -1721,61 +1898,154 @@
             {
               "section": ".data",
               "original": [
-                5,
                 6,
-                8,
-                10,
-                13,
-                17,
-                19,
-                29,
-                31,
-                37,
-                39,
-                41,
-                42,
-                44,
-                45
+                21,
+                24,
+                26,
+                28,
+                30,
+                32,
+                45,
+                48,
+                56,
+                58,
+                60,
+                61,
+                63,
+                74
               ],
               "desired": [
-                5,
                 6,
-                10,
-                19,
-                13,
-                17,
+                21,
+                26,
+                28,
+                30,
+                24,
+                32,
+                45,
+                48,
+                56,
+                58,
+                60,
+                61,
+                63,
+                74
+              ],
+              "slots": [
+                6,
+                21,
+                24,
+                26,
+                28,
+                30,
+                32,
+                45,
+                48,
+                56,
+                58,
+                60,
+                61,
+                63,
+                74
+              ]
+            },
+            {
+              "section": ".rodata.after_sound",
+              "original": [
+                5,
+                7,
                 8,
-                31,
-                29,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                20,
+                36,
                 37,
-                39,
+                38,
+                40,
                 41,
                 42,
-                44,
-                45
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                73
+              ],
+              "desired": [
+                7,
+                5,
+                8,
+                13,
+                15,
+                12,
+                11,
+                17,
+                9,
+                14,
+                16,
+                10,
+                20,
+                36,
+                37,
+                38,
+                40,
+                41,
+                42,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                73
               ],
               "slots": [
                 5,
-                6,
+                7,
                 8,
+                9,
                 10,
+                11,
+                12,
                 13,
+                14,
+                15,
+                16,
                 17,
-                19,
-                29,
-                31,
+                20,
+                36,
                 37,
-                39,
+                38,
+                40,
                 41,
                 42,
-                44,
-                45
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                73
               ]
             }
           ],
-          "symbolIndices": 15,
+          "symbolIndices": 43,
           "sectionLinks": 0,
-          "sectionInfos": 10,
+          "sectionInfos": 11,
           "error": null
         },
         "errors": null
@@ -2303,9 +2573,179 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@1111",
+      "from": "@1110",
       "to": "@1086",
-      "evidence": "Compiler-local object retains its canonical pin @1086. Including dFdBrightness_c.h shifts the compiler spelling from @1100 to @1111; both are STB_LOCAL/STT_OBJECT at the same .bss section +0, size 12. Complete allocated sections and named relocation records are identical after applying the old and new mappings respectively (notes/experiments/scene-physics3955-review.md)."
+      "evidence": "data-trampoline2-wave-tables1017: named local wave-record type shifts compiler-local destructor registration node from@1111 to@1110. Both are unique12-byte local NOBITS objects; identical64-byte initializer references the node at the same relocation offset/type/addend. Its configured canonicalidentity remains@1086. Complete71-definition proof permits only this exactsite-derived bijection and the random-position semanticrename."
+    }
+  ],
+  "rodata": [
+    {
+      "symbol": "sTrmp2Wave3MotionTypes",
+      "address": "0x0212f0f0",
+      "size": "0x4",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave3Angles",
+      "address": "0x0212f0f4",
+      "size": "0x4",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave3ItemTypes",
+      "address": "0x0212f0f8",
+      "size": "0x4",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave4Angles",
+      "address": "0x0212f0fc",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave4MotionTypes",
+      "address": "0x0212f104",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave0Angles",
+      "address": "0x0212f10c",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave0ItemTypes",
+      "address": "0x0212f114",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave1ItemTypes",
+      "address": "0x0212f11c",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave4ItemTypes",
+      "address": "0x0212f124",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave0MotionTypes",
+      "address": "0x0212f12c",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave1MotionTypes",
+      "address": "0x0212f134",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave1Angles",
+      "address": "0x0212f13c",
+      "size": "0x6",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2SpinnerColors",
+      "address": "0x0212f144",
+      "size": "0x8",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave2Angles",
+      "address": "0x0212f14c",
+      "size": "0xa",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave5Angles",
+      "address": "0x0212f158",
+      "size": "0xa",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave2ItemTypes",
+      "address": "0x0212f164",
+      "size": "0xa",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave5ItemTypes",
+      "address": "0x0212f170",
+      "size": "0xa",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave2MotionTypes",
+      "address": "0x0212f17c",
+      "size": "0xa",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave5MotionTypes",
+      "address": "0x0212f188",
+      "size": "0xa",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave3Positions",
+      "address": "0x0212f194",
+      "size": "0x18",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2BrushPltt",
+      "address": "0x0212f1ac",
+      "size": "0x20",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave0Positions",
+      "address": "0x0212f1cc",
+      "size": "0x24",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave1Positions",
+      "address": "0x0212f1f0",
+      "size": "0x24",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave4Positions",
+      "address": "0x0212f214",
+      "size": "0x24",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave2Positions",
+      "address": "0x0212f238",
+      "size": "0x3c",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2Wave5Positions",
+      "address": "0x0212f274",
+      "size": "0x3c",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
+    },
+    {
+      "symbol": "sTrmp2SpawnDefs",
+      "address": "0x0212f2b0",
+      "size": "0x78",
+      "evidence": "Six wave indices consumed by StatePlay; count and four pointers match all24 configuredrelocation destinations."
+    },
+    {
+      "symbol": "sTrmp2RandomSpawnPositions",
+      "address": "0x0212f328",
+      "size": "0x84",
+      "evidence": "Observed consumer count and native layout; original declared length/spelling remain unknown."
     }
   ]
 }

@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-
-typedef struct { int x, y, z; } Vector3;
+#include "types.h"
 
 extern short ReadUnalignedShort(unsigned char *p);
 extern void func_02007c9c(const Vector3 *v0, const Vector3 *v1, int *outDist,

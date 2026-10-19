@@ -16,8 +16,8 @@
  *
  * All helpers are daSanbo_c members; the func_ov096_<addr> names are
  * ours, not recovered. The state pairs they serve live in
- * data_ov096_02137b48, filled by __sinit_ov096_0213770c, which this
- * file does not own. func_ov096_02135878's ROM signature carried a
+ * data_ov096_02137b48, filled by this translation unit's native
+ * static initializer. func_ov096_02135878's ROM signature carried a
  * dead first argument (r0) that was never read -- as a member its
  * real argument lands in r1 either way.
  *
@@ -36,7 +36,7 @@
  *   the wall normal is unused.
  *   - gSanboHeadModelFile and gSanboBodyModelFile are the head
  *   and segment file handles (InitResources LoadFile, CleanupResources
- *   Release). g_profile_SANBO stays in its own file.
+ *   Release). Both actor profiles are defined with their factories below.
  *   - unk_3a8 is the head byte func_ov096_0213670c reads to
  *   choose a 0 or 0x5a regrowth delay. func_ov096_021365d4 clears it
  *   once three segments exist. It stays unk_ until that role is
@@ -62,6 +62,7 @@ enum daSanbo_c_AssetId {
 #include "dBgPi.h"
 #include "types.h"
 #include "SharedFilePtr.h"
+#include "SpawnInfo.h"
 #include "decl_common.h"
 #include "Player.h"
 #include "Particle__System.h"
@@ -353,8 +354,7 @@ int daSanbo_c::func_ov096_02136754()
 
 // @symbol _ZN9daSanbo_c19func_ov096_0213670cEv
 /* unk_3a8 on the head picks a zero delay or a 90-frame one. */
-void daSanbo_c::func_ov096_0213670c()
-{
+int daSanbo_c::func_ov096_0213670c() {
     daSanbo_c *head = func_ov096_021357b4();
     u8 timer = head->unk_3a8;
 
@@ -370,6 +370,7 @@ void daSanbo_c::func_ov096_0213670c()
         mScaleZ = 0x1000;
     }
     mState = 1;
+    return 1;
 }
 
 // @symbol _ZN9daSanbo_c19func_ov096_021365d4Ev
@@ -914,27 +915,25 @@ int daSanbo_c::OnYoshiTryEat()
 SanboModelFilePtr gSanboHeadModelFile(ASSET_SANBO_HEAD_BMD);   /* head model */
 SanboModelFilePtr gSanboBodyModelFile(ASSET_SANBO_BODY_BMD);   /* segment model */
 
-/* The twelve state PMF records live in .data (0x02137920..0x02137980); the
- * static initializer copies them into the .bss table below, an init/update
- * pair per state. */
-extern "C" daSanbo_c::StateFunc data_ov096_02137948;
-extern "C" daSanbo_c::StateFunc data_ov096_02137940;
-extern "C" daSanbo_c::StateFunc data_ov096_02137950;
-extern "C" daSanbo_c::StateFunc data_ov096_02137928;
-extern "C" daSanbo_c::StateFunc data_ov096_02137930;
-extern "C" daSanbo_c::StateFunc data_ov096_02137920;
-extern "C" daSanbo_c::StateFunc data_ov096_02137978;
-extern "C" daSanbo_c::StateFunc data_ov096_02137970;
-extern "C" daSanbo_c::StateFunc data_ov096_02137938;
-extern "C" daSanbo_c::StateFunc data_ov096_02137968;
-extern "C" daSanbo_c::StateFunc data_ov096_02137960;
-extern "C" daSanbo_c::StateFunc data_ov096_02137958;
+/* Native member pointers emit twelve descriptors in .data. The initializer
+ * copies them into this runtime table as six entry/update pairs. The state
+ * numbers and address-named helpers are retained reconstruction identities. */
 
 daSanbo_c::StateFunc data_ov096_02137b48[12] = {
-    data_ov096_02137948, data_ov096_02137940,   /* state 0 */
-    data_ov096_02137950, data_ov096_02137928,   /* state 1 */
-    data_ov096_02137930, data_ov096_02137920,   /* state 2 */
-    data_ov096_02137978, data_ov096_02137970,   /* state 3 */
-    data_ov096_02137938, data_ov096_02137968,   /* state 4 */
-    data_ov096_02137960, data_ov096_02137958,   /* state 5 */
+    &daSanbo_c::func_ov096_021368a4, &daSanbo_c::func_ov096_02136754, /* state 0 */
+    &daSanbo_c::func_ov096_0213670c, &daSanbo_c::func_ov096_021365d4, /* state 1 */
+    &daSanbo_c::func_ov096_02136534, &daSanbo_c::func_ov096_02136434, /* state 2 */
+    &daSanbo_c::func_ov096_0213640c, &daSanbo_c::func_ov096_021363c4, /* state 3 */
+    &daSanbo_c::func_ov096_021363b4, &daSanbo_c::func_ov096_02136264, /* state 4 */
+    &daSanbo_c::func_ov096_02136134, &daSanbo_c::func_ov096_021360c4, /* state 5 */
 };
+SpawnInfo<daSanbo_c> g_profile_SANBO = {
+    daSanbo_c_classInit_SANBO, 0xf0, 0x5f, 0x10000002, 0x1f4000, 0x1f4000, 0x1000000, 0x1000000};
+SpawnInfo<daSanbo_c> g_profile_SANBO_BODY = {daSanbo_c_classInit_SANBO_BODY,
+                                             0xf1,
+                                             0x60,
+                                             0x10000002,
+                                             0x1f4000,
+                                             0x1f4000,
+                                             0x1000000,
+                                             0x1000000};

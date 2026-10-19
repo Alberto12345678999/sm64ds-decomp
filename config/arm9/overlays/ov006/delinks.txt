@@ -1,5 +1,11 @@
     .text       start:0x020bfec0 end:0x0212b890 kind:code align:32
-    .rodata     start:0x0212b890 end:0x0212f4c4 kind:rodata align:4
+    .rodata.before_coin_tables start:0x0212b890 end:0x0212e308 kind:rodata align:4
+    .rodata.coin_tables start:0x0212e308 end:0x0212e450 kind:rodata align:4
+    .rodata start:0x0212e450 end:0x0212ee0c kind:rodata align:4
+    .rodata.sound_tables start:0x0212ee0c end:0x0212ef5c kind:rodata align:4
+    .rodata.sound_row_views start:0x0212ef5c end:0x0212ef9c kind:rodata align:4
+    .rodata.sound_note_offsets start:0x0212ef9c end:0x0212efc4 kind:rodata align:4
+    .rodata.after_sound start:0x0212efc4 end:0x0212f4c4 kind:rodata align:4
     .init       start:0x0212f4c4 end:0x0213356c kind:code align:4
     .ctor       start:0x0213356c end:0x021335e8 kind:rodata align:4
     .data       start:0x02133600 end:0x021402e0 kind:data align:32
@@ -37,6 +43,7 @@ src/minigames/unit020cd744.cpp:
 src/minigames/d_s_mg_amida.cpp:
     complete
     .text start:0x020d1018 end:0x020d5a54
+    .data start:0x0213b814 end:0x0213b9ac
 
 src/minigames/d_s_mg_bomroom.cpp:
     complete
@@ -51,6 +58,7 @@ src/minigames/d_s_mg_card.cpp:
 
 src/minigames/d_s_mg_coin.cpp:
     complete
+    .rodata.coin_tables start:0x0212e308 end:0x0212e450
     .text start:0x020dbe40 end:0x020de988
     .init start:0x0213014c end:0x021303d0
     .ctor start:0x02133588 end:0x0213358c
@@ -62,6 +70,7 @@ src/minigames/d_s_mg_cup.cpp:
     .init start:0x021303d0 end:0x021304ac
     .ctor start:0x0213358c end:0x02133590
     .bss start:0x02141870 end:0x021418b0
+    .data start:0x0213bfe0 end:0x0213c1e4
 
 src/minigames/d_s_mg_curling.cpp:
     complete
@@ -93,6 +102,7 @@ src/minigames/d_s_mg_hanachan_methods.cpp:
     .text start:0x020ea280 end:0x020ede18
     .init start:0x02130df8 end:0x02130e9c
     .ctor start:0x021335a0 end:0x021335a4
+    .data start:0x0213c95c end:0x0213ca7c
     .bss start:0x02142018 end:0x02142044
 
 src/minigames/d_s_mg_hanachan.cpp:
@@ -127,6 +137,7 @@ src/minigames/d_s_mg_luigi.cpp:
 
 src/minigames/d_s_mg_memory.cpp:
     complete
+    .data start:0x0213cfc0 end:0x0213d248
     .text start:0x020f3834 end:0x020f5564
     .init start:0x021311c8 end:0x021314e4
     .ctor start:0x021335b0 end:0x021335b4
@@ -137,6 +148,7 @@ src/minigames/d_s_mg_memory2.cpp:
     .text start:0x020f5564 end:0x020f7634
     .init start:0x021314e4 end:0x021318a0
     .ctor start:0x021335b4 end:0x021335b8
+    .data start:0x0213d248 end:0x0213d338
     .bss start:0x021423a8 end:0x021424ec
 
 src/minigames/d_s_mg_m_carlo.cpp:
@@ -200,6 +212,9 @@ src/minigames/d_s_mg_smartball.cpp:
 
 src/minigames/d_s_mg_sound.cpp:
     complete
+    .data start:0x0213f6e4 end:0x0213f8d4
+    .rodata.sound_tables start:0x0212ee0c end:0x0212ef5c
+    .rodata.sound_note_offsets start:0x0212ef9c end:0x0212efc4
     .text start:0x02119904 end:0x0211cbd0
     .init start:0x02132970 end:0x02132f68
     .ctor start:0x021335d4 end:0x021335d8
@@ -224,6 +239,7 @@ src/minigames/d_s_mg_trampoline2.cpp:
     .init start:0x0213322c end:0x0213326c
     .ctor start:0x021335dc end:0x021335e0
     .bss start:0x02142f80 end:0x02142f94
+    .rodata.after_sound start:0x0212f0f0 end:0x0212f3ac
 
 src/minigames/d_s_mg_bsc.cpp:
     complete

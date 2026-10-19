@@ -60,8 +60,12 @@ TOOLS = REPO / "tools"
 sys.path.insert(0, str(TOOLS))
 
 import build_pin as BP          # noqa: E402
+import dsd_pin as DSP            # noqa: E402
+import data_section_routes as DSR  # noqa: E402
 import enroll as EN             # noqa: E402
 import lcf_interior as LI       # noqa: E402
+import linker_alignment as LA   # noqa: E402
+import initialized_boundaries as IB  # noqa: E402
 import match as M               # noqa: E402
 import modules as MOD           # noqa: E402
 import objisolate as OI         # noqa: E402
@@ -1659,13 +1663,15 @@ def manifest_section_claims(entry):
     for ordinary linker mappings such as input ``.rodata`` being placed in output
     ``.data``; it does not weaken the byte, symbol, or relocation checks on the input.
 
-    One claim per input section name is deliberate for this first data phase:
-    mwldarm concatenates a TU's repeated input sections of the same name into one
-    contribution, while two disjoint ranges would need an explicit input-section
-    partition the manifest cannot yet express.  Refusing that ambiguity is safer than
-    assigning output by list position.
+    One claim per input section name is deliberate: mwldarm concatenates repeated
+    input sections of the same name. Explicit initialized routes can give complete
+    native sections unique names using ``input_section``; they never split an input
+    section or claim intervening gap bytes.
     """
     rows, reasons, seen = [], [], set()
+    named_routes, routing_errors = DSR.routes(entry)
+    reasons.extend(routing_errors)
+    route_names = {row["name"] for row in named_routes}
     raw = entry.get("sections")
     if not isinstance(raw, list) or not raw:
         return [], ["manifest has no section claims"]
@@ -1674,12 +1680,12 @@ def manifest_section_claims(entry):
             reasons.append(f"sections[{i}] is not an object")
             continue
         name = claim.get("name")
-        if name not in _TU_SECTION_NAMES:
+        if not isinstance(name, str) or (name not in _TU_SECTION_NAMES and name not in route_names):
             reasons.append(f"sections[{i}] has unsupported name {name!r}; expected one "
                            f"of {list(_TU_SECTION_NAMES)}")
             continue
         module_section = claim.get("module_section", name)
-        if module_section not in _TU_SECTION_NAMES:
+        if not isinstance(module_section, str) or (module_section not in _TU_SECTION_NAMES and module_section not in route_names):
             reasons.append(f"sections[{i}] has unsupported module_section "
                            f"{module_section!r}; expected one of "
                            f"{list(_TU_SECTION_NAMES)}")
@@ -1701,8 +1707,15 @@ def manifest_section_claims(entry):
             reasons.append(f"sections[{i}] {name} is empty/reversed: "
                            f"0x{start:08x}..0x{end:08x}")
             continue
-        rows.append({"name": name, "module_section": module_section,
-                     "start": start, "end": end})
+        normalized = {"name": name, "module_section": module_section,
+                      "start": start, "end": end}
+        try:
+            policy = IB.terminal_policy(claim)
+            if policy is not None:
+                normalized["terminal_linker_fill"] = policy
+        except (KeyError, TypeError, ValueError) as exc:
+            reasons.append(f"sections[{i}] {name}: {exc}")
+        rows.append(normalized)
 
     if sum(1 for r in rows if r["name"] == ".text") != 1:
         reasons.append("manifest must claim exactly one .text contribution")
@@ -1712,6 +1725,10 @@ def manifest_section_claims(entry):
             reasons.append(f"manifest section claims overlap: {left['name']} "
                            f"0x{left['start']:08x}..0x{left['end']:08x} and "
                            f"{right['name']} 0x{right['start']:08x}..0x{right['end']:08x}")
+    try:
+        IB.prefix_policies(entry)
+    except ValueError as exc:
+        reasons.append(str(exc))
     return rows, reasons
 
 
@@ -1731,6 +1748,8 @@ def validate_claims_in_module(delinks_path, claims):
                        f"{c['name']} -> {output_name}")
             reasons.append(f"{mapping} claim 0x{c['start']:08x}..0x{c['end']:08x} is "
                            f"not wholly inside exactly one declared module section")
+        elif IB.terminal_policy(c) is not None and homes[0] != (c["start"], c["end"]):
+            reasons.append(f"{c['name']} terminal fill requires complete logical module section ownership")
     return reasons
 
 
@@ -2225,7 +2244,7 @@ def manifest_owned_symbol_rows(entry):
             continue
         for row in rows:
             if isinstance(row, dict) and row.get("symbol"):
-                out.append((section, row))
+                out.append((DSR.owned_section(entry, section, row), row))
     return out
 
 
@@ -3143,6 +3162,8 @@ def section_contribution(obj_bytes, section_name, start):
     offsets, and linked addresses for every symbol in those sections.  Section order,
     alignment, and ``sh_info`` are read from the real ELF rather than inferred from
     section names -- mwccarm emits many identically named `.data` sections in one TU.
+    The pinned DSD script's ALIGNALL(4) supplies the minimum input alignment;
+    generated scripts are checked before the scratch and production builds.
     """
     elf = ELFFile(io.BytesIO(obj_bytes))
     secs = list(elf.iter_sections())
@@ -3158,7 +3179,8 @@ def section_contribution(obj_bytes, section_name, start):
     image = bytearray()
     offsets = {}
     for shndx, sec in selected:
-        absolute = _align_up(start + len(image), sec.header["sh_addralign"])
+        absolute = _align_up(start + len(image),
+                             LA.effective_alignment(sec.header["sh_addralign"]))
         image.extend(b"\0" * (absolute - (start + len(image))))
         offsets[shndx] = len(image)
         size = sec.header["sh_size"]
@@ -3208,6 +3230,9 @@ def prepare_owned_nontext_section_order(obj_bytes, entry, claims):
     byte/symbol/relocation verifier.  This helper never guesses from symbol spelling or
     payload bytes and never changes content or relocation records.
     """
+    obj_bytes, routing, routing_errors = DSR.apply(obj_bytes, entry)
+    if routing_errors:
+        return None, {"groups": [], "objisolate": None, "routing": routing}, routing_errors
     nontext = [claim for claim in claims if claim["name"] != ".text"]
     if not nontext:
         return obj_bytes, {"groups": [], "objisolate": None}, []
@@ -3300,22 +3325,30 @@ def prepare_owned_nontext_section_order(obj_bytes, entry, claims):
         cursor = claim["start"]
         for shndx in desired:
             sec = secs[shndx]
-            cursor = _align_up(cursor, sec.header["sh_addralign"])
+            cursor = _align_up(cursor,
+                               LA.effective_alignment(sec.header["sh_addralign"]))
             if cursor != bases[shndx]:
                 reasons.append(f"retained {name} section[{shndx}] aligns at "
                                f"0x{cursor:08x}, manifest anchors require "
                                f"0x{bases[shndx]:08x}")
             cursor += sec.header["sh_size"]
-        if cursor != claim["end"]:
+        terminal = None
+        if "terminal_linker_fill" in claim:
+            try:
+                terminal = IB.terminal_extent(claim, cursor)
+            except ValueError as exc:
+                reasons.append(f"manifest-ordered {name}: {exc}")
+        elif cursor != claim["end"]:
             reasons.append(f"manifest-ordered {name} contribution ends at "
                            f"0x{cursor:08x}, claim ends at 0x{claim['end']:08x}")
 
         groups.append({"section": name, "original": selected,
-                       "desired": desired, "anchors": anchors})
+                       "desired": desired, "anchors": anchors,
+                       "terminalLinkerFillBytes": terminal or 0})
         if desired != selected:
             requested.append({"section": name, "indices": desired})
 
-    report = {"groups": groups, "objisolate": None}
+    report = {"groups": groups, "objisolate": None, "routing": routing}
     if reasons:
         return None, report, reasons
     if not requested:
@@ -3469,7 +3502,7 @@ def _configured_terminal_bss_end(module, claim, layout, owned_rows):
                 return None, [f"terminal BSS anchor has malformed BSS kind at symbols.txt:{number}"]
             if match.group(1) is not None:
                 size = int(match.group(1), 16 if match.group(1).startswith("0x") else 10)
-                if size <= 0 or address + size > 0x100000000:
+                if size < 0 or address + size > 0x100000000:
                     return None, [f"terminal BSS anchor has invalid size for {name}"]
                 if address < module_end and address + size > end:
                     return None, [f"configured BSS object {name} crosses the proposed end"]
@@ -3493,13 +3526,26 @@ def _configured_terminal_bss_end(module, claim, layout, owned_rows):
     _name, kind, address, size = configured[0]
     if not kind.startswith("bss(") or size is None:
         return None, [f"terminal BSS object {name} needs an explicit configured BSS size"]
+    if size == 0:
+        return None, [f"terminal BSS anchor cannot use zero-sized object {name}"]
     if address != emitted["address"] or size != emitted["size"]:
         return None, [f"terminal BSS object {name} disagrees with its configured address/size"]
     # A second configured label at the terminal address is ambiguous evidence.
     if sum(record[2] == address for record in records) != 1:
         return None, [f"terminal BSS object {name} has ambiguous configured aliases"]
-    if any(address < record[2] < end for record in records):
-        return None, [f"terminal BSS object {name} contains another configured symbol"]
+    # A native array may retain configured labels for its elements or fields.
+    # Only explicit zero-storage BSS aliases can coexist with this terminal extent;
+    # a positive size would overlap the full parent in DSD's baseline object.
+    # They cannot establish the end or describe another emitted/owned object.
+    for interior_name, interior_kind, interior_address, interior_size in records:
+        if not address < interior_address < end:
+            continue
+        if (not interior_kind.startswith("bss(") or interior_size != 0
+                or sum(r[0] == interior_name for r in records) != 1
+                or sum(r[2] == interior_address for r in records) != 1
+                or interior_name in layout.get("symbols", {})
+                or any(row.get("symbol") == interior_name for _section, row in owned_rows)):
+            return None, [f"terminal BSS object {name} contains another configured symbol"]
     declared = [row for section, row in owned_rows
                 if section == ".bss" and row.get("symbol") == name]
     if len(declared) != 1:
@@ -3522,7 +3568,8 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
                           config_relocs=None, sym_index=None, target_reader=None,
                           symbol_homes=None, bss_boundaries=None,
                           public_address_points=False,
-                          normalized_undefined_vtables=False):
+                          normalized_undefined_vtables=False,
+                          boundary_config_root=None):
     """Verify licensed non-text layout, bytes, symbols, and relocation destinations.
 
     Relocated words are wildcarded only after every relocation is independently tied
@@ -3557,6 +3604,15 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
             reasons.append(error)
             rows.append({"section": claim["name"], "ok": False, "error": error})
             continue
+        physical_size = len(layout["bytes"])
+        terminal = None
+        try:
+            layout, terminal = IB.finalize_layout(
+                entry, claim, layout, boundary_config_root or CFG_ARM9, target_reader)
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            reasons.append(f"{claim['name']} terminal linker fill: {exc}")
+            rows.append({"section": claim["name"], "ok": False, "error": str(exc)})
+            continue
         layouts[claim["name"]] = layout
         want = claim["end"] - claim["start"]
         size_ok = len(layout["bytes"]) == want
@@ -3571,9 +3627,11 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
         elif not size_ok:
             byte_ok, ndiff = False, 999
         rows.append({"section": claim["name"], "start": f"0x{claim['start']:08x}",
-                     "end": f"0x{claim['end']:08x}", "emittedBytes": len(layout["bytes"]),
+                     "end": f"0x{claim['end']:08x}", "emittedBytes": physical_size,
                      "sizeOk": size_ok, "bytesOk": byte_ok,
                      "differingWords": ndiff, "relocCount": len(layout["relocs"])})
+        if terminal is not None:
+            rows[-1].update(linkedBytes=len(layout["bytes"]), terminalLinkerFill=terminal)
         if not size_ok:
             reasons.append(f"{claim['name']} emits 0x{len(layout['bytes']):x} bytes, "
                            f"manifest claims 0x{want:x}")
@@ -3979,7 +4037,9 @@ def content_tree_sha256(root):
 
 BASELINE_CONTROL_TOOLS = tuple(
     REPO / "tools" / name for name in (
-        "objisolate.py", "reloc_audit.py", "rombuild.py", "rombuild_cache.py",
+        "dsd_pin.py", "linker_alignment.py", "data_section_routes.py", "initialized_boundaries.py",
+        "lcf_interior.py", "objisolate.py", "reloc_audit.py",
+        "rombuild.py", "rombuild_cache.py",
         "rombuild_check.py", "rombuild_profile.py", "tu_manifest.py",
         "tu_production.py", "tubuild.py"))
 
@@ -5129,6 +5189,10 @@ def cmd_linkcheck(args):
     print("real config/ and the shared build/ outputs are read-only for this command; "
           "everything written below lives under that scratch tree (build/ is gitignored).\n")
 
+    try:
+        report["dsdTool"] = DSP.check(RB.DSD)
+    except DSP.DsdPinError as exc:
+        raise SystemExit(str(exc)) from exc
     for tool in (RB.DSD, RB.MW / RB.VERSION / "mwccarm.exe",
                  RB.MW / RB.LD_VERSION / "mwldarm.exe"):
         if not tool.is_file():
@@ -5336,6 +5400,14 @@ def cmd_linkcheck(args):
         return 1
     print(f"      ok ({dt:.1f}s) -> {(scratch / 'arm9.lcf').relative_to(REPO).as_posix()}, "
           f"{(scratch / 'objects.txt').relative_to(REPO).as_posix()}")
+    try:
+        report["linkerAlignment"] = LA.verify_lcf(scratch / "arm9.lcf")
+    except ValueError as error:
+        print(f"\nREFUSED -- {error}")
+        report["result"] = "linker-alignment-refused"
+        report["linkerAlignment"] = {"error": str(error)}
+        _write_link_report(scratch, report)
+        return 1
     if partitioned:
         artifact_report = validate_partitioned_link_artifacts(
             scratch / "arm9.lcf", scratch / "objects.txt", entry, claims)
@@ -5925,7 +5997,21 @@ def cmd_linkcheck(args):
                   "were resolved.")
 
     # -------------------------------------------------------------------------- link
-    defined_interior = LI.patch(scratch / "arm9.lcf", scratch / "objects.txt", cfg_root)
+    try:
+        boundary_entries = ([] if baseline else list(
+            (intact_override if intact_override is not None else RB.intact_tu_policies(srcs)).values()))
+        if not baseline and entry is not None and not any(row is entry for row in boundary_entries):
+            boundary_entries.append(entry)
+        boundaries = IB.link_plan(boundary_entries, scratch / "objects.txt",
+                                  scratch / "arm9.lcf", cfg_root)
+        report["initializedBoundaries"] = boundaries
+        defined_interior = LI.patch(scratch / "arm9.lcf", scratch / "objects.txt", cfg_root,
+                                    initialized_prefixes=boundaries["prefixes"])
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        report["initializedBoundaryError"] = str(exc)
+        _write_link_report(scratch, report)
+        print(f"REFUSED -- initialized boundary proof: {exc}")
+        return 1
     if defined_interior:
         print(f"      lcf: defined {len(defined_interior)} interior row(s) at their ROM "
               f"address ({', '.join(n for n, _a in defined_interior)})")

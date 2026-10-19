@@ -16,6 +16,31 @@
       "name": ".text",
       "start": "0x02120c58",
       "end": "0x02121ffc"
+    },
+    {
+      "name": ".rodata",
+      "start": "0x02122004",
+      "end": "0x02122018"
+    },
+    {
+      "name": ".init",
+      "start": "0x02122414",
+      "end": "0x02122708"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02122714",
+      "end": "0x02122718"
+    },
+    {
+      "name": ".data",
+      "start": "0x021229f4",
+      "end": "0x02122b0c"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02122c94",
+      "end": "0x02122dcc"
     }
   ],
   "functions": [
@@ -244,11 +269,222 @@
       "ordinal": 31
     }
   ],
-  "data": [],
-  "bss": [],
+  "data": [
+    {
+      "symbol": "data_ov072_021229f4",
+      "address": "0x021229f4",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_021229fc",
+      "address": "0x021229fc",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a04",
+      "address": "0x02122a04",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a0c",
+      "address": "0x02122a0c",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a14",
+      "address": "0x02122a14",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a1c",
+      "address": "0x02122a1c",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a24",
+      "address": "0x02122a24",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a2c",
+      "address": "0x02122a2c",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a34",
+      "address": "0x02122a34",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a3c",
+      "address": "0x02122a3c",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a44",
+      "address": "0x02122a44",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "data_ov072_02122a4c",
+      "address": "0x02122a4c",
+      "size": "0x8",
+      "evidence": "compiler-generated member-pointer literal; target and zero adjustment independently matched to retail and initializer use"
+    },
+    {
+      "symbol": "_ZTS9daPgBby_c",
+      "address": "0x02122a54",
+      "size": "0xb",
+      "evidence": "Native eleven-byte class name; following byte is compiler alignment, not a larger string."
+    },
+    {
+      "symbol": "_ZTI9daPgBby_c",
+      "address": "0x02122a60",
+      "size": "0xc",
+      "evidence": "Native RTTI record preserves all three exact relocation destinations."
+    },
+    {
+      "symbol": "g_profile_PENGUIN_BABY",
+      "address": "0x02122a6c",
+      "size": "0x1c",
+      "evidence": "SpawnInfo<daPgBby_c> binds the existing typed factory and all retail profile fields without pointer casts."
+    },
+    {
+      "symbol": "_ZTV9daPgBby_c",
+      "address": "0x02122a90",
+      "size": "0x84",
+      "emitted_storage_address": "0x02122a88",
+      "address_point_bias": "0x8",
+      "evidence": "Full compiler vtable: two ABI header words plus31slots, ending at0x02122b0c. Following20bytes remain ROM-owned."
+    }
+  ],
+  "bss": [
+    {
+      "symbol": "gPenguinBabyDiveAnimationFile",
+      "address": "0x02122c94",
+      "size": "0x8",
+      "evidence": "native8-byte file handle; runtime asset ID and destructor registration independently recovered"
+    },
+    {
+      "symbol": "gPenguinBabyWaitAnimationFile",
+      "address": "0x02122c9c",
+      "size": "0x8",
+      "evidence": "native8-byte file handle; runtime asset ID and destructor registration independently recovered"
+    },
+    {
+      "symbol": "gPenguinBabyStandUpAnimationFile",
+      "address": "0x02122ca4",
+      "size": "0x8",
+      "evidence": "native8-byte file handle; runtime asset ID and destructor registration independently recovered"
+    },
+    {
+      "symbol": "gPenguinBabySlideAnimationFile",
+      "address": "0x02122cac",
+      "size": "0x8",
+      "evidence": "native8-byte file handle; runtime asset ID and destructor registration independently recovered"
+    },
+    {
+      "symbol": "gPenguinBabyModelFile",
+      "address": "0x02122cb4",
+      "size": "0x8",
+      "evidence": "native8-byte file handle; runtime asset ID and destructor registration independently recovered"
+    },
+    {
+      "symbol": "gPenguinBabyWalkAnimationFile",
+      "address": "0x02122cbc",
+      "size": "0x8",
+      "evidence": "native8-byte file handle; runtime asset ID and destructor registration independently recovered"
+    },
+    {
+      "symbol": "data_ov072_02122cc4",
+      "address": "0x02122cc4",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122cd0",
+      "address": "0x02122cd0",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122cdc",
+      "address": "0x02122cdc",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122ce8",
+      "address": "0x02122ce8",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122cf4",
+      "address": "0x02122cf4",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122d00",
+      "address": "0x02122d00",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122d0c",
+      "address": "0x02122d0c",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122d18",
+      "address": "0x02122d18",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122d24",
+      "address": "0x02122d24",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "data_ov072_02122d30",
+      "address": "0x02122d30",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor registration node, three32-bit pointers, exact initializer consumer"
+    },
+    {
+      "symbol": "gPenguinBabyCarryOffsets",
+      "address": "0x02122d3c",
+      "size": "0x30",
+      "evidence": "native four-Vector3 array; individual element constructors and destructor registrations match retail"
+    },
+    {
+      "symbol": "gPenguinBabyStates",
+      "address": "0x02122d6c",
+      "size": "0x60",
+      "evidence": "native six-State array; two8-byte member pointers per entry, including final update at0x02122dc4"
+    }
+  ],
   "notes": [
-    "Text-only promotion. The class's .data (the member-pointer literals at 0x021229f4..0x02122a54, _ZTS/_ZTI, the PENGUIN_BABY profile and the vtable, 0x021229f4..0x02122b0c), the file-handle .rodata table at 0x02122004 and the static initializer __sinit_ov072_02122414 that builds the state table stay with their current owners, as in the sibling daBgSnmHed_c promotion.",
-    "The twelve state steps and the other func_ov072_* helpers keep their configured unmangled names as extern \"C\" functions; the state table calls them through a non-polymorphic member-pointer view (PgBbyStateHost) because the ROM literals are two-word {address, 0} pairs."
+    "Native data ownership now covers the complete20-byte handle-pointer table,96-byte member-pointer literals,312-byte BSS resource/state/vector group,756-byte compiler initializer and ctor word alongside the current32-method production TU. The separately enrolled handwritten initializer is retired. This is an evidenced reconstruction assignment, not proof of the historical source filename.",
+    "The state steps are already real daPgBby_c methods in the current header. Their address-based configured names remain; State is two native int(daPgBby_c::*)() members. The complete six-entry array ends at0x02122dcc; data_ov072_02122dc4 is an interior label, not a separate owner.",
+    "Historical PR4038 boundary: RTTI/type name, profile and vtable were outside that native-handle/state slice. The data-pgbby-metadata1017 continuation now owns the exact184-byte metadata/profile band through0x02122b0c. The following20-byte unknown tail remains ROM-owned. Other duplicate policies, ABI/layout findings and descriptive naming limitations remain.",
+    "Global rename correspondence is recorded in the owned experiment/handoff; existing address attribution and reserved global rename ledger remain unchanged.",
+    "data-pgbby-metadata1017 extends the existing .data ownership by184bytes: four native objects183bytes plus one type-name alignment byte. The class vtable is132bytes including its ABI preamble, not152bytes inferred from the next configured object. A boundary label at0x02122b0c preserves the unclaimed20-byte tail. Production source assignment does not prove the original TU filename. All prior emitted definitions and native initialization must remain exact."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -266,21 +502,16 @@
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        26
+        30,
+        31,
+        37,
+        38,
+        39,
+        44,
+        45,
+        50,
+        51,
+        72
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -288,29 +519,368 @@
         "_ZTI7dBase_c",
         "_ZTS7dBase_c",
         "_ZTI8dActor_c",
-        "_ZTS8dActor_c",
-        "_ZTS9daPgBby_c",
-        "_ZTI9daPgBby_c",
-        "_ZTV9daPgBby_c"
+        "_ZTS8dActor_c"
       ],
       "dataExternalized": [
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
         "_ZTI8dActor_c",
-        "_ZTI9daPgBby_c",
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
-        "_ZTS8dActor_c",
-        "_ZTS9daPgBby_c",
-        "_ZTV9daPgBby_c"
-      ]
+        "_ZTS8dActor_c"
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov072-daPgBby_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x02120c58",
+        "end": "0x02121ffc",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x02120c58",
+          "end": "0x02121ffc",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".rodata",
+          "start": "0x02122004",
+          "end": "0x02122018",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02122414",
+          "end": "0x02122708",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02122714",
+          "end": "0x02122718",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x021229f4",
+          "end": "0x02122b0c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02122c94",
+          "end": "0x02122dcc",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 69
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".rodata",
+            "original": [
+              57
+            ],
+            "desired": [
+              57
+            ]
+          },
+          {
+            "section": ".init",
+            "original": [
+              127
+            ],
+            "desired": [
+              127
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              125
+            ],
+            "desired": [
+              125
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              5,
+              7,
+              9,
+              11,
+              13,
+              15,
+              18,
+              24,
+              26,
+              28,
+              33,
+              35,
+              40,
+              42,
+              59,
+              63
+            ],
+            "desired": [
+              33,
+              24,
+              35,
+              13,
+              26,
+              11,
+              28,
+              5,
+              9,
+              7,
+              18,
+              15,
+              40,
+              42,
+              59,
+              63
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              17,
+              20,
+              21,
+              22,
+              23,
+              32,
+              41,
+              46,
+              47,
+              48,
+              49,
+              52,
+              53,
+              54,
+              55,
+              56,
+              61,
+              62
+            ],
+            "desired": [
+              21,
+              23,
+              22,
+              17,
+              20,
+              32,
+              49,
+              41,
+              47,
+              46,
+              48,
+              52,
+              53,
+              54,
+              55,
+              56,
+              61,
+              62
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                5,
+                7,
+                9,
+                11,
+                13,
+                15,
+                18,
+                24,
+                26,
+                28,
+                33,
+                35,
+                40,
+                42,
+                59,
+                63
+              ],
+              "desired": [
+                33,
+                24,
+                35,
+                13,
+                26,
+                11,
+                28,
+                5,
+                9,
+                7,
+                18,
+                15,
+                40,
+                42,
+                59,
+                63
+              ],
+              "slots": [
+                5,
+                7,
+                9,
+                11,
+                13,
+                15,
+                18,
+                24,
+                26,
+                28,
+                33,
+                35,
+                40,
+                42,
+                59,
+                63
+              ]
+            },
+            {
+              "section": ".bss",
+              "original": [
+                17,
+                20,
+                21,
+                22,
+                23,
+                32,
+                41,
+                46,
+                47,
+                48,
+                49,
+                52,
+                53,
+                54,
+                55,
+                56,
+                61,
+                62
+              ],
+              "desired": [
+                21,
+                23,
+                22,
+                17,
+                20,
+                32,
+                49,
+                41,
+                47,
+                46,
+                48,
+                52,
+                53,
+                54,
+                55,
+                56,
+                61,
+                62
+              ],
+              "slots": [
+                17,
+                20,
+                21,
+                22,
+                23,
+                32,
+                41,
+                46,
+                47,
+                48,
+                49,
+                52,
+                53,
+                54,
+                55,
+                56,
+                61,
+                62
+              ]
+            }
+          ],
+          "symbolIndices": 34,
+          "sectionLinks": 0,
+          "sectionInfos": 15,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
   },
   "compiler_only_output": [
@@ -362,27 +932,1400 @@
       "canonical_module": "arm9",
       "canonical_address": "0x0208e384",
       "reason": "Vague-linkage type-name string for the inherited base dActor_c, re-emitted because this TU emits daPgBby_c's RTTI. The cartridge's own copy lives at arm9:0x0208e384, outside the claimed .text span 0x02120c58..0x02121ffc; rombuild proves this copy's relocation-resolved words against those cartridge bytes before isolation discards them."
+    }
+  ],
+  "production_mode": "intact-object",
+  "rodata": [
+    {
+      "symbol": "gPenguinBabyAnimationFiles",
+      "address": "0x02122004",
+      "size": "0x14",
+      "evidence": "five constant pointers to mutable animation handles, exact retail order"
+    }
+  ],
+  "init": [
+    {
+      "symbol": "__sinit_d_a_pg_bby.cpp",
+      "address": "0x02122414",
+      "size": "0x2f4",
+      "evidence": "native compiler initializer; all756bytes and call/data relocation destinations match retail"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_d_a_pg_bby.cpp",
+      "address": "0x02122714",
+      "size": "0x4",
+      "evidence": "native ctor-table pointer to owned initializer"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@930",
+      "to": "data_ov072_02122a34",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
     },
     {
+      "from": "@926",
+      "to": "data_ov072_02122a44",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@928",
+      "to": "data_ov072_02122a3c",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@940",
+      "to": "data_ov072_02122a24",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@922",
+      "to": "data_ov072_02122a4c",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@920",
+      "to": "data_ov072_02122a14",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@924",
+      "to": "data_ov072_02122a0c",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@938",
+      "to": "data_ov072_021229f4",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@934",
+      "to": "data_ov072_02122a04",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@932",
+      "to": "data_ov072_02122a2c",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@918",
+      "to": "data_ov072_021229fc",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@936",
+      "to": "data_ov072_02122a1c",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@911",
+      "to": "data_ov072_02122d00",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@912",
+      "to": "data_ov072_02122d0c",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@913",
+      "to": "data_ov072_02122d18",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@914",
+      "to": "data_ov072_02122d24",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@915",
+      "to": "data_ov072_02122d30",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@916",
+      "to": "data_ov072_02122cc4",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@942",
+      "to": "data_ov072_02122cd0",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@945",
+      "to": "data_ov072_02122cdc",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@948",
+      "to": "data_ov072_02122ce8",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    },
+    {
+      "from": "@951",
+      "to": "data_ov072_02122cf4",
+      "evidence": "Actual emitted compiler-local symbol mapped by exact retail initializer relocation destination and native target identity; no claim of original source spelling"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN14PgBbyModelFileC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "Native local wrapper lifecycle or compiler runtime call; exact retail initializer PC24/ABS32 destination and existing SharedFilePtr implementation"
+    },
+    {
+      "symbol": "_ZN14PgBbyModelFileD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "Native local wrapper lifecycle or compiler runtime call; exact retail initializer PC24/ABS32 destination and existing SharedFilePtr implementation"
+    },
+    {
+      "symbol": "_ZN18PgBbyAnimationFileC1Ej",
+      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201799c",
+      "evidence": "Native local wrapper lifecycle or compiler runtime call; exact retail initializer PC24/ABS32 destination and existing SharedFilePtr implementation"
+    },
+    {
+      "symbol": "_ZN18PgBbyAnimationFileD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017984",
+      "evidence": "Native local wrapper lifecycle or compiler runtime call; exact retail initializer PC24/ABS32 destination and existing SharedFilePtr implementation"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "Native local wrapper lifecycle or compiler runtime call; exact retail initializer PC24/ABS32 destination and existing SharedFilePtr implementation"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "data_ov072_02122a34",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a44",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a3c",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a24",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a4c",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a14",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a0c",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_021229f4",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a04",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a2c",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_021229fc",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122a1c",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122cd0",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122cdc",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122ce8",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122cc4",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122cf4",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122d00",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122d0c",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122d18",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122d24",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "data_ov072_02122d30",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": ".p__sinit_d_a_pg_bby.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "__sinit_d_a_pg_bby.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "_ZN9daPgBby_cD1Ev",
+      "from": "STB_LOPROC",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    },
+    {
+      "symbol": "_ZN9daPgBby_cD0Ev",
+      "from": "STB_LOPROC",
+      "to": "STB_GLOBAL",
+      "evidence": "Expose actual compiler definition as configured global identity without changing storage, value, symbol index or relocation destination"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".data",
+      "source": "0x02122a34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121758Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121758"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a44",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121890Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121890"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_021217acEv",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x021217ac"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a24",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_021212c0Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x021212c0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a4c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121a28Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121a28"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a14",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121a84Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121a84"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a0c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_021218dcEv",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x021218dc"
+    },
+    {
+      "section": ".data",
+      "source": "0x021229f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121368Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121368"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a04",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121640Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121640"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a2c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121670Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121670"
+    },
+    {
+      "section": ".data",
+      "source": "0x021229fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_02121c94Ev",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02121c94"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a1c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c19func_ov072_021214dcEv",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x021214dc"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02122714",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_d_a_pg_bby.cpp",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122414"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122424",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_02017acc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x02017acc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122434",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122440",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122450",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212245c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212246c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122478",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122488",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122494",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021224a4",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021224b0",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021224c0",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021225dc",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122604",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212262c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122654",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122664",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyModelFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cb4"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212266c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "func_02017ab4",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017ab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122670",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122d00",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122d00"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122674",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyWaitAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122c9c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212267c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "SharedFilePtr_Destruct_Anim",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017984"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122680",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122d0c",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122d0c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122684",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyWalkAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cbc"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212268c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122d18",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122d18"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122690",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyDiveAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122c94"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122694",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122d24",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122d24"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122698",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabySlideAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cac"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226a0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122d30",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122d30"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226a4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyStandUpAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122ca4"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226ac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122cc4",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cc4"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226b0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyStates",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122d6c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226b4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_021229fc",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x021229fc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226b8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a14",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a14"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226bc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a4c",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a4c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226c0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a0c",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a0c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226c4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a44",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a44"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226c8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a3c",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a3c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226cc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a34",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a34"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226d0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a2c",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a2c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226d4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a04",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a04"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226d8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a1c",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a1c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226dc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_021229f4",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x021229f4"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226e0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122a24",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122a24"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226e4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyCarryOffsets",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122d3c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7Vector3D1Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x020072c0"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226ec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122cd0",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cd0"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyCarryOffsets",
+      "addend": 12,
+      "target_module": "ov072",
+      "target_address": "0x02122d48"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122cdc",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cdc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226f8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyCarryOffsets",
+      "addend": 24,
+      "target_module": "ov072",
+      "target_address": "0x02122d54"
+    },
+    {
+      "section": ".init",
+      "source": "0x021226fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122ce8",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122ce8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122700",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyCarryOffsets",
+      "addend": 36,
+      "target_module": "ov072",
+      "target_address": "0x02122d60"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122704",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov072_02122cf4",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cf4"
+    },
+    {
+      "section": ".rodata",
+      "source": "0x02122014",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyStandUpAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122ca4"
+    },
+    {
+      "section": ".rodata",
+      "source": "0x02122010",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabySlideAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cac"
+    },
+    {
+      "section": ".rodata",
+      "source": "0x0212200c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyDiveAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122c94"
+    },
+    {
+      "section": ".rodata",
+      "source": "0x02122008",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyWalkAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122cbc"
+    },
+    {
+      "section": ".rodata",
+      "source": "0x02122004",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "gPenguinBabyWaitAnimationFile",
+      "addend": 0,
+      "target_module": "ov072",
+      "target_address": "0x02122c9c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a64",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
       "symbol": "_ZTS9daPgBby_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov072",
-      "canonical_address": "0x02122a54",
-      "reason": "This class's own type-name string. MEASURED in extracted/overlays/overlay_0072.bin: the bytes at ov072:0x02122a54 are the NUL-terminated '9daPgBby_c', the ROM's own spelling of this class's name and the source of the rename from the coined BabyPenguin. It lies in .data, outside the claimed .text span 0x02120c58..0x02121ffc."
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02122a54"
     },
     {
+      "section": ".data",
+      "source": "0x02122a68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI8dActor_c",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0208e390"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "main",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a6c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daPgBby_c_classInit",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02121fac"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a8c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
       "symbol": "_ZTI9daPgBby_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov072",
-      "canonical_address": "0x02122a60",
-      "reason": "This class's own typeinfo record, outside the claimed .text span. MEASURED in extracted/overlays/overlay_0072.bin: the three words at ov072:0x02122a60 are 0x0209a764 (__si_class_type_info's vtable+8), 0x02122a54 (_ZTS9daPgBby_c) and 0x0208e390 (_ZTI8dActor_c), so the cartridge states the single direct base is dActor_c, as the header declares."
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02122a60"
     },
     {
-      "symbol": "_ZTV9daPgBby_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov072",
-      "canonical_address": "0x02122a90",
-      "reason": "This class's own vtable (compiler storage 0x84 including the two-word preamble), outside the claimed .text span; the PENGUIN_BABY profile at 0x02122a6c sits between _ZTI and the vtable storage and is not emitted here. MEASURED in extracted/overlays/overlay_0072.bin: 0x02122a88 is the offset-to-top word 0 and 0x02122a8c is 0x02122a60 (&_ZTI9daPgBby_c); 0x02122a90 is the address point. Slots 0, 3, 6, 9 and 12 hold 0x02121e84, 0x02121d6c, 0x02121e08, 0x02121db4 and 0x02121db0 (InitResources, CleanupResources, Behavior, Render, OnPendingDestroy); slots 16..19 hold 0x02120c58 / 0x02120ca0 (D1 then D0), 0x02120cfc (OnYoshiTryEat) and 0x02121fa0 (OnTurnIntoEgg); every other slot is dActor_c's inherited word, and the table ends after 31 slots at 0x02122b0c."
+      "section": ".data",
+      "source": "0x02122acc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02043494"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ac8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0204349c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ac4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0204357c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122b08",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c25OnAimedAtWithEggReturnVecEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x020100dc"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122b04",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c16OnAimedAtWithEggEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010124"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122b00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19OnHitFromUnderneathERS_",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0201012c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122afc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnHitByMegaCharER6Player",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010130"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122af8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c24OnHitByCannonBlastedCharERS_",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010134"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122af4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnPushedERS_",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010138"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122af0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnKickedERS_",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0201013c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122aec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked2ERS_",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010140"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ae8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked1ERS_",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010144"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ae4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnGroundPoundedERS_",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010148"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ae0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c9Virtual50Ev",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x0201014c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122abc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010f6c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ab8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010f78"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ab0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010fc8"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122aac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02010fd4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122aa4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02011214"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122aa0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02011220"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02011244"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x02011268"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ad4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_cD0Ev",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02120ca0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ad0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_cD1Ev",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02120c58"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122adc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c13OnTurnIntoEggER6Player",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02121fa0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ad8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c13OnYoshiTryEatEv",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02120cfc"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ac0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02121db0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ab4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c6RenderEv",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02121db4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122aa8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02121e08"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a9c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02121d6c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122a90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN9daPgBby_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "overlay(72)",
+      "target_address": "0x02121e84"
     }
   ]
 }

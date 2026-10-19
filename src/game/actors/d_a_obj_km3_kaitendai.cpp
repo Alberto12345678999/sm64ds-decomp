@@ -4,14 +4,16 @@
  *
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjKaitendai_c's shared ov002
- * helpers. Start angle is data_ov047_02112320, or
- * data_ov047_02112324 when param1's low byte is 1.
+ * helpers. The default rotation increment is 312 angle units per frame,
+ * or 624 when param1's low byte is 1. The shared setup stores the
+ * increment and Behavior adds it each frame; it is not a start angle.
  * func_ov002_020b676c loads slot 0 with Model::LoadFile, slot 1 with
  * dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. This TU's static
  * initializer constructs those SharedFilePtrs as file IDs 1661 / 1662.
  *
- * The three-word file table is defined in this TU. Retail .data
- * order is typeinfo, descriptor, type-name, profile, vtable.
+ * This TU defines the rotation increments, two-entry collision-property
+ * block, and three-pointer resource descriptor. The data names describe
+ * measured consumers; their original source spellings are not recovered.
  *
  * daObjKm3_Kaitendai_c_classInit is reconstructed (RTTI
  * daObjKm3_Kaitendai_c, KM3_KAITENDAI registry). Retail does not
@@ -20,10 +22,10 @@
  * deslop
  * Leftover: func_ov002_020b676c / func_ov002_020b66a8 are still
  *   linker names. Naming belongs in ov002.
- * Leftover: the BMD/KCL SharedFilePtrs and CLPS_Block are still
- *   data_ov047_*. The two start-angle halfwords 02112320 / 02112324
- *   sit 8 bytes before this TU's claimed .data (typeinfo at
- *   02112328); they are not owned here.
+ * Leftover: the BMD/KCL handle storage remains a two-word wrapper,
+ *   and the handles and descriptor retain their address names.
+ *   The shared setup/cleanup interface still takes an opaque mutable
+ *   CLPS_Block pointer, although its collision-property consumers only read it.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -33,6 +35,7 @@ enum d_a_obj_km3_kaitendai_AssetId {
 };
 
 #include "SharedFilePtr.h"
+#include "CLPS.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
@@ -53,46 +56,51 @@ struct Km3KaitendaiClsnFilePtr : SharedFilePtr {
 
 typedef char Km3KaitendaiModelFilePtr_size_must_be_8[
     sizeof(Km3KaitendaiModelFilePtr) == 8 ? 1 : -1];
-typedef char Km3KaitendaiClsnFilePtr_size_must_be_8[
-    sizeof(Km3KaitendaiClsnFilePtr) == 8 ? 1 : -1];
+typedef char Km3KaitendaiClsnFilePtr_size_must_be_8[sizeof(Km3KaitendaiClsnFilePtr) == 8 ? 1 : -1];
 
-struct CLPS_Block;
+struct Km3KaitendaiClpsBlock {
+    char magic[4];
+    u16 entrySize;
+    u16 entryCount;
+    CLPS entries[2];
+};
+typedef char
+    Km3KaitendaiClpsBlock_size_must_be_0x18[sizeof(Km3KaitendaiClpsBlock) == 0x18 ? 1 : -1];
 
 struct ResourceDescriptor {
     SharedFilePtr *model;
     SharedFilePtr *kcl;
     CLPS_Block *clps;
 };
-typedef char ResourceDescriptor_size_must_be_0x0c[
-    sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
+typedef char ResourceDescriptor_size_must_be_0x0c[sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
 extern "C" {
 extern Km3KaitendaiModelFilePtr data_ov047_02112610;
 extern Km3KaitendaiClsnFilePtr data_ov047_02112608;
-extern CLPS_Block data_ov047_02111bf4;
+/* KCL prism attributes index these two entries. The following ROM bytes
+ * have no established type or ownership and are not part of this block. */
+extern const Km3KaitendaiClpsBlock gKm3KaitendaiClps = {
+    {'C', 'L', 'P', 'S'}, 8, 2, {{0x00000fc0, 0x000000ff}, {0x00000fc4, 0x000000ff}}};
 }
 
 /* Defined here because this TU owns the descriptor in overlay .data. */
 extern "C" ResourceDescriptor data_ov047_02112334 = {
-    &data_ov047_02112610,
-    &data_ov047_02112608,
-    &data_ov047_02111bf4
-};
+    &data_ov047_02112610, &data_ov047_02112608,
+    reinterpret_cast<CLPS_Block *>(const_cast<Km3KaitendaiClpsBlock *>(&gKm3KaitendaiClps))};
 
 #include "daObjKm3_Kaitendai_c.h"
 #include "SpawnInfo.h"
 
 extern "C" {
 s32 func_ov002_020b676c(daObjKaitendai_c *self, ResourceDescriptor *descriptor,
-                        s16 angle);
+                        s16 rotationIncrement);
 s32 func_ov002_020b66a8(daObjKaitendai_c *self, ResourceDescriptor *descriptor);
-extern s16 data_ov047_02112320;
-extern s16 data_ov047_02112324;
+s16 gKm3KaitendaiRotationIncrement = 312;
+s16 gKm3KaitendaiAlternateRotationIncrement = 624;
 }
 
 // @symbol daObjKm3_Kaitendai_c_classInit
-extern "C" daObjKm3_Kaitendai_c *daObjKm3_Kaitendai_c_classInit()
-{
+extern "C" daObjKm3_Kaitendai_c *daObjKm3_Kaitendai_c_classInit() {
     return new daObjKm3_Kaitendai_c();
 }
 
@@ -111,15 +119,14 @@ extern "C" SpawnInfo<daObjKm3_Kaitendai_c> g_profile_KM3_KAITENDAI = {
 // @symbol _ZN20daObjKm3_Kaitendai_c13InitResourcesEv
 s32 daObjKm3_Kaitendai_c::InitResources()
 {
-    s16 angle = data_ov047_02112320;
+    s16 rotationIncrement = gKm3KaitendaiRotationIncrement;
     if ((param1 & 0xff) == 1)
-        angle = data_ov047_02112324;
-    return func_ov002_020b676c(this, &data_ov047_02112334, angle);
+        rotationIncrement = gKm3KaitendaiAlternateRotationIncrement;
+    return func_ov002_020b676c(this, &data_ov047_02112334, rotationIncrement);
 }
 
 // @symbol _ZN20daObjKm3_Kaitendai_c16CleanupResourcesEv
-s32 daObjKm3_Kaitendai_c::CleanupResources()
-{
+s32 daObjKm3_Kaitendai_c::CleanupResources() {
     return func_ov002_020b66a8(this, &data_ov047_02112334);
 }
 

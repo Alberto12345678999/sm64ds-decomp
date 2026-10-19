@@ -16,13 +16,20 @@
     "ABSTRACT-SLOT HAZARD DOES NOT APPLY. dScene_c leaves vtable slots 0 (InitResources) and 3 (CleanupResources) abstract, so a member pinned only by one of those slots can hide at a run's edge. Read directly out of extracted/overlays/overlay_0003.bin at the address point 0x020b1704: slot -1 is _ZTI12dScStarSel_c 0x020b16bc, slot 0 is 0x020af8a0 (the real InitResources) and slot 3 is 0x020af86c (the real CleanupResources). Both are inside the run and already labelled; 18 slots total; nothing is hidden.",
     "HISTORY, SUPERSEDED BY THE BEHAVIOR FOLD (last entry): LICENSED RANGE IS A SUBSET OF THE RUN, deliberately, and ONE thing sets its upper edge. _ZN12dScStarSel_c8BehaviorEv (0x020af038, 0x834 bytes) does not match under any configuration reached here and is left as its existing unenrolled draft. Because it sits in the MIDDLE of the run, the licensed .text cannot skip it: a delinks entry carries exactly one .text range (no entry anywhere in config/ carries two) so a licensed range must be contiguous. That caps the fold at 0x020af038 and splits the run in two -- eleven functions below Behavior, three above it (CleanupResources 0x34, InitResources 0xc50, dScStarSel_c_classInit 0x90). The three above all match; they are simply the smaller side and stay as their existing shards. The lower edge is the run's own left edge, 0x020addfc: the destructor pair D1 (0x020addfc) and D0 (0x020ade54) is folded in, under the out-of-line destructor + `#pragma defer_codegen off` + ROM-ascending source form (see the DESTRUCTOR FORM note). The licensed range is therefore the eleven functions from D1 up to Behavior: 0x020addfc..0x020af038, 0x123c bytes (4668).",
     "HISTORY, SUPERSEDED BY THE BEHAVIOR FOLD (last entry): WHY BEHAVIOR DOES NOT CLOSE: it is a released near-miss (see the near-miss bank record for ov003:0x020af038, which documents a 187-cell rank-by-type sweep, a 180-cell scratch sweep, two randomized product scans, a permuter run, a 40-cell pragma sweep and a cross-build sweep). Re-tested inside this fold, as a promotion is supposed to do, it did not close: the residual is 23 words, every one of them the same instruction with a different register number and no schedule change at all -- the bank's own r6/r7 swap at +0x248 plus a re-opened register-routing cluster at +0x210..+0x2ec. The fold is not the shape that fixes it. Closing it is the single blocker for the whole class: with Behavior's draft body in place, a scratch build of all fifteen functions with the inline-in-class destructor emits every function in exact ROM-ascending order with no D2, at 13/14.",
-    "BEHAVIOR FOLD (EDGE 1 moved up from 0x020af038 to 0x020b0580, the run's own right edge): _ZN12dScStarSel_c8BehaviorEv now reproduces the cartridge under 2004/b56 and was enrolled as its own one-function source, so the one hole that split the run is closed. Behavior (0x020af038, 0x834), CleanupResources (0x020af86c, 0x34), InitResources (0x020af8a0, 0xc50) and dScStarSel_c_classInit (0x020b04f0, 0x90) are folded as ordinals 11..14, appended after Render in ROM-ascending order under the file's `#pragma defer_codegen off`; the licensed .text is now the whole run, 0x020addfc..0x020b0580, 15 functions. Retired: src/_ZN12dScStarSel_c8BehaviorEv.cpp, src/_ZN12dScStarSel_c16CleanupResourcesEv.cpp, src/_ZN12dScStarSel_c13InitResourcesEv.cpp and src/game/stages/d_s_star_sel.cpp, whose four delinks entries merge into this TU's single .text claim."
+    "BEHAVIOR FOLD (EDGE 1 moved up from 0x020af038 to 0x020b0580, the run's own right edge): _ZN12dScStarSel_c8BehaviorEv now reproduces the cartridge under 2004/b56 and was enrolled as its own one-function source, so the one hole that split the run is closed. Behavior (0x020af038, 0x834), CleanupResources (0x020af86c, 0x34), InitResources (0x020af8a0, 0xc50) and dScStarSel_c_classInit (0x020b04f0, 0x90) are folded as ordinals 11..14, appended after Render in ROM-ascending order under the file's `#pragma defer_codegen off`; the licensed .text is now the whole run, 0x020addfc..0x020b0580, 15 functions. Retired: src/_ZN12dScStarSel_c8BehaviorEv.cpp, src/_ZN12dScStarSel_c16CleanupResourcesEv.cpp, src/_ZN12dScStarSel_c13InitResourcesEv.cpp and src/game/stages/d_s_star_sel.cpp, whose four delinks entries merge into this TU's single .text claim.",
+    "Native data continuation: the complete 180-byte range 020b1698..020b174c contains eight scalar/array tables, typed scene profile, RTTI/name and full 80-byte vtable. Twelve objects contribute 174 bytes plus six natural alignment bytes. All 23 data relocations use exact configured module sets. Observed consumers support the documented roles and formats; retained numeric labels do not claim original identifiers or unique original TU grouping. Three camera vectors in rodata remain required shared-header-dependent continuation.",
+    "The fixed character order has three meaningful bytes (1,0,2): the inverse lookup loops three times, and mode 4 bounds the cursor to 0..2. Its fourth byte is natural alignment rather than an invented fourth element. The decimal table is three u16 divisors (100,10,1). sStarSelectCharacterOrder and sStarSelectDecimalDivisors are inferred role names, not recovered original identifiers. The two stepped tables retain three four-slot strides; unused row tails do not uniquely determine original declaration bounds."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020addfc",
       "end": "0x020b0580"
+    },
+    {
+      "name": ".data",
+      "start": "0x020b1698",
+      "end": "0x020b174c"
     }
   ],
   "functions": [
@@ -132,7 +139,71 @@
       "ordinal": 14
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "symbol": "data_ov003_020b1698",
+      "address": "0x20b1698",
+      "size": "0x2"
+    },
+    {
+      "symbol": "sStarSelectCharacterOrder",
+      "address": "0x20b169c",
+      "size": "0x3"
+    },
+    {
+      "symbol": "data_ov003_020b16a0",
+      "address": "0x20b16a0",
+      "size": "0x4"
+    },
+    {
+      "symbol": "data_ov003_020b16a4",
+      "address": "0x20b16a4",
+      "size": "0x4"
+    },
+    {
+      "symbol": "data_ov003_020b16a8",
+      "address": "0x20b16a8",
+      "size": "0x4"
+    },
+    {
+      "symbol": "sStarSelectDecimalDivisors",
+      "address": "0x20b16ac",
+      "size": "0x6"
+    },
+    {
+      "symbol": "g_profile_STAR_SELECT",
+      "address": "0x020b16b4",
+      "size": "0x8"
+    },
+    {
+      "symbol": "_ZTI12dScStarSel_c",
+      "address": "0x020b16bc",
+      "size": "0xc"
+    },
+    {
+      "symbol": "data_ov003_020b16c8",
+      "address": "0x20b16c8",
+      "size": "0xc"
+    },
+    {
+      "symbol": "_ZTS12dScStarSel_c",
+      "address": "0x020b16d4",
+      "size": "0xf"
+    },
+    {
+      "symbol": "data_ov003_020b16e4",
+      "address": "0x20b16e4",
+      "size": "0x18"
+    },
+    {
+      "symbol": "_ZTV12dScStarSel_c",
+      "address": "0x020b1704",
+      "size": "0x50",
+      "emitted_storage_address": "0x020b16fc",
+      "emitted_storage_size": "0x50",
+      "address_point_bias": 8
+    }
+  ],
   "bss": [],
   "compiler_only_output": [
     {
@@ -141,65 +212,44 @@
       "reason": "Compiler-generated base-object destructor. dScStarSel_c declares its destructor out of line, so mwccarm emits all three variants; under this file's `#pragma defer_codegen off` the group emits D1, D0, D2, and D1/D0 reproduce the cartridge byte for byte at 0x020addfc and 0x020ade54. Nothing in the object references D2: the vtable's slots 16 and 17 name D1 and D0. config/arm9/overlays/*/symbols.txt gives _ZN12dScStarSel_cD2Ev no home anywhere in the ROM, which is the cartridge saying the retail link dead-stripped the same unreferenced variant. Homeless, so a plain deadstrip rather than deadstrip-duplicate."
     },
     {
-      "symbol": "_ZTV12dScStarSel_c",
-      "disposition": "deadstrip-data",
-      "reason": "This class's own record. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at ov003:0x020b1704, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
-      "canonical_module": "ov003",
-      "canonical_address": "0x020b1704"
-    },
-    {
-      "symbol": "_ZTI12dScStarSel_c",
-      "disposition": "deadstrip-data",
-      "reason": "This class's own record. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at ov003:0x020b16bc, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
-      "canonical_module": "ov003",
-      "canonical_address": "0x020b16bc"
-    },
-    {
-      "symbol": "_ZTS12dScStarSel_c",
-      "disposition": "deadstrip-data",
-      "reason": "This class's own record. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at ov003:0x020b16d4, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
-      "canonical_module": "ov003",
-      "canonical_address": "0x020b16d4"
-    },
-    {
       "symbol": "_ZTI8dScene_c",
       "disposition": "deadstrip-data",
-      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x020914d4, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x020914d4, in ARM9 and outside this overlay TU's owned ranges, so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x020914d4"
     },
     {
       "symbol": "_ZTS8dScene_c",
       "disposition": "deadstrip-data",
-      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x020914b0, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x020914b0, in ARM9 and outside this overlay TU's owned ranges, so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x020914b0"
     },
     {
       "symbol": "_ZTI7dBase_c",
       "disposition": "deadstrip-data",
-      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e78, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e78, in ARM9 and outside this overlay TU's owned ranges, so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e78"
     },
     {
       "symbol": "_ZTS7dBase_c",
       "disposition": "deadstrip-data",
-      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e54, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e54, in ARM9 and outside this overlay TU's owned ranges, so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e54"
     },
     {
       "symbol": "_ZTI7fBase_c",
       "disposition": "deadstrip-data",
-      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086d70, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086d70, in ARM9 and outside this overlay TU's owned ranges, so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086d70"
     },
     {
       "symbol": "_ZTS7fBase_c",
       "disposition": "deadstrip-data",
-      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e60, outside this TU's only licensed range (.text 0x020addfc-0x020af038), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e60, in ARM9 and outside this overlay TU's owned ranges, so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60"
     }
@@ -219,7 +269,8 @@
     "DESTRUCTOR FORM, measured. The cartridge places D1 (0x020addfc) BELOW D0 (0x020ade54). Under deferred codegen an out-of-line destructor emits D2, D0, D1 -- the reverse of retail -- and `tubuild.py linkcheck` refused that object with 'licensed .text functions are not emitted in ROM address order'; that is why the first promotion of this class left D1/D0 as their own shards. An earlier revision of this note also recorded that `defer_codegen off` changed neither; that was measured without rewriting the file in ascending order, and it does not hold for the form this file now ships. Measured by the widen: out-of-line destructor (include/dScStarSel_c.h unchanged) + `#pragma defer_codegen off` above every function + the whole file rewritten ROM-ascending with the destructor first -> tubuild verify 11/11 MATCH, objisolate clean, reloc-destinations clean, all eleven in ROM-ascending section order, first try. The group emits D1, D0, D2; D2 is unreferenced and homeless and is licensed as deadstrip. This is the same cell ov006/dScMgFlower_c ships, another dScene_c child with D1 below D0. Because the destructor is the first declared non-inline virtual it is dScStarSel_c's key function, so this TU also emits _ZTV12dScStarSel_c and the typeinfo chain up to fBase_c; all nine are licensed deadstrip-data against their cartridge copies, which sit outside the licensed .text. The previously recorded alternative -- an inline in-class destructor, which only emits with InitResources in the same TU -- is no longer needed.",
     "DONE (BEHAVIOR FOLD, last boundary_evidence entry): FOLLOW-UP, the moment Behavior closes: append Behavior, CleanupResources, InitResources and dScStarSel_c_classInit after Render in ROM-ascending order (this file already runs under `#pragma defer_codegen off`), extend the licensed .text to 0x020addfc..0x020b0580, retire the three shards and src/game/stages/d_s_star_sel.cpp's claim, and re-run verify. The destructor form and the ten compiler_only_output rows are already in place; the header needs no change. Re-check the opt_strength_reduction cell for the new members, since the PRAGMA note's measurements predate them.",
     "WIDEN (0x020adec0..0x020af038 -> 0x020addfc..0x020af038): folds _ZN12dScStarSel_cD1Ev and _ZN12dScStarSel_cD0Ev into this file and retires their one-function shards; the two delinks entries are merged into this TU's single .text claim. Behavior, CleanupResources, InitResources and dScStarSel_c_classInit stay out (see LICENSED RANGE above). tools/tubuild.py linkcheck has no route for an already-enrolled text-only TU (the enrolled-candidate path is intact-object only and refuses with 'intact production requires one .text claim and at least one non-text claim'), so the verification.linkcheck block below is the ORIGINAL 0x020adec0..0x020af038 promotion's record and was not refreshed; the widen's link proof is a full tools/rombuild.py build.",
-    "BEHAVIOR FOLD, source changes the fold forced, each verified by tools/tubuild.py verify (15/15 MATCH, objisolate clean, ROM-ascending): (a) Behavior read the touch tables through PlayerInput.h's flat u8[] spelling (gTouchHeld[idx * 4], a TouchRecord cast for the row); this file declares them u8[][4] for Render's record-view addressing, so Behavior now spells the same reads gTouchHeld[idx][0] and gTouchHeld[idx], and data_020a0e5a[slot * 2] as data_020a0e5a[slot][0]. Byte-identical. (b) InitResources' FH(p, o) was the UNSIGNED halfword view; this file's FH is signed, so its uses are spelled FU, the unsigned view Behavior brought. (c) InitResources' `#pragma opt_loop_invariants off` is bracketed by push/pop so it binds InitResources alone; under defer_codegen off the state at each definition is what binds. (d) CleanupResources' file-local `class Sound` stub is replaced by Sound.h. (e) The factory keeps the retired source's hand-built construction verbatim (see daPicGate_c's classInit note for why `new` cannot be used while the vtable label is the address point); its two vtable externs come from decl_common.h."
+    "BEHAVIOR FOLD, source changes the fold forced, each verified by tools/tubuild.py verify (15/15 MATCH, objisolate clean, ROM-ascending): (a) Behavior read the touch tables through PlayerInput.h's flat u8[] spelling (gTouchHeld[idx * 4], a TouchRecord cast for the row); this file declares them u8[][4] for Render's record-view addressing, so Behavior now spells the same reads gTouchHeld[idx][0] and gTouchHeld[idx], and data_020a0e5a[slot * 2] as data_020a0e5a[slot][0]. Byte-identical. (b) InitResources' FH(p, o) was the UNSIGNED halfword view; this file's FH is signed, so its uses are spelled FU, the unsigned view Behavior brought. (c) InitResources' `#pragma opt_loop_invariants off` is bracketed by push/pop so it binds InitResources alone; under defer_codegen off the state at each definition is what binds. (d) CleanupResources' file-local `class Sound` stub is replaced by Sound.h. (e) The factory keeps the retired source's hand-built construction verbatim (see daPicGate_c's classInit note for why `new` cannot be used while the vtable label is the address point); its two vtable externs come from decl_common.h.",
+    "Native data evidence: notes/experiments/data-starsel-native1018.json and notes/agents/data-starsel-native1018.md. Existing partial class reconstruction remains; raw factory construction is unchanged apart from its correctly typed return pointer, with all previous definitions byte-identical in the private probe."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -287,7 +338,7 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov003-dScStarSel_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -299,31 +350,122 @@
         "rom": true
       },
       "tuRange": {
-        "start": "0x020adec0",
-        "end": "0x020af038",
+        "start": "0x020addfc",
+        "end": "0x020b0580",
         "differingBytes": 0,
         "firstDiff": null
       },
       "tuRanges": [
         {
           "section": ".text",
-          "start": "0x020adec0",
-          "end": "0x020af038",
+          "start": "0x020addfc",
+          "end": "0x020b0580",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x020b1698",
+          "end": "0x020b174c",
           "differingBytes": 0,
           "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 9
+          "LICENSED": 27
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
+        "groups": [
+          {
+            "section": ".data",
+            "original": [
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              46,
+              48,
+              49
+            ],
+            "desired": [
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              44,
+              49,
+              42,
+              48,
+              43,
+              46
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                46,
+                48,
+                49
+              ],
+              "desired": [
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                44,
+                49,
+                42,
+                48,
+                43,
+                46
+              ],
+              "slots": [
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                46,
+                48,
+                49
+              ]
+            }
+          ],
+          "symbolIndices": 12,
+          "sectionLinks": 0,
+          "sectionInfos": 3,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
@@ -358,5 +500,238 @@
       },
       "linkerOutput": null
     }
-  }
+  },
+  "relocations": [
+    {
+      "section": ".data",
+      "source": "0x20b16b4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "dScStarSel_c_classInit",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20b04f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1700",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI12dScStarSel_c",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20b16bc"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1740",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x2043494"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b173c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x204349c"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1738",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x204357c"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1730",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e398"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b172c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e3a4"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1724",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e3c8"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1720",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e3d4"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1718",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e5d0"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1714",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e5f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b170c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e62c"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1708",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x202e638"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1748",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScStarSel_cD0Ev",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20ade54"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1734",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScStarSel_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20ae6f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1728",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScStarSel_c6RenderEv",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20ae6f4"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b171c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScStarSel_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20af038"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1710",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScStarSel_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20af86c"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1704",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScStarSel_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20af8a0"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b1744",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12dScStarSel_cD1Ev",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20addfc"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b16c0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS12dScStarSel_c",
+      "addend": 0,
+      "target_module": "overlay(3)",
+      "target_address": "0x20b16d4"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b16c4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI8dScene_c",
+      "addend": 0,
+      "target_module": "main",
+      "target_address": "0x20914d4"
+    },
+    {
+      "section": ".data",
+      "source": "0x20b16bc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "main",
+      "target_address": "0x209a764"
+    }
+  ],
+  "production_mode": "intact-object"
 }

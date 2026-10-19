@@ -5,7 +5,7 @@
  * func_020070e8. Always returns 1.
  */
 
-typedef struct { int x, y, z; } Vector3;
+#include "types.h"
 
 /* The fields used here, named as in include/dActor_c.h and include/dCamera_c.h. */
 typedef struct dActor_c {

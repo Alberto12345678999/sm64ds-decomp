@@ -28,10 +28,10 @@
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 struct daSanbo_c : dActor_c {
-    /* Dispatch ignores results; void is a reconstructed interface. Some state
-       handlers return int in the ROM; the records are raw words, so the PMF
-       spelling is a convenience, not a constraint. */
-    typedef void (daSanbo_c::*StateFunc)();
+    /* The twelve state handlers leave 1 in the return register. Dispatch
+       ignores the result; int is a consistent reconstructed interface,
+       not a recovered original return-type declaration. */
+    typedef int (daSanbo_c::*StateFunc)();
 
     u8  pad_0d0[0x4];
     Model mModel;                            /* 0x0d4 */
@@ -116,7 +116,7 @@ struct daSanbo_c : dActor_c {
     int func_ov096_02136434();
     int func_ov096_02136534();
     int func_ov096_021365d4();
-    void func_ov096_0213670c();
+    int func_ov096_0213670c();
     int func_ov096_02136754();
     int func_ov096_021368a4();
     void func_ov096_021368b4();

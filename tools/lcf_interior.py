@@ -20,11 +20,16 @@ none defines, it adds `name = 0x<addr>;` to the linker command file. Those
 modules never move, so the address in symbols.txt is the address the linked
 code is at. Overlay code entry points are left alone.
 
-BSS interior labels, including overlay labels, are handled separately: a live
-import must have one configured home strictly inside one actual source-defined
-NOBITS object, with that whole object covered by a complete BSS entry. The LCF
+BSS interior labels, including overlay labels, retain configured identities even
+without live imports when one actual source provider proves the complete NOBITS
+object. The older imported-label path remains available. The LCF
 defines the canonical label inside its enclosing output module. This preserves aliases
 without adding storage, changing object bytes, or assuming an overlay base.
+
+Initialized-data labels at an object's start or inside it are retained even without
+live imports, because dsd validates configured identities. Each alias needs one actual PROGBITS OBJECT
+definition from its complete source provider, a unique configured module home,
+and a matching .data/.rodata range covering the entire emitted object.
 
 It also adds the NitroSDK linker constants in LINKER_CONSTANTS. The SDK's own
 LCF template assigns them and its OS init code takes their *address* as the
@@ -34,6 +39,136 @@ compiled reader (func_02058308, func_02058df4) links `Undefined`.
 import pathlib
 import re
 import struct
+import data_section_routes as DSR
+
+
+def initialized_interior_rows(config_root, objects_txt, definitions):
+    """Initialized-object aliases, including another name at the object's start."""
+    return _source_storage_interior_rows(config_root, objects_txt, definitions)
+
+
+def source_bss_interior_rows(config_root, objects_txt, definitions):
+    return _source_storage_interior_rows(config_root, objects_txt, definitions, bss=True)
+
+
+def _source_storage_interior_rows(config_root, objects_txt, definitions, bss=False):
+    """Configured labels inside complete, actual source-defined storage objects.
+
+    Unlike an unresolved import, an unreferenced configured interior label still
+    needs an ELF identity for symbol validation. Only matching OBJECT storage
+    in the same section, module and source provider can justify that identity.
+    This adds no storage and does not infer an object's extent from the next label.
+    """
+    import io
+    from elftools.elf.elffile import ELFFile
+
+    root = pathlib.Path(config_root)
+    storage_type = "SHT_NOBITS" if bss else "SHT_PROGBITS"
+    homes, claims = {}, []
+    symbol_row = re.compile(r"^(\S+)\s+kind:(\S+)\s+addr:0x([0-9a-fA-F]+)")
+    section_row = re.compile(
+        r"^\s+(\.\S+)\s+start:0x([0-9a-fA-F]+)\s+end:0x([0-9a-fA-F]+)")
+
+    def supported_section(name):
+        return name == ".bss" if bss else DSR.initialized_kind(name) is not None
+    for symbols in sorted(root.rglob("symbols.txt")):
+        module = symbols.parent.relative_to(root).as_posix()
+        for line in symbols.read_text(encoding="utf-8").splitlines():
+            match = symbol_row.match(line)
+            if match:
+                name, kind, address = match.groups()
+                size = re.search(r"\bsize=(0x[0-9a-fA-F]+|[0-9]+)", kind)
+                valid_kind = (re.fullmatch(r"bss(?:\(size=(?:0x[0-9a-fA-F]+|[0-9]+)\))?", kind)
+                              is not None) if bss else kind.startswith("data(")
+                homes.setdefault(name, []).append((
+                    module, int(address, 16), valid_kind,
+                    int(size[1], 0) if size else (None if bss else 0)))
+        delinks = symbols.with_name("delinks.txt")
+        if not delinks.is_file():
+            continue
+        source, complete, ranges = None, False, []
+
+        def flush():
+            if source and source.startswith("src/") and complete:
+                claims.extend((module, source, *row) for row in ranges)
+
+        for line in delinks.read_text(encoding="utf-8").splitlines():
+            if line and not line[0].isspace() and line.rstrip().endswith(":"):
+                flush()
+                source, complete, ranges = line.strip()[:-1], False, []
+            elif line.strip() == "complete":
+                complete = True
+            else:
+                match = section_row.match(line)
+                if match and supported_section(match[1]):
+                    ranges.append((match[1], int(match[2], 16), int(match[3], 16)))
+        flush()
+
+    objects, definition_counts = {}, {}
+    for line in pathlib.Path(objects_txt).read_text(encoding="utf-8").splitlines():
+        path = pathlib.Path(line.strip().strip('"'))
+        if not line.strip():
+            continue
+        raw = path.read_bytes()
+        if raw[:4] != b"\x7fELF":
+            continue
+        elf = ELFFile(io.BytesIO(raw))
+        if (elf.elfclass != 32 or not elf.little_endian
+                or elf["e_type"] != "ET_REL" or elf["e_machine"] != "EM_ARM"):
+            continue
+        tables = [section for section in elf.iter_sections()
+                  if section["sh_type"] == "SHT_SYMTAB"]
+        for symbol in (symbol for table in tables for symbol in table.iter_symbols()):
+            index = symbol["st_shndx"]
+            if (symbol.name and index != "SHN_UNDEF"
+                    and symbol["st_info"]["bind"] != "STB_LOCAL"):
+                definition_counts[symbol.name] = definition_counts.get(symbol.name, 0) + 1
+            if (not symbol.name or not isinstance(index, int) or index <= 0
+                    or index >= elf.num_sections()
+                    or symbol["st_info"]["bind"] == "STB_LOCAL"
+                    or symbol["st_info"]["type"] != "STT_OBJECT"):
+                continue
+            section = elf.get_section(index)
+            size, value = symbol["st_size"], symbol["st_value"]
+            if (section["sh_type"] != storage_type
+                    or not supported_section(section.name)
+                    or not size or value + size > section["sh_size"]):
+                continue
+            objects.setdefault(symbol.name, []).append((path, section.name, size))
+
+    owners = []
+    for name, rows in objects.items():
+        locations = homes.get(name, [])
+        if (name not in definitions or len(rows) != 1 or len(locations) != 1
+                or definition_counts.get(name) != 1):
+            continue
+        path, section, size = rows[0]
+        module, address, is_data, declared_size = locations[0]
+        if not is_data or (((bss and declared_size is not None) or declared_size)
+                           and declared_size != size):
+            continue
+        matching = [(source, start, end) for mod, source, sec, start, end in claims
+                    if mod == module and sec == section
+                    and start <= address and address + size <= end
+                    and path.resolve().as_posix().endswith("/" + str(
+                        pathlib.PurePosixPath(source).with_suffix(".o")))]
+        if len(matching) == 1:
+            owners.append((name, module, address, size))
+    out = []
+    for name, locations in sorted(homes.items()):
+        if name in definitions or len(locations) != 1:
+            continue
+        module, address, is_data, declared_size = locations[0]
+        if not is_data:
+            continue
+        enclosing = [(owner, base) for owner, mod, base, size in owners
+                     if mod == module and base <= address < base + size
+                     and (not bss or base < address)
+                     and address + (declared_size or 0) <= base + size]
+        if len(enclosing) == 1:
+            owner, base = enclosing[0]
+            out.append((name, address, owner, address - base, module))
+    return out
 
 FIXED = ("arm9", "itcm", "dtcm")
 
@@ -237,14 +372,27 @@ def _elf_names(data):
     return defined, imported
 
 
-def patch(lcf_path, objects_txt, config_root):
+def patch(lcf_path, objects_txt, config_root, *, initialized_prefixes=()):
     """Add the missing interior definitions and linker constants to `lcf_path`;
     return [(name, addr)].
 
-    Only a name some object imports and none defines is added, so a link that
-    already resolves is handed exactly the command file it had."""
+    Code labels require an import. Source-proven storage interior labels also
+    preserve configured identities checked by dsd, even without an import."""
     defined, imported, bss = _link_inventory(objects_txt)
     aliases = bss_interior_rows(config_root, defined, imported, bss)
+    aliases += initialized_interior_rows(config_root, objects_txt, defined)
+    aliases += source_bss_interior_rows(config_root, objects_txt, defined)
+    # Only the shared initialized-boundary link planner supplies these records,
+    # after re-verifying the actual prepared objects and complete source claims.
+    # They are zero-storage LCF identities, not additional compiler OBJECTs.
+    for row in initialized_prefixes:
+        if row["identitySize"] != 0 or row["alias"] in defined:
+            raise ValueError("initialized prefix identity is already defined or has storage")
+        aliases.append((row["alias"], row["address"], row["publicSymbol"],
+                        -row["licensedStoragePrefixBytes"], row["module"]))
+    aliases = sorted(set(aliases))
+    if len({row[0] for row in aliases}) != len(aliases):
+        raise ValueError("conflicting storage alias identities")
     rows = interior_rows(config_root) + list(LINKER_CONSTANTS.items())
     missing = sorted({(n, a) for n, a in rows
                       if n in imported and n not in defined}, key=lambda r: r[1])
@@ -264,7 +412,7 @@ def patch(lcf_path, objects_txt, config_root):
                              r"[ \t]*:[ \t]*\{)", re.MULTILINE)
         matches = list(pattern.finditer(text))
         if len(matches) != 1:
-            raise ValueError(f"BSS alias {name} requires exactly one .{section} "
+            raise ValueError(f"storage alias {name} requires exactly one .{section} "
                              "output section")
         at = matches[0].end()
         # mwldarm evaluates `object + offset` here before relocating the

@@ -113,23 +113,23 @@ enum {
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
-extern int sCoinBagRowTopY[];
-extern int sCoinBagRowHeight[];
-extern int sCoinBagHopVX[];
+extern const int sCoinBagRowTopY[];
+extern const int sCoinBagRowHeight[];
+extern const int sCoinBagHopVX[];
 extern int sCoinCaptionSprites[];
-extern unsigned char sCoinCaptionLoopTimes[];
-extern unsigned char sCoinCaptionLoopSprites[];
-extern unsigned char sCoinCaptionBlinkTimes[];
-extern unsigned char sCoinCaptionBlinkSprites[];
-extern u16 sCoinCaptionCountInTimes[];
-extern u8 sCoinCaptionCountInSprites[];
+extern const unsigned char sCoinCaptionLoopTimes[];
+extern const unsigned char sCoinCaptionLoopSprites[];
+extern const unsigned char sCoinCaptionBlinkTimes[];
+extern const unsigned char sCoinCaptionBlinkSprites[];
+extern const u16 sCoinCaptionCountInTimes[];
+extern const u8 sCoinCaptionCountInSprites[];
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
-extern int data_ov006_0212e430[];
-extern u16 sCoinSparkleAngles[];
+extern const int sCoinSparkleSpawnOffsets[];
+extern const u16 sCoinSparkleAngles[];
 extern s16 data_02082214[];
 extern int sCoinPopupSprites;
-extern int sCoinPopupY[];
+extern const int sCoinPopupY[];
 extern int *sCoinScorePlayerSprites[];
 extern int GetGameLanguage(void);
 extern void Mg_DrawCreditsIcon(int r0, int r1, int r2, int r3);
@@ -140,19 +140,19 @@ extern void *sCoinSparkleSprites[];
 extern void *sCoinBagSprites[];
 extern void Mg_RenderSpriteBothPalMtx(void *obj, int x, int y, int w, int *vec);
 extern void func_020127a4(int a, int b, int c, int d);
-extern int sCoinRowY[];
+extern const int sCoinRowY[];
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern void RenderOamMainScreen(int a, int b, int c, int d, int e);
-extern u16 sCoinBlockFrameSprites[];
+extern const u16 sCoinBlockFrameSprites[];
 extern void *sCoinBlocksSprites[];
-extern int sCoinBlockFallRowY[];
-extern int sCoinBlockDropRowY[];
-extern int sCoinBlockWanderRowY[];
-extern int sCoinBlockWanderRowHeight[];
-extern int sCoinBlockHopRowY[];
-extern int sCoinBlockHopRowHeight[];
-extern int sCoinBlockHopVX[];
-extern u16 sCoinBlockFrameTimes[];
+extern const int sCoinBlockFallRowY[];
+extern const int sCoinBlockDropRowY[];
+extern const int sCoinBlockWanderRowY[];
+extern const int sCoinBlockWanderRowHeight[];
+extern const int sCoinBlockHopRowY[];
+extern const int sCoinBlockHopRowHeight[];
+extern const int sCoinBlockHopVX[];
+extern const u16 sCoinBlockFrameTimes[];
 extern void FreeGfxSlotsById(int n);
 extern void Mg_PlayJingle(void *c);
 extern int Mg_GetTopRecord(void);
@@ -658,8 +658,8 @@ void dScMgCoin_c::Sparkle_Burst(int coinIndex) {
         if (*(u8 *)(raw + 0x4d28) == 0) {
             *(u8 *)(raw + 0x4d28) = 1;
             *(u8 *)(raw + 0x4d29) = 1;
-            *(int *)(raw + 0x4d14) = *coinX + (data_ov006_0212e430[j] << 12);
-            *(int *)(raw + 0x4d18) = *coinY + (data_ov006_0212e430[k] << 12);
+            *(int *)(raw + 0x4d14) = *coinX + (sCoinSparkleSpawnOffsets[j] << 12);
+            *(int *)(raw + 0x4d18) = *coinY + (sCoinSparkleSpawnOffsets[k] << 12);
             {
                 u16 ang = sCoinSparkleAngles[i];
                 int sine = (ang >> 4) * 2;
@@ -1683,4 +1683,35 @@ inline dScMgCoin_c::dScMgCoin_c() {
 // @symbol dScMgCoin_c_classInit
 extern "C" void *dScMgCoin_c_classInit() {
     return new dScMgCoin_c;
+}
+
+/* Scalar animation and movement tables. Blink has two frames; the other
+ * caption sequences have four and eight. The two blink arrays each acquire
+ * two bytes of linker alignment before the next table, not extra entries.
+ * Row positions and heights are pixels; hop velocities are Q12.
+ * The final flat table holds four XY pixel offsets for Sparkle_Burst.
+ * Names describe the existing consumers, not recovered original identifiers. */
+extern "C" {
+extern const unsigned char sCoinCaptionBlinkTimes[2] = {7, 9};
+extern const unsigned char sCoinCaptionBlinkSprites[2] = {2, 1};
+extern const u8 sCoinCaptionCountInSprites[4] = {3, 4, 5, 6};
+extern const u16 sCoinBlockFrameSprites[4] = {0, 1, 2, 1};
+extern const unsigned char sCoinCaptionLoopSprites[8] = {7, 8, 9, 8, 9, 8, 9, 8};
+extern const unsigned char sCoinCaptionLoopTimes[8] = {10, 60, 7, 45, 6, 7, 6, 3};
+extern const u16 sCoinBlockFrameTimes[4] = {10, 8, 6, 8};
+extern const u16 sCoinSparkleAngles[4] = {0xb000, 0xd000, 0x9000, 0xf000};
+extern const u16 sCoinCaptionCountInTimes[4] = {30, 3, 10, 60};
+extern const int sCoinBagHopVX[2] = {0xc00, -0xc00};
+extern const int sCoinBlockHopVX[3] = {0, 0xc00, -0xc00};
+extern const int sCoinRowY[3] = {48, 112, 176};
+extern const int sCoinPopupY[3] = {-168, -108, -48};
+extern const int sCoinBagRowTopY[6] = {-168, -108, -48, 48, 112, 176};
+extern const int sCoinBagRowHeight[6] = {18, 18, 18, 26, 26, 26};
+extern const int sCoinBlockHopRowY[6] = {-168, -108, -48, 48, 112, 176};
+extern const int sCoinBlockHopRowHeight[6] = {16, 16, 16, 24, 24, 24};
+extern const int sCoinBlockWanderRowY[6] = {-168, -108, -48, 48, 112, 176};
+extern const int sCoinBlockWanderRowHeight[6] = {16, 16, 16, 24, 24, 24};
+extern const int sCoinBlockDropRowY[6] = {-168, -108, -48, 48, 112, 176};
+extern const int sCoinBlockFallRowY[6] = {-168, -108, -48, 48, 112, 176};
+extern const int sCoinSparkleSpawnOffsets[8] = {-4, -4, 4, -4, -4, 4, 4, 4};
 }

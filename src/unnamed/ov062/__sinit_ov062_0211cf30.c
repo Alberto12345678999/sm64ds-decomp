@@ -1,3 +1,4 @@
+#include "types.h"
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov062_0211cf30_AssetId {
     ASSET_HORUHEI_BMD = 0x0327,
@@ -28,10 +29,9 @@ extern void* data_ov062_0211de40;
 extern void* gHoruheiWalkAnimationFile;
 extern void* data_ov062_0211de4c;
 
-typedef struct { int x, y, z; } V3;
-extern V3 data_ov062_0211df10;
+extern Vector3 data_ov062_0211df10;
 extern void* data_ov062_0211de58;
-extern V3 data_ov062_0211df1c;
+extern Vector3 data_ov062_0211df1c;
 extern void* data_ov062_0211de64;
 
 typedef struct { int a, b; } S8;

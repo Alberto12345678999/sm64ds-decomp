@@ -15,12 +15,8 @@
  * port/hal/shims.cpp already arrange.
  *
  * leftovers:
- * - dFdWipe_c::AdvanceFade reads currInterp/speed through (char*)&
- *   launders; the alias pins are the matched form.
- * - GX::LoadBGPltt, GXS::LoadBGPltt, CP15::FlushAndInvalidateDataCache,
- *   G2x::SetBlendBrightness and ModelComponents::Render stay extern-C
- *   calls under literal/untyped spellings -- no shared typed decl for
- *   the register/void* argument shapes this file needs.
+ * - G2x::SetBlendBrightness keeps its measured wide-argument bridge; see
+ *   the declaration below. The original parameter width remains unresolved.
  * - The 0x400xxxx MMIO addresses stay literal; no shared register-name
  *   header owns them.
  */
@@ -31,19 +27,31 @@
 #include "decl_common.h"
 #include "ModelBase.h"
 
-extern "C" {
-Fix12i _ZN4cstd4fdivEii(Fix12i a, Fix12i b);
-void _Z14ApproachLinearRiii(Fix12i *value, Fix12i target, Fix12i step);
-void func_02053a90(u16 *reg, int value);
-void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 addr, u32 len);
-void _ZN2GX10LoadBGPlttEPKvjj(const void *src, u32 offset, u32 len);
-void _ZN3GXS10LoadBGPlttEPKvjj(const void *src, u32 offset, u32 len);
-void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, u16 a, int b);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToScale(void *m, Fix12i x, Fix12i y, Fix12i z);
-void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
+// These helpers have native definitions but no shared declaration yet.
+namespace cstd {
+Fix12i fdiv(Fix12i a, Fix12i b);
 }
-struct Matrix4x3;
+namespace CP15 {
+void FlushAndInvalidateDataCache(u32 addr, u32 len);
+}
+namespace GX {
+void LoadBGPltt(const void *src, u32 offset, u32 len);
+}
+namespace GXS {
+void LoadBGPltt(const void *src, u32 offset, u32 len);
+}
+int ApproachLinear(Fix12i &value, Fix12i target, Fix12i step);
+
+extern "C" {
+void func_02053a90(u16 *reg, int value);
+// local extern: G2x.h's short parameter adds sign-extension before these calls
+// under 2004/b56 (+8 bytes in each AdvanceFade). The reconstructed signature
+// still needs a callee/caller audit; keep this boundary explicit meanwhile.
+void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, u16 a, int b);
+void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
+void Matrix4x3_ApplyInPlaceToScale(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
+void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, short ang);
+}
 extern Matrix4x3 data_020a0e68;
 
 #ifndef _MSC_VER
@@ -82,9 +90,9 @@ void dFdBrightness_c::AdvanceFade()
     if (level > -0x10)
         return;
 
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)data_0209d3ac, 2);
-    _ZN2GX10LoadBGPlttEPKvjj(data_0209d3ac, 0, 2);
-    _ZN3GXS10LoadBGPlttEPKvjj(data_0209d3ac, 0, 2);
+    CP15::FlushAndInvalidateDataCache((u32)data_0209d3ac, 2);
+    GX::LoadBGPltt(data_0209d3ac, 0, 2);
+    GXS::LoadBGPltt(data_0209d3ac, 0, 2);
 }
 #endif
 
@@ -95,7 +103,7 @@ int dFdBrightness_c::SetBackwardTime(u32 frames)
     if (frames == 0) {
         speed = -(Fix12i)0x1000;
     } else {
-        speed = _ZN4cstd4fdivEii(-(Fix12i)0x1000, (Fix12i)(frames << 12));
+        speed = cstd::fdiv(-(Fix12i)0x1000, (Fix12i)(frames << 12));
     }
     return IsAtStart();
 }
@@ -107,7 +115,7 @@ int dFdBrightness_c::SetForwardTime(u32 frames)
     if (frames == 0) {
         speed = (Fix12i)0x1000;
     } else {
-        speed = _ZN4cstd4fdivEii(0x1000, (Fix12i)(frames << 12));
+        speed = cstd::fdiv(0x1000, (Fix12i)(frames << 12));
     }
     return IsAtEnd();
 }
@@ -150,7 +158,7 @@ void dFdBrightness_c::SetToStart()
 }
 
 /* Step currInterp one frame toward its target. A positive speed fades toward
-   1.0, a negative one toward 0.0; the helper takes an unsigned step. */
+   1.0, a negative one toward 0.0; the helper takes a nonnegative step. */
 // @symbol _ZN8dFader_c13AdvanceInterpEv
 void dFader_c::AdvanceInterp()
 {
@@ -158,7 +166,7 @@ void dFader_c::AdvanceInterp()
     Fix12i target = step >= 0 ? 0x1000 : 0;
     if (step < 0)
         step = -step;
-    _Z14ApproachLinearRiii(&currInterp, target, step);
+    ApproachLinear(currInterp, target, step);
 }
 
 #ifndef _MSC_VER
@@ -211,30 +219,31 @@ dFdWipe_c::~dFdWipe_c()
 // @symbol _ZN9dFdWipe_c11AdvanceFadeEv
 void dFdWipe_c::AdvanceFade()
 {
-    Fix12i old = *(Fix12i*)((char*)&currInterp);
+    Fix12i old = currInterp;
     Fix12i cur;
     AdvanceInterp();
-    cur = *(Fix12i*)((char*)&currInterp);
+    cur = currInterp;
     if (cur == 0 && cur == old) return;
     if (cur == 0x1000) {
         _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16*)0x4000050, 0x3f, -0x10);
     } else {
-        if (*(Fix12i*)((char*)&speed) != 0) {
+        if (speed != 0) {
             if (old != 0x1000) *(u16*)0x4000050 = 0;
         }
-        if (*(Fix12i*)((char*)&currInterp) != 0) {
-            Fix12i scale = FX_MUL(0x1000 - *(Fix12i *)((char *)&currInterp), 0x20000);
+        if (currInterp != 0) {
+            Fix12i scale = FX_MUL(0x1000 - currInterp, 0x20000);
             Matrix4x3_FromTranslation(&data_020a0e68, 0, 0, -0x1000);
             Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, scale, scale, scale);
             Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, 0x4000);
             model.data.Render(&data_020a0e68, 0);
         }
     }
-    if (*(Fix12i*)((char*)&currInterp) == old) return;
+    if (currInterp == old)
+        return;
     {
         u16 color = this->color;
         int m = color ? 0x10 : -0x10;
-        int prod = *(Fix12i*)((char*)&currInterp) * m;
+        int prod = currInterp * m;
         int r = prod >> 12;
         if (r != 0) {
             _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16*)0x4001050, 0x3f, r);

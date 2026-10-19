@@ -89,15 +89,15 @@ _ZN9daPgBby_c13InitResourcesEv kind:function(arm,size=0x11c) addr:0x02121e84
 _ZN9daPgBby_c13OnTurnIntoEggER6Player kind:function(arm,size=0xc) addr:0x02121fa0
 daPgBby_c_classInit kind:function(arm,size=0x50) addr:0x02121fac
 data_ov072_02121ffc kind:data(any) addr:0x02121ffc
-data_ov072_02122004 kind:data(any) addr:0x02122004
+gPenguinBabyAnimationFiles kind:data(any) addr:0x02122004
 __sinit_ov072_02122018 kind:function(arm,size=0x1e0) addr:0x02122018
 __sinit_ov072_021221f8 kind:function(arm,size=0x158) addr:0x021221f8
 __sinit_d_a_bg_snwmn.cpp kind:function(arm,size=0xc4) addr:0x02122350
-__sinit_ov072_02122414 kind:function(arm,size=0x2f4) addr:0x02122414
+__sinit_d_a_pg_bby.cpp kind:function(arm,size=0x2f4) addr:0x02122414
 .p__sinit_ov072_02122018 kind:data(word) addr:0x02122708
 .p__sinit_ov072_021221f8 kind:data(word) addr:0x0212270c
 .p__sinit_d_a_bg_snwmn.cpp kind:data(word) addr:0x02122710
-.p__sinit_ov072_02122414 kind:data(word) addr:0x02122714
+.p__sinit_d_a_pg_bby.cpp kind:data(word) addr:0x02122714
 data_ov072_02122720 kind:data(any) addr:0x02122720
 data_ov072_02122728 kind:data(any) addr:0x02122728
 data_ov072_02122730 kind:data(any) addr:0x02122730
@@ -146,6 +146,7 @@ _ZTS9daPgBby_c kind:data(any) addr:0x02122a54
 _ZTI9daPgBby_c kind:data(any) addr:0x02122a60
 g_profile_PENGUIN_BABY kind:data(any) addr:0x02122a6c ambiguous
 _ZTV9daPgBby_c kind:data(any) addr:0x02122a90
+data_ov072_02122b0c kind:data(any) addr:0x02122b0c
 data_ov072_02122b20 kind:bss addr:0x02122b20
 data_ov072_02122b28 kind:bss addr:0x02122b28
 data_ov072_02122b34 kind:bss addr:0x02122b34
@@ -169,12 +170,12 @@ gdaBgSnwmnBigSnowmanSmileTextureSequenceFile kind:bss addr:0x02122c50
 data_ov072_02122c70 kind:bss addr:0x02122c70
 @397 kind:bss addr:0x02122c7c
 @396 kind:bss addr:0x02122c88
-data_ov072_02122c94 kind:bss addr:0x02122c94
-data_ov072_02122c9c kind:bss addr:0x02122c9c
-data_ov072_02122ca4 kind:bss addr:0x02122ca4
-data_ov072_02122cac kind:bss addr:0x02122cac
-data_ov072_02122cb4 kind:bss addr:0x02122cb4
-data_ov072_02122cbc kind:bss addr:0x02122cbc
+gPenguinBabyDiveAnimationFile kind:bss addr:0x02122c94
+gPenguinBabyWaitAnimationFile kind:bss addr:0x02122c9c
+gPenguinBabyStandUpAnimationFile kind:bss addr:0x02122ca4
+gPenguinBabySlideAnimationFile kind:bss addr:0x02122cac
+gPenguinBabyModelFile kind:bss addr:0x02122cb4
+gPenguinBabyWalkAnimationFile kind:bss addr:0x02122cbc
 data_ov072_02122cc4 kind:bss addr:0x02122cc4
 data_ov072_02122cd0 kind:bss addr:0x02122cd0
 data_ov072_02122cdc kind:bss addr:0x02122cdc
@@ -186,9 +187,9 @@ data_ov072_02122d0c kind:bss addr:0x02122d0c
 data_ov072_02122d18 kind:bss addr:0x02122d18
 data_ov072_02122d24 kind:bss addr:0x02122d24
 data_ov072_02122d30 kind:bss addr:0x02122d30
-data_ov072_02122d3c kind:bss addr:0x02122d3c
+gPenguinBabyCarryOffsets kind:bss addr:0x02122d3c
 data_ov072_02122d48 kind:bss addr:0x02122d48
 data_ov072_02122d54 kind:bss addr:0x02122d54
 data_ov072_02122d60 kind:bss addr:0x02122d60
-data_ov072_02122d6c kind:bss addr:0x02122d6c
-data_ov072_02122dc4 kind:bss addr:0x02122dc4 ambiguous
+gPenguinBabyStates kind:bss(size=0x60) addr:0x02122d6c
+data_ov072_02122dc4 kind:bss(size=0x0) addr:0x02122dc4 ambiguous

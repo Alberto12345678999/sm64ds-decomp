@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned int u32;
-typedef struct Vector3 { int x, y, z; } Vector3;
-typedef struct Vector3_16 { short x, y, z; } Vector3_16;
+#include "common.h"
 
 extern int _ZN8SaveData19IsCharacterUnlockedEj(u32);
 extern void* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32, u32, const Vector3*, const Vector3_16*, int, int);

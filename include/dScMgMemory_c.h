@@ -138,7 +138,7 @@ struct dScMgMemory_c : dScMgSingle3DBase_c {
     void ResultFinish();
 
     void RoundReveal();
-    void *RoundWaitDeal();
+    void RoundWaitDeal();
     void RoundDealHard();
     void RoundDealNormal();
     void RoundDealEasy();

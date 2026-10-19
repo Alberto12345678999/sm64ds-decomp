@@ -1,4 +1,4 @@
-typedef struct Vector3 Vector3;
+#include "types.h"
 
 extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);

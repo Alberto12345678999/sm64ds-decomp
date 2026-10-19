@@ -1,3 +1,4 @@
+#include "types.h"
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov006_0212f6b4_AssetId {
     ASSET_MARIO_MODEL_MG_BMD = 0x0216
@@ -66,13 +67,12 @@ extern int sTrmp2RiseSpeedMax;
 extern int data_ov006_0212e01c;
 extern int sTrmp2DriftScale;
 
-typedef struct { unsigned int x, y, z; } V3;
-extern V3 sTrmpGoalSlots;
-extern V3 data_ov006_02140784;
-extern V3 data_ov006_02140790;
-extern V3 data_ov006_0214079c;
-extern V3 data_ov006_021407a8;
-extern V3 data_ov006_021407b4;
+extern Vector3 sTrmpGoalSlots;
+extern Vector3 data_ov006_02140784;
+extern Vector3 data_ov006_02140790;
+extern Vector3 data_ov006_0214079c;
+extern Vector3 data_ov006_021407a8;
+extern Vector3 data_ov006_021407b4;
 extern int data_ov006_02140640[];
 extern int data_ov006_0214064c[];
 extern int data_ov006_02140658[];
@@ -80,12 +80,12 @@ extern int data_ov006_02140664[];
 extern int data_ov006_02140670[];
 extern int data_ov006_0214067c[];
 
-extern V3 data_ov006_021407c0;
-extern V3 data_ov006_021407cc;
-extern V3 data_ov006_021407d8;
-extern V3 data_ov006_021407e4;
-extern V3 data_ov006_021407f0;
-extern V3 data_ov006_021407fc;
+extern Vector3 data_ov006_021407c0;
+extern Vector3 data_ov006_021407cc;
+extern Vector3 data_ov006_021407d8;
+extern Vector3 data_ov006_021407e4;
+extern Vector3 data_ov006_021407f0;
+extern Vector3 data_ov006_021407fc;
 extern int data_ov006_02140688[];
 extern int data_ov006_02140694[];
 extern int data_ov006_021406a0[];
@@ -145,11 +145,13 @@ void __sinit_ov006_0212f6b4(void)
     sTrmp3DBounceScale = data_ov006_0212e008;
     sTrmp3DHardBounceScale = data_ov006_0212e004;
 
-    sTrmpGoalSlots.x = (unsigned int)-0x50000;
+    sTrmpGoalSlots.x = -0x50000;
     sTrmpGoalSlots.y = 0x100000;
     sTrmpGoalSlots.z = 0;
     func_020731dc(&sTrmpGoalSlots, (void *)&_ZN7Vector3D1Ev, data_ov006_02140640);
 
+    /* The remaining slots are written through an unsigned int*: plain
+       .x/.y/.z stores (as above) compile to different code and lose the match. */
     {
         unsigned int *p = (unsigned int*)&data_ov006_02140784;
         p[0] = (unsigned int)-0x30000;
@@ -197,7 +199,7 @@ void __sinit_ov006_0212f6b4(void)
     sTrmp2RiseSpeedMax = data_ov006_0212dff8;
     sTrmp2DriftScale = data_ov006_0212e01c;
 
-    data_ov006_021407c0.x = (unsigned int)-0x50000;
+    data_ov006_021407c0.x = -0x50000;
     data_ov006_021407c0.y = 0x100000;
     data_ov006_021407c0.z = 0;
     func_020731dc(&data_ov006_021407c0, (void*)&_ZN7Vector3D1Ev, data_ov006_02140688);

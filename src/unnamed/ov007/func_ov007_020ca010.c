@@ -1,13 +1,9 @@
-typedef struct Vec3 {
-    int x;
-    int y;
-    int z;
-} Vec3;
+#include "types.h"
 
 struct Obj;
 
 struct Node {
-    Vec3 *pos;
+    Vector3 *pos;
     int pad[7];
     int flags;
 };
@@ -27,11 +23,11 @@ struct Mgr {
     int unk00;
     struct Param *param;
     int unk08;
-    Vec3 v0c;
-    Vec3 *buf18;
+    Vector3 v0c;
+    Vector3 *buf18;
     struct Thing *t1c;
-    Vec3 arrA[2];
-    Vec3 arrB[2];
+    Vector3 arrA[2];
+    Vector3 arrB[2];
     void *p50[2];
     void *p58[2];
     void *p60[2];
@@ -56,12 +52,12 @@ struct Mgr *func_ov007_020ca010(struct Param *param)
     obj->unk00 = 0;
     obj->param = param;
     n = param->count;
-    obj->v0c = (Vec3){0, 0, 0};
-    obj->buf18 = (Vec3 *)func_ov007_020c3df4(0, (void *)(n * 12));
+    obj->v0c = (Vector3){0, 0, 0};
+    obj->buf18 = (Vector3 *)func_ov007_020c3df4(0, (void *)(n * 12));
     obj->t1c = func_ov007_020c798c((void *)2, param->count, param->p04, 1);
     thing = obj->t1c;
     for (i = 0; i < param->count; i++) {
-        Vec3 v = {0, 0, 0};
+        Vector3 v = {0, 0, 0};
         v.z = i << 12;
         obj->buf18[i] = v;
         thing->nodes[i]->pos = &obj->buf18[i];
@@ -70,12 +66,12 @@ struct Mgr *func_ov007_020ca010(struct Param *param)
     thing->nodes[0]->flags |= 1;
     for (j = 0; j < 2; j++) {
         {
-            Vec3 a = {0, 0, 0};
+            Vector3 a = {0, 0, 0};
             a.x = j << 12;
             obj->arrA[j] = a;
         }
         {
-            Vec3 b = {0, 0, 0};
+            Vector3 b = {0, 0, 0};
             b.y = j << 12;
             obj->arrB[j] = b;
         }

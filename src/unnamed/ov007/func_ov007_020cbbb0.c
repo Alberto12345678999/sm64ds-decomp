@@ -1,10 +1,16 @@
+#include "types.h"
 #include "nitro/fx/fx.h"
-typedef struct { int x, y, z; } Elem;
-typedef struct { char pad[8]; Elem ****rows; } Grid;
+typedef struct {
+    char pad[8];
+    Vector3 ****rows;
+} Grid;
 
 typedef struct { int v[6]; } Copy6;
 typedef struct {
-    Elem *buf0; Grid *grid; int *buf8; Copy6 copy;
+    Vector3 *buf0;
+    Grid *grid;
+    int *buf8;
+    Copy6 copy;
     short s24; short s26;
     int *buf28; int *buf2c; int *buf30; int *buf34;
 } Ctx;
@@ -33,7 +39,7 @@ void *func_ov007_020cbbb0(int a0, int a1, int a2, int *a3)
     c = (d1 * a0m1) / 2;
     a1m1 = a1 - 1;
     e = (d2 * a1m1) / 2;
-    ctx->buf0  = (Elem *)func_ov007_020c3df4(0, a0 * 12 * a1);
+    ctx->buf0 = (Vector3 *)func_ov007_020c3df4(0, a0 * 12 * a1);
     ctx->buf28 = (int *)func_ov007_020c3df4(0, a0m1 * 6 * a1m1 * 2);
     ctx->buf2c = (int *)func_ov007_020c3df4(0, a0 * 6 * a1);
     ctx->buf30 = (int *)func_ov007_020c3df4(0, a0 * 4);
@@ -45,11 +51,11 @@ void *func_ov007_020cbbb0(int a0, int a1, int a2, int *a3)
 
     for (i = 0; i < a1; i++) {
         for (j = 0; j < a0; j++) {
-            Elem *elem = &ctx->buf0[i * a0 + j];
+            Vector3 *elem = &ctx->buf0[i * a0 + j];
             elem->x = j * d1 - c + ((i % 2 == 0) ? 0 : d1 / 2);
             elem->y = d2 * (a1 - 1 - i) - e;
             elem->z = a3[5];
-            *(Elem **)((*ctx->grid->rows[i])[j]) = elem;
+            *(Vector3 **)((*ctx->grid->rows[i])[j]) = elem;
             if (j < a0m1 && i < a1m1) {
                 ctx->buf8[i * a0m1 + j] = (int)func_ov007_020c80a4();
             }

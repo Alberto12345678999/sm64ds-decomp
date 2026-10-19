@@ -36,6 +36,36 @@
       "name": ".bss",
       "start": "0x02112658",
       "end": "0x02112720"
+    },
+    {
+      "name": ".data.clps0",
+      "input_section": ".data",
+      "start": "0x2111b60",
+      "end": "0x2111b78"
+    },
+    {
+      "name": ".data.clps1",
+      "input_section": ".data",
+      "start": "0x2111ba0",
+      "end": "0x2111bb8"
+    },
+    {
+      "name": ".data.clps2",
+      "input_section": ".data",
+      "start": "0x2111c40",
+      "end": "0x2111c58"
+    },
+    {
+      "name": ".data.clps3",
+      "input_section": ".data",
+      "start": "0x2111c60",
+      "end": "0x2111c78"
+    },
+    {
+      "name": ".data.clps4",
+      "input_section": ".data",
+      "start": "0x2111c80",
+      "end": "0x2111c98"
     }
   ],
   "functions": [
@@ -107,6 +137,36 @@
       "address_point_bias": "0x8",
       "size": "0x88",
       "evidence": "compiler storage includes the two-word ABI preamble at 0x02112554; the configured public address point is eight bytes later and all 32 slot relocations match without split aliases"
+    },
+    {
+      "symbol": "sKm1Dorifu1Clps",
+      "address": "0x2111b60",
+      "size": "0x18",
+      "evidence": "Native mutable CLPS block: signature/stride/count header and two entries; both indices occur in its stock-ROM-bound km1_dorifu KCL. Complete 24-byte slice excludes the following 8-byte FF tail; original name and constness are not recovered."
+    },
+    {
+      "symbol": "sKm1Dorifu2Clps",
+      "address": "0x2111ba0",
+      "size": "0x18",
+      "evidence": "Native mutable CLPS block: signature/stride/count header and two entries; both indices occur in its stock-ROM-bound km1_dorifu KCL. Complete 24-byte slice excludes the following 8-byte FF tail; original name and constness are not recovered."
+    },
+    {
+      "symbol": "sKm1Dorifu0Clps",
+      "address": "0x2111c40",
+      "size": "0x18",
+      "evidence": "Native mutable CLPS block: signature/stride/count header and two entries; both indices occur in its stock-ROM-bound km1_dorifu KCL. Complete 24-byte slice excludes the following 8-byte FF tail; original name and constness are not recovered."
+    },
+    {
+      "symbol": "sKm1Dorifu4Clps",
+      "address": "0x2111c60",
+      "size": "0x18",
+      "evidence": "Native mutable CLPS block: signature/stride/count header and two entries; both indices occur in its stock-ROM-bound km1_dorifu KCL. Complete 24-byte slice excludes the following 8-byte FF tail; original name and constness are not recovered."
+    },
+    {
+      "symbol": "sKm1Dorifu3Clps",
+      "address": "0x2111c80",
+      "size": "0x18",
+      "evidence": "Native mutable CLPS block: signature/stride/count header and two entries; both indices occur in its stock-ROM-bound km1_dorifu KCL. Complete 24-byte slice excludes the following 8-byte FF tail; original name and constness are not recovered."
     }
   ],
   "bss": [
@@ -115,70 +175,70 @@
       "address": "0x021126a0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles model SharedFilePtr (file 0x649), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu model SharedFilePtr (file 0x649), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112680",
       "address": "0x02112680",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles model SharedFilePtr (file 0x64b), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu model SharedFilePtr (file 0x64b), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112668",
       "address": "0x02112668",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles model SharedFilePtr (file 0x64d), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu model SharedFilePtr (file 0x64d), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112688",
       "address": "0x02112688",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles model SharedFilePtr (file 0x64f), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu model SharedFilePtr (file 0x64f), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112690",
       "address": "0x02112690",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles model SharedFilePtr (file 0x651), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu model SharedFilePtr (file 0x651), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112678",
       "address": "0x02112678",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles KCL SharedFilePtr (file 0x64a), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu KCL SharedFilePtr (file 0x64a), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112658",
       "address": "0x02112658",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles KCL SharedFilePtr (file 0x64c), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu KCL SharedFilePtr (file 0x64c), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112670",
       "address": "0x02112670",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles KCL SharedFilePtr (file 0x64e), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu KCL SharedFilePtr (file 0x64e), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112698",
       "address": "0x02112698",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles KCL SharedFilePtr (file 0x650), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu KCL SharedFilePtr (file 0x650), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "data_ov043_02112660",
       "address": "0x02112660",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "Tricky Triangles KCL SharedFilePtr (file 0x652), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
+      "evidence": "KM1 Dorifu KCL SharedFilePtr (file 0x652), constructed by __sinit_d_a_obj_km1_dorifu.cpp"
     },
     {
       "symbol": "@346",
@@ -317,7 +377,7 @@
       "source": "0x02112520",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov043_02111c40",
+      "symbol": "sKm1Dorifu0Clps",
       "addend": 0,
       "target_module": "ov043",
       "target_address": "0x02111c40"
@@ -347,7 +407,7 @@
       "source": "0x0211252c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov043_02111b60",
+      "symbol": "sKm1Dorifu1Clps",
       "addend": 0,
       "target_module": "ov043",
       "target_address": "0x02111b60"
@@ -377,7 +437,7 @@
       "source": "0x02112538",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov043_02111ba0",
+      "symbol": "sKm1Dorifu2Clps",
       "addend": 0,
       "target_module": "ov043",
       "target_address": "0x02111ba0"
@@ -407,7 +467,7 @@
       "source": "0x02112544",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov043_02111c80",
+      "symbol": "sKm1Dorifu3Clps",
       "addend": 0,
       "target_module": "ov043",
       "target_address": "0x02111c80"
@@ -437,7 +497,7 @@
       "source": "0x02112550",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov043_02111c60",
+      "symbol": "sKm1Dorifu4Clps",
       "addend": 0,
       "target_module": "ov043",
       "target_address": "0x02111c60"
@@ -1462,7 +1522,9 @@
     "Manually curated against include/daObjKm1_Dorifu_c.h; an inline empty destructor makes mwccarm emit the retail D1/D0 pair in order. return new also emits base D2 helpers; exact compiler-only policy deadstrips those.",
     "daObjKm1_Dorifu_c_classInit is the adjacent fifth function: return new allocates exactly sizeof(daObjKm1_Dorifu_c), constructs the inherited Model[5] and dBgW_KcMbg[5], and installs this class's vtable; the next function is the overlay initializer.",
     "The earlier 3/4 cleanup-helper warning was stale. Fresh strict isolation gives both D0 objects the same __cxa_vec_cleanup relocations; __cxa_vec_cleanup is now the sized owner at that ROM address: the tree's own name __destroy_arr was deleted when 0x0207328c was carved out to source, because a size-0 alias row is a link definition only while a dsd gap object owns its range.",
-    "LOCAL WORKER NOTE (sinit fold __sinit_ov043_02111940): this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40; the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container/packaging fields outside every module range: all five owned ranges identical, 106/106 modules exact, moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b and the 9-error symbol inventory (0 new vs baseline) all equal the canonical records."
+    "HISTORICAL CONTAINER RECEIPT, not current proof: LOCAL WORKER NOTE (sinit fold __sinit_ov043_02111940): this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40; the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container/packaging fields outside every module range: all five owned ranges identical, 106/106 modules exact, moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b and the 9-error symbol inventory (0 new vs baseline) all equal the canonical records.",
+    "Native CLPS continuation (issue 4072): five 24-byte .data.clps0..4 claims route complete native sections through the accepted tooling dependency. Asset-derived sKm1Dorifu0Clps..4 names are inferred; all five numeric start aliases and five existing interior labels retain their configured identities. Each following eight-byte FF tail stays ROM-owned with unknown purpose. Shared parent/header and raw handle wrappers remain outside this bounded source change.",
+    "The local Km1DorifuClpsBlock has two entries; the shared CLPS_Block remains opaque and resource-table conversions are explicit. Mutable storage retains the existing API/declaration contract; historical constness is not recovered. Complete object proof preserves all 44 previous definitions and all 158 relocation sites, allowing only five explicit same-destination target-name substitutions in the resource table. Current standalone diagnostics are freshly measured separately from complete normal-TU ownership."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1475,9 +1537,9 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 21 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
-      "relocation_destinations_verified": "PASS"
+      "relocation_destinations_verified": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 11 unlicensed section/symbol(s), 0 compiler-only policy error(s)"
     },
     "compilerOnlyOutput": {
       "requested": [
@@ -1489,13 +1551,14 @@
         "_ZN13daObjDorifu_cD2Ev"
       ],
       "droppedSections": [
-        59,
-        60,
-        61,
-        62
+        64,
+        65,
+        66,
+        67
       ],
       "data": [],
-      "dataExternalized": []
+      "dataExternalized": [],
+      "canonicalDuplicates": []
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
@@ -1550,11 +1613,46 @@
           "start": "0x02112658",
           "end": "0x02112720",
           "comparison": "NOBITS -- symbol/module gates"
+        },
+        {
+          "section": ".data.clps0",
+          "start": "0x02111b60",
+          "end": "0x02111b78",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.clps1",
+          "start": "0x02111ba0",
+          "end": "0x02111bb8",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.clps2",
+          "start": "0x02111c40",
+          "end": "0x02111c58",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.clps3",
+          "start": "0x02111c60",
+          "end": "0x02111c78",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data.clps4",
+          "start": "0x02111c80",
+          "end": "0x02111c98",
+          "differingBytes": 0,
+          "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 32
+          "LICENSED": 37
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -1567,34 +1665,34 @@
             "original": [
               29,
               42,
-              43,
-              45,
-              47
+              48,
+              50,
+              52
             ],
             "desired": [
               29,
               42,
-              43,
-              45,
-              47
+              48,
+              50,
+              52
             ]
           },
           {
             "section": ".init",
             "original": [
-              65
+              70
             ],
             "desired": [
-              65
+              70
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              63
+              68
             ],
             "desired": [
-              63
+              68
             ]
           },
           {
@@ -1603,11 +1701,11 @@
               5,
               6,
               7,
-              8,
-              9,
               10,
               11,
               12,
+              13,
+              14,
               15,
               16,
               20,
@@ -1615,33 +1713,78 @@
               24,
               25,
               28,
-              31,
-              34,
+              33,
+              36,
               37,
               38,
               39
             ],
             "desired": [
-              9,
-              8,
-              12,
-              7,
+              14,
               11,
-              6,
-              5,
               15,
               16,
+              7,
+              13,
+              12,
+              5,
+              6,
               10,
+              38,
+              39,
+              20,
               21,
               24,
               25,
               28,
-              31,
-              34,
               37,
-              38,
-              39,
-              20
+              36,
+              33
+            ]
+          },
+          {
+            "section": ".data.clps0",
+            "original": [
+              46
+            ],
+            "desired": [
+              46
+            ]
+          },
+          {
+            "section": ".data.clps1",
+            "original": [
+              47
+            ],
+            "desired": [
+              47
+            ]
+          },
+          {
+            "section": ".data.clps2",
+            "original": [
+              45
+            ],
+            "desired": [
+              45
+            ]
+          },
+          {
+            "section": ".data.clps3",
+            "original": [
+              44
+            ],
+            "desired": [
+              44
+            ]
+          },
+          {
+            "section": ".data.clps4",
+            "original": [
+              43
+            ],
+            "desired": [
+              43
             ]
           }
         ],
@@ -1653,11 +1796,11 @@
                 5,
                 6,
                 7,
-                8,
-                9,
                 10,
                 11,
                 12,
+                13,
+                14,
                 15,
                 16,
                 20,
@@ -1665,43 +1808,43 @@
                 24,
                 25,
                 28,
-                31,
-                34,
+                33,
+                36,
                 37,
                 38,
                 39
               ],
               "desired": [
-                9,
-                8,
-                12,
-                7,
+                14,
                 11,
-                6,
-                5,
                 15,
                 16,
+                7,
+                13,
+                12,
+                5,
+                6,
                 10,
+                38,
+                39,
+                20,
                 21,
                 24,
                 25,
                 28,
-                31,
-                34,
                 37,
-                38,
-                39,
-                20
+                36,
+                33
               ],
               "slots": [
                 5,
                 6,
                 7,
-                8,
-                9,
                 10,
                 11,
                 12,
+                13,
+                14,
                 15,
                 16,
                 20,
@@ -1709,8 +1852,8 @@
                 24,
                 25,
                 28,
-                31,
-                34,
+                33,
+                36,
                 37,
                 38,
                 39

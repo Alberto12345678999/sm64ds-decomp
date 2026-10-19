@@ -1,4 +1,4 @@
-typedef struct { int x; int y; int z; } Vector3;
+#include "types.h"
 
 extern void Math_Function_0203b0fc(void *dest, int src, int step, int max);
 

@@ -1,6 +1,5 @@
-#include "types.h"
+#include "common.h"
 #include "nitro/fx/fx.h"
-typedef struct { int x, y, z; } Vec3;
 
 typedef struct {
     u32 start : 6;
@@ -65,7 +64,7 @@ typedef struct {
     int *p38;
 } Self;
 
-extern void MulVec3Mat4x3(Vec3 *v, int *m, Vec3 *dst);
+extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern void func_02055388(int *m);
 extern void func_0204c24c(u8 a, u8 b);
 extern s16 data_02082214[];
@@ -76,7 +75,7 @@ void func_0204bbd8(Self *self, Node *node)
     s16 q = c->p18->p0->q20;
     int scale = (node->p40.lo * (node->p40.hi + 1)) >> 5;
     int *mtx = self->p38;
-    Vec3 trans;
+    Vector3 trans;
     int mat[12];
     u32 f2;
     u32 v;
@@ -104,7 +103,7 @@ void func_0204bbd8(Self *self, Node *node)
     trans.x = node->p14 + node->p8;
     trans.y = node->p18 + node->pc;
     trans.z = node->p1c + node->p10;
-    MulVec3Mat4x3(&trans, mtx, &trans);
+    MulVec3Mat4x3(&trans, (Matrix4x3 *)mtx, &trans);
 
     {
         int idx = node->p36 >> 4;

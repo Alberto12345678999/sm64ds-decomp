@@ -15,9 +15,10 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x020f3834..0x020f5564, 47 functions; the 46 scene methods are immediately followed by the unique MG_MEMORY classInit and end exactly where dScMgMemory2_c begins",
-    "RTTI/data ownership cluster: the unique MgMemoryMatch_SpawnInfo profile, PMF source pairs, scene RTTI/type string, resources/tables and vtable occupy 0x0213cfc0..0x0213d288; the previous symbol, sLuigiBg1NcgPath, is dScMgLuigi_c's own resource path '/MG/d_2d_mg_bg_luigi1_ncg.bin' (0x0213cfa0..0x0213cfc0 including padding to alignment), and the next symbol after this cluster begins dScMgMemory2_c data. CORRECTED 2026-09-06: this field previously said the cluster starts at 0x0213cfa0 and that 'the previous byte ends dScMgLuigi_c data'. Both were wrong by 0x20 and the claim swallowed dScMgLuigi_c's string. Cartridge evidence, overlay_0006.bin at base 0x020bfec0: 0x0213cfa0 reads 2F474D2F 64325F64 5F676D5F 6C5F6762 69676975 636E5F31 69622E67 0000006E, i.e. the 29-byte NUL-terminated ASCII path; the first word of this TU's own data is at 0x0213cfc0, 020F5164, and 0x0213cfc0/0x0213cfc8/0x0213cfd0 are {0x020f5164, 0}, {0x020f41b0, 0}, {0x020f51b0, 0} -- PMF record shape. Prose only: no byte, address or symbol claim of this TU changes.",
+    "Current initialized data group is ov006:0x0213cfc0..0x0213d248. Historical boundary prose incorrectly ended0x0213d288 and included Memory2's first eight descriptors; its first PMF actually begins0x0213d248. Earlier correction of the starting address from0x0213cfa0 tocfc0 remains valid: preceding32bytes are Luigi's path string/padding, not Memory data. These facts correct prose, not evidence for unique original TU boundaries.",
     "static-initializer ownership: __sinit_ov006_021311c8 and .p__sinit_ov006_021311c8 build this TU's five PMF tables and sprite-pointer state; the next initializer at 0x021314e4 owns dScMgMemory2_c state",
-    "BSS ownership: this minigame's state occupies 0x021422a4..0x021423a8; the next BSS symbol begins dScMgMemory2_c state"
+    "BSS ownership: this minigame's state occupies 0x021422a4..0x021423a8; the next BSS symbol begins dScMgMemory2_c state",
+    "data-memory-native1018 assigns complete ov006:0x0213cfc0..0x0213d248 to this compiled TU:25PMFs, profile, class metadata and seven card tables. All consumer/lifecycle destinations and natural2byte internal alignment are proven. Modern reconstruction ownership is not unique recovery of an original source-file boundary."
   ],
   "sections": [
     {
@@ -39,6 +40,11 @@
       "name": ".bss",
       "start": "0x021422a4",
       "end": "0x021423a8"
+    },
+    {
+      "name": ".data",
+      "start": "0x0213cfc0",
+      "end": "0x0213d248"
     }
   ],
   "functions": [
@@ -372,42 +378,297 @@
       "ordinal": 46
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "symbol": "pmf_dScMgMemory_c_StatePlay",
+      "address": "0x0213cfc0",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_CardFlipUp",
+      "address": "0x0213cfc8",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_StateSetup",
+      "address": "0x0213cfd0",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "g_profile_MG_MEMORY",
+      "address": "0x0213cfd8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "BaseSpawnInfo<dScMgMemory_c>: typed scene factory and two u16 priorities0x16a; complete eight-byte profile."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_RoundReveal",
+      "address": "0x0213cfe0",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_CardSelect",
+      "address": "0x0213cfe8",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_CardIdle",
+      "address": "0x0213cff0",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_PlayerDrop",
+      "address": "0x0213cff8",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_RoundWaitDeal",
+      "address": "0x0213d000",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_CardFlipDown",
+      "address": "0x0213d008",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_CardWait",
+      "address": "0x0213d010",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_CardMove",
+      "address": "0x0213d018",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_ResultReward",
+      "address": "0x0213d020",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_ResultFinish",
+      "address": "0x0213d028",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_ResultTurnCards",
+      "address": "0x0213d030",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_ResultWait",
+      "address": "0x0213d038",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_PlayerWait",
+      "address": "0x0213d040",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_PlayerMove",
+      "address": "0x0213d048",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_RoundDealHard",
+      "address": "0x0213d050",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_RoundDealNormal",
+      "address": "0x0213d058",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_RoundDealEasy",
+      "address": "0x0213d060",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_RoundStart",
+      "address": "0x0213d068",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_CardFlyAway",
+      "address": "0x0213d070",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_StateExit",
+      "address": "0x0213d078",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_StateResult",
+      "address": "0x0213d080",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "pmf_dScMgMemory_c_StateJudge",
+      "address": "0x0213d088",
+      "size": "0x8",
+      "binding": "STB_LOCAL",
+      "evidence": "Native member-pointer constant with the actual void() or void(int) handler signature; local binding preserved."
+    },
+    {
+      "symbol": "_ZTI13dScMgMemory_c",
+      "address": "0x0213d090",
+      "size": "0xc",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "sMemoryCardPositionsPerDifficulty",
+      "address": "0x0213d09c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "sMemoryFlipFrameTimes",
+      "address": "0x0213d0a8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "_ZTS13dScMgMemory_c",
+      "address": "0x0213d0b4",
+      "size": "0x10",
+      "binding": "STB_LOPROC",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "sMemoryCardNcgByLanguage",
+      "address": "0x0213d0c4",
+      "size": "0x14",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "sMemoryCardPositionsEasy",
+      "address": "0x0213d0d8",
+      "size": "0x30",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "sMemoryCardPositionsNormal",
+      "address": "0x0213d108",
+      "size": "0x30",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "sMemoryCardPositionsHard",
+      "address": "0x0213d138",
+      "size": "0x30",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "sMemoryCardFrameSprites",
+      "address": "0x0213d168",
+      "size": "0x46",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred."
+    },
+    {
+      "symbol": "_ZTV13dScMgMemory_c",
+      "address": "0x0213d1b8",
+      "size": "0x98",
+      "binding": "STB_GLOBAL",
+      "evidence": "Complete native class metadata or consumer-backed card data. Coordinates are12x/y pairs, sprites7values by5frames; six timing values stored though onlyfive observed active. Original names and extra timing purpose remain inferred.",
+      "emitted_storage_address": "0x0213d1b0",
+      "address_point_bias": 8
+    }
+  ],
   "bss": [
     {
       "symbol": "sMemoryPlayerTable",
       "address": "0x021422a4",
       "size": "0x18",
       "binding": "STB_GLOBAL",
-      "evidence": "three player states (no enrolled consumer names it yet), plain-copied from the ROM constants"
+      "evidence": "Three native void(int) member pointers for PlayerDrop, PlayerMove and PlayerWait; actual handler signatures determine the table type."
     },
     {
       "symbol": "sMemoryResultTable",
       "address": "0x021422bc",
       "size": "0x20",
       "binding": "STB_GLOBAL",
-      "evidence": "four result states, plain-copied from the ROM constants"
+      "evidence": "four result states, plain-copied from the native compiler-emitted member-pointer constants"
     },
     {
       "symbol": "sMemoryStateTable",
       "address": "0x021422dc",
       "size": "0x28",
       "binding": "STB_GLOBAL",
-      "evidence": "five main states, plain-copied from the ROM constants"
+      "evidence": "five main states, plain-copied from the native compiler-emitted member-pointer constants"
     },
     {
       "symbol": "sMemoryRoundTable",
       "address": "0x02142304",
       "size": "0x30",
       "binding": "STB_GLOBAL",
-      "evidence": "six round states, plain-copied from the ROM constants"
+      "evidence": "six round states, plain-copied from the native compiler-emitted member-pointer constants"
     },
     {
       "symbol": "sMemoryCardTable",
       "address": "0x02142334",
       "size": "0x38",
       "binding": "STB_GLOBAL",
-      "evidence": "seven card states, plain-copied from the ROM constants"
+      "evidence": "seven card states, plain-copied from the native compiler-emitted member-pointer constants"
     },
     {
       "symbol": "sMemoryCardSprites",
@@ -424,10 +685,11 @@
     "MEASURED CODEWARRIOR EMISSION BOUNDARY: the default deferred code generator makes the last optimization state win across an apparent pragma push/pop. Global defer_codegen off makes definitions emit eagerly in ROM-ascending source order, allowing DrawCards' opt_propagation off and CardFlyAway's opt_lifetimes off to be scoped with push/pop. The resulting single object emits all 47 text sections byte-exact and in cartridge order.",
     "MEASURED ITERATOR-SPELLING BOUNDARY: direct typed mCards/mPlayers expressions were tested in the remaining 17 offset-view methods. They changed strength reduction, base-address formation, register allocation, or section size despite identical semantics. The public class layout remains typed; those localized implementation views preserve demonstrated mwccarm 1.2 code generation rather than substituting prettier non-matching code.",
     "MEASURED CW 1.2 FACTORY WALL: dScMgMemory_c_classInit is allocation plus a fully folded scene construction sequence. Semantic placement construction is unavailable in this compiler setup, so the literal classInit bridge preserves allocation size, base construction, vptr transitions, Particle::SysTracker construction and shared-state construction explicitly and byte-exact.",
-    "FOCUSED VERIFY LIMITATION: tools/tubuild.py verify reports 46/47 because objisolate rejects the classInit's R_ARM_ABS32 relocation with addend zero against _ZTV13dScMgMemory_c emitted by the same object. Extracted factory bytes match individually and all 47 text sections occur in cartridge order; the production linker and full ROM build are the authority for that same-object vtable relocation.",
-    "CURRENT NON-TEXT BOUNDARY: this promotion owns the complete contiguous .text run only. The five PMF tables, resource/static data, compiler-generated RTTI/vtable, __sinit_ov006_021311c8 and 0x021422a4..0x021423a8 BSS remain ROM-gap owned until their exact input-section order and initializers are reconstructed. The production rombuild is 106/106 and stock-identical; a post-promotion tubuild linkcheck currently refuses this valid text-only promotion at intact-object preparation because it requires at least one non-text claim, so the recorded pre-promotion 47/47 full linkcheck remains the single-object relocation proof.",
+    "Historical focused verification limitation (fresh measurements recorded separately): FOCUSED VERIFY LIMITATION: tools/tubuild.py verify reports 46/47 because objisolate rejects the classInit's R_ARM_ABS32 relocation with addend zero against _ZTV13dScMgMemory_c emitted by the same object. Extracted factory bytes match individually and all 47 text sections occur in cartridge order; the production linker and full ROM build are the authority for that same-object vtable relocation.",
+    "Historical text-only promotion boundary, superseded by initializer/BSS ownership and this native208-byte enrollment: CURRENT NON-TEXT BOUNDARY: this promotion owns the complete contiguous .text run only. The five PMF tables, resource/static data, compiler-generated RTTI/vtable, __sinit_ov006_021311c8 and 0x021422a4..0x021423a8 BSS remain ROM-gap owned until their exact input-section order and initializers are reconstructed. The production rombuild is 106/106 and stock-identical; a post-promotion tubuild linkcheck currently refuses this valid text-only promotion at intact-object preparation because it requires at least one non-text claim, so the recorded pre-promotion 47/47 full linkcheck remains the single-object relocation proof.",
     "tubuild create warnings (RESOLVED): the generated extern-C wrapper and declaration-conflict markers were reconciled in place. No TUBUILD CONFLICT marker remains in the source; this note retains the fact that the legacy fragments disagreed while making the resolution status explicit.",
-    "Static initializer folded: the fifteen-entry sprite-pointer table plus the five PMF state tables (0x021422a4..0x021423a8) move out of the handwritten src/unnamed shard into src/minigames/d_s_mg_memory.cpp, defined through the existing dScMgMemory_cState/dScMgMemory_cCardState typedefs (the player table keeps the shard no-arg grouping; no enrolled consumer names it yet) and plain-copied from the ROM constants. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order."
+    "Historical initializer fold, before native PMFs: Static initializer folded: the fifteen-entry sprite-pointer table plus the five PMF state tables (0x021422a4..0x021423a8) move out of the handwritten src/unnamed shard into src/minigames/d_s_mg_memory.cpp, defined through the existing dScMgMemory_cState/dScMgMemory_cCardState typedefs (the player table keeps the shard no-arg grouping; no enrolled consumer names it yet) and plain-copied from the ROM constants. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order.",
+    "Native data-memory-native1018 owns the entire648-byte initialized data group, including25native PMFs, typed profile, own RTTI/name/full152-byte vtable and all seven card tables. Player dispatch is void(int), RoundWaitDeal void() without casts; historical signature unproven. Factory returns typed scene pointer with unchanged manual construction. Sixth stored flip timing purpose remains unknown; flat coordinate indexing preserves measured CardMove bytes."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -447,26 +709,21 @@
       "droppedSections": [
         9,
         10,
-        93,
-        94,
-        95,
-        96,
-        97,
-        98,
-        99,
-        100,
-        101,
-        102,
-        103,
-        104,
-        105,
-        106,
-        107,
-        108,
-        109,
-        110,
-        111,
-        112
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -477,27 +734,22 @@
         "_ZTI11dScMgBase_c",
         "_ZTS11dScMgBase_c",
         "_ZTI8dScene_c",
-        "_ZTI13dScMgMemory_c",
-        "_ZTS13dScMgMemory_c",
         "_ZTI19dScMgSingle3DBase_c",
-        "_ZTS19dScMgSingle3DBase_c",
-        "_ZTV13dScMgMemory_c"
+        "_ZTS19dScMgSingle3DBase_c"
       ],
       "dataExternalized": [
         "_ZTI11dScMgBase_c",
-        "_ZTI13dScMgMemory_c",
         "_ZTI19dScMgSingle3DBase_c",
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
         "_ZTI8dScene_c",
         "_ZTS11dScMgBase_c",
-        "_ZTS13dScMgMemory_c",
         "_ZTS19dScMgSingle3DBase_c",
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
-        "_ZTS8dScene_c",
-        "_ZTV13dScMgMemory_c"
-      ]
+        "_ZTS8dScene_c"
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -552,11 +804,18 @@
           "start": "0x021422a4",
           "end": "0x021423a8",
           "comparison": "NOBITS -- symbol/module gates"
+        },
+        {
+          "section": ".data",
+          "start": "0x0213cfc0",
+          "end": "0x0213d248",
+          "differingBytes": 0,
+          "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 55
+          "LICENSED": 91
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -567,38 +826,117 @@
           {
             "section": ".init",
             "original": [
-              115
+              175
             ],
             "desired": [
-              115
+              175
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              113
+              173
             ],
             "desired": [
-              113
+              173
             ]
           },
           {
             "section": ".bss",
             "original": [
               87,
-              88,
-              89,
-              90,
-              91,
-              92
+              98,
+              111,
+              120,
+              135,
+              142
             ],
             "desired": [
-              92,
-              90,
-              88,
-              89,
-              91,
+              142,
+              120,
+              98,
+              111,
+              135,
               87
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              88,
+              90,
+              92,
+              94,
+              96,
+              99,
+              101,
+              103,
+              105,
+              107,
+              109,
+              112,
+              114,
+              116,
+              118,
+              121,
+              123,
+              125,
+              127,
+              129,
+              131,
+              133,
+              136,
+              138,
+              140,
+              143,
+              145,
+              146,
+              147,
+              148,
+              150,
+              151,
+              152,
+              153,
+              155,
+              156
+            ],
+            "desired": [
+              90,
+              127,
+              88,
+              143,
+              109,
+              125,
+              123,
+              136,
+              107,
+              131,
+              129,
+              121,
+              114,
+              118,
+              116,
+              112,
+              140,
+              138,
+              105,
+              103,
+              101,
+              99,
+              133,
+              96,
+              94,
+              92,
+              156,
+              148,
+              150,
+              155,
+              151,
+              145,
+              146,
+              147,
+              152,
+              153
             ]
           }
         ],
@@ -608,33 +946,150 @@
               "section": ".bss",
               "original": [
                 87,
-                88,
-                89,
-                90,
-                91,
-                92
+                98,
+                111,
+                120,
+                135,
+                142
               ],
               "desired": [
-                92,
-                90,
-                88,
-                89,
-                91,
+                142,
+                120,
+                98,
+                111,
+                135,
                 87
               ],
               "slots": [
                 87,
+                98,
+                111,
+                120,
+                135,
+                142
+              ]
+            },
+            {
+              "section": ".data",
+              "original": [
                 88,
-                89,
                 90,
-                91,
-                92
+                92,
+                94,
+                96,
+                99,
+                101,
+                103,
+                105,
+                107,
+                109,
+                112,
+                114,
+                116,
+                118,
+                121,
+                123,
+                125,
+                127,
+                129,
+                131,
+                133,
+                136,
+                138,
+                140,
+                143,
+                145,
+                146,
+                147,
+                148,
+                150,
+                151,
+                152,
+                153,
+                155,
+                156
+              ],
+              "desired": [
+                90,
+                127,
+                88,
+                143,
+                109,
+                125,
+                123,
+                136,
+                107,
+                131,
+                129,
+                121,
+                114,
+                118,
+                116,
+                112,
+                140,
+                138,
+                105,
+                103,
+                101,
+                99,
+                133,
+                96,
+                94,
+                92,
+                156,
+                148,
+                150,
+                155,
+                151,
+                145,
+                146,
+                147,
+                152,
+                153
+              ],
+              "slots": [
+                88,
+                90,
+                92,
+                94,
+                96,
+                99,
+                101,
+                103,
+                105,
+                107,
+                109,
+                112,
+                114,
+                116,
+                118,
+                121,
+                123,
+                125,
+                127,
+                129,
+                131,
+                133,
+                136,
+                138,
+                140,
+                143,
+                145,
+                146,
+                147,
+                148,
+                150,
+                151,
+                152,
+                153,
+                155,
+                156
               ]
             }
           ],
-          "symbolIndices": 6,
+          "symbolIndices": 42,
           "sectionLinks": 0,
-          "sectionInfos": 0,
+          "sectionInfos": 29,
           "error": null
         },
         "errors": null
@@ -735,20 +1190,6 @@
       "reason": "ancestor RTTI passenger; the canonical cartridge copy is independently enrolled and romdata_check verifies this emitted copy before duplicate removal"
     },
     {
-      "symbol": "_ZTI13dScMgMemory_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov006",
-      "canonical_address": "0x0213d090",
-      "reason": "this class's RTTI record; romdata_check verifies the emitted copy against its canonical cartridge record before duplicate removal"
-    },
-    {
-      "symbol": "_ZTS13dScMgMemory_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov006",
-      "canonical_address": "0x0213d0b4",
-      "reason": "this class's RTTI name; romdata_check verifies the emitted copy against its canonical cartridge string before duplicate removal"
-    },
-    {
       "symbol": "_ZTI19dScMgSingle3DBase_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov006",
@@ -761,13 +1202,6 @@
       "canonical_module": "ov006",
       "canonical_address": "0x0213bd00",
       "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled and romdata_check verifies this emitted copy before duplicate removal"
-    },
-    {
-      "symbol": "_ZTV13dScMgMemory_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov006",
-      "canonical_address": "0x0213d1b8",
-      "reason": "this class's vtable; romdata_check verifies the emitted copy against its canonical cartridge record before duplicate removal"
     }
   ],
   "init": [
@@ -793,13 +1227,13 @@
       "symbol": "__sinit_d_s_mg_memory.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+      "evidence": "Preserve the existing configured global identity of this initializer or ctor-table word for compatibility with its existing linker consumers. Native PMF constants retain local binding; DSD supports local symbols."
     },
     {
       "symbol": ".p__sinit_d_s_mg_memory.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+      "evidence": "Preserve the existing configured global identity of this initializer or ctor-table word for compatibility with its existing linker consumers. Native PMF constants retain local binding; DSD supports local symbols."
     }
   ],
   "relocations": [
@@ -1132,6 +1566,823 @@
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021422a4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cfc0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c9StatePlayEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f5164"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cfc8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10CardFlipUpEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f41b0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cfd0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10StateSetupEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f51b0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cfd8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "dScMgMemory_c_classInit",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f5504"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cfe0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c11RoundRevealEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f49ac"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cfe8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10CardSelectEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f4248"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cff0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c8CardIdleEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f43c0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213cff8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10PlayerDropEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f3ba0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d000",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c13RoundWaitDealEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f4a40"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d008",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c12CardFlipDownEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f411c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d010",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c8CardWaitEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f41ac"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d018",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c8CardMoveEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f43c4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d020",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c12ResultRewardEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f47d8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d028",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c12ResultFinishEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f456c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d030",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c15ResultTurnCardsEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f46ec"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d038",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10ResultWaitEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f4888"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d040",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10PlayerWaitEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f3a10"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d048",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10PlayerMoveEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f3a14"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d050",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c13RoundDealHardEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f4ad4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d058",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c15RoundDealNormalEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f4b30"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d060",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c13RoundDealEasyEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f4bbc"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d068",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10RoundStartEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f4c38"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d070",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c11CardFlyAwayEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f3f84"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d078",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c9StateExitEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f50c0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d080",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c11StateResultEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f50f8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d088",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10StateJudgeEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f5140"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d090",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d094",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS13dScMgMemory_c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213d0b4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d098",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI19dScMgSingle3DBase_c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213bc64"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d09c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sMemoryCardPositionsEasy",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213d0d8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d0a0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sMemoryCardPositionsNormal",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213d108"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d0a4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "sMemoryCardPositionsHard",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213d138"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1b4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI13dScMgMemory_c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213d090"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1b8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f53e4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1bc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b0930"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1c0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN19dScMgSingle3DBase_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0210a6e4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1c4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043bf0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1c8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e5f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1cc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN19dScMgSingle3DBase_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0210a608"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1d0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f5388"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1d4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN19dScMgSingle3DBase_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0210a698"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1d8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e3c8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1dc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c6RenderEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f5324"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1e0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN19dScMgSingle3DBase_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0210a664"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1e4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dScene_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0202e398"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b04e8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1ec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204357c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204349c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043494"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1f8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_cD1Ev",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f3834"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d1fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_cD0Ev",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f3888"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d200",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10StartRoundEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f52c4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d204",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c11CanEndStateEi",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f5250"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d208",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c11OnNewRecordEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b2990"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d20c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN13dScMgMemory_c10OnDealDoneEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x020f523c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d210",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback1Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae198"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d214",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback0Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae1a0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d218",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback2Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae140"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d21c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback3Ev",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae128"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d220",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN19dScMgSingle3DBase_c14GetDisplayModeEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0210a600"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d224",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c8OpenMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020af27c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d228",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c9CloseMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020af04c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d22c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c17SaveScreenForMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020af094"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d230",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c21RestoreScreenFromMenuEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020aeed8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d234",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c15InitSubScreenBgEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b2880"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d238",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c16InitMainScreenBgEv",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020b27f4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d23c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN19dScMgSingle3DBase_c11InitEnginesEv",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0210a708"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d240",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c11PaintSquareEiiii",
+      "addend": 0,
+      "target_module": "overlays(0,4)",
+      "target_address": "0x020ae3b4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0213d244",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN11dScMgBase_c12IsAltVariantEv",
+      "addend": 0,
+      "target_module": "overlays(0,2,3,4,7)",
+      "target_address": "0x020ad660"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@1451",
+      "to": "pmf_dScMgMemory_c_StateSetup",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1453",
+      "to": "pmf_dScMgMemory_c_StatePlay",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1455",
+      "to": "pmf_dScMgMemory_c_StateJudge",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1457",
+      "to": "pmf_dScMgMemory_c_StateResult",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1459",
+      "to": "pmf_dScMgMemory_c_StateExit",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1461",
+      "to": "pmf_dScMgMemory_c_RoundStart",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1463",
+      "to": "pmf_dScMgMemory_c_RoundDealEasy",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1465",
+      "to": "pmf_dScMgMemory_c_RoundDealNormal",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1467",
+      "to": "pmf_dScMgMemory_c_RoundDealHard",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1469",
+      "to": "pmf_dScMgMemory_c_RoundWaitDeal",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1471",
+      "to": "pmf_dScMgMemory_c_RoundReveal",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1473",
+      "to": "pmf_dScMgMemory_c_ResultWait",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1475",
+      "to": "pmf_dScMgMemory_c_ResultReward",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1477",
+      "to": "pmf_dScMgMemory_c_ResultTurnCards",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1479",
+      "to": "pmf_dScMgMemory_c_ResultFinish",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1481",
+      "to": "pmf_dScMgMemory_c_CardMove",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1483",
+      "to": "pmf_dScMgMemory_c_CardIdle",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1485",
+      "to": "pmf_dScMgMemory_c_CardSelect",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1487",
+      "to": "pmf_dScMgMemory_c_CardFlipUp",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1489",
+      "to": "pmf_dScMgMemory_c_CardWait",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1491",
+      "to": "pmf_dScMgMemory_c_CardFlipDown",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1493",
+      "to": "pmf_dScMgMemory_c_CardFlyAway",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1495",
+      "to": "pmf_dScMgMemory_c_PlayerDrop",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1497",
+      "to": "pmf_dScMgMemory_c_PlayerMove",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
+    },
+    {
+      "from": "@1499",
+      "to": "pmf_dScMgMemory_c_PlayerWait",
+      "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     }
   ]
 }

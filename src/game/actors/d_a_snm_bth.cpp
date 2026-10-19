@@ -28,6 +28,7 @@
 #include "Model.h"
 #include "Player.h"
 #include "SaveData.h"
+#include "SpawnInfo.h"
 
 /* This scene owns the position used by the breath effect. */
 extern Vector3 data_ov027_02113d10;
@@ -387,3 +388,8 @@ extern "C" daSnmBth_c *daSnmBth_c_classInit()
 
 /* Construction and destructor registration belong to this translation unit. */
 Vector3 data_ov027_02113d10(0x27a52b, 0xdf2000, 0x2626bb);
+
+/* The actor registry uses this factory, priorities, flags and clip ranges.
+ * SpawnInfo and the profile name are reconstructed interface names. */
+extern "C" SpawnInfo<daSnmBth_c> g_profile_SNOWMAN_BREATH = {
+    daSnmBth_c_classInit, 0x113, 0x86, 0x00800002, 0, 0x3e8000, 0x1000000, 0x7d0000};

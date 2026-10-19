@@ -5,7 +5,7 @@
  * - The destructor is written so D1 lands at 0x020addfc and D0 at
  *   0x020ade54. The extra D2 is unreferenced and dropped at link.
  *   It is the key function, so this file emits the vtable. The
- *   cartridge's copies of that vtable sit outside this range.
+ *   native vtable, typeinfo and profile now own their complete data range.
  * - opt_strength_reduction off is file-global. Without it Render
  *   grows by 0x10 bytes.
  * - common.h stays before dScStarSel_c.h. The other order grows
@@ -30,6 +30,7 @@
 #pragma defer_codegen off
 #pragma opt_strength_reduction off
 #include "common.h"
+#include "SpawnInfo.h"
 #include "dScStarSel_c.h"
 #include "decl_common.h"
 #include "dFdBrightness_c.h"
@@ -99,7 +100,7 @@ void EndLoadOBJExtPltt();
 #define CHAR_Y(p, i)      FB((u8 *)(p) + (i), 0x128)
 #define PANEL_Y(p)        FB(p, 0x12b)
 #define CHAR_SPRITE(p, i) FB((u8 *)(p) + (i), 0x12c)
-#define STRIP_MODE(p)     FB(p, 0x130)  /* strip slots + 1; 4 = fixed order from data_ov003_020b169c */
+#define STRIP_MODE(p)     FB(p, 0x130)  /* strip slots + 1; 4 = fixed order from sStarSelectCharacterOrder */
 #define PLATE_MASK(p)     FB(p, 0x131)  /* bit i: extra sprite behind plate i */
 #define PICKED_CHAR(p)    FB(p, 0x132)
 #define CURSOR_MODE(p)    FB(p, 0x133)  /* 0 plates, 1 character strip, else fixed */
@@ -109,8 +110,8 @@ void EndLoadOBJExtPltt();
 #define ANIM_FLIP(p)      FB(p, 0x13a)
 
 extern "C" {
-extern unsigned char data_ov003_020b169c[];
-extern unsigned short data_ov003_020b16ac[];
+extern unsigned char sStarSelectCharacterOrder[];
+extern unsigned short sStarSelectDecimalDivisors[];
 extern void func_02012790(int a);
 extern unsigned char NumStars(void);
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
@@ -185,7 +186,7 @@ dScStarSel_c::~dScStarSel_c() {}
 int dScStarSel_c::func_ov003_020adec0(unsigned int chr) {
     unsigned char mode = STRIP_MODE(this);
     if (mode == 4) {
-        unsigned char *p = data_ov003_020b169c;
+        unsigned char *p = sStarSelectCharacterOrder;
         int i;
         for (i = 0; i < 3; i++) {
             if (chr == *p) {
@@ -210,12 +211,12 @@ int dScStarSel_c::func_ov003_020adec0(unsigned int chr) {
 
 // @symbol _ZN12dScStarSel_c19func_ov003_020adf50Ev
 // ROM 0x020adf50, size 0x78. Maps the strip slot CHAR_CURSOR to a character
-// index: through data_ov003_020b169c when STRIP_MODE is 4, otherwise the
+// index: through sStarSelectCharacterOrder when STRIP_MODE is 4, otherwise the
 // CHAR_CURSOR-th unlocked character when STRIP_MODE is 2 or more; else 0.
 int dScStarSel_c::func_ov003_020adf50() {
     unsigned char mode = STRIP_MODE(this);
     if (mode == 4) {
-        return data_ov003_020b169c[CHAR_CURSOR(this)];
+        return sStarSelectCharacterOrder[CHAR_CURSOR(this)];
     }
     if (mode >= 2) {
         int slot = 0;
@@ -284,7 +285,7 @@ void dScStarSel_c::func_ov003_020ae0b0() {
 
 // @symbol _ZN12dScStarSel_c19func_ov003_020ae1a4Ei
 // ROM 0x020ae1a4, size 0x94. Splits value into three decimal digits in
-// DIGIT(this, 0..2), dividing by data_ov003_020b16ac[i] in turn; leading
+// DIGIT(this, 0..2), dividing by sStarSelectDecimalDivisors[i] in turn; leading
 // zeros are stored as -1 (blank) except the last digit.
 void dScStarSel_c::func_ov003_020ae1a4(int value) {
     int found = 0;
@@ -292,7 +293,7 @@ void dScStarSel_c::func_ov003_020ae1a4(int value) {
     int blank = -1;
     int i;
     for (i = 0; i < 3; i++) {
-        unsigned short place = data_ov003_020b16ac[i];
+        unsigned short place = sStarSelectDecimalDivisors[i];
         int digit = value / place;
         if (digit == 0 && found == 0 && i != 2) {
             DIGIT(this, i) = (char)blank;
@@ -1371,7 +1372,7 @@ extern void *data_0208e4b8[];
  * allocation size, vtable identity, and the STAR_SELECT registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: StarSelect_Spawn. */
-void *dScStarSel_c_classInit(void) {
+dScStarSel_c *dScStarSel_c_classInit(void) {
     char *p = (char *)_ZN7fBase_cnwEj(0x13c);
     if (p) {
         _ZN7fBase_cC2Ev(p);
@@ -1383,6 +1384,27 @@ void *dScStarSel_c_classInit(void) {
         *(void ***)p = (void **)data_ov003_020b1704;
         __cxa_vec_ctor(p + 0x64, 2, 0x50, (void (*)(void *))_ZN5ModelC1Ev, _ZN5ModelD1Ev);
     }
-    return p;
+    return (dScStarSel_c *)p;
 }
+}
+
+extern "C" {
+/* Inferred role: background palette entry; existing address label retained. */
+u16 data_ov003_020b1698 = 32767;
+/* The inverse lookup visits three entries; mode 4 bounds the cursor to 0..2. */
+u8 sStarSelectCharacterOrder[3] = {1, 0, 2};
+/* Inferred role: initial icon y position by unlocked count; existing address label retained. */
+u8 data_ov003_020b16a0[4] = {0, 72, 72, 72};
+/* Inferred role: initial icon sprite index by unlocked count; existing address label retained. */
+u8 data_ov003_020b16a4[4] = {0, 0, 1, 0};
+/* Inferred role: initial icon x position by unlocked count; existing address label retained. */
+u8 data_ov003_020b16a8[4] = {0, 128, 92, 128};
+/* Divisors for the hundreds, tens and units digits. */
+u16 sStarSelectDecimalDivisors[3] = {100, 10, 1};
+/* Inferred role: icon y position steps for two, three and four unlocked characters; existing address label retained. */
+/* Four-slot strides are observed; unused slots do not prove original bounds. */
+s8 data_ov003_020b16c8[12] = {0, 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0};
+/* Inferred role: icon x position steps for two, three and four unlocked characters; existing address label retained. */
+s16 data_ov003_020b16e4[12] = {0, 0, 0, 0, 72, 0, 0, 0, -68, 136, 0, 0};
+BaseSpawnInfo<dScStarSel_c> g_profile_STAR_SELECT = {dScStarSel_c_classInit, 4, 7};
 }

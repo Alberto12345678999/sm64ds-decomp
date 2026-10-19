@@ -262,5 +262,293 @@ class BssInteriorTests(unittest.TestCase):
                 self.assertEqual(lcf.read_bytes(), before)
 
 
+
+def _data_elf(section_name=".rodata", size=16, value=0, payload_size=16):
+    strings = b"\0block\0"
+    section_strings = ("\0" + section_name + "\0.symtab\0.strtab\0.shstrtab\0").encode()
+    symbols = b"\0" * 16 + struct.pack("<IIIBBH", 1, value, size, 0x11, 0, 1)
+    payload = bytes(range(payload_size))
+    data_offset = 52
+    symbol_offset = data_offset + payload_size
+    strings_offset = symbol_offset + len(symbols)
+    section_strings_offset = strings_offset + len(strings)
+    headers_offset = section_strings_offset + len(section_strings)
+    headers = b"\0" * 40
+    headers += struct.pack("<IIIIIIIIII", 1, 1, 2, 0, data_offset, payload_size, 0, 0, 4, 0)
+    headers += struct.pack("<IIIIIIIIII", section_strings.index(b".symtab"), 2, 0, 0,
+                           symbol_offset, len(symbols), 3, 1, 4, 16)
+    headers += struct.pack("<IIIIIIIIII", section_strings.index(b".strtab"), 3, 0, 0,
+                           strings_offset, len(strings), 0, 0, 1, 0)
+    headers += struct.pack("<IIIIIIIIII", section_strings.index(b".shstrtab"), 3, 0, 0,
+                           section_strings_offset, len(section_strings), 0, 0, 1, 0)
+    header = b"\x7fELF\x01\x01\x01" + b"\0" * 9
+    header += struct.pack("<HHIIIIIHHHHHH", 1, 40, 1, 0, 0, headers_offset, 0,
+                          52, 0, 0, 40, 5, 4)
+    return header + payload + symbols + strings + section_strings + headers
+
+
+class InitializedInteriorTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = pathlib.Path(self.temp.name)
+        self.config = self.root / "config"
+        self.module = self.config / "overlays/ov047"
+        self.module.mkdir(parents=True)
+        self.symbols = self.module / "symbols.txt"
+        self.symbols.write_text("block kind:data(any) addr:0x02111ab4\n"
+                                "entry kind:data(any) addr:0x02111abc\n")
+        self.delinks = self.module / "delinks.txt"
+        self.delinks.write_text("    .rodata start:0x021119e0 end:0x021125e0 kind:rodata align:4\n"
+                                "src/cart.cpp:\n    complete\n"
+                                "    .rodata start:0x02111ab4 end:0x02111ac4\n")
+        self.obj = self.root / "build/src/cart.o"
+        self.obj.parent.mkdir(parents=True)
+        self.obj.write_bytes(_data_elf())
+        self.objects = self.root / "objects.txt"
+        self.objects.write_text(str(self.obj) + "\n")
+        self.lcf = self.root / "arm9.lcf"
+        self.lcf.write_text("SECTIONS {\n    .ov047 : {\n    } > ov047\n}\n")
+
+    def rows(self, defined=("block",)):
+        return LI.initialized_interior_rows(self.config, self.objects, set(defined))
+
+    def test_unimported_label_uses_complete_compiled_object_extent(self):
+        self.assertEqual(self.rows(), [("entry", 0x02111abc, "block", 8, "overlays/ov047")])
+        before = self.obj.read_bytes()
+        self.assertEqual(LI.patch(self.lcf, self.objects, self.config), [("entry", 0x02111abc)])
+        self.assertIn(".ov047 : {\n        entry = 0x02111abc;", self.lcf.read_text())
+        self.assertEqual(self.obj.read_bytes(), before)
+
+    def test_mutable_data_is_supported(self):
+        self.obj.write_bytes(_data_elf(".data"))
+        self.delinks.write_text(self.delinks.read_text().replace(".rodata", ".data"))
+        self.assertEqual(len(self.rows()), 1)
+
+    def test_named_initialized_slice_keeps_exact_provider_and_extent_guards(self):
+        self.obj.write_bytes(_data_elf('.data.clps0'))
+        self.delinks.write_text(self.delinks.read_text().replace('.rodata', '.data.clps0'))
+        self.assertEqual(self.rows(), [('entry', 0x02111abc, 'block', 8, 'overlays/ov047')])
+        original = self.delinks.read_text()
+        self.delinks.write_text(original.replace('end:0x02111ac4', 'end:0x02111ac0'))
+        self.assertEqual(self.rows(), [])
+        self.delinks.write_text(original.replace('src/cart.cpp:', 'src/another.cpp:'))
+        self.assertEqual(self.rows(), [])
+
+    def test_unimported_start_alias_keeps_identity_without_storage(self):
+        self.symbols.write_text(self.symbols.read_text().replace("0x02111abc", "0x02111ab4"))
+        expected = [("entry", 0x02111ab4, "block", 0, "overlays/ov047")]
+        for section in (".data", ".rodata"):
+            with self.subTest(section=section):
+                self.obj.write_bytes(_data_elf(section))
+                self.delinks.write_text("src/cart.cpp:\n    complete\n"
+                                        f"    {section} start:0x02111ab4 end:0x02111ac4\n")
+                self.assertEqual(self.rows(), expected)
+        before = self.obj.read_bytes()
+        self.assertEqual(LI.patch(self.lcf, self.objects, self.config), [("entry", 0x02111ab4)])
+        self.assertIn(".ov047 : {\n        entry = 0x02111ab4;", self.lcf.read_text())
+        self.assertEqual(self.obj.read_bytes(), before)
+        self.assertEqual(self.rows(("block", "entry")), [])
+
+    def test_start_alias_declared_extent_must_fit_actual_object(self):
+        for size, accepted in ((0, True), (4, True), (16, True), (17, False)):
+            with self.subTest(size=size):
+                self.symbols.write_text("block kind:data(any) addr:0x02111ab4\n"
+                                        f"entry kind:data(size={size}) addr:0x02111ab4\n")
+                self.assertEqual(bool(self.rows()), accepted)
+
+    def test_start_alias_requires_complete_actual_source_extent(self):
+        self.symbols.write_text(self.symbols.read_text().replace("0x02111abc", "0x02111ab4"))
+        original = self.delinks.read_text()
+        for changed in (original.replace("    complete\n", ""),
+                        original.replace("end:0x02111ac4", "end:0x02111ac0"),
+                        original.replace(".rodata", ".data"),
+                        original.replace("src/cart.cpp", "src/other.cpp")):
+            with self.subTest(delinks=changed):
+                self.delinks.write_text(changed)
+                self.assertEqual(self.rows(), [])
+        self.delinks.write_text(original)
+        self.obj.write_bytes(_data_elf(size=0))
+        self.assertEqual(self.rows(), [])
+
+    def test_start_alias_refuses_ambiguous_owner_or_module(self):
+        original = "block kind:data(any) addr:0x02111ab4\nentry kind:data(any) addr:0x02111ab4\n"
+        self.symbols.write_text(original)
+        other_module = self.config / "overlays/ov048"
+        other_module.mkdir(parents=True)
+        for name in ("block", "entry"):
+            with self.subTest(duplicate_home=name):
+                (other_module / "symbols.txt").write_text(f"{name} kind:data(any) addr:0x02111ab4\n")
+                self.assertEqual(self.rows(), [])
+        (other_module / "symbols.txt").write_text("")
+        self.objects.write_text((str(self.obj) + "\n") * 2)
+        self.assertEqual(self.rows(), [])
+        other = self.root / "other/build/src/cart.o"
+        other.parent.mkdir(parents=True)
+        other.write_bytes(self.obj.read_bytes().replace(b"block", b"other"))
+        self.objects.write_text(str(self.obj) + "\n" + str(other) + "\n")
+        self.symbols.write_text(original + "other kind:data(any) addr:0x02111ab4\n")
+        self.assertEqual(self.rows(("block", "other")), [])
+
+    def test_start_alias_cannot_cross_overlays_or_use_nondata_row(self):
+        self.symbols.write_text("block kind:data(any) addr:0x02111ab4\n")
+        other = self.config / "overlays/ov048"
+        other.mkdir(parents=True)
+        (other / "symbols.txt").write_text("entry kind:data(any) addr:0x02111ab4\n")
+        self.assertEqual(self.rows(), [])
+        (other / "symbols.txt").write_text("")
+        for kind in ("bss(size=4)", "function(arm,size=4)"):
+            with self.subTest(kind=kind):
+                self.symbols.write_text("block kind:data(any) addr:0x02111ab4\n"
+                                        f"entry kind:{kind} addr:0x02111ab4\n")
+                self.assertEqual(self.rows(), [])
+
+    def test_does_not_infer_extent_from_next_symbol(self):
+        self.obj.write_bytes(_data_elf(size=8))
+        self.assertEqual(self.rows(), [])
+        self.obj.write_bytes(_data_elf(size=17))
+        self.assertEqual(self.rows(), [])
+        self.obj.write_bytes(_data_elf(value=4))
+        self.assertEqual(self.rows(), [])
+
+    def test_requires_complete_matching_section_and_whole_extent(self):
+        original = self.delinks.read_text()
+        for altered in (original.replace("    complete\n", ""),
+                        original.replace("end:0x02111ac4", "end:0x02111ac0"),
+                        original.replace("    .rodata start:0x02111ab4", "    .data start:0x02111ab4")):
+            with self.subTest(delinks=altered):
+                self.delinks.write_text(altered)
+                self.assertEqual(self.rows(), [])
+
+    def test_refuses_gap_or_wrong_source_provider(self):
+        for name in ("_dsd_gap@ov047_0.o", "wrong.o"):
+            with self.subTest(name=name):
+                other = self.obj.with_name(name)
+                other.write_bytes(self.obj.read_bytes())
+                self.objects.write_text(str(other) + "\n")
+                self.assertEqual(self.rows(), [])
+
+    def test_refuses_ambiguous_module_homes_and_duplicate_definitions(self):
+        other = self.config / "overlays/ov048"
+        other.mkdir(parents=True)
+        (other / "symbols.txt").write_text("entry kind:data(any) addr:0x02111abc\n")
+        self.assertEqual(self.rows(), [])
+        (other / "symbols.txt").write_text("block kind:data(any) addr:0x02111ab4\n")
+        self.assertEqual(self.rows(), [])
+        (other / "symbols.txt").write_text("")
+        self.objects.write_text((str(self.obj) + "\n") * 2)
+        self.assertEqual(self.rows(), [])
+
+    def test_preserves_existing_definitions_and_refuses_nondata_rows(self):
+        self.assertEqual(self.rows(("block", "entry")), [])
+        self.symbols.write_text(self.symbols.read_text().replace(
+            "entry kind:data(any)", "entry kind:function(arm,size=0x8)"))
+        self.assertEqual(self.rows(), [])
+
+    def test_same_numeric_address_in_another_overlay_is_not_an_alias(self):
+        self.symbols.write_text("block kind:data(any) addr:0x02111ab4\n")
+        other = self.config / "overlays/ov048"
+        other.mkdir(parents=True)
+        (other / "symbols.txt").write_text("entry kind:data(any) addr:0x02111abc\n")
+        self.assertEqual(self.rows(), [])
+
+    def test_duplicate_nonobject_definition_also_refuses_owner(self):
+        other = self.obj.with_name("duplicate.o")
+        other.write_bytes(_elf(defined=["block"]))
+        self.objects.write_text(str(self.obj) + "\n" + str(other) + "\n")
+        self.assertEqual(self.rows(), [])
+
+    def test_rejects_conflicting_declared_object_extents(self):
+        original = self.symbols.read_text()
+        for altered in (original.replace("block kind:data(any)", "block kind:data(size=0x20)"),
+                        original.replace("entry kind:data(any)", "entry kind:data(size=0xc)")):
+            with self.subTest(symbols=altered):
+                self.symbols.write_text(altered)
+                self.assertEqual(self.rows(), [])
+
+    def test_output_module_must_be_unique_and_failure_does_not_write(self):
+        for value in ("SECTIONS {\n}\n",
+                      "SECTIONS {\n.ov047 : { }\n.ov047 : { }\n}\n"):
+            self.lcf.write_text(value)
+            before = self.lcf.read_bytes()
+            with self.assertRaisesRegex(ValueError, "exactly one .ov047"):
+                LI.patch(self.lcf, self.objects, self.config)
+            self.assertEqual(self.lcf.read_bytes(), before)
+
+
+class SourceBssInteriorTests(unittest.TestCase):
+    def setUp(self):
+        InitializedInteriorTests.setUp(self)
+        self.symbols.write_text("block kind:bss(size=16) addr:0x02111ab4\n"
+                                "entry kind:bss(size=8) addr:0x02111abc\n")
+        self.delinks.write_text(self.delinks.read_text().replace(".rodata", ".bss"))
+        self.raw = bytearray(_data_elf(".bss"))
+        self.shoff = struct.unpack_from("<I", self.raw, 0x20)[0]
+        struct.pack_into("<I", self.raw, self.shoff + 40 + 4, 8)
+        self.obj.write_bytes(self.raw)
+
+    def rows(self):
+        return LI.source_bss_interior_rows(self.config, self.objects, {"block"})
+
+    def test_unimported_sized_field_retains_identity_without_storage(self):
+        self.assertEqual(self.rows(), [("entry", 0x02111abc, "block", 8, "overlays/ov047")])
+        self.assertEqual(LI.patch(self.lcf, self.objects, self.config), [("entry", 0x02111abc)])
+        self.assertEqual(self.obj.read_bytes(), self.raw)
+        self.assertIn("entry = 0x02111abc;", self.lcf.read_text())
+
+    def test_unsized_interior_label_uses_actual_parent_extent(self):
+        self.symbols.write_text(self.symbols.read_text().replace("entry kind:bss(size=8)",
+                                                                "entry kind:bss"))
+        self.assertEqual(len(self.rows()), 1)
+
+    def test_zero_storage_interior_alias_is_preserved(self):
+        self.symbols.write_text(self.symbols.read_text().replace("entry kind:bss(size=8)",
+                                                                "entry kind:bss(size=0)"))
+        self.assertEqual(len(self.rows()), 1)
+
+    def test_start_alias_policy_is_not_extended_to_bss(self):
+        self.symbols.write_text(self.symbols.read_text().replace("0x02111abc", "0x02111ab4"))
+        self.assertEqual(self.rows(), [])
+
+    def test_wrong_kind_zero_size_and_out_of_bounds_extents_fail(self):
+        original = self.symbols.read_text()
+        for altered in (original.replace("block kind:bss(size=16)", "block kind:bss(size=12)"),
+                        original.replace("entry kind:bss(size=8)", "entry kind:bss(size=12)"),
+                        original.replace("block kind:bss(size=16)", "block kind:bss(size=0)"),
+                        original.replace("entry kind:bss(size=8)", "entry kind:data(any)"),
+                        original.replace("entry kind:bss(size=8)", "entry kind:bss(size=bad)")):
+            with self.subTest(symbols=altered):
+                self.symbols.write_text(altered)
+                self.assertEqual(self.rows(), [])
+
+    def test_requires_nobits_arm_relocatable_object(self):
+        for offset, fmt, value in ((self.shoff + 44, "<I", 1), (16, "<H", 2), (18, "<H", 3)):
+            with self.subTest(offset=offset):
+                changed = bytearray(self.raw)
+                struct.pack_into(fmt, changed, offset, value)
+                self.obj.write_bytes(changed)
+                self.assertEqual(self.rows(), [])
+
+    def test_requires_exact_complete_provider_and_extent(self):
+        original = self.delinks.read_text()
+        for altered in (original.replace("    complete\n", ""),
+                        original.replace("src/cart.cpp", "src/other.cpp"),
+                        original.replace("end:0x02111ac4", "end:0x02111ac0"),
+                        original.replace(".bss", ".data")):
+            with self.subTest(delinks=altered):
+                self.delinks.write_text(altered)
+                self.assertEqual(self.rows(), [])
+
+    def test_duplicate_definition_or_cross_module_home_is_ambiguous(self):
+        self.objects.write_text((str(self.obj) + "\n") * 2)
+        self.assertEqual(self.rows(), [])
+        self.objects.write_text(str(self.obj) + "\n")
+        other = self.config / "overlays/ov048"
+        other.mkdir(parents=True)
+        for symbol, address in (("entry", "0x02111abc"), ("block", "0x02111ab4")):
+            (other / "symbols.txt").write_text(f"{symbol} kind:bss addr:{address}\n")
+            self.assertEqual(self.rows(), [])
+
+
 if __name__ == "__main__":
     unittest.main()

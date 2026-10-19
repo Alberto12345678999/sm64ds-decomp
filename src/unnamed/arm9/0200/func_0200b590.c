@@ -1,5 +1,5 @@
+#include "types.h"
 #include "nitro/fx/fx.h"
-typedef struct { int x, y, z; } Vector3;
 
 extern short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
