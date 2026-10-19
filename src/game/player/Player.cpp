@@ -4,8 +4,10 @@
 // C1 still reaches mModelAnim3, mModelAnim4, mTexSeqBody, mMatChanger and
 // mTexSeqPlayer as offsets from mBodyModels (this + 0xdc), the enrolled
 // addressing. func_ov002_020e69c0 rotates data_ov002_0210a760, which has no
-// recovered name. Scalar Fix12 bridges, opaque views and raw offsets remain
-// in the earlier members; notes/agents/handoffs/player-readable1014.md.
+// recovered name. func_ov002_020e6780 keeps the char * parameter that
+// include/decl_common.h declares, and casts it to Player. Scalar Fix12
+// bridges, opaque views and raw offsets remain in the earlier members;
+// notes/agents/handoffs/player-readable1014.md.
 /* Player -- ov002, ROM ordinals 0..616 (0x020bccfc..0x020e6a08)
  * and __sinit_ov002_021019d0 (.init 0x021019d0..0x02106e40).
  *
@@ -27630,8 +27632,9 @@ void func_ov002_020e640c(char *c)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e6780
 extern "C" {
-void func_ov002_020e6780(Player *player)
+void func_ov002_020e6780(char *raw)
 {
+    Player *player = (Player *)raw;
     player->mSpineRot[0] = 0;
     player->mSpineRot[1] = 0;
     player->mSpineRot[2] = 0;
