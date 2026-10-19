@@ -9,9 +9,8 @@
  * top of d_a_kpa.cpp. Fix12 values read 0x1000 = 1.0; angles 0x10000 = a full turn.
  *
  * Leftover: unk_420 and unk_422 are written in d_a_kpa.cpp and never read, so they
- * keep placeholder names; the dActor_c words at 0xa4 and 0xac that the file
- * touches are unnamed (they are dActor_c's own unk_0a4 / unk_0ac); the pad_ arrays
- * are bytes nothing in that file reads or writes.
+ * keep placeholder names; the pad_ arrays are bytes nothing in that file reads
+ * or writes.
  *
  * Five sub-objects, and every one's asserted size closes EXACTLY on the next named
  * field -- five independent confirmations of one layout:

@@ -41,7 +41,7 @@
  *    Matrix4x3, dCc_c, Player, Sound, Heap, and `typedef int Fix12`
  *    (types.h has a Fix12<T> TEMPLATE, so that typedef is not even legal here).
  *    Field names follow: deathTableId -> mDeathTableID, flags -> mFlags, camSpacePos
- *    -> mCamSpacePosX, pos -> mPosX, speed -> unk_0a4, areaID -> mAreaId.
+ *    -> mCamSpacePosX, pos -> mPosX, speed -> mSpeedX, areaID -> mAreaId.
  *  - One spelling per global, chosen for what the ROM's use of it supports:
  *    data_0209b468 is an ADDRESS, not a value -- the ROM readers pass
  *    `&data_0209b468` as the list head's address, matching the plurality
@@ -382,10 +382,10 @@ extern "C" {
 void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 void func_02010da4(dActor_c *actor);
 }
-/* Adds the velocity (unk_0a4, mVertSpeed, unk_0ac) to mPos, then the
+/* Adds the velocity (mSpeedX, mVertSpeed, mSpeedZ) to mPos, then the
    cylinder's horizontal push-out, then clamps to the world bounds. */
 void dActor_c::UpdatePosWithOnlySpeed(dCc_c *clsn) {
-    AddVec3((Vec3 *)&mPos, (Vec3 *)&unk_0a4, (Vec3 *)&mPos);
+    AddVec3((Vec3 *)&mPos, (Vec3 *)&mSpeedX, (Vec3 *)&mPos);
     if (clsn != 0) {
         mPosX += clsn->pushback.x;
         mPosZ += clsn->pushback.z;
@@ -410,9 +410,9 @@ void dActor_c::UpdatePosWithHorzSpeedAndAng() {
         s32 terminal = mTerminalVelocity;
         if (vertSpeed >= terminal)
             terminal = vertSpeed;
-        unk_0a4 = 0;
+        mSpeedX = 0;
         mVertSpeed = terminal;
-        unk_0ac = 0;
+        mSpeedZ = 0;
     } else {
         s32 vertSpeed;
         s32 accel;
@@ -434,9 +434,9 @@ void dActor_c::UpdatePosWithHorzSpeedAndAng() {
             terminal = next;
         sinv = data_02082214[idx];
         speedX = FX_MUL(horzSpeed, sinv);
-        unk_0a4 = speedX;
+        mSpeedX = speedX;
         mVertSpeed = terminal;
-        unk_0ac = speedZ;
+        mSpeedZ = speedZ;
     }
 }
 

@@ -222,16 +222,16 @@ int daYurei_Mucho_c::Behavior()
         }
     }
     {
-        /* Gravity, clamped at terminal velocity. unk_0ac is read and written
+        /* Gravity, clamped at terminal velocity. mSpeedZ is read and written
            back unchanged -- the ROM really does reload and restore it here. */
         int fallSpeed = mVertSpeed + mVertAccel;
         int clamped = mTerminalVelocity;
         if (fallSpeed >= clamped) {
             clamped = fallSpeed;
         }
-        int keep = unk_0ac;
+        int keep = mSpeedZ;
         mVertSpeed = clamped;
-        unk_0ac = keep;
+        mSpeedZ = keep;
     }
     if (mCurrentState != (State *)data_ov065_0211d650) {
         int ang;
@@ -406,7 +406,7 @@ int daYurei_Mucho_c::func_ov065_02116744()
 
     in.z = 0xa000;
     Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-    MulVec3Mat4x3(&in, data_020a0e68, &unk_0a4);
+    MulVec3Mat4x3(&in, data_020a0e68, &mSpeedX);
 
     if (*(unsigned short *)((char *)this + 0x100) == 0) {
         func_ov065_0211691c((State *)data_ov065_0211d670);
@@ -434,9 +434,9 @@ int daYurei_Mucho_c::func_ov065_02116744()
 /* State entry hook at 0x0211d680 +0x00: stop the actor dead. */
 int daYurei_Mucho_c::func_ov065_0211672c()
 {
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     return 1;
 }
 
@@ -466,16 +466,16 @@ int daYurei_Mucho_c::func_ov065_021165d8()
         b.z = tmp.z;
         pitch = Vec3_VertAngle(&mPosX, &b);
         if (Vec3_Dist(&mPosX, &tmp) >= 0x1f4000) {
-            unk_0a4 = 0;
+            mSpeedX = 0;
             mVertSpeed = 0;
-            unk_0ac = 0;
+            mSpeedZ = 0;
         } else {
             v.z = 0;
             v.z = -0x1000;
             v.x = 0;
             v.y = 0;
             Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-            MulVec3Mat4x3(&v, data_020a0e68, &unk_0a4);
+            MulVec3Mat4x3(&v, data_020a0e68, &mSpeedX);
         }
     } else {
         *(short *)((char *)this + 0x100) = pitch;
@@ -568,9 +568,9 @@ int daYurei_Mucho_c::func_ov065_02116364()
 /* State entry hook at 0x0211d660 +0x00: the bumped-from-below pop. */
 int daYurei_Mucho_c::func_ov065_02116328()
 {
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     mVertSpeed = 0x32000;
     mVertAccel = -0x5000;
     *(short *)((char *)this + 0x100) = 0xa;

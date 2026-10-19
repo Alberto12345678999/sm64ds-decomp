@@ -709,9 +709,9 @@ void daTrs_c::func_ov063_02116e14() {
     {
         char* r = (char*)dActor_c::Spawn(this->mCarriedID, 0, *(const Vector3 *)((struct Vector3*)&this->mCarriedPosX), (const Vector3_16 *)(0), this->mAreaIdx, -1);
         if (r != 0) {
-            ((dActor_c *)r)->unk_0a4 = 0;
+            ((dActor_c *)r)->mSpeedX = 0;
             ((dActor_c *)r)->mVertSpeed = 0x32000;
-            ((dActor_c *)r)->unk_0ac = 0;
+            ((dActor_c *)r)->mSpeedZ = 0;
         }
     }
     this->mBooFlags.carrying = 0;

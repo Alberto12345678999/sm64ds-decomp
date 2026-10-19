@@ -124,9 +124,12 @@ struct dActor_c : dBase_c {
     s32 mHorzSpeed;         /* 0x098 */
     s32 mVertAccel;         /* 0x09c -- fix12, negative (gravity) */
     s32 mTerminalVelocity;  /* 0x0a0 -- fix12, negative */
-    s32 unk_0a4;            /* 0x0a4 */
+    /* mSpeedX, mVertSpeed and mSpeedZ are the velocity vector:
+       UpdatePosWithOnlySpeed adds it to mPos, and UpdatePosWithHorzSpeedAndAng
+       derives the x/z words from mHorzSpeed along the heading mPrevAngleY. */
+    s32 mSpeedX;            /* 0x0a4 */
     s32 mVertSpeed;         /* 0x0a8 */
-    s32 unk_0ac;            /* 0x0ac */
+    s32 mSpeedZ;            /* 0x0ac */
     /* Two populations of bits share this word. The profile descriptor's +0x08
      * word is copied in verbatim by the constructor; the framework then sets and
      * clears its own bits in the same storage. Across the 353 soundly-parsed
@@ -409,9 +412,12 @@ struct dActor_c {
     s32 mHorzSpeed;         /* 0x098 */
     s32 mVertAccel;         /* 0x09c */
     s32 mTerminalVelocity;  /* 0x0a0 */
-    s32 unk_0a4;            /* 0x0a4 */
+    /* mSpeedX, mVertSpeed and mSpeedZ are the velocity vector:
+       UpdatePosWithOnlySpeed adds it to mPos, and UpdatePosWithHorzSpeedAndAng
+       derives the x/z words from mHorzSpeed along the heading mPrevAngleY. */
+    s32 mSpeedX;            /* 0x0a4 */
     s32 mVertSpeed;         /* 0x0a8 */
-    s32 unk_0ac;            /* 0x0ac */
+    s32 mSpeedZ;            /* 0x0ac */
     u32 mFlags;             /* 0x0b0 */
     s32 mClipOffsetY;       /* 0x0b4 */
     s32 mClipRadius;        /* 0x0b8 */

@@ -21,7 +21,7 @@
  * - ModelAnim::SetAnim and dCcAcPos_c::Init stay the scalar
  *   Fix12<int> externs. The member calls grow those functions and
  *   move InitResources' reloc off data_ov090_02134524.
- * - Behavior keeps the unk_0ac copy after the terminal clamp.
+ * - Behavior keeps the mSpeedZ copy after the terminal clamp.
  *   Dropping it loses the reload of dActor_c's z speed.
  * - Matrix4x3 stays decl_common.h's flat s32[12].
  *   func_ov090_02132b14 indexes .m. common.h must not replace it.
@@ -345,16 +345,16 @@ int daManta_c::Behavior()
         forward.z = MANTA_FORWARD;
         Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mPrevAngleX);
-        MulVec3Mat4x3(&forward, &data_020a0e68, (Vector3 *)&unk_0a4);
+        MulVec3Mat4x3(&forward, &data_020a0e68, (Vector3 *)&mSpeedX);
     }
     {
         int speed = mVertSpeed + mVertAccel;
         int clamped = mTerminalVelocity;
-        int keep0ac = unk_0ac;
+        int keep0ac = mSpeedZ;
         if (speed >= clamped)
             clamped = speed;
         mVertSpeed = clamped;
-        unk_0ac = keep0ac;
+        mSpeedZ = keep0ac;
     }
     UpdatePosWithOnlySpeed(&mdCcAcPos_c);
     func_ov090_02132b14();
