@@ -3285,19 +3285,6 @@ extern "C" {
 void func_ov002_020c16ec(char *o, char *s)
 {
     Player *player = (Player *)o;
-    struct Obj16ec {
-        char pad554[0x554];
-        int f554;   // 0x554
-        int f558;   // 0x558
-        int f55c;   // 0x55c
-        char pad_to658[0x658 - 0x560];
-        int f658;   // 0x658
-        int f65c;   // 0x65c
-        int f660;   // 0x660
-        int f664;   // 0x664
-        int f66c;   // 0x66c
-        int f670;   // 0x670
-    };
     extern int func_02037e38(void*);
     extern int func_02037e58(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
