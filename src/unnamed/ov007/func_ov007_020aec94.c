@@ -1,5 +1,8 @@
+#include "Ov007MenuState.h"
+
 extern void func_ov007_020bd9e4(int);
 extern int* data_ov007_0210342c;
+/* data_ov007_0210342c's record has no class or header; its slot 2 holds an Ov007MenuState. */
 void func_ov007_020aec94(int r4){
   int* g = data_ov007_0210342c;
   int* r2 = (int*)(g[0xa]);
@@ -11,7 +14,7 @@ void func_ov007_020aec94(int r4){
     if(r5 != 0 || r6 != 0){
       int* p = (int*)(data_ov007_0210342c[0xa]);
       *(unsigned char*)((char*)p+0x39) = 1;
-      *(unsigned short*)((char*)(data_ov007_0210342c[2])+2) = 9;
+      ((Ov007MenuState *)data_ov007_0210342c[2])->requestedState = 9;
       return;
     }
   }
@@ -19,13 +22,13 @@ void func_ov007_020aec94(int r4){
     if(r6 != 0){
       int* p = (int*)(data_ov007_0210342c[0xa]);
       *(unsigned char*)((char*)p+0x39) = 2;
-      *(unsigned short*)((char*)(data_ov007_0210342c[2])+2) = 9;
+      ((Ov007MenuState *)data_ov007_0210342c[2])->requestedState = 9;
       return;
     }
   }
   if((unsigned int)(r4-3) <= 2){
-    *(unsigned short*)((char*)(data_ov007_0210342c[2])+2) = 0xb;
+      ((Ov007MenuState *)data_ov007_0210342c[2])->requestedState = 0xb;
   } else {
-    *(unsigned short*)((char*)(data_ov007_0210342c[2])+2) = 6;
+      ((Ov007MenuState *)data_ov007_0210342c[2])->requestedState = 6;
   }
 }

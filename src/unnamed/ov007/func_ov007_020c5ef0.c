@@ -13,6 +13,7 @@ extern void func_ov007_020c6b58(struct O* c);
 extern void func_ov007_020c64c4(struct O* c, int b);
 extern void func_ov007_020c62cc(struct O* c, int b);
 
+/* c: the record func_ov007_020b9f0c passes; no class or header names it, so raw. */
 void func_ov007_020c5ef0(struct O* c)
 {
     int i, j;
