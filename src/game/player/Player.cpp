@@ -913,47 +913,45 @@ void Player::func_ov002_020bdc18() {
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-void Player::IncMegaKillCount()
-{
-    struct Vec3
-    {
-      int x;
-      int y;
-      int z;
+void Player::IncMegaKillCount() {
+    struct Vec3 {
+        int x;
+        int y;
+        int z;
     };
-    extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int a, void*);
-    extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int id, unsigned int p, void*, void*, int a, int b);
+    extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int a, void *);
+    extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int id, unsigned int p,
+                                                                 void *, void *, int a, int b);
     extern void GiveLives(int);
-    extern void func_ov002_020f0e54(void*, void*);
-  struct Vec3 v;
-  char *new_var2;
-  int new_var3;
-  char *a;
-  int y;
-  if ((*((unsigned char *) ((char *)&mIsMega))) == 0)
-  {
-    return;
-  }
-  ++mMegaKillCount;
-  new_var3 = -1;
-  if (mMegaKillCount >= 8) {
-      mMegaKillCount = 8;
-      _ZN5Sound9PlayBank3EjRK7Vector3(0x6e, &mCamSpacePos);
-      GiveLives(1);
-  }
-  v.x = *((int *) ((char *)&mPosX));
-  y = *((int *) ((char *)&mPosY));
-  v.y = y;
-  v.z = mPosZ;
-  v.y = y + 0x190000;
-  new_var2 = (char *) _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x14b, mMegaKillCount, &v, 0, *((signed char *) ((char *)&mAreaId)), new_var3);
-  a = new_var2;
-  if (a == 0)
-  {
-    return;
-  }
-  *((unsigned short *) ((a + 0x100) + 0x4c)) = 0;
-  func_ov002_020f0e54(a, 0);
+    extern void func_ov002_020f0e54(void *, void *);
+    struct Vec3 v;
+    char *new_var2;
+    int new_var3;
+    char *a;
+    int y;
+    if ((*((unsigned char *)((char *)&mIsMega))) == 0) {
+        return;
+    }
+    ++mMegaKillCount;
+    new_var3 = -1;
+    if (mMegaKillCount >= 8) {
+        mMegaKillCount = 8;
+        _ZN5Sound9PlayBank3EjRK7Vector3(0x6e, &mCamSpacePos);
+        GiveLives(1);
+    }
+    v.x = *((int *)((char *)&mPosX));
+    y = *((int *)((char *)&mPosY));
+    v.y = y;
+    v.z = mPosZ;
+    v.y = y + 0x190000;
+    new_var2 = (char *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
+        0x14b, mMegaKillCount, &v, 0, *((signed char *)((char *)&mAreaId)), new_var3);
+    a = new_var2;
+    if (a == 0) {
+        return;
+    }
+    *((unsigned short *)((a + 0x100) + 0x4c)) = 0;
+    func_ov002_020f0e54(a, 0);
 }
 }
 
