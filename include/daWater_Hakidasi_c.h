@@ -41,13 +41,14 @@ struct daWater_Hakidasi_c : dEnemyBase_c {
     u8  pad_308[0x4];
     s32 mRingsPassed;                  /* 0x30c -- rings passed in order, 0..5, then 0xa once the STAR spawns */
     s32 mRewardTimer;               /* 0x310 -- frames until the STAR spawns; counts while mRingsPassed is 5 */
-    /* Both are decoded out of the spawn word (fBase_c::param1) by InitResources
-       and never read back anywhere in the tree, so what they select is unknown:
-       0x314 takes nibble 3 (param1 >> 12 & 0xf), 0x318 takes bit 0 but only when
-       the low nibble is 0 or 1. Deliberately left unk_ -- see
-       notes/enemy-leaf-provenance.md. */
-    s32 unk_314;                      /* 0x314 */
-    s32 unk_318;                      /* 0x318 */
+    /* Nibble 3 of param1 (InitResources). func_ov064_021193b4 spawns the
+       STAR (actor 0xb2) with param1 mStarID | 0x40, the spelling
+       daObjBk_Kabe_c uses for the same Spawn. Was unk_314. */
+    s32 mStarID; /* 0x314 */
+    /* Bit 0 of param1 when its low nibble is 0 or 1, else 0 (InitResources).
+       Set, func_ov064_021193b4 only re-feeds particle 0x7b: no WATER_RING
+       spawns, no ring count, no STAR. Was unk_318. */
+    s32 mNoRings; /* 0x318 */
 
     /* --- vtable --- */
     virtual ~daWater_Hakidasi_c();
@@ -120,8 +121,8 @@ struct daWater_Hakidasi_c {
     u8  pad_145[0x1bb];
     void *mState;                /* 0x300 */
     u8  pad_304[0x10];
-    s32 unk_314;            /* 0x314 */
-    s32 unk_318;            /* 0x318 */
+    s32 mStarID;  /* 0x314 */
+    s32 mNoRings; /* 0x318 */
 };
 
 #endif /* __cplusplus */
