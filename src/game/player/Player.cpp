@@ -534,9 +534,8 @@ extern "C" {
 int Player::func_ov002_020bd480(unsigned char *params, int beginFrame, int endFrame)
 {
     extern unsigned int ReadUnalignedInt(unsigned char *p);
-    unsigned char *c = (unsigned char *)this;
     unsigned int v = ReadUnalignedInt(params);
-    Sound::PlayCharVoice(c[0x6d9], v, *(Vector3*)(c+0x74));
+    Sound::PlayCharVoice(mCharacter, v, mCamSpacePos);
     return 1;
 }
 }
@@ -873,9 +872,7 @@ void Player::func_ov002_020bdb50(int arg) {
     if (this->mObjInMouth == 0) return;
     this->func_ov002_020d71a0();
     {
-        char *obj = (char *)mObjInMouth;
-        char* vt = *(char**)obj;
-        int r = (*(int(**)(char*))(vt+0x48))(obj);
+        int r = ((dActor_c *)mObjInMouth)->OnYoshiTryEat();
         if (r == 0) return;
     }
     {
@@ -936,28 +933,22 @@ void Player::IncMegaKillCount()
   char *new_var2;
   int new_var3;
   char *a;
-  char *st;
   int y;
-  char *new_var;
   if ((*((unsigned char *) ((char *)&mIsMega))) == 0)
   {
     return;
   }
   ++mMegaKillCount;
   new_var3 = -1;
-  st = ((char *)this);
-  st = st + 0x600;
-  if ((*((unsigned short *) (st + 0xd0))) >= 8)
-  {
-    *((unsigned short *) (st + 0xd0)) = 8;
-    _ZN5Sound9PlayBank3EjRK7Vector3(0x6e, &mCamSpacePos);
-    GiveLives(1);
+  if (mMegaKillCount >= 8) {
+      mMegaKillCount = 8;
+      _ZN5Sound9PlayBank3EjRK7Vector3(0x6e, &mCamSpacePos);
+      GiveLives(1);
   }
   v.x = *((int *) ((char *)&mPosX));
   y = *((int *) ((char *)&mPosY));
   v.y = y;
-  new_var = ((char *)this);
-  v.z = *((int *) (new_var + 0x64));
+  v.z = mPosZ;
   v.y = y + 0x190000;
   new_var2 = (char *) _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x14b, mMegaKillCount, &v, 0, *((signed char *) ((char *)&mAreaId)), new_var3);
   a = new_var2;
@@ -1472,9 +1463,7 @@ void Player::func_ov002_020be3b0()
 // @symbol _ZN6Player19func_ov002_020bea7cEv
 extern "C" {
 int Player::func_ov002_020bea7c(){
-    char* c = (char*)this;
-  char* p=c+0x700;
-  return *(unsigned short*)(p+0x3c)!=0;
+    return mCapFlags != 0;
 }
 }
 
@@ -4385,18 +4374,17 @@ void func_ov002_020c3160(Player *self, Arg1 *out) {
 /* recovered: shared common types */
 extern "C" {
 void Player::func_ov002_020c37a4(char *arg) {
-    char *self = (char *)this;
     extern void MulVec3Mat4x3(void *, void *, void *);
     extern void Vec3_MulScalar(void *, void *, int s);
     extern void Vec3_RotateYAndTranslate(void *, void *, int ang, void *);
     extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *);
-    unsigned int id = this->GetBodyModelID(*(int *)(self + 8) & 0xff, 0);
-    int r6 = *(int *)(*(int *)(self + (id << 2) + 0xdc) + 0x14) + 0x180;
-    unsigned int id2 = this->GetBodyModelID(*(int *)(self + 8) & 0xff, 0);
+    unsigned int id = this->GetBodyModelID(param1 & 0xff, 0);
+    Matrix4x3 *bone = &mBodyModels[id]->data.transforms[8];
+    unsigned int id2 = this->GetBodyModelID(param1 & 0xff, 0);
     struct Vector3 v;
     struct Vector3 s;
-    MulVec3Mat4x3((void *)(r6 + 0x24), (void *)(*(int *)(self + (id2 << 2) + 0xdc) + 0x1c), &v);
+    MulVec3Mat4x3(&bone->m[9], &mBodyModels[id2]->mat4x3, &v);
     Vec3_MulScalar(&s, &v, 0x8000);
     v = s;
     Vec3_RotateYAndTranslate(&v, &v, this->mAngleY, arg);
@@ -5633,9 +5621,8 @@ int Player::St_StuckInGround_Main()
         mStateWork++;
         break;
     case 2: {
-        void *anim = mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
-        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char *)anim + 0x50,
-                                                  data_ov002_020ff0ec[mStateStep])) {
+        ModelAnim *anim = mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+        if (anim->WillHitFrame(data_ov002_020ff0ec[mStateStep])) {
             func_ov002_020c5444();
             _ZN5Sound9PlayBank0EjRK7Vector3(0xb4, &mCamSpacePos);
         }
@@ -10880,8 +10867,8 @@ int Player::St_MetalWaterGround_Main()
         _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 0x48, 0, 0x1000, 0);
         int r5 = (int)((((long long)mHorzSpeed << 9) + 0x800) >> 12);
         if(r5 < 0x400) r5 = 0x400;
-        char *anim = (char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] + 0x50;
-        *(int*)(anim + 0xc) = r5;
+        dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+        anim.speed = r5;
         if (mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(4) != 0 ||
             mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(0x13) != 0) {
             func_0201251c(0, 0xaa, (void*)((char*)&mCamSpacePosX), mHorzSpeed);
@@ -11276,8 +11263,7 @@ int Player::St_Swim_Main()
     int var_r6;
     int var_r1;
     int has;
-    int* p;
-    int* sub;
+    int *p;
     unsigned int t5;
 
     if (mIsMetal != 0) {
@@ -11359,28 +11345,25 @@ int Player::St_Swim_Main()
                 _ZN6Player7SetAnimEji5Fix12IiEj(this, 0xa8, 0, 0x1000, 0);
             }
         } else if (mAngleX >= 0x1000) {
-            sub =
-                (int *)((char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] + 0x50);
-            if (*(int*)((char*)sub + 0xc) != 0x3000) {
-                sub = (int *)((char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] +
-                              0x50);
-                *(int*)((char*)sub + 0xc) = 0x3000;
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            if (anim.speed != 0x3000) {
+                dExtFrameCtrl_c &again =
+                    *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+                again.speed = 0x3000;
             }
         } else if (mAngleYSpeed != 0) {
-            sub =
-                (int *)((char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] + 0x50);
-            if (*(int*)((char*)sub + 0xc) != 0x2000) {
-                sub = (int *)((char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] +
-                              0x50);
-                *(int*)((char*)sub + 0xc) = 0x2000;
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            if (anim.speed != 0x2000) {
+                dExtFrameCtrl_c &again =
+                    *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+                again.speed = 0x2000;
             }
         } else {
-            sub =
-                (int *)((char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] + 0x50);
-            if (*(int*)((char*)sub + 0xc) != 0x1000) {
-                sub = (int *)((char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] +
-                              0x50);
-                *(int*)((char*)sub + 0xc) = 0x1000;
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            if (anim.speed != 0x1000) {
+                dExtFrameCtrl_c &again =
+                    *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+                again.speed = 0x1000;
             }
         }
         if (func_ov002_020ce324(this) != 0) return 1;
@@ -11455,8 +11438,10 @@ int Player::St_Swim_Main()
             }
         }
         _ZN5dCc_c5ClearEv(&mAttackClsn);
-        sub = (int *)((char *)mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)] + 0x50);
-        t5 = ((unsigned int)(*(int*)((char*)sub + 8)) << 4) >> 0x10;
+        {
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            t5 = ((unsigned int)anim.currFrame << 4) >> 0x10;
+        }
         if ((int)t5 >= 5 && (int)t5 <= 7) {
             _ZN5dCc_c6UpdateEv(&mAttackClsn);
         }
@@ -12290,8 +12275,8 @@ int Player::St_CeilingGrate_Main()
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), data_ov002_0210a60c[mStateWork & 1], 0, 0x1000, 0);
         }
         {
-            char *anim = (char *)mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)] + 0x50;
-            if ((u32)(*(int*)(anim + 8) << 4) >> 0x10 < 0x21)
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            if ((u32)(anim.currFrame << 4) >> 0x10 < 0x21)
                 break;
         }
     case 1:
@@ -12311,8 +12296,8 @@ int Player::St_CeilingGrate_Main()
         if (spd < 0x800)
             spd = 0x800;
         {
-            char *anim = (char *)mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)] + 0x50;
-            *(int*)(anim + 0xc) = spd;
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            anim.speed = spd;
         }
         if (this->FinishedAnim() != 0) {
             _ZN5Sound9PlayBank0EjRK7Vector3(0xb2, &mCamSpacePos);
@@ -13025,8 +13010,8 @@ int Player::St_LedgeGrab_Main()
     this->ChangeState(data_ov002_0211013c);
   if(this->IsAnim(0x20)){
     int id=this->GetBodyModelID(param1&0xff, 0);
-    void *anim = mBodyModels[id];
-    if(_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)anim+0x50,0x1e))
+    ModelAnim *anim = mBodyModels[id];
+    if (anim->WillHitFrame(0x1e))
         _ZN5Sound9PlayBank0EjRK7Vector3(mGroundSoundType + 0x40, &mCamSpacePos);
   }
   Player_AdvanceAnims(((char*)this));
@@ -13357,15 +13342,17 @@ int Player::St_Crawl_Main()
         s16 val1 = *(s16*)((char*)data_0209f4a0 + off);
         if (val1 >= 0x200 && ((*(u16*)((char*)data_0209f49c + off) & 0x400) != 0 || func_ov002_020d1164(((char*)this)) != 0)) {
             int id = this->GetBodyModelID(param1 & 0xff, 0);
-            char* anim = (char*)mBodyModels[id] + 0x50;
-            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0xe) ||
+            ModelAnim *anim = mBodyModels[id];
+            if (anim->WillHitFrame(0xe) ||
                 mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x1c)) {
                 _ZN5Sound9PlayBank0EjRK7Vector3(mGroundSoundType + 0xc0, &mCamSpacePos);
             }
             int shifted = mHorzSpeed >> 2;
             int id3 = this->GetBodyModelID(param1 & 0xff, 0);
-            char* anim3 = (char*)(((long long)(int)((char*)mBodyModels[id3] + 0x50)));
-            *(int*)(anim3 + 0xc) = shifted;
+            /* Launder kept: storing through mBodyModels[id3] directly moves bytes. */
+            dExtFrameCtrl_c *anim3 = reinterpret_cast<dExtFrameCtrl_c *>(
+                (long long)(int)&static_cast<dExtFrameCtrl_c &>(*mBodyModels[id3]));
+            anim3->speed = shifted;
             if (func_ov002_020d36d8(((char*)this), 1))
                 return 1;
             int r4v = Player_ScaleByCharFactor(((char*)this), 0x8000);
@@ -14337,8 +14324,8 @@ int Player::St_Wait_Main()
             break;
         case 0: {
             int idA = this->GetBodyModelID(x1&0xff, 0);
-            void *animA = mBodyModels[idA];
-            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)animA+0x50, 0x5a)) {
+            ModelAnim *animA = mBodyModels[idA];
+            if (animA->WillHitFrame(0x5a)) {
                 _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x2d, &mCamSpacePos);
             } else if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x3a) ||
                        mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x44)) {
@@ -14348,13 +14335,13 @@ int Player::St_Wait_Main()
         }
         case 1: {
             int idD = this->GetBodyModelID(x1&0xff, 0);
-            void *animD = mBodyModels[idD];
-            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)animD+0x50, 0x6e)) {
+            ModelAnim *animD = mBodyModels[idD];
+            if (animD->WillHitFrame(0x6e)) {
                 _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x2d, &mCamSpacePos);
             } else {
                 int idE = this->GetBodyModelID(param1&0xff, 0);
-                void *animE = mBodyModels[idE];
-                if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)animE+0x50, 0x32)) {
+                ModelAnim *animE = mBodyModels[idE];
+                if (animE->WillHitFrame(0x32)) {
                     _ZN5Sound9PlayBank0EjRK7Vector3(0xb1, &mCamSpacePos);
                 }
             }
@@ -14362,8 +14349,8 @@ int Player::St_Wait_Main()
         }
         case 2: {
             int idF = this->GetBodyModelID(x1&0xff, 0);
-            void *animF = mBodyModels[idF];
-            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)animF+0x50, 0x20)) {
+            ModelAnim *animF = mBodyModels[idF];
+            if (animF->WillHitFrame(0x20)) {
                 _ZN5Sound9PlayBank0EjRK7Vector3(2, &mCamSpacePos);
             } else if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x47) ||
                        mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x60)) {
@@ -14373,8 +14360,8 @@ int Player::St_Wait_Main()
         }
         case 3: {
             int idI = this->GetBodyModelID(x1&0xff, 0);
-            void *animI = mBodyModels[idI];
-            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)animI+0x50, 0xad)) {
+            ModelAnim *animI = mBodyModels[idI];
+            if (animI->WillHitFrame(0xad)) {
                 _ZN5Sound9PlayBank0EjRK7Vector3(0x50, &mCamSpacePos);
             }
             break;
@@ -16076,10 +16063,8 @@ int Player::St_BurnFire_Main()
         if (mIsAirborne == 0) {
             mStateStep = 1;
             _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x3f, 0, 0x1000, 0);
-            {
-                char *anim = (char *)((char *)mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)] + 0x50);
-                *(int *)(anim + 0xc) = 0x4000;
-            }
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            anim.speed = 0x4000;
         }
         break;
     case 1:
@@ -16103,8 +16088,8 @@ int Player::St_BurnFire_Main()
         }
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x3f, 0, 0x1000, 0);
         {
-            char *anim = (char *)((char *)mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)] + 0x50);
-            *(int *)(anim + 0xc) = 0x4000;
+            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            anim.speed = 0x4000;
         }
         {
             int idx = gActivePlayerSlot * 0x18;
@@ -17459,16 +17444,13 @@ void func_ov002_020d71ec(char* p, int arg1)
     extern struct P2 data_ov002_0210eb88;
     extern u8 data_ov002_020ff0f8[];
     int arr[4];
-    char* model;
-    char* sub;
     u32 shifted;
     int val;
 
     if (arg1 != 2) {
-        model =
-            *(char **)(p + _ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0) * 4 + 0xdc);
-        sub = (char*)(model + 0x50);
-        shifted = ((u32)*(int*)(sub + 8) << 4) >> 0x10;
+        dExtFrameCtrl_c &anim =
+            *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
+        shifted = ((u32)anim.currFrame << 4) >> 0x10;
         *(struct P2*)&arr[0] = data_ov002_0210a34c;
         *(struct P2*)&arr[2] = data_ov002_0210a084;
         _ZN6Player7SetAnimEji5Fix12IiEj(p, arr[arg1], 0x40000000, 0x1000, 0);
@@ -17481,12 +17463,11 @@ void func_ov002_020d71ec(char* p, int arg1)
 
         if (arg1 == 1) {
             val = data_ov002_020ff0f8[shifted];
-            model = *(char **)(p + _ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0) * 4 +
-                               0xdc);
-            sub = (char*)(model + 0x50);
+            dExtFrameCtrl_c &body =
+                *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
             val = ((u32)val << 0x10) >> 4;
-            *(int*)(sub + 8) = val;
-            *(int *)((int)player->mHeadModels[3] + 0x58) = val;
+            body.currFrame = val;
+            player->mHeadModels[3]->currFrame = val;
         }
 
         player->mStateStep = 1;
@@ -17651,7 +17632,7 @@ int Player::St_YoshiPower_Main()
     switch (mStateStep) {
     case 0: {
         if (mStateArg == 0) {
-            int t4 = (*(int *)((char *)mHeadModels[3] + 0x58) >> 0xc) << 0x10;
+            int t4 = (mHeadModels[3]->currFrame >> 0xc) << 0x10;
             int id0 = this->GetBodyModelID(this->param1 & 0xff, 0);
             dp = (char*)*(void**)(c + (id0<<2) + 0xdc);
             dp = (char*)(dp + 0x50);
@@ -18488,14 +18469,15 @@ void func_ov002_020d8a50(char* self, int which)
     extern int func_ov002_020ef070(void*, char*);
     int flag = 1;
     u32 i2 = (u8)(which << 1);
-    char* model;
-    char* anim;
+    ModelAnim *model;
+    dExtFrameCtrl_c *anim;
     int frame;
 
-    model = *(char **)(self + _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0) * 4 +
-                       0xdc);
-    anim = (char*)((long long)(int)(model + 0x50));
-    frame = (u16)(*(int*)(anim + 8) >> 12);
+    model = player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
+    /* Launder kept: reading model->currFrame directly moves bytes. */
+    anim = reinterpret_cast<dExtFrameCtrl_c *>(
+        (long long)(int)&static_cast<dExtFrameCtrl_c &>(*model));
+    frame = (u16)(anim->currFrame >> 12);
     if (frame < data_ov002_0210a5cc[i2] || frame > data_ov002_0210a5cc[i2 + 1]) {
         flag = 0;
         _ZN5dCc_c5ClearEv(&player->mAttackClsn);
@@ -18521,9 +18503,8 @@ void func_ov002_020d8a50(char* self, int which)
     if (flag == 1)
         _ZN5dCc_c6UpdateEv(&player->mAttackClsn);
 
-    model = *(char **)(self + _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0) * 4 +
-                       0xdc);
-    if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(model + 0x50, data_ov002_0210a5cc[i2]))
+    model = player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
+    if (!model->WillHitFrame(data_ov002_0210a5cc[i2]))
         return;
 
     switch (which) {
@@ -19201,9 +19182,8 @@ void func_ov002_020d9a4c(char *c) {
     extern u8 data_ov002_02109dc4[];
     Player *player = (Player *)c;
     int idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-    int anim = *(int*)(c + idx * 4 + 0xdc);
-    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char *)anim + 0x50,
-                                              data_ov002_02109dc4[player->mStateStep & 7]) != 0)
+    ModelAnim *anim = player->mBodyModels[idx];
+    if (anim->WillHitFrame(data_ov002_02109dc4[player->mStateStep & 7]) != 0)
         player->mStateWork |= 1;
 }
 }
@@ -20056,8 +20036,8 @@ int Player::St_Throw_Main() {
     if (*(char **)((char *)&mHeldObj)) {
         int r4 = 5;
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        void *anim = mBodyModels[id];
-        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char *)anim + 0x50, 0)) {
+        ModelAnim *anim = mBodyModels[id];
+        if (anim->WillHitFrame(0)) {
             if (func_ov002_020c19d0(0x40, 0x32))
                 r4 = 0;
         }
@@ -20078,8 +20058,8 @@ int Player::St_Throw_Main() {
     }
     Ld0:
         int id2 = this->GetBodyModelID(param1 & 0xff, 0);
-        void *anim2 = mBodyModels[id2];
-        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char *)anim2 + 0x50, r4)) {
+        ModelAnim *anim2 = mBodyModels[id2];
+        if (anim2->WillHitFrame(r4)) {
             int b2 = (((dActor_c *)mHeldObj)->mFlags & 0x200) ? 1 : 0;
             if (b2 == 0)
                 func_ov002_020daa74();
@@ -24792,15 +24772,9 @@ void func_ov002_020e1c20(char *c) {
             player->mStateStep = 1;
             player->mVertAccel = 0;
             _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x3f, 0, 0x1000, 0);
-            {
-                int id;
-                char *p = (char *)(((
-                    long long)((int)((*((char **)((c + 0xdc) + (_ZNK6Player14GetBodyModelIDEjb(
-                                                                    c, (player->param1) & 0xff, 0) *
-                                                                4)))) +
-                                     0x50))));
-                *((int *)(p + 0xc)) = 0x4000;
-            }
+            dExtFrameCtrl_c &anim =
+                *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
+            anim.speed = 0x4000;
         }
     }
 }
@@ -24834,15 +24808,9 @@ void func_ov002_020e1e70(char *c) {
     }
     if ((*((unsigned short *)(&data_0209f49c[gActivePlayerSlot * 0x18]))) & 2) {
         _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x3f, 0, 0x1000, 0);
-        {
-            int id;
-            char *p = (char *)(((long long)((
-                int)((*((char **)((c + 0xdc) +
-                                  (_ZNK6Player14GetBodyModelIDEjb(c, (player->param1) & 0xff, 0) *
-                                   4)))) +
-                     0x50))));
-            *((int *)(p + 0xc)) = 0x4000;
-        }
+        dExtFrameCtrl_c &anim =
+            *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
+        anim.speed = 0x4000;
         player->mLoopingSoundHandle =
             func_02012120(player->mLoopingSoundHandle, player->mCharacter, 0x18,
                           (const struct Vector3 *)(&player->mCamSpacePosX), 0);
