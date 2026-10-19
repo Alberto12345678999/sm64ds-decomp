@@ -282,7 +282,12 @@ struct Player : dActor_c {
        More than 0x64000 below it, func_ov002_020c133c hurts the player and
        St_Wait_Init plays anim 5. */
     s32 mToxicSurfaceY;     /* 0x650 */
-    s32 unk_654;            /* 0x654 */
+    /* Yoshi's tongue against walls. func_ov002_020d6dac, run by the tongue
+       grab func_ov002_020d6998 (mHatCharacter 3), casts a dBgCh_Lin between
+       two bones of mHeadModels[3] and stores func_02053274's distance from
+       the first to the hit point here; Behavior scales that model's bone by
+       |dist| >> 3 while it is nonzero, and ChangeState zeroes it. */
+    s32 mTongueHitDist; /* 0x654 */
     /* --- Unpacked CLPS (collision property) fields ---------------------
      * Player::SetFloorSurfaceInfo (func_ov002_020c16ec) calls one bitfield
      * getter per field on the floor's CLPS and stores each result here. The
@@ -309,7 +314,16 @@ struct Player : dActor_c {
     s32 mGroundSoundType;            /* 0x66c  CLPS bits 0-4, getter func_02037e84 */
     s32 mClpsWord1Lo;            /* 0x670  CLPS word1 bits 0-7, getter func_02037e90 */
     s32 mHurtDamage;            /* 0x674 */
-    u8  pad_678[0xc];
+    /* Two music layers over the level music, both Sound::SetMusic ids.
+       func_ov002_020bd9ec(id) starts a power-up's music in mPowerupMusic
+       (Mega 0x31, Fire Yoshi 0x32, Vanish/Wings 0x33, Metal 0x34, Balloon
+       0x30) and func_ov002_020bd984 ends it; func_ov002_020bd928 and
+       func_ov002_020bd8c0 do the same for mStateMusic (St_Owl 0x2f, St_Shell
+       and St_Swim 0x33). mPlayingMusic is the one SetMusic last started;
+       ending a layer restarts the other if it is still set. */
+    u32 mPowerupMusic;     /* 0x678 */
+    u32 mStateMusic;       /* 0x67c */
+    u32 mPlayingMusic;     /* 0x680 */
     s32 mPeakY;            /* 0x684 */
     s32 mAttachOffsetY;            /* 0x688 */
     s32 mSinkDepth;            /* 0x68c */
@@ -348,7 +362,10 @@ struct Player : dActor_c {
     u16 mStickGraceTimer;         /* 0x6ac */
     u16 mPowerupTimer;            /* 0x6ae */
     u16 mCrouchTimer;            /* 0x6b0 */
-    u16 unk_6b2;            /* 0x6b2 */
+    /* Hold between two steps of the scale animation at mScaleAnimStep:
+       func_ov002_020db704 sets it to 10 when step 1 or 6 reaches its
+       target and moves on when Behavior has counted it down to 1. */
+    u16 mScaleAnimTimer;            /* 0x6b2 */
     u16 mHoldHeavyTimer;            /* 0x6b4 */
     /* Climb re-grab cooldown: St_Climb_Cleanup sets it to 8 when the player
        leaves the climb for a non-climb state, Behavior counts it down, and
@@ -362,7 +379,11 @@ struct Player : dActor_c {
        quicksand handler skips sinking. */
     u16 mWaterRunTimer;     /* 0x6ba */
     u16 mQuicksandRunTimer; /* 0x6bc */
-    u16 unk_6be;            /* 0x6be */
+    /* Fire Yoshi: func_ov002_020d8118 sets it to 0x258 with mIsFire and the
+       power-up music 0x32; Behavior counts it down and, at 0, calls
+       func_ov002_020d80d0, which clears all three. While it runs,
+       St_YoshiPower_Init refills mFireBreaths to 2. */
+    u16 mFireTimer; /* 0x6be */
     /* u16, not s16: every READ of this slot in the ROM is an ldrh --
        func_ov002_020e4bb8 tests `< 0x3f` and `& 1`, Behavior passes it to
        DecIfAbove0_Short(u16*), St_Balloon_Main tests `== 0`. Only the stores
@@ -372,8 +393,17 @@ struct Player : dActor_c {
        Behavior counts it down, St_Balloon_Main exits when it reaches 0, and
        020e4bb8 blinks the balloon below 0x3f. */
     u16 mBalloonTimer;            /* 0x6c0 */
-    u16 unk_6c2;            /* 0x6c2 */
-    u16 unk_6c4;            /* 0x6c4 */
+    /* Mega: func_ov002_020bdf8c sets mIsMega and this to 0x258 (with the
+       power-up music 0x31), func_ov002_020c8d14 resets it to 0x258, and
+       when Behavior has counted it down to 0 it calls func_ov002_020bdd2c,
+       which shrinks the player back and ends the music. */
+    u16 mMegaTimer; /* 0x6c2 */
+    /* Set to 2 by the quicksand handler func_ov002_020bfec0 in the land
+       state (0x02110424) unless the previous state was 0x021104cc; Behavior
+       counts it down. func_ov002_020e2ad0, run by the jump inits, damps the
+       jump out of quicksand only once it is 0; before that it just keeps
+       mSinkDepth at least 0xb000. */
+    u16 mQuicksandJumpTimer;        /* 0x6c4 */
     u16 mMouthHoldTimer;            /* 0x6c6 */
     u16 mTeleportTimer;            /* 0x6c8 */
     /* func_ov002_020cec2c (the water states): counts up while the player is
@@ -427,23 +457,57 @@ struct Player : dActor_c {
        St_Walk_Init and St_Crouch_Init play a voice. */
     u8 mDashBoostTimer;     /* 0x6ed */
     u8  unk_6ee;            /* 0x6ee */
-    u8  pad_6ef[0x3];
-    u8  unk_6f2;            /* 0x6f2 */
-    u8  pad_6f3[0x1];
-    u8  unk_6f4;            /* 0x6f4 */
+    u8 pad_6ef[0x1];
+    /* Turn ramp in func_ov002_020d3b9c's walk turning (input mode byte
+       data_0209f4ac == 0, stick at least 0xa00): counts up to 0x18 while the
+       stick is 0x1000 or more off mPrevAngleY and drops by 2 otherwise. The
+       ApproachAngle divisor is 0x10 - ramp / 2, so the longer a sharp turn is
+       held, the faster the player swings round. */
+    u16 mTurnRamp; /* 0x6f0 */
+    /* A squash-and-stretch on mScale, run each frame by func_ov002_020db704
+       and started by func_ov002_020db8bc(kind), which sets the step to 1 and
+       zeroes mScaleAnimTimer. Kinds 0 and 1 step mScaleY through the tables
+       data_ov002_020ff2c0 / data_ov002_020ff230 with X and Z set to
+       (0x1000 - Y) / 2 + 0x1000: 0 after a stomp (func_ov002_020d869c),
+       1 after St_Squish and a long fall (func_ov002_020e2c84). Kind 2 grows
+       the scale to 0x3000, kind 3 shrinks it to 0x1000 (leaving Mega,
+       func_ov002_020bdd2c). Step 0 is idle; starting Mega
+       (func_ov002_020bdf8c), func_ov002_020c61ac and Unk_020c6a10 reset it. */
+    u8 mScaleAnimStep; /* 0x6f2 */
+    u8 mScaleAnimKind; /* 0x6f3 */
+    /* Fire breaths Yoshi has left: St_YoshiPower_Init plays the breath
+       (anim 0x6d, voice 0x101) instead of the tongue while it is nonzero and
+       takes one. Swallowing a type-5 object leaves one (func_ov002_020d6790,
+       St_YoshiPower_Main), InitFireYoshi's func_ov002_020d8158 sets 1, and
+       mFireTimer refills it to 2; func_ov002_020d80d0 and the cap change
+       clear it. */
+    u8 mFireBreaths;         /* 0x6f4 */
     u8  mOpacity;            /* 0x6f5 */
     u8  mIsControlDisabled;            /* 0x6f6 */
     u8  mSwimMusicPushed;            /* 0x6f7 */
-    u8  pad_6f8[0x1];
+    /* Fire Yoshi is on: func_ov002_020d8118 sets it with mFireTimer, and
+       func_ov002_020d80d0 does nothing unless it is 1, then clears it,
+       mFireTimer and mFireBreaths and ends the music. */
+    u8 mIsFire;              /* 0x6f8 */
     u8  mIsMetal;            /* 0x6f9 */
-    u8  unk_6fa;            /* 0x6fa */
+    /* The power-up state as drawn. func_ov002_020e4bb8 copies mIsMetal,
+       mIsBalloon, mHasWings and HasNoCap() here after the update (mIsVanish
+       goes to mPlayerTexFrame), dropping the power-ups on the off frames of
+       the blink when mPowerupTimer or mBalloonTimer is below 0x3f; Render,
+       GetBodyModelID(id, true) and func_ov002_020becf4(id, 1) read these
+       copies rather than the live flags. */
+    u8 mDrawnIsMetal;         /* 0x6fa */
     u8  mIsVanish;            /* 0x6fb */
     u8  mPlayerTexFrame;            /* 0x6fc */
     u8  mIsBalloon;            /* 0x6fd */
-    u8  pad_6fe[0x1];
+    u8 mDrawnIsBalloon;        /* 0x6fe */
     u8  mHasWings;            /* 0x6ff */
-    u8  unk_700;            /* 0x700 */
-    u8  pad_701[0x2];
+    u8 mDrawnHasWings;        /* 0x700 */
+    u8 mDrawnHasNoCap;        /* 0x701 */
+    /* func_ov002_020e4bb8's blink phase: 0, then mPowerupTimer & 1 once the
+       timer is below 0x3f; a 0 there drops the wings, vanish and metal from
+       that frame's drawn copies. */
+    u8 mPowerupBlinkOn;     /* 0x702 */
     u8  mIsMega;            /* 0x703 */
     u8  mEggParams;            /* 0x704 */
     u8  pad_705[0x1];
@@ -463,7 +527,13 @@ struct Player : dActor_c {
        floor; while set, the next call snaps again within the same 0xc8000
        window. Cleared on every other exit. */
     u8 mSnapToFloor;        /* 0x70f */
-    u8  unk_710;            /* 0x710 */
+    /* 1 while the move input asks for a walk rather than a run:
+       func_ov002_020d4748 sets it each frame from the stick magnitude
+       against 0xdc7 (0xe00 in input mode 2) plus 0x80 while it is already
+       set, or, in input mode 0, from input flag 0x800 not being held. It
+       picks animation 0x48 there, and St_Walk_Main lowers its stop
+       threshold by 0x80 while it is set. */
+    u8 mIsWalkPace; /* 0x710 */
     /* Set to 1 only by func_ov002_020c71e0, the last step of St_LevelEnter;
        dScStage_c::RenderVsModeCountdown counts the players that have it. */
     u8 mLevelEntryDone;           /* 0x711 */
@@ -471,8 +541,18 @@ struct Player : dActor_c {
     u8  mIsBodyClsnEnabled;            /* 0x713 */
     u8  mUseAltBodyModel;            /* 0x714 */
     u8  mUseFarCamera;            /* 0x715 */
-    u8  unk_716;            /* 0x716 */
-    u8  unk_717;            /* 0x717 */
+    /* func_ov002_020c2db8 runs the floor probe, then returns before
+       everything that reacts to it (slide type, floor snap, wall push,
+       ground sounds, the lava and water-run checks) while this is set.
+       Talk, DeadPit, Squish, Grabbed and the scripted sequences
+       (func_ov002_020c3bdc, func_ov002_020c9ac0 and its siblings) set it;
+       ChangeState and St_Respawn_Init clear it. */
+    u8 mSkipGroundUpdate; /* 0x716 */
+    /* func_ov002_020e444c skips DropShadowRadHeight while it is set. The
+       Headstand, Climb and Grabbed inits set it, 020e444c itself sets it
+       when the player is fully transparent, and ChangeState and the balloon
+       blink in func_ov002_020e4bb8 clear it. */
+    u8 mHideShadow;                      /* 0x717 */
     u8  mLoadedResourceFlags;            /* 0x718 */
     s8  mKeyModelId;            /* 0x719 */
     u8  mHasNoCap;            /* 0x71a */
@@ -498,8 +578,14 @@ struct Player : dActor_c {
     u8  unk_724;            /* 0x724 */
     u8  unk_725;            /* 0x725  latch: St_Talk_Cleanup reloads music layer 1 when set */
     s8  unk_726;            /* 0x726 */
-    u8  unk_727;            /* 0x727 */
-    u8  unk_728;            /* 0x728 */
+    /* The scripted animation sequence the Kuppa script started. Command
+       func_ov002_020bd20c stores its parameter byte here (1-based, 0 for
+       none) and zeroes mAnimScriptStep, after func_ov002_020bd06c has
+       closed the old one; func_ov002_020bcdf0 plays entry mAnimScriptStep of
+       data_ov002_0210a7a0[mAnimScriptId - 1] (anim id, parameter) and steps
+       to the next when the animation finishes, until an id of 0. */
+    u8 mAnimScriptId;   /* 0x727 */
+    u8 mAnimScriptStep; /* 0x728 */
     u8 pad_729[0x3];
     /* A cap (actor 0x10d, the actor daMky_c spawns as the lost cap).
        func_ov002_020bd06c spawns it when animation script 8, 9 or 10 starts
@@ -507,7 +593,17 @@ struct Player : dActor_c {
        scripts is left; func_ov002_020bcdf0 keeps it on mPos and the
        player's angles. */
     dActor_c *mCapActor; /* 0x72c */
-    u8 pad_730[0xc];
+    /* A flight along the control points data_ov002_0210a8b8 ({speed, x, y,
+       z} rows), a uniform cubic B-spline: func_ov002_020c3148 resets it,
+       func_ov002_020c3160 weights four rows from mSplinePoint by the basis
+       at mSplineT (fx12), using mSplineSpan 1..5 to pick the clamped-end
+       variants, and func_ov002_020c2fec advances mSplineT by the row's
+       speed / 1000, moving to the next point at 0x1000. Driven by
+       func_ov002_020c38a0 (anim 0xc1). */
+    u8 mSplinePoint; /* 0x730 */
+    u8 pad_731[0x3];
+    s32 mSplineT;             /* 0x734 */
+    s32 mSplineSpan;          /* 0x738 */
     u16 mCapFlags;            /* 0x73c */
     /* Ticks left in the current mCapFlags phase. The cap-change update loads
        it from a per-phase table, counts it down every frame, and advances
