@@ -3153,28 +3153,18 @@ void Player::func_ov002_020c14b8()
         unsigned short f18, f1a;
         int f1c, f20, f24;
     } ClsnResultTmp;
-    typedef struct { int x, y, z; } Vector3i;
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern int _ZN6Player12Unk_020c9e5cEh(void*, unsigned char state);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
+    extern int _ZN6Player12Unk_020c9e5cEh(void *, unsigned char state);
     extern void func_ov002_020c16ec(void*, void*);
-    extern void _ZN5dBgPiD1Ev(void*);
-    extern void _ZN5dBgCh19StartDetectingWaterEv(void*);
-    extern void _ZN5dBgCh19StartDetectingToxicEv(void*);
-    extern void _ZN5dBgCh21StopDetectingOrdinaryEv(void*);
+    extern void _ZN5dBgPiD1Ev(void *);
     extern int SurfaceInfo_TestFlag0x20(void*);
-    extern int func_02037e20(void*);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
+    extern int func_02037e20(void *);
     extern int data_02099368;
     extern int data_0209f32c;
     char *c = (char *)arg0;
-    char rg[0x50];
-    Vector3i pos;
+    dBgCh_Gnd rg;
+    Vector3 pos;
     ClsnResultTmp tmp;
     int savedY;
-
-    _ZN9dBgCh_GndC1Ev(rg);
 
     savedY = 0x80000000;
     if (_ZN6Player12Unk_020c9e5cEh(c, 7) || _ZN6Player12Unk_020c9e5cEh(c, 0xa) || _ZN6Player12Unk_020c9e5cEh(c, 0xb) || _ZN6Player12Unk_020c9e5cEh(c, 0xe))
@@ -3198,38 +3188,43 @@ void Player::func_ov002_020c14b8()
         pos.y = y;
         pos.z = z;
     }
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rg, &pos, c);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(rg)) {
+    rg.SetObjAndPos(pos, this);
+    if (rg.DetectClsn()) {
         int *dst = &tmp.f04;
-        { struct P2w { int w[2]; }; *(P2w *)dst = *(P2w *)(rg + 0x14); }
-        dst[2] = *(int *)(rg + 0x1c);
-        dst[3] = *(int *)(rg + 0x20);
-        dst[4] = *(int *)(rg + 0x24);
+        {
+            struct P2w {
+                int w[2];
+            };
+            *(P2w *)dst = *(P2w *)&rg.surface.clps;
+        }
+        dst[2] = rg.surface.normal.x;
+        dst[3] = rg.surface.normal.y;
+        dst[4] = rg.surface.normal.z;
         tmp.tag = &data_02099368;
-        tmp.f18 = *(unsigned short *)(rg + 0x28);
-        tmp.f1a = *(unsigned short *)(rg + 0x2a);
-        tmp.f1c = *(int *)(rg + 0x2c);
-        tmp.f20 = *(int *)(rg + 0x30);
-        tmp.f24 = *(int *)(rg + 0x34);
+        tmp.f18 = rg.triangleID;
+        tmp.f1a = rg.colliderIdx;
+        tmp.f1c = rg.clsnID;
+        tmp.f20 = (int)rg.owner;
+        tmp.f24 = (int)rg.collider;
         func_ov002_020c16ec(c, &tmp);
         _ZN5dBgPiD1Ev(&tmp);
-        mProbedGroundY = *(int *)(rg + 0x44);
+        mProbedGroundY = rg.clsnY;
         mGroundY = mProbedGroundY;
         mProbedSurfaceType = mSurfaceType;
     }
 
     pos.y = mPosY + 0x12c000;
-    _ZN5dBgCh19StartDetectingWaterEv(rg);
-    _ZN5dBgCh19StartDetectingToxicEv(rg);
-    _ZN5dBgCh21StopDetectingOrdinaryEv(rg);
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rg, &pos, c);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(rg)) {
-        if (SurfaceInfo_TestFlag0x20((int *)(rg + 0x14)) != 0) {
-            mWaterSurfaceY = *(int *)(rg + 0x44);
+    rg.StartDetectingWater();
+    rg.StartDetectingToxic();
+    rg.StopDetectingOrdinary();
+    rg.SetObjAndPos(pos, this);
+    if (rg.DetectClsn()) {
+        if (SurfaceInfo_TestFlag0x20(&rg.surface) != 0) {
+            mWaterSurfaceY = rg.clsnY;
             data_0209f32c = mWaterSurfaceY;
         }
-        if (func_02037e20((int *)(rg + 0x14)) != 0) {
-            mToxicSurfaceY = *(int *)(rg + 0x44);
+        if (func_02037e20((int *)&rg.surface) != 0) {
+            mToxicSurfaceY = rg.clsnY;
         }
     }
 
@@ -3239,8 +3234,6 @@ void Player::func_ov002_020c14b8()
 
     if (savedY != (int)0x80000000)
         mGroundY = savedY;
-
-    _ZN9dBgCh_GndD1Ev(rg);
 }
 }
 
@@ -3800,8 +3793,7 @@ int Player::func_ov002_020c25a8(int arg1)
     extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void*);
     extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int func_02035638(void*);
-    extern void func_020371fc(void*);
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void*);
+    extern void func_020371fc(void *);
     extern void func_ov002_020c16ec(void*, void*);
     extern void _ZN5dBgPiD1Ev(void*);
     extern int func_02037e58(void*);
@@ -3820,7 +3812,7 @@ int Player::func_ov002_020c25a8(int arg1)
     Vector3i v;
     Vector3i wn;
     ClsnResultTmp tmp;
-    char *fr;
+    dBgPi *fr;
     int *dst;
 
     func_02037318(&mMeshClsn);
@@ -3890,28 +3882,33 @@ int Player::func_ov002_020c25a8(int arg1)
         func_020371fc(&mMeshClsn);
 
     if (mClsnFlags & 1) {
-        fr = (char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn);
+        fr = (dBgPi *)mMeshClsn.GetFloorResult();
         dst = &tmp.f04;
 
-        { struct P2w { int w[2]; }; *(P2w *)dst = *(P2w *)(fr + 0x4); }
-        dst[2] = *(int*)(fr + 0xc);
-        dst[3] = *(int*)(fr + 0x10);
-        dst[4] = *(int*)(fr + 0x14);
+        {
+            struct P2w {
+                int w[2];
+            };
+            *(P2w *)dst = *(P2w *)&fr->surface.clps;
+        }
+        dst[2] = fr->surface.normal.x;
+        dst[3] = fr->surface.normal.y;
+        dst[4] = fr->surface.normal.z;
         tmp.tag = &data_02099368;
-        tmp.f18 = *(unsigned short*)(fr + 0x18);
-        tmp.f1a = *(unsigned short*)(fr + 0x1a);
-        tmp.f1c = *(int*)(fr + 0x1c);
-        tmp.f20 = *(int*)(fr + 0x20);
-        tmp.f24 = *(int*)(fr + 0x24);
+        tmp.f18 = fr->triangleID;
+        tmp.f1a = fr->colliderIdx;
+        tmp.f1c = fr->clsnID;
+        tmp.f20 = (int)fr->owner;
+        tmp.f24 = (int)fr->collider;
 
         func_ov002_020c16ec(c, &tmp);
         _ZN5dBgPiD1Ev(&tmp);
 
         mGroundY = mPosY;
-        ret = func_02037e58(fr + 4);
+        ret = func_02037e58(&fr->surface);
 
         if (mIsUnderwater == 0 && ret != 1) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(fr + 4, &v);
+            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
             if (v.y != 0) {
                 int t = _ZN4cstd4fdivEii(
                     FX_MUL(v.x, *(int *)(c + 0xa4)) + FX_MUL(v.z, *(int *)(c + 0xac)), v.y);
@@ -4028,7 +4025,6 @@ void Player::func_ov002_020c2b08()
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern char data_ov002_0211013c;
     char *c = (char *)arg0;
-    char rg[0x54];
     int v[3];
 
     if (param1 != 1)
@@ -4100,16 +4096,16 @@ void Player::func_ov002_020c2b08()
                 v[2] = zz;
             }
 
-            _ZN9dBgCh_GndC1Ev(rg);
-            _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rg, v, c);
+            {
+                dBgCh_Gnd rg;
+                _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, v, c);
 
-            if (_ZN9dBgCh_Gnd10DetectClsnEv(rg) != 0) {
-                mGroundY = *(int *)(rg + 0x44);
-                if (mPosY + mModelOffsetY < *(int *)(rg + 0x44))
-                    mWaterRunTimer = 0;
+                if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) {
+                    mGroundY = rg.clsnY;
+                    if (mPosY + mModelOffsetY < rg.clsnY)
+                        mWaterRunTimer = 0;
+                }
             }
-
-            _ZN9dBgCh_GndD1Ev(rg);
             return;
         }
 
@@ -6228,12 +6224,8 @@ int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
 // @symbol _ZN6Player19func_ov002_020c61acEv
 extern "C" {
 int Player::func_ov002_020c61ac() {
-    extern void func_ov002_020de968(void*);
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern void _ZN5dBgCh19StartDetectingWaterEv(void*);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
+    extern void func_ov002_020de968(void *);
+    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *, void *, void *);
     extern Player::State data_ov002_021102ec;
     extern Player::State data_ov002_021106dc;
     extern Player::State data_ov002_021106f4;
@@ -6244,7 +6236,6 @@ int Player::func_ov002_020c61ac() {
     int outA;
     int outB;
     int v[3];
-    int obj[0x14];
     int saved;
     int a;
     int b;
@@ -6266,11 +6257,11 @@ int Player::func_ov002_020c61ac() {
             v[0] = xv;
             v[1] = yv;
             v[2] = zv;
-            _ZN9dBgCh_GndC1Ev(obj);
-            _ZN5dBgCh19StartDetectingWaterEv(obj);
-            _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(obj, v, this);
-            if (_ZN9dBgCh_Gnd10DetectClsnEv(obj)) {
-                mGroundY = *(int *)((char *)obj + 0x44);
+            dBgCh_Gnd obj;
+            obj.StartDetectingWater();
+            _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&obj, v, this);
+            if (obj.DetectClsn()) {
+                mGroundY = obj.clsnY;
                 this->mPosY = mGroundY;
             }
             if (mIsBalloon != 0) {
@@ -6279,10 +6270,8 @@ int Player::func_ov002_020c61ac() {
             } else {
                 func_ov002_020bdd2c();
                 this->ChangeState(data_ov002_021101b4);
-                _ZN9dBgCh_GndD1Ev(obj);
                 return 1;
             }
-            _ZN9dBgCh_GndD1Ev(obj);
         }
     }
     a = func_ov002_020c607c(this->mPosY - 0x20000, this->mPosY + 0xa0000, &outA);
@@ -11738,13 +11727,10 @@ void func_ov002_020ce798(char* c)
     extern int data_0209f32c;
     extern char data_ov002_0211067c;
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern int _ZNK10dBgCh_Actr10IsOnGroundEv(const void* self);
-    extern void *_ZN9dBgCh_LinC1Ev(void*);
-    extern void _ZN9dBgCh_LinD1Ev(void*);
+    extern int _ZNK10dBgCh_Actr10IsOnGroundEv(const void *self);
     extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void*, const Vec3i* a, const Vec3i* b, void*);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
     Player *player = (Player *)c;
-    char rl[0x78];
     Vec3i v1, v2;
 
     if (!_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0211067c)) return;
@@ -11754,7 +11740,7 @@ void func_ov002_020ce798(char* c)
             player->mPosY = data_0209f32c - 0x50000;
     }
 
-    _ZN9dBgCh_LinC1Ev(rl);
+    dBgCh_Lin rl;
     v1.x = player->mPosX;
     v1.y = player->mPosY;
     v1.z = player->mPosZ;
@@ -11763,16 +11749,15 @@ void func_ov002_020ce798(char* c)
     v2.z = player->mPosZ;
     v1.y += 0x50000;
     v2.y += 0x96000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl, &v1, &v2, (dActor_c*)c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(rl)) {
-        ::Vector3 cp = ((::dBgCh_Lin*)rl)->GetClsnPos();
+    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &v1, &v2, (dActor_c *)c);
+    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+        ::Vector3 cp = rl.GetClsnPos();
         if (player->mPosY >= cp.y - 0x82000) {
             LDR_I(&player->mPosY) -= 0x4000;
             if (player->mPosY < cp.y - 0x82000)
                 player->mPosY = cp.y - 0x82000;
         }
     }
-    _ZN9dBgCh_LinD1Ev(rl);
 }
 }
 #undef LDR_I
@@ -12692,7 +12677,6 @@ int func_ov002_020cfea4(char *self)
     extern short data_02082214[];
 
     Vector3 pts[8];
-    char rg[0x54];
     void *fr;
     void *other;
     int idx, dx, dz;
@@ -12716,7 +12700,7 @@ int func_ov002_020cfea4(char *self)
             }
         }
     }
-    _ZN9dBgCh_GndC1Ev(rg);
+    dBgCh_Gnd rg;
     {
         int y;
         short *tbl;
@@ -12737,10 +12721,9 @@ int func_ov002_020cfea4(char *self)
             pts[1].z = pz;
         }
     }
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rg, &pts[1], self);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(rg) != 0) {
-        if (*(int *)(rg + 0x44) >= p->mPosY - 0x50000) {
-            _ZN9dBgCh_GndD1Ev(rg);
+    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pts[1], self);
+    if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) {
+        if (rg.clsnY >= p->mPosY - 0x50000) {
             return 1;
         }
     }
@@ -12774,7 +12757,6 @@ int func_ov002_020cfea4(char *self)
     pts[4] = pts[2];
     pts[5] = pts[3];
     if (func_ov002_020cfd84(self, &pts[4], &pts[5]) != 0) {
-        _ZN9dBgCh_GndD1Ev(rg);
         return 1;
     }
     pts[3].x = pts[1].x - dx;
@@ -12782,10 +12764,8 @@ int func_ov002_020cfea4(char *self)
     pts[6] = pts[2];
     pts[7] = pts[3];
     if (func_ov002_020cfd84(self, &pts[6], &pts[7]) != 0) {
-        _ZN9dBgCh_GndD1Ev(rg);
         return 1;
     }
-    _ZN9dBgCh_GndD1Ev(rg);
     return 0;
 }
 }
@@ -12797,14 +12777,11 @@ int func_ov002_020cfea4(char *self)
 extern "C" {
 int func_ov002_020d0178(char* c, int arg1, int flag)
 {
-    typedef struct Vec3 { int x, y, z; } Vec3;
-    typedef struct dBgCh_Lin { char pad[0x78]; } dBgCh_Lin;
-    extern void *_ZN9dBgCh_GndC1Ev(void* self);
-    extern void _ZN9dBgCh_GndD1Ev(void* self);
+    typedef struct Vec3 {
+        int x, y, z;
+    } Vec3;
     extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void* self, Vec3* pos, void* actor);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void* self);
-    extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
-    extern void _ZN9dBgCh_LinD1Ev(void* self);
+    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
     extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void* self, Vec3* a, Vec3* b, void* actor);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(void* self);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vec3* out);
@@ -12816,13 +12793,11 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     Vec3 normal;
     Vec3 pos1;
     Vec3 lineStart;
-    char rg[0x50];
-    char rl[0x78];
+    dBgCh_Gnd rg;
     int ang;
     int gy;
     int res;
 
-    _ZN9dBgCh_GndC1Ev(rg);
     if (flag != 0)
         ang = (s16)(p->mAngleY + 0x8000);
     else
@@ -12854,15 +12829,13 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
             pos1.z = tz;
         }
     }
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rg, &pos1, c);
-    if (!_ZN9dBgCh_Gnd10DetectClsnEv(rg)) {
-        _ZN9dBgCh_GndD1Ev(rg);
+    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos1, c);
+    if (!_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
         return 0;
     }
-    gy = *(int*)(rg + 0x44);
+    gy = rg.clsnY;
     if (flag != 0) {
         if (gy > p->mPosY + 0x64000 || gy < p->mPosY) {
-            _ZN9dBgCh_GndD1Ev(rg);
             return 0;
         }
     } else {
@@ -12870,16 +12843,14 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
         if (p->mIsMega != 0)
             lo = 0x190;
         if (gy > p->mPosY + ((lo + 0x64) << 12) || gy < p->mPosY + (lo << 12)) {
-            _ZN9dBgCh_GndD1Ev(rg);
             return 0;
         }
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rg + 0x14, &normal);
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rg.surface, &normal);
     if (normal.y < 0xf04) {
-        _ZN9dBgCh_GndD1Ev(rg);
         return 0;
     }
-    _ZN9dBgCh_LinC1Ev((dBgCh_Lin*)rl);
+    dBgCh_Lin rl;
     pos1.y = gy;
     {
         int tz = p->mPosZ;
@@ -12888,16 +12859,12 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
         lineStart.y = arg1;
         lineStart.z = tz;
     }
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl, &lineStart, &pos1, c);
-    if (!_ZN9dBgCh_Lin10DetectClsnEv(rl)) {
-        _ZN9dBgCh_LinD1Ev(rl);
-        _ZN9dBgCh_GndD1Ev(rg);
+    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &pos1, c);
+    if (!_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
         return 0;
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rl + 0x14, &normal);
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
     if (normal.y >= 0x2c7) {
-        _ZN9dBgCh_LinD1Ev(rl);
-        _ZN9dBgCh_GndD1Ev(rg);
         return 0;
     }
     res = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
@@ -12907,27 +12874,21 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
             if (diff < 0)
                 diff = -diff;
             if (diff > 0x4000) {
-                _ZN9dBgCh_LinD1Ev(rl);
-                _ZN9dBgCh_GndD1Ev(rg);
                 return 0;
             }
         } else {
             if (diff < 0)
                 diff = -diff;
             if (diff < 0x4000) {
-                _ZN9dBgCh_LinD1Ev(rl);
-                _ZN9dBgCh_GndD1Ev(rg);
                 return 0;
             }
         }
     }
-    ::Vector3 clsnPos = ((::dBgCh_Lin*)rl)->GetClsnPos();
+    ::Vector3 clsnPos = rl.GetClsnPos();
     lineStart.y += 0x64000;
     pos1.y += 0x64000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl, &lineStart, &pos1, c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(rl)) {
-        _ZN9dBgCh_LinD1Ev(rl);
-        _ZN9dBgCh_GndD1Ev(rg);
+    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &pos1, c);
+    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
         return 0;
     }
     lineStart.y = p->mPosY;
@@ -12936,18 +12897,14 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     line2.y = p->mPosY;
     line2.z = p->mPosZ;
     line2.y = gy + 0xa000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl, &lineStart, &line2, c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(rl)) {
-        _ZN9dBgCh_LinD1Ev(rl);
-        _ZN9dBgCh_GndD1Ev(rg);
+    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &line2, c);
+    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
         return 0;
     }
     p->mPosX = clsnPos.x - normal.x;
     p->mPosZ = clsnPos.z - normal.z;
     p->mPosY = gy;
     p->mAngleY = (u16)(res + 0x8000);
-    _ZN9dBgCh_LinD1Ev(rl);
-    _ZN9dBgCh_GndD1Ev(rg);
     return 1;
 }
 }
@@ -17257,7 +17214,7 @@ ret0b:
 /* ROM ordinal 402 -- func_ov002_020d6dac, 0x020d6dac, size 0x284 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d6dac
-/* The first two words of the SurfaceInfo at rl+0x14 are copied as one
+/* The first two words of the SurfaceInfo rl.surface are copied as one
  * two-int struct. Spelled `{ int a, b; }`, C++ scalarizes that copy into
  * load/store/load/store, 10 words off the ROM's load/load/store/store;
  * the array-wrapper view restores it, as in func_ov002_020c14b8. */
@@ -17268,10 +17225,9 @@ int func_ov002_020d6dac(char *self)
     struct Vector3 { int x, y, z; };
     typedef struct P2 { int w[2]; } P2;
     typedef struct dBgPi { void *vtb; int s0, s1, s2, s3, s4; u16 f, g; int h, i, j; } dBgPi;
-    typedef struct Vec3_16 { s16 x, y, z; } Vec3_16;
-    typedef struct dBgCh_Lin { char pad[0x78]; } dBgCh_Lin;
-    extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin *self);
-    extern void _ZN9dBgCh_LinD1Ev(void *self);
+    typedef struct Vec3_16 {
+        s16 x, y, z;
+    } Vec3_16;
     extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
     extern void MulVec3Mat4x3(void *v, void *m, void *dst);
     extern void Vec3_MulScalarInPlace(int *v, int s);
@@ -17291,14 +17247,12 @@ int func_ov002_020d6dac(char *self)
     struct Vector3 p1;
     struct Vector3 p2;
     dBgPi res;
-    char rl[0x78];
+    dBgCh_Lin rl;
     int *d;
     char *actor;
     s16 ang;
     int t;
     int idx;
-
-    _ZN9dBgCh_LinC1Ev((dBgCh_Lin *)rl);
 
     {
         u8 b = player->mUseAltBodyModel;
@@ -17322,36 +17276,34 @@ int func_ov002_020d6dac(char *self)
         Vec3_MulScalarInPlace((int *)&p2, 0x8000);
     }
 
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl, &p1, &p2, self);
+    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &p1, &p2, self);
 
-    if (_ZN9dBgCh_Lin10DetectClsnEv(rl) == 0) {
-        _ZN9dBgCh_LinD1Ev(rl);
+    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl) == 0) {
         return 0;
     }
 
     d = &res.s0;
-    *(P2 *)d = *(P2 *)(rl + 0x14);
-    d[2] = *(int *)(rl + 0x1c);
-    d[3] = *(int *)(rl + 0x20);
-    d[4] = *(int *)(rl + 0x24);
+    *(P2 *)d = *(P2 *)&rl.surface.clps;
+    d[2] = rl.surface.normal.x;
+    d[3] = rl.surface.normal.y;
+    d[4] = rl.surface.normal.z;
     res.vtb = data_02099368;
-    res.f = *(u16 *)(rl + 0x28);
-    res.g = *(u16 *)(rl + 0x2a);
-    res.h = *(int *)(rl + 0x2c);
-    res.i = *(int *)(rl + 0x30);
-    res.j = *(int *)(rl + 0x34);
+    res.f = rl.triangleID;
+    res.g = rl.colliderIdx;
+    res.h = rl.clsnID;
+    res.i = (int)rl.owner;
+    res.j = (int)rl.collider;
 
     actor = _ZN8dActor_c10FindWithIDEj(_ZNK5dBgPi9GetClsnIDEv(&res));
     if (actor != 0 && (t = (int)(((dActor_c *)actor)->actorID == 0xc2)) != 0) {
         _ZN5dBgPiD1Ev(&res);
-        _ZN9dBgCh_LinD1Ev(rl);
         return 0;
     }
 
-    ::Vector3 clsnPos = ((::dBgCh_Lin*)rl)->GetClsnPos();
+    ::Vector3 clsnPos = rl.GetClsnPos();
     player->mTongueHitDist = func_02053274((int *)&p1, (int *)&clsnPos);
     struct Vector3 normal;
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rl + 0x14, &normal);
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
     ang = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
     idx = (u16)ang >> 4;
     dir.x = data_02082214[idx * 2];
@@ -17363,7 +17315,6 @@ int func_ov002_020d6dac(char *self)
         0, 0x13f, clsnPos.x, clsnPos.y, clsnPos.z, &dir, 0);
 
     _ZN5dBgPiD1Ev(&res);
-    _ZN9dBgCh_LinD1Ev(rl);
     return 1;
 }
 }
