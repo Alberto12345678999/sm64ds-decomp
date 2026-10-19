@@ -25,7 +25,7 @@
 //   passes 0, 0). There is no int method on the class.
 // - Particle::System::NewSimple's definition takes three s32 positions
 //   (Kill). A Fix12<int> declaration changes the caller.
-// - func_020393c4 is `p[7] = v`, the store of OnStoodOn into dBgW::unk_1c.
+// - func_020393c4 is `p[7] = v`, the store of OnStoodOn into dBgW::stoodOnCallback.
 //   The ROM calls it; an inlined store would drop the bl. Naming belongs
 //   on dBgW.
 // - OnStoodOn keeps long_calls. The ROM tail is the pooled absolute
