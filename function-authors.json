@@ -35087,7 +35087,7 @@
     },
     "ov060:0x02116740": {
       "author": "tangosdev",
-      "name": "func_ov060_02116740"
+      "name": "_ZN11daKpaFire_c19func_ov060_02116740Ev"
     },
     "ov060:0x021167c8": {
       "author": "andrewboudreau",
@@ -35159,7 +35159,7 @@
     },
     "ov060:0x02117624": {
       "author": "tangosdev",
-      "name": "func_ov060_02117624"
+      "name": "_ZN11daKpaFire_c19func_ov060_02117624Ev"
     },
     "ov060:0x021176c4": {
       "author": "tangosdev",

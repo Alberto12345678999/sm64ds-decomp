@@ -239,8 +239,8 @@ int daKpaFire_c::Behavior()
             }
         }
     }
-    func_ov060_02116740((char *)this);
-    func_ov060_02117624((char *)this);
+    func_ov060_02116740();
+    func_ov060_02117624();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;
@@ -260,7 +260,7 @@ int daKpaFire_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov060_02117624
+// @symbol _ZN11daKpaFire_c19func_ov060_02117624Ev
 /* Per-frame drop shadow. Does nothing when mDropsShadow is 0. Otherwise it
  * builds a translation matrix in the shared scratch matrix data_020a0e68 at
  * the fire's x, its mGroundY and its z (each >> 3), copies it into the
@@ -270,12 +270,11 @@ int daKpaFire_c::CleanupResources()
  * that value means is not decoded; every caller passes 0xf).
  * The Matrix4x3 at 0x32c remains the header's pad_32c storage; copying it
  * through the RawMatrix4x3 view keeps the block copy intact in C++. */
-extern "C" void func_ov060_02117624(char *c) {
-    struct daKpaFire_c *self = (struct daKpaFire_c *)c;
-    if (self->mDropsShadow == 0) return;
-    Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX>>3, self->mGroundY>>3, self->mPosZ>>3);
-    *(RawMatrix4x3*)self->pad_32c = *(RawMatrix4x3*)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, self->pad_32c, self->mShadowRadiusMul * self->mFireScale, 0x1e000, 0xf);
+void daKpaFire_c::func_ov060_02117624() {
+    if (mDropsShadow == 0) return;
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX>>3, mGroundY>>3, mPosZ>>3);
+    *(RawMatrix4x3*)pad_32c = *(RawMatrix4x3*)&data_020a0e68;
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, pad_32c, mShadowRadiusMul * mFireScale, 0x1e000, 0xf);
 }
 
 // @symbol _ZN11daKpaFire_c19func_ov060_0211747cEv
@@ -810,17 +809,15 @@ void daKpaFire_c::func_ov060_021167c8() {
     this->mShadowRadiusMul = 0x10;
 }
 
-// @symbol func_ov060_02116740
+// @symbol _ZN11daKpaFire_c19func_ov060_02116740Ev
 /* Burn the player the fire's cylinder touched. Reads mdCcAc_c.otherOwner (the
  * dCc_c field Clear zeroes; here it is used as an actor uniqueID, 0 for none)
  * and looks that actor up; if it is the Player (actor id 0xbf = ACTOR_PLAYER)
  * and neither Player::mIsMetal nor Player::mIsVanish is set it calls
- * Player::Burn.
- * Keeps the char * parameter decl_common.h declares. */
-extern "C" {
-void func_ov060_02116740(char* c)
+ * Player::Burn. */
+void daKpaFire_c::func_ov060_02116740()
 {
-    unsigned int id = ((daKpaFire_c *)c)->mdCcAc_c.otherOwner;
+    unsigned int id = ((daKpaFire_c *)this)->mdCcAc_c.otherOwner;
     if (id == 0) return;
     Player* player = (Player *)dActor_c::FindWithID(id);
     if (player == 0) return;
@@ -831,7 +828,6 @@ void func_ov060_02116740(char* c)
     if (player->mIsMetal != 0) return;
     if (player->mIsVanish != 0) return;
     player->Burn();
-}
 }
 
 // @symbol _ZN11daKpaFire_c19func_ov060_02116518Ejii
