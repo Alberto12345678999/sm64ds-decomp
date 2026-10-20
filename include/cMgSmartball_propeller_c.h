@@ -19,13 +19,11 @@
  * (mCurrent0/mCurrent1) to look up a rotation matrix and draw two sprites.
  *
  * 0x32 IS NOT DECLARED HERE, same as every sibling that reaches it: it
- * belongs to cMgSmartball_object_c (unk_032), reached with the base's own
- * raw `(char*)this + 0x32` idiom because 0x31-0x33 is a three-byte region
- * with no single type, read three incompatible ways (see
- * cMgSmartball_object_c.h). This class's own Update is one of the three --
- * it indexes a sine table with `>> 4` (lsr, not asr) on that field, i.e. an
- * UNSIGNED reading, one of the several conflicting accesses the base header
- * already records.
+ * belongs to cMgSmartball_object_c (unk_032), reached by a per-reader cast
+ * because 0x31-0x33 is a three-byte region with no single type, read three
+ * incompatible ways (see cMgSmartball_object_c.h). This class reads it both
+ * ways itself: RebuildVerts and SaveSnapshot signed, Update unsigned -- it
+ * indexes a sine table with `>> 4` (lsr, not asr) on that field.
  *
  * THE TAIL FROM 0x38 TO 0x77 IS mVertices[8], eight (x, y) pairs. Both
  * readers are in d_s_mg_smartball.cpp: RebuildVerts (called from SaveSnapshot
@@ -43,17 +41,10 @@
  * carry whatever the allocator left there until RestoreInitial first sets
  * them.
  *
- * SaveSnapshot's own .cpp does NOT use mSpinSpeedTarget/mSpinSpeed by name, even though
- * they are declared below and Update/RestoreInitial use them freely: named
- * member access there measurably changed codegen. Compiled with the named
- * members it was 0x98 bytes against a required 0xac -- mwcc CSEs the
- * repeated `this->mSpinSpeed` reads/writes into fewer reloads than the ROM's
- * three separately-cast `*(short*)(c+0x36)` expressions allow. The .cpp
- * keeps the original's raw-offset shape (a local `char* c = (char*)this`
- * and explicit casts) to reproduce that; see the file for the measurement
- * and cMgSmartball_object_c.h's own note on why this hierarchy is a
- * rename-and-reshape job that still has to stop reshaping the moment the
- * bytes move. */
+ * SaveSnapshot reads mSpinSpeedTarget/mSpinSpeed by name but steps the
+ * speed through a local `short *p` taken from &mSpinSpeed; written as a
+ * plain member assignment it is 0x9c bytes against the ROM's 0xac. See the
+ * function for the measurement. */
 #ifndef CMGSMARTBALL_PROPELLER_C_H
 #define CMGSMARTBALL_PROPELLER_C_H
 #include "types.h"
@@ -69,6 +60,7 @@ struct cMgSmartball_propeller_c : cMgSmartball_object_c {
        0x32 angle and mCurrent position. */
     int  HitTest(int *pos);
     void RebuildVerts();
+    s16 GetAngle() const; /* the base's 0x32 angle, signed; inline in the .cpp */
 
     s16 mSpinSpeedTarget; /* 0x034 -- the rotation speed mSpinSpeed is eased
                               toward. RestoreInitial sets it to 0x40 and the
