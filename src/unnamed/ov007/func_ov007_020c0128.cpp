@@ -19,24 +19,24 @@ extern "C" void func_02052ec8(void *p);
  * +0xd0; no reader names them. */
 struct Ov007Camera {
     char pad_00[4];
-    unsigned int tweening; /* 0x04: bit 0 eye, bit 1 target, bit 2 distance */
-    Vector3 eye;           /* 0x08 */
-    Vector3 target;        /* 0x14 */
-    Vector3 up;            /* 0x20 */
-    int distance;          /* 0x2c */
+    unsigned int tweening;    /* 0x04: bit 0 eye, bit 1 target, bit 2 distance */
+    Vector3 eye;              /* 0x08 */
+    Vector3 target;           /* 0x14 */
+    Vector3 up;               /* 0x20 */
+    int distance;             /* 0x2c */
     unsigned short elevation; /* 0x30 */
     unsigned short azimuth;   /* 0x32 */
     char pad_34[0x10];
-    int viewMatrix[12];    /* 0x44: Matrix4x3 */
-    int projMatrix[16];    /* 0x74: Matrix4x4 */
-    int scaleW;            /* 0xb4 */
+    int viewMatrix[12]; /* 0x44: Matrix4x3 */
+    int projMatrix[16]; /* 0x74: Matrix4x4 */
+    int scaleW;         /* 0xb4 */
     char pad_b8[4];
-    long long aspect;      /* 0xbc: PerspectiveW_ takes it >> 0x14 */
-    int nearZ;             /* 0xc4 */
-    int farZ;              /* 0xc8 */
+    long long aspect; /* 0xbc: PerspectiveW_ takes it >> 0x14 */
+    int nearZ;        /* 0xc4 */
+    int farZ;         /* 0xc8 */
     char pad_cc[8];
-    short fovy;            /* 0xd4: a u16 angle; func_ov007_020b2160 indexes
-                            * the sine table with it >> 4 */
+    /* 0xd4: a u16 angle; func_ov007_020b2160 indexes the sine table with it >> 4 */
+    short fovy;
 };
 
 extern "C" void func_ov007_020c0128(char *c)

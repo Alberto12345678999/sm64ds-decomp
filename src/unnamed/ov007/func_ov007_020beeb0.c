@@ -49,8 +49,8 @@ typedef struct Ov007Work {
     char pad_00[4];
     Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
     char pad_10[0x20];
-    void *cameras[2];    /* 0x30: func_ov007_020c023c */
-    Ov007Light *lights[2]; /* 0x38: func_ov007_020c241c(0/1) */
+    void *cameras[2];             /* 0x30: func_ov007_020c023c */
+    Ov007Light *lights[2];        /* 0x38: func_ov007_020c241c(0/1) */
     Ov007MenuState *paletteState; /* 0x40: func_ov007_020bce70 requests palette n on
                                    * it and blends over its stateTicks */
     char pad_44[0xc];

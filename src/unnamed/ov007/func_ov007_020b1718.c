@@ -65,8 +65,8 @@ typedef struct Ov007Work {
     int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus
                          * tap, 0 for a button */
     char pad_24[0xc];
-    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
-    Ov007Light *lights[2];   /* 0x38: func_ov007_020c241c(0/1) */
+    Ov007Camera *cameras[2];      /* 0x30: func_ov007_020c023c */
+    Ov007Light *lights[2];        /* 0x38: func_ov007_020c241c(0/1) */
     Ov007MenuState *paletteState; /* 0x40: func_ov007_020bce70 requests palette n on
                                    * it and blends over its stateTicks */
 } Ov007Work;
@@ -142,12 +142,12 @@ void func_ov007_020b1718(void)
         break;
     }
     case 0: {
-        Ov007Camera* m = WORK->cameras[0];
+        Ov007Camera *m = WORK->cameras[0];
         int q, t, w, r3, u;
 
         if (v == 0) {
-            Ov007VecTween* d;
-            Ov007Tween* dd;
+            Ov007VecTween *d;
+            Ov007Tween *dd;
             func_ov007_020b257c();
             d = m->targetTween;
             d->to = m->target;
@@ -175,14 +175,18 @@ void func_ov007_020b1718(void)
         divisor = 0x28;
         {
             int uu = (int)(unsigned int)u;
-            m->target.x = (int)(((s64)(0x1000 - u) * m->targetTween->from.x + (s64)uu * m->targetTween->to.x) >> 12);
+            m->target.x = (int)(((s64)(0x1000 - u) * m->targetTween->from.x +
+                                 (s64)uu * m->targetTween->to.x) >>
+                                12);
             {
-                Ov007VecTween* d2 = m->targetTween;
+                Ov007VecTween *d2 = m->targetTween;
                 r3 = u - (int)(((s64)r3 * (0x2000 - r3)) >> 12);
                 m->target.y = (int)(((s64)(0x1000 - r3) * d2->from.y + (s64)r3 * d2->to.y) >> 12);
             }
             q = (int)(((s64)u * (0x2000 - u)) >> 12);
-            m->distance = (int)(((s64)(0x1000 - q) * m->distanceTween->from + (s64)q * m->distanceTween->to) >> 12);
+            m->distance = (int)(((s64)(0x1000 - q) * m->distanceTween->from +
+                                 (s64)q * m->distanceTween->to) >>
+                                12);
         }
         if (v >= 0x28) flag = 1;
         break;
