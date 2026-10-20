@@ -191,7 +191,7 @@ dScMgSlot1_c::~dScMgSlot1_c() {}
 
 // @symbol _ZN12dScMgSlot3_cD1Ev
 dScMgSlot3_c::~dScMgSlot3_c() {
-    Mascot_Destruct((char *)this + 0x4f38);
+    Mascot_Destruct((char *)mMascot);
 }
 
 // @symbol _ZN12dScMgSlot3_cD0Ev
@@ -513,7 +513,7 @@ void FreeGfxSlotsById(int arg);
 void Slot3_StateIntro(char *p) {
     dScMgSlot3_c *scene = (dScMgSlot3_c *)p;
     if (scene->mReelDrawY == 0x50) {
-        Mascot_LookAt(p + 0x4f38, 0);
+        Mascot_LookAt((char *)scene->mMascot, 0);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
@@ -522,7 +522,7 @@ void Slot3_StateIntro(char *p) {
         if (scene->mReelDrawY != 0)
             return;
         scene->mWinSymbol = scene->mNextWinSymbol;
-        Mascot_StopLooking((int *)(p + 0x4f38));
+        Mascot_StopLooking((int *)scene->mMascot);
         return;
     }
 
@@ -681,7 +681,7 @@ s32 dScMgSlot3_c::Render() {
     int i, j;
 
     Camera_InitSlotsView(c + 0x4660);
-    Mascot_Draw(c + 0x4f38);
+    Mascot_Draw((char *)self->mMascot);
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
@@ -830,14 +830,14 @@ s32 dScMgSlot3_c::Behavior() {
 
     (self->*sSlot3StateTable[self->mState])();
 
-    pc = (unsigned char *)((char *)self + 0x503f);
+    pc = &self->mFrameCounter;
     *pc = *pc + 1;
-    Mascot_Update((char *)self + 0x4f38);
+    Mascot_Update(self->mMascot);
 
     for (i = 0; i < 3; i++) {
         if (self->mState == 1) {
-            ph1 = (unsigned short *)((char *)self + 0x5018);
-            ph2 = (unsigned short *)((char *)self + 0x501a);
+            ph1 = &self->mLamp1Angle;
+            ph2 = &self->mLamp2Angle;
             *ph1 = *ph1 - 0x200;
             *ph2 = *ph2 - 0x400;
             break;
@@ -910,7 +910,7 @@ s32 dScMgSlot3_c::InitResources() {
     data_0209d454 = 0x14;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
 
-    Mascot_Load(c + 0x4f38);
+    Mascot_Load((char *)mMascot);
     Camera_InitSlotsView(c + 0x4660);
 
     mReelDifficulty = (int)mLevel;
@@ -963,10 +963,10 @@ int *dScMgSlot3_c_classInit(void) {
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
         p[0] = (int)_ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev((char *)p + 0x471c);
+        _ZN8Particle10SysTrackerC1Ev(&((dScMgSlot3_c *)p)->mSysTracker);
 
         p[0] = (int)&_ZTV12dScMgSlot3_c[2];
-        Mascot_Construct((char *)p + 0x4f38);
+        Mascot_Construct((char *)((dScMgSlot3_c *)p)->mMascot);
     }
     return p;
 }

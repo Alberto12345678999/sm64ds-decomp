@@ -71,7 +71,7 @@ extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
 int Heyho_Destruct(int *c) {
     gMgPHeyhoMiniModelFile.Release();
     gMgPHeyhoWaitAnimFile.Release();
-    _ZN9ModelAnimD1Ev((char *)c + 0x38);
+    _ZN9ModelAnimD1Ev(HEYHO(c)->mModelAnim);
     return (int)c;
 }
 }
@@ -597,10 +597,10 @@ struct S {
 };
 extern struct S pmf_Heyho_MotionPatrolBob;
 void Heyho_StartMotionPatrolBob(int *c) {
-    *(int *)((char *)c + 0xa8) = 0x800;
-    *(int *)((char *)c + 0xac) = 0;
-    *(int *)((char *)c + 0xb0) = 0;
-    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionPatrolBob;
+    HEYHO(c)->mVel.x = 0x800;
+    HEYHO(c)->mVel.y = 0;
+    HEYHO(c)->mVel.z = 0;
+    *(struct S *)HEYHO(c)->mMotion = pmf_Heyho_MotionPatrolBob;
 }
 }
 }
@@ -651,11 +651,11 @@ struct S {
 };
 extern struct S pmf_Heyho_MotionBobVertical;
 void Heyho_StartMotionBobVertical(int *c) {
-    *(int *)((char *)c + 0xa8) = 0;
-    *(int *)((char *)c + 0xac) = 0x800;
-    *(int *)((char *)c + 0xb0) = 0;
-    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionBobVertical;
-    *(short *)((char *)c + 0xe6) = 0;
+    HEYHO(c)->mVel.x = 0;
+    HEYHO(c)->mVel.y = 0x800;
+    HEYHO(c)->mVel.z = 0;
+    *(struct S *)HEYHO(c)->mMotion = pmf_Heyho_MotionBobVertical;
+    HEYHO(c)->mLean = 0;
 }
 }
 }
@@ -687,11 +687,11 @@ extern "C" {
 struct S{int w[2];};
 extern struct S pmf_Heyho_MotionBounceNear;
 void Heyho_StartMotionBounceNear(void *c) {
-    *(short *)((char *)c + 0xe6) = 0;
-    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
-    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
-    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
-    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionBounceNear;
+    HEYHO(c)->mLean = 0;
+    HEYHO(c)->mVel.x = HEYHO(c)->mStartVel.x;
+    HEYHO(c)->mVel.y = HEYHO(c)->mStartVel.y;
+    HEYHO(c)->mVel.z = HEYHO(c)->mStartVel.z;
+    *(struct S *)HEYHO(c)->mMotion = pmf_Heyho_MotionBounceNear;
 }
 }
 }
@@ -903,10 +903,10 @@ struct S {
 };
 extern struct S pmf_Heyho_MotionBounceInRange;
 void Heyho_StartMotionBounceInRange(int *c) {
-    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
-    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
-    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
-    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionBounceInRange;
+    HEYHO(c)->mVel.x = HEYHO(c)->mStartVel.x;
+    HEYHO(c)->mVel.y = HEYHO(c)->mStartVel.y;
+    HEYHO(c)->mVel.z = HEYHO(c)->mStartVel.z;
+    *(struct S *)HEYHO(c)->mMotion = pmf_Heyho_MotionBounceInRange;
 }
 }
 }
@@ -1009,7 +1009,7 @@ void Heyho_StartMotionDiagonal(struct Obj *o) {
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = pmf_Heyho_MotionDiagonal;
+    *(W2 *)HEYHO(o)->mMotion = pmf_Heyho_MotionDiagonal;
 }
 }
 }
@@ -1135,7 +1135,7 @@ void Heyho_StartMotionDiagonalMirror(struct Obj *o) {
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = pmf_Heyho_MotionDiagonalMirror;
+    *(W2 *)HEYHO(o)->mMotion = pmf_Heyho_MotionDiagonalMirror;
 }
 }
 }
@@ -1199,11 +1199,11 @@ extern "C" {
 struct S{int w[2];};
 extern struct S pmf_Heyho_MotionCircleUpper;
 void Heyho_StartMotionCircleUpper(void *c) {
-    *(short *)((char *)c + 0xe6) = 0;
-    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
-    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
-    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
-    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionCircleUpper;
+    HEYHO(c)->mLean = 0;
+    HEYHO(c)->mVel.x = HEYHO(c)->mStartVel.x;
+    HEYHO(c)->mVel.y = HEYHO(c)->mStartVel.y;
+    HEYHO(c)->mVel.z = HEYHO(c)->mStartVel.z;
+    *(struct S *)HEYHO(c)->mMotion = pmf_Heyho_MotionCircleUpper;
 }
 }
 }
@@ -1248,11 +1248,11 @@ extern "C" {
 struct S{int w[2];};
 extern struct S pmf_Heyho_MotionCircleLower;
 void Heyho_StartMotionCircleLower(void *c) {
-    *(short *)((char *)c + 0xe6) = 0;
-    *(int *)((char *)c + 0xa8) = *(int *)((char *)c + 4);
-    *(int *)((char *)c + 0xac) = *(int *)((char *)c + 8);
-    *(int *)((char *)c + 0xb0) = *(int *)((char *)c + 0xc);
-    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionCircleLower;
+    HEYHO(c)->mLean = 0;
+    HEYHO(c)->mVel.x = HEYHO(c)->mStartVel.x;
+    HEYHO(c)->mVel.y = HEYHO(c)->mStartVel.y;
+    HEYHO(c)->mVel.z = HEYHO(c)->mStartVel.z;
+    *(struct S *)HEYHO(c)->mMotion = pmf_Heyho_MotionCircleLower;
 }
 }
 }
@@ -1469,9 +1469,9 @@ struct S{int w[2];};
 extern struct S pmf_Heyho_MotionHitSpin;
 extern void D3D_PlaySeAtX(int a, int b);
 void Heyho_StartMotionHitSpin(int *c) {
-    *(short *)((char *)c + 0xea) = 0;
-    D3D_PlaySeAtX(0x1c8, *(int *)((char *)c + 0x9c));
-    *(struct S *)((char *)c + 0x30) = pmf_Heyho_MotionHitSpin;
+    HEYHO(c)->mPhase = 0;
+    D3D_PlaySeAtX(0x1c8, HEYHO(c)->mPos.x);
+    *(struct S *)HEYHO(c)->mMotion = pmf_Heyho_MotionHitSpin;
 }
 }
 }
@@ -1522,6 +1522,14 @@ extern int sHeyhoScorePopups;
 extern void *sMgSubCamera;
 extern void *sMgMainCamera;
 
+/* View of Particle::System (include/Particle__System.h) up to its
+ * callbackScale; including that header renumbers this TU's pinned @NNN
+ * labels. */
+struct ParticleSystemView {
+    u8 pad_000[0x50];
+    s32 callbackScale; /* 0x50 */
+};
+
 void Heyho_Settle(char* c)
 {
     void* a;
@@ -1534,8 +1542,11 @@ void Heyho_Settle(char* c)
     b = _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
         0x123, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3, HEYHO(c)->mPos.z << 3);
     t = (int)(*(int*)(c + 0xd8) << 0x1c) >> 0x10;
-    if (a) *(int*)((char*)a + 0x50) = t;
-    if (b) *(int*)((char*)a + 0x50) = t;
+    /* Both stores go through a; the cartridge never sets b's scale. */
+    if (a)
+        ((ParticleSystemView *)a)->callbackScale = t;
+    if (b)
+        ((ParticleSystemView *)a)->callbackScale = t;
 
     _Z14ApproachLinearRiii(sHeyhoUnsettledCount, 0, 1);
     _Z14ApproachLinearRiii(&sJumpComboCount, 0x270f, 1);
@@ -1590,7 +1601,7 @@ struct Foo {
 };
 extern "C" void Heyho_Update(struct Foo *c){
   (c->*(c->pmf))();
-  _ZN15dExtFrameCtrl_c7AdvanceEv((char*)c+0x88);
+  _ZN15dExtFrameCtrl_c7AdvanceEv(HEYHO(c)->mFrameCtrl);
   Heyho_UpdateMatrix(c);
 }
 
