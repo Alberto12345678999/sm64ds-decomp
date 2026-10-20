@@ -31,7 +31,7 @@
  * - func_ov060_02116740, 02117624 stay free functions with
  *   the char * / unsigned char * decl_common.h declares. Their bodies
  *   compile as C++; 02117624 uses a POD matrix view for its block copy.
- * - dCcAc_c::Init, dBgCh_Actr::Init, `DropShadowRadHeight`,
+ * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
  *   Particle::System::New / NewSimple / NewUnkCallback818 and
  *   SaveData::IsCharacterUnlocked stay mangled. Those calls pass
  *   Fix12<int> by value; the header spelling of dBgCh_Actr::Init is
@@ -42,7 +42,8 @@
  *   that symbol's spelling at this site.
  * - Particle::System::callbackScale and callbackVelocity are named.
  *   The word at +0x44 sits in pad_042 and stays a raw store.
- * - `DropShadowRadHeight`'s matrix is `u8 mShadowMat`. `daKpaFire_c.h` has no
+ * - DropShadowRadHeight's matrix is `mShadowMat`, raw `u8[0x30]` storage.
+ *   daKpaFire_c.h has no
  *   Matrix4x3 member there.
  * - Sound 0x180, player param1 == 3, and the particle kind pairs are
  *   named only by the use-site enums below.
@@ -268,7 +269,7 @@ int daKpaFire_c::CleanupResources()
  * radius mShadowRadiusMul * mFireScale, the second Fix12 argument (dActor_c.h
  * calls it `depth`) 30 units (0x1e000), and the `opacity` argument 0xf (what
  * that value means is not decoded; every caller passes 0xf).
- * The Matrix4x3 at 0x32c remains the header's `u8 mShadowMat` storage; copying it
+ * The Matrix4x3 at 0x32c remains the header's `mShadowMat` storage; copying it
  * through the RawMatrix4x3 view keeps the block copy intact in C++. */
 void daKpaFire_c::func_ov060_02117624() {
     if (mDropsShadow == 0)
