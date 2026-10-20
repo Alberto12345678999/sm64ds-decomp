@@ -31,8 +31,7 @@
 struct dScMgTeresa_c : dScMgBase_c {
     /* One of the 16 small Boos (0x24 bytes; the big Boo is a separate
        record at 0x4bcc). Meanings come from DrawBoos,
-       SpawnBoos, AnimateBoo and the Boo_State handlers; unk_ bytes are
-       written but not yet understood. */
+       SpawnBoos, AnimateBoo and the Boo_State handlers. */
     struct SmallBoo {
         s32 mX;          /* 0x00 -- 20.12 screen x */
         s32 mY;          /* 0x04 -- 20.12 screen y */
@@ -40,12 +39,16 @@ struct dScMgTeresa_c : dScMgBase_c {
         u16 mHeading;    /* 0x0c -- angle; the sine table's sign picks mAnim */
         u16 mTimer;      /* 0x0e */
         u16 mAnimTimer;  /* 0x10 -- counts to 0xf, then advances mFrame */
-        u16 unk_12;      /* 0x12 */
+        u16 mTurnTimer;  /* 0x12 -- Boo_StateFadeIn sets 0x80 on entering FadeAway (7);
+                            FadeAway counts it down, then reverses mHeading and
+                            sets mFrame to 6, which stops the 3..5 frame cycle */
         u16 mDelay;      /* 0x14 */
         u8  mFade;       /* 0x16 -- nonzero draws semi-transparent */
         u8  mInPlay;     /* 0x17 */
         u8  mState;      /* 0x18 */
-        u8  unk_19;      /* 0x19 */
+        u8 mSettled;     /* 0x19 -- AreBoosSettled sets it as it moves a hidden Boo
+                            to FadeIn; Appear and SpawnBoos clear it. Not read
+                            in this TU */
         u8  mVisible;    /* 0x1a */
         u8  mPriority;   /* 0x1b -- OAM priority */
         u8  mFound;      /* 0x1c -- set when a touch test finds this Boo */
@@ -228,7 +231,8 @@ struct dScMgTeresa_c : dScMgBase_c {
     u8 pad_4bfc[0xc];
     s32 mRubSound; /* 0x4c08 -- the rub sound's handle; func_02012468 takes it back */
     u8 pad_4c0c[0xa];
-    s16 unk_4c16;            /* 0x4c16 */
+    s16 mBannerTimer; /* 0x4c16 -- 0x20 when banner 0xd is shown; Scene_StatePlay counts it
+                         down, then frees the banner and enables the prompt */
     u8 pad_4c18[0x5];
     u8 mRubTouching; /* 0x4c1d -- set on the stylus press, cleared on release */
     u8 pad_4c1e[0x1];

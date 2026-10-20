@@ -1181,7 +1181,7 @@ void dScMgTeresa_c::AreBoosSettled()
                 mBoos[i].mState = 6;
                 mBoos[i].mTimer = 0;
                 mBoos[i].mFade = 0;
-                mBoos[i].unk_19 = 1;
+                mBoos[i].mSettled = 1;
                 mBoos[i].mFrame = 3;
                 mBoos[i].mPlaySettleSound = 0;
                 mLastSettledBoo = (unsigned char)i;
@@ -1310,6 +1310,8 @@ void dScMgTeresa_c::Boo_StateFadeAway(int i) {
     int o = i * 0x24;
     u8 *fade;
 
+    /* raw: mBoos[i] fields at c + o; both member spellings move bytes,
+       except the facing block below */
     if (*(u16 *)(c + 0x4674 + o) != 0) {
         (*(u16 *)((c + 0x4674) + o))--;
         if (*(u16 *)((c + 0x4674) + o) == 0)
@@ -1333,10 +1335,10 @@ void dScMgTeresa_c::Boo_StateFadeAway(int i) {
 
     {
         char *row = c + o;
-        if (data_02082214[((*(u16 *)(row + 0x466c) >> 4) << 1) + 1] >= 0)
-            *(u8 *)(row + 0x467e) = 1;
+        if (data_02082214[((((dScMgTeresa_c *)row)->mBoos[0].mHeading >> 4) << 1) + 1] >= 0)
+            ((dScMgTeresa_c *)row)->mBoos[0].mAnim = 1;
         else
-            *(u8 *)(row + 0x467e) = 0;
+            ((dScMgTeresa_c *)row)->mBoos[0].mAnim = 0;
     }
 
     if (*(u16 *)(((char *)c + o) + 0x4672) != 0) {
@@ -1416,7 +1418,7 @@ void dScMgTeresa_c::Boo_StateFadeIn(int i) {
     if (mBoos[i].mFade < 0x10)
         return;
 
-    mBoos[i].unk_12 = 0x80;
+    mBoos[i].mTurnTimer = 0x80;
     mBoos[i].mTimer = 0;
     mBoos[i].mFade = 0;
     mBoos[i].mState = 7;
@@ -1563,7 +1565,7 @@ void dScMgTeresa_c::Boo_StateAppear(int idx) {
     unsigned char t;
     mBoos[idx].mVisible = 1;
     mBoos[idx].mTimer = 0x60;
-    mBoos[idx].unk_19 = 0;
+    mBoos[idx].mSettled = 0;
     mBoos[idx].mState = 1;
     mBoos[idx].mSpeed = 0xc00;
     t = mBoos[idx].mKind;
@@ -1662,11 +1664,11 @@ void dScMgTeresa_c::SpawnBoos()
         mBoos[i].mKind = cval;
         mBoos[i].mTimer = 0;
         mBoos[i].mAnimTimer = 0;
-        mBoos[i].unk_12 = 0;
+        mBoos[i].mTurnTimer = 0;
         mBoos[i].mDelay = 0;
         mBoos[i].mInPlay = 1;
         mBoos[i].mState = 0;
-        mBoos[i].unk_19 = 0;
+        mBoos[i].mSettled = 0;
         mBoos[i].mPriority = 0;
         mBoos[i].mFound = 0;
         mBoos[i].mFrame = 0;
@@ -1906,6 +1908,7 @@ void dScMgTeresa_c::Scene_StateRoundEnd() {
     Sound::PlayBank2_2D(0x1f2);
 }
 
+/* g[0xb] is mBannerTimer (0x4c16), kept raw: the member spelling moves bytes. */
 // @symbol _ZN13dScMgTeresa_c15Scene_StatePlayEv
 void dScMgTeresa_c::Scene_StatePlay() {
     char *c = (char *)this;
@@ -2041,7 +2044,7 @@ void dScMgTeresa_c::StartRound(int reset)
     MultiStore16(val, dst, 0x6000);
     mSceneState = 0;
     FreeGfxSlotsById(0x1d);
-    unk_4c16 = 0x20;
+    mBannerTimer = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     void *h = LoadFile(0x101);
     DecompressLZ16(h, (void *)0x6400000);
@@ -2158,7 +2161,7 @@ s32 dScMgTeresa_c::InitResources()
     Reveal_Start();
     SpawnBoos();
     mSceneState = 1;
-    *((u16 *) (self + 0x4c16)) = 0x20;
+    mBannerTimer = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     sMgClearBannerX = 0x80;
     sMgClearBannerY = -128;
