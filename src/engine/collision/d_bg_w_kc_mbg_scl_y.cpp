@@ -189,7 +189,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
         bounds.scaledMax.y = FX_MUL(bounds.localMax.y, scale);
         bounds.scaledMax.z = FX_MUL(bounds.localMax.z, scale);
         sphere.ExpandPushOutBounds(bounds.scaledMin.x, bounds.scaledMin.y, bounds.scaledMin.z,
-                             bounds.scaledMax.x, bounds.scaledMax.y, bounds.scaledMax.z);
+                                   bounds.scaledMax.x, bounds.scaledMax.y, bounds.scaledMax.z);
         (dBgPi &)sphere = (dBgPi &)localSphere;
         sphere.flags |= 1;
         if (localSphere.flags & 4) {

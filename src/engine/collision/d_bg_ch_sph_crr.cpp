@@ -68,8 +68,7 @@ void dBgCh_SphCrr::func_02037b5c()
 
 /* Clear the displacement and the push-out range the scan accumulates. */
 // @symbol _ZN12dBgCh_SphCrr17ResetDisplacementEv
-void dBgCh_SphCrr::ResetDisplacement()
-{
+void dBgCh_SphCrr::ResetDisplacement() {
     disp.x = disp.y = disp.z = 0;
     aabbMin.x = aabbMax.x = 0;
     aabbMin.y = aabbMax.y = 0;
@@ -78,8 +77,7 @@ void dBgCh_SphCrr::ResetDisplacement()
 
 /* Widen the push-out range to cover a scan's lowest and highest pushes. */
 // @symbol _ZN12dBgCh_SphCrr19ExpandPushOutBoundsEiiiiii
-void dBgCh_SphCrr::ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ)
-{
+void dBgCh_SphCrr::ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ) {
     if (aabbMin.x > minX) aabbMin.x = minX;
     if (aabbMax.x < minX) aabbMax.x = minX;
     if (aabbMin.x > maxX) aabbMin.x = maxX;
