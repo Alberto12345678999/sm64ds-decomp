@@ -2648,9 +2648,9 @@ class NativeConstructorAndWrapperTests(unittest.TestCase):
                 found = [d for d in defs if d.symbol == symbol]
                 self.assertEqual(len(found), 1)
                 self.assertEqual(CDA._native_constructor_abi(found[0]), (owner, owner + " *"))
-        for owner in ("Vector3", "Vector3s"):
+        for owner, rel in (("Vector3", "src/unnamed/arm9/0200/func_020071e0.cpp"),
+                           ("Vector3s", "src/_ZN8Vector3sD1Ev.cpp")):
             symbol = "_ZN%d%sD1Ev" % (len(owner), owner)
-            rel = "src/" + symbol + ".cpp"
             _, defs, _ = CDA.parse_file(rel, (REPO / rel).read_text(encoding="utf-8"), {})
             self.assertFalse(any(d.symbol == symbol for d in defs))
 
