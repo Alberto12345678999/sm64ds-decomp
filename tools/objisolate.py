@@ -823,15 +823,15 @@ def deadstrip_plan(raw, symbol_names, expect=None, duplicates=None):
       An unnamed section symbol stays refused either way, because an anonymous
       reference cannot be redirected to a home by name.
 
-    ``expect`` extends this to the *duplicate* case: a vague-linkage body the compiler
-    re-emits in every TU that needs it, while the retail image keeps exactly one copy
+    ``expect`` extends this to the *duplicate* case: a body the compiler re-emits in
+    a TU that is not its enrolled home, while the retail image keeps exactly one copy
     at a configured address.  Such a symbol is NOT compiler-only -- it has a ROM home --
     so discarding it is only sound when this object's copy is provably the same body.
-    ``{symbol: bytes}`` demands exactly that: ``STB_LOPROC`` binding and a section whose
-    content equals the cartridge's own bytes at the home address.  A caller that cannot
-    produce those bytes must not use this path.  If nothing else defines the symbol the
-    link fails loudly on an undefined reference, so this cannot silently drop a function
-    that has a retail address.
+    ``{symbol: bytes}`` demands exactly that: vague or strong linkage and a section
+    whose content equals the cartridge's own bytes at the home address.  A caller that
+    cannot produce those bytes must not use this path.  If nothing else defines the
+    symbol the link fails loudly on an undefined reference, so this cannot silently
+    drop a function that has a retail address.
 
     ``STT_OBJECT`` is accepted alongside ``STT_FUNC`` because a reconstructed TU that
     names its key function emits the class's ``_ZTV``/``_ZTI``/``_ZTS`` as well as its
@@ -988,9 +988,15 @@ def deadstrip_plan(raw, symbol_names, expect=None, duplicates=None):
                              f"data object's words are relocation addends here and "
                              f"linked addresses in the cartridge, so the two are not "
                              f"comparable before the link"}
-        if sym["st_info"]["bind"] != "STB_LOPROC":
-            return {"error": f"{name}: duplicate deadstrip needs vague linkage, got "
-                             f"{sym['st_info']['bind']}"}
+        # Vague linkage is the usual case. A strong duplicate is the same
+        # discard when this body is the cartridge's and another enrolled source
+        # owns that home: externalising it leaves one definition, and if that
+        # owner is absent the link fails on an undefined symbol instead of
+        # silently dropping the only copy. The byte checks below are what
+        # make the strong case safe.
+        if sym["st_info"]["bind"] not in ("STB_LOPROC", "STB_GLOBAL", "STB_WEAK"):
+            return {"error": f"{name}: duplicate deadstrip needs vague or strong "
+                             f"linkage, got {sym['st_info']['bind']}"}
         got, want = bytes(secs[sym["st_shndx"]].data()), bytes(want)
         if len(got) != len(want):
             return {"error": f"{name}: this object's body ({len(got)} bytes) is not the "

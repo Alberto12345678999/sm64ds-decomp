@@ -530,6 +530,47 @@ class Isolate(unittest.TestCase):
         _out, plan = OI.derive_deadstrip(raw, ["_ZN1VD1Ev"], duplicates=["_ZN1CD1Ev"])
         self.assertIn("not requested compiler-only functions", plan["error"])
 
+    def test_duplicate_deadstrip_accepts_a_strong_matching_body(self):
+        """An ordinary definition is STB_GLOBAL.  Matching bytes still discard it.
+
+        The model-animation thunk translation unit defines the three destructors
+        as real methods, and mwcc emits those bodies STB_GLOBAL.  Vague linkage
+        is not what that compilation produces.  The cartridge-byte compare is
+        what makes discarding the strong copy safe.  A binding outside
+        vague-or-strong stays a refusal.
+        """
+        import io
+        from elftools.elf.elffile import ELFFile
+
+        obj = self.build('extern "C" int helper(int x) { return x + 1; }\n'
+                         'extern "C" int kept(int x) { return helper(x); }\n')
+        raw = obj.read_bytes()
+        real = self._section_bytes(raw, "helper")
+        elf = ELFFile(io.BytesIO(raw))
+        symtab = elf.get_section_by_name(".symtab")
+        syms = list(symtab.iter_symbols())
+        index = next(i for i, s in enumerate(syms) if s.name == "helper")
+        self.assertEqual(syms[index]["st_info"]["bind"], "STB_GLOBAL")
+        self.assertEqual(symtab.header["sh_entsize"], 16)
+
+        out, plan = OI.derive_deadstrip(raw, ["helper"], {"helper": real})
+        self.assertIsNone(plan["error"], plan)
+        done = ELFFile(io.BytesIO(out))
+        got = next(s for s in done.get_section_by_name(".symtab").iter_symbols()
+                   if s.name == "helper")
+        self.assertEqual(got["st_shndx"], "SHN_UNDEF")
+
+        info_at = symtab.header["sh_offset"] + index * 16 + 12
+        weak = bytearray(raw)
+        weak[info_at] = (2 << 4) | 2  # STB_WEAK, STT_FUNC
+        out, plan = OI.derive_deadstrip(bytes(weak), ["helper"], {"helper": real})
+        self.assertIsNone(plan["error"], plan)
+
+        local = bytearray(raw)
+        local[info_at] = 2  # STB_LOCAL, STT_FUNC
+        _out, plan = OI.derive_deadstrip(bytes(local), ["helper"], {"helper": real})
+        self.assertIn("vague or strong linkage", plan["error"])
+
     def test_duplicate_deadstrip_still_refuses_an_unnamed_section_reference(self):
         """The exemption is keyed on the NAME, so an anonymous reference is untouched.
 
