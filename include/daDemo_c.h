@@ -154,8 +154,8 @@ struct daDemo_c : dActor_c {
            its animation frame out of starChars, and 5990 runs its state
            handler and lets it emit the sparkle particle. */
         struct Star {
-            s32 x;           /* 0x00 - fix12 screen position */
-            s32 y;           /* 0x04 */
+            s32 x; /* 0x00 - fix12 screen position */
+            s32 y; /* 0x04 */
             /* Speed along heading while approaching the target; the x
                velocity while flying off (x += speed); 569c steps x by it
                and y by speedY. */
@@ -171,13 +171,13 @@ struct daDemo_c : dActor_c {
                sparkle; they ease up from 0x199 to 0x1000 and 0x800. */
             s32 kiraDefParam; /* 0x28 */
             s16 kiraSysParam; /* 0x2c */
-            u16 heading;     /* 0x2e - angle stepped toward the target */
-            u16 delay;       /* 0x30 - frames before the state handler runs */
-            u16 frameTimer;  /* 0x32 - 39ec advances frame every 4 frames */
-            u16 kiraTimer;   /* 0x34 - 5894 counts it to 0x1e */
-            u16 flyTimer;    /* 0x36 - frames since the fly-off began */
-            u16 pad_38;      /* 0x38 - 5d34 clears it; nothing reads it */
-            u16 frame;       /* 0x3a - index into data_ov002_021002a0 */
+            u16 heading;      /* 0x2e - angle stepped toward the target */
+            u16 delay;        /* 0x30 - frames before the state handler runs */
+            u16 frameTimer;   /* 0x32 - 39ec advances frame every 4 frames */
+            u16 kiraTimer;    /* 0x34 - 5894 counts it to 0x1e */
+            u16 flyTimer;     /* 0x36 - frames since the fly-off began */
+            u16 pad_38;       /* 0x38 - 5d34 clears it; nothing reads it */
+            u16 frame;        /* 0x3a - index into data_ov002_021002a0 */
             /* Counts the frames on which frame and frameTimer are both 0
                (40fc, 4d70); the re-arm loops clear it and nothing else
                reads it. Medium confidence. */
@@ -200,81 +200,81 @@ struct daDemo_c : dActor_c {
            0x4001046 (y1 << 8 | y2). Indexed by the handlers' int
            argument, which is always 0. */
         struct Window {
-            s32 bgX;         /* 0x00 - fix12, SetSubBg1Offset/SetSubBg2Offset */
-            s32 bgY;         /* 0x04 */
-            u8 pad_08[8];    /* 0x08 */
-            s32 left;        /* 0x10 - fix12 */
-            s32 top;         /* 0x14 */
-            s32 right;       /* 0x18 */
-            s32 bottom;      /* 0x1c */
-            s32 stepX;       /* 0x20 - 30f8 widens the window by it per frame */
-            s32 stepY;       /* 0x24 */
-            u16 delay;       /* 0x28 - 30f8 waits it out first */
-            u8 pad_2a[2];    /* 0x2a */
-            u8 active;       /* 0x2c - func_ov002_020f37a0 does nothing while 0 */
-            u8 kind;         /* 0x2d - index into data_ov002_02110e4c */
+            s32 bgX;      /* 0x00 - fix12, SetSubBg1Offset/SetSubBg2Offset */
+            s32 bgY;      /* 0x04 */
+            u8 pad_08[8]; /* 0x08 */
+            s32 left;     /* 0x10 - fix12 */
+            s32 top;      /* 0x14 */
+            s32 right;    /* 0x18 */
+            s32 bottom;   /* 0x1c */
+            s32 stepX;    /* 0x20 - 30f8 widens the window by it per frame */
+            s32 stepY;    /* 0x24 */
+            u16 delay;    /* 0x28 - 30f8 waits it out first */
+            u8 pad_2a[2]; /* 0x2a */
+            u8 active;    /* 0x2c - func_ov002_020f37a0 does nothing while 0 */
+            u8 kind;      /* 0x2d - index into data_ov002_02110e4c */
             /* step index func_ov002_020f3310 and func_ov002_020f3740
                dispatch on; the step handlers advance it. */
-            u8 step;         /* 0x2e */
-            u8 pad_2f;       /* 0x2f */
+            u8 step;   /* 0x2e */
+            u8 pad_2f; /* 0x2f */
         };
 
         /* One of the five sub-screen sprites placed on the cake
            (func_ov002_020f2f9c, one per unlocked character plus the fixed
            ones); 2f18 moves them with the window scroll. */
         struct Doll {
-            s32 x;           /* 0x00 - fix12 */
-            s32 y;           /* 0x04 */
-            u8 pad_08[8];    /* 0x08 */
-            u8 active;       /* 0x10 - 2f18 moves and 2f64 animates it while set */
-            u8 visible;      /* 0x11 - 2eac draws it while set */
-            u8 frame;        /* 0x12 - index into data_ov002_0210bba0 */
-            u8 priority;     /* 0x13 - OAM::RenderSub priority */
+            s32 x;        /* 0x00 - fix12 */
+            s32 y;        /* 0x04 */
+            u8 pad_08[8]; /* 0x08 */
+            u8 active;    /* 0x10 - 2f18 moves and 2f64 animates it while set */
+            u8 visible;   /* 0x11 - 2eac draws it while set */
+            u8 frame;     /* 0x12 - index into data_ov002_0210bba0 */
+            u8 priority;  /* 0x13 - OAM::RenderSub priority */
         };
 
         /* The credit text on sub BG0: func_0201ef50 shows message
            `message`, and the step handlers fade it with the BG0 blend at
            0x4001050. */
         struct Credit {
-            u16 timer;       /* 0x00 */
-            u16 blendTimer;  /* 0x02 - blend steps every 2 frames */
-            u8 active;       /* 0x04 - func_ov002_020f2dd4 does nothing while 0 */
-            u8 step;         /* 0x05 - index into data_ov002_02110ebc */
-            u8 blend;        /* 0x06 - blend weight, 0..0x10 */
-            u8 message;      /* 0x07 - func_0201ef50's argument */
+            u16 timer;      /* 0x00 */
+            u16 blendTimer; /* 0x02 - blend steps every 2 frames */
+            u8 active;      /* 0x04 - func_ov002_020f2dd4 does nothing while 0 */
+            u8 step;        /* 0x05 - index into data_ov002_02110ebc */
+            u8 blend;       /* 0x06 - blend weight, 0..0x10 */
+            u8 message;     /* 0x07 - func_0201ef50's argument */
         };
 
-        Star stars[4];       /* 0x000 */
-        Window window[1];    /* 0x130 */
-        Doll dolls[5];       /* 0x160 */
-        Credit credit[1];    /* 0x1c4 */
+        Star stars[4];    /* 0x000 */
+        Window window[1]; /* 0x130 */
+        Doll dolls[5];    /* 0x160 */
+        Credit credit[1]; /* 0x1c4 */
         /* The language's "The End" sprite (data_ov002_0210b988), drawn by
            2990 while endVisible is set. */
-        s32 endX;            /* 0x1cc - fix12 */
-        s32 endY;            /* 0x1d0 */
-        u8 pad_1d4[4];       /* 0x1d4 */
+        s32 endX;      /* 0x1cc - fix12 */
+        s32 endY;      /* 0x1d0 */
+        u8 pad_1d4[4]; /* 0x1d4 */
         /* Written with endVisible by 2a48 and 2a68; nothing reads it.
            Medium confidence. */
-        u8 endActive;        /* 0x1d8 */
-        u8 endVisible;       /* 0x1d9 */
-        u8 pad_1da[10];      /* 0x1da */
+        u8 endActive;   /* 0x1d8 */
+        u8 endVisible;  /* 0x1d9 */
+        u8 pad_1da[10]; /* 0x1da */
         /* The sparkle burst 27e8 emits twice a frame at (0x80, 0x60): the
            same easing as a star's kira fields. */
-        s32 burstDefParam;   /* 0x1e4 */
-        s16 burstSysParam;   /* 0x1e8 */
-        u16 burstPeriods;    /* 0x1ea */
-        u8 burstTimer;       /* 0x1ec - wraps at 0x1e */
-        u8 burstActive;      /* 0x1ed */
-        u8 pad_1ee[2];       /* 0x1ee */
-        u8 pad_1f0[8];       /* 0x1f0 - 5ad4 clears both words; nothing reads them */
-        s32 kiraStar;        /* 0x1f8 - the star whose sparkle 5990 spawns this frame, 0..3 */
-        u32 kiraParticle;    /* 0x1fc - Particle::System::New handle */
+        s32 burstDefParam; /* 0x1e4 */
+        s16 burstSysParam; /* 0x1e8 */
+        u16 burstPeriods;  /* 0x1ea */
+        u8 burstTimer;     /* 0x1ec - wraps at 0x1e */
+        u8 burstActive;    /* 0x1ed */
+        u8 pad_1ee[2];     /* 0x1ee */
+        u8 pad_1f0[8];     /* 0x1f0 - 5ad4 clears both words; nothing reads them */
+        s32 kiraStar;      /* 0x1f8 - the star whose sparkle 5990 spawns this frame, 0..3 */
+        u32 kiraParticle;  /* 0x1fc - Particle::System::New handle */
         dPa_c::level_c::edStarKiraCallback_c kira; /* 0x200 - the sparkle callback */
-        u8 *starChars;       /* 0x510 - the 0x4000-byte D_2D_ED_STAR characters */
+        u8 *starChars; /* 0x510 - the 0x4000-byte D_2D_ED_STAR characters */
         /* Set by 5b8c; while set an orbiting star does not start its
            fly-off. */
-        u8 holdOrbit;        /* 0x514 */
-        u8 pad_515[3];       /* 0x515 */
+        u8 holdOrbit;  /* 0x514 */
+        u8 pad_515[3]; /* 0x515 */
     };
 
     u8 pad_0d0[4];          /* 0x0d0 */
@@ -364,14 +364,14 @@ typedef char
     daDemo_c_simpleModel_c_size_must_be_0x60[sizeof(daDemo_c::simpleModel_c) == 0x60 ? 1 : -1];
 typedef char daDemo_c_ScrollState_size_must_be_0x36[
     sizeof(daDemo_c::ScrollState) == 0x36 ? 1 : -1];
-typedef char daDemo_c_StaffRoll_size_must_be_0x518[
-    sizeof(daDemo_c::StaffRoll) == 0x518 ? 1 : -1];
-typedef char daDemo_c_StaffRoll_Star_size_must_be_0x4c[
-    sizeof(daDemo_c::StaffRoll::Star) == 0x4c ? 1 : -1];
-typedef char daDemo_c_StaffRoll_Window_size_must_be_0x30[
-    sizeof(daDemo_c::StaffRoll::Window) == 0x30 ? 1 : -1];
-typedef char daDemo_c_StaffRoll_Doll_size_must_be_0x14[
-    sizeof(daDemo_c::StaffRoll::Doll) == 0x14 ? 1 : -1];
+typedef char daDemo_c_StaffRoll_size_must_be_0x518[sizeof(daDemo_c::StaffRoll) == 0x518 ? 1 : -1];
+typedef char
+    daDemo_c_StaffRoll_Star_size_must_be_0x4c[sizeof(daDemo_c::StaffRoll::Star) == 0x4c ? 1 : -1];
+typedef char daDemo_c_StaffRoll_Window_size_must_be_0x30[sizeof(daDemo_c::StaffRoll::Window) == 0x30
+                                                             ? 1
+                                                             : -1];
+typedef char
+    daDemo_c_StaffRoll_Doll_size_must_be_0x14[sizeof(daDemo_c::StaffRoll::Doll) == 0x14 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */
