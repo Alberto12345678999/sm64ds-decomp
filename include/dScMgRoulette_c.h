@@ -49,17 +49,27 @@ struct dScMgRoulette_c : dScMgSingle3DBase_c {
     u8    mTable[0x270];   /* 0x4f38 -- the spinning board */
     u8    mArray[0x104];   /* 0x51a8 -- 5 racers, 0x34 each */
     u8    mMeter[4][0x18]; /* 0x52ac -- strips for payouts 12, 6, 3, 2 */
+    /* mSlider through mBraking is the wheel and its ball. The RouletteBoard_
+       helpers in d_s_mg_roulette_methods.cpp take mSlider and reach all of
+       it through their RouletteSliderView. */
     u8    mSlider[0x10];   /* 0x530c -- PMF state and the two model files */
-    u8    mModel1[0x50];   /* 0x531c -- raw Model; the destructor calls it explicitly */
-    u8    mModel2[0x50];   /* 0x536c */
-    u8    pad_53bc[0x8];   /* 0x53bc */
-    s32   mBoardBusy;      /* 0x53c4 -- while 0 the board is idle: Render draws
-                              the cursor and phase 3 pays out */
-    u8    pad_53c8[0xe];   /* 0x53c8 */
-    s16   mSelectedTile;   /* 0x53d6 -- cursor tile; phase 3 scores against it */
-    s16   mTableReady;     /* 0x53d8 -- set once the table first reports ready */
+    u8    mModel1[0x50];   /* 0x531c -- raw Model, the wheel; the destructor calls it explicitly */
+    u8    mModel2[0x50];   /* 0x536c -- the ball */
+    s32   mBallRadius;     /* 0x53bc -- Fix12; 0x4200 when the spin starts */
+    s32   mBallRadiusVel;  /* 0x53c0 -- added to mBallRadius each frame */
+    s32   mSpinSpeed;      /* 0x53c4 -- the ball's speed; at 0 it has stopped:
+                              Render draws the cursor and phase 3 pays out */
+    s32   mRollSoundHandle; /* 0x53c8 -- Sound_PlayIfNotActive's handle */
+    s16   mOrbitAngle;     /* 0x53cc -- the ball's angle round the wheel */
+    s16   mBoardAngle;     /* 0x53ce -- the wheel's own angle */
+    s16   mSlowBias;       /* 0x53d0 -- -mBoardAngle when the slowdown starts */
+    s16   mAngleStep;      /* 0x53d2 -- mOrbitAngle's step this frame */
+    s16   mBoardSpin;      /* 0x53d4 -- mBoardAngle's step, -0x200 */
+    s16   mSelectedTile;   /* 0x53d6 -- the tile under the ball; phase 3 scores against it */
+    s16   mRollSound;      /* 0x53d8 -- 0 quiet, 1 rolling (sound 0x157), 2 slowing
+                              (0x158); phase 1 sets 1 once the dealer is done */
     s16   pad_53da;        /* 0x53da */
-    s32   mTilesScored;    /* 0x53dc -- set to 1 when phase 2 records the tiles */
+    s32   mBraking;        /* 0x53dc -- phase 2 sets it; the spin then eases to 0 */
     s32   unk_53e0;        /* 0x53e0 -- reset to 0x100; not read in this TU */
     s16   mCameraPreset;     /* 0x53e4 -- Render copies row n of the camera
                                 tables (data_ov006_0213e34c / _0213e370 at stride
