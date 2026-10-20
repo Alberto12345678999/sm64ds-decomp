@@ -5,11 +5,13 @@
 /* recovered: shared common types */
 #include "common.h"
 #include "nitro/fx/fx.h"
+#include "Ov007MenuState.h"
 extern s16 data_02082214[];
 
-
-
-
+/* The _02104ba0 record has no class or header; its +0x10 slot is an Ov007MenuState
+ * (func_ov007_020b9880 allocates it with func_ov007_020c9388). The record in slot 0
+ * (built by func_ov007_020c690c, reset by func_ov007_020c684c) has no header either,
+ * so `a` stays raw. */
 void func_ov007_020baa10(void)
 {
     char* a;
@@ -17,17 +19,17 @@ void func_ov007_020baa10(void)
     int dx;
     int dy;
     int s;
-    char* p;
+    Ov007MenuState *menu;
     int counter;
 
     a = *(char**)data_ov007_02104ba0;
-    p = *(char**)(data_ov007_02104ba0 + 0x10);
+    menu = *(Ov007MenuState **)(data_ov007_02104ba0 + 0x10);
     dx = *(int*)(a + 0xc4) - *(int*)(a + 0xb8);
     dy = *(int*)(a + 0xc8) - *(int*)(a + 0xbc);
-    func_ov007_020c92d0(p);
-    p = *(char**)(data_ov007_02104ba0 + 0x10);
-    state = *(s16*)p;
-    counter = *(int*)(p + 0xc);
+    func_ov007_020c92d0((char *)menu);
+    menu = *(Ov007MenuState **)(data_ov007_02104ba0 + 0x10);
+    state = menu->currentState;
+    counter = menu->stateTicks;
 
     switch (state) {
     case 0:
@@ -61,7 +63,7 @@ void func_ov007_020baa10(void)
         if (m <= 0) v = 0;
         else if (m >= 0x3c) v = 0x1000;
         else v = _ZN4cstd3divEii(m << 12, 0x3c);
-        if (*(s16*)*(char**)(data_ov007_02104ba0 + 0x10) == 4)
+        if ((*(Ov007MenuState **)(data_ov007_02104ba0 + 0x10))->currentState == 4)
             v = 0x1000 - v;
         idx = ((u16)((v * 0xffff) >> 12) >> 4) * 2;
         *(int *)(a + 0x88) = FX_MUL((dx / 4), data_02082214[idx + 1]);
