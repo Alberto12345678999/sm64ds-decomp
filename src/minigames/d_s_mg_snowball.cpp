@@ -40,9 +40,8 @@
 // - The raw-pointer and view-struct puns (C_0212a224, C_02129d94,
 //   Obj_02129690, the AT()/ATS()/ATI() launders) are load-bearing: the
 //   0xa000..0xc000 field offsets exceed the +/-0xfff store immediate, so the
-//   compiler's own pointer arithmetic has to stand in for them. The
-//   remaining raw `*(T *)(base + 0x...)` sites are ones whose member
-//   spelling was tried and moved bytes; each carries a note saying so.
+//   compiler's own pointer arithmetic has to stand in for them. Raw sites
+//   whose member spelling was tried and moved bytes carry a note saying so.
 // - The r4/r5/r7 locals in the render-setup helpers are named for the
 //   registers they color; renaming them needs the coloring comments updated
 //   in the same pass.

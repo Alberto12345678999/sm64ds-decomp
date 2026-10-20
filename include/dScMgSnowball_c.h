@@ -239,8 +239,9 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     u16   mPrevHeadingAngle;/* 0xab82 */
     s32   mSpinAxis[3];     /* 0xab84 -- Vector3, seeded (0, 0x1000, 0) */
     s32   mSpinQuat[4];     /* 0xab90 -- Quaternion_FromVector3 of mSpinAxis */
-    s32   mBallSize;        /* 0xaba0 -- grows with the climb, capped 0x37000,
-                                shrinks by 0x1000 a tick while melting */
+    s32 mBallSize;          /* 0xaba0 -- grows with downhill (-Y) travel (see
+                                mUphillDebt), capped 0x37000, shrinks by
+                                0x1000 a tick while melting */
     Model mModel;           /* 0xaba4 -- 0x50, see file banner */
     BMD_File *mBallBmd;     /* 0xabf4 -- the snowball BMD; InitResources loads it,
                                 slot 3 frees it */

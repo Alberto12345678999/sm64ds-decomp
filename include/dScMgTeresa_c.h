@@ -41,7 +41,7 @@ struct dScMgTeresa_c : dScMgBase_c {
         u16 mAnimTimer;  /* 0x10 -- counts to 0xf, then advances mFrame */
         u16 mTurnTimer;  /* 0x12 -- Boo_StateFadeIn sets 0x80 on entering FadeAway (7);
                             FadeAway counts it down, then reverses mHeading and
-                            returns to FadeIn (6) */
+                            sets mFrame to 6, which stops the 3..5 frame cycle */
         u16 mDelay;      /* 0x14 */
         u8  mFade;       /* 0x16 -- nonzero draws semi-transparent */
         u8  mInPlay;     /* 0x17 */
