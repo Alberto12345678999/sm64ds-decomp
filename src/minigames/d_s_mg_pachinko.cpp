@@ -118,6 +118,7 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 /* Pachinko_DrawAimLine adds the field first, then the index. `&SHOT(p)->f`
  * shares one base and does not match. */
 #define SHOT_OFF(member) (SHOT_BASE + (int)&((dScMgPachinko_shot *)0)->member)
+#define BALL_OFF(member) (BALL_BASE + (int)&((dScMgPachinko_ball *)0)->member)
 
 namespace G2 {
     void *GetBG2CharPtr();
@@ -1761,9 +1762,9 @@ void PachinkoBall_StateDrift(char *o, int i) {
     int idx;
     PachinkoBall_CheckFall(o, i);
     idx = i * 0x38;
-    if (*(unsigned char *)(o + 0x4690 + idx) == 0)
+    if (*(unsigned char *)(o + BALL_OFF(started) + idx) == 0)
     {
-        *(unsigned char *)(o + 0x4690 + idx) += 1;
+        *(unsigned char *)(o + BALL_OFF(started) + idx) += 1;
         if (self->mWaveLevel > 0xc) {
             *(int *)(ATI(o, idx) + 0x466c) =
                 ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 3) >> 0xf)
@@ -1778,13 +1779,13 @@ void PachinkoBall_StateDrift(char *o, int i) {
         }
         if ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1) >> 0xf) != 0)
         {
-            *(int *)(o + idx + 0x4668) = (self->mWaveLevel << 7) + 0x600;
-            *(unsigned char *)(o + idx + 0x4691) = 0;
+            *(int *)(o + idx + BALL_OFF(velX)) = (self->mWaveLevel << 7) + 0x600;
+            *(unsigned char *)(o + idx + BALL_OFF(driftDir)) = 0;
         }
         else
         {
-            *(int *)(o + idx + 0x4668) = -((self->mWaveLevel << 7) + 0x600);
-            *(unsigned char *)(o + idx + 0x4691) = 0;
+            *(int *)(o + idx + BALL_OFF(velX)) = -((self->mWaveLevel << 7) + 0x600);
+            *(unsigned char *)(o + idx + BALL_OFF(driftDir)) = 0;
         }
         *(unsigned short *)((ATI(o, 0) + idx) + 0x4688) =
             ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) << 3) + 0x20;
@@ -1793,121 +1794,121 @@ void PachinkoBall_StateDrift(char *o, int i) {
     {
         int v12;
         int *vel;
-        *(int *)(o + 0x4664 + idx) += *(int *)(o + idx + 0x466c);
-        vel = (int *)(o + 0x4668 + idx);
-        *(int *)(o + 0x4660 + idx) += *(int *)(o + 0x4668 + idx);
-        v12 = *(int *)(o + 0x4660 + idx) >> 12;
+        *(int *)(o + BALL_OFF(y) + idx) += *(int *)(o + idx + BALL_OFF(velY));
+        vel = (int *)(o + BALL_OFF(velX) + idx);
+        *(int *)(o + BALL_OFF(x) + idx) += *(int *)(o + BALL_OFF(velX) + idx);
+        v12 = *(int *)(o + BALL_OFF(x) + idx) >> 12;
         if (v12 > 0xf0)
         {
             u8 d;
             *vel = -*vel;
-            d = *(unsigned char *)(o + 0x4691 + idx);
+            d = *(unsigned char *)(o + BALL_OFF(driftDir) + idx);
             if (d != 0)
             {
                 if (d == 1)
-                    *(unsigned char *)(o + 0x4691 + idx) = 2;
+                    *(unsigned char *)(o + BALL_OFF(driftDir) + idx) = 2;
                 else
-                    *(unsigned char *)(o + 0x4691 + idx) = 1;
+                    *(unsigned char *)(o + BALL_OFF(driftDir) + idx) = 1;
             }
-            *(int *)(o + 0x4660 + idx) = 0xf0000;
+            *(int *)(o + BALL_OFF(x) + idx) = 0xf0000;
         }
         if (v12 < 0x10)
         {
             u8 d;
-            *(int *)(o + 0x4668 + idx) = -*(int *)(o + 0x4668 + idx);
-            d = *(unsigned char *)(o + 0x4691 + idx);
+            *(int *)(o + BALL_OFF(velX) + idx) = -*(int *)(o + BALL_OFF(velX) + idx);
+            d = *(unsigned char *)(o + BALL_OFF(driftDir) + idx);
             if (d != 0)
             {
                 if (d == 1)
-                    *(unsigned char *)(o + 0x4691 + idx) = 2;
+                    *(unsigned char *)(o + BALL_OFF(driftDir) + idx) = 2;
                 else
-                    *(unsigned char *)(o + 0x4691 + idx) = 1;
+                    *(unsigned char *)(o + BALL_OFF(driftDir) + idx) = 1;
             }
-            *(int *)(o + 0x4660 + idx) = 0x10000;
+            *(int *)(o + BALL_OFF(x) + idx) = 0x10000;
         }
         PachinkoBall_CheckHitByBobOmb(o, i);
         PachinkoBall_CheckPipes(o, i);
         PachinkoBall_CountNearby(o, i);
         {
-            unsigned short t = *(unsigned short *)(o + 0x4688 + idx);
+            unsigned short t = *(unsigned short *)(o + BALL_OFF(timer) + idx);
             if (t != 0)
             {
-                *(unsigned short *)(o + 0x4688 + idx) = t - 1;
+                *(unsigned short *)(o + BALL_OFF(timer) + idx) = t - 1;
                 if (*vel > 0)
                 {
-                    *(unsigned short *)(o + 0x4684 + idx) -= 0x80;
-                    if (*(short *)(o + 0x4684 + idx) <= -0x1800)
-                        *(unsigned short *)(o + 0x4684 + idx) = 0xe800;
+                    *(unsigned short *)(o + BALL_OFF(rotation) + idx) -= 0x80;
+                    if (*(short *)(o + BALL_OFF(rotation) + idx) <= -0x1800)
+                        *(unsigned short *)(o + BALL_OFF(rotation) + idx) = 0xe800;
                 }
                 else if (*vel < 0)
                 {
-                    *(unsigned short *)(o + 0x4684 + idx) += 0x80;
-                    if (*(short *)(o + 0x4684 + idx) >= 0x1800)
-                        *(short *)(o + 0x4684 + idx) = 0x1800;
+                    *(unsigned short *)(o + BALL_OFF(rotation) + idx) += 0x80;
+                    if (*(short *)(o + BALL_OFF(rotation) + idx) >= 0x1800)
+                        *(short *)(o + BALL_OFF(rotation) + idx) = 0x1800;
                 }
-                if (*(short *)(o + 0x4688 + idx) < 0)
-                    *(short *)(o + 0x4688 + idx) = 0;
+                if (*(short *)(o + BALL_OFF(timer) + idx) < 0)
+                    *(short *)(o + BALL_OFF(timer) + idx) = 0;
                 return;
             }
             {
-                u8 st = *(unsigned char *)(o + 0x4691 + idx);
+                u8 st = *(unsigned char *)(o + BALL_OFF(driftDir) + idx);
                 if (st == 0)
                 {
                     int v = *vel;
                     if (v > 0)
                     {
                         *vel = v - 0x20;
-                        *(unsigned short *)(o + 0x4684 + idx) += 0x80;
-                        if (*(short *)(o + 0x4684 + idx) >= 0)
-                            *(short *)(o + 0x4684 + idx) = 0;
+                        *(unsigned short *)(o + BALL_OFF(rotation) + idx) += 0x80;
+                        if (*(short *)(o + BALL_OFF(rotation) + idx) >= 0)
+                            *(short *)(o + BALL_OFF(rotation) + idx) = 0;
                         if (*vel <= 0)
                         {
-                            *(unsigned char *)(o + 0x4691 + idx) =
+                            *(unsigned char *)(o + BALL_OFF(driftDir) + idx) =
                                 (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1) >> 0xf) + 1;
-                            *(unsigned short *)(o + 0x4688 + idx) =
+                            *(unsigned short *)(o + BALL_OFF(timer) + idx) =
                                 ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 4) >> 0xf) << 2);
-                            *(short *)(o + 0x4684 + idx) = 0;
+                            *(short *)(o + BALL_OFF(rotation) + idx) = 0;
                         }
                     }
                     else if (v < 0)
                     {
                         *vel = v + 0x20;
-                        *(unsigned short *)(o + 0x4684 + idx) -= 0x80;
-                        if (*(short *)(o + 0x4684 + idx) < 0)
-                            *(short *)(o + 0x4684 + idx) = 0;
+                        *(unsigned short *)(o + BALL_OFF(rotation) + idx) -= 0x80;
+                        if (*(short *)(o + BALL_OFF(rotation) + idx) < 0)
+                            *(short *)(o + BALL_OFF(rotation) + idx) = 0;
                         if (*vel >= 0)
                         {
-                            *(unsigned char *)(o + 0x4691 + idx) =
+                            *(unsigned char *)(o + BALL_OFF(driftDir) + idx) =
                                 (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1) >> 0xf) + 1;
-                            *(unsigned short *)(o + 0x4688 + idx) =
+                            *(unsigned short *)(o + BALL_OFF(timer) + idx) =
                                 ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 4) >> 0xf) << 2);
-                            *(short *)(o + 0x4684 + idx) = 0;
+                            *(short *)(o + BALL_OFF(rotation) + idx) = 0;
                         }
                     }
                 }
                 else if (st == 1)
                 {
                     *vel += 0x20;
-                    *(unsigned short *)(o + 0x4684 + idx) -= 0x80;
-                    if (*(short *)(o + 0x4684 + idx) <= -0x1800)
-                        *(unsigned short *)(o + 0x4684 + idx) = 0xe800;
+                    *(unsigned short *)(o + BALL_OFF(rotation) + idx) -= 0x80;
+                    if (*(short *)(o + BALL_OFF(rotation) + idx) <= -0x1800)
+                        *(unsigned short *)(o + BALL_OFF(rotation) + idx) = 0xe800;
                     if (*vel >= (self->mWaveLevel << 7) + 0x600) {
-                        *(unsigned char *)(o + 0x4691 + idx) = 0;
+                        *(unsigned char *)(o + BALL_OFF(driftDir) + idx) = 0;
                         *vel = (self->mWaveLevel << 7) + 0x600;
-                        *(unsigned short *)(o + 0x4688 + idx) =
+                        *(unsigned short *)(o + BALL_OFF(timer) + idx) =
                             ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) << 3) + 0x10;
                     }
                 }
                 else
                 {
                     *vel -= 0x20;
-                    *(unsigned short *)(o + 0x4684 + idx) += 0x80;
-                    if (*(short *)(o + 0x4684 + idx) >= 0x1800)
-                        *(short *)(o + 0x4684 + idx) = 0x1800;
+                    *(unsigned short *)(o + BALL_OFF(rotation) + idx) += 0x80;
+                    if (*(short *)(o + BALL_OFF(rotation) + idx) >= 0x1800)
+                        *(short *)(o + BALL_OFF(rotation) + idx) = 0x1800;
                     if (*vel <= -((self->mWaveLevel << 7) + 0x600)) {
-                        *(unsigned char *)(o + 0x4691 + idx) = 0;
+                        *(unsigned char *)(o + BALL_OFF(driftDir) + idx) = 0;
                         *vel = -((self->mWaveLevel << 7) + 0x600);
-                        *(unsigned short *)(o + 0x4688 + idx) =
+                        *(unsigned short *)(o + BALL_OFF(timer) + idx) =
                             ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) << 3) + 0x10;
                     }
                 }
@@ -2302,88 +2303,88 @@ void PachinkoBobOmb_StateAim(dScMgPachinko_c *self, int i) {
 
         cx = gTouchX[idx][0];
         cy = gTouchY[idx][0];
-        *(s32 *)(c + 0x4ed8 + off) = (cx << 12) + *(s32 *)(c + 0x4ee8 + off);
-        *(s32 *)(c + 0x4edc + off) = (cy << 12) + *(s32 *)(c + 0x4eec + off);
+        *(s32 *)(c + SHOT_OFF(x) + off) = (cx << 12) + *(s32 *)(c + SHOT_OFF(offX) + off);
+        *(s32 *)(c + SHOT_OFF(y) + off) = (cy << 12) + *(s32 *)(c + SHOT_OFF(offY) + off);
 
-        vy = *(s32 *)(c + 0x4edc + off) >> 12;
-        vx = *(s32 *)(c + 0x4ed8 + off) >> 12;
+        vy = *(s32 *)(c + SHOT_OFF(y) + off) >> 12;
+        vx = *(s32 *)(c + SHOT_OFF(x) + off) >> 12;
         if (vx >= 0xf8)
-            *(s32 *)(c + 0x4ed8 + off) = 0xf8000;
-        py = (s32 *)(c + 0x4edc + off);
+            *(s32 *)(c + SHOT_OFF(x) + off) = 0xf8000;
+        py = (s32 *)(c + SHOT_OFF(y) + off);
         if (vx <= 8)
-            *(s32 *)(c + 0x4ed8 + off) = 0x8000;
+            *(s32 *)(c + SHOT_OFF(x) + off) = 0x8000;
         if (vy >= 0xb8)
             *py = 0xb8000;
         if (vy <= 8)
             *py = 0x8000;
 
         {
-            s32 nx = (*(s32 *)(c + 0x4ed8 + off) >> 12) - gTouchX[gActivePlayerSlot][0];
-            s32 ny = (*(s32 *)(c + 0x4edc + off) >> 12) - gTouchY[gActivePlayerSlot][0];
+            s32 nx = (*(s32 *)(c + SHOT_OFF(x) + off) >> 12) - gTouchX[gActivePlayerSlot][0];
+            s32 ny = (*(s32 *)(c + SHOT_OFF(y) + off) >> 12) - gTouchY[gActivePlayerSlot][0];
 
-            *(s32 *)(c + 0x4ee8 + off) = nx << 12;
-            *(s32 *)(c + 0x4eec + off) = ny << 12;
+            *(s32 *)(c + SHOT_OFF(offX) + off) = nx << 12;
+            *(s32 *)(c + SHOT_OFF(offY) + off) = ny << 12;
         }
 
         {
-            s32 dy = 0x80 - (*(s32 *)(c + 0x4ed8 + off) >> 12);
-            s32 dx = 0x20 - (*(s32 *)(c + 0x4edc + off) >> 12);
+            s32 dy = 0x80 - (*(s32 *)(c + SHOT_OFF(x) + off) >> 12);
+            s32 dx = 0x20 - (*(s32 *)(c + SHOT_OFF(y) + off) >> 12);
             s32 dist = cstd::sqrt((u64)(s64)(dy * dy + dx * dx));
-            s32 prev = *(s32 *)(c + 0x4f04 + off);
+            s32 prev = *(s32 *)(c + SHOT_OFF(dist) + off);
 
-            *(s32 *)(c + 0x4f04 + off) = dist;
+            *(s32 *)(c + SHOT_OFF(dist) + off) = dist;
             if (dist > prev) {
                 if (dist > prev + 10)
-                    *(s32 *)(c + 0x4f00 + off) = Sound_PlayIfNotActive(
-                        *(s32 *)(c + 0x4f00 + off), 2, 0x17b, 0);
+                    *(s32 *)(c + SHOT_OFF(sound) + off) = Sound_PlayIfNotActive(
+                        *(s32 *)(c + SHOT_OFF(sound) + off), 2, 0x17b, 0);
                 else
-                    *(s32 *)(c + 0x4f00 + off) = Sound_PlayIfNotActive(
-                        *(s32 *)(c + 0x4f00 + off), 2, 0x17c, 0);
+                    *(s32 *)(c + SHOT_OFF(sound) + off) = Sound_PlayIfNotActive(
+                        *(s32 *)(c + SHOT_OFF(sound) + off), 2, 0x17c, 0);
             }
         }
     } else {
         int off = i * 0x38;
         s32 dy, dx, dist;
 
-        *(u8 *)(c + 0x4f0d + off) = 2;
-        dy = 0x80 - (*(s32 *)(c + 0x4ed8 + off) >> 12);
-        dx = 0x20 - (*(s32 *)(c + 0x4edc + off) >> 12);
+        *(u8 *)(c + SHOT_OFF(state) + off) = 2;
+        dy = 0x80 - (*(s32 *)(c + SHOT_OFF(x) + off) >> 12);
+        dx = 0x20 - (*(s32 *)(c + SHOT_OFF(y) + off) >> 12);
         dist = cstd::sqrt((u64)(s64)(dy * dy + dx * dx));
         if (dist >= 0x10) {
             {
                 s16 ang = _ZN4cstd5atan2E5Fix12IiES1_(dx, dy);
                 char *p = c + off;
 
-                *(s16 *)(p + 0x4f08) = ang;
+                *(s16 *)(p + SHOT_OFF(angle)) = ang;
             }
-            *(s32 *)(c + 0x4ef8 + off) =
+            *(s32 *)(c + SHOT_OFF(speed) + off) =
                 cstd::sqrt((u64)(s64)(dy * dy + dx * dx)) << 8;
-            *(s32 *)(c + 0x4ef8 + off) += *(s32 *)(c + 0x4ef8 + off) >> 2;
-            *(s32 *)(c + 0x4ef8 + off) += *(s32 *)(c + 0x4ef8 + off) >> 2;
-            *(s32 *)(c + 0x4ef8 + off) += *(s32 *)(c + 0x4ef8 + off) >> 2;
-            if (*(s32 *)(c + 0x4ef8 + off) >= 0xa000)
-                *(s32 *)(c + 0x4ef8 + off) = 0xa000;
-            self->mNextBallDelay = (u16)(*(s32 *)(c + 0x4ef8 + off) >> 10);
+            *(s32 *)(c + SHOT_OFF(speed) + off) += *(s32 *)(c + SHOT_OFF(speed) + off) >> 2;
+            *(s32 *)(c + SHOT_OFF(speed) + off) += *(s32 *)(c + SHOT_OFF(speed) + off) >> 2;
+            *(s32 *)(c + SHOT_OFF(speed) + off) += *(s32 *)(c + SHOT_OFF(speed) + off) >> 2;
+            if (*(s32 *)(c + SHOT_OFF(speed) + off) >= 0xa000)
+                *(s32 *)(c + SHOT_OFF(speed) + off) = 0xa000;
+            self->mNextBallDelay = (u16)(*(s32 *)(c + SHOT_OFF(speed) + off) >> 10);
             if (self->mNextBallDelay == 0)
                 self->mNextBallDelay = 1;
             *(u8 *)(c + 0x5c31) = 0;
             {
-                int ai = (*(u16 *)(c + 0x4f08 + off) >> 4) * 2 + 1;
-                *(s32 *)(c + 0x4ee0 + off) = FX_MUL(data_02082214[ai], *(s32 *)(c + 0x4ef8 + off));
+                int ai = (*(u16 *)(c + SHOT_OFF(angle) + off) >> 4) * 2 + 1;
+                *(s32 *)(c + SHOT_OFF(velX) + off) = FX_MUL(data_02082214[ai], *(s32 *)(c + SHOT_OFF(speed) + off));
             }
             {
-                const s16 *sp = &data_02082214[(*(u16 *)(c + 0x4f08 + off) >> 4) * 2];
-                *(s32 *)(c + 0x4ee4 + off) = FX_MUL(*sp, *(s32 *)(c + 0x4ef8 + off));
+                const s16 *sp = &data_02082214[(*(u16 *)(c + SHOT_OFF(angle) + off) >> 4) * 2];
+                *(s32 *)(c + SHOT_OFF(velY) + off) = FX_MUL(*sp, *(s32 *)(c + SHOT_OFF(speed) + off));
             }
-            *(s16 *)(c + 0x4f0a + off) = 0;
+            *(s16 *)(c + SHOT_OFF(timer) + off) = 0;
             if (dist >= 0x40)
                 Sound::PlayBank2_2D(0x17e);
             else
                 Sound::PlayBank2_2D(0x17d);
         } else {
-            *(s32 *)(c + 0x4ed8 + off) = 0x80000;
-            *(s32 *)(c + 0x4edc + off) = 0x28000;
-            *(u8 *)(c + 0x4f0d + off) = 0;
+            *(s32 *)(c + SHOT_OFF(x) + off) = 0x80000;
+            *(s32 *)(c + SHOT_OFF(y) + off) = 0x28000;
+            *(u8 *)(c + SHOT_OFF(state) + off) = 0;
         }
     }
     Pachinko_DrawAimLine(self);
