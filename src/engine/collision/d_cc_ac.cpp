@@ -1,27 +1,36 @@
 //cpp
 /* leftovers:
- * func_02014a20 stays a free helper under its address name: the cartridge
- * record carries the linker's tail-call veneer to dCcAc_c::GetOwnerID, not a
- * member body (dCcAcPos_c.h slot-3 note).
- * The three Init definitions stay mangled free functions: the real signatures
+ * dCcAcPos_c::GetOwnerID stays the 12-byte interworking veneer. The
+ * qualified call is what -interworking lowers to `ldr ip,[pc]; bx ip`,
+ * and _ZTV10dCcAcPos_c slot 3 binds to that veneer rather than to the
+ * base body (dCcAcPos_c.h).
+ * The two Init definitions stay mangled free functions: the real signatures
  * carry Fix12<int> by value (wall 6az); dCcAc_c.h and dCcAcPos_c.h keep the
  * real declarations for callers.
  */
 /* dCcAc_c -- collision cylinder attached to an dActor_c. Cartridge class:
    _ZTV7dCcAc_c at 0x0208e6d4, _ZTS7dCcAc_c at 0x0208e668, _ZTI7dCcAc_c at
    0x0208e698 (si_class, base dCc_c). The derived position-bearing class
-   dCcAcPos_c (_ZTV10dCcAcPos_c at 0x0208e704, si_class on this class) folds
-   into the same TU for its non-lifecycle members: the run brackets the
-   base span (GetPos and the slot-3 veneer above it, Init and
-   SetPosRelativeToActor below it), while D0/D1/C1 stay in their own files
-   because defining the key function here would re-emit _ZTV10dCcAcPos_c
-   with slot 3 bound to the base member, not to the linker veneer the
-   cartridge record carries. TU claims 0x0201489c..0x02014a34. Written
-   back-to-front: mwccarm emits .text in reverse source order under default
-   deferred codegen. */
+   dCcAcPos_c (_ZTV10dCcAcPos_c at 0x0208e704, si_class on this class) is
+   this same TU, lifecycle included. ~dCcAcPos_c() is the key function, so
+   the vtable emits here; slot 3 is the veneer below, not
+   _ZN7dCcAc_c10GetOwnerIDEv. D2 and C2 have no cartridge home. TU claims
+   0x0201489c..0x02014aa8. Written back-to-front: mwccarm emits .text in
+   reverse source order under default deferred codegen. */
 #include "dCcAc_c.h"
 #include "dCcAcPos_c.h"
 #include "dActor_c.h"
+
+// @symbol _ZN10dCcAcPos_cC1Ev
+/* pos is left uninitialised. C1 is the dCcAc_c base step and this vtable
+   store; C2 is the same body with no cartridge home. */
+dCcAcPos_c::dCcAcPos_c() {}
+
+// @symbol _ZN10dCcAcPos_cD1Ev
+/* No member has a destructor the cartridge calls. D1 stores this vtable
+   and runs dCcAc_c's D2; D0 adds the inherited operator delete. D2 is
+   emitted beside them and has no cartridge home. */
+dCcAcPos_c::~dCcAcPos_c() {}
 
 // @symbol _ZN10dCcAcPos_c6GetPosEv
 /* Vtable slot 2. This shadows dCcAc_c's own slot 2, which returns the
@@ -31,16 +40,14 @@ Vector3 &dCcAcPos_c::GetPos()
     return pos;
 }
 
-extern "C" {
-
-// @symbol func_02014a20
-/* dCcAcPos_c vtable slot 3: the compiler emitted a 12-byte interworking
-   veneer tail-calling the inherited dCcAc_c::GetOwnerID instead of a real
-   override body. The qualified (non-virtual) call reproduces the direct
-   branch with `self` passed through untouched. */
-void func_02014a20(dCcAc_c *self) {
-    self->dCcAc_c::GetOwnerID();
-}
+// @symbol _ZN10dCcAcPos_c10GetOwnerIDEv
+/* Vtable slot 3. The body is the qualified base call, not a copy of the
+   base body: -interworking lowers it to the 12-byte veneer
+   `ldr ip,[pc]; bx ip; .word _ZN7dCcAc_c10GetOwnerIDEv`. Declaring the
+   override is what makes the emitted vtable relocate this slot here.
+   Leaving it inherited would point the slot at 0x0201493c. */
+u32 dCcAcPos_c::GetOwnerID() {
+    return dCcAc_c::GetOwnerID();
 }
 
 // @symbol _ZN7dCcAc_cC2Ev
