@@ -145,5 +145,18 @@
   ],
   "notes": [
     "The six former one-function thunk shards are this file. Each shard was only the class destructor, and objisolate kept one thunk. One compilation emits all six, in cartridge order, and the bodies and vtables are compiler-only."
-  ]
+  ],
+  "verification": {
+    "round": "mwccarm 2004/b56 compile of this file, then tools/match.py extract_func against extracted/arm9_dec.bin with relocation words masked",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "functions_matched": 6,
+    "functions_declared": 6,
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS"
+    }
+  }
 }
