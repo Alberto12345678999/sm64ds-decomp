@@ -804,37 +804,32 @@ void PachinkoFlyer_Update(C2 *c){
 }
 
 // @symbol PachinkoTarget_Choose
-void PachinkoTarget_Choose(char *raw)
-{
-  int targets;
-  int i;
-  unsigned int rand;
-  char *target;
-  dScMgPachinko_c *self = PACHINKO(raw);
-  if (self->mFlyerOut != 0)
-  {
-    return;
-  }
-  self->mFlyer[0].active = 1;
-  self->mFlyer[0].state = 0;
-  self->mFlyer[0].sound = 0;
-  rand = (((unsigned int) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
-  self->mFlyer[0].delay = (short) ((((rand << 5) >> 15) << 3) + 0x200);
-  targets = 0;
-  for (i = 0; i < 4; i++)
-  {
-    if (self->mTarget[i].active != 0)
-    {
-      targets++;
+void PachinkoTarget_Choose(char *raw) {
+    int targets;
+    int i;
+    unsigned int rand;
+    char *target;
+    dScMgPachinko_c *self = PACHINKO(raw);
+    if (self->mFlyerOut != 0) {
+        return;
     }
-  }
+    self->mFlyer[0].active = 1;
+    self->mFlyer[0].state = 0;
+    self->mFlyer[0].sound = 0;
+    rand = (((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
+    self->mFlyer[0].delay = (short)((((rand << 5) >> 15) << 3) + 0x200);
+    targets = 0;
+    for (i = 0; i < 4; i++) {
+        if (self->mTarget[i].active != 0) {
+            targets++;
+        }
+    }
 
-  if (targets == 1)
-  {
-    rand = (((unsigned int) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
-    self->mFlyer[0].delay = (short) ((((rand << 5) >> 15) << 2) + 0x200);
-  }
-  self->mFlyerOut++;
+    if (targets == 1) {
+        rand = (((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
+        self->mFlyer[0].delay = (short)((((rand << 5) >> 15) << 2) + 0x200);
+    }
+    self->mFlyerOut++;
 }
 
 // @symbol PachinkoFx_DrawAll
@@ -978,26 +973,22 @@ void PachinkoPopup_DrawAll(char *raw)
 }
 
 // @symbol PachinkoPopup_UpdateAll
-void PachinkoPopup_UpdateAll(char *popup)
-{
-  int i;
-  for (i = 0; i < 0x1e; i++)
-  {
-    unsigned short v = PACHINKO(popup)->mPopup[0].timer;
-    if (v != 0)
-    {
-        unsigned short *timer =
-            (unsigned short *)(((long long)((int)(popup + REC_OFF(mPopup, timer)))));
-        *timer = (*timer) - 1;
-        /* mPopup[0].timer, signed: the member spelling shares the laundered
-           address above instead of a fresh + 0x4c00 base. */
-        if ((*((short *)((popup + 0x4c00) + 0xfa))) < 0) {
-            *((short *)((popup + 0x4c00) + 0xfa)) = 0;
+void PachinkoPopup_UpdateAll(char *popup) {
+    int i;
+    for (i = 0; i < 0x1e; i++) {
+        unsigned short v = PACHINKO(popup)->mPopup[0].timer;
+        if (v != 0) {
+            unsigned short *timer =
+                (unsigned short *)(((long long)((int)(popup + REC_OFF(mPopup, timer)))));
+            *timer = (*timer) - 1;
+            /* mPopup[0].timer, signed: the member spelling shares the laundered
+               address above instead of a fresh + 0x4c00 base. */
+            if ((*((short *)((popup + 0x4c00) + 0xfa))) < 0) {
+                *((short *)((popup + 0x4c00) + 0xfa)) = 0;
+            }
         }
+        popup += 0xc;
     }
-    popup += 0xc;
-  }
-
 }
 
 // @symbol PachinkoPopup_SpawnScore
