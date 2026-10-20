@@ -113,11 +113,10 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
     u8  mIsWaiting;      /* 0x100 -- 1 while this ball is still queued behind the
                              one in play. RestoreInitial sets it; SaveSnapshot
                              clears it once the base's mIndex (this ball's own
-                             slot index) equals the manager's current index at
-                             mgr+0x4664 and mInPlay is up. While set,
+                             slot index) equals the manager's mServeIndex and mInPlay is up. While set,
                              SaveSnapshot runs QueueBehind, which lines
                              the ball up behind its predecessor in the
-                             manager's 13-entry table at mgr+0x4688; once clear
+                             manager's 13-entry mpBalls table; once clear
                              it runs the live physics path
                              SmartballBall_UpdatePhysics instead. */
     u8  pad_101[0x3]; /* 0x101-0x103 -- alignment */

@@ -150,7 +150,8 @@ struct dScMgSmartball_c : dScMgBase_c {
     /* The seven object counts, each paired with the table below it by
        SpawnObjects (counted while the BG maps are scanned, then used as the
        construction bound) and by AfterCleanupResources (zeroed after that table
-       is freed). */
+       is freed -- all but mPropellerCount, which is cleared only where
+       SpawnObjects zeroes all seven before its scan). */
     s32 mBallCount;       /* 0x4668 -- 0xc or 0xd, from the mode byte */
     s32 mAnaCount;        /* 0x466c -- capped at 8, tile 0x2cb */
     s32 mKinokoCount;     /* 0x4670 -- capped at 0x19, tiles 0x2e8 and 0x328 */
@@ -202,7 +203,8 @@ struct dScMgSmartball_c : dScMgBase_c {
     /* EndRound sets it; cleared once no ball is left to burst. The table is not
        at rest and the board stops scoring while it is up. */
     u8 mDraining; /* 0x595c */
-    /* EndRound sets it, nothing clears it; the propellers stop turning. */
+    /* EndRound sets it and SpawnObjects clears it; while it is set the
+       propellers stop turning. */
     u8 mRoundEnded; /* 0x595d */
     /* Render's itemised-result reveal counter, counts to 0x12c. */
     s32 mResultTimer; /* 0x5960 */
