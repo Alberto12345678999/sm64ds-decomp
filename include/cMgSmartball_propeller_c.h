@@ -22,7 +22,7 @@
  * belongs to cMgSmartball_object_c (unk_032), reached by a per-reader cast
  * because 0x31-0x33 is a three-byte region with no single type, read three
  * incompatible ways (see cMgSmartball_object_c.h). This class reads it both
- * ways itself: RebuildVerts signed (GetAngle below), Update unsigned -- it
+ * ways itself: RebuildVerts and SaveSnapshot signed, Update unsigned -- it
  * indexes a sine table with `>> 4` (lsr, not asr) on that field.
  *
  * THE TAIL FROM 0x38 TO 0x77 IS mVertices[8], eight (x, y) pairs. Both
@@ -60,13 +60,7 @@ struct cMgSmartball_propeller_c : cMgSmartball_object_c {
        0x32 angle and mCurrent position. */
     int  HitTest(int *pos);
     void RebuildVerts();
-
-    /* RebuildVerts reads the base's 0x32 angle signed, like the wing's
-       GetAngle; Update reads the same two bytes unsigned and keeps its cast.
-       The base keeps byte storage because other children use different views. */
-    s16 GetAngle() const {
-        return *(const s16 *)&unk_032;
-    }
+    s16 GetAngle() const; /* the base's 0x32 angle, signed; inline in the .cpp */
 
     s16 mSpinSpeedTarget; /* 0x034 -- the rotation speed mSpinSpeed is eased
                               toward. RestoreInitial sets it to 0x40 and the

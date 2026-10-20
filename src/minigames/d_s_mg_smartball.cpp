@@ -2019,6 +2019,12 @@ int cMgSmartball_propeller_c::HitTest(int *pos) {
     return PointInTriangle((int *)&v0, (int *)&v1, (int *)&v2, (int *)&v3) != 0;
 }
 
+/* The base's angle at 0x32 read signed, as RebuildVerts needs it. Update reads
+   the same two bytes unsigned and keeps its own cast. */
+inline s16 cMgSmartball_propeller_c::GetAngle() const {
+    return *(const s16 *)((const char *)this + 0x32);
+}
+
 // @symbol _ZN24cMgSmartball_propeller_c12RebuildVertsEv
 void cMgSmartball_propeller_c::RebuildVerts() {
     mVertices[0].x = 0x20000;
@@ -2104,7 +2110,7 @@ void cMgSmartball_propeller_c::Update() {
  * mRoundEnded flag is set, it returns before touching anything else.
  * Otherwise it steps the rotation speed (mSpinSpeed) by +-8 toward the target
  * (mSpinSpeedTarget), clamping once it crosses, adds the stepped speed onto the
- * base's own angle at 0x32 (a cast of unk_032 -- see cMgSmartball_object_c.h
+ * base's own angle at 0x32 (a raw cast -- see cMgSmartball_object_c.h
  * on why that field has no single type), and calls the shared helper that
  * recomputes the propeller-blade positions from the new angle.
  *
@@ -2130,7 +2136,7 @@ void cMgSmartball_propeller_c::SaveSnapshot() {
             mSpinSpeed = mSpinSpeedTarget;
     }
     {
-        short *q = (short *)&unk_032;
+        short *q = (short *)((char *)this + 0x32);
         *q = *q + mSpinSpeed;
     }
     RebuildVerts();
