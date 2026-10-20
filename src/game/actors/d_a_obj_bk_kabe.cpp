@@ -36,7 +36,7 @@
  *   0xf0 to 0xe4. The 0/1 local stays.
  * - Behavior: `pos.y = mPosY + kStarPopY` is a size-DIFF, 0xf0 to 0xec.
  *   Y is stored, then increased.
- * - Behavior: assigning mMeshCollider.unk_0c is a size-DIFF, 0xf0 to 0xe8.
+ * - Behavior: assigning mMeshCollider.clipRadius is a size-DIFF, 0xf0 to 0xe8.
  *   func_020393a4 stays; that is the call the ROM makes.
  * - Behavior: IsClsnInRange(kClsnRange, 0) does not compile (no conversion
  *   to Fix12<int>). Fix12<int> locals are a size-DIFF, 0xf0 to 0x108. The
