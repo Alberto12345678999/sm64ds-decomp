@@ -307,8 +307,8 @@ s32 dScMgFlower_c::Render() {
             attr.a = (attr.a & 0xc1fffcff) | 0x100;
             if (mHeldPetal == i)
                 palette = 0;
-            Mg_RenderSubSpriteScaled(&attr, mPetals[i].x >> 12, mPetals[i].y >> 12, -1,
-                                     palette, 0x1000, (u16)(s16)((u16)mPetals[i].angle + 0x8000));
+            Mg_RenderSubSpriteScaled(&attr, mPetals[i].x >> 12, mPetals[i].y >> 12, -1, palette,
+                                     0x1000, (u16)(s16)((u16)mPetals[i].angle + 0x8000));
         }
     }
 

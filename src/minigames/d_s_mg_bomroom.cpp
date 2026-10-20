@@ -103,7 +103,8 @@ dScMgBomroom_c::~dScMgBomroom_c()
 /* Draws the round-over sprite once mRoundOver is set. */
 
 void dScMgBomroom_c::DrawRoundOver() {
-    if (mRoundOver == 0) return;
+    if (mRoundOver == 0)
+        return;
     RenderOamMainScreen((int)sBomroomRoundOverSprites, 0x80, 0xc0, -1, 1);
 }
 
@@ -113,7 +114,6 @@ void dScMgBomroom_c::DrawRoundOver() {
 void dScMgBomroom_c::SetRoundOver() {
     mRoundOver = 1;
 }
-
 
 // @symbol _ZN14dScMgBomroom_c13UpdateBg2LiftEv
 /* Steps the BG2 y offset mBg2Y (Fix12): state 1 raises it by 3 a
@@ -174,7 +174,6 @@ void dScMgBomroom_c::UpdateBg2Lift() {
     }
 }
 
-
 // @symbol _ZN14dScMgBomroom_c12ResetBg2LiftEv
 
 void dScMgBomroom_c::ResetBg2Lift() {
@@ -184,7 +183,6 @@ void dScMgBomroom_c::ResetBg2Lift() {
     mBg2Hold = zero;
     SetBg2Offset(zero, zero);
 }
-
 
 // @symbol _ZN14dScMgBomroom_c14Marker_DrawAllEv
 /* Draws the two mMarkers sprite records that are active. */
@@ -237,7 +235,6 @@ void dScMgBomroom_c::Marker_Show(int idx) {
     mMarkers[idx].idx = 0;
 }
 
-
 /* The scene keeps its per-slot UI state in the two-entry Slot arrays
  * mHatchPanels, mPenGates and mMarkers. The loops over them match only
  * with strength reduction off, so each carries its own bracket. */
@@ -280,9 +277,10 @@ void dScMgBomroom_c::TopDoor_Open() {
 // @symbol _ZN14dScMgBomroom_c12TopDoor_DrawEv
 
 void dScMgBomroom_c::TopDoor_Draw() {
-    if (mTopDoor.level == 0) return;
-    RenderOamMainScreen(sBomroomTopDoorSprites[mTopDoor.idx],
-                        mTopDoor.x >> 0xc, mTopDoor.y >> 0xc, -1, 2);
+    if (mTopDoor.level == 0)
+        return;
+    RenderOamMainScreen(sBomroomTopDoorSprites[mTopDoor.idx], mTopDoor.x >> 0xc, mTopDoor.y >> 0xc,
+                        -1, 2);
 }
 
 // @symbol _ZN14dScMgBomroom_c20TopDoor_StateClosingEi
@@ -290,7 +288,8 @@ void dScMgBomroom_c::TopDoor_Draw() {
 void dScMgBomroom_c::TopDoor_StateClosing(int index) {
     if ((&mTopDoor)[index].idx != 0) {
         (&mTopDoor)[index].timer++;
-        if ((&mTopDoor)[index].timer < 3) return;
+        if ((&mTopDoor)[index].timer < 3)
+            return;
         (&mTopDoor)[index].timer = 0;
         (&mTopDoor)[index].idx--;
     } else {
@@ -305,24 +304,21 @@ void dScMgBomroom_c::TopDoor_StateOpen() {}
 // @symbol _ZN14dScMgBomroom_c20TopDoor_StateOpeningEi
 
 void dScMgBomroom_c::TopDoor_StateOpening(int index) {
-  if ((&mTopDoor)[index].idx >= 4)
-  {
-    (&mTopDoor)[index].idx = 4;
-    (&mTopDoor)[index].state = 2;
-    return;
-  }
-  (&mTopDoor)[index].timer++;
-  if ((&mTopDoor)[index].timer < 3)
-  {
-    return;
-  }
-  (&mTopDoor)[index].timer = 0;
-  (&mTopDoor)[index].idx++;
-  if ((&mTopDoor)[index].idx >= 4)
-  {
-    (&mTopDoor)[index].idx = 4;
-    (&mTopDoor)[index].state = 2;
-  }
+    if ((&mTopDoor)[index].idx >= 4) {
+        (&mTopDoor)[index].idx = 4;
+        (&mTopDoor)[index].state = 2;
+        return;
+    }
+    (&mTopDoor)[index].timer++;
+    if ((&mTopDoor)[index].timer < 3) {
+        return;
+    }
+    (&mTopDoor)[index].timer = 0;
+    (&mTopDoor)[index].idx++;
+    if ((&mTopDoor)[index].idx >= 4) {
+        (&mTopDoor)[index].idx = 4;
+        (&mTopDoor)[index].state = 2;
+    }
 }
 
 // @symbol _ZN14dScMgBomroom_c17TopDoor_StateShutEi
@@ -379,7 +375,8 @@ void dScMgBomroom_c::PenGate_DrawAll() {
 void dScMgBomroom_c::PenGate_StateClosing(int index) {
     if (mPenGates[index].level != 0) {
         mPenGates[index].timer++;
-        if (mPenGates[index].timer < 4) return;
+        if (mPenGates[index].timer < 4)
+            return;
         mPenGates[index].timer = 0;
         mPenGates[index].level--;
     } else {
@@ -507,7 +504,8 @@ void dScMgBomroom_c::HatchPanel_DrawAll() {
 void dScMgBomroom_c::HatchPanel_StateRevert(int index) {
     if (mHatchPanels[index].level != 0) {
         mHatchPanels[index].timer++;
-        if (mHatchPanels[index].timer < 3) return;
+        if (mHatchPanels[index].timer < 3)
+            return;
         mHatchPanels[index].timer = 0;
         mHatchPanels[index].level--;
     } else {
@@ -717,7 +715,6 @@ void dScMgBomroom_c::OnBombExploded(int picked) {
  * reaches the per-type frame time, playing its sound effects, and
  * wraps (or holds, for type 3) at the per-type frame count. */
 
-
 void dScMgBomroom_c::Bomb_Animate(int index) {
     int type;
     int frame;
@@ -766,7 +763,6 @@ void dScMgBomroom_c::Bomb_Animate(int index) {
 
 // @symbol _ZN14dScMgBomroom_c16Bomb_CheckSortedEi
 
-
 void dScMgBomroom_c::Bomb_CheckSorted(int index) {
     u8 color = mBombs[index].color;
     int x = mBombs[index].x >> 0xc;
@@ -793,7 +789,6 @@ void dScMgBomroom_c::Bomb_CheckSorted(int index) {
         func_02012718((int)0x1dc, mBombs[index].x);
     }
 }
-
 
 // @symbol _ZN14dScMgBomroom_c18Bomb_CheckWrongPenEi
 
@@ -834,7 +829,6 @@ void dScMgBomroom_c::Bomb_CheckWrongPen(int index) {
         OnBombExploded(index);
     }
 }
-
 
 // @symbol _ZN14dScMgBomroom_c14Bomb_CheckGrabEi
 /* Picks up a bomb under the stylus: a touch within 12 units across and 15
@@ -1546,10 +1540,9 @@ void dScMgBomroom_c::SpawnBombs()
   s32 j0;
   if (mSpawnDelay != 0)
   {
-    mSpawnDelay--;
-    if ((s16)mSpawnDelay < 0)
-    {
-      mSpawnDelay = 0;
+      mSpawnDelay--;
+      if ((s16)mSpawnDelay < 0) {
+          mSpawnDelay = 0;
     }
     return;
   }
@@ -1627,25 +1620,24 @@ void dScMgBomroom_c::SpawnBombs()
   flag = 0;
   if (sb == 7)
   {
-    unsigned char *pf = &mSpawnHatchFlip;
-    s32 bit = mSpawnHatchFlip;
-    cnt = 2;
-    flag = (bit & 1) + 1;
-    *pf ^= 1;
-    step = 0x3000;
+      unsigned char *pf = &mSpawnHatchFlip;
+      s32 bit = mSpawnHatchFlip;
+      cnt = 2;
+      flag = (bit & 1) + 1;
+      *pf ^= 1;
+      step = 0x3000;
   }
   new_var = sb;
   if (new_var == 8)
   {
-    s32 bit = mSpawnHatchFlip & 1;
-    unsigned char *pf = &mSpawnHatchFlip;
-    s32 x = *pf;
-    cnt = bit + 2;
-    *pf = x ^ 1;
-    flag = bit + 1;
-    if (cnt == 2)
-    {
-      step = 0x3000;
+      s32 bit = mSpawnHatchFlip & 1;
+      unsigned char *pf = &mSpawnHatchFlip;
+      s32 x = *pf;
+      cnt = bit + 2;
+      *pf = x ^ 1;
+      flag = bit + 1;
+      if (cnt == 2) {
+          step = 0x3000;
     }
     else
     {
@@ -1659,12 +1651,12 @@ void dScMgBomroom_c::SpawnBombs()
   }
   if (sb == 11)
   {
-    unsigned char *pf = &mSpawnHatchFlip;
-    s32 bit = mSpawnHatchFlip;
-    cnt = 3;
-    flag = (bit & 1) + 1;
-    *pf ^= 1;
-    step = 0x1800;
+      unsigned char *pf = &mSpawnHatchFlip;
+      s32 bit = mSpawnHatchFlip;
+      cnt = 3;
+      flag = (bit & 1) + 1;
+      *pf ^= 1;
+      step = 0x1800;
   }
   if (sb >= 12)
   {
@@ -1692,89 +1684,69 @@ void dScMgBomroom_c::SpawnBombs()
     {
       s32 z = z0;
       j = j0;
-      while (1)
-      {
-        unsigned char *slot = (unsigned char *) ((c + (j << 6)) + off);
-        if ((*slot) == 0)
-        {
-          unsigned char *ptype;
-          *slot = (unsigned char) one;
-          mBombs[j].state = (char) z;
-          mBombs[j].substate = (char) z;
-          mBombs[j].lineSlot = (char) z;
-          mBombs[j].exploded = (char) z;
-          mBombs[j].x = v80000;
-          mBombs[j].marchDelay = (s16) v4;
-          mBombs[j].fuse = (s16) v200;
-          rnd = (u32) RandomIntInternal(&data_0209d4b8);
-          ptype = &((dScMgBomroom_c *)(c + (j << 6)))->mBombs[0].color;
-          *ptype = (((rnd >> 16) & 0x7fff) << 1) >> 15;
-          mBombs[j].speed = 0x999;
-          mBombs[j].dragSound = z1;
-          if (sb == 0)
-          {
-            *ptype = (unsigned char) one;
-            HatchPanel_Activate(z1);
+      while (1) {
+          unsigned char *slot = (unsigned char *)((c + (j << 6)) + off);
+          if ((*slot) == 0) {
+              unsigned char *ptype;
+              *slot = (unsigned char)one;
+              mBombs[j].state = (char)z;
+              mBombs[j].substate = (char)z;
+              mBombs[j].lineSlot = (char)z;
+              mBombs[j].exploded = (char)z;
+              mBombs[j].x = v80000;
+              mBombs[j].marchDelay = (s16)v4;
+              mBombs[j].fuse = (s16)v200;
+              rnd = (u32)RandomIntInternal(&data_0209d4b8);
+              ptype = &((dScMgBomroom_c *)(c + (j << 6)))->mBombs[0].color;
+              *ptype = (((rnd >> 16) & 0x7fff) << 1) >> 15;
+              mBombs[j].speed = 0x999;
+              mBombs[j].dragSound = z1;
+              if (sb == 0) {
+                  *ptype = (unsigned char)one;
+                  HatchPanel_Activate(z1);
+              }
+              if (sb <= 1) {
+                  rnd = (u32)RandomIntInternal(&data_0209d4b8);
+                  *(s16 *)&mBombs[j].angle = (((((rnd >> 16) & 0x7fff) << 2) >> 15) << 12) + 0x2000;
+                  mBombs[j].y = z2;
+              } else if (flag != 0) {
+                  if (flag == 1) {
+                      *(s16 *)&mBombs[j].angle = ang + 0x2000;
+                      mBombs[j].y = z2;
+                      HatchPanel_Activate(z2);
+                  } else {
+                      *(s16 *)&mBombs[j].angle = ang + 0xa000;
+                      mBombs[j].y = vB8000;
+                      HatchPanel_Activate(one);
+                  }
+              } else if ((mSpawnCount & 1) != 0) {
+                  if (step != 0) {
+                      *(s16 *)&mBombs[j].angle = (step * (i >> 1)) + 0x2800;
+                  } else {
+                      rnd = (u32)RandomIntInternal(&data_0209d4b8);
+                      *(s16 *)&mBombs[j].angle =
+                          (((((rnd >> 16) & 0x7fff) << 2) >> 15) << 12) + 0x2000;
+                  }
+                  mBombs[j].y = z3;
+                  HatchPanel_Activate(z3);
+              } else {
+                  if (step != 0) {
+                      *(s16 *)&mBombs[j].angle = (step * (i >> 1)) + 0xa800;
+                  } else {
+                      rnd = (u32)RandomIntInternal(&data_0209d4b8);
+                      *(s16 *)&mBombs[j].angle =
+                          (((((rnd >> 16) & 0x7fff) << 2) >> 15) << 12) + 0xa000;
+                  }
+                  mBombs[j].y = vB8000;
+                  HatchPanel_Activate(one);
+              }
+              mSpawnCount++;
+              break;
           }
-          if (sb <= 1)
-          {
-            rnd = (u32) RandomIntInternal(&data_0209d4b8);
-            *(s16 *)&mBombs[j].angle = (((((rnd >> 16) & 0x7fff) << 2) >> 15) << 12) + 0x2000;
-            mBombs[j].y = z2;
+          j++;
+          if (j >= 0x70) {
+              break;
           }
-          else
-            if (flag != 0)
-          {
-            if (flag == 1)
-            {
-              *(s16 *)&mBombs[j].angle = ang + 0x2000;
-              mBombs[j].y = z2;
-              HatchPanel_Activate(z2);
-            }
-            else
-            {
-              *(s16 *)&mBombs[j].angle = ang + 0xa000;
-              mBombs[j].y = vB8000;
-              HatchPanel_Activate(one);
-            }
-          }
-          else
-            if ((mSpawnCount & 1) != 0)
-          {
-            if (step != 0)
-            {
-              *(s16 *)&mBombs[j].angle = (step * (i >> 1)) + 0x2800;
-            }
-            else
-            {
-              rnd = (u32) RandomIntInternal(&data_0209d4b8);
-              *(s16 *)&mBombs[j].angle = (((((rnd >> 16) & 0x7fff) << 2) >> 15) << 12) + 0x2000;
-            }
-            mBombs[j].y = z3;
-            HatchPanel_Activate(z3);
-          }
-          else
-          {
-            if (step != 0)
-            {
-              *(s16 *)&mBombs[j].angle = (step * (i >> 1)) + 0xa800;
-            }
-            else
-            {
-              rnd = (u32) RandomIntInternal(&data_0209d4b8);
-              *(s16 *)&mBombs[j].angle = (((((rnd >> 16) & 0x7fff) << 2) >> 15) << 12) + 0xa000;
-            }
-            mBombs[j].y = vB8000;
-            HatchPanel_Activate(one);
-          }
-          mSpawnCount++;
-          break;
-        }
-        j++;
-        if (j >= 0x70)
-        {
-          break;
-        }
       }
 
       ang += step;
@@ -1798,7 +1770,6 @@ void dScMgBomroom_c::HideExplodedBombs() {
         }
     }
 }
-
 
 // @symbol _ZN14dScMgBomroom_c10ClearBombsEv
 /* Zeroes all 0x70 mBombs records: 11 words, 4
@@ -2151,13 +2122,11 @@ void dScMgBomroom_c::ResetRound() {
     SetRoundOver();
 }
 
-
 /* Slot 18 override of dScMgBase_c::StartRound(int); the signature
  * repeats the base declaration exactly, or mwcc appends a slot instead of
  * overriding. */
 // @symbol _ZN14dScMgBomroom_c10StartRoundEi
-void dScMgBomroom_c::StartRound(int /* arg */)
-{
+void dScMgBomroom_c::StartRound(int /* arg */) {
     ResetRound();
     mTallyCount = 0;
     mSceneState = 0;
@@ -2203,8 +2172,7 @@ s32 dScMgBomroom_c::Behavior()
 // @symbol _ZN14dScMgBomroom_c13InitResourcesEv
 /* Loads the main- and sub-screen backgrounds, palettes and object
  * graphics, sets the blend, then resets the round into state 1. */
-s32 dScMgBomroom_c::InitResources()
-{
+s32 dScMgBomroom_c::InitResources() {
     char *b;
     volatile u16 fill;
     int f;

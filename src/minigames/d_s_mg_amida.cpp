@@ -1032,7 +1032,8 @@ void dScMgAmida_c::StepWalkers() {
 
                         if (IsVariant2() != 0) {
                             u32 wantedGoal = (u32)mLaneWants[walker];
-                            walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                            walkerX =
+                                &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
                             x = *walkerX;
                             switch (x) {
                             case 0x20:
@@ -1139,7 +1140,8 @@ void dScMgAmida_c::StepWalkers() {
                                 }
                                 mRoundTimer = 0x1e;
                             } else {
-                                s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                s32 *walkerX =
+                                    &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
                                 s32 speedMode;
                                 func_02012718(v10, *walkerX << 0xc);
                                 func_02012718(0x1c1, *walkerX << 0xc);
@@ -1184,11 +1186,9 @@ void dScMgAmida_c::StepWalkers() {
                         if (IsVariant2() != 0) {
                             func_02012dbc(5);
                             if (mRoundFailed == 0) {
-                                func_02012718(0x1c2, mWalkerCell[walker][0]
-                                                         << 0xc);
+                                func_02012718(0x1c2, mWalkerCell[walker][0] << 0xc);
                             } else {
-                                func_02012718(0x1c3, mWalkerCell[walker][0]
-                                                         << 0xc);
+                                func_02012718(0x1c3, mWalkerCell[walker][0] << 0xc);
                             }
                             *done = 1;
                             mRoundFailed = 1;
@@ -1218,18 +1218,18 @@ void dScMgAmida_c::StepWalkers() {
                         }
                     } else {
                         progress500 = ((y + 0xd4) * 0x1f4) / (goalY + 0xd4);
-                        s32 *walkerDir = &((dScMgAmida_c *)(sceneBytes + walker * 4))->mWalkerDir[0];
+                        s32 *walkerDir =
+                            &((dScMgAmida_c *)(sceneBytes + walker * 4))->mWalkerDir[0];
                         u32 direction = *walkerDir;
                         switch (direction) {
                         default:
                             break;
                         case 0:
-                            if (mWalkerCell[walker][0] == 0x21 ||
-                                mWalkerCell[walker][0] == 0x61 ||
-                                mWalkerCell[walker][0] == 0xa1 ||
-                                mWalkerCell[walker][0] == 0xe1) {
+                            if (mWalkerCell[walker][0] == 0x21 || mWalkerCell[walker][0] == 0x61 ||
+                                mWalkerCell[walker][0] == 0xa1 || mWalkerCell[walker][0] == 0xe1) {
                                 {
-                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
+                                                        ->mWalkerCell[0][0];
                                     *walkerX -= 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1253,12 +1253,11 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 2:
-                            if (mWalkerCell[walker][0] == 0x1f ||
-                                mWalkerCell[walker][0] == 0x5f ||
-                                mWalkerCell[walker][0] == 0x9f ||
-                                mWalkerCell[walker][0] == 0xdf) {
+                            if (mWalkerCell[walker][0] == 0x1f || mWalkerCell[walker][0] == 0x5f ||
+                                mWalkerCell[walker][0] == 0x9f || mWalkerCell[walker][0] == 0xdf) {
                                 {
-                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
+                                                        ->mWalkerCell[0][0];
                                     *walkerX += 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1274,12 +1273,11 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 3:
-                            if (mWalkerCell[walker][0] == 0x21 ||
-                                mWalkerCell[walker][0] == 0x61 ||
-                                mWalkerCell[walker][0] == 0xa1 ||
-                                mWalkerCell[walker][0] == 0xe1) {
+                            if (mWalkerCell[walker][0] == 0x21 || mWalkerCell[walker][0] == 0x61 ||
+                                mWalkerCell[walker][0] == 0xa1 || mWalkerCell[walker][0] == 0xe1) {
                                 {
-                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
+                                                        ->mWalkerCell[0][0];
                                     *walkerX -= 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1296,12 +1294,11 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 4:
-                            if (mWalkerCell[walker][0] == 0x1f ||
-                                mWalkerCell[walker][0] == 0x5f ||
-                                mWalkerCell[walker][0] == 0x9f ||
-                                mWalkerCell[walker][0] == 0xdf) {
+                            if (mWalkerCell[walker][0] == 0x1f || mWalkerCell[walker][0] == 0x5f ||
+                                mWalkerCell[walker][0] == 0x9f || mWalkerCell[walker][0] == 0xdf) {
                                 {
-                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
+                                                        ->mWalkerCell[0][0];
                                     *walkerX += 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1318,12 +1315,11 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 5:
-                            if (mWalkerCell[walker][0] == 0x21 ||
-                                mWalkerCell[walker][0] == 0x61 ||
-                                mWalkerCell[walker][0] == 0xa1 ||
-                                mWalkerCell[walker][0] == 0xe1) {
+                            if (mWalkerCell[walker][0] == 0x21 || mWalkerCell[walker][0] == 0x61 ||
+                                mWalkerCell[walker][0] == 0xa1 || mWalkerCell[walker][0] == 0xe1) {
                                 {
-                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
+                                                        ->mWalkerCell[0][0];
                                     *walkerX -= 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1347,12 +1343,11 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 7:
-                            if (mWalkerCell[walker][0] == 0x1f ||
-                                mWalkerCell[walker][0] == 0x5f ||
-                                mWalkerCell[walker][0] == 0x9f ||
-                                mWalkerCell[walker][0] == 0xdf) {
+                            if (mWalkerCell[walker][0] == 0x1f || mWalkerCell[walker][0] == 0x5f ||
+                                mWalkerCell[walker][0] == 0x9f || mWalkerCell[walker][0] == 0xdf) {
                                 {
-                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                    s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
+                                                        ->mWalkerCell[0][0];
                                     *walkerX += 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
