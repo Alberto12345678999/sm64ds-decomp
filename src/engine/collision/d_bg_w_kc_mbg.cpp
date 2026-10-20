@@ -17,14 +17,15 @@
 #include "nitro/fx/fx.h"
 
 extern "C" {
-/* This TU's own free helpers, called from the members below. */
+/* This TU's own free helpers, defined below the members that call them. */
 void func_020398fc(dBgW_KcMbg *self);
 void func_02039db8(dBgW_KcMbg *thiz, Vector3 *v, Vector3 *res);
 void func_02039e18(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 void func_02039e30(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 void func_02039e48(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 
-/* Shared math workers. */
+/* Shared math workers.
+   local extern: no header in include/ declares them. */
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
 int InvMat4x3(void *dst, void *src);
 void Matrix4x3_ApplyInPlaceToScale(Matrix4x3 *m, s32 x, s32 y, s32 z);
@@ -33,14 +34,17 @@ void NormalizeVec3(void *src, void *dst);
 void func_02039624(char *p);
 int func_02053200(int v);
 
-/* dBgW_Kc's ITCM workers, run on `this` through base inheritance. */
+/* dBgW_Kc's ITCM depth-policy setters and d_bg_w.cpp's threshold setter, run
+   on `this` through base inheritance.
+   local extern: no header in include/ declares them. */
 void func_01ffb0a4(dBgW_Kc *self);
 void func_01ffb07c(dBgW_Kc *self, const Vector3 *v);
 void func_01ffb0b0(dBgW_Kc *self);
 void func_01ffb0bc(dBgW_Kc *self);
 void func_020396d0(int *p, int v);
 
-/* Collision-query plumbing shared with the SphCrr/Gnd/Lin checkers. */
+/* Collision-query plumbing shared with the SphCrr/Gnd/Lin checkers.
+   local extern: no header in include/ declares it. */
 void func_02035394(void *dst, void *src);
 /* local extern: the radius is Fix12 by value, so the call spells the symbol. */
 void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(dBgCh_SphCrr *sphere,
@@ -48,6 +52,9 @@ void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(dBgCh_SphC
                                                                       Fix12i radius,
                                                                       dActor_c *actor);
 
+/* The shared scratch line (in collider space), its lineEnd and dBgPi base, and
+   the scratch scaled matrix.
+   local extern: no header in include/ declares them. */
 extern dBgCh_Lin data_020a0d0c;
 extern Vector3 data_020a0d60;
 extern dBgPi data_020a0d1c;
@@ -378,10 +385,10 @@ void dBgW_KcMbg::GetVelocity(Vector3 &res) {
 }
 
 // @symbol func_020398fc
-/* Sets the byte at 0x130 -- the enable flag Transform checks before applying
- * velocity feedback. Called by actor code (Eyerok) once the collider starts
- * moving. Its address name and C linkage do not establish whether the
- * original source declared a free helper or a member. */
+/* Sets filterByMoveDir, which makes Transform aim dBgW_Kc's depth policy
+ * along the collider's horizontal motion. Called by actor code (Eyerok) once
+ * the collider starts moving. Its address name and C linkage do not establish
+ * whether the original source declared a free helper or a member. */
 extern "C" void func_020398fc(dBgW_KcMbg *self) {
     self->filterByMoveDir = true;
 }

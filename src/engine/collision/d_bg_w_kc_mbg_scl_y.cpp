@@ -24,13 +24,17 @@ void func_0203aa10(dBgW_KcMbgSclY *self, Vector3 *v, Vector3 *res);
 void func_0203aa74(dBgW_KcMbgSclY *self, Vector3 *v, Vector3 *res);
 s32 func_0203aad0(dBgW_KcMbgSclY *self);
 
-/* Shared math workers. */
+/* Shared math workers.
+   local extern: no header in include/ declares them. */
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
 void NormalizeVec3(Vector3 *src, Vector3 *dst);
-void func_02039db8(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 int func_02053200(int v);
+/* local extern: dBgW_KcMbg's direction rotate, a free function of
+   d_bg_w_kc_mbg.cpp that no header declares. */
+void func_02039db8(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 
-/* Collision-query plumbing shared with the KcMbg checkers. */
+/* Collision-query plumbing shared with the KcMbg checkers.
+   local extern: no header in include/ declares it. */
 void func_02035394(void *dst, void *src);
 
 /* local extern: the radius is Fix12 by value, so the call spells the symbol. */
@@ -45,6 +49,7 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void 
                                                                            int scale, short angY,
                                                                            void *clps);
 
+/* local extern: no header in include/ declares these three. */
 extern dBgCh_Lin data_020a0d0c; /* the scratch line, in collider space */
 extern Vector3 data_020a0d60;   /* == data_020a0d0c.lineEnd  (+0x54) */
 extern dBgPi data_020a0d1c;     /* == data_020a0d0c's dBgPi   (+0x10) */
