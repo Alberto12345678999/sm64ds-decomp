@@ -2164,6 +2164,11 @@
       ]
     },
     "SharedFilePtr_Construct_TexSeq": {
+      "src/game/player/Player.cpp": [
+        "linkage:bare extern in a C++ TU",
+        "param:#2 int",
+        "return:int"
+      ],
       "src/minigames/unit020bfec0.cpp": [
         "return:void"
       ],
@@ -2244,6 +2249,11 @@
       ]
     },
     "SharedFilePtr_Destruct_Anim": {
+      "src/game/player/Player.cpp": [
+        "arity:0",
+        "linkage:bare extern in a C++ TU",
+        "return:void"
+      ],
       "src/minigames/unit020bfec0.cpp": [
         "param:#1 void *",
         "return:void"
@@ -2844,6 +2854,11 @@
       ]
     },
     "SharedFilePtr_Destruct_TexSeq": {
+      "src/game/player/Player.cpp": [
+        "arity:0",
+        "linkage:bare extern in a C++ TU",
+        "return:void"
+      ],
       "src/minigames/unit020bfec0.cpp": [
         "param:#1 void *",
         "return:void"
@@ -5607,6 +5622,10 @@
       ]
     },
     "_ZN13SharedFilePtr9ConstructEj": {
+      "src/game/player/Player.cpp": [
+        "param:#2 int",
+        "return:int"
+      ],
       "src/minigames/unit020bfec0.cpp": [
         "return:void"
       ],
@@ -5913,6 +5932,9 @@
     "_ZN15MaterialChangerD1Ev": {
       "src/_ZN6PlayerC1Ev.cpp": [
         "return:void"
+      ],
+      "src/game/player/Player.cpp": [
+        "return:void"
       ]
     },
     "_ZN15TextureSequence17UpdateFileOffsetsER8BTP_File": {
@@ -6039,6 +6061,9 @@
     },
     "_ZN15TextureSequenceD1Ev": {
       "src/_ZN6PlayerC1Ev.cpp": [
+        "return:void"
+      ],
+      "src/game/player/Player.cpp": [
         "return:void"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -11337,6 +11362,12 @@
         "param:#4 void *",
         "param:#5 void *"
       ],
+      "src/game/player/Player.cpp": [
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 void *",
+        "param:#5 void *"
+      ],
       "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#2 int",
         "param:#3 int"
@@ -11795,6 +11826,21 @@
     "data_0209b2e8": {
       "src/unnamed/ov075/func_ov075_021196d0.c": [
         "return:int"
+      ]
+    },
+    "func_0201973c": {
+      "src/game/player/Player.cpp": [
+        "linkage:bare extern in a C++ TU"
+      ]
+    },
+    "func_0203b9b4": {
+      "src/game/player/Player.cpp": [
+        "linkage:bare extern in a C++ TU"
+      ]
+    },
+    "func_020731dc": {
+      "src/game/player/Player.cpp": [
+        "linkage:bare extern in a C++ TU"
       ]
     },
     "gMgSaveDirty": {
@@ -14400,6 +14446,9 @@
     "data_ov002_0210eaa0": {
       "src/game/actors/d_a_luigi.cpp": [
         "return:SharedFilePtr"
+      ],
+      "src/game/player/Player.cpp": [
+        "return:char []"
       ],
       "src/unnamed/ov002/__sinit_ov002_021019d0.c": [
         "return:char []"
@@ -20525,6 +20574,11 @@
       ]
     },
     "func_02017ab4": {
+      "src/game/player/Player.cpp": [
+        "arity:0",
+        "linkage:bare extern in a C++ TU",
+        "return:void"
+      ],
       "src/minigames/unit020bfec0.cpp": [
         "param:#1 void *",
         "return:void"
@@ -21155,6 +21209,11 @@
       ]
     },
     "func_02017acc": {
+      "src/game/player/Player.cpp": [
+        "linkage:bare extern in a C++ TU",
+        "param:#2 int",
+        "return:int"
+      ],
       "src/unnamed/ov002/__sinit_ov002_02100560.c": [
         "param:#2 int",
         "return:int"

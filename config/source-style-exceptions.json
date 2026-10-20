@@ -466,6 +466,94 @@
       "evidence": "include/cMgSmartball_object_c.h documents per-reader signedness across0x031..0x033; cMgSmartball_wing_c::GetAngle casts the named byte storage. Fresh b56 compile preserves the entire production-prepared Smartball object byte-for-byte versus a317608eec;132/132 owned strict function checks VERIFIED; build/review3955-smartball-proof/proof.json."
     },
     {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN13SharedFilePtr9ConstructEj",
+      "count": 295,
+      "reason": "__sinit_ov002_021019d0 is the enrolled C initializer under #pragma cplusplus off, so SharedFilePtr::Construct cannot be spelled as a member call. Follow-up: keep this initializer in C until a C++ spelling reproduces the same .init bytes.",
+      "evidence": "Retired src/unnamed/ov002/__sinit_ov002_021019d0.c, folded into src/game/player/Player.cpp; ov002/Player .init 0x021019d0 size 0x5470 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN6PlayerC1Ev",
+      "count": 1,
+      "reason": "Player's C1 stays the enrolled free function. Its body addresses mModelAnim3, mModelAnim4, mTexSeqBody, mMatChanger and mTexSeqPlayer from one base at this+0xdc, and a Player::Player() definition changes that addressing. Follow-up: rewrite it as the real constructor once that base is preserved.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player D0/D1/C1 bytes identical to the enrolled objects"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_cC2Ev",
+      "count": 2,
+      "reason": "C1 passes constructor and destructor addresses to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. The declaration and the call spell the ROM symbol. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN9ModelAnimC1Ev",
+      "count": 5,
+      "reason": "C1 passes constructor and destructor addresses to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. Two earlier members already spelled ModelAnim's C1; the three new occurrences are this constructor. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN15TextureSequenceC1Ev",
+      "count": 3,
+      "reason": "C1 passes TextureSequence's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN15TextureSequenceD1Ev",
+      "count": 3,
+      "reason": "C1 passes TextureSequence's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN15MaterialChangerC1Ev",
+      "count": 2,
+      "reason": "C1 passes MaterialChanger's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN15MaterialChangerD1Ev",
+      "count": 2,
+      "reason": "C1 passes MaterialChanger's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtShadowModel_cC1Ev",
+      "count": 2,
+      "reason": "C1 calls dExtShadowModel_c's constructor by its ROM symbol. The declaration and the call both spell it, because this constructor is still the enrolled free function. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN10dCcAcPos_cC1Ev",
+      "count": 3,
+      "reason": "C1 calls dCcAcPos_c's constructor by its ROM symbol. The declaration and the two calls spell it, because this constructor is still the enrolled free function. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN10dBgCh_ActrC1Ev",
+      "count": 2,
+      "reason": "C1 calls dBgCh_Actr's constructor by its ROM symbol. The declaration and the call both spell it, because this constructor is still the enrolled free function. Follow-up: retire these with the C1 rewrite.",
+      "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
+    },
+    {
       "path": "src/_ZN10dScEntry_c17RenderWaitingTextEv.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi",
