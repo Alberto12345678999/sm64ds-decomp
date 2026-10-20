@@ -472,6 +472,14 @@
       "count": 2,
       "reason": "Retained scalar ABI bridge for the Fix12-by-value OAM overload, carried from the old waiting renderer. OAM.h deliberately excludes this overload; RenderSub uses the shared header. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching call ABI.",
       "evidence": "include/OAM.h; notes/mwccarm-codegen.md section 6az; notes/agents/handoffs/entry-sync1018.md; ov075 0x021194e4 size0x15c links exactly with all six destinations verified."
+    },
+    {
+      "path": "src/runtime/actor/d_actor.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_",
+      "count": 3,
+      "reason": "SetRanges takes four Fix12<int> by value. A decl-only member does not accept the constructor's scalar words (mwcc rejects the call as not matching SetRanges(Fix12<int>, Fix12<int>, Fix12<int>, Fix12<int>)), and defining the body as a method homes each used parameter. The extern \"C\" spelling passes them as ints. These three occurrences are the local declaration, the constructor call, and the definition.",
+      "evidence": "include/dActor_c.h does not declare SetRanges; notes/mwccarm-codegen.md 6az measured +0x14 on this function at 0x02010e08; _ZN8dActor_cC2Ev 0x0201150c size 0x148 MATCH under 2004/b56 with the scalar call."
     }
   ]
 }

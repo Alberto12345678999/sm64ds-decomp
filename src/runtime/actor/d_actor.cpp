@@ -71,6 +71,7 @@
  * came later, for the classes SpawnFireball, SpawnNumber and
  * GivePlayerCoins spawn. */
 #include "types.h"
+#include "SpawnInfo.h"
 #include "decl_common.h"
 #include "dActor_c.h"
 #include "Player.h"
@@ -105,20 +106,17 @@ extern void *data_020a4bb8;
 /* local extern: no header declares it. Game mode; 2 pushes the clip distance. */
 extern unsigned char data_0209f2d8;
 /* Defined below as extern "C". Fix12-by-value, so it is not a method. */
-void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, s32 clipOffsetY,
-                                                s32 clipRadius, s32 clipDistance,
-                                                s32 farDistance);
+void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, s32 clipOffsetY, s32 clipRadius,
+                                               s32 clipDistance, s32 farDistance);
 }
 
 #ifdef _MSC_VER
 /* The host has one ~dActor_c(). These are the ROM's flat D2 and D0 names. */
-extern "C" dActor_c *_ZN8dActor_cD2Ev(dActor_c *thiz)
-{
+extern "C" dActor_c *_ZN8dActor_cD2Ev(dActor_c *thiz) {
     thiz->dActor_c::~dActor_c();
     return thiz;
 }
-extern "C" dActor_c *_ZN8dActor_cD0Ev(dActor_c *thiz)
-{
+extern "C" dActor_c *_ZN8dActor_cD0Ev(dActor_c *thiz) {
     thiz->dActor_c::~dActor_c();
     dActor_c::operator delete(thiz);
     return thiz;
@@ -132,7 +130,7 @@ extern "C" dActor_c *_ZN8dActor_cD0Ev(dActor_c *thiz)
 dActor_c::dActor_c() : mActorListNode(this) {
     func_0203b244(&data_0209b468, &mActorListNode);
     {
-        int* spawnPos = (int*)data_0209b460;
+        int *spawnPos = (int *)data_0209b460;
         if (spawnPos) {
             mPosX = spawnPos[0];
             mPosY = spawnPos[1];
@@ -140,13 +138,13 @@ dActor_c::dActor_c() : mActorListNode(this) {
         }
     }
     {
-        short* spawnRot = (short*)data_0209b45c;
+        short *spawnRot = (short *)data_0209b45c;
         if (spawnRot) {
             mAngleX = spawnRot[0];
             mAngleY = spawnRot[1];
             mAngleZ = spawnRot[2];
             /* The ROM reloads the global. Folding the two reads drops an ldr. */
-            spawnRot = (short*)data_0209b45c;
+            spawnRot = (short *)data_0209b45c;
             mPrevAngleX = spawnRot[0];
             mPrevAngleY = spawnRot[1];
             mPrevAngleZ = spawnRot[2];
@@ -155,23 +153,29 @@ dActor_c::dActor_c() : mActorListNode(this) {
     mAreaId = data_0209b44c;
     mDeathTableID = data_0208e378;
     {
-        void** table = *(void***)&data_020a4bb8;
+        void **table = *(void ***)&data_020a4bb8;
         int actorID = this->actorID;
-        char* info = (char*)table[actorID];
-        mFlags = *(int*)(info+8);
+        SpawnInfo<void> *info = (SpawnInfo<void> *)table[actorID];
+        mFlags = info->actorFlags;
         {
             int isMode2 = (data_0209f2d8 == 2);
             int clipDistance;
-            int farDistance = *(int*)(info+0x18);
-            if (isMode2) clipDistance = *(int*)(info+0x14) + 0x7d0000;
-            else clipDistance = *(int*)(info+0x14);
-            _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, *(int*)(info+0xc), *(int*)(info+0x10), clipDistance, farDistance);
+            int farDistance = info->farDistance;
+            if (isMode2)
+                clipDistance = info->clipDistance + 0x7d0000;
+            else
+                clipDistance = info->clipDistance;
+            _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, info->clipOffsetY, info->clipRadius,
+                                                      clipDistance, farDistance);
         }
     }
     /* Unreachable. Vector3s's empty destructor inlines at a direct call, but
        an array cleanup has to pass its address to __cxa_vec_cleanup, so mwcc
        emits _ZN8Vector3sD1Ev in the constructor's helper slot, between C1 and
-       C2. -O4 deletes the cleanup itself: both variants stay 0x148. */
+       C2. -O4 deletes the cleanup itself: both variants stay 0x148. The marker
+       names that emitted symbol; its body is the inline destructor in
+       include/types.h. */
+    // @symbol _ZN8Vector3sD1Ev
     if (0) {
         Vector3s tmp[2];
         (void)tmp;
@@ -181,8 +185,7 @@ dActor_c::dActor_c() : mActorListNode(this) {
 // @symbol _ZN8dActor_cD2Ev
 // @symbol _ZN8dActor_cD0Ev
 // @symbol _ZN8dActor_cD1Ev
-dActor_c::~dActor_c()
-{
+dActor_c::~dActor_c() {
     func_0203b27c((int)&data_0209b468, (int)&mActorListNode);
 }
 

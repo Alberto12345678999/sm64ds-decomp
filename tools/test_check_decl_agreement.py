@@ -2648,9 +2648,9 @@ class NativeConstructorAndWrapperTests(unittest.TestCase):
                 found = [d for d in defs if d.symbol == symbol]
                 self.assertEqual(len(found), 1)
                 self.assertEqual(CDA._native_constructor_abi(found[0]), (owner, owner + " *"))
-        for owner in ("Vector3", "Vector3s"):
+        for owner, rel in (("Vector3", "src/_ZN7Vector3D1Ev.cpp"),
+                           ("Vector3s", "src/runtime/actor/d_actor.cpp")):
             symbol = "_ZN%d%sD1Ev" % (len(owner), owner)
-            rel = "src/" + symbol + ".cpp"
             _, defs, _ = CDA.parse_file(rel, (REPO / rel).read_text(encoding="utf-8"), {})
             self.assertFalse(any(d.symbol == symbol for d in defs))
 
@@ -2930,7 +2930,7 @@ class IncludedInlineDestructorTests(unittest.TestCase):
         self.assertEqual(self.inspect(header)[2], [])
 
     def test_real_vector_carriers_reference_inline_header_bodies(self):
-        targets=['src/_ZN7Vector3D1Ev.cpp', 'src/_ZN8Vector3sD1Ev.cpp']
+        targets=['src/_ZN7Vector3D1Ev.cpp', 'src/runtime/actor/d_actor.cpp']
         _, _, defs, _=CDA.collect(REPO, targets)
         for owner, line in (('Vector3', 61), ('Vector3s', 89)):
             symbol='_ZN%d%sD1Ev' % (len(owner), owner)
