@@ -124,7 +124,7 @@ class RomBuildEnrollment(unittest.TestCase):
                                   return_value={"error": None}) as many:
             self.assertIsNone(RB._isolate(
                 obj, "src/Pair.cpp", {"src/Pair.cpp": ["First", "Second"]}))
-            many.assert_called_once_with(obj, ["First", "Second"])
+            many.assert_called_once_with(obj, ["First", "Second"], rtti_rebased=False)
             one.assert_not_called()
 
             many.reset_mock()
@@ -146,7 +146,7 @@ class RomBuildEnrollment(unittest.TestCase):
                 obj, "src/Pair.cpp", {"src/Pair.cpp": ["First", "Second"]},
                 compiler_only=policy))
         deadstrip.assert_called_once_with(b"raw object", ["_ZN4PairC2Ev"], {})
-        many.assert_called_once_with(obj, ["First", "Second"])
+        many.assert_called_once_with(obj, ["First", "Second"], rtti_rebased=True)
         self.assertEqual(obj.read_bytes(), b"reduced object")
 
     def test_compiler_only_policy_refuses_a_symbol_with_a_rom_home(self):

@@ -730,19 +730,7 @@ src/_ZN10ModelAnim2C1Ev.cpp:
 
 src/engine/model/BlendModelAnim.cpp:
     complete
-    .text start:0x020163e0 end:0x02016644
-
-src/_ZN14BlendModelAnimD0Ev.cpp:
-    complete
-    .text start:0x02016644 end:0x02016690
-
-src/_ZN14BlendModelAnimD1Ev.cpp:
-    complete
-    .text start:0x02016690 end:0x020166d4
-
-src/_ZN14BlendModelAnimC1Ev.cpp:
-    complete
-    .text start:0x020166d4 end:0x02016714
+    .text start:0x020163e0 end:0x02016714
 
 src/engine/model/ModelAnim.cpp:
     complete

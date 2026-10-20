@@ -285,6 +285,42 @@ def emitted_data_symbols(raw):
     return out
 
 
+def _rtti_off_secondary_preambles(linked, retail, module, addr):
+    """Offsets of secondary-preamble words RTTI-off mwcc zeroed inside one `_ZTV`.
+
+    A multiple-inheritance vtable is one symbol: primary slots, then each
+    secondary table's offset-to-top and typeinfo, then its slots. `symbols.txt`
+    names the secondary table at its slot array, and that preamble's
+    offset-to-top is negative, so `_vtable_preamble_at` does not split it out
+    of the primary's compared body. RTTI off writes both words as zeros. Mask
+    them only when the cartridge side is that preamble (a small negative
+    offset-to-top and a `_ZTI` pointer) sitting immediately before another
+    symbol in this span. A zero where the cartridge has a slot still differs.
+    """
+    if len(linked) < OI.VTABLE_PREAMBLE or len(retail) < OI.VTABLE_PREAMBLE:
+        return []
+    index = rom_data_index()
+    typeinfo = {a for (mod, name), (a, _ext) in index.items()
+                if name.startswith("_ZTI") and mod in (module, "arm9")}
+    if not typeinfo:
+        return []
+    end = addr + len(linked)
+    spans = []
+    for (mod, _name), (sym_addr, _ext) in index.items():
+        if mod != module or not (addr < sym_addr <= end):
+            continue
+        off = sym_addr - addr - OI.VTABLE_PREAMBLE
+        if off < 0 or off + OI.VTABLE_PREAMBLE > len(linked):
+            continue
+        if linked[off:off + OI.VTABLE_PREAMBLE] != b"\0" * OI.VTABLE_PREAMBLE:
+            continue
+        top, info = struct.unpack_from("<II", retail, off)
+        if top < 0xFFFF0000 or (top & 3) != 0 or info not in typeinfo:
+            continue
+        spans.append(off)
+    return spans
+
+
 def verify_data_symbol(raw, name, shndx, value, size, names=None):
     """One verdict dict for one emitted data symbol.
 
@@ -332,6 +368,11 @@ def verify_data_symbol(raw, name, shndx, value, size, names=None):
     if retail is None or len(retail) < len(linked):
         return {"symbol": name, "verdict": PARTIAL, "bytes": 0, "module": module,
                 "addr": addr, "note": "module image shorter than the emitted symbol"}
+    masked = (_rtti_off_secondary_preambles(linked, retail, module, addr)
+              if name.startswith("_ZTV") else [])
+    for off in masked:
+        blind.add(off)
+        blind_bytes.update(range(off, min(len(linked), off + OI.VTABLE_PREAMBLE)))
     compared = differing = 0
     for off in range(len(linked)):
         if off in blind_bytes:
@@ -341,6 +382,8 @@ def verify_data_symbol(raw, name, shndx, value, size, names=None):
             differing += 1
     rec = {"symbol": name, "module": module, "addr": addr, "bytes": compared,
            "emitted": len(linked), "romExtent": extent, "blindWords": len(blind)}
+    if masked:
+        rec["note"] = "RTTI-off secondary preamble masked"
     if differing:
         rec["verdict"] = DIFFERS
         rec["differingBytes"] = differing
