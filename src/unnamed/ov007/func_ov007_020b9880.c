@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Tween.h"
 #pragma opt_strength_reduction off
 
 /* Ov007Sprite: reconstructed name and layout, not a recovered class (no RTTI,
@@ -48,18 +49,6 @@ typedef struct Ov007Sprite {
     s16 shadowOffset[3]; /* 0x7e: c421c passes it as the shadow pass's vector */
     u16 *tilemap;        /* 0x84: c4684 tile map when drawFlags & 8 */
 } Ov007Sprite;
-
-/* Copy of include/Ov007Tween.h's layout and names (this matched file takes no
- * new #include). */
-typedef struct Ov007Tween {
-    s32 state;
-    s32 mode;
-    s32 step;
-    s16 t;
-    s32 *out;
-    s32 from;
-    s32 to; /* 0x18 */
-} Ov007Tween;
 
 /* The 0x1c record func_ov007_020b4c04 returns (names as in that file). */
 typedef struct Ov007ItemView {
