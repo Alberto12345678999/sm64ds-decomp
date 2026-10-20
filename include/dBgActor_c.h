@@ -32,8 +32,8 @@ struct dBgActor_c : dActor_c {
     /* Mega Mario's knockback: KillByMegaChar arms the flag and loads the
        30-frame timer; UpdateKillByMegaChar flies the actor while the flag is
        set and calls Kill() when the timer runs out. */
-    u8  mMegaKnockback;       /* 0x31c */
-    u8  mMegaKnockbackTimer;  /* 0x31d */
+    u8 mMegaKnockback;      /* 0x31c */
+    u8 mMegaKnockbackTimer; /* 0x31d */
     /* The class ends at 0x31e; sizeof rounds to 0x320, and derived classes do
        use that tail padding (daObjRc_Guruguru_c::mAngVelY). */
 
@@ -114,8 +114,8 @@ struct dBgActor_c {
     u8  mMeshCollider;            /* 0x124 */
     u8  pad_125[0x1c7];
     struct Matrix4x3 mClsnMat;    /* 0x2ec */
-    u8  mMegaKnockback;       /* 0x31c */
-    u8  mMegaKnockbackTimer;  /* 0x31d */
+    u8 mMegaKnockback;            /* 0x31c */
+    u8 mMegaKnockbackTimer;       /* 0x31d */
     /* Ends at 0x31e; sizeof rounds to 0x320. See the C++ half. */
 };
 
