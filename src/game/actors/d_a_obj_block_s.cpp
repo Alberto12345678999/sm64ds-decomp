@@ -1,6 +1,6 @@
 //cpp
-/* Production translation unit for ov098/daObjBlockS_c.
- * 37 functions, .text 0x02138040..0x02139f70. The small breakable crate
+/* daObjBlockS_c -- small breakable crate (BLOCK_S, ov098).
+ * 37 functions, .text 0x02138040..0x02139f70, ending with classInit.
  * (registry profile BLOCK_S): it sits where it is placed, can be picked up
  * and thrown by a player, spat out or swallowed, slides and bounces on
  * the floor, sinks into quicksand, and breaks (paying out three coins once)
@@ -12,23 +12,11 @@
  * kill it; quicksand and the off-screen respawn path send it to STATE_BROKEN
  * directly, without coins).
  *
- * NAME: _ZTS13daObjBlockS_c is "13daObjBlockS_c" at ov098 0x0213c500; _ZTI at
- * 0x0213c4d4 reads [__si_class_type_info, that string, _ZTI10dBgActor_c], and
- * the word before the _ZTV13daObjBlockS_c address point (0x0213c534) points at
- * that _ZTI. The tree previously called the class Crate (coined).
+ * _ZTS13daObjBlockS_c at ov098 0x0213c500, _ZTI at 0x0213c4d4
+ * (base _ZTI10dBgActor_c), _ZTV13daObjBlockS_c at 0x0213c534.
  *
- * The unit runs from the destructor pair (D1 0x02138040, D0 0x021380bc) to
- * daObjBlockS_c_classInit (0x02139f04). The out-of-line destructor is the key
- * function, so this TU emits the vtable and the RTTI chain; D2 has no ROM home.
- *
- * Crate_SetState and func_ov098_02138b70 run the state table at
- * data_ov098_0213c878: one {enter, update} member-pointer pair per state, and
- * mState (0x560) is the index. The state functions (0x0213814c..0x02138b18
- * and the helpers after them) are methods named func_ov098_<addr>. The first
- * argument is this.
- *
- * Under `#pragma defer_codegen off` .text is laid down in source order, so
- * this file is ROM-ascending.
+ * Key function ~daObjBlockS_c (out-of-line): D1 0x02138040, D0 0x021380bc,
+ * D2 homeless. Under `#pragma defer_codegen off` .text is ROM-ascending.
  *
  * STATES. mState (daObjBlockS_c::State) indexes the table at
  * data_ov098_0213c878, built by __sinit_ov098_0213c058 from fourteen
