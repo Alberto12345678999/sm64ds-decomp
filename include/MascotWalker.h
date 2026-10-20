@@ -12,21 +12,21 @@
  * place at most, or sit inside an embedded object. */
 struct MascotWalker {
     /* Three SharedFilePtrs, each a handle and then the loaded file. */
-    s32 mModelFile[2];     /* 0x00 -- kino_d.bmd (0x205) */
+    s32 mModelFile[2]; /* 0x00 -- kino_d.bmd (0x205) */
     /* kino_wait.bca (0x206): [1] is the BCA Load starts and StartPause restarts. */
     s32 mPauseAnimFile[2]; /* 0x08 */
     s32 mWalkAnimFile[2];  /* 0x10 -- kino_walk.bca (0x207): [1] StartNextPath restarts */
     u8 mModel[0x14];       /* 0x18 -- a BlendModelAnim, running to 0x88 */
     /* mModel's bone matrices (Model +0x14, ModelComponents::transforms):
        UpdateMatrix turns bone 6 by mHeadAngle. */
-    s32 mBoneMatrices;     /* 0x2c */
-    u8 pad_30[0x4];        /* 0x30 */
-    u8 mMatrix[0x30];      /* 0x34 -- mModel's Matrix4x3 (Model +0x1c), set by UpdateMatrix */
-    u8 pad_64[0x4];        /* 0x64 -- the rest of mModel's Model */
+    s32 mBoneMatrices; /* 0x2c */
+    u8 pad_30[0x4];    /* 0x30 */
+    u8 mMatrix[0x30];  /* 0x34 -- mModel's Matrix4x3 (Model +0x1c), set by UpdateMatrix */
+    u8 pad_64[0x4];    /* 0x64 -- the rest of mModel's Model */
     /* mModel's dExtFrameCtrl_c (ModelAnim +0x50): StateWalk pauses when it
        hits frame 0. */
-    s32 mModelFrame[4];    /* 0x68 */
-    u8 pad_78[0x10];       /* 0x78 -- the rest of mModel */
+    s32 mModelFrame[4]; /* 0x68 */
+    u8 pad_78[0x10];    /* 0x78 -- the rest of mModel */
     /* Built by Construct, InitCylinder'd by Load and InitModel'd on mMatrix by Draw. */
     u8 mShadow[0x28]; /* 0x88 -- a dExtShadowModel_c */
     s32 mPath;        /* 0xb0 -- the path walked: a point count, then the points */

@@ -18,7 +18,7 @@ struct FallingPetal {
     Vector3 mAxis;   /* 0x24 -- the petal's up axis, tipped toward its motion */
     s32 mRot[4];     /* 0x30 -- a quaternion */
     s32 mActive;     /* 0x40 */
-    u8 mModel[0x1c];  /* 0x44 -- a Model, running to 0x94 */
+    u8 mModel[0x1c]; /* 0x44 -- a Model, running to 0x94 */
     u8 mMatrix[0x30]; /* 0x60 -- mModel's Matrix4x3 (Model +0x1c), set by UpdateMatrix */
     u8 pad_90[0x4];   /* 0x90 -- the rest of mModel */
     s16 mLife;       /* 0x94 -- frames left; 0 clears mActive */

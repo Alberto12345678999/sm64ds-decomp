@@ -43,10 +43,10 @@ struct Dealer {
     u8 pad_068[0x4];       /* 0x068 -- the rest of mModel's Model */
     /* mModel's dExtFrameCtrl_c (ModelAnim +0x50), which the state functions
        test with Finished and WillHitFrame. */
-    s32 mModelFrame[4];    /* 0x06c */
-    s32 mAnim;             /* 0x07c -- the BCA file mModel plays */
-    u8 pad_080[0xc];       /* 0x080 */
-    u8 mTable[0xc];        /* 0x08c -- a Model, running to 0x0dc */
+    s32 mModelFrame[4]; /* 0x06c */
+    s32 mAnim;          /* 0x07c -- the BCA file mModel plays */
+    u8 pad_080[0xc];    /* 0x080 */
+    u8 mTable[0xc];     /* 0x08c -- a Model, running to 0x0dc */
     /* mTable's material table (Model +0xc, ModelComponents::materials):
        Load clears and sets flags on materials 0, 4 and 5. */
     s32 mTableMaterials;   /* 0x098 */
