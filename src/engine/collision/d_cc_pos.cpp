@@ -30,7 +30,8 @@ extern "C" {
    class-typed by-value parameters, so callers go through the real method
    while the callee stays the mangled scalar spelling dCc_c's TU defines. */
 void _ZN5dCc_c4InitE5Fix12IiES1_jj(dCc_c *self, int radius, int height, u32 flags, u32 vulnFlags);
-/* The font-base halfword the absorbed print helper below adds the glyph index to. */
+/* local extern: ROM data no TU defines and no header declares -- the
+   font-base halfword the absorbed print helper below adds the glyph index to. */
 extern unsigned short data_0208e500;
 }
 
