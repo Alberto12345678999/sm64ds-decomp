@@ -272,7 +272,10 @@ struct dScMgPachinko_c : dScMgBase_c {
                     by Pachinko_DrawAimLine, cleared by Pachinko_ClearAimLine */
     u8 pad_5c30;
     u8 unk_5c31; /* 0x5c31 */
-    u8 pad_5c32[0x2];
+    u8 mPlayStarted; /* 0x5c32 -- latched to 1 by Pachinko_CountLaunch on the first
+                        play-phase frame Behavior runs it; Pachinko_ResetRound
+                        clears it. Nothing reads it back (medium confidence). */
+    u8 pad_5c33;
     u8 mFlyerOut; /* 0x5c34 -- nonzero while the flyer is up: PachinkoTarget_Choose
                      returns early on it and bumps it when it launches the
                      flyer; the flyer's leave and hit paths clear it */
