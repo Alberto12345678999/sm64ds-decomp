@@ -12,8 +12,9 @@
  * target in mPrevAngleX, and the accumulated yaw in mPrevAngleY, which
  * is copied to mAngleY for the model and the mesh.
  *
- * Key function ~daObjCtKaitendai_c (inline in header). Source order is
- * reverse ROM order (2004/b56 emits .text back to front); do not reorder.
+ * The destructor pair comes off the inline ~daObjCtKaitendai_c() in the
+ * header. Source order is reverse ROM order (2004/b56 emits .text back
+ * to front); do not reorder.
  *
  * leftovers:
  * - dBgW_KcMbg::SetFile and dActor_c::DropShadowRadHeight stay mangled

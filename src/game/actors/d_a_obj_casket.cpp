@@ -6,6 +6,7 @@
  *   0 "WAIT"     init St_Wait_Init     exec St_Wait_Main
  *   1 "STANDUP"  init St_StandUp_Init  exec St_StandUp_Main
  *
+ * The tree called the class Coffin until then.
  * Key function InitResources (inline empty dtor in daObjCasket_c.h); this TU
  * emits _ZTV/_ZTI/_ZTS13daObjCasket_c (0x02122efc/0x02122e94/0x02122ea0).
  * Source order is reverse ROM order (2004/b56 emits .text back to front).

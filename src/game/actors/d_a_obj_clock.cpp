@@ -4,8 +4,8 @@
  * (_ZTI/_ZTS, g_profile_CLOCK_LONG/SHORT, _ZTV at 0x02112200).
  * CLOCK_PAINTING_HAND_SHORT (292) and _LONG (293) share this class.
  * Source order is reverse ROM order (2004/b56 emits .text back to front);
- * the destructor pair at the end is the one exception (D0 before D1 from
- * the inline header dtor, plus a homeless D2).
+ * the destructor pair at the end is the one exception, because the
+ * compiler picks the order inside a D0/D1 group.
  *
  * leftovers (measured under mwccarm 2004/b56, left in the matching form):
  * - the widened `int isLongHand` stays: folding actorID == 0x125 into the

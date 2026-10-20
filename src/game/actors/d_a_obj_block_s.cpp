@@ -14,6 +14,7 @@
  *
  * _ZTS13daObjBlockS_c at ov098 0x0213c500, _ZTI at 0x0213c4d4
  * (base _ZTI10dBgActor_c), _ZTV13daObjBlockS_c at 0x0213c534.
+ * The tree previously called the class Crate (coined).
  *
  * Key function ~daObjBlockS_c (out-of-line): D1 0x02138040, D0 0x021380bc,
  * D2 homeless. Under `#pragma defer_codegen off` .text is ROM-ascending.

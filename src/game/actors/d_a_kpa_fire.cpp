@@ -2,8 +2,9 @@
 /* daKpaFire_c -- Bowser's fire (KOOPAFIRE, ov060).
  *
  * _ZTS11daKpaFire_c at ov060 0x0211a7c0, _ZTI at 0x0211a7b4 (base
- * _ZTI12dEnemyBase_c), _ZTV at 0x0211a7f4. The out-of-line destructor is
- * the key function: D1 at 0x02116484, D0 at 0x021164c4, then a D2 the
+ * _ZTI12dEnemyBase_c), _ZTV at 0x0211a7f4. The tree used to call this
+ * class BowserFire. The out-of-line destructor is the key function:
+ * D1 at 0x02116484, D0 at 0x021164c4, then a D2 the
  * cartridge does not keep. Codegen is deferred, so .text is the reverse
  * of source order. The destructor alone sits under defer_codegen off,
  * which is what emits D1 before D0.

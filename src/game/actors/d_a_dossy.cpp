@@ -40,7 +40,6 @@
 //   materialization plus the `cmp r2, #0` re-test. Removing the typedef
 //   also renumbers this TU's @NNN temps (manifest rename @1027).
 
-
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daDossy_c_AssetId {
     ASSET_DOSSY_BMD = 0x02e9,

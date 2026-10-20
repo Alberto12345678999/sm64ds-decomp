@@ -715,15 +715,15 @@ int daKing_Donketu_c::func_ov073_0211fbec()
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0211fbf4Ev
 int daKing_Donketu_c::func_ov073_0211fbf4() {
     daKing_Donketu_c *c = this;
-  Player* pl = c->mTalkPlayer;
-  c->mSoundHandle =
-      _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, &c->mCamSpacePos, 0);
-  ((dCamera_c *)data_0209f318)->SetFlag_3();
-  c->func_ov073_0211f144();
-  if (pl->GetTalkState() == -1) {
-    ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123370);
-  }
-  return 1;
+    Player *pl = c->mTalkPlayer;
+    c->mSoundHandle =
+        _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, &c->mCamSpacePos, 0);
+    ((dCamera_c *)data_0209f318)->SetFlag_3();
+    c->func_ov073_0211f144();
+    if (pl->GetTalkState() == -1) {
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123370);
+    }
+    return 1;
 }
 
 /* ..3410 enter: nothing to do. */
@@ -890,13 +890,12 @@ short daKing_Donketu_c::func_ov073_0212000c() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212005cEv
 int daKing_Donketu_c::func_ov073_0212005c() {
     daKing_Donketu_c *c = this;
-  if (c->mBlendModelAnim.Finished()) {
-    c->unk_4c5 = 0xff;
-    ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
-  }
-  return 1;
+    if (c->mBlendModelAnim.Finished()) {
+        c->unk_4c5 = 0xff;
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
+    }
+    return 1;
 }
-
 
 /* ..3380 enter: clear unk_4ca and start the animation in
    gKingIceDonketuJumpEdAnimationFile.file. */
@@ -1714,9 +1713,10 @@ int daKing_Donketu_c::func_ov073_02121388() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02121538Ev
 int daKing_Donketu_c::func_ov073_02121538() {
     daKing_Donketu_c *c = this;
-  c->mPhase = 0;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, gKingIceDonketuWaitAnimationFile.file, 4, 0, 0x1000, 0);
-  return 1;
+    c->mPhase = 0;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &c->mBlendModelAnim, gKingIceDonketuWaitAnimationFile.file, 4, 0, 0x1000, 0);
+    return 1;
 }
 
 /* Stores the state record in mState (the shadow struct's pp, at +0x37c) and
@@ -1781,17 +1781,17 @@ void daKing_Donketu_c::func_ov073_021215cc()
 
 // @symbol _ZN16daKing_Donketu_c16CleanupResourcesEv
 int daKing_Donketu_c::CleanupResources() {
-  UnloadKeyModels(4);
-  ((SharedFilePtr *)&gKingIceDonketuDeadAnimationFile)->Release();
-  ((SharedFilePtr *)&gKingIceDonketuHitAnimationFile)->Release();
-  ((SharedFilePtr *)&gKingIceDonketuWalkAnimationFile)->Release();
-  ((SharedFilePtr *)&gKingIceDonketuDamageAnimationFile)->Release();
-  ((SharedFilePtr *)&gKingIceDonketuJumpEdAnimationFile)->Release();
-  ((SharedFilePtr *)&gKingIceDonketuJumpStAnimationFile)->Release();
-  ((SharedFilePtr *)&gKingIceDonketuWaitAnimationFile)->Release();
-  ((SharedFilePtr *)data_ov002_0210da30)->Release();
-  ((SharedFilePtr *)&gKingIceDonketuModelModelFile)->Release();
-  return 1;
+    UnloadKeyModels(4);
+    ((SharedFilePtr *)&gKingIceDonketuDeadAnimationFile)->Release();
+    ((SharedFilePtr *)&gKingIceDonketuHitAnimationFile)->Release();
+    ((SharedFilePtr *)&gKingIceDonketuWalkAnimationFile)->Release();
+    ((SharedFilePtr *)&gKingIceDonketuDamageAnimationFile)->Release();
+    ((SharedFilePtr *)&gKingIceDonketuJumpEdAnimationFile)->Release();
+    ((SharedFilePtr *)&gKingIceDonketuJumpStAnimationFile)->Release();
+    ((SharedFilePtr *)&gKingIceDonketuWaitAnimationFile)->Release();
+    ((SharedFilePtr *)data_ov002_0210da30)->Release();
+    ((SharedFilePtr *)&gKingIceDonketuModelModelFile)->Release();
+    return 1;
 }
 
 // @symbol _ZN16daKing_Donketu_c16OnPendingDestroyEv

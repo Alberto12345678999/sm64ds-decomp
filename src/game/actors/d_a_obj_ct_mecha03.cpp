@@ -1,12 +1,16 @@
 //cpp
 /* daObjCtMecha03_c -- TTC swinging pendulum (CT_MECHA03, ov065).
- * Swings under mSwingAngle/mSwingSpeed; clock mode 2 re-rolls push strength
- * and pauses. Shadow follows the bob (func_ov065_02119fe8); model matrix
- * helper func_ov065_0211a114.
+ * It swings under mSwingAccel; in clock mode 2 (data_0209f2c0) each stop
+ * rolls a new push strength and an occasional pause. Shadow follows the
+ * bob (func_ov065_02119fe8); model matrix helper func_ov065_0211a114.
  *
- * Key function ~daObjCtMecha03_c (inline in header; D1 then D0, no D2).
- * Source order is reverse ROM order (2004/b56 emits .text back to front).
- * `return new` emits a homeless _ZN10dBgActor_cD2Ev (compiler-only deadstrip).
+ * The destructor pair comes off the inline header destructor (D1 then D0,
+ * no D2). Source order is reverse ROM order (2004/b56 emits .text back to
+ * front); the factory stays first and the inline destructor stays in the
+ * header. `return new` emits a homeless _ZN10dBgActor_cD2Ev (compiler-only
+ * deadstrip).
+ * common.h stays first. Shadow and model matrices are the flat 12-word
+ * Matrix4x3; translation is m[9], m[10], m[11].
  * func_ov065_02119fe8 / func_ov065_0211a114 are methods (S33); the ROM
  * address is the method name.
  *

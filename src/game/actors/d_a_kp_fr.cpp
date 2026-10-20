@@ -51,8 +51,11 @@ extern "C" daKpFr_c *daKpFr_c_classInit(void)
     return new daKpFr_c();
 }
 
-/* KERONPA_FIRE profile descriptor at ov070:0x02123424.
- * Historical aliases: daKpFr_c_Spawn, daKpFr_c_SpawnInfo. */
+/* Reconstructed source-style names: SM64DS proves the daKpFr_c RTTI identity,
+ * KERONPA_FIRE registry ID, descriptor/factory relationship, and object shape;
+ * later EAD lineage supplies the spelling prior. Exact original SM64DS
+ * spellings are not preserved. Historical aliases: daKpFr_c_Spawn and
+ * daKpFr_c_SpawnInfo. The descriptor is at ov070:0x02123424. */
 extern "C" SpawnInfo<daKpFr_c> g_profile_KERONPA_FIRE = {
     daKpFr_c_classInit,
     0x010f,

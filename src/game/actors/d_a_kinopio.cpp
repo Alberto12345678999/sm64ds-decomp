@@ -611,7 +611,10 @@ int daKinopio_c::InitResources()
 // @symbol daKinopio_c_classInit
 /* The registry factory behind the KINOPIO profile: `return new` allocates
  * 0x210 (this class's sizeof) and installs this class's vtable.
- * Historical alias: Toad_Spawn. */
+ * Reconstructed source-style name: SM64DS proves daKinopio_c through RTTI,
+ * allocation size, vtable identity and the KINOPIO registry profile; later
+ * EAD lineage supplies classInit. The exact original spelling is not
+ * preserved. Historical alias: Toad_Spawn. */
 extern "C" daKinopio_c *daKinopio_c_classInit(void)
 {
     return new daKinopio_c();

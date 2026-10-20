@@ -2,7 +2,8 @@
 /* daIDonketu_c -- Chill Bully (ICE_DONKETU, ov027), child of the daOts_c
  * Bully base in ov064. Own resources, own run/death states; otherwise the
  * base's common workers. _ZTS/_ZTV prove the class name; the ICE_DONKETU
- * profile proves the registry slot.
+ * profile proves the registry slot. The tree used to call it `ChillBully`,
+ * which is coined.
  *
  * Two load-bearing spellings, both measured:
  *
@@ -65,7 +66,11 @@ extern int data_ov027_021138f4[];
 /* -------------------------------------------------------------------------- */
 // @symbol daIDonketu_c_classInit
 /* Factory: `return new` emits the size (0x3fc), the base C2, the member
- * C1s and both vptr stores. Historical alias: daIDonketu_c_Spawn. */
+ * C1s and both vptr stores. Reconstructed source-style name: SM64DS proves
+ * daIDonketu_c through RTTI, allocation size, vtable identity, and the
+ * ICE_DONKETU registry profile; later EAD lineage supplies classInit.
+ * Exact original spelling is not preserved. Historical alias:
+ * daIDonketu_c_Spawn. */
 extern "C" daIDonketu_c *daIDonketu_c_classInit(void)
 {
     return new daIDonketu_c();

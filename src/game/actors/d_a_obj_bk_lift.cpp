@@ -6,9 +6,10 @@
  * else only refreshes the collider. func_ov015_021123c8 re-aims the
  * cuboid shadow every frame.
  *
- * Key function ~daObjBk_Lift_c (inline in daObjBk_Lift_c.h): D1 0x02112290,
- * D0 0x021122dc. Source order is reverse ROM order (2004/b56 emits .text
- * back to front); factory first, Kill() last.
+ * The destructor pair comes off the in-class `~daObjBk_Lift_c() {}` in
+ * include/daObjBk_Lift_c.h and lands ahead of everything, D1 then D0
+ * (0x02112290, then 0x021122dc). Source order is reverse ROM order
+ * (2004/b56 emits .text back to front); factory first, Kill() last.
  *
  * leftovers:
  * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange, dActor_c::UpdatePos,
