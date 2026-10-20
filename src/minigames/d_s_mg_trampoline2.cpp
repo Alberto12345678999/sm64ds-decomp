@@ -342,16 +342,18 @@ extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
         }
         _ZN8Particle10SysTrackerC1Ev(&((dScMgTrampoline2_c *)scene)->mSysTracker);
         *(int *)scene = (int)&_ZTV18dScMgTrampoline2_c[2];
-        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray1, 5, 0xdc, (void *)Trmp2Mario_Construct,
-                       (void *)Trmp2Mario_Destruct);
-        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray2, 3, 0x32c, (void *)TrmpLine_Reset, (void *)TrmpLine_Destroy);
-        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray3, 0xa, 0x1d0, (void *)TrmpItem_Construct,
-                       (void *)Trmp2_DestructJumperModels);
-        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray4, 0xa, 0x24, (void *)Jump2Popup_ElemCtor,
-                       (void *)Jump2Popup_ElemDtor);
-        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray5, 0x14, 0x78, (void *)Trmp2Spinner_Construct,
-                       (void *)Trmp2Spinner_Destruct);
-        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray6, 5, 0x24, (void *)Trmp_Nothing2, (void *)Trmp_Nothing);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray1, 5, 0xdc,
+                       (void *)Trmp2Mario_Construct, (void *)Trmp2Mario_Destruct);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray2, 3, 0x32c, (void *)TrmpLine_Reset,
+                       (void *)TrmpLine_Destroy);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray3, 0xa, 0x1d0,
+                       (void *)TrmpItem_Construct, (void *)Trmp2_DestructJumperModels);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray4, 0xa, 0x24,
+                       (void *)Jump2Popup_ElemCtor, (void *)Jump2Popup_ElemDtor);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray5, 0x14, 0x78,
+                       (void *)Trmp2Spinner_Construct, (void *)Trmp2Spinner_Destruct);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray6, 5, 0x24, (void *)Trmp_Nothing2,
+                       (void *)Trmp_Nothing);
     }
     return (dScMgTrampoline2_c *)scene;
 }
