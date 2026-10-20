@@ -288,6 +288,44 @@ class RomBuildEnrollment(unittest.TestCase):
                 "_ZTV4Pair": [("arm9", 0x02000040)]})
         self.assertIn("must be built, not discarded", raised.exception.output)
 
+    def test_coined_rtti_retarget_is_accepted_outside_claimed_ranges(self):
+        """A coined _ZTS may name the cartridge string and be discarded, not compared."""
+        manifest = self._data_manifest(
+            symbol="_ZTS9ModelAnim",
+            canonical_symbol="_ZTS14dExtAnmModel_c",
+            canonical_module="arm9",
+            canonical_address="0x0208e7fc",
+            proof="import")
+        got = RB.compiler_only_policies(manifest=manifest, homes={
+            "_ZTS14dExtAnmModel_c": [("arm9", 0x0208e7fc)]})
+        self.assertEqual(got["src/Pair.cpp"]["data"], ["_ZTS9ModelAnim"])
+        self.assertEqual(got["src/Pair.cpp"]["retarget"], [{
+            "symbol": "_ZTS9ModelAnim",
+            "canonical_symbol": "_ZTS14dExtAnmModel_c",
+            "proof": "import"}])
+
+    def test_coined_rtti_import_proof_refuses_a_typeinfo_record(self):
+        manifest = self._data_manifest(
+            symbol="_ZTI9ModelAnim",
+            canonical_symbol="_ZTI14dExtAnmModel_c",
+            canonical_module="arm9",
+            canonical_address="0x0208e924",
+            proof="import")
+        with self.assertRaises(RB.BuildError) as raised:
+            RB.compiler_only_policies(manifest=manifest, homes={
+                "_ZTI14dExtAnmModel_c": [("arm9", 0x0208e924)]})
+        self.assertIn("has to be compared", raised.exception.output)
+
+    def test_coined_rtti_retarget_refuses_a_canonical_name_with_no_home(self):
+        manifest = self._data_manifest(
+            symbol="_ZTI9ModelAnim",
+            canonical_symbol="_ZTI14dExtAnmModel_c",
+            canonical_module="arm9",
+            canonical_address="0x0208e924")
+        with self.assertRaises(RB.BuildError) as raised:
+            RB.compiler_only_policies(manifest=manifest, homes={})
+        self.assertIn("exactly one configured ROM home", raised.exception.output)
+
     def test_data_disposition_accepts_a_home_outside_every_claimed_range(self):
         """The licence is an address argument: dsd delinks it from the cartridge
         regardless, so discarding this object's copy cannot cost the image a byte."""

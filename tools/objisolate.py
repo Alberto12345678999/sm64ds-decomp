@@ -575,7 +575,7 @@ def plan(raw, keep_symbol):
             "ztvRebase": ztv_rebase, "error": None}
 
 
-def plan_many(raw, keep_symbols):
+def plan_many(raw, keep_symbols, public_vtables=False):
     """Validate an exact text-only multi-function object for production linking.
 
     This is deliberately not ``plan`` with a wider argument.  The one-function
@@ -687,18 +687,26 @@ def plan_many(raw, keep_symbols):
                 return {"error": f"{target.name}: RTTI reloc is REL, not RELA"}
             if target["st_shndx"] in ("SHN_UNDEF", SHN_UNDEF) \
                     and reloc["r_addend"] != 0:
-                return {"error": f"{target.name}: intact multi-symbol object has "
-                                 f"undefined RTTI addend {reloc['r_addend']}; text-only "
-                                 "production isolation cannot rewrite it"}
+                # deadstrip already subtracted the vtable preamble and turned the
+                # definition into an import. A secondary store's public addend is
+                # then the thunk-table offset (ModelAnim: 44 - 8 = 36), not zero.
+                # This function still does not rewrite. _ZTI/_ZTS addends stay 0,
+                # and a raw mwcc addend is refused unless the caller did that rewrite.
+                if not (public_vtables and target.name.startswith("_ZTV")
+                        and reloc["r_info_type"] == R_ARM_ABS32
+                        and reloc["r_addend"] > 0):
+                    return {"error": f"{target.name}: intact multi-symbol object has "
+                                     f"undefined RTTI addend {reloc['r_addend']}; text-only "
+                                     "production isolation cannot rewrite it"}
 
     return {"keep": keep, "keepSymbols": requested, "drop": [],
             "externalise": [], "dead": [], "referenced": sorted(referenced),
             "error": None}
 
 
-def derive_many(raw, keep_symbols):
+def derive_many(raw, keep_symbols, public_vtables=False):
     """Pure, fail-closed validation of one exact text-only multi-function object."""
-    p = plan_many(bytes(raw), keep_symbols)
+    p = plan_many(bytes(raw), keep_symbols, public_vtables=public_vtables)
     return (None, p) if p.get("error") else (bytes(raw), p)
 
 
@@ -1904,10 +1912,10 @@ def isolate(obj, keep_symbol):
     return p
 
 
-def isolate_many(obj, keep_symbols):
+def isolate_many(obj, keep_symbols, public_vtables=False):
     """Validate and preserve an exact text-only multi-function object in place."""
     raw = obj.read_bytes()
-    out, p = derive_many(raw, keep_symbols)
+    out, p = derive_many(raw, keep_symbols, public_vtables=public_vtables)
     if out is not None and out != raw:
         obj.write_bytes(out)
     return p
