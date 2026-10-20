@@ -63,13 +63,9 @@ src/main.c:
     complete
     .text start:0x02007000 end:0x0200705c
 
-src/_ZN9dCamera_cD1Ev.cpp:
+src/engine/view/d_camera_dtor.cpp:
     complete
-    .text start:0x0200705c end:0x02007098
-
-src/_ZN9dCamera_cD0Ev.cpp:
-    complete
-    .text start:0x02007098 end:0x020070e8
+    .text start:0x0200705c end:0x020070e8
 
 src/unnamed/arm9/0200/func_020070e8.c:
     complete
