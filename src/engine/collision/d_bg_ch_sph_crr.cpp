@@ -76,18 +76,30 @@ void dBgCh_SphCrr::ResetDisplacement() {
 /* Widen the push-out range to cover a scan's lowest and highest pushes. */
 // @symbol _ZN12dBgCh_SphCrr19ExpandPushOutBoundsEiiiiii
 void dBgCh_SphCrr::ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ) {
-    if (mPushOutMin.x > minX) mPushOutMin.x = minX;
-    if (mPushOutMax.x < minX) mPushOutMax.x = minX;
-    if (mPushOutMin.x > maxX) mPushOutMin.x = maxX;
-    if (mPushOutMax.x < maxX) mPushOutMax.x = maxX;
-    if (mPushOutMin.y > minY) mPushOutMin.y = minY;
-    if (mPushOutMax.y < minY) mPushOutMax.y = minY;
-    if (mPushOutMin.y > maxY) mPushOutMin.y = maxY;
-    if (mPushOutMax.y < maxY) mPushOutMax.y = maxY;
-    if (mPushOutMin.z > minZ) mPushOutMin.z = minZ;
-    if (mPushOutMax.z < minZ) mPushOutMax.z = minZ;
-    if (mPushOutMin.z > maxZ) mPushOutMin.z = maxZ;
-    if (mPushOutMax.z < maxZ) mPushOutMax.z = maxZ;
+    if (mPushOutMin.x > minX)
+        mPushOutMin.x = minX;
+    if (mPushOutMax.x < minX)
+        mPushOutMax.x = minX;
+    if (mPushOutMin.x > maxX)
+        mPushOutMin.x = maxX;
+    if (mPushOutMax.x < maxX)
+        mPushOutMax.x = maxX;
+    if (mPushOutMin.y > minY)
+        mPushOutMin.y = minY;
+    if (mPushOutMax.y < minY)
+        mPushOutMax.y = minY;
+    if (mPushOutMin.y > maxY)
+        mPushOutMin.y = maxY;
+    if (mPushOutMax.y < maxY)
+        mPushOutMax.y = maxY;
+    if (mPushOutMin.z > minZ)
+        mPushOutMin.z = minZ;
+    if (mPushOutMax.z < minZ)
+        mPushOutMax.z = minZ;
+    if (mPushOutMin.z > maxZ)
+        mPushOutMin.z = maxZ;
+    if (mPushOutMax.z < maxZ)
+        mPushOutMax.z = maxZ;
 }
 
 /* Commit the accumulated range into the displacement the actor moves by. */

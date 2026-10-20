@@ -841,7 +841,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         if (!contactKind) contactKind = k2;
 
                     face:
-                        if (sphere.mMaxNormalY < sn.y) continue;
+                        if (sphere.mMaxNormalY < sn.y)
+                            continue;
 
                         /* Walls only, and only once the cheap tests have accepted
                            the prism. Rebuild the triangle's three real vertices --
@@ -857,8 +858,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                            wholly-INSIDE rejects -- the last compare is
                            `ble 0x1ffd314`, the reject -- so a triangle that
                            escapes the slab in any component keeps its hit. */
-                        if (sphere.mWallRejectHalfExtent > 0 && cls == 1
-                                && !(tri->length & 0xf0000000)) {
+                        if (sphere.mWallRejectHalfExtent > 0 && cls == 1 &&
+                            !(tri->length & 0xf0000000)) {
 
                             tp.x = vtx[0] << 6;
                             tp.y = vtx[1] << 6;
@@ -927,7 +928,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                             sphere.flags |= 4;
                             v = (s32)(((s64)depth * sn.y) >> 14) >> 2;
                             if (v > hiPY) hiPY = v; else if (v < loPY) loPY = v;
-                            if (sn.y > sphere.mFloorNormal.y) sphere.func_0203794c((const s32 *)&sn);
+                            if (sn.y > sphere.mFloorNormal.y)
+                                sphere.func_0203794c((const s32 *)&sn);
                         } else if (cls == 1) {
                             sphere.flags |= 8;
                             sphere.func_020379c0(triID, &data_020a0cec);
