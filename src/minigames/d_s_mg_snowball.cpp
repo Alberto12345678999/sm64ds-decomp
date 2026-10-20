@@ -542,7 +542,7 @@ void dScMgSnowball_c::UpdateSnowball() {
     Vector3 part;
     int allWater;
     int len;
-    int *sys;
+    Particle::System *sys;
     u32 id1;
     u32 id2;
     int headingComponent;
@@ -675,17 +675,18 @@ void dScMgSnowball_c::UpdateSnowball() {
                 0, 0xf1, part.x * 8, part.y * 8, part.z * 8, 0, 0);
             id2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                 0, 0xf2, part.x * 8, part.y * 8, part.z * 8, 0, 0);
-            sys = (int *)Particle::System::FromUniqueID(id1);
+            sys = Particle::System::FromUniqueID(id1);
             if (sys != 0) {
-                sys[0x44 / 4] = (s16)((self->mBallSize - 0x4000) * 11 / 60 + 0x3000);
-                sys[0x48 / 4] = (s16)((self->mBallSize - 0x4000) * 36 / 10 / 60 + 0x1333);
-                sys[0x4c / 4] = (s16)((self->mBallSize - 0x4000) * 26 / 10 / 60 + 0x1666);
-                sys[0x50 / 4] = (s16)((self->mBallSize - 0x4000) * 8 / 10 / 60 + 0x666);
+                /* 0x44 lies in Particle::System's unnamed pad_042. */
+                ((int *)sys)[0x44 / 4] = (s16)((self->mBallSize - 0x4000) * 11 / 60 + 0x3000);
+                sys->callbackParam = (s16)((self->mBallSize - 0x4000) * 36 / 10 / 60 + 0x1333);
+                sys->callbackVelocity = (s16)((self->mBallSize - 0x4000) * 26 / 10 / 60 + 0x1666);
+                sys->callbackScale = (s16)((self->mBallSize - 0x4000) * 8 / 10 / 60 + 0x666);
             }
-            sys = (int *)Particle::System::FromUniqueID(id2);
+            sys = Particle::System::FromUniqueID(id2);
             if (sys != 0) {
-                sys[0x48 / 4] = (s16)((self->mBallSize - 0x4000) * 62 / 10 / 60 + 0x1ccc);
-                sys[0x50 / 4] = (s16)((self->mBallSize - 0x4000) * 45 / 10 / 60 + 0x1800);
+                sys->callbackParam = (s16)((self->mBallSize - 0x4000) * 62 / 10 / 60 + 0x1ccc);
+                sys->callbackScale = (s16)((self->mBallSize - 0x4000) * 45 / 10 / 60 + 0x1800);
             }
             if (self->mState == 1) {
                 func_02012718(0x169, hit.x);
@@ -772,7 +773,7 @@ void Snowball_UpdateCamera(char *scene) {
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, self->mHeadingAngle);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, self->mRollAngle);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, self->mAngleY);
-    *(struct M4x3Flat *)(scene + 0xabc0) = *(struct M4x3Flat *)&data_020a0e68;
+    *(struct M4x3Flat *)&self->mModel.mat4x3 = *(struct M4x3Flat *)&data_020a0e68;
 }
 }
 #pragma opt_lifetimes on
