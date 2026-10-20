@@ -34833,7 +34833,7 @@ matched: yes</title></rect><rect x="1146.75" y="333.73" width="8.86" height="31.
 module: ov060
 addr: 0x02116518
 size: 552 bytes
-matched: yes</title></rect><rect x="1146.75" y="365.67" width="8.86" height="7.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov060_02116740
+matched: yes</title></rect><rect x="1146.75" y="365.67" width="8.86" height="7.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c19func_ov060_02116740Ev
 module: ov060
 addr: 0x02116740
 size: 136 bytes
@@ -34905,7 +34905,7 @@ matched: yes</title></rect><rect x="1163.91" y="322.32" width="39.78" height="5.
 module: ov060
 addr: 0x0211747c
 size: 424 bytes
-matched: yes</title></rect><rect x="1203.69" y="322.32" width="15.01" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov060_02117624
+matched: yes</title></rect><rect x="1203.69" y="322.32" width="15.01" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c19func_ov060_02117624Ev
 module: ov060
 addr: 0x02117624
 size: 160 bytes
