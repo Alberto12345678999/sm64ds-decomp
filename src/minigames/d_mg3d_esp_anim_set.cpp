@@ -176,7 +176,7 @@ extern volatile Matrix4x3 sEsp3DIdentityMtx;
 dScMg3DEsp_c::~dScMg3DEsp_c()
 {
     ((TextureTransformer *)mTextureTransformer)->TextureTransformer::~TextureTransformer();
-    ((dMg3DEspModel_c *)pad_4fd8)->~dMg3DEspModel_c();
+    ((dMg3DEspModel_c *)mEspModel)->~dMg3DEspModel_c();
     ((Model *)mModel2)->Model::~Model();
     ((Model *)mModel1)->Model::~Model();
 }
@@ -219,8 +219,7 @@ void dMg3DEspAnimSet_c::Render()
 }
 
 // @symbol _ZN17dMg3DEspAnimSet_c8BehaviorEv
-void dMg3DEspAnimSet_c::Behavior()
-{
+void dMg3DEspAnimSet_c::Behavior() {
     char *self = (char *)this;
     int sb = 0;
     if (mRepeats != 0) {
@@ -235,9 +234,11 @@ void dMg3DEspAnimSet_c::Behavior()
     {
         int zero = 0;
         int i;
-        char* a = self;
+        char *a = self;
         char *b = (char *)mMaterialChangers;
-        char* cc = self;
+        /* cc steps by one MaterialChanger: mMaterialChangers[i] grows
+           Behavior from 0xf8 to 0xfc bytes. */
+        char *cc = self;
         for (i = 0; i < 3; i++) {
             if (mActive[i] != 0) {
                 _ZN15dExtFrameCtrl_c7AdvanceEv(a + 0x50);
@@ -580,7 +581,7 @@ void dScMg3DEsp_c::DrawBanner()
 void dScMg3DEsp_c::FlashQuick() {
     if (mFlashStep)
         return;
-    ((dMg3DEspModel_c *)pad_4fd8)->mPolygonID = 0x1e;
+    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1e;
     mFlashStep += 1;
 }
 
@@ -591,13 +592,13 @@ void dScMg3DEsp_c::FlashSync()
     u8 state = mFlashStep;
     if (state == 0) {
         u8 *p = &mFlashStep;
-        ((dMg3DEspModel_c *)pad_4fd8)->mPolygonID = 0x1e;
+        ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1e;
         (*p)++;
         return;
     }
     if (state != 1)
         return;
-    /* c + 0x5034 is the embedded model's mModelAnim frame control
+    /* c + 0x5034 is mEspModel's mModelAnim frame control
        (0x4fd8 + 0xc + 0x50). The ROM pool-loads 0x5034 as one constant;
        spelling it as that member grows FlashSync from 0xb4 to 0xb8 bytes. */
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5034, 0)) {
@@ -610,7 +611,7 @@ void dScMg3DEsp_c::FlashSync()
         u8 *p = &mFlashStep;
         (*p)++;
     }
-    ((dMg3DEspModel_c *)pad_4fd8)->mPolygonID = 0x1f;
+    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1f;
 }
 
 // @symbol _ZN12dScMg3DEsp_c9FlashOnceEv
@@ -624,7 +625,7 @@ void dScMg3DEsp_c::FlashOnce() {
     p = &mFlashStep;
     *p = (unsigned char)(*p + 1);
     k = 0x1f;
-    ((dMg3DEspModel_c *)pad_4fd8)->mPolygonID = k;
+    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = k;
 }
 
 // @symbol _ZN12dScMg3DEsp_c11UpdateFlashEv
@@ -651,29 +652,31 @@ void dScMg3DEsp_c::RenderSlots() {
 }
 
 // @symbol _ZN12dScMg3DEsp_c10SlotDampenEi
-void dScMg3DEsp_c::SlotDampen(int i)
-{
-  char *c = (char*)this;
-  unsigned long new_var;
-  dScMg3DEsp_c *b = (dScMg3DEsp_c *)(c + (i * 32));
-  new_var = i;
-  mSlots[new_var].mX = mSlots[new_var].mX + b->mSlots[0].mVelX;
-  mSlots[new_var].mY = mSlots[new_var].mY + b->mSlots[0].mVelY;
-  if (b->mSlots[0].mVelX > 0) {
-      unsigned char e = b->mSlots[0].mAccel;
-      mSlots[new_var].mVelX = mSlots[new_var].mVelX - ((e * 16) + 0x10);
-      if (((short)b->mSlots[0].mVelX) < 0) {
-          b->mSlots[0].mVelX = 0;
-      }
-  } else if (b->mSlots[0].mVelX < 0) {
-      unsigned char e = b->mSlots[0].mAccel;
-      mSlots[new_var].mVelX = mSlots[new_var].mVelX + ((e * 16) + 0x10);
-      if (((short)b->mSlots[0].mVelX) > 0) {
-          b->mSlots[0].mVelX = 0;
-      }
-  } else {
-      b->mSlots[0].mType = 0;
-  }
+void dScMg3DEsp_c::SlotDampen(int i) {
+    char *c = (char *)this;
+    unsigned long new_var;
+    /* b steps `this` by one slot, so b->mSlots[0] is mSlots[i]. Spelled as
+     mSlots[i] the code is the same, but without b the file's @NNN labels
+     renumber by one. */
+    dScMg3DEsp_c *b = (dScMg3DEsp_c *)(c + (i * 32));
+    new_var = i;
+    mSlots[new_var].mX = mSlots[new_var].mX + b->mSlots[0].mVelX;
+    mSlots[new_var].mY = mSlots[new_var].mY + b->mSlots[0].mVelY;
+    if (b->mSlots[0].mVelX > 0) {
+        unsigned char e = b->mSlots[0].mAccel;
+        mSlots[new_var].mVelX = mSlots[new_var].mVelX - ((e * 16) + 0x10);
+        if (((short)b->mSlots[0].mVelX) < 0) {
+            b->mSlots[0].mVelX = 0;
+        }
+    } else if (b->mSlots[0].mVelX < 0) {
+        unsigned char e = b->mSlots[0].mAccel;
+        mSlots[new_var].mVelX = mSlots[new_var].mVelX + ((e * 16) + 0x10);
+        if (((short)b->mSlots[0].mVelX) > 0) {
+            b->mSlots[0].mVelX = 0;
+        }
+    } else {
+        b->mSlots[0].mType = 0;
+    }
 }
 
 #pragma push
@@ -873,6 +876,7 @@ struct EspAt5000 {
     char pad3[0x54e - 0x294];
     u8 mFade; /* 0x554e */
 };
+typedef char EspAt5000_size_must_be_0x550[sizeof(EspAt5000) == 0x550 ? 1 : -1];
 
 #define ESP_AT_5000(base) ((EspAt5000 *)((base) + 0x5000))
 
@@ -969,10 +973,11 @@ void dScMg3DEsp_c::UpdateRows()
 extern unsigned short data_ov006_0212e58c[];
 
 // @symbol _ZN12dScMg3DEsp_c9SpawnRowsEi
-void dScMg3DEsp_c::SpawnRows(int idx)
-{
-    char *c = (char*)this;
+void dScMg3DEsp_c::SpawnRows(int idx) {
+    char *c = (char *)this;
     int i;
+    /* e steps `this` by one card, so this reads mCards[idx]; spelled that
+       way, SpawnRows grows from 0x94 to 0x9c bytes. */
     char *e = c + idx * 0x18;
     s32 *src1 = &((dScMg3DEsp_c *)e)->mCards[0].mX;
     s32 *src2 = &((dScMg3DEsp_c *)e)->mCards[0].mY;
@@ -992,41 +997,40 @@ struct Ent_8e10 { u16 f0, f2, f4, f6; };
 extern Ent_8e10 *data_ov006_02133f24[];
 
 // @symbol _ZN12dScMg3DEsp_c11RenderCardsEv
-void dScMg3DEsp_c::RenderCards()
-{
-  char *c0 = (char*)this;
-  int i;
-  int x;
-  int y;
-  int c;
-  Ent_8e10 *r7;
-  char *c2;
-  u8 b;
-  c2 = c0;
-  for (i = 0; i < 5; i++) {
-      if (ESP_AT_5000(c2)->mCard.mVisible != 0) {
-          b = ESP_AT_5000(c2)->mCard.mFace;
-          x = ESP_AT_5000(c2)->mCard.mX >> 0xc;
-          y = ESP_AT_5000(c2)->mCard.mY >> 0xc;
-          c = ESP_AT_5000(c2)->mCard.mPriority;
-          r7 = data_ov006_02133f24[b];
-          for (;;) {
-              int *r0 = (int *)Mg_RenderSubSpriteScaled((int)r7, x, y, -1, c, 0x1000, 0);
-              if (ESP_AT_5000(c0)->mFade && !ESP_AT_5000(c2)->mCard.mState) {
-                  int v = r0[0];
-                  int w = r0[1];
-                  int bits = (int)((unsigned int)(w << 0x10) >> 0x1c);
-                  r0[0] = (v & ~0xc00) | 0x400;
-                  *(u16 *)((char *)r0 + 4) =
-                      (u16)((*(u16 *)((char *)r0 + 4) & ~0xf000) | (bits << 12));
-              }
-              if (r7->f6 == 0xffff)
-                  break;
-              r7++;
-          }
-      }
-    c2 += 0x18;
-  }
+void dScMg3DEsp_c::RenderCards() {
+    char *c0 = (char *)this;
+    int i;
+    int x;
+    int y;
+    int c;
+    Ent_8e10 *r7;
+    char *c2;
+    u8 b;
+    c2 = c0;
+    for (i = 0; i < 5; i++) {
+        if (ESP_AT_5000(c2)->mCard.mVisible != 0) {
+            b = ESP_AT_5000(c2)->mCard.mFace;
+            x = ESP_AT_5000(c2)->mCard.mX >> 0xc;
+            y = ESP_AT_5000(c2)->mCard.mY >> 0xc;
+            c = ESP_AT_5000(c2)->mCard.mPriority;
+            r7 = data_ov006_02133f24[b];
+            for (;;) {
+                int *r0 = (int *)Mg_RenderSubSpriteScaled((int)r7, x, y, -1, c, 0x1000, 0);
+                if (ESP_AT_5000(c0)->mFade && !ESP_AT_5000(c2)->mCard.mState) {
+                    int v = r0[0];
+                    int w = r0[1];
+                    int bits = (int)((unsigned int)(w << 0x10) >> 0x1c);
+                    r0[0] = (v & ~0xc00) | 0x400;
+                    *(u16 *)((char *)r0 + 4) =
+                        (u16)((*(u16 *)((char *)r0 + 4) & ~0xf000) | (bits << 12));
+                }
+                if (r7->f6 == 0xffff)
+                    break;
+                r7++;
+            }
+        }
+        c2 += 0x18;
+    }
 }
 
 #undef ESP_AT_5000
@@ -1041,8 +1045,7 @@ void dScMg3DEsp_c::CardSeek(int i) {
     int angle1;
 
     timer = mCards[i].mTimer;
-    if (timer != 0)
-    {
+    if (timer != 0) {
         mCards[i].mTimer = timer - 1;
         if ((s16)mCards[i].mTimer <= 0) {
             mCards[i].mTimer = 0;
@@ -1083,15 +1086,12 @@ void dScMg3DEsp_c::CardSeek(int i) {
             mCorrect = 1;
         } else {
             int rnd = RandomIntInternal(&data_0209d4b8);
-            u32 temp = ((u32) rnd >> 16) & 0x7fff;
-            if (((temp << 1) >> 0xf) == 0)
-            {
+            u32 temp = ((u32)rnd >> 16) & 0x7fff;
+            if (((temp << 1) >> 0xf) == 0) {
                 mCorrect = 0;
-            }
-            else
-            {
+            } else {
                 mTarget = mCards[i].mFace;
-                ((dMg3DEspModel_c *)pad_4fd8)->mTextureFrame = mCards[i].mFace;
+                ((dMg3DEspModel_c *)mEspModel)->mTextureFrame = mCards[i].mFace;
                 mCorrect = 1;
             }
         }
@@ -1110,7 +1110,7 @@ void dScMg3DEsp_c::CardSeek(int i) {
         mTimer += 0x40;
     }
 
-    ((dMg3DEspModel_c*)pad_4fd8)->StartHit();
+    ((dMg3DEspModel_c *)mEspModel)->StartHit();
 }
 
 // @symbol _ZN12dScMg3DEsp_c9CardTouchEi
@@ -1225,7 +1225,7 @@ void dScMg3DEsp_c::DealCards() {
             l++;
         } while (l < n);
     }
-    ((dMg3DEspModel_c *)pad_4fd8)->mTextureFrame = mTarget;
+    ((dMg3DEspModel_c *)mEspModel)->mTextureFrame = mTarget;
 }
 
 // @symbol _ZN12dScMg3DEsp_c10ClearCardsEv
@@ -1313,7 +1313,7 @@ void dScMg3DEsp_c::Deal() {
         return;
     }
     SetDifficulty();
-    ((dMg3DEspModel_c*)pad_4fd8)->StartIntro();
+    ((dMg3DEspModel_c *)mEspModel)->StartIntro();
     DealCards();
     mPhase = 1;
     FreeGfxSlotsById(0x1d);
@@ -1394,7 +1394,7 @@ void dScMg3DEsp_c::Results() {
             mDone = 0;
             Mg_ShowBanner(8, 0x80, 0xa0, 1, -1, 0xd);
             Mg_SetSharedState(MG_STATE_GAME_OVER);
-            mModelMuted = 1;
+            ((dMg3DEspModel_c *)mEspModel)->mMuted = 1;
         }
         mPromptEnabled = 0;
         mTimer = 0;
@@ -1465,8 +1465,8 @@ void dScMg3DEsp_c::StartRound(int a)
         mLevel = 0;
         if (mLevel > 9998) mLevel = 9998; /* the ROM keeps this clamp; 16 bytes */
     }
-    mModelMuted = 0;
-    ((dMg3DEspModel_c*)pad_4fd8)->Reset();
+    ((dMg3DEspModel_c *)mEspModel)->mMuted = 0;
+    ((dMg3DEspModel_c *)mEspModel)->Reset();
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 }
 
@@ -1500,7 +1500,7 @@ s32 dScMg3DEsp_c::Render()
     /* Model::data, at +8. Naming the member makes mwcc add the 8 in a separate instruction. */
     ((TextureTransformer *)mTextureTransformer)->Update(*(ModelComponents *)(mModel1 + 8));
     ((Model *)mModel1)->Render(0);
-    ((dMg3DEspModel_c *)pad_4fd8)->Render();
+    ((dMg3DEspModel_c *)mEspModel)->Render();
     ((Model *)mModel2)->Render(0);
     return 1;
 }
@@ -1514,7 +1514,7 @@ s32 dScMg3DEsp_c::Behavior()
     (this->*s3DEspRoundTable[mRoundState])();
     UpdateSlots();
     ((TextureTransformer *)mTextureTransformer)->Advance();
-    ((dMg3DEspModel_c*)pad_4fd8)->Behavior();
+    ((dMg3DEspModel_c *)mEspModel)->Behavior();
     return 1;
 }
 
@@ -1555,7 +1555,8 @@ s32 dScMg3DEsp_c::InitResources()
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &sEsp3DTextureAnim,
                                                           0, 0x1000, 0);
 
-    if (((dMg3DEspModel_c*)pad_4fd8)->InitResources() == 0) return 0;
+    if (((dMg3DEspModel_c *)mEspModel)->InitResources() == 0)
+        return 0;
 
     if (func_020179b4(&gIrieBackModelFile, mModel2, 1) == 0)
         return 0;
@@ -1637,9 +1638,7 @@ void *dScMg3DEsp_c_classInit(void){
         *(int *)o = (int)&_ZTV12dScMg3DEsp_c[2];
         _ZN5ModelC1Ev(((dScMg3DEsp_c *)o)->mModel1);
         _ZN5ModelC1Ev(((dScMg3DEsp_c *)o)->mModel2);
-        /* The embedded dMg3DEspModel_c; the header splits it round
-           mModelMuted, so there is no one member to name. */
-        _ZN15dMg3DEspModel_cC1Ev(o + 0x4fd8);
+        _ZN15dMg3DEspModel_cC1Ev(((dScMg3DEsp_c *)o)->mEspModel);
         _ZN18TextureTransformerC1Ev(((dScMg3DEsp_c *)o)->mTextureTransformer);
     }
     return o;

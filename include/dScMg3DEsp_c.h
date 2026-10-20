@@ -5,7 +5,7 @@
  *
  * The factory and the destructor fix the members after the base:
  *   - two Models at 0x4f38 and 0x4f88, 0x50 bytes each
- *   - a dMg3DEspModel_c at 0x4fd8, 0x21c bytes; mModelMuted is its mMuted
+ *   - a dMg3DEspModel_c at 0x4fd8, 0x21c bytes (mEspModel)
  *   - a TextureTransformer at 0x51f4, 0x14 bytes
  *   - this class's own fields from 0x5208 to 0x5558
  * The factory constructs the four in declaration order and the destructor
@@ -30,7 +30,7 @@ struct dScMg3DEsp_c : dScMgSingle3DBase_c {
         u16 mTimer;   /* 0x0c, CardSeek waits it out; CardTouch sets 0x20 */
         u16 mAngle;   /* 0x0e, heading to the reveal spot (CardTouch's atan2) */
         u8 mActive;   /* 0x10, UpdateCards runs the card while set */
-        u8 mState;    /* 0x11, s3DEspCardTable index: 0 exit, 1 touch, 2 seek */
+        u8 mState;    /* 0x11, s3DEspCardTable index: 0 CardExit, 1 touch, 2 seek */
         u8 mVisible;  /* 0x12, RenderCards draws the card while set */
         u8 mFace;     /* 0x13, sprite index; matched against mTarget */
         u8 mPriority; /* 0x14, OAM priority; DealCards sets 1, CardExit drops it to 0 */
@@ -78,9 +78,7 @@ struct dScMg3DEsp_c : dScMgSingle3DBase_c {
 
     u8  mModel1[0x50];             /* 0x4f38, a Model */
     u8  mModel2[0x50];             /* 0x4f88, a Model */
-    u8  pad_4fd8[0x20c];           /* 0x4fd8, a dMg3DEspModel_c up to 0x51f4 */
-    s32 mModelMuted;               /* 0x51e4, the model's mMuted; set at game over */
-    u8  pad_51e8[0xc];             /* 0x51e8 */
+    u8 mEspModel[0x21c];           /* 0x4fd8, a dMg3DEspModel_c */
     u8  mTextureTransformer[0x14]; /* 0x51f4, a TextureTransformer */
     Card mCards[5];                /* 0x5208 */
     Row mRows[3];                  /* 0x5280 */
@@ -129,7 +127,7 @@ struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     void UpdateCards();
     void CardSeek(int i);         /* fall toward the target zone and land */
     void CardTouch(int i);        /* stylus hit test */
-    void CardExit(int i);         /* clear once the fade ramps */
+    void CardExit(int i);         /* waits for mFade to reach 0x10, then sets state 1 */
     void DealCards();
     void ClearCards();
     void RenderCards();
