@@ -1264,25 +1264,25 @@ extern "C" KCL_File *func_01ffb0c8(dBgW_Kc *self)
 // @symbol func_01ffb0bc
 extern "C" void func_01ffb0bc(dBgW_Kc *self)
 {
-    self->shallowOnly = 1;
+    self->shallowOnly = true;
 }
 
 // @symbol func_01ffb0b0
 extern "C" void func_01ffb0b0(dBgW_Kc *self)
 {
-    self->shallowOnly = 0;
+    self->shallowOnly = false;
 }
 
 // @symbol func_01ffb0a4
 extern "C" void func_01ffb0a4(dBgW_Kc *self)
 {
-    self->depthByDir = 1;
+    self->depthByDir = true;
 }
 
 // @symbol func_01ffb098
 extern "C" void func_01ffb098(dBgW_Kc *self)
 {
-    self->depthByDir = 0;
+    self->depthByDir = false;
 }
 
 /* Copies the depth direction memberwise: three separate word loads and stores. */

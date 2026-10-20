@@ -97,8 +97,8 @@ struct dBgW_Kc : dBgW {
        at 10.0.
        Set and cleared by func_01ffb0bc/0b0 (shallowOnly), func_01ffb0a4/098
        (depthByDir), func_01ffb07c (depthDir) and func_020396d0 (depthDirMinDot). */
-    u8 shallowOnly; /* 0x34 */
-    u8 depthByDir;  /* 0x35 */
+    bool shallowOnly; /* 0x34 */
+    bool depthByDir;  /* 0x35 */
     u8 pad_36[2];
     PlainVec depthDir;     /* 0x38 - init the unit X vector */
     Fix12i depthDirMinDot; /* 0x44 - init -0x1000 */
@@ -112,8 +112,8 @@ struct dBgW_Kc : dBgW {
                              means only a face contact can register
          tolerantWallEdges   selects the tolerant form of that test for walls */
     s32 edgeToleranceShift; /* 0x48 - init 2 */
-    u8 edgeContacts;        /* 0x4c - init 1 */
-    u8 tolerantWallEdges;   /* 0x4d - init 0 */
+    bool edgeContacts;      /* 0x4c - init true */
+    bool tolerantWallEdges; /* 0x4d - init false */
     u8 pad_4e[2];
 
     /* --- vtable, in ROM order. Do not reorder. --- */

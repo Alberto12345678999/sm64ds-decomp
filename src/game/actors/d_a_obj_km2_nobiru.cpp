@@ -143,7 +143,7 @@ int daObjKm2_Nobiru_c::InitResources()
         &mCollider, (KCL_File *)dBgW_Kc::LoadFile(PoleLift_ClsnFile),
         mColliderTransform, 0x1000, mAngleY, *(CLPS_Block *)data_ov045_021125b0);
     func_020396c0(&mCollider, 4);
-    mCollider.tolerantWallEdges = 1;
+    mCollider.tolerantWallEdges = true;
     mCollider.Enable(this);
     mGrowing = 1;
     return 1;

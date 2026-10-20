@@ -166,7 +166,7 @@ int daObjSlIceBlock_c::InitResources()
             0x1000, mAngleY, data_ov027_02113108);
         func_020393d4((int *)&mMeshCollider,
             (int)&dBgW::UpdatePosWithVelocity);
-        mMeshCollider.edgeContacts = 0;
+        mMeshCollider.edgeContacts = false;
         mMeshCollider.Enable(this);
         mHorzSpeed = 0x2d000;
         mDelayTimer = 0x64;

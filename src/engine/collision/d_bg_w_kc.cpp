@@ -72,15 +72,15 @@ void dBgW_Kc::SetFile(KCL_File *file, CLPS_Block &clpsBlock) {
     upAxis.x = 0;
     upAxis.y = 0x1000;
     upAxis.z = 0;
-    shallowOnly = 0;
-    depthByDir = 0;
+    shallowOnly = false;
+    depthByDir = false;
     depthDir.x = 0x1000;
     depthDir.y = 0;
     depthDir.z = 0;
     depthDirMinDot = -0x1000;
     edgeToleranceShift = 2;
-    edgeContacts = 1;
-    tolerantWallEdges = 0;
+    edgeContacts = true;
+    tolerantWallEdges = false;
 }
 
 // @symbol func_020396dc
