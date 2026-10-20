@@ -3,48 +3,56 @@
  * registered region. A node moves free -> busy (state 1, loading; func_02041b60)
  * -> ready (state 2; func_02041b24) -> busy (state 3, releasing; func_02041ae8)
  * -> free (state 0; func_02041a94). */
+enum { FILE_SHARE_NODE_SIZE = 0xcc0 }; /* node slot stride; FileShareNode is its head */
+
 typedef struct FileShareNode {
     struct FileShareNode *mNext; /* 0x00 -- list link (func_02041bbc moves nodes) */
-    u8 mRegion[0x34];  /* 0x04 -- func_020658c0 registers it (offset, size, 0x20-byte
-                          name, data); func_02041c2c finds a node by its offset */
-    u8 mFile[0x44];    /* 0x38 -- FS_InitFile here; func_02042254 opens, reads
-                          and closes the region's file through it */
-    int mState;        /* 0x7c -- 0 free, 1 loading, 2 ready, 3 releasing */
-    int mRefCount;     /* 0x80 -- func_020412f0: +1 per child reading the region,
-                          -1 when it is done; at 0 the node is released */
-    int mWaitingChildren; /* 0x84 -- func_020412f0: children asking for a region
-                             that is still loading, by AID bit */
-    int mFileId;       /* 0x88 -- func_02042254 opens the file by it; func_020412f0
-                          hands it to the requesting child. Seeded per node below */
+    /* 0x04 -- func_020658c0 registers it (offset, size, 0x20-byte name,
+     * data); func_02041c2c finds a node by its offset */
+    u8 mRegion[0x34];
+    /* 0x38 -- FS_InitFile here; func_02042254 opens, reads and closes the
+     * region's file through it */
+    u8 mFile[0x44];
+    int mState; /* 0x7c -- 0 free, 1 loading, 2 ready, 3 releasing */
+    /* 0x80 -- func_020412f0: +1 per child reading the region, -1 when it is
+     * done; at 0 the node is released */
+    int mRefCount;
+    /* 0x84 -- func_020412f0: children asking for a region that is still
+     * loading, by AID bit */
+    int mWaitingChildren;
+    /* 0x88 -- func_02042254 opens the file by it; func_020412f0 hands it to
+     * the requesting child. Seeded per node below */
+    int mFileId;
 } FileShareNode;
 
 typedef struct FileShareParentArea {
-    u8 mReplies[0x10][0xc];     /* 0x0000 -- one reply per AID: func_020412f0 fills
-                                   it, func_02041d28 sets its file id,
-                                   func_02041e14 sends it */
-    u8 mNodes[3][0xcc0];        /* 0x00c0 */
-    FileShareNode *mFreeList;   /* 0x2700 */
-    FileShareNode *mReadyList;  /* 0x2704 -- func_02041c2c searches it */
-    FileShareNode *mBusyList;   /* 0x2708 -- func_02042254 loads its state-1 nodes */
-    int mReplyPending;          /* 0x270c -- children owed a reply, by AID bit
-                                   (func_020412f0, func_02041d28 set; func_02041e14
-                                   sends and clears) */
+    /* 0x0000 -- one reply per AID: func_020412f0 fills it, func_02041d28 sets
+     * its file id, func_02041e14 sends it */
+    u8 mReplies[0x10][0xc];
+    u8 mNodes[3][FILE_SHARE_NODE_SIZE]; /* 0x00c0 */
+    FileShareNode *mFreeList;           /* 0x2700 */
+    FileShareNode *mReadyList;          /* 0x2704 -- func_02041c2c searches it */
+    FileShareNode *mBusyList;           /* 0x2708 -- func_02042254 loads its state-1 nodes */
+    /* 0x270c -- children owed a reply, by AID bit (func_020412f0,
+     * func_02041d28 set; func_02041e14 sends and clears) */
+    int mReplyPending;
     u8 pad_2710[0x4];
-    int mReplySending;          /* 0x2714 -- func_02041e14 sets it after a send and
-                                   waits; the send callback func_02042160 clears it */
-    int mConnectedBitmap;       /* 0x2718 -- by AID; bit 0 is the parent itself.
-                                   func_020417d0 sets a child's bit on connect and
-                                   clears it on disconnect */
+    /* 0x2714 -- func_02041e14 sets it after a send and waits; the send
+     * callback func_02042160 clears it */
+    int mReplySending;
+    /* 0x2718 -- by AID; bit 0 is the parent itself. func_020417d0 sets a
+     * child's bit on connect and clears it on disconnect */
+    int mConnectedBitmap;
     u8 pad_271c[0x4];
-    int mResizePending;         /* 0x2720 -- func_020412f0: a request named another
-                                   packet size; func_02041e14 applies
-                                   mNewPacketSize once mBusyCount is 0 */
-    int mBusyCount;             /* 0x2724 -- nodes off the free list (func_02041b60
-                                   +1, func_02041a94 -1) */
-    int mResizeChildren;        /* 0x2728 -- children to tell the new size, by AID
-                                   bit (func_020412f0 sets, func_02041e14 sends) */
-    int mNewPacketSize;         /* 0x272c -- func_02041e14 copies it to
-                                   mParentPacketSize */
+    /* 0x2720 -- func_020412f0: a request named another packet size;
+     * func_02041e14 applies mNewPacketSize once mBusyCount is 0 */
+    int mResizePending;
+    /* 0x2724 -- nodes off the free list (func_02041b60 +1, func_02041a94 -1) */
+    int mBusyCount;
+    /* 0x2728 -- children to tell the new size, by AID bit (func_020412f0
+     * sets, func_02041e14 sends) */
+    int mResizeChildren;
+    int mNewPacketSize; /* 0x272c -- func_02041e14 copies it to mParentPacketSize */
 } FileShareParentArea;
 
 /* Child area at +0x440. */
@@ -53,11 +61,13 @@ typedef struct FileShareChildArea {
     int zeros1[0x10];
     int zeros2[0x10];
     u8 pad_0c0[0xbb0];
-    int mRecvWork;     /* 0xc70 -- func_02041224 allocates it (about four bytes per
-                          packet of mMaxReadSize); func_02040aa4 frees it */
-    int mMaxReadSize;  /* 0xc74 -- func_02041224 grows it to the largest read */
-    int mReadRegion;   /* 0xc78 -- func_02040f30: offset of the region being read,
-                          as the parent registered it (the tables are 0x20000) */
+    /* 0xc70 -- func_02041224 allocates it (about four bytes per packet of
+     * mMaxReadSize); func_02040aa4 frees it */
+    int mRecvWork;
+    int mMaxReadSize; /* 0xc74 -- func_02041224 grows it to the largest read */
+    /* 0xc78 -- func_02040f30: offset of the region being read, as the parent
+     * registered it (the tables are 0x20000) */
+    int mReadRegion;
 } FileShareChildArea;
 
 /* File-local view of the wireless file-sharing work block at data_020a1fc0
@@ -157,19 +167,21 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
                 saved = (char *)((FileShareParentArea *)base)->mNodes;
                 zero = 0;
                 node = saved;
-                next = node + 0xcc0;
+                next = node + FILE_SHARE_NODE_SIZE;
                 end = ((int)next & 1) ? (char *)((FileShareParentArea *)base)->mNodes[3]
-                                       : (char *)((FileShareParentArea *)base)->mNodes[3];
+                                      : (char *)((FileShareParentArea *)base)->mNodes[3];
                 ((FileShareParentArea *)base)->mFreeList = (FileShareNode *)saved;
                 if (next < end) {
                     do {
-                        ((FileShareNode *)node)->mNext = (FileShareNode *)(node + 0xcc0);
+                        ((FileShareNode *)node)->mNext =
+                            (FileShareNode *)(node + FILE_SHARE_NODE_SIZE);
                         FS_InitFile((int *)((FileShareNode *)node)->mFile);
                         ((FileShareNode *)node)->mRefCount = (int)zero;
                         ((FileShareNode *)node)->mState = (int)zero;
-                        ((FileShareNode *)node)->mFileId = (((int)node + 0xcc00cc0) - (int)saved) / 0xcc0;
-                        node += 0xcc0;
-                    } while (node + 0xcc0 < end);
+                        ((FileShareNode *)node)->mFileId =
+                            (((int)node + 0xcc00cc0) - (int)saved) / 0xcc0;
+                        node += FILE_SHARE_NODE_SIZE;
+                    } while (node + FILE_SHARE_NODE_SIZE < end);
                 }
                 ((FileShareNode *)node)->mNext = 0;
                 *(int*)(base + 0x2710) = 0;
@@ -194,10 +206,11 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
                 FileShareNode *nd;
                 nd = ((FileShareParentArea *)base)->mFreeList;
                 ((FileShareParentArea *)base)->mFreeList = nd->mNext;
-                func_0205a588(nd, 0, 0xcc0);
+                func_0205a588(nd, 0, FILE_SHARE_NODE_SIZE);
                 /* mTableSize is read through data_020a1fc0, not G, here and in the
                    child branch: the G-> spelling comes out 8 bytes short */
-                func_020658c0(nd->mRegion, 0x20000, data_02082158, G->mTable, ((FileShareWork *)data_020a1fc0)->mTableSize, 0);
+                func_020658c0(nd->mRegion, 0x20000, data_02082158, G->mTable,
+                              ((FileShareWork *)data_020a1fc0)->mTableSize, 0);
                 nd->mNext = ((FileShareParentArea *)base)->mReadyList;
                 ((FileShareParentArea *)base)->mReadyList = nd;
                 nd->mRefCount = 1;
@@ -205,7 +218,7 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
             }
         } else {
             char *base = (char *)G->mArea;
-            FileShareChildArea *arr = (FileShareChildArea*)base;
+            FileShareChildArea *arr = (FileShareChildArea *)base;
             int i;
             char *p;
             _ZN4CP1527FlushAndInvalidateDataCacheEjj((int)base, sizeof(FileShareChildArea));
