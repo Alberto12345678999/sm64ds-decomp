@@ -666,19 +666,7 @@ src/engine/collision/d_cc_pos.cpp:
 
 src/engine/collision/d_cc_ac.cpp:
     complete
-    .text start:0x0201489c end:0x02014a34
-
-src/_ZN10dCcAcPos_cD0Ev.cpp:
-    complete
-    .text start:0x02014a34 end:0x02014a60
-
-src/_ZN10dCcAcPos_cD1Ev.cpp:
-    complete
-    .text start:0x02014a60 end:0x02014a84
-
-src/_ZN10dCcAcPos_cC1Ev.cpp:
-    complete
-    .text start:0x02014a84 end:0x02014aa8
+    .text start:0x0201489c end:0x02014aa8
 
 src/engine/collision/d_cc.cpp:
     complete

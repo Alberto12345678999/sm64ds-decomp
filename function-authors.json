@@ -1955,7 +1955,7 @@
     },
     "arm9:0x02014a20": {
       "author": "ruspecial",
-      "name": "func_02014a20"
+      "name": "_ZN10dCcAcPos_c10GetOwnerIDEv"
     },
     "arm9:0x02014a2c": {
       "author": "tangosdev",
