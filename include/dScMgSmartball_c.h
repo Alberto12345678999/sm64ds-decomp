@@ -215,7 +215,7 @@ struct dScMgSmartball_c : dScMgBase_c {
     s32 mAnaTally;      /* 0x5980 -- CountAna, x 0x7d0 */
     s32 mDokanTally;    /* 0x5984 -- CountDokan, x 0xbb8 */
     s32 mAwardTally[3]; /* 0x5988 -- CountAward(i) */
-    u32 mOutTally;      /* 0x5994 -- CountOut, x 0x7d0 */
+    s32 mOutTally;      /* 0x5994 -- CountOut, x 0x7d0 */
     /* Sub BG0 x offset: InitResources sets 0x100, mPhase 1 slides it to 0 by 4. */
     s32 mResultSlideX;            /* 0x5998 */
     SmartballSpark mSparks[0x40]; /* 0x599c -- elem dtor SmartballObj_ElemDtor */
