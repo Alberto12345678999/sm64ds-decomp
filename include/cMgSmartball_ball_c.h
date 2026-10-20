@@ -71,9 +71,10 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
     u8  unk_039;      /* 0x039 -- cleared alongside mUpperWallSolid and by
                           RestoreInitial; NOTHING IN THE TREE READS IT. No
                           evidence, so no name. */
-    u8  state3a;      /* 0x03a -- name from SmartballBall_UpdatePhysics.c's own
-                          Obj cast of this same class; gates most of that
-                          function's per-frame collision work */
+    u8  state3a;      /* 0x03a -- name carried over from the Obj view that
+                          SmartballBall_UpdatePhysics used to cast this class
+                          to; gates most of that function's per-frame
+                          collision work */
     u8  state3b;      /* 0x03b -- ditto; set once mZoneDwell maxes out */
     s32 mZoneDwell;      /* 0x03c -- frames spent inside the box x [0x8000,
                              0xd8000) z [0x74000,0x7c000); counts up, sets
@@ -85,8 +86,8 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
                              base's mIsActive -- after which every SaveSnapshot
                              and Update returns immediately. */
 
-    /* Where the ball was swallowed: SmartballBall_UpdatePhysics (its own Obj
-       cast calls them hitX/hitZ) copies the position of the ana it falls into,
+    /* Where the ball was swallowed: SmartballBall_UpdatePhysics (whose old Obj
+       view called them hitX/hitZ) copies the position of the ana it falls into,
        right before that ana's Swallow(). While state3a is 1, NeedsRespawn
        measures the ball's distance from this point. */
     s32 mSwallowX; /* 0x044 */
