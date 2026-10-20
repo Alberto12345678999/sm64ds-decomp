@@ -80,9 +80,12 @@
 #include "daDsnBase_c.h"
 
 struct daDsn_c : daDsnBase_c {
-    /* UNOBSERVED, not inherited. daDsnBase_c's own methods stop at 0x360 and
-       nothing in the tree reads 0x360..0x398 on either leaf. daDkk_c allocates
-       0x3a0, so the span exists there too -- see include/daDsnBase_c.h. */
+    /* Not inherited: daDsnBase_c declares nothing past 0x360. Its methods do
+       reach into this span on both leaves, though, through d_a_dsn_base.cpp's
+       file-local DsnCycle view: the shadow matrix at 0x360 and the rise and
+       ground heights at 0x390/0x394, which daDkk_c.h names mShadowMtx, mRiseY
+       and mGroundY. d_a_dsn.cpp itself touches none of it, so it stays a pad
+       here -- see include/daDsnBase_c.h. */
     u8  pad_360[0x38];
     /* Field NAMES are placeholders. Offsets, widths and types are observed. */
     s32 mState;             /* 0x398 */

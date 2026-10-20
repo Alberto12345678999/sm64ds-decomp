@@ -6,8 +6,10 @@
  *   - func_ and data_ helpers are still the linker names.
  *   - CheckFinished reads mCredits through WordAt. As a plain member the
  *     multiply-add takes its registers the other way round.
- *   - ShuffleCards: mValueCounts[cardValue] hoists the base; adding the slot
- *     to 0x5330 matches.
+ *   - ShuffleCards: mValueCounts[cardValue] hoists the base; the slot is
+ *     added to `this` first and the array reached through a cast back to
+ *     the class. The card walks (DrawCards, RoundWaitDeal, ShuffleCards)
+ *     step a `char *` the same way -- mCards[i] does not match there.
  *   - cstd::atan2 stays the mangled symbol (Fix12<int> by value).
  *   - the factory builds the object by hand because the class has no
  *     constructor declared yet.
@@ -53,14 +55,6 @@ extern dScMgMemory_cState sMemoryRoundTable[];
 extern dScMgMemory_cCardState sMemoryCardTable[];
 /* Player markers use the int-argument handlers, like the card handlers. */
 extern "C" dScMgMemory_cPlayerState sMemoryPlayerTable[];
-
-/* A walk that advances the scene pointer. The card sits at 0x51a8 so the
- * address stays add #0x5000 plus the field. mCards[i] did not match in
- * DrawCards, RoundWaitDeal, or ShuffleCards. */
-struct dMgMemoryCardCur {
-    char pad[0x51a8];
-    dMgMemoryCard_c card;
-};
 
 namespace GX {
 void LoadOBJPltt(void const *, unsigned int, unsigned int);
@@ -333,14 +327,15 @@ void dScMgMemory_c::DrawCards() {
     cardBase = raw;
     cardIndex = 0;
     do {
-        dMgMemoryCardCur *card = (dMgMemoryCardCur *)cardBase;
-        if (card->card.visible != 0) {
+        dScMgMemory_c *card = (dScMgMemory_c *)cardBase;
+        if (card->mCards[0].visible != 0) {
             dimmed = 0;
             if (mState != STATE_JUDGE_PAIRS)
                 dimmed = 1;
-            spriteIndex = sMemoryCardFrameSprites[card->card.value * 5 + card->card.frame];
-            Hud_RenderSprite(sMemoryCardSprites[spriteIndex], card->card.x >> 12,
-                             card->card.y >> 12, -1, dimmed);
+            spriteIndex =
+                sMemoryCardFrameSprites[card->mCards[0].value * 5 + card->mCards[0].frame];
+            Hud_RenderSprite(sMemoryCardSprites[spriteIndex], card->mCards[0].x >> 12,
+                             card->mCards[0].y >> 12, -1, dimmed);
         }
         cardIndex += 1;
         cardBase += 0x18;
@@ -678,9 +673,9 @@ void dScMgMemory_c::RoundWaitDeal() {
     int cardIndex = 0;
     char *cardBase = raw;
     for (; cardIndex < 0xc;) {
-        dMgMemoryCardCur *card = (dMgMemoryCardCur *)cardBase;
-        if (card->card.active != 0) {
-            if (card->card.state != CARD_IDLE) {
+        dScMgMemory_c *card = (dScMgMemory_c *)cardBase;
+        if (card->mCards[0].active != 0) {
+            if (card->mCards[0].state != CARD_IDLE) {
                 waiting++;
                 break;
             }
@@ -695,7 +690,7 @@ void dScMgMemory_c::RoundWaitDeal() {
     {
         unsigned char selectState = CARD_SELECTABLE;
         for (; cardIndex < 0xc;) {
-            ((dMgMemoryCardCur *)cardBase)->card.state = selectState;
+            ((dScMgMemory_c *)cardBase)->mCards[0].state = selectState;
             cardIndex++;
             cardBase += 0x18;
         }
@@ -784,9 +779,9 @@ void dScMgMemory_c::ShuffleCards() {
                 (int)((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 4 >> 15) + 1;
             for (;;) {
                 /* mValueCounts[cardValue] hoists the base. Same spelling below. */
-                valueCount = (u8 *)(raw + cardValue + 0x5330);
+                valueCount = &((dScMgMemory_c *)(raw + cardValue))->mValueCounts[0];
                 if (*valueCount < 2) {
-                    ((dMgMemoryCardCur *)cardBase)->card.value = cardValue;
+                    ((dScMgMemory_c *)cardBase)->mCards[0].value = cardValue;
                     *valueCount += 1;
                     break;
                 }
@@ -797,11 +792,11 @@ void dScMgMemory_c::ShuffleCards() {
         }
         cardBase = raw + 0x60;
         for (cardIndex = 4; cardIndex < 12; cardIndex++) {
-            ((dMgMemoryCardCur *)cardBase)->card.x = 0x80000;
-            ((dMgMemoryCardCur *)cardBase)->card.y = -0x80000;
-            ((dMgMemoryCardCur *)cardBase)->card.speed = 0x8000;
-            ((dMgMemoryCardCur *)cardBase)->card.visible = 1;
-            ((dMgMemoryCardCur *)cardBase)->card.state = CARD_MOVING;
+            ((dScMgMemory_c *)cardBase)->mCards[0].x = 0x80000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].y = -0x80000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].speed = 0x8000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].visible = 1;
+            ((dScMgMemory_c *)cardBase)->mCards[0].state = CARD_MOVING;
             cardBase += 0x18;
         }
     } else if (mDifficulty == 1) {
@@ -810,9 +805,9 @@ void dScMgMemory_c::ShuffleCards() {
             cardValue =
                 (int)((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5 >> 15) + 1;
             for (;;) {
-                valueCount = (u8 *)(raw + cardValue + 0x5330);
+                valueCount = &((dScMgMemory_c *)(raw + cardValue))->mValueCounts[0];
                 if (*valueCount < 2) {
-                    ((dMgMemoryCardCur *)cardBase)->card.value = cardValue;
+                    ((dScMgMemory_c *)cardBase)->mCards[0].value = cardValue;
                     *valueCount += 1;
                     break;
                 }
@@ -823,11 +818,11 @@ void dScMgMemory_c::ShuffleCards() {
         }
         cardBase = raw + 0x30;
         for (cardIndex = 2; cardIndex < 12; cardIndex++) {
-            ((dMgMemoryCardCur *)cardBase)->card.x = 0x80000;
-            ((dMgMemoryCardCur *)cardBase)->card.y = -0x80000;
-            ((dMgMemoryCardCur *)cardBase)->card.speed = 0x8000;
-            ((dMgMemoryCardCur *)cardBase)->card.visible = 1;
-            ((dMgMemoryCardCur *)cardBase)->card.state = CARD_MOVING;
+            ((dScMgMemory_c *)cardBase)->mCards[0].x = 0x80000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].y = -0x80000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].speed = 0x8000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].visible = 1;
+            ((dScMgMemory_c *)cardBase)->mCards[0].state = CARD_MOVING;
             cardBase += 0x18;
         }
     } else {
@@ -836,9 +831,9 @@ void dScMgMemory_c::ShuffleCards() {
             cardValue =
                 (int)((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 6 >> 15) + 1;
             for (;;) {
-                valueCount = (u8 *)(raw + cardValue + 0x5330);
+                valueCount = &((dScMgMemory_c *)(raw + cardValue))->mValueCounts[0];
                 if (*valueCount < 2) {
-                    ((dMgMemoryCardCur *)cardBase)->card.value = cardValue;
+                    ((dScMgMemory_c *)cardBase)->mCards[0].value = cardValue;
                     *valueCount += 1;
                     break;
                 }
@@ -849,11 +844,11 @@ void dScMgMemory_c::ShuffleCards() {
         }
         cardBase = raw;
         for (cardIndex = 0; cardIndex < 12; cardIndex++) {
-            ((dMgMemoryCardCur *)cardBase)->card.x = 0x80000;
-            ((dMgMemoryCardCur *)cardBase)->card.y = -0x80000;
-            ((dMgMemoryCardCur *)cardBase)->card.speed = 0x8000;
-            ((dMgMemoryCardCur *)cardBase)->card.visible = 1;
-            ((dMgMemoryCardCur *)cardBase)->card.state = CARD_MOVING;
+            ((dScMgMemory_c *)cardBase)->mCards[0].x = 0x80000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].y = -0x80000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].speed = 0x8000;
+            ((dScMgMemory_c *)cardBase)->mCards[0].visible = 1;
+            ((dScMgMemory_c *)cardBase)->mCards[0].state = CARD_MOVING;
             cardBase += 0x18;
         }
     }

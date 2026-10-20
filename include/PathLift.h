@@ -32,6 +32,10 @@ struct dPathLiftActor_c : dBgActor_c {
     u16 mWaitTimer;                       /* 0x428 */
     u8  mAfterClsnRan;                    /* 0x42a -- set by AfterClsn, cleared by the last statement of BaseBehavior */
     u8  mTriggerDelay;                    /* 0x42b -- DecIfAbove0_Byte; AfterClsn only fires the state change at 0 */
+    /* Respawn-after-fall: daObjPathLift_c and daObjRcCarpet_c set it in
+       InitResources, and StateFall then puts the lift back at the start of
+       its path (ResetPath) instead of destroying it. Renaming it touches
+       both of those files. */
     u8  unk_42c;                          /* 0x42c */
     u8  pad_42d[0x3];
     PathPtr mPath;                        /* 0x430 */

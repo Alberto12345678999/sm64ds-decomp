@@ -22,7 +22,6 @@
 #include "dCcAc_c.h"
 #include "dCcAcPos_c.h"
 #include "dActor_c.h"
-#include "decl_dCcAc_c.h"
 
 // @symbol _ZN10dCcAcPos_c6GetPosEv
 /* Vtable slot 2. This shadows dCcAc_c's own slot 2, which returns the
@@ -37,11 +36,11 @@ extern "C" {
 // @symbol func_02014a20
 /* dCcAcPos_c vtable slot 3: the compiler emitted a 12-byte interworking
    veneer tail-calling the inherited dCcAc_c::GetOwnerID instead of a real
-   override body. */
-void func_02014a20(void) {
-    _ZN7dCcAc_c10GetOwnerIDEv();
+   override body. The qualified (non-virtual) call reproduces the direct
+   branch with `self` passed through untouched. */
+void func_02014a20(dCcAc_c *self) {
+    self->dCcAc_c::GetOwnerID();
 }
-
 }
 
 // @symbol _ZN7dCcAc_cC2Ev
@@ -73,7 +72,9 @@ u32 dCcAc_c::GetOwnerID()
 // @symbol _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj
 /* Stays a mangled free definition: the real signature carries Fix12<int> and
    wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in dCcAc_c.h is the real one and callers may use it. */
+   The declaration in dCcAc_c.h is the real one and callers may use it.
+   local extern: the base Init carries Fix12<int> by value too, so the call
+   spells its symbol rather than going through dCc_c.h's member. */
 extern "C" void _ZN5dCc_c4InitE5Fix12IiES1_jj(dCc_c *self, int radius, int height, u32 flags, u32 vulnFlags);
 
 extern "C" void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, u32 flags, u32 vulnFlags)
@@ -98,7 +99,8 @@ extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos
    position. dCcAcPos_c::Init calls it once at construction.
 
    mAngleY is s16 and the ROM's load is `ldrsh' -- reading it through the named
-   member keeps the sign. */
+   member keeps the sign.
+   local extern: no header declares Vec3_RotateYAndTranslate. */
 extern "C" void Vec3_RotateYAndTranslate(Vector3 *res, const Vector3 *translation, s16 angY, const Vector3 *v);
 
 void dCcAcPos_c::SetPosRelativeToActor(const Vector3 &offset)

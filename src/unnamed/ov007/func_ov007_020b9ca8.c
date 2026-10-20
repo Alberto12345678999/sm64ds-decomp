@@ -19,6 +19,8 @@ extern void func_ov007_020c6314(char *, int, int);
 extern void func_ov007_020c5fc8(char *, int, int);
 extern void func_ov007_020c5948(char *, int *);
 
+/* r5 (the func_ov007_020c690c record) and r4 (data_ov007_0210342c+0x50) have no class
+ * or header, so their fields stay raw. */
 void func_ov007_020b9ca8(void)
 {
     char *r5 = *(char **)data_ov007_02104ba0;

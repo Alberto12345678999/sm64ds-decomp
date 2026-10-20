@@ -322,7 +322,7 @@ void daFPkn_c::CheckClsnHits()
     activate_path:
         cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
         if (cmp != 0) {
-            unk_108 = 1;            /* the coin kind SpawnCoin drops */
+            mCoinType = 1; /* the coin kind SpawnCoin drops */
             SpawnCoin();
             KillAndTrackInDeathTable();
             Sound::PlayBank0(SND_HIT_S, mCamSpacePos);

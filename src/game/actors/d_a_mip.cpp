@@ -1409,9 +1409,9 @@ int daMip_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0) {
-            if (unk_104 == 5)
+            if (mSpitOutTimer == 5)
                 mHorzSpeed = 0;
-            if (unk_104 == 0)
+            if (mSpitOutTimer == 0)
                 mdCcAc_c.Update();
         }
         if (mEatenByYoshi == 1) {

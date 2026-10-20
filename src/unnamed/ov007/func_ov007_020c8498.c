@@ -10,6 +10,8 @@ extern void func_ov007_020c8b34(void* p, int a);
 
 typedef void (*VFN)(void);
 
+/* r5: the transition record in data_ov007_02104bd8 slot 0 (func_ov007_020bf690 drives it);
+ * no class or header names it, so raw. */
 void func_ov007_020c8498(char* r5)
 {
     int r4 = 0;

@@ -162,7 +162,7 @@ s32 daBmb_c::OnYoshiTryEat() {
  *
  * param1's low three bits pick the variant: 2 is the one that starts inert --
  * it sets the collision volume's `hit` bit, clears a behaviour flag and leaves
- * unk_108 clear -- 4 also starts clear, and everything else starts live.
+ * mCoinType clear -- 4 also starts clear, and everything else starts live.
  * ======================================================================== */
 
 // @symbol _ZN7daBmb_c13InitResourcesEv
@@ -189,11 +189,11 @@ int daBmb_c::InitResources()
            mFlags bit 0 (the profile clip-enable bit). */
         mdCc_c.flags |= 2;
         mFlags &= ~1u;
-        unk_108 = 0;
+        mCoinType = 0;
     } else if (mVariant == 4) {
-        unk_108 = 0;
+        mCoinType = 0;
     } else {
-        unk_108 = 1;
+        mCoinType = 1;
     }
 
     mHomePosX = mPosX;
@@ -1211,9 +1211,9 @@ void func_ov102_0214ae1c(void *cv) {
     v.x = self->mPosX;
     v.y = w;
     v.z = z;
-    if (self->unk_108) {
+    if (self->mCoinType) {
         dActor_c::Spawn(0x120, 2, *(Vector3 *)&v, 0, self->mAreaId, -1);
-        self->unk_108 = 0;
+        self->mCoinType = 0;
     }
     func_0201267c(0x10c, &self->mCamSpacePosX);
     v.y = self->mPosY + 0x64000;
@@ -1264,7 +1264,7 @@ void func_ov102_0214ae1c(void *cv) {
 // @symbol _ZN7daBmb_c13OnTurnIntoEggER6Player
 void daBmb_c::OnTurnIntoEgg(Player &player)
 {
-    if (unk_108 == 1) {
+    if (mCoinType == 1) {
         Sound::PlayBank3(0x11, mCamSpacePos);
         GiveCoins(player.mPlayerNo, 1);
         player.Heal(0x100);
@@ -1380,7 +1380,7 @@ after_cannon:
     }
 
     if (self->mEatenByYoshi != 0) {
-        if (self->unk_104 == 5) {
+        if (self->mSpitOutTimer == 5) {
             self->mdCc_c.flags &= ~0x8000u;
         }
     }
@@ -1400,7 +1400,7 @@ hit:
 skip_hit:
     self->mdCc_c.Clear();
     if (self->mEatenByYoshi != 0) {
-        if (self->unk_104 == 0) {
+        if (self->mSpitOutTimer == 0) {
             self->mdCc_c.dCc_c::Update();
         }
     }

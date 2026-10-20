@@ -167,7 +167,7 @@ int daPukupuku_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAcPos_c.Clear();
         if (mEatenByYoshi != 0) {
-            if (unk_104 == 0) {
+            if (mSpitOutTimer == 0) {
                 mdCcAcPos_c.Update();
             }
         }

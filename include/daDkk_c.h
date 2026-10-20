@@ -23,22 +23,26 @@
  * daDsnBase_c ends its own data at 0x360; this class's own storage starts
  * there. daDsnBase_c.h notes 0x360..0x3a0 exists in both leaves
  * (daDkk_c_classInit allocates 0x3a0, Thwomp_Spawn 0x3a4) but stays declared
- * per-leaf until a later pass shows both reading the same offsets. This TU
- * touches SIX words in that span:
+ * per-leaf until a later pass shows both reading the same offsets. The
+ * daDsnBase_c methods this class runs (its states 0..4 and the per-frame
+ * shadow refresh) read and write the whole span through d_a_dsn_base.cpp's
+ * DsnCycle view, which is the evidence for most of the names below:
  *
- *   0x390  a Fix12 height InitResources' raycast probe writes and nothing in
- *          this TU reads -- coined mProbeHeight.
- *   0x394  s32. The state-5 fall reads it as the ground height to snap to and
- *          never writes it -- so it is NOT mProbeHeight under another name.
- *          0x390 and 0x394 are separate words; both accesses byte-match.
- *          Live: pad_394 -> unk_394.
- *   0x398  a small state selector Behavior switches on (cases 0..7) --
- *          coined mState.
- *   0x39c  s16, a target facing angle: state 6 writes it, state 7 approaches it.
- *          Live: pad_39c -> unk_39c.
- *   0x39e  u8, the post-landing pause countdown. Live: unk_39e.
- *   0x39f  u8, the landing counter that turns the actor on its fourth pass.
- *          Live: unk_39f.
+ *   0x360  mShadowMtx -- func_ov091_02133098 copies the model matrix here,
+ *          lowers its translation row, and hands it to the drop shadow.
+ *   0x390  mRiseY -- the top of the rise. daDsnBase_c::Init seeds it at
+ *          mPosY + 0x190000; this class's InitResources then raycasts up
+ *          and, on a hit, lowers it to 0x190000 under the ceiling. State 0
+ *          (func_ov091_02133020) climbs to it. Was mProbeHeight.
+ *   0x394  mGroundY -- Init's ground probe writes it; state 5 here and the
+ *          base's fall both snap mPosY to it.
+ *   0x398  mState, the selector Behavior switches on (cases 0..7).
+ *   0x39c  mTurnTargetAngle -- state 6 writes mAngleY + 0x8000, state 7
+ *          steps mAngleY toward it.
+ *   0x39e  mTimer -- the cycle's frame countdown: the base's hover and rest
+ *          states spend it, and here it is the post-landing pause.
+ *   0x39f  mLandCount -- Init zeroes it, state 5 counts landings, state 6
+ *          turns the actor on the fourth, state 7 zeroes it again.
  *
  * Slot 29, OnAimedAtWithEgg, is an override this class supplies beyond the
  * two (InitResources, Behavior) daDsnBase_c leaves abstract; the signature
@@ -59,14 +63,16 @@
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 struct daDkk_c : daDsnBase_c {
-    u8  pad_360[0x30];                /* 0x360 -- unclaimed, within daDsnBase_c's
-                                          declared-but-unmodelled 0x360..0x3a0 span */
-    s32 mProbeHeight;                 /* 0x390 */
-    s32 unk_394;                      /* 0x394 -- ground height the fall snaps to */
+    /* The drop shadow's matrix; daDsnBase_c's per-frame shadow refresh
+       fills it. Kept as raw bytes: a Matrix4x3 member would add a
+       destructor. Nothing in d_a_dkk.cpp touches it. */
+    u8 mShadowMtx[0x30];              /* 0x360 */
+    s32 mRiseY;                       /* 0x390 -- top of the rise (state 0) */
+    s32 mGroundY;                     /* 0x394 -- ground height the falls snap to */
     s32 mState;                       /* 0x398 */
-    s16 unk_39c;                      /* 0x39c -- target facing for the turn */
-    u8  unk_39e;                      /* 0x39e -- post-landing pause countdown */
-    u8  unk_39f;                      /* 0x39f -- landing-pass counter */
+    s16 mTurnTargetAngle;             /* 0x39c -- target facing for the turn */
+    u8 mTimer;                        /* 0x39e -- cycle countdown; post-landing pause */
+    u8 mLandCount;                    /* 0x39f -- landings since the last turn */
 
     /* --- vtable --- */
     /* INLINE ON PURPOSE, and this is a byte-level requirement rather than a

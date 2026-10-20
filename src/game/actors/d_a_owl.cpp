@@ -235,9 +235,9 @@ void daOwl_c::func_ov094_021357a4()
     st[1] = 0x1838000;
     if (data_0209f2f8 == 0x16)
         st[1] = 0x1194000;
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     if (func_ov002_020df840(mRider, this, st) != 1) {
         mRider = 0;
         return;
@@ -258,9 +258,9 @@ int daOwl_c::func_ov094_021358b4()
             mVertSpeed = 0x14000;
         } else {
             unk_3e8 = 1;
-            unk_0a4 = 0;
+            mSpeedX = 0;
             mVertSpeed = 0;
-            unk_0ac = 0;
+            mSpeedZ = 0;
             mPosX = mAnchorX;
             mPosY = mAnchorY;
             mPosZ = mAnchorZ;
@@ -420,7 +420,7 @@ int daOwl_c::func_ov094_02135c28()
     _Z14ApproachLinearRiii(&mPosY, mAnchorY + result, 0x3000);
 
     Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
-    MulVec3Mat4x3(&buf, &data_020a0e68, &unk_0a4);
+    MulVec3Mat4x3(&buf, &data_020a0e68, &mSpeedX);
     return 1;
 }
 
@@ -469,9 +469,9 @@ int daOwl_c::func_ov094_02135ee0()
 /* Enter of the talk state: stop, and play the animation data_ov094_02136af0[1]. */
 int daOwl_c::func_ov094_02135fe0()
 {
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af0.words[1], 0, 0x1000, 0);
     return 1;
 }
@@ -485,7 +485,7 @@ int daOwl_c::func_ov094_02135fe0()
 int daOwl_c::func_ov094_02136024()
 {
     Player *p = ClosestPlayer();
-    if (p != 0 && *(int *)((char *)p + 0x37c) != 0) {
+    if (p != 0 && p->mClimbClsn != 0) {
         char *ip = (char *)&p->mPosX;
         OwlVec pp;
         OwlVec d;
@@ -656,11 +656,11 @@ int daOwl_c::Behavior()
     {
         int fallSpeed = mVertSpeed + mVertAccel;
         int clamped = mTerminalVelocity;
-        int keep = unk_0ac;
+        int keep = mSpeedZ;
         if (fallSpeed >= clamped)
             clamped = fallSpeed;
         mVertSpeed = clamped;
-        unk_0ac = keep;
+        mSpeedZ = keep;
     }
     UpdatePosWithOnlySpeed(&mdCcAcPos_c);
     mAngleX = mPrevAngleX;

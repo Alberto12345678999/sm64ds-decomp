@@ -12,7 +12,7 @@
  * The shared file handles and the four state records keep address names;
  * their definitions at the bottom are this file's static initializer.
  * actorID and mFlags are tested through an int. ExecutePerch keeps its base
- * pointer. unk_0ac is reloaded because a named temporary moves a word.
+ * pointer. mSpeedZ is reloaded because a named temporary moves a word.
  * EnterDrop's PoofPos is a three-int constructor; a Vector3 assignment does
  * not schedule the same stores.
  */
@@ -180,8 +180,7 @@ void daBasabasa_c::func_ov065_0211704c()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
-            this, &pos, unk_10a + 1, 0xa000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &pos, mExtraCoinCount + 1, 0xa000, 0);
         return;
     }
 
@@ -226,9 +225,9 @@ int daBasabasa_c::ExecuteReturn()
             mPosX = mHomePosX;
             mPosY = mHomePosY;
             mPosZ = mHomePosZ;
-            unk_0a4 = 0;
+            mSpeedX = 0;
             mVertSpeed = 0;
-            unk_0ac = 0;
+            mSpeedZ = 0;
             SetState(&data_ov065_0211d700);
             return 1;
         }
@@ -238,7 +237,7 @@ int daBasabasa_c::ExecuteReturn()
     ApproachAngle(&mPrevAngleY, mTargetAngleY, 0xa, 0x200, 0x100);
     v.z = 0xa000;
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-    MulVec3Mat4x3(&v, &data_020a0e68, &unk_0a4);
+    MulVec3Mat4x3(&v, &data_020a0e68, &mSpeedX);
     if ((u16)mStateTimer == 0) {
         SetState(&data_ov065_0211d6f0);
     }
@@ -272,7 +271,7 @@ int daBasabasa_c::ExecuteChase()
     v.z = 0xa000;
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mPrevAngleX);
-    MulVec3Mat4x3(&v, &data_020a0e68, &unk_0a4);
+    MulVec3Mat4x3(&v, &data_020a0e68, &mSpeedX);
     if (Vec3_Dist(&mPosX, &mHomePosX) > 0x5dc000 || (u16)mStateTimer == 0) {
         mPerchTimer = 0;
         SetState(&data_ov065_0211d6f0);
@@ -423,7 +422,7 @@ int daBasabasa_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0) {
-            if (unk_104 == 0) {
+            if (mSpitOutTimer == 0) {
                 mdCcAc_c.Update();
             }
         }
@@ -450,15 +449,15 @@ int daBasabasa_c::Behavior()
         }
     }
     {
-        /* Gravity, clamped at terminal velocity. unk_0ac is reloaded and
+        /* Gravity, clamped at terminal velocity. mSpeedZ is reloaded and
            stored back unchanged, as in the ROM. */
         int fallSpeed = mVertSpeed + mVertAccel;
         int clamped = mTerminalVelocity;
         if (fallSpeed >= clamped)
             clamped = fallSpeed;
-        int keep = unk_0ac;
+        int keep = mSpeedZ;
         mVertSpeed = clamped;
-        unk_0ac = keep;
+        mSpeedZ = keep;
     }
     UpdatePosWithOnlySpeed(&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);
@@ -506,7 +505,7 @@ int daBasabasa_c::InitResources()
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
-    unk_108 = 1;
+    mCoinType = 1;
     SetState(&data_ov065_0211d700);
     return 1;
 }
@@ -520,7 +519,7 @@ s32 daBasabasa_c::OnAimedAtWithEgg()
 // @symbol _ZN12daBasabasa_c13OnTurnIntoEggER6Player
 void daBasabasa_c::OnTurnIntoEgg(Player &player)
 {
-    GivePlayerCoins(player, (unsigned char)(unk_10a + 1), 0);
+    GivePlayerCoins(player, (unsigned char)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 

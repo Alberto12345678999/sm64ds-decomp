@@ -111,7 +111,7 @@ extern Matrix4x3 data_020a0e68;
 extern int data_0209caa0[];
 extern void *data_0209f318;
 
-/* Depth from unk_690, mPosY, mSinkDepth and mGroundY; radius from that,
+/* Depth from mModelOffsetY, mPosY, mSinkDepth and mGroundY; radius from that,
  * mIsBalloon, mIsMega and mScaleY. The definition takes char *. */
 void func_ov002_020e4374(char *player, int *depth, int *radius);
 /* Returns mBodyModels[GetBodyModelID(mBodyModelId, 1)] as int. */

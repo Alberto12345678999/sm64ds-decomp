@@ -1,3 +1,6 @@
+#include "Ov007MenuState.h"
+#include "Ov007Tween.h"
+
 extern int func_ov007_020bdeb0(int a);
 extern int func_ov007_020c1da0(int i);
 
@@ -9,6 +12,8 @@ extern char* data_ov007_02104b9c;
 #define BA0 data_ov007_02104ba0
 #define B9C data_ov007_02104b9c
 
+/* G and BA0 are records with no class or header; BA0's 0x8 slot holds an Ov007MenuState
+ * and its 0x44 slot the Ov007Tween func_ov007_020b9880 binds to BA0+0x3c. */
 int func_ov007_020bb09c(void)
 {
     char* r5 = *(char**)((char*)BA0);
@@ -22,8 +27,8 @@ int func_ov007_020bb09c(void)
     if (r3 != 0 || ((r2 & 0x40) && !(*(unsigned short*)(r4 + 2) & 0x40))) {
         int r1;
         int ip;
-        char* r3p = *(char**)((char*)BA0 + 0x44);
-        r1 = *(int*)(r3p + 0x18);
+        Ov007Tween *r3p = *(Ov007Tween **)((char *)BA0 + 0x44);
+        r1 = r3p->to;
         switch (r1) {
         case 0:      ip = 0x800; break;
         case 0x800:  ip = 0x1000; break;
@@ -32,21 +37,21 @@ int func_ov007_020bb09c(void)
         }
         if (ip != -1) {
             int t = *(int*)((char*)BA0 + 0x3c);
-            *(int*)(r3p) = 1;
-            *(int*)(r3p + 4) = 1;
-            *(short*)(r3p + 0xc) = 0;
-            *(int*)(r3p + 8) = 0x100;
-            *(int*)(r3p + 0x14) = t;
-            *(int*)(*(int*)(r3p + 0x10)) = *(int*)(r3p + 0x14);
-            *(int*)(r3p + 0x18) = ip;
+            r3p->state = 1;
+            r3p->mode = 1;
+            r3p->t = 0;
+            r3p->step = 0x100;
+            r3p->from = t;
+            *r3p->out = r3p->from;
+            r3p->to = ip;
             func_ov007_020bdeb0(0x23);
         }
     } else if (((r2 & 2) && !(*(unsigned short*)(r4 + 2) & 2)) ||
                ((r2 & 0x80) && !(*(unsigned short*)(r4 + 2) & 0x80))) {
         int r1;
         int ip;
-        char* r3p = *(char**)((char*)BA0 + 0x44);
-        r1 = *(int*)(r3p + 0x18);
+        Ov007Tween *r3p = *(Ov007Tween **)((char *)BA0 + 0x44);
+        r1 = r3p->to;
         switch (r1) {
         case 0:      ip = -1; break;
         case 0x800:  ip = 0; break;
@@ -55,13 +60,13 @@ int func_ov007_020bb09c(void)
         }
         if (ip != -1) {
             int t = *(int*)((char*)BA0 + 0x3c);
-            *(int*)(r3p) = 1;
-            *(int*)(r3p + 4) = 1;
-            *(short*)(r3p + 0xc) = 0;
-            *(int*)(r3p + 8) = 0x100;
-            *(int*)(r3p + 0x14) = t;
-            *(int*)(*(int*)(r3p + 0x10)) = *(int*)(r3p + 0x14);
-            *(int*)(r3p + 0x18) = ip;
+            r3p->state = 1;
+            r3p->mode = 1;
+            r3p->t = 0;
+            r3p->step = 0x100;
+            r3p->from = t;
+            *r3p->out = r3p->from;
+            r3p->to = ip;
             func_ov007_020bdeb0(0x22);
         }
     }
@@ -75,10 +80,10 @@ int func_ov007_020bb09c(void)
         }
         if (r3b != 0 || ((r1 & 0x200) && !(*(unsigned short*)(r2p + 2) & 0x200))) {
             if (*(int*)(*(char**)(((char*)B9C) + 8) + 0x50) == 0x1f000) {
-                *(short*)(*(char**)((char*)BA0 + 8) + 2) = 3;
+                (*(Ov007MenuState **)((char *)BA0 + 8))->requestedState = 3;
                 func_ov007_020bdeb0(0x29);
             } else {
-                *(short*)(*(char**)((char*)BA0 + 8) + 2) = 4;
+                (*(Ov007MenuState **)((char *)BA0 + 8))->requestedState = 4;
                 func_ov007_020bdeb0(0x2a);
             }
         }
@@ -103,7 +108,7 @@ int func_ov007_020bb09c(void)
 
     {
         char* b = *(char* volatile*)&data_ov007_02104ba0;
-        short st = *(short*)(*(char**)(b + 8));
+        short st = (*(Ov007MenuState **)(b + 8))->currentState;
         if (st == 6) return st;
         if (st == 7) return st;
         if (*(int*)(b + 0x30) != 0) {
@@ -126,7 +131,7 @@ int func_ov007_020bb09c(void)
                 int* p8 = (int*)(r5 + 8);
                 *p14 = *p14 - *(unsigned short*)(e + 0xa);
                 *p8 = *p8 - 1;
-                *(short*)(*(char**)((char*)BA0 + 8) + 2) = 6;
+                (*(Ov007MenuState **)((char *)BA0 + 8))->requestedState = 6;
                 return func_ov007_020bdeb0(0x20);
             }
         }
@@ -149,7 +154,7 @@ int func_ov007_020bb09c(void)
             int* p8 = (int*)(r5 + 8);
             *p14 = *p14 + *(unsigned short*)(e + 0xa);
             *p8 = *p8 + 1;
-            *(short*)(*(char**)(*(char* volatile*)&data_ov007_02104ba0 + 8) + 2) = 7;
+            (*(Ov007MenuState **)(*(char *volatile *)&data_ov007_02104ba0 + 8))->requestedState = 7;
             return func_ov007_020bdeb0(0x21);
         }
     }

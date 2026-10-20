@@ -475,7 +475,7 @@ int daJango_c::Behavior()
         (this->*(m->update))();
 
     /* Gravity: mVertSpeed = max(mVertSpeed + mVertAccel, mTerminalVelocity).
-       (mVertAccel is negative and mTerminalVelocity is the floor.) unk_0ac is
+       (mVertAccel is negative and mTerminalVelocity is the floor.) mSpeedZ is
        loaded and stored back unchanged. */
     {
         int accum = mVertSpeed;
@@ -484,9 +484,9 @@ int daJango_c::Behavior()
         int sum = accum + a0;
         if (sum >= lim)
             lim = sum;
-        int t = unk_0ac;
+        int t = mSpeedZ;
         mVertSpeed = lim;
-        unk_0ac = t;
+        mSpeedZ = t;
     }
     UpdatePosWithOnlySpeed((dCc_c *)&mdCcAc_c1);
     UpdateWMClsn(mWithMeshClsn, 0);
@@ -654,7 +654,7 @@ void daJango_c::func_ov062_0211c6a8()
 int daJango_c::func_ov062_0211c658(void *p) { StateRecord *qq = (StateRecord *)p; mState = qq; StateRecord *q = (StateRecord *)mState; if (*(int *)q == 0) return 1; return (this->*q->enter)(); }
 
 // @symbol _ZN9daJango_c19func_ov062_0211c594Ev
-/* FLY_PATH enter. Clears the three velocity words (unk_0a4, mVertSpeed, unk_0ac).
+/* FLY_PATH enter. Clears the three velocity words (mSpeedX, mVertSpeed, mSpeedZ).
    If unk_446 is 1 -- func_ov062_0211b3ac set it because the node it
    picked is index ^ 2 (assumed to be the far side of the square) -- the vector (0, 0, 20.0) is turned by mAngleY and
    then by a pitch of -0x4000 (a quarter turn), and its Y becomes mVertSpeed
@@ -665,9 +665,9 @@ int daJango_c::func_ov062_0211c594() {
     Vector3 in;
     Vector3 out;
 
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
 
     if (unk_446 == 1) {
         in.x = 0; in.y = 0; in.z = 0;
@@ -697,7 +697,7 @@ int daJango_c::func_ov062_0211c594() {
    has arrived: unk_460 = 7 so the next b3ac call runs at once, the node index advances (the next node in order
    for the silver-star variant and level ids 0x18/0x19, else b3ac's choice, else a
    random one that differs from the current), mPos is snapped to the node and
-   copied to mPathNodePos, the velocity words (unk_0a4, mVertSpeed, unk_0ac) are
+   copied to mPathNodePos, the velocity words (mSpeedX, mVertSpeed, mSpeedZ) are
    set to (0, 0, 20.0) turned by mAngleY, and the actor re-enters CIRCLE. */
 int daJango_c::func_ov062_0211c2f4() {
     /* Real PathPtr object (as legacy had it via PathPtr.h): its implicit
@@ -752,7 +752,7 @@ int daJango_c::func_ov062_0211c2f4() {
         zero[1] = 0;
         zero[2] = 0x14000;
         Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-        MulVec3Mat4x3((Vector3 *)zero, data_020a0e68, (Vector3 *)&unk_0a4);
+        MulVec3Mat4x3((Vector3 *)zero, data_020a0e68, (Vector3 *)&mSpeedX);
         func_ov062_0211c658(JANGO_STATE_CIRCLE);
         return 1;
     }
@@ -992,9 +992,9 @@ int daJango_c::func_ov062_0211bc54()
         mStateTimer =
             (((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 0xf) + 0x14;
     }
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     func_02012694(SND_AT_SWOOP_ENTER, &mCamSpacePosX);
     unk_43c =
         ((((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 3) << 8) + 0x300;
@@ -1064,7 +1064,7 @@ int func_ov062_0211ba84(char *c)
     v.z = 0x1e000;
     Matrix4x3_FromRotationY(data_020a0e68, actor.mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, actor.mAngleX);
-    MulVec3Mat4x3(&v, data_020a0e68, (Vector3 *)&actor.unk_0a4);
+    MulVec3Mat4x3(&v, data_020a0e68, (Vector3 *)&actor.mSpeedX);
     actor.func_ov062_0211b51c();
     /* Retail reads the timer as unsigned here; the inherited field is s16. */
     if ((u16)actor.mStateTimer == 0 || actor.mWithMeshClsn.IsOnWall() != 0) {
@@ -1119,9 +1119,9 @@ int daJango_c::func_ov062_0211b930()
     }
     func_02012694(SND_AT_HURT_ENTER, &mCamSpacePosX);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PARTICLE_AT_HURT_ENTER, mPosX, mPosY, mPosZ);
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     mVertAccel = 0;
     return 1;
 }
@@ -1151,9 +1151,9 @@ int daJango_c::func_ov062_0211b8d8() {
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 int daJango_c::func_ov062_0211b880() {
     mBlendModelAnim.speed = 0x2000;
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     mVertAccel = 0;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     return 1;
@@ -1170,9 +1170,9 @@ int daJango_c::func_ov062_0211b800() {
     ApproachLinear(mPrevAngleX, 0, 0x300);
     ApproachLinear(mPrevAngleZ, 0, 0x300);
     if (mPosY >= mPathNodePosY - 0x2000) {
-        unk_0a4 = 0;
+        mSpeedX = 0;
         mVertSpeed = 0;
-        unk_0ac = 0;
+        mSpeedZ = 0;
         mPosY = mPathNodePosY;
         mBlendModelAnim.speed = 0x1000;
         func_ov062_0211c658(JANGO_STATE_CIRCLE);
@@ -1377,7 +1377,7 @@ int daJango_c::func_ov062_0211b3ac()
 }
 
 // @symbol _ZN9daJango_c19func_ov062_0211b2fcEv
-/* Sets the velocity words (unk_0a4, mVertSpeed, unk_0ac) for the circling
+/* Sets the velocity words (mSpeedX, mVertSpeed, mSpeedZ) for the circling
    state: the vector (0, 0, 20.0) turned by mAngleY then mAngleX. Empty-handed
    (nothing carried or held) it is (0, 0, 40.0) instead, and while mTimer is
    0 mPrevAngleY also drops by 0x100 (about 1.4 degrees) per call. */
@@ -1403,7 +1403,7 @@ void daJango_c::func_ov062_0211b2fc(){
   }
   Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
   Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, mAngleX);
-  MulVec3Mat4x3(&v[0], data_020a0e68, (Vector3*)&unk_0a4);
+  MulVec3Mat4x3(&v[0], data_020a0e68, (Vector3 *)&mSpeedX);
 }
 }
 

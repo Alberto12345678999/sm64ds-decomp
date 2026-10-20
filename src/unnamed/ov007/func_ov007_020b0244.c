@@ -1,3 +1,4 @@
+#include "Ov007Tween.h"
 extern void func_ov007_020c0638(int a, int b, int c, int d);
 extern char* data_ov007_0210342c;
 
@@ -13,8 +14,8 @@ void func_ov007_020b0244(void)
     *(int*)(G + 0x60) = 0;
     *(int*)(G + 0x64) = 0x20000;
     *(int*)(G + 0x68) = 0x30000;
-    **(int**)(G + 0x6c) = 0;
-    **(int**)(G + 0x70) = 0;
+    (*(Ov007Tween **)(G + 0x6c))->state = 0;
+    (*(Ov007Tween **)(G + 0x70))->state = 0;
     func_ov007_020c0638(*(int*)((char*)*(void**)(G + 0xe0) + 4), 0, 0, 0);
     func_ov007_020c0638(*(int*)((char*)*(void**)(G + 0xe4) + 4), 0, 0, 0);
 }

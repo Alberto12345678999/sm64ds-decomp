@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007MenuState.h"
 extern u8 data_ov007_0210342c[];
 extern void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0);
 
@@ -13,14 +14,15 @@ typedef struct {
     char *sprite;     /* 0x04 */
 } Icon;
 
+/* data_ov007_0210342c's record has no class or header; its 0xc slot holds an Ov007MenuState. */
 void func_ov007_020ae070(char *self)
 {
     Icon *icon = (Icon *)self;
     IconOwner *p = icon->owner;
     u16 state = p->state;
-    int ip2 = *(int *)(*(char **)((char *)p + 4) + 0xc);
+    int ip2 = (*(Ov007MenuState **)((char *)p + 4))->stateTicks;
     int *g = *(int**)data_ov007_0210342c;
-    short idx = *(short*)(*(int**)((char*)g + 0xc));
+    short idx = (*(Ov007MenuState **)((char *)g + 0xc))->currentState;
 
     if (state != 1) return;
     if (ip2 != 0) return;

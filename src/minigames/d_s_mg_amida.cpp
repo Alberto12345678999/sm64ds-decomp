@@ -211,10 +211,10 @@ extern AmidaRenderPeriods sAmidaRenderPeriods;
    destructors do nothing. D1 stores the vptr and ends in dScMgBase_c's D2;
    D0 repeats the same body and adds the delete. */
 dScMgAmida_c::~dScMgAmida_c() {
-    __cxa_vec_cleanup((char *)this + 0x4768, 0x80, 0x18, (void *)AmidaPiece_ElemDtor);
-    __cxa_vec_cleanup((char *)this + 0x4744, 4, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup((char *)this + 0x4724, 4, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup((char *)this + 0x4660, 4, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mPieces, 0x80, 0x18, (void *)AmidaPiece_ElemDtor);
+    __cxa_vec_cleanup(mLaneVel, 4, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mLanePos, 4, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mWalkerCell, 4, 8, (void *)NullDestructor_0203d47c);
 }
 
 #ifdef _MSC_VER

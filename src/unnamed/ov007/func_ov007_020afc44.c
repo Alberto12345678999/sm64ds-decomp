@@ -1,3 +1,6 @@
+#include "Ov007MenuState.h"
+#include "Ov007Tween.h"
+
 extern int func_ov007_020c8f98(void* p);
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b0244(void);
@@ -12,43 +15,47 @@ extern char* data_ov007_0210342c;
 
 #define G data_ov007_0210342c
 
+/* G has no class or header: its +0x8 and +0xc slots hold Ov007MenuStates (freed by
+ * func_ov007_020b65e0 like the other menu states); +0x6c/+0x70 are the Ov007Tweens
+ * func_ov007_020b6a84 binds to +0x64/+0x68. */
+
 void func_ov007_020afc44(void)
 {
-    char* r8 = *(char**)(G + 8);
+    Ov007MenuState *menu = *(Ov007MenuState **)(G + 8);
     unsigned char* r7 = (unsigned char*)(*(int*)(*(char**)(G + 0x28))) + 0xb;
-    int r6 = *(int*)(r8 + 0xc);
-    char* r5 = *(char**)(G + 0x6c);
-    char* r4 = *(char**)(G + 0x70);
+    int r6 = menu->stateTicks;
+    Ov007Tween *r5 = *(Ov007Tween **)(G + 0x6c);
+    Ov007Tween *r4 = *(Ov007Tween **)(G + 0x70);
     int v0 = func_ov007_020c8f98(r5);
     int v1 = func_ov007_020c8f98(r4);
     int sb = (v0 == 0);
     int fp = (v1 == 0);
-    int st = *(short*)r8;
+    int st = menu->currentState;
 
     switch (st) {
     case 3:
         if (r6 == 0) {
             func_ov007_020c1d78(0);
             func_ov007_020b0244();
-            *(short*)(*(char**)(G + 0xc) + 2) = 0xa;
+            (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xa;
         }
-        switch (*(int*)(r8 + 4)) {
+        switch (menu->stateWork) {
         case 0: {
             int idx = *(int*)(G + 0x58);
             if (idx != -1) {
                 if (r7[idx] != 0) {
-                    *(short*)(r8 + 2) = 4;
+                    menu->requestedState = 4;
                 } else {
                     *(int*)(G + 0x58) = -1;
                     func_ov007_020b7d94(3);
-                    *(int*)(r8 + 4) = 1;
+                    menu->stateWork = 1;
                 }
             }
             break;
         }
         case 1:
             if (func_ov007_020b79e4() == 0) {
-                *(int*)(r8 + 4) = 0;
+                menu->stateWork = 0;
             }
             break;
         }
@@ -57,24 +64,24 @@ void func_ov007_020afc44(void)
         if (r6 == 0) {
             func_ov007_020c1d8c(0);
             RequestScreenFade(8, 0xa, 0);
-            *(short*)(*(char**)(G + 0xc) + 2) = 0xb;
+            (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xb;
             func_ov007_020b8188(*(int*)(G + 0x58), *(int*)(G + 0x28), *(int*)(G + 0x60));
-            *(int*)(r5) = 1;
-            *(int*)(r5 + 4) = 1;
-            *(short*)(r5 + 0xc) = 0;
-            *(int*)(r5 + 8) = 0;
-            *(int*)(r5 + 0x14) = 0;
-            *(int*)(*(int*)(r5 + 0x10)) = *(int*)(r5 + 0x14);
-            *(int*)(r5 + 0x18) = 0;
-            *(int*)(r4) = 1;
-            *(int*)(r4 + 4) = 1;
-            *(short*)(r4 + 0xc) = 0;
-            *(int*)(r4 + 8) = 0x2000;
-            *(int*)(r4 + 0x14) = 0x30000;
-            *(int*)(*(int*)(r4 + 0x10)) = *(int*)(r4 + 0x14);
-            *(int*)(r4 + 0x18) = 0x1000;
+            r5->state = 1;
+            r5->mode = 1;
+            r5->t = 0;
+            r5->step = 0;
+            r5->from = 0;
+            *r5->out = r5->from;
+            r5->to = 0;
+            r4->state = 1;
+            r4->mode = 1;
+            r4->t = 0;
+            r4->step = 0x2000;
+            r4->from = 0x30000;
+            *r4->out = r4->from;
+            r4->to = 0x1000;
         } else if (v1 != 0) {
-            *(short*)(r8 + 2) = 2;
+            menu->requestedState = 2;
         }
         break;
     case 2:
@@ -85,7 +92,7 @@ void func_ov007_020afc44(void)
             int prev = *(int*)(G + 0x5c);
             if (prev != -1) {
                 if (prev != *(int*)(G + 0x58)) {
-                    *(short*)(r8 + 2) = 5;
+                    menu->requestedState = 5;
                 }
             }
         }
@@ -100,57 +107,57 @@ void func_ov007_020afc44(void)
         }
         if (r6 == 0) {
             func_ov007_020c1d8c(0);
-            *(int*)(r5) = 1;
-            *(int*)(r5 + 4) = 1;
-            *(short*)(r5 + 0xc) = 0;
-            *(int*)(r5 + 8) = 0x3000;
-            *(int*)(r5 + 0x14) = 0;
-            *(int*)(*(int*)(r5 + 0x10)) = *(int*)(r5 + 0x14);
-            *(int*)(r5 + 0x18) = sp4;
+            r5->state = 1;
+            r5->mode = 1;
+            r5->t = 0;
+            r5->step = 0x3000;
+            r5->from = 0;
+            *r5->out = r5->from;
+            r5->to = sp4;
         } else if (v0 != 0) {
-            switch (*(int*)(r8 + 4)) {
+            switch (menu->stateWork) {
             case 1:
                 *(int*)(G + 0x58) = prev;
                 *(int*)(G + 0x5c) = -1;
-                *(short*)(r8 + 2) = 2;
+                menu->requestedState = 2;
                 break;
             case 0:
             case 2:
                 if (r7[prev] != 0) {
                     if (func_ov007_020b79e4() == 0) {
                         func_ov007_020c1d8c(0);
-                        if (*(int*)(r8 + 4) == 2) {
+                        if (menu->stateWork == 2) {
                             RequestScreenFade(8, 0xa, 0);
-                            *(short*)(*(char**)(G + 0xc) + 2) = 0xb;
+                            (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xb;
                         }
                         func_ov007_020b8188(*(int*)(G + 0x5c), *(int*)(G + 0x28), *(int*)(G + 0x60));
                         sb = 1;
-                        *(int*)(r5) = 1;
-                        *(int*)(r5 + 4) = 1;
-                        *(short*)(r5 + 0xc) = 0;
-                        *(int*)(r5 + 8) = 0x3000;
-                        *(int*)(r5 + 0x14) = sl;
-                        *(int*)(*(int*)(r5 + 0x10)) = *(int*)(r5 + 0x14);
-                        *(int*)(r5 + 0x18) = 0;
-                        *(int*)(r4) = 1;
-                        *(int*)(r4 + 4) = 1;
-                        *(short*)(r4 + 0xc) = 0;
-                        *(int*)(r4 + 8) = 0x1000;
-                        *(int*)(r4 + 0x14) = 0x1000;
-                        *(int*)(*(int*)(r4 + 0x10)) = *(int*)(r4 + 0x14);
-                        *(int*)(r4 + 0x18) = 0x1000;
-                        *(int*)(r8 + 4) = 1;
+                        r5->state = 1;
+                        r5->mode = 1;
+                        r5->t = 0;
+                        r5->step = 0x3000;
+                        r5->from = sl;
+                        *r5->out = r5->from;
+                        r5->to = 0;
+                        r4->state = 1;
+                        r4->mode = 1;
+                        r4->t = 0;
+                        r4->step = 0x1000;
+                        r4->from = 0x1000;
+                        *r4->out = r4->from;
+                        r4->to = 0x1000;
+                        menu->stateWork = 1;
                     }
                 } else {
                     int t;
                     RequestScreenFade(8, 8, 0);
-                    *(short*)(*(char**)(G + 0xc) + 2) = 0xa;
+                    (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xa;
                     t = *(int*)(G + 0x58);
                     *(int*)(G + 0x58) = *(int*)(G + 0x5c);
                     *(int*)(G + 0x5c) = t;
                     func_ov007_020b7d94(3);
                     func_ov007_020c0638(*(int*)(*(char**)(G + 0xe0) + 4), 0, 0, 0);
-                    *(int*)(r8 + 4) = 2;
+                    menu->stateWork = 2;
                 }
                 break;
             }
@@ -160,30 +167,31 @@ void func_ov007_020afc44(void)
     case 6:
         if (r6 == 0) {
             func_ov007_020c1d8c(0);
-            if (*(short*)(r8 + 0xa) == 3) {
-                *(short*)(r8 + 2) = 0;
+            if (menu->previousState == 3) {
+                menu->requestedState = 0;
             } else {
                 RequestScreenFade(8, 8, 0);
-                *(short*)(*(char**)(G + 0xc) + 2) = 0xa;
-                *(int*)(r4) = 1;
-                *(int*)(r4 + 4) = 1;
-                *(short*)(r4 + 0xc) = 0;
-                *(int*)(r4 + 8) = 0x2000;
-                *(int*)(r4 + 0x14) = 0x1000;
-                *(int*)(*(int*)(r4 + 0x10)) = *(int*)(r4 + 0x14);
-                *(int*)(r4 + 0x18) = 0x30000;
+                (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xa;
+                r4->state = 1;
+                r4->mode = 1;
+                r4->t = 0;
+                r4->step = 0x2000;
+                r4->from = 0x1000;
+                *r4->out = r4->from;
+                r4->to = 0x30000;
             }
         } else if (v1 != 0) {
-            if (*(short*)(r8 + 0xa) == 2) {
-                *(short*)(r8 + 2) = 3;
+            if (menu->previousState == 2) {
+                menu->requestedState = 3;
             } else {
-                *(short*)(r8 + 2) = 0;
+                menu->requestedState = 0;
             }
         }
         break;
     }
 
-    if (*(short*)r8 == 3) return;
+    if (menu->currentState == 3)
+        return;
     if (func_ov007_020b79e4() != 0) return;
     if (sb != 0) {
         func_ov007_020c0638(*(int*)(*(char**)(G + 0xe0) + 4), (*(int*)(G + 0x64) >> 0xc) * 8, 0, 0);

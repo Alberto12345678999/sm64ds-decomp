@@ -38,7 +38,11 @@
 struct BMD_Bone {
     u32 unk_00;
     void *unk_04;          /* 0x04 - file-relative, fixed up on load */
-    u8 pad_08[0x2c];
+    u8 pad_08[0x28];
+    /* 0x30 - length of materialIds: bounds the material walks in
+       dScStage_c::RenderModel and RenderModelTransparent */
+    u16 numMaterials;
+    u8 pad_32[0x2];
     u8 *materialIds;       /* 0x34 - per-bone material index list */
     void *unk_38;          /* 0x38 - file-relative, fixed up on load */
     u32 unk_3c;

@@ -29,8 +29,8 @@
  * - Kill: Particle::System::NewSimple(Fix12<int> x, y, z) is +0x24
  *   (0x8c -> 0xb0). The scalar extern passes the three positions in r1-r3.
  * - func_ov091_02131160: dActor_c::DropShadowScaleXYZ as a method is +0x1c
- *   (0x1e0 -> 0x1fc). A Matrix4x3 * at pad_348 is +4 (0x1e0 -> 0x1e4);
- *   the translation row stays this+0x36c / 0x370 / 0x374.
+ *   (0x1e0 -> 0x1fc). A Matrix4x3 * local for mShadowMat is +4
+ *   (0x1e0 -> 0x1e4); the translation row is stored through `this`.
  * - Behavior: dBgActor_c::UpdateKillByMegaChar as a method is +0xc
  *   (0x488 -> 0x494). One this+0x3a2 halfword for the arrived pitch is
  *   -0xc (0x488 -> 0x47c); &mPitchBase is a pool add of 0x3a2 and the
@@ -219,7 +219,7 @@ void daObjRotateUpdownLift_c::Kill()
     PoofDustAt(v);
     Sound::PlayBank3(0xf, mCamSpacePos);
     mIsDead = 1;
-    unk_31c = 0;
+    mMegaKnockback = 0;
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 }
@@ -246,17 +246,17 @@ void daObjRotateUpdownLift_c::OnHitByMegaChar(Player &player)
    for HS_UPDOWN_LIFT. */
 int daObjRotateUpdownLift_c::func_ov091_02131160()
 {
-    /* The shadow matrix is the 0x30 bytes at 0x348 (pad_348). Holding that
-       as a Matrix4x3 * steals r4 from `this` and the function grows. The
-       three translation words are stored from `this`, not from that pointer. */
+    /* Holding mShadowMat in a Matrix4x3 * local steals r4 from `this` and
+       the function grows. The three translation words are stored from
+       `this`, not from that pointer. */
     char *c = (char *)this;
     VariantWords shadowBaseY = data_ov091_02134bac;
     VariantWords shadowSizeX = data_ov091_02134bd0;
     VariantWords shadowSizeZ = data_ov091_02134bb8;
     VariantWords clipCap = data_ov091_02134ba0;
 
-    Matrix4x3_FromRotationY((Matrix4x3 *)(c + 0x348), mAngleY);
-    *(int *)(c + 0x36c) = mPosX >> 3;
+    Matrix4x3_FromRotationY((Matrix4x3 *)mShadowMat, mAngleY);
+    ((Matrix4x3 *)mShadowMat)->t.x = mPosX >> 3;
 
     int sinIdx = (u16)mAngleX >> 4;
     int sine = data_02082214[sinIdx << 1];
@@ -266,8 +266,8 @@ int daObjRotateUpdownLift_c::func_ov091_02131160()
     int base = shadowBaseY.v[variantA];
     int sum = base + scaled;
     int py = mPosY;
-    *(int *)(c + 0x370) = (py - sum) >> 3;
-    *(int *)(c + 0x374) = mPosZ >> 3;
+    ((Matrix4x3 *)mShadowMat)->t.y = (py - sum) >> 3;
+    ((Matrix4x3 *)mShadowMat)->t.z = mPosZ >> 3;
 
     int variantB = mVariant;
     int h = mPosY - mGroundY;
@@ -288,7 +288,7 @@ int daObjRotateUpdownLift_c::func_ov091_02131160()
     if (cosine < 0)
         cosine = -cosine;
     return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        c, c + 0x320, c + 0x348, sx, h, shadowSizeZ.v[variantC] + FX_MUL(fac, cosine), 0xf);
+        c, &mShadowModel, mShadowMat, sx, h, shadowSizeZ.v[variantC] + FX_MUL(fac, cosine), 0xf);
 }
 
 // 0x02131340 (0x48)
@@ -359,25 +359,24 @@ int daObjRotateUpdownLift_c::Behavior()
         if (isParent != 0) {
             daObjRotateUpdownLift_c *platform0;
             daObjRotateUpdownLift_c *platform1;
-            if ((daObjRotateUpdownLift_c *)mPlatform0 == 0
-                || (daObjRotateUpdownLift_c *)mPlatform1 == 0) {
+            if (mPlatform0 == 0 || mPlatform1 == 0) {
                 daObjRotateUpdownLift_c *nearby;
                 nearby = (daObjRotateUpdownLift_c *)FindWithActorID(0x1d, 0);
                 if (nearby != 0) {
                     do {
                         if (nearby != this && Vec3_HorzDist(&mPos, &nearby->mPos) < 0xa0000) {
-                            if ((daObjRotateUpdownLift_c *)mPlatform0 == 0)
-                                mPlatform0 = (s32)nearby;
-                            else if ((daObjRotateUpdownLift_c *)mPlatform1 == 0)
-                                mPlatform1 = (s32)nearby;
+                            if (mPlatform0 == 0)
+                                mPlatform0 = nearby;
+                            else if (mPlatform1 == 0)
+                                mPlatform1 = nearby;
                         }
                         nearby = (daObjRotateUpdownLift_c *)FindWithActorID(0x1d, nearby);
                     } while (nearby != 0);
                 }
             }
-            platform0 = (daObjRotateUpdownLift_c *)mPlatform0;
+            platform0 = mPlatform0;
             if (platform0 != 0) {
-                platform1 = (daObjRotateUpdownLift_c *)mPlatform1;
+                platform1 = mPlatform1;
                 if (platform1 != 0) {
                     int offScreen;
                     if (platform0->mIsDead != 0 && platform1->mIsDead != 0)
@@ -385,10 +384,10 @@ int daObjRotateUpdownLift_c::Behavior()
                     offScreen = (mFlags & 8) ? 1 : 0;
                     if (offScreen != 0) {
                         if (DistToCPlayer() > 0x7d0000) {
-                            platform0 = (daObjRotateUpdownLift_c *)mPlatform0;
+                            platform0 = mPlatform0;
                             if (platform0->mIsDead != 0)
                                 platform0->func_ov091_02130fac();
-                            platform1 = (daObjRotateUpdownLift_c *)mPlatform1;
+                            platform1 = mPlatform1;
                             if (platform1->mIsDead != 0)
                                 platform1->func_ov091_02130fac();
                         }
