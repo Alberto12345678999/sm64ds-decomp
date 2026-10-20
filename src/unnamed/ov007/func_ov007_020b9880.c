@@ -106,9 +106,14 @@ extern void func_ov007_020c43bc(void *a, int b);
 extern void func_ov007_020c4388(char *r0, int r1);
 extern void func_ov007_020bbe60(int idx);
 
-extern Ov007PickerScene *data_ov007_02104ba0;
-extern Ov007PickerSprites *data_ov007_02104b9c;
-extern Ov007Work *data_ov007_0210342c;
+extern char *data_ov007_02104ba0;
+extern char *data_ov007_02104b9c;
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+#define SCENE ((Ov007PickerScene *)data_ov007_02104ba0)
+#define SCENE_SPRITES ((Ov007PickerSprites *)data_ov007_02104b9c)
 extern int data_ov007_020d7b60;
 extern int data_ov007_020d7b80;
 
@@ -123,27 +128,26 @@ void func_ov007_020b9880(int a0, int a1)
     if (data_ov007_02104ba0 != 0)
         return;
 
-    data_ov007_02104ba0 = (Ov007PickerScene *)func_ov007_020c3df4(0, 0x4c);
-    data_ov007_02104b9c = (Ov007PickerSprites *)func_ov007_020c3df4(0, 0x14);
+    data_ov007_02104ba0 = (char *)func_ov007_020c3df4(0, 0x4c);
+    data_ov007_02104b9c = (char *)func_ov007_020c3df4(0, 0x14);
 
-    data_ov007_02104ba0->picker =
-        func_ov007_020c690c(0xc8, 0x1f4, 0x1f4, (int)data_ov007_0210342c->cameras[0],
-                            &data_ov007_020d7b60, &data_ov007_020d7b80);
+    SCENE->picker = func_ov007_020c690c(0xc8, 0x1f4, 0x1f4, (int)WORK->cameras[0],
+                                        &data_ov007_020d7b60, &data_ov007_020d7b80);
 
-    data_ov007_02104ba0->states[0] = func_ov007_020c9388(0);
-    data_ov007_02104ba0->states[1] = func_ov007_020c9388(-1);
-    data_ov007_02104ba0->states[2] = func_ov007_020c9388(0);
-    data_ov007_02104ba0->states[3] = func_ov007_020c9388(0);
+    SCENE->states[0] = func_ov007_020c9388(0);
+    SCENE->states[1] = func_ov007_020c9388(-1);
+    SCENE->states[2] = func_ov007_020c9388(0);
+    SCENE->states[3] = func_ov007_020c9388(0);
 
-    *(int *)((char *)data_ov007_02104ba0 + 0x1c) = 0;
-    *(int *)((char *)data_ov007_02104ba0 + 0x20) = 0;
-    *(int *)((char *)data_ov007_02104ba0 + 0x28) = 0;
-    *(int *)((char *)data_ov007_02104ba0 + 0x24) = 0;
-    *(int *)((char *)data_ov007_02104ba0 + 0x2c) = 0;
-    *(int *)((char *)data_ov007_02104ba0 + 0x38) = 0;
+    *(int *)(data_ov007_02104ba0 + 0x1c) = 0;
+    *(int *)(data_ov007_02104ba0 + 0x20) = 0;
+    *(int *)(data_ov007_02104ba0 + 0x28) = 0;
+    *(int *)(data_ov007_02104ba0 + 0x24) = 0;
+    *(int *)(data_ov007_02104ba0 + 0x2c) = 0;
+    *(int *)(data_ov007_02104ba0 + 0x38) = 0;
 
-    data_ov007_02104ba0->tweens[0] = func_ov007_020c908c(&data_ov007_02104ba0->tweenOut[0]);
-    data_ov007_02104ba0->tweens[1] = func_ov007_020c908c(&data_ov007_02104ba0->tweenOut[1]);
+    SCENE->tweens[0] = func_ov007_020c908c(&SCENE->tweenOut[0]);
+    SCENE->tweens[1] = func_ov007_020c908c(&SCENE->tweenOut[1]);
 
     sp1c = 0;
     sp14 = 0x60000;
@@ -151,15 +155,15 @@ void func_ov007_020b9880(int a0, int a1)
     sp10 = 1;
 
     for (var_sl = 0; var_sl < 2; var_sl++) {
-        data_ov007_02104b9c->sprites[var_sl] = func_ov007_020c44e4(sp10);
-        sprite = data_ov007_02104b9c->sprites[var_sl];
+        SCENE_SPRITES->sprites[var_sl] = func_ov007_020c44e4(sp10);
+        sprite = SCENE_SPRITES->sprites[var_sl];
 
         if (var_sl == 0) {
-            sprite->frames[0] = data_ov007_0210342c->textures[3];
+            sprite->frames[0] = WORK->textures[3];
             sprite->depth = 0xfffcdf01;
             sprite->polygonId = 0x18;
         } else {
-            sprite->frames[0] = data_ov007_0210342c->textures[4];
+            sprite->frames[0] = WORK->textures[4];
             sprite->depth = -0x32000;
             sprite->polygonId = 0x17;
         }
@@ -172,12 +176,12 @@ void func_ov007_020b9880(int a0, int a1)
         sprite->height = (s16)sp18;
         sprite->alpha = sp1c;
 
-        func_ov007_020c43bc(sprite, (int)data_ov007_0210342c->cameras[1]);
-        func_ov007_020c4388((char *)sprite, (int)data_ov007_0210342c->cameras[1]);
+        func_ov007_020c43bc(sprite, (int)WORK->cameras[1]);
+        func_ov007_020c4388((char *)sprite, (int)WORK->cameras[1]);
     }
 
-    data_ov007_02104b9c->sprites[2] = func_ov007_020c44e4(1);
-    temp_r5 = data_ov007_02104b9c->sprites[2];
+    SCENE_SPRITES->sprites[2] = func_ov007_020c44e4(1);
+    temp_r5 = SCENE_SPRITES->sprites[2];
     temp_r5->width = 0x48;
     temp_r5->height = 8;
     temp_r5->cornerColors[3] = 0x7f8a;
@@ -187,8 +191,8 @@ void func_ov007_020b9880(int a0, int a1)
     temp_r5->drawFlags = temp_r5->drawFlags | 2;
     temp_r5->polygonId = 0x19;
 
-    data_ov007_02104b9c->sprites[3] = func_ov007_020c44e4(1);
-    temp_r5 = data_ov007_02104b9c->sprites[3];
+    SCENE_SPRITES->sprites[3] = func_ov007_020c44e4(1);
+    temp_r5 = SCENE_SPRITES->sprites[3];
     temp_r5->width = 0x48;
     temp_r5->height = 8;
     temp_r5->color = 0x294a;
@@ -196,27 +200,27 @@ void func_ov007_020b9880(int a0, int a1)
     temp_r5->drawFlags = temp_r5->drawFlags | 1;
     temp_r5->polygonId = 0x1a;
 
-    itemSprite = data_ov007_0210342c->itemViews[5]->sprite;
-    data_ov007_02104b9c->sprites[2]->depth = itemSprite->depth - 0x10;
-    data_ov007_02104b9c->sprites[3]->depth = itemSprite->depth - 0xff;
+    itemSprite = WORK->itemViews[5]->sprite;
+    SCENE_SPRITES->sprites[2]->depth = itemSprite->depth - 0x10;
+    SCENE_SPRITES->sprites[3]->depth = itemSprite->depth - 0xff;
 
-    func_ov007_020c43bc(data_ov007_02104b9c->sprites[2], (int)data_ov007_0210342c->cameras[1]);
-    func_ov007_020c43bc(data_ov007_02104b9c->sprites[3], (int)data_ov007_0210342c->cameras[1]);
+    func_ov007_020c43bc(SCENE_SPRITES->sprites[2], (int)WORK->cameras[1]);
+    func_ov007_020c43bc(SCENE_SPRITES->sprites[3], (int)WORK->cameras[1]);
 
-    *(int *)((char *)data_ov007_02104ba0 + 0x34) = 0;
-    data_ov007_02104ba0->tweens[0]->to = 0x800;
-    data_ov007_02104ba0->tweenOut[0] = data_ov007_02104ba0->tweens[0]->to;
+    *(int *)(data_ov007_02104ba0 + 0x34) = 0;
+    SCENE->tweens[0]->to = 0x800;
+    SCENE->tweenOut[0] = SCENE->tweens[0]->to;
 
     if (a0 != 0) {
         if (a0 == 1) {
-            *(int *)((char *)data_ov007_02104ba0 + 0x30) = 0;
-            data_ov007_02104ba0->tweenOut[1] = 0;
-            data_ov007_02104ba0->states[1]->requestedState = 0;
+            *(int *)(data_ov007_02104ba0 + 0x30) = 0;
+            SCENE->tweenOut[1] = 0;
+            SCENE->states[1]->requestedState = 0;
         }
     } else {
-        *(int *)((char *)data_ov007_02104ba0 + 0x30) = 1;
-        data_ov007_02104ba0->tweenOut[1] = 0x1000;
-        data_ov007_02104ba0->states[1]->requestedState = 2;
+        *(int *)(data_ov007_02104ba0 + 0x30) = 1;
+        SCENE->tweenOut[1] = 0x1000;
+        SCENE->states[1]->requestedState = 2;
     }
 
     if (a0 != 1)

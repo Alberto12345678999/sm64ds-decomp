@@ -41,7 +41,10 @@ typedef struct Ov007Work {
         *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
 } Ov007Work;
 
-extern Ov007Work *data_ov007_0210342c;
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Teardown of the data_ov007_0210342c manager. */
 #pragma opt_strength_reduction off
@@ -50,80 +53,80 @@ void func_ov007_020b65e0(void)
 {
     int i;
 
-    if (data_ov007_0210342c->states[0] != 0) {
-        func_ov007_020c937c(data_ov007_0210342c->states[0]);
-        data_ov007_0210342c->states[0] = 0;
+    if (WORK->states[0] != 0) {
+        func_ov007_020c937c(WORK->states[0]);
+        WORK->states[0] = 0;
     }
-    if (data_ov007_0210342c->states[1] != 0) {
-        func_ov007_020c937c(data_ov007_0210342c->states[1]);
-        data_ov007_0210342c->states[1] = 0;
+    if (WORK->states[1] != 0) {
+        func_ov007_020c937c(WORK->states[1]);
+        WORK->states[1] = 0;
     }
-    if (data_ov007_0210342c->states[2] != 0) {
-        func_ov007_020c937c(data_ov007_0210342c->states[2]);
-        data_ov007_0210342c->states[2] = 0;
+    if (WORK->states[2] != 0) {
+        func_ov007_020c937c(WORK->states[2]);
+        WORK->states[2] = 0;
     }
-    if (data_ov007_0210342c->cameras[0] != 0) {
-        func_ov007_020c020c(data_ov007_0210342c->cameras[0]);
-        data_ov007_0210342c->cameras[0] = 0;
+    if (WORK->cameras[0] != 0) {
+        func_ov007_020c020c(WORK->cameras[0]);
+        WORK->cameras[0] = 0;
     }
-    if (data_ov007_0210342c->cameras[1] != 0) {
-        func_ov007_020c020c(data_ov007_0210342c->cameras[1]);
-        data_ov007_0210342c->cameras[1] = 0;
+    if (WORK->cameras[1] != 0) {
+        func_ov007_020c020c(WORK->cameras[1]);
+        WORK->cameras[1] = 0;
     }
-    if (data_ov007_0210342c->lights[0] != 0) {
-        func_ov007_020c2410((int)data_ov007_0210342c->lights[0]);
-        data_ov007_0210342c->lights[0] = 0;
+    if (WORK->lights[0] != 0) {
+        func_ov007_020c2410((int)WORK->lights[0]);
+        WORK->lights[0] = 0;
     }
-    if (data_ov007_0210342c->lights[1] != 0) {
-        func_ov007_020c2410((int)data_ov007_0210342c->lights[1]);
-        data_ov007_0210342c->lights[1] = 0;
+    if (WORK->lights[1] != 0) {
+        func_ov007_020c2410((int)WORK->lights[1]);
+        WORK->lights[1] = 0;
     }
-    if (data_ov007_0210342c->touch != 0) {
-        func_ov007_020c2018((int)data_ov007_0210342c->touch);
-        data_ov007_0210342c->touch = 0;
+    if (WORK->touch != 0) {
+        func_ov007_020c2018((int)WORK->touch);
+        WORK->touch = 0;
     }
-    if (*(int *)((char *)data_ov007_0210342c + 0x54) != 0) {
-        func_ov007_020c22f8(*(int *)((char *)data_ov007_0210342c + 0x54));
-        *(int *)((char *)data_ov007_0210342c + 0x54) = 0;
+    if (*(int *)(data_ov007_0210342c + 0x54) != 0) {
+        func_ov007_020c22f8(*(int *)(data_ov007_0210342c + 0x54));
+        *(int *)(data_ov007_0210342c + 0x54) = 0;
     }
-    if (data_ov007_0210342c->tweens[0] != 0) {
-        func_ov007_020c9080((int)data_ov007_0210342c->tweens[0]);
-        data_ov007_0210342c->tweens[0] = 0;
+    if (WORK->tweens[0] != 0) {
+        func_ov007_020c9080((int)WORK->tweens[0]);
+        WORK->tweens[0] = 0;
     }
-    if (data_ov007_0210342c->tweens[1] != 0) {
-        func_ov007_020c9080((int)data_ov007_0210342c->tweens[1]);
-        data_ov007_0210342c->tweens[1] = 0;
+    if (WORK->tweens[1] != 0) {
+        func_ov007_020c9080((int)WORK->tweens[1]);
+        WORK->tweens[1] = 0;
     }
-    if (data_ov007_0210342c->settings != 0) {
-        func_ov007_020c3d1c(data_ov007_0210342c->settings);
-        data_ov007_0210342c->settings = 0;
+    if (WORK->settings != 0) {
+        func_ov007_020c3d1c(WORK->settings);
+        WORK->settings = 0;
     }
 
     for (i = 0; i < 0xb; i++) {
-        if (data_ov007_0210342c->textures[i] != 0) {
-            func_ov007_020c1620((int)data_ov007_0210342c->textures[i]);
-            data_ov007_0210342c->textures[i] = 0;
+        if (WORK->textures[i] != 0) {
+            func_ov007_020c1620((int)WORK->textures[i]);
+            WORK->textures[i] = 0;
         }
     }
 
     func_ov007_020b3edc(0x16);
 
-    if (*(int *)((char *)data_ov007_0210342c + 0x40) != 0) {
-        func_ov007_020c937c((void *)*(int *)((char *)data_ov007_0210342c + 0x40));
-        *(int *)((char *)data_ov007_0210342c + 0x40) = 0;
+    if (*(int *)(data_ov007_0210342c + 0x40) != 0) {
+        func_ov007_020c937c((void *)*(int *)(data_ov007_0210342c + 0x40));
+        *(int *)(data_ov007_0210342c + 0x40) = 0;
     }
 
     for (i = 0; i < 3; i++) {
-        if (*(int *)((char *)data_ov007_0210342c + i * 4 + 0x44) != 0) {
-            func_ov007_020c9460(*(int *)((char *)data_ov007_0210342c + i * 4 + 0x44));
-            *(int *)((char *)data_ov007_0210342c + i * 4 + 0x44) = 0;
+        if (*(int *)(data_ov007_0210342c + i * 4 + 0x44) != 0) {
+            func_ov007_020c9460(*(int *)(data_ov007_0210342c + i * 4 + 0x44));
+            *(int *)(data_ov007_0210342c + i * 4 + 0x44) = 0;
         }
     }
 
     for (i = 0; i < 0x18; i++) {
-        if (data_ov007_0210342c->itemViews[i] != 0) {
-            func_ov007_020b4bd4((int *)data_ov007_0210342c->itemViews[i]);
-            data_ov007_0210342c->itemViews[i] = 0;
+        if (WORK->itemViews[i] != 0) {
+            func_ov007_020b4bd4((int *)WORK->itemViews[i]);
+            WORK->itemViews[i] = 0;
         }
     }
 

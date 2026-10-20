@@ -98,7 +98,10 @@ extern u16 data_ov007_020d76a0[];
 extern u16 data_ov007_020d76a1[];
 extern u8 data_ov007_020d77e1[];
 extern s32 data_ov007_020d7648[];
-extern Ov007Work *data_ov007_0210342c;
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 extern u16 data_ov007_020d75e8[];
 extern u16 data_ov007_020d75f8[];
 extern u8 data_ov007_020d76c0[];
@@ -146,10 +149,10 @@ void *func_ov007_020b4c04(int arg0)
 
     if (arg0 >= 0 && arg0 <= 2) {
 
-        sprite->frames[0] = data_ov007_0210342c->textures[6];
+        sprite->frames[0] = WORK->textures[6];
         sprite->texS = data_ov007_020d75e8[arg0];
         sprite->texT = data_ov007_020d75f8[arg0];
-        if (data_ov007_0210342c->settings->language == 5) {
+        if (WORK->settings->language == 5) {
             view->item->hitBox = &data_ov007_020d76c0[(r5 - 1) * 0x14];
             view->item->layout = (s16 *)&data_ov007_020d7680[arg0 * 0xa];
             if (arg0 != 0) {
@@ -160,14 +163,14 @@ void *func_ov007_020b4c04(int arg0)
         }
     } else if (arg0 >= 3 && arg0 <= 6) {
 
-        sprite->frames[0] = data_ov007_0210342c->textures[1];
+        sprite->frames[0] = WORK->textures[1];
         sprite->texS = data_ov007_020d7608[arg0 - 3];
         sprite->texT = data_ov007_020d7600[arg0 - 3];
     } else if (arg0 >= 7 && arg0 <= 0xd) {
         if (arg0 == 7) {
-            sprite->frames[0] = data_ov007_0210342c->textures[6];
+            sprite->frames[0] = WORK->textures[6];
         } else {
-            sprite->frames[0] = data_ov007_0210342c->textures[8];
+            sprite->frames[0] = WORK->textures[8];
         }
         switch (arg0) {
         case 7:
@@ -176,17 +179,17 @@ void *func_ov007_020b4c04(int arg0)
         case 8:
             sprite->texS = 0xc0;
             sprite->texT = 0x20;
-            t = data_ov007_0210342c->settings->language;
+            t = WORK->settings->language;
             switch (t) {
             case 3:
-                sprite->frames[0] = data_ov007_0210342c->textures[7];
+                sprite->frames[0] = WORK->textures[7];
                 sprite->texS = 0;
                 sprite->texT = 0;
                 sprite->width = 0x50;
                 view->item->hitBox = &data_ov007_020d7658;
                 break;
             case 4:
-                sprite->frames[0] = data_ov007_0210342c->textures[7];
+                sprite->frames[0] = WORK->textures[7];
                 sprite->texS = 0x50;
                 sprite->texT = 0;
                 sprite->width = 0x60;
@@ -210,12 +213,12 @@ void *func_ov007_020b4c04(int arg0)
         }
     } else if (arg0 >= 0xe && arg0 <= 0x15) {
 
-        sprite->frames[0] = data_ov007_0210342c->textures[2];
+        sprite->frames[0] = WORK->textures[2];
         sprite->texS = data_ov007_020d7628[arg0 - 0xe];
         sprite->texT = data_ov007_020d7638[arg0 - 0xe];
     } else if (arg0 >= 0x16 && arg0 <= 0x17) {
 
-        sprite->frames[0] = data_ov007_0210342c->textures[2];
+        sprite->frames[0] = WORK->textures[2];
         sprite->texS = (u16)((arg0 - 0x16) * 0x48);
         sprite->texT = 0x80;
     }
