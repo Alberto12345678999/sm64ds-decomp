@@ -3,7 +3,8 @@
  *
  * _ZTS9dCamera_c is at 0x02086e6c, _ZTI9dCamera_c at 0x02086ee4,
  * _ZTV9dCamera_c at 0x02086f84. ChangeState's mangling names the
- * nested State. The D1/D0 pair is at 0x0200705c, outside this run.
+ * nested State. The D1/D0 pair is its own TU at 0x0200705c
+ * (src/engine/view/d_camera_dtor.cpp), outside this run.
  *
  * leftovers:
  * - The func_0200* handlers retain their existing C linkage. The three

@@ -24,25 +24,32 @@ struct SystemDefinition {
 
 struct Manager {
     /* The three manager lists are the same two-word intrusive-list heads used
-       by func_0204d958/func_0204d9a0. Their element types differ, so only the
-       two lists reached by AddSystem are named here. */
+       by func_0204d958/func_0204d9a0. Element types differ. AddSystem names
+       the system lists; the third list is the free-particle pool. */
     struct SystemList {
-        System *head;       /* 0x00 */
-        s32 count;          /* 0x04 */
+        System *head; /* 0x00 */
+        s32 count;    /* 0x04 */
     };
 
-    void *allocator;                    /* 0x00 */
-    SystemList mActiveSystems;          /* 0x04 */
-    SystemList mFreeSystems;            /* 0x0c */
-    u8 pad_014[0x8];                    /* 0x14 - another intrusive list */
-    SystemDefinition *mDefinitions;     /* 0x1c */
-    void *unk_020;                      /* 0x20 */
-    u16 unk_024;                        /* 0x24 */
-    u16 unk_026;                        /* 0x26 */
-    u16 unk_028;                        /* 0x28 */
-    u16 unk_02a;                        /* 0x2a */
-    u16 unk_02c;                        /* 0x2c */
-    u16 unk_02e;                        /* 0x2e */
+    /* func_0204a4c8 fills this with `b` nodes of 0x44 bytes, and func_02049d60
+       hands it to a system. The node is not Particle::Element (0x30). */
+    struct FreeList {
+        void *head; /* 0x00 */
+        s32 count;  /* 0x04 */
+    };
+
+    void *allocator;                /* 0x00 */
+    SystemList mActiveSystems;      /* 0x04 */
+    SystemList mFreeSystems;        /* 0x0c */
+    FreeList mFreeParticles;        /* 0x14 */
+    SystemDefinition *mDefinitions; /* 0x1c */
+    void *unk_020;                  /* 0x20 */
+    u16 unk_024;                    /* 0x24 */
+    u16 unk_026;                    /* 0x26 */
+    u16 unk_028;                    /* 0x28 */
+    u16 unk_02a;                    /* 0x2a */
+    u16 unk_02c;                    /* 0x2c */
+    u16 unk_02e;                    /* 0x2e */
     u8 pad_030[0xc];
 
     System *AddSystem(int definitionID, Vector3 &position);

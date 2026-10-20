@@ -49,27 +49,15 @@ src/game/stages/d_s_boot_methods.cpp:
 
 src/runtime/actor/d_cap_enemy_arm9.cpp:
     complete
-    .text start:0x02005d94 end:0x0200651c
-
-src/_ZN11dCapEnemy_cD1Ev.cpp:
-    complete
-    .text start:0x0200651c end:0x02006554
-
-src/_ZN11dCapEnemy_cC2Ev.cpp:
-    complete
-    .text start:0x02006554 end:0x02006588
+    .text start:0x02005d94 end:0x02006588
 
 src/main.c:
     complete
     .text start:0x02007000 end:0x0200705c
 
-src/_ZN9dCamera_cD1Ev.cpp:
+src/engine/view/d_camera_dtor.cpp:
     complete
-    .text start:0x0200705c end:0x02007098
-
-src/_ZN9dCamera_cD0Ev.cpp:
-    complete
-    .text start:0x02007098 end:0x020070e8
+    .text start:0x0200705c end:0x020070e8
 
 src/unnamed/arm9/0200/func_020070e8.c:
     complete
@@ -79,13 +67,9 @@ src/unnamed/arm9/0200/func_020071a8.c:
     complete
     .text start:0x020071a8 end:0x020071e0
 
-src/unnamed/arm9/0200/func_020071e0.c:
+src/unnamed/arm9/0200/func_020071e0.cpp:
     complete
-    .text start:0x020071e0 end:0x020072c0
-
-src/_ZN7Vector3D1Ev.cpp:
-    complete
-    .text start:0x020072c0 end:0x020072c4
+    .text start:0x020071e0 end:0x020072c4
 
 src/unnamed/arm9/0200/func_020072c4.c:
     complete
@@ -666,19 +650,7 @@ src/engine/collision/d_cc_pos.cpp:
 
 src/engine/collision/d_cc_ac.cpp:
     complete
-    .text start:0x0201489c end:0x02014a34
-
-src/_ZN10dCcAcPos_cD0Ev.cpp:
-    complete
-    .text start:0x02014a34 end:0x02014a60
-
-src/_ZN10dCcAcPos_cD1Ev.cpp:
-    complete
-    .text start:0x02014a60 end:0x02014a84
-
-src/_ZN10dCcAcPos_cC1Ev.cpp:
-    complete
-    .text start:0x02014a84 end:0x02014aa8
+    .text start:0x0201489c end:0x02014aa8
 
 src/engine/collision/d_cc.cpp:
     complete
@@ -2873,41 +2845,9 @@ src/unnamed/arm9/0204/func_02049cd8.c:
     complete
     .text start:0x02049cd8 end:0x02049d60
 
-src/unnamed/arm9/0204/func_02049d60.c:
+src/engine/particle/Particle_Manager.cpp:
     complete
-    .text start:0x02049d60 end:0x02049d78
-
-src/unnamed/arm9/0204/func_02049d78.c:
-    complete
-    .text start:0x02049d78 end:0x02049e0c
-
-src/_ZN8Particle7Manager9AddSystemEiR7Vector3.cpp:
-    complete
-    .text start:0x02049e0c end:0x02049ee8
-
-src/unnamed/arm9/0204/func_02049ee8.c:
-    complete
-    .text start:0x02049ee8 end:0x02049f58
-
-src/unnamed/arm9/0204/func_02049f58.c:
-    complete
-    .text start:0x02049f58 end:0x0204a028
-
-src/unnamed/arm9/0204/func_0204a028.c:
-    complete
-    .text start:0x0204a028 end:0x0204a0dc
-
-src/unnamed/arm9/0204/func_0204a0dc.c:
-    complete
-    .text start:0x0204a0dc end:0x0204a17c
-
-src/unnamed/arm9/0204/func_0204a17c.cpp:
-    complete
-    .text start:0x0204a17c end:0x0204a4c8
-
-src/unnamed/arm9/0204/func_0204a4c8.c:
-    complete
-    .text start:0x0204a4c8 end:0x0204a5bc
+    .text start:0x02049d60 end:0x0204a5bc
 
 src/unnamed/arm9/0204/func_0204a5bc.c:
     complete

@@ -284,6 +284,9 @@ void dScMgBomroom_c::TopDoor_Draw() {
 }
 
 // @symbol _ZN14dScMgBomroom_c20TopDoor_StateClosingEi
+// The top door is a single record, but its state handlers keep the index the
+// shared PMF signature passes (TopDoor_Update always passes 0), indexing off
+// mTopDoor the way the two-slot mPenGates handlers index their array.
 
 void dScMgBomroom_c::TopDoor_StateClosing(int index) {
     if ((&mTopDoor)[index].idx != 0) {
