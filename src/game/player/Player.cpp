@@ -1,9 +1,9 @@
 //cpp
-// leftovers: D0 and D1 stay free functions. ~Player() is the key function and
-// would emit _ZTI6Player; the vtable typeinfo word relocates to _ZTI7daPly_c.
-// C1 still reaches mModelAnim3, mModelAnim4, mTexSeqBody, mMatChanger and
-// mTexSeqPlayer as offsets from mBodyModels (this + 0xdc), the enrolled
-// addressing. func_ov002_020e69c0 rotates data_ov002_0210a760, which has no
+// leftovers: ~Player() is defined with RTTI off, so the vtable preamble's
+// typeinfo word is zero where retail relocates to _ZTI7daPly_c. D2 is not in
+// the cartridge. C1 still reaches mModelAnim3, mModelAnim4, mTexSeqBody,
+// mMatChanger and mTexSeqPlayer as offsets from mBodyModels (this + 0xdc), the
+// enrolled addressing. func_ov002_020e69c0 rotates data_ov002_0210a760, which has no
 // recovered name. func_ov002_020e6780 keeps the char * parameter that
 // include/decl_common.h declares, and casts it to Player. Scalar Fix12
 // bridges, opaque views and raw offsets remain in the earlier members;
@@ -27,11 +27,11 @@
  * declarations preserve existing ABI views where shared interfaces are not yet
  * recovered. Unknown fields and state objects retain their neutral names.
  *
- * The destructor variants and constructor below are free functions. Defining
- * Player::~Player() is the key function: mwccarm then emits _ZTV6Player and
- * _ZTI6Player, and the cartridge's vtable typeinfo is _ZTI7daPly_c, not a
- * Player RTTI record. The free functions reproduce D0 and D1 without that
- * emission. The ITCM interior entries called by func_ov002_020dc560 are
+ * ~Player() is the key function, compiled with RTTI off so it emits D0, D1,
+ * D2 and _ZTV6Player and no _ZTI6Player/_ZTS6Player. The cartridge typeinfo
+ * is _ZTI7daPly_c; the vtable is externalized to that retail table. The
+ * constructor below stays the enrolled free function. The ITCM interior
+ * entries called by func_ov002_020dc560 are
  * supplied at their retail addresses by the link; they are not definitions
  * emitted by this file.
  */
@@ -27645,57 +27645,23 @@ void func_ov002_020e6780(char *raw)
 }
 }
 
-/* D0 then D1, the retail order. These are the deleting and complete-object
- * variants of ~Player, spelled as the free functions the one-function sources
- * enrolled. A Player::~Player() definition here is the key function and emits
- * a vtable whose typeinfo is _ZTI6Player; the cartridge stores _ZTI7daPly_c. */
-extern "C" {
-extern int _ZTV6Player[];
-// local extern: the minigame headers spell the last argument void *; this call passes the destructor.
-void __cxa_vec_cleanup(void *, int, int, void (*)(void *));
-void _ZN15TextureSequenceD1Ev(void *);
-void _ZN15MaterialChangerD1Ev(void *);
-void _ZN9ModelAnimD1Ev(void *);
-void _ZN17dExtShadowModel_cD1Ev(void *);
-void _ZN10dCcAcPos_cD1Ev(void *);
-void _ZN10dBgCh_ActrD1Ev(void *);
-void _ZN8dActor_cD2Ev(void *);
+/* Out-of-line ~Player is the key function. defer_codegen on for this
+ * definition only: under defer_codegen off the variants come out D1, D0, D2,
+ * and the cartridge order is D0 then D1. With deferred codegen they come out
+ * D2, D0, D1, and the following function stays after them. RTTI stays off
+ * from here on, which suppresses _ZTI6Player and _ZTS6Player and writes a
+ * zero typeinfo word in the vtable preamble. Retail relocates 0x0210a838 to
+ * _ZTI7daPly_c. The 124 slot bytes reproduce. D2 is not in the cartridge. */
+#pragma defer_codegen on
+#pragma RTTI off
 
 // @symbol _ZN6PlayerD0Ev
-Player *_ZN6PlayerD0Ev(Player *self)
+// @symbol _ZN6PlayerD1Ev
+Player::~Player()
 {
-    *(int *)self = (int)(_ZTV6Player + 2);
-    _ZN10dBgCh_ActrD1Ev(&self->mMeshClsn);
-    _ZN10dCcAcPos_cD1Ev(&self->mAttackClsn);
-    _ZN10dCcAcPos_cD1Ev(&self->mdCcAcPos_c);
-    _ZN17dExtShadowModel_cD1Ev(&self->mShadowModel);
-    __cxa_vec_cleanup(self->mTexSeqPlayer, 2, 0x14, _ZN15TextureSequenceD1Ev);
-    __cxa_vec_cleanup(self->mMatChanger, 2, 0x14, _ZN15MaterialChangerD1Ev);
-    __cxa_vec_cleanup(self->mTexSeqBody, 4, 0x14, _ZN15TextureSequenceD1Ev);
-    _ZN9ModelAnimD1Ev(&self->mModelAnim4);
-    _ZN9ModelAnimD1Ev(&self->mModelAnim3);
-    _ZN8dActor_cD2Ev(self);
-    _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(self, data_020a0eac);
-    return self;
 }
 
-// @symbol _ZN6PlayerD1Ev
-Player *_ZN6PlayerD1Ev(Player *self)
-{
-    *(int *)self = (int)(_ZTV6Player + 2);
-    _ZN10dBgCh_ActrD1Ev(&self->mMeshClsn);
-    _ZN10dCcAcPos_cD1Ev(&self->mAttackClsn);
-    _ZN10dCcAcPos_cD1Ev(&self->mdCcAcPos_c);
-    _ZN17dExtShadowModel_cD1Ev(&self->mShadowModel);
-    __cxa_vec_cleanup(self->mTexSeqPlayer, 2, 0x14, _ZN15TextureSequenceD1Ev);
-    __cxa_vec_cleanup(self->mMatChanger, 2, 0x14, _ZN15MaterialChangerD1Ev);
-    __cxa_vec_cleanup(self->mTexSeqBody, 4, 0x14, _ZN15TextureSequenceD1Ev);
-    _ZN9ModelAnimD1Ev(&self->mModelAnim4);
-    _ZN9ModelAnimD1Ev(&self->mModelAnim3);
-    _ZN8dActor_cD2Ev(self);
-    return self;
-}
-}
+#pragma defer_codegen off
 
 extern "C"  {
 extern int data_ov002_0210a83c[];
