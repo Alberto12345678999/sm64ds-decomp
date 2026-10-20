@@ -39749,11 +39749,11 @@ matched: yes</title></rect><rect x="1240.70" y="611.22" width="10.81" height="17
 module: ov075
 addr: 0x02118f38
 size: 364 bytes
-matched: yes</title></rect><rect x="1240.70" y="628.35" width="10.81" height="11.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_021190a4
+matched: yes</title></rect><rect x="1240.70" y="628.35" width="10.81" height="11.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c23UpdatePlayerSelectIntroEv
 module: ov075
 addr: 0x021190a4
 size: 248 bytes
-matched: yes</title></rect><rect x="1251.50" y="554.57" width="14.97" height="9.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_0211919c
+matched: yes</title></rect><rect x="1251.50" y="554.57" width="14.97" height="9.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c22EnterPlayerSelectIntroEv
 module: ov075
 addr: 0x0211919c
 size: 288 bytes
