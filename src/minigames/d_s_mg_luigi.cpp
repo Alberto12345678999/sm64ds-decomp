@@ -9,12 +9,15 @@
  * Keep source order. The local optimization pragmas stay with the functions
  * that need them.
  *
- * Member access changed the code in four places, so those stay raw:
- * UpdatePenalties (a pointer at mPenalty is 0x24 bytes short),
- * TickPictureFlash (one spelling of the blink timer collapses the two
- * exits), RestartPicture (the three slot bytes no longer share a base),
- * and the grid cell in PlaceNextPicture. InitResources and ChooseTarget
- * still copy tiles through a volatile u16; a plain local is shorter.
+ * Four places only match through a stepped base: UpdatePenalties walks a
+ * char * by 0x14 (a pointer at mPenalty is 0x24 bytes short),
+ * RestartPicture steps by idx (direct mShown[idx] and friends change the
+ * code), the grid cell in PlaceNextPicture steps by col * 9 + row (direct
+ * &mGrid[col][row] changes it), and TickPictureFlash keeps its blink and
+ * shown base pointers (one spelling of the blink timer collapses the two
+ * exits). Each spells the member through the stepped base. InitResources
+ * and ChooseTarget still copy tiles through a volatile u16; a plain local
+ * is shorter.
  *
  * The measurements behind the source forms of MovePictureSway,
  * MovePictureDriftRandom, PlaceBoardLayout and PlaceNextPicture (for one,
@@ -371,10 +374,10 @@ void dScMgLuigi_c::UpdateReward() {
         {
             char *g = (char *)gMgScene;
             if (g != 0) {
-                if (*(int *)(g + 0xb4) < 0x270f)
-                    *(int *)(g + 0xb4) += 1;
-                if (*(int *)(g + 0xb4) > *(int *)(g + 0xb8))
-                    *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
+                if (((dScMgBase_c *)g)->mHudScore < 0x270f)
+                    ((dScMgBase_c *)g)->mHudScore += 1;
+                if (((dScMgBase_c *)g)->mHudScore > ((dScMgBase_c *)g)->mBestHudScore)
+                    ((dScMgBase_c *)g)->mBestHudScore = ((dScMgBase_c *)g)->mHudScore;
             }
         }
         Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
@@ -766,32 +769,36 @@ void dScMgLuigi_c::DrawPenalties() {
 // @symbol _ZN12dScMgLuigi_c15UpdatePenaltiesEv
 #pragma push
 #pragma opt_common_subs off
-/* Walks from this. A pointer at mPenalty is 0x24 bytes short of this body. */
+/* Walks from this: q steps one dScMgLuigi_Penalty at a time and PEN reads
+   mPenalty[0] through it. A pointer at mPenalty is 0x24 bytes short of this
+   body. timer is s16, but the ROM tests and decrements it as a u16; the s16
+   spelling of either changes the code. */
+#define PEN(q) (((dScMgLuigi_c *)(q))->mPenalty[0])
 void dScMgLuigi_c::UpdatePenalties() {
     char *q = (char *)this;
     int penaltyIndex;
     for (penaltyIndex = 0; penaltyIndex < 0x10; penaltyIndex++, q += 0x14) {
-        if (*(u8 *)(q + 0x4670) != 0) {
-            if (*(u8 *)(q + 0x4672) == 0) {
-                if (*(u16 *)(q + 0x466c) != 0) {
-                    *(u16 *)(q + 0x466c) -= 1;
-                    if (*(short *)(q + 0x466c) < 0)
-                        *(u16 *)(q + 0x466c) = 0;
-                    *(int *)(q + 0x4664) += *(int *)(q + 0x4668);
-                    *(int *)(q + 0x4668) += 0x100;
+        if (PEN(q).active != 0) {
+            if (PEN(q).phase == 0) {
+                if (*(u16 *)&PEN(q).timer != 0) {
+                    *(u16 *)&PEN(q).timer -= 1;
+                    if (PEN(q).timer < 0)
+                        PEN(q).timer = 0;
+                    PEN(q).y += PEN(q).velY;
+                    PEN(q).velY += 0x100;
                 } else {
-                    *(u16 *)(q + 0x466c) = 0x40;
-                    *(u8 *)(q + 0x4672) += 1;
+                    PEN(q).timer = 0x40;
+                    PEN(q).phase += 1;
                 }
             } else {
-                if (*(u16 *)(q + 0x466c) != 0) {
-                    *(u16 *)(q + 0x466c) -= 1;
-                    if (*(short *)(q + 0x466c) < 0)
-                        *(u16 *)(q + 0x466c) = 0;
+                if (*(u16 *)&PEN(q).timer != 0) {
+                    *(u16 *)&PEN(q).timer -= 1;
+                    if (PEN(q).timer < 0)
+                        PEN(q).timer = 0;
                 } else {
-                    *(u16 *)(q + 0x466c) = 0;
-                    *(u8 *)(q + 0x4670) = 0;
-                    *(u8 *)(q + 0x4671) = 0;
+                    PEN(q).timer = 0;
+                    PEN(q).active = 0;
+                    PEN(q).shown = 0;
                 }
             }
         }
@@ -835,33 +842,33 @@ void dScMgLuigi_c::DrawWantedIcon() {
 #pragma push
 #pragma opt_strength_reduction off
 void dScMgLuigi_c::TickPictureFlash(int pictureIndex) {
-    char *raw = (char *)this;
-    char *blinkBase = raw + 0x506c;
+    char *raw = (char *)this; /* unread; deleting it renumbers the pinned @NNN */
+    char *blinkBase = (char *)mBlink;
     int byteOffset = pictureIndex * 2;
     unsigned short timer = *(unsigned short *)(blinkBase + byteOffset);
     unsigned char *shown;
 
     *(short *)(blinkBase + byteOffset) = (short)(timer - 1);
 
-    if (*(short *)(raw + (pictureIndex << 1) + 0x506c) < 0)
-        *(short *)(raw + (pictureIndex << 1) + 0x506c) = 0;
+    if ((short)mBlink[pictureIndex] < 0)
+        mBlink[pictureIndex] = 0;
 
     /* Two exits, not one if/else: folding them changes the code. */
     if ((((unsigned short)mBlink[pictureIndex] >> 2) & 1) != 0) {
-        char *shownBase = raw + 0x53dd;
+        char *shownBase = (char *)mShown;
         shownBase[pictureIndex] = 0;
         shown = (unsigned char *)(shownBase + pictureIndex);
         goto after_flag;
     }
     {
-        char *shownBase = raw + 0x53dd;
+        char *shownBase = (char *)mShown;
         shownBase[pictureIndex] = 1;
         shown = (unsigned char *)(shownBase + pictureIndex);
     }
 after_flag:
     if (mBlink[pictureIndex] != 0)
         return;
-    *(unsigned char *)(raw + pictureIndex + 0x51fd) = 0;
+    mKind[pictureIndex] = 0;
     *shown = 1;
 }
 #pragma pop
@@ -1150,9 +1157,9 @@ void dScMgLuigi_c::RestartPicture(int idx) {
     extern unsigned char data_ov006_0213ceac[];
     unsigned short board = mBoard;
     self += idx;
-    self[0x53dd] = 1;
-    self[0x5275] = 0;
-    self[0x51fd] = data_ov006_0213ceac[board] + 1;
+    ((dScMgLuigi_c *)self)->mShown[0] = 1;
+    ((dScMgLuigi_c *)self)->mStarted[0] = 0;
+    ((dScMgLuigi_c *)self)->mKind[0] = data_ov006_0213ceac[board] + 1;
 }
 
 // @symbol _ZN12dScMgLuigi_c14UpdatePicturesEv
@@ -1479,7 +1486,7 @@ void dScMgLuigi_c::PlaceNextPicture() {
             col = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 13 >> 15;
             row = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9 >> 15;
         }
-        cell = (u8 *)((unsigned int)((char *)this + col * 9 + row) + 0x5178);
+        cell = ((dScMgLuigi_c *)((char *)this + col * 9 + row))->mGrid[0];
         if (*cell == 0) {
             int jitterX;
             int jitterY;
@@ -1803,7 +1810,7 @@ void dScMgLuigi_c::StartRound(int mode) {
             gMgScene->mHudScore = 0;
 
         p = (char *)gMgScene;
-        Mg_SubmitScore(p != 0 ? *(int *)(p + 0xb4) : 0);
+        Mg_SubmitScore(p != 0 ? ((dScMgBase_c *)p)->mHudScore : 0);
     }
 
     FreeGfxSlotsById(0x1d);

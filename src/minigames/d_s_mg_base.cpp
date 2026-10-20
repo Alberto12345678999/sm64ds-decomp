@@ -25,7 +25,7 @@
  *
  * Still unnamed: the header's unk_ fields, and the bytes it leaves as
  * padding that this file reaches by offset (+0xb0, +0x2228/+0x4228,
- * +0x4000, +0x4644); the func_ov004 and data_ov004 helpers are unnamed in
+ * +0x4644); the func_ov004 and data_ov004 helpers are unnamed in
  * symbols.txt.
  */
 
@@ -45,14 +45,19 @@
    mVecA into mPos each frame; state 1 (UpdateFlyTo /
    DrawFlyTo) interpolates mPos between the two vectors as the timer
    runs down. The class is not recovered, so the type stays a local view.
-   The three s32 pairs stay raw offsets: declaring them as s32 members makes
-   the struct 4-aligned, and the pool's .bss section goes from 2-byte to
-   4-byte alignment. */
+   The s32 members make the struct 4-aligned, so the pool's .bss section is
+   4-aligned where the old byte-pad view left it 2-aligned. The ROM cannot
+   tell the two apart: sMgFxPool sits at 0x020bebe8, right after the 0x40
+   bytes of sMgSparkleSprites, and every function and the link are
+   unchanged. */
 struct MgFx {
-    char pad[0x1a];                     /* 0x00 mPos, 0x08 mVecA, 0x10 mVecB */
-    s16 mTimer;                         /* 0x1a -- counts down to 0; 0 = free */
-    s16 mDuration;                      /* 0x1c -- mTimer's starting value */
-    s16 mState;                         /* 0x1e -- index into both PMF tables */
+    s32 mPos[2];  /* 0x00 */
+    s32 mVecA[2]; /* 0x08 */
+    s32 mVecB[2]; /* 0x10 */
+    u8 pad_18[2];
+    s16 mTimer;    /* 0x1a -- counts down to 0; 0 = free */
+    s16 mDuration; /* 0x1c -- mTimer's starting value */
+    s16 mState;    /* 0x1e -- index into both PMF tables */
     MgFx() {}
     ~MgFx() {}
     void DrawFlyTo();
@@ -101,7 +106,7 @@ extern void func_0203cbc0(void *ptr);
 extern void func_02012e1c(void);
 void Mg_InitMusic();
 extern void Enable3dEngines(void);
-extern char gMgMenuRow[];
+extern int gMgMenuRow[];
 extern dWipe_c data_0209f61c;
 extern unsigned char data_0209d460[];
 extern unsigned char data_0209d458[];
@@ -545,7 +550,7 @@ extern int Mg_RenderSpriteOnNoMtx(int,int,int,long long);
 void MgFx::DrawFlyTo() {
     int idx=s20adc80::GetGameLanguage();
     int *t=sMgSpriteTables[idx];
-    s20adc80::Mg_RenderSpriteOnNoMtx(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
+    s20adc80::Mg_RenderSpriteOnNoMtx(t[2], mPos[0] >> 0xc, mPos[1] >> 0xc, -1);
 }
 
 // @symbol _ZN4MgFx11DrawSparkleEv
@@ -585,8 +590,8 @@ void MgFx::DrawSparkle() {
     }
     {
         int idx = ((int)mTimer) & 0xf;
-        int x = *(int *)this >> 0xc;
-        int y = *(int *)((char *)this + 4) >> 0xc;
+        int x = mPos[0] >> 0xc;
+        int y = mPos[1] >> 0xc;
         s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::sMgSparkleSprites[idx], x, y, -1, -1);
     }
 }
@@ -617,7 +622,6 @@ inline long long inline_fn(int arg0)
    remaining fraction s = mTimer / mDuration: x = mVecA.x * s + mVecB.x * (1 - s),
    y = mVecB.y + s * s * (mVecA.y - mVecB.y), all Fix12. */
 void MgFx::UpdateFlyTo() {
-    char *r5 = (char *)this;
     using namespace s20addcc;
     {
         if (ApproachLinear2(mTimer, 0, 1)) {
@@ -629,15 +633,14 @@ void MgFx::UpdateFlyTo() {
         int c3 = mDuration;
         int c2 = mTimer;
         int t = cstd::fdiv((c3 - c2) << 0xc, c3 << 0xc);
-        int v8 = *((int *)(r5 + 8));
-        int v10 = *((int *)(r5 + 0x10));
+        int v8 = mVecA[0];
+        int v10 = mVecB[0];
         long long m1 = inline_fn(v8) * inline_fn(s);
         long long m2 = inline_fn(v10) * inline_fn(t);
         long long m3 = inline_fn(s) * inline_fn(s);
-        long long m4 = inline_fn((int)((m3 + 0x800) >> 0xc)) *
-                       inline_fn((*((int *)(r5 + 0xc))) - (*((int *)(r5 + 0x14))));
-        *((int *)r5) = ((int)((m1 + 0x800) >> 0xc)) + ((int)((m2 + 0x800) >> 0xc));
-        *((int *)(r5 + 4)) = (*((int *)(r5 + 0x14))) + ((int)((m4 + 0x800) >> 0xc));
+        long long m4 = inline_fn((int)((m3 + 0x800) >> 0xc)) * inline_fn(mVecA[1] - mVecB[1]);
+        mPos[0] = ((int)((m1 + 0x800) >> 0xc)) + ((int)((m2 + 0x800) >> 0xc));
+        mPos[1] = mVecB[1] + ((int)((m4 + 0x800) >> 0xc));
     }
 }
 
@@ -645,16 +648,12 @@ void MgFx::UpdateFlyTo() {
 /* State 0's update: counts mTimer down, passes mVecA to func_0203d630 with
    0xff8, then adds mVecB into mVecA and mVecA into mPos. */
 void MgFx::UpdateDrift() {
-    char* c = (char*)this;
     ApproachLinear2(mTimer, 0, 1);
-    func_0203d630((int*)(c + 8), 0xff8);
-    int *p = (int*)(((int)c + 8));
-    int *p2 = (int*)(((int)c + 0xc));
-    *p += *(int*)(c + 0x10);
-    *p2 += *(int*)(c + 0x14);
-    p = (int*)(((int)c + 4));
-    *(int*)c += *(int*)(c + 8);
-    *p += *(int*)(c + 0xc);
+    func_0203d630(mVecA, 0xff8);
+    mVecA[0] += mVecB[0];
+    mVecA[1] += mVecB[1];
+    mPos[0] += mVecA[0];
+    mPos[1] += mVecA[1];
 }
 
 // @symbol Mg_UpdateFx
@@ -678,16 +677,16 @@ void Mg_InitFx(char *c, short state, short timer, int *pos, int *vecA, int *vecB
     e->mState = state;
     e->mTimer = timer;
     e->mDuration = e->mTimer;
-    *(int *)(c) = pos[0];
-    *(int *)(c + 4) = pos[1];
+    e->mPos[0] = pos[0];
+    e->mPos[1] = pos[1];
     if (vecA) {
-        *(int *)(c + 8) = vecA[0];
-        *(int *)(c + 0xc) = vecA[1];
+        e->mVecA[0] = vecA[0];
+        e->mVecA[1] = vecA[1];
     }
-  if(vecB){
-    *(int*)(c+0x10)=vecB[0];
-    *(int*)(c+0x14)=vecB[1];
-  }
+    if (vecB) {
+        e->mVecB[0] = vecB[0];
+        e->mVecB[1] = vecB[1];
+    }
 }
 }
 }
@@ -2448,7 +2447,7 @@ int dScMgBase_c::BeforeBehavior()
 void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
 {
     if (vfSuccess == 2) {
-        if (((int *)gMgMenuRow)[4] == 0)
+        if (gMgMenuRow[4] == 0)
             Mg_CommitRecords();
         data_0209d4a8 = 0;
         sMgGraphCallback.mScene = 0;
@@ -2477,9 +2476,19 @@ void dScMgBase_c::AfterInitResources(u32 vfSuccess)
 }
 
 // @symbol _ZN11dScMgBase_c19BeforeInitResourcesEv
+namespace s20b0930 {
+extern "C" {
+/* local extern: decl_common.h declares this `(char *)`, but the definition
+   in src/minigames/d_mg_state.cpp takes no parameter and only resets the
+   sMg*Banner position globals. The `add r0, r4, #0x4000` the cartridge has
+   just before the call is the base of the mNewRecord store
+   (`strb r1, [r0, #0x65c]`), left in r0, not an argument. */
+void Mg_ResetBannerLayout(void);
+}
+}
+
 /* Sets up the scene and both displays. Slots 26, 31 and 33 must stay
- * virtual calls so derived scenes can override them. The block at 0x4000 is
- * padding in the header, so it is still passed by offset. */
+ * virtual calls so derived scenes can override them. */
 bool dScMgBase_c::BeforeInitResources()
 {
     if (dScene_c::BeforeInitResources() == 0) return 0;
@@ -2487,7 +2496,7 @@ bool dScMgBase_c::BeforeInitResources()
         func_02019028();
     else
         Enable3dEngines();
-    mMusicTrack = *(int*)(gMgMenuRow + 0x28);
+    mMusicTrack = gMgMenuRow[10]; /* the menu row's music track, +0x28 */
     if (sMgWorkBuffer == 0)
         sMgWorkBuffer = _ZN6Memory13operator_new2Ej(0x4000);
     /* +0xb0 is the header's pad_0b0. Scanning ov004 and ov006 turns up no
@@ -2498,7 +2507,7 @@ bool dScMgBase_c::BeforeInitResources()
     mHudScore = 0;
     mBestHudScore = 0;
     mNewRecord = 0;
-    Mg_ResetBannerLayout((char *)this + 0x4000);
+    s20b0930::Mg_ResetBannerLayout();
     InitEngines();
     Mg_LoadBannerFiles();
     dScene_c::SetFaders(&data_0209f61c);
@@ -3868,14 +3877,14 @@ dScMgBase_c::dScMgBase_c() : mRunDuringFade(0), unk_0c2(1) {
     mQuitFadeStarted = 0;
 
     gMgScene = this;
-    mLevel = *(u32 *)(gMgMenuRow + 0x30);
+    mLevel = gMgMenuRow[12]; /* dScMiniGm_c::mStartLevel, +0x30 */
 
     mSceneKind = sMgSceneKindByGame[(param1 >> 16) & 0xff];
-    /* param1 &= 0xffff, through a char *: spelled with the member, either
-       as &= or as a plain assignment, mwccarm forms the address this + 8
-       in ip first and the constructor grows by 4 bytes. */
-    *(s32 *)((char *)this + 8) =
-        *(u32 *)((char *)this + 8) & 0xffff;
+    /* param1 &= 0xffff, stored through an s32 lvalue. Spelled as a plain
+       u32 `param1 &= 0xffff` (or `param1 = param1 & 0xffff`), mwccarm forms
+       the address this + 8 in ip first and the constructor grows by 4
+       bytes; `param1 = (u16)param1` shrinks it by 4. */
+    *(s32 *)&param1 = param1 & 0xffff;
     mTallyShown = 0;
     mTallyAnimTimer = 0;
 
