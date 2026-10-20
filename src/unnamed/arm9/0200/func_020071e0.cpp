@@ -1,4 +1,13 @@
+//cpp
+// @symbol _ZN7Vector3D1Ev
+/* Camera state. The Vector3 locals emit Vector3::~Vector3 as the next
+ * .text section, the cartridge copy at 0x020072c0. func_020072c4 is a
+ * different state and stays its own TU. The marker names that emitted
+ * symbol; its body is the inline destructor in include/types.h.
+ */
 #include "types.h"
+
+extern "C" {
 extern void _Z14ApproachLinearRiii(int *val, int target, int step);
 extern void Vec3_RotateYAndTranslate(Vector3 *out, const Vector3 *trans, short ang,
                                      const Vector3 *add);
@@ -7,6 +16,7 @@ extern void func_02007c9c(const Vector3 *v0, const Vector3 *v1, int *outDist, sh
 extern void func_02007c14(Vector3 *res, const Vector3 *trans, int mag, short ang, short angY);
 extern int func_02007cec(void *a, void *b, int c);
 extern void func_02007d0c(Vector3 *self, const Vector3 *src, int sx, int sy, int sz);
+}
 
 /* File-local views (the class headers are C++): only the fields this state
  * touches. Camera names follow include/dCamera_c.h; the player's follow
@@ -29,7 +39,7 @@ typedef struct {
     PlayerView *mTargetPlayer; /* 0x110 */
 } CameraView;
 
-int func_020071e0(char *self) {
+extern "C" int func_020071e0(char *self) {
     CameraView *cam = (CameraView *)self;
     Vector3 va, vb;
     int dist;

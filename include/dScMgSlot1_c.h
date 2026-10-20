@@ -57,20 +57,15 @@
  * object pointer, member pointer and vtable symbols are nevertheless typed;
  * only the codegen-sensitive construction sequence remains explicit.
  *
- * 0x4684 and 0x4690 are two more embedded objects (0xc bytes each,
- * constructed via SlotBlink_Clear in the constructor, ticked via
- * SlotBlink_Draw in Render), and 0x469c is a further one (constructed
- * via SlotLamp_Clear, size unknown). None of InitResources/Render/D1/
- * D0 read or write inside any of the three directly -- only pass their
- * address to a helper -- so all three stay raw padding.
+ * 0x4684 and 0x4690 are two SlotBlink markers (0xc bytes each) and 0x469c
+ * a SlotLamp (0x8 bytes): the factory clears them through SlotBlink_Clear and
+ * SlotLamp_Clear, Behavior starts and ticks them, and Render draws the two
+ * blinks. The class methods only pass their addresses to those helpers; the
+ * helpers' own stores and reads give the two structs their fields.
  *
- * Field at `this+8` some of these methods read is INHERITED from further up
- * the hierarchy than dScMgBase_c (dScene_c/fBase_c level, well below where
- * dScMgBase_c's own fields start at 0x50) -- accessed via raw offset
- * arithmetic on a char* cast, not added as a named field anywhere.
- *
- * StartRound still accesses the byte at 0x4706 through an offset cast.
- * That byte remains inside pad_4705 until its role is recovered.
+ * The word at `this+8` InitResources reads is fBase_c::param1, inherited
+ * from well below dScMgBase_c's own fields; its low byte picks the
+ * alternative reel strips.
  *
  * slots 27/28 (OpenMenu/CloseMenu) are real overrides.  The
  * names were independently recovered on dScMgBase_c's own copies at the same
@@ -134,6 +129,24 @@
 #define DSCMGSLOT1_C_H
 #include "dScMgBase_c.h"
 
+/* A blinking win-line marker, 0xc bytes: SlotBlink_Clear zeroes it,
+ * SlotBlink_Start places and arms it, SlotBlink_Tick counts it down and
+ * SlotBlink_Draw draws it. */
+struct SlotBlink {
+    s16 mX;      /* 0x0 -- SlotBlink_Start stores; SlotBlink_Draw draws at it */
+    s16 mY;      /* 0x2 */
+    s32 mTimer;  /* 0x4 -- SlotBlink_Start loads 0x48; SlotBlink_Tick counts it down */
+    u8 mVisible; /* 0x8 -- flipped every 8 ticks; SlotBlink_Draw draws only while set */
+};
+
+/* The payout lamp, 0x8 bytes: SlotLamp_Clear zeroes it, SlotLamp_Start arms
+ * it and SlotLamp_Tick counts it down, mirroring mOn into bit 1 of
+ * data_0209d454. */
+struct SlotLamp {
+    s32 mTimer; /* 0x0 -- SlotLamp_Start loads 0x48; SlotLamp_Tick counts it down */
+    u8 mOn;     /* 0x4 -- flipped every 8 ticks */
+};
+
 struct dScMgSlot1_c : dScMgBase_c {
     struct betIcon_c : dThIcon_c {
         betIcon_c() {}
@@ -155,9 +168,9 @@ struct dScMgSlot1_c : dScMgBase_c {
     virtual int CloseMenu();          /* slot 28 */
 
     betIcon_c mBetIcon;    /* 0x4660 -- RTTI-proven nested touch icon */
-    u8 pad_4684[0xc];      /* 0x4684 -- embedded object, own type unknown */
-    u8 pad_4690[0xc];      /* 0x4690 -- embedded object, own type unknown */
-    u8 pad_469c[0x8];      /* 0x469c -- embedded object, own type unknown */
+    SlotBlink mMatchBlink; /* 0x4684 -- placed from sSlotMatchBlinkX/Y[mMatchedSymbol] */
+    SlotBlink mWildBlink;  /* 0x4690 -- placed from sSlotWildBlinkX/Y[mWildCount - 1] */
+    SlotLamp mPayoutLamp;  /* 0x469c -- started when a spin pays out */
     u32 mReelScroll[3];    /* 0x46a4 -- Fix12 distance to the next symbol */
     s32 mSpinSoundHandle;  /* 0x46b0 -- returned by Sound_PlayIfNotActive */
     s32 mState;            /* 0x46b4 -- Behavior's state-machine index */
@@ -167,7 +180,9 @@ struct dScMgSlot1_c : dScMgBase_c {
     u8 mSymbolIndex[3];    /* 0x46ff -- current strip index, modulo 21 */
     u8 mReelSpinning[3];   /* 0x4702 -- cleared by a touch on that reel */
     u8 mStoppedReelCount;  /* 0x4705 -- reels stopped by touch this spin */
-    u8 pad_4706[0x2];      /* 0x4706 used by StartRound */
+    s8 mPrevMatchedSymbol; /* 0x4706 -- Slot1_InitHud seeds -1, StartRound(4) copies
+                              mMatchedSymbol; nothing here reads it back */
+    u8 pad_4707[0x1];      /* 0x4707 -- Slot1_InitHud stores 1; no reader */
     u8 mSpeedTableOffset;  /* 0x4708 -- added to reel index in the speed table */
     u8 mMatchedSymbol;     /* 0x4709 -- common non-wild symbol, or 5 if all wild */
     u8 mHasMatch;          /* 0x470a -- all three symbols agree, allowing wilds */

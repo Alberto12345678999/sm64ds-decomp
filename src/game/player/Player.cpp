@@ -1,5 +1,15 @@
 //cpp
-/* Player -- ov002, ROM ordinals 0..611 (0x020bccfc..0x020e67a8).
+// leftovers: ~Player() is defined with RTTI off, so the vtable preamble's
+// typeinfo word is zero where retail relocates to _ZTI7daPly_c. D2 is not in
+// the cartridge. C1 still reaches mModelAnim3, mModelAnim4, mTexSeqBody,
+// mMatChanger and mTexSeqPlayer as offsets from mBodyModels (this + 0xdc), the
+// enrolled addressing. func_ov002_020e69c0 rotates data_ov002_0210a760, which has no
+// recovered name. func_ov002_020e6780 keeps the char * parameter that
+// include/decl_common.h declares, and casts it to Player. Scalar Fix12
+// bridges, opaque views and raw offsets remain in the earlier members;
+// notes/agents/handoffs/player-readable1014.md.
+/* Player -- ov002, ROM ordinals 0..616 (0x020bccfc..0x020e6a08)
+ * and __sinit_ov002_021019d0 (.init 0x021019d0..0x02106e40).
  *
  * This production translation unit preserves the contiguous ROM function order.
  * Its boundaries are reconstructed; they do not establish the original physical
@@ -17,11 +27,13 @@
  * declarations preserve existing ABI views where shared interfaces are not yet
  * recovered. Unknown fields and state objects retain their neutral names.
  *
- * The following five functions in the linker run, including Player's destructor
- * variants and constructor, remain separate sources. Their vtable/RTTI emission
- * and lifecycle ownership are outside this translation unit. The ITCM interior
- * entries called by func_ov002_020dc560 are supplied at their retail addresses
- * by the link; they are not definitions emitted by this file.
+ * ~Player() is the key function, compiled with RTTI off so it emits D0, D1,
+ * D2 and _ZTV6Player and no _ZTI6Player/_ZTS6Player. The cartridge typeinfo
+ * is _ZTI7daPly_c; the vtable is externalized to that retail table. The
+ * constructor below stays the enrolled free function. The ITCM interior
+ * entries called by func_ov002_020dc560 are
+ * supplied at their retail addresses by the link; they are not definitions
+ * emitted by this file.
  */
 
 #pragma defer_codegen off
@@ -27738,9 +27750,9 @@ void func_ov002_020e640c(char *c)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e6780
 extern "C" {
-void func_ov002_020e6780(char *p)
+void func_ov002_020e6780(char *raw)
 {
-    Player *player = (Player *)p;
+    Player *player = (Player *)raw;
     player->mSpineRot[0] = 0;
     player->mSpineRot[1] = 0;
     player->mSpineRot[2] = 0;
@@ -27751,618 +27763,2493 @@ void func_ov002_020e6780(char *p)
 }
 }
 
-/* Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x020bccfc  func_ov002_020bccfc.c  (src/unnamed/ov002, retired)
- *   [1] 0x020bcd18  func_ov002_020bcd18.c  (src/unnamed/ov002, retired)
- *   [2] 0x020bcd38  func_ov002_020bcd38.c  (src/unnamed/ov002, retired)
- *   [3] 0x020bcdf0  func_ov002_020bcdf0.c  (src/unnamed/ov002, retired)
- *   [4] 0x020bd06c  func_ov002_020bd06c.c  (src/unnamed/ov002, retired)
- *   [5] 0x020bd20c  func_ov002_020bd20c.c  (src/unnamed/ov002, retired)
- *   [6] 0x020bd250  func_ov002_020bd250.cpp  (src/unnamed/ov002, retired)
- *   [7] 0x020bd354  func_ov002_020bd354.c  (src/unnamed/ov002, retired)
- *   [8] 0x020bd3a0  func_ov002_020bd3a0.c  (src/unnamed/ov002, retired)
- *   [9] 0x020bd438  func_ov002_020bd438.c  (src/unnamed/ov002, retired)
- *   [10] 0x020bd45c  func_ov002_020bd45c.cpp  (src/unnamed/ov002, retired)
- *   [11] 0x020bd480  func_ov002_020bd480.cpp  (src/unnamed/ov002, retired)
- *   [12] 0x020bd4ac  func_ov002_020bd4ac.c  (src/unnamed/ov002, retired)
- *   [13] 0x020bd4c8  func_ov002_020bd4c8.c  (src/unnamed/ov002, retired)
- *   [14] 0x020bd4e0  func_ov002_020bd4e0.c  (src/unnamed/ov002, retired)
- *   [15] 0x020bd600  func_ov002_020bd600.c  (src/unnamed/ov002, retired)
- *   [16] 0x020bd664  func_ov002_020bd664.cpp  (src/unnamed/ov002, retired)
- *   [17] 0x020bd828  src/_ZN6Player8CanPauseEv.cpp
- *   [18] 0x020bd8ac  src/func_ov002_020bd8ac.c
- *   [19] 0x020bd8c0  src/func_ov002_020bd8c0.cpp
- *   [20] 0x020bd928  src/func_ov002_020bd928.cpp
- *   [21] 0x020bd984  src/func_ov002_020bd984.cpp
- *   [22] 0x020bd9ec  src/func_ov002_020bd9ec.cpp
- *   [23] 0x020bda48  src/func_ov002_020bda48.c
- *   [24] 0x020bda98  src/_ZN6Player8HasNoCapEv.cpp
- *   [25] 0x020bdb50  src/func_ov002_020bdb50.cpp
- *   [26] 0x020bdc18  src/func_ov002_020bdc18.c
- *   [27] 0x020bdc58  src/_ZN6Player16IncMegaKillCountEv.cpp
- *   [28] 0x020bdd2c  src/func_ov002_020bdd2c.c
- *   [29] 0x020bdd9c  src/func_ov002_020bdd9c.cpp
- *   [30] 0x020bde14  src/_ZN6Player14InitMetalWarioEv.cpp
- *   [31] 0x020bdef0  src/func_ov002_020bdef0.cpp
- *   [32] 0x020bdf4c  src/_ZN6Player15InitVanishLuigiEv.cpp
- *   [33] 0x020bdf8c  src/func_ov002_020bdf8c.c
- *   [34] 0x020be008  src/func_ov002_020be008.cpp
- *   [35] 0x020be0f8  src/_ZN6Player18SetNewHatCharacterEjjb.cpp
- *   [36] 0x020be1e0  src/_ZN6Player16SetRealCharacterEj.cpp
- *   [37] 0x020be324  src/_ZN6Player18TurnOffToonShadingEj.cpp
- *   [38] 0x020be3b0  src/func_ov002_020be3b0.c
- *   [39] 0x020bea7c  src/func_ov002_020bea7c.c
- *   [40] 0x020bea94  src/_ZN6Player15IsCollectingCapEv.cpp
- *   [41] 0x020beabc  src/func_ov002_020beabc.cpp
- *   [42] 0x020beb38  src/func_ov002_020beb38.c
- *   [43] 0x020bebd4  src/func_ov002_020bebd4.cpp
- *   [44] 0x020bec2c  src/func_ov002_020bec2c.cpp
- *   [45] 0x020bec84  src/func_ov002_020bec84.c
- *   [46] 0x020bec9c  src/func_ov002_020bec9c.cpp
- *   [47] 0x020becc8  src/_ZNK6Player14GetBodyModelIDEjb.cpp
- *   [48] 0x020becf4  src/func_ov002_020becf4.cpp
- *   [49] 0x020bed98  src/_ZN6Player12FinishedAnimEv.cpp
- *   [50] 0x020bedd4  src/Player_AdvanceAnims.cpp
- *   [51] 0x020beecc  src/_ZN6Player6IsAnimEj.cpp
- *   [52] 0x020bef2c  src/_ZN6Player7SetAnimEji5Fix12IiEj.cpp
- *   [53] 0x020bf13c  src/func_ov002_020bf13c.c
- *   [54] 0x020bf224  src/func_ov002_020bf224.c
- *   [55] 0x020bf27c  src/func_ov002_020bf27c.c
- *   [56] 0x020bf2d8  src/func_ov002_020bf2d8.c
- *   [57] 0x020bf30c  src/Player_ScaleByCharFactor.c
- *   [58] 0x020bf340  src/func_ov002_020bf340.c
- *   [59] 0x020bf36c  src/func_ov002_020bf36c.cpp
- *   [60] 0x020bf40c  src/func_ov002_020bf40c.c
- *   [61] 0x020bf4e4  src/_ZN6Player4HealEi.cpp
- *   [62] 0x020bf548  src/_ZN6Player9GetHealthEv.cpp
- *   [63] 0x020bf56c  src/func_ov002_020bf56c.cpp
- *   [64] 0x020bf5e0  src/func_ov002_020bf5e0.c
- *   [65] 0x020bf800  src/func_ov002_020bf800.cpp
- *   [66] 0x020bf88c  src/func_ov002_020bf88c.c
- *   [67] 0x020bf90c  src/func_ov002_020bf90c.c
- *   [68] 0x020bf9d4  src/func_ov002_020bf9d4.cpp
- *   [69] 0x020bfa74  src/func_ov002_020bfa74.cpp
- *   [70] 0x020bfec0  src/func_ov002_020bfec0.c
- *   [71] 0x020c0108  src/func_ov002_020c0108.c
- *   [72] 0x020c031c  src/func_ov002_020c031c.cpp
- *   [73] 0x020c0364  src/func_ov002_020c0364.c
- *   [74] 0x020c0434  src/func_ov002_020c0434.c
- *   [75] 0x020c04ac  src/func_ov002_020c04ac.c
- *   [76] 0x020c04e0  src/func_ov002_020c04e0.c
- *   [77] 0x020c0688  src/func_ov002_020c0688.cpp
- *   [78] 0x020c06fc  src/func_ov002_020c06fc.c
- *   [79] 0x020c0cbc  src/func_ov002_020c0cbc.c
- *   [80] 0x020c0d90  src/func_ov002_020c0d90.c
- *   [81] 0x020c0fb4  src/func_ov002_020c0fb4.c
- *   [82] 0x020c1234  src/func_ov002_020c1234.cpp
- *   [83] 0x020c133c  src/func_ov002_020c133c.c
- *   [84] 0x020c14b8  src/func_ov002_020c14b8.c
- *   [85] 0x020c16ec  src/func_ov002_020c16ec.c
- *   [86] 0x020c179c  src/func_ov002_020c179c.cpp
- *   [87] 0x020c18b0  src/func_ov002_020c18b0.c
- *   [88] 0x020c19d0  src/func_ov002_020c19d0.cpp
- *   [89] 0x020c1ad8  src/func_ov002_020c1ad8.c
- *   [90] 0x020c1c84  src/func_ov002_020c1c84.c
- *   [91] 0x020c1e44  src/func_ov002_020c1e44.c
- *   [92] 0x020c1eb4  src/func_ov002_020c1eb4.cpp
- *   [93] 0x020c200c  src/func_ov002_020c200c.c
- *   [94] 0x020c2138  src/func_ov002_020c2138.cpp
- *   [95] 0x020c2270  src/func_ov002_020c2270.cpp
- *   [96] 0x020c231c  src/func_ov002_020c231c.c
- *   [97] 0x020c25a8  src/func_ov002_020c25a8.c
- *   [98] 0x020c29d4  src/func_ov002_020c29d4.cpp
- *   [99] 0x020c2b08  src/func_ov002_020c2b08.c
- *   [100] 0x020c2db8  src/func_ov002_020c2db8.c
- *   [101] 0x020c2e78  src/func_ov002_020c2e78.cpp
- *   [102] 0x020c2ef0  src/_ZN6Player7CanWarpEv.cpp
- *   [103] 0x020c2f3c  src/_ZN6Player7IsInAirEv.cpp
- *   [104] 0x020c2f64  src/func_ov002_020c2f64.c
- *   [105] 0x020c2fec  src/func_ov002_020c2fec.c
- *   [106] 0x020c3148  src/func_ov002_020c3148.c
- *   [107] 0x020c3160  src/func_ov002_020c3160.c
- *   [108] 0x020c37a4  src/func_ov002_020c37a4.cpp
- *   [109] 0x020c38a0  src/func_ov002_020c38a0.c
- *   [110] 0x020c3a48  src/func_ov002_020c3a48.c
- *   [111] 0x020c3bdc  src/func_ov002_020c3bdc.c
- *   [112] 0x020c3cf0  src/func_ov002_020c3cf0.c
- *   [113] 0x020c3d1c  src/_ZN6Player17St_EndingFly_MainEv.cpp
- *   [114] 0x020c3d6c  src/_ZN6Player17St_EndingFly_InitEv.cpp
- *   [115] 0x020c3dbc  src/func_ov002_020c3dbc.c
- *   [116] 0x020c3dd0  src/_ZN6Player21St_OpeningWakeUp_MainEv.cpp
- *   [117] 0x020c3e8c  src/func_ov002_020c3e8c.c
- *   [118] 0x020c3ea0  src/func_ov002_020c3ea0.c
- *   [119] 0x020c3ed8  src/_ZN6Player21St_OpeningWakeUp_InitEv.cpp
- *   [120] 0x020c3f18  src/func_ov002_020c3f18.c
- *   [121] 0x020c3f2c  src/func_ov002_020c3f2c.c
- *   [122] 0x020c3f40  src/_ZN6Player15St_Respawn_MainEv.cpp
- *   [123] 0x020c4088  src/_ZN6Player15St_Respawn_InitEv.cpp
- *   [124] 0x020c4188  src/func_ov002_020c4188.c
- *   [125] 0x020c43c4  src/func_ov002_020c43c4.c
- *   [126] 0x020c44c4  src/func_ov002_020c44c4.c
- *   [127] 0x020c4760  src/_ZN6Player15St_Talk_CleanupEv.cpp
- *   [128] 0x020c47f4  src/func_ov002_020c47f4.cpp
- *   [129] 0x020c48e0  src/_ZN6Player12St_Talk_MainEv.cpp
- *   [130] 0x020c4bd8  src/_ZN6Player12St_Talk_InitEv.cpp
- *   [131] 0x020c4c60  src/_ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh.cpp
- *   [132] 0x020c4ec0  src/_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh.cpp
- *   [133] 0x020c4efc  src/_ZN6Player18HasFinishedTalkingEv.cpp
- *   [134] 0x020c4f40  src/_ZN6Player12Unk_020c4f40Et.cpp
- *   [135] 0x020c4fa0  src/_ZN6Player9StartTalkER7fBase_cb.cpp
- *   [136] 0x020c51d0  src/func_ov002_020c51d0.cpp
- *   [137] 0x020c5244  src/func_ov002_020c5244.c
- *   [138] 0x020c524c  src/_ZN6Player12GetTalkStateEv.cpp
- *   [139] 0x020c52bc  src/_ZN6Player21St_StuckInGround_MainEv.cpp
- *   [140] 0x020c5444  src/func_ov002_020c5444.cpp
- *   [141] 0x020c54e8  src/_ZN6Player21St_StuckInGround_InitEv.cpp
- *   [142] 0x020c5560  src/_ZN6Player24St_BowserEarthquake_MainEv.cpp
- *   [143] 0x020c568c  src/_ZN6Player24St_BowserEarthquake_InitEv.cpp
- *   [144] 0x020c56f0  src/func_ov002_020c56f0.c
- *   [145] 0x020c5780  src/_ZN6Player15St_DeadPit_MainEv.cpp
- *   [146] 0x020c59c0  src/_ZN6Player15St_DeadPit_InitEv.cpp
- *   [147] 0x020c5cc8  src/_ZN6Player14EnterWhirlpoolEv.cpp
- *   [148] 0x020c5cd8  src/func_ov002_020c5cd8.c
- *   [149] 0x020c5d0c  src/func_ov002_020c5d0c.c
- *   [150] 0x020c5d60  src/func_ov002_020c5d60.c
- *   [151] 0x020c5dec  src/func_ov002_020c5dec.cpp
- *   [152] 0x020c5e34  src/_ZN6Player15St_DeadHit_MainEv.cpp
- *   [153] 0x020c6010  src/_ZN6Player15St_DeadHit_InitEv.cpp
- *   [154] 0x020c607c  src/func_ov002_020c607c.cpp
- *   [155] 0x020c61ac  src/func_ov002_020c61ac.c
- *   [156] 0x020c647c  src/func_ov002_020c647c.cpp
- *   [157] 0x020c6538  src/func_ov002_020c6538.cpp
- *   [158] 0x020c65f8  src/_ZN6Player17St_Squish_CleanupEv.cpp
- *   [159] 0x020c662c  src/_ZN6Player14St_Squish_MainEv.cpp
- *   [160] 0x020c6908  src/func_ov002_020c6908.cpp
- *   [161] 0x020c69a0  src/_ZN6Player14St_Squish_InitEv.cpp
- *   [162] 0x020c6a10  src/_ZN6Player12Unk_020c6a10Ej.cpp
- *   [163] 0x020c6adc  src/func_ov002_020c6adc.cpp
- *   [164] 0x020c6b3c  src/_ZN6Player16St_Teleport_MainEv.cpp
- *   [165] 0x020c6dc4  src/_ZN6Player16St_Teleport_InitEv.cpp
- *   [166] 0x020c6e14  src/func_ov002_020c6e14.c
- *   [167] 0x020c6f34  src/_ZN6Player21St_LevelEnter_CleanupEv.cpp
- *   [168] 0x020c6f3c  src/_ZN6Player18St_LevelEnter_MainEv.cpp
- *   [169] 0x020c6fe4  src/func_ov002_020c6fe4.c
- *   [170] 0x020c70ac  src/func_ov002_020c70ac.c
- *   [171] 0x020c7194  src/func_ov002_020c7194.cpp
- *   [172] 0x020c71e0  src/func_ov002_020c71e0.cpp
- *   [173] 0x020c72a4  src/func_ov002_020c72a4.cpp
- *   [174] 0x020c7350  src/func_ov002_020c7350.cpp
- *   [175] 0x020c75f0  src/func_ov002_020c75f0.c
- *   [176] 0x020c7838  src/_ZN6Player18St_LevelEnter_InitEv.cpp
- *   [177] 0x020c7cbc  src/func_ov002_020c7cbc.c
- *   [178] 0x020c7dd0  src/func_ov002_020c7dd0.cpp
- *   [179] 0x020c7e84  src/_ZN6Player15IsEnteringLevelEv.cpp
- *   [180] 0x020c7ed4  src/_ZN6Player20IsStateEnteringLevelEv.cpp
- *   [181] 0x020c7f10  src/func_ov002_020c7f10.cpp
- *   [182] 0x020c7ff8  src/func_ov002_020c7ff8.c
- *   [183] 0x020c8128  src/_ZN6Player20St_NoControl_CleanupEv.cpp
- *   [184] 0x020c816c  src/_ZN6Player17St_NoControl_MainEv.cpp
- *   [185] 0x020c84b0  src/func_ov002_020c84b0.c
- *   [186] 0x020c8540  src/func_ov002_020c8540.c
- *   [187] 0x020c8714  src/func_ov002_020c8714.c
- *   [188] 0x020c897c  src/func_ov002_020c897c.c
- *   [189] 0x020c8a4c  src/func_ov002_020c8a4c.cpp
- *   [190] 0x020c8b54  src/func_ov002_020c8b54.c
- *   [191] 0x020c8b78  src/func_ov002_020c8b78.cpp
- *   [192] 0x020c8cb0  src/func_ov002_020c8cb0.cpp
- *   [193] 0x020c8d14  src/func_ov002_020c8d14.c
- *   [194] 0x020c8f0c  src/func_ov002_020c8f0c.cpp
- *   [195] 0x020c8f80  src/func_ov002_020c8f80.cpp
- *   [196] 0x020c904c  src/func_ov002_020c904c.c
- *   [197] 0x020c9128  src/func_ov002_020c9128.cpp
- *   [198] 0x020c91bc  src/func_ov002_020c91bc.c
- *   [199] 0x020c924c  src/func_ov002_020c924c.c
- *   [200] 0x020c9288  src/func_ov002_020c9288.cpp
- *   [201] 0x020c92fc  src/func_ov002_020c92fc.c
- *   [202] 0x020c94a4  src/func_ov002_020c94a4.c
- *   [203] 0x020c965c  src/func_ov002_020c965c.c
- *   [204] 0x020c9718  src/func_ov002_020c9718.c
- *   [205] 0x020c976c  src/_ZN6Player17St_NoControl_InitEv.cpp
- *   [206] 0x020c97e0  src/func_ov002_020c97e0.c
- *   [207] 0x020c97f8  src/func_ov002_020c97f8.cpp
- *   [208] 0x020c9840  src/func_ov002_020c9840.cpp
- *   [209] 0x020c98a4  src/func_ov002_020c98a4.cpp
- *   [210] 0x020c990c  src/func_ov002_020c990c.c
- *   [211] 0x020c9998  src/func_ov002_020c9998.c
- *   [212] 0x020c9a04  src/func_ov002_020c9a04.c
- *   [213] 0x020c9ac0  src/func_ov002_020c9ac0.cpp
- *   [214] 0x020c9b10  src/func_ov002_020c9b10.c
- *   [215] 0x020c9b5c  src/func_ov002_020c9b5c.c
- *   [216] 0x020c9b7c  src/func_ov002_020c9b7c.c
- *   [217] 0x020c9c00  src/func_ov002_020c9c00.c
- *   [218] 0x020c9c4c  src/func_ov002_020c9c4c.c
- *   [219] 0x020c9cc0  src/func_ov002_020c9cc0.c
- *   [220] 0x020c9d1c  src/func_ov002_020c9d1c.c
- *   [221] 0x020c9d68  src/func_ov002_020c9d68.cpp
- *   [222] 0x020c9de4  src/func_ov002_020c9de4.c
- *   [223] 0x020c9e18  src/func_ov002_020c9e18.c
- *   [224] 0x020c9e40  src/Player_DisableInteraction.c
- *   [225] 0x020c9e5c  src/_ZN6Player12Unk_020c9e5cEh.cpp
- *   [226] 0x020ca0f4  src/func_ov002_020ca0f4.c
- *   [227] 0x020ca108  src/func_ov002_020ca108.cpp
- *   [228] 0x020ca144  src/_ZN6Player11OpenBigDoorEv.cpp
- *   [229] 0x020ca150  src/_ZN6Player12Unk_020ca150Eh.cpp
- *   [230] 0x020ca1b8  src/_ZN6Player17SetNoControlStateEhih.cpp
- *   [231] 0x020ca270  src/func_ov002_020ca270.cpp
- *   [232] 0x020ca2ac  src/_ZN6Player15JumpIntoBooCageER7Vector3.cpp
- *   [233] 0x020ca344  src/_ZN6Player13TryTalkToDoorEh.cpp
- *   [234] 0x020ca3d0  src/_ZN6Player21IsOpeningDoorWithStarEv.cpp
- *   [235] 0x020ca410  src/_ZN6Player16TryTalkToKeyDoorEv.cpp
- *   [236] 0x020ca488  src/_ZN6Player12Unk_020ca488Ev.cpp
- *   [237] 0x020ca498  src/_ZN6Player16TryEnterStarDoorER7Vector3s.cpp
- *   [238] 0x020ca5cc  src/_ZN6Player12CanEnterDoorEh.cpp
- *   [239] 0x020ca708  src/_ZN6Player17PlayMammaMiaSoundEv.cpp
- *   [240] 0x020ca724  src/_ZN6Player24TryExitWhiteDoorWithStarEv.cpp
- *   [241] 0x020ca78c  src/func_ov002_020ca78c.c
- *   [242] 0x020ca7f4  src/_ZN6Player16St_DebugFly_MainEv.cpp
- *   [243] 0x020ca8d0  src/_ZN6Player16St_DebugFly_InitEv.cpp
- *   [244] 0x020ca8f8  src/_ZN6Player12Unk_020ca8f8Ev.cpp
- *   [245] 0x020ca940  src/func_ov002_020ca940.c
- *   [246] 0x020cabe0  src/func_ov002_020cabe0.cpp
- *   [247] 0x020cac20  src/_ZN6Player15St_Null_CleanupEv.cpp
- *   [248] 0x020cac28  src/_ZN6Player12St_Null_MainEv.cpp
- *   [249] 0x020cac30  src/_ZN6Player12St_Null_InitEv.cpp
- *   [250] 0x020cac38  src/_ZN6Player21St_CameraZoom_CleanupEv.cpp
- *   [251] 0x020cac60  src/func_ov002_020cac60.c
- *   [252] 0x020cad10  src/_ZN6Player18St_CameraZoom_MainEv.cpp
- *   [253] 0x020cae10  src/func_ov002_020cae10.c
- *   [254] 0x020caef4  src/_ZN6Player18St_CameraZoom_InitEv.cpp
- *   [255] 0x020caf68  src/func_ov002_020caf68.c
- *   [256] 0x020caf98  src/func_ov002_020caf98.cpp
- *   [257] 0x020cb15c  src/_ZN6Player17St_Headstand_MainEv.cpp
- *   [258] 0x020cb2f0  src/_ZN6Player17St_Headstand_InitEv.cpp
- *   [259] 0x020cb354  src/func_ov002_020cb354.cpp
- *   [260] 0x020cb400  src/func_ov002_020cb400.cpp
- *   [261] 0x020cb474  src/func_ov002_020cb474.cpp
- *   [262] 0x020cb568  src/_ZN6Player16St_Climb_CleanupEv.cpp
- *   [263] 0x020cb5bc  src/_ZN6Player13St_Climb_MainEv.cpp
- *   [264] 0x020cbd34  src/_ZN6Player13St_Climb_InitEv.cpp
- *   [265] 0x020cbea8  src/func_ov002_020cbea8.c
- *   [266] 0x020cc01c  src/func_ov002_020cc01c.cpp
- *   [267] 0x020cc05c  src/func_ov002_020cc05c.c
- *   [268] 0x020cc140  src/_ZN6Player9IsOnShellEv.cpp
- *   [269] 0x020cc16c  src/func_ov002_020cc16c.c
- *   [270] 0x020cc1f4  src/func_ov002_020cc1f4.c
- *   [271] 0x020cc228  src/_ZN6Player16St_Shell_CleanupEv.cpp
- *   [272] 0x020cc27c  src/_ZN6Player13St_Shell_MainEv.cpp
- *   [273] 0x020cc660  src/func_ov002_020cc660.c
- *   [274] 0x020cc780  src/_ZN6Player13St_Shell_InitEv.cpp
- *   [275] 0x020cc7d0  src/_ZN6Player17St_HurtWater_MainEv.cpp
- *   [276] 0x020cc910  src/_ZN6Player17St_HurtWater_InitEv.cpp
- *   [277] 0x020cc9c0  src/_ZN6Player23St_MetalWaterWater_MainEv.cpp
- *   [278] 0x020ccc3c  src/_ZN6Player23St_MetalWaterWater_InitEv.cpp
- *   [279] 0x020ccccc  src/_ZN6Player24St_MetalWaterGround_MainEv.cpp
- *   [280] 0x020cd0d0  src/_ZN6Player24St_MetalWaterGround_InitEv.cpp
- *   [281] 0x020cd190  src/func_ov002_020cd190.c
- *   [282] 0x020cd1e4  src/_ZN6Player15St_Swim_CleanupEv.cpp
- *   [283] 0x020cd218  src/func_ov002_020cd218.cpp
- *   [284] 0x020cd28c  src/func_ov002_020cd28c.c
- *   [285] 0x020cd2c4  src/func_ov002_020cd2c4.c
- *   [286] 0x020cd308  src/func_ov002_020cd308.c
- *   [287] 0x020cd364  src/func_ov002_020cd364.c
- *   [288] 0x020cd39c  src/func_ov002_020cd39c.c
- *   [289] 0x020cd3e0  src/func_ov002_020cd3e0.cpp
- *   [290] 0x020cd448  src/func_ov002_020cd448.cpp
- *   [291] 0x020cd550  src/func_ov002_020cd550.c
- *   [292] 0x020cd71c  src/func_ov002_020cd71c.c
- *   [293] 0x020cd94c  src/_ZN6Player12St_Swim_MainEv.cpp
- *   [294] 0x020ce324  src/func_ov002_020ce324.c
- *   [295] 0x020ce550  src/_ZN6Player12St_Swim_InitEv.cpp
- *   [296] 0x020ce5f8  src/func_ov002_020ce5f8.c
- *   [297] 0x020ce798  src/func_ov002_020ce798.c
- *   [298] 0x020ce8bc  src/func_ov002_020ce8bc.c
- *   [299] 0x020ce9c8  src/func_ov002_020ce9c8.c
- *   [300] 0x020ceaf4  src/func_ov002_020ceaf4.c
- *   [301] 0x020ceb54  src/func_ov002_020ceb54.c
- *   [302] 0x020ceb7c  src/func_ov002_020ceb7c.c
- *   [303] 0x020cec2c  src/func_ov002_020cec2c.c
- *   [304] 0x020cedb0  src/func_ov002_020cedb0.c
- *   [305] 0x020cede0  src/func_ov002_020cede0.cpp
- *   [306] 0x020cef84  src/func_ov002_020cef84.cpp
- *   [307] 0x020cf20c  src/func_ov002_020cf20c.cpp
- *   [308] 0x020cf2f8  src/func_ov002_020cf2f8.c
- *   [309] 0x020cf384  src/func_ov002_020cf384.c
- *   [310] 0x020cf398  src/_ZN6Player20St_CeilingGrate_MainEv.cpp
- *   [311] 0x020cf6bc  src/_ZN6Player20St_CeilingGrate_InitEv.cpp
- *   [312] 0x020cf700  src/func_ov002_020cf700.c
- *   [313] 0x020cf714  src/_ZN6Player14St_OnWall_MainEv.cpp
- *   [314] 0x020cfa90  src/_ZN6Player14St_OnWall_InitEv.cpp
- *   [315] 0x020cfaf0  src/func_ov002_020cfaf0.cpp
- *   [316] 0x020cfbdc  src/func_ov002_020cfbdc.cpp
- *   [317] 0x020cfd84  src/func_ov002_020cfd84.cpp
- 
- *   [318] 0x020cfea4  func_ov002_020cfea4
- *   [319] 0x020d0178  func_ov002_020d0178
- *   [320] 0x020d0580  func_ov002_020d0580
- *   [321] 0x020d06c0  func_ov002_020d06c0
- *   [322] 0x020d0824  _ZN6Player17St_LedgeGrab_MainEv
- *   [323] 0x020d08b0  _ZN6Player17St_LedgeGrab_InitEv
- *   [324] 0x020d092c  _ZN6Player20St_LedgeHang_CleanupEv
- *   [325] 0x020d0948  func_ov002_020d0948
- *   [326] 0x020d0a44  _ZN6Player17St_LedgeHang_MainEv
- *   [327] 0x020d0c54  _ZN6Player17St_LedgeHang_InitEv
- *   [328] 0x020d0d2c  func_ov002_020d0d2c
- *   [329] 0x020d0d78  _ZN6Player17St_WallSlide_MainEv
- *   [330] 0x020d0e8c  _ZN6Player17St_WallSlide_InitEv
- *   [331] 0x020d0ee0  _ZN6Player13St_Crawl_MainEv
- *   [332] 0x020d112c  _ZN6Player13St_Crawl_InitEv
- *   [333] 0x020d1164  func_ov002_020d1164
- *   [334] 0x020d1204  func_ov002_020d1204
- *   [335] 0x020d12b0  func_ov002_020d12b0
- *   [336] 0x020d1354  _ZN6Player14St_Crouch_MainEv
- *   [337] 0x020d15e0  _ZN6Player14St_Crouch_InitEv
- *   [338] 0x020d16bc  _ZN6Player17St_HoldHeavy_MainEv
- *   [339] 0x020d19a8  _ZN6Player17St_HoldHeavy_InitEv
- *   [340] 0x020d19fc  _ZN6Player20St_HoldLight_CleanupEv
- *   [341] 0x020d1a1c  _ZN6Player17St_HoldLight_MainEv
- *   [342] 0x020d1ea0  _ZN6Player17St_HoldLight_InitEv
- *   [343] 0x020d1f78  func_ov002_020d1f78
- *   [344] 0x020d2184  _ZN6Player21St_WaitQuicksand_MainEv
- *   [345] 0x020d2224  _ZN6Player21St_WaitQuicksand_InitEv
- *   [346] 0x020d225c  func_ov002_020d225c
- *   [347] 0x020d228c  func_ov002_020d228c
- *   [348] 0x020d22ec  func_ov002_020d22ec
- *   [349] 0x020d2378  _ZN6Player15St_Wait_CleanupEv
- *   [350] 0x020d2404  _ZN6Player12St_Wait_MainEv
- *   [351] 0x020d2da0  func_ov002_020d2da0
- *   [352] 0x020d2e74  func_ov002_020d2e74
- *   [353] 0x020d2f24  func_ov002_020d2f24
- *   [354] 0x020d2fdc  func_ov002_020d2fdc
- *   [355] 0x020d32bc  _ZN6Player12St_Wait_InitEv
- *   [356] 0x020d3498  func_ov002_020d3498
- *   [357] 0x020d34bc  _ZN6Player18St_TurnAround_MainEv
- *   [358] 0x020d369c  _ZN6Player18St_TurnAround_InitEv
- *   [359] 0x020d36d8  func_ov002_020d36d8
- *   [360] 0x020d38c0  _ZN6Player12St_Walk_MainEv
- *   [361] 0x020d3b9c  func_ov002_020d3b9c
- *   [362] 0x020d413c  func_ov002_020d413c
- *   [363] 0x020d4270  _ZN6Player12St_Walk_InitEv
- *   [364] 0x020d4540  func_ov002_020d4540
- *   [365] 0x020d454c  func_ov002_020d454c
- *   [366] 0x020d45c0  func_ov002_020d45c0
- *   [367] 0x020d4748  _ZN6Player19func_ov002_020d4748Ev
- *   [368] 0x020d4c30  func_ov002_020d4c30
- *   [369] 0x020d4d88  func_ov002_020d4d88
- *   [370] 0x020d4de8  _ZN6Player12St_Bonk_MainEv
- *   [371] 0x020d4f8c  _ZN6Player12St_Bonk_InitEv
- *   [372] 0x020d4fe4  _ZN6Player8BlowAwayEs
- *   [373] 0x020d5038  _ZN6Player16St_BurnLava_MainEv
- *   [374] 0x020d529c  _ZN6Player16St_BurnLava_InitEv
- *   [375] 0x020d5338  _ZN6Player19func_ov002_020d5338Ev
- *   [376] 0x020d53ac  _ZN6Player16St_BurnFire_MainEv
- *   [377] 0x020d5750  _ZN6Player16St_BurnFire_InitEv
- *   [378] 0x020d57d8  _ZN6Player4BurnEv
- *   [379] 0x020d5834  _ZN6Player19St_Electrocute_MainEv
- *   [380] 0x020d59b0  _ZN6Player19St_Electrocute_InitEv
- *   [381] 0x020d5a1c  _ZN6Player5ShockEj
- *   [382] 0x020d5ab4  func_ov002_020d5ab4
- *   [383] 0x020d5c6c  func_ov002_020d5c6c
- *   [384] 0x020d5cec  func_ov002_020d5cec
- *   [385] 0x020d5ed0  _ZN6Player19func_ov002_020d5ed0Ev
- *   [386] 0x020d5f34  func_ov002_020d5f34
- *   [387] 0x020d5f98  _ZN6Player19func_ov002_020d5f98EPhS0_
- *   [388] 0x020d600c  func_ov002_020d600c
- *   [389] 0x020d6048  _ZN6Player19func_ov002_020d6048Ev
- *   [390] 0x020d6084  _ZN6Player23St_InYoshiMouth_CleanupEv
- *   [391] 0x020d60b8  _ZN6Player20St_InYoshiMouth_MainEv
- *   [392] 0x020d62f8  _ZN6Player20St_InYoshiMouth_InitEv
- *   [393] 0x020d6334  func_ov002_020d6334
- *   [394] 0x020d6368  func_ov002_020d6368
- *   [395] 0x020d6474  _ZN6Player15St_Swallow_MainEv
- *   [396] 0x020d666c  _ZN6Player15St_Swallow_InitEv
- *   [397] 0x020d6708  _ZN6Player20RegisterEggCoinCountEjbb
- *   [398] 0x020d674c  func_ov002_020d674c
- *   [399] 0x020d6790  func_ov002_020d6790
- *   [400] 0x020d6998  _ZN6Player19func_ov002_020d6998Ev
- *   [401] 0x020d6c60  func_ov002_020d6c60
- *   [402] 0x020d6dac  func_ov002_020d6dac
- *   [403] 0x020d7030  func_ov002_020d7030
- *   [404] 0x020d708c  _ZN6Player19func_ov002_020d708cEv
- *   [405] 0x020d718c  _ZN6Player19func_ov002_020d718cEv
- *   [406] 0x020d71a0  _ZN6Player19func_ov002_020d71a0Ev
- *   [407] 0x020d71ec  func_ov002_020d71ec
- *   [408] 0x020d736c  _ZN6Player21St_YoshiPower_CleanupEv
- *   [409] 0x020d7430  func_ov002_020d7430
- *   [410] 0x020d7504  _ZN6Player18St_YoshiPower_MainEv
- *   [411] 0x020d7ed0  _ZN6Player18St_YoshiPower_InitEv
- *   [412] 0x020d80d0  func_ov002_020d80d0
- *   [413] 0x020d8118  func_ov002_020d8118
- *   [414] 0x020d8158  func_ov002_020d8158
- *   [415] 0x020d8228  _ZN6Player13InitFireYoshiEv
- *   [416] 0x020d8274  _ZN6Player21St_DizzyStars_CleanupEv
- *   [417] 0x020d828c  _ZN6Player18St_DizzyStars_MainEv
- *   [418] 0x020d82cc  _ZN6Player18St_DizzyStars_InitEv
- *   [419] 0x020d82f0  func_ov002_020d82f0
- *   [420] 0x020d8360  func_ov002_020d8360
- *   [421] 0x020d853c  func_ov002_020d853c
- *   [422] 0x020d85fc  func_ov002_020d85fc
- *   [423] 0x020d869c  func_ov002_020d869c
- *   [424] 0x020d8838  func_ov002_020d8838
- *   [425] 0x020d8854  func_ov002_020d8854
- *   [426] 0x020d8944  func_ov002_020d8944
- *   [427] 0x020d8a50  func_ov002_020d8a50
- *   [428] 0x020d8d10  func_ov002_020d8d10
- *   [429] 0x020d8e70  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj
- *   [430] 0x020d91b8  func_ov002_020d91b8
- *   [431] 0x020d91e0  func_ov002_020d91e0
- *   [432] 0x020d9298  func_ov002_020d9298
- *   [433] 0x020d932c  _ZN6Player6BounceE5Fix12IiE
- *   [434] 0x020d93ac  _ZN6Player19func_ov002_020d93acEv
- *   [435] 0x020d94cc  _ZN6Player19func_ov002_020d94ccEv
- *   [436] 0x020d9654  _ZN6Player15St_Hurt_CleanupEv
- *   [437] 0x020d966c  _ZN6Player12St_Hurt_MainEv
- *   [438] 0x020d98b4  _ZN6Player19func_ov002_020d98b4Ev
- *   [439] 0x020d99a4  func_ov002_020d99a4
- *   [440] 0x020d9a4c  func_ov002_020d9a4c
- *   [441] 0x020d9aac  func_ov002_020d9aac
- *   [442] 0x020d9b68  _ZN6Player12St_Hurt_InitEv
- *   [443] 0x020d9c44  _ZN6Player12GetHurtStateEv
- *   [444] 0x020d9c70  func_ov002_020d9c70
- *   [445] 0x020d9dcc  func_ov002_020d9dcc
- *   [446] 0x020d9fc4  _ZN6Player22St_SwingPlayer_CleanupEv
- *   [447] 0x020d9fec  _ZN6Player19St_SwingPlayer_MainEv
- *   [448] 0x020da3b0  _ZN6Player19St_SwingPlayer_InitEv
- *   [449] 0x020da41c  _ZN6Player25St_GrabBowserTail_CleanupEv
- *   [450] 0x020da438  _ZN6Player22St_GrabBowserTail_MainEv
- *   [451] 0x020da794  _ZN6Player22St_GrabBowserTail_InitEv
- *   [452] 0x020da7f4  _ZN6Player9DropActorEv
- *   [453] 0x020da95c  func_ov002_020da95c
- *   [454] 0x020da9d4  func_ov002_020da9d4
- *   [455] 0x020daa74  _ZN6Player19func_ov002_020daa74Ev
- *   [456] 0x020dab14  Player_ReleaseHeldActor
- *   [457] 0x020daba0  _ZN6Player7TryGrabER8dActor_c
- *   [458] 0x020dacb4  func_ov002_020dacb4
- *   [459] 0x020dae6c  _ZN6Player13St_Throw_MainEv
- *   [460] 0x020dafd4  _ZN6Player13St_Throw_InitEv
- *   [461] 0x020db0a4  _ZN6Player17St_Thrown_CleanupEv
- *   [462] 0x020db0bc  _ZN6Player14St_Thrown_MainEv
- *   [463] 0x020db2e8  _ZN6Player14St_Thrown_InitEv
- *   [464] 0x020db368  _ZN6Player18St_Grabbed_CleanupEv
- *   [465] 0x020db3bc  _ZN6Player15St_Grabbed_MainEv
- *   [466] 0x020db4d8  _ZN6Player15St_Grabbed_InitEv
- *   [467] 0x020db54c  func_ov002_020db54c
- *   [468] 0x020db5f4  func_ov002_020db5f4
- *   [469] 0x020db674  func_ov002_020db674
- *   [470] 0x020db704  func_ov002_020db704
- *   [471] 0x020db8bc  func_ov002_020db8bc
- *   [472] 0x020db8d8  _ZN6Player19func_ov002_020db8d8Ev
- *   [473] 0x020dba0c  func_ov002_020dba0c
- *   [474] 0x020dbaec  func_ov002_020dbaec
- *   [475] 0x020dbbc0  func_ov002_020dbbc0
- *   [476] 0x020dbc94  func_ov002_020dbc94
- *   [477] 0x020dbd94  func_ov002_020dbd94
- *   [478] 0x020dbe70  func_ov002_020dbe70
- *   [479] 0x020dbf4c  func_ov002_020dbf4c
- *   [480] 0x020dc020  func_ov002_020dc020
- *   [481] 0x020dc09c  func_ov002_020dc09c
- *   [482] 0x020dc174  func_ov002_020dc174
- *   [483] 0x020dc1d0  _ZN6Player17St_SlideKick_MainEv
- *   [484] 0x020dc3e0  _ZN6Player17St_SlideKick_InitEv
- *   [485] 0x020dc48c  _ZN6Player17St_SweepKick_MainEv
- *   [486] 0x020dc510  _ZN6Player17St_SweepKick_InitEv
- *   [487] 0x020dc560  func_ov002_020dc560
- *   [488] 0x020dc740  _ZN6Player17St_ButtSlide_MainEv
- *   [489] 0x020dca80  _ZN6Player17St_ButtSlide_InitEv
- *   [490] 0x020dcafc  func_ov002_020dcafc
- *   [491] 0x020dcc28  _ZN6Player20St_StomachSlide_MainEv
- *   [492] 0x020dd104  _ZN6Player20St_StomachSlide_InitEv
- *   [493] 0x020dd17c  _ZN6Player12St_Dive_InitEv
- *   [494] 0x020dd240  _ZN6Player8IsDivingEv
- *   [495] 0x020dd26c  _ZN6Player17LostGrabbedObjectEv
- *   [496] 0x020dd2b0  _ZN6Player14IsFrontSlidingEv
- *   [497] 0x020dd2f4  func_ov002_020dd2f4
- *   [498] 0x020dd3c4  _ZN6Player17St_PunchKick_MainEv
- *   [499] 0x020dd5ec  func_ov002_020dd5ec
- *   [500] 0x020dd79c  _ZN6Player17St_PunchKick_InitEv
- *   [501] 0x020dd824  func_ov002_020dd824
- *   [502] 0x020dd8b8  func_ov002_020dd8b8
- *   [503] 0x020dd8f4  func_ov002_020dd8f4
- *   [504] 0x020dd908  func_ov002_020dd908
- *   [505] 0x020dd9e0  _ZN6Player22St_GroundPound_CleanupEv
- *   [506] 0x020dd9f8  _ZN6Player19St_GroundPound_MainEv
- *   [507] 0x020dddf0  _ZN6Player19St_GroundPound_InitEv
- *   [508] 0x020dde74  func_ov002_020dde74
- *   [509] 0x020ddfdc  _ZN6Player19St_TornadoSpin_MainEv
- *   [510] 0x020de2a0  _ZN6Player19St_TornadoSpin_InitEv
- *   [511] 0x020de328  func_ov002_020de328
- *   [512] 0x020de33c  func_ov002_020de33c
- *   [513] 0x020de3b4  _ZN6Player18St_Balloon_CleanupEv
- *   [514] 0x020de3d0  func_ov002_020de3d0
- *   [515] 0x020de428  func_ov002_020de428
- *   [516] 0x020de45c  _ZN6Player15St_Balloon_MainEv
- *   [517] 0x020de8ac  _ZN6Player15St_Balloon_InitEv
- *   [518] 0x020de968  func_ov002_020de968
- *   [519] 0x020dea00  _ZN6Player16InitBalloonMarioEv
- *   [520] 0x020deab8  _ZN6Player17St_WindCarry_MainEv
- *   [521] 0x020dec0c  _ZN6Player17St_WindCarry_InitEv
- *   [522] 0x020dec70  func_ov002_020dec70
- *   [523] 0x020dedf0  _ZN6Player21St_JumpQuicksand_MainEv
- *   [524] 0x020deeac  _ZN6Player21St_JumpQuicksand_InitEv
- *   [525] 0x020deefc  _ZN6Player17St_Cannon_CleanupEv
- *   [526] 0x020def14  _ZN6Player14St_Cannon_MainEv
- *   [527] 0x020df208  _ZN6Player14St_Cannon_InitEv
- *   [528] 0x020df288  _ZN6Player16IsInsideOfCannonEv
- *   [529] 0x020df2c4  _ZN6Player22IsBeingShotOutOfCannonEv
- *   [530] 0x020df300  func_ov002_020df300
- *   [531] 0x020df34c  func_ov002_020df34c
- *   [532] 0x020df3c8  _ZN6Player14St_Owl_CleanupEv
- *   [533] 0x020df3ec  _ZN6Player11St_Owl_MainEv
- *   [534] 0x020df740  _ZN6Player11St_Owl_InitEv
- *   [535] 0x020df7ac  func_ov002_020df7ac
- *   [536] 0x020df7f4  func_ov002_020df7f4
- *   [537] 0x020df840  func_ov002_020df840
- *   [538] 0x020df8f0  func_ov002_020df8f0
- *   [539] 0x020dfdf0  _ZN6Player11St_Fly_MainEv
- *   [540] 0x020e027c  _ZN6Player11St_Fly_InitEv
- *   [541] 0x020e032c  func_ov002_020e032c
- *   [542] 0x020e03b8  _ZN6Player16InitWingFeathersEb
- *   [543] 0x020e0478  func_ov002_020e0478
- *   [544] 0x020e04a4  func_ov002_020e04a4
- *   [545] 0x020e04ec  _ZN6Player12St_Land_MainEv
- *   [546] 0x020e088c  _ZN6Player12St_Land_InitEv
- *   [547] 0x020e0a64  func_ov002_020e0a64
- *   [548] 0x020e0aa8  _ZN6Player21St_SmallLaunchUp_MainEv
- *   [549] 0x020e0adc  _ZN6Player21St_SmallLaunchUp_InitEv
- *   [550] 0x020e0b50  _ZN6Player17St_SlopeJump_MainEv
- *   [551] 0x020e0c04  _ZN6Player17St_SlopeJump_InitEv
- *   [552] 0x020e0ccc  func_ov002_020e0ccc
- *   [553] 0x020e0d28  _ZN6Player22St_CrazedCrate_CleanupEv
- *   [554] 0x020e0d48  _ZN6Player19St_CrazedCrate_MainEv
- *   [555] 0x020e0f38  func_ov002_020e0f38
- *   [556] 0x020e0fac  _ZN6Player19St_CrazedCrate_InitEv
- *   [557] 0x020e1020  _ZN6Player10SpinBounceE5Fix12IiE
- *   [558] 0x020e10a8  func_ov002_020e10a8
- *   [559] 0x020e10d4  _ZN6Player15St_Spin_CleanupEv
- *   [560] 0x020e10ec  _ZN6Player12St_Spin_MainEv
- *   [561] 0x020e119c  _ZN6Player12St_Spin_InitEv
- *   [562] 0x020e1238  _ZN6Player16St_LongJump_MainEv
- *   [563] 0x020e127c  _ZN6Player16St_LongJump_InitEv
- *   [564] 0x020e13c0  _ZN6Player16St_SideFlip_MainEv
- *   [565] 0x020e162c  _ZN6Player17St_WaterJump_InitEv
- *   [566] 0x020e16a4  _ZN6Player21St_HeadstandJump_InitEv
- *   [567] 0x020e1714  _ZN6Player16St_WallJump_MainEv
- *   [568] 0x020e17f8  _ZN6Player16St_WallJump_InitEv
- *   [569] 0x020e18a8  _ZN6Player16St_BackFlip_InitEv
- *   [570] 0x020e1990  _ZN6Player24St_SlideKickRecover_InitEv
- *   [571] 0x020e1a10  _ZN6Player16St_SideFlip_InitEv
- *   [572] 0x020e1af8  _ZN6Player12St_Fall_MainEv
- *   [573] 0x020e1b80  _ZN6Player12St_Fall_InitEv
- *   [574] 0x020e1c20  func_ov002_020e1c20
- *   [575] 0x020e1e70  func_ov002_020e1e70
- *   [576] 0x020e200c  func_ov002_020e200c
- *   [577] 0x020e2118  _ZN6Player12St_Jump_MainEv
- *   [578] 0x020e22c0  _ZN6Player12St_Jump_InitEv
- *   [579] 0x020e25d4  func_ov002_020e25d4
- *   [580] 0x020e25f0  func_ov002_020e25f0
- *   [581] 0x020e2664  func_ov002_020e2664
- *   [582] 0x020e28d4  func_ov002_020e28d4
- *   [583] 0x020e2ad0  func_ov002_020e2ad0
- *   [584] 0x020e2b6c  func_ov002_020e2b6c
- *   [585] 0x020e2ba8  func_ov002_020e2ba8
- *   [586] 0x020e2be4  func_ov002_020e2be4
- *   [587] 0x020e2c84  func_ov002_020e2c84
- *   [588] 0x020e2ea0  func_ov002_020e2ea0
- *   [589] 0x020e301c  func_ov002_020e301c
- *   [590] 0x020e3078  func_ov002_020e3078
- *   [591] 0x020e308c  _ZN6Player7IsStateERNS_5StateE
- *   [592] 0x020e30a0  _ZN6Player11ChangeStateERNS_5StateE
- *   [593] 0x020e32d4  _ZN6Player16CleanupResourcesEv
- *   [594] 0x020e3a04  _ZN6Player16OnPendingDestroyEv
- *   [595] 0x020e3a08  _ZN6Player6RenderEv
- *   [596] 0x020e3e00  func_ov002_020e3e00
- *   [597] 0x020e3f90  func_ov002_020e3f90
- *   [598] 0x020e4374  func_ov002_020e4374
- *   [599] 0x020e444c  func_ov002_020e444c
- *   [600] 0x020e4768  func_ov002_020e4768
- *   [601] 0x020e496c  func_ov002_020e496c
- *   [602] 0x020e4990  func_ov002_020e4990
- *   [603] 0x020e4bb8  func_ov002_020e4bb8
- *   [604] 0x020e4d24  _ZN6Player8BehaviorEv
- *   [605] 0x020e558c  _ZN6Player13InitResourcesEv
- *   [606] 0x020e5948  func_ov002_020e5948
- *   [607] 0x020e6330  func_ov002_020e6330
- *   [608] 0x020e6350  func_ov002_020e6350
- *   [609] 0x020e63a4  func_ov002_020e63a4
- *   [610] 0x020e640c  func_ov002_020e640c
- *   [611] 0x020e6780  func_ov002_020e6780
- */
+/* Out-of-line ~Player is the key function. defer_codegen on for this
+ * definition only: under defer_codegen off the variants come out D1, D0, D2,
+ * and the cartridge order is D0 then D1. With deferred codegen they come out
+ * D2, D0, D1, and the following function stays after them. RTTI stays off
+ * from here on, which suppresses _ZTI6Player and _ZTS6Player and writes a
+ * zero typeinfo word in the vtable preamble. Retail relocates 0x0210a838 to
+ * _ZTI7daPly_c. The 124 slot bytes reproduce. D2 is not in the cartridge. */
+#pragma defer_codegen on
+#pragma RTTI off
+
+// @symbol _ZN6PlayerD0Ev
+// @symbol _ZN6PlayerD1Ev
+Player::~Player()
+{
+}
+
+#pragma defer_codegen off
+
+extern "C"  {
+extern int data_ov002_0210a83c[];
+void *_ZN8dActor_cC2Ev(void*);
+void *_ZN9ModelAnimC1Ev(void*);
+void __cxa_vec_ctor(void*,int,int,void*,void*);
+void *_ZN15TextureSequenceC1Ev(void*);
+void _ZN15TextureSequenceD1Ev(void*);
+void *_ZN15MaterialChangerC1Ev(void*);
+void _ZN15MaterialChangerD1Ev(void*);
+void *_ZN17dExtShadowModel_cC1Ev(void*);
+void *_ZN10dCcAcPos_cC1Ev(void*);
+void *_ZN10dBgCh_ActrC1Ev(void*);
+void* _ZN6PlayerC1Ev(void* c){
+  char* p=(char*)c;
+  _ZN8dActor_cC2Ev(c);
+  char* r4=p+0xdc;
+  *(int*)p=(int)data_ov002_0210a83c;
+  _ZN9ModelAnimC1Ev(r4+0x14);
+  _ZN9ModelAnimC1Ev(r4+0x98);
+  __cxa_vec_ctor(r4+0x100,4,0x14,(void*)_ZN15TextureSequenceC1Ev,(void*)_ZN15TextureSequenceD1Ev);
+  __cxa_vec_ctor(r4+0x150,2,0x14,(void*)_ZN15MaterialChangerC1Ev,(void*)_ZN15MaterialChangerD1Ev);
+  __cxa_vec_ctor(r4+0x178,2,0x14,(void*)_ZN15TextureSequenceC1Ev,(void*)_ZN15TextureSequenceD1Ev);
+  _ZN17dExtShadowModel_cC1Ev(p+0x2ac);
+  _ZN10dCcAcPos_cC1Ev(p+0x2d4);
+  _ZN10dCcAcPos_cC1Ev(p+0x314);
+  _ZN10dBgCh_ActrC1Ev(p+0x380);
+  return c;
+}
+}
+
+// @symbol _ZN6Player13OnYoshiTryEatEv
+int Player::OnYoshiTryEat()
+{
+    (void)this;
+    return 1;
+}
+
+// @symbol func_ov002_020e69c0
+extern "C" {
+extern unsigned short data_ov002_0210a760[];
+void func_ov002_020e69c0(void *unused)
+{
+    (void)unused;
+    unsigned short *dst = data_ov002_0210a760;
+    unsigned short a = *dst;
+    unsigned short b = dst[1];
+    unsigned short *src = (unsigned short *)((char *)dst + 4);
+    int i;
+    for (i = 2; i < 0x20; i++) {
+        *dst++ = *src++;
+    }
+    dst[0] = a;
+    dst[1] = b;
+}
+}
+
+
+
+/* Static initializer __sinit_ov002_021019d0. define_section puts this
+ * function in .init; under cplusplus off the body matches the enrolled
+ * C translation unit. */
+#pragma define_section initsec ".init" ".init" ".init" far_absolute RX
+#pragma section initsec begin
+#pragma cplusplus off
+/* SharedFilePtr is opaque to this C initializer. It only passes these objects
+ * by address; their storage and layout are not defined here. The method-bearing
+ * SharedFilePtr.h interface is C++ only. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum sinit_ov002_021019d0_AssetId {
+    ASSET_B_MARIO_ALL_BMD = 0x04be,
+    ASSET_B_MARIO_BODY_BMD = 0x04bf,
+    ASSET_B_MARIO_HEAD_CAP_BMD = 0x04c0,
+    ASSET_B_MARIO_START_BCA = 0x04c1,
+    ASSET_COLD_WAIT_BCA = 0x04c2,
+    ASSET_COLD_WAIT_END_BCA = 0x04c3,
+    ASSET_COLD_WAIT_START_BCA = 0x04c4,
+    ASSET_DAMAGE_START_BCA = 0x04c5,
+    ASSET_DAMAGE_WAIT_BCA = 0x04c6,
+    ASSET_DOOR_PULL_BCA = 0x04c7,
+    ASSET_DOOR_PUSH_BCA = 0x04c8,
+    ASSET_DROWN_DIE_BCA = 0x04c9,
+    ASSET_ED_CAP_OFF_BCA = 0x04ca,
+    ASSET_ED_CAP_OFF_WAIT_BCA = 0x04cb,
+    ASSET_ED_FLY_BCA = 0x04cc,
+    ASSET_ED_FLY_START_BCA = 0x04cd,
+    ASSET_ED_KISS_TO_POSE_BCA = 0x04ce,
+    ASSET_ED_KISS_WAIT_BCA = 0x04cf,
+    ASSET_ED_LOOK_LEFT_BCA = 0x04d0,
+    ASSET_ED_LOOK_LEFT_END_BCA = 0x04d1,
+    ASSET_ED_LOOK_LEFT_WAIT_BCA = 0x04d2,
+    ASSET_ED_NOD_BCA = 0x04d3,
+    ASSET_ED_PUTUP_WAIT_BCA = 0x04d4,
+    ASSET_ED_WAIT_BCA = 0x04d5,
+    ASSET_ED_WAVE_BCA = 0x04d6,
+    ASSET_E_DOWN_BCA = 0x04d7,
+    ASSET_FALL_DIE_BCA = 0x04d8,
+    ASSET_FALL_SAND_BCA = 0x04d9,
+    ASSET_FIRST_CHANGE_BCA = 0x04da,
+    ASSET_GAS_DIE_BCA = 0x04db,
+    ASSET_GAS_WAIT_BCA = 0x04dc,
+    ASSET_H_CARRY_START_BCA = 0x04dd,
+    ASSET_H_CARRY_THROW_BCA = 0x04de,
+    ASSET_H_CARRY_WAIT_BCA = 0x04df,
+    ASSET_H_CARRY_WALK_BCA = 0x04e0,
+    ASSET_KEY_GET_BCA = 0x04e1,
+    ASSET_KEY_OPEN_BCA = 0x04e2,
+    ASSET_LIE_END_BCA = 0x04e3,
+    ASSET_LIE_WAIT_BCA = 0x04e4,
+    ASSET_L_ED_AMAZED_BCA = 0x04e5,
+    ASSET_L_ED_CAP_OFF_BCA = 0x04e6,
+    ASSET_L_ED_CAP_OFF_WAIT_BCA = 0x04e7,
+    ASSET_L_ED_LOOKUP_WAIT_BCA = 0x04e8,
+    ASSET_L_ED_LOOK_MARIO_BCA = 0x04e9,
+    ASSET_L_ED_LOOK_M_WAIT_BCA = 0x04ea,
+    ASSET_L_ED_WAIT_BCA = 0x04eb,
+    ASSET_L_ENTRY_WAIT_BCA = 0x04ec,
+    ASSET_L_ENTRY_WAIT_END_BCA = 0x04ed,
+    ASSET_L_FIRST_CHANGE_BCA = 0x04ee,
+    ASSET_L_LIE_END_BCA = 0x04ef,
+    ASSET_L_LIE_WAIT_BCA = 0x04f0,
+    ASSET_L_OP_LOOK_WARIO_BCA = 0x04f1,
+    ASSET_L_OP_NOD_BCA = 0x04f2,
+    ASSET_L_OP_TURN_BCA = 0x04f3,
+    ASSET_L_SLEEP_END_BCA = 0x04f4,
+    ASSET_L_SLEEP_START_BCA = 0x04f5,
+    ASSET_L_SLEEP_TO_LIE_BCA = 0x04f6,
+    ASSET_L_SLEEP_WAIT_BCA = 0x04f7,
+    ASSET_L_TX_DAMAGE_START_BTP = 0x04f8,
+    ASSET_L_TX_DAMAGE_WAIT_BTP = 0x04f9,
+    ASSET_L_TX_ED_AMAZED_BTP = 0x04fa,
+    ASSET_L_TX_GAS_WAIT_BTP = 0x04fb,
+    ASSET_L_TX_LIE_END_BTP = 0x04fc,
+    ASSET_L_TX_LIE_WAIT_BTP = 0x04fd,
+    ASSET_L_TX_RETURN_DOWN_BTP = 0x04fe,
+    ASSET_L_TX_SLEEP_END_BTP = 0x04ff,
+    ASSET_L_TX_SLEEP_START_BTP = 0x0500,
+    ASSET_L_TX_SLEEP_TO_LIE_BTP = 0x0501,
+    ASSET_L_TX_SLEEP_WAIT_BTP = 0x0502,
+    ASSET_M_ENTRY_WAIT_BCA = 0x0503,
+    ASSET_M_ENTRY_WAIT_END_BCA = 0x0504,
+    ASSET_N_CARRY_LOST_BCA = 0x0505,
+    ASSET_N_CARRY_POSE_BCA = 0x0506,
+    ASSET_N_CARRY_PUT_BCA = 0x0507,
+    ASSET_N_CARRY_START_BCA = 0x0508,
+    ASSET_N_CARRY_WAIT_BCA = 0x0509,
+    ASSET_N_CARRY_WALK_BCA = 0x050a,
+    ASSET_OP_GO_BCA = 0x050b,
+    ASSET_OP_WAIT_BCA = 0x050c,
+    ASSET_PADDLE_1_BCA = 0x050d,
+    ASSET_PADDLE_2_BCA = 0x050e,
+    ASSET_PADDLE_CARRY_BCA = 0x050f,
+    ASSET_PADDLE_END_BCA = 0x0510,
+    ASSET_PUTON_T_CAP_BCA = 0x0511,
+    ASSET_P_KOOPA_HOLD_BCA = 0x0512,
+    ASSET_P_KOOPA_H_WAIT_BCA = 0x0513,
+    ASSET_P_KOOPA_THROW_BCA = 0x0514,
+    ASSET_RETURN_DOWN_BCA = 0x0515,
+    ASSET_RETURN_NOCAP_BCA = 0x0516,
+    ASSET_RETURN_STAR_BCA = 0x0517,
+    ASSET_SCALE_UP_BCA = 0x0518,
+    ASSET_SDROP_HEAD_BCA = 0x0519,
+    ASSET_SDROP_HEAD_END_BCA = 0x051a,
+    ASSET_SDROP_HEAD_WAIT_BCA = 0x051b,
+    ASSET_SDROP_HIP_BCA = 0x051c,
+    ASSET_SDROP_HIP_END_BCA = 0x051d,
+    ASSET_SDROP_HIP_WAIT_BCA = 0x051e,
+    ASSET_SDROP_LEG_BCA = 0x051f,
+    ASSET_SDROP_LEG_END_BCA = 0x0520,
+    ASSET_SDROP_LEG_WAIT_BCA = 0x0521,
+    ASSET_SDROP_WAIT_BCA = 0x0522,
+    ASSET_SDROP_WALK_BCA = 0x0523,
+    ASSET_SHF_DIE_BCA = 0x0524,
+    ASSET_SHOOT_BCA = 0x0525,
+    ASSET_SHOOT_TO_FLY_BCA = 0x0526,
+    ASSET_SLEEP_END_BCA = 0x0527,
+    ASSET_SLEEP_START_BCA = 0x0528,
+    ASSET_SLEEP_TO_LIE_BCA = 0x0529,
+    ASSET_SLEEP_WAIT_BCA = 0x052a,
+    ASSET_STAR_OPEN_BCA = 0x052b,
+    ASSET_SU_HIPAT_BCA = 0x052c,
+    ASSET_SU_HIPED_BCA = 0x052d,
+    ASSET_SU_HIPSR_BCA = 0x052e,
+    ASSET_SU_JUMP_BCA = 0x052f,
+    ASSET_SU_JUMP_END_BCA = 0x0530,
+    ASSET_SU_RUN_BCA = 0x0531,
+    ASSET_SU_WAIT_BCA = 0x0532,
+    ASSET_SU_WALK_BCA = 0x0533,
+    ASSET_SU_WALK_END_BCA = 0x0534,
+    ASSET_SU_WALK_START_BCA = 0x0535,
+    ASSET_SWIM_BCA = 0x0536,
+    ASSET_SWIM_ATTACK_BCA = 0x0537,
+    ASSET_SWIM_CARRY_BCA = 0x0538,
+    ASSET_SWIM_DAMAGE_BCA = 0x0539,
+    ASSET_SWIM_DIE_BCA = 0x053a,
+    ASSET_SWIM_IN_BCA = 0x053b,
+    ASSET_SWIM_STAR_GET_BCA = 0x053c,
+    ASSET_SWIM_THROW_BCA = 0x053d,
+    ASSET_SWIM_WAIT_BCA = 0x053e,
+    ASSET_S_DIE_BCA = 0x053f,
+    ASSET_TX_DAMAGE_START_BTP = 0x0540,
+    ASSET_TX_DAMAGE_WAIT_BTP = 0x0541,
+    ASSET_TX_ED_KISS_TO_POSE_BTP = 0x0542,
+    ASSET_TX_ED_KISS_WAIT_BTP = 0x0543,
+    ASSET_TX_GAS_WAIT_BTP = 0x0544,
+    ASSET_TX_LIE_END_BTP = 0x0545,
+    ASSET_TX_LIE_WAIT_BTP = 0x0546,
+    ASSET_TX_RETURN_DOWN_BTP = 0x0547,
+    ASSET_TX_SLEEP_END_BTP = 0x0548,
+    ASSET_TX_SLEEP_START_BTP = 0x0549,
+    ASSET_TX_SLEEP_TO_LIE_BTP = 0x054a,
+    ASSET_TX_SLEEP_WAIT_BTP = 0x054b,
+    ASSET_WARIO_METAL_MODEL_BMD = 0x054c,
+    ASSET_W_ED_AMAZED_WAIR_BCA = 0x054d,
+    ASSET_W_ED_CAP_OFF_BCA = 0x054e,
+    ASSET_W_ED_CAP_OFF_WAIT_BCA = 0x054f,
+    ASSET_W_ED_LOOKUP_WAIT_BCA = 0x0550,
+    ASSET_W_ED_WAIT_BCA = 0x0551,
+    ASSET_W_ED_WAVE_BCA = 0x0552,
+    ASSET_W_ENTRY_WAIT_BCA = 0x0553,
+    ASSET_W_ENTRY_WAIT_END_BCA = 0x0554,
+    ASSET_W_FIRST_CHANGE_BCA = 0x0555,
+    ASSET_W_KEY_GET_BCA = 0x0556,
+    ASSET_W_LIE_END_BCA = 0x0557,
+    ASSET_W_LIE_WAIT_BCA = 0x0558,
+    ASSET_W_OP_LOOK_LUIGI_BCA = 0x0559,
+    ASSET_W_OP_NOD_BCA = 0x055a,
+    ASSET_W_OP_POINT_BCA = 0x055b,
+    ASSET_W_OP_TURN_BCA = 0x055c,
+    ASSET_W_SLEEP_END_BCA = 0x055d,
+    ASSET_W_SLEEP_START_BCA = 0x055e,
+    ASSET_W_SLEEP_TO_LIE_BCA = 0x055f,
+    ASSET_W_SLEEP_WAIT_BCA = 0x0560,
+    ASSET_W_TX_DAMAGE_START_BTP = 0x0561,
+    ASSET_W_TX_DAMAGE_WAIT_BTP = 0x0562,
+    ASSET_W_TX_ED_AMAZED_BTP = 0x0563,
+    ASSET_W_TX_GAS_WAIT_BTP = 0x0564,
+    ASSET_W_TX_LIE_END_BTP = 0x0565,
+    ASSET_W_TX_LIE_WAIT_BTP = 0x0566,
+    ASSET_W_TX_RETURN_DOWN_BTP = 0x0567,
+    ASSET_W_TX_SLEEP_END_BTP = 0x0568,
+    ASSET_W_TX_SLEEP_START_BTP = 0x0569,
+    ASSET_W_TX_SLEEP_TO_LIE_BTP = 0x056a,
+    ASSET_W_TX_SLEEP_WAIT_BTP = 0x056b,
+    ASSET_Y_ED_LOOKUP_WAIT_BCA = 0x056c,
+    ASSET_Y_ED_LOOK_CAM_BCA = 0x056d,
+    ASSET_Y_ED_SHY_TO_WAIT_BCA = 0x056e,
+    ASSET_Y_ED_SHY_WAIT_BCA = 0x056f,
+    ASSET_Y_ED_TURN_BCA = 0x0570,
+    ASSET_Y_ED_WAIT_BCA = 0x0571,
+    ASSET_Y_EGG_RUN_BCA = 0x0572,
+    ASSET_Y_EGG_WAIT_BCA = 0x0573,
+    ASSET_Y_LIE_END_BCA = 0x0574,
+    ASSET_Y_LIE_WAIT_BCA = 0x0575,
+    ASSET_Y_OP_LIE_TO_SIT_BCA = 0x0576,
+    ASSET_Y_OP_SIT_TO_STAND_BCA = 0x0577,
+    ASSET_Y_OP_SIT_WAIT_BCA = 0x0578,
+    ASSET_Y_OP_STAND_WAIT_BCA = 0x0579,
+    ASSET_Y_SLEEP_END_BCA = 0x057a,
+    ASSET_Y_SLEEP_START_BCA = 0x057b,
+    ASSET_Y_SLEEP_TO_LIE_BCA = 0x057c,
+    ASSET_Y_SLEEP_WAIT_BCA = 0x057d,
+    ASSET_Y_TX_DAMAGE_START_BTP = 0x057e,
+    ASSET_Y_TX_DAMAGE_WAIT_BTP = 0x057f,
+    ASSET_Y_TX_GAS_WAIT_BTP = 0x0580,
+    ASSET_Y_TX_LIE_END_BTP = 0x0581,
+    ASSET_Y_TX_LIE_WAIT_BTP = 0x0582,
+    ASSET_Y_TX_RETURN_DOWN_BTP = 0x0583,
+    ASSET_Y_TX_SLEEP_END_BTP = 0x0584,
+    ASSET_Y_TX_SLEEP_START_BTP = 0x0585,
+    ASSET_Y_TX_SLEEP_TO_LIE_BTP = 0x0586
+};
+
+struct SharedFilePtr;
+struct P2 { int a, b; };
+struct P4 { struct P2 lo, hi; };
+struct P6 { struct P2 lo, hi, tail; };
+extern int _ZN13SharedFilePtr9ConstructEj(void *, int);
+extern int SharedFilePtr_Construct_TexSeq(void *, int);
+extern int func_02017acc(void *, int);
+extern void func_0203b9b4(int *, int);
+extern void func_020731dc(void *, void *, void **);
+extern struct P2 data_02086b58;
+extern struct P2 data_ov002_02109dd4;
+extern struct P2 data_ov002_02109ddc;
+extern struct P2 data_ov002_02109de4;
+extern struct P2 data_ov002_02109dec;
+extern struct P2 data_ov002_02109df4;
+extern struct P2 data_ov002_02109dfc;
+extern struct P2 data_ov002_02109e04;
+extern struct P2 data_ov002_02109e0c;
+extern struct P2 data_ov002_02109e14;
+extern struct P2 data_ov002_02109e1c;
+extern struct P2 data_ov002_02109e24;
+extern struct P2 data_ov002_02109e2c;
+extern struct P2 data_ov002_02109e34;
+extern struct P2 data_ov002_02109e3c;
+extern struct P2 data_ov002_02109e44;
+extern struct P2 data_ov002_02109e4c;
+extern struct P2 data_ov002_02109e54;
+extern struct P2 data_ov002_02109e5c;
+extern struct P2 data_ov002_02109e64;
+extern struct P2 data_ov002_02109e6c;
+extern struct P2 data_ov002_02109e74;
+extern struct P2 data_ov002_02109e7c;
+extern struct P2 data_ov002_02109e84;
+extern struct P2 data_ov002_02109e8c;
+extern struct P2 data_ov002_02109e94;
+extern struct P2 data_ov002_02109e9c;
+extern struct P2 data_ov002_02109ea4;
+extern struct P2 data_ov002_02109eac;
+extern struct P2 data_ov002_02109eb4;
+extern struct P2 data_ov002_02109ebc;
+extern struct P2 data_ov002_02109ec4;
+extern struct P2 data_ov002_02109ecc;
+extern struct P2 data_ov002_02109ed4;
+extern struct P2 data_ov002_02109edc;
+extern struct P2 data_ov002_02109ee4;
+extern struct P2 data_ov002_02109eec;
+extern struct P2 data_ov002_02109ef4;
+extern struct P2 data_ov002_02109efc;
+extern struct P2 data_ov002_02109f04;
+extern struct P2 data_ov002_02109f0c;
+extern struct P2 data_ov002_02109f14;
+extern struct P2 data_ov002_02109f1c;
+extern struct P2 data_ov002_02109f24;
+extern struct P2 data_ov002_02109f2c;
+extern struct P2 data_ov002_02109f34;
+extern struct P2 data_ov002_02109f3c;
+extern struct P2 data_ov002_02109f44;
+extern struct P2 data_ov002_02109f4c;
+extern struct P2 data_ov002_02109f54;
+extern struct P2 data_ov002_02109f5c;
+extern struct P2 data_ov002_02109f64;
+extern struct P2 data_ov002_02109f6c;
+extern struct P2 data_ov002_02109f74;
+extern struct P2 data_ov002_02109f7c;
+extern struct P2 data_ov002_02109f84;
+extern struct P2 data_ov002_02109f8c;
+extern struct P2 data_ov002_02109f94;
+extern struct P2 data_ov002_02109f9c;
+extern struct P2 data_ov002_02109fa4;
+extern struct P2 data_ov002_02109fac;
+extern struct P2 data_ov002_02109fb4;
+extern struct P2 data_ov002_02109fbc;
+extern struct P2 data_ov002_02109fc4;
+extern struct P2 data_ov002_02109fcc;
+extern struct P2 data_ov002_02109fd4;
+extern struct P2 data_ov002_02109fdc;
+extern struct P2 data_ov002_02109fec;
+extern struct P2 data_ov002_02109ffc;
+extern struct P2 data_ov002_0210a004;
+extern struct P2 data_ov002_0210a00c;
+extern struct P2 data_ov002_0210a014;
+extern struct P2 data_ov002_0210a01c;
+extern struct P2 data_ov002_0210a024;
+extern struct P2 data_ov002_0210a02c;
+extern struct P2 data_ov002_0210a034;
+extern struct P2 data_ov002_0210a03c;
+extern struct P2 data_ov002_0210a044;
+extern struct P2 data_ov002_0210a04c;
+extern struct P2 data_ov002_0210a05c;
+extern struct P2 data_ov002_0210a06c;
+extern struct P2 data_ov002_0210a074;
+extern struct P2 data_ov002_0210a08c;
+extern struct P2 data_ov002_0210a09c;
+extern struct P2 data_ov002_0210a0a4;
+extern struct P2 data_ov002_0210a0ac;
+extern struct P2 data_ov002_0210a0bc;
+extern struct P2 data_ov002_0210a0c4;
+extern struct P2 data_ov002_0210a0cc;
+extern struct P2 data_ov002_0210a0d4;
+extern struct P2 data_ov002_0210a0e4;
+extern struct P2 data_ov002_0210a0ec;
+extern struct P2 data_ov002_0210a0f4;
+extern struct P2 data_ov002_0210a0fc;
+extern struct P2 data_ov002_0210a104;
+extern struct P2 data_ov002_0210a10c;
+extern struct P2 data_ov002_0210a114;
+extern struct P2 data_ov002_0210a11c;
+extern struct P2 data_ov002_0210a12c;
+extern struct P2 data_ov002_0210a134;
+extern struct P2 data_ov002_0210a13c;
+extern struct P2 data_ov002_0210a144;
+extern struct P2 data_ov002_0210a154;
+extern struct P2 data_ov002_0210a15c;
+extern struct P2 data_ov002_0210a164;
+extern struct P2 data_ov002_0210a16c;
+extern struct P2 data_ov002_0210a174;
+extern struct P2 data_ov002_0210a17c;
+extern struct P2 data_ov002_0210a184;
+extern struct P2 data_ov002_0210a18c;
+extern struct P2 data_ov002_0210a194;
+extern struct P2 data_ov002_0210a19c;
+extern struct P2 data_ov002_0210a1a4;
+extern struct P2 data_ov002_0210a1ac;
+extern struct P2 data_ov002_0210a1b4;
+extern struct P2 data_ov002_0210a1bc;
+extern struct P2 data_ov002_0210a1c4;
+extern struct P2 data_ov002_0210a1cc;
+extern struct P2 data_ov002_0210a1dc;
+extern struct P2 data_ov002_0210a1e4;
+extern struct P2 data_ov002_0210a1ec;
+extern struct P2 data_ov002_0210a1f4;
+extern struct P2 data_ov002_0210a1fc;
+extern struct P2 data_ov002_0210a204;
+extern struct P2 data_ov002_0210a20c;
+extern struct P2 data_ov002_0210a214;
+extern struct P2 data_ov002_0210a21c;
+extern struct P2 data_ov002_0210a224;
+extern struct P2 data_ov002_0210a22c;
+extern struct P2 data_ov002_0210a234;
+extern struct P2 data_ov002_0210a23c;
+extern struct P2 data_ov002_0210a244;
+extern struct P2 data_ov002_0210a24c;
+extern struct P2 data_ov002_0210a254;
+extern struct P2 data_ov002_0210a25c;
+extern struct P2 data_ov002_0210a264;
+extern struct P2 data_ov002_0210a26c;
+extern struct P2 data_ov002_0210a274;
+extern struct P2 data_ov002_0210a27c;
+extern struct P2 data_ov002_0210a284;
+extern struct P2 data_ov002_0210a28c;
+extern struct P2 data_ov002_0210a294;
+extern struct P2 data_ov002_0210a29c;
+extern struct P2 data_ov002_0210a2a4;
+extern struct P2 data_ov002_0210a2ac;
+extern struct P2 data_ov002_0210a2b4;
+extern struct P2 data_ov002_0210a2bc;
+extern struct P2 data_ov002_0210a2c4;
+extern struct P2 data_ov002_0210a2cc;
+extern struct P2 data_ov002_0210a2d4;
+extern struct P2 data_ov002_0210a2dc;
+extern struct P2 data_ov002_0210a2e4;
+extern struct P2 data_ov002_0210a2ec;
+extern struct P2 data_ov002_0210a2f4;
+extern struct P2 data_ov002_0210a2fc;
+extern struct P2 data_ov002_0210a304;
+extern struct P2 data_ov002_0210a30c;
+extern struct P2 data_ov002_0210a314;
+extern struct P2 data_ov002_0210a31c;
+extern struct P2 data_ov002_0210a324;
+extern struct P2 data_ov002_0210a32c;
+extern struct P2 data_ov002_0210a334;
+extern struct P2 data_ov002_0210a33c;
+extern struct P2 data_ov002_0210a344;
+extern struct P2 data_ov002_0210a354;
+extern struct P2 data_ov002_0210a35c;
+extern struct P2 data_ov002_0210a364;
+extern struct P2 data_ov002_0210a374;
+extern struct P2 data_ov002_0210a37c;
+extern struct P2 data_ov002_0210a384;
+extern struct P2 data_ov002_0210a38c;
+extern struct P2 data_ov002_0210a394;
+extern struct P2 data_ov002_0210a39c;
+extern struct P2 data_ov002_0210a3a4;
+extern struct P2 data_ov002_0210a3ac;
+extern struct P2 data_ov002_0210a3b4;
+extern struct P2 data_ov002_0210a3bc;
+extern struct P2 data_ov002_0210a3cc;
+extern struct P2 data_ov002_0210a3d4;
+extern struct P2 data_ov002_0210a3e4;
+extern struct P2 data_ov002_0210a3ec;
+extern struct P2 data_ov002_0210a3f4;
+extern struct P2 data_ov002_0210a404;
+extern struct P2 data_ov002_0210a414;
+extern struct P2 data_ov002_0210a41c;
+extern struct P2 data_ov002_0210a42c;
+extern struct P2 data_ov002_0210a43c;
+extern struct P2 data_ov002_0210a444;
+extern struct P2 data_ov002_0210a454;
+extern struct P2 data_ov002_0210a45c;
+extern struct P2 data_ov002_0210a464;
+extern struct P2 data_ov002_0210a46c;
+extern struct P2 data_ov002_0210a47c;
+extern struct P2 data_ov002_0210a484;
+extern struct P2 data_ov002_0210a48c;
+extern struct P2 data_ov002_0210a494;
+extern struct P2 data_ov002_0210a49c;
+extern struct P2 data_ov002_0210a4a4;
+extern struct P2 data_ov002_0210a4ac;
+extern struct P2 data_ov002_0210a4b4;
+extern struct P2 data_ov002_0210a4c4;
+extern struct P2 data_ov002_0210a4cc;
+extern struct P2 data_ov002_0210a4d4;
+extern struct P2 data_ov002_0210a4dc;
+extern struct P2 data_ov002_0210a4e4;
+extern struct P2 data_ov002_0210a4ec;
+extern struct P2 data_ov002_0210a4f4;
+extern struct P2 data_ov002_0210a4fc;
+extern struct P2 data_ov002_0210a504;
+extern struct P2 data_ov002_0210a50c;
+extern struct P2 data_ov002_0210a514;
+extern struct P2 data_ov002_0210a51c;
+extern struct P2 data_ov002_0210a524;
+extern struct P2 data_ov002_0210a52c;
+extern struct P2 data_ov002_0210a53c;
+extern struct P2 data_ov002_0210a544;
+extern struct P2 data_ov002_0210a54c;
+extern char data_ov002_0210e160[];
+extern char data_ov002_0210e168[];
+extern char data_ov002_0210e170[];
+extern char data_ov002_0210e178[];
+extern char data_ov002_0210e180[];
+extern char data_ov002_0210e188[];
+extern char data_ov002_0210e190[];
+extern char data_ov002_0210e198[];
+extern char data_ov002_0210e1a0[];
+extern char data_ov002_0210e1a8[];
+extern char data_ov002_0210e1b0[];
+extern char data_ov002_0210e1b8[];
+extern char data_ov002_0210e1c0[];
+extern char data_ov002_0210e1c8[];
+extern char data_ov002_0210e1d0[];
+extern char data_ov002_0210e1d8[];
+extern char data_ov002_0210e1e0[];
+extern char data_ov002_0210e1e8[];
+extern char data_ov002_0210e1f0[];
+extern char data_ov002_0210e1f8[];
+extern char data_ov002_0210e200[];
+extern char data_ov002_0210e208[];
+extern char data_ov002_0210e210[];
+extern char data_ov002_0210e218[];
+extern char data_ov002_0210e220[];
+extern char data_ov002_0210e228[];
+extern char data_ov002_0210e230[];
+extern char data_ov002_0210e238[];
+extern char data_ov002_0210e240[];
+extern char data_ov002_0210e248[];
+extern char data_ov002_0210e250[];
+extern char data_ov002_0210e258[];
+extern char data_ov002_0210e260[];
+extern char data_ov002_0210e268[];
+extern char data_ov002_0210e270[];
+extern char data_ov002_0210e278[];
+extern char data_ov002_0210e280[];
+extern char data_ov002_0210e288[];
+extern char data_ov002_0210e290[];
+extern char data_ov002_0210e298[];
+extern char data_ov002_0210e2a0[];
+extern char data_ov002_0210e2a8[];
+extern char data_ov002_0210e2b0[];
+extern char data_ov002_0210e2b8[];
+extern char data_ov002_0210e2c0[];
+extern char data_ov002_0210e2c8[];
+extern char data_ov002_0210e2d0[];
+extern char data_ov002_0210e2d8[];
+extern char data_ov002_0210e2e0[];
+extern char data_ov002_0210e2e8[];
+extern char data_ov002_0210e2f0[];
+extern char data_ov002_0210e2f8[];
+extern char data_ov002_0210e300[];
+extern char data_ov002_0210e308[];
+extern char data_ov002_0210e310[];
+extern char data_ov002_0210e318[];
+extern char data_ov002_0210e320[];
+extern char data_ov002_0210e328[];
+extern char data_ov002_0210e330[];
+extern char data_ov002_0210e338[];
+extern char data_ov002_0210e340[];
+extern char data_ov002_0210e348[];
+extern char data_ov002_0210e350[];
+extern char data_ov002_0210e358[];
+extern char data_ov002_0210e360[];
+extern char data_ov002_0210e368[];
+extern char data_ov002_0210e370[];
+extern char data_ov002_0210e378[];
+extern char data_ov002_0210e380[];
+extern char data_ov002_0210e388[];
+extern char data_ov002_0210e390[];
+extern char data_ov002_0210e398[];
+extern char data_ov002_0210e3a0[];
+extern char data_ov002_0210e3a8[];
+extern char data_ov002_0210e3b0[];
+extern char data_ov002_0210e3b8[];
+extern char data_ov002_0210e3c0[];
+extern char data_ov002_0210e3c8[];
+extern char data_ov002_0210e3d0[];
+extern char data_ov002_0210e3d8[];
+extern char data_ov002_0210e3e0[];
+extern char data_ov002_0210e3e8[];
+extern char data_ov002_0210e3f0[];
+extern char data_ov002_0210e3f8[];
+extern char data_ov002_0210e400[];
+extern char data_ov002_0210e408[];
+extern char data_ov002_0210e410[];
+extern char data_ov002_0210e418[];
+extern char data_ov002_0210e420[];
+extern char data_ov002_0210e428[];
+extern char data_ov002_0210e430[];
+extern char data_ov002_0210e438[];
+extern char data_ov002_0210e440[];
+extern char data_ov002_0210e448[];
+extern char data_ov002_0210e450[];
+extern char data_ov002_0210e458[];
+extern char data_ov002_0210e460[];
+extern char data_ov002_0210e468[];
+extern char data_ov002_0210e470[];
+extern char data_ov002_0210e478[];
+extern char data_ov002_0210e480[];
+extern char data_ov002_0210e488[];
+extern char data_ov002_0210e490[];
+extern char data_ov002_0210e498[];
+extern char data_ov002_0210e4a0[];
+extern char data_ov002_0210e4a8[];
+extern char data_ov002_0210e4b0[];
+extern char data_ov002_0210e4b8[];
+extern char data_ov002_0210e4c0[];
+extern char data_ov002_0210e4c8[];
+extern char data_ov002_0210e4d0[];
+extern char data_ov002_0210e4d8[];
+extern char data_ov002_0210e4e0[];
+extern char data_ov002_0210e4e8[];
+extern char data_ov002_0210e4f0[];
+extern char data_ov002_0210e4f8[];
+extern char data_ov002_0210e500[];
+extern char data_ov002_0210e508[];
+extern char data_ov002_0210e510[];
+extern char data_ov002_0210e518[];
+extern char data_ov002_0210e520[];
+extern char data_ov002_0210e528[];
+extern char data_ov002_0210e530[];
+extern char data_ov002_0210e538[];
+extern char data_ov002_0210e540[];
+extern char data_ov002_0210e548[];
+extern char data_ov002_0210e550[];
+extern char data_ov002_0210e558[];
+extern char data_ov002_0210e560[];
+extern char data_ov002_0210e568[];
+extern char data_ov002_0210e570[];
+extern char data_ov002_0210e578[];
+extern char data_ov002_0210e580[];
+extern char data_ov002_0210e588[];
+extern char data_ov002_0210e590[];
+extern char data_ov002_0210e598[];
+extern char data_ov002_0210e5a0[];
+extern char data_ov002_0210e5a8[];
+extern char data_ov002_0210e5b0[];
+extern char data_ov002_0210e5b8[];
+extern char data_ov002_0210e5c0[];
+extern char data_ov002_0210e5c8[];
+extern char data_ov002_0210e5d0[];
+extern char data_ov002_0210e5d8[];
+extern char data_ov002_0210e5e0[];
+extern char data_ov002_0210e5e8[];
+extern char data_ov002_0210e5f0[];
+extern char data_ov002_0210e5f8[];
+extern char data_ov002_0210e600[];
+extern char data_ov002_0210e608[];
+extern char data_ov002_0210e610[];
+extern char data_ov002_0210e618[];
+extern char data_ov002_0210e620[];
+extern char data_ov002_0210e628[];
+extern char data_ov002_0210e630[];
+extern char data_ov002_0210e638[];
+extern char data_ov002_0210e640[];
+extern char data_ov002_0210e648[];
+extern char data_ov002_0210e650[];
+extern char data_ov002_0210e658[];
+extern char data_ov002_0210e660[];
+extern char data_ov002_0210e668[];
+extern char data_ov002_0210e670[];
+extern char data_ov002_0210e678[];
+extern char data_ov002_0210e680[];
+extern char data_ov002_0210e688[];
+extern char data_ov002_0210e690[];
+extern char data_ov002_0210e698[];
+extern char data_ov002_0210e6a0[];
+extern char data_ov002_0210e6a8[];
+extern char data_ov002_0210e6b0[];
+extern char data_ov002_0210e6b8[];
+extern char data_ov002_0210e6c0[];
+extern char data_ov002_0210e6c8[];
+extern char data_ov002_0210e6d0[];
+extern char data_ov002_0210e6d8[];
+extern char data_ov002_0210e6e0[];
+extern char data_ov002_0210e6e8[];
+extern char data_ov002_0210e6f0[];
+extern char data_ov002_0210e6f8[];
+extern char data_ov002_0210e700[];
+extern char data_ov002_0210e708[];
+extern char data_ov002_0210e710[];
+extern char data_ov002_0210e718[];
+extern char data_ov002_0210e720[];
+extern char data_ov002_0210e728[];
+extern char data_ov002_0210e730[];
+extern char data_ov002_0210e738[];
+extern char data_ov002_0210e740[];
+extern char data_ov002_0210e748[];
+extern char data_ov002_0210e750[];
+extern char data_ov002_0210e758[];
+extern char data_ov002_0210e760[];
+extern char data_ov002_0210e768[];
+extern char data_ov002_0210e770[];
+extern char data_ov002_0210e778[];
+extern char data_ov002_0210e780[];
+extern char data_ov002_0210e788[];
+extern char data_ov002_0210e790[];
+extern char data_ov002_0210e798[];
+extern char data_ov002_0210e7a0[];
+extern char data_ov002_0210e7a8[];
+extern char data_ov002_0210e7b0[];
+extern char data_ov002_0210e7c0[];
+extern char data_ov002_0210e7c8[];
+extern char data_ov002_0210e7d0[];
+extern char data_ov002_0210e7d8[];
+extern char data_ov002_0210e7e0[];
+extern char data_ov002_0210e7e8[];
+extern char data_ov002_0210e7f0[];
+extern char data_ov002_0210e7f8[];
+extern char data_ov002_0210e800[];
+extern char data_ov002_0210e808[];
+extern char data_ov002_0210e810[];
+extern char data_ov002_0210e818[];
+extern char data_ov002_0210e820[];
+extern char data_ov002_0210e828[];
+extern char data_ov002_0210e830[];
+extern char data_ov002_0210e838[];
+extern char data_ov002_0210e840[];
+extern char data_ov002_0210e848[];
+extern char data_ov002_0210e850[];
+extern char data_ov002_0210e858[];
+extern char data_ov002_0210e860[];
+extern char data_ov002_0210e868[];
+extern char data_ov002_0210e870[];
+extern char data_ov002_0210e878[];
+extern char data_ov002_0210e880[];
+extern char data_ov002_0210e888[];
+extern char data_ov002_0210e890[];
+extern char data_ov002_0210e898[];
+extern char data_ov002_0210e8a0[];
+extern char data_ov002_0210e8a8[];
+extern char data_ov002_0210e8b0[];
+extern char data_ov002_0210e8b8[];
+extern char data_ov002_0210e8c0[];
+extern char data_ov002_0210e8c8[];
+extern struct SharedFilePtr data_ov002_0210e8d0;
+extern char data_ov002_0210e8d8[];
+extern char data_ov002_0210e8e0[];
+extern char data_ov002_0210e8e8[];
+extern char data_ov002_0210e8f0[];
+extern char data_ov002_0210e8f8[];
+extern char data_ov002_0210e900[];
+extern char data_ov002_0210e908[];
+extern char data_ov002_0210e910[];
+extern char data_ov002_0210e918[];
+extern char data_ov002_0210e920[];
+extern char data_ov002_0210e928[];
+extern char data_ov002_0210e930[];
+extern char data_ov002_0210e938[];
+extern char data_ov002_0210e940[];
+extern char data_ov002_0210e948[];
+extern char data_ov002_0210e950[];
+extern char data_ov002_0210e958[];
+extern char data_ov002_0210e960[];
+extern char data_ov002_0210e968[];
+extern char data_ov002_0210e970[];
+extern char data_ov002_0210e978[];
+extern char data_ov002_0210e980[];
+extern char data_ov002_0210e988[];
+extern char data_ov002_0210e990[];
+extern char data_ov002_0210e998[];
+extern char data_ov002_0210e9a0[];
+extern char data_ov002_0210e9a8[];
+extern char data_ov002_0210e9b0[];
+extern char data_ov002_0210e9b8[];
+extern char data_ov002_0210e9c0[];
+extern char data_ov002_0210e9c8[];
+extern char data_ov002_0210e9d0[];
+extern char data_ov002_0210e9d8[];
+extern char data_ov002_0210e9e0[];
+extern char data_ov002_0210e9e8[];
+extern char data_ov002_0210e9f0[];
+extern char data_ov002_0210e9f8[];
+extern char data_ov002_0210ea00[];
+extern char data_ov002_0210ea08[];
+extern char data_ov002_0210ea10[];
+extern char data_ov002_0210ea18[];
+extern char data_ov002_0210ea20[];
+extern char data_ov002_0210ea28[];
+extern char data_ov002_0210ea30[];
+extern char data_ov002_0210ea38[];
+extern char data_ov002_0210ea40[];
+extern char data_ov002_0210ea48[];
+extern char data_ov002_0210ea50[];
+extern char data_ov002_0210ea58[];
+extern char data_ov002_0210ea60[];
+extern char data_ov002_0210ea68[];
+extern char data_ov002_0210ea70[];
+extern char data_ov002_0210ea78[];
+extern char data_ov002_0210ea80[];
+extern char data_ov002_0210ea88[];
+extern char data_ov002_0210ea90[];
+extern char data_ov002_0210ea98[];
+extern char data_ov002_0210eaa0[];
+extern char data_ov002_0210eaa8[];
+extern char data_ov002_0210eab0[];
+extern char data_ov002_0210eab8[];
+extern char data_ov002_0210eac0[];
+extern char data_ov002_0210eac8[];
+extern char data_ov002_0210ead0[];
+extern char data_ov002_0210ead8[];
+extern char data_ov002_0210eae0[];
+extern char data_ov002_0210eae8[];
+extern char data_ov002_0210eaf0[];
+extern char data_ov002_0210eaf8[];
+extern char data_ov002_0210eb00[];
+extern char data_ov002_0210eb08[];
+extern char data_ov002_0210eb10[];
+extern char data_ov002_0210eb18[];
+extern struct SharedFilePtr data_ov002_0210eb20;
+extern char data_ov002_0210eb28[];
+extern char data_ov002_0210eb30[];
+extern char data_ov002_0210eb38[];
+extern char data_ov002_0210eb40[];
+extern char data_ov002_0210eb48[];
+extern char data_ov002_0210eb50[];
+extern char data_ov002_0210eb58[];
+extern char data_ov002_0210eb60[];
+extern char data_ov002_0210eb68[];
+extern char data_ov002_0210eb70[];
+extern char data_ov002_0210eb78[];
+extern char data_ov002_0210eb80[];
+extern char data_ov002_0210eb88[];
+extern char data_ov002_0210eb90[];
+extern char data_ov002_0210eb98[];
+extern char data_ov002_0210eba0[];
+extern char data_ov002_0210eba8[];
+extern char data_ov002_0210ebb0[];
+extern struct SharedFilePtr data_ov002_0210ebb8;
+extern char data_ov002_0210ebc0[];
+extern char data_ov002_0210ebc8[];
+extern char data_ov002_0210ebd0[];
+extern struct SharedFilePtr data_ov002_0210ebd8;
+extern char data_ov002_0210ebe0[];
+extern char data_ov002_0210ebe8[];
+extern char data_ov002_0210ebf0[];
+extern char data_ov002_0210ebf8[];
+extern char data_ov002_0210ec00[];
+extern char data_ov002_0210ec08[];
+extern char data_ov002_0210ec10[];
+extern char data_ov002_0210ec18[];
+extern char data_ov002_0210ec20[];
+extern char data_ov002_0210ec28[];
+extern char data_ov002_0210ec30[];
+extern char data_ov002_0210ec38[];
+extern char data_ov002_0210ec40[];
+extern char data_ov002_0210ec48[];
+extern char data_ov002_0210ec50[];
+extern char data_ov002_0210ec58[];
+extern char data_ov002_0210ec60[];
+extern char data_ov002_0210ec68[];
+extern char data_ov002_0210ec70[];
+extern char data_ov002_0210ec78[];
+extern char data_ov002_0210ec80[];
+extern char data_ov002_0210ec88[];
+extern char data_ov002_0210ec90[];
+extern char data_ov002_0210ec98[];
+extern char data_ov002_0210eca0[];
+extern char data_ov002_0210eca8[];
+extern char data_ov002_0210ecb0[];
+extern char data_ov002_0210ecb8[];
+extern char data_ov002_0210ecc0[];
+extern char data_ov002_0210ecc8[];
+extern char data_ov002_0210ecd0[];
+extern char data_ov002_0210ecd8[];
+extern char data_ov002_0210ece0[];
+extern char data_ov002_0210ece8[];
+extern char data_ov002_0210ecf0[];
+extern char data_ov002_0210ecf8[];
+extern char data_ov002_0210ed00[];
+extern char data_ov002_0210ed08[];
+extern char data_ov002_0210ed10[];
+extern char data_ov002_0210ed18[];
+extern char data_ov002_0210ed20[];
+extern char data_ov002_0210ed28[];
+extern char data_ov002_0210ed30[];
+extern char data_ov002_0210ed38[];
+extern char data_ov002_0210ed40[];
+extern char data_ov002_0210ed48[];
+extern char data_ov002_0210ed50[];
+extern char data_ov002_0210ed58[];
+extern char data_ov002_0210ed60[];
+extern char data_ov002_0210ed68[];
+extern char data_ov002_0210ed74[];
+extern char data_ov002_0210ed80[];
+extern char data_ov002_0210ed8c[];
+extern char data_ov002_0210ed98[];
+extern char data_ov002_0210eda4[];
+extern char data_ov002_0210edb0[];
+extern char data_ov002_0210edbc[];
+extern char data_ov002_0210edc8[];
+extern char data_ov002_0210edd4[];
+extern char data_ov002_0210ede0[];
+extern char data_ov002_0210edec[];
+extern char data_ov002_0210edf8[];
+extern char data_ov002_0210ee04[];
+extern char data_ov002_0210ee10[];
+extern char data_ov002_0210ee1c[];
+extern char data_ov002_0210ee28[];
+extern char data_ov002_0210ee34[];
+extern char data_ov002_0210ee40[];
+extern char data_ov002_0210ee4c[];
+extern char data_ov002_0210ee58[];
+extern char data_ov002_0210ee64[];
+extern char data_ov002_0210ee70[];
+extern char data_ov002_0210ee7c[];
+extern char data_ov002_0210ee88[];
+extern char data_ov002_0210ee94[];
+extern char data_ov002_0210eea0[];
+extern char data_ov002_0210eeac[];
+extern char data_ov002_0210eeb8[];
+extern char data_ov002_0210eec4[];
+extern char data_ov002_0210eed0[];
+extern char data_ov002_0210eedc[];
+extern char data_ov002_0210eee8[];
+extern char data_ov002_0210eef4[];
+extern char data_ov002_0210ef00[];
+extern char data_ov002_0210ef0c[];
+extern char data_ov002_0210ef18[];
+extern char data_ov002_0210ef24[];
+extern char data_ov002_0210ef30[];
+extern char data_ov002_0210ef3c[];
+extern char data_ov002_0210ef48[];
+extern char data_ov002_0210ef54[];
+extern char data_ov002_0210ef60[];
+extern char data_ov002_0210ef6c[];
+extern char data_ov002_0210ef78[];
+extern char data_ov002_0210ef84[];
+extern char data_ov002_0210ef90[];
+extern char data_ov002_0210ef9c[];
+extern char data_ov002_0210efa8[];
+extern char data_ov002_0210efb4[];
+extern char data_ov002_0210efc0[];
+extern char data_ov002_0210efcc[];
+extern char data_ov002_0210efd8[];
+extern char data_ov002_0210efe4[];
+extern char data_ov002_0210eff0[];
+extern char data_ov002_0210effc[];
+extern char data_ov002_0210f008[];
+extern char data_ov002_0210f014[];
+extern char data_ov002_0210f020[];
+extern char data_ov002_0210f02c[];
+extern char data_ov002_0210f038[];
+extern char data_ov002_0210f044[];
+extern char data_ov002_0210f050[];
+extern char data_ov002_0210f05c[];
+extern char data_ov002_0210f068[];
+extern char data_ov002_0210f074[];
+extern char data_ov002_0210f080[];
+extern char data_ov002_0210f08c[];
+extern char data_ov002_0210f098[];
+extern char data_ov002_0210f0a4[];
+extern char data_ov002_0210f0b0[];
+extern char data_ov002_0210f0bc[];
+extern char data_ov002_0210f0c8[];
+extern char data_ov002_0210f0d4[];
+extern char data_ov002_0210f0e0[];
+extern char data_ov002_0210f0ec[];
+extern char data_ov002_0210f0f8[];
+extern char data_ov002_0210f104[];
+extern char data_ov002_0210f110[];
+extern char data_ov002_0210f11c[];
+extern char data_ov002_0210f128[];
+extern char data_ov002_0210f134[];
+extern char data_ov002_0210f140[];
+extern char data_ov002_0210f14c[];
+extern char data_ov002_0210f158[];
+extern char data_ov002_0210f164[];
+extern char data_ov002_0210f170[];
+extern char data_ov002_0210f17c[];
+extern char data_ov002_0210f188[];
+extern char data_ov002_0210f194[];
+extern char data_ov002_0210f1a0[];
+extern char data_ov002_0210f1b8[];
+extern char data_ov002_0210f1c4[];
+extern char data_ov002_0210f1d0[];
+extern char data_ov002_0210f1dc[];
+extern char data_ov002_0210f1e8[];
+extern char data_ov002_0210f1f4[];
+extern char data_ov002_0210f200[];
+extern char data_ov002_0210f20c[];
+extern char data_ov002_0210f218[];
+extern char data_ov002_0210f230[];
+extern char data_ov002_0210f23c[];
+extern char data_ov002_0210f248[];
+extern char data_ov002_0210f254[];
+extern char data_ov002_0210f260[];
+extern char data_ov002_0210f26c[];
+extern char data_ov002_0210f278[];
+extern char data_ov002_0210f284[];
+extern char data_ov002_0210f290[];
+extern char data_ov002_0210f29c[];
+extern char data_ov002_0210f2a8[];
+extern char data_ov002_0210f2b4[];
+extern char data_ov002_0210f2c0[];
+extern char data_ov002_0210f2cc[];
+extern char data_ov002_0210f2d8[];
+extern char data_ov002_0210f2e4[];
+extern char data_ov002_0210f2f0[];
+extern char data_ov002_0210f2fc[];
+extern char data_ov002_0210f314[];
+extern char data_ov002_0210f320[];
+extern char data_ov002_0210f32c[];
+extern char data_ov002_0210f338[];
+extern char data_ov002_0210f35c[];
+extern char data_ov002_0210f368[];
+extern char data_ov002_0210f374[];
+extern char data_ov002_0210f380[];
+extern char data_ov002_0210f38c[];
+extern char data_ov002_0210f398[];
+extern char data_ov002_0210f3a4[];
+extern char data_ov002_0210f3bc[];
+extern char data_ov002_0210f3c8[];
+extern char data_ov002_0210f3d4[];
+extern char data_ov002_0210f3e0[];
+extern char data_ov002_0210f3ec[];
+extern char data_ov002_0210f3f8[];
+extern char data_ov002_0210f404[];
+extern char data_ov002_0210f410[];
+extern char data_ov002_0210f41c[];
+extern char data_ov002_0210f428[];
+extern char data_ov002_0210f434[];
+extern char data_ov002_0210f440[];
+extern char data_ov002_0210f44c[];
+extern char data_ov002_0210f458[];
+extern char data_ov002_0210f464[];
+extern char data_ov002_0210f470[];
+extern char data_ov002_0210f47c[];
+extern char data_ov002_0210f488[];
+extern char data_ov002_0210f494[];
+extern char data_ov002_0210f4a0[];
+extern char data_ov002_0210f4ac[];
+extern char data_ov002_0210f4b8[];
+extern char data_ov002_0210f4c4[];
+extern char data_ov002_0210f4d0[];
+extern char data_ov002_0210f4dc[];
+extern char data_ov002_0210f4e8[];
+extern char data_ov002_0210f4f4[];
+extern char data_ov002_0210f500[];
+extern char data_ov002_0210f50c[];
+extern char data_ov002_0210f518[];
+extern char data_ov002_0210f524[];
+extern char data_ov002_0210f530[];
+extern char data_ov002_0210f53c[];
+extern char data_ov002_0210f548[];
+extern char data_ov002_0210f554[];
+extern char data_ov002_0210f560[];
+extern char data_ov002_0210f56c[];
+extern char data_ov002_0210f578[];
+extern char data_ov002_0210f584[];
+extern char data_ov002_0210f590[];
+extern char data_ov002_0210f59c[];
+extern char data_ov002_0210f5a8[];
+extern char data_ov002_0210f5b4[];
+extern char data_ov002_0210f5c0[];
+extern char data_ov002_0210f5cc[];
+extern char data_ov002_0210f5d8[];
+extern char data_ov002_0210f5e4[];
+extern char data_ov002_0210f5f0[];
+extern char data_ov002_0210f5fc[];
+extern char data_ov002_0210f608[];
+extern char data_ov002_0210f614[];
+extern char data_ov002_0210f620[];
+extern char data_ov002_0210f62c[];
+extern char data_ov002_0210f638[];
+extern char data_ov002_0210f644[];
+extern char data_ov002_0210f650[];
+extern char data_ov002_0210f65c[];
+extern char data_ov002_0210f668[];
+extern char data_ov002_0210f674[];
+extern char data_ov002_0210f680[];
+extern char data_ov002_0210f68c[];
+extern char data_ov002_0210f698[];
+extern char data_ov002_0210f6a4[];
+extern char data_ov002_0210f6b0[];
+extern char data_ov002_0210f6bc[];
+extern char data_ov002_0210f6c8[];
+extern char data_ov002_0210f6d4[];
+extern char data_ov002_0210f6e0[];
+extern char data_ov002_0210f6ec[];
+extern char data_ov002_0210f6f8[];
+extern char data_ov002_0210f704[];
+extern char data_ov002_0210f710[];
+extern char data_ov002_0210f71c[];
+extern char data_ov002_0210f728[];
+extern char data_ov002_0210f734[];
+extern char data_ov002_0210f740[];
+extern char data_ov002_0210f74c[];
+extern char data_ov002_0210f758[];
+extern char data_ov002_0210f764[];
+extern char data_ov002_0210f770[];
+extern char data_ov002_0210f77c[];
+extern char data_ov002_0210f788[];
+extern char data_ov002_0210f794[];
+extern char data_ov002_0210f7a0[];
+extern char data_ov002_0210f7ac[];
+extern char data_ov002_0210f7b8[];
+extern char data_ov002_0210f7c4[];
+extern char data_ov002_0210f7d0[];
+extern char data_ov002_0210f7dc[];
+extern char data_ov002_0210f7e8[];
+extern char data_ov002_0210f800[];
+extern char data_ov002_0210f80c[];
+extern char data_ov002_0210f818[];
+extern char data_ov002_0210f830[];
+extern char data_ov002_0210f83c[];
+extern char data_ov002_0210f848[];
+extern char data_ov002_0210f854[];
+extern char data_ov002_0210f860[];
+extern char data_ov002_0210f86c[];
+extern char data_ov002_0210f878[];
+extern char data_ov002_0210f884[];
+extern char data_ov002_0210f890[];
+extern char data_ov002_0210f8a8[];
+extern char data_ov002_0210f8b4[];
+extern char data_ov002_0210f8c0[];
+extern char data_ov002_0210f8d8[];
+extern char data_ov002_0210f8e4[];
+extern char data_ov002_0210f8f0[];
+extern char data_ov002_0210f8fc[];
+extern char data_ov002_0210f908[];
+extern char data_ov002_0210f914[];
+extern char data_ov002_0210f920[];
+extern char data_ov002_0210f938[];
+extern char data_ov002_0210f944[];
+extern char data_ov002_0210f950[];
+extern char data_ov002_0210f95c[];
+extern char data_ov002_0210f968[];
+extern char data_ov002_0210f974[];
+extern char data_ov002_0210f980[];
+extern char data_ov002_0210f98c[];
+extern char data_ov002_0210f998[];
+extern char data_ov002_0210f9a4[];
+extern char data_ov002_0210f9b0[];
+extern char data_ov002_0210f9bc[];
+extern char data_ov002_0210f9c8[];
+extern char data_ov002_0210f9d4[];
+extern char data_ov002_0210f9e0[];
+extern char data_ov002_0210f9ec[];
+extern char data_ov002_0210f9f8[];
+extern char data_ov002_0210fa04[];
+extern char data_ov002_0210fa10[];
+extern char data_ov002_0210fa1c[];
+extern char data_ov002_0210fa28[];
+extern char data_ov002_0210fa34[];
+extern char data_ov002_0210fa40[];
+extern char data_ov002_0210fa4c[];
+extern char data_ov002_0210fa58[];
+extern char data_ov002_0210fa64[];
+extern char data_ov002_0210fa70[];
+extern char data_ov002_0210fa7c[];
+extern char data_ov002_0210fa88[];
+extern char data_ov002_0210fa94[];
+extern char data_ov002_0210faa0[];
+extern char data_ov002_0210faac[];
+extern char data_ov002_0210fab8[];
+extern char data_ov002_0210fac4[];
+extern char data_ov002_0210fad0[];
+extern char data_ov002_0210fadc[];
+extern char data_ov002_0210fae8[];
+extern char data_ov002_0210faf4[];
+extern char data_ov002_0210fb00[];
+extern char data_ov002_0210fb0c[];
+extern char data_ov002_0210fb18[];
+extern char data_ov002_0210fb24[];
+extern char data_ov002_0210fb30[];
+extern char data_ov002_0210fb3c[];
+extern char data_ov002_0210fb48[];
+extern char data_ov002_0210fb54[];
+extern char data_ov002_0210fb60[];
+extern char data_ov002_0210fb6c[];
+extern char data_ov002_0210fb78[];
+extern char data_ov002_0210fb84[];
+extern char data_ov002_0210fb90[];
+extern char data_ov002_0210fb9c[];
+extern char data_ov002_0210fba8[];
+extern char data_ov002_0210fbb4[];
+extern char data_ov002_0210fbc0[];
+extern char data_ov002_0210fbcc[];
+extern char data_ov002_0210fbd8[];
+extern char data_ov002_0210fbe4[];
+extern char data_ov002_0210fbf0[];
+extern char data_ov002_0210fbfc[];
+extern char data_ov002_0210fc08[];
+extern char data_ov002_0210fc14[];
+extern char data_ov002_0210fc20[];
+extern char data_ov002_0210fc2c[];
+extern char data_ov002_0210fc38[];
+extern char data_ov002_0210fc44[];
+extern char data_ov002_0210fc50[];
+extern char data_ov002_0210fc5c[];
+extern char data_ov002_0210fc68[];
+extern char data_ov002_0210fc74[];
+extern char data_ov002_0210fc80[];
+extern char data_ov002_0210fc8c[];
+extern char data_ov002_0210fc98[];
+extern char data_ov002_0210fca4[];
+extern char data_ov002_0210fcb0[];
+extern char data_ov002_0210fcbc[];
+extern char data_ov002_0210fcc8[];
+extern char data_ov002_0210fcd4[];
+extern char data_ov002_0210fce0[];
+extern char data_ov002_0210fcec[];
+extern char data_ov002_0210fcf8[];
+extern char data_ov002_0210fd04[];
+extern char data_ov002_0210fd10[];
+extern char data_ov002_0210fd1c[];
+extern char data_ov002_0210fd28[];
+extern char data_ov002_0210fd34[];
+extern char data_ov002_0210fd40[];
+extern char data_ov002_0210fd4c[];
+extern char data_ov002_0210fd58[];
+extern char data_ov002_0210fd64[];
+extern char data_ov002_0210fd70[];
+extern char data_ov002_0210fd7c[];
+extern char data_ov002_0210fd88[];
+extern char data_ov002_0210fd94[];
+extern char data_ov002_0210fda0[];
+extern char data_ov002_0210fdac[];
+extern char data_ov002_0210fdb8[];
+extern char data_ov002_0210fdc4[];
+extern char data_ov002_0210fdd0[];
+extern char data_ov002_0210fddc[];
+extern char data_ov002_0210fde8[];
+extern char data_ov002_0210fdf4[];
+extern char data_ov002_0210fe00[];
+extern char data_ov002_0210fe0c[];
+extern char data_ov002_0210fe18[];
+extern char data_ov002_0210fe24[];
+extern char data_ov002_0210fe30[];
+extern char data_ov002_0210fe3c[];
+extern char data_ov002_0210fe48[];
+extern char data_ov002_0210fe54[];
+extern char data_ov002_0210fe60[];
+extern char data_ov002_0210fe6c[];
+extern char data_ov002_0210fe78[];
+extern char data_ov002_0210fe84[];
+extern char data_ov002_0210fe90[];
+extern char data_ov002_0210fe9c[];
+extern char data_ov002_0210fea8[];
+extern char data_ov002_0210feb4[];
+extern char data_ov002_0210fec0[];
+extern char data_ov002_0210fecc[];
+extern char data_ov002_0210fed8[];
+extern char data_ov002_0210fee4[];
+extern char data_ov002_0210fef0[];
+extern char data_ov002_0210fefc[];
+extern char data_ov002_0210ff08[];
+extern char data_ov002_0210ff14[];
+extern char data_ov002_0210ff20[];
+extern char data_ov002_0210ff2c[];
+extern char data_ov002_0210ff38[];
+extern char data_ov002_0210ff44[];
+extern char data_ov002_0210ff50[];
+extern char data_ov002_0210ff5c[];
+extern char data_ov002_0210ff68[];
+extern char data_ov002_0210ff74[];
+extern char data_ov002_0210ff80[];
+extern char data_ov002_0210ff8c[];
+extern char data_ov002_0210ff98[];
+extern char data_ov002_0210ffa4[];
+extern char data_ov002_0210ffb0[];
+extern char data_ov002_0210ffbc[];
+extern char data_ov002_0210ffc8[];
+extern char data_ov002_0210ffd4[];
+extern char data_ov002_0210ffe0[];
+extern struct P6 data_ov002_0210ffec;
+extern struct P6 data_ov002_02110004;
+extern struct P6 data_ov002_0211001c;
+extern struct P6 data_ov002_02110034;
+extern struct P6 data_ov002_0211004c;
+extern struct P6 data_ov002_02110064;
+extern struct P6 data_ov002_0211007c;
+extern struct P6 data_ov002_02110094;
+extern struct P6 data_ov002_021100ac;
+extern struct P6 data_ov002_021100c4;
+extern struct P6 data_ov002_021100dc;
+extern struct P6 data_ov002_021100f4;
+extern struct P6 data_ov002_0211010c;
+extern struct P6 data_ov002_02110124;
+extern struct P6 data_ov002_0211013c;
+extern struct P6 data_ov002_02110154;
+extern struct P6 data_ov002_0211016c;
+extern struct P6 data_ov002_02110184;
+extern struct P6 data_ov002_0211019c;
+extern struct P6 data_ov002_021101b4;
+extern struct P6 data_ov002_021101cc;
+extern struct P6 data_ov002_021101e4;
+extern struct P6 data_ov002_021101fc;
+extern struct P6 data_ov002_02110214;
+extern struct P6 data_ov002_0211022c;
+extern struct P6 data_ov002_02110244;
+extern struct P6 data_ov002_0211025c;
+extern struct P6 data_ov002_02110274;
+extern struct P6 data_ov002_0211028c;
+extern struct P6 data_ov002_021102a4;
+extern struct P6 data_ov002_021102bc;
+extern struct P6 data_ov002_021102d4;
+extern struct P6 data_ov002_021102ec;
+extern struct P6 data_ov002_02110304;
+extern struct P6 data_ov002_0211031c;
+extern struct P6 data_ov002_02110334;
+extern struct P6 data_ov002_0211034c;
+extern struct P6 data_ov002_02110364;
+extern struct P6 data_ov002_0211037c;
+extern struct P6 data_ov002_02110394;
+extern struct P6 data_ov002_021103ac;
+extern struct P6 data_ov002_021103c4;
+extern struct P6 data_ov002_021103dc;
+extern struct P6 data_ov002_021103f4;
+extern struct P6 data_ov002_0211040c;
+extern struct P6 data_ov002_02110424;
+extern struct P6 data_ov002_0211043c;
+extern struct P6 data_ov002_02110454;
+extern struct P6 data_ov002_0211046c;
+extern struct P6 data_ov002_02110484;
+extern struct P6 data_ov002_0211049c;
+extern struct P6 data_ov002_021104b4;
+extern struct P6 data_ov002_021104cc;
+extern struct P6 data_ov002_021104e4;
+extern struct P6 data_ov002_021104fc;
+extern struct P6 data_ov002_02110514;
+extern struct P6 data_ov002_0211052c;
+extern struct P6 data_ov002_02110544;
+extern struct P6 data_ov002_0211055c;
+extern struct P6 data_ov002_02110574;
+extern struct P6 data_ov002_0211058c;
+extern struct P6 data_ov002_021105a4;
+extern struct P6 data_ov002_021105bc;
+extern struct P6 data_ov002_021105d4;
+extern struct P6 data_ov002_021105ec;
+extern struct P6 data_ov002_02110604;
+extern struct P6 data_ov002_0211061c;
+extern struct P6 data_ov002_02110634;
+extern struct P6 data_ov002_0211064c;
+extern struct P6 data_ov002_02110664;
+extern struct P6 data_ov002_0211067c;
+extern struct P6 data_ov002_02110694;
+extern struct P6 data_ov002_021106ac;
+extern struct P6 data_ov002_021106c4;
+extern struct P6 data_ov002_021106dc;
+extern struct P6 data_ov002_021106f4;
+extern struct P6 data_ov002_0211070c;
+extern struct P6 data_ov002_02110724;
+extern struct P6 data_ov002_0211073c;
+extern struct P6 data_ov002_0211075c;
+extern struct P6 data_ov002_02110804;
+extern struct P6 data_ov002_02110884;
+extern void SharedFilePtr_Destruct_TexSeq(void);
+extern void SharedFilePtr_Destruct_Anim(void);
+extern void func_02017ab4(void);
+extern void func_0201973c(void);
+void __sinit_ov002_021019d0(void)
+{
+    struct P2 tmp;
+    int ta, tb;
+
+    func_0203b9b4((int *)&data_ov002_0210e160, 0x4d2);
+    func_020731dc(&data_ov002_0210e160, (void *)&func_0201973c, (void **)&data_ov002_0210f9b0);
+    func_02017acc(data_ov002_0210e6f8, ASSET_B_MARIO_ALL_BMD);
+    func_020731dc(&data_ov002_0210e6f8, (void *)&func_02017ab4, (void **)&data_ov002_0210f9c8);
+    func_02017acc(data_ov002_0210e648, ASSET_B_MARIO_BODY_BMD);
+    func_020731dc(&data_ov002_0210e648, (void *)&func_02017ab4, (void **)&data_ov002_0210f9d4);
+    func_02017acc(data_ov002_0210eae8, ASSET_B_MARIO_HEAD_CAP_BMD);
+    func_020731dc(&data_ov002_0210eae8, (void *)&func_02017ab4, (void **)&data_ov002_0210f9e0);
+    func_02017acc(&data_ov002_0210eb20, 0x807e);
+    func_020731dc(&data_ov002_0210eb20, (void *)&func_02017ab4, (void **)&data_ov002_0210f9f8);
+    func_02017acc(data_ov002_0210eb00, 0x807f);
+    func_020731dc(&data_ov002_0210eb00, (void *)&func_02017ab4, (void **)&data_ov002_0210fa04);
+    func_02017acc(&data_ov002_0210ebb8, 0x8080);
+    func_020731dc(&data_ov002_0210ebb8, (void *)&func_02017ab4, (void **)&data_ov002_0210fa1c);
+    func_02017acc(data_ov002_0210e690, 0x8081);
+    func_020731dc(&data_ov002_0210e690, (void *)&func_02017ab4, (void **)&data_ov002_0210fa28);
+    func_02017acc(data_ov002_0210ec38, 0x8082);
+    func_020731dc(&data_ov002_0210ec38, (void *)&func_02017ab4, (void **)&data_ov002_0210fa40);
+    func_02017acc(data_ov002_0210ec50, 0x8083);
+    func_020731dc(&data_ov002_0210ec50, (void *)&func_02017ab4, (void **)&data_ov002_0210fa4c);
+    func_02017acc(data_ov002_0210e758, 0x80b8);
+    func_020731dc(&data_ov002_0210e758, (void *)&func_02017ab4, (void **)&data_ov002_0210fa64);
+    func_02017acc(data_ov002_0210e790, 0x80b9);
+    func_020731dc(&data_ov002_0210e790, (void *)&func_02017ab4, (void **)&data_ov002_0210fa70);
+    func_02017acc(data_ov002_0210e780, ASSET_WARIO_METAL_MODEL_BMD);
+    func_020731dc(&data_ov002_0210e780, (void *)&func_02017ab4, (void **)&data_ov002_0210fa94);
+    func_02017acc(data_ov002_0210ec60, 0x80ba);
+    func_020731dc(&data_ov002_0210ec60, (void *)&func_02017ab4, (void **)&data_ov002_0210faa0);
+    func_02017acc(data_ov002_0210e7b0, 0x80bd);
+    func_020731dc(&data_ov002_0210e7b0, (void *)&func_02017ab4, (void **)&data_ov002_0210fab8);
+    func_02017acc(data_ov002_0210e3a0, 0x80c0);
+    func_020731dc(&data_ov002_0210e3a0, (void *)&func_02017ab4, (void **)&data_ov002_0210fac4);
+    func_02017acc(data_ov002_0210e7d8, 0x80c1);
+    func_020731dc(&data_ov002_0210e7d8, (void *)&func_02017ab4, (void **)&data_ov002_0210fadc);
+    func_02017acc(data_ov002_0210e7a8, 0x80c2);
+    func_020731dc(&data_ov002_0210e7a8, (void *)&func_02017ab4, (void **)&data_ov002_0210fae8);
+    func_02017acc(data_ov002_0210e7f0, 0x80c3);
+    func_020731dc(&data_ov002_0210e7f0, (void *)&func_02017ab4, (void **)&data_ov002_0210fb00);
+    func_02017acc(data_ov002_0210e818, 0x80c4);
+    func_020731dc(&data_ov002_0210e818, (void *)&func_02017ab4, (void **)&data_ov002_0210fb0c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e490, 0x801d);
+    func_020731dc(&data_ov002_0210e490, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb24);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e838, 0x801e);
+    func_020731dc(&data_ov002_0210e838, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb30);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e848, 0x801f);
+    func_020731dc(&data_ov002_0210e848, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb48);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2c0, ASSET_L_ED_AMAZED_BCA);
+    func_020731dc(&data_ov002_0210e2c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb54);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e860, ASSET_L_ED_CAP_OFF_BCA);
+    func_020731dc(&data_ov002_0210e860, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb6c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4f8, ASSET_L_ED_CAP_OFF_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e4f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb78);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e888, ASSET_L_ED_LOOK_M_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e888, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb90);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e868, ASSET_L_ED_LOOK_MARIO_BCA);
+    func_020731dc(&data_ov002_0210e868, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb9c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7c0, ASSET_L_ED_LOOKUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e7c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbb4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8b0, ASSET_L_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbc0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8b8, ASSET_L_ENTRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbe4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e518, ASSET_L_ENTRY_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e518, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbf0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8d8, ASSET_L_FIRST_CHANGE_BCA);
+    func_020731dc(&data_ov002_0210e8d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc08);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8f0, ASSET_L_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210e8f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc14);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e900, ASSET_L_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e900, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc2c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e548, ASSET_L_OP_LOOK_WARIO_BCA);
+    func_020731dc(&data_ov002_0210e548, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc38);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e530, ASSET_L_OP_NOD_BCA);
+    func_020731dc(&data_ov002_0210e530, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc50);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e528, ASSET_L_OP_TURN_BCA);
+    func_020731dc(&data_ov002_0210e528, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f380);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4b0, 0x8020);
+    func_020731dc(&data_ov002_0210e4b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc68);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e550, ASSET_L_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210e550, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc74);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e748, ASSET_L_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210e748, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc8c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5c0, ASSET_L_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210e5c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc98);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e998, ASSET_L_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e998, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcb0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eaa0, 0x8029);
+    func_020731dc(&data_ov002_0210eaa0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcbc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea50, 0x802a);
+    func_020731dc(&data_ov002_0210ea50, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcd4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8c8, ASSET_M_ENTRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fce0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e778, ASSET_M_ENTRY_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e778, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcf8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebe0, 0x802b);
+    func_020731dc(&data_ov002_0210ebe0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd04);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4f0, 0x802c);
+    func_020731dc(&data_ov002_0210e4f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd1c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4c8, 0x802d);
+    func_020731dc(&data_ov002_0210e4c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd28);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb30, 0x802e);
+    func_020731dc(&data_ov002_0210eb30, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd40);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e510, 0x802f);
+    func_020731dc(&data_ov002_0210e510, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd4c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e970, ASSET_W_ED_AMAZED_WAIR_BCA);
+    func_020731dc(&data_ov002_0210e970, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd64);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e558, ASSET_W_ED_CAP_OFF_BCA);
+    func_020731dc(&data_ov002_0210e558, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd70);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9c0, ASSET_W_ED_CAP_OFF_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e9c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd88);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea20, ASSET_W_ED_LOOKUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea20, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd94);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5b0, ASSET_W_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e5b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdac);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5d0, ASSET_W_ED_WAVE_BCA);
+    func_020731dc(&data_ov002_0210e5d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdb8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5f0, ASSET_W_ENTRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e5f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdd0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9a0, ASSET_W_ENTRY_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e9a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fddc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e520, ASSET_W_FIRST_CHANGE_BCA);
+    func_020731dc(&data_ov002_0210e520, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdf4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eab8, 0x8030);
+    func_020731dc(&data_ov002_0210eab8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe00);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ead0, 0x8031);
+    func_020731dc(&data_ov002_0210ead0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe18);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eac0, 0x8032);
+    func_020731dc(&data_ov002_0210eac0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe24);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9f0, 0x8033);
+    func_020731dc(&data_ov002_0210e9f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe3c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eae0, ASSET_W_KEY_GET_BCA);
+    func_020731dc(&data_ov002_0210eae0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe48);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea08, ASSET_W_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210ea08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe60);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e990, ASSET_W_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e990, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe6c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eaf8, ASSET_W_OP_LOOK_LUIGI_BCA);
+    func_020731dc(&data_ov002_0210eaf8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe84);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9b8, ASSET_W_OP_NOD_BCA);
+    func_020731dc(&data_ov002_0210e9b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe90);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecb0, ASSET_W_OP_POINT_BCA);
+    func_020731dc(&data_ov002_0210ecb0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fea8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb08, ASSET_W_OP_TURN_BCA);
+    func_020731dc(&data_ov002_0210eb08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210feb4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e668, 0x8034);
+    func_020731dc(&data_ov002_0210e668, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fecc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e650, ASSET_W_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210e650, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fed8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb18, ASSET_W_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210eb18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fef0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e658, ASSET_W_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210e658, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fefc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e678, ASSET_W_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e678, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff14);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb28, 0x803b);
+    func_020731dc(&data_ov002_0210eb28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff20);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e638, 0x803c);
+    func_020731dc(&data_ov002_0210e638, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff38);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e688, 0x803d);
+    func_020731dc(&data_ov002_0210e688, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff44);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb40, 0x803e);
+    func_020731dc(&data_ov002_0210eb40, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff5c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e630, 0x803f);
+    func_020731dc(&data_ov002_0210e630, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff68);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e930, 0x8040);
+    func_020731dc(&data_ov002_0210e930, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff80);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb50, ASSET_Y_ED_LOOK_CAM_BCA);
+    func_020731dc(&data_ov002_0210eb50, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff8c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e698, ASSET_Y_ED_LOOKUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e698, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffa4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb60, ASSET_Y_ED_SHY_TO_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eb60, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffb0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb68, ASSET_Y_ED_SHY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eb68, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffc8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6a8, ASSET_Y_ED_TURN_BCA);
+    func_020731dc(&data_ov002_0210e6a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffd4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e618, ASSET_Y_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e618, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed68);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6b0, ASSET_Y_EGG_RUN_BCA);
+    func_020731dc(&data_ov002_0210e6b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed74);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb78, ASSET_Y_EGG_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eb78, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed8c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3d0, 0x8041);
+    func_020731dc(&data_ov002_0210e3d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed98);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb80, 0x8042);
+    func_020731dc(&data_ov002_0210eb80, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edb0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb88, 0x8043);
+    func_020731dc(&data_ov002_0210eb88, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edbc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6c0, 0x8044);
+    func_020731dc(&data_ov002_0210e6c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edd4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3d8, 0x8045);
+    func_020731dc(&data_ov002_0210e3d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ede0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb98, 0x8046);
+    func_020731dc(&data_ov002_0210eb98, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edf8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6c8, 0x8047);
+    func_020731dc(&data_ov002_0210e6c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee04);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eba0, ASSET_Y_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210eba0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee1c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6d0, ASSET_Y_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e6d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee28);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebb0, ASSET_Y_OP_LIE_TO_SIT_BCA);
+    func_020731dc(&data_ov002_0210ebb0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee40);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3f0, ASSET_Y_OP_SIT_TO_STAND_BCA);
+    func_020731dc(&data_ov002_0210e3f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee4c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6d8, ASSET_Y_OP_SIT_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e6d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee64);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebc0, ASSET_Y_OP_STAND_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ebc0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee70);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3f8, 0x8048);
+    func_020731dc(&data_ov002_0210e3f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee88);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6e8, ASSET_Y_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210e6e8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee94);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebd0, ASSET_Y_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210ebd0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eeac);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6f0, ASSET_Y_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210e6f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbcc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3c0, ASSET_Y_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e3c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eec4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e628, 0x8419);
+    func_020731dc(&data_ov002_0210e628, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eed0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e700, 0x841a);
+    func_020731dc(&data_ov002_0210e700, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eee8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebe8, 0x841b);
+    func_020731dc(&data_ov002_0210ebe8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eef4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebf0, 0x841c);
+    func_020731dc(&data_ov002_0210ebf0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef0c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e710, 0x841d);
+    func_020731dc(&data_ov002_0210e710, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef18);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3a8, 0x841e);
+    func_020731dc(&data_ov002_0210e3a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef30);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebf8, 0x841f);
+    func_020731dc(&data_ov002_0210ebf8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef3c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e718, 0x8420);
+    func_020731dc(&data_ov002_0210e718, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef54);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec08, 0x8421);
+    func_020731dc(&data_ov002_0210ec08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef60);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e720, 0x8422);
+    func_020731dc(&data_ov002_0210e720, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef78);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec20, 0x8423);
+    func_020731dc(&data_ov002_0210ec20, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef84);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e410, 0x8424);
+    func_020731dc(&data_ov002_0210e410, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef9c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e260, 0x8425);
+    func_020731dc(&data_ov002_0210e260, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa88);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e730, 0x8426);
+    func_020731dc(&data_ov002_0210e730, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efb4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec30, 0x8050);
+    func_020731dc(&data_ov002_0210ec30, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efc0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e418, 0x8051);
+    func_020731dc(&data_ov002_0210e418, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efd8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e740, 0x8052);
+    func_020731dc(&data_ov002_0210e740, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efe4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec48, 0x8053);
+    func_020731dc(&data_ov002_0210ec48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210effc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e420, 0x8054);
+    func_020731dc(&data_ov002_0210e420, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f008);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e750, ASSET_B_MARIO_START_BCA);
+    func_020731dc(&data_ov002_0210e750, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f020);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e760, 0x8055);
+    func_020731dc(&data_ov002_0210e760, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f02c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e428, 0x8056);
+    func_020731dc(&data_ov002_0210e428, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f044);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e258, 0x8057);
+    func_020731dc(&data_ov002_0210e258, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f050);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e268, 0x8058);
+    func_020731dc(&data_ov002_0210e268, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f068);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e440, 0x8059);
+    func_020731dc(&data_ov002_0210e440, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f074);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9e0, 0x805a);
+    func_020731dc(&data_ov002_0210e9e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f08c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e240, 0x805b);
+    func_020731dc(&data_ov002_0210e240, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f098);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e448, 0x805c);
+    func_020731dc(&data_ov002_0210e448, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0b0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e798, 0x805d);
+    func_020731dc(&data_ov002_0210e798, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0bc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7a0, 0x805e);
+    func_020731dc(&data_ov002_0210e7a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0d4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e278, 0x805f);
+    func_020731dc(&data_ov002_0210e278, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0e0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e238, 0x8060);
+    func_020731dc(&data_ov002_0210e238, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0f8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e248, 0x8061);
+    func_020731dc(&data_ov002_0210e248, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f104);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e468, ASSET_COLD_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e468, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f11c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e470, ASSET_COLD_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e470, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f128);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e280, ASSET_COLD_WAIT_START_BCA);
+    func_020731dc(&data_ov002_0210e280, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f140);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7d0, 0x8062);
+    func_020731dc(&data_ov002_0210e7d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f14c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e290, 0x8063);
+    func_020731dc(&data_ov002_0210e290, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f164);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e480, 0x8064);
+    func_020731dc(&data_ov002_0210e480, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f170);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e488, ASSET_DAMAGE_START_BCA);
+    func_020731dc(&data_ov002_0210e488, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f188);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e228, ASSET_DAMAGE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e228, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f194);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e498, ASSET_DOOR_PULL_BCA);
+    func_020731dc(&data_ov002_0210e498, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1b8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4a0, ASSET_DOOR_PUSH_BCA);
+    func_020731dc(&data_ov002_0210e4a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1c4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e808, ASSET_DROWN_DIE_BCA);
+    func_020731dc(&data_ov002_0210e808, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1dc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e298, ASSET_E_DOWN_BCA);
+    func_020731dc(&data_ov002_0210e298, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1e8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e810, 0x8065);
+    func_020731dc(&data_ov002_0210e810, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f200);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2a0, ASSET_ED_CAP_OFF_BCA);
+    func_020731dc(&data_ov002_0210e2a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f20c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e820, ASSET_ED_CAP_OFF_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e820, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f230);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2a8, ASSET_ED_FLY_BCA);
+    func_020731dc(&data_ov002_0210e2a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f23c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1d8, ASSET_ED_FLY_START_BCA);
+    func_020731dc(&data_ov002_0210e1d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f254);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2b0, ASSET_ED_KISS_TO_POSE_BCA);
+    func_020731dc(&data_ov002_0210e2b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f260);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e840, ASSET_ED_KISS_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e840, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f278);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2b8, ASSET_ED_LOOK_LEFT_BCA);
+    func_020731dc(&data_ov002_0210e2b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f284);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e850, ASSET_ED_LOOK_LEFT_END_BCA);
+    func_020731dc(&data_ov002_0210e850, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f29c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4e0, ASSET_ED_LOOK_LEFT_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e4e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2a8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e858, ASSET_ED_NOD_BCA);
+    func_020731dc(&data_ov002_0210e858, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2c0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2c8, ASSET_ED_PUTUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e2c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2cc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e948, ASSET_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e948, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2e4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2d0, ASSET_ED_WAVE_BCA);
+    func_020731dc(&data_ov002_0210e2d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2f0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e870, 0x8066);
+    func_020731dc(&data_ov002_0210e870, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f314);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2d8, 0x8067);
+    func_020731dc(&data_ov002_0210e2d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f320);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e880, ASSET_FALL_DIE_BCA);
+    func_020731dc(&data_ov002_0210e880, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f32c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e508, ASSET_FALL_SAND_BCA);
+    func_020731dc(&data_ov002_0210e508, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f338);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2e0, 0x8068);
+    func_020731dc(&data_ov002_0210e2e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5e4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e890, ASSET_FIRST_CHANGE_BCA);
+    func_020731dc(&data_ov002_0210e890, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f35c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2e8, 0x8069);
+    func_020731dc(&data_ov002_0210e2e8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f368);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1f0, 0x806a);
+    func_020731dc(&data_ov002_0210e1f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f374);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1b8, ASSET_GAS_DIE_BCA);
+    func_020731dc(&data_ov002_0210e1b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f38c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8a0, ASSET_GAS_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f398);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2f8, ASSET_H_CARRY_START_BCA);
+    func_020731dc(&data_ov002_0210e2f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3a4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8a8, ASSET_H_CARRY_THROW_BCA);
+    func_020731dc(&data_ov002_0210e8a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3bc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e300, ASSET_H_CARRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e300, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3c8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8c0, ASSET_H_CARRY_WALK_BCA);
+    func_020731dc(&data_ov002_0210e8c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3d4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e308, 0x806b);
+    func_020731dc(&data_ov002_0210e308, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3e0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1a8, 0x806c);
+    func_020731dc(&data_ov002_0210e1a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3ec);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e310, 0x806d);
+    func_020731dc(&data_ov002_0210e310, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3f8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8e0, 0x806e);
+    func_020731dc(&data_ov002_0210e8e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f404);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e318, 0x806f);
+    func_020731dc(&data_ov002_0210e318, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f410);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8f8, 0x8070);
+    func_020731dc(&data_ov002_0210e8f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f41c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e320, 0x8071);
+    func_020731dc(&data_ov002_0210e320, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f428);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e908, 0x8072);
+    func_020731dc(&data_ov002_0210e908, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f434);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e328, 0x8073);
+    func_020731dc(&data_ov002_0210e328, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f440);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1a0, 0x8074);
+    func_020731dc(&data_ov002_0210e1a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f44c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e330, 0x8075);
+    func_020731dc(&data_ov002_0210e330, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f458);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e918, 0x8076);
+    func_020731dc(&data_ov002_0210e918, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f464);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e560, 0x8077);
+    func_020731dc(&data_ov002_0210e560, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f470);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e338, 0x8078);
+    func_020731dc(&data_ov002_0210e338, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f47c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e928, 0x8079);
+    func_020731dc(&data_ov002_0210e928, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f488);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e568, ASSET_KEY_GET_BCA);
+    func_020731dc(&data_ov002_0210e568, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f494);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e938, ASSET_KEY_OPEN_BCA);
+    func_020731dc(&data_ov002_0210e938, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4a0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e940, 0x807a);
+    func_020731dc(&data_ov002_0210e940, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4ac);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e340, 0x807b);
+    func_020731dc(&data_ov002_0210e340, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4b8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1f8, ASSET_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210e1f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4c4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e950, ASSET_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e950, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4d0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e570, 0x807c);
+    func_020731dc(&data_ov002_0210e570, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4dc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e960, 0x807d);
+    func_020731dc(&data_ov002_0210e960, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4e8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e968, 0x8084);
+    func_020731dc(&data_ov002_0210e968, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4f4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e578, 0x8085);
+    func_020731dc(&data_ov002_0210e578, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f500);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e208, 0x8086);
+    func_020731dc(&data_ov002_0210e208, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f50c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e978, 0x8087);
+    func_020731dc(&data_ov002_0210e978, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f518);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e580, 0x8088);
+    func_020731dc(&data_ov002_0210e580, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f524);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e980, ASSET_N_CARRY_LOST_BCA);
+    func_020731dc(&data_ov002_0210e980, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f530);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e588, ASSET_N_CARRY_POSE_BCA);
+    func_020731dc(&data_ov002_0210e588, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f53c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e988, ASSET_N_CARRY_PUT_BCA);
+    func_020731dc(&data_ov002_0210e988, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f548);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e348, ASSET_N_CARRY_START_BCA);
+    func_020731dc(&data_ov002_0210e348, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f554);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e178, ASSET_N_CARRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e178, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f560);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e200, ASSET_N_CARRY_WALK_BCA);
+    func_020731dc(&data_ov002_0210e200, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f56c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e590, ASSET_OP_GO_BCA);
+    func_020731dc(&data_ov002_0210e590, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f578);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9a8, ASSET_OP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e9a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f584);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9b0, ASSET_P_KOOPA_H_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e9b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f590);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e598, ASSET_P_KOOPA_HOLD_BCA);
+    func_020731dc(&data_ov002_0210e598, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f59c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e188, ASSET_P_KOOPA_THROW_BCA);
+    func_020731dc(&data_ov002_0210e188, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5a8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5a0, ASSET_PADDLE_1_BCA);
+    func_020731dc(&data_ov002_0210e5a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5b4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9c8, ASSET_PADDLE_2_BCA);
+    func_020731dc(&data_ov002_0210e9c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5c0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e350, ASSET_PADDLE_CARRY_BCA);
+    func_020731dc(&data_ov002_0210e350, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5cc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5a8, ASSET_PADDLE_END_BCA);
+    func_020731dc(&data_ov002_0210e5a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5d8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9d8, 0x8089);
+    func_020731dc(&data_ov002_0210e9d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5f0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e358, 0x808a);
+    func_020731dc(&data_ov002_0210e358, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5fc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e170, ASSET_PUTON_T_CAP_BCA);
+    func_020731dc(&data_ov002_0210e170, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f608);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9f8, ASSET_RETURN_DOWN_BCA);
+    func_020731dc(&data_ov002_0210e9f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f614);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e360, ASSET_RETURN_NOCAP_BCA);
+    func_020731dc(&data_ov002_0210e360, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f620);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5b8, ASSET_RETURN_STAR_BCA);
+    func_020731dc(&data_ov002_0210e5b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f62c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea00, 0x808b);
+    func_020731dc(&data_ov002_0210ea00, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f638);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e368, 0x808c);
+    func_020731dc(&data_ov002_0210e368, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f644);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e370, 0x808d);
+    func_020731dc(&data_ov002_0210e370, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f650);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea18, 0x808e);
+    func_020731dc(&data_ov002_0210ea18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f65c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e210, 0x808f);
+    func_020731dc(&data_ov002_0210e210, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f668);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5c8, 0x8090);
+    func_020731dc(&data_ov002_0210e5c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f674);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea28, 0x8091);
+    func_020731dc(&data_ov002_0210ea28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f680);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e378, ASSET_S_DIE_BCA);
+    func_020731dc(&data_ov002_0210e378, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f68c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e190, ASSET_SCALE_UP_BCA);
+    func_020731dc(&data_ov002_0210e190, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f698);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea38, 0x8092);
+    func_020731dc(&data_ov002_0210ea38, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6a4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e380, ASSET_SDROP_HEAD_BCA);
+    func_020731dc(&data_ov002_0210e380, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6b0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea40, ASSET_SDROP_HEAD_END_BCA);
+    func_020731dc(&data_ov002_0210ea40, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6bc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea48, ASSET_SDROP_HEAD_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6c8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5d8, ASSET_SDROP_HIP_BCA);
+    func_020731dc(&data_ov002_0210e5d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6d4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e218, ASSET_SDROP_HIP_END_BCA);
+    func_020731dc(&data_ov002_0210e218, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6e0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea58, ASSET_SDROP_HIP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea58, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6ec);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5e0, ASSET_SDROP_LEG_BCA);
+    func_020731dc(&data_ov002_0210e5e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6f8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea60, ASSET_SDROP_LEG_END_BCA);
+    func_020731dc(&data_ov002_0210ea60, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f704);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5e8, ASSET_SDROP_LEG_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e5e8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f710);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea68, ASSET_SDROP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea68, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f71c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e388, ASSET_SDROP_WALK_BCA);
+    func_020731dc(&data_ov002_0210e388, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f728);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e198, 0x8093);
+    func_020731dc(&data_ov002_0210e198, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f734);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea78, 0x8094);
+    func_020731dc(&data_ov002_0210ea78, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f740);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e390, ASSET_SHF_DIE_BCA);
+    func_020731dc(&data_ov002_0210e390, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f74c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5f8, 0x8095);
+    func_020731dc(&data_ov002_0210e5f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f758);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea80, ASSET_SHOOT_BCA);
+    func_020731dc(&data_ov002_0210ea80, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f764);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e398, ASSET_SHOOT_TO_FLY_BCA);
+    func_020731dc(&data_ov002_0210e398, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f770);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea90, 0x8096);
+    func_020731dc(&data_ov002_0210ea90, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f77c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea98, ASSET_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210ea98, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f788);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e608, ASSET_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210e608, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f794);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eaa8, ASSET_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210eaa8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7a0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eab0, ASSET_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eab0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7ac);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e610, 0x8097);
+    func_020731dc(&data_ov002_0210e610, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7b8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e220, 0x8098);
+    func_020731dc(&data_ov002_0210e220, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7c4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e168, 0x8099);
+    func_020731dc(&data_ov002_0210e168, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7d0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e180, 0x809a);
+    func_020731dc(&data_ov002_0210e180, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7dc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3b8, 0x809b);
+    func_020731dc(&data_ov002_0210e3b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7e8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1b0, 0x809c);
+    func_020731dc(&data_ov002_0210e1b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f800);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1c0, 0x809d);
+    func_020731dc(&data_ov002_0210e1c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f80c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed58, 0x809e);
+    func_020731dc(&data_ov002_0210ed58, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f818);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed60, 0x809f);
+    func_020731dc(&data_ov002_0210ed60, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f830);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed50, 0x80a0);
+    func_020731dc(&data_ov002_0210ed50, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f83c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed48, 0x80a1);
+    func_020731dc(&data_ov002_0210ed48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f848);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed40, 0x80a2);
+    func_020731dc(&data_ov002_0210ed40, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f854);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed38, 0x80a3);
+    func_020731dc(&data_ov002_0210ed38, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f860);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed30, ASSET_STAR_OPEN_BCA);
+    func_020731dc(&data_ov002_0210ed30, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f86c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed28, 0x80a4);
+    func_020731dc(&data_ov002_0210ed28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f878);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed20, ASSET_SU_HIPAT_BCA);
+    func_020731dc(&data_ov002_0210ed20, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f884);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed18, ASSET_SU_HIPED_BCA);
+    func_020731dc(&data_ov002_0210ed18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f890);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed10, ASSET_SU_HIPSR_BCA);
+    func_020731dc(&data_ov002_0210ed10, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8a8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed08, ASSET_SU_JUMP_BCA);
+    func_020731dc(&data_ov002_0210ed08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8b4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecf8, ASSET_SU_JUMP_END_BCA);
+    func_020731dc(&data_ov002_0210ecf8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8c0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecf0, ASSET_SU_RUN_BCA);
+    func_020731dc(&data_ov002_0210ecf0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8d8);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ece8, ASSET_SU_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ece8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8e4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ece0, ASSET_SU_WALK_BCA);
+    func_020731dc(&data_ov002_0210ece0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8f0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecd8, ASSET_SU_WALK_END_BCA);
+    func_020731dc(&data_ov002_0210ecd8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8fc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecd0, ASSET_SU_WALK_START_BCA);
+    func_020731dc(&data_ov002_0210ecd0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f908);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecc8, ASSET_SWIM_BCA);
+    func_020731dc(&data_ov002_0210ecc8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f914);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecc0, ASSET_SWIM_ATTACK_BCA);
+    func_020731dc(&data_ov002_0210ecc0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f920);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e768, ASSET_SWIM_CARRY_BCA);
+    func_020731dc(&data_ov002_0210e768, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f938);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eca0, ASSET_SWIM_DAMAGE_BCA);
+    func_020731dc(&data_ov002_0210eca0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f944);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec90, ASSET_SWIM_DIE_BCA);
+    func_020731dc(&data_ov002_0210ec90, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f950);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec88, ASSET_SWIM_IN_BCA);
+    func_020731dc(&data_ov002_0210ec88, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f95c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec80, ASSET_SWIM_STAR_GET_BCA);
+    func_020731dc(&data_ov002_0210ec80, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f968);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec78, ASSET_SWIM_THROW_BCA);
+    func_020731dc(&data_ov002_0210ec78, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f974);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec70, ASSET_SWIM_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ec70, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f980);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec68, 0x80a5);
+    func_020731dc(&data_ov002_0210ec68, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f98c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4d8, 0x80a6);
+    func_020731dc(&data_ov002_0210e4d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f998);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e920, 0x80a7);
+    func_020731dc(&data_ov002_0210e920, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f9a4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7c8, 0x80a8);
+    func_020731dc(&data_ov002_0210e7c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f9bc);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ead8, 0x80a9);
+    func_020731dc(&data_ov002_0210ead8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f9ec);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb48, 0x80aa);
+    func_020731dc(&data_ov002_0210eb48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa10);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec18, 0x80ab);
+    func_020731dc(&data_ov002_0210ec18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa34);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec58, 0x80ac);
+    func_020731dc(&data_ov002_0210ec58, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa58);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed00, 0x80b3);
+    func_020731dc(&data_ov002_0210ed00, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa7c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec28, 0x80b4);
+    func_020731dc(&data_ov002_0210ec28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210faac);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7e0, 0x80b5);
+    func_020731dc(&data_ov002_0210e7e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fad0);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7f8, 0x80b6);
+    func_020731dc(&data_ov002_0210e7f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210faf4);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4a8, 0x80b7);
+    func_020731dc(&data_ov002_0210e4a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb18);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e828, 0x80bb);
+    func_020731dc(&data_ov002_0210e828, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb3c);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4c0, 0x80bc);
+    func_020731dc(&data_ov002_0210e4c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb60);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e878, 0x80be);
+    func_020731dc(&data_ov002_0210e878, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb84);
+    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e830, 0x80bf);
+    func_020731dc(&data_ov002_0210e830, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fba8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e538, 0x8021);
+    func_020731dc(&data_ov002_0210e538, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fbd8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e8d0, 0x8022);
+    func_020731dc(&data_ov002_0210e8d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fbfc);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e8e8, ASSET_L_TX_DAMAGE_START_BTP);
+    func_020731dc(&data_ov002_0210e8e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc20);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e540, ASSET_L_TX_DAMAGE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e540, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc44);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e958, ASSET_L_TX_ED_AMAZED_BTP);
+    func_020731dc(&data_ov002_0210e958, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc5c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e898, 0x8023);
+    func_020731dc(&data_ov002_0210e898, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc80);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e9e8, 0x8024);
+    func_020731dc(&data_ov002_0210e9e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fca4);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea70, ASSET_L_TX_GAS_WAIT_BTP);
+    func_020731dc(&data_ov002_0210ea70, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fcc8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ebd8, 0x8025);
+    func_020731dc(&data_ov002_0210ebd8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fcec);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eac8, 0x8026);
+    func_020731dc(&data_ov002_0210eac8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd10);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e460, ASSET_L_TX_LIE_END_BTP);
+    func_020731dc(&data_ov002_0210e460, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd34);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e910, ASSET_L_TX_LIE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e910, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd58);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e2f0, ASSET_L_TX_RETURN_DOWN_BTP);
+    func_020731dc(&data_ov002_0210e2f0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd7c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea10, 0x8027);
+    func_020731dc(&data_ov002_0210ea10, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fda0);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e600, ASSET_L_TX_SLEEP_END_BTP);
+    func_020731dc(&data_ov002_0210e600, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fdc4);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec98, ASSET_L_TX_SLEEP_START_BTP);
+    func_020731dc(&data_ov002_0210ec98, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fde8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea88, ASSET_L_TX_SLEEP_TO_LIE_BTP);
+    func_020731dc(&data_ov002_0210ea88, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe0c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eca8, ASSET_L_TX_SLEEP_WAIT_BTP);
+    func_020731dc(&data_ov002_0210eca8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe30);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e9d0, 0x8028);
+    func_020731dc(&data_ov002_0210e9d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe54);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eaf0, 0x8035);
+    func_020731dc(&data_ov002_0210eaf0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe78);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea30, ASSET_W_TX_DAMAGE_START_BTP);
+    func_020731dc(&data_ov002_0210ea30, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe9c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e660, ASSET_W_TX_DAMAGE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e660, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fec0);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb10, ASSET_W_TX_ED_AMAZED_BTP);
+    func_020731dc(&data_ov002_0210eb10, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fee4);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e670, 0x8036);
+    func_020731dc(&data_ov002_0210e670, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff08);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e680, 0x8037);
+    func_020731dc(&data_ov002_0210e680, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff2c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb38, ASSET_W_TX_GAS_WAIT_BTP);
+    func_020731dc(&data_ov002_0210eb38, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff50);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e640, 0x8038);
+    func_020731dc(&data_ov002_0210e640, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff74);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb58, ASSET_W_TX_LIE_END_BTP);
+    func_020731dc(&data_ov002_0210eb58, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff98);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6a0, ASSET_W_TX_LIE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e6a0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ffbc);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3e0, ASSET_W_TX_RETURN_DOWN_BTP);
+    func_020731dc(&data_ov002_0210e3e0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ffe0);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb70, 0x8039);
+    func_020731dc(&data_ov002_0210eb70, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ed80);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6b8, ASSET_W_TX_SLEEP_END_BTP);
+    func_020731dc(&data_ov002_0210e6b8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eda4);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb90, ASSET_W_TX_SLEEP_START_BTP);
+    func_020731dc(&data_ov002_0210eb90, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210edc8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e620, ASSET_W_TX_SLEEP_TO_LIE_BTP);
+    func_020731dc(&data_ov002_0210e620, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210edec);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3e8, ASSET_W_TX_SLEEP_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e3e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee10);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210eba8, 0x803a);
+    func_020731dc(&data_ov002_0210eba8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee34);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3c8, 0x8049);
+    func_020731dc(&data_ov002_0210e3c8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee58);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6e0, ASSET_Y_TX_DAMAGE_START_BTP);
+    func_020731dc(&data_ov002_0210e6e0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee7c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ebc8, ASSET_Y_TX_DAMAGE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210ebc8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eea0);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e400, 0x804a);
+    func_020731dc(&data_ov002_0210e400, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eeb8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ecb8, 0x804b);
+    func_020731dc(&data_ov002_0210ecb8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eedc);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e708, ASSET_Y_TX_GAS_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e708, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef00);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e408, 0x804c);
+    func_020731dc(&data_ov002_0210e408, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef24);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec00, ASSET_Y_TX_LIE_END_BTP);
+    func_020731dc(&data_ov002_0210ec00, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef48);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec10, ASSET_Y_TX_LIE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210ec10, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef6c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e728, ASSET_Y_TX_RETURN_DOWN_BTP);
+    func_020731dc(&data_ov002_0210e728, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef90);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3b0, 0x804d);
+    func_020731dc(&data_ov002_0210e3b0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210efa8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e738, ASSET_Y_TX_SLEEP_END_BTP);
+    func_020731dc(&data_ov002_0210e738, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210efcc);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec40, ASSET_Y_TX_SLEEP_START_BTP);
+    func_020731dc(&data_ov002_0210ec40, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eff0);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e250, ASSET_Y_TX_SLEEP_TO_LIE_BTP);
+    func_020731dc(&data_ov002_0210e250, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f014);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e430, 0x804e);
+    func_020731dc(&data_ov002_0210e430, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f038);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e438, 0x804f);
+    func_020731dc(&data_ov002_0210e438, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f05c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e770, 0x80ad);
+    func_020731dc(&data_ov002_0210e770, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f080);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e788, ASSET_TX_DAMAGE_START_BTP);
+    func_020731dc(&data_ov002_0210e788, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f0a4);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e450, ASSET_TX_DAMAGE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e450, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f0c8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e270, ASSET_TX_ED_KISS_TO_POSE_BTP);
+    func_020731dc(&data_ov002_0210e270, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f0ec);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e458, ASSET_TX_ED_KISS_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e458, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f110);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e288, 0x80ae);
+    func_020731dc(&data_ov002_0210e288, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f134);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e478, 0x80af);
+    func_020731dc(&data_ov002_0210e478, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f158);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e7e8, ASSET_TX_GAS_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e7e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f17c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e230, 0x80b0);
+    func_020731dc(&data_ov002_0210e230, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f1a0);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e800, ASSET_TX_LIE_END_BTP);
+    func_020731dc(&data_ov002_0210e800, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f1d0);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1d0, ASSET_TX_LIE_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e1d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f1f4);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4b8, ASSET_TX_RETURN_DOWN_BTP);
+    func_020731dc(&data_ov002_0210e4b8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f218);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1c8, 0x80b1);
+    func_020731dc(&data_ov002_0210e1c8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f248);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4d0, ASSET_TX_SLEEP_END_BTP);
+    func_020731dc(&data_ov002_0210e4d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f26c);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1e0, ASSET_TX_SLEEP_START_BTP);
+    func_020731dc(&data_ov002_0210e1e0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f290);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4e8, ASSET_TX_SLEEP_TO_LIE_BTP);
+    func_020731dc(&data_ov002_0210e4e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f2b4);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1e8, ASSET_TX_SLEEP_WAIT_BTP);
+    func_020731dc(&data_ov002_0210e1e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f2d8);
+    SharedFilePtr_Construct_TexSeq(&data_ov002_0210e500, 0x80b2);
+    func_020731dc(&data_ov002_0210e500, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f2fc);
+    data_ov002_0211013c.lo = data_ov002_02109e0c;
+    data_ov002_0211013c.hi = data_ov002_02109f74;
+    tmp = data_02086b58;
+    ta = tmp.a;
+    tb = tmp.b;
+    data_ov002_0211013c.tail.a = tb ? ta : ta;
+    data_ov002_0211013c.tail.b = tb;
+    data_ov002_02110154.lo = data_ov002_0210a25c;
+    data_ov002_02110154.hi = data_ov002_02109e14;
+    data_ov002_02110154.tail = data_ov002_02109f84;
+    data_ov002_02110184.tail.a = tb ? ta : ta;
+    data_ov002_02110184.tail.b = tb;
+    data_ov002_02110184.lo = data_ov002_02109f94;
+    data_ov002_02110184.hi = data_ov002_02109e1c;
+    data_ov002_0211019c.lo = data_ov002_02109fa4;
+    data_ov002_0211019c.tail.a = tb ? ta : ta;
+    data_ov002_0211019c.tail.b = tb;
+    data_ov002_0211019c.hi = data_ov002_02109fac;
+    data_ov002_021101b4.tail.a = tb ? ta : ta;
+    data_ov002_021101b4.tail.b = tb;
+    data_ov002_021101b4.lo = data_ov002_02109dec;
+    data_ov002_021101b4.hi = data_ov002_0210a26c;
+    data_ov002_021101e4.lo = data_ov002_02109fb4;
+    data_ov002_021101e4.tail.a = tb ? ta : ta;
+    data_ov002_021101e4.tail.b = tb;
+    data_ov002_021101e4.hi = data_ov002_0210a27c;
+    data_ov002_021101fc.tail.a = tb ? ta : ta;
+    data_ov002_021101fc.tail.b = tb;
+    data_ov002_021101fc.lo = data_ov002_02109fbc;
+    data_ov002_021101fc.hi = data_ov002_02109fc4;
+    data_ov002_02110214.lo = data_ov002_0210a214;
+    data_ov002_02110214.tail.a = tb ? ta : ta;
+    data_ov002_02110214.tail.b = tb;
+    data_ov002_02110214.hi = data_ov002_02109fd4;
+    data_ov002_02110244.lo = data_ov002_02109e9c;
+    data_ov002_02110244.hi = data_ov002_02109fdc;
+    data_ov002_02110244.tail = data_ov002_0210a2a4;
+    data_ov002_02110274.tail.a = tb ? ta : ta;
+    data_ov002_02110274.tail.b = tb;
+    data_ov002_02110274.lo = data_ov002_02109eac;
+    data_ov002_02110274.hi = data_ov002_0210a2b4;
+    data_ov002_0211028c.lo = data_ov002_0210a2bc;
+    data_ov002_0211028c.hi = data_ov002_02109fec;
+    data_ov002_0211028c.tail = data_ov002_0210a1e4;
+    data_ov002_021102bc.tail.a = tb ? ta : ta;
+    data_ov002_021102bc.tail.b = tb;
+    data_ov002_021102bc.lo = data_ov002_02109e94;
+    data_ov002_021102bc.hi = data_ov002_0210a2cc;
+    data_ov002_021102d4.lo = data_ov002_02109ffc;
+    data_ov002_021102d4.hi = data_ov002_0210a1c4;
+    data_ov002_021102d4.tail = data_ov002_02109ebc;
+    data_ov002_02110304.lo = data_ov002_0210a2e4;
+    data_ov002_02110304.hi = data_ov002_0210a004;
+    data_ov002_02110304.tail = data_ov002_0210a2f4;
+    data_ov002_0211031c.tail.a = tb ? ta : ta;
+    data_ov002_0211031c.tail.b = tb;
+    data_ov002_0211031c.lo = data_ov002_0210a00c;
+    data_ov002_0211031c.hi = data_ov002_02109e3c;
+    data_ov002_02110334.lo = data_ov002_0210a18c;
+    data_ov002_02110334.tail.a = tb ? ta : ta;
+    data_ov002_02110334.tail.b = tb;
+    data_ov002_02110334.hi = data_ov002_0210a304;
+    data_ov002_02110364.lo = data_ov002_0210a01c;
+    data_ov002_02110364.hi = data_ov002_02109e44;
+    data_ov002_02110364.tail = data_ov002_0210a314;
+    data_ov002_02110394.tail.a = tb ? ta : ta;
+    data_ov002_02110394.tail.b = tb;
+    data_ov002_02110394.lo = data_ov002_0210a31c;
+    data_ov002_02110394.hi = data_ov002_0210a324;
+    data_ov002_021103ac.lo = data_ov002_0210a164;
+    data_ov002_021103ac.tail.a = tb ? ta : ta;
+    data_ov002_021103ac.tail.b = tb;
+    data_ov002_021103ac.hi = data_ov002_02109dd4;
+    data_ov002_021103dc.tail.a = tb ? ta : ta;
+    data_ov002_021103dc.tail.b = tb;
+    data_ov002_021103dc.lo = data_ov002_0210a33c;
+    data_ov002_021103dc.hi = data_ov002_0210a034;
+    data_ov002_021103f4.lo = data_ov002_02109ec4;
+    data_ov002_021103f4.tail.a = tb ? ta : ta;
+    data_ov002_021103f4.tail.b = tb;
+    data_ov002_021103f4.hi = data_ov002_0210a03c;
+    data_ov002_02110424.tail.a = tb ? ta : ta;
+    data_ov002_02110424.tail.b = tb;
+    data_ov002_02110424.lo = data_ov002_02109ecc;
+    data_ov002_02110424.hi = data_ov002_0210a35c;
+    data_ov002_0211043c.lo = data_ov002_0210a044;
+    data_ov002_0211043c.tail.a = tb ? ta : ta;
+    data_ov002_0211043c.tail.b = tb;
+    data_ov002_0211043c.hi = data_ov002_02109e4c;
+    data_ov002_02110454.lo = data_ov002_0210a04c;
+    data_ov002_02110454.hi = data_ov002_0210a37c;
+    data_ov002_02110454.tail = data_ov002_0210a384;
+    data_ov002_02110484.lo = data_ov002_02109e54;
+    data_ov002_02110484.hi = data_ov002_02109ed4;
+    data_ov002_02110484.tail = data_ov002_0210a38c;
+    data_ov002_0211049c.tail.a = tb ? ta : ta;
+    data_ov002_0211049c.tail.b = tb;
+    data_ov002_0211049c.lo = data_ov002_0210a05c;
+    data_ov002_0211049c.hi = data_ov002_0210a394;
+    data_ov002_021104cc.lo = data_ov002_02109ddc;
+    data_ov002_021104cc.tail.a = tb ? ta : ta;
+    data_ov002_021104cc.tail.b = tb;
+    data_ov002_021104cc.hi = data_ov002_0210a0f4;
+    data_ov002_021104e4.tail.a = tb ? ta : ta;
+    data_ov002_021104e4.tail.b = tb;
+    data_ov002_021104e4.lo = data_ov002_02109de4;
+    data_ov002_021104e4.hi = data_ov002_0210a54c;
+    data_ov002_02110514.lo = data_ov002_02109df4;
+    data_ov002_02110514.tail.a = tb ? ta : ta;
+    data_ov002_02110514.tail.b = tb;
+    data_ov002_02110514.hi = data_ov002_0210a0d4;
+    data_ov002_0211052c.tail.a = tb ? ta : ta;
+    data_ov002_0211052c.tail.b = tb;
+    data_ov002_0211052c.lo = data_ov002_0210a544;
+    data_ov002_0211052c.hi = data_ov002_0210a53c;
+    data_ov002_0211055c.lo = data_ov002_0210a52c;
+    data_ov002_0211055c.tail.a = tb ? ta : ta;
+    data_ov002_0211055c.tail.b = tb;
+    data_ov002_0211055c.hi = data_ov002_0210a524;
+    data_ov002_02110574.tail.a = tb ? ta : ta;
+    data_ov002_02110574.tail.b = tb;
+    data_ov002_02110574.lo = data_ov002_0210a514;
+    data_ov002_02110574.hi = data_ov002_0210a50c;
+    data_ov002_021105a4.lo = data_ov002_0210a504;
+    data_ov002_021105a4.hi = data_ov002_0210a4fc;
+    data_ov002_021105a4.tail = data_ov002_0210a4f4;
+    data_ov002_021105bc.tail.a = tb ? ta : ta;
+    data_ov002_021105bc.tail.b = tb;
+    data_ov002_021105bc.lo = data_ov002_0210a4ec;
+    data_ov002_021105bc.hi = data_ov002_0210a4e4;
+    data_ov002_021105d4.lo = data_ov002_0210a0ac;
+    data_ov002_021105d4.tail.a = tb ? ta : ta;
+    data_ov002_021105d4.tail.b = tb;
+    data_ov002_021105d4.hi = data_ov002_02109f14;
+    data_ov002_021105ec.lo = data_ov002_0210a4d4;
+    data_ov002_021105ec.hi = data_ov002_0210a4cc;
+    data_ov002_021105ec.tail = data_ov002_0210a4c4;
+    data_ov002_02110604.lo = data_ov002_0210a4b4;
+    data_ov002_02110604.hi = data_ov002_0210a494;
+    data_ov002_02110604.tail = data_ov002_0210a414;
+    data_ov002_0211061c.tail.a = tb ? ta : ta;
+    data_ov002_0211061c.tail.b = tb;
+    data_ov002_0211061c.lo = data_ov002_0210a1dc;
+    data_ov002_0211061c.hi = data_ov002_0210a3cc;
+    data_ov002_02110634.lo = data_ov002_0210a49c;
+    data_ov002_02110634.tail.a = tb ? ta : ta;
+    data_ov002_02110634.tail.b = tb;
+    data_ov002_02110634.hi = data_ov002_0210a09c;
+    data_ov002_0211064c.lo = data_ov002_02109e6c;
+    data_ov002_0211064c.hi = data_ov002_0210a0e4;
+    data_ov002_0211064c.tail = data_ov002_0210a13c;
+    data_ov002_02110664.lo = data_ov002_0210a17c;
+    data_ov002_02110664.hi = data_ov002_0210a1a4;
+    data_ov002_02110664.tail = data_ov002_02109f5c;
+    data_ov002_0211067c.lo = data_ov002_0210a204;
+    data_ov002_0211067c.hi = data_ov002_0210a224;
+    data_ov002_0211067c.tail = data_ov002_0210a24c;
+    data_ov002_02110694.tail.a = tb ? ta : ta;
+    data_ov002_02110694.tail.b = tb;
+    data_ov002_02110694.lo = data_ov002_0210a42c;
+    data_ov002_02110694.hi = data_ov002_0210a2fc;
+    data_ov002_021106ac.lo = data_ov002_0210a2ec;
+    data_ov002_021106ac.hi = data_ov002_0210a0a4;
+    data_ov002_021106ac.tail = data_ov002_0210a194;
+    data_ov002_021106c4.lo = data_ov002_0210a294;
+    data_ov002_021106c4.hi = data_ov002_02109eb4;
+    data_ov002_021106c4.tail = data_ov002_02109e84;
+    data_ov002_021106dc.lo = data_ov002_0210a3a4;
+    data_ov002_021106dc.hi = data_ov002_0210a39c;
+    data_ov002_021106dc.tail = data_ov002_0210a3bc;
+    data_ov002_021106f4.lo = data_ov002_0210a2c4;
+    data_ov002_021106f4.hi = data_ov002_0210a3d4;
+    data_ov002_021106f4.tail = data_ov002_0210a3e4;
+    data_ov002_0211070c.tail.a = tb ? ta : ta;
+    data_ov002_0211070c.tail.b = tb;
+    data_ov002_0211070c.lo = data_ov002_0210a3ec;
+    data_ov002_0211070c.hi = data_ov002_0210a3b4;
+    data_ov002_02110724.lo = data_ov002_0210a2ac;
+    data_ov002_02110724.tail.a = tb ? ta : ta;
+    data_ov002_02110724.tail.b = tb;
+    data_ov002_02110724.hi = data_ov002_02109ef4;
+    data_ov002_0210ffec.lo = data_ov002_0210a41c;
+    data_ov002_0210ffec.hi = data_ov002_0210a06c;
+    data_ov002_0210ffec.tail = data_ov002_02109eec;
+    data_ov002_02110004.tail.a = tb ? ta : ta;
+    data_ov002_02110004.tail.b = tb;
+    data_ov002_02110004.lo = data_ov002_0210a43c;
+    data_ov002_02110004.hi = data_ov002_0210a444;
+    data_ov002_0211001c.lo = data_ov002_0210a454;
+    data_ov002_0211001c.tail.a = tb ? ta : ta;
+    data_ov002_0211001c.tail.b = tb;
+    data_ov002_0211001c.hi = data_ov002_0210a464;
+    data_ov002_02110034.lo = data_ov002_02109ee4;
+    data_ov002_02110034.hi = data_ov002_02109efc;
+    data_ov002_02110034.tail = data_ov002_0210a484;
+    data_ov002_0211004c.tail.a = tb ? ta : ta;
+    data_ov002_0211004c.tail.b = tb;
+    data_ov002_0211004c.lo = data_ov002_02109f04;
+    data_ov002_0211004c.hi = data_ov002_0210a32c;
+    data_ov002_02110064.lo = data_ov002_0210a4a4;
+    data_ov002_02110064.hi = data_ov002_0210a4ac;
+    data_ov002_02110064.tail = data_ov002_0210a08c;
+    data_ov002_0211007c.tail.a = tb ? ta : ta;
+    data_ov002_0211007c.tail.b = tb;
+    data_ov002_0211007c.lo = data_ov002_02109e74;
+    data_ov002_0211007c.hi = data_ov002_02109e7c;
+    data_ov002_02110094.lo = data_ov002_02109f1c;
+    data_ov002_02110094.hi = data_ov002_02109f24;
+    data_ov002_02110094.tail = data_ov002_02109edc;
+    data_ov002_021100ac.tail.a = tb ? ta : ta;
+    data_ov002_021100ac.tail.b = tb;
+    data_ov002_021100ac.lo = data_ov002_02109f2c;
+    data_ov002_021100ac.hi = data_ov002_0210a2d4;
+    data_ov002_021100c4.lo = data_ov002_02109e8c;
+    data_ov002_021100c4.tail.a = tb ? ta : ta;
+    data_ov002_021100c4.tail.b = tb;
+    data_ov002_021100c4.hi = data_ov002_02109f34;
+    data_ov002_021100dc.tail.a = tb ? ta : ta;
+    data_ov002_021100dc.tail.b = tb;
+    data_ov002_021100dc.lo = data_ov002_02109f3c;
+    data_ov002_021100dc.hi = data_ov002_02109e5c;
+    data_ov002_021100f4.lo = data_ov002_0210a16c;
+    data_ov002_021100f4.tail.a = tb ? ta : ta;
+    data_ov002_021100f4.tail.b = tb;
+    data_ov002_021100f4.hi = data_ov002_02109f4c;
+    data_ov002_0211010c.tail.a = tb ? ta : ta;
+    data_ov002_0211010c.tail.b = tb;
+    data_ov002_0211010c.lo = data_ov002_0210a28c;
+    data_ov002_0211010c.hi = data_ov002_0210a1bc;
+    data_ov002_02110124.lo = data_ov002_02109e04;
+    data_ov002_02110124.tail.a = tb ? ta : ta;
+    data_ov002_02110124.tail.b = tb;
+    data_ov002_02110124.hi = data_ov002_0210a4dc;
+    data_ov002_0211016c.lo = data_ov002_02109f7c;
+    data_ov002_0211016c.hi = data_ov002_0210a254;
+    data_ov002_0211016c.tail = data_ov002_02109f8c;
+    data_ov002_021101cc.lo = data_ov002_02109f9c;
+    data_ov002_021101cc.hi = data_ov002_02109e24;
+    data_ov002_021101cc.tail = data_ov002_0210a234;
+    data_ov002_0211022c.lo = data_ov002_0210a284;
+    data_ov002_0211022c.hi = data_ov002_0210a21c;
+    data_ov002_0211022c.tail = data_ov002_02109fcc;
+    data_ov002_0211025c.tail.a = tb ? ta : ta;
+    data_ov002_0211025c.tail.b = tb;
+    data_ov002_0211025c.lo = data_ov002_0210a20c;
+    data_ov002_0211025c.hi = data_ov002_02109ea4;
+    data_ov002_021102a4.lo = data_ov002_0210a1f4;
+    data_ov002_021102a4.tail.a = tb ? ta : ta;
+    data_ov002_021102a4.tail.b = tb;
+    data_ov002_021102a4.hi = data_ov002_02109f6c;
+    data_ov002_021102ec.lo = data_ov002_02109e34;
+    data_ov002_021102ec.hi = data_ov002_02109f64;
+    data_ov002_021102ec.tail = data_ov002_0210a2dc;
+    data_ov002_0211034c.lo = data_ov002_0210a1ac;
+    data_ov002_0211034c.hi = data_ov002_0210a19c;
+    data_ov002_0211034c.tail = data_ov002_0210a014;
+    data_ov002_0211037c.tail.a = tb ? ta : ta;
+    data_ov002_0211037c.tail.b = tb;
+    data_ov002_0211037c.lo = data_ov002_0210a184;
+    data_ov002_0211037c.hi = data_ov002_0210a024;
+    data_ov002_021103c4.lo = data_ov002_0210a02c;
+    data_ov002_021103c4.tail.a = tb ? ta : ta;
+    data_ov002_021103c4.tail.b = tb;
+    data_ov002_021103c4.hi = data_ov002_0210a15c;
+    data_ov002_0211040c.tail.a = tb ? ta : ta;
+    data_ov002_0211040c.tail.b = tb;
+    data_ov002_0211040c.lo = data_ov002_0210a344;
+    data_ov002_0211040c.hi = data_ov002_0210a354;
+    data_ov002_0211046c.lo = data_ov002_0210a364;
+    data_ov002_0211046c.hi = data_ov002_0210a374;
+    data_ov002_0211046c.tail = data_ov002_0210a11c;
+    data_ov002_021104b4.lo = data_ov002_0210a114;
+    data_ov002_021104b4.hi = data_ov002_0210a104;
+    data_ov002_021104b4.tail = data_ov002_0210a0fc;
+    data_ov002_021104fc.tail.a = tb ? ta : ta;
+    data_ov002_021104fc.tail.b = tb;
+    data_ov002_021104fc.lo = data_ov002_02109e64;
+    data_ov002_021104fc.hi = data_ov002_0210a0ec;
+    data_ov002_02110544.lo = data_ov002_0210a0cc;
+    data_ov002_02110544.tail.a = tb ? ta : ta;
+    data_ov002_02110544.tail.b = tb;
+    data_ov002_02110544.hi = data_ov002_0210a0c4;
+    data_ov002_0211058c.lo = data_ov002_0210a51c;
+    data_ov002_0211058c.tail.a = tb ? ta : ta;
+    data_ov002_0211058c.tail.b = tb;
+    data_ov002_0211058c.hi = data_ov002_0210a0bc;
+    func_ov002_020e6ad4(&data_ov002_02110804);
+    data_ov002_0211073c.lo = data_ov002_02109f0c;
+    data_ov002_0211073c.hi = data_ov002_0210a47c;
+    ((int *)&data_ov002_0211073c)[4] = ((int *)&data_ov002_0210a10c)[0];
+    ((int *)&data_ov002_0211073c)[5] = ((int *)&data_ov002_0210a10c)[1];
+    ((int *)&data_ov002_0211073c)[6] = ((int *)&data_ov002_0210a45c)[0];
+    ((int *)&data_ov002_0211073c)[7] = ((int *)&data_ov002_0210a45c)[1];
+    data_ov002_02110884.lo = data_ov002_02109dfc;
+    data_ov002_02110884.hi = data_ov002_0210a264;
+    ((int *)&data_ov002_02110884)[4] = ((int *)&data_ov002_0210a244)[0];
+    ((int *)&data_ov002_02110884)[5] = ((int *)&data_ov002_0210a244)[1];
+    ((int *)&data_ov002_02110884)[6] = ((int *)&data_ov002_0210a23c)[0];
+    ((int *)&data_ov002_02110884)[7] = ((int *)&data_ov002_0210a23c)[1];
+    ((int *)&data_ov002_02110884)[8] = ((int *)&data_ov002_0210a274)[0];
+    ((int *)&data_ov002_02110884)[9] = ((int *)&data_ov002_0210a274)[1];
+    ((int *)&data_ov002_02110884)[10] = ((int *)&data_ov002_0210a22c)[0];
+    ((int *)&data_ov002_02110884)[11] = ((int *)&data_ov002_0210a22c)[1];
+    ((int *)&data_ov002_02110884)[12] = ((int *)&data_ov002_0210a29c)[0];
+    ((int *)&data_ov002_02110884)[13] = ((int *)&data_ov002_0210a29c)[1];
+    ((int *)&data_ov002_02110884)[14] = ((int *)&data_ov002_0210a1fc)[0];
+    ((int *)&data_ov002_02110884)[15] = ((int *)&data_ov002_0210a1fc)[1];
+    ((int *)&data_ov002_02110884)[16] = ((int *)&data_ov002_0210a1ec)[0];
+    ((int *)&data_ov002_02110884)[17] = ((int *)&data_ov002_0210a1ec)[1];
+    ((int *)&data_ov002_02110884)[18] = ((int *)&data_ov002_02109e2c)[0];
+    ((int *)&data_ov002_02110884)[19] = ((int *)&data_ov002_02109e2c)[1];
+    ((int *)&data_ov002_02110884)[20] = ((int *)&data_ov002_0210a1cc)[0];
+    ((int *)&data_ov002_02110884)[21] = ((int *)&data_ov002_0210a1cc)[1];
+    ((int *)&data_ov002_02110884)[22] = ((int *)&data_ov002_0210a1b4)[0];
+    ((int *)&data_ov002_02110884)[23] = ((int *)&data_ov002_0210a1b4)[1];
+    ((int *)&data_ov002_02110884)[24] = ((int *)&data_ov002_02109f54)[0];
+    ((int *)&data_ov002_02110884)[25] = ((int *)&data_ov002_02109f54)[1];
+    ((int *)&data_ov002_02110884)[26] = ((int *)&data_ov002_0210a30c)[0];
+    ((int *)&data_ov002_02110884)[27] = ((int *)&data_ov002_0210a30c)[1];
+    ((int *)&data_ov002_02110884)[28] = ((int *)&data_ov002_0210a174)[0];
+    ((int *)&data_ov002_02110884)[29] = ((int *)&data_ov002_0210a174)[1];
+    ((int *)&data_ov002_02110884)[30] = ((int *)&data_ov002_02109f44)[0];
+    ((int *)&data_ov002_02110884)[31] = ((int *)&data_ov002_02109f44)[1];
+    ((int *)&data_ov002_02110884)[32] = ((int *)&data_ov002_0210a154)[0];
+    ((int *)&data_ov002_02110884)[33] = ((int *)&data_ov002_0210a154)[1];
+    ((int *)&data_ov002_02110884)[34] = ((int *)&data_ov002_0210a144)[0];
+    ((int *)&data_ov002_02110884)[35] = ((int *)&data_ov002_0210a144)[1];
+    ((int *)&data_ov002_02110884)[36] = ((int *)&data_ov002_0210a134)[0];
+    ((int *)&data_ov002_02110884)[37] = ((int *)&data_ov002_0210a134)[1];
+    ((int *)&data_ov002_02110884)[38] = ((int *)&data_ov002_0210a12c)[0];
+    ((int *)&data_ov002_02110884)[39] = ((int *)&data_ov002_0210a12c)[1];
+    data_ov002_0211075c.lo = data_ov002_0210a48c;
+    data_ov002_0211075c.hi = data_ov002_0210a46c;
+    ((int *)&data_ov002_0211075c)[4] = ((int *)&data_ov002_0210a3ac)[0];
+    ((int *)&data_ov002_0211075c)[5] = ((int *)&data_ov002_0210a3ac)[1];
+    ((int *)&data_ov002_0211075c)[6] = ((int *)&data_ov002_0210a074)[0];
+    ((int *)&data_ov002_0211075c)[7] = ((int *)&data_ov002_0210a074)[1];
+    ((int *)&data_ov002_0211075c)[8] = ((int *)&data_ov002_0210a334)[0];
+    ((int *)&data_ov002_0211075c)[9] = ((int *)&data_ov002_0210a334)[1];
+    ((int *)&data_ov002_0211075c)[10] = ((int *)&data_ov002_0210a404)[0];
+    ((int *)&data_ov002_0211075c)[11] = ((int *)&data_ov002_0210a404)[1];
+    ((int *)&data_ov002_0211075c)[12] = ((int *)&data_ov002_0210a3f4)[0];
+    ((int *)&data_ov002_0211075c)[13] = ((int *)&data_ov002_0210a3f4)[1];
+}
+
+#pragma cplusplus on
+#pragma section initsec end

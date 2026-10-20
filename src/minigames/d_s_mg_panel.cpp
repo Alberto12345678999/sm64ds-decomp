@@ -16,28 +16,32 @@
  * (the address is the method name; no ROM spelling survives), declared in
  * dScMgPanel_c.h. Some helpers retain local layout views and raw offset accesses where native member loads change the matching build. The three empty handlers Shake_StateIdle, Banner_StateIdle and IntroCard_StateDone are members too; the state tables point at them.
  *
- * Leftover, each measured against the matching build:
- * - Particle_Spawn, Particle_ClearAll: the slot scan steps a byte pointer by
- *   0x18 and reads mParticles[0] through it; Particle_Spawn's vx (0x46b0)
- *   keeps its `(int)` launder (see the comment there).
- * - Shake_StateLoseTry, Shake_StateShake: the timer sites relative to the
- *   &mShake[0].timer base (plus index * 0xc) and the offset sites stay raw;
- *   their member spellings move code. Banner_Show's mY[i] read does too.
- * - CountMatches' mAnimTimer[i] store, Panel_StateBlink's mAnimTimer[idx]
- *   reset (through a +0x4e00 split base) and Panel_StateIdle's
- *   mFastFlip[index] store (through a +0x4000 split base) DIFF as members.
- * - Answer_StateFindSolution: the PanelInputView width view stays, and the
- *   mKind, mFlipAt, mFace and mFastFlip index sites DIFF as members.
- * - CheckSolved: the mFace / mGoal compare DIFFs as members; the mCheckDelay
- *   decrement keeps its laundered volatile round trip.
- * - FlipAt: the mFace flip through a computed byte pointer DIFFs as
- *   &mFace[cell].
- * - Scene_StateResult: the mKind pointer DIFFs as &mKind[i]; mResultTimer and
- *   the 0x4ec6 counter go through laundered pointers, and mSolved through a
- *   +0x4000 byte base.
- * - HasDuplicateRows, ClearGrid, ResetRound: see the comments there (@NNN).
- * - DrawPanels keeps a local layout view: the native-member rewrite changes
- *   its body from 360 to 388 bytes.
+ * Stepped member reads. Many per-panel sites index a member through a
+ * stepped scene pointer, `((dScMgPanel_c *)(scene + i))->mFace[0]`, rather
+ * than `mFace[i]`. The two name the same byte, but the plain index moves code
+ * or renumbers @NNN at each of these sites. This applies to:
+ * - Particle_Spawn / Particle_ClearAll's slot scan
+ * - Banner_Show
+ * - CountMatches
+ * - Answer_StateFindSolution
+ * - CheckSolved
+ * - FlipAt
+ * - HasDuplicateRows / ClearGrid
+ * - ResetRound
+ * - Panel_StateIdle
+ * - Scene_StateResult
+ * The shake helpers address mShake[index] as &mShake[0].field + index * 0xc
+ * for the same reason.
+ *
+ * Leftover raw sites, each measured against the matching build:
+ * - Shake_StateLoseTry: the dead `q` (dropping it renumbers @NNN).
+ * - Panel_StateBlink: the mAnimTimer[idx] reset through a +0x4e00 split base.
+ * - Scene_StateResult: mSolved through a +0x4000 byte base. mResultTimer and
+ *   mScrollFrames go through laundered `scene + off` pointers.
+ * - ResetRound: 0x4ec2 and 0x466c are pads that only ResetRound writes.
+ * - Answer_StateFindSolution keeps the PanelInputView width view, and
+ *   DrawPanels a local layout view. Its native-member rewrite grows the body
+ *   from 360 to 388 bytes.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -192,11 +196,11 @@ void dScMgPanel_c::Particle_Spawn(int x, int y, int mode) {
             /* The `(int)` launder keeps mwcc from common-subexpressioning this
                field address with the one taken three lines down; without it 16
                words of this function move. */
-            *(int *)((char *)(((int)scene + 0x46b0)) + off) = 0;
+            *(int *)((char *)(((int)&mParticles[0].vx)) + off) = 0;
             mParticles[i].vy = 0;
             mParticles[i].x = x;
             mParticles[i].y = y;
-            w = (int *)((char *)(((int)scene + 0x46b0)) + off);
+            w = (int *)((char *)(((int)&mParticles[0].vx)) + off);
             if (mode != 0) {
                 mParticles[i].drift = 0;
             } else {
@@ -340,11 +344,11 @@ void dScMgPanel_c::Shake_StateLoseTry(int index) {
     extern u8 data_0209d454;
     extern int data_ov006_0212ed00[];
     int n = index * 0xc;
-    /* base is &mShake[0].timer, so base + n is mShake[index].timer.  The
-       base-relative timer sites and the
-       offset sites stay raw: their member spellings move this function's
-       code.  The dead `q` below stays too: dropping it renumbers @NNN. */
-    char *base = scene + 0x4690;
+    /* base + n is mShake[index].timer and &mShake[0].offset + n is
+       mShake[index].offset: `s->mShake[index].timer` / `.offset` move this
+       function's code.  The dead `q` below stays: dropping it renumbers
+       @NNN. */
+    char *base = (char *)&s->mShake[0].timer;
     int cnt;
     *(u16 *)(base + n) = *(u16 *)(base + n) + 1;
     cnt = *(u16 *)(base + n);
@@ -357,14 +361,14 @@ void dScMgPanel_c::Shake_StateLoseTry(int index) {
         s->mCredits -= 1;
         return;
     }
-    *(int *)(scene + 0x468c + n) = data_ov006_0212ed00[cnt >> 3];
+    *(int *)((char *)&s->mShake[0].offset + n) = data_ov006_0212ed00[cnt >> 3];
     {
         char *q = scene + n + 0x4600;
         u16 t = ((dScMgPanel_c *)(scene + n))->mShake[0].timer;
         if (t == 1 || t == 0x11)
             Sound::PlayBank2_2D(0x1fc);
     }
-    SetSubBg0Offset(0, *(int *)(scene + 0x468c + n));
+    SetSubBg0Offset(0, *(int *)((char *)&s->mShake[0].offset + n));
 }
 
 // @symbol _ZN12dScMgPanel_c16Shake_StateShakeEi
@@ -375,10 +379,9 @@ void dScMgPanel_c::Shake_StateShake(int index) {
     char *scene = (char *)this;
     extern int sPanelShakeOffsets[];
     int m = index * 0xc;
-    /* b is &mShake[0].timer, so b + m is mShake[index].timer.  The
-       b-relative timer sites and the
-       offset stay raw: their member spellings move this function's code. */
-    char *b = scene + 0x4690;
+    /* b + m is mShake[index].timer and dst mShake[index].offset: the
+       indexed member spellings move this function's code. */
+    char *b = (char *)&((dScMgPanel_c *)scene)->mShake[0].timer;
     u16 h = *(u16 *)(b + m);
     h = h + 1;
     *(u16 *)(b + m) = h;
@@ -390,7 +393,7 @@ void dScMgPanel_c::Shake_StateShake(int index) {
     }
     {
         int t = sPanelShakeOffsets[h >> 3];
-        int *dst = (int *)(scene + 0x468c + m);
+        int *dst = (int *)((char *)&((dScMgPanel_c *)scene)->mShake[0].offset + m);
         u16 st;
         *dst = t;
         st = ((dScMgPanel_c *)(scene + m))->mShake[0].timer;
@@ -501,8 +504,8 @@ void dScMgPanel_c::Banner_Show(int i) {
     mBanner.active = 1;
     mBanner.visible = 1;
     mBanner.x = mX[i];
-    /* mY[i]: the member spelling moves this function's code. */
-    mBanner.y = *(int *)(e + 0x4d54) + 0x8000;
+    /* Stepped: `mY[i]` moves this function's code. */
+    mBanner.y = ((dScMgPanel_c *)e)->mY[0] + 0x8000;
     mBanner.timer = 0x30;
     mBanner.hold = 0;
     mBanner.state = 0;
@@ -782,7 +785,7 @@ void dScMgPanel_c ::Answer_StateFindSolution() {
     i = found;
     if (n > 0) {
         do {
-            if (*(u8 *)(c + i + 0x4efa) != 0) {
+            if (((dScMgPanel_c *)(c + i))->mKind[0] != 0) {
                 found++;
                 break;
             }
@@ -817,7 +820,7 @@ void dScMgPanel_c ::Answer_StateFindSolution() {
     li = 0;
     if (nlights > 0) {
         do {
-            idx = *(u8 *)(c + li + 0x4fae);
+            idx = ((dScMgPanel_c *)(c + li))->mFlipAt[0];
             wq = 3;
             hq = 3;
             col = idx % scene->width;
@@ -855,11 +858,11 @@ void dScMgPanel_c ::Answer_StateFindSolution() {
     j = 0;
     if (n > 0) {
         do {
-            p = (u8 *)(c + j + 0x4f1e);
+            p = &((dScMgPanel_c *)(c + j))->mFace[0];
             if (*p != arr[j]) {
-                *(u8 *)(c + j + 0x4efa) = 1;
+                ((dScMgPanel_c *)(c + j))->mKind[0] = 1;
                 *p ^= 1;
-                *(u8 *)(c + j + 0x4f8a) = 1; /* mFastFlip; renumbers @NNN as a member */
+                ((dScMgPanel_c *)(c + j))->mFastFlip[0] = 1; /* mFastFlip[j] renumbers @NNN */
             }
             j++;
         } while (j < mCount);
@@ -1104,8 +1107,8 @@ void dScMgPanel_c::CountMatches() {
     do {
         if (s->mFace[i] != s->mGoal[i]) {
             s->mKind[i] = 2;
-            /* mAnimTimer[i]: the member spelling moves code. */
-            *(u16 *)(scene + (int)(((long long)i)) * 2 + 0x4e30) = 0;
+            /* Stepped: `mAnimTimer[i]` moves code. */
+            ((dScMgPanel_c *)(scene + (int)(((long long)i)) * 2))->mAnimTimer[0] = 0;
         }
         i++;
     } while (i < s->mCount);
@@ -1149,16 +1152,16 @@ void dScMgPanel_c::CheckSolved() {
     /* Laundered volatile round trip: the `(int)` cast and the volatile are both
        load-bearing -- they are what turns this decrement into the ROM's
        ldrb/sub/strb instead of a folded one. */
-    tmp = *(volatile u8 *)(int *)(((int)scene + 0x4feb));
+    tmp = *(volatile u8 *)(int *)((int)&((dScMgPanel_c *)scene)->mCheckDelay);
     --tmp;
-    *(volatile u8 *)(int *)(((int)scene + 0x4feb)) = tmp;
+    *(volatile u8 *)(int *)((int)&((dScMgPanel_c *)scene)->mCheckDelay) = tmp;
     if (mCheckDelay != 0)
         return;
     found = 0;
     i = 0;
     n = ((dScMgPanel_c *)scene)->mCount;
     while (i < n) {
-        if (*(u8 *)(scene + i + 0x4f1e) != *(u8 *)(scene + i + 0x4f42)) {
+        if (((dScMgPanel_c *)(scene + i))->mFace[0] != ((dScMgPanel_c *)(scene + i))->mGoal[0]) {
             found++;
             break;
         }
@@ -1291,7 +1294,7 @@ void dScMgPanel_c::FlipAt(int index) {
     int y, x;
     for (y = 0; y < hq; y++) {
         for (x = 0; x < wq; x++) {
-            u8 *p = (u8 *)((((int)scene + ((mWidth) * (row + y) + (col + x))) + 0x4f1e));
+            u8 *p = ((dScMgPanel_c *)((int)scene + ((mWidth) * (row + y) + (col + x))))->mFace;
             *p ^= 1;
         }
     }
@@ -1377,10 +1380,7 @@ void dScMgPanel_c::DealPuzzle() {
 // @symbol _ZN12dScMgPanel_c14ScramblePanelsEv
 #pragma push
 #pragma opt_common_subs off
-/* Address launder and the 15-bit random draw, both used a dozen times below.
-   The launder is what stops mwcc folding the field address into the
-   surrounding expression; Particle_Spawn spells out the same lever. */
-#define PANEL_AT(p, off) ((void *)(int)((char *)(p) + (off)))
+/* The 15-bit random draw, used a dozen times below. */
 #define PANEL_RAND ((((u32)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff)
 
 void dScMgPanel_c::ScramblePanels() {
@@ -1406,7 +1406,7 @@ void dScMgPanel_c::ScramblePanels() {
         }
         if (sPanelScrambleFlipEnabled[t] != 0 || self->mDealt == 0) {
             if (self->mDealt == 0)
-                *(int *)PANEL_AT(scene, 0x4cb0) += 1;
+                self->mDealt += 1;
             nv = (PANEL_RAND * 8) >> 15;
             if (nv == self->mFaceSet) {
                 nv = (nv + (((PANEL_RAND * 7) >> 15) + 1)) & 7;
@@ -1428,7 +1428,7 @@ void dScMgPanel_c::ScramblePanels() {
             t -= 0x19;
         if (sPanelScrambleFlipEnabledAlt[t] != 0 || self->mDealt == 0) {
             if (self->mDealt == 0)
-                *(int *)PANEL_AT(scene, 0x4cb0) += 1;
+                self->mDealt += 1;
             nv = (PANEL_RAND * 4) >> 15;
             k = sPanelPuzzleSizes[t];
             p = &sPanelPuzzleSizes[t];
@@ -1454,7 +1454,6 @@ void dScMgPanel_c::ScramblePanels() {
         self->mFlips = sPanelScrambleFlipsAlt[t];
     }
 }
-#undef PANEL_AT
 #undef PANEL_RAND
 #pragma pop
 
@@ -1493,9 +1492,9 @@ int dScMgPanel_c::HasDuplicateRows() {
             src += 0xa;
         }
     }
-    /* mPastFlips[0][i] = mFlipAt[i], raw: the member spelling renumbers @NNN. */
+    /* mPastFlips[0][i] = mFlipAt[i]; the indexed store renumbers @NNN. */
     for (i = 0; i < 0xa; i++) {
-        *(u8 *)(scene + 0x4ec8 + i) = *(u8 *)(scene + 0x4fae + i);
+        ((dScMgPanel_c *)(scene + i))->mPastFlips[0][0] = ((dScMgPanel_c *)scene)->mFlipAt[i];
     }
     return 1;
 }
@@ -1505,10 +1504,11 @@ int dScMgPanel_c::HasDuplicateRows() {
 void dScMgPanel_c::ClearGrid() {
     char *scene = (char *)this;
     int i, j;
-    /* Fills mPastFlips; the member spelling shrinks it and renumbers @NNN. */
+    /* Fills mPastFlips with 0xff; `mPastFlips[i][j]` shrinks it and
+       renumbers @NNN. */
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 0xa; j++) {
-            *(u8 *)(scene + j + 0x4ec8) = 0xff;
+            ((dScMgPanel_c *)(scene + j))->mPastFlips[0][0] = 0xff;
         }
         scene += 0xa;
     }
@@ -1523,15 +1523,15 @@ void dScMgPanel_c::ClearGrid() {
 void dScMgPanel_c::ResetRound() {
     char *scene = (char *)this;
     int i;
-    /* mX, mY, mFlipFrame, mAnimTimer and mFlipDelay spelled as members
-       renumber this file's @NNN labels. 0x4ec2 and 0x466c are pads nothing
-       reads; Scene_StateResult only ever counts 0x4ec6 up. */
+    /* mX, mY, mFlipFrame, mAnimTimer and mFlipDelay are stepped: indexed
+       they renumber this file's @NNN labels. 0x4ec2 and 0x466c are pads
+       that only this function writes. */
     for (i = 0; i < 0x24; i++) {
-        *(int *)(scene + i * 4 + 0x4cc4) = 0;
-        *(int *)(scene + i * 4 + 0x4d54) = 0;
-        *(s16 *)(scene + i * 2 + 0x4de8) = 0;
-        *(s16 *)(scene + i * 2 + 0x4e30) = 0;
-        *(s16 *)(scene + i * 2 + 0x4e78) = 0;
+        ((dScMgPanel_c *)(scene + i * 4))->mX[0] = 0;
+        ((dScMgPanel_c *)(scene + i * 4))->mY[0] = 0;
+        ((dScMgPanel_c *)(scene + i * 2))->mFlipFrame[0] = 0;
+        ((dScMgPanel_c *)(scene + i * 2))->mAnimTimer[0] = 0;
+        ((dScMgPanel_c *)(scene + i * 2))->mFlipDelay[0] = 0;
         ((dScMgPanel_c *)scene)->mFace[i] = 0;
         ((dScMgPanel_c *)scene)->mKind[i] = 0;
         ((dScMgPanel_c *)scene)->mGoal[i] = 0;
@@ -1569,7 +1569,7 @@ void dScMgPanel_c::ResetRound() {
     s->mBanner.visible = 0;
     s->mBanner.state = 0;
     s->mSolved = 0;
-    *(s16 *)(scene + 0x4ec6) = 0;
+    s->mScrollFrames = 0;
     Shake_Stop();
     Scroll_Stop();
     Particle_ClearAll();
@@ -1714,10 +1714,10 @@ void dScMgPanel_c::Panel_StateFlip(int index) {
 // @symbol _ZN12dScMgPanel_c15Panel_StateIdleEi
 void dScMgPanel_c::Panel_StateIdle(int index) {
     char *scene = (char *)this;
-    char *base = scene + index + 0x4000;
-    /* mFastFlip[index]: the split base is load-bearing; `mFastFlip[index]`
-       and the strided `mFastFlip[0]` both move code. */
-    base[0xf8a] = 0;
+    char *base = scene + index;
+    /* The separate base local is load-bearing: `mFastFlip[index]`, and the
+       stepped form without the local, both move code. */
+    ((dScMgPanel_c *)base)->mFastFlip[0] = 0;
 }
 
 // @symbol _ZN12dScMgPanel_c19Scene_StateGameOverEv
@@ -1780,7 +1780,7 @@ void dScMgPanel_c::Scene_StateResult() {
     n = mCount;
     if (n > 0) {
         do {
-            u8 *p = (u8 *)(scene + i + 0x4efa);
+            u8 *p = &((dScMgPanel_c *)(scene + i))->mKind[0];
             (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[*p])(i);
             i++;
             if (*p != 0)
@@ -1795,9 +1795,11 @@ void dScMgPanel_c::Scene_StateResult() {
         int off;
         u16 *tp;
         u8 *flags;
+        /* scene + 0x4ec0 is mResultTimer, laundered. `&mResultTimer` in place
+           of `scene + off` leaves `off` dead, and dropping it renumbers @NNN. */
         off = 0x4ec0;
         tp = (u16 *)(int)((long long)(int)(scene + off) & 0xFFFFFFFFFFFFFFFFLL);
-        /* flags[0xfe6] is mSolved; the member spelling moves this code. */
+        /* flags[0xfe6] is mSolved; `&mSolved` moves this code. */
         flags = (u8 *)(scene + 0x4000);
         *tp = *tp - 1;
         if (flags[0xfe6] == 0) {
@@ -1841,6 +1843,7 @@ void dScMgPanel_c::Scene_StateResult() {
     {
         int inc;
         u16 *ip;
+        /* scene + 0x4ec6 is mScrollFrames, laundered the same way. */
         inc = 0x4ec6;
         ip = (u16 *)(int)((long long)(unsigned)(scene + inc) & 0xFFFFFFFFFFFFFFFFLL);
         *ip = *ip + 1;

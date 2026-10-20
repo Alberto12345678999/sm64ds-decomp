@@ -50,6 +50,13 @@ struct TrampolineObjectCallbacks {
     virtual int IsActive();
     virtual void Clear();
 };
+
+// The two item counters on the jumper, named as in dMgTrmpln2Mario_c.h.
+struct TrampolineJumperCounts : TrampolineObjectCallbacks {
+    char pad_04[0x20 - 0x04];
+    u16 mItemHitCount;  // +0x20: items hit; doubles the score
+    s16 mItemPushCount; // +0x22: item-end pushes this frame
+};
 }
 
 namespace s020cd744 {
@@ -657,14 +664,14 @@ extern "C" void TrmpItem_ReflectOffLine(char *item, Obj *jumper) {
         Vec3_MulScalar(&negativeEndCorrection, &negativeEndOffset, TRMPITEM(item)->mAppearScale);
         AddVec3(position, &negativeEndCorrection, position);
         AddVec3(&pushSum, &negativeEndOffset, &pushSum);
-        *(short *)(((int)jumper + 0x22)) += 1;
+        ((TrampolineJumperCounts *)jumper)->mItemPushCount += 1;
     } else if (positiveEndDistance < 0xE000 && NormalizeVec3IfNonZero(&positiveEndOffset) != 0) {
         Vec3_MulScalarInPlace(&positiveEndOffset, 0xE000 - positiveEndDistance);
         positiveEndOffset.y <<= 1;
         Vec3_MulScalar(&positiveEndCorrection, &positiveEndOffset, TRMPITEM(item)->mAppearScale);
         AddVec3(position, &positiveEndCorrection, position);
         AddVec3(&pushSum, &positiveEndOffset, &pushSum);
-        *(short *)(((int)jumper + 0x22)) += 1;
+        ((TrampolineJumperCounts *)jumper)->mItemPushCount += 1;
     }
 
     Vec3_MulScalar(&endVelocityChange, &pushSum, 0x100);
@@ -748,7 +755,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *object, int arg1) {
 
     if (sTrmpItemHitsOff != 0)
         return;
-    *(unsigned short *)(sb + 0x22) = 0;
+    ((TrampolineJumperCounts *)sb)->mItemPushCount = 0;
 
     for (itemIndex = 0; itemIndex < sTrmpItemCount; itemIndex++) {
         if (TRMPITEM(ELEM)->mActive == 0)
@@ -757,7 +764,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *object, int arg1) {
         if (TrmpItem_HitTest2D(ELEM, sb, arg1) == 0)
             continue;
         _Z14ApproachLinearRiii(&sTrmpItemsHit, 0x270f, 1);
-        hitCount = *(unsigned short *)(sb + 0x20);
+        hitCount = ((TrampolineJumperCounts *)sb)->mItemHitCount;
         // Double the award for each prior hit, up to six doublings.
         scoreIncrement = 100;
         scoreDoublings = (hitCount > 6) ? 6 : hitCount;
@@ -782,9 +789,9 @@ extern "C" void TrmpItem_UpdateWithJumper(void *object, int arg1) {
             break;
         }
         _Z14ApproachLinearRiii(&sTrmp2Score, 0xf423f, scoreIncrement);
-        Trmp2Spinner_InitAll(*(unsigned short *)(sb + 0x20));
+        Trmp2Spinner_InitAll(((TrampolineJumperCounts *)sb)->mItemHitCount);
         TrmpItem_ProjectToScreen(ELEM, (short)scoreIncrement);
-        (*(unsigned short *)(sb + 0x20))++;
+        ((TrampolineJumperCounts *)sb)->mItemHitCount++;
     }
 }
 }
