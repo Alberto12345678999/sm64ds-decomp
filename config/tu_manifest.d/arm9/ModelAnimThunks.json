@@ -67,21 +67,21 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x0201689c",
-      "reason": "The key function emits D2 beside the thunks. The lifecycle shard owns the cartridge body at 0x0201689c."
+      "reason": "The key function emits D2 beside the thunks. src/engine/model/ModelAnim.cpp owns the cartridge body at 0x0201689c."
     },
     {
       "symbol": "_ZN9ModelAnimD0Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x020168d8",
-      "reason": "The key function emits D0 beside the thunks. The lifecycle shard owns the cartridge body at 0x020168d8."
+      "reason": "The key function emits D0 beside the thunks. src/engine/model/ModelAnim.cpp owns the cartridge body at 0x020168d8."
     },
     {
       "symbol": "_ZN9ModelAnimD1Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x0201691c",
-      "reason": "The key function emits D1 beside the thunks. The lifecycle shard owns the cartridge body at 0x0201691c."
+      "reason": "The key function emits D1 beside the thunks. src/engine/model/ModelAnim.cpp owns the cartridge body at 0x0201691c."
     },
     {
       "symbol": "_ZN14BlendModelAnimD2Ev",
@@ -93,14 +93,14 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016644",
-      "reason": "The key function emits D0 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016644."
+      "reason": "The key function emits D0 beside the thunks. src/engine/model/BlendModelAnim.cpp owns the cartridge body at 0x02016644."
     },
     {
       "symbol": "_ZN14BlendModelAnimD1Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016690",
-      "reason": "The key function emits D1 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016690."
+      "reason": "The key function emits D1 beside the thunks. src/engine/model/BlendModelAnim.cpp owns the cartridge body at 0x02016690."
     },
     {
       "symbol": "_ZN10ModelAnim2D2Ev",
@@ -112,14 +112,14 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016320",
-      "reason": "The key function emits D0 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016320."
+      "reason": "The key function emits D0 beside the thunks. src/engine/model/ModelAnim2.cpp owns the cartridge body at 0x02016320."
     },
     {
       "symbol": "_ZN10ModelAnim2D1Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016364",
-      "reason": "The key function emits D1 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016364."
+      "reason": "The key function emits D1 beside the thunks. src/engine/model/ModelAnim2.cpp owns the cartridge body at 0x02016364."
     },
     {
       "symbol": "_ZTV9ModelAnim",

@@ -91,5 +91,27 @@
     "Folded from nine one-function files. The unnamed functions stay extern \"C\" under their existing symbols; only AddSystem is a real Particle::Manager method. tools/srcpath.py still answered src/_ZN8Particle7Manager9AddSystemEiR7Vector3.cpp for that symbol because that shard was the enrolled owner; placement_for returned None (its filename cohort was the repo root). The production name follows the other Particle TUs already in src/engine/particle/ (Particle.cpp, Particle_Behavior.cpp, Particle_SysTracker_Contents.cpp).",
     "Each function matched under mwccarm 2004/b56 both alone, compiled as C++, and again from this TU. The object emits nine .text sections in ROM-ascending address order and no data."
   ],
-  "relocations": []
+  "relocations": [],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-Particle_Manager/Particle_Manager.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 9,
+    "functions_declared": 9,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
 }

@@ -20,8 +20,8 @@ extern "C" void func_0203cbc0(void *ptr);
 ModelAnim::~ModelAnim() {}
 
 BlendModelAnim::~BlendModelAnim() {
-    if (unk_6c)
-        func_0203cbc0(unk_6c);
+    if (mBlendBuffer)
+        func_0203cbc0(mBlendBuffer);
 }
 
 ModelAnim2::~ModelAnim2() {}
