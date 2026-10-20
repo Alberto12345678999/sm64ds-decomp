@@ -271,10 +271,12 @@ int daKpaFire_c::CleanupResources()
  * The Matrix4x3 at 0x32c remains the header's pad_32c storage; copying it
  * through the RawMatrix4x3 view keeps the block copy intact in C++. */
 void daKpaFire_c::func_ov060_02117624() {
-    if (mDropsShadow == 0) return;
-    Matrix4x3_FromTranslation(&data_020a0e68, mPosX>>3, mGroundY>>3, mPosZ>>3);
-    *(RawMatrix4x3*)pad_32c = *(RawMatrix4x3*)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, pad_32c, mShadowRadiusMul * mFireScale, 0x1e000, 0xf);
+    if (mDropsShadow == 0)
+        return;
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, mGroundY >> 3, mPosZ >> 3);
+    *(RawMatrix4x3 *)pad_32c = *(RawMatrix4x3 *)&data_020a0e68;
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        this, &mShadowModel, pad_32c, mShadowRadiusMul * mFireScale, 0x1e000, 0xf);
 }
 
 // @symbol _ZN11daKpaFire_c19func_ov060_0211747cEv
@@ -815,11 +817,11 @@ void daKpaFire_c::func_ov060_021167c8() {
  * and looks that actor up; if it is the Player (actor id 0xbf = ACTOR_PLAYER)
  * and neither Player::mIsMetal nor Player::mIsVanish is set it calls
  * Player::Burn. */
-void daKpaFire_c::func_ov060_02116740()
-{
+void daKpaFire_c::func_ov060_02116740() {
     unsigned int id = ((daKpaFire_c *)this)->mdCcAc_c.otherOwner;
-    if (id == 0) return;
-    Player* player = (Player *)dActor_c::FindWithID(id);
+    if (id == 0)
+        return;
+    Player *player = (Player *)dActor_c::FindWithID(id);
     if (player == 0) return;
     /* Measured: folding this temp into `if (player->actorID != ACTOR_PLAYER)`
        makes the function 12 bytes shorter than the ROM size, 0x88. */
