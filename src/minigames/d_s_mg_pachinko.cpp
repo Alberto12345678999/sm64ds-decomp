@@ -893,17 +893,17 @@ void PachinkoFx_Spawn(char *raw, int x, int y, int kind, int points, int target)
     int i = 0;
     char *scan = raw;
     do {
-        if (*(unsigned char *)(scan + 0x5964) == 0) {
+        if (PACHINKO(scan)->mFx[0].active == 0) {
             char *fx = raw + i * 0x14;
-            *(int *)(fx + 0x5958) = x;
-            *(int *)(fx + 0x595c) = y;
-            *(unsigned char *)(fx + 0x5964) = 1;
-            *(unsigned char *)(fx + 0x5966) = 1;
-            *(unsigned short *)(fx + 0x5960) = 0;
-            *(unsigned char *)(fx + 0x5965) = 0;
-            *(unsigned char *)(fx + 0x5967) = kind;
-            *(unsigned short *)(fx + 0x5962) = points;
-            *(unsigned char *)(fx + 0x5968) = target;
+            PACHINKO(fx)->mFx[0].x = x;
+            PACHINKO(fx)->mFx[0].y = y;
+            PACHINKO(fx)->mFx[0].active = 1;
+            PACHINKO(fx)->mFx[0].visible = 1;
+            PACHINKO(fx)->mFx[0].timer = 0;
+            PACHINKO(fx)->mFx[0].frame = 0;
+            PACHINKO(fx)->mFx[0].kind = kind;
+            PACHINKO(fx)->mFx[0].points = points;
+            PACHINKO(fx)->mFx[0].target = target;
             return;
         }
         i++;
@@ -918,7 +918,7 @@ void Pachinko_CheckTargetsLeft(char* raw){
   int i = 0;
   char* target = raw;
   do {
-    if (*(unsigned char*)(target + 0x5bd4) != 0) {
+    if (PACHINKO(target)->mTarget[0].active != 0) {
       count++;
       break;
     }
@@ -960,11 +960,11 @@ void PachinkoPopup_DrawAll(char *raw)
     int i;
     char *popup = raw;
     for (i = 0; i < 0x1e; i++) {
-        if (*(unsigned short *)(popup + 0x4c00 + 0xfa) != 0) {
+        if (PACHINKO(popup)->mPopup[0].timer != 0) {
             Mg_DrawBigNumber(
-                *(int *)(popup + 0x4000 + 0xcf0) >> 0xc,
-                *(int *)(popup + 0x4000 + 0xcf4) >> 0xc,
-                *(unsigned short *)(popup + 0x4c00 + 0xf8),
+                PACHINKO(popup)->mPopup[0].x >> 0xc,
+                PACHINKO(popup)->mPopup[0].y >> 0xc,
+                PACHINKO(popup)->mPopup[0].points,
                 -1, -1, 0, 0);
         }
         popup += 0xc;
@@ -1000,7 +1000,7 @@ void PachinkoPopup_SpawnScore(char *raw, int idx, unsigned short points)
     int i;
     char *popup = raw + 0x15c;
     for (i = 0x1d; i >= 0; popup -= 0xc, i--) {
-        if (*(unsigned short *)(popup + 0x4cfa) != 0) continue;
+        if (PACHINKO(popup)->mPopup[0].timer != 0) continue;
         self->mPopup[i].x = self->mFx[idx].x;
         self->mPopup[i].y = self->mFx[idx].y;
         self->mPopup[i].timer = 0x30;
@@ -1232,7 +1232,7 @@ void PachinkoPipe_SetAll(char *row, int phase) {
 int PachinkoPipe_StateIdle(char *raw, int idx) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
     u16 *counter = &self->mPipe[idx].timer;
-    u8 *frame = (u8 *)(raw + 0x4eb6 + idx * 0x1c);
+    u8 *frame = &self->mPipe[idx].frame;
     u16 c = *counter;
     *counter = c + 1;
     u8 oldFrame = *frame;
@@ -1440,7 +1440,7 @@ void PachinkoPipe_ResetAll(unsigned char *row) {
         PIPE(row)->y = 0x68000;
         PIPE(row)->vel = 0;
         *(int *)(row + 0x4eac) = 0;
-        *(unsigned char *)(row + 0x4eb9) = 0;
+        PIPE(row)->sinking = 0;
         PIPE(row)->laps = 0;
     }
 }
@@ -1467,16 +1467,15 @@ void PachinkoBall_DrawAll(char *scene)
     int i;
     char *ball = scene;
     for (i = 0; i < 30; i++, ball += 0x38) {
-        char *p = ball + 0x4000;
-        if (*(unsigned char *)(p + 0x68d) != 0) {
-            int idx = ((int)*(unsigned short *)(ball + 0x4684) >> 4) << 1;
-            int scale = *(int *)(p + 0x680);
-            int sprite = *(unsigned char *)(p + 0x693);
+        if (BALL(ball)->visible != 0) {
+            int idx = ((int)BALL(ball)->rotation >> 4) << 1;
+            int scale = BALL(ball)->scale;
+            int sprite = BALL(ball)->sprite;
             Matrix2x2 m;
             int cosv = FX_Mul(data_02082214[idx + 1], scale);
             int sinv = FX_Mul(data_02082214[idx], scale);
-            int x = (*(int *)(p + 0x660) + *(int *)(p + 0x670)) >> 12;
-            int y = (*(int *)(p + 0x664) + *(int *)(p + 0x674)) >> 12;
+            int x = (BALL(ball)->x + BALL(ball)->offX) >> 12;
+            int y = (BALL(ball)->y + BALL(ball)->offY) >> 12;
             m._00 = cosv;
             m._01 = sinv;
             m._10 = -sinv;
@@ -1977,8 +1976,8 @@ void PachinkoBall_UpdateAll(char* c){
   int i=0;
   char* r5=c;
   do{
-    if(*(unsigned char*)(r5+0x468c)!=0){
-      int idx=*(unsigned char*)(r5+0x468f);
+    if(BALL(r5)->active!=0){
+      int idx=BALL(r5)->state;
       Ent7d0 *e = &sPachinkoBallStateTable[idx];
       int adj=e->b;
       char* obj=c+(adj>>1);
@@ -2221,8 +2220,8 @@ void PachinkoBobOmb_UpdateAll(char* c){
   int i=0;
   char* r5=c;
   do{
-    if(*(unsigned char*)(r5+0x4f0c)!=0){
-      int idx=*(unsigned char*)(r5+0x4f0d);
+    if(SHOT(r5)->active!=0){
+      int idx=SHOT(r5)->state;
       Ent7d0 *e = &sPachinkoBobOmbStateTable[idx];
       int adj=e->b;
       char* obj=c+(adj>>1);
@@ -2258,12 +2257,12 @@ void PachinkoBobOmb_StateWaitGrab(char *self, int i) {
     }
     if (flag != 0) {
         p = self + i * 0x38;
-        dx = ((*(s32 *)(p + 0x4ed8)) >> 12) - gTouchX[idx][0];
-        dy = ((*(s32 *)(p + 0x4edc)) >> 12) - gTouchY[idx][0];
-        *(unsigned char *)(p + 0x4f0d) = 1;
-        *(s32 *)(p + 0x4ee8) = dx << 12;
-        *(s32 *)(p + 0x4eec) = dy << 12;
-        *(unsigned char *)(p + 0x4f0f) = 0;
+        dx = (SHOT(p)->x >> 12) - gTouchX[idx][0];
+        dy = (SHOT(p)->y >> 12) - gTouchY[idx][0];
+        SHOT(p)->state = 1;
+        SHOT(p)->offX = dx << 12;
+        SHOT(p)->offY = dy << 12;
+        SHOT(p)->combo = 0;
     }
     Pachinko_DrawAimLine(self);
 }
