@@ -12,8 +12,7 @@
  * The query scans keep the spellings that match: int pos rather than a
  * pointer local, the zero/one locals, and data_020a0c80 by its address
  * name. func_02037de8 copies the five-word surface with a u64 so the
- * loads and stores interleave. RecordHit stays the mangled call because
- * the member's s16 parameter would sign-extend here.
+ * loads and stores interleave.
  */
 
 #include "dBgCh_Lin.h"
@@ -450,8 +449,10 @@ extern "C" void func_02038324(void *arg, int b, int c, int d)
         return;
     idx = hit->GetColliderIndex();
     obj = data_020a0c80[idx];
-    if (obj == 0) return;
-    if (func_020393cc(obj) == 0) return;
+    if (obj == 0)
+        return;
+    if (func_020393cc(obj) == 0)
+        return;
     if (func_02038298(hit) == 0)
         return;
     obj->BeforeClsn(*hit, (dActor_c *)func_020393b4(data_020a0c80[idx]), *(Vector3 *)b,
@@ -514,8 +515,10 @@ CLPS_BlockRef &CLPS_BlockRef::operator=(CLPS_Block &block)
 }
 
 // @symbol func_020381cc
-/* CLPS entry lookup: walks the collider table through a pointer-to-pointer
-   argument. Written first to land last in the ROM (reverse emission). */
+/* CLPS entry lookup: hands back entry idx of the block's 8-byte-entry
+   table, or the default entry data_020a0c78 (reset by func_02037e9c) when
+   the block is missing or its entries are not 8 bytes. Written first to
+   land last in the ROM (reverse emission). */
 extern "C" void func_020381cc(void *block, int idx, void **out) {
     unsigned char *e = *(unsigned char **)block;
     if (e == 0 || *(unsigned short *)(e + 4) != 8) {
