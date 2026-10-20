@@ -353,7 +353,8 @@ void dScMgMemory2_c::DrawCards() {
             dimmed = 0;
             if (mState != STATE_JUDGE_PAIRS)
                 dimmed = 1;
-            sprite = sMemory2CardFrameSprites[((dScMgMemory2_c *)p)->mCards[0].value * 5 + ((dScMgMemory2_c *)p)->mCards[0].frame];
+            sprite = sMemory2CardFrameSprites[((dScMgMemory2_c *)p)->mCards[0].value * 5 +
+                                              ((dScMgMemory2_c *)p)->mCards[0].frame];
             Hud_RenderSprite(sMemory2CardSprites[sprite], ((dScMgMemory2_c *)p)->mCards[0].x >> 12,
                              ((dScMgMemory2_c *)p)->mCards[0].y >> 12, -1, dimmed);
         }
