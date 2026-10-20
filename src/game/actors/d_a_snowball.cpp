@@ -43,7 +43,7 @@
  *   named by value here for that reason.
  * - mdCcAc_c's `flags`/`vulnFlags` words (0x200004 / 0x40010) are likewise
  *   given as numbers.
- * - unk_0a4 / unk_0ac are dActor_c's x/z velocity words (as da1up_c's banner
+ * - mSpeedX / mSpeedZ are dActor_c's x/z velocity words (as da1up_c's banner
  *   records); they stay unnamed because naming them is a shared header change.
  */
 
@@ -209,7 +209,7 @@ int daSnowball_c::func_ov081_021260fc()
             PTCL_SNOWBALL_BURST, this->mPosX, this->mPosY, this->mPosZ);
         MarkForDestruction();
     }
-    if (this->unk_0a4 != 0 || this->unk_0ac != 0) {
+    if (this->mSpeedX != 0 || this->mSpeedZ != 0) {
         func_ov081_02125fb8(this);
     }
     return 1;
@@ -285,7 +285,7 @@ int daSnowball_c::Render()
  *     rebuild the model matrix;
  *   - clear the cylinder and, if there is a closest player and it is not
  *     vanished (mIsVanish), re-register it with dCcAc_c::Update.
- * leftover: the read and write-back of unk_0ac around the mVertSpeed store is
+ * leftover: the read and write-back of mSpeedZ around the mVertSpeed store is
  * a no-op in source terms; it stays as written, the shape these bytes were
  * matched with. */
 int daSnowball_c::Behavior()
@@ -298,9 +298,9 @@ int daSnowball_c::Behavior()
     int hi = mTerminalVelocity;
     if (v >= hi)
         hi = v;
-    int tmp = unk_0ac;
+    int tmp = mSpeedZ;
     mVertSpeed = hi;
-    unk_0ac = tmp;
+    mSpeedZ = tmp;
     UpdatePosWithOnlySpeed((dCc_c *)&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);
     mAngleY = mPrevAngleY;

@@ -4136,8 +4136,8 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f6f48EP7Vector3i
 /* Turn mAngleX/mAngleY toward v by 1/amt of the remaining difference per
- * call (step capped at 0x4000, 90 degrees), then set unk_0a4, mVertSpeed and
- * unk_0ac to unk_0f4 times rotation elements 6..8 of the animated model's
+ * call (step capped at 0x4000, 90 degrees), then set mSpeedX, mVertSpeed and
+ * mSpeedZ to unk_0f4 times rotation elements 6..8 of the animated model's
  * matrix. */
 
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
@@ -4146,9 +4146,9 @@ void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
     ApproachAngle(&this->mAngleX, Vec3_VertAngle((&this->mPos), v), amt, 0x4000, 0);
     ApproachAngle(&this->mAngleY, Vec3_HorzAngle((&this->mPos), v), amt, 0x4000, 0);
     m = &this->mModelAnim->mat4x3;
-    this->unk_0a4 = FX_MUL(this->unk_0f4, m->m[6]);
+    this->mSpeedX = FX_MUL(this->unk_0f4, m->m[6]);
     this->mVertSpeed = FX_MUL(this->unk_0f4, m->m[7]);
-    this->unk_0ac = FX_MUL(this->unk_0f4, m->m[8]);
+    this->mSpeedZ = FX_MUL(this->unk_0f4, m->m[8]);
 }
 
 /* -------------------------------------------------------------------------- */

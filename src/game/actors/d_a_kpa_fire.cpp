@@ -418,9 +418,9 @@ void daKpaFire_c::func_ov060_021172e0() {
     {
         dActor_c *spawned = dActor_c::Spawn(ACTOR_COIN, 0, this->mPos, 0, this->mAreaId, -1);
         if (spawned != 0) {
-            spawned->unk_0a4 = 0;
+            spawned->mSpeedX = 0;
             spawned->mVertSpeed = 0;
-            spawned->unk_0ac = 0;
+            spawned->mSpeedZ = 0;
         }
     }
 }
@@ -564,8 +564,8 @@ void daKpaFire_c::func_ov060_02116f74() {
  * Each frame: mFireScale grows by 0x255 (about 0.146) while below 5.0 (0x5000),
  * and the pitch word (mPrevAngleX, signed) loses 0x200 while above 0x800.
  * The three velocity words come from the speed (mHorzSpeed), the pitch and the
- * heading through the sine table: unk_0a4 = x, mVertSpeed = y (-speed times
- * the pitch's table[2p]), unk_0ac = z; the x and z values are divided by 896
+ * heading through the sine table: mSpeedX = x, mVertSpeed = y (-speed times
+ * the pitch's table[2p]), mSpeedZ = z; the x and z values are divided by 896
  * (0x380, not decoded). Position moves by those velocities. Shows
  * PARTICLE_SCALED_9A scaled by mFireScale (y offset 12 * scale). When the mesh
  * collision reports ground it spawns a variant 6 fire with a 16 in 17 chance
@@ -585,7 +585,7 @@ void daKpaFire_c::func_ov060_02116d78() {
         int s0 = data_02082214[i0];
         int speed = this->mHorzSpeed;
         int s1 = data_02082214[i1];
-        this->unk_0a4 = (s1 * (speed * s0)) / 896;
+        this->mSpeedX = (s1 * (speed * s0)) / 896;
     }
     {
         int speed = this->mHorzSpeed;
@@ -596,11 +596,11 @@ void daKpaFire_c::func_ov060_02116d78() {
         int s0 = data_02082214[((*(unsigned short *)&this->mPrevAngleX) >> 4) * 2];
         int s1 = data_02082214[((*(unsigned short *)&this->mPrevAngleY) >> 4) * 2];
         int speed = this->mHorzSpeed;
-        this->unk_0ac = (s1 * ((-speed) * s0)) / 896;
+        this->mSpeedZ = (s1 * ((-speed) * s0)) / 896;
     }
-    this->mPosX += this->unk_0a4;
+    this->mPosX += this->mSpeedX;
     this->mPosY += this->mVertSpeed;
-    this->mPosZ += this->unk_0ac;
+    this->mPosZ += this->mSpeedZ;
 
     func_ov060_02116518(PARTICLE_SCALED_9A, 1, this->mFireScale * 0xc);
     if (this->mWithMeshClsn.IsOnGround() != 0) {

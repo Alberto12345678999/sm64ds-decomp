@@ -204,9 +204,9 @@ void daSnowman_c::func_ov081_02124134()
             a->mPrevAngleX = 0;
             a->mPrevAngleY = rv << 0xc;
             a->mPrevAngleZ = 0;
-            a->unk_0a4 = 0;
+            a->mSpeedX = 0;
             a->mVertSpeed = 0x14000;
-            a->unk_0ac = 0;
+            a->mSpeedZ = 0;
             a->mHorzSpeed = 0xa000;
             a->mCarryMatrix = 0;
         }
@@ -421,9 +421,9 @@ int daSnowman_c::func_ov081_0212479c()
             a->mPrevAngleY = rv << 0xc;
             a->mPrevAngleZ = 0;
             a->mHorzSpeed = 0xa000;
-            a->unk_0a4 = 0;
+            a->mSpeedX = 0;
             a->mVertSpeed = 0x14000;
-            a->unk_0ac = 0;
+            a->mSpeedZ = 0;
             a->mCarryMatrix = 0;
         }
         func_02012790(0xa);
@@ -568,9 +568,9 @@ int daSnowman_c::func_ov081_02124b98()
                     MulVec3Mat4x3(&in, &data_020a0e68, &out);
                 }
                 out.y += 0x14000;
-                target->unk_0a4 = out.x;
+                target->mSpeedX = out.x;
                 target->mVertSpeed = out.y;
-                target->unk_0ac = out.z;
+                target->mSpeedZ = out.z;
                 target->mVertAccel = -0x2000;
                 this->mSnowballID = 0;
             }
