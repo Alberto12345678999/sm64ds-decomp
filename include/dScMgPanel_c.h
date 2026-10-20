@@ -52,7 +52,9 @@ struct dScMgPanel_Scroll {
     u8 on;    /* +0x10 */
     u8 phase; /* +0x11 */
     u8 timer; /* +0x12 */
-    u8 pad_13;
+    /* Frames until Scroll_Update drops the next pair of edge particles: it
+       counts down, and at 0 spawns two and reloads 3 (phase 0) or 2. */
+    u8 spawnDelay; /* +0x13 */
 };
 
 /* One of the 64 debris particles (Particle_UpdateAll steps them). */
