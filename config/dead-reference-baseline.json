@@ -1366,10 +1366,6 @@
    "ref": "src/_ZN4cstd4ldivEii.c"
   },
   {
-   "file": "port/docs/mmio-inventory.md",
-   "ref": "src/_ZN4cstd4sqrtEy.c"
-  },
-  {
    "file": "port/docs/opie-assessment.md",
    "ref": "include/nitro/gx/g3imm.h"
   },

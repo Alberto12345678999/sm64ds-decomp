@@ -13834,7 +13834,7 @@
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "return:char []"
       ],
-      "src/_ZN4CP1511SystemSetupEv.cpp": [
+      "src/engine/cp15/CP15_SystemSetup.cpp": [
         "return:char []"
       ],
       "src/unnamed/arm9/0205/func_02058308.c": [
@@ -19607,7 +19607,7 @@
       ]
     },
     "func_01ffa4bc": {
-      "src/_ZN4cstd5atan2E5Fix12IiES1_.c": [
+      "src/cstd_atan2.c": [
         "return:int"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [
