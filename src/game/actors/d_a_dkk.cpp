@@ -7,11 +7,11 @@
  * highest address back, which is the order this compiler emits.
  */
 // leftovers:
-// - func_ov025_021119f4 keeps `unk_39e--`. `unk_39e = unk_39e - 1` and
-//   `(u8)(unk_39e - 1)` shrink 0x90 to 0x84.
-// - func_ov025_02111a84 keeps `unk_39f++` and `Vector3 v[2]`. Adding one
-//   as `unk_39f = unk_39f + 1` shrinks 0xe0 to 0xd4. Two separate Vector3
-//   locals DIFF 8 words.
+// - func_ov025_021119f4 keeps `mTimer--`. `mTimer = mTimer - 1` and
+//   `(u8)(mTimer - 1)` shrink 0x90 to 0x84.
+// - func_ov025_02111a84 keeps `mLandCount++` and `Vector3 v[2]`. Adding
+//   one as `mLandCount = mLandCount + 1` shrinks 0xe0 to 0xd4. Two separate
+//   Vector3 locals DIFF 8 words.
 // - Earthquake and Particle::System::NewSimple stay mangled. Fix12<int> by
 //   value grows 02111a84 (0xe0 to 0xe8, and 0xe0 to 0x104). The ROM plays
 //   the impact through func_0201267c, not Sound::Play.
@@ -23,11 +23,8 @@
 // - func_ov091_02132ff4, func_ov091_02132e98 and func_ov091_02132e64 stay
 //   C calls into daDsnBase_c. The other four func_ov091_* calls are already
 //   daDsnBase_c methods.
-// - unk_394, unk_39c, unk_39e and unk_39f stay the header's names: ground
-//   height, turn target, pause count, landing count.
 // - data_ov025_02113814 is the file-table handle. g_profile_DONKAKU stays
 //   overlay data.
-
 
 /* daDkk_c.h pulls common.h before Model.h, so Matrix4x3 is the flat
  * s32 m[12]. Keep dBgCh_Lin.h below that include. */
@@ -82,7 +79,7 @@ extern "C" daDkk_c *daDkk_c_classInit()
 
 // @symbol _ZN7daDkk_c13InitResourcesEv
 /* Stores the file table, then either starts already airborne or raycasts
- * down for mProbeHeight. */
+ * up for the ceiling and lowers mRiseY, the top of the rise, under it. */
 int daDkk_c::InitResources()
 {
     mFileTable = (s32)data_ov025_02113814;
@@ -110,7 +107,7 @@ int daDkk_c::InitResources()
             /* The first result is unused. */
             Vector3 p1 = ray.GetClsnPos();
             Vector3 p2 = ray.GetClsnPos();
-            mProbeHeight = p2.y - 0x190000;
+            mRiseY = p2.y - 0x190000;
         }
     }
     return r;
@@ -151,15 +148,15 @@ void daDkk_c::func_ov025_02111a84()
         mVertAccel = -0x4000;
     else
         mVertAccel = -0x8000;
-    if (mPosY > unk_394)
+    if (mPosY > mGroundY)
         return;
-    mPosY = unk_394;
+    mPosY = mGroundY;
     v[1].x = mPosX;
     v[1].y = mPosY;
     v[1].z = mPosZ;
     _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, v[1], 0x7d0000);
-    unk_39e = 0x3c;
-    unk_39f++;
+    mTimer = 0x3c;
+    mLandCount++;
     mState = 6;
     v[0].x = mPosX;
     v[0].y = mPosY;
@@ -170,35 +167,36 @@ void daDkk_c::func_ov025_02111a84()
 }
 
 // @symbol _ZN7daDkk_c19func_ov025_021119f4Ev
-/* mState 6, the pause after landing. Counts 0x39e down; at zero it either
+/* mState 6, the pause after landing. Counts mTimer down; at zero it either
  * starts the next fall (state 5) or, on the fourth pass, turns to face the
  * opposite way (state 7). */
 void daDkk_c::func_ov025_021119f4()
 {
-    unk_39e--;
-    if (unk_39e != 0) return;
-    if (unk_39f != 4) {
+    mTimer--;
+    if (mTimer != 0)
+        return;
+    if (mLandCount != 4) {
         mState = 5;
         mVertSpeed = 0x3c000;
         func_0201267c(0xf4, &mCamSpacePosX);
         return;
     }
     mState = 7;
-    unk_39c = (s16)(mAngleY + 0x8000);
+    mTurnTargetAngle = (s16)(mAngleY + 0x8000);
 }
 
 // @symbol _ZN7daDkk_c19func_ov025_021119a4Ev
-/* mState 7, the turn. Steps mAngleY toward the target angle in unk_39c; once
+/* mState 7, the turn. Steps mAngleY toward mTurnTargetAngle; once
  * ApproachLinear reports it has arrived, copies it into mPrevAngleY, clears the
- * pass counter and goes back to state 6. */
+ * landing counter and goes back to state 6. */
 int daDkk_c::func_ov025_021119a4()
 {
-    int arrived = ApproachLinear(mAngleY, unk_39c, 0x400);
+    int arrived = ApproachLinear(mAngleY, mTurnTargetAngle, 0x400);
     if (arrived == 0) return arrived;
     mPrevAngleY = mAngleY;
     mState = 6;
-    unk_39f = 0;
-    unk_39e = 0x28;
+    mLandCount = 0;
+    mTimer = 0x28;
     return 0x28;
 }
 
