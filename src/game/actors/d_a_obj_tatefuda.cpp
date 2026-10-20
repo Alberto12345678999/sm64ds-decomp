@@ -1245,7 +1245,7 @@ void daObjTatefuda_c::Reset()
   UpdateClsnPosAndRot();
   UpdateShadowMatrix();
   SetState(STATE_IDLE);
-  unk_31c = 0;
+  mMegaKnockback = 0;
   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x4800002, 0x41000);
   if (_ZN4dBgW9IsEnabledEv(&mMeshCollider))
   {

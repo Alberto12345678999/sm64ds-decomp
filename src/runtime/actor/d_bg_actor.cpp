@@ -25,9 +25,6 @@
  *   overload poison (S13).
  * - Player is only forward-declared here, so the closest player's position
  *   is read through a dActor_c cast rather than pulling in Player.h.
- * - unk_31c/unk_31d stay: the mega-knockback armed flag and its 30-frame fuse
- *   to Kill(), but daObjRotateUpdownLift_c::Kill also writes unk_31c, so
- *   renaming is a shared-header plus leaf change, out of scope for this TU.
  * - data_020a0e68 is the shared scratch matrix; no header owns it, TU-local.
  */
 /* dBgActor_c.h FIRST: it pulls common.h ahead of Model.h, which is the
@@ -514,7 +511,7 @@ int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, F
     Vector3 rayEnd;
     Vector3 sum;
 
-    if (unk_31c == 0)
+    if (mMegaKnockback == 0)
         return 0;
 
     probe.x = 0;
@@ -536,7 +533,7 @@ int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, F
     mAngleY += angStepY;
     mAngleZ += angStepZ;
     UpdatePos(0);
-    if (DecIfAbove0_Byte(&unk_31d) == 0)
+    if (DecIfAbove0_Byte(&mMegaKnockbackTimer) == 0)
         Kill();
     func_ov002_020ee5d0(this, pivotY.val);
     return 1;
@@ -597,13 +594,13 @@ void dBgActor_c::KillByMegaChar(Player &player)
     v.y = mPosY;
     v.z = mPosZ;
     _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x5dc000);
-    unk_31c = 1;
+    mMegaKnockback = 1;
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x14000;
     mVertSpeed = 0x1e000;
     mPrevAngleY = Vec3_HorzAngle((Vector3 *)((char *)&player + 0x5c), &mPos);
-    unk_31d = 0x1e;
+    mMegaKnockbackTimer = 0x1e;
     if (mMeshCollider.IsEnabled() == 0)
         return;
     mMeshCollider.Disable();

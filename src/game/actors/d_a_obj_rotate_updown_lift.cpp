@@ -219,7 +219,7 @@ void daObjRotateUpdownLift_c::Kill()
     PoofDustAt(v);
     Sound::PlayBank3(0xf, mCamSpacePos);
     mIsDead = 1;
-    unk_31c = 0;
+    mMegaKnockback = 0;
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 }
