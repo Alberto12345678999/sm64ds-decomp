@@ -774,7 +774,7 @@ void dCamera_c::GoBehindPlayer(unsigned int j)
     func_0200cb58(this, 0xa);
     mFlags |= 4u;
 
-    slot4 = mMode;
+    slot4 = (int)mMode;
     slotc = 0;
     func_0200c66c(this, &((dActor_c *)mTargetPlayer)->mPos, &slot8, &slot4, &slotc);
     if (slot4 == (int)&data_020873dc)
@@ -805,7 +805,7 @@ void func_0200d1e4(char *self)
     cam->mTargetPos.y = base->y;
     cam->mTargetPos.z = base->z;
 
-    v1 = ((CamMode *)cam->mMode)->lookAtDist;
+    v1 = cam->mMode->lookAtDist;
     r0 = func_020093f4(self, v1);
 
     temp1[0] = data_02086f2c.x;
@@ -816,11 +816,11 @@ void func_0200d1e4(char *self)
     angle = ((struct dActor_c *)cam->mTargetPlayer)->mAngleY;
     Vec3_RotateYAndTranslate(&cam->lookAt, &cam->mTargetPos, angle, temp1);
 
-    v2 = ((CamMode *)cam->mMode)->lookAtHeight;
+    v2 = cam->mMode->lookAtHeight;
     dResult = func_020093d4(self, v2);
     cam->lookAt.y += dResult;
 
-    v3 = ((CamMode *)cam->mMode)->posDist;
+    v3 = cam->mMode->posDist;
     r0b = func_020093f4(self, v3);
 
     data_02086f14[2] = r0b;
@@ -874,7 +874,7 @@ void func_0200d10c(void *thiz, unsigned char playerID) {
 // @symbol func_0200d0ac
 int func_0200d0ac(int a, unsigned int b) {
     if (b == data_0209f250) {
-        unsigned short v = ((CamMode *)((struct dCamera_c *)a)->mAreaMode)->flags;
+        unsigned short v = ((struct dCamera_c *)a)->mAreaMode->flags;
         if (v & 1) {
             return 0;
         }
@@ -921,7 +921,7 @@ void func_0200cf40(char *c) {
     cam->mAspect = 0x1555;
     cam->mNear = 0x1000;
     cam->mFar = 0x1388000;
-    cam->mAreaMode = &data_0208715c;
+    cam->mAreaMode = (CamMode *)&data_0208715c;
     cam->mViewObj = 0;
     if ((int)cam->param1 != 0xf) {
         CamEntryE *v;
@@ -929,7 +929,7 @@ void func_0200cf40(char *c) {
         int y;
         int z;
         func_0200cb58(c, 0xa);
-        cam->mFovAngle = ((CamMode *)cam->mMode)->fovAngle;
+        cam->mFovAngle = cam->mMode->fovAngle;
         func_0200d954(c, cam->mFovAngle);
         func_0200cce4(c);
         v = (CamEntryE *)GetViewObj((int)cam->param1 & 0xff);
@@ -944,7 +944,7 @@ void func_0200cf40(char *c) {
         return;
     }
     func_0200cb58(c, 9);
-    cam->mFovAngle = ((CamMode *)cam->mMode)->fovAngle;
+    cam->mFovAngle = cam->mMode->fovAngle;
     func_0200d954(c, cam->mFovAngle);
     func_0200cce4(c);
 }
@@ -966,7 +966,7 @@ extern "C" void func_0200cce4(char* cam)
         self->mTargetPos.z = p->z;
 
         {
-            u32 d1 = func_020093f4(cam, ((CamMode *)self->mMode)->lookAtDist);
+            u32 d1 = func_020093f4(cam, self->mMode->lookAtDist);
             tmp1.z = d1;
             tmp1.x = data_02086f2c.x;
             tmp1.y = data_02086f2c.y;
@@ -975,11 +975,11 @@ extern "C" void func_0200cce4(char* cam)
         Vec3_RotateYAndTranslate((Vec3 *)&self->lookAt, &self->mTargetPos,
                                  ((dActor_c *)self->mTargetPlayer)->mAngleY, &tmp1);
 
-        d = func_020093d4(cam, ((CamMode *)self->mMode)->lookAtHeight);
+        d = func_020093d4(cam, self->mMode->lookAtHeight);
         self->lookAt.y += d;
 
         {
-            u32 d2 = func_020093f4(cam, -((CamMode *)self->mMode)->posDist);
+            u32 d2 = func_020093f4(cam, -self->mMode->posDist);
             tmp2.z = d2;
             data_02086f20.z = d2;
             tmp2.x = data_02086f20.x;
@@ -1030,7 +1030,7 @@ extern "C" void func_0200cce4(char* cam)
             }
         }
         {
-            u32 t = func_020093d4(cam, ((CamMode *)self->mMode)->lookAtHeight);
+            u32 t = func_020093d4(cam, self->mMode->lookAtHeight);
             self->mLookAtOffset.x = 0;
             self->mLookAtOffset.y = t;
             self->mLookAtOffset.z = 0;
@@ -1121,7 +1121,7 @@ int dCamera_c::ChangeState(State * state)
 // @symbol func_0200cb58
 void func_0200cb58(void *obj_, int index) {
     struct dCamera_c *obj = (struct dCamera_c *)obj_;
-    obj->mMode = index * 0x28 + (int)&data_02086fcc;
+    obj->mMode = (CamMode *)(index * 0x28 + (int)&data_02086fcc);
 }
 #pragma cplusplus on
 
@@ -1151,8 +1151,8 @@ extern "C" int func_0200ca50(void *self)
     int flags;
     int r5;
     {
-        void *p = (void *)cam->mMode;
-        _Z15ApproachLinear2Rsss(&cam->mFovAngle, ((CamMode *)p)->fovAngle, 0x80);
+        CamMode *p = cam->mMode;
+        _Z15ApproachLinear2Rsss(&cam->mFovAngle, p->fovAngle, 0x80);
     }
     r5 = 1;
     flags = cam->mFlags;
@@ -1269,7 +1269,7 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
     }
 
     if (col1 == 0 || (cam->mFlags & 0x400) != 0) {
-        if (((CamMode *)cam->mMode)->flags & 0x10) {
+        if (cam->mMode->flags & 0x10) {
             if (cam->mAreaMode)
                 *out1 = cam->mAreaMode;
             if (cam->mViewObj)
@@ -1297,7 +1297,7 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
                 } else if (b0 == 6) {
                     *out1 = (void*)&data_0208742c;
                 } else {
-                    if ((((CamMode *)cam->mMode)->flags & 4) == 0) {
+                    if ((cam->mMode->flags & 4) == 0) {
                         if (b0 == 0) {
                             if (*out1 == (void*)&data_02087274 && data_0209f2f8 == 0x2d) {
                                 cam->mLookTargetPos.x = cam->mTargetPos.x;
@@ -1316,7 +1316,7 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
             }
         }
         if (*out1 != (void *)&data_02087094)
-            cam->mAreaMode = *out1;
+            cam->mAreaMode = (CamMode *)*out1;
         if (*out1 != (void*)&data_0208733c) {
             if (*out2 != 0 && *(unsigned char*)(*out2) != 2)
                 cam->mViewObj = *out2;
@@ -1333,10 +1333,10 @@ int func_0200c394(void *self_, int a1, void *a2_, void *a3, void **a5, int *a6)
     char *self = (char *)self_;
     struct dCamera_c *cam = (struct dCamera_c *)self_;
     unsigned char *a2 = (unsigned char *)a2_;
-    void *p = (void *)cam->mMode;
+    CamMode *p = cam->mMode;
     Vec3 local, local2;
     signed char g;
-    int flags = ((CamMode *)p)->flags;
+    int flags = p->flags;
     int v;
     short sz, sy, sx;
 
@@ -1404,9 +1404,9 @@ body:
 
         other:
             if (flags & 4) {
-                return (p == &data_0208706c) ? 0 : 1;
+                return (p == (CamMode *)&data_0208706c) ? 0 : 1;
             }
-            if (p == &data_0208715c) {
+            if (p == (CamMode *)&data_0208715c) {
                 if (v) { *a5 = &data_0208747c; }
                 else if (a1 == 8) { *a5 = &data_0208715c; }
                 else if (a1 == 6) { *a5 = &data_02087184; }
