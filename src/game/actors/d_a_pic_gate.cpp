@@ -355,7 +355,7 @@ void daPicGate_c::func_ov080_02125af0()
 s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
 {
     unsigned short r4 = mWaveTimer;
-    int *obj;
+    const WaveParams *wave;
     int r5res, r4res, sum, idx;
     Fix12i f;
     short tv;
@@ -364,11 +364,13 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
         return 0;
 
     if (((unsigned char)((param1 >> 13) & 3)) == 0) {
-        obj = (int *)mWaveParams;
+        wave = mWaveParams;
         {
-            int a = __aeabi_idiv(0xffff, obj[1]);
-            int b = __aeabi_idiv(obj[2], a);
-            if (r6 > b * (obj[4] - r4))
+            /* Frames per cycle, then distance per frame: past the
+               wavefront the picture is still flat. */
+            int a = __aeabi_idiv(0xffff, wave->phaseStep);
+            int b = __aeabi_idiv(wave->wavelength, a);
+            if (r6 > b * (wave->duration - r4))
                 return 0;
         }
     }
@@ -376,7 +378,7 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
     r5res = func_ov080_02125d08(r6);
     r4res = func_ov080_02125cd4(mWaveParams->duration - mWaveTimer);
 
-    f = _ZN4cstd4fdivEii(r4res, mWaveParams->unk_0c);
+    f = _ZN4cstd4fdivEii(r4res, mWaveParams->radius);
     sum = r4res + FX_MUL(-f, r6);
     if (sum < 0)
         sum = 0;
@@ -387,23 +389,23 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125cd4Ei
-/* unk_00 / duration of the current WaveParams row, as a frame count. */
+/* The wave's amplitude after n frames: it decays linearly from
+ * amplitude to 0 over duration. */
 s32 daPicGate_c::func_ov080_02125cd4(s32 n)
 {
     const WaveParams *p = mWaveParams;
-    int r4 = p->unk_00;
+    int r4 = p->amplitude;
     int r1 = p->duration;
     int r = __aeabi_idiv(r4, r1);
     return r4 - r * n;
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125d08Ei
-/* frames * unk_08, 4.12 fixed-point, minus the running phase mWavePhase. */
-s32 daPicGate_c::func_ov080_02125d08(s32 frames)
-{
-    int *obj = (int *)mWaveParams;
-    Fix12i speed = _ZN4cstd4fdivEii(0xffff, obj[2]);
-    int result = FX_MUL(frames, speed);
+/* The wave's phase at distance dist from the origin: dist * 0xffff /
+ * wavelength, 4.12 fixed-point, minus the running phase mWavePhase. */
+s32 daPicGate_c::func_ov080_02125d08(s32 dist) {
+    Fix12i speed = _ZN4cstd4fdivEii(0xffff, mWaveParams->wavelength);
+    int result = FX_MUL(dist, speed);
     s16 cur = mWavePhase;
     return (s16)(result - cur);
 }
@@ -413,22 +415,23 @@ s32 daPicGate_c::func_ov080_02125d08(s32 frames)
 struct Elem { struct Vector3 pos; int dist; int pad[2]; };  /* 0x18 */
 
 // @symbol func_ov080_02125d64
-/* Refresh every cell's planar distance from the wave origin (unk_134);
+/* Refresh every cell's planar distance from the wave origin (mWaveOrigin);
  * Elem::dist feeds RippleHeight. */
 extern "C" void func_ov080_02125d64(char *c)
 {
     int i;
 
-    for (i = 0; i < *(unsigned short*)(c + 0x1b8); i++) {
-        struct Elem *e = (struct Elem *)(*(char **)(c + 0x1a0) + i * 0x18);
+    for (i = 0; i < ((daPicGate_c *)c)->mNumCells; i++) {
+        struct Elem *e = (struct Elem *)((char *)((daPicGate_c *)c)->mCells + i * 0x18);
         Vec3 tmp = *(struct Vec3 *)&e->pos;
         tmp.z = 0;
-        e->dist = Vec3_Dist((struct Vector3 *)(c + 0x134), (struct Vector3 *)&tmp);
+        e->dist =
+            Vec3_Dist((struct Vector3 *)((daPicGate_c *)c)->mWaveOrigin, (struct Vector3 *)&tmp);
     }
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125de0Eiii
-/* BeginWave: the origin in cell space goes to unk_134, every cell's dist
+/* BeginWave: the origin in cell space goes to mWaveOrigin, every cell's dist
  * is refreshed, then a WaveParams row is picked for this param1 shape
  * (front/back rows differ) and mWaveTimer reloads from it. */
 void daPicGate_c::func_ov080_02125de0(s32 a1, s32 a2, s32 a3)
@@ -436,9 +439,9 @@ void daPicGate_c::func_ov080_02125de0(s32 a1, s32 a2, s32 a3)
     u32 m8;
     int r0;
     unsigned char f;
-    unk_134[0] = a1;
-    unk_134[1] = a2;
-    unk_134[2] = 0;
+    mWaveOrigin[0] = a1;
+    mWaveOrigin[1] = a2;
+    mWaveOrigin[2] = 0;
     func_ov080_02125d64((char *)this);
     m8 = param1;
     r0 = 0;
