@@ -1,70 +1,113 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Touch.h"
 extern void func_ov007_020b2614(int a, int b, int c);
 extern int _ZN4cstd3modEii(int a, int b);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020aec94(int r4);
 
-extern char *data_ov007_0210342c;
+/* The 0x2c-byte record func_ov007_020aea6c allocates; only the fields this
+ * file touches are spelled. */
+typedef struct Ov007Item {
+    char pad_00[0x10];
+    s32 fade;         /* 0x10: Q12; func_ov007_020ae834 eases it in states 5/6,
+                       * func_ov007_020b5bf0 turns it into the sprite alpha */
+    char pad_14[4];
+    s32 wiggleTimer;  /* 0x18: func_ov007_020ae834 counts it down; func_ov007_020b5bf0
+                       * swings the sprite's rotZ while it runs */
+    s32 wiggleFrames; /* 0x1c: the wiggle's length; func_ov007_020ae2d0 also arms 0x3c */
+} Ov007Item;
 
-/* data_ov007_0210342c has no class or header; only its +0x8/+0xc Ov007MenuStates are
- * typed here; the records in its other slots have no header and stay raw. */
+/* The 0x1c record func_ov007_020b4c04 returns and the 8-byte one
+ * func_ov007_020ade58 returns: both start with the item. */
+typedef struct Ov007ItemView {
+    Ov007Item *item; /* 0x00 */
+} Ov007ItemView;
+
+/* The 0x70-byte key record func_ov007_020c2304 allocates;
+ * func_ov007_020c20b8 copies keys into prevKeys, then reads KEYINPUT. */
+typedef struct Ov007Pad {
+    u16 keys;     /* 0x00: held this frame */
+    u16 prevKeys; /* 0x02: held last frame */
+} Ov007Pad;
+
+/* data_ov007_0210342c: the overlay's manager. No class or header names it;
+ * only the slots this file touches are spelled. +0xec (0 or 1; picks the
+ * sound) and +0xf4 (the model func_ov007_020b2bd4 builds) stay raw, as in
+ * func_ov007_020b1718. */
+typedef struct Ov007Work {
+    char pad_00[4];
+    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
+    char pad_10[0x10];
+    int transitionMode; /* 0x20: func_ov007_020b1718 runs mode 1 after a
+                         * stylus tap here, mode 0 after a button */
+    char pad_24[0x2c];
+    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
+    Ov007Pad *pad;     /* 0x54: func_ov007_020c2304 */
+    char pad_58[0x4c];
+    Ov007ItemView *itemNodes[9]; /* 0xa4: func_ov007_020b6d40, one per func_ov007_020ade58 */
+    char pad_c8[0x4c];
+    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
+} Ov007Work;
+
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+
 void func_ov007_020b1cf0(void)
 {
     char *r6 = *(char **)(data_ov007_0210342c + 0xf4);
-    Ov007MenuState *menu = *(Ov007MenuState **)(data_ov007_0210342c + 8);
+    Ov007MenuState *menu = WORK->states[1];
     int hi = menu->previousState;
     int r5 = menu->stateTicks;
     int flag = 0;
 
     if (hi == 8 && r5 == 0) {
         int anim;
-        (*(Ov007MenuState **)(data_ov007_0210342c + 0xc))->requestedState = 3;
+        WORK->states[2]->requestedState = 3;
         anim = (*(int *)(data_ov007_0210342c + 0xec) == 1) ? 0x3d : 0x14;
         func_ov007_020b2614(0, anim, 8);
     }
 
     if (r5 >= 0x28) {
         int m = _ZN4cstd3modEii(r5 - 0x28, 0x154);
-        char *p;
+        Ov007Item *p;
         switch (m) {
         case 0:
-            p = *(char **)(*(char **)(data_ov007_0210342c + 0xa8));
-            *(int *)(p + 0x1c) = 0x3c;
-            *(int *)(p + 0x18) = *(int *)(p + 0x1c);
+            p = WORK->itemNodes[1]->item;
+            p->wiggleFrames = 0x3c;
+            p->wiggleTimer = p->wiggleFrames;
             break;
         case 0x46:
-            p = *(char **)(*(char **)(data_ov007_0210342c + 0x118));
-            *(int *)(p + 0x1c) = 0x3c;
-            *(int *)(p + 0x18) = *(int *)(p + 0x1c);
+            p = WORK->itemViews[1]->item;
+            p->wiggleFrames = 0x3c;
+            p->wiggleTimer = p->wiggleFrames;
             break;
         case 0x8c:
-            p = *(char **)(*(char **)(data_ov007_0210342c + 0x114));
-            *(int *)(p + 0x1c) = 0x3c;
-            *(int *)(p + 0x18) = *(int *)(p + 0x1c);
+            p = WORK->itemViews[0]->item;
+            p->wiggleFrames = 0x3c;
+            p->wiggleTimer = p->wiggleFrames;
             break;
         case 0xd2:
-            p = *(char **)(*(char **)(data_ov007_0210342c + 0x11c));
-            *(int *)(p + 0x1c) = 0x3c;
-            *(int *)(p + 0x18) = *(int *)(p + 0x1c);
+            p = WORK->itemViews[2]->item;
+            p->wiggleFrames = 0x3c;
+            p->wiggleTimer = p->wiggleFrames;
             break;
         }
     }
 
-    if (*(int *)(*(char **)(*(char **)(data_ov007_0210342c + 0x130)) + 0x10) == 0x1000
-        && func_ov007_020c1da0(0) == 0) {
-        char *r1 = *(char **)(data_ov007_0210342c + 0x50);
-        if (*(u16 *)(r1 + 0xc) != 0
-            && *(u16 *)(r1 + 0x14) == 0
-            && (unsigned)*(int *)(r1 + 0x24) >= 1) {
+    if (WORK->itemViews[7]->item->fade == 0x1000 && func_ov007_020c1da0(0) == 0) {
+        Ov007Touch *r1 = WORK->touch;
+        if (r1->cur.touch != 0 && r1->prev.touch == 0 && r1->releasedFrames >= 1) {
             flag = 1;
-            *(int *)(data_ov007_0210342c + 0x20) = 1;
+            WORK->transitionMode = 1;
             func_ov007_020b2614(1, 0, 8);
         } else {
-            char *r1b = *(char **)(data_ov007_0210342c + 0x54);
-            if (*(u16 *)r1b & 2) {
-                if (!(*(u16 *)(r1b + 2) & 2)) {
-                    *(int *)(data_ov007_0210342c + 0x20) = 0;
+            Ov007Pad *r1b = WORK->pad;
+            if (r1b->keys & 2) {
+                if (!(r1b->prevKeys & 2)) {
+                    WORK->transitionMode = 0;
                     flag = 1;
                 }
             }
@@ -72,7 +115,7 @@ void func_ov007_020b1cf0(void)
     }
 
     if (flag != 0) {
-        (*(Ov007MenuState **)(data_ov007_0210342c + 8))->requestedState = 4;
+        WORK->states[1]->requestedState = 4;
         return;
     }
 
