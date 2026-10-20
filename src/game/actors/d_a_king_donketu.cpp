@@ -720,7 +720,7 @@ int daKing_Donketu_c::func_ov073_0211fbf4() {
       _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, &c->mCamSpacePos, 0);
   ((dCamera_c *)data_0209f318)->SetFlag_3();
   c->func_ov073_0211f144();
-  if(pl->GetTalkState() == -1){
+  if (pl->GetTalkState() == -1) {
     ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123370);
   }
   return 1;
@@ -880,7 +880,7 @@ int daKing_Donketu_c::func_ov073_0211fe8c() {
 short daKing_Donketu_c::func_ov073_0212000c() {
     daKing_Donketu_c *c = this;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, gKingIceDonketuDeadAnimationFile.file, 4, 0, 0x1000, 0);
-    c->mStateTimer=0x32;
+    c->mStateTimer = 0x32;
     return 1;
 }
 
@@ -890,8 +890,8 @@ short daKing_Donketu_c::func_ov073_0212000c() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212005cEv
 int daKing_Donketu_c::func_ov073_0212005c() {
     daKing_Donketu_c *c = this;
-  if(c->mBlendModelAnim.Finished()){
-    c->unk_4c5=0xff;
+  if (c->mBlendModelAnim.Finished()) {
+    c->unk_4c5 = 0xff;
     ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
   }
   return 1;
@@ -1318,8 +1318,8 @@ int daKing_Donketu_c::func_ov073_02120ad8()
 int daKing_Donketu_c::func_ov073_02120b78() {
     daKing_Donketu_c *c = this;
     ApproachLinear(c->mAngleX, -0x4000, 0x400);
-    if(c->mSpawnPosY > c->mPosY){
-        if(c->mWithMeshClsn.IsOnGround()){
+    if (c->mSpawnPosY > c->mPosY) {
+        if (c->mWithMeshClsn.IsOnGround()) {
             c->func_ov073_0211f2c0(0xfa0000);
             c->mHorzSpeed = 0;
             c->mPrevAngleY = Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->mSpawnPosX);
@@ -1714,7 +1714,7 @@ int daKing_Donketu_c::func_ov073_02121388() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02121538Ev
 int daKing_Donketu_c::func_ov073_02121538() {
     daKing_Donketu_c *c = this;
-  c->mPhase=0;
+  c->mPhase = 0;
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, gKingIceDonketuWaitAnimationFile.file, 4, 0, 0x1000, 0);
   return 1;
 }
@@ -1780,7 +1780,7 @@ void daKing_Donketu_c::func_ov073_021215cc()
 }
 
 // @symbol _ZN16daKing_Donketu_c16CleanupResourcesEv
-int daKing_Donketu_c::CleanupResources(){
+int daKing_Donketu_c::CleanupResources() {
   UnloadKeyModels(4);
   ((SharedFilePtr *)&gKingIceDonketuDeadAnimationFile)->Release();
   ((SharedFilePtr *)&gKingIceDonketuHitAnimationFile)->Release();
