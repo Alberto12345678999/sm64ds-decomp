@@ -1,13 +1,15 @@
-extern void *func_ov007_020c2b9c(int a, const int *b);
+#include "Ov007StrokePath.h"
+
 extern void func_ov007_020c2d44(void *obj, int i);
 
-void *func_ov007_020c2b38(int count, const int *src1, const int *src2, const int *arg3) {
-    void *obj = func_ov007_020c2b9c(count, arg3);
+void *func_ov007_020c2b38(int pointCount, const int *xCoords, const int *yCoords,
+                          const int *progressThresholds) {
+    Ov007StrokePath *path = (Ov007StrokePath *)func_ov007_020c2b9c(pointCount, progressThresholds);
     int i;
-    for (i = 0; i < count; i++) {
-        (*(int **)((char *)obj + 0x24))[i] = src1[i];
-        (*(int **)((char *)obj + 0x28))[i] = src2[i];
-        func_ov007_020c2d44(obj, i);
+    for (i = 0; i < pointCount; i++) {
+        path->xCoords[i] = xCoords[i];
+        path->yCoords[i] = yCoords[i];
+        func_ov007_020c2d44(path, i);
     }
-    return obj;
+    return path;
 }

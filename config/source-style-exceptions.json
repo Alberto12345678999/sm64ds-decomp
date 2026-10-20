@@ -464,6 +464,14 @@
       "count": 1,
       "reason": "The wing-only GetAngle accessor reads the existing byte pair at base+0x32 as s16. The base deliberately stores u8 bytes because ana, board, wing and propeller require different views; renaming this shared byte as a signed angle would misstate those readers. Keep this one explicit boundary until a shared representation justified by every consumer exists.",
       "evidence": "include/cMgSmartball_object_c.h documents per-reader signedness across0x031..0x033; cMgSmartball_wing_c::GetAngle casts the named byte storage. Fresh b56 compile preserves the entire production-prepared Smartball object byte-for-byte versus a317608eec;132/132 owned strict function checks VERIFIED; build/review3955-smartball-proof/proof.json."
+    },
+    {
+      "path": "src/_ZN10dScEntry_c17RenderWaitingTextEv.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi",
+      "count": 2,
+      "reason": "Retained scalar ABI bridge for the Fix12-by-value OAM overload, carried from the old waiting renderer. OAM.h deliberately excludes this overload; RenderSub uses the shared header. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching call ABI.",
+      "evidence": "include/OAM.h; notes/mwccarm-codegen.md section 6az; notes/agents/handoffs/entry-sync1018.md; ov075 0x021194e4 size0x15c links exactly with all six destinations verified."
     }
   ]
 }
