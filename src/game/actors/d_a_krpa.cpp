@@ -60,11 +60,8 @@ extern "C" daKrpa_c *daKrpa_c_classInit()
     return new daKrpa_c();
 }
 
-/* Reconstructed source-style names: SM64DS proves the daKrpa_c RTTI identity,
- * KERONPA registry ID, descriptor/factory relationship, and object shape;
- * later EAD lineage supplies the spelling prior. Exact original SM64DS
- * spellings are not preserved. Historical aliases: daKrpa_c_Spawn and
- * daKrpa_c_SpawnInfo. The descriptor is at ov070:0x0212334c. */
+/* KERONPA profile descriptor at ov070:0x0212334c.
+ * Historical aliases: daKrpa_c_Spawn, daKrpa_c_SpawnInfo. */
 extern "C" SpawnInfo<daKrpa_c> g_profile_KERONPA = {
     daKrpa_c_classInit,
     0x010e,
