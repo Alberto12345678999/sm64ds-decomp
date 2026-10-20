@@ -738,9 +738,8 @@ unsigned int PlayCharVoice(unsigned int a, unsigned int b, const Vector3 &v)
 }
 
 // @symbol func_02012120
-extern "C" int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2,
-                             const Vector3 *p3, short p4)
-{
+extern "C" int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2, const Vector3 *p3,
+                             short p4) {
     p2 += data_02075250[p1];
     return Sound::PlayLong(p0, 1, p2, *p3, p4);
 }
