@@ -57,7 +57,7 @@ struct dScMgPachinko_ball {
     u8 driftDir;        /* 0x31 _StateDrift's sway: 0 eases velX to a stop,
                            1 speeds it up rightwards, 2 leftwards; a wall
                            bounce swaps 1 and 2 */
-    u8  pad32;          /* 0x32 */
+    u8 pad32;           /* 0x32 */
     u8 sprite;          /* 0x33 index into sPachinkoBallSprites, which
                            PachinkoBall_DrawAll draws */
     u8 target;          /* 0x34 the mTarget index _AimAtTarget homes it on */
