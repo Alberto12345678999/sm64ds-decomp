@@ -48,8 +48,7 @@ ModelAnim::ModelAnim() {
 // @symbol _ZN9ModelAnimD2Ev
 // @symbol _ZN9ModelAnimD0Ev
 // @symbol _ZN9ModelAnimD1Ev
-ModelAnim::~ModelAnim() {
-}
+ModelAnim::~ModelAnim() {}
 
 // @symbol _ZN9ModelAnim11UpdateVertsEv
 void ModelAnim::UpdateVerts() {
