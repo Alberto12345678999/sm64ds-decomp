@@ -24,17 +24,13 @@
 // @symbol _ZN10dCcAcPos_cC1Ev
 /* pos is left uninitialised. C1 is the dCcAc_c base step and this vtable
    store; C2 is the same body with no cartridge home. */
-dCcAcPos_c::dCcAcPos_c()
-{
-}
+dCcAcPos_c::dCcAcPos_c() {}
 
 // @symbol _ZN10dCcAcPos_cD1Ev
 /* No member has a destructor the cartridge calls. D1 stores this vtable
    and runs dCcAc_c's D2; D0 adds the inherited operator delete. D2 is
    emitted beside them and has no cartridge home. */
-dCcAcPos_c::~dCcAcPos_c()
-{
-}
+dCcAcPos_c::~dCcAcPos_c() {}
 
 // @symbol _ZN10dCcAcPos_c6GetPosEv
 /* Vtable slot 2. This shadows dCcAc_c's own slot 2, which returns the
@@ -50,8 +46,7 @@ Vector3 &dCcAcPos_c::GetPos()
    `ldr ip,[pc]; bx ip; .word _ZN7dCcAc_c10GetOwnerIDEv`. Declaring the
    override is what makes the emitted vtable relocate this slot here.
    Leaving it inherited would point the slot at 0x0201493c. */
-u32 dCcAcPos_c::GetOwnerID()
-{
+u32 dCcAcPos_c::GetOwnerID() {
     return dCcAc_c::GetOwnerID();
 }
 
