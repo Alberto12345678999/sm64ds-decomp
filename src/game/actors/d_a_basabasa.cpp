@@ -180,8 +180,7 @@ void daBasabasa_c::func_ov065_0211704c()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
-            this, &pos, unk_10a + 1, 0xa000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &pos, mExtraCoinCount + 1, 0xa000, 0);
         return;
     }
 
@@ -423,7 +422,7 @@ int daBasabasa_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0) {
-            if (unk_104 == 0) {
+            if (mSpitOutTimer == 0) {
                 mdCcAc_c.Update();
             }
         }
@@ -506,7 +505,7 @@ int daBasabasa_c::InitResources()
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
-    unk_108 = 1;
+    mCoinType = 1;
     SetState(&data_ov065_0211d700);
     return 1;
 }
@@ -520,7 +519,7 @@ s32 daBasabasa_c::OnAimedAtWithEgg()
 // @symbol _ZN12daBasabasa_c13OnTurnIntoEggER6Player
 void daBasabasa_c::OnTurnIntoEgg(Player &player)
 {
-    GivePlayerCoins(player, (unsigned char)(unk_10a + 1), 0);
+    GivePlayerCoins(player, (unsigned char)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 

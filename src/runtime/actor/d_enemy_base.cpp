@@ -166,18 +166,18 @@ void dEnemyBase_c::SpawnCoin()
     dEnemyBase_c *t = this;
     int i;
     Vector3 v;
-    if (t->unk_108 != 0) {
+    if (t->mCoinType != 0) {
         int tz = t->mPosZ;
         int ty = t->mPosY + 0x78000;
         int tx = t->mPosX;
         v.x = tx;
         v.y = ty;
         v.z = tz;
-        if (t->unk_108 >= 4)
-            t->unk_108 = 1;
-        for (i = 0; i < t->unk_10a + 1; i++) {
+        if (t->mCoinType >= 4)
+            t->mCoinType = 1;
+        for (i = 0; i < t->mExtraCoinCount + 1; i++) {
             dActor_c *coin = dActor_c::Spawn(
-                (&data_ov002_020ff014)[t->unk_108 - 1],
+                (&data_ov002_020ff014)[t->mCoinType - 1],
                 0xf2, v, 0, t->mAreaId, -1);
             if (coin != 0) {
                 int rnd1 = RandomIntInternal(&data_0209e650);

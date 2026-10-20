@@ -394,7 +394,8 @@ int daSnowman_c::func_ov081_021246a0()
                 v.x = this->mPosX;
                 v.y = this->mPosY;
                 v.z = this->mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, this->unk_10a + 1, 0xa000, 0);
+                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, this->mExtraCoinCount + 1,
+                                                               0xa000, 0);
             }
             func_ov081_02124134();
             this->KillAndTrackInDeathTable();
@@ -454,7 +455,8 @@ int daSnowman_c::func_ov081_02124894()
             v.x = this->mPosX;
             v.y = this->mPosY;
             v.z = this->mPosZ;
-            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, this->unk_10a + 1, 0xa000, 0);
+            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, this->mExtraCoinCount + 1,
+                                                           0xa000, 0);
         }
         func_ov081_02124134();
         this->KillAndTrackInDeathTable();
@@ -1078,8 +1080,8 @@ int daSnowman_c::InitResources()
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         &mWithMeshClsn, this, 0x14000, 0xf000, 0, 0);
 
-    unk_108 = 1;
-    unk_10a = 2;
+    mCoinType = 1;
+    mExtraCoinCount = 2;
 
     if (mType == 0) {
         PathPtr pp;
@@ -1093,8 +1095,8 @@ int daSnowman_c::InitResources()
         mPosY -= 0x118000;
         func_ov081_02125488(&data_ov081_02128e84);
         if (mType == 3) {
-            unk_108 = 0;
-            unk_10a = 0;
+            mCoinType = 0;
+            mExtraCoinCount = 0;
             mFlags = 2;
         }
         if (mType == 2)

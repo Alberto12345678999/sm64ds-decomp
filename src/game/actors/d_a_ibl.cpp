@@ -916,7 +916,7 @@ int daIbl_c::InitResources()
 
 end:
     mStateTimer = 0;
-    unk_108 = 0;            /* a dEnemyBase_c byte; nothing in this file reads it */
+    mCoinType = 0; /* a dEnemyBase_c byte; nothing in this file reads it */
     mRollSoundHandle = 0;
     mDispenser = 0;
     mLiveBalls = 0;

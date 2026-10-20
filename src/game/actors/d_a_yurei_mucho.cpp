@@ -145,7 +145,7 @@ s32 daYurei_Mucho_c::OnYoshiTryEat()
  * cannot distinguish them. */
 void daYurei_Mucho_c::OnTurnIntoEgg(Player &player)
 {
-    GivePlayerCoins(player, (unsigned char)(unk_10a + 1), 0);
+    GivePlayerCoins(player, (unsigned char)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 
@@ -173,8 +173,8 @@ int daYurei_Mucho_c::InitResources()
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x46000, 0, 0, 0);
-    unk_108 = 1;
-    unk_10a = 1;
+    mCoinType = 1;
+    mExtraCoinCount = 1;
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
@@ -191,7 +191,7 @@ int daYurei_Mucho_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0) {
-            if (unk_104 == 0) {
+            if (mSpitOutTimer == 0) {
                 mdCcAc_c.Update();
             }
         }
@@ -688,7 +688,7 @@ int daYurei_Mucho_c::func_ov065_02115f84()
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, unk_10a + 1, 0xa000, 0);
+    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, mExtraCoinCount + 1, 0xa000, 0);
     KillAndTrackInDeathTable();
     return func_02012694(0x11e, &mCamSpacePosX);
 }
