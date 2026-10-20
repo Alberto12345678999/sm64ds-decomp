@@ -11,7 +11,9 @@ struct dScMgCoin_Coin {
     s32 landY;    /* 0x08 */
     s32 vy;       /* 0x0c */
     u8 state;     /* 0x10 */
-    u8 pad11;     /* 0x11 */
+    /* LayOutCoins sets it on every coin it places and ResetRound clears it;
+       Phase_StateSettle keeps waiting while a placed coin is still hopping. */
+    u8 placed;    /* 0x11 */
     u8 visible;   /* 0x12 */
     u8 value;     /* 0x13 */
     /* LayOutCoins marks two random coins in each row; Block_StateWander

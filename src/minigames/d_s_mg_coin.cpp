@@ -903,7 +903,7 @@ void dScMgCoin_c::Coin_UpdateAll() {
 
 // @symbol _ZN11dScMgCoin_c11LayOutCoinsEv
 /* Lays the 24 coins out in three rows of eight and marks two coins in each
-   row, picked at random, keepEmpty. */
+   row, picked at random, as keepEmpty. */
 void dScMgCoin_c::LayOutCoins() {
     int a[3];
     int b[3];
@@ -928,7 +928,7 @@ void dScMgCoin_c::LayOutCoins() {
         mCoins[i].x = (((col << 5) + 0x10) << 12);
         mCoins[i].y = sCoinRowY[row] << 12;
         col++;
-        mCoins[i].pad11 = 1;
+        mCoins[i].placed = 1;
         mCoins[i].visible = 1;
         if (col >= 8) {
             col = 0;
@@ -1347,7 +1347,7 @@ void dScMgCoin_c::ResetRound() {
         ((dScMgCoin_c *)p)->mCoins[0].x = j;
         ((dScMgCoin_c *)p)->mCoins[0].y = j;
         ((dScMgCoin_c *)p)->mCoins[0].state = j;
-        ((dScMgCoin_c *)p)->mCoins[0].pad11 = j;
+        ((dScMgCoin_c *)p)->mCoins[0].placed = j;
         ((dScMgCoin_c *)p)->mCoins[0].visible = j;
         ((dScMgCoin_c *)p)->mCoins[0].value = j;
         ((dScMgCoin_c *)p)->mCoins[0].keepEmpty = j;
@@ -1463,7 +1463,7 @@ void dScMgCoin_c::Phase_StateSettle() {
         }
     }
     for (j = 0; j < 0x18; j++) {
-        if (mCoins[j].state == 1 && mCoins[j].pad11 != 0)
+        if (mCoins[j].state == 1 && mCoins[j].placed != 0)
             count++;
     }
     this->Coin_UpdateAll();
