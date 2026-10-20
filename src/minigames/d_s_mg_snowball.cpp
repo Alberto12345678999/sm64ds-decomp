@@ -2010,7 +2010,7 @@ s32 dScMgSnowball_c::InitResources() {
        bytes of address setup the ROM does not have. */
     Model::UpdateFileOffsets(**(BMD_File **)(r4 + SNOW_OFF(mBallBmd)));
 
-    if (((dScMgSnowball_c *)r4)->mModel.SetFile(*(BMD_File **)(r4 + SNOW_OFF(mBallBmd)), 1, -1) == 0)
+    if (!((dScMgSnowball_c *)r4)->mModel.SetFile(*(BMD_File **)(r4 + SNOW_OFF(mBallBmd)), 1, -1))
         return 0;
 
     *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | 1;
@@ -2046,9 +2046,12 @@ extern "C" void *dScMgSnowball_c_Construct(char *t) {
     *(void **)t = &_ZTV15dScMgSnowball_c[2];
     _ZN5ModelC1Ev(&((dScMgSnowball_c *)t)->mModel);
     ((dScMgSnowball_c *)t)->mBallBmd = 0;
-    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mArray1, 0x80, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
-    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mArray2, 0x80, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
-    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mSprays, 0x20, 0x24, (void *)SnowSpray_ElemCtor, (void *)SnowSpray_ElemDtor);
+    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mArray1, 0x80, 8, (void *)func_0203d738,
+                   (void *)NullDestructor_0203d47c);
+    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mArray2, 0x80, 8, (void *)func_0203d738,
+                   (void *)NullDestructor_0203d47c);
+    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mSprays, 0x20, 0x24, (void *)SnowSpray_ElemCtor,
+                   (void *)SnowSpray_ElemDtor);
     return t;
 }
 
@@ -2213,7 +2216,8 @@ void dScMgSnowball_c::BitA_StateDriftLeft(int i) {
     unsigned short *hold;
 
     *(int *)((char *)&mBits[0].x + o) += *(int *)((char *)&mBits[0].vx + o);
-    *(int *)((char *)&mBits[0].y + o) = *(int *)((char *)&mBits[0].y + o) + *(int *)((char *)&mBits[0].vy + o);
+    *(int *)((char *)&mBits[0].y + o) =
+        *(int *)((char *)&mBits[0].y + o) + *(int *)((char *)&mBits[0].vy + o);
 
     hold = (unsigned short *)((char *)&mBits[0].holdTimer + o);
     if (*hold != 0) {
@@ -2300,7 +2304,8 @@ void dScMgSnowball_c::BitA_StatePause(int i) {
     char *o = (char *)this;
     int n = i * 0x24;
     if (*(unsigned short *)((char *)&mBits[0].holdTimer + n) != 0) {
-        *(unsigned short *)((char *)&mBits[0].holdTimer + n) = *(unsigned short *)((char *)&mBits[0].holdTimer + n) - 1;
+        *(unsigned short *)((char *)&mBits[0].holdTimer + n) =
+            *(unsigned short *)((char *)&mBits[0].holdTimer + n) - 1;
         if (*(short *)((char *)&mBits[0].holdTimer + n) < 0)
             *(short *)((char *)&mBits[0].holdTimer + n) = 0;
         return;
@@ -2376,8 +2381,10 @@ void dScMgSnowball_c::BitB_StateDriftLeft(int idx) {
     int n = idx * 0x24;
     unsigned short d;
     short r;
-    *(int *)((char *)&mBits[0].x + n) = *(int *)((char *)&mBits[0].x + n) + *(int *)((char *)&mBits[0].vx + n);
-    *(int *)((char *)&mBits[0].y + n) = *(int *)((char *)&mBits[0].y + n) + *(int *)((char *)&mBits[0].vy + n);
+    *(int *)((char *)&mBits[0].x + n) =
+        *(int *)((char *)&mBits[0].x + n) + *(int *)((char *)&mBits[0].vx + n);
+    *(int *)((char *)&mBits[0].y + n) =
+        *(int *)((char *)&mBits[0].y + n) + *(int *)((char *)&mBits[0].vy + n);
     d = *(unsigned short *)((char *)&mBits[0].holdTimer + n);
     if (d != 0) {
         r = (short)(d - 1);
@@ -2588,7 +2595,8 @@ void dScMgSnowball_c::Bit_InitAll() {
         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
         /* this re-read of mBits[0].spriteA keeps `p + offset`: every member
            spelling grows the function by 12 bytes */
-        v = *(unsigned char *)(p + SNOW_OFF(mBits[0].spriteA)) + ((((r >> 16) & 0x7fff) << 2) >> 0xf) + 1;
+        v = *(unsigned char *)(p + SNOW_OFF(mBits[0].spriteA)) +
+            ((((r >> 16) & 0x7fff) << 2) >> 0xf) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;

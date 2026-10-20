@@ -578,7 +578,8 @@ void dScMgCurling_c::Bit_InitAll() {
         ((dScMgCurling_c *)bit)->mBit[0].texA = (char)(((roll >> 16) & 0x7fff) * 5 >> 0xf);
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        v = *(unsigned char *)(bit + CURL_OFF(mBit[0].texA)) + ((((roll >> 16) & 0x7fff) << 2) >> 0xf) + 1;
+        v = *(unsigned char *)(bit + CURL_OFF(mBit[0].texA)) +
+            ((((roll >> 16) & 0x7fff) << 2) >> 0xf) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
@@ -628,7 +629,7 @@ void dScMgCurling_c::Popup_UpdateAll() {
             continue;
         {
             volatile unsigned short *timer =
-                (volatile unsigned short *)((unsigned int)&((dScMgCurling_c *)popup)->mPopup[0].countdown);
+                (volatile u16 *)((unsigned int)&((dScMgCurling_c *)popup)->mPopup[0].countdown);
             *timer = *timer - 1;
             if (*timer != 0)
                 continue;
@@ -1148,8 +1149,7 @@ void dScMgCurling_c::Stone_Drag(int stoneIndex) {
             mStone[stoneIndex].x = 0xe000;
         if (stoneXPixels > 0xf2)
             mStone[stoneIndex].x = 0xf2000;
-        grabXPixels =
-            (mStone[stoneIndex].x >> 12) - ((struct B4 *)gTouchX)[gActivePlayerSlot].v;
+        grabXPixels = (mStone[stoneIndex].x >> 12) - ((struct B4 *)gTouchX)[gActivePlayerSlot].v;
         grabYPixels = (mStone[stoneIndex].y >> 12) - ((struct B4 *)gTouchY)[playerSlot].v;
         mStone[stoneIndex].grabX = grabXPixels << 12;
         mStone[stoneIndex].grabY = grabYPixels << 12;
