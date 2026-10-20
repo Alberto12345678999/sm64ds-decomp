@@ -26,7 +26,7 @@
  * base chain.
  *
  * The four PMF state tables dispatch on this class: the big Boo's flight
- * at sTeresaBigBooStateTable (9 states by Boo::state), the reveal pair at
+ * at sTeresaBigBooStateTable (9 states by BigBoo::state), the reveal pair at
  * sTeresaRevealStateTable (5 states by mReveal[0].state), the 16-Boo rows at
  * sTeresaBooStateTable (8 states), and the scene table sTeresaSceneStateTable
  * (5 no-argument states by mSceneState). __sinit_ov006_02132f68 fills them
@@ -123,7 +123,7 @@ typedef void (dScMgTeresa_c::*Pmf)(int);
 typedef void (dScMgTeresa_c::*Pmf0)();
 struct PmfEntry { Pmf0 pmf; };
 
-extern Pmf sTeresaBigBooStateTable[];     /* big Boo flight states, by Boo::state */
+extern Pmf sTeresaBigBooStateTable[];     /* big Boo flight states, by BigBoo::state */
 extern Pmf sTeresaRevealStateTable[];     /* reveal states, by mReveal[0].state */
 extern Pmf sTeresaBooStateTable[];        /* per-Boo states, one call per live row */
 extern PmfEntry sTeresaSceneStateTable[]; /* scene states, by mSceneState */
