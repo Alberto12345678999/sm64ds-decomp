@@ -169,9 +169,9 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
    `smull` / `adds #0x800` / `adc` / `lsr #0xc` / `orr lsl #20`: the collider's
    axis is Fix12i where the edge normals are 0x400-scale, so MUL10 is wrong here
    and FX_MUL is wrong everywhere else. */
-#define AXIS_DOT0(v) (FX_MUL(unk_28, (v).x) \
-                    + FX_MUL(unk_2c, (v).y) \
-                    + FX_MUL(unk_30, (v).z))
+#define AXIS_DOT0(v) (FX_MUL(upAxis.x, (v).x) \
+                    + FX_MUL(upAxis.y, (v).y) \
+                    + FX_MUL(upAxis.z, (v).z))
 
 /* A vertex region: the closest point is where edge normals `ea` and `eb` meet.
    `nn` is their cosine, already formed by the dispatch. Solve the 2x2 for the
@@ -192,9 +192,9 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
     goto vtail;
 
 /* The filter each edge block runs before its distance is taken, and the reason
-   dBgW_Kc::unk_48, unk_4d and the 0x28 vector exist. unk_48 is a SHIFT
+   dBgW_Kc::edgeToleranceShift, tolerantWallEdges and the 0x28 vector exist. edgeToleranceShift is a SHIFT
    COUNT, not a value: the test is "is the lateral distance outside this edge
-   more than faceDot >> unk_48", i.e. a slope tolerance expressed as a fraction
+   more than faceDot >> edgeToleranceShift", i.e. a slope tolerance expressed as a fraction
    of the penetration. Only a floor (cls 0) that fails it gets the expensive
    path -- a real hypotenuse through the hardware sqrt, then the contact angle
    through cstd::fdiv, compared against the collider's stored axis at +0x28.
@@ -203,13 +203,13 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
     if (sphere.flags & 2) goto armA;                                          \
     if (cls == 1) {                                                           \
         if (func_02037e58((unsigned int *)&data_020a0cec) == 1) {             \
-            if ((d) > (faceDot >> unk_48)) continue;                          \
-        } else if (unk_4d) {                                                  \
-            if ((d) > (faceDot >> unk_48)) continue;                          \
+            if ((d) > (faceDot >> edgeToleranceShift)) continue;                          \
+        } else if (tolerantWallEdges) {                                                  \
+            if ((d) > (faceDot >> edgeToleranceShift)) continue;                          \
         } else {                                                              \
             if ((d) > faceDot) continue;                                      \
         }                                                                     \
-    } else if ((d) > (faceDot >> unk_48)) {                                   \
+    } else if ((d) > (faceDot >> edgeToleranceShift)) {                                   \
         s32 axisDot;                                                      \
         s32 dh;                                                           \
         s32 fh;                                                           \
@@ -217,7 +217,7 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
         if (((const dBgCh_SphCrr &)sphere).flags & 0x20) continue;        \
         dh = (d) >> 4;                                                    \
         fh = faceDot >> 4;                                                \
-        axisDot = DotVec3((const s32 *)&sn, (const Vector3 *)&unk_28);    \
+        axisDot = DotVec3((const s32 *)&sn, (const Vector3 *)&upAxis);    \
         SqrtStart((u64)((s64)fh * fh + (s64)dh * dh), zval, k1);        \
         hypv = SQRT_RESULT;      \
         if (func_020397dc(hypv)) continue;                                 \
@@ -227,7 +227,7 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
     armA:                                                                     \
     if (cls == 1) {                                                           \
         if ((d) > faceDot) continue;                                          \
-    } else if ((d) > (faceDot >> unk_48)) continue;                           \
+    } else if ((d) > (faceDot >> edgeToleranceShift)) continue;                           \
     dsqL:;
 
 /* ---- defs in reverse ROM order ---- */
@@ -308,7 +308,7 @@ int dBgW_Kc::DetectClsn(dBgCh_Gnd &ray)
         idx = ((u32)z >> shift) << file->zShift
             | ((u32)y >> shift) << file->yShift;
         idx |= (u32)x >> shift;
-        node = (u32 *)file->unk_0c;
+        node = (u32 *)file->octree;
         word = node[idx];
 
         /* Non-negative: a byte offset to the child block. One bit per axis. */
@@ -595,7 +595,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                 idx = (z >> shift) << f->zShift
                     | (y >> shift) << f->yShift;
                 idx |= x >> shift;
-                node = (u32 *)f->unk_0c;
+                node = (u32 *)f->octree;
                 word = node[idx];
 
                 while (word >= 0) {
@@ -672,25 +672,23 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         if (faceDot > rsc) continue;
                         }
 
-                        /* this->unk_34 / unk_35 gate the face test. These are the
-                           dBgW_Kc bytes whose set/clear accessors were among
-                           the original eleven ITCM matches (func_01ffb098/0a4 for
-                           0x35, func_01ffb0b0/0bc for 0x34); this is what they are
-                           for. unk_38 is the Vector3 func_01ffb07c writes, seeded
-                           by SetFile to the unit X vector. */
-                        if (unk_34) {
+                        /* The depth policy (include/dBgW_Kc.h): how far behind
+                           the face the centre may sit. */
+                        if (shallowOnly) {
                             if (faceDot < -0x50000) continue;
-                        } else if (unk_35) {
+                        } else if (depthByDir) {
                             nrm[0] = fn[0] << 2;
                             nrm[1] = fn[1] << 2;
                             nrm[2] = fn[2] << 2;
-                            if (DotVec3(nrm, (const Vector3 *)&unk_38) > unk_44) {
-                                if (faceDot < -f->unk_10) continue;
+                            if (DotVec3(nrm, (const Vector3 *)&depthDir) > depthDirMinDot) {
+                                if (faceDot < -f->prismThickness)
+                                    continue;
                             } else {
                                 if (faceDot < -0xa0000) continue;
                             }
                         } else {
-                            if (faceDot < -f->unk_10) continue;
+                            if (faceDot < -f->prismThickness)
+                                continue;
                         }
 
                         /* Accepted. The overlap along the face normal is what gets
@@ -725,7 +723,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                            is compared against.
 
                            TODO: the three symmetric edge/vertex branches. They are
-                           gated by this->unk_4c and are ~1100 of the function's
+                           gated by this->edgeContacts and are ~1100 of the function's
                            1778 words. */
                         /* The dispatch picks the edge the centre is furthest
                            outside, then asks -- against BOTH of that edge's
@@ -750,7 +748,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                     feat1:
                         {
                             if (dot1 <= 0) goto face;
-                            if (!unk_4c) continue;
+                            if (!edgeContacts)
+                                continue;
                             if (dot2 > dot3) {
                                 nn = EDGENORMAL_DOT(en1, en2);
                                 d1h = dot1 >> 31;
@@ -768,7 +767,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         }
                     feat2:
                         if (dot2 <= 0) goto face;
-                        if (!unk_4c) continue;
+                        if (!edgeContacts)
+                            continue;
                         if (dot3 > dot1) {
                             nn = EDGENORMAL_DOT(en2, en3);
                             d2h = dot2 >> 31;
@@ -786,7 +786,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
 
                     feat3:
                         if (dot3 <= 0) goto face;
-                        if (!unk_4c) continue;
+                        if (!edgeContacts)
+                            continue;
                         if (dot1 > dot2) {
                             nn = EDGENORMAL_DOT(en3, en1);
                             d3h = dot3 >> 31;
@@ -1080,7 +1081,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
                 idx = (z >> shift) << f->zShift
                     | (y >> shift) << f->yShift;
                 idx |= x >> shift;
-                node = (u32 *)f->unk_0c;
+                node = (u32 *)f->octree;
                 v = node[idx];
                 u16 *leaf;
                 s32 size, mask, cy, cz;
@@ -1228,34 +1229,32 @@ extern "C" KCL_File *func_01ffb0c8(dBgW_Kc *self)
 // @symbol func_01ffb0bc
 extern "C" void func_01ffb0bc(dBgW_Kc *self)
 {
-    self->unk_34 = 1;
+    self->shallowOnly = 1;
 }
 
 // @symbol func_01ffb0b0
 extern "C" void func_01ffb0b0(dBgW_Kc *self)
 {
-    self->unk_34 = 0;
+    self->shallowOnly = 0;
 }
 
 // @symbol func_01ffb0a4
 extern "C" void func_01ffb0a4(dBgW_Kc *self)
 {
-    self->unk_35 = 1;
+    self->depthByDir = 1;
 }
 
 // @symbol func_01ffb098
 extern "C" void func_01ffb098(dBgW_Kc *self)
 {
-    self->unk_35 = 0;
+    self->depthByDir = 0;
 }
 
-/* Copies a Vector3 into 0x38..0x40 -- three separate word loads and stores.
-   Those three fields are declared as scalars (unk_38/unk_3c/unk_40) but behave
-   as one Vector3: SetFile seeds them to (0x1000, 0, 0), the unit X vector. */
+/* Copies the depth direction memberwise: three separate word loads and stores. */
 // @symbol func_01ffb07c
 extern "C" void func_01ffb07c(dBgW_Kc *self, const Vector3 *v)
 {
-    self->unk_38 = v->x;
-    self->unk_3c = v->y;
-    self->unk_40 = v->z;
+    self->depthDir.x = v->x;
+    self->depthDir.y = v->y;
+    self->depthDir.z = v->z;
 }

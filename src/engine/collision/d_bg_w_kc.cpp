@@ -61,7 +61,7 @@ void dBgW_Kc::UpdateFileOffsets(KCL_File &file) {
     file.positions = (s32(*)[3])((char *)&file + (int)file.positions);
     file.normals = (s16(*)[3])((char *)&file + (int)file.normals);
     file.tris = (KCL_Tri *)((char *)&file + (int)file.tris);
-    file.unk_0c = (char *)&file + (int)file.unk_0c;
+    file.octree = (char *)&file + (int)file.octree;
 }
 
 // @symbol _ZN7dBgW_Kc7SetFileEP8KCL_FileR10CLPS_Block
@@ -69,18 +69,18 @@ void dBgW_Kc::SetFile(KCL_File *file, CLPS_Block &clpsBlock) {
     func_02039624(this);
     kclFile = file;
     clps = clpsBlock;
-    unk_28 = 0;
-    unk_2c = 0x1000;
-    unk_30 = 0;
-    unk_34 = 0;
-    unk_35 = 0;
-    unk_38 = 0x1000;
-    unk_3c = 0;
-    unk_40 = 0;
-    unk_44 = -0x1000;
-    unk_48 = 2;
-    unk_4c = 1;
-    unk_4d = 0;
+    upAxis.x = 0;
+    upAxis.y = 0x1000;
+    upAxis.z = 0;
+    shallowOnly = 0;
+    depthByDir = 0;
+    depthDir.x = 0x1000;
+    depthDir.y = 0;
+    depthDir.z = 0;
+    depthDirMinDot = -0x1000;
+    edgeToleranceShift = 2;
+    edgeContacts = 1;
+    tolerantWallEdges = 0;
 }
 
 // @symbol func_020396dc

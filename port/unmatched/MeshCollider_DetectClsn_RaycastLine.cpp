@@ -129,7 +129,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
             rowStep = 0;
             for (x = loX; x <= hiX; x += stepX) {
                 u32 shift = this->kclFile->coordShift;
-                u32 *node = (u32 *)this->kclFile->unk_0c;
+                u32 *node = (u32 *)this->kclFile->octree;
                 s32 v = node[(z >> shift) << this->kclFile->zShift
                            | (y >> shift) << this->kclFile->yShift
                            | (x >> shift)];

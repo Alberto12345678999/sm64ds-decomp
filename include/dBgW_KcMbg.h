@@ -38,8 +38,8 @@ struct dBgW_KcMbg : dBgW_Kc {
     Vector3 pos;               /* 0x118 */
     Vector3 velocity;          /* 0x124 */
     /* Set by func_020398fc. While set, Transform points dBgW_Kc's
-       face filter (unk_34/unk_35/unk_38/unk_44) along the collider's
-       horizontal velocity every frame. SetFile clears it. */
+       depth policy (shallowOnly/depthByDir/depthDir/depthDirMinDot) along the
+       collider's horizontal velocity every frame. SetFile clears it. */
     bool filterByMoveDir; /* 0x130 */
     u8 pad_131[3];
     Matrix4x3 newScaledMat;    /* 0x134 */

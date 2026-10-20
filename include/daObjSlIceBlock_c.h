@@ -73,7 +73,7 @@ struct daObjSlIceBlock_c {
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base.
        The marker's pad stopped short of the object, so the member also takes over
-       unk_170 (+0x4c = the dBgW_Kc base's unk_4c), which the header declared
+       unk_170 (+0x4c = the dBgW_Kc base's edgeContacts), which the header declared
        separately inside it. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
     u8  pad_2ec[0x32];

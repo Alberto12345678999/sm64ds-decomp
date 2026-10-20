@@ -41,7 +41,7 @@
 // the ifs reorders the body). The mangled SetFile call with scalar 0x1000
 // stays (Fix12<int> local grows InitResources and adds .data). The mangled
 // IsClsnInRange (this, 0, 0) stays (no Fix12<int> conversion; Fix12 pair
-// grows Behavior). func_020396c0 / func_020393d4 and the mMeshCollider.unk_48
+// grows Behavior). func_020396c0 / func_020393d4 and the mMeshCollider.edgeToleranceShift
 // / beforeClsnCallback stores stay (dBgW field naming belongs in arm9).
 // Both data_ov035_02111ef0 stores stay (one local shrinks InitResources).
 // unk_326 is written with no reader in this TU. DecIfAbove0_Short,

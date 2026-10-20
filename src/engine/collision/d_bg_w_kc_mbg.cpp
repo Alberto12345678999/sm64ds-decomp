@@ -118,7 +118,7 @@ extern "C" void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_
     scratch.up.x = 0;
     scratch.up.y = 0x1000;
     scratch.up.z = 0;
-    func_02039e18(self, (Vector3 *)&scratch.up, (Vector3 *)&self->unk_28);
+    func_02039e18(self, (Vector3 *)&scratch.up, (Vector3 *)&self->upAxis);
     self->filterByMoveDir = false;
 }
 
@@ -164,14 +164,14 @@ void dBgW_KcMbg::Transform(const Matrix4x3 &mtx, s16 angle) {
     up.x = 0;
     up.y = 0x1000;
     up.z = 0;
-    func_02039e18(this, (Vector3 *)&up, (Vector3 *)&unk_28);
+    func_02039e18(this, (Vector3 *)&up, (Vector3 *)&upAxis);
 
     if (!filterByMoveDir)
         return;
 
-    /* Aim dBgW_Kc's face filter along the horizontal motion: unk_35 on,
-       unk_38 the direction in collider space, unk_44 its threshold. A
-       collider that is not moving sideways sets unk_34 instead. */
+    /* Aim dBgW_Kc's depth policy along the horizontal motion: depthByDir on,
+       depthDir the direction in collider space, depthDirMinDot its threshold.
+       A collider that is not moving sideways sets shallowOnly instead. */
     RawVector3 moveDir;
     GetVelocity(*(Vector3 *)&moveDir);
     moveDir.y = 0;

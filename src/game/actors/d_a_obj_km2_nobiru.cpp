@@ -137,13 +137,13 @@ int daObjKm2_Nobiru_c::InitResources()
 
     /* Leftover: dBgW_KcMbgSclY::SetFile takes Fix12<int> by value, so it stays
      * mangled; the method call makes InitResources differ. func_020396c0 stays
-     * a call because the direct mCollider.unk_48 = 4 store makes
+     * a call because the direct mCollider.edgeToleranceShift = 4 store makes
      * InitResources differ. */
     _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mCollider, (KCL_File *)dBgW_Kc::LoadFile(PoleLift_ClsnFile),
         mColliderTransform, 0x1000, mAngleY, *(CLPS_Block *)data_ov045_021125b0);
     func_020396c0(&mCollider, 4);
-    mCollider.unk_4d = 1;
+    mCollider.tolerantWallEdges = 1;
     mCollider.Enable(this);
     mGrowing = 1;
     return 1;
