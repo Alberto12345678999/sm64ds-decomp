@@ -82,7 +82,8 @@ extern Matrix4x3 data_020a0e68;
  *
  * Leftovers: C linkage and each caller's own scalar spelling of these names
  * are kept (decl_common.h declares three of them and daObjBlockS_c a fourth;
- * their parameter types stay agreeable with those). The ceiling and any-hit
+ * those agree, except decl_common.h's (char *, char *) spelling of
+ * func_ov002_020eee3c, a banked disagreement). The ceiling and any-hit
  * queries on dBgCh_Actr have no member declaration yet and are called by ROM
  * label. The hit record copy is the ROM's field-by-field copy into a local
  * dBgPi-shaped struct; the real dBgPi copy constructor is not what the bytes
