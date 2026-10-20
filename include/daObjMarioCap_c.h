@@ -104,7 +104,7 @@ struct daObjMarioCap_c : dEnemyBase_c {
        and 17 keep the param1 value). 0xff means the cap has no icon:
        Behavior and OnPendingDestroy skip the icon work, and since mDormant is
        only set for caps with an icon, such a cap is never dormant. Otherwise it is handed to dCapIcon_c::func_ov001_020ab228,
-       which keeps it in the icon's unk_19. */
+       which keeps it in the icon's mIconKind. */
     u8  mIconKind;                              /* 0x400 */
     /* Step of the taken state: 1 = waiting for Player::SetNoControlState(0xf)
        to succeed (set for TYPE_START_TAKEN and when the touch finds the player

@@ -20,7 +20,7 @@
  * - func_020393d4 / func_020393c4 / func_020393a4: InitResources stores
  *   dBgW::UpdatePosWithTransform and &func_ov029_02111e60 on mMeshCollider;
  *   Behavior clips at 0x250000; dBgW.h has no setter.
- * - Sound::PlayLong: Behavior recycles unk_324 at mCamSpacePosX. Sound.h
+ * - Sound::PlayLong: Behavior recycles mSoundHandle at mCamSpacePosX. Sound.h
  *   declares it, but including Sound.h renumbers this TU's @NNN temps, which
  *   the manifest pins, so the mangled extern stays.
  * - gWcObj05ModelFile / 02114284 are this TU's BMD/KCL file handles;
@@ -105,14 +105,14 @@ extern "C" int func_ov029_02111e60(void *a, void *b, void *c)
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-/* BeforeClsn helper: if the other actor's actorID (dActor_c+0x0c) is PLAYER
- * (0xbf), arm unk_32a. The unsigned char temporary is load-bearing. */
+/* BeforeClsn helper: if the other actor's actorID is PLAYER (0xbf), arm
+ * mPlayerOnTop. The unsigned char temporary is load-bearing. */
 // @symbol func_ov029_02111e40
 extern "C" void func_ov029_02111e40(char *a, char *b)
 {
-    unsigned char ok = *(unsigned short *)(b + 0xc) == 0xbf;
+    unsigned char ok = ((dActor_c *)b)->actorID == 0xbf;
     if (ok)
-        ((daObjWc_Obj05_c *)a)->unk_32a = 1;
+        ((daObjWc_Obj05_c *)a)->mPlayerOnTop = 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -129,14 +129,14 @@ s32 daObjWc_Obj05_c::InitResources()
         &mMeshCollider, mc, &mClsnMat, 0x1000, mAngleY, data_ov029_0211306c);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&func_ov029_02111e60);
-    unk_32b = 0;
-    unk_32a = unk_32b;
-    unk_328 = 0;
+    mPrevPlayerOnTop = 0;
+    mPlayerOnTop = mPrevPlayerOnTop;
+    mDwellTimer = 0;
     if (param1 & 1)
-        unk_32c = 3;
+        mState = 3;
     else
-        unk_32c = 0;
-    unk_320 = mPosY;
+        mState = 0;
+    mRestPosY = mPosY;
     return 1;
 }
 
@@ -147,50 +147,50 @@ s32 daObjWc_Obj05_c::Behavior()
 {
     func_020393a4((int *)&mMeshCollider, 0x250000);
 
-    switch (unk_32c) {
+    switch (mState) {
     case 0:
-        if (unk_32a != 0) {
-            if (unk_32b == 0) {
-                u8 *p = &unk_32c;
+        if (mPlayerOnTop != 0) {
+            if (mPrevPlayerOnTop == 0) {
+                u8 *p = &mState;
                 *p = *p + 1;
             }
         }
-        unk_32b = unk_32a;
+        mPrevPlayerOnTop = mPlayerOnTop;
         break;
     case 1: {
         s32 *p60 = &mPosY;
         *p60 = *p60 - 0x14000;
-        unk_324 = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-            (unsigned)unk_324, 3, 0x8d, &mCamSpacePosX, 0);
+        mSoundHandle =
+            _ZN5Sound8PlayLongEjjjRK7Vector3s((unsigned)mSoundHandle, 3, 0x8d, &mCamSpacePosX, 0);
         {
-            int v = unk_320 + (int)0xff5d8000;
+            int v = mRestPosY + (int)0xff5d8000;
             if (mPosY <= v) {
                 mPosY = v;
                 {
-                    u8 *p = &unk_32c;
+                    u8 *p = &mState;
                     *p = *p + 1;
                 }
-                unk_328 = 0;
+                mDwellTimer = 0;
             }
         }
         break;
     }
     case 2: {
-        if ((u16)unk_328 >= 0x6e) {
-            int snd = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-                (unsigned)unk_324, 3, 0x8d, &mCamSpacePosX, 0);
-            unk_324 = snd;
+        if ((u16)mDwellTimer >= 0x6e) {
+            int snd = _ZN5Sound8PlayLongEjjjRK7Vector3s((unsigned)mSoundHandle, 3, 0x8d,
+                                                        &mCamSpacePosX, 0);
+            mSoundHandle = snd;
             {
                 s32 *p60 = &mPosY;
                 *p60 = *p60 + 0xa000;
             }
-            if (mPosY >= unk_320) {
-                mPosY = unk_320;
-                unk_32c = 0;
-                unk_328 = 0;
+            if (mPosY >= mRestPosY) {
+                mPosY = mRestPosY;
+                mState = 0;
+                mDwellTimer = 0;
             }
         } else {
-            u16 *p = (u16 *)&unk_328;
+            u16 *p = (u16 *)&mDwellTimer;
             *p = *p + 1;
         }
         break;
@@ -204,7 +204,7 @@ s32 daObjWc_Obj05_c::Behavior()
         UpdateClsnPosAndRot();
     }
     mMeshCollider.Transform(mClsnMat, mAngleY);
-    unk_32a = 0;
+    mPlayerOnTop = 0;
     return 1;
 }
 

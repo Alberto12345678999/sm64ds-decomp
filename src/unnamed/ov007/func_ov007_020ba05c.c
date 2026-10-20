@@ -3,10 +3,7 @@
 /* `dz` is loaded and then subtracted in place; that split is what keeps the two
  * squared distances on the cartridge's sb/sl pair (the whole 9-word residue the
  * earlier drafts carried). */
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef short s16;
+#include "Ov007MenuState.h"
 
 extern char *data_ov007_02104ba0;
 extern char *data_ov007_0210342c;
@@ -41,7 +38,7 @@ int func_ov007_020ba05c(void)
     }
     if (func_ov007_020c1da0(0) == 0) {
         char *r3 = data_ov007_02104ba0;
-        int st = *(s16 *)(*(char **)(r3 + 8));
+        int st = (*(Ov007MenuState **)(r3 + 8))->currentState;
         if (st != 6 && st != 7 && *(int *)(r3 + 0x30) == 0) {
             if (*(u16 *)(r4 + 0xc) != 0) {
                 unsigned int cnt;

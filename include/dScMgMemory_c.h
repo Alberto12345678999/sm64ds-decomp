@@ -41,7 +41,7 @@ struct dMgMemoryCard_c {
     s16 angle;         /* 0x0c */
     u16 animTimer;     /* 0x0e */
     u8 value;          /* 0x10 */
-    u8 unk_11;         /* 0x11 */
+    u8 unk_11;         /* 0x11, write-only: ResetGame zeroes it */
     u8 visible;        /* 0x12 */
     u8 active;         /* 0x13 */
     u8 state;          /* 0x14 */
@@ -57,7 +57,7 @@ struct dMgMemoryPlayer_c {
     s16 angle; /* 0x0c */
     s16 delay; /* 0x0e */
     u8 active; /* 0x10 */
-    u8 unk_11; /* 0x11 */
+    u8 unk_11; /* 0x11, write-only: PlayerDrop sets 1, ResetGame zeroes it */
     u8 state;  /* 0x12 */
     u8 pad_13; /* 0x13 */
 };
@@ -159,7 +159,7 @@ struct dScMgMemory_c : dScMgSingle3DBase_c {
     dMgMemoryCursor_c mCursor;      /* 0x5304 */
     s32 mState;                     /* 0x5314 */
     s32 mSubstate;                  /* 0x5318 */
-    u8 pad_531c[4];                 /* 0x531c */
+    u8 pad_531c[4];                 /* 0x531c, untouched */
     u16 mRoundTimer;                /* 0x5320 */
     u16 mCardTimer;                 /* 0x5322 */
     u16 mResultTimer;               /* 0x5324 */
@@ -171,7 +171,7 @@ struct dScMgMemory_c : dScMgSingle3DBase_c {
     u8 mValueCounts[7];             /* 0x5330 */
     u8 mPairsFound;                 /* 0x5337 */
     u8 mSelectedCount;              /* 0x5338 */
-    u8 unk_5339;                    /* 0x5339 */
+    u8 unk_5339;                    /* 0x5339, write-only: ResetGame zeroes it */
     u8 mMisses;                     /* 0x533a */
     u8 mMaxMisses;                  /* 0x533b */
     u8 mDifficulty;                 /* 0x533c */

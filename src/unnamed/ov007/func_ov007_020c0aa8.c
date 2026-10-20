@@ -1,5 +1,6 @@
 extern int* func_ov007_020c3df4(int,int);
 extern void func_ov007_020c0a44(int*);
+/* The 0x38-byte record func_ov007_020c0a44 resets; no class or header names it, so raw. */
 int* func_ov007_020c0aa8(int a, int b, int c, short d, unsigned short e){
   int* o = func_ov007_020c3df4(0,0x38);
   func_ov007_020c0a44(o);

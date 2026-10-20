@@ -195,7 +195,7 @@ struct dActor_c * dCapEnemy_c::RespawnIfHasCap()
     if (!r) return r;
     ((dCapEnemy_c *)r)->mIsDormant = 1;
     *(int *)((char *)r + 0xf4) = r->mFlags;
-    ((dEnemyBase_c *)r)->unk_108 = 0;
+    ((dEnemyBase_c *)r)->mCoinType = 0;
     {
         r->mFlags &= ~1;
         r->mFlags &= ~0x10000000;

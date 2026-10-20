@@ -28,8 +28,8 @@
  *   `nodeList` view of this+0x24: spelling those stores as members re-bases
  *   them on `this` and diffs (two words for the list pair, five with all
  *   four).
- * - The AllocateForwards/AllocateBackwards NodeList overlay stays: its `flag`
- *   is mFlags2 and its head/tail are mFirstNode/mLastNode, but both searches
+ * - The AllocateForwards/AllocateBackwards NodeList overlay stays: it spells
+ *   the header's mFirstNode..mFlags2 from this+0x24, but both searches
  *   also pass `c` onward to AllocateNode as the list sentinel -- one object
  *   serving both views. Splitting the access changed the emitted code.
  * - AllocateNode reads the allocator's mFlags through `c[-1]` -- the flag word
@@ -59,14 +59,16 @@ extern "C" ExpandingHeapAllocator *_ZN22ExpandingHeapAllocatorC1EPvj(
     ExpandingHeapAllocator *self, void *heapEnd, u32 flags);
 extern "C" void _ZN10MemoryNode6TargetC1EPS_(MemoryNode::Target *t, MemoryNode *node);
 
-/* The free list sentinel: the allocator's node bookkeeping at this+0x24,
- * viewed as {head, tail, pad, flag}. `flag` is the search-policy bit the two
- * fit searches read; it is the same word the header calls mFlags2. */
+/* The free list sentinel: a view of the allocator's node bookkeeping from
+ * this+0x24, with the header's member names. mFlags2 bit 0 is the
+ * search-policy bit the two fit searches read. */
 struct NodeList {
-    MemoryNode *head;
-    MemoryNode *tail;
-    unsigned char pad[0xa];
-    unsigned short flag;
+    MemoryNode *mFirstNode;     /* this+0x24 */
+    MemoryNode *mLastNode;      /* this+0x28 */
+    MemoryNode *mUsedFirstNode; /* this+0x2c */
+    MemoryNode *mUsedLastNode;  /* this+0x30 */
+    unsigned short mNodeID;     /* this+0x34 */
+    unsigned short mFlags2;     /* this+0x36 */
 };
 
 /* UnlinkNode's recovered node view -- field order only, names are offsets. */
@@ -85,9 +87,7 @@ static inline MemoryNode **GetList(void *t) {
 // @symbol _ZN10MemoryNode6TargetC1EPS_
 MemoryNode::Target::Target(MemoryNode *node)
     : start((char *)node - (u16)((node->flags >> 8) & 0x7f)),
-      end((char *)(node->size + (u32)((char *)node + 0x10)))
-{
-}
+      end((char *)(node->size + (u32)(node + 1))) {}
 
 // @symbol _ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_
 /* Doubly-linked-list removal writing head/tail (c[0], c[1]) directly when the
@@ -231,12 +231,12 @@ void *ExpandingHeapAllocator::AllocateNode(MemoryNode *c, MemoryNode *node,
     int t0e = (int)t0.end;
     *flagsPtr &= ~0x7f00;
     *flagsPtr |= (((unsigned short)((int)allocNode - t0e)) & 0x7f) << 8;
-    unsigned int cRaw = *(unsigned short *)((char *)c + 0x10);
+    unsigned int cRaw = ((NodeList *)c)->mNodeID;
     unsigned int cValue = cRaw & 0xff;
     *flagsPtr &= ~0xff;
     *flagsPtr |= cValue;
 
-    void *usedTail = (void *)(*(int *)((char *)c + 0xc));
+    void *usedTail = ((NodeList *)c)->mUsedLastNode;
     LinkNode((MemoryNode *)usedList, (MemoryNode *)allocNode, (MemoryNode *)usedTail);
 
     return target;
@@ -250,16 +250,16 @@ void *ExpandingHeapAllocator::AllocateNode(MemoryNode *c, MemoryNode *node,
 void *ExpandingHeapAllocator::AllocateForwards(u32 size, u32 align)
 {
     NodeList *c = (NodeList *)&mFirstNode;
-    unsigned short flag = c->flag;
+    unsigned short flag = c->mFlags2;
     int firstFit = ((unsigned short)(flag & 1) == 0);
     MemoryNode *best = 0;
-    MemoryNode *node = c->head;
+    MemoryNode *node = c->mFirstNode;
     unsigned int bestSize = 0xFFFFFFFF;
     void *bestTarget = 0;
     if (node != 0) {
         unsigned int mask = align - 1;
         do {
-            char *data = (char *)node + 0x10;
+            char *data = (char *)(node + 1);
             char *aligned = (char *)((mask + (unsigned int)data) & ~mask);
             unsigned int pad = (unsigned int)(aligned - data);
             unsigned int nsize = node->size;
@@ -284,16 +284,16 @@ void *ExpandingHeapAllocator::AllocateForwards(u32 size, u32 align)
 void *ExpandingHeapAllocator::AllocateBackwards(u32 size, u32 align)
 {
     NodeList *c = (NodeList *)&mFirstNode;
-    unsigned short flag = c->flag;
+    unsigned short flag = c->mFlags2;
     int firstFit = ((unsigned short)(flag & 1) == 0);
     MemoryNode *best = 0;
-    MemoryNode *node = c->tail;
+    MemoryNode *node = c->mLastNode;
     unsigned int bestSize = 0xFFFFFFFF;
     void *bestTarget = 0;
     if (node != 0) {
         unsigned int mask = align - 1;
         do {
-            char *data = (char *)node + 0x10;
+            char *data = (char *)(node + 1);
             unsigned int nsize = node->size;
             unsigned int t = nsize + (unsigned int)data - size;
             char *aligned = (char *)(~mask & t);
@@ -562,7 +562,7 @@ void *ExpandingHeapAllocator::DeallocateAll(DeallocationFunction fn, u32 ctx)
     if (!node) return node;
     do {
         MemoryNode *next = node->next;
-        fn((char *)node + 0x10, this, ctx);
+        fn((char *)(node + 1), this, ctx);
         node = next;
     } while (node);
     return node;

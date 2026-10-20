@@ -21,8 +21,8 @@
  * they are all < 0x450, inside dPathLiftActor_c's own storage. This class's
  * methods reach them as inherited members.
  *
- * unk_478 is the drop-shadow matrix func_ov100_02146e70 fills and hands to
- * dActor_c::DropShadowScaleXYZ; 0x478 + 0x30 = 0x4a8. Kept as raw storage:
+ * mShadowMat is the drop-shadow matrix func_ov100_02146e70 fills and hands
+ * to dActor_c::DropShadowScaleXYZ; 0x478 + 0x30 = 0x4a8. Kept as s32[12]:
  * a Matrix4x3 member (Vector3 translation) is non-trivial and changes the
  * factory.
  */
@@ -39,7 +39,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 struct daObjPathLift_c : dPathLiftActor_c {
     dExtShadowModel_c mShadowModel; /* 0x450 */
-    u8          unk_478[0x30]; /* 0x478 */
+    s32 mShadowMat[12];             /* 0x478 -- [9..11] the translation, pos >> 3 */
     u32         mSoundHandle; /* 0x4a8 */
     s32         mGroundY;     /* 0x4ac */
     u8          mTimer;       /* 0x4b0 */

@@ -140,16 +140,16 @@ extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
     }
     if (player->mIsMetal != 0) {
         /* Deflected: mPrevAngleY (which Behavior copies into mAngleY)
-           swings half a turn, so only the facing flips. unk_0a4 and unk_0ac
+           swings half a turn, so only the facing flips. mSpeedX and mSpeedZ
            are the x and z of the velocity UpdatePosWithOnlySpeed adds, so
            zeroing them stops the horizontal motion; the vertical speed
            becomes 0x1e000 up with -0x4000 acceleration. */
         self->mDeflected = 1;
         Sound::Play(0, 0xa5, self->mCamSpacePos);
         self->mPrevAngleY -= 0x8000;
-        self->unk_0a4 = 0;
+        self->mSpeedX = 0;
         self->mVertSpeed = 0x1e000;
-        self->unk_0ac = 0;
+        self->mSpeedZ = 0;
         self->mVertAccel = -0x4000;
         return;
     }
@@ -246,16 +246,16 @@ int daPropeller_Heyho_Fire_c::Behavior()
         (this->*(h->mMain))();
     }
     {
-        /* Gravity, clamped at terminal velocity. unk_0ac is read and written
+        /* Gravity, clamped at terminal velocity. mSpeedZ is read and written
            back unchanged -- the ROM really does reload and restore it here. */
         int speed = mVertSpeed;
         int accel = mVertAccel;
         int limit = mTerminalVelocity;
-        int keep = unk_0ac;
+        int keep = mSpeedZ;
         int next = speed + accel;
         if (next >= limit) limit = next;
         mVertSpeed = limit;
-        unk_0ac = keep;
+        mSpeedZ = keep;
         UpdatePosWithOnlySpeed(&mdCcAc_c);
     }
     UpdateWMClsn(mWithMeshClsn, 0);

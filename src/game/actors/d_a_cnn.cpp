@@ -316,9 +316,9 @@ void daCnn_c::func_ov098_0213ade8()
             sinCos = table;
             speed = launchSpeed;
             ball = spawned;
-            ball->unk_0a4 = 0;
+            ball->mSpeedX = 0;
             ball->mVertSpeed = sine * launchSpeed;
-            ball->unk_0ac = 0;
+            ball->mSpeedZ = 0;
         }
 
         elevation = (s16)(0x4000 - mPrevAngleX);
@@ -337,7 +337,7 @@ void daCnn_c::func_ov098_0213ade8()
         /* The muzzle is two frames of the ball's travel out from the spawn
            point. */
         {
-            int *vp = (int *)(int)&ball->unk_0a4;
+            int *vp = (int *)(int)&ball->mSpeedX;
             int vx = *vp;
             int px = pos.x;
             vel[0] = vx;

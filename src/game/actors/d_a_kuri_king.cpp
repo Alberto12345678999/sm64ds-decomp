@@ -50,14 +50,12 @@
  *   cast call whose third argument survives in the emitted code; and
  *   func_ov074_0212007c/021201ec/021203e0 are (void) stubs whose data records
  *   don't carry `this`. Those six stay free.
- * - The matrix at actor+0x37c stays a cast; a Matrix4x3 member there would
- *   run ~Vector3 from ~daKuriKing_c.
+ * - mBodyMatrix is raw s32 words reached through a Matrix4x3 cast; a
+ *   Matrix4x3 member there would run ~Vector3 from ~daKuriKing_c.
+ *   mShadowMatrices is left untyped with it [GUESS: same ~Vector3 cost].
  * - State dispatch stays a pointer-to-member on a non-virtual stand-in:
  *   daKuriKing_c has virtuals, so its own member pointers are wider than the
  *   8-byte records the sinit copies in.
- * - pad_2ec holds the three drop-shadow matrices and the body matrix (+0x37c)
- *   and is reached by cast. The body matrix's reason is the item above; the
- *   drop-shadow matrices are left untyped with it [GUESS: same ~Vector3 cost].
  * - The remaining mangled calls that carry Fix12<int> (Particle::System::
  *   NewSimple, Player::Hurt, ModelAnim::SetAnim, the SetFile/Init family,
  *   Earthquake, DropShadowRadHeight, cstd::atan2, Sound::ChangeMusicVolume)
@@ -336,9 +334,9 @@ void daKuriKing_c::func_ov074_0211f244()
             int rv = (unsigned int)RandomIntInternal(&data_0209e650) >> 8;
             t->mTimer = 0x30;
             t->mHorzSpeed = ((rv & 0xf) << 0xc) + 0x16000;
-            t->unk_0a4 = 0;
+            t->mSpeedX = 0;
             t->mVertSpeed = ((rv & 0x1f) << 0xc) + 0x60000;
-            t->unk_0ac = 0;
+            t->mSpeedZ = 0;
             Vector3_16 pos = t->mPrevAngle;
             rv &= 0x1000;
             pos.y = (short)(pos.y + rv);
@@ -1349,35 +1347,35 @@ void daKuriKing_c::func_ov074_02120d74() {
 
 // @symbol func_ov074_02121270
 /* World position of model bone `bone`: that bone's transform composed with
- * the body matrix at +0x37c, translation row out, shifted back up from model
+ * mBodyMatrix, translation row out, shifted back up from model
  * space (<< 3). */
-extern "C" void func_ov074_02121270(Vector3* out, daKuriKing_c* self, int bone){
-  Vector3* v = out;
-  Matrix4x3* boneMat;
-  v->x = 0;
-  v->y = 0;
-  v->z = 0;
-  data_020a0e68 = *(struct Matrix4x3*)((char*)self + 0x37c);
-  boneMat = (Matrix4x3*)self->mModelAnim.data.transforms + bone;
-  MulMat4x3Mat4x3(boneMat, &data_020a0e68, &data_020a0e68);
-  v->x = data_020a0e68.m[9];
-  v->y = data_020a0e68.m[10];
-  v->z = data_020a0e68.m[11];
-  Vec3_LslInPlace(v, 3);
+extern "C" void func_ov074_02121270(Vector3 *out, daKuriKing_c *self, int bone) {
+    Vector3 *v = out;
+    Matrix4x3 *boneMat;
+    v->x = 0;
+    v->y = 0;
+    v->z = 0;
+    data_020a0e68 = *(struct Matrix4x3 *)self->mBodyMatrix;
+    boneMat = (Matrix4x3 *)self->mModelAnim.data.transforms + bone;
+    MulMat4x3Mat4x3(boneMat, &data_020a0e68, &data_020a0e68);
+    v->x = data_020a0e68.m[9];
+    v->y = data_020a0e68.m[10];
+    v->z = data_020a0e68.m[11];
+    Vec3_LslInPlace(v, 3);
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02121300Ev
 
-extern "C" void Matrix4x3_ApplyInPlaceToRotationY(void* m, short a);
-extern "C" void Matrix4x3_ApplyInPlaceToScale(void* m, int x, int y, int z);
+extern "C" void Matrix4x3_ApplyInPlaceToRotationY(void *m, short a);
+extern "C" void Matrix4x3_ApplyInPlaceToScale(void *m, int x, int y, int z);
 extern "C" struct Matrix4x3 data_020a0e68;
-void daKuriKing_c::func_ov074_02121300(){
-  struct Vector3 v;
-  Vec3_Asr(&v, &this->mPos, 3);
-  Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-  Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
-  Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, this->mScaleX, this->mScaleY, this->mScaleZ);
-  *(struct Matrix4x3*)((char*)this + 0x37c) = data_020a0e68;
+void daKuriKing_c::func_ov074_02121300() {
+    struct Vector3 v;
+    Vec3_Asr(&v, &this->mPos, 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
+    Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, this->mScaleX, this->mScaleY, this->mScaleZ);
+    *(struct Matrix4x3 *)this->mBodyMatrix = data_020a0e68;
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02121380Ev
@@ -1409,18 +1407,19 @@ void daKuriKing_c::func_ov074_02121380() {
     yoff[0] = FX_MUL(this->mScaleY, 0x14000);
     rad[0] = FX_MUL(this->mScaleX, 0xb4000);
     hgt[0] = FX_MUL(this->mScaleY, 0x104000);
-    /* q walks mCylClsnPos[i] (+0x3ac) with the member offset left in each
-     * load, the same walk func_ov074_02121800 keeps. */
+    /* q is this shifted by i mCylClsnPos entries, read back through the
+     * class so each load keeps the member offset -- the same walk
+     * func_ov074_02121800 keeps. */
     q = (char*)this;
     for (i = 0; i < 3; i++) {
         int ax, ay, az;
         func_ov074_02121270(&v[2], this, bone.v[i]);
-        *(int*)(q + 0x3ac) = v[2].x;
-        *(int*)(q + 0x3b0) = v[2].y;
-        *(int*)(q + 0x3b4) = v[2].z;
-        ax = *(int*)(q + 0x3ac);
-        az = *(int*)(q + 0x3b4);
-        ay = *(int*)(q + 0x3b0) + yoff[i];
+        ((daKuriKing_c *)q)->mCylClsnPos[0].x = v[2].x;
+        ((daKuriKing_c *)q)->mCylClsnPos[0].y = v[2].y;
+        ((daKuriKing_c *)q)->mCylClsnPos[0].z = v[2].z;
+        ax = ((daKuriKing_c *)q)->mCylClsnPos[0].x;
+        az = ((daKuriKing_c *)q)->mCylClsnPos[0].z;
+        ay = ((daKuriKing_c *)q)->mCylClsnPos[0].y + yoff[i];
         this->mdCc_cs[i + 1].radius = rad[i];
         this->mdCc_cs[i + 1].height = hgt[i];
         this->mdCc_cs[i + 1].pos.x = ax;
@@ -1502,14 +1501,14 @@ void daKuriKing_c::func_ov074_02121800()
     if (this->mNoShadow != 0)
         return;
 
-    /* pad_2ec holds the three shadow matrices (0x2ec + 0x30 * i); the
-     * translation row is +0x24. self and src walk the matrices and
-     * mCylClsnPos with the member offset left in each load: typed
-     * pointers or indexing re-base them and the loop changes. */
+    /* self and src are this shifted by i shadow matrices (0x30) and i
+     * mCylClsnPos entries (0xc), read back through the class so each load
+     * keeps the member offset: typed pointers or indexing re-base them and
+     * the loop changes. Words 9..11 are a matrix's translation row. */
     mtx = IDENTITY_MATRIX4X3;
     self = (char *)this;
     src = (char *)this;
-    m = (char *)pad_2ec;
+    m = (char *)mShadowMatrices;
     shadow = mShadowModels;
     for (i = 0; i < 3; i++) {
         height = this->mPosY - this->mSpawnPosY;
@@ -1519,15 +1518,17 @@ void daKuriKing_c::func_ov074_02121800()
         if (rad < 0xa000)
             rad = 0xa000;
         radius = rad;
-        *(Matrix4x3 *)(self + 0x2ec) = mtx;
-        *(int *)(self + 0x310) = *(int *)(src + 0x3ac) >> 3;
+        *(Matrix4x3 *)((daKuriKing_c *)self)->mShadowMatrices[0] = mtx;
+        ((daKuriKing_c *)self)->mShadowMatrices[0][9] =
+            ((daKuriKing_c *)src)->mCylClsnPos[0].x >> 3;
         posY = this->mPosY;
         /* Both arms are the same; the select is never needed for codegen,
            but its compiler temporaries keep the @2113.. pins (dropping it
            renumbers by 4). */
-        *(int *)(self + 0x314) = (radius ? posY : posY) >> 3;
+        ((daKuriKing_c *)self)->mShadowMatrices[0][10] = (radius ? posY : posY) >> 3;
         height += 0x28000;
-        *(int *)(self + 0x318) = *(int *)(src + 0x3b4) >> 3;
+        ((daKuriKing_c *)self)->mShadowMatrices[0][11] =
+            ((daKuriKing_c *)src)->mCylClsnPos[0].z >> 3;
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, shadow, m, radius, height, 0xf);
         self += 0x30;
@@ -1939,15 +1940,15 @@ int daKuriKing_c::func_ov074_021223bc()
         this->mAngleX += 0x1800;
     }
 
-    /* One drop shadow, through the first shadow matrix in pad_2ec. */
-    *(Matrix4x3 *)pad_2ec = IDENTITY_MATRIX4X3;
+    /* One drop shadow, through the first shadow matrix. */
+    *(Matrix4x3 *)mShadowMatrices[0] = IDENTITY_MATRIX4X3;
 
-    ((Matrix4x3 *)pad_2ec)->m[9] = this->mPosX >> 3;
-    ((Matrix4x3 *)pad_2ec)->m[10] = this->mPosY >> 3;
-    ((Matrix4x3 *)pad_2ec)->m[11] = this->mPosZ >> 3;
+    mShadowMatrices[0][9] = this->mPosX >> 3;
+    mShadowMatrices[0][10] = this->mPosY >> 3;
+    mShadowMatrices[0][11] = this->mPosZ >> 3;
 
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &this->mShadowModels[0], pad_2ec, 0x8c000, 0x3e8000, 0xf);
+        this, &this->mShadowModels[0], mShadowMatrices[0], 0x8c000, 0x3e8000, 0xf);
 
     return 1;
 }
