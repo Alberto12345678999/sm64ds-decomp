@@ -1785,6 +1785,7 @@ void dScMgPanel_c::Scene_StateResult() {
         u8 *flags;
         off = 0x4ec0;
         tp = (u16 *)(int)((long long)(int)(scene + off) & 0xFFFFFFFFFFFFFFFFLL);
+        /* flags[0xfe6] is mSolved; the member spelling moves this code. */
         flags = (u8 *)(scene + 0x4000);
         *tp = *tp - 1;
         if (flags[0xfe6] == 0) {
