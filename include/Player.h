@@ -285,7 +285,7 @@ struct Player : dActor_c {
        probe stores clsnY when the hit's CLPS has the toxic bit (0x02000000).
        More than 0x64000 below it, func_ov002_020c133c hurts the player and
        St_Wait_Init plays anim 5. */
-    s32 mToxicSurfaceY;     /* 0x650 */
+    s32 mToxicSurfaceY; /* 0x650 */
     /* Yoshi's tongue against walls. func_ov002_020d6dac, run by the tongue
        grab func_ov002_020d6998 (mHatCharacter 3), casts a dBgCh_Lin between
        two bones of mHeadModels[3] and stores func_02053274's distance from
