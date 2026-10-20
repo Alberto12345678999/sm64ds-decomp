@@ -49,9 +49,17 @@
 struct daKuriKing_c : dEnemyBase_c {
     dCcAcPos_c mdCc_cs[4];  /* 0x110 */
     ModelAnim mModelAnim;                         /* 0x210 */
-    dExtShadowModel_c mShadowModels[3];                 /* 0x274 */
-    u8  pad_2ec[0xc0];
-    Vector3 mCylClsnPos[3];                           /* 0x3ac */
+    dExtShadowModel_c mShadowModels[3];           /* 0x274 */
+    /* One drop-shadow matrix per foot. func_ov074_02121800 sets each to the
+       identity with that foot's mCylClsnPos x/z and mPosY (>> 3) as translation
+       and hands it to DropShadowRadHeight; func_ov074_021223bc uses [0] alone.
+       Raw words rather than Matrix4x3: see d_a_kuri_king.cpp's deslop notes. */
+    s32 mShadowMatrices[3][12]; /* 0x2ec */
+    /* Body transform. func_ov074_02121300 builds it from mPos >> 3, mAngleY and
+       mScale; func_ov074_02121270 composes a bone's transform with it to get
+       that bone's world position. */
+    s32 mBodyMatrix[12];                          /* 0x37c */
+    Vector3 mCylClsnPos[3];                       /* 0x3ac */
     MaterialChanger mMaterialChanger;             /* 0x3d0 */
     TextureSequence mTextureSequence;             /* 0x3e4 */
     TextureTransformer mTextureTransformer;       /* 0x3f8 */
@@ -195,9 +203,11 @@ struct daKuriKing_c {
     s32 mHorzSpeed;              /* 0x098 */
     s32 mVertAccel;              /* 0x09c -- dActor_c's; InitResources sets -0xa000 */
     s32 mTerminalVelocity;       /* 0x0a0 -- dActor_c's; InitResources sets -0x3c000 */
-    u8  pad_0a4[0x16c];
-    ModelAnim mModelAnim;     /* 0x210 */
-    u8  pad_274[0x138];
+    u8 pad_0a4[0x16c];
+    ModelAnim mModelAnim; /* 0x210 */
+    u8 pad_274[0x78];
+    s32 mShadowMatrices[3][12]; /* 0x2ec */
+    s32 mBodyMatrix[12];        /* 0x37c */
     /* The C++ branch's Vector3 mCylClsnPos[3], flat -- the six scalars that used
        to sit here as unk_3b8..unk_3cc were elements 1 and 2 of it. */
     s32 mCylClsnPos[9];              /* 0x3ac */
