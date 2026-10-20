@@ -1,12 +1,12 @@
 //cpp
 /* daMky_c -- Tall Tall Mountain Ukiki (UKIKI_THIEF 0x10b, UKIKI_STAR 0x10c).
  *
- * ov030 0x02115b78 is the bytes 7daMky_c. The star monkey's talk
- * (func_ov030_02112578) finds UKIKI_CAGE (0x67) and shoves it.
- * defer_codegen off lays the file down in ROM order, so the
- * destructor emits D1 then D0 (0x02111688, 0x021116d0). D2 has no
- * ROM home. The destructor is the key function. The two factories
- * (historical aliases UkikiStar_Spawn and UkikiThief_Spawn) are last.
+ * Key function ~daMky_c (out-of-line): D1 0x02111688, D0 0x021116d0;
+ * D2 has no ROM home (deadstripped). defer_codegen off keeps ROM order.
+ * Factories daMky_c_classInit_MONKEY_STAR/_THIEF last
+ * (historical aliases UkikiStar_Spawn, UkikiThief_Spawn).
+ * The func_ov030_* helpers are daMky_c methods (S33); symbols.txt
+ * carries the mangled spellings.
  *
  * leftovers:
  * - The func_ov030_* methods keep their address names. Of the 22
@@ -34,6 +34,9 @@
  * - data_ov030_* handles stay address labels. decl_common.h types
  *   four of them as void*[] where this file's blocks say int[].
  *   g_profile is not this TU's data.
+ * - func_ov030_02112578 keeps `*(s32 *)((u8 *)v + N)` stores (byte-equal
+ *   to v[N] indexing; left because the linkcheck baseline needed to
+ *   verify it is unavailable on this worker).
  */
 #pragma defer_codegen off
 

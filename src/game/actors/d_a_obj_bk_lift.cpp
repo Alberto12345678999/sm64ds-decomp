@@ -1,25 +1,14 @@
 //cpp
-/**
- * Whomp's Fortress tower lift (registry profile BK_LIFT01).
+/* daObjBk_Lift_c -- Whomp's Fortress tower lift (BK_LIFT01).
  *
- * A stepping platform on the tower. `param1 & 0xff` picks the behaviour:
- * kind 1 flips yaw by a half turn every 0x87 frames, kind 2 rides between
- * mMinPosY and mMaxPosY and keeps a looping sound alive while it moves,
- * and anything else only refreshes the collider. The class carries its
- * own cuboid dExtShadowModel_c, and func_ov015_021123c8 is the helper that
- * re-aims it every frame.
+ * param1 & 0xff picks the behaviour: kind 1 flips yaw every 0x87 frames,
+ * kind 2 rides between mMinPosY/mMaxPosY with a looping sound, anything
+ * else only refreshes the collider. func_ov015_021123c8 re-aims the
+ * cuboid shadow every frame.
  *
- * The class's .text, its .init/.ctor pair and the two resource handles'
- * .bss are owned here. ov015 delinks no .data for this class, so the
- * _ZTV / _ZTI / _ZTS group it names is compiler-only output, compared
- * against the cartridge's own copies at ov015 0x02114650 / 0x0211460c /
- * 0x02114618.
- *
- * SOURCE ORDER IS REVERSE ROM ORDER. mwccarm 2004/b56 emits .text back to
- * front under this tree's flags, so the factory is written first and Kill()
- * last; the destructor pair comes off the in-class `~daObjBk_Lift_c() {}` in
- * include/daObjBk_Lift_c.h and lands ahead of everything, D1 then D0, which
- * is the order the cartridge has (0x02112290, then 0x021122dc).
+ * Key function ~daObjBk_Lift_c (inline in daObjBk_Lift_c.h): D1 0x02112290,
+ * D0 0x021122dc. Source order is reverse ROM order (2004/b56 emits .text
+ * back to front); factory first, Kill() last.
  *
  * leftovers:
  * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange, dActor_c::UpdatePos,
