@@ -6665,3 +6665,5 @@ ov004	0x020adeb0	_ZN3Ent11UpdateDriftEv	_ZN4MgFx11UpdateDriftEv	class renamed fr
 ov075	0x0211944c	func_ov075_0211944c	_ZN10dScEntry_c15EnterPlayerSyncEv	inferred dScEntry_c member from the player synchronization step PMFs and waiting UI; original spelling not preserved; bytes unchanged
 ov075	0x021192bc	func_ov075_021192bc	_ZN10dScEntry_c16UpdatePlayerSyncEv	inferred dScEntry_c member from the player synchronization step PMFs and waiting UI; original spelling not preserved; bytes unchanged
 ov075	0x021194e4	func_ov075_021194e4	_ZN10dScEntry_c17RenderWaitingTextEv	inferred dScEntry_c member from the player synchronization step PMFs and waiting UI; original spelling not preserved; bytes unchanged
+ov075	0x021190a4	func_ov075_021190a4	_ZN10dScEntry_c23UpdatePlayerSelectIntroEv	inferred dScEntry_c player-selection intro callback from step PMFs, screen assets and readiness barrier; original spelling not preserved; bytes unchanged
+ov075	0x0211919c	func_ov075_0211919c	_ZN10dScEntry_c22EnterPlayerSelectIntroEv	inferred dScEntry_c player-selection intro callback from step PMFs, screen assets and readiness barrier; original spelling not preserved; bytes unchanged

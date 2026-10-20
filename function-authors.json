@@ -40039,11 +40039,11 @@
     },
     "ov075:0x021190a4": {
       "author": "lunavyqo",
-      "name": "func_ov075_021190a4"
+      "name": "_ZN10dScEntry_c23UpdatePlayerSelectIntroEv"
     },
     "ov075:0x0211919c": {
       "author": "tangosdev",
-      "name": "func_ov075_0211919c"
+      "name": "_ZN10dScEntry_c22EnterPlayerSelectIntroEv"
     },
     "ov075:0x021192bc": {
       "author": "tangosdev",
