@@ -1,4 +1,5 @@
 #include "types.h"
+#include "WmWork.h"
 #pragma opt_strength_reduction off
 extern u32 _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(u32 prev);
@@ -26,7 +27,7 @@ int func_02068ae8(int param0)
 
     saved = _ZN3IRQ7DisableEv();
 
-    *(u16 *)(data_020a9db4 + 0x1300 + 0x30) = param0;
+    WM_WORK->parentParam.channel = param0;
 
     cb = *(u32 *)(data_020a9db8 + 0x1000 + 0x4e4);
 
@@ -35,9 +36,9 @@ int func_02068ae8(int param0)
 
     func_020672a4(cb);
 
-    *(int *)(data_020a9db8 + 0x1000 + 0x318) = *(u16 *)(data_020a9db4 + 0x1400) - 6;
-    *(int *)(data_020a9db8 + 0x1000 + 0x31c) = *(u16 *)(data_020a9db4 + 0x1400 + 2) - 2;
-    *(int *)(data_020a9db8 + 0x1000 + 0x320) = 30 / (*(u16 *)(data_020a9db4 + 0x1400 + 2) - 2);
+    *(int *)(data_020a9db8 + 0x1000 + 0x318) = WM_WORK->parentMaxSize - 6;
+    *(int *)(data_020a9db8 + 0x1000 + 0x31c) = WM_WORK->childMaxSize - 2;
+    *(int *)(data_020a9db8 + 0x1000 + 0x320) = 30 / (WM_WORK->childMaxSize - 2);
 
     for (i = 0; i < 0xf; i++) {
         *(int *)(data_020a9db8 + 0x1000 + 0x4e8 + i * 4) = 0;
@@ -50,17 +51,15 @@ int func_02068ae8(int param0)
 
     func_0205a588(data_020a9db8 + 0x1754, 0, 0x1e);
 
-    *(u16 *)(data_020a9db4 + 0x1e00 + 0x24) = 1;
-    *(void (**)(int, void *))(data_020a9db4 + 0x1000 + 0xe1c) = (void (*)(int, void *))func_02066a94;
-    *(void (**)(char *))(data_020a9db4 + 0x1000 + 0x40c) = func_02069994;
+    WM_WORK->mode = 1;
+    WM_WORK->userCallback = (void (*)(int, void *))func_02066a94;
+    WM_WORK->stateCallback = func_02069994;
 
-    *(u16 *)(data_020a9db4 + 0x1300 + 0x32) = *(u16 *)(data_020a9db4 + 0x1400);
-    *(u16 *)(data_020a9db4 + 0x1e00 + 0x18) =
-        (*(u16 *)(data_020a9db4 + 0x1300 + 0x32) + 0x23) & ~0x1f;
+    WM_WORK->parentParam.parentMaxSize = WM_WORK->parentMaxSize;
+    WM_WORK->sendBufSize = (WM_WORK->parentParam.parentMaxSize + 0x23) & ~0x1f;
 
-    *(u16 *)(data_020a9db4 + 0x1300 + 0x34) = *(u16 *)(data_020a9db4 + 0x1400 + 2);
-    *(u16 *)(data_020a9db4 + 0x1e00 + 0x1a) =
-        (((*(u16 *)(data_020a9db4 + 0x1300 + 0x34) + 0xe) * 0xf + 0x29) & ~0x1f) << 1;
+    WM_WORK->parentParam.childMaxSize = WM_WORK->childMaxSize;
+    WM_WORK->recvBufSize = (((WM_WORK->parentParam.childMaxSize + 0xe) * 0xf + 0x29) & ~0x1f) << 1;
 
     func_020684a8();
     result = func_02068d08();

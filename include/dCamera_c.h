@@ -6,6 +6,7 @@
 #include "dView_c.h"
 
 struct dActor_c;
+struct CamMode;
 
 struct dCamera_c : dView_c {
     /* Nested, and only ever needed as a pointer -- dCamera_c::ChangeState is
@@ -97,13 +98,14 @@ struct dCamera_c : dView_c {
        (func_0200cb58 stores table + N * 0x28). Its +0x10/+0x14/+0x20 are the
        distances func_0200cce4 places lookAt and pos by, +0x24 the field-of-view
        angle func_0200ca50 eases mFovAngle toward, and +0x26 a flag halfword.
-       func_02009e70 calls the record CamMode. */
-    s32 mMode; /* 0x13c */
+       The record is CamMode, defined in d_camera.cpp (func_02009e70 has its
+       own view of it); consumers that never read it see only the tag. */
+    struct CamMode *mMode; /* 0x13c */
     /* The mode record func_0200c66c last chose from the floor's camera
        behaviour and view object (it skips data_02087094); func_0200cf40 seeds
        it with entry 10. Behavior clears mFlags 0x60 unless it is
        data_0208733c, and func_0200d0ac tests its +0x26 bit 0. */
-    void *mAreaMode; /* 0x140 */
+    struct CamMode *mAreaMode; /* 0x140 */
     /* The view object func_0200c66c last chose (GetViewObj's record).
        func_0200bb28 re-reads the base angle only when the object differs. */
     void *mViewObj; /* 0x144 */

@@ -110,7 +110,7 @@ struct CameraView {
     s32 mFocusDist;         /* 0x12c */
     s32 mFocusBlend;        /* 0x130 */
     u8 pad_134[0x8];
-    struct CamMode *mState_13c; /* 0x13c */
+    struct CamMode *mMode; /* 0x13c */
     u8 pad_140[0x14];
     u32 mFlags;     /* 0x154 */
     s32 mTurnSound; /* 0x158 */
@@ -216,7 +216,7 @@ s32 func_02009e70(char *self)
     if (cam->mTargetPlayer == 0) {
         cam->mAngleY = Vec3_HorzAngle(&cam->lookAt, &cam->pos);
     } else {
-        sp1c = (cam->mFlags & 0x100) ? &data_0208747c : cam->mState_13c;
+        sp1c = (cam->mFlags & 0x100) ? &data_0208747c : cam->mMode;
         Vec3_Sub(&sp34, &cam->mTargetPlayer->mPos, &cam->mTargetPos);
         {
             struct Vector3 *q = &cam->mTargetPlayer->mPos;

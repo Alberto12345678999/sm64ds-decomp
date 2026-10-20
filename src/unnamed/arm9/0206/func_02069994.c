@@ -1,4 +1,5 @@
 #include "types.h"
+#include "WmWork.h"
 extern char *data_020a9db4;
 extern char *data_020a9db8;
 
@@ -13,15 +14,14 @@ extern int func_020625fc(void *arg0, int arg1, int arg2, int arg3, u16 arg4, u16
 extern int func_0206a230(void);
 extern int func_020621b8(void *x);
 
-#define DISPATCH(a, b) \
-    (*(void (**)(int, void *))(data_020a9db4 + 0x1000 + 0xe1c))((a), (b))
+#define DISPATCH(a, b) WM_WORK->userCallback((a), (b))
 
 void func_02069994(char *arg0)
 {
     switch (*(u16 *)arg0) {
     case 0x0:
         if (*(u16 *)(arg0 + 2) == 0) {
-            func_0206879c(0x83, func_02061c20((int *)(data_020a9db4 + 0x1418)));
+            func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
             func_0206879c(0x80, func_02061ce4((void*) func_02069994));
             func_0206879c(0x1D, func_02063574((void*) func_02069994, 0xFFFF, 0x28, 5));
             return;
@@ -31,7 +31,7 @@ void func_02069994(char *arg0)
 
     case 0x1D:
         if (*(u16 *)(arg0 + 2) == 0) {
-            func_0206879c(7, func_020620b0((void*) func_02069994, data_020a9db4 + 0x1300));
+            func_0206879c(7, func_020620b0((void *)func_02069994, (char *)&WM_WORK->parentParam));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -56,23 +56,23 @@ void func_02069994(char *arg0)
             case 0:
                 return;
             case 7:
-                func_0206879c(0x83, func_02061c20((int *)(data_020a9db4 + 0x1418)));
-                *(u16 *)(data_020a9db4 + 0x1e2a) = *(u16 *)(data_020a9db4 + 0x1596);
+                func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
+                WM_WORK->childBitmap = WM_WORK->status.child_bitmap;
                 DISPATCH(0, arg0);
+                /* WmStatus +0x10: a BOOL WM_ReadStatus fills in; which SDK
+                   field it is isn't pinned down here, so it stays raw */
                 if (*(int *)(data_020a9db4 + 0x1428) == 0) {
                     char *g8 = data_020a9db8;
                     if (*(int *)(g8 + 0x1324) == 0) {
                         int v = 1;
                         *(int *)(g8 + 0x1324) = 1;
-                        if (*(u16 *)(data_020a9db4 + 0x1e2c) != 0) {
+                        if (WM_WORK->mpContinuous != 0) {
                             v = 0;
                         }
-                        func_0206879c(0xE, func_020625fc((void*) func_02069994,
-                            *(int *)(data_020a9db4 + 0x1408),
-                            *(u16 *)(data_020a9db4 + 0x1e1a),
-                            *(int *)(data_020a9db4 + 0x1404),
-                            *(u16 *)(data_020a9db4 + 0x1e18),
-                            (u16) v, 0, 0, 0, 1, 1));
+                        func_0206879c(0xE,
+                                      func_020625fc((void *)func_02069994, (int)WM_WORK->recvBuf,
+                                                    WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
+                                                    WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
                         return;
                     }
                 }
@@ -82,8 +82,8 @@ void func_02069994(char *arg0)
                 DISPATCH(0x19, (void *)0);
                 return;
             case 9:
-                func_0206879c(0x83, func_02061c20((int *)(data_020a9db4 + 0x1418)));
-                *(u16 *)(data_020a9db4 + 0x1e2a) = *(u16 *)(data_020a9db4 + 0x1596);
+                func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
+                WM_WORK->childBitmap = WM_WORK->status.child_bitmap;
                 DISPATCH(1, arg0);
                 return;
             case 2:
@@ -102,7 +102,7 @@ void func_02069994(char *arg0)
         *(int *)(data_020a9db8 + 0x1324) = 0;
         switch (*(u16 *)(arg0 + 4)) {
         case 0xA:
-            *(u16 *)(data_020a9db4 + 0x1e28) = 1;
+            WM_WORK->mpStarted = 1;
             DISPATCH(0x19, (void *)0);
             return;
         case 0xB:
@@ -114,7 +114,7 @@ void func_02069994(char *arg0)
         }
 
     case 0xF:
-        *(u8 *)(data_020a9db4 + 0x1410) = 0;
+        WM_WORK->mpSending = 0;
         {
             u16 t = *(u16 *)(arg0 + 2);
             if (t == 0) {
@@ -136,18 +136,18 @@ void func_02069994(char *arg0)
             func_0206879c(2, func_020621b8((void*) func_02069994));
             return;
         }
-        *(u16 *)(data_020a9db4 + 0x1e26) = 0;
+        WM_WORK->resetting = 0;
         DISPATCH(0x100, arg0);
         return;
 
     case 0x2:
         if (*(u16 *)(arg0 + 2) == 0) {
-            *(u8 *)(data_020a9db4 + 0x1411) = 0;
+            WM_WORK->initialized = 0;
             *(u16 *)(data_020a9db8 + 0x1316) = 0;
             DISPATCH(0x11, arg0);
             return;
         }
-        *(u16 *)(data_020a9db4 + 0x1e26) = 0;
+        WM_WORK->resetting = 0;
         DISPATCH(0x100, arg0);
         return;
 
@@ -155,8 +155,8 @@ void func_02069994(char *arg0)
         if (*(u16 *)(arg0 + 2) != 0) {
             return;
         }
-        func_0206879c(0x83, func_02061c20((int *)(data_020a9db4 + 0x1418)));
-        *(u16 *)(data_020a9db4 + 0x1e2a) = *(u16 *)(data_020a9db4 + 0x1596);
+        func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
+        WM_WORK->childBitmap = WM_WORK->status.child_bitmap;
         return;
 
     case 0x15:

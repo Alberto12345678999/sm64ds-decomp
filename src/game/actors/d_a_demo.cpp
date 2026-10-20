@@ -72,16 +72,12 @@
  *   func_ov002_020f26d4 is a ldr/bx veneer that tail-calls
  *   func_ov002_020f2630 through a raw void(*)(void); a member pointer
  *   cannot spell that cast, so both stay free.
- *   The mStaffRoll heap block (0x518 bytes, edStarKiraCallback_c embedded at
- *   +0x200) has no proven class, so its helpers and the C/PMF/PMF0
- *   dispatch tables over it stay free.
- *   Shadow windows OamEnt, E, C, S and the per-function windows (E5cd0,
- *   Ent5b98, Obj2e30 and the rest) remain where a shared class is not yet
- *   proven; the ones over daDemo_c and its model helpers were moved onto
- *   real members. Inside the block, the four 0x4c-byte entries at +0 and
- *   the 0x30-byte window entries at +0x130 have roles (see E5cd0 and C37)
- *   but no class, so indexed accesses that also reach unnamed offsets stay
- *   raw with a one-line note.
+ *   The mStaffRoll heap block is daDemo_c::StaffRoll, a record recovered
+ *   from its helpers (no RTTI names it). The helpers take it as char *
+ *   and stay free, as do the C/PMF/PMF0 dispatch tables over it; C, C37
+ *   and C2dd4 remain as the tables' receiver types. Indexed entry fields
+ *   are spelled with STAR_OFF and its siblings where the ROM adds the
+ *   field offset before the index.
  *   common.h must precede daDemo_c.h: ModelAnim.h's nested Matrix4x3
  *   otherwise wins and scalarizes Behavior's 12-word matrix copy.
  */
@@ -128,6 +124,18 @@ struct OamAttr;
 
 #pragma defer_codegen off
 
+/* The staff-roll block's helpers are free functions that take the block
+   as char *; they read it through this record. */
+typedef daDemo_c::StaffRoll StaffRoll;
+
+/* Field offsets inside one star, window or credit entry. Where a helper
+   indexes an entry, the ROM adds the field offset to the block first and
+   the scaled index second; the member spelling folds the two into one
+   multiply-add and comes out shorter. */
+#define STAR_OFF(m) ((int)&((StaffRoll *)0)->stars[0].m)
+#define WINDOW_OFF(m) ((int)&((StaffRoll *)0)->window[0].m)
+#define CREDIT_OFF(m) ((int)&((StaffRoll *)0)->credit[0].m)
+
 /* shadow typedef 's16' */
 typedef signed short s16;
 
@@ -143,9 +151,6 @@ struct OamEnt {
 /* shadow struct 'ParticleCallback' */
 struct ParticleCallback;
 
-/* shadow struct 'S' */
-struct S { unsigned char b[0x30]; };
-
 /* shadow struct 'C' */
 struct C;
 
@@ -158,17 +163,13 @@ typedef void (C::*PMF0)();
 /* pointer-to-member taking (cmd, a2, a3) — func_ov002_020f7d74's table */
 typedef void (daDemo_c::*PMF3)(unsigned char*, int, int);
 
-/* dispatch receiver of func_ov002_020f37a0: the mStaffRoll block seen through
-   the control bytes of its first 0x30-byte sub-screen window entry, which
-   starts at block + 0x130 (sub BG1/BG2 offset, then the window-1
-   rectangle the handlers write to 0x4001042/0x4001046). */
+/* dispatch receiver of func_ov002_020f37a0: the StaffRoll block seen through
+   window[0]'s control bytes (StaffRoll::Window active, kind, step). */
 struct C37 {
     unsigned char pad[0x15c];
-    unsigned char active; /* 0x15c - func_ov002_020f37a0 does nothing while 0 */
-    unsigned char kind;   /* 0x15d - index into data_ov002_02110e4c */
-    /* 0x15e - step index func_ov002_020f3310 and func_ov002_020f3740
-       dispatch on; the step handlers advance it. */
-    unsigned char step;
+    unsigned char active; /* 0x15c */
+    unsigned char kind;   /* 0x15d */
+    unsigned char step;   /* 0x15e */
 };
 typedef void (C37::*PMF37)(int);
 struct Entry37 { PMF37 pmf; };
@@ -177,79 +178,6 @@ struct Entry37 { PMF37 pmf; };
 struct C2dd4 { unsigned char pad[0x1c8]; unsigned char g; unsigned char idx; };
 typedef void (C2dd4::*PMF2dd4)(int);
 struct Entry2dd4 { PMF2dd4 pmf; };
-
-/* shadow struct 'E' */
-struct E { unsigned char d[0x30]; };
-
-/* shadow struct 'E5cd0' — anim-entry window of func_ov002_020f5cd0 and
-   func_ov002_020f5678: one of the four 0x4c-byte entries at the start of the
-   mStaffRoll block. f28/f2c are the int and s16 func_ov002_020f5990 passes to
-   func_ov002_020f2790, which stores them in the edStarKiraCallback_c at
-   block + 0x200 (its unk308/unk30c) before spawning particle 0x3e. */
-struct E5cd0 {
-    s32 f0;              /* 0x00 */
-    s32 f4;              /* 0x04 */
-    char p8[0x28 - 8];
-    s32 f28;             /* 0x28 */
-    u16 f2c;             /* 0x2c */
-    char p2e[0x30 - 0x2e];
-    u16 f30;             /* 0x30 */
-    u16 f32;             /* 0x32 */
-    char p34[0x3a - 0x34];
-    u16 f3a;             /* 0x3a */
-    char p3c[0x44 - 0x3c];
-    /* Set by func_ov002_020f5d34 for each entry it starts, cleared by
-       func_ov002_020f5a6c; func_ov002_020f5990 skips an entry while 0. */
-    u8 active; /* 0x44 */
-    char p45;
-    /* Index into data_ov002_02110e7c, the per-entry handler table
-       func_ov002_020f5990 dispatches through (0 from 5d34, 1 here, 2 from
-       func_ov002_020f5b98). */
-    u8 state; /* 0x46 */
-    char p47[0x4c - 0x47];
-};
-
-/* shadow struct 'E57c0' — anim-entry window of func_ov002_020f57c0 */
-struct E57c0 {
-  char p0[8];
-  int f8;
-  int fc;
-  char p10[0x20];
-  unsigned short f30;
-  unsigned short f32;
-  char p34[6];
-  unsigned short f3a;
-  char p3c[9];
-  unsigned char f45;
-  char p46;
-  unsigned char f47;
-  char p48;
-  unsigned char f49;
-  char p4a[2];
-};
-
-/* shadow struct 'Ent5b98' — anim-entry window of func_ov002_020f5b98 */
-struct Ent5b98 {
-    char pad44[0x44];
-    unsigned char active; /* 0x44 - see E5cd0 */
-    char pad45;
-    unsigned char state; /* 0x46 */
-    unsigned char f47;
-    char pad48[2];
-    unsigned char f4a;
-    char pad4b[0x4c - 0x4b];
-};
-
-/* shadow struct 'Obj2e30' — flag window of func_ov002_020f2e30 */
-struct Obj2e30 {
-    char pad1c4[0x1c4];
-    unsigned short f1c4;
-    unsigned short f1c6;
-    unsigned char f1c8;
-    unsigned char f1c9;
-    unsigned char f1ca;
-    unsigned char f1cb;
-};
 
 /* shadow struct 'Ent' */
 struct Ent
@@ -261,21 +189,6 @@ struct Ent
   char pad14[0x1a];
   u16 angle;
   char pad30[0x1c];
-};
-
-/* shadow struct 'Sub' */
-struct Sub {
-    int f0;
-    int f4;
-    char pad8[0x28 - 8];
-    int f28;
-    s16 f2c;
-    char pad2e[0x44 - 0x2e];
-    u8 active; /* 0x44 - see E5cd0 */
-    u8 pad45;
-    u8 state; /* 0x46 */
-    char pad47[0x49 - 0x47];
-    u8 f49;
 };
 
 /* shadow struct 'SharedFilePtr' */
@@ -548,7 +461,7 @@ extern void func_ov002_020f37fc(char*);
 extern void func_ov002_020f2f9c(void *, int);
 extern void func_ov002_020f3954(char *);
 /* local extern dropped: decl_common.h already declares LoadFont(u8) */
-void func_ov002_020f2e30(struct Obj2e30*, int);
+void func_ov002_020f2e30(StaffRoll *, int);
 extern PMF0 data_ov002_02110f9c[];
 extern void SetSubBg3Offset(int a, int b);
 extern void _ZN3GXS15SetGraphicsModeEi(int m);
@@ -1104,10 +1017,9 @@ void func_ov002_020f26d4(void) {
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f26e0(void *thiz)
 {
-    /* block + 0x208 is trackingRecords of the edStarKiraCallback_c that
-       func_ov002_020f6448 constructs at block + 0x200; dPa_c.h keeps the
-       records as opaque words, so OamEnt views them and the offset stays raw. */
-    struct OamEnt *e = (struct OamEnt *)((char *)thiz + 0x208);
+    /* The kira callback's tracking records: dPa_c.h keeps them as opaque
+       words, so OamEnt views each one as the sparkle sprite it draws. */
+    struct OamEnt *e = (struct OamEnt *)((StaffRoll *)thiz)->kira.trackingRecords;
     int i;
     for (i = 0; i < 0x40; i++, e++) {
         int idx;
@@ -1136,14 +1048,12 @@ void func_ov002_020f26e0(void *thiz)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f2790(char* c, int p1, int p2, int p3, s16 p4)
 {
-    *(int*)(c+0x508) = p3;
-    *(s16*)(c+0x50c) = p4;
-    *(u32*)(c+0x1fc) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(c+0x1fc),
-        0x3e,
-        p1<<12, p2<<12, 0,
-        0,
-        (struct ParticleCallback*)(c+0x200));
+    ((StaffRoll *)c)->kira.unk308 = p3;
+    ((StaffRoll *)c)->kira.unk30c = p4;
+    ((StaffRoll *)c)->kiraParticle =
+        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            ((StaffRoll *)c)->kiraParticle, 0x3e, p1 << 12, p2 << 12, 0, 0,
+            (struct ParticleCallback *)&((StaffRoll *)c)->kira);
 }
 }
 
@@ -1154,34 +1064,41 @@ void func_ov002_020f2790(char* c, int p1, int p2, int p3, s16 p4)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov002_020f27e8(char *c)
 {
-    if (*(unsigned char *)(c + 0x1ed) == 0) return *(unsigned char *)(c + 0x1ed);
+    if (((StaffRoll *)c)->burstActive == 0)
+        return ((StaffRoll *)c)->burstActive;
 
-    *(unsigned char *)(c + 0x1ec) += 1;
+    ((StaffRoll *)c)->burstTimer += 1;
 
-    if (*(int *)(c + 0x1e4) != 0x1000) {
-        if (*(unsigned char *)(c + 0x1ec) == data_ov002_02100140[*(unsigned short *)(c + 0x1ea) & 3]) {
-            *(int *)(c + 0x1e4) += 0x199;
-            if (*(int *)(c + 0x1e4) >= 0x1000) *(int *)(c + 0x1e4) = 0x1000;
+    if (((StaffRoll *)c)->burstDefParam != 0x1000) {
+        if (((StaffRoll *)c)->burstTimer ==
+            data_ov002_02100140[((StaffRoll *)c)->burstPeriods & 3]) {
+            ((StaffRoll *)c)->burstDefParam += 0x199;
+            if (((StaffRoll *)c)->burstDefParam >= 0x1000)
+                ((StaffRoll *)c)->burstDefParam = 0x1000;
         }
     }
 
-    if (*(short *)(c + 0x1e8) != 0x800) {
-        if (*(unsigned short *)(c + 0x1ea) >= 5) {
-            if ((*(unsigned char *)(c + 0x1ec) & 3) == 3) {
-                *(short *)(c + 0x1e8) += 0x199;
-                if (*(short *)(c + 0x1e8) >= 0x800) *(short *)(c + 0x1e8) = 0x800;
+    if (((StaffRoll *)c)->burstSysParam != 0x800) {
+        if (((StaffRoll *)c)->burstPeriods >= 5) {
+            if ((((StaffRoll *)c)->burstTimer & 3) == 3) {
+                ((StaffRoll *)c)->burstSysParam += 0x199;
+                if (((StaffRoll *)c)->burstSysParam >= 0x800)
+                    ((StaffRoll *)c)->burstSysParam = 0x800;
             }
         }
     }
 
-    func_ov002_020f2790(c, 0x80, 0x60, *(int *)(c + 0x1e4), *(short *)(c + 0x1e8));
-    func_ov002_020f2790(c, 0x80, 0x60, *(int *)(c + 0x1e4), *(short *)(c + 0x1e8));
+    func_ov002_020f2790(c, 0x80, 0x60, ((StaffRoll *)c)->burstDefParam,
+                        ((StaffRoll *)c)->burstSysParam);
+    func_ov002_020f2790(c, 0x80, 0x60, ((StaffRoll *)c)->burstDefParam,
+                        ((StaffRoll *)c)->burstSysParam);
 
-    if (*(unsigned char *)(c + 0x1ec) >= 0x1e) {
-        *(unsigned char *)(c + 0x1ec) = 0;
-        *(unsigned short *)(c + 0x1ea) += 1;
+    if (((StaffRoll *)c)->burstTimer >= 0x1e) {
+        ((StaffRoll *)c)->burstTimer = 0;
+        ((StaffRoll *)c)->burstPeriods += 1;
     }
-    if (*(unsigned short *)(c + 0x1ea) < 0xa) return *(unsigned short *)(c + 0x1ea);
+    if (((StaffRoll *)c)->burstPeriods < 0xa)
+        return ((StaffRoll *)c)->burstPeriods;
     return func_ov002_020f2984(c);
 }
 }
@@ -1193,11 +1110,11 @@ int func_ov002_020f27e8(char *c)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f2958(char *c)
 {
-    *(unsigned char*)(c + 0x1ed) = 1;
-    *(int*)(c + 0x1e4) = 0x199;
-    *(unsigned short*)(c + 0x1e8) = 0x199;
-    *(unsigned char*)(c + 0x1ec) = 0;
-    *(unsigned short*)(c + 0x1ea) = 0;
+    ((StaffRoll *)c)->burstActive = 1;
+    ((StaffRoll *)c)->burstDefParam = 0x199;
+    ((StaffRoll *)c)->burstSysParam = 0x199;
+    ((StaffRoll *)c)->burstTimer = 0;
+    ((StaffRoll *)c)->burstPeriods = 0;
 }
 }
 
@@ -1208,7 +1125,7 @@ void func_ov002_020f2958(char *c)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov002_020f2984(char *p)
 {
-    p[493] = 0;
+    ((StaffRoll *)p)->burstActive = 0;
     return (int)p;
 }
 }
@@ -1223,12 +1140,11 @@ int func_ov002_020f2990(char* c)
     int x, y;
     int idx;
 
-    /* 0x1cc/0x1d0: sprite position; 0x1d9: draw flag (0x1d8 is written with it
-       by 2a48/2a68 but read nowhere in this TU). Raw: the block has no proven class. */
-    if (*(u8*)(c + 0x1d9) == 0) return (int)c;
+    if (((StaffRoll *)c)->endVisible == 0)
+        return (int)c;
 
-    x = *(int*)(c + 0x1cc) >> 0xc;
-    y = *(int*)(c + 0x1d0) >> 0xc;
+    x = ((StaffRoll *)c)->endX >> 0xc;
+    y = ((StaffRoll *)c)->endY >> 0xc;
     idx = 0;
     if (GetOwnerLanguage() == 3) idx = 1;
     else if (GetOwnerLanguage() == 2 || GetOwnerLanguage() == 5) idx = 2;
@@ -1247,10 +1163,10 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f2a48(char *p)
 {
     /* 0x1d8/0x1d9 and the position: see func_ov002_020f2990. */
-    *(char *)(p + 0x1d8) = 1;
-    *(char *)(p + 0x1d9) = 1;
-    *(int *)(p + 0x1cc) = 524288;
-    *(int *)(p + 0x1d0) = 393216;
+    ((StaffRoll *)p)->endActive = 1;
+    ((StaffRoll *)p)->endVisible = 1;
+    ((StaffRoll *)p)->endX = 524288;
+    ((StaffRoll *)p)->endY = 393216;
 }
 }
 
@@ -1262,8 +1178,8 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f2a68(char *p)
 {
     /* 0x1d8/0x1d9: see func_ov002_020f2990. */
-    *(char *)(p + 0x1d8) = 0;
-    *(char *)(p + 0x1d9) = 0;
+    ((StaffRoll *)p)->endActive = 0;
+    ((StaffRoll *)p)->endVisible = 0;
 }
 }
 
@@ -1274,7 +1190,7 @@ void func_ov002_020f2a68(char *p)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f2a78(char *p, int i)
 {
-    *(char *)(p + i * 8 + 0x1c8) = 0;
+    ((StaffRoll *)p)->credit[i].active = 0;
 }
 }
 
@@ -1282,18 +1198,18 @@ void func_ov002_020f2a78(char *p, int i)
 /* ROM ordinal 21 -- func_ov002_020f2a88, 0x020f2a88, size 0x64 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f2a88
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f2a88(char *c, int i)
-{
-  unsigned long new_var;
-  *((short *) ((c + 0x1c4) + (i * 8))) = (*((u16 *) ((c + 0x1c4) + (i * 8)))) + 1;
-  new_var = i;
-  if ((*((u16 *) ((c + (new_var * 8)) + 0x1c4))) < 0x39)
-  {
-    return;
-  }
-  *((u16 *) ((c + (new_var * 8)) + 0x1c4)) = 0;
-  *((u8 *) ((c + 0x1c9) + (new_var * 8))) = (*((u8 *) ((c + 0x1c9) + (new_var * 8)))) + 1;
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov002_020f2a88(char *c, int i) {
+    unsigned long new_var;
+    *((short *)((c + CREDIT_OFF(timer)) + (i * 8))) =
+        (*((u16 *)((c + CREDIT_OFF(timer)) + (i * 8)))) + 1;
+    new_var = i;
+    if ((*((u16 *)((c + (new_var * 8)) + CREDIT_OFF(timer)))) < 0x39) {
+        return;
+    }
+    *((u16 *)((c + (new_var * 8)) + CREDIT_OFF(timer))) = 0;
+    *((u8 *)((c + CREDIT_OFF(step)) + (new_var * 8))) =
+        (*((u8 *)((c + CREDIT_OFF(step)) + (new_var * 8)))) + 1;
 }
 }
 
@@ -1307,24 +1223,24 @@ void func_ov002_020f2aec(char *c, int idx)
 {
     unsigned char cnt;
 
-    if (*(unsigned short *)(c + idx * 8 + 0x100 + 0xc4) == 0) {
+    if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) == 0) {
         data_0209d454 |= 1;
     }
-    *(unsigned short *)(c + 0x1c4 + idx * 8) += 1;
-    *(unsigned short *)(c + 0x1c6 + idx * 8) += 1;
+    *(unsigned short *)(c + CREDIT_OFF(timer) + idx * 8) += 1;
+    *(unsigned short *)(c + CREDIT_OFF(blendTimer) + idx * 8) += 1;
 
-    if (*(unsigned short *)(c + idx * 8 + 0x100 + 0xc6) >= 2) {
-        *(unsigned short *)(c + idx * 8 + 0x100 + 0xc6) = 0;
-        *(unsigned char *)(c + 0x1ca + idx * 8) += 1;
-        cnt = *(unsigned char *)(c + idx * 8 + 0x1ca);
+    if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) >= 2) {
+        *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
+        *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
+        cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
         _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, cnt, 0x10 - cnt);
     }
 
-    if (*(unsigned short *)(c + idx * 8 + 0x100 + 0xc4) < 30) {
+    if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
         return;
     }
-    *(unsigned short *)(c + idx * 8 + 0x100 + 0xc4) = 0;
-    *(unsigned char *)(c + 0x1c9 + idx * 8) += 1;
+    *(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) = 0;
+    *(unsigned char *)(c + CREDIT_OFF(step) + idx * 8) += 1;
     *(volatile unsigned short *)0x4001050 = 0;
 }
 #pragma opt_common_subs on
@@ -1340,26 +1256,26 @@ void func_ov002_020f2bf4(char *c, int idx)
 {
     unsigned char cnt;
 
-    *(unsigned short *)(c + 0x1c4 + idx * 8) += 1;
-    *(unsigned short *)(c + 0x1c6 + idx * 8) += 1;
+    *(unsigned short *)(c + CREDIT_OFF(timer) + idx * 8) += 1;
+    *(unsigned short *)(c + CREDIT_OFF(blendTimer) + idx * 8) += 1;
 
-    if (*(unsigned short *)(c + idx * 8 + 0x100 + 0xc6) >= 2) {
-        *(unsigned short *)(c + idx * 8 + 0x100 + 0xc6) = 0;
-        *(unsigned char *)(c + 0x1ca + idx * 8) += 1;
-        cnt = *(unsigned char *)(c + idx * 8 + 0x1ca);
+    if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) >= 2) {
+        *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
+        *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
+        cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
         _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, 0x10 - cnt, cnt);
     }
 
-    if (*(unsigned short *)(c + idx * 8 + 0x100 + 0xc4) < 30) {
+    if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
         return;
     }
-    *(unsigned short *)(c + idx * 8 + 0x100 + 0xc4) = 0;
-    *(unsigned char *)(c + 0x1c9 + idx * 8) += 1;
-    *(unsigned char *)(c + 0x1cb + idx * 8) += 1;
-    *(unsigned char *)(c + idx * 8 + 0x1ca) = 0;
-    *(unsigned short *)(c + idx * 8 + 0x100 + 0xc6) = 0;
+    *(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) = 0;
+    *(unsigned char *)(c + CREDIT_OFF(step) + idx * 8) += 1;
+    *(unsigned char *)(c + CREDIT_OFF(message) + idx * 8) += 1;
+    *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend)) = 0;
+    *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
     data_0209d454 &= ~1;
-    func_0201ef50(*(unsigned char *)(c + idx * 8 + 0x1cb));
+    func_0201ef50(*(unsigned char *)(c + idx * 8 + CREDIT_OFF(message)));
 }
 #pragma opt_common_subs on
 }
@@ -1368,20 +1284,19 @@ void func_ov002_020f2bf4(char *c, int idx)
 /* ROM ordinal 24 -- func_ov002_020f2d0c, 0x020f2d0c, size 0x64 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f2d0c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f2d0c(char *c, int i)
-{
-  long new_var;
-  *((short *) ((c + 0x1c4) + (i * 8))) = (*((unsigned short *) ((c + 0x1c4) + (i * 8)))) + 1;
-  new_var = 8;
-  char *r = c + (i * new_var);
-  char *b = r + 0x100;
-  if ((*((unsigned short *) (b + 0xc4))) < 0x39)
-  {
-    return;
-  }
-  *((short *) ((r + 0x100) + 0xc4)) = 0;
-  *((unsigned char *) ((c + 0x1c9) + (i * new_var))) = (*((unsigned char *) ((c + 0x1c9) + (i * new_var)))) + 1;
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov002_020f2d0c(char *c, int i) {
+    long new_var;
+    *((short *)((c + CREDIT_OFF(timer)) + (i * 8))) =
+        (*((unsigned short *)((c + CREDIT_OFF(timer)) + (i * 8)))) + 1;
+    new_var = 8;
+    char *r = c + (i * new_var);
+    if (((StaffRoll *)r)->credit[0].timer < 0x39) {
+        return;
+    }
+    ((StaffRoll *)r)->credit[0].timer = 0;
+    *((unsigned char *)((c + CREDIT_OFF(step)) + (i * new_var))) =
+        (*((unsigned char *)((c + CREDIT_OFF(step)) + (i * new_var)))) + 1;
 }
 }
 
@@ -1389,19 +1304,18 @@ void func_ov002_020f2d0c(char *c, int i)
 /* ROM ordinal 25 -- func_ov002_020f2d70, 0x020f2d70, size 0x64 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f2d70
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f2d70(char *c, int i)
-{
-  char *p;
-  p = c + 0x1c4;
-  *((short *) (p + (i * 8))) = (*((unsigned short *) (p + (i * 8)))) + 1;
-  p = c + (i * 8);
-  if ((*((unsigned short *) (p + 0x1c4))) < 0x1e)
-  {
-    return;
-  }
-  *((short *) (p + 0x1c4)) = 0;
-  *((unsigned char *) ((c + 0x1c9) + (i * 8))) = (*((unsigned char *) ((c + 0x1c9) + (i * 8)))) + 1;
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov002_020f2d70(char *c, int i) {
+    char *p;
+    p = c + CREDIT_OFF(timer);
+    *((short *)(p + (i * 8))) = (*((unsigned short *)(p + (i * 8)))) + 1;
+    p = c + (i * 8);
+    if (((StaffRoll *)p)->credit[0].timer < 0x1e) {
+        return;
+    }
+    ((StaffRoll *)p)->credit[0].timer = 0;
+    *((unsigned char *)((c + CREDIT_OFF(step)) + (i * 8))) =
+        (*((unsigned char *)((c + CREDIT_OFF(step)) + (i * 8)))) + 1;
 }
 }
 
@@ -1424,16 +1338,16 @@ extern "C" void func_ov002_020f2dd4(C2dd4* c){
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (overlay ov002).
  */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f2e30(struct Obj2e30 *self, int n) {
+void func_ov002_020f2e30(StaffRoll *self, int n) {
     if (n == 0) return;
     if (n == 0x15) return;
-    self->f1c8 = 1;
-    self->f1c9 = 0;
-    self->f1c4 = 0;
-    self->f1c6 = 0;
-    self->f1ca = 0;
+    self->credit[0].active = 1;
+    self->credit[0].step = 0;
+    self->credit[0].timer = 0;
+    self->credit[0].blendTimer = 0;
+    self->credit[0].blend = 0;
     n = (n - 1) << 1;
-    self->f1cb = (unsigned char)n;
+    self->credit[0].message = (unsigned char)n;
     func_0201f108();
     func_0201ef50(n & 0xff);
     data_0209d454 |= 1;
@@ -1447,7 +1361,7 @@ void func_ov002_020f2e30(struct Obj2e30 *self, int n) {
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f2ea0(char *p)
 {
-    p[456] = 0;
+    ((StaffRoll *)p)->credit[0].active = 0;
 }
 }
 
@@ -1455,18 +1369,18 @@ void func_ov002_020f2ea0(char *p)
 /* ROM ordinal 29 -- func_ov002_020f2eac, 0x020f2eac, size 0x6c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f2eac
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f2eac(void* c) {
-  int i;
-  char* p = (char*)c;
-  for (i = 0; i < 5; i++) {
-    if (*(unsigned char*)(p+0x171) != 0) {
-        OAM::RenderSub(data_ov002_0210bba0[*(unsigned char *)(p + 0x172)],
-                       *(int *)(p + 0x160) >> 12, *(int *)(p + 0x164) >> 12, -1,
-                       *(unsigned char *)(p + 0x173));
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov002_020f2eac(void *c) {
+    int i;
+    char *p = (char *)c;
+    for (i = 0; i < 5; i++) {
+        if (((StaffRoll *)p)->dolls[0].visible != 0) {
+            OAM::RenderSub(data_ov002_0210bba0[((StaffRoll *)p)->dolls[0].frame],
+                           ((StaffRoll *)p)->dolls[0].x >> 12, ((StaffRoll *)p)->dolls[0].y >> 12,
+                           -1, ((StaffRoll *)p)->dolls[0].priority);
+        }
+        p += 0x14;
     }
-    p += 0x14;
-  }
 }
 }
 
@@ -1479,9 +1393,9 @@ void func_ov002_020f2f18(char* c, int a, int b)
 {
     int i = 0;
     do {
-        if (*(u8*)(c + 0x170) != 0) {
-            *(s32*)(((int)c + 0x160)) -= a;
-            *(s32*)(((int)c + 0x164)) -= b;
+        if (((StaffRoll *)c)->dolls[0].active != 0) {
+            ((StaffRoll *)c)->dolls[0].x -= a;
+            ((StaffRoll *)c)->dolls[0].y -= b;
         }
         i++;
         c += 0x14;
@@ -1498,8 +1412,8 @@ void func_ov002_020f2f64(char* self)
 {
     int i;
     for (i = 0; i < 5; i++) {
-        if (*(unsigned char*)(self + 0x170) != 0) {
-            (*(unsigned char*)(((int)self + 0x172)))++;
+        if (((StaffRoll *)self)->dolls[0].active != 0) {
+            ((StaffRoll *)self)->dolls[0].frame++;
         }
         self += 0x14;
     }
@@ -1530,13 +1444,13 @@ void func_ov002_020f2f9c(void* self, int count)
         }
         if (ok) {
             int* p;
-            *(u8*)(sl + 0x170) = 1;
-            *(u8*)(sl + 0x171) = 1;
+            ((StaffRoll *)sl)->dolls[0].active = 1;
+            ((StaffRoll *)sl)->dolls[0].visible = 1;
             p = data_ov002_0210b97c[idx];
-            *(int*)(sl + 0x160) = (p[i * 4 + 0] + 0xe0) << 12;
-            *(int*)(sl + 0x164) = (p[i * 4 + 1] + 0x66) << 12;
-            *(u8*)(sl + 0x173) = (u8)p[i * 4 + 2];
-            *(u8*)(sl + 0x172) = (u8)p[i * 4 + 3];
+            ((StaffRoll *)sl)->dolls[0].x = (p[i * 4 + 0] + 0xe0) << 12;
+            ((StaffRoll *)sl)->dolls[0].y = (p[i * 4 + 1] + 0x66) << 12;
+            ((StaffRoll *)sl)->dolls[0].priority = (u8)p[i * 4 + 2];
+            ((StaffRoll *)sl)->dolls[0].frame = (u8)p[i * 4 + 3];
         }
         sl += 0x14;
     }
@@ -1552,8 +1466,8 @@ void func_ov002_020f30d4(char *p)
 {
     int i;
     for (i = 0; i < 5; i++) {
-        *(unsigned char *)(p + 0x170) = 0;
-        *(unsigned char *)(p + 0x171) = 0;
+        ((StaffRoll *)p)->dolls[0].active = 0;
+        ((StaffRoll *)p)->dolls[0].visible = 0;
         p += 0x14;
     }
 }
@@ -1571,42 +1485,52 @@ void func_ov002_020f30f8(char *o, int i)
     int oldA, oldB;
     int cc, dd, ee, ff;
 
-    t = *(unsigned short *)(o + 0x158 + idx);
+    t = *(unsigned short *)(o + WINDOW_OFF(delay) + idx);
     if (t != 0) {
-        *(unsigned short *)(o + 0x158 + idx) = t - 1;
+        *(unsigned short *)(o + WINDOW_OFF(delay) + idx) = t - 1;
         return;
     }
 
-    *(int *)(o + 0x140 + idx) -= *(int *)(o + 0x150 + idx);
-    *(int *)(o + 0x144 + idx) -= *(int *)(o + 0x154 + idx);
-    *(int *)(o + 0x148 + idx) += *(int *)(o + 0x150 + idx);
-    *(int *)(o + 0x14c + idx) += *(int *)(o + 0x154 + idx);
+    *(int *)(o + WINDOW_OFF(left) + idx) -= *(int *)(o + WINDOW_OFF(stepX) + idx);
+    *(int *)(o + WINDOW_OFF(top) + idx) -= *(int *)(o + WINDOW_OFF(stepY) + idx);
+    *(int *)(o + WINDOW_OFF(right) + idx) += *(int *)(o + WINDOW_OFF(stepX) + idx);
+    *(int *)(o + WINDOW_OFF(bottom) + idx) += *(int *)(o + WINDOW_OFF(stepY) + idx);
 
-    oldA = *(int *)(o + 0x130 + idx);
-    oldB = *(int *)(o + 0x134 + idx);
-    *(int *)(o + 0x130 + idx) = oldA + *(int *)(o + 0x150 + idx);
-    *(int *)(o + 0x134 + idx) += *(int *)(o + 0x154 + idx);
+    oldA = *(int *)(o + WINDOW_OFF(bgX) + idx);
+    oldB = *(int *)(o + WINDOW_OFF(bgY) + idx);
+    *(int *)(o + WINDOW_OFF(bgX) + idx) = oldA + *(int *)(o + WINDOW_OFF(stepX) + idx);
+    *(int *)(o + WINDOW_OFF(bgY) + idx) += *(int *)(o + WINDOW_OFF(stepY) + idx);
 
-    if (*(int *)(o + 0x130 + idx) >= 0) *(int *)(o + 0x130 + idx) = 0;
-    if (*(int *)(o + 0x134 + idx) >= 0) *(int *)(o + 0x134 + idx) = 0;
-    if (*(int *)(o + 0x140 + idx) < 0) *(int *)(o + 0x140 + idx) = 0;
-    if (*(int *)(o + 0x144 + idx) < 0) *(int *)(o + 0x144 + idx) = 0;
-    if (*(int *)(o + 0x148 + idx) >= 0xff000) *(int *)(o + 0x148 + idx) = 0xff000;
-    if (*(int *)(o + 0x14c + idx) >= 0xc0000) *(int *)(o + 0x14c + idx) = 0xc0000;
-    if (*(int *)(o + 0x130 + idx) > 0) *(int *)(o + 0x130 + idx) = 0;
-    if (*(int *)(o + 0x134 + idx) > 0) *(int *)(o + 0x134 + idx) = 0;
+    if (*(int *)(o + WINDOW_OFF(bgX) + idx) >= 0)
+        *(int *)(o + WINDOW_OFF(bgX) + idx) = 0;
+    if (*(int *)(o + WINDOW_OFF(bgY) + idx) >= 0)
+        *(int *)(o + WINDOW_OFF(bgY) + idx) = 0;
+    if (*(int *)(o + WINDOW_OFF(left) + idx) < 0)
+        *(int *)(o + WINDOW_OFF(left) + idx) = 0;
+    if (*(int *)(o + WINDOW_OFF(top) + idx) < 0)
+        *(int *)(o + WINDOW_OFF(top) + idx) = 0;
+    if (*(int *)(o + WINDOW_OFF(right) + idx) >= 0xff000)
+        *(int *)(o + WINDOW_OFF(right) + idx) = 0xff000;
+    if (*(int *)(o + WINDOW_OFF(bottom) + idx) >= 0xc0000)
+        *(int *)(o + WINDOW_OFF(bottom) + idx) = 0xc0000;
+    if (*(int *)(o + WINDOW_OFF(bgX) + idx) > 0)
+        *(int *)(o + WINDOW_OFF(bgX) + idx) = 0;
+    if (*(int *)(o + WINDOW_OFF(bgY) + idx) > 0)
+        *(int *)(o + WINDOW_OFF(bgY) + idx) = 0;
 
-    cc = *(int *)(o + 0x130 + idx) - oldA;
-    func_ov002_020f2f18(o, cc, *(int *)(o + 0x134 + idx) - oldB);
+    cc = *(int *)(o + WINDOW_OFF(bgX) + idx) - oldA;
+    func_ov002_020f2f18(o, cc, *(int *)(o + WINDOW_OFF(bgY) + idx) - oldB);
 
-    ee = *(int *)(o + 0x148 + idx) >> 12;
-    ff = *(int *)(o + 0x14c + idx) >> 12;
-    cc = *(int *)(o + 0x140 + idx) >> 12;
-    dd = *(int *)(o + 0x144 + idx) >> 12;
+    ee = *(int *)(o + WINDOW_OFF(right) + idx) >> 12;
+    ff = *(int *)(o + WINDOW_OFF(bottom) + idx) >> 12;
+    cc = *(int *)(o + WINDOW_OFF(left) + idx) >> 12;
+    dd = *(int *)(o + WINDOW_OFF(top) + idx) >> 12;
     *(unsigned short *)0x4001042 = ((cc << 8) & 0xff00) | (ee & 0xff);
     *(unsigned short *)0x4001046 = ((dd << 8) & 0xff00) | (ff & 0xff);
-    SetSubBg1Offset(*(int *)(o + 0x130 + idx) >> 12, *(int *)(o + 0x134 + idx) >> 12);
-    SetSubBg2Offset(*(int *)(o + 0x130 + idx) >> 12, *(int *)(o + 0x134 + idx) >> 12);
+    SetSubBg1Offset(*(int *)(o + WINDOW_OFF(bgX) + idx) >> 12,
+                    *(int *)(o + WINDOW_OFF(bgY) + idx) >> 12);
+    SetSubBg2Offset(*(int *)(o + WINDOW_OFF(bgX) + idx) >> 12,
+                    *(int *)(o + WINDOW_OFF(bgY) + idx) >> 12);
 }
 }
 
@@ -1615,14 +1539,11 @@ void func_ov002_020f30f8(char *o, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f32e4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f32e4(struct S *arr, int i)
-{
-    char *p = (char*)&arr[i];
-    *(unsigned short*)(p + 0x158) = 0x10;
-    *(int*)(p + 0x150) = 0x1800;
-    *(int*)(p + 0x154) = 0x1800;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    *(unsigned char*)(p + 0x15e) = 1;
+void func_ov002_020f32e4(StaffRoll *self, int i) {
+    self->window[i].delay = 0x10;
+    self->window[i].stepX = 0x1800;
+    self->window[i].stepY = 0x1800;
+    self->window[i].step = 1;
 }
 }
 
@@ -1631,8 +1552,7 @@ void func_ov002_020f32e4(struct S *arr, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3310
 extern "C" void func_ov002_020f3310(C* self, int idx) {
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x30 + 0x15e));
+    unsigned char sel = ((StaffRoll *)self)->window[idx].step;
     (self->*data_ov002_02110e24[sel])(idx);
 }
 
@@ -1644,18 +1564,17 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 #pragma opt_common_subs off
 void func_ov002_020f335c(char *o, int i) {
     int idx = i * 0x30;
-    int *fld = (int *)(o + 0x144 + idx);
+    int *fld = (int *)(o + WINDOW_OFF(top) + idx);
     *fld = *fld + 0x1800;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
     if (*fld >= 0x66000) {
         *fld = 0x66000;
-        *(unsigned char *)(o + idx + 0x15c) = 0;
-        *(unsigned char *)(o + idx + 0x15e) = 0;
+        ((StaffRoll *)o)->window[i].active = 0;
+        ((StaffRoll *)o)->window[i].step = 0;
     }
     char *b = o + idx;
-    int f140 = *(int *)(b + 0x140) >> 0xc;
-    int f148 = *(int *)(b + 0x148) >> 0xc;
-    int f14c = *(int *)(b + 0x14c) >> 0xc;
+    int f140 = ((StaffRoll *)b)->window[0].left >> 0xc;
+    int f148 = ((StaffRoll *)b)->window[0].right >> 0xc;
+    int f14c = ((StaffRoll *)b)->window[0].bottom >> 0xc;
     int fv   = *fld >> 0xc;
     *(volatile unsigned short *)0x4001042 = (unsigned short)(((f140 << 8) & 0xff00) | (f148 & 0xff));
     *(volatile unsigned short *)0x4001046 = (unsigned short)(((fv   << 8) & 0xff00) | (f14c & 0xff));
@@ -1671,18 +1590,17 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 #pragma opt_common_subs off
 void func_ov002_020f340c(char *o, int i) {
     int idx = i * 0x30;
-    int *fld = (int *)(o + 0x144 + idx);
+    int *fld = (int *)(o + WINDOW_OFF(top) + idx);
     *fld = *fld + 0x1800;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
     if (*fld >= 0x66000) {
         *fld = 0x66000;
-        *(unsigned char *)(o + idx + 0x15c) = 0;
-        *(unsigned char *)(o + idx + 0x15e) = 0;
+        ((StaffRoll *)o)->window[i].active = 0;
+        ((StaffRoll *)o)->window[i].step = 0;
     }
     char *b = o + idx;
-    int f140 = *(int *)(b + 0x140) >> 0xc;
-    int f148 = *(int *)(b + 0x148) >> 0xc;
-    int f14c = *(int *)(b + 0x14c) >> 0xc;
+    int f140 = ((StaffRoll *)b)->window[0].left >> 0xc;
+    int f148 = ((StaffRoll *)b)->window[0].right >> 0xc;
+    int f14c = ((StaffRoll *)b)->window[0].bottom >> 0xc;
     int fv   = *fld >> 0xc;
     *(volatile unsigned short *)0x4001042 = (unsigned short)(((f140 << 8) & 0xff00) | (f148 & 0xff));
     *(volatile unsigned short *)0x4001046 = (unsigned short)(((fv   << 8) & 0xff00) | (f14c & 0xff));
@@ -1701,21 +1619,27 @@ void func_ov002_020f34bc(unsigned char *s, int idx)
     int flag;
     int a, b, c, d;
     int bs, cs, ds, as_;
-    *(int *)(s + 0x140 + k) -= 0x1800;
-    *(int *)(s + 0x144 + k) -= 0x1800;
-    *(int *)(s + 0x148 + k) += 0x1800;
-    *(int *)(s + 0x14c + k) += 0x1800;
+    *(int *)(s + WINDOW_OFF(left) + k) -= 0x1800;
+    *(int *)(s + WINDOW_OFF(top) + k) -= 0x1800;
+    *(int *)(s + WINDOW_OFF(right) + k) += 0x1800;
+    *(int *)(s + WINDOW_OFF(bottom) + k) += 0x1800;
     flag = 0;
-    if (*(int *)(s + 0x140 + k) <= 0x80000) *(int *)(s + 0x140 + k) = 0x80000;
-    if (*(int *)(s + 0x144 + k) <= 0x56000) *(int *)(s + 0x144 + k) = 0x56000;
-    if (*(int *)(s + 0x148 + k) >= 0xfc000) *(int *)(s + 0x148 + k) = 0xfc000;
-    if (*(int *)(s + 0x14c + k) >= 0xbc000) { *(int *)(s + 0x14c + k) = 0xbc000; flag++; }
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    if (flag != 0) (*(unsigned char *)(s + 0x15e + k))++;
-    a = *(int *)(s + 0x144 + k);
-    b = *(int *)(s + 0x140 + k);
-    c = *(int *)(s + 0x148 + k);
-    d = *(int *)(s + 0x14c + k);
+    if (*(int *)(s + WINDOW_OFF(left) + k) <= 0x80000)
+        *(int *)(s + WINDOW_OFF(left) + k) = 0x80000;
+    if (*(int *)(s + WINDOW_OFF(top) + k) <= 0x56000)
+        *(int *)(s + WINDOW_OFF(top) + k) = 0x56000;
+    if (*(int *)(s + WINDOW_OFF(right) + k) >= 0xfc000)
+        *(int *)(s + WINDOW_OFF(right) + k) = 0xfc000;
+    if (*(int *)(s + WINDOW_OFF(bottom) + k) >= 0xbc000) {
+        *(int *)(s + WINDOW_OFF(bottom) + k) = 0xbc000;
+        flag++;
+    }
+    if (flag != 0)
+        (*(unsigned char *)(s + WINDOW_OFF(step) + k))++;
+    a = *(int *)(s + WINDOW_OFF(top) + k);
+    b = *(int *)(s + WINDOW_OFF(left) + k);
+    c = *(int *)(s + WINDOW_OFF(right) + k);
+    d = *(int *)(s + WINDOW_OFF(bottom) + k);
     bs = b >> 12;
     cs = c >> 12;
     ds = d >> 12;
@@ -1733,28 +1657,30 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f35e4(char *c, int i)
 {
     int off = i * 0x30;
-    *(int *)(c + 0x140 + off) = 0xe0000;
-    *(int *)(c + 0x144 + off) = 0x66000;
-    *(int *)(c + 0x148 + off) = 0xe0000;
-    *(int *)(c + 0x14c + off) = 0x66000;
+    *(int *)(c + WINDOW_OFF(left) + off) = 0xe0000;
+    *(int *)(c + WINDOW_OFF(top) + off) = 0x66000;
+    *(int *)(c + WINDOW_OFF(right) + off) = 0xe0000;
+    *(int *)(c + WINDOW_OFF(bottom) + off) = 0x66000;
     *((volatile unsigned int *) 0x4001000) = ((*((volatile unsigned int *) 0x4001000)) & (~0xe000)) | 0x4000;
     *((volatile unsigned short *) 0x4001048) = (unsigned short) (((((*((volatile unsigned short *) 0x4001048)) & (~0x3f00)) | 0x1700) & 0xFFFFFFFFFFFFFFFFull) | 0x2000);
     *((volatile unsigned short *) 0x400104a) = (unsigned short) (((((*((volatile unsigned short *) 0x400104a)) & (~0x3f)) | 0x11) & 0xFFFFFFFFFFFFFFFFull) | 0x20);
     {
-        int a = *(int *)(c + 0x140 + off) >> 12;
-        int d = *(int *)(c + 0x148 + off) >> 12;
-        int e = *(int *)(c + 0x14c + off) >> 12;
-        int b = *(int *)(c + 0x144 + off) >> 12;
+        int a = *(int *)(c + WINDOW_OFF(left) + off) >> 12;
+        int d = *(int *)(c + WINDOW_OFF(right) + off) >> 12;
+        int e = *(int *)(c + WINDOW_OFF(bottom) + off) >> 12;
+        int b = *(int *)(c + WINDOW_OFF(top) + off) >> 12;
         *((volatile unsigned short *) 0x4001042) = (unsigned short) (((a << 8) & 0xff00) | (d & 0xff));
         *((volatile unsigned short *) 0x4001046) = (unsigned short) (((b << 8) & 0xff00) | (e & 0xff));
     }
-    *(int *)(c + 0x130 + off) = -0x60000;
-    *(int *)(c + 0x134 + off) = -0x38000;
-    SetSubBg1Offset(*(int *)(c + 0x130 + off) >> 12, *(int *)(c + 0x134 + off) >> 12);
-    SetSubBg2Offset(*(int *)(c + 0x130 + off) >> 12, *(int *)(c + 0x134 + off) >> 12);
+    *(int *)(c + WINDOW_OFF(bgX) + off) = -0x60000;
+    *(int *)(c + WINDOW_OFF(bgY) + off) = -0x38000;
+    SetSubBg1Offset(*(int *)(c + WINDOW_OFF(bgX) + off) >> 12,
+                    *(int *)(c + WINDOW_OFF(bgY) + off) >> 12);
+    SetSubBg2Offset(*(int *)(c + WINDOW_OFF(bgX) + off) >> 12,
+                    *(int *)(c + WINDOW_OFF(bgY) + off) >> 12);
     data_0209d454 |= 6;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    *(unsigned char *)(c + 0x15e + off) = *(unsigned char *)(c + 0x15e + off) + 1;
+    *(unsigned char *)(c + WINDOW_OFF(step) + off) =
+        *(unsigned char *)(c + WINDOW_OFF(step) + off) + 1;
 }
 }
 
@@ -1763,8 +1689,7 @@ void func_ov002_020f35e4(char *c, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3740
 extern "C" void func_ov002_020f3740(C* self, int idx) {
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x30 + 0x15e));
+    unsigned char sel = ((StaffRoll *)self)->window[idx].step;
     (self->*data_ov002_02110e9c[sel])(idx);
 }
 
@@ -1773,8 +1698,8 @@ extern "C" void func_ov002_020f3740(C* self, int idx) {
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f378c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f378c(struct E *base, int idx){
-  base[idx].d[0x15e] = 0;
+void func_ov002_020f378c(StaffRoll *self, int idx) {
+    self->window[idx].step = 0;
 }
 }
 
@@ -1862,16 +1787,17 @@ void func_ov002_020f396c(char *p)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3978
 extern "C" {
-extern void* data_ov002_0210b998[];
-void func_ov002_020f3978(char* c){
-  int i;
-  for(i = 0; i < 4; i++){
-    if(*(unsigned char*)(c+0x45)){
-        OAM::Render(true, (OamAttr *)data_ov002_0210b998[i], *(int *)c >> 0xc,
-                    *(int *)(c + 4) >> 0xc, -1, 1, 0);
+extern void *data_ov002_0210b998[];
+void func_ov002_020f3978(char *c) {
+    int i;
+    for (i = 0; i < 4; i++) {
+        if (((StaffRoll *)c)->stars[0].visible) {
+            OAM::Render(true, (OamAttr *)data_ov002_0210b998[i],
+                        ((StaffRoll *)c)->stars[0].x >> 0xc, ((StaffRoll *)c)->stars[0].y >> 0xc,
+                        -1, 1, 0);
+        }
+        c += 0x4c;
     }
-    c += 0x4c;
-  }
 }
 }
 
@@ -1879,47 +1805,50 @@ void func_ov002_020f3978(char* c){
 /* ROM ordinal 49 -- func_ov002_020f39ec, 0x020f39ec, size 0xfc */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f39ec
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" { /* .c-derived member: C linkage for the whole block */
 #pragma opt_common_subs off
-void func_ov002_020f39ec(char *self, int idx)
-{
-  char pad[4];
-  (void)pad[0];
-  int off = idx * 0x4c;
-  unsigned short *p32 = (unsigned short *)(self + 0x32);
-  unsigned short *ctr = (unsigned short *)((char *)p32 + off);
-  *ctr = (unsigned short)(*ctr + 1);
-  if (*ctr < 4) return;
-  int zero = 0;
-  *ctr = (unsigned short)zero;
-  {
-    unsigned short *p3a = (unsigned short *)(self + 0x3a);
-    unsigned short *ctr2 = (unsigned short *)((char *)p3a + off);
-    *ctr2 = (unsigned short)(*ctr2 + 1);
-    char *row = self + off;
-    if (*((unsigned char *)(row + 0x4a)) != 0) {
-      if (*ctr2 >= 0x10) *ctr2 = 0x10;
-    } else if (*ctr2 >= 0x20) {
-      *ctr2 = (unsigned short)zero;
+void func_ov002_020f39ec(char *self, int idx) {
+    char pad[4];
+    (void)pad[0];
+    int off = idx * 0x4c;
+    unsigned short *timerBase = &((StaffRoll *)self)->stars[0].frameTimer;
+    unsigned short *ctr = (unsigned short *)((char *)timerBase + off);
+    *ctr = (unsigned short)(*ctr + 1);
+    if (*ctr < 4)
+        return;
+    int zero = 0;
+    *ctr = (unsigned short)zero;
+    {
+        unsigned short *frameBase = &((StaffRoll *)self)->stars[0].frame;
+        unsigned short *ctr2 = (unsigned short *)((char *)frameBase + off);
+        *ctr2 = (unsigned short)(*ctr2 + 1);
+        char *row = self + off;
+        if (((StaffRoll *)row)->stars[0].holdFrame != 0) {
+            if (*ctr2 >= 0x10)
+                *ctr2 = 0x10;
+        } else if (*ctr2 >= 0x20) {
+            *ctr2 = (unsigned short)zero;
+        }
     }
-  }
 
-  int i = 0;
-  int acc = i;
-  int dst_off = i;
-  char *row = self + off;
-  unsigned base = 0x6600000u;
-  base += 0x2000u;
-  base += (unsigned)(idx << 8);
-  int n100 = 0x100;
-  for (; i < 4; i++) {
-    int v = data_ov002_021002a0[*((unsigned short *)(row + 0x3a))];
-    int src_off = acc + ((v & 7) << 8);
-    if (v & 8) src_off += 0x2000;
-    MultiCopyHalf((void *)((*((int *)(self + 0x510))) + src_off), (void *)(base + (unsigned)dst_off), (unsigned)n100);
-    acc += 0x800;
-    dst_off += 0x400;
-  }
+    int i = 0;
+    int acc = i;
+    int dst_off = i;
+    char *row = self + off;
+    unsigned base = 0x6600000u;
+    base += 0x2000u;
+    base += (unsigned)(idx << 8);
+    int n100 = 0x100;
+    for (; i < 4; i++) {
+        int v = data_ov002_021002a0[((StaffRoll *)row)->stars[0].frame];
+        int src_off = acc + ((v & 7) << 8);
+        if (v & 8)
+            src_off += 0x2000;
+        MultiCopyHalf((void *)(((StaffRoll *)self)->starChars + src_off),
+                      (void *)(base + (unsigned)dst_off), (unsigned)n100);
+        acc += 0x800;
+        dst_off += 0x400;
+    }
 }
 #pragma opt_common_subs on
 }
@@ -1931,20 +1860,19 @@ void func_ov002_020f39ec(char *self, int idx)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f3ae8(char *base, int idx)
 {
-  struct Ent *arr = (struct Ent *) base;
-  int a;
-  int b;
-  a = data_02082214[((arr[idx].angle >> 4) * 2) + 1];
-  b = arr[idx].vx;
-  arr[idx].out0 = FX_MUL(a, b) + 0xe0000;
-  a = data_02082214[(arr[idx].angle >> 4) * 2];
-  b = arr[idx].vx;
-  arr[idx].out4 = FX_MUL(a, b) + 0x66000;
-  if (arr[idx].vx > 0x18000)
-  {
-    arr[idx].vx = arr[idx].vx - 0x10;
-  }
-  arr[idx].angle += 0x200;
+    StaffRoll::Star *arr = (StaffRoll::Star *)base;
+    int a;
+    int b;
+    a = data_02082214[((arr[idx].heading >> 4) * 2) + 1];
+    b = arr[idx].radius;
+    arr[idx].x = FX_MUL(a, b) + 0xe0000;
+    a = data_02082214[(arr[idx].heading >> 4) * 2];
+    b = arr[idx].radius;
+    arr[idx].y = FX_MUL(a, b) + 0x66000;
+    if (arr[idx].radius > 0x18000) {
+        arr[idx].radius = arr[idx].radius - 0x10;
+    }
+    arr[idx].heading += 0x200;
 }
 }
 
@@ -1960,47 +1888,47 @@ void func_ov002_020f3ba0(char *c, int i)
     unsigned short ang;
     unsigned short target;
 
-    idx = *(unsigned short*)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2 + 1];
-        int spd = *(int*)(c + 8 + off);
-        *(int *)(c + 0 + off) += FX_MUL(tv, spd);
+        int spd = *(int *)(c + STAR_OFF(speed) + off);
+        *(int *)(c + STAR_OFF(x) + off) += FX_MUL(tv, spd);
     }
 
-    idx = *(unsigned short*)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2];
-        int spd = *(int*)(c + 8 + off);
-        *(int *)(c + 4 + off) += FX_MUL(tv, spd);
+        int spd = *(int *)(c + STAR_OFF(speed) + off);
+        *(int *)(c + STAR_OFF(y) + off) += FX_MUL(tv, spd);
     }
 
-    *(int*)(c + 8 + off) += 0x30;
+    *(int *)(c + STAR_OFF(speed) + off) += 0x30;
 
-    dx = 0xe0 - (*(int*)(c + 0 + off) >> 12);
-    dy = 0x46 - (*(int*)(c + 4 + off) >> 12);
+    dx = 0xe0 - (*(int *)(c + STAR_OFF(x) + off) >> 12);
+    dy = 0x46 - (*(int *)(c + STAR_OFF(y) + off) >> 12);
 
     if (dx >= -2 && dx <= 2 && dy >= -2 && dy <= 2) {
-        *(unsigned char*)(c + 0x47 + off) += 1;
-        *(unsigned short*)(c + 0x30 + off) = 0;
-        *(unsigned short*)(c + 0x2e + off) = 0xc000;
-        *(int*)(c + 0x10 + off) = 0x20000;
-        *(int*)(c + 0 + off) = 0xe0000;
-        *(int*)(c + 4 + off) = 0x46000;
+        *(unsigned char *)(c + STAR_OFF(step) + off) += 1;
+        *(unsigned short *)(c + STAR_OFF(delay) + off) = 0;
+        *(unsigned short *)(c + STAR_OFF(heading) + off) = 0xc000;
+        *(int *)(c + STAR_OFF(radius) + off) = 0x20000;
+        *(int *)(c + STAR_OFF(x) + off) = 0xe0000;
+        *(int *)(c + STAR_OFF(y) + off) = 0x46000;
         return;
     }
 
     target = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
-    ang = *(unsigned short*)(c + 0x2e + off);
+    ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
     if (target > ang) {
-        *(unsigned short*)(c + 0x2e + off) += 0x80;
-        if (target <= *(unsigned short*)(c + 0x2e + off))
-            *(unsigned short*)(c + 0x2e + off) = target;
+        *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x80;
+        if (target <= *(unsigned short *)(c + STAR_OFF(heading) + off))
+            *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
     } else {
         if (ang <= target)
             return;
-        *(unsigned short*)(c + 0x2e + off) -= 0x80;
-        if (*(unsigned short*)(c + 0x2e + off) <= target)
-            *(unsigned short*)(c + 0x2e + off) = target;
+        *(unsigned short *)(c + STAR_OFF(heading) + off) -= 0x80;
+        if (*(unsigned short *)(c + STAR_OFF(heading) + off) <= target)
+            *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
     }
 }
 }
@@ -2013,16 +1941,16 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f3d38(char *c, int i)
 {
     int off = i * 0x4c;
-    if (*(u16*)(c + 0x30 + off) != 0) {
-        *(u16*)(c + 0x30 + off) = *(u16*)(c + 0x30 + off) - 1;
+    if (*(u16 *)(c + STAR_OFF(delay) + off) != 0) {
+        *(u16 *)(c + STAR_OFF(delay) + off) = *(u16 *)(c + STAR_OFF(delay) + off) - 1;
         return;
     }
-    *(s32*)(c + off) = -0x10000;
-    *(s32*)(c + off + 4) = -0x10000;
-    *(s32*)(c + off + 8) = 0x2000;
-    *(u16*)(c + off + 0x2e) = 0;
-    *(u16*)(c + 0x30 + off) = 0;
-    *(u8*)(c + 0x47 + off) = *(u8*)(c + 0x47 + off) + 1;
+    *(s32 *)(c + STAR_OFF(x) + off) = -0x10000;
+    *(s32 *)(c + off + STAR_OFF(y)) = -0x10000;
+    *(s32 *)(c + off + STAR_OFF(speed)) = 0x2000;
+    *(u16 *)(c + off + STAR_OFF(heading)) = 0;
+    *(u16 *)(c + STAR_OFF(delay) + off) = 0;
+    *(u8 *)(c + STAR_OFF(step) + off) = *(u8 *)(c + STAR_OFF(step) + off) + 1;
 }
 }
 
@@ -2031,7 +1959,7 @@ void func_ov002_020f3d38(char *c, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3d98
 extern "C" void func_ov002_020f3d98(C* self, int idx) {
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x4c + 0x47));
+    unsigned char sel = ((StaffRoll *)self)->stars[idx].step;
     (self->*data_ov002_02110e34[sel])(idx);
 }
 
@@ -2051,85 +1979,86 @@ void func_ov002_020f3de4(char *c, int i)
     unsigned short v;
     int j;
 
-    v = *(unsigned short *)(c + 0x30 + off);
+    v = *(unsigned short *)(c + STAR_OFF(delay) + off);
     if (v != 0) {
-        *(unsigned short *)(c + 0x30 + off) = v - 1;
+        *(unsigned short *)(c + STAR_OFF(delay) + off) = v - 1;
         return;
     }
 
-    if (*(unsigned char *)(c + 0x48 + off) == 0) {
-        idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    if (*(unsigned char *)(c + STAR_OFF(phase) + off) == 0) {
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2 + 1];
-            int spd = *(int *)(c + 8 + off);
-            *(int *)(c + 0 + off) += FX_MUL(tv, spd);
+            int spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(x) + off) += FX_MUL(tv, spd);
         }
 
-        idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2];
-            int spd = *(int *)(c + 8 + off);
-            *(int *)(c + 4 + off) += FX_MUL(tv, spd);
+            int spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(y) + off) += FX_MUL(tv, spd);
         }
 
-        if (*(int *)(c + 8 + off) >= 0x2000)
-            *(int *)(c + 8 + off) -= 0x120;
+        if (*(int *)(c + STAR_OFF(speed) + off) >= 0x2000)
+            *(int *)(c + STAR_OFF(speed) + off) -= 0x120;
 
-        dx = (*(int *)(c + 0x1c + off) - *(int *)(c + 0 + off)) >> 12;
-        dy = (*(int *)(c + 0x20 + off) - *(int *)(c + 4 + off)) >> 12;
+        dx = (*(int *)(c + STAR_OFF(targetX) + off) - *(int *)(c + STAR_OFF(x) + off)) >> 12;
+        dy = (*(int *)(c + STAR_OFF(targetY) + off) - *(int *)(c + STAR_OFF(y) + off)) >> 12;
 
         if (dx >= -2 && dx <= 2 && dy >= -2 && dy <= 2) {
-            *(unsigned char *)(c + 0x48 + off) += 1;
-            *(int *)(c + 0x24 + off) = 0;
-            *(unsigned short *)(c + 0x2e + off) = 0xc000;
+            *(unsigned char *)(c + STAR_OFF(phase) + off) += 1;
+            *(int *)(c + STAR_OFF(orbitTravel) + off) = 0;
+            *(unsigned short *)(c + STAR_OFF(heading) + off) = 0xc000;
             return;
         }
 
         target = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
-        ang = *(unsigned short *)(c + 0x2e + off);
+        ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
         if (target > ang) {
-            *(unsigned short *)(c + 0x2e + off) += 0x100;
-            if (target <= *(unsigned short *)(c + 0x2e + off))
-                *(unsigned short *)(c + 0x2e + off) = target;
+            *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x100;
+            if (target <= *(unsigned short *)(c + STAR_OFF(heading) + off))
+                *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
         } else {
             if (ang <= target)
                 return;
-            *(unsigned short *)(c + 0x2e + off) -= 0x100;
-            if (*(unsigned short *)(c + 0x2e + off) <= target)
-                *(unsigned short *)(c + 0x2e + off) = target;
+            *(unsigned short *)(c + STAR_OFF(heading) + off) -= 0x100;
+            if (*(unsigned short *)(c + STAR_OFF(heading) + off) <= target)
+                *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
         }
         return;
     }
 
-    idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2 + 1];
-        int spd = *(int *)(c + 0x10 + off);
-        *(int *)(c + 0 + off) = FX_MUL(tv, spd) + 0x80000;
+        int spd = *(int *)(c + STAR_OFF(radius) + off);
+        *(int *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
     }
-    idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2];
-        int spd = *(int *)(c + 0x10 + off);
-        *(int *)(c + 4 + off) = FX_MUL(tv, spd) + 0x60000;
+        int spd = *(int *)(c + STAR_OFF(radius) + off);
+        *(int *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
     }
-    *(unsigned short *)(c + 0x2e + off) += *(unsigned short *)(c + 0x42 + off);
-    *(int *)(c + 0x24 + off) += *(unsigned short *)(c + 0x42 + off);
+    *(unsigned short *)(c + STAR_OFF(heading) + off) +=
+        *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
+    *(int *)(c + STAR_OFF(orbitTravel) + off) += *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
 
     if (i != func_ov002_020f5a94(c) - 1)
         return;
-    if ((unsigned int)*(int *)(c + 0x24) < 0x10000)
+    if ((unsigned int)((StaffRoll *)c)->stars[0].orbitTravel < 0x10000)
         return;
 
     for (j = 0; j < 4; j++) {
-        if (*(unsigned char *)(c + 0x44) != 0) {
-            *(unsigned char *)(c + 0x47) = 1;
-            *(unsigned short *)(c + 0x3c) = 0;
-            *(unsigned char *)(c + 0x48) = 0;
-            *(int *)(c + 0x10) = 0x38000;
-            *(unsigned short *)(c + 0x2e) = data_ov002_021000c0[j];
-            *(int *)(c + 0x24) = 0;
-            *(unsigned short *)(c + 0x42) = 0x200;
+        if (((StaffRoll *)c)->stars[0].active != 0) {
+            ((StaffRoll *)c)->stars[0].step = 1;
+            ((StaffRoll *)c)->stars[0].loops = 0;
+            ((StaffRoll *)c)->stars[0].phase = 0;
+            ((StaffRoll *)c)->stars[0].radius = 0x38000;
+            ((StaffRoll *)c)->stars[0].heading = data_ov002_021000c0[j];
+            ((StaffRoll *)c)->stars[0].orbitTravel = 0;
+            ((StaffRoll *)c)->stars[0].angSpeed = 0x200;
         }
         c += 0x4c;
     }
@@ -2145,80 +2074,83 @@ void func_ov002_020f40fc(char *c, int i)
 {
     int off = i * 0x4c;
 
-    if (*(unsigned short*)(c + 0x3a + off) == 0) {
-        if (*(unsigned short*)(c + 0x32 + off) == 0) {
-            *(unsigned short*)(c + 0x3c + off) += 1;
+    if (*(unsigned short *)(c + STAR_OFF(frame) + off) == 0) {
+        if (*(unsigned short *)(c + STAR_OFF(frameTimer) + off) == 0) {
+            *(unsigned short *)(c + STAR_OFF(loops) + off) += 1;
         }
     }
 
-    if (*(unsigned char*)(c + 0x48 + off) == 0) {
+    if (*(unsigned char *)(c + STAR_OFF(phase) + off) == 0) {
         int idx;
-        idx = *(unsigned short*)(c + 0x2e + off) >> 4;
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2 + 1];
-            int spd = *(int*)(c + 0x10 + off);
-            *(int *)(c + 0 + off) = FX_MUL(tv, spd) + 0x80000;
+            int spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
         }
-        idx = *(unsigned short*)(c + 0x2e + off) >> 4;
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2];
-            int spd = *(int*)(c + 0x10 + off);
-            *(int *)(c + 4 + off) = FX_MUL(tv, spd) + 0x60000;
+            int spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
         }
 
-        *(unsigned short*)(c + 0x2e + off) -= *(unsigned short*)(c + 0x42 + off);
-        *(int*)(c + 0x24 + off) += *(unsigned short*)(c + 0x42 + off);
+        *(unsigned short *)(c + STAR_OFF(heading) + off) -=
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
+        *(int *)(c + STAR_OFF(orbitTravel) + off) +=
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
 
-        if (*(unsigned char*)(c + 0x48) != 0) {
-            *(unsigned short*)(c + 0x42 + off) += 8;
+        if (((StaffRoll *)c)->stars[0].phase != 0) {
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off) += 8;
         } else {
-            if (*(unsigned short*)(c + 0x42 + off) < 0x200) {
-                *(unsigned short*)(c + 0x42 + off) += 6;
-                if (*(unsigned short*)(c + 0x42 + off) > 0x200)
-                    *(unsigned short*)(c + 0x42 + off) = 0x200;
+            if (*(unsigned short *)(c + STAR_OFF(angSpeed) + off) < 0x200) {
+                *(unsigned short *)(c + STAR_OFF(angSpeed) + off) += 6;
+                if (*(unsigned short *)(c + STAR_OFF(angSpeed) + off) > 0x200)
+                    *(unsigned short *)(c + STAR_OFF(angSpeed) + off) = 0x200;
             }
         }
 
-        if ((unsigned int)*(int*)(c + 0x24 + off) >= (unsigned int)data_ov002_02100120[i]
-            && *(unsigned char*)(c + 0x514) == 0) {
-            *(unsigned char*)(c + 0x48 + off) += 1;
-            *(unsigned short*)(c + 0x36 + off) = 0;
-            *(int*)(c + 8 + off) = 0x2000;
+        if ((unsigned int)*(int *)(c + STAR_OFF(orbitTravel) + off) >=
+                (unsigned int)data_ov002_02100120[i] &&
+            ((StaffRoll *)c)->holdOrbit == 0) {
+            *(unsigned char *)(c + STAR_OFF(phase) + off) += 1;
+            *(unsigned short *)(c + STAR_OFF(flyTimer) + off) = 0;
+            *(int *)(c + STAR_OFF(speed) + off) = 0x2000;
         }
 
         if (func_ov002_020f5a94(c) != 3)
             return;
-        if ((unsigned int)*(int*)(c + 0x24 + off) < 0xc000)
+        if ((unsigned int)*(int *)(c + STAR_OFF(orbitTravel) + off) < 0xc000)
             return;
         if (i != 2)
             return;
-        if (*(unsigned char*)(c + 0x514) != 0)
+        if (((StaffRoll *)c)->holdOrbit != 0)
             return;
-        *(unsigned char*)(c + 0x48 + off) += 1;
-        *(unsigned short*)(c + 0x36 + off) = 0;
-        *(int*)(c + 8 + off) = 0x2000;
+        *(unsigned char *)(c + STAR_OFF(phase) + off) += 1;
+        *(unsigned short *)(c + STAR_OFF(flyTimer) + off) = 0;
+        *(int *)(c + STAR_OFF(speed) + off) = 0x2000;
         return;
     }
 
-    *(unsigned short*)(c + 0x36 + off) += 1;
-    *(int*)(c + 0 + off) += *(int*)(c + 8 + off);
-    *(int*)(c + 8 + off) += 0x300;
-    if (*(unsigned short*)(c + 0x36) < 0x70)
+    *(unsigned short *)(c + STAR_OFF(flyTimer) + off) += 1;
+    *(int *)(c + STAR_OFF(x) + off) += *(int *)(c + STAR_OFF(speed) + off);
+    *(int *)(c + STAR_OFF(speed) + off) += 0x300;
+    if (((StaffRoll *)c)->stars[0].flyTimer < 0x70)
         return;
     {
         int off2 = (int)((long long)i) * 0x4c;
-        *(unsigned char*)(c + 0x47 + off2) += 1;
-        *(unsigned short*)(c + 0x3c + off2) = 0;
-        *(unsigned char*)(c + 0x48 + off) = 0;
-        *(int*)(c + 0x10 + off2) = 0x38000;
-        *(unsigned short*)(c + 0x2e + off2) = 0;
-        *(unsigned short*)(c + 0x30 + off2) = data_ov002_02100130[i] << 6;
-        *(int*)(c + 0 + off) = -0x10000;
-        *(int*)(c + 4 + off2) = 0;
-        *(unsigned short*)(c + 0x42 + off2) = 0x100;
-        *(int*)(c + 8 + off) = 0x5800;
-        *(int*)(c + 0x1c + off2) = 0x80000;
-        *(int*)(c + 0x20 + off2) = 0x28000;
+        *(unsigned char *)(c + STAR_OFF(step) + off2) += 1;
+        *(unsigned short *)(c + STAR_OFF(loops) + off2) = 0;
+        *(unsigned char *)(c + STAR_OFF(phase) + off) = 0;
+        *(int *)(c + STAR_OFF(radius) + off2) = 0x38000;
+        *(unsigned short *)(c + STAR_OFF(heading) + off2) = 0;
+        *(unsigned short *)(c + STAR_OFF(delay) + off2) = data_ov002_02100130[i] << 6;
+        *(int *)(c + STAR_OFF(x) + off) = -0x10000;
+        *(int *)(c + STAR_OFF(y) + off2) = 0;
+        *(unsigned short *)(c + STAR_OFF(angSpeed) + off2) = 0x100;
+        *(int *)(c + STAR_OFF(speed) + off) = 0x5800;
+        *(int *)(c + STAR_OFF(targetX) + off2) = 0x80000;
+        *(int *)(c + STAR_OFF(targetY) + off2) = 0x28000;
     }
 }
 }
@@ -2253,58 +2185,58 @@ void func_ov002_020f43cc(char *c, int i) {
     char *s;
     int off = idx * 0x4c;
     {
-        unsigned short v = *(unsigned short *)(c + 0x30 + off);
+        unsigned short v = *(unsigned short *)(c + STAR_OFF(delay) + off);
         if (v != 0) {
-            *(unsigned short *)(c + 0x30 + off) = v - 1;
+            *(unsigned short *)(c + STAR_OFF(delay) + off) = v - 1;
             return;
         }
     }
-    if (*(unsigned char *)(c + 0x48 + off) == 0) {
+    if (*(unsigned char *)(c + STAR_OFF(phase) + off) == 0) {
         int idxa;
         short tv;
         int spd;
-        idxa = *(unsigned short *)(c + 0x2e + off) >> 4;
+        idxa = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             tv = data_02082214[idxa * 2 + 1];
-            spd = *(int *)(c + 8 + off);
-            *(int *)(c + off) += FX_MUL(tv, spd);
+            spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(x) + off) += FX_MUL(tv, spd);
         }
-        idxa = *(unsigned short *)(c + 0x2e + off) >> 4;
+        idxa = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             tv = data_02082214[idxa * 2];
-            spd = *(int *)(c + 8 + off);
-            *(int *)(c + 4 + off) += FX_MUL(tv, spd);
+            spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(y) + off) += FX_MUL(tv, spd);
         }
         px = c + off;
-        if (*(int *)(c + 8 + off) <= -0x2000)
-            *(int *)(c + 8 + off) = *(int *)(c + 8 + off) + 0x120;
+        if (*(int *)(c + STAR_OFF(speed) + off) <= -0x2000)
+            *(int *)(c + STAR_OFF(speed) + off) = *(int *)(c + STAR_OFF(speed) + off) + 0x120;
         {
             s = c + idx * 0x4c;
-            int dx = (*(int *)(s + 0x1c) - *(int *)px) >> 12;
-            int dy = (*(int *)(s + 0x20) - *(int *)(c + 4 + off)) >> 12;
+            int dx = (((StaffRoll *)s)->stars[0].targetX - *(int *)px) >> 12;
+            int dy = (((StaffRoll *)s)->stars[0].targetY - *(int *)(c + STAR_OFF(y) + off)) >> 12;
             if (dx >= -2 && dx <= 2 && dy >= -2 && dy <= 2) {
-                (*(unsigned char *)(c + 0x48 + off))++;
-                *(int *)(s + 0x24) = 0;
-                *(unsigned short *)(c + 0x2e + off) = 0xc000;
+                (*(unsigned char *)(c + STAR_OFF(phase) + off))++;
+                ((StaffRoll *)s)->stars[0].orbitTravel = 0;
+                *(unsigned short *)(c + STAR_OFF(heading) + off) = 0xc000;
                 return;
             }
             {
                 unsigned short a = (unsigned short)_ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
-                unsigned short cur = *(unsigned short *)(c + 0x2e + off);
+                unsigned short cur = *(unsigned short *)(c + STAR_OFF(heading) + off);
                 if (a > cur) {
                     unsigned short nv;
-                    *(unsigned short *)(c + 0x2e + off) += 0x100;
-                    nv = *(unsigned short *)(c + 0x2e + off);
+                    *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x100;
+                    nv = *(unsigned short *)(c + STAR_OFF(heading) + off);
                     if (a <= nv)
-                        *(unsigned short *)(c + 0x2e + off) = a;
+                        *(unsigned short *)(c + STAR_OFF(heading) + off) = a;
                     return;
                 }
                 if (cur > a) {
                     unsigned short nv2;
-                    *(unsigned short *)(c + 0x2e + off) -= 0x100;
-                    nv2 = *(unsigned short *)(c + 0x2e + off);
+                    *(unsigned short *)(c + STAR_OFF(heading) + off) -= 0x100;
+                    nv2 = *(unsigned short *)(c + STAR_OFF(heading) + off);
                     if (nv2 <= a)
-                        *(unsigned short *)(c + 0x2e + off) = a;
+                        *(unsigned short *)(c + STAR_OFF(heading) + off) = a;
                     return;
                 }
                 return;
@@ -2315,39 +2247,42 @@ void func_ov002_020f43cc(char *c, int i) {
         int idxa;
         short tv;
         int spd;
-        idxa = *(unsigned short *)(c + 0x2e + off) >> 4;
+        idxa = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             tv = data_02082214[idxa * 2 + 1];
-            spd = *(int *)(c + 0x10 + off);
-            *(int *)(c + off) = FX_MUL(tv, spd) + 0x80000;
+            spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
         }
-        idxa = *(unsigned short *)(c + 0x2e + off) >> 4;
+        idxa = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             tv = data_02082214[idxa * 2];
-            spd = *(int *)(c + 0x10 + off);
-            *(int *)(c + 4 + off) = FX_MUL(tv, spd) + 0x60000;
+            spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
         }
-        *(unsigned short *)(c + 0x2e + off) -= *(unsigned short *)(c + 0x42 + off);
-        *(int *)(c + 0x24 + off) += *(unsigned short *)(c + 0x42 + off);
+        *(unsigned short *)(c + STAR_OFF(heading) + off) -=
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
+        *(int *)(c + STAR_OFF(orbitTravel) + off) +=
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
     }
     if (idx != func_ov002_020f5a94(c) - 1)
         return;
-    if ((unsigned int)*(int *)(c + 0x24) < 0x10000U)
+    if ((unsigned int)((StaffRoll *)c)->stars[0].orbitTravel < 0x10000U)
         return;
     {
         int j;
         char *p = c;
         for (j = 0; j < 4; j++) {
-            if (*(unsigned char *)(p + 0x44) != 0) {
-                (*(unsigned char *)(p + 0x47))++;
-                *(unsigned short *)(p + 0x3c) = 0;
-                *(unsigned char *)(p + 0x48) = 0;
-                *(int *)(p + 0x10) = 0x38000;
-                *(unsigned short *)(p + 0x2e) = data_ov002_021000b8[j];
+            if (((StaffRoll *)p)->stars[0].active != 0) {
+                (((StaffRoll *)p)->stars[0].step)++;
+                ((StaffRoll *)p)->stars[0].loops = 0;
+                ((StaffRoll *)p)->stars[0].phase = 0;
+                ((StaffRoll *)p)->stars[0].radius = 0x38000;
+                ((StaffRoll *)p)->stars[0].heading = data_ov002_021000b8[j];
                 if (func_ov002_020f5a94(c) == 3) {
-                    if (j == 2) *(unsigned short *)(p + 0x2e) = 0;
+                    if (j == 2)
+                        ((StaffRoll *)p)->stars[0].heading = 0;
                 }
-                *(int *)(p + 0x24) = 0;
+                ((StaffRoll *)p)->stars[0].orbitTravel = 0;
             }
             p += 0x4c;
         }
@@ -2364,92 +2299,92 @@ void func_ov002_020f4710(char *c, int i)
 {
     int off = i * 0x4c;
 
-    if (*(u8*)(c + 0x48 + off) == 0) {
+    if (*(u8 *)(c + STAR_OFF(phase) + off) == 0) {
         int idx;
 
-        idx = *(u16*)(c + 0x2e + off) >> 4;
+        idx = *(u16 *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2 + 1];
-            int spd = *(s32*)(c + 0x10 + off);
-            *(s32 *)(c + 0 + off) = FX_MUL(tv, spd) + 0x80000;
+            int spd = *(s32 *)(c + STAR_OFF(radius) + off);
+            *(s32 *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
         }
 
-        idx = *(u16*)(c + 0x2e + off) >> 4;
+        idx = *(u16 *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2];
-            int spd = *(s32*)(c + 0x10 + off);
-            *(s32 *)(c + 4 + off) = FX_MUL(tv, spd) + 0x60000;
+            int spd = *(s32 *)(c + STAR_OFF(radius) + off);
+            *(s32 *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
         }
 
-        *(u16*)(c + 0x2e + off) -= *(u16*)(c + 0x42 + off);
-        *(s32*)(c + 0x24 + off) += *(u16*)(c + 0x42 + off);
+        *(u16 *)(c + STAR_OFF(heading) + off) -= *(u16 *)(c + STAR_OFF(angSpeed) + off);
+        *(s32 *)(c + STAR_OFF(orbitTravel) + off) += *(u16 *)(c + STAR_OFF(angSpeed) + off);
 
-        if (*(u8*)(c + 0x48) != 0) {
-            *(u16*)(c + 0x42 + off) += 8;
-        } else if (*(u16*)(c + 0x42 + off) < 0x200) {
-            *(u16*)(c + 0x42 + off) += 6;
-            if (*(u16*)(c + 0x42 + off) > 0x200)
-                *(u16*)(c + 0x42 + off) = 0x200;
+        if (((StaffRoll *)c)->stars[0].phase != 0) {
+            *(u16 *)(c + STAR_OFF(angSpeed) + off) += 8;
+        } else if (*(u16 *)(c + STAR_OFF(angSpeed) + off) < 0x200) {
+            *(u16 *)(c + STAR_OFF(angSpeed) + off) += 6;
+            if (*(u16 *)(c + STAR_OFF(angSpeed) + off) > 0x200)
+                *(u16 *)(c + STAR_OFF(angSpeed) + off) = 0x200;
         }
 
-        if ((u32)*(s32*)(c + 0x24 + off) < (u32)data_ov002_02100100[i])
+        if ((u32) * (s32 *)(c + STAR_OFF(orbitTravel) + off) < (u32)data_ov002_02100100[i])
             return;
-        if (*(u8*)(c + 0x514) != 0)
+        if (((StaffRoll *)c)->holdOrbit != 0)
             return;
 
-        (*(u8*)(c + 0x48 + off))++;
-        *(u16*)(c + 0x36 + off) = 0;
+        (*(u8 *)(c + STAR_OFF(phase) + off))++;
+        *(u16 *)(c + STAR_OFF(flyTimer) + off) = 0;
 
         if (i == 0 || i == 3) {
-            *(s32*)(c + 8 + off) = 0x2000;
+            *(s32 *)(c + STAR_OFF(speed) + off) = 0x2000;
         } else {
-            *(s32*)(c + 8 + off) = -0x2000;
+            *(s32 *)(c + STAR_OFF(speed) + off) = -0x2000;
         }
 
         if (func_ov002_020f5a94(c) != 3)
             return;
         if (i != 2)
             return;
-        if (*(u8*)(c + 0x514) == 0)
-            *(s32*)(c + 8 + off) = 0x2000;
+        if (((StaffRoll *)c)->holdOrbit == 0)
+            *(s32 *)(c + STAR_OFF(speed) + off) = 0x2000;
         return;
     }
 
-    (*(u16*)(c + 0x36 + off))++;
-    *(s32*)(c + 0 + off) += *(s32*)(c + 8 + off);
+    (*(u16 *)(c + STAR_OFF(flyTimer) + off))++;
+    *(s32 *)(c + STAR_OFF(x) + off) += *(s32 *)(c + STAR_OFF(speed) + off);
 
     if (func_ov002_020f5a94(c) == 3 && i == 2) {
-        *(s32*)(c + 8 + off) += 0x300;
+        *(s32 *)(c + STAR_OFF(speed) + off) += 0x300;
     } else if (i == 0 || i == 3) {
-        *(s32*)(c + 8 + off) += 0x300;
+        *(s32 *)(c + STAR_OFF(speed) + off) += 0x300;
     } else {
-        *(s32*)(c + 8 + off) -= 0x300;
+        *(s32 *)(c + STAR_OFF(speed) + off) -= 0x300;
     }
 
-    if (*(u16*)(c + 0x36) < 0x60)
+    if (((StaffRoll *)c)->stars[0].flyTimer < 0x60)
         return;
 
     {
         int o2 = (int)((unsigned long long)i) * 0x4c;
-        (*(u8*)(c + 0x47 + o2))++;
-        *(u16*)(c + 0x3c + o2) = 0;
-        *(u8*)(c + 0x48 + off) = 0;
-        *(s32*)(c + 0x10 + o2) = 0x38000;
-        *(u16*)(c + 0x2e + o2) = 0x8000;
-        *(u16*)(c + 0x30 + o2) = (u16)(data_ov002_02100110[i] << 6);
+        (*(u8 *)(c + STAR_OFF(step) + o2))++;
+        *(u16 *)(c + STAR_OFF(loops) + o2) = 0;
+        *(u8 *)(c + STAR_OFF(phase) + off) = 0;
+        *(s32 *)(c + STAR_OFF(radius) + o2) = 0x38000;
+        *(u16 *)(c + STAR_OFF(heading) + o2) = 0x8000;
+        *(u16 *)(c + STAR_OFF(delay) + o2) = (u16)(data_ov002_02100110[i] << 6);
 
         if (func_ov002_020f5a94(c) == 3) {
             if (i == 2)
-                *(u16*)(c + 0x30 + o2) = 0x40;
+                *(u16 *)(c + STAR_OFF(delay) + o2) = 0x40;
         }
     }
 
-    *(s32*)(c + 0 + off) = 0x110000;
-    *(s32*)(c + 4 + off) = 0;
-    *(u16*)(c + 0x42 + off) = 0x100;
-    *(s32*)(c + 8 + off) = 0x5800;
-    *(s32*)(c + 0x1c + off) = 0x80000;
-    *(s32*)(c + 0x20 + off) = 0x28000;
+    *(s32 *)(c + STAR_OFF(x) + off) = 0x110000;
+    *(s32 *)(c + STAR_OFF(y) + off) = 0;
+    *(u16 *)(c + STAR_OFF(angSpeed) + off) = 0x100;
+    *(s32 *)(c + STAR_OFF(speed) + off) = 0x5800;
+    *(s32 *)(c + STAR_OFF(targetX) + off) = 0x80000;
+    *(s32 *)(c + STAR_OFF(targetY) + off) = 0x28000;
 }
 }
 
@@ -2466,101 +2401,102 @@ void func_ov002_020f4a2c(char *c, int i)
     unsigned short target;
     unsigned short v;
 
-    v = *(unsigned short *)(c + 0x30 + off);
+    v = *(unsigned short *)(c + STAR_OFF(delay) + off);
     if (v != 0) {
-        *(unsigned short *)(c + 0x30 + off) = v - 1;
+        *(unsigned short *)(c + STAR_OFF(delay) + off) = v - 1;
         return;
     }
 
-    if (*(unsigned char *)(c + 0x48 + off) == 0) {
-        idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    if (*(unsigned char *)(c + STAR_OFF(phase) + off) == 0) {
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2 + 1];
-            int spd = *(int *)(c + 8 + off);
-            *(int *)(c + 0 + off) += FX_MUL(tv, spd);
+            int spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(x) + off) += FX_MUL(tv, spd);
         }
 
-        idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2];
-            int spd = *(int *)(c + 8 + off);
-            *(int *)(c + 4 + off) += FX_MUL(tv, spd);
+            int spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(y) + off) += FX_MUL(tv, spd);
         }
 
-        if (*(int *)(c + 8 + off) <= -0x2000)
-            *(int *)(c + 8 + off) = *(int *)(c + 8 + off) + 0x120;
+        if (*(int *)(c + STAR_OFF(speed) + off) <= -0x2000)
+            *(int *)(c + STAR_OFF(speed) + off) = *(int *)(c + STAR_OFF(speed) + off) + 0x120;
 
-        dx = (*(int *)(c + 0x1c + off) - *(int *)(c + 0 + off)) >> 12;
-        dy = (*(int *)(c + 0x20 + off) - *(int *)(c + 4 + off)) >> 12;
+        dx = (*(int *)(c + STAR_OFF(targetX) + off) - *(int *)(c + STAR_OFF(x) + off)) >> 12;
+        dy = (*(int *)(c + STAR_OFF(targetY) + off) - *(int *)(c + STAR_OFF(y) + off)) >> 12;
 
         if (dx >= -2 && dx <= 2 && dy >= -2 && dy <= 2) {
-            *(unsigned char *)(c + 0x48 + off) += 1;
-            *(int *)(c + 0x24 + off) = 0;
-            *(unsigned short *)(c + 0x2e + off) = 0xc000;
+            *(unsigned char *)(c + STAR_OFF(phase) + off) += 1;
+            *(int *)(c + STAR_OFF(orbitTravel) + off) = 0;
+            *(unsigned short *)(c + STAR_OFF(heading) + off) = 0xc000;
             return;
         }
 
         {
             int raw = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
-            ang = *(unsigned short *)(c + 0x2e + off);
+            ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
             target = (unsigned short)raw;
         }
         if (target > ang) {
             unsigned short nv;
-            *(unsigned short *)(c + 0x2e + off) += 0x100;
-            nv = *(unsigned short *)(c + 0x2e + off);
+            *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x100;
+            nv = *(unsigned short *)(c + STAR_OFF(heading) + off);
             if (target <= nv)
-                *(unsigned short *)(c + 0x2e + off) = target;
+                *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
             return;
         }
         if (ang > target) {
             unsigned short nv2;
-            *(unsigned short *)(c + 0x2e + off) -= 0x100;
-            nv2 = *(unsigned short *)(c + 0x2e + off);
+            *(unsigned short *)(c + STAR_OFF(heading) + off) -= 0x100;
+            nv2 = *(unsigned short *)(c + STAR_OFF(heading) + off);
             if (nv2 <= target)
-                *(unsigned short *)(c + 0x2e + off) = target;
+                *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
             return;
         }
         return;
     }
 
-    idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2 + 1];
-        int spd = *(int *)(c + 0x10 + off);
-        *(int *)(c + 0 + off) = FX_MUL(tv, spd) + 0x80000;
+        int spd = *(int *)(c + STAR_OFF(radius) + off);
+        *(int *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
     }
 
-    idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2];
-        int spd = *(int *)(c + 0x10 + off);
-        *(int *)(c + 4 + off) = FX_MUL(tv, spd) + 0x60000;
+        int spd = *(int *)(c + STAR_OFF(radius) + off);
+        *(int *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
     }
 
-    *(unsigned short *)(c + 0x2e + off) -= *(unsigned short *)(c + 0x42 + off);
-    *(int *)(c + 0x24 + off) += *(unsigned short *)(c + 0x42 + off);
+    *(unsigned short *)(c + STAR_OFF(heading) + off) -=
+        *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
+    *(int *)(c + STAR_OFF(orbitTravel) + off) += *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
 
     if (i != func_ov002_020f5a94(c) - 1)
         return;
-    if ((unsigned int)*(int *)(c + 0x24) < 0x10000)
+    if ((unsigned int)((StaffRoll *)c)->stars[0].orbitTravel < 0x10000)
         return;
 
     {
         int j;
         char *p = c;
         for (j = 0; j < 4; j++) {
-            if (*(unsigned char *)(p + 0x44) != 0) {
-                *(unsigned char *)(p + 0x47) += 1;
-                *(unsigned short *)(p + 0x3c) = 0;
-                *(unsigned char *)(p + 0x48) = 0;
-                *(int *)(p + 0x10) = 0x38000;
-                *(unsigned short *)(p + 0x2e) = data_ov002_021000c8[j];
+            if (((StaffRoll *)p)->stars[0].active != 0) {
+                ((StaffRoll *)p)->stars[0].step += 1;
+                ((StaffRoll *)p)->stars[0].loops = 0;
+                ((StaffRoll *)p)->stars[0].phase = 0;
+                ((StaffRoll *)p)->stars[0].radius = 0x38000;
+                ((StaffRoll *)p)->stars[0].heading = data_ov002_021000c8[j];
                 if (func_ov002_020f5a94(c) == 3) {
                     if (j == 2)
-                        *(unsigned short *)(p + 0x2e) = 0;
+                        ((StaffRoll *)p)->stars[0].heading = 0;
                 }
-                *(int *)(p + 0x24) = 0;
+                ((StaffRoll *)p)->stars[0].orbitTravel = 0;
             }
             p += 0x4c;
         }
@@ -2577,81 +2513,81 @@ void func_ov002_020f4d70(char *c, int i)
 {
     int off = i * 0x4c;
 
-    if (*(u16*)(c + 0x3a + off) == 0) {
-        if (*(u16*)(c + 0x32 + off) == 0)
-            (*(u16*)(c + 0x3c + off))++;
+    if (*(u16 *)(c + STAR_OFF(frame) + off) == 0) {
+        if (*(u16 *)(c + STAR_OFF(frameTimer) + off) == 0)
+            (*(u16 *)(c + STAR_OFF(loops) + off))++;
     }
 
-    if (*(u8*)(c + 0x48 + off) == 0) {
+    if (*(u8 *)(c + STAR_OFF(phase) + off) == 0) {
         int idx;
 
-        idx = *(unsigned short*)(c + 0x2e + off) >> 4;
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2 + 1];
-            int spd = *(int*)(c + 0x10 + off);
-            *(int *)(c + 0 + off) = FX_MUL(tv, spd) + 0x80000;
+            int spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
         }
 
-        idx = *(unsigned short*)(c + 0x2e + off) >> 4;
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2];
-            int spd = *(int*)(c + 0x10 + off);
-            *(int *)(c + 4 + off) = FX_MUL(tv, spd) + 0x60000;
+            int spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
         }
 
-        *(u16*)(c + 0x2e + off) += *(u16*)(c + 0x42 + off);
-        *(s32*)(c + 0x24 + off) += *(u16*)(c + 0x42 + off);
+        *(u16 *)(c + STAR_OFF(heading) + off) += *(u16 *)(c + STAR_OFF(angSpeed) + off);
+        *(s32 *)(c + STAR_OFF(orbitTravel) + off) += *(u16 *)(c + STAR_OFF(angSpeed) + off);
 
-        if (*(u8*)(c + 0x48) != 0) {
-            *(u16*)(c + 0x42 + off) += 8;
+        if (((StaffRoll *)c)->stars[0].phase != 0) {
+            *(u16 *)(c + STAR_OFF(angSpeed) + off) += 8;
         } else {
-            if (*(u16*)(c + 0x42 + off) < 0x200) {
-                *(u16*)(c + 0x42 + off) += 6;
-                if (*(u16*)(c + 0x42 + off) > 0x200)
-                    *(u16*)(c + 0x42 + off) = 0x200;
+            if (*(u16 *)(c + STAR_OFF(angSpeed) + off) < 0x200) {
+                *(u16 *)(c + STAR_OFF(angSpeed) + off) += 6;
+                if (*(u16 *)(c + STAR_OFF(angSpeed) + off) > 0x200)
+                    *(u16 *)(c + STAR_OFF(angSpeed) + off) = 0x200;
             }
         }
 
-        if ((u32)*(s32*)(c + 0x24 + off) < (u32)data_ov002_021000e0[i])
+        if ((u32) * (s32 *)(c + STAR_OFF(orbitTravel) + off) < (u32)data_ov002_021000e0[i])
             return;
 
-        if (*(u8*)(c + 0x514) != 0)
+        if (((StaffRoll *)c)->holdOrbit != 0)
             return;
 
-        (*(u8*)(c + 0x48 + off))++;
-        *(u16*)(c + 0x36 + off) = 0;
-        *(s32*)(c + 8 + off) = -0x2000;
+        (*(u8 *)(c + STAR_OFF(phase) + off))++;
+        *(u16 *)(c + STAR_OFF(flyTimer) + off) = 0;
+        *(s32 *)(c + STAR_OFF(speed) + off) = -0x2000;
         return;
     }
 
-    (*(u16*)(c + 0x36 + off))++;
-    *(s32*)(c + 0 + off) += *(s32*)(c + 8 + off);
-    *(s32*)(c + 8 + off) -= 0x300;
+    (*(u16 *)(c + STAR_OFF(flyTimer) + off))++;
+    *(s32 *)(c + STAR_OFF(x) + off) += *(s32 *)(c + STAR_OFF(speed) + off);
+    *(s32 *)(c + STAR_OFF(speed) + off) -= 0x300;
 
-    if (*(u16*)(c + 0x36) < 0x70)
+    if (((StaffRoll *)c)->stars[0].flyTimer < 0x70)
         return;
 
     {
         int o2 = (unsigned)i * 0x4c;
-        (*(u8*)(c + 0x47 + o2))++;
-        *(s32*)(c + 0x10 + o2) = 0x38000;
-        *(u16*)(c + 0x2e + o2) = 0x8000;
-        *(u8*)(c + 0x48 + off) = 0;
-        *(u16*)(c + 0x3c + o2) = 0;
-        *(u16*)(c + 0x30 + o2) = data_ov002_021000f0[i] << 6;
+        (*(u8 *)(c + STAR_OFF(step) + o2))++;
+        *(s32 *)(c + STAR_OFF(radius) + o2) = 0x38000;
+        *(u16 *)(c + STAR_OFF(heading) + o2) = 0x8000;
+        *(u8 *)(c + STAR_OFF(phase) + off) = 0;
+        *(u16 *)(c + STAR_OFF(loops) + o2) = 0;
+        *(u16 *)(c + STAR_OFF(delay) + o2) = data_ov002_021000f0[i] << 6;
 
         if (func_ov002_020f5a94(c) == 3) {
             if (i == 2)
-                *(u16*)(c + 0x30 + o2) = 0x40;
+                *(u16 *)(c + STAR_OFF(delay) + o2) = 0x40;
         }
     }
 
-    *(s32*)(c + 0 + off) = 0x110000;
-    *(s32*)(c + 4 + off) = 0;
-    *(u16*)(c + 0x42 + off) = 0x100;
-    *(s32*)(c + 8 + off) = 0x5800;
-    *(s32*)(c + 0x1c + off) = 0x80000;
-    *(s32*)(c + 0x20 + off) = 0x28000;
+    *(s32 *)(c + STAR_OFF(x) + off) = 0x110000;
+    *(s32 *)(c + STAR_OFF(y) + off) = 0;
+    *(u16 *)(c + STAR_OFF(angSpeed) + off) = 0x100;
+    *(s32 *)(c + STAR_OFF(speed) + off) = 0x5800;
+    *(s32 *)(c + STAR_OFF(targetX) + off) = 0x80000;
+    *(s32 *)(c + STAR_OFF(targetY) + off) = 0x28000;
 }
 }
 
@@ -2680,97 +2616,98 @@ void func_ov002_020f5010(char *c, int i)
     unsigned short target;
     unsigned short v;
 
-    v = *(unsigned short *)(c + 0x30 + off);
+    v = *(unsigned short *)(c + STAR_OFF(delay) + off);
     if (v != 0) {
-        *(unsigned short *)(c + 0x30 + off) = v - 1;
+        *(unsigned short *)(c + STAR_OFF(delay) + off) = v - 1;
         return;
     }
 
-    if (*(unsigned char *)(c + 0x48 + off) == 0) {
-        idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    if (*(unsigned char *)(c + STAR_OFF(phase) + off) == 0) {
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2 + 1];
-            int spd = *(int *)(c + 8 + off);
-            *(int *)(c + 0 + off) += FX_MUL(tv, spd);
+            int spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(x) + off) += FX_MUL(tv, spd);
         }
 
-        idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+        idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
         {
             short tv = data_02082214[idx * 2];
-            int spd = *(int *)(c + 8 + off);
-            *(int *)(c + 4 + off) += FX_MUL(tv, spd);
+            int spd = *(int *)(c + STAR_OFF(speed) + off);
+            *(int *)(c + STAR_OFF(y) + off) += FX_MUL(tv, spd);
         }
 
-        if (*(int *)(c + 8 + off) >= 0x2000)
-            *(int *)(c + 8 + off) = *(int *)(c + 8 + off) - 0x120;
+        if (*(int *)(c + STAR_OFF(speed) + off) >= 0x2000)
+            *(int *)(c + STAR_OFF(speed) + off) = *(int *)(c + STAR_OFF(speed) + off) - 0x120;
 
-        dx = (*(int *)(c + 0x1c + off) - *(int *)(c + 0 + off)) >> 12;
-        dy = (*(int *)(c + 0x20 + off) - *(int *)(c + 4 + off)) >> 12;
+        dx = (*(int *)(c + STAR_OFF(targetX) + off) - *(int *)(c + STAR_OFF(x) + off)) >> 12;
+        dy = (*(int *)(c + STAR_OFF(targetY) + off) - *(int *)(c + STAR_OFF(y) + off)) >> 12;
 
         if (dx >= -2 && dx <= 2 && dy >= -2 && dy <= 2) {
-            *(unsigned char *)(c + 0x48 + off) += 1;
-            *(int *)(c + 0x24 + off) = 0;
-            *(unsigned short *)(c + 0x2e + off) = 0xc000;
+            *(unsigned char *)(c + STAR_OFF(phase) + off) += 1;
+            *(int *)(c + STAR_OFF(orbitTravel) + off) = 0;
+            *(unsigned short *)(c + STAR_OFF(heading) + off) = 0xc000;
             return;
         }
 
         {
             int raw = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
-            ang = *(unsigned short *)(c + 0x2e + off);
+            ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
             target = (unsigned short)raw;
         }
         if (target > ang) {
             unsigned short nv;
-            *(unsigned short *)(c + 0x2e + off) += 0x100;
-            nv = *(unsigned short *)(c + 0x2e + off);
+            *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x100;
+            nv = *(unsigned short *)(c + STAR_OFF(heading) + off);
             if (target <= nv)
-                *(unsigned short *)(c + 0x2e + off) = target;
+                *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
             return;
         }
         if (ang > target) {
             unsigned short nv2;
-            *(unsigned short *)(c + 0x2e + off) -= 0x100;
-            nv2 = *(unsigned short *)(c + 0x2e + off);
+            *(unsigned short *)(c + STAR_OFF(heading) + off) -= 0x100;
+            nv2 = *(unsigned short *)(c + STAR_OFF(heading) + off);
             if (nv2 <= target)
-                *(unsigned short *)(c + 0x2e + off) = target;
+                *(unsigned short *)(c + STAR_OFF(heading) + off) = target;
             return;
         }
         return;
     }
 
-    idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2 + 1];
-        int spd = *(int *)(c + 0x10 + off);
-        *(int *)(c + 0 + off) = FX_MUL(tv, spd) + 0x80000;
+        int spd = *(int *)(c + STAR_OFF(radius) + off);
+        *(int *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
     }
 
-    idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+    idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
     {
         short tv = data_02082214[idx * 2];
-        int spd = *(int *)(c + 0x10 + off);
-        *(int *)(c + 4 + off) = FX_MUL(tv, spd) + 0x60000;
+        int spd = *(int *)(c + STAR_OFF(radius) + off);
+        *(int *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
     }
 
-    *(unsigned short *)(c + 0x2e + off) += *(unsigned short *)(c + 0x42 + off);
-    *(int *)(c + 0x24 + off) += *(unsigned short *)(c + 0x42 + off);
+    *(unsigned short *)(c + STAR_OFF(heading) + off) +=
+        *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
+    *(int *)(c + STAR_OFF(orbitTravel) + off) += *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
 
     if (i != func_ov002_020f5a94(c) - 1)
         return;
-    if ((unsigned int)*(int *)(c + 0x24) < 0x10000)
+    if ((unsigned int)((StaffRoll *)c)->stars[0].orbitTravel < 0x10000)
         return;
 
     {
         int j;
         char *p = c;
         for (j = 0; j < 4; j++) {
-            if (*(unsigned char *)(p + 0x44) != 0) {
-                *(unsigned char *)(p + 0x47) += 1;
-                *(unsigned short *)(p + 0x3c) = 0;
-                *(unsigned char *)(p + 0x48) = 0;
-                *(int *)(p + 0x10) = 0x38000;
-                *(unsigned short *)(p + 0x2e) = data_ov002_021000d0[j];
-                *(int *)(p + 0x24) = 0;
+            if (((StaffRoll *)p)->stars[0].active != 0) {
+                ((StaffRoll *)p)->stars[0].step += 1;
+                ((StaffRoll *)p)->stars[0].loops = 0;
+                ((StaffRoll *)p)->stars[0].phase = 0;
+                ((StaffRoll *)p)->stars[0].radius = 0x38000;
+                ((StaffRoll *)p)->stars[0].heading = data_ov002_021000d0[j];
+                ((StaffRoll *)p)->stars[0].orbitTravel = 0;
             }
             p += 0x4c;
         }
@@ -2787,73 +2724,77 @@ void func_ov002_020f5328(char *c, int i)
 {
     int off = i * 0x4c;
 
-    if (*(unsigned char *)(c + 0x48 + off) == 0) {
+    if (*(unsigned char *)(c + STAR_OFF(phase) + off) == 0) {
         int idx;
         {
-            idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+            idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
             short tv = data_02082214[idx * 2 + 1];
-            int spd = *(int *)(c + 0x10 + off);
-            *(int *)(c + 0x00 + off) = FX_MUL(tv, spd) + 0x80000;
+            int spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(x) + off) = FX_MUL(tv, spd) + 0x80000;
         }
         {
-            idx = *(unsigned short *)(c + 0x2e + off) >> 4;
+            idx = *(unsigned short *)(c + STAR_OFF(heading) + off) >> 4;
             short tv = data_02082214[idx * 2];
-            int spd = *(int *)(c + 0x10 + off);
-            *(int *)(c + 0x04 + off) = FX_MUL(tv, spd) + 0x60000;
+            int spd = *(int *)(c + STAR_OFF(radius) + off);
+            *(int *)(c + STAR_OFF(y) + off) = FX_MUL(tv, spd) + 0x60000;
         }
 
-        *(unsigned short *)(c + 0x2e + off) += *(unsigned short *)(c + 0x42 + off);
-        *(int *)(c + 0x24 + off) += *(unsigned short *)(c + 0x42 + off);
+        *(unsigned short *)(c + STAR_OFF(heading) + off) +=
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
+        *(int *)(c + STAR_OFF(orbitTravel) + off) +=
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off);
 
-        if (*(unsigned char *)(c + 0x48) != 0) {
-            *(unsigned short *)(c + 0x42 + off) += 8;
-        } else if (*(unsigned short *)(c + 0x42 + off) < 0x200) {
-            *(unsigned short *)(c + 0x42 + off) += 6;
-            if (*(unsigned short *)(c + 0x42 + off) > 0x200)
-                *(unsigned short *)(c + 0x42 + off) = 0x200;
+        if (((StaffRoll *)c)->stars[0].phase != 0) {
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off) += 8;
+        } else if (*(unsigned short *)(c + STAR_OFF(angSpeed) + off) < 0x200) {
+            *(unsigned short *)(c + STAR_OFF(angSpeed) + off) += 6;
+            if (*(unsigned short *)(c + STAR_OFF(angSpeed) + off) > 0x200)
+                *(unsigned short *)(c + STAR_OFF(angSpeed) + off) = 0x200;
         }
 
-        if ((unsigned int)*(int *)(c + 0x24 + off) < (unsigned int)data_ov002_02100150[i])
+        if ((unsigned int)*(int *)(c + STAR_OFF(orbitTravel) + off) <
+            (unsigned int)data_ov002_02100150[i])
             return;
-        if (*(unsigned char *)(c + 0x514) != 0)
+        if (((StaffRoll *)c)->holdOrbit != 0)
             return;
 
-        *(unsigned char *)(c + 0x48 + off) += 1;
-        *(unsigned short *)(c + 0x36 + off) = 0;
+        *(unsigned char *)(c + STAR_OFF(phase) + off) += 1;
+        *(unsigned short *)(c + STAR_OFF(flyTimer) + off) = 0;
 
         if (i == 1 || i == 3) {
-            *(int *)(c + 0x08 + off) = 0x2000;
+            *(int *)(c + STAR_OFF(speed) + off) = 0x2000;
         } else {
-            *(int *)(c + 0x08 + off) = -0x2000;
+            *(int *)(c + STAR_OFF(speed) + off) = -0x2000;
         }
         return;
     }
 
-    *(unsigned short *)(c + 0x36 + off) += 1;
-    *(int *)(c + 0x00 + off) += *(int *)(c + 0x08 + off);
+    *(unsigned short *)(c + STAR_OFF(flyTimer) + off) += 1;
+    *(int *)(c + STAR_OFF(x) + off) += *(int *)(c + STAR_OFF(speed) + off);
     if (i == 1 || i == 3) {
-        *(int *)(c + 0x08 + off) += 0x300;
+        *(int *)(c + STAR_OFF(speed) + off) += 0x300;
     } else {
-        *(int *)(c + 0x08 + off) -= 0x300;
+        *(int *)(c + STAR_OFF(speed) + off) -= 0x300;
     }
 
-    if (*(unsigned short *)(c + 0x36) < 0x60)
+    if (((StaffRoll *)c)->stars[0].flyTimer < 0x60)
         return;
 
     {
         int off2 = (int)((unsigned long long)i) * 0x4c;
-        *(unsigned char *)(c + 0x47 + off2) += 1;
-        *(unsigned short *)(c + 0x3c + off2) = 0;
-        *(unsigned char *)(c + 0x48 + off) = 0;
-        *(int *)(c + 0x10 + off2) = 0x38000;
-        *(unsigned short *)(c + 0x2e + off2) = 0;
-        *(unsigned short *)(c + 0x30 + off2) = (unsigned short)(data_ov002_02100160[i] << 6);
-        *(int *)(c + 0x00 + off) = -0x10000;
-        *(int *)(c + 0x04 + off2) = 0;
-        *(unsigned short *)(c + 0x42 + off2) = 0x100;
-        *(int *)(c + 0x08 + off) = 0x5800;
-        *(int *)(c + 0x1c + off2) = 0x80000;
-        *(int *)(c + 0x20 + off2) = 0x28000;
+        *(unsigned char *)(c + STAR_OFF(step) + off2) += 1;
+        *(unsigned short *)(c + STAR_OFF(loops) + off2) = 0;
+        *(unsigned char *)(c + STAR_OFF(phase) + off) = 0;
+        *(int *)(c + STAR_OFF(radius) + off2) = 0x38000;
+        *(unsigned short *)(c + STAR_OFF(heading) + off2) = 0;
+        *(unsigned short *)(c + STAR_OFF(delay) + off2) =
+            (unsigned short)(data_ov002_02100160[i] << 6);
+        *(int *)(c + STAR_OFF(x) + off) = -0x10000;
+        *(int *)(c + STAR_OFF(y) + off2) = 0;
+        *(unsigned short *)(c + STAR_OFF(angSpeed) + off2) = 0x100;
+        *(int *)(c + STAR_OFF(speed) + off) = 0x5800;
+        *(int *)(c + STAR_OFF(targetX) + off2) = 0x80000;
+        *(int *)(c + STAR_OFF(targetY) + off2) = 0x28000;
     }
 }
 }
@@ -2862,20 +2803,20 @@ void func_ov002_020f5328(char *c, int i)
 /* ROM ordinal 62 -- func_ov002_020f55b4, 0x020f55b4, size 0x78 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f55b4
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f55b4(char* c, int i){
-  char* e = c + i*0x4c;
-  if(*(unsigned short*)(e+0x3a) != 0x10) return;
-  *(unsigned char*)(c + 0x47 + i*0x4c) += 1;
-  *(int*)(e+0x10) = 0x38000;
-  *(unsigned short*)(e+0x2e) = data_ov002_021000d8[i];
-  *(unsigned char*)(e+0x48) = 0;
-  *(unsigned short*)(e+0x3c) = 0;
-  *(int*)(e+0x24) = 0;
-  *(unsigned short*)(e+0x42) = 0x200;
-  /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
-  *(int*)(e+0x28) = 0x1000;
-  *(unsigned short*)(e+0x2c) = 0x200;
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov002_020f55b4(char *c, int i) {
+    char *e = c + i * 0x4c;
+    if (((StaffRoll *)e)->stars[0].frame != 0x10)
+        return;
+    *(unsigned char *)(c + STAR_OFF(step) + i * 0x4c) += 1;
+    ((StaffRoll *)e)->stars[0].radius = 0x38000;
+    ((StaffRoll *)e)->stars[0].heading = data_ov002_021000d8[i];
+    ((StaffRoll *)e)->stars[0].phase = 0;
+    ((StaffRoll *)e)->stars[0].loops = 0;
+    ((StaffRoll *)e)->stars[0].orbitTravel = 0;
+    ((StaffRoll *)e)->stars[0].angSpeed = 0x200;
+    ((StaffRoll *)e)->stars[0].kiraDefParam = 0x1000;
+    ((StaffRoll *)e)->stars[0].kiraSysParam = 0x200;
 }
 }
 
@@ -2884,7 +2825,7 @@ void func_ov002_020f55b4(char* c, int i){
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f562c
 extern "C" void func_ov002_020f562c(C* self, int idx) {
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x4c + 0x47));
+    unsigned char sel = ((StaffRoll *)self)->stars[idx].step;
     (self->*data_ov002_02110eec[sel])(idx);
 }
 
@@ -2895,9 +2836,9 @@ extern "C" void func_ov002_020f562c(C* self, int idx) {
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5678(char *base, int i)
 {
-    struct E5cd0 *e = (struct E5cd0 *)base + i;
-    e->f28 = 0xccc;
-    e->f2c = 0x155;
+    StaffRoll::Star *e = (StaffRoll::Star *)base + i;
+    e->kiraDefParam = 0xccc;
+    e->kiraSysParam = 0x155;
 }
 }
 
@@ -2917,52 +2858,48 @@ void func_ov002_020f569c(void *self, int i)
 
     idx = i * 0x4c;
 
-    if (*(unsigned short *)(p + 0x30 + idx) != 0)
-    {
-        *(unsigned short *)(p + 0x30 + idx) = *(unsigned short *)(p + 0x30 + idx) - 1;
+    if (*(unsigned short *)(p + STAR_OFF(delay) + idx) != 0) {
+        *(unsigned short *)(p + STAR_OFF(delay) + idx) =
+            *(unsigned short *)(p + STAR_OFF(delay) + idx) - 1;
         return;
     }
 
-    /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
-    *(int *)(p + idx + 0x28) = 0x1000;
-    *(short *)(p + idx + 0x2c) = 0x200;
+    *(int *)(p + idx + STAR_OFF(kiraDefParam)) = 0x1000;
+    *(short *)(p + idx + STAR_OFF(kiraSysParam)) = 0x200;
 
-    *(int *)(p + idx) = *(int *)(p + idx) + *(int *)(p + 8 + idx);
-    *(int *)(p + 4 + idx) = *(int *)(p + 4 + idx) + *(int *)(p + 0xc + idx);
+    *(int *)(p + STAR_OFF(x) + idx) =
+        *(int *)(p + STAR_OFF(x) + idx) + *(int *)(p + STAR_OFF(speed) + idx);
+    *(int *)(p + STAR_OFF(y) + idx) =
+        *(int *)(p + STAR_OFF(y) + idx) + *(int *)(p + STAR_OFF(speedY) + idx);
 
     tx = data_ov002_02100190[i * 2];
     ty = data_ov002_02100190[i * 2 + 1];
-    ax = *(int *)(p + idx) >> 12;
-    by = *(int *)(p + 4 + idx) >> 12;
+    ax = *(int *)(p + STAR_OFF(x) + idx) >> 12;
+    by = *(int *)(p + STAR_OFF(y) + idx) >> 12;
 
-    if (*(int *)(p + 8 + idx) > 0)
-    {
+    if (*(int *)(p + STAR_OFF(speed) + idx) > 0) {
         if (ax > tx)
-            *(int *)(p + idx) = tx << 12;
-    }
-    else
-    {
+            *(int *)(p + STAR_OFF(x) + idx) = tx << 12;
+    } else {
         if (ax < tx)
-            *(int *)(p + idx) = tx << 12;
+            *(int *)(p + STAR_OFF(x) + idx) = tx << 12;
     }
 
-    if (*(int *)(p + 0xc + idx) > 0)
-    {
+    if (*(int *)(p + STAR_OFF(speedY) + idx) > 0) {
         if (by > ty)
-            *(int *)(p + 4 + idx) = ty << 12;
-    }
-    else
-    {
+            *(int *)(p + STAR_OFF(y) + idx) = ty << 12;
+    } else {
         if (by < ty)
-            *(int *)(p + 4 + idx) = ty << 12;
+            *(int *)(p + STAR_OFF(y) + idx) = ty << 12;
     }
 
-    ax = *(int *)(p + idx) >> 12;
-    by = *(int *)(p + 4 + idx) >> 12;
+    ax = *(int *)(p + STAR_OFF(x) + idx) >> 12;
+    by = *(int *)(p + STAR_OFF(y) + idx) >> 12;
 
     if (ax == tx && by == ty)
     {
-        *(unsigned char *)(p + 0x47 + idx) = *(unsigned char *)(p + 0x47 + idx) + 1;
+        *(unsigned char *)(p + STAR_OFF(step) + idx) =
+            *(unsigned char *)(p + STAR_OFF(step) + idx) + 1;
     }
 }
 }
@@ -2972,16 +2909,20 @@ void func_ov002_020f569c(void *self, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f57c0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f57c0(struct E57c0* arr, int idx) {
-  if (arr[idx].f3a != 0) return;
-  if (arr[idx].f32 != 0) return;
-  arr[idx].f49 = 1;
-  arr[idx].f45 = 1;
-  arr[idx].f47++;
-  arr[idx].f8 = data_ov002_02100170[idx*2];
-  arr[idx].fc = data_ov002_02100170[idx*2+1];
-  if (idx == 0) arr[idx].f30 = 0x78;
-  else arr[idx].f30 = 0x20;
+void func_ov002_020f57c0(StaffRoll::Star *arr, int idx) {
+    if (arr[idx].frame != 0)
+        return;
+    if (arr[idx].frameTimer != 0)
+        return;
+    arr[idx].sparkling = 1;
+    arr[idx].visible = 1;
+    arr[idx].step++;
+    arr[idx].speed = data_ov002_02100170[idx * 2];
+    arr[idx].speedY = data_ov002_02100170[idx * 2 + 1];
+    if (idx == 0)
+        arr[idx].delay = 0x78;
+    else
+        arr[idx].delay = 0x20;
 }
 }
 
@@ -2990,7 +2931,7 @@ void func_ov002_020f57c0(struct E57c0* arr, int idx) {
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5848
 extern "C" void func_ov002_020f5848(C* self, int idx) {
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x4c + 0x47));
+    unsigned char sel = ((StaffRoll *)self)->stars[idx].step;
     (self->*data_ov002_02110e64[sel])(idx);
 }
 
@@ -3006,32 +2947,37 @@ void func_ov002_020f5894(char *a, int i)
     short s2c;
     if (i != 0) return;
     off = i * 0x4c;
-    p34 = (unsigned short*)(a + 0x34 + off);
+    p34 = (unsigned short *)(a + STAR_OFF(kiraTimer) + off);
     *p34 = *p34 + 1;
-    /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
-    if (*(int*)(a + 0x28 + off) != 0x1000) {
+    if (*(int *)(a + STAR_OFF(kiraDefParam) + off) != 0x1000) {
         unsigned short v = *p34;
         if (v == 0xf || v == 0x1e) {
-            *(int*)(a + 0x28 + off) = *(int*)(a + 0x28 + off) + 0x199;
-            if (*(int*)(a + 0x28 + off) >= 0x1000) *(int*)(a + 0x28 + off) = 0x1000;
+            *(int *)(a + STAR_OFF(kiraDefParam) + off) =
+                *(int *)(a + STAR_OFF(kiraDefParam) + off) + 0x199;
+            if (*(int *)(a + STAR_OFF(kiraDefParam) + off) >= 0x1000)
+                *(int *)(a + STAR_OFF(kiraDefParam) + off) = 0x1000;
         }
     }
-    s2c = *(short*)(a + 0x2c + off);
+    s2c = *(short *)(a + STAR_OFF(kiraSysParam) + off);
     if (s2c != 0x800) {
-        if (*(unsigned short*)(a + off + 0x3e) >= 5) {
+        if (*(unsigned short *)(a + off + STAR_OFF(kiraPeriods)) >= 5) {
             if ((*p34 & 3) == 3) {
-                *(short*)(a + 0x2c + off) = s2c + 0x199;
-                if (*(short*)(a + 0x2c + off) >= 0x800) *(short*)(a + 0x2c + off) = 0x800;
+                *(short *)(a + STAR_OFF(kiraSysParam) + off) = s2c + 0x199;
+                if (*(short *)(a + STAR_OFF(kiraSysParam) + off) >= 0x800)
+                    *(short *)(a + STAR_OFF(kiraSysParam) + off) = 0x800;
             }
         }
     }
     if (*p34 < 0x1e) return;
     *p34 = 0;
     {
-        unsigned short *p3e = (unsigned short*)(a + 0x3e + off);
+        unsigned short *p3e = (unsigned short *)(a + STAR_OFF(kiraPeriods) + off);
         *p3e = *p3e + 1;
     }
 }
+#undef STAR_OFF
+#undef WINDOW_OFF
+#undef CREDIT_OFF
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3041,20 +2987,23 @@ void func_ov002_020f5894(char *a, int i)
 void func_ov002_020f5990(char* c)
 {
     int i;
-    Sub* s = (Sub*)c;
+    StaffRoll::Star *s = ((StaffRoll *)c)->stars;
     {
-        int* cnt = (int*)(((int)c + 0x1f8));
+        int *cnt = &((StaffRoll *)c)->kiraStar;
         *cnt = *cnt + 1;
         *cnt = *cnt & 3;
     }
-    for (i = 0; i < 4; i++, s = (Sub*)((char*)s + 0x4c)) {
+    for (i = 0; i < 4; i++, s++) {
         if (s->active == 0)
             continue;
         (((C *)c)->*data_ov002_02110e7c[s->state])(i);
         func_ov002_020f39ec(c, i);
-        if (s->f49 == 0) continue;
-        if (i != *(int*)(c + 0x1f8)) continue;
-        func_ov002_020f2790(c, (s16)(s->f0 >> 12), (s16)(s->f4 >> 12), s->f28, s->f2c);
+        if (s->sparkling == 0)
+            continue;
+        if (i != ((StaffRoll *)c)->kiraStar)
+            continue;
+        func_ov002_020f2790(c, (s16)(s->x >> 12), (s16)(s->y >> 12), s->kiraDefParam,
+                            s->kiraSysParam);
     }
 }
 
@@ -3062,16 +3011,15 @@ void func_ov002_020f5990(char* c)
 /* ROM ordinal 70 -- func_ov002_020f5a6c, 0x020f5a6c, size 0x28 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5a6c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f5a6c(char *p){
-  int i;
-  for(i=0;i<4;i++){
-      /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
-      *(unsigned char *)(p + 0x44) = 0;
-      *(unsigned char *)(p + 0x45) = 0;
-      *(unsigned char *)(p + 0x4a) = 0;
-      p += 0x4c;
-  }
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov002_020f5a6c(char *p) {
+    int i;
+    for (i = 0; i < 4; i++) {
+        ((StaffRoll *)p)->stars[0].active = 0;
+        ((StaffRoll *)p)->stars[0].visible = 0;
+        ((StaffRoll *)p)->stars[0].holdFrame = 0;
+        p += 0x4c;
+    }
 }
 }
 
@@ -3098,10 +3046,11 @@ int func_ov002_020f5a94(void *unused){
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5ad4(char* c)
 {
+    /* StaffRoll::pad_1f0: two words cleared here and read nowhere. */
     *(int*)(c+0x1f0) = 0;
     *(int*)(c+0x1f4) = 0;
-    *(int*)(c+0x1f8) = 0;
-    *(unsigned char*)(c+0x514) = 0;
+    ((StaffRoll *)c)->kiraStar = 0;
+    ((StaffRoll *)c)->holdOrbit = 0;
     func_ov002_020f5a6c(c);
     func_ov002_020f396c(c);
     func_ov002_020f30d4(c);
@@ -3183,14 +3132,13 @@ void func_ov002_020f5b8c(char *p)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5b98
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f5b98(struct Ent5b98 *e)
-{
+void func_ov002_020f5b98(StaffRoll::Star *e) {
     int i;
     for (i = 0; i < 4; i++) {
         if (e->active != 0) {
             e->state = 2;
-            e->f47 = 0;
-            e->f4a = 0;
+            e->step = 0;
+            e->holdFrame = 0;
         }
         e++;
     }
@@ -3201,14 +3149,14 @@ void func_ov002_020f5b98(struct Ent5b98 *e)
 /* ROM ordinal 80 -- func_ov002_020f5bcc, 0x020f5bcc, size 0x28 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5bcc
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f5bcc(char *p){
-  int i;
-  for(i=0;i<4;i++){
-      if (((struct Ent5b98 *)p)->active)
-          ((struct Ent5b98 *)p)->f4a = 1;
-      p += 0x4c;
-  }
+extern "C" { /* .c-derived member: C linkage for the whole block */
+void func_ov002_020f5bcc(char *p) {
+    int i;
+    for (i = 0; i < 4; i++) {
+        if (((StaffRoll *)p)->stars[0].active)
+            ((StaffRoll *)p)->stars[0].holdFrame = 1;
+        p += 0x4c;
+    }
 }
 }
 
@@ -3219,13 +3167,14 @@ void func_ov002_020f5bcc(char *p){
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5bf4(char* c)
 {
-    if (*(unsigned char*)(c+0x128) == 0) return;
-    *(int*)(c+0xe4) = 0x80000;
-    *(int*)(c+0xe8) = 0x60000;
-    *(unsigned short*)(c+0x114) = 0;
-    *(unsigned char*)(c+0x12a) = 1;
-    *(int*)(c+0x10c) = 0xccc;
-    *(unsigned short*)(c+0x110) = 0x155;
+    if (((StaffRoll *)c)->stars[3].active == 0)
+        return;
+    ((StaffRoll *)c)->stars[3].x = 0x80000;
+    ((StaffRoll *)c)->stars[3].y = 0x60000;
+    ((StaffRoll *)c)->stars[3].delay = 0;
+    ((StaffRoll *)c)->stars[3].state = 1;
+    ((StaffRoll *)c)->stars[3].kiraDefParam = 0xccc;
+    ((StaffRoll *)c)->stars[3].kiraSysParam = 0x155;
 }
 }
 
@@ -3236,14 +3185,14 @@ void func_ov002_020f5bf4(char* c)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5c40(char *p)
 {
-    if (!*(unsigned char *)(p + 0xdc))
+    if (!((StaffRoll *)p)->stars[2].active)
         return;
-    *(int *)(p + 0x98) = 0x80000;
-    *(int *)(p + 0x9c) = 0x60000;
-    *(short *)(p + 0xc8) = 0;
-    *(unsigned char *)(p + 0xde) = 1;
-    *(int *)(p + 0xc0) = 0xccc;
-    *(short *)(p + 0xc4) = 0x155;
+    ((StaffRoll *)p)->stars[2].x = 0x80000;
+    ((StaffRoll *)p)->stars[2].y = 0x60000;
+    ((StaffRoll *)p)->stars[2].delay = 0;
+    ((StaffRoll *)p)->stars[2].state = 1;
+    ((StaffRoll *)p)->stars[2].kiraDefParam = 0xccc;
+    ((StaffRoll *)p)->stars[2].kiraSysParam = 0x155;
 }
 }
 
@@ -3254,13 +3203,14 @@ void func_ov002_020f5c40(char *p)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5c88(char* c)
 {
-    if (*(unsigned char*)(c+0x90) == 0) return;
-    *(int*)(c+0x4c) = 0x80000;
-    *(int*)(c+0x50) = 0x60000;
-    *(unsigned short*)(c+0x7c) = 0;
-    *(unsigned char*)(c+0x92) = 1;
-    *(int*)(c+0x74) = 0xccc;
-    *(unsigned short*)(c+0x78) = 0x155;
+    if (((StaffRoll *)c)->stars[1].active == 0)
+        return;
+    ((StaffRoll *)c)->stars[1].x = 0x80000;
+    ((StaffRoll *)c)->stars[1].y = 0x60000;
+    ((StaffRoll *)c)->stars[1].delay = 0;
+    ((StaffRoll *)c)->stars[1].state = 1;
+    ((StaffRoll *)c)->stars[1].kiraDefParam = 0xccc;
+    ((StaffRoll *)c)->stars[1].kiraSysParam = 0x155;
 }
 }
 
@@ -3269,20 +3219,19 @@ void func_ov002_020f5c88(char* c)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5cd0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f5cd0(struct E5cd0 *c)
-{
+void func_ov002_020f5cd0(StaffRoll::Star *c) {
     int i;
     if (c->active == 0)
         return;
-    c->f0 = 0x80000;
-    c->f4 = 0x60000;
-    c->f30 = 0;
+    c->x = 0x80000;
+    c->y = 0x60000;
+    c->delay = 0;
     c->state = 1;
-    c->f28 = 0xccc;
-    c->f2c = 0x155;
+    c->kiraDefParam = 0xccc;
+    c->kiraSysParam = 0x155;
     for (i = 0; i < 4; i++) {
-        c->f3a = 0;
-        c->f32 = 0;
+        c->frame = 0;
+        c->frameTimer = 0;
         c++;
     }
 }
@@ -3303,23 +3252,23 @@ void func_ov002_020f5d34(u8 *self)
     e = self;
     v = 0;
     do {
-        /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
-        *(u8 *)(e + 0x44) = 1;
-        *(u8 *)(e + 0x45) = 0;
-        *(s16 *)(e + 0x2e) = 0;
-        *(s16 *)(e + 0x38) = 0;
-        *(int *)(e + 0) = 0x80000;
-        *(int *)(e + 4) = 0x60000;
-        *(s16 *)(e + 0x30) = v;
-        *(s16 *)(e + 0x32) = 0;
-        *(s16 *)(e + 0x34) = 0;
-        *(s16 *)(e + 0x3e) = 0;
-        *(int *)(e + 0x28) = 0x199;
-        *(s16 *)(e + 0x2c) = 0x199;
-        *(s16 *)(e + 0x38) = 0;
-        *(u8 *)(e + 0x46) = 0;
-        *(u8 *)(e + 0x47) = 0;
-        *(u8 *)(e + 0x49) = 0;
+        /* +0x38 is Star::pad_38: written twice here, read nowhere. */
+        ((StaffRoll *)e)->stars[0].active = 1;
+        ((StaffRoll *)e)->stars[0].visible = 0;
+        ((StaffRoll *)e)->stars[0].heading = 0;
+        ((StaffRoll *)e)->stars[0].pad_38 = 0;
+        ((StaffRoll *)e)->stars[0].x = 0x80000;
+        ((StaffRoll *)e)->stars[0].y = 0x60000;
+        ((StaffRoll *)e)->stars[0].delay = v;
+        ((StaffRoll *)e)->stars[0].frameTimer = 0;
+        ((StaffRoll *)e)->stars[0].kiraTimer = 0;
+        ((StaffRoll *)e)->stars[0].kiraPeriods = 0;
+        ((StaffRoll *)e)->stars[0].kiraDefParam = 0x199;
+        ((StaffRoll *)e)->stars[0].kiraSysParam = 0x199;
+        ((StaffRoll *)e)->stars[0].pad_38 = 0;
+        ((StaffRoll *)e)->stars[0].state = 0;
+        ((StaffRoll *)e)->stars[0].step = 0;
+        ((StaffRoll *)e)->stars[0].sparkling = 0;
         e += 0x4c;
         v += 0x40;
         i++;
@@ -3450,9 +3399,9 @@ void func_ov002_020f5efc(void) {
 /* ROM ordinal 97 -- func_ov002_020f5f0c, 0x020f5f0c, size 0x54 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5f0c
-extern "C" void func_ov002_020f5f0c(C* c, int idx){
-  (c->*data_ov002_02110f9c[idx])();
-  func_ov002_020f2e30((Obj2e30*)c, idx);
+extern "C" void func_ov002_020f5f0c(C *c, int idx) {
+    (c->*data_ov002_02110f9c[idx])();
+    func_ov002_020f2e30((StaffRoll *)c, idx);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3462,11 +3411,11 @@ extern "C" void func_ov002_020f5f0c(C* c, int idx){
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5f60(char *c)
 {
-    void *p = *(void**)(c + 0x510);
+    void *p = ((StaffRoll *)c)->starChars;
     if (p == 0)
         return;
     _ZN6Memory16operator_delete2EPv(p);
-    *(void**)(c + 0x510) = 0;
+    ((StaffRoll *)c)->starChars = 0;
 }
 }
 
@@ -3591,12 +3540,12 @@ void func_ov002_020f5fe4(char* c)
         Deallocate((void*)r5);
     }
 
-    *(int*)(c + 0x510) = 0;
-    if (*(int*)(c + 0x510) == 0) {
-        *(int*)(c + 0x510) = (int)_ZN6Memory13operator_new2Ej(0x4000);
+    ((StaffRoll *)c)->starChars = 0;
+    if (((StaffRoll *)c)->starChars == 0) {
+        ((StaffRoll *)c)->starChars = (u8 *)_ZN6Memory13operator_new2Ej(0x4000);
     }
     f = LoadFile(ASSET_D_2D_ED_STAR_NCG_BIN);
-    DecompressLZ16(f, *(void**)(c + 0x510));
+    DecompressLZ16(f, ((StaffRoll *)c)->starChars);
     Deallocate((void*)f);
 
     func_ov002_020f5ad4(c);
@@ -3660,11 +3609,11 @@ int daDemo_c::func_ov002_020f6424()
 
 int daDemo_c::func_ov002_020f6448(unsigned char *arg1)
 {
-    char *p;
+    StaffRoll *p;
     this->mCue = *arg1;
-    p = (char*)_Znwj(0x518);
+    p = (StaffRoll *)_Znwj(sizeof(StaffRoll));
     if (p)
-        _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev(p + 0x200);
+        _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev((char *)&p->kira);
     this->mStaffRoll = p;
     if (this->mStaffRoll == 0)
         return 0;

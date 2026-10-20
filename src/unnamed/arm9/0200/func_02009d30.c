@@ -10,7 +10,7 @@ struct dCamera_c {
     char pad_000[0x110];
     struct dActor_c *mTargetPlayer; /* 0x110 */
     char pad_114[0x13c - 0x114];
-    s32 mState_13c; /* 0x13c */
+    s32 mMode; /* 0x13c */
     char pad_140[0x154 - 0x140];
     u32 mFlags; /* 0x154 */
     char pad_158[0x186 - 0x158];
@@ -26,7 +26,7 @@ int func_02009d30(int *p)
     struct dCamera_c *cam = (struct dCamera_c *)p;
     int one = 1;
 
-    cam->mState_13c = (int)&data_0208729c;
+    cam->mMode = (int)&data_0208729c;
 
     cam->mTurningToTarget = (unsigned char)one;
 

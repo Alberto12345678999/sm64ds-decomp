@@ -126,7 +126,9 @@ struct dScMgPanel_c : dScMgBase_c {
                              Scene_StateResult/_StateGameOver count it down */
     u8 pad_4ec2[0x2];
     s16 mDelay; /* 0x4ec4 countdown; helpers also read it as u16 */
-    u8 pad_4ec6[0x2];
+    u16 mScrollFrames;     /* 0x4ec6 Scene_StateResult counts the frames it runs
+                              Scroll_Update; ResetRound clears it; nothing
+                              reads it */
     u8 mPastFlips[5][0xa]; /* 0x4ec8 HasDuplicateRows: the first 0xa mFlipAt
                               of the last five deals, newest first; a repeat
                               is refused; ClearGrid fills it with 0xff */
