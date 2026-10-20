@@ -9,21 +9,20 @@
  * reorder. The helpers are all dScMgCurling_c members: the state tables
  * call them through pointers to member, the rest with the scene as r0.
  *
- * comment leftovers: a few spellings must stay raw because the typed form
- * changes codegen (each was measured -- the DIFF size is in parentheses):
- * - BitB_StateDriftLeft / BitB_StateDriftRight keep the `bits + 0x47NN +
- *   off` spelling; mBit[index] reschedules them (0ff0 also sits under
- *   inline_depth(0)).
- * - Popup_UpdateAll / 020e1680 / 020e3078 / 020e3388 sit under
- *   opt_strength_reduction off: 1608's volatile countdown launder, 1680's
- *   M() popup-Y launder and stone walk, 3078's stone walk and base-field
- *   words, and 3388's clear loops all DIFF when typed (20-999 words).
- * - Stone_Slide keeps its heading/speed/position pointer temporaries;
- *   &mStone[idx] form moves the address math (45 words).
- * - Stone_Drag reads the dragged stone through DragView; the
- *   mStone[i] spelling costs one word.
- * - Bit_InitAll's second init walk keeps `char *bit`; the
- *   indexed form costs four words.
+ * comment leftovers: a few spellings keep `pointer + offset` arithmetic
+ * because every member spelling changes codegen; their offsets are named
+ * through CURL_OFF:
+ * - Popup_UpdateAll / ScoreStones / Scene_Play / ClearStones sit under
+ *   opt_strength_reduction off and walk the rows with a stepped `char *`.
+ *   Popup_UpdateAll's volatile countdown launder and ScoreStones' M()
+ *   popup-Y launder stay; ScoreStones' stone x/y reads and Scene_Play's
+ *   timer pointer and state reads keep CURL_OFF.
+ * - Stone_Slide keeps its angle/speed/position pointer temporaries; the
+ *   angle and speed ones stay `&mStone[0].f + offset`, since
+ *   &mStone[idx] moves their address math.
+ * - Bit_InitAll's second init walk keeps `char *bit`, and its x, y, wait
+ *   and texA accesses stay `bit + CURL_OFF(...)`: the member spelling grows
+ *   the function by one to four words.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum dScMgCurling_c_AssetId {
@@ -54,27 +53,6 @@ struct Entry {
 };
 typedef void (C::*PMF0)();
 
-/* The dragged stone, as Stone_Drag reads it: the stone row plus
- * the aim point at 0x4eb0 past the five rows. */
-struct DragStone {
-    int x;
-    int y;
-    int pad[3];
-    int grabX;
-    int grabY;
-    int pad2[3];
-    unsigned char dragging;
-    unsigned char pad3[3];
-};
-
-struct DragView {
-    unsigned char pad[0x4660];
-    DragStone stone[48];
-    unsigned char pad2[0x10];
-    int aimX;
-    int aimY;
-};
-
 /* B4 is a 4-byte-record view of a touch lane, used by the stone-drag
  * reader; the other readers index the lanes flat. */
 struct B4 {
@@ -84,6 +62,10 @@ struct B4 {
 
 /* Launder: forces an address through an integer so it is not shared. */
 #define M(p) ((int *)(int)(p))
+
+/* Byte offset of a dScMgCurling_c member, for the sites that must keep
+   `pointer + constant` arithmetic because every member spelling moved bytes. */
+#define CURL_OFF(m) ((int)&((dScMgCurling_c *)0)->m)
 
 /* Everything this file calls or reads. Class members cannot go inside an
  * `extern "C"` block, so the C-linkage names are collected here in one. */
@@ -596,7 +578,7 @@ void dScMgCurling_c::Bit_InitAll() {
         ((dScMgCurling_c *)bit)->mBit[0].texA = (char)(((roll >> 16) & 0x7fff) * 5 >> 0xf);
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        v = *(unsigned char *)(bit + 0x47ad) + ((((roll >> 16) & 0x7fff) << 2) >> 0xf) + 1;
+        v = *(unsigned char *)(bit + CURL_OFF(mBit[0].texA)) + ((((roll >> 16) & 0x7fff) << 2) >> 0xf) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
@@ -608,12 +590,12 @@ void dScMgCurling_c::Bit_InitAll() {
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
         m = ((roll >> 16) & 0x7fff) << 5;
-        *(int *)(bit + 0x478c) = (int)((m >> 0xf)) << 0xf;
+        *(int *)(bit + CURL_OFF(mBit[0].x)) = (int)((m >> 0xf)) << 0xf;
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
         q = (((roll >> 16) & 0x7fff) * 0x1a) >> 0xf;
-        *(int *)(bit + 0x4790) = (((q << 3) - 8)) << 0xc;
-        *(short *)(bit + 0x47a0) = 0;
+        *(int *)(bit + CURL_OFF(mBit[0].y)) = (((q << 3) - 8)) << 0xc;
+        *(short *)(bit + CURL_OFF(mBit[0].wait)) = 0;
         bit += 0x24;
     }
 }
@@ -646,7 +628,7 @@ void dScMgCurling_c::Popup_UpdateAll() {
             continue;
         {
             volatile unsigned short *timer =
-                (volatile unsigned short *)((unsigned int)popup + 0x4746);
+                (volatile unsigned short *)((unsigned int)&((dScMgCurling_c *)popup)->mPopup[0].countdown);
             *timer = *timer - 1;
             if (*timer != 0)
                 continue;
@@ -679,20 +661,20 @@ void dScMgCurling_c::ScoreStones() {
     for (i = 0; i < 5; i++, stone += 0x2c) {
         int dx, dz, dist, top;
 
-        if (*(u8 *)(stone + 0x4689) == 0)
+        if (((dScMgCurling_c *)stone)->mStone[0].active == 0)
             continue;
-        dx = *(int *)(stone + 0x4660) - mHouseX;
-        dz = *(int *)(stone + 0x4664) - mHouseY;
+        dx = *(int *)(stone + CURL_OFF(mStone[0].x)) - mHouseX;
+        dz = *(int *)(stone + CURL_OFF(mStone[0].y)) - mHouseY;
         {
             int ax = dx >> 12;
             int az = dz >> 12;
             dist = cstd::sqrt((u64)(s64)(ax * ax + az * az));
         }
         mPopup[slot].live = 1;
-        mPopup[slot].x = *(int *)(stone + 0x4660);
+        mPopup[slot].x = *(int *)(stone + CURL_OFF(mStone[0].x));
         {
-            int *popupY = M(raw + slot * 16 + 0x4740);
-            *popupY = *(int *)(stone + 0x4664) + 0x1000;
+            int *popupY = M(&((dScMgCurling_c *)(raw + slot * 16))->mPopup[0].y);
+            *popupY = *(int *)(stone + CURL_OFF(mStone[0].y)) + 0x1000;
             mPopup[slot].countdown = *delay;
             if (dist <= 8)
                 mPopup[slot].points = 1000;
@@ -715,8 +697,8 @@ void dScMgCurling_c::ScoreStones() {
 #pragma pop
 
 // @symbol _ZN14dScMgCurling_c13DrawAimMarkerEv
-/* Draws a sprite at the aimed stone's position (0x4eb0) once the stylus
- * handler has set 0x4ee5. */
+/* Draws a sprite at the aimed stone's position (mAimX/mAimY) once the
+ * stylus handler has set mAimShown. */
 void dScMgCurling_c::DrawAimMarker() {
     if (mAimShown == 0)
         return;
@@ -731,14 +713,14 @@ void dScMgCurling_c::DrawAimMarker() {
 /* Stylus handler for the stone being aimed. While the stylus is down, the
  * touch point plus the grab offset becomes the new position, clamped to the
  * 0x20000..0xe0000 by 0x94000..0xb8000 box; a move under two units is undone.
- * Otherwise it updates the swing tracking (0x4eea), turns the move into an
- * angle at 0x4ede clamped to the lower half turn and averaged with the last
- * one, and folds the move length into the speed at 0x4ec8. With the stylus
+ * Otherwise it updates the swing tracking (mSwingState), turns the move into
+ * an angle at mSwingAng clamped to the lower half turn and averaged with the last
+ * one, and folds the move length into mSwingSpeed. With the stylus
  * up, two flags are reset.
  *
  * Shapes that must stay: the touch records are read through a `u8 *` cast;
  * dx is computed before dy with no temporaries; the tail's index `j` is
- * wider than a byte; and the pragma keeps the 0x4eb0 and 0x4eb4 re-reads
+ * wider than a byte; and the pragma keeps the mAimX and mAimY re-reads
  * after the clamps. */
 void dScMgCurling_c::Aim_Swing() {
     u8 idx;
@@ -1137,7 +1119,7 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
 }
 
 // @symbol _ZN14dScMgCurling_c12SetStoneSpinEi
-/* Sets stone i's spin (0x4682) from the x component of its velocity:
+/* Sets stone i's spin from the x component of its velocity:
  * -(cos(angle) * speed) / 4. */
 void dScMgCurling_c::SetStoneSpin(int stoneIndex) {
     int heading = mStone[stoneIndex].angle;
@@ -1151,32 +1133,31 @@ void dScMgCurling_c::SetStoneSpin(int stoneIndex) {
 
 // @symbol _ZN14dScMgCurling_c10Stone_DragEi
 /* Stone i while it is being dragged. With the stylus down the stone
- * follows the touch point plus the grab offset (0x4674/0x4678), its x kept
+ * follows the touch point plus the grab offset (grabX/grabY), its x kept
  * between 0xe and 0xf2 units, and the offset is recomputed; with the stylus
- * up the drag flag clears and, if the aimed stone (0x4eb0) overlaps it, the
+ * up the drag state clears and, if the aimed stone (mAimX/mAimY) overlaps it, the
  * aimed stone is moved just below it. */
 void dScMgCurling_c::Stone_Drag(int stoneIndex) {
-    DragView *dragView = (DragView *)this;
     unsigned char playerSlot = gActivePlayerSlot;
     if (((struct B4 *)gTouchHeld)[playerSlot].v) {
         int stoneXPixels, grabXPixels, grabYPixels;
-        dragView->stone[stoneIndex].x =
-            dragView->stone[stoneIndex].grabX + (((struct B4 *)gTouchX)[playerSlot].v << 12);
-        stoneXPixels = dragView->stone[stoneIndex].x >> 12;
+        mStone[stoneIndex].x =
+            mStone[stoneIndex].grabX + (((struct B4 *)gTouchX)[playerSlot].v << 12);
+        stoneXPixels = mStone[stoneIndex].x >> 12;
         if (stoneXPixels < 0xe)
-            dragView->stone[stoneIndex].x = 0xe000;
+            mStone[stoneIndex].x = 0xe000;
         if (stoneXPixels > 0xf2)
-            dragView->stone[stoneIndex].x = 0xf2000;
+            mStone[stoneIndex].x = 0xf2000;
         grabXPixels =
-            (dragView->stone[stoneIndex].x >> 12) - ((struct B4 *)gTouchX)[gActivePlayerSlot].v;
-        grabYPixels = (dragView->stone[stoneIndex].y >> 12) - ((struct B4 *)gTouchY)[playerSlot].v;
-        dragView->stone[stoneIndex].grabX = grabXPixels << 12;
-        dragView->stone[stoneIndex].grabY = grabYPixels << 12;
+            (mStone[stoneIndex].x >> 12) - ((struct B4 *)gTouchX)[gActivePlayerSlot].v;
+        grabYPixels = (mStone[stoneIndex].y >> 12) - ((struct B4 *)gTouchY)[playerSlot].v;
+        mStone[stoneIndex].grabX = grabXPixels << 12;
+        mStone[stoneIndex].grabY = grabYPixels << 12;
     } else {
         int dx, dy;
-        dragView->stone[stoneIndex].dragging = 0;
-        dx = (dragView->aimX - dragView->stone[stoneIndex].x) >> 12;
-        dy = (dragView->aimY - dragView->stone[stoneIndex].y) >> 12;
+        mStone[stoneIndex].state = 0;
+        dx = (mAimX - mStone[stoneIndex].x) >> 12;
+        dy = (mAimY - mStone[stoneIndex].y) >> 12;
         if (dx < -0x2e)
             return;
         if (dx > 0x2e)
@@ -1184,7 +1165,7 @@ void dScMgCurling_c::Stone_Drag(int stoneIndex) {
         if (dy < -0x14)
             return;
         if (dy <= 0x14)
-            dragView->aimY = dragView->stone[stoneIndex].y + 0x15000;
+            mAimY = mStone[stoneIndex].y + 0x15000;
     }
 }
 
@@ -1201,12 +1182,12 @@ void dScMgCurling_c::Stone_Collide(int idx) {
  * five bands below the house from the sCurlingSlideZoneEdges tables, and a
  * steeper rate while the stone still travels upward above -0x20. At zero
  * speed the stone stops (state 2). The collision and spin helpers run, and
- * the slide sound at 0x467c is retuned to the speed. */
+ * the slide sound (slideSnd) is retuned to the speed. */
 void dScMgCurling_c::Stone_Slide(int stoneIndex) {
     char *c = (char *)this;
     int stoneOffset;
     int zi;
-    u16 *pHeading;
+    u16 *pAngle;
     int *pSpeed;
     int *pX;
     int *pY;
@@ -1225,14 +1206,14 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
 
     stoneOffset = stoneIndex * 0x2c;
 
-    pHeading = (u16 *)(c + 0x4686 + stoneOffset);
-    pSpeed = (int *)(c + 0x4668 + stoneOffset);
-    pX = (int *)(c + 0x4660 + stoneOffset);
-    pY = (int *)(c + 0x4664 + stoneOffset);
+    pAngle = (u16 *)((char *)&mStone[0].angle + stoneOffset);
+    pSpeed = (int *)((char *)&mStone[0].speed + stoneOffset);
+    pX = &mStone[stoneIndex].x;
+    pY = &mStone[stoneIndex].y;
 
-    cosAngle = data_02082214[((*pHeading) >> 4) * 2 + 1];
+    cosAngle = data_02082214[((*pAngle) >> 4) * 2 + 1];
     *pX += FX_MUL(cosAngle, *pSpeed);
-    sinAngle = data_02082214[((*pHeading) >> 4) * 2];
+    sinAngle = data_02082214[((*pAngle) >> 4) * 2];
     *pY += FX_MUL(sinAngle, *pSpeed);
     mStone[stoneIndex].heading += (u16)mStone[stoneIndex].spin;
 
@@ -1242,11 +1223,11 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
     zi = z >> 12;
 
     if (xi + 0xc >= 0x100) {
-        *pHeading = 0x8000 - *pHeading;
+        *pAngle = 0x8000 - *pAngle;
         *pX = 0xf4000;
         func_02012718(0x1d4, *pX);
     } else if (xi - 0xc < 0) {
-        *pHeading = 0x8000 - *pHeading;
+        *pAngle = 0x8000 - *pAngle;
         *pX = 0xc000;
         func_02012718(0x1d4, *pX);
     }
@@ -1267,7 +1248,7 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
         v = 0x1c;
     for (i2 = 0, sbv = *pY >> 12; i2 < 5; i2++) {
         if (sbv <= -(sCurlingSlideZoneEdges[i2] + 0x20)) {
-            s = data_02082214[(*pHeading >> 4) * 2];
+            s = data_02082214[(*pAngle >> 4) * 2];
             if (s < 0) {
                 v = zi >> sCurlingSlideShiftLeft[i2];
                 if (v < sCurlingSlideMinLeft[i2])
@@ -1282,7 +1263,7 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
     }
 
     if (sbv > -0x20) {
-        s = data_02082214[(*pHeading >> 4) * 2];
+        s = data_02082214[(*pAngle >> 4) * 2];
         if (s > 0) {
             v = zi >> 3;
             if (v <= 0x180)
@@ -1310,9 +1291,9 @@ void dScMgCurling_c::Stone_Slide(int stoneIndex) {
 }
 
 // @symbol _ZN14dScMgCurling_c17Stone_WaitReleaseEi
-/* Releases stone idx if the aimed stone (0x4eb0) overlaps it: it takes the
- * aim angle (0x4ede, clamped to the lower half turn) and the swing speed
- * (0x4ec8), is flagged fast above 0x3800, and starts sliding. The aim is
+/* Releases stone idx if the aimed stone (mAimX/mAimY) overlaps it: it takes
+ * the aim angle (mSwingAng, clamped to the lower half turn) and the swing
+ * speed (mSwingSpeed), is flagged fast above 0x3800, and starts sliding. The aim is
  * then put away, the stones are separated, and the throw sound plays at a
  * volume that depends on the fast flag. */
 void dScMgCurling_c::Stone_WaitRelease(int idx) {
@@ -1362,8 +1343,8 @@ void dScMgCurling_c::Stone_WaitRelease(int idx) {
 }
 
 // @symbol _ZN14dScMgCurling_c17BringOutNextStoneEv
-/* Brings out the next stone once the 0x4ee0 delay has run down: it starts
- * active at (0x80000, 0x80000), the stone count at 0x4ee6 goes up (with a
+/* Brings out the next stone once the mStoneDelay delay has run down: it starts
+ * active at (0x80000, 0x80000), the stone count mThrown goes up (with a
  * sound from the second stone on), and the aim point resets. */
 void dScMgCurling_c::BringOutNextStone() {
     if (mNextStone == 0)
@@ -1400,7 +1381,7 @@ void dScMgCurling_c::BringOutNextStone() {
 void dScMgCurling_c::Scene_Idle() {}
 
 // @symbol _ZN14dScMgCurling_c9Scene_EndEv
-/* The scene's end state. After the 0x4ee2 delay it asks the base whether
+/* The scene's end state. After the mStateDelay delay it asks the base whether
  * the game is over, moves to state 4 with the base's own end state, and
  * clears the stones' visible flags. */
 void dScMgCurling_c::Scene_End() {
@@ -1427,7 +1408,7 @@ void dScMgCurling_c::Scene_End() {
 }
 
 // @symbol _ZN14dScMgCurling_c11Scene_ScoreEv
-/* The scoring state. Runs the popup countdowns, then after the 0x4ee2
+/* The scoring state. Runs the popup countdowns, then after the mStateDelay
  * delay either starts the next stone (state 1) or, once all five have been
  * thrown, ends the round (state 3) with the popups' points summed into the
  * score. The popups are cleared either way. */
@@ -1469,8 +1450,8 @@ void dScMgCurling_c::Scene_Score() {
 }
 
 // @symbol _ZN14dScMgCurling_c10Scene_PlayEv
-/* The playing state. After the 0x4ee2 delay it shows the HUD once, runs
- * the aim state (0x4ee4) through its table, then every active stone's own
+/* The playing state. After the mStateDelay delay it shows the HUD once, runs
+ * the aim state (mStylusHeld) through its table, then every active stone's own
  * state through the other table, remembering the last position of each.
  * When no stone is still moving, the popups are scored and the scene moves
  * to state 2 with a 0xc0 delay. */
@@ -1487,7 +1468,7 @@ void dScMgCurling_c::Scene_Play() {
         mPromptBlinkTimer = 0;
     }
     if (mSwingTimer != 0) {
-        u8 *q = (u8 *)(c + 0x4ee9);
+        u8 *q = &mSwingTimer;
         *q = *q - 1;
     }
     (((C *)c)->*sCurlingAimTable[mStylusHeld])();
@@ -1497,15 +1478,15 @@ void dScMgCurling_c::Scene_Play() {
         int i = 0;
         char *p = c;
         for (; i < 5; i++, p += 0x2c) {
-            if (*(u8 *)(p + 0x4689) != 0) {
-                *(int *)(p + 0x466c) = *(int *)(p + 0x4660);
-                *(int *)(p + 0x4670) = *(int *)(p + 0x4664);
-                if (*(u16 *)(p + 0x4680) != 0) {
-                    u16 *q = (u16 *)(p + 0x4680);
+            if (((dScMgCurling_c *)p)->mStone[0].active != 0) {
+                ((dScMgCurling_c *)p)->mStone[0].lastX = ((dScMgCurling_c *)p)->mStone[0].x;
+                ((dScMgCurling_c *)p)->mStone[0].lastY = ((dScMgCurling_c *)p)->mStone[0].y;
+                if (((dScMgCurling_c *)p)->mStone[0].timer != 0) {
+                    u16 *q = (u16 *)(p + CURL_OFF(mStone[0].timer));
                     *q = *q - 1;
                 }
-                (((C *)c)->*sCurlingStoneTable[*(u8 *)(p + 0x4688)])(i);
-                if (*(u8 *)(p + 0x4688) != 2)
+                (((C *)c)->*sCurlingStoneTable[*(u8 *)(p + CURL_OFF(mStone[0].state))])(i);
+                if (*(u8 *)(p + CURL_OFF(mStone[0].state)) != 2)
                     count++;
             }
         }
@@ -1529,7 +1510,7 @@ void dScMgCurling_c::Scene_StartRound() {
 }
 
 // @symbol _ZN14dScMgCurling_c9PickHouseEv
-/* Picks the house (0x4e9c): a fresh random one of three that differs from
+/* Picks the house (mHouse): a fresh random one of three that differs from
  * the last, or the first one when the slot still holds its 0xff reset.
  * The house centre comes from sCurlingHouseSpots and its background from
  * one of three files. */
@@ -1576,18 +1557,18 @@ void dScMgCurling_c::ClearStones() {
     char *c = (char *)this;
     char *r = c;
     for (i = 0; i < 5; i++) {
-        *(int *)(r + 0x4660) = 0;
-        *(int *)(r + 0x4664) = 0;
-        *(int *)(r + 0x4668) = 0;
-        *(int *)(r + 0x466c) = 0;
-        *(int *)(r + 0x4670) = 0;
-        *(int *)(r + 0x467c) = 0;
-        *(short *)(r + 0x4682) = 0;
-        *(short *)(r + 0x4684) = 0;
-        *(short *)(r + 0x4686) = 0;
-        *(unsigned char *)(r + 0x4688) = 0;
-        *(unsigned char *)(r + 0x4689) = 0;
-        *(unsigned char *)(r + 0x468a) = 0;
+        ((dScMgCurling_c *)r)->mStone[0].x = 0;
+        ((dScMgCurling_c *)r)->mStone[0].y = 0;
+        ((dScMgCurling_c *)r)->mStone[0].speed = 0;
+        ((dScMgCurling_c *)r)->mStone[0].lastX = 0;
+        ((dScMgCurling_c *)r)->mStone[0].lastY = 0;
+        ((dScMgCurling_c *)r)->mStone[0].slideSnd = 0;
+        ((dScMgCurling_c *)r)->mStone[0].spin = 0;
+        ((dScMgCurling_c *)r)->mStone[0].heading = 0;
+        ((dScMgCurling_c *)r)->mStone[0].angle = 0;
+        ((dScMgCurling_c *)r)->mStone[0].state = 0;
+        ((dScMgCurling_c *)r)->mStone[0].active = 0;
+        ((dScMgCurling_c *)r)->mStone[0].dealt = 0;
         r += 0x2c;
     }
     for (i = 0; i < 5; i++) {
