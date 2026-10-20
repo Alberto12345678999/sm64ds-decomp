@@ -23,15 +23,17 @@
  */
 
 // leftovers: both classes stay address-named free functions over char* --
-// neither class has a header and no key function is defined as a real method
-// here, so this TU emits no vtable/typeinfo (cartridge copies stay in the
-// module's .data; only Vector3's trivial D1 is compiler-only output). The
-// per-shard namespaces stay (independent decl shapes would collide). The
-// +0x10/+0x14 bounce inputs are the along-line projection and line half-length
-// written by TrmpLine_PushJumper; the actor layouts remain partial.
-// Shared resource, model, frame-controller and
-// sound calls use their genuine API headers. The embedded ModelAnim members
-// stay at the constructor-proven +0x78/+0x6c offsets until the owners have layouts.
+// no key function is defined as a real method here, so this TU emits no
+// vtable/typeinfo (cartridge copies stay in the module's .data; only Vector3's
+// trivial D1 is compiler-only output). The per-shard namespaces stay
+// (independent decl shapes would collide). The records are read through the
+// partial layout views dMgTrmpln2Mario_c.h / dMgTrmpln3DMario_c.h (MARIO2 /
+// MARIO3D). Those keep the embedded ModelAnim as byte views (mModelAnim at the
+// constructor-proven +0x78/+0x6c, its dExtFrameCtrl_c base as mFrameCtrl), so
+// model, frame and anim-file reads cast those members. Shared resource, model,
+// frame-controller and sound calls use their genuine API headers. Trmp2 +0x68
+// and Trmp3D +0x5c stay raw: each is only ever stored 0 (BounceOffLineA,
+// EnterBounce), and no reader gives it a role.
 #pragma defer_codegen off
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -201,7 +203,7 @@ extern "C" void Trmp2Mario_Update(char *o) {
     MARIO2(o)->mPrevPos.y = MARIO2(o)->mPos.y;
     MARIO2(o)->mPrevPos.z = MARIO2(o)->mPos.z;
     if (MARIO2(o)->mState[0] != 0) {
-        Closure *cl = (Closure *)(o + 0x70);
+        Closure *cl = (Closure *)MARIO2(o)->mState;
         void *tobj = o + (cl->adj >> 1);
         void (*fn)();
         if (cl->adj & 1)
@@ -213,7 +215,7 @@ extern "C" void Trmp2Mario_Update(char *o) {
     Trmp2Mario_ApplyGravity(o);
     Fix12 v = FX_MUL(MARIO2(o)->mBounceVy, 0xb4b);
     if (MARIO2(o)->mVel.y > v) {
-        if (*(int *)(o + 0xd8) == sTrmpAnimBounce) {
+        if ((int)((::ModelAnim *)MARIO2(o)->mModelAnim)->file == sTrmpAnimBounce) {
             MARIO2(o)->mParticleId =
                 (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                     MARIO2(o)->mParticleId, 0xf5, MARIO2(o)->mPos.x << 3, MARIO2(o)->mPos.y << 3,
@@ -221,7 +223,7 @@ extern "C" void Trmp2Mario_Update(char *o) {
         }
     }
     Trmp2Mario_UpdateMatrix(o);
-    ((dExtFrameCtrl_c *)(o + 0xc8))->Advance();
+    ((dExtFrameCtrl_c *)MARIO2(o)->mFrameCtrl)->Advance();
 }
 }
 // ---- Trmp2Mario_ApplyGravity
@@ -232,7 +234,7 @@ int _Z14ApproachLinearRiii(int *a, int b, int c);
 void AddVec3(void *dst, void *a, void *b);
 // @symbol Trmp2Mario_ApplyGravity
 void Trmp2Mario_ApplyGravity(char *o) {
-    _Z14ApproachLinearRiii((int *)(o + 0x40), sTrmp2FallSpeed[0], MARIO2(o)->mGravityStep);
+    _Z14ApproachLinearRiii(&MARIO2(o)->mVel.y, sTrmp2FallSpeed[0], MARIO2(o)->mGravityStep);
     AddVec3(o + 0x24, o + 0x3c, o + 0x24);
 }
 }
@@ -303,9 +305,9 @@ body:
     MARIO2(c)->mVel.x = 0;
     MARIO2(c)->mVel.y = 0x2000;
     D3D_PlaySeAtX(0x1c9, MARIO2(c)->mPos.x);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78),
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO2(c)->mModelAnim,
                                                 (BCA_File *)sTrmpAnimStruggle[0], 0, 0x800, 0);
-    *(int *)(c + 0xd0) = 0;
+    ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     {
         int a = pmf_Trmp2Mario_StateKnockedOut[0];
         int b = pmf_Trmp2Mario_StateKnockedOut[1];
@@ -345,14 +347,14 @@ extern "C" void Trmp2Mario_StateBounce(char *c) {
         return;
     }
 
-    if (*(int *)(c + 0xd8) == sTrmpAnimBounce) {
-        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)(c + 0xc8), 0xc) != 0 ||
-            _ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)(c + 0xc8), 0x18) != 0) {
+    if ((int)((::ModelAnim *)MARIO2(c)->mModelAnim)->file == sTrmpAnimBounce) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)MARIO2(c)->mFrameCtrl, 0xc) != 0 ||
+            _ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)MARIO2(c)->mFrameCtrl, 0x18) != 0) {
             D3D_PlaySeAtX(0x1b5, MARIO2(c)->mPos.x);
         }
     }
 
-    Camera_ProjectToScreen16(sMgMainCamera, (void *)(c + 0x24), MARIO2(c)->mScreenPos);
+    Camera_ProjectToScreen16(sMgMainCamera, &MARIO2(c)->mPos, MARIO2(c)->mScreenPos);
 
     v24 = MARIO2(c)->mPos.x;
 
@@ -376,19 +378,19 @@ L70: {
     MARIO2(c)->mPos.x = v;
 }
 
-    if (*(s16 *)(c + 0x22) != 0)
+    if (MARIO2(c)->mItemPushCount != 0)
         goto L1a4;
-    if (_Z14ApproachLinearRiii((int *)(c + 0x64), 5, 1) != 0)
+    if (_Z14ApproachLinearRiii(&MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
         goto L1a4;
     {
         int t;
 
         MARIO2(c)->mAnim = 2;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
-            0);
+            (void *)MARIO2(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+            0x40000000, 0x800, 0);
 
-        *(int *)(c + 0xd0) = 0;
+        ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
 
         t = FX_MUL(-MARIO2(c)->mVel.x, 0x1200);
@@ -398,7 +400,7 @@ L70: {
             t = 0x1400;
         MARIO2(c)->mVel.x = t;
 
-        *(int *)(((int)c + 0x40)) += FX_MUL(sTrmpSpeedScale, 0x400);
+        MARIO2(c)->mVel.y += FX_MUL(sTrmpSpeedScale, 0x400);
 
         {
             int v40 = sTrmp2RiseSpeedMax;
@@ -441,7 +443,7 @@ L1a4: {
 L230:
     if (MARIO2(c)->mContact == 3) {
         ((TrampolineObjectCallbacks *)c)->Clear();
-        *(int *)(((int)c + 0x3c)) *= -1;
+        MARIO2(c)->mVel.x *= -1;
     }
 
 L260: {
@@ -490,7 +492,7 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
     if (alongLine < 0)
         alongLine = -alongLine;
     {
-        int *src = (int *)(c + 4);
+        int *src = (int *)&MARIO2(c)->mContactNormal;
         tmp.x = src[0];
         tmp.y = src[1];
         tmp.z = src[2];
@@ -543,7 +545,7 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
                 (MARIO2(c)->mPos.z) << 3, &vec16, 0);
             MARIO2(c)->mParticleId =
                 (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    *(unsigned int *)(c + 0x5c), 0xf5, (MARIO2(c)->mPos.x) << 3,
+                    MARIO2(c)->mParticleId, 0xf5, (MARIO2(c)->mPos.x) << 3,
                     (MARIO2(c)->mPos.y) << 3, (MARIO2(c)->mPos.z) << 3, 0, 0);
         }
     }
@@ -551,12 +553,12 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
     MARIO2(c)->mBounceVy = MARIO2(c)->mVel.y;
     ((TrampolineObjectCallbacks *)c)->Clear();
     MARIO2(c)->mWallBumpTimer = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x78), sTrmpAnimBounce, 0x40000000,
-                                                0x800, 0);
-    *(int *)(c + 0xd0) = 0;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO2(c)->mModelAnim, sTrmpAnimBounce,
+                                                0x40000000, 0x800, 0);
+    ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, 4, MARIO2(c)->mPos.x);
     D3D_PlaySeAtX(0x1b5, MARIO2(c)->mPos.x);
-    *(int *)(c + 0x68) = 0;
+    *(int *)(c + 0x68) = 0; /* stays raw: only ever stored 0, no reader */
     {
         int a = pmf_Trmp2Mario_StateBounce_2[0];
         int b = pmf_Trmp2Mario_StateBounce_2[1];
@@ -594,7 +596,7 @@ extern "C" void Trmp2Mario_StateWallBounce(char *c) {
         return;
     }
 
-    Camera_ProjectToScreen16(sMgMainCamera, (void *)(c + 0x24), MARIO2(c)->mScreenPos);
+    Camera_ProjectToScreen16(sMgMainCamera, &MARIO2(c)->mPos, MARIO2(c)->mScreenPos);
 
     v24 = MARIO2(c)->mPos.x;
 
@@ -618,9 +620,9 @@ L70: {
     MARIO2(c)->mPos.x = v;
 }
 
-    if (*(s16 *)(c + 0x22) != 0)
+    if (MARIO2(c)->mItemPushCount != 0)
         goto L1a4;
-    if (_Z14ApproachLinearRiii((int *)(c + 0x64), 5, 1) != 0)
+    if (_Z14ApproachLinearRiii(&MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
         goto L1a4;
     {
         int t = FX_MUL(-MARIO2(c)->mVel.x, 0x1200);
@@ -632,7 +634,7 @@ L70: {
             t = 0x1400;
         MARIO2(c)->mVel.x = t;
 
-        *(int *)(((int)c + 0x40)) += FX_MUL(sTrmpSpeedScale, 0x400);
+        MARIO2(c)->mVel.y += FX_MUL(sTrmpSpeedScale, 0x400);
 
         v40 = sTrmp2RiseSpeedMax;
         if (MARIO2(c)->mVel.y <= v40)
@@ -641,10 +643,10 @@ L70: {
 
         MARIO2(c)->mAnim = 2;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
-            0);
+            (void *)MARIO2(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+            0x40000000, 0x800, 0);
 
-        *(int *)(c + 0xd0) = 0;
+        ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
     }
     goto L260;
@@ -682,7 +684,7 @@ L1a4: {
 L230:
     if (MARIO2(c)->mContact == 3) {
         ((TrampolineObjectCallbacks *)c)->Clear();
-        *(int *)(((int)c + 0x3c)) *= -1;
+        MARIO2(c)->mVel.x *= -1;
     }
 
 L260: {
@@ -731,7 +733,7 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c) {
     if (alongLine < 0)
         alongLine = -alongLine;
     {
-        int *src = (int *)(c + 4);
+        int *src = (int *)&MARIO2(c)->mContactNormal;
         tmp.x = src[0];
         tmp.y = src[1];
         tmp.z = src[2];
@@ -772,10 +774,11 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c) {
         MARIO2(c)->mAnim = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO2(c)->mModelAnim,
+                                                *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+                                                0x40000000, 0x800, 0);
 
-    *(int *)(c + 0xd0) = 0;
+    ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
 
     {
@@ -825,12 +828,12 @@ extern "C" void Trmp2Mario_EnterBounce(char *c) {
     callbacks->Clear();
     MARIO2(c)->mWallBumpTimer = 0;
     MARIO2(c)->mAnim = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78), sTrmpAnimBounce,
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO2(c)->mModelAnim, sTrmpAnimBounce,
                                                 0x40000000, 0x800, 0);
-    *(int *)(c + 0xd0) = 0;
+    ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     D3D_PlaySeAtX(0x110, MARIO2(c)->mPos.x);
     D3D_PlaySeAtX(0x1b5, MARIO2(c)->mPos.x);
-    *(int *)(c + 0x68) = 0;
+    *(int *)(c + 0x68) = 0; /* stays raw: only ever stored 0, no reader */
     a = pmf_Trmp2Mario_StateBounce.a;
     b = pmf_Trmp2Mario_StateBounce.b;
     MARIO2(c)->mState[0] = b ? a : a;
@@ -896,7 +899,7 @@ void Trmp2Mario_EnterRespawnWait(unsigned char *c) {
     MARIO2(c)->mPrevPos.z = MARIO2(c)->mPos.z;
     MARIO2(c)->mVel.y = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, sTrmpAnimWallJump, 0x40000000, 0x800, 0);
-    *(W2 *)(c + 0x70) = *(W2 *)&pmf_Trmp2Mario_StateRespawnWait_2;
+    *(W2 *)MARIO2(c)->mState = *(W2 *)&pmf_Trmp2Mario_StateRespawnWait_2;
 }
 }
 }
@@ -953,7 +956,7 @@ void Trmp2Mario_EnterMissed(char *c) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, *(void **)&sTrmpAnimStruggle, 0, 0x800,
                                                 0);
     MARIO2(c)->mTimer = 0x28;
-    *(double *)(c + 0x70) = pmf_Trmp2Mario_StateMissed_2;
+    *(double *)MARIO2(c)->mState = pmf_Trmp2Mario_StateMissed_2;
 }
 }
 }
@@ -993,7 +996,7 @@ extern "C" void Trmp2Mario_StateFall(char *c) {
         return;
     }
 
-    Camera_ProjectToScreen16(sMgMainCamera, (void *)(c + 0x24), MARIO2(c)->mScreenPos);
+    Camera_ProjectToScreen16(sMgMainCamera, &MARIO2(c)->mPos, MARIO2(c)->mScreenPos);
 
     v24 = MARIO2(c)->mPos.x;
 
@@ -1017,22 +1020,22 @@ L70: {
     MARIO2(c)->mPos.x = v;
 }
 
-    *(int *)(((int)c + 0x3c)) *= -1;
+    MARIO2(c)->mVel.x *= -1;
     if (MARIO2(c)->mVel.y <= -0x800)
         goto L260;
 
-    if (*(s16 *)(c + 0x22) != 0)
+    if (MARIO2(c)->mItemPushCount != 0)
         goto L1a4;
-    if (_Z14ApproachLinearRiii((int *)(c + 0x64), 5, 1) != 0)
+    if (_Z14ApproachLinearRiii(&MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
         goto L1a4;
     {
         MARIO2(c)->mVel.y = 0x800;
         MARIO2(c)->mAnim = 2;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)(c + 0x78), *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
-            0);
+            (void *)MARIO2(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+            0x40000000, 0x800, 0);
 
-        *(int *)(c + 0xd0) = 0;
+        ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
 
         {
@@ -1061,7 +1064,7 @@ L1a4: {
 L230:
     if (MARIO2(c)->mContact == 3) {
         ((TrampolineObjectCallbacks *)c)->Clear();
-        *(int *)(((int)c + 0x3c)) *= -1;
+        MARIO2(c)->mVel.x *= -1;
     }
 
 L260: {
@@ -1171,9 +1174,9 @@ extern "C" void Trmp2Mario_EnterHidden(char *c) {
     MARIO2(c)->mVel.z = data_020a0ebc[2];
     MARIO2(c)->mGravityStep = 0;
     MARIO2(c)->mWallBumpTimer = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78),
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO2(c)->mModelAnim,
                                                 (BCA_File *)sTrmpAnimWalk[0], 0, 0x800, 0);
-    *(double *)(c + 0x70) = pmf_Trmp2Mario_StateHidden_3;
+    *(double *)MARIO2(c)->mState = pmf_Trmp2Mario_StateHidden_3;
 }
 }
 // ---- Trmp2Mario_Load
@@ -1434,9 +1437,9 @@ extern "C" void Trmp2Mario_MoveToStart(void) {
     q0 = pmf_Trmp2Mario_StateHidden[0];
     for (;;) {
 
-        int *v = (int *)(e + 0x70);
+        int *v = MARIO2(e)->mState;
         volatile int *q = (volatile int *)pmf_Trmp2Mario_StateHidden;
-        if (v[0] == q0 && (v[1] == q[1] || *(int *)(e + 0x70) == 0)) {
+        if (v[0] == q0 && (v[1] == q[1] || MARIO2(e)->mState[0] == 0)) {
 
             Trmp2Mario_EnterAppearWait(base + i * 0xdc, (short)(i * 0x14));
             *(int *)(sTrmp2Marios + i * 0xdc + 0x24) = 0;
@@ -1772,7 +1775,7 @@ extern "C" void Trmp3DMario_Update(char *o) {
     MARIO3D(o)->mPrevPos.y = MARIO3D(o)->mPos.y;
     MARIO3D(o)->mPrevPos.z = MARIO3D(o)->mPos.z;
     if (MARIO3D(o)->mState[0] != 0) {
-        Closure *cl = (Closure *)(o + 0x64);
+        Closure *cl = (Closure *)MARIO3D(o)->mState;
         void *tobj = o + (cl->adj >> 1);
         void (*fn)();
         if (cl->adj & 1)
@@ -1784,7 +1787,7 @@ extern "C" void Trmp3DMario_Update(char *o) {
     Trmp3DMario_ApplyGravity(o);
     Fix12 v = FX_MUL(MARIO3D(o)->mBounceVy, 0xb4b);
     if (MARIO3D(o)->mVel.y > v) {
-        if (*(int *)(o + 0xcc) == sTrmpAnimBounce) {
+        if ((int)((::ModelAnim *)MARIO3D(o)->mModelAnim)->file == sTrmpAnimBounce) {
             MARIO3D(o)->mParticleId =
                 (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                     MARIO3D(o)->mParticleId, 0xf5, MARIO3D(o)->mPos.x << 3, MARIO3D(o)->mPos.y << 3,
@@ -1792,7 +1795,7 @@ extern "C" void Trmp3DMario_Update(char *o) {
         }
     }
     Trmp3DMario_UpdateMatrix(o);
-    ((dExtFrameCtrl_c *)(o + 0xbc))->Advance();
+    ((dExtFrameCtrl_c *)MARIO3D(o)->mFrameCtrl)->Advance();
 }
 }
 // ---- Trmp3DMario_ApplyGravity
@@ -1803,7 +1806,7 @@ int _Z14ApproachLinearRiii(int *a, int b, int c);
 void AddVec3(void *dst, void *a, void *b);
 // @symbol Trmp3DMario_ApplyGravity
 void Trmp3DMario_ApplyGravity(char *o) {
-    _Z14ApproachLinearRiii((int *)(o + 0x38), sTrmp3DFallSpeed[0], MARIO3D(o)->mGravityStep);
+    _Z14ApproachLinearRiii(&MARIO3D(o)->mVel.y, sTrmp3DFallSpeed[0], MARIO3D(o)->mGravityStep);
     AddVec3(o + 0x1c, o + 0x34, o + 0x1c);
 }
 }
@@ -1871,9 +1874,9 @@ body:
     MARIO3D(c)->mVel.x = 0;
     MARIO3D(c)->mVel.y = 0x2000;
     Sound::PlayBank2_2D(0x1c9);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x6c),
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO3D(c)->mModelAnim,
                                                 (BCA_File *)sTrmpAnimStruggle[0], 0, 0x800, 0);
-    *(int *)(c + 0xc4) = 0;
+    ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     {
         int a = pmf_Trmp3DMario_StateKnockedOut[0];
         int b = pmf_Trmp3DMario_StateKnockedOut[1];
@@ -1922,30 +1925,30 @@ void Trmp3DMario_StateGoal(void *self) {
     int u;
     int i;
 
-    idx = *(short *)(c + 0x52);
+    idx = MARIO3D(c)->mHeightRow;
     lim = sTrmpRowHeights[idx];
-    if (*(int *)(c + 0x20) <= lim) {
-        *(int *)(c + 0x20) = lim;
-        *(int *)(c + 0x38) = 0;
+    if (MARIO3D(c)->mPos.y <= lim) {
+        MARIO3D(c)->mPos.y = lim;
+        MARIO3D(c)->mVel.y = 0;
     }
 
-    if (*(int *)(c + 0xcc) == sTrmpAnimRollJumpEnd) {
-        _Z11UpdateAngleRssis((short *)(c + 0x4a), 0, 2, 0x1000);
+    if ((int)((::ModelAnim *)MARIO3D(c)->mModelAnim)->file == sTrmpAnimRollJumpEnd) {
+        _Z11UpdateAngleRssis(&MARIO3D(c)->mRotY, 0, 2, 0x1000);
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) == 0)
             return;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, sTrmpAnimWalk, 0, 0x800, 0);
         return;
     }
 
-    if (*(int *)(c + 0x1c) > 0) {
-        _Z14ApproachLinearRiii((int *)(c + 0x34), 0x4000, 0x800);
-        _Z15ApproachLinear2Rsss((short *)(c + 0x4a), 0x4000, 0x1000);
+    if (MARIO3D(c)->mPos.x > 0) {
+        _Z14ApproachLinearRiii(&MARIO3D(c)->mVel.x, 0x4000, 0x800);
+        _Z15ApproachLinear2Rsss(&MARIO3D(c)->mRotY, 0x4000, 0x1000);
     } else {
-        _Z14ApproachLinearRiii((int *)(c + 0x34), -0x4000, 0x800);
-        _Z15ApproachLinear2Rsss((short *)(c + 0x4a), -0x4000, 0x1000);
+        _Z14ApproachLinearRiii(&MARIO3D(c)->mVel.x, -0x4000, 0x800);
+        _Z15ApproachLinear2Rsss(&MARIO3D(c)->mRotY, -0x4000, 0x1000);
     }
 
-    u = *(int *)(c + 0x1c);
+    u = MARIO3D(c)->mPos.x;
     if (u <= 0x90000 && u >= -0x90000)
         return;
 
@@ -1954,7 +1957,7 @@ void Trmp3DMario_StateGoal(void *self) {
     sTrmpMariosInPlay -= 1;
     sTrmpMariosOnLedges -= 1;
 
-    if (*(int *)(c + 0x20) > 0) {
+    if (MARIO3D(c)->mPos.y > 0) {
         Camera_ProjectToScreen(sMgSubCamera, c + 0x1c, &va, &vb);
         vb = vb - (Mg_GetTopScreenYOffset() + 0xc0);
     } else {
@@ -1970,13 +1973,13 @@ void Trmp3DMario_StateGoal(void *self) {
     i = sTrmpGoalSlotCursor;
     {
         Triple *p = &sTrmpGoalSlots[i];
-        *(int *)(c + 0x1c) = p->m0;
-        *(int *)(c + 0x20) = p->m4;
-        *(int *)(c + 0x24) = p->m8;
+        MARIO3D(c)->mPos.x = p->m0;
+        MARIO3D(c)->mPos.y = p->m4;
+        MARIO3D(c)->mPos.z = p->m8;
     }
-    *(int *)(c + 0x34) = data_020a0ebc.m0;
-    *(int *)(c + 0x38) = data_020a0ebc.m4;
-    *(int *)(c + 0x3c) = data_020a0ebc.m8;
+    MARIO3D(c)->mVel.x = data_020a0ebc.m0;
+    MARIO3D(c)->mVel.y = data_020a0ebc.m4;
+    MARIO3D(c)->mVel.z = data_020a0ebc.m8;
 
     Trmp3DMario_EnterOffstage(c);
 }
@@ -2011,8 +2014,8 @@ extern "C" void Trmp3DMario_EnterGoal(char *c) {
     MARIO3D(c)->mVel.x = 0;
     MARIO3D(c)->mVel.y = 0;
     Sound_PlayBank1Panned(0, (char *)0x10, *(void **)(c + 0x1c));
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x6c), sTrmpAnimRollJumpEnd,
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO3D(c)->mModelAnim,
+                                                sTrmpAnimRollJumpEnd, 0x40000000, 0x800, 0);
     sTrmpMariosOnLedges[0] = sTrmpMariosOnLedges[0] + 1;
     a = pmf_Trmp3DMario_StateGoal[0];
     b = pmf_Trmp3DMario_StateGoal[1];
@@ -2036,14 +2039,14 @@ extern void Trmp3DMario_EnterOnLedge(char *c);
 
 // @symbol Trmp3DMario_StateLand
 void Trmp3DMario_StateLand(char *c) {
-    _Z14ApproachLinearRiii((int *)(c + 0x20), sTrmpRowHeights[MARIO3D(c)->mHeightRow], 0x4000);
+    _Z14ApproachLinearRiii(&MARIO3D(c)->mPos.y, sTrmpRowHeights[MARIO3D(c)->mHeightRow], 0x4000);
     if (MARIO3D(c)->mPos.x > 0)
-        _Z14ApproachLinearRsss((short *)(c + 0x4a), 0x4000, 0x1000);
+        _Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, 0x4000, 0x1000);
     else
-        _Z14ApproachLinearRsss((short *)(c + 0x4a), -0x4000, 0x1000);
+        _Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, -0x4000, 0x1000);
     MARIO3D(c)->mVel.x = 0;
     MARIO3D(c)->mVel.y = 0;
-    if (*(int *)(c + 0xcc) != sTrmpAnimHangUp)
+    if ((int)((::ModelAnim *)MARIO3D(c)->mModelAnim)->file != sTrmpAnimHangUp)
         return;
     if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) == 0)
         return;
@@ -2082,8 +2085,8 @@ void Trmp3DMario_EnterLand(char *c) {
     MARIO3D(c)->mVel.x = data_020a0ebc[0];
     MARIO3D(c)->mVel.y = data_020a0ebc[1];
     MARIO3D(c)->mVel.z = data_020a0ebc[2];
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x6c), (void *)sTrmpAnimHangUp,
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO3D(c)->mModelAnim,
+                                                (void *)sTrmpAnimHangUp, 0x40000000, 0x800, 0);
     Sound_PlayBank1Panned(0, (char *)0x17, *(void **)(c + 0x1c));
     {
         int a = pmf_Trmp3DMario_StateLand.a;
@@ -2159,7 +2162,7 @@ extern void Trmp3DMario_StateFallToLedge(char *c);
 
 // @symbol Trmp3DMario_EnterFallToLedge
 void Trmp3DMario_EnterFallToLedge(char *c) {
-    *(W2 *)(c + 0x64) = *(W2 *)&pmf_Trmp3DMario_StateFallToLedge;
+    *(W2 *)MARIO3D(c)->mState = *(W2 *)&pmf_Trmp3DMario_StateFallToLedge;
     Trmp3DMario_StateFallToLedge(c);
 }
 }
@@ -2193,14 +2196,14 @@ extern "C" void Trmp3DMario_StateHardBounce(char *c) {
         return;
     }
 
-    if (*(int *)(c + 0xcc) == sTrmpAnimBounce) {
-        if (((dExtFrameCtrl_c *)(c + 0xbc))->WillHitFrame(0xc) ||
-            ((dExtFrameCtrl_c *)(c + 0xbc))->WillHitFrame(0x18)) {
+    if ((int)((::ModelAnim *)MARIO3D(c)->mModelAnim)->file == sTrmpAnimBounce) {
+        if (((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->WillHitFrame(0xc) ||
+            ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->WillHitFrame(0x18)) {
             D3D_PlaySeAtX(0x1b5, MARIO3D(c)->mPos.x);
         }
     }
 
-    Camera_ProjectToScreen16(sMgMainCamera, (void *)(c + 0x1c), MARIO3D(c)->mScreenPos);
+    Camera_ProjectToScreen16(sMgMainCamera, &MARIO3D(c)->mPos, MARIO3D(c)->mScreenPos);
 
     v = MARIO3D(c)->mPos.x;
 
@@ -2263,21 +2266,21 @@ L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)(c + 0x6c), *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim], 0x40000000,
-            0x800, 0);
+            (void *)MARIO3D(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+            0x40000000, 0x800, 0);
 
-        *(int *)(c + 0xc4) = 0;
+        ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
     }
 
     func_02012718(0x1b3, MARIO3D(c)->mPos.x + 0x80000);
-    *(int *)(((int)c + 0x34)) *= -1;
+    MARIO3D(c)->mVel.x *= -1;
     goto L1dc;
 
 L1ac:
     if (MARIO3D(c)->mContact == 3) {
         ((TrampolineObjectCallbacks *)c)->Clear();
-        *(int *)(((int)c + 0x34)) *= -1;
+        MARIO3D(c)->mVel.x *= -1;
     }
 
 L1dc: {
@@ -2358,9 +2361,9 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
             0);
     }
 
-    *(unsigned int *)(c + 0x54) =
-        (unsigned int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int *)(c + 0x54), 0xf5, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
+    MARIO3D(c)->mParticleId =
+        (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            MARIO3D(c)->mParticleId, 0xf5, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
             MARIO3D(c)->mPos.z << 3, 0, 0);
 
     scale = FX_MUL(sTrmp3DHardBounceScale, fdivr);
@@ -2393,15 +2396,15 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
         MARIO3D(c)->mAnim = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x6c), sTrmpAnimBounce, 0x40000000,
-                                                0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO3D(c)->mModelAnim, sTrmpAnimBounce,
+                                                0x40000000, 0x800, 0);
 
-    *(int *)(c + 0xc4) = 0;
+    ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, 4, MARIO3D(c)->mPos.x);
 
     D3D_PlaySeAtX(0x1b5, MARIO3D(c)->mPos.x);
 
-    *(int *)(c + 0x5c) = 0;
+    *(int *)(c + 0x5c) = 0; /* stays raw: only ever stored 0, no reader */
     {
         int a = pmf_Trmp3DMario_StateHardBounce[0];
         int b = pmf_Trmp3DMario_StateHardBounce[1];
@@ -2439,7 +2442,7 @@ extern "C" void Trmp3DMario_StateBounce(char *c) {
         return;
     }
 
-    Camera_ProjectToScreen16(sMgMainCamera, (void *)(c + 0x1c), MARIO3D(c)->mScreenPos);
+    Camera_ProjectToScreen16(sMgMainCamera, &MARIO3D(c)->mPos, MARIO3D(c)->mScreenPos);
 
     v = MARIO3D(c)->mPos.x;
 
@@ -2502,21 +2505,21 @@ L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)(c + 0x6c), *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim], 0x40000000,
-            0x800, 0);
+            (void *)MARIO3D(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+            0x40000000, 0x800, 0);
 
-        *(int *)(c + 0xc4) = 0;
+        ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
     }
 
     func_02012718(0x1b3, MARIO3D(c)->mPos.x + 0x80000);
-    *(int *)(((int)c + 0x34)) *= -1;
+    MARIO3D(c)->mVel.x *= -1;
     goto L1dc;
 
 L1ac:
     if (MARIO3D(c)->mContact == 3) {
         ((TrampolineObjectCallbacks *)c)->Clear();
-        *(int *)(((int)c + 0x34)) *= -1;
+        MARIO3D(c)->mVel.x *= -1;
     }
 
 L1dc: {
@@ -2607,11 +2610,11 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c) {
         MARIO3D(c)->mAnim = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x6c),
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO3D(c)->mModelAnim,
                                                 *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
                                                 0x40000000, 0x800, 0);
 
-    *(int *)(c + 0xc4) = 0;
+    ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
 
     {
@@ -2656,18 +2659,18 @@ extern "C" void Trmp3DMario_JumpOff(char *c) {
     if (b > 0)
         MARIO3D(c)->mVel.x = -MARIO3D(c)->mVel.x;
 
-    p38 = (int *)(c + 0x38);
+    p38 = &MARIO3D(c)->mVel.y;
     *p38 += (int)((((long long)sTrmp3DBounceScale << 11) + 0x800) >> 12);
 
     ((TrampolineObjectCallbacks *)c)->Clear();
 
     MARIO3D(c)->mAnim = 0;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x6c),
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO3D(c)->mModelAnim,
                                                 *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
                                                 0x40000000, 0x800, 0);
 
-    *(int *)(c + 0xc4) = 0;
+    ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
 
     {
@@ -2736,7 +2739,7 @@ void Trmp3DMario_EnterMissed(char *c) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, *(void **)&sTrmpAnimStruggle, 0, 0x800,
                                                 0);
     MARIO3D(c)->mTimer = 0x28;
-    *(double *)(c + 0x64) = pmf_Trmp3DMario_StateMissed_2;
+    *(double *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateMissed_2;
 }
 }
 }
@@ -2770,7 +2773,7 @@ extern "C" void Trmp3DMario_StateFall(char *c) {
         return;
     }
 
-    Camera_ProjectToScreen16(sMgMainCamera, (void *)(c + 0x1c), MARIO3D(c)->mScreenPos);
+    Camera_ProjectToScreen16(sMgMainCamera, &MARIO3D(c)->mPos, MARIO3D(c)->mScreenPos);
 
     v = MARIO3D(c)->mPos.x;
 
@@ -2831,13 +2834,13 @@ Ld0:
 
 L130:
     D3D_PlaySeAtX(0x1b3, v);
-    *(int *)(((int)c + 0x34)) *= -1;
+    MARIO3D(c)->mVel.x *= -1;
     goto L180;
 
 L150:
     if (MARIO3D(c)->mContact == 3) {
         ((TrampolineObjectCallbacks *)c)->Clear();
-        *(int *)(((int)c + 0x34)) *= -1;
+        MARIO3D(c)->mVel.x *= -1;
     }
 
 L180: {
@@ -2909,7 +2912,7 @@ void Trmp3DMario_EnterWalkBack(char *c) {
     MARIO3D(c)->mVel.z = 0;
     MARIO3D(c)->mRotY = -0x4000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, *(void **)&sTrmpAnimWalk, 0, 0x800, 0);
-    *(double *)(c + 0x64) = pmf_Trmp3DMario_StateWalkBack;
+    *(double *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateWalkBack;
 }
 }
 }
@@ -2950,7 +2953,7 @@ void Trmp3DMario_StateOnLedge(char *c) {
             }
             return;
         }
-        if (_Z14ApproachLinearRsss((s16 *)(c + 0x4a), 0x4000, 0x800) != 0)
+        if (_Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, 0x4000, 0x800) != 0)
             MARIO3D(c)->mVel.x = 0x1000;
         return;
     }
@@ -3010,7 +3013,7 @@ void Trmp3DMario_EnterOnLedge(char *p) {
         int *ctr = &sTrmpMariosOnLedges;
         int c = *ctr;
         *ctr = c + 1;
-        *(W2 *)(p + 0x64) = *(W2 *)&pmf_Trmp3DMario_StateOnLedge;
+        *(W2 *)MARIO3D(p)->mState = *(W2 *)&pmf_Trmp3DMario_StateOnLedge;
     }
 }
 }
@@ -3105,7 +3108,7 @@ void Trmp3DMario_StateOnGround(char *c) {
             }
             return;
         }
-        if (_Z14ApproachLinearRsss((s16 *)(c + 0x4a), -0x4000, 0x800) != 0)
+        if (_Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, -0x4000, 0x800) != 0)
             MARIO3D(c)->mVel.x = -0x1000;
         return;
     }
@@ -3144,7 +3147,7 @@ extern "C" void Trmp3DMario_EnterOnGround(char *c) {
     MARIO3D(c)->mVel.y = 0;
     MARIO3D(c)->mVel.z = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, sTrmpAnimJumpEnd, 0x40000000, 0x800, 0);
-    *(double *)(c + 0x64) = pmf_Trmp3DMario_StateOnGround_2;
+    *(double *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateOnGround_2;
 }
 }
 // ---- Trmp3DMario_IsOffstage
