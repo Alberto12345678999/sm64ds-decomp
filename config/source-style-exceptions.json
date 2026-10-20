@@ -560,6 +560,86 @@
       "count": 2,
       "reason": "Retained scalar ABI bridge for the Fix12-by-value OAM overload, carried from the old waiting renderer. OAM.h deliberately excludes this overload; RenderSub uses the shared header. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching call ABI.",
       "evidence": "include/OAM.h; notes/mwccarm-codegen.md section 6az; notes/agents/handoffs/entry-sync1018.md; ov075 0x021194e4 size0x15c links exactly with all six destinations verified."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_000",
+      "count": 2,
+      "reason": "AddSystem already stores through Particle::System::Flags. The 6-bit field is the loan of Manager::unk_02c, then copied into unk_00c. include/Particle__System.h and Particle_SysTracker_Contents.cpp keep the placeholder; no reader names it. Follow-up: rename the bitfield once a consumer establishes its role.",
+      "evidence": "include/Particle__System.h Flags unk_000:6 at +0x74; Particle_SysTracker_Contents.cpp Entry::Initialise reads the same field. Typed member access, not a raw offset. mwccarm 2004/b56 match.py: _ZN8Particle7Manager9AddSystemEiR7Vector3 at 0x02049e0c size 0xdc MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_006",
+      "count": 1,
+      "reason": "AddSystem stores Manager::unk_02e through the existing 6-bit Flags member. The shared header name stays unknown; Contents::Entry::Initialise compares the same field. Follow-up: rename it together with unk_000 and unk_00c.",
+      "evidence": "include/Particle__System.h Flags unk_006:6; src/engine/particle/Particle_SysTracker_Contents.cpp. mwccarm 2004/b56 match.py: AddSystem at 0x02049e0c size 0xdc MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_00c",
+      "count": 1,
+      "reason": "AddSystem copies flags.unk_000 into the existing 6-bit Flags member. The shared header name stays unknown. Follow-up: rename it together with unk_000 and unk_006.",
+      "evidence": "include/Particle__System.h Flags unk_00c:6; Contents::Entry::Initialise writes the same field. mwccarm 2004/b56 match.py: AddSystem at 0x02049e0c size 0xdc MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_02c",
+      "count": 2,
+      "reason": "func_0204a4c8's (short*)(p+0x2c) store and AddSystem's read are the existing Manager member. The constructor's third argument is loaned into each system's flags.unk_000; no consumer names the value. Follow-up: name Manager+0x2c with that flag field.",
+      "evidence": "include/Particle__Manager.h u16 unk_02c at +0x2c. Replaces (short*)(p+0x2c). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH; AddSystem at 0x02049e0c size 0xdc MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_02e",
+      "count": 2,
+      "reason": "func_0204a4c8's (short*)(p+0x2e) store and AddSystem's read are the existing Manager member. The constructor's fourth argument is loaned into flags.unk_006; no consumer names the value. Follow-up: name Manager+0x2e with that flag field.",
+      "evidence": "include/Particle__Manager.h u16 unk_02e at +0x2e. Replaces (short*)(p+0x2e). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH; AddSystem at 0x02049e0c size 0xdc MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_028",
+      "count": 1,
+      "reason": "func_0204a4c8's (short*)(p+0x28) store is the existing Manager member, the constructor's first argument. Nothing else in this TU reads it, so the header name stays unknown. Follow-up: name Manager+0x28 when a reader establishes its role.",
+      "evidence": "include/Particle__Manager.h u16 unk_028 at +0x28. Replaces (short*)(p+0x28). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_02a",
+      "count": 1,
+      "reason": "func_0204a4c8's (short*)(p+0x2a) store is the existing Manager member, the constructor's second argument. Nothing else in this TU reads it, so the header name stays unknown. Follow-up: name Manager+0x2a when a reader establishes its role.",
+      "evidence": "include/Particle__Manager.h u16 unk_02a at +0x2a. Replaces (short*)(p+0x2a). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_020",
+      "count": 1,
+      "reason": "func_0204a4c8's (int*)(p+0x20) clear is the existing Manager member. func_0204a17c then fills the same slot as the second resource table through the file-local EData view. The shared header name stays unknown. Follow-up: name Manager+0x20 once that table is shared outside this TU.",
+      "evidence": "include/Particle__Manager.h void *unk_020 at +0x20. Replaces (int*)(p+0x20). mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_024",
+      "count": 1,
+      "reason": "func_0204a4c8's (short*)(p+0x24) store is the existing Manager member. The same halfword is EData::numA, the first resource-table count func_0204a17c writes. The shared header name stays unknown. Follow-up: name Manager+0x24 with that count once both views share one record.",
+      "evidence": "include/Particle__Manager.h u16 unk_024 at +0x24. Replaces (short*)(p+0x24) and the following unsigned load of unk_026. mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
+    },
+    {
+      "path": "src/engine/particle/Particle_Manager.cpp",
+      "rule": "unknown-field",
+      "match": "unk_026",
+      "count": 2,
+      "reason": "func_0204a4c8's (unsigned short*)(p+0x26) clear and the reload into unk_024 are the existing Manager member. The same halfword is EData::numB. The shared header name stays unknown. Follow-up: name Manager+0x26 with that count once both views share one record.",
+      "evidence": "include/Particle__Manager.h u16 unk_026 at +0x26. Replaces both (unsigned short*)(p+0x26) occurrences. mwccarm 2004/b56 match.py: func_0204a4c8 at 0x0204a4c8 size 0xf4 MATCH."
     }
   ]
 }

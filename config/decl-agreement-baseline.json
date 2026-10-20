@@ -6483,7 +6483,7 @@
       ]
     },
     "_ZN2GX7LoadTexEPKvjj": {
-      "src/unnamed/arm9/0204/func_0204a0dc.c": [
+      "src/engine/particle/Particle_Manager.cpp": [
         "return:unsigned int"
       ]
     },
@@ -23826,7 +23826,7 @@
       ]
     },
     "func_0204ae2c": {
-      "src/_ZN8Particle7Manager9AddSystemEiR7Vector3.cpp": [
+      "src/engine/particle/Particle_Manager.cpp": [
         "param:#1 Particle::System *"
       ]
     },
@@ -23887,10 +23887,7 @@
       ]
     },
     "func_0204d8e8": {
-      "src/unnamed/arm9/0204/func_02049d78.c": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02049f58.c": [
+      "src/engine/particle/Particle_Manager.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0204/func_0204a730.c": [
@@ -23901,29 +23898,8 @@
       "include/decl_common.h": [
         "return:void *"
       ],
-      "src/_ZN8Particle7Manager9AddSystemEiR7Vector3.cpp": [
-        "param:#1 Particle::Manager::SystemList *",
+      "src/engine/particle/Particle_Manager.cpp": [
         "return:Particle::System *"
-      ],
-      "src/unnamed/arm9/0204/func_02049d78.c": [
-        "return:int"
-      ]
-    },
-    "func_0204d9a0": {
-      "src/_ZN8Particle7Manager9AddSystemEiR7Vector3.cpp": [
-        "param:#1 Particle::Manager::SystemList *",
-        "param:#2 Particle::System *"
-      ],
-      "src/unnamed/arm9/0204/func_02049d78.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0204/func_02049f58.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0204/func_0204a4c8.c": [
-        "param:#1 char *",
-        "param:#2 char *",
-        "return:int"
       ]
     },
     "func_0204dab4": {
