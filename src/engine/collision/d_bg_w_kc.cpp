@@ -33,13 +33,13 @@ dBgW_Kc::~dBgW_Kc() {}
 
 // @symbol func_020397dc
 /* True when a divisor is too close to zero to divide by (|value| <= 8). */
-extern "C" int func_020397dc(int value) {
+extern "C" bool func_020397dc(int value) {
     return value <= 8 && value >= -8;
 }
 
 // @symbol func_020397b8
 /* True when a face normal's y lies strictly inside the wall band. */
-extern "C" int func_020397b8(int normalY) {
+extern "C" bool func_020397b8(int normalY) {
     return normalY < 0x600 && normalY > -0xccc;
 }
 

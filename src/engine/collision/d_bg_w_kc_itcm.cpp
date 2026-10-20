@@ -46,10 +46,10 @@
 extern "C" {
 
 /* Shared collider helpers, defined in the arm9 TU (src/engine/collision/d_bg_w_kc.cpp). */
-s16 func_020396dc(dBgW_Kc *self, KCL_Tri *tri);   /* prism -> triangle index */
-int func_020397dc(int x);   /* near-zero divisor guard */
-int func_020397b8(int x);   /* wall-facing test */
-int func_02039794(int x);   /* slope-band classify */
+s16 func_020396dc(dBgW_Kc *self, KCL_Tri *tri); /* prism -> triangle index */
+bool func_020397dc(int x);                      /* near-zero divisor guard */
+bool func_020397b8(int x);                      /* wall-facing test */
+int func_02039794(int x);                       /* slope-band classify */
 
 /* Hit-record writers into the query's embedded dBgPi. */
 /* local extern: dBgPi::RecordHit by its mangled name -- the Lin query's call shape (int* res/info) is byte-required, so dBgPi.h's member spelling is not used here. */

@@ -31,8 +31,8 @@ struct dBgCh_Lin {
 };
 
 extern "C" {
-int  func_020397dc(s32 x);
-int  func_020397b8(s32 x);
+bool func_020397dc(s32 x);
+bool func_020397b8(s32 x);
 void _ZN5dBgPcC1Ev(SurfaceInfo *info);
 void _ZN5dBgPcD1Ev(SurfaceInfo *info);
 void func_02037fd4(dBgPi *res, s16 triIdx, SurfaceInfo *info);
