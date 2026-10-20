@@ -1069,11 +1069,13 @@ void SlotBlink_Clear(char *sprite) {
 extern "C" { /* .c-derived member: C linkage for the whole block */
 /* The symbol name is a misreading: Behavior state 5 passes &mBetIcon and
  * the payout multiplier, and this arms the bet icon's payout countdown --
- * bet count (unk_01c) * multiplier * 4 ticks into unk_020, which
- * betIcon_c::Behavior drains one credit per 4 ticks. */
+ * bet count (icon word 7, +0x1c) * multiplier * 4 ticks into word 8
+ * (+0x20), which betIcon_c::Behavior drains one credit per 4 ticks. The
+ * two dThIcon_c fields have per-derived roles, so they keep their
+ * placeholder names in the shared header and are indexed here. */
 void SlotReel_SetSpeed(void *raw, int value) {
-    dThIcon_c *icon = (dThIcon_c *)raw;
-    icon->unk_020 = (icon->unk_01c * value) << 2;
+    int *words = (int *)raw;
+    words[8] = (words[7] * value) << 2;
 }
 }
 
