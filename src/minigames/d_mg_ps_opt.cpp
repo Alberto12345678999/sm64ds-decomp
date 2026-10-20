@@ -26,22 +26,10 @@ struct M;
    loads each base on its own. */
 #define HALF_AT(base, i) (*(short *)((char *)(base) + (i) * 4))
 
-/* dThIcon_c leaves these unk_. The other derived icons do not agree on
-   names, so the names stay in this file.
-     unk_004 mX, unk_006 mY          center, pixels
-     unk_008 mHalfW, unk_00a mHalfH  hit box and the BG highlight
-     unk_00c mBlink                  countdown; 0 means settled
-     unk_010 mOn                     lit / pressed
-     unk_011 mReady                  accepts a touch
+/* dThIcon_c leaves these two unk_. The other derived icons do not agree
+   on names, so the names stay in this file.
      unk_01c mStyle                  which graphic
      unk_020 mVariant                sound mode, or 0 */
-#define mX unk_004
-#define mY unk_006
-#define mHalfW unk_008
-#define mHalfH unk_00a
-#define mBlink unk_00c
-#define mOn unk_010
-#define mReady unk_011
 #define mStyle unk_01c
 #define mVariant unk_020
 
@@ -99,7 +87,7 @@ extern short sPsOptIconPosBY[];
 extern short sPsOptStylePos[];
 extern short sPsOptStylePosY[];
 int TouchArea_Update(void *icon, int touch);
-/* Toggles mOn, drops mReady, and reloads mBlink from the icon's +0x18. */
+/* Toggles mOn, drops mReady, and reloads mPressTimer from mPressTime. */
 void func_ov001_020ab3f0(void *icon);
 /* Sound::Play2D(2, id). The ROM calls this thunk, not Play2D. */
 void func_02012790(int id);
@@ -316,7 +304,7 @@ int dMgPsOpt_c::IsIdle()
     int i;
 
     for (i = 0; i < mIconCount; i++) {
-        if (icon->mBlink != 0)
+        if (icon->mPressTimer != 0)
             return 0;
         icon++;
     }
