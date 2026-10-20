@@ -19,12 +19,9 @@
  * into the one ~dCamera_c() it emits, so the deleting destructor is spelled
  * out here: the D1 body, called qualified, then the class-specific delete.
  * Nothing in this arm reaches mwccarm. */
-dCamera_c::~dCamera_c()
-{
-}
+dCamera_c::~dCamera_c() {}
 
-extern "C" dCamera_c *_ZN9dCamera_cD0Ev(dCamera_c *thiz)
-{
+extern "C" dCamera_c *_ZN9dCamera_cD0Ev(dCamera_c *thiz) {
     thiz->dCamera_c::~dCamera_c();
     dCamera_c::operator delete(thiz);
     return thiz;
@@ -34,7 +31,5 @@ extern "C" dCamera_c *_ZN9dCamera_cD0Ev(dCamera_c *thiz)
 
 // @symbol _ZN9dCamera_cD1Ev
 // @symbol _ZN9dCamera_cD0Ev
-dCamera_c::~dCamera_c()
-{
-}
+dCamera_c::~dCamera_c() {}
 #endif
