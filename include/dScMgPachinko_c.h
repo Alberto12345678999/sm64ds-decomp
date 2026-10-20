@@ -33,8 +33,9 @@ struct dScMgPachinko_ball {
     s32 unk20;          /* 0x20 */
     u16 unk24;          /* 0x24 */
     u16 angle;          /* 0x26 */
-    u16 timer;          /* 0x28 seeded with 16 when a hit forces state 6;
-                           only ever written here, so the name is inferred */
+    u16 timer;          /* 0x28 StateWaiting holds the ball until it runs
+                           out; a hit forces state 6 with 16 and StatePop
+                           pops the ball when it reaches zero */
     u8  unk2a[0x2];     /* 0x2a */
     u8  active;         /* 0x2c */
     u8 visible;         /* 0x2d PachinkoBall_DrawAll draws only balls with
@@ -90,8 +91,10 @@ typedef char dScMgPachinko_shot_size_must_be_0x38[sizeof(struct dScMgPachinko_sh
 struct dScMgPachinko_popup {
     s32 x;              /* 0x00 */
     s32 y;              /* 0x04 */
-    u16 timer;          /* 0x08 */
-    u16 value;          /* 0x0a */
+    u16 points;         /* 0x08 PachinkoPopup_SpawnScore stores the score here
+                           and submits it; PachinkoPopup_DrawAll draws it */
+    u16 timer;          /* 0x0a SpawnScore seeds 0x30, PachinkoPopup_UpdateAll
+                           counts it down, DrawAll draws only while nonzero */
 };
 
 /* One of the three swinging rows at 0x4e58 (PachinkoDeco_UpdateAll swings
@@ -110,16 +113,23 @@ struct dScMgPachinko_row {
 
 /* The two pipes at 0x4ea0. */
 struct dScMgPachinko_pipe {
-    s32 acc;            /* 0x00 */
-    s32 y;              /* 0x04 PachinkoPipe_DrawAll draws the sprite at
-                           (acc, y) >> 12; PachinkoPipe_ResetAll seeds 0x68000 */
+    s32 x;              /* 0x00 PachinkoPipe_DrawAll draws the sprite at
+                           (x, y) >> 12; _StateRise and _StateSink slide it
+                           by vel between the sPachinkoPipe*Stops columns */
+    s32 y;              /* 0x04 PachinkoPipe_ResetAll seeds 0x68000 */
     s32 vel;            /* 0x08 */
     u8  pad0c[0x4];
     u16 timer;          /* 0x10 */
     u8  pad12;
-    u8  out2;           /* 0x13 */
-    u8  state;          /* 0x14 */
-    u8  out;            /* 0x15 */
+    u8 state;           /* 0x13 PachinkoPipe_UpdateAll's index into
+                           sPachinkoPipeStateTable (0 Pick, 1 Rise, 2 Sink,
+                           3 Idle): _StatePick stores the rolled kind, Rise
+                           ends in 2, Sink in 1, Idle in 0; _SetAll sets 3 */
+    u8 phase;           /* 0x14 Rise/Sink: 0 while sliding, 1 once at the
+                           stop for the settle animation; Idle: nonzero holds
+                           the pipe there (_SetAll's argument, 1 at time up) */
+    u8 sprite;          /* 0x15 index into sPachinkoPipeSprites, which
+                           PachinkoPipe_DrawAll draws */
     u8  frame;          /* 0x16 */
     u8 active;          /* 0x17 PachinkoPipe_UpdateAll and _SetAll skip a pipe
                            without it; _ResetAll sets it */
