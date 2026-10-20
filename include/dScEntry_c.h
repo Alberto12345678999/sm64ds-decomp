@@ -31,14 +31,34 @@ struct dScEntry_c : dScene_c {
     u8 pad_06c[0x4];                /* 0x06c */
     icon_c mIcons[9];               /* 0x070..0x1b4 */
     OamAnimation mOamAnimations[4]; /* 0x1b4..0x264 */
-    u8 unk_264[0x1c];               /* 0x264 */
-    u8 mIconCount;                  /* 0x280 -- live entries of mIcons */
-    u8 pad_281[0x2];                /* 0x281 */
-    u8 mFadeBrightness;             /* 0x283 -- driven into the sub engine's MASTER_BRIGHT */
-    u8 mFadeTick;                   /* 0x284 -- steps the fade every other frame */
-    u8 mIsFading; /* 0x285 -- while set, Behavior runs the fade and nothing else */
-    u8 pad_286;   /* 0x286 */
-    u8 unk_287;   /* 0x287 */
+    // Inferred view of workspace shared with selection, blinking and results
+    // steps. Waiting text also uses the wave fields outside player sync.
+    struct WaitingWork {
+        s32 playerWaitTicks;
+        s32 wavePhase;
+        s32 waveDelay;
+        s32 syncTicks;
+    };
+    u8 unk_264[0x4]; /* 0x264 */
+    union {
+        s32 mStepWork[4]; /* 0x268 -- reused by each step */
+        WaitingWork mWaiting;
+    };
+    s32 mSoundHandle;         /* 0x278 */
+    u8 mResultLeaderFlags[4]; /* 0x27c -- active players tied for the nonzero top score */
+    u8 mIconCount;            /* 0x280 -- live entries of mIcons */
+    u8 mSelectedIcon;         /* 0x281 */
+    u8 mStepPhase;            /* 0x282 -- substate within the current step */
+    u8 mFadeBrightness;       /* 0x283 -- driven into the sub engine's MASTER_BRIGHT */
+    u8 mFadeTick;             /* 0x284 -- steps the fade every other frame */
+    u8 mIsFading;             /* 0x285 -- while set, Behavior runs the fade and nothing else */
+    u8 pad_286;               /* 0x286 */
+    u8 unk_287;               /* 0x287 */
+
+    // Names inferred from the step table and multiplayer/UI consumers.
+    void EnterPlayerSync();
+    void UpdatePlayerSync();
+    void RenderWaitingText();
 
     /* Out of line: the key function, defined first in src/game/stages/d_s_entry.cpp. */
     virtual ~dScEntry_c(); /* slots 16 (D1), 17 (D0) */
