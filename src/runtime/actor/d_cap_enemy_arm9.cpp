@@ -5,14 +5,14 @@
  * path, so this file is the other module. rombuild refuses one complete path
  * in two modules; D2 and D0 stay in the ov002 TU.
  *
- * D1 and C2 are extern "C" ABI bodies, not member definitions. A member
- * ~dCapEnemy_c() is this class's key function and would emit _ZTV11dCapEnemy_c
- * plus D0 and D2; a member constructor would emit C1 beside C2. Those extras
- * come out STB_GLOBAL, and D0/D2 are homed in the ov002 TU, which plan_many
- * cannot deadstrip. The free functions are the retail bodies and emit no
- * vtable, so the ov002 table stays the linked copy.
+ * The constructor and the destructor are the real members. The destructor is
+ * inline, so D1 and D0 come out vague and D2 is not emitted. D0 duplicates
+ * the ov002 body and is discarded; C1, emitted beside C2, has no ROM home
+ * and is discarded. PinD1 is the use that places D1 before C2 -- without it
+ * the vague destructor trails the constructor. That destructor is also what
+ * emits _ZTV11dCapEnemy_c.
  *
- * Source order is reverse ROM order. C2 is written before D1.
+ * Source order is reverse ROM order. The constructor is written before D1.
  *
  * leftovers:
  *  - ModelBase::SetFile has no header member, so AddCap keeps the mangled
@@ -55,32 +55,21 @@ extern void Vec3_Asr(CapVec *vF, const CapVec *v, int amount);
 extern void Matrix4x3_FromTranslation(CapMtx *mF, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(CapMtx *mF, short x, short y, short z);
 extern CapMtx data_020a0e68;
-
-extern void *_ZN10dCapIcon_cC1Ev(void *);
-extern void _ZN10dCapIcon_cD1Ev(void *);
-extern void _ZN12dEnemyBase_cD2Ev(void *);
 }
 
-/* C2 then D1: reverse source order emits D1 at 0x0200651c and C2 at
- * 0x02006554. Same construction and teardown the member definitions emit,
- * spelled so this object does not also define C1, D0, D2 or the vtable. */
 // @symbol _ZN11dCapEnemy_cC2Ev
-extern "C" void *_ZN11dCapEnemy_cC2Ev(dCapEnemy_c *self) {
-    _ZN12dEnemyBase_cC2Ev(self);
-    *(int *)self = (int)_ZTV11dCapEnemy_c;
-    _ZN5ModelC1Ev(&self->mModel);
-    _ZN10dCapIcon_cC1Ev(&self->mCapIcon);
-    return self;
+dCapEnemy_c::dCapEnemy_c() {}
+
+/* The call is not in the ROM. It is the odr-use that makes mwcc emit the
+ * inline destructor's D1 section here, ahead of C2, instead of trailing it. */
+void PinD1(dCapEnemy_c *self) {
+    self->~dCapEnemy_c();
 }
 
 // @symbol _ZN11dCapEnemy_cD1Ev
-extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD1Ev(dCapEnemy_c *self) {
-    *(int *)self = (int)_ZTV11dCapEnemy_c;
-    _ZN10dCapIcon_cD1Ev(&self->mCapIcon);
-    _ZN5ModelD1Ev(&self->mModel);
-    _ZN12dEnemyBase_cD2Ev(self);
-    return self;
-}
+#pragma never_inline on
+inline dCapEnemy_c::~dCapEnemy_c() {}
+#pragma never_inline off
 
 // @symbol _ZN11dCapEnemy_c14UnloadCapModelEv
 void dCapEnemy_c::UnloadCapModel()
