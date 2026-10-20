@@ -28,14 +28,17 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
     virtual void RestoreInitial(); /* slot 2 */
 
     /* Recovered helpers. The state/query set gates the physics step: HasHit
-       reads the base's mTriggered (the ball collided this frame), IsOut the
+       reads anyHit (0xcc -- SmartballBall_UpdatePhysics raises it when a
+       probe on the ball's rim hits a wall, exit or obstacle this frame;
+       dScMgSmartball_c::ResolveBallPair
+       zeroes such a ball's velocity instead of exchanging it), IsOut the
        off-field flag, IsFinished the settled/dead end state, ArmExpire the
-       expiry countdown Freeze arms, PutInPlay the respawn, Burst the score
-       pop. The Hit* sweep set walks one manager table each and returns the
-       first solid contact. */
+       mExpireTimer countdown, Freeze the pin at mFrozenPos, PutInPlay the
+       respawn, Burst the score pop. The Hit* sweep set walks one manager
+       table each and returns the first solid contact. */
     void PlayHitSound(int a1, int *vel);
-    void Freeze();                 /* stop velocity, arm unk_038 expiry */
-    int HasHit();                  /* mTriggered */
+    void Freeze();                 /* pin at mFrozenPos, raise mIsFrozen */
+    int HasHit();                  /* anyHit */
     int  IsOut();                  /* off-field flag */
     int  ArmExpire(int val);       /* expiry timer hits val */
     int  IsFinished();             /* end state reached */
