@@ -96,7 +96,7 @@ void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
 void _ZN17dExtShadowModel_c12InitCylinderEv(
     void
-        *); // local extern: receiver is a char* cursor over actor memory (c + 0x88), not the class object
+        *); // local extern: receiver is a char* cursor over actor memory (the mShadow byte array), not the class object
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *, int, int, int,
                                                                   unsigned int);
 void *_ZN17dExtShadowModel_cC1Ev(void *);
@@ -339,8 +339,8 @@ extern "C" int FlowerFace_Load(char *c) {
     for (; i < 0x16; i++) {
         FallingPetal_SetModel(p, m);
         FLOWERFACE(c)->mPetals[0].mActive = z;
-        p += 0x98;
-        c += 0x98;
+        p += sizeof(FallingPetal);
+        c += sizeof(FallingPetal);
     }
     return 1;
 }
@@ -360,7 +360,7 @@ void FlowerFace_Update(char *c) {
         fn = (int *)*(int *)c;
     }
     ((void (*)(void *))fn)(p);
-    _ZN15dExtFrameCtrl_c7AdvanceEv(c + 0xd68);
+    _ZN15dExtFrameCtrl_c7AdvanceEv(FLOWERFACE(c)->mFrame);
     int i = 0;
     char *e = (char *)FLOWERFACE(c)->mPetals;
     /* c steps a petal at a time, so mPetals[0] is petal i. */
@@ -368,8 +368,8 @@ void FlowerFace_Update(char *c) {
         if (FLOWERFACE(c)->mPetals[0].mActive != 0)
             FallingPetal_Update(e);
         i++;
-        c += 0x98;
-        e += 0x98;
+        c += sizeof(FallingPetal);
+        e += sizeof(FallingPetal);
     } while (i < 0x16);
 }
 }
@@ -412,8 +412,7 @@ extern "C" void FlowerFace_Draw(void *self) {
     func_02016a14(FLOWERFACE(c)->mModel, 0x2bff);
     func_02016a04(FLOWERFACE(c)->mModel, 0x1211);
 
-    /* 0xd34 is mModel's matrix (Model +0x1c); mModel is a byte array here. */
-    *(struct Matrix4x3 *)(c + 0xd34) = *(struct Matrix4x3 *)data_ov006_0213aee8;
+    *(struct Matrix4x3 *)FLOWERFACE(c)->mMatrix = *(struct Matrix4x3 *)data_ov006_0213aee8;
 
     ((Obj *)FLOWERFACE(c)->mModel)->f5(0);
 
@@ -424,8 +423,8 @@ extern "C" void FlowerFace_Draw(void *self) {
         for (; i < 0x16; i++) {
             if (FLOWERFACE(c)->mPetals[0].mActive != 0)
                 FallingPetal_Draw(p);
-            c += 0x98;
-            p += 0x98;
+            c += sizeof(FallingPetal);
+            p += sizeof(FallingPetal);
         }
     }
 }
@@ -439,7 +438,7 @@ void FlowerFace_Reset(void *a) {
     /* p steps a petal at a time, so mPetals[0] is petal i. */
     for (; i < 22; i++) {
         FLOWERFACE(p)->mPetals[0].mActive = 0;
-        p += 0x98;
+        p += sizeof(FallingPetal);
     }
     FlowerFace_PlayIdle((char *)a);
 }
@@ -546,14 +545,13 @@ void FlowerFace_PlayPetalPulled(char *c) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         FLOWERFACE(c)->mModel, ((void *)FLOWERFACE(c)->mPickAnim.file), 0x40000000, 0x800, 0);
 
-    /* 0xd70 is the current frame (+0x8) of mModel's dExtFrameCtrl_c at 0xd68. */
-    *(int *)(c + 0xd70) = 0;
+    FLOWERFACE(c)->mFrame[2] = 0; /* rewind: the current frame */
 
     /* p steps a petal at a time, so FLOWERFACE(p)->mPetals[0] is the same
        petal as FLOWERFACE(c)->mPetals[i]. Spelling both the test and the spawn
        one way (either way) moves bytes. */
     p = c;
-    for (i = 0; i < 0x16; i++, p += 0x98) {
+    for (i = 0; i < 0x16; i++, p += sizeof(FallingPetal)) {
         if (FLOWERFACE(p)->mPetals[0].mActive == 0) {
             b.pos.x = 0x2000;
             b.pos.y = 0xa000;
@@ -586,9 +584,7 @@ void FlowerFace_PlayPetalPulled(char *c) {
 namespace s020c395c {
 extern "C" {
 void FlowerFace_StatePick(int *c) {
-    /* 0xd68 is the dExtFrameCtrl_c base of mModel (a ModelAnim at 0xd18); this
-       file's local Model/dExtFrameCtrl_c stand-ins keep ModelAnim.h out. */
-    if (_ZN15dExtFrameCtrl_c8FinishedEv((char *)c + 0xd68) == 0)
+    if (_ZN15dExtFrameCtrl_c8FinishedEv(FLOWERFACE(c)->mFrame) == 0)
         return;
     FlowerFace_PlayIdle((char *)c);
 }
@@ -798,8 +794,7 @@ void FallingPetal_UpdateMatrix(char *c) {
     MulVec3Mat3x3(&sPetalUpAxis, &sp, &PETAL(c)->mAxis);
     Matrix4x3_FromTranslation(&data_020a0e68, PETAL(c)->mPos.x, PETAL(c)->mPos.y, PETAL(c)->mPos.z);
     MulMat4x3Mat4x3(&sp, &data_020a0e68, &data_020a0e68);
-    /* 0x60 is mModel's matrix (Model +0x1c); mModel is a byte array here. */
-    *(struct Matrix4x3 *)((char *)c + 0x60) = data_020a0e68;
+    *(struct Matrix4x3 *)PETAL(c)->mMatrix = data_020a0e68;
 }
 }
 }
