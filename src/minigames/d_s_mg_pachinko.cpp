@@ -27,7 +27,8 @@
 //   (mTarget, 0x5bcc) and the background scroller (mBg, 0x5bfc) are typed
 //   in the header. PachinkoFlyer_Draw, PachinkoFx_DrawAll, PachinkoBg_Stop,
 //   PachinkoTarget_ShowAll/HideAll/DrawAll and the target count read them by
-//   field (PachinkoFx_Spawn's typed forms change code). mFlyer and mBg are
+//   field (PachinkoFx_Spawn indexes mFx through the strided `PACHINKO(fx)->mFx[0]`
+//   form; `mFx[i]` changes code). mFlyer and mBg are
 //   one-element arrays because their handlers take an index; PachinkoBg_StateScroll
 //   and PachinkoFlyer_CheckHits' head use them, while Bg_StateWaiting/RiseIn/SinkOut,
 //   Bg_Start and Flyer_StateWaiting/Cross/Pause/Leave measured different typed and stay on
@@ -36,9 +37,11 @@
 //   and convert one function at a time. mShot holds 0x30 records,
 //   ending exactly at mFx. The pipe fields behind the PIPE_* byte-offset
 //   macros take a pre-scaled offset rather than an index.
-// - Shot and ball fields go through `p + i * 0x38`: indexing mShot[i]/mBall[i]
-//   is one word different, so the multiply forms stay; the r5 cursor locals
-//   in the two table walkers are named for the register they color.
+// - Pachinko_SpawnWave, the Ball Fall/Pop/Dive/SpinAway states and
+//   PachinkoBobOmb_StateFallAway index mBall[i]/mShot[i]. In StateAim,
+//   StateDrift and the other BALL_OFF sites indexing is one word different, so
+//   `p + i * 0x38` stays; the r5 cursor locals in the two table walkers are
+//   named for the register they color.
 // - Where a typed member moves code, the whole-scene offset is spelled
 //   SHOT_OFF/BALL_OFF/REC_OFF(field): the same constant, checked against the
 //   header. Split bases (`+ 0x4000 + 0x68f`) keep their literal halves.
