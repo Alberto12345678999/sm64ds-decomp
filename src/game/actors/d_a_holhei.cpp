@@ -173,8 +173,8 @@ int daHolhei_c::InitResources()
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
-    unk_108 = 1;
-    unk_10a = 4;
+    mCoinType = 1;
+    mExtraCoinCount = 4;
     mPrevPosX = mPosX;
     mPrevPosY = mPosY;
     mPrevPosZ = mPosZ;
@@ -633,7 +633,8 @@ extern "C" int func_ov062_021163b0(daHolhei_c *self)
         v[1].x = self->mPosX;
         v[1].y = self->mPosY;
         v[1].z = self->mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &v[1], self->unk_10a + 1, 0xa000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &v[1], self->mExtraCoinCount + 1,
+                                                       0xa000, 0);
     }
     return 1;
 }

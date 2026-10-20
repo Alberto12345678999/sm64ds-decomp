@@ -205,7 +205,7 @@ int daHyuhyu_c::Behavior()
 {
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
-        if (mEatenByYoshi != 0 && unk_104 == 0)
+        if (mEatenByYoshi != 0 && mSpitOutTimer == 0)
             mdCcAc_c.Update();
         func_ov091_02134094();
         return 1;

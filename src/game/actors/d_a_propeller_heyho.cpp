@@ -17,8 +17,8 @@
  * through int* in func_ov070_0211fd98, func_ov070_0211fae4 and
  * func_ov070_0211f48c, and the Vector3 write through ((int *)&v)[i] in
  * func_ov070_0211f368, stay as written. SharedFilePtr has no fields, so
- * the loaded file is ((int *)&handle)[1]. unk_104, unk_108, unk_10a and
- * the mPrevAngle triple keep the base-class names.
+ * the loaded file is ((int *)&handle)[1]. The mPrevAngle triple keeps
+ * the base-class names.
  * FlyGuy_ChangeState keeps its C-ABI name. ApproachAngleInt is the
  * int-target overload. V3w and V3h keep the ldm/stm copy in
  * func_ov070_0211f6e0 and func_ov070_0211f48c. The six state records and
@@ -127,12 +127,12 @@ s32 daPropeller_Heyho_c::OnYoshiTryEat() {
 /* Vtable slot 19. _ZTV19daPropeller_Heyho_c at 0x02123168 + 0x4c is this body. */
 #include "Player.h"
 
-/* Turned into an egg: the player is paid unk_10a + 1 coins (unk_10a is the
- * dEnemyBase_c byte InitResources seeds to 1, so 2 coins here), then this
+/* Turned into an egg: the player is paid mExtraCoinCount + 1 coins
+ * (InitResources seeds mExtraCoinCount to 1, so 2 coins here), then this
  * actor is killed and recorded in the death table. */
 void daPropeller_Heyho_c::OnTurnIntoEgg(Player &player)
 {
-    GivePlayerCoins(player, (u8)(unk_10a + 1), 0);
+    GivePlayerCoins(player, (u8)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 
@@ -209,8 +209,8 @@ extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State
 /* Loads the model (shared file 02123530) and six animation files, then seeds:
  * mCanSpitFire from the low byte of param1 (0xff counts as 0), the terminal fall
  * speed, the collider (dCcAc_c radius 60.0 / height 50.0; dBgCh_Actr::Init gets
- * 80.0 and 60.0), unk_108 and unk_10a = 1, and the home position = the spawn
- * position, then enters the wander state. */
+ * 80.0 and 60.0), mCoinType and mExtraCoinCount = 1, and the home
+ * position = the spawn position, then enters the wander state. */
 int daPropeller_Heyho_c::InitResources()
 {
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov070_02123530), 1, -1);
@@ -226,8 +226,8 @@ int daPropeller_Heyho_c::InitResources()
     mTerminalVelocity = -0x1e000; /* -30.0 units/frame */
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x32000, 0x200000, 0x7eff0);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x50000, 0x3c000, 0, 0);
-    unk_108 = 1;
-    unk_10a = 1;
+    mCoinType = 1;
+    mExtraCoinCount = 1;
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
@@ -260,7 +260,7 @@ int daPropeller_Heyho_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0) {
-            if (unk_104 == 0) {
+            if (mSpitOutTimer == 0) {
                 mdCcAc_c.Update();
             }
         }
@@ -1104,16 +1104,16 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
 /* SpawnCoins takes Fix12<int> by value, so this call stays the mangled extern. */
 extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *, Vector3 const &, unsigned int, int, short);
 
-
-/* Defeat helper: a small puff of dust, then unk_10a + 1 coins spread 10.0 units
- * from the actor, then the actor is killed and recorded in the death table. */
+/* Defeat helper: a small puff of dust, then mExtraCoinCount + 1 coins spread
+ * 10.0 units from the actor, then the actor is killed and recorded in the
+ * death table. */
 extern "C" int func_ov070_0211f0a4(daPropeller_Heyho_c *c) {
     c->SmallPoofDust();
     Vector3 pos;
     pos.x = c->mPosX;
     pos.y = c->mPosY;
     pos.z = c->mPosZ;
-    unsigned int coins = (unsigned char)c->unk_10a + 1;
+    unsigned int coins = (unsigned char)c->mExtraCoinCount + 1;
     _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, pos, coins, 0xa000, 0);
     c->KillAndTrackInDeathTable();
 }

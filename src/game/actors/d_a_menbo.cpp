@@ -298,7 +298,7 @@ void func_ov090_021310b4(daMenbo_c *c)
         cv.x = c->mPosX;
         cv.y = c->mPosY;
         cv.z = c->mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, &cv, c->unk_10a + 1, 0xa000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, &cv, c->mExtraCoinCount + 1, 0xa000, 0);
         c->PoofDust();
         c->KillAndTrackInDeathTable();
         return;
@@ -728,7 +728,7 @@ int daMenbo_c::Behavior()
 
     if (UpdateYoshiEat(mWithMeshClsn)) {
         mdCcAcPos_c.Clear();
-        if (mEatenByYoshi != 0 && unk_104 == 0)
+        if (mEatenByYoshi != 0 && mSpitOutTimer == 0)
             mdCcAcPos_c.Update();
         func_ov090_02131e50(this);
         return 1;
@@ -758,7 +758,7 @@ int daMenbo_c::Behavior()
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
-            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, &v, unk_10a + 1, 0xa000, 0);
+            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, &v, mExtraCoinCount + 1, 0xa000, 0);
             PoofDust();
             KillAndTrackInDeathTable();
         }
@@ -861,8 +861,8 @@ int daMenbo_c::InitResources()
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, 0xc8000, 0, 0, 0);
     func_0203558c(&mWithMeshClsn);
 
-    unk_108 = 1;
-    unk_10a = 2;
+    mCoinType = 1;
+    mExtraCoinCount = 2;
     mVertAccel = -0x3000;
 
     if (IsGameMode(2) && data_0209f2f8 == 0x12) {
@@ -932,7 +932,7 @@ s32 daMenbo_c::OnAimedAtWithEgg()
 // @symbol _ZN9daMenbo_c13OnTurnIntoEggER6Player
 void daMenbo_c::OnTurnIntoEgg(Player &player)
 {
-    GivePlayerCoins(player, (unsigned char)(unk_10a + 1), 0);
+    GivePlayerCoins(player, (unsigned char)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 

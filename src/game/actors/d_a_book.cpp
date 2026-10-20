@@ -260,7 +260,7 @@ void daBook_c::func_ov020_02111340()
 /* What a flying book does about whatever func_ov020_021115ac found. Returns 1
  * when the book is gone. The first count handed to Player::Hurt is 0 for a
  * metal player, 2 for KILLER_BOOK and 1 otherwise; touching the player also
- * clears unk_108, so no blue coin drops. */
+ * clears mCoinType, so no blue coin drops. */
 int daBook_c::func_ov020_02111418()
 {
     int r = func_ov020_021115ac();
@@ -283,7 +283,7 @@ int daBook_c::func_ov020_02111418()
             v.x = mPosX; v.y = mPosY; v.z = mPosZ;
             _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 1, 0xc000, 1, 0, 1);
         }
-        unk_108 = 0;
+        mCoinType = 0;
         func_ov020_02112110();
         return 1;
     }
@@ -473,7 +473,7 @@ void daBook_c::func_ov020_0211174c()
 
 // @symbol _ZN8daBook_c19func_ov020_021119dcEv
 /* STATE_YOSHI_SKID: brakes the book to a standstill at 0x800 a frame, with
- * its collider off while unk_104 counts down, then resumes mSavedState (a
+ * its collider off while mSpitOutTimer counts down, then resumes mSavedState (a
  * book that was in flight goes back to winding up). func_0203568c stores its
  * second argument in word 6 of mWithMeshClsn (the radius, as daBgSnmBdy_c
  * reads it): 100 units on every skid frame, back to Init's 50 when the skid
@@ -481,10 +481,10 @@ void daBook_c::func_ov020_0211174c()
 void daBook_c::func_ov020_021119dc()
 {
     func_0203568c((int *)&mWithMeshClsn, 0x64000);
-    if (unk_104 != 0) {
-        unsigned short *p = &unk_104;
+    if (mSpitOutTimer != 0) {
+        unsigned short *p = &mSpitOutTimer;
         *p = (unsigned short)(*p - 1);
-        if (unk_104 != 0) {
+        if (mSpitOutTimer != 0) {
             u32 *q = &mdCcAcPos_c.flags;
             *q = *q | 1;
         } else {
@@ -508,7 +508,7 @@ void daBook_c::func_ov020_021119dc()
  * on the third frame it becomes STATE_FLY at full speed with the collider on. */
 void daBook_c::func_ov020_02111aa8()
 {
-    unk_108 = 0;
+    mCoinType = 0;
     STATE_TIMER++;
     if (STATE_TIMER >= 3) {
         int *bf;
@@ -530,31 +530,33 @@ void daBook_c::func_ov020_02111aa8()
 /* STATE_FLY: moves by the velocity in mSpeedX/mVertSpeed/mSpeedZ and is gone
  * when it hits the player, the ground, or a wall that faces it (the wall's
  * normal more than a quarter turn from the book's heading). */
-void daBook_c::func_ov020_02111b28()
-{
-  if (mUsesModelAnim != 0) {
-    mModelAnim.Advance();
-  }
-  AddVec3(&mPosX, &mSpeedX, &mPosX);
-  if (func_ov020_02111418() != 0) return;
-  dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
-  if (mWithMeshClsn.IsOnGround() != 0) {
-    unk_108 = 0;
+void daBook_c::func_ov020_02111b28() {
+    if (mUsesModelAnim != 0) {
+        mModelAnim.Advance();
+    }
+    AddVec3(&mPosX, &mSpeedX, &mPosX);
+    if (func_ov020_02111418() != 0)
+        return;
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
+    if (mWithMeshClsn.IsOnGround() != 0) {
+        mCoinType = 0;
+        func_ov020_02112110();
+        func_0201267c(kSfxImpact, &mCamSpacePos);
+        return;
+    }
+    if (mWithMeshClsn.IsOnWall() == 0)
+        return;
+    {
+        Vector3 normal;
+        void *w = mWithMeshClsn.GetWallResult();
+        ((SurfaceInfo *)((char *)w + 4))->CopyNormalTo(normal);
+        short angle = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
+        if (GetSubtraction(mPrevAngleY, angle) <= 0x4000)
+            return;
+    }
+    mCoinType = 0;
     func_ov020_02112110();
     func_0201267c(kSfxImpact, &mCamSpacePos);
-    return;
-  }
-  if (mWithMeshClsn.IsOnWall() == 0) return;
-  {
-    Vector3 normal;
-    void *w = mWithMeshClsn.GetWallResult();
-    ((SurfaceInfo *)((char *)w + 4))->CopyNormalTo(normal);
-    short angle = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
-    if (GetSubtraction(mPrevAngleY, angle) <= 0x4000) return;
-  }
-  unk_108 = 0;
-  func_ov020_02112110();
-  func_0201267c(kSfxImpact, &mCamSpacePos);
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02111c30Ev
@@ -697,16 +699,15 @@ void daBook_c::func_ov020_02112080()
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02112110Ev
-/* The end of a book: drops a blue coin if unk_108 is set, puffs smoke and
+/* The end of a book: drops a blue coin if mCoinType is set, puffs smoke and
  * removes the actor. */
-void daBook_c::func_ov020_02112110()
-{
-  if (unk_108) {
-    int param = mAreaId;
-    dActor_c::Spawn(kBlueCoinActorId, 2, mPos, 0, param, -1);
-  }
-  PoofDust();
-  MarkForDestruction();
+void daBook_c::func_ov020_02112110() {
+    if (mCoinType) {
+        int param = mAreaId;
+        dActor_c::Spawn(kBlueCoinActorId, 2, mPos, 0, param, -1);
+    }
+    PoofDust();
+    MarkForDestruction();
 }
 
 // @symbol _ZN8daBook_c19func_ov020_0211216cEv
@@ -771,10 +772,10 @@ int daBook_c::Behavior()
 {
     func_0200f760(this, &mdCcAcPos_c);
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
-        /* Yoshi released the book (mEatenByYoshi, unk_104 == 5): save the
+        /* Yoshi released the book (mEatenByYoshi, mSpitOutTimer == 5): save the
          * state, give it 0x8000 forward speed and let STATE_YOSHI_SKID bring
          * it to rest */
-        if (mEatenByYoshi != 0 && unk_104 == 5) {
+        if (mEatenByYoshi != 0 && mSpitOutTimer == 5) {
             mSavedState = mState;
             mState = STATE_YOSHI_SKID;
             mEatenByYoshi = 0;
@@ -833,7 +834,7 @@ int daBookGen_c::Behavior()
 // @symbol _ZN8daBook_c13InitResourcesEv
 /* Loads both models and both animations, builds the collision objects, and
  * sets the profile's starting state by actorID. A book starts at half size;
- * unk_108 is nonzero only for the KILLER_BOOK; it is what makes destroying
+ * mCoinType is nonzero only for the KILLER_BOOK; it is what makes destroying
  * the book drop a blue coin, and touching the player or the world clears it.
  * The vulnFlags are dCc_c hit bits (dCc_c.h's best-effort reading):
  * the shot and killer books take the player's attacks, the killer book also
@@ -882,7 +883,7 @@ int daBook_c::InitResources()
         {
             mKind = KIND_FLYING_BOOK;
             mState = STATE_SPAWNED;
-            unk_108 = 0;
+            mCoinType = 0;
             mdCcAcPos_c.vulnFlags |= 0x26fe0;
             goto success;
         }
@@ -892,7 +893,7 @@ int daBook_c::InitResources()
             {
                 mKind = KIND_FLYING_BOOK;
                 mState = STATE_WAIT;
-                unk_108 = 3;
+                mCoinType = 3;
                 mdCcAcPos_c.vulnFlags |= 0x2efe0;
                 goto success;
             }
@@ -903,7 +904,7 @@ int daBook_c::InitResources()
             {
                 mKind = KIND_SWITCH_BOOK;
                 mState = STATE_SWITCH_WAIT;
-                unk_108 = 0;
+                mCoinType = 0;
                 mdCcAcPos_c.flags |= 4;
                 mdCcAcPos_c.vulnFlags |= 0x3c0;
                 mScaleX = 0x1000;
