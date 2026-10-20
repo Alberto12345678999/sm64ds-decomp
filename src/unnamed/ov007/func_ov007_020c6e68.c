@@ -135,7 +135,7 @@ void func_ov007_020c6e68(char *picker, int idx) {
         } while (i < count);
     }
 
-    (*(void ***)((char *)self + 0x40))[idx] = func_ov007_020c80a4();
-    (*(void ***)((char *)self + 0x44))[idx] = func_ov007_020c80a4();
+    (*(void ***)(picker + 0x40))[idx] = func_ov007_020c80a4();
+    (*(void ***)(picker + 0x44))[idx] = func_ov007_020c80a4();
     func_ov007_020c7804(sb);
 }
