@@ -639,7 +639,8 @@ def render_tu(ev, rec, run, evidence, slots):
     lines += ["   Written ROM-descending: mwccarm emits .text in reverse source order under the",
               "   default deferred codegen, so this file's LAST member is the TU's first function.",
               "   Every hand-written member keeps its unique `// @symbol` line",
-              "   (notes/tu-promotion-conventions.md section 6). */",
+              "   (notes/tu-promotion-conventions.md section 6).",
+              "   Fill the bodies using the measured source forms in notes/cpp-class-form.md. */",
               f'#include "{tree}.h"', ""]
     slot_of = {s["symbol"]: s for s in slots if s["symbol"]}
     for a, n, s in reversed(run):
@@ -876,6 +877,8 @@ def print_plan(plan):
         for f in p["files"]))
     if p.get("manifest_path"):
         print(f"manifest   {pathlib.Path(p['manifest_path']).relative_to(REPO).as_posix()}")
+    print("class form read notes/cpp-class-form.md before filling these in (destructor order, "
+          "vtable ownership, struct copies, bool widening)")
 
 
 def main(argv=None):
