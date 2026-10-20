@@ -38,11 +38,13 @@ typedef struct ThrowContext {
     int mLocation;  /* 0x04 -- thrown object; matched against a CatchInfo */
     int mDtor;      /* 0x08 -- thrown object's destructor (case 0xd) */
     char pad_0c[0x8];
-    char *mSP;      /* 0x14 -- func_02071910: mFP + frame size after unwind */
-    char *mFP;      /* 0x18 -- base for frame-relative operands; set from
-                       mSP, r7 or r11 by func_02071864 */
-    int mGPR[16];   /* 0x1c -- r0..r15; func_02071910 restores the saved
-                       registers here, mGPR[14] is the return address */
+    char *mSP; /* 0x14 -- func_02071910: mFP + frame size after unwind */
+    /* 0x18 -- base for frame-relative operands; set from mSP, r7 or r11 by
+     * func_02071864 */
+    char *mFP;
+    /* 0x1c -- r0..r15; func_02071910 restores the saved registers here,
+     * mGPR[14] is the return address */
+    int mGPR[16];
 } ThrowContext;
 
 typedef struct ActionIterator {
