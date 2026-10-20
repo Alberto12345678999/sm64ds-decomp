@@ -251,7 +251,11 @@ struct Player : dActor_c {
     u8  pad_58c[0x74];
     u8  unk_600;            /* 0x600 */
     u8  pad_601[0x1b];
-    s32 unk_61c;            /* 0x61c */
+    /* Yoshi's per-player material word for VS mode. func_ov002_020e5948 sets it
+       to word +0x20 of material 0 of Yoshi's body model (GetBodyModelID(3))
+       plus mPlayerNo * 2; the draw path copies it into word +0x20 of every
+       body and head material when data_0209f2d8 == 1 and param1 == 3. */
+    s32 mVsYoshiMaterialParam;          /* 0x61c */
     s32 mLoopingSoundHandle;            /* 0x620 */
     s32 mSurfaceSoundHandle;            /* 0x624  Sound::PlayLong handle recycled by func_ov002_020bfa74 */
     s32 mParticle1;            /* 0x628 */
@@ -281,7 +285,7 @@ struct Player : dActor_c {
        probe stores clsnY when the hit's CLPS has the toxic bit (0x02000000).
        More than 0x64000 below it, func_ov002_020c133c hurts the player and
        St_Wait_Init plays anim 5. */
-    s32 mToxicSurfaceY;     /* 0x650 */
+    s32 mToxicSurfaceY; /* 0x650 */
     /* Yoshi's tongue against walls. func_ov002_020d6dac, run by the tongue
        grab func_ov002_020d6998 (mHatCharacter 3), casts a dBgCh_Lin between
        two bones of mHeadModels[3] and stores func_02053274's distance from
