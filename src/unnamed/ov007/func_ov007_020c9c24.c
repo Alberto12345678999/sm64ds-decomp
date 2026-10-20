@@ -8,6 +8,7 @@ extern void func_ov007_020c80c8(char *o, int a, int s);
 extern void func_ov007_020c7560(void *self, int r6, int r5);
 extern void func_ov007_020c7504(int *self, int b, int c);
 
+/* self: the record func_ov007_020beeb0 passes; no class or header names it, so raw. */
 void func_ov007_020c9c24(int *self, int arg1)
 {
     int i;

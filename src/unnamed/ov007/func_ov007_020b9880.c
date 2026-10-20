@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007MenuState.h"
 #pragma opt_strength_reduction off
 extern void *func_ov007_020c3df4(int a, int b);
 extern void *func_ov007_020c690c(int a0, int a1, int a2, int a3, void *a4, void *a5);
@@ -15,6 +16,7 @@ extern char *data_ov007_0210342c;
 extern int data_ov007_020d7b60;
 extern int data_ov007_020d7b80;
 
+/* The _02104ba0 (0x4c), _02104b9c (0x14) and 020c44e4 records have no class or header: raw. */
 void func_ov007_020b9880(int a0, int a1)
 {
     int sp14, sp18, sp10, sp1c;
@@ -113,12 +115,12 @@ void func_ov007_020b9880(int a0, int a1)
         if (a0 == 1) {
             *(int *)(data_ov007_02104ba0 + 0x30) = 0;
             *(int *)(data_ov007_02104ba0 + 0x40) = 0;
-            *(u16 *)((char *)(*(void **)(data_ov007_02104ba0 + 0x8)) + 0x2) = 0;
+            (*(Ov007MenuState **)(data_ov007_02104ba0 + 0x8))->requestedState = 0;
         }
     } else {
         *(int *)(data_ov007_02104ba0 + 0x30) = 1;
         *(int *)(data_ov007_02104ba0 + 0x40) = 0x1000;
-        *(u16 *)((char *)(*(void **)(data_ov007_02104ba0 + 0x8)) + 0x2) = 2;
+        (*(Ov007MenuState **)(data_ov007_02104ba0 + 0x8))->requestedState = 2;
     }
 
     if (a0 != 1)

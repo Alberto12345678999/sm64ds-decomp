@@ -1,3 +1,4 @@
+/* o: the 0x34-byte record func_ov007_020c8b10 allocates; no class or header names it, so raw. */
 void func_ov007_020c8ac0(int* o){
   *(int*)((char*)o+0x4) = 0;
   *(int*)((char*)o+0x0) = 0;

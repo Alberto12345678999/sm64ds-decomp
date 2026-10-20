@@ -1,21 +1,23 @@
 #include "types.h"
+#include "Ov007MenuState.h"
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 extern int _ZN4cstd3modEii(int, int);
 extern int _ZN4cstd3divEii(int, int);
 
+/* *c: the 0x2c-byte func_ov007_020aea6c record; only its +4 Ov007MenuState has a header. */
 void func_ov007_020ae2d0(char *c)
 {
     int *p = *(int**)c;
     u16 state = *(u16*)p;
-    int v = *(int*)((char*)*(int**)((char*)p + 4) + 0xc);
+    int v = (*(Ov007MenuState **)((char *)p + 4))->stateTicks;
 
     switch (state) {
     case 1: {
         int *q = *(int**)data_ov007_0210342c;
-        short a = *(short*)(*(int**)((char*)q + 4));
+        short a = (*(Ov007MenuState **)((char *)q + 4))->currentState;
         if (a == 0) {
-            short b = *(short*)(*(int**)((char*)q + 8));
+            short b = (*(Ov007MenuState **)((char *)q + 8))->currentState;
             if (b == 0) return;
         }
         if (a == 2) return;
@@ -49,7 +51,7 @@ void func_ov007_020ae2d0(char *c)
         int *q = *(int**)data_ov007_0210342c;
         int *r = *(int**)((char*)q + 0x134);
         int *s = *(int**)r;
-        short t = *(short*)(*(int**)((char*)s + 4));
+        short t = (*(Ov007MenuState **)((char *)s + 4))->currentState;
         if (t == 0) {
             if (*(int*)((char*)p + 0x20) == 0) *(int*)((char*)p + 0x20) = 1;
         } else {
