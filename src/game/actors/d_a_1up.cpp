@@ -106,7 +106,7 @@
  * - The da1up_MushroomType names describe what each type does when it runs;
  *   they are not recovered original names (nor are the address-named
  *   handlers).
- * - unk_0a4 / unk_0ac are dActor_c's velocity x/z words (UpdatePosWithHorzSpeedAndAng
+ * - mSpeedX / mSpeedZ are dActor_c's velocity x/z words (UpdatePosWithHorzSpeedAndAng
  *   writes them from mHorzSpeed and mPrevAngleY); they stay unnamed here because
  *   naming them is a shared dActor_c.h change.
  * - The SND3_* names and the effect ids are known by use only (0x68 is played
@@ -292,15 +292,15 @@ void da1up_c::func_ov002_020aefb8() {
 
     UpdatePosWithHorzSpeedAndAng();
     if (mWithMeshClsn.IsOnGround()) {
-        unk_0a4 += mFloorNormalX * 0xa;
-        unk_0ac += mFloorNormalZ * 0xa;
+        mSpeedX += mFloorNormalX * 0xa;
+        mSpeedZ += mFloorNormalZ * 0xa;
         if (mWithMeshClsn.JustHitGround()) {
             mVertSpeed = -(mVertSpeed << 2) / 10;
         } else {
             mVertSpeed = 0;
         }
-        if (Vec3_HorzLen((Vector3*)&unk_0a4) > mHorzSpeed) {
-            mHorzSpeed = Vec3_HorzLen((Vector3*)&unk_0a4);
+        if (Vec3_HorzLen((Vector3 *)&mSpeedX) > mHorzSpeed) {
+            mHorzSpeed = Vec3_HorzLen((Vector3 *)&mSpeedX);
             if (mHorzSpeed >= 0xf000) mHorzSpeed = 0xf000;
         }
     }
@@ -930,12 +930,12 @@ void da1up_c::func_ov002_020afd10() {
     volatile Fix12i v[3];
 
     if (mState != 0) {
-        v[0] = unk_0a4;
+        v[0] = mSpeedX;
         v[1] = mVertSpeed;
-        v[2] = unk_0ac;
+        v[2] = mSpeedZ;
         func_ov002_020aefb8();
-        unk_0a4 = v[0];
-        unk_0ac = v[2];
+        mSpeedX = v[0];
+        mSpeedZ = v[2];
     }
 
     switch (mState) {

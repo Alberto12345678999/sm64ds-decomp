@@ -330,7 +330,7 @@ void daKrb_c::func_ov084_02129168(dActor_c *actor) {
     daKrb_c *goomba = this;
     goomba->mBounceCountdown = 0x3c;
     goomba->mVertSpeed = cstd::fdiv(0xd000 - goomba->mVertAccel, goomba->mFloorNormalY);
-    goomba->mHorzSpeed = Vec3_HorzLen((const Vector3 *)&goomba->unk_0a4) * -1;
+    goomba->mHorzSpeed = Vec3_HorzLen((const Vector3 *)&goomba->mSpeedX) * -1;
     if (actor != 0)
         goomba->mPrevAngleY = Vec3_HorzAngle(&goomba->mPos, &actor->mPos);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cc0.ptr, 0, 0x1000, 0);

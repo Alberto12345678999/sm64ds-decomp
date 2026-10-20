@@ -883,7 +883,7 @@ void Scuttlebug::func_ov071_0211f148(dBgCh_Actr *w)
             ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(normal);
             if (normal.y != 0) {
                 mVertSpeed =
-                    -(_ZN4cstd4fdivEii(FX_MUL(normal.x, unk_0a4) + FX_MUL(normal.z, unk_0ac),
+                    -(_ZN4cstd4fdivEii(FX_MUL(normal.x, mSpeedX) + FX_MUL(normal.z, mSpeedZ),
                                        normal.y) +
                       0x8000);
             }

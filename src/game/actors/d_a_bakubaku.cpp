@@ -373,9 +373,9 @@ int daBakubaku_c::func_ov032_02111dd8()
     unsigned int r = RandomIntInternal(data_0209e650);
     mStateTimer = ((r >> 8) & 0x1f) + 0x14;
     mModelAnim.speed = 0x1000;
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     return 1;
 }
 
@@ -500,9 +500,9 @@ int daBakubaku_c::func_ov032_02111830()
     if (func_ov032_02111350() == 1 || func_ov032_02111254() == 0) {
         speed = 0;
         mHorzSpeed = 0;
-        unk_0a4 = 0;
+        mSpeedX = 0;
         mVertSpeed = 0;
-        unk_0ac = 0;
+        mSpeedZ = 0;
     } else {
         Vector3 in2;
         Vector3 out2;
@@ -569,9 +569,9 @@ int daBakubaku_c::func_ov032_02111620()
 
     if (func_ov032_02111350() == 1 || func_ov032_02111254() == 0) {
         mHorzSpeed = 0;
-        unk_0a4 = 0;
+        mSpeedX = 0;
         mVertSpeed = 0;
-        unk_0ac = 0;
+        mSpeedZ = 0;
     } else {
         Vector3 in;
         Vector3 out;

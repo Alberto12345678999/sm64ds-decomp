@@ -25,9 +25,6 @@
  *   overload poison (S13).
  * - Player is only forward-declared here, so the closest player's position
  *   is read through a dActor_c cast rather than pulling in Player.h.
- * - unk_31c/unk_31d stay: the mega-knockback armed flag and its 30-frame fuse
- *   to Kill(), but daObjRotateUpdownLift_c::Kill also writes unk_31c, so
- *   renaming is a shared-header plus leaf change, out of scope for this TU.
  * - data_020a0e68 is the shared scratch matrix; no header owns it, TU-local.
  */
 /* dBgActor_c.h FIRST: it pulls common.h ahead of Model.h, which is the
@@ -78,42 +75,58 @@ extern Matrix4x3 data_020a0e68;
  *   func_ov002_020eea84  ceiling/wall hazards that hurt the player
  *
  * Callers are Player, daBmb_c and daObjBlockS_c. They take the mover as the
- * event's `other'. The two ray functions cast 150 (130 when the mover's +0x8
- * word is 2) or 100 units ahead along the mover's facing from 60 units up,
- * and copy the hit
- * record out of the line checker before asking it for the collider ID.
+ * event's `other'. The two ray functions cast a line from 60 units above the
+ * mover along its facing -- 100 units for OnAttacked2, 150 for OnKicked, 130
+ * for either when the mover's param1 is 2 -- and copy the hit record out of
+ * the line checker before asking it for the collider ID.
  *
  * Leftovers: C linkage and each caller's own scalar spelling of these names
- * are kept, and the dBgCh_Actr result queries are called by mangled name. The
- * hit record copy is the ROM's field-by-field copy into a local shape; the
- * real dBgPi copy constructor is not what the bytes show. */
+ * are kept (decl_common.h declares three of them and daObjBlockS_c a fourth;
+ * their parameter types stay agreeable with those). The ceiling and any-hit
+ * queries on dBgCh_Actr have no member declaration yet and are called by ROM
+ * label. The hit record copy is the ROM's field-by-field copy into a local
+ * dBgPi-shaped struct; the real dBgPi copy constructor is not what the bytes
+ * show. */
 
 extern "C" {
-int func_02035638(void *c);       /* ceiling hit */
-int func_0203567c(int c);         /* &mSphereClsn + 0x10: the hit record */
-void _ZN5dBgPiD1Ev(void *r);
-void func_ov002_020d8838(void *actor);
+/* dBgCh_Actr queries (src/engine/collision/d_bg_ch_actr.cpp), not yet
+   declared in dBgCh_Actr.h. */
+int func_02035638(void *clsn); /* mSphereClsn.flags & 0x10: the ceiling bit */
+int func_0203567c(int clsn);   /* &mSphereClsn + 0x10: its own dBgPi base */
+int func_0203564c(int clsn);   /* mSphereClsn.GetUnderResult(): the ceiling hit */
+/* Player.cpp: sets 0x20 in Player::mStateFlags. */
+void func_ov002_020d8838(void *player);
 extern int data_02099368[];   /* dBgPi's vtable */
-extern short data_02082214[];
+extern short data_02082214[]; /* sine/cosine pairs, indexed by angle >> 4 */
 }
 
-/* The hit record as the ray functions copy it out of dBgCh_Lin (+0x10). */
+/* Is this actor of the given kind? An int-returning inline: the ROM
+   materialises the 0/1 result before it branches on it. */
+static inline int IsActorID(const dActor_c *actor, int id) {
+    return actor->actorID == id;
+}
+
+/* A dBgPi, field for field, as the ray and hazard functions copy one onto
+   the stack: the vtable word, dBgPc's SurfaceInfo (two CLPS words, then the
+   face normal), and the collider identity. */
 struct ClsnHitCopy {
-    void *tag;
-    int f04, f08, f0c, f10, f14;
-    unsigned short f18, f1a;
-    int f1c, f20, f24;
+    void *vtable;
+    int surface[5];
+    u16 triangleID;
+    u16 colliderIdx;
+    s32 clsnID;
+    dActor_c *owner;
+    dBgW *collider;
 };
 
 // @symbol func_ov002_020ef2a4
-extern "C" int func_ov002_020ef2a4(void *c, int arg)
-{
-    if (((dBgCh_Actr *)c)->IsOnGround()) {
-        void *res = ((dBgCh_Actr *)c)->GetFloorResult();
-        if (((dBgPi *)res)->GetClsnID() != -1) {
-            dActor_c *a = dActor_c::FindWithID(((dBgPi *)res)->GetClsnID());
-            if (a != 0) {
-                a->OnGroundPounded(*(dActor_c *)arg);
+extern "C" int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
+    if (clsn->IsOnGround()) {
+        dBgPi *hit = (dBgPi *)clsn->GetFloorResult();
+        if (hit->GetClsnID() != -1) {
+            dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
+            if (owner != 0) {
+                owner->OnGroundPounded(*other);
                 return 1;
             }
         }
@@ -122,14 +135,14 @@ extern "C" int func_ov002_020ef2a4(void *c, int arg)
 }
 
 // @symbol func_ov002_020ef228
-extern "C" int func_ov002_020ef228(void *c, int arg)
-{
-    if (((dBgCh_Actr *)c)->IsOnWall()) {
-        void *res = ((dBgCh_Actr *)c)->GetWallResult();
-        if (((dBgPi *)res)->GetClsnID() != -1) {
-            dActor_c *a = dActor_c::FindWithID(((dBgPi *)res)->GetClsnID());
-            if (a != 0) {
-                a->OnAttacked1(*(dActor_c *)arg);
+extern "C" int func_ov002_020ef228(dBgCh_Actr *clsn, int otherArg) {
+    dActor_c *other = (dActor_c *)otherArg;
+    if (clsn->IsOnWall()) {
+        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        if (hit->GetClsnID() != -1) {
+            dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
+            if (owner != 0) {
+                owner->OnAttacked1(*other);
                 return 1;
             }
         }
@@ -138,146 +151,140 @@ extern "C" int func_ov002_020ef228(void *c, int arg)
 }
 
 // @symbol func_ov002_020ef070
-extern "C" int func_ov002_020ef070(void *unused, char *actor)
-{
-    Vector3 v1, v2;
-    ClsnHitCopy tmp;
+extern "C" int func_ov002_020ef070(void *unused, char *moverArg) {
+    Vector3 start, end;
+    ClsnHitCopy hit;
 
     dBgCh_Lin line;
 
-    Vector3 *pos = (Vector3 *)(actor + 0x5c);
+    dActor_c *mover = (dActor_c *)moverArg;
+    Vector3 *pos = &mover->mPos;
     int x = pos->x;
-    v1.x = x;
+    start.x = x;
     int y = pos->y;
-    v1.y = y;
+    start.y = y;
     int z = pos->z;
-    v2.x = x;
-    v2.z = z;
-    v1.z = z;
-    v1.y = y + 0x3c000;
-    v2.y = y + 0x3c000;
+    end.x = x;
+    end.z = z;
+    start.z = z;
+    start.y = y + 0x3c000;
+    end.y = y + 0x3c000;
 
-    int scale = 0x64;
-    if (*(int *)(actor + 8) == 2) scale = 0x82;
-    v2.x = scale * data_02082214[(*(unsigned short *)(actor + 0x8e) >> 4) << 1] + v2.x;
-    v2.z = scale * data_02082214[((*(unsigned short *)(actor + 0x8e) >> 4) << 1) + 1] + v2.z;
+    int reach = 0x64;
+    if (mover->param1 == 2)
+        reach = 0x82;
+    end.x += reach * data_02082214[((u16)mover->mAngleY >> 4) << 1];
+    end.z += reach * data_02082214[(((u16)mover->mAngleY >> 4) << 1) + 1];
 
-    line.SetObjAndLine(v1, v2, (dActor_c *)actor);
+    line.SetObjAndLine(start, end, mover);
     if (line.DetectClsn()) {
-        int t = (*(unsigned short *)(actor + 0xc) == 0xbf);
-        if (t != false) {
-            func_ov002_020d8838(actor);
-        }
+        if (IsActorID(mover, 0xbf))
+            func_ov002_020d8838(mover);
         {
-            int *dst = &tmp.f04;
-            int w0 = *(int *)((char *)&line + 0x14);
-            int w1 = *(int *)((char *)&line + 0x18);
+            int *dst = hit.surface;
+            int w0 = line.surface.clps.w0;
+            int w1 = line.surface.clps.w1;
             dst[0] = w1 ? w0 : w0;
             dst[1] = w1;
-            dst[2] = *(int *)((char *)&line + 0x1c);
-            dst[3] = *(int *)((char *)&line + 0x20);
-            dst[4] = *(int *)((char *)&line + 0x24);
-            tmp.tag = data_02099368;
-            tmp.f18 = *(unsigned short *)((char *)&line + 0x28);
-            tmp.f1a = *(unsigned short *)((char *)&line + 0x2a);
-            tmp.f1c = *(int *)((char *)&line + 0x2c);
-            tmp.f20 = *(int *)((char *)&line + 0x30);
-            tmp.f24 = *(int *)((char *)&line + 0x34);
-            if (((dBgPi *)&tmp)->GetClsnID() != -1) {
-                dActor_c *a = dActor_c::FindWithID(((dBgPi *)&tmp)->GetClsnID());
-                if (a) {
-                    a->OnAttacked2(*(dActor_c *)actor);
-                    _ZN5dBgPiD1Ev(&tmp);
+            dst[2] = line.surface.normal.x;
+            dst[3] = line.surface.normal.y;
+            dst[4] = line.surface.normal.z;
+            hit.vtable = data_02099368;
+            hit.triangleID = line.triangleID;
+            hit.colliderIdx = line.colliderIdx;
+            hit.clsnID = line.clsnID;
+            hit.owner = line.owner;
+            hit.collider = line.collider;
+            if (((dBgPi *)&hit)->GetClsnID() != -1) {
+                dActor_c *owner = dActor_c::FindWithID(((dBgPi *)&hit)->GetClsnID());
+                if (owner) {
+                    owner->OnAttacked2(*mover);
+                    ((dBgPi *)&hit)->dBgPi::~dBgPi();
                     return 1;
                 }
             }
-            _ZN5dBgPiD1Ev(&tmp);
+            ((dBgPi *)&hit)->dBgPi::~dBgPi();
         }
     }
     return 0;
 }
 
 // @symbol func_ov002_020eeeb8
-extern "C" int func_ov002_020eeeb8(void *unused, char *actor)
-{
-    Vector3 v1, v2;
-    ClsnHitCopy tmp;
+extern "C" int func_ov002_020eeeb8(void *unused, char *moverArg) {
+    Vector3 start, end;
+    ClsnHitCopy hit;
 
     dBgCh_Lin line;
 
-    Vector3 *pos =
-        (Vector3 *)(actor + 0x5c);
+    dActor_c *mover = (dActor_c *)moverArg;
+    Vector3 *pos = &mover->mPos;
     int x = pos->x;
-    v1.x = x;
+    start.x = x;
     int y = pos->y;
-    v1.y = y;
+    start.y = y;
     int z = pos->z;
-    v2.x = x;
-    v2.z = z;
-    v1.z = z;
-    v1.y = y + 0x3c000;
-    v2.y = y + 0x3c000;
+    end.x = x;
+    end.z = z;
+    start.z = z;
+    start.y = y + 0x3c000;
+    end.y = y + 0x3c000;
 
-    int scale = 0x96;
-    if (*(int *)(actor + 8) == 2)
-        scale = 0x82;
+    int reach = 0x96;
+    if (mover->param1 == 2)
+        reach = 0x82;
 
-    v2.x = scale *
-        data_02082214[(*(unsigned short *)(actor + 0x8e) >> 4) << 1] +
-        v2.x;
-    v2.z = scale *
-        data_02082214[((*(unsigned short *)(actor + 0x8e) >> 4) << 1) + 1] +
-        v2.z;
+    end.x += reach * data_02082214[((u16)mover->mAngleY >> 4) << 1];
+    end.z += reach * data_02082214[(((u16)mover->mAngleY >> 4) << 1) + 1];
 
-    line.SetObjAndLine(v1, v2, (dActor_c *)actor);
+    line.SetObjAndLine(start, end, mover);
 
     if (line.DetectClsn()) {
-        int t = (*(unsigned short *)(actor + 0xc) == 0xbf);
-        if (t != false)
-            func_ov002_020d8838(actor);
+        if (IsActorID(mover, 0xbf))
+            func_ov002_020d8838(mover);
 
         {
-            int *dst = &tmp.f04;
-            int w0 = *(int *)((char *)&line + 0x14);
-            int w1 = *(int *)((char *)&line + 0x18);
+            int *dst = hit.surface;
+            int w0 = line.surface.clps.w0;
+            int w1 = line.surface.clps.w1;
 
             dst[0] = w1 ? w0 : w0;
             dst[1] = w1;
-            dst[2] = *(int *)((char *)&line + 0x1c);
-            dst[3] = *(int *)((char *)&line + 0x20);
-            dst[4] = *(int *)((char *)&line + 0x24);
+            dst[2] = line.surface.normal.x;
+            dst[3] = line.surface.normal.y;
+            dst[4] = line.surface.normal.z;
 
-            tmp.tag = data_02099368;
-            tmp.f18 = *(unsigned short *)((char *)&line + 0x28);
-            tmp.f1a = *(unsigned short *)((char *)&line + 0x2a);
-            tmp.f1c = *(int *)((char *)&line + 0x2c);
-            tmp.f20 = *(int *)((char *)&line + 0x30);
-            tmp.f24 = *(int *)((char *)&line + 0x34);
+            hit.vtable = data_02099368;
+            hit.triangleID = line.triangleID;
+            hit.colliderIdx = line.colliderIdx;
+            hit.clsnID = line.clsnID;
+            hit.owner = line.owner;
+            hit.collider = line.collider;
 
-            if (((dBgPi *)&tmp)->GetClsnID() != -1) {
-                dActor_c *a = dActor_c::FindWithID(((dBgPi *)&tmp)->GetClsnID());
-                if (a) {
-                    a->OnKicked(*(dActor_c *)actor);
-                    _ZN5dBgPiD1Ev(&tmp);
+            if (((dBgPi *)&hit)->GetClsnID() != -1) {
+                dActor_c *owner = dActor_c::FindWithID(((dBgPi *)&hit)->GetClsnID());
+                if (owner) {
+                    owner->OnKicked(*mover);
+                    ((dBgPi *)&hit)->dBgPi::~dBgPi();
                     return 1;
                 }
             }
         }
-        _ZN5dBgPiD1Ev(&tmp);
+        ((dBgPi *)&hit)->dBgPi::~dBgPi();
     }
 
     return 0;
 }
 
 // @symbol func_ov002_020eee3c
-extern "C" int func_ov002_020eee3c(void *c, int arg)
-{
-    if (((dBgCh_Actr *)c)->IsOnWall()) {
-        void *res = ((dBgCh_Actr *)c)->GetWallResult();
-        if (((dBgPi *)res)->GetClsnID() != -1) {
-            dActor_c *a = dActor_c::FindWithID(((dBgPi *)res)->GetClsnID());
-            if (a != 0) {
-                a->OnPushed(*(dActor_c *)arg);
+extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
+    dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
+    dActor_c *other = (dActor_c *)otherArg;
+    if (clsn->IsOnWall()) {
+        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        if (hit->GetClsnID() != -1) {
+            dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
+            if (owner != 0) {
+                owner->OnPushed(*other);
                 return 1;
             }
         }
@@ -286,14 +293,13 @@ extern "C" int func_ov002_020eee3c(void *c, int arg)
 }
 
 // @symbol func_ov002_020eedc0
-extern "C" int func_ov002_020eedc0(void *c, int arg)
-{
-    if (((dBgCh_Actr *)c)->IsOnWall()) {
-        void *res = ((dBgCh_Actr *)c)->GetWallResult();
-        if (((dBgPi *)res)->GetClsnID() != -1) {
-            dActor_c *a = dActor_c::FindWithID(((dBgPi *)res)->GetClsnID());
-            if (a != 0) {
-                a->OnHitByCannonBlastedChar(*(dActor_c *)arg);
+extern "C" int func_ov002_020eedc0(dBgCh_Actr *clsn, dActor_c *other) {
+    if (clsn->IsOnWall()) {
+        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        if (hit->GetClsnID() != -1) {
+            dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
+            if (owner != 0) {
+                owner->OnHitByCannonBlastedChar(*other);
                 return 1;
             }
         }
@@ -302,16 +308,15 @@ extern "C" int func_ov002_020eedc0(void *c, int arg)
 }
 
 // @symbol func_ov002_020eed24
-extern "C" int func_ov002_020eed24(void *c, void *arg)
-{
-    void *r;
-    dActor_c *a;
-    if (((dBgCh_Actr *)c)->IsOnWall() || ((dBgCh_Actr *)c)->IsOnGround() || func_02035638(c)) {
-        r = (void *)func_0203567c((int)c);
-        if (((dBgPi *)r)->GetClsnID() != -1) {
-            a = dActor_c::FindWithID(((dBgPi *)r)->GetClsnID());
-            if (a) {
-                a->OnHitByMegaChar(*(Player *)arg);
+extern "C" int func_ov002_020eed24(dBgCh_Actr *clsn, Player *player) {
+    dBgPi *hit;
+    dActor_c *owner;
+    if (clsn->IsOnWall() || clsn->IsOnGround() || func_02035638(clsn)) {
+        hit = (dBgPi *)func_0203567c((int)clsn);
+        if (hit->GetClsnID() != -1) {
+            owner = dActor_c::FindWithID(hit->GetClsnID());
+            if (owner) {
+                owner->OnHitByMegaChar(*player);
                 return 1;
             }
         }
@@ -320,14 +325,13 @@ extern "C" int func_ov002_020eed24(void *c, void *arg)
 }
 
 // @symbol func_ov002_020eeca8
-extern "C" int func_ov002_020eeca8(void *c, int arg)
-{
-    if (func_02035638(c)) {
-        void *res = (void *)func_0203567c((int)c);
-        if (((dBgPi *)res)->GetClsnID() != -1) {
-            dActor_c *a = dActor_c::FindWithID(((dBgPi *)res)->GetClsnID());
-            if (a != 0) {
-                a->OnHitFromUnderneath(*(dActor_c *)arg);
+extern "C" int func_ov002_020eeca8(dBgCh_Actr *clsn, dActor_c *other) {
+    if (func_02035638(clsn)) {
+        dBgPi *hit = (dBgPi *)func_0203567c((int)clsn);
+        if (hit->GetClsnID() != -1) {
+            dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
+            if (owner != 0) {
+                owner->OnHitFromUnderneath(*other);
                 return 1;
             }
         }
@@ -337,70 +341,75 @@ extern "C" int func_ov002_020eeca8(void *c, int arg)
 
 /* Only for the player (actor ID 0xbf): a ceiling owned by actor ID 0x3a hurts
  * for 3, a wall owned by actor ID 0x139 hurts for 1 and plays sound 0xb5 at
- * that actor; both with knockback 0xc000. self is the mover's
- * dBgCh_Actr (Player::mMeshClsn at +0x380), not a dBgActor_c. The
- * array-backed two-word copy keeps the ceiling-hit snapshot on the stack
- * under 2004/b56 C++. The explicit shadow snapshot and scalar Hurt ABI
- * remain measured reconstruction boundaries. */
-extern "C" {
+ * that actor; both with knockback 0xc000. clsn is the mover's dBgCh_Actr
+ * (Player::mMeshClsn at +0x380). The two-word struct copy of the CLPS keeps
+ * the ceiling-hit snapshot on the stack under 2004/b56 C++; the explicit
+ * snapshot and the scalar Hurt ABI remain measured reconstruction
+ * boundaries. */
 typedef struct { int w[2]; } ClsnHitHead;
 
 // @symbol func_ov002_020eea84
-int func_ov002_020eea84(char *self, char *player)
-{
-    extern char *func_0203564c(char *p);
+extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
     /* local extern: scalar Fix12 ABI preserves the retail call
        (notes/mwccarm-codegen.md 6az). */
     extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
-    struct ClsnHitCopy res;
-    Vector3 v;
-    Vector3 v2;
-    dActor_c *actor;
-    int b;
+    struct ClsnHitCopy hit;
+    Vector3 hurtFrom;
+    Vector3 hurtFrom2;
+    dActor_c *owner;
 
-    b = (int)(((dActor_c *)player)->actorID == 0xbf);
-    if (b == 0)
+    if (!IsActorID(player, 0xbf))
         return 0;
 
-    if (func_02035638(self)) {
-        char *r = func_0203564c(self);
-        int *d = &res.f04;
-        *(ClsnHitHead *)d = *(ClsnHitHead *)(r + 4);
-        d[2] = *(int *)(r + 0xc);
-        d[3] = *(int *)(r + 0x10);
-        d[4] = *(int *)(r + 0x14);
-        res.tag = data_02099368;
-        res.f18 = *(unsigned short *)(r + 0x18);
-        res.f1a = *(unsigned short *)(r + 0x1a);
-        res.f1c = *(int *)(r + 0x1c);
-        res.f20 = *(int *)(r + 0x20);
-        res.f24 = *(int *)(r + 0x24);
-        if (((dBgPi *)&res)->GetClsnID() != -1) {
-            actor = dActor_c::FindWithID(((dBgPi *)&res)->GetClsnID());
-            if (actor != 0 && (b = (int)(actor->actorID == 0x3a)) != 0) {
-                { int *s = (int *)(&((dActor_c *)player)->mPosX); v.x = s[0]; v.y = s[1]; v.z = s[2]; }
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 3, 0xc000, 1, 0, 1);
-                _ZN5dBgPiD1Ev(&res);
+    if (func_02035638(clsn)) {
+        const dBgPi *src = (const dBgPi *)func_0203564c((int)clsn);
+        int *d = hit.surface;
+        *(ClsnHitHead *)d = *(const ClsnHitHead *)&src->surface.clps;
+        d[2] = src->surface.normal.x;
+        d[3] = src->surface.normal.y;
+        d[4] = src->surface.normal.z;
+        hit.vtable = data_02099368;
+        hit.triangleID = src->triangleID;
+        hit.colliderIdx = src->colliderIdx;
+        hit.clsnID = src->clsnID;
+        hit.owner = src->owner;
+        hit.collider = src->collider;
+        if (((dBgPi *)&hit)->GetClsnID() != -1) {
+            owner = dActor_c::FindWithID(((dBgPi *)&hit)->GetClsnID());
+            if (owner != 0 && IsActorID(owner, 0x3a)) {
+                {
+                    Vector3 *from = &player->mPos;
+                    hurtFrom.x = from->x;
+                    hurtFrom.y = from->y;
+                    hurtFrom.z = from->z;
+                }
+                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtFrom, 3, 0xc000, 1, 0, 1);
+                ((dBgPi *)&hit)->dBgPi::~dBgPi();
                 return 1;
             }
         }
-        _ZN5dBgPiD1Ev(&res);
+        ((dBgPi *)&hit)->dBgPi::~dBgPi();
     }
 
-    if (((dBgCh_Actr *)self)->IsOnWall()) {
-        dBgPi *wr = (dBgPi *)((dBgCh_Actr *)self)->GetWallResult();
-        if (wr->GetClsnID() != -1) {
-            actor = dActor_c::FindWithID(wr->GetClsnID());
-            if (actor != 0 && (b = (int)(actor->actorID == 0x139)) != 0) {
-                { int *s = (int *)(&actor->mPosX); v2.x = s[0]; v2.y = s[1]; v2.z = s[2]; }
-                if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, 1, 0xc000, 1, 0, 1) != 0)
-                    Sound::PlayBank0(0xb5, actor->mCamSpacePos);
+    if (clsn->IsOnWall()) {
+        dBgPi *wallHit = (dBgPi *)clsn->GetWallResult();
+        if (wallHit->GetClsnID() != -1) {
+            owner = dActor_c::FindWithID(wallHit->GetClsnID());
+            if (owner != 0 && IsActorID(owner, 0x139)) {
+                {
+                    Vector3 *from = &owner->mPos;
+                    hurtFrom2.x = from->x;
+                    hurtFrom2.y = from->y;
+                    hurtFrom2.z = from->z;
+                }
+                if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtFrom2, 1, 0xc000, 1, 0,
+                                                            1) != 0)
+                    Sound::PlayBank0(0xb5, owner->mCamSpacePos);
                 return 1;
             }
         }
     }
     return 0;
-}
 }
 
 /* Base step, vptr store, then mModel and mMeshCollider in declaration order:
@@ -514,7 +523,7 @@ int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, F
     Vector3 rayEnd;
     Vector3 sum;
 
-    if (unk_31c == 0)
+    if (mMegaKnockback == 0)
         return 0;
 
     probe.x = 0;
@@ -536,7 +545,7 @@ int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, F
     mAngleY += angStepY;
     mAngleZ += angStepZ;
     UpdatePos(0);
-    if (DecIfAbove0_Byte(&unk_31d) == 0)
+    if (DecIfAbove0_Byte(&mMegaKnockbackTimer) == 0)
         Kill();
     func_ov002_020ee5d0(this, pivotY.val);
     return 1;
@@ -597,16 +606,15 @@ void dBgActor_c::KillByMegaChar(Player &player)
     v.y = mPosY;
     v.z = mPosZ;
     _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x5dc000);
-    unk_31c = 1;
+    mMegaKnockback = 1;
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x14000;
     mVertSpeed = 0x1e000;
-    mPrevAngleY = Vec3_HorzAngle((Vector3 *)((char *)&player + 0x5c), &mPos);
-    unk_31d = 0x1e;
-    if (mMeshCollider.IsEnabled() == 0)
-        return;
-    mMeshCollider.Disable();
+    mPrevAngleY = Vec3_HorzAngle(&((dActor_c *)&player)->mPos, &mPos);
+    mMegaKnockbackTimer = 0x1e;
+    if (mMeshCollider.IsEnabled())
+        mMeshCollider.Disable();
 }
 
 /* Nothing forces D0/D1 here: this TU defines Kill (slot 31), the class's key

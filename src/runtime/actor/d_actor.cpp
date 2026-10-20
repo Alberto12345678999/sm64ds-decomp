@@ -41,7 +41,7 @@
  *    Matrix4x3, dCc_c, Player, Sound, Heap, and `typedef int Fix12`
  *    (types.h has a Fix12<T> TEMPLATE, so that typedef is not even legal here).
  *    Field names follow: deathTableId -> mDeathTableID, flags -> mFlags, camSpacePos
- *    -> mCamSpacePosX, pos -> mPosX, speed -> unk_0a4, areaID -> mAreaId.
+ *    -> mCamSpacePosX, pos -> mPosX, speed -> mSpeedX, areaID -> mAreaId.
  *  - One spelling per global, chosen for what the ROM's use of it supports:
  *    data_0209b468 is an ADDRESS, not a value -- the ROM readers pass
  *    `&data_0209b468` as the list head's address, matching the plurality
@@ -53,12 +53,12 @@
  *    the result cannot both be wrong about it while six that discard it are
  *    right. dActor_c::ClosestPlayer is DEFINED here, so the three disagreeing
  *    extern "C" guesses at its prototype are simply gone.
- *  - Ordinals 12/18 retain the RaycastGroundPod workspace and explicit
- *    construction/destruction calls. Ordinals 14/16 use the real dBgCh_Gnd
- *    header and its collision-height field; their automatic query objects
- *    own the normal C++ lifetime. Ordinal 0 takes the real dBgCh_Lin
- *    instead: its ctor/dtor are out-of-line declarations, so the member
- *    spelling emits the same calls the retired shard proved.
+ *  - Ordinals 12, 14, 16 and 18 use the real dBgCh_Gnd header and its
+ *    collision-height field; their automatic query objects own the normal
+ *    C++ lifetime (12 and 18 used to spell the C1/D1 calls by hand on a
+ *    stand-in struct). Ordinal 0 takes the real dBgCh_Lin instead: its
+ *    ctor/dtor are out-of-line declarations, so the member spelling emits
+ *    the same calls the retired shard proved.
  *
  * include/dActor_c.h gained three declarations for this file: a `struct Matrix4x3;`
  * forward declaration, `void UntrackInDeathTable();` and
@@ -68,7 +68,9 @@
 
 /* Includes: union of the admitted legacy files', first-seen in emission
  * order. Header-guarded, so the union is safe; ordering constraints are
- * not otherwise checked. */
+ * not otherwise checked. daFPknBall_c.h, daObjNumber_c.h and daCoin_c.h
+ * came later, for the classes SpawnFireball, SpawnNumber and
+ * GivePlayerCoins spawn. */
 #include "types.h"
 #include "decl_common.h"
 #include "dActor_c.h"
@@ -78,6 +80,9 @@
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
+#include "daFPknBall_c.h"
+#include "daObjNumber_c.h"
+#include "daCoin_c.h"
 #include "Model.h"
 #include "SharedFilePtr.h"
 #include "dClipper.h"
@@ -92,23 +97,15 @@
  * 0x02011268  size 0x60 */
 bool dActor_c::BeforeInitResources()
 {
-    int spawnEvenIfKilledBefore;
+    int spawnEvenIfKilledBefore = (mFlags & 0x8000000) ? 1 : 0;
 
-    spawnEvenIfKilledBefore = (mFlags & 0x8000000) ? 1 : 0;
-    if (spawnEvenIfKilledBefore != 0) {
-        goto skip;
-    }
-    if (GetBitInDeathTable() == 0) {
-        goto skip;
-    }
-    MarkForDestruction();
-    return true;
-skip:;
-    {
-        int r = fBase_c::BeforeInitResources();
-        if (r == 0) return false;
+    if (spawnEvenIfKilledBefore == 0 && GetBitInDeathTable() != 0) {
+        MarkForDestruction();
         return true;
     }
+    if (!fBase_c::BeforeInitResources())
+        return false;
+    return true;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -118,10 +115,11 @@ skip:;
 void dActor_c::AfterInitResources(u32 vfSuccess)
 {
     dBase_c::AfterInitResources(vfSuccess);
-    /* The (long long)(int) cast is a codegen launder, not a type conversion: the
-       ROM materialises the address into a register first (`add r1,r4,#0xb0`)
-       and then does the read-modify-write through it. Writing `mFlags |= 0x38`
-       folds the offset into the ldr/str and comes out 4 bytes short. */
+    /* The store through `*(u32 *)&mFlags` is a codegen launder, not a type
+       conversion: the ROM materialises the address into a register first
+       (`add r1,r4,#0xb0`) and then does the read-modify-write through it.
+       Writing `mFlags |= 0x38` folds the offset into the ldr/str and comes
+       out 4 bytes short. */
     *(u32 *)&mFlags |= 0x38;
 }
 
@@ -168,8 +166,8 @@ int dActor_c::BeforeBehavior()
 
     data_0209b458 = 0;
 
-    signed char c = mAreaId;
-    if (c >= 0 && !IsAreaShowing(c)) {
+    signed char areaId = mAreaId;
+    if (areaId >= 0 && !IsAreaShowing(areaId)) {
         mFlags |= 0x38;
         mCamSpacePosX = 0x7fffffff;
         mCamSpacePosY = 0x7fffffff;
@@ -204,16 +202,11 @@ int dActor_c::BeforeBehavior()
         }
     }
 
-    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) == 0) {
-        u32 f = mFlags;
-        if ((f & 9) != 9 && (data_0209b464 == 0 || (f & data_0209b464) != 0))
-            goto do_copy;
-        if (data_0209fc68 != 0)
-            goto do_copy;
-    }
-    return 0;
+    if (((data_0209f2c4 | data_0209f20c | data_0209f294) & 0xff) != 0 ||
+        (((mFlags & 9) == 9 || (data_0209b464 != 0 && (mFlags & data_0209b464) == 0)) &&
+         data_0209fc68 == 0))
+        return 0;
 
-do_copy:
     mPrevPosX = mPosX;
     mPrevPosY = mPosY;
     mPrevPosZ = mPosZ;
@@ -241,15 +234,8 @@ int dActor_c::BeforeRender()
         return 0;
 
     flags = mFlags;
-    if (flags & 0x20)
-        goto ret0;
-    if (!(flags & 8))
-        goto ret1;
-    if (!(flags & 2))
-        goto ret1;
-ret0:
-    return 0;
-ret1:
+    if ((flags & 0x20) || ((flags & 8) && (flags & 2)))
+        return 0;
     return 1;
 }
 
@@ -267,14 +253,15 @@ void dActor_c::AfterRender(u32 vfSuccess)
 /* ROM ordinal 82 -- _ZN8dActor_c10FindWithIDEj
  * 0x02010f3c  size 0x30 */
 extern "C" {
-extern dActor_c *func_02043f98(dActor_c **head, unsigned int id);
-extern void *data_0209b468;         /* the global actor list -- callers use &name */
+/* local extern: defined in ActorBase.cpp, which has no header. */
+extern fLiNdBa_c *func_02043f98(fLiNdBa_c **head, unsigned int key);
+extern void *data_0209b468; /* the global actor list -- callers use &name */
 }
 dActor_c *dActor_c::FindWithID(u32 id)
 {
-    dActor_c *node = func_02043f98((dActor_c **)&data_0209b468, id);
+    fLiNdBa_c *node = func_02043f98((fLiNdBa_c **)&data_0209b468, id);
     if (node)
-        return *(dActor_c **)((char *)node + 8);
+        return static_cast<dActor_c *>(node->owner);
     return 0;
 }
 
@@ -282,13 +269,18 @@ dActor_c *dActor_c::FindWithID(u32 id)
 // @symbol _ZN8dActor_c15FindWithActorIDEjPS_
 /* ROM ordinal 81 -- _ZN8dActor_c15FindWithActorIDEjPS_
  * 0x02010ef0  size 0x4c */
-dActor_c *dActor_c::FindWithActorID(u32 j, dActor_c *after) {
-  int p = (int)after;
-  int *r;
-  if (p) r = func_02043f4c((int *)&data_0209b468, j, p+0x50);
-  else r = func_02043f4c((int *)&data_0209b468, j, 0);
-  if (r) return (dActor_c *)r[2];
-  return 0;
+/* func_02043f4c really takes and returns fLiNdBa_c * (ActorBase.cpp), but
+   decl_common.h spells it with ints and this TU includes that. */
+dActor_c *dActor_c::FindWithActorID(u32 actorID, dActor_c *after) {
+    fLiNdBa_c *node;
+    if (after)
+        node =
+            (fLiNdBa_c *)func_02043f4c((int *)&data_0209b468, actorID, (int)&after->mActorListNode);
+    else
+        node = (fLiNdBa_c *)func_02043f4c((int *)&data_0209b468, actorID, 0);
+    if (node)
+        return static_cast<dActor_c *>(node->owner);
+    return 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -297,11 +289,14 @@ dActor_c *dActor_c::FindWithActorID(u32 j, dActor_c *after) {
  * 0x02010ecc  size 0x24 */
 dActor_c *dActor_c::Next(const dActor_c *after)
 {
-  fLiNdBa_c *node;
-  if (after) node = after->mActorListNode.next;
-  else node = *(fLiNdBa_c **)&data_0209b468;
-  if (node) return static_cast<dActor_c *>(node->owner);
-  return 0;
+    fLiNdBa_c *node;
+    if (after)
+        node = after->mActorListNode.next;
+    else
+        node = *(fLiNdBa_c **)&data_0209b468;
+    if (node)
+        return static_cast<dActor_c *>(node->owner);
+    return 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -313,12 +308,13 @@ extern s16 *data_0209b460;          /* spawn position, or null to leave it at 0 
 extern s16 *data_0209b45c;          /* spawn rotation, or null */
 extern s16 data_0208e378;           /* spawn death-table id */
 }
-extern "C" void func_02010e78(const Vector3 *a, const Vector3_16 *b, s8 c, s16 d)
-{
-    data_0209b460 = (s16 *)a;
-    data_0209b45c = (s16 *)b;
-    data_0209b44c = c;
-    data_0208e378 = d;
+/* Stages Spawn's arguments for the constructor to pick up. */
+extern "C" void func_02010e78(const Vector3 *pos, const Vector3_16 *rot, s8 areaID,
+                              s16 deathTableID) {
+    data_0209b460 = (s16 *)pos;
+    data_0209b45c = (s16 *)rot;
+    data_0209b44c = areaID;
+    data_0208e378 = deathTableID;
     data_0209b458 = 0;
 }
 
@@ -341,101 +337,109 @@ dActor_c *dActor_c::Spawn(u32 actorID, u32 spawnParam, const Vector3 &pos,
 // @symbol _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
 /* ROM ordinal 77 -- _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
  * 0x02010e08  size 0x24 */
-extern "C" {
-void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(struct dActor_c *self, int a, int b, int c, int d) {
-self->mClipOffsetY=a;
-self->mClipRadius=b>>3;
-self->mClipDistance=c>>3;
-self->mFarDistance=d>>3;
-}
+/* Fix12<int> by value: defined by its symbol, see the header. The three
+   ranges are stored at 1/8 scale, the scale BeforeBehavior projects into. */
+extern "C" void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, s32 clipOffsetY,
+                                                          s32 clipRadius, s32 clipDistance,
+                                                          s32 farDistance) {
+    self->mClipOffsetY = clipOffsetY;
+    self->mClipRadius = clipRadius >> 3;
+    self->mClipDistance = clipDistance >> 3;
+    self->mFarDistance = farDistance >> 3;
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol func_02010da4
 /* ROM ordinal 76 -- func_02010da4
  * 0x02010da4  size 0x64 */
-extern "C" void func_02010da4(int* p)
-{
-    int v;
-    v = p[0x5c / 4];
-    if (v < -0x7d00000) p[0x5c / 4] = -0x7d00000;
-    else if (v > 0x7d00000) p[0x5c / 4] = 0x7d00000;
-    v = p[0x60 / 4];
-    if (v < -0x7d00000) p[0x60 / 4] = -0x7d00000;
-    else if (v > 0x7d00000) p[0x60 / 4] = 0x7d00000;
-    v = p[0x64 / 4];
-    if (v < -0x7d00000) p[0x64 / 4] = -0x7d00000;
-    else if (v > 0x7d00000) p[0x64 / 4] = 0x7d00000;
+/* Clamps each axis of mPos to +-32000.0, the edge of the world. */
+extern "C" void func_02010da4(dActor_c *actor) {
+    s32 v;
+    v = actor->mPosX;
+    if (v < -0x7d00000)
+        actor->mPosX = -0x7d00000;
+    else if (v > 0x7d00000)
+        actor->mPosX = 0x7d00000;
+    v = actor->mPosY;
+    if (v < -0x7d00000)
+        actor->mPosY = -0x7d00000;
+    else if (v > 0x7d00000)
+        actor->mPosY = 0x7d00000;
+    v = actor->mPosZ;
+    if (v < -0x7d00000)
+        actor->mPosZ = -0x7d00000;
+    else if (v > 0x7d00000)
+        actor->mPosZ = 0x7d00000;
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c
 /* ROM ordinal 75 -- _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c
  * 0x02010d40  size 0x64 */
-typedef int s32;
-struct Vec3 { s32 x, y, z; };
+/* AddVec3's own definition (src/AddVec3.c) spells its operands with this
+   three-int struct, not Vector3; declared to agree with it. */
+struct Vec3 {
+    s32 x, y, z;
+};
 extern "C" {
 void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-void func_02010da4(int *p);
+void func_02010da4(dActor_c *actor);
 }
+/* Adds the velocity (mSpeedX, mVertSpeed, mSpeedZ) to mPos, then the
+   cylinder's horizontal push-out, then clamps to the world bounds. */
 void dActor_c::UpdatePosWithOnlySpeed(dCc_c *clsn) {
-    AddVec3((Vec3 *)&mPosX, (Vec3 *)&unk_0a4, (Vec3 *)&mPosX);
+    AddVec3((Vec3 *)&mPos, (Vec3 *)&mSpeedX, (Vec3 *)&mPos);
     if (clsn != 0) {
-        *(s32 *)(&mPosX) += clsn->pushback.x;
-        *(s32 *)(&mPosZ) += clsn->pushback.z;
+        mPosX += clsn->pushback.x;
+        mPosZ += clsn->pushback.z;
     }
-    func_02010da4((int *)this);
+    func_02010da4(this);
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv
 /* ROM ordinal 74 -- _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv
  * 0x02010c5c  size 0xe4 */
-typedef short s16;
-typedef long long s64;
 extern "C" {
-extern "C" s16 data_02082214[];
+extern s16 data_02082214[]; /* NitroSDK FX_SinCosTable_: {sin, cos} per angle >> 4 */
 }
-/* 0xa4 and 0xac stay raw: they are the X and Z of the speed vector whose Y is
-   mVertSpeed (UpdatePosWithOnlySpeed adds all three to mPos), but dActor_c.h
-   still calls them unk_0a4/unk_0ac, and renaming them there touches every actor. */
-void dActor_c::UpdatePosWithHorzSpeedAndAng(){
-    void *c = this;
-    s32 v98 = ((dActor_c *)c)->mHorzSpeed;
-    if (v98 == 0) {
-        s32 a8 = ((dActor_c *)c)->mVertSpeed;
-        s32 v9c = ((dActor_c *)c)->mVertAccel;
-        s32 a0 = ((dActor_c *)c)->mTerminalVelocity;
-        s32 nx = a8 + v9c;
-        if (nx >= a0) a0 = nx;
-        *(s32*)((char*)c+0xa4) = 0;
-        ((dActor_c *)c)->mVertSpeed = a0;
-        *(s32*)((char*)c+0xac) = 0;
-        return;
+/* Splits mHorzSpeed along mPrevAngleY (the heading the velocity follows) into
+   the x/z velocity words, x by sin and z by cos, and applies mVertAccel to
+   mVertSpeed, clamped at mTerminalVelocity. */
+void dActor_c::UpdatePosWithHorzSpeedAndAng() {
+    s32 horzSpeed = mHorzSpeed;
+    if (horzSpeed == 0) {
+        s32 vertSpeed = mVertSpeed + mVertAccel;
+        s32 terminal = mTerminalVelocity;
+        if (vertSpeed >= terminal)
+            terminal = vertSpeed;
+        mSpeedX = 0;
+        mVertSpeed = terminal;
+        mSpeedZ = 0;
     } else {
-        s32 a8;
-        s32 v9c;
-        s32 a0;
-        s64 px;
-        s32 j;
-        s16 sinv;
-        s32 nx;
+        s32 vertSpeed;
+        s32 accel;
+        s32 terminal;
+        s32 speedZ;
+        s32 idx;
         s16 cosv;
-        s64 pz;
-        j = ((s32)(u16)((dActor_c *)c)->mPrevAngleY >> 4) << 1;
-        sinv = data_02082214[j + 1];
-        a8 = ((dActor_c *)c)->mVertSpeed;
-        v9c = ((dActor_c *)c)->mVertAccel;
-        a0 = ((dActor_c *)c)->mTerminalVelocity;
-        px = FX_MUL(v98, sinv);
-        nx = a8 + v9c;
-        if (nx >= a0) a0 = nx;
-        cosv = data_02082214[j];
-        pz = FX_MUL(v98, cosv);
-        *(s32*)((char*)c+0xa4) = (s32)pz;
-        ((dActor_c *)c)->mVertSpeed = a0;
-        *(s32*)((char*)c+0xac) = (s32)px;
-        return;
+        s32 next;
+        s16 sinv;
+        s32 speedX;
+        idx = ((u16)mPrevAngleY >> 4) * 2;
+        cosv = data_02082214[idx + 1];
+        vertSpeed = mVertSpeed;
+        accel = mVertAccel;
+        terminal = mTerminalVelocity;
+        speedZ = FX_MUL(horzSpeed, cosv);
+        next = vertSpeed + accel;
+        if (next >= terminal)
+            terminal = next;
+        sinv = data_02082214[idx];
+        speedX = FX_MUL(horzSpeed, sinv);
+        mSpeedX = speedX;
+        mVertSpeed = terminal;
+        mSpeedZ = speedZ;
     }
 }
 
@@ -453,19 +457,15 @@ void dActor_c::UpdatePos(dCc_c *clsn)
 // @symbol _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j
 /* ROM ordinal 72 -- _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j
  * 0x02010be8  size 0x48 */
-struct dExtShadowModel_c;
-extern "C" {
-extern void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j( struct dExtShadowModel_c* shadow, struct Matrix4x3* matrix, Fix12i scaleX, Fix12i scaleY, Fix12i scaleZ, u8 opacity);
-}
+/* local extern: dExtShadowModel_c::InitModel takes Fix12<int> by value, so it
+   is called by its symbol (the Fix12 wall); so are both definitions below. */
+extern "C" void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
+    dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i scaleX, Fix12i scaleY, Fix12i scaleZ,
+    u8 opacity);
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    struct dActor_c* this_,
-    struct dExtShadowModel_c* shadow,
-    struct Matrix4x3* matrix,
-    Fix12i radius,
-    Fix12i depth,
-    u8 opacity)
-{
-    if (this_->mFlags & 0x10)
+    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i radius, Fix12i depth,
+    u8 opacity) {
+    if (self->mFlags & 0x10) /* beyond mFarDistance: no drop shadow */
         return;
     _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, radius, depth, radius, opacity);
 }
@@ -475,15 +475,9 @@ extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x
 /* ROM ordinal 71 -- _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j
  * 0x02010b9c  size 0x4c */
 extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    struct dActor_c* this_,
-    struct dExtShadowModel_c* shadow,
-    struct Matrix4x3* matrix,
-    Fix12i scaleX,
-    Fix12i scaleY,
-    Fix12i scaleZ,
-    u8 opacity)
-{
-    if (this_->mFlags & 0x10)
+    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i scaleX, Fix12i scaleY,
+    Fix12i scaleZ, u8 opacity) {
+    if (self->mFlags & 0x10)
         return;
     _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, scaleX, scaleY, scaleZ, opacity);
 }
@@ -493,11 +487,11 @@ extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3
 /* ROM ordinal 70 -- _ZN8dActor_c13ClosestPlayerEv
  * 0x02010ad8  size 0xc4 */
 extern "C" {
-extern int Vec3_Dist(const void* a, const void* b);
-extern int data_0208e380;
-extern int data_0208e37c;
-extern unsigned char data_0209f21c;
-extern void* data_0209f394[];
+extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
+extern int data_0208e380;           /* distance to the cached closest player */
+extern int data_0208e37c;           /* distance to the cached farthest player */
+extern unsigned char data_0209f21c; /* number of players */
+extern void *data_0209f394[];       /* the player table */
 }
 Player *dActor_c::ClosestPlayer()
 {
@@ -506,11 +500,18 @@ Player *dActor_c::ClosestPlayer()
         data_0208e37c = 0x80000000;
         int i;
         for (i = 0; i < data_0209f21c; i++) {
-            void* p = data_0209f394[i];
-            if (!p) continue;
-            int d = Vec3_Dist(&mPosX, &((dActor_c *)p)->mPosX);
-            if (d < data_0208e380) { data_0208e380 = d; data_0209b458 = p; }
-            if (d > data_0208e37c) { data_0208e37c = d; data_0209b450 = p; }
+            Player *player = (Player *)data_0209f394[i];
+            if (!player)
+                continue;
+            int dist = Vec3_Dist(&mPos, &player->mPos);
+            if (dist < data_0208e380) {
+                data_0208e380 = dist;
+                data_0209b458 = player;
+            }
+            if (dist > data_0208e37c) {
+                data_0208e37c = dist;
+                data_0209b450 = player;
+            }
         }
     }
     return (Player *)data_0209b458;
@@ -527,13 +528,20 @@ Player *dActor_c::ClosestNonVanishPlayer()
         data_0208e37c = 0x80000000;
         int i;
         for (i = 0; i < data_0209f21c; i++) {
-            void* p = data_0209f394[i];
-            if (!p) continue;
-            if (((Player *)p)->mIsVanish)
+            Player *player = (Player *)data_0209f394[i];
+            if (!player)
                 continue;
-            int d = Vec3_Dist(&mPosX, &((dActor_c *)p)->mPosX);
-            if (d < data_0208e380) { data_0208e380 = d; data_0209b458 = p; }
-            if (d > data_0208e37c) { data_0208e37c = d; data_0209b450 = p; }
+            if (player->mIsVanish)
+                continue;
+            int dist = Vec3_Dist(&mPos, &player->mPos);
+            if (dist < data_0208e380) {
+                data_0208e380 = dist;
+                data_0209b458 = player;
+            }
+            if (dist > data_0208e37c) {
+                data_0208e37c = dist;
+                data_0209b450 = player;
+            }
         }
     }
     return (Player *)data_0209b458;
@@ -543,7 +551,6 @@ Player *dActor_c::ClosestNonVanishPlayer()
 // @symbol _ZN8dActor_c13DistToCPlayerEv
 /* ROM ordinal 68 -- _ZN8dActor_c13DistToCPlayerEv
  * 0x020109e4  size 0x24 */
-typedef int Fix12i; /* 20.12 fixed-point */
 s32 dActor_c::DistToCPlayer()
 {
     ClosestPlayer();
@@ -629,13 +636,13 @@ dActor_c *dActor_c::ClosestWithActorID(u32 actorID)
 // @symbol func_02010844
 /* ROM ordinal 62 -- func_02010844
  * 0x02010844  size 0x80 */
-typedef unsigned short u16;
 extern "C" {
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x);
-extern s32 Vec3_HorzLen(Vector3* v);
+extern s32 Vec3_HorzLen(Vector3 *v);
 }
-extern "C" s32 func_02010844(void* unused, Vector3* v, s16 angle)
-{
+/* atan2 of v's horizontal length, projected onto heading `angle`, against
+   v->y. The leading actor argument is unused. */
+extern "C" s32 func_02010844(void *actor, Vector3 *v, s16 angle) {
     s32 dir;
     s32 horzLen;
 
@@ -650,7 +657,6 @@ extern "C" s32 func_02010844(void* unused, Vector3* v, s16 angle)
 // @symbol _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs
 /* ROM ordinal 61 -- _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs
  * 0x02010714  size 0x130 */
-typedef unsigned int u32;
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650[];
@@ -709,7 +715,7 @@ extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
  * 0x0201061c  size 0xf8 */
 extern "C" {
 extern u32 data_02075238[]; /* coins each kind is worth */
-extern u16 data_02075230[]; /* actor ID of the popup each kind spawns */
+extern u16 data_02075230[]; /* actor ID of the coin each kind spawns */
 void GiveCoins(s32 playerNo, s32 amount); /* 0x0202a7b8 */
 }
 void dActor_c::GivePlayerCoins(Player &player, u8 count, u32 coinKind)
@@ -741,29 +747,25 @@ void dActor_c::GivePlayerCoins(Player &player, u8 count, u32 coinKind)
     spawnPos.z = src->z;
     spawnPos.y = spawnPos.y + 0x96000;
 
-    dActor_c *popup = Spawn(data_02075230[coinKind], 8, spawnPos, 0,
-                         player.mAreaId, -1);
-    if (popup != 0)
-        ((daCoin_c *)popup)->mFollowTarget = &player;
+    /* A coin of the same kind (actor 0x120, 0x121 or 0x122, all daCoin_c),
+       spawned above the player; it then tracks mFollowTarget every frame. */
+    daCoin_c *coin =
+        static_cast<daCoin_c *>(Spawn(data_02075230[coinKind], 8, spawnPos, 0, player.mAreaId, -1));
+    if (coin != 0)
+        coin->mFollowTarget = &player;
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol func_020105cc
 /* ROM ordinal 59 -- func_020105cc
  * 0x020105cc  size 0x50 */
-extern "C" {
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 soundID, const struct Vector3 *pos); /* 0x0201264c */
-}
-extern "C" void func_020105cc(struct dActor_c *thiz, u32 flags)
-{
-    if (flags & 0x380)
-    {
-        _ZN5Sound9PlayBank0EjRK7Vector3(0xa, &thiz->mCamSpacePos);
+extern "C" void func_020105cc(dActor_c *actor, u32 flags) {
+    if (flags & 0x380) {
+        Sound::PlayBank0(0xa, actor->mCamSpacePos);
         return;
     }
-    if (flags & 0x40)
-    {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, &thiz->mCamSpacePos);
+    if (flags & 0x40) {
+        Sound::PlayBank0(9, actor->mCamSpacePos);
         return;
     }
 }
@@ -819,12 +821,15 @@ bool dActor_c::IsPlayerInRange(s32 maxDist)
 // @symbol _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i
 /* ROM ordinal 55 -- _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i
  * 0x02010498  size 0x44 */
-extern "C" int _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i(struct dActor_c *self, Fix12i posX, Fix12i posY, Fix12i posZ, int maxDist) {
-    struct Vector3 pos;
+/* Fix12<int> by value: defined by its symbol. */
+extern "C" int _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i(dActor_c *self, Fix12i posX,
+                                                              Fix12i posY, Fix12i posZ,
+                                                              int maxDist) {
+    Vector3 pos;
     pos.x = posX;
     pos.y = posY;
     pos.z = posZ;
-    struct dActor_c *closest = (struct dActor_c *)self->ClosestPlayer();
+    Player *closest = self->ClosestPlayer();
     return Vec3_Dist(&pos, &closest->mPos) < (maxDist << 12);
 }
 
@@ -843,8 +848,10 @@ bool dActor_c::IsPlayerInRange(const Vector3 &pos, s32 maxDist)
 // @symbol _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s
 /* ROM ordinal 53 -- _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s
  * 0x02010428  size 0x34 */
-extern "C" s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(struct dActor_c *thiz, Fix12i normalX, Fix12i normalZ, s16 angToReflect)
-{
+/* Fix12<int> by value: defined by its symbol. Mirrors angToReflect, turned
+   around, about the normal's heading. */
+extern "C" s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(dActor_c *self, Fix12i normalX,
+                                                        Fix12i normalZ, s16 angToReflect) {
     s16 normalAngle = _ZN4cstd5atan2E5Fix12IiES1_(normalX, normalZ);
     s16 delta = (s16)((angToReflect + 0x8000) - normalAngle);
     return (s16)(normalAngle - delta);
@@ -854,12 +861,15 @@ extern "C" s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(struct dActor_c *thiz, F
 // @symbol _ZN8dActor_c14GetSubtractionEss
 /* ROM ordinal 52 -- _ZN8dActor_c14GetSubtractionEss
  * 0x020103f4  size 0x34 */
+/* The magnitude of the shortest turn from angle a to angle b. */
 int dActor_c::GetSubtraction(short a, short b)
 {
-int d=(short)(b-a);
-if(d==-0x8000) d=-0x7fff;
-if(d<0) d=(short)(-d);
-return d;
+    int d = (short)(b - a);
+    if (d == -0x8000)
+        d = -0x7fff;
+    if (d < 0)
+        d = (short)(-d);
+    return d;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -900,38 +910,34 @@ dActor_c *dActor_c::FindExplosionActor(dCc_c &clsn)
 // @symbol func_02010304
 /* ROM ordinal 49 -- func_02010304
  * 0x02010304  size 0x70 */
-extern "C" {
-}
-extern "C" {
-void *func_02010304(void *target, char *p) {
-    unsigned id = *(unsigned *)(p + 0x24);
-    void *found;
-    if (id != 0 && (found = dActor_c::FindWithID(id)) != 0 && (*(int *)(p + 0x20) & 0x1000)) {
-        int t = ((dActor_c *)found)->actorID == 0xbf;
-        if (t && ((Player *)found)->TryGrab(*(dActor_c *)target))
+/* Returns the player behind `clsn`'s last hit if that hit carried hitFlags
+   0x1000 and the player then grabs `target`; otherwise null. 0xbf is the
+   player's actor ID. */
+extern "C" void *func_02010304(dActor_c *target, dCc_c *clsn) {
+    u32 id = clsn->otherOwner;
+    dActor_c *found;
+    if (id != 0 && (found = dActor_c::FindWithID(id)) != 0 && (clsn->hitFlags & 0x1000)) {
+        int isPlayer = found->actorID == 0xbf;
+        if (isPlayer && ((Player *)found)->TryGrab(*target))
             return found;
     }
     return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j
 /* ROM ordinal 48 -- _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j
  * 0x020102b0  size 0x54 */
-typedef signed char s8;
+/* Spawns actor 0xfe, daFPknBall_c (the fire piranha plant's fireball), with
+   its starting speed and the speed it then approaches. Fix12<int> by value,
+   so defined by its symbol. */
 extern "C" void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-    dActor_c* self,
-    const Vector3* pos,
-    const Vector3_16* rot,
-    Fix12i horzSpeed,
-    Fix12i unk35c,
-    u32 param1
-) {
-    dActor_c* a = dActor_c::Spawn(0xfe, param1, *pos, rot, self->mAreaId, -1);
-    if (a != (dActor_c*)0) {
-        a->mHorzSpeed = horzSpeed;
-        ((daFPknBall_c *)a)->mTargetSpeed = unk35c;
+    dActor_c *self, const Vector3 *pos, const Vector3_16 *rot, Fix12i horzSpeed, Fix12i targetSpeed,
+    u32 param1) {
+    dActor_c *ball = dActor_c::Spawn(0xfe, param1, *pos, rot, self->mAreaId, -1);
+    if (ball != 0) {
+        ball->mHorzSpeed = horzSpeed;
+        static_cast<daFPknBall_c *>(ball)->mTargetSpeed = targetSpeed;
     }
 }
 
@@ -940,7 +946,7 @@ extern "C" void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_
 /* ROM ordinal 47 -- _ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3
  * 0x02010180  size 0x130 */
 extern "C" {
-void *func_ov002_020e496c(Player *p);
+void *func_ov002_020e496c(Player *p); /* the player's current mBodyModels entry */
 void MulMat4x3Mat4x3(Matrix4x3 *m1, Matrix4x3 *m0, Matrix4x3 *mF);
 void Matrix4x3_FromTranslation(Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *mF, short x, short y, short z);
@@ -951,23 +957,20 @@ extern Matrix4x3 data_020a0e68;
 }
 Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
 {
-    Player *p = &player;
     Vector3 t;
-    *(int *)((char *)&t + 0) = 0;
-    *(int *)((char *)&t + 4) = 0;
-    *(int *)((char *)&t + 8) = 0;
-    /* The player's current body model; the carried actor hangs off bone 14. */
-    Model *o = (Model *)func_ov002_020e496c(p);
-    Matrix4x3 *base = o->data.transforms;
-    data_020a0e68 = o->mat4x3;
-    MulMat4x3Mat4x3(&base[14], &data_020a0e68, &data_020a0e68);
-    *(Vector3 *)&t = *(Vector3 *)((char *)&data_020a0e68 + 0x24);
-    mPrevAngleY = p->mAngleY;
+    t.x = 0;
+    t.y = 0;
+    t.z = 0;
+    /* Bone 14 of the body model, carried into world space by the model's
+       own matrix; only its translation survives. */
+    Model *body = (Model *)func_ov002_020e496c(&player);
+    Matrix4x3 *bones = body->data.transforms;
+    data_020a0e68 = body->mat4x3;
+    MulMat4x3Mat4x3(&bones[14], &data_020a0e68, &data_020a0e68);
+    t = *(Vector3 *)&data_020a0e68.m[9];
+    mPrevAngleY = player.mAngleY;
     mAngleY = mPrevAngleY;
-    Matrix4x3_FromTranslation(&data_020a0e68,
-        *(volatile int *)((char *)&t + 0),
-        *(volatile int *)((char *)&t + 4),
-        *(volatile int *)((char *)&t + 8));
+    Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     Vector3 asr;
     Vec3_Asr(&asr, &vec, 3);
@@ -975,8 +978,8 @@ Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
     mPosX = data_020a0e68.m[9];
     mPosY = data_020a0e68.m[10];
     mPosZ = data_020a0e68.m[11];
-    volatile Vector3 lsl;
-    Vec3_Lsl((Vector3 *)&lsl, &mPos, 3);
+    Vector3 lsl;
+    Vec3_Lsl(&lsl, &mPos, 3);
     mPosX = lsl.x;
     mPosY = lsl.y;
     mPosZ = lsl.z;
@@ -988,13 +991,16 @@ Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
 /* ROM ordinal 46 -- _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE
  * 0x02010168  size 0x18 */
 extern "C" {
-extern void func_0200d8c8(void*, int);
-extern void* data_0209f318;
+extern void func_0200d8c8(void *, int);
+extern void *data_0209f318; /* the camera */
 }
-extern "C" {
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void* v, int f) {
-    func_0200d8c8(data_0209f318, f);
-}
+/* Fix12<int> by value: defined by its symbol. The real shape is
+   (this, const Vector3 &pos, magnitude) tail-calling dCamera_c's
+   func_0200d8c8(camera, pos, strength) with r1/r2 untouched; spelling it so
+   contradicts 15 consumer declarations banked against this two-argument
+   form, so the two-argument spelling stays until those are fixed together. */
+extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, int magnitude) {
+    func_0200d8c8(data_0209f318, magnitude);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1115,23 +1121,25 @@ Vector3 dActor_c::OnAimedAtWithEggReturnVec()
 // @symbol _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_
 /* ROM ordinal 32 -- _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_
  * 0x02010044  size 0x98 */
-extern "C" {
-dActor_c *func_ov002_020f0918(dActor_c *number, dActor_c *owner);
-}
-dActor_c *dActor_c::SpawnNumber(const Vector3 &pos, u32 value, bool packLowNibble,
-                          u16 delay, dActor_c *owner)
-{
-    dActor_c *number;
+/* local extern: defined in d_a_obj_number.cpp, which has no header for it. It
+   returns void there; the ROM tail-calls it, so SpawnNumber returns whatever
+   it leaves in r0. */
+extern "C" dActor_c *func_ov002_020f0918(daObjNumber_c *number, dActor_c *owner);
+/* Spawns actor 0x14a, daObjNumber_c, the number that pops up over an actor. */
+dActor_c *dActor_c::SpawnNumber(const Vector3 &pos, u32 value, bool packLowNibble, u16 delay,
+                                dActor_c *owner) {
+    daObjNumber_c *number;
 
     if (packLowNibble)
-        number = Spawn(0x14a, (value & 0xf) | 0x10, pos, 0, mAreaId, -1);
+        number =
+            static_cast<daObjNumber_c *>(Spawn(0x14a, (value & 0xf) | 0x10, pos, 0, mAreaId, -1));
     else
-        number = Spawn(0x14a, value, pos, 0, mAreaId, -1);
+        number = static_cast<daObjNumber_c *>(Spawn(0x14a, value, pos, 0, mAreaId, -1));
 
     if (number == 0)
         return number;
 
-    ((daObjNumber_c *)number)->mDelay = delay;
+    number->mDelay = delay;
     return func_ov002_020f0918(number, owner);
 }
 
@@ -1201,18 +1209,21 @@ dActor_c *dActor_c::UntrackAndSpawnStar(s8 &trackStarID, u32 starID,
 /* ROM ordinal 28 -- _ZN8dActor_c17GetWaterHeightWDWEv
  * 0x0200fec8  size 0x4c */
 extern "C" {
-extern unsigned char data_0209f2c0[];
-extern int data_02075244[];
+extern unsigned char data_0209f2c0[]; /* WDW's water level, 0..2 */
+extern int data_02075244[];           /* the water height for each level */
 }
+/* In area 0 of sublevel 0x15 (WDW), the current water height; anywhere else,
+   the actor's own height. */
 s32 dActor_c::GetWaterHeightWDW()
 {
-    s32 ret = mPosY;
+    s32 height = mPosY;
     if (data_0209f2f8[0] == 0x15 && mAreaId == 0) {
-        unsigned int i = data_0209f2c0[0];
-        if (i >= 3) i = 2;
-        ret = data_02075244[i];
+        unsigned int level = data_0209f2c0[0];
+        if (level >= 3)
+            level = 2;
+        height = data_02075244[level];
     }
-    return ret;
+    return height;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1257,6 +1268,8 @@ void dActor_c::PoofDust()
 /* ROM ordinal 24 -- _ZN8dActor_c10PoofDustAtERK7Vector3
  * 0x0200fdfc  size 0x40 */
 extern "C" {
+/* local extern: Particle::System::NewSimple takes Fix12<int> by value, so it
+   is called by its symbol (the Fix12 wall). */
 extern int _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 }
 void dActor_c::PoofDustAt(const Vector3 &pos)
@@ -1316,37 +1329,35 @@ void dActor_c::DisappearPoofDustAt(const Vector3 &pos)
 // @symbol func_0200fccc
 /* ROM ordinal 19 -- func_0200fccc
  * 0x0200fccc  size 0x38 */
-struct T{int a;int b;int c;};
 extern "C" {
-extern int func_0200fc44(int a, Vector3 *pos, int flag);
+extern int func_0200fc44(int actor, Vector3 *pos, int doRaycast);
 }
-extern "C" int func_0200fccc(char*s,int r1){
-struct T t={*(int*)(s+0x5c),*(int*)(s+0x60),*(int*)(s+0x64)};
-return func_0200fc44((int)s,(Vector3 *)&t,r1);
+/* func_0200fc44 at this actor's position. The parameter keeps the char *
+   every declaration of this symbol spells. */
+extern "C" int func_0200fccc(char *actorp, int doRaycast) {
+    dActor_c *actor = (dActor_c *)actorp;
+    Vector3 pos;
+    pos.x = actor->mPosX;
+    pos.y = actor->mPosY;
+    pos.z = actor->mPosZ;
+    return func_0200fc44((int)actor, &pos, doRaycast);
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol func_0200fc44
 /* ROM ordinal 18 -- func_0200fc44
  * 0x0200fc44  size 0x88 */
-typedef struct RaycastGroundPod { int filler[17]; int resultY; int pad[2]; } RaycastGroundPod;
-extern "C" {
-extern void _ZN9dBgCh_GndC1Ev(dBgCh_Gnd* c);
-extern void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd* c);
-}
-extern "C" int func_0200fc44(int a, Vector3* pos, int flag) {
-    if (flag) {
-        RaycastGroundPod rg;
-        _ZN9dBgCh_GndC1Ev((dBgCh_Gnd*)&rg);
-        int* yp = (int*)((int)pos + 4);
-        *yp += 0x32000;
-        ((dBgCh_Gnd *)&rg)->SetObjAndPos(*pos, 0);
-        if (((dBgCh_Gnd *)&rg)->DetectClsn())
-            pos->y = rg.resultY;
-        _ZN9dBgCh_GndD1Ev((dBgCh_Gnd*)&rg);
+/* Particle 0xb3 25.0 above pos, optionally first dropping pos onto the
+   ground below it; pos is moved. The leading actor argument is unused. */
+extern "C" int func_0200fc44(int actor, Vector3 *pos, int doRaycast) {
+    if (doRaycast) {
+        dBgCh_Gnd rc;
+        pos->y += 0x32000;
+        rc.SetObjAndPos(*pos, 0);
+        if (rc.DetectClsn())
+            pos->y = rc.clsnY;
     }
-    int* yp2 = (int*)((int)pos + 4);
-    *yp2 += 0x19000;
+    pos->y += 0x19000;
     return _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb3, pos->x, pos->y, pos->z);
 }
 
@@ -1367,18 +1378,10 @@ void dActor_c::LandingDust(bool doRaycast)
 // @symbol _ZN8dActor_c17HugeLandingDustAtER7Vector3b
 /* ROM ordinal 16 -- _ZN8dActor_c17HugeLandingDustAtER7Vector3b
  * 0x0200fb84  size 0x88 */
-namespace Particle { struct System {
-    static void NewSimple(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
-};
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" int _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
- }
-void dActor_c::HugeLandingDustAt(Vector3 &pos, bool b)
-{
-    if (b) {
+/* Particle 0xb2 40.0 above pos, optionally first dropping pos onto the
+   ground below it; pos is moved. */
+void dActor_c::HugeLandingDustAt(Vector3 &pos, bool doRaycast) {
+    if (doRaycast) {
         dBgCh_Gnd rc;
         pos.y += 0x32000;
         rc.SetObjAndPos(pos, 0);
@@ -1386,7 +1389,7 @@ void dActor_c::HugeLandingDustAt(Vector3 &pos, bool b)
             pos.y = rc.clsnY;
     }
     pos.y += 0x28000;
-    Particle::_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, pos.x, pos.y, pos.z);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1406,9 +1409,9 @@ void dActor_c::HugeLandingDust(bool doRaycast)
 // @symbol _ZN8dActor_c13LandingDustAtER7Vector3b
 /* ROM ordinal 14 -- _ZN8dActor_c13LandingDustAtER7Vector3b
  * 0x0200fac4  size 0x88 */
-void dActor_c::LandingDustAt(Vector3 &pos, bool b)
-{
-    if (b) {
+/* As HugeLandingDustAt, with particle 0xb1 raised 90.0. */
+void dActor_c::LandingDustAt(Vector3 &pos, bool doRaycast) {
+    if (doRaycast) {
         dBgCh_Gnd rc;
         pos.y += 0x32000;
         rc.SetObjAndPos(pos, 0);
@@ -1416,7 +1419,7 @@ void dActor_c::LandingDustAt(Vector3 &pos, bool b)
             pos.y = rc.clsnY;
     }
     pos.y += 0x5a000;
-    Particle::_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb1, pos.x, pos.y, pos.z);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb1, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1424,34 +1427,32 @@ void dActor_c::LandingDustAt(Vector3 &pos, bool b)
 /* ROM ordinal 13 -- func_0200fa8c
  * 0x0200fa8c  size 0x38 */
 extern "C" {
-extern int func_0200fa04(int a, Vector3 *pos, int flag);
+extern int func_0200fa04(int actor, Vector3 *pos, int doRaycast);
 }
-extern "C" void func_0200fa8c(void *tv, int a)
-{
-    int *t = (int *)tv;
-    int v[3];
-    v[0] = t[0x17];
-    v[1] = t[0x18];
-    v[2] = t[0x19];
-    func_0200fa04((int)t, (Vector3 *)v, a);
+/* func_0200fa04 at this actor's position; void * as decl_common.h spells it. */
+extern "C" void func_0200fa8c(void *actorp, int doRaycast) {
+    dActor_c *actor = (dActor_c *)actorp;
+    Vector3 pos;
+    pos.x = actor->mPosX;
+    pos.y = actor->mPosY;
+    pos.z = actor->mPosZ;
+    func_0200fa04((int)actor, &pos, doRaycast);
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol func_0200fa04
 /* ROM ordinal 12 -- func_0200fa04
  * 0x0200fa04  size 0x88 */
-extern "C" int func_0200fa04(int a, Vector3* pos, int flag)
-{
-    RaycastGroundPod rc;
-    if (flag) {
-        _ZN9dBgCh_GndC1Ev((dBgCh_Gnd*)&rc);
-        *(int*)(((int)pos + 4)) += 0x32000;
-        ((dBgCh_Gnd *)&rc)->SetObjAndPos(*pos, 0);
-        if (((dBgCh_Gnd *)&rc)->DetectClsn())
-            pos->y = rc.resultY;
-        _ZN9dBgCh_GndD1Ev((dBgCh_Gnd*)&rc);
+/* As func_0200fc44, with particle 0x1b raised 120.0 instead of 25.0. */
+extern "C" int func_0200fa04(int actor, Vector3 *pos, int doRaycast) {
+    if (doRaycast) {
+        dBgCh_Gnd rc;
+        pos->y += 0x32000;
+        rc.SetObjAndPos(*pos, 0);
+        if (rc.DetectClsn())
+            pos->y = rc.clsnY;
     }
-    *(int*)(((int)pos + 4)) += 0x78000;
+    pos->y += 0x78000;
     return _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x1b, pos->x, pos->y, pos->z);
 }
 
@@ -1515,26 +1516,23 @@ void dActor_c::SpawnSoundObj(u32 soundObjParam)
 /* ROM ordinal 6 -- _ZN5Sound15PlaySecretSoundEP8dActor_cPt
  * 0x0200f8f8  size 0x84 */
 extern "C" {
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int soundID, unsigned int vol, unsigned int pan, Fix12i dist, int loop);
+/* local extern: Sound::PlaySub takes Fix12<int> by value, so it is called by
+   its symbol (the Fix12 wall). */
+int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int soundID, unsigned int vol, unsigned int pan,
+                                    Fix12i dist, int loop);
 static const int kPoolDist = 0x8777;
 }
 namespace Sound {
 
-int PlaySecretSound(dActor_c* actor, u16* counter)
-{
-    int ret = 0;
-    (void)actor;
+int PlaySecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x4b) {
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-        goto done;
-    }
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x7f, 0, kPoolDist, 0))
+    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x7f, 0, kPoolDist, 0)) {
         return 1;
-done:
-    return ret;
+    }
+    return 0;
 }
-
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1543,40 +1541,29 @@ done:
  * 0x0200f874  size 0x84 */
 namespace Sound {
 
-int PlaySmallSecretSound(dActor_c* actor, u16* counter)
-{
-    int ret = 0;
-    (void)actor;
+int PlaySmallSecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x19) {
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-        goto done;
-    }
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x7f, 0, kPoolDist, 0))
+    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x7f, 0, kPoolDist, 0)) {
         return 1;
-done:
-    return ret;
+    }
+    return 0;
 }
-
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol func_0200f7f0
 /* ROM ordinal 4 -- func_0200f7f0
  * 0x0200f7f0  size 0x84 */
-extern "C" int func_0200f7f0(struct dActor_c *actor, u16 *counter)
-{
-    int ret = 0;
-    (void)actor;
+extern "C" int func_0200f7f0(dActor_c *actor, u16 *counter) {
     if (*counter < 0x69) {
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-        goto done;
-    }
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x7f, 0, kPoolDist, 0))
+    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x7f, 0, kPoolDist, 0)) {
         return 1;
-done:
-    return ret;
+    }
+    return 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1593,7 +1580,7 @@ void dActor_c::MakeVanishLuigiWork(dCc_c &clsn)
     if (player == 0)
         return;
 
-    if (player->mIsVanish != 0)
+    if (player->mIsVanish)
         clsn.flags |= 2;
 }
 
@@ -1601,27 +1588,31 @@ void dActor_c::MakeVanishLuigiWork(dCc_c &clsn)
 // @symbol func_0200f760
 /* ROM ordinal 2 -- func_0200f760
  * 0x0200f760  size 0x48 */
-extern "C" void func_0200f760(void *self, char *actor)
-{
-    Player *p;
+/* MakeVanishLuigiWork again, as a free function taking the cylinder by
+   pointer; the ROM keeps both copies. */
+extern "C" void func_0200f760(dActor_c *actor, dCc_c *clsn) {
+    Player *player;
 
-    ((dCc_c *)actor)->flags &= ~2;
-    p = ((dActor_c *)self)->ClosestPlayer();
-    if (p == 0) return;
-    if (p->mIsVanish != 0) {
-        ((dCc_c *)actor)->flags |= 2;
-    }
+    clsn->flags &= ~2;
+    player = actor->ClosestPlayer();
+    if (player == 0)
+        return;
+    if (player->mIsVanish)
+        clsn->flags |= 2;
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
 /* ROM ordinal 1 -- _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
  * 0x0200f70c  size 0x54 */
+/* Fix12<int> by value: defined by its symbol. True only while the actor is
+   off screen (mFlags 0x08), nothing forces it to think, and the closest
+   player is at least threshold away. */
 extern "C" int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(dActor_c *self, int threshold)
 {
     if (data_0209fc68 == 0) {
-        int b = (self->mFlags & 8) != 0;
-        if (b != 0) {
+        int offScreen = (self->mFlags & 8) != 0;
+        if (offScreen != 0) {
             if (self->DistToCPlayer() >= threshold)
                 return 1;
         }

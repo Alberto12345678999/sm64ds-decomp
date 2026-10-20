@@ -31,9 +31,9 @@
 struct daObjEwbIce_State;
 
 struct daObjEwbIce_c : dBgActor_c {
-    /* dBgActor_c's own last named fields (unk_31c/unk_31d) are u8, so its
-       sizeof (0x320) includes 2 bytes of pure tail padding to reach 4-byte
-       alignment. mwcc reuses that tail padding for a derived class's first
+    /* dBgActor_c's own last named fields (mMegaKnockback and
+       mMegaKnockbackTimer) are u8, so its sizeof (0x320) includes 2 bytes of
+       pure tail padding to reach 4-byte alignment. mwcc reuses that tail padding for a derived class's first
        member when that member's OWN alignment does not require the full
        round-up -- a byte field placed first lands at 0x31e, not 0x320,
        which the ROM disagrees with (Behavior reads [this, #0x320]).
