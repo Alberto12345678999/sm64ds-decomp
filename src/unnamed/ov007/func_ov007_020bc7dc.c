@@ -3,6 +3,7 @@ extern void func_ov007_020c9110(void* p);
 extern void _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(void* model, void* bca, int frame);
 extern void func_0204531c(void* model, int x);
 
+/* c: the model record func_ov007_020bc02c updates; no class or header names it, so raw. */
 void func_ov007_020bc7dc(char* c)
 {
     void* model = *(void**)c;
