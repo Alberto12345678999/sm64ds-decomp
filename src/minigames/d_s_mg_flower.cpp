@@ -424,7 +424,7 @@ s32 dScMgFlower_c::Behavior() {
                             break;
                         }
                     }
-                    petalPos = (V2 *)((char *)petalPos + 0x20);
+                    petalPos = (V2 *)((char *)petalPos + sizeof(dScMgFlower_c::Petal));
                 }
                 if (self->mHeldPetal < 0) {
                     int freeIndex;

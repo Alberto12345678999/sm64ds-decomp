@@ -668,7 +668,7 @@ int daBombking_c::func_ov078_02124520()
     }
     player = this->mTalkingPlayer;
     if (player->GetTalkState() != -1) {
-        pp = (int *)((int)player + 0x5c);
+        pp = &player->mPosX;
         in.x = 0;
         in.y = 0;
         in.z = 0;
@@ -1070,7 +1070,7 @@ int daBombking_c::func_ov078_021250f8()
                 v[0].x = 0; v[0].y = 0; v[0].z = 0;
                 player = (Player *)this->ClosestPlayer();
                 if (player != 0) {
-                    int *q = (int *)((int)player + 0x5c);
+                    int *q = &player->mPosX;
                     v[1].x = q[0];
                     v[1].y = q[1];
                     v[1].z = q[2];
@@ -1091,7 +1091,7 @@ int daBombking_c::func_ov078_021250f8()
                     MulVec3Mat4x3(&in, &data_020a0e68, &out);
                 }
                 this->mSpawnedThrown[this->mSpawnSlot] = 1;
-                *(int *)((char *)target + 0xc8) = 0;
+                target->mCarryMatrix = 0;
             }
         }
     } else {
@@ -1322,7 +1322,7 @@ int daBombking_c::func_ov078_021258e4()
 int daBombking_c::func_ov078_02125950()
 {
     Player *target = this->mTalkingPlayer;
-    int *src = (int *)((int)target + 0x5c);
+    int *src = &target->mPosX;
     Vector3 v;
     int t = src[0];
     v.x = t;
@@ -1519,7 +1519,7 @@ void daBombking_c::func_ov078_02125de0()
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0xb000, -0x7000, -0x6000);
         Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, 0x4000, -0x1000, 0x2000);
         *(struct M12 *)this->mHoldMtx = data_020a0e68;
-        *(void **)((char *)actor + 0xc8) = this->mHoldMtx;
+        ((dActor_c *)actor)->mCarryMatrix = (struct Matrix4x3 *)this->mHoldMtx;
     }
 }
 
@@ -1571,7 +1571,7 @@ int daBombking_c::Render()
         int flags = mFlags;
         int flag = (flags & 0x4000) ? 1 : 0;
         if (flag != 0) {
-            if (*(int *)((char *)held + 0xc8) != 0) {
+            if (((dActor_c *)held)->mCarryMatrix != 0) {
                 func_ov078_02125f8c();
             }
         }
@@ -1609,7 +1609,7 @@ int daBombking_c::Behavior()
         int flag;
         if (held != 0) {
             flag = (mFlags & 0x4000) != 0;
-            if (flag != 0 && *(int *)((char *)held + 0xc8) != 0) {
+            if (flag != 0 && ((dActor_c *)held)->mCarryMatrix != 0) {
                 goto skip_de0;
             }
         }
