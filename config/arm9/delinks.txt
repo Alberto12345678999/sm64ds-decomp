@@ -714,19 +714,7 @@ src/engine/model/d_ext_common_model.cpp:
 
 src/engine/model/ModelAnim2.cpp:
     complete
-    .text start:0x02016254 end:0x02016320
-
-src/_ZN10ModelAnim2D0Ev.cpp:
-    complete
-    .text start:0x02016320 end:0x02016364
-
-src/_ZN10ModelAnim2D1Ev.cpp:
-    complete
-    .text start:0x02016364 end:0x020163a0
-
-src/_ZN10ModelAnim2C1Ev.cpp:
-    complete
-    .text start:0x020163a0 end:0x020163e0
+    .text start:0x02016254 end:0x020163e0
 
 src/engine/model/BlendModelAnim.cpp:
     complete
