@@ -42,9 +42,9 @@
  * - dScMgHanachan_c::Render, `Thing *base; &base[i]` and `slot++`
  *   on the 0x98 array, DIFF, 6 words. `char *arr += 0x98` stays.
  *   Behavior's `&base[i]` matches.
- * - BeginResult, `Wiggler *p = (Wiggler *)mWiggler; p->alive = 0; p++`
- *   and mHit / mPhaseTimer, DIFF. The measured raw loop stays; the phase
- *   assignment now uses its native member-pointer field.
+ * - BeginResult, `Wiggler *p = (Wiggler *)mWiggler; p->alive = 0; p++`,
+ *   DIFF. The loop steps a char * by 0x98 and clears mWiggler[0].alive
+ *   through it.
  * - Wiggler_StateMoveA, Wiggler_StateWait, Wiggler_StateMoveB read their
  *   fields through a `Wiggler *w = this` local; dropping the old char *
  *   local instead renumbers the pinned @NNN labels. Wiggler_UpdateSway reads its
@@ -53,6 +53,10 @@
  * - Wiggler_StepSegmentsA, Wiggler_StepSegmentsB, Wiggler_StepSegmentsC,
  *   Wiggler_MoveBounce, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
+ * - Wiggler_DrawField's seg[i] reads and Wiggler_StartPathB's seg[i] / ang[i]
+ *   loop stay raw; their member spellings renumber the pinned @NNN labels.
+ *   Wiggler_GetFlag reads the four colour fields at +0x74 through the B72
+ *   view.
  * - Wiggler_DrawField, OAM::Render(int, OamAttr*, int, int, int,
  *   int, int, int), does not typecheck (the sprite table is void*). The
  *   ROM symbol's scale parameter is Fix12<int>, which this tree cannot spell.

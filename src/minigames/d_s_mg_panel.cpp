@@ -17,22 +17,28 @@
  * dScMgPanel_c.h. Some helpers retain local layout views and raw offset accesses where native member loads change the matching build. The three empty handlers Shake_StateIdle, Banner_StateIdle and IntroCard_StateDone are members too; the state tables point at them.
  *
  * Leftover, each measured against the matching build:
- * - Particle_DrawAll, Particle_UpdateAll, Particle_Spawn,
- *   Particle_ClearAll: `PanelPart *p = (PanelPart *)(scene + 0x46a8)`
- *   with p->x / p->show / p++ DIFFs. The 0x18 byte step stays.
- * - Scroll_Update, Scroll_Start: `PanelScroll *` at 0x4694
- *   DIFFs. Scroll_Stop uses the native `on` member. Answer_StateFlipSolution and UpdateMoves keep mWidth and mDelay raw;
- *   `(u16 *)(int)&mDelay` then an s16 compare DIFFs by 25 words.
- * - Answer_StateFindSolution, Answer_StateResetBoard, Scene_StateGameOver,
- *   Scene_StateShowAnswer, Scene_StateRewind, Scene_StatePlay: mKind
- *   and mCount (and mFace, mDelay where used) DIFF as members.
- * - CheckSolved: the mFace / mGoal compare DIFFs as members.
- * - UpdateTouch, FlipAt, Panel_StartAll: mWidth
- *   DIFFs as a member; so does mKind in Panel_StartAll.
+ * - Particle_Spawn, Particle_ClearAll: the slot scan steps a byte pointer by
+ *   0x18 and reads mParticles[0] through it; Particle_Spawn's vx (0x46b0)
+ *   keeps its `(int)` launder (see the comment there).
+ * - Shake_StateLoseTry, Shake_StateShake: the timer sites relative to the
+ *   &mShake[index].timer pointer and the offset sites stay raw; their member
+ *   spellings move code. Banner_Show's mY[i] read does too.
+ * - Answer_StateFindSolution: the PanelInputView width view stays, and the
+ *   mKind, mFlipAt, mFace and mFastFlip index sites DIFF as members.
+ * - CheckSolved: the mFace / mGoal compare DIFFs as members; the mCheckDelay
+ *   decrement keeps its laundered volatile round trip.
+ * - FlipAt: the mFace flip through a computed byte pointer DIFFs as
+ *   &mFace[cell].
+ * - Scene_StateResult: the mKind pointer DIFFs as &mKind[i]; mResultTimer and
+ *   the 0x4ec6 counter go through laundered pointers, and mSolved through a
+ *   +0x4000 byte base.
+ * - Answer_StateResetBoard, UpdateMoves, Panel_StartAll, Scene_StateGameOver,
+ *   Scene_StateShowAnswer, Scene_StateRewind, Scene_StatePlay: the mKind
+ *   (and Answer_StateResetBoard's mFace) index sites are still raw; their
+ *   member spellings measure identical and were not converted in this pass.
+ * - HasDuplicateRows, ClearGrid, ResetRound: see the comments there (@NNN).
  * - DrawPanels keeps a local layout view: the native-member rewrite changes
- *   its body from 360 to 388 bytes. UpdateTouch uses native position members.
- * - Scene_StateResult and FlipAt's mFace flip still go through a computed byte
- *   pointer; native forms have not been tried.
+ *   its body from 360 to 388 bytes.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -541,9 +547,8 @@ void dScMgPanel_c::ReloadSlideDelay() {
 }
 
 // @symbol _ZN12dScMgPanel_c14TickSlideDelayEv
-// If the byte flag at self+0x4677 is set, decrement it. The read folds to add+ldrb
-// (offset > 0xfff), while the laundered RMW pool-loads the offset, matching the ROM's
-// predicated ldrbne/subne/strbne tail.
+// If mSlideLeft (self+0x4677) is set, decrement it: the ROM's predicated
+// ldrbne/subne/strbne tail.
 void dScMgPanel_c::TickSlideDelay() {
     char *scene = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)scene;
