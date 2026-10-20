@@ -547,7 +547,7 @@ extern "C" {}
    `operator delete`, which is why nothing below mentions a heap. Nobody writes
    D0; declaring the destructor is enough. */
 dScMgSmartball_c::~dScMgSmartball_c() {
-    __cxa_vec_cleanup(mArray4, 0x40, 0x24, (void *)SmartballObj_ElemDtor);
+    __cxa_vec_cleanup(mSparks, 0x40, 0x24, (void *)SmartballObj_ElemDtor);
     __cxa_vec_cleanup(mArray3, 0x10, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mArray2, 0x10, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mArray1, 5, 8, (void *)NullDestructor_0203d47c);
@@ -6721,7 +6721,7 @@ extern "C" void *dScMgSmartball_c_classInit(void) {
                        (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene->mArray3, 0x10, 8, (void *)func_0203d738,
                        (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mArray4, 0x40, 0x24, (void *)SmartballObj_ElemCtor,
+        __cxa_vec_ctor(scene->mSparks, 0x40, 0x24, (void *)SmartballObj_ElemCtor,
                        (void *)SmartballObj_ElemDtor);
     }
     return scene;
