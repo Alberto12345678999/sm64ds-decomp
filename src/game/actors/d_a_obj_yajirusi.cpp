@@ -38,9 +38,8 @@
  * Leftover: Kill copies dustPos memberwise. Vector3's destructor turns a
  *   whole-object assignment into ldm/stm, four instructions where the ROM
  *   stores six.
- * Leftover: mShadowMat stays a u8 at +0x348. A Matrix4x3 member would run
- *   Vector3's destructor from this class's D1. func_ov098_02137c8c stores
- *   the translation at +0x24 of that marker, not through Matrix4x3::t.
+ * Leftover: mShadowMat stays 0x30 raw bytes at +0x348. A Matrix4x3 member
+ *   would run Vector3's destructor from this class's D1.
  * Leftover: data_ov098_0213c380 / 0213c384 / 0213c388 are overlapping
  *   column views (model, KCL, CLPS, stride 0xc). One array would retarget
  *   those relocations. g_profile_YAJIRUSI_R/L live outside this TU.
@@ -157,7 +156,7 @@ int daObjYajirusi_c::Behavior()
     func_02039394((int *)&mMeshCollider, 0xc0000);
     func_020393a4((int *)&mMeshCollider, 0xe0000);
     _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        this, &mShadowModel, &mShadowMat, 0x10e000, 0x64000, 0x46000, 0xf);
+        this, &mShadowModel, mShadowMat, 0x10e000, 0x64000, 0x46000, 0xf);
     _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x600000, 0);
     return 1;
 }
@@ -244,10 +243,10 @@ void daObjYajirusi_c::Kill()
  * mPos >> 3. The address is the name. */
 void daObjYajirusi_c::func_ov098_02137c8c()
 {
-    Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
-    *(int *)((char *)&mShadowMat + 0x24) = mPosX >> 3;
-    *(int *)((char *)&mShadowMat + 0x28) = mPosY >> 3;
-    *(int *)((char *)&mShadowMat + 0x2c) = mPosZ >> 3;
+    Matrix4x3_FromRotationY(mShadowMat, mAngleY);
+    ((Matrix4x3 *)mShadowMat)->t.x = mPosX >> 3;
+    ((Matrix4x3 *)mShadowMat)->t.y = mPosY >> 3;
+    ((Matrix4x3 *)mShadowMat)->t.z = mPosZ >> 3;
 }
 
 // 0x02137c2c (0x60), 0x02137be0 (0x4c)
