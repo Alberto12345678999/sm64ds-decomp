@@ -1468,9 +1468,9 @@ void Camera_InitPresenterView(struct dCamera_c *self) {
 namespace s020c221c {
 extern "C" {
 int Mascot_Construct(char *t) {
-    func_02017acc(t, 0x205);
-    _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
-    _ZN14BlendModelAnimC1Ev(t + 0x10);
+    func_02017acc(MASCOT(t)->mModelFile, 0x205);
+    _ZN13SharedFilePtr9ConstructEj(MASCOT(t)->mWaitAnimFile, 0x206);
+    _ZN14BlendModelAnimC1Ev(MASCOT(t)->mModel);
     MASCOT(t)->mLooking = 0;
     return (int)t;
 }
@@ -1480,11 +1480,11 @@ int Mascot_Construct(char *t) {
 namespace s020c21e4 {
 extern "C" {
 int Mascot_Destruct(char *t) {
-    _ZN13SharedFilePtr7ReleaseEv(t);
-    _ZN13SharedFilePtr7ReleaseEv(t + 8);
-    _ZN14BlendModelAnimD1Ev(t + 0x10);
-    SharedFilePtr_Destruct_Anim(t + 8);
-    func_02017ab4(t);
+    _ZN13SharedFilePtr7ReleaseEv(MASCOT(t)->mModelFile);
+    _ZN13SharedFilePtr7ReleaseEv(MASCOT(t)->mWaitAnimFile);
+    _ZN14BlendModelAnimD1Ev(MASCOT(t)->mModel);
+    SharedFilePtr_Destruct_Anim(MASCOT(t)->mWaitAnimFile);
+    func_02017ab4(MASCOT(t)->mModelFile);
     return (int)t;
 }
 }
@@ -1494,12 +1494,12 @@ namespace s020c2154 {
 extern "C" {
 void Mascot_Load(char *c) {
     void *f;
-    f = _ZN5Model8LoadFileER13SharedFilePtr(c);
-    _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x10, f, 1, -1);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(c + 8);
+    f = _ZN5Model8LoadFileER13SharedFilePtr(MASCOT(c)->mModelFile);
+    _ZN9ModelBase7SetFileEP8BMD_Fileii(MASCOT(c)->mModel, f, 1, -1);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(MASCOT(c)->mWaitAnimFile);
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        c + 0x10, ((void *)MASCOT(c)->mWaitAnimFile[1]), 0, 0, 0x800, 0);
-    _ZN5Model12HideMaterialEii(c + 0x10, 7, 0);
+        MASCOT(c)->mModel, ((void *)MASCOT(c)->mWaitAnimFile[1]), 0, 0, 0x800, 0);
+    _ZN5Model12HideMaterialEii(MASCOT(c)->mModel, 7, 0);
     MASCOT(c)->mPos.x = 0xd000;
     MASCOT(c)->mPos.y = 0;
     MASCOT(c)->mPos.z = 0;
@@ -1583,6 +1583,7 @@ struct Vtbl {
     virtual void v3(); // offset 0xc
 };
 
+/* The bone matrices, read at bone 6 (0x120 = 6 * 0x30), the head. */
 struct Sub {
     char pad[0x120];
     Matrix4x3 m;
@@ -1592,14 +1593,12 @@ extern "C" void Mascot_UpdateMatrix(char *c) {
     Matrix4x3_FromTranslation(&data_020a0e68, MASCOT(c)->mPos.x, MASCOT(c)->mPos.y,
                               MASCOT(c)->mPos.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, MASCOT(c)->mRot[1]);
-    /* 0x2c is mModel's matrix (Model +0x1c) and 0x24 its bone-matrix pointer
-       (Model +0x14); mModel is a byte array here. */
-    *(Matrix4x3 *)(c + 0x2c) = data_020a0e68;
+    *(Matrix4x3 *)MASCOT(c)->mMatrix = data_020a0e68;
     ((Vtbl *)MASCOT(c)->mModel)->v3();
-    data_020a0e68 = (*(Sub **)(c + 0x24))->m;
+    data_020a0e68 = ((Sub *)MASCOT(c)->mBoneMatrices)->m;
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, MASCOT(c)->mHeadYaw);
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, MASCOT(c)->mHeadPitch);
-    (*(Sub **)(c + 0x24))->m = data_020a0e68;
+    ((Sub *)MASCOT(c)->mBoneMatrices)->m = data_020a0e68;
 }
 }
 
