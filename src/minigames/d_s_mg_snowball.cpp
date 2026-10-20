@@ -37,11 +37,11 @@
 // - dScMgSnowball_c_Construct stays free: it is the C2 construction body called by
 //   dScMgSnowball_c_classInit, below, after allocation;
 //   writing it as a real ctor changes codegen.
-// - The raw-pointer and view-struct puns (C_0212a224, C_02129d94,
-//   Obj_02129690, the AT()/ATS()/ATI() launders) are load-bearing: the
+// - The raw-pointer puns (the AT()/ATS()/ATI() launders) are load-bearing: the
 //   0xa000..0xc000 field offsets exceed the +/-0xfff store immediate, so the
-//   compiler's own pointer arithmetic has to stand in for them. Raw sites
-//   whose member spelling was tried and moved bytes carry a note saying so.
+//   compiler's own pointer arithmetic has to stand in for them. Sites
+//   whose member spelling was tried and moved bytes keep `pointer + offset`
+//   arithmetic, with the offset named through SNOW_OFF and a note saying so.
 // - The r4/r5/r7 locals in the render-setup helpers are named for the
 //   registers they color; renaming them needs the coloring comments updated
 //   in the same pass.
@@ -111,6 +111,9 @@ struct SPS {
 #define C2 ((char*)(void*)(int)(C1))
 #define ATS(off) AT(C1,off)
 #define ATI(off) AT(C2,off)
+/* Byte offset of a dScMgSnowball_c member, for the sites that must keep
+   `pointer + constant` arithmetic because every member spelling moved bytes. */
+#define SNOW_OFF(m) ((int)&((dScMgSnowball_c *)0)->m)
 #define atan2 _ZN4cstd5atan2E5Fix12IiES1_
 #define pnew _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE
 #define pfromid(id) ((int *)Particle::System::FromUniqueID(id))
@@ -245,15 +248,15 @@ void dScMgSnowball_c::SnowSpray_UpdateAll() {
     for (i = 0; i < 0x20; i++, rec += 0x24, pos += 0x24, vel += 0x24) {
         if (((dScMgSnowball_c *)rec)->mSprays[0].active) {
             if (((dScMgSnowball_c *)rec)->mSprays[0].life > 0) {
-                /* Raw: mSprays[0].life and .vz through the (int) launder. The
-                   member spelling drops the ROM's reload after each store. */
-                *(int *)(((int)rec + 0xba2c)) -= 1;
-                if (*(int *)(rec + 0xba2c) <= 0) {
+                /* mSprays[0].life and .vz keep `rec + offset` arithmetic (the
+                   (int) launder included): their member spellings move bytes. */
+                *(int *)(((int)rec + SNOW_OFF(mSprays[0].life))) -= 1;
+                if (*(int *)(rec + SNOW_OFF(mSprays[0].life)) <= 0) {
                     ((dScMgSnowball_c *)scene)->mSprays[i].active = 0;
                     return;
                 }
             }
-            *(int *)(((int)rec + 0xba28)) -= 0x200;
+            *(int *)(((int)rec + SNOW_OFF(mSprays[0].vz))) -= 0x200;
             AddVec3((Vec3 *)pos, (Vec3 *)vel, (Vec3 *)pos);
             if (((dScMgSnowball_c *)rec)->mSprays[0].vz < 0 &&
                 ((dScMgSnowball_c *)rec)->mSprays[0].z < 0) {
@@ -378,17 +381,18 @@ int dScMgSnowball_c::HitsBreakable(int *point) {
         if (((dScMgSnowball_c *)(scene + i))->mArray1Active[0] == 1) {
             char *prop = scene + i * 8;
             int dx, dy;
-            /* raw: mArray1[i] spellings here grow the function by 16 bytes */
-            if (point[0] >= *(int *)(prop + 0xacd8) + 0x10000)
+            /* mArray1 member spellings here grow the function by 8 bytes, so
+               these reads keep `prop + offset` */
+            if (point[0] >= *(int *)(prop + SNOW_OFF(mArray1[0][0])) + 0x10000)
                 continue;
-            if (point[0] < *(int *)(prop + 0xacd8) - 0x10000)
+            if (point[0] < *(int *)(prop + SNOW_OFF(mArray1[0][0])) - 0x10000)
                 continue;
-            if (point[1] >= *(int *)(prop + 0xacdc) + 0x8000)
+            if (point[1] >= *(int *)(prop + SNOW_OFF(mArray1[0][1])) + 0x8000)
                 continue;
-            if (point[1] < *(int *)(prop + 0xacdc) - 0x8000)
+            if (point[1] < *(int *)(prop + SNOW_OFF(mArray1[0][1])) - 0x8000)
                 continue;
-            dy = *(int *)(prop + 0xacdc) - point[1];
-            dx = *(int *)(prop + 0xacd8) - point[0];
+            dy = *(int *)(prop + SNOW_OFF(mArray1[0][1])) - point[1];
+            dx = *(int *)(prop + SNOW_OFF(mArray1[0][0])) - point[0];
             if (FX_MUL(dx, dx) + FX_MUL(dy, dy) / 4 > 0x100000)
                 continue;
             ((dScMgSnowball_c *)(scene + i))->mArray1Hit[0] = 1;
@@ -842,44 +846,45 @@ void dScMgSnowball_c::DrawCourseColumn(int col, int flag) {
         row = scene + (col << 1);
         off = masked << 7;
         n = 2;
-        /* raw: every mTileMap spelling of these reads shrinks the function */
+        /* every member spelling of these mTileMap reads shrinks the function,
+           so they keep the `row + offset` arithmetic, named through SNOW_OFF */
         do {
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v0 = tile, (char *)(scr + j), n);
 
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v1 = tile, (char *)(scr + j + 1), n);
 
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v2 = tile, (char *)(scr + j + 0x20), n);
 
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
             scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + off);
             MultiStore16(v3 = tile, (char *)(scr + j + 0x21), n);
 
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v4 = tile, (char *)(scr + j), n);
 
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v5 = tile, (char *)(scr + j + 1), n);
 
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v6 = tile, (char *)(scr + j + 0x20), n);
 
-            idx = *(u16 *)(row + 0x4f38);
+            idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
             scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
             MultiStore16(v7 = tile, (char *)(scr + j + 0x21), n);
@@ -899,42 +904,42 @@ void dScMgSnowball_c::DrawCourseColumn(int col, int flag) {
     n = 2;
     k842 = 0x842;
     do {
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + 0x800 + off);
         MultiStore16(w0 = tile, (char *)(scr + j), n);
 
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + 0x802 + off);
         MultiStore16(w1 = tile, (char *)(scr + j), n);
 
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + 0x840 + off);
         MultiStore16(w2 = tile, (char *)(scr + j), n);
 
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
         scr = (volatile u16 *)(_ZN2G212GetBG2ScrPtrEv() + k842 + off);
         MultiStore16(w3 = tile, (char *)(scr + j), n);
 
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x800 + off);
         MultiStore16(w4 = tile, (char *)(scr + j), n);
 
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x802 + off);
         MultiStore16(w5 = tile, (char *)(scr + j), n);
 
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x840 + off);
         MultiStore16(w6 = tile, (char *)(scr + j), n);
 
-        idx = *(u16 *)(row + 0x4f38);
+        idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
         scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + k842 + off);
         MultiStore16(w7 = tile, (char *)(scr + j), n);
@@ -1413,8 +1418,7 @@ s32 dScMgSnowball_c::Render() {
     int m[3];
     int vecArr[3];
 
-    /* raw: mAnimCounter through the long long launder; the member spelling moves bytes */
-    *(int *)((long long)(int)(c + 0xb9d8)) = *(int *)((long long)(int)(c + 0xb9d8)) + 1;
+    self->mAnimCounter++;
     if (self->mAnimCounter >= 0x20) {
         self->mAnimCounter = 0;
     }
@@ -1454,7 +1458,7 @@ s32 dScMgSnowball_c::Render() {
         char *p = c + i1;
         if (((dScMgSnowball_c *)p)->mArray1Active[0] == 1) {
             int t6 = self->mScrollY;
-            int t5 = *(int *)((long long)(int)(c + i1 * 8 + 0xacdc));
+            int t5 = *(int *)((long long)(int)&((dScMgSnowball_c *)(c + i1 * 8))->mArray1[0][1]);
             if (t5 >= t6 - 0x20000 && t5 < t6 + 0x1a0000 + (Mg_GetTopScreenYOffset() << 0xc)) {
                 if (mArray1Kind[i1] == 1) {
                     int cnt = self->mAnimCounter;
@@ -1476,7 +1480,7 @@ s32 dScMgSnowball_c::Render() {
     for (int i2 = 0; i2 < 0x80; i2++) {
         if (self->mArray2Active[i2] == 1) {
             int t7 = self->mScrollY;
-            int t6 = *(int *)((long long)(int)(c + i2 * 8 + 0xb5dc));
+            int t6 = *(int *)((long long)(int)&((dScMgSnowball_c *)(c + i2 * 8))->mArray2[0][1]);
             if (t6 >= t7 - 0x40000 && t6 < t7 + 0x1c0000 + (Mg_GetTopScreenYOffset() << 0xc)) {
                 switch (mArray2Kind[i2]) {
                 case 0:
@@ -1655,8 +1659,8 @@ s32 dScMgSnowball_c::Behavior() {
         }
 
         if (mVelX != 0 || mVelY != 0) {
-            if (Vec2_Len((int *)AT(c, 0xab60)) >= 0x8000 && func_0203d434((int *)ATS(0xab60)) != 0)
-                func_0203d630((int *)ATI(0xab60), 0x8000);
+            if (Vec2_Len(&mVelX) >= 0x8000 && func_0203d434((int *)ATS(SNOW_OFF(mVelX))) != 0)
+                func_0203d630((int *)ATI(SNOW_OFF(mVelX)), 0x8000);
         }
         UpdateSnowball();
 
@@ -1677,7 +1681,7 @@ s32 dScMgSnowball_c::Behavior() {
 
         if (mBallSize >= 0x37000)
             mBallSize = 0x37000;
-        Vec2_Sub(s.b, (int *)AT(C1, 0xab38), (int *)AT(c, 0xab50));
+        Vec2_Sub(s.b, (int *)AT(C1, SNOW_OFF(mPosX)), &mSoundPosX);
         gate = (Vec2_Len(s.b) >= 0x30000) ? 1 : 0;
         if ((int)((long long)gate) != 0) {
             mSoundPosX = mPosX;
@@ -1698,15 +1702,15 @@ s32 dScMgSnowball_c::Behavior() {
         if (mScrollY >= r4)
             mScrollY = r4;
 
-        if (Vec2_Len((int *)AT(c, 0xab60)) >= 0x10) {
+        if (Vec2_Len(&mVelX) >= 0x10) {
             short *hp;
-            v = Vec2_Len((int *)ATS(0xab60));
+            v = Vec2_Len((int *)ATS(SNOW_OFF(mVelX)));
             hp = (short *)&mRollAngle;
             q = __aeabi_idiv(v * 0x2710, mBallSize);
             *hp = *hp + (unsigned short)q;
             m = atan2(mVelX, mVelY);
             ApproachLinear(*(short *)&mHeadingAngle, (short)m,
-                           (short)(Vec2_Len((int *)ATI(0xab60)) / 16));
+                           (short)(Vec2_Len((int *)ATI(SNOW_OFF(mVelX))) / 16));
         }
 
         if (mAllWater == 1 || mTimeLeft <= 0) {
@@ -1757,14 +1761,14 @@ s32 dScMgSnowball_c::Behavior() {
         UpdateSnowball();
 
         if (mVelX != 0 || mVelY != 0) {
-            r7 = Vec2_Len((int *)AT(c, 0xab60));
+            r7 = Vec2_Len(&mVelX);
             if (mPosY < 0xc0000)
                 r7 -= 0x80;
             if (r7 < 0) {
                 mVelX = 0;
                 mVelY = 0;
-            } else if (func_0203d434((int *)ATS(0xab60)) != 0) {
-                func_0203d630((int *)ATI(0xab60), r7);
+            } else if (func_0203d434((int *)ATS(SNOW_OFF(mVelX))) != 0) {
+                func_0203d630((int *)ATI(SNOW_OFF(mVelX)), r7);
             }
         }
 
@@ -1775,9 +1779,9 @@ s32 dScMgSnowball_c::Behavior() {
         else
             mScreensSwapped = 1;
 
-        if (Vec2_Len((int *)AT(c, 0xab60)) >= 0x10) {
+        if (Vec2_Len(&mVelX) >= 0x10) {
             short *hp;
-            v = Vec2_Len((int *)ATS(0xab60));
+            v = Vec2_Len((int *)ATS(SNOW_OFF(mVelX)));
             hp = (short *)&mRollAngle;
             q = __aeabi_idiv(v * 0x2710, mBallSize);
             *hp = *hp + (unsigned short)q;
@@ -1796,11 +1800,11 @@ s32 dScMgSnowball_c::Behavior() {
     case 4:
         if (mCrashTimer < 0x3c) {
             if (mVelX != 0 || mVelY != 0) {
-                r4 = Vec2_Len((int *)AT(c, 0xab60)) + 0x100;
+                r4 = Vec2_Len(&mVelX) + 0x100;
                 if (r4 >= 0x8000)
                     r4 = 0x8000;
-                if (func_0203d434((int *)ATS(0xab60)) != 0)
-                    func_0203d630((int *)ATI(0xab60), r4);
+                if (func_0203d434((int *)ATS(SNOW_OFF(mVelX))) != 0)
+                    func_0203d630((int *)ATI(SNOW_OFF(mVelX)), r4);
             }
             mCrashTimer += 1;
         } else if (mCrashTimer == 0x3c) {
@@ -1841,9 +1845,9 @@ s32 dScMgSnowball_c::Behavior() {
             }
         }
 
-        if (Vec2_Len((int *)AT(c, 0xab60)) >= 0x10) {
+        if (Vec2_Len(&mVelX) >= 0x10) {
             short *hp;
-            v = Vec2_Len((int *)ATS(0xab60));
+            v = Vec2_Len((int *)ATS(SNOW_OFF(mVelX)));
             hp = (short *)&mRollAngle;
             q = __aeabi_idiv(v * 0x2710, mBallSize);
             *hp = *hp + (unsigned short)q;
@@ -2001,11 +2005,11 @@ s32 dScMgSnowball_c::InitResources() {
     InitialiseVramGlobals();
 
     ((dScMgSnowball_c *)r4)->mBallBmd = (BMD_File *)Ov004_LoadFileByPath(&data_ov006_021400fc);
-    /* Raw: the two mBallBmd reloads. As members they cost 8 bytes of
-       address setup the ROM does not have. */
-    Model::UpdateFileOffsets(**(BMD_File **)(r4 + 0xabf4));
+    /* The two mBallBmd reloads keep `r4 + offset`: as members they cost 8
+       bytes of address setup the ROM does not have. */
+    Model::UpdateFileOffsets(**(BMD_File **)(r4 + SNOW_OFF(mBallBmd)));
 
-    if (((dScMgSnowball_c *)r4)->mModel.SetFile(*(BMD_File **)(r4 + 0xabf4), 1, -1) == 0)
+    if (((dScMgSnowball_c *)r4)->mModel.SetFile(*(BMD_File **)(r4 + SNOW_OFF(mBallBmd)), 1, -1) == 0)
         return 0;
 
     *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | 1;
@@ -2057,6 +2061,8 @@ extern "C" {
 extern void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *m);
 extern void DrawOamSprite(void *a, int b, int c, void *m);
 
+/* Unused since Bit_DrawAll reads mBits directly. Kept: deleting these
+   anonymous structs renumbers the TU's @NNN constants. */
 typedef struct {  /* dScMgSnowball_bit, with the header's names */
     s32 x;        /* 0x00 */
     s32 y;        /* 0x04 */
@@ -2076,14 +2082,14 @@ typedef struct {
 }
 void dScMgSnowball_c::Bit_DrawAll() {
     void *self = (void *)this;
-    Obj_02129690 *a = (Obj_02129690 *)self;
+    dScMgSnowball_c *a = (dScMgSnowball_c *)self;
     int i;
     for (i = 0; i < 50; i++) {
-        if (a->arr[i].visible != 0) {
-            int bb = a->arr[i].x >> 12;
-            int cc = (a->arr[i].y - a->fixed) >> 12;
-            Mg_RenderSubSpriteMtx((void *)sSnowballBitSprites[a->arr[i].spriteA], bb, cc, 0);
-            DrawOamSprite((void *)sSnowballBitSprites[a->arr[i].spriteB], bb, cc, 0);
+        if (a->mBits[i].visible != 0) {
+            int bb = a->mBits[i].x >> 12;
+            int cc = (a->mBits[i].y - a->mScrollY) >> 12;
+            Mg_RenderSubSpriteMtx((void *)sSnowballBitSprites[a->mBits[i].spriteA], bb, cc, 0);
+            DrawOamSprite((void *)sSnowballBitSprites[a->mBits[i].spriteB], bb, cc, 0);
         }
     }
 }
@@ -2315,27 +2321,18 @@ void dScMgSnowball_c::BitA_StatePause(int i) {
 }
 
 // @symbol _ZN15dScMgSnowball_c12Bit_RunKindAEi
-struct C_02129d94;
 typedef void (dScMgSnowball_c::*PMF_02129d94)(int);
 struct Entry_02129d94 {
     PMF_02129d94 pmf;
 };
 extern Entry_02129d94 sSnowballBitAStateTable[];
 extern Entry_02129d94 sSnowballBitStateTable[];
-struct Elem_02129d94 { /* dScMgSnowball_bit from 0x1c, with the header's names */
-    unsigned char driftState;
-    unsigned char fallState;
-    char pad[0x22];
-};
-struct C_02129d94 {
-    char head[0xbeb0];
-    Elem_02129d94 arr[1];
-}; /* pun view over the scene; PMF receiver is the class. mBits[i] renumbers @NNN */
+/* Through a dScMgSnowball_c * copy of this: bare mBits[i] renumbers @NNN. */
 void dScMgSnowball_c::Bit_RunKindA(int i) {
-    C_02129d94 *c = (C_02129d94 *)this;
-    int idx0 = c->arr[i].driftState;
+    dScMgSnowball_c *c = (dScMgSnowball_c *)this;
+    int idx0 = c->mBits[i].driftState;
     (this->*sSnowballBitAStateTable[idx0].pmf)(i);
-    int idx1 = c->arr[i].fallState;
+    int idx1 = c->mBits[i].fallState;
     (this->*sSnowballBitStateTable[idx1].pmf)(i);
 }
 
@@ -2514,8 +2511,8 @@ void dScMgSnowball_c::Bit_UpdateAll() {
     i = 0;
     mask = 0x7fff;
     do {
-        /* mBits[0] fields at q. The y and kind stores stay raw: their member
-           spellings grow the function by 8 and 12 bytes. */
+        /* mBits[0] fields at q. The y and kind stores keep `q + offset`:
+           their member spellings grow the function by 8 and 12 bytes. */
         if (((dScMgSnowball_c *)q)->mBits[0].active != 0) {
             u8 fidx = ((dScMgSnowball_c *)q)->mBits[0].kind;
             (this->*sSnowballBitKindTable[fidx])(i);
@@ -2523,9 +2520,9 @@ void dScMgSnowball_c::Bit_UpdateAll() {
                 u32 rnd = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & mask;
                 rnd = (rnd << 5) >> 0xf;
                 ((dScMgSnowball_c *)q)->mBits[0].x = rnd << 0xf;
-                *(int *)(q + 0xbe98) = mScrollY - 0x8000;
+                *(int *)(q + SNOW_OFF(mBits[0].y)) = mScrollY - 0x8000;
                 ((dScMgSnowball_c *)q)->mBits[0].driftState = 0;
-                *(u8 *)(q + 0xbeaf) = 0;
+                *(u8 *)(q + SNOW_OFF(mBits[0].kind)) = 0;
                 ((dScMgSnowball_c *)q)->mBits[0].fallState = 0;
             }
         }
@@ -2588,9 +2585,9 @@ void dScMgSnowball_c::Bit_InitAll() {
         ((dScMgSnowball_c *)p)->mBits[0].spriteA = (char)(((r >> 16) & 0x7fff) * 5 >> 0xf);
 
         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        /* raw: this re-read of mBits[0].spriteA keeps the split p + 0xb000
-           base; every member spelling grows the function by 12 bytes */
-        v = *(unsigned char *)(p + 0xb000 + 0xeb3) + ((((r >> 16) & 0x7fff) << 2) >> 0xf) + 1;
+        /* this re-read of mBits[0].spriteA keeps `p + offset`: every member
+           spelling grows the function by 12 bytes */
+        v = *(unsigned char *)(p + SNOW_OFF(mBits[0].spriteA)) + ((((r >> 16) & 0x7fff) << 2) >> 0xf) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
