@@ -3665,7 +3665,7 @@ int daDemo_c::func_ov002_020f6448(unsigned char *arg1)
     p = (char*)_Znwj(0x518);
     if (p)
         _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev(p + 0x200);
-    this->mStaffRoll = p;
+    this->mStaffRoll = (StaffRoll *)p;
     if (this->mStaffRoll == 0)
         return 0;
     func_ov002_020f5fe4((char *)this->mStaffRoll);
