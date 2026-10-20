@@ -426,5 +426,48 @@ class ObjectLocalDataRenames(unittest.TestCase):
         self.assertEqual(self.check()[0]['blindWords'], 1)
 
 
+class UndefinedImportAliases(unittest.TestCase):
+    """A manifest alias is the address romdata compares, not a second spelling."""
+
+    def setUp(self):
+        self.saved = RDC._alias_by_source
+        self.names = {"_ZN5Model9DoSetFileEPcii": ("arm9", 0x02016bf8)}
+        RDC._alias_by_source = {
+            "src/game/actors/d_a_demo.cpp": [{
+                "undefined_symbol_aliases": [{
+                    "symbol": "_ZN17dExtSimpleModel_c9DoSetFileEPcii",
+                    "canonical_symbol": "_ZN5Model9DoSetFileEPcii",
+                    "canonical_module": "arm9",
+                    "canonical_address": "0x02016bf8",
+                }],
+            }],
+        }
+
+    def tearDown(self):
+        RDC._alias_by_source = self.saved
+
+    def test_alias_resolves_to_the_canonical_address(self):
+        merged = RDC._with_undefined_aliases("src/game/actors/d_a_demo.cpp", self.names)
+        self.assertEqual(merged["_ZN17dExtSimpleModel_c9DoSetFileEPcii"],
+                         ("arm9", 0x02016bf8))
+        self.assertNotIn("_ZN17dExtSimpleModel_c9DoSetFileEPcii", self.names)
+
+    def test_other_sources_are_unchanged(self):
+        self.assertIs(RDC._with_undefined_aliases("src/other.cpp", self.names), self.names)
+
+    def test_disagreement_with_symbols_txt_is_a_refusal(self):
+        self.names["_ZN17dExtSimpleModel_c9DoSetFileEPcii"] = ("arm9", 0x1)
+        with self.assertRaises(ValueError) as caught:
+            RDC._with_undefined_aliases("src/game/actors/d_a_demo.cpp", self.names)
+        self.assertIn("already resolves elsewhere", str(caught.exception))
+
+    def test_a_canonical_that_misses_its_address_is_a_refusal(self):
+        RDC._alias_by_source["src/game/actors/d_a_demo.cpp"][0][
+            "undefined_symbol_aliases"][0]["canonical_address"] = "0x1"
+        with self.assertRaises(ValueError) as caught:
+            RDC._with_undefined_aliases("src/game/actors/d_a_demo.cpp", self.names)
+        self.assertIn("does not resolve exactly", str(caught.exception))
+
+
 if __name__ == "__main__":
     unittest.main()

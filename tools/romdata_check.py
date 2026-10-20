@@ -92,6 +92,8 @@ _names_lock = threading.Lock()
 _names = None
 _manifest_lock = threading.Lock()
 _source_manifests = None
+_alias_lock = threading.Lock()
+_alias_by_source = None
 
 
 def _rename_manifest(rel):
@@ -111,6 +113,83 @@ def _rename_manifest(rel):
     return entries[0] if entries else None
 
 
+def _undefined_alias_entries():
+    """source path -> manifests that alias an undefined import to a ROM name.
+
+    The production link rewrites those imports
+    (`tubuild.apply_undefined_symbol_alias_policy`). A vtable slot that still
+    carries the compiler's spelling has no `symbols.txt` home, so the compare
+    leaves it blind and the symbol can never be VERIFIED. Resolving the alias
+    here is the same address the linker would write.
+    """
+    global _alias_by_source
+    with _alias_lock:
+        if _alias_by_source is None:
+            by_source = collections.defaultdict(list)
+            for entry in TUM.load()["entries"]:
+                if not entry.get("undefined_symbol_aliases"):
+                    continue
+                source = entry.get("promoted_source") or entry.get("source")
+                if source:
+                    by_source[str(source).replace("\\", "/")].append(entry)
+            _alias_by_source = dict(by_source)
+        return _alias_by_source
+
+
+def _with_undefined_aliases(rel, names):
+    """Name index plus this source's admitted undefined-import aliases.
+
+    A name already in `names` is left alone: `symbols.txt` wins, and an alias
+    that disagrees with it is a refusal rather than a second opinion. The
+    returned dict is a copy only when an alias is added, so the shared index
+    is never mutated.
+    """
+    entries = _undefined_alias_entries().get(str(rel).replace("\\", "/"), [])
+    if not entries:
+        return names
+    if len(entries) > 1:
+        raise ValueError(f"ambiguous undefined-symbol alias manifests for {rel}")
+    extra = {}
+    reasons = []
+    for ordinal, row in enumerate(entries[0].get("undefined_symbol_aliases") or []):
+        label = f"undefined_symbol_aliases[{ordinal}]"
+        if not isinstance(row, dict):
+            reasons.append(f"{label} is not an object")
+            continue
+        old, new = row.get("symbol"), row.get("canonical_symbol")
+        module, address = row.get("canonical_module"), row.get("canonical_address")
+        if not old or not new or module in (None, "") or address in (None, ""):
+            reasons.append(f"{label} is missing a symbol, canonical name, module, or address")
+            continue
+        try:
+            address = int(str(address), 0)
+        except (TypeError, ValueError):
+            reasons.append(f"{label} has an invalid canonical_address")
+            continue
+        module = RL.normalize_module(str(module))
+        resolved = names.get(new) or RA.resolve_candidate(new, names)
+        if (resolved is None or resolved[0] is None
+                or RL.normalize_module(resolved[0]) != module or resolved[1] != address):
+            reasons.append(f"{label} canonical symbol {new} does not resolve exactly "
+                           f"to {module}:0x{address:08x}")
+            continue
+        if old in extra:
+            reasons.append(f"duplicate undefined alias source {old}")
+            continue
+        current = names.get(old)
+        if current is not None and current != (module, address):
+            reasons.append(f"{label} source {old} already resolves elsewhere")
+            continue
+        extra[old] = (module, address)
+    if reasons:
+        raise ValueError("undefined symbol alias refused: " + "; ".join(reasons))
+    if not extra:
+        return names
+    merged = dict(names)
+    merged.update(extra)
+    return merged
+
+
 def _measurement_object(raw, rel, names):
     """Use production's validated definition names on an in-memory audit copy.
 
@@ -118,11 +197,14 @@ def _measurement_object(raw, rel, names):
     global name-index hit is not evidence that two such definitions are the same
     object. The source's manifest and the shared rename admission rule establish
     that identity; a refused policy produces an explicit measurement error.
-    Nothing is written back to the compiler output or supplied to the linker.
+    Undefined imports admitted by `undefined_symbol_aliases` resolve to those
+    same canonical addresses, so a vtable slot is compared at the address the
+    linker writes. Nothing is written back to the compiler output or supplied
+    to the linker.
     """
     entry = _rename_manifest(rel)
     if entry is None:
-        return raw, names
+        return raw, _with_undefined_aliases(rel, names)
     mapping, _requested, reasons = RA.validated_defined_symbol_rename_plan(raw, entry)
     if reasons:
         raise ValueError("data rename policy refused: " + "; ".join(reasons))
@@ -160,7 +242,7 @@ def _measurement_object(raw, rel, names):
                     and int(str(rows[0].get("address", "-1")), 0) == home[0]
                     and int(str(rows[0].get("size", "-1")), 0) == symbol["st_size"]):
                 contextual[symbol.name] = (module, home[0])
-    return renamed, contextual
+    return renamed, _with_undefined_aliases(rel, contextual)
 
 
 def name_index():
