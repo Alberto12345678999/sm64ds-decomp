@@ -117,7 +117,7 @@ void func_02069994(char *arg0)
 
     case 0x1D:
         if (*(u16 *)(arg0 + 2) == 0) {
-            func_0206879c(7, func_020620b0((void*) func_02069994, (char *)&WM_WORK->parentParam));
+            func_0206879c(7, func_020620b0((void *)func_02069994, (char *)&WM_WORK->parentParam));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -155,12 +155,10 @@ void func_02069994(char *arg0)
                         if (WM_WORK->mpContinuous != 0) {
                             v = 0;
                         }
-                        func_0206879c(0xE, func_020625fc((void*) func_02069994,
-                            (int)WM_WORK->recvBuf,
-                            WM_WORK->recvBufSize,
-                            (int)WM_WORK->sendBuf,
-                            WM_WORK->sendBufSize,
-                            (u16) v, 0, 0, 0, 1, 1));
+                        func_0206879c(0xE,
+                                      func_020625fc((void *)func_02069994, (int)WM_WORK->recvBuf,
+                                                    WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
+                                                    WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
                         return;
                     }
                 }

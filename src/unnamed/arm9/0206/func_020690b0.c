@@ -147,22 +147,22 @@ typedef struct {
 /* WMScanParam (data_020a9dc0), WM_StartScan's argument; func_0206a29c steps
  * its channel through the allowed-channel mask. */
 typedef struct {
-    WmBssDesc *scanBuf;  /* 0x0 */
-    u16 channel;         /* 0x4 */
-    u16 maxChannelTime;  /* 0x6 */
-    u16 bssid[3];        /* 0x8: SDK u8[6]; all 0xffff = any parent */
+    WmBssDesc *scanBuf; /* 0x0 */
+    u16 channel;        /* 0x4 */
+    u16 maxChannelTime; /* 0x6 */
+    u16 bssid[3];       /* 0x8: SDK u8[6]; all 0xffff = any parent */
 } WmScanParam;
 
 #define SCAN_PARAM ((WmScanParam *)data_020a9dc0)
 
 /* Leading fields of WMStartConnectCallback. */
 typedef struct {
-    u16 apiid;     /* 0x0 */
-    u16 errcode;   /* 0x2 */
-    u16 wlCmdID;   /* 0x4 */
-    u16 wlResult;  /* 0x6 */
-    u16 state;     /* 0x8 */
-    u16 aid;       /* 0xa */
+    u16 apiid;    /* 0x0 */
+    u16 errcode;  /* 0x2 */
+    u16 wlCmdID;  /* 0x4 */
+    u16 wlResult; /* 0x6 */
+    u16 state;    /* 0x8 */
+    u16 aid;      /* 0xa */
 } WmStartConnectCallback;
 
 /* The 0x80-byte WMGameInfo, copied as one struct. */
@@ -237,8 +237,10 @@ void func_020690b0(char *arg0)
     case 0x1d:
         if (*(u16 *)(arg0 + 2) == 0) {
             SCAN_PARAM->scanBuf = &w->scanBuf;
-            if (SCAN_PARAM->channel == 0) SCAN_PARAM->channel = 1;
-            if (SCAN_PARAM->maxChannelTime == 0) SCAN_PARAM->maxChannelTime = 0xc8;
+            if (SCAN_PARAM->channel == 0)
+                SCAN_PARAM->channel = 1;
+            if (SCAN_PARAM->maxChannelTime == 0)
+                SCAN_PARAM->maxChannelTime = 0xc8;
             SCAN_PARAM->bssid[0] = 0xffff;
             SCAN_PARAM->bssid[1] = 0xffff;
             SCAN_PARAM->bssid[2] = 0xffff;
@@ -258,14 +260,16 @@ void func_020690b0(char *arg0)
             case 5:
                 RecordScannedParent(w, arg0);
                 DISPATCH(4, arg0);
-                if (w->scanContinue == 0) return;
+                if (w->scanContinue == 0)
+                    return;
                 if (w->scanNextChannel != 0 && func_0206a29c(data_020a9dc0) == 0)
                     func_0206879c(2, func_02068a74());
                 func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
                 return;
             case 4:
                 DISPATCH(5, arg0);
-                if (w->scanContinue == 0) return;
+                if (w->scanContinue == 0)
+                    return;
                 if (w->scanNextChannel != 0 && func_0206a29c(data_020a9dc0) == 0)
                     func_0206879c(2, func_02068a74());
                 func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
@@ -281,8 +285,7 @@ void func_020690b0(char *arg0)
 
     case 0xb:
         if (*(u16 *)(arg0 + 2) == 0) {
-            func_0206879c(0xc, func_02061e38((void *)func_020690b0,
-                                             w->connectBssDesc, 0));
+            func_0206879c(0xc, func_02061e38((void *)func_020690b0, w->connectBssDesc, 0));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -298,13 +301,9 @@ void func_020690b0(char *arg0)
                 DISPATCH(6, arg0);
                 w->childBitmap = 1;
                 if (func_02061c88(1, (void *)func_02069918, 0) != 0) return;
-                func_0206879c(0xe, func_020625fc((void *)func_020690b0,
-                                                 (int)w->recvBuf,
-                                                 w->recvBufSize,
-                                                 (int)w->sendBuf,
-                                                 w->sendBufSize,
-                                                 (u16)(w->mpContinuous == 0),
-                                                 0, 0, 0, 1, 1));
+                func_0206879c(0xe, func_020625fc((void *)func_020690b0, (int)w->recvBuf,
+                                                 w->recvBufSize, (int)w->sendBuf, w->sendBufSize,
+                                                 (u16)(w->mpContinuous == 0), 0, 0, 0, 1, 1));
                 return;
             case 9:
                 DISPATCH(0xa, arg0);

@@ -102,9 +102,7 @@ int func_02068d08(void)
     *(short *)(data_020a9db4 + 0x1e48) = 0; /* in WmWork.pad_1e2e: no reader here */
     func_02068834(0xa);
     do {
-        ret = func_02062240((int)WM_WORK->wmSysBuf,
-                            (int)WM_WORK->stateCallback,
-                            data_020a9db0);
+        ret = func_02062240((int)WM_WORK->wmSysBuf, (int)WM_WORK->stateCallback, data_020a9db0);
     } while (ret == 4);
     if (ret != 2) return 8;
     func_02061ce4((int)WM_WORK->stateCallback);
