@@ -289,7 +289,7 @@ void daCoin_c::func_ov002_020b1384()
 /* Shared per-frame tail of the movement handlers. Counts down the no-collision
  * timer and the disappear timer (the coin is killed when the latter reaches 1),
  * moves the coin, and runs the mesh collision -- the continuous variant when
- * the speed vector (unk_0a4, mVertSpeed, unk_0ac) is longer than the collision
+ * the speed vector (mSpeedX, mVertSpeed, mSpeedZ) is longer than the collision
  * radius. Landing on a floor with surface flag 0x20 while falling makes a big
  * splash and leaves the coin sinking slowly (gravity -0x800, terminal velocity
  * -0x5000). */
@@ -302,7 +302,7 @@ void daCoin_c::func_ov002_020b13e0()
         return;
     }
     UpdatePos(&mdCc_c);
-    if (LenVec3(&unk_0a4) > mWithMeshClsn.mRadius)
+    if (LenVec3(&mSpeedX) > mWithMeshClsn.mRadius)
         dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     else
         dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
@@ -694,15 +694,15 @@ void daCoin_c::func_ov002_020b1cc0()
 
     if (normal.x != 0 || normal.z != 0) {
         int slide = data_ov002_020ff078[floorClass];
-        int *velocity = (int *)((int)&unk_0a4);
+        int *velocity = (int *)((int)&mSpeedX);
         *velocity += normal.x * slide;
-        *(int *)((int)&unk_0ac) += normal.z * slide;
+        *(int *)((int)&mSpeedZ) += normal.z * slide;
         mHorzSpeed = Vec3_HorzLen(velocity);
         if (mHorzSpeed > 0x1c000) {
             mHorzSpeed = 0x1c000;
             UpdatePosWithHorzSpeedAndAng();
         }
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(unk_0a4, unk_0ac);
+        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(mSpeedX, mSpeedZ);
     }
 
     if (mWithMeshClsn.JustHitGround() != 0)
@@ -711,8 +711,8 @@ void daCoin_c::func_ov002_020b1cc0()
         return;
 
     if (normal.y != 0) {
-        int dotX = FX_MUL(normal.x, unk_0a4);
-        int dotZ = FX_MUL(normal.z, unk_0ac);
+        int dotX = FX_MUL(normal.x, mSpeedX);
+        int dotZ = FX_MUL(normal.z, mSpeedZ);
         mVertSpeed = -(_ZN4cstd4fdivEii(dotX + dotZ, normal.y) + 0x8000);
     }
 

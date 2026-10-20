@@ -18,9 +18,6 @@
  *   TouchesWater and cstd::fdiv are the const method and the divide.
  * - holder->mPosX/Y/Z in place of the word triple changes EnterState7 and
  *   UpdateState6.
- * - unk_0a4 / unk_0ac stay. They are the base's world-velocity X/Z beside
- *   mVertSpeed; dActor_c.h still spells them unk_, and this TU multiplies
- *   them by the floor normal.
  * - UpdateState0 keeps mPhase++. mPhase = (u8)(mPhase + 1) is 0x144
  *   against 0x158, and mSpinAngleY += 0xc00 is four words off.
  * - ApproachLinear2 takes &mState as int* because mState, mPhase and
@@ -349,9 +346,9 @@ void daGmch_c::ApplySlopeToVertSpeed(void *clsn)
     if (((dBgCh_Actr *)clsn)->IsOnGround()) {
         ((dBgPi *)((dBgCh_Actr *)clsn)->GetFloorResult())->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            /* unk_0a4 / unk_0ac: world velocity X/Z next to mVertSpeed. */
-            s32 velX = unk_0a4;
-            s32 velZ = unk_0ac;
+            /* mSpeedX / mSpeedZ: world velocity X/Z next to mVertSpeed. */
+            s32 velX = mSpeedX;
+            s32 velZ = mSpeedZ;
             int termX = FX_MUL(floorNormal.x, velX);
             int termZ = FX_MUL(floorNormal.z, velZ);
             int dot = termX + termZ;

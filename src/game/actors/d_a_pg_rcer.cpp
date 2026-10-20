@@ -602,8 +602,8 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            int x = FX_MUL(floorNormal.x, self->unk_0a4);
-            int y = FX_MUL(floorNormal.z, self->unk_0ac);
+            int x = FX_MUL(floorNormal.x, self->mSpeedX);
+            int y = FX_MUL(floorNormal.z, self->mSpeedZ);
             self->mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
             if (self->mVertSpeed > 0)
                 self->mVertSpeed = 0;

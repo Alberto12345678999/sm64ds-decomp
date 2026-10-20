@@ -200,7 +200,7 @@ typedef char daDoor_c_size_must_be_0x148[sizeof(daDoor_c) == 0x148 ? 1 : -1];
 
    Every field daDoor_c.h named has a home: 0x05c/0x060/0x064 are
    base.mPosX/Y/Z, 0x080/0x084/0x088 base.mScaleX/Y/Z, 0x08c/0x08e/0x090
-   base.mAngleX/Y/Z, 0x0a4/0x0a8/0x0ac base.unk_0a4/mVertSpeed/unk_0ac,
+   base.mAngleX/Y/Z, 0x0a4/0x0a8/0x0ac base.mSpeedX/mVertSpeed/mSpeedZ,
    0x0e8 mModel.data.transforms, and mState, mKeyModelIdx and mTimer are
    this class's own. */
 struct daDoor_c {

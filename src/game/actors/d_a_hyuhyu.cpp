@@ -221,16 +221,16 @@ int daHyuhyu_c::Behavior()
     mAngleY = mPrevAngleY;
     mAngleZ = mPrevAngleZ;
     /* Fall, no faster than mTerminalVelocity. The cartridge reloads and
-       rewrites unk_0ac here too (a whole-vector store, most likely); a plain
+       rewrites mSpeedZ here too (a whole-vector store, most likely); a plain
        clamp misses. */
     {
         int speed = mVertSpeed + mVertAccel;
         int limit = mTerminalVelocity;
         if (speed >= limit)
             limit = speed;
-        int tmp = unk_0ac;
+        int tmp = mSpeedZ;
         mVertSpeed = limit;
-        unk_0ac = tmp;
+        mSpeedZ = tmp;
     }
     UpdatePosWithOnlySpeed(&mdCcAc_c);
     func_ov091_021339fc();
@@ -429,7 +429,7 @@ int daHyuhyu_c::func_ov091_02133c6c()
     this->mPrevAngleX -= 0x80;
     Matrix4x3_FromRotationY(&data_020a0e68, this->mPrevAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, this->mPrevAngleX);
-    MulVec3Mat4x3(&fwd, &data_020a0e68, (Vector3 *)&this->unk_0a4);
+    MulVec3Mat4x3(&fwd, &data_020a0e68, (Vector3 *)&this->mSpeedX);
     if ((u16)this->mStateTimer == 0
         || this->mWithMeshClsn.IsOnGround() != 0
         || this->mWithMeshClsn.IsOnWall() != 0
@@ -525,9 +525,9 @@ void daHyuhyu_c::func_ov091_021339fc()
                 if (cap == 0)
                     return;
                 cap->mHorzSpeed = 0x32000;
-                cap->unk_0a4 = 0;
+                cap->mSpeedX = 0;
                 cap->mVertSpeed = 0x14000;
-                cap->unk_0ac = 0;
+                cap->mSpeedZ = 0;
             }
         }
     }

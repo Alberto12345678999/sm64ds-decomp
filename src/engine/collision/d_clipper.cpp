@@ -14,8 +14,9 @@
  *
  * leftovers:
  * - ClipSphere and TransformAndClip are names inferred from their operations.
- * - ClipSphere's opt_propagation off pair and its materialized 0/1
- *   outside/ok locals are the matched form; dClipper_EmitDeletingDestructor/EmitDestructor
+ * - ClipSphere's opt_propagation off pair, its materialized 0/1
+ *   outside/insidePlane locals and its unsigned re-reads of viewPos.y/z are
+ *   the matched form; dClipper_EmitDeletingDestructor/EmitDestructor
  *   are uncalled stubs that force D0 then D1 out of the inline
  *   destructor (ROM order).
  */
@@ -26,6 +27,8 @@
 #include "math/Matrix.h"
 #include "nitro/fx/fx.h"
 
+/* local extern: no non-generated header declares these vector helpers, the
+   cstd fdiv, or the sine/cosine pair table. */
 extern "C" {
 void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *res);
 void CrossVec3(Vector3 *a, Vector3 *b, Vector3 *result);
@@ -36,8 +39,7 @@ extern short data_02082214[];
 
 /* Signed distance of (x, y, z) from a frustum side plane, each product rounded to Fix12. */
 static inline int PlaneDistance(const ClipperPlane &n, long long x, long long y, long long z) {
-    return (int)((z * n.z + 0x800) >> 12) +
-           ((int)((x * n.x + 0x800) >> 12) + (int)((y * n.y + 0x800) >> 12));
+    return FX_MUL(z, n.z) + (FX_MUL(x, n.x) + FX_MUL(y, n.y));
 }
 
 #pragma opt_propagation off
@@ -73,6 +75,8 @@ int dClipper::ClipSphere(Vector3 &viewPos, Fix12i radius, u8 *cachedPlane) {
             outside = wideMargin < firstPlaneDistance;
             if (outside == 0) {
                 planeIndex = (firstPlane + 1) & 3;
+                /* Re-read through an unsigned view: a plain `y = viewPos.y`
+                   reorders the loop's register web (57 words). */
                 y = (int)*(unsigned int *)&viewPos.y;
                 z = (int)*(unsigned int *)&viewPos.z;
                 zero = 0;
