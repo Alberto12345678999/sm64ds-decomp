@@ -17,20 +17,24 @@ extern void Vec3_RotateYAndTranslate(s32* out, s32* in, s16 ang, s32* src);
 extern s32 Math_Function_0203b14c(s32* p, s32 tgt, s32 rate, s32 lim, s32 step);
 extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(s32* v, s32* t, s32 rate);
 
-#define L0(p) ((s32)(p))
-#define L1(p) ((s32)(p))
-#define L2(p) ((s32)((p) | 0LL))
-#define L3(p) ((s32)(p))
-
 /* File-local views (the class headers are C++): only the fields this state
- * touches whose role is shown. Camera names follow include/dCamera_c.h; the
- * player's follow include/dActor_c.h. The yaw words 0x180..0x184 and 0x19e,
- * the flag 0x1a0, and 0x144 and 0x164 stay raw: this function is their only
- * reader here, and it does not settle what each one is. */
+ * touches. Camera names follow include/dCamera_c.h; the player's follow
+ * include/dActor_c.h. */
 typedef struct {
     u8 pad_000[0x8e];
     s16 mAngleY; /* 0x08e */
 } PlayerView;
+
+/* GetViewObj's 0xe-byte record, as d_camera.cpp's CamViewObj reads it. A
+   type-2 object supplies a yaw at +0xa; byte 1 zero means jump to it at once
+   (here: snap mEasedAngleY and set mFlags bit 4, which places pos directly). */
+typedef struct {
+    u8 type;      /* 0x0 */
+    u8 p1;        /* 0x1 */
+    s16 x, y, z;  /* 0x2 */
+    u8 pad_8[2];
+    s16 angleY;   /* 0xa */
+} CamViewObj;
 
 typedef struct {
     u8 pad_000[0x80];
@@ -40,20 +44,32 @@ typedef struct {
     struct Vector3 mTargetPos; /* 0x098 */
     u8 pad_0a4[0x6c];
     PlayerView *mTargetPlayer; /* 0x110 */
-    u8 pad_114[0x40];
+    u8 pad_114[0x30];
+    char *mViewObj; /* 0x144 */
+    u8 pad_148[0xc];
     u32 mFlags; /* 0x154 */
-    u8 pad_158[0x24];
+    u8 pad_158[0xc];
+    u32 mTurnButtons; /* 0x164 */
+    u8 pad_168[0x14];
     s16 mAngleY; /* 0x17c */
-    u8 pad_17e[0x18];
+    u8 pad_17e[0x2];
+    s16 mEasedAngleY;     /* 0x180 */
+    s16 mBaseAngleY;      /* 0x182 */
+    s16 mBaseAngleOffset; /* 0x184 */
+    u8 pad_186[0x10];
     /* A countdown the states arm and run down: here the delay before a held
        turn input repeats. */
     u16 mStateTimer; /* 0x196 */
+    u8 pad_198[0x6];
+    s16 mBehindAngleY; /* 0x19e */
+    u16 mRecentering;  /* 0x1a0 */
 } CameraView;
 
 #pragma opt_common_subs off
 void func_0200bb28(char* c, char* a1)
 {
     CameraView *cam = (CameraView *)c;
+    CamViewObj *view = (CamViewObj *)a1;
     s32 flag4000;
     s32 sp_speed;
     struct Vector3 vsrc;
@@ -68,30 +84,30 @@ void func_0200bb28(char* c, char* a1)
     m = gActivePlayerSlot * 0x18;
     flag4000 = *(u16*)((char*)data_0209f49c + m) & 0x4000;
 
-    if (flag4000 != 0 || *(u16*)(c + 0x1a0) != 0) {
+    if (flag4000 != 0 || cam->mRecentering != 0) {
         if (*(u16*)((char*)data_0209f49e + m) & 0x4000) {
             func_02012790(0x1a);
         }
         if (flag4000 != 0) {
-            *(s16 *)(c + 0x19e) = (s16)(cam->mTargetPlayer->mAngleY + 0x8000);
+            cam->mBehindAngleY = (s16)(cam->mTargetPlayer->mAngleY + 0x8000);
         }
-        *(u16*)(c + 0x1a0) = (ApproachAngle((s16*)(c + 0x180), *(s16*)(c + 0x19e), 4, 0x400, 0x100) != 0);
-        *(s16*)(c + 0x184) = (s16)(*(s16*)(c + 0x180) - *(s16*)(c + 0x182));
-        *(s16*)(c + 0x184) = (s16)((*(s16*)(c + 0x184) + 0x1000) & -0x2000);
+        cam->mRecentering = (ApproachAngle(&cam->mEasedAngleY, cam->mBehindAngleY, 4, 0x400, 0x100) != 0);
+        cam->mBaseAngleOffset = (s16)(cam->mEasedAngleY - cam->mBaseAngleY);
+        cam->mBaseAngleOffset = (s16)((cam->mBaseAngleOffset + 0x1000) & -0x2000);
         cam->mFlags |= 0x60;
     } else {
         if (a1 != 0) {
-            if (*(u8*)a1 == 2 && a1 != *(char**)(c + 0x144)) {
-                *(s16*)(c + 0x182) = (s16)(*(s16*)(a1 + 0xa) + 0x8000);
-                if (*(u8*)(a1 + 1) == 0) {
-                    *(s16*)(c + 0x180) = *(s16*)(c + 0x182);
+            if (view->type == 2 && a1 != cam->mViewObj) {
+                cam->mBaseAngleY = (s16)(view->angleY + 0x8000);
+                if (view->p1 == 0) {
+                    cam->mEasedAngleY = cam->mBaseAngleY;
                     cam->mFlags |= 4;
                 }
-                *(s16*)(c + 0x184) = 0;
-                *(char**)(c + 0x144) = a1;
+                cam->mBaseAngleOffset = 0;
+                cam->mViewObj = a1;
             }
         } else {
-            *(char**)(c + 0x144) = 0;
+            cam->mViewObj = 0;
         }
         if (!(cam->mFlags & 0x60)) {
             s32 m2;
@@ -102,25 +118,25 @@ void func_0200bb28(char* c, char* a1)
             if (f1 != 0) {
                 s32 f2 = *(u16*)((char*)data_0209f49e + m2) & 0x300;
                 if (f2 != 0) {
-                    *(u32*)(c + 0x164) = f2;
-                } else if (!(*(u32*)(c + 0x164) & f1)) {
+                    cam->mTurnButtons = f2;
+                } else if (!(cam->mTurnButtons & f1)) {
                     f2 = f1;
-                    *(u32*)(c + 0x164) = f1;
+                    cam->mTurnButtons = f1;
                 }
                 if (f2 != 0 || cam->mStateTimer == 0) {
-                    u32 dir = *(u32*)(c + 0x164);
+                    u32 dir = cam->mTurnButtons;
                     if (dir & 0x200) {
-                        *(s16*)L0(c + 0x184) -= 0x2000;
+                        cam->mBaseAngleOffset -= 0x2000;
                         cam->mFlags |= 0x20;
                     } else if (dir & 0x100) {
-                        *(s16*)L0(c + 0x184) += 0x2000;
+                        cam->mBaseAngleOffset += 0x2000;
                         cam->mFlags |= 0x40;
                     }
                     cam->mStateTimer = 0x14;
                 }
             }
         }
-        _Z14ApproachLinearRsss((s16*)(c + 0x180), (s16)(*(s16*)(c + 0x182) + *(s16*)(c + 0x184)), 0x800);
+        _Z14ApproachLinearRsss(&cam->mEasedAngleY, (s16)(cam->mBaseAngleY + cam->mBaseAngleOffset), 0x800);
     }
 
     tbl = (cam->mFlags & 2) ? data_02086d50 : data_02086cc8;
@@ -142,7 +158,7 @@ void func_0200bb28(char* c, char* a1)
         vin.y = ty;
         vin.z = tz;
     }
-    Vec3_RotateYAndTranslate(&vout.x, &vin.x, *(s16*)(c + 0x180), &vsrc.x);
+    Vec3_RotateYAndTranslate(&vout.x, &vin.x, cam->mEasedAngleY, &vsrc.x);
     if (cam->mFlags & 4) {
         cam->pos.x = vout.x;
         cam->pos.y = vout.y;
@@ -155,5 +171,5 @@ void func_0200bb28(char* c, char* a1)
         flag4000 == 0) {
         cam->mFlags &= ~0x60;
     }
-    cam->mAngleY = *(s16 *)(c + 0x180);
+    cam->mAngleY = cam->mEasedAngleY;
 }
