@@ -363,6 +363,7 @@ void FlowerFace_Update(char *c) {
     _ZN15dExtFrameCtrl_c7AdvanceEv(c + 0xd68);
     int i = 0;
     char *e = (char *)FLOWERFACE(c)->mPetals;
+    /* c steps a petal at a time, so mPetals[0] is petal i. */
     do {
         if (FLOWERFACE(c)->mPetals[0].mActive != 0)
             FallingPetal_Update(e);
@@ -419,6 +420,7 @@ extern "C" void FlowerFace_Draw(void *self) {
     i = 0;
     {
         char *p = (char *)FLOWERFACE(c)->mPetals;
+        /* c steps a petal at a time, so mPetals[0] is petal i. */
         for (; i < 0x16; i++) {
             if (FLOWERFACE(c)->mPetals[0].mActive != 0)
                 FallingPetal_Draw(p);
@@ -434,6 +436,7 @@ extern "C" {
 void FlowerFace_Reset(void *a) {
     int i = 0;
     char *p = (char *)a;
+    /* p steps a petal at a time, so mPetals[0] is petal i. */
     for (; i < 22; i++) {
         FLOWERFACE(p)->mPetals[0].mActive = 0;
         p += 0x98;
@@ -546,6 +549,9 @@ void FlowerFace_PlayPetalPulled(char *c) {
     /* 0xd70 is the current frame (+0x8) of mModel's dExtFrameCtrl_c at 0xd68. */
     *(int *)(c + 0xd70) = 0;
 
+    /* p steps a petal at a time, so FLOWERFACE(p)->mPetals[0] is the same
+       petal as FLOWERFACE(c)->mPetals[i]. Spelling both the test and the spawn
+       one way (either way) moves bytes. */
     p = c;
     for (i = 0; i < 0x16; i++, p += 0x98) {
         if (FLOWERFACE(p)->mPetals[0].mActive == 0) {
@@ -2489,7 +2495,7 @@ int MascotWalker_Construct(char *t) {
     func_02017acc(t, 0x205);
     _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
     _ZN13SharedFilePtr9ConstructEj(t + 0x10, 0x207);
-    _ZN14BlendModelAnimC1Ev(t + 0x18);
+    _ZN14BlendModelAnimC1Ev(WALKER(t)->mModel);
     _ZN17dExtShadowModel_cC1Ev(WALKER(t)->mShadow);
     WALKER(t)->mPathIndex = 0;
     WALKER(t)->mHeadAngle = 0;
@@ -2506,7 +2512,7 @@ int MascotWalker_Destruct(char *t) {
     _ZN13SharedFilePtr7ReleaseEv(t + 0x10);
     _ZN13SharedFilePtr7ReleaseEv(t + 8);
     _ZN17dExtShadowModel_cD1Ev(WALKER(t)->mShadow);
-    _ZN14BlendModelAnimD1Ev(t + 0x18);
+    _ZN14BlendModelAnimD1Ev(WALKER(t)->mModel);
     SharedFilePtr_Destruct_Anim(t + 0x10);
     SharedFilePtr_Destruct_Anim(t + 8);
     func_02017ab4(t);
@@ -2614,12 +2620,12 @@ extern "C" void MascotWalker_Update(C *c) {
         _Z11UpdateAngleRssis(&c->mHeadAngle, d, 8, 0x200);
 
         {
-            int *p = WALKER(c)->mState;
+            int *p = (int *)&c->pmf;
             int *g = pmf_MascotWalker_StateWalk_2;
             if (p[0] == g[0]) {
                 if (p[1] == g[1])
                     return;
-                if (WALKER(c)->mState[0] == 0)
+                if (((int *)&c->pmf)[0] == 0)
                     return;
             }
         }

@@ -1453,7 +1453,7 @@ static inline void G3_Vtx(s16 x, s16 y, s16 z) {
 
 // @symbol TrmpLine_Draw
 /* Loads the object's placement and scale matrices, then draws its 4x4 vertex
- * patch (positions at +0x5c, packed normals at +0x2dc) as three triangle
+ * patch (positions mVerts, packed normals mPackedNormals) as three triangle
  * strips per face, the back face first with negated normals. Each normal
  * pointer steps in its own statement after the REG_NORMAL write; stepping it
  * inside the write reorders the vertex loads. */
@@ -1479,15 +1479,15 @@ extern "C" void TrmpLine_Draw(char *obj) {
     REG_TEXIMAGE_PARAM = 0x8da70000 | ((u32)sTrmpLineTexAddr >> 3);
     REG_TEXPLTT_BASE = (u32)sTrmpLinePlttAddr >> 4;
     {
-        short *p31e = &TRMPLINE(obj)->mSlotIndex;
-        int sh = *p31e;
+        short *slotIndex = &TRMPLINE(obj)->mSlotIndex;
+        int sh = *slotIndex;
         unsigned short *dif = sTrmpLineDiffuse;
         volatile unsigned char *alpha = &TRMPLINE(obj)->mAlpha;
         int pl = *alpha;
         REG_POLYGON_ATTR = (((sh + 1) << 24) | 0x82) | (pl << 16);
         {
-            unsigned short *p326 = &TRMPLINE(obj)->mBounceCount;
-            unsigned idx = *p326;
+            unsigned short *bounceCount = &TRMPLINE(obj)->mBounceCount;
+            unsigned idx = *bounceCount;
             REG_DIF_AMB = dif[idx] | (sTrmpLineAmbient[idx] << 16);
         }
     }
@@ -2430,9 +2430,9 @@ namespace s020d0c38 {
  * direction whose absolute X component is below 1401. When the full
  * vector is shorter than 0x30000, rescale the direction using a length
  * with Y weighted by 0xc00 (0.75), then rewrite the endpoints around
- * the midpoint. Then find the first free slot (state byte +0x328 == 0)
+ * the midpoint. Then find the first free slot (mStatus == 0)
  * among the three, rejecting it if the
- * segment crosses any active (state 1) slot's own segment (+0x50/+0x54),
+ * segment crosses any active (state 1) slot's own segment (mStart/mEnd),
  * and initialises the slot through TrmpLine_Build, returning its
  * address (0 when none is free).
  *
