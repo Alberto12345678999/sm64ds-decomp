@@ -39,6 +39,10 @@ struct Ov007Camera {
     short fovy;
 };
 
+/* aspect at 0xbc relies on long long taking 4-byte alignment here. */
+typedef char Ov007Camera_aspect_must_be_at_0xbc[(int)&((Ov007Camera *)0)->aspect == 0xbc ? 1 : -1];
+typedef char Ov007Camera_size_must_be_0xd8[sizeof(Ov007Camera) == 0xd8 ? 1 : -1];
+
 extern "C" void func_ov007_020c0128(char *c)
 {
     Ov007Camera *cam = (Ov007Camera *)c;

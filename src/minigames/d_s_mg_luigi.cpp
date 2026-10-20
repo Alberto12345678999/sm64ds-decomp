@@ -804,6 +804,7 @@ void dScMgLuigi_c::UpdatePenalties() {
         }
     }
 }
+#undef PEN
 #pragma pop
 
 // @symbol _ZN12dScMgLuigi_c10AddPenaltyEi

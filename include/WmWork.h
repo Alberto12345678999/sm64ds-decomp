@@ -41,6 +41,11 @@ typedef struct {
     unsigned short childMaxSize;       /* 0x34 */
     unsigned short rsv2[5];            /* 0x36 */
 } WmParentParam;                       /* WMParentParam, 0x40 */
+/* ggid is two u16s at 0x06 with no padding before it, so tgid..childMaxSize
+ * sit 2 bytes earlier than in the public NitroSDK WMParentParam. That is
+ * this ROM's SDK revision: func_02068e4c fills parentParam at these offsets
+ * byte-identically before WM_SetParentParameter, and the size assert below
+ * holds. Don't realign it to the public header. */
 
 typedef struct {
     unsigned char pad_000[0x17e];

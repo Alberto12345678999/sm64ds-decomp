@@ -1,12 +1,10 @@
 // Constructor-variant bridges: the C1/C2 pair collapses on a host compiler.
 //
 // mwccarm targets the Itanium ABI, which emits TWO constructor symbols per
-// class -- C1 for a complete object and C2 for a base subobject -- and this
-// decomp enrolls each variant in its own file, objisolate stripping the
-// sibling the file does not own. That is correct for the cartridge and it is
-// why src/_ZN9ModelAnimC1Ev.cpp and src/_ZN9ModelAnimC2Ev.cpp both exist.
-// A class whose TU is whole emits both variants from one constructor
-// instead; the host still gets only one.
+// class -- C1 for a complete object and C2 for a base subobject. A split
+// class enrolls each variant in its own file, objisolate stripping the
+// sibling that file does not own. A class whose TU is whole emits both
+// variants from one constructor instead; the host still gets only one.
 //
 // MSVC has ONE constructor symbol. Compile both files for the host and the
 // pair lands on the same decorated name -- LNK2005, a duplicate definition

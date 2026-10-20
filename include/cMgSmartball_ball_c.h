@@ -37,7 +37,7 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
        respawn, Burst the score pop. The Hit* sweep set walks one manager
        table each and returns the first solid contact. */
     void PlayHitSound(int a1, int *vel);
-    void Freeze();                 /* pin at mFrozenPos, raise mIsFrozen */
+    void Freeze();                 /* pin at mFrozenPos, raise mIsFrozen and state3b */
     int HasHit();                  /* anyHit */
     int  IsOut();                  /* off-field flag */
     int  ArmExpire(int val);       /* expiry timer hits val */
@@ -75,7 +75,7 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
                           SmartballBall_UpdatePhysics used to cast this class
                           to; gates most of that function's per-frame
                           collision work */
-    u8  state3b;      /* 0x03b -- ditto; set once mZoneDwell maxes out */
+    u8 state3b;       /* 0x03b -- ditto; set once mZoneDwell maxes out, and by Freeze */
     s32 mZoneDwell;      /* 0x03c -- frames spent inside the box x [0x8000,
                              0xd8000) z [0x74000,0x7c000); counts up, sets
                              state3b past 0x1e, saturates at 0x12c, and resets
