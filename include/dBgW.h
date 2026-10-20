@@ -77,6 +77,12 @@ struct Vector3_16 { s16 x, y, z; };
 
 extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 
+struct dBgW;
+/* dBgW::BeforeClsn's hook. Its parameters stay named: each name is one of every
+   consumer TU's @NNN numbers, as they were when the member spelled the type inline. */
+typedef void (*BeforeClsnCallback)(dBgW *self, dActor_c *actor, dBgPi *res, Vector3 *pos,
+                                   Vector3_16 *motionAng, Vector3_16 *ang);
+
 struct dBgW {
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
     dActor_c *owner;             /* 0x04 - set by Enable, null when free */
@@ -88,9 +94,7 @@ struct dBgW {
     Fix12i clipOffsetY;       /* 0x10 */
     u8 slotIdx;               /* 0x14 - index into data_020a0c80; 0x18 = disabled */
     u8 pad_15[3];
-    void (*beforeClsnCallback)(dBgW *self, dActor_c *actor,
-                               dBgPi *res, Vector3 *pos,
-                               Vector3_16 *motionAng, Vector3_16 *ang); /* 0x18 */
+    BeforeClsnCallback beforeClsnCallback; /* 0x18 */
     /* Run by func_02038234 when an actor commits a floor hit on this collider
        (dBgCh_Actr's floor-result path), as (collider, owner, actor). */
     void (*stoodOnCallback)(dBgW *, dActor_c *, dActor_c *); /* 0x1c */

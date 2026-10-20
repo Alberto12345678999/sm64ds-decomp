@@ -28,10 +28,6 @@ extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_02037e38(unsigned int *p);
 }
 
-/* Preserve the address-based helper ABI while using the declared callback type. */
-typedef void (*BeforeClsnCallback)(dBgW *, dActor_c *, dBgPi *, Vector3 *, Vector3_16 *,
-                                   Vector3_16 *);
-
 // @symbol func_020396d0
 
 /* Stores dBgW_Kc::depthDirMinDot (+0x44), the sphere query's face-dot threshold. */
