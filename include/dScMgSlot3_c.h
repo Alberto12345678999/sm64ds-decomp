@@ -9,18 +9,18 @@
  * (dScMgSlot3_c_classInit in src/minigames/d_s_mg_slots.cpp). The evidenced field span stops at 0x5043,
  * so the trailing byte is alignment, not unclaimed space.
  *
- * TABLE at 0x4f38, constructed by Mascot_Construct and destroyed by
- * Mascot_Destruct -- the same construct/destroy pair shape five
- * siblings use at this same offset (see include/dScMgCard_c.h's own note).
- * Nothing reads inside the table itself, so its size is bounded only by
- * what follows it, and that bound is 0xac, not the 0xb8 the first draft of
- * this header claimed: a THREE-ELEMENT s32 array sits at 0x4fe4, indexed by
+ * MASCOT at 0x4f38: Toad at the table. Mascot_Construct and
+ * Mascot_Destruct build and tear it down here, and this class's Load,
+ * Behavior and Render hand the same address to Mascot_Load, Mascot_Update
+ * and Mascot_Draw, the Mascot_* helpers over include/Mascot.h's 0xac-byte
+ * record. Kept as bytes so this header need not include Mascot.h. Its size
+ * is bounded by what follows it, and that bound is 0xac, not the 0xb8 the
+ * first draft of this header claimed: a THREE-ELEMENT s32 array sits at 0x4fe4, indexed by
  * five of this class's methods (the legacy Render's local
  * `struct T4fe4 { char pad[0x4fe4]; int vals[3]; }` names it outright, and
  * InitResources, Slot3_StateSpin, Slot3_StateJudge and
  * Slot3_ReelDigits all index it as
- * `[i]` or `+ i*4`). It closes exactly on mReelPeriod. Left opaque up to
- * there rather than guessed at, as dScMgCard_c.h leaves its own.
+ * `[i]` or `+ i*4`). It closes exactly on mReelPeriod.
  *
  * OWN TAIL, 0x4ff0..0x5043: seventeen fields carried over verbatim from
  * this header's previous auto-generated form, all real matched access out
@@ -68,7 +68,7 @@ struct dScMgSlot3_c : dScMgSingle3DBase_c {
     s32 Behavior();                       /* slot  6 */
     s32 Render();                         /* slot  9 */
 
-    u8 pad_4f38[0xac];       /* 0x4f38 -- opaque table, see file banner */
+    u8 mMascot[0xac];        /* 0x4f38 -- a Mascot (include/Mascot.h), see file banner */
     s32 mReelPos[3];         /* 0x4fe4 -- Fix12 scroll of each reel; seeded to a
                                random symbol * 0x50000 (0x50 px a symbol) */
     s32 mReelPeriod;         /* 0x4ff0 -- strip length * 80 pixels, in Fix12 */

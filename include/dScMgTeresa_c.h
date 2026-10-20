@@ -218,9 +218,26 @@ struct dScMgTeresa_c : dScMgBase_c {
        its typed view. */
     u8  pad_4bcc[0x1c];
     s32 mSceneState; /* 0x4be8 -- state index for Behavior's pmf dispatch */
-    u8  pad_4bec[0x2a];
+    /* The stylus point ReadRubTouch reads each frame while mRubTouching. */
+    s32 mRubX; /* 0x4bec */
+    s32 mRubY; /* 0x4bf0 */
+    /* Last frame's point: seeded from mRubX/Y on the press; UpdateRubbing draws
+       the rub line from it to mRubX/Y, then copies mRubX/Y in. */
+    s32 mRubPrevX; /* 0x4bf4 */
+    s32 mRubPrevY; /* 0x4bf8 */
+    u8 pad_4bfc[0xc];
+    s32 mRubSound; /* 0x4c08 -- the rub sound's handle; func_02012468 takes it back */
+    u8 pad_4c0c[0xa];
     s16 unk_4c16;            /* 0x4c16 */
-    u8  pad_4c18[0x9];
+    u8 pad_4c18[0x5];
+    u8 mRubTouching; /* 0x4c1d -- set on the stylus press, cleared on release */
+    u8 pad_4c1e[0x1];
+    /* 1 when CheckRoundEnd finds every Boo, 0 when time runs out: picks the
+       round-clear or game-over result and the big Boo's result frames. */
+    u8 mRoundCleared; /* 0x4c1f */
+    /* Set by CheckRevealDone once no active Boo is still in reveal stage 0..2;
+       StartCountdown, UpdateRubbing and CheckRoundEnd wait on it. */
+    u8 mRevealDone;          /* 0x4c20 */
     u8  mFoundCount;         /* 0x4c21 -- Boos found this round; stamped into mFoundOrder */
     u8  mLastSettledBoo;     /* 0x4c22 -- the Boo AreBoosSettled settled last */
     u8 mBooPattern;          /* 0x4c23 -- spawn pattern: mLevel, or 10..13 from level 15 */
