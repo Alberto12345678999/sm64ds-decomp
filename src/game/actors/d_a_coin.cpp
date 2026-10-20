@@ -42,6 +42,17 @@
 #include "ModelBase.h"
 #include "dBgCh_Actr.h"
 
+/* Views of daObjBC_Switch_c.h and daObjFl_Coin_c.h, same member names and
+   offsets: including either header renumbers this TU's @NNN labels. */
+struct daObjBC_Switch_cView {
+    u8 pad_000[0x32a];
+    u16 mCoinTimerSeed; /* 0x32a */
+};
+struct daObjFl_Coin_cView {
+    u8 pad_000[0xd6];
+    u8 mLiveCoinCount; /* 0x0d6 */
+};
+
 namespace Event { s32 GetBit(u32 bit); void SetBit(u32 bit); }
 
 /* mCoinType. */
@@ -278,7 +289,7 @@ void daCoin_c::func_ov002_020b1384()
 /* Shared per-frame tail of the movement handlers. Counts down the no-collision
  * timer and the disappear timer (the coin is killed when the latter reaches 1),
  * moves the coin, and runs the mesh collision -- the continuous variant when
- * the speed vector (unk_0a4, mVertSpeed, unk_0ac) is longer than the collision
+ * the speed vector (mSpeedX, mVertSpeed, mSpeedZ) is longer than the collision
  * radius. Landing on a floor with surface flag 0x20 while falling makes a big
  * splash and leaves the coin sinking slowly (gravity -0x800, terminal velocity
  * -0x5000). */
@@ -291,7 +302,7 @@ void daCoin_c::func_ov002_020b13e0()
         return;
     }
     UpdatePos(&mdCc_c);
-    if (LenVec3(&unk_0a4) > mWithMeshClsn.mRadius)
+    if (LenVec3(&mSpeedX) > mWithMeshClsn.mRadius)
         dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     else
         dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
@@ -433,7 +444,7 @@ void daCoin_c::func_ov002_020b16c4(Player *player)
         star->mAreaId = -1;
     star->AddStarMarker();
     *(unsigned short *)LAUNDER(&star->unk_4a2) |= 0x1000;
-    *(int *)((char *)star + 0x434) = marker->uniqueID;
+    star->mMarkerID = marker->uniqueID;
     *(u8 *)LAUNDER(&marker->mFlags) |= 4;
 }
 #undef LAUNDER
@@ -522,7 +533,7 @@ void daCoin_c::func_ov002_020b1a60()
 {
     mDisappearTimer += 1;
     {
-        int *targetPos = (int *)((int)mFollowTarget + 0x5c);
+        int *targetPos = &mFollowTarget->mPosX;
         mPosX = targetPos[0];
         mPosY = targetPos[1];
         mPosZ = targetPos[2];
@@ -683,15 +694,15 @@ void daCoin_c::func_ov002_020b1cc0()
 
     if (normal.x != 0 || normal.z != 0) {
         int slide = data_ov002_020ff078[floorClass];
-        int *velocity = (int *)((int)&unk_0a4);
+        int *velocity = (int *)((int)&mSpeedX);
         *velocity += normal.x * slide;
-        *(int *)((int)&unk_0ac) += normal.z * slide;
+        *(int *)((int)&mSpeedZ) += normal.z * slide;
         mHorzSpeed = Vec3_HorzLen(velocity);
         if (mHorzSpeed > 0x1c000) {
             mHorzSpeed = 0x1c000;
             UpdatePosWithHorzSpeedAndAng();
         }
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(unk_0a4, unk_0ac);
+        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(mSpeedX, mSpeedZ);
     }
 
     if (mWithMeshClsn.JustHitGround() != 0)
@@ -700,8 +711,8 @@ void daCoin_c::func_ov002_020b1cc0()
         return;
 
     if (normal.y != 0) {
-        int dotX = FX_MUL(normal.x, unk_0a4);
-        int dotZ = FX_MUL(normal.z, unk_0ac);
+        int dotX = FX_MUL(normal.x, mSpeedX);
+        int dotZ = FX_MUL(normal.z, mSpeedZ);
         mVertSpeed = -(_ZN4cstd4fdivEii(dotX + dotZ, normal.y) + 0x8000);
     }
 
@@ -747,7 +758,7 @@ void daCoin_c::func_ov002_020b20b4()
     *(u32 *)(int)&mdCc_c.flags &= ~1;
     found = dActor_c::FindWithActorID(0xa, 0);
     if (found) {
-        mDisappearTimer = *(unsigned short *)((char *)found + 0x32a);
+        mDisappearTimer = ((daObjBC_Switch_cView *)found)->mCoinTimerSeed;
     } else {
         mDisappearTimer = 0xfa;
     }
@@ -797,10 +808,8 @@ s32 daCoin_c::CleanupResources()
     if (manager != 0) {
         int isFlCoin = (int)(manager->actorID == 0x4f);
         if (isFlCoin != 0) {
-            /* +0xd6 is the manager's live-coin count; no header describes
-               that class yet, so the offset stays raw. */
-            if (*(unsigned char *)((char *)manager + 0xd6) != 0) {
-                unsigned char *count = (unsigned char *)((int)manager + 0xd6);
+            if (((daObjFl_Coin_cView *)manager)->mLiveCoinCount != 0) {
+                unsigned char *count = &((daObjFl_Coin_cView *)manager)->mLiveCoinCount;
                 *count = *count - 1;
             }
         }

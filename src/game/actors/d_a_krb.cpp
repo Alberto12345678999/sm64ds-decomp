@@ -51,9 +51,9 @@
  * - GetCapState is called as the dCapEnemy_c.h member (the old "no header
  *   member" note was stale; d_a_trs.cpp already calls it that way).
  * - What dCcAc_c bits 0x4 and 0x20000 mean, the king's mState 4 that
- *   unk_475 watches, dEnemyBase_c::unk_104, sounds 0xd0 / 0xe0 /
- *   0xd6 / 0x110 / 0x111 / 0x118 / 0x13a / 0x13b, mFlags bits 0x8 and
- *   0x10000000, and data_0209f2f8 values 6 and 0x1b are not named here.
+ *   unk_475 watches, sounds 0xd0 / 0xe0 / 0xd6 / 0x110 / 0x111 / 0x118 /
+ *   0x13a / 0x13b, mFlags bits 0x8 and 0x10000000, and data_0209f2f8
+ *   values 6 and 0x1b are not named here.
  *   Nothing in this TU enters STATE_PAUSE except through the table.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -330,7 +330,7 @@ void daKrb_c::func_ov084_02129168(dActor_c *actor) {
     daKrb_c *goomba = this;
     goomba->mBounceCountdown = 0x3c;
     goomba->mVertSpeed = cstd::fdiv(0xd000 - goomba->mVertAccel, goomba->mFloorNormalY);
-    goomba->mHorzSpeed = Vec3_HorzLen((const Vector3 *)&goomba->unk_0a4) * -1;
+    goomba->mHorzSpeed = Vec3_HorzLen((const Vector3 *)&goomba->mSpeedX) * -1;
     if (actor != 0)
         goomba->mPrevAngleY = Vec3_HorzAngle(&goomba->mPos, &actor->mPos);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cc0.ptr, 0, 0x1000, 0);
@@ -688,7 +688,7 @@ L_end:
  * the dCcAc_c flags (disabled).
  * Otherwise the model and cap are placed (func_ov084_0212a580) and, while
  * Yoshi holds it (mEatenByYoshi != 0), the ground check runs
- * (func_ov084_021294d0), then by unk_104: 0 updates the cylinder; 5 replays
+ * (func_ov084_021294d0), then by mSpitOutTimer: 0 updates the cylinder; 5 replays
  * the data_ov084_02130ce0 animation, turns the Goomba half a turn, reverses
  * its horizontal speed and restarts the material animation. The animation is
  * advanced, and on touchdown the Goomba is thrown clear again
@@ -735,7 +735,7 @@ int daKrb_c::func_ov084_02129a00() {
     if (goomba->mEatenByYoshi != 0) {
         goomba->func_ov084_021294d0();
         {
-            u16 s = goomba->unk_104;
+            u16 s = goomba->mSpitOutTimer;
             if (s == 0) {
                 ((dCc_c *)&goomba->mdCcAc_c)->Update();
             } else if (s == 5) {
@@ -942,7 +942,8 @@ void daKrb_c::func_ov084_02129ed4() {
 
     if (flags & HIT_SPIN_OR_POUND) {
         goomba->mDeathState = daKrb_c::DEATH_STOMPED;
-        if (goomba->mGoombaType == daKrb_c::GOOMBA_LARGE) goomba->unk_108 = daKrb_c::COIN_BLUE;
+        if (goomba->mGoombaType == daKrb_c::GOOMBA_LARGE)
+            goomba->mCoinType = daKrb_c::COIN_BLUE;
         goomba->mScaleX = 0x1000;     /* 1.0 */
         goomba->mScaleY = 0x1000;
         goomba->mScaleZ = 0x1000;
@@ -1592,13 +1593,13 @@ void daKrb_c::OnTurnIntoEgg(Player &playerRef)
 
     if (((dActor_c *)this)->OnYoshiTryEat() == 6) {
         if (player->IsCollectingCap()) {
-            if (unk_108 == COIN_PLAIN)
+            if (mCoinType == COIN_PLAIN)
                 GivePlayerCoins(*player, 1, 0);
             func_ov084_021296cc();
         } else {
             b5 = 0;
             b4 = b5;
-            if (unk_108 == COIN_PLAIN)
+            if (mCoinType == COIN_PLAIN)
                 b5 = 1;
             if (mRewardType == REWARD_SILVER_STAR) {
                 UntrackStar(mStarTracked);
@@ -1617,7 +1618,7 @@ void daKrb_c::OnTurnIntoEgg(Player &playerRef)
             player->RegisterEggCoinCount(b5, b4, 0);
         }
     } else if (((dActor_c *)this)->OnYoshiTryEat() == 4) {
-        if (unk_108 == COIN_PLAIN)
+        if (mCoinType == COIN_PLAIN)
             GivePlayerCoins(*player, 1, 0);
     }
 
@@ -1879,7 +1880,7 @@ done:
  * dCapEnemy_c byte at 0x112 (mHadBank1Cap), bits 12..15 mStarID. The size
  * class follows from the actor id (see GoombaType); a KURIBO spawned with
  * param1 0xeeee or 0xeeef is a Goomba King minion, with bit 1 of mFlags
- * cleared, and 0xeeee also drops no coin (unk_108 = COIN_NONE). The dCcAc_c
+ * cleared, and 0xeeee also drops no coin (mCoinType = COIN_NONE). The dCcAc_c
  * cylinder gets radius 60 * scale and height data_ov084_02130208[type]; a
  * KURIBO_L has bit 0x8000 cleared from its vulnFlags (the Yoshi-tongue bit in
  * dCc_c.h's best-effort table); dBgCh_Actr::Init gets 60 * scale for its two
@@ -1929,7 +1930,7 @@ int daKrb_c::InitResources()
     MaterialChanger::Prepare(*(BMD_File*)data_ov084_02130cf8.ptr, *(BMA_File*)&data_ov084_0213089c);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov084_0213089c, 0x40000000, 0x1000, 0);
 
-    unk_108 = COIN_PLAIN;
+    mCoinType = COIN_PLAIN;
 
     {
         int id = actorID;
@@ -1948,7 +1949,7 @@ int daKrb_c::InitResources()
                     mGoombaType = GOOMBA_KING_MINION;
                     *(int*)(((int)&mFlags) & 0xFFFFFFFFFFFFFFFF) &= ~2;
                     if (*(int*)(c + 8) == 0xeeee)
-                        unk_108 = COIN_NONE;
+                        mCoinType = COIN_NONE;
                 }
                 else
                 {

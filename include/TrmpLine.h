@@ -8,7 +8,8 @@
  * build, flex and draw (the scenes construct three or four). The name is coined.
  * A layout view only: the helpers are free functions over a char* slot and read
  * it through their TRMPLINE() cast. Unnamed regions are touched in one place at
- * most; +0x329 is read as an int by ApproachLinear2 and stays an offset. */
+ * most. mAlpha is a byte, but the fade states step it with the int
+ * ApproachLinear2 through an (int *) cast of its address. */
 struct TrmpLine {
     s32 mState[2];          /* 0x000 -- the current state's member-pointer record */
     Vector3 mCenter;        /* 0x008 -- midpoint of the drawn stroke */
@@ -22,15 +23,22 @@ struct TrmpLine {
     s32 mHalfWidth;         /* 0x058 -- half the stroke's length */
     Vector3 mVerts[16];     /* 0x05c -- the 4x4 patch drawn */
     Vector3 mRestVerts[16]; /* 0x11c -- the patch at rest; the flex states start from it */
-    u8 pad_1dc[0x140];      /* 0x1dc */
+    Vector3 mNormals[16];   /* 0x1dc -- per-vertex normals, TrmpLine_ComputeNormals */
+    s32 mFlexAmplitude[16]; /* 0x29c -- per-vertex flex depth: TrmpLine_PointDistance sets
+                               it; the flex states scale the deflection by it and decay it */
+    s32 mPackedNormals[16]; /* 0x2dc -- mNormals packed 10:10:10 for REG_NORMAL */
     s16 mLifeTimer;         /* 0x31c -- 0x258 frames, then the line fades */
-    u8 pad_31e[0x2];        /* 0x31e */
+    s16 mSlotIndex;         /* 0x31e -- index in sTrmpLines; TrmpLine_Create stores it and
+                               the start-line builders store 3. TrmpLine_Draw uses it + 1
+                               as the polygon ID; StateFlex never fades slot 3 */
     u16 mWobblePhase;       /* 0x320 -- sine phase of the flex */
     u16 mWobbleSpeed;       /* 0x322 -- added to mWobblePhase each frame */
     u16 mBouncesLeft;       /* 0x324 -- at 0 the line settles */
-    u16 mBounceCount;       /* 0x326 */
-    u8 mStatus;             /* 0x328 -- 0 free; 3 settling */
-    u8 pad_329[0x3];        /* 0x329 */
+    u16 mBounceCount;       /* 0x326 -- picks TrmpLine_Draw's diffuse/ambient colour */
+    u8 mStatus;             /* 0x328 -- 0 free; 1 flexing; 3 settling */
+    u8 mAlpha;              /* 0x329 -- 0x1f on build; TrmpLine_Draw writes it to the
+                               polygon alpha bits, the fade states step it to 0 */
+    u8 pad_32a[0x2];        /* 0x32a */
 };
 
 #ifndef SM64DS_PLATFORM_PC

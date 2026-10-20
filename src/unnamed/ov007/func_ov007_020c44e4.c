@@ -6,8 +6,7 @@
 #include "common.h"
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
 
-
-
+/* p: the 0x88-byte record this function allocates and returns; no class or header names it, so raw. */
 int func_ov007_020c44e4(int count)
 {
     char* p = (char*)func_ov007_020c3df4(0, 0x88);

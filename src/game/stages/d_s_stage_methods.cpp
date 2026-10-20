@@ -3779,7 +3779,6 @@ struct LocalModelComponents {
 };
 
 void dScStage_c::RenderModelTransparent() {
-    // The material count at bone +0x30 is still opaque in BMD_Bone.
     ModelComponents *components = &mModel.data;
     BMD_Bone *bone = components->modelFile->bones;
     StageTexAnimSlot *slot = mTexAnimSlots;
@@ -3789,8 +3788,7 @@ void dScStage_c::RenderModelTransparent() {
         if (slot->mActive != 0) {
             u8 *materialIds = bone->materialIds;
             u16 materialIndex;
-            for (materialIndex = 0; materialIndex < *(u16 *)((char *)bone + 0x30);
-                 materialIndex++) {
+            for (materialIndex = 0; materialIndex < bone->numMaterials; materialIndex++) {
                 BMD_Material *material = &components->materials[*materialIds];
                 if ((material->flags & 0x1f0000) != 0x1f0000)
                     material->flags &= ~0x80000000;
@@ -3806,7 +3804,6 @@ void dScStage_c::RenderModelTransparent() {
 
 // @symbol _ZN10dScStage_c11RenderModelEv
 void dScStage_c::RenderModel() {
-    // The material count at bone +0x30 is still opaque in BMD_Bone.
     ModelComponents *components = &mModel.data;
     BMD_Bone *bone = components->modelFile->bones;
     StageTexAnimSlot *slot = mTexAnimSlots;
@@ -3818,8 +3815,7 @@ void dScStage_c::RenderModel() {
 
         if (active != 0) {
             u16 materialIndex;
-            for (materialIndex = 0; materialIndex < *(u16 *)((char *)bone + 0x30);
-                 materialIndex++) {
+            for (materialIndex = 0; materialIndex < bone->numMaterials; materialIndex++) {
                 u8 materialId = *materialIds;
                 BMD_Material *material = &components->materials[materialId];
                 materialIds++;
@@ -3836,8 +3832,7 @@ void dScStage_c::RenderModel() {
                 ((TextureTransformer *)slot->mTransformer)->Update(mModel.data);
         } else {
             u16 materialIndex;
-            for (materialIndex = 0; materialIndex < *(u16 *)((char *)bone + 0x30);
-                 materialIndex++) {
+            for (materialIndex = 0; materialIndex < bone->numMaterials; materialIndex++) {
                 u8 materialId = *materialIds;
                 BMD_Material *material = &components->materials[materialId];
                 material->flags |= 0x80000000;

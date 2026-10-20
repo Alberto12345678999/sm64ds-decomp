@@ -201,7 +201,7 @@ struct daKrb_c : dCapEnemy_c {
         DEATH_HIT_20000 = 7      /* hit bit 0x20000 (not in dCc_c.h's table), or a hit reported during the Yoshi-eat update or STATE_TUMBLE */
     };
 
-    /* unk_108 (dEnemyBase_c) is the kind of coin SpawnCoin drops: its value
+    /* mCoinType (dEnemyBase_c) is the kind of coin SpawnCoin drops: its value
        minus one indexes the u16 table at data_ov002_020ff014 = {288 COIN,
        289 RED_COIN, 290 BLUE_COIN}. 0 drops nothing. */
     enum CoinKind {

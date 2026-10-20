@@ -24,6 +24,7 @@
 #include "Dealer.h"
 #include "Mascot.h"
 #include "FlowerFace.h"
+#include "BMD_File.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
 /* Typed access to a Presenter record from the char* helpers below. */
@@ -261,7 +262,7 @@ int FallingPetal_Construct(char *t);
 namespace s020c402c {
 extern "C" {
 int FallingPetal_Construct(char *t) {
-    _ZN5ModelC1Ev(t + 0x44);
+    _ZN5ModelC1Ev(PETAL(t)->mModel);
     return (int)t;
 }
 }
@@ -271,15 +272,15 @@ namespace s020c3f54 {
 extern "C" {}
 
 extern "C" void *FlowerFace_Construct(char *c) {
-    __cxa_vec_ctor(c + 8, 0x16, 0x98, (void *)FallingPetal_Construct,
+    __cxa_vec_ctor(FLOWERFACE(c)->mPetals, 0x16, 0x98, (void *)FallingPetal_Construct,
                    (void *)FallingPetal_Destruct);
-    _ZN9ModelAnimC1Ev(c + 0xd18);
-    func_02017acc(c + 0xd7c, 0x222);
-    func_02017acc(c + 0xd84, 0x201);
-    _ZN13SharedFilePtr9ConstructEj(c + 0xd8c, 0x224);
-    _ZN13SharedFilePtr9ConstructEj(c + 0xd94, 0x223);
-    _ZN13SharedFilePtr9ConstructEj(c + 0xd9c, 0x221);
-    _ZN13SharedFilePtr9ConstructEj(c + 0xda4, 0x220);
+    _ZN9ModelAnimC1Ev(FLOWERFACE(c)->mModel);
+    func_02017acc(&FLOWERFACE(c)->mModelFile, 0x222);
+    func_02017acc(&FLOWERFACE(c)->mPetalFile, 0x201);
+    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mWaitAnim, 0x224);
+    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mPickAnim, 0x223);
+    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mLikeAnim, 0x221);
+    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mHateAnim, 0x220);
     return c;
 }
 }
@@ -287,20 +288,20 @@ extern "C" void *FlowerFace_Construct(char *c) {
 namespace s020c3e70 {
 extern "C" {}
 extern "C" void *FlowerFace_Destruct(char *c) {
-    ((SharedFilePtr *)(c + 0xd7c))->Release();
-    ((SharedFilePtr *)(c + 0xd84))->Release();
-    ((SharedFilePtr *)(c + 0xd8c))->Release();
-    ((SharedFilePtr *)(c + 0xd94))->Release();
-    ((SharedFilePtr *)(c + 0xd9c))->Release();
-    ((SharedFilePtr *)(c + 0xda4))->Release();
-    SharedFilePtr_Destruct_Anim((c + 0xda4));
-    SharedFilePtr_Destruct_Anim((c + 0xd9c));
-    SharedFilePtr_Destruct_Anim((c + 0xd94));
-    SharedFilePtr_Destruct_Anim((c + 0xd8c));
-    func_02017ab4((c + 0xd84));
-    func_02017ab4((c + 0xd7c));
-    _ZN9ModelAnimD1Ev(c + 0xd18);
-    __cxa_vec_cleanup(c + 8, 0x16, 0x98, (void *)FallingPetal_Destruct);
+    ((SharedFilePtr *)&FLOWERFACE(c)->mModelFile)->Release();
+    ((SharedFilePtr *)&FLOWERFACE(c)->mPetalFile)->Release();
+    ((SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim)->Release();
+    ((SharedFilePtr *)&FLOWERFACE(c)->mPickAnim)->Release();
+    ((SharedFilePtr *)&FLOWERFACE(c)->mLikeAnim)->Release();
+    ((SharedFilePtr *)&FLOWERFACE(c)->mHateAnim)->Release();
+    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mHateAnim);
+    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mLikeAnim);
+    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mPickAnim);
+    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mWaitAnim);
+    func_02017ab4(&FLOWERFACE(c)->mPetalFile);
+    func_02017ab4(&FLOWERFACE(c)->mModelFile);
+    _ZN9ModelAnimD1Ev(FLOWERFACE(c)->mModel);
+    __cxa_vec_cleanup(FLOWERFACE(c)->mPetals, 0x16, 0x98, (void *)FallingPetal_Destruct);
     return c;
 }
 }
@@ -308,7 +309,7 @@ extern "C" void *FlowerFace_Destruct(char *c) {
 namespace s020c3e54 {
 extern "C" {
 int FallingPetal_Destruct(char *t) {
-    _ZN5ModelD1Ev(t + 0x44);
+    _ZN5ModelD1Ev(PETAL(t)->mModel);
     return (int)t;
 }
 }
@@ -322,21 +323,22 @@ struct ModelBase {
 };
 extern "C" int FlowerFace_Load(char *c) {
     {
-        void *bmd = _ZN5Model8LoadFileER13SharedFilePtr((c + 0xd7c));
-        _ZN9ModelBase7SetFileEP8BMD_Fileii((ModelBase *)(c + 0xd18), bmd, 1, -1);
+        void *bmd = _ZN5Model8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mModelFile);
+        _ZN9ModelBase7SetFileEP8BMD_Fileii((ModelBase *)FLOWERFACE(c)->mModel, bmd, 1, -1);
     }
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0xd8c));
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0xd94));
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0xd9c));
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0xda4));
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mWaitAnim);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mPickAnim);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mLikeAnim);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mHateAnim);
     FlowerFace_PlayIdle(c);
-    int m = (int)_ZN5Model8LoadFileER13SharedFilePtr((c + 0xd84));
+    int m = (int)_ZN5Model8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mPetalFile);
     int i = 0;
     int z = i;
-    char *p = c + 8;
+    char *p = (char *)FLOWERFACE(c)->mPetals;
+    /* c steps a petal at a time too, so mPetals[0] is petal i. */
     for (; i < 0x16; i++) {
         FallingPetal_SetModel(p, m);
-        *(int *)(c + 0x48) = z;
+        FLOWERFACE(c)->mPetals[0].mActive = z;
         p += 0x98;
         c += 0x98;
     }
@@ -360,9 +362,10 @@ void FlowerFace_Update(char *c) {
     ((void (*)(void *))fn)(p);
     _ZN15dExtFrameCtrl_c7AdvanceEv(c + 0xd68);
     int i = 0;
-    char *e = c + 8;
+    char *e = (char *)FLOWERFACE(c)->mPetals;
+    /* c steps a petal at a time, so mPetals[0] is petal i. */
     do {
-        if (*(int *)(c + 0x48) != 0)
+        if (FLOWERFACE(c)->mPetals[0].mActive != 0)
             FallingPetal_Update(e);
         i++;
         c += 0x98;
@@ -406,18 +409,20 @@ extern "C" void FlowerFace_Draw(void *self) {
              ((((short)v.z >> 3) & 0x3ff) << 20);
     *(unsigned int *)0x40004c8 = packed;
 
-    func_02016a14(c + 0xd18, 0x2bff);
-    func_02016a04(c + 0xd18, 0x1211);
+    func_02016a14(FLOWERFACE(c)->mModel, 0x2bff);
+    func_02016a04(FLOWERFACE(c)->mModel, 0x1211);
 
+    /* 0xd34 is mModel's matrix (Model +0x1c); mModel is a byte array here. */
     *(struct Matrix4x3 *)(c + 0xd34) = *(struct Matrix4x3 *)data_ov006_0213aee8;
 
-    ((Obj *)(c + 0xd18))->f5(0);
+    ((Obj *)FLOWERFACE(c)->mModel)->f5(0);
 
     i = 0;
     {
-        char *p = c + 8;
+        char *p = (char *)FLOWERFACE(c)->mPetals;
+        /* c steps a petal at a time, so mPetals[0] is petal i. */
         for (; i < 0x16; i++) {
-            if (*(int *)(c + 0x48) != 0)
+            if (FLOWERFACE(c)->mPetals[0].mActive != 0)
                 FallingPetal_Draw(p);
             c += 0x98;
             p += 0x98;
@@ -431,8 +436,9 @@ extern "C" {
 void FlowerFace_Reset(void *a) {
     int i = 0;
     char *p = (char *)a;
+    /* p steps a petal at a time, so mPetals[0] is petal i. */
     for (; i < 22; i++) {
-        *((int *)(p + 0x48)) = 0;
+        FLOWERFACE(p)->mPetals[0].mActive = 0;
         p += 0x98;
     }
     FlowerFace_PlayIdle((char *)a);
@@ -501,9 +507,9 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateIdle;
 }
 void FlowerFace_PlayIdle(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0xd18, ((void *)FLOWERFACE(p)->mWaitAnim.file),
-                                                0, 0x800, 0);
-    *(struct S *)(p + 0x0) = pmf_FlowerFace_StateIdle;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        FLOWERFACE(p)->mModel, ((void *)FLOWERFACE(p)->mWaitAnim.file), 0, 0x800, 0);
+    *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateIdle;
 }
 }
 }
@@ -537,14 +543,18 @@ void FlowerFace_PlayPetalPulled(char *c) {
         Vec3 pos, vel, pos2, vel2;
     } b;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0xd18, ((void *)FLOWERFACE(c)->mPickAnim.file),
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        FLOWERFACE(c)->mModel, ((void *)FLOWERFACE(c)->mPickAnim.file), 0x40000000, 0x800, 0);
 
+    /* 0xd70 is the current frame (+0x8) of mModel's dExtFrameCtrl_c at 0xd68. */
     *(int *)(c + 0xd70) = 0;
 
+    /* p steps a petal at a time, so FLOWERFACE(p)->mPetals[0] is the same
+       petal as FLOWERFACE(c)->mPetals[i]. Spelling both the test and the spawn
+       one way (either way) moves bytes. */
     p = c;
     for (i = 0; i < 0x16; i++, p += 0x98) {
-        if (*(int *)(p + 0x48) == 0) {
+        if (FLOWERFACE(p)->mPetals[0].mActive == 0) {
             b.pos.x = 0x2000;
             b.pos.y = 0xa000;
             b.pos.z = 0x1000;
@@ -563,7 +573,7 @@ void FlowerFace_PlayPetalPulled(char *c) {
             b.vel2.x = b.vel.x;
             b.vel2.y = b.vel.y;
             b.vel2.z = b.vel.z;
-            FallingPetal_Spawn((int *)(c + 8 + i * 0x98), (int *)&b.pos2, (int *)&b.vel2);
+            FallingPetal_Spawn((int *)&FLOWERFACE(c)->mPetals[i], (int *)&b.pos2, (int *)&b.vel2);
             break;
         }
     }
@@ -576,6 +586,8 @@ void FlowerFace_PlayPetalPulled(char *c) {
 namespace s020c395c {
 extern "C" {
 void FlowerFace_StatePick(int *c) {
+    /* 0xd68 is the dExtFrameCtrl_c base of mModel (a ModelAnim at 0xd18); this
+       file's local Model/dExtFrameCtrl_c stand-ins keep ModelAnim.h out. */
     if (_ZN15dExtFrameCtrl_c8FinishedEv((char *)c + 0xd68) == 0)
         return;
     FlowerFace_PlayIdle((char *)c);
@@ -592,9 +604,9 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateLike;
 }
 void FlowerFace_PlayLike(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0xd18, ((void *)FLOWERFACE(p)->mLikeAnim.file),
-                                                0x40000000, 0x800, 0);
-    *(struct S *)(p + 0x0) = pmf_FlowerFace_StateLike;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        FLOWERFACE(p)->mModel, ((void *)FLOWERFACE(p)->mLikeAnim.file), 0x40000000, 0x800, 0);
+    *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateLike;
 }
 }
 }
@@ -614,9 +626,9 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateHate;
 }
 void FlowerFace_PlayHate(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0xd18, ((void *)FLOWERFACE(p)->mHateAnim.file),
-                                                0x40000000, 0x800, 0);
-    *(struct S *)(p + 0x0) = pmf_FlowerFace_StateHate;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        FLOWERFACE(p)->mModel, ((void *)FLOWERFACE(p)->mHateAnim.file), 0x40000000, 0x800, 0);
+    *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateHate;
 }
 }
 }
@@ -630,7 +642,7 @@ void FlowerFace_StateHate(void) {}
 namespace s020c3884 {
 extern "C" {
 void FallingPetal_SetModel(char *t, int a1) {
-    _ZN9ModelBase7SetFileEP8BMD_Fileii(t + 0x44, (void *)a1, 1, -1);
+    _ZN9ModelBase7SetFileEP8BMD_Fileii(PETAL(t)->mModel, (void *)a1, 1, -1);
     PETAL(t)->mActive = 0;
 }
 }
@@ -673,17 +685,17 @@ void FallingPetal_Spawn(int *r6, int *r5, int *r4) {
     r6[6] = 0;
     r6[7] = -0x40;
     r6[8] = 0;
-    *(short *)((char *)r6 + 0x94) = 0xb4;
+    PETAL(r6)->mLife = 0xb4;
     r6[9] = sFallingPetalAxis[0];
     r6[10] = sFallingPetalAxis[1];
     r6[11] = sFallingPetalAxis[2];
-    func_0203cd80((char *)r6 + 0x24, (short)RandomIntInternal(&data_0209e650));
+    func_0203cd80(&PETAL(r6)->mAxis, (short)RandomIntInternal(&data_0209e650));
     r6[12] = data_02092768[0];
     r6[13] = data_02092768[1];
     r6[14] = data_02092768[2];
     r6[15] = data_02092768[3];
-    Quaternion_FromVector3((char *)r6 + 0x30, sFallingPetalAxis, (int *)((char *)r6 + 0x24));
-    *(int *)((char *)r6 + 0x40) = 1;
+    Quaternion_FromVector3(PETAL(r6)->mRot, sFallingPetalAxis, (int *)&PETAL(r6)->mAxis);
+    PETAL(r6)->mActive = 1;
 }
 }
 }
@@ -713,34 +725,34 @@ void FallingPetal_Update(char *self) {
     int val;
     int dot;
 
-    if (_Z15ApproachLinear2Rsss((short *)(self + 0x94), 0, 1) != 0) {
+    if (_Z15ApproachLinear2Rsss(&PETAL(self)->mLife, 0, 1) != 0) {
         PETAL(self)->mActive = 0;
         return;
     }
-    AddVec3(self, self + 0xc, self);
+    AddVec3(&PETAL(self)->mPos, &PETAL(self)->mVel, &PETAL(self)->mPos);
     PETAL(self)->mAccel.y = -0x40;
-    AddVec3(self + 0xc, self + 0x18, self + 0xc);
-    idx = ((*(int *)(self + 4) >> 1) << 16) >> 20;
+    AddVec3(&PETAL(self)->mVel, &PETAL(self)->mAccel, &PETAL(self)->mVel);
+    idx = ((PETAL(self)->mPos.y >> 1) << 16) >> 20;
     val = *(short *)&data_02082214[idx];
     v0.x = val;
     v0.y = 0;
     v0.z = val;
     Vec3_MulScalarInPlace((int *)&v0, 0x400);
-    Vec3_Add(&v1, self + 0xc, &v0);
-    dot = DotVec3(self + 0x24, &v1);
-    Vec3_MulScalar(&v2, self + 0x24, dot);
+    Vec3_Add(&v1, &PETAL(self)->mVel, &v0);
+    dot = DotVec3(&PETAL(self)->mAxis, &v1);
+    Vec3_MulScalar(&v2, &PETAL(self)->mAxis, dot);
     Vec3_MulScalarInPlace((int *)&v2, 0x300);
-    SubVec3(self + 0xc, &v2, self + 0xc);
+    SubVec3(&PETAL(self)->mVel, &v2, &PETAL(self)->mVel);
     v3.x = v1.x;
     v3.y = v1.y;
     v3.z = v1.z;
     if (NormalizeVec3IfNonZero(&v3) == 0)
         return;
     q1 = data_02092768;
-    Quaternion_FromVector3(&q0, self + 0x24, &v3);
+    Quaternion_FromVector3(&q0, &PETAL(self)->mAxis, &v3);
     Quaternion_SLerp(&q1, &q0, 0x200, &q1);
     Quaternion_Normalize(&q1);
-    func_0202ffec(self + 0x30, &q1, self + 0x30);
+    func_0202ffec(PETAL(self)->mRot, &q1, PETAL(self)->mRot);
 }
 }
 }
@@ -763,7 +775,7 @@ extern "C" void FallingPetal_Draw(char *c) {
     v.z = 0x1000;
     v.y = 0x1000;
     v.x = 0x1000;
-    ((Obj *)(c + 0x44))->m5(&v);
+    ((Obj *)PETAL(c)->mModel)->m5(&v);
 }
 }
 
@@ -782,10 +794,11 @@ extern struct Matrix4x3 data_020a0e68;
 }
 void FallingPetal_UpdateMatrix(char *c) {
     struct Matrix4x3 sp;
-    Matrix4x3_FromQuaternion((char *)c + 0x30, &sp);
-    MulVec3Mat3x3(&sPetalUpAxis, &sp, (char *)c + 0x24);
-    Matrix4x3_FromTranslation(&data_020a0e68, *(int *)c, *(int *)(c + 4), *(int *)(c + 8));
+    Matrix4x3_FromQuaternion(PETAL(c)->mRot, &sp);
+    MulVec3Mat3x3(&sPetalUpAxis, &sp, &PETAL(c)->mAxis);
+    Matrix4x3_FromTranslation(&data_020a0e68, PETAL(c)->mPos.x, PETAL(c)->mPos.y, PETAL(c)->mPos.z);
     MulMat4x3Mat4x3(&sp, &data_020a0e68, &data_020a0e68);
+    /* 0x60 is mModel's matrix (Model +0x1c); mModel is a byte array here. */
     *(struct Matrix4x3 *)((char *)c + 0x60) = data_020a0e68;
 }
 }
@@ -1020,8 +1033,8 @@ void Presenter_Update(C *c) {
     Presenter_TrackStylus((char *)c);
     if (c->pmf)
         (c->*(c->pmf))();
-    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)c + 0xc8);
-    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)c + 0xdc);
+    _ZN15dExtFrameCtrl_c7AdvanceEv(PRESENTER(c)->mTexSeq);
+    _ZN15dExtFrameCtrl_c7AdvanceEv(PRESENTER(c)->mTexAnim);
     _ZN14BlendModelAnim7AdvanceEv((char *)c + 8);
     Presenter_UpdateMatrix((char *)c);
 }
@@ -1072,14 +1085,14 @@ extern "C" void Presenter_Draw(char *c) {
                                  ((((short)v1[2] >> 3) & 0x3ff) << 20) | 0x40000000;
 
     p = *(int **)(mc + 4);
-    _ZN15TextureSequence6UpdateER15ModelComponents(c + 0xc8, mc);
-    _ZN18TextureTransformer6UpdateER15ModelComponents(c + 0xdc, mc);
+    _ZN15TextureSequence6UpdateER15ModelComponents(PRESENTER(c)->mTexSeq, mc);
+    _ZN18TextureTransformer6UpdateER15ModelComponents(PRESENTER(c)->mTexAnim, mc);
     *(int *)(((int)p + 0x104)) -= PRESENTER(c)->mSway[2];
     *(int *)(((int)p + 0x108)) += PRESENTER(c)->mSway[3];
     *(int *)(((int)p + 0x134)) += PRESENTER(c)->mSway[0];
     *(int *)(((int)p + 0x138)) += PRESENTER(c)->mSway[1];
-    ((Obj *)(c + 8))->m(0);
-    ((Obj *)(c + 0x78))->m(&sPresenterScale);
+    ((Obj *)PRESENTER(c)->mFace)->m(0);
+    ((Obj *)PRESENTER(c)->mBack)->m(&sPresenterScale);
 }
 }
 
@@ -1110,6 +1123,7 @@ extern "C" {
 /* Presenter_IsAnimDone @ 0x20c2984 (ov006) -- veneer: add r0,r0,#0x58; b dExtFrameCtrl_c::Finished(). */
 
 int Presenter_IsAnimDone(void *a) {
+    /* 0x58 is the dExtFrameCtrl_c inside mFace (its +0x50); mFace is a byte array here. */
     return _ZN15dExtFrameCtrl_c8FinishedEv((char *)a + 0x58);
 }
 }
@@ -1128,6 +1142,9 @@ void Presenter_ResetPose(char *c) {
     PRESENTER(c)->mSway[0] = PRESENTER(c)->mSway[1];
     PRESENTER(c)->mSway[3] = 0;
     PRESENTER(c)->mSway[2] = PRESENTER(c)->mSway[3];
+    /* Rewind: each is a current frame (dExtFrameCtrl_c +0x8) -- of mFace's
+       frame control at 0x58, of mTexSeq and of mTexAnim. All three are byte
+       arrays here. */
     *(int *)(c + 0x60) = 0;
     *(int *)(c + 0xd0) = 0;
     *(int *)(c + 0xe4) = 0;
@@ -1374,7 +1391,7 @@ extern long long pmf_Presenter_StateSurprisedThenIdle;
 void Presenter_PlayCheerLoop(void *c) {
     long long new_var;
     char *r4 = (char *)c;
-    if ((*((int *)(((char *)c) + 0x1a8))) == 0) {
+    if ((PRESENTER(c)->mQuiet) == 0) {
         func_02012174(0, 3);
     }
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
@@ -1498,7 +1515,7 @@ extern "C" {
 /* Mascot_Update @ 0x20c2144 (ov006) -- veneer: add r0,r0,#0x10; b BlendModelAnim::Advance(). */
 
 void Mascot_Update(void *a) {
-    _ZN14BlendModelAnim7AdvanceEv((char *)a + 0x10);
+    _ZN14BlendModelAnim7AdvanceEv(MASCOT(a)->mModel);
 }
 }
 }
@@ -1575,8 +1592,10 @@ extern "C" void Mascot_UpdateMatrix(char *c) {
     Matrix4x3_FromTranslation(&data_020a0e68, MASCOT(c)->mPos.x, MASCOT(c)->mPos.y,
                               MASCOT(c)->mPos.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, MASCOT(c)->mRot[1]);
+    /* 0x2c is mModel's matrix (Model +0x1c) and 0x24 its bone-matrix pointer
+       (Model +0x14); mModel is a byte array here. */
     *(Matrix4x3 *)(c + 0x2c) = data_020a0e68;
-    ((Vtbl *)(c + 0x10))->v3();
+    ((Vtbl *)MASCOT(c)->mModel)->v3();
     data_020a0e68 = (*(Sub **)(c + 0x24))->m;
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, MASCOT(c)->mHeadYaw);
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, MASCOT(c)->mHeadPitch);
@@ -1734,8 +1753,8 @@ int Dealer_Load(char *c) {
     void *ip;
 
     _ZN17dExtShadowModel_c8CleanAllEv();
-    *(void **)(c + 0x260) = _ZN5Model8LoadFileER13SharedFilePtr(c + 0x1e8);
-    *(void **)(c + 0x264) = _ZN5Model8LoadFileER13SharedFilePtr(c + 0x1f0);
+    DEALER(c)->mModelData = (int)_ZN5Model8LoadFileER13SharedFilePtr(&DEALER(c)->mModelFile);
+    DEALER(c)->mTableData = (int)_ZN5Model8LoadFileER13SharedFilePtr(&DEALER(c)->mTableFile);
     f = ((void *)DEALER(c)->mModelData);
     if (f == 0 || _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x1c, f, 1, -1) == 0) {
         return 0;
@@ -1756,7 +1775,7 @@ int Dealer_Load(char *c) {
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
         c + 0x1c, ((void *)DEALER(c)->mAnims[0].file), 0, 0, 0x800, 0);
     Dealer_ResetMatrices(c);
-    *(int *)(c + 8) = data_020a0ebc.x;
+    DEALER(c)->mPos.x = data_020a0ebc.x;
     DEALER(c)->mPos.y = data_020a0ebc.y;
     DEALER(c)->mPos.z = data_020a0ebc.z;
     DEALER(c)->mRot[0] = data_020a0edc.x;
@@ -1770,9 +1789,9 @@ int Dealer_Load(char *c) {
         return 0;
     }
     ip = *(void **)(c + 0x98);
-    *(int *)((char *)ip + 0x24) &= ~1;
-    *(int *)((char *)ip + 0x114) &= ~1;
-    *(int *)((char *)ip + 0xe4) |= 2;
+    ((BMD_Material *)ip)[0].flags &= ~1;
+    ((BMD_Material *)ip)[5].flags &= ~1;
+    ((BMD_Material *)ip)[4].flags |= 2;
     MascotWalker_Load(c + 0xdc);
     DEALER(c)->mLampTimer = 0;
     DEALER(c)->mLampPattern = 1;
@@ -1798,17 +1817,17 @@ extern "C" void Dealer_Update(char *thiz) {
     if (*(int *)c != 0) {
         (o->*(o->pmf))();
     }
-    _ZN14BlendModelAnim7AdvanceEv(c + 0x1c);
-    if (_Z15ApproachLinear2Rsss((short *)(c + 0x1e0), 0, 1) != 0) {
-        short *p = (short *)(((int)c + 0x1e2));
+    _ZN14BlendModelAnim7AdvanceEv(DEALER(c)->mModel);
+    if (_Z15ApproachLinear2Rsss(&DEALER(c)->mLampTimer, 0, 1) != 0) {
+        short *p = &DEALER(c)->mLampPattern;
         *p = *p + 1;
-        if (*(short *)(c + 0x100 + 0xe2) > 7)
-            *(short *)(c + 0x100 + 0xe2) = 1;
-        *(short *)(c + 0x1e0) = data_ov006_0212b89c[*(short *)(c + 0x100 + 0xe2)];
+        if (DEALER(c)->mLampPattern > 7)
+            DEALER(c)->mLampPattern = 1;
+        DEALER(c)->mLampTimer = data_ov006_0212b89c[DEALER(c)->mLampPattern];
     }
-    short *q = (short *)(((int)c + 0x1e4));
+    short *q = &DEALER(c)->mLightAngle;
     *q = *q + 0x400;
-    MascotWalker_Update(c + 0xdc);
+    MascotWalker_Update(DEALER(c)->mWalker);
 }
 }
 
@@ -1854,8 +1873,8 @@ extern "C" void Dealer_Draw(void *self) {
          ((((short)v2.z >> 3) & 0x3ff) << 20);
     *(volatile unsigned int *)0x40004c8 = p2 | 0x40000000;
 
-    func_02016a14(c + 0x1c, 0x7fff);
-    func_02016a04(c + 0x1c, 0x4210);
+    func_02016a14(DEALER(c)->mModel, 0x7fff);
+    func_02016a04(DEALER(c)->mModel, 0x4210);
 
     ang = DEALER(c)->mLampPattern;
     {
@@ -1869,13 +1888,13 @@ extern "C" void Dealer_Draw(void *self) {
         }
     }
 
-    func_020169d8(c + 0x8c, 0, (unsigned short)(b[0] | (b[1] << 5) | (b[2] << 10)));
-    func_020169d8(c + 0x8c, 4, 0x6318);
-    func_020169d8(c + 0x8c, 5, (unsigned short)(b[1] | (b[2] << 5) | (b[0] << 10)));
+    func_020169d8(DEALER(c)->mTable, 0, (unsigned short)(b[0] | (b[1] << 5) | (b[2] << 10)));
+    func_020169d8(DEALER(c)->mTable, 4, 0x6318);
+    func_020169d8(DEALER(c)->mTable, 5, (unsigned short)(b[1] | (b[2] << 5) | (b[0] << 10)));
 
-    ((Obj *)(c + 0x1c))->f5(0);
-    MascotWalker_Draw(c + 0xdc);
-    ((Obj *)(c + 0x8c))->f5(0);
+    ((Obj *)DEALER(c)->mModel)->f5(0);
+    MascotWalker_Draw((char *)DEALER(c)->mWalker);
+    ((Obj *)DEALER(c)->mTable)->f5(0);
 
     dExtShadowModel_c::RenderAll();
 }
@@ -1900,15 +1919,17 @@ extern P2 pmf_Dealer_StateIdle;
 
 extern "C" void Dealer_PlayIdle(char *c) {
     if (DEALER(c)->mHand == 1) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            (BlendModelAnim *)(c + 0x1c), ((void *)DEALER(c)->mAnims[7].file), 0, 0, 0x800, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)DEALER(c)->mModel,
+                                                           ((void *)DEALER(c)->mAnims[7].file), 0,
+                                                           0, 0x800, 0);
         if (DEALER(c)->mDealSoundPlayed == 0) {
             Sound::PlayBank2_2D(0x13a);
             DEALER(c)->mDealSoundPlayed = 1;
         }
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            (BlendModelAnim *)(c + 0x1c), ((void *)DEALER(c)->mAnims[0].file), 0, 0, 0x800, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)DEALER(c)->mModel,
+                                                           ((void *)DEALER(c)->mAnims[0].file), 0,
+                                                           0, 0x800, 0);
     }
     *(P2 *)c = pmf_Dealer_StateIdle;
 }
@@ -1970,7 +1991,7 @@ void Dealer_StartShuffle(char *c, int unused, short a2, int a3) {
         DEALER(c)->mShuffleLeft = 1;
         DEALER(c)->mDealDoneAt = 1;
     }
-    if (_Z15ApproachLinear2Rsss((short *)(c + 0x1dc), 5, 1) != 0) {
+    if (_Z15ApproachLinear2Rsss(&DEALER(c)->mShuffleRound, 5, 1) != 0) {
         DEALER(c)->mShuffleRound = 0;
     }
     DEALER(c)->mDealSoundPlayed = 0;
@@ -2028,8 +2049,8 @@ extern "C" void Dealer_StateShuffle(char *c) {
     }
 
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 0)) {
-        short cv = *(short *)(c + 0x100 + 0xd8);
-        short *p = (short *)(((long)c + 0x1d8));
+        short cv = DEALER(c)->mShuffleLeft;
+        short *p = &DEALER(c)->mShuffleLeft;
         short old = *p;
         *p = old - 1;
         if (cv <= 0) {
@@ -2071,11 +2092,11 @@ extern "C" void Dealer_StartDeal(char *c, short arg1, int arg2) {
     DEALER(c)->mDealLeft = arg1;
     DEALER(c)->mDealtCount = arg2;
     if (Dealer_IsIdle((int *)c) && DEALER(c)->mAnim != DEALER(c)->mAnims[7].file) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)DEALER(c)->mModel,
                                                            ((void *)DEALER(c)->mAnims[1].file), 0,
                                                            0x40000000, 0x800, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)DEALER(c)->mModel,
                                                            ((void *)DEALER(c)->mAnims[3].file), 0,
                                                            0x40000000, 0x800, 0);
     }
@@ -2107,8 +2128,8 @@ void Dealer_StateDeal(char *c) {
 
     if (f7c == ((void *)DEALER(c)->mAnims[4].file)) {
         if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 0)) {
-            short cv = *(short *)(c + 0x100 + 0xde);
-            short *p = (short *)(((long)c + 0x1de));
+            short cv = DEALER(c)->mDealLeft;
+            short *p = &DEALER(c)->mDealLeft;
             short old = *p;
             *p = old - 1;
             if (cv <= 0) {
@@ -2142,7 +2163,7 @@ void Dealer_StateDeal(char *c) {
             return;
         _ZN5Sound12PlayBank2_2DEj(0x142);
         {
-            short *p = *(short **)(c + 0x1d4);
+            short *p = (short *)DEALER(c)->mDealtCount;
             *p = (short)(*p + 1);
         }
         return;
@@ -2168,10 +2189,10 @@ extern P2 pmf_Dealer_StateReveal_2;
 }
 
 void Dealer_StartReveal(int *t, int a1, int a2) {
-    *(short *)((char *)t + 0x1de) = a1;
-    t[0x75] = a2;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((char *)t + 0x1c, (void *)t[0x87], 8, 0,
-                                                       0x800, 0);
+    DEALER(t)->mDealLeft = a1;
+    DEALER(t)->mDealtCount = a2;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        DEALER(t)->mModel, (void *)DEALER(t)->mAnims[DEALER_ANIM_DEAL].file, 8, 0, 0x800, 0);
     *(P2 *)t = pmf_Dealer_StateReveal_2;
 }
 }
@@ -2187,8 +2208,8 @@ extern "C" void Dealer_StateReveal(void *cc) {
         goto other;
 
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 0)) {
-        short cv = *(short *)(c + 0x100 + 0xde);
-        short *p = (short *)(((long)c + 0x1de));
+        short cv = DEALER(c)->mDealLeft;
+        short *p = &DEALER(c)->mDealLeft;
         short old = *p;
         *p = old - 1;
         if (cv <= 0) {
@@ -2223,7 +2244,7 @@ extern "C" void Dealer_StateReveal(void *cc) {
     if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x6c, 5))
         return;
     _ZN5Sound12PlayBank2_2DEj(0x142);
-    *(short *)*(char **)(c + 0x1d4) += 1;
+    *(short *)DEALER(c)->mDealtCount += 1;
     return;
 
 other:
@@ -2273,6 +2294,7 @@ extern "C" {
 /* Dealer_IsAnimDone @ 0x20c0efc (ov006) -- veneer: add r0,r0,#0x6c; b dExtFrameCtrl_c::Finished(). */
 
 int Dealer_IsAnimDone(void *a) {
+    /* 0x6c is the dExtFrameCtrl_c inside mModel (its +0x50); mModel is a byte array here. */
     return _ZN15dExtFrameCtrl_c8FinishedEv((char *)a + 0x6c);
 }
 }
@@ -2288,10 +2310,11 @@ extern P2 pmf_Dealer_StateSwap;
 }
 
 void Dealer_StartSwap(int *t) {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((char *)t + 0x1c, (void *)t[0x8f], 0,
-                                                       0x40000000, 0x800, 0);
-    _ZN5Model12HideMaterialEii((char *)t + 0x1c, 2, 0);
-    _ZN5Model12ShowMaterialEii((char *)t + 0x1c, 1, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        DEALER(t)->mModel, (void *)DEALER(t)->mAnims[DEALER_ANIM_THROW].file, 0, 0x40000000, 0x800,
+        0);
+    _ZN5Model12HideMaterialEii(DEALER(t)->mModel, 2, 0);
+    _ZN5Model12ShowMaterialEii(DEALER(t)->mModel, 1, 0);
     *(P2 *)t = pmf_Dealer_StateSwap;
 }
 }
@@ -2304,10 +2327,11 @@ extern "C" void Dealer_StateSwap(char *c) {
         Sound::PlayBank2_2D(0x139);
         DEALER(c)->mShuffleSoundPlayed = 1;
     }
+    /* 0x6c is the dExtFrameCtrl_c inside mModel (its +0x50). */
     if (DEALER(c)->mAnim == DEALER(c)->mAnims[8].file &&
         ((dExtFrameCtrl_c *)(c + 0x6c))->Finished()) {
-        ((Model *)(c + 0x1c))->HideMaterial(1, 0);
-        ((Model *)(c + 0x1c))->ShowMaterial(2, 0);
+        ((Model *)DEALER(c)->mModel)->HideMaterial(1, 0);
+        ((Model *)DEALER(c)->mModel)->ShowMaterial(2, 0);
         return;
     }
     if (((dExtFrameCtrl_c *)(c + 0x6c))->WillHitFrame(0x14))
@@ -2333,12 +2357,12 @@ extern double pmf_Dealer_StateLose;
 
 extern "C" void Dealer_PlayLose(char *c) {
     if (DEALER(c)->mHand == 1) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)DEALER(c)->mModel,
                                                            (void *)DEALER(c)->mAnims[5].file, 0,
                                                            0x40000000, 0x800, 0);
     } else {
         Sound::PlayBank2_2D(0x13c);
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c),
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)DEALER(c)->mModel,
                                                            (void *)DEALER(c)->mAnims[12].file, 0,
                                                            0x40000000, 0x800, 0);
     }
@@ -2471,11 +2495,11 @@ int MascotWalker_Construct(char *t) {
     func_02017acc(t, 0x205);
     _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
     _ZN13SharedFilePtr9ConstructEj(t + 0x10, 0x207);
-    _ZN14BlendModelAnimC1Ev(t + 0x18);
-    _ZN17dExtShadowModel_cC1Ev(t + 0x88);
+    _ZN14BlendModelAnimC1Ev(WALKER(t)->mModel);
+    _ZN17dExtShadowModel_cC1Ev(WALKER(t)->mShadow);
     WALKER(t)->mPathIndex = 0;
-    *(short *)(t + 0xf0) = 0;
-    *(int *)(t + 0xf4) = 0;
+    WALKER(t)->mHeadAngle = 0;
+    WALKER(t)->mPaused = 0;
     return (int)t;
 }
 }
@@ -2487,8 +2511,8 @@ int MascotWalker_Destruct(char *t) {
     _ZN13SharedFilePtr7ReleaseEv(t);
     _ZN13SharedFilePtr7ReleaseEv(t + 0x10);
     _ZN13SharedFilePtr7ReleaseEv(t + 8);
-    _ZN17dExtShadowModel_cD1Ev(t + 0x88);
-    _ZN14BlendModelAnimD1Ev(t + 0x18);
+    _ZN17dExtShadowModel_cD1Ev(WALKER(t)->mShadow);
+    _ZN14BlendModelAnimD1Ev(WALKER(t)->mModel);
     SharedFilePtr_Destruct_Anim(t + 0x10);
     SharedFilePtr_Destruct_Anim(t + 8);
     func_02017ab4(t);
@@ -2525,23 +2549,23 @@ extern "C" void MascotWalker_Load(char *thiz) {
     char *c = thiz;
     {
         void *bmd = _ZN5Model8LoadFileER13SharedFilePtr(c);
-        _ZN9ModelBase7SetFileEP8BMD_Fileii((ModelBase *)(c + 0x18), bmd, 1, -1);
+        _ZN9ModelBase7SetFileEP8BMD_Fileii((ModelBase *)WALKER(c)->mModel, bmd, 1, -1);
     }
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0x10));
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 8));
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x18),
-                                                       **(BCA_File **)(c + 0xc), 0, 0, 0x800, 0);
-    _ZN5Model12SetPolygonIDEi((Model *)(c + 0x18), 1);
-    _ZN17dExtShadowModel_c12InitCylinderEv((void *)(c + 0x88));
-    *(int *)(c + 0xbc) = 0x1000;
-    *(int *)(c + 0xc0) = 0x1000;
-    *(int *)(c + 0xc4) = 0x1000;
-    *(int *)(c + 0xc8) = data_020a0ebc.x;
-    *(int *)(c + 0xcc) = data_020a0ebc.y;
-    *(int *)(c + 0xd0) = data_020a0ebc.z;
-    *(short *)(c + 0xe8) = data_020a0edc.x;
-    *(short *)(c + 0xea) = data_020a0edc.y;
-    *(short *)(c + 0xec) = data_020a0edc.z;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        (BlendModelAnim *)WALKER(c)->mModel, *(BCA_File *)WALKER(c)->mPauseAnim, 0, 0, 0x800, 0);
+    _ZN5Model12SetPolygonIDEi((Model *)WALKER(c)->mModel, 1);
+    _ZN17dExtShadowModel_c12InitCylinderEv((void *)WALKER(c)->mShadow);
+    WALKER(c)->mScale.x = 0x1000;
+    WALKER(c)->mScale.y = 0x1000;
+    WALKER(c)->mScale.z = 0x1000;
+    WALKER(c)->mPos.x = data_020a0ebc.x;
+    WALKER(c)->mPos.y = data_020a0ebc.y;
+    WALKER(c)->mPos.z = data_020a0ebc.z;
+    WALKER(c)->mAngleX = data_020a0edc.x;
+    WALKER(c)->mAngleY = data_020a0edc.y;
+    WALKER(c)->mAngleZ = data_020a0edc.z;
     MascotWalker_StartNextPath(c);
 }
 }
@@ -2559,13 +2583,13 @@ struct C {
     char pad0[0xb4];
     PMF pmf; // 0xb4 (2 words)
     char pad1[0xc8 - 0xb4 - 8];
-    Vector3 v0c8; // 0xc8
+    Vector3 mPos; // 0xc8
     char pad2[0xea - 0xc8 - 12];
-    short a0ea; // 0xea
+    short mAngleY; // 0xea
     char pad3[0xf0 - 0xea - 2];
-    short a0f0; // 0xf0
+    short mHeadAngle; // 0xf0
     char pad4[0xf4 - 0xf0 - 2];
-    int a0f4; // 0xf4
+    int mPaused; // 0xf4
 };
 
 extern "C" {
@@ -2578,37 +2602,37 @@ extern "C" int pmf_MascotWalker_StateWalk_2[2];
 extern "C" void MascotWalker_Update(C *c) {
     (c->*(c->pmf))();
 
-    _ZN14BlendModelAnim7AdvanceEv((char *)c + 0x18);
+    _ZN14BlendModelAnim7AdvanceEv(WALKER(c)->mModel);
 
-    if (c->a0f4 != 0) {
+    if (c->mPaused != 0) {
         Vector3 t;
         t.x = sMascotWalkerOffset.x;
         t.y = sMascotWalkerOffset.y;
         t.z = sMascotWalkerOffset.z;
         short d;
         int ang;
-        ang = Vec3_HorzAngle(&c->v0c8, &t);
-        d = (short)(ang - c->a0ea);
+        ang = Vec3_HorzAngle(&c->mPos, &t);
+        d = (short)(ang - c->mAngleY);
         if (d < -0x3000)
             d = -0x3000;
         else if (d > 0x3000)
             d = 0x3000;
-        _Z11UpdateAngleRssis(&c->a0f0, d, 8, 0x200);
+        _Z11UpdateAngleRssis(&c->mHeadAngle, d, 8, 0x200);
 
         {
-            int *p = (int *)(((int)c + 0xb4));
+            int *p = (int *)&c->pmf;
             int *g = pmf_MascotWalker_StateWalk_2;
             if (p[0] == g[0]) {
                 if (p[1] == g[1])
                     return;
-                if (*(int *)((char *)c + 0xb4) == 0)
+                if (((int *)&c->pmf)[0] == 0)
                     return;
             }
         }
         d = (short)(ang - d);
-        _Z11UpdateAngleRssis(&c->a0ea, d, 8, 0x200);
+        _Z11UpdateAngleRssis(&c->mAngleY, d, 8, 0x200);
     } else {
-        _Z11UpdateAngleRssis(&c->a0f0, 0, 8, 0x200);
+        _Z11UpdateAngleRssis(&c->mHeadAngle, 0, 8, 0x200);
     }
 }
 }
@@ -2617,9 +2641,9 @@ namespace s020c07a0 {
 extern "C" {
 void MascotWalker_Draw(char *t) {
     MascotWalker_UpdateMatrix(t);
-    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(t + 0x88, t + 0x34, 0x3c000,
-                                                                 0x14000, 0x3c000, 0xc);
-    _ZN5Model6RenderEPK7Vector3(t + 0x18, 0);
+    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
+        WALKER(t)->mShadow, WALKER(t)->mMatrix, 0x3c000, 0x14000, 0x3c000, 0xc);
+    _ZN5Model6RenderEPK7Vector3(WALKER(t)->mModel, 0);
 }
 }
 }
@@ -2641,20 +2665,21 @@ struct Base {
 
 extern "C" void MascotWalker_UpdateMatrix(char *thiz) {
     char *c = thiz;
-    ((Base *)(c + 0x18))->m();
+    ((Base *)WALKER(c)->mModel)->m();
+    /* 0x2c is mModel's bone-matrix pointer (Model +0x14); 0x120 picks bone 6. */
     {
         char *m = *(char **)(c + 0x2c);
         data_020a0e68 = *(Matrix4x3 *)(m + 0x120);
     }
-    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, *(short *)(c + 0xf0));
+    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, WALKER(c)->mHeadAngle);
     {
         char *m = *(char **)(c + 0x2c);
         *(Matrix4x3 *)(m + 0x120) = data_020a0e68;
     }
-    Matrix4x3_FromTranslation((Matrix4x3 *)&data_020a0e68, *(int *)(c + 0xc8), *(int *)(c + 0xcc),
-                              *(int *)(c + 0xd0));
-    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(short *)(c + 0xea));
-    *(Matrix4x3 *)(c + 0x34) = data_020a0e68;
+    Matrix4x3_FromTranslation((Matrix4x3 *)&data_020a0e68, WALKER(c)->mPos.x, WALKER(c)->mPos.y,
+                              WALKER(c)->mPos.z);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, WALKER(c)->mAngleY);
+    *(Matrix4x3 *)WALKER(c)->mMatrix = data_020a0e68;
 }
 }
 
@@ -2668,10 +2693,10 @@ extern int pmf_MascotWalker_StateWalk[];
 void MascotWalker_StartNextPath(char *c) {
     int sp8[3];
     int sp14[3];
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x18, (void *)WALKER(c)->mWalkAnim, 0, 0,
-                                                       0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        WALKER(c)->mModel, (void *)WALKER(c)->mWalkAnim, 0, 0, 0x800, 0);
     if (WALKER(c)->mPathIndex < 3) {
-        *(int *)(((int)c + 0xe4)) += 1;
+        WALKER(c)->mPathIndex += 1;
     } else {
         WALKER(c)->mPathIndex = 0;
     }
@@ -2685,12 +2710,13 @@ void MascotWalker_StartNextPath(char *c) {
         WALKER(c)->mPos.y = el[1];
         WALKER(c)->mPos.z = el[2];
     }
-    *(int *)(((int)c + 0xe0)) += 1;
-    Vec3_Sub(sp8, c + 0xc8, (char *)((int *)WALKER(c)->mPath)[1] + WALKER(c)->mPathPoint * 0xc);
+    WALKER(c)->mPathPoint += 1;
+    Vec3_Sub(sp8, &WALKER(c)->mPos,
+             (char *)((int *)WALKER(c)->mPath)[1] + WALKER(c)->mPathPoint * 0xc);
     WALKER(c)->mDir.x = sp8[0];
     WALKER(c)->mDir.y = sp8[1];
     WALKER(c)->mDir.z = sp8[2];
-    if (NormalizeVec3IfNonZero(c + 0xd4) == 0) {
+    if (NormalizeVec3IfNonZero(&WALKER(c)->mDir) == 0) {
         WALKER(c)->mDir.x = 0xb50;
         WALKER(c)->mDir.y = 0xb50;
         WALKER(c)->mDir.z = 0;
@@ -2703,7 +2729,7 @@ void MascotWalker_StartNextPath(char *c) {
         sp14[1] = el[1];
         sp14[2] = el[2];
     }
-    WALKER(c)->mTargetAngle = (short)Vec3_HorzAngle(c + 0xc8, sp14);
+    WALKER(c)->mTargetAngle = (short)Vec3_HorzAngle(&WALKER(c)->mPos, sp14);
     {
         int a = pmf_MascotWalker_StateWalk[0];
         int b = pmf_MascotWalker_StateWalk[1];
@@ -2731,7 +2757,7 @@ void MascotWalker_StateWalk(char *c) {
     int t1, t2;
     int r1, r2;
 
-    _Z11UpdateAngleRssis((short *)(c + 0xea), WALKER(c)->mTargetAngle, 8, 0x100);
+    _Z11UpdateAngleRssis(&WALKER(c)->mAngleY, WALKER(c)->mTargetAngle, 8, 0x100);
 
     a = WALKER(c)->mDir.x;
     if (a < 0)
@@ -2743,27 +2769,27 @@ void MascotWalker_StateWalk(char *c) {
         b = -b;
 
     idx = WALKER(c)->mPathPoint * 0xc;
-    path = *(char **)(c + 0xb0);
+    path = (char *)WALKER(c)->mPath;
     arr = *(char **)(path + 4);
-    r1 = _Z14ApproachLinearRiii((int *)(c + 0xc8), *(int *)(arr + idx), t1);
+    r1 = _Z14ApproachLinearRiii(&WALKER(c)->mPos.x, *(int *)(arr + idx), t1);
 
     t2 = FX_MUL(b, 0x1a9);
 
     idx = WALKER(c)->mPathPoint * 0xc;
-    path = *(char **)(c + 0xb0);
+    path = (char *)WALKER(c)->mPath;
     arr = *(char **)(path + 4);
-    r2 = _Z14ApproachLinearRiii((int *)(c + 0xd0), *(int *)(arr + idx + 8), t2);
+    r2 = _Z14ApproachLinearRiii(&WALKER(c)->mPos.z, *(int *)(arr + idx + 8), t2);
 
     if (r1 != 0 && r2 != 0) {
-        if (WALKER(c)->mPathPoint < *(int *)(*(char **)(c + 0xb0)) - 1) {
+        if (WALKER(c)->mPathPoint < *(int *)WALKER(c)->mPath - 1) {
             Vector3 dir;
             Vector3 next;
             int *p;
 
-            p = (int *)(c + 0xe0);
+            p = &WALKER(c)->mPathPoint;
             *p = *p + 1;
 
-            path = *(char **)(c + 0xb0);
+            path = (char *)WALKER(c)->mPath;
             idx = WALKER(c)->mPathPoint * 0xc;
             arr = *(char **)(path + 4);
             Vec3_Sub(&dir, &WALKER(c)->mPos, (Vector3 *)(arr + idx));
@@ -2779,13 +2805,13 @@ void MascotWalker_StateWalk(char *c) {
             }
 
             idx = WALKER(c)->mPathPoint * 0xc;
-            path = *(char **)(c + 0xb0);
+            path = (char *)WALKER(c)->mPath;
             arr = *(char **)(path + 4);
             next.x = *(int *)(arr + idx);
             next.y = *(int *)(arr + idx + 4);
             next.z = *(int *)(arr + idx + 8);
 
-            WALKER(c)->mTargetAngle = Vec3_HorzAngle((const Vector3 *)(c + 0xc8), &next);
+            WALKER(c)->mTargetAngle = Vec3_HorzAngle((const Vector3 *)&WALKER(c)->mPos, &next);
             return;
         }
 
@@ -2793,7 +2819,7 @@ void MascotWalker_StateWalk(char *c) {
         return;
     }
 
-    if (_Z15ApproachLinear2Rsss((short *)(c + 0xf2), 0, 1) == 0)
+    if (_Z15ApproachLinear2Rsss(&WALKER(c)->mStateTimer, 0, 1) == 0)
         return;
 
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x68, 0) == 0)
@@ -2814,11 +2840,11 @@ extern P2 pmf_MascotWalker_StatePause;
 }
 
 void MascotWalker_StartPause(int *t) {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((char *)t + 0x18, (void *)t[3], 8, 0, 0x800,
-                                                       0);
-    *(short *)((char *)t + 0xf2) = 0x78;
-    t[0x3d] = 1;
-    *(P2 *)((char *)t + 0xb4) = pmf_MascotWalker_StatePause;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        WALKER(t)->mModel, (void *)WALKER(t)->mPauseAnim, 8, 0, 0x800, 0);
+    WALKER(t)->mStateTimer = 0x78;
+    WALKER(t)->mPaused = 1;
+    *(P2 *)WALKER(t)->mState = pmf_MascotWalker_StatePause;
 }
 }
 }
@@ -2844,15 +2870,15 @@ extern P2 pmf_MascotWalker_StateWalk_3;
 }
 
 extern "C" void MascotWalker_StatePause(char *c) {
-    if (ApproachLinear2(*(short *)(c + 0xf2), 0, 1) == 0)
+    if (ApproachLinear2(WALKER(c)->mStateTimer, 0, 1) == 0)
         return;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x18),
-                                                       *(void **)(c + 0x14), 0, 0, 0x800, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        (BlendModelAnim *)WALKER(c)->mModel, (void *)WALKER(c)->mWalkAnim, 0, 0, 0x800, 0);
     int r = RandomIntInternal(&data_0209e650);
     int idx = (int)((unsigned int)(r & 0x7fffffff) >> 0x13);
-    *(short *)(c + 0xf2) = (short)(((idx * 0x258) >> 12) + 0x258);
-    *(int *)(c + 0xf4) = 0;
-    *(P2 *)(c + 0xb4) = pmf_MascotWalker_StateWalk_3;
+    WALKER(c)->mStateTimer = (short)(((idx * 0x258) >> 12) + 0x258);
+    WALKER(c)->mPaused = 0;
+    *(P2 *)WALKER(c)->mState = pmf_MascotWalker_StateWalk_3;
 }
 }
 
@@ -2927,7 +2953,7 @@ extern short data_02082214[];
 void Camera_ProjectToScreen(char *r4, void *r1, int *r6, int *r5) {
     int out[3];
     MulVec3Mat4x3(r1, r4, out);
-    int ang = *(short *)(r4 + 0xb8) >> 4;
+    int ang = ((s020c0134::dCamera_c *)r4)->angle >> 4;
     int i = ang * 2;
     int cosv = data_02082214[i];
     int sinv = data_02082214[i + 1];
@@ -2951,7 +2977,7 @@ extern short data_02082214[];
 void Camera_ProjectToScreen16(char *r4, void *r1, short *r5) {
     int out[3];
     MulVec3Mat4x3(r1, r4, out);
-    int ang = *(short *)(r4 + 0xb8) >> 4;
+    int ang = ((s020c0134::dCamera_c *)r4)->angle >> 4;
     int i = ang * 2;
     int cosv = data_02082214[i];
     int sinv = data_02082214[i + 1];

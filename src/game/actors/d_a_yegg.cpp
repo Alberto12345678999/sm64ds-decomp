@@ -59,7 +59,7 @@
  *   Spawned coins use dActor_c's existing previous-angle and horizontal-speed fields.
  * - mSpawnPos is named in daYegg_c.h but its purpose is not known
  *   (written once, never read here); unk_41e and the 4-byte gap at 0x3f8 are
- *   unnamed. dActor_c::unk_0a4/unk_0ac are read through their unk_ names.
+ *   unnamed.
  * - this list is representative, not exhaustive: the flag and mask
  *   literals (mFlags 0x40000/0x10000000/0x8, the hit flags 0x8000/0x26fe0,
  *   the cylinder words 0x202000/0x200002/0xa08000) are also left numeric, and
@@ -785,10 +785,10 @@ void daYegg_c::func_ov002_020ed0d4()
 
     com = mPlayer;
     mHoldOffsetZ = -0x68000;
-    p = &com->unk_0a4;
-    unk_0a4 = p[0];
+    p = &com->mSpeedX;
+    mSpeedX = p[0];
     mVertSpeed = p[1];
-    unk_0ac = p[2];
+    mSpeedZ = p[2];
     mHorzSpeed = com->mHorzSpeed;
 
     if (DecIfAbove0_Byte(&unk_41e) == 0) {
@@ -878,22 +878,28 @@ void daYegg_c::func_ov002_020ed0d4()
     }
 
     if (func_ov002_020ec654() == 0) {
-        int a4 = unk_0a4;
+        int a4 = mSpeedX;
         if (a4 < 0) a4 = -a4;
-        unk_0a4 = a4;
-        int ac = unk_0ac;
+        mSpeedX = a4;
+        int ac = mSpeedZ;
         if (ac < 0) ac = -ac;
-        unk_0ac = ac;
-        a4 = unk_0a4;
-        if (a4 > 0x20000) { a4 = 0x20000; unk_0a4 = a4; }
-        a4 = unk_0a4;
+        mSpeedZ = ac;
+        a4 = mSpeedX;
+        if (a4 > 0x20000) {
+            a4 = 0x20000;
+            mSpeedX = a4;
+        }
+        a4 = mSpeedX;
         {
             int fd1 = _ZN4cstd4fdivEii(a4, 0x20000);
             int r1 = FX_MUL(fd1, 0xe39);
             short a4ang = (short)(-r1);
-            ac = unk_0ac;
-            if (ac > 0x20000) { ac = 0x20000; unk_0ac = ac; }
-            ac = unk_0ac;
+            ac = mSpeedZ;
+            if (ac > 0x20000) {
+                ac = 0x20000;
+                mSpeedZ = ac;
+            }
+            ac = mSpeedZ;
             {
                 int fd2 = _ZN4cstd4fdivEii(ac, 0x20000);
                 int r2 = FX_MUL(fd2, 0xe39);

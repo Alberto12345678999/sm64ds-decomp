@@ -15,6 +15,8 @@ extern void func_ov007_020b9770(void);
 extern void func_ov007_020bf304(void);
 extern char *data_ov007_0210342c;
 
+/* Teardown of the data_ov007_0210342c manager. It has no class or header, so its slots
+ * stay raw; +0x4/+0x8/+0xc/+0x40 are Ov007MenuStates, but only their pointers are touched. */
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 void func_ov007_020b65e0(void)

@@ -82,9 +82,12 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
                              base's mIsActive -- after which every SaveSnapshot
                              and Update returns immediately. */
 
-    /* hitX/hitZ per SmartballBall_UpdatePhysics, but nothing in this class reads
-       them -- unmodelled, not unread. */
-    u8  pad_044[0x8]; /* 0x044-0x04b */
+    /* Where the ball was swallowed: SmartballBall_UpdatePhysics (its own Obj
+       cast calls them hitX/hitZ) copies the position of the ana it falls into,
+       right before that ana's Swallow(). While state3a is 1, NeedsRespawn
+       measures the ball's distance from this point. */
+    s32 mSwallowX; /* 0x044 */
+    s32 mSwallowZ; /* 0x048 */
 
     u8  hit[0x20];      /* 0x04c */
     u8  hitA[0x20];     /* 0x06c */
@@ -110,11 +113,10 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
     u8  mIsWaiting;      /* 0x100 -- 1 while this ball is still queued behind the
                              one in play. RestoreInitial sets it; SaveSnapshot
                              clears it once the base's mIndex (this ball's own
-                             slot index) equals the manager's current index at
-                             mgr+0x4664 and mInPlay is up. While set,
+                             slot index) equals the manager's mServeIndex and mInPlay is up. While set,
                              SaveSnapshot runs QueueBehind, which lines
                              the ball up behind its predecessor in the
-                             manager's 13-entry table at mgr+0x4688; once clear
+                             manager's 13-entry mpBalls table; once clear
                              it runs the live physics path
                              SmartballBall_UpdatePhysics instead. */
     u8  pad_101[0x3]; /* 0x101-0x103 -- alignment */

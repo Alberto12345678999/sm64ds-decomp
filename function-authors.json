@@ -40039,23 +40039,23 @@
     },
     "ov075:0x021190a4": {
       "author": "lunavyqo",
-      "name": "func_ov075_021190a4"
+      "name": "_ZN10dScEntry_c23UpdatePlayerSelectIntroEv"
     },
     "ov075:0x0211919c": {
       "author": "tangosdev",
-      "name": "func_ov075_0211919c"
+      "name": "_ZN10dScEntry_c22EnterPlayerSelectIntroEv"
     },
     "ov075:0x021192bc": {
       "author": "tangosdev",
-      "name": "func_ov075_021192bc"
+      "name": "_ZN10dScEntry_c16UpdatePlayerSyncEv"
     },
     "ov075:0x0211944c": {
       "author": "tangosdev",
-      "name": "func_ov075_0211944c"
+      "name": "_ZN10dScEntry_c15EnterPlayerSyncEv"
     },
     "ov075:0x021194e4": {
       "author": "tangosdev",
-      "name": "func_ov075_021194e4"
+      "name": "_ZN10dScEntry_c17RenderWaitingTextEv"
     },
     "ov075:0x02119640": {
       "author": "tangosdev",

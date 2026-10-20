@@ -1,5 +1,6 @@
 typedef struct { int a, b, c; } Vec3;
 
+/* o: the 0xd0-byte record func_ov007_020c690c allocates; no class or header names it, so raw. */
 void func_ov007_020c684c(char *o)
 {
     Vec3 tmp;
