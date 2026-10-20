@@ -82,12 +82,6 @@ typedef struct {
     int x, y;
 } V2;
 
-/* shadow 'V2ab' (was 'V2') -- 2 member(s).
-   the same two words as V2, but named a/b by their files. */
-struct V2ab {
-    int a, b;
-};
-
 /* shadow 'V2xz' (was 'V2') -- 2 member(s).
    the same two words as V2, named x/z by their files. */
 typedef struct V2xz {
@@ -399,8 +393,8 @@ extern int _ZTV19cMgSmartball_wing_c[];
 /* Local helper declarations. */
 /* These declarations also cover helpers called before their ROM-ordered definition. */
 extern "C" {
-char *cMgSmartball_wing_c_Construct(char *self, int x, int y, struct V2ab *src);
-char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, struct V2ab *src);
+char *cMgSmartball_wing_c_Construct(char *self, int x, int y, int *src);
+char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, int *src);
 int cMgSmartball_pushswitch_c_Construct(char *c, int b, int d, int *s);
 int cMgSmartball_board_c_Construct(char *c, int b, int d, int *s);
 int cMgSmartball_pakkun_c_Construct(char *c, int b, int d, int *s);
@@ -681,11 +675,11 @@ void cMgSmartball_wing_c::RestoreInitial() {
 
 // @symbol cMgSmartball_wing_c_Construct
 extern "C" { /* .c-derived member: C linkage for the whole block */
-char *cMgSmartball_wing_c_Construct(char *self, int x, int y, struct V2ab *src) {
-    struct V2ab v;
-    v.a = src->a;
-    v.b = src->b;
-    cMgSmartball_object_c_Construct(self, x, y, (int *)&v);
+char *cMgSmartball_wing_c_Construct(char *self, int x, int y, int *src) {
+    int v[2];
+    v[0] = src[0];
+    v[1] = src[1];
+    cMgSmartball_object_c_Construct(self, x, y, v);
     *(void **)(self) = (void *)&_ZTV19cMgSmartball_wing_c[2];
     ((cMgSmartball_object_c *)self)->mRadius = 0x18000;
     *(short *)(self + 0x32) = 0;
@@ -2363,33 +2357,30 @@ int cMgSmartball_spring_c_Construct(char *c, int b, int d, int *s) {
 
 // @symbol _ZN18cMgSmartball_ana_c7HasBallEv
 int cMgSmartball_ana_c::HasBall() {
-    unsigned char *p = (unsigned char *)this;
-    return p[49];
+    return mTriggered;
 }
 
 // @symbol _ZN18cMgSmartball_ana_c7SwallowEv
 void cMgSmartball_ana_c::Swallow() {
-    char *c = (char *)this;
     int tmp1[2];
     int tmp2[2];
     mRespawnTimer = 0x3c;
     mTriggered = 1;
-    tmp1[0] = *(int *)(c + 8);
+    tmp1[0] = mCurrent0;
     tmp1[1] = mCurrent1;
-    ((dScMgSmartball_c *)((char *)(*(int *)(c + 4))))->EmitSparks((int *)tmp1, 0);
-    tmp2[0] = *(int *)(c + 8);
+    ((dScMgSmartball_c *)mpManager)->EmitSparks((int *)tmp1, 0);
+    tmp2[0] = mCurrent0;
     tmp2[1] = mCurrent1;
-    ((dScMgSmartball_c *)(*(int *)(c + 4)))->EmitScore((int *)tmp2, (int)0x7d0, (int)0, (int)1);
-    ((dScMgSmartball_c *)((char *)(*(int *)(c + 4))))->CountAna();
-    func_02012718(0xe0, *(int *)(c + 8));
+    ((dScMgSmartball_c *)mpManager)->EmitScore((int *)tmp2, (int)0x7d0, (int)0, (int)1);
+    ((dScMgSmartball_c *)mpManager)->CountAna();
+    func_02012718(0xe0, mCurrent0);
 }
 
 // @symbol _ZN18cMgSmartball_ana_c6UpdateEv
 /* Slot 1. While the BASE's mTriggered flag is set, picks a warning-sprite
  * index from this class's countdown (mRespawnTimer) and draws it under the main
  * sprite; the main sprite is always drawn. mTriggered belongs to the base
- * class, not this one -- reached with the same explicit cast the old C
- * used, see cMgSmartball_ana_c.h. */
+ * class, not this one -- see cMgSmartball_ana_c.h. */
 void cMgSmartball_ana_c::Update() {
     if (mTriggered == 1) {
         int v = mRespawnTimer;
@@ -2535,9 +2526,9 @@ void cMgSmartball_kinoko_c::SaveSnapshot() {
             i = 0;
             if (((dScMgSmartball_c *)obj)->mBallCount > 0) {
                 do {
-                    void *n =
-                        (i >= 0xd) ? (void *)0 : (void *)((dScMgSmartball_c *)obj)->mpBalls[i];
-                    if (*(unsigned char *)((int)n + 0x30) != 0) {
+                    cMgSmartball_ball_c *n =
+                        (i >= 0xd) ? 0 : ((dScMgSmartball_c *)obj)->mpBalls[i];
+                    if (n->mIsActive != 0) {
                         void *m =
                             (i >= 0xd) ? (void *)0 : (void *)((dScMgSmartball_c *)obj)->mpBalls[i];
                         int hit;
@@ -2585,11 +2576,11 @@ void cMgSmartball_kinoko_c::RestoreInitial() {
 
 // @symbol cMgSmartball_kinoko_c_Construct
 extern "C" { /* .c-derived member: C linkage for the whole block */
-char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, struct V2ab *src) {
-    struct V2ab v;
-    v.a = src->a;
-    v.b = src->b;
-    cMgSmartball_object_c_Construct(self, x, y, (int *)&v);
+char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, int *src) {
+    int v[2];
+    v[0] = src[0];
+    v[1] = src[1];
+    cMgSmartball_object_c_Construct(self, x, y, v);
     *(void **)(self) = (void *)&_ZTV21cMgSmartball_kinoko_c[2];
     ((cMgSmartball_object_c *)self)->mRadius = 0x7000;
     ((cMgSmartball_kinoko_c *)self)->mVariant = 2;
@@ -5016,7 +5007,7 @@ void dScMgSmartball_c::SpawnObjects() {
             void *p = _Znwj(0x40);
             if (p != 0) {
                 V2 tmp = pos[j];
-                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, (int)j, (struct V2ab *)&tmp);
+                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, (int)j, (int *)&tmp);
             }
             {
                 void **slot =
@@ -5061,7 +5052,7 @@ void dScMgSmartball_c::SpawnObjects() {
                 int tx = pos[n].x;
                 tmp.x = tx;
                 tmp.y = ty;
-                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, n, (V2ab *)&tmp);
+                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, n, (int *)&tmp);
             }
             {
                 void **slot =
@@ -5419,7 +5410,7 @@ void dScMgSmartball_c::SpawnObjects() {
             void *p = _Znwj(0x88);
             if (p != 0) {
                 V2 tmp = pos[0];
-                p = cMgSmartball_wing_c_Construct((char *)p, (int)c, (int)0, (struct V2ab *)&tmp);
+                p = cMgSmartball_wing_c_Construct((char *)p, (int)c, (int)0, (int *)&tmp);
             }
             mpWing = (cMgSmartball_wing_c *)p;
         }
