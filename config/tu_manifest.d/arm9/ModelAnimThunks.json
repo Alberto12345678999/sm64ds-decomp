@@ -1,0 +1,149 @@
+{
+  "id": "arm9/ModelAnimThunks",
+  "module": "arm9",
+  "source": "src/engine/model/ModelAnimThunks.cpp",
+  "promoted_source": "src/engine/model/ModelAnimThunks.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run 0x02017168..0x020171c8. Six _ZThn80_ thunks, each 0x10 bytes, in class order ModelAnim, BlendModelAnim, ModelAnim2, and within each class D0 then D1.",
+    "The byte before the run is ModelBase::C2. The byte after it is not one of these classes. None of the three class translation units is contiguous with this run, so the thunks cannot be appended to those files.",
+    "Defining ~ModelAnim(), ~BlendModelAnim(), and ~ModelAnim2() in that order emits the six thunks in cartridge order. The destructor bodies match the lifecycle homes and are not part of this claim."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02017168",
+      "end": "0x020171c8"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "_ZThn80_N9ModelAnimD0Ev",
+      "address": "0x02017168",
+      "size": "0x00000010",
+      "legacy_source": "src/engine/model/ModelAnimThunks.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZThn80_N9ModelAnimD1Ev",
+      "address": "0x02017178",
+      "size": "0x00000010",
+      "legacy_source": "src/engine/model/ModelAnimThunks.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZThn80_N14BlendModelAnimD0Ev",
+      "address": "0x02017188",
+      "size": "0x00000010",
+      "legacy_source": "src/engine/model/ModelAnimThunks.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZThn80_N14BlendModelAnimD1Ev",
+      "address": "0x02017198",
+      "size": "0x00000010",
+      "legacy_source": "src/engine/model/ModelAnimThunks.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZThn80_N10ModelAnim2D0Ev",
+      "address": "0x020171a8",
+      "size": "0x00000010",
+      "legacy_source": "src/engine/model/ModelAnimThunks.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZThn80_N10ModelAnim2D1Ev",
+      "address": "0x020171b8",
+      "size": "0x00000010",
+      "legacy_source": "src/engine/model/ModelAnimThunks.cpp",
+      "ordinal": 5
+    }
+  ],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN9ModelAnimD2Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201689c",
+      "reason": "The key function emits D2 beside the thunks. The lifecycle shard owns the cartridge body at 0x0201689c."
+    },
+    {
+      "symbol": "_ZN9ModelAnimD0Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020168d8",
+      "reason": "The key function emits D0 beside the thunks. The lifecycle shard owns the cartridge body at 0x020168d8."
+    },
+    {
+      "symbol": "_ZN9ModelAnimD1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201691c",
+      "reason": "The key function emits D1 beside the thunks. The lifecycle shard owns the cartridge body at 0x0201691c."
+    },
+    {
+      "symbol": "_ZN14BlendModelAnimD2Ev",
+      "disposition": "deadstrip",
+      "reason": "The key function emits D2. The cartridge has no _ZN14BlendModelAnimD2Ev symbol."
+    },
+    {
+      "symbol": "_ZN14BlendModelAnimD0Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02016644",
+      "reason": "The key function emits D0 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016644."
+    },
+    {
+      "symbol": "_ZN14BlendModelAnimD1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02016690",
+      "reason": "The key function emits D1 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016690."
+    },
+    {
+      "symbol": "_ZN10ModelAnim2D2Ev",
+      "disposition": "deadstrip",
+      "reason": "The key function emits D2. The cartridge has no _ZN10ModelAnim2D2Ev symbol."
+    },
+    {
+      "symbol": "_ZN10ModelAnim2D0Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02016320",
+      "reason": "The key function emits D0 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016320."
+    },
+    {
+      "symbol": "_ZN10ModelAnim2D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02016364",
+      "reason": "The key function emits D1 beside the thunks. The lifecycle shard owns the cartridge body at 0x02016364."
+    },
+    {
+      "symbol": "_ZTV9ModelAnim",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e980",
+      "reason": "Defining the destructor emits the vtable. This translation unit does not claim that data. RTTI is off, so the secondary preamble inside the symbol is the masked zero pair. The retail table stays the linked copy."
+    },
+    {
+      "symbol": "_ZTV14BlendModelAnim",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e94c",
+      "reason": "Defining the destructor emits the vtable. This translation unit does not claim that data. RTTI is off, so the secondary preamble inside the symbol is the masked zero pair. The retail table stays the linked copy."
+    },
+    {
+      "symbol": "_ZTV10ModelAnim2",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e9b4",
+      "reason": "Defining the destructor emits the vtable. This translation unit does not claim that data. RTTI is off, so the secondary preamble inside the symbol is the masked zero pair. The retail table stays the linked copy."
+    }
+  ],
+  "notes": [
+    "The six former one-function thunk shards are this file. Each shard was only the class destructor, and objisolate kept one thunk. One compilation emits all six, in cartridge order, and the bodies and vtables are compiler-only."
+  ]
+}
