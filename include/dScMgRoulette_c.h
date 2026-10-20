@@ -46,7 +46,7 @@ struct dScMgRoulette_c : dScMgSingle3DBase_c {
     virtual void StartRound(int arg);               /* slot 18 */
     virtual int  CanEndState(int mode);              /* slot 19 */
 
-    u8    mTable[0x270];   /* 0x4f38 -- the spinning board */
+    u8 mTable[0x270];      /* 0x4f38 -- the dealer (Dealer.h) */
     u8    mArray[0x104];   /* 0x51a8 -- 5 racers, 0x34 each */
     u8    mMeter[4][0x18]; /* 0x52ac -- strips for payouts 12, 6, 3, 2 */
     /* mSlider through mBraking is the wheel and its ball. The RouletteBoard_
