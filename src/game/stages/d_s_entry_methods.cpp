@@ -24,8 +24,9 @@
  *   would need the class constructor, which is not reconstructed.
  *   Its __cxa_vec_ctor calls take the icon_c and OamAnimation
  *   structors by address, which C++ cannot spell.
- * - The header holds 0x50, 0x6c..0x70 and 0x264..0x280 as opaque
- *   storage.
+ * - The header names the entry object and shared step workspace; older
+ *   callbacks still access that storage through offsets. 0x6c..0x70 remains
+ *   opaque pending recovery of the transition step-set pointer.
  * - InitResources keeps its `int isResult = (actorID == 7)' flag locals.
  *   Folding the first one into its condition rewrites the function
  *   (999 words, measured).

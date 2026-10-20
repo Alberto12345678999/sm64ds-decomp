@@ -166,7 +166,7 @@ s32 daNknk_c::OnYoshiTryEat() {
  */
 void daNknk_c::OnTurnIntoEgg(Player &player)
 {
-    if (unk_108 == 3) {
+    if (mCoinType == 3) {
         if (OnYoshiTryEat() == 6 && !player.IsCollectingCap()) {
             player.RegisterEggCoinCount(0, 0, 1);
         } else {
@@ -249,7 +249,7 @@ int daNknk_c::InitResources()
 
     mWithMeshClsn.StartDetectingWater();
 
-    unk_108 = 3;
+    mCoinType = 3;
     LoadBlueCoinModel(this);
 
     return 1;
@@ -278,7 +278,7 @@ int daNknk_c::Behavior()
             func_ov062_02117570();
         func_ov062_02118334();
         mdCc_c.Clear();
-        if (mEatenByYoshi != 0 && unk_104 == 0)
+        if (mEatenByYoshi != 0 && mSpitOutTimer == 0)
             mdCc_c.Update();
         if (mKoopaVariant == 1)
             mState = 4;

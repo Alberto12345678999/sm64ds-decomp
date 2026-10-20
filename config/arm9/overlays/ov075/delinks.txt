@@ -207,11 +207,11 @@ src/unnamed/ov075/func_ov075_02118f38.c:
     complete
     .text start:0x02118f38 end:0x021190a4
 
-src/unnamed/ov075/func_ov075_021190a4.c:
+src/_ZN10dScEntry_c23UpdatePlayerSelectIntroEv.cpp:
     complete
     .text start:0x021190a4 end:0x0211919c
 
-src/unnamed/ov075/func_ov075_0211919c.c:
+src/_ZN10dScEntry_c22EnterPlayerSelectIntroEv.cpp:
     complete
     .text start:0x0211919c end:0x021192bc
 

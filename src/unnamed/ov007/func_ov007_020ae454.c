@@ -1,10 +1,13 @@
 #include "nitro/fx/fx.h"
+#include "Ov007MenuState.h"
 extern int _ZN4cstd3divEii(int,int);
 extern short data_02082214[];
+/* *c: the 0x2c-byte func_ov007_020aea6c record; only its +4 Ov007MenuState has a header. */
 void func_ov007_020ae454(char* c){
   int* s = *(int**)c;
   if(*(unsigned short*)s != 1) return;
-  if(*(short*)(*(int*)((char*)s+4)) != 0) return;
+  if ((*(Ov007MenuState **)((char *)s + 4))->currentState != 0)
+      return;
   int a = *(int*)((char*)s+0x18);
   if(a>0){
     int b = *(int*)((char*)s+0x1c);

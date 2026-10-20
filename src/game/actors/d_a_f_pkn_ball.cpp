@@ -26,7 +26,6 @@
 // - func_ov002_020f897c writes a byte at +0x42b on actor 279 so a second
 //   cap is not dropped. Nothing here names that field.
 // - mStateTimer is incremented through a u16 cast. The ROM loads it unsigned.
-// - unk_0a4 and unk_0ac stay the base header's lateral-velocity names.
 
 
 #pragma defer_codegen off
@@ -128,9 +127,9 @@ void daFPknBall_c::func_ov002_020f88ec()
     if (((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10 >= 4) return;
     coin = dActor_c::Spawn(ACTOR_COIN, 0, mPos, 0, mAreaId, -1);
     if (coin != 0) {
-        coin->unk_0a4 = 0;
+        coin->mSpeedX = 0;
         coin->mVertSpeed = 0;
-        coin->unk_0ac = 0;
+        coin->mSpeedZ = 0;
     }
 }
 
@@ -174,9 +173,9 @@ void daFPknBall_c::func_ov002_020f897c()
     {
         dActor_c *coin = dActor_c::Spawn(ACTOR_COIN, 0, mPos, 0, mAreaId, -1);
         if (coin != 0) {
-            coin->unk_0a4 = 0;
+            coin->mSpeedX = 0;
             coin->mVertSpeed = 0;
-            coin->unk_0ac = 0;
+            coin->mSpeedZ = 0;
         }
     }
 }
@@ -367,12 +366,12 @@ int daFPknBall_c::Behavior() {
      * mTargetAngleY) and mPrevAngleX the pitch; data_02082214 holds (sin, cos)
      * pairs in fix12. */
     flatSpeed = (mHorzSpeed * data_02082214[((u16)mPrevAngleX >> 4) * 2 + 1]) / 4096;
-    unk_0a4 = (flatSpeed * data_02082214[((u16)mPrevAngleY >> 4) * 2]) / 4096;
+    mSpeedX = (flatSpeed * data_02082214[((u16)mPrevAngleY >> 4) * 2]) / 4096;
     mVertSpeed = (-mHorzSpeed * data_02082214[((u16)mPrevAngleX >> 4) * 2]) / 4096;
-    unk_0ac = (flatSpeed * data_02082214[((u16)mPrevAngleY >> 4) * 2 + 1]) / 4096;
-    mPosX += unk_0a4;
+    mSpeedZ = (flatSpeed * data_02082214[((u16)mPrevAngleY >> 4) * 2 + 1]) / 4096;
+    mPosX += mSpeedX;
     mPosY += mVertSpeed;
-    mPosZ += unk_0ac;
+    mPosZ += mSpeedZ;
 
     mdCcAc_c.Clear();
     mdCcAc_c.Update();

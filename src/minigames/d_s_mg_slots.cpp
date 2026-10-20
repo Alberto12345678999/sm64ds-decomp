@@ -191,7 +191,7 @@ dScMgSlot1_c::~dScMgSlot1_c() {}
 
 // @symbol _ZN12dScMgSlot3_cD1Ev
 dScMgSlot3_c::~dScMgSlot3_c() {
-    Mascot_Destruct((char *)this + 0x4f38);
+    Mascot_Destruct((char *)mMascot);
 }
 
 // @symbol _ZN12dScMgSlot3_cD0Ev
@@ -513,7 +513,7 @@ void FreeGfxSlotsById(int arg);
 void Slot3_StateIntro(char *p) {
     dScMgSlot3_c *scene = (dScMgSlot3_c *)p;
     if (scene->mReelDrawY == 0x50) {
-        Mascot_LookAt(p + 0x4f38, 0);
+        Mascot_LookAt((char *)scene->mMascot, 0);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
@@ -522,7 +522,7 @@ void Slot3_StateIntro(char *p) {
         if (scene->mReelDrawY != 0)
             return;
         scene->mWinSymbol = scene->mNextWinSymbol;
-        Mascot_StopLooking((int *)(p + 0x4f38));
+        Mascot_StopLooking((int *)scene->mMascot);
         return;
     }
 
@@ -681,7 +681,7 @@ s32 dScMgSlot3_c::Render() {
     int i, j;
 
     Camera_InitSlotsView(c + 0x4660);
-    Mascot_Draw(c + 0x4f38);
+    Mascot_Draw((char *)self->mMascot);
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
@@ -830,14 +830,14 @@ s32 dScMgSlot3_c::Behavior() {
 
     (self->*sSlot3StateTable[self->mState])();
 
-    pc = (unsigned char *)((char *)self + 0x503f);
+    pc = &self->mFrameCounter;
     *pc = *pc + 1;
-    Mascot_Update((char *)self + 0x4f38);
+    Mascot_Update(self->mMascot);
 
     for (i = 0; i < 3; i++) {
         if (self->mState == 1) {
-            ph1 = (unsigned short *)((char *)self + 0x5018);
-            ph2 = (unsigned short *)((char *)self + 0x501a);
+            ph1 = &self->mLamp1Angle;
+            ph2 = &self->mLamp2Angle;
             *ph1 = *ph1 - 0x200;
             *ph2 = *ph2 - 0x400;
             break;
@@ -910,7 +910,7 @@ s32 dScMgSlot3_c::InitResources() {
     data_0209d454 = 0x14;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
 
-    Mascot_Load(c + 0x4f38);
+    Mascot_Load((char *)mMascot);
     Camera_InitSlotsView(c + 0x4660);
 
     mReelDifficulty = (int)mLevel;
@@ -963,10 +963,10 @@ int *dScMgSlot3_c_classInit(void) {
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
         p[0] = (int)_ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev((char *)p + 0x471c);
+        _ZN8Particle10SysTrackerC1Ev(&((dScMgSlot3_c *)p)->mSysTracker);
 
         p[0] = (int)&_ZTV12dScMgSlot3_c[2];
-        Mascot_Construct((char *)p + 0x4f38);
+        Mascot_Construct((char *)((dScMgSlot3_c *)p)->mMascot);
     }
     return p;
 }
@@ -1073,7 +1073,7 @@ void SlotBet_OnTouch(void *c_) {
     if (icon->unk_01c >= 3) {
         return;
     }
-    if (icon->unk_010 != 0) {
+    if (icon->mOn != 0) {
         return;
     }
     scene = gMgScene;
@@ -1095,14 +1095,14 @@ void SlotBet_Reset(void *raw) {
     dThIcon_c *icon = (dThIcon_c *)raw;
     icon->unk_01c = 0;
     icon->unk_020 = 0;
-    if (icon->unk_014 >= 1)
-        icon->unk_011 = 1;
+    if (icon->mTouchKind >= 1)
+        icon->mReady = 1;
 }
 }
 
 // @symbol _ZN12dScMgSlot1_c9betIcon_c6RenderEv
 void dScMgSlot1_c::betIcon_c::Render() {
-    OAM::RenderSub((OamAttr *)data_ov006_0213e528[unk_010], unk_004, unk_006, -1, 1);
+    OAM::RenderSub((OamAttr *)data_ov006_0213e528[mOn], mX, mY, -1, 1);
     int i;
     int y = 0xb0;
     int zero = 0;
@@ -1132,7 +1132,7 @@ void dScMgSlot1_c::betIcon_c::Behavior() {
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBet_Place(char *icon) {
     func_ov001_020ab5b0(icon, 1, 0x90, 0xb0, 0x10, 8);
-    *(int *)(icon + 0x18) = 6;
+    ((dThIcon_c *)icon)->mPressTime = 6;
 }
 }
 
@@ -1361,8 +1361,8 @@ s32 dScMgSlot1_c::Behavior() {
                         if (dx <= 0x20 && dx >= -0x20 && dy <= 0x20 && dy >= -0x20) {
                             mReelSpinning[i] = 0;
                             mStoppedReelCount++;
-                            if (mBetIcon.unk_011 != 0) {
-                                mBetIcon.unk_011 = 0;
+                            if (mBetIcon.mReady != 0) {
+                                mBetIcon.mReady = 0;
                                 Mg_SaveRecordPair(mCredits, mHudScore);
                             }
                             func_02012718(0x162, sSlot1ReelPos[i][0] << 12);

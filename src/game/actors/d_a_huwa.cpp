@@ -314,7 +314,7 @@ int daHuwa_c::Behavior()
             func_ov081_021237ec(this);
         func_ov081_02123b20(this);
         mdCcAc_c.Clear();
-        if (mEatenByYoshi != 0 && unk_104 == 0)
+        if (mEatenByYoshi != 0 && mSpitOutTimer == 0)
             mdCcAc_c.Update();
         return 1;
     }

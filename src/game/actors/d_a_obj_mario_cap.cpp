@@ -1091,7 +1091,7 @@ int daObjMarioCap_c::Slide()
     if (mHorzSpeed > 0xf000)
         mHorzSpeed = 0xf000;
     mPrevAngleY = ang;
-    mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(mFloorNormalX, unk_0a4) + FX_MUL(mFloorNormalZ, unk_0ac),
+    mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ),
                                     mFloorNormalY) +
                    0x8000);
     pitch = func_02010844(this, &mFloorNormalX, mAngleY);
@@ -1112,9 +1112,9 @@ int daObjMarioCap_c::Slide()
 // @symbol _ZN15daObjMarioCap_c9InitTakenEv
 int daObjMarioCap_c::InitTaken()
 {
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     mVertAccel = 0;
     mTakenStep = 0;
     mBlinkHidden = 0;

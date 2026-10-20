@@ -226,7 +226,7 @@ void daKlr_c::func_ov079_0212682c()
     this->UpdateWMClsn(this->mWallClsn, 0);
     this->mHorzSpeed = -0x1e000;
     this->UpdatePosWithHorzSpeedAndAng();
-    Vec3_Add(&nose, &this->mPos, (Vector3 *)&this->unk_0a4);
+    Vec3_Add(&nose, &this->mPos, (Vector3 *)&this->mSpeedX);
     this->mSmokeTrailID = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         this->mSmokeTrailID, kSmokeParticle, nose.x, nose.y, nose.z, 0, 0);
     this->mHorzSpeed = 0x1e000;

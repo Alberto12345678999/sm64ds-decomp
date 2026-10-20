@@ -95,10 +95,10 @@ struct dBgCh_Actr : dBgCh {
     dBgCh_SphCrr mSphereClsn;   /* 0x020 - spans [0x20,0x130) */
     s32 mAngPtr; /* 0x130 - Init stores its Vector3_16 * arg 5; dBgW::BeforeClsn's `ang` */
     dBgCh_Lin mRaycastLine;     /* 0x134 - spans [0x134,0x1ac) */
-    Vector3 mGroundNormal;      /* 0x1ac - func_02037318 copies mSphereClsn.mFloorNormal here
-                                   on a grounded frame. That payload is the floor normal with
-                                   the largest y (dBgW_Kc's sphere query hands func_0203794c
-                                   `&sn` when sn.y beats it); func_020371fc snaps only when .y
+    Vector3 mGroundNormal;      /* 0x1ac - func_02037318 copies mSphereClsn.mFloorNormal
+                                   (the normal of the floor contact with the greatest Y,
+                                   documented in include/dBgCh_SphCrr.h)
+                                   here on a grounded frame; func_020371fc snaps only when .y
                                    is under 0xf20, i.e. on a slope. */
     Fix12i mScale;              /* 0x1b8 - (?) Init sets 0x1000 */
 

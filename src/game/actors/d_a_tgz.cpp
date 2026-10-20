@@ -180,7 +180,7 @@ extern "C" int func_ov077_02124ce4(void *vc)
 
 // @symbol func_ov077_02124d08
 /* Toxic floor destroys the Spiny. A sloped floor rewrites vertical speed
- * from unk_0a4/unk_0ac and pitches mAngleX/mAngleZ to the normal. */
+ * from mSpeedX/mSpeedZ and pitches mAngleX/mAngleZ to the normal. */
 extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
 {
     Vector3 pos;
@@ -212,8 +212,8 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
-                self->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(normal.x, self->unk_0a4) +
-                                                          FX_MUL(normal.z, self->unk_0ac),
+                self->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(normal.x, self->mSpeedX) +
+                                                          FX_MUL(normal.z, self->mSpeedZ),
                                                       normal.y) +
                                      0x8000);
             }

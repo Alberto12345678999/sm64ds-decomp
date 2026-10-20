@@ -57,8 +57,8 @@ struct daObjYajirusi_c {
     Matrix4x3 mClsnMat;                /* 0x2ec */
     u8  pad_31c[0x4];
     dExtShadowModel_c mShadowModel;          /* 0x320 */
-    u8 mShadowMat;                        /* 0x348 */
-    u8  pad_349[0x33];
+    u8 mShadowMat[0x30];                     /* 0x348 */
+    u8 pad_378[0x4];
     u8 mVariant;                        /* 0x37c */
     u8  pad_37d[0x3];
 
@@ -105,12 +105,13 @@ static_assert(sizeof(daObjYajirusi_c) == 0x380, "daObjYajirusi_c host size");
 struct daObjYajirusi_c : dBgActor_c {
     u8  pad_31e[0x2];
     dExtShadowModel_c mShadowModel;         /* 0x320 */
-    /* Behavior passes `&mShadowMat' as the `Matrix4x3 &' argument of
+    /* Behavior passes `mShadowMat' as the `Matrix4x3 &' argument of
        dActor_c::DropShadowScaleXYZ, with mShadowModel as the argument before
-       it. A Matrix4x3 is 0x30 bytes and 0x348 + 0x30 = 0x378. Left a u8
-       marker, the idiom this family's C twins already use. */
-    u8  mShadowMat;                   /* 0x348 */
-    u8  pad_349[0x33];
+       it; func_ov098_02137c8c builds it. A Matrix4x3 is 0x30 bytes, so it
+       ends at 0x378. Raw bytes rather than a Matrix4x3, whose Vector3 would
+       bring a destructor (see the .cpp). Was a u8 marker and pad_349. */
+    u8 mShadowMat[0x30]; /* 0x348 */
+    u8 pad_378[0x4];
     u8  mVariant;                     /* 0x37c -- 0/1 from actorID; indexes all three ov098 resource columns */
 
     /* --- vtable --- */
@@ -171,8 +172,8 @@ struct daObjYajirusi_c {
        dExtShadowModel_c's D1 at +0x320 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN15daObjYajirusi_cD1Ev, now in src/game/actors/d_a_obj_yajirusi.cpp] */
     dExtShadowModel_c mShadowModel;            /* 0x320 */
-    u8  mShadowMat;         /* 0x348 */
-    u8  pad_349[0x33];
+    u8 mShadowMat[0x30];                       /* 0x348 */
+    u8 pad_378[0x4];
     u8  mVariant;           /* 0x37c */
 };
 

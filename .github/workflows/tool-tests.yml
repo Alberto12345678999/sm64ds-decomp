@@ -232,6 +232,7 @@ jobs:
             tools.test_profile_reconstruction \
             tools.test_progress \
             tools.test_reloc_audit_flags \
+            tools.test_rom_fingerprint \
             tools.test_romdata_check \
             tools.test_rombuild \
             tools.test_rombuild_cache \
@@ -435,6 +436,15 @@ jobs:
 #                                      contradict a promoted TU -- and fails closed on
 #                                      an unreadable, fieldless or empty manifest
 #                                      rather than passing on zero rows.
+#   test_rom_fingerprint        (21)   rom_fingerprint.py -- the ROM hash recorded
+#                                      inside build/rtti_vtables.json, and the gates that
+#                                      read it. A vtable file built from a stale dsd
+#                                      extraction put 364 of 426 tables wrong with
+#                                      nothing saying so. A mismatch is REFUSED (the
+#                                      builder, tu_map), a file with no
+#                                      field is warned about once and still loads, and
+#                                      the "_" metadata key is never read as a class.
+#                                      Fake tree in a tempdir; needs no ROM.
 #   test_rombuild               (37)   rombuild.py -- the source-to-ROM build itself:
 #                                      intact-TU policy resolution, per-file verdicts and
 #                                      the `.init` retargeting that decides which `.text`

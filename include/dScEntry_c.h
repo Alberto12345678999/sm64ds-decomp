@@ -6,6 +6,8 @@
 #include "dGraph_c.h"
 #include "dThIcon_c.h"
 
+struct dEntObj_c;
+
 /* Course-entry / results scene. ov075 hosts ENTRY(6) and RESULT(7); both
  * spawn dScEntry_c. Nested icon_c (dThIcon_c leaf) and graphCallback_c
  * (dGraph_c::callback_c leaf). Nine course/character icons on the sub
@@ -24,7 +26,7 @@ struct dScEntry_c : dScene_c {
 
     typedef void (dScEntry_c::*Step)();
 
-    u8 unk_050[0x4];                /* 0x050 */
+    dEntObj_c *mEntObj;             /* 0x050 -- multiplayer player figures */
     Step mEnterStep;                /* 0x054 -- run as soon as a step set is installed */
     Step mBehaviorStep;             /* 0x05c -- Behavior runs it every frame */
     Step mRenderStep;               /* 0x064 -- Render runs it every frame */
@@ -39,10 +41,11 @@ struct dScEntry_c : dScene_c {
         s32 waveDelay;
         s32 syncTicks;
     };
-    u8 unk_264[0x4]; /* 0x264 */
+    s32 mStepDelay; /* 0x264 -- countdown before the current step advances */
     union {
         s32 mStepWork[4]; /* 0x268 -- reused by each step */
         WaitingWork mWaiting;
+        s32 mPlayerSelectReady; /* selection intro: figures reached their slots */
     };
     s32 mSoundHandle;         /* 0x278 */
     u8 mResultLeaderFlags[4]; /* 0x27c -- active players tied for the nonzero top score */
@@ -59,6 +62,8 @@ struct dScEntry_c : dScene_c {
     void EnterPlayerSync();
     void UpdatePlayerSync();
     void RenderWaitingText();
+    void EnterPlayerSelectIntro();
+    void UpdatePlayerSelectIntro();
 
     /* Out of line: the key function, defined first in src/game/stages/d_s_entry.cpp. */
     virtual ~dScEntry_c(); /* slots 16 (D1), 17 (D0) */

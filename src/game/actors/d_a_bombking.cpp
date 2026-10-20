@@ -668,7 +668,7 @@ int daBombking_c::func_ov078_02124520()
     }
     player = this->mTalkingPlayer;
     if (player->GetTalkState() != -1) {
-        pp = (int *)((int)player + 0x5c);
+        pp = &player->mPosX;
         in.x = 0;
         in.y = 0;
         in.z = 0;
@@ -751,7 +751,7 @@ int daBombking_c::func_ov078_021247bc()
         Matrix4x3_FromRotationY(&data_020a0e68, this->mPrevAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, this->mPrevAngleX);
         MulVec3Mat4x3((Vector3 *)&vB, &data_020a0e68, (Vector3 *)&vC);
-        this->unk_0a4 = vC.x;
+        this->mSpeedX = vC.x;
         if (this->mActionStep == 0) {
             this->mVertSpeed = vC.y;
             if (this->mVertSpeed > 0x3c000)
@@ -759,7 +759,7 @@ int daBombking_c::func_ov078_021247bc()
             else if (this->mVertSpeed < 0x1e000)
                 this->mVertSpeed = 0x1e000;
         }
-        this->unk_0ac = vC.z;
+        this->mSpeedZ = vC.z;
         this->mVertSpeed += this->mVertAccel;
         vA.x = this->mPosX;
         vA.y = this->mPosY;
@@ -776,9 +776,9 @@ int daBombking_c::func_ov078_021247bc()
             *(struct M3 *)&D = *(struct M3 *)&pl->mPosX;
             if (Vec3_Dist(&this->mArenaPosX, &D) > 0x640000 ||
                 this->mArenaPosY - 0x64000 > D.y) {
-                this->unk_0a4 = 0;
+                this->mSpeedX = 0;
                 this->mVertSpeed = 0;
-                this->unk_0ac = 0;
+                this->mSpeedZ = 0;
                 KingBobOmb_SetState(&data_ov078_021270fc);
                 return 1;
             }
@@ -794,9 +794,9 @@ int daBombking_c::func_ov078_021247bc()
             func_ov078_02125c24(0xfa0000);
             func_0200fa8c(this, 1);
             this->mActionStep = 2;
-            this->unk_0a4 = 0;
+            this->mSpeedX = 0;
             this->mVertSpeed = 0;
-            this->unk_0ac = 0;
+            this->mSpeedZ = 0;
             return 1;
         }
 
@@ -833,9 +833,9 @@ int daBombking_c::func_ov078_02124b40()
     this->mWithMeshClsn.ClearGroundFlag();
     this->mPrevAngleX = 0;
     this->mHorzSpeed = 0;
-    this->unk_0a4 = 0;
+    this->mSpeedX = 0;
     this->mVertSpeed = 0;
-    this->unk_0ac = 0;
+    this->mSpeedZ = 0;
     this->mActionStep = 0;
     this->mVertAccel = -0x6000;
     return 1;
@@ -1070,7 +1070,7 @@ int daBombking_c::func_ov078_021250f8()
                 v[0].x = 0; v[0].y = 0; v[0].z = 0;
                 player = (Player *)this->ClosestPlayer();
                 if (player != 0) {
-                    int *q = (int *)((int)player + 0x5c);
+                    int *q = &player->mPosX;
                     v[1].x = q[0];
                     v[1].y = q[1];
                     v[1].z = q[2];
@@ -1083,15 +1083,15 @@ int daBombking_c::func_ov078_021250f8()
                         (short)(-_ZN4cstd5atan2E5Fix12IiES1_(v[0].y, Vec3_HorzLen(&v[0]))));
                     out.y += 0x14000;
                     func_ov102_0214ad14(target);
-                    target->unk_0a4 = out.x;
+                    target->mSpeedX = out.x;
                     target->mVertSpeed = out.y;
-                    target->unk_0ac = out.z;
+                    target->mSpeedZ = out.z;
                     target->mHorzSpeed = 0x14000;
                     target->mVertAccel = -0x2000;
                     MulVec3Mat4x3(&in, &data_020a0e68, &out);
                 }
                 this->mSpawnedThrown[this->mSpawnSlot] = 1;
-                *(int *)((char *)target + 0xc8) = 0;
+                target->mCarryMatrix = 0;
             }
         }
     } else {
@@ -1322,7 +1322,7 @@ int daBombking_c::func_ov078_021258e4()
 int daBombking_c::func_ov078_02125950()
 {
     Player *target = this->mTalkingPlayer;
-    int *src = (int *)((int)target + 0x5c);
+    int *src = &target->mPosX;
     Vector3 v;
     int t = src[0];
     v.x = t;
@@ -1519,7 +1519,7 @@ void daBombking_c::func_ov078_02125de0()
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0xb000, -0x7000, -0x6000);
         Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, 0x4000, -0x1000, 0x2000);
         *(struct M12 *)this->mHoldMtx = data_020a0e68;
-        *(void **)((char *)actor + 0xc8) = this->mHoldMtx;
+        ((dActor_c *)actor)->mCarryMatrix = (struct Matrix4x3 *)this->mHoldMtx;
     }
 }
 
@@ -1571,7 +1571,7 @@ int daBombking_c::Render()
         int flags = mFlags;
         int flag = (flags & 0x4000) ? 1 : 0;
         if (flag != 0) {
-            if (*(int *)((char *)held + 0xc8) != 0) {
+            if (((dActor_c *)held)->mCarryMatrix != 0) {
                 func_ov078_02125f8c();
             }
         }
@@ -1609,7 +1609,7 @@ int daBombking_c::Behavior()
         int flag;
         if (held != 0) {
             flag = (mFlags & 0x4000) != 0;
-            if (flag != 0 && *(int *)((char *)held + 0xc8) != 0) {
+            if (flag != 0 && ((dActor_c *)held)->mCarryMatrix != 0) {
                 goto skip_de0;
             }
         }
