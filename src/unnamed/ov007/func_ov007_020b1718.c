@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "Ov007MenuState.h"
 // @symbol func_ov007_020b1718
 /* recovered: per-frame update of a two-mode screen transition driven by the
  * manager at data_ov007_0210342c. Mode 1 eases a scale toward 0x1000 over
@@ -8,6 +9,9 @@
  * object along a smoothstep-squared curve and flags completion at frame 0x28.
  * Both modes leave a (remaining, total) pair for the shared tail, which
  * advances the counter and fades the target through func_ov007_020b2764.
+ *
+ * The manager has no class or header: only its +0x4/+0x8/+0xc/+0x40 slots, the
+ * Ov007MenuStates func_ov007_020b65e0 frees with func_ov007_020c937c, are typed.
  *
  * Codegen note: `r7val = v - 2; divisor = 0x28;` must be assigned BEFORE the
  * Fix12 store block (the compiler sinks both defs to the block exit, ahead of
@@ -33,10 +37,10 @@ void func_ov007_020b1718(void)
     int divisor;
     int mode;
 
-    v = *(int*)(*(char**)(data_ov007_0210342c + 8) + 0xc);
+    v = (*(Ov007MenuState **)(data_ov007_0210342c + 8))->stateTicks;
 
     if (v == 0)
-        *(s16*)(*(char**)(data_ov007_0210342c + 0xc) + 2) = 2;
+        (*(Ov007MenuState **)(data_ov007_0210342c + 0xc))->requestedState = 2;
 
     if (v == 0 && *(int*)(data_ov007_0210342c + 0xec) == 0)
         func_ov007_020bdeb0(0x1c);
@@ -130,14 +134,14 @@ void func_ov007_020b1718(void)
 
     if (flag != 0) {
         *(int*)(data_ov007_0210342c + 0x1c) = 2;
-        *(s16*)(*(char**)(data_ov007_0210342c + 4) + 2) = 1;
+        (*(Ov007MenuState **)(data_ov007_0210342c + 4))->requestedState = 1;
     }
 
     if (v >= 2 && r7val >= 0) {
         int w;
         int qq;
         func_ov007_020bce70(2, 0xf);
-        w = *(int*)(*(char**)(data_ov007_0210342c + 0x40) + 0xc);
+        w = (*(Ov007MenuState **)(data_ov007_0210342c + 0x40))->stateTicks;
         if (w <= 0) qq = 0;
         else if (w >= 0xf) qq = 0x1000;
         else qq = _ZN4cstd3divEii(w << 0xc, 0xf);
