@@ -97,7 +97,7 @@ struct dBgCh_Actr : dBgCh {
     dBgCh_Lin mRaycastLine;     /* 0x134 - spans [0x134,0x1ac) */
     Vector3 mGroundNormal;      /* 0x1ac - func_02037318 copies mSphereClsn.mFloorNormal here
                                    on a grounded frame. That payload is the floor normal with
-                                   the largest y (dBgW_Kc's sphere query hands func_0203794c
+                                   the largest y (dBgW_Kc's sphere query hands SetFloorNormal
                                    `&sn` when sn.y beats it); func_020371fc snaps only when .y
                                    is under 0xf20, i.e. on a slope. */
     Fix12i mScale;              /* 0x1b8 - (?) Init sets 0x1000 */

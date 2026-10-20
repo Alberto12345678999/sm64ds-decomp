@@ -6668,3 +6668,12 @@ arm9	0x02037a6c	_ZN12dBgCh_SphCrr13func_02037a6cEiiiiii	_ZN12dBgCh_SphCrr19Expan
 ov075	0x0211944c	func_ov075_0211944c	_ZN10dScEntry_c15EnterPlayerSyncEv	inferred dScEntry_c member from the player synchronization step PMFs and waiting UI; original spelling not preserved; bytes unchanged
 ov075	0x021192bc	func_ov075_021192bc	_ZN10dScEntry_c16UpdatePlayerSyncEv	inferred dScEntry_c member from the player synchronization step PMFs and waiting UI; original spelling not preserved; bytes unchanged
 ov075	0x021194e4	func_ov075_021194e4	_ZN10dScEntry_c17RenderWaitingTextEv	inferred dScEntry_c member from the player synchronization step PMFs and waiting UI; original spelling not preserved; bytes unchanged
+arm9	0x0203794c	_ZN12dBgCh_SphCrr13func_0203794cEPKi	_ZN12dBgCh_SphCrr14SetFloorNormalEPKi	inferred name: stores the three-word floor normal into mFloorNormal
+arm9	0x02037968	_ZN12dBgCh_SphCrr13func_02037968EiiP8dActor_cP4dBgW	_ZN12dBgCh_SphCrr16SetUnderColliderEiiP8dActor_cP4dBgW	inferred name: forwards to mClsnResult3 (GetUnderResult) SetCollider
+arm9	0x0203798c	_ZN12dBgCh_SphCrr13func_0203798cEiPv	_ZN12dBgCh_SphCrr14RecordUnderHitEiPv	inferred name: forwards to mClsnResult3 (GetUnderResult) RecordHit
+arm9	0x0203799c	_ZN12dBgCh_SphCrr13func_0203799cEiiP8dActor_cP4dBgW	_ZN12dBgCh_SphCrr15SetWallColliderEiiP8dActor_cP4dBgW	inferred name: forwards to mClsnResult2 (GetWallResult) SetCollider
+arm9	0x020379c0	_ZN12dBgCh_SphCrr13func_020379c0EiPv	_ZN12dBgCh_SphCrr13RecordWallHitEiPv	inferred name: forwards to mClsnResult2 (GetWallResult) RecordHit
+arm9	0x020379d0	_ZN12dBgCh_SphCrr13func_020379d0EiiP8dActor_cP4dBgW	_ZN12dBgCh_SphCrr16SetFloorColliderEiiP8dActor_cP4dBgW	inferred name: forwards to mClsnResult1 (GetFloorResult) SetCollider
+arm9	0x020379f4	_ZN12dBgCh_SphCrr13func_020379f4EiPv	_ZN12dBgCh_SphCrr14RecordFloorHitEiPv	inferred name: forwards to mClsnResult1 (GetFloorResult) RecordHit
+arm9	0x02037a04	_ZN12dBgCh_SphCrr13func_02037a04EP7Vector3S1_	_ZN12dBgCh_SphCrr16GetPushOutBoundsEP7Vector3S1_	inferred name: copies mPushOutMin/mPushOutMax out
+arm9	0x02037a38	_ZN12dBgCh_SphCrr13func_02037a38Ev	_ZN12dBgCh_SphCrr18UpdateDisplacementEv	inferred name: sets disp to mPushOutMin + mPushOutMax after a scan

@@ -953,17 +953,17 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
 
                         if (cls == 0) {
                             if (!(sphere.flags & 4)) {
-                                sphere.func_020379f4(triID, &data_020a0cec);
+                                sphere.RecordFloorHit(triID, &data_020a0cec);
                                 hitFlags |= 1;
                             }
                             hitFlags2 = k1;
                             sphere.flags |= 4;
                             WIDEN_PUSH_OUT(loPY, hiPY, sn.y)
                             if (sn.y > sphere.mFloorNormal.y)
-                                sphere.func_0203794c((const s32 *)&sn);
+                                sphere.SetFloorNormal((const s32 *)&sn);
                         } else if (cls == 1) {
                             sphere.flags |= 8;
-                            sphere.func_020379c0(triID, &data_020a0cec);
+                            sphere.RecordWallHit(triID, &data_020a0cec);
                             hitFlags |= 2;
                             if (contactKind == 1) {
                                 WIDEN_PUSH_OUT(loPX, hiPX, sn.x)
@@ -975,7 +975,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                             }
                         } else {
                             sphere.flags |= 0x10;
-                            sphere.func_0203798c(triID, &data_020a0cec);
+                            sphere.RecordUnderHit(triID, &data_020a0cec);
                             hitFlags |= 4;
                             WIDEN_PUSH_OUT(loPX, hiPX, sn.x)
                             WIDEN_PUSH_OUT(loPY, hiPY, sn.y)

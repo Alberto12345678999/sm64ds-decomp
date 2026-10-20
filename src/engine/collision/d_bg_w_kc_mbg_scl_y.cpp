@@ -186,7 +186,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
     func_02035394(&localSphere, &sphere);
     hit = dBgW_Kc::DetectClsn(localSphere);
     if (hit) {
-        localSphere.func_02037a04((Vector3 *)&bounds.localMin, (Vector3 *)&bounds.localMax);
+        localSphere.GetPushOutBounds((Vector3 *)&bounds.localMin, (Vector3 *)&bounds.localMax);
         bounds.scaledMin.x = FX_MUL(bounds.localMin.x, scale);
         bounds.scaledMin.y = FX_MUL(bounds.localMin.y, scale);
         bounds.scaledMin.z = FX_MUL(bounds.localMin.z, scale);
@@ -205,7 +205,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
             }
             sphere.flags |= 4;
             if (sphere.mFloorNormal.y < localSphere.mFloorNormal.y) {
-                sphere.func_0203794c(&localSphere.mFloorNormal.x);
+                sphere.SetFloorNormal(&localSphere.mFloorNormal.x);
             }
         }
         if (localSphere.flags & 8) {

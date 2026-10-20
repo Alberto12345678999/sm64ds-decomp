@@ -5279,39 +5279,39 @@
     },
     "arm9:0x0203794c": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_0203794cEPKi"
+      "name": "_ZN12dBgCh_SphCrr14SetFloorNormalEPKi"
     },
     "arm9:0x02037968": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_02037968EiiP8dActor_cP4dBgW"
+      "name": "_ZN12dBgCh_SphCrr16SetUnderColliderEiiP8dActor_cP4dBgW"
     },
     "arm9:0x0203798c": {
       "author": "ruspecial",
-      "name": "_ZN12dBgCh_SphCrr13func_0203798cEiPv"
+      "name": "_ZN12dBgCh_SphCrr14RecordUnderHitEiPv"
     },
     "arm9:0x0203799c": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_0203799cEiiP8dActor_cP4dBgW"
+      "name": "_ZN12dBgCh_SphCrr15SetWallColliderEiiP8dActor_cP4dBgW"
     },
     "arm9:0x020379c0": {
       "author": "ruspecial",
-      "name": "_ZN12dBgCh_SphCrr13func_020379c0EiPv"
+      "name": "_ZN12dBgCh_SphCrr13RecordWallHitEiPv"
     },
     "arm9:0x020379d0": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_020379d0EiiP8dActor_cP4dBgW"
+      "name": "_ZN12dBgCh_SphCrr16SetFloorColliderEiiP8dActor_cP4dBgW"
     },
     "arm9:0x020379f4": {
       "author": "ruspecial",
-      "name": "_ZN12dBgCh_SphCrr13func_020379f4EiPv"
+      "name": "_ZN12dBgCh_SphCrr14RecordFloorHitEiPv"
     },
     "arm9:0x02037a04": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_02037a04EP7Vector3S1_"
+      "name": "_ZN12dBgCh_SphCrr16GetPushOutBoundsEP7Vector3S1_"
     },
     "arm9:0x02037a38": {
       "author": "tangosdev",
-      "name": "_ZN12dBgCh_SphCrr13func_02037a38Ev"
+      "name": "_ZN12dBgCh_SphCrr18UpdateDisplacementEv"
     },
     "arm9:0x02037a6c": {
       "author": "tangosdev",
