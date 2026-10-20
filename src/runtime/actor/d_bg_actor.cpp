@@ -145,7 +145,7 @@ extern "C" int func_ov002_020ef070(void *unused, char *actor)
 
     dBgCh_Lin line;
 
-    Vector3 *pos = &((dActor_c *)actor)->mPos;
+    Vector3 *pos = (Vector3 *)(actor + 0x5c);
     int x = pos->x;
     v1.x = x;
     int y = pos->y;
@@ -158,15 +158,13 @@ extern "C" int func_ov002_020ef070(void *unused, char *actor)
     v2.y = y + 0x3c000;
 
     int scale = 0x64;
-    if (((dActor_c *)actor)->param1 == 2)
-        scale = 0x82;
-    v2.x = scale * data_02082214[((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1] + v2.x;
-    v2.z = scale * data_02082214[(((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1) + 1] +
-           v2.z;
+    if (*(int *)(actor + 8) == 2) scale = 0x82;
+    v2.x = scale * data_02082214[(*(unsigned short *)(actor + 0x8e) >> 4) << 1] + v2.x;
+    v2.z = scale * data_02082214[((*(unsigned short *)(actor + 0x8e) >> 4) << 1) + 1] + v2.z;
 
     line.SetObjAndLine(v1, v2, (dActor_c *)actor);
     if (line.DetectClsn()) {
-        int t = (((dActor_c *)actor)->actorID == 0xbf);
+        int t = (*(unsigned short *)(actor + 0xc) == 0xbf);
         if (t != false) {
             func_ov002_020d8838(actor);
         }
@@ -207,7 +205,8 @@ extern "C" int func_ov002_020eeeb8(void *unused, char *actor)
 
     dBgCh_Lin line;
 
-    Vector3 *pos = &((dActor_c *)actor)->mPos;
+    Vector3 *pos =
+        (Vector3 *)(actor + 0x5c);
     int x = pos->x;
     v1.x = x;
     int y = pos->y;
@@ -220,17 +219,20 @@ extern "C" int func_ov002_020eeeb8(void *unused, char *actor)
     v2.y = y + 0x3c000;
 
     int scale = 0x96;
-    if (((dActor_c *)actor)->param1 == 2)
+    if (*(int *)(actor + 8) == 2)
         scale = 0x82;
 
-    v2.x = scale * data_02082214[((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1] + v2.x;
-    v2.z = scale * data_02082214[(((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1) + 1] +
-           v2.z;
+    v2.x = scale *
+        data_02082214[(*(unsigned short *)(actor + 0x8e) >> 4) << 1] +
+        v2.x;
+    v2.z = scale *
+        data_02082214[((*(unsigned short *)(actor + 0x8e) >> 4) << 1) + 1] +
+        v2.z;
 
     line.SetObjAndLine(v1, v2, (dActor_c *)actor);
 
     if (line.DetectClsn()) {
-        int t = (((dActor_c *)actor)->actorID == 0xbf);
+        int t = (*(unsigned short *)(actor + 0xc) == 0xbf);
         if (t != false)
             func_ov002_020d8838(actor);
 
