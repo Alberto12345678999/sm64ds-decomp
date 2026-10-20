@@ -318,6 +318,7 @@ struct HanaStarPopup {
     u8 visible; /* 0x10 Draw draws only while this is 1 */
     u8 pad[3];
 };
+typedef char HanaStarPopup_size_must_be_0x14[sizeof(HanaStarPopup) == 0x14 ? 1 : -1];
 
 // @symbol StarPopup_Draw
 /* Draws the single popup while its visible flag is 1: a sprite from the
@@ -333,7 +334,7 @@ extern "C" void StarPopup_Draw(void) {
         return;
     }
     x = ((HanaStarPopup *)sHanaStarPopup)->x >> 12;
-    y = new_var[1] >> 12;
+    y = ((HanaStarPopup *)new_var)->y >> 12;
     r = GetGameLanguage();
     Mg_RenderSubSpriteMtx(((void **)sHanaTextSpritesByLanguage[r])[13], x - 8, y, 0);
     Mg_RenderSubSpriteMtx(*((void **)(sMgDigitSprites + 0x64)), x + 8, y, 0);

@@ -21,8 +21,11 @@
  *   0x18 and reads mParticles[0] through it; Particle_Spawn's vx (0x46b0)
  *   keeps its `(int)` launder (see the comment there).
  * - Shake_StateLoseTry, Shake_StateShake: the timer sites relative to the
- *   &mShake[index].timer pointer and the offset sites stay raw; their member
- *   spellings move code. Banner_Show's mY[i] read does too.
+ *   &mShake[0].timer base (plus index * 0xc) and the offset sites stay raw;
+ *   their member spellings move code. Banner_Show's mY[i] read does too.
+ * - CountMatches' mAnimTimer[i] store, Panel_StateBlink's mAnimTimer[idx]
+ *   reset (through a +0x4e00 split base) and Panel_StateIdle's
+ *   mFastFlip[index] store (through a +0x4000 split base) DIFF as members.
  * - Answer_StateFindSolution: the PanelInputView width view stays, and the
  *   mKind, mFlipAt, mFace and mFastFlip index sites DIFF as members.
  * - CheckSolved: the mFace / mGoal compare DIFFs as members; the mCheckDelay
@@ -199,6 +202,7 @@ void dScMgPanel_c::Particle_Spawn(int x, int y, int mode) {
             } else {
                 int rnd = (int)((((u32)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff);
                 rnd = (int)((((u32)rnd) << 1) >> 15);
+                /* Strided on purpose: `mParticles[i].drift = rnd` moves code. */
                 ((dScMgPanel_c *)(scene + off))->mParticles[0].drift = rnd;
             }
             if (x >= 0x80000)
@@ -320,11 +324,11 @@ void dScMgPanel_c::Scroll_Stop() {
 
 // @symbol _ZN12dScMgPanel_c18EnableOverlayLayerEv
 void dScMgPanel_c::EnableOverlayLayer() {
-    u8 *scene = (u8 *)this;
+    u8 *scene = (u8 *)this; /* dead, but dropping it renumbers @NNN */
     extern u8 data_0209d454[];
-    if (scene[0x4693] != 0)
+    if (mShake[0].state != 0)
         return;
-    scene[0x4693] = 1;
+    mShake[0].state = 1;
     mShake[0].timer = 0;
     data_0209d454[0] |= 1;
 }
@@ -336,7 +340,8 @@ void dScMgPanel_c::Shake_StateLoseTry(int index) {
     extern u8 data_0209d454;
     extern int data_ov006_0212ed00[];
     int n = index * 0xc;
-    /* base is &mShake[index].timer.  The base-relative timer sites and the
+    /* base is &mShake[0].timer, so base + n is mShake[index].timer.  The
+       base-relative timer sites and the
        offset sites stay raw: their member spellings move this function's
        code.  The dead `q` below stays too: dropping it renumbers @NNN. */
     char *base = scene + 0x4690;
@@ -370,7 +375,8 @@ void dScMgPanel_c::Shake_StateShake(int index) {
     char *scene = (char *)this;
     extern int sPanelShakeOffsets[];
     int m = index * 0xc;
-    /* b is &mShake[index].timer.  The b-relative timer sites and the
+    /* b is &mShake[0].timer, so b + m is mShake[index].timer.  The
+       b-relative timer sites and the
        offset stay raw: their member spellings move this function's code. */
     char *b = scene + 0x4690;
     u16 h = *(u16 *)(b + m);
@@ -538,8 +544,8 @@ void dScMgPanel_c::DrawHud() {
 // @symbol _ZN12dScMgPanel_c16ReloadSlideDelayEv
 void dScMgPanel_c::ReloadSlideDelay() {
     u8 *scene = (u8 *)this;
-    scene += 0x4000;
-    scene[0x677] = scene[0xfde];
+    /* Through `scene`: the plain `mSlideLeft = mFlipCount` moves code. */
+    ((dScMgPanel_c *)scene)->mSlideLeft = ((dScMgPanel_c *)scene)->mFlipCount;
 }
 
 // @symbol _ZN12dScMgPanel_c14TickSlideDelayEv
@@ -1098,6 +1104,7 @@ void dScMgPanel_c::CountMatches() {
     do {
         if (s->mFace[i] != s->mGoal[i]) {
             s->mKind[i] = 2;
+            /* mAnimTimer[i]: the member spelling moves code. */
             *(u16 *)(scene + (int)(((long long)i)) * 2 + 0x4e30) = 0;
         }
         i++;
@@ -1613,7 +1620,7 @@ void dScMgPanel_c::Panel_StateFall(int index) {
             }
             {
                 int nxt = (row + 1) * div + col;
-                if (((s->mY[nxt] - *(int *)(scene + (u32)index * 4 + 0x4d54)) >> 12) > 0)
+                if (((s->mY[nxt] - s->mY[index]) >> 12) > 0)
                     return;
                 *flag = 1;
                 s->mKind[nxt] = 3;
@@ -1626,7 +1633,7 @@ void dScMgPanel_c::Panel_StateFall(int index) {
 void dScMgPanel_c::Panel_StateBlink(int idx) {
     char *c = (char *)this;
     dScMgPanel_c *s = (dScMgPanel_c *)c;
-    u16 *timers = (u16 *)(int)(c + 0x4e30);
+    u16 *timers = s->mAnimTimer;
     u8 *q;
     timers[idx] = timers[idx] + 1;
     if ((((int)s->mAnimTimer[idx] >> 3) & 1) != 0) {
@@ -1637,7 +1644,9 @@ void dScMgPanel_c::Panel_StateBlink(int idx) {
         q[idx] = 0;
     }
     {
-        /* The `(long long)` round trip on the index is load-bearing here. */
+        /* b + 0x30 is mAnimTimer[idx]. The `(long long)` round trip on the
+           index and this split base are load-bearing: `s->mAnimTimer[idxL]`
+           moves code. */
         int idxL = (int)((long long)idx);
         char *b = c + idxL * 2;
         b += 0x4e00;
@@ -1706,6 +1715,8 @@ void dScMgPanel_c::Panel_StateFlip(int index) {
 void dScMgPanel_c::Panel_StateIdle(int index) {
     char *scene = (char *)this;
     char *base = scene + index + 0x4000;
+    /* mFastFlip[index]: the split base is load-bearing; `mFastFlip[index]`
+       and the strided `mFastFlip[0]` both move code. */
     base[0xf8a] = 0;
 }
 
