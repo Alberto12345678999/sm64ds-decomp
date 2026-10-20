@@ -34,7 +34,7 @@
  * - InitResources: dCcAcPos_c::Init with Fix12<int> radius and height is
  *   size 0x108 to 0x118. The int-parameter call stays.
  * - Behavior: clamping with `speed < mTerminalVelocity` and dropping the
- *   unk_0ac copy is size 0x1c0 to 0x1b8 and shifts the calls
+ *   mSpeedZ copy is size 0x1c0 to 0x1b8 and shifts the calls
  *   (WRONG-DEST, func_ov090_02133904 against 0x02010d40). The
  *   compare-into-terminal and the copy stay.
  */
@@ -283,18 +283,18 @@ int daShark_c::Behavior()
         velocity.z = 0x14000;
         Matrix4x3_FromRotationY(data_020a0e68, mPrevAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, mPrevAngleX);
-        MulVec3Mat4x3(&velocity, data_020a0e68, (Vector3 *)&unk_0a4);
+        MulVec3Mat4x3(&velocity, data_020a0e68, (Vector3 *)&mSpeedX);
     }
     {
-        /* unk_0ac is the z word of the vector just stored at unk_0a4.
+        /* mSpeedZ is the z word of the vector just stored at mSpeedX.
          * The copy is load-bearing. */
         int speed = mVertSpeed + mVertAccel;
         int terminalVelocity = mTerminalVelocity;
-        int kept = unk_0ac;
+        int kept = mSpeedZ;
         if (speed >= terminalVelocity)
             terminalVelocity = speed;
         mVertSpeed = terminalVelocity;
-        unk_0ac = kept;
+        mSpeedZ = kept;
     }
     UpdatePosWithOnlySpeed(&mdCcAcPos_c);
     func_ov090_02133904(this);

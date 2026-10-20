@@ -549,8 +549,8 @@ void daBgSnmBdy_c::UpdateGroundCollision(dBgCh_Actr *mc)
     floorResult->surface.CopyNormalTo(normal);
     if (normal.y == 0) return;
     {
-        int alongX = FX_Mul(normal.x, unk_0a4);
-        int alongZ = FX_Mul(normal.z, unk_0ac);
+        int alongX = FX_Mul(normal.x, mSpeedX);
+        int alongZ = FX_Mul(normal.z, mSpeedZ);
         mVertSpeed = -(cstd::fdiv(alongX + alongZ, normal.y) + 0x8000);
     }
 }
