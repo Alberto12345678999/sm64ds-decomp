@@ -1,24 +1,13 @@
 //cpp
 /* daMoray_c -- Jolly Roger Bay eel (MORAY).
  *
- * Five states, installed by func_ov016_02111bf0. The sinit copies the
- * pointer-to-member words at 0x02114878 into the state records:
- * den wait, lunge, swim out, path swim, retreat.
- * Retreat's init is BookSwitch_Spawn. That name came from the spawn
- * table pass; the body only writes mStateTimer and mHorzSpeed, and
- * its only reference is the retreat init word. It keeps the name
- * because renaming it is a symbols change of its own.
+ * Five states installed by func_ov016_02111bf0 (retreat init is the
+ * BookSwitch_Spawn name from the spawn-table pass). InitResources keeps the
+ * variant picked by data_0209f220 and stars 1/2 of sublevel 8: variant 2
+ * waits in the den, variant 1 carries a STAR (178), variant 0 swims the path.
  *
- * Which variant InitResources keeps depends on data_0209f220 and
- * whether stars 1 and 2 of sublevel 8 are collected. Variant 2 waits
- * in the den. Variant 1 carries a STAR (178). Variant 0 swims the path.
- *
- * Text is 0x021111a0..0x0211260c. The out-of-line destructor is the
- * key function (D1 and D0 at the start of ov016). The native factory
- * constructs the Vector3 segment array through its empty default
- * constructor. defer_codegen off keeps ROM order and scopes the
- * den-wait and Render pragmas.
- * common.h stays first: the pose reads Matrix4x3 words m[9], m[10], m[11].
+ * Text 0x021111a0..0x0211260c. Key function ~daMoray_c (out-of-line; D1/D0
+ * at the start of ov016, D2 deadstripped). defer_codegen off keeps ROM order.
  *
  * leftovers:
  * - BlendModelAnim::SetAnim, dCcAcPos_c::Init, ApproachLinear and
