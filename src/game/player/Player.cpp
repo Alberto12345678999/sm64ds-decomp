@@ -4,6 +4,8 @@
  * off: retail typeinfo is _ZTI7daPly_c and this file emits no _ZTS.
  * defer_codegen stays off except around ~Player(), where it is on so D0
  * lands before D1.
+ * Local optimization pragmas and some copy/reload forms are load-bearing.
+ * Evidence: config/tu_manifest.d/ov002/Player.json, notes/data/class-facts/Player.json; measured limits: notes/experiments/player-readability-1014.json.
  *
  * Leftover:
  * - Sound::PlayBank0(0xb9, c + 0x74) still passes the camera-space vector
@@ -10366,7 +10368,7 @@ int Player::St_Shell_Main()
         flag = 1;
         res = (void*)func_0203564c((int)((char*)&mMeshClsn));
         if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
-            void* a = dActor_c::FindWithID((u32)_ZNK5dBgPi9GetClsnIDEv(res));
+            void *a = dActor_c::FindWithID((u32)_ZNK5dBgPi9GetClsnIDEv(res));
             if (a) {
                 u16 type = ((dActor_c *)a)->actorID;
                 if ((type == 0x14 ? flag : 0) || (type == 0x15 ? 1 : 0)) {
@@ -12516,7 +12518,7 @@ int func_ov002_020cfd84(void* actor, void* a, void* b) {
         result.owner = line.owner;
         result.collider = line.collider;
         if (result.GetClsnID() != -1) {
-            void* act = dActor_c::FindWithID((unsigned int)result.GetClsnID());
+            void *act = dActor_c::FindWithID((unsigned int)result.GetClsnID());
             if (act != 0) {
                 int t = (((dActor_c *)act)->actorID == 0x12a);
                 if (t == 0) {
@@ -13498,8 +13500,7 @@ int Player::St_Crouch_Init() {
     extern int _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, unsigned int);
 
     if (mDashBoostTimer) {
-        Sound::PlayCharVoice(mCharacter, 0x2e,
-                                              mCamSpacePos);
+        Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
     }
     mStateTimer = 0x1e;
     if (*(unsigned short *)(data_0209f49c + gActivePlayerSlot * 0x18) & 2) {
@@ -15496,8 +15497,8 @@ void Player::func_ov002_020d4748()
             _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x3f, 0, v + 0x2800, AnimSpeed(c));
         }
 
-        if (((dExtFrameCtrl_c *)(GetAnim(c)))->WillHitFrame(4) != 0
-            || ((dExtFrameCtrl_c *)(GetAnim(c)))->WillHitFrame(0x13) != 0) {
+        if (((dExtFrameCtrl_c *)(GetAnim(c)))->WillHitFrame(4) != 0 ||
+            ((dExtFrameCtrl_c *)(GetAnim(c)))->WillHitFrame(0x13) != 0) {
             func_ov002_020d4c30(c);
         }
     }
@@ -16293,7 +16294,8 @@ extern "C" int func_ov002_020d5cec(char* c)
     int y1;
     int shifted;
 
-    if (((Player *)c)->IsState(data_ov002_02110064) == 0) return 0;
+    if (((Player *)c)->IsState(data_ov002_02110064) == 0)
+        return 0;
     _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x56, 0x40000000, 0x1000, 0);
 
     d0 = (char *)player->mEatingPlayer;
@@ -17550,7 +17552,8 @@ int Player::St_YoshiPower_Main()
                 }
             }
             int id2 = this->GetBodyModelID(this->param1 & 0xff, 0);
-            if (((dExtFrameCtrl_c *)((char*)*(void**)(c + (id2<<2) + 0xdc) + 0x50))->WillHitFrame(0xa) != 0) {
+            if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id2 << 2) + 0xdc) + 0x50))
+                    ->WillHitFrame(0xa) != 0) {
                 Vec3 *src = (Vec3 *)&mPosX;
                 dp = (char*)*(void**)(&mObjInMouth);
                 ((dActor_c *)dp)->mPosX = src->x;
@@ -17580,7 +17583,8 @@ int Player::St_YoshiPower_Main()
                 }
             } else {
                 int id3 = this->GetBodyModelID(this->param1 & 0xff, 0);
-                if (((dExtFrameCtrl_c *)((char*)*(void**)(c + (id3<<2) + 0xdc) + 0x50))->WillHitFrame(0xc) != 0) {
+                if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id3 << 2) + 0xdc) + 0x50))
+                        ->WillHitFrame(0xc) != 0) {
                     mUseAltBodyModel = 1;
                     if ((*(Obj**)(&mObjInMouth))->v18() == 5) {
                         int cond2 = (((dActor_c *)mObjInMouth)->actorID == 0x132);
@@ -17653,7 +17657,8 @@ int Player::St_YoshiPower_Main()
 
     case 4: {
         int id5 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (((dExtFrameCtrl_c *)((char*)*(void**)(c + (id5<<2) + 0xdc) + 0x50))->WillHitFrame(3) != 0) {
+        if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id5 << 2) + 0xdc) + 0x50))
+                ->WillHitFrame(3) != 0) {
             int z = 0;
             mUseAltBodyModel = z;
             if (mUseAltBodyModel == 0) {
@@ -17665,7 +17670,8 @@ int Player::St_YoshiPower_Main()
             }
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (((dExtFrameCtrl_c *)((char*)*(void**)(c + (id7<<2) + 0xdc) + 0x50))->WillHitFrame(4) != 0) {
+        if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id7 << 2) + 0xdc) + 0x50))
+                ->WillHitFrame(4) != 0) {
             obj0 = *(Obj**)(&mObjInMouth);
             if (obj0 != 0) {
                 int cond3 = (((dActor_c *)obj0)->actorID == 0xbf);
@@ -17733,7 +17739,8 @@ int Player::St_YoshiPower_Main()
         }
         mPrevAngleY = mAngleY;
         int id10 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (((dExtFrameCtrl_c *)((char*)*(void**)(c + (id10<<2) + 0xdc) + 0x50))->WillHitFrame(6) != 0) {
+        if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id10 << 2) + 0xdc) + 0x50))
+                ->WillHitFrame(6) != 0) {
             this->func_ov002_020daa74();
             Sound::PlayCharVoice(0, 0x102, mCamSpacePos);
             goto common_tail;
@@ -17875,8 +17882,10 @@ void func_ov002_020d8158(char* c)
         *(u16 *)(int)(&p->mStateFlags) &= ~0x1000;
         return;
     }
-    if (((Player *)c)->IsState(data_ov002_02110034)) return;
-    if (((Player *)c)->IsState(data_ov002_0211004c)) return;
+    if (((Player *)c)->IsState(data_ov002_02110034))
+        return;
+    if (((Player *)c)->IsState(data_ov002_0211004c))
+        return;
     if (p->mIsNoControl != 0)
         return;
     if ((u16)(p->mStateFlags & 0x1000) == 0)
@@ -18192,8 +18201,7 @@ extern "C" int func_ov002_020d869c(char *c)
                 p.z = z;
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, p.x, p.y, p.z);
                 Sound::PlayBank0(0x12, pl->mCamSpacePos);
-                Sound::PlayCharVoice(pl->mCharacter, 0x19,
-                                                      pl->mCamSpacePos);
+                Sound::PlayCharVoice(pl->mCharacter, 0x19, pl->mCamSpacePos);
             }
         }
     }
@@ -18630,8 +18638,7 @@ extern "C" {
 void func_ov002_020d91b8(unsigned char *self, int a) {
     extern int data_ov002_020ff120[];
     Player *player = (Player *)self;
-    Sound::PlayCharVoice(self[0x6d9], data_ov002_020ff120[a & 1],
-                                          player->mCamSpacePos);
+    Sound::PlayCharVoice(self[0x6d9], data_ov002_020ff120[a & 1], player->mCamSpacePos);
 }
 }
 
@@ -18662,7 +18669,8 @@ int func_ov002_020d91e0(char* thiz, int damage, int doPre)
     if (*(int*)(data_0209ee90 + 0x248) == 0) {
         ((Player *)thiz)->Heal(-damage);
     }
-    if (((Player *)thiz)->GetHealth() != 0) return 0;
+    if (((Player *)thiz)->GetHealth() != 0)
+        return 0;
 
     ((Player *)thiz)->Heal(-0x100);
     return 1;
@@ -18707,7 +18715,8 @@ void _ZN6Player6BounceE5Fix12IiE(struct Player *self, int f) {
     extern int data_ov002_021105a4[];
     extern int data_ov002_0211019c[];
   if(_ZN6Player7IsStateERNS_5StateE(((char*)self), data_ov002_021105a4)) return;
-  if(((Player *)self)->GetHealth()==0) return;
+  if (((Player *)self)->GetHealth() == 0)
+      return;
   _ZN6Player11ChangeStateERNS_5StateE(((char*)self), data_ov002_0211019c);
   self->mVertSpeed = f;
   Sound::PlayCharVoice(self->mCharacter, 0x14, self->mCamSpacePos);
@@ -20915,8 +20924,7 @@ int Player::St_SlideKick_Init()
     extern int data_ov002_020ff130[];
     Sound::PlayBank0(0x11, mCamSpacePos);
     unsigned int r = (unsigned int)RandomIntInternal(&data_ov002_0210e160);
-    Sound::PlayCharVoice(mCharacter, data_ov002_020ff130[(r >> 4) & 1],
-                                          mCamSpacePos);
+    Sound::PlayCharVoice(mCharacter, data_ov002_020ff130[(r >> 4) & 1], mCamSpacePos);
     _ZN6Player7SetAnimEji5Fix12IiEj(((void*)this), 0x67, 0x40000000, 0x1000, 0);
     int *yv = &mHorzSpeed;
     mVertSpeed = 0x14000;
@@ -21436,8 +21444,7 @@ int Player::St_Dive_Init()
     extern int data_ov002_020ff100[];
     Sound::PlayBank0(0x11, mCamSpacePos);
     unsigned int r = (unsigned int)RandomIntInternal(&data_ov002_0210e160);
-    Sound::PlayCharVoice(mCharacter, data_ov002_020ff100[(r >> 4) & 1],
-                                          mCamSpacePos);
+    Sound::PlayCharVoice(mCharacter, data_ov002_020ff100[(r >> 4) & 1], mCamSpacePos);
     _ZN6Player7SetAnimEji5Fix12IiEj(((void*)this), 0x40, 0x40000000, 0x1000, 0);
     mStateStep = 0;
     int *yv = &mHorzSpeed;
@@ -21670,8 +21677,7 @@ void func_ov002_020dd5ec(char *c) {
         r = RandomIntInternal(&data_ov002_0210e160);
         idx = (idx + (((unsigned int)r) >> 4)) & 1;
     }
-    Sound::PlayCharVoice(player->mCharacter, data_ov002_020ff194[idx],
-                                          player->mCamSpacePos);
+    Sound::PlayCharVoice(player->mCharacter, data_ov002_020ff194[idx], player->mCamSpacePos);
     if ((player->mIsMega) != 0) {
         Sound::PlayBank0(0xd5, player->mCamSpacePos);
         return;
@@ -21705,7 +21711,7 @@ int Player::St_PunchKick_Init()
     mAttackClsn.Clear();
     mAttackClsn.Update();
   } else {
-    mAttackClsn.Clear();
+      mAttackClsn.Clear();
   }
   return 1;
 }
@@ -22815,7 +22821,8 @@ extern "C" int func_ov002_020df34c(Player* self) {
     extern Player::State data_ov002_021102d4;
     extern dCamera_c* data_0209f318;
     unsigned char* p = (unsigned char*)self;
-    if (p[0x709] != 0 || func_ov002_020e0478(self) != 0 || ((Player *)self)->IsState(data_ov002_0210ffec) != 0) {
+    if (p[0x709] != 0 || func_ov002_020e0478(self) != 0 ||
+        ((Player *)self)->IsState(data_ov002_0210ffec) != 0) {
         return 0;
     }
     p[0x6e3] = 0;
@@ -22989,10 +22996,11 @@ int func_ov002_020df7ac(void* thiz){
     extern void _ZN6Player14St_Owl_CleanupEv(void* thiz);
     extern Player::State data_ov002_02110244;
     extern Player::State data_ov002_021101b4;
-  if (((Player *)thiz)->IsState(data_ov002_02110244) == 0) return 0;
-  _ZN6Player14St_Owl_CleanupEv(thiz);
-  ((Player *)thiz)->ChangeState(data_ov002_021101b4);
-  return 1;
+    if (((Player *)thiz)->IsState(data_ov002_02110244) == 0)
+        return 0;
+    _ZN6Player14St_Owl_CleanupEv(thiz);
+    ((Player *)thiz)->ChangeState(data_ov002_021101b4);
+    return 1;
 }
 }
 
@@ -23443,7 +23451,7 @@ extern "C" {
 int func_ov002_020e0478(void* c){
     extern Player::State data_ov002_02110214;
     int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-  return ((Player *)c)->IsState(data_ov002_02110214) != 0;
+    return ((Player *)c)->IsState(data_ov002_02110214) != 0;
 }
 }
 
@@ -23956,7 +23964,8 @@ void _ZN6Player10SpinBounceE5Fix12IiE(struct Player *self, int f) {
     extern int data_ov002_021105a4[];
     extern int data_ov002_02110454[];
   if(_ZN6Player7IsStateERNS_5StateE(((char*)self), data_ov002_021105a4)) return;
-  if(((Player *)self)->GetHealth()==0) return;
+  if (((Player *)self)->GetHealth() == 0)
+      return;
   self->mVertSpeed = f;
   Sound::PlayCharVoice(self->mCharacter, 0x28, self->mCamSpacePos);
   Sound::PlayBank0(0xb6, self->mCamSpacePos);
@@ -23973,7 +23982,7 @@ extern "C" {
 int func_ov002_020e10a8(void* c){
     extern Player::State data_ov002_02110454;
     int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-  return ((Player *)c)->IsState(data_ov002_02110454) != 0;
+    return ((Player *)c)->IsState(data_ov002_02110454) != 0;
 }
 }
 
@@ -24876,8 +24885,7 @@ void func_ov002_020e25f0(char *c, int a) {
         Sound::PlayBank0(0xa0, p->mCamSpacePos);
     }
     int idx = (a * 2) + (inline_fn(data_ov002_0210e160) & 1);
-    Sound::PlayCharVoice(p->mCharacter, data_ov002_020ff284[idx],
-                                          p->mCamSpacePos);
+    Sound::PlayCharVoice(p->mCharacter, data_ov002_020ff284[idx], p->mCamSpacePos);
 }
 }
 
@@ -25189,8 +25197,7 @@ int func_ov002_020e2c84(char *self)
 
         func_0200d8c8(data_0209f318, (struct Vector3 *)(&player->mPosX), 0x7d0000);
         player->mIsFallScreaming = 0;
-        Sound::PlayCharVoice(player->mCharacter, 7,
-                                              player->mCamSpacePos);
+        Sound::PlayCharVoice(player->mCharacter, 7, player->mCamSpacePos);
     } else if (diff > 0x47e000) {
         if (_ZN6Player19func_ov002_020c0cbcEv(self) == 0) {
             if (func_ov002_020d91e0(self, 0x200, 1) != 0) {
@@ -25210,8 +25217,7 @@ int func_ov002_020e2c84(char *self)
             player->mVertSpeed = 0;
             func_0200d8c8(data_0209f318, (struct Vector3 *)(&player->mPosX), 0x7d0000);
             player->mIsFallScreaming = 0;
-            Sound::PlayCharVoice(player->mCharacter, 7,
-                                                  player->mCamSpacePos);
+            Sound::PlayCharVoice(player->mCharacter, 7, player->mCamSpacePos);
         }
     }
 
