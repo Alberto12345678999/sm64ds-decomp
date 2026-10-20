@@ -75,7 +75,7 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
                           SmartballBall_UpdatePhysics used to cast this class
                           to; gates most of that function's per-frame
                           collision work */
-    u8  state3b;      /* 0x03b -- ditto; set once mZoneDwell maxes out, and by Freeze */
+    u8 state3b;       /* 0x03b -- ditto; set once mZoneDwell maxes out, and by Freeze */
     s32 mZoneDwell;      /* 0x03c -- frames spent inside the box x [0x8000,
                              0xd8000) z [0x74000,0x7c000); counts up, sets
                              state3b past 0x1e, saturates at 0x12c, and resets
