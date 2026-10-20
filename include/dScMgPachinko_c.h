@@ -24,14 +24,23 @@
 struct dScMgPachinko_ball {
     s32 x;              /* 0x00 */
     s32 y;              /* 0x04 */
-    s32 unk08;          /* 0x08 */
-    s32 unk0c;          /* 0x0c */
-    s32 unk10;          /* 0x10 */
-    s32 unk14;          /* 0x14 */
-    s32 unk18;          /* 0x18 */
-    s32 unk1c;          /* 0x1c */
-    s32 unk20;          /* 0x20 */
-    u16 unk24;          /* 0x24 */
+    s32 velX;           /* 0x08 PachinkoBall_StateDive/_StateSpinAway add it to
+                           x; _AimAtTarget rewrites it as speed * cos */
+    s32 velY;           /* 0x0c added to y; _StateDive's atan2(velY, velX)
+                           gives `angle` */
+    s32 offX;           /* 0x10 PachinkoBall_DrawAll draws at x + offX;
+                           _StateSpinAway sets it to cos(rotation) * spinRadius */
+    s32 offY;           /* 0x14 the same for y, with sin */
+    s32 spinRadius;     /* 0x18 _StateSpinAway grows it by 0x800 up to 0x30000
+                           and scales the offset by it */
+    s32 sound;          /* 0x1c, sound handle (_StateSpinAway's
+                           Sound_PlayIfNotActive) */
+    s32 scale;          /* 0x20 PachinkoBall_DrawAll's sprite scale (20.12);
+                           seeded 0x1000 */
+    u16 rotation;       /* 0x24 the angle PachinkoBall_DrawAll draws at:
+                           _StateSpinAway spins it 0x800 a frame, _StateDive
+                           sets it to angle - 0x4000 and _StateGlide turns it
+                           there 0x100 a frame */
     u16 angle;          /* 0x26 */
     u16 timer;          /* 0x28 StateWaiting holds the ball until it runs
                            out; a hit forces state 6 with 16 and StatePop
@@ -43,11 +52,19 @@ struct dScMgPachinko_ball {
                            the clears drop it with active */
     u8  unk2e;          /* 0x2e */
     u8  state;          /* 0x2f 0 rests; a hit below 5 jumps to 6 */
-    u8  unk30;          /* 0x30 */
-    u8  unk31[0x2];     /* 0x31 */
-    u8  unk33;          /* 0x33 */
-    u8  unk34[0x2];     /* 0x34 */
-    u8  unk36;          /* 0x36 */
+    u8 started;         /* 0x30 PachinkoBall_StateFall/_StateDrift seed the
+                           velocity on the frame it is 0 and bump it */
+    u8 driftDir;        /* 0x31 _StateDrift's sway: 0 eases velX to a stop,
+                           1 speeds it up rightwards, 2 leftwards; a wall
+                           bounce swaps 1 and 2 */
+    u8  pad32;          /* 0x32 */
+    u8 sprite;          /* 0x33 index into sPachinkoBallSprites, which
+                           PachinkoBall_DrawAll draws */
+    u8 target;          /* 0x34 the mTarget index _AimAtTarget homes it on */
+    u8 fallPlayed;      /* 0x35 PachinkoBall_CheckFall plays sound 0x184 once,
+                           on the frame it sets this */
+    u8 level;           /* 0x36 mWaveLevel when Pachinko_SpawnWave spawned it;
+                           _AimAtTarget pitches its sound by it */
     u8  unk37;          /* 0x37 */
 };
 
@@ -79,7 +96,10 @@ struct dScMgPachinko_shot {
     u8 visible;         /* 0x36 PachinkoBobOmb_DrawAll draws only shots with
                            it set; set when served, cleared with active on a
                            hit and by PachinkoBobOmb_ClearAll */
-    u8  unk37;          /* 0x37 */
+    u8 combo;           /* 0x37 balls this shot has popped:
+                           PachinkoBall_CheckHitByBobOmb picks the pop sound
+                           and score by it (capped at 5), then bumps it;
+                           zeroed on grab and when served */
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -135,7 +155,9 @@ struct dScMgPachinko_pipe {
                            without it; _ResetAll sets it */
     u8 visible;         /* 0x18 PachinkoPipe_DrawAll draws only with it set;
                            _StatePick sets it, _ResetAll clears it */
-    u8  pad19;
+    u8 sinking;         /* 0x19 PachinkoPipe_StatePick sets it when it picks
+                           Sink (2), with vel 0x1000, and clears it
+                           otherwise; _ResetAll clears it */
     u8  laps;           /* 0x1a */
     u8  pad1b;
 };

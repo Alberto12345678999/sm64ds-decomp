@@ -1653,20 +1653,20 @@ void PachinkoBall_StateSpinAway(char *c, int i) {
     int f;
     short sv;
 
-    self->mBall[i].x += self->mBall[i].unk08;
-    self->mBall[i].y += self->mBall[i].unk0c;
-    self->mBall[i].unk24 += 0x800;
-    if (self->mBall[i].unk18 <= 0x30000) {
-        self->mBall[i].unk18 += 0x800;
+    self->mBall[i].x += self->mBall[i].velX;
+    self->mBall[i].y += self->mBall[i].velY;
+    self->mBall[i].rotation += 0x800;
+    if (self->mBall[i].spinRadius <= 0x30000) {
+        self->mBall[i].spinRadius += 0x800;
     }
-    sv = data_02082214[(self->mBall[i].unk24 >> 4) * 2 + 1];
-    self->mBall[i].unk10 = FX_MUL(sv, self->mBall[i].unk18);
-    sv = data_02082214[(self->mBall[i].unk24 >> 4) * 2];
-    self->mBall[i].unk14 = FX_MUL(sv, self->mBall[i].unk18);
+    sv = data_02082214[(self->mBall[i].rotation >> 4) * 2 + 1];
+    self->mBall[i].offX = FX_MUL(sv, self->mBall[i].spinRadius);
+    sv = data_02082214[(self->mBall[i].rotation >> 4) * 2];
+    self->mBall[i].offY = FX_MUL(sv, self->mBall[i].spinRadius);
 
-    x = (self->mBall[i].x + self->mBall[i].unk10) >> 12;
-    y = (self->mBall[i].y + self->mBall[i].unk14) >> 12;
-    self->mBall[i].unk1c = Sound_PlayIfNotActive(self->mBall[i].unk1c, 2, 0x187, 0);
+    x = (self->mBall[i].x + self->mBall[i].offX) >> 12;
+    y = (self->mBall[i].y + self->mBall[i].offY) >> 12;
+    self->mBall[i].sound = Sound_PlayIfNotActive(self->mBall[i].sound, 2, 0x187, 0);
     f = 0;
     if (x >= 0x130 || x <= -0x30) {
         f++;
@@ -1727,8 +1727,8 @@ void PachinkoBall_StateDive(char *c, int i) {
         }
     }
 
-    self->mBall[i].x += self->mBall[i].unk08;
-    self->mBall[i].y += self->mBall[i].unk0c;
+    self->mBall[i].x += self->mBall[i].velX;
+    self->mBall[i].y += self->mBall[i].velY;
 
     t = self->mWaveLevel;
     if (t > 12)
@@ -1740,9 +1740,9 @@ void PachinkoBall_StateDive(char *c, int i) {
         lim = 0x600 + t * 0xa0;
     }
 
-    if (self->mBall[i].unk0c <= lim)
+    if (self->mBall[i].velY <= lim)
     {
-        self->mBall[i].unk0c += t * 4 + 8;
+        self->mBall[i].velY += t * 4 + 8;
     }
 
     PachinkoBall_CheckHitByBobOmb(c, i);
@@ -1750,8 +1750,8 @@ void PachinkoBall_StateDive(char *c, int i) {
     PachinkoBall_CountNearby(c, i);
 
     self->mBall[i].angle =
-        _ZN4cstd5atan2E5Fix12IiES1_(self->mBall[i].unk0c, self->mBall[i].unk08);
-    self->mBall[i].unk24 = self->mBall[i].angle - 0x4000;
+        _ZN4cstd5atan2E5Fix12IiES1_(self->mBall[i].velY, self->mBall[i].velX);
+    self->mBall[i].rotation = self->mBall[i].angle - 0x4000;
 
     PachinkoBall_AimAtTarget(c, i);
 }
@@ -1921,16 +1921,16 @@ void PachinkoBall_StateDrift(char *o, int i) {
 // @symbol PachinkoBall_StateFall
 void PachinkoBall_StateFall(char *o, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)o;
-    if (self->mBall[i].unk30 == 0)
+    if (self->mBall[i].started == 0)
     {
-        self->mBall[i].unk30 += 1;
+        self->mBall[i].started += 1;
         if (self->mWaveLevel > 0xc) {
-            self->mBall[i].unk0c =
+            self->mBall[i].velY =
                 ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 3) >> 0xf)
                  << 7) +
                 0xb80 + ((self->mWaveLevel - 0xc) << 7);
         } else {
-            self->mBall[i].unk0c =
+            self->mBall[i].velY =
                 self->mWaveLevel * 0xa0 +
                 (((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 3) >> 0xf)
                   << 7) +
@@ -1939,7 +1939,7 @@ void PachinkoBall_StateFall(char *o, int i) {
     }
     else
     {
-        self->mBall[i].y += self->mBall[i].unk0c;
+        self->mBall[i].y += self->mBall[i].velY;
     }
     PachinkoBall_CheckFall(o, i);
     PachinkoBall_CheckHitByBobOmb(o, i);
@@ -2143,15 +2143,15 @@ void Pachinko_SpawnWave(dScMgPachinko_c *self)
                             ((((u32)ra >> 16) & 0x7fff) * 4 >> 15) * 8)
                            << 12;
         self->mBall[i].y = -0x100000;
-        self->mBall[i].unk08 = 0;
-        self->mBall[i].unk0c = 0;
+        self->mBall[i].velX = 0;
+        self->mBall[i].velY = 0;
         self->mBall[i].state = 0;
-        self->mBall[i].unk30 = 0;
+        self->mBall[i].started = 0;
         ra = RandomIntInternal(&data_0209d4b8);
         self->mBall[i].timer = ((((u32)ra >> 16) & 0x7fff) * 8 >> 15) << 4;
-        self->mBall[i].unk24 = 0;
-        self->mBall[i].unk1c = 0;
-        self->mBall[i].unk36 = self->mWaveLevel;
+        self->mBall[i].rotation = 0;
+        self->mBall[i].sound = 0;
+        self->mBall[i].level = self->mWaveLevel;
         self->mWaveSpawns++;
         if (self->mWaveLevel == 0)
             break;
@@ -2169,17 +2169,17 @@ void Pachinko_SpawnWave(dScMgPachinko_c *self)
             self->mBall[i].x = 0;
             self->mBall[i].angle = (((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0xc >> 15) + 1 << 9) + 0xc000;
         }
-        self->mBall[i].unk18 = 0;
-        self->mBall[i].unk10 = 0;
-        self->mBall[i].unk14 = 0;
-        self->mBall[i].unk24 = self->mBall[i].angle - 0x4000;
+        self->mBall[i].spinRadius = 0;
+        self->mBall[i].offX = 0;
+        self->mBall[i].offY = 0;
+        self->mBall[i].rotation = self->mBall[i].angle - 0x4000;
         self->mBall[i].y = -0x60000;
-        self->mBall[i].unk08 = FX_MUL(data_02082214[(self->mBall[i].angle >> 4) * 2 + 1], 0xe80);
-        self->mBall[i].unk0c = FX_MUL(data_02082214[(self->mBall[i].angle >> 4) * 2], 0xe80);
+        self->mBall[i].velX = FX_MUL(data_02082214[(self->mBall[i].angle >> 4) * 2 + 1], 0xe80);
+        self->mBall[i].velY = FX_MUL(data_02082214[(self->mBall[i].angle >> 4) * 2], 0xe80);
         self->mBall[i].state = 3;
         self->mBall[i].visible = 1;
-        self->mBall[i].unk33 = 0;
-        self->mBall[i].unk20 = 0x1000;
+        self->mBall[i].sprite = 0;
+        self->mBall[i].scale = 0x1000;
         self->mBall[i].timer = 0x10;
         break;
     }
