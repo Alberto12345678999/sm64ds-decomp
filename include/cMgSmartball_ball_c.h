@@ -71,7 +71,7 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
     u8  unk_039;      /* 0x039 -- cleared alongside mUpperWallSolid and by
                           RestoreInitial; NOTHING IN THE TREE READS IT. No
                           evidence, so no name. */
-    u8  state3a;      /* 0x03a -- name carried over from the Obj view that
+    u8 state3a;       /* 0x03a -- name carried over from the Obj view that
                           SmartballBall_UpdatePhysics used to cast this class
                           to; gates most of that function's per-frame
                           collision work */

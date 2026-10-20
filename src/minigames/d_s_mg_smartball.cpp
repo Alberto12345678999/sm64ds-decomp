@@ -654,8 +654,7 @@ int cMgSmartball_pushswitch_c::CheckBall(int *p) {
         return func_0203d5bc(d) < 0x40000;
     }
     if (p[1] > mCurrent1) {
-        if (p[0] >= mCurrent0 - 0x8000 && p[0] < mCurrent0 + 0x8000 &&
-            p[1] < mCurrent1 + 0xa000)
+        if (p[0] >= mCurrent0 - 0x8000 && p[0] < mCurrent0 + 0x8000 && p[1] < mCurrent1 + 0xa000)
             return 1;
         return 0;
     }
@@ -1261,8 +1260,7 @@ void cMgSmartball_board_c::SaveSnapshot() {
         for (j = 0, lo = 0xc000, hi = 0x14000; j < 9; j++) {
             int slot = sSmartballCellOrder[j];
             if (v.x >= lo && v.x < hi) {
-                if (GetObjBoard((char *)mpManager, n)
-                        ->ArmExpire(0x14)) {
+                if (GetObjBoard((char *)mpManager, n)->ArmExpire(0x14)) {
                     if ((&mTriggered)[slot] == 0) {
                         SetV2(&a, mCurrent0 + ((sSmartballCellOrder[j] % 3 - 1) * 0x18 << 12),
                               mCurrent1 + ((sSmartballCellOrder[j] / 3 - 1) * 0x18 << 12));
@@ -1632,8 +1630,10 @@ void *cMgSmartball_slot_c_Construct(char *c, int a1, int a2, int *src) {
     tmp[1] = src[1];
     cMgSmartball_object_c_Construct(c, a1, a2, tmp);
     *(void ***)c = (void **)&_ZTV19cMgSmartball_slot_c[2];
-    __cxa_vec_ctor(((cMgSmartball_slot_c *)c)->mReelOffset, 3, 8, func_0203d738, NullDestructor_0203d47c);
-    __cxa_vec_ctor(((cMgSmartball_slot_c *)c)->mReelVel, 3, 8, func_0203d738, NullDestructor_0203d47c);
+    __cxa_vec_ctor(((cMgSmartball_slot_c *)c)->mReelOffset, 3, 8, func_0203d738,
+                   NullDestructor_0203d47c);
+    __cxa_vec_ctor(((cMgSmartball_slot_c *)c)->mReelVel, 3, 8, func_0203d738,
+                   NullDestructor_0203d47c);
     ((cMgSmartball_object_c *)c)->mRadius = 0x28000;
     return c;
 }
@@ -2443,8 +2443,7 @@ void cMgSmartball_kinoko_c::SaveSnapshot() {
         if (mHitTimer == 0) {
             pair.x = mCurrent0;
             pair.y = mCurrent1;
-            ((dScMgSmartball_c *)mpManager)
-                ->EmitScore((int *)&pair, (int)0x12c, (int)0, (int)1);
+            ((dScMgSmartball_c *)mpManager)->EmitScore((int *)&pair, (int)0x12c, (int)0, (int)1);
             ((dScMgSmartball_c *)mpManager)->CountKinoko();
             func_02012718(0x19f, mCurrent0);
         }
@@ -2460,11 +2459,9 @@ void cMgSmartball_kinoko_c::SaveSnapshot() {
             i = 0;
             if (obj->mBallCount > 0) {
                 do {
-                    cMgSmartball_ball_c *n =
-                        (i >= 0xd) ? 0 : obj->mpBalls[i];
+                    cMgSmartball_ball_c *n = (i >= 0xd) ? 0 : obj->mpBalls[i];
                     if (n->mIsActive != 0) {
-                        void *m =
-                            (i >= 0xd) ? (void *)0 : (void *)obj->mpBalls[i];
+                        void *m = (i >= 0xd) ? (void *)0 : (void *)obj->mpBalls[i];
                         int hit;
                         CopyObjectPos((int *)&bufA, (int *)m);
                         Vec2_Sub((int *)&bufB, &mCurrent0, (int *)&bufA);
@@ -2674,9 +2671,7 @@ int cMgSmartball_ball_c::HitSwitches(int *arg) {
         buf[0] = arg[0];
         buf[1] = arg[1];
         base = (dScMgSmartball_c *)mpManager;
-        p = (i >= base->mPushSwitchCount)
-                ? zero
-                : (int *)base->mpPushSwitches[i];
+        p = (i >= base->mPushSwitchCount) ? zero : (int *)base->mpPushSwitches[i];
         if (((cMgSmartball_pushswitch_c *)((char *)p))->CheckBall((int *)buf))
             return 1;
         i++;
@@ -2695,9 +2690,7 @@ extern "C" int cMgSmartball_ball_c::HitPakkuns(int *arg) {
         buf[0] = arg[0];
         buf[1] = arg[1];
         base = (dScMgSmartball_c *)mpManager;
-        p = (i >= base->mPakkunCount)
-                ? zero
-                : (int *)base->mpPakkuns[i];
+        p = (i >= base->mPakkunCount) ? zero : (int *)base->mpPakkuns[i];
         if (((cMgSmartball_pakkun_c *)p)->CheckBall((int *)(buf)))
             return 1;
         i++;
@@ -2717,9 +2710,7 @@ int cMgSmartball_ball_c::HitDokans(int *arg) {
         buf[0] = arg[0];
         buf[1] = arg[1];
         base = (dScMgSmartball_c *)mpManager;
-        p = (i >= base->mDokanCount)
-                ? zero
-                : (int *)base->mpDokans[i];
+        p = (i >= base->mDokanCount) ? zero : (int *)base->mpDokans[i];
         if (((cMgSmartball_dokan_c *)(p))->CheckBall(buf))
             return 1;
         i++;
@@ -3311,14 +3302,18 @@ outer_loop:
         if (((dScMgSmartball_c *)self->mpManager)->mBallCount > 0) {
             do {
                 if (entityLoopIndex != self->mIndex) {
-                    other =
-                        entityLoopIndex >= 0xd ? state.null34 : ((dScMgSmartball_c *)self->mpManager)->mpBalls[entityLoopIndex];
+                    other = entityLoopIndex >= 0xd
+                                ? state.null34
+                                : ((dScMgSmartball_c *)self->mpManager)->mpBalls[entityLoopIndex];
                     if (((cMgSmartball_ball_c *)other)->state3a == 0) {
-                        other = entityLoopIndex >= 0xd ? state.null38
-                                                       : ((dScMgSmartball_c *)self->mpManager)->mpBalls[entityLoopIndex];
+                        other =
+                            entityLoopIndex >= 0xd
+                                ? state.null38
+                                : ((dScMgSmartball_c *)self->mpManager)->mpBalls[entityLoopIndex];
                         if (((cMgSmartball_object_c *)other)->mIsActive != 0) {
                             other = entityLoopIndex >= 0xd ? (void *)state.null3c
-                                                           : ((dScMgSmartball_c *)self->mpManager)->mpBalls[entityLoopIndex];
+                                                           : ((dScMgSmartball_c *)self->mpManager)
+                                                                 ->mpBalls[entityLoopIndex];
                             CopyObjectPos((int *)&entityPos, (int *)other);
                             Vec2_Sub((int *)&entityDelta, (int *)(V2xz *)&self->mCurrent0,
                                      (int *)&entityPos);
@@ -3480,14 +3475,17 @@ outer_loop:
             self->mCurrent0 = 0xe8000;
         CopyObjectPos((int *)&specialPos, (int *)((dScMgSmartball_c *)self->mpManager)->mpSpring);
         self->mCurrent1 = specialPos.z - 0x20001 - self->mRadius;
-        GetObjectDelta((void *)&specialDelta0, (char *)((dScMgSmartball_c *)self->mpManager)->mpSpring);
+        GetObjectDelta((void *)&specialDelta0,
+                       (char *)((dScMgSmartball_c *)self->mpManager)->mpSpring);
         if (specialDelta0.z >= -0x1000)
             return;
-        GetObjectDelta((void *)&specialDelta1, (char *)((dScMgSmartball_c *)self->mpManager)->mpSpring);
+        GetObjectDelta((void *)&specialDelta1,
+                       (char *)((dScMgSmartball_c *)self->mpManager)->mpSpring);
         if (self->mVel1 < specialDelta1.z)
             return;
         self->mVel0 = 0;
-        GetObjectDelta((void *)&specialDelta2, (char *)((dScMgSmartball_c *)self->mpManager)->mpSpring);
+        GetObjectDelta((void *)&specialDelta2,
+                       (char *)((dScMgSmartball_c *)self->mpManager)->mpSpring);
         self->mVel1 = specialDelta2.z;
         if (self->mVel1 < -0x6000)
             self->mVel1 = (self->mVel1 + 0x6000) / 4 - 0x6000;
@@ -3540,11 +3538,15 @@ outer_loop:
     if (((dScMgSmartball_c *)self->mpManager)->mAnaCount <= 0)
         return;
     do {
-        other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount ? (void *)0 : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
+        other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount
+                    ? (void *)0
+                    : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
         if (((cMgSmartball_ana_c *)other)->HasBall() == 0) {
             hazardDelta.x = self->mCurrent0;
             hazardDelta.z = self->mCurrent1;
-            other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount ? (void *)0 : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
+            other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount
+                        ? (void *)0
+                        : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
             CopyObjectPos((int *)&hazardPos, (int *)other);
             hazardDelta.x -= hazardPos.x;
             hazardDelta.z -= hazardPos.z;
@@ -3552,11 +3554,15 @@ outer_loop:
             if (func_0203d5bc((int *)&hazardDelta) < square) {
                 dot = self->mRadius + 0x10000 - Vec2_Len((Vec2 *)&hazardDelta);
                 if (self->mRadius < dot) {
-                    other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount ? (void *)0 : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
+                    other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount
+                                ? (void *)0
+                                : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
                     CopyObjectPos((int *)&hazardPos2, (int *)other);
                     self->mSwallowX = hazardPos2.x;
                     self->mSwallowZ = hazardPos2.z;
-                    other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount ? (void *)0 : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
+                    other = i >= ((dScMgSmartball_c *)self->mpManager)->mAnaCount
+                                ? (void *)0
+                                : ((dScMgSmartball_c *)self->mpManager)->mpAnas[i];
                     ((cMgSmartball_ana_c *)other)->Swallow();
                     ((cMgSmartball_ball_c *)self)->ArmExpire(0x80);
                     self->state3a = 1;
@@ -3609,12 +3615,16 @@ void cMgSmartball_ball_c::DrawMarker() {
         sq = FX_MUL(v, v);
         for (i = 0; i < ((dScMgSmartball_c *)mpManager)->mAnaCount; i++) {
             if (((cMgSmartball_ana_c *)((
-                     unsigned char *)((i >= ((dScMgSmartball_c *)mpManager)->mAnaCount) ? 0 : ((dScMgSmartball_c *)mpManager)->mpAnas[i])))
+                     unsigned char *)((i >= ((dScMgSmartball_c *)mpManager)->mAnaCount)
+                                          ? 0
+                                          : ((dScMgSmartball_c *)mpManager)->mpAnas[i])))
                     ->HasBall() == 0) {
                 s[0] = mCurrent0;
                 s[1] = mCurrent1;
                 s[1] += 0x5000;
-                CopyObjectPos(&s[4], (i >= ((dScMgSmartball_c *)mpManager)->mAnaCount) ? 0 : (int *)((dScMgSmartball_c *)mpManager)->mpAnas[i]);
+                CopyObjectPos(&s[4], (i >= ((dScMgSmartball_c *)mpManager)->mAnaCount)
+                                         ? 0
+                                         : (int *)((dScMgSmartball_c *)mpManager)->mpAnas[i]);
                 s[0] = s[0] - s[4];
                 s[1] = s[1] - s[5];
                 s[1] = s[1] * 2;
