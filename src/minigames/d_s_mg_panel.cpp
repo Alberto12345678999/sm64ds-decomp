@@ -32,10 +32,6 @@
  * - Scene_StateResult: the mKind pointer DIFFs as &mKind[i]; mResultTimer and
  *   the 0x4ec6 counter go through laundered pointers, and mSolved through a
  *   +0x4000 byte base.
- * - Answer_StateResetBoard, UpdateMoves, Panel_StartAll, Scene_StateGameOver,
- *   Scene_StateShowAnswer, Scene_StateRewind, Scene_StatePlay: the mKind
- *   (and Answer_StateResetBoard's mFace) index sites are still raw; their
- *   member spellings measure identical and were not converted in this pass.
  * - HasDuplicateRows, ClearGrid, ResetRound: see the comments there (@NNN).
  * - DrawPanels keeps a local layout view: the native-member rewrite changes
  *   its body from 360 to 388 bytes.
@@ -881,8 +877,8 @@ void dScMgPanel_c::Answer_StateResetBoard() {
     } else {
         int k;
         for (k = 0; k < self->mCount; k++) {
-            *(u8 *)(scene + k + 0x4efa) = 1;
-            *(u8 *)(scene + k + 0x4f1e) ^= 1;
+            self->mKind[k] = 1;
+            self->mFace[k] ^= 1;
             self->mFastFlip[k] = 1;
         }
         mInputState = 2;
@@ -966,7 +962,7 @@ void dScMgPanel_c::UpdateMoves() {
         int i;
         int n = s->mCount;
         for (i = 0; i < n; i++) {
-            if (*(u8 *)(scene + i + 0x4efa) != 0) {
+            if (mKind[i] != 0) {
                 found++;
                 break;
             }
@@ -1016,7 +1012,7 @@ void dScMgPanel_c::UpdateMoves() {
         for (y = 0; y < hq; y++) {
             for (x = 0; x < wq; x++) {
                 int cell = mWidth * (row + y) + (col + x);
-                *(u8 *)(scene + cell + 0x4efa) = 1;
+                mKind[cell] = 1;
                 s->mFace[cell] ^= 1;
                 s->mFlipDelay[cell] = 8;
                 s->mFastFlip[cell] = 1;
@@ -1578,7 +1574,7 @@ void dScMgPanel_c::Panel_StartAll() {
     char *scene = (char *)this;
     int i;
     for (i = 0; i < mWidth; i++) {
-        *(u8 *)(scene + i + 0x4efa) = 3;
+        mKind[i] = 3;
     }
 }
 
@@ -1726,7 +1722,7 @@ void dScMgPanel_c::Scene_StateGameOver() {
     extern PanelStateFnI sPanelPanelStateTable[];
     int i;
     for (i = 0; i < mCount; i++) {
-        u8 index = *(u8 *)(scene + i + 0x4efa);
+        u8 index = mKind[i];
         struct PanelPmfRec_bc0 *e = (struct PanelPmfRec_bc0 *)&sPanelPanelStateTable[index];
         int adj = e->adj;
         char *thisp = scene + (adj >> 1);
@@ -1849,7 +1845,7 @@ void dScMgPanel_c::Scene_StateShowAnswer() {
     IntroCard_Update();
     Answer_Update();
     for (i = 0; i < mCount; i++) {
-        u8 index = *(u8 *)(scene + i + 0x4efa);
+        u8 index = mKind[i];
         (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[index])(i);
     }
 }
@@ -1864,7 +1860,7 @@ void dScMgPanel_c::Scene_StateRewind() {
     self->mBusy = 1;
     UpdateMoves();
     for (i = 0; i < self->mCount; i++) {
-        u8 index = *(u8 *)(scene + i + 0x4efa);
+        u8 index = mKind[i];
         (((dScMgPanel_c *)scene)->*sPanelPanelStateTable[index])(i);
     }
 }
@@ -1897,12 +1893,12 @@ void dScMgPanel_c::Scene_StatePlay() {
     dScMgPanel_c *scene = this;
     extern PanelStateFnI sPanelPanelStateTable[];
     int i;
-    char *b = (char *)scene;
+    char *b = (char *)scene; /* unused; dropping it renumbers @NNN */
     UpdateTouch();
     IntroCard_Update();
     mBusy = 0;
     for (i = 0; i < mCount; i++) {
-        u8 index = *(u8 *)(b + i + 0x4efa);
+        u8 index = scene->mKind[i];
         (scene->*sPanelPanelStateTable[index])(i);
     }
     CheckSolved();
