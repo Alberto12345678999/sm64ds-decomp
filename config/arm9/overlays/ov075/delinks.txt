@@ -215,15 +215,15 @@ src/unnamed/ov075/func_ov075_0211919c.c:
     complete
     .text start:0x0211919c end:0x021192bc
 
-src/unnamed/ov075/func_ov075_021192bc.c:
+src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp:
     complete
     .text start:0x021192bc end:0x0211944c
 
-src/unnamed/ov075/func_ov075_0211944c.c:
+src/_ZN10dScEntry_c15EnterPlayerSyncEv.cpp:
     complete
     .text start:0x0211944c end:0x021194e4
 
-src/unnamed/ov075/func_ov075_021194e4.cpp:
+src/_ZN10dScEntry_c17RenderWaitingTextEv.cpp:
     complete
     .text start:0x021194e4 end:0x02119640
 

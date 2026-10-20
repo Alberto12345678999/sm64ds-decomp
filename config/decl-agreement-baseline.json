@@ -22555,7 +22555,7 @@
       "src/game/stages/d_s_stage_methods.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov075/func_ov075_021192bc.c": [
+      "src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp": [
         "return:int"
       ]
     },
@@ -22569,7 +22569,7 @@
       "src/unnamed/ov075/func_ov075_02118a78.c": [
         "arity:0"
       ],
-      "src/unnamed/ov075/func_ov075_021192bc.c": [
+      "src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp": [
         "param:#1 int"
       ]
     },
