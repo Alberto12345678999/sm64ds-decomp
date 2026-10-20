@@ -646,8 +646,8 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         ((SurfaceInfo *)((char *)clsn->GetFloorResult() + 4))->CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
-            int x = FX_MUL(floorNormal.x, unk_0a4);
-            int y = FX_MUL(floorNormal.z, unk_0ac);
+            int x = FX_MUL(floorNormal.x, mSpeedX);
+            int y = FX_MUL(floorNormal.z, mSpeedZ);
             mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
         }
     }

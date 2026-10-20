@@ -461,7 +461,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
         dBgPi *floor = (dBgPi *)w->GetFloorResult();
         floor->surface.CopyNormalTo(n);
         if (n.y != 0) {
-            int s = FX_MUL(n.x, self->unk_0a4) + FX_MUL(n.z, self->unk_0ac);
+            int s = FX_MUL(n.x, self->mSpeedX) + FX_MUL(n.z, self->mSpeedZ);
             self->mVertSpeed = -(_ZN4cstd4fdivEii(s, n.y) + 0x8000);
         }
     }

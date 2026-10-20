@@ -15,8 +15,6 @@
 //   increment does not match UpdateRunState.
 // - PlayStepSound, PlayHitSound, PlayShellHitSound and PlayDeathSound call
 //   func_0201267c. That symbol has no header name.
-// - The coin's unk_0a4 and unk_0ac stay the base header's lateral-velocity
-//   names.
 // - data_ov064_0211b834 stays the file table decl_common.h already declares.
 //   g_profile_DONKETU is not in this TU.
 
@@ -105,9 +103,9 @@ int daDonketu_c::Behavior()
             dActor_c *coin = dActor_c::Spawn(0x120, 2, pos, &rot, mAreaId, -1);
             if (coin) {
                 coin->mHorzSpeed = 0xa000;
-                coin->unk_0a4 = 0;
+                coin->mSpeedX = 0;
                 coin->mVertSpeed = 0x50000;
-                coin->unk_0ac = 0;
+                coin->mSpeedZ = 0;
             }
             dActor_c *spawner = dActor_c::FindWithID(mBigBullyID);
             if (spawner) {
@@ -145,9 +143,9 @@ void daDonketu_c::UpdateDeathState()
     dActor_c *coin = dActor_c::Spawn(0x120, 2, pos, &rot, mAreaId, -1);
     if (coin) {
         coin->mHorzSpeed = 0xa000;
-        coin->unk_0a4 = 0;
+        coin->mSpeedX = 0;
         coin->mVertSpeed = 0x50000;
-        coin->unk_0ac = 0;
+        coin->mSpeedZ = 0;
     }
     dActor_c *spawner = dActor_c::FindWithID(mBigBullyID);
     if (spawner) {

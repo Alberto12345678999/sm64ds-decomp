@@ -21,7 +21,7 @@
  * Leftover: Sound::PlaySub and Particle::System::NewSimple stay mangled --
  *   Fix12<int> by value (wall 6az). Sound.h still only has PlayBank3;
  *   Particle.h has no System::NewSimple.
- * Leftover: func_020393c4 is a 4-byte store into dBgW+0x1c (unk_1c). This
+ * Leftover: func_020393c4 is a 4-byte store into dBgW+0x1c (stoodOnCallback). This
  *   TU calls it; naming belongs with dBgW in arm9.
  * Leftover: HatenaMatrixWords 12-word copies -- structured Matrix4x3
  *   assignment scalarizes; common.h-first would drop mClsnMat.t used in

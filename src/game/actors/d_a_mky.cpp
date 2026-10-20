@@ -394,7 +394,7 @@ void daMky_c::func_ov030_02111f6c(dBgCh_Actr *w) {
         Vector3 n;
         static_cast<const dBgPi *>(w->GetFloorResult())->surface.CopyNormalTo(n);
         if (n.y != 0) {
-            int s = FX_MUL(n.x, this->unk_0a4) + FX_MUL(n.z, this->unk_0ac);
+            int s = FX_MUL(n.x, this->mSpeedX) + FX_MUL(n.z, this->mSpeedZ);
             this->mVertSpeed = -(cstd::fdiv(s, n.y) + 0x8000);
         }
     }

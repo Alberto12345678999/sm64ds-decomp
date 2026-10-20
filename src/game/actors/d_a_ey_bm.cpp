@@ -162,12 +162,10 @@ int daEyBm_c::Behavior()
         velocity.y = 0;
         Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mPrevAngleX);
-        MulVec3Mat4x3(
-            &velocity, &data_020a0e68, (DaEyBmVector3Words *)&unk_0a4);
+        MulVec3Mat4x3(&velocity, &data_020a0e68, (DaEyBmVector3Words *)&mSpeedX);
 
         /* Retail retains a typed whole-vector writeback after the transform. */
-        *(DaEyBmVector3Words *)&unk_0a4 =
-            *(DaEyBmVector3Words *)&unk_0a4;
+        *(DaEyBmVector3Words *)&mSpeedX = *(DaEyBmVector3Words *)&mSpeedX;
 
         UpdatePosWithOnlySpeed(&mdCcAcPos_c);
         UpdateCollision(mWithMeshClsn);

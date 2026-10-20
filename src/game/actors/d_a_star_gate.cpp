@@ -29,7 +29,7 @@
  * Leftover: gObjStargateModelFile model handle (SharedFilePtr.h has no fields;
  *   StarGateModelFilePtr is the 8-byte wrapper). data_ov100_02148390 gate
  *   table.
- * Leftover: (Vector3 *)&unk_0a4 (dActor_c consecutive
+ * Leftover: (Vector3 *)&mSpeedX (dActor_c consecutive
  *   s32s; a Vector3 member is not this class).
  * Leftover: data_0209caa0 +0x41 character byte (SaveData.mCharacter).
  *   SaveData.h shifts this TU's @432..@446 PTMF uniquifiers in symbols.txt.
@@ -190,15 +190,15 @@ int daStarGate_c::Render()
     if (IsAreaShowing((s8)mAngleX) != 0 ||
         IsAreaShowing((s8)mAngleZ) != 0) {
         Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
-        mModel.mat4x3.t.x = (mPosX + unk_0a4) >> 3;
+        mModel.mat4x3.t.x = (mPosX + mSpeedX) >> 3;
         mModel.mat4x3.t.y = (mPosY + mVertSpeed) >> 3;
-        mModel.mat4x3.t.z = (mPosZ + unk_0ac) >> 3;
+        mModel.mat4x3.t.z = (mPosZ + mSpeedZ) >> 3;
         mModel.Render(0);
 
         Matrix4x3_FromRotationY(&mModel.mat4x3, (s16)(mAngleY + 0x8000));
-        mModel.mat4x3.t.x = (mPosX - unk_0a4) >> 3;
+        mModel.mat4x3.t.x = (mPosX - mSpeedX) >> 3;
         mModel.mat4x3.t.y = (mPosY - mVertSpeed) >> 3;
-        mModel.mat4x3.t.z = (mPosZ - unk_0ac) >> 3;
+        mModel.mat4x3.t.z = (mPosZ - mSpeedZ) >> 3;
         mModel.Render(0);
     }
 
@@ -432,8 +432,7 @@ bool daStarGate_c::St_OpenClose_Main(Player *player)
     vec.x = vd;
     vec.z = gz;
     vec.y = gy;
-    Vec3_RotateYAndTranslate((Vector3 *)&unk_0a4, &data_020a0ebc,
-                             mAngleY, (Vector3 *)&vec);
+    Vec3_RotateYAndTranslate((Vector3 *)&mSpeedX, &data_020a0ebc, mAngleY, (Vector3 *)&vec);
     return true;
 }
 
