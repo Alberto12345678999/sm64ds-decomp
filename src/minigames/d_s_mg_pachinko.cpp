@@ -33,8 +33,8 @@
 //   Bg_Start and Flyer_StateWaiting/Cross/Pause/Leave measured different typed and stay on
 //   offsets; the other handlers
 //   keep the offset forms their launder macros and saved row cursors tune,
-//   and convert one function at a time. 0x5418..0x5958 is never
-//   accessed by this class's code, so it stays padding. The pipe fields behind the PIPE_* byte-offset
+//   and convert one function at a time. mShot holds 0x30 records,
+//   ending exactly at mFx. The pipe fields behind the PIPE_* byte-offset
 //   macros take a pre-scaled offset rather than an index.
 // - Shot and ball fields go through `p + i * 0x38`: indexing mShot[i]/mBall[i]
 //   is one word different, so the multiply forms stay; the r5 cursor locals
@@ -1265,7 +1265,7 @@ int PachinkoPipe_StateIdle(char *raw, int idx) {
 // @symbol PachinkoPipe_StateSink
 void PachinkoPipe_StateSink(char *raw, int i) {
     int off = i * 0x1c;
-    int y;
+    int x;
 
     if (PIPE_PHASE(raw, off) != 0) {
         PIPE_TIMER(raw, off)++;
@@ -1294,14 +1294,14 @@ void PachinkoPipe_StateSink(char *raw, int i) {
     }
 
     PIPE_X(raw, off) += PIPE_VEL(raw, off);
-    y = PIPE_X(raw, off) >> 0xc;
-    if (y >= sPachinkoPipeSinkStops[i + 2]) {
+    x = PIPE_X(raw, off) >> 0xc;
+    if (x >= sPachinkoPipeSinkStops[i + 2]) {
         if (PIPE_VEL(raw, off) >= 0x800)
             PIPE_VEL(raw, off) -= 0x80;
     } else {
         PIPE_VEL(raw, off) += 0x80;
     }
-    if (y < sPachinkoPipeSinkStops[i])
+    if (x < sPachinkoPipeSinkStops[i])
         return;
 
     PIPE_X(raw, off) = sPachinkoPipeSinkStops[i] << 0xc;
@@ -1316,7 +1316,7 @@ void PachinkoPipe_StateSink(char *raw, int i) {
 void PachinkoPipe_StateRise(char *raw, int i) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
     int off = i * 0x1c;
-    int y;
+    int x;
 
     if (self->mPipe[i].phase != 0) {
         (self->mPipe[i].timer)++;
@@ -1346,8 +1346,8 @@ void PachinkoPipe_StateRise(char *raw, int i) {
     }
 
     self->mPipe[i].x = self->mPipe[i].x + self->mPipe[i].vel;
-    y = self->mPipe[i].x >> 0xc;
-    if (y <= sPachinkoPipeRiseStops[i + 2]) {
+    x = self->mPipe[i].x >> 0xc;
+    if (x <= sPachinkoPipeRiseStops[i + 2]) {
         if (self->mPipe[i].vel <= -0x800) {
             self->mPipe[i].vel = self->mPipe[i].vel + 0x80;
         }
@@ -1355,7 +1355,7 @@ void PachinkoPipe_StateRise(char *raw, int i) {
         self->mPipe[i].vel = self->mPipe[i].vel - 0x80;
     }
 
-    if (y > sPachinkoPipeRiseStops[i]) {
+    if (x > sPachinkoPipeRiseStops[i]) {
         return;
     }
     self->mPipe[i].x = sPachinkoPipeRiseStops[i] << 0xc;
