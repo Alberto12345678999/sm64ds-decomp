@@ -1548,6 +1548,7 @@
         "matchesStockRom": true
       },
       "linkerOutput": null
-    }
+    },
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off"
   }
 }

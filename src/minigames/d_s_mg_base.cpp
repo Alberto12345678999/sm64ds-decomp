@@ -1911,7 +1911,7 @@ void RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority);
  * names and offsets are the header's. Including the header itself
  * renumbers this file's compiler-generated @ labels (@329 becomes @529),
  * which the TU manifest pins; this view leaves them alone. */
-struct dScMgD3DBase_c : dScMgBase_c {
+struct D3DBaseView : dScMgBase_c {
     s32 mSavedSubObjBank; /* 0x4660 */
     u16 mDrawSubScreen;   /* 0x4664 */
 };
@@ -1937,7 +1937,7 @@ void Hud_RenderSprite(void *attr, int x, int y, int palette, int priority) {
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 0)
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 0)
                 return;
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)attr, x, y, palette, priority,
                                                         0x1000, 0x1000, 0, -1);
@@ -1967,7 +1967,7 @@ extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, 
         return 0;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 0)
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 0)
                 return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4,
                                                            a5, a6);
@@ -1987,7 +1987,7 @@ void Mg_RenderSubSpritePalMtx(void *a0, int a1, int a2, int a3, int a4, void *a5
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 0)
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 0)
                 return;
             OAM::Render(0, (OamAttr *)a0, a1, a2, a3, a4, (Matrix2x2 *)a5);
             return;
@@ -2007,7 +2007,7 @@ void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *m) {
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 0)
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 0)
                 return;
             OAM::Render(false, (OamAttr *)a, b, c, -1, -1, (Matrix2x2 *)m);
             return;
@@ -2030,7 +2030,7 @@ extern "C" void RenderOamMainScreen(int oam, int x, int y, int palette, int prio
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 1)
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 1)
                 return;
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)oam, x, y, palette, priority,
                                                         0x1000, 0x1000, 0, -1);
@@ -2061,7 +2061,7 @@ extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4,
         return 0;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 1)
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 1)
                 return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4,
                                                            a5, a6);
@@ -2081,7 +2081,7 @@ void Mg_RenderMainSpritePalMtx(void *a0, int a1, int a2, int a3, int a4, void *a
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 1)
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 1)
                 return;
             OAM::Render(0, (OamAttr *)a0, a1, a2, a3, a4, (Matrix2x2 *)a5);
             return;
@@ -2100,7 +2100,7 @@ extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3) {
     if (scene == 0)
         return;
     if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
-        if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen != 1)
+        if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 1)
             return;
         OAM::Render(false, (OamAttr *)arg0, (int)arg1, arg2, -1, -1, (Matrix2x2 *)arg3);
         return;
@@ -2122,7 +2122,7 @@ void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4) {
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen == 1) {
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen == 1) {
                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
                     0, a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, a3, a4, 0x1000, 0x1000, 0, -1);
                 return;
@@ -2157,7 +2157,7 @@ extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr *a0, int a1, int a2, int
     if (scene == 0)
         return 0;
     if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
-        if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen == 1) {
+        if (((D3DBaseView *)gMgScene)->mDrawSubScreen == 1) {
             int hp = sMgTopScreenYOffset;
             if (a2 >= -0x100 - hp && a2 < -hp) {
                 return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4,
@@ -2193,7 +2193,7 @@ void RenderOamBothScreens(void *attr, int x, int y, int palette, int priority, v
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen == 1) {
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen == 1) {
                 OAM::Render(false, (OamAttr *)attr, x, y + 0xc0 + sMgTopScreenYOffset, palette,
                             priority, (Matrix2x2 *)mtx);
                 return;
@@ -2221,7 +2221,7 @@ void Mg_RenderSpriteBothPalMtx(void *a0, int a1, int a2, int a3, void *a4) {
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen == 1) {
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen == 1) {
                 OAM::Render(0, (OamAttr *)a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, a3, -1,
                             (Matrix2x2 *)a4);
                 return;
@@ -2248,7 +2248,7 @@ void Mg_RenderSpriteBothMtx(void *a0, int a1, int a2, void *a3) {
         return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (((dScMgD3DBase_c *)gMgScene)->mDrawSubScreen == 1) {
+            if (((D3DBaseView *)gMgScene)->mDrawSubScreen == 1) {
                 OAM::Render(0, (OamAttr *)a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, -1, -1,
                             (Matrix2x2 *)a3);
                 return;
