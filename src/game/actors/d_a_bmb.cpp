@@ -1463,5 +1463,5 @@ int func_ov102_0214aa18(void *selfv)
 
 // @symbol _ZN7daBmb_c16OnAimedAtWithEggEv
 s32 daBmb_c::OnAimedAtWithEgg() {
-    return 204800;
+    return 0x32000;
 }

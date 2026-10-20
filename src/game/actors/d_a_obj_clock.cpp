@@ -1,21 +1,13 @@
 //cpp
-/* ov013/daObjClock_c -- reconstructed translation unit (9 functions).
+/* daObjClock_c -- clock-painting hands (ov013, 9 functions).
+ * ROM run 0x021113bc..0x021116ac; .data 0x021121a4..0x0211227c
+ * (_ZTI/_ZTS, g_profile_CLOCK_LONG/SHORT, _ZTV at 0x02112200).
+ * CLOCK_PAINTING_HAND_SHORT (292) and _LONG (293) share this class.
+ * Source order is reverse ROM order (2004/b56 emits .text back to front);
+ * the destructor pair at the end is the one exception, because the
+ * compiler picks the order inside a D0/D1 group.
  *
- * ROM run 0x021113bc..0x021116ac, plus the class's .data run at
- * 0x021121a4..0x0211227c (_ZTI, _ZTS, the g_profile_CLOCK_LONG and
- * g_profile_CLOCK_SHORT descriptors, and the _ZTV whose address point is
- * 0x02112200). ov013 is the clock painting overlay (not TTC / ov065):
- * CLOCK_PAINTING_HAND_SHORT (292) and CLOCK_PAINTING_HAND_LONG (293) share
- * this class; CLOCK_PAINTING_PENDULUM (294) is the sibling daObjClockHuriko_c.
- *
- * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
- * emits one .text section per function in the reverse of source order, so the
- * highest-address ROM function is written FIRST here. Do not reorder; the
- * destructor pair at the end is the one documented exception, because the
- * compiler picks the order inside a D0/D1 group itself.
- *
- * leftovers: measured under mwccarm 2004/b56, and left in the form that
- * matches.
+ * leftovers (measured under mwccarm 2004/b56, left in the matching form):
  * - the widened `int isLongHand` stays: folding actorID == 0x125 into the
  *   if sizes InitResources 0x70 -> 0x64; a ternary, or
  *   mHandIndex = actorID != 0x125, sizes it 0x70 -> 0x60.

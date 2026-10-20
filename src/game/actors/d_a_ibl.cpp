@@ -781,12 +781,7 @@ int daIbl_c::Behavior()
 }
 
 // @symbol _ZN7daIbl_c13InitResourcesEv
-/* Byte-matches under the pinned 2004/b56, 0x38c for 0x38c, relocation
-   destinations checked. It did not until the param1 shift below was respelt;
-   the extra `add r1, r4, #8` the loose source used to emit at +0x60 is
-   described at that line.
-
-   Loads the model and shadow, sets gravity (-4 units/frame^2, mVertAccel
+/* Loads the model and shadow, sets gravity (-4 units/frame^2, mVertAccel
    -0x4000) and terminal velocity (-70 units/frame, -0x46000), picks the kind
    from param1's low nibble and sets up that kind. Distances and speeds below
    are in units (0x1000 = 1). The sublevel tests read data_0209f2f8 (a signed
@@ -803,23 +798,12 @@ int daIbl_c::InitResources()
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x46000;
     mVariant = param1 & 0xf;
-    /* The spawn word is packed: the low nibble is the variant, read out just
-       above, and the rest is this ball's own parameters, shifted down in
-       place here.
-
-       Spelt plainly (`param1 = param1 >> 4;`), both sides of this assignment
-       are the same expression, and 2004/b56 value-numbers them together and
-       materialises the address once -- the extra `add r1, r4, #8` at +0x60,
-       followed by `ldr r0, [r1]` and `str r0, [r1]` -- one instruction
-       longer than the ROM, which shifts every literal-pool load in the rest
-       of the function. The ROM keeps the offset folded into both accesses:
-       `ldr r0, [r4, #8]` / `lsr r0, r0, #4` / `str r0, [r4, #8]`. A
-       redundant cast on the read side is enough to make the two sides
-       textually different and reach the folded form -- no `volatile`
-       needed, so tools/tiers.py never reads this as a codegen trick. Same
-       residue, same lever, as daDoor_c::InitResources. Measured: with the
-       cast the candidate is 0x38c and 0 of 227 words differ; without it
-       0x390, and over the shared prefix 186 of 228 differ. */
+    /* The spawn word is packed: low nibble was the variant (read above), the
+     * rest shifts down in place here. The redundant cast is load-bearing:
+     * plain `param1 = param1 >> 4` value-numbers both sides together and
+     * emits an extra `add r1, r4, #8` at +0x60 (0x390, 186/228 words
+     * differ); the cast keeps the ROM's folded `ldr/lsr/str` (0x38c, 0
+     * differ). Same lever as daDoor_c::InitResources. */
     param1 = (u32)param1 >> 4;
     kind = mVariant;
 

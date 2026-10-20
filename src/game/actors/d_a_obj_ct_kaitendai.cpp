@@ -12,9 +12,9 @@
  * target in mPrevAngleX, and the accumulated yaw in mPrevAngleY, which
  * is copied to mAngleY for the model and the mesh.
  *
- * mwccarm lays the definitions below down back to front, so they run
- * from the highest retail address toward the destructor pair the
- * inline ~daObjCtKaitendai_c() emits. Keep that order.
+ * The destructor pair comes off the inline ~daObjCtKaitendai_c() in the
+ * header. Source order is reverse ROM order (2004/b56 emits .text back
+ * to front); do not reorder.
  *
  * leftovers:
  * - dBgW_KcMbg::SetFile and dActor_c::DropShadowRadHeight stay mangled
