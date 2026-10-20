@@ -4,15 +4,27 @@
    dExtAnm2Model_c (_ZTI15dExtAnm2Model_c at 0x0208e788, single inheritance
    from dExtAnmModel_c, the tree's ModelAnim); its vtable _ZTV10ModelAnim2 at
    0x0208e9b4 overrides only the destructor pair.
-   TU claims 0x02016254..0x02016320 -- the class's method run: Copy, the two
-   bone-animation helpers Player calls on its body models, and Func_020162C4.
-   The lifecycle row (D0, D1, C1 at 0x02016320..0x020163e0) stays enrolled
-   shards, the split ModelAnim and BlendModelAnim recorded: the destructor is
-   the key function, and defining it here would emit the vtable group of a
-   class whose base is multiply inherited.
-   Scaffolded by tools/class_scaffold.py, then filled. Written back-to-front:
-   mwccarm emits .text in reverse source order under default deferred codegen. */
+   TU claims 0x02016254..0x020163e0 -- the method run, then D0, D1 and C1.
+   ~ModelAnim2() is the key function, so this object also emits the MI vtable
+   group, D2, C2 and the two _ZThn80_ thunks. RTTI stays off across that
+   definition: the coined name would emit homeless _ZTI/_ZTS records, and the
+   secondary preamble (inside the primary _ZTV, ahead of
+   VTable_Animation_ModelAnim2Thunk) comes out as zeros. Those two cartridge
+   words are a real preamble, not slots; the retail table is externalized
+   unchanged. D2 and C2 have no cartridge home. The thunks stay enrolled in
+   their own shards; this copy is a duplicate. Written back-to-front: mwccarm
+   emits .text in reverse source order under default deferred codegen, so the
+   constructor and destructor are first in the file and land after the methods. */
 #include "ModelAnim2.h"
+
+/* RTTI stays off for the whole TU. Deferred codegen emits the key function
+   at the end of the file, so a later `#pragma RTTI on` would turn the records
+   back on. On, the TU would emit _ZTI/_ZTS for ModelAnim2 and every coined
+   base. Off, the secondary preamble's offset-to-top and typeinfo words are
+   zeros; romdata_check masks that pair when the cartridge has a negative
+   offset-to-top and a _ZTI pointer. The method bodies do not use RTTI and
+   match either way. */
+#pragma RTTI off
 
 extern "C" {
 /* local extern: Fix12 by-value speed (wall 6az, notes/mwccarm-codegen.md);
@@ -34,6 +46,18 @@ struct BCA_File {
     u8 pad_00[0x2];
     u16 numFrames; /* 0x02 */
 };
+
+/* One definition emits C1 and C2. C2 has no cartridge home. otherFile is
+   declared before otherAnim, so the init list stores it before the member
+   constructor; a body store would land one call too late. */
+// @symbol _ZN10ModelAnim2C1Ev
+ModelAnim2::ModelAnim2() : otherFile(0) {}
+
+/* One definition emits D2, D0 and D1, then the _ZThn80_ pair. D0 adds the
+   class operator delete. The body is empty: the vptr stores and the base
+   destructor follow from the class. */
+// @symbol _ZN10ModelAnim2D1Ev
+ModelAnim2::~ModelAnim2() {}
 
 /* The second animation's SetAnim, fast path and all; keeps the mangled free
    spelling for the same Fix12<int> reason as ModelAnim::SetAnim. */

@@ -110,5 +110,70 @@
     "Two per-function shards folded into one production TU. #pragma defer_codegen off puts the variants in cartridge order D1, D0, D2. D2 is deadstripped. RTTI stays on because the cartridge spells this class dCamera_c, so the emitted _ZTV/_ZTI/_ZTS records have retail homes and are deadstrip-data rather than homeless. The retail vtable at 0x02086f84 remains the linked copy.",
     "Not folded into d_camera.cpp: the runs are not adjacent, func_020070e8 is not this pair, and Vector3::~Vector3 at 0x020072c0 is unrelated code in the gap. The opt_common_subs split that keeps 0x0200af0c..0x0200bec4 out of d_camera.cpp is unchanged."
   ],
-  "relocations": []
+  "relocations": [],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-dCamera_c_dtor/d_camera_dtor.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 2,
+    "functions_declared": 2,
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN9dCamera_cD2Ev"
+      ],
+      "deadstripped": [
+        "_ZN9dCamera_cD2Ev"
+      ],
+      "droppedSections": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "data": [
+        "_ZTV9dCamera_c",
+        "_ZTS9dCamera_c",
+        "_ZTI9dCamera_c",
+        "_ZTS7dView_c",
+        "_ZTI7dView_c",
+        "_ZTS7dBase_c",
+        "_ZTI7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTI7fBase_c"
+      ],
+      "dataExternalized": [
+        "_ZTI7dBase_c",
+        "_ZTI7dView_c",
+        "_ZTI7fBase_c",
+        "_ZTI9dCamera_c",
+        "_ZTS7dBase_c",
+        "_ZTS7dView_c",
+        "_ZTS7fBase_c",
+        "_ZTS9dCamera_c",
+        "_ZTV9dCamera_c"
+      ],
+      "canonicalDuplicates": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
 }

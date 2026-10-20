@@ -53,6 +53,11 @@ typedef struct MbChildRequest {
     u8 pad_1d[0x3];
 } MbChildRequest;
 
+#ifndef SM64DS_PLATFORM_PC
+/* mChildRequest[15] runs 0x1538..0x1718, so one request is 0x20. */
+typedef char MbChildRequest_size_must_be_0x20[sizeof(MbChildRequest) == 0x20 ? 1 : -1];
+#endif
+
 typedef struct MbParentWork {
     u8 pad_0000[0x1340];
     /* 0x1340 -- per child (AID - 1): the user record from its entry request,
