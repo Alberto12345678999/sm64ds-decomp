@@ -544,9 +544,9 @@ extern "C" {}
    D0; declaring the destructor is enough. */
 dScMgSmartball_c::~dScMgSmartball_c() {
     __cxa_vec_cleanup(mSparks, 0x40, 0x24, (void *)SmartballObj_ElemDtor);
-    __cxa_vec_cleanup(mArray3, 0x10, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mArray2, 0x10, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mArray1, 5, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mDustVel, 0x10, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mDustPos, 0x10, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mPopupPos, 5, 8, (void *)NullDestructor_0203d47c);
 }
 // @symbol SmartballObj_ElemDtor
 extern "C" { /* .c-derived member: C linkage for the whole block */
@@ -4497,14 +4497,14 @@ unsigned short dScMgSmartball_c::GetTile(int *pos) {
 void dScMgSmartball_c::UpdateDust() {
     char *self = (char *)this;
     int i;
-    char *obj = (char *)mArray3;
+    char *obj = (char *)mDustVel;
     for (i = 0; i < 0x10; i++) {
         unsigned char *flag = (unsigned char *)(int)((dScMgSmartball_c *)(self + i))->mDustActive;
         if (*flag != 0) {
-            *(int *)((dScMgSmartball_c *)(int)(self + i * 8))->mArray2 +=
-                *(int *)((dScMgSmartball_c *)(self + i * 8))->mArray3;
-            *(int *)&((dScMgSmartball_c *)(int)(self + i * 8))->mArray2[4] +=
-                *(int *)&((dScMgSmartball_c *)(self + i * 8))->mArray3[4];
+            *(int *)((dScMgSmartball_c *)(int)(self + i * 8))->mDustPos +=
+                *(int *)((dScMgSmartball_c *)(self + i * 8))->mDustVel;
+            *(int *)&((dScMgSmartball_c *)(int)(self + i * 8))->mDustPos[4] +=
+                *(int *)&((dScMgSmartball_c *)(self + i * 8))->mDustVel[4];
             {
                 int m = Vec2_Len((Vec2 *)obj) * 6 / 8;
                 if (func_0203d434((V2 *)obj)) {
@@ -4529,10 +4529,10 @@ void dScMgSmartball_c::UpdateDust() {
 // @symbol _ZN16dScMgSmartball_c9SpawnDustEPi
 /* SpawnDust -- dScMgSmartball_c, ov006 0x02115248, 0x238 bytes.
  *
- * Spawns up to four balls: for each of the four passes it takes the first free
- * slot of sixteen, draws two angles from the shared RNG, and fills that slot's
- * position (mArray2) and velocity (mArray3) from the sine table,
- * biased by the caller's origin, then marks the slot taken.
+ * Spawns up to four dust puffs: for each of the four passes it takes the first
+ * free slot of sixteen, draws two angles from the shared RNG, and fills that
+ * slot's mDustPos and mDustVel from the sine table, the position biased by the
+ * caller's origin, then marks the slot taken.
  *
  * TWO THINGS ARE LOAD BEARING AND BOTH WERE MEASURED.
  *
@@ -4555,8 +4555,8 @@ void dScMgSmartball_c::UpdateDust() {
  *    measured and all leave the same 27-word window.
  *
  * The flag and the two arrays are spelled through the stepped base (c + j,
- * c + j * 8), not indexed from `this`: &mDustActive[j], mArray2[j * 8] and
- * mArray3[j * 8 + 4] each move bytes, and a struct-array view of either array
+ * c + j * 8), not indexed from `this`: &mDustActive[j], mDustPos[j * 8] and
+ * mDustVel[j * 8 + 4] each move bytes, and a struct-array view of either array
  * changes the frame and the loop's addressing and does not reproduce.
  */
 extern "C" void dScMgSmartball_c::SpawnDust(int *origin) {
@@ -4582,14 +4582,15 @@ extern "C" void dScMgSmartball_c::SpawnDust(int *origin) {
                 TVec2 v;
                 sa = (s64)sinA;
                 v.x = FX(sinB, FX(sinA, 0x8000));
-                *(int *)((dScMgSmartball_c *)(c + j * 8))->mArray2 = v.x;
+                *(int *)((dScMgSmartball_c *)(c + j * 8))->mDustPos = v.x;
                 cosA = data_02082214[(angA >> 4) * 2];
                 v.y = FX(sinB, FX(cosA, 0x8000));
-                *(int *)&((dScMgSmartball_c *)(c + j * 8))->mArray2[4] = v.y;
-                *(int *)((dScMgSmartball_c *)(c + j * 8))->mArray2 += origin[0];
-                *(int *)&((dScMgSmartball_c *)(c + j * 8))->mArray2[4] += origin[1];
-                *(int *)((dScMgSmartball_c *)(c + j * 8))->mArray3 = FX(sinB, FX(sa, 0x4000));
-                *(int *)&((dScMgSmartball_c *)(c + j * 8))->mArray3[4] = FX(sinB, FX(cosA, 0x4000));
+                *(int *)&((dScMgSmartball_c *)(c + j * 8))->mDustPos[4] = v.y;
+                *(int *)((dScMgSmartball_c *)(c + j * 8))->mDustPos += origin[0];
+                *(int *)&((dScMgSmartball_c *)(c + j * 8))->mDustPos[4] += origin[1];
+                *(int *)((dScMgSmartball_c *)(c + j * 8))->mDustVel = FX(sinB, FX(sa, 0x4000));
+                *(int *)&((dScMgSmartball_c *)(c + j * 8))->mDustVel[4] =
+                    FX(sinB, FX(cosA, 0x4000));
                 mDustAge[j] = 0;
                 *flag = 1;
             }
@@ -4609,8 +4610,8 @@ void dScMgSmartball_c::UpdateScores() {
     for (i = 0; i < 5; i++) {
         int *A = ((dScMgSmartball_c *)(int)(o + i * 4))->mPopupScore;
         int *E = ((dScMgSmartball_c *)(int)(o + i * 4))->mPopupDelay;
-        int *D0 = (int *)((dScMgSmartball_c *)(int)(o + i * 8))->mArray1;
-        int *D1 = (int *)&((dScMgSmartball_c *)(int)(o + i * 8))->mArray1[4];
+        int *D0 = (int *)((dScMgSmartball_c *)(int)(o + i * 8))->mPopupPos;
+        int *D1 = (int *)&((dScMgSmartball_c *)(int)(o + i * 8))->mPopupPos[4];
         int *B = ((dScMgSmartball_c *)(int)(o + i * 4))->mPopupMultiplier;
         int *C = ((dScMgSmartball_c *)(int)(o + i * 4))->mPopupAge;
         if (*A > 0) {
@@ -4656,8 +4657,8 @@ extern "C" void dScMgSmartball_c::EmitScore(int *src, int v2, int v3, int v5) {
         mPopupScore[i] = v2;
         mPopupMultiplier[i] = v5;
         mPopupAge[i] = 0;
-        ((int(*)[2])mArray1)[i][0] = src[0];
-        ((int(*)[2])mArray1)[i][1] = src[1];
+        ((int(*)[2])mPopupPos)[i][0] = src[0];
+        ((int(*)[2])mPopupPos)[i][1] = src[1];
         return;
     }
     Mg_SubmitScore(v2 * v5 + Mg_GetSubmittedScore());
@@ -5595,17 +5596,17 @@ void dScMgSmartball_c::SpawnObjects() {
         mPopupScore[i] = 0;
         mPopupMultiplier[i] = 0;
         mPopupAge[i] = 0;
-        *(int *)((dScMgSmartball_c *)(c + i * 8))->mArray1 = 0;
-        *(int *)&((dScMgSmartball_c *)(c + i * 8))->mArray1[4] = 0;
+        *(int *)((dScMgSmartball_c *)(c + i * 8))->mPopupPos = 0;
+        *(int *)&((dScMgSmartball_c *)(c + i * 8))->mPopupPos[4] = 0;
         mPopupDelay[i] = 0;
     }
     for (int i = 0; i < 0x10; i++) {
         mDustActive[i] = 0;
         mDustAge[i] = 0;
-        *(int *)((dScMgSmartball_c *)(c + i * 8))->mArray2 = 0;
-        *(int *)&((dScMgSmartball_c *)(c + i * 8))->mArray2[4] = 0;
-        *(int *)((dScMgSmartball_c *)(c + i * 8))->mArray3 = 0;
-        *(int *)&((dScMgSmartball_c *)(c + i * 8))->mArray3[4] = 0;
+        *(int *)((dScMgSmartball_c *)(c + i * 8))->mDustPos = 0;
+        *(int *)&((dScMgSmartball_c *)(c + i * 8))->mDustPos[4] = 0;
+        *(int *)((dScMgSmartball_c *)(c + i * 8))->mDustVel = 0;
+        *(int *)&((dScMgSmartball_c *)(c + i * 8))->mDustVel[4] = 0;
     }
     mPhase = 0;
     mResultSlideX = 0x100;
@@ -5838,8 +5839,8 @@ s32 dScMgSmartball_c::Render() {
                 if (mode >= 2) {
                     unsigned int u;
                     int nd;
-                    int *py = LP(((dScMgSmartball_c *)(g + sb * 8))->mArray1 + 4);
-                    int *px = LP(((dScMgSmartball_c *)(g + sb * 8))->mArray1);
+                    int *py = LP(((dScMgSmartball_c *)(g + sb * 8))->mPopupPos + 4);
+                    int *px = LP(((dScMgSmartball_c *)(g + sb * 8))->mPopupPos);
                     Mg_DrawNumber((*px >> 12) - 0x10, *py >> 12, cnt, -1, 0, 0, 0);
                     nd = 0;
                     /* mPopupScore[sb] again, through an int address: the
@@ -6700,11 +6701,11 @@ extern "C" void *dScMgSmartball_c_classInit(void) {
     if (scene != 0) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)&_ZTV16dScMgSmartball_c[2];
-        __cxa_vec_ctor(scene->mArray1, 5, 8, (void *)func_0203d738,
+        __cxa_vec_ctor(scene->mPopupPos, 5, 8, (void *)func_0203d738,
                        (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mArray2, 0x10, 8, (void *)func_0203d738,
+        __cxa_vec_ctor(scene->mDustPos, 0x10, 8, (void *)func_0203d738,
                        (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mArray3, 0x10, 8, (void *)func_0203d738,
+        __cxa_vec_ctor(scene->mDustVel, 0x10, 8, (void *)func_0203d738,
                        (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene->mSparks, 0x40, 0x24, (void *)SmartballObj_ElemCtor,
                        (void *)SmartballObj_ElemDtor);

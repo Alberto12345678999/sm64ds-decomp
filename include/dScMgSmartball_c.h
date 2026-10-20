@@ -26,9 +26,9 @@
  * THE REST OF THE CLASS IS NOW MODELLED from its access sites: the
  * object counts and tables, the score popup queue, the dust puffs, the two
  * decompressed BG maps, the round state and the result tallies. Each field
- * below carries its evidence. mArray1..3 stay byte arrays: their element is
- * an 8-byte pair with a constructor and destructor, and a member of such a
- * type changes this class's codegen.
+ * below carries its evidence. mPopupPos, mDustPos and mDustVel stay byte
+ * arrays: their element is an 8-byte pair with a constructor and destructor,
+ * and a member of such a type changes this class's codegen.
  *
  * So: the four arrays below are evidenced by two witnesses each and the
  * size is evidenced by a third.
@@ -175,21 +175,21 @@ struct dScMgSmartball_c : dScMgBase_c {
        while it is positive. */
     s32 mGateLampTimer[2]; /* 0x4784 */
     /* The five-slot score popup queue, EmitScore's writer and UpdateScores's
-       reader. mArray1 holds the popup positions (5 * 8, UpdateScores raises
+       reader. mPopupPos holds the popup positions (5 * 8, UpdateScores raises
        them each frame); mPopupDelay is EmitScore's delay, and UpdateScores
        submits the score once it drains. */
     s32 mPopupScore[5];      /* 0x478c -- the score value; > 0 marks a live slot */
     s32 mPopupMultiplier[5]; /* 0x47a0 -- EmitScore's last argument */
     s32 mPopupAge[5];        /* 0x47b4 -- frames shown; cleared past 0x3c */
-    u8 mArray1[0x28];        /* 0x47c8 -- elem dtor NullDestructor_0203d47c */
+    u8 mPopupPos[0x28];      /* 0x47c8 -- elem dtor NullDestructor_0203d47c */
     s32 mPopupDelay[5];      /* 0x47f0 */
     /* The dust puffs: SpawnDust sets mDustActive and UpdateDust clears it,
-       retiring a puff once mDustAge reaches 0xf. mArray2/mArray3 are the
+       retiring a puff once mDustAge reaches 0xf. mDustPos/mDustVel are the
        0x10 * 8 positions and velocities. */
     u8 mDustActive[0x10]; /* 0x4804 */
     s32 mDustAge[0x10];   /* 0x4814 */
-    u8 mArray2[0x80];     /* 0x4854 -- elem dtor NullDestructor_0203d47c */
-    u8 mArray3[0x80];     /* 0x48d4 -- elem dtor NullDestructor_0203d47c */
+    u8 mDustPos[0x80];    /* 0x4854 -- elem dtor NullDestructor_0203d47c */
+    u8 mDustVel[0x80];    /* 0x48d4 -- elem dtor NullDestructor_0203d47c */
     /* sSmartballBg1NscFmt / sSmartballBg2NscFmt decompressed: scanned for the
        object tiles, and GetTile's upper and lower halves. */
     u16 mBg1Map[0x400]; /* 0x4954 */
