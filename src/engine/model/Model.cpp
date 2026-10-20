@@ -1,11 +1,21 @@
 //cpp
 /* Model -- the concrete model class; the cartridge calls it dExtSimpleModel_c
    (_ZTI17dExtSimpleModel_c at 0x0208e794, _ZTV5Model at 0x0208e90c). TU claims
-   0x02016b78..0x02016df8, the whole class run in delinks order: Render,
-   Virtual10, DoSetFile, UpdateVerts, then the full lifecycle D2,D0,D1,C1,C2
-   -- every emitted variant has a cartridge home, so nothing deadstrips.
-   Written back-to-front: mwccarm emits .text in reverse source order under
-   default deferred codegen. */
+   0x020169d8..0x02017168: the Model run, the ModelBase edge interleaved with
+   it, and the unnamed helpers between them. Written back-to-front: mwccarm
+   emits .text in reverse source order under default deferred codegen.
+
+   One ~Model() emits D2, D0, D1 and one Model() emits C1, C2, and the
+   cartridge homes all five. One ~ModelBase() likewise emits D2, D0, D1 in
+   that order. One ModelBase() emits C1 beside C2; the cartridge homes only
+   C2 (nothing constructs a complete ModelBase), which is the variant
+   objisolate used to keep from the C2 shard. C1 is licensed deadstrip, not
+   a second definition.
+
+   The six _ZThn80_ destructor thunks at 0x02017168..0x020171c8 stay in
+   their shards. Only a member destructor of ModelAnim / BlendModelAnim /
+   ModelAnim2 emits them, and that definition also emits those classes'
+   D-variants, which already have homes in the neighbouring TUs. */
 
 /* common.h comes first so this TU sees the flat Matrix4x3 { s32 m[12]; }
    spelling: the ctor's mat4x3 = IDENTITY_MATRIX4X3 copy block-moves twelve
@@ -18,10 +28,20 @@
    _ZTS5Model/_ZTI5Model records emitted under the project spelling would
    have no configured home. Compiling with RTTI off emits no records at
    all; the vtable preamble's typeinfo word deadstrips with the rest of the
-   data sections. */
+   data sections. ModelBase's vtable is the same shape. */
 #pragma RTTI off
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
+
+/* func_02016b24's raw view of a Model: components.modelFile at +8,
+   components.materials at +0xc. The body is the shard's; a Model* parameter
+   would let the compiler see the real layout. */
+struct Obj {
+    char pad[8];
+    char *p8;
+    char *pc;
+};
+
 extern "C" {
 extern Matrix4x3 data_0209b3ec;      /* local extern: the camera-space matrix Render uses */
 /* local extern: no header declares it */
@@ -35,10 +55,185 @@ u32 func_02046564(BMD_File *file);
 void *_ZN6Memory13operator_new2Ej(u32 size);
 /* local extern: no header declares it; initializes ModelComponents over the file */
 void func_020462d0(ModelComponents *data, BMD_File *file, void *buffer);
-/* local extern: no header declares it; neighbour below this run */
-void func_02016b24(Model *self, int flags);
+/* local extern: defined below; DoSetFile calls it. Spelled the way
+   func_02016b24.c defines it (banked against decl_common's narrower copy). */
+void func_02016b24(struct Obj *o, u32 mask);
 /* local extern: no header declares it; delete veneer for the transforms buffer */
 void func_0203cbc0(void *ptr);
+/* local extern: no header declares it; global new veneer func_02016e70 uses */
+void *_Znwj(u32 size);
+/* local extern: LoadFile.c defines int(int). This is the spelling
+   LoadAndSetFile's shard matched (banked return and parameter rows). */
+void *LoadFile(u16 ov0ID);
+/* local extern: func_020469e0.c defines int(int *). The caller's shard
+   matched this spelling (banked rows). */
+u32 func_020469e0(void *ptr);
+/* local extern: no header declares it; ModelBase's destructor frees the file.
+   decl_common.h's copy is the same spelling; that catch-all does not count. */
+void Deallocate(void *ptr);
+/* local extern: the new-size helper. Spelled the way func_02017060.c calls them */
+int _ZN5mHeap6Heap_t7_SizeofEPv(void *heap, void *ptr);
+u32 _ZN5mHeap6Heap_t10ReallocateEPvj(void *heap, void *ptr, u32 newSize);
+/* local extern: game heap pointer func_02017060 reads */
+extern void *data_020a0ea0;
+/* decl_common.h's int[] spelling. The records are 0xc-byte CommonModelData. */
+extern int data_0209cef8[];
+extern int data_0209cefc[];
+/* local extern: no header declares it; CleanCommonModelDataArr clears it.
+   int, not void *: the other readers declare int, and the store of 0 is
+   the same word. */
+extern int data_0209cef0;
+/* local extern: AddToCommonModelDataArr's "textures already loaded" flag.
+   A scalar, matching the other reader; [0] on an int[] is the same word
+   but flips the declaration plurality onto this shorter path. */
+extern int data_0208e738;
+/* local extern: polygon-mode / polygon-id / opacity. Model4.cpp defines the
+   first and third as (void *, void *) and (void *, unsigned); these are the
+   spellings the call shards matched (banked rows). */
+void func_02046234(ModelComponents *data, int mode);
+void func_02046008(ModelComponents *data, int id);
+void func_020461b4(ModelComponents *data, u32 a);
+/* local extern: the +8 adjustors the low veneers forward to. The one-param
+   spellings are deliberate under-declarations -- the thunks forward r1/r2
+   untouched, which C cannot express (banked arity rows). */
+void func_02045ec4(void *self, unsigned int value, int index);
+void func_02045e70(char *p);
+void func_02045ef8(char *p);
+void func_02045f80(char *p);
+void func_0204605c(char *p);
+/* defined below; LoadAndSetFile calls it */
+int func_02016ff4(ModelBase *self, BMD_File *file, int c, int d);
+u32 func_02017060(void *ptr);
+}
+
+/* 0xc-byte records in the common model data array at data_0209cefc, counted
+   by data_0209cef8. func_02016e70 fills the two owned slots; the destructors
+   and CleanCommonModelDataArr free them. */
+struct CommonModelData {
+    BMD_File *file;              /* 0x00 */
+    ModelComponents *components; /* 0x04 */
+    void *buffer;                /* 0x08 */
+};
+
+/* One definition emits C1 and C2. C1 has no cartridge home -- objisolate
+   kept C2 from the shard -- so the manifest deadstrips C1. */
+// @symbol _ZN9ModelBaseC2Ev
+ModelBase::ModelBase() : modelFile(0) {}
+
+/* One definition emits D2, D0 and D1, in that order: the vptr store is the
+   compiler's; the body releases modelFile. D0 follows with the ModelBase
+   operator delete (Memory::operator_delete2). */
+// @symbol _ZN9ModelBaseD2Ev
+// @symbol _ZN9ModelBaseD0Ev
+// @symbol _ZN9ModelBaseD1Ev
+ModelBase::~ModelBase()
+{
+    if (modelFile != 0) {
+        Deallocate(modelFile);
+    }
+}
+
+// @symbol func_02017060
+extern "C" u32 func_02017060(void *ptr)
+{
+    if (!ptr)
+        return 0;
+    void *heap = data_020a0ea0;
+    _ZN5mHeap6Heap_t7_SizeofEPv(heap, ptr);
+    u32 newSize = func_020469e0(ptr);
+    return _ZN5mHeap6Heap_t10ReallocateEPvj(heap, ptr, newSize);
+}
+
+/* Loads the file offsets, calls the object's DoSetFile through vtable slot 2,
+   and on success reallocs the file down to its reported size. */
+// @symbol func_02016ff4
+extern "C" int func_02016ff4(ModelBase *self, BMD_File *file, int c, int d)
+{
+    int ret;
+    if (!file) return 0;
+    Model::UpdateFileOffsets(*file);
+    ret = self->DoSetFile((char *)file, c, d);
+    if (ret) func_02017060(file);
+    return ret;
+}
+
+// @symbol _ZN9ModelBase7SetFileEP8BMD_Fileii
+int ModelBase::SetFile(BMD_File *file, int a, int b)
+{
+    return DoSetFile((char *)file, a, b);
+}
+
+// @symbol _ZN5Model14LoadAndSetFileEtii
+void Model::LoadAndSetFile(u16 ov0ID, int a, int b)
+{
+    BMD_File *file = (BMD_File *)::LoadFile(ov0ID);
+    modelFile = file;
+    func_02016ff4(this, file, a, b);
+}
+
+// @symbol _ZN5Model23AddToCommonModelDataArrER8BMD_File
+void *Model::AddToCommonModelDataArr(BMD_File &file)
+{
+    CommonModelData *p = (CommonModelData *)data_0209cefc;
+    int i = 0;
+    int n = data_0209cef8[0];
+    while (i < n) {
+        if (&file == p->file) return p;
+        i++;
+        p++;
+    }
+    p->file = &file;
+    p->components = 0;
+    p->buffer = 0;
+    data_0209cef8[0] = data_0209cef8[0] + 1;
+    if (data_0208e738 == 0) return p;
+    LoadTexAndPal(file);
+    return p;
+}
+
+/* Get-or-create the pooled ModelComponents entry for the pointer-holding
+   siblings (dExtCommonModel_c/dExtShadowModel_c). */
+// @symbol func_02016e70
+extern "C" void *func_02016e70(void *file)
+{
+    CommonModelData *e;
+    void *b;
+
+    e = (CommonModelData *)Model::AddToCommonModelDataArr(*(BMD_File *)file);
+    if (e->components == 0) {
+        e->components = (ModelComponents *)_Znwj(0x14);
+        if (e->components == 0) return 0;
+        e->buffer = _ZN6Memory13operator_new2Ej(func_02046564((BMD_File *)file));
+        b = e->buffer;
+        if (b == 0) {
+            _ZN6Memory16operator_delete2EPv(e->components);
+            e->components = 0;
+            return 0;
+        }
+        func_020462d0(e->components, (BMD_File *)file, b);
+    }
+    return e->components;
+}
+
+// @symbol CleanCommonModelDataArr
+extern "C" void CleanCommonModelDataArr(void)
+{
+    CommonModelData *e = (CommonModelData *)data_0209cefc;
+    int i = 0;
+
+    if (data_0209cef8[0] > 0) {
+        do {
+            if (e->buffer)
+                func_0203cbc0(e->buffer);
+            if (e->components)
+                _ZN6Memory16operator_delete2EPv(e->components);
+            i++;
+            e++;
+        } while (i < data_0209cef8[0]);
+    }
+
+    data_0209cef8[0] = 0;
+    data_0209cef0 = 0;
 }
 
 /* One definition emits C1 and C2: the base-chain call to ModelBase::C2, the
@@ -79,7 +274,7 @@ int Model::DoSetFile(char *file_, int a, int b)
     if (buffer == 0) return 0;
     func_020462d0(&data, file, buffer);
     data.UpdateVertsUsingBones();
-    if (a != 0) func_02016b24(this, 0x8000);
+    if (a != 0) func_02016b24((Obj *)this, 0x8000);
     if (b < 0) return 1;
     SetPolygonID(b & 0xff);
     return 1;
@@ -102,4 +297,96 @@ void Model::Render(const Vector3 *scale)
     Matrix4x3 temp;
     MulMat4x3Mat4x3(&mat4x3, &data_0209b3ec, &temp);
     data.Render(&temp, (Vector3 *)scale);
+}
+
+// @symbol func_02016b24
+extern "C" void func_02016b24(struct Obj *o, u32 mask)
+{
+    u32 count = *(u32 *)(o->p8 + 0x24);
+    char *p = o->pc;
+    u32 i;
+    for (i = 0; i < count; i++) {
+        *(u32 *)(((int)p + 0x24)) |= mask;
+        p += 0x30;
+    }
+}
+
+// @symbol func_02016acc
+extern "C" void func_02016acc(char *a0, unsigned int mask)
+{
+    char *p = *(char **)(a0 + 8);
+    unsigned int n = *(unsigned int *)(p + 0x24);
+    char *q = *(char **)(a0 + 0xc);
+
+    for (unsigned int i = 0; i < n; i++) {
+        unsigned int nmask = ~mask;
+        *(unsigned int *)(q + 0x24) &= nmask;
+        q += 0x30;
+    }
+}
+
+// @symbol _ZN5Model12SetPolygonIDEi
+void Model::SetPolygonID(int id)
+{
+    func_02046008(&data, id);
+}
+
+// @symbol func_02016aac
+extern "C" void func_02016aac(char *self)
+{
+    func_0204605c(self + 8);
+}
+
+// @symbol _ZN9ModelBase12ApplyOpacityEjj
+void ModelBase::ApplyOpacity(u32 opacity, u32)
+{
+    func_020461b4(&static_cast<Model *>(this)->data, opacity);
+}
+
+// @symbol _ZN5Model14SetPolygonModeEi
+void Model::SetPolygonMode(int mode)
+{
+    func_02046234(&data, mode);
+}
+
+// @symbol _ZN5Model12HideMaterialEii
+void Model::HideMaterial(int boneID, int listIdx)
+{
+    BMD_File *file = data.modelFile;
+    BMD_Material *mats = data.materials;
+    u8 *ids = file->bones[boneID].materialIds;
+    mats[ids[listIdx]].flags |= 0x80000000;
+}
+
+// @symbol _ZN5Model12ShowMaterialEii
+void Model::ShowMaterial(int boneID, int listIdx)
+{
+    BMD_File *file = data.modelFile;
+    BMD_Material *mats = data.materials;
+    u8 *ids = file->bones[boneID].materialIds;
+    mats[ids[listIdx]].flags &= 0x7fffffff;
+}
+
+// @symbol func_02016a14
+extern "C" void func_02016a14(char *self)
+{
+    func_02045f80(self + 8);
+}
+
+// @symbol func_02016a04
+extern "C" void func_02016a04(char *self)
+{
+    func_02045ef8(self + 8);
+}
+
+// @symbol func_020169f4
+extern "C" void func_020169f4(char *self)
+{
+    func_02045e70(self + 8);
+}
+
+// @symbol func_020169d8
+extern "C" void func_020169d8(char *self, int index, unsigned int value)
+{
+    func_02045ec4(self + 8, value, index);
 }
