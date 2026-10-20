@@ -64,7 +64,7 @@ struct dScMgPachinko_ball {
     u8 fallPlayed;      /* 0x35 PachinkoBall_CheckFall plays sound 0x184 once,
                            on the frame it sets this */
     u8 level;           /* 0x36 mWaveLevel when Pachinko_SpawnWave spawned it;
-                           _AimAtTarget pitches its sound by it */
+                           _AimAtTarget passes it to the sound call */
     u8  unk37;          /* 0x37 */
 };
 
