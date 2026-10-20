@@ -2975,6 +2975,9 @@ void func_ov002_020f5894(char *a, int i)
         *p3e = *p3e + 1;
     }
 }
+#undef STAR_OFF
+#undef WINDOW_OFF
+#undef CREDIT_OFF
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3253,7 +3256,7 @@ void func_ov002_020f5d34(u8 *self)
         ((StaffRoll *)e)->stars[0].active = 1;
         ((StaffRoll *)e)->stars[0].visible = 0;
         ((StaffRoll *)e)->stars[0].heading = 0;
-        *(s16 *)(e + 0x38) = 0;
+        ((StaffRoll *)e)->stars[0].pad_38 = 0;
         ((StaffRoll *)e)->stars[0].x = 0x80000;
         ((StaffRoll *)e)->stars[0].y = 0x60000;
         ((StaffRoll *)e)->stars[0].delay = v;
@@ -3262,7 +3265,7 @@ void func_ov002_020f5d34(u8 *self)
         ((StaffRoll *)e)->stars[0].kiraPeriods = 0;
         ((StaffRoll *)e)->stars[0].kiraDefParam = 0x199;
         ((StaffRoll *)e)->stars[0].kiraSysParam = 0x199;
-        *(s16 *)(e + 0x38) = 0;
+        ((StaffRoll *)e)->stars[0].pad_38 = 0;
         ((StaffRoll *)e)->stars[0].state = 0;
         ((StaffRoll *)e)->stars[0].step = 0;
         ((StaffRoll *)e)->stars[0].sparkling = 0;
