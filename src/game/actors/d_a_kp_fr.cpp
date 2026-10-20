@@ -7,10 +7,6 @@
  * within 50.0 below is undone (func_ov070_02121be4). A Mario it touches is
  * burnt (Player::Burn) unless he is vanished.
  *
- * One TU, 21 functions. It began as the old one-function files
- * concatenated in reverse ROM order: their bodies were wrapped in
- * extern "C" { }, which the merge tool could not take apart.
- *
  * _ZTS8daKpFr_c 0x0212340c. _ZTI8daKpFr_c 0x02123418.
  * _ZTV8daKpFr_c 0x02123448. The inline destructor in the header is the key
  * function: D1 at 0x02121b48, D0 at 0x02121b88, no D2.
@@ -55,11 +51,8 @@ extern "C" daKpFr_c *daKpFr_c_classInit(void)
     return new daKpFr_c();
 }
 
-/* Reconstructed source-style names: SM64DS proves the daKpFr_c RTTI identity,
- * KERONPA_FIRE registry ID, descriptor/factory relationship, and object shape;
- * later EAD lineage supplies the spelling prior. Exact original SM64DS
- * spellings are not preserved. Historical aliases: daKpFr_c_Spawn and
- * daKpFr_c_SpawnInfo. The descriptor is at ov070:0x02123424. */
+/* KERONPA_FIRE profile descriptor at ov070:0x02123424.
+ * Historical aliases: daKpFr_c_Spawn, daKpFr_c_SpawnInfo. */
 extern "C" SpawnInfo<daKpFr_c> g_profile_KERONPA_FIRE = {
     daKpFr_c_classInit,
     0x010f,

@@ -34,19 +34,13 @@
  *   spawned actor's words).
  */
 /* common.h FIRST, and the order is load-bearing. Both it and math/Matrix.h
- * define Matrix4x3 behind one shared guard -- flat `s32 m[12]` here, and
- * `Matrix3x3 r; Vector3 t;` there -- and whichever a translation unit reaches
- * first stands. The structured spelling holds a Vector3, which declares its own
- * destructor, so Matrix4x3 acquires a compiler-declared one; this class has two
- * Matrix4x3 members, and synthesizing that member destructor while generating
- * this class's own makes mwccarm emit the variant group D2, D0, D1 instead of
- * D1, D0, D2. The cartridge has D1 at 0x02129020 below D0 at 0x02129060 and no
- * D2 at all, so the group must come out D1 first for the licensed pair to link
- * in cartridge order once the homeless D2 is discarded. Measured on this class:
- * with math/Matrix.h first the object emits D2, D0, D1; with common.h first it
- * emits D1, D0, D2. Neither spelling is named anywhere below -- the two members
- * are layout only -- and all fifteen functions reproduce their cartridge bytes
- * either way. */
+ * define Matrix4x3 behind one shared guard -- flat `s32 m[12]` here,
+ * `Matrix3x3 r; Vector3 t;` there -- and whichever the TU reaches first
+ * stands. The structured spelling pulls in Vector3's destructor, and with
+ * two Matrix4x3 members that makes mwccarm emit D2, D0, D1; the cartridge
+ * has D1 below D0 and no D2. Measured: math/Matrix.h first emits D2, D0,
+ * D1; common.h first emits D1, D0, D2, which links in cartridge order
+ * once the homeless D2 is discarded. */
 #include "common.h"
 #include "daKinopio_c.h"
 #include "SharedFilePtr.h"
@@ -135,19 +129,11 @@ static inline int IsPlayerActor(dActor_c *actor) {
 
 // @symbol _ZN11daKinopio_cD1Ev
 // @symbol _ZN11daKinopio_cD0Ev
-/* ONE definition, TWO ROM functions. mwccarm emits the deleting variant D0 and
- * the complete variant D1 from this single declaration, so D0 has no source of
- * its own; with deferred code generation off they land in the cartridge's order,
- * D1 first at 0x02129020 and D0 at 0x02129060, and the base-object variant D2
- * the compiler also emits is homeless and discarded.
- *
- * The body is empty because there is nothing to write: one vptr store and three
- * member destructor calls, every one a consequence of
- * `struct daKinopio_c : dActor_c` and the members that declaration types --
- * dExtShadowModel_c (0x16c), ModelAnim (0x108) and dCcAc_c (0x0d4) in reverse
- * declaration order, then dActor_c's own. D0's deallocation is an inline
- * operator delete reached through dActor_c, this class's immediate base, which
- * is why nothing here mentions a heap. */
+/* ONE definition, TWO ROM functions (D1 at 0x02129020, D0 at 0x02129060;
+ * the D2 the compiler also emits is homeless and discarded). The empty
+ * body is one vptr store plus the member destructors in reverse
+ * declaration order, then dActor_c's own; D0 adds the inline operator
+ * delete through dActor_c. */
 daKinopio_c::~daKinopio_c()
 {
 }
@@ -623,21 +609,9 @@ int daKinopio_c::InitResources()
 #pragma opt_propagation on
 
 // @symbol daKinopio_c_classInit
-/* The registry factory behind the KINOPIO profile. It allocates 0x210 -- this
- * class's own sizeof -- and installs this class's vtable, which is the second of
- * the two independent witnesses the header's layout is read from.
- *
- * Reconstructed source-style name: SM64DS proves daKinopio_c through RTTI,
- * allocation size, vtable identity and the KINOPIO registry profile; later EAD
- * lineage supplies classInit. The exact original spelling is not preserved.
- * Historical alias: Toad_Spawn.
- *
- * `return new daKinopio_c()` is the whole body: the synthesized constructor is
- * what stores the vptr and runs the dCcAc_c, ModelAnim and dExtShadowModel_c
- * constructors the ROM calls, in that order, and `operator new` is fBase_c's.
- * Spelling the vptr store by hand instead would be wrong here as well as longer
- * -- this TU emits the vtable itself, so the store has to be the compiler's
- * own. */
+/* The registry factory behind the KINOPIO profile: `return new` allocates
+ * 0x210 (this class's sizeof) and installs this class's vtable.
+ * Historical alias: Toad_Spawn. */
 extern "C" daKinopio_c *daKinopio_c_classInit(void)
 {
     return new daKinopio_c();

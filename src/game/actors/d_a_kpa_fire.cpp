@@ -2,12 +2,11 @@
 /* daKpaFire_c -- Bowser's fire (KOOPAFIRE, ov060).
  *
  * _ZTS11daKpaFire_c at ov060 0x0211a7c0, _ZTI at 0x0211a7b4 (base
- * _ZTI12dEnemyBase_c), _ZTV at 0x0211a7f4. The tree used to call this
- * class BowserFire. The out-of-line destructor is the key function:
- * D1 at 0x02116484, D0 at 0x021164c4, then a D2 the cartridge does not
- * keep. Codegen is deferred, so .text is the reverse of source order.
- * The destructor alone sits under defer_codegen off, which is what
- * emits D1 before D0.
+ * _ZTI12dEnemyBase_c), _ZTV at 0x0211a7f4. The out-of-line destructor is
+ * the key function: D1 at 0x02116484, D0 at 0x021164c4, then a D2 the
+ * cartridge does not keep. Codegen is deferred, so .text is the reverse
+ * of source order. The destructor alone sits under defer_codegen off,
+ * which is what emits D1 before D0.
  *
  * Eight variants, param1 & 7. Behavior runs data_ov060_0211afb4.
  * InitResources runs data_ov060_0211af74, then finishes setup.
@@ -22,10 +21,10 @@
  *   7  same handler as 6, tossed straight up
  * FIRE_PARAM packs variant in bits 0..2 and the sub-variant in bits 4..5.
  *
- * Actor creation, lookup, movement and destruction use the existing native
- * interfaces, as do the ground predicate and Player::Burn. Spawn still views
- * the base actor's contiguous scalar position/angle fields as vectors; that
- * inherited flat-field layout is not reconstructed here.
+ * Actor creation, lookup, movement and destruction use the native
+ * interfaces, as do the ground predicate and Player::Burn. Spawn still
+ * views the base actor's contiguous scalar position/angle fields as
+ * vectors; that inherited flat-field layout is not reconstructed here.
  *
  * leftovers:
  * - func_ov060_02116740, 02117624 stay free functions with
