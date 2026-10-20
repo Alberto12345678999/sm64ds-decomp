@@ -49,15 +49,7 @@ src/game/stages/d_s_boot_methods.cpp:
 
 src/runtime/actor/d_cap_enemy_arm9.cpp:
     complete
-    .text start:0x02005d94 end:0x0200651c
-
-src/_ZN11dCapEnemy_cD1Ev.cpp:
-    complete
-    .text start:0x0200651c end:0x02006554
-
-src/_ZN11dCapEnemy_cC2Ev.cpp:
-    complete
-    .text start:0x02006554 end:0x02006588
+    .text start:0x02005d94 end:0x02006588
 
 src/main.c:
     complete

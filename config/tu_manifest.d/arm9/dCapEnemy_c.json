@@ -7,16 +7,16 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "NOT FROM tu_map. tools/tu_map.py reports arm9 main as one unit, so this boundary is the address run in config/arm9/symbols.txt.",
-    "Contiguous run 0x02005d94..0x02006588 for the class's arm9 methods. Twelve tile this TU's licensed range 0x02005d94..0x0200651c: 0x94+0xb0+0x34+0x94+0xb4+0xa0+0xbc+0xd0+0x38+0xf8+0x130+0x3c = 0x788. D1 (0x0200651c..0x02006554) and C2 (0x02006554..0x02006588) keep their single-function files at the run's end.",
+    "Contiguous run 0x02005d94..0x02006588 for the class's arm9 methods. Fourteen tile this TU's licensed range: 0x94+0xb0+0x34+0x94+0xb4+0xa0+0xbc+0xd0+0x38+0xf8+0x130+0x3c+0x38+0x34 = 0x7f4. D1 (0x0200651c..0x02006554) and C2 (0x02006554..0x02006588) are the tail, spelled as extern \"C\" ABI bodies.",
     "func_02005e28 and func_02005ed8 are dCapEnemy_c methods, not foreign classes. 0x02005e28 reads mCapId and the player table; 0x02005ed8 tests mCapIcon.mFlags bit 2 and calls dCapIcon_c::Unlink. dCapIcon_c::Unlink itself is ov001 0x020ab110.",
-    "D1 and C2 stay out of this TU because the destructor is the class's key function: only a member ~dCapEnemy_c() emits _ZTV11dCapEnemy_c, and a member dtor/ctor in a multi-function object also emits D0/D2/C1 as STB_GLOBAL homed to the ov002 TU (0x020aedbc, 0x020aedf4), which plan_many cannot deadstrip. The same shape as ov002/daObjKuruma_c's licensed-range trim.",
+    "D1 and C2 are in this TU as extern \"C\" ABI bodies. A member ~dCapEnemy_c() is the key function and would emit _ZTV11dCapEnemy_c plus D0 and D2; a member constructor would emit C1. Those extras are STB_GLOBAL, and D0/D2 are homed to the ov002 TU (0x020aedbc, 0x020aedf4), which plan_many cannot deadstrip. The free functions emit neither the variants nor a vtable.",
     "Below: dScBoot_c::InitResources ends at 0x02005d94. Above: main starts at 0x02007000. Nothing of another class sits inside the run."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02005d94",
-      "end": "0x0200651c"
+      "end": "0x02006588"
     }
   ],
   "functions": [
@@ -103,6 +103,20 @@
       "size": "0x0000003c",
       "legacy_source": "src/_ZN11dCapEnemy_c14UnloadCapModelEv.cpp",
       "ordinal": 11
+    },
+    {
+      "symbol": "_ZN11dCapEnemy_cD1Ev",
+      "address": "0x0200651c",
+      "size": "0x00000038",
+      "legacy_source": "src/_ZN11dCapEnemy_cD1Ev.cpp",
+      "ordinal": 12
+    },
+    {
+      "symbol": "_ZN11dCapEnemy_cC2Ev",
+      "address": "0x02006554",
+      "size": "0x00000034",
+      "legacy_source": "src/_ZN11dCapEnemy_cC2Ev.cpp",
+      "ordinal": 13
     }
   ],
   "data": [],
@@ -110,7 +124,7 @@
   "compiler_only_output": [],
   "notes": [
     "The ov002 half stays src/runtime/actor/d_cap_enemy.cpp. This file is the arm9 half because that path is already enrolled in ov002 and rombuild refuses one complete path in two modules.",
-    "D1 and C2 keep per-function shards: the destructor is the key function, and only a member ~dCapEnemy_c() emits _ZTV11dCapEnemy_c for romdata_check. A member definition in this multi-function object would also emit global D0/D2/C1, homed to the ov002 TU, which plan_many cannot deadstrip."
+    "D1 and C2 are extern \"C\" ABI bodies in this file. A member ~dCapEnemy_c() would emit _ZTV11dCapEnemy_c plus global D0/D2, and a member constructor would emit global C1. D0 and D2 are homed to the ov002 TU, which plan_many cannot deadstrip. No vtable is emitted here; the retail ov002 table stays the linked copy."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -118,8 +132,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-dCapEnemy_c/dCapEnemy_c_arm9.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 12,
-    "functions_declared": 12,
+    "functions_matched": 14,
+    "functions_declared": 14,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
