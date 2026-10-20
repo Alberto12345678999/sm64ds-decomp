@@ -2490,9 +2490,9 @@ void Camera_InitDealerView(struct dCamera_c *self) {
 namespace s020c0a48 {
 extern "C" {
 int MascotWalker_Construct(char *t) {
-    func_02017acc(t, 0x205);
-    _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
-    _ZN13SharedFilePtr9ConstructEj(t + 0x10, 0x207);
+    func_02017acc(WALKER(t)->mModelFile, 0x205);
+    _ZN13SharedFilePtr9ConstructEj(WALKER(t)->mPauseAnimFile, 0x206);
+    _ZN13SharedFilePtr9ConstructEj(WALKER(t)->mWalkAnimFile, 0x207);
     _ZN14BlendModelAnimC1Ev(WALKER(t)->mModel);
     _ZN17dExtShadowModel_cC1Ev(WALKER(t)->mShadow);
     WALKER(t)->mPathIndex = 0;
@@ -2506,14 +2506,14 @@ int MascotWalker_Construct(char *t) {
 namespace s020c09f8 {
 extern "C" {
 int MascotWalker_Destruct(char *t) {
-    _ZN13SharedFilePtr7ReleaseEv(t);
-    _ZN13SharedFilePtr7ReleaseEv(t + 0x10);
-    _ZN13SharedFilePtr7ReleaseEv(t + 8);
+    _ZN13SharedFilePtr7ReleaseEv(WALKER(t)->mModelFile);
+    _ZN13SharedFilePtr7ReleaseEv(WALKER(t)->mWalkAnimFile);
+    _ZN13SharedFilePtr7ReleaseEv(WALKER(t)->mPauseAnimFile);
     _ZN17dExtShadowModel_cD1Ev(WALKER(t)->mShadow);
     _ZN14BlendModelAnimD1Ev(WALKER(t)->mModel);
-    SharedFilePtr_Destruct_Anim(t + 0x10);
-    SharedFilePtr_Destruct_Anim(t + 8);
-    func_02017ab4(t);
+    SharedFilePtr_Destruct_Anim(WALKER(t)->mWalkAnimFile);
+    SharedFilePtr_Destruct_Anim(WALKER(t)->mPauseAnimFile);
+    func_02017ab4(WALKER(t)->mModelFile);
     return (int)t;
 }
 }
@@ -2546,13 +2546,13 @@ extern Vector3_16 data_020a0edc;
 extern "C" void MascotWalker_Load(char *thiz) {
     char *c = thiz;
     {
-        void *bmd = _ZN5Model8LoadFileER13SharedFilePtr(c);
+        void *bmd = _ZN5Model8LoadFileER13SharedFilePtr(WALKER(c)->mModelFile);
         _ZN9ModelBase7SetFileEP8BMD_Fileii((ModelBase *)WALKER(c)->mModel, bmd, 1, -1);
     }
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0x10));
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 8));
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(WALKER(c)->mWalkAnimFile);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(WALKER(c)->mPauseAnimFile);
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        (BlendModelAnim *)WALKER(c)->mModel, *(BCA_File *)WALKER(c)->mPauseAnim, 0, 0, 0x800, 0);
+        (BlendModelAnim *)WALKER(c)->mModel, *(BCA_File *)WALKER(c)->mPauseAnimFile[1], 0, 0, 0x800, 0);
     _ZN5Model12SetPolygonIDEi((Model *)WALKER(c)->mModel, 1);
     _ZN17dExtShadowModel_c12InitCylinderEv((void *)WALKER(c)->mShadow);
     WALKER(c)->mScale.x = 0x1000;
@@ -2664,15 +2664,15 @@ struct Base {
 extern "C" void MascotWalker_UpdateMatrix(char *thiz) {
     char *c = thiz;
     ((Base *)WALKER(c)->mModel)->m();
-    /* 0x2c is mModel's bone-matrix pointer (Model +0x14); 0x120 picks bone 6. */
+    /* Bone 6 of mBoneMatrices takes the head angle. */
     {
-        char *m = *(char **)(c + 0x2c);
-        data_020a0e68 = *(Matrix4x3 *)(m + 0x120);
+        Matrix4x3 *m = (Matrix4x3 *)WALKER(c)->mBoneMatrices;
+        data_020a0e68 = m[6];
     }
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, WALKER(c)->mHeadAngle);
     {
-        char *m = *(char **)(c + 0x2c);
-        *(Matrix4x3 *)(m + 0x120) = data_020a0e68;
+        Matrix4x3 *m = (Matrix4x3 *)WALKER(c)->mBoneMatrices;
+        m[6] = data_020a0e68;
     }
     Matrix4x3_FromTranslation((Matrix4x3 *)&data_020a0e68, WALKER(c)->mPos.x, WALKER(c)->mPos.y,
                               WALKER(c)->mPos.z);
@@ -2692,7 +2692,7 @@ void MascotWalker_StartNextPath(char *c) {
     int sp8[3];
     int sp14[3];
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        WALKER(c)->mModel, (void *)WALKER(c)->mWalkAnim, 0, 0, 0x800, 0);
+        WALKER(c)->mModel, (void *)WALKER(c)->mWalkAnimFile[1], 0, 0, 0x800, 0);
     if (WALKER(c)->mPathIndex < 3) {
         WALKER(c)->mPathIndex += 1;
     } else {
@@ -2820,7 +2820,7 @@ void MascotWalker_StateWalk(char *c) {
     if (_Z15ApproachLinear2Rsss(&WALKER(c)->mStateTimer, 0, 1) == 0)
         return;
 
-    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x68, 0) == 0)
+    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(WALKER(c)->mModelFrame, 0) == 0)
         return;
 
     MascotWalker_StartPause((int *)c);
@@ -2839,7 +2839,7 @@ extern P2 pmf_MascotWalker_StatePause;
 
 void MascotWalker_StartPause(int *t) {
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        WALKER(t)->mModel, (void *)WALKER(t)->mPauseAnim, 8, 0, 0x800, 0);
+        WALKER(t)->mModel, (void *)WALKER(t)->mPauseAnimFile[1], 8, 0, 0x800, 0);
     WALKER(t)->mStateTimer = 0x78;
     WALKER(t)->mPaused = 1;
     *(P2 *)WALKER(t)->mState = pmf_MascotWalker_StatePause;
@@ -2871,7 +2871,7 @@ extern "C" void MascotWalker_StatePause(char *c) {
     if (ApproachLinear2(WALKER(c)->mStateTimer, 0, 1) == 0)
         return;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        (BlendModelAnim *)WALKER(c)->mModel, (void *)WALKER(c)->mWalkAnim, 0, 0, 0x800, 0);
+        (BlendModelAnim *)WALKER(c)->mModel, (void *)WALKER(c)->mWalkAnimFile[1], 0, 0, 0x800, 0);
     int r = RandomIntInternal(&data_0209e650);
     int idx = (int)((unsigned int)(r & 0x7fffffff) >> 0x13);
     WALKER(c)->mStateTimer = (short)(((idx * 0x258) >> 12) + 0x258);
