@@ -7,6 +7,17 @@
 #include "decl_ShadowModel.h"
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
+
+/* File-local view of daStar_c (include/daStar_c.h is C++): the five
+   members the factory constructs, sized as that header's layout table. */
+typedef struct {
+    char pad_000[0x110];
+    char mdCc_c[0x40];         /* 0x110 dCcAcPos_c */
+    char mWithMeshClsn[0x1bc]; /* 0x150 dBgCh_Actr */
+    char mModelAnim1[0x64];    /* 0x30c ModelAnim */
+    char mModelAnim2[0x64];    /* 0x370 ModelAnim */
+    char mShadowModel[0x28];   /* 0x3d4 dExtShadowModel_c */
+} StarView;
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV8daStar_c */
 /* Reconstructed source-style name: SM64DS proves daStar_c through RTTI,
@@ -19,11 +30,11 @@ int *daStar_c_classInit_SILVER_STAR(void)
     if (p) {
         _ZN12dEnemyBase_cC2Ev(p);
         p[0] = (int)_ZTV8daStar_c;
-        _ZN10dCcAcPos_cC1Ev((char *)p + 0x110);
-        _ZN10dBgCh_ActrC1Ev((char *)p + 0x150);
-        _ZN9ModelAnimC1Ev((char *)p + 0x30c);
-        _ZN9ModelAnimC1Ev((char *)p + 0x370);
-        _ZN17dExtShadowModel_cC1Ev((char *)p + 0x3d4);
+        _ZN10dCcAcPos_cC1Ev(((StarView *)p)->mdCc_c);
+        _ZN10dBgCh_ActrC1Ev(((StarView *)p)->mWithMeshClsn);
+        _ZN9ModelAnimC1Ev(((StarView *)p)->mModelAnim1);
+        _ZN9ModelAnimC1Ev(((StarView *)p)->mModelAnim2);
+        _ZN17dExtShadowModel_cC1Ev(((StarView *)p)->mShadowModel);
     }
     return p;
 }

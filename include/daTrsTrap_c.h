@@ -46,7 +46,7 @@ struct daTrsTrap_c : dActor_c {
     u8  mStepIndex;              /* 0x151 */
     u8  mInitLatch;              /* 0x152 -- merry-go-round skips occupancy once, then latches this */
     /* Merry-go-round occupancy: a rider stands on the mesh or the area is
-       showing. Written every frame; no reader recovered yet. */
+       showing. Written every frame; the Boo (daTrs_c, 021163d0) reads it. */
     u8  mOccupiedFlag;           /* 0x153 */
     u8  pad_154;                 /* 0x154 -- zeroed by InitResources, no reader recovered */
     /* KAIDAN release: the Boo's death path (ov063:0x02118b98) finds the master
