@@ -257,13 +257,31 @@ struct Player : dActor_c {
     s32 mParticle1;            /* 0x628 */
     s32 mParticle2;            /* 0x62c */
     s32 mParticle3;            /* 0x630 */
-    u8  pad_634[0x8];
+    /* Particle handles at the water surface. func_ov002_020ce8bc passes each
+       back to func_02022cbc (Particle::System::New) at x/z of the player and
+       y = data_0209f32c + 0x3000: the first when its speed argument (mHorzSpeed
+       or mPrevVertSpeed) is nonzero, the second when it is zero. Leaving Mega
+       (func_ov002_020bdd2c) zeroes both along with mParticle1. */
+    s32 mWaterMoveParticle;       /* 0x634 */
+    s32 mWaterStillParticle;      /* 0x638 */
     u32 mCharFileBase;            /* 0x63c */
     s32 mPrevVertSpeed;            /* 0x640 */
     s32 mGroundY;            /* 0x644 */
-    u8  pad_648[0x4];
-    s32 unk_64c;            /* 0x64c */
-    s32 unk_650;            /* 0x650 */
+    /* The floor probe in func_ov002_020c14b8 stores its clsnY here
+       (0x80000000 on a miss) and copies it to mGroundY; four no-control
+       sequences then overwrite mGroundY with mPosY, but not this copy.
+       func_ov002_020c0fb4 tests mPosY against it on a lava floor. */
+    s32 mProbedGroundY; /* 0x648 */
+    /* Height of the water surface above the player: set from a dBgCh_Gnd
+       probe that detects water when the hit's CLPS has the water bit (0x20),
+       0x80000000 when there is none, and copied to data_0209f32c. Read by
+       St_Swim_Main and func_ov002_020c231c (no floor snap over water). */
+    s32 mWaterSurfaceY; /* 0x64c */
+    /* Height of the toxic-gas surface: func_ov002_020c14b8's water/toxic
+       probe stores clsnY when the hit's CLPS has the toxic bit (0x02000000).
+       More than 0x64000 below it, func_ov002_020c133c hurts the player and
+       St_Wait_Init plays anim 5. */
+    s32 mToxicSurfaceY;     /* 0x650 */
     s32 unk_654;            /* 0x654 */
     /* --- Unpacked CLPS (collision property) fields ---------------------
      * Player::SetFloorSurfaceInfo (func_ov002_020c16ec) calls one bitfield
@@ -284,7 +302,10 @@ struct Player : dActor_c {
     s32 mClpsBits15_18;            /* 0x65c  getter func_02037e48 */
     s32 mClpsBits6_11;            /* 0x660  getter func_02037e68 */
     s32 mSurfaceType;            /* 0x664  CLPS bits 19-23, getter func_02037e38; values 6..9 are the quicksand tiers */
-    u8  pad_668[0x4];
+    /* mSurfaceType as func_ov002_020c14b8's floor probe left it (0 on a
+       miss), kept beside mProbedGroundY. func_ov002_020c0fb4 tests it == 1,
+       the lava floor: within 0x2000 of mProbedGroundY it starts St_BurnLava. */
+    s32 mProbedSurfaceType;          /* 0x668 */
     s32 mGroundSoundType;            /* 0x66c  CLPS bits 0-4, getter func_02037e84 */
     s32 mClpsWord1Lo;            /* 0x670  CLPS word1 bits 0-7, getter func_02037e90 */
     s32 mHurtDamage;            /* 0x674 */
@@ -292,8 +313,13 @@ struct Player : dActor_c {
     s32 mPeakY;            /* 0x684 */
     s32 mAttachOffsetY;            /* 0x688 */
     s32 mSinkDepth;            /* 0x68c */
-    s32 unk_690;            /* 0x690 */
-    s32 unk_694;            /* 0x694 */
+    /* Body model offset from mPos. func_ov002_020e444c builds the model
+       matrix from (0, mModelOffsetY - mSinkDepth, mModelOffsetZ) rotated by
+       mAngleY, and func_ov002_020e4374 adds mModelOffsetY to the shadow
+       height. States set them (balloon 0x64000, swim from mAngleX, the
+       water-run sink); ChangeState zeroes both. */
+    s32 mModelOffsetY;           /* 0x690 */
+    s32 mModelOffsetZ;           /* 0x694 */
     s16 mSpawnAngleY;            /* 0x698 */
     /* Downhill direction of the current floor, binary angle (0x10000 per turn).
      * Player::SetFloorSurfaceInfo computes it as cstd::atan2(mFloorNormalX,
@@ -316,7 +342,10 @@ struct Player : dActor_c {
        parameter widths in dActor_c.h: a declared type nothing had checked. */
     u16 mJumpComboTimer;            /* 0x6a8 */
     u16 mPunchKickCooldown;            /* 0x6aa */
-    u16 unk_6ac;            /* 0x6ac */
+    /* func_ov002_020d3b9c sets it to 4 each frame the stick is held,
+       Behavior counts it down; the no-stick branch only decelerates (and
+       may start mIsBraking) once it reaches 0. */
+    u16 mStickGraceTimer;         /* 0x6ac */
     u16 mPowerupTimer;            /* 0x6ae */
     u16 mCrouchTimer;            /* 0x6b0 */
     u16 unk_6b2;            /* 0x6b2 */
@@ -347,7 +376,11 @@ struct Player : dActor_c {
     u16 unk_6c4;            /* 0x6c4 */
     u16 mMouthHoldTimer;            /* 0x6c6 */
     u16 mTeleportTimer;            /* 0x6c8 */
-    u8  pad_6ca[0x2];
+    /* func_ov002_020cec2c (the water states): counts up while the player is
+       0x8c000 below the water surface or in levels 0x13/0x14/0x30, and
+       costs 0x100 health on reaching 0xf0 (0x50 in those levels); reset to
+       0 otherwise. */
+    u16 mAirDrainCounter;   /* 0x6ca */
     u16 unk_6cc;            /* 0x6cc */
     u16 mStateFlags;            /* 0x6ce */
     u16 mMegaKillCount;            /* 0x6d0 */
@@ -362,7 +395,12 @@ struct Player : dActor_c {
     u8  mHatCharacter;            /* 0x6dd */
     u8  mIsAirborne;            /* 0x6de */
     u8  mLandSoundPlayed;            /* 0x6df */
-    u8  unk_6e0;            /* 0x6e0 */
+    /* Set by func_ov002_020d454c when the stick is let go above walking
+       speed 0x10000 (anim 0x36, speed capped); while set, St_Walk_Main plays
+       the ground-type sound 0xe2 + mGroundSoundType and func_ov002_020d3b9c
+       decelerates. Stick input, anim 0x37 ending and ChangeState clear it
+       (func_ov002_020d4540). */
+    u8 mIsBraking;                  /* 0x6e0 */
     u8  mJumpComboStage;            /* 0x6e1 */
     u8  mPunchKickStep;            /* 0x6e2 */
     u8  mStateStep;            /* 0x6e3 */
@@ -377,8 +415,17 @@ struct Player : dActor_c {
        func_ov002_020c29d4 has evaluated it. Cap change zeroes both. */
     u8 mWaterRunLatch;      /* 0x6ea */
     u8 mQuicksandRunFlags;  /* 0x6eb */
-    u8  unk_6ec;            /* 0x6ec */
-    u8  unk_6ed;            /* 0x6ed */
+    /* When set, func_ov002_020c25a8 makes mMeshClsn detect water, so a water
+       surface holds the player up. Only Luigi (param1 1) sets it: St_Walk_Init
+       outside shallow water, and func_ov002_020c2b08 when he walks on
+       non-water ground after a water run. ChangeState clears it. */
+    u8 mDetectWater; /* 0x6ec */
+    /* 0x1e once func_ov002_020d2fdc has ramped mStateWork to 0x1e with input
+       flag 0x800 (data_0209f49c) held; func_ov002_020d3b9c then counts it
+       down while the flag stays set, scaling walk speed by 0x1333 with accel
+       0x1e000, and clears it when the flag drops. While it is nonzero,
+       St_Walk_Init and St_Crouch_Init play a voice. */
+    u8 mDashBoostTimer;     /* 0x6ed */
     u8  unk_6ee;            /* 0x6ee */
     u8  pad_6ef[0x3];
     u8  unk_6f2;            /* 0x6f2 */
@@ -453,7 +500,14 @@ struct Player : dActor_c {
     s8  unk_726;            /* 0x726 */
     u8  unk_727;            /* 0x727 */
     u8  unk_728;            /* 0x728 */
-    u8  pad_729[0x13];
+    u8 pad_729[0x3];
+    /* A cap (actor 0x10d, the actor daMky_c spawns as the lost cap).
+       func_ov002_020bd06c spawns it when animation script 8, 9 or 10 starts
+       (param 0x14..0x16 | param1 << 8) and destroys it when one of those
+       scripts is left; func_ov002_020bcdf0 keeps it on mPos and the
+       player's angles. */
+    dActor_c *mCapActor; /* 0x72c */
+    u8 pad_730[0xc];
     u16 mCapFlags;            /* 0x73c */
     /* Ticks left in the current mCapFlags phase. The cap-change update loads
        it from a per-phase table, counts it down every frame, and advances
