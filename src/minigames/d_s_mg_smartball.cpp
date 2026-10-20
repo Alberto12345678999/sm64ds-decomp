@@ -95,14 +95,6 @@ typedef struct V2xz {
     int z;
 } V2xz;
 
-/* The propeller's view of the object base's angle at 0x32, which straddles
-   the base's unk_031..unk_033 span (cMgSmartball_object_c.h). Its vertex
-   ring is the member mVertices. */
-struct C2 {
-    char pad0[0x32];
-    s16 angle; /* 0x32 */
-};
-
 /* shadow 'Vec2' -- 1 member(s). */
 typedef struct {
     int x, y;
@@ -2101,7 +2093,6 @@ int cMgSmartball_propeller_c::HitTest(int *pos) {
 
 // @symbol _ZN24cMgSmartball_propeller_c12RebuildVertsEv
 void cMgSmartball_propeller_c::RebuildVerts() {
-    struct C2 *c = (struct C2 *)this;
     mVertices[0].x = 0x20000;
     mVertices[0].y = 0;
     mVertices[1].x = 0;
@@ -2119,14 +2110,14 @@ void cMgSmartball_propeller_c::RebuildVerts() {
     mVertices[7].x = 0;
     mVertices[7].y = -0x20000;
 
-    func_0203d388((V2 *)&mVertices[0], c->angle);
-    func_0203d388((V2 *)&mVertices[1], c->angle);
-    func_0203d388((V2 *)&mVertices[2], c->angle);
-    func_0203d388((V2 *)&mVertices[3], c->angle);
-    func_0203d388((V2 *)&mVertices[4], c->angle);
-    func_0203d388((V2 *)&mVertices[5], c->angle);
-    func_0203d388((V2 *)&mVertices[6], c->angle);
-    func_0203d388((V2 *)&mVertices[7], c->angle);
+    func_0203d388((V2 *)&mVertices[0], GetAngle());
+    func_0203d388((V2 *)&mVertices[1], GetAngle());
+    func_0203d388((V2 *)&mVertices[2], GetAngle());
+    func_0203d388((V2 *)&mVertices[3], GetAngle());
+    func_0203d388((V2 *)&mVertices[4], GetAngle());
+    func_0203d388((V2 *)&mVertices[5], GetAngle());
+    func_0203d388((V2 *)&mVertices[6], GetAngle());
+    func_0203d388((V2 *)&mVertices[7], GetAngle());
 
     mVertices[0].x += mCurrent0;
     mVertices[0].y += mCurrent1;
@@ -2185,20 +2176,16 @@ void cMgSmartball_propeller_c::Update() {
  * mRoundEnded flag is set, it returns before touching anything else.
  * Otherwise it steps the rotation speed (mSpinSpeed) by +-8 toward the target
  * (mSpinSpeedTarget), clamping once it crosses, adds the stepped speed onto the
- * base's own angle at 0x32 (raw cast -- see cMgSmartball_propeller_c.h on
- * why that field isn't reached by name), and calls the shared helper that
+ * base's own angle at 0x32 (a cast of unk_032 -- see cMgSmartball_object_c.h
+ * on why that field has no single type), and calls the shared helper that
  * recomputes the propeller-blade positions from the new angle.
  *
- * KEPT AS RAW OFFSET ACCESS ON PURPOSE, unlike Update/RestoreInitial in
- * this same class. Rewritten with named `mSpinSpeedTarget`/`mSpinSpeed` member access
- * this compiled to 0x98 bytes where the ROM has 0xac: mwcc CSEs the
- * repeated `this->mSpinSpeed` load into fewer reloads than the ROM's shape
- * (write through a locally-cast `short* p`, but re-read every comparison
- * through a fresh `*(short*)(c+0x36)` cast) allows. The local `p`/`q`
- * pointers and repeated casts are load-bearing for the emitted code, not
- * decoration -- see cMgSmartball_propeller_c.h. */
+ * The step writes through a local `short *p` taken from &mSpinSpeed while
+ * every comparison re-reads the member. That pointer is load-bearing:
+ * written `mSpinSpeed = mSpinSpeed + 8` the function is 0x9c bytes where
+ * the ROM has 0xac, because mwcc then keeps the stepped value in a
+ * register instead of reloading it. */
 void cMgSmartball_propeller_c::SaveSnapshot() {
-    char *c = (char *)this;
     mSnapshot0 = mCurrent0;
     mSnapshot1 = mCurrent1;
     if (((dScMgSmartball_c *)mpManager)->mRoundEnded != 0)
@@ -2215,7 +2202,7 @@ void cMgSmartball_propeller_c::SaveSnapshot() {
             mSpinSpeed = mSpinSpeedTarget;
     }
     {
-        short *q = (short *)(((int)c + 0x32));
+        short *q = (short *)&unk_032;
         *q = *q + mSpinSpeed;
     }
     RebuildVerts();
@@ -2255,7 +2242,7 @@ int cMgSmartball_propeller_c_Construct(char *c, int b, int d, int *s) {
  * through the base's mpManager scene pointer (offset 8, low byte) -- unrelated
  * to this class's own 0x34+ fields, which Update never touches at all. */
 void cMgSmartball_spring_c::Update() {
-    if ((*(int *)((char *)mpManager + 8) & 0xff) == 0) {
+    if ((((dScMgSmartball_c *)mpManager)->param1 & 0xff) == 0) {
         Mg_RenderSpriteBoth(sSmartballSpringSprites[0], mCurrent0 >> 12, mCurrent1 >> 12, -1, 1);
         Mg_RenderSpriteBoth(sSmartballSpringSprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1,
                             2);
@@ -3751,7 +3738,7 @@ void cMgSmartball_ball_c::Update() {
     r2 = 1;
     if (state3a == 1)
         r2 = 3;
-    if ((*(int *)((char *)mpManager + 8) & 0xff) == 0) {
+    if ((((dScMgSmartball_c *)mpManager)->param1 & 0xff) == 0) {
         int x = mCurrent0;
         int y = mCurrent1;
         Mg_RenderSpriteBoth(sSmartballBallSprites[0], (x + 0x800) >> 12, (y + 0x800) >> 12, -1, r2);
@@ -3830,7 +3817,7 @@ void cMgSmartball_ball_c::SaveSnapshot() {
     if (mCurrent0 < 0 || mCurrent0 >= 0x100000 || mCurrent1 < -0xf0000 || mCurrent1 >= 0xc0000) {
         mStuckFrames += 1;
     } else {
-        if ((*(int *)((char *)mpManager + 8) & 0xff) != 0) {
+        if ((((dScMgSmartball_c *)mpManager)->param1 & 0xff) != 0) {
             Vec2_Sub((int *)&d1, (int *)(V2xz *)&mCurrent0, (int *)(V2xz *)&mLastPos0);
             t = Vec2_Len((Vec2 *)&d1) < 0x8000;
             if (t != 0) {
@@ -3969,7 +3956,7 @@ void cMgSmartball_ball_c::RestoreInitial() {
     mStuckFrames = 0;
     mPipeUsed = 0;
     mInPlay = 1;
-    if ((*(int *)((char *)mpManager + 8) & 0xff) && mIndex >= 9)
+    if ((((dScMgSmartball_c *)mpManager)->param1 & 0xff) && mIndex >= 9)
         mInPlay = 0;
     else
         mInPlay = 1;
