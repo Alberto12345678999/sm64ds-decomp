@@ -82,6 +82,9 @@
 #include "SharedFilePtr.h"
 #include "dClipper.h"
 #include "nitro/fx/fx.h"
+#include "daObjNumber_c.h"
+#include "daCoin_c.h"
+#include "daFPknBall_c.h"
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c19BeforeInitResourcesEv
@@ -393,17 +396,20 @@ typedef long long s64;
 extern "C" {
 extern "C" s16 data_02082214[];
 }
+/* 0xa4 and 0xac stay raw: they are the X and Z of the speed vector whose Y is
+   mVertSpeed (UpdatePosWithOnlySpeed adds all three to mPos), but dActor_c.h
+   still calls them unk_0a4/unk_0ac, and renaming them there touches every actor. */
 void dActor_c::UpdatePosWithHorzSpeedAndAng(){
     void *c = this;
     s32 v98 = ((dActor_c *)c)->mHorzSpeed;
     if (v98 == 0) {
-        s32 a8 = *(s32*)((char*)c+0xa8);
-        s32 v9c = *(s32*)((char*)c+0x9c);
-        s32 a0 = *(s32*)((char*)c+0xa0);
+        s32 a8 = ((dActor_c *)c)->mVertSpeed;
+        s32 v9c = ((dActor_c *)c)->mVertAccel;
+        s32 a0 = ((dActor_c *)c)->mTerminalVelocity;
         s32 nx = a8 + v9c;
         if (nx >= a0) a0 = nx;
         *(s32*)((char*)c+0xa4) = 0;
-        *(s32*)((char*)c+0xa8) = a0;
+        ((dActor_c *)c)->mVertSpeed = a0;
         *(s32*)((char*)c+0xac) = 0;
         return;
     } else {
@@ -416,18 +422,18 @@ void dActor_c::UpdatePosWithHorzSpeedAndAng(){
         s32 nx;
         s16 cosv;
         s64 pz;
-        j = ((s32)*(unsigned short*)((char*)c+0x94) >> 4) << 1;
+        j = ((s32)(u16)((dActor_c *)c)->mPrevAngleY >> 4) << 1;
         sinv = data_02082214[j + 1];
-        a8 = *(s32*)((char*)c+0xa8);
-        v9c = *(s32*)((char*)c+0x9c);
-        a0 = *(s32*)((char*)c+0xa0);
+        a8 = ((dActor_c *)c)->mVertSpeed;
+        v9c = ((dActor_c *)c)->mVertAccel;
+        a0 = ((dActor_c *)c)->mTerminalVelocity;
         px = FX_MUL(v98, sinv);
         nx = a8 + v9c;
         if (nx >= a0) a0 = nx;
         cosv = data_02082214[j];
         pz = FX_MUL(v98, cosv);
         *(s32*)((char*)c+0xa4) = (s32)pz;
-        *(s32*)((char*)c+0xa8) = a0;
+        ((dActor_c *)c)->mVertSpeed = a0;
         *(s32*)((char*)c+0xac) = (s32)px;
         return;
     }
@@ -523,7 +529,8 @@ Player *dActor_c::ClosestNonVanishPlayer()
         for (i = 0; i < data_0209f21c; i++) {
             void* p = data_0209f394[i];
             if (!p) continue;
-            if (*(unsigned char*)((char*)p + 0x6fb)) continue;
+            if (((Player *)p)->mIsVanish)
+                continue;
             int d = Vec3_Dist(&mPosX, &((dActor_c *)p)->mPosX);
             if (d < data_0208e380) { data_0208e380 = d; data_0209b458 = p; }
             if (d > data_0208e37c) { data_0208e37c = d; data_0209b450 = p; }
@@ -686,11 +693,11 @@ extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
             r = (u32)RandomIntInternal(data_0209e650);
             r >>= 16;
 
-            *(s16 *)((char *)actor + 0x92) = 0;
+            actor->mPrevAngleX = 0;
             spread = (u32)((u32)spread * ((r % 50) + 100)) / 100;
             prev = ang;
-            *(s16 *)((char *)actor + 0x94) = (s16)(ang0 + ang);
-            *(s16 *)((char *)actor + 0x96) = 0;
+            actor->mPrevAngleY = (s16)(ang0 + ang);
+            actor->mPrevAngleZ = 0;
             actor->mHorzSpeed = spread;
         }
     }
@@ -737,7 +744,7 @@ void dActor_c::GivePlayerCoins(Player &player, u8 count, u32 coinKind)
     dActor_c *popup = Spawn(data_02075230[coinKind], 8, spawnPos, 0,
                          player.mAreaId, -1);
     if (popup != 0)
-        *(Player **)((char *)popup + 0x39c) = &player;
+        ((daCoin_c *)popup)->mFollowTarget = &player;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -900,7 +907,7 @@ void *func_02010304(void *target, char *p) {
     unsigned id = *(unsigned *)(p + 0x24);
     void *found;
     if (id != 0 && (found = dActor_c::FindWithID(id)) != 0 && (*(int *)(p + 0x20) & 0x1000)) {
-        int t = *(unsigned short *)((char *)found + 0xc) == 0xbf;
+        int t = ((dActor_c *)found)->actorID == 0xbf;
         if (t && ((Player *)found)->TryGrab(*(dActor_c *)target))
             return found;
     }
@@ -924,7 +931,7 @@ extern "C" void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_
     dActor_c* a = dActor_c::Spawn(0xfe, param1, *pos, rot, self->mAreaId, -1);
     if (a != (dActor_c*)0) {
         a->mHorzSpeed = horzSpeed;
-        *(Fix12i *)((char *)a + 0x35c) = unk35c;
+        ((daFPknBall_c *)a)->mTargetSpeed = unk35c;
     }
 }
 
@@ -945,35 +952,34 @@ extern Matrix4x3 data_020a0e68;
 Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
 {
     Player *p = &player;
-    char *self = (char *)this;
     Vector3 t;
     *(int *)((char *)&t + 0) = 0;
     *(int *)((char *)&t + 4) = 0;
     *(int *)((char *)&t + 8) = 0;
-    void *o = func_ov002_020e496c(p);
-    char *base = *(char**)((char*)o + 0x14);
-    data_020a0e68 = *(Matrix4x3*)((char*)o + 0x1c);
-    MulMat4x3Mat4x3((Matrix4x3*)(base + 0x2a0), &data_020a0e68, &data_020a0e68);
+    /* The player's current body model; the carried actor hangs off bone 14. */
+    Model *o = (Model *)func_ov002_020e496c(p);
+    Matrix4x3 *base = o->data.transforms;
+    data_020a0e68 = o->mat4x3;
+    MulMat4x3Mat4x3(&base[14], &data_020a0e68, &data_020a0e68);
     *(Vector3 *)&t = *(Vector3 *)((char *)&data_020a0e68 + 0x24);
-    *(short*)(self + 0x94) = *(short*)((char*)p + 0x8e);
-    *(short*)(self + 0x8e) = *(short*)(self + 0x94);
+    mPrevAngleY = p->mAngleY;
+    mAngleY = mPrevAngleY;
     Matrix4x3_FromTranslation(&data_020a0e68,
         *(volatile int *)((char *)&t + 0),
         *(volatile int *)((char *)&t + 4),
         *(volatile int *)((char *)&t + 8));
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
-        *(short*)(self + 0x8c), *(short*)(self + 0x8e), *(short*)(self + 0x90));
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     Vector3 asr;
     Vec3_Asr(&asr, &vec, 3);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
-    *(Fix12i*)(self + 0x5c) = data_020a0e68.m[9];
-    *(Fix12i*)(self + 0x60) = data_020a0e68.m[10];
-    *(Fix12i*)(self + 0x64) = data_020a0e68.m[11];
+    mPosX = data_020a0e68.m[9];
+    mPosY = data_020a0e68.m[10];
+    mPosZ = data_020a0e68.m[11];
     volatile Vector3 lsl;
-    Vec3_Lsl((Vector3*)&lsl, (Vector3*)(self + 0x5c), 3);
-    *(Fix12i*)(self + 0x5c) = lsl.x;
-    *(Fix12i*)(self + 0x60) = lsl.y;
-    *(Fix12i*)(self + 0x64) = lsl.z;
+    Vec3_Lsl((Vector3 *)&lsl, &mPos, 3);
+    mPosX = lsl.x;
+    mPosY = lsl.y;
+    mPosZ = lsl.z;
     return &data_020a0e68;
 }
 
@@ -1125,7 +1131,7 @@ dActor_c *dActor_c::SpawnNumber(const Vector3 &pos, u32 value, bool packLowNibbl
     if (number == 0)
         return number;
 
-    *(u16 *)((char *)number + 0x14c) = delay;
+    ((daObjNumber_c *)number)->mDelay = delay;
     return func_ov002_020f0918(number, owner);
 }
 
@@ -1587,7 +1593,7 @@ void dActor_c::MakeVanishLuigiWork(dCc_c &clsn)
     if (player == 0)
         return;
 
-    if (((u8 *)player)[0x6fb] != 0)
+    if (player->mIsVanish != 0)
         clsn.flags |= 2;
 }
 
@@ -1597,13 +1603,13 @@ void dActor_c::MakeVanishLuigiWork(dCc_c &clsn)
  * 0x0200f760  size 0x48 */
 extern "C" void func_0200f760(void *self, char *actor)
 {
-    unsigned char *p;
+    Player *p;
 
-    *(u32 *)(((int)actor + 0x18)) &= ~2;
-    p = (unsigned char *)((dActor_c *)self)->ClosestPlayer();
+    ((dCc_c *)actor)->flags &= ~2;
+    p = ((dActor_c *)self)->ClosestPlayer();
     if (p == 0) return;
-    if (p[0x6fb] != 0) {
-        *(u32 *)(((int)(actor + 0x18))) |= 2;
+    if (p->mIsVanish != 0) {
+        ((dCc_c *)actor)->flags |= 2;
     }
 }
 
