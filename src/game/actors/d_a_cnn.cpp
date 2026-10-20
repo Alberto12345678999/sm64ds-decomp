@@ -546,8 +546,8 @@ void daCnn_c::func_ov098_0213a984()
     *(s16 *)(bones + 0x1c) = yaw;
     *(u16 *)(bones + 0x4e) = pitch;
     *(s32 *)(bones + 0x54) = 0;
-    *(s32 *)(bones + 0x58) = mBarrelRestY + (mRecoil * data_02082214[idx * 2 + 1]) / 4096;
-    *(s32 *)(bones + 0x5c) = (mRecoil * data_02082214[idx * 2]) / 4096;
+    *(s32 *)(bones + 0x58) = mBarrelRestY + (mRecoil * data_02082214[idx * 2 + 1]) / 0x1000;
+    *(s32 *)(bones + 0x5c) = (mRecoil * data_02082214[idx * 2]) / 0x1000;
 }
 
 // @symbol _ZN7daCnn_cD0Ev
