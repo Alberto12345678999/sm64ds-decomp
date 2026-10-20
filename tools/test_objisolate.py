@@ -211,6 +211,31 @@ class Isolate(unittest.TestCase):
         OI.isolate_many(obj, names)
         self.assertEqual(obj.read_bytes(), raw)
 
+    def test_both_vtable_licences_still_refuse_an_unrebased_primary(self):
+        """A primary +8 stays refused when both vtable flags are set.
+
+        rombuild passes ``rtti_rebased`` and ``public_vtables`` together after
+        a deadstrip.  ``public_vtables`` used to accept any positive ABS32
+        addend, which cancelled the ``>= 16`` floor and let an unrebased
+        primary store through.  ModelAnim's secondary remainder is 36.
+        """
+        obj = self.build(
+            'extern "C" int _ZTV1P[];\n'
+            "struct Pair { void First(); void Second(); };\n"
+            "void Pair::Second() { *(int *)this = (int)_ZTV1P; }\n"
+            "void Pair::First() {}\n")
+        names = ["_ZN4Pair5FirstEv", "_ZN4Pair6SecondEv"]
+        primary = self._retarget_addend(obj.read_bytes(), "_ZTV1P", 8)
+        self.assertEqual(self._reloc_addends(primary, "_ZTV1P"), [8])
+        plan = OI.plan_many(
+            primary, names, rtti_rebased=True, public_vtables=True)
+        self.assertIn("undefined RTTI addend 8", plan["error"])
+
+        secondary = self._retarget_addend(obj.read_bytes(), "_ZTV1P", 36)
+        plan = OI.plan_many(
+            secondary, names, rtti_rebased=True, public_vtables=True)
+        self.assertIsNone(plan["error"], plan)
+
     def test_multi_symbol_isolation_refuses_a_missing_member(self):
         obj, names = self._plain_two_function_tu()
         out, plan = OI.derive_many(
@@ -555,6 +580,10 @@ class Isolate(unittest.TestCase):
 
         out, plan = OI.derive_deadstrip(raw, ["helper"], {"helper": real})
         self.assertIsNone(plan["error"], plan)
+        # Same binding, different bytes: the strong case is still a refusal.
+        _out, plan = OI.derive_deadstrip(
+            raw, ["helper"], {"helper": bytes(len(real))})
+        self.assertIn("non-relocated offset", plan["error"])
         done = ELFFile(io.BytesIO(out))
         got = next(s for s in done.get_section_by_name(".symtab").iter_symbols()
                    if s.name == "helper")

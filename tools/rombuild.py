@@ -423,10 +423,11 @@ def _isolate(obj, rel, syms, data_sink=None, compiler_only=None, intact_tus=None
                 obj.write_bytes(reduced)
             # deadstrip has already turned mwcc's vtable-object addends into the
             # ROM slot-array convention. isolate_many does not rewrite them.
-            # rtti_rebased keeps a secondary _ZTV remainder of at least 16 that
-            # is 4-aligned. public_vtables keeps any positive R_ARM_ABS32 _ZTV
-            # addend (a thunk-table offset). Both stay false when this object
-            # was not deadstripped, so an unrebased +8 primary is still refused.
+            # rtti_rebased and public_vtables both keep a secondary _ZTV
+            # remainder of at least 16 that is 4-aligned (a thunk-table offset).
+            # They share that floor, so passing both after a deadstrip still
+            # refuses an unrebased +8 primary. Both stay false when this object
+            # was not deadstripped.
             plan = (OI.isolate(obj, selected[0]) if len(selected) == 1
                     else OI.isolate_many(
                         obj, selected, rtti_rebased=bool(dead),

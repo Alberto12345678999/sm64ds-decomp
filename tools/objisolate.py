@@ -597,9 +597,12 @@ def plan_many(raw, keep_symbols, rtti_rebased=False, public_vtables=False):
       addend of 16 or more that is a multiple of 4: after the preamble was
       subtracted, that is a secondary slot-array offset, not a pending rewrite.
       A primary ``+8`` and any shorter or unaligned remainder are still refused.
-      ``public_vtables=True`` keeps a positive ``R_ARM_ABS32`` addend on
-      ``_ZTV`` (a thunk-table offset such as ModelAnim's 44 - 8 = 36).
-      ``_ZTI`` / ``_ZTS`` addends stay 0, and a non-ABS32 reloc is refused.
+      ``public_vtables=True`` keeps an ``R_ARM_ABS32`` ``_ZTV`` addend of 16
+      or more that is a multiple of 4, the same floor as ``rtti_rebased``.
+      ModelAnim's thunk-table offset is 44 - 8 = 36.  A primary ``+8`` is
+      refused even when both flags are set, which is how rombuild calls this
+      after a deadstrip.  ``_ZTI`` / ``_ZTS`` addends stay 0, and a non-ABS32
+      reloc is refused.
       Callers that have not rebased leave both flags false.
 
     Success therefore needs no ELF surgery: the exact input object is preserved.  The
@@ -708,14 +711,16 @@ def plan_many(raw, keep_symbols, rtti_rebased=False, public_vtables=False):
                 # is still a pending rewrite.
                 #
                 # public_vtables: the definition is an import and the remainder
-                # is a thunk-table offset (ModelAnim: 44 - 8 = 36). Any positive
-                # R_ARM_ABS32 against _ZTV is that offset. _ZTI/_ZTS stay 0.
+                # is a thunk-table offset (ModelAnim: 44 - 8 = 36). The floor
+                # matches rtti_rebased. A primary +8 is the unrebased store,
+                # and passing both flags must not accept it. _ZTI/_ZTS stay 0.
                 rebased_secondary = (
                     rtti_rebased and target.name.startswith("_ZTV")
                     and addend >= 16 and addend % 4 == 0)
                 public_secondary = (
                     public_vtables and target.name.startswith("_ZTV")
-                    and reloc["r_info_type"] == R_ARM_ABS32 and addend > 0)
+                    and reloc["r_info_type"] == R_ARM_ABS32
+                    and addend >= 16 and addend % 4 == 0)
                 if not (rebased_secondary or public_secondary):
                     return {"error": f"{target.name}: intact multi-symbol object has "
                                      f"undefined RTTI addend {addend}; text-only "
