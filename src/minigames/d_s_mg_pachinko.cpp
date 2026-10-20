@@ -2527,27 +2527,27 @@ void Pachinko_UpdateNextBall(char *o) {
     self->mNextBallDelay = 0;
 
     p = o;
-    for (i = 0; i < 0x30; i++)
-    {
-        if (*(unsigned char *)(p + 0x4f0c) == 0)
-        {
-            /* Two-step base: mla into temp then add #0x4000 into r3 (not ip). */
+    for (i = 0; i < 0x30; i++) {
+        if (*(unsigned char *)(p + SHOT_OFF(active)) == 0) {
+            /* Two-step base: mla into temp then add #0x4000 into r3 (not ip).
+               The stores below are mShot[i]'s fields at 0x4ed8 + 0x38 * i,
+               kept on that split base; a member spelling folds it. */
             p = o + i * 0x38;
             p = p + 0x4000;
-            *(unsigned char *)(p + 0xf0c) = 1;
-            *(unsigned char *)(p + 0xf0e) = 1;
-            *(unsigned char *)(p + 0xf0d) = 0;
-            *(int *)(p + 0xefc) = 0;
-            *(int *)(p + 0xed8) = 0x80000;
-            *(int *)(p + 0xedc) = 0x28000;
-            *(int *)(p + 0xee8) = 0;
-            *(int *)(p + 0xeec) = 0;
-            *(unsigned char *)(p + 0xf0f) = 0;
-            *(int *)(p + 0xee0) = 0;
-            *(int *)(p + 0xee4) = 0;
+            *(unsigned char *)(p + 0xf0c) = 1; /* active */
+            *(unsigned char *)(p + 0xf0e) = 1; /* visible */
+            *(unsigned char *)(p + 0xf0d) = 0; /* state */
+            *(int *)(p + 0xefc) = 0;           /* gravity */
+            *(int *)(p + 0xed8) = 0x80000;     /* x */
+            *(int *)(p + 0xedc) = 0x28000;     /* y */
+            *(int *)(p + 0xee8) = 0;           /* offX */
+            *(int *)(p + 0xeec) = 0;           /* offY */
+            *(unsigned char *)(p + 0xf0f) = 0; /* combo */
+            *(int *)(p + 0xee0) = 0;           /* velX */
+            *(int *)(p + 0xee4) = 0;           /* velY */
             self->mShot[i].timer = 0;
-            *(int *)(p + 0xf00) = 0;
-            *(int *)(p + 0xf04) = 4;
+            *(int *)(p + 0xf00) = 0; /* sound */
+            *(int *)(p + 0xf04) = 4; /* dist */
             self->mAimShot = (unsigned char)(i + 1);
             if (self->mBallsServed != 0) {
                 Sound::PlayBank2_2D(0x18d);
