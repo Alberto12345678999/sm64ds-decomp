@@ -157,16 +157,16 @@ struct daDemo_c : dActor_c {
        mOpacity takes as mMagnitude >> 12 (71c4, 7410, 7538), and the
        segment progress func_02008b4c advances (7bb8). Medium confidence:
        no single role covers every reader. */
-    s32 mMagnitude;         /* 0x0f4 */
+    s32 mMagnitude; /* 0x0f4 */
     /* A fix12 rate eased toward a target: the sink speed 7038 subtracts
        from mPosY (scaled by 0x199), the x drift 79c0 adds to mPosX, and
        the 0..0x1000 blend weight 7538 interpolates two vectors by. */
-    s32 mRate;              /* 0x0f8 */
+    s32 mRate; /* 0x0f8 */
     /* The handler's phase: the path segment func_02008b4c walks (7bb8),
        the frame count 7780 compares against 0x3c/0x6a/0xa9, and the sine
        angle 79c0 bobs mPosY by. */
-    s16 mPhase;             /* 0x0fc */
-    s16 mPhaseStep;         /* 0x0fe - 79c0 adds it to mPhase each frame and eases it toward 0x200 */
+    s16 mPhase;     /* 0x0fc */
+    s16 mPhaseStep; /* 0x0fe - 79c0 adds it to mPhase each frame and eases it toward 0x200 */
     /* Script cue: handlers 20, 21 and 23 copy it from the record's first
        byte. 23f0 waits for cues 3 and 4; 63f8 and 6424 index the staff-roll
        block's dispatch tables with it. */
@@ -175,7 +175,7 @@ struct daDemo_c : dActor_c {
     u8 mOpacity;            /* 0x102 */
     /* Bit 0: Behavior lifted the actor back onto the floor (mSnapToFloor);
        7038 switches the animation to entry 1 once it is set. */
-    u8 mGroundFlags;        /* 0x103 */
+    u8 mGroundFlags; /* 0x103 */
 
     /* Keep the destructor first: it is the class's key function and remains
        the translation-unit owner selected by the ROM's lifecycle symbols. */

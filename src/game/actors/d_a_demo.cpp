@@ -3610,7 +3610,7 @@ void func_ov002_020f5fe4(char* c)
 
 int daDemo_c::func_ov002_020f63a0()
 {
-    func_ov002_020f5f60((char*)this->mStaffRoll);
+    func_ov002_020f5f60((char *)this->mStaffRoll);
     if (this->mStaffRoll != 0) {
         _ZN6Memory16operator_delete2EPv(this->mStaffRoll);
         this->mStaffRoll = 0;
@@ -3638,7 +3638,7 @@ int daDemo_c::func_ov002_020f63d4()
 int daDemo_c::func_ov002_020f63f8(unsigned char *src)
 {
     this->mCue = *src;
-    func_ov002_020f5dd8((C*)this->mStaffRoll, (int)this->mCue);
+    func_ov002_020f5dd8((C *)this->mStaffRoll, (int)this->mCue);
     return 1;
 }
 
@@ -3649,7 +3649,7 @@ int daDemo_c::func_ov002_020f63f8(unsigned char *src)
 
 int daDemo_c::func_ov002_020f6424()
 {
-    func_ov002_020f5f0c((C*)this->mStaffRoll, (int)this->mCue);
+    func_ov002_020f5f0c((C *)this->mStaffRoll, (int)this->mCue);
     return 1;
 }
 
@@ -3668,7 +3668,7 @@ int daDemo_c::func_ov002_020f6448(unsigned char *arg1)
     this->mStaffRoll = p;
     if (this->mStaffRoll == 0)
         return 0;
-    func_ov002_020f5fe4((char*)this->mStaffRoll);
+    func_ov002_020f5fe4((char *)this->mStaffRoll);
     return func_ov002_020f6424();
 }
 
@@ -4045,7 +4045,8 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
       int m = FX_MUL(r, 0xa000);
       this->mMagnitude = m + 0x19000;
     }
-    AddVec3((Vec3 *) (&this->mPosX), (Vec3 *) &((dCamera_c *)data_0209f318)->pos, (Vec3 *) (&this->mPosX));
+    AddVec3((Vec3 *)(&this->mPosX), (Vec3 *)&((dCamera_c *)data_0209f318)->pos,
+            (Vec3 *)(&this->mPosX));
     if (arg2 > 0x2bc)
     {
       this->mPosY -= 0x96000;
@@ -4596,7 +4597,7 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
     this->mOpacity = 0x1f;
     cam = (dCamera_c *)data_0209f318;
 
-    AddVec3((Vec3*)&v0, (Vec3 *)&cam->pos, (Vec3*)&v0);
+    AddVec3((Vec3 *)&v0, (Vec3 *)&cam->pos, (Vec3 *)&v0);
     dist = Vec3_Dist(&v0, &cam->pos);
 
     {
