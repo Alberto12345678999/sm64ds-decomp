@@ -44,8 +44,8 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
        cover them. ResetDisplacement clears all six words, func_02037a04 reads
        them out, and func_02037a38 sums min + max into disp, so opposing
        pushes on one axis cancel and same-sign ones keep the largest. */
-    Vector3 mPushOutMin;    /* 0x058 */
-    Vector3 mPushOutMax;    /* 0x064 */
+    Vector3 mPushOutMin; /* 0x058 */
+    Vector3 mPushOutMax; /* 0x064 */
     /* Result flags, read and OR-ed a bit at a time by the same function:
        1 = any hit, 4 = floor, 8 = wall, 0x10 = from underneath. Each bit gates
        copying the matching dBgPi below it. */
@@ -67,7 +67,7 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
        0x01ffd094..0x01ffd0a8 through func_0203794c. Reset (func_02037b5c)
        uses (0, -0x1000, 0), so the first accepted floor replaces it;
        dBgCh_Actr copies it into its mGroundNormal on a grounded frame. */
-    Vector3 mFloorNormal;  /* 0x0fc */
+    Vector3 mFloorNormal; /* 0x0fc */
     /* Contacts whose normal Y exceeds this are skipped: dBgW_Kc's sphere
        query tests it against every candidate face before classifying it.
        SetObjAndSphere sets 0x1000 (accept every face); dBgCh_Actr's Update*
