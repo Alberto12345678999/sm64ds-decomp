@@ -27,7 +27,7 @@
  *               times at the positions in data_ov002_0210bb7c
  *   0x1a..0x2d  anmModel_c from data_ov009_02113c20; moved with
  *               UpdatePosWithOnlySpeed and rotated ZXY instead of XYZ
- *   0x2e        the 0x518-byte block at unk_0d8 (handler 20 allocates it;
+ *   0x2e        the 0x518-byte block at mStaffRoll (handler 20 allocates it;
  *               Behavior 63d4, Cleanup 63a0)
  *   0x2f        the 0x36-byte ScrollState at mScroll (handler 22 allocates
  *               it through the 26d4 veneer to 2630; Behavior 23f0, Cleanup
@@ -72,7 +72,7 @@
  *   func_ov002_020f26d4 is a ldr/bx veneer that tail-calls
  *   func_ov002_020f2630 through a raw void(*)(void); a member pointer
  *   cannot spell that cast, so both stay free.
- *   The unk_0d8 heap block (0x518 bytes, edStarKiraCallback_c embedded at
+ *   The mStaffRoll heap block (0x518 bytes, edStarKiraCallback_c embedded at
  *   +0x200) has no proven class, so its helpers and the C/PMF/PMF0
  *   dispatch tables over it stay free.
  *   Shadow windows OamEnt, E, C, S and the per-function windows (E5cd0,
@@ -122,6 +122,7 @@ enum daDemo_c_AssetId {
 #include "OAM.h"
 #include "SaveData.h"
 #include "TextureSequence.h"
+#include "dCamera_c.h"
 
 struct OamAttr;
 
@@ -157,7 +158,7 @@ typedef void (C::*PMF0)();
 /* pointer-to-member taking (cmd, a2, a3) — func_ov002_020f7d74's table */
 typedef void (daDemo_c::*PMF3)(unsigned char*, int, int);
 
-/* dispatch receiver of func_ov002_020f37a0: the unk_0d8 block seen through
+/* dispatch receiver of func_ov002_020f37a0: the mStaffRoll block seen through
    the control bytes of its first 0x30-byte sub-screen window entry, which
    starts at block + 0x130 (sub BG1/BG2 offset, then the window-1
    rectangle the handlers write to 0x4001042/0x4001046). */
@@ -182,7 +183,7 @@ struct E { unsigned char d[0x30]; };
 
 /* shadow struct 'E5cd0' — anim-entry window of func_ov002_020f5cd0 and
    func_ov002_020f5678: one of the four 0x4c-byte entries at the start of the
-   unk_0d8 block. f28/f2c are the int and s16 func_ov002_020f5990 passes to
+   mStaffRoll block. f28/f2c are the int and s16 func_ov002_020f5990 passes to
    func_ov002_020f2790, which stores them in the edStarKiraCallback_c at
    block + 0x200 (its unk308/unk30c) before spawning particle 0x3e. */
 struct E5cd0 {
@@ -968,14 +969,14 @@ int daDemo_c::func_ov002_020f23d0()
  *   0  each frame the scene fader (data_0209f5bc) reports IsAtStart,
  *      centerSpriteY[0]++ and centerSpriteY[1]--; next state when
  *      centerSpriteY[0] reaches 8 (it starts at -8)
- *   1  wait for unk_100 == 3 (written by script handler 26c4), then set
+ *   1  wait for mCue == 3 (written by script handler 26c4), then set
  *      data_ov002_02111144 to 1
  *   2  on frames with FRAME_TIMER bit 0 clear, bg1Y++ and bg0Y--; at
  *      bg1Y 0x80, next state and sprite delays 1/0x41/0x81. Also runs the
  *      horizontal scroll (237c) and the fade step (1fcc)
  *   3  fade step and horizontal scroll; the fade step advances the state
  *      when fadeLevel reaches zero
- *   4  wait for unk_100 == 4, horizontal scroll
+ *   4  wait for mCue == 4, horizontal scroll
  *   5  on frames with FRAME_TIMER bit 0 clear, bg1Y++ and bg0Y--; at
  *      bg1Y 0xe0, next state and bits 0..1 of data_0209d454 cleared into
  *      bits 8..12 of 0x4001000. Also runs the horizontal scroll (237c)
@@ -995,7 +996,7 @@ int daDemo_c::func_ov002_020f23f0()
         }
         break;
     case 1:
-        if (this->unk_100 == 3) {
+        if (this->mCue == 3) {
             data_ov002_02111144 = 1;
             mScroll->state++;
         }
@@ -1024,7 +1025,7 @@ int daDemo_c::func_ov002_020f23f0()
         func_ov002_020f237c();
         break;
     case 4:
-        if (this->unk_100 == 4) {
+        if (this->mCue == 4) {
             mScroll->state++;
         }
         func_ov002_020f237c();
@@ -1075,11 +1076,11 @@ int func_ov002_020f2630(daDemo_c *self){
 /* ROM ordinal 10 -- func_ov002_020f26c4, 0x020f26c4, size 0x10 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f26c4EPh
-/* Script handler (table entry 23): unk_100 = p[0], the value 23f0 waits on. */
+/* Script handler (table entry 23): mCue = p[0], the value 23f0 waits on. */
 
 int daDemo_c::func_ov002_020f26c4(unsigned char *src)
 {
-    this->unk_100 = src[0];
+    this->mCue = src[0];
     return 1;
 }
 
@@ -3609,10 +3610,10 @@ void func_ov002_020f5fe4(char* c)
 
 int daDemo_c::func_ov002_020f63a0()
 {
-    func_ov002_020f5f60((char*)this->unk_0d8);
-    if (this->unk_0d8 != 0) {
-        _ZN6Memory16operator_delete2EPv(this->unk_0d8);
-        this->unk_0d8 = 0;
+    func_ov002_020f5f60((char *)this->mStaffRoll);
+    if (this->mStaffRoll != 0) {
+        _ZN6Memory16operator_delete2EPv(this->mStaffRoll);
+        this->mStaffRoll = 0;
     }
     return 1;
 }
@@ -3624,8 +3625,8 @@ int daDemo_c::func_ov002_020f63a0()
 
 int daDemo_c::func_ov002_020f63d4()
 {
-    func_ov002_020f5fb8(this->unk_0d8);
-    func_ov002_020f5f8c(this->unk_0d8);
+    func_ov002_020f5fb8(this->mStaffRoll);
+    func_ov002_020f5f8c(this->mStaffRoll);
     return 1;
 }
 
@@ -3636,8 +3637,8 @@ int daDemo_c::func_ov002_020f63d4()
 
 int daDemo_c::func_ov002_020f63f8(unsigned char *src)
 {
-    this->unk_100 = *src;
-    func_ov002_020f5dd8((C*)this->unk_0d8, (int)this->unk_100);
+    this->mCue = *src;
+    func_ov002_020f5dd8((C *)this->mStaffRoll, (int)this->mCue);
     return 1;
 }
 
@@ -3648,7 +3649,7 @@ int daDemo_c::func_ov002_020f63f8(unsigned char *src)
 
 int daDemo_c::func_ov002_020f6424()
 {
-    func_ov002_020f5f0c((C*)this->unk_0d8, (int)this->unk_100);
+    func_ov002_020f5f0c((C *)this->mStaffRoll, (int)this->mCue);
     return 1;
 }
 
@@ -3660,14 +3661,14 @@ int daDemo_c::func_ov002_020f6424()
 int daDemo_c::func_ov002_020f6448(unsigned char *arg1)
 {
     char *p;
-    this->unk_100 = *arg1;
+    this->mCue = *arg1;
     p = (char*)_Znwj(0x518);
     if (p)
         _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev(p + 0x200);
-    this->unk_0d8 = p;
-    if (this->unk_0d8 == 0)
+    this->mStaffRoll = p;
+    if (this->mStaffRoll == 0)
         return 0;
-    func_ov002_020f5fe4((char*)this->unk_0d8);
+    func_ov002_020f5fe4((char *)this->mStaffRoll);
     return func_ov002_020f6424();
 }
 
@@ -4042,9 +4043,10 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
     {
       int r = (inline_fn(RandomIntInternal(&data_0209e650)) >> 20) & 0xfff;
       int m = FX_MUL(r, 0xa000);
-      this->unk_0f4 = m + 0x19000;
+      this->mMagnitude = m + 0x19000;
     }
-    AddVec3((Vec3 *) (&this->mPosX), (Vec3 *) (data_0209f318 + 0x8c), (Vec3 *) (&this->mPosX));
+    AddVec3((Vec3 *)(&this->mPosX), (Vec3 *)&((dCamera_c *)data_0209f318)->pos,
+            (Vec3 *)(&this->mPosX));
     if (arg2 > 0x2bc)
     {
       this->mPosY -= 0x96000;
@@ -4090,7 +4092,7 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f6e48EPh
 /* Script handler 10: position (p[0..5], whole units shifted into 20.12) and
- * angles (p[6..11]) from the record, unk_0f4 = p[12] << 12, scale 0xb33, and
+ * angles (p[6..11]) from the record, mMagnitude = p[12] << 12, scale 0xb33, and
  * the animation's currFrame set from a random draw scaled by
  * numFramesAndFlags. */
 
@@ -4120,7 +4122,7 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
   this->mPrevAngleX = this->mAngleX;
   this->mPrevAngleY = this->mAngleY;
   this->mPrevAngleZ = this->mAngleZ;
-  this->unk_0f4 = (new_var = p[0xc]) << 12;
+  this->mMagnitude = (new_var = p[0xc]) << 12;
   this->mScaleX = 0xb33;
   this->mScaleY = 0xb33;
   this->mScaleZ = 0xb33;
@@ -4137,7 +4139,7 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 // @symbol _ZN8daDemo_c19func_ov002_020f6f48EP7Vector3i
 /* Turn mAngleX/mAngleY toward v by 1/amt of the remaining difference per
  * call (step capped at 0x4000, 90 degrees), then set mSpeedX, mVertSpeed and
- * mSpeedZ to unk_0f4 times rotation elements 6..8 of the animated model's
+ * mSpeedZ to mMagnitude times rotation elements 6..8 of the animated model's
  * matrix. */
 
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
@@ -4146,9 +4148,9 @@ void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
     ApproachAngle(&this->mAngleX, Vec3_VertAngle((&this->mPos), v), amt, 0x4000, 0);
     ApproachAngle(&this->mAngleY, Vec3_HorzAngle((&this->mPos), v), amt, 0x4000, 0);
     m = &this->mModelAnim->mat4x3;
-    this->mSpeedX = FX_MUL(this->unk_0f4, m->m[6]);
-    this->mVertSpeed = FX_MUL(this->unk_0f4, m->m[7]);
-    this->mSpeedZ = FX_MUL(this->unk_0f4, m->m[8]);
+    this->mSpeedX = FX_MUL(this->mMagnitude, m->m[6]);
+    this->mVertSpeed = FX_MUL(this->mMagnitude, m->m[7]);
+    this->mSpeedZ = FX_MUL(this->mMagnitude, m->m[8]);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4176,21 +4178,21 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
         mParticleID[2] = 0;
     }
     if (this->mPosY >= 0x514000) {
-        if (unk_0f8 < 0x3c000) {
-            unk_0f8 += 0x5000;
+        if (mRate < 0x3c000) {
+            mRate += 0x5000;
         }
     } else {
-        if (unk_0f8 > 0x1a000) {
-            unk_0f8 -= 0x2000;
+        if (mRate > 0x1a000) {
+            mRate -= 0x2000;
         }
     }
     {
         anmModel_c *obj = (anmModel_c *)this->mModelAnim;
-        if (obj->mAnimEntry == 0 && (this->unk_103 & 1)) {
+        if (obj->mAnimEntry == 0 && (this->mGroundFlags & 1)) {
             obj->func_ov002_020f6514((u8 *)&data_ov002_0210bc88, 1);
         }
     }
-    this->mPosY -= FX_MUL(unk_0f8, 0x199);
+    this->mPosY -= FX_MUL(mRate, 0x199);
     {
         struct Vector3 pos;
         int z = this->mPosZ;
@@ -4218,10 +4220,10 @@ int daDemo_c::func_ov002_020f71c4(int a, int arg)
 {
     if (arg == 0) {
         if (arg == data_0209b274) {
-            this->unk_0f4 = 0x10000;
+            this->mMagnitude = 0x10000;
         }
-        _Z14ApproachLinearRiii(&this->unk_0f4, 0x1f000, 0x3e3);
-        this->mOpacity = this->unk_0f4 >> 12;
+        _Z14ApproachLinearRiii(&this->mMagnitude, 0x1f000, 0x3e3);
+        this->mOpacity = this->mMagnitude >> 12;
     }
     {
         struct Vector3 pos;
@@ -4292,7 +4294,7 @@ int daDemo_c::func_ov002_020f7384(unsigned char *flag, int val)
 /* Script handler 4. On the record's start frame, when in[0] is non-zero, it
  * stores a fixed vector at mModel + 0x50 (the param_c tail base), sets fixed
  * angles and calls func_0201f138. Every frame mPos = that vector times
- * INV_VIEW_MATRIX_ASR_3, then << 3; unk_0f4 approaches in[0] << 12 by
+ * INV_VIEW_MATRIX_ASR_3, then << 3; mMagnitude approaches in[0] << 12 by
  * in[1] << 8 (func_0201ef38 is called when it arrives at 0 with in[1]
  * non-zero) and drives mOpacity and the blend registers at 0x4000050. */
 
@@ -4315,9 +4317,9 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
     MulVec3Mat4x3(((param_c &)*(simpleModel_c *)this->mModel).mScale, (Matrix4x3 *)&data_0209b41c,
                   (&this->mPos));
     Vec3_LslInPlace(&this->mPosX, 3);
-    if (_Z14ApproachLinearRiii(&this->unk_0f4, a, b) != 0 && a == 0 && b != 0)
+    if (_Z14ApproachLinearRiii(&this->mMagnitude, a, b) != 0 && a == 0 && b != 0)
         func_0201ef38();
-    *(char *)(&this->mOpacity) = *(int *)(&this->unk_0f4) >> 12;
+    *(char *)(&this->mOpacity) = *(int *)(&this->mMagnitude) >> 12;
     {
         unsigned char r = *(unsigned char *)(&this->mOpacity);
         if (r != 0 || a != 0) {
@@ -4334,11 +4336,11 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f7538EPhi
 /* Script handler 3. On the start frame, when arg1[0] is non-zero, it sets
- * fixed angles and clears unk_0f8. Every frame Math_Function_0203b0fc moves
- * unk_0f8 toward 1.0 (arg1[0] non-zero) or 0, and the vector at mModelAnim +
+ * fixed angles and clears mRate. Every frame Math_Function_0203b0fc moves
+ * mRate toward 1.0 (arg1[0] non-zero) or 0, and the vector at mModelAnim +
  * 0x64 (the param_c tail base) becomes base + (data_ov002_02110e0c - base) *
- * unk_0f8, with base data_ov002_02110df4 or data_ov002_02110e18 by the same
- * test. mPos = that vector times INV_VIEW_MATRIX_ASR_3, then << 3; unk_0f4
+ * mRate, with base data_ov002_02110df4 or data_ov002_02110e18 by the same
+ * test. mPos = that vector times INV_VIEW_MATRIX_ASR_3, then << 3; mMagnitude
  * approaches arg1[0] << 12 by arg1[1] << 8 and drives mOpacity. */
 
 int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
@@ -4355,7 +4357,7 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     this->mAngleX = 0xd00;
     this->mAngleY = -0x7300;
     this->mAngleZ = 0x2f00;
-    this->unk_0f8 = 0;
+    this->mRate = 0;
   }
 
   if (!(data_ov002_02110b04 & 1)) {
@@ -4388,12 +4390,12 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     scale = 0;
   }
 
-  Math_Function_0203b0fc(&this->unk_0f8, scale, 0x40, 0x100);
+  Math_Function_0203b0fc(&this->mRate, scale, 0x40, 0x100);
   Vec3_Sub(&diff, (Vec3*)data_ov002_02110e0c, (Vec3*)base);
   tmp.x = diff.x;
   tmp.y = diff.y;
   tmp.z = diff.z;
-  Vec3_MulScalar(&scaled, &tmp, this->unk_0f8);
+  Vec3_MulScalar(&scaled, &tmp, this->mRate);
   Vec3_Add(&sum, (Vec3*)base, &scaled);
 
   {
@@ -4405,8 +4407,8 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
   MulVec3Mat4x3(((param_c &)*(anmModel_c *)this->mModelAnim).mScale, (Matrix4x3 *)&data_0209b41c,
                 &this->mPos);
   Vec3_LslInPlace((int*)(&this->mPosX), 3);
-  _Z14ApproachLinearRiii(&this->unk_0f4, f1, f2);
-  this->mOpacity = this->unk_0f4 >> 0xc;
+  _Z14ApproachLinearRiii(&this->mMagnitude, f1, f2);
+  this->mOpacity = this->mMagnitude >> 0xc;
   return 1;
 }
 
@@ -4417,7 +4419,7 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
 
 int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 {
-    char *r4 = (char *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
 
     if (mode == data_0209b274) {
         if (mode == 0) {
@@ -4434,10 +4436,9 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 
             idx = *(volatile unsigned char *)&data_0209f250;
             {
-                char *p = (char *)(data_0209f394);
-                short ang = *(short *)((char*)(*(void **)(p + (idx << 2))) + 0x8e);
+                short ang = ((dActor_c *)data_0209f394[idx])->mAngleY;
 
-                Vec3_RotateYAndTranslate(&this->mPosX, (int *)(r4 + 0x8c), (short)(ang + 0x8000), v);
+                Vec3_RotateYAndTranslate(&this->mPosX, (int *)&cam->pos, (short)(ang + 0x8000), v);
             }
         }
 
@@ -4446,30 +4447,30 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
         this->mAngleY = this->mPrevAngleY;
         this->mOpacity = 0x1f;
     } else {
-        short state = *&this->unk_0fc;
+        short state = *&this->mPhase;
         if (state <= 0x6a) {
             if (state > 0x3c) {
-                Math_Function_0203b0fc(&this->unk_0f4, -0xa000, 0xcc, 0x7fffffff);
+                Math_Function_0203b0fc(&this->mMagnitude, -0xa000, 0xcc, 0x7fffffff);
                 short *p94 = &this->mPrevAngleY;
                 short *p92 = &this->mPrevAngleX;
                 *p94 = *p94 + 0x78;
                 *p92 = *p92 + 0x40;
 
-                short h = Vec3_HorzAngle((&this->mPos), (const Vector3 *)(r4 + 0x8c));
+                short h = Vec3_HorzAngle((&this->mPos), &cam->pos);
                 _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
             }
 
-            state = *&this->unk_0fc;
+            state = *&this->mPhase;
             if (state > 0x69) {
                 this->mPrevAngleX = 0xe00;
             }
         } else {
-            Math_Function_0203b0fc(&this->unk_0f4, 0x3c000, 0xcc, 0x7fffffff);
+            Math_Function_0203b0fc(&this->mMagnitude, 0x3c000, 0xcc, 0x7fffffff);
 
-            short h = Vec3_HorzAngle((&this->mPos), (const Vector3 *)(r4 + 0x8c));
+            short h = Vec3_HorzAngle((&this->mPos), &cam->pos);
             _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
 
-            state = *&this->unk_0fc;
+            state = *&this->mPhase;
             if (state < 0xa9) {
                 _Z11UpdateAngleRssis(((void *)&this->mPrevAngleY), 0x1800, 0x1e, 0x4000);
             }
@@ -4479,19 +4480,19 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 
     {
         unsigned short a = *((unsigned short *)&this->mPrevAngleX);
-        int t = this->unk_0f4;
+        int t = this->mMagnitude;
         short s0 = data_02082214[((a >> 4) << 1) + 1];
         this->mHorzSpeed = FX_MUL(t, s0);
     }
     {
         unsigned short a = *(unsigned short *)(&this->mPrevAngleX);
-        int t = this->unk_0f4;
+        int t = this->mMagnitude;
         int s1 = -data_02082214[(a >> 4) << 1];
         this->mVertSpeed = FX_MUL(t, s1);
     }
 
     {
-        short *pfc = &this->unk_0fc;
+        short *pfc = &this->mPhase;
         *pfc = *pfc + 1;
     }
 
@@ -4507,10 +4508,10 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
 {
 
     if (mode == data_0209b274) {
-        this->unk_0f4 = 0x578000;
-        *&this->unk_0fc = -0x1000;
-        *&this->unk_0fe = 0x800;
-        this->unk_0f8 = -0xc8000;
+        this->mMagnitude = 0x578000;
+        *&this->mPhase = -0x1000;
+        *&this->mPhaseStep = 0x800;
+        this->mRate = -0xc8000;
         this->mPrevAngleY = -0x8000;
         this->mAngleY = -0x4000;
         this->mPrevAngleX = 0x800;
@@ -4525,13 +4526,13 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
             short *p94 = &this->mPrevAngleY;
             *p94 = *p94 + 0x200;
         }
-        Math_Function_0203b0fc(&this->unk_0f4, 0x64000, 0x7a, 0x7fffffff);
+        Math_Function_0203b0fc(&this->mMagnitude, 0x64000, 0x7a, 0x7fffffff);
 
         this->mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(this->mPosY - 0x190000, 0xc8000);
 
         ApproachAngle(&this->mAngleY, (short)(this->mPrevAngleY + 0x8000), 4, 0x4000, 0);
 
-        data_ov002_02110ddc[2] = this->unk_0f4;
+        data_ov002_02110ddc[2] = this->mMagnitude;
         v[0] = data_ov002_0210b964[0];
         v[1] = data_ov002_0210b964[1];
         v[2] = data_ov002_0210b964[2];
@@ -4540,7 +4541,7 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
         w[2] = data_ov002_02110ddc[2];
         Vec3_RotateYAndTranslate(&this->mPosX, v, this->mPrevAngleY, w);
 
-        h = (unsigned short)this->unk_0fc;
+        h = (unsigned short)this->mPhase;
         t = data_02082214[(h >> 4) * 2 + 1];
         {
             int *p60 = (int *)(&this->mPosY);
@@ -4548,16 +4549,16 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
         }
 
         {
-            short *pfc = &this->unk_0fc;
-            *pfc = *pfc + *&this->unk_0fe;
+            short *pfc = &this->mPhase;
+            *pfc = *pfc + *&this->mPhaseStep;
         }
-        ApproachAngle(&this->unk_0fe, 0x200, 0x14, 0x4000, 0);
+        ApproachAngle(&this->mPhaseStep, 0x200, 0x14, 0x4000, 0);
 
         {
             int *p5c = &this->mPosX;
-            *p5c = *p5c + this->unk_0f8;
+            *p5c = *p5c + this->mRate;
         }
-        Math_Function_0203b0fc(&this->unk_0f8, 0, 0xcc, 0x7fffffff);
+        Math_Function_0203b0fc(&this->mRate, 0, 0xcc, 0x7fffffff);
     }
     return 1;
 }
@@ -4573,40 +4574,40 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
     int src[3];
     Fix12i dist;
     s16 vertAngle, heading;
-    char *obj;
+    dCamera_c *cam;
     unsigned int tbl1, tbl2;
     int i;
 
     this->mOpacity = 0;
     if (id == data_0209b274) {
-        this->unk_0f4 = 0;
-        this->unk_0fc = 0;
+        this->mMagnitude = 0;
+        this->mPhase = 0;
     }
 
     tbl1 = ReadUnalignedInt(p);
     tbl2 = ReadUnalignedInt(p + 4);
 
-    if (func_02008b4c(&v1, &this->unk_0fc, &this->unk_0f4, (char *)tbl1) != 0) {
+    if (func_02008b4c(&v1, &this->mPhase, &this->mMagnitude, (char *)tbl1) != 0) {
         return 0;
     }
-    if (func_02008b4c(&v0, &this->unk_0fc, &this->unk_0f4, (char *)tbl2) != 0) {
+    if (func_02008b4c(&v0, &this->mPhase, &this->mMagnitude, (char *)tbl2) != 0) {
         return 0;
     }
 
     this->mOpacity = 0x1f;
-    obj = data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
 
-    AddVec3((Vec3*)&v0, (Vec3 *)(obj + 0x8c), (Vec3*)&v0);
-    dist = Vec3_Dist(&v0, (Vector3 *)(obj + 0x8c));
+    AddVec3((Vec3 *)&v0, (Vec3 *)&cam->pos, (Vec3 *)&v0);
+    dist = Vec3_Dist(&v0, &cam->pos);
 
     {
-        s16 t1 = *(s16 *)(obj + 0x17e);
-        vertAngle = Vec3_VertAngle(&v0, (Vector3 *)(obj + 0x8c));
+        s16 t1 = cam->mAngleX;
+        vertAngle = Vec3_VertAngle(&v0, &cam->pos);
         vertAngle += t1;
     }
     {
-        s16 t2 = *(s16 *)(obj + 0x17c);
-        heading = Vec3_HorzAngle(&v0, (Vector3 *)(obj + 0x8c));
+        s16 t2 = cam->mAngleY;
+        heading = Vec3_HorzAngle(&v0, &cam->pos);
         heading += t2;
     }
 
@@ -4614,7 +4615,7 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
     src[1] = FX_MUL(dist, data_02082214[(((u16)vertAngle) >> 4) * 2]);
     src[2] = FX_MUL(dist, data_02082214[(((u16)vertAngle) >> 4) * 2 + 1]);
 
-    Vec3_RotateYAndTranslate((int *)(&this->mPosX), (int *)(obj + 0x8c), heading, src);
+    Vec3_RotateYAndTranslate((int *)(&this->mPosX), (int *)&cam->pos, heading, src);
 
     this->mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(v1.y, Vec3_HorzLen(&v1));
     this->mAngleY = _ZN4cstd5atan2E5Fix12IiES1_(v1.x, v1.z);
@@ -4770,7 +4771,7 @@ int daDemo_c::Behavior()
               s32 h = ground.clsnY;
               if ((this->mPosY) < h) {
                   this->mPosY = h;
-                  this->unk_103 |= 1;
+                  this->mGroundFlags |= 1;
               }
           }
       }
