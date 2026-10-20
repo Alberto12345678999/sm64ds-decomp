@@ -79,13 +79,9 @@ src/unnamed/arm9/0200/func_020071a8.c:
     complete
     .text start:0x020071a8 end:0x020071e0
 
-src/unnamed/arm9/0200/func_020071e0.c:
+src/unnamed/arm9/0200/func_020071e0.cpp:
     complete
-    .text start:0x020071e0 end:0x020072c0
-
-src/_ZN7Vector3D1Ev.cpp:
-    complete
-    .text start:0x020072c0 end:0x020072c4
+    .text start:0x020071e0 end:0x020072c4
 
 src/unnamed/arm9/0200/func_020072c4.c:
     complete

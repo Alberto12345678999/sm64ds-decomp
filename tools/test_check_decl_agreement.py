@@ -2930,7 +2930,7 @@ class IncludedInlineDestructorTests(unittest.TestCase):
         self.assertEqual(self.inspect(header)[2], [])
 
     def test_real_vector_carriers_reference_inline_header_bodies(self):
-        targets=['src/_ZN7Vector3D1Ev.cpp', 'src/_ZN8Vector3sD1Ev.cpp']
+        targets=['src/unnamed/arm9/0200/func_020071e0.cpp', 'src/_ZN8Vector3sD1Ev.cpp']
         _, _, defs, _=CDA.collect(REPO, targets)
         for owner, line in (('Vector3', 61), ('Vector3s', 89)):
             symbol='_ZN%d%sD1Ev' % (len(owner), owner)
