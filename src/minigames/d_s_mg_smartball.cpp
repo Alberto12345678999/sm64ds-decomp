@@ -31,11 +31,15 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 //   construct objects they do not own. SmartballObj_ElemDtor and
 //   SmartballObj_ElemCtor are the manager array element destructor and the
 //   empty final hook.
-// - The scene-side shadows (Mgr, Mgr2, SArrays) are gone: their fields were
-//   dScMgSmartball_c's, and Obj/Obj2 now reach the scene as `mgr`, a
-//   dScMgSmartball_c *. The object-side shadows below (Obj, Obj2, State2, S,
-//   A, Owl, SBoard, C2, ...) remain TU-local reconstructions; none has a
-//   proven field-to-member mapping against the class headers yet.
+// - The layout shadows are gone. The scene-side ones (Mgr, Mgr2, SArrays)
+//   were dScMgSmartball_c's fields; the object-side ones (Obj, Obj2, SBoard,
+//   Owl, C2, V2ab, A, S28, S24) were the cMgSmartball_*_c members they
+//   overlaid, and those sites read as members now. The objects reach the
+//   scene by casting the base's s32 mpManager. The types still declared
+//   below are local value types, not views of a class.
+// - A few object-side sites keep a pinned shape, each with its reason beside
+//   it: slot BeginStop writes the stop counts through a copy of `this`, and
+//   propeller SaveSnapshot steps the spin speed through a short pointer.
 // - The object tables, popups, dust and score block from 0x4660 on are
 //   dScMgSmartball_c members now. A few strided sites (SpawnObjects,
 //   AfterCleanup, SpawnDust/UpdateDust, CollideBalls' first ball, Render's
@@ -68,67 +72,66 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 #include "Memory.h"
 #include "nitro/fx/fx.h"
 
-/* Local shadow declarations carried from the legacy files. RECONCILED on
- * fold: where two files spelled one name for different memory, each keeps
- * its own declaration under its own name and its own member block is bound
- * to it; where they spelled the same field set differently, they share one.
- * Emitted in dependency order. Still NOT reconciled against real project
- * headers -- a real header should usually win, one at a time. */
-/* shadow 's16' -- 2 member(s). */
-typedef short s16;
+/* Local value types carried over from the legacy files. None of these is a
+ * view of a class any more: the object-side views (Obj, Obj2, SBoard, Owl,
+ * C2, V2ab, A, S28, S24) were each a cast of `this` or of a table entry, and
+ * every one of their fields now reads as a cMgSmartball_*_c or
+ * dScMgSmartball_c member. What is left is plain locals and parameters: the
+ * two-word position/velocity pairs, a nine-word table, the sprite scale
+ * typedef, a vtable-slot pointer and the physics step's search state. No
+ * shared header declares an equivalent type, so they stay here. */
 
-/* shadow 'V2' -- 9 member(s). */
+/* The two-word (x, y) pair the fx helpers (func_0203d388, func_0203d434,
+   func_0203d570) take. */
 typedef struct {
     int x, y;
 } V2;
 
-/* shadow 'V2xz' (was 'V2') -- 2 member(s).
-   the same two words as V2, named x/z by their files. */
+/* The same two words, named x/z by the ball physics. */
 typedef struct V2xz {
     int x;
     int z;
 } V2xz;
 
-/* shadow 'Vec2' -- 1 member(s). */
+/* The pair Vec2_Len measures. */
 typedef struct {
     int x, y;
 } Vec2;
 
-/* shadow 'S' -- 5 member(s). */
+/* The point and triangle corners the pakkun, propeller and ball hit tests
+   hand to PointInTriangle. */
 struct S {
     int a, b;
 };
 
-/* shadow 'W9' -- 1 member(s). */
+/* Nine words: the shape of sSmartballCellStartOrder, copied whole by
+   ShuffleCells. */
 struct W9 {
     int w[9];
 };
 
-/* shadow 'Fix12i' -- 1 member(s). */
+/* OAM::Render's scale arguments. */
 typedef int Fix12i;
 
-/* shadow 'W' -- 1 member(s). */
+/* Three pairs: the dokan's scratch block. */
 typedef struct {
     V2 d;
     V2 v;
     V2 e;
 } W;
 
-/* shadow 'u8' -- 1 member(s). */
-typedef unsigned char u8;
-
-/* shadow 'TVec2' -- 1 member(s). */
+/* A pair with an empty destructor, used by SpawnDust and ResolveBallPair;
+   the comment above SpawnDust says why the destructor matters. */
 struct TVec2 {
     int x;
     int y;
     ~TVec2() {}
 };
 
-/* shadow 'void' -- 1 member(s). */
+/* A first-vtable-slot call, as Behavior's per-object dispatch spells it. */
 typedef void (*VFunc)(void *);
 
-/* shadow 'State2' (was 'State') -- 1 member(s).
-   SmartballBall_UpdatePhysics.c's search state. */
+/* SmartballBall_UpdatePhysics's search state. */
 typedef struct State2 {
     int flags[7];
     int iteration;
