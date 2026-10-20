@@ -131,8 +131,8 @@ void dScEntry_c::icon_c::Render() {
     int y;
     int x;
 
-    xy[0] = unk_004;
-    xy[1] = unk_006;
+    xy[0] = mX;
+    xy[1] = mY;
 
     switch (unk_01c) {
     case 7: {
@@ -141,13 +141,13 @@ void dScEntry_c::icon_c::Render() {
         int scale;
 
         spriteIndex = unk_020;
-        if (unk_010 == 0) {
-            if (unk_011 != 0)
+        if (mOn == 0) {
+            if (mReady != 0)
                 spriteIndex += 4;
         }
         spriteData = (void *)data_ov075_0211cb64[spriteIndex];
 
-        scale = unk_00c;
+        scale = mPressTimer;
         if (scale <= 0) {
             scale = 0x1000;
         } else if (scale < 4) {
@@ -164,7 +164,7 @@ void dScEntry_c::icon_c::Render() {
     case 0:
     case 1:
     case 2:
-        paletteBits = (unk_010 != 0) ? 0x6000 : 0x5000;
+        paletteBits = (mOn != 0) ? 0x6000 : 0x5000;
         /* The ROM's case 0..2 block branches into case 8..11's fill loop.
          * A shared inline helper (void or int-returning), one merged
          * case, a do/while(0) that breaks out of a merged case, a fill
@@ -179,35 +179,35 @@ void dScEntry_c::icon_c::Render() {
     case 9:
     case 10:
     case 11:
-        paletteBits = (unk_010 != 0) ? 0x2000 : 0x1000;
+        paletteBits = (mOn != 0) ? 0x2000 : 0x1000;
     fill:
-        halfWidth = unk_008;
+        halfWidth = mHalfW;
         screenMap = (u16 *)_ZN3G2S12GetBG2ScrPtrEv();
-        x = unk_004;
-        halfHeight = unk_00a;
+        x = mX;
+        halfHeight = mHalfH;
         x -= halfWidth;
         x >>= 3;
         screenMap += x;
-        y = unk_006;
+        y = mY;
         y -= halfHeight;
         screenMap += (y >> 3) << 5;
-        for (row = 0; row < unk_00a >> 2; row++) {
+        for (row = 0; row < mHalfH >> 2; row++) {
             for (column = 0; column < halfWidth >> 2; column++) {
                 screenMap[column] = (u16)(paletteBits | (screenMap[column] & 0xfff));
-                halfWidth = unk_008;
+                halfWidth = mHalfW;
             }
             screenMap += 0x20;
         }
         return;
 
     case 3:
-        if (unk_010 != 0)
+        if (mOn != 0)
             xy[0] = (s16)(xy[0] - 2);
         sprite = data_ov075_0211c720;
         break;
 
     case 4:
-        if (unk_010 != 0)
+        if (mOn != 0)
             xy[0] = (s16)(xy[0] + 2);
         sprite = data_ov075_0211c730;
         break;
@@ -232,9 +232,9 @@ void dScEntry_c::icon_c::Render() {
 void dScEntry_c::icon_c::Behavior() {
     if (unk_01c == 0xd) {
         if (unk_020 == data_0209b2e4) {
-            _Z15ApproachLinear2Rsss(&unk_006, 0x14, 8);
+            _Z15ApproachLinear2Rsss(&mY, 0x14, 8);
         } else {
-            if (_Z15ApproachLinear2Rsss(&unk_006, -0x24, 8) != 0)
+            if (_Z15ApproachLinear2Rsss(&mY, -0x24, 8) != 0)
                 unk_020 = data_0209b2e4;
         }
     }
