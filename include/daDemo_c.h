@@ -142,20 +142,40 @@ struct daDemo_c : dActor_c {
 
     u8 pad_0d0[4];          /* 0x0d0 */
     ScrollState *mScroll;   /* 0x0d4 - param1 0x2f only */
-    void *unk_0d8;          /* 0x0d8 - heap block freed by func_ov002_020f63a0 */
+    /* param1 0x2e only: the 0x518-byte staff-roll block handler 20
+       (func_ov002_020f6448) allocates, whose setup (func_ov002_020f5fe4)
+       loads the D_2D_STAFF_ROLL_* and D_2D_ED_STAR assets; Behavior steps
+       it (63d4) and CleanupResources frees it (63a0). */
+    void *mStaffRoll;       /* 0x0d8 */
     Model *mModel;          /* 0x0dc */
     ModelAnim *mModelAnim;  /* 0x0e0 */
     u32 mSoundHandle;       /* 0x0e4 - Sound::PlayLong handle, passed back on every call */
     u32 mParticleID[3];     /* 0x0e8 - Particle::System::New handles, passed back likewise */
-    s32 unk_0f4;            /* 0x0f4 - fix12 height/amplitude the handlers scale by */
-    s32 unk_0f8;            /* 0x0f8 - fix12 speed/blend parameter; each handler uses it differently */
-    s16 unk_0fc;            /* 0x0fc - step counter/angle (func_02008b4c, 7780, 79c0) */
-    s16 unk_0fe;            /* 0x0fe - per-frame increment of unk_0fc (79c0) */
-    u8 unk_100;             /* 0x100 - set from the script by handlers 20, 21 and 23;
-                               23f0 waits for 3 and 4, 63f8/6424 pass it on */
+    /* A fix12 magnitude each script handler sets or eases, then scales by:
+       the speed along the model's facing (6c60, 6e48, 6f48) or along
+       mPrevAngleX (7780), the orbit radius (79c0), the opacity level that
+       mOpacity takes as mMagnitude >> 12 (71c4, 7410, 7538), and the
+       segment progress func_02008b4c advances (7bb8). Medium confidence:
+       no single role covers every reader. */
+    s32 mMagnitude;         /* 0x0f4 */
+    /* A fix12 rate eased toward a target: the sink speed 7038 subtracts
+       from mPosY (scaled by 0x199), the x drift 79c0 adds to mPosX, and
+       the 0..0x1000 blend weight 7538 interpolates two vectors by. */
+    s32 mRate;              /* 0x0f8 */
+    /* The handler's phase: the path segment func_02008b4c walks (7bb8),
+       the frame count 7780 compares against 0x3c/0x6a/0xa9, and the sine
+       angle 79c0 bobs mPosY by. */
+    s16 mPhase;             /* 0x0fc */
+    s16 mPhaseStep;         /* 0x0fe - 79c0 adds it to mPhase each frame and eases it toward 0x200 */
+    /* Script cue: handlers 20, 21 and 23 copy it from the record's first
+       byte. 23f0 waits for cues 3 and 4; 63f8 and 6424 index the staff-roll
+       block's dispatch tables with it. */
+    u8 mCue;                /* 0x100 */
     u8 pad_101;             /* 0x101 */
     u8 mOpacity;            /* 0x102 */
-    u8 unk_103;             /* 0x103 */
+    /* Bit 0: Behavior lifted the actor back onto the floor (mSnapToFloor);
+       7038 switches the animation to entry 1 once it is set. */
+    u8 mGroundFlags;        /* 0x103 */
 
     /* Keep the destructor first: it is the class's key function and remains
        the translation-unit owner selected by the ROM's lifecycle symbols. */
