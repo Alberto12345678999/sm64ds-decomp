@@ -5,6 +5,8 @@ extern void func_ov007_020c1404(void *c);
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020caeac(int a0, int a1, int a2, int a3, int s0, int s1, int s2, int s3, int s4, int s5, int s6, int s7, int s8);
 extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
+/* a1/a2: data_ov007_02104bd4 entries (see func_ov007_020bee14); no class or header names
+ * them, so raw. */
 void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5)
 {
   int *r7 = *((int **) a2);

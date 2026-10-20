@@ -6,6 +6,7 @@ extern long long _ZN4cstd4ldivEii(int a, int b);
 extern "C" void Matrix4x3_LoadIdentity(void *m);
 extern "C" void func_02052ec8(void *p);
 
+/* c: the 0xd8-byte record func_ov007_020c023c allocates; no class or header names it, so raw. */
 extern "C" void func_ov007_020c0128(char *c)
 {
     *(int *)(c + 0xc) = 0;
