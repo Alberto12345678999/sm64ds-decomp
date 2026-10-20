@@ -131,17 +131,6 @@ struct W9 {
     int w[9];
 };
 
-/* shadow 'Owl' -- 1 member(s). */
-struct Owl {
-    char pad_000[0x8];
-    int posX; /* 0x08 -- fix12 */
-    int posY; /* 0x0c -- fix12 */
-    char pad_010[0x20];
-    unsigned char active; /* 0x30 */
-    char pad_031[0x7];
-    int state; /* 0x38 */
-};
-
 /* shadow 'Fix12i' -- 1 member(s). */
 typedef int Fix12i;
 
@@ -1731,12 +1720,10 @@ void *cMgSmartball_slot_c_Construct(char *c, int a1, int a2, int *src) {
 }
 
 // @symbol _ZN21cMgSmartball_pakkun_c9CheckBallEPi
-/* Smartball object collision helper. Offsets 0x08 and 0x0c hold the
- * object's fixed-point 2D coordinates, used here for distance checks.
- */
-/* Local layout: only what this function actually touches. */
+/* Ball-vs-piranha collision test. While mActionTimer has run out it tests the
+ * ball against the plant's two jaw triangles either side of mCurrent; while
+ * the plant is mid-action it tests the ring between the two radii. */
 int cMgSmartball_pakkun_c::CheckBall(int *pos) {
-    struct Owl *self = (struct Owl *)this;
     struct S *v = (struct S *)pos;
     struct S d;
     struct S p, t1, t2, t3;
@@ -1746,34 +1733,34 @@ int cMgSmartball_pakkun_c::CheckBall(int *pos) {
     int yv, xv;
     int yv2, xv2;
 
-    if (self->active == 0)
+    if (mIsActive == 0)
         return 0;
     t = v->a;
     d.a = t;
     d.b = v->b;
-    d.a -= self->posX;
-    d.b -= self->posY;
-    if (self->state <= 0) {
-        t = self->posY;
+    d.a -= mCurrent0;
+    d.b -= mCurrent1;
+    if (mActionTimer <= 0) {
+        t = mCurrent1;
         if (v->b >= t) {
             if (func_0203d5bc(&d.a) >= 0x190000)
                 return 0;
             return func_0203d5bc(&d.a) >= 0xc4000;
         }
-        if (v->a >= self->posX - 0x14000 && v->a < self->posX + 0x14000 && v->b >= t - 0xc000) {
-            if (v->a >= self->posX - 0x14000 && v->a < self->posX - 0xa000) {
+        if (v->a >= mCurrent0 - 0x14000 && v->a < mCurrent0 + 0x14000 && v->b >= t - 0xc000) {
+            if (v->a >= mCurrent0 - 0x14000 && v->a < mCurrent0 - 0xa000) {
                 p.a = v->a;
                 p.b = v->b;
-                yv = self->posY - 0xc000;
-                xv = self->posX - 0x14000;
+                yv = mCurrent1 - 0xc000;
+                xv = mCurrent0 - 0x14000;
                 t1.a = xv;
                 t1.b = yv;
-                yv = self->posY - 0xc000;
-                xv = self->posX - 0xa000;
+                yv = mCurrent1 - 0xc000;
+                xv = mCurrent0 - 0xa000;
                 t2.a = xv;
                 t2.b = yv;
-                yv = self->posY - 0x1000;
-                xv = self->posX - 0xa000;
+                yv = mCurrent1 - 0x1000;
+                xv = mCurrent0 - 0xa000;
                 t3.a = xv;
                 t3.b = yv;
                 r = PointInTriangle((int *)&p, (int *)&t1, (int *)&t2, (int *)&t3);
@@ -1783,19 +1770,19 @@ int cMgSmartball_pakkun_c::CheckBall(int *pos) {
             in1:
                 return 1;
             }
-            if (v->a >= self->posX + 0xa000 && v->a < self->posX + 0x16000) {
+            if (v->a >= mCurrent0 + 0xa000 && v->a < mCurrent0 + 0x16000) {
                 p2.a = v->a;
                 p2.b = v->b;
-                yv2 = self->posY - 0xc000;
-                xv2 = self->posX + 0x14000;
+                yv2 = mCurrent1 - 0xc000;
+                xv2 = mCurrent0 + 0x14000;
                 t4.a = xv2;
                 t4.b = yv2;
-                yv2 = self->posY - 0xc000;
-                xv2 = self->posX + 0xa000;
+                yv2 = mCurrent1 - 0xc000;
+                xv2 = mCurrent0 + 0xa000;
                 t5.a = xv2;
                 t5.b = yv2;
-                yv2 = self->posY - 0x1000;
-                xv2 = self->posX + 0xa000;
+                yv2 = mCurrent1 - 0x1000;
+                xv2 = mCurrent0 + 0xa000;
                 t6.a = xv2;
                 t6.b = yv2;
                 r = PointInTriangle((int *)&p2, (int *)&t4, (int *)&t5, (int *)&t6);
@@ -1876,8 +1863,8 @@ void cMgSmartball_pakkun_c::Update() {
  * off, fires an effect, deactivates the object it found, and returns. If
  * the whole scan comes up empty, mIdleTimer counts the miss and wraps at
  * 0x3c, toggling mTriggered. */
-inline int *GetObjPakkun(char *g, int i) {
-    return i >= 13 ? 0 : (int *)((dScMgSmartball_c *)g)->mpBalls[i];
+inline cMgSmartball_ball_c *GetObjPakkun(char *g, int i) {
+    return i >= 13 ? 0 : ((dScMgSmartball_c *)g)->mpBalls[i];
 }
 
 void cMgSmartball_pakkun_c::SaveSnapshot() {
@@ -1896,14 +1883,14 @@ void cMgSmartball_pakkun_c::SaveSnapshot() {
         return;
     }
     for (i = 0; i < ((dScMgSmartball_c *)mpManager)->mBallCount; i++) {
-        CopyObjectPos(&s[0], GetObjPakkun((char *)mpManager, i));
+        CopyObjectPos(&s[0], (int *)GetObjPakkun((char *)mpManager, i));
         Vec2_Sub(&s[2], &mCurrent0, &s[0]);
         b = Vec2_Len((Vec2 *)&s[2]) < 0x4000;
         if (b) {
             mActionTimer = 0x61;
             mTriggered = 0;
             ((dScMgSmartball_c *)mpManager)->mpWing->Trigger();
-            *((char *)GetObjPakkun((char *)mpManager, i) + 0x30) = 0;
+            GetObjPakkun((char *)mpManager, i)->mIsActive = 0;
             func_02012718(0x1a0, mCurrent0);
             return;
         }
@@ -1947,11 +1934,10 @@ int cMgSmartball_pakkun_c_Construct(char *c, int b, int d, int *s) {
 
 // @symbol _ZN20cMgSmartball_dokan_c9CheckBallEPi
 int cMgSmartball_dokan_c::CheckBall(int *b) {
-    int *a = (int *)this;
-    int ax = a[2];
+    int ax = mCurrent0;
     int bx = b[0];
     if (bx >= ax - 0xe000 && bx < ax + 0xe000) {
-        int ay = a[3];
+        int ay = mCurrent1;
         int by = b[1];
         if (by >= ay - 0x48000 && by < ay + 0x28000) {
             if (bx < ax - 0xa000)
@@ -1989,8 +1975,8 @@ void cMgSmartball_dokan_c::Update() {
  * rather than called -- the base's is out-of-line at 0x02114724 and there is
  * no bl here, so the original repeated the two statements. Every sibling's
  * slot 0 opens the same way. */
-inline unsigned char *GetObjDokan(char *g, int i) {
-    return i >= 13 ? 0 : (unsigned char *)((dScMgSmartball_c *)g)->mpBalls[i];
+inline cMgSmartball_ball_c *GetObjDokan(char *g, int i) {
+    return i >= 13 ? 0 : ((dScMgSmartball_c *)g)->mpBalls[i];
 }
 
 void cMgSmartball_dokan_c::SaveSnapshot() {
@@ -2000,9 +1986,9 @@ void cMgSmartball_dokan_c::SaveSnapshot() {
     mSnapshot0 = mCurrent0;
     mSnapshot1 = mCurrent1;
     for (i = 0; i < ((dScMgSmartball_c *)mpManager)->mBallCount; i++) {
-        if (GetObjDokan((char *)mpManager, i)[0x30] == 0)
+        if (GetObjDokan((char *)mpManager, i)->mIsActive == 0)
             continue;
-        if (GetObjDokan((char *)mpManager, i)[0x120] == 1)
+        if (GetObjDokan((char *)mpManager, i)->mPipeUsed == 1)
             continue;
         CopyObjectPos((int *)&s.v, (int *)GetObjDokan((char *)mpManager, i));
         s.d = s.v;
@@ -2020,7 +2006,7 @@ void cMgSmartball_dokan_c::SaveSnapshot() {
         s.e.y = -0x40000;
         ((dScMgSmartball_c *)(void *)mpManager)->EmitScore((int *)&s.e, 0xbb8, 0, 1);
         ((dScMgSmartball_c *)((char *)mpManager))->CountDokan();
-        GetObjDokan((char *)mpManager, i)[0x120] = 1;
+        GetObjDokan((char *)mpManager, i)->mPipeUsed = 1;
         Sound::PlayBank2_2D(0x16);
     }
 }
@@ -2775,7 +2761,6 @@ int cMgSmartball_ball_c::HitWing(int *src) {
 // @symbol _ZN19cMgSmartball_ball_c11HitSwitchesEPi
 
 int cMgSmartball_ball_c::HitSwitches(int *arg) {
-    char *c = (char *)this;
     int buf[2];
     int i = 0;
     int *zero = 0;
@@ -2784,7 +2769,7 @@ int cMgSmartball_ball_c::HitSwitches(int *arg) {
         char *base;
         buf[0] = arg[0];
         buf[1] = arg[1];
-        base = *(char **)(c + 4);
+        base = (char *)mpManager;
         p = (i >= ((dScMgSmartball_c *)base)->mPushSwitchCount)
                 ? zero
                 : (int *)((dScMgSmartball_c *)base)->mpPushSwitches[i];
@@ -2797,7 +2782,6 @@ int cMgSmartball_ball_c::HitSwitches(int *arg) {
 
 // @symbol _ZN19cMgSmartball_ball_c10HitPakkunsEPi
 extern "C" int cMgSmartball_ball_c::HitPakkuns(int *arg) {
-    char *c = (char *)this;
     int buf[2];
     int i = 0;
     int *zero = 0;
@@ -2806,11 +2790,11 @@ extern "C" int cMgSmartball_ball_c::HitPakkuns(int *arg) {
         char *base;
         buf[0] = arg[0];
         buf[1] = arg[1];
-        base = *(char **)(c + 4);
+        base = (char *)mpManager;
         p = (i >= ((dScMgSmartball_c *)base)->mPakkunCount)
                 ? zero
                 : (int *)((dScMgSmartball_c *)base)->mpPakkuns[i];
-        if (((cMgSmartball_pakkun_c *)((Owl *)p))->CheckBall((int *)(buf)))
+        if (((cMgSmartball_pakkun_c *)p)->CheckBall((int *)(buf)))
             return 1;
         i++;
     }
@@ -2820,7 +2804,6 @@ extern "C" int cMgSmartball_ball_c::HitPakkuns(int *arg) {
 // @symbol _ZN19cMgSmartball_ball_c9HitDokansEPi
 
 int cMgSmartball_ball_c::HitDokans(int *arg) {
-    char *c = (char *)this;
     int buf[2];
     int i = 0;
     int *zero = 0;
@@ -2829,7 +2812,7 @@ int cMgSmartball_ball_c::HitDokans(int *arg) {
         char *base;
         buf[0] = arg[0];
         buf[1] = arg[1];
-        base = *(char **)(c + 4);
+        base = (char *)mpManager;
         p = (i >= ((dScMgSmartball_c *)base)->mDokanCount)
                 ? zero
                 : (int *)((dScMgSmartball_c *)base)->mpDokans[i];
@@ -2966,10 +2949,9 @@ int cMgSmartball_ball_c::CheckExits(int *pos) {
 // @symbol _ZN19cMgSmartball_ball_c8AtSpringEPi
 
 int cMgSmartball_ball_c::AtSpring(int *b) {
-    int *a = (int *)this;
     int local[2];
-    char *base = (char *)a[1];
-    if (a[0xb] != ((dScMgSmartball_c *)base)->mServeIndex)
+    char *base = (char *)mpManager;
+    if (mIndex != ((dScMgSmartball_c *)base)->mServeIndex)
         return 0;
     if (b[0] >= 0xdc000) {
         CopyObjectPos(local, (int *)((dScMgSmartball_c *)base)->mpSpring);
@@ -4043,8 +4025,8 @@ void cMgSmartball_object_c::SetVel(int *velocity) {
 // @symbol CopyObjectVel
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void CopyObjectVel(int *a, int *b) {
-    a[0] = b[8];
-    a[1] = b[9];
+    a[0] = ((cMgSmartball_object_c *)b)->mVel0;
+    a[1] = ((cMgSmartball_object_c *)b)->mVel1;
 }
 }
 
@@ -4059,8 +4041,8 @@ void GetObjectDelta(void *a, char *b) {
 // @symbol CopyObjectPos
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void CopyObjectPos(int *a, int *b) {
-    a[0] = b[2];
-    a[1] = b[3];
+    a[0] = ((cMgSmartball_object_c *)b)->mCurrent0;
+    a[1] = ((cMgSmartball_object_c *)b)->mCurrent1;
 }
 }
 
