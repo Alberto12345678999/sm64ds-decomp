@@ -2119,7 +2119,6 @@ int cMgSmartball_dokan_c_Construct(char *c, int b, int d, int *s) {
 
 // @symbol _ZN24cMgSmartball_propeller_c7HitTestEPi
 int cMgSmartball_propeller_c::HitTest(int *pos) {
-    char *self = (char *)this;
     struct S *p = (struct S *)pos;
     struct S d;
     struct S s0, s1, s2, s3;
@@ -2136,45 +2135,45 @@ int cMgSmartball_propeller_c::HitTest(int *pos) {
 
     s0.a = p->a;
     s0.b = p->b;
-    s1.a = *(int *)(self + 0x38);
-    s1.b = *(int *)(self + 0x3c);
-    s2.a = *(int *)(self + 0x40);
-    s2.b = *(int *)(self + 0x44);
-    s3.a = *(int *)(self + 0x48);
-    s3.b = *(int *)(self + 0x4c);
+    s1.a = mVertices[0].x;
+    s1.b = mVertices[0].y;
+    s2.a = mVertices[1].x;
+    s2.b = mVertices[1].y;
+    s3.a = mVertices[2].x;
+    s3.b = mVertices[2].y;
     if (PointInTriangle((int *)&s0, (int *)&s1, (int *)&s2, (int *)&s3))
         return 1;
 
     t0.a = p->a;
     t0.b = p->b;
-    t1.a = *(int *)(self + 0x50);
-    t1.b = *(int *)(self + 0x54);
-    t2.a = *(int *)(self + 0x40);
-    t2.b = *(int *)(self + 0x44);
-    t3.a = *(int *)(self + 0x48);
-    t3.b = *(int *)(self + 0x4c);
+    t1.a = mVertices[3].x;
+    t1.b = mVertices[3].y;
+    t2.a = mVertices[1].x;
+    t2.b = mVertices[1].y;
+    t3.a = mVertices[2].x;
+    t3.b = mVertices[2].y;
     if (PointInTriangle((int *)&t0, (int *)&t1, (int *)&t2, (int *)&t3))
         return 1;
 
     u0.a = p->a;
     u0.b = p->b;
-    u1.a = *(int *)(self + 0x58);
-    u1.b = *(int *)(self + 0x5c);
-    u2.a = *(int *)(self + 0x60);
-    u2.b = *(int *)(self + 0x64);
-    u3.a = *(int *)(self + 0x68);
-    u3.b = *(int *)(self + 0x6c);
+    u1.a = mVertices[4].x;
+    u1.b = mVertices[4].y;
+    u2.a = mVertices[5].x;
+    u2.b = mVertices[5].y;
+    u3.a = mVertices[6].x;
+    u3.b = mVertices[6].y;
     if (PointInTriangle((int *)&u0, (int *)&u1, (int *)&u2, (int *)&u3))
         return 1;
 
     v0.a = p->a;
     v0.b = p->b;
-    v1.a = *(int *)(self + 0x70);
-    v1.b = *(int *)(self + 0x74);
-    v2.a = *(int *)(self + 0x60);
-    v2.b = *(int *)(self + 0x64);
-    v3.a = *(int *)(self + 0x68);
-    v3.b = *(int *)(self + 0x6c);
+    v1.a = mVertices[7].x;
+    v1.b = mVertices[7].y;
+    v2.a = mVertices[5].x;
+    v2.b = mVertices[5].y;
+    v3.a = mVertices[6].x;
+    v3.b = mVertices[6].y;
     return PointInTriangle((int *)&v0, (int *)&v1, (int *)&v2, (int *)&v3) != 0;
 }
 
@@ -2207,22 +2206,22 @@ void cMgSmartball_propeller_c::RebuildVerts() {
     func_0203d388(&c->v[6], c->angle);
     func_0203d388(&c->v[7], c->angle);
 
-    *(int *)(((int)c + 0x38)) += c->dx;
-    *(int *)(((int)c + 0x3c)) += c->dy;
-    *(int *)(((int)c + 0x40)) += c->dx;
-    *(int *)(((int)c + 0x44)) += c->dy;
-    *(int *)(((int)c + 0x48)) += c->dx;
-    *(int *)(((int)c + 0x4c)) += c->dy;
-    *(int *)(((int)c + 0x50)) += c->dx;
-    *(int *)(((int)c + 0x54)) += c->dy;
-    *(int *)(((int)c + 0x58)) += c->dx;
-    *(int *)(((int)c + 0x5c)) += c->dy;
-    *(int *)(((int)c + 0x60)) += c->dx;
-    *(int *)(((int)c + 0x64)) += c->dy;
-    *(int *)(((int)c + 0x68)) += c->dx;
-    *(int *)(((int)c + 0x6c)) += c->dy;
-    *(int *)(((int)c + 0x70)) += c->dx;
-    *(int *)(((int)c + 0x74)) += c->dy;
+    mVertices[0].x += c->dx;
+    mVertices[0].y += c->dy;
+    mVertices[1].x += c->dx;
+    mVertices[1].y += c->dy;
+    mVertices[2].x += c->dx;
+    mVertices[2].y += c->dy;
+    mVertices[3].x += c->dx;
+    mVertices[3].y += c->dy;
+    mVertices[4].x += c->dx;
+    mVertices[4].y += c->dy;
+    mVertices[5].x += c->dx;
+    mVertices[5].y += c->dy;
+    mVertices[6].x += c->dx;
+    mVertices[6].y += c->dy;
+    mVertices[7].x += c->dx;
+    mVertices[7].y += c->dy;
 }
 
 // @symbol _ZN24cMgSmartball_propeller_c6UpdateEv
@@ -2827,7 +2826,6 @@ void cMgSmartball_ball_c::PutInPlay() {
  * Both reads must use it -- respelling only one leaves the other sharing.
  */
 int cMgSmartball_ball_c::HitWing(int *src) {
-    char *c = (char *)this;
     int g = (int)((dScMgSmartball_c *)mpManager)->mpWing;
     if (g == 0)
         return 0;

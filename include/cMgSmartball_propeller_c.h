@@ -27,16 +27,13 @@
  * UNSIGNED reading, one of the several conflicting accesses the base header
  * already records.
  *
- * THE TAIL FROM 0x38 TO 0x77 IS AN EXPLICIT PAD, and it is UNMODELLED, NOT
- * UNREAD. RebuildVerts -- a free helper called from both
- * SaveSnapshot and RestoreInitial, and not touched by this migration --
- * reinterprets `this` through its own local struct and read-modify-writes
- * eight (int x, int y) pairs there (its `v[8]`), a ring of propeller-blade
- * tip positions offset by the base's mCurrent0/mCurrent1 and rotated by the
- * base's angle at 0x32. That evidence lives in the helper's own file, which
- * this migration does not touch, so this header does not assert field names
- * for the range -- the gap is in what THIS file models, not in the ROM's
- * use of the bytes.
+ * THE TAIL FROM 0x38 TO 0x77 IS mVertices[8], eight (x, y) pairs. Both
+ * readers are in d_s_mg_smartball.cpp: RebuildVerts (called from SaveSnapshot
+ * and RestoreInitial) seeds the eight blade-tip offsets, rotates each by the
+ * base's angle at 0x32 and adds mCurrent0/mCurrent1; HitTest reads them back
+ * as the corners of four triangles -- {0,1,2}, {3,1,2}, {4,5,6}, {7,5,6} --
+ * for its PointInTriangle tests. The wing models its own vertex ring the
+ * same way (cMgSmartball_wing_c::mVertices).
  *
  * CONSTRUCTED BY cMgSmartball_propeller_c_Construct, left a free function for the same
  * reason the base's is (this tree has migrated zero constructors). It calls
@@ -74,18 +71,20 @@ struct cMgSmartball_propeller_c : cMgSmartball_object_c {
     void RebuildVerts();
 
     s16 mSpinSpeedTarget; /* 0x034 -- the rotation speed mSpinSpeed is eased
-                              toward. RestoreInitial is the only writer in the
-                              tree and sets it to 0x40; nothing else changes
-                              it, so "target" is what the ease relationship
-                              proves, not a role anyone assigns it. */
+                              toward. RestoreInitial sets it to 0x40 and the
+                              scene's KickGate negates it, reversing the
+                              spin; "target" is what the ease relationship
+                              proves. */
     s16 mSpinSpeed;       /* 0x036 -- the live rotation speed. SaveSnapshot
                               steps it by +-8 toward mSpinSpeedTarget, clamping
                               on overshoot, and then ADDS it onto the base's
                               angle at 0x32 every frame -- which is what makes
                               it an angular speed rather than an angle.
                               RestoreInitial zeroes it. */
-    u8  pad_038[0x40]; /* 0x038..0x077 -- unmodelled, not unread; see
-                           above */
+    struct CollisionVertex {
+        s32 x, y;
+    };
+    CollisionVertex mVertices[8]; /* 0x038..0x077, rebuilt from the angle */
 };
 
 #ifndef SM64DS_PLATFORM_PC
