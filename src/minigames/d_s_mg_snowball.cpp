@@ -2544,6 +2544,7 @@ void dScMgSnowball_c::Bit_InitAll() {
     int q;
     unsigned int m;
 
+    /* Raw: mArray4 (0xbe94) is still u8[0x708] in the header; no type names a bit. */
     i = 0;
     p = c;
     for (; i < 0x32; i++) {

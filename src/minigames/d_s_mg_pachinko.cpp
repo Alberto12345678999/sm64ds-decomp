@@ -2514,35 +2514,34 @@ void Pachinko_ResetRound(char *self)
 {
     dScMgPachinko_c *scene = (dScMgPachinko_c *)self;
     int i, j, k, l, m, n;
-    char *p, *q, *r, *s, *t, *u;
+    char *r, *s, *t;
 
     scene->mPhase = 0;
 
-    p = self;
     for (i = 0; i < 30; i++) {
-        *(int *)(p + 0x4cf0) = 0;
-        *(int *)(p + 0x4cf4) = 0;
-        *(short *)(p + 0x4cf8) = 0;
-        *(short *)(p + 0x4cfa) = 0;
-        p += 0xc;
+        scene->mPopup[i].x = 0;
+        scene->mPopup[i].y = 0;
+        scene->mPopup[i].timer = 0;
+        scene->mPopup[i].value = 0;
     }
 
-    q = self;
     for (j = 0; j < 3; j++) {
-        *(char *)(q + 0x4e6c) = 0;
-        *(char *)(q + 0x4e6d) = 0;
-        q += 0x18;
+        scene->mRow[j].active = 0;
+        scene->mRow[j].visible = 0;
     }
 
+    /* r, s and t walk `this` one record per pass, so their [0] is element k,
+       l or m; indexing the arrays directly grows the function by 16 bytes.
+       The raw stores left in these loops hit pad/unk slots no code names. */
     r = self;
     for (k = 0; k < 2; k++) {
-        *(int *)(r + 0x4ea0) = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].acc = 0;
         *(int *)(r + 0x4ea4) = 0;
-        *(int *)(r + 0x4ea8) = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].vel = 0;
         *(int *)(r + 0x4eac) = 0;
-        *(short *)(r + 0x4eb0) = 0;
-        *(char *)(r + 0x4eb5) = 0;
-        *(char *)(r + 0x4eb3) = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].timer = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].out = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].out2 = 0;
         *(char *)(r + 0x4eb2) = 0;
         *(char *)(r + 0x4eb7) = 0;
         *(char *)(r + 0x4eb8) = 0;
@@ -2551,39 +2550,38 @@ void Pachinko_ResetRound(char *self)
 
     s = self;
     for (l = 0; l < 0x30; l++) {
-        *(int *)(s + 0x4ed8) = 0;
-        *(int *)(s + 0x4edc) = 0;
-        *(int *)(s + 0x4ef0) = 0;
-        *(int *)(s + 0x4ef4) = 0;
-        *(int *)(s + 0x4ef8) = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].x = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].y = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].prevX = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].prevY = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].speed = 0;
         *(int *)(s + 0x4efc) = 0;
-        *(short *)(s + 0x4f08) = 0;
-        *(short *)(s + 0x4f0a) = 0;
-        *(char *)(s + 0x4f0c) = 0;
-        *(char *)(s + 0x4f0d) = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].angle = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].timer = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].active = 0;
+        ((dScMgPachinko_c *)s)->mShot[0].state = 0;
         *(char *)(s + 0x4f0e) = 0;
         s += 0x38;
     }
 
     t = self;
     for (m = 0; m < 30; m++) {
-        *(char *)(t + 0x468c) = 0;
+        ((dScMgPachinko_c *)t)->mBall[0].active = 0;
         *(char *)(t + 0x468d) = 0;
-        *(char *)(t + 0x468f) = 0;
+        ((dScMgPachinko_c *)t)->mBall[0].state = 0;
         t += 0x38;
     }
 
-    u = self;
     for (n = 0; n < 30; n++) {
-        *(char *)(u + 0x5964) = 0;
-        *(char *)(u + 0x5966) = 0;
-        u += 0x14;
+        scene->mFx[n].active = 0;
+        scene->mFx[n].visible = 0;
     }
 
-    *(char *)(self + 0x5bc6) = 0;
-    *(char *)(self + 0x5bc8) = 0;
-    *(char *)(self + 0x5bc7) = 0;
+    scene->mFlyer[0].active = 0;
+    scene->mFlyer[0].state = 0;
+    scene->mFlyer[0].visible = 0;
     scene->mEndTimer = 0;
+    /* The raw 0x5c1e..0x5c34 stores land in header pads with no named field. */
     *(short *)(self + 0x5c22) = 0;
     *(short *)(self + 0x5c1e) = 0;
     *(char *)(self + 0x5c30) = 0;
