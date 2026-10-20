@@ -1543,7 +1543,7 @@ void dScMgBomroom_c::SpawnBombs()
       mSpawnDelay--;
       if ((s16)mSpawnDelay < 0) {
           mSpawnDelay = 0;
-    }
+      }
     return;
   }
   t0 = mSpawnCount;
@@ -1638,11 +1638,9 @@ void dScMgBomroom_c::SpawnBombs()
       flag = bit + 1;
       if (cnt == 2) {
           step = 0x3000;
-    }
-    else
-    {
-      step = 0x1800;
-    }
+      } else {
+          step = 0x1800;
+      }
   }
   if (new_var == 10)
   {
