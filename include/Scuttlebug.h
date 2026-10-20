@@ -65,7 +65,7 @@ struct Scuttlebug : dActor_c {
        (0x0211f000, 0x0211f048). The body stays on this line so the header
        field walk still sees the brace. d_a_spd.cpp compiles the class with
        RTTI off, so the coined name does not emit _ZTI10Scuttlebug. */
-    virtual ~Scuttlebug() {}          /* slots 16 (D1), 17 (D0) */
+    virtual ~Scuttlebug() {} /* slots 16 (D1), 17 (D0) */
 
     virtual int   OnYoshiTryEat();               /* slot 18 */
     virtual void  OnTurnIntoEgg(Player &player); /* slot 19 */
