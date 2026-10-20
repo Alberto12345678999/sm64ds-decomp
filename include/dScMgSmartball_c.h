@@ -71,9 +71,8 @@ struct SmartballSpark {
     s32 mVel[2];    /* 0x10 -- (0, 0x10) rotated; damped by 7/8 a frame */
     s32 mFrame;     /* 0x18 -- animation frame, sprite index mFrame / 4 */
     s32 mBursts;    /* 0x1c -- re-seeds left; the spark dies at 0 */
-    u8  mActive;    /* 0x20 */
-    u8  mAlt;       /* 0x21 -- EmitSparks's second argument; picks the
-                        second sprite set */
+    u8 mActive;     /* 0x20 */
+    u8 mAlt;        /* 0x21 -- EmitSparks's a3; picks the second sprite set */
 };
 
 struct dScMgSmartball_c : dScMgBase_c {
@@ -139,14 +138,15 @@ struct dScMgSmartball_c : dScMgBase_c {
     /* dScMgBase_c's data ends at 0x4660. Field evidence is this class's own
        methods in src/minigames/d_s_mg_smartball.cpp; widths come from the access
        sites. */
-    s32 mPhase;           /* 0x4660 -- Behavior's switch: 0 the table runs, 1
-                              the result screen (set once IsTableAtRest has held
-                              0x3c frames), 2 the hand-off (set on the touch
-                              that leaves the result screen) */
-    s32 mServeIndex;      /* 0x4664 -- index into mpBalls of the ball in play:
-                              Behavior advances it when that ball IsOut, and
-                              cMgSmartball_ball_c's QueueBehind and
-                              SaveSnapshot compare their mIndex against it */
+
+    /* Behavior's switch: 0 the table runs, 1 the result screen (set once
+       IsTableAtRest has held 0x3c frames), 2 the hand-off (set on the touch that
+       leaves the result screen). */
+    s32 mPhase; /* 0x4660 */
+    /* Index into mpBalls of the ball in play: Behavior advances it when that
+       ball IsOut, and cMgSmartball_ball_c's QueueBehind and SaveSnapshot compare
+       their mIndex against it. */
+    s32 mServeIndex; /* 0x4664 */
     /* The seven object counts, each paired with the table below it by
        SpawnObjects (counted while the BG maps are scanned, then used as the
        construction bound) and by AfterCleanupResources (zeroed after that table
@@ -158,8 +158,8 @@ struct dScMgSmartball_c : dScMgBase_c {
     s32 mDokanCount;      /* 0x4678 -- capped at 6, tile 0x3d2 */
     s32 mPakkunCount;     /* 0x467c -- capped at 3, tile 0x292 */
     s32 mPushSwitchCount; /* 0x4680 -- capped at 2, tile 0x50 */
-    cMgSmartball_spring_c *mpSpring;              /* 0x4684 -- InitResources
-                                                      builds it (0x48 bytes) */
+    /* InitResources builds the spring (0x48 bytes). */
+    cMgSmartball_spring_c *mpSpring;              /* 0x4684 */
     cMgSmartball_ball_c *mpBalls[13];             /* 0x4688 */
     cMgSmartball_kinoko_c *mpKinokos[25];         /* 0x46bc */
     cMgSmartball_ana_c *mpAnas[8];                /* 0x4720 */
@@ -170,53 +170,54 @@ struct dScMgSmartball_c : dScMgBase_c {
     cMgSmartball_slot_c *mpSlot;                  /* 0x4778 -- tile 0x57 */
     cMgSmartball_board_c *mpBoard;                /* 0x477c -- nine tiles 0x4a */
     cMgSmartball_wing_c *mpWing;                  /* 0x4780 -- tile 0xab */
-    s32 mGateLampTimer[2]; /* 0x4784 -- KickGate(i) arms [i] to 0x14 (and
-                              reverses every propeller when it was 0); Behavior
-                              counts both down; Render lights the left/right
-                              side sprite while it is positive */
+    /* KickGate(i) arms [i] to 0x14 (and reverses every propeller when it was
+       0); Behavior counts both down; Render lights the left/right side sprite
+       while it is positive. */
+    s32 mGateLampTimer[2]; /* 0x4784 */
     /* The five-slot score popup queue, EmitScore's writer and UpdateScores's
-       reader. */
-    s32 mPopupScore[5];    /* 0x478c -- the score value; > 0 marks a live slot */
+       reader. mArray1 holds the popup positions (5 * 8, UpdateScores raises
+       them each frame); mPopupDelay is EmitScore's delay, and UpdateScores
+       submits the score once it drains. */
+    s32 mPopupScore[5];      /* 0x478c -- the score value; > 0 marks a live slot */
     s32 mPopupMultiplier[5]; /* 0x47a0 -- EmitScore's last argument */
-    s32 mPopupAge[5];      /* 0x47b4 -- frames shown; cleared past 0x3c */
-    u8 mArray1[0x28];     /* 0x47c8 -- 5 * 8, the popup positions (UpdateScores
-                              rises them each frame). Elem dtor
-                              NullDestructor_0203d47c */
-    s32 mPopupDelay[5];    /* 0x47f0 -- EmitScore's delay; UpdateScores submits
-                              the score once it drains */
-    u8 mDustActive[0x10]; /* 0x4804 -- SpawnDust sets, UpdateDust clears */
-    s32 mDustAge[0x10];   /* 0x4814 -- UpdateDust retires a puff at 0xf */
-    u8 mArray2[0x80];     /* 0x4854 -- 0x10 * 8, the dust positions. Elem dtor
-                              NullDestructor_0203d47c */
-    u8 mArray3[0x80];     /* 0x48d4 -- 0x10 * 8, the dust velocities. Elem dtor
-                              NullDestructor_0203d47c */
-    u16 mBg1Map[0x400];   /* 0x4954 -- sSmartballBg1NscFmt decompressed; scanned
-                              for the object tiles, and GetTile's upper half */
-    u16 mBg2Map[0x400];   /* 0x5154 -- sSmartballBg2NscFmt, the lower half */
-    s32 mRestFrames;      /* 0x5954 -- frames IsTableAtRest has held; 0x3c moves
-                              mPhase to 1 */
-    s32 mDrainTimer;      /* 0x5958 -- EndRound zeroes it; counts while
-                              mDraining, music restored at 0xb4, then one ball
-                              burst every 0x1e frames */
-    u8 mDraining;         /* 0x595c -- EndRound sets it; cleared once no ball
-                              is left to burst. The table is not at rest and
-                              the board stops scoring while it is up */
-    u8 mRoundEnded;       /* 0x595d -- EndRound sets it, nothing clears it;
-                              the propellers stop turning */
-    s32 mResultTimer;     /* 0x5960 -- Render's itemised-result reveal counter,
-                              counts to 0x12c */
+    s32 mPopupAge[5];        /* 0x47b4 -- frames shown; cleared past 0x3c */
+    u8 mArray1[0x28];        /* 0x47c8 -- elem dtor NullDestructor_0203d47c */
+    s32 mPopupDelay[5];      /* 0x47f0 */
+    /* The dust puffs: SpawnDust sets mDustActive and UpdateDust clears it,
+       retiring a puff once mDustAge reaches 0xf. mArray2/mArray3 are the
+       0x10 * 8 positions and velocities. */
+    u8 mDustActive[0x10]; /* 0x4804 */
+    s32 mDustAge[0x10];   /* 0x4814 */
+    u8 mArray2[0x80];     /* 0x4854 -- elem dtor NullDestructor_0203d47c */
+    u8 mArray3[0x80];     /* 0x48d4 -- elem dtor NullDestructor_0203d47c */
+    /* sSmartballBg1NscFmt / sSmartballBg2NscFmt decompressed: scanned for the
+       object tiles, and GetTile's upper and lower halves. */
+    u16 mBg1Map[0x400]; /* 0x4954 */
+    u16 mBg2Map[0x400]; /* 0x5154 */
+    /* Frames IsTableAtRest has held; 0x3c moves mPhase to 1. */
+    s32 mRestFrames; /* 0x5954 */
+    /* EndRound zeroes it; counts while mDraining, music restored at 0xb4, then
+       one ball burst every 0x1e frames. */
+    s32 mDrainTimer; /* 0x5958 */
+    /* EndRound sets it; cleared once no ball is left to burst. The table is not
+       at rest and the board stops scoring while it is up. */
+    u8 mDraining; /* 0x595c */
+    /* EndRound sets it, nothing clears it; the propellers stop turning. */
+    u8 mRoundEnded; /* 0x595d */
+    /* Render's itemised-result reveal counter, counts to 0x12c. */
+    s32 mResultTimer; /* 0x5960 */
     /* The result screen's tallies, one Count* helper each; Render draws them
        with their per-item point values. */
-    s32 mCellTally;       /* 0x5964 -- CountCell, x 0x64 */
-    s32 mLineTally[4];    /* 0x5968 -- CountLine(i) bumps [i - 1] */
-    s32 mBingoTally;      /* 0x5978 -- CountBingo, x 0x2710 */
-    s32 mKinokoTally;     /* 0x597c -- CountKinoko, x 0x12c */
-    s32 mAnaTally;        /* 0x5980 -- CountAna, x 0x7d0 */
-    s32 mDokanTally;      /* 0x5984 -- CountDokan, x 0xbb8 */
-    s32 mAwardTally[3];   /* 0x5988 -- CountAward(i) */
-    u32 mOutTally;        /* 0x5994 -- CountOut, x 0x7d0 */
-    s32 mResultSlideX;    /* 0x5998 -- sub BG0 x offset: InitResources sets
-                              0x100, mPhase 1 slides it to 0 by 4 */
+    s32 mCellTally;     /* 0x5964 -- CountCell, x 0x64 */
+    s32 mLineTally[4];  /* 0x5968 -- CountLine(i) bumps [i - 1] */
+    s32 mBingoTally;    /* 0x5978 -- CountBingo, x 0x2710 */
+    s32 mKinokoTally;   /* 0x597c -- CountKinoko, x 0x12c */
+    s32 mAnaTally;      /* 0x5980 -- CountAna, x 0x7d0 */
+    s32 mDokanTally;    /* 0x5984 -- CountDokan, x 0xbb8 */
+    s32 mAwardTally[3]; /* 0x5988 -- CountAward(i) */
+    u32 mOutTally;      /* 0x5994 -- CountOut, x 0x7d0 */
+    /* Sub BG0 x offset: InitResources sets 0x100, mPhase 1 slides it to 0 by 4. */
+    s32 mResultSlideX;            /* 0x5998 */
     SmartballSpark mSparks[0x40]; /* 0x599c -- elem dtor SmartballObj_ElemDtor */
 };
 
