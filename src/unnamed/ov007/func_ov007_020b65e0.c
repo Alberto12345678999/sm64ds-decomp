@@ -23,21 +23,22 @@ typedef struct Ov007Work {
     char pad_00[4];
     struct Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
     char pad_10[0x18];
-    struct Ov007Settings *settings;   /* 0x28: 0x3c bytes; +0x3a language */
+    struct Ov007Settings *settings; /* 0x28: 0x3c bytes; +0x3a language */
     char pad_2c[4];
     void *cameras[2]; /* 0x30: func_ov007_020c023c; freed by func_ov007_020c020c */
     void *lights[2];  /* 0x38: func_ov007_020c241c(0/1); func_ov007_020c232c
                        * writes them to LIGHT_VECTOR / LIGHT_COLOR */
     char pad_40[0x10];
-    void *touch;      /* 0x50: func_ov007_020c2068's 0x44-byte touch-panel record,
+    void *touch; /* 0x50: func_ov007_020c2068's 0x44-byte touch-panel record,
                        * updated by func_ov007_020c1db0, read by func_ov007_020b46b0 */
     char pad_54[0x10];
-    int tweenOut[2];               /* 0x64: bound as tweens[i]->out */
-    struct Ov007Tween *tweens[2];  /* 0x6c: func_ov007_020c908c */
+    int tweenOut[2];              /* 0x64: bound as tweens[i]->out */
+    struct Ov007Tween *tweens[2]; /* 0x6c: func_ov007_020c908c */
     char pad_74[4];
     void *textures[11]; /* 0x78: func_ov007_020b697c builds them from the BMD textures */
     char pad_a4[0x70];
-    struct Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
+    struct Ov007ItemView
+        *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
 } Ov007Work;
 
 extern Ov007Work *data_ov007_0210342c;

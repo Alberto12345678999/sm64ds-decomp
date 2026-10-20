@@ -9,15 +9,15 @@
  * func_ov007_020c43bc (world size), func_ov007_020c42f8 (transform),
  * func_ov007_020c421c (draw + drop shadow) and func_ov007_020c4684 (quad). */
 typedef struct Ov007Sprite {
-    s32 drawFlags;       /* 0x00: c4684: 1|2 plain quad, 2 corner colours; c421c: 4 shadow; 8 tilemap */
-    s32 screenX;         /* 0x04: c4388 -> func_ov007_020bfe4c centres it on 0x80000 (128 px) */
-    s32 screenY;         /* 0x08: c4388 -> func_ov007_020bfe4c centres it on 0x60000 (96 px) */
-    u16 width;           /* 0x0c: pixels; c43bc scales it, c4684 uses it as the texel width */
-    u16 height;          /* 0x0e */
-    s32 depth;           /* 0x10: c4388 view z; c43bc scales width/height by |depth| */
-    Vector3 pos;         /* 0x14: c4388 writes the world position, c42f8 translates by it */
-    s32 worldWidth;      /* 0x20: c43bc result; c4684 quad width */
-    s32 worldHeight;     /* 0x24 */
+    s32 drawFlags;   /* 0x00: c4684: 1|2 plain quad, 2 corner colours; c421c: 4 shadow; 8 tilemap */
+    s32 screenX;     /* 0x04: c4388 -> func_ov007_020bfe4c centres it on 0x80000 (128 px) */
+    s32 screenY;     /* 0x08: c4388 -> func_ov007_020bfe4c centres it on 0x60000 (96 px) */
+    u16 width;       /* 0x0c: pixels; c43bc scales it, c4684 uses it as the texel width */
+    u16 height;      /* 0x0e */
+    s32 depth;       /* 0x10: c4388 view z; c43bc scales width/height by |depth| */
+    Vector3 pos;     /* 0x14: c4388 writes the world position, c42f8 translates by it */
+    s32 worldWidth;  /* 0x20: c43bc result; c4684 quad width */
+    s32 worldHeight; /* 0x24 */
     Vector3 posOffset;   /* 0x28: c42f8 adds it to pos */
     u16 rotX;            /* 0x34: c42f8 rotation angles */
     u16 rotY;            /* 0x36 */
@@ -71,7 +71,7 @@ typedef struct Ov007ItemView {
  * only the slots this file touches are spelled. */
 typedef struct Ov007Work {
     char pad_00[0x30];
-    void *cameras[2];   /* 0x30: both built by func_ov007_020c023c; [1] is the
+    void *cameras[2]; /* 0x30: both built by func_ov007_020c023c; [1] is the
                          * one func_ov007_020b2160 loads into the projection */
     char pad_38[0x40];
     void *textures[11]; /* 0x78: func_ov007_020b697c builds them from the BMD textures */
@@ -87,8 +87,8 @@ typedef struct Ov007PickerScene {
     void *picker;              /* 0x00: func_ov007_020c690c; freed by c6684 */
     Ov007MenuState *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
     char pad_14[0x28];
-    s32 tweenOut[2];           /* 0x3c: bound as tweens[i]->out */
-    Ov007Tween *tweens[2];     /* 0x44: func_ov007_020c908c */
+    s32 tweenOut[2];       /* 0x3c: bound as tweens[i]->out */
+    Ov007Tween *tweens[2]; /* 0x44: func_ov007_020c908c */
 } Ov007PickerScene;
 
 /* data_ov007_02104b9c: the 0x14 record of the scene's sprites (freed by
@@ -126,8 +126,9 @@ void func_ov007_020b9880(int a0, int a1)
     data_ov007_02104ba0 = (Ov007PickerScene *)func_ov007_020c3df4(0, 0x4c);
     data_ov007_02104b9c = (Ov007PickerSprites *)func_ov007_020c3df4(0, 0x14);
 
-    data_ov007_02104ba0->picker = func_ov007_020c690c(0xc8, 0x1f4, 0x1f4,
-        (int)data_ov007_0210342c->cameras[0], &data_ov007_020d7b60, &data_ov007_020d7b80);
+    data_ov007_02104ba0->picker =
+        func_ov007_020c690c(0xc8, 0x1f4, 0x1f4, (int)data_ov007_0210342c->cameras[0],
+                            &data_ov007_020d7b60, &data_ov007_020d7b80);
 
     data_ov007_02104ba0->states[0] = func_ov007_020c9388(0);
     data_ov007_02104ba0->states[1] = func_ov007_020c9388(-1);

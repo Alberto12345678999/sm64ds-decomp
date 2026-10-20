@@ -6,15 +6,15 @@
  * func_ov007_020c43bc (world size), func_ov007_020c42f8 (transform),
  * func_ov007_020c421c (draw + drop shadow) and func_ov007_020c4684 (quad). */
 typedef struct Ov007Sprite {
-    s32 drawFlags;       /* 0x00: c4684: 1|2 plain quad, 2 corner colours; c421c: 4 shadow; 8 tilemap */
-    s32 screenX;         /* 0x04: c4388 -> func_ov007_020bfe4c centres it on 0x80000 (128 px) */
-    s32 screenY;         /* 0x08: c4388 -> func_ov007_020bfe4c centres it on 0x60000 (96 px) */
-    u16 width;           /* 0x0c: pixels; c43bc scales it, c4684 uses it as the texel width */
-    u16 height;          /* 0x0e */
-    s32 depth;           /* 0x10: c4388 view z; c43bc scales width/height by |depth| */
-    Vector3 pos;         /* 0x14: c4388 writes the world position, c42f8 translates by it */
-    s32 worldWidth;      /* 0x20: c43bc result; c4684 quad width */
-    s32 worldHeight;     /* 0x24 */
+    s32 drawFlags;   /* 0x00: c4684: 1|2 plain quad, 2 corner colours; c421c: 4 shadow; 8 tilemap */
+    s32 screenX;     /* 0x04: c4388 -> func_ov007_020bfe4c centres it on 0x80000 (128 px) */
+    s32 screenY;     /* 0x08: c4388 -> func_ov007_020bfe4c centres it on 0x60000 (96 px) */
+    u16 width;       /* 0x0c: pixels; c43bc scales it, c4684 uses it as the texel width */
+    u16 height;      /* 0x0e */
+    s32 depth;       /* 0x10: c4388 view z; c43bc scales width/height by |depth| */
+    Vector3 pos;     /* 0x14: c4388 writes the world position, c42f8 translates by it */
+    s32 worldWidth;  /* 0x20: c43bc result; c4684 quad width */
+    s32 worldHeight; /* 0x24 */
     Vector3 posOffset;   /* 0x28: c42f8 adds it to pos */
     u16 rotX;            /* 0x34: c42f8 rotation angles */
     u16 rotY;            /* 0x36 */
@@ -59,15 +59,15 @@ typedef struct Ov007Item {
  * stored in the manager's items[] by func_ov007_020b693c). func_ov007_020b5f64
  * slides item from slideFrom to slideTo by slideT. */
 typedef struct Ov007ItemView {
-    Ov007Item *item;          /* 0x00 */
-    Ov007Sprite *sprite;      /* 0x04: func_ov007_020c44e4 */
-    char pad_08[4];           /* 0x08: cleared here; no reader found */
-    s32 slideT;               /* 0x0c: slideTween output, 0..0x1000 */
+    Ov007Item *item;               /* 0x00 */
+    Ov007Sprite *sprite;           /* 0x04: func_ov007_020c44e4 */
+    char pad_08[4];                /* 0x08: cleared here; no reader found */
+    s32 slideT;                    /* 0x0c: slideTween output, 0..0x1000 */
     struct Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c, bound to slideT */
-    s16 slideFromX;           /* 0x14 */
-    s16 slideFromY;           /* 0x16 */
-    s16 slideToX;             /* 0x18 */
-    s16 slideToY;             /* 0x1a */
+    s16 slideFromX;                /* 0x14 */
+    s16 slideFromY;                /* 0x16 */
+    s16 slideToX;                  /* 0x18 */
+    s16 slideToY;                  /* 0x1a */
 } Ov007ItemView;
 
 /* The 0x3c-byte record at the manager's +0x28; only +0x3a is known here. */
@@ -120,7 +120,7 @@ void *func_ov007_020b4c04(int arg0)
     view = (Ov007ItemView *)func_ov007_020c3df4(0, 0x1c);
     r5 = *(s32 *)((char *)data_ov007_020d77d8 + arg0 * 0xc);
     view->item = func_ov007_020aea6c(arg0, (char *)data_ov007_020d76e8 + arg0 * 0xa,
-                                         (char *)data_ov007_020d78f8 + r5 * 0x14);
+                                     (char *)data_ov007_020d78f8 + r5 * 0x14);
     view->sprite = func_ov007_020c44e4(((u8 *)data_ov007_020d77e0)[view->item->id * 0xc]);
     sprite = view->sprite;
     if (arg0 == 0x15) {
@@ -131,8 +131,10 @@ void *func_ov007_020b4c04(int arg0)
     sprite->texRepeat = 3;
     sprite->texFlip = 0;
     sprite->texColor0 = 1;
-    sprite->width = (s16)((u8 *)data_ov007_020d76a0)[*(s32 *)((char *)data_ov007_020d77d8 + view->item->id * 0xc) * 2];
-    sprite->height = (s16)((u8 *)data_ov007_020d76a1)[*(s32 *)((char *)data_ov007_020d77d8 + view->item->id * 0xc) * 2];
+    sprite->width = (s16)((
+        u8 *)data_ov007_020d76a0)[*(s32 *)((char *)data_ov007_020d77d8 + view->item->id * 0xc) * 2];
+    sprite->height = (s16)((
+        u8 *)data_ov007_020d76a1)[*(s32 *)((char *)data_ov007_020d77d8 + view->item->id * 0xc) * 2];
     sprite->depth = data_ov007_020d7648[((u8 *)data_ov007_020d77e1)[view->item->id * 0xc]];
     *(s32 *)((char *)view + 8) = 0; /* +0x08 has no reader, so it stays unnamed */
     view->slideTween = func_ov007_020c908c(&view->slideT);
@@ -143,13 +145,13 @@ void *func_ov007_020b4c04(int arg0)
     view->slideFromY = view->slideToY;
 
     if (arg0 >= 0 && arg0 <= 2) {
-        
+
         sprite->frames[0] = data_ov007_0210342c->textures[6];
         sprite->texS = data_ov007_020d75e8[arg0];
         sprite->texT = data_ov007_020d75f8[arg0];
         if (data_ov007_0210342c->settings->language == 5) {
             view->item->hitBox = &data_ov007_020d76c0[(r5 - 1) * 0x14];
-            view->item->layout = (s16 *) &data_ov007_020d7680[arg0 * 0xa];
+            view->item->layout = (s16 *)&data_ov007_020d7680[arg0 * 0xa];
             if (arg0 != 0) {
                 sprite->width = 0x48;
             } else {
@@ -157,7 +159,7 @@ void *func_ov007_020b4c04(int arg0)
             }
         }
     } else if (arg0 >= 3 && arg0 <= 6) {
-        
+
         sprite->frames[0] = data_ov007_0210342c->textures[1];
         sprite->texS = data_ov007_020d7608[arg0 - 3];
         sprite->texT = data_ov007_020d7600[arg0 - 3];
@@ -207,12 +209,12 @@ void *func_ov007_020b4c04(int arg0)
             break;
         }
     } else if (arg0 >= 0xe && arg0 <= 0x15) {
-        
+
         sprite->frames[0] = data_ov007_0210342c->textures[2];
         sprite->texS = data_ov007_020d7628[arg0 - 0xe];
         sprite->texT = data_ov007_020d7638[arg0 - 0xe];
     } else if (arg0 >= 0x16 && arg0 <= 0x17) {
-        
+
         sprite->frames[0] = data_ov007_0210342c->textures[2];
         sprite->texS = (u16)((arg0 - 0x16) * 0x48);
         sprite->texT = 0x80;

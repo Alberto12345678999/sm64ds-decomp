@@ -13,15 +13,15 @@
  * func_ov007_020c43bc (world size), func_ov007_020c42f8 (transform),
  * func_ov007_020c421c (draw + drop shadow) and func_ov007_020c4684 (quad). */
 typedef struct Ov007Sprite {
-    s32 drawFlags;       /* 0x00: c4684: 1|2 plain quad, 2 corner colours; c421c: 4 shadow; 8 tilemap */
-    s32 screenX;         /* 0x04: c4388 -> func_ov007_020bfe4c centres it on 0x80000 (128 px) */
-    s32 screenY;         /* 0x08: c4388 -> func_ov007_020bfe4c centres it on 0x60000 (96 px) */
-    u16 width;           /* 0x0c: pixels; c43bc scales it, c4684 uses it as the texel width */
-    u16 height;          /* 0x0e */
-    s32 depth;           /* 0x10: c4388 view z; c43bc scales width/height by |depth| */
-    Vector3 pos;         /* 0x14: c4388 writes the world position, c42f8 translates by it */
-    s32 worldWidth;      /* 0x20: c43bc result; c4684 quad width */
-    s32 worldHeight;     /* 0x24 */
+    s32 drawFlags;   /* 0x00: c4684: 1|2 plain quad, 2 corner colours; c421c: 4 shadow; 8 tilemap */
+    s32 screenX;     /* 0x04: c4388 -> func_ov007_020bfe4c centres it on 0x80000 (128 px) */
+    s32 screenY;     /* 0x08: c4388 -> func_ov007_020bfe4c centres it on 0x60000 (96 px) */
+    u16 width;       /* 0x0c: pixels; c43bc scales it, c4684 uses it as the texel width */
+    u16 height;      /* 0x0e */
+    s32 depth;       /* 0x10: c4388 view z; c43bc scales width/height by |depth| */
+    Vector3 pos;     /* 0x14: c4388 writes the world position, c42f8 translates by it */
+    s32 worldWidth;  /* 0x20: c43bc result; c4684 quad width */
+    s32 worldHeight; /* 0x24 */
     Vector3 posOffset;   /* 0x28: c42f8 adds it to pos */
     u16 rotX;            /* 0x34: c42f8 rotation angles */
     u16 rotY;            /* 0x36 */
@@ -55,13 +55,13 @@ typedef struct Ov007Sprite {
 
 int func_ov007_020c44e4(int count)
 {
-    Ov007Sprite* p = (Ov007Sprite*)func_ov007_020c3df4(0, 0x88);
+    Ov007Sprite *p = (Ov007Sprite *)func_ov007_020c3df4(0, 0x88);
     int i;
     u16 zs[3];
 
     p->frame = 0;
     p->frameCount = (s16)count;
-    p->frames = (void**)func_ov007_020c3df4(0, count << 2);
+    p->frames = (void **)func_ov007_020c3df4(0, count << 2);
     for (i = 0; i < count; i++) {
         p->frames[i] = 0;
     }
@@ -78,13 +78,13 @@ int func_ov007_020c44e4(int count)
         struct Vector3 z3 = {0, 0, 0};
         p->pos = z3;
 
-    p->worldHeight = 0;
-    p->worldWidth = p->worldHeight;
-    p->scaleY = 0x1000;
-    p->scaleX = p->scaleY;
-    p->rotZ = 0;
-    p->rotY = p->rotZ;
-    p->rotX = p->rotY;
+        p->worldHeight = 0;
+        p->worldWidth = p->worldHeight;
+        p->scaleY = 0x1000;
+        p->scaleX = p->scaleY;
+        p->rotZ = 0;
+        p->rotY = p->rotZ;
+        p->rotX = p->rotY;
 
         {
             struct Vector3 z3b = {0, 0, 0};
