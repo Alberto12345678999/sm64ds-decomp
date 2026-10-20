@@ -1,4 +1,5 @@
 #include "Ov007MenuState.h"
+#include "Ov007Tween.h"
 
 extern int func_ov007_020c8f98(void* p);
 extern void func_ov007_020c1d78(int i);
@@ -15,16 +16,16 @@ extern char* data_ov007_0210342c;
 #define G data_ov007_0210342c
 
 /* G has no class or header: its +0x8 and +0xc slots hold Ov007MenuStates (freed by
- * func_ov007_020b65e0 like the other menu states); r5/r4 are func_ov007_020c8f98 tween
- * records, which have no header either, so their fields stay raw. */
+ * func_ov007_020b65e0 like the other menu states); +0x6c/+0x70 are the Ov007Tweens
+ * func_ov007_020b6a84 binds to +0x64/+0x68. */
 
 void func_ov007_020afc44(void)
 {
     Ov007MenuState *menu = *(Ov007MenuState **)(G + 8);
     unsigned char* r7 = (unsigned char*)(*(int*)(*(char**)(G + 0x28))) + 0xb;
     int r6 = menu->stateTicks;
-    char* r5 = *(char**)(G + 0x6c);
-    char* r4 = *(char**)(G + 0x70);
+    Ov007Tween *r5 = *(Ov007Tween **)(G + 0x6c);
+    Ov007Tween *r4 = *(Ov007Tween **)(G + 0x70);
     int v0 = func_ov007_020c8f98(r5);
     int v1 = func_ov007_020c8f98(r4);
     int sb = (v0 == 0);
@@ -65,20 +66,20 @@ void func_ov007_020afc44(void)
             RequestScreenFade(8, 0xa, 0);
             (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xb;
             func_ov007_020b8188(*(int*)(G + 0x58), *(int*)(G + 0x28), *(int*)(G + 0x60));
-            *(int*)(r5) = 1;
-            *(int*)(r5 + 4) = 1;
-            *(short*)(r5 + 0xc) = 0;
-            *(int*)(r5 + 8) = 0;
-            *(int*)(r5 + 0x14) = 0;
-            *(int*)(*(int*)(r5 + 0x10)) = *(int*)(r5 + 0x14);
-            *(int*)(r5 + 0x18) = 0;
-            *(int*)(r4) = 1;
-            *(int*)(r4 + 4) = 1;
-            *(short*)(r4 + 0xc) = 0;
-            *(int*)(r4 + 8) = 0x2000;
-            *(int*)(r4 + 0x14) = 0x30000;
-            *(int*)(*(int*)(r4 + 0x10)) = *(int*)(r4 + 0x14);
-            *(int*)(r4 + 0x18) = 0x1000;
+            r5->state = 1;
+            r5->mode = 1;
+            r5->t = 0;
+            r5->step = 0;
+            r5->from = 0;
+            *r5->out = r5->from;
+            r5->to = 0;
+            r4->state = 1;
+            r4->mode = 1;
+            r4->t = 0;
+            r4->step = 0x2000;
+            r4->from = 0x30000;
+            *r4->out = r4->from;
+            r4->to = 0x1000;
         } else if (v1 != 0) {
             menu->requestedState = 2;
         }
@@ -106,13 +107,13 @@ void func_ov007_020afc44(void)
         }
         if (r6 == 0) {
             func_ov007_020c1d8c(0);
-            *(int*)(r5) = 1;
-            *(int*)(r5 + 4) = 1;
-            *(short*)(r5 + 0xc) = 0;
-            *(int*)(r5 + 8) = 0x3000;
-            *(int*)(r5 + 0x14) = 0;
-            *(int*)(*(int*)(r5 + 0x10)) = *(int*)(r5 + 0x14);
-            *(int*)(r5 + 0x18) = sp4;
+            r5->state = 1;
+            r5->mode = 1;
+            r5->t = 0;
+            r5->step = 0x3000;
+            r5->from = 0;
+            *r5->out = r5->from;
+            r5->to = sp4;
         } else if (v0 != 0) {
             switch (menu->stateWork) {
             case 1:
@@ -131,20 +132,20 @@ void func_ov007_020afc44(void)
                         }
                         func_ov007_020b8188(*(int*)(G + 0x5c), *(int*)(G + 0x28), *(int*)(G + 0x60));
                         sb = 1;
-                        *(int*)(r5) = 1;
-                        *(int*)(r5 + 4) = 1;
-                        *(short*)(r5 + 0xc) = 0;
-                        *(int*)(r5 + 8) = 0x3000;
-                        *(int*)(r5 + 0x14) = sl;
-                        *(int*)(*(int*)(r5 + 0x10)) = *(int*)(r5 + 0x14);
-                        *(int*)(r5 + 0x18) = 0;
-                        *(int*)(r4) = 1;
-                        *(int*)(r4 + 4) = 1;
-                        *(short*)(r4 + 0xc) = 0;
-                        *(int*)(r4 + 8) = 0x1000;
-                        *(int*)(r4 + 0x14) = 0x1000;
-                        *(int*)(*(int*)(r4 + 0x10)) = *(int*)(r4 + 0x14);
-                        *(int*)(r4 + 0x18) = 0x1000;
+                        r5->state = 1;
+                        r5->mode = 1;
+                        r5->t = 0;
+                        r5->step = 0x3000;
+                        r5->from = sl;
+                        *r5->out = r5->from;
+                        r5->to = 0;
+                        r4->state = 1;
+                        r4->mode = 1;
+                        r4->t = 0;
+                        r4->step = 0x1000;
+                        r4->from = 0x1000;
+                        *r4->out = r4->from;
+                        r4->to = 0x1000;
                         menu->stateWork = 1;
                     }
                 } else {
@@ -171,13 +172,13 @@ void func_ov007_020afc44(void)
             } else {
                 RequestScreenFade(8, 8, 0);
                 (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xa;
-                *(int*)(r4) = 1;
-                *(int*)(r4 + 4) = 1;
-                *(short*)(r4 + 0xc) = 0;
-                *(int*)(r4 + 8) = 0x2000;
-                *(int*)(r4 + 0x14) = 0x1000;
-                *(int*)(*(int*)(r4 + 0x10)) = *(int*)(r4 + 0x14);
-                *(int*)(r4 + 0x18) = 0x30000;
+                r4->state = 1;
+                r4->mode = 1;
+                r4->t = 0;
+                r4->step = 0x2000;
+                r4->from = 0x1000;
+                *r4->out = r4->from;
+                r4->to = 0x30000;
             }
         } else if (v1 != 0) {
             if (menu->previousState == 2) {
