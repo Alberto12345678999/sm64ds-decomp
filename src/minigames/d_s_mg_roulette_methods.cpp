@@ -434,8 +434,9 @@ s32 dScMgRoulette_c::Behavior() {
                     char *racerRaw = c;
                     char *racer = (char *)mArray;
                     do {
-                        ((RacerScene *)racerRaw)->racers[0].tile = Roulette_TileAt(
-                            ((RacerScene *)racerRaw)->racers[0].targetX >> 12, ((RacerScene *)racerRaw)->racers[0].targetY >> 12);
+                        ((RacerScene *)racerRaw)->racers[0].tile =
+                            Roulette_TileAt(((RacerScene *)racerRaw)->racers[0].targetX >> 12,
+                                            ((RacerScene *)racerRaw)->racers[0].targetY >> 12);
                         onTile = 0;
                         /* racers[0].tile, read back raw: through the member the
                            compiler reuses the value it just stored and Behavior
@@ -1392,13 +1393,10 @@ void RouletteBoard_StateSlow(RouletteSliderView *board) {
     spinAbs = board->spinSpeed - 0x140;
     if (spinAbs < 0)
         spinAbs = -spinAbs;
-    pull =
-        cstd::fdiv((int)((((long long)spinAbs * spinAbs) + 0x800) >> 12), board->radius) -
-        0xc00;
+    pull = cstd::fdiv((int)((((long long)spinAbs * spinAbs) + 0x800) >> 12), board->radius) - 0xc00;
 
     board->angleStep =
-        cstd::fdiv((int)((((long long)board->spinSpeed * 0x500) + 0x800) >> 12),
-                   board->radius);
+        cstd::fdiv((int)((((long long)board->spinSpeed * 0x500) + 0x800) >> 12), board->radius);
 
     board->orbitAngle += board->angleStep;
 
@@ -1432,8 +1430,7 @@ void RouletteBoard_StateSlow(RouletteSliderView *board) {
     if (board->radius < 0x2000) {
         if (diff < -0x400 && (diff - board->angleStep) >= -0x400) {
             board->orbitAngle = (stops.v[idx] - 0x400) - board->slowBias;
-            board->spinSpeed =
-                -(int)((((long long)board->spinSpeed * 0xf00) + 0x800) >> 12);
+            board->spinSpeed = -(int)((((long long)board->spinSpeed * 0xf00) + 0x800) >> 12);
             ApproachLinear(board->spinSpeed, 0xfffff667, 0x30);
             if (board->rollSound != 0) {
                 Sound::PlayBank2_2D(0x159);
@@ -1441,8 +1438,7 @@ void RouletteBoard_StateSlow(RouletteSliderView *board) {
             }
         } else if (diff > 0x400 && (diff - board->angleStep) <= 0x400) {
             board->orbitAngle = (stops.v[idx] + 0x400) - board->slowBias;
-            board->spinSpeed =
-                -(int)((((long long)board->spinSpeed * 0xe00) + 0x800) >> 12);
+            board->spinSpeed = -(int)((((long long)board->spinSpeed * 0xe00) + 0x800) >> 12);
             if (board->rollSound != 0) {
                 Sound::PlayBank2_2D(0x159);
                 board->rollSound = 0;
