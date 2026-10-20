@@ -467,7 +467,8 @@ s32 func_02009e70(char *self)
                                 t0 = _ZN4cstd4fdivEii(r7, Vec3_HorzLen(&sp40));
                                 sp40.x = FX_MUL(sp40.x, t0);
                                 sp40.z = FX_MUL(sp40.z, t0);
-                                /* 0x188 is still padding in dCamera_c.h. */
+                                /* 0x188 is dCamera_c::mInputYawLag (this file sees the camera through
+                                   local views, not dCamera_c.h). */
                                 *(s16 *)L0(self + 0x188) -= cam->mAngleY - sb;
                             }
                             t0 = Vec3_HorzLen(&sp40);
