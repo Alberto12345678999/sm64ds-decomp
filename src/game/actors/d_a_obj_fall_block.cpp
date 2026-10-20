@@ -197,9 +197,9 @@ void daObjFallBlock_c_ResetMotion(daObjFallBlock_c *c)
     c->mAngleZ = 0;
     c->mShakeX = 0;
     c->mTiltVelZ = 0;
-    c->unk_0a4 = 0;
+    c->mSpeedX = 0;
     c->mVertSpeed = 0;
-    c->unk_0ac = 0;
+    c->mSpeedZ = 0;
     c->mStateTimer = 4;
 }
 }

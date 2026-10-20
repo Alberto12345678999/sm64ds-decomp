@@ -134,9 +134,9 @@ void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr &clsn_, unsigned int sel) {
             int dz = mFloorNormalY;
             if (dz != 0) {
                 int nx = mFloorNormalX;
-                int vx = unk_0a4;
+                int vx = mSpeedX;
                 int nz = mFloorNormalZ;
-                int vz = unk_0ac;
+                int vz = mSpeedZ;
                 int a = FX_MUL(nx, vx);
                 int b = FX_MUL(nz, vz);
                 int num = a + b;

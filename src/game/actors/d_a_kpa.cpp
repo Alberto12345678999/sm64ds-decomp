@@ -3180,8 +3180,8 @@ void daKpa_c::func_ov060_021128c0(){
             if (this->mVertSpeed >= 0x14000)
                 this->mVertSpeed = 0x14000;
         } else if (this->mGroundNormalY != 0) {
-            this->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(this->mGroundNormalX, this->unk_0a4) +
-                                                      FX_MUL(this->mGroundNormalZ, this->unk_0ac),
+            this->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(this->mGroundNormalX, this->mSpeedX) +
+                                                      FX_MUL(this->mGroundNormalZ, this->mSpeedZ),
                                                   this->mGroundNormalY) +
                                  0x8000);
         }

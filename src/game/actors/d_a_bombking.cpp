@@ -751,7 +751,7 @@ int daBombking_c::func_ov078_021247bc()
         Matrix4x3_FromRotationY(&data_020a0e68, this->mPrevAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, this->mPrevAngleX);
         MulVec3Mat4x3((Vector3 *)&vB, &data_020a0e68, (Vector3 *)&vC);
-        this->unk_0a4 = vC.x;
+        this->mSpeedX = vC.x;
         if (this->mActionStep == 0) {
             this->mVertSpeed = vC.y;
             if (this->mVertSpeed > 0x3c000)
@@ -759,7 +759,7 @@ int daBombking_c::func_ov078_021247bc()
             else if (this->mVertSpeed < 0x1e000)
                 this->mVertSpeed = 0x1e000;
         }
-        this->unk_0ac = vC.z;
+        this->mSpeedZ = vC.z;
         this->mVertSpeed += this->mVertAccel;
         vA.x = this->mPosX;
         vA.y = this->mPosY;
@@ -776,9 +776,9 @@ int daBombking_c::func_ov078_021247bc()
             *(struct M3 *)&D = *(struct M3 *)&pl->mPosX;
             if (Vec3_Dist(&this->mArenaPosX, &D) > 0x640000 ||
                 this->mArenaPosY - 0x64000 > D.y) {
-                this->unk_0a4 = 0;
+                this->mSpeedX = 0;
                 this->mVertSpeed = 0;
-                this->unk_0ac = 0;
+                this->mSpeedZ = 0;
                 KingBobOmb_SetState(&data_ov078_021270fc);
                 return 1;
             }
@@ -794,9 +794,9 @@ int daBombking_c::func_ov078_021247bc()
             func_ov078_02125c24(0xfa0000);
             func_0200fa8c(this, 1);
             this->mActionStep = 2;
-            this->unk_0a4 = 0;
+            this->mSpeedX = 0;
             this->mVertSpeed = 0;
-            this->unk_0ac = 0;
+            this->mSpeedZ = 0;
             return 1;
         }
 
@@ -833,9 +833,9 @@ int daBombking_c::func_ov078_02124b40()
     this->mWithMeshClsn.ClearGroundFlag();
     this->mPrevAngleX = 0;
     this->mHorzSpeed = 0;
-    this->unk_0a4 = 0;
+    this->mSpeedX = 0;
     this->mVertSpeed = 0;
-    this->unk_0ac = 0;
+    this->mSpeedZ = 0;
     this->mActionStep = 0;
     this->mVertAccel = -0x6000;
     return 1;
@@ -1083,9 +1083,9 @@ int daBombking_c::func_ov078_021250f8()
                         (short)(-_ZN4cstd5atan2E5Fix12IiES1_(v[0].y, Vec3_HorzLen(&v[0]))));
                     out.y += 0x14000;
                     func_ov102_0214ad14(target);
-                    target->unk_0a4 = out.x;
+                    target->mSpeedX = out.x;
                     target->mVertSpeed = out.y;
-                    target->unk_0ac = out.z;
+                    target->mSpeedZ = out.z;
                     target->mHorzSpeed = 0x14000;
                     target->mVertAccel = -0x2000;
                     MulVec3Mat4x3(&in, &data_020a0e68, &out);

@@ -914,7 +914,7 @@ int daKing_Donketu_c::func_ov073_02120098() {
    0x46000 (70.0), mVertAccel -0x3000 (-3.0), and SND_HOP_LAUNCH if unk_4ca is
    set. At 0, while mStateScratch is 0, mAngleX is straightened (0x2000 a
    frame), mPrevAngleY turns toward the angle to mSpawnPos by 0x800, and the
-   x/z velocity words unk_0a4 / unk_0ac are set to 50.0 (0x32000) when
+   x/z velocity words mSpeedX / mSpeedZ are set to 50.0 (0x32000) when
    mHitsRemaining is 2, else 30.0 (0x1e000), along that angle. While falling,
    if the actor touching the boss is the player and the boss is the higher,
    Player::Unk_020c6a10(1) is called on it. On the ground the motion is
@@ -962,8 +962,8 @@ int daKing_Donketu_c::func_ov073_021200e0()
         }
         Matrix4x3_FromRotationY(&data_020a0e68, horz);
         MulVec3Mat4x3(&offset, &data_020a0e68, &rotated);
-        thiz->unk_0a4 = rotated.x;
-        thiz->unk_0ac = rotated.z;
+        thiz->mSpeedX = rotated.x;
+        thiz->mSpeedZ = rotated.z;
         if (thiz->mVertSpeed < 0) {
             int id = thiz->mdCcAcPos_c.otherOwner;
             if (id != 0) {
@@ -983,9 +983,9 @@ int daKing_Donketu_c::func_ov073_021200e0()
     if (thiz->mWithMeshClsn.IsOnGround() != 0) {
         if (thiz->mStateScratch == 0) {
             thiz->mHorzSpeed = 0;
-            thiz->unk_0a4 = 0;
+            thiz->mSpeedX = 0;
             thiz->mVertSpeed = 0;
-            thiz->unk_0ac = 0;
+            thiz->mSpeedZ = 0;
             thiz->func_ov073_0211f2c0(0x1388000);
             func_02012694(SND_HOP_LANDING, &thiz->mCamSpacePosX);
         }
@@ -1074,15 +1074,15 @@ mainblock:
         Matrix4x3_FromRotationY(&data_020a0e68, hz);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, vt);
         MulVec3Mat4x3(in, &data_020a0e68, out);
-        c->unk_0a4 = out[0];
-        c->unk_0ac = out[2];
+        c->mSpeedX = out[0];
+        c->mSpeedZ = out[2];
     }
     if (c->mWithMeshClsn.IsOnGround() != 0) {
         c->unk_4c5 = c->mWaypointCursor;
         c->mHorzSpeed = 0;
-        c->unk_0a4 = 0;
+        c->mSpeedX = 0;
         c->mVertSpeed = 0;
-        c->unk_0ac = 0;
+        c->mSpeedZ = 0;
         c->func_ov073_0211f2c0(0x7d0000);
         func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
         {
@@ -1158,19 +1158,19 @@ int daKing_Donketu_c::func_ov073_02120610()
             Matrix4x3_FromRotationY(&data_020a0e68, hz);
             Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, vt);
             MulVec3Mat4x3(in, &data_020a0e68, out);
-            c->unk_0a4 = out[0];
+            c->mSpeedX = out[0];
             if (c->mStateScratch != 0 || c->mVertSpeed < 0) {
                 c->mVertSpeed = out[1];
                 c->mStateScratch = 1;
             }
-            c->unk_0ac = out[2];
+            c->mSpeedZ = out[2];
         }
         if (c->mWithMeshClsn.IsOnGround() != 0) {
             c->unk_4c5 = c->mWaypointCursor;
             c->mHorzSpeed = 0;
-            c->unk_0a4 = 0;
+            c->mSpeedX = 0;
             c->mVertSpeed = 0;
-            c->unk_0ac = 0;
+            c->mSpeedZ = 0;
             c->func_ov073_0211f2c0(0x7d0000);
             func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
             c->mJumpCount = 1;
@@ -1244,9 +1244,9 @@ int daKing_Donketu_c::func_ov073_02120910()
 
     c->mVertAccel = 0;
     c->mHorzSpeed = 0;
-    c->unk_0a4 = 0;
+    c->mSpeedX = 0;
     c->mVertSpeed = 0;
-    c->unk_0ac = 0;
+    c->mSpeedZ = 0;
 
     if ((unsigned short)c->mStateTimer == 0) {
         *&c->mHitsRemaining = 1;
@@ -1298,9 +1298,9 @@ int daKing_Donketu_c::func_ov073_02120ad8()
     t->mStateScratch = 0;
     t->mVertAccel = 0;
     t->mHorzSpeed = 0;
-    t->unk_0a4 = 0;
+    t->mSpeedX = 0;
     t->mVertSpeed = 0;
-    t->unk_0ac = 0;
+    t->mSpeedZ = 0;
     t->unk_4d0 = -0x1000;
     t->unk_4a8 = t->mGroundMissPosX;
     t->unk_4ac = t->mGroundMissPosY;
@@ -1873,10 +1873,10 @@ int daKing_Donketu_c::Behavior()
     } else {
         int sum = mVertSpeed + mVertAccel;
         int m = mTerminalVelocity;
-        int ac = unk_0ac;
+        int ac = mSpeedZ;
         if (sum >= m) m = sum;
         mVertSpeed = m;
-        unk_0ac = ac;
+        mSpeedZ = ac;
         UpdatePosWithOnlySpeed(&mdCcAcPos_c);
     }
 
