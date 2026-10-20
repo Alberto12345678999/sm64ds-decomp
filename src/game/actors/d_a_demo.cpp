@@ -72,16 +72,12 @@
  *   func_ov002_020f26d4 is a ldr/bx veneer that tail-calls
  *   func_ov002_020f2630 through a raw void(*)(void); a member pointer
  *   cannot spell that cast, so both stay free.
- *   The mStaffRoll heap block (0x518 bytes, edStarKiraCallback_c embedded at
- *   +0x200) has no proven class, so its helpers and the C/PMF/PMF0
- *   dispatch tables over it stay free.
- *   Shadow windows OamEnt, E, C, S and the per-function windows (E5cd0,
- *   Ent5b98, Obj2e30 and the rest) remain where a shared class is not yet
- *   proven; the ones over daDemo_c and its model helpers were moved onto
- *   real members. Inside the block, the four 0x4c-byte entries at +0 and
- *   the 0x30-byte window entries at +0x130 have roles (see E5cd0 and C37)
- *   but no class, so indexed accesses that also reach unnamed offsets stay
- *   raw with a one-line note.
+ *   The mStaffRoll heap block is daDemo_c::StaffRoll, a record recovered
+ *   from its helpers (no RTTI names it). The helpers take it as char *
+ *   and stay free, as do the C/PMF/PMF0 dispatch tables over it; C, C37
+ *   and C2dd4 remain as the tables' receiver types. Indexed entry fields
+ *   are spelled with STAR_OFF and its siblings where the ROM adds the
+ *   field offset before the index.
  *   common.h must precede daDemo_c.h: ModelAnim.h's nested Matrix4x3
  *   otherwise wins and scalarizes Behavior's 12-word matrix copy.
  */
@@ -156,9 +152,6 @@ struct OamEnt {
 /* shadow struct 'ParticleCallback' */
 struct ParticleCallback;
 
-/* shadow struct 'S' */
-struct S { unsigned char b[0x30]; };
-
 /* shadow struct 'C' */
 struct C;
 
@@ -171,17 +164,13 @@ typedef void (C::*PMF0)();
 /* pointer-to-member taking (cmd, a2, a3) — func_ov002_020f7d74's table */
 typedef void (daDemo_c::*PMF3)(unsigned char*, int, int);
 
-/* dispatch receiver of func_ov002_020f37a0: the mStaffRoll block seen through
-   the control bytes of its first 0x30-byte sub-screen window entry, which
-   starts at block + 0x130 (sub BG1/BG2 offset, then the window-1
-   rectangle the handlers write to 0x4001042/0x4001046). */
+/* dispatch receiver of func_ov002_020f37a0: the StaffRoll block seen through
+   window[0]'s control bytes (StaffRoll::Window active, kind, step). */
 struct C37 {
     unsigned char pad[0x15c];
-    unsigned char active; /* 0x15c - func_ov002_020f37a0 does nothing while 0 */
-    unsigned char kind;   /* 0x15d - index into data_ov002_02110e4c */
-    /* 0x15e - step index func_ov002_020f3310 and func_ov002_020f3740
-       dispatch on; the step handlers advance it. */
-    unsigned char step;
+    unsigned char active; /* 0x15c */
+    unsigned char kind;   /* 0x15d */
+    unsigned char step;   /* 0x15e */
 };
 typedef void (C37::*PMF37)(int);
 struct Entry37 { PMF37 pmf; };
@@ -190,79 +179,6 @@ struct Entry37 { PMF37 pmf; };
 struct C2dd4 { unsigned char pad[0x1c8]; unsigned char g; unsigned char idx; };
 typedef void (C2dd4::*PMF2dd4)(int);
 struct Entry2dd4 { PMF2dd4 pmf; };
-
-/* shadow struct 'E' */
-struct E { unsigned char d[0x30]; };
-
-/* shadow struct 'E5cd0' — anim-entry window of func_ov002_020f5cd0 and
-   func_ov002_020f5678: one of the four 0x4c-byte entries at the start of the
-   mStaffRoll block. f28/f2c are the int and s16 func_ov002_020f5990 passes to
-   func_ov002_020f2790, which stores them in the edStarKiraCallback_c at
-   block + 0x200 (its unk308/unk30c) before spawning particle 0x3e. */
-struct E5cd0 {
-    s32 f0;              /* 0x00 */
-    s32 f4;              /* 0x04 */
-    char p8[0x28 - 8];
-    s32 f28;             /* 0x28 */
-    u16 f2c;             /* 0x2c */
-    char p2e[0x30 - 0x2e];
-    u16 f30;             /* 0x30 */
-    u16 f32;             /* 0x32 */
-    char p34[0x3a - 0x34];
-    u16 f3a;             /* 0x3a */
-    char p3c[0x44 - 0x3c];
-    /* Set by func_ov002_020f5d34 for each entry it starts, cleared by
-       func_ov002_020f5a6c; func_ov002_020f5990 skips an entry while 0. */
-    u8 active; /* 0x44 */
-    char p45;
-    /* Index into data_ov002_02110e7c, the per-entry handler table
-       func_ov002_020f5990 dispatches through (0 from 5d34, 1 here, 2 from
-       func_ov002_020f5b98). */
-    u8 state; /* 0x46 */
-    char p47[0x4c - 0x47];
-};
-
-/* shadow struct 'E57c0' — anim-entry window of func_ov002_020f57c0 */
-struct E57c0 {
-  char p0[8];
-  int f8;
-  int fc;
-  char p10[0x20];
-  unsigned short f30;
-  unsigned short f32;
-  char p34[6];
-  unsigned short f3a;
-  char p3c[9];
-  unsigned char f45;
-  char p46;
-  unsigned char f47;
-  char p48;
-  unsigned char f49;
-  char p4a[2];
-};
-
-/* shadow struct 'Ent5b98' — anim-entry window of func_ov002_020f5b98 */
-struct Ent5b98 {
-    char pad44[0x44];
-    unsigned char active; /* 0x44 - see E5cd0 */
-    char pad45;
-    unsigned char state; /* 0x46 */
-    unsigned char f47;
-    char pad48[2];
-    unsigned char f4a;
-    char pad4b[0x4c - 0x4b];
-};
-
-/* shadow struct 'Obj2e30' — flag window of func_ov002_020f2e30 */
-struct Obj2e30 {
-    char pad1c4[0x1c4];
-    unsigned short f1c4;
-    unsigned short f1c6;
-    unsigned char f1c8;
-    unsigned char f1c9;
-    unsigned char f1ca;
-    unsigned char f1cb;
-};
 
 /* shadow struct 'Ent' */
 struct Ent
@@ -546,7 +462,7 @@ extern void func_ov002_020f37fc(char*);
 extern void func_ov002_020f2f9c(void *, int);
 extern void func_ov002_020f3954(char *);
 /* local extern dropped: decl_common.h already declares LoadFont(u8) */
-void func_ov002_020f2e30(struct Obj2e30*, int);
+void func_ov002_020f2e30(StaffRoll *, int);
 extern PMF0 data_ov002_02110f9c[];
 extern void SetSubBg3Offset(int a, int b);
 extern void _ZN3GXS15SetGraphicsModeEi(int m);
@@ -1220,8 +1136,6 @@ int func_ov002_020f2990(char* c)
     int x, y;
     int idx;
 
-    /* 0x1cc/0x1d0: sprite position; 0x1d9: draw flag (0x1d8 is written with it
-       by 2a48/2a68 but read nowhere in this TU). Raw: the block has no proven class. */
     if (((StaffRoll *)c)->endVisible == 0) return (int)c;
 
     x = ((StaffRoll *)c)->endX >> 0xc;
@@ -1271,7 +1185,7 @@ void func_ov002_020f2a68(char *p)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f2a78(char *p, int i)
 {
-    *(char *)(p + i * 8 + CREDIT_OFF(active)) = 0;
+    ((StaffRoll *)p)->credit[i].active = 0;
 }
 }
 
@@ -1420,16 +1334,16 @@ extern "C" void func_ov002_020f2dd4(C2dd4* c){
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (overlay ov002).
  */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f2e30(struct Obj2e30 *self, int n) {
+void func_ov002_020f2e30(StaffRoll *self, int n) {
     if (n == 0) return;
     if (n == 0x15) return;
-    self->f1c8 = 1;
-    self->f1c9 = 0;
-    self->f1c4 = 0;
-    self->f1c6 = 0;
-    self->f1ca = 0;
+    self->credit[0].active = 1;
+    self->credit[0].step = 0;
+    self->credit[0].timer = 0;
+    self->credit[0].blendTimer = 0;
+    self->credit[0].blend = 0;
     n = (n - 1) << 1;
-    self->f1cb = (unsigned char)n;
+    self->credit[0].message = (unsigned char)n;
     func_0201f108();
     func_0201ef50(n & 0xff);
     data_0209d454 |= 1;
@@ -1611,14 +1525,12 @@ void func_ov002_020f30f8(char *o, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f32e4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f32e4(struct S *arr, int i)
+void func_ov002_020f32e4(StaffRoll *self, int i)
 {
-    char *p = (char*)&arr[i];
-    ((StaffRoll *)p)->window[0].delay = 0x10;
-    ((StaffRoll *)p)->window[0].stepX = 0x1800;
-    ((StaffRoll *)p)->window[0].stepY = 0x1800;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    ((StaffRoll *)p)->window[0].step = 1;
+    self->window[i].delay = 0x10;
+    self->window[i].stepX = 0x1800;
+    self->window[i].stepY = 0x1800;
+    self->window[i].step = 1;
 }
 }
 
@@ -1627,8 +1539,7 @@ void func_ov002_020f32e4(struct S *arr, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3310
 extern "C" void func_ov002_020f3310(C* self, int idx) {
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x30 + 0x15e));
+    unsigned char sel = ((StaffRoll *)self)->window[idx].step;
     (self->*data_ov002_02110e24[sel])(idx);
 }
 
@@ -1642,11 +1553,10 @@ void func_ov002_020f335c(char *o, int i) {
     int idx = i * 0x30;
     int *fld = (int *)(o + WINDOW_OFF(top) + idx);
     *fld = *fld + 0x1800;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
     if (*fld >= 0x66000) {
         *fld = 0x66000;
-        *(unsigned char *)(o + idx + WINDOW_OFF(active)) = 0;
-        *(unsigned char *)(o + idx + WINDOW_OFF(step)) = 0;
+        ((StaffRoll *)o)->window[i].active = 0;
+        ((StaffRoll *)o)->window[i].step = 0;
     }
     char *b = o + idx;
     int f140 = ((StaffRoll *)b)->window[0].left >> 0xc;
@@ -1669,11 +1579,10 @@ void func_ov002_020f340c(char *o, int i) {
     int idx = i * 0x30;
     int *fld = (int *)(o + WINDOW_OFF(top) + idx);
     *fld = *fld + 0x1800;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
     if (*fld >= 0x66000) {
         *fld = 0x66000;
-        *(unsigned char *)(o + idx + WINDOW_OFF(active)) = 0;
-        *(unsigned char *)(o + idx + WINDOW_OFF(step)) = 0;
+        ((StaffRoll *)o)->window[i].active = 0;
+        ((StaffRoll *)o)->window[i].step = 0;
     }
     char *b = o + idx;
     int f140 = ((StaffRoll *)b)->window[0].left >> 0xc;
@@ -1706,7 +1615,6 @@ void func_ov002_020f34bc(unsigned char *s, int idx)
     if (*(int *)(s + WINDOW_OFF(top) + k) <= 0x56000) *(int *)(s + WINDOW_OFF(top) + k) = 0x56000;
     if (*(int *)(s + WINDOW_OFF(right) + k) >= 0xfc000) *(int *)(s + WINDOW_OFF(right) + k) = 0xfc000;
     if (*(int *)(s + WINDOW_OFF(bottom) + k) >= 0xbc000) { *(int *)(s + WINDOW_OFF(bottom) + k) = 0xbc000; flag++; }
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
     if (flag != 0) (*(unsigned char *)(s + WINDOW_OFF(step) + k))++;
     a = *(int *)(s + WINDOW_OFF(top) + k);
     b = *(int *)(s + WINDOW_OFF(left) + k);
@@ -1749,7 +1657,6 @@ void func_ov002_020f35e4(char *c, int i)
     SetSubBg1Offset(*(int *)(c + WINDOW_OFF(bgX) + off) >> 12, *(int *)(c + WINDOW_OFF(bgY) + off) >> 12);
     SetSubBg2Offset(*(int *)(c + WINDOW_OFF(bgX) + off) >> 12, *(int *)(c + WINDOW_OFF(bgY) + off) >> 12);
     data_0209d454 |= 6;
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
     *(unsigned char *)(c + WINDOW_OFF(step) + off) = *(unsigned char *)(c + WINDOW_OFF(step) + off) + 1;
 }
 }
@@ -1759,8 +1666,7 @@ void func_ov002_020f35e4(char *c, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3740
 extern "C" void func_ov002_020f3740(C* self, int idx) {
-    /* +0x15c/+0x15e: control bytes of window entry i (C37 names entry 0's); raw because the block has no proven class. */
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x30 + 0x15e));
+    unsigned char sel = ((StaffRoll *)self)->window[idx].step;
     (self->*data_ov002_02110e9c[sel])(idx);
 }
 
@@ -1769,8 +1675,8 @@ extern "C" void func_ov002_020f3740(C* self, int idx) {
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f378c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f378c(struct E *base, int idx){
-  base[idx].d[0x15e] = 0;
+void func_ov002_020f378c(StaffRoll *self, int idx){
+  self->window[idx].step = 0;
 }
 }
 
@@ -1927,20 +1833,20 @@ void func_ov002_020f39ec(char *self, int idx)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f3ae8(char *base, int idx)
 {
-  struct Ent *arr = (struct Ent *) base;
+  StaffRoll::Star *arr = (StaffRoll::Star *)base;
   int a;
   int b;
-  a = data_02082214[((arr[idx].angle >> 4) * 2) + 1];
-  b = arr[idx].vx;
-  arr[idx].out0 = FX_MUL(a, b) + 0xe0000;
-  a = data_02082214[(arr[idx].angle >> 4) * 2];
-  b = arr[idx].vx;
-  arr[idx].out4 = FX_MUL(a, b) + 0x66000;
-  if (arr[idx].vx > 0x18000)
+  a = data_02082214[((arr[idx].heading >> 4) * 2) + 1];
+  b = arr[idx].radius;
+  arr[idx].x = FX_MUL(a, b) + 0xe0000;
+  a = data_02082214[(arr[idx].heading >> 4) * 2];
+  b = arr[idx].radius;
+  arr[idx].y = FX_MUL(a, b) + 0x66000;
+  if (arr[idx].radius > 0x18000)
   {
-    arr[idx].vx = arr[idx].vx - 0x10;
+    arr[idx].radius = arr[idx].radius - 0x10;
   }
-  arr[idx].angle += 0x200;
+  arr[idx].heading += 0x200;
 }
 }
 
@@ -2027,7 +1933,7 @@ void func_ov002_020f3d38(char *c, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f3d98
 extern "C" void func_ov002_020f3d98(C* self, int idx) {
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x4c + 0x47));
+    unsigned char sel = ((StaffRoll *)self)->stars[idx].step;
     (self->*data_ov002_02110e34[sel])(idx);
 }
 
@@ -2869,7 +2775,6 @@ void func_ov002_020f55b4(char* c, int i){
   ((StaffRoll *)e)->stars[0].loops = 0;
   ((StaffRoll *)e)->stars[0].orbitTravel = 0;
   ((StaffRoll *)e)->stars[0].angSpeed = 0x200;
-  /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
   ((StaffRoll *)e)->stars[0].kiraDefParam = 0x1000;
   ((StaffRoll *)e)->stars[0].kiraSysParam = 0x200;
 }
@@ -2880,7 +2785,7 @@ void func_ov002_020f55b4(char* c, int i){
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f562c
 extern "C" void func_ov002_020f562c(C* self, int idx) {
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x4c + 0x47));
+    unsigned char sel = ((StaffRoll *)self)->stars[idx].step;
     (self->*data_ov002_02110eec[sel])(idx);
 }
 
@@ -2891,9 +2796,9 @@ extern "C" void func_ov002_020f562c(C* self, int idx) {
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5678(char *base, int i)
 {
-    struct E5cd0 *e = (struct E5cd0 *)base + i;
-    e->f28 = 0xccc;
-    e->f2c = 0x155;
+    StaffRoll::Star *e = (StaffRoll::Star *)base + i;
+    e->kiraDefParam = 0xccc;
+    e->kiraSysParam = 0x155;
 }
 }
 
@@ -2919,27 +2824,26 @@ void func_ov002_020f569c(void *self, int i)
         return;
     }
 
-    /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
     *(int *)(p + idx + STAR_OFF(kiraDefParam)) = 0x1000;
     *(short *)(p + idx + STAR_OFF(kiraSysParam)) = 0x200;
 
-    *(int *)(p + idx) = *(int *)(p + idx) + *(int *)(p + STAR_OFF(speed) + idx);
+    *(int *)(p + STAR_OFF(x) + idx) = *(int *)(p + STAR_OFF(x) + idx) + *(int *)(p + STAR_OFF(speed) + idx);
     *(int *)(p + STAR_OFF(y) + idx) = *(int *)(p + STAR_OFF(y) + idx) + *(int *)(p + STAR_OFF(speedY) + idx);
 
     tx = data_ov002_02100190[i * 2];
     ty = data_ov002_02100190[i * 2 + 1];
-    ax = *(int *)(p + idx) >> 12;
+    ax = *(int *)(p + STAR_OFF(x) + idx) >> 12;
     by = *(int *)(p + STAR_OFF(y) + idx) >> 12;
 
     if (*(int *)(p + STAR_OFF(speed) + idx) > 0)
     {
         if (ax > tx)
-            *(int *)(p + idx) = tx << 12;
+            *(int *)(p + STAR_OFF(x) + idx) = tx << 12;
     }
     else
     {
         if (ax < tx)
-            *(int *)(p + idx) = tx << 12;
+            *(int *)(p + STAR_OFF(x) + idx) = tx << 12;
     }
 
     if (*(int *)(p + STAR_OFF(speedY) + idx) > 0)
@@ -2953,7 +2857,7 @@ void func_ov002_020f569c(void *self, int i)
             *(int *)(p + STAR_OFF(y) + idx) = ty << 12;
     }
 
-    ax = *(int *)(p + idx) >> 12;
+    ax = *(int *)(p + STAR_OFF(x) + idx) >> 12;
     by = *(int *)(p + STAR_OFF(y) + idx) >> 12;
 
     if (ax == tx && by == ty)
@@ -2968,16 +2872,16 @@ void func_ov002_020f569c(void *self, int i)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f57c0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f57c0(struct E57c0* arr, int idx) {
-  if (arr[idx].f3a != 0) return;
-  if (arr[idx].f32 != 0) return;
-  arr[idx].f49 = 1;
-  arr[idx].f45 = 1;
-  arr[idx].f47++;
-  arr[idx].f8 = data_ov002_02100170[idx*2];
-  arr[idx].fc = data_ov002_02100170[idx*2+1];
-  if (idx == 0) arr[idx].f30 = 0x78;
-  else arr[idx].f30 = 0x20;
+void func_ov002_020f57c0(StaffRoll::Star *arr, int idx) {
+  if (arr[idx].frame != 0) return;
+  if (arr[idx].frameTimer != 0) return;
+  arr[idx].sparkling = 1;
+  arr[idx].visible = 1;
+  arr[idx].step++;
+  arr[idx].speed = data_ov002_02100170[idx*2];
+  arr[idx].speedY = data_ov002_02100170[idx*2+1];
+  if (idx == 0) arr[idx].delay = 0x78;
+  else arr[idx].delay = 0x20;
 }
 }
 
@@ -2986,7 +2890,7 @@ void func_ov002_020f57c0(struct E57c0* arr, int idx) {
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5848
 extern "C" void func_ov002_020f5848(C* self, int idx) {
-    unsigned char sel = *((unsigned char*)((char*)self + idx * 0x4c + 0x47));
+    unsigned char sel = ((StaffRoll *)self)->stars[idx].step;
     (self->*data_ov002_02110e64[sel])(idx);
 }
 
@@ -3004,7 +2908,6 @@ void func_ov002_020f5894(char *a, int i)
     off = i * 0x4c;
     p34 = (unsigned short *)(a + STAR_OFF(kiraTimer) + off);
     *p34 = *p34 + 1;
-    /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
     if (*(int *)(a + STAR_OFF(kiraDefParam) + off) != 0x1000) {
         unsigned short v = *p34;
         if (v == 0xf || v == 0x1e) {
@@ -3062,7 +2965,6 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5a6c(char *p){
   int i;
   for(i=0;i<4;i++){
-      /* Entry fields E5cd0 names (+0x28/+0x2c sparkle parameters, +0x44 active, +0x46 state); raw because the block has no proven class and this body reaches offsets no view names. */
       ((StaffRoll *)p)->stars[0].active = 0;
       ((StaffRoll *)p)->stars[0].visible = 0;
       ((StaffRoll *)p)->stars[0].holdFrame = 0;
@@ -3094,6 +2996,7 @@ int func_ov002_020f5a94(void *unused){
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5ad4(char* c)
 {
+    /* StaffRoll::pad_1f0: two words cleared here and read nowhere. */
     *(int*)(c+0x1f0) = 0;
     *(int*)(c+0x1f4) = 0;
     ((StaffRoll *)c)->kiraStar = 0;
@@ -3179,14 +3082,14 @@ void func_ov002_020f5b8c(char *p)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5b98
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f5b98(struct Ent5b98 *e)
+void func_ov002_020f5b98(StaffRoll::Star *e)
 {
     int i;
     for (i = 0; i < 4; i++) {
         if (e->active != 0) {
             e->state = 2;
-            e->f47 = 0;
-            e->f4a = 0;
+            e->step = 0;
+            e->holdFrame = 0;
         }
         e++;
     }
@@ -3201,8 +3104,8 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f5bcc(char *p){
   int i;
   for(i=0;i<4;i++){
-      if (((struct Ent5b98 *)p)->active)
-          ((struct Ent5b98 *)p)->f4a = 1;
+      if (((StaffRoll *)p)->stars[0].active)
+          ((StaffRoll *)p)->stars[0].holdFrame = 1;
       p += 0x4c;
   }
 }
@@ -3265,20 +3168,20 @@ void func_ov002_020f5c88(char* c)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f5cd0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f5cd0(struct E5cd0 *c)
+void func_ov002_020f5cd0(StaffRoll::Star *c)
 {
     int i;
     if (c->active == 0)
         return;
-    c->f0 = 0x80000;
-    c->f4 = 0x60000;
-    c->f30 = 0;
+    c->x = 0x80000;
+    c->y = 0x60000;
+    c->delay = 0;
     c->state = 1;
-    c->f28 = 0xccc;
-    c->f2c = 0x155;
+    c->kiraDefParam = 0xccc;
+    c->kiraSysParam = 0x155;
     for (i = 0; i < 4; i++) {
-        c->f3a = 0;
-        c->f32 = 0;
+        c->frame = 0;
+        c->frameTimer = 0;
         c++;
     }
 }
@@ -3448,7 +3351,7 @@ void func_ov002_020f5efc(void) {
 // @symbol func_ov002_020f5f0c
 extern "C" void func_ov002_020f5f0c(C* c, int idx){
   (c->*data_ov002_02110f9c[idx])();
-  func_ov002_020f2e30((Obj2e30*)c, idx);
+  func_ov002_020f2e30((StaffRoll *)c, idx);
 }
 
 /* -------------------------------------------------------------------------- */
