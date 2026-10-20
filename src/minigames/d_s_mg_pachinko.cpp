@@ -34,7 +34,7 @@
 //   offsets; the other handlers
 //   keep the offset forms their launder macros and saved row cursors tune,
 //   and convert one function at a time. 0x5418..0x5958 is never
-//   accessed by this class's code, so it stays padding. The pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset
+//   accessed by this class's code, so it stays padding. The pipe fields behind the PIPE_* byte-offset
 //   macros take a pre-scaled offset rather than an index.
 // - Shot and ball fields go through `p + i * 0x38`: indexing mShot[i]/mBall[i]
 //   is one word different, so the multiply forms stay; the r5 cursor locals
@@ -98,13 +98,13 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 #define M2(a) (a)
 
 /* Pipe row accessors for PachinkoPipe_StateSink. */
-#define ST(c,b)       (*(u8*)((c) + 0x4eb4 + (b)))
-#define CTA(c,b)      (*(u16*)((c) + 0x4eb0 + (b)))
-#define FB(c,b)       (*(u8*)((c) + 0x4eb6 + (b)))
-#define OUTFLAG(c,b)  (*(u8*)((c) + 0x4eb5 + (b)))
-#define OUTFLAG2(c,b) (*(u8*)((c) + 0x4eb3 + (b)))
-#define ACC(c,b)      (*(s32*)((c) + 0x4ea0 + (b)))
-#define VEL(c,b)      (*(s32*)((c) + 0x4ea8 + (b)))
+#define PIPE_PHASE(c, b)  (*(u8*)((c) + 0x4eb4 + (b)))
+#define PIPE_TIMER(c, b)  (*(u16*)((c) + 0x4eb0 + (b)))
+#define PIPE_FRAME(c, b)  (*(u8*)((c) + 0x4eb6 + (b)))
+#define PIPE_SPRITE(c, b) (*(u8*)((c) + 0x4eb5 + (b)))
+#define PIPE_STATE(c, b)  (*(u8*)((c) + 0x4eb3 + (b)))
+#define PIPE_X(c, b)      (*(s32*)((c) + 0x4ea0 + (b)))
+#define PIPE_VEL(c, b)    (*(s32*)((c) + 0x4ea8 + (b)))
 
 /* The scene seen through a char pointer, for the free helpers below. */
 #define PACHINKO(p) ((dScMgPachinko_c *)(p))
@@ -1003,9 +1003,9 @@ void PachinkoPopup_SpawnScore(char *raw, int idx, unsigned short points)
         if (*(unsigned short *)(popup + 0x4cfa) != 0) continue;
         self->mPopup[i].x = self->mFx[idx].x;
         self->mPopup[i].y = self->mFx[idx].y;
-        self->mPopup[i].value = 0x30;
-        self->mPopup[i].timer = points;
-        Mg_SubmitScore(self->mPopup[i].timer + Mg_GetSubmittedScore());
+        self->mPopup[i].timer = 0x30;
+        self->mPopup[i].points = points;
+        Mg_SubmitScore(self->mPopup[i].points + Mg_GetSubmittedScore());
         if ((unsigned int)Mg_GetSubmittedScore() < 0xbb8) return;
         if (PACHINKO(raw)->mPromptEnabled != 0)
             PACHINKO(raw)->mPromptEnabled = 0;
@@ -1208,21 +1208,21 @@ void PachinkoPipe_DrawAll(char *raw)
     char *row = raw;
     for (i = 0; i < 2; i++) {
         if (PIPE(row)->visible != 0) {
-            Mg_RenderSpriteBoth((void *)sPachinkoPipeSprites[PIPE(row)->out], PIPE(row)->acc >> 0xc,
-                                PIPE(row)->y >> 0xc, -1, 2);
+            Mg_RenderSpriteBoth((void *)sPachinkoPipeSprites[PIPE(row)->sprite],
+                                PIPE(row)->x >> 0xc, PIPE(row)->y >> 0xc, -1, 2);
         }
         row += 0x1c;
     }
 }
 
 // @symbol PachinkoPipe_SetAll
-void PachinkoPipe_SetAll(char* row, int mode) {
+void PachinkoPipe_SetAll(char *row, int phase) {
     int i;
     for (i = 0; i < 2; i++) {
         if (PIPE(row)->active) {
-            PIPE(row)->out2 = 3;
+            PIPE(row)->state = 3;
             PIPE(row)->laps = 0;
-            PIPE(row)->state = (unsigned char)mode;
+            PIPE(row)->phase = (unsigned char)phase;
         }
         row += 0x1c;
     }
@@ -1231,35 +1231,35 @@ void PachinkoPipe_SetAll(char* row, int mode) {
 // @symbol PachinkoPipe_StateIdle
 int PachinkoPipe_StateIdle(char *raw, int idx) {
     dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
-  u16* counter = &self->mPipe[idx].timer;
-  u8* frame = (u8*)(raw + 0x4eb6 + idx*0x1c);
-  u16 c = *counter;
-  *counter = c + 1;
-  u8 oldFrame = *frame;
-  if (*counter >= sPachinkoPipeIdleTimes[oldFrame]) {
-      *counter = 0;
-      *frame = *frame + 1;
-      if (*frame >= 8) {
-          *frame = 0;
-          self->mPipe[idx].laps = self->mPipe[idx].laps + 1;
-      }
-      self->mPipe[idx].out = sPachinkoPipeIdleFrames[*frame];
-  }
-  {
-    if (self->mPipe[idx].state != 0) {
-      self->mPipe[idx].laps = 0;
-      return 0;
+    u16 *counter = &self->mPipe[idx].timer;
+    u8 *frame = (u8 *)(raw + 0x4eb6 + idx * 0x1c);
+    u16 c = *counter;
+    *counter = c + 1;
+    u8 oldFrame = *frame;
+    if (*counter >= sPachinkoPipeIdleTimes[oldFrame]) {
+        *counter = 0;
+        *frame = *frame + 1;
+        if (*frame >= 8) {
+            *frame = 0;
+            self->mPipe[idx].laps = self->mPipe[idx].laps + 1;
+        }
+        self->mPipe[idx].sprite = sPachinkoPipeIdleFrames[*frame];
     }
-  }
-  {
-    u8 c3 = self->mPipe[idx].laps;
-    if (c3 >= 2) {
-      c3 = 0;
-      self->mPipe[idx].out2 = c3;
-      self->mPipe[idx].laps = c3;
+    {
+        if (self->mPipe[idx].phase != 0) {
+            self->mPipe[idx].laps = 0;
+            return 0;
+        }
     }
-    return c3;
-  }
+    {
+        u8 c3 = self->mPipe[idx].laps;
+        if (c3 >= 2) {
+            c3 = 0;
+            self->mPipe[idx].state = c3;
+            self->mPipe[idx].laps = c3;
+        }
+        return c3;
+    }
 }
 
 // @symbol PachinkoPipe_StateSink
@@ -1267,49 +1267,49 @@ void PachinkoPipe_StateSink(char *raw, int i) {
     int off = i * 0x1c;
     int y;
 
-    if (ST(raw, off) != 0) {
-        CTA(raw, off)++;
-        if (CTA(raw, off) < 4)
+    if (PIPE_PHASE(raw, off) != 0) {
+        PIPE_TIMER(raw, off)++;
+        if (PIPE_TIMER(raw, off) < 4)
             return;
-        CTA(raw, off) = 0;
-        FB(raw, off)++;
-        if (FB(raw, off) >= 3) {
-            FB(raw, off) = 0;
-            OUTFLAG2(raw, off) = 1;
-            ST(raw, off) = 0;
+        PIPE_TIMER(raw, off) = 0;
+        PIPE_FRAME(raw, off)++;
+        if (PIPE_FRAME(raw, off) >= 3) {
+            PIPE_FRAME(raw, off) = 0;
+            PIPE_STATE(raw, off) = 1;
+            PIPE_PHASE(raw, off) = 0;
             return;
         }
-        OUTFLAG(raw, off) = sPachinkoPipeSinkStartFrames[FB(raw, off)];
+        PIPE_SPRITE(raw, off) = sPachinkoPipeSinkStartFrames[PIPE_FRAME(raw, off)];
         return;
     }
 
-    CTA(raw, off)++;
-    if (CTA(raw, off) >= 4) {
-        CTA(raw, off) = 0;
-        FB(raw, off)++;
-        if (FB(raw, off) >= 6) {
-            FB(raw, off) = 0;
+    PIPE_TIMER(raw, off)++;
+    if (PIPE_TIMER(raw, off) >= 4) {
+        PIPE_TIMER(raw, off) = 0;
+        PIPE_FRAME(raw, off)++;
+        if (PIPE_FRAME(raw, off) >= 6) {
+            PIPE_FRAME(raw, off) = 0;
         }
-        OUTFLAG(raw, off) = sPachinkoPipeSinkFrames[FB(raw, off)];
+        PIPE_SPRITE(raw, off) = sPachinkoPipeSinkFrames[PIPE_FRAME(raw, off)];
     }
 
-    ACC(raw, off) += VEL(raw, off);
-    y = ACC(raw, off) >> 0xc;
+    PIPE_X(raw, off) += PIPE_VEL(raw, off);
+    y = PIPE_X(raw, off) >> 0xc;
     if (y >= sPachinkoPipeSinkStops[i + 2]) {
-        if (VEL(raw, off) >= 0x800)
-            VEL(raw, off) -= 0x80;
+        if (PIPE_VEL(raw, off) >= 0x800)
+            PIPE_VEL(raw, off) -= 0x80;
     } else {
-        VEL(raw, off) += 0x80;
+        PIPE_VEL(raw, off) += 0x80;
     }
     if (y < sPachinkoPipeSinkStops[i])
         return;
 
-    ACC(raw, off) = sPachinkoPipeSinkStops[i] << 0xc;
-    VEL(raw, off) = -0x1000;
-    ST(raw, off)++;
-    CTA(raw, off) = 0;
-    FB(raw, off) = 0;
-    OUTFLAG(raw, off) = sPachinkoPipeSinkStartFrames[0];
+    PIPE_X(raw, off) = sPachinkoPipeSinkStops[i] << 0xc;
+    PIPE_VEL(raw, off) = -0x1000;
+    PIPE_PHASE(raw, off)++;
+    PIPE_TIMER(raw, off) = 0;
+    PIPE_FRAME(raw, off) = 0;
+    PIPE_SPRITE(raw, off) = sPachinkoPipeSinkStartFrames[0];
 }
 
 // @symbol PachinkoPipe_StateRise
@@ -1318,7 +1318,7 @@ void PachinkoPipe_StateRise(char *raw, int i) {
     int off = i * 0x1c;
     int y;
 
-    if (self->mPipe[i].state != 0) {
+    if (self->mPipe[i].phase != 0) {
         (self->mPipe[i].timer)++;
         if (self->mPipe[i].timer < 4) {
             return;
@@ -1327,11 +1327,11 @@ void PachinkoPipe_StateRise(char *raw, int i) {
         (self->mPipe[i].frame)++;
         if (self->mPipe[i].frame >= 3) {
             self->mPipe[i].frame = 0;
-            self->mPipe[i].out2 = 2;
-            self->mPipe[i].state = 0;
+            self->mPipe[i].state = 2;
+            self->mPipe[i].phase = 0;
             return;
         }
-        self->mPipe[i].out = sPachinkoPipeRiseStartFrames[self->mPipe[i].frame];
+        self->mPipe[i].sprite = sPachinkoPipeRiseStartFrames[self->mPipe[i].frame];
         return;
     }
 
@@ -1342,11 +1342,11 @@ void PachinkoPipe_StateRise(char *raw, int i) {
         if (self->mPipe[i].frame >= 6) {
             self->mPipe[i].frame = 0;
         }
-        self->mPipe[i].out = sPachinkoPipeRiseFrames[self->mPipe[i].frame];
+        self->mPipe[i].sprite = sPachinkoPipeRiseFrames[self->mPipe[i].frame];
     }
 
-    self->mPipe[i].acc = self->mPipe[i].acc + self->mPipe[i].vel;
-    y = self->mPipe[i].acc >> 0xc;
+    self->mPipe[i].x = self->mPipe[i].x + self->mPipe[i].vel;
+    y = self->mPipe[i].x >> 0xc;
     if (y <= sPachinkoPipeRiseStops[i + 2]) {
         if (self->mPipe[i].vel <= -0x800) {
             self->mPipe[i].vel = self->mPipe[i].vel + 0x80;
@@ -1358,12 +1358,12 @@ void PachinkoPipe_StateRise(char *raw, int i) {
     if (y > sPachinkoPipeRiseStops[i]) {
         return;
     }
-    self->mPipe[i].acc = sPachinkoPipeRiseStops[i] << 0xc;
+    self->mPipe[i].x = sPachinkoPipeRiseStops[i] << 0xc;
     self->mPipe[i].vel = 0x1000;
-    (self->mPipe[i].state)++;
+    (self->mPipe[i].phase)++;
     self->mPipe[i].timer = 0;
     self->mPipe[i].frame = 0;
-    self->mPipe[i].out = sPachinkoPipeRiseStartFrames[0];
+    self->mPipe[i].sprite = sPachinkoPipeRiseStartFrames[0];
 }
 
 #pragma push
@@ -1382,13 +1382,13 @@ void PachinkoPipe_StatePick(char *raw, int n) {
     unsigned int rand = ((unsigned)rnd >> 16) & 0x7fff;
     unsigned int idx = (rand << 1) >> 0xf;
     int kind = sPachinkoPipeKinds[idx];
-    unsigned char *kinds = (unsigned char*)(raw + 0x4eb3);
+    unsigned char *state = (unsigned char *)(raw + 0x4eb3);
     char *q;
-    kinds[off] = (unsigned char)kind;
+    state[off] = (unsigned char)kind;
     q = raw + off + 0x4000;
     *(unsigned char*)(q + 0xeb4) = 0;
     q = raw + off;
-    if (kinds[off] == 2) {
+    if (state[off] == 2) {
         *(unsigned char*)(q + 0x4000 + 0xeb9) = 1;
         *(int*)(q + 0x4000 + 0xea8) = 0x1000;
     } else {
@@ -1409,7 +1409,7 @@ void PachinkoPipe_UpdateAll(char *raw) {
     char *row = raw;
     do {
         if (PIPE(row)->active != 0) {
-            int idx = PIPE(row)->out2;
+            int idx = PIPE(row)->state;
             Ent7d0 *rec = &sPachinkoPipeStateTable[idx];
             int adj = rec->b;
             char *obj = raw + (adj >> 1);
@@ -1432,11 +1432,11 @@ void PachinkoPipe_ResetAll(unsigned char *row) {
     for (i = 0; i < 2; i++, row += 0x1c) {
         PIPE(row)->active = 1;
         PIPE(row)->visible = 0;
-        PIPE(row)->out2 = 0;
         PIPE(row)->state = 0;
-        PIPE(row)->out = 0;
+        PIPE(row)->phase = 0;
+        PIPE(row)->sprite = 0;
         PIPE(row)->timer = 0;
-        PIPE(row)->acc = data_ov006_0212eb24[i] << 12;
+        PIPE(row)->x = data_ov006_0212eb24[i] << 12;
         PIPE(row)->y = 0x68000;
         PIPE(row)->vel = 0;
         *(int *)(row + 0x4eac) = 0;
@@ -2523,8 +2523,8 @@ void Pachinko_ResetRound(char *self)
     for (i = 0; i < 30; i++) {
         scene->mPopup[i].x = 0;
         scene->mPopup[i].y = 0;
+        scene->mPopup[i].points = 0;
         scene->mPopup[i].timer = 0;
-        scene->mPopup[i].value = 0;
     }
 
     for (j = 0; j < 3; j++) {
@@ -2534,16 +2534,16 @@ void Pachinko_ResetRound(char *self)
 
     /* r, s and t walk `this` one record per pass, so their [0] is element k,
        l or m; indexing the arrays directly grows the function by 16 bytes.
-       The two raw pipe stores hit pads nothing else reads or writes. */
+       The two raw pipe stores hit pads nothing reads. */
     r = self;
     for (k = 0; k < 2; k++) {
-        ((dScMgPachinko_c *)r)->mPipe[0].acc = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].x = 0;
         ((dScMgPachinko_c *)r)->mPipe[0].y = 0;
         ((dScMgPachinko_c *)r)->mPipe[0].vel = 0;
         *(int *)(r + 0x4eac) = 0;
         ((dScMgPachinko_c *)r)->mPipe[0].timer = 0;
-        ((dScMgPachinko_c *)r)->mPipe[0].out = 0;
-        ((dScMgPachinko_c *)r)->mPipe[0].out2 = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].sprite = 0;
+        ((dScMgPachinko_c *)r)->mPipe[0].state = 0;
         *(char *)(r + 0x4eb2) = 0;
         ((dScMgPachinko_c *)r)->mPipe[0].active = 0;
         ((dScMgPachinko_c *)r)->mPipe[0].visible = 0;
