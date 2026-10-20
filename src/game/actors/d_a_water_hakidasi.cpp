@@ -198,9 +198,9 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
                         mSpawnedHead = 0;
                     }
                     ring->mSpawner = this;
-                    ring->unk_0a4 = 0;
+                    ring->mSpeedX = 0;
                     ring->mVertSpeed = 0x5000;
-                    ring->unk_0ac = 0;
+                    ring->mSpeedZ = 0;
                 }
                 mStateTimer = 0x50;
             }

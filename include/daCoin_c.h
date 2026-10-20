@@ -75,7 +75,7 @@ struct daCoin_c : dActor_c {
     s32 mFloorPosY;            /* 0x398 */
     /* Read only by func_ov002_020b1a60, which copies that actor's position
        (raised by 0xc8000) into the coin every frame. Written by
-       dActor_c::GivePlayerCoins: the popup coin follows the paid player. */
+       dActor_c::GivePlayerCoins, which points it at the player it pays. */
     dActor_c *mFollowTarget;            /* 0x39c */
     s32 mCoinType;            /* 0x3a0 */
     s32 mBehaviorType;            /* 0x3a4 */

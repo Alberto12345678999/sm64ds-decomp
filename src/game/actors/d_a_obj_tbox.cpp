@@ -261,9 +261,9 @@ void daObjTbox_c::State1()
         if (player->mIsUnderwater != 0) {
             dActor_c *bubble = dActor_c::Spawn(
                 0x123, 0, spawnPos, 0, mAreaId, -1);
-            bubble->unk_0a4 = 0;
+            bubble->mSpeedX = 0;
             bubble->mVertSpeed = 0x800;
-            bubble->unk_0ac = 0;
+            bubble->mSpeedZ = 0;
         }
     }
 

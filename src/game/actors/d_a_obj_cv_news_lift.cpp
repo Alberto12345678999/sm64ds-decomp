@@ -14,7 +14,7 @@
  * deslop leftovers:
  * - InitResources: dBgW_KcMbg::SetFile as a method is 0x264 against 0x258
  *   (Fix12<int> by value). The scalar mangled call stays.
- * - InitResources: mMeshCollider.unk_1c = &MainMeshCallback, and a cast
+ * - InitResources: mMeshCollider.stoodOnCallback = &MainMeshCallback, and a cast
  *   store of UpdatePosWithTransform into beforeClsnCallback, are each
  *   0x254 against 0x258. func_020393c4 and func_020393d4 stay.
  * - InitResources: probePos.y = mPosY - 0x14000 is 0x254 against 0x258.

@@ -334,9 +334,9 @@ void daKuriKing_c::func_ov074_0211f244()
             int rv = (unsigned int)RandomIntInternal(&data_0209e650) >> 8;
             t->mTimer = 0x30;
             t->mHorzSpeed = ((rv & 0xf) << 0xc) + 0x16000;
-            t->unk_0a4 = 0;
+            t->mSpeedX = 0;
             t->mVertSpeed = ((rv & 0x1f) << 0xc) + 0x60000;
-            t->unk_0ac = 0;
+            t->mSpeedZ = 0;
             Vector3_16 pos = t->mPrevAngle;
             rv &= 0x1000;
             pos.y = (short)(pos.y + rv);

@@ -25,7 +25,7 @@
 //   passes 0, 0). There is no int method on the class.
 // - Particle::System::NewSimple's definition takes three s32 positions
 //   (Kill). A Fix12<int> declaration changes the caller.
-// - func_020393c4 is `p[7] = v`, the store of OnStoodOn into dBgW::unk_1c.
+// - func_020393c4 is `p[7] = v`, the store of OnStoodOn into dBgW::stoodOnCallback.
 //   The ROM calls it; an inlined store would drop the bl. Naming belongs
 //   on dBgW.
 // - OnStoodOn keeps long_calls. The ROM tail is the pooled absolute
@@ -197,9 +197,9 @@ void daObjFallBlock_c_ResetMotion(daObjFallBlock_c *c)
     c->mAngleZ = 0;
     c->mShakeX = 0;
     c->mTiltVelZ = 0;
-    c->unk_0a4 = 0;
+    c->mSpeedX = 0;
     c->mVertSpeed = 0;
-    c->unk_0ac = 0;
+    c->mSpeedZ = 0;
     c->mStateTimer = 4;
 }
 }

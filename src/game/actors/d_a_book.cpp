@@ -337,14 +337,14 @@ int daBook_c::func_ov020_021115ac()
 
     if (BumpedUnderneathByPlayer(*(Player *)found) != 0) {
         /* the bump also cancels the player's vertical speed */
-        Vec3 *p = (Vec3 *)&found->unk_0a4;
+        Vec3 *p = (Vec3 *)&found->mSpeedX;
         Vec3 v;
         v.z = p->z;
         v.x = p->x;
         v.y = 0;
-        found->unk_0a4 = v.x;
+        found->mSpeedX = v.x;
         found->mVertSpeed = v.y;
-        found->unk_0ac = v.z;
+        found->mSpeedZ = v.z;
         mTouchedPlayer = (Player *)found;
         return HIT_ATTACKED;
     }
@@ -527,7 +527,7 @@ void daBook_c::func_ov020_02111aa8()
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02111b28Ev
-/* STATE_FLY: moves by the velocity in unk_0a4/mVertSpeed/unk_0ac and is gone
+/* STATE_FLY: moves by the velocity in mSpeedX/mVertSpeed/mSpeedZ and is gone
  * when it hits the player, the ground, or a wall that faces it (the wall's
  * normal more than a quarter turn from the book's heading). */
 void daBook_c::func_ov020_02111b28()
@@ -535,7 +535,7 @@ void daBook_c::func_ov020_02111b28()
   if (mUsesModelAnim != 0) {
     mModelAnim.Advance();
   }
-  AddVec3(&mPosX, &unk_0a4, &mPosX);
+  AddVec3(&mPosX, &mSpeedX, &mPosX);
   if (func_ov020_02111418() != 0) return;
   dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
   if (mWithMeshClsn.IsOnGround() != 0) {
@@ -589,9 +589,9 @@ void daBook_c::func_ov020_02111c30()
         {
             /* velocity = kFlightSpeed along (yaw, pitch) */
             s32 r = FX_MUL(data_02082214[SINCOS_INDEX(mAngleX) + 1], 0x32000);
-            unk_0a4 = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY)]);
+            mSpeedX = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY)]);
             mVertSpeed = FX_MUL(data_02082214[SINCOS_INDEX(mAngleX)], -0x32000);
-            unk_0ac = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY) + 1]);
+            mSpeedZ = FX_MUL(r, data_02082214[SINCOS_INDEX(mAngleY) + 1]);
         }
         return;
     }

@@ -16,7 +16,7 @@
  * Leftover: dBgW_KcMbg::SetFile, IsClsnInRange, Particle::System::NewSimple
  *   stay mangled (Fix12-by-value, wall 6az). SetFile as a method
  *   size-DIFF Init.
- * Leftover: unk_0a4 is dActor_c's X speed (velocity at 0xa4/a8/ac),
+ * Leftover: mSpeedX is dActor_c's X speed (velocity at 0xa4/a8/ac),
  *   not a field of this class.
  * Leftover: resource table is two { model, KCL, CLPS } rows. Init must
  *   keep the three column symbols 02114534/38/3c; a typed
@@ -289,12 +289,12 @@ extern "C" void func_ov015_02111df4(daObjBk_Dossunbar_c *self)
     func_ov015_02111fb8(self, 5);
 }
 
-/* State 4 enter: X speed rather than a timer. unk_0a4 is dActor_c's
-   velocity X (with mVertSpeed / unk_0ac). */
+/* State 4 enter: X speed rather than a timer. mSpeedX is dActor_c's
+   velocity X (with mVertSpeed / mSpeedZ). */
 // @symbol func_ov015_02111dd4
 extern "C" void func_ov015_02111dd4(daObjBk_Dossunbar_c *self)
 {
-    self->unk_0a4 = 0xf000;
+    self->mSpeedX = 0xf000;
     Sound::PlayBank3(0xc3, self->mCamSpacePos);
 }
 
@@ -330,7 +330,7 @@ extern "C" void func_ov015_02111d4c(daObjBk_Dossunbar_c *self)
 // @symbol func_ov015_02111d28
 extern "C" void func_ov015_02111d28(daObjBk_Dossunbar_c *self)
 {
-    self->unk_0a4 = -0x14000;
+    self->mSpeedX = -0x14000;
     Sound::PlayBank3(0xc3, self->mCamSpacePos);
 }
 
