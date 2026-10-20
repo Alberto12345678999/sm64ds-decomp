@@ -86,13 +86,14 @@ int Heyho_Destruct(int *c) {
 struct BMD_File; struct BCA_File;
 extern HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile;
 extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
-/* View of fBase_c (include/fBase_c.h) up to actorID; this TU does not
- * include that header. data_0209f5c0 is the current scene. */
+/* data_0209f5c0 is the current scene. This TU does not include
+ * include/fBase_c.h, so fBaseView reads it up to actorID. */
+struct fBase_c;
+extern fBase_c *data_0209f5c0;
 struct fBaseView {
     u8 pad_00[0xc];
     u16 actorID; /* 0x0c */
 };
-extern fBaseView *data_0209f5c0;
 namespace n020c6e4c {
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -119,7 +120,7 @@ extern "C" int Heyho_LoadResources(char *c) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)HEYHO(c)->mModelAnim, a, 0, 0x800, 0);
     func_02016acc((char *)HEYHO(c)->mModelAnim, 1);
     func_02016b24((char *)HEYHO(c)->mModelAnim, 2);
-    int b = (data_0209f5c0->actorID == 0x175);
+    int b = (((fBaseView *)data_0209f5c0)->actorID == 0x175);
     if (b != 0) {
         func_02016a14((char *)HEYHO(c)->mModelAnim, 0x7fff);
         func_02016a04((char *)HEYHO(c)->mModelAnim, 0x7d40);
