@@ -11,8 +11,8 @@
  * spelling, which is what the unowned PMF .data records resolve by name.
  *
  * Remaining reconstruction under issue #2478:
- * - mStateTimer comparisons stay unsigned short, because the ROM loads it
- *   with ldrh.
+ * - mStateTimer comparisons read it through a (u16) cast, because the ROM
+ *   loads it with ldrh.
  * - The Mtx43 / V3A overlays on mModelAnim.mat4x3, mShadowMat and the
  *   player position copies. Plain Matrix4x3 / Vector3 assignment
  *   scalarizes.
@@ -145,7 +145,7 @@ s32 daYurei_Mucho_c::OnYoshiTryEat()
  * cannot distinguish them. */
 void daYurei_Mucho_c::OnTurnIntoEgg(Player &player)
 {
-    GivePlayerCoins(player, (unsigned char)(unk_10a + 1), 0);
+    GivePlayerCoins(player, (unsigned char)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 
@@ -173,8 +173,8 @@ int daYurei_Mucho_c::InitResources()
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x46000, 0, 0, 0);
-    unk_108 = 1;
-    unk_10a = 1;
+    mCoinType = 1;
+    mExtraCoinCount = 1;
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
@@ -191,7 +191,7 @@ int daYurei_Mucho_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0) {
-            if (unk_104 == 0) {
+            if (mSpitOutTimer == 0) {
                 mdCcAc_c.Update();
             }
         }
@@ -222,16 +222,16 @@ int daYurei_Mucho_c::Behavior()
         }
     }
     {
-        /* Gravity, clamped at terminal velocity. unk_0ac is read and written
+        /* Gravity, clamped at terminal velocity. mSpeedZ is read and written
            back unchanged -- the ROM really does reload and restore it here. */
         int fallSpeed = mVertSpeed + mVertAccel;
         int clamped = mTerminalVelocity;
         if (fallSpeed >= clamped) {
             clamped = fallSpeed;
         }
-        int keep = unk_0ac;
+        int keep = mSpeedZ;
         mVertSpeed = clamped;
-        unk_0ac = keep;
+        mSpeedZ = keep;
     }
     if (mCurrentState != (State *)data_ov065_0211d650) {
         int ang;
@@ -372,8 +372,7 @@ int daYurei_Mucho_c::func_ov065_0211691c(State *s)
 int daYurei_Mucho_c::func_ov065_021168a8()
 {
     mTargetAngle = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
-    /* unsigned/signed timer store: a named s16 write DIFFs the ldrh sites. */
-    *(short *)((char *)this + 0x100) = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
+    mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
         ((void **)&data_ov065_0211d600)[1], 0, 0x1000, 0);
     return 1;
@@ -397,8 +396,8 @@ int daYurei_Mucho_c::func_ov065_02116744()
     if (Vec3_Dist(&mPosX, &mHomePosX) > 0x1f4000 ||
         mWithMeshClsn.IsOnWall() != 0) {
         mTargetAngle = Vec3_HorzAngle(&mPosX, &mHomePosX);
-        if (*(unsigned short *)((char *)this + 0x100) < 0x14)
-            *(unsigned short *)((char *)this + 0x100) = 0x14;
+        if ((u16)mStateTimer < 0x14)
+            mStateTimer = 0x14;
     }
 
     ApproachAngle(&mPrevAngleY, mTargetAngle, 0xa, 0x200, 0x100);
@@ -406,9 +405,9 @@ int daYurei_Mucho_c::func_ov065_02116744()
 
     in.z = 0xa000;
     Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-    MulVec3Mat4x3(&in, data_020a0e68, &unk_0a4);
+    MulVec3Mat4x3(&in, data_020a0e68, &mSpeedX);
 
-    if (*(unsigned short *)((char *)this + 0x100) == 0) {
+    if ((u16)mStateTimer == 0) {
         func_ov065_0211691c((State *)data_ov065_0211d670);
         return 1;
     }
@@ -421,7 +420,7 @@ int daYurei_Mucho_c::func_ov065_02116744()
         dp.z = pos[2];
 
         if (Vec3_Dist(&mPosX, &dp) < 0x3e8000) {
-            *(unsigned short *)((char *)this + 0x100) = 0x14;
+            mStateTimer = 0x14;
             func_ov065_0211691c((State *)&data_ov065_0211d680);
         }
     }
@@ -434,9 +433,9 @@ int daYurei_Mucho_c::func_ov065_02116744()
 /* State entry hook at 0x0211d680 +0x00: stop the actor dead. */
 int daYurei_Mucho_c::func_ov065_0211672c()
 {
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     return 1;
 }
 
@@ -466,23 +465,23 @@ int daYurei_Mucho_c::func_ov065_021165d8()
         b.z = tmp.z;
         pitch = Vec3_VertAngle(&mPosX, &b);
         if (Vec3_Dist(&mPosX, &tmp) >= 0x1f4000) {
-            unk_0a4 = 0;
+            mSpeedX = 0;
             mVertSpeed = 0;
-            unk_0ac = 0;
+            mSpeedZ = 0;
         } else {
             v.z = 0;
             v.z = -0x1000;
             v.x = 0;
             v.y = 0;
             Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-            MulVec3Mat4x3(&v, data_020a0e68, &unk_0a4);
+            MulVec3Mat4x3(&v, data_020a0e68, &mSpeedX);
         }
     } else {
-        *(short *)((char *)this + 0x100) = pitch;
+        mStateTimer = pitch;
     }
     ApproachAngle(&mPrevAngleY, mTargetAngle, 1, 0x500, 0x500);
     ApproachAngle(&mPrevAngleX, pitch, 1, 0x500, 0x500);
-    if (*(unsigned short *)((char *)this + 0x100) == 0)
+    if ((u16)mStateTimer == 0)
         func_ov065_0211691c((State *)data_ov065_0211d650);
     return 1;
 }
@@ -497,7 +496,7 @@ short daYurei_Mucho_c::func_ov065_02116588()
     mShotCount = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
         ((void **)&data_ov065_0211d608)[1], 0x40000000, 0x1000, 0);
-    *(short *)((char *)this + 0x100) = 0;
+    mStateTimer = 0;
     return 1;
 }
 
@@ -515,9 +514,8 @@ int daYurei_Mucho_c::func_ov065_02116364()
         mTargetAngle = Vec3_HorzAngle(&mPosX, &L.tgt);
         ApproachAngle(&mPrevAngleY, mTargetAngle, 1, 0x500, 0x500);
 
-        if (((*(u32 *)((char *)this + 0x358) << 4) >> 16) >= 0xf
-            && *(u16 *)((char *)this + 0x100) == 0
-            && mShotCount < 3) {
+        if ((((u32)mModelAnim.currFrame << 4) >> 16) >= 0xf && (u16)mStateTimer == 0 &&
+            mShotCount < 3) {
             void *spawned = dActor_c::Spawn(0xe9, 1, *(Vector3 *)&mShotPosX, 0, mAreaId, -1);
             if (spawned != 0) {
                 u8 *shot = (u8 *)spawned;
@@ -535,28 +533,28 @@ int daYurei_Mucho_c::func_ov065_02116364()
                 *(s32 *)(shot + 0xa8) = L.sout.y;
                 *(s32 *)(shot + 0xac) = L.sout.z;
                 mShotCount += 1;
-                *(u16 *)((char *)this + 0x100) = 4;
+                mStateTimer = 4;
             }
         }
     }
 
-    if (((dExtFrameCtrl_c *)((void *)((char *)this + 0x350)))->Finished() != 0) {
+    if (mModelAnim.Finished() != 0) {
         if (pl != 0) {
             s32 *dsrc = (s32 *)(int)(&pl->mPosX);
             L.d.x = dsrc[0];
             L.d.y = dsrc[1];
             L.d.z = dsrc[2];
             if (Vec3_Dist(&mPosX, &L.d) > 0x3e8000) {
-                *(u16 *)((char *)this + 0x100) = 0;
+                mStateTimer = 0;
                 func_ov065_0211691c((State *)data_ov065_0211d670);
             } else {
-                *(u16 *)((char *)this + 0x100) = 0x32;
+                mStateTimer = 0x32;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
                     ((void **)&data_ov065_0211d600)[1], 0, 0x1000, 0);
                 func_ov065_0211691c((State *)&data_ov065_0211d680);
             }
         } else {
-            *(u16 *)((char *)this + 0x100) = 0;
+            mStateTimer = 0;
             func_ov065_0211691c((State *)data_ov065_0211d670);
         }
     }
@@ -568,12 +566,12 @@ int daYurei_Mucho_c::func_ov065_02116364()
 /* State entry hook at 0x0211d660 +0x00: the bumped-from-below pop. */
 int daYurei_Mucho_c::func_ov065_02116328()
 {
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
     mVertSpeed = 0x32000;
     mVertAccel = -0x5000;
-    *(short *)((char *)this + 0x100) = 0xa;
+    mStateTimer = 0xa;
     mFlags = 0;
     return 1;
 }
@@ -592,7 +590,7 @@ int daYurei_Mucho_c::func_ov065_021162c0()
 {
     ApproachAngle(&mAngleX, -0x4000, 0xa, 0x200, 0x100);
     ApproachLinear(mAngleX, -0x4000, 0x200);
-    if (*(unsigned short *)((char *)this + 0x100) == 0)
+    if ((u16)mStateTimer == 0)
         func_ov065_02115f84();
     return 1;
 }
@@ -688,7 +686,7 @@ int daYurei_Mucho_c::func_ov065_02115f84()
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, unk_10a + 1, 0xa000, 0);
+    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, mExtraCoinCount + 1, 0xa000, 0);
     KillAndTrackInDeathTable();
     return func_02012694(0x11e, &mCamSpacePosX);
 }

@@ -275,9 +275,9 @@ void daChoropu_c::func_ov080_02123a34()
         if (d >= 0x258000)
             d = 0x258000;
         a->mHorzSpeed = 0x1e000;
-        a->unk_0a4 = 0;
+        a->mSpeedX = 0;
         a->mVertSpeed = (d << 2) / 100 + 0x4000;
-        a->unk_0ac = 0;
+        a->mSpeedZ = 0;
         func_0201267c(0xd2, &mCamSpacePosX);
     }
 
@@ -771,9 +771,9 @@ s32 daChoro_Rock_c::Behavior()
             s->mPrevAngleY = (short)((unsigned int)r >> 8);
             s->mPrevAngleZ = 0;
             s->mHorzSpeed = mHorzSpeed >> 1;
-            s->unk_0a4 = 0;
+            s->mSpeedX = 0;
             s->mVertSpeed = 0x5000;
-            s->unk_0ac = 0;
+            s->mSpeedZ = 0;
 
             s = dActor_c::Spawn(daChoro_Rock_ACTOR_ID, 1, mPos, 0, mAreaId, -1);
             r = RandomIntInternal(&data_0209e650);
@@ -781,9 +781,9 @@ s32 daChoro_Rock_c::Behavior()
             s->mPrevAngleY = (short)((unsigned int)r >> 8);
             s->mPrevAngleZ = 0;
             s->mHorzSpeed = mHorzSpeed >> 1;
-            s->unk_0a4 = 0;
+            s->mSpeedX = 0;
             s->mVertSpeed = 0x5000;
-            s->unk_0ac = 0;
+            s->mSpeedZ = 0;
         }
         MarkForDestruction();
     }

@@ -30,12 +30,24 @@ enum PresenterAnim {
 
 struct Presenter {
     s32 mState[2];            /* 0x000 -- the current state's member-pointer record */
-    u8 mFace[0x60];           /* 0x008 -- a BlendModelAnim */
+    u8 mFace[0x8];            /* 0x008 -- a BlendModelAnim, running to 0x078 */
+    /* mFace's ModelComponents (Model +0x8): Draw hands it to mTexSeq and
+       mTexAnim and nudges two of its materials (its +0x4 table). */
+    u8 mFaceComponents[0x14]; /* 0x010 */
+    u8 mFaceMatrix[0x30];     /* 0x024 -- mFace's Matrix4x3 (Model +0x1c), set by UpdateMatrix */
+    u8 pad_054[0x4];          /* 0x054 -- the rest of mFace's Model */
+    /* mFace's dExtFrameCtrl_c (ModelAnim +0x50): vptr, frame count, current
+       frame, speed. IsAnimDone tests it and ResetPose rewinds [2]. */
+    s32 mFaceFrame[4];        /* 0x058 */
     s32 mFaceAnim;            /* 0x068 -- the BCA file mFace plays */
     u8 pad_06c[0xc];          /* 0x06c */
-    u8 mBack[0x50];           /* 0x078 -- a Model */
-    u8 mTexSeq[0x14];         /* 0x0c8 -- a TextureSequence */
-    u8 mTexAnim[0x14];        /* 0x0dc -- a TextureTransformer */
+    u8 mBack[0x1c];           /* 0x078 -- a Model, running to 0x0c8 */
+    u8 mBackMatrix[0x30];     /* 0x094 -- mBack's Matrix4x3 (Model +0x1c), set by Load */
+    u8 pad_0c4[0x4];          /* 0x0c4 -- the rest of mBack */
+    /* A TextureSequence and a TextureTransformer: each starts with its
+       dExtFrameCtrl_c ([2] is the current frame ResetPose rewinds). */
+    s32 mTexSeq[5];           /* 0x0c8 */
+    s32 mTexAnim[5];          /* 0x0dc */
     PresenterFile mFaceModel; /* 0x0f0 -- face_demo_mario.bmd */
     PresenterFile mBackModel; /* 0x0f8 -- f_demo_back.bmd */
     PresenterFile mAnims[PRESENTER_ANIM_COUNT];   /* 0x100 */

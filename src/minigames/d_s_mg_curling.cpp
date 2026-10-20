@@ -577,30 +577,33 @@ void dScMgCurling_c::Bit_InitAll() {
         mBit[i].texB = 1;
     }
 
+    /* bit walks `this` one dScMgCurling_bit per pass, so its mBit[0] is
+       mBit[i]. The texA read and the second x/y/wait stores stay raw: spelled
+       as members they change the generated code. */
     i = 0;
     bit = (char *)this;
     for (; i < 0x32; i++) {
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
         m = ((roll >> 16) & 0x7fff) << 5;
-        *(int *)(bit + 0x478c) = (int)((m >> 0xf)) << 0xf;
-        *(int *)(bit + 0x4790) = -0x8000;
-        *(char *)(bit + 0x47a8) = 1;
-        *(char *)(bit + 0x47ac) = 1;
-        *(char *)(bit + 0x47a9) = 0;
-        *(char *)(bit + 0x47aa) = 0;
+        ((dScMgCurling_c *)bit)->mBit[0].x = (int)((m >> 0xf)) << 0xf;
+        ((dScMgCurling_c *)bit)->mBit[0].y = -0x8000;
+        ((dScMgCurling_c *)bit)->mBit[0].on = 1;
+        ((dScMgCurling_c *)bit)->mBit[0].shown = 1;
+        ((dScMgCurling_c *)bit)->mBit[0].kind = 0;
+        ((dScMgCurling_c *)bit)->mBit[0].state = 0;
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        *(char *)(bit + 0x47ad) = (char)(((roll >> 16) & 0x7fff) * 5 >> 0xf);
+        ((dScMgCurling_c *)bit)->mBit[0].texA = (char)(((roll >> 16) & 0x7fff) * 5 >> 0xf);
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
         v = *(unsigned char *)(bit + 0x47ad) + ((((roll >> 16) & 0x7fff) << 2) >> 0xf) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
-        *(char *)(bit + 0x47ae) = (char)v;
+        ((dScMgCurling_c *)bit)->mBit[0].texB = (char)v;
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        *(short *)(bit + 0x47a0) =
+        ((dScMgCurling_c *)bit)->mBit[0].wait =
             (short)(((i & 7) << 6) + (((roll >> 16) & 0x7fff) * 0x30 >> 0xf));
 
         roll = (unsigned int)RandomIntInternal(&data_0209d4b8);

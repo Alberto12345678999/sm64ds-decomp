@@ -220,13 +220,10 @@ extern "C" int func_ov100_0214700c(daObjPathLift_c *self)
 {
     Matrix4x3_FromRotationXYZExt(
         &self->mModel.mat4x3, self->mAngleX, self->mAngleY, 0);
-    /* Direct nested-member stores make b56 materialise a second matrix base
-       and grow this function. Retail keeps `this` as the base for the three
-       translation stores. */
-    *(s32 *)((char *)self + 0x114) = self->mPosX >> 3;
-    *(s32 *)((char *)self + 0x118) = self->mPosY >> 3;
+    self->mModel.mat4x3.t.x = self->mPosX >> 3;
+    self->mModel.mat4x3.t.y = self->mPosY >> 3;
     int z = self->mPosZ >> 3;
-    *(s32 *)((char *)self + 0x11c) = z;
+    self->mModel.mat4x3.t.z = z;
     return z;
 }
 
@@ -258,20 +255,20 @@ extern "C" void func_ov100_02146e70(daObjPathLift_c *self)
     if (scaleZ < 0)
         scaleZ = -scaleZ;
 
-    Matrix4x3_FromRotationY((Matrix4x3 *)self->unk_478, self->mAngleY);
-    *(s32 *)((char *)self + 0x49c) = self->mPosX >> 3;
-    *(s32 *)((char *)self + 0x4a0) = (self->mPosY - yOff) >> 3;
-    *(s32 *)((char *)self + 0x4a4) = self->mPosZ >> 3;
+    Matrix4x3_FromRotationY((Matrix4x3 *)self->mShadowMat, self->mAngleY);
+    self->mShadowMat[9] = self->mPosX >> 3;
+    self->mShadowMat[10] = (self->mPosY - yOff) >> 3;
+    self->mShadowMat[11] = self->mPosZ >> 3;
 
     t = data_0209f2d8 == 1;
     if (t != false) {
         _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-            self, &self->mShadowModel, (Matrix4x3 *)self->unk_478, 0x118000,
-            0x7d0000, scaleZ, 0xf);
+            self, &self->mShadowModel, (Matrix4x3 *)self->mShadowMat, 0x118000, 0x7d0000, scaleZ,
+            0xf);
     } else {
         _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-            self, &self->mShadowModel, (Matrix4x3 *)self->unk_478, 0x118000,
-            groundDepth, scaleZ, 0xf);
+            self, &self->mShadowModel, (Matrix4x3 *)self->mShadowMat, 0x118000, groundDepth, scaleZ,
+            0xf);
     }
 }
 // @symbol _ZN15daObjPathLift_cD1Ev

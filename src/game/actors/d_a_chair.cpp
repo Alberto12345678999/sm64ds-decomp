@@ -28,9 +28,8 @@
 // - ST reads mStateTimer/mActionTimer through this+0x300, and the
 //   halfword increments use the int-cast form; the member forms change
 //   sizes.
-// - unk_0a4/unk_0ac keep the base header's names (lateral velocity
-//   beside mVertSpeed). g_profile_CHAIR is not in this TU.
-//   data_ov020_02114af0 is the model handle.
+// - g_profile_CHAIR is not in this TU. data_ov020_02114af0 is the model
+//   handle.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daChair_c_AssetId {
@@ -373,11 +372,11 @@ void daChair_c::State2()
                 mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(diff.x, diff.z);
                 mPrevAngleX = _ZN4cstd5atan2E5Fix12IiES1_(
                                   diff.y, Vec3_HorzLen((const Vector3 *)&diff)) * -1;
-                /* unk_0a4 / unk_0ac: lateral velocity beside mVertSpeed. */
+                /* mSpeedX / mSpeedZ: lateral velocity beside mVertSpeed. */
                 reach = FX_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX) + 1], 0x32000);
-                unk_0a4 = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY)]);
+                mSpeedX = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY)]);
                 mVertSpeed = FX_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX)], -0x32000);
-                unk_0ac = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY) + 1]);
+                mSpeedZ = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY) + 1]);
             } else {
                 if (ST->timer > 0x14) {
                     /* (int)&mAngleY. mAngleY += 0x2710 changes the code size. */
@@ -399,7 +398,7 @@ void daChair_c::State2()
         }
     }
 
-    AddVec3((Vec3 *)&mPosX, (Vec3 *)&unk_0a4, (Vec3 *)&mPosX);
+    AddVec3((Vec3 *)&mPosX, (Vec3 *)&mSpeedX, (Vec3 *)&mPosX);
 
     {
         u32 id = mCylinder.otherOwner;

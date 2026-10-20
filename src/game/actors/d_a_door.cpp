@@ -69,7 +69,7 @@
  *   functions.
  * - dActor_c's mScaleX/Y/Z and mAngleX/Z carry other things for a door
  *   (the player's position in the door's frame, and two area ids), and
- *   unk_0a4/mVertSpeed/unk_0ac hold the message position; the base names
+ *   mSpeedX/mVertSpeed/mSpeedZ hold the message position; the base names
  *   cannot change on one derived class's evidence, so the functions that read
  *   them describe them in their own comments.
  * - the sound ids other than the two swing pairs, the message ids, camera
@@ -791,7 +791,7 @@ int daDoor_c::func_ov100_02144ccc()
        data_ov100_02148904 for a nonzero mKeyModelIdx, else
        data_ov100_021488f4.
    Where ShowMessage, TryTalkToDoor or TryTalkToKeyDoor returns 0, control
-   goes to the last case. The message position is unk_0a4 (see
+   goes to the last case. The message position is mSpeedX (see
    InitResources). Was a C source. */
 int daDoor_c::func_ov100_02144cf8(Player *b)
 {
@@ -803,7 +803,8 @@ int daDoor_c::func_ov100_02144cf8(Player *b)
             if (data_0209caa0.flags1 & (DOOR_SAVE_STAR_UNLOCKED << entry->flagShift)) goto L240;
             if (NumStars() < entry->starsNeeded) {
                 if (func_ov100_02144f84() == 0) return 1;
-                if (b->ShowMessage(*this, entry->msg, (Vector3 *)&unk_0a4, 0, 2) == 0) goto L240;
+                if (b->ShowMessage(*this, entry->msg, (Vector3 *)&mSpeedX, 0, 2) == 0)
+                    goto L240;
                 func_ov100_021453d8(&data_ov100_021488c4, (int)b);
                 return 1;
             } else {
@@ -832,7 +833,8 @@ int daDoor_c::func_ov100_02144cf8(Player *b)
                     }
                     msg = sel ? entry->msg : 0x17;
                 }
-                if (b->ShowMessage(*this, (short)msg, (Vector3 *)&unk_0a4, 0, 2) == 0) goto L240;
+                if (b->ShowMessage(*this, (short)msg, (Vector3 *)&mSpeedX, 0, 2) == 0)
+                    goto L240;
             }
             func_ov100_021453d8(&data_ov100_021488c4, (int)b);
             if (entry->keyIndex == 5)
@@ -1271,11 +1273,11 @@ s32 daDoor_c::InitResources()
         z = mPosZ;
         x = mPosX;
         w = y + 0xb4000;                     /* 180 units up */
-        unk_0a4 = x;
+        mSpeedX = x;
         mVertSpeed = w;
         {
             unsigned char bi = data_0209f250;
-            unk_0ac = z;
+            mSpeedZ = z;
             r4 = (int)data_0209f394[bi];
         }
     }

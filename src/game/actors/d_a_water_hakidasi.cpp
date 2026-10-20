@@ -169,7 +169,7 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
         }
     }
 
-    if (unk_318 == 0) {
+    if (mNoRings == 0) {
         mParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
             mParticle, 0x138, mPosX, mPosY, mPosZ, 0, 0);
         if (mRingsPassed < 5) {
@@ -198,9 +198,9 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
                         mSpawnedHead = 0;
                     }
                     ring->mSpawner = this;
-                    ring->unk_0a4 = 0;
+                    ring->mSpeedX = 0;
                     ring->mVertSpeed = 0x5000;
-                    ring->unk_0ac = 0;
+                    ring->mSpeedZ = 0;
                 }
                 mStateTimer = 0x50;
             }
@@ -272,7 +272,7 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
         rewardPos.y = rewardPos.y - 0x64000;
         *timerp = *timerp + 1;
         if (mRewardTimer > 0x1e) {
-            dActor_c::Spawn(0xb2, unk_314 | 0x40, *(Vector3 *)&rewardPos, &mAngle, mAreaId, -1);
+            dActor_c::Spawn(0xb2, mStarID | 0x40, *(Vector3 *)&rewardPos, &mAngle, mAreaId, -1);
             mRingsPassed = 0xa;
         }
     }
@@ -356,9 +356,10 @@ s32 daWater_Hakidasi_c::InitResources()
 {
     Model::LoadFile(data_ov002_0210da10);
     Model::LoadFile(data_ov002_0210d9a8);
-    unk_314 = (param1 >> 0xc) & 0xf;
-    unk_318 = param1 & 1;
-    if ((param1 & 0xf) > 1) unk_318 = 0;
+    mStarID = (param1 >> 0xc) & 0xf;
+    mNoRings = param1 & 1;
+    if ((param1 & 0xf) > 1)
+        mNoRings = 0;
     if (data_0209f2f8 == 8 && (data_0209f220 == 1 || IsStarCollected(SublevelToLevel(8), 1) == 0)) {
         return 0;
     }

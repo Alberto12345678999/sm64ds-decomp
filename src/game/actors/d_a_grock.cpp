@@ -8,8 +8,8 @@
  * next nibble is the star index. Spawned rocks are actor 0xdd, this class.
  * 0xbf is the player.
  *
- * The travel heading lives in mPrevAngleY. Lateral velocity is unk_0a4 /
- * unk_0ac around mVertSpeed; the base header still spells those unk_.
+ * The travel heading lives in mPrevAngleY. Lateral velocity is mSpeedX /
+ * mSpeedZ around mVertSpeed.
  * The rolling Sound::PlayLong handle is the s32 at 0x3b8 (pad_3b8) and the
  * rolling Particle::System::New handle is the s32 at 0x3c4 (pad_3c3).
  * unk_3b4 is the other rock's uniqueID (spawner on the child, and the
@@ -292,17 +292,17 @@ extern "C" void func_ov021_02112544(char *raw)
                 Sound::PlayLong(grock_roll_sound(rock), 3, 0x8a, rock->mCamSpacePos, 0);
         }
         {
-            int *vx = (int *)(int)&rock->unk_0a4;
-            int *vz = (int *)(int)&rock->unk_0ac;
+            int *vx = (int *)(int)&rock->mSpeedX;
+            int *vz = (int *)(int)&rock->mSpeedZ;
             *vx = *vx + normal.x * 5;
             *vz = *vz + normal.z * 5;
         }
-        rock->mHorzSpeed = Vec3_HorzLen(&rock->unk_0a4);
-        rock->mPrevAngleY = (s16)_ZN4cstd5atan2E5Fix12IiES1_(rock->unk_0a4, rock->unk_0ac);
+        rock->mHorzSpeed = Vec3_HorzLen(&rock->mSpeedX);
+        rock->mPrevAngleY = (s16)_ZN4cstd5atan2E5Fix12IiES1_(rock->mSpeedX, rock->mSpeedZ);
         if (rock->mHorzSpeed >= 0x22000) {
             rock->mHorzSpeed = 0x22000;
-            rock->unk_0a4 = data_02082214[((*(u16 *)&rock->mPrevAngleY >> 4) << 1)] * 0x22;
-            rock->unk_0ac = data_02082214[((*(u16 *)&rock->mPrevAngleY >> 4) << 1) + 1] * 0x22;
+            rock->mSpeedX = data_02082214[((*(u16 *)&rock->mPrevAngleY >> 4) << 1)] * 0x22;
+            rock->mSpeedZ = data_02082214[((*(u16 *)&rock->mPrevAngleY >> 4) << 1) + 1] * 0x22;
         }
     }
 
@@ -332,7 +332,7 @@ extern "C" void func_ov021_021127b4(char *raw)
     if (sum >= clamped)
         clamped = sum;
     rock->mVertSpeed = clamped;
-    AddVec3(&rock->mPos, (Vector3 *)&rock->unk_0a4, &rock->mPos);
+    AddVec3(&rock->mPos, (Vector3 *)&rock->mSpeedX, &rock->mPos);
 }
 
 // @symbol _ZN9daGrock_c16CleanupResourcesEv
@@ -481,8 +481,8 @@ int daGrock_c::InitResources()
             mVertAccel = -0x4000;
             mTerminalVelocity = -0x28000;
             mHorzSpeed = 0x1e000;
-            unk_0a4 = data_02082214[((*(u16 *)&mPrevAngleY >> 4) << 1)] * 0x1e;
-            unk_0ac = data_02082214[((*(u16 *)&mPrevAngleY >> 4) << 1) + 1] * 0x1e;
+            mSpeedX = data_02082214[((*(u16 *)&mPrevAngleY >> 4) << 1)] * 0x1e;
+            mSpeedZ = data_02082214[((*(u16 *)&mPrevAngleY >> 4) << 1) + 1] * 0x1e;
         }
     } else if (mType == kGrockStarSpawner) {
         unk_3c1 = (u8)((param1 >> 8) & 0xf);

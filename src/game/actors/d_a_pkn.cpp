@@ -22,9 +22,6 @@
  *   two-word view, because include/SharedFilePtr.h deliberately leaves the
  *   layout unrecovered; the state table at 0x02130e80 also keeps its
  *   address name (text-only TU; the static initializer owns the .bss).
- * - unk_108 on the dEnemyBase_c base is the drop-a-blue-coin-on-death flag
- *   shared by ~10 subclasses (see daBook_c/daBmb_c usage); renaming it is
- *   base-header work, left to a shared-header pass.
  *
  * Boundary, layout and compiler experiments are recorded in
  * notes/data/class-facts/daPkn_c.json and
@@ -166,7 +163,7 @@ int daPkn_c::InitResources()
     mClsnEnabled = 0;
     mSubSoundFadedOut = 1;
     mStateTimer = 0;
-    unk_108 = 3;
+    mCoinType = 3;
     mPlayerAirborne = 0;
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
     mHeadClsnOffset.x = mPosX;
@@ -210,7 +207,7 @@ int daPkn_c::Behavior()
     r = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 1);
     if (r != 0) {
         if (r == 2) {
-            unk_108 = 0;
+            mCoinType = 0;
             mState = 7;
             mScaleX = 0;
             mScaleY = 0;
@@ -550,10 +547,10 @@ void daPkn_c::StateShrink()
         scale = scale - 0xa3;
     } else {
         scale = 0;
-        if (unk_108 != 0) {
+        if (mCoinType != 0) {
             Vector3 v(mPosX, mPosY + 0x78000, mPosZ);
             dActor_c::Spawn(0x122, 0, v, 0, mAreaId, -1);
-            unk_108 = 0;
+            mCoinType = 0;
         }
         mState = 7;
     }

@@ -315,7 +315,7 @@ Heap_t* Heap_t::CreateRootHeap(void* mem, u32 size)
 {
     ExpandingHeap* heap = (ExpandingHeap*)mem;
 
-    heap->heapStart = (char*)heap + 0x18;
+    heap->heapStart = heap + 1;
     heap->allocator = CreateExpandingHeapAllocator(heap->heapStart, size - 0x18, 3);
     if (heap->allocator != 0)
     {
@@ -346,7 +346,7 @@ Heap_t* Heap_t::CreateExpandingHeap(u32 size, Heap_t* root, int align)
     ExpandingHeap* heap = (ExpandingHeap*)parent->Allocate(size + 0x18, align);
     if (heap != 0)
     {
-        heap->heapStart = (char*)heap + 0x18;
+        heap->heapStart = heap + 1;
         heap->allocator = CreateExpandingHeapAllocator(heap->heapStart, size, 3);
         if (heap->allocator == 0)
         {
@@ -395,7 +395,7 @@ Heap_t* Heap_t::CreateSolidHeap(u32 size, Heap_t* root, int align)
     SolidHeap* heap = (SolidHeap*)parent->Allocate(size + 0x18, align);
     if (heap != 0)
     {
-        heap->heapStart = (char*)heap + 0x18;
+        heap->heapStart = heap + 1;
         heap->allocator = CreateSolidHeapAllocator(heap->heapStart, size, 3);
         if (heap->allocator == 0)
         {

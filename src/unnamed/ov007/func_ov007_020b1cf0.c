@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007MenuState.h"
 extern void func_ov007_020b2614(int a, int b, int c);
 extern int _ZN4cstd3modEii(int a, int b);
 extern int func_ov007_020c1da0(int i);
@@ -6,17 +7,19 @@ extern void func_ov007_020aec94(int r4);
 
 extern char *data_ov007_0210342c;
 
+/* data_ov007_0210342c has no class or header; only its +0x8/+0xc Ov007MenuStates are
+ * typed here; the records in its other slots have no header and stay raw. */
 void func_ov007_020b1cf0(void)
 {
     char *r6 = *(char **)(data_ov007_0210342c + 0xf4);
-    char *r2 = *(char **)(data_ov007_0210342c + 8);
-    int hi = *(s16 *)(r2 + 0xa);
-    int r5 = *(int *)(r2 + 0xc);
+    Ov007MenuState *menu = *(Ov007MenuState **)(data_ov007_0210342c + 8);
+    int hi = menu->previousState;
+    int r5 = menu->stateTicks;
     int flag = 0;
 
     if (hi == 8 && r5 == 0) {
         int anim;
-        *(s16 *)(*(char **)(data_ov007_0210342c + 0xc) + 2) = 3;
+        (*(Ov007MenuState **)(data_ov007_0210342c + 0xc))->requestedState = 3;
         anim = (*(int *)(data_ov007_0210342c + 0xec) == 1) ? 0x3d : 0x14;
         func_ov007_020b2614(0, anim, 8);
     }
@@ -69,7 +72,7 @@ void func_ov007_020b1cf0(void)
     }
 
     if (flag != 0) {
-        *(s16 *)(*(char **)(data_ov007_0210342c + 8) + 2) = 4;
+        (*(Ov007MenuState **)(data_ov007_0210342c + 8))->requestedState = 4;
         return;
     }
 

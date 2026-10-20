@@ -8,7 +8,7 @@
 //   does not name it, and it is the one body here that is not a method.
 // - ModelAnim::SetAnim stays mangled. The ModelAnim and dExtFrameCtrl_c
 //   views are reached by cast because both take Fix12<int> by value.
-// - Offsets 0xa4 and 0xac are dActor_c's unk_0a4 and unk_0ac. Offset 0xe8
+// - Offsets 0xa4 and 0xac are dActor_c's mSpeedX and mSpeedZ. Offset 0xe8
 //   sits inside the model's ModelComponents and is still read through words[].
 #include "common.h"
 #include "nitro/fx/fx.h"
@@ -144,7 +144,7 @@ void daPeach_c::UpdateLookAt()
  * the copy and uses nothing of it. */
 void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
 {
-    int *words = (int *)this;    /* 0xa4 and 0xac are dActor_c's unk_0a4 / unk_0ac */
+    int *words = (int *)this; /* 0xa4 and 0xac are dActor_c's mSpeedX / mSpeedZ */
     int floorN[3];
     int wallN[3];
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);

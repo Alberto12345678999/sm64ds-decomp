@@ -445,9 +445,9 @@ void daWbm_c::Burst()
     for (i = 0; i < 5; i++) {
         dActor_c *frag =
             dActor_c::Spawn(ACTOR_WATERBOMB, 2, mPos, (const Vector3_16 *)0, mAreaId, -1);
-        frag->unk_0a4 = 0;
+        frag->mSpeedX = 0;
         frag->mVertSpeed = 0x14000;
-        frag->unk_0ac = 0;
+        frag->mSpeedZ = 0;
         frag->mHorzSpeed = 0x14000;
         frag->mPrevAngleX = 0;
         frag->mPrevAngleY = data_ov098_0213bf90[i];

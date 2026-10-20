@@ -524,10 +524,10 @@ int daBtfly_c::Behavior()
             int horiz = FX_MUL((int)data_02082214[idx + 1], s);
             int idx2 = ((unsigned short)mPrevAngleY >> 4) << 1;
             int velX = FX_MUL(horiz, (int)data_02082214[idx2]);
-            unk_0a4 = velX;
+            mSpeedX = velX;
             int idx3 = (((unsigned short)mPrevAngleY >> 4) << 1) + 1;
             int velZ = FX_MUL(horiz, (int)data_02082214[idx3]);
-            unk_0ac = velZ;
+            mSpeedZ = velZ;
         }
         UpdatePosWithOnlySpeed(0);
         mStateTimer++;

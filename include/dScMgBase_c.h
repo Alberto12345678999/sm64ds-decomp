@@ -771,10 +771,11 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
          `colour` into the nibble at `(x&7)*4`, and writes it back.  Sixteen
          colours, one palette index per pixel.  It clips on all four sides.
        THE TWO FIELDS SLOT 33 INITIALISES ARE THE ONES IT READS.  Slot 33
-         (InitEngines, engine bring-up) sets `obj+0x68` to 0 and `obj+0x6c` to -1.
-         Here `obj+0x6c` selects WHICH background layer to draw into -- 0..3
+         (InitEngines, engine bring-up) sets mBrushOnMain (+0x68) to 0 and
+         mBrushLayer (+0x6c) to -1.
+         Here mBrushLayer selects WHICH background layer to draw into -- 0..3
          index G2S::GetBG0CharPtr through GetBG3CharPtr, anything else returns
-         without drawing, which is what -1 buys -- and `obj+0x68` gates the
+         without drawing, which is what -1 buys -- and mBrushOnMain gates the
          wrapped region above the touch screen, where the main engine's
          G2::GetBG*CharPtr are used instead and y is folded by
          `+ sMgTopScreenYOffset + 0xc0`.  So slot 33 leaves the brush disabled
@@ -885,7 +886,15 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     s32 mFrameCounter;      /* 0x05c -- wraps every 40 frames */
     s32 mRecordRevealTimer;            /* 0x060 */
     s32 mLastRecordRank;            /* 0x064 */
-    u8  pad_068[0x38];
+    /* The brush PaintSquare (slot 34) paints with. mBrushLayer is the BG
+       layer 0..3 it draws into, any other value drawing nothing; with
+       mBrushOnMain set it also paints the main engine's layer above the
+       touch screen. InitEngines resets them to 0 and -1, Mg_InitBrush arms
+       them. */
+    u8 mBrushOnMain; /* 0x068 */
+    u8 pad_069[0x3];
+    s32 mBrushLayer; /* 0x06c */
+    u8 pad_070[0x30];
     s32 mSubBgBank;            /* 0x0a0 */
     s32 mRunDuringFade;            /* 0x0a4 */
     s32 mCredits;            /* 0x0a8 */

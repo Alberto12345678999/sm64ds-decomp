@@ -158,7 +158,11 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
         u8 pad_1e[2];
     };
     Petal mPetals[22];  /* 0x4f38, 0x20-byte records */
-    u8 pad_51f8[0xdc0]; /* 0x51f8 -- opaque object, see file banner */
+    char mFace[0xdc0];  /* 0x51f8 -- the flower's face, opaque (see file
+                              banner): FlowerFace_Construct builds it,
+                              FlowerFace_Destruct tears it down, and the
+                              Load/Reset/Update/Draw/IsIdle/Play* calls all
+                              take its address */
     s32 mCursorX;       /* 0x5fb8 -- Fix12 stylus position, from the touch
                               sample gTouchX/gTouchY << 12 */
     s32 mCursorY;       /* 0x5fbc */
