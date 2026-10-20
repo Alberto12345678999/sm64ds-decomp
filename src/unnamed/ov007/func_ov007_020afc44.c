@@ -36,7 +36,7 @@ typedef struct Ov007Work {
     Ov007Tween *tweens[2]; /* 0x6c: func_ov007_020c908c */
 } Ov007Work;
 
-extern char* data_ov007_0210342c;
+extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define G data_ov007_0210342c
@@ -45,7 +45,7 @@ extern char* data_ov007_0210342c;
 void func_ov007_020afc44(void)
 {
     Ov007MenuState *menu = WORK->states[1];
-    unsigned char* r7 = (unsigned char*)(*(int*)WORK->settings) + 0xb;
+    unsigned char *r7 = (unsigned char *)(*(int *)WORK->settings) + 0xb;
     int r6 = menu->stateTicks;
     Ov007Tween *r5 = WORK->tweens[0];
     Ov007Tween *r4 = WORK->tweens[1];
@@ -88,7 +88,7 @@ void func_ov007_020afc44(void)
             func_ov007_020c1d8c(0);
             RequestScreenFade(8, 0xa, 0);
             WORK->states[2]->requestedState = 0xb;
-            func_ov007_020b8188(WORK->selectedSlot, (int)WORK->settings, *(int*)(G + 0x60));
+            func_ov007_020b8188(WORK->selectedSlot, (int)WORK->settings, *(int *)(G + 0x60));
             r5->state = 1;
             r5->mode = 1;
             r5->t = 0;
@@ -153,7 +153,8 @@ void func_ov007_020afc44(void)
                             RequestScreenFade(8, 0xa, 0);
                             WORK->states[2]->requestedState = 0xb;
                         }
-                        func_ov007_020b8188(WORK->targetSlot, (int)WORK->settings, *(int*)(G + 0x60));
+                        func_ov007_020b8188(WORK->targetSlot, (int)WORK->settings,
+                                            *(int *)(G + 0x60));
                         sb = 1;
                         r5->state = 1;
                         r5->mode = 1;
@@ -217,8 +218,10 @@ void func_ov007_020afc44(void)
         return;
     if (func_ov007_020b79e4() != 0) return;
     if (sb != 0) {
-        func_ov007_020c0638(*(int*)(*(char**)(G + 0xe0) + 4), (WORK->tweenOut[0] >> 0xc) * 8, 0, 0);
-        func_ov007_020c0638(*(int*)(*(char**)(G + 0xe4) + 4), (WORK->tweenOut[0] >> 0xc) * 8, 0, 0);
+        func_ov007_020c0638(*(int *)(*(char **)(G + 0xe0) + 4), (WORK->tweenOut[0] >> 0xc) * 8, 0,
+                            0);
+        func_ov007_020c0638(*(int *)(*(char **)(G + 0xe4) + 4), (WORK->tweenOut[0] >> 0xc) * 8, 0,
+                            0);
     }
     if (fp == 0) return;
     func_ov007_020b8070(WORK->tweenOut[1] >> 0xc);

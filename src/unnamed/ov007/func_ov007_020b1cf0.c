@@ -10,8 +10,9 @@ extern void func_ov007_020aec94(int r4);
  * file touches are spelled. */
 typedef struct Ov007Item {
     char pad_00[0x10];
-    s32 fade;         /* 0x10: Q12; func_ov007_020ae834 eases it in states 5/6,
-                       * func_ov007_020b5bf0 turns it into the sprite alpha */
+    /* 0x10: Q12; func_ov007_020ae834 eases it in states 5/6,
+     * func_ov007_020b5bf0 turns it into the sprite alpha */
+    s32 fade;
     char pad_14[4];
     s32 wiggleTimer;  /* 0x18: func_ov007_020ae834 counts it down; func_ov007_020b5bf0
                        * swings the sprite's rotZ while it runs */

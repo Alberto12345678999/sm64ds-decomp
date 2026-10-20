@@ -19,16 +19,16 @@ typedef struct Ov007ItemLayout {
 /* The 0x2c-byte record func_ov007_020aea6c allocates; only the fields this
  * file touches are spelled. */
 typedef struct Ov007Item {
-    u16 id;                /* 0x00: aea6c's first argument (func_ov007_020b4c04's index) */
-    char pad_02[2];        /* 0x02 */
-    Ov007MenuState *state; /* 0x04: func_ov007_020c9388; ticked by func_ov007_020ae834 */
-    char pad_08[8];        /* 0x08 */
-    s32 fade;              /* 0x10: Q12; func_ov007_020ae834 eases it in states 5/6 */
-    s32 slideOut;          /* 0x14: Q12; func_ov007_020ae834 eases it in states 3/4/7 and
+    u16 id;                  /* 0x00: aea6c's first argument (func_ov007_020b4c04's index) */
+    char pad_02[2];          /* 0x02 */
+    Ov007MenuState *state;   /* 0x04: func_ov007_020c9388; ticked by func_ov007_020ae834 */
+    char pad_08[8];          /* 0x08 */
+    s32 fade;                /* 0x10: Q12; func_ov007_020ae834 eases it in states 5/6 */
+    s32 slideOut;            /* 0x14: Q12; func_ov007_020ae834 eases it in states 3/4/7 and
                             * func_ov007_020aeb34 slides the item by its square */
-    s32 wiggleTimer;       /* 0x18: func_ov007_020ae834 counts it down */
-    s32 wiggleFrames;      /* 0x1c: the wiggle's length; func_ov007_020ae2d0 arms 0x3c */
-    char pad_20[4];        /* 0x20 */
+    s32 wiggleTimer;         /* 0x18: func_ov007_020ae834 counts it down */
+    s32 wiggleFrames;        /* 0x1c: the wiggle's length; func_ov007_020ae2d0 arms 0x3c */
+    char pad_20[4];          /* 0x20 */
     Ov007ItemLayout *layout; /* 0x24 */
 } Ov007Item;
 
@@ -56,8 +56,7 @@ extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020b5f64(void *a);
 extern void func_ov007_020c8f98(int a);
 
-void func_ov007_020b5bf0(Ov007ItemView *view)
-{
+void func_ov007_020b5bf0(Ov007ItemView *view) {
     Ov007Item *r7 = view->item;
     int r6 = 0;
     int r5 = r6;

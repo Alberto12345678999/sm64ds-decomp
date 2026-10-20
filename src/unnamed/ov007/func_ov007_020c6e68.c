@@ -49,8 +49,8 @@ typedef struct Ov007Picker {
     char pad_00[0x1c];
     char *params; /* 0x1c: a4 of func_ov007_020c690c */
     char pad_20[8];
-    Vector3 **groupPoints;       /* 0x28: per group, the points unprojected through camera */
-    Vector3 **groupPointCopies;  /* 0x2c: per group, a copy of groupPoints */
+    Vector3 **groupPoints;      /* 0x28: per group, the points unprojected through camera */
+    Vector3 **groupPointCopies; /* 0x2c: per group, a copy of groupPoints */
     char pad_30[4];
     void ***groupLinks;          /* 0x34: per group, one link per point from posPoint */
     Ov007StrokePath **groups;    /* 0x38: committed strokes (func_ov007_020c6d20) */
@@ -63,8 +63,7 @@ typedef struct Ov007Picker {
 
 /* The parameter keeps func_ov007_020c6d20's char * spelling (the
  * declaration-agreement gate); the typed view is a local. */
-void func_ov007_020c6e68(char *picker, int idx)
-{
+void func_ov007_020c6e68(char *picker, int idx) {
     Ov007Picker *self = (Ov007Picker *)picker;
     Ov007StrokePath *grp;
     char *fp;
