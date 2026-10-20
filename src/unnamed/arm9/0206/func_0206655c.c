@@ -51,7 +51,11 @@ typedef struct MbGameInfo {
     u8 mMaxPlayers; /* 0x18 -- entries (parent included) at or past it are refused */
 } MbGameInfo;
 
-extern MbParentWork *data_020a9db8;
+extern u8 *data_020a9db8;
+
+/* Typed through a cast: most declarations of data_020a9db8 spell it as a byte
+ * pointer, and a typed extern here disagrees with them. */
+#define MB_WORK ((MbParentWork *)data_020a9db8)
 
 extern void func_02065c2c(u8 *a, u8 *b);
 extern int func_02065de4(void *a, u32 b);
@@ -61,9 +65,9 @@ extern u16 func_02065ef8(u16 a, u16 b);
 
 /* File record i, reached the way the ROM builds its address: the work pointer
  * stepped a whole MbParentFile per index, then mFiles[0] from there. Writing
- * data_020a9db8->mFiles[i] builds it differently and moves bytes, except for
+ * MB_WORK->mFiles[i] builds it differently and moves bytes, except for
  * mRequestedBlock in message 9. rec below is the same stepped pointer. */
-#define MB_FILE(i) (((MbParentWork *)((u8 *)data_020a9db8 + (i) * sizeof(MbParentFile)))->mFiles)
+#define MB_FILE(i) (((MbParentWork *)(data_020a9db8 + (i) * sizeof(MbParentFile)))->mFiles)
 
 void func_0206655c(void *arg0, u32 arg1)
 {
@@ -91,18 +95,18 @@ void func_0206655c(void *arg0, u32 arg1)
         return;
 
     idx = arg1 - 1;
-    phase = data_020a9db8->mChildState[idx];
+    phase = MB_WORK->mChildState[idx];
 
     switch (buf[0]) {
     case 7:
         if (phase == 2 && func_02065de4(buf, arg1) == 1) {
             i = arg1 - 1;
-            CpuCopy8(&data_020a9db8->mChildRequest[i], buf + 0x14, 0x1d);
-            data_020a9db8->mChildGameId[i] = *(int *)(buf + 0x14);
-            data_020a9db8->mChildVersion[i] = *(u16 *)(buf + 0x2e);
-            CpuCopy8(buf + 0x18, data_020a9db8->mChildUser[i], 0x16);
+            CpuCopy8(&MB_WORK->mChildRequest[i], buf + 0x14, 0x1d);
+            MB_WORK->mChildGameId[i] = *(int *)(buf + 0x14);
+            MB_WORK->mChildVersion[i] = *(u16 *)(buf + 0x2e);
+            CpuCopy8(buf + 0x18, MB_WORK->mChildUser[i], 0x16);
             {
-                u8 *pp = data_020a9db8->mChildUser[i];
+                u8 *pp = MB_WORK->mChildUser[i];
                 *pp = (u8)((*pp & ~0xf0) | (((u8)arg1 & 0xf) << 4));
             }
             func_02066fec(arg1, 0xa, (int)(buf + 0x18));
@@ -110,19 +114,19 @@ void func_0206655c(void *arg0, u32 arg1)
         if (phase != 0xa)
             return;
         cnt = 0;
-        physIdx = data_020a9db8->mChildRequest[idx].mFileNo;
+        physIdx = MB_WORK->mChildRequest[idx].mFileNo;
         /* have/disp gotos kept: an inline session predicate grows it (0x554); only an
            || chain assigning rec/p inside the condition matches */
         if (physIdx < 0x10) {
-            rec = (MbParentWork *)((u8 *)data_020a9db8 + physIdx * sizeof(MbParentFile));
+            rec = (MbParentWork *)(data_020a9db8 + physIdx * sizeof(MbParentFile));
             if (rec->mFiles[0].mActive != 0) {
                 p = (MbGameInfo *)rec->mFiles[0].mGameInfo;
-                gv = data_020a9db8->mChildGameId[idx];
+                gv = MB_WORK->mChildGameId[idx];
                 if (gv == p->mGameId)
                     goto have;
             }
         }
-        data_020a9db8->mChildResponse[idx] = 4;
+        MB_WORK->mChildResponse[idx] = 4;
         goto disp;
     have:
         flags = rec->mFiles[0].mEntryBitmap;
@@ -131,29 +135,29 @@ void func_0206655c(void *arg0, u32 arg1)
                 cnt++;
         }
         if ((u32)cnt >= (u32)p->mMaxPlayers) {
-            data_020a9db8->mChildResponse[idx] = 0;
+            MB_WORK->mChildResponse[idx] = 0;
             func_02066fec(arg1, 0xb, 0);
             return;
         }
     disp:
         /* b + 0x54 is mChildResponse[idx]; the ROM builds it as 0x1700 + 0x54,
            and naming the member folds that split and moves bytes. */
-        b = (u8 *)data_020a9db8 + idx * 2 + 0x1700;
+        b = data_020a9db8 + idx * 2 + 0x1700;
         switch (*(u16 *)(b + 0x54)) {
         case 3:
             bit = 1u << arg1;
-            if (data_020a9db8->mChildEntryBitmap & bit)
+            if (MB_WORK->mChildEntryBitmap & bit)
                 return;
-            cp = &data_020a9db8->mChildCount;
+            cp = &MB_WORK->mChildCount;
             (*cp)++;
-            fld = &data_020a9db8->mChildEntryBitmap;
+            fld = &MB_WORK->mChildEntryBitmap;
             *fld = (u16)(*fld | bit);
-            data_020a9db8->mChildFile[arg1 - 1] = physIdx;
+            MB_WORK->mChildFile[arg1 - 1] = physIdx;
             fld = &MB_FILE(physIdx)->mEntryBitmap;
             *fld = (u16)(*fld | bit);
             fld = &MB_FILE(physIdx)->mEntryChanged;
             *fld = (u16)(*fld | bit);
-            data_020a9db8->mChildResponse[arg1 - 1] = 0;
+            MB_WORK->mChildResponse[arg1 - 1] = 0;
             func_02066fec(arg1, 5, 0);
             return;
         case 4:
@@ -170,29 +174,29 @@ void func_0206655c(void *arg0, u32 arg1)
         }
         if (phase != 0xe)
             return;
-        if (data_020a9db8->mChildResponse[idx] != 2)
+        if (MB_WORK->mChildResponse[idx] != 2)
             return;
-        pi = data_020a9db8->mChildFile[idx];
+        pi = MB_WORK->mChildFile[idx];
         fld = &MB_FILE(pi)->mChildBitmap;
         *fld = (u16)(*fld | (1u << arg1));
         MB_FILE(pi)->mCurrentBlock = 0;
-        data_020a9db8->mChildResponse[idx] = 0;
+        MB_WORK->mChildResponse[idx] = 0;
         func_02066fec(arg1, 6, 0);
         return;
 
     case 9:
         if (phase != 6)
             return;
-        pi = data_020a9db8->mChildFile[idx];
+        pi = MB_WORK->mChildFile[idx];
         if (pi == 0xff)
             return;
-        data_020a9db8->mFiles[pi].mRequestedBlock =
-            func_02065ef8(data_020a9db8->mFiles[pi].mRequestedBlock, *(u16 *)(buf + 2));
+        MB_WORK->mFiles[pi].mRequestedBlock =
+            func_02065ef8(MB_WORK->mFiles[pi].mRequestedBlock, *(u16 *)(buf + 2));
         return;
 
     case 10:
         if (phase == 6) {
-            pi = data_020a9db8->mChildFile[idx];
+            pi = MB_WORK->mChildFile[idx];
             if (pi == 0xff)
                 return;
             fld = &MB_FILE(pi)->mChildBitmap;
@@ -202,7 +206,7 @@ void func_0206655c(void *arg0, u32 arg1)
         }
         if (phase != 7)
             return;
-        b = (u8 *)data_020a9db8 + idx * 2 + 0x1700;
+        b = data_020a9db8 + idx * 2 + 0x1700;
         if (*(u16 *)(b + 0x54) != 5)
             return;
         *(u16 *)(b + 0x54) = 0;
