@@ -439,7 +439,7 @@ def member_run(ev, rec, slots, exclude_lifecycle):
             raise SystemExit(f"{rec['name']}: lifecycle members sit inside the method run, so "
                              "excluding them leaves two .text spans; tu_promote needs one")
         evidence.append(f"lifecycle excluded ({', '.join(structors)}): they stay enrolled "
-                        "shards, the split arm9/ModelAnim recorded")
+                        "shards, the split arm9/ModelAnim and arm9/BlendModelAnim recorded")
         run = kept
     return run, evidence, warnings, structors
 
@@ -823,10 +823,9 @@ def lifecycle_note(rec, slots, run, structors, base_mi=False):
         text = "the class overrides nothing: no vtable is emitted by this TU"
     if mi:
         text += ("; the class is multiply inherited (itself or a base), so its destructors carry "
-                 "_ZThn thunks and the key function emits a vtable group. The secondary preamble "
-                 "lands inside the primary _ZTV; RTTI off zeroes it, and romdata_check masks those "
-                 "zeros only when the cartridge words are a negative offset-to-top plus a _ZTI "
-                 "pointer (arm9/BlendModelAnim). arm9/ModelAnim still keeps its lifecycle as shards")
+                 "_ZThn thunks; the promoted MI precedent "
+                 "(arm9/ModelAnim) keeps the lifecycle row as shards because the secondary table's "
+                 "preamble cannot be licensed")
     return text
 
 

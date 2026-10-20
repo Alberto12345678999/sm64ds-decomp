@@ -408,12 +408,8 @@ def _isolate(obj, rel, syms, data_sink=None, compiler_only=None, intact_tus=None
                     if reduced is None:
                         return "canonical duplicate rename refused: " + rename_plan["error"]
                 obj.write_bytes(reduced)
-            # deadstrip has already turned mwcc's vtable-object addends into the
-            # ROM slot-array convention, including a secondary store whose
-            # remainder is not zero. isolate_many must not treat that remainder
-            # as a rewrite it still owes.
             plan = (OI.isolate(obj, selected[0]) if len(selected) == 1
-                    else OI.isolate_many(obj, selected, rtti_rebased=bool(dead)))
+                    else OI.isolate_many(obj, selected))
     else:
         plan = OI.isolate(obj, selected)
     if plan.get("kind") == OI.NOT_A_FUNCTION:

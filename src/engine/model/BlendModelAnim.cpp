@@ -30,13 +30,13 @@ extern "C" {
 /* local extern: no header declares it; blends verts toward the old pose in
    Virtual10/UpdateVerts while blendWeight is still below 1.0 */
 void func_0204531c(ModelComponents *data, s32 weight);
-/* local extern: no header declares it; sizes the unk_6c blend buffer off the
+/* local extern: no header declares it; sizes the mBlendBuffer blend buffer off the
    file. Spelled (int *) the way func_020462bc.c defines it */
 u32 func_020462bc(int *file);
 /* local extern: no header declares it; initializes ModelComponents' side of
    the blend buffer. Spelled (int *, int) the way func_020462b4.c defines it */
 void func_020462b4(int *data, int buf);
-/* local extern: no header declares it; D1 frees unk_6c through this veneer */
+/* local extern: no header declares it; D1 frees mBlendBuffer through this veneer */
 void func_0203cbc0(void *ptr);
 /* defined below -- DoSetFile's tail; it sits between UpdateVerts and
    DoSetFile in the ROM and DoSetFile is its only caller here */
@@ -63,16 +63,15 @@ struct BCA_File {
    uninitialised: Advance seeds it from SetAnim, and the ROM ctor never stores
    it. Empty body; the two stores are the init list. */
 // @symbol _ZN14BlendModelAnimC1Ev
-BlendModelAnim::BlendModelAnim() : blendWeight(0x1000), unk_6c(0) {}
+BlendModelAnim::BlendModelAnim() : blendWeight(0x1000), mBlendBuffer(0) {}
 
 /* One definition emits D2, D0 and D1, then the _ZThn80_ pair. D0 adds the
    class operator delete. The written obligation is the conditional free of
-   unk_6c; a bare delete would call operator delete with no test. */
+   mBlendBuffer; a bare delete would call operator delete with no test. */
 // @symbol _ZN14BlendModelAnimD1Ev
-BlendModelAnim::~BlendModelAnim()
-{
-    if (unk_6c)
-        func_0203cbc0(unk_6c);
+BlendModelAnim::~BlendModelAnim() {
+    if (mBlendBuffer)
+        func_0203cbc0(mBlendBuffer);
 }
 
 // @symbol _ZN14BlendModelAnim9DoSetFileEPcii
@@ -85,14 +84,14 @@ int BlendModelAnim::DoSetFile(char *file, int a, int b)
     return func_020165c4(this, f);
 }
 
-/* DoSetFile's tail: allocates the unk_6c blend buffer sized off the file and
+/* DoSetFile's tail: allocates the mBlendBuffer blend buffer sized off the file and
    hands it plus the ModelComponents member to func_020462b4. It sits between
    UpdateVerts and DoSetFile in the ROM. */
 // @symbol func_020165c4
 extern "C" int func_020165c4(BlendModelAnim *self, char *file)
 {
-    self->unk_6c = Memory::operator_new2(func_020462bc((int *)file));
-    void *p = self->unk_6c;
+    self->mBlendBuffer = Memory::operator_new2(func_020462bc((int *)file));
+    void *p = self->mBlendBuffer;
     if (p == 0) return 0;
     func_020462b4((int *)&self->data, (int)p);
     return 1;

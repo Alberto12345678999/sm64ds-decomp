@@ -10,7 +10,7 @@
  * VTable_Animation_BlendModelAnimThunk secondary.
  *
  * THE DESTRUCTOR IS DECLARED FIRST -- see include/ModelAnim.h; the D1
- * additionally frees unk_6c before chaining to ModelAnim::D2. Defined
+ * additionally frees mBlendBuffer before chaining to ModelAnim::D2. Defined
  * out of line in src/engine/model/BlendModelAnim.cpp. That definition is
  * the key function, so the TU also emits the MI vtable group; RTTI is off
  * and the retail table stays externalized (see the TU manifest).
@@ -18,7 +18,7 @@
  * LAYOUT: ModelAnim 0x00..0x64, then the blend state. blendWeight ramps
  * 0 -> 0x1000 (1.0) by blendStep per Advance; below 1.0 UpdateVerts and
  * Virtual10 route through the blending func_0204531c instead of
- * UpdateVertsUsingBones. unk_6c is a buffer the destructor frees and
+ * UpdateVertsUsingBones. mBlendBuffer is a buffer the destructor frees and
  * func_020165c4 (DoSetFile's tail) sets up.
  *
  * SetAnim's definition stays a mangled free function (wall 6az).
@@ -31,7 +31,7 @@ extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 struct BlendModelAnim : ModelAnim {
     Fix12i blendWeight;        /* 0x64 - 0x1000 is 1.0 */
     Fix12i blendStep;          /* 0x68 - per-frame increment */
-    void *unk_6c;              /* 0x6c - owned; D1 deletes it */
+    void *mBlendBuffer; /* 0x6c - pose blend buffer; DoSetFile tail allocates it, D1 frees it */
 
     /* --- vtable order. Do not reorder. --- */
     /* The destructor pair spelled as two plain virtuals on the host, plus the
@@ -54,7 +54,7 @@ struct BlendModelAnim : ModelAnim {
     /* DECLARED, defined out of line in src/engine/model/BlendModelAnim.cpp
      * as real C++ -- complete-object context for every ROM caller (it is a
      * member subobject in daKing_Donketu_c/Eyerok/daJango_c/daMoray_c...), hence C1.
-     * Body is empty; blendWeight and unk_6c are initialised through the init
+     * Body is empty; blendWeight and mBlendBuffer are initialised through the init
      * list so their stores land where the ROM has them. */
 
     /* --- non-virtual --- */
@@ -96,7 +96,7 @@ struct BlendModelAnim {
     struct BCA_File *file;             /* 0x60 */
     s32 blendWeight;                   /* 0x64 */
     s32 blendStep;                     /* 0x68 */
-    void *unk_6c;                      /* 0x6c */
+    void *mBlendBuffer; /* 0x6c - pose blend buffer; DoSetFile tail allocates it, D1 frees it */
 };
 
 /* So an object header declaring a BlendModelAnim member reads the same in both modes:
