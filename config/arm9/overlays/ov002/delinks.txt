@@ -344,16 +344,8 @@ src/game/actors/d_a_mugen_bgm.cpp:
 
 src/game/actors/d_a_demo.cpp:
     complete
-    .text start:0x020f1f70 end:0x020f8838
+    .text start:0x020f1f70 end:0x020f8858
     .data start:0x0210b940 end:0x0210b958
-
-src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp:
-    complete
-    .text start:0x020f8838 end:0x020f8848
-
-src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp:
-    complete
-    .text start:0x020f8848 end:0x020f8858
 
 src/game/actors/d_a_f_pkn_ball.cpp:
     complete
