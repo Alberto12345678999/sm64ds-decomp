@@ -207,22 +207,6 @@ typedef struct State2 {
     int baseZ;
 } State2;
 
-/* shadow 'SBoard' (was 'S') -- 1 member(s).
-   func_ov006_0210ef48.c's 0x9c-byte board. */
-typedef struct {
-    int f0;         /* 0x00 */
-    void *f4;       /* 0x04 */
-    int f8;         /* 0x08 */
-    int fc;         /* 0x0c */
-    u8 pad10[0x21]; /* 0x10 */
-    u8 cells[9];    /* 0x31 */
-    u8 pad3a[0x32]; /* 0x3a */
-    int lines[8];   /* 0x6c */
-    u8 marks[8];    /* 0x8c */
-    int f94;        /* 0x94 */
-    int f98;        /* 0x98 */
-} SBoard;
-
 /* shadow 'Sound' -- 2 member(s). */
 namespace Sound {
 void PlayBank2_2D(u32 id);
@@ -730,17 +714,16 @@ char *cMgSmartball_wing_c_Construct(char *self, int x, int y, struct V2ab *src) 
 
 // @symbol _ZN25cMgSmartball_pushswitch_c10BallsClearEv
 int cMgSmartball_pushswitch_c::BallsClear() {
-    int *self = (int *)this;
     int i;
     Vec2 delta, pos;
-    for (i = 0; i < ((dScMgSmartball_c *)self[1])->mBallCount; i++) {
-        int *o = (i >= 13) ? 0 : (int *)((dScMgSmartball_c *)self[1])->mpBalls[i];
+    for (i = 0; i < ((dScMgSmartball_c *)mpManager)->mBallCount; i++) {
+        int *o = (i >= 13) ? 0 : (int *)((dScMgSmartball_c *)mpManager)->mpBalls[i];
         if (((cMgSmartball_object_c *)o)->mIsActive != 0) {
-            int *o2 = (i >= 13) ? 0 : (int *)((dScMgSmartball_c *)self[1])->mpBalls[i];
+            int *o2 = (i >= 13) ? 0 : (int *)((dScMgSmartball_c *)mpManager)->mpBalls[i];
             CopyObjectPos((int *)&pos, o2);
             delta = pos;
-            delta.x -= self[2];
-            delta.y -= self[3];
+            delta.x -= mCurrent0;
+            delta.y -= mCurrent1;
             if (Vec2_Len(&delta) < 0x12000)
                 return 0;
         }
@@ -750,11 +733,10 @@ int cMgSmartball_pushswitch_c::BallsClear() {
 
 // @symbol _ZN25cMgSmartball_pushswitch_c9CheckBallEPi
 int cMgSmartball_pushswitch_c::CheckBall(int *p) {
-    char *self = (char *)this;
     int d[2];
     d[0] = p[0];
     d[1] = p[1];
-    d[0] -= *(int *)(self + 8);
+    d[0] -= mCurrent0;
     d[1] -= mCurrent1;
     if (mTriggered) {
         if (p[1] >= mCurrent1 + 0x8000)
@@ -763,15 +745,15 @@ int cMgSmartball_pushswitch_c::CheckBall(int *p) {
         return func_0203d5bc(d) < 0x40000;
     }
     if (p[1] > mCurrent1) {
-        if (p[0] >= *(int *)(self + 8) - 0x8000 && p[0] < *(int *)(self + 8) + 0x8000 &&
+        if (p[0] >= mCurrent0 - 0x8000 && p[0] < mCurrent0 + 0x8000 &&
             p[1] < mCurrent1 + 0xa000)
             return 1;
         return 0;
     }
     if (func_0203d5bc(d) >= 0x40000)
         return 0;
-    if (p[0] >= *(int *)(self + 8) - 0x4000 && p[0] < *(int *)(self + 8) + 0x4000) {
-        (*(dScMgSmartball_c **)(self + 4))->mpSlot->StartSpin();
+    if (p[0] >= mCurrent0 - 0x4000 && p[0] < mCurrent0 + 0x4000) {
+        ((dScMgSmartball_c *)mpManager)->mpSlot->StartSpin();
         mTriggered = 1;
         mReleaseDelay = 0xa;
         _ZN5Sound12PlayBank2_2DEj(0x1a4);
@@ -838,10 +820,9 @@ int cMgSmartball_pushswitch_c_Construct(char *c, int b, int d, int *s) {
 
 // @symbol _ZN20cMgSmartball_board_c13AnyLineActiveEv
 int cMgSmartball_board_c::AnyLineActive() {
-    int(*c)[1] = (int(*)[1])this;
     int i;
     for (i = 0; i < 8; i++) {
-        if (c[i][0x1b] > 0x168)
+        if (mLineTimer[i] > 0x168)
             return 1;
     }
     return 0;
@@ -1119,130 +1100,128 @@ void cMgSmartball_board_c::ClaimCell(int i) {
     int m;
     int tmp;
     int slot;
-    SBoard *c;
     int v;
     int a[2];
     int b[2];
     int d[2];
     int e[2];
 
-    c = (SBoard *)this;
     slot = sSmartballCellOrder[i];
-    if (c->cells[slot] == 1)
+    if ((&mTriggered)[slot] == 1)
         return;
-    c->cells[slot] = 1;
+    (&mTriggered)[slot] = 1;
     v = i * 0x18000 + 0x10000;
     a[0] = v;
     a[1] = 0x78000;
-    ((dScMgSmartball_c *)c->f4)->EmitScore((int *)a, 0x64, 0, 1);
-    ((dScMgSmartball_c *)((char *)c->f4))->CountCell();
+    ((dScMgSmartball_c *)mpManager)->EmitScore((int *)a, 0x64, 0, 1);
+    ((dScMgSmartball_c *)mpManager)->CountCell();
     b[0] = v;
     b[1] = 0x78000;
-    ((cMgSmartball_board_c *)((char *)c))->PaintCell(i, (int *)b);
+    PaintCell(i, (int *)b);
     _ZN5Sound12PlayBank2_2DEj(0x173);
     count = 0;
     if (slot < 3) {
-        if (c->cells[slot + 3] == 1 && c->cells[slot + 6] == 1) {
-            c->lines[slot] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[slot] = 1;
+        if ((&mTriggered)[slot + 3] == 1 && (&mTriggered)[slot + 6] == 1) {
+            mLineTimer[slot] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[slot] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
     } else if (slot < 6) {
-        if (c->cells[slot - 3] == 1 && c->cells[slot + 3] == 1) {
-            c->lines[slot - 3] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[slot - 3] = 1;
+        if ((&mTriggered)[slot - 3] == 1 && (&mTriggered)[slot + 3] == 1) {
+            mLineTimer[slot - 3] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[slot - 3] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
     } else {
-        if (c->cells[slot - 6] == 1 && c->cells[slot - 3] == 1) {
-            c->lines[slot - 6] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[slot - 6] = 1;
+        if ((&mTriggered)[slot - 6] == 1 && (&mTriggered)[slot - 3] == 1) {
+            mLineTimer[slot - 6] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[slot - 6] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
     }
     i = slot % 3;
     if (i == 0) {
-        if (c->cells[slot + 1] == 1 && c->cells[slot + 2] == 1) {
-            c->lines[slot / 3 + 3] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[slot / 3 + 3] = 1;
+        if ((&mTriggered)[slot + 1] == 1 && (&mTriggered)[slot + 2] == 1) {
+            mLineTimer[slot / 3 + 3] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[slot / 3 + 3] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
     } else if (i == 1) {
-        if (c->cells[slot - 1] == 1 && c->cells[slot + 1] == 1) {
-            c->lines[slot / 3 + 3] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[slot / 3 + 3] = 1;
+        if ((&mTriggered)[slot - 1] == 1 && (&mTriggered)[slot + 1] == 1) {
+            mLineTimer[slot / 3 + 3] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[slot / 3 + 3] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
     } else {
-        if (c->cells[slot - 2] == 1 && c->cells[slot - 1] == 1) {
-            c->lines[slot / 3 + 3] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[slot / 3 + 3] = 1;
+        if ((&mTriggered)[slot - 2] == 1 && (&mTriggered)[slot - 1] == 1) {
+            mLineTimer[slot / 3 + 3] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[slot / 3 + 3] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
     }
     switch (slot) {
     case 0:
-        if (c->cells[4] == 1 && c->cells[8] == 1) {
-            c->lines[6] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[6] = 1;
+        if ((&mTriggered)[4] == 1 && (&mTriggered)[8] == 1) {
+            mLineTimer[6] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[6] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
         break;
     case 2:
-        if (c->cells[4] == 1 && c->cells[6] == 1) {
-            c->lines[7] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[7] = 1;
+        if ((&mTriggered)[4] == 1 && (&mTriggered)[6] == 1) {
+            mLineTimer[7] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[7] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
         break;
     case 4:
-        if (c->cells[0] == 1 && c->cells[8] == 1) {
-            c->lines[6] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[6] = 1;
+        if ((&mTriggered)[0] == 1 && (&mTriggered)[8] == 1) {
+            mLineTimer[6] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[6] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
-        if (c->cells[2] == 1 && c->cells[6] == 1) {
-            c->lines[7] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[7] = 1;
+        if ((&mTriggered)[2] == 1 && (&mTriggered)[6] == 1) {
+            mLineTimer[7] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[7] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
         break;
     case 6:
-        if (c->cells[2] == 1 && c->cells[4] == 1) {
-            c->lines[7] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[7] = 1;
+        if ((&mTriggered)[2] == 1 && (&mTriggered)[4] == 1) {
+            mLineTimer[7] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[7] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
         break;
     case 8:
-        if (c->cells[0] == 1 && c->cells[4] == 1) {
-            c->lines[6] = 0x21d;
-            c->f94 = 0xb5;
-            c->marks[6] = 1;
+        if ((&mTriggered)[0] == 1 && (&mTriggered)[4] == 1) {
+            mLineTimer[6] = 0x21d;
+            mFanfareTimer = 0xb5;
+            mLineScored[6] = 1;
             count += 1;
-            (*(int *)(((int)c + 0x98)))++;
+            mLinesScored++;
         }
         break;
     }
@@ -1252,7 +1231,7 @@ void cMgSmartball_board_c::ClaimCell(int i) {
         for (j = 0; j < 9; j++) {
             if (j == slot)
                 continue;
-            if (c->cells[j] == 0) {
+            if ((&mTriggered)[j] == 0) {
                 bingo = 0;
                 break;
             }
@@ -1264,20 +1243,20 @@ void cMgSmartball_board_c::ClaimCell(int i) {
     if (count > 0) {
         tmp = sSmartballCellScores[0];
         do {
-            d[0] = c->f8;
-            d[1] = c->fc;
-            ((dScMgSmartball_c *)c->f4)->EmitScore((int *)d, (int)tmp, (int)0, (int)1);
-            ((dScMgSmartball_c *)((char *)c->f4))->CountLine(1);
+            d[0] = mCurrent0;
+            d[1] = mCurrent1;
+            ((dScMgSmartball_c *)mpManager)->EmitScore((int *)d, (int)tmp, (int)0, (int)1);
+            ((dScMgSmartball_c *)mpManager)->CountLine(1);
             m++;
         } while (m < count);
     }
     if (bingo != 1)
         return;
-    e[0] = c->f8;
-    e[1] = c->fc;
-    ((dScMgSmartball_c *)c->f4)->EmitScore((int *)e, 0x2710, 0x3c, 1);
-    ((dScMgSmartball_c *)((char *)c->f4))->CountBingo();
-    ((dScMgSmartball_c *)((char *)c->f4))->EndRound();
+    e[0] = mCurrent0;
+    e[1] = mCurrent1;
+    ((dScMgSmartball_c *)mpManager)->EmitScore((int *)e, 0x2710, 0x3c, 1);
+    ((dScMgSmartball_c *)mpManager)->CountBingo();
+    ((dScMgSmartball_c *)mpManager)->EndRound();
     _ZN5Sound12PlayBank2_2DEj(0x174);
 }
 
