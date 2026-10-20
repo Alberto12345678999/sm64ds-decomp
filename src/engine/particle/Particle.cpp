@@ -172,6 +172,7 @@ void SysTracker::Initialise()
 
     mManager = (Manager*)func_0204a4c8(
         func_02023178, countA, countB, 0x1a, 0x3e);
+    /* Manager +0x30 sits in its unnamed pad_030; nothing else reaches it. */
     *(int*)((char*)mManager + 0x30) = 0x8000;
 
     if (func_0206e28c((u8*)data_02075f14, data_0208f668, 4) != 0) {
@@ -193,6 +194,7 @@ void SysTracker::Initialise()
 
     if (mResourceFile != data_02075f14) {
         mHeap::Heap_t *heap = (mHeap::Heap_t *)(int)M(data_020a0ea0);
+        /* +0x18 of the particle resource file header; no header models that file. */
         unsigned int oldSize = (unsigned int)M(*(unsigned int*)((char*)mResourceFile + 0x18));
         heap->_Sizeof(mResourceFile);
         heap->Reallocate(mResourceFile, oldSize);
@@ -287,14 +289,14 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 type, u32 u, int a, int b, int c, const struct Vec3 *pos, void *cb)
 {
   struct System *new_var;
-  void *contents;
+  Particle::SysTracker::Contents *contents;
   struct System *sys;
   struct Args3 args;
   args.a = a >> 3;
-  contents = ((char *) data_0209ee74) + 8;
+  contents = &data_0209ee74->mContents;
   args.b = b >> 3;
   args.c = (c >> 1) >> 2;
-  new_var = (struct System *)((Particle::SysTracker::Contents *)contents)->FindData(type);
+  new_var = (struct System *)contents->FindData(type);
   sys = new_var;
   if (sys)
   {
@@ -318,32 +320,29 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     }
     return sys->f0;
   }
-  return (int)((Particle::SysTracker::Contents *)contents)
-      ->Create(u, *(Vector3 *)&args, (const Vector3_16f *)pos, (dPa_c::level_c::callback_c *)cb);
+  return (int)contents->Create(u, *(Vector3 *)&args, (const Vector3_16f *)pos,
+                               (dPa_c::level_c::callback_c *)cb);
 }
 
 // @symbol func_02022d44
 u32 func_02022d44(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir)
 {
     return _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        uniqueID, effectID, x, y, z, (const Vec3*)dir,
-        (char*)data_0209ee74 + 0x7f0);
+        uniqueID, effectID, x, y, z, (const Vec3 *)dir, (void *)&data_0209ee74->mCallback_7f0);
 }
 
 // @symbol func_02022d00
 u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir)
 {
     return _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        uniqueID, effectID, x, y, z, (const Vec3*)dir,
-        (char*)data_0209ee74 + 0x7f4);
+        uniqueID, effectID, x, y, z, (const Vec3 *)dir, (void *)&data_0209ee74->mCallback_7f4);
 }
 
 // @symbol func_02022cbc
 u32 func_02022cbc(int uniqueID, int effectID, s32 x, s32 y, s32 z, int dir)
 {
     return _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        uniqueID, effectID, x, y, z, (const Vec3*)dir,
-        (char*)data_0209ee74 + 0x7f8);
+        uniqueID, effectID, x, y, z, (const Vec3 *)dir, (void *)&data_0209ee74->mCallback_7f8);
 }
 
 // @symbol func_02022c80
@@ -351,8 +350,7 @@ u32 func_02022c80(
     u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir)
 {
     return _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        uniqueID, effectID, x, y, z, (const Vec3*)dir,
-        (char*)data_0209ee74 + 0x800);
+        uniqueID, effectID, x, y, z, (const Vec3 *)dir, (void *)&data_0209ee74->mCallback_800);
 }
 
 // @symbol func_02022c3c
@@ -360,16 +358,15 @@ u32 func_02022c3c(
     u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir)
 {
     return _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        uniqueID, effectID, x, y, z, (const Vec3*)dir,
-        (char*)data_0209ee74 + 0x808);
+        uniqueID, effectID, x, y, z, (const Vec3 *)dir, (void *)&data_0209ee74->mCallback_808);
 }
 
 // @symbol _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj
 u32 _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
     u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir, u8 numWeatherEffectsNow)
 {
-    char* callback = (char*)&data_0209ee74->mWeatherCallback;
-    *(u8*)(callback + 4) = numWeatherEffectsNow;
+    dPa_c::level_c::clipCallback_c *callback = &data_0209ee74->mWeatherCallback;
+    callback->enabled = numWeatherEffectsNow;
     return _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         uniqueID, effectID, x, y, z, (const Vec3*)dir, callback);
 }
@@ -398,13 +395,10 @@ void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(Fix12i x, Fix12i y, Fix1
 // @symbol func_02022b04
 void func_02022b04(Fix12i x, Fix12i y, Fix12i z)
 {
-    *(u32*)((char*)data_0209ee74 + 0x75c) =
+    data_0209ee74->mSystemID_75c =
         _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(u32*)((char*)data_0209ee74 + 0x75c),
-            0x61,
-            x, y, z,
-            (const Vec3*)0,
-            (char*)data_0209ee74 + 0x760);
+            data_0209ee74->mSystemID_75c, 0x61, x, y, z, (const Vec3 *)0,
+            (void *)&data_0209ee74->mCallback_760);
 }
 
 // @symbol _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_
@@ -422,28 +416,20 @@ void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(Fix12i x, Fix12i y, Fix12
 // @symbol func_02022a4c
 u32 func_02022a4c(Fix12i x, Fix12i y, Fix12i z)
 {
-    char* base = (char*)data_0209ee74;
+    Particle::SysTracker *base = data_0209ee74;
     u32 result = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(base + 0x774),
-        0xdf,
-        x, y, z,
-        (const Vec3*)0,
-        base + 0x76c);
-    *(u32*)((char*)data_0209ee74 + 0x774) = result;
+        base->mSystemID_774, 0xdf, x, y, z, (const Vec3 *)0, (void *)&base->mBigSplashCallback);
+    data_0209ee74->mSystemID_774 = result;
     return result;
 }
 
 // @symbol func_020229f0
 u32 func_020229f0(Fix12i x, Fix12i y, Fix12i z)
 {
-    char* base = (char*)data_0209ee74;
+    Particle::SysTracker *base = data_0209ee74;
     u32 result = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(base + 0x780),
-        0xc4,
-        x, y, z,
-        (const Vec3*)0,
-        base + 0x784);
-    *(u32*)((char*)data_0209ee74 + 0x780) = result;
+        base->mSystemID_780, 0xc4, x, y, z, (const Vec3 *)0, (void *)&base->mCallback_784);
+    data_0209ee74->mSystemID_780 = result;
     return result;
 }
 
@@ -464,68 +450,54 @@ u32 _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(Fix12i x, Fix12i y, Fix12i z)
 // @symbol func_0202293c
 u32 func_0202293c(Fix12i x, Fix12i y, Fix12i z)
 {
-    char* base = (char*)data_0209ee74;
+    Particle::SysTracker *base = data_0209ee74;
     u32 result = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(base + 0x798),
-        0x118,
-        x, y, z,
-        (const Vec3*)0,
-        base + 0x79c);
-    *(u32*)((char*)data_0209ee74 + 0x798) = result;
+        base->mSystemID_798, 0x118, x, y, z, (const Vec3 *)0, (void *)&base->mCallback_79c);
+    data_0209ee74->mSystemID_798 = result;
     return result;
 }
 
 // @symbol func_020228dc
 u32 func_020228dc(Fix12i x, Fix12i y, Fix12i z)
 {
-    char* base = (char*)data_0209ee74;
+    Particle::SysTracker *base = data_0209ee74;
     u32 result = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(base + 0x7a4),
-        0x117,
-        x, y, z,
-        (const Vec3*)0,
-        base + 0x7a8);
-    *(u32*)((char*)data_0209ee74 + 0x7a4) = result;
+        base->mSystemID_7a4, 0x117, x, y, z, (const Vec3 *)0, (void *)&base->mCallback_7a8);
+    data_0209ee74->mSystemID_7a4 = result;
     return result;
 }
 
 // @symbol func_02022864
 void func_02022864(Fix12i x, Fix12i y, Fix12i z, s16 ang1, s16 ang2)
 {
-    *(s16*)((char*)data_0209ee74 + 0x7ba) = ang1;
-    *(s16*)((char*)data_0209ee74 + 0x7bc) = ang2;
-    *(u32*)((char*)data_0209ee74 + 0x7b0) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)((char*)data_0209ee74 + 0x7b0),
-        0x51,
-        x, y, z,
-        (const Vec3*)0,
-        (char*)data_0209ee74 + 0x7b4);
+    data_0209ee74->mCallback_7b4.scale = ang1;
+    data_0209ee74->mCallback_7b4.velocity = ang2;
+    data_0209ee74->mSystemID_7b0 =
+        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            data_0209ee74->mSystemID_7b0, 0x51, x, y, z, (const Vec3 *)0,
+            (void *)&data_0209ee74->mCallback_7b4);
 }
 
 // @symbol func_020227ec
 void func_020227ec(Fix12i x, Fix12i y, Fix12i z, s16 ang1, s16 ang2)
 {
-    *(s16*)((char*)data_0209ee74 + 0x7ca) = ang1;
-    *(s16*)((char*)data_0209ee74 + 0x7cc) = ang2;
-    *(u32*)((char*)data_0209ee74 + 0x7c0) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)((char*)data_0209ee74 + 0x7c0),
-        0x52,
-        x, y, z,
-        (const Vec3*)0,
-        (char*)data_0209ee74 + 0x7c4);
+    data_0209ee74->mCallback_7c4.scale = ang1;
+    data_0209ee74->mCallback_7c4.velocity = ang2;
+    data_0209ee74->mSystemID_7c0 =
+        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            data_0209ee74->mSystemID_7c0, 0x52, x, y, z, (const Vec3 *)0,
+            (void *)&data_0209ee74->mCallback_7c4);
 }
 
 // @symbol func_02022774
 void func_02022774(Fix12i x, Fix12i y, Fix12i z, s16 ang1, s16 ang2)
 {
-    *(s16*)((char*)data_0209ee74 + 0x7da) = ang1;
-    *(s16*)((char*)data_0209ee74 + 0x7dc) = ang2;
-    *(u32*)((char*)data_0209ee74 + 0x7d0) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)((char*)data_0209ee74 + 0x7d0),
-        0x4f,
-        x, y, z,
-        (const Vec3*)0,
-        (char*)data_0209ee74 + 0x7d4);
+    data_0209ee74->mCallback_7d4.scale = ang1;
+    data_0209ee74->mCallback_7d4.velocity = ang2;
+    data_0209ee74->mSystemID_7d0 =
+        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            data_0209ee74->mSystemID_7d0, 0x4f, x, y, z, (const Vec3 *)0,
+            (void *)&data_0209ee74->mCallback_7d4);
 }
 
 // @symbol func_020226fc
@@ -538,18 +510,14 @@ void func_020226fc(Fix12i x, Fix12i y, Fix12i z, s16 arg3, s16 arg4)
     u32 result;
 
     sys1 = data_0209ee74;
-    *(s16*)((u8*)sys1 + 0x7ea) = arg3;
+    sys1->mCallback_7e4.scale = arg3;
     sys2 = data_0209ee74;
-    *(s16*)((u8*)sys2 + 0x7ec) = arg4;
+    sys2->mCallback_7e4.velocity = arg4;
     sys3 = data_0209ee74;
     result = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)((u8*)sys3 + 0x7e0),
-        0x50,
-        x, y, z,
-        (const Vec3*)0,
-        (u8*)sys3 + 0x7e4);
+        sys3->mSystemID_7e0, 0x50, x, y, z, (const Vec3 *)0, (void *)&sys3->mCallback_7e4);
     sys4 = data_0209ee74;
-    *(u32*)((u8*)sys4 + 0x7e0) = result;
+    sys4->mSystemID_7e0 = result;
 }
 
 }

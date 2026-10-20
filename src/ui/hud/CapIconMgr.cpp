@@ -79,10 +79,10 @@ void func_ov001_020aaf40(void)
         for (i = 0; i < 3; i++) {
             char *node = (char *)gCapIconListHeads[i];
             while (node) {
-                if (*(int*)(node + 0x14) != -1 && *(unsigned char*)(node + 0x1a) != 0) {
+                if (((dCapIcon_c *)node)->mSlot != -1 && ((dCapIcon_c *)node)->mFlashFrames != 0) {
                     int v;
-                    *(unsigned char *)(int)(node + 0x1a) -= 1;
-                    v = *(unsigned char*)(node + 0x1a);
+                    ((dCapIcon_c *)node)->mFlashFrames -= 1;
+                    v = ((dCapIcon_c *)node)->mFlashFrames;
                     if (v == 0) {
                         func_ov001_020aa6b0((int *)node, 1);
                     } else if (v % 10 == 0) {
@@ -130,7 +130,7 @@ void func_ov001_020aadac(void) {
         func_ov001_020aa6cc(i1);
         sl = (int *)gCapIconListHeads[i1];
         while (sl != 0) {
-            unsigned char* fl = LAUNDER_U8_PTR((char*)sl + 0x1b);
+            unsigned char *fl = LAUNDER_U8_PTR(&((dCapIcon_c *)sl)->mFlags);
             *fl &= ~2;
             if (sl[0x14/4] != -1) {
                 func_ov001_020aa6b0(sl, 0);
@@ -138,7 +138,7 @@ void func_ov001_020aadac(void) {
             }
             sl = (int*)sl[0x10/4];
         }
-        if (i1 != *(unsigned char*)(fp + 0x6d9)) {
+        if (i1 != ((Player *)fp)->mCharacter) {
             gCapIconDispatchFlags[i1] |= 2;
         }
     }
@@ -153,12 +153,12 @@ void func_ov001_020aadac(void) {
         do {
             void* fw = dActor_c::FindWithID(o[8/4]);
             if (fw != 0 || (int)fw != o[4/4]) {
-                if (*(unsigned char*)((char*)o + 0x19) == 4) {
-                    unsigned char* fl = LAUNDER_U8_PTR((char*)o + 0x1b);
+                if (((dCapIcon_c *)o)->mIconKind == 4) {
+                    unsigned char *fl = LAUNDER_U8_PTR(&((dCapIcon_c *)o)->mFlags);
                     *fl |= 2;
-                    o[0x14/4] = func_0202a8e0(o[4/4], *(unsigned char*)((char*)o + 0x18));
+                    o[0x14 / 4] = func_0202a8e0(o[4 / 4], ((dCapIcon_c *)o)->mCharacter);
                     func_ov001_020aa6b0(o, 1);
-                    func_ov001_020aa6e4(i2, *(unsigned char*)((char*)o + 0x19), 0);
+                    func_ov001_020aa6e4(i2, ((dCapIcon_c *)o)->mIconKind, 0);
                     *flags |= 2;
                 }
             } else {
@@ -222,10 +222,10 @@ void func_ov001_020aaa54(void)
                     int bit0 = (unsigned)(b1b << 0x1f) >> 0x1f;
                     if (bit0 == 0 && (unsigned)(b1b << 0x1e) >> 0x1f) {
                         fp = 1;
-                        r8 = sl->unk_19;
+                        r8 = sl->mIconKind;
                     } else {
                         int t = *flagp;
-                        if ((t & 0x30) || sl->unk_19 >= 2) {
+                        if ((t & 0x30) || sl->mIconKind >= 2) {
                             if (bit0) {
                                 if (sl->mSlot == -1) {
                                     sl->mSlot = func_0202a8e0((int)sl->mOwner, sl->mCharacter);
@@ -235,19 +235,20 @@ void func_ov001_020aaa54(void)
                                     spc = 1;
                                 }
                                 r7 = 1;
-                                sp4 = sl->unk_19;
+                                sp4 = sl->mIconKind;
                                 if ((*flagp & 3) == 0)
                                     *flagp |= 1;
-                                if (sl->unk_19 >= 2) *flagp |= 0x20;
+                                if (sl->mIconKind >= 2)
+                                    *flagp |= 0x20;
                             } else {
-                                if (sl->unk_19 != 0) {
-                                    if (r8 < sl->unk_19) {
-                                        r8 = sl->unk_19;
+                                if (sl->mIconKind != 0) {
+                                    if (r8 < sl->mIconKind) {
+                                        r8 = sl->mIconKind;
                                         sb = sl;
                                     }
                                     if ((t & 3) == 0)
                                         *flagp |= 1;
-                                    if (sl->unk_19 >= 2)
+                                    if (sl->mIconKind >= 2)
                                         *flagp |= 0x20;
                                 } else {
                                     if ((t & 3) == 1 && r8 == 0) {
@@ -274,7 +275,7 @@ void func_ov001_020aaa54(void)
                 FLAGS1B(sb) |= 2;
                 sb->mSlot = func_0202a8e0((int)sb->mOwner, sb->mCharacter);
                 func_ov001_020aa6b0((int *)sb, 1);
-                func_ov001_020aa6e4(r6, sb->unk_19, (int *)sb);
+                func_ov001_020aa6e4(r6, sb->mIconKind, (int *)sb);
             } else {
                 if (r7 != 0 && (((Player *)player)->IsCollectingCap() != 0 || (*flagp & 0x40) != 0)) {
                     if (spc != 0) {
@@ -312,7 +313,7 @@ int func_ov001_020aa960(int x, char* arg){
         return 0;
     if (v & 0x40)
         return 0;
-    if (x == *(unsigned char *)(arg + 0x6d9))
+    if (x == ((Player *)arg)->mCharacter)
         return 0;
     if (func_ov001_020aa79c(x))
         return 0;
@@ -332,7 +333,7 @@ int func_ov001_020aa858(int self, char* a, int b, int d)
         return 0;
     }
     if (a == 0) return 0;
-    unsigned char k = *(unsigned char*)(a+0x19);
+    unsigned char k = ((dCapIcon_c *)a)->mIconKind;
     if (k >= 3) return 1;
     if (d != 0) return 0;
     void* p = data_0209f394[0];
@@ -348,7 +349,8 @@ int func_ov001_020aa858(int self, char* a, int b, int d)
 int func_ov001_020aa7b8(void* self, char* a)
 {
     if (a == 0) return 0;
-    if (*(unsigned char*)(a+0x19) == 3) return 1;
+    if (((dCapIcon_c *)a)->mIconKind == 3)
+        return 1;
     int i = 0;
     for (i = 0; i < ((unsigned char *)&data_0208a0e0)[0]; i++) {
         void* p = data_0209f394[i];
@@ -374,8 +376,8 @@ void func_ov001_020aa6e4(int idx, unsigned r1, int* obj){
             return;
         data_0209f284 = 1;
         func_02012790(0x24);
-        *((char *)obj + 0x1a) = 0x3c;
-        gCapIconFlashTimer = *((unsigned char *)obj + 0x1a);
+        ((dCapIcon_c *)obj)->mFlashFrames = 0x3c;
+        gCapIconFlashTimer = ((dCapIcon_c *)obj)->mFlashFrames;
         return;
     }
     gCapIconDispatchFlags[idx] |= 0x80;
@@ -448,7 +450,7 @@ void func_ov001_020aa420(void) {
         if (reqFlag == 0) {
             if (node != 0) {
                 do {
-                    *(u8 *)((char *)node + 0x1b) &= ~2;
+                    ((dCapIcon_c *)node)->mFlags &= ~2;
                     if (node->field19 == 1) {
                         *flagByte = 1;
                     }
@@ -476,7 +478,7 @@ void func_ov001_020aa420(void) {
                     if (node->flags.b0) {
                         if (node->soundHandle == -1) {
                             node->soundHandle = func_0202a8e0(node->field4, node->field18);
-                            *(u8 *)((char *)node + 0x1b) |= 2;
+                            ((dCapIcon_c *)node)->mFlags |= 2;
                             func_ov001_020aa6b0((int *)node, 1);
                         }
                         handled = 1;
@@ -490,7 +492,7 @@ void func_ov001_020aa420(void) {
                         if (node->flags.b3) {
                             best = node;
                         } else {
-                            *(u8 *)((char *)node + 0x1b) |= 8;
+                            ((dCapIcon_c *)node)->mFlags |= 8;
                         }
                     }
                 } else {
@@ -501,7 +503,7 @@ void func_ov001_020aa420(void) {
         }
 
         if (func_ov001_020aa7b8((void *)i, (char *)best) != 0) {
-            *(u8 *)((char *)best + 0x1b) |= 2;
+            ((dCapIcon_c *)best)->mFlags |= 2;
             best->soundHandle = func_0202a8e0(best->field4, best->field18);
             func_ov001_020aa6b0((int *)best, 1);
             func_ov001_020aa6e4(i, best->field19, (int *)best);

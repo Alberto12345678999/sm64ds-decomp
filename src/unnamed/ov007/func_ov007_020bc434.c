@@ -1,3 +1,4 @@
+/* c: the model record func_ov007_020bc47c sets up; no class or header names it, so raw. */
 void func_ov007_020bc434(void* c){
   *(int*)((char*)c+0x3c)=0;
   *(int*)((char*)c+0x38)=*(int*)((char*)c+0x3c);

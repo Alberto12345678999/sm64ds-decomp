@@ -65,35 +65,16 @@ countdown block. Where a row cites "Behavior" that is the file meant.
   stores its `kind` argument and then passes it as the rotation to
   `Vec3_RotateYAndTranslate`). Three lifetimes, no common meaning; a single name
   would be a claim none of the three supports.
-- **0x716, 0x717, 0x726** -- every matched site *writes* them (`ChangeState`
-  clears, various `St_*_Init` set). Nothing in matched code reads them, so there
-  is no evidence of what they gate.
-- **0x6ac, 0x6b2, 0x6b6, 0x6ba, 0x6bc, 0x6c2, 0x6c4** -- countdown timers whose
-  only matched site is Behavior's `DecIfAbove0_Short` block. Their shape is
-  witnessed (`u16`, decrement-to-zero); their owner is not, because nothing
-  matched arms them. `0x6be` and `0x6c2` additionally fire one unnamed helper at
-  zero, which is not enough to name either.
-- **0x744..0x74c and 0x750..0x758** -- two `Vector3`s, already documented in the
-  header. 0x750 is the anchor and 0x744 the point `Vec3_RotateYAndTranslate`
-  derives from it (`TryEnterStarDoor`, `ShowMessage2`, `JumpIntoBooCage`), but
-  what the pair *means* is not settled, so the widths stay and the names do not.
-- **0x760, 0x762, 0x764, 0x766** -- four `s16`s that `ApproachLinear2` decays
-  toward 0 (`St_YoshiPower_Main`, `St_Talk_Main`) and that `St_Shell_Main` and
-  `St_Land_Main` set to 0x1000 / 0x4000. Almost certainly a render tilt/squash
-  group, but no matched body consumes them, so "almost certainly" is where it
-  stops.
-- **0x64c, 0x650** -- both seeded to the sentinel 0x80000000 by `InitResources`
-  and compared against `mPosY` with different slacks (`- 0xc8000` in
-  `St_Swim_Main`, `- 0x64000` in `St_Wait_Init`). Y thresholds of some kind;
-  which surface they record is not witnessed.
-- **0x578, 0x57c** -- `InitResources` allocates a 0x32-element container with a
-  0xc stride and `Vector3::~Vector3` as the element destructor at 0x578, and a
-  bare 0x32-byte block at 0x57c; `CleanupResources` frees both. Fifty `Vector3`s
-  plus fifty bytes is suggestive of a position trail, but nothing matched reads
-  either back.
-- **0x6f4, 0x6ee, 0x742, 0x722..0x728, 0x743** -- state-local scratch in
-  `St_YoshiPower_*`, `St_Talk_*` and `St_Wait_Cleanup` with writes but no
-  witnessed consumer.
+- **0x726** -- every matched site *writes* it (`ChangeState` clears, various
+  `St_*_Init` set). Nothing in matched code reads it, so there is no evidence of
+  what it gates.
+- **0x6ee, 0x722..0x725** -- state-local scratch in `St_YoshiPower_*`,
+  `St_Talk_*` and `St_Wait_Cleanup` with writes but no witnessed consumer.
+- **Since named.** This list once also held 0x716/0x717, the `u16` countdowns
+  0x6ac..0x6c4, the 0x744/0x750 vectors, the 0x75c..0x766 rotations, 0x64c/0x650,
+  0x578/0x57c, 0x6f4, 0x727/0x728, 0x742 and 0x743. Later passes found readers
+  or arming sites for each; the evidence is in the `include/Player.h` comments
+  beside the names, not repeated here.
 - **0x0e0, 0x0ec, 0x154, 0x158, 0x160, 0x27c, 0x28c** -- these are not scalars at
   all. `CleanupResources` walks them as arrays (`this + i*4 + 0xdc`,
   `+ 0x154`, `+ 0x27c`, `+ 0x28c` for `i < 4`, plus `i + 4` for the 0x154 and

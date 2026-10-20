@@ -32,7 +32,7 @@
 //   dispatch in this TU).
 // - SnowSpray_ElemDtor (empty element destructor) and SnowSpray_ElemCtor
 //   (empty element constructor) stay free: they are ctor/dtor slots in the
-//   __cxa_vec_ctor call for the mArray3/mArray4 records, not dispatch
+//   __cxa_vec_ctor call for the mArray3 records, not dispatch
 //   targets on the scene.
 // - dScMgSnowball_c_Construct stays free: it is the C2 construction body called by
 //   dScMgSnowball_c_classInit, below, after allocation;
@@ -2060,13 +2060,13 @@ extern "C" {
 extern void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *m);
 extern void DrawOamSprite(void *a, int b, int c, void *m);
 
-typedef struct {
-    s32 a;        /* 0x00 */
-    s32 b;        /* 0x04 */
+typedef struct {  /* dScMgSnowball_bit, with the header's names */
+    s32 x;        /* 0x00 */
+    s32 y;        /* 0x04 */
     u8 pad[0x16]; /* 0x08 */
-    u8 f1e;       /* 0x1e */
-    u8 f1f;       /* 0x1f */
-    u8 f20;       /* 0x20 */
+    u8 visible;   /* 0x1e */
+    u8 spriteA;   /* 0x1f */
+    u8 spriteB;   /* 0x20 */
     u8 pad2[3];   /* 0x21 */
 } Elem_02129690;
 
@@ -2082,11 +2082,11 @@ void dScMgSnowball_c::Bit_DrawAll() {
     Obj_02129690 *a = (Obj_02129690 *)self;
     int i;
     for (i = 0; i < 50; i++) {
-        if (a->arr[i].f1e != 0) {
-            int bb = a->arr[i].a >> 12;
-            int cc = (a->arr[i].b - a->fixed) >> 12;
-            Mg_RenderSubSpriteMtx((void *)sSnowballBitSprites[a->arr[i].f1f], bb, cc, 0);
-            DrawOamSprite((void *)sSnowballBitSprites[a->arr[i].f20], bb, cc, 0);
+        if (a->arr[i].visible != 0) {
+            int bb = a->arr[i].x >> 12;
+            int cc = (a->arr[i].y - a->fixed) >> 12;
+            Mg_RenderSubSpriteMtx((void *)sSnowballBitSprites[a->arr[i].spriteA], bb, cc, 0);
+            DrawOamSprite((void *)sSnowballBitSprites[a->arr[i].spriteB], bb, cc, 0);
         }
     }
 }
@@ -2151,16 +2151,14 @@ extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 }
 void dScMgSnowball_c::Bit_StateFallStart(int i) {
-    char *c = (char *)this;
-    int idx = i * 0x24;
     unsigned int r;
-    *(int *)(c + 0xbea0 + idx) = 0;
+    mBits[i].vy = 0;
     r = ((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-    *(int *)(c + 0xbea4 + idx) = (((r << 4) >> 15) << 4) + 0x300;
-    *(unsigned char *)(c + 0xbeb1 + idx) = 1;
+    mBits[i].fallSpeed = (((r << 4) >> 15) << 4) + 0x300;
+    mBits[i].fallState = 1;
     r = ((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
     r = ((r << 5) >> 15) + 0x20;
-    *(short *)(c + 0xbeac + idx) = (unsigned char)r;
+    mBits[i].fallTimer = (unsigned char)r;
 }
 
 // @symbol _ZN15dScMgSnowball_c19BitA_StateDriftStopEi
@@ -2321,20 +2319,20 @@ struct Entry_02129d94 {
 };
 extern Entry_02129d94 sSnowballBitAStateTable[];
 extern Entry_02129d94 sSnowballBitStateTable[];
-struct Elem_02129d94 {
-    unsigned char a;
-    unsigned char b;
+struct Elem_02129d94 { /* dScMgSnowball_bit from 0x1c, with the header's names */
+    unsigned char driftState;
+    unsigned char fallState;
     char pad[0x22];
 };
 struct C_02129d94 {
     char head[0xbeb0];
     Elem_02129d94 arr[1];
-}; /* pun view over the scene; PMF receiver is the class */
+}; /* pun view over the scene; PMF receiver is the class. mBits[i] renumbers @NNN */
 void dScMgSnowball_c::Bit_RunKindA(int i) {
     C_02129d94 *c = (C_02129d94 *)this;
-    int idx0 = c->arr[i].a;
+    int idx0 = c->arr[i].driftState;
     (this->*sSnowballBitAStateTable[idx0].pmf)(i);
-    int idx1 = c->arr[i].b;
+    int idx1 = c->arr[i].fallState;
     (this->*sSnowballBitStateTable[idx1].pmf)(i);
 }
 
@@ -2473,8 +2471,8 @@ typedef void (dScMgSnowball_c::*PMF_0212a224)(int);
 extern "C" PMF_0212a224 sSnowballBitBStateTable[];
 
 void dScMgSnowball_c::Bit_RunKindB(int idx) {
-    char *base = (char *)this;
-    unsigned char state = *(unsigned char *)(base + idx * 0x24 + 0xbeb0);
+    char *base = (char *)this; /* bare mBits[idx] renumbers @NNN */
+    unsigned char state = ((dScMgSnowball_c *)base)->mBits[idx].driftState;
     (this->*sSnowballBitBStateTable[state])(idx);
 }
 
@@ -2490,8 +2488,9 @@ void dScMgSnowball_c::Bit_PickKind(int idx) {
     int b = 0;
     if (v == 5)
         b = 1;
-    *(unsigned char *)(self + idx * 0x24 + 0xbeaf) = data_ov006_0212f3b4[b];
-    *(unsigned char *)(self + idx * 0x24 + 0xbeb0) = 0;
+    /* through self: bare mBits[idx] renumbers @NNN */
+    ((dScMgSnowball_c *)self)->mBits[idx].kind = data_ov006_0212f3b4[b];
+    ((dScMgSnowball_c *)self)->mBits[idx].driftState = 0;
 }
 
 // @symbol _ZN15dScMgSnowball_c13Bit_UpdateAllEv
@@ -2512,6 +2511,7 @@ void dScMgSnowball_c::Bit_UpdateAll() {
     i = 0;
     mask = 0x7fff;
     do {
+        /* mBits[0] fields at q; the member spellings grow this function */
         if (*(u8 *)(q + 0xbeae) != 0) {
             u8 fidx = *(u8 *)(q + 0xbeaf);
             (this->*sSnowballBitKindTable[fidx])(i);
@@ -2544,6 +2544,7 @@ void dScMgSnowball_c::Bit_InitAll() {
     int q;
     unsigned int m;
 
+    /* Raw: mBits[i] fields through the split + 0xb000 / + 0xbe00 bases. */
     i = 0;
     p = c;
     for (; i < 0x32; i++) {

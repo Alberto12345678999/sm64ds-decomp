@@ -33,10 +33,10 @@
 //   take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
 // - func_020393d4 / func_020393c4 install dBgW's two callback words;
 //   dBgW carries no setter for them.
-// - &mTargetPosX / &unk_0a4: this class and dActor_c store those triples
-//   as scalars; the shared header has not named unk_0a4 / unk_0ac yet.
+// - &mTargetPosX / &mSpeedX: this class and dActor_c store those triples
+//   as scalars, so the vector helpers take the first word's address.
 // - func_ov091_02131cb0 stays free: it is typed on dActor_c and its body
-//   only touches the base's velocity triples (unk_0a4 / unk_0ac).
+//   only touches the base's velocity triples (mSpeedX / mSpeedZ).
 // - Behavior lowers mPosY by the sink offset and restores it before the
 //   model update, which the cartridge does too; the dead store is its own.
 
@@ -293,7 +293,7 @@ void daLinelift2_c::func_ov091_02131ef0()
 int daLinelift2_c::func_ov091_02131db8()
 {
     int result;
-    AddVec3((Vec3 *)&mPosX, (Vec3 *)&unk_0a4, (Vec3 *)&mPosX);
+    AddVec3((Vec3 *)&mPosX, (Vec3 *)&mSpeedX, (Vec3 *)&mPosX);
     if (Vec3_Dist(&mPos, (const Vector3 *)&mTargetPosX) < (mHorzSpeed >> 1)) {
         result = 1;
         mBasePosX = mTargetPosX;
@@ -334,8 +334,8 @@ int daLinelift2_c::func_ov091_02131db8()
 
 // @symbol func_ov091_02131cb0
 /* Aim the velocity from `from` toward `to` at mHorzSpeed: pitch into
-   mPrevAngleX, heading into mPrevAngleY, components into unk_0a4 /
-   mVertSpeed / unk_0ac. */
+   mPrevAngleX, heading into mPrevAngleY, components into mSpeedX /
+   mVertSpeed / mSpeedZ. */
 extern "C" void func_ov091_02131cb0(dActor_c *self, const Vector3 *to, const Vector3 *from)
 {
     Vector3 d;
@@ -343,9 +343,9 @@ extern "C" void func_ov091_02131cb0(dActor_c *self, const Vector3 *to, const Vec
     self->mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(d.x, d.z);
     self->mPrevAngleX = _ZN4cstd5atan2E5Fix12IiES1_(d.y, Vec3_HorzLen(&d));
     s32 horz = FX_MUL(self->mHorzSpeed, data_02082214[((u16)self->mPrevAngleX >> 4) * 2 + 1]);
-    self->unk_0a4 = FX_MUL(horz, data_02082214[((u16)self->mPrevAngleY >> 4) * 2]);
+    self->mSpeedX = FX_MUL(horz, data_02082214[((u16)self->mPrevAngleY >> 4) * 2]);
     self->mVertSpeed = FX_MUL(self->mHorzSpeed, data_02082214[((u16)self->mPrevAngleX >> 4) * 2]);
-    self->unk_0ac = FX_MUL(horz, data_02082214[((u16)self->mPrevAngleY >> 4) * 2 + 1]);
+    self->mSpeedZ = FX_MUL(horz, data_02082214[((u16)self->mPrevAngleY >> 4) * 2 + 1]);
 }
 
 // @symbol _ZN13daLinelift2_cD1Ev

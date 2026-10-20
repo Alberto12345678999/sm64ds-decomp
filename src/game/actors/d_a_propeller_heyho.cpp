@@ -17,8 +17,8 @@
  * through int* in func_ov070_0211fd98, func_ov070_0211fae4 and
  * func_ov070_0211f48c, and the Vector3 write through ((int *)&v)[i] in
  * func_ov070_0211f368, stay as written. SharedFilePtr has no fields, so
- * the loaded file is ((int *)&handle)[1]. unk_0a4, unk_0ac, unk_104,
- * unk_108, unk_10a and the mPrevAngle triple keep the base-class names.
+ * the loaded file is ((int *)&handle)[1]. unk_104, unk_108, unk_10a and
+ * the mPrevAngle triple keep the base-class names.
  * FlyGuy_ChangeState keeps its C-ABI name. ApproachAngleInt is the
  * int-target overload. V3w and V3h keep the ldm/stm copy in
  * func_ov070_0211f6e0 and func_ov070_0211f48c. The six state records and
@@ -290,16 +290,16 @@ int daPropeller_Heyho_c::Behavior()
     }
 
     {
-        /* Gravity, clamped at terminal velocity. unk_0ac is read and written
+        /* Gravity, clamped at terminal velocity. mSpeedZ is read and written
            back unchanged -- the ROM really does reload and restore it here. */
         int v = mVertSpeed + mVertAccel;
         int hi = mTerminalVelocity;
         if (v >= hi) {
             hi = v;
         }
-        int tmp = unk_0ac;
+        int tmp = mSpeedZ;
         mVertSpeed = hi;
-        unk_0ac = tmp;
+        mSpeedZ = tmp;
     }
 
     UpdatePosWithOnlySpeed(&mdCcAc_c);
@@ -486,9 +486,9 @@ int func_ov070_0211fd98(daPropeller_Heyho_c *c)
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, c->mPrevAngleX);
     MulVec3Mat4x3(in, data_020a0e68, out);
 
-    _Z14ApproachLinearRiii(&c->unk_0a4, out[0], 0x1000);
+    _Z14ApproachLinearRiii(&c->mSpeedX, out[0], 0x1000);
     _Z14ApproachLinearRiii(&c->mVertSpeed, out[1], 0x800);
-    _Z14ApproachLinearRiii(&c->unk_0ac, out[2], 0x1000);
+    _Z14ApproachLinearRiii(&c->mSpeedZ, out[2], 0x1000);
 
     if ((u16)c->mStateTimer == 0) {
         FlyGuy_ChangeState(c, &data_ov070_0212359c);
@@ -610,7 +610,7 @@ int func_ov070_0211fae4(daPropeller_Heyho_c *c)
     vin.z = 0xf000;
     Matrix4x3_FromRotationY(data_020a0e68, c->mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, c->mPrevAngleX);
-    MulVec3Mat4x3(&vin, data_020a0e68, &c->unk_0a4);
+    MulVec3Mat4x3(&vin, data_020a0e68, &c->mSpeedX);
 
     if (Vec3_Dist(&c->mPosX, &c->mHomePosX) > kHomeLeashDist) {
         FlyGuy_ChangeState(c, &data_ov070_0212359c);
@@ -622,9 +622,9 @@ int func_ov070_0211fae4(daPropeller_Heyho_c *c)
     int thresh = kArriveDist;
     if (data_0209f2f8 == kLevel0x16) thresh = kArriveDistLevel0x16;
     if (dist < thresh) {
-        c->unk_0a4 = 0;
+        c->mSpeedX = 0;
         c->mVertSpeed = 0;
-        c->unk_0ac = 0;
+        c->mSpeedZ = 0;
         if (c->mCanSpitFire == 0 ||
             (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 1) == 0) {
             FlyGuy_ChangeState(c, &data_ov070_021235cc);
@@ -811,7 +811,7 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
 
     Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, mPrevAngleX);
-    MulVec3Mat4x3(&v, data_020a0e68, &unk_0a4);
+    MulVec3Mat4x3(&v, data_020a0e68, &mSpeedX);
 
     return 1;
 }
@@ -940,9 +940,9 @@ extern "C" {
  * mVertSpeed = +50.0 units/frame (upward pop), mVertAccel = -5.0, timer = 3
  * frames and mFlags = 0. */
 short func_ov070_0211f450(daPropeller_Heyho_c *c) {
-    c->unk_0a4 = 0;
+    c->mSpeedX = 0;
     c->mVertSpeed = 0;
-    c->unk_0ac = 0;
+    c->mSpeedZ = 0;
     c->mVertSpeed = 0x32000;
     c->mVertAccel = -0x5000;
     c->mStateTimer = 3;
