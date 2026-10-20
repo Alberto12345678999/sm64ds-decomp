@@ -185,11 +185,6 @@ struct Obj2 {
     unsigned char b121; /* 0x121 */
 };
 
-/* shadow 'Arr' -- 1 member(s). */
-typedef struct {
-    int *p[13];
-} Arr;
-
 /* shadow 'TVec2' -- 1 member(s). */
 struct TVec2 {
     int x;
@@ -4389,88 +4384,73 @@ void dScMgSmartball_c::ResetSparks() {
 
 // @symbol _ZN16dScMgSmartball_c8EndRoundEv
 void dScMgSmartball_c::EndRound() {
-    char *c = (char *)this;
     int i;
-    *(int *)(c + 0x5958) = 0;
-    *(unsigned char *)(c + 0x595c) = 1;
-    *(unsigned char *)(c + 0x595d) = 1;
+    mDrainTimer = 0;
+    mDraining = 1;
+    mRoundEnded = 1;
     Mg_ShowBanner(6, 0x80, -0x60, -1, -1, 0xd);
     Mg_PlayJingle(0);
-    for (i = 0; i < *(int *)(c + 0x4668); i++) {
-        if (*(unsigned char *)(((i >= 0xd) ? 0 : ((char **)(c + 0x4688))[i]) + 0x30))
-            ((cMgSmartball_ball_c *)((i >= 0xd) ? 0 : ((char **)(c + 0x4688))[i]))->Freeze();
+    for (i = 0; i < mBallCount; i++) {
+        if (((i >= 0xd) ? 0 : mpBalls[i])->mIsActive)
+            ((i >= 0xd) ? 0 : mpBalls[i])->Freeze();
     }
 }
 
 // @symbol _ZN16dScMgSmartball_c13ServeNextBallEv
-static inline int *get(char *self, int i) {
-    return i >= 13 ? 0 : ((Arr *)(self + 0x4688))->p[i];
+static inline cMgSmartball_ball_c *get(dScMgSmartball_c *self, int i) {
+    return i >= 13 ? 0 : self->mpBalls[i];
 }
 void dScMgSmartball_c::ServeNextBall() {
-    char *self = (char *)this;
     int t[3];
-    int n = *(int *)(self + 0x4668);
+    int n = mBallCount;
     int i;
     for (i = 0; i < n; i++) {
-        if (*(unsigned char *)((char *)get(self, i) + 0x30) == 0)
+        if (get(this, i)->mIsActive == 0)
             continue;
-        if (*(unsigned char *)((char *)get(self, i) + 0x121) != 0)
+        if (get(this, i)->mInPlay != 0)
             continue;
-        ((cMgSmartball_ball_c *)((char *)get(self, i)))->PutInPlay();
-        CopyObjectPos(t, get(self, i));
+        get(this, i)->PutInPlay();
+        CopyObjectPos(t, (int *)get(this, i));
         func_02012718(0x1a5, t[0]);
         return;
     }
 }
 
 // @symbol _ZN16dScMgSmartball_c8CountOutEv
-// Increment the u32 counter at self+0x5994. The u64-mask launder forces the base to
-// materialize via a pool-loaded constant + add (ldr r1,[pc]; add r1,self,r1),
-// rather than splitting the large offset.
+// The ROM materializes &mOutTally via a pool-loaded constant + add
+// (ldr r1,[pc]; add r1,self,r1) rather than splitting the large offset.
 void dScMgSmartball_c::CountOut() {
-    char *self = (char *)this;
-    *(unsigned int *)(self + 0x5994) += 1;
+    mOutTally++;
 }
 
 // @symbol _ZN16dScMgSmartball_c10CountAwardEi
 void dScMgSmartball_c::CountAward(int i) {
-    char *p = (char *)this;
-    int *a = (int *)(p + 22920);
-    a[i] = a[i] + 1;
+    mAwardTally[i]++;
 }
 
 // @symbol _ZN16dScMgSmartball_c10CountDokanEv
 void dScMgSmartball_c::CountDokan() {
-    char *p = (char *)this;
-    int *a = (int *)(p + 0x5984);
-    *a = *a + 1;
+    mDokanTally++;
 }
 
 // @symbol _ZN16dScMgSmartball_c8CountAnaEv
 void dScMgSmartball_c::CountAna() {
-    char *p = (char *)this;
-    int *a = (int *)(p + 0x5980);
-    *a = *a + 1;
+    mAnaTally++;
 }
 
 // @symbol _ZN16dScMgSmartball_c11CountKinokoEv
 void dScMgSmartball_c::CountKinoko() {
-    char *p = (char *)this;
-    int *a = (int *)(p + 0x597c);
-    *a = *a + 1;
+    mKinokoTally++;
 }
 
 // @symbol _ZN16dScMgSmartball_c10CountBingoEv
 void dScMgSmartball_c::CountBingo() {
-    char *p = (char *)this;
-    int *a = (int *)(p + 0x5978);
-    *a = *a + 1;
+    mBingoTally++;
 }
 
 // @symbol _ZN16dScMgSmartball_c9CountLineEi
 int dScMgSmartball_c::CountLine(int i) {
-    char *base = (char *)this;
-    int *arr = (int *)(base + 0x5968);
+    int *arr = mLineTally;
     int v = arr[i - 1] + 1;
     arr[i - 1] = v;
     return v;
@@ -4478,9 +4458,7 @@ int dScMgSmartball_c::CountLine(int i) {
 
 // @symbol _ZN16dScMgSmartball_c9CountCellEv
 void dScMgSmartball_c::CountCell() {
-    char *p = (char *)this;
-    int *a = (int *)(p + 0x5964);
-    *a = *a + 1;
+    mCellTally++;
 }
 
 // @symbol _ZN16dScMgSmartball_c7GetTileEPi
@@ -4491,14 +4469,14 @@ unsigned short dScMgSmartball_c::GetTile(int *pos) {
         int b = pos[0];
         int ai = (a >> 12) / 8;
         int bi = (b >> 12) / 8;
-        unsigned short h = *(unsigned short *)(base + (ai * 32 + bi) * 2 + 0x5154);
+        unsigned short h = mBg2Map[ai * 32 + bi];
         return (unsigned short)(h & 0x3ff);
     }
     if (a < -0x30000 && a >= -0xf0000) {
         int b = pos[0];
         int ai = ((a >> 12) + 0xf0) / 8;
         int bi = (b >> 12) / 8;
-        unsigned short h = *(unsigned short *)(base + (ai * 32 + bi) * 2 + 0x4954);
+        unsigned short h = mBg1Map[ai * 32 + bi];
         return (unsigned short)(h & 0x3ff);
     }
     return 0;
@@ -4510,12 +4488,12 @@ unsigned short dScMgSmartball_c::GetTile(int *pos) {
 void dScMgSmartball_c::UpdateDust() {
     char *self = (char *)this;
     int i;
-    char *obj = self + 0x48d4;
+    char *obj = (char *)mArray3;
     for (i = 0; i < 0x10; i++) {
-        unsigned char *flag = (unsigned char *)(int)(self + i + 0x4804);
+        unsigned char *flag = (unsigned char *)(int)((dScMgSmartball_c *)(self + i))->mDustActive;
         if (*flag != 0) {
-            *(int *)((int)(self + i * 8) + 0x4854) += *(int *)(self + i * 8 + 0x48d4);
-            *(int *)((int)(self + i * 8) + 0x4858) += *(int *)(self + i * 8 + 0x48d8);
+            *(int *)((dScMgSmartball_c *)(int)(self + i * 8))->mArray2 += *(int *)((dScMgSmartball_c *)(self + i * 8))->mArray3;
+            *(int *)&((dScMgSmartball_c *)(int)(self + i * 8))->mArray2[4] += *(int *)&((dScMgSmartball_c *)(self + i * 8))->mArray3[4];
             {
                 int m = Vec2_Len((Vec2 *)obj) * 6 / 8;
                 if (func_0203d434((V2 *)obj)) {
@@ -4523,7 +4501,7 @@ void dScMgSmartball_c::UpdateDust() {
                 }
             }
             {
-                int *counter = (int *)(int)(self + i * 4 + 0x4814);
+                int *counter = (int *)(int)((dScMgSmartball_c *)(self + i * 4))->mDustAge;
                 *counter += 1;
                 if (*counter >= 0xf) {
                     *flag = 0;
