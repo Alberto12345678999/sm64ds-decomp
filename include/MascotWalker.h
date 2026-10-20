@@ -10,7 +10,9 @@
  * read it through their WALKER() cast. Unnamed regions are touched in one
  * place at most, or sit inside an embedded object. */
 struct MascotWalker {
-    u8 pad_00[0x14];  /* 0x00 */
+    u8 pad_00[0xc];   /* 0x00 */
+    s32 mPauseAnim;   /* 0x0c -- the BCA file Load starts and StartPause restarts */
+    u8 pad_10[0x4];   /* 0x10 */
     s32 mWalkAnim;    /* 0x14 -- the BCA file StartNextPath restarts */
     u8 mModel[0x1c];  /* 0x18 -- a BlendModelAnim */
     u8 mMatrix[0x30]; /* 0x34 -- a Matrix4x3, set by UpdateMatrix */
@@ -26,7 +28,13 @@ struct MascotWalker {
     s16 mAngleY;      /* 0xea -- eased toward mTargetAngle */
     u8 pad_ec[0x2];   /* 0xec */
     s16 mTargetAngle; /* 0xee -- horizontal angle to the next point */
-    u8 pad_f0[0x8];   /* 0xf0 */
+    /* Applied as an X rotation to bone 6 by UpdateMatrix; Update eases it
+       toward sMascotWalkerOffset (clamped to +/-0x3000) while mPaused, else to 0. */
+    s16 mHeadAngle; /* 0xf0 */
+    /* Counted down by StateWalk and StatePause: 0x78 frames of pause from
+       StartPause, then 0x258..0x4af frames of walking from StatePause. */
+    s16 mStateTimer; /* 0xf2 */
+    s32 mPaused;     /* 0xf4 -- set by StartPause, cleared when StatePause resumes the walk */
 };
 
 #ifndef SM64DS_PLATFORM_PC
