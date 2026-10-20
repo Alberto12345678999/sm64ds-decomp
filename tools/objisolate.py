@@ -575,7 +575,7 @@ def plan(raw, keep_symbol):
             "ztvRebase": ztv_rebase, "error": None}
 
 
-def plan_many(raw, keep_symbols):
+def plan_many(raw, keep_symbols, rtti_rebased=False, public_vtables=False):
     """Validate an exact text-only multi-function object for production linking.
 
     This is deliberately not ``plan`` with a wider argument.  The one-function
@@ -591,7 +591,16 @@ def plan_many(raw, keep_symbols):
     * one dedicated, non-empty ``.text`` section per requested symbol;
     * those sections occur in the caller's ROM order;
     * no other non-debug content and no unlicensed symbol in a kept section; and
-    * no undefined RTTI relocation that still needs the single-function ``-8`` rewrite.
+    * no undefined RTTI relocation that still needs the single-function ``-8``
+      rewrite.  Two licences name a rewrite that already happened, and either
+      one is enough to keep the addend.  ``rtti_rebased=True`` keeps a ``_ZTV``
+      addend of 16 or more that is a multiple of 4: after the preamble was
+      subtracted, that is a secondary slot-array offset, not a pending rewrite.
+      A primary ``+8`` and any shorter or unaligned remainder are still refused.
+      ``public_vtables=True`` keeps a positive ``R_ARM_ABS32`` addend on
+      ``_ZTV`` (a thunk-table offset such as ModelAnim's 44 - 8 = 36).
+      ``_ZTI`` / ``_ZTS`` addends stay 0, and a non-ABS32 reloc is refused.
+      Callers that have not rebased leave both flags false.
 
     Success therefore needs no ELF surgery: the exact input object is preserved.  The
     returned plan uses the familiar shape so callers can report one isolation verdict
@@ -685,20 +694,42 @@ def plan_many(raw, keep_symbols):
                 continue
             if not relsec.is_RELA():
                 return {"error": f"{target.name}: RTTI reloc is REL, not RELA"}
-            if target["st_shndx"] in ("SHN_UNDEF", SHN_UNDEF) \
-                    and reloc["r_addend"] != 0:
-                return {"error": f"{target.name}: intact multi-symbol object has "
-                                 f"undefined RTTI addend {reloc['r_addend']}; text-only "
-                                 "production isolation cannot rewrite it"}
+            addend = reloc["r_addend"]
+            if target["st_shndx"] in ("SHN_UNDEF", SHN_UNDEF) and addend != 0:
+                # This function does not rewrite addends. An unrebased primary
+                # store is still +8. After deadstrip has subtracted the preamble,
+                # a primary store is 0 and a secondary store keeps a positive
+                # remainder. Either licence below keeps that remainder; callers
+                # that have not rebased leave both flags false.
+                #
+                # rtti_rebased: the remainder is the ROM symbol's real offset
+                # from the primary slot array (at least two destructor slots plus
+                # the secondary preamble, 16) and is 4-aligned. Anything shorter
+                # is still a pending rewrite.
+                #
+                # public_vtables: the definition is an import and the remainder
+                # is a thunk-table offset (ModelAnim: 44 - 8 = 36). Any positive
+                # R_ARM_ABS32 against _ZTV is that offset. _ZTI/_ZTS stay 0.
+                rebased_secondary = (
+                    rtti_rebased and target.name.startswith("_ZTV")
+                    and addend >= 16 and addend % 4 == 0)
+                public_secondary = (
+                    public_vtables and target.name.startswith("_ZTV")
+                    and reloc["r_info_type"] == R_ARM_ABS32 and addend > 0)
+                if not (rebased_secondary or public_secondary):
+                    return {"error": f"{target.name}: intact multi-symbol object has "
+                                     f"undefined RTTI addend {addend}; text-only "
+                                     "production isolation cannot rewrite it"}
 
     return {"keep": keep, "keepSymbols": requested, "drop": [],
             "externalise": [], "dead": [], "referenced": sorted(referenced),
             "error": None}
 
 
-def derive_many(raw, keep_symbols):
+def derive_many(raw, keep_symbols, rtti_rebased=False, public_vtables=False):
     """Pure, fail-closed validation of one exact text-only multi-function object."""
-    p = plan_many(bytes(raw), keep_symbols)
+    p = plan_many(bytes(raw), keep_symbols, rtti_rebased=rtti_rebased,
+                  public_vtables=public_vtables)
     return (None, p) if p.get("error") else (bytes(raw), p)
 
 
@@ -1904,10 +1935,11 @@ def isolate(obj, keep_symbol):
     return p
 
 
-def isolate_many(obj, keep_symbols):
+def isolate_many(obj, keep_symbols, rtti_rebased=False, public_vtables=False):
     """Validate and preserve an exact text-only multi-function object in place."""
     raw = obj.read_bytes()
-    out, p = derive_many(raw, keep_symbols)
+    out, p = derive_many(raw, keep_symbols, rtti_rebased=rtti_rebased,
+                         public_vtables=public_vtables)
     if out is not None and out != raw:
         obj.write_bytes(out)
     return p
