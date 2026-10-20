@@ -42,8 +42,9 @@ typedef struct MbParentFile {
 typedef char MbParentFile_size_must_be_0x5c4[sizeof(MbParentFile) == 0x5c4 ? 1 : -1];
 #endif
 
-/* The entry request a child sends (message 7); func_0206655c copies 0x1d
- * bytes of it, and its parts into the per-child tables below. */
+/* The entry request a child sends. func_02065de4 assembles it piece by piece
+ * into mChildRequest; once complete, func_0206655c copies its 0x1d bytes out
+ * and files the parts into the per-child tables below. */
 typedef struct MbChildRequest {
     u32 mGameId;          /* 0x00 -- copied to mChildGameId */
     u8  mUser[0x16];      /* 0x04 -- copied to mChildUser */
@@ -73,7 +74,8 @@ typedef struct MbParentWork {
                              func_02066a94 -1) */
     u16 mChildEntryBitmap;/* 0x1536 -- the same children, by AID bit */
     MbChildRequest mChildRequest[15]; /* 0x1538 -- each child's entry request */
-    u8  pad_1718[0x3c];
+    u32 mChildRequestPieces[15]; /* 0x1718 -- pieces of it received, by bit
+                                    (func_02065de4); cleared on disconnect */
     u16 mChildResponse[15]; /* 0x1754 -- the application's answer to an entry
                                request (func_0206703c); func_0206655c acts on
                                3 (accept) and 4 (refuse) for message 7, 2 for
