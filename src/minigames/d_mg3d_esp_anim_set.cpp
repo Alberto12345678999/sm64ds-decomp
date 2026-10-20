@@ -203,7 +203,7 @@ void dMg3DEspAnimSet_c::Render()
     void *zero;
     Matrix4x3_FromTranslation(&data_020a0e68, 0x8c000, 0x80000, 0x40000);
     r5 = c;
-    r4 = c + 0x12c;
+    r4 = (char *)mMaterialChangers;
     i = 0;
     zero = (void*)i;
     do {
@@ -236,7 +236,7 @@ void dMg3DEspAnimSet_c::Behavior()
         int zero = 0;
         int i;
         char* a = self;
-        char* b = self + 0x12c;
+        char *b = (char *)mMaterialChangers;
         char* cc = self;
         for (i = 0; i < 3; i++) {
             if (mActive[i] != 0) {
@@ -304,7 +304,7 @@ void dMg3DEspAnimSet_c::InitResources()
     bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspHamonAnimFile);
     MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&sEsp3DMaterialAnim);
     w = o;
-    w2 = o + 0x12c;
+    w2 = (char *)mMaterialChangers;
     for (i = 0; i < 3; i++) {
         ((ModelBase *)w)->SetFile((BMD_File *)bmd, 1, m1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000,
@@ -483,7 +483,7 @@ void dMg3DEspModel_c::Reset()
 int dMg3DEspModel_c::InitResources()
 {
     char* c = (char*)this;
-    if (func_020179b4(&gEspCardModelFile, c + 0xc, 1) == 0)
+    if (func_020179b4(&gEspCardModelFile, (char *)&mModelAnim, 1) == 0)
         return 0;
     TextureSequence::LoadFile(gEspCardTexSeqFile);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardStartAnimFile);
@@ -493,7 +493,7 @@ int dMg3DEspModel_c::InitResources()
     TextureSequence::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
                              **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        c + 0x70, *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
+        (char *)&mTextureSequence, *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, *((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
     mAnimSet.InitResources();
@@ -1633,12 +1633,14 @@ void *dScMg3DEsp_c_classInit(void){
     if(o != 0){
         _ZN11dScMgBase_cC2Ev(o);
         *(int *)o = (int)_ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(o + 0x471c);
+        _ZN8Particle10SysTrackerC1Ev(&((dScMg3DEsp_c *)o)->mSysTracker);
         *(int *)o = (int)&_ZTV12dScMg3DEsp_c[2];
-        _ZN5ModelC1Ev(o + 0x4f38);
-        _ZN5ModelC1Ev(o + 0x4f88);
+        _ZN5ModelC1Ev(((dScMg3DEsp_c *)o)->mModel1);
+        _ZN5ModelC1Ev(((dScMg3DEsp_c *)o)->mModel2);
+        /* The embedded dMg3DEspModel_c; the header splits it round
+           mModelMuted, so there is no one member to name. */
         _ZN15dMg3DEspModel_cC1Ev(o + 0x4fd8);
-        _ZN18TextureTransformerC1Ev(o + 0x51f4);
+        _ZN18TextureTransformerC1Ev(((dScMg3DEsp_c *)o)->mTextureTransformer);
     }
     return o;
 }
