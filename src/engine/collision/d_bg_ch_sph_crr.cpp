@@ -8,10 +8,8 @@
 //   - SetObjAndSphere is defined by its mangled name: the real signature
 //     carries Fix12<int> by value and the member form changes codegen under
 //     2004/b56. The header declaration is the real one; callers use it.
-//   - unk_0ec and unk_0fc/unk_100/unk_104 keep their unk_ spellings: their
-//     roles (wall-rejection half extent; floor normal) are documented in the
-//     class header, and the rename has to move with their users in
-//     d_bg_w_kc_itcm.cpp, d_bg_w_kc_mbg*.cpp and d_bg_ch_actr.cpp.
+//   - The hit-record forwarders call dBgPi::RecordHit by its mangled name:
+//     they take int triID, and the member's s16 parameter emits an sxth.
 #include "dBgCh_SphCrr.h"
 
 extern "C" {
@@ -21,7 +19,7 @@ void _ZN5dBgPi9RecordHitEsP11SurfaceInfo(void *res, int triID, void *info);
 }
 
 // @symbol _ZN12dBgCh_SphCrrC1Ev
-dBgCh_SphCrr::dBgCh_SphCrr() : unk_0ec(0) {}
+dBgCh_SphCrr::dBgCh_SphCrr() : mWallRejectHalfExtent(0) {}
 
 // @symbol _ZN12dBgCh_SphCrrD1Ev
 // @symbol _ZN12dBgCh_SphCrrD0Ev
@@ -41,7 +39,7 @@ extern "C" void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c
     ((dM3dGSph &)*self).Set(*pos, radius);
     self->SetActor(actor);
     self->func_02037b5c();
-    self->mScale = 0x1000;
+    self->mMaxNormalY = 0x1000;
 }
 
 /* Reset the whole query state: bounds, every flag bit, the base record and
@@ -61,55 +59,55 @@ void dBgCh_SphCrr::func_02037b5c()
     mClsnResult1.Reset();
     mClsnResult2.Reset();
     mClsnResult3.Reset();
-    unk_0fc = 0;
-    unk_100 = -0x1000;
-    unk_104 = 0;
+    mFloorNormal.x = 0;
+    mFloorNormal.y = -0x1000;
+    mFloorNormal.z = 0;
 }
 
 /* Clear the displacement and the push-out range the scan accumulates. */
 // @symbol _ZN12dBgCh_SphCrr17ResetDisplacementEv
 void dBgCh_SphCrr::ResetDisplacement() {
     disp.x = disp.y = disp.z = 0;
-    aabbMin.x = aabbMax.x = 0;
-    aabbMin.y = aabbMax.y = 0;
-    aabbMin.z = aabbMax.z = 0;
+    mPushOutMin.x = mPushOutMax.x = 0;
+    mPushOutMin.y = mPushOutMax.y = 0;
+    mPushOutMin.z = mPushOutMax.z = 0;
 }
 
 /* Widen the push-out range to cover a scan's lowest and highest pushes. */
 // @symbol _ZN12dBgCh_SphCrr19ExpandPushOutBoundsEiiiiii
 void dBgCh_SphCrr::ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ) {
-    if (aabbMin.x > minX) aabbMin.x = minX;
-    if (aabbMax.x < minX) aabbMax.x = minX;
-    if (aabbMin.x > maxX) aabbMin.x = maxX;
-    if (aabbMax.x < maxX) aabbMax.x = maxX;
-    if (aabbMin.y > minY) aabbMin.y = minY;
-    if (aabbMax.y < minY) aabbMax.y = minY;
-    if (aabbMin.y > maxY) aabbMin.y = maxY;
-    if (aabbMax.y < maxY) aabbMax.y = maxY;
-    if (aabbMin.z > minZ) aabbMin.z = minZ;
-    if (aabbMax.z < minZ) aabbMax.z = minZ;
-    if (aabbMin.z > maxZ) aabbMin.z = maxZ;
-    if (aabbMax.z < maxZ) aabbMax.z = maxZ;
+    if (mPushOutMin.x > minX) mPushOutMin.x = minX;
+    if (mPushOutMax.x < minX) mPushOutMax.x = minX;
+    if (mPushOutMin.x > maxX) mPushOutMin.x = maxX;
+    if (mPushOutMax.x < maxX) mPushOutMax.x = maxX;
+    if (mPushOutMin.y > minY) mPushOutMin.y = minY;
+    if (mPushOutMax.y < minY) mPushOutMax.y = minY;
+    if (mPushOutMin.y > maxY) mPushOutMin.y = maxY;
+    if (mPushOutMax.y < maxY) mPushOutMax.y = maxY;
+    if (mPushOutMin.z > minZ) mPushOutMin.z = minZ;
+    if (mPushOutMax.z < minZ) mPushOutMax.z = minZ;
+    if (mPushOutMin.z > maxZ) mPushOutMin.z = maxZ;
+    if (mPushOutMax.z < maxZ) mPushOutMax.z = maxZ;
 }
 
 /* Commit the accumulated range into the displacement the actor moves by. */
 // @symbol _ZN12dBgCh_SphCrr13func_02037a38Ev
 void dBgCh_SphCrr::func_02037a38()
 {
-    disp.x = aabbMin.x + aabbMax.x;
-    disp.y = aabbMin.y + aabbMax.y;
-    disp.z = aabbMin.z + aabbMax.z;
+    disp.x = mPushOutMin.x + mPushOutMax.x;
+    disp.y = mPushOutMin.y + mPushOutMax.y;
+    disp.z = mPushOutMin.z + mPushOutMax.z;
 }
 
 // @symbol _ZN12dBgCh_SphCrr13func_02037a04EP7Vector3S1_
 void dBgCh_SphCrr::func_02037a04(Vector3 *outMin, Vector3 *outMax)
 {
-    outMin->x = aabbMin.x;
-    outMin->y = aabbMin.y;
-    outMin->z = aabbMin.z;
-    outMax->x = aabbMax.x;
-    outMax->y = aabbMax.y;
-    outMax->z = aabbMax.z;
+    outMin->x = mPushOutMin.x;
+    outMin->y = mPushOutMin.y;
+    outMin->z = mPushOutMin.z;
+    outMax->x = mPushOutMax.x;
+    outMax->y = mPushOutMax.y;
+    outMax->z = mPushOutMax.z;
 }
 
 /* Hit-record forwarders for the three result slots (1 = floor, 2 = wall,
@@ -153,9 +151,9 @@ void dBgCh_SphCrr::func_02037968(int i, int clsnID, dActor_c *owner, dBgW *colli
 /* Save the selected floor normal; the collision scan compares Y first. */
 // @symbol _ZN12dBgCh_SphCrr13func_0203794cEPKi
 void dBgCh_SphCrr::func_0203794c(const s32 *normal) {
-    unk_0fc = normal[0];
-    unk_100 = normal[1];
-    unk_104 = normal[2];
+    mFloorNormal.x = normal[0];
+    mFloorNormal.y = normal[1];
+    mFloorNormal.z = normal[2];
 }
 
 /* Merge another query's flag byte, dropping its hit-result bits (0x1c). */

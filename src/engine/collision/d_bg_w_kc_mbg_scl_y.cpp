@@ -171,12 +171,12 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
 
     inverseScale = invScale;
     localRadius = FX_MUL(sphere.radius, inverseScale);
-    localExtraExtent = FX_MUL(sphere.unk_0ec, inverseScale);
+    localExtraExtent = FX_MUL(sphere.mWallRejectHalfExtent, inverseScale);
 
     dBgCh_SphCrr localSphere;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&localSphere, &localCentre,
                                                                      localRadius, 0);
-    localSphere.unk_0ec = localExtraExtent;
+    localSphere.mWallRejectHalfExtent = localExtraExtent;
     localSphere.func_02037940(sphere.flags);
     func_02035394(&localSphere, &sphere);
     hit = dBgW_Kc::DetectClsn(localSphere);
@@ -199,8 +199,8 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
                 sphere.SetFloorResult(*localSphere.GetFloorResult());
             }
             sphere.flags |= 4;
-            if (sphere.unk_100 < localSphere.unk_100) {
-                sphere.func_0203794c(&localSphere.unk_0fc);
+            if (sphere.mFloorNormal.y < localSphere.mFloorNormal.y) {
+                sphere.func_0203794c(&localSphere.mFloorNormal.x);
             }
         }
         if (localSphere.flags & 8) {

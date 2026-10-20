@@ -124,7 +124,7 @@ extern "C" void func_02037318(char *self)
     if (((Player *)clsn->mActor)->IsInAir())
         return;
     clsn->mFlags |= 0x100;
-    src = &clsn->mSphereClsn.unk_0fc;
+    src = &clsn->mSphereClsn.mFloorNormal.x;
     clsn->mGroundNormal.x = src[0];
     clsn->mGroundNormal.y = src[1];
     clsn->mGroundNormal.z = src[2];
@@ -203,7 +203,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
     v.y = sy + mHeight;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
         &mSphereClsn, &v, mRadius, mActor);
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (src->y - p68->y > 0) {
         mSphereClsn.flags |= 0x20;
     }
@@ -246,7 +246,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava_2()
     v.y = sy + mHeight;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
         &mSphereClsn, &v, mRadius, mActor);
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (src->y - obj->mPrevPosY > 0) {
         mSphereClsn.flags |= 0x20;
     }
@@ -376,7 +376,7 @@ extern "C" void func_02036acc(char *c)
                                                                      self->mRadius, self->mActor);
     if (func_0203553c((int*)c) == 0)
         self->mSphereClsn.flags |= 0x40;
-    self->mSphereClsn.mScale = self->mScale;
+    self->mSphereClsn.mMaxNormalY = self->mScale;
     if (pos[1] - prev[1] > 0)
         self->mSphereClsn.flags |= 0x20;
     if (floorFlag != 0) {
@@ -513,7 +513,7 @@ void dBgCh_Actr::UpdateContinuous()
                                                                      mActor);
     if (func_0203553c((int*)this) == 0)
         mSphereClsn.flags |= 0x40;
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (pos[1] - prev[1] > 0)
         mSphereClsn.flags |= 0x20;
     if (floorFlag != 0) {
@@ -642,7 +642,7 @@ void dBgCh_Actr::UpdateContinuousNoLava()
     sphere.y += height;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
                                                                      mActor);
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (pos[1] - prev[1] > 0)
         mSphereClsn.flags |= 0x20;
     if (floorFlag != 0) {
@@ -834,7 +834,7 @@ void dBgCh_Actr::UpdateExtraContinous()
         _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &v124,
                                                                          mRadius, mActor);
 
-        mSphereClsn.mScale = mScale;
+        mSphereClsn.mMaxNormalY = mScale;
         if (func_02035764((int *)this))
             mSphereClsn.flags |= 2;
         if (pos->y - prev->y > 0)
@@ -974,7 +974,7 @@ void dBgCh_Actr::UpdateExtraContinous()
                     }
                 }
                 _ZN5dBgPiD1Ev((dBgPi *)&tmp);
-            } else if (mSphereClsn.aabbMin.y <= -vo) {
+            } else if (mSphereClsn.mPushOutMin.y <= -vo) {
                 Vector3 v1a0;
 
                 V3D(v1a0, prev, vo)
