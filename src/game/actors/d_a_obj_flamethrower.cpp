@@ -281,11 +281,15 @@ int daObjFlamethrower_c::Behavior()
                     }
                     if (data_0209f2f8 == kBigBoosHaunt) {
                         s16 wave = data_02082214[(((u16)(s16)wavePhase) >> 4) * 2];
-                        ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].y = mPosY + FX_MUL(wave, -0xaa000);
+                        ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].y =
+                            mPosY + FX_MUL(wave, -0xaa000);
                     }
-                    ((daObjFlamethrower_c *)pclsn)->mColliders[0].pos.x = ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].x;
-                    ((daObjFlamethrower_c *)pclsn)->mColliders[0].pos.y = ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].y;
-                    ((daObjFlamethrower_c *)pclsn)->mColliders[0].pos.z = ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].z;
+                    ((daObjFlamethrower_c *)pclsn)->mColliders[0].pos.x =
+                        ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].x;
+                    ((daObjFlamethrower_c *)pclsn)->mColliders[0].pos.y =
+                        ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].y;
+                    ((daObjFlamethrower_c *)pclsn)->mColliders[0].pos.z =
+                        ((daObjFlamethrower_c *)ppos)->mFlamePositions[0].z;
                 }
                 id = ((daObjFlamethrower_c *)pclsn)->mColliders[0].otherOwner;
                 if (id != 0) {

@@ -76,7 +76,7 @@ struct dScMgCoin_Block {
     /* The coin this block claimed: Block_StateWander stores the index,
        Block_StateDropOnCoin takes that coin's x, and KickBlockUnderCoin
        finds the block by it. */
-    u8 coin;       /* 0x1b */
+    u8 coin; /* 0x1b */
 };
 #ifndef SM64DS_PLATFORM_PC
 typedef char dScMgCoin_Block_size_must_be_0x1c[sizeof(dScMgCoin_Block) == 0x1c ? 1 : -1];
@@ -228,7 +228,7 @@ struct dScMgCoin_c : dScMgBase_c {
        something was collected (a touch on a worthless coin ends it without
        it); Phase_StateResult then frees graphics slot 6 and restores the
        music. ResetRound clears it. */
-    u8 mClearedAll;                    /* 0x51df */
+    u8 mClearedAll; /* 0x51df */
 };
 
 #ifndef SM64DS_PLATFORM_PC

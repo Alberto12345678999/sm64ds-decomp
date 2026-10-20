@@ -158,9 +158,11 @@ extern "C" int func_ov002_020ef070(void *unused, char *actor)
     v2.y = y + 0x3c000;
 
     int scale = 0x64;
-    if (((dActor_c *)actor)->param1 == 2) scale = 0x82;
+    if (((dActor_c *)actor)->param1 == 2)
+        scale = 0x82;
     v2.x = scale * data_02082214[((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1] + v2.x;
-    v2.z = scale * data_02082214[(((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1) + 1] + v2.z;
+    v2.z = scale * data_02082214[(((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1) + 1] +
+           v2.z;
 
     line.SetObjAndLine(v1, v2, (dActor_c *)actor);
     if (line.DetectClsn()) {
@@ -205,8 +207,7 @@ extern "C" int func_ov002_020eeeb8(void *unused, char *actor)
 
     dBgCh_Lin line;
 
-    Vector3 *pos =
-        &((dActor_c *)actor)->mPos;
+    Vector3 *pos = &((dActor_c *)actor)->mPos;
     int x = pos->x;
     v1.x = x;
     int y = pos->y;
@@ -222,12 +223,9 @@ extern "C" int func_ov002_020eeeb8(void *unused, char *actor)
     if (((dActor_c *)actor)->param1 == 2)
         scale = 0x82;
 
-    v2.x = scale *
-        data_02082214[((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1] +
-        v2.x;
-    v2.z = scale *
-        data_02082214[(((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1) + 1] +
-        v2.z;
+    v2.x = scale * data_02082214[((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1] + v2.x;
+    v2.z = scale * data_02082214[(((unsigned short)((dActor_c *)actor)->mAngleY >> 4) << 1) + 1] +
+           v2.z;
 
     line.SetObjAndLine(v1, v2, (dActor_c *)actor);
 

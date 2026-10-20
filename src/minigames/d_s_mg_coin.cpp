@@ -586,7 +586,8 @@ void dScMgCoin_c::Popup_UpdateAll() {
     int i;
     for (i = 0; i < 0x18; i++) {
         char *popup = raw + (int)((long long)i) * 0x10;
-        if (((dScMgCoin_c *)popup)->mPopups[0].live != 0 && ((dScMgCoin_c *)popup)->mPopups[0].timer != 0) {
+        if (((dScMgCoin_c *)popup)->mPopups[0].live != 0 &&
+            ((dScMgCoin_c *)popup)->mPopups[0].timer != 0) {
             ((dScMgCoin_c *)(int)popup)->mPopups[0].timer -= 1;
             if ((s16)((dScMgCoin_c *)(int)popup)->mPopups[0].timer <= 0)
                 ((dScMgCoin_c *)popup)->mPopups[0].flag = 1;
@@ -660,13 +661,13 @@ void dScMgCoin_c::Sparkle_Burst(int coinIndex) {
         if (((dScMgCoin_c *)raw)->mSparkles[0].active == 0) {
             *(u8 *)(raw + 0x4d28) = 1; /* mSparkles[0].active */
             ((dScMgCoin_c *)raw)->mSparkles[0].visible = 1;
-            ((dScMgCoin_c *)raw)->mSparkles[0].x =*coinX + (sCoinSparkleSpawnOffsets[j] << 12);
-            ((dScMgCoin_c *)raw)->mSparkles[0].y =*coinY + (sCoinSparkleSpawnOffsets[k] << 12);
+            ((dScMgCoin_c *)raw)->mSparkles[0].x = *coinX + (sCoinSparkleSpawnOffsets[j] << 12);
+            ((dScMgCoin_c *)raw)->mSparkles[0].y = *coinY + (sCoinSparkleSpawnOffsets[k] << 12);
             {
                 u16 ang = sCoinSparkleAngles[i];
                 int sine = (ang >> 4) * 2;
-                ((dScMgCoin_c *)raw)->mSparkles[0].vx =FX_MUL(data_02082214[sine + 1], 0x2000);
-                ((dScMgCoin_c *)raw)->mSparkles[0].vy =FX_MUL(data_02082214[sine], 0x2000);
+                ((dScMgCoin_c *)raw)->mSparkles[0].vx = FX_MUL(data_02082214[sine + 1], 0x2000);
+                ((dScMgCoin_c *)raw)->mSparkles[0].vy = FX_MUL(data_02082214[sine], 0x2000);
             }
             ((dScMgCoin_c *)raw)->mSparkles[0].life = 0x18;
         }
@@ -951,7 +952,8 @@ void dScMgCoin_c::KickBlockUnderCoin(int id) {
     int i;
     char *p = base;
     for (i = 0; i < 0x28; i++) {
-        if (((dScMgCoin_c *)p)->mBlocks[0].active != 0 && ((dScMgCoin_c *)p)->mBlocks[0].state == 4 &&
+        if (((dScMgCoin_c *)p)->mBlocks[0].active != 0 &&
+            ((dScMgCoin_c *)p)->mBlocks[0].state == 4 &&
             id == ((dScMgCoin_c *)p)->mBlocks[0].coin) {
             int v = mCoins[id].y;
             mBlocks[i].y = v - 0x20000;

@@ -29,11 +29,11 @@ typedef struct {
    type-2 object supplies a yaw at +0xa; byte 1 zero means jump to it at once
    (here: snap mEasedAngleY and set mFlags bit 4, which places pos directly). */
 typedef struct {
-    u8 type;      /* 0x0 */
-    u8 p1;        /* 0x1 */
-    s16 x, y, z;  /* 0x2 */
+    u8 type;     /* 0x0 */
+    u8 p1;       /* 0x1 */
+    s16 x, y, z; /* 0x2 */
     u8 pad_8[2];
-    s16 angleY;   /* 0xa */
+    s16 angleY; /* 0xa */
 } CamViewObj;
 
 typedef struct {
@@ -91,7 +91,8 @@ void func_0200bb28(char* c, char* a1)
         if (flag4000 != 0) {
             cam->mBehindAngleY = (s16)(cam->mTargetPlayer->mAngleY + 0x8000);
         }
-        cam->mRecentering = (ApproachAngle(&cam->mEasedAngleY, cam->mBehindAngleY, 4, 0x400, 0x100) != 0);
+        cam->mRecentering =
+            (ApproachAngle(&cam->mEasedAngleY, cam->mBehindAngleY, 4, 0x400, 0x100) != 0);
         cam->mBaseAngleOffset = (s16)(cam->mEasedAngleY - cam->mBaseAngleY);
         cam->mBaseAngleOffset = (s16)((cam->mBaseAngleOffset + 0x1000) & -0x2000);
         cam->mFlags |= 0x60;
@@ -136,7 +137,8 @@ void func_0200bb28(char* c, char* a1)
                 }
             }
         }
-        _Z14ApproachLinearRsss(&cam->mEasedAngleY, (s16)(cam->mBaseAngleY + cam->mBaseAngleOffset), 0x800);
+        _Z14ApproachLinearRsss(&cam->mEasedAngleY, (s16)(cam->mBaseAngleY + cam->mBaseAngleOffset),
+                               0x800);
     }
 
     tbl = (cam->mFlags & 2) ? data_02086d50 : data_02086cc8;
