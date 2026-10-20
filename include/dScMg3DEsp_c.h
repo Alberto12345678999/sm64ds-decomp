@@ -21,6 +21,57 @@
 #include "dScMgSingle3DBase_c.h"
 
 struct dScMg3DEsp_c : dScMgSingle3DBase_c {
+    /* One of the five cards, 0x18 bytes. DealCards places it and
+       CardTouch/CardSeek fly it to the reveal spot at (0x80, 0x30). */
+    struct Card {
+        s32 mX;        /* 0x00, Fix12 screen position */
+        s32 mY;        /* 0x04 */
+        s32 mSpeed;    /* 0x08, CardSeek adds 0x300 a frame; CardTouch zeroes it */
+        u16 mTimer;    /* 0x0c, CardSeek waits it out; CardTouch sets 0x20 */
+        u16 mAngle;    /* 0x0e, heading to the reveal spot (CardTouch's atan2) */
+        u8  mActive;   /* 0x10, UpdateCards runs the card while set */
+        u8  mState;    /* 0x11, s3DEspCardTable index: 0 exit, 1 touch, 2 seek */
+        u8  mVisible;  /* 0x12, RenderCards draws the card while set */
+        u8  mFace;     /* 0x13, sprite index; matched against mTarget */
+        u8  mPriority; /* 0x14, OAM priority; DealCards sets 1, CardExit drops it to 0 */
+        u8  pad_15[3]; /* 0x15 */
+    };
+
+    /* One of the three emitters SpawnRows copies a tapped card's spot to,
+       0x14 bytes. */
+    struct Row {
+        s32 mX;        /* 0x00 */
+        s32 mY;        /* 0x04 */
+        s32 mScale;    /* 0x08, Fix12 sprite scale; 0x1400 at spawn, then decays */
+        u16 mTimer;    /* 0x0c, RowWait's countdown */
+        u8  pad_0e[2]; /* 0x0e */
+        u8  mActive;   /* 0x10, UpdateRows runs the row while set */
+        u8  mState;    /* 0x11, s3DEspRowTable index: 0 wait, 1 decay, 2 fade */
+        u8  mVisible;  /* 0x12, RenderRows draws the row while set */
+        u8  mPriority; /* 0x13, OAM priority; SpawnRows sets 0 */
+    };
+
+    /* One of the twenty falling slots, 0x20 bytes. */
+    struct Slot {
+        s32 mX;        /* 0x00, Fix12 screen position */
+        s32 mY;        /* 0x04 */
+        s32 mVelX;     /* 0x08, added to mX each frame by the type handlers */
+        s32 mVelY;     /* 0x0c, added to mY; SlotFall pulls it down by mGravity */
+        u16 mLife;     /* 0x10, SlotFall's countdown; at 0 the slot waits again */
+        u16 mDelay;    /* 0x12, frames the rise/kick handlers hold before pushing */
+        u16 mPushTime; /* 0x14, frames they push mVelX for */
+        u16 mWait;     /* 0x16, SlotWait's countdown before a relaunch */
+        u8  mActive;   /* 0x18, UpdateSlots runs the slot while set */
+        u8  mAccel;    /* 0x19, 0..7; the push step is (mAccel << 4) + 0x10 */
+        u8  mGravity;  /* 0x1a, 0..7; SlotFall's pull is (mGravity << 3) + 0x10 */
+        u8  mFrame;    /* 0x1b, sprite index; 7 - min(mLife >> 3, 7) */
+        u8  mVisible;  /* 0x1c, RenderSlots draws the slot while set */
+        u8  mState;    /* 0x1d, s3DEspSlotFallTable index: 0 wait, 1 fall */
+        u8  mType;     /* 0x1e, s3DEspSlotRiseTable index: 0 setup, 1 rise,
+                          2 kick, 3 dampen */
+        u8  pad_1f;    /* 0x1f */
+    };
+
     virtual ~dScMg3DEsp_c();
     virtual void StartRound(int arg);               /* slot 18 */
     virtual void OnNewRecord();                          /* slot 20 */
@@ -31,9 +82,9 @@ struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     s32 mModelMuted;               /* 0x51e4, the model's mMuted; set at game over */
     u8  pad_51e8[0xc];             /* 0x51e8 */
     u8  mTextureTransformer[0x14]; /* 0x51f4, a TextureTransformer */
-    u8  mCards[0x78];              /* 0x5208, five 0x18-byte cards */
-    u8  mRows[0x3c];               /* 0x5280, three 0x14-byte emitters */
-    u8  mSlots[0x280];             /* 0x52bc, twenty 0x20-byte slots */
+    Card mCards[5];                /* 0x5208 */
+    Row  mRows[3];                 /* 0x5280 */
+    Slot mSlots[20];               /* 0x52bc */
     s32 mRoundState;               /* 0x553c, the state index Behavior dispatches on */
     s32 mPhase;                    /* 0x5540, the play sub-state index */
     s32 mDifficulty;               /* 0x5544 */
