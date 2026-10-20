@@ -341,11 +341,11 @@ extern "C" {  /* .c-derived members: C linkage for everything below */
 void PachinkoDeco_DrawAll(char* row)
 {
     for (int i = 0; i < 3; i++) {
-        if (*(unsigned char*)(row + 0x4000 + 0xe6d) != 0) {
+        if (PACHINKO(row)->mRow[0].visible != 0) {
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-                false, sPachinkoDecoSprite, *(int *)(row + 0x4000 + 0xe58) >> 12,
-                *(int *)(row + 0x4000 + 0xe5c) >> 12, -1, -1, 0x1000, (void *)0x1000,
-                *(unsigned short *)(row + 0x4e00 + 0x68), -1);
+                false, sPachinkoDecoSprite, PACHINKO(row)->mRow[0].x >> 12,
+                PACHINKO(row)->mRow[0].y >> 12, -1, -1, 0x1000, (void *)0x1000,
+                (unsigned short)PACHINKO(row)->mRow[0].angle, -1);
         }
         row += 0x18;
     }
@@ -388,12 +388,12 @@ void PachinkoDeco_ShowAll(char *row)
         if (*(unsigned char *)(row + 0x4e6c) == 0)
         {
             *(unsigned char *)(row + 0x4e6c) = 1;
-            *(unsigned char *)(row + 0x4e6d) = 1;
-            *(int *)(row + 0x4e58) = (data_ov006_0212eb44[i] << 12) - *(int *)(raw + 0x5bfc);
-            *(int *)(row + 0x4e5c) = -*(int *)(raw + 0x5c00);
-            *(short *)(row + 0x4e6a) = 0;
-            *(short *)(row + 0x4e68) = 0;
-            *(unsigned char *)(row + 0x4e6e) = 0;
+            PACHINKO(row)->mRow[0].visible = 1;
+            PACHINKO(row)->mRow[0].x = (data_ov006_0212eb44[i] << 12) - *(int *)(raw + 0x5bfc);
+            PACHINKO(row)->mRow[0].y = -*(int *)(raw + 0x5c00);
+            *(short *)(row + 0x4e6a) = 0; /* mRow[0].unk12: nothing reads it */
+            PACHINKO(row)->mRow[0].angle = 0;
+            PACHINKO(row)->mRow[0].dir = 0;
         }
     }
 }
@@ -403,8 +403,8 @@ void PachinkoDeco_HideAll(char *row)
 {
     int i;
     for (i = 0; i < 3; i++) {
-        *(unsigned char *)(row + 0x4e6c) = 0;
-        *(unsigned char *)(row + 0x4e6d) = 0;
+        PACHINKO(row)->mRow[0].active = 0;
+        PACHINKO(row)->mRow[0].visible = 0;
         row += 0x18;
     }
 }
