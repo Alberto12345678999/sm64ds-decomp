@@ -772,7 +772,7 @@ int cMgSmartball_pushswitch_c::BallsClear() {
     Vec2 delta, pos;
     for (i = 0; i < *(int *)((char *)self[1] + 0x4668); i++) {
         int *o = (i >= 13) ? 0 : ((int **)((char *)self[1] + 0x4688))[i];
-        if (*(unsigned char *)((char *)o + 0x30) != 0) {
+        if (((cMgSmartball_object_c *)o)->mIsActive != 0) {
             int *o2 = (i >= 13) ? 0 : ((int **)((char *)self[1] + 0x4688))[i];
             CopyObjectPos((int *)&pos, o2);
             delta = pos;
@@ -1627,7 +1627,7 @@ void cMgSmartball_slot_c::UpdateSpin() {
     mIsSlowingDown = 0;
     mIsSpinning = 0;
     {
-        int first = *(int *)(c + 0x38);
+        int first = mReelOffset[0].y;
         int eq = 1;
         int j;
         for (j = 1; j < 3; j++) {
@@ -2684,7 +2684,7 @@ char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, struct V2ab *src
     cMgSmartball_object_c_Construct(self, x, y, (int *)&v);
     *(void **)(self) = (void *)&_ZTV21cMgSmartball_kinoko_c[2];
     ((cMgSmartball_object_c *)self)->mRadius = 0x7000;
-    *(int *)(self + 0x34) = 2;
+    ((cMgSmartball_kinoko_c *)self)->mVariant = 2;
     return self;
 }
 }
@@ -2700,7 +2700,7 @@ void cMgSmartball_ball_c::PlayHitSound(int a1, int *vel) {
     }
     {
         int v[2];
-        Vec2_Sub(v, (int *)(self + 0x20), vel);
+        Vec2_Sub(v, &mVel0, vel);
         spd = Vec2_Len((Vec2 *)v);
     }
     if (spd < 0x1000)
@@ -2952,7 +2952,7 @@ int cMgSmartball_ball_c::HitKinokos(int *pos) {
     i = 0;
     if (n > 0) {
         do {
-            if (*(unsigned char *)(sl + 0xce + i)) {
+            if (nearby[i]) {
                 r7 = ((cMgSmartball_kinoko_c *)((
                           S28 *)(i >= n ? 0 : (void *)((dScMgSmartball_c *)base)->mpKinokos[i])))
                          ->HitRadiusSq();
@@ -2970,7 +2970,7 @@ int cMgSmartball_ball_c::HitKinokos(int *pos) {
                         void *e = i >= ((dScMgSmartball_c *)mpManager)->mKinokoCount
                                       ? 0
                                       : (void *)((dScMgSmartball_c *)mpManager)->mpKinokos[i];
-                        *(unsigned char *)((char *)e + 0x38) = 1;
+                        ((cMgSmartball_kinoko_c *)e)->mWasHit = 1;
                         return 1;
                     }
                 }
@@ -3087,13 +3087,12 @@ int cMgSmartball_ball_c::OnSlope(int *p) {
 
 // @symbol _ZN19cMgSmartball_ball_c12NeedsRespawnEPi
 int cMgSmartball_ball_c::NeedsRespawn(int *pos) {
-    char *self = (char *)this;
     struct S *arg = (struct S *)pos;
     int z, z2, x;
 
     if (state3a == 1) {
-        int dz = arg->b - *(int *)(self + 0x48);
-        int dx = arg->a - *(int *)(self + 0x44);
+        int dz = arg->b - mSwallowZ;
+        int dx = arg->a - mSwallowX;
         int dxsq = FX_MUL(dx, dx);
         int dzsq = FX_MUL(dz, dz);
         return dxsq + dzsq >= 0x100000;
@@ -4814,14 +4813,14 @@ void dScMgSmartball_c::ResolveBallPair(int firstIndex, int secondIndex, u8 *firs
 #pragma opt_common_subs off
 void dScMgSmartball_c::CollideBalls() {
     char *p = (char *)this;
-    int ballCount = *(int *)(p + 0x4668);
+    int ballCount = mBallCount;
     int firstIndex, secondIndex;
     for (firstIndex = 0; firstIndex < ballCount; firstIndex++) {
         for (secondIndex = 0; secondIndex < ballCount; secondIndex++) {
             int firstBall = (firstIndex >= 13) ? 0 : *(int *)(int)(p + firstIndex * 4 + 0x4688);
             int secondBall = (secondIndex >= 13) ? 0 : *(int *)(p + secondIndex * 4 + 0x4688);
             ResolveBallPair(firstIndex, secondIndex, (u8 *)firstBall, (u8 *)secondBall);
-            ballCount = *(int *)(p + 0x4668);
+            ballCount = mBallCount;
         }
     }
 }

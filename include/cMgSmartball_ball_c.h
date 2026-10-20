@@ -82,9 +82,12 @@ struct cMgSmartball_ball_c : cMgSmartball_object_c {
                              base's mIsActive -- after which every SaveSnapshot
                              and Update returns immediately. */
 
-    /* hitX/hitZ per SmartballBall_UpdatePhysics, but nothing in this class reads
-       them -- unmodelled, not unread. */
-    u8  pad_044[0x8]; /* 0x044-0x04b */
+    /* Where the ball was swallowed: SmartballBall_UpdatePhysics (its own Obj
+       cast calls them hitX/hitZ) copies the position of the ana it falls into,
+       right before that ana's Swallow(). While state3a is 1, NeedsRespawn
+       measures the ball's distance from this point. */
+    s32 mSwallowX; /* 0x044 */
+    s32 mSwallowZ; /* 0x048 */
 
     u8  hit[0x20];      /* 0x04c */
     u8  hitA[0x20];     /* 0x06c */
