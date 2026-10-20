@@ -515,8 +515,11 @@ int dPathLiftActor_c::Param08ModeIs1Or2() const
 
 // 0x020eff04 (0x14)
 // @symbol _ZNK16dPathLiftActor_c11IsUnk42cSetEv
+/* The byte local is load-bearing: without it the TU's compiler-numbered
+   objects come out one short of the @851..@861 the manifest renames. */
 int dPathLiftActor_c::IsUnk42cSet() const {
-    return unk_42c != 0;
+    u8 respawn = unk_42c;
+    return respawn != 0;
 }
 
 // 0x020eff18 (0x78)
