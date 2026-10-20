@@ -277,8 +277,9 @@ extern "C" int func_ov002_020eeeb8(void *unused, char *moverArg) {
 }
 
 // @symbol func_ov002_020eee3c
-extern "C" int func_ov002_020eee3c(void *clsnArg, dActor_c *other) {
+extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
     dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
+    dActor_c *other = (dActor_c *)otherArg;
     if (clsn->IsOnWall()) {
         dBgPi *hit = (dBgPi *)clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
