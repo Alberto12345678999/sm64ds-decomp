@@ -621,7 +621,7 @@ int daWanwan2_c::Render()
    (mCoinTimer) in game mode 1 (data_0209f2d8[0] is 1) it spawns a COIN at its
    position, its mPrevAngleY set to 0x10000 / mPathNodeIndex (truncated to 16
    bits; this divides by zero if the index has wrapped to 0), its mVertSpeed to
-   4 units/frame and its unk_0a4 and unk_0ac to 0, playing SND_COIN_SPAWN
+   4 units/frame and its mSpeedX and mSpeedZ to 0, playing SND_COIN_SPAWN
    (unless unk_6a8 is nonzero; played even if Spawn returned no actor). It then turns
    toward the path node mPathNodeIndex: when it is closer than 400 units
    (0x190000) the index advances (back to 0 at mNumPathNodes) and the next
@@ -691,9 +691,9 @@ int daWanwan2_c::Behavior()
             sp->mPrevAngleZ = 0;
             int vx = v.x;
             int vy = v.y;
-            sp->unk_0a4 = vx << 12;
+            sp->mSpeedX = vx << 12;
             sp->mVertSpeed = vy << 12;
-            sp->unk_0ac = vx << 12;
+            sp->mSpeedZ = vx << 12;
         }
         mCoinTimer = 0xc8;
     }

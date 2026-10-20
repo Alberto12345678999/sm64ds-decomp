@@ -29,8 +29,6 @@
  *   speeds and kill heights chosen from them.
  * - func_020383f0 and func_02038414 are the two probes picked by that
  *   level id. func_02012694 plays a bank-3 sound at a position.
- * - unk_0a4 / unk_0ac stay. They are the base world-velocity X/Z this
- *   TU adds the floor normal into. dActor_c.h still spells them unk_.
  * - Behavior's dispatch and InitResources' param1 shift keep the
  *   spellings the bytes need.
  */
@@ -250,7 +248,7 @@ void daIbl_c::func_ov100_02142130()
     mPosX = mPrevPosX;
     mPosZ = mPrevPosZ;
     if (mFloorNormalY == 0) return;
-    int s = FX_MUL(mFloorNormalX, unk_0a4) + FX_MUL(mFloorNormalZ, unk_0ac);
+    int s = FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ);
     mVertSpeed = -(_ZN4cstd4fdivEii(s, mFloorNormalY) + 0x8000);
 }
 
@@ -473,9 +471,9 @@ int daIbl_c::func_ov100_021424c0()
             } else if (mVariant == daIbl_KIND_PATH_RAMP) {
                 _Z14ApproachLinearRiii(&mHorzSpeed, 0x23000, 0x400);
             } else {
-                unk_0a4 += mFloorNormalX;
-                unk_0ac += mFloorNormalZ;
-                mHorzSpeed = Vec3_HorzLen(&unk_0a4);
+                mSpeedX += mFloorNormalX;
+                mSpeedZ += mFloorNormalZ;
+                mHorzSpeed = Vec3_HorzLen(&mSpeedX);
             }
         }
     }
@@ -536,16 +534,14 @@ ground:
         int *pa4;
         int *pac;
 
-        pa4 = &unk_0a4;
-        pac = &unk_0ac;
+        pa4 = &mSpeedX;
+        pac = &mSpeedZ;
 
         *pa4 = *pa4 + mFloorNormalX * 3;
         *pac = *pac + mFloorNormalZ * 3;
         mHorzSpeed = Vec3_HorzLen(pa4);
 
-        mPrevAngleY =
-            _ZN4cstd5atan2E5Fix12IiES1_(
-                unk_0a4, unk_0ac);
+        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(mSpeedX, mSpeedZ);
 
         if (mWithMeshClsn.JustHitGround()) {
             func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
@@ -614,12 +610,12 @@ void daIbl_c::func_ov100_02142918()
         int ang;
         mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
         ang = *(u16 *)&mPrevAngleY;
-        unk_0a4 = FX_MUL(mHorzSpeed, data_02082214[(ang >> 4) << 1]);
+        mSpeedX = FX_MUL(mHorzSpeed, data_02082214[(ang >> 4) << 1]);
         ang = *(u16 *)&mPrevAngleY;
-        unk_0ac = FX_MUL(mHorzSpeed, data_02082214[((ang >> 4) << 1) + 1]);
+        mSpeedZ = FX_MUL(mHorzSpeed, data_02082214[((ang >> 4) << 1) + 1]);
         {
-            int *pa4 = &unk_0a4;
-            int *pac = &unk_0ac;
+            int *pa4 = &mSpeedX;
+            int *pac = &mSpeedZ;
             *pa4 = *pa4 - mWallNormalX * 3;
             *pac = *pac - mWallNormalZ * 3;
             mHorzSpeed = Vec3_HorzLen(pa4);
@@ -631,15 +627,15 @@ void daIbl_c::func_ov100_02142918()
         goto Lend;
 
     {
-        int *pa4 = &unk_0a4;
-        int *pac = &unk_0ac;
+        int *pa4 = &mSpeedX;
+        int *pac = &mSpeedZ;
         *pa4 = *pa4 + mFloorNormalX * 3;
         *pac = *pac + mFloorNormalZ * 3;
         mHorzSpeed = Vec3_HorzLen(pa4);
     }
     if (mFloorNormalY == 0x1000 && mHorzSpeed > 0x1c000) {
         mHorzSpeed = 0x1c000;
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(unk_0a4, unk_0ac);
+        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(mSpeedX, mSpeedZ);
         UpdatePosWithHorzSpeedAndAng();
     }
 

@@ -41,8 +41,6 @@
  *   choose a 0 or 0x5a regrowth delay. func_ov096_021365d4 clears it
  *   once three segments exist. It stays unk_ until that role is
  *   measured past those two stores.
- *   - unk_0a4 and unk_0ac keep dActor_c's names.
- *   func_ov096_02135e2c multiplies them by the floor normal.
  *   - func_ov096_02135948 keeps five int[3] positions. One
  *   Vector3 in their place changes that function.
  *   - data_02082214 is arm9's sine table. data_020a0e68 is the
@@ -637,8 +635,8 @@ void daSanbo_c::func_ov096_02135e2c(dBgCh_Actr *clsn)
     if (clsn->IsOnGround()) {
         static_cast<dBgPi *>(clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)n0);
         if (n0[1] != 0) {
-            int x = FX_MUL(n0[0], unk_0a4);
-            int z = FX_MUL(n0[2], unk_0ac);
+            int x = FX_MUL(n0[0], mSpeedX);
+            int z = FX_MUL(n0[2], mSpeedZ);
             int dot = x + z;
             int slope = cstd::fdiv(dot, n0[1]);
             mVertSpeed = -(slope + 0x8000);

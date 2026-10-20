@@ -751,9 +751,9 @@ void daObjBlockS_c::func_ov098_02138ce0()
     mAngleY = mHomeAngleY;
     mAngleZ = mHomeAngleZ;
     mHorzSpeed = 0;
-    unk_0a4 = 0;
+    mSpeedX = 0;
     mVertSpeed = 0;
-    unk_0ac = 0;
+    mSpeedZ = 0;
 
     ((struct Vector3 *)(((long long)(int)&zero)))->x = 0;
     ((struct Vector3 *)(((long long)(int)&zero)))->y = 0;
@@ -965,8 +965,8 @@ void daObjBlockS_c::func_ov098_021390ec()
  * data_02082214), a2 is hl in the direction atan2 of the normal's x and z
  * gives (through the same table), scaled by Vec3_HorzLen of the normal;
  * their sum becomes the new mPrevAngleY and mHorzSpeed (capped at 100 units,
- * 0x64000). mVertSpeed is set to -((normalX * unk_0a4 + normalZ * unk_0ac)
- * / normalY + 8 units); unk_0a4 / unk_0ac sit either side of mVertSpeed and
+ * 0x64000). mVertSpeed is set to -((normalX * mSpeedX + normalZ * mSpeedZ)
+ * / normalY + 8 units); mSpeedX / mSpeedZ sit either side of mVertSpeed and
  * are treated here as its x and z companions, which this file does not
  * otherwise confirm. When func_ov002_020f035c(n, mFloorNormalY) (the
  * per-class slope test, include/Player.h) is nonzero, the crate is nearly
@@ -1066,8 +1066,8 @@ int daObjBlockS_c::func_ov098_02139228()
     AngleDiff(mPrevAngleY, mAngleY);
 
     {
-        s32 m0 = FX_MUL(mFloorNormalX, unk_0a4);
-        s32 m1 = FX_MUL(mFloorNormalZ, unk_0ac);
+        s32 m0 = FX_MUL(mFloorNormalX, mSpeedX);
+        s32 m1 = FX_MUL(mFloorNormalZ, mSpeedZ);
         mVertSpeed = -(_ZN4cstd4fdivEii(m0 + m1, mFloorNormalY) + 0x8000);
     }
 
