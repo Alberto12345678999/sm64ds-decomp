@@ -1,26 +1,17 @@
 //cpp
-/* daIDonketu_c -- the Chill Bully, on the ice bridge in Snowman's Land.
+/* daIDonketu_c -- Chill Bully (ICE_DONKETU, ov027), child of the daOts_c
+ * Bully base in ov064. Own resources, own run/death states; otherwise the
+ * base's common workers. _ZTS/_ZTV prove the class name; the ICE_DONKETU
+ * profile proves the registry slot.
  *
- * A thin child of daOts_c, the shared Bully base in ov064: this class brings
- * its own resources, its own run and death states, and otherwise wraps the
- * base's common workers. ov027 is a mixed overlay (sliding-ice spawner,
- * sliding ice, Chill Bully, Bubba, Snowman's breath); this file is only the
- * bully. The cartridge's RTTI names the class daIDonketu_c, the debug table
- * names it ICE_DONKETU, and the project calls the actor CHILL_BULLY. The
- * measurement that settles the name is at the top of include/daIDonketu_c.h;
- * the tree used to call it `ChillBully`, which is coined.
+ * Two load-bearing spellings, both measured:
  *
- * Two things here will look wrong and are not:
+ *   Function order is the REVERSE of the ROM's -- mwccarm emits one .text
+ *   section per function in reverse source order. Do not reorder (the
+ *   destructor D0/D1/D2 group is the only exception).
  *
- *   Function order is the REVERSE of the ROM's -- the highest-address ROM
- *   function is written first. mwccarm 2004/b56 emits one .text section per
- *   function in reverse source order. Do not reorder. The one exception is a
- *   destructor's D0/D1/D2 group, whose order the compiler picks
- *   (notes/tu-reconstruction-pilot-report.md sec 3).
- *
- *   UpdateRunState reads its own timer as `*(u16 *)&mStateTimer`. The member
- *   is s16 and the ROM compares unsigned (blo, not blt); the cast is what
- *   reproduces it.
+ *   UpdateRunState reads its timer as `*(u16 *)&mStateTimer`: the member
+ *   is s16 and the ROM compares unsigned (blo, not blt).
  *
  * leftovers:
  * - The TU is one `complete` delinks span claiming .text only, so the
@@ -73,20 +64,8 @@ extern int data_ov027_021138f4[];
 
 /* -------------------------------------------------------------------------- */
 // @symbol daIDonketu_c_classInit
-/* Reconstructed source-style name: SM64DS proves daIDonketu_c through RTTI,
- * allocation size, vtable identity, and the ICE_DONKETU registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: daIDonketu_c_Spawn.
- *
- * Every instruction the cartridge has here falls out of the one `new`.
- * 0x02111870 loads 1020 = 0x3fc -- the class's own size -- into the header's
- * leaf operator new; 0x02111880 calls dEnemyBase_c's C2; the store at
- * 0x0211188c lays down daOts_c's vptr; the four member C1s at 0x110 / 0x174 /
- * 0x33c / 0x370 run between the two vptr stores; the store at 0x021118bc lays
- * down this class's vptr at &[2] because this TU defines the table. The null
- * check is the one `new` itself emits. The implicit constructor keeps the
- * intervening daOts_c construction inlined; declaring a constructor of our
- * own would emit a `bl` the factory does not have. */
+/* Factory: `return new` emits the size (0x3fc), the base C2, the member
+ * C1s and both vptr stores. Historical alias: daIDonketu_c_Spawn. */
 extern "C" daIDonketu_c *daIDonketu_c_classInit(void)
 {
     return new daIDonketu_c();
