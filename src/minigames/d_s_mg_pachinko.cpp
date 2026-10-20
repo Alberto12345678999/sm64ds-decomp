@@ -1515,16 +1515,16 @@ void PachinkoBall_CheckPipes(char *c, int idx)
     int dy;
     int n;
 
-    if (*(u8 *)(c + idx * 0x38 + 0x468f) == 5)
+    if (BALL(c + idx * 0x38)->state == 5)
         return;
 
     p = c;
     for (i = 0; i < 4; i++, p += 0xc) {
-        if (*(u8 *)(p + 0x5bd4) == 0)
+        if (PACHINKO(p)->mTarget[0].active == 0)
             continue;
 
-        dx = (*(int *)(p + 0x5bcc) - *(int *)(c + idx * 0x38 + 0x4660)) >> 12;
-        dy = (*(int *)(p + 0x5bd0) - *(int *)(c + idx * 0x38 + 0x4664)) >> 12;
+        dx = (PACHINKO(p)->mTarget[0].x - *(int *)(c + idx * 0x38 + 0x4660)) >> 12;
+        dy = (PACHINKO(p)->mTarget[0].y - *(int *)(c + idx * 0x38 + 0x4664)) >> 12;
         if (dx < -0x10) continue;
         if (dx > 0x18) continue;
         if (dy < -0x10) continue;
@@ -1620,9 +1620,9 @@ void PachinkoBall_CheckFall(char *thiz, int idx) {
     char *e;
     if (*flag != 0) return;
     e = thiz + idx * 0x38;
-    if ((*(int*)(e + 0x4664) >> 0xc) < -0xf2) return;
+    if ((BALL(e)->y >> 0xc) < -0xf2) return;
     *flag = *flag + 1;
-    func_02012718(0x184, *(int*)(e + 0x4660));
+    func_02012718(0x184, BALL(e)->x);
 }
 
 // @symbol PachinkoBall_StatePop
@@ -1959,16 +1959,16 @@ void PachinkoBall_StateWaiting(char *base, int idx) {
     }
     r = RandomIntInternal(&data_0209d4b8);
     o = base + off;
-    *(unsigned char *)(o + 0x468f) = ((((r >> 16) & 0x7fff) << 1) >> 0xf) + 1;
-    *(unsigned char *)(o + 0x4690) = 0;
-    *(unsigned char *)(o + 0x468d) = 1;
-    *(unsigned char *)(o + 0x4693) = 0;
-    *(unsigned short *)(o + 0x4684) = 0;
-    *(int *)(o + 0x4678) = 0;
-    *(int *)(o + 0x4670) = 0;
-    *(int *)(o + 0x4674) = 0;
-    *(int *)(o + 0x4680) = 0x1000;
-    *(unsigned char *)(o + 0x4695) = 0;
+    BALL(o)->state = ((((r >> 16) & 0x7fff) << 1) >> 0xf) + 1;
+    BALL(o)->started = 0;
+    BALL(o)->visible = 1;
+    BALL(o)->sprite = 0;
+    BALL(o)->rotation = 0;
+    BALL(o)->spinRadius = 0;
+    BALL(o)->offX = 0;
+    BALL(o)->offY = 0;
+    BALL(o)->scale = 0x1000;
+    BALL(o)->fallPlayed = 0;
 }
 
 // @symbol PachinkoBall_UpdateAll
