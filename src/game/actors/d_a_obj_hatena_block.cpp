@@ -1029,7 +1029,7 @@ struct HbSpawnFrame { Vector3 pos; int vel[3]; };
    spawned, the cap gets heading (RandomIntInternal() + camera mAngleY +
    0x8000, truncated to 16 bits) in its mPrevAngleY, speed 0x3320 (about 3.2
    units) in mHorzSpeed, and a velocity vector (0, 0x11000, 0) in
-   unk_0a4 / mVertSpeed / unk_0ac (0x11000 = 17 units up). */
+   mSpeedX / mVertSpeed / mSpeedZ (0x11000 = 17 units up). */
 void daObjHatenaBlock_c::func_ov102_0214953c(int p1, int p2)
 {
     HbSpawnFrame f;
@@ -1051,9 +1051,9 @@ void daObjHatenaBlock_c::func_ov102_0214953c(int p1, int p2)
         o->mPrevAngleY = (short)vsum;
         o->mPrevAngleZ = 0;
         o->mHorzSpeed = 0x3320;
-        o->unk_0a4 = f.vel[0];
+        o->mSpeedX = f.vel[0];
         o->mVertSpeed = f.vel[1];
-        o->unk_0ac = f.vel[2];
+        o->mSpeedZ = f.vel[2];
     }
 }
 

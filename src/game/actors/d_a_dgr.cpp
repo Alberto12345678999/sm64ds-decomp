@@ -142,7 +142,7 @@ s32 daDgr_c::Behavior()
             mPhaseTimer = 0;
         } else {
             mPhaseTimer++;
-            unk_0ac = 0;
+            mSpeedZ = 0;
             mAngleXSpeed = 0;
             func_ov025_02111344();
             if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
@@ -180,16 +180,16 @@ s32 daDgr_c::Behavior()
 
     if (mPhaseTimer < rollFrames) {
         if (mRollDir == 0) {
-            unk_0ac = kRollZStep / speedDivisor;
+            mSpeedZ = kRollZStep / speedDivisor;
             mAngleXSpeed = (s16)(kRollAngleStep / speedDivisor);
         } else {
-            unk_0ac = (-kRollZStep) / speedDivisor;
+            mSpeedZ = (-kRollZStep) / speedDivisor;
             mAngleXSpeed = (s16)((-kRollAngleStep) / speedDivisor);
         }
 
         {
             s16 *angleX = &mAngleX;
-            mPosZ = mPosZ + unk_0ac;
+            mPosZ = mPosZ + mSpeedZ;
             *angleX = (s16)(*angleX + mAngleXSpeed);
             if ((mAngleX & kGrindAngleMask) < kGrindWindow) {
                 if (mAngleXSpeed != 0)

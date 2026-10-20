@@ -3,8 +3,8 @@
  * The loose and carried states each have an entry and an update.
  */
 // leftovers:
-// - unk_0a4, unk_0ac, unk_190 and unk_19c stay the header's names. The
-//   loose update approaches through 0a4/0ac, and 19c selects the entry.
+// - unk_190 and unk_19c stay the header's names. The loose update
+//   approaches through mSpeedX/mSpeedZ, and 19c selects the entry.
 // - DropShadowRadHeight stays mangled. The scalar bridge is 16 bytes
 //   smaller than the Fix12 aggregate call in this helper.
 // - data_020a0e68 is the shared arm9 matrix scratch this TU copies.
@@ -197,9 +197,9 @@ extern "C" int func_ov085_0212cd80(daObj_Mip_Key_c *self)
 extern "C" int func_ov085_0212d038(daObj_Mip_Key_c *c)
 {
     int kind;
-    c->unk_0a4 = 0;
+    c->mSpeedX = 0;
     c->mVertSpeed = 0;
-    c->unk_0ac = 0;
+    c->mSpeedZ = 0;
     c->mAngleX = 0;
     kind = c->unk_19c;
     if (kind != 0x4d) {
@@ -258,9 +258,9 @@ extern "C" int func_ov085_0212d108(daObj_Mip_Key_c *c)
     Matrix4x3_FromRotationY(&data_020a0e68, c->mPrevAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, c->mPrevAngleX);
     MulVec3Mat4x3(&v, &data_020a0e68, &out);
-    ApproachLinear(c->unk_0a4, out.x, 0x1000);
+    ApproachLinear(c->mSpeedX, out.x, 0x1000);
     ApproachLinear(c->mVertSpeed, out.y, 0x1000);
-    ApproachLinear(c->unk_0ac, out.z, 0x1000);
+    ApproachLinear(c->mSpeedZ, out.z, 0x1000);
     if (pp.y + 0x64000 > c->mPosY) {
         c->mPlayer = player;
         func_ov085_0212d268(c, &data_ov085_0213072c);
@@ -348,10 +348,10 @@ int daObj_Mip_Key_c::Behavior()
     int capped = mTerminalVelocity;
     if (nextSpeed >= capped)
         capped = nextSpeed;
-    /* The read-back-and-store of unk_0ac is what the ROM does; it is not dead. */
-    int unk0acCopy = unk_0ac;
+    /* The read-back-and-store of mSpeedZ is what the ROM does; it is not dead. */
+    int unk0acCopy = mSpeedZ;
     mVertSpeed = capped;
-    unk_0ac = unk0acCopy;
+    mSpeedZ = unk0acCopy;
     UpdatePosWithOnlySpeed(0);
     return 1;
 }

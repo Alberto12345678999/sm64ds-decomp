@@ -19,10 +19,10 @@
 //   InitResources 0xac->0xb8. The scalar extern stays.
 // - IsClsnInRange(Fix12<int>, Fix12<int>) size-DIFFs Behavior 0xa4->0xc0.
 //   The scalar extern called as (this, 0, 0) matches.
-// - mMeshCollider.unk_0c = 0x150000 size-DIFFs Behavior 0xa4->0xa0.
+// - mMeshCollider.clipRadius = 0x150000 size-DIFFs Behavior 0xa4->0xa0.
 //   func_020393a4 is the call the ROM makes.
 // - Assigning beforeClsnCallback size-DIFFs InitResources 0xac->0xa8.
-//   Assigning unk_1c from func_ov022_0211193c size-DIFFs 0xac->0xa8.
+//   Assigning stoodOnCallback from func_ov022_0211193c size-DIFFs 0xac->0xa8.
 //   func_020393d4 and func_020393c4 stay.
 // - Putting the limit on the left of the compare
 //   (`mMaxPosY - 0xc8000 > mPosY`, `mMaxPosY < mPosY`) keeps Behavior at

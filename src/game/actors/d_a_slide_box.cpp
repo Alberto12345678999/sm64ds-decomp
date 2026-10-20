@@ -6,7 +6,7 @@
  * ship's angles, slides by the sine of the pitch, and steps out from
  * the landing spot by the sine and cosine of the ship's yaw. The deck
  * normal then rebuilds mVertSpeed from the horizontal velocity at
- * unk_0a4 / unk_0ac so the next step stays on the tilt.
+ * mSpeedX / mSpeedZ so the next step stays on the tilt.
  *
  * The rolling-sound gate reads mHorzSpeed after this state has stored
  * 0 there, so the sound does not start.
@@ -235,9 +235,9 @@ int daSlide_Box_c::Behavior()
             dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
             floor->surface.CopyNormalTo(normal);
             if (normal.y != 0) {
-                mVertSpeed = -(cstd::fdiv(
-                    FixMul(normal.x, unk_0a4) + FixMul(normal.z, unk_0ac),
-                    normal.y) + kDeckSink);
+                mVertSpeed =
+                    -(cstd::fdiv(FixMul(normal.x, mSpeedX) + FixMul(normal.z, mSpeedZ), normal.y) +
+                      kDeckSink);
             }
         }
         if (DistToCPlayer() < kSoundRange) {
