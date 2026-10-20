@@ -1060,65 +1060,67 @@ void dScMgMemory2_c::ResetGame() {
     p = c;
     i = 0;
     do {
-        *(int *)(p + 0x51a8) = 0;
-        *(int *)(p + 0x51ac) = 0;
-        *(int *)(p + 0x51b0) = 0;
-        *(short *)(p + 0x51b4) = 0;
-        *(short *)(p + 0x51b6) = 0;
-        *(char *)(p + 0x51b8) = 0;
-        *(char *)(p + 0x51b9) = 0;
-        *(char *)(p + 0x51ba) = 0;
-        *(char *)(p + 0x51bb) = 0;
-        *(char *)(p + 0x51bc) = 0;
-        *(char *)(p + 0x51bd) = 0;
+        /* p is this advanced by i cards, so its mCards[0] is mCards[i]. */
+        ((dScMgMemory2_c *)p)->mCards[0].x = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].y = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].speed = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].angle = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].animTimer = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].value = 0;
+        *(char *)(p + 0x51b9) = 0; /* card +0x11: only ever cleared, no name */
+        ((dScMgMemory2_c *)p)->mCards[0].visible = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].active = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].state = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].frame = 0;
         i++;
-        *(char *)(p + 0x51be) = 0;
+        ((dScMgMemory2_c *)p)->mCards[0].flyAwayStarted = 0;
         p += 0x18;
     } while (i < 0x14);
     p = c;
     j = 0;
     do {
-        *(int *)(p + 0x5388) = 0;
-        *(int *)(p + 0x538c) = 0;
-        *(int *)(p + 0x5390) = 0;
-        *(short *)(p + 0x5396) = 0;
-        *(short *)(p + 0x5394) = 0;
-        *(char *)(p + 0x5398) = 0;
-        *(char *)(p + 0x5399) = 0;
+        /* p is this advanced by j players, so its mPlayers[0] is mPlayers[j]. */
+        ((dScMgMemory2_c *)p)->mPlayers[0].x = 0;
+        ((dScMgMemory2_c *)p)->mPlayers[0].y = 0;
+        ((dScMgMemory2_c *)p)->mPlayers[0].speed = 0;
+        ((dScMgMemory2_c *)p)->mPlayers[0].delay = 0;
+        ((dScMgMemory2_c *)p)->mPlayers[0].angle = 0;
+        ((dScMgMemory2_c *)p)->mPlayers[0].active = 0;
+        *(char *)(p + 0x5399) = 0; /* player +0x11: no evidenced name */
         j++;
-        *(char *)(p + 0x539a) = 0;
+        ((dScMgMemory2_c *)p)->mPlayers[0].state = 0;
         p += 0x14;
     } while (j < 3);
     p = c + 0x5000;
-    *(char *)(p + 0x3d0) = 0;
-    *(char *)(p + 0x3d2) = 0;
-    *(char *)(p + 0x3d1) = 0;
-    *(int *)(p + 0x3d4) = 0;
-    *(int *)(p + 0x3d8) = 0;
-    *(short *)(c + 0x53e0) = 0;
-    *(short *)(c + 0x53e2) = 0;
-    *(short *)(c + 0x53e4) = 0;
-    *(char *)(p + 0x405) = 0;
-    *(char *)(p + 0x406) = 0;
-    *(char *)(p + 0x407) = 0;
+    mCursor.visible = 0;
+    mCursor.enabled = 0;
+    mCursor.frame = 0;
+    mState = 0;
+    mSubstate = 0;
+    mRoundTimer = 0;
+    mCardTimer = 0;
+    mResultTimer = 0;
+    mPairsFound = 0;
+    mSelectedCount = 0;
+    *(char *)(p + 0x407) = 0; /* 0x5407: only ever cleared, no name */
+    /* 0x5408 is mMisses; the member spelling renumbers later @NNN labels. */
     *(char *)(p + 0x408) = 0;
     i = 0;
     do {
         p = c + i;
-        p += 0x5000;
-        *(char *)(p + 0x3ee) = 0;
+        ((dScMgMemory2_c *)p)->mSelectedValues[0] = 0;
         i++;
-        *(char *)(p + 0x3f0) = 0;
+        ((dScMgMemory2_c *)p)->mSelectedCards[0] = 0;
     } while (i < 2);
+    /* mValueCounts[j]; the member spelling moves the code or renumbers @NNN. */
     j = 0;
     do {
         p = (c + j) + 0x5000;
         j++;
         *(char *)(p + 0x3f2) = 0;
     } while (j < 0xb);
-    c += 0x5000;
-    *(char *)(c + 0x40b) = 1;
-    *(char *)(c + 0x40c) = 0;
+    mMessageVisible = 1;
+    mInputSeen = 0;
 }
 
 void dScMgMemory2_c::StateExit() {
@@ -1248,7 +1250,7 @@ s32 dScMgMemory2_c::InitResources() {
     data_0209d454 = 0x18;
     ResetGame();
     /* 0x4660..0x471c is dScMgSingle3DBase_c's minigame camera. */
-    Camera_InitDealerView((char *)this + 0x4660);
+    Camera_InitDealerView((char *)pad_4660);
     if (Dealer_Load(&mShared) == 0)
         return 0;
     mCredits = Mg_GetSavedRecord0();

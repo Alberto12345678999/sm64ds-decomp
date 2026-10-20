@@ -1507,6 +1507,8 @@ void dScMgPanel_c::ClearGrid() {
 void dScMgPanel_c::ResetRound() {
     char *scene = (char *)this;
     int i;
+    /* mX/mY spelled as members renumber this file's @NNN labels; the other
+       raw stores below land in header pads that have no evidenced name. */
     for (i = 0; i < 0x24; i++) {
         *(int *)(scene + i * 4 + 0x4cc4) = 0;
         *(int *)(scene + i * 4 + 0x4d54) = 0;
@@ -1520,14 +1522,14 @@ void dScMgPanel_c::ResetRound() {
         *(char *)(scene + i + 0x4f8a) = 0;
     }
     mState = 0;
-    *(char *)(scene + 0x4fe9) = 0;
+    mBusy = 0;
     *(s16 *)(scene + 0x4ec0) = 0;
     *(s16 *)(scene + 0x4ec2) = 0;
-    *(char *)(scene + 0x4fde) = 0;
+    mFlipCount = 0;
     mMovesUsed = 0;
     ((dScMgPanel_c *)scene)->mCredits = 0;
     for (i = 0; i < 0x20; i++) {
-        *(u8 *)(scene + i + 0x4fae) = 0xff;
+        ((dScMgPanel_c *)scene)->mFlipAt[i] = 0xff;
     }
     for (i = 0; i < 0x10; i++) {
         *(char *)(scene + i + 0x4fce) = 0;
@@ -1543,12 +1545,12 @@ void dScMgPanel_c::ResetRound() {
     s->mSlideStep = 0;
     s->mSlideFlag = 0;
     s->mSlideOn = 0;
-    *(int *)(scene + 0x4678) = 0;
-    *(int *)(scene + 0x467c) = 0;
-    *(s16 *)(scene + 0x4680) = 0;
-    *(char *)(scene + 0x4684) = 0;
-    *(char *)(scene + 0x4685) = 0;
-    *(char *)(scene + 0x4686) = 0;
+    s->mBanner.x = 0;
+    s->mBanner.y = 0;
+    s->mBanner.timer = 0;
+    s->mBanner.active = 0;
+    s->mBanner.visible = 0;
+    s->mBanner.state = 0;
     *(char *)(scene + 0x4fe6) = 0;
     *(s16 *)(scene + 0x4ec6) = 0;
     Shake_Stop();

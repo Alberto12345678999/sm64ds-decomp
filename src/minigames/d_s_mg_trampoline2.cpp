@@ -432,7 +432,7 @@ s32 dScMgTrampoline2_c::InitResources() {
         return 0;
     TrmpFx_InitPool(raw + 0x7ad0, 5);
     TrmpLine_LoadTextures();
-    TrmpItem_LoadAll((char *)(raw + 0x5ddc), 10);
+    TrmpItem_LoadAll((char *)mArray3, 10);
     Jump2Popup_InitPool((int)(raw + 0x6ffc), 10);
     data_ov006_021421b4 = 0;
     Trmp2Spinner_LoadAll((int)(raw + 0x7164), 0x14);
@@ -555,6 +555,7 @@ void dScMgTrampoline2_c::StateIntro() {
 void dScMgTrampoline2_c::BeginPlay() {
     mTimer = 0xb4;
     mInputEnabled = 1;
+    /* The callee ignores r0; this + 0x7b00 lands mid-element in mArray6. */
     Trmp2Mario_PlaceAtStart((char *)this + 0x7b00);
     *(struct S2 *)mState = pmf_dScMgTrampoline2_c_StatePlay;
 }
@@ -933,6 +934,7 @@ s32 dScMgTrampoline2_c::Behavior() {
         mParticleID, 0xf0, 0x280000, 0x700000, -0x580000, 0);
     void *p = Particle::System::FromUniqueID(mParticleID);
     if (p != 0) {
+        /* +0x58 sits in Particle::System's unnamed pad_054. */
         *(char *)((char *)p + 0x58) = (char)(mRamp >> 12);
         ApproachLinear(mRamp, 0x14000, 0x200);
     }
