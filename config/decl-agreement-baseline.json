@@ -6737,6 +6737,9 @@
       "src/unnamed/ov075/func_ov075_02119d3c.c": [
         "arity:4"
       ],
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "arity:4"
+      ],
       "src/Message.cpp": [
         "param:#2 int",
         "param:#3 int"
@@ -29441,6 +29444,9 @@
         "arity:1"
       ],
       "src/_ZN10dScEntry_c23UpdatePlayerSelectIntroEv.cpp": [
+        "arity:1"
+      ],
+      "src/game/stages/d_s_entry_methods.cpp": [
         "arity:1"
       ]
     },
