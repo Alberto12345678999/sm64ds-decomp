@@ -223,6 +223,7 @@ struct dScMgSmartball_c : dScMgBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char SmartballSpark_size_must_be_0x24[sizeof(SmartballSpark) == 0x24 ? 1 : -1];
 typedef char dScMgSmartball_c_size_must_be_0x629c[sizeof(dScMgSmartball_c) == 0x629c ? 1 : -1];
 #endif
 
