@@ -3,31 +3,22 @@
 // 0x800 and mirrors that into its output, counts the restart, and requests
 // state 5 on states[1].
 
-/* An Ov007Tween (include/Ov007Tween.h); only its target here. */
-typedef struct Sub {
-    int pad[6];
-    int to; /* 0x18 */
-} Sub;
-
-/* An Ov007MenuState (include/Ov007MenuState.h); only its first two slots. */
-typedef struct Hdr {
-    short currentState;
-    short requestedState;
-} Hdr;
+#include "Ov007MenuState.h"
+#include "Ov007Tween.h"
 
 /* The 0x4c record func_ov007_020b9880 allocates; names as in
  * func_ov007_020b91b4, func_ov007_020b9ca8 and func_ov007_020ba05c. The tags
  * keep the extern's spelling. */
 typedef struct G {
-    void *picker;   /* 0x00: func_ov007_020c690c */
-    Hdr *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
+    void *picker;              /* 0x00: func_ov007_020c690c */
+    Ov007MenuState *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
     char pad_14[0x10];
     int restartCount; /* 0x24: counted here */
     char pad_28[8];
     int awaitingTap; /* 0x30: func_ov007_020ba05c clears it on the next fresh press */
     char pad_34[8];
-    int tweenOut[2]; /* 0x3c: bound as tweens[i]->out */
-    Sub *tweens[2];  /* 0x44: func_ov007_020c908c */
+    int tweenOut[2];       /* 0x3c: bound as tweens[i]->out */
+    Ov007Tween *tweens[2]; /* 0x44: func_ov007_020c908c */
 } G;
 
 typedef char G_size_must_be_0x4c[sizeof(G) == 0x4c ? 1 : -1];

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007StrokePath.h"
 /* One group point: a Vector3 (x, y, z), as func_ov007_020c2f14 is declared. */
 struct Elem {
     int x, y, z;
@@ -7,12 +8,6 @@ struct Elem {
 extern void func_ov007_020bfe4c(void* p, int b, int c, int d, int* e);
 extern void func_ov007_020c2f14(struct Elem* arr, u16 n, int* o0, int* o1, int* o2, int* o3, int e, int f);
 extern int func_01ffaa34(s64 v, s64 w);
-
-/* A committed stroke; names as in include/Ov007StrokePath.h. */
-typedef struct Ov007StrokePath {
-    char pad_00[8];
-    u16 pointCount; /* 0x08 */
-} Ov007StrokePath;
 
 /* The 0xd8-byte camera func_ov007_020c023c allocates; names as in
  * func_ov007_020b9ca8, only the slot this file reads. */
