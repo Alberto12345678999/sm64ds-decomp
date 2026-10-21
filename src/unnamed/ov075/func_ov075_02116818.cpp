@@ -34,6 +34,7 @@ extern void *data_0209f5c0;
 
 int func_ov075_02116818(char *c)
 {
+    dScEntry_c *scene = reinterpret_cast<dScEntry_c *>(c);
     int k;
     void *tmp;
     int id0;
@@ -127,8 +128,8 @@ int func_ov075_02116818(char *c)
         } while (k < n);
     }
 
-    reinterpret_cast<dScEntry_c *>(c)->SetSteps(&data_ov075_0211d7e0);
-    *(void **)(c + 0x50) = _ZN7dBase_c5SpawnEjP7fBase_cii(0x15a, data_0209f5c0, 1, 0);
+    scene->SetSteps(&data_ov075_0211d7e0);
+    scene->mEntObj = (dEntObj_c *)_ZN7dBase_c5SpawnEjP7fBase_cii(0x15a, data_0209f5c0, 1, 0);
     return 1;
 }
 }
