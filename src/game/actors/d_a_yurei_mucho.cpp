@@ -319,8 +319,7 @@ void daYurei_Mucho_c::func_ov065_0211696c()
     mShotPosZ = 0;
     *(Mtx43 *)data_020a0e68 = *(Mtx43 *)&mModelAnim.mat4x3;
 
-    MulMat4x3Mat4x3(reinterpret_cast<const int *>(
-                        (char *)mModelAnim.data.transforms + 0xc0),
+    MulMat4x3Mat4x3(reinterpret_cast<const int *>(&mModelAnim.data.transforms[4]),
                      data_020a0e68, data_020a0e68);
 
     mShotPosX = data_020a0e68[9];
@@ -414,7 +413,7 @@ int daYurei_Mucho_c::func_ov065_02116744()
 
     pl = ClosestNonVanishPlayer();
     if (pl != 0) {
-        pos = (int *)(((int)pl + 0x5c));
+        pos = (int *)&pl->mPosX;
         dp.x = pos[0];
         dp.y = pos[1];
         dp.z = pos[2];
@@ -518,7 +517,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
             mShotCount < 3) {
             void *spawned = dActor_c::Spawn(0xe9, 1, *(Vector3 *)&mShotPosX, 0, mAreaId, -1);
             if (spawned != 0) {
-                u8 *shot = (u8 *)spawned;
+                dActor_c *shot = (dActor_c *)spawned;
                 func_02012694(0xfb, &mCamSpacePosX);
                 L.spv.x = 0;
                 L.spv.y = 0;
@@ -529,9 +528,9 @@ int daYurei_Mucho_c::func_ov065_02116364()
                 Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
                 Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
                 MulVec3Mat4x3(&L.spv, &data_020a0e68, &L.sout);
-                *(s32 *)(shot + 0xa4) = L.sout.x;
-                *(s32 *)(shot + 0xa8) = L.sout.y;
-                *(s32 *)(shot + 0xac) = L.sout.z;
+                shot->mSpeedX = L.sout.x;
+                shot->mVertSpeed = L.sout.y;
+                shot->mSpeedZ = L.sout.z;
                 mShotCount += 1;
                 mStateTimer = 4;
             }
