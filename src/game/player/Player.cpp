@@ -10111,7 +10111,7 @@ void func_ov002_020cd71c(char *self)
     extern short data_0209f4a2[];
     extern void _Z15ApproachLinear2Rsss(void*, short t, short s);
     extern void func_ov002_020cd71c(void*);
-    int ip = data_ov002_020ff1f0[*(int *)(self + 8)];
+    int ip = data_ov002_020ff1f0[player->param1];
     int a = FX_MUL(ip, 0x320);
     int c = (int)((((long long)ip << 7) + 0x800) >> 12);
     s16 step = (s16)((((long long)ip << 5) + 0x800) >> 12);
@@ -10873,7 +10873,7 @@ Fix12i func_ov002_020cedb0(void *c, Fix12i a)
 {
     extern unsigned short data_ov002_020ff158[];
     extern int func_ov002_020cedb0(void*, int);
-    unsigned int t = data_ov002_020ff158[*(int*)((char*)c + 8)];
+    unsigned int t = data_ov002_020ff158[((Player *)c)->param1];
     return FX_MUL(a, (int)t);
 }
 }
@@ -10980,7 +10980,7 @@ int func_ov002_020cef84(char *self)
     {
         int t = p->mHeldObj != 0;
         if (t != false) {
-            if (*(int *)(self + 8) == 2) {
+            if (p->param1 == 2) {
                 v2.y += 0x32000;
                 lim = 0xb4000;
             }
@@ -14987,7 +14987,7 @@ extern "C" int func_ov002_020d5cec(char* c)
     Vector3 v2;
     char* d0;
     short* m;
-    char* p;
+    Vector3 *p;
     int y1;
     int shifted;
 
@@ -15004,11 +15004,11 @@ extern "C" int func_ov002_020d5cec(char* c)
     player->mHorzSpeed = 0x18000;
     player->mVertSpeed = 0x18000;
 
-    p = (char *)&((Player *)player->mEatingPlayer)->mPos;
-    v1.x = *(int*)p;
-    y1 = *(int*)(p + 4);
+    p = &((Player *)player->mEatingPlayer)->mPos;
+    v1.x = p->x;
+    y1 = p->y;
     v1.y = y1;
-    v1.z = *(int*)(p + 8);
+    v1.z = p->z;
     v1.y = y1 + 0x32000;
 
     shifted = (unsigned short)player->mAngleY >> 4;
@@ -16126,7 +16126,7 @@ int Player::St_YoshiPower_Main()
             int id0 = this->GetBodyModelID(this->param1 & 0xff, 0);
             /* Split: a plain ->currFrame folds +0x50 and +8 into one +0x58 and moves bytes. */
             dp = (char *)mBodyModels[id0];
-            dp = (char*)(dp + 0x50);
+            dp = (char *)&(dExtFrameCtrl_c &)*(ModelAnim *)dp;
             ((dExtFrameCtrl_c *)dp)->currFrame = (unsigned int)t4 >> 4;
             mStateArg = 1;
         }
@@ -16673,8 +16673,8 @@ int func_ov002_020d853c(char *c, char *o) {
     if (((Player *)c)->IsState(data_ov002_02110574)) {
         int j = (player->mPunchKickStep << 1) & 0xff;
         unsigned idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-        char *mp = (char *)player->mBodyModels[idx];
-        int v = ((dExtFrameCtrl_c *)((long long)(int)(mp + 0x50)))->currFrame;
+        ModelAnim *mp = player->mBodyModels[idx];
+        int v = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*mp))->currFrame;
         int k = (unsigned short)(v >> 12);
         if (k < data_ov002_0210a5dc[j] || k > data_ov002_0210a5dc[j + 1])
             return 1;
@@ -17609,7 +17609,7 @@ int Player::St_Hurt_Init()
     _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), data_ov002_0210a6d4[mStateStep & 7], 0x40000000, 0x1000, 0);
     mid = this->GetBodyModelID(param1 & 0xff, 0);
     m = (char *)mBodyModels[mid];
-    m = (char*)(((unsigned int)m + 0x50) & 0xFFFFFFFFU);
+    m = (char *)((unsigned int)&(dExtFrameCtrl_c &)*(ModelAnim *)m & 0xFFFFFFFFU);
     ((dExtFrameCtrl_c *)m)->currFrame = 0;
     mStatePhase = 0;
     old = mStateWork;
@@ -18307,14 +18307,14 @@ int func_ov002_020dacb4(char *p, char *actor)
         s = (s & 0x8000) != false;
         if (s != false) {
             offset = 0x224;
-            if (*(int *)(p + 8) == 2) {
+            if (((Player *)p)->param1 == 2) {
                 int c = ((dActor_c *)a2)->actorID;
                 c = c == 0xce;
                 if (c != false) offset = 0xc4;
             }
         }
         {
-            int player_var = *(int *)(p + 8);
+            int player_var = ((Player *)p)->param1;
             int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
             void *self = ((Player *)p)->mBodyModels[model_idx];
             int j = *(int *)(data_ov002_020ff480[offset + player_var] + 4);
@@ -18595,13 +18595,13 @@ int Player::St_Grabbed_Main()
     if (mStateTimer != 0) {
         id = this->GetBodyModelID(param1 & 0xff, 0);
         model = (char *)mBodyModels[id];
-        pRate = (int*)(model + 0x50);
+        pRate = (int *)&(dExtFrameCtrl_c &)*(ModelAnim *)model;
         pRate = (int *)&((dExtFrameCtrl_c *)pRate)->speed;
         *pRate = 0x4000;
     } else {
         id = this->GetBodyModelID(param1 & 0xff, 0);
         model = (char *)mBodyModels[id];
-        pRate = (int*)(model + 0x50);
+        pRate = (int *)&(dExtFrameCtrl_c &)*(ModelAnim *)model;
         pRate = (int *)&((dExtFrameCtrl_c *)pRate)->speed;
         *pRate = 0x1000;
     }
@@ -19267,8 +19267,8 @@ L14c:
 L18c:
     {
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        void *anim = mBodyModels[id];
-        u32 w = ((dExtFrameCtrl_c *)((long long)(int)((char *)anim + 0x50)))->currFrame;
+        ModelAnim *anim = mBodyModels[id];
+        u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
         if ((u16)(w >> 12) < 4)
             goto L1d8;
         func_ov002_020dbaec(((char*)this));
@@ -19973,10 +19973,10 @@ void func_ov002_020dd5ec(char *c) {
     }
     _ZN6Player7SetAnimEji5Fix12IiEj(c, data_ov002_0210a5c0[player->mPunchKickStep], 0x40000000,
                                     0x1000, 0);
-    model = _ZNK6Player14GetBodyModelIDEjb(c, (*((int *)(c + 8))) & 0xff, 0);
+    model = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
     new_var2 = -0x4000;
     new_var = (int *)&player->mBodyModels[model];
-    new_var3 = (int *)((*new_var) + 0x50);
+    new_var3 = (int *)&(dExtFrameCtrl_c &)*(ModelAnim *)*new_var;
     if ((c && c) && c) {
     }
     p = new_var3;
@@ -20307,7 +20307,7 @@ extern "C" int func_ov002_020dde74(char *thiz) {
         _ZN6Player11ChangeStateERNS_5StateE((Player *)thiz, &data_ov002_021105d4);
         return 1;
     }
-    if (*(int *)(thiz + 8) == 3 && p->mIsMega == 0) {
+    if (p->param1 == 3 && p->mIsMega == 0) {
         _ZN6Player11ChangeStateERNS_5StateE((Player *)thiz, &data_ov002_02110034);
         return 1;
     }
@@ -22005,7 +22005,7 @@ int Player::St_CrazedCrate_Main() {
             (*(u8 *)(int)(&mJumpComboStage))++;
             func_ov002_020e0f38(self, this->mJumpComboStage);
         } else {
-            if (*(int*)(self + 8) == 3) {
+            if (param1 == 3) {
                 if ((void *)mObjInMouth != 0) {
                     _ZN7fBase_c18MarkForDestructionEv((void *)mObjInMouth);
                 }
@@ -22319,8 +22319,8 @@ int Player::St_SideFlip_Main()
 
         if (IsState(*(Player::State *)data_ov002_021101e4)) {
             int id = this->GetBodyModelID(param1 & 0xff, 0);
-            void *anim = mBodyModels[id];
-            u32 w = ((dExtFrameCtrl_c *)((long long)(int)((char *)anim + 0x50)))->currFrame;
+            ModelAnim *anim = mBodyModels[id];
+            u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
             if ((u16)(w >> 12) == 0x10) {
                 Sound::PlayBank0(0xf, mCamSpacePos);
             }
@@ -22778,8 +22778,8 @@ int Player::St_Jump_Main()
 
             {
                 u32 id = this->GetBodyModelID(*(u32 *)((char *)&param1) & 0xff, 0);
-                void *anim = mBodyModels[id];
-                u32 w = ((dExtFrameCtrl_c *)((long long)(int)((char *)anim + 0x50)))->currFrame;
+                ModelAnim *anim = mBodyModels[id];
+                u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
                 u16 t = (u16)(w >> 12);
                 if (t == 4 || t == 0x18 || t == 0x2c) {
                     Sound::PlayBank0(0xf, mCamSpacePos);
@@ -23017,7 +23017,7 @@ int func_ov002_020e2664(char* self)
     p->mPrevAngleY = p->mAngleY;
 
     if (p->mIsMega == 0) {
-        if (*(int*)(self + 8) == 3) {
+        if (p->param1 == 3) {
             _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_02110034);
         } else {
             _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_021105bc);
@@ -23051,7 +23051,7 @@ void func_ov002_020e28d4(char* c, int a, int b)
     Player *p = (Player *)c;
     int r4;
 
-    if (*(int*)(c + 8) == 1)
+    if (p->param1 == 1)
         a <<= 1;
 
     if (*(s16*)((char*)data_0209f4a0 + gActivePlayerSlot * 0x18) != 0) {
@@ -25368,7 +25368,7 @@ extern "C" {
 void func_ov002_020e6330(unsigned char *self) {
     extern unsigned char data_ov002_020ff0f0[];
     extern void func_02011f7c(int a);
-    func_02011f7c(data_ov002_020ff0f0[self[0x6d9] & 3]);
+    func_02011f7c(data_ov002_020ff0f0[((Player *)self)->mCharacter & 3]);
 }
 }
 
@@ -25380,7 +25380,7 @@ void func_ov002_020e6350(char* c){
     extern unsigned char data_ov002_020ff0f4[];
   int b = (int)(data_0209f2d8 == 1);
   if(b != 0) return;
-  func_02011ee4(data_ov002_020ff0f4[*(int*)(c+8) & 3]);
+  func_02011ee4(data_ov002_020ff0f4[((Player *)c)->param1 & 3]);
 }
 }
 
