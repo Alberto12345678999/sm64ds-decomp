@@ -26,9 +26,9 @@
  * zero mangled calls.
  *
  * deslop leftovers:
- * - State7 mFlutterPhase / mScale: named += is 0x234 vs 0x258. The phase
- *   load is ldrsh plus a zero-extend shift (ldrh of the field is shorter),
- *   and the adds take the int-cast address, not add #0x300.
+ * - State7 mFlutterPhase: named += is 0x234 vs 0x258. The phase load is
+ *   ldrsh plus a zero-extend shift (ldrh of the field is shorter), and the
+ *   adds take the int-cast address, not add #0x300.
  * - State7 Player::Hurt: method form is 0x264 vs 0x258 (+0xc). Fix12<int>
  *   by value. Player.h does not declare Hurt.
  * - State7 UpdateContinuous(): WRONG-DEST. ROM calls

@@ -32,9 +32,6 @@
  *   retain scalar or opaque boundaries. UpdateCapPos has a shared reference
  *   declaration, but the direct call currently changes two argument-address
  *   setup instructions in 021166ac; that source-shape reconstruction remains open.
- * - func_02012694's third argument is the address of mShadowMtx2.m[11]
- *   (this + 0x500), the drop matrix's last word; what the callee does with
- *   it is not recovered.
  * - `*(u16 *)&member` puns stay on mStateTimer and the angle fields: the
  *   header declares s16 but the retail code loads those sites unsigned
  *   (ldrh), and the signed member spelling emits ldrsh.
@@ -929,7 +926,7 @@ void daTrs_c::func_ov063_02117364() {
             this->mParticle1 = 0;
             this->mParticle0 = this->mParticle1;
             this->mRelocateTimer = 0x78;
-            func_02012694(0x154, &this->mCamSpacePosX, &this->mShadowMtx2.m[11], 0x78);
+            func_02012694(0x154, &this->mCamSpacePosX);
             return;
         }
         pos.y += this->mClsnScale * 0xaf;
