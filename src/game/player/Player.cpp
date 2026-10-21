@@ -67,26 +67,6 @@ struct V3a {
  void set(int x_, int y_, int z_) { x = x_; y = y_; z = z_; }
 };
 namespace Particle { extern "C" void _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void *, void *); }
-struct Obj1eb4 {
- char pad0[0x5c];
- Vector3 p5c; /* 0x5c */
- char pad1[0x74 - 0x68];
- Vector3 p74; /* 0x74 */
- char pad2[0x8c - 0x80];
- short p8c; /* 0x8c */
- short p8e; /* 0x8e */
- short p90; /* 0x90 */
- char pad3[0x94 - 0x92];
- short p94; /* 0x94 */
- char pad4[0x98 - 0x96];
- int p98; /* 0x98 */
- char pad5[0x674 - 0x9c];
- int p674; /* 0x674 */
- char pad6[0x6de - 0x678];
- unsigned char b6de; /* 0x6de */
- char pad7[0x6e3 - 0x6df];
- unsigned char b6e3; /* 0x6e3 */
-};
 typedef struct {
  int unk0, unk4, unk8, unkC;
 } Arg1;
@@ -3203,7 +3183,6 @@ int func_ov002_020c1e44(void* a, int x) {
 extern "C" {
 void Player::func_ov002_020c1eb4(int dmg)
 {
-    Obj1eb4 *self = (Obj1eb4 *)this;
     typedef int Fx12;
     extern void Vec3_RotateYAndTranslate(void*, const Vector3 *origin, int angle, const Vector3 *offset);
     extern short data_02082214[];
@@ -3213,25 +3192,25 @@ void Player::func_ov002_020c1eb4(int dmg)
     Vector3 offset;
     Vector3_16 vec;
 
-    Sound::PlayBank0(0x13, self->p74);
-    self->p8e = self->p94;
-    self->p90 = 0;
-    self->p8c = self->p90;
-    self->b6e3 = 0;
-    if (self->b6de) {
-        self->b6e3 += 2;
+    Sound::PlayBank0(0x13, mCamSpacePos);
+    mAngleY = mPrevAngleY;
+    mAngleZ = 0;
+    mAngleX = mAngleZ;
+    mStateStep = 0;
+    if (mIsAirborne) {
+        mStateStep += 2;
     }
-    self->p8e = (short)(dmg * 2 - self->p8e);
-    self->p94 = (short)(self->p8e + 0x8000);
-    self->p98 = 0xa000;
-    self->b6e3 |= 0x20;
-    self->p674 = 0;
-    ((Player *)self)->ChangeState(data_ov002_02110094);
+    mAngleY = (short)(dmg * 2 - mAngleY);
+    mPrevAngleY = (short)(mAngleY + 0x8000);
+    mHorzSpeed = 0xa000;
+    mStateStep |= 0x20;
+    mHurtDamage = 0;
+    this->ChangeState(data_ov002_02110094);
 
     offset.x = 0;
     offset.y = 0x32000;
     offset.z = 0x28000;
-    Vec3_RotateYAndTranslate(&out, &self->p5c, (short)(dmg + 0x8000), &offset);
+    Vec3_RotateYAndTranslate(&out, &mPos, (short)(dmg + 0x8000), &offset);
 
     {
         int idx = ((unsigned short)dmg >> 4);
@@ -3240,7 +3219,7 @@ void Player::func_ov002_020c1eb4(int dmg)
         vec.y = 0;
         Particle::_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(0, 0xc8, out.x, out.y, out.z, &vec, 0);
     }
-    func_ov002_020d91e0((char *)self, 0, 1);
+    func_ov002_020d91e0((char *)this, 0, 1);
 }
 }
 
@@ -13305,36 +13284,21 @@ int func_ov002_020d2da0(char *c) {
 extern "C" {
 void func_ov002_020d2e74(Player *p)
 {
-    struct PlayerView {
-        char pad8[8];
-        int field_8;             /* 0x8 */
-        char pad1[0x5c - 0xc];
-        struct Vector3 field_5c; /* 0x5c */
-        char pad2[0x74 - 0x68];
-        struct Vector3 field_74; /* 0x74 */
-        char pad3[0x8e - 0x80];
-        s16 field_8e;            /* 0x8e */
-        char pad4[0x6d9 - 0x90];
-        u8 field_6d9;            /* 0x6d9 */
-        char pad5[0x707 - 0x6da];
-        u8 field_707;            /* 0x707 */
-    };
     extern void Vec3_RotateYAndTranslate(struct Vector3 *out, const struct Vector3 *base, s16 ang, const struct Vector3 *off);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 a, int b, int c, int d);
 
-    PlayerView *thiz = (PlayerView *)p;
     struct Vector3 v;
     struct Vector3 off;
-    if (thiz->field_707 != 0)
+    if (p->mIsInShallowWater != 0)
         return;
-    if (thiz->field_8 != 3)
+    if (p->param1 != 3)
         return;
-    Sound::PlayBank0(0xbc, thiz->field_74);
-    Sound::PlayCharVoice(thiz->field_6d9, 0x2f, thiz->field_74);
+    Sound::PlayBank0(0xbc, p->mCamSpacePos);
+    Sound::PlayCharVoice(p->mCharacter, 0x2f, p->mCamSpacePos);
     off.x = 0;
     off.y = 0x1e000;
     off.z = 0x64000;
-    Vec3_RotateYAndTranslate(&v, &thiz->field_5c, thiz->field_8e, &off);
+    Vec3_RotateYAndTranslate(&v, &p->mPos, p->mAngleY, &off);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xfe, v.x, v.y, v.z);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xff, v.x, v.y, v.z);
 }
@@ -14338,30 +14302,8 @@ void Player::func_ov002_020d4748()
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-struct Obj {
-    char pad0[0x5c];
-    Fix12i p5c;     /* 0x5c */
-    Fix12i p60;     /* 0x60 */
-    Fix12i p64;     /* 0x64 */
-    char pad1[0x74 - 0x68];
-    Vector3 p74;    /* 0x74 */
-    char pad2[0x98 - 0x80];
-    int p98;        /* 0x98 */
-    char pad3[0x628 - 0x9c];
-    unsigned int p628; /* 0x628 */
-    char pad4[0x66c - 0x62c];
-    int p66c;       /* 0x66c */
-    char pad5[0x68c - 0x670];
-    int p68c;       /* 0x68c */
-    char pad6[0x6e3 - 0x690];
-    unsigned char b6e3; /* 0x6e3 */
-    char pad7[0x6f9 - 0x6e4];
-    unsigned char b6f9; /* 0x6f9 */
-    char pad8[0x707 - 0x6fa];
-    unsigned char b707; /* 0x707 */
-};
 extern "C" {
-extern "C" void func_ov002_020d4c30(Obj *self)
+extern "C" void func_ov002_020d4c30(Player *self)
 {
     extern void func_0201251c(int a, int b, int c, int d);
     extern int data_0209f32c;
@@ -14369,34 +14311,34 @@ extern "C" void func_ov002_020d4c30(Obj *self)
     extern int data_0208e430;
     extern unsigned int func_02022d00(unsigned int, unsigned int, Fix12i, Fix12i, Fix12i, void*);
     int id;
-    if (self->b707) {
-        self->p628 = func_02022d00(self->p628, 0xde, self->p5c, data_0209f32c,
-                                   self->p64, 0);
+    if (self->mIsInShallowWater) {
+        self->mParticle1 = func_02022d00(self->mParticle1, 0xde, self->mPosX, data_0209f32c,
+                                   self->mPosZ, 0);
     }
-    if (self->p68c > 0x32000) {
-        Sound::PlayBank0(0xb3, self->p74);
-    } else if (self->b6e3 >= 0x1e) {
-        if (self->b6f9 == 0) {
-            Sound::PlayBank0(self->p66c + 0x70, self->p74);
+    if (self->mSinkDepth > 0x32000) {
+        Sound::PlayBank0(0xb3, self->mCamSpacePos);
+    } else if (self->mStateStep >= 0x1e) {
+        if (self->mIsMetal == 0) {
+            Sound::PlayBank0(self->mGroundSoundType + 0x70, self->mCamSpacePos);
         } else {
-            Sound::PlayBank0(0xa4, self->p74);
+            Sound::PlayBank0(0xa4, self->mCamSpacePos);
         }
     } else {
-        if (self->b6f9 == 0) {
-            func_0201251c(0, self->p66c + 0x20, (int)&self->p74, self->p98);
+        if (self->mIsMetal == 0) {
+            func_0201251c(0, self->mGroundSoundType + 0x20, (int)&self->mCamSpacePos, self->mHorzSpeed);
         } else {
-            func_0201251c(0, 0xaa, (int)&self->p74, self->p98);
+            func_0201251c(0, 0xaa, (int)&self->mCamSpacePos, self->mHorzSpeed);
         }
     }
     if (data_0208e430 == 0x2e) return;
     id = -1;
-    if (self->p66c != 6) {
-        if (self->p66c != 8) {
-            if (self->p66c == 9) id = 0xe6;
+    if (self->mGroundSoundType != 6) {
+        if (self->mGroundSoundType != 8) {
+            if (self->mGroundSoundType == 9) id = 0xe6;
         } else id = 0xe4;
     } else id = 0xe5;
     if (id == -1) return;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(id, self->p5c, self->p60, self->p64);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(id, self->mPosX, self->mPosY, self->mPosZ);
 }
 }
 
@@ -15339,13 +15281,12 @@ int Player::St_InYoshiMouth_Init()
 }
 
 // @symbol func_ov002_020d6334
-struct Obj6334 { char pad[0x588]; int *arr; /* 0x588 */ };
 extern "C" {
-int func_ov002_020d6334(struct Obj6334 *o, int val)
+int func_ov002_020d6334(Player *o, int val)
 {
     int i;
     int *arr;
-    arr = o->arr;
+    arr = (int *)o->mHeldObjQueue;
     for (i = 0; i < 5; i++) {
         if (arr[i] == 0) {
             arr[i] = val;
@@ -21306,39 +21247,22 @@ int func_ov002_020df7f4(char* c) {
 // @symbol func_ov002_020df840
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
-struct Playerf840 {
-    char pad8[8];
-    int field_8;
-    char pad[0x5c-0xc];
-    struct Vector3 pos;      /* 0x5c */
-    char pad2[0x358-0x68];
-    int field_358;           /* 0x358 */
-    char pad3[0x688-0x35c];
-    int field_688;           /* 0x688 */
-    char pad4[0x69c-0x68c];
-    s16 field_69c;           /* 0x69c */
-    char pad5[0x6fd-0x69e];
-    u8 field_6fd;            /* 0x6fd */
-    char pad6[0x703-0x6fe];
-    u8 field_703;            /* 0x703 */
-};
 extern "C" {
-int func_ov002_020df840(struct Playerf840 *thiz, void *arg1, struct Vector3 *arg2)
+int func_ov002_020df840(Player *thiz, void *arg1, struct Vector3 *arg2)
 {
     extern u16 data_0209f49c[];
     extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(struct Playerf840 *thiz, void *st);
-    extern char data_ov002_02110244;
-    if (thiz->field_703 != 0 || thiz->field_6fd != 0)
+    extern Player::State data_ov002_02110244;
+    if (thiz->mIsMega != 0 || thiz->mIsBalloon != 0)
         return 0;
     if ((*(u16*)((char*)data_0209f49c + gActivePlayerSlot * 0x18) & 2) == 0)
         return 0;
-    if (thiz->field_358 != 0)
+    if (thiz->mHeldObj != 0)
         return 0;
-    _ZN6Player11ChangeStateERNS_5StateE(thiz, &data_ov002_02110244);
-    thiz->field_358 = (int)arg1;
-    thiz->field_688 = arg2->y;
-    thiz->field_69c = Vec3_HorzAngle(&thiz->pos, arg2);
+    thiz->ChangeState(data_ov002_02110244);
+    thiz->mHeldObj = (int)arg1;
+    thiz->mAttachOffsetY = arg2->y;
+    thiz->mAngleYSpeed = Vec3_HorzAngle(&thiz->mPos, arg2);
     return 1;
 }
 }
