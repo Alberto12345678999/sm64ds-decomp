@@ -24,6 +24,9 @@
  *   functions, including func_ov002_020e6780 (decl_common.h spells the
  *   parameter char *) and func_ov002_020bcdf0. func_ov002_020e69c0 rotates
  *   data_ov002_0210a760, which has no recovered name.
+ * - Player:: methods with no body-local externs carry no extern "C"
+ *   wrapper (60 sites); the rest keep it: the block gives C linkage to
+ *   body-local externs, and hoisting them exposes S42 spelling drift.
  */
 
 #pragma defer_codegen off
@@ -143,12 +146,10 @@ typedef int (Player::*ScriptCommand)(unsigned char *, int, int);
 /* ROM ordinal 0 -- _ZN6Player19func_ov002_020bccfcEPhii, 0x020bccfc, size 0x1c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bccfcEPhii
-extern "C" {
 int Player::func_ov002_020bccfc(unsigned char *params, int beginFrame, int endFrame)
 {
     this->MarkForDestruction();
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -397,7 +398,6 @@ void Player::func_ov002_020bd06c(unsigned int state2)
 /* ROM ordinal 5 -- _ZN6Player19func_ov002_020bd20cEPhii, 0x020bd20c, size 0x44 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd20cEPhii
-extern "C" {
 int Player::func_ov002_020bd20c(unsigned char *params, int beginFrame, int endFrame)
 {
     if (mAnimScriptId != *params) {
@@ -406,7 +406,6 @@ int Player::func_ov002_020bd20c(unsigned char *params, int beginFrame, int endFr
         mAnimScriptStep = 0;
     }
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -554,12 +553,10 @@ int Player::func_ov002_020bd4ac(unsigned char *params, int beginFrame, int endFr
 /* ROM ordinal 13 -- _ZN6Player19func_ov002_020bd4c8EPhii, 0x020bd4c8, size 0x18 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd4c8EPhii
-extern "C" {
 int Player::func_ov002_020bd4c8(unsigned char *params, int beginFrame, int endFrame)
 {
     mFlags |= 0x24000000;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1067,7 +1064,6 @@ void Player::func_ov002_020bdef0(){
  * Note the original wrote mPowerupTimer as `c + 0x600 + 0xae` rather than 0x6ae --
  * the split is how the compiler addressed it, not a second field.
  */
-extern "C" {
 void Player::InitVanishLuigi()
 {
     func_ov002_020bda48();
@@ -1075,7 +1071,6 @@ void Player::InitVanishLuigi()
     mPowerupTimer = 0x258;
     func_ov002_020bd9ec(0x33);
     func_ov002_020c43c4(3);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1454,10 +1449,8 @@ void Player::func_ov002_020be3b0()
 /* ROM ordinal 39 -- _ZN6Player19func_ov002_020bea7cEv, 0x020bea7c, size 0x18 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bea7cEv
-extern "C" {
 int Player::func_ov002_020bea7c(){
     return mCapFlags != 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1465,20 +1458,17 @@ int Player::func_ov002_020bea7c(){
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15IsCollectingCapEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsCollectingCap()
 {
   unsigned short v = mCapFlags;
   if(v!=0 && (v&7)<5) return 1;
   return 0;
 }
-}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 41 -- func_ov002_020beabc, 0x020beabc, size 0x7c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020beabcEv
-extern "C" {
 void Player::func_ov002_020beabc()
 {
     char *p = (char *)this;
@@ -1491,7 +1481,6 @@ void Player::func_ov002_020beabc()
     mBodyModels[id]->SetPolygonMode(2);
     unsigned int id2 = func_ov002_020becf4(param1 & 0xff, 0);
     ((Model *)*(int *)(p + (id2 << 2) + 0x154))->SetPolygonMode(2);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1588,7 +1577,6 @@ int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
  * const, and the _ZNK in the symbol is what says so: declared without it the
  * compiler emits _ZN..., which names a symbol that does not exist.
  */
-extern "C" {
 unsigned int Player::GetBodyModelID(unsigned int a, bool b_) const
 {
     if (b_ == 0) {
@@ -1599,13 +1587,11 @@ unsigned int Player::GetBodyModelID(unsigned int a, bool b_) const
     }
     return a;
 }
-}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 48 -- _ZN6Player19func_ov002_020becf4Eii, 0x020becf4, size 0xa4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020becf4Eii
-extern "C" {
 int Player::func_ov002_020becf4(int v, int arg2){
     int cond;
     int r1;
@@ -1630,21 +1616,18 @@ int Player::func_ov002_020becf4(int v, int arg2){
     }
     return (r1 + v) & 0xff;
 }
-}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 49 -- _ZN6Player12FinishedAnimEv, 0x020bed98, size 0x3c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12FinishedAnimEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::FinishedAnim()
 {
     unsigned int modelID = GetBodyModelID(param1 & 0xff, 0);
     // GetBodyModelID can return 4; the shared array currently declares four slots.
     ModelAnim *model = mBodyModels[modelID];
     return model->Finished() != 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2536,7 +2519,6 @@ void Player::func_ov002_020c0364(u32 arg)
 /* ROM ordinal 74 -- func_ov002_020c0434, 0x020c0434, size 0x78 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0434Ev
-extern "C" {
 int Player::func_ov002_020c0434(){
   unsigned short f = mStateFlags & 1;
   if(f){
@@ -2545,7 +2527,6 @@ int Player::func_ov002_020c0434(){
     if(func_ov002_020c04ac()) return 1;
   }
   return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2644,7 +2625,6 @@ int Player::func_ov002_020c04e0()
 /* ROM ordinal 77 -- func_ov002_020c0688, 0x020c0688, size 0x74 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0688Ev
-extern "C" {
 int Player::func_ov002_020c0688(){
   if (mIsAirborne == 0) return 1;
   if (mSlideType != 0) {
@@ -2661,7 +2641,6 @@ int Player::func_ov002_020c0688(){
     }
   }
   return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2823,7 +2802,6 @@ int Player::func_ov002_020c06fc(int arg)
 /* ROM ordinal 79 -- func_ov002_020c0cbc, 0x020c0cbc, size 0xd4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0cbcEv
-extern "C" {
 int Player::func_ov002_020c0cbc(){
   int t;
   int d;
@@ -2845,7 +2823,6 @@ int Player::func_ov002_020c0cbc(){
     return 1;
   }
   return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4194,19 +4171,16 @@ int Player::CanWarp()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player7IsInAirEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsInAir()
 {
   if(mIsAirborne) return mIsInAirState!=0;
   return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 104 -- _ZN6Player19func_ov002_020c2f64Ev, 0x020c2f64, size 0x88 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c2f64Ev
-extern "C" {
 void Player::func_ov002_020c2f64() {
   if (this->mLandSoundPlayed) return;
   this->mLandSoundPlayed = 1;
@@ -4219,7 +4193,6 @@ void Player::func_ov002_020c2f64() {
       return;
   }
   Sound::PlayBank0(this->mGroundSoundType + 0x40, mCamSpacePos);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4275,13 +4248,11 @@ int Player::func_ov002_020c2fec(int *out)
 /* ROM ordinal 106 -- _ZN6Player19func_ov002_020c3148Ev, 0x020c3148, size 0x18 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c3148Ev
-extern "C" {
 void Player::func_ov002_020c3148()
 {
     mSplinePoint = 0;
     mSplineT = 0;
     mSplineSpan = 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4547,13 +4518,11 @@ void Player::func_ov002_020c3bdc(){
 /* ROM ordinal 112 -- func_ov002_020c3cf0, 0x020c3cf0, size 0x2c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c3cf0Ev
-extern "C" {
 void Player::func_ov002_020c3cf0()
 {
     mStateStep = 0;
     mStateWork = mStateStep;
     (this->mStatePhase)++;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4577,7 +4546,6 @@ void Player::func_ov002_020c3cf0()
  * was moved here from ov007, where it had been sitting on an unrelated 0x50
  * function that ov007 calls from 46 places. See the commit and Player.h.
  */
-extern "C" {
 int Player::St_EndingFly_Main()
 {
     switch (mStatePhase) {
@@ -4591,7 +4559,6 @@ int Player::St_EndingFly_Main()
         break;
     }
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -5976,11 +5943,9 @@ int Player::St_DeadPit_Init()
 /* recovered: named members + shared header, real C++ method */
 /* _ZN6Player14EnterWhirlpoolEv @ 0x20c5cc8 (ov002) -- tail-call veneer to _ZN6Player19func_ov002_020c5decEi (0x20c5dec) with r1=9.
  */
-extern "C" {
 void Player::EnterWhirlpool()
 {
     ((Player *)(((void*)this)))->func_ov002_020c5dec(9);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -6002,7 +5967,6 @@ int func_ov002_020c5cd8(char *c, int arg) {
 /* ROM ordinal 149 -- func_ov002_020c5d0c, 0x020c5d0c, size 0x54 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c5d0cEv
-extern "C" {
 int Player::func_ov002_020c5d0c()
 {
     u16 *p;
@@ -6011,7 +5975,6 @@ int Player::func_ov002_020c5d0c()
     p = &this->mStateFlags;
     *p |= 0x400;
     return func_ov002_020c5dec(1);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -6146,7 +6109,6 @@ int Player::St_DeadHit_Init()
 /* ROM ordinal 154 -- _ZN6Player19func_ov002_020c607cEiiPi, 0x020c607c, size 0x130 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c607cEiiPi
-extern "C" {
 int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
 {
     char *self = (char *)this;
@@ -6177,7 +6139,6 @@ int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
         }
     }
     return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -6277,7 +6238,6 @@ int Player::func_ov002_020c61ac() {
 /* recovered: shared common types */
 // _ZN6Player19func_ov002_020c647cEi at 0x020c647c
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
-extern "C" {
 int Player::func_ov002_020c647c(int arg1) {
     char* c = (char*)this;
     Vector3 v1;
@@ -6304,13 +6264,11 @@ int Player::func_ov002_020c647c(int arg1) {
     }
     return r5;
 }
-}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 157 -- func_ov002_020c6538, 0x020c6538, size 0xc0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c6538Ev
-extern "C" {
 int Player::func_ov002_020c6538() {
     dBgCh_Gnd rg;
     Vector3 v;
@@ -6336,14 +6294,12 @@ int Player::func_ov002_020c6538() {
         return 1;
     }
 }
-}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 158 -- _ZN6Player17St_Squish_CleanupEv, 0x020c65f8, size 0x34 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_Squish_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Squish_Cleanup()
 {
     int val = 0x1000;
@@ -6356,7 +6312,6 @@ int Player::St_Squish_Cleanup()
 
     *(int *)((char *)&mdCcAcPos_c.flags) &= ~4;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -6748,12 +6703,10 @@ int func_ov002_020c6e14(void* actor)
  * Cleanup hook of the ST_LEVEL_ENTER player state-machine state; a no-op
  * that returns VS_FAIL (1). The implicit Player* this is unused.
  */
-extern "C" {
 s32 Player::St_LevelEnter_Cleanup()
 {
     (void)this;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -6818,7 +6771,6 @@ void Player::func_ov002_020c6fe4()
 /* ROM ordinal 170 -- func_ov002_020c70ac, 0x020c70ac, size 0xe8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c70acEv
-extern "C" {
 void Player::func_ov002_020c70ac() {
     if (mStateTimer != 0) {
         this->mVertSpeed = 0;
@@ -6854,7 +6806,6 @@ void Player::func_ov002_020c70ac() {
         mStateArg = 0;
         break;
     }
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -7349,14 +7300,12 @@ void Player::func_ov002_020c7dd0(int i) {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15IsEnteringLevelEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsEnteringLevel()
 {
   if(this->IsStateEnteringLevel()==0) return 0;
   unsigned char s=mStateStep;
   if(s==8||s==9||s==0x10) return 1;
   return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -7865,7 +7814,6 @@ int Player::func_ov002_020c8a4c() {
 /* ROM ordinal 190 -- func_ov002_020c8b54, 0x020c8b54, size 0x24 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8b54Ev
-extern "C" {
 int Player::func_ov002_020c8b54()
 {
     if (mStateTimer == 0) {
@@ -7873,7 +7821,6 @@ int Player::func_ov002_020c8b54()
         mStateStep = 0xf;
     }
     return 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -8415,13 +8362,11 @@ int Player::St_NoControl_Init()
 /* ROM ordinal 206 -- func_ov002_020c97e0, 0x020c97e0, size 0x18 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c97e0Ev
-extern "C" {
 void Player::func_ov002_020c97e0()
 {
     mStateStep = 19;
     this->mHorzSpeed = 0;
     this->mVertSpeed = 0;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -8587,13 +8532,11 @@ int Player::func_ov002_020c9b10(){
 /* ROM ordinal 215 -- func_ov002_020c9b5c, 0x020c9b5c, size 0x20 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9b5cEv
-extern "C" {
 void Player::func_ov002_020c9b5c() {
     mSkipGroundUpdate = 1;
     mIsBodyClsnEnabled = 0;
     this->mVertAccel = 0;
     func_ov002_020c9b10();
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -8731,13 +8674,11 @@ void func_ov002_020c9de4(char* c){
 /* ROM ordinal 223 -- func_ov002_020c9e18, 0x020c9e18, size 0x28 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9e18Ev
-extern "C" {
 void Player::func_ov002_020c9e18()
 {
     if (mIsNoControl != 1) return;
     mIsNoControl = 0;
     this->mdCcAcPos_c.flags &= ~4;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -8870,11 +8811,9 @@ void Player::func_ov002_020ca108(){
  * Sets a u8 flag at offset 0x70b (1803) in the Player object to 1.
  * Player.h has only `u8 unk70b` here, so keep the typed offset access.
  */
-extern "C" {
 void Player::OpenBigDoor()
 {
     mIsOpeningBigDoor = 1; /* +0x70b */
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -9139,13 +9078,11 @@ int Player::CanEnterDoor(unsigned char door)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17PlayMammaMiaSoundEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 void Player::PlayMammaMiaSound()
 {
     /* mCamSpacePosX/Y/Z are three consecutive words; dActor_c.h declares them
        individually rather than as one Vector3. */
     Sound::PlayCharVoice(mCharacter, 0x27, mCamSpacePos);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -9371,12 +9308,10 @@ void func_ov002_020cabe0(char* c){
  * Cleanup hook of the ST_NULL do-nothing player state; returns VS_FAIL (1).
  * The implicit Player* this is unused.
  */
-extern "C" {
 s32 Player::St_Null_Cleanup()
 {
     (void)this;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -9388,12 +9323,10 @@ s32 Player::St_Null_Cleanup()
  * Main hook of the ST_NULL do-nothing player state; returns VS_FAIL (1).
  * (All ST_NULL state functions are "return 1;" per Player.h.)
  */
-extern "C" {
 s32 Player::St_Null_Main()
 {
     (void)this;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -9416,11 +9349,9 @@ s32 Player::St_Null_Main()
  * was moved here from ov006, where it had been sitting on an unrelated 0x6c
  * function at the same shared address. See the commit and include/Player.h.
  */
-extern "C" {
 int Player::St_Null_Init()
 {
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -9428,13 +9359,11 @@ int Player::St_Null_Init()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_CameraZoom_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_CameraZoom_Cleanup()
 {
     *(unsigned short *)((char *)&mStateFlags) &= ~4;
     mUseFarCamera = 0;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -10314,7 +10243,6 @@ void func_ov002_020cc1f4(char *c) {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_Shell_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Shell_Cleanup()
 {
   char* p = *(char**)((char*)&mRidingShell);
@@ -10327,7 +10255,6 @@ int Player::St_Shell_Cleanup()
     func_ov002_020bd8c0(0x33);
   }
   return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -10825,7 +10752,6 @@ int Player::St_MetalWaterGround_Main()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player24St_MetalWaterGround_InitEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_MetalWaterGround_Init()
 {
     dActor_c *p = *(dActor_c **)((char *)&mHeldObj);
@@ -10849,7 +10775,6 @@ tail:
     mIsUnderwater = 1;
     return 1;
 }
-}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 281 -- func_ov002_020cd190, 0x020cd190, size 0x54 */
@@ -10872,7 +10797,6 @@ void func_ov002_020cd190(char* c){
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Swim_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Swim_Cleanup()
 {
   if(mSwimMusicPushed!=0){
@@ -10880,7 +10804,6 @@ int Player::St_Swim_Cleanup()
     func_ov002_020bd8c0(0x33);
   }
   return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -13656,7 +13579,6 @@ int Player::St_HoldHeavy_Init()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_HoldLight_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_HoldLight_Cleanup()
 {
 
@@ -13665,7 +13587,6 @@ int Player::St_HoldLight_Cleanup()
       ((dActor_c *)p)->mFlags |= 0x4000;
   }
   return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -16462,7 +16383,6 @@ int Player::func_ov002_020d6048(){
  * This file carried the placeholder name func_ov002_020d6084 until the symbol
  * was moved here from ov006. See the commit and include/Player.h.
  */
-extern "C" {
 int Player::St_InYoshiMouth_Cleanup()
 {
     unsigned int *p = (unsigned int *)&mdCcAcPos_c.flags;
@@ -16471,7 +16391,6 @@ int Player::St_InYoshiMouth_Cleanup()
     mIsBodyClsnEnabled = 1;
     mOpacity = 0x1f;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -16571,7 +16490,6 @@ int Player::St_InYoshiMouth_Main()
 // @symbol _ZN6Player20St_InYoshiMouth_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_InYoshiMouth_Init()
 {
     unsigned int r3;
@@ -16588,7 +16506,6 @@ int Player::St_InYoshiMouth_Init()
     *(unsigned int *)slot = r1;
     mIsBodyClsnEnabled = (unsigned char)r3;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -16770,7 +16687,6 @@ int Player::St_Swallow_Init() {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20RegisterEggCoinCountEjbb
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 void Player::RegisterEggCoinCount(unsigned int count, bool b2, bool b3)
 {
 	mEggParams = (count & 0xf) << 2;
@@ -16778,7 +16694,6 @@ void Player::RegisterEggCoinCount(unsigned int count, bool b2, bool b3)
 		*(unsigned char *)((char*)&mEggParams) |= 0x40;
 	if (b2)
 		*(unsigned char *)((char*)&mEggParams) |= 0x80;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -17281,12 +17196,10 @@ char* Player::func_ov002_020d708c() {
 /* ROM ordinal 405 -- _ZN6Player19func_ov002_020d718cEv, 0x020d718c, size 0x14 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d718cEv
-extern "C" {
 void Player::func_ov002_020d718c() {
 
     this->mObjInMouth = 0;
     func_ov002_020d71a0();
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -17920,13 +17833,11 @@ void Player::InitFireYoshi()
 /* ROM ordinal 416 -- _ZN6Player21St_DizzyStars_CleanupEv, 0x020d8274, size 0x18 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_DizzyStars_CleanupEv
-extern "C" {
 int Player::St_DizzyStars_Cleanup()
 {
 
     mFlags &= ~0x80u;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -17955,13 +17866,11 @@ int Player::St_DizzyStars_Main()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_DizzyStars_InitEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_DizzyStars_Init()
 {
     mStateTimer = 0x12c;
     mFlags |= 0x80;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -18866,12 +18775,10 @@ fail:
 // Player::St_Hurt_Cleanup - clear flag bit 0x80 in the u32 at this+0xb0, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0xb0) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Hurt_Cleanup()
 {
     *(unsigned int *)((char *)&mFlags) &= ~0x80;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -19286,7 +19193,6 @@ int func_ov002_020d9dcc(char* c)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22St_SwingPlayer_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_SwingPlayer_Cleanup()
 {
   char* p = *(char**)((char*)&mHeldObj);
@@ -19295,7 +19201,6 @@ int Player::St_SwingPlayer_Cleanup()
   }
   mPrevAngleY = mAngleY;
   return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -19450,12 +19355,10 @@ int Player::St_SwingPlayer_Init()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player25St_GrabBowserTail_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_GrabBowserTail_Cleanup()
 {
     func_ov002_020daa74();
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -19978,12 +19881,10 @@ int Player::St_Throw_Init() {
 // Player::St_Thrown_Cleanup - clear flag bit 0x2000 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Thrown_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x2000;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -21482,11 +21383,9 @@ int Player::IsDiving()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17LostGrabbedObjectEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::LostGrabbedObject()
 {
   return ((Player *)(((void*)this)))->IsAnim(0x18) || ((Player *)(((void*)this)))->IsAnim(0x8b);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -21494,11 +21393,9 @@ int Player::LostGrabbedObject()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14IsFrontSlidingEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsFrontSliding()
 {
   return ((Player *)(((void*)this)))->IsAnim(0x43) || ((Player *)(((void*)this)))->IsAnim(0x40);
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -21811,12 +21708,10 @@ void func_ov002_020dd908(char *sb) {
 // Player::St_GroundPound_Cleanup - clear flag bit 0x20 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_GroundPound_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x20;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -22629,12 +22524,10 @@ int Player::St_JumpQuicksand_Init()
 // Player::St_Cannon_Cleanup - clear flag bit 0x20 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Cannon_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x20;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -22837,13 +22730,11 @@ extern "C" int func_ov002_020df34c(Player* self) {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Owl_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Owl_Cleanup()
 {
   func_ov002_020bd8c0(0x2f);
   mHeldObj=0;
   return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -23817,12 +23708,10 @@ int func_ov002_020e0ccc(char *c, short *st) {
 /* ROM ordinal 553 -- _ZN6Player22St_CrazedCrate_CleanupEv, 0x020e0d28, size 0x20 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22St_CrazedCrate_CleanupEv
-extern "C" {
 int Player::St_CrazedCrate_Cleanup() {
     mdCcAcPos_c.flags &= ~0x20;
     mJumpComboStage = 0;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -23994,12 +23883,10 @@ int func_ov002_020e10a8(void* c){
 // Player::St_Spin_Cleanup - clear flag bit 0x20 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Spin_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x20;
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -25344,11 +25231,9 @@ int func_ov002_020e3078(struct Player3078* self, void* s) {
    The parameter is a reference, so the caller passes an address and this
    compares pointer identity: two distinct State objects with identical
    contents are NOT the same state. That is the whole semantic. */
-extern "C" {
 bool Player::IsState(Player::State &state)
 {
     return mState == &state;
-}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -25803,11 +25688,9 @@ int Player::CleanupResources()
 /* Player::OnPendingDestroy() at 0x020e3a04 (ov002) -- vtable slot 12.
  * Empty override; Player does nothing when marked for destruction.
  */
-extern "C" {
 void Player::OnPendingDestroy()
 {
     (void)this;
-}
 }
 
 /* -------------------------------------------------------------------------- */
