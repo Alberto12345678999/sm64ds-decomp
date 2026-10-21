@@ -85,6 +85,16 @@ struct Arg {
 /* Only ever an opaque pointer: the camera's extern, and func_ov002_020ceb7c's
  * parameter, which is a Player (it reads mPosY, mPlayerNo and mStateWork). */
 struct CameraRaw;
+/* SharedFilePtr's fields. include/SharedFilePtr.h declares the class with none;
+ * these are the names its own TU, src/SharedFilePtr.cpp, gives them (Load
+ * stores the loaded buffer in filePtr). data_ov002_020ff480's handles are read
+ * through filePtr to reach the BCA/BTP file they hold. */
+struct SharedFilePtrFields {
+    u16 fileID;    /* 0x00 */
+    u8 numRefs;    /* 0x02 */
+    void *filePtr; /* 0x04 */
+};
+typedef char SharedFilePtrFields_size_must_be_0x8[sizeof(SharedFilePtrFields) == 0x8 ? 1 : -1];
 /* The rest of this block is the same hoist for the same reason, and the tags
  * are unique in the same way.  A body may not declare `extern` with a
  * function-local class type: a local class has no linkage, so the declaration
@@ -879,7 +889,8 @@ void Player::func_ov002_020bdd9c(){
   unsigned int v = this->param1;
   int id = this->GetBodyModelID(v & 0xff, 0);
   char* t = data_ov002_020ff480[mCharFileBase + v];
-  _ZN10ModelAnim24CopyERKS_Pcj(mBodyModels[id], mBodyModels[4], *(char **)(t + 4), 0);
+  _ZN10ModelAnim24CopyERKS_Pcj(mBodyModels[id], mBodyModels[4],
+                               (char *)((SharedFilePtrFields *)t)->filePtr, 0);
   func_ov002_020bd984(0x34);
 }
 }
@@ -913,7 +924,7 @@ void Player::InitMetalWario()
     v = param1;
     id = this->GetBodyModelID(v & 0xff, 0);
     _ZN10ModelAnim24CopyERKS_Pcj(mBodyModels[id], mBodyModels[v],
-                                 *(char **)((char *)data_ov002_020ff480[mCharFileBase + v] + 4), 0);
+                                 (char *)((SharedFilePtrFields *)data_ov002_020ff480[mCharFileBase + v])->filePtr, 0);
 
     mPowerupTimer = 0x258;
     func_ov002_020bd9ec(0x34);
@@ -1075,11 +1086,11 @@ void Player::SetRealCharacter(unsigned int chr_)
     m1 = this->GetBodyModelID(chr, 0);
     m2 = this->GetBodyModelID(param1 & 0xff, 0);
     _ZN10ModelAnim24CopyERKS_Pcj(mBodyModels[m1], mBodyModels[m2],
-                                 *(char **)((char *)data_ov002_020ff480[mCharFileBase + chr] + 4),
+                                 (char *)((SharedFilePtrFields *)data_ov002_020ff480[mCharFileBase + chr])->filePtr,
                                  0);
     m1 = this->GetBodyModelID(chr, 0);
     _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-        mBodyModels[m1], *(int *)((char *)data_ov002_020ff480[chr + 0xc4] + 4), 0, 0x1000, 0);
+        mBodyModels[m1], (int)((SharedFilePtrFields *)data_ov002_020ff480[chr + 0xc4])->filePtr, 0, 0x1000, 0);
 }
 }
 
@@ -1531,17 +1542,17 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
 
     newVal = a << 2;
     if (newVal != player->mCharFileBase) {
-        ((SharedFilePtr *)(data_ov002_020ff480[player->mCharFileBase + (*(int *)(self + 8) & 3)]))
+        ((SharedFilePtr *)(data_ov002_020ff480[player->mCharFileBase + (player->param1 & 3)]))
             ->Release();
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_020ff480[newVal + (*(int *)(self + 8) & 3)]);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_020ff480[newVal + (player->param1 & 3)]);
 
-        id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
+        id = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
         modelPtr = player->mBodyModels[id];
         ((ModelAnim *)modelPtr)->file = 0;
 
         if ((player->mCapFlags & 7) == 4) {
             charId = player->mHatCharacter;
-            if (charId == *(u32 *)(self + 8))
+            if (charId == player->param1)
                 charId = player->mPrevCharacter;
 
             ((SharedFilePtr *)(data_ov002_020ff480[player->mCharFileBase + charId]))->Release();
@@ -1550,7 +1561,7 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
 
             id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(player->mBodyModels[id],
-                                                        *(void **)((char *)sfp + 4), b, c, d);
+                                                        ((SharedFilePtrFields *)sfp)->filePtr, b, c, d);
             {
                 u16 *g = LAUNDER16(&player->mCapTimer);
                 *g = (u16)(*g + 1);
@@ -1558,20 +1569,20 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
         }
     }
 
-    field8 = *(int *)(self + 8);
+    field8 = player->param1;
     sl = a * 4;
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         player->mBodyModels[id],
-        *(void **)((char *)data_ov002_020ff480[(field8 & 3) + (a * 4)] + 4), b, c, d);
+        ((SharedFilePtrFields *)data_ov002_020ff480[(field8 & 3) + (a * 4)])->filePtr, b, c, d);
 
-    field8 = *(int *)(self + 8);
+    field8 = player->param1;
     if ((int)sl >= 0x60) sl = 0x60;
     sl += (field8 & 3);
     param2 = 0;
     if (((int)sl >> 2) == 1) param2 = 0x40000000;
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &player->mTexSeqBody[field8], *(void **)((char *)data_ov002_020ff2f0[sl] + 4), param2,
+        &player->mTexSeqBody[field8], ((SharedFilePtrFields *)data_ov002_020ff2f0[sl])->filePtr, param2,
         0x1000, 0);
 
     player->mCharFileBase = newVal;
@@ -1664,7 +1675,7 @@ extern "C" {
 void Player::func_ov002_020bf2d8(Fix12i a){
     void*c = (void*)this;
     extern unsigned short data_ov002_020ff140[];
-  unsigned int t = data_ov002_020ff140[*(int*)((char*)c+8)];
+  unsigned int t = data_ov002_020ff140[param1];
   this->mVertSpeed = FX_MUL(a, (int)t);
 }
 }
@@ -1673,7 +1684,7 @@ void Player::func_ov002_020bf2d8(Fix12i a){
 extern "C" {
 Fix12i Player_ScaleByCharFactor(void*c, Fix12i a){
     extern unsigned short data_ov002_020ff170[];
-  int idx = *(int*)((char*)c+8) & 0xff;
+  int idx = ((Player *)c)->param1 & 0xff;
   unsigned int t = data_ov002_020ff170[idx];
   return FX_MUL(a, (int)t);
 }
@@ -2935,15 +2946,15 @@ void func_ov002_020c16ec(char *o, char *s)
     extern int func_02037e68(void*);
     extern int func_02037e84(void*);
     struct Vector3 v;
-    player->mClpsWord1Lo = func_02037e90((int *)(s + 4));
-    player->mSurfaceType = func_02037e38((unsigned int *)(s + 4));
-    player->mClpsBits15_18 = func_02037e48((unsigned int *)(s + 4));
-    player->mClpsBits6_11 = func_02037e68((unsigned int *)(s + 4));
-    player->mGroundSoundType = func_02037e84((int *)(s + 4));
+    player->mClpsWord1Lo = func_02037e90((int *)&((dBgPi *)s)->surface.clps);
+    player->mSurfaceType = func_02037e38((unsigned int *)&((dBgPi *)s)->surface.clps);
+    player->mClpsBits15_18 = func_02037e48((unsigned int *)&((dBgPi *)s)->surface.clps);
+    player->mClpsBits6_11 = func_02037e68((unsigned int *)&((dBgPi *)s)->surface.clps);
+    player->mGroundSoundType = func_02037e84((int *)&((dBgPi *)s)->surface.clps);
     if (player->mFloorClass == 1)
         return;
-    player->mFloorClass = func_02037e58((unsigned int *)(s + 4));
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((struct SurfaceInfo *)(s + 4), &v);
+    player->mFloorClass = func_02037e58((unsigned int *)&((dBgPi *)s)->surface.clps);
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&((dBgPi *)s)->surface, &v);
     player->mFloorNormalX = v.x;
     player->mFloorNormalY = v.y;
     player->mFloorNormalZ = v.z;
@@ -3581,7 +3592,7 @@ int Player::func_ov002_020c25a8(int arg1)
     }
 
     _ZNK11SurfaceInfo12CopyNormalToER7Vector3(
-        (char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mMeshClsn) + 4, &wn);
+        &((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(&mMeshClsn))->surface, &wn);
     mWallNormalX = wn.x;
     mWallNormalY = wn.y;
     mWallNormalZ = wn.z;
@@ -3630,7 +3641,7 @@ void Player::func_ov002_020c29d4()
     } else if (flags & 0x80) {
         if (mMeshClsn.IsOnGround()) {
             int r = func_02037e38(
-                (unsigned int *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn) + 4));
+                (unsigned int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps);
             if (r >= 6 && r <= 9) return;
             mQuicksandRunFlags = 0;
             mQuicksandRunTimer = 0;
@@ -3670,7 +3681,7 @@ void Player::func_ov002_020c2b08()
         if (!mMeshClsn.IsOnGround())
             return;
         if (!SurfaceInfo_TestFlag0x20(
-                (int *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn) + 4)))
+                (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps))
             return;
 
         limit = Player_ScaleByCharFactor(c, 0x20000);
@@ -3686,7 +3697,7 @@ void Player::func_ov002_020c2b08()
         if (!mMeshClsn.IsOnGround())
             goto clear_timer;
         if (!SurfaceInfo_TestFlag0x20(
-                (int *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn) + 4)))
+                (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps))
             goto clear_timer;
 
         mIsInShallowWater = 1;
@@ -3750,7 +3761,7 @@ void Player::func_ov002_020c2b08()
     if (!mMeshClsn.IsOnGround())
         return;
     if (SurfaceInfo_TestFlag0x20(
-            (int *)((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn) + 4)) != 0)
+            (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps) != 0)
         return;
     if (mIsInShallowWater != 0)
         return;
@@ -9471,7 +9482,7 @@ int Player::St_Shell_Main()
     if (_ZNK10dBgCh_Actr8IsOnWallEv((void*)((char*)&mMeshClsn))) {
         int ang = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
-            if (func_02037e58((u32*)((char*)_ZNK10dBgCh_Actr13GetWallResultEv((void*)((char*)&mMeshClsn)) + 4)) != 1) {
+            if (func_02037e58((u32*)&((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv((void*)((char*)&mMeshClsn)))->surface.clps) != 1) {
                 flag = 1;
             }
         }
@@ -10255,7 +10266,7 @@ int Player::St_Swim_Main()
     }
 
     if (mPrevVertSpeed == 0 && mMeshClsn.IsOnGround() != 0) {
-        fr = (int*)func_02037dc4((char*)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn) + 4);
+        fr = (int*)func_02037dc4(&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface);
         ang = fr[1];
         if (ang < 0x720 && ang > 0x400 && mPosY >= mWaterSurfaceY - 0xc8000) {
             int at;
