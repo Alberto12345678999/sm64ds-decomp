@@ -15,8 +15,10 @@ typedef struct MbParentFile {
     u8  mHeader[0x59c];   /* 0x000 -- download info; func_020662c0 sends 0xe4 of
                              it, func_02067530 reads three 16-byte segment rows
                              at +0xc */
-    u8  mBlockTable[0x14];/* 0x59c -- 3 segment addresses, 3 head block numbers,
-                             block count (func_02067530) */
+    u8  mBlockTable[0x14];/* 0x59c -- NitroSDK MB_BlockInfoTable: 3 segment
+                             byte offsets (running sums of the segment sizes),
+                             3 head block numbers, block count; built by
+                             func_02067604, read by func_02067530 */
     u8 *mGameRegistry;    /* 0x5b0 -- the NitroSDK MBGameRegistry the file was
                              registered with: func_02067928 stores its first
                              argument here (and refuses it twice) and builds
@@ -62,7 +64,12 @@ typedef char MbChildRequest_size_must_be_0x20[sizeof(MbChildRequest) == 0x20 ? 1
 #endif
 
 typedef struct MbParentWork {
-    u8 pad_0000[0x1340];
+    u8 pad_0000[0x1318];
+    /* 0x1318 -- bytes of a file carried per block: func_02068ae8 sets it to
+     * the MP parent size less 6; func_02067604 divides each segment by it
+     * and func_02067530 turns a block number back into an offset with it */
+    u32 mBlockSize;
+    u8 pad_131c[0x1340 - 0x131c];
     /* 0x1340 -- per child (AID - 1): the user record from its entry request,
      * AID in the high nibble of byte 0 (func_0206655c); func_02066a94 hands
      * the table to func_0206853c */
