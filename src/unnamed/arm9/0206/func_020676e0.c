@@ -33,8 +33,7 @@ typedef struct RomHeaderView {
  * reaches past 0x02300000) or in ARM7 WRAM 0x037f8000..0x0380f000 (always
  * staged); 2 is the 0x160-byte ROM header at 0x027ffe00. A segment the child
  * cannot load is fatal. */
-void func_020676e0(unsigned *rom, unsigned *seg_type, unsigned *row, unsigned *recvCursor)
-{
+void func_020676e0(unsigned *rom, unsigned *seg_type, unsigned *row, unsigned *recvCursor) {
     RomHeaderView *mrh = (RomHeaderView *)rom;
     MbSegmentInfo *seg_info = (MbSegmentInfo *)row;
     unsigned mode = *seg_type;

@@ -35,8 +35,7 @@ static inline int IsBusy(FSArchive *p_arc) {
 /* NitroSDK FSi_ReadTable(p, dst, len): mark the archive IS_SYNC and read len
  * bytes at p->pos through table_func. SUCCESS / FAILURE (0, 1) clear the
  * mark; PROC_ASYNC (6) sleeps on sync_q until it clears. Then advance pos. */
-extern "C" void func_0205c528(FSiSyncReadParam *p, int dst, int len)
-{
+extern "C" void func_0205c528(FSiSyncReadParam *p, int dst, int len) {
     FSArchive *arc = p->arc;
     arc->flag |= 0x200;
     int res = arc->table_func(arc, dst, p->pos, len);

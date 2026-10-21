@@ -15,16 +15,14 @@ struct ColorRamp
  * SPLResourceHeader). 0x12 is the particle's base colour: the ramp runs
  * startColor -> color -> endColor, and func_0204c584 spawns a particle with
  * it (its `tex` there; the ramp is its `texAnim` view). */
-struct PtclData
-{
+struct PtclData {
     char pad0[0x12];
     u16 color; /* 0x12 */
 };
 
 /* The particle definition (func_0204a730's PtclDef; SPL's SPLResource), whose
  * colorAnim slot registers this function as a particle callback. */
-struct PtclDef
-{
+struct PtclDef {
     struct PtclData *data;       /* 0x00 */
     void *scaleAnim;             /* 0x04 */
     struct ColorRamp *colorAnim; /* 0x08 */
@@ -38,8 +36,7 @@ struct Particle
 
 /* age is the particle's animation time, 0..255 (func_0204a730 passes its
  * life rate, or its loop time when the ramp loops). */
-void func_0204d294(struct Particle *ptcl, struct PtclDef *data, int age)
-{
+void func_0204d294(struct Particle *ptcl, struct PtclDef *data, int age) {
     struct PtclData *header = data->data;
     struct ColorRamp *ramp = data->colorAnim;
     u8 stop1 = ramp->stop1;

@@ -11,13 +11,13 @@ typedef struct SNDSharedPlayer {
 } SNDSharedPlayer;
 
 typedef struct SNDSharedWork {
-    u32 finishCommandTag;      /* 0x000 */
-    u32 playerStatus;          /* 0x004 */
-    u16 channelStatus;         /* 0x008 */
-    u16 captureStatus;         /* 0x00a */
-    u32 padding[5];            /* 0x00c */
+    u32 finishCommandTag;       /* 0x000 */
+    u32 playerStatus;           /* 0x004 */
+    u16 channelStatus;          /* 0x008 */
+    u16 captureStatus;          /* 0x00a */
+    u32 padding[5];             /* 0x00c */
     SNDSharedPlayer player[16]; /* 0x020 */
-    s16 globalVariable[16];    /* 0x260 */
+    s16 globalVariable[16];     /* 0x260 */
 } SNDSharedWork;
 
 /* NitroSDK SNDi_InitSharedWork(work): clear the status words and tick

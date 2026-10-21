@@ -9,10 +9,10 @@ extern int WM_SendCommand(short a0, unsigned short count);
 /* NitroSDK WMScanParam, WM_StartScan's argument (same names as
  * func_020690b0's WmScanParam, which passes data_020a9dc0 here). */
 struct WmScanParam {
-    void *scanBuf;                /* 0x0 */
-    unsigned short channel;       /* 0x4 -- 1..14 */
+    void *scanBuf;                 /* 0x0 */
+    unsigned short channel;        /* 0x4 -- 1..14 */
     unsigned short maxChannelTime; /* 0x6 */
-    unsigned short bssid[3];      /* 0x8: SDK u8[6] */
+    unsigned short bssid[3];       /* 0x8: SDK u8[6] */
 };
 
 /* NitroSDK WMStartScanReq: the request WM_StartScan writes for ARM7. */
@@ -45,7 +45,8 @@ int func_02061ee4(int a, char *b) {
     rc = WM_CheckStateEx(3, 2, 3, 5);
     if (rc != 0) return rc;
     if (b == 0) return 6;
-    if (param->scanBuf == 0) return 6;
+    if (param->scanBuf == 0)
+        return 6;
     h = param->channel;
     if (h < 1 || h > 0xe) return 6;
     _ZN4CP1514FlushDataCacheEjj((unsigned int)b, 0x20);

@@ -59,8 +59,7 @@ typedef struct WMArm9Buf {
  * (aid 0) primes the four sets, registers its port receive callback
  * (func_02062bdc) and sends the first set (two in double mode); a child
  * registers func_02062aa4 and waits. */
-int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleMode)
-{
+int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleMode) {
     WMDataSharingInfo *dsInfo = (WMDataSharingInfo *)self;
     u16 childMask = 1;
     WMArm9Buf *sys;
@@ -143,13 +142,8 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
             int cr;
 
             dsInfo->writeIndex = (dsInfo->writeIndex + 1) % 4;
-            cr = func_020623ec(
-                func_02062d10,
-                (int)cur,
-                dsInfo->dataSetLength,
-                (u16)(dsInfo->aidBitmap & childMask),
-                dsInfo->port,
-                1);
+            cr = func_020623ec(func_02062d10, (int)cur, dsInfo->dataSetLength,
+                               (u16)(dsInfo->aidBitmap & childMask), dsInfo->port, 1);
 
             if (cr == 7) {
                 dsInfo->seqNum[n] = 0xffff;

@@ -15,8 +15,7 @@ typedef struct WMArm9Buf {
 /* NitroSDK WM_SetPortCallback(port, callback, arg): unless WM is not
  * initialised (func_0206152c's error), store the port's receive callback
  * and its argument with interrupts off. */
-int func_02061c88(int port, int callback, int arg)
-{
+int func_02061c88(int port, int callback, int arg) {
     int token = _ZN3IRQ7DisableEv();
     int r = func_0206152c();
     if (r != 0) {

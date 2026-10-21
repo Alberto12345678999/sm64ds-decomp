@@ -18,7 +18,7 @@ typedef struct FSArchive {
  * not suspended. */
 int func_0205c7e4(char* self)
 {
-    FSArchive* p_arc = (FSArchive*)self;
+    FSArchive *p_arc = (FSArchive *)self;
     void* r = 0;
     unsigned int saved;
     enum Bool bit;

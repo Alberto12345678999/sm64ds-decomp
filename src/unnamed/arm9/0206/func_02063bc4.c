@@ -41,7 +41,8 @@ int func_02063bc4(void *base, int idx, int r8) {
                     if (r == 0) {
                         r6 = func_02064d6c(r8, r7, e->cmd_counter, e->block_id, e->seq_no, 0, 0);
                     } else {
-                        r6 = func_02064d6c(r8, r7, e->cmd_counter, e->block_id, v, r, func_02065bc0());
+                        r6 = func_02064d6c(r8, r7, e->cmd_counter, e->block_id, v, r,
+                                           func_02065bc0());
                     }
                 } else if (node->block_type == 1) {
                     sys->u.prepare_send_data.block_id = e->block_id;
@@ -50,7 +51,11 @@ int func_02063bc4(void *base, int idx, int r8) {
                     sys->u.prepare_send_data.data_ptr = 0;
                     func_02064554(base, 0xd, idx, 0);
                     if (sys->u.prepare_send_data.data_ptr != 0) {
-                        r6 = func_02064d6c(r8, r7, e->cmd_counter, sys->u.prepare_send_data.block_id, sys->u.prepare_send_data.block_seq_no, (int)sys->u.prepare_send_data.data_ptr, sys->u.prepare_send_data.own_packet_size);
+                        r6 =
+                            func_02064d6c(r8, r7, e->cmd_counter, sys->u.prepare_send_data.block_id,
+                                          sys->u.prepare_send_data.block_seq_no,
+                                          (int)sys->u.prepare_send_data.data_ptr,
+                                          sys->u.prepare_send_data.own_packet_size);
                     }
                 }
             }
