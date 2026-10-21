@@ -5,12 +5,12 @@
  * (owner/head/next as there). The word at +0x40 has no reader found yet and
  * stays raw on `c`. */
 typedef struct Ov007OamNode {
-    int x;               /* 0x00: Q12 screen x; func_ov007_020c0b78 adds it to the parent's */
-    int y;               /* 0x04: Q12 screen y */
-    int visible;         /* 0x08: func_ov007_020c0b78 draws this node and its children only when set */
-    int flip;            /* 0x0c: the OAM flip mode func_ov007_020c0eb0 applies */
-    int mosaic;          /* 0x10: func_ov007_020c0eb0 sets the OAM mosaic bit when set */
-    unsigned char priority; /* 0x14: OAM priority, used when the caller passes none (> 3) */
+    int x;       /* 0x00: Q12 screen x; func_ov007_020c0b78 adds it to the parent's */
+    int y;       /* 0x04: Q12 screen y */
+    int visible; /* 0x08: func_ov007_020c0b78 draws this node and its children only when set */
+    int flip;    /* 0x0c: the OAM flip mode func_ov007_020c0eb0 applies */
+    int mosaic;  /* 0x10: func_ov007_020c0eb0 sets the OAM mosaic bit when set */
+    unsigned char priority;  /* 0x14: OAM priority, used when the caller passes none (> 3) */
     signed char affineIndex; /* 0x15: OAM affine matrix, -1 = none */
     char pad_16[2];
     void **anims;            /* 0x18: animCount animations (func_ov007_020c11ac) */
@@ -49,7 +49,7 @@ void func_ov007_020c10ec(char* c) {
     n->tick = 0;
     n->changed = 0;
     *(int*)(c + 0x40) = 0;
-    n->next = (Ov007OamNode *)*(int*)(c + 0x40);
+    n->next = (Ov007OamNode *)*(int *)(c + 0x40);
     n->head = n->next;
     n->owner = n->head;
     for (i = 0; i < n->animCount; i++) {

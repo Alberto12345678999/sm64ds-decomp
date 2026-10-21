@@ -1,4 +1,6 @@
-typedef struct { int x, y, z; } Vec3;
+typedef struct {
+    int x, y, z;
+} Vec3;
 
 /* The 0xd0-byte touch picker func_ov007_020c690c allocates and resets here.
  * Names follow func_ov007_020c5a6c, func_ov007_020c5dec and

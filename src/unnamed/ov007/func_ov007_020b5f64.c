@@ -15,7 +15,7 @@ typedef struct Ov007ItemLayout {
  * func_ov007_020b5bf0 and func_ov007_020beeb0, only the slots this file
  * touches. */
 typedef struct Ov007Item {
-    u16 id;                /* 0x00: func_ov007_020b4c04's index */
+    u16 id; /* 0x00: func_ov007_020b4c04's index */
     char pad_02[2];
     Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
     s32 posX;              /* 0x08: Q12 */
@@ -29,12 +29,12 @@ typedef struct Ov007Item {
 typedef struct Ov007ItemView {
     Ov007Item *item; /* 0x00 */
     char pad_04[8];
-    s32 slideT;              /* 0x0c: slideTween output, 0..0x1000 */
-    Ov007Tween *slideTween;  /* 0x10: func_ov007_020c908c, bound to slideT */
-    s16 slideFromX;          /* 0x14 */
-    s16 slideFromY;          /* 0x16 */
-    s16 slideToX;            /* 0x18 */
-    s16 slideToY;            /* 0x1a */
+    s32 slideT;             /* 0x0c: slideTween output, 0..0x1000 */
+    Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c, bound to slideT */
+    s16 slideFromX;         /* 0x14 */
+    s16 slideFromY;         /* 0x16 */
+    s16 slideToX;           /* 0x18 */
+    s16 slideToY;           /* 0x1a */
 } Ov007ItemView;
 
 /* data_ov007_0210342c: the overlay's manager; names as in
@@ -122,8 +122,10 @@ void func_ov007_020b5f64(char *self)
         return;
 
     w = view->slideT;
-    p->posX = (int)(((s64)(0x1000 - w) * ((int)view->slideFromX << 12)
-                          + (s64)w * ((int)view->slideToX << 12)) >> 12);
-    p->posY = (int)(((s64)(0x1000 - w) * ((int)view->slideFromY << 12)
-                            + (s64)w * ((int)view->slideToY << 12)) >> 12);
+    p->posX = (int)(((s64)(0x1000 - w) * ((int)view->slideFromX << 12) +
+                     (s64)w * ((int)view->slideToX << 12)) >>
+                    12);
+    p->posY = (int)(((s64)(0x1000 - w) * ((int)view->slideFromY << 12) +
+                     (s64)w * ((int)view->slideToY << 12)) >>
+                    12);
 }

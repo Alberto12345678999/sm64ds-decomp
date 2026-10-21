@@ -213,7 +213,7 @@ int func_ov007_020b3708(void)
             }
         }
     } else {
-        u8 b = *(u8*)(*(char**)WORK->settings + 9);
+        u8 b = *(u8 *)(*(char **)WORK->settings + 9);
         r4 = (b != 0) ? 0xc : 0xd;
     }
 

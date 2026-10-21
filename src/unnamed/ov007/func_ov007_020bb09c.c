@@ -32,8 +32,8 @@ typedef struct Ov007PickerScene {
     Ov007Picker *picker;       /* 0x00: func_ov007_020c690c */
     Ov007MenuState *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
     char pad_14[0x18];
-    int strokeCount;       /* 0x2c: redo stops at it */
-    int awaitingTap;       /* 0x30 */
+    int strokeCount; /* 0x2c: redo stops at it */
+    int awaitingTap; /* 0x30 */
     char pad_34[8];
     s32 tweenOut[2];       /* 0x3c: bound as tweens[i]->out */
     Ov007Tween *tweens[2]; /* 0x44: func_ov007_020c908c */
@@ -101,8 +101,7 @@ int func_ov007_020bb09c(void)
             r3p->to = ip;
             func_ov007_020bdeb0(0x23);
         }
-    } else if (((r2 & 2) && !(r4->prevKeys & 2)) ||
-               ((r2 & 0x80) && !(r4->prevKeys & 0x80))) {
+    } else if (((r2 & 2) && !(r4->prevKeys & 2)) || ((r2 & 0x80) && !(r4->prevKeys & 0x80))) {
         int r1;
         int ip;
         Ov007Tween *r3p = SCENE->tweens[0];
@@ -182,8 +181,8 @@ int func_ov007_020bb09c(void)
             if (n <= 0) return n;
             {
                 Ov007StrokePath *e = r5->groups[n - 1];
-                int* p14 = &r5->totalPoints;
-                int* p8 = &r5->groupCount;
+                int *p14 = &r5->totalPoints;
+                int *p8 = &r5->groupCount;
                 *p14 = *p14 - e->capacity;
                 *p8 = *p8 - 1;
                 SCENE->states[1]->requestedState = 6;
@@ -194,7 +193,8 @@ int func_ov007_020bb09c(void)
             /* fallthrough to block_66 */
         } else {
             if (!(r1 & 0x10)) return r1 & 0x10;
-            if (r4->prevKeys & 0x10) return r4->prevKeys & 0x10;
+            if (r4->prevKeys & 0x10)
+                return r4->prevKeys & 0x10;
         }
     }
 
@@ -205,8 +205,8 @@ int func_ov007_020bb09c(void)
         if (n >= lim) return lim;
         {
             Ov007StrokePath *e = r5->groups[n];
-            int* p14 = &r5->totalPoints;
-            int* p8 = &r5->groupCount;
+            int *p14 = &r5->totalPoints;
+            int *p8 = &r5->groupCount;
             *p14 = *p14 + e->capacity;
             *p8 = *p8 + 1;
             (*(Ov007PickerScene *volatile *)&data_ov007_02104ba0)->states[1]->requestedState = 7;
