@@ -1,4 +1,5 @@
 #include "types.h"
+#include "private/arm9_wbt.h"
 extern int data_020a94c0;
 extern unsigned int _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(unsigned int);
@@ -10,12 +11,20 @@ extern void func_02065be0(void);
 extern void func_02065ba0(int v);
 extern void func_02065bb0(int v);
 
-void func_020652fc(int a, int b, int c)
+/* NitroSDK WBT_InitParent(send_packet_size, recv_packet_size, callback): once
+ * (data_020a94c0), store 0 through func_02065a84 (a child stores -1), reset
+ * the running and system commands of the WBTWork that func_02065b94 returns,
+ * make callback the system command's callback, forget each peer's last
+ * command counter, queue an empty command (func_02065af0 copies its 0x9c
+ * bytes into queued_cmd), and set the two packet sizes less the 0xe-byte
+ * header (func_02065ba0, func_02065bb0). func_02040c34 passes the file-share
+ * packet sizes and func_020412f0, the file-share parent's callback. */
+void func_020652fc(int send_packet_size, int recv_packet_size, int callback)
 {
     unsigned int saved = _ZN3IRQ7DisableEv();
     int i;
     char *p;
-    int local[0x27];
+    WBTCommand cmd;
 
     if (data_020a94c0 == 1) {
         _ZN3IRQ7RestoreEj(saved);
@@ -25,24 +34,24 @@ void func_020652fc(int a, int b, int c)
     func_02065a84(0);
     func_02065ad0(0);
     p = func_02065b94();
-    *(int *)(p + 0) = 0;
-    *(u16 *)(p + 8) = 0;
-    *(u16 *)(p + 0xa) = 0;
-    *(int *)(p + 0x10) = 0;
-    *(int *)(p + 0x138) = 0;
-    *(u16 *)(p + 0x140) = 0;
-    *(u16 *)(p + 0x142) = 0;
-    *(int *)(p + 0x148) = c;
+    ((WBTWork *)p)->cmd.command = 0;
+    ((WBTWork *)p)->cmd.target_bmp = 0;
+    ((WBTWork *)p)->cmd.peer_bmp = 0;
+    ((WBTWork *)p)->cmd.callback = 0;
+    ((WBTWork *)p)->system_cmd.command = 0;
+    ((WBTWork *)p)->system_cmd.target_bmp = 0;
+    ((WBTWork *)p)->system_cmd.peer_bmp = 0;
+    ((WBTWork *)p)->system_cmd.callback = (void (*)(char *))callback;
     i = 0;
     do {
-        *(u8 *)(p + 0x1d7) = 0;
+        ((WBTWork *)p)->peer[0].last_cmd_counter = 0;
         i++;
-        p += 0x68;
+        p += sizeof(WBTPeerRecord);
     } while (i < 0x10);
-    local[0] = 0;
-    func_02065af0(local);
+    cmd.command = 0;
+    func_02065af0((int *)&cmd);
     func_02065be0();
-    func_02065ba0(a - 0xe);
-    func_02065bb0(b - 0xe);
+    func_02065ba0(send_packet_size - 0xe);
+    func_02065bb0(recv_packet_size - 0xe);
     _ZN3IRQ7RestoreEj(saved);
 }
