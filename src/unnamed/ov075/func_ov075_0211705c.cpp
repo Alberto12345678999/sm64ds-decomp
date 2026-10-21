@@ -1,9 +1,11 @@
+//cpp
+#include "dScEntry_c.h"
 #pragma opt_strength_reduction off
 #include "common.h"
+extern "C" {
 
 extern int func_0203da9c(void);
 extern int TouchArea_Update(void *p, int x);
-extern int func_ov075_02116d9c(void *self, int id);
 extern void func_ov001_020ab41c(void *p);
 extern void func_ov075_02116c38(void *self);
 extern void func_02012790(int a);
@@ -16,18 +18,15 @@ extern void TurnBacklightOff(void);
 extern u16 *_ZN3G2S12GetBG2ScrPtrEv(void);
 extern u16 data_020a0e5a[];
 
-void func_ov075_0211705c(void *thiz)
-{
+void func_ov075_0211705c(void *thiz) {
     unsigned char *s = (unsigned char *)thiz;
     int w = func_0203da9c();
     int dir;
     u16 flags;
 
-    if (TouchArea_Update(s + 0x124, -1) != 0
-        || TouchArea_Update(s + 0x190, -1) != 0
-        || ((flags = data_020a0e5a[w << 1]) & 8) != 0
-        || (flags & 4) != 0
-        || (func_ov075_02116d9c(s, -1) != 0 && s[0x281] == 2)) {
+    if (TouchArea_Update(s + 0x124, -1) != 0 || TouchArea_Update(s + 0x190, -1) != 0 ||
+        ((flags = data_020a0e5a[w << 1]) & 8) != 0 || (flags & 4) != 0 ||
+        (reinterpret_cast<dScEntry_c *>(s)->CheckMenuConfirm(-1) != 0 && s[0x281] == 2)) {
         func_ov001_020ab41c(s + 0x124);
         s[0x281] = 2;
         func_ov075_02116c38(s);
@@ -35,15 +34,14 @@ void func_ov075_0211705c(void *thiz)
     } else {
         dir = 0;
         if (s[0xc9] != 0) {
-            if (TouchArea_Update(s + 0xb8, -1) != 0
-                || TouchArea_Update(s + 0x94, -1) != 0
-                || TouchArea_Update(s + 0x148, -1) != 0) {
+            if (TouchArea_Update(s + 0xb8, -1) != 0 || TouchArea_Update(s + 0x94, -1) != 0 ||
+                TouchArea_Update(s + 0x148, -1) != 0) {
                 s[0x281] = 0;
                 dir = 1;
             } else if (TouchArea_Update(s + 0x70, -1) != 0) {
                 s[0x281] = dir;
                 dir = -1;
-            } else if (func_ov075_02116d9c(s, -1) != 0) {
+            } else if (reinterpret_cast<dScEntry_c *>(s)->CheckMenuConfirm(-1) != 0) {
                 if (s[0x281] == 0)
                     dir = 1;
             }
@@ -72,22 +70,20 @@ void func_ov075_0211705c(void *thiz)
             }
         }
         if (s[0xed] != 0 && s[0x111] != 0) {
-            if ((func_ov075_02116d9c(s, -1) != 0 && s[0x281] == 1)
-                || TouchArea_Update(s + 0x16c, -1) != 0) {
+            if ((reinterpret_cast<dScEntry_c *>(s)->CheckMenuConfirm(-1) != 0 && s[0x281] == 1) ||
+                TouchArea_Update(s + 0x16c, -1) != 0) {
                 dir = 1;
                 s[0x281] = 1;
                 if (s[0xec] == 0)
                     dir = -1;
             }
-            if (TouchArea_Update(s + 0xdc, -1) != 0
-                || (dir < 0 && s[0x281] == 1)) {
+            if (TouchArea_Update(s + 0xdc, -1) != 0 || (dir < 0 && s[0x281] == 1)) {
                 TurnBacklightOn();
                 func_ov001_020ab41c(s + 0xdc);
                 s[0x110] = 0;
                 s[0x281] = 1;
                 func_02012790(0x66);
-            } else if (TouchArea_Update(s + 0x100, -1) != 0
-                       || (dir > 0 && s[0x281] == 1)) {
+            } else if (TouchArea_Update(s + 0x100, -1) != 0 || (dir > 0 && s[0x281] == 1)) {
                 TurnBacklightOff();
                 s[0xec] = 0;
                 func_ov001_020ab41c(s + 0x100);
@@ -128,4 +124,5 @@ void func_ov075_0211705c(void *thiz)
             dir += 0xc0;
         } while (i < 2);
     }
+}
 }

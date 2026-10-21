@@ -6688,3 +6688,4 @@ ov075	0x02118bf8	func_ov075_02118bf8	_ZN10dScEntry_c19LoadCourseResourcesEi	infe
 ov075	0x02118c80	func_ov075_02118c80	_ZN10dScEntry_c17EnterMatchLoadingEv	inferred Entry match-loading/member callback role from PMFs, async callback and caller register contract; original spelling unknown; bytes unchanged
 ov075	0x0211d7b0	data_ov075_0211d7b0	EntryMatchLoadingSteps	inferred Entry match-loading role from initializer/unique consumers; existing storage unchanged
 ov075	0x0211d5bc	data_ov075_0211d5bc	EntryCourseLoadStarted	inferred Entry match-loading role from initializer/unique consumers; existing storage unchanged
+ov075	0x02116d9c	func_ov075_02116d9c	_ZN10dScEntry_c16CheckMenuConfirmEi	inferred Entry menu-confirm input member from scene/slot caller ABI, pressed-key mask and menu actions; returns int and may play rejection sound; original spelling unknown; bytes unchanged

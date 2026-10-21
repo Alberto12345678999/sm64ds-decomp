@@ -142,7 +142,6 @@ void func_02030a78(void);
 void func_02030a6c(void);
 void func_020337ec(void);
 int TouchArea_Update(char *, int);
-int func_ov075_02116d9c(int, int);
 void func_ov001_020ab41c(void *);
 void func_ov001_020ab3f0(void *);
 
@@ -402,7 +401,8 @@ extern "C" void func_ov075_021197e8(char *c) {
     if (*(unsigned char *)(c + 0x282) == 0)
         return;
     if (TouchArea_Update(c + 0x70, -1) != 0 ||
-        (func_ov075_02116d9c((int)c, -1) != 0 && *(unsigned char *)(c + 0x281) == 0)) {
+        (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) != 0 &&
+         *(unsigned char *)(c + 0x281) == 0)) {
         *(unsigned char *)(c + 0xa4) = 0;
         func_ov001_020ab41c(c + 0x70);
         SetNumPlayers(1);
@@ -411,7 +411,7 @@ extern "C" void func_ov075_021197e8(char *c) {
         return;
     }
     if (TouchArea_Update(c + 0x94, -1) == 0) {
-        if (func_ov075_02116d9c((int)c, -1) == 0)
+        if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) == 0)
             return;
         if (*(unsigned char *)(c + 0x281) != 1)
             return;
@@ -514,7 +514,7 @@ extern "C" void func_ov075_02119b34(char *c) {
         return;
     if (r4 < 4) {
         if (TouchArea_Update(c + 0x70, 0) == 0) {
-            if (func_ov075_02116d9c((int)c, 0) == 0)
+            if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(0) == 0)
                 return;
         }
     }
