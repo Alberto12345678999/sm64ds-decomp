@@ -32,10 +32,9 @@
  * - func_ov002_020e9d18 keeps the masked `(((int)&mStarFlags) & ~0ULL)`
  *   halfword stores and the LA label; a plain mBits.answer store loses the
  *   address rematerialization.
- * - func_ov002_020e8398 keeps `c + 0x3fc` for the shadow matrix and the M48
- *   struct copy of IDENTITY_MATRIX4X3.
- * - func_ov002_020e86ec keeps the raw `rc` buffer: a real dBgCh_Gnd local
- *   there adds code.
+ * - func_ov002_020e86ec keeps the raw `rc` buffer and its `rc + 0x14`
+ *   surface: a real dBgCh_Gnd local, or the member spelling of the surface,
+ *   adds code.
  * - Render keeps its gotos, and mStateTimer keeps its (u16) casts.
  * - func_ov002_020e8244 stays a free function; its first parameter is the
  *   output vector, not the star.
@@ -2386,7 +2385,7 @@ void daStar_c::func_ov002_020e88a8() {
         mHorzSpeed = 0xc000;
         mVertSpeed = 0x17000;
     }
-    r = func_02037e38((char *)mWithMeshClsn.GetFloorResult() + 4);
+    r = func_02037e38(&((dBgPi *)mWithMeshClsn.GetFloorResult())->surface);
     if (r == 1 || r == 9) {
         w.x = mSafePosX;
         w.y = mSafePosY;
@@ -2414,7 +2413,7 @@ void daStar_c::func_ov002_020e88a8() {
         mPrevAngleY = Vec3_HorzAngle(&v, &mPos);
         if (mFloorNormalY >= *(short*)(data_02082714 + 0x56)) {
             if (data_0209f2f8 != 0x1d) return;
-            if (func_02037e58((char *)mWithMeshClsn.GetFloorResult() + 4) != 5)
+            if (func_02037e58(&((dBgPi *)mWithMeshClsn.GetFloorResult())->surface) != 5)
                 return;
         }
         {
@@ -2466,6 +2465,8 @@ void daStar_c::func_ov002_020e86ec() {
         v.z = tz;
         ((dBgCh_Gnd *)rc)->SetObjAndPos(*(Vector3 *)&v, this);
         if (((dBgCh_Gnd *)rc)->DetectClsn() != 0) {
+            /* rc + 0x14 is the probe's dBgPi surface; spelling it as
+               &((dBgCh_Gnd *)rc)->surface builds 4 bytes long. */
             if (SurfaceInfo_TestFlag0x20(rc + 0x14) != 0) {
                 mWaterHeight = ((dBgCh_Gnd *)rc)->clsnY;
                 data_0209f32c = mWaterHeight;
@@ -2594,13 +2595,13 @@ void daStar_c::func_ov002_020e8398() {
 
     t = delta + 0x28000;
 
-    *(struct M48*)(c + 0x3fc) = *(struct M48*)&IDENTITY_MATRIX4X3;
+    *(Mtx *)&mShadowMtx = IDENTITY_MATRIX4X3;
 
     mShadowMtx.tx = mPosX >> 3;
     mShadowMtx.ty = mPosY >> 3;
     mShadowMtx.tz = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, (struct dExtShadowModel_c *)&mShadowModel, (struct Matrix4x3 *)(c + 0x3fc), r8, t, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, (struct dExtShadowModel_c *)&mShadowModel, (struct Matrix4x3 *)&mShadowMtx, r8, t, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
