@@ -2,17 +2,19 @@
 /* ModelAnim -- Model + Animation multiple inheritance: the animated-model
    base the scene objects embed. Cartridge class: _ZTV9ModelAnim at
    0x0208e980 plus its Animation-side thunk vtable; the cartridge RTTI
-   names it dExtAnmModel_c (_ZTI14dExtAnmModel_c at 0x0208e924).
-   TU claims 0x02016714..0x0201689c -- the class's method run: Copy,
-   SetAnim, the file-local func_020167a4 helper, Virtual18, Render,
-   Virtual10, UpdateVerts. The lifecycle row (D2, D0, D1, C1, C2 at
-   0x0201689c..0x020169d8) and the two _ZThn80_ destructor thunks stay
-   enrolled shards: defining the key function ~ModelAnim() would emit the
-   whole MI vtable group into this object, and the secondary table's
-   preamble lands inside the primary's compared extent, where RTTI-off
-   zeros cannot license the discard -- the same wall BlendModelAnim
-   recorded. Written back-to-front: mwccarm emits .text in reverse source
-   order under default deferred codegen. */
+   names it dExtAnmModel_c (_ZTI14dExtAnmModel_c at 0x0208e924,
+   base dExtSimpleModel_c at 0x00 and dExtFrameCtrl_c at 0x50).
+   TU claims 0x02016714..0x020169d8: the method run, then D2, D0, D1, C1
+   and C2. The two _ZThn80_ destructor thunks stay in their own block.
+   Defining ~ModelAnim() emits the MI vtable group. Its secondary preamble
+   sits inside _ZTV9ModelAnim's compared extent, so RTTI stays on: the
+   -0x50 word is a literal, and the manifest retargets the coined
+   _ZTI/_ZTS records onto dExtAnmModel_c, dExtSimpleModel_c and
+   dExtModel_c for that compare. The coined type strings are not the
+   cartridge's and are discarded, not linked. Written back-to-front:
+   mwccarm emits .text in reverse source order under default deferred
+   codegen. The constructor and destructor stand above the methods so the
+   lifecycle emits after them, D2 D0 D1 then C1 C2. */
 #include "ModelAnim.h"
 
 extern "C" {
@@ -31,6 +33,22 @@ struct BCA_File {
     u16 unk_00;
     u16 numFrames;
 };
+
+/* One definition emits C1 and C2: Model::C2, dExtFrameCtrl_c::C2 at +0x50,
+   both vptr stores, and file = 0. The cartridge keeps both variants. */
+// @symbol _ZN9ModelAnimC1Ev
+// @symbol _ZN9ModelAnimC2Ev
+ModelAnim::ModelAnim() {
+    file = 0;
+}
+
+/* One definition emits D2, D0 and D1. The body is empty: both vptr restores
+   and the base destructor calls are the compiler's, and D0 finishes with
+   ModelAnim::operator delete. The cartridge keeps all three. */
+// @symbol _ZN9ModelAnimD2Ev
+// @symbol _ZN9ModelAnimD0Ev
+// @symbol _ZN9ModelAnimD1Ev
+ModelAnim::~ModelAnim() {}
 
 // @symbol _ZN9ModelAnim11UpdateVertsEv
 void ModelAnim::UpdateVerts() {

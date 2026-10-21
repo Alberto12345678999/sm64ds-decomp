@@ -520,12 +520,6 @@ int daMip_c::StateReleasedInit()
    branch that runs once all eight glowing rabbits are found. */
 int daMip_c::StateCaughtMain()
 {
-    typedef int s32;
-    typedef short s16;
-    typedef unsigned int u32;
-    typedef unsigned short u16;
-    typedef unsigned char u8;
-    typedef signed char s8;
     /* POD triple. The ::Vector3 casts below are the destructor-bearing type
        ShowMessage and Spawn take by pointer; this local is not that type. */
     typedef struct { s32 x, y, z; } Vector3;

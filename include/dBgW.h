@@ -154,6 +154,11 @@ struct dBgW {
     void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
 };
 
+/* The enabled-collider table: Enable puts a collider in the first free
+   entry and records the index in slotIdx, Disable and
+   dScStage_c::ResetMeshColliders clear entries, and the query TUs walk it. */
+extern "C" dBgW *data_020a0c80[];
+
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char dBgW_size_must_be_0x20[sizeof(dBgW) == 0x20 ? 1 : -1];

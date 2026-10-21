@@ -120,17 +120,17 @@ extern struct P2 data_ov075_0211c8c8;
 extern struct P2 data_ov075_0211c8d0;
 extern struct P2 data_ov075_0211c8d8;
 
-extern struct P6 data_ov075_0211d768;
-extern struct P6 data_ov075_0211d780;
+extern struct P6 EntryPlayerSelectIntroSteps;
+extern struct P6 EntryCourseSelectSteps;
 extern struct P6 data_ov075_0211d798;
-extern struct P6 data_ov075_0211d7b0;
+extern struct P6 EntryMatchLoadingSteps;
 extern struct P6 data_ov075_0211d7c8;
 extern struct P6 data_ov075_0211d7e0;
 extern struct P6 data_ov075_0211d7f8;
 extern struct P6 data_ov075_0211d810;
 extern struct P6 data_ov075_0211d828;
-extern struct P6 data_ov075_0211d840;
-extern struct P6 data_ov075_0211d858;
+extern struct P6 EntryDelaySteps;
+extern struct P6 EntryFadeOutSteps;
 extern struct P6 data_ov075_0211d870;
 extern struct P6 data_ov075_0211d888;
 extern struct P6 data_ov075_0211d8a0;
@@ -237,15 +237,15 @@ void __sinit_ov075_0211bb00(void)
     ta = tmp.a;
     tb = tmp.b;
 
-    data_ov075_0211d840.lo = tmp;
-    data_ov075_0211d840.tail.a = tb ? ta : ta;
-    data_ov075_0211d840.tail.b = tb;
-    data_ov075_0211d840.hi = data_ov075_0211c8d0;
+    EntryDelaySteps.lo = tmp;
+    EntryDelaySteps.tail.a = tb ? ta : ta;
+    EntryDelaySteps.tail.b = tb;
+    EntryDelaySteps.hi = data_ov075_0211c8d0;
 
-    data_ov075_0211d858.tail.a = tb ? ta : ta;
-    data_ov075_0211d858.tail.b = tb;
-    data_ov075_0211d858.lo = data_ov075_0211c700;
-    data_ov075_0211d858.hi = data_ov075_0211c750;
+    EntryFadeOutSteps.tail.a = tb ? ta : ta;
+    EntryFadeOutSteps.tail.b = tb;
+    EntryFadeOutSteps.lo = data_ov075_0211c700;
+    EntryFadeOutSteps.hi = data_ov075_0211c750;
 
     data_ov075_0211d888.lo = data_ov075_0211c850;
     data_ov075_0211d888.hi = data_ov075_0211c828;
@@ -269,19 +269,19 @@ void __sinit_ov075_0211bb00(void)
     data_ov075_0211d918.hi = data_ov075_0211c760;
     data_ov075_0211d918.tail = data_ov075_0211c780;
 
-    data_ov075_0211d768.tail.a = tb ? ta : ta;
-    data_ov075_0211d768.tail.b = tb;
-    data_ov075_0211d768.lo = data_ov075_0211c810;
-    data_ov075_0211d768.hi = data_ov075_0211c7e8;
+    EntryPlayerSelectIntroSteps.tail.a = tb ? ta : ta;
+    EntryPlayerSelectIntroSteps.tail.b = tb;
+    EntryPlayerSelectIntroSteps.lo = data_ov075_0211c810;
+    EntryPlayerSelectIntroSteps.hi = data_ov075_0211c7e8;
 
-    data_ov075_0211d780.lo = data_ov075_0211c768;
-    data_ov075_0211d780.hi = data_ov075_0211c898;
-    data_ov075_0211d780.tail = data_ov075_0211c738;
+    EntryCourseSelectSteps.lo = data_ov075_0211c768;
+    EntryCourseSelectSteps.hi = data_ov075_0211c898;
+    EntryCourseSelectSteps.tail = data_ov075_0211c738;
 
-    data_ov075_0211d7b0.tail.a = tb ? ta : ta;
-    data_ov075_0211d7b0.tail.b = tb;
-    data_ov075_0211d7b0.lo = data_ov075_0211c8a8;
-    data_ov075_0211d7b0.hi = data_ov075_0211c840;
+    EntryMatchLoadingSteps.tail.a = tb ? ta : ta;
+    EntryMatchLoadingSteps.tail.b = tb;
+    EntryMatchLoadingSteps.lo = data_ov075_0211c8a8;
+    EntryMatchLoadingSteps.hi = data_ov075_0211c840;
 
     data_ov075_0211d7c8.lo = tmp;
     data_ov075_0211d7c8.tail.a = tb ? ta : ta;

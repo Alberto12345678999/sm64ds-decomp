@@ -436,7 +436,7 @@ extern "C" void func_ov073_02122730(daObjEwbIce_c *ice, dActor_c *other)
     if (ice->mState != &data_ov073_021234b0)
         return;
     boss->mWaypointCursor = ice->mSpawnIndex;
-    if (ice->mSpawnIndex != boss->unk_4c5)
+    if (ice->mSpawnIndex != boss->mLandedWaypoint)
         return;
     if (ice->mVariant != 0)
         func_ov073_021223a4(ice, &data_ov073_021234c0);

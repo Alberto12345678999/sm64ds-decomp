@@ -4,14 +4,16 @@
  *   same form as d_s_entry.cpp below the hole. Reordering moves the
  *   run.
  * - This is the upper part of dScEntry_c's translation unit. The
- *   lower part is d_s_entry.cpp (0x02115ab8..0x02116128). Between
- *   them sit 69 func_ov075_* helpers (0x02116128..0x0211a210), each
- *   still its own file. No other class's code reaches them. They are
- *   called from InitResources, Behavior or one another, or reached
- *   through the step tables that __sinit_ov075_0211bb00 copies into
- *   .bss. That initializer also builds the graphCallback_c, so it is
- *   this unit's. A delinks entry is one contiguous .text claim, so
- *   the two parts join only once the hole is folded.
+ *   lower part is d_s_entry.cpp (0x02115ab8..0x021165b0). The hole
+ *   that still separates them is 0x021165b0..0x021190a4: 37 functions
+ *   still in separate sources, including course selection and readiness. No other class's
+ *   code reaches them. They are called from InitResources, Behavior
+ *   or one another, or reached through the step tables that
+ *   __sinit_ov075_0211bb00 copies into .bss. That initializer also
+ *   builds the graphCallback_c, so it is this unit's. 37 of those
+ *   helpers remain. A delinks entry is one contiguous .text claim,
+ *   so the two parts join only once that remaining hole is folded.
+ * - The transition helpers use native Step member-pointer copies.
  * - The destructor, the key function, is in d_s_entry.cpp. This file
  *   defines no virtual the class declares first, so it emits no
  *   dScEntry_c vtable or typeinfo.
@@ -25,8 +27,8 @@
  *   Its __cxa_vec_ctor calls take the icon_c and OamAnimation
  *   structors by address, which C++ cannot spell.
  * - The header names the entry object and shared step workspace; older
- *   callbacks still access that storage through offsets. 0x6c..0x70 remains
- *   opaque pending recovery of the transition step-set pointer.
+ *   callbacks still access some of that storage through offsets. The transition
+ *   helpers use the typed pending StepSet pointer at 0x6c.
  * - InitResources keeps its `int isResult = (actorID == 7)' flag locals.
  *   Folding the first one into its condition rewrites the function
  *   (999 words, measured).
@@ -34,12 +36,14 @@
  *   their linker names. Naming belongs with recovered members.
  *
  * dScEntry_c, the course-entry / results scene. ov075 .text
- * 0x0211a210..0x0211a854: the six scene methods, the RESULT factory,
- * then the OamAnimation and icon_c constructors. The ENTRY factory at
- * 0x0211a854 is not in this file. It sits past the constructor tail
- * that closes this run. The code after it is reached from dEntObj_c
- * (d_ent_obj.cpp) and through tables __sinit_ov075_0211c51c reads,
- * not from this class.
+ * 0x021190a4..0x0211a854: the player-select and sync steps, the
+ * waiting-text render, the helpers through SetSteps, the
+ * six scene methods, the RESULT factory, then the OamAnimation and
+ * icon_c constructors. The ENTRY factory at 0x0211a854 is not in
+ * this file. It sits past the constructor tail that closes this
+ * run. The code after it is reached from dEntObj_c (d_ent_obj.cpp)
+ * and through tables __sinit_ov075_0211c51c reads, not from this
+ * class.
  */
 #pragma defer_codegen off
 
@@ -60,7 +64,6 @@ void LoadBGPltt(const void *, unsigned int, unsigned int);
 extern "C" {
 void func_020308b4(void *self);
 void func_020551f0(void *s, int v);
-int func_ov075_02119dc4(void *c, void *arg);
 extern int data_0209fc68;
 
 void Enable3dEngines(void);
@@ -96,6 +99,616 @@ extern s32 data_0208ee44;
 /* The scene manager Behavior polls through its slot 5. */
 extern "C" dFdBrightness_c *data_0209f5bc;
 
+#include "dEntObj_c.h"
+#include "OAM.h"
+#include "OamAttr.h"
+#include "G2x.h"
+
+namespace G2S {
+u32 GetBG2ScrPtr();
+u32 GetBG3ScrPtr();
+}
+
+/* Two-word step copies. The RESULT factory below uses the same layout;
+ * defining it once keeps the later aggregate copies on the struct the
+ * cartridge's factory was matched against. */
+struct P2 {
+    int a, b;
+};
+struct P2Copy {
+    int words[2];
+};
+extern int data_02086b58[];
+
+extern "C" {
+int func_0203d974(void);
+u8 func_02020168(void);
+void func_02020304(void);
+void func_020200e0(void);
+void func_02020334(void);
+void func_02020124(void);
+int func_0203d890(void);
+u32 LoadCompressedFileAt(u16, void *);
+u32 func_02012790(u32);
+int Sound_PlayIfNotActive(int, int, int, int);
+void func_ov075_02116030(void *, int);
+void func_ov075_02116028(int *, int);
+void func_020338b0(int, int, short, int);
+void func_02033464(int, int, int);
+void func_ov075_02115e8c(char *, int, int, short, short);
+void func_02034414(unsigned short);
+void func_02030a38(void);
+void func_02030a78(void);
+void func_02030a6c(void);
+void func_020337ec(void);
+int TouchArea_Update(char *, int);
+void func_ov001_020ab41c(void *);
+void func_ov001_020ab3f0(void *);
+
+
+extern u8 data_0208f274;
+extern OamAttr *data_0208a0f8[];
+extern s16 data_02082214[];
+extern dScEntry_c::StepSet data_ov075_0211d918;
+extern dScEntry_c::StepSet data_ov075_0211d900;
+extern dScEntry_c::StepSet data_ov075_0211d8b8;
+extern OamAttr *data_ov075_0211c968[];
+extern u8 data_0209fc58;
+extern u8 data_0209fc5c[];
+extern u8 data_0209fc5d[];
+extern int data_ov075_0211d920[];
+extern dScEntry_c::StepSet data_ov075_0211d8a0;
+extern dScEntry_c::StepSet data_ov075_0211d8d0;
+
+void _ZN9dEntObj_c19func_ov075_02115134Ev(char *);
+int _ZN9dEntObj_c19func_ov075_02115098Ei(void *, int);
+void _ZN9dEntObj_c19func_ov075_0211505cEv(void *);
+
+/* local extern: OAM.h excludes this Fix12-by-value overload. */
+OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr *, int, int, int, int, int, int);
+
+}
+
+// @symbol _ZN10dScEntry_c23UpdatePlayerSelectIntroEv
+void dScEntry_c::UpdatePlayerSelectIntro() {
+    if (func_0203d974()) {
+        if (!mPlayerSelectReady) {
+            mEntObj->func_ov075_02115134();
+            if (mEntObj->func_ov075_02115098(func_0203da9c()))
+                mPlayerSelectReady = 1;
+        }
+        if (mPlayerSelectReady)
+            mStepPhase = 1;
+    }
+
+    if (func_02020168()) {
+        func_02020304();
+        func_020200e0();
+        ChangeStepsAfterDelay(&EntryCourseSelectSteps, 5);
+        return;
+    }
+
+    if (mStepDelay > 0) {
+        mStepDelay -= data_0208ee44;
+        return;
+    }
+    if (!mStepPhase)
+        return;
+    func_02020334();
+    if (!func_0203d9b4())
+        return;
+    if (!ArePlayersReady())
+        return;
+    func_02020124();
+}
+
+// @symbol _ZN10dScEntry_c22EnterPlayerSelectIntroEv
+void dScEntry_c::EnterPlayerSelectIntro() {
+    int row;
+    int col;
+    u16 *tiles;
+    u32 palette;
+    data_0209d454 &= ~5;
+    if (func_0200f0bc() == 0)
+        LoadCompressedFileAt(0x840a, reinterpret_cast<void *>(G2S::GetBG2ScrPtr()));
+    else
+        LoadCompressedFileAt(0x980c, reinterpret_cast<void *>(G2S::GetBG2ScrPtr()));
+    LoadCompressedFileAt(0x840b, reinterpret_cast<void *>(G2S::GetBG3ScrPtr()));
+
+    // Color the 9-by-10 tile panel for this player's wireless station.
+    tiles = reinterpret_cast<u16 *>(G2S::GetBG2ScrPtr()) + 11 * 32 + 11;
+    palette = (static_cast<u32>(func_0203da9c() + 10) << 28) >> 16;
+    for (row = 0; row < 10; ++row) {
+        for (col = 0; col < 9; ++col)
+            tiles[col] = palette | (tiles[col] & 0xfff);
+        tiles += 32;
+    }
+    data_0209d454 |= 4;
+    mIconCount = 0;
+    mStepDelay = 180;
+    if (func_0203d974()) {
+        mStepPhase = 0;
+        mPlayerSelectReady = 0;
+        mWaiting.syncTicks = 0;
+    } else {
+        mStepPhase = 1;
+    }
+    func_02012790(0x122);
+}
+
+// @symbol _ZN10dScEntry_c16UpdatePlayerSyncEv
+void dScEntry_c::UpdatePlayerSync() {
+    mSoundHandle = Sound_PlayIfNotActive(mSoundHandle, 2, 0x11d, 0);
+
+    switch (mStepPhase) {
+    case 0: {
+        u8 activePlayers = data_0209fc50;
+        int sessionPlayers = func_0203d890();
+        if (activePlayers == sessionPlayers) {
+            func_020308b4((void *)sessionPlayers);
+            ++mStepPhase;
+        } else {
+            ++mWaiting.playerWaitTicks;
+            if (mWaiting.playerWaitTicks >= 900)
+                data_0209fc54 = 1;
+        }
+        break;
+    }
+    case 1:
+        if (func_020308a8())
+            ++mStepPhase;
+        break;
+    case 2: {
+        int hostReady = func_0203d8fc();
+        if (hostReady) {
+            func_020308b4((void *)hostReady);
+            ++mStepPhase;
+        }
+        break;
+    }
+    case 3:
+        if (func_020308a8()) {
+            ChangeStepsWithFade(&EntryPlayerSelectIntroSteps);
+            u8 observedPlayers = data_0208f274;
+            int sessionPlayers = func_0203d890();
+            if (observedPlayers == sessionPlayers) {
+                func_02012790(0x11f);
+                return;
+            }
+        }
+        break;
+    }
+
+    if (mStepPhase < 1)
+        return;
+    ++mWaiting.syncTicks;
+    if (mWaiting.syncTicks >= 2700)
+        data_0209fc54 = 1;
+}
+
+// @symbol _ZN10dScEntry_c15EnterPlayerSyncEv
+void dScEntry_c::EnterPlayerSync() {
+    // Download-play clients and non-host stations install the waiting screen.
+    if (func_0203d974()) {
+        data_0209d454 &= ~5;
+        int screen = LoadFile(0x8409);
+        func_ov075_02116030((void *)&data_ov075_0211d71c, screen);
+        func_020338b0(0x225, 0xb0, 0x1d, -1);
+        data_0209d454 |= 5;
+        mIconCount = 0;
+        mWaiting.wavePhase = 0;
+        mWaiting.waveDelay = 120;
+    }
+    mStepPhase = 0;
+    mWaiting.playerWaitTicks = 0;
+    mWaiting.syncTicks = 0;
+}
+
+// @symbol _ZN10dScEntry_c17RenderWaitingTextEv
+void dScEntry_c::RenderWaitingText() {
+    OamAttr *glyph = data_0208a0f8[func_0200f0bc()];
+
+    if (mWaiting.waveDelay <= 0) {
+        int phase;
+        bool waving;
+
+        phase = mWaiting.wavePhase;
+        waving = false;
+        do {
+            int y;
+            if (phase >= 0 && phase < 0x10000) {
+                waving = true;
+                // The intermediate narrowing preserves the retail ARM shifts.
+                y = (data_02082214[2 * ((u16)(s16)(u16)phase >> 4)] >> 10) + 96;
+            } else {
+                y = 96;
+            }
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(true, glyph, 128, y, -1, -1, 0x1000, 0);
+            if (glyph->attr3 == 0xffff)
+                break;
+            ++glyph;
+            phase -= 0x2000;
+        } while (true);
+
+        mWaiting.wavePhase += 0x800;
+        if (!waving)
+            mWaiting.waveDelay = 120;
+    } else {
+        OAM::RenderSub(glyph, 128, 96);
+        mWaiting.waveDelay -= data_0208ee44;
+        mWaiting.wavePhase = 0;
+    }
+}
+
+// @symbol func_ov075_02119640
+extern "C" void func_ov075_02119640(char *r4) {
+    *(int *)(r4 + 0x278) = Sound_PlayIfNotActive(*(int *)(r4 + 0x278), 2, 0x11d, 0);
+    if (*(unsigned char *)(r4 + 0x282) == 0) {
+        _ZN9dEntObj_c19func_ov075_02115134Ev(*(char **)(r4 + 0x50));
+        *(unsigned char *)(r4 + 0x282) = (unsigned char)_ZN9dEntObj_c19func_ov075_02115098Ei(
+            *(char **)(r4 + 0x50), func_0203da9c());
+    }
+    if (func_0203da3c() != 0)
+        return;
+    LoadTextNarcs();
+    LoadArchive(0);
+    LoadArchive(1);
+    func_02030aa4(1);
+    reinterpret_cast<dScEntry_c *>(r4)->SetSteps(&data_ov075_0211d918);
+}
+
+// @symbol func_ov075_021196d0
+extern "C" void func_ov075_021196d0(char *c) {
+    _ZN9dEntObj_c19func_ov075_02115134Ev(*(char **)(c + 0x50));
+    data_0209d454 &= ~5;
+    func_ov075_02116030((void *)&data_ov075_0211d71c, (int)data_0209b2e8);
+    data_0209b2e8 = 0;
+    func_020338b0(0x225, 0xb0, 0x1d, -1);
+    data_0209d454 |= 5;
+    *(unsigned char *)(c + 0x280) = 0;
+    *(int *)(c + 0x26c) = 0;
+    *(int *)(c + 0x270) = 0x78;
+    func_02012790(0x11e);
+    *(unsigned char *)(c + 0x282) =
+        _ZN9dEntObj_c19func_ov075_02115098Ei(*(char **)(c + 0x50), func_0203da9c());
+}
+
+// @symbol func_ov075_0211977c
+extern "C" void func_ov075_0211977c(char *c) {
+    int r = func_0203da3c();
+    if (r != 0)
+        return;
+    Deallocate(data_0209b2e8);
+    data_0209b2e8 = 0;
+    LoadTextNarcs();
+    LoadArchive(0);
+    LoadArchive(1);
+    reinterpret_cast<dScEntry_c *>(c)->SetSteps(&EntryCourseSelectSteps);
+}
+
+// @symbol func_ov075_021197dc
+extern "C" void func_ov075_021197dc(char *p) {
+    p[640] = 0;
+}
+
+// @symbol func_ov075_021197e8
+extern "C" void func_ov075_021197e8(char *c) {
+    if (*(unsigned char *)(c + 0x282) == 0) {
+        *(unsigned char *)(c + 0x282) =
+            (unsigned char)(_ZN9dEntObj_c19func_ov075_02115098Ei(*(void **)(c + 0x50),
+                                                                 func_0203da9c()) != 0);
+    }
+    if (*(unsigned char *)(c + 0x282) == 0)
+        return;
+    if (TouchArea_Update(c + 0x70, -1) != 0 ||
+        (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) != 0 &&
+         *(unsigned char *)(c + 0x281) == 0)) {
+        *(unsigned char *)(c + 0xa4) = 0;
+        func_ov001_020ab41c(c + 0x70);
+        SetNumPlayers(1);
+        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d900, 0x14);
+        func_02012790(0x118);
+        return;
+    }
+    if (TouchArea_Update(c + 0x94, -1) == 0) {
+        if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) == 0)
+            return;
+        if (*(unsigned char *)(c + 0x281) != 1)
+            return;
+    }
+    *(unsigned char *)(c + 0x80) = 0;
+    func_ov001_020ab41c(c + 0x94);
+    reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8b8, 0x14);
+    _ZN9dEntObj_c19func_ov075_0211505cEv(*(void **)(c + 0x50));
+    func_02012790(0x119);
+}
+
+// @symbol func_ov075_02119918
+extern "C" void func_ov075_02119918(void *thiz) {
+    unsigned char *c = (unsigned char *)thiz;
+
+    data_0209d454 = data_0209d454 & ~1;
+    func_ov075_02116028((int *)&data_ov075_0211d71c, 2);
+    func_02034414(0x11);
+
+    data_0209d454 = data_0209d454 | 5;
+    *(u8 *)(c + 0x281) = 1;
+    func_ov075_02115e8c((char *)(c + 0x70), 8, 0, 0x50, 0xa8);
+    func_ov075_02115e8c((char *)(c + 0x94), 8, 0, 0xb0, 0xa8);
+
+    *(u8 *)(c + 0x280) = 2;
+    func_02030a38();
+    {
+        int r = func_0203da9c();
+        *(u8 *)(c + 0x282) =
+            (u8)(_ZN9dEntObj_c19func_ov075_02115098Ei(*(char **)(c + 0x50), r) != 0);
+    }
+}
+
+struct SinePair {
+    short a, b;
+};
+
+// @symbol func_ov075_021199d8
+extern "C" void func_ov075_021199d8(char *c) {
+    OamAttr *attr;
+
+    attr = data_ov075_0211c968[func_0200f0bc()];
+
+    if (*(int *)(c + 0x270) <= 0) {
+        int ang;
+        int flag;
+        int fallback = 0x1c;
+        int zero = 0;
+        int one = 1;
+        int minus = -1;
+        int fx = 0x1000;
+        int x = 0x80;
+
+        ang = *(int *)(c + 0x26c);
+        flag = 0;
+
+        do {
+            int y;
+
+            if (ang >= 0 && ang < 0x10000) {
+                flag = one;
+                y = (((SinePair *)data_02082214)[(unsigned short)(short)(unsigned short)ang >> 4]
+                         .a >>
+                     0xa) +
+                    fallback;
+            } else {
+                y = fallback;
+            }
+
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(one, attr, x, y, minus, minus, fx, zero);
+
+            if (attr->attr3 == 0xffff)
+                break;
+
+            attr += 1;
+            ang -= 0x2000;
+        } while (1);
+
+        *(int *)(c + 0x26c) += 0x800;
+
+        if (flag == zero)
+            *(int *)(c + 0x270) = 0x78;
+    } else {
+        OAM::RenderSub(attr, 0x80, 0x1c);
+        *(int *)(c + 0x270) -= data_0208ee44;
+        *(int *)(c + 0x26c) = 0;
+    }
+}
+
+// @symbol func_ov075_02119b34
+extern "C" void func_ov075_02119b34(char *c) {
+    int r5 = func_0203da9c();
+    int r4 = data_0209fc50;
+    for (int i = 1; i < 4; i++) {
+        func_02033464((unsigned char)i, (signed char)i, 0);
+    }
+    _ZN9dEntObj_c19func_ov075_02115134Ev(*(char **)(c + 0x50));
+    *(int *)(c + 0x278) = Sound_PlayIfNotActive(*(int *)(c + 0x278), 2, 0x11c, 0);
+    if (data_0209fc5c[r5] == 0)
+        return;
+    if (r4 < 4) {
+        if (TouchArea_Update(c + 0x70, 0) == 0) {
+            if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(0) == 0)
+                return;
+        }
+    }
+    func_ov001_020ab3f0(c + 0x70);
+    if (r4 <= 1) {
+        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8a0, 0x14);
+    } else {
+        func_02030a6c();
+        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8d0, 0x14);
+    }
+    func_02012790(0x117);
+}
+
+// @symbol func_ov075_02119c38
+extern "C" void func_ov075_02119c38(char *c) {
+    data_0209d454 &= ~1;
+    func_ov075_02116028((int *)&data_ov075_0211d71c, 1);
+    func_020337ec();
+    data_0209d454 |= 5;
+    func_ov075_02115e8c(c + 0x70, 0xa, 0, 0x80, 0xa8);
+    *(unsigned char *)(c + 0x280) = 1;
+    *(unsigned char *)(c + 0x282) = 0;
+    *(int *)(c + 0x26c) = 0;
+    *(int *)(c + 0x270) = 0x78;
+}
+
+// @symbol _ZN10dScEntry_c17UpdateStepFadeOutEv
+void dScEntry_c::UpdateStepFadeOut() {
+    ++mFadeTick;
+    if (mFadeTick & 1)
+        return;
+    ++mFadeBrightness;
+    func_020551f0((void *)0x4001050, mFadeBrightness);
+    if (mFadeBrightness < 16)
+        return;
+    mIsFading = 1;
+    SetSteps(mPendingSteps);
+}
+
+// @symbol _ZN10dScEntry_c16EnterStepFadeOutEv
+void dScEntry_c::EnterStepFadeOut() {
+    *(volatile u16 *)0x4000050 = 0;
+    G2x::SetBlendBrightness((volatile u16 *)0x4001050, 0x1d, 0);
+    mFadeBrightness = 0;
+    mFadeTick = 0;
+}
+
+// @symbol _ZN10dScEntry_c15UpdateStepDelayEv
+void dScEntry_c::UpdateStepDelay() {
+    mStepDelay -= data_0208ee44;
+    if (mStepDelay > 0)
+        return;
+    SetSteps(mPendingSteps);
+}
+
+/* recovered: dScEntry_c wireless/VS teardown.
+ *
+ * Clears the two entry flags, folds the three per-slot ready bytes at
+ * data_0209fc5d into a bitmask, then splits on whether the pending scene is
+ * the VS one (6) or not. Both arms fade the top screen to black
+ * (SetBlendBrightness with a negative amount) and hand off through
+ * ChangeStepsAfterDelay or the sound/scene helpers.
+ *
+ * The materialized bool at the split (cmp/moveq/movne/cmp/beq) is the tell
+ * that this TU is C++: in C mode mwccarm folds that away under every spelling.
+ * See notes/mwccarm-codegen.md 6c and 6bg.
+ *
+ * The scene this runs on is dScEntry_c. This view keeps the two steps as
+ * their two words so the copies stay aggregate moves. */
+struct EntryScene {
+    u8 pad_00[0x50];
+    char *mEntObj; /* 0x050 */
+    u8 pad_054[8];
+    struct P2 mBehaviorStep; /* 0x05c */
+    struct P2 mRenderStep;   /* 0x064 */
+    u8 pad_06c[0x214];
+    u8 mIconCount; /* 0x280 */
+    u8 pad_281[6];
+    u8 mExitMask; /* 0x287 */
+};
+
+static inline int IsVsMode() {
+    return data_0209fc68 == 6;
+}
+
+// @symbol func_ov075_02119dc4
+extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
+    volatile struct P2 tmp;
+    u8 mask;
+    u8 *q;
+    int i;
+    u8 st;
+
+    data_0209d454 = data_0209d454 & ~0x11;
+    mask = 0;
+    q = data_0209fc5d;
+    for (i = 1; i < 4; i++) {
+        if (q[0])
+            mask = mask | (1 << i);
+        q++;
+    }
+    st = data_0209fc58;
+    if (IsVsMode()) {
+        func_ov075_02116028((int *)&data_ov075_0211d71c, 5);
+        func_02030a78();
+        {
+            struct P2 *p;
+            int *ref;
+            if ((st & 0x30) != 0 ||
+                ((p = &self->mBehaviorStep), (ref = data_ov075_0211d920),
+                 p->a == ref[0] && (p->b == ref[1] || self->mBehaviorStep.a == 0))) {
+                if (GetOwnerLanguage() == 3)
+                    func_020338b0(0xa5, 0xb0, 0x15, -1);
+                else
+                    func_020338b0(0xc5, 0xb0, 0x15, -1);
+            } else {
+                func_020338b0(0xc5, 0xb0, 0x13, -1);
+            }
+        }
+        tmp.a = data_02086b58[0];
+        tmp.b = data_02086b58[1];
+        self->mBehaviorStep.a = data_02086b58[0];
+        self->mBehaviorStep.b = data_02086b58[1];
+        data_0209d45c = data_0209d45c & ~self->mExitMask;
+        if (self->mExitMask) {
+            int t0 = tmp.a;
+            int t1 = tmp.b;
+            self->mRenderStep.a = t0;
+            self->mRenderStep.b = t1;
+        }
+        G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
+        *(volatile u16 *)0x4001050 = 0;
+        Sound::StopLoadedMusic_Layer1(4);
+        func_02012790(0x123);
+        self->mEntObj[0xf44] = 1;
+    } else {
+        func_ov075_02116028((int *)&data_ov075_0211d71c, 6);
+        if ((func_0203d974() && data_0209fc5c[0] == 0) || (func_0203d9b4() && mask == 0)) {
+            if (func_0203d974())
+                func_020338b0(0x125, 0xb0, 0x1b, 0);
+            else
+                func_020338b0(0x125, 0xb0, 0x1a, -1);
+            func_02030a78();
+            reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
+                reinterpret_cast<const dScEntry_c::StepSet *>(&data_ov075_0211d930), 0xb4);
+            data_0209d45c = data_0209d45c & ~self->mExitMask;
+            if (self->mExitMask)
+                *(struct P2Copy *)&self->mRenderStep = *(struct P2Copy *)data_02086b58;
+            G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
+            func_02012790(0x12a);
+        } else {
+            for (i = 0; i < 4; i++) {
+                int bit = 1 << i;
+                if (st & bit) {
+                    func_020338b0(0x125, 0xb0, 0x1c, (s8)(u8)i);
+                    data_0209fc58 = data_0209fc58 & ~bit;
+                    reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
+                        reinterpret_cast<const dScEntry_c::StepSet *>(arg), 0x78);
+                    func_02012790(0x12a);
+                    break;
+                }
+            }
+        }
+    }
+    data_0209d454 = data_0209d454 | 5;
+    self->mIconCount = 0;
+}
+
+// @symbol _ZN10dScEntry_c19ChangeStepsWithFadeEPKNS_7StepSetE
+void dScEntry_c::ChangeStepsWithFade(const StepSet *steps) {
+    mPendingSteps = steps;
+    Step render = mRenderStep;
+    SetSteps(&EntryFadeOutSteps);
+    mRenderStep = render;
+}
+
+// @symbol _ZN10dScEntry_c21ChangeStepsAfterDelayEPKNS_7StepSetEi
+void dScEntry_c::ChangeStepsAfterDelay(const StepSet *steps, s32 delay) {
+    mPendingSteps = steps;
+    mStepDelay = delay;
+    Step render = mRenderStep;
+    SetSteps(&EntryDelaySteps);
+    mRenderStep = render;
+}
+
+// @symbol _ZN10dScEntry_c8SetStepsEPKNS_7StepSetE
+void dScEntry_c::SetSteps(const StepSet *steps) {
+    mEnterStep = steps->enter;
+    mBehaviorStep = steps->behavior;
+    mRenderStep = steps->render;
+    if (mEnterStep != 0)
+        (this->*mEnterStep)();
+}
+
 /* Slot 3. Releases the level-entry scratch buffer, unregisters the
  * graph callback, drops the voice group and clears the shared
  * model-data array. */
@@ -125,7 +738,7 @@ s32 dScEntry_c::Render() {
     return 1;
 }
 
-/* Slot 6. Runs the sub-screen fade-out if one is in flight, then the
+/* Slot 6. Restores the sub-screen brightness after a step change, then the
  * per-frame step, then every live icon. */
 // @symbol _ZN10dScEntry_c8BehaviorEv
 s32 dScEntry_c::Behavior() {
@@ -148,7 +761,7 @@ s32 dScEntry_c::Behavior() {
     if (data_0209fc68 != 0) {
         int t = (data_0209fc68 == 6);
         if (t != 0)
-            func_ov075_02119dc4(this, &data_ov075_0211d930);
+            func_ov075_02119dc4((EntryScene *)this, (int)&data_ov075_0211d930);
     }
 
     if (mBehaviorStep != 0)
@@ -286,15 +899,8 @@ extern void *_ZN7fBase_cC2Ev(void *);
 extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
                            void (*ctor)(void *), void (*dtor)(void *));
 
-struct P2 {
-    int a, b;
-};
-struct P2Copy {
-    int words[2];
-};
 extern char data_0208e4b8[];
 extern char _ZTV10dScEntry_c[];
-extern struct P2 data_02086b58;
 extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cD1Ev(dScEntry_c::icon_c *object);
 extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cC1Ev(dScEntry_c::icon_c *object);
 extern OamAnimation *_ZN12OamAnimationD1Ev(OamAnimation *object);

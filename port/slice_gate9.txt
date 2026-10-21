@@ -10,12 +10,10 @@ src/game/actors/d_a_obj_yajirusi.cpp
 # UpdateClsnPosAndRot, UpdateModelPosAndRotY and IsClsnInRangeOnScreen
 # this slice used to name separately all live in it.
 src/runtime/actor/d_bg_actor.cpp
-# dActor_c is one production translation unit; SetRanges and ClosestPlayer
-# this slice used to name separately all live in it. The constructor keeps
-# its own files: the ROM's C1/C2 variant pair brackets Vector3s' vague-linkage
-# D1, so one member definition cannot tile the run.
+# dActor_c is one production translation unit; SetRanges, ClosestPlayer,
+# the destructor triple and both constructors live in it. Vector3s::~Vector3s
+# is the four-byte vague-linkage body the constructor emits between C1 and C2.
 src/runtime/actor/d_actor.cpp
-src/_ZN8dActor_cC2Ev.cpp
 # SceneNode's constructor and Reset now share their production translation unit.
 src/runtime/actor/ActorBase_SceneNode.cpp
 # fBase_c is one production translation unit; operator new, the framework
@@ -33,7 +31,9 @@ src/engine/collision/d_bg_w_kc_mbg.cpp
 # Enable/Disable/IsEnabled, the slot-registry helpers and the func_020393*
 # accessors this slice used to name separately all live in it.
 src/engine/collision/d_bg_w.cpp
-src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp
+# ModelBase::SetFile lives in src/engine/model/Model.cpp, which slice 4b
+# already compiles; smoke_actor links that slice, so listing it again
+# would define the class twice.
 src/InvMat4x3.c
 # cstd is one production translation unit; the func_02053200 helper this slice
 # used to name separately lives in it with the rest of the namespace.

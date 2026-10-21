@@ -1,0 +1,27 @@
+//cpp
+#pragma RTTI off
+#include "ModelAnim.h"
+#include "BlendModelAnim.h"
+#include "ModelAnim2.h"
+
+/* The six _ZThn80_ destructor thunks are one run, 0x02017168..0x020171c8,
+ * immediately after ModelBase's constructor. Each is the adjustor from the
+ * dExtFrameCtrl_c base at +0x50 back to the complete object. They are not
+ * contiguous with the class translation units, so those files discard their
+ * own copies and this file is the enrolled home.
+ *
+ * Defining the three destructors is what emits the thunks. RTTI is off: the
+ * cartridge type names are the dExt* spellings, and this file does not own
+ * the vtables. The destructor bodies are duplicates of the lifecycle homes
+ * below 0x020169d8. */
+
+extern "C" void func_0203cbc0(void *ptr);
+
+ModelAnim::~ModelAnim() {}
+
+BlendModelAnim::~BlendModelAnim() {
+    if (mBlendBuffer)
+        func_0203cbc0(mBlendBuffer);
+}
+
+ModelAnim2::~ModelAnim2() {}

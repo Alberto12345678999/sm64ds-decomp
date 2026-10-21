@@ -18,7 +18,9 @@ struct FallingPetal {
     Vector3 mAxis;   /* 0x24 -- the petal's up axis, tipped toward its motion */
     s32 mRot[4];     /* 0x30 -- a quaternion */
     s32 mActive;     /* 0x40 */
-    u8 mModel[0x50]; /* 0x44 -- a Model */
+    u8 mModel[0x1c]; /* 0x44 -- a Model, running to 0x94 */
+    u8 mMatrix[0x30]; /* 0x60 -- mModel's Matrix4x3 (Model +0x1c), set by UpdateMatrix */
+    u8 pad_90[0x4];   /* 0x90 -- the rest of mModel */
     s16 mLife;       /* 0x94 -- frames left; 0 clears mActive */
     u8 pad_96[0x2];  /* 0x96 */
 };
@@ -31,7 +33,14 @@ struct FlowerFaceFile {
 struct FlowerFace {
     s32 mState[2];             /* 0x000 -- the current state's member-pointer record */
     FallingPetal mPetals[22];  /* 0x008 */
-    u8 mModel[0x64];           /* 0xd18 -- a ModelAnim */
+    u8 mModel[0x1c];           /* 0xd18 -- a ModelAnim, running to 0xd7c */
+    u8 mMatrix[0x30];          /* 0xd34 -- mModel's Matrix4x3 (Model +0x1c), set by Draw */
+    u8 pad_d64[0x4];           /* 0xd64 -- the rest of mModel's Model */
+    /* mModel's dExtFrameCtrl_c (ModelAnim +0x50): vptr, frame count, current
+       frame, speed. Update advances it, StatePick tests it and
+       PlayPetalPulled rewinds [2]. */
+    s32 mFrame[4];             /* 0xd68 */
+    u8 pad_d78[0x4];           /* 0xd78 -- mModel's BCA file (ModelAnim +0x60) */
     FlowerFaceFile mModelFile; /* 0xd7c -- yoshi_model.bmd */
     FlowerFaceFile mPetalFile; /* 0xd84 -- f_parts.bmd */
     FlowerFaceFile mWaitAnim;  /* 0xd8c -- yoshi_wait.bca */

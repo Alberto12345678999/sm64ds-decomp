@@ -63,19 +63,19 @@ src/unnamed/ov075/func_ov075_021165b0.c:
     complete
     .text start:0x021165b0 end:0x02116818
 
-src/unnamed/ov075/func_ov075_02116818.c:
+src/unnamed/ov075/func_ov075_02116818.cpp:
     complete
     .text start:0x02116818 end:0x02116ad4
 
-src/unnamed/ov075/func_ov075_02116ad4.c:
+src/unnamed/ov075/func_ov075_02116ad4.cpp:
     complete
     .text start:0x02116ad4 end:0x02116c38
 
-src/unnamed/ov075/func_ov075_02116c38.c:
+src/unnamed/ov075/func_ov075_02116c38.cpp:
     complete
     .text start:0x02116c38 end:0x02116c8c
 
-src/unnamed/ov075/func_ov075_02116c8c.c:
+src/_ZN10dScEntry_c10StartMatchEv.cpp:
     complete
     .text start:0x02116c8c end:0x02116ce4
 
@@ -83,11 +83,11 @@ src/unnamed/ov075/func_ov075_02116ce4.c:
     complete
     .text start:0x02116ce4 end:0x02116d40
 
-src/unnamed/ov075/func_ov075_02116d40.c:
+src/_ZN10dScEntry_c15ArePlayersReadyEv.cpp:
     complete
     .text start:0x02116d40 end:0x02116d9c
 
-src/unnamed/ov075/func_ov075_02116d9c.c:
+src/_ZN10dScEntry_c16CheckMenuConfirmEi.cpp:
     complete
     .text start:0x02116d9c end:0x02116e00
 
@@ -95,7 +95,7 @@ src/unnamed/ov075/func_ov075_02116e00.c:
     complete
     .text start:0x02116e00 end:0x02116e44
 
-src/unnamed/ov075/func_ov075_02116e44.c:
+src/unnamed/ov075/func_ov075_02116e44.cpp:
     complete
     .text start:0x02116e44 end:0x02116ebc
 
@@ -107,7 +107,7 @@ src/unnamed/ov075/func_ov075_02116f40.cpp:
     complete
     .text start:0x02116f40 end:0x0211705c
 
-src/unnamed/ov075/func_ov075_0211705c.c:
+src/unnamed/ov075/func_ov075_0211705c.cpp:
     complete
     .text start:0x0211705c end:0x021173a8
 
@@ -119,7 +119,7 @@ src/unnamed/ov075/func_ov075_02117590.cpp:
     complete
     .text start:0x02117590 end:0x0211763c
 
-src/unnamed/ov075/func_ov075_0211763c.c:
+src/unnamed/ov075/func_ov075_0211763c.cpp:
     complete
     .text start:0x0211763c end:0x02117918
 
@@ -139,7 +139,7 @@ src/unnamed/ov075/func_ov075_02117bc4.c:
     complete
     .text start:0x02117bc4 end:0x02117c0c
 
-src/unnamed/ov075/func_ov075_02117c0c.c:
+src/unnamed/ov075/func_ov075_02117c0c.cpp:
     complete
     .text start:0x02117c0c end:0x02117d80
 
@@ -159,7 +159,7 @@ src/unnamed/ov075/func_ov075_02117fe4.c:
     complete
     .text start:0x02117fe4 end:0x02118248
 
-src/unnamed/ov075/func_ov075_02118248.c:
+src/unnamed/ov075/func_ov075_02118248.cpp:
     complete
     .text start:0x02118248 end:0x02118378
 
@@ -171,7 +171,7 @@ src/unnamed/ov075/func_ov075_021184b0.cpp:
     complete
     .text start:0x021184b0 end:0x0211867c
 
-src/unnamed/ov075/func_ov075_0211867c.c:
+src/unnamed/ov075/func_ov075_0211867c.cpp:
     complete
     .text start:0x0211867c end:0x021188b4
 
@@ -183,117 +183,33 @@ src/unnamed/ov075/func_ov075_02118a78.c:
     complete
     .text start:0x02118a78 end:0x02118a84
 
-src/unnamed/ov075/func_ov075_02118a84.c:
+src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp:
     complete
     .text start:0x02118a84 end:0x02118bf8
 
-src/unnamed/ov075/func_ov075_02118bf8.c:
+src/_ZN10dScEntry_c19LoadCourseResourcesEi.cpp:
     complete
     .text start:0x02118bf8 end:0x02118c80
 
-src/unnamed/ov075/func_ov075_02118c80.cpp:
+src/_ZN10dScEntry_c17EnterMatchLoadingEv.cpp:
     complete
     .text start:0x02118c80 end:0x02118cd0
 
-src/unnamed/ov075/func_ov075_02118cd0.c:
+src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp:
     complete
     .text start:0x02118cd0 end:0x02118d1c
 
-src/unnamed/ov075/func_ov075_02118d1c.c:
+src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp:
     complete
     .text start:0x02118d1c end:0x02118f38
 
-src/unnamed/ov075/func_ov075_02118f38.c:
+src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp:
     complete
     .text start:0x02118f38 end:0x021190a4
 
-src/_ZN10dScEntry_c23UpdatePlayerSelectIntroEv.cpp:
-    complete
-    .text start:0x021190a4 end:0x0211919c
-
-src/_ZN10dScEntry_c22EnterPlayerSelectIntroEv.cpp:
-    complete
-    .text start:0x0211919c end:0x021192bc
-
-src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp:
-    complete
-    .text start:0x021192bc end:0x0211944c
-
-src/_ZN10dScEntry_c15EnterPlayerSyncEv.cpp:
-    complete
-    .text start:0x0211944c end:0x021194e4
-
-src/_ZN10dScEntry_c17RenderWaitingTextEv.cpp:
-    complete
-    .text start:0x021194e4 end:0x02119640
-
-src/unnamed/ov075/func_ov075_02119640.c:
-    complete
-    .text start:0x02119640 end:0x021196d0
-
-src/unnamed/ov075/func_ov075_021196d0.c:
-    complete
-    .text start:0x021196d0 end:0x0211977c
-
-src/unnamed/ov075/func_ov075_0211977c.c:
-    complete
-    .text start:0x0211977c end:0x021197dc
-
-src/unnamed/ov075/func_ov075_021197dc.c:
-    complete
-    .text start:0x021197dc end:0x021197e8
-
-src/unnamed/ov075/func_ov075_021197e8.c:
-    complete
-    .text start:0x021197e8 end:0x02119918
-
-src/unnamed/ov075/func_ov075_02119918.c:
-    complete
-    .text start:0x02119918 end:0x021199d8
-
-src/unnamed/ov075/func_ov075_021199d8.cpp:
-    complete
-    .text start:0x021199d8 end:0x02119b34
-
-src/unnamed/ov075/func_ov075_02119b34.c:
-    complete
-    .text start:0x02119b34 end:0x02119c38
-
-src/unnamed/ov075/func_ov075_02119c38.c:
-    complete
-    .text start:0x02119c38 end:0x02119cc0
-
-src/unnamed/ov075/func_ov075_02119cc0.c:
-    complete
-    .text start:0x02119cc0 end:0x02119d3c
-
-src/unnamed/ov075/func_ov075_02119d3c.c:
-    complete
-    .text start:0x02119d3c end:0x02119d78
-
-src/unnamed/ov075/func_ov075_02119d78.c:
-    complete
-    .text start:0x02119d78 end:0x02119dc4
-
-src/unnamed/ov075/func_ov075_02119dc4.cpp:
-    complete
-    .text start:0x02119dc4 end:0x0211a100
-
-src/unnamed/ov075/func_ov075_0211a100.c:
-    complete
-    .text start:0x0211a100 end:0x0211a148
-
-src/unnamed/ov075/func_ov075_0211a148.c:
-    complete
-    .text start:0x0211a148 end:0x0211a194
-
-src/unnamed/ov075/func_ov075_0211a194.cpp:
-    complete
-    .text start:0x0211a194 end:0x0211a210
-
 src/game/stages/d_s_entry_methods.cpp:
     complete
-    .text start:0x0211a210 end:0x0211a854
+    .text start:0x021190a4 end:0x0211a854
 
 src/game/stages/d_s_entry_entry.cpp:
     complete
