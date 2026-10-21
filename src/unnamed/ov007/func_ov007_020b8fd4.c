@@ -103,8 +103,8 @@ void func_ov007_020b8fd4(int param)
         b = SPRITES->sprites[1];
         b->screenY += (-d) << 8;
         break;
-    }
-    func_ov007_020c4388((char *)SPRITES->sprites[1], (int)WORK->cameras[1]);
+      }
+      func_ov007_020c4388((char *)SPRITES->sprites[1], (int)WORK->cameras[1]);
   }
   func_ov007_020c421c((char *)SPRITES->sprites[0]);
   func_ov007_020c421c((char *)SPRITES->sprites[1]);
@@ -128,7 +128,7 @@ void func_ov007_020b8fd4(int param)
       if (flag) {
           f8 = 0;
           f14 = f8;
-    }
+      }
   }
 
   if (sh == 1)
