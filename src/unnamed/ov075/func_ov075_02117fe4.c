@@ -1,8 +1,12 @@
 #include "types.h"
 /* func_ov075_02117fe4 @ 0x02117fe4 (ov075, size 0x264)
- * Per-player two-digit counter dMeter_c: renders tens/ones OAM digits for each
- * player, then every 3 calls toggles a blink flag and refreshes per-player
- * state.
+ * A dScEntry_c step render (its address sits in two of the scene's step
+ * sets, whose other entries are dScEntry_c members); an older banner called
+ * it a dMeter_c counter. Renders each joined player's two-digit count (the
+ * shared base at data_0209ee90+0x1d4 plus that player's data_0209b2ec, mod
+ * 100) as tens/ones OAM digits, then every 3 calls toggles a blink flag and
+ * has func_ov075_02116128 repaint each flagged player's slot border
+ * bright or dim by it.
  */
 extern u8 data_0209fc50;
 extern u8 data_0209b2ec[];
@@ -15,8 +19,21 @@ extern int *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int a, void *attr, int y, in
                                                     int c4, int c5, int c6, int c7);
 extern void func_ov075_02116128(char *c, int idx, int flag);
 
+/* C view of include/dScEntry_c.h's dScEntry_c (a C++ class this C file
+ * cannot include), with the header's names; only the field this file
+ * uses. Here mStepWork[0] counts frames and mStepWork[1] is the blink
+ * flag it toggles every third one. */
+typedef struct dScEntry_c {
+    u8 pad_000[0x268];
+    s32 mStepWork[4]; /* 0x268 */
+    u8 pad_278[0x10];
+} dScEntry_c;
+
+typedef char dScEntry_c_size_must_be_0x288[sizeof(dScEntry_c) == 0x288 ? 1 : -1];
+
 void func_ov075_02117fe4(char *c)
 {
+    dScEntry_c *scene = (dScEntry_c *)c;
     int count = data_0209fc50;
     int d = 4 - count;
     int xbase = d * 16 + 0x30;
@@ -59,12 +76,12 @@ void func_ov075_02117fe4(char *c)
         } while (xoff += stride, ++i < count);
     }
 
-    (*(int *)(int)(c + 0x268))++;
-    if (*(int *)(c + 0x268) < 3)
+    scene->mStepWork[0]++;
+    if (scene->mStepWork[0] < 3)
         return;
 
-    *(int *)(c + 0x268) = 0;
-    *(int *)(int)(c + 0x26c) ^= 1;
+    scene->mStepWork[0] = 0;
+    scene->mStepWork[1] ^= 1;
 
     if (count <= 0)
         return;
@@ -73,7 +90,7 @@ void func_ov075_02117fe4(char *c)
         int j = 0;
         do {
             if (data_0209b2f0[func_02030958(j)] != 0)
-                func_ov075_02116128(c, j, *(int *)(c + 0x26c));
+                func_ov075_02116128(c, j, scene->mStepWork[1]);
             j++;
         } while (j < count);
     }
