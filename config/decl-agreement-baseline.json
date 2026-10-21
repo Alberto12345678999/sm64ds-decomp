@@ -1166,7 +1166,7 @@
       "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void *"
       ],
-      "src/_ZN5Model14LoadAndSetFileEtii.cpp": [
+      "src/engine/model/Model.cpp": [
         "param:#1 unsigned short",
         "return:void *"
       ],
@@ -23577,8 +23577,23 @@
         "param:#1 Ctx *"
       ]
     },
+    "func_02045e70": {
+      "src/engine/model/Model.cpp": [
+        "arity:1"
+      ]
+    },
+    "func_02045ef8": {
+      "src/engine/model/Model.cpp": [
+        "arity:1"
+      ]
+    },
+    "func_02045f80": {
+      "src/engine/model/Model.cpp": [
+        "arity:1"
+      ]
+    },
     "func_02046008": {
-      "src/_ZN5Model12SetPolygonIDEi.cpp": [
+      "src/engine/model/Model.cpp": [
         "param:#2 int"
       ],
       "src/engine/model/d_ext_common_model.cpp": [
@@ -23603,8 +23618,13 @@
         "param:#2 int"
       ]
     },
+    "func_0204605c": {
+      "src/engine/model/Model.cpp": [
+        "arity:1"
+      ]
+    },
     "func_02046234": {
-      "src/_ZN5Model14SetPolygonModeEi.cpp": [
+      "src/engine/model/Model.cpp": [
         "param:#2 int"
       ]
     },
@@ -23644,7 +23664,7 @@
       ]
     },
     "func_020469e0": {
-      "src/unnamed/arm9/0201/func_02017060.c": [
+      "src/engine/model/Model.cpp": [
         "return:unsigned int"
       ]
     },

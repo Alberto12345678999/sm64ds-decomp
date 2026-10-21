@@ -101,17 +101,15 @@ namespace n020c6e4c {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, int b, unsigned int u);
+extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, int b,
+                                                           unsigned int u);
 
-
-extern "C" void func_02016acc(char *m, int a);
+extern "C" void func_02016acc(Model *m, unsigned int a);
 extern "C" void func_02016b24(char *m, int a);
 extern "C" void func_02016a14(char *m, int a);
 extern "C" void func_02016a04(char *m, int a);
 extern "C" void Heyho_UpdateMatrix(char *c);
 extern "C" void Heyho_SetIdle(char *p);
-
-
 
 extern "C" int Heyho_LoadResources(char *c) {
     BMD_File *m = (BMD_File *)Model::LoadFile(gMgPHeyhoMiniModelFile);
@@ -120,7 +118,7 @@ extern "C" int Heyho_LoadResources(char *c) {
         return 0;
     }
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)HEYHO(c)->mModelAnim, a, 0, 0x800, 0);
-    func_02016acc((char *)HEYHO(c)->mModelAnim, 1);
+    func_02016acc((Model *)HEYHO(c)->mModelAnim, 1u);
     func_02016b24((char *)HEYHO(c)->mModelAnim, 2);
     int b = (((fBaseView *)data_0209f5c0)->actorID == 0x175);
     if (b != 0) {

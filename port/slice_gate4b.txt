@@ -6,10 +6,9 @@
 # Model
 src/engine/model/Model.cpp
 # Model::LoadFile lives in src/SharedFilePtr.cpp (slice 3b), compiled
-# under SM64DS_PORT_GATE4B.
-src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp
+# under SM64DS_PORT_GATE4B. AddToCommonModelDataArr and SetPolygonID live
+# in Model.cpp with the rest of the class.
 src/engine/model/Model4.cpp
-src/_ZN5Model12SetPolygonIDEi.cpp
 # ModelComponents::Render: HOST copy in port/unmatched -- the matched TU
 # passes the material index by leaving it in r1 (see the file header there).
 port/unmatched/ModelComponents_Render.cpp
@@ -27,10 +26,9 @@ src/engine/gx/GX.cpp
 # silently -- the exact failure hostgen exists to prevent.
 src/MulMat4x3Mat4x3.c
 src/func_020458a8.c
-src/func_02016b24.c
 src/func_02048234.c
 src/MulMat3x3Mat3x3.c
-src/_ZN9ModelBaseC2Ev.cpp
+# func_02016b24 and ModelBase::C2 live in src/engine/model/Model.cpp above.
 src/DMASyncWordTransfer.c
 src/func_02059fd0.c
 
