@@ -302,8 +302,7 @@ s32 daObjFallBlock_c::Render()
    named virtual (key function). UpdatePos is dActor_c's. dBgW calls go
    through mMeshCollider. IsClsnInRange stays mangled --
    notes/mwccarm-codegen.md 6az. */
-s32 daObjFallBlock_c::Behavior()
-{
+s32 daObjFallBlock_c::Behavior() {
     int all;
     daObjFallBlock_c *p;
     daObjFallBlock_c *q;

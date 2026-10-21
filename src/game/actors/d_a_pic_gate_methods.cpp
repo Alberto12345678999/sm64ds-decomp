@@ -212,7 +212,10 @@ void daPicGate_c::func_ov080_021265ec()
                 do {
                     daPicGate_c::Vertex *v = &this->mCells[row * this->mRows + col];
                     int cols;
-                    v->x = x; v->y = y; v->z = z; v->normal = normal;
+                    v->x = x;
+                    v->y = y;
+                    v->z = z;
+                    v->normal = normal;
                     cols = this->mCols;
                     if (col == cols - 2) x = ((u8)(this->param1 & 0xf) + 1) * kCell;
                     else x += ((u8)(this->param1 & 0xf) + 1) * kCell / (cols - 1);

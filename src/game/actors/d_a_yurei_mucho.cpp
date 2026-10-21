@@ -319,8 +319,8 @@ void daYurei_Mucho_c::func_ov065_0211696c()
     mShotPosZ = 0;
     *(Mtx43 *)data_020a0e68 = *(Mtx43 *)&mModelAnim.mat4x3;
 
-    MulMat4x3Mat4x3(reinterpret_cast<const int *>(&mModelAnim.data.transforms[4]),
-                     data_020a0e68, data_020a0e68);
+    MulMat4x3Mat4x3(reinterpret_cast<const int *>(&mModelAnim.data.transforms[4]), data_020a0e68,
+                    data_020a0e68);
 
     mShotPosX = data_020a0e68[9];
     mShotPosY = data_020a0e68[10];

@@ -98,9 +98,9 @@ struct daFPknBallView { /* daFPknBall_c.h: SpawnFireball's result */
    with the Boo's angles. */
 struct TrsBone {
     u8 pad_00[0x1a];
-    s16 rotX;       /* 0x1a */
-    s16 rotY;       /* 0x1c */
-    s16 rotZ;       /* 0x1e */
+    s16 rotX; /* 0x1a */
+    s16 rotY; /* 0x1c */
+    s16 rotZ; /* 0x1e */
     u8 pad_20[0x14];
 };
 #ifndef SM64DS_PLATFORM_PC

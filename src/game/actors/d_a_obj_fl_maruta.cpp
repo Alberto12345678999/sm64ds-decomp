@@ -142,9 +142,9 @@ daObj_volcanoCannon_c::~daObj_volcanoCannon_c()
 // @symbol func_ov022_02112654
 /* Burns Mario (actor type 0xbf) if the actor the flame's cylinder last hit
  * is Mario, then retires itself. */
-extern "C" void func_ov022_02112654(daObj_volcanoCannon_c *c)
-{
-    if (c->mCylinderClsn.otherOwner == 0) return;
+extern "C" void func_ov022_02112654(daObj_volcanoCannon_c *c) {
+    if (c->mCylinderClsn.otherOwner == 0)
+        return;
     void *a = dActor_c::FindWithID(c->mCylinderClsn.otherOwner);
     if (a == 0) return;
     unsigned int b = ((dActor_c *)a)->actorID == 0xbf;
@@ -157,8 +157,7 @@ extern "C" void func_ov022_02112654(daObj_volcanoCannon_c *c)
 /* The volcano cannon state's behavior handler, bound through
  * data_ov022_02114424. The flame dies once it falls below mKillPosY or
  * mKillTimer runs out. Historical alias: daObjFlMaruta_c_AfterClsn. */
-extern "C" int func_ov022_021126ac(daObj_volcanoCannon_c *c)
-{
+extern "C" int func_ov022_021126ac(daObj_volcanoCannon_c *c) {
     int a = c->mPosY;
     int b = c->mKillPosY;
     if (a < b) {
@@ -179,8 +178,7 @@ extern "C" int func_ov022_021126ac(daObj_volcanoCannon_c *c)
  * data_ov022_0211442c. Launches the flame: a 0x3c kill timer, a random
  * heading, and randomised horizontal and vertical speed in 12-bit fixed
  * point, under a -4.0 gravity. */
-extern "C" int func_ov022_02112710(daObj_volcanoCannon_c *c)
-{
+extern "C" int func_ov022_02112710(daObj_volcanoCannon_c *c) {
     unsigned int r = (unsigned int)RandomIntInternal(&data_0209e650) >> 8;
     c->mKillTimer = 0x3c;
     c->mPrevAngleY = (short)((r & 0xf) << 0xc);

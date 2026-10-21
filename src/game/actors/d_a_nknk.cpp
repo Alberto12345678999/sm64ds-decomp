@@ -527,7 +527,8 @@ void daNknk_c::func_ov062_02118a50()
         if (mTimer != 0) {
             u16 *p = &mTimer;
             *p = (u16)(*p - 1);
-            if (mTimer != 0) return;
+            if (mTimer != 0)
+                return;
             func_ov062_02117994(8); return;
         }
     }

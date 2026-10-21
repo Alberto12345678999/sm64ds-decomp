@@ -75,12 +75,12 @@ bool ApproachLinear(short &value, short target, short step);
    rest height, and the barrel's recoil slides transY/transZ. */
 struct CnnBone {
     u8 pad_00[0x1a];
-    s16 rotX;       /* 0x1a */
-    s16 rotY;       /* 0x1c */
-    s16 rotZ;       /* 0x1e */
-    s32 transX;     /* 0x20 */
-    s32 transY;     /* 0x24 */
-    s32 transZ;     /* 0x28 */
+    s16 rotX;   /* 0x1a */
+    s16 rotY;   /* 0x1c */
+    s16 rotZ;   /* 0x1e */
+    s32 transX; /* 0x20 */
+    s32 transY; /* 0x24 */
+    s32 transZ; /* 0x28 */
     u8 pad_2c[0x8];
 };
 #ifndef SM64DS_PLATFORM_PC

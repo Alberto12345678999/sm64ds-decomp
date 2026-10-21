@@ -190,8 +190,7 @@ u8 *daPicGate_c::func_ov080_02125630(s32 i)
         b = (char *)o->materials;
         c = o->palettes;
         int sz;
-        e->texAddr = (int)Model::LoadCompressedTextureToVram(
-            a->data, a->size, a->data + a->size);
+        e->texAddr = (int)Model::LoadCompressedTextureToVram(a->data, a->size, a->data + a->size);
         sz = c->size;
         if (sz <= 8)
             e->pltAddr = (int)func_02045ad8(c->data, (unsigned int)sz);
@@ -325,9 +324,7 @@ void daPicGate_c::func_ov080_02125940()
             CrossVec3((const Vec3_Fix12 *)&ej, (const Vec3_Fix12 *)&ei, (Vec3_Fix12 *)&n);
             n.z >>= 1;
             NormalizeVec3((int *)&n, (int *)&n);
-            p->normal = (n.x >> 3 & mask)
-                | ((n.y >> 3 & mask) << 10)
-                | ((n.z >> 3 & mask) << 20);
+            p->normal = (n.x >> 3 & mask) | ((n.y >> 3 & mask) << 10) | ((n.z >> 3 & mask) << 20);
             p += 1;
         }
     }
