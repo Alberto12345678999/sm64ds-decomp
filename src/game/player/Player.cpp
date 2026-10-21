@@ -4607,7 +4607,7 @@ cont:
             func_ov100_02145070(0x1e);
             func_ov100_02145014();
             func_02012694(0xb8, &mCamSpacePos);
-            unk_725 = 1;
+            mPlayMusicAfterTalk = 1;
             return 1;
         }
         break;
@@ -4676,9 +4676,9 @@ int Player::St_Talk_Cleanup()
     mFlags &= ~0x800000;
     data_0209b454 &= ~0x800000;
     ((dCamera_c *)data_0209f318)->mFlags &= ~8;
-    if (unk_725) {
+    if (mPlayMusicAfterTalk) {
         Sound::LoadAndSetMusic_Layer1(0x39);
-        unk_725 = 0;
+        mPlayMusicAfterTalk = 0;
     }
     return 1;
 }
@@ -4739,9 +4739,9 @@ int Player::St_Talk_Main()
     extern void func_0201fc88(s16);
     extern void func_0200d7a4(void*, u8);
     extern int func_ov100_02144fcc(void);
-    if (unk_722 != 0) {
+    if (mRestoreMusicVolume != 0) {
         if (_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222) != 0)
-            unk_722 = 0;
+            mRestoreMusicVolume = 0;
     }
 
     if (mNoCtrlKind == 0) {
@@ -7271,7 +7271,7 @@ int Player::func_ov002_020c8b78() {
             data_ov002_0210e154 |= 1;
         }
         Vec3_RotateYAndTranslate(&v, &mPos, this->mAngleY, data_ov002_0210f824);
-        unk_722 = 1;
+        mRestoreMusicVolume = 1;
         {
             u16 *fl = &this->mStateFlags;
             *fl |= 0x400;

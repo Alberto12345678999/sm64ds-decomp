@@ -599,10 +599,17 @@ struct Player : dActor_c {
     u8 mEventStep;              /* 0x71f */
     u8 mEventWait;              /* 0x720 */
     u8  mSleepStage;            /* 0x721 */
-    u8  unk_722;            /* 0x722 */
+    /* func_ov002_020c8b78 holds the music at volume 0x14 while its animation
+       runs, then sets this and opens message 0x188 (0x29); St_Talk_Main
+       calls Sound::ChangeMusicVolume(0x7f, ...) each frame while it is set
+       and clears it once the volume is back. */
+    u8 mRestoreMusicVolume; /* 0x722 */
     u8  unk_723;            /* 0x723 */
     u8  unk_724;            /* 0x724 */
-    u8  unk_725;            /* 0x725  latch: St_Talk_Cleanup reloads music layer 1 when set */
+    /* func_ov002_020c44c4 sets it when it opens the one-time message 0x177;
+       St_Talk_Cleanup then calls Sound::LoadAndSetMusic_Layer1(0x39) and
+       clears it. */
+    u8 mPlayMusicAfterTalk; /* 0x725 */
     s8  unk_726;            /* 0x726 */
     /* The scripted animation sequence the Kuppa script started. Command
        func_ov002_020bd20c stores its parameter byte here (1-based, 0 for
