@@ -1,4 +1,5 @@
 #include "types.h"
+#include "private/arm9_a9db8_mb_parent.h"
 extern void CpuCopy8(const void *src, void *dst, unsigned int size);
 extern char *data_020a9db8;
 
@@ -6,9 +7,7 @@ extern char *data_020a9db8;
  * block header. Type 7 (file request) carries a piece number and one piece
  * of the entry request (func_02065de4 assembles them); types 8 and 9 carry
  * a 16-bit request built from two bytes, and 9 also a piece of reserved
- * data. The header follows the SDK's MBCommChildBlockHeader. The piece
- * size and count at work +0x131c/+0x1320 have no name in the shared work
- * header yet and stay offsets. */
+ * data. The header follows the SDK's MBCommChildBlockHeader. */
 typedef struct MBCommChildBlockHeader {
     u8 type; /* 0x0 */
     u8 pad_1;
@@ -34,12 +33,11 @@ u8 *func_02065c2c(u8 *src, u8 *dst) {
         hd->u.req_data.piece = src[1];
         {
             char *g = data_020a9db8;
-            g = g + 0x1000;
-            if (hd->u.req_data.piece > (*((int *)(g + 0x320)))) {
+            if (hd->u.req_data.piece > ((MbParentWork *)g)->mReqPieceCount) {
                 return 0;
             }
-            CpuCopy8(r4, hd->u.req_data.data, *((int *)(g + 0x31c)));
-            r4 = r4 + (*((int *)((data_020a9db8 + 0x1000) + 0x31c)));
+            CpuCopy8(r4, hd->u.req_data.data, ((MbParentWork *)g)->mReqPieceSize);
+            r4 = r4 + ((MbParentWork *)data_020a9db8)->mReqPieceSize;
         }
         break;
 
@@ -62,8 +60,8 @@ u8 *func_02065c2c(u8 *src, u8 *dst) {
             r4 = src + 3;
             *p = (*p) | ((hi << 8) & 0xff00);
         }
-        CpuCopy8(r4, hd->u.data.reserved, *((int *)((data_020a9db8 + 0x1000) + 0x31c)));
-        r4 = r4 + (*((int *)((data_020a9db8 + 0x1000) + 0x31c)));
+        CpuCopy8(r4, hd->u.data.reserved, ((MbParentWork *)data_020a9db8)->mReqPieceSize);
+        r4 = r4 + ((MbParentWork *)data_020a9db8)->mReqPieceSize;
     } break;
 
     default:
