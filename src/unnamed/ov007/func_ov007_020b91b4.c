@@ -28,7 +28,7 @@ typedef struct Ov007PickerScene {
     Ov007Picker *picker;       /* 0x00: func_ov007_020c690c */
     Ov007MenuState *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
     /* 0x14: func_ov007_020c5db0's point total over the stroke and every
-     * group (the picker keeps the same total at its own +0x14) */
+     * group; func_ov007_020ba368 divides the drawn progress by it */
     int totalPoints;
     /* 0x18, medium confidence: func_ov007_020c5d5c's sum of each group's
      * last progressThresholds entry (strokeTime >> 12 when the point was
