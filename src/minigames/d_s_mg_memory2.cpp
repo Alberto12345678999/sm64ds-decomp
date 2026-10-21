@@ -10,9 +10,10 @@
  *   RoundShowCards, ResultFinish, ResetGame and InitPlayers step char* by
  *   0x18 or 0x14 from this. A card or player pointer changes those loops.
  * - CardFlyAway keeps FlyAwaySceneView. Direct mCards access misses.
- * - CheckFinished calls inline_fn(this+0xa8) and this+0xb4.
- *   mCredits and mHudScore directly miss. unk_5407 is only cleared.
- * - ResultWait decrements mResultTimer as (int)this+0x53e4.
+ * - CheckFinished reads mCredits and mHudScore through inline_fn(&member);
+ *   the plain reads renumber @NNN. unk_5407 is only cleared.
+ * - ResultWait decrements mResultTimer as (int)this + its offset.
+ * - MEMORY2_OFF/MEMORY2_HI name the offsets the char* loops add.
  * - Camera_InitDealerView sets the camera at this+0x4660 and tail-calls
  *   Camera_UpdateMatrices. Render and InitResources call that wrapper.
  * - Mg_DrawScoreTally, Mg_SaveRecordPair and Dealer_Load
@@ -153,6 +154,12 @@ extern u8 data_0209d454;
 /* The scene seen through a pointer stepped one element at a time, for the
  * strided card/player/selection walks below. */
 #define MEMORY2(p) ((dScMgMemory2_c *)(p))
+/* A field's byte offset in the scene, for the sites that add it to a
+   stepped char pointer or keep it in an int local, as the ROM does. */
+#define MEMORY2_OFF(member) ((int)&((dScMgMemory2_c *)0)->member)
+/* ResetGame adds 0x5000 to the scene first and then the rest of the field's
+   offset; MEMORY2_HI(m) is that rest. */
+#define MEMORY2_HI(member) (MEMORY2_OFF(member) - 0x5000)
 
 #pragma defer_codegen off
 
@@ -294,14 +301,14 @@ void dScMgMemory2_c::CheckFinished() {
         mResultTimer = 0x40;
         mState = STATE_RESULT;
         mSubstate = RESULT_WAIT;
-        Mg_SaveRecordPair(((5 - mMisses) * 5) + (*inline_fn(raw + 0xa8)),
-                          (*inline_fn(raw + 0xb4)) + 1);
+        Mg_SaveRecordPair(((5 - mMisses) * 5) + (*inline_fn((char *)&mCredits)),
+                          (*inline_fn((char *)&mHudScore)) + 1);
     }
     if (mMisses >= mMaxMisses) {
         mResultTimer = 0x40;
         mState = STATE_RESULT;
         mSubstate = RESULT_WAIT;
-        Mg_SaveRecordPair(*inline_fn(raw + 0xa8), (*inline_fn(raw + 0xb4)) - 1);
+        Mg_SaveRecordPair(*inline_fn((char *)&mCredits), (*inline_fn((char *)&mHudScore)) - 1);
     }
 }
 
@@ -403,8 +410,8 @@ void dScMgMemory2_c::CardFlyAway(int cardIndex) {
         precedingOffset = 1;
         if (scanLimit > 1) {
             do {
-                currentX = (s32 *)((u8 *)&view->raw[cardIndex] + 0x51a8);
-                flyAwayStarted = (u8 *)&view->raw[cardIndex] + 0x51be;
+                currentX = (s32 *)((u8 *)&view->raw[cardIndex] + MEMORY2_OFF(mCards[0].x));
+                flyAwayStarted = (u8 *)&view->raw[cardIndex] + MEMORY2_OFF(mCards[0].flyAwayStarted);
                 if (view->cards[cardIndex - precedingOffset].active != 0) {
                     if (((*currentX - view->cards[cardIndex - precedingOffset].x) >> 12) <= 4) {
                         *flyAwayStarted = 1;
@@ -655,7 +662,7 @@ void dScMgMemory2_c::ResultWait() {
     /* mResultTimer, decremented through raw: mResultTimer--, the
      * `= mResultTimer - 1` form and both again through MEMORY2(raw) all
      * change the object (the first renumbers @NNN by 3). */
-    *(unsigned short *)(((int)raw + 0x53e4)) = *(unsigned short *)(((int)raw + 0x53e4)) - 1;
+    *(unsigned short *)(((int)raw + MEMORY2_OFF(mResultTimer))) = *(unsigned short *)(((int)raw + MEMORY2_OFF(mResultTimer))) - 1;
     if ((short)mResultTimer > 0)
         return;
 
@@ -756,7 +763,7 @@ void dScMgMemory2_c::RoundReadyCards() {
         if (MEMORY2(p)->mCards[0].active != 0) {
             if (MEMORY2(p)->mCards[0].state == CARD_SELECT)
                 /* mCards[0].state: a member store shares the read's address and grows the code. */
-                *(unsigned char *)(p + 0x51bc) = CARD_IDLE;
+                *(unsigned char *)(p + MEMORY2_OFF(mCards[0].state)) = CARD_IDLE;
         }
     }
     for (cardIndex = 0, p = raw; cardIndex < 0x14; cardIndex++, p += 0x18) {
@@ -777,7 +784,7 @@ void dScMgMemory2_c::RoundHideCards() {
     int i;
     unsigned char *cardBase;
     if (mPreviewTimer != 0) {
-        i = 0x53ec;
+        i = MEMORY2_OFF(mPreviewTimer);
         *((unsigned short *)((((int)raw) + i))) -= 1;
         return;
     }
@@ -786,7 +793,7 @@ void dScMgMemory2_c::RoundHideCards() {
         if (((dScMgMemory2_c *)cardBase)->mCards[0].active != 0) {
             if (((dScMgMemory2_c *)cardBase)->mCards[0].state == CARD_WAIT) {
                 /* mCards[0].state: as in RoundReadyCards, a member store grows the code. */
-                cardBase[0x51bc] = CARD_FLIP_DOWN;
+                cardBase[MEMORY2_OFF(mCards[0].state)] = CARD_FLIP_DOWN;
             }
         }
         cardBase += 0x18;
@@ -818,8 +825,8 @@ void dScMgMemory2_c::RoundShowCards() {
     int previewIndex;
     int unusedPreview = 0xff;
     int flipUpState = CARD_FLIP_UP;
-    int previewOffset = 0x53fd;
-    int stateOffset = 0x51bc;
+    int previewOffset = MEMORY2_OFF(mPreviewCards);
+    int stateOffset = MEMORY2_OFF(mCards[0].state);
     int stride = 0x18;
 
     for (previewIndex = 0; previewIndex < 8; previewIndex++) {
@@ -829,7 +836,7 @@ void dScMgMemory2_c::RoundShowCards() {
             continue;
         {
             int base = (int)raw + cardIndex * stride;
-            activeOffset = 0x51bb;
+            activeOffset = MEMORY2_OFF(mCards[0].active);
             if (*(unsigned char *)(base + activeOffset) != 0) {
                 unsigned char *cardState = (unsigned char *)(base + stateOffset);
                 if (*cardState == CARD_IDLE) {
@@ -948,7 +955,7 @@ void dScMgMemory2_c::ShuffleCards() {
                 1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 8 >> 15);
             u8 *valueCount;
         check0:
-            valueCount = (u8 *)(raw + cardValue + 0x53f2);
+            valueCount = &MEMORY2(raw + cardValue)->mValueCounts[0];
             if (*valueCount < 2) {
                 MEMORY2(p)->mCards[0].value = cardValue;
                 (*valueCount)++;
@@ -977,7 +984,7 @@ void dScMgMemory2_c::ShuffleCards() {
                 1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9 >> 15);
             u8 *valueCount;
         check1:
-            valueCount = (u8 *)(raw + cardValue + 0x53f2);
+            valueCount = &MEMORY2(raw + cardValue)->mValueCounts[0];
             if (*valueCount < 2) {
                 MEMORY2(p)->mCards[0].value = cardValue;
                 (*valueCount)++;
@@ -1006,7 +1013,7 @@ void dScMgMemory2_c::ShuffleCards() {
                 1 + ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 10 >> 15);
             u8 *valueCount;
         check2:
-            valueCount = (u8 *)(raw + cardValue + 0x53f2);
+            valueCount = &MEMORY2(raw + cardValue)->mValueCounts[0];
             if (*valueCount < 2) {
                 MEMORY2(p)->mCards[0].value = cardValue;
                 (*valueCount)++;
@@ -1113,8 +1120,7 @@ void dScMgMemory2_c::ResetGame() {
     mPairsFound = 0;
     mSelectedCount = 0;
     *(char *)(p + 0x407) = 0; /* 0x5407: only ever cleared, no name */
-    /* 0x5408 is mMisses; the member spelling renumbers later @NNN labels. */
-    *(char *)(p + 0x408) = 0;
+    *(char *)(p + MEMORY2_HI(mMisses)) = 0; /* mMisses = 0 renumbers 26 @NNN labels */
     i = 0;
     do {
         p = c + i;
@@ -1122,12 +1128,13 @@ void dScMgMemory2_c::ResetGame() {
         i++;
         MEMORY2(p)->mSelectedCards[0] = 0;
     } while (i < 2);
-    /* mValueCounts[j]; the member spelling moves the code or renumbers @NNN. */
+    /* mValueCounts[j], through the same split base: MEMORY2(c + j)->mValueCounts[0]
+       moves the code. */
     j = 0;
     do {
         p = (c + j) + 0x5000;
         j++;
-        *(char *)(p + 0x3f2) = 0;
+        *(char *)(p + MEMORY2_HI(mValueCounts)) = 0;
     } while (j < 0xb);
     mMessageVisible = 1;
     mInputSeen = 0;
