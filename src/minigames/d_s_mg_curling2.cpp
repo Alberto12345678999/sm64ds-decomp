@@ -5,9 +5,10 @@
  *
  * Leftover: DragUpdate and SeparateStones call
  *   _ZN4cstd5atan2E5Fix12IiES1_. cstd::atan2 takes Fix12 by value.
- * Leftover: StoneSlide keeps the ROM's raw `this + 0x46xx + stoneOffset`
- *   addressing, and Play keeps the stone timer and state dispatch raw;
- *   every member spelling of those sites moves bytes. StoneSpin, NextStone,
+ * Leftover: StoneSlide's speed decay keeps the ROM's `this + field +
+ *   stoneOffset` order (`&mStone[0].speed + stoneOffset`), and Play keeps
+ *   the stone timer and state dispatch raw; every member spelling of those
+ *   sites moves bytes. StoneSpin, NextStone,
  *   Play, ResetGame and the two mark functions reach their records through
  *   a stepped `char *` cast back to the class (`((dScMgCurling2_c *)p)->
  *   mStone[0].x`): indexing mStone[i] directly folds the base differently.
@@ -1260,10 +1261,11 @@ void dScMgCurling2_c::StoneRest(int i) {
  * stop, run the collision step and the spin update, then feed the rolling
  * sound from speed and position.
  *
- * Most fields stay raw `c + 0x46xx + stoneOffset`: the ROM adds the field
- * offset to `this` before the stone offset, and every member spelling
- * (including the stepped-pointer `((dScMgCurling2_c *)(c + stoneOffset))`
- * form) adds them the other way round and moves bytes. */
+ * The speed decay keeps the ROM's order of adding the field offset to
+ * `this` before the stone offset, spelled `&mStone[0].speed + stoneOffset`,
+ * and the stop's `state = 2` keeps the stepped
+ * `((dScMgCurling2_c *)(c + stoneIndex * 0x30))` cast; the other fields take
+ * mStone[stoneIndex] directly. */
 void dScMgCurling2_c::StoneSlide(int stoneIndex) {
     char *c = (char *)this;
     int stoneOffset;
@@ -1284,16 +1286,16 @@ void dScMgCurling2_c::StoneSlide(int stoneIndex) {
 
     stoneOffset = stoneIndex * 0x30;
 
-    pHeading = (u16 *)(c + 0x4686 + stoneOffset);
-    pSpeed = (int *)(c + 0x4668 + stoneOffset);
-    pX = (int *)(c + 0x4660 + stoneOffset);
-    pY = (int *)(c + 0x4664 + stoneOffset);
+    pHeading = &mStone[stoneIndex].angle;
+    pSpeed = &mStone[stoneIndex].speed;
+    pX = &mStone[stoneIndex].x;
+    pY = &mStone[stoneIndex].y;
 
     cosAngle = data_02082214[((*pHeading) >> 4) * 2 + 1];
     *pX += FX_MUL(cosAngle, *pSpeed);
     sinAngle = data_02082214[((*pHeading) >> 4) * 2];
     *pY += FX_MUL(sinAngle, *pSpeed);
-    *(u16 *)(c + 0x4684 + stoneOffset) += *(u16 *)(c + stoneOffset + 0x4682);
+    mStone[stoneIndex].spinAngle += mStone[stoneIndex].spinVel;
 
     x = *pX;
     z = *pY;
@@ -1311,11 +1313,11 @@ void dScMgCurling2_c::StoneSlide(int stoneIndex) {
     }
 
     if (zi + 0xc > 0xc0) {
-        *(u16 *)(c + 0x4686 + stoneOffset) = -*(u16 *)(c + 0x4686 + stoneOffset);
+        mStone[stoneIndex].angle = -mStone[stoneIndex].angle;
         *pY = 0xb4000;
         func_02012718(0x1d4, *pX);
     } else if (zi - 0xc < -0xe0) {
-        *(u16 *)(c + 0x4686 + stoneOffset) = -*(u16 *)(c + 0x4686 + stoneOffset);
+        mStone[stoneIndex].angle = -mStone[stoneIndex].angle;
         *pY = -0xd4000;
         func_02012718(0x1d4, *pX);
     }
@@ -1325,14 +1327,17 @@ void dScMgCurling2_c::StoneSlide(int stoneIndex) {
     if (v <= 0x1c)
         v = 0x1c;
 
-    *(int *)(c + 0x4668 + stoneOffset) -= v;
-    pd = (int *)(c + 0x4668 + stoneOffset);
-    if (*(int *)(c + 0x4668 + stoneOffset) <= 0) {
+    /* `&mStone[0].speed + stoneOffset` here: mStone[stoneIndex].speed and the
+       stepped `((dScMgCurling2_c *)(c + stoneOffset))` form both move bytes
+       (the stepped form builds 8 bytes shorter). */
+    *(int *)((char *)&mStone[0].speed + stoneOffset) -= v;
+    pd = (int *)((char *)&mStone[0].speed + stoneOffset);
+    if (*(int *)((char *)&mStone[0].speed + stoneOffset) <= 0) {
         *pSpeed = 0;
         ((dScMgCurling2_c *)(c + stoneIndex * 0x30))->mStone[0].state = 2;
     }
 
-    Curling2_ResolveStoneCollision((dScMgCurling2_c *)c, stoneIndex);
+    Curling2_ResolveStoneCollision(this, stoneIndex);
     StoneSpin(stoneIndex);
 
     v = *pd;
@@ -1340,8 +1345,8 @@ void dScMgCurling2_c::StoneSlide(int stoneIndex) {
     p = v >> 7;
     if (p >= 0x7f)
         p = 0x7f;
-    *(int *)(c + 0x467c + stoneOffset) =
-        func_02012468(*(int *)(c + 0x467c + stoneOffset), 2, 0xe7, 7, p, w, func_020126e8(*pX), 0);
+    mStone[stoneIndex].snd =
+        func_02012468(mStone[stoneIndex].snd, 2, 0xe7, 7, p, w, func_020126e8(*pX), 0);
 }
 
 // @symbol _ZN15dScMgCurling2_c9StoneWaitEi

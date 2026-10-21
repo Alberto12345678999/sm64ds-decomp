@@ -10,8 +10,7 @@ extern void func_ov007_020bc47c(void *thiz);
  * func_ov007_020bc02c, only the slots this file touches. The three
  * animation slots are (count, table, func_ov007_020c92ac player) triples
  * that func_ov007_020bc6b4, func_ov007_020bc658 and func_ov007_020bc5fc
- * bind. +0x84 (one word per BMD material, func_ov007_020bc47c copies each
- * material's +0x1c into it) stays raw: no role to name. */
+ * bind. */
 typedef struct Ov007Model {
     struct ModelComponents *model; /* 0x00 */
     void *transforms;              /* 0x04: func_02046564-sized, as Model's transformsBuf */
@@ -26,7 +25,12 @@ typedef struct Ov007Model {
     int numTexSeqAnims; /* 0x28 */
     void *texSeqAnims;  /* 0x2c: BTP_File table (func_02046bbc, TextureSequence) */
     void *texSeqAnim;   /* 0x30 */
-    char pad_34[0x54];
+    char pad_34[0x50];
+    /* 0x84, medium confidence: one word per BMD material, allocated here;
+     * func_ov007_020bc47c copies each material's +0x1c into it, the word
+     * func_02044b30 writes to REG_TEXIMAGE_PARAM (0x040004a8). Nothing in
+     * ov007 reads it back; func_ov007_020bc53c frees it. */
+    int *materialTexParams;
     void *blendAnim; /* 0x88: flags & 4 only; func_ov007_020bc7dc's cross-fade source */
     char pad_8c[0x10];
     int flags; /* 0x9c: 1/2 half-rate animation, 4 cross-fade, 8 no LoadTexAndPal */
@@ -46,7 +50,7 @@ void *func_ov007_020bc6d4(char *r6, void *r7)
     m = (Ov007Model *)o;
     m->model = func_ov007_020c3df4(0, 0x14);
     mc = m->model;
-    *(void **)(o + 0x84) = func_ov007_020c3df4(0, ((struct BMD_File *)r6)->numMaterials << 2);
+    m->materialTexParams = func_ov007_020c3df4(0, ((struct BMD_File *)r6)->numMaterials << 2);
     m->flags = (int)r7;
     m->numBoneAnims = 0;
     m->boneAnims = 0;

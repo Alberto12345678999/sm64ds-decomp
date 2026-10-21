@@ -979,17 +979,17 @@ extern "C" {
         } \
         { \
             int m = FX_MUL(r, 0x20) + FX_MUL(w, 0x500); \
-            int o1 = *(int*)((c) + 0x18c); \
-            int o2 = *(int*)((c) + 0x194); \
+            int o1 = PRESENTER(c)->mSway[0]; \
+            int o2 = PRESENTER(c)->mSway[2]; \
             b -= o2; \
-            int o3 = *(int*)((c) + 0x190); \
-            int o4 = *(int*)((c) + 0x198); \
-            *(int*)((c) + 0x18c) += (a - o1) >> 2; \
-            *(int*)((c) + 0x194) += b >> 2; \
+            int o3 = PRESENTER(c)->mSway[1]; \
+            int o4 = PRESENTER(c)->mSway[3]; \
+            PRESENTER(c)->mSway[0] += (a - o1) >> 2; \
+            PRESENTER(c)->mSway[2] += b >> 2; \
             o3 = m - o3; \
-            *(int*)((c) + 0x190) += o3 >> 2; \
+            PRESENTER(c)->mSway[1] += o3 >> 2; \
             o4 = m - o4; \
-            *(int*)((c) + 0x198) += o4 >> 2; \
+            PRESENTER(c)->mSway[3] += o4 >> 2; \
         } \
     }
 

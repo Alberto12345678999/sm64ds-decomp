@@ -5,8 +5,8 @@ extern "C" void func_ov007_020c3d1c(int);
 /* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in that
    file, only the slots this function frees. The four animation players go
    back through func_ov007_020c92a0, the buffers through func_ov007_020c3d1c.
-   +0x84 (one word per BMD material, func_ov007_020bc47c fills it) has no
-   name in func_ov007_020bc6d4 either and stays raw on `r4`. */
+   +0x84 is func_ov007_020bc6d4's materialTexParams (func_ov007_020bc47c
+   fills it); this view leaves it unnamed and frees it raw through `r4`. */
 struct Ov007Model {
     void *model;          /* 0x00 */
     void *transforms;     /* 0x04 */

@@ -1067,9 +1067,10 @@ void dScMgCoin_c::Block_StateDropOnCoin(int index) {
     int new_var;
     int *pa = &mBlocks[index].vy;
     int *pb = &mBlocks[index].y;
-    /* mBlocks[index].vy; the member spelling moves bytes */
-    *pb = (*pb) + (*((int *)((thiz + 0x466c) + off)));
-    *((int *)((thiz + 0x466c) + off)) = (*pa) + 0x400;
+    /* mBlocks[index].vy as `&mBlocks[0].vy + off`, the ROM's this + field +
+       record order; mBlocks[index].vy moves bytes */
+    *pb = (*pb) + (*(int *)((char *)&mBlocks[0].vy + off));
+    *(int *)((char *)&mBlocks[0].vy + off) = (*pa) + 0x400;
     int look = sCoinBlockDropRowY[((dScMgCoin_c *)(thiz + off))->mBlocks[0].row];
     if (((*pb) >> 12) <= look) {
         return;
@@ -1103,12 +1104,13 @@ void dScMgCoin_c::Block_StateWander(int i) {
     int *pD;
 
     mBlocks[i].x += mBlocks[i].vx;
-    /* mBlocks[i].vy, here and in pD; the member spelling moves bytes */
-    mBlocks[i].y += *(int *)(c + 0x466c + n);
+    /* mBlocks[i].vy, here and in pD, as `&mBlocks[0].vy + n` (this + field
+       + record); mBlocks[i].vy builds 8 bytes longer */
+    mBlocks[i].y += *(int *)((char *)&mBlocks[0].vy + n);
     mBlocks[i].vy += 0x400;
     this->Block_ClampToWalls(i);
 
-    pD = (int *)(c + 0x466c + n);
+    pD = (int *)((char *)&mBlocks[0].vy + n);
     idxb = ((dScMgCoin_c *)(c + n))->mBlocks[0].row;
     diff = sCoinBlockWanderRowY[idxb] - sCoinBlockWanderRowHeight[idxb];
     if ((mBlocks[i].y >> 12) > diff) {
