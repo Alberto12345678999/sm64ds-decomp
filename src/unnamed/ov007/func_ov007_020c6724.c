@@ -8,9 +8,10 @@ typedef struct Ov007Picker {
     int groupCount; /* 0x08 */
     int maxGroups;  /* 0x0c: a0; func_ov007_020c6550 stops committing at it */
     char pad_10[4];
-    /* 0x14: points appended to path; func_ov007_020c65bc counts it up and
-     * stops at maxPoints (+0x10) */
-    int pointCount;
+    /* 0x14: points over the stroke and every group; func_ov007_020c65bc
+     * counts it up per appended point and stops at maxPoints (+0x10),
+     * func_ov007_020c6784 seeds it */
+    int totalPoints;
     char pad_18[8];
     void *path; /* 0x20: the stroke being drawn (func_ov007_020c2c68) */
 } Ov007Picker;
@@ -30,5 +31,5 @@ void func_ov007_020c6724(char* self, int flag) {
     }
     func_ov007_020c28ac(picker->path);
     picker->groupCount = 0;
-    picker->pointCount = 0;
+    picker->totalPoints = 0;
 }
