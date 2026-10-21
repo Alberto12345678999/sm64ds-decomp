@@ -1,4 +1,5 @@
 #include "types.h"
+#include "private/arm9_wbt.h"
 extern void CpuCopy8(int a, void *b, int c);
 extern int func_02065a74(void);
 extern void func_02064470(void *self, int code, int idx);
@@ -15,54 +16,9 @@ extern void func_020647a4(void *p, int value);
  * state machine: command (1), target bitmap (2), command counter (3), then by
  * command the list count (4), packet sizes (5), block id (7), sequence number
  * (8), user-data size (10) and the payload address (9). state goes 1 while
- * parsing and 2 once the record is complete. Record names match
- * func_02064554's view (which reports the parsed command) and
- * func_02063718's (whose recv is the per-peer packet bitmap that
- * func_020647d8 / func_02064674 / func_020647a4 test, store and mark). Only
- * the fields this parser touches are spelled out. */
-typedef struct WBTCommand {
-    s32 command;    /* 0x00 */
-    s32 event;      /* 0x04 */
-    u16 target_bmp; /* 0x08 */
-    u8 pad_0a[0xa];
-    union {
-        struct {
-            s32 block_id; /* 0x14 */
-        } get;
-    } u;
-} WBTCommand;
-
-typedef struct WBTPeerRecord {
-    u8 state;             /* 0x00 -- 1 parsing, 2 complete */
-    u8 command;           /* 0x01 */
-    u8 cmd_counter;       /* 0x02 */
-    u8 last_cmd_counter;  /* 0x03 */
-    s16 my_packet_size;   /* 0x04 */
-    s16 peer_packet_size; /* 0x06 */
-    u16 target_bmp;       /* 0x08 */
-    s16 num_of_list;      /* 0x0a */
-    u8 pad_0c;
-    u8 user_data_size; /* 0x0d */
-    u8 pad_0e[2];
-    s32 block_id; /* 0x10 */
-    s32 seq_no;   /* 0x14 */
-    u8 pad_18[8];
-    s32 user_data; /* 0x20 -- the payload's address in the packet */
-    u8 recv[0x44]; /* 0x24 -- packet bitmap state */
-} WBTPeerRecord;
-
-typedef struct WBTWork {
-    WBTCommand cmd; /* 0x000 -- the command running */
-    u8 pad_018[0x1bc];
-    WBTPeerRecord peer[16]; /* 0x1d4 -- indexed by aid */
-} WBTWork;
-
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm: a peer record is 0x68 bytes from +0x1d4. */
-typedef char WBTPeerRecord_size_must_be_0x68[sizeof(WBTPeerRecord) == 0x68 ? 1 : -1];
-typedef char WBTWork_peer_must_be_at_0x1d4[(int)&((WBTWork *)0)->peer == 0x1d4 ? 1 : -1];
-#endif
-
+ * parsing and 2 once the record is complete. The record's recv is the
+ * per-peer packet bitmap that func_020647d8 / func_02064674 / func_020647a4
+ * test, store and mark. The views are in private/arm9_wbt.h. */
 int func_02063ea8(char *arg0, int arg1, int arg2, int arg3)
 {
     WBTWork *work = (WBTWork *)arg0;
@@ -78,7 +34,7 @@ int func_02063ea8(char *arg0, int arg1, int arg2, int arg3)
     sp0 = arg3;
     peer = &work->peer[arg1];
     r6 = 1;
-    sp4 = (char *)work->peer[0].recv + off;
+    sp4 = (char *)&work->peer[0].recv + off;
     r7 = 0;
     r8 = arg2;
     peer->state = 1;

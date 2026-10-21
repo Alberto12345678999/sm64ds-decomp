@@ -1,5 +1,6 @@
 #include "types.h"
 #include "private/arm9_a1fc0_file_share.h"
+#include "private/arm9_wbt.h"
 typedef struct {
     u32 kind : 4;
     u32 chan : 4;
@@ -7,31 +8,6 @@ typedef struct {
     u32 word4;
     u8 byte8;
 } Cmd;
-
-/* The NitroSDK WBTCommand this WBT callback receives; layout and names as in
- * func_02064554.c. command 2 is REQ_SYNC, 4 REQ_GET_BLOCK, 6
- * REQ_GET_BLOCKINFO, 0xc SYSTEM_CALLBACK (event 0xa, REQ_USER_DATA). */
-typedef struct WBTCommand {
-    s32 command;              /* 0x00 */
-    s32 event;                /* 0x04 */
-    u16 target_bmp;           /* 0x08 */
-    u16 peer_bmp;             /* 0x0a */
-    u8 my_cmd_counter;        /* 0x0c */
-    u8 peer_cmd_counter;      /* 0x0d */
-    s16 result;               /* 0x0e */
-    void (*callback)(char *); /* 0x10 */
-    union {
-        struct {
-            s16 num_of_list;      /* 0x14 */
-            s16 peer_packet_size; /* 0x16 */
-            s16 my_packet_size;   /* 0x18 */
-        } sync;
-        struct {
-            u8 data[9]; /* 0x14 */
-            u8 size;    /* 0x1d */
-        } user_data;
-    } u;
-} WBTCommand;
 
 /* The FSFile a child read is for (FileShareWork.mReadRequest, set by
  * func_02041a00). This ROM's FSFile has its prop union at 0x1c and its arg
