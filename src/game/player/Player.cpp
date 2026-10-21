@@ -41,6 +41,7 @@
 #include "dBgCh_Actr.h"
 #include "decl_Animation.h"
 #include "Sound.h"
+#include "dCamera_c.h"
 #include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -879,8 +880,7 @@ void Player::func_ov002_020bdb50(int arg) {
             func_ov002_020d5cec();
             (this->mStateFlags) &= ~2;
         } else {
-            char* vt = *(char**)obj;
-            (*(void(**)(char*, char*))(vt+0x4c))(obj, c);
+            ((dActor_c *)obj)->OnTurnIntoEgg(*this);
         }
     }
     this->mObjInMouth = 0;
@@ -967,8 +967,7 @@ void Player::func_ov002_020bdd2c() {
     if (this->mIsMega == 1) {
         func_ov002_020db8bc((unsigned char *)c, 3);
         {
-            int *base = (int *)(((int)data_0209f318 + 0x154));
-            *base &= ~0x80;
+            ((dCamera_c *)data_0209f318)->mFlags &= ~0x80;
         }
         this->func_ov002_020bd984(0x31);
         this->mWaterStillParticle = 0;
@@ -1095,7 +1094,7 @@ void Player::func_ov002_020bdf8c(){
   }
   mIsMega = 1;
   mMegaTimer = 0x258;
-  (*(unsigned int *)(((int)data_0209f318 + 0x154))) |= 0x80;
+  ((dCamera_c *)data_0209f318)->mFlags |= 0x80;
   func_ov002_020bd9ec(0x31);
 }
 }
@@ -4889,7 +4888,7 @@ int Player::func_ov002_020c4188()
         mFlags &= ~0x800000;
         data_0209b454 &= ~0x800000;
         if (mEventId >= 7) {
-            *(int*)(((int)p + 0x154)) &= ~8;
+            ((dCamera_c *)p)->mFlags &= ~8;
         }
         func_0200d81c(p, mPlayerNo);
         if (mEventId == 6) {
@@ -4900,7 +4899,7 @@ int Player::func_ov002_020c4188()
         }
         break;
     case 4:
-        if (p[0x55] & 0x8000) {
+        if (((dCamera_c *)p)->mFlags & 0x8000) {
             break;
         }
         mEventId = 0;
@@ -5101,7 +5100,7 @@ int Player::St_Talk_Cleanup()
     }
     mFlags &= ~0x800000;
     data_0209b454 &= ~0x800000;
-    *(u32*)((char*)data_0209f318 + 0x154) &= ~8;
+    ((dCamera_c *)data_0209f318)->mFlags &= ~8;
     if (unk_725) {
         Sound::LoadAndSetMusic_Layer1(0x39);
         unk_725 = 0;
@@ -5242,7 +5241,7 @@ int Player::St_Talk_Main()
             mPrevAngleY = mAngleY;
             char* cam = data_0209f318;
             func_0200d81c(cam, mPlayerNo);
-            *(u32*)(((int)cam + 0x154)) &= ~8;
+            ((dCamera_c *)cam)->mFlags &= ~8;
             mHeadRotMode = 4;
         }
         break;
@@ -5250,7 +5249,7 @@ int Player::St_Talk_Main()
         if (mStateWaitTimer != 0)
             break;
     case 6:
-        if ((*(u32*)(data_0209f318 + 0x154) & 0x8000) != 0)
+        if ((((dCamera_c *)data_0209f318)->mFlags & 0x8000) != 0)
             break;
         if (mIsOpeningBigDoor != 0) {
             mNoCtrlKind = 0x13;
@@ -9528,7 +9527,7 @@ void func_ov002_020cae10(char* c)
     int ang;
     int r8;
     if (self->mPlayerNo == data_0209f250) {
-        r4 -= *(short*)((char*)*(void**)&data_0209f318 + 0x17e);
+        r4 -= ((dCamera_c *)data_0209f318)->mAngleX;
         r4 = (short)r4;
     }
     ang = (short)((self->mAngleY - GetAngleToCamera(self->mPlayerNo)) + 0x8000);
@@ -12035,22 +12034,22 @@ int func_ov002_020cef84(char *self)
                 int w0, w1;
                 p->mVertSpeed = -0x1000;
                 p->mClsnFlags |= 8;
-                w0 = *(int *)((char *)&line + 0x14);
-                w1 = *(int *)((char *)&line + 0x18);
+                w0 = line.surface.clps.w0;
+                w1 = line.surface.clps.w1;
                 dst[0] = w1 ? w0 : w0;
                 dst[1] = w1;
-                dst[2] = *(int *)((char *)&line + 0x1c);
-                dst[3] = *(int *)((char *)&line + 0x20);
-                dst[4] = *(int *)((char *)&line + 0x24);
+                dst[2] = line.surface.normal.x;
+                dst[3] = line.surface.normal.y;
+                dst[4] = line.surface.normal.z;
                 tmp.tag = &data_02099368;
-                tmp.f18 = *(unsigned short *)((char *)&line + 0x28);
-                tmp.f1a = *(unsigned short *)((char *)&line + 0x2a);
-                tmp.f1c = *(int *)((char *)&line + 0x2c);
-                tmp.f20 = *(int *)((char *)&line + 0x30);
-                tmp.f24 = *(int *)((char *)&line + 0x34);
+                tmp.f18 = line.triangleID;
+                tmp.f1a = line.colliderIdx;
+                tmp.f1c = line.clsnID;
+                tmp.f20 = (int)line.owner;
+                tmp.f24 = (int)line.collider;
                 a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&tmp));
                 if (a)
-                    (*(void (**)(void *, char *))(*(int *)a + 0x70))(a, self);
+                    ((dActor_c *)a)->OnHitFromUnderneath(*(dActor_c *)self);
                 _ZN5dBgPiD1Ev(&tmp);
             }
         }
@@ -14078,7 +14077,7 @@ int Player::St_Wait_Cleanup()
     extern int data_0209caa0[];
 
     void* r4 = data_0209f318;
-    (*(unsigned int*)(((int)r4 + 0x154))) &= ~0x2000;
+    ((dCamera_c *)r4)->mFlags &= ~0x2000;
     mSleepStage = 0;
     do {
         unsigned char v = data_0209f2d8;
@@ -14273,7 +14272,7 @@ int Player::St_Wait_Main()
         }
         }
         if (func_ov002_020d22ec(((char*)this), 0)) {
-            (*(unsigned int*)(((int)r4 + 0x154))) &= ~0x2000;
+            ((dCamera_c *)r4)->mFlags &= ~0x2000;
             Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
         }
         break;
@@ -14300,7 +14299,7 @@ int Player::St_Wait_Main()
         }
         if (*(unsigned short*)(data_0209f49e+gActivePlayerSlot*0x18) & 2) {
             this->ChangeState(data_ov002_0211019c);
-            (*(unsigned int*)(((int)r4 + 0x154))) &= ~0x2000;
+            ((dCamera_c *)r4)->mFlags &= ~0x2000;
             Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
             return 1;
         }
@@ -14605,7 +14604,7 @@ int func_ov002_020d2fdc(char *self)
                 _ZN6Player7SetAnimEji5Fix12IiEj(self, 0xd, 0x40000000, 0x1000, 0);
                 p->mStateStep = 1;
             }
-            *(int *)(((int)(char *)data_0209f318 + 0x154)) |= 0x2000;
+            ((dCamera_c *)data_0209f318)->mFlags |= 0x2000;
         }
     } else {
         _ZN6Player7SetAnimEji5Fix12IiEj(self, 0xf, 0, 0x1000, 0);
@@ -16701,10 +16700,10 @@ int Player::St_Swallow_Main()
     goto L65e4;
 
 L653c:
-    (*(void (**)(void*, char*))(*(char**)p360 + 0x4c))(p360, ((char*)this));
+    p360->OnTurnIntoEgg(*this);
     {
         void* q = *(void**)((char*)&mObjInMouth);
-        if ((*(int (**)(void*))(*(char**)q + 0x48))(q) == 1) goto L65e4;
+        if (((dActor_c *)q)->OnYoshiTryEat() == 1) goto L65e4;
     }
     if ((unsigned short)(mStateFlags & 0x1000)) goto L65e4;
     {
@@ -16750,8 +16749,7 @@ int Player::St_Swallow_Init() {
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, unsigned int);
     if (*(void **)((char *)&mObjInMouth)) {
         void *o = *(void **)((char *)&mObjInMouth);
-        int (*f)(void *) = *(int (**)(void *))(*(char **)o + 0x48);
-        if (f(o) == 4) {
+        if (((dActor_c *)o)->OnYoshiTryEat() == 4) {
             Player_DisableInteraction(((char *)this));
         }
         int eq = ((dActor_c *)mObjInMouth)->actorID == 0xbf;
@@ -22669,7 +22667,7 @@ int Player::St_Cannon_Main()
         mPrevAngleY = GetAngleToCamera(mPlayerNo) + 0x8000;
         mAngleY = mPrevAngleY;
 
-        int ang = *(u16*)(p + 0x17e);
+        int ang = (u16)((dCamera_c *)p)->mAngleX;
         int j = ang >> 4;
         mHorzSpeed = FX_MUL(data_02082214[j * 2 + 1], 0x64000);
         mVertSpeed = FX_MUL(data_02082214[j * 2], 0x64000);
@@ -22946,7 +22944,7 @@ int Player::St_Owl_Main()
         break;
 
     case 3:
-        if ((*(int*)(data_0209f318 + 0x154) & 0x8000) == 0) {
+        if ((((dCamera_c *)data_0209f318)->mFlags & 0x8000) == 0) {
             mStateStep = 4;
             mStateTimer = 0x3c;
             func_ov002_020c9e18();
