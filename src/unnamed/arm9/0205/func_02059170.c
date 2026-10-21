@@ -4,52 +4,79 @@ extern void* func_02059364(void* a, void* n);
 extern void* func_0205938c(void* next, void* node);
 extern int* data_020a637c[];
 
-struct Node { struct Node* prev; struct Node* next; int size; };
-struct Bucket { int f0; struct Node* head; void* f8; };
+/* NitroSDK's heap bookkeeping, SDK names. data_020a637c is OSiHeapInfo, one
+ * OSHeapInfo per arena; func_02059040 (OS_InitAlloc) lays it out: the current
+ * heap at 0x00 and the HeapDesc array at 0x10, each desc's size -1 and both
+ * lists empty. A Cell heads every block, free or allocated, and the caller's
+ * memory starts 0x20 (HEADERSIZE) past it. */
+typedef struct Cell {
+    struct Cell* prev; /* 0x0 */
+    struct Cell* next; /* 0x4 */
+    int size;          /* 0x8 -- header included */
+} Cell;
 
-void* func_02059170(int id, int idx2, int reqsize)
+typedef struct HeapDesc {
+    int size;        /* 0x0 */
+    Cell* free;      /* 0x4 */
+    Cell* allocated; /* 0x8 */
+} HeapDesc;
+
+typedef struct OSHeapInfo {
+    int currentHeap;     /* 0x00 */
+    int numHeaps;        /* 0x04 */
+    void* arenaStart;    /* 0x08 */
+    void* arenaEnd;      /* 0x0c */
+    HeapDesc* heapArray; /* 0x10 */
+} OSHeapInfo;
+
+/* NitroSDK OS_AllocFromHeap(id, heap, size): first fit on the heap's free
+ * list (heap < 0 means the current heap) for size plus the header, rounded to
+ * 32. A remainder under 0x40 (MINOBJSIZE) goes with the block
+ * (func_02059364 = DLExtract); a larger one is split off and stays free. The
+ * block joins the allocated list (func_0205938c = DLAddFront). */
+void* func_02059170(int id, int heap, int size)
 {
-    int* pool;
-    struct Bucket* b;
-    struct Node* n;
+    OSHeapInfo* heapInfo;
+    HeapDesc* hd;
+    Cell* cell;
     unsigned int state;
-    int rem;
+    int leftoverSize;
 
     state = _ZN3IRQ7DisableEv();
-    pool = data_020a637c[id];
-    if (pool == 0) {
+    heapInfo = (OSHeapInfo*)data_020a637c[id];
+    if (heapInfo == 0) {
         _ZN3IRQ7RestoreEj(state);
         return 0;
     }
-    if (idx2 < 0) idx2 = pool[0];
-    b = (struct Bucket*)((char*)pool[4] + idx2 * 0xc);
-    n = b->head;
-    reqsize = ((int)((char*)reqsize + 0x20) + 0x1f) & ~0x1f;
-    if (n != 0) {
+    if (heap < 0) heap = heapInfo->currentHeap;
+    hd = &heapInfo->heapArray[heap];
+    cell = hd->free;
+    size = ((int)((char*)size + 0x20) + 0x1f) & ~0x1f;
+    if (cell != 0) {
         do {
-            if (reqsize <= n->size) break;
-            n = n->next;
-        } while (n != 0);
+            if (size <= cell->size) break;
+            cell = cell->next;
+        } while (cell != 0);
     }
-    if (n == 0) {
+    if (cell == 0) {
         _ZN3IRQ7RestoreEj(state);
         return 0;
     }
-    rem = n->size - reqsize;
-    if ((unsigned int)rem < 0x40) {
-        b->head = func_02059364(b->head, n);
+    leftoverSize = cell->size - size;
+    if ((unsigned int)leftoverSize < 0x40) {
+        hd->free = func_02059364(hd->free, cell);
     } else {
-        struct Node* nn;
-        n->size = reqsize;
-        nn = (struct Node*)((char*)n + reqsize);
-        nn->size = rem;
-        nn->prev = n->prev;
-        nn->next = n->next;
-        if (nn->next != 0) nn->next->prev = nn;
-        if (nn->prev != 0) nn->prev->next = nn;
-        else b->head = nn;
+        Cell* newCell;
+        cell->size = size;
+        newCell = (Cell*)((char*)cell + size);
+        newCell->size = leftoverSize;
+        newCell->prev = cell->prev;
+        newCell->next = cell->next;
+        if (newCell->next != 0) newCell->next->prev = newCell;
+        if (newCell->prev != 0) newCell->prev->next = newCell;
+        else hd->free = newCell;
     }
-    b->f8 = func_0205938c(b->f8, n);
+    hd->allocated = func_0205938c(hd->allocated, cell);
     _ZN3IRQ7RestoreEj(state);
-    return (char*)n + 0x20;
+    return (char*)cell + 0x20;
 }
