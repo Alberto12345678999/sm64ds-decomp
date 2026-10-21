@@ -35,16 +35,19 @@ void func_ov075_0211867c(char *self)
     int one;
     int bit;
     u8 *p;
+    dScEntry_c *scene = reinterpret_cast<dScEntry_c *>(self);
 
     id = func_0203da9c();
     if (func_02020168() != 0) {
         func_02020304();
         func_020200e0();
-        reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d810, 5);
+        scene->ChangeStepsAfterDelay(&data_ov075_0211d810, 5);
         func_02012790(0x124);
     } else {
         if (func_0203d9b4() != 0) {
-            if (*(int *)(self + 0x274) == 0) {
+            /* mStepWork[3]: set once the mStepDelay countdown has run out
+               and func_02020334 has been sent; this step reads it back. */
+            if (scene->mStepWork[3] == 0) {
                 acc = 0;
                 p = data_0209fc5c;
                 i = acc;
@@ -63,49 +66,42 @@ void func_ov075_0211867c(char *self)
                     i = i + 1;
                     p = p + 1;
                 } while (i < 4);
-                {
-                    int *timer;
-                    timer = (int *)(self + 0x264);
-                    *timer = *timer - data_0208ee44;
-                    if (*(int *)(self + 0x264) <= 0 ||
-                        (*(int *)(self + 0x264) < 0x21c && acc != 0)) {
-                        func_02020334();
-                        *(int *)(self + 0x274) = 1;
-                    }
+                scene->mStepDelay -= data_0208ee44;
+                if (scene->mStepDelay <= 0 || (scene->mStepDelay < 0x21c && acc != 0)) {
+                    func_02020334();
+                    scene->mStepWork[3] = 1;
                 }
             } else {
-                if (reinterpret_cast<dScEntry_c *>(self)->ArePlayersReady() != 0)
+                if (scene->ArePlayersReady() != 0)
                     func_02020124();
             }
-        } else if (*(int *)(self + 0x274) == 0) {
-            int *timer;
-            timer = (int *)(self + 0x264);
-            *timer = *timer - data_0208ee44;
-            if (*(int *)(self + 0x264) < 0x1e0) {
+        } else if (scene->mStepWork[3] == 0) {
+            scene->mStepDelay -= data_0208ee44;
+            if (scene->mStepDelay < 0x1e0) {
                 func_02020334();
-                *(int *)(self + 0x274) = 1;
+                scene->mStepWork[3] = 1;
             }
         }
         if ((data_020a0e5a[func_0203da9c() * 2] & ~0xc) != 0)
             func_02012790(0xe);
     }
 
-    func_02020768(self + 0x1b4);
-    func_02020768(self + 0x1e0);
-    func_02020768(self + 0x20c);
+    func_02020768((char *)&scene->mOamAnimations[0]);
+    func_02020768((char *)&scene->mOamAnimations[1]);
+    func_02020768((char *)&scene->mOamAnimations[2]);
     p = data_0209b2f0 + id;
     if (*p == 0)
-        func_02020768(self + 0x238);
-    if (*(u8 *)(self + 0x1d9) == 0) {
-        if (*(u8 *)(self + 0x205) == 0) {
-            *(u8 *)(self + 0x1da) = 0;
-            *(u8 *)(self + 0x205) = 1;
-            *(u8 *)(self + 0x206) = 1;
+        func_02020768((char *)&scene->mOamAnimations[3]);
+    if (scene->mOamAnimations[0].enabled == 0) {
+        if (scene->mOamAnimations[1].enabled == 0) {
+            scene->mOamAnimations[0].affine = 0;
+            scene->mOamAnimations[1].enabled = 1;
+            scene->mOamAnimations[1].affine = 1;
             if (*p == 0) {
-                *(u8 *)(self + 0x231) = 1;
-                *(u8 *)(self + 0x232) = 1;
-                *(u8 *)(self + 0x25d) = 1;
-                *(u8 *)(self + 0x25e) = 1;
+                scene->mOamAnimations[2].enabled = 1;
+                scene->mOamAnimations[2].affine = 1;
+                scene->mOamAnimations[3].enabled = 1;
+                scene->mOamAnimations[3].affine = 1;
             }
         }
     }
