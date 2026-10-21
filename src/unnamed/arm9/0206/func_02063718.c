@@ -1,4 +1,5 @@
 #include "types.h"
+#include "private/arm9_wbt.h"
 
 /* NitroSDK WBT (wireless block transfer): start the command the application
  * queued. When no command is running (cmd.command == 0) and one is queued,
@@ -8,67 +9,7 @@
  * 10 REQ_USER_DATA. A block (or block-info) request first resets each target
  * peer's receive bitmap: GET_BLOCK into the caller's buffer and bitmap
  * tables, GET_BLOCKINFO into the peer record's own bitmap words.
- *
- * Field names follow func_02064554's WBTCommand / WBTPeerRecord views; the
- * get union is the layout WBT_GetBlock (func_02065730) builds. */
-typedef struct WBTCommand {
-    s32 command;              /* 0x00 */
-    s32 event;                /* 0x04 */
-    u16 target_bmp;           /* 0x08 */
-    u16 peer_bmp;             /* 0x0a */
-    u8 my_cmd_counter;        /* 0x0c */
-    u8 peer_cmd_counter;      /* 0x0d */
-    s16 result;               /* 0x0e */
-    void (*callback)(char *); /* 0x10 */
-    union {
-        struct {
-            u32 block_id;           /* 0x14 */
-            u32 recv_data_size;     /* 0x18 */
-            u8 *recv_buf_table[16]; /* 0x1c -- per aid */
-            u32 *pkt_bmp_table[16]; /* 0x5c -- per aid */
-        } get;
-        struct {
-            u8 data[9]; /* 0x14 */
-            u8 size;    /* 0x1d */
-        } user_data;
-    } u;
-} WBTCommand;
-
-/* func_020647fc fills it: length, packet count, three cursors, then the
- * bitmap words and the receive buffer. */
-typedef struct WBTPacketBitmap {
-    s32 length; /* 0x00 */
-    s32 count;  /* 0x04 */
-    s32 pad_08[3];
-    u32 *bitmap; /* 0x14 */
-    u8 *buffer;  /* 0x18 */
-} WBTPacketBitmap;
-
-/* A peer's receive state for the running transfer. */
-typedef struct WBTPeerRecv {
-    WBTPacketBitmap pkt_bmp; /* 0x00 */
-    u32 blockinfo_bits[10];  /* 0x1c -- GET_BLOCKINFO's bitmap words */
-} WBTPeerRecv;
-
-typedef struct WBTPeerRecord {
-    u8 pad_00[0x24];
-    WBTPeerRecv recv; /* 0x24 */
-} WBTPeerRecord;
-
-typedef struct WBTWork {
-    WBTCommand cmd;        /* 0x000 -- the command running */
-    WBTCommand queued_cmd; /* 0x09c -- the next one; command 0 = none */
-    u8 pad_138[0x9c];
-    WBTPeerRecord peer[16]; /* 0x1d4 -- indexed by aid */
-} WBTWork;
-
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm: WBT_GetBlock's command is 0x9c bytes, a peer
- * record steps 0x68, and peer[] starts at 0x1d4. */
-typedef char WBTCommand_size_must_be_0x9c[sizeof(WBTCommand) == 0x9c ? 1 : -1];
-typedef char WBTPeerRecord_size_must_be_0x68[sizeof(WBTPeerRecord) == 0x68 ? 1 : -1];
-typedef char WBTWork_peer_must_be_at_0x1d4[(int)&((WBTWork *)0)->peer == 0x1d4 ? 1 : -1];
-#endif
+ * The WBTCommand / WBTWork views are in private/arm9_wbt.h. */
 
 extern void MultiCopy_Int(void *src, void *dst, int n); /* loads through r0, stores through r1 */
 extern void func_02065bf4(void);

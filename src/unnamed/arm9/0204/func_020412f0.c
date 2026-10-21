@@ -12,6 +12,7 @@
  * shape rather than a b56 accident. Link-verified: VERIFIED, 0 diffs, 0 blind.
  */
 #include "private/arm9_a1fc0_file_share.h"
+#include "private/arm9_wbt.h"
 
 typedef unsigned int u32;
 typedef unsigned short u16;
@@ -38,35 +39,6 @@ extern u8 data_020a2408[];
 extern u8 data_020a2409[];
 extern char data_020a1fc0[];
 extern int data_020a0f8c;
-
-/* The NitroSDK WBTCommand this WBT system callback receives; layout and names
- * as in func_02064554.c, plus the prepare-send member. Event 0xa is
- * REQ_USER_DATA (a child's request), 0xd PREPARE_SEND_DATA (WBT asks for the
- * bytes of one block packet). */
-typedef struct WBTPrepareSendDataCallback {
-    u32 block_id;         /* 0x00 */
-    s32 block_seq_no;     /* 0x04 */
-    const void *data_ptr; /* 0x08 */
-    s16 own_packet_size;  /* 0x0c */
-} WBTPrepareSendDataCallback;
-
-typedef struct WBTCommand {
-    s32 command;              /* 0x00 */
-    s32 event;                /* 0x04 */
-    u16 target_bmp;           /* 0x08 */
-    u16 peer_bmp;             /* 0x0a */
-    u8 my_cmd_counter;        /* 0x0c */
-    u8 peer_cmd_counter;      /* 0x0d */
-    s16 result;               /* 0x0e */
-    void (*callback)(char *); /* 0x10 */
-    union {
-        struct {
-            u8 data[9]; /* 0x14 */
-            u8 size;    /* 0x1d */
-        } user_data;
-        WBTPrepareSendDataCallback prepare_send_data;
-    } u;
-} WBTCommand;
 
 typedef struct {
     u32 f0 : 4;
