@@ -29,7 +29,6 @@
 #include "common.h"
 
 extern "C" {
-void func_020353b0(void *ray, void *actor);
 int func_02035354(void *a, void *b);
 Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 int func_020393b4(void *p);

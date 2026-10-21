@@ -967,10 +967,9 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
         z += stepZ;
     } while (z <= hiZ);
 
-    /* The accumulated extent goes back as two corners; the flags word is the
-       return value. func_02037a6c (0x02037a6c, 0xb0) is still unnamed. */
+    /* Merge the accumulated push-out range into the query; return the hit flags. */
     if (!hitFlags && !hitFlags2) goto ret0;
-    sphere.func_02037a6c(loPX, loPY, loPZ, hiPX, hiPY, hiPZ);
+    sphere.ExpandPushOutBounds(loPX, loPY, loPZ, hiPX, hiPY, hiPZ);
     return hitFlags;
 ret0:
     return 0;
