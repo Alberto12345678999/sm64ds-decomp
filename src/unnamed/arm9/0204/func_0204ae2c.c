@@ -67,8 +67,7 @@ struct ParticleSystem {
     int m70;        /* 0x70 */
 };
 
-void func_0204ae2c(struct ParticleSystem *o, void *p18, struct Vector3 *src3)
-{
+void func_0204ae2c(struct ParticleSystem *o, void *p18, struct Vector3 *src3) {
     o->mDefinition = p18;
     o->callbackFlags = 0;
     o->position = *src3;
