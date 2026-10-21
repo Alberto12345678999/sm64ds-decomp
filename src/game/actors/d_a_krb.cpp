@@ -91,7 +91,7 @@ struct SilverStarView {
     u8 head[0x434];
     u32 mMarkerID;
 };
-typedef char SilverStarViewSizeCheck[sizeof(SilverStarView) == 0x438 ? 1 : -1];
+typedef char SilverStarView_size_must_be_0x438[sizeof(SilverStarView) == 0x438 ? 1 : -1];
 
 namespace cstd { int fdiv(int a, int b); }
 

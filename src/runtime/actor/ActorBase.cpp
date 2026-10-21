@@ -71,8 +71,9 @@ extern void *func_02043810(void *p);
 /* Heap's methods and fields come from include/Heap.h. The heap locals stay
    `void *` (and are cast at each use): Virtual34 and Virtual38 read its
    heapStart and heapSize through those casts. include/Heap.h itself
-   declares InitializeSolidHeapAsDefault as returning `void *`. Memory::Deallocate and data_020a0eac come from include/fBase_c.h,
-   which needs them for its inline operator delete. */
+   declares InitializeSolidHeapAsDefault as returning `void *`.
+   Memory::Deallocate and data_020a0eac come from include/fBase_c.h, which
+   needs them for its inline operator delete. */
 extern void *_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(unsigned int size, int align, void *heap);
 
 }

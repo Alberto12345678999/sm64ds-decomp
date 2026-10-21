@@ -94,7 +94,7 @@ struct BookSwitchView {
     u8 head[0x418];
     u32 mLinkedActorID;
 };
-typedef char BookSwitchViewSizeCheck[sizeof(BookSwitchView) == 0x41c ? 1 : -1];
+typedef char BookSwitchView_size_must_be_0x41c[sizeof(BookSwitchView) == 0x41c ? 1 : -1];
 
 /* SharedFilePtr's fields, which SharedFilePtr.h leaves undeclared; the
    names are src/SharedFilePtr.cpp's. filePtr is the loaded file. */
@@ -103,7 +103,9 @@ struct SharedFileView {
     u8 numRefs;    /* 0x02 */
     void *filePtr; /* 0x04 */
 };
-typedef char SharedFileViewSizeCheck[sizeof(SharedFileView) == 8 ? 1 : -1];
+#ifndef SM64DS_PLATFORM_PC
+typedef char SharedFileView_size_must_be_0x8[sizeof(SharedFileView) == 8 ? 1 : -1];
+#endif
 
 #pragma defer_codegen off
 

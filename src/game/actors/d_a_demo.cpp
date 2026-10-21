@@ -392,7 +392,9 @@ struct SharedFileView {
     u8 numRefs;    /* 0x02 */
     void *filePtr; /* 0x04 */
 };
-typedef char SharedFileViewSizeCheck[sizeof(SharedFileView) == 8 ? 1 : -1];
+#ifndef SM64DS_PLATFORM_PC
+typedef char SharedFileView_size_must_be_0x8[sizeof(SharedFileView) == 8 ? 1 : -1];
+#endif
 
 /* Lakitu's model-file handle, owned and constructed by d_a_c_jugem.cpp's
  * static init. Same TU-local wrapper spelling as the owning TU. */
