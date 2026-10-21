@@ -82,7 +82,7 @@ typedef struct MBCommChildBlockHeader {
             u16 req; /* 0x02 */
         } data;
         struct {
-            u8 piece;     /* 0x02 */
+            u8 piece;      /* 0x02 */
             u8 data[0x10]; /* 0x03 */
             u8 pad2[1];
         } req_data;
@@ -91,7 +91,8 @@ typedef struct MBCommChildBlockHeader {
 
 #ifndef SM64DS_PLATFORM_PC
 /* The SDK packs it to 0x14: 2 + the 0x12-byte request piece. */
-typedef char MBCommChildBlockHeader_size_must_be_0x14[sizeof(MBCommChildBlockHeader) == 0x14 ? 1 : -1];
+typedef char
+    MBCommChildBlockHeader_size_must_be_0x14[sizeof(MBCommChildBlockHeader) == 0x14 ? 1 : -1];
 #endif
 
 extern u8 *data_020a9db8;

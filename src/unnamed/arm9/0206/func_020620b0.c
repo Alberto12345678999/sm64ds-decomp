@@ -38,7 +38,8 @@ int func_020620b0(int self, char *o)
     if (r != 0) return r;
     if (o == 0) return 6;
     if (param->userGameInfoLength != 0) {
-        if (param->userGameInfo == 0) return 6;
+        if (param->userGameInfo == 0)
+            return 6;
     }
     ksFlag = param->KS_Flag;
     if (param->parentMaxSize + (ksFlag != 0 ? 0x2a : 0) > 0x200 ||

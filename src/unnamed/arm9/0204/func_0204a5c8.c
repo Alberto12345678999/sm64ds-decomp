@@ -34,7 +34,7 @@ typedef struct DefinitionDataView {
 
 /* A particle: ParticleNode's next link, plus the texture its animation is on. */
 typedef struct ParticleNodeView {
-    struct ParticleNodeView* next; /* 0x00 */
+    struct ParticleNodeView *next; /* 0x00 */
     char pad[0x42 - 4];
     u8 texture; /* 0x42 -- index into ManagerView.textures */
 } ParticleNodeView;
@@ -49,18 +49,18 @@ typedef struct ChildDefinitionView {
 } ChildDefinitionView;
 
 typedef struct SystemDefinitionView {
-    DefinitionDataView* data; /* 0x00 */
+    DefinitionDataView *data; /* 0x00 */
     char pad[0x14 - 4];
-    ChildDefinitionView* child; /* 0x14 */
+    ChildDefinitionView *child; /* 0x14 */
 } SystemDefinitionView;
 
 typedef struct SystemView {
     char pad0[8];
-    ParticleNodeView* particles; /* 0x08 -- System.particles.head */
+    ParticleNodeView *particles; /* 0x08 -- System.particles.head */
     char pad1[0x10 - 0xc];
-    ParticleNodeView* particles2; /* 0x10 -- System.particles2.head: the children */
+    ParticleNodeView *particles2; /* 0x10 -- System.particles2.head: the children */
     char pad2[0x18 - 0x14];
-    SystemDefinitionView* mDefinition; /* 0x18 */
+    SystemDefinitionView *mDefinition; /* 0x18 */
 } SystemView;
 
 /* One 0x14-byte texture record: what func_0204af3c (texture, palette, size)
@@ -75,18 +75,18 @@ typedef struct TextureView {
  * here. */
 typedef struct ManagerView {
     char pad0[0x20];
-    TextureView* textures; /* 0x20 */
+    TextureView *textures; /* 0x20 */
     char pad1[0x34 - 0x24];
-    SystemView* currentSystem; /* 0x34 */
+    SystemView *currentSystem; /* 0x34 */
 } ManagerView;
 
 void func_0204a5c8(char* self)
 {
-    ManagerView* mgr = (ManagerView*)self;
-    SystemView* system = mgr->currentSystem;
-    SystemDefinitionView* def = system->mDefinition;
-    ParticleNodeView* n;
-    DefinitionDataView* data = def->data;
+    ManagerView *mgr = (ManagerView *)self;
+    SystemView *system = mgr->currentSystem;
+    SystemDefinitionView *def = system->mDefinition;
+    ParticleNodeView *n;
+    DefinitionDataView *data = def->data;
     void (*fn1)(void*, void*) = 0;
     void (*fn2)(void*);
 
@@ -109,7 +109,8 @@ void func_0204a5c8(char* self)
         } while (n != 0);
     }
 
-    if (!data->hasChildResource) return;
+    if (!data->hasChildResource)
+        return;
 
     func_0204af3c(&mgr->textures[def->child->texture]);
 

@@ -17,11 +17,11 @@ typedef struct MbSegmentInfo {
  * MbDownloadFileInfoHeader fields (as func_02067604's view names them), then
  * the 0x88-byte authentication code. */
 typedef struct MB_DownloadFileInfo {
-    u32 arm9EntryAddr;      /* 0x00 */
-    u32 arm7EntryAddr;      /* 0x04 */
-    u32 padding;            /* 0x08 */
-    MbSegmentInfo seg[3];   /* 0x0c */
-    u8 auth_code[0x88];     /* 0x3c */
+    u32 arm9EntryAddr;    /* 0x00 */
+    u32 arm7EntryAddr;    /* 0x04 */
+    u32 padding;          /* 0x08 */
+    MbSegmentInfo seg[3]; /* 0x0c */
+    u8 auth_code[0x88];   /* 0x3c */
 } MB_DownloadFileInfo;
 
 /* The ROM header fields read here: the two entry points. */
@@ -37,8 +37,7 @@ typedef struct RomHeaderView {
  * data_0208685c entry (ARM9 static, ARM7 static, ROM header), with ARM7
  * segments that cannot be received in place staged upward from 0x022c0000,
  * then copy in the authentication code that follows the image. */
-void func_020678a4(int *out, int *in, void *authCode)
-{
+void func_020678a4(int *out, int *in, void *authCode) {
     int recvCursor;
     MbSegmentInfo *seg;
     int *t;

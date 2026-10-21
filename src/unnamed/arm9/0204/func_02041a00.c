@@ -27,8 +27,7 @@ typedef struct FileShareWork {
  * back: it compares the two packet-size bytes with its own mParentPacketSize,
  * and looks the region up by (offset, length) with func_02041ce0 and
  * func_02041c64. */
-typedef struct
-{
+typedef struct {
     u32 kind : 4;
     u32 packetSizeHigh : 4; /* bits 8-11 of the packet size */
     u32 length : 24;

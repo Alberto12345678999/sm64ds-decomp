@@ -15,7 +15,7 @@ typedef struct MbParentFile {
     u8  mHeader[0x59c];   /* 0x000 -- download info; func_020662c0 sends 0xe4 of
                              it, func_02067530 reads three 16-byte segment rows
                              at +0xc */
-    u8  mBlockTable[0x14];/* 0x59c -- NitroSDK MB_BlockInfoTable: 3 segment
+    u8 mBlockTable[0x14]; /* 0x59c -- NitroSDK MB_BlockInfoTable: 3 segment
                              byte offsets (running sums of the segment sizes),
                              3 head block numbers, block count; built by
                              func_02067604, read by func_02067530 */

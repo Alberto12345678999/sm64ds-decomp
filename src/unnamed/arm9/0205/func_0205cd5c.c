@@ -32,8 +32,7 @@ extern u32 _ZN3IRQ7DisableEv(void);
 extern void OS_WakeupThread(u16 *p);
 extern void _ZN3IRQ7RestoreEj(u32 f);
 
-void func_0205cd5c(FSArchive *self, int arg)
-{
+void func_0205cd5c(FSArchive *self, int arg) {
     /* The FS_IsArchiveAsync test is materialized as a 0/1 int; testing the
        flag in the if directly moves bytes. */
     int b = (int)((self->flag & 0x100) != 0);

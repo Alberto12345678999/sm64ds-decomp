@@ -4,10 +4,10 @@ extern void *data_020a9db8;
 /* NitroSDK MbSegmentInfo: one row of a download file's segment table, as
  * func_020676e0 fills it (ARM9 static, ARM7 static, ROM header). */
 typedef struct MbSegmentInfo {
-    unsigned int recv_addr; /* 0x00 -- where the child receives it: load_addr, or a
-                               staging buffer for an ARM7 segment */
-    unsigned int load_addr; /* 0x04 -- where it finally runs */
-    unsigned int size;      /* 0x08 */
+    unsigned int recv_addr;  /* 0x00 -- where the child receives it: load_addr, or a
+                                staging buffer for an ARM7 segment */
+    unsigned int load_addr;  /* 0x04 -- where it finally runs */
+    unsigned int size;       /* 0x08 */
     unsigned int target : 1; /* 0x0c -- set for the ARM7 segment */
     unsigned int rsv : 31;
 } MbSegmentInfo;
