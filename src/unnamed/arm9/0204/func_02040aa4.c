@@ -1,4 +1,6 @@
 #include "types.h"
+#include "private/arm9_a1fc0_file_share.h"
+
 extern u32 _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(u32 state);
 extern void func_0205cd5c(void *arg0, int arg1);
@@ -8,45 +10,58 @@ extern void func_02065170(void);
 extern int data_020a0f84;
 extern char data_020a1fc0[];
 
+/* mAllocFunc: (arg, size, 0) allocates, (arg, 0, ptr) frees. */
 typedef void (*CallbackFn)(void *ctx, int zero, int val);
 
+/* The FSFile a child read is in flight on (mReadRequest); only its archive is
+ * read here (NitroSDK FSFile.arc). */
+typedef struct FSFile {
+  char pad_00[8];
+  void *arc; /* 0x08 */
+} FSFile;
+
+/* Shut the file share down: free the card tables (mTable), and as a child
+ * cancel the read in flight and free the receive work (mRecvWork). The
+ * mAllocFunc/mAllocArg and mIsParent reads go through FILE_SHARE_WORK, not
+ * work: the ROM reloads the block's address for them (through work the
+ * function is 12 bytes shorter). */
 void func_02040aa4(void)
 {
-  char *g = data_020a1fc0;
+  FileShareWork *work = FILE_SHARE_WORK;
   u32 saved0 = _ZN3IRQ7DisableEv();
 
   if (data_020a0f84 != 0) {
-    int cb1 = *(int *)(g + 0x20);
+    int cb1 = work->mTable;
 
     if (cb1 != 0) {
       if (cb1 != 0) {
         u32 saved1 = _ZN3IRQ7DisableEv();
-        void *ctxArg = *(void **)(data_020a1fc0 + 0x18);
-        CallbackFn fn = *(CallbackFn *)(data_020a1fc0 + 0x14);
+        void *ctxArg = (void *)FILE_SHARE_WORK->mAllocArg;
+        CallbackFn fn = (CallbackFn)FILE_SHARE_WORK->mAllocFunc;
         fn(ctxArg, 0, cb1);
         _ZN3IRQ7RestoreEj(saved1);
       }
-      *(volatile int *)(g + 0x20) = 0;
-      *(volatile int *)(g + 0x24) = 0;
+      *(volatile int *)&work->mTable = 0;
+      *(volatile int *)&work->mTableSize = 0;
     }
 
-    *(int *)(g + 0xc) = 0;
+    work->mState = 0;
 
-    if (*(int *)data_020a1fc0 == 0) {
-      void *p = *(void **)(g + 0x1c);
-      char *g2 = g + 0x440;
+    if (FILE_SHARE_WORK->mIsParent == 0) {
+      FSFile *p = (FSFile *)work->mReadRequest;
+      FileShareChildArea *child = (FileShareChildArea *)work->mArea;
       if (p != 0) {
-        void *arg = *(void **)((char *)p + 8);
-        *(void **)(g + 0x1c) = 0;
+        void *arg = p->arc;
+        work->mReadRequest = 0;
         func_0205cd5c(arg, 5);
       }
 
       {
-        int cb2 = *(int *)(g2 + 0xc70);
+        int cb2 = child->mRecvWork;
         if (cb2 != 0) {
           u32 saved2 = _ZN3IRQ7DisableEv();
-          void *ctxArg2 = *(void **)(data_020a1fc0 + 0x18);
-          CallbackFn fn2 = *(CallbackFn *)(data_020a1fc0 + 0x14);
+          void *ctxArg2 = (void *)FILE_SHARE_WORK->mAllocArg;
+          CallbackFn fn2 = (CallbackFn)FILE_SHARE_WORK->mAllocFunc;
           fn2(ctxArg2, 0, cb2);
           _ZN3IRQ7RestoreEj(saved2);
         }
