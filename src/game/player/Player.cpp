@@ -13127,7 +13127,8 @@ int Player::St_Wait_Main()
     }
 
     case 2: {
-        if (unk_723 == 0 && mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(1)) {
+        if (mMuteSleepVoice == 0 &&
+            mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(1)) {
             Sound::PlayCharVoice(mCharacter, 0x2a, mCamSpacePos);
         }
         {
@@ -13187,7 +13188,7 @@ int Player::St_Wait_Main()
     case 4: {
         if (mStatePhase == 0) {
             func_ov002_020d2f24(((char*)this));
-            if (unk_723 == 0 &&
+            if (mMuteSleepVoice == 0 &&
                 mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0xd)) {
                 Sound::PlayCharVoice(mCharacter, 0x2b, mCamSpacePos);
             }

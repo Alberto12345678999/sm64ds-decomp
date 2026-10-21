@@ -604,7 +604,10 @@ struct Player : dActor_c {
        calls Sound::ChangeMusicVolume(0x7f, ...) each frame while it is set
        and clears it once the volume is back. */
     u8 mRestoreMusicVolume; /* 0x722 */
-    u8  unk_723;            /* 0x723 */
+    /* While set, St_Wait_Main skips the two sleep voices (0x2a in step 2,
+       0x2b in step 4). daC_Jugem_c::StateArriveMain sets it on the closest
+       player at its first tick and clears it at tick 0x82. */
+    u8 mMuteSleepVoice;     /* 0x723 */
     u8  unk_724;            /* 0x724 */
     /* func_ov002_020c44c4 sets it when it opens the one-time message 0x177;
        St_Talk_Cleanup then calls Sound::LoadAndSetMusic_Layer1(0x39) and
