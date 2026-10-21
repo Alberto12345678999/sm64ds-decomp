@@ -109,16 +109,10 @@ u32 GetBG2ScrPtr();
 u32 GetBG3ScrPtr();
 }
 
-/* Two-word step copies. The RESULT factory below uses the same layout;
- * defining it once keeps the later aggregate copies on the struct the
- * cartridge's factory was matched against. */
-struct P2 {
-    int a, b;
-};
+/* The RESULT factory retains its two-word aggregate-copy schedule. */
 struct P2Copy {
     int words[2];
 };
-extern int data_02086b58[];
 
 extern "C" {
 int func_0203d974(void);
@@ -142,7 +136,6 @@ void func_02030a78(void);
 void func_02030a6c(void);
 void func_020337ec(void);
 int TouchArea_Update(char *, int);
-int func_ov075_02116d9c(int, int);
 void func_ov001_020ab41c(void *);
 void func_ov001_020ab3f0(void *);
 
@@ -151,13 +144,14 @@ extern u8 data_0208f274;
 extern OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
 extern dScEntry_c::StepSet data_ov075_0211d918;
+// Behavior slot of the player-sync step set, at data_ov075_0211d918 + 8.
+extern dScEntry_c::Step data_ov075_0211d920;
 extern dScEntry_c::StepSet data_ov075_0211d900;
 extern dScEntry_c::StepSet data_ov075_0211d8b8;
 extern OamAttr *data_ov075_0211c968[];
 extern u8 data_0209fc58;
 extern u8 data_0209fc5c[];
 extern u8 data_0209fc5d[];
-extern int data_ov075_0211d920[];
 extern dScEntry_c::StepSet data_ov075_0211d8a0;
 extern dScEntry_c::StepSet data_ov075_0211d8d0;
 
@@ -402,7 +396,8 @@ extern "C" void func_ov075_021197e8(char *c) {
     if (*(unsigned char *)(c + 0x282) == 0)
         return;
     if (TouchArea_Update(c + 0x70, -1) != 0 ||
-        (func_ov075_02116d9c((int)c, -1) != 0 && *(unsigned char *)(c + 0x281) == 0)) {
+        (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) != 0 &&
+         *(unsigned char *)(c + 0x281) == 0)) {
         *(unsigned char *)(c + 0xa4) = 0;
         func_ov001_020ab41c(c + 0x70);
         SetNumPlayers(1);
@@ -411,7 +406,7 @@ extern "C" void func_ov075_021197e8(char *c) {
         return;
     }
     if (TouchArea_Update(c + 0x94, -1) == 0) {
-        if (func_ov075_02116d9c((int)c, -1) == 0)
+        if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) == 0)
             return;
         if (*(unsigned char *)(c + 0x281) != 1)
             return;
@@ -514,7 +509,7 @@ extern "C" void func_ov075_02119b34(char *c) {
         return;
     if (r4 < 4) {
         if (TouchArea_Update(c + 0x70, 0) == 0) {
-            if (func_ov075_02116d9c((int)c, 0) == 0)
+            if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(0) == 0)
                 return;
         }
     }
@@ -570,62 +565,33 @@ void dScEntry_c::UpdateStepDelay() {
     SetSteps(mPendingSteps);
 }
 
-/* recovered: dScEntry_c wireless/VS teardown.
- *
- * Clears the two entry flags, folds the three per-slot ready bytes at
- * data_0209fc5d into a bitmask, then splits on whether the pending scene is
- * the VS one (6) or not. Both arms fade the top screen to black
- * (SetBlendBrightness with a negative amount) and hand off through
- * ChangeStepsAfterDelay or the sound/scene helpers.
- *
- * The materialized bool at the split (cmp/moveq/movne/cmp/beq) is the tell
- * that this TU is C++: in C mode mwccarm folds that away under every spelling.
- * See notes/mwccarm-codegen.md 6c and 6bg.
- *
- * The scene this runs on is dScEntry_c. This view keeps the two steps as
- * their two words so the copies stay aggregate moves. */
-struct EntryScene {
-    u8 pad_00[0x50];
-    char *mEntObj; /* 0x050 */
-    u8 pad_054[8];
-    struct P2 mBehaviorStep; /* 0x05c */
-    struct P2 mRenderStep;   /* 0x064 */
-    u8 pad_06c[0x214];
-    u8 mIconCount; /* 0x280 */
-    u8 pad_281[6];
-    u8 mExitMask; /* 0x287 */
-};
-
-static inline int IsVsMode() {
+/* State 6 is written by the wireless teardown path. Keep the materialized
+ * predicate: flattening it changes the retail branch sequence. */
+static inline int HasConnectionError() {
     return data_0209fc68 == 6;
 }
 
-// @symbol func_ov075_02119dc4
-extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
-    volatile struct P2 tmp;
-    u8 mask;
-    u8 *q;
-    int i;
-    u8 st;
+// @symbol _ZN10dScEntry_c22HandlePlayerDisconnectEPKNS_7StepSetE
+void dScEntry_c::HandlePlayerDisconnect(const StepSet *resumeSteps) {
+    u8 activePeerMask;
+    u8 *peerActive;
+    int player;
+    u8 disconnectFlags;
 
     data_0209d454 = data_0209d454 & ~0x11;
-    mask = 0;
-    q = data_0209fc5d;
-    for (i = 1; i < 4; i++) {
-        if (q[0])
-            mask = mask | (1 << i);
-        q++;
+    activePeerMask = 0;
+    peerActive = data_0209fc5d;
+    for (player = 1; player < 4; player++) {
+        if (peerActive[0])
+            activePeerMask = activePeerMask | (1 << player);
+        peerActive++;
     }
-    st = data_0209fc58;
-    if (IsVsMode()) {
+    disconnectFlags = data_0209fc58;
+    if (HasConnectionError()) {
         func_ov075_02116028((int *)&data_ov075_0211d71c, 5);
         func_02030a78();
         {
-            struct P2 *p;
-            int *ref;
-            if ((st & 0x30) != 0 ||
-                ((p = &self->mBehaviorStep), (ref = data_ov075_0211d920),
-                 p->a == ref[0] && (p->b == ref[1] || self->mBehaviorStep.a == 0))) {
+            if ((disconnectFlags & 0x30) != 0 || mBehaviorStep == data_ov075_0211d920) {
                 if (GetOwnerLanguage() == 3)
                     func_020338b0(0xa5, 0xb0, 0x15, -1);
                 else
@@ -634,45 +600,37 @@ extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
                 func_020338b0(0xc5, 0xb0, 0x13, -1);
             }
         }
-        tmp.a = data_02086b58[0];
-        tmp.b = data_02086b58[1];
-        self->mBehaviorStep.a = data_02086b58[0];
-        self->mBehaviorStep.b = data_02086b58[1];
-        data_0209d45c = data_0209d45c & ~self->mExitMask;
-        if (self->mExitMask) {
-            int t0 = tmp.a;
-            int t1 = tmp.b;
-            self->mRenderStep.a = t0;
-            self->mRenderStep.b = t1;
-        }
+        mBehaviorStep = 0;
+        data_0209d45c = data_0209d45c & ~mDisconnectHideMask;
+        if (mDisconnectHideMask)
+            mRenderStep = 0;
         G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
         *(volatile u16 *)0x4001050 = 0;
         Sound::StopLoadedMusic_Layer1(4);
         func_02012790(0x123);
-        self->mEntObj[0xf44] = 1;
+        mEntObj->mSuspended = 1;
     } else {
         func_ov075_02116028((int *)&data_ov075_0211d71c, 6);
-        if ((func_0203d974() && data_0209fc5c[0] == 0) || (func_0203d9b4() && mask == 0)) {
+        if ((func_0203d974() && data_0209fc5c[0] == 0) ||
+            (func_0203d9b4() && activePeerMask == 0)) {
             if (func_0203d974())
                 func_020338b0(0x125, 0xb0, 0x1b, 0);
             else
                 func_020338b0(0x125, 0xb0, 0x1a, -1);
             func_02030a78();
-            reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
-                reinterpret_cast<const dScEntry_c::StepSet *>(&data_ov075_0211d930), 0xb4);
-            data_0209d45c = data_0209d45c & ~self->mExitMask;
-            if (self->mExitMask)
-                *(struct P2Copy *)&self->mRenderStep = *(struct P2Copy *)data_02086b58;
+            ChangeStepsAfterDelay(reinterpret_cast<const StepSet *>(&data_ov075_0211d930), 0xb4);
+            data_0209d45c = data_0209d45c & ~mDisconnectHideMask;
+            if (mDisconnectHideMask)
+                mRenderStep = 0;
             G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x1f, -6);
             func_02012790(0x12a);
         } else {
-            for (i = 0; i < 4; i++) {
-                int bit = 1 << i;
-                if (st & bit) {
-                    func_020338b0(0x125, 0xb0, 0x1c, (s8)(u8)i);
+            for (player = 0; player < 4; player++) {
+                int bit = 1 << player;
+                if (disconnectFlags & bit) {
+                    func_020338b0(0x125, 0xb0, 0x1c, (s8)(u8)player);
                     data_0209fc58 = data_0209fc58 & ~bit;
-                    reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
-                        reinterpret_cast<const dScEntry_c::StepSet *>(arg), 0x78);
+                    ChangeStepsAfterDelay(resumeSteps, 0x78);
                     func_02012790(0x12a);
                     break;
                 }
@@ -680,7 +638,7 @@ extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
         }
     }
     data_0209d454 = data_0209d454 | 5;
-    self->mIconCount = 0;
+    mIconCount = 0;
 }
 
 // @symbol _ZN10dScEntry_c19ChangeStepsWithFadeEPKNS_7StepSetE
@@ -761,7 +719,7 @@ s32 dScEntry_c::Behavior() {
     if (data_0209fc68 != 0) {
         int t = (data_0209fc68 == 6);
         if (t != 0)
-            func_ov075_02119dc4((EntryScene *)this, (int)&data_ov075_0211d930);
+            HandlePlayerDisconnect(reinterpret_cast<const StepSet *>(&data_ov075_0211d930));
     }
 
     if (mBehaviorStep != 0)
@@ -834,7 +792,7 @@ s32 dScEntry_c::InitResources() {
         Deallocate(data_0209b2e8);
         data_0209b2e8 = 0;
     }
-    unk_287 = 0;
+    mDisconnectHideMask = 0;
     LoadFont3D();
 
     {
@@ -917,7 +875,7 @@ void *dScEntry_c_classInit_RESULT(void) {
        mOamAnimations) are byte-neutral. */
     char *p = (char *)_ZN7fBase_cnwEj(sizeof(dScEntry_c));
     if (p) {
-        struct P2 v;
+        dScEntry_c::Step v;
         _ZN7fBase_cC2Ev(p);
         *(char **)p = data_0208e4b8;
         *(char **)p = (char *)_ZTV8dScene_c;
@@ -927,9 +885,8 @@ void *dScEntry_c_classInit_RESULT(void) {
             *flags |= 4;
         }
         *(char **)p = _ZTV10dScEntry_c;
-        /* Array-member copies preserve the original C aggregate-copy schedule
-           in C++ without changing the two-word value's type or layout. */
-        *(struct P2Copy *)&v = *(struct P2Copy *)&data_02086b58;
+        v = 0;
+        /* Keep the factory's aggregate-copy schedule for these three stores. */
         *(struct P2Copy *)&((dScEntry_c *)p)->mEnterStep = *(struct P2Copy *)&v;
         *(struct P2Copy *)&((dScEntry_c *)p)->mBehaviorStep = *(struct P2Copy *)&v;
         *(struct P2Copy *)&((dScEntry_c *)p)->mRenderStep = *(struct P2Copy *)&v;

@@ -50,7 +50,7 @@
  *   tables. Render keeps a volatile Vector3 backup of the scale.
  * - GetCapState is the dCapEnemy_c.h member.
  * - What dCcAc_c bits 0x4 and 0x20000 mean, the king's mState 4 that
- *   unk_475 watches, sounds 0xd0 / 0xe0 / 0xd6 / 0x110 / 0x111 / 0x118 /
+ *   mFreeRoamTimer watches, sounds 0xd0 / 0xe0 / 0xd6 / 0x110 / 0x111 / 0x118 /
  *   0x13a / 0x13b, mFlags bits 0x8 and 0x10000000, and data_0209f2f8
  *   values 6 and 0x1b are not named here.
  *   Nothing in this TU enters STATE_PAUSE except through the table.
@@ -340,7 +340,7 @@ void daKrb_c::func_ov084_02129168(dActor_c *actor) {
     goomba->mWithMeshClsn.ClearJustHitGroundFlag();
     goomba->mWithMeshClsn.ClearGroundFlag();
     func_02012694(SND_TUMBLE_BOUNCE_FIRST, &goomba->mCamSpacePos);
-    goomba->unk_467 = 0;
+    goomba->mBounceCount = 0;
 }
 
 // @symbol _ZN7daKrb_c19func_ov084_02129238Ev
@@ -495,25 +495,27 @@ void daKrb_c::func_ov084_021294d0() {
     char *floorResult = (char *)goomba->mWithMeshClsn.GetFloorResult();
     int surfaceType;
     {
-    char* surface = obj + 4;
-    int normalX = *(int*)(floorResult + 4);
-    int normalY = *(int*)(floorResult + 8);
-    /* `normalY ? normalX : normalX` is not a typo and not dead: both arms are the
-     * same value, and the ternary is what makes mwccarm materialize normalX after
-     * the load of normalY instead of before it. Collapsing it to a plain store
-     * reorders the pair and the function stops reproducing. */
-    *(int*)(surface) = normalY ? normalX : normalX;
-    *(int*)(surface + 4) = normalY;
-    *(int*)(surface + 8) = *(int*)(floorResult + 0xc);
-    *(int*)(surface + 0xc) = *(int*)(floorResult + 0x10);
-    *(int*)(surface + 0x10) = *(int*)(floorResult + 0x14);
-    *(int*)(obj) = (int)data_02099368;
-    *(unsigned short*)(obj + 0x18) = *(unsigned short*)(floorResult + 0x18);
-    *(unsigned short*)(obj + 0x1a) = *(unsigned short*)(floorResult + 0x1a);
-    *(int*)(obj + 0x1c) = *(int*)(floorResult + 0x1c);
-    *(int*)(obj + 0x20) = *(int*)(floorResult + 0x20);
-    *(int*)(obj + 0x24) = *(int*)(floorResult + 0x24);
-    surfaceType = func_02037e38((unsigned int*)surface);
+        /* obj + 4 is &((dBgPi *)obj)->surface; that spelling here or in the
+         * func_02037e84 argument below adds an instruction, so both stay. */
+        char *surface = obj + 4;
+        int clpsLo = ((dBgPi *)floorResult)->surface.clps.w0;
+        int clpsHi = ((dBgPi *)floorResult)->surface.clps.w1;
+        /* `clpsHi ? clpsLo : clpsLo` is not a typo and not dead: both arms are the
+         * same value, and the ternary is what makes mwccarm materialize clpsLo after
+         * the load of clpsHi instead of before it. Collapsing it to a plain store
+         * reorders the pair and the function stops reproducing. */
+        ((SurfaceInfo *)surface)->clps.w0 = clpsHi ? clpsLo : clpsLo;
+        ((SurfaceInfo *)surface)->clps.w1 = clpsHi;
+        ((SurfaceInfo *)surface)->normal.x = ((dBgPi *)floorResult)->surface.normal.x;
+        ((SurfaceInfo *)surface)->normal.y = ((dBgPi *)floorResult)->surface.normal.y;
+        ((SurfaceInfo *)surface)->normal.z = ((dBgPi *)floorResult)->surface.normal.z;
+        *(int *)(obj) = (int)data_02099368;
+        ((dBgPi *)obj)->triangleID = ((dBgPi *)floorResult)->triangleID;
+        ((dBgPi *)obj)->colliderIdx = ((dBgPi *)floorResult)->colliderIdx;
+        ((dBgPi *)obj)->clsnID = ((dBgPi *)floorResult)->clsnID;
+        ((dBgPi *)obj)->owner = ((dBgPi *)floorResult)->owner;
+        ((dBgPi *)obj)->collider = ((dBgPi *)floorResult)->collider;
+        surfaceType = func_02037e38((unsigned int *)surface);
     }
     if (func_02037e84((int*)(obj + 4)) == 8) {
         if (surfaceType == 6 || surfaceType == 7 || surfaceType == 8 || surfaceType == 9)
@@ -576,8 +578,9 @@ void daKrb_c::func_ov084_021296cc() {
         silverStar =
             (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, goomba->mPos, 0, goomba->mAreaId, -1);
         if (starMarker != 0 && silverStar != 0) {
-            /* the silver star's +0x434 holds the marker's uniqueID (+4) */
-            *(int *)(silverStar + 0x434) = *(int *)(starMarker + 4);
+            /* +0x434 is daStar_c::mMarkerID; including daStar_c.h renumbers
+               this TU's @NNN labels, so the star side stays raw. */
+            *(int *)(silverStar + 0x434) = ((dActor_c *)starMarker)->uniqueID;
             _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(starMarker, silverStar);
             goomba->SpawnSoundObj(1);
         }
@@ -1167,8 +1170,8 @@ void daKrb_c::func_ov084_0212a6f8() {
  * becomes (countdown << 10) - mVertAccel when the old speed is no more than
  * countdown * 0x500, else 80 percent of the old one reversed; the horizontal
  * speed is halved but kept at 5.0 or more in magnitude; and a sound plays,
- * SND_TUMBLE_BOUNCE_FIRST when unk_467 is 0, SND_TUMBLE_BOUNCE_LATER for 1
- * and 2. unk_467 counts the landings. Staying on the ground clamps the
+ * SND_TUMBLE_BOUNCE_FIRST when mBounceCount is 0, SND_TUMBLE_BOUNCE_LATER for 1
+ * and 2. mBounceCount counts the landings. Staying on the ground clamps the
  * countdown the same way.
  * Last, mEatenByYoshi is 1 around a SpawnParticlesIfHitOtherObj call (which
  * reports hits differently while it is set, per dEnemyBase_c.h); a hit sets
@@ -1241,12 +1244,12 @@ void daKrb_c::func_ov084_0212a774() {
             }
         }
 
-        if (goomba->unk_467 == 0) {
+        if (goomba->mBounceCount == 0) {
             func_02012694(SND_TUMBLE_BOUNCE_FIRST, &goomba->mCamSpacePos);
-        } else if (goomba->unk_467 <= 2) {
+        } else if (goomba->mBounceCount <= 2) {
             func_02012694(SND_TUMBLE_BOUNCE_LATER, &goomba->mCamSpacePos);
         }
-        goomba->unk_467 += 1;
+        goomba->mBounceCount += 1;
     } else {
         if (goomba->mWithMeshClsn.IsOnGround() != 0) {
             goomba->mWithMeshClsn.ClearLimMovFlag();
@@ -1428,7 +1431,7 @@ void daKrb_c::func_ov084_0212abd4() {
  * mMinionIndex into the spot (targetPos) this minion should stand at. When
  * ApproachAngle (mPrevAngleY toward mInitAngleY) returns 0 and the Goomba is
  * on the ground:
- *  - If the king's mState is 4 with mWalkSpeed 0, or the unk_475 countdown
+ *  - If the king's mState is 4 with mWalkSpeed 0, or the mFreeRoamTimer countdown
  *    (DecIfAbove0_Byte) is nonzero, or the spot is more than 1000.0 away, the
  *    minion acts for itself: if the player is within 1000.0 and the angle
  *    difference to the player is below 0x3000 (67.5 degrees) it faces the
@@ -1442,7 +1445,7 @@ void daKrb_c::func_ov084_0212abd4() {
  *    mGoombaTargetSpeed: a quarter, a half or all of it when the spot is under
  *    50.0, 100.0 or 150.0 away, and the run speed plus all of it beyond that.
  * A minion that falls more than 1000.0 below mHomePos is removed, and while
- * the king is in state 4 with mWalkSpeed 0 unk_475 is reloaded with 30. */
+ * the king is in state 4 with mWalkSpeed 0 mFreeRoamTimer is reloaded with 30. */
 void daKrb_c::func_ov084_0212af74() {
     daKrb_c *goomba = this;
     Vector3 targetPos;
@@ -1480,9 +1483,7 @@ void daKrb_c::func_ov084_0212af74() {
         dist = Vec3_HorzDist(&goomba->mPosX, &targetPos);
 
         if ((king->mState == 4 && king->mWalkSpeed == 0) ||
-            DecIfAbove0_Byte(&goomba->unk_475) != 0 ||
-            dist > 0x3e8000)
-        {
+            DecIfAbove0_Byte(&goomba->mFreeRoamTimer) != 0 || dist > 0x3e8000) {
             ang = goomba->HorzAngleToCPlayer();
             flag = 1;
             if (goomba->DistToCPlayer() < 0x3e8000 &&
@@ -1539,7 +1540,7 @@ void daKrb_c::func_ov084_0212af74() {
     if (king->mState != 4)
         return;
     if (king->mWalkSpeed == 0)
-        goomba->unk_475 = 0x1e;
+        goomba->mFreeRoamTimer = 0x1e;
 }
 
 // @symbol _ZN7daKrb_c19func_ov084_0212b2dcEv
@@ -2001,7 +2002,7 @@ int daKrb_c::InitResources()
     mTerminalVelocity = -0x32000;     /* -50.0 */
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
 
-    unk_467 = 0;
+    mBounceCount = 0;
     mSavedParam = *(int*)(c + 8);
     return 1;
 }

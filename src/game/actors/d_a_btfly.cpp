@@ -26,9 +26,9 @@
  * zero mangled calls.
  *
  * deslop leftovers:
- * - State7 mFlutterPhase / mScale: named += is 0x234 vs 0x258. The phase
- *   load is ldrsh plus a zero-extend shift (ldrh of the field is shorter),
- *   and the adds take the int-cast address, not add #0x300.
+ * - State7 mFlutterPhase: named += is 0x234 vs 0x258. The phase load is
+ *   ldrsh plus a zero-extend shift (ldrh of the field is shorter), and the
+ *   adds take the int-cast address, not add #0x300.
  * - State7 Player::Hurt: method form is 0x264 vs 0x258 (+0xc). Fix12<int>
  *   by value. Player.h does not declare Hurt.
  * - State7 UpdateContinuous(): WRONG-DEST. ROM calls
@@ -103,9 +103,6 @@ struct BtflyAnimationFilePtr : SharedFilePtr {
 /* SharedFilePtr.h has no fields. LoadFile stashes the file in the second word. */
 #define LOADED(h) (((void **)&(h))[1])
 
-/* State2's player-position reload. opt_common_subs is off in that function;
- * folding the cast lets the two reloads CSE. */
-#define M(p) (p)
 /* State7's flutter-phase add. A plain mFlutterPhase += folds to add #0x300;
  * the int cast keeps the pool-offset add the ROM has. */
 #define L(p) ((int)(p))
@@ -156,24 +153,24 @@ daBtfly_c::~daBtfly_c()
 // @symbol _ZN9daBtfly_c6State7Ev
 void daBtfly_c::State7()
 {
-    char *c = (char *)this;
+    char *c = (char *)this; /* unused, but removing it renumbers the @NNN labels */
     int hasContact;
     int v;
 
-    /* 0x3ee does not fit a halfword immediate, and the sign-extend then
-     * zero-extend is not the same instruction as ldrh of mFlutterPhase. */
+    /* Read mFlutterPhase signed, then zero-extend: a single (u16) read
+     * shortens State7 by 8 bytes. */
     if (mStateTimer > 0x78) {
-        int ang = (short)*(s16 *)(c + 0x3ee);
+        int ang = mFlutterPhase;
         ang = (unsigned short)(short)ang;
         int idx = ang >> 4;
         v = FX_MUL((int)data_02082214[(idx << 1) + 1], 0xa3);
         if (v > 0) {
             v = FX_MUL(v, 0x4800);
-            *(u16 *)L(c + 0x3ee) += 0x2710;
+            *(u16 *)L(&mFlutterPhase) += 0x2710;
         } else {
-            *(u16 *)L(c + 0x3ee) += 0xfa0;
+            *(u16 *)L(&mFlutterPhase) += 0xfa0;
         }
-        *(int *)L(c + 0x3e0) += v;
+        mScale += v;
     }
 
     _Z14ApproachLinearRiii(&mHorzSpeed, 0x14000, 0x1000);
@@ -373,7 +370,7 @@ void daBtfly_c::State3()
 // @symbol _ZN9daBtfly_c6State2Ev
 void daBtfly_c::State2()
 {
-    char *player;
+    Player *player;
     Vector3 v;
     Vector3 d;
 
@@ -381,21 +378,21 @@ void daBtfly_c::State2()
     mPosY = mHomePosY;
     mPosZ = mHomePosZ;
 
-    player = (char *)ClosestPlayer();
+    player = ClosestPlayer();
     if (player != 0) {
         int *pp;
         int k = 0x5000;
         int py;
         int t;
         int five = 5;
-        Vec3_Sub(&d, &mPosX, player + 0x5c);
+        Vec3_Sub(&d, &mPosX, &player->mPosX);
         v.x = d.x;
         v.y = d.y;
         v.z = d.z;
         if (Vec3_HorzLen(&v) > 0x4b0000)
             mState = 3;
 
-        pp = (int *)(int)M(player + 0x5c);
+        pp = &player->mPosX;
         mPosX = mPrevPosX;
         mPosY = mPrevPosY;
         mPosZ = mPrevPosZ;
@@ -409,7 +406,7 @@ void daBtfly_c::State2()
         v.z = v.z + t / 4;
         ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPosX, &v), 0x300);
 
-        pp = (int *)(int)M(player + 0x5c);
+        pp = &player->mPosX;
         v.x = pp[0];
         py = pp[1];
         v.y = py;

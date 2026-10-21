@@ -87,7 +87,7 @@ src/_ZN10dScEntry_c15ArePlayersReadyEv.cpp:
     complete
     .text start:0x02116d40 end:0x02116d9c
 
-src/unnamed/ov075/func_ov075_02116d9c.c:
+src/_ZN10dScEntry_c16CheckMenuConfirmEi.cpp:
     complete
     .text start:0x02116d9c end:0x02116e00
 
@@ -107,7 +107,7 @@ src/unnamed/ov075/func_ov075_02116f40.cpp:
     complete
     .text start:0x02116f40 end:0x0211705c
 
-src/unnamed/ov075/func_ov075_0211705c.c:
+src/unnamed/ov075/func_ov075_0211705c.cpp:
     complete
     .text start:0x0211705c end:0x021173a8
 
@@ -119,7 +119,7 @@ src/unnamed/ov075/func_ov075_02117590.cpp:
     complete
     .text start:0x02117590 end:0x0211763c
 
-src/unnamed/ov075/func_ov075_0211763c.c:
+src/unnamed/ov075/func_ov075_0211763c.cpp:
     complete
     .text start:0x0211763c end:0x02117918
 
@@ -147,7 +147,7 @@ src/unnamed/ov075/func_ov075_02117d80.cpp:
     complete
     .text start:0x02117d80 end:0x02117e84
 
-src/unnamed/ov075/func_ov075_02117e84.c:
+src/unnamed/ov075/func_ov075_02117e84.cpp:
     complete
     .text start:0x02117e84 end:0x02117f5c
 

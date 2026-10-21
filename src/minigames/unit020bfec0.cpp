@@ -479,18 +479,18 @@ struct dCamera_c {
     char pad30[0x30];               /* 0x30 */
     struct Matrix4x3_local projMat; /* 0x60 */
     char pad90[0x10];               /* 0x90 */
-    struct Vector3 eye;             /* 0xa0 */
-    struct Vector3 target;          /* 0xac */
+    struct Vector3 target;          /* 0xa0 */
+    struct Vector3 eye;             /* 0xac */
     short angle;                    /* 0xb8 */
 };
 
 void Camera_InitFlowerView(struct dCamera_c *self) {
-    self->eye.x = 0x1b000;
-    self->eye.y = 0x17600;
-    self->eye.z = -0x22f00;
-    self->target.x = 0x38000;
-    self->target.y = 0x22500;
-    self->target.z = -0x51200;
+    self->target.x = 0x1b000;
+    self->target.y = 0x17600;
+    self->target.z = -0x22f00;
+    self->eye.x = 0x38000;
+    self->eye.y = 0x22500;
+    self->eye.z = -0x51200;
     self->angle = 0xb30;
     Camera_UpdateMatrices(self);
 }
@@ -1442,18 +1442,18 @@ struct dCamera_c {
     char pad30[0x30];               /* 0x30 */
     struct Matrix4x3_local projMat; /* 0x60 */
     char pad90[0x10];               /* 0x90 */
-    struct Vector3 eye;             /* 0xa0 */
-    struct Vector3 target;          /* 0xac */
+    struct Vector3 target;          /* 0xa0 */
+    struct Vector3 eye;             /* 0xac */
     short angle;                    /* 0xb8 */
 };
 
 void Camera_InitPresenterView(struct dCamera_c *self) {
-    self->eye.x = 0;
-    self->eye.y = 0;
-    self->eye.z = 0;
     self->target.x = 0;
     self->target.y = 0;
-    self->target.z = 0x2d000;
+    self->target.z = 0;
+    self->eye.x = 0;
+    self->eye.y = 0;
+    self->eye.z = 0x2d000;
     self->angle = 0x800;
     Camera_UpdateMatrices(self);
 }
@@ -1640,18 +1640,18 @@ struct dCamera_c {
     char pad30[0x30];               /* 0x30 */
     struct Matrix4x3_local projMat; /* 0x60 */
     char pad90[0x10];               /* 0x90 */
-    struct Vector3 eye;             /* 0xa0 */
-    struct Vector3 target;          /* 0xac */
+    struct Vector3 target;          /* 0xa0 */
+    struct Vector3 eye;             /* 0xac */
     short angle;                    /* 0xb8 */
 };
 
 void Camera_InitSlotsView(struct dCamera_c *self) {
-    self->eye.x = 0;
-    self->eye.y = 0xe000;
-    self->eye.z = -0x22f00;
     self->target.x = 0;
-    self->target.y = 0xf000;
-    self->target.z = 0x32000;
+    self->target.y = 0xe000;
+    self->target.z = -0x22f00;
+    self->eye.x = 0;
+    self->eye.y = 0xf000;
+    self->eye.z = 0x32000;
     self->angle = 0xb00;
     Camera_UpdateMatrices(self);
 }
@@ -2468,18 +2468,18 @@ struct dCamera_c {
     char pad30[0x30];               /* 0x30 */
     struct Matrix4x3_local projMat; /* 0x60 */
     char pad90[0x10];               /* 0x90 */
-    struct Vector3 eye;             /* 0xa0 */
-    struct Vector3 target;          /* 0xac */
+    struct Vector3 target;          /* 0xa0 */
+    struct Vector3 eye;             /* 0xac */
     short angle;                    /* 0xb8 */
 };
 
 void Camera_InitDealerView(struct dCamera_c *self) {
-    self->eye.x = 0x200;
-    self->eye.y = 0x9600;
-    self->eye.z = -0x22f00;
-    self->target.x = -0x100;
-    self->target.y = 0x10500;
-    self->target.z = 0x1ee00;
+    self->target.x = 0x200;
+    self->target.y = 0x9600;
+    self->target.z = -0x22f00;
+    self->eye.x = -0x100;
+    self->eye.y = 0x10500;
+    self->eye.z = 0x1ee00;
     self->angle = 0xbb0;
     Camera_UpdateMatrices(self);
 }
@@ -2898,9 +2898,12 @@ struct dCamera_c {
     char pad30[0x30];               /* 0x30 */
     struct Matrix4x3_local projMat; /* 0x60 */
     char pad90[0x10];               /* 0x90 */
-    struct Vector3 eye;             /* 0xa0 */
-    struct Vector3 target;          /* 0xac */
-    short angle;                    /* 0xb8 */
+    /* Camera_UpdateMatrices hands 0xac to G3i::LookAt_ as the camera
+     * position and 0xa0 as the point it looks at. The flower, slots and
+     * dealer presets put 0xac above 0xa0; the presenter view is level. */
+    struct Vector3 target; /* 0xa0 */
+    struct Vector3 eye;    /* 0xac */
+    short angle;           /* 0xb8 */
 };
 
 extern short data_02082214[];
@@ -2918,7 +2921,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self) {
     up.y = 0x1000;
     up.z = 0;
 
-    SubVec3(&self->eye, &self->target, &v1c);
+    SubVec3(&self->target, &self->eye, &v1c);
     if (NormalizeVec3IfNonZero(&v1c)) {
         func_0203cebc(&v34, &v28, &v1c, &up);
         if (NormalizeVec3IfNonZero(&v28)) {
@@ -2935,7 +2938,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self) {
         data_02082214[idx], data_02082214[idx + 1], 0x1555, 0x1000, 0x1388000, 0x1000, 1,
         &self->projMat);
 
-    G3i::LookAt_(&self->target, &up, &self->eye, true, (Matrix4x3 *)&self->viewMat);
+    G3i::LookAt_(&self->eye, &up, &self->target, true, (Matrix4x3 *)&self->viewMat);
 
     _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
 

@@ -1,7 +1,7 @@
 #include "types.h"
 #pragma opt_common_subs off
 extern int func_02054d88(void);
-extern void MultiCopy_Int(int *dst, int *src, int len);
+extern void MultiCopy_Int(int *src, int *dst, int len);
 
 extern int data_0209fd00;
 extern u8 data_0209fc78;

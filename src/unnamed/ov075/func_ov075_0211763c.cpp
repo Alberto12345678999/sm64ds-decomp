@@ -1,6 +1,8 @@
+//cpp
+#include "dScEntry_c.h"
+extern "C" {
 extern int func_0203da9c(void);
 extern int TouchArea_Update(void *p, int x);
-extern int func_ov075_02116d9c(void *self, int id);
 extern void SetControllerMode(unsigned char mode);
 extern void func_02020028(int a, unsigned char b);
 extern void func_ov001_020ab41c(void *p);
@@ -9,16 +11,13 @@ extern void func_02012790(int a);
 extern void SetBg2Offset(int a, int b);
 extern unsigned short data_020a0e5a[];
 
-void func_ov075_0211763c(void *thiz)
-{
+void func_ov075_0211763c(void *thiz) {
     unsigned char *s = (unsigned char *)thiz;
     int w = func_0203da9c();
 
-    if (TouchArea_Update(s + 0xdc, -1) != 0
-        || TouchArea_Update(s + 0x100, -1) != 0
-        || (data_020a0e5a[w << 1] & 8) != 0
-        || (data_020a0e5a[w << 1] & 4) != 0
-        || (func_ov075_02116d9c(s, -1) != 0 && s[0x281] == 3)) {
+    if (TouchArea_Update(s + 0xdc, -1) != 0 || TouchArea_Update(s + 0x100, -1) != 0 ||
+        (data_020a0e5a[w << 1] & 8) != 0 || (data_020a0e5a[w << 1] & 4) != 0 ||
+        (reinterpret_cast<dScEntry_c *>(s)->CheckMenuConfirm(-1) != 0 && s[0x281] == 3)) {
         int i;
         unsigned char *p = s;
         for (i = 0; i <= 2; i++, p += 0x24) {
@@ -34,8 +33,8 @@ void func_ov075_0211763c(void *thiz)
         return;
     }
 
-    if (TouchArea_Update(s + 0x70, -1) != 0
-        || (func_ov075_02116d9c(s, -1) != 0 && s[0x281] == 0)) {
+    if (TouchArea_Update(s + 0x70, -1) != 0 ||
+        (reinterpret_cast<dScEntry_c *>(s)->CheckMenuConfirm(-1) != 0 && s[0x281] == 0)) {
         s[0x281] = 0;
         if (s[0x80] != 0) {
             SetControllerMode(0);
@@ -53,8 +52,8 @@ void func_ov075_0211763c(void *thiz)
         return;
     }
 
-    if (TouchArea_Update(s + 0x94, -1) != 0
-        || (func_ov075_02116d9c(s, -1) != 0 && s[0x281] == 1)) {
+    if (TouchArea_Update(s + 0x94, -1) != 0 ||
+        (reinterpret_cast<dScEntry_c *>(s)->CheckMenuConfirm(-1) != 0 && s[0x281] == 1)) {
         s[0x281] = 1;
         if (s[0xa4] != 0) {
             SetControllerMode(1);
@@ -72,8 +71,8 @@ void func_ov075_0211763c(void *thiz)
         return;
     }
 
-    if (TouchArea_Update(s + 0xb8, -1) != 0
-        || (func_ov075_02116d9c(s, -1) != 0 && s[0x281] == 2)) {
+    if (TouchArea_Update(s + 0xb8, -1) != 0 ||
+        (reinterpret_cast<dScEntry_c *>(s)->CheckMenuConfirm(-1) != 0 && s[0x281] == 2)) {
         s[0x281] = 2;
         if (s[0xc8] != 0) {
             SetControllerMode(2);
@@ -90,4 +89,5 @@ void func_ov075_0211763c(void *thiz)
         func_ov001_020ab41c(s + 0xb8);
         return;
     }
+}
 }

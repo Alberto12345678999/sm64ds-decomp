@@ -92,11 +92,12 @@
  *   swaps two registers. Those functions also ldrh mStateTimer and
  *   mAngleX/Y/Z through unsigned short; a plain s16 read is ldrsh.
  * - s16* behind mPrevAngleY in func_ov073_0211f61c and 02120d80, the
- *   const s32* walk of mPosX, unk_4d4[i] in the dust loops, and
+ *   const s32* walk of mPosX, mFootPos[i] in the dust loops, and
  *   *(void**)&mState in func_ov073_0211f2c0 stay. The direct member forms
  *   change addressing. data_020a0e68's translation words stay a char*
  *   walk; .m[9..11] changes bytes.
- * - unk_4a8..4b0, unk_4c5, unk_4ca, unk_4d0 and unk_4d4 keep offset names.
+ * - mEdgePos, mLandedWaypoint, mEdgeRecovered, mStateParam and mFootPos are
+ *   named from their readers in this TU and d_a_obj_ewb_ice.cpp.
  *   The hit masks in func_ov073_0211f61c stay literals (0x10000 is not in
  *   dCc_c.h's bit table). Sound ids are named for the site that plays them.
  */
@@ -336,7 +337,8 @@ void daKing_Donketu_c::func_ov073_0211f2c0(int strength)
   int z;
   func_0200d8c8(data_0209f318, &c->mPosX, strength);
   data_020a0e68 = c->mBlendModelAnim.mat4x3;
-  MulMat4x3Mat4x3(((char *) c->mBlendModelAnim.data.transforms) + (c->mStepBoneIdx * 0x30), &data_020a0e68, &data_020a0e68);
+  MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[c->mStepBoneIdx], &data_020a0e68,
+                  &data_020a0e68);
   c->mStepBoneIdx ^= 1;
   ty = *((int *) (((char *) (&data_020a0e68)) + 0x28));
   tx = *((int *) (((char *) (&data_020a0e68)) + 0x24));
@@ -492,7 +494,7 @@ void daKing_Donketu_c::func_ov073_0211f494(void *pb)
        particle 0x8a at the other actor's position, and in ..33d0
        SND_HIT_REGISTERED plays and the function returns 1. Elsewhere the boss turns mPrevAngleY by half a turn
        (0x8000), plays SND_REVERSE_AFTER_HURT, goes to ..3360 with mPhase 2,
-       unk_4d0 0x2000 and mStateTimer 0x1e, and the function still returns 0. */
+       mStateParam 0x2000 and mStateTimer 0x1e, and the function still returns 0. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0211f61cEv
 s32 daKing_Donketu_c::func_ov073_0211f61c()
 {
@@ -635,7 +637,7 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, gKingIceDonketuHitAnimationFile.file, 4, 0x40000000, 0x1000, 0);
     c->mBlendModelAnim.speed = 0x1000;
     c->mPhase = 2;
-    c->unk_4d0 = 0x2000;
+    c->mStateParam = 0x2000;
     c->mStateTimer = 0x1e;
 done0:
     return 0;
@@ -884,33 +886,33 @@ short daKing_Donketu_c::func_ov073_0212000c() {
     return 1;
 }
 
-
-/* ..3380 update: when the animation finishes, unk_4c5 = 0xff and back to the
+/* ..3380 update: when the animation finishes, mLandedWaypoint = 0xff and back to the
    chase (..3360). */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212005cEv
 int daKing_Donketu_c::func_ov073_0212005c() {
     daKing_Donketu_c *c = this;
     if (c->mBlendModelAnim.Finished()) {
-        c->unk_4c5 = 0xff;
+        c->mLandedWaypoint = 0xff;
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
     }
     return 1;
 }
 
-/* ..3380 enter: clear unk_4ca and start the animation in
+/* ..3380 enter: clear mEdgeRecovered and start the animation in
    gKingIceDonketuJumpEdAnimationFile.file. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120098Ev
 struct BCA_File;
 int daKing_Donketu_c::func_ov073_02120098() {
     daKing_Donketu_c *c = this;
-  c->unk_4ca = 0;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, gKingIceDonketuJumpEdAnimationFile.file, 4, 0x40000000, 0x1000, 0);
-  return 1;
+    c->mEdgeRecovered = 0;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &c->mBlendModelAnim, gKingIceDonketuJumpEdAnimationFile.file, 4, 0x40000000, 0x1000, 0);
+    return 1;
 }
 
 /* ..3340 update, a leap toward mSpawnPos. mStateTimer counts down from 10
    (set by the enter handler). At 1 the leap's animation starts: mVertSpeed
-   0x46000 (70.0), mVertAccel -0x3000 (-3.0), and SND_HOP_LAUNCH if unk_4ca is
+   0x46000 (70.0), mVertAccel -0x3000 (-3.0), and SND_HOP_LAUNCH if mEdgeRecovered is
    set. At 0, while mStateScratch is 0, mAngleX is straightened (0x2000 a
    frame), mPrevAngleY turns toward the angle to mSpawnPos by 0x800, and the
    x/z velocity words mSpeedX / mSpeedZ are set to 50.0 (0x32000) when
@@ -918,7 +920,7 @@ int daKing_Donketu_c::func_ov073_02120098() {
    if the actor touching the boss is the player and the boss is the higher,
    Player::Unk_020c6a10(1) is called on it. On the ground the motion is
    zeroed, the camera is shaken (0x1388000) and SND_HOP_LANDING plays (once,
-   while mStateScratch is 0). With mHitsRemaining 1 and unk_4ca clear the boss
+   while mStateScratch is 0). With mHitsRemaining 1 and mEdgeRecovered clear the boss
    then waits 0x82 frames (counted in mStateScratch) before ..3380; otherwise
    it goes to ..3380 at once. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_021200e0Ev
@@ -931,9 +933,9 @@ int daKing_Donketu_c::func_ov073_021200e0()
             _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, gKingIceDonketuJumpStAnimationFile.file, 4, 0x40000000, 0x1000, 0);
             thiz->mBlendModelAnim.speed = 0x1000;
             thiz->mVertSpeed = 0x46000;
-            thiz->unk_4c5 = 0xff;
+            thiz->mLandedWaypoint = 0xff;
             thiz->mVertAccel = -0x3000;
-            if (thiz->unk_4ca != 0) {
+            if (thiz->mEdgeRecovered != 0) {
                 func_02012694(SND_HOP_LAUNCH, &thiz->mCamSpacePosX);
             }
         }
@@ -988,8 +990,8 @@ int daKing_Donketu_c::func_ov073_021200e0()
             thiz->func_ov073_0211f2c0(0x1388000);
             func_02012694(SND_HOP_LANDING, &thiz->mCamSpacePosX);
         }
-        if (thiz->mHitsRemaining == 1 && thiz->unk_4ca == 0) {
-            thiz->unk_4c5 = 0;
+        if (thiz->mHitsRemaining == 1 && thiz->mEdgeRecovered == 0) {
+            thiz->mLandedWaypoint = 0;
             if (thiz->mStateScratch == 0) {
                 _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, gKingIceDonketuJumpEdAnimationFile.file, 4, 0x40000000, 0x1000, 0);
             }
@@ -1020,7 +1022,7 @@ int daKing_Donketu_c::func_ov073_02120390()
    0x2000. At 0 the boss steers toward the current waypoint (set B while
    mHitsRemaining is 2, else set A): mPrevAngleY turns toward it by 0x800 and
    the x/z velocity words are set to 80.0 (0x50000) along the heading and
-   pitch. On landing it copies the cursor to unk_4c5, stops, shakes the camera
+   pitch. On landing it copies the cursor to mLandedWaypoint, stops, shakes the camera
    (0x7d0000), plays SND_HOP_LANDING and counts the landing in mJumpCount: past
    7 the state becomes ..3340, otherwise it re-enters ..3320. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_021203acEv
@@ -1077,7 +1079,7 @@ mainblock:
         c->mSpeedZ = out[2];
     }
     if (c->mWithMeshClsn.IsOnGround() != 0) {
-        c->unk_4c5 = c->mWaypointCursor;
+        c->mLandedWaypoint = c->mWaypointCursor;
         c->mHorzSpeed = 0;
         c->mSpeedX = 0;
         c->mVertSpeed = 0;
@@ -1117,78 +1119,81 @@ int daKing_Donketu_c::func_ov073_021205f0()
    is set or the boss is falling, mVertSpeed also follows the aim. The landing
    sets mJumpCount to 1 and goes to ..3320. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120610Ev
-int daKing_Donketu_c::func_ov073_02120610()
-{
-        daKing_Donketu_c *c = this;
-        int *src;
-        int v[3];
+int daKing_Donketu_c::func_ov073_02120610() {
+    daKing_Donketu_c *c = this;
+    int *src;
+    int v[3];
 
-        if ((unsigned short)c->mStateTimer == 0)
-            goto mainblock;
+    if ((unsigned short)c->mStateTimer == 0)
+        goto mainblock;
 
-        if ((unsigned short)c->mStateTimer == 1) {
-            c->mVertSpeed = 0x5a000;
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, gKingIceDonketuDamageAnimationFile.file, 4, 0, 0x1000, 0);
-            c->mBlendModelAnim.speed = 0x2000;
-        }
-        return 1;
-
-    mainblock:
-        ApproachLinear(c->mAngleX, 0, 0x2000);
-        if (c->mHitsRemaining == 2) {
-            src = (int *)&c->mWaypointsB[c->mWaypointCursor];
-            v[0] = src[0];
-            v[1] = src[1];
-            v[2] = src[2];
-        } else {
-            src = (int *)&c->mWaypointsA[c->mWaypointCursor];
-            v[0] = src[0];
-            v[1] = src[1];
-            v[2] = src[2];
-        }
-        {
-            short hz = Vec3_HorzAngle(&c->mPos, (const Vector3 *)v);
-            short vt = Vec3_VertAngle(&c->mPosX, v);
-            int in[3];
-            int out[3];
-            in[2] = 0;
-            in[0] = 0; in[1] = 0; out[0] = 0; out[1] = 0; out[2] = 0;
-            in[2] = 0x28000;
-            Matrix4x3_FromRotationY(&data_020a0e68, hz);
-            Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, vt);
-            MulVec3Mat4x3(in, &data_020a0e68, out);
-            c->mSpeedX = out[0];
-            if (c->mStateScratch != 0 || c->mVertSpeed < 0) {
-                c->mVertSpeed = out[1];
-                c->mStateScratch = 1;
-            }
-            c->mSpeedZ = out[2];
-        }
-        if (c->mWithMeshClsn.IsOnGround() != 0) {
-            c->unk_4c5 = c->mWaypointCursor;
-            c->mHorzSpeed = 0;
-            c->mSpeedX = 0;
-            c->mVertSpeed = 0;
-            c->mSpeedZ = 0;
-            c->func_ov073_0211f2c0(0x7d0000);
-            func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
-            c->mJumpCount = 1;
-            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123320);
-        }
-        c->mAngleY = c->mPrevAngleY;
-        return 1;
+    if ((unsigned short)c->mStateTimer == 1) {
+        c->mVertSpeed = 0x5a000;
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &c->mBlendModelAnim, gKingIceDonketuDamageAnimationFile.file, 4, 0, 0x1000, 0);
+        c->mBlendModelAnim.speed = 0x2000;
     }
+    return 1;
+
+mainblock:
+    ApproachLinear(c->mAngleX, 0, 0x2000);
+    if (c->mHitsRemaining == 2) {
+        src = (int *)&c->mWaypointsB[c->mWaypointCursor];
+        v[0] = src[0];
+        v[1] = src[1];
+        v[2] = src[2];
+    } else {
+        src = (int *)&c->mWaypointsA[c->mWaypointCursor];
+        v[0] = src[0];
+        v[1] = src[1];
+        v[2] = src[2];
+    }
+    {
+        short hz = Vec3_HorzAngle(&c->mPos, (const Vector3 *)v);
+        short vt = Vec3_VertAngle(&c->mPosX, v);
+        int in[3];
+        int out[3];
+        in[2] = 0;
+        in[0] = 0;
+        in[1] = 0;
+        out[0] = 0;
+        out[1] = 0;
+        out[2] = 0;
+        in[2] = 0x28000;
+        Matrix4x3_FromRotationY(&data_020a0e68, hz);
+        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, vt);
+        MulVec3Mat4x3(in, &data_020a0e68, out);
+        c->mSpeedX = out[0];
+        if (c->mStateScratch != 0 || c->mVertSpeed < 0) {
+            c->mVertSpeed = out[1];
+            c->mStateScratch = 1;
+        }
+        c->mSpeedZ = out[2];
+    }
+    if (c->mWithMeshClsn.IsOnGround() != 0) {
+        c->mLandedWaypoint = c->mWaypointCursor;
+        c->mHorzSpeed = 0;
+        c->mSpeedX = 0;
+        c->mVertSpeed = 0;
+        c->mSpeedZ = 0;
+        c->func_ov073_0211f2c0(0x7d0000);
+        func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
+        c->mJumpCount = 1;
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123320);
+    }
+    c->mAngleY = c->mPrevAngleY;
+    return 1;
+}
 
 /* ..3400 enter: mStateTimer = 10, mStateScratch = 0, mJumpCount = 0,
-   unk_4c5 = 0xff. */
+   mLandedWaypoint = 0xff. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212081cEv
-int daKing_Donketu_c::func_ov073_0212081c()
-{
+int daKing_Donketu_c::func_ov073_0212081c() {
     daKing_Donketu_c *self = this;
     self->mStateTimer = 0xa;
     self->mStateScratch = 0;
     self->mJumpCount = 0;
-    self->unk_4c5 = 0xff;
+    self->mLandedWaypoint = 0xff;
     return 1;
 }
 
@@ -1226,11 +1231,11 @@ int daKing_Donketu_c::func_ov073_021208e4() {
 
 /* ..33d0 update. Gravity, mHorzSpeed and the velocity words are zeroed. When
    mStateTimer runs out (the enter handler sets it to 0x5a) mHitsRemaining
-   becomes 1, unk_4ca becomes 1 and the state is ..3340. Otherwise a looped
+   becomes 1, mEdgeRecovered becomes 1 and the state is ..3340. Otherwise a looped
    sound plays and the boss moves toward the point 120.0 (0x78000) from the
-   saved miss position (unk_4a8..4b0) along mAngleY + 0x8000, at 20.0 (0x14000)
+   saved miss position (mEdgePos) along mAngleY + 0x8000, at 20.0 (0x14000)
    a frame; mAngleY becomes the angle to mSpawnPos, mPrevAngleY that + 0x8000.
-   mStateScratch advances 0x500 a frame and mAngleX approaches unk_4d0 times
+   mStateScratch advances 0x500 a frame and mAngleX approaches mStateParam times
    the sine of it (data_02082214, Fix12) by 0x400. Then,
    when func_ov073_0211f61c returns nonzero (the boss took a hit or, in this
    state, hurt the player) the state becomes ..33f0. */
@@ -1250,7 +1255,7 @@ int daKing_Donketu_c::func_ov073_02120910()
     if ((unsigned short)c->mStateTimer == 0) {
         *&c->mHitsRemaining = 1;
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123340);
-        *&c->unk_4ca = 1;
+        *&c->mEdgeRecovered = 1;
         c->mPrevAngleY = c->mAngleY;
         return 1;
     }
@@ -1267,15 +1272,16 @@ int daKing_Donketu_c::func_ov073_02120910()
     out.z = 0;
     Matrix4x3_FromRotationY(&data_020a0e68, c->mAngleY + 0x8000);
     MulVec3Mat4x3(&in, &data_020a0e68, &out);
-    in.x = c->unk_4a8 + out.x;
-    in.y = c->unk_4ac;
-    in.z = c->unk_4b0 + out.z;
+    in.x = c->mEdgePosX + out.x;
+    in.y = c->mEdgePosY;
+    in.z = c->mEdgePosZ + out.z;
     Vec3_ApproachHorz(&c->mPosX, &in, 0x14000);
     c->mAngleY = Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->mSpawnPosX);
     c->mPrevAngleY = c->mAngleY + 0x8000;
     c->mStateScratch += 0x500;
-    ApproachLinear(c->mAngleX,
-        FX_MUL(c->unk_4d0, data_02082214[((unsigned short)(short)c->mStateScratch >> 4) * 2]),
+    ApproachLinear(
+        c->mAngleX,
+        FX_MUL(c->mStateParam, data_02082214[((unsigned short)(short)c->mStateScratch >> 4) * 2]),
         0x400);
     if (c->func_ov073_0211f61c()) {
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233f0);
@@ -1284,8 +1290,8 @@ int daKing_Donketu_c::func_ov073_02120910()
 }
 
 /* ..33d0 enter: animation gKingIceDonketuWalkAnimationFile.file at speed 0x4000; mAngleX,
-   mStateScratch and all the motion words cleared; unk_4d0 = -0x1000;
-   mGroundMissPos copied into unk_4a8..4b0; sound handle cleared;
+   mStateScratch and all the motion words cleared; mStateParam = -0x1000;
+   mGroundMissPos copied into mEdgePos; sound handle cleared;
    mStateTimer = 0x5a (90 frames). */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120ad8Ev
 int daKing_Donketu_c::func_ov073_02120ad8()
@@ -1300,10 +1306,10 @@ int daKing_Donketu_c::func_ov073_02120ad8()
     t->mSpeedX = 0;
     t->mVertSpeed = 0;
     t->mSpeedZ = 0;
-    t->unk_4d0 = -0x1000;
-    t->unk_4a8 = t->mGroundMissPosX;
-    t->unk_4ac = t->mGroundMissPosY;
-    t->unk_4b0 = t->mGroundMissPosZ;
+    t->mStateParam = -0x1000;
+    t->mEdgePosX = t->mGroundMissPosX;
+    t->mEdgePosY = t->mGroundMissPosY;
+    t->mEdgePosZ = t->mGroundMissPosZ;
     t->mSoundHandle = 0;
     t->mStateTimer = 0x5a;
     return 1;
@@ -1348,7 +1354,7 @@ int daKing_Donketu_c::func_ov073_02120c08()
 }
 
 /* ..33a0 update, the hit reaction. While |mHorzSpeed| > 0xa the dust follows
-   unk_4d4[0..1]. If mNoGroundAhead is 1 mHitsRemaining drops by one and the
+   mFootPos[0..1]. If mNoGroundAhead is 1 mHitsRemaining drops by one and the
    state becomes ..33c0 while it is nonzero, ..33d0 when it reaches 0.
    Otherwise mHorzSpeed is braked to 0 by 0x1000 a frame, and once the
    animation has finished with |mHorzSpeed| < 0xa the boss stops, takes mAngleY
@@ -1361,7 +1367,8 @@ int daKing_Donketu_c::func_ov073_02120c7c()
     if (a > 0xa) {
         int i = 0;
         do {
-            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(c->unk_4d4[i].x, c->unk_4d4[i].y, c->unk_4d4[i].z);
+            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(c->mFootPos[i].x, c->mFootPos[i].y,
+                                                               c->mFootPos[i].z);
             i++;
         } while (i < 2);
     }
@@ -1443,14 +1450,14 @@ int daKing_Donketu_c::func_ov073_02120e60() {
    1 sends the boss to ..3390 first.
      leg 0  with mStateTimer at 0: mTargetAngle = the angle to the player. If
             mPrevAngleY is within 0x2000 of it the timer is set to 0x1e and
-            the leg continues; otherwise leg 1 with unk_4d0 = 0x1000 and
+            the leg continues; otherwise leg 1 with mStateParam = 0x1000 and
             SND_CHASE_BRAKE. While the timer runs: mHorzSpeed approaches
             0x1e000 (30.0) by 0x3000, mPrevAngleY turns toward mTargetAngle by
             0x1d0, and the first time the player is within 0x1f4000 (500.0)
             there is a one-in-eight chance of leg 3 (speed zeroed,
             mStateTimer 0xf).
-     leg 3  when mStateTimer is 0: unk_4d0 = 0x1000, leg 1.
-     legs 1, 2  mHorzSpeed is braked to 0 by unk_4d0 with the dust following
+     leg 3  when mStateTimer is 0: mStateParam = 0x1000, leg 1.
+     legs 1, 2  mHorzSpeed is braked to 0 by mStateParam with the dust following
             while it is above 0xa; leg 1 also turns mAngleY toward the player
             by 0x500. When |mHorzSpeed| < 0xa and mStateTimer is 0, leg 2
             first retargets (to mSpawnPos if the player's hurt state reads 4 or
@@ -1477,7 +1484,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
                 break;
             } else {
                 c->mStateTimer = 0;
-                c->unk_4d0 = 0x1000;
+                c->mStateParam = 0x1000;
                 (c->mPhase)++;
                 func_02012694(SND_CHASE_BRAKE, &c->mCamSpacePosX);
                 break;
@@ -1503,7 +1510,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
 
     case 3:
         if ((unsigned short)c->mStateTimer == 0) {
-            c->unk_4d0 = 0x1000;
+            c->mStateParam = 0x1000;
             c->mPhase = 1;
         }
         break;
@@ -1519,12 +1526,12 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
         if (d > 0xa) {
             i = 0;
             do {
-                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(c->unk_4d4[i].x, c->unk_4d4[i].y,
-                                                                   c->unk_4d4[i].z);
+                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(
+                    c->mFootPos[i].x, c->mFootPos[i].y, c->mFootPos[i].z);
                 i++;
             } while (i < 2);
         }
-        _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, c->unk_4d0);
+        _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, c->mStateParam);
         if (c->mPhase == 1) {
             c->mTargetAngle = c->HorzAngleToCPlayer();
             ApproachLinear(c->mAngleY, c->mTargetAngle, 0x500);
@@ -1574,7 +1581,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
     return 1;
 }
 
-/* ..3360 enter: mStateTimer = 0, mPhase = 0, unk_4d0 = 0x2000; animation
+/* ..3360 enter: mStateTimer = 0, mPhase = 0, mStateParam = 0x2000; animation
    gKingIceDonketuWalkAnimationFile.file at speed 0x2000. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212122cEv
 int daKing_Donketu_c::func_ov073_0212122c()
@@ -1582,7 +1589,7 @@ int daKing_Donketu_c::func_ov073_0212122c()
     daKing_Donketu_c *t = this;
     t->mStateTimer = 0;
     t->mPhase = 0;
-    t->unk_4d0 = 0x2000;
+    t->mStateParam = 0x2000;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, gKingIceDonketuWalkAnimationFile.file, 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x2000;
     return 1;
@@ -1726,7 +1733,7 @@ int daKing_Donketu_c::func_ov073_02121538() {
 extern "C" int ChiefChilly_ChangeState(C *c, PMF *p) { c->pp = p; PMF *q = c->pp; if (*q == 0) return 1; return (c->**q)(); }
 
 /* Called at the end of every Behavior. Builds the model matrix (mPos >> 3,
-   rotated by mAngleX/Y/Z) into mBlendModelAnim.mat4x3, then sets unk_4d4[0..1]
+   rotated by mAngleX/Y/Z) into mBlendModelAnim.mat4x3, then sets mFootPos[0..1]
    to the world positions of bones 2 and 3 (bone matrix times the model
    matrix, translation words shifted left by 3). In ..33b0, ..33e0, ..3410,
    ..33f0 and ..3370 it stops there; in every other state it also draws the
@@ -1748,21 +1755,21 @@ void daKing_Donketu_c::func_ov073_021215cc()
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
 
-    p = (Vec3*)&c->unk_4d4;
+    p = (Vec3 *)&c->mFootPos;
     c->mBlendModelAnim.mat4x3 = data_020a0e68;
     saved = (Mtx43*)&c->mBlendModelAnim.mat4x3;
     sh = 3;
     i = 0;
     for (; i < 2; i++) {
         data_020a0e68 = *(struct Matrix4x3 *)saved;
-        MulMat4x3Mat4x3(*(Mtx43**)&c->mBlendModelAnim.data.transforms + (i + 2), &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[i + 2], &data_020a0e68, &data_020a0e68);
         p->x = data_020a0e68.m[9];
         p->y = data_020a0e68.m[10];
         p->z = data_020a0e68.m[11];
         Vec3_Lsl(&out, p, sh);
-        c->unk_4d4[i].x = out.x;
-        c->unk_4d4[i].y = out.y;
-        c->unk_4d4[i].z = out.z;
+        c->mFootPos[i].x = out.x;
+        c->mFootPos[i].y = out.y;
+        c->mFootPos[i].z = out.z;
         p++;
     }
 
@@ -1883,7 +1890,7 @@ int daKing_Donketu_c::Behavior()
     if (((char *)c->pp == (char *)&data_ov073_02123330 || (char *)c->pp == (char *)&data_ov073_02123350)
         && mBlendModelAnim.WillHitFrame(7) != 0) {
         data_020a0e68 = mBlendModelAnim.mat4x3;
-        MulMat4x3Mat4x3((char *)mBlendModelAnim.data.transforms + 0x60, &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3(&mBlendModelAnim.data.transforms[2], &data_020a0e68, &data_020a0e68);
         v0.x = data_020a0e68.m[9];
         v0.y = data_020a0e68.m[10];
         v0.z = data_020a0e68.m[11];
@@ -2017,7 +2024,7 @@ int daKing_Donketu_c::InitResources()
         mWaypointsB[i].y = mPosY;
         mWaypointsB[i].z = mPosZ;
     }
-    unk_4c5 = 0xff;
+    mLandedWaypoint = 0xff;
     mPrevAngleY = HorzAngleToCPlayer();
     mAngleY = mPrevAngleY;
     mTargetAngle = mAngleY;

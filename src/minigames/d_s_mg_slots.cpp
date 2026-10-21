@@ -72,6 +72,11 @@ struct G2 {
 
 typedef void (dScMgSlot3_c::*SlotState)();
 
+/* A dScMgSlot3_c field's byte offset, for the sites that add it to an
+   integer or stepped base the way the ROM does; the member spellings
+   change those functions' code. */
+#define SLOT3_OFF(member) ((int)&((dScMgSlot3_c *)0)->member)
+
 /* One player's 4-byte touch record (PlayerInput.h): Slot1 Behavior reads
  * x/y through this view so the compiler, not the source, hoists them. */
 struct TouchRec {
@@ -258,8 +263,8 @@ void dScMgSlot3_c::InitMainScreenBg() {
 // @symbol Slot3_ReelDigits
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void Slot3_ReelDigits(char *sceneBytes, int reelIndex);
-// Keep the strided cursors cast back to the class. mStripLength stays a raw
-// read at 0x503a: a member read of it grows this body by 8 bytes (measured).
+// Keep the strided cursors cast back to the class. mStripLength is read by
+// offset: a member read of it grows this body by 8 bytes (measured).
 void Slot3_ReelDigits(char *c, int reelIndex) {
     int symbolIndex = (((dScMgSlot3_c *)(c + reelIndex * 4))->mReelPos[0] >> 12) / 80;
     int column;
@@ -268,7 +273,7 @@ void Slot3_ReelDigits(char *c, int reelIndex) {
     for (column = 0; column < 3; column++) {
         ((dScMgSlot3_c *)dst)->mResultSymbols[0][0] =
             ((dScMgSlot3_c *)(stripBytes + symbolIndex))->mReelStrip[0][0];
-        symbolIndex = (symbolIndex + 1) % *(unsigned char *)(c + 0x503a);
+        symbolIndex = (symbolIndex + 1) % *(unsigned char *)(c + SLOT3_OFF(mStripLength));
         dst += 1;
     }
 }
@@ -719,7 +724,8 @@ s32 dScMgSlot3_c::Render() {
                     Hud_RenderSprite(
                         sSlot3FaceSprites[((dScMgSlot3_c *)(p + j2))->mResultSymbols[0][0] * 3 +
                                           i2],
-                        y - (*(int *)((int)c + i2 * 4 + 0x4ff4) >> 12), 0x60, -1, -1);
+                        y - (*(int *)((int)c + i2 * 4 + SLOT3_OFF(mReelWinPos)) >> 12), 0x60, -1,
+                        -1);
                     y += 0x50;
                 }
                 p += 3;
@@ -729,7 +735,7 @@ s32 dScMgSlot3_c::Render() {
             int row, rem;
             int i2, j2;
             for (i2 = 0; i2 < 3; i2++) {
-                int a = *(int *)(((int)c + i2 * 4 + 0x4fe4)) >> 12;
+                int a = *(int *)(((int)c + i2 * 4 + SLOT3_OFF(mReelPos))) >> 12;
                 int y;
                 row = a / 0x50;
                 rem = a % 0x50;

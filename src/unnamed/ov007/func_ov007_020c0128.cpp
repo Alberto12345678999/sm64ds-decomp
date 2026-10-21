@@ -15,8 +15,7 @@ extern "C" void func_02052ec8(void *p);
  * `tweening` bits are set. Only the slots spelled here have a reader.
  *
  * Left raw, on the char * `c`: +0x00, the u16 at +0x34 (zeroed beside the
- * two angles), the four bytes at +0xb8 and the ints at +0xcc and
- * +0xd0; no reader names them. */
+ * two angles) and the ints at +0xcc and +0xd0; no reader names them. */
 struct Ov007Camera {
     char pad_00[4];
     unsigned int tweening;    /* 0x04: bit 0 eye, bit 1 target, bit 2 distance */
@@ -30,7 +29,12 @@ struct Ov007Camera {
     int viewMatrix[12]; /* 0x44: Matrix4x3 */
     int projMatrix[16]; /* 0x74: Matrix4x4 */
     int scaleW;         /* 0xb4 */
-    char pad_b8[4];
+    /* 0xb8..0xbb: the screen rectangle in pixels, the whole 256x192 screen
+     * here; func_ov007_020c510c unprojects its corners */
+    unsigned char viewportMinX;
+    unsigned char viewportMaxX;
+    unsigned char viewportMinY;
+    unsigned char viewportMaxY;
     long long aspect; /* 0xbc: PerspectiveW_ takes it >> 0x14 */
     int nearZ;        /* 0xc4 */
     int farZ;         /* 0xc8 */
@@ -64,10 +68,10 @@ extern "C" void func_ov007_020c0128(char *c)
     cam->fovy = (short)_ZN4cstd3divEii(0x1e0000, 0x168);
     long long l = _ZN4cstd4ldivEii(0x4000, 0x3000);
     cam->aspect = l;
-    *(unsigned char *)(c + 0xb8) = 0;
-    *(unsigned char *)(c + 0xb9) = 0xff;
-    *(unsigned char *)(c + 0xba) = 0;
-    *(unsigned char *)(c + 0xbb) = 0xbf;
+    cam->viewportMinX = 0;
+    cam->viewportMaxX = 0xff;
+    cam->viewportMinY = 0;
+    cam->viewportMaxY = 0xbf;
     *(int *)(c + 0xcc) = 0x1000;
     *(int *)(c + 0xd0) = 0xc00;
     Matrix4x3_LoadIdentity(cam->viewMatrix);

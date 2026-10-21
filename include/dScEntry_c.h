@@ -62,7 +62,7 @@ struct dScEntry_c : dScene_c {
     u8 mFadeTick;             /* 0x284 -- steps the fade every other frame */
     u8 mIsFading;             /* 0x285 -- while set, Behavior runs the fade and nothing else */
     u8 pad_286;               /* 0x286 */
-    u8 unk_287;               /* 0x287 */
+    u8 mDisconnectHideMask;   /* 0x287 -- main-screen layers hidden on disconnect */
 
     // Names inferred from the step table and multiplayer/UI consumers.
     void SetSteps(const StepSet *steps);
@@ -71,6 +71,8 @@ struct dScEntry_c : dScene_c {
     void UpdateStepDelay();
     void EnterStepFadeOut();
     void UpdateStepFadeOut();
+    // Name and const qualifier are inferred; callers supply a step-set address.
+    void HandlePlayerDisconnect(const StepSet *resumeSteps);
     enum MatchLoadPhase {
         MATCH_LOAD_RESOURCES,
         MATCH_LOAD_WAIT_FOR_SIGNAL_CLEAR,
@@ -80,6 +82,7 @@ struct dScEntry_c : dScene_c {
     void UpdateMatchLoading();
     static void LoadCourseResources(int course);
     void StartMatch();
+    int CheckMenuConfirm(int player);
     int ArePlayersReady();
     void EnterCourseSelect();
     void UpdateCourseSelect();

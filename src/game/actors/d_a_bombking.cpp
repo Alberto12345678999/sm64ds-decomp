@@ -191,19 +191,17 @@ int daBombking_c::func_ov078_02123804()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_c19func_ov078_02123864Ev
 
-void daBombking_c::func_ov078_02123864()
-{
-  int i = 0;
-  do {
-    daBmb_c *bmb = (daBmb_c *)dActor_c::FindWithID(this->mSpawnedId[i]);
-    if (bmb) {
-      bmb->unk_3e0 = 0;
-      bmb->unk_3f6 = 1;
-    }
-    i++;
-  } while (i < 2);
+void daBombking_c::func_ov078_02123864() {
+    int i = 0;
+    do {
+        daBmb_c *bmb = (daBmb_c *)dActor_c::FindWithID(this->mSpawnedId[i]);
+        if (bmb) {
+            bmb->mHurtDamage = 0;
+            bmb->mDetonate = 1;
+        }
+        i++;
+    } while (i < 2);
 }
-
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_c19func_ov078_021238acEv
@@ -286,9 +284,9 @@ int daBombking_c::func_ov078_02123aa0()
             }
         }
     }
-    if (this->unk_505 == 0) {
+    if (this->mSoundCooldown == 0) {
         func_02012694(0x12d, &this->mCamSpacePosX);
-        this->unk_505 = 5;
+        this->mSoundCooldown = 5;
     }
     ApproachAngle(&this->mPrevAngleY, ang, 5, 0x1000, 0x100);
     this->mAngleY = this->mPrevAngleY;
@@ -392,13 +390,13 @@ int daBombking_c::func_ov078_02123d3c()
     this->mAngleY = this->mPrevAngleY;
 
     if (Vec3_Dist(&this->mPos, &v) > 0x1e000) {
-        if (this->unk_505 == 0) {
+        if (this->mSoundCooldown == 0) {
             func_02012694(0x12d, &this->mCamSpacePosX);
-            this->unk_505 = 0xf;
+            this->mSoundCooldown = 0xf;
         }
     } else {
-        if (this->unk_505 == 0) {
-            this->unk_505 = 0x14;
+        if (this->mSoundCooldown == 0) {
+            this->mSoundCooldown = 0x14;
             func_02012694(0x12f, &this->mCamSpacePosX);
         }
     }
@@ -1104,7 +1102,7 @@ int daBombking_c::func_ov078_021250f8()
         player = (Player *)this->ClosestPlayer();
         if (player != 0) {
             if (player->param1 != 3) {
-                this->unk_504 = 0x64;
+                this->mThrowCooldown = 0x64;
             }
         }
         KingBobOmb_SetState(&data_ov078_0212703c);
@@ -1132,7 +1130,7 @@ int daBombking_c::func_ov078_02125350()
         if (this->mSpawnedId[i] == 0) {
             r = (int)dActor_c::Spawn(0xce, 2, *(Vector3 *)(&this->mThrowPosX), 0, this->mAreaId, -1);
             if (r != 0) {
-                this->mSpawnedId[i] = *(int*)(r + 4);
+                this->mSpawnedId[i] = ((dActor_c *)r)->uniqueID;
                 this->mSpawnSlot = i;
                 return 1;
             }
@@ -1162,9 +1160,9 @@ int daBombking_c::func_ov078_02125448()
     int v4a0;
     int slot;
 
-    if (this->unk_505 == 0) {
+    if (this->mSoundCooldown == 0) {
         func_02012694(0x12d, &this->mCamSpacePosX);
-        this->unk_505 = 0xf;
+        this->mSoundCooldown = 0xf;
     }
     if (func_ov078_02123804() == 1) {
         func_ov078_02123864();
@@ -1213,7 +1211,7 @@ int daBombking_c::func_ov078_02125448()
             return 1;
         }
 
-        if (this->unk_504 == 0) {
+        if (this->mThrowCooldown == 0) {
             if (data_0209f220[0] == 1) {
                 if (this->DistToCPlayer() < 0x3e8000) {
                     if (AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) < 0x2800) {
@@ -1620,8 +1618,8 @@ int daBombking_c::Behavior()
     }
 
     DecIfAbove0_Short((unsigned short *)&mStateTimer);
-    DecIfAbove0_Byte(&unk_505);
-    DecIfAbove0_Byte(&unk_504);
+    DecIfAbove0_Byte(&mSoundCooldown);
+    DecIfAbove0_Byte(&mThrowCooldown);
 
     if ((char *)mState != (char *)data_ov078_021270bc) {
         UpdatePos(&mdCcAcPos_c);

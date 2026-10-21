@@ -24,6 +24,9 @@
  *   functions, including func_ov002_020e6780 (decl_common.h spells the
  *   parameter char *) and func_ov002_020bcdf0. func_ov002_020e69c0 rotates
  *   data_ov002_0210a760, which has no recovered name.
+ * - Player:: methods with no body-local externs carry no extern "C"
+ *   wrapper (60 sites); the rest keep it: the block gives C linkage to
+ *   body-local externs, and hoisting them exposes S42 spelling drift.
  */
 
 #pragma defer_codegen off
@@ -41,6 +44,7 @@
 #include "dBgCh_Actr.h"
 #include "decl_Animation.h"
 #include "Sound.h"
+#include "dCamera_c.h"
 #include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -92,14 +96,9 @@ struct Arg {
  virtual void *m1();
  virtual struct Ret *m2();
 };
-struct CameraRaw {
- char pad60[0x60];
- int f60; // 0x60
- char pad_to6d8[0x6d8 - 0x64];
- unsigned char f6d8; // 0x6d8
- char pad_to6e5[0x6e5 - 0x6d9];
- unsigned char f6e5; // 0x6e5
-};
+/* Only ever an opaque pointer: the camera's extern, and func_ov002_020ceb7c's
+ * parameter, which is a Player (it reads mPosY, mPlayerNo and mStateWork). */
+struct CameraRaw;
 /* The rest of this block is the same hoist for the same reason, and the tags
  * are unique in the same way.  A body may not declare `extern` with a
  * function-local class type: a local class has no linkage, so the declaration
@@ -139,21 +138,13 @@ struct ObjHS {
  * members of one signature. */
 typedef int (Player::*ScriptCommand)(unsigned char *, int, int);
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN6Player19func_ov002_020bccfcEPhii, 0x020bccfc, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bccfcEPhii
-extern "C" {
 int Player::func_ov002_020bccfc(unsigned char *params, int beginFrame, int endFrame)
 {
     this->MarkForDestruction();
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN6Player19func_ov002_020bcd18EPhii, 0x020bcd18, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bcd18EPhii
 extern "C" {
 int Player::func_ov002_020bcd18(unsigned char *params, int beginFrame, int endFrame)
@@ -164,9 +155,6 @@ int Player::func_ov002_020bcd18(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN6Player19func_ov002_020bcd38EPhii, 0x020bcd38, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bcd38EPhii
 extern "C" {
 int Player::func_ov002_020bcd38(unsigned char *params, int beginFrame, int endFrame)
@@ -195,9 +183,6 @@ int Player::func_ov002_020bcd38(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov002_020bcdf0, 0x020bcdf0, size 0x27c */
-/* -------------------------------------------------------------------------- */
 /* Free C-linkage script-animation update on a Player. The array-backed
  * entry retains the retail two-word stack snapshot under 2004/b56 C++.
  * w[0] is the animation ID; w[1] is the signed animation parameter.
@@ -301,9 +286,6 @@ particle:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN6Player19func_ov002_020bd06cEj, 0x020bd06c, size 0x1a0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd06cEj
 extern "C" {
 void Player::func_ov002_020bd06c(unsigned int state2)
@@ -393,11 +375,7 @@ void Player::func_ov002_020bd06c(unsigned int state2)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN6Player19func_ov002_020bd20cEPhii, 0x020bd20c, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd20cEPhii
-extern "C" {
 int Player::func_ov002_020bd20c(unsigned char *params, int beginFrame, int endFrame)
 {
     if (mAnimScriptId != *params) {
@@ -407,11 +385,7 @@ int Player::func_ov002_020bd20c(unsigned char *params, int beginFrame, int endFr
     }
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN6Player19func_ov002_020bd250EPhii, 0x020bd250, size 0x104 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd250EPhii
 extern "C" {
 int Player::func_ov002_020bd250(unsigned char *params, int beginFrame, int endFrame)
@@ -451,9 +425,6 @@ int Player::func_ov002_020bd250(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN6Player19func_ov002_020bd354EPhii, 0x020bd354, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd354EPhii
 extern "C" {
 int Player::func_ov002_020bd354(unsigned char *params, int beginFrame, int endFrame)
@@ -471,9 +442,6 @@ int Player::func_ov002_020bd354(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN6Player19func_ov002_020bd3a0EPhii, 0x020bd3a0, size 0x98 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd3a0EPhii
 extern "C" {
 int Player::func_ov002_020bd3a0(unsigned char *params, int beginFrame, int endFrame)
@@ -494,9 +462,6 @@ int Player::func_ov002_020bd3a0(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN6Player19func_ov002_020bd438EPhii, 0x020bd438, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd438EPhii
 extern "C" {
 int Player::func_ov002_020bd438(unsigned char *params, int beginFrame, int endFrame)
@@ -509,9 +474,6 @@ int Player::func_ov002_020bd438(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- _ZN6Player19func_ov002_020bd45cEPhii, 0x020bd45c, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd45cEPhii
 extern "C" {
 int Player::func_ov002_020bd45c(unsigned char *params, int beginFrame, int endFrame)
@@ -523,9 +485,6 @@ int Player::func_ov002_020bd45c(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN6Player19func_ov002_020bd480EPhii, 0x020bd480, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd480EPhii
 extern "C" {
 int Player::func_ov002_020bd480(unsigned char *params, int beginFrame, int endFrame)
@@ -537,9 +496,6 @@ int Player::func_ov002_020bd480(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN6Player19func_ov002_020bd4acEPhii, 0x020bd4ac, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd4acEPhii
 extern "C" {
 int Player::func_ov002_020bd4ac(unsigned char *params, int beginFrame, int endFrame)
@@ -550,21 +506,13 @@ int Player::func_ov002_020bd4ac(unsigned char *params, int beginFrame, int endFr
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- _ZN6Player19func_ov002_020bd4c8EPhii, 0x020bd4c8, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd4c8EPhii
-extern "C" {
 int Player::func_ov002_020bd4c8(unsigned char *params, int beginFrame, int endFrame)
 {
     mFlags |= 0x24000000;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- _ZN6Player19func_ov002_020bd4e0EPhii, 0x020bd4e0, size 0x120 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd4e0EPhii
 #pragma push
 #pragma opt_propagation off
@@ -613,9 +561,6 @@ int Player::func_ov002_020bd4e0(unsigned char *data, int beginFrame, int endFram
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- _ZN6Player19func_ov002_020bd600EPhii, 0x020bd600, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd600EPhii
 extern "C" {
 int Player::func_ov002_020bd600(unsigned char *data, int beginFrame, int endFrame)
@@ -635,9 +580,6 @@ int Player::func_ov002_020bd600(unsigned char *data, int beginFrame, int endFram
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 16 -- _ZN6Player19func_ov002_020bd664EPhii, 0x020bd664, size 0x1c4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd664EPhii
 extern "C" {
 int Player::func_ov002_020bd664(unsigned char *cmd, int beginFrame, int endFrame)
@@ -679,9 +621,6 @@ int Player::func_ov002_020bd664(unsigned char *cmd, int beginFrame, int endFrame
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 17 -- _ZN6Player8CanPauseEv, 0x020bd828, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player8CanPauseEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -706,9 +645,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 18 -- func_ov002_020bd8ac, 0x020bd8ac, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bd8ac
 extern "C" {
 int func_ov002_020bd8ac(unsigned char *p)
@@ -717,9 +653,6 @@ int func_ov002_020bd8ac(unsigned char *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 19 -- _ZN6Player19func_ov002_020bd8c0Ej, 0x020bd8c0, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd8c0Ej
 extern "C" {
 void Player::func_ov002_020bd8c0(unsigned int r1) {
@@ -738,9 +671,6 @@ void Player::func_ov002_020bd8c0(unsigned int r1) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- _ZN6Player19func_ov002_020bd928Ej, 0x020bd928, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd928Ej
 extern "C" {
 void Player::func_ov002_020bd928(unsigned int r4) {
@@ -760,9 +690,6 @@ void Player::func_ov002_020bd928(unsigned int r4) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- _ZN6Player19func_ov002_020bd984Ej, 0x020bd984, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd984Ej
 extern "C" {
 void Player::func_ov002_020bd984(unsigned int r1) {
@@ -781,9 +708,6 @@ void Player::func_ov002_020bd984(unsigned int r1) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 22 -- _ZN6Player19func_ov002_020bd9ecEj, 0x020bd9ec, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bd9ecEj
 extern "C" {
 void Player::func_ov002_020bd9ec(unsigned int r4) {
@@ -803,9 +727,6 @@ void Player::func_ov002_020bd9ec(unsigned int r4) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 23 -- func_ov002_020bda48, 0x020bda48, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bda48Ev
 extern "C" {
 void Player::func_ov002_020bda48()
@@ -825,9 +746,6 @@ void Player::func_ov002_020bda48()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 24 -- _ZN6Player8HasNoCapEv, 0x020bda98, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player8HasNoCapEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -854,9 +772,6 @@ int Player::HasNoCap()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 25 -- _ZN6Player19func_ov002_020bdb50Ei, 0x020bdb50, size 0xc8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bdb50Ei
 extern "C" {
 void Player::func_ov002_020bdb50(int arg) {
@@ -879,17 +794,13 @@ void Player::func_ov002_020bdb50(int arg) {
             func_ov002_020d5cec();
             (this->mStateFlags) &= ~2;
         } else {
-            char* vt = *(char**)obj;
-            (*(void(**)(char*, char*))(vt+0x4c))(obj, c);
+            ((dActor_c *)obj)->OnTurnIntoEgg(*this);
         }
     }
     this->mObjInMouth = 0;
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- _ZN6Player19func_ov002_020bdc18Ev, 0x020bdc18, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bdc18Ev
 extern "C" {
 void Player::func_ov002_020bdc18() {
@@ -907,9 +818,6 @@ void Player::func_ov002_020bdc18() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 27 -- _ZN6Player16IncMegaKillCountEv, 0x020bdc58, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16IncMegaKillCountEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -955,9 +863,6 @@ void Player::IncMegaKillCount() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 28 -- _ZN6Player19func_ov002_020bdd2cEv, 0x020bdd2c, size 0x70 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bdd2cEv
 extern "C" {
 void Player::func_ov002_020bdd2c() {
@@ -967,8 +872,7 @@ void Player::func_ov002_020bdd2c() {
     if (this->mIsMega == 1) {
         func_ov002_020db8bc((unsigned char *)c, 3);
         {
-            int *base = (int *)(((int)data_0209f318 + 0x154));
-            *base &= ~0x80;
+            ((dCamera_c *)data_0209f318)->mFlags &= ~0x80;
         }
         this->func_ov002_020bd984(0x31);
         this->mWaterStillParticle = 0;
@@ -980,9 +884,6 @@ void Player::func_ov002_020bdd2c() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 29 -- func_ov002_020bdd9c, 0x020bdd9c, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bdd9cEv
 extern "C" {
 void Player::func_ov002_020bdd9c(){
@@ -998,9 +899,6 @@ void Player::func_ov002_020bdd9c(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 30 -- _ZN6Player14InitMetalWarioEv, 0x020bde14, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14InitMetalWarioEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -1038,9 +936,6 @@ void Player::InitMetalWario()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 31 -- func_ov002_020bdef0, 0x020bdef0, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bdef0Ev
 extern "C" {
 void Player::func_ov002_020bdef0(){
@@ -1055,9 +950,6 @@ void Player::func_ov002_020bdef0(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 32 -- _ZN6Player15InitVanishLuigiEv, 0x020bdf4c, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15InitVanishLuigiEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -1067,7 +959,6 @@ void Player::func_ov002_020bdef0(){
  * Note the original wrote mPowerupTimer as `c + 0x600 + 0xae` rather than 0x6ae --
  * the split is how the compiler addressed it, not a second field.
  */
-extern "C" {
 void Player::InitVanishLuigi()
 {
     func_ov002_020bda48();
@@ -1076,11 +967,7 @@ void Player::InitVanishLuigi()
     func_ov002_020bd9ec(0x33);
     func_ov002_020c43c4(3);
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 33 -- func_ov002_020bdf8c, 0x020bdf8c, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bdf8cEv
 extern "C" {
 void Player::func_ov002_020bdf8c(){
@@ -1095,14 +982,11 @@ void Player::func_ov002_020bdf8c(){
   }
   mIsMega = 1;
   mMegaTimer = 0x258;
-  (*(unsigned int *)(((int)data_0209f318 + 0x154))) |= 0x80;
+  ((dCamera_c *)data_0209f318)->mFlags |= 0x80;
   func_ov002_020bd9ec(0x31);
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 34 -- func_ov002_020be008, 0x020be008, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020be008
 extern "C" {
 void func_ov002_020be008(char* self){
@@ -1134,9 +1018,6 @@ void func_ov002_020be008(char* self){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 35 -- _ZN6Player18SetNewHatCharacterEjjb, 0x020be0f8, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18SetNewHatCharacterEjjb
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -1175,9 +1056,6 @@ void Player::SetNewHatCharacter(unsigned int p1, unsigned int p2, bool p3)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 36 -- _ZN6Player16SetRealCharacterEj, 0x020be1e0, size 0x144 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16SetRealCharacterEj
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -1220,9 +1098,6 @@ void Player::SetRealCharacter(unsigned int chr_)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 37 -- _ZN6Player18TurnOffToonShadingEj, 0x020be324, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18TurnOffToonShadingEj
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -1243,9 +1118,6 @@ void Player::TurnOffToonShading(unsigned int j)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 38 -- func_ov002_020be3b0, 0x020be3b0, size 0x6cc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020be3b0Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -1450,35 +1322,21 @@ void Player::func_ov002_020be3b0()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 39 -- _ZN6Player19func_ov002_020bea7cEv, 0x020bea7c, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bea7cEv
-extern "C" {
 int Player::func_ov002_020bea7c(){
     return mCapFlags != 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 40 -- _ZN6Player15IsCollectingCapEv, 0x020bea94, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15IsCollectingCapEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsCollectingCap()
 {
   unsigned short v = mCapFlags;
   if(v!=0 && (v&7)<5) return 1;
   return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 41 -- func_ov002_020beabc, 0x020beabc, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020beabcEv
-extern "C" {
 void Player::func_ov002_020beabc()
 {
     char *p = (char *)this;
@@ -1490,13 +1348,9 @@ void Player::func_ov002_020beabc()
     unsigned int id = GetBodyModelID(this->mCharacter, 0);
     mBodyModels[id]->SetPolygonMode(2);
     unsigned int id2 = func_ov002_020becf4(param1 & 0xff, 0);
-    ((Model *)*(int *)(p + (id2 << 2) + 0x154))->SetPolygonMode(2);
-}
+    mHeadModels[id2]->SetPolygonMode(2);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 42 -- func_ov002_020beb38, 0x020beb38, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020beb38Ev
 extern "C" {
 int Player::func_ov002_020beb38(){
@@ -1516,9 +1370,6 @@ int Player::func_ov002_020beb38(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 43 -- func_ov002_020bebd4, 0x020bebd4, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bebd4
 extern "C" {
 void func_ov002_020bebd4(void){
@@ -1533,9 +1384,6 @@ void func_ov002_020bebd4(void){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 44 -- func_ov002_020bec2c, 0x020bec2c, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bec2c
 extern "C" {
 void func_ov002_020bec2c(void){
@@ -1551,9 +1399,6 @@ void func_ov002_020bec2c(void){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 45 -- func_ov002_020bec84, 0x020bec84, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bec84
 extern "C" {
 int func_ov002_020bec84(void* p, unsigned int i) {
@@ -1563,9 +1408,6 @@ int func_ov002_020bec84(void* p, unsigned int i) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 46 -- func_ov002_020bec9c, 0x020bec9c, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bec9c
 extern "C" {
 int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
@@ -1575,9 +1417,6 @@ int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 47 -- _ZNK6Player14GetBodyModelIDEjb, 0x020becc8, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZNK6Player14GetBodyModelIDEjb
 /* recovered: named members + shared header, real C++ method
  *
@@ -1588,7 +1427,6 @@ int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
  * const, and the _ZNK in the symbol is what says so: declared without it the
  * compiler emits _ZN..., which names a symbol that does not exist.
  */
-extern "C" {
 unsigned int Player::GetBodyModelID(unsigned int a, bool b_) const
 {
     if (b_ == 0) {
@@ -1599,13 +1437,8 @@ unsigned int Player::GetBodyModelID(unsigned int a, bool b_) const
     }
     return a;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 48 -- _ZN6Player19func_ov002_020becf4Eii, 0x020becf4, size 0xa4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020becf4Eii
-extern "C" {
 int Player::func_ov002_020becf4(int v, int arg2){
     int cond;
     int r1;
@@ -1630,14 +1463,9 @@ int Player::func_ov002_020becf4(int v, int arg2){
     }
     return (r1 + v) & 0xff;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 49 -- _ZN6Player12FinishedAnimEv, 0x020bed98, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12FinishedAnimEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::FinishedAnim()
 {
     unsigned int modelID = GetBodyModelID(param1 & 0xff, 0);
@@ -1645,18 +1473,14 @@ int Player::FinishedAnim()
     ModelAnim *model = mBodyModels[modelID];
     return model->Finished() != 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 50 -- Player_AdvanceAnims, 0x020bedd4, size 0xf8 */
-/* -------------------------------------------------------------------------- */
 // @symbol Player_AdvanceAnims
 extern "C" {
 void Player_AdvanceAnims(char *self)
 {
     Player *player = reinterpret_cast<Player *>(self);
     unsigned int modelID = player->GetBodyModelID(player->param1 & 0xff, 0);
-    ModelAnim *model = *reinterpret_cast<ModelAnim **>(self + 0xdc + modelID * 4);
+    ModelAnim *model = player->mBodyModels[modelID];
     model->Advance();
 
     if (player->IsAnim(0x9a) || player->IsAnim(0x19) ||
@@ -1669,9 +1493,6 @@ void Player_AdvanceAnims(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 51 -- _ZN6Player6IsAnimEj, 0x020beecc, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player6IsAnimEj
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -1688,9 +1509,6 @@ int Player::IsAnim(unsigned int a)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 52 -- _ZN6Player7SetAnimEji5Fix12IiEj, 0x020bef2c, size 0x210 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player7SetAnimEji5Fix12IiEj
 #define LAUNDER16(p) ((u16 *)(int)(p))
 #pragma push
@@ -1767,7 +1585,9 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
     sl += (field8 & 3);
     param2 = 0;
     if (((int)sl >> 2) == 1) param2 = 0x40000000;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj( self + 0x1dc + field8 * 0x14, *(void **)((char *)data_ov002_020ff2f0[sl] + 4), param2, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &player->mTexSeqBody[field8], *(void **)((char *)data_ov002_020ff2f0[sl] + 4), param2,
+        0x1000, 0);
 
     player->mCharFileBase = newVal;
 }
@@ -1775,9 +1595,6 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
 #pragma pop
 #undef LAUNDER16
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 53 -- func_ov002_020bf13c, 0x020bf13c, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf13cEv
 /* matched pure C — was HAND-ASM regperm floor; y-early preload cracks r4/r5 */
 extern "C" {
@@ -1824,9 +1641,6 @@ void Player::func_ov002_020bf13c()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 54 -- func_ov002_020bf224, 0x020bf224, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bf224
 /* func_ov002_020bf224 — scale b by an s16 factor from a 0x18-stride table
  * indexed by byte gActivePlayerSlot (fx12 rounded multiply), clamped below by c.
@@ -1843,9 +1657,6 @@ int func_ov002_020bf224(int a, int b, int c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 55 -- func_ov002_020bf27c, 0x020bf27c, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bf27c
 extern "C" {
 int func_ov002_020bf27c(char* c, int r1){
@@ -1863,9 +1674,6 @@ int func_ov002_020bf27c(char* c, int r1){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 56 -- _ZN6Player19func_ov002_020bf2d8Ei, 0x020bf2d8, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf2d8Ei
 extern "C" {
 void Player::func_ov002_020bf2d8(Fix12i a){
@@ -1876,9 +1684,6 @@ void Player::func_ov002_020bf2d8(Fix12i a){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 57 -- Player_ScaleByCharFactor, 0x020bf30c, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol Player_ScaleByCharFactor
 extern "C" {
 Fix12i Player_ScaleByCharFactor(void*c, Fix12i a){
@@ -1889,9 +1694,6 @@ Fix12i Player_ScaleByCharFactor(void*c, Fix12i a){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 58 -- func_ov002_020bf340, 0x020bf340, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bf340
 extern "C" {
 void func_ov002_020bf340(int dummy, int*p, int delta, int limit){
@@ -1902,9 +1704,6 @@ void func_ov002_020bf340(int dummy, int*p, int delta, int limit){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 59 -- _ZN6Player19func_ov002_020bf36cEPv, 0x020bf36c, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf36cEPv
 extern "C" {
 void Player::func_ov002_020bf36c(void* arg){
@@ -1929,9 +1728,6 @@ void Player::func_ov002_020bf36c(void* arg){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 60 -- func_ov002_020bf40c, 0x020bf40c, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf40cEv
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -1968,7 +1764,7 @@ int Player::func_ov002_020bf40c() {
         }
         _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos, this);
         if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
-            mGroundY = *(int *)((char *)&rg + 0x44);
+            mGroundY = ((::dBgCh_Gnd *)&rg)->clsnY;
         }
         _ZN9dBgCh_GndD1Ev(&rg);
         return 1;
@@ -1977,9 +1773,6 @@ int Player::func_ov002_020bf40c() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 61 -- _ZN6Player4HealEi, 0x020bf4e4, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player4HealEi
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -1998,9 +1791,6 @@ int Player::Heal(int amt)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 62 -- _ZN6Player9GetHealthEv, 0x020bf548, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player9GetHealthEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -2013,9 +1803,6 @@ int Player::GetHealth()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 63 -- func_ov002_020bf56c, 0x020bf56c, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bf56c
 extern "C" {
 int func_ov002_020bf56c(void* a, int b){
@@ -2042,9 +1829,6 @@ int func_ov002_020bf56c(void* a, int b){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 64 -- func_ov002_020bf5e0, 0x020bf5e0, size 0x220 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf5e0Ev
 extern "C" {
 void Player::func_ov002_020bf5e0()
@@ -2132,9 +1916,6 @@ state_merge:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 65 -- func_ov002_020bf800, 0x020bf800, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020bf800
 extern "C" {
 void func_ov002_020bf800(char *c, Vector3_16f v)
@@ -2152,9 +1933,6 @@ void func_ov002_020bf800(char *c, Vector3_16f v)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 66 -- func_ov002_020bf88c, 0x020bf88c, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf88cEv
 extern "C" {
 void Player::func_ov002_020bf88c(){
@@ -2170,9 +1948,6 @@ void Player::func_ov002_020bf88c(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 67 -- func_ov002_020bf90c, 0x020bf90c, size 0xc8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf90cEv
 extern "C" {
 void Player::func_ov002_020bf90c()
@@ -2196,9 +1971,6 @@ void Player::func_ov002_020bf90c()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 68 -- func_ov002_020bf9d4, 0x020bf9d4, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bf9d4Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -2228,9 +2000,6 @@ void Player::func_ov002_020bf9d4(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 69 -- func_ov002_020bfa74, 0x020bfa74, size 0x44c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bfa74Ev
 /* Player on a CLPS surface of type 0xb (a current/conveyor tile): the tile's
  * CLPS word names a two-node path whose direction is the push vector. Spawns the
@@ -2319,9 +2088,6 @@ int Player::func_ov002_020bfa74()
 #undef SIN
 #undef COS
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 70 -- func_ov002_020bfec0, 0x020bfec0, size 0x248 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020bfec0Ev
 extern "C" {
 int Player::func_ov002_020bfec0()
@@ -2404,9 +2170,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 71 -- _ZN6Player19func_ov002_020c0108Ei, 0x020c0108, size 0x214 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0108Ei
 #define AT(p, off) ((void *)(int)((char *)(p) + (off)))
 extern "C" {
@@ -2481,9 +2244,6 @@ int Player::func_ov002_020c0108(int p1)
 }
 #undef AT
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 72 -- _ZN6Player19func_ov002_020c031cEv, 0x020c031c, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c031cEv
 extern "C" {
 int Player::func_ov002_020c031c(){
@@ -2497,9 +2257,6 @@ int Player::func_ov002_020c031c(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 73 -- _ZN6Player19func_ov002_020c0364Ej, 0x020c0364, size 0xd0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0364Ej
 extern "C" {
 void Player::func_ov002_020c0364(u32 arg)
@@ -2532,11 +2289,7 @@ void Player::func_ov002_020c0364(u32 arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 74 -- func_ov002_020c0434, 0x020c0434, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0434Ev
-extern "C" {
 int Player::func_ov002_020c0434(){
   unsigned short f = mStateFlags & 1;
   if(f){
@@ -2546,11 +2299,7 @@ int Player::func_ov002_020c0434(){
   }
   return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 75 -- func_ov002_020c04ac, 0x020c04ac, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c04acEv
 extern "C" {
 int Player::func_ov002_020c04ac(){
@@ -2559,9 +2308,6 @@ int Player::func_ov002_020c04ac(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 76 -- func_ov002_020c04e0, 0x020c04e0, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c04e0Ev
 extern "C" {
 int Player::func_ov002_020c04e0()
@@ -2640,11 +2386,7 @@ int Player::func_ov002_020c04e0()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 77 -- func_ov002_020c0688, 0x020c0688, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0688Ev
-extern "C" {
 int Player::func_ov002_020c0688(){
   if (mIsAirborne == 0) return 1;
   if (mSlideType != 0) {
@@ -2662,11 +2404,7 @@ int Player::func_ov002_020c0688(){
   }
   return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 78 -- _ZN6Player19func_ov002_020c06fcEi, 0x020c06fc, size 0x5c0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c06fcEi
 extern "C" {
 int Player::func_ov002_020c06fc(int arg)
@@ -2819,11 +2557,7 @@ int Player::func_ov002_020c06fc(int arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 79 -- func_ov002_020c0cbc, 0x020c0cbc, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0cbcEv
-extern "C" {
 int Player::func_ov002_020c0cbc(){
   int t;
   int d;
@@ -2846,11 +2580,7 @@ int Player::func_ov002_020c0cbc(){
   }
   return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 80 -- _ZN6Player19func_ov002_020c0d90Ei, 0x020c0d90, size 0x224 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0d90Ei
 extern "C" {
 int Player::func_ov002_020c0d90(int y)
@@ -2909,9 +2639,6 @@ int Player::func_ov002_020c0d90(int y)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 81 -- _ZN6Player19func_ov002_020c0fb4Ev, 0x020c0fb4, size 0x280 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c0fb4Ev
 extern "C" {
 int Player::func_ov002_020c0fb4() {
@@ -3028,9 +2755,6 @@ int Player::func_ov002_020c0fb4() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 82 -- func_ov002_020c1234, 0x020c1234, size 0x108 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c1234Ev
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -3072,9 +2796,6 @@ void Player::func_ov002_020c1234() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 83 -- func_ov002_020c133c, 0x020c133c, size 0x17c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c133cEv
 extern "C" {
 void Player::func_ov002_020c133c()
@@ -3117,9 +2838,6 @@ set0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 84 -- _ZN6Player19func_ov002_020c14b8Ev, 0x020c14b8, size 0x234 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c14b8Ev
 extern "C" {
 void Player::func_ov002_020c14b8()
@@ -3216,9 +2934,6 @@ void Player::func_ov002_020c14b8()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 85 -- func_ov002_020c16ec, 0x020c16ec, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c16ec
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -3251,9 +2966,6 @@ void func_ov002_020c16ec(char *o, char *s)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 86 -- func_ov002_020c179c, 0x020c179c, size 0x114 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c179c
 /* recovered: shared common types */
 // func_ov002_020c179c at 0x020c179c
@@ -3301,9 +3013,6 @@ int func_ov002_020c179c(char* self, int angle) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 87 -- func_ov002_020c18b0, 0x020c18b0, size 0x120 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c18b0
 extern "C" {
 void func_ov002_020c18b0(char *self, int p1)
@@ -3342,9 +3051,6 @@ void func_ov002_020c18b0(char *self, int p1)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 88 -- _ZN6Player19func_ov002_020c19d0Eii, 0x020c19d0, size 0x108 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c19d0Eii
 extern "C" {
 int Player::func_ov002_020c19d0(int arg1, int arg2) {
@@ -3373,9 +3079,6 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 89 -- _ZN6Player19func_ov002_020c1ad8Ei, 0x020c1ad8, size 0x1ac */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c1ad8Ei
 /* _ZN6Player19func_ov002_020c1ad8Ei at 0x020c1ad8 (ov002)
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
@@ -3427,9 +3130,6 @@ int Player::func_ov002_020c1ad8(int ang)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 90 -- _ZN6Player19func_ov002_020c1c84Ei, 0x020c1c84, size 0x1c0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c1c84Ei
 extern "C" {
 int Player::func_ov002_020c1c84(int arg)
@@ -3480,9 +3180,6 @@ int Player::func_ov002_020c1c84(int arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 91 -- func_ov002_020c1e44, 0x020c1e44, size 0x70 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c1e44
 extern "C" {
 int func_ov002_020c1e44(void* a, int x) {
@@ -3495,9 +3192,6 @@ int func_ov002_020c1e44(void* a, int x) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 92 -- _ZN6Player19func_ov002_020c1eb4Ei, 0x020c1eb4, size 0x158 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c1eb4Ei
 /* recovered: shared common types */
 extern "C" {
@@ -3544,9 +3238,6 @@ void Player::func_ov002_020c1eb4(int dmg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 93 -- _ZN6Player19func_ov002_020c200cEi, 0x020c200c, size 0x12c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c200cEi
 extern "C" {
 int Player::func_ov002_020c200c(int arg)
@@ -3584,9 +3275,6 @@ int Player::func_ov002_020c200c(int arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 94 -- _ZN6Player19func_ov002_020c2138Ev, 0x020c2138, size 0x138 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c2138Ev
 // _ZN6Player19func_ov002_020c2138Ev at 0x020c2138
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
@@ -3610,9 +3298,6 @@ return this->func_ov002_020c1ad8(ang);
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 95 -- func_ov002_020c2270, 0x020c2270, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c2270
 /* recovered: shared common types */
 extern "C" {
@@ -3635,9 +3320,6 @@ int func_ov002_020c2270(void* c, void* p1, void* p2) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 96 -- func_ov002_020c231c, 0x020c231c, size 0x28c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c231cEv
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -3723,9 +3405,6 @@ int Player::func_ov002_020c231c()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 97 -- _ZN6Player19func_ov002_020c25a8Ei, 0x020c25a8, size 0x42c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c25a8Ei
 extern "C" {
 int Player::func_ov002_020c25a8(int arg1)
@@ -3888,8 +3567,7 @@ int Player::func_ov002_020c25a8(int arg1)
         if (mIsUnderwater == 0 && ret != 1) {
             _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
             if (v.y != 0) {
-                int t = _ZN4cstd4fdivEii(
-                    FX_MUL(v.x, *(int *)(c + 0xa4)) + FX_MUL(v.z, *(int *)(c + 0xac)), v.y);
+                int t = _ZN4cstd4fdivEii(FX_MUL(v.x, mSpeedX) + FX_MUL(v.z, mSpeedZ), v.y);
                 t = -(t + 0x8000);
                 if (t < 0)
                     mVertSpeed = t;
@@ -3940,9 +3618,6 @@ int Player::func_ov002_020c25a8(int arg1)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 98 -- func_ov002_020c29d4, 0x020c29d4, size 0x134 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c29d4Ev
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -3984,9 +3659,6 @@ void Player::func_ov002_020c29d4()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 99 -- _ZN6Player19func_ov002_020c2b08Ev, 0x020c2b08, size 0x2b0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c2b08Ev
 extern "C" {
 void Player::func_ov002_020c2b08()
@@ -4108,9 +3780,6 @@ void Player::func_ov002_020c2b08()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 100 -- _ZN6Player19func_ov002_020c2db8Ev, 0x020c2db8, size 0xc0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c2db8Ev
 extern "C" {
 void Player::func_ov002_020c2db8() {
@@ -4141,9 +3810,6 @@ void Player::func_ov002_020c2db8() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 101 -- func_ov002_020c2e78, 0x020c2e78, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c2e78Ev
 extern "C" {
 void Player::func_ov002_020c2e78(){
@@ -4162,9 +3828,6 @@ void Player::func_ov002_020c2e78(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 102 -- _ZN6Player7CanWarpEv, 0x020c2ef0, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player7CanWarpEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -4189,24 +3852,15 @@ int Player::CanWarp()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 103 -- _ZN6Player7IsInAirEv, 0x020c2f3c, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player7IsInAirEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsInAir()
 {
   if(mIsAirborne) return mIsInAirState!=0;
   return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 104 -- _ZN6Player19func_ov002_020c2f64Ev, 0x020c2f64, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c2f64Ev
-extern "C" {
 void Player::func_ov002_020c2f64() {
   if (this->mLandSoundPlayed) return;
   this->mLandSoundPlayed = 1;
@@ -4220,11 +3874,7 @@ void Player::func_ov002_020c2f64() {
   }
   Sound::PlayBank0(this->mGroundSoundType + 0x40, mCamSpacePos);
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 105 -- _ZN6Player19func_ov002_020c2fecEPi, 0x020c2fec, size 0x15c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c2fecEPi
 extern "C" {
 int Player::func_ov002_020c2fec(int *out)
@@ -4271,22 +3921,14 @@ int Player::func_ov002_020c2fec(int *out)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 106 -- _ZN6Player19func_ov002_020c3148Ev, 0x020c3148, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c3148Ev
-extern "C" {
 void Player::func_ov002_020c3148()
 {
     mSplinePoint = 0;
     mSplineT = 0;
     mSplineSpan = 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 107 -- func_ov002_020c3160, 0x020c3160, size 0x644 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c3160
 extern "C" {
 static inline int FX(int a, int b) {
@@ -4354,9 +3996,6 @@ void func_ov002_020c3160(Player *self, Arg1 *out) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 108 -- _ZN6Player19func_ov002_020c37a4EPc, 0x020c37a4, size 0xfc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c37a4EPc
 /* recovered: shared common types */
 extern "C" {
@@ -4382,9 +4021,6 @@ void Player::func_ov002_020c37a4(char *arg) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 109 -- func_ov002_020c38a0, 0x020c38a0, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c38a0Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -4444,9 +4080,6 @@ void Player::func_ov002_020c38a0()
 }
 #undef LA
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 110 -- func_ov002_020c3a48, 0x020c3a48, size 0x194 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c3a48Ev
 extern "C" {
 int Player::func_ov002_020c3a48()
@@ -4503,9 +4136,6 @@ int Player::func_ov002_020c3a48()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 111 -- func_ov002_020c3bdc, 0x020c3bdc, size 0x114 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c3bdcEv
 extern "C" {
 void Player::func_ov002_020c3bdc(){
@@ -4543,22 +4173,14 @@ void Player::func_ov002_020c3bdc(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 112 -- func_ov002_020c3cf0, 0x020c3cf0, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c3cf0Ev
-extern "C" {
 void Player::func_ov002_020c3cf0()
 {
     mStateStep = 0;
     mStateWork = mStateStep;
     (this->mStatePhase)++;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 113 -- _ZN6Player17St_EndingFly_MainEv, 0x020c3d1c, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_EndingFly_MainEv
 /* recovered: shared header, real C++ method
  *
@@ -4577,7 +4199,6 @@ void Player::func_ov002_020c3cf0()
  * was moved here from ov007, where it had been sitting on an unrelated 0x50
  * function that ov007 calls from 46 places. See the commit and Player.h.
  */
-extern "C" {
 int Player::St_EndingFly_Main()
 {
     switch (mStatePhase) {
@@ -4592,11 +4213,7 @@ int Player::St_EndingFly_Main()
     }
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 114 -- _ZN6Player17St_EndingFly_InitEv, 0x020c3d6c, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_EndingFly_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -4613,9 +4230,6 @@ int Player::St_EndingFly_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 115 -- func_ov002_020c3dbc, 0x020c3dbc, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c3dbc
 extern "C" {
 void func_ov002_020c3dbc(void* player) {
@@ -4624,9 +4238,6 @@ void func_ov002_020c3dbc(void* player) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 116 -- _ZN6Player21St_OpeningWakeUp_MainEv, 0x020c3dd0, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_OpeningWakeUp_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -4657,9 +4268,6 @@ int Player::St_OpeningWakeUp_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 117 -- func_ov002_020c3e8c, 0x020c3e8c, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c3e8c
 extern "C" {
 void func_ov002_020c3e8c(void* player) {
@@ -4668,9 +4276,6 @@ void func_ov002_020c3e8c(void* player) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 118 -- func_ov002_020c3ea0, 0x020c3ea0, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c3ea0Ev
 extern "C" {
 int Player::func_ov002_020c3ea0(){
@@ -4681,9 +4286,6 @@ int Player::func_ov002_020c3ea0(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 119 -- _ZN6Player21St_OpeningWakeUp_InitEv, 0x020c3ed8, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_OpeningWakeUp_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -4697,9 +4299,6 @@ int Player::St_OpeningWakeUp_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 120 -- func_ov002_020c3f18, 0x020c3f18, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c3f18
 extern "C" {
 void func_ov002_020c3f18(char* p) {
@@ -4709,9 +4308,6 @@ void func_ov002_020c3f18(char* p) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 121 -- func_ov002_020c3f2c, 0x020c3f2c, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c3f2c
 extern "C" {
 void func_ov002_020c3f2c(void* player) {
@@ -4720,9 +4316,6 @@ void func_ov002_020c3f2c(void* player) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 122 -- _ZN6Player15St_Respawn_MainEv, 0x020c3f40, size 0x148 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Respawn_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -4776,9 +4369,6 @@ int Player::St_Respawn_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 123 -- _ZN6Player15St_Respawn_InitEv, 0x020c4088, size 0x100 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Respawn_InitEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -4822,9 +4412,6 @@ int Player::St_Respawn_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 124 -- func_ov002_020c4188, 0x020c4188, size 0x23c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c4188Ev
 extern "C" {
 int Player::func_ov002_020c4188()
@@ -4889,7 +4476,7 @@ int Player::func_ov002_020c4188()
         mFlags &= ~0x800000;
         data_0209b454 &= ~0x800000;
         if (mEventId >= 7) {
-            *(int*)(((int)p + 0x154)) &= ~8;
+            ((dCamera_c *)p)->mFlags &= ~8;
         }
         func_0200d81c(p, mPlayerNo);
         if (mEventId == 6) {
@@ -4900,7 +4487,7 @@ int Player::func_ov002_020c4188()
         }
         break;
     case 4:
-        if (p[0x55] & 0x8000) {
+        if (((dCamera_c *)p)->mFlags & 0x8000) {
             break;
         }
         mEventId = 0;
@@ -4915,9 +4502,6 @@ int Player::func_ov002_020c4188()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 125 -- _ZN6Player19func_ov002_020c43c4Ej, 0x020c43c4, size 0x100 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c43c4Ej
 extern "C" {
 void Player::func_ov002_020c43c4(unsigned int idx) {
@@ -4958,9 +4542,6 @@ void Player::func_ov002_020c43c4(unsigned int idx) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 126 -- func_ov002_020c44c4, 0x020c44c4, size 0x29c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c44c4Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -5074,9 +4655,6 @@ cont:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 127 -- _ZN6Player15St_Talk_CleanupEv, 0x020c4760, size 0x94 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Talk_CleanupEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -5101,7 +4679,7 @@ int Player::St_Talk_Cleanup()
     }
     mFlags &= ~0x800000;
     data_0209b454 &= ~0x800000;
-    *(u32*)((char*)data_0209f318 + 0x154) &= ~8;
+    ((dCamera_c *)data_0209f318)->mFlags &= ~8;
     if (unk_725) {
         Sound::LoadAndSetMusic_Layer1(0x39);
         unk_725 = 0;
@@ -5110,9 +4688,6 @@ int Player::St_Talk_Cleanup()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 128 -- func_ov002_020c47f4, 0x020c47f4, size 0xec */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c47f4Ev
 /* recovered: shared common types */
 extern "C" {
@@ -5147,9 +4722,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 129 -- _ZN6Player12St_Talk_MainEv, 0x020c48e0, size 0x2f8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Talk_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -5242,7 +4814,7 @@ int Player::St_Talk_Main()
             mPrevAngleY = mAngleY;
             char* cam = data_0209f318;
             func_0200d81c(cam, mPlayerNo);
-            *(u32*)(((int)cam + 0x154)) &= ~8;
+            ((dCamera_c *)cam)->mFlags &= ~8;
             mHeadRotMode = 4;
         }
         break;
@@ -5250,7 +4822,7 @@ int Player::St_Talk_Main()
         if (mStateWaitTimer != 0)
             break;
     case 6:
-        if ((*(u32*)(data_0209f318 + 0x154) & 0x8000) != 0)
+        if ((((dCamera_c *)data_0209f318)->mFlags & 0x8000) != 0)
             break;
         if (mIsOpeningBigDoor != 0) {
             mNoCtrlKind = 0x13;
@@ -5269,9 +4841,6 @@ int Player::St_Talk_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 130 -- _ZN6Player12St_Talk_InitEv, 0x020c4bd8, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Talk_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -5298,9 +4867,6 @@ int Player::St_Talk_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 131 -- _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh, 0x020c4c60, size 0x260 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh
 /* recovered: named members + shared header, real C++ method
  *
@@ -5391,9 +4957,6 @@ finish:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 132 -- _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh, 0x020c4ec0, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh
 /* recovered: named members + shared header, real C++ method
  *
@@ -5417,9 +4980,6 @@ int Player::ShowMessage(fBase_c & a_, unsigned int b, const Vector3 * v, unsigne
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 133 -- _ZN6Player18HasFinishedTalkingEv, 0x020c4efc, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18HasFinishedTalkingEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -5435,9 +4995,6 @@ int Player::HasFinishedTalking()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 134 -- _ZN6Player12Unk_020c4f40Et, 0x020c4f40, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12Unk_020c4f40Et
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -5454,9 +5011,6 @@ int Player::Unk_020c4f40(unsigned short x)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 135 -- _ZN6Player9StartTalkER7fBase_cb, 0x020c4fa0, size 0x230 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player9StartTalkER7fBase_cb
 /* recovered: named members + shared header, real C++ method
  *
@@ -5518,9 +5072,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 136 -- func_ov002_020c51d0, 0x020c51d0, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c51d0
 extern "C" {
 int func_ov002_020c51d0(char* c, State3i* st){
@@ -5538,9 +5089,6 @@ int func_ov002_020c51d0(char* c, State3i* st){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 137 -- func_ov002_020c5244, 0x020c5244, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c5244
 extern "C" {
 int func_ov002_020c5244(void)
@@ -5549,9 +5097,6 @@ int func_ov002_020c5244(void)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 138 -- _ZN6Player12GetTalkStateEv, 0x020c524c, size 0x70 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12GetTalkStateEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -5568,9 +5113,6 @@ int Player::GetTalkState()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 139 -- _ZN6Player21St_StuckInGround_MainEv, 0x020c52bc, size 0x188 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_StuckInGround_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -5619,9 +5161,6 @@ int Player::St_StuckInGround_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 140 -- func_ov002_020c5444, 0x020c5444, size 0xa4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c5444Ev
 /* recovered: shared common types */
 extern "C" {
@@ -5647,9 +5186,6 @@ void Player::func_ov002_020c5444(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 141 -- _ZN6Player21St_StuckInGround_InitEv, 0x020c54e8, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_StuckInGround_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -5673,9 +5209,6 @@ int Player::St_StuckInGround_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 142 -- _ZN6Player24St_BowserEarthquake_MainEv, 0x020c5560, size 0x12c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player24St_BowserEarthquake_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -5719,9 +5252,6 @@ int Player::St_BowserEarthquake_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 143 -- _ZN6Player24St_BowserEarthquake_InitEv, 0x020c568c, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player24St_BowserEarthquake_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -5738,9 +5268,6 @@ int Player::St_BowserEarthquake_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 144 -- func_ov002_020c56f0, 0x020c56f0, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c56f0
 extern "C" {
 int func_ov002_020c56f0(unsigned char* c, unsigned char arg)
@@ -5762,9 +5289,6 @@ int func_ov002_020c56f0(unsigned char* c, unsigned char arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 145 -- _ZN6Player15St_DeadPit_MainEv, 0x020c5780, size 0x240 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_DeadPit_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -5864,9 +5388,6 @@ int Player::St_DeadPit_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 146 -- _ZN6Player15St_DeadPit_InitEv, 0x020c59c0, size 0x308 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_DeadPit_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -5969,23 +5490,15 @@ int Player::St_DeadPit_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 147 -- _ZN6Player14EnterWhirlpoolEv, 0x020c5cc8, size 0x10 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14EnterWhirlpoolEv
 /* recovered: named members + shared header, real C++ method */
 /* _ZN6Player14EnterWhirlpoolEv @ 0x20c5cc8 (ov002) -- tail-call veneer to _ZN6Player19func_ov002_020c5decEi (0x20c5dec) with r1=9.
  */
-extern "C" {
 void Player::EnterWhirlpool()
 {
     ((Player *)(((void*)this)))->func_ov002_020c5dec(9);
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 148 -- func_ov002_020c5cd8, 0x020c5cd8, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c5cd8
 extern "C" {
 int func_ov002_020c5cd8(char *c, int arg) {
@@ -5998,11 +5511,7 @@ int func_ov002_020c5cd8(char *c, int arg) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 149 -- func_ov002_020c5d0c, 0x020c5d0c, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c5d0cEv
-extern "C" {
 int Player::func_ov002_020c5d0c()
 {
     u16 *p;
@@ -6012,11 +5521,7 @@ int Player::func_ov002_020c5d0c()
     *p |= 0x400;
     return func_ov002_020c5dec(1);
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 150 -- _ZN6Player19func_ov002_020c5d60Ev, 0x020c5d60, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c5d60Ev
 extern "C" {
 void Player::func_ov002_020c5d60() {
@@ -6034,9 +5539,6 @@ void Player::func_ov002_020c5d60() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 151 -- _ZN6Player19func_ov002_020c5decEi, 0x020c5dec, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c5decEi
 extern "C" {
 int Player::func_ov002_020c5dec(int r1){
@@ -6051,9 +5553,6 @@ int Player::func_ov002_020c5dec(int r1){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 152 -- _ZN6Player15St_DeadHit_MainEv, 0x020c5e34, size 0x1dc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_DeadHit_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -6117,9 +5616,6 @@ int Player::St_DeadHit_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 153 -- _ZN6Player15St_DeadHit_InitEv, 0x020c6010, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_DeadHit_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -6142,11 +5638,7 @@ int Player::St_DeadHit_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 154 -- _ZN6Player19func_ov002_020c607cEiiPi, 0x020c607c, size 0x130 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c607cEiiPi
-extern "C" {
 int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
 {
     char *self = (char *)this;
@@ -6178,11 +5670,7 @@ int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
     }
     return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 155 -- func_ov002_020c61ac, 0x020c61ac, size 0x2d0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c61acEv
 extern "C" {
 int Player::func_ov002_020c61ac() {
@@ -6270,14 +5758,10 @@ int Player::func_ov002_020c61ac() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 156 -- _ZN6Player19func_ov002_020c647cEi, 0x020c647c, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c647cEi
 /* recovered: shared common types */
 // _ZN6Player19func_ov002_020c647cEi at 0x020c647c
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
-extern "C" {
 int Player::func_ov002_020c647c(int arg1) {
     char* c = (char*)this;
     Vector3 v1;
@@ -6304,13 +5788,8 @@ int Player::func_ov002_020c647c(int arg1) {
     }
     return r5;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 157 -- func_ov002_020c6538, 0x020c6538, size 0xc0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c6538Ev
-extern "C" {
 int Player::func_ov002_020c6538() {
     dBgCh_Gnd rg;
     Vector3 v;
@@ -6336,14 +5815,9 @@ int Player::func_ov002_020c6538() {
         return 1;
     }
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 158 -- _ZN6Player17St_Squish_CleanupEv, 0x020c65f8, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_Squish_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Squish_Cleanup()
 {
     int val = 0x1000;
@@ -6357,11 +5831,7 @@ int Player::St_Squish_Cleanup()
     *(int *)((char *)&mdCcAcPos_c.flags) &= ~4;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 159 -- _ZN6Player14St_Squish_MainEv, 0x020c662c, size 0x2dc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Squish_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -6464,9 +5934,6 @@ int Player::St_Squish_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 160 -- func_ov002_020c6908, 0x020c6908, size 0x98 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c6908Ev
 extern "C" {
 int Player::func_ov002_020c6908(){
@@ -6494,9 +5961,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 161 -- _ZN6Player14St_Squish_InitEv, 0x020c69a0, size 0x70 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Squish_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -6520,9 +5984,6 @@ int Player::St_Squish_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 162 -- _ZN6Player12Unk_020c6a10Ej, 0x020c6a10, size 0xcc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12Unk_020c6a10Ej
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -6557,9 +6018,6 @@ int Player::Unk_020c6a10(unsigned int arg_)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 163 -- func_ov002_020c6adc, 0x020c6adc, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c6adcEv
 extern "C" {
 int Player::func_ov002_020c6adc()
@@ -6575,9 +6033,6 @@ int Player::func_ov002_020c6adc()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 164 -- _ZN6Player16St_Teleport_MainEv, 0x020c6b3c, size 0x288 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_Teleport_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -6675,9 +6130,6 @@ int Player::St_Teleport_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 165 -- _ZN6Player16St_Teleport_InitEv, 0x020c6dc4, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_Teleport_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -6695,9 +6147,6 @@ int Player::St_Teleport_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 166 -- func_ov002_020c6e14, 0x020c6e14, size 0x120 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c6e14
 /* func_ov002_020c6e14 at 0x020c6e14
  *
@@ -6739,26 +6188,18 @@ int func_ov002_020c6e14(void* actor)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 167 -- _ZN6Player21St_LevelEnter_CleanupEv, 0x020c6f34, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_LevelEnter_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 /* Player::St_LevelEnter_Cleanup() at 0x020c6f34 (ov002).
  * Cleanup hook of the ST_LEVEL_ENTER player state-machine state; a no-op
  * that returns VS_FAIL (1). The implicit Player* this is unused.
  */
-extern "C" {
 s32 Player::St_LevelEnter_Cleanup()
 {
     (void)this;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 168 -- _ZN6Player18St_LevelEnter_MainEv, 0x020c6f3c, size 0xa8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_LevelEnter_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -6788,9 +6229,6 @@ int Player::St_LevelEnter_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 169 -- func_ov002_020c6fe4, 0x020c6fe4, size 0xc8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c6fe4Ev
 extern "C" {
 void Player::func_ov002_020c6fe4()
@@ -6814,11 +6252,7 @@ void Player::func_ov002_020c6fe4()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 170 -- func_ov002_020c70ac, 0x020c70ac, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c70acEv
-extern "C" {
 void Player::func_ov002_020c70ac() {
     if (mStateTimer != 0) {
         this->mVertSpeed = 0;
@@ -6855,11 +6289,7 @@ void Player::func_ov002_020c70ac() {
         break;
     }
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 171 -- func_ov002_020c7194, 0x020c7194, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c7194Ev
 extern "C" {
 void Player::func_ov002_020c7194(){
@@ -6872,9 +6302,6 @@ void Player::func_ov002_020c7194(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 172 -- func_ov002_020c71e0, 0x020c71e0, size 0xc4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c71e0Ev
 extern "C" {
 void Player::func_ov002_020c71e0() {
@@ -6902,9 +6329,6 @@ void Player::func_ov002_020c71e0() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 173 -- func_ov002_020c72a4, 0x020c72a4, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c72a4
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -6938,9 +6362,6 @@ void func_ov002_020c72a4(void* thisptr)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 174 -- func_ov002_020c7350, 0x020c7350, size 0x2a0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c7350Ev
 extern "C" {
 void Player::func_ov002_020c7350()
@@ -7036,9 +6457,6 @@ void Player::func_ov002_020c7350()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 175 -- func_ov002_020c75f0, 0x020c75f0, size 0x248 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c75f0Ev
 extern "C" {
 void Player::func_ov002_020c75f0()
@@ -7117,9 +6535,6 @@ void Player::func_ov002_020c75f0()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 176 -- _ZN6Player18St_LevelEnter_InitEv, 0x020c7838, size 0x484 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_LevelEnter_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -7277,9 +6692,6 @@ int Player::St_LevelEnter_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 177 -- func_ov002_020c7cbc, 0x020c7cbc, size 0x114 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c7cbcEv
 extern "C" {
 int Player::func_ov002_020c7cbc()
@@ -7308,9 +6720,6 @@ int Player::func_ov002_020c7cbc()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 178 -- _ZN6Player19func_ov002_020c7dd0Ei, 0x020c7dd0, size 0xb4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c7dd0Ei
 extern "C" {
 void Player::func_ov002_020c7dd0(int i) {
@@ -7344,12 +6753,8 @@ void Player::func_ov002_020c7dd0(int i) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 179 -- _ZN6Player15IsEnteringLevelEv, 0x020c7e84, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15IsEnteringLevelEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsEnteringLevel()
 {
   if(this->IsStateEnteringLevel()==0) return 0;
@@ -7357,11 +6762,7 @@ int Player::IsEnteringLevel()
   if(s==8||s==9||s==0x10) return 1;
   return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 180 -- _ZN6Player20IsStateEnteringLevelEv, 0x020c7ed4, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20IsStateEnteringLevelEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -7376,9 +6777,6 @@ int Player::IsStateEnteringLevel()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 181 -- func_ov002_020c7f10, 0x020c7f10, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c7f10Ev
 extern "C" {
 int Player::func_ov002_020c7f10()
@@ -7412,9 +6810,6 @@ fail:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 182 -- func_ov002_020c7ff8, 0x020c7ff8, size 0x130 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c7ff8Ev
 extern "C" {
 void Player::func_ov002_020c7ff8()
@@ -7457,9 +6852,6 @@ void Player::func_ov002_020c7ff8()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 183 -- _ZN6Player20St_NoControl_CleanupEv, 0x020c8128, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_NoControl_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -7476,9 +6868,6 @@ int Player::St_NoControl_Cleanup()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 184 -- _ZN6Player17St_NoControl_MainEv, 0x020c816c, size 0x344 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_NoControl_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -7603,9 +6992,6 @@ int Player::St_NoControl_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 185 -- _ZN6Player19func_ov002_020c84b0Ev, 0x020c84b0, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c84b0Ev
 extern "C" {
 unsigned char Player::func_ov002_020c84b0() {
@@ -7634,9 +7020,6 @@ dummy_label_675641:;
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 186 -- func_ov002_020c8540, 0x020c8540, size 0x1d4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8540Ev
 /* func_ov002_020c8540 at 0x020c8540 (ov002)
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
@@ -7702,9 +7085,6 @@ int Player::func_ov002_020c8540()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 187 -- func_ov002_020c8714, 0x020c8714, size 0x268 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8714Ev
 /* func_ov002_020c8714 @ 0x020c8714 (ov002, size 0x268)
  * Player cap-power ending update: while active, ducks the music, damps the
@@ -7781,9 +7161,6 @@ int Player::func_ov002_020c8714()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 188 -- func_ov002_020c897c, 0x020c897c, size 0xd0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c897cEv
 extern "C" {
 int Player::func_ov002_020c897c()
@@ -7809,9 +7186,6 @@ int Player::func_ov002_020c897c()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 189 -- func_ov002_020c8a4c, 0x020c8a4c, size 0x108 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8a4cEv
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -7861,11 +7235,7 @@ int Player::func_ov002_020c8a4c() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 190 -- func_ov002_020c8b54, 0x020c8b54, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8b54Ev
-extern "C" {
 int Player::func_ov002_020c8b54()
 {
     if (mStateTimer == 0) {
@@ -7874,11 +7244,7 @@ int Player::func_ov002_020c8b54()
     }
     return 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 191 -- func_ov002_020c8b78, 0x020c8b78, size 0x138 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8b78Ev
 /* recovered: shared common types */
 extern "C" {
@@ -7927,9 +7293,6 @@ int Player::func_ov002_020c8b78() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 192 -- func_ov002_020c8cb0, 0x020c8cb0, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8cb0Ev
 extern "C" {
 int Player::func_ov002_020c8cb0(){
@@ -7946,9 +7309,6 @@ int Player::func_ov002_020c8cb0(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 193 -- func_ov002_020c8d14, 0x020c8d14, size 0x1f8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8d14Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -8011,9 +7371,6 @@ int Player::func_ov002_020c8d14()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 194 -- func_ov002_020c8f0c, 0x020c8f0c, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8f0cEv
 extern "C" {
 int Player::func_ov002_020c8f0c(){
@@ -8037,9 +7394,6 @@ int Player::func_ov002_020c8f0c(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 195 -- func_ov002_020c8f80, 0x020c8f80, size 0xcc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c8f80Ev
 /* recovered: shared common types */
 /* Signature deliberately copied from the local declaration above: the
@@ -8058,8 +7412,7 @@ int Player::func_ov002_020c8f80()
     this->mScaleZ -= 0x80;
 
     unsigned int id = GetBodyModelID(param1 & 0xff, false);
-    dExtFrameCtrl_c *anim = (dExtFrameCtrl_c *)(*(char **)(p + id * 4 + 0xdc) + 0x50);
-    if (anim->WillHitFrame(1)) {
+    if (mBodyModels[id]->WillHitFrame(1)) {
         if (this->mStateArg == 0) {
             this->mStateArg = 1;
         } else {
@@ -8074,9 +7427,6 @@ int Player::func_ov002_020c8f80()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 196 -- _ZN6Player19func_ov002_020c904cEv, 0x020c904c, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c904cEv
 extern "C" {
 int Player::func_ov002_020c904c() {
@@ -8103,8 +7453,7 @@ int Player::func_ov002_020c904c() {
     }
     if (this->IsAnim(0x56) != 0) {
         mid = this->GetBodyModelID((param1) & 0xff, 0);
-        anim = (*((char **)((c + (mid * 4)) + 0xdc))) + 0x50;
-        if (((dExtFrameCtrl_c *)(anim))->WillHitFrame(0) != 0) {
+        if (mBodyModels[mid]->WillHitFrame(0) != 0) {
             Sound::PlayBank0(6, mCamSpacePos);
         }
     }
@@ -8112,9 +7461,6 @@ int Player::func_ov002_020c904c() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 197 -- func_ov002_020c9128, 0x020c9128, size 0x94 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9128Ev
 extern "C" {
 int Player::func_ov002_020c9128(){
@@ -8137,9 +7483,6 @@ int Player::func_ov002_020c9128(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 198 -- func_ov002_020c91bc, 0x020c91bc, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c91bcEv
 extern "C" {
 int Player::func_ov002_020c91bc()
@@ -8161,9 +7504,6 @@ int Player::func_ov002_020c91bc()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 199 -- func_ov002_020c924c, 0x020c924c, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c924cEv
 extern "C" {
 int Player::func_ov002_020c924c()
@@ -8177,9 +7517,6 @@ int Player::func_ov002_020c924c()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 200 -- func_ov002_020c9288, 0x020c9288, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9288Ev
 extern "C" {
 int Player::func_ov002_020c9288(){
@@ -8200,9 +7537,6 @@ int Player::func_ov002_020c9288(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 201 -- func_ov002_020c92fc, 0x020c92fc, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c92fcEv
 extern "C" {
 int Player::func_ov002_020c92fc()
@@ -8257,9 +7591,6 @@ int Player::func_ov002_020c92fc()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 202 -- func_ov002_020c94a4, 0x020c94a4, size 0x1b8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c94a4Ev
 extern "C" {
 int Player::func_ov002_020c94a4()
@@ -8328,9 +7659,6 @@ int Player::func_ov002_020c94a4()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 203 -- func_ov002_020c965c, 0x020c965c, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c965cEv
 extern "C" {
 int Player::func_ov002_020c965c()
@@ -8361,9 +7689,6 @@ done:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 204 -- _ZN6Player19func_ov002_020c9718Ev, 0x020c9718, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9718Ev
 /* _ZN6Player19func_ov002_020c9718Ev at 0x020c9718
  *
@@ -8387,9 +7712,6 @@ void Player::func_ov002_020c9718()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 205 -- _ZN6Player17St_NoControl_InitEv, 0x020c976c, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_NoControl_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -8411,22 +7733,14 @@ int Player::St_NoControl_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 206 -- func_ov002_020c97e0, 0x020c97e0, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c97e0Ev
-extern "C" {
 void Player::func_ov002_020c97e0()
 {
     mStateStep = 19;
     this->mHorzSpeed = 0;
     this->mVertSpeed = 0;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 207 -- func_ov002_020c97f8, 0x020c97f8, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c97f8Ev
 extern "C" {
 void Player::func_ov002_020c97f8(){
@@ -8439,9 +7753,6 @@ void Player::func_ov002_020c97f8(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 208 -- func_ov002_020c9840, 0x020c9840, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9840Ev
 extern "C" {
 void Player::func_ov002_020c9840(){
@@ -8457,9 +7768,6 @@ void Player::func_ov002_020c9840(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 209 -- func_ov002_020c98a4, 0x020c98a4, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c98a4Ev
 extern "C" {
 void Player::func_ov002_020c98a4(){
@@ -8477,9 +7785,6 @@ void Player::func_ov002_020c98a4(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 210 -- func_ov002_020c990c, 0x020c990c, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c990c
 extern "C" {
 void func_ov002_020c990c(void* c) {
@@ -8500,9 +7805,6 @@ void func_ov002_020c990c(void* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 211 -- func_ov002_020c9998, 0x020c9998, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c9998
 /* recovered: shared common types */
 extern "C" {
@@ -8520,9 +7822,6 @@ void func_ov002_020c9998(void* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 212 -- func_ov002_020c9a04, 0x020c9a04, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9a04Ev
 /* recovered: shared common types */
 extern "C" {
@@ -8549,9 +7848,6 @@ void Player::func_ov002_020c9a04()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 213 -- func_ov002_020c9ac0, 0x020c9ac0, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9ac0Ev
 extern "C" {
 void Player::func_ov002_020c9ac0(){
@@ -8567,9 +7863,6 @@ void Player::func_ov002_020c9ac0(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 214 -- func_ov002_020c9b10, 0x020c9b10, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9b10Ev
 extern "C" {
 int Player::func_ov002_020c9b10(){
@@ -8583,22 +7876,14 @@ int Player::func_ov002_020c9b10(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 215 -- func_ov002_020c9b5c, 0x020c9b5c, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9b5cEv
-extern "C" {
 void Player::func_ov002_020c9b5c() {
     mSkipGroundUpdate = 1;
     mIsBodyClsnEnabled = 0;
     this->mVertAccel = 0;
     func_ov002_020c9b10();
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 216 -- func_ov002_020c9b7c, 0x020c9b7c, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c9b7c
 extern "C" {
 void func_ov002_020c9b7c(void* c) {
@@ -8621,9 +7906,6 @@ void func_ov002_020c9b7c(void* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 217 -- func_ov002_020c9c00, 0x020c9c00, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9c00Ev
 extern "C" {
 int Player::func_ov002_020c9c00(){
@@ -8638,9 +7920,6 @@ int Player::func_ov002_020c9c00(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 218 -- func_ov002_020c9c4c, 0x020c9c4c, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9c4cEv
 extern "C" {
 void Player::func_ov002_020c9c4c() {
@@ -8658,9 +7937,6 @@ void Player::func_ov002_020c9c4c() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 219 -- func_ov002_020c9cc0, 0x020c9cc0, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9cc0Ev
 extern "C" {
 void Player::func_ov002_020c9cc0(){
@@ -8674,9 +7950,6 @@ void Player::func_ov002_020c9cc0(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 220 -- func_ov002_020c9d1c, 0x020c9d1c, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9d1cEv
 extern "C" {
 int Player::func_ov002_020c9d1c(){
@@ -8690,9 +7963,6 @@ int Player::func_ov002_020c9d1c(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 221 -- func_ov002_020c9d68, 0x020c9d68, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9d68Ev
 extern "C" {
 void Player::func_ov002_020c9d68(){
@@ -8712,9 +7982,6 @@ tail:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 222 -- func_ov002_020c9de4, 0x020c9de4, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020c9de4
 extern "C" {
 void func_ov002_020c9de4(char* c){
@@ -8727,22 +7994,14 @@ void func_ov002_020c9de4(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 223 -- func_ov002_020c9e18, 0x020c9e18, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020c9e18Ev
-extern "C" {
 void Player::func_ov002_020c9e18()
 {
     if (mIsNoControl != 1) return;
     mIsNoControl = 0;
     this->mdCcAcPos_c.flags &= ~4;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 224 -- Player_DisableInteraction, 0x020c9e40, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol Player_DisableInteraction
 extern "C" {
 void Player_DisableInteraction(char *self)
@@ -8754,9 +8013,6 @@ void Player_DisableInteraction(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 225 -- _ZN6Player12Unk_020c9e5cEh, 0x020c9e5c, size 0x298 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12Unk_020c9e5cEh
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -8834,9 +8090,6 @@ int Player::Unk_020c9e5c(unsigned char h)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 226 -- func_ov002_020ca0f4, 0x020ca0f4, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ca0f4
 extern "C" {
 int func_ov002_020ca0f4(void* player) {
@@ -8845,9 +8098,6 @@ int func_ov002_020ca0f4(void* player) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 227 -- func_ov002_020ca108, 0x020ca108, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020ca108Ev
 extern "C" {
 void Player::func_ov002_020ca108(){
@@ -8861,25 +8111,17 @@ void Player::func_ov002_020ca108(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 228 -- _ZN6Player11OpenBigDoorEv, 0x020ca144, size 0xc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player11OpenBigDoorEv
 /* recovered: named members + shared header, real C++ method */
 /* Player::OpenBigDoor() at 0x020ca144 (ov002).
  * Sets a u8 flag at offset 0x70b (1803) in the Player object to 1.
  * Player.h has only `u8 unk70b` here, so keep the typed offset access.
  */
-extern "C" {
 void Player::OpenBigDoor()
 {
     mIsOpeningBigDoor = 1; /* +0x70b */
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 229 -- _ZN6Player12Unk_020ca150Eh, 0x020ca150, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12Unk_020ca150Eh
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -8898,9 +8140,6 @@ int Player::Unk_020ca150(unsigned char a)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 230 -- _ZN6Player17SetNoControlStateEhih, 0x020ca1b8, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17SetNoControlStateEhih
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -8936,9 +8175,6 @@ int Player::SetNoControlState(unsigned char a_, int b, unsigned char c_)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 231 -- func_ov002_020ca270, 0x020ca270, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ca270
 extern "C" {
 int func_ov002_020ca270(char* c){
@@ -8952,9 +8188,6 @@ int func_ov002_020ca270(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 232 -- _ZN6Player15JumpIntoBooCageER7Vector3, 0x020ca2ac, size 0x98 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15JumpIntoBooCageER7Vector3
 /* recovered: named members + shared header, real C++ method
  *
@@ -8979,9 +8212,6 @@ int Player::JumpIntoBooCage(Vector3 & v_)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 233 -- _ZN6Player13TryTalkToDoorEh, 0x020ca344, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13TryTalkToDoorEh
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -8999,9 +8229,6 @@ int Player::TryTalkToDoor(unsigned char a)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 234 -- _ZN6Player21IsOpeningDoorWithStarEv, 0x020ca3d0, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21IsOpeningDoorWithStarEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -9012,9 +8239,6 @@ int Player::IsOpeningDoorWithStar()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 235 -- _ZN6Player16TryTalkToKeyDoorEv, 0x020ca410, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16TryTalkToKeyDoorEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -9031,9 +8255,6 @@ int Player::TryTalkToKeyDoor()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 236 -- _ZN6Player12Unk_020ca488Ev, 0x020ca488, size 0x10 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12Unk_020ca488Ev
 /* recovered: named members + shared header, real C++ method */
 /* _ZN6Player12Unk_020ca488Ev @ 0x20ca488 (ov002) -- tail-call veneer to _ZN6Player12Unk_020c9e5cEh (0x20c9e5c) with r1=11.
@@ -9046,9 +8267,6 @@ void Player::Unk_020ca488()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 237 -- _ZN6Player16TryEnterStarDoorER7Vector3s, 0x020ca498, size 0x134 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16TryEnterStarDoorER7Vector3s
 /* recovered: named members + shared header, real C++ method
  *
@@ -9095,9 +8313,6 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 238 -- _ZN6Player12CanEnterDoorEh, 0x020ca5cc, size 0x13c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12CanEnterDoorEh
 /* recovered: named members + shared header, real C++ method */
 // Player::CanEnterDoor(unsigned char door)
@@ -9134,23 +8349,15 @@ int Player::CanEnterDoor(unsigned char door)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 239 -- _ZN6Player17PlayMammaMiaSoundEv, 0x020ca708, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17PlayMammaMiaSoundEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 void Player::PlayMammaMiaSound()
 {
     /* mCamSpacePosX/Y/Z are three consecutive words; dActor_c.h declares them
        individually rather than as one Vector3. */
     Sound::PlayCharVoice(mCharacter, 0x27, mCamSpacePos);
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 240 -- _ZN6Player24TryExitWhiteDoorWithStarEv, 0x020ca724, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player24TryExitWhiteDoorWithStarEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -9165,9 +8372,6 @@ int Player::TryExitWhiteDoorWithStar()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 241 -- func_ov002_020ca78c, 0x020ca78c, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ca78c
 extern "C" {
 int func_ov002_020ca78c(void *c) {
@@ -9183,9 +8387,6 @@ int func_ov002_020ca78c(void *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 242 -- _ZN6Player16St_DebugFly_MainEv, 0x020ca7f4, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_DebugFly_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -9226,9 +8427,6 @@ int Player::St_DebugFly_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 243 -- _ZN6Player16St_DebugFly_InitEv, 0x020ca8d0, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_DebugFly_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -9243,9 +8441,6 @@ int Player::St_DebugFly_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 244 -- _ZN6Player12Unk_020ca8f8Ev, 0x020ca8f8, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12Unk_020ca8f8Ev
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -9259,9 +8454,6 @@ int Player::Unk_020ca8f8()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 245 -- func_ov002_020ca940, 0x020ca940, size 0x2a0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ca940
 extern "C" {
 void func_ov002_020ca940(char* self)
@@ -9347,9 +8539,6 @@ void func_ov002_020ca940(char* self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 246 -- func_ov002_020cabe0, 0x020cabe0, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cabe0
 extern "C" {
 void func_ov002_020cabe0(char* c){
@@ -9362,43 +8551,30 @@ void func_ov002_020cabe0(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 247 -- _ZN6Player15St_Null_CleanupEv, 0x020cac20, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Null_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 /* Player::St_Null_Cleanup() at 0x020cac20 (ov002).
  * Cleanup hook of the ST_NULL do-nothing player state; returns VS_FAIL (1).
  * The implicit Player* this is unused.
  */
-extern "C" {
 s32 Player::St_Null_Cleanup()
 {
     (void)this;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 248 -- _ZN6Player12St_Null_MainEv, 0x020cac28, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Null_MainEv
 /* recovered: named members + shared header, real C++ method */
 /* Player::St_Null_Main() at 0x020cac28 (ov002).
  * Main hook of the ST_NULL do-nothing player state; returns VS_FAIL (1).
  * (All ST_NULL state functions are "return 1;" per Player.h.)
  */
-extern "C" {
 s32 Player::St_Null_Main()
 {
     (void)this;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 249 -- _ZN6Player12St_Null_InitEv, 0x020cac30, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Null_InitEv
 /* recovered: shared header, real C++ method
  *
@@ -9416,30 +8592,20 @@ s32 Player::St_Null_Main()
  * was moved here from ov006, where it had been sitting on an unrelated 0x6c
  * function at the same shared address. See the commit and include/Player.h.
  */
-extern "C" {
 int Player::St_Null_Init()
 {
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 250 -- _ZN6Player21St_CameraZoom_CleanupEv, 0x020cac38, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_CameraZoom_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_CameraZoom_Cleanup()
 {
     *(unsigned short *)((char *)&mStateFlags) &= ~4;
     mUseFarCamera = 0;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 251 -- func_ov002_020cac60, 0x020cac60, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cac60
 extern "C" {
 int func_ov002_020cac60(char *self)
@@ -9468,9 +8634,6 @@ int func_ov002_020cac60(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 252 -- _ZN6Player18St_CameraZoom_MainEv, 0x020cad10, size 0x100 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_CameraZoom_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -9493,7 +8656,9 @@ int Player::St_CameraZoom_Main()
             unsigned int id;
             this->ChangeState(data_ov002_0211013c);
             id = GetBodyModelID(param1 & 0xff, 0);
-            int q = (int)((*(volatile int*)((char*)&mBodyModels + id * 4) + 0x50));
+            /* currFrame of the body model's frame controller, kept split: the ROM adds
+               +0x50 and stores at +8, and ->currFrame folds that to one +0x58. */
+            int q = (int)((*(ModelAnim *volatile *)&mBodyModels[id])) + 0x50;
             *(int*)(q + 8) = 0;
             mPrevAngleY = mAngleY;
             return 1;
@@ -9512,9 +8677,6 @@ int Player::St_CameraZoom_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 253 -- func_ov002_020cae10, 0x020cae10, size 0xe4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cae10
 extern "C" {
 void func_ov002_020cae10(char* c)
@@ -9528,7 +8690,7 @@ void func_ov002_020cae10(char* c)
     int ang;
     int r8;
     if (self->mPlayerNo == data_0209f250) {
-        r4 -= *(short*)((char*)*(void**)&data_0209f318 + 0x17e);
+        r4 -= ((dCamera_c *)data_0209f318)->mAngleX;
         r4 = (short)r4;
     }
     ang = (short)((self->mAngleY - GetAngleToCamera(self->mPlayerNo)) + 0x8000);
@@ -9541,9 +8703,6 @@ void func_ov002_020cae10(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 254 -- _ZN6Player18St_CameraZoom_InitEv, 0x020caef4, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_CameraZoom_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -9567,9 +8726,6 @@ int Player::St_CameraZoom_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 255 -- func_ov002_020caf68, 0x020caf68, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020caf68
 extern "C" {
 void func_ov002_020caf68(void *self) {
@@ -9581,9 +8737,6 @@ void func_ov002_020caf68(void *self) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 256 -- func_ov002_020caf98, 0x020caf98, size 0x1c4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020caf98
 extern "C" {
 int func_ov002_020caf98(Player *self, Arg *arg)
@@ -9623,7 +8776,8 @@ state_check:
         if (func_ov002_020e3078(self, &data_ov002_021106dc) != 0) return 0;
     }
 
-    if (*(int *)((char *)arg + 0x18) & 0x400000) return 0;
+    if (((dCc_c *)arg)->flags & 0x400000)
+        return 0;
 
     {
         Ret *r = arg->m2();
@@ -9640,9 +8794,6 @@ ret0a:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 257 -- _ZN6Player17St_Headstand_MainEv, 0x020cb15c, size 0x194 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_Headstand_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -9703,9 +8854,6 @@ int Player::St_Headstand_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 258 -- _ZN6Player17St_Headstand_InitEv, 0x020cb2f0, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_Headstand_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -9725,9 +8873,6 @@ int Player::St_Headstand_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 259 -- func_ov002_020cb354, 0x020cb354, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cb354
 /* recovered: shared common types */
 extern "C" {
@@ -9740,12 +8885,13 @@ int func_ov002_020cb354(void* thisptr)
     int a = _ZN6Player6IsAnimEj(thisptr, 0x24);
     if (a == 0) return a;
     int idx = _ZNK6Player14GetBodyModelIDEjb(thisptr, player->param1 & 0xff, 0);
-    int* m = *(int**)(p + (idx << 2) + 0xdc);
+    ModelAnim *m = player->mBodyModels[idx];
+    /* q[2] is the frame controller's currFrame; m->currFrame folds +0x50 and +8. */
     int* q = (int*)(((int)m + 0x50));
     if ((int)((unsigned int)((q[2]) << 4) >> 0x10) < 8) {
         unsigned char f = player->mStateArg;
         if (f != 0) return f;
-        if (*(int *)((int)player->mClimbClsn + 0x18) & 0x1000000)
+        if (player->mClimbClsn->flags & 0x1000000)
             Sound::PlayBank0(0xd, player->mCamSpacePos);
         else
             Sound::PlayBank0(0xb0, player->mCamSpacePos);
@@ -9757,9 +8903,6 @@ int func_ov002_020cb354(void* thisptr)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 260 -- func_ov002_020cb400, 0x020cb400, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cb400
 extern "C" {
 int func_ov002_020cb400(char *c) {
@@ -9769,17 +8912,14 @@ int func_ov002_020cb400(char *c) {
     if (v >= 0x100)
         v = 0x100;
     int code = 0x107;
-    if (*(int *)((int)self->mClimbClsn + 0x18) & 0x1000000)
+    if (self->mClimbClsn->flags & 0x1000000)
         code = 0x105;
-    int r = func_02012194(self->mLoopingSoundHandle, 0, code, 3, v, (int)(c + 0x74), 0);
+    int r = func_02012194(self->mLoopingSoundHandle, 0, code, 3, v, (int)&self->mCamSpacePos, 0);
     self->mLoopingSoundHandle = r;
     return r;
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 261 -- func_ov002_020cb474, 0x020cb474, size 0xf4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cb474
 extern "C" {
 void func_ov002_020cb474(char *c) {
@@ -9787,10 +8927,10 @@ void func_ov002_020cb474(char *c) {
     extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *);
     extern signed char data_0209f2f8;
-    int *r1 = (int *)self->mClimbClsn;
-    if ((*(int *)((char *)r1 + 0x18) & 0x1000000) == 0)
+    dCc_c *r1 = self->mClimbClsn;
+    if ((r1->flags & 0x1000000) == 0)
         return;
-    if (((*(int *)((char *)r1 + 8)) >> 2) > self->mAttachOffsetY)
+    if ((r1->height >> 2) > self->mAttachOffsetY)
         return;
     volatile int v[3];
     int z = self->mPosZ;
@@ -9814,14 +8954,11 @@ void func_ov002_020cb474(char *c) {
         id = 0xb9;
         break;
     }
-    *(void **)(c + 0x628) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(volatile unsigned int *)(c + 0x628), id, v[0], v[1], v[2], 0, 0);
+    self->mParticle1 = (s32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        *(volatile unsigned int *)&self->mParticle1, id, v[0], v[1], v[2], 0, 0);
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 262 -- _ZN6Player16St_Climb_CleanupEv, 0x020cb568, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_Climb_CleanupEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -9841,9 +8978,6 @@ int Player::St_Climb_Cleanup()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 263 -- _ZN6Player13St_Climb_MainEv, 0x020cb5bc, size 0x778 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Climb_MainEv
 /* Player::St_Climb_Main (ov002:0x020cb5bc, 0x778).
  *
@@ -9982,7 +9116,7 @@ int Player::St_Climb_Main()
                     if (fx2 >= 0x4000) fx2 = 0x4000;
                     {
                         s32 modelIdx = GetBodyModelID((u8)(*(s32*)(c + 8)), 0);
-                        char* p2 = (char*)((long long)(int)(*(char**)(c + modelIdx * 4 + 0xdc) + 0x50));
+                        char *p2 = (char *)((long long)(int)((char *)mBodyModels[modelIdx] + 0x50));
                         *(s32*)(p2 + 0xc) = fx2;
                     }
                     mStateWork = 0;
@@ -10090,9 +9224,6 @@ tail: {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 264 -- _ZN6Player13St_Climb_InitEv, 0x020cbd34, size 0x174 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Climb_InitEv
 extern "C" {
 int Player::St_Climb_Init() {
@@ -10103,7 +9234,7 @@ int Player::St_Climb_Init() {
     char* self = (char*)this;
     Player_ReleaseHeldActor(self);
 
-    int* bitfield = (int*)(((int)self + 0x2ec));
+    int *bitfield = (int *)&mdCcAcPos_c.flags;
     *bitfield |= 4;
     *bitfield &= ~8;
 
@@ -10140,9 +9271,9 @@ int Player::St_Climb_Init() {
     mHideShadow = 1;
 
     {
-        char *b = (char *)mClimbClsn;
-        if (*(int*)(b + 0x18) & 0x1000000) {
-            if ((*(int*)(b + 8) >> 2) <= this->mAttachOffsetY) {
+        dCc_c *b = mClimbClsn;
+        if (b->flags & 0x1000000) {
+            if ((b->height >> 2) <= this->mAttachOffsetY) {
                 if (func_ov002_020e3078(self, data_ov002_021106f4) == 0) {
                     mJumpComboTimer = 0xf;
                 }
@@ -10153,9 +9284,6 @@ int Player::St_Climb_Init() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 265 -- func_ov002_020cbea8, 0x020cbea8, size 0x174 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cbea8
 #define LA(p) ((int)(p))
 extern "C" {
@@ -10194,18 +9322,15 @@ int func_ov002_020cbea8(char *c)
         p = (int *)LA(&((Player *)o)->mAttachOffsetY);
         *p -= amt * 2;
         ((Player *)o)->mAngleYSpeed = 0;
-        t = *(int *)(o + 0xac);
+        t = ((Player *)o)->mSpeedZ;
         ((Player *)o)->mVertSpeed = 0;
-        *(int *)(o + 0xac) = t;
+        ((Player *)o)->mSpeedZ = t;
     }
     return 0;
 }
 }
 #undef LA
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 266 -- func_ov002_020cc01c, 0x020cc01c, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cc01c
 extern "C" {
 int func_ov002_020cc01c(char* c){
@@ -10218,9 +9343,6 @@ int func_ov002_020cc01c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 267 -- func_ov002_020cc05c, 0x020cc05c, size 0xe4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cc05c
 extern "C" {
 void func_ov002_020cc05c(char *self)
@@ -10229,9 +9351,10 @@ void func_ov002_020cc05c(char *self)
     extern s16 data_0209f4a2[];
     extern void func_ov002_020cc05c(void*, unsigned short);
     int idx = gActivePlayerSlot * 0x18;
-    /* raw: player->mAngleYSpeed (0x69c) moves bytes on both sites */
-    s16 curval = *(s16*)((int)self + 0x69c);
-    *(s16 *)((int)self + 0x69c) = curval + (s16)FX_MUL(*(s16 *)((char *)data_0209f4a2 + idx), 0x80);
+    /* Through (int): plain player->mAngleYSpeed reschedules the 0x69c add and moves bytes. */
+    s16 curval = *(s16 *)((int)&player->mAngleYSpeed);
+    *(s16 *)((int)&player->mAngleYSpeed) =
+        curval + (s16)FX_MUL(*(s16 *)((char *)data_0209f4a2 + idx), 0x80);
     {
         s16 tv2 = *(s16*)((char*)data_0209f4a2 + idx);
     {
@@ -10255,9 +9378,6 @@ void func_ov002_020cc05c(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 268 -- _ZN6Player9IsOnShellEv, 0x020cc140, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player9IsOnShellEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -10270,9 +9390,6 @@ int Player::IsOnShell()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 269 -- func_ov002_020cc16c, 0x020cc16c, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cc16c
 extern "C" {
 int func_ov002_020cc16c(void *c, void *state) {
@@ -10294,9 +9411,6 @@ int func_ov002_020cc16c(void *c, void *state) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 270 -- func_ov002_020cc1f4, 0x020cc1f4, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cc1f4
 extern "C" {
 void func_ov002_020cc1f4(char *c) {
@@ -10309,12 +9423,8 @@ void func_ov002_020cc1f4(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 271 -- _ZN6Player16St_Shell_CleanupEv, 0x020cc228, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_Shell_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Shell_Cleanup()
 {
   char* p = *(char**)((char*)&mRidingShell);
@@ -10328,11 +9438,7 @@ int Player::St_Shell_Cleanup()
   }
   return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 272 -- _ZN6Player13St_Shell_MainEv, 0x020cc27c, size 0x3e4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Shell_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -10471,9 +9577,6 @@ int Player::St_Shell_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 273 -- func_ov002_020cc660, 0x020cc660, size 0x120 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cc660
 extern "C" {
 void func_ov002_020cc660(char *self, int angle){
@@ -10504,9 +9607,6 @@ void func_ov002_020cc660(char *self, int angle){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 274 -- _ZN6Player13St_Shell_InitEv, 0x020cc780, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Shell_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -10522,9 +9622,6 @@ int Player::St_Shell_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 275 -- _ZN6Player17St_HurtWater_MainEv, 0x020cc7d0, size 0x140 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_HurtWater_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -10573,9 +9670,6 @@ int Player::St_HurtWater_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 276 -- _ZN6Player17St_HurtWater_InitEv, 0x020cc910, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_HurtWater_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -10606,9 +9700,6 @@ int Player::St_HurtWater_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 277 -- _ZN6Player23St_MetalWaterWater_MainEv, 0x020cc9c0, size 0x27c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player23St_MetalWaterWater_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -10707,9 +9798,6 @@ int Player::St_MetalWaterWater_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 278 -- _ZN6Player23St_MetalWaterWater_InitEv, 0x020ccc3c, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player23St_MetalWaterWater_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -10732,9 +9820,6 @@ int Player::St_MetalWaterWater_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 279 -- _ZN6Player24St_MetalWaterGround_MainEv, 0x020ccccc, size 0x404 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player24St_MetalWaterGround_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -10820,12 +9905,8 @@ int Player::St_MetalWaterGround_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 280 -- _ZN6Player24St_MetalWaterGround_InitEv, 0x020cd0d0, size 0xc0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player24St_MetalWaterGround_InitEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_MetalWaterGround_Init()
 {
     dActor_c *p = *(dActor_c **)((char *)&mHeldObj);
@@ -10849,11 +9930,7 @@ tail:
     mIsUnderwater = 1;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 281 -- func_ov002_020cd190, 0x020cd190, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd190
 extern "C" {
 void func_ov002_020cd190(char* c){
@@ -10867,12 +9944,8 @@ void func_ov002_020cd190(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 282 -- _ZN6Player15St_Swim_CleanupEv, 0x020cd1e4, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Swim_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Swim_Cleanup()
 {
   if(mSwimMusicPushed!=0){
@@ -10881,11 +9954,7 @@ int Player::St_Swim_Cleanup()
   }
   return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 283 -- func_ov002_020cd218, 0x020cd218, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd218
 extern "C" {
 void func_ov002_020cd218(char* c, int v, int* out1, int* out2){
@@ -10897,9 +9966,6 @@ void func_ov002_020cd218(char* c, int v, int* out1, int* out2){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 284 -- func_ov002_020cd28c, 0x020cd28c, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd28c
 extern "C" {
 int func_ov002_020cd28c(char* c){
@@ -10911,9 +9977,6 @@ int func_ov002_020cd28c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 285 -- func_ov002_020cd2c4, 0x020cd2c4, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd2c4
 extern "C" {
 void func_ov002_020cd2c4(char* c){
@@ -10926,9 +9989,6 @@ void func_ov002_020cd2c4(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 286 -- func_ov002_020cd308, 0x020cd308, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd308
 extern "C" {
 void func_ov002_020cd308(char* c){
@@ -10942,9 +10002,6 @@ void func_ov002_020cd308(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 287 -- func_ov002_020cd364, 0x020cd364, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd364
 extern "C" {
 void func_ov002_020cd364(char *c) {
@@ -10959,9 +10016,6 @@ void func_ov002_020cd364(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 288 -- func_ov002_020cd39c, 0x020cd39c, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd39c
 extern "C" {
 void func_ov002_020cd39c(char* c){
@@ -10974,9 +10028,6 @@ void func_ov002_020cd39c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 289 -- func_ov002_020cd3e0, 0x020cd3e0, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd3e0
 extern "C" {
 void func_ov002_020cd3e0(char *c) {
@@ -10991,9 +10042,6 @@ void func_ov002_020cd3e0(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 290 -- func_ov002_020cd448, 0x020cd448, size 0x108 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd448
 extern "C" {
 void func_ov002_020cd448(char* self) {
@@ -11032,9 +10080,6 @@ tail:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 291 -- func_ov002_020cd550, 0x020cd550, size 0x1cc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd550
 /* the += / -= on 0x92 go through a materialized base (add r1,c,#0x92;
    ldrsh/strh [r1]); the (long long)-mask launder stops mwcc folding it. */
@@ -11082,9 +10127,6 @@ void func_ov002_020cd550(char* c)
 }
 #undef LS16
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 292 -- func_ov002_020cd71c, 0x020cd71c, size 0x230 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cd71c
 extern "C" {
 void func_ov002_020cd71c(char *self)
@@ -11139,9 +10181,6 @@ void func_ov002_020cd71c(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 293 -- _ZN6Player12St_Swim_MainEv, 0x020cd94c, size 0x9d8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Swim_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -11431,9 +10470,6 @@ int Player::St_Swim_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 294 -- func_ov002_020ce324, 0x020ce324, size 0x22c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ce324
 extern "C" {
 int func_ov002_020ce324(char* c)
@@ -11521,9 +10557,6 @@ int func_ov002_020ce324(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 295 -- _ZN6Player12St_Swim_InitEv, 0x020ce550, size 0xa8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Swim_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -11553,9 +10586,6 @@ int Player::St_Swim_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 296 -- func_ov002_020ce5f8, 0x020ce5f8, size 0x1a0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ce5f8
 /* recovered: shared common types */
 extern "C" {
@@ -11604,14 +10634,14 @@ int func_ov002_020ce5f8(char* c) {
 
     {
         u32 idx = self->GetBodyModelID(self->param1 & 0xff, 0);
-        char* m1 = *(char**)(c + idx * 4 + 0xdc);
-        char* base;
+        ModelAnim *m1 = self->mBodyModels[idx];
+        Matrix4x3 *base;
         u32 idx2;
-        char* m2;
-        base = *(char**)(m1 + 0x14) + 0x2d0;
+        ModelAnim *m2;
+        base = &m1->data.transforms[15];
         idx2 = self->GetBodyModelID(self->param1 & 0xff, 0);
-        m2 = *(char**)(c + idx2 * 4 + 0xdc);
-        MulVec3Mat4x3(base + 0x24, m2 + 0x1c, &pos);
+        m2 = self->mBodyModels[idx2];
+        MulVec3Mat4x3(&base->m[9], &m2->mat4x3, &pos);
     }
     Vec3_LslInPlace(&pos, 3);
 
@@ -11626,9 +10656,6 @@ int func_ov002_020ce5f8(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 297 -- func_ov002_020ce798, 0x020ce798, size 0x124 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ce798
 /* the -= 0x4000 goes through a materialized base (add r1,c,#0x60; ldr/str [r1]);
    the (long long)-mask launder is what stops mwcc folding it to [c,#0x60]. */
@@ -11675,9 +10702,6 @@ void func_ov002_020ce798(char* c)
 }
 #undef LDR_I
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 298 -- func_ov002_020ce8bc, 0x020ce8bc, size 0x10c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ce8bc
 extern "C" {
 void func_ov002_020ce8bc(char* self, int arg1)
@@ -11710,9 +10734,6 @@ void func_ov002_020ce8bc(char* self, int arg1)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 299 -- func_ov002_020ce9c8, 0x020ce9c8, size 0x12c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ce9c8
 extern "C" {
 void func_ov002_020ce9c8(char* self)
@@ -11753,9 +10774,6 @@ void func_ov002_020ce9c8(char* self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 300 -- func_ov002_020ceaf4, 0x020ceaf4, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ceaf4
 extern "C" {
 int func_ov002_020ceaf4(char* c){
@@ -11770,9 +10788,6 @@ int func_ov002_020ceaf4(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 301 -- func_ov002_020ceb54, 0x020ceb54, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ceb54
 extern "C" {
 int func_ov002_020ceb54(char *p)
@@ -11784,9 +10799,6 @@ int func_ov002_020ceb54(char *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 302 -- func_ov002_020ceb7c, 0x020ceb7c, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020ceb7c
 /* The 0x6e5 read-modify-write goes through a materialized base
    (ldr rN,[pc]; add rN,c,rN) because 0x6e5 is not an ARM rotated immediate;
@@ -11795,30 +10807,28 @@ int func_ov002_020ceb54(char *p)
 extern "C" {
 void func_ov002_020ceb7c(struct CameraRaw *c)
 {
+    Player *self = (Player *)c;
     extern struct CameraRaw *data_0209f318;
     extern int data_0209f32c;
     extern void func_0200d768(void*, unsigned char playerID);
     extern void func_0200d72c(void*, unsigned char playerID);
     struct CameraRaw *g = data_0209f318;
 
-    if (c->f6e5 & 2) {
-        if (data_0209f32c - 0x50000 - c->f60 >= 0x64000)
+    if (self->mStateWork & 2) {
+        if (data_0209f32c - 0x50000 - self->mPosY >= 0x64000)
             return;
-        func_0200d768(g, c->f6d8);
-        *LAUNDER_U8((char *)c + 0x6e5) ^= 2;
+        func_0200d768(g, self->mPlayerNo);
+        *LAUNDER_U8(&self->mStateWork) ^= 2;
     } else {
-        if (data_0209f32c - 0x50000 - c->f60 <= 0x12c000)
+        if (data_0209f32c - 0x50000 - self->mPosY <= 0x12c000)
             return;
-        func_0200d72c(g, c->f6d8);
-        *LAUNDER_U8((char *)c + 0x6e5) |= 2;
+        func_0200d72c(g, self->mPlayerNo);
+        *LAUNDER_U8(&self->mStateWork) |= 2;
     }
 }
 }
 #undef LAUNDER_U8
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 303 -- func_ov002_020cec2c, 0x020cec2c, size 0x184 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cec2c
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -11883,9 +10893,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 304 -- func_ov002_020cedb0, 0x020cedb0, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cedb0
 extern "C" {
 Fix12i func_ov002_020cedb0(void *c, Fix12i a)
@@ -11897,9 +10904,6 @@ Fix12i func_ov002_020cedb0(void *c, Fix12i a)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 305 -- func_ov002_020cede0, 0x020cede0, size 0x1a4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cede0
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -11957,9 +10961,6 @@ int func_ov002_020cede0(void *thiz_) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 306 -- func_ov002_020cef84, 0x020cef84, size 0x288 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cef84
 extern "C" {
 int func_ov002_020cef84(char *self)
@@ -12035,22 +11036,22 @@ int func_ov002_020cef84(char *self)
                 int w0, w1;
                 p->mVertSpeed = -0x1000;
                 p->mClsnFlags |= 8;
-                w0 = *(int *)((char *)&line + 0x14);
-                w1 = *(int *)((char *)&line + 0x18);
+                w0 = line.surface.clps.w0;
+                w1 = line.surface.clps.w1;
                 dst[0] = w1 ? w0 : w0;
                 dst[1] = w1;
-                dst[2] = *(int *)((char *)&line + 0x1c);
-                dst[3] = *(int *)((char *)&line + 0x20);
-                dst[4] = *(int *)((char *)&line + 0x24);
+                dst[2] = line.surface.normal.x;
+                dst[3] = line.surface.normal.y;
+                dst[4] = line.surface.normal.z;
                 tmp.tag = &data_02099368;
-                tmp.f18 = *(unsigned short *)((char *)&line + 0x28);
-                tmp.f1a = *(unsigned short *)((char *)&line + 0x2a);
-                tmp.f1c = *(int *)((char *)&line + 0x2c);
-                tmp.f20 = *(int *)((char *)&line + 0x30);
-                tmp.f24 = *(int *)((char *)&line + 0x34);
+                tmp.f18 = line.triangleID;
+                tmp.f1a = line.colliderIdx;
+                tmp.f1c = line.clsnID;
+                tmp.f20 = (int)line.owner;
+                tmp.f24 = (int)line.collider;
                 a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&tmp));
                 if (a)
-                    (*(void (**)(void *, char *))(*(int *)a + 0x70))(a, self);
+                    ((dActor_c *)a)->OnHitFromUnderneath(*(dActor_c *)self);
                 _ZN5dBgPiD1Ev(&tmp);
             }
         }
@@ -12059,9 +11060,6 @@ int func_ov002_020cef84(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 307 -- func_ov002_020cf20c, 0x020cf20c, size 0xec */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cf20c
 /* recovered: shared common types */
 // func_ov002_020cf20c at 0x020cf20c
@@ -12102,9 +11100,6 @@ int func_ov002_020cf20c(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 308 -- func_ov002_020cf2f8, 0x020cf2f8, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cf2f8
 extern "C" {
 void func_ov002_020cf2f8(void* c) {
@@ -12121,9 +11116,6 @@ void func_ov002_020cf2f8(void* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 309 -- func_ov002_020cf384, 0x020cf384, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cf384
 extern "C" {
 void func_ov002_020cf384(char *p)
@@ -12136,9 +11128,6 @@ void func_ov002_020cf384(char *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 310 -- _ZN6Player20St_CeilingGrate_MainEv, 0x020cf398, size 0x324 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_CeilingGrate_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -12241,9 +11230,6 @@ int Player::St_CeilingGrate_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 311 -- _ZN6Player20St_CeilingGrate_InitEv, 0x020cf6bc, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_CeilingGrate_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -12260,9 +11246,6 @@ int Player::St_CeilingGrate_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 312 -- func_ov002_020cf700, 0x020cf700, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cf700
 extern "C" {
 int func_ov002_020cf700(void* player) {
@@ -12272,9 +11255,6 @@ int func_ov002_020cf700(void* player) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 313 -- _ZN6Player14St_OnWall_MainEv, 0x020cf714, size 0x37c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_OnWall_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -12375,9 +11355,6 @@ int Player::St_OnWall_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 314 -- _ZN6Player14St_OnWall_InitEv, 0x020cfa90, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_OnWall_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -12396,9 +11373,6 @@ int Player::St_OnWall_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 315 -- func_ov002_020cfaf0, 0x020cfaf0, size 0xec */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cfaf0
 extern "C" {
 int func_ov002_020cfaf0(char* c) {
@@ -12434,9 +11408,6 @@ int func_ov002_020cfaf0(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 316 -- func_ov002_020cfbdc, 0x020cfbdc, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cfbdc
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -12499,9 +11470,6 @@ int func_ov002_020cfbdc(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 317 -- func_ov002_020cfd84, 0x020cfd84, size 0x120 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cfd84
 // func_ov002_020cfd84 at 0x020cfd84
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
@@ -12531,9 +11499,6 @@ int func_ov002_020cfd84(void* actor, void* a, void* b) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 318 -- func_ov002_020cfea4, 0x020cfea4, size 0x2d4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020cfea4
 /* recovered: Player ground/edge probe used while carrying or standing on
  * another actor.
@@ -12672,9 +11637,6 @@ int func_ov002_020cfea4(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 319 -- func_ov002_020d0178, 0x020d0178, size 0x408 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d0178
 extern "C" {
 int func_ov002_020d0178(char* c, int arg1, int flag)
@@ -12811,9 +11773,6 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 320 -- func_ov002_020d0580, 0x020d0580, size 0x140 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d0580
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -12855,9 +11814,6 @@ cont:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 321 -- func_ov002_020d06c0, 0x020d06c0, size 0x164 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d06c0
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -12907,9 +11863,6 @@ cont:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 322 -- _ZN6Player17St_LedgeGrab_MainEv, 0x020d0824, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_LedgeGrab_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -12932,9 +11885,6 @@ int Player::St_LedgeGrab_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 323 -- _ZN6Player17St_LedgeGrab_InitEv, 0x020d08b0, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_LedgeGrab_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -12953,9 +11903,6 @@ int Player::St_LedgeGrab_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 324 -- _ZN6Player20St_LedgeHang_CleanupEv, 0x020d092c, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_LedgeHang_CleanupEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -12969,9 +11916,6 @@ int Player::St_LedgeHang_Cleanup()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 325 -- func_ov002_020d0948, 0x020d0948, size 0xfc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d0948
 extern "C" {
 void func_ov002_020d0948(char* self)
@@ -13009,9 +11953,6 @@ void func_ov002_020d0948(char* self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 326 -- _ZN6Player17St_LedgeHang_MainEv, 0x020d0a44, size 0x210 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_LedgeHang_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13082,9 +12023,6 @@ int Player::St_LedgeHang_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 327 -- _ZN6Player17St_LedgeHang_InitEv, 0x020d0c54, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_LedgeHang_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -13122,9 +12060,6 @@ int Player::St_LedgeHang_Init() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 328 -- func_ov002_020d0d2c, 0x020d0d2c, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d0d2c
 extern "C" {
 int func_ov002_020d0d2c(void* c)
@@ -13139,9 +12074,6 @@ int func_ov002_020d0d2c(void* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 329 -- _ZN6Player17St_WallSlide_MainEv, 0x020d0d78, size 0x114 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_WallSlide_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13197,9 +12129,6 @@ int Player::St_WallSlide_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 330 -- _ZN6Player17St_WallSlide_InitEv, 0x020d0e8c, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_WallSlide_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -13215,9 +12144,6 @@ int Player::St_WallSlide_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 331 -- _ZN6Player13St_Crawl_MainEv, 0x020d0ee0, size 0x24c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Crawl_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13294,9 +12220,6 @@ int Player::St_Crawl_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 332 -- _ZN6Player13St_Crawl_InitEv, 0x020d112c, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Crawl_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -13310,9 +12233,6 @@ int Player::St_Crawl_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 333 -- func_ov002_020d1164, 0x020d1164, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d1164
 // func_ov002_020d1164 at 0x020d1164
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
@@ -13341,9 +12261,6 @@ int func_ov002_020d1164(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 334 -- func_ov002_020d1204, 0x020d1204, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d1204
 extern "C" {
 int func_ov002_020d1204(void* thisptr)
@@ -13373,9 +12290,6 @@ int func_ov002_020d1204(void* thisptr)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 335 -- func_ov002_020d12b0, 0x020d12b0, size 0xa4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d12b0
 extern "C" {
 int func_ov002_020d12b0(u8 *self)
@@ -13406,9 +12320,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 336 -- _ZN6Player14St_Crouch_MainEv, 0x020d1354, size 0x28c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Crouch_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13488,9 +12399,6 @@ int Player::St_Crouch_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 337 -- _ZN6Player14St_Crouch_InitEv, 0x020d15e0, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Crouch_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13517,9 +12425,6 @@ int Player::St_Crouch_Init() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 338 -- _ZN6Player17St_HoldHeavy_MainEv, 0x020d16bc, size 0x2ec */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_HoldHeavy_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13632,9 +12537,6 @@ end:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 339 -- _ZN6Player17St_HoldHeavy_InitEv, 0x020d19a8, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_HoldHeavy_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13651,12 +12553,8 @@ int Player::St_HoldHeavy_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 340 -- _ZN6Player20St_HoldLight_CleanupEv, 0x020d19fc, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_HoldLight_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_HoldLight_Cleanup()
 {
 
@@ -13666,11 +12564,7 @@ int Player::St_HoldLight_Cleanup()
   }
   return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 341 -- _ZN6Player17St_HoldLight_MainEv, 0x020d1a1c, size 0x484 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_HoldLight_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -13829,9 +12723,6 @@ end:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 342 -- _ZN6Player17St_HoldLight_InitEv, 0x020d1ea0, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_HoldLight_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -13866,9 +12757,6 @@ int Player::St_HoldLight_Init() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 343 -- func_ov002_020d1f78, 0x020d1f78, size 0x20c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d1f78
 extern "C" {
 void func_ov002_020d1f78(void *selfPtr, u32 param)
@@ -13957,9 +12845,6 @@ state_merge:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 344 -- _ZN6Player21St_WaitQuicksand_MainEv, 0x020d2184, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_WaitQuicksand_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -13986,9 +12871,6 @@ int Player::St_WaitQuicksand_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 345 -- _ZN6Player21St_WaitQuicksand_InitEv, 0x020d2224, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_WaitQuicksand_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -14002,9 +12884,6 @@ int Player::St_WaitQuicksand_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 346 -- func_ov002_020d225c, 0x020d225c, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d225c
 extern "C" {
 int func_ov002_020d225c(char *o)
@@ -14017,9 +12896,6 @@ int func_ov002_020d225c(char *o)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 347 -- func_ov002_020d228c, 0x020d228c, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d228c
 extern "C" {
 void func_ov002_020d228c(char* c)
@@ -14039,9 +12915,6 @@ void func_ov002_020d228c(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 348 -- func_ov002_020d22ec, 0x020d22ec, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d22ec
 extern "C" {
 int func_ov002_020d22ec(char* c, int arg)
@@ -14065,9 +12938,6 @@ int func_ov002_020d22ec(char* c, int arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 349 -- _ZN6Player15St_Wait_CleanupEv, 0x020d2378, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Wait_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -14078,7 +12948,7 @@ int Player::St_Wait_Cleanup()
     extern int data_0209caa0[];
 
     void* r4 = data_0209f318;
-    (*(unsigned int*)(((int)r4 + 0x154))) &= ~0x2000;
+    ((dCamera_c *)r4)->mFlags &= ~0x2000;
     mSleepStage = 0;
     do {
         unsigned char v = data_0209f2d8;
@@ -14098,9 +12968,6 @@ int Player::St_Wait_Cleanup()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 350 -- _ZN6Player12St_Wait_MainEv, 0x020d2404, size 0x99c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Wait_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -14273,7 +13140,7 @@ int Player::St_Wait_Main()
         }
         }
         if (func_ov002_020d22ec(((char*)this), 0)) {
-            (*(unsigned int*)(((int)r4 + 0x154))) &= ~0x2000;
+            ((dCamera_c *)r4)->mFlags &= ~0x2000;
             Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
         }
         break;
@@ -14300,7 +13167,7 @@ int Player::St_Wait_Main()
         }
         if (*(unsigned short*)(data_0209f49e+gActivePlayerSlot*0x18) & 2) {
             this->ChangeState(data_ov002_0211019c);
-            (*(unsigned int*)(((int)r4 + 0x154))) &= ~0x2000;
+            ((dCamera_c *)r4)->mFlags &= ~0x2000;
             Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
             return 1;
         }
@@ -14397,9 +13264,6 @@ int Player::St_Wait_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 351 -- func_ov002_020d2da0, 0x020d2da0, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d2da0
 extern "C" {
 int func_ov002_020d2da0(char *c) {
@@ -14418,21 +13282,18 @@ int func_ov002_020d2da0(char *c) {
     char *p = data_0209f318;
     int cond = (int)(data_0209f4a0[idx].v >= 0x200);
     if (cond | (((unsigned short)data_0209f49e[idx].v) & 0xc03)) {
-        *(int *)((int)p + 0x154) &= ~0x2000;
+        ((dCamera_c *)p)->mFlags &= ~0x2000;
         Sound::PlayCharVoice(player->mCharacter, 0x2e, player->mCamSpacePos);
         return 1;
     }
     if (player->mIsAirborne == 0)
         return 0;
-    *(int *)((int)p + 0x154) &= ~0x2000;
+    ((dCamera_c *)p)->mFlags &= ~0x2000;
     _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_021101b4);
     return 2;
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 352 -- func_ov002_020d2e74, 0x020d2e74, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d2e74
 /* recovered: shared common types */
 extern "C" {
@@ -14473,9 +13334,6 @@ void func_ov002_020d2e74(Player *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 353 -- func_ov002_020d2f24, 0x020d2f24, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d2f24
 extern "C" {
 void func_ov002_020d2f24(char* thiz)
@@ -14493,7 +13351,8 @@ void func_ov002_020d2f24(char* thiz)
     r4 = *(int*)(thiz + 0x56c);
     id = _ZNK6Player14GetBodyModelIDEjb(thiz, id & 0xff, 0);
     {
-        int* q = (int*)(*(int*)(thiz + id * 4 + 0xdc) + 0x50);
+        /* q[2] is the frame controller's currFrame; ->currFrame folds the split +0x50. */
+        int *q = (int *)((int)player->mBodyModels[id] + 0x50);
         v = (u32)(q[2] << 4) >> 0x10;
     }
 
@@ -14522,9 +13381,6 @@ store:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 354 -- func_ov002_020d2fdc, 0x020d2fdc, size 0x2e0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d2fdc
 extern "C" {
 int func_ov002_020d2fdc(char *self)
@@ -14605,7 +13461,7 @@ int func_ov002_020d2fdc(char *self)
                 _ZN6Player7SetAnimEji5Fix12IiEj(self, 0xd, 0x40000000, 0x1000, 0);
                 p->mStateStep = 1;
             }
-            *(int *)(((int)(char *)data_0209f318 + 0x154)) |= 0x2000;
+            ((dCamera_c *)data_0209f318)->mFlags |= 0x2000;
         }
     } else {
         _ZN6Player7SetAnimEji5Fix12IiEj(self, 0xf, 0, 0x1000, 0);
@@ -14614,9 +13470,6 @@ int func_ov002_020d2fdc(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 355 -- _ZN6Player12St_Wait_InitEv, 0x020d32bc, size 0x1dc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Wait_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -14678,9 +13531,6 @@ L13c:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 356 -- func_ov002_020d3498, 0x020d3498, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d3498
 extern "C" {
 void func_ov002_020d3498(char* c)
@@ -14693,9 +13543,6 @@ void func_ov002_020d3498(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 357 -- _ZN6Player18St_TurnAround_MainEv, 0x020d34bc, size 0x1e0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_TurnAround_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -14757,9 +13604,6 @@ int Player::St_TurnAround_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 358 -- _ZN6Player18St_TurnAround_InitEv, 0x020d369c, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_TurnAround_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -14773,9 +13617,6 @@ int Player::St_TurnAround_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 359 -- func_ov002_020d36d8, 0x020d36d8, size 0x1e8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d36d8
 extern "C" {
 int func_ov002_020d36d8(char* c, int arg)
@@ -14838,9 +13679,6 @@ int func_ov002_020d36d8(char* c, int arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 360 -- _ZN6Player12St_Walk_MainEv, 0x020d38c0, size 0x2dc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Walk_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -14949,9 +13787,6 @@ end:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 361 -- func_ov002_020d3b9c, 0x020d3b9c, size 0x5a0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d3b9c
 /* recovered: Player walk state helper (between St_Walk_Main and St_Walk_Init): steering and turn approach. */
 extern "C" {
@@ -15152,9 +13987,6 @@ int func_ov002_020d3b9c(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 362 -- func_ov002_020d413c, 0x020d413c, size 0x134 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d413c
 extern "C" {
 void func_ov002_020d413c(char *self, int arg)
@@ -15189,9 +14021,6 @@ void func_ov002_020d413c(char *self, int arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 363 -- _ZN6Player12St_Walk_InitEv, 0x020d4270, size 0x2d0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Walk_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -15294,9 +14123,6 @@ merge:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 364 -- func_ov002_020d4540, 0x020d4540, size 0xc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d4540
 extern "C" {
 void func_ov002_020d4540(char *p)
@@ -15305,9 +14131,6 @@ void func_ov002_020d4540(char *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 365 -- func_ov002_020d454c, 0x020d454c, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d454c
 extern "C" {
 void func_ov002_020d454c(char* c){
@@ -15323,9 +14146,6 @@ void func_ov002_020d454c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 366 -- func_ov002_020d45c0, 0x020d45c0, size 0x188 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d45c0
 extern "C" {
 void func_ov002_020d45c0(char* self)
@@ -15375,16 +14195,16 @@ void func_ov002_020d45c0(char* self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 367 -- _ZN6Player19func_ov002_020d4748Ev, 0x020d4748, size 0x4e8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d4748Ev
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern "C" {
 static inline int* GetAnim(char* c)
 {
     int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
-    return (int*)(*(char**)(c + _ZNK6Player14GetBodyModelIDEjb(c, (unsigned char)*(int*)(c + 8), 0) * 4 + 0xdc) + 0x50);
+    Player *player = (Player *)c;
+    return (int *)((char *)player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(
+                       c, (unsigned char)player->param1, 0)] +
+                   0x50);
 }
 static inline unsigned int AnimSpeed(char* c)
 {
@@ -15505,9 +14325,6 @@ void Player::func_ov002_020d4748()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 368 -- func_ov002_020d4c30, 0x020d4c30, size 0x158 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d4c30
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -15577,9 +14394,6 @@ extern "C" void func_ov002_020d4c30(Obj *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 369 -- func_ov002_020d4d88, 0x020d4d88, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d4d88
 /* func_ov002_020d4d88 at 0x020d4d88
  *
@@ -15600,9 +14414,6 @@ int func_ov002_020d4d88(char *self, int a, int b, int c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 370 -- _ZN6Player12St_Bonk_MainEv, 0x020d4de8, size 0x1a4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Bonk_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -15682,9 +14493,6 @@ ret1:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 371 -- _ZN6Player12St_Bonk_InitEv, 0x020d4f8c, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Bonk_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -15700,9 +14508,6 @@ int Player::St_Bonk_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 372 -- _ZN6Player8BlowAwayEs, 0x020d4fe4, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player8BlowAwayEs
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -15719,9 +14524,6 @@ void Player::BlowAway(short v)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 373 -- _ZN6Player16St_BurnLava_MainEv, 0x020d5038, size 0x264 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_BurnLava_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -15820,9 +14622,6 @@ int Player::St_BurnLava_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 374 -- _ZN6Player16St_BurnLava_InitEv, 0x020d529c, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_BurnLava_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -15852,9 +14651,6 @@ int Player::St_BurnLava_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 375 -- _ZN6Player19func_ov002_020d5338Ev, 0x020d5338, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d5338Ev
 extern "C" {
 int Player::func_ov002_020d5338(){
@@ -15872,9 +14668,6 @@ int Player::func_ov002_020d5338(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 376 -- _ZN6Player16St_BurnFire_MainEv, 0x020d53ac, size 0x3a4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_BurnFire_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -16004,9 +14797,6 @@ int Player::St_BurnFire_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 377 -- _ZN6Player16St_BurnFire_InitEv, 0x020d5750, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_BurnFire_InitEv
 /* recovered: named members + shared header, real C++ method */
 /* SetAnim takes a Fix12<int> BY VALUE, which is the mwccarm 6az wall (runbook
@@ -16038,9 +14828,6 @@ int Player::St_BurnFire_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 378 -- _ZN6Player4BurnEv, 0x020d57d8, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player4BurnEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -16057,9 +14844,6 @@ int Player::Burn()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 379 -- _ZN6Player19St_Electrocute_MainEv, 0x020d5834, size 0x17c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_Electrocute_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -16136,9 +14920,6 @@ int Player::St_Electrocute_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 380 -- _ZN6Player19St_Electrocute_InitEv, 0x020d59b0, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_Electrocute_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -16159,9 +14940,6 @@ int Player::St_Electrocute_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 381 -- _ZN6Player5ShockEj, 0x020d5a1c, size 0x98 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player5ShockEj
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -16185,9 +14963,6 @@ int Player::Shock(unsigned int j)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 382 -- func_ov002_020d5ab4, 0x020d5ab4, size 0x1b8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d5ab4
 #pragma push
 #pragma opt_strength_reduction off
@@ -16246,9 +15021,6 @@ int func_ov002_020d5ab4(char *self)
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 383 -- func_ov002_020d5c6c, 0x020d5c6c, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d5c6c
 extern "C" {
 int func_ov002_020d5c6c(char* c)
@@ -16273,9 +15045,6 @@ change:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 384 -- func_ov002_020d5cec, 0x020d5cec, size 0x1e4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d5cec
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -16332,7 +15101,7 @@ extern "C" int func_ov002_020d5cec(char* c)
         player->mPosZ = v2.z;
     }
     player->mOpacity = 0x1f;
-    *(int*)(int)(c + 0x2ec) &= ~2;
+    player->mdCcAcPos_c.flags &= ~2;
     player->mStateStep = 2;
     player->mStateTimer = 4;
     player->mIsTakingDamage = 1;
@@ -16341,9 +15110,6 @@ extern "C" int func_ov002_020d5cec(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 385 -- _ZN6Player19func_ov002_020d5ed0Ev, 0x020d5ed0, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d5ed0Ev
 extern "C" {
 int Player::func_ov002_020d5ed0(){
@@ -16362,9 +15128,6 @@ int Player::func_ov002_020d5ed0(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 386 -- func_ov002_020d5f34, 0x020d5f34, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d5f34
 extern "C" {
 int func_ov002_020d5f34(char* c, void* st){
@@ -16373,7 +15136,7 @@ int func_ov002_020d5f34(char* c, void* st){
     Player *player = (Player *)c;
     if (player->mEatingPlayer != 0)
         return 0;
-    *(void **)(c + 0xd0) = st;
+    player->mEatingPlayer = (s32)st;
     _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x3f, 0, 0x3000, 0);
     player->mStateStep = 0;
     ((Player *)c)->ChangeState(data_ov002_02110064);
@@ -16381,9 +15144,6 @@ int func_ov002_020d5f34(char* c, void* st){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 387 -- _ZN6Player19func_ov002_020d5f98EPhS0_, 0x020d5f98, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d5f98EPhS0_
 extern "C" {
 int Player::func_ov002_020d5f98(unsigned char* a, unsigned char* b){
@@ -16402,9 +15162,6 @@ int Player::func_ov002_020d5f98(unsigned char* a, unsigned char* b){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 388 -- func_ov002_020d600c, 0x020d600c, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d600c
 extern "C" {
 int func_ov002_020d600c(char *c) {
@@ -16418,9 +15175,6 @@ int func_ov002_020d600c(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 389 -- _ZN6Player19func_ov002_020d6048Ev, 0x020d6048, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d6048Ev
 extern "C" {
 int Player::func_ov002_020d6048(){
@@ -16434,9 +15188,6 @@ int Player::func_ov002_020d6048(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 390 -- _ZN6Player23St_InYoshiMouth_CleanupEv, 0x020d6084, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player23St_InYoshiMouth_CleanupEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -16462,7 +15213,6 @@ int Player::func_ov002_020d6048(){
  * This file carried the placeholder name func_ov002_020d6084 until the symbol
  * was moved here from ov006. See the commit and include/Player.h.
  */
-extern "C" {
 int Player::St_InYoshiMouth_Cleanup()
 {
     unsigned int *p = (unsigned int *)&mdCcAcPos_c.flags;
@@ -16472,11 +15222,7 @@ int Player::St_InYoshiMouth_Cleanup()
     mOpacity = 0x1f;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 391 -- _ZN6Player20St_InYoshiMouth_MainEv, 0x020d60b8, size 0x240 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_InYoshiMouth_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -16565,13 +15311,9 @@ int Player::St_InYoshiMouth_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 392 -- _ZN6Player20St_InYoshiMouth_InitEv, 0x020d62f8, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_InYoshiMouth_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_InYoshiMouth_Init()
 {
     unsigned int r3;
@@ -16589,11 +15331,7 @@ int Player::St_InYoshiMouth_Init()
     mIsBodyClsnEnabled = (unsigned char)r3;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 393 -- func_ov002_020d6334, 0x020d6334, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d6334
 struct Obj6334 { char pad[0x588]; int *arr; /* 0x588 */ };
 extern "C" {
@@ -16612,9 +15350,6 @@ int func_ov002_020d6334(struct Obj6334 *o, int val)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 394 -- func_ov002_020d6368, 0x020d6368, size 0x10c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d6368
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -16661,9 +15396,6 @@ void func_ov002_020d6368(char *self)
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 395 -- _ZN6Player15St_Swallow_MainEv, 0x020d6474, size 0x1f8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Swallow_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -16701,10 +15433,11 @@ int Player::St_Swallow_Main()
     goto L65e4;
 
 L653c:
-    (*(void (**)(void*, char*))(*(char**)p360 + 0x4c))(p360, ((char*)this));
+    p360->OnTurnIntoEgg(*this);
     {
         void* q = *(void**)((char*)&mObjInMouth);
-        if ((*(int (**)(void*))(*(char**)q + 0x48))(q) == 1) goto L65e4;
+        if (((dActor_c *)q)->OnYoshiTryEat() == 1)
+            goto L65e4;
     }
     if ((unsigned short)(mStateFlags & 0x1000)) goto L65e4;
     {
@@ -16736,9 +15469,6 @@ L65ec:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 396 -- _ZN6Player15St_Swallow_InitEv, 0x020d666c, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Swallow_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -16750,8 +15480,7 @@ int Player::St_Swallow_Init() {
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, unsigned int);
     if (*(void **)((char *)&mObjInMouth)) {
         void *o = *(void **)((char *)&mObjInMouth);
-        int (*f)(void *) = *(int (**)(void *))(*(char **)o + 0x48);
-        if (f(o) == 4) {
+        if (((dActor_c *)o)->OnYoshiTryEat() == 4) {
             Player_DisableInteraction(((char *)this));
         }
         int eq = ((dActor_c *)mObjInMouth)->actorID == 0xbf;
@@ -16765,12 +15494,8 @@ int Player::St_Swallow_Init() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 397 -- _ZN6Player20RegisterEggCoinCountEjbb, 0x020d6708, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20RegisterEggCoinCountEjbb
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 void Player::RegisterEggCoinCount(unsigned int count, bool b2, bool b3)
 {
 	mEggParams = (count & 0xf) << 2;
@@ -16779,11 +15504,7 @@ void Player::RegisterEggCoinCount(unsigned int count, bool b2, bool b3)
 	if (b2)
 		*(unsigned char *)((char*)&mEggParams) |= 0x80;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 398 -- func_ov002_020d674c, 0x020d674c, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d674c
 extern "C" {
 int func_ov002_020d674c(char* c){
@@ -16798,9 +15519,6 @@ int func_ov002_020d674c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 399 -- func_ov002_020d6790, 0x020d6790, size 0x208 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d6790
 extern "C" {
 int func_ov002_020d6790(char* self)
@@ -16886,9 +15604,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 400 -- _ZN6Player19func_ov002_020d6998Ev, 0x020d6998, size 0x2c8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d6998Ev
 /* recovered: shared common types */
 extern "C" {
@@ -17015,9 +15730,6 @@ fail:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 401 -- func_ov002_020d6c60, 0x020d6c60, size 0x14c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d6c60
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -17071,7 +15783,7 @@ l48:
 leq:
     if (func_ov002_020d5f34(p1, p0) == 0)
         goto ret0b;
-    *(char **)(p0 + 0x360) = p1;
+    ((Player *)p0)->mObjInMouth = (s32)p1;
     q = (int *)&((dActor_c *)p1)->mFlags;
     *q = *q | 0x20000;
     func_ov002_020d71ec(p0, 1);
@@ -17082,9 +15794,6 @@ ret0b:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 402 -- func_ov002_020d6dac, 0x020d6dac, size 0x284 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d6dac
 /* The first two words of the SurfaceInfo rl.surface are copied as one
  * two-int struct. Spelled `{ int a, b; }`, C++ scalarizes that copy into
@@ -17128,20 +15837,20 @@ int func_ov002_020d6dac(char *self)
     {
         u8 b = player->mUseAltBodyModel;
         int model;
-        char *m1 = (char *)(*(int *)(*(int *)(self + ((b << 2) + 3) * 4 + 0x154) + 0x14));
+        Matrix4x3 *m1 = player->mHeadModels[(b << 2) + 3]->data.transforms;
         model = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-        MulVec3Mat4x3(m1 + 0x24, (char *)(*(int *)(self + model * 4 + 0xdc)) + 0x1c, &p1);
+        MulVec3Mat4x3(&m1->m[9], &player->mBodyModels[model]->mat4x3, &p1);
         Vec3_MulScalarInPlace((int *)&p1, 0x8000);
     }
 
     {
         u8 b2 = player->mUseAltBodyModel;
-        int m2i = *(int *)(*(int *)(self + ((b2 << 2) + 3) * 4 + 0x154) + 0x14) + 0x90;
+        Matrix4x3 *m2i = &player->mHeadModels[(b2 << 2) + 3]->data.transforms[3];
         int model2 = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
         void *a0, *a1, *a2;
-        a1 = (char *)(*(int *)(self + model2 * 4 + 0xdc));
-        a0 = (char *)m2i + 0x24;
-        a1 = (char *)a1 + 0x1c;
+        a1 = player->mBodyModels[model2];
+        a0 = &m2i->m[9];
+        a1 = &((ModelAnim *)a1)->mat4x3;
         a2 = &p2;
         MulVec3Mat4x3(a0, a1, a2);
         Vec3_MulScalarInPlace((int *)&p2, 0x8000);
@@ -17190,9 +15899,6 @@ int func_ov002_020d6dac(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 403 -- func_ov002_020d7030, 0x020d7030, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d7030
 extern "C" {
 int func_ov002_020d7030(char* a, char* b) {
@@ -17208,9 +15914,6 @@ int func_ov002_020d7030(char* a, char* b) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 404 -- _ZN6Player19func_ov002_020d708cEv, 0x020d708c, size 0x100 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d708cEv
 extern "C" {
 char* Player::func_ov002_020d708c() {
@@ -17277,21 +15980,13 @@ char* Player::func_ov002_020d708c() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 405 -- _ZN6Player19func_ov002_020d718cEv, 0x020d718c, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d718cEv
-extern "C" {
 void Player::func_ov002_020d718c() {
 
     this->mObjInMouth = 0;
     func_ov002_020d71a0();
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 406 -- _ZN6Player19func_ov002_020d71a0Ev, 0x020d71a0, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d71a0Ev
 extern "C" {
 void Player::func_ov002_020d71a0() {
@@ -17306,9 +16001,6 @@ void Player::func_ov002_020d71a0() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 407 -- func_ov002_020d71ec, 0x020d71ec, size 0x180 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d71ec
 #pragma push
 #pragma opt_propagation off
@@ -17370,9 +16062,6 @@ void func_ov002_020d71ec(char* p, int arg1)
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 408 -- _ZN6Player21St_YoshiPower_CleanupEv, 0x020d736c, size 0xc4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_YoshiPower_CleanupEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -17409,9 +16098,6 @@ end:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 409 -- func_ov002_020d7430, 0x020d7430, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d7430
 // State globals still have incompatible declarations across the legacy callers.
 extern "C" {
@@ -17445,9 +16131,6 @@ void func_ov002_020d7430(Player& player)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 410 -- _ZN6Player18St_YoshiPower_MainEv, 0x020d7504, size 0x9cc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_YoshiPower_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -17516,7 +16199,8 @@ int Player::St_YoshiPower_Main()
         if (mStateArg == 0) {
             int t4 = (mHeadModels[3]->currFrame >> 0xc) << 0x10;
             int id0 = this->GetBodyModelID(this->param1 & 0xff, 0);
-            dp = (char*)*(void**)(c + (id0<<2) + 0xdc);
+            /* Split: a plain ->currFrame folds +0x50 and +8 into one +0x58 and moves bytes. */
+            dp = (char *)mBodyModels[id0];
             dp = (char*)(dp + 0x50);
             *(unsigned int*)(dp + 8) = (unsigned int)t4 >> 4;
             mStateArg = 1;
@@ -17537,13 +16221,13 @@ int Player::St_YoshiPower_Main()
         mHeadRotMode = flag;
         if (*(void**)(&mObjInMouth) != 0) {
             int b = mUseAltBodyModel;
-            char* t4 = (char*)(*(int*)(*(int*)(c + ((b<<2)+3)*4 + 0x154) + 0x14) + 0x90);
+            Matrix4x3 *t4 = &mHeadModels[(b << 2) + 3]->data.transforms[3];
             if (*(void**)(&mObjInMouth) != 0) {
                 if (!(((dActor_c *)*(void **)&mObjInMouth)->mFlags & 0x20000))
                     flag = 0;
                 if (flag != 0) {
                     int id1 = this->GetBodyModelID(this->param1 & 0xff, 0);
-                    MulVec3Mat4x3(t4 + 0x24, (char*)*(void**)(c + (id1<<2) + 0xdc) + 0x1c, &tmp);
+                    MulVec3Mat4x3(&t4->m[9], &mBodyModels[id1]->mat4x3, &tmp);
                     Vec3_MulScalarInPlace(&tmp, 0x8000);
                     dp = (char*)*(void**)(&mObjInMouth);
                     ((dActor_c *)dp)->mPosX = tmp.x;
@@ -17552,8 +16236,7 @@ int Player::St_YoshiPower_Main()
                 }
             }
             int id2 = this->GetBodyModelID(this->param1 & 0xff, 0);
-            if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id2 << 2) + 0xdc) + 0x50))
-                    ->WillHitFrame(0xa) != 0) {
+            if (mBodyModels[id2]->WillHitFrame(0xa) != 0) {
                 Vec3 *src = (Vec3 *)&mPosX;
                 dp = (char*)*(void**)(&mObjInMouth);
                 ((dActor_c *)dp)->mPosX = src->x;
@@ -17583,8 +16266,7 @@ int Player::St_YoshiPower_Main()
                 }
             } else {
                 int id3 = this->GetBodyModelID(this->param1 & 0xff, 0);
-                if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id3 << 2) + 0xdc) + 0x50))
-                        ->WillHitFrame(0xc) != 0) {
+                if (mBodyModels[id3]->WillHitFrame(0xc) != 0) {
                     mUseAltBodyModel = 1;
                     if ((*(Obj**)(&mObjInMouth))->v18() == 5) {
                         int cond2 = (((dActor_c *)mObjInMouth)->actorID == 0x132);
@@ -17628,7 +16310,7 @@ int Player::St_YoshiPower_Main()
             return 1;
         }
         int id4 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        int* a50b = (int*)((long long)(int)((char*)*(void**)(c + (id4<<2) + 0xdc) + 0x50));
+        int *a50b = (int *)((long long)(int)((char *)mBodyModels[id4] + 0x50));
         if ((unsigned short)(a50b[2] >> 0xc) == 0) {
             if (mIsAirborne != 0) {
                 this->ChangeState(data_ov002_021101b4);
@@ -17657,21 +16339,19 @@ int Player::St_YoshiPower_Main()
 
     case 4: {
         int id5 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id5 << 2) + 0xdc) + 0x50))
-                ->WillHitFrame(3) != 0) {
+        if (mBodyModels[id5]->WillHitFrame(3) != 0) {
             int z = 0;
             mUseAltBodyModel = z;
             if (mUseAltBodyModel == 0) {
                 int id6 = this->GetBodyModelID(this->param1 & 0xff, z);
-                int* a50c = (int*)((long long)(int)((char*)*(void**)(c + (id6<<2) + 0xdc) + 0x50));
+                int *a50c = (int *)((long long)(int)((char *)mBodyModels[id6] + 0x50));
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
                     mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                     (unsigned int)(a50c[2] << 4) >> 0x10);
             }
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id7 << 2) + 0xdc) + 0x50))
-                ->WillHitFrame(4) != 0) {
+        if (mBodyModels[id7]->WillHitFrame(4) != 0) {
             obj0 = *(Obj**)(&mObjInMouth);
             if (obj0 != 0) {
                 int cond3 = (((dActor_c *)obj0)->actorID == 0xbf);
@@ -17696,7 +16376,7 @@ int Player::St_YoshiPower_Main()
     case 5: {
         if (mStateTimer != 0) {
             int id8 = this->GetBodyModelID(this->param1 & 0xff, 0);
-            int* a50d = (int*)((long long)(int)((char*)*(void**)(c + (id8<<2) + 0xdc) + 0x50));
+            int *a50d = (int *)((long long)(int)((char *)mBodyModels[id8] + 0x50));
             if (((unsigned int)(a50d[2] << 4) >> 0x10) >= 4) {
                 int i2 = (*(unsigned short*)&mAngleY >> 4) * 2;
                 short* tbl = data_02082214;
@@ -17717,7 +16397,7 @@ int Player::St_YoshiPower_Main()
                     int z2 = 0;
                     mUseAltBodyModel = z2;
                     int id9 = this->GetBodyModelID(this->param1 & 0xff, z2);
-                    int* a50e = (int*)((long long)(int)((char*)*(void**)(c + (id9<<2) + 0xdc) + 0x50));
+                    int *a50e = (int *)((long long)(int)((char *)mBodyModels[id9] + 0x50));
                     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
                         mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                         (unsigned int)(a50e[2] << 4) >> 0x10);
@@ -17739,8 +16419,7 @@ int Player::St_YoshiPower_Main()
         }
         mPrevAngleY = mAngleY;
         int id10 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (((dExtFrameCtrl_c *)((char *)*(void **)(c + (id10 << 2) + 0xdc) + 0x50))
-                ->WillHitFrame(6) != 0) {
+        if (mBodyModels[id10]->WillHitFrame(6) != 0) {
             this->func_ov002_020daa74();
             Sound::PlayCharVoice(0, 0x102, mCamSpacePos);
             goto common_tail;
@@ -17763,9 +16442,6 @@ int Player::St_YoshiPower_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 411 -- _ZN6Player18St_YoshiPower_InitEv, 0x020d7ed0, size 0x200 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_YoshiPower_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -17829,9 +16505,6 @@ int Player::St_YoshiPower_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 412 -- func_ov002_020d80d0, 0x020d80d0, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d80d0
 extern "C" {
 void func_ov002_020d80d0(char* c){
@@ -17847,9 +16520,6 @@ void func_ov002_020d80d0(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 413 -- func_ov002_020d8118, 0x020d8118, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8118
 extern "C" {
 void func_ov002_020d8118(char* c)
@@ -17866,9 +16536,6 @@ void func_ov002_020d8118(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 414 -- func_ov002_020d8158, 0x020d8158, size 0xd0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8158
 extern "C" {
 void func_ov002_020d8158(char* c)
@@ -17898,9 +16565,6 @@ void func_ov002_020d8158(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 415 -- _ZN6Player13InitFireYoshiEv, 0x020d8228, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13InitFireYoshiEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -17916,22 +16580,14 @@ void Player::InitFireYoshi()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 416 -- _ZN6Player21St_DizzyStars_CleanupEv, 0x020d8274, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_DizzyStars_CleanupEv
-extern "C" {
 int Player::St_DizzyStars_Cleanup()
 {
 
     mFlags &= ~0x80u;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 417 -- _ZN6Player18St_DizzyStars_MainEv, 0x020d828c, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_DizzyStars_MainEv
 /* recovered: named members + shared header, real C++ method */
 /* the walk state */
@@ -17950,23 +16606,15 @@ int Player::St_DizzyStars_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 418 -- _ZN6Player18St_DizzyStars_InitEv, 0x020d82cc, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_DizzyStars_InitEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_DizzyStars_Init()
 {
     mStateTimer = 0x12c;
     mFlags |= 0x80;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 419 -- func_ov002_020d82f0, 0x020d82f0, size 0x70 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d82f0
 extern "C" {
 int func_ov002_020d82f0(void *c) {
@@ -17990,9 +16638,6 @@ ret1:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 420 -- func_ov002_020d8360, 0x020d8360, size 0x1dc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8360
 /* func_ov002_020d8360 at 0x020d8360
  *
@@ -18091,9 +16736,6 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 421 -- func_ov002_020d853c, 0x020d853c, size 0xc0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d853c
 extern "C" {
 int func_ov002_020d853c(char *c, char *o) {
@@ -18106,7 +16748,7 @@ int func_ov002_020d853c(char *c, char *o) {
     if (((Player *)c)->IsState(data_ov002_02110574)) {
         int j = (player->mPunchKickStep << 1) & 0xff;
         unsigned idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-        char *mp = *(char **)(c + 0xdc + idx * 4);
+        char *mp = (char *)player->mBodyModels[idx];
         int v = ((int *)(((long long)(int)(mp + 0x50))))[2];
         int k = (unsigned short)(v >> 12);
         if (k < data_ov002_0210a5dc[j] || k > data_ov002_0210a5dc[j + 1])
@@ -18119,9 +16761,6 @@ int func_ov002_020d853c(char *c, char *o) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 422 -- func_ov002_020d85fc, 0x020d85fc, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d85fc
 extern "C" {
 extern "C" int func_ov002_020d85fc(char* self, char* arg, int flags){
@@ -18142,9 +16781,6 @@ extern "C" int func_ov002_020d85fc(char* self, char* arg, int flags){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 423 -- func_ov002_020d869c, 0x020d869c, size 0x19c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d869c
 struct PVec869c { s32 x, y, z; ~PVec869c() {} };
 extern "C" {
@@ -18209,9 +16845,6 @@ extern "C" int func_ov002_020d869c(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 424 -- func_ov002_020d8838, 0x020d8838, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8838
 // Set bit 0x20 in the halfword flag at self+0x6ce and return. The u64-mask launder
 // forces the base+offset to materialize into a register (pool-loaded 0x6ce + add) so
@@ -18224,9 +16857,6 @@ void func_ov002_020d8838(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 425 -- func_ov002_020d8854, 0x020d8854, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8854
 /* recovered: shared common types */
 extern "C" {
@@ -18267,9 +16897,6 @@ void func_ov002_020d8854(char *self) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 426 -- func_ov002_020d8944, 0x020d8944, size 0x10c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8944
 /* recovered: shared common types */
 // non-trivial destructor keeps the particle-spawn vector on the stack (no SROA)
@@ -18317,9 +16944,6 @@ int func_ov002_020d8944(void *self, char *enemy, char *v1) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 427 -- func_ov002_020d8a50, 0x020d8a50, size 0x2c0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8a50
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -18438,9 +17062,6 @@ void func_ov002_020d8a50(char* self, int which)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 428 -- func_ov002_020d8d10, 0x020d8d10, size 0x160 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d8d10
 /* recovered: shared common types */
 /* func_ov002_020d8d10 at 0x020d8d10
@@ -18477,9 +17098,6 @@ void func_ov002_020d8d10(struct Self* self, struct Vector3* pos)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 429 -- _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj, 0x020d8e70, size 0x348 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj
 /* recovered: named members + shared header, declarations from a shared header */
 /* recovered: named members + shared header */
@@ -18630,9 +17248,6 @@ L9c:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 430 -- func_ov002_020d91b8, 0x020d91b8, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d91b8
 extern "C" {
 void func_ov002_020d91b8(unsigned char *self, int a) {
@@ -18642,9 +17257,6 @@ void func_ov002_020d91b8(unsigned char *self, int a) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 431 -- func_ov002_020d91e0, 0x020d91e0, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d91e0
 extern "C" {
 int func_ov002_020d91e0(char* thiz, int damage, int doPre)
@@ -18677,9 +17289,6 @@ int func_ov002_020d91e0(char* thiz, int damage, int doPre)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 432 -- func_ov002_020d9298, 0x020d9298, size 0x94 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d9298
 extern "C" {
 int func_ov002_020d9298(char *c) {
@@ -18702,9 +17311,6 @@ int func_ov002_020d9298(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 433 -- _ZN6Player6BounceE5Fix12IiE, 0x020d932c, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player6BounceE5Fix12IiE
 /* recovered: named members + shared header, declarations from a shared header */
 /* recovered: named members + shared header */
@@ -18724,9 +17330,6 @@ void _ZN6Player6BounceE5Fix12IiE(struct Player *self, int f) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 434 -- _ZN6Player19func_ov002_020d93acEv, 0x020d93ac, size 0x120 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d93acEv
 /* recovered: shared common types */
 extern "C" {
@@ -18785,9 +17388,6 @@ fail:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 435 -- _ZN6Player19func_ov002_020d94ccEv, 0x020d94cc, size 0x188 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d94ccEv
 /* recovered: shared common types */
 /* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
@@ -18858,25 +17458,17 @@ fail:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 436 -- _ZN6Player15St_Hurt_CleanupEv, 0x020d9654, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Hurt_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 // Player::St_Hurt_Cleanup - clear flag bit 0x80 in the u32 at this+0xb0, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0xb0) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Hurt_Cleanup()
 {
     *(unsigned int *)((char *)&mFlags) &= ~0x80;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 437 -- _ZN6Player12St_Hurt_MainEv, 0x020d966c, size 0x248 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Hurt_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -18978,9 +17570,6 @@ int Player::St_Hurt_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 438 -- _ZN6Player19func_ov002_020d98b4Ev, 0x020d98b4, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020d98b4Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -19012,9 +17601,6 @@ void Player::func_ov002_020d98b4() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 439 -- func_ov002_020d99a4, 0x020d99a4, size 0xa8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d99a4
 extern "C" {
 void func_ov002_020d99a4(unsigned char *self)
@@ -19035,9 +17621,6 @@ void func_ov002_020d99a4(unsigned char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 440 -- func_ov002_020d9a4c, 0x020d9a4c, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d9a4c
 extern "C" {
 void func_ov002_020d9a4c(char *c) {
@@ -19051,9 +17634,6 @@ void func_ov002_020d9a4c(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 441 -- func_ov002_020d9aac, 0x020d9aac, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d9aac
 extern "C" {
 void func_ov002_020d9aac(char* c)
@@ -19087,9 +17667,6 @@ void func_ov002_020d9aac(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 442 -- _ZN6Player12St_Hurt_InitEv, 0x020d9b68, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Hurt_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -19125,9 +17702,6 @@ int Player::St_Hurt_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 443 -- _ZN6Player12GetHurtStateEv, 0x020d9c44, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12GetHurtStateEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -19141,9 +17715,6 @@ int Player::GetHurtState()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 444 -- func_ov002_020d9c70, 0x020d9c70, size 0x15c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d9c70
 #pragma push
 #pragma opt_common_subs off
@@ -19195,17 +17766,14 @@ void func_ov002_020d9c70(char *o)
     ((dActor_c *)player->mHeldObj)->mHorzSpeed = A;
     {
         char *q = (char *)player->mHeldObj;
-        *(int *)(q + 0xa4) = 0;
+        ((dActor_c *)q)->mSpeedX = 0;
         ((dActor_c *)q)->mVertSpeed = 0x20000;
-        *(int *)(q + 0xac) = 0;
+        ((dActor_c *)q)->mSpeedZ = 0;
     }
 }
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 445 -- func_ov002_020d9dcc, 0x020d9dcc, size 0x1f8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d9dcc
 /* The state test compares the comparison as an int,
  * `(int)(x == 0xbf) == 0`.  In C++ the comparison is a bool: tested
@@ -19281,12 +17849,8 @@ int func_ov002_020d9dcc(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 446 -- _ZN6Player22St_SwingPlayer_CleanupEv, 0x020d9fc4, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22St_SwingPlayer_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_SwingPlayer_Cleanup()
 {
   char* p = *(char**)((char*)&mHeldObj);
@@ -19296,11 +17860,7 @@ int Player::St_SwingPlayer_Cleanup()
   mPrevAngleY = mAngleY;
   return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 447 -- _ZN6Player19St_SwingPlayer_MainEv, 0x020d9fec, size 0x3c4 */
-/* -------------------------------------------------------------------------- */
 
 /* recovered: Player::St_SwingPlayer_Main, the per-frame body of the swing state (animation, particles, the approach helpers). */
 // Provenance: first drafted from nearmiss/db.jsonl (divergence 8) and kept on main as a
@@ -19423,9 +17983,6 @@ int Player::St_SwingPlayer_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 448 -- _ZN6Player19St_SwingPlayer_InitEv, 0x020da3b0, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_SwingPlayer_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -19445,22 +18002,14 @@ int Player::St_SwingPlayer_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 449 -- _ZN6Player25St_GrabBowserTail_CleanupEv, 0x020da41c, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player25St_GrabBowserTail_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_GrabBowserTail_Cleanup()
 {
     func_ov002_020daa74();
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 450 -- _ZN6Player22St_GrabBowserTail_MainEv, 0x020da438, size 0x35c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22St_GrabBowserTail_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -19554,9 +18103,6 @@ int Player::St_GrabBowserTail_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 451 -- _ZN6Player22St_GrabBowserTail_InitEv, 0x020da794, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22St_GrabBowserTail_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -19576,9 +18122,6 @@ int Player::St_GrabBowserTail_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 452 -- _ZN6Player9DropActorEv, 0x020da7f4, size 0x168 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player9DropActorEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -19643,9 +18186,6 @@ int Player::DropActor()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 453 -- func_ov002_020da95c, 0x020da95c, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020da95c
 #pragma push
 #pragma opt_propagation off
@@ -19666,9 +18206,6 @@ int func_ov002_020da95c(char *c)
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 454 -- func_ov002_020da9d4, 0x020da9d4, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020da9d4
 extern "C" {
 extern "C" int func_ov002_020da9d4(char* self){
@@ -19694,9 +18231,6 @@ extern "C" int func_ov002_020da9d4(char* self){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 455 -- _ZN6Player19func_ov002_020daa74Ev, 0x020daa74, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020daa74Ev
 extern "C" {
 int Player::func_ov002_020daa74(){
@@ -19722,9 +18256,6 @@ int Player::func_ov002_020daa74(){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 456 -- Player_ReleaseHeldActor, 0x020dab14, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol Player_ReleaseHeldActor
 extern "C" {
 int Player_ReleaseHeldActor(char* c)
@@ -19745,9 +18276,6 @@ int Player_ReleaseHeldActor(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 457 -- _ZN6Player7TryGrabER8dActor_c, 0x020daba0, size 0x114 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player7TryGrabER8dActor_c
 /* recovered: named members + shared header, real C++ method
  *
@@ -19793,9 +18321,6 @@ bd:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 458 -- func_ov002_020dacb4, 0x020dacb4, size 0x1b8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dacb4
 extern "C" {
 int func_ov002_020dacb4(char *p, char *actor)
@@ -19874,9 +18399,6 @@ int func_ov002_020dacb4(char *p, char *actor)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 459 -- _ZN6Player13St_Throw_MainEv, 0x020dae6c, size 0x168 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Throw_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -19932,9 +18454,6 @@ int Player::St_Throw_Main() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 460 -- _ZN6Player13St_Throw_InitEv, 0x020dafd4, size 0xd0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13St_Throw_InitEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -19970,25 +18489,17 @@ int Player::St_Throw_Init() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 461 -- _ZN6Player17St_Thrown_CleanupEv, 0x020db0a4, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_Thrown_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 // Player::St_Thrown_Cleanup - clear flag bit 0x2000 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Thrown_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x2000;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 462 -- _ZN6Player14St_Thrown_MainEv, 0x020db0bc, size 0x22c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Thrown_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -20068,9 +18579,6 @@ L1f8:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 463 -- _ZN6Player14St_Thrown_InitEv, 0x020db2e8, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Thrown_InitEv
 /* recovered: named members + shared header, real C++ method */
 /* SetAnim takes a Fix12<int> by value -- the mwccarm 6az wall, runbook
@@ -20092,9 +18600,6 @@ int Player::St_Thrown_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 464 -- _ZN6Player18St_Grabbed_CleanupEv, 0x020db368, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_Grabbed_CleanupEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -20126,9 +18631,6 @@ int Player::St_Grabbed_Cleanup()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 465 -- _ZN6Player15St_Grabbed_MainEv, 0x020db3bc, size 0x11c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Grabbed_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -20182,9 +18684,6 @@ int Player::St_Grabbed_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 466 -- _ZN6Player15St_Grabbed_InitEv, 0x020db4d8, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Grabbed_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -20204,9 +18703,6 @@ int Player::St_Grabbed_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 467 -- func_ov002_020db54c, 0x020db54c, size 0xa8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020db54c
 /* recovered: shared common types */
 extern "C" {
@@ -20223,7 +18719,7 @@ extern "C" void func_ov002_020db54c(unsigned char *self, int a, int b, short c)
     if (node != 0) {
         int bb = (int)(((dActor_c *)node)->actorID == 0xbf);
         if (bb != 0) {
-            struct Vector3 *src = (struct Vector3 *)(((int)node + 0x5c));
+            struct Vector3 *src = (struct Vector3 *)((int)&((dActor_c *)node)->mPos);
             struct Vector3 v;
             int ty;
             v.x = src->x;
@@ -20242,9 +18738,6 @@ extern "C" void func_ov002_020db54c(unsigned char *self, int a, int b, short c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 468 -- func_ov002_020db5f4, 0x020db5f4, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020db5f4
 extern "C" {
 int func_ov002_020db5f4(char* c, char* arg){
@@ -20264,9 +18757,6 @@ int func_ov002_020db5f4(char* c, char* arg){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 469 -- func_ov002_020db674, 0x020db674, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020db674
 extern "C" {
 int func_ov002_020db674(char* c, int a1, int a2, int a3)
@@ -20290,9 +18780,6 @@ int func_ov002_020db674(char* c, int a1, int a2, int a3)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 470 -- func_ov002_020db704, 0x020db704, size 0x1b8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020db704
 extern "C" {
 void func_ov002_020db704(Player *self) {
@@ -20360,9 +18847,6 @@ void func_ov002_020db704(Player *self) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 471 -- func_ov002_020db8bc, 0x020db8bc, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020db8bc
 extern "C" {
 void func_ov002_020db8bc(Player *p, unsigned char kind) {
@@ -20372,9 +18856,6 @@ void func_ov002_020db8bc(Player *p, unsigned char kind) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 472 -- _ZN6Player19func_ov002_020db8d8Ev, 0x020db8d8, size 0x134 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19func_ov002_020db8d8Ev
 /* recovered: shared common types */
 extern "C" {
@@ -20390,16 +18871,16 @@ void Player::func_ov002_020db8d8()
     Vector3 dir;
     Vector3 scaled;
     int model;
-    char *m;
+    Matrix4x3 *m;
     int b;
     int cond;
     backup.x = this->mPosX;
     backup.y = this->mPosY;
     backup.z = this->mPosZ;
     b = this->mUseAltBodyModel;
-    m = (char *)(*(int *)(*(int *)(self + ((b << 2) + 3) * 4 + 0x154) + 0x14) + 0x90);
-    model = this->GetBodyModelID(*(int *)(self + 8) & 0xff, 0);
-    MulVec3Mat4x3(m + 0x24, (char *)(*(int *)(self + model * 4 + 0xdc)) + 0x1c, &tmp);
+    m = &mHeadModels[(b << 2) + 3]->data.transforms[3];
+    model = this->GetBodyModelID(param1 & 0xff, 0);
+    MulVec3Mat4x3(&m->m[9], &mBodyModels[model]->mat4x3, &tmp);
     Vec3_MulScalar(&scaled, &tmp, 0x8000);
     this->mPosX = scaled.x;
     this->mPosY = scaled.y;
@@ -20419,9 +18900,6 @@ void Player::func_ov002_020db8d8()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 473 -- func_ov002_020dba0c, 0x020dba0c, size 0xe0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dba0c
 extern "C" {
 void func_ov002_020dba0c(char *c) {
@@ -20467,9 +18945,6 @@ void func_ov002_020dba0c(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 474 -- func_ov002_020dbaec, 0x020dbaec, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dbaec
 extern "C" {
 void func_ov002_020dbaec(char *c) {
@@ -20511,9 +18986,6 @@ void func_ov002_020dbaec(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 475 -- func_ov002_020dbbc0, 0x020dbbc0, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dbbc0
 extern "C" {
 void func_ov002_020dbbc0(char *c) {
@@ -20555,9 +19027,6 @@ void func_ov002_020dbbc0(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 476 -- func_ov002_020dbc94, 0x020dbc94, size 0x100 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dbc94
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -20590,9 +19059,6 @@ void func_ov002_020dbc94(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 477 -- func_ov002_020dbd94, 0x020dbd94, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dbd94
 extern "C" {
 void func_ov002_020dbd94(char *c) {
@@ -20633,9 +19099,6 @@ void func_ov002_020dbd94(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 478 -- func_ov002_020dbe70, 0x020dbe70, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dbe70
 extern "C" {
 void func_ov002_020dbe70(char *c) {
@@ -20676,9 +19139,6 @@ void func_ov002_020dbe70(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 479 -- func_ov002_020dbf4c, 0x020dbf4c, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dbf4c
 extern "C" {
 void func_ov002_020dbf4c(char *c) {
@@ -20718,9 +19178,6 @@ void func_ov002_020dbf4c(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 480 -- func_ov002_020dc020, 0x020dc020, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dc020
 extern "C" {
 void func_ov002_020dc020(char *c) {
@@ -20749,9 +19206,6 @@ void func_ov002_020dc020(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 481 -- func_ov002_020dc09c, 0x020dc09c, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dc09c
 /* func_ov002_020dc09c at 0x020dc09c
  *
@@ -20799,9 +19253,6 @@ void func_ov002_020dc09c(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 482 -- func_ov002_020dc174, 0x020dc174, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dc174
 extern "C" {
 void func_ov002_020dc174(char* c, void* r1, int r2, int r3, unsigned int a5, unsigned int a6){
@@ -20813,9 +19264,6 @@ void func_ov002_020dc174(char* c, void* r1, int r2, int r3, unsigned int a5, uns
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 483 -- _ZN6Player17St_SlideKick_MainEv, 0x020dc1d0, size 0x210 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_SlideKick_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -20909,9 +19357,6 @@ L1d8:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 484 -- _ZN6Player17St_SlideKick_InitEv, 0x020dc3e0, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_SlideKick_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -20938,9 +19383,6 @@ int Player::St_SlideKick_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 485 -- _ZN6Player17St_SweepKick_MainEv, 0x020dc48c, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_SweepKick_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -20964,9 +19406,6 @@ int Player::St_SweepKick_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 486 -- _ZN6Player17St_SweepKick_InitEv, 0x020dc510, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_SweepKick_InitEv
 /* recovered: named members + shared header, real C++ method */
 /* SetAnim takes a Fix12<int> by value -- the mwccarm 6az wall, runbook
@@ -20985,9 +19424,6 @@ int Player::St_SweepKick_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 487 -- func_ov002_020dc560, 0x020dc560, size 0x1e0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dc560
 #define ADDR(p) ((int *)(((long long)(int)(p))))
 extern "C" {
@@ -21047,9 +19483,6 @@ void func_ov002_020dc560(char *self)
 }
 #undef ADDR
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 488 -- _ZN6Player17St_ButtSlide_MainEv, 0x020dc740, size 0x340 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_ButtSlide_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -21160,9 +19593,6 @@ int Player::St_ButtSlide_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 489 -- _ZN6Player17St_ButtSlide_InitEv, 0x020dca80, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_ButtSlide_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -21185,9 +19615,6 @@ int Player::St_ButtSlide_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 490 -- func_ov002_020dcafc, 0x020dcafc, size 0x12c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dcafc
 /* func_ov002_020dcafc at 0x020dcafc
  *
@@ -21222,9 +19649,6 @@ void func_ov002_020dcafc(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 491 -- _ZN6Player20St_StomachSlide_MainEv, 0x020dcc28, size 0x4dc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_StomachSlide_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -21403,9 +19827,6 @@ end:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 492 -- _ZN6Player20St_StomachSlide_InitEv, 0x020dd104, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player20St_StomachSlide_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -21429,9 +19850,6 @@ int Player::St_StomachSlide_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 493 -- _ZN6Player12St_Dive_InitEv, 0x020dd17c, size 0xc4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Dive_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -21462,9 +19880,6 @@ int Player::St_Dive_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 494 -- _ZN6Player8IsDivingEv, 0x020dd240, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player8IsDivingEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -21477,33 +19892,20 @@ int Player::IsDiving()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 495 -- _ZN6Player17LostGrabbedObjectEv, 0x020dd26c, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17LostGrabbedObjectEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::LostGrabbedObject()
 {
   return ((Player *)(((void*)this)))->IsAnim(0x18) || ((Player *)(((void*)this)))->IsAnim(0x8b);
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 496 -- _ZN6Player14IsFrontSlidingEv, 0x020dd2b0, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14IsFrontSlidingEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::IsFrontSliding()
 {
   return ((Player *)(((void*)this)))->IsAnim(0x43) || ((Player *)(((void*)this)))->IsAnim(0x40);
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 497 -- func_ov002_020dd2f4, 0x020dd2f4, size 0xd0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dd2f4
 extern "C" {
 int func_ov002_020dd2f4(char* c)
@@ -21531,9 +19933,6 @@ int func_ov002_020dd2f4(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 498 -- _ZN6Player17St_PunchKick_MainEv, 0x020dd3c4, size 0x228 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_PunchKick_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -21624,9 +20023,6 @@ end:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 499 -- func_ov002_020dd5ec, 0x020dd5ec, size 0x1b0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dd5ec
 extern "C" {
 void func_ov002_020dd5ec(char *c) {
@@ -21653,7 +20049,7 @@ void func_ov002_020dd5ec(char *c) {
                                     0x1000, 0);
     model = _ZNK6Player14GetBodyModelIDEjb(c, (*((int *)(c + 8))) & 0xff, 0);
     new_var2 = -0x4000;
-    new_var = (int *)((c + (model * 4)) + 0xdc);
+    new_var = (int *)&player->mBodyModels[model];
     new_var3 = (int *)((*new_var) + 0x50);
     if ((c && c) && c) {
     }
@@ -21690,9 +20086,6 @@ void func_ov002_020dd5ec(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 500 -- _ZN6Player17St_PunchKick_InitEv, 0x020dd79c, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_PunchKick_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -21717,9 +20110,6 @@ int Player::St_PunchKick_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 501 -- func_ov002_020dd824, 0x020dd824, size 0x94 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dd824
 extern "C" {
 int func_ov002_020dd824(char *c) {
@@ -21741,9 +20131,6 @@ int func_ov002_020dd824(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 502 -- func_ov002_020dd8b8, 0x020dd8b8, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dd8b8
 extern "C" {
 int func_ov002_020dd8b8(char* c){
@@ -21755,9 +20142,6 @@ int func_ov002_020dd8b8(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 503 -- func_ov002_020dd8f4, 0x020dd8f4, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dd8f4
 extern "C" {
 void func_ov002_020dd8f4(void* player) {
@@ -21766,9 +20150,6 @@ void func_ov002_020dd8f4(void* player) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 504 -- func_ov002_020dd908, 0x020dd908, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dd908
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -21803,25 +20184,17 @@ void func_ov002_020dd908(char *sb) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 505 -- _ZN6Player22St_GroundPound_CleanupEv, 0x020dd9e0, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22St_GroundPound_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 // Player::St_GroundPound_Cleanup - clear flag bit 0x20 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_GroundPound_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x20;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 506 -- _ZN6Player19St_GroundPound_MainEv, 0x020dd9f8, size 0x3f8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_GroundPound_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -21966,9 +20339,6 @@ int Player::St_GroundPound_Main()
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 507 -- _ZN6Player19St_GroundPound_InitEv, 0x020dddf0, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_GroundPound_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -21992,9 +20362,6 @@ int Player::St_GroundPound_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 508 -- func_ov002_020dde74, 0x020dde74, size 0x168 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dde74
 extern "C" {
 extern "C" int func_ov002_020dde74(char *thiz) {
@@ -22043,9 +20410,6 @@ change574:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 509 -- _ZN6Player19St_TornadoSpin_MainEv, 0x020ddfdc, size 0x2c4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_TornadoSpin_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -22129,9 +20493,6 @@ int Player::St_TornadoSpin_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 510 -- _ZN6Player19St_TornadoSpin_InitEv, 0x020de2a0, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_TornadoSpin_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -22154,9 +20515,6 @@ int Player::St_TornadoSpin_Init() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 511 -- func_ov002_020de328, 0x020de328, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020de328
 extern "C" {
 int func_ov002_020de328(void* player) {
@@ -22165,9 +20523,6 @@ int func_ov002_020de328(void* player) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 512 -- func_ov002_020de33c, 0x020de33c, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020de33c
 extern "C" {
 int func_ov002_020de33c(char *c, int a) {
@@ -22186,9 +20541,6 @@ ok:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 513 -- _ZN6Player18St_Balloon_CleanupEv, 0x020de3b4, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player18St_Balloon_CleanupEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -22201,9 +20553,6 @@ int Player::St_Balloon_Cleanup()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 514 -- func_ov002_020de3d0, 0x020de3d0, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020de3d0
 extern "C" {
 void func_ov002_020de3d0(int a0, short* r1, short* r2){
@@ -22215,9 +20564,6 @@ void func_ov002_020de3d0(int a0, short* r1, short* r2){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 515 -- func_ov002_020de428, 0x020de428, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020de428
 /* recovered: shared common types */
 struct dActor_ce428 {
@@ -22236,9 +20582,6 @@ void func_ov002_020de428(struct dActor_ce428 *thiz)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 516 -- _ZN6Player15St_Balloon_MainEv, 0x020de45c, size 0x450 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Balloon_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -22361,9 +20704,6 @@ s32 Player::St_Balloon_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 517 -- _ZN6Player15St_Balloon_InitEv, 0x020de8ac, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Balloon_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -22392,9 +20732,6 @@ int Player::St_Balloon_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 518 -- func_ov002_020de968, 0x020de968, size 0x98 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020de968
 // local extern: this file's local Vector3/Fix12i shadow the shared headers, so it cannot include Player.h and use the member
 extern "C" {
@@ -22422,9 +20759,6 @@ void func_ov002_020de968(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 519 -- _ZN6Player16InitBalloonMarioEv, 0x020dea00, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16InitBalloonMarioEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -22455,9 +20789,6 @@ void Player::InitBalloonMario()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 520 -- _ZN6Player17St_WindCarry_MainEv, 0x020deab8, size 0x154 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_WindCarry_MainEv
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -22510,9 +20841,6 @@ int Player::St_WindCarry_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 521 -- _ZN6Player17St_WindCarry_InitEv, 0x020dec0c, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_WindCarry_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -22533,9 +20861,6 @@ int Player::St_WindCarry_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 522 -- func_ov002_020dec70, 0x020dec70, size 0x180 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020dec70
 extern "C" {
 extern "C" int func_ov002_020dec70(char *c)
@@ -22577,9 +20902,6 @@ extern "C" int func_ov002_020dec70(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 523 -- _ZN6Player21St_JumpQuicksand_MainEv, 0x020dedf0, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_JumpQuicksand_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -22602,9 +20924,6 @@ int Player::St_JumpQuicksand_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 524 -- _ZN6Player21St_JumpQuicksand_InitEv, 0x020deeac, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_JumpQuicksand_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -22621,25 +20940,17 @@ int Player::St_JumpQuicksand_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 525 -- _ZN6Player17St_Cannon_CleanupEv, 0x020deefc, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_Cannon_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 // Player::St_Cannon_Cleanup - clear flag bit 0x20 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Cannon_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x20;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 526 -- _ZN6Player14St_Cannon_MainEv, 0x020def14, size 0x2f4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Cannon_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -22669,7 +20980,7 @@ int Player::St_Cannon_Main()
         mPrevAngleY = GetAngleToCamera(mPlayerNo) + 0x8000;
         mAngleY = mPrevAngleY;
 
-        int ang = *(u16*)(p + 0x17e);
+        int ang = (u16)((dCamera_c *)p)->mAngleX;
         int j = ang >> 4;
         mHorzSpeed = FX_MUL(data_02082214[j * 2 + 1], 0x64000);
         mVertSpeed = FX_MUL(data_02082214[j * 2], 0x64000);
@@ -22728,9 +21039,6 @@ int Player::St_Cannon_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 527 -- _ZN6Player14St_Cannon_InitEv, 0x020df208, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Cannon_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -22757,9 +21065,6 @@ int Player::St_Cannon_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 528 -- _ZN6Player16IsInsideOfCannonEv, 0x020df288, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16IsInsideOfCannonEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -22772,9 +21077,6 @@ int Player::IsInsideOfCannon()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 529 -- _ZN6Player22IsBeingShotOutOfCannonEv, 0x020df2c4, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22IsBeingShotOutOfCannonEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -22787,9 +21089,6 @@ int Player::IsBeingShotOutOfCannon()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 530 -- func_ov002_020df300, 0x020df300, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020df300
 extern "C" {
 int func_ov002_020df300(char* p) {
@@ -22804,9 +21103,6 @@ int func_ov002_020df300(char* p) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 531 -- func_ov002_020df34c, 0x020df34c, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020df34c
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -22832,23 +21128,15 @@ extern "C" int func_ov002_020df34c(Player* self) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 532 -- _ZN6Player14St_Owl_CleanupEv, 0x020df3c8, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player14St_Owl_CleanupEv
 /* recovered: named members + shared header, real C++ method */
-extern "C" {
 int Player::St_Owl_Cleanup()
 {
   func_ov002_020bd8c0(0x2f);
   mHeldObj=0;
   return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 533 -- _ZN6Player11St_Owl_MainEv, 0x020df3ec, size 0x354 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player11St_Owl_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -22946,7 +21234,7 @@ int Player::St_Owl_Main()
         break;
 
     case 3:
-        if ((*(int*)(data_0209f318 + 0x154) & 0x8000) == 0) {
+        if ((((dCamera_c *)data_0209f318)->mFlags & 0x8000) == 0) {
             mStateStep = 4;
             mStateTimer = 0x3c;
             func_ov002_020c9e18();
@@ -22964,9 +21252,6 @@ int Player::St_Owl_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 534 -- _ZN6Player11St_Owl_InitEv, 0x020df740, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player11St_Owl_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -22987,9 +21272,6 @@ int Player::St_Owl_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 535 -- func_ov002_020df7ac, 0x020df7ac, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020df7ac
 extern "C" {
 int func_ov002_020df7ac(void* thiz){
@@ -23004,9 +21286,6 @@ int func_ov002_020df7ac(void* thiz){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 536 -- func_ov002_020df7f4, 0x020df7f4, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020df7f4
 extern "C" {
 int func_ov002_020df7f4(char* c) {
@@ -23018,9 +21297,6 @@ int func_ov002_020df7f4(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 537 -- func_ov002_020df840, 0x020df840, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020df840
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -23061,9 +21337,6 @@ int func_ov002_020df840(struct Playerf840 *thiz, void *arg1, struct Vector3 *arg
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 538 -- func_ov002_020df8f0, 0x020df8f0, size 0x500 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020df8f0
 #pragma push
 #pragma opt_common_subs off
@@ -23206,9 +21479,6 @@ void func_ov002_020df8f0(char* c)
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 539 -- _ZN6Player11St_Fly_MainEv, 0x020dfdf0, size 0x48c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player11St_Fly_MainEv
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -23313,7 +21583,7 @@ skip:
     if (mPrevVertSpeed >= 0x30000) {
         if (mPrevAngleX > 0x800) {
             if (mStateArg == 0) {
-                _ZN5Sound9PlayBank0EjRK7Vector3(0xb9, c + 0x74);
+                _ZN5Sound9PlayBank0EjRK7Vector3(0xb9, &mCamSpacePos);
                 func_ov002_020e25f0(c, 2);
                 /* mStateArg += 1 through an int-cast address; the member spelling is 12 bytes short. */
                 *(u8 *)(((int)c + 0x70c)) = *(u8 *)(((int)c + 0x70c)) + 1;
@@ -23347,7 +21617,8 @@ skip:
         if (r1 >= 0x100) {
             r1 = 0x100;
         }
-        mLoopingSoundHandle = func_02012194(*(char **)(c + 0x620), 0, 0x104, 3, r1, c + 0x74, 0);
+        mLoopingSoundHandle =
+            func_02012194((char *)mLoopingSoundHandle, 0, 0x104, 3, r1, &mCamSpacePos, 0);
     }
     Player_AdvanceAnims(c);
     return 1;
@@ -23361,9 +21632,6 @@ skip:
 #undef sp1C
 #undef c
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 540 -- _ZN6Player11St_Fly_InitEv, 0x020e027c, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player11St_Fly_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -23392,9 +21660,6 @@ int Player::St_Fly_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 541 -- func_ov002_020e032c, 0x020e032c, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e032c
 extern "C" {
 void func_ov002_020e032c(unsigned char* c)
@@ -23414,9 +21679,6 @@ void func_ov002_020e032c(unsigned char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 542 -- _ZN6Player16InitWingFeathersEb, 0x020e03b8, size 0xc0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16InitWingFeathersEb
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -23443,9 +21705,6 @@ void Player::InitWingFeathers(bool b_)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 543 -- func_ov002_020e0478, 0x020e0478, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e0478
 extern "C" {
 int func_ov002_020e0478(void* c){
@@ -23455,9 +21714,6 @@ int func_ov002_020e0478(void* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 544 -- func_ov002_020e04a4, 0x020e04a4, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e04a4
 /* func_ov002_020e04a4 at 0x020e04a4
  *
@@ -23472,9 +21728,6 @@ void func_ov002_020e04a4(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 545 -- _ZN6Player12St_Land_MainEv, 0x020e04ec, size 0x3a0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Land_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -23586,9 +21839,6 @@ tail:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 546 -- _ZN6Player12St_Land_InitEv, 0x020e088c, size 0x1d8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Land_InitEv
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -23671,9 +21921,6 @@ int Player::St_Land_Init()
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 547 -- func_ov002_020e0a64, 0x020e0a64, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e0a64
 extern "C" {
 int func_ov002_020e0a64(char* c){
@@ -23688,9 +21935,6 @@ int func_ov002_020e0a64(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 548 -- _ZN6Player21St_SmallLaunchUp_MainEv, 0x020e0aa8, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_SmallLaunchUp_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -23707,9 +21951,6 @@ int Player::St_SmallLaunchUp_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 549 -- _ZN6Player21St_SmallLaunchUp_InitEv, 0x020e0adc, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_SmallLaunchUp_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -23732,9 +21973,6 @@ int Player::St_SmallLaunchUp_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 550 -- _ZN6Player17St_SlopeJump_MainEv, 0x020e0b50, size 0xb4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_SlopeJump_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -23765,9 +22003,6 @@ int Player::St_SlopeJump_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 551 -- _ZN6Player17St_SlopeJump_InitEv, 0x020e0c04, size 0xc8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_SlopeJump_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -23795,9 +22030,6 @@ int Player::St_SlopeJump_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 552 -- func_ov002_020e0ccc, 0x020e0ccc, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e0ccc
 extern "C" {
 int func_ov002_020e0ccc(char *c, short *st) {
@@ -23813,21 +22045,13 @@ int func_ov002_020e0ccc(char *c, short *st) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 553 -- _ZN6Player22St_CrazedCrate_CleanupEv, 0x020e0d28, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player22St_CrazedCrate_CleanupEv
-extern "C" {
 int Player::St_CrazedCrate_Cleanup() {
     mdCcAcPos_c.flags &= ~0x20;
     mJumpComboStage = 0;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 554 -- _ZN6Player19St_CrazedCrate_MainEv, 0x020e0d48, size 0x1f0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_CrazedCrate_MainEv
 extern "C" {
 int Player::St_CrazedCrate_Main() {
@@ -23901,9 +22125,6 @@ int Player::St_CrazedCrate_Main() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 555 -- func_ov002_020e0f38, 0x020e0f38, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e0f38
 extern "C" {
 void func_ov002_020e0f38(char* c, int a){
@@ -23923,9 +22144,6 @@ void func_ov002_020e0f38(char* c, int a){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 556 -- _ZN6Player19St_CrazedCrate_InitEv, 0x020e0fac, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player19St_CrazedCrate_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -23952,9 +22170,6 @@ int Player::St_CrazedCrate_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 557 -- _ZN6Player10SpinBounceE5Fix12IiE, 0x020e1020, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player10SpinBounceE5Fix12IiE
 /* recovered: named members + shared header */
 extern "C" {
@@ -23974,9 +22189,6 @@ void _ZN6Player10SpinBounceE5Fix12IiE(struct Player *self, int f) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 558 -- func_ov002_020e10a8, 0x020e10a8, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e10a8
 extern "C" {
 int func_ov002_020e10a8(void* c){
@@ -23986,25 +22198,17 @@ int func_ov002_020e10a8(void* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 559 -- _ZN6Player15St_Spin_CleanupEv, 0x020e10d4, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player15St_Spin_CleanupEv
 /* recovered: named members + shared header, real C++ method */
 // Player::St_Spin_Cleanup - clear flag bit 0x20 in the u32 at this+0x2ec, return 1.
 // The u64-mask launder forces the base to materialize (add r2,this,#0x2ec) so the
 // load/store reuse it, matching the ROM instead of folding the offset into ldr/str.
-extern "C" {
 int Player::St_Spin_Cleanup()
 {
     *(unsigned int *)((char *)&mdCcAcPos_c.flags) &= ~0x20;
     return 1;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 560 -- _ZN6Player12St_Spin_MainEv, 0x020e10ec, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Spin_MainEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -24036,9 +22240,6 @@ int Player::St_Spin_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 561 -- _ZN6Player12St_Spin_InitEv, 0x020e119c, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Spin_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24071,9 +22272,6 @@ int Player::St_Spin_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 562 -- _ZN6Player16St_LongJump_MainEv, 0x020e1238, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_LongJump_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24091,9 +22289,6 @@ int Player::St_LongJump_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 563 -- _ZN6Player16St_LongJump_InitEv, 0x020e127c, size 0x144 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_LongJump_InitEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -24147,9 +22342,6 @@ int Player::St_LongJump_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 564 -- _ZN6Player16St_SideFlip_MainEv, 0x020e13c0, size 0x26c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_SideFlip_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -24233,9 +22425,6 @@ int Player::St_SideFlip_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 565 -- _ZN6Player17St_WaterJump_InitEv, 0x020e162c, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player17St_WaterJump_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24258,9 +22447,6 @@ int Player::St_WaterJump_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 566 -- _ZN6Player21St_HeadstandJump_InitEv, 0x020e16a4, size 0x70 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player21St_HeadstandJump_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24281,9 +22467,6 @@ int Player::St_HeadstandJump_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 567 -- _ZN6Player16St_WallJump_MainEv, 0x020e1714, size 0xe4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_WallJump_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -24317,9 +22500,6 @@ int Player::St_WallJump_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 568 -- _ZN6Player16St_WallJump_InitEv, 0x020e17f8, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_WallJump_InitEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -24371,9 +22551,6 @@ int Player::St_WallJump_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 569 -- _ZN6Player16St_BackFlip_InitEv, 0x020e18a8, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_BackFlip_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24405,9 +22582,6 @@ int Player::St_BackFlip_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 570 -- _ZN6Player24St_SlideKickRecover_InitEv, 0x020e1990, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player24St_SlideKickRecover_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24431,9 +22605,6 @@ int Player::St_SlideKickRecover_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 571 -- _ZN6Player16St_SideFlip_InitEv, 0x020e1a10, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16St_SideFlip_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24465,9 +22636,6 @@ int Player::St_SideFlip_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 572 -- _ZN6Player12St_Fall_MainEv, 0x020e1af8, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Fall_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -24492,9 +22660,6 @@ int Player::St_Fall_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 573 -- _ZN6Player12St_Fall_InitEv, 0x020e1b80, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Fall_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
@@ -24519,9 +22684,6 @@ int Player::St_Fall_Init()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 574 -- func_ov002_020e1c20, 0x020e1c20, size 0x250 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e1c20
 extern "C" {
 void func_ov002_020e1c20(char *c) {
@@ -24592,9 +22754,6 @@ void func_ov002_020e1c20(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 575 -- func_ov002_020e1e70, 0x020e1e70, size 0x19c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e1e70
 extern "C" {
 void func_ov002_020e1e70(char *c) {
@@ -24638,9 +22797,6 @@ void func_ov002_020e1e70(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 576 -- func_ov002_020e200c, 0x020e200c, size 0x10c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e200c
 extern "C" {
 void func_ov002_020e200c(char* c){
@@ -24668,9 +22824,6 @@ void func_ov002_020e200c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 577 -- _ZN6Player12St_Jump_MainEv, 0x020e2118, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Jump_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -24739,9 +22892,6 @@ int Player::St_Jump_Main()
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 578 -- _ZN6Player12St_Jump_InitEv, 0x020e22c0, size 0x314 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player12St_Jump_InitEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -24852,9 +23002,6 @@ skipclear:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 579 -- func_ov002_020e25d4, 0x020e25d4, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e25d4
 /* recovered: shared common types */
 extern "C" {
@@ -24865,9 +23012,6 @@ extern "C" void func_ov002_020e25d4(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 580 -- func_ov002_020e25f0, 0x020e25f0, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e25f0
 extern "C" {
 inline int inline_fn(int *arg0) {
@@ -24889,9 +23033,6 @@ void func_ov002_020e25f0(char *c, int a) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 581 -- func_ov002_020e2664, 0x020e2664, size 0x270 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e2664
 extern "C" {
 int func_ov002_020e2664(char* self)
@@ -24987,9 +23128,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 582 -- func_ov002_020e28d4, 0x020e28d4, size 0x1fc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e28d4
 extern "C" {
 void func_ov002_020e28d4(char* c, int a, int b)
@@ -25056,9 +23194,6 @@ void func_ov002_020e28d4(char* c, int a, int b)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 583 -- func_ov002_020e2ad0, 0x020e2ad0, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e2ad0
 extern "C" {
 void func_ov002_020e2ad0(char* p)
@@ -25077,9 +23212,6 @@ void func_ov002_020e2ad0(char* p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 584 -- func_ov002_020e2b6c, 0x020e2b6c, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e2b6c
 extern "C" {
 int func_ov002_020e2b6c(char* c){
@@ -25092,9 +23224,6 @@ int func_ov002_020e2b6c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 585 -- func_ov002_020e2ba8, 0x020e2ba8, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e2ba8
 extern "C" {
 int func_ov002_020e2ba8(char* c){
@@ -25107,9 +23236,6 @@ int func_ov002_020e2ba8(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 586 -- func_ov002_020e2be4, 0x020e2be4, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e2be4
 extern "C" {
 extern "C" int func_ov002_020e2be4(char* self){
@@ -25142,9 +23268,6 @@ extern "C" int func_ov002_020e2be4(char* self){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 587 -- func_ov002_020e2c84, 0x020e2c84, size 0x21c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e2c84
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -25226,9 +23349,6 @@ int func_ov002_020e2c84(char *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 588 -- func_ov002_020e2ea0, 0x020e2ea0, size 0x17c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e2ea0
 extern "C" {
 extern "C" int func_ov002_020e2ea0(Player *self) {
@@ -25299,9 +23419,6 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 589 -- func_ov002_020e301c, 0x020e301c, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e301c
 extern "C" {
 void func_ov002_020e301c(char* c){
@@ -25316,9 +23433,6 @@ void func_ov002_020e301c(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 590 -- func_ov002_020e3078, 0x020e3078, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e3078
 struct Player3078 { char p[0x400]; };
 extern "C" {
@@ -25327,9 +23441,6 @@ int func_ov002_020e3078(struct Player3078* self, void* s) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 591 -- _ZN6Player7IsStateERNS_5StateE, 0x020e308c, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player7IsStateERNS_5StateE
 /* recovered: real C++ method, named members + shared header */
 /* Five instructions, and every one of them is in the source now:
@@ -25344,16 +23455,11 @@ int func_ov002_020e3078(struct Player3078* self, void* s) {
    The parameter is a reference, so the caller passes an address and this
    compares pointer identity: two distinct State objects with identical
    contents are NOT the same state. That is the whole semantic. */
-extern "C" {
 bool Player::IsState(Player::State &state)
 {
     return mState == &state;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 592 -- _ZN6Player11ChangeStateERNS_5StateE, 0x020e30a0, size 0x234 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player11ChangeStateERNS_5StateE
 /* recovered: named members + shared header, real C++ method,
  * declarations from a shared header
@@ -25471,9 +23577,6 @@ int Player::ChangeState(Player::State &state) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 593 -- _ZN6Player16CleanupResourcesEv, 0x020e32d4, size 0x730 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -25795,24 +23898,16 @@ int Player::CleanupResources()
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 594 -- _ZN6Player16OnPendingDestroyEv, 0x020e3a04, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player16OnPendingDestroyEv
 /* recovered: named members + shared header, real C++ method */
 /* Player::OnPendingDestroy() at 0x020e3a04 (ov002) -- vtable slot 12.
  * Empty override; Player does nothing when marked for destruction.
  */
-extern "C" {
 void Player::OnPendingDestroy()
 {
     (void)this;
 }
-}
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 595 -- _ZN6Player6RenderEv, 0x020e3a08, size 0x3f8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player6RenderEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -25869,10 +23964,10 @@ int Player::Render()
                 if (t2 != false) {
                     if (param1 == 3) {
                         int* p = (int*)AT(bodyMdl, 8);
-                        char* hdr = (char*)p[0];
+                        BMD_File *hdr = (BMD_File *)p[0];
                         char* rec = (char*)p[1];
                         u32 i2;
-                        for (i2 = 0; i2 < *(u32*)(hdr + 0x24); i2++) {
+                        for (i2 = 0; i2 < hdr->numMaterials; i2++) {
                             *(int *)(rec + 0x20) = mVsYoshiMaterialParam;
                             rec += 0x30;
                         }
@@ -25891,11 +23986,12 @@ int Player::Render()
                 if (mBodyModelId == 3) {
                     Matrix4x3_FromTranslation(&data_020a0e68, -0x1b33, -0x666, 0);
                     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, 0x4000);
-                    MulMat4x3Mat4x3(&data_020a0e68, *(char**)(bodyMdl + 0x14) + 0x180, &data_020a0e68);
+                    MulMat4x3Mat4x3(&data_020a0e68, &((ModelAnim *)bodyMdl)->data.transforms[8],
+                                    &data_020a0e68);
                     ((VObj *)((char *)&mModelAnim4))->m18(&data_020a0e68, &mScale);
                 } else {
                     ((VObj *)((char *)&mModelAnim4))
-                        ->m18(*(char **)(bodyMdl + 0x14) + 0x2d0, &mScale);
+                        ->m18(&((ModelAnim *)bodyMdl)->data.transforms[15], &mScale);
                 }
             }
         } else {
@@ -25912,10 +24008,10 @@ int Player::Render()
                     if (t3 != false) {
                         if (param1 == 3) {
                             int *p = (int *)AT((char *)mHeadModels[i], 8);
-                            char* hdr = (char*)p[0];
+                            BMD_File *hdr = (BMD_File *)p[0];
                             char* rec = (char*)p[1];
                             u32 i2;
-                            for (i2 = 0; i2 < *(u32*)(hdr + 0x24); i2++) {
+                            for (i2 = 0; i2 < hdr->numMaterials; i2++) {
                                 *(int *)(rec + 0x20) = mVsYoshiMaterialParam;
                                 rec += 0x30;
                             }
@@ -25925,9 +24021,8 @@ int Player::Render()
                 if (i == 3) {
                     _ZN5Model6RenderEPK7Vector3((char *)mHeadModels[i], &mScale);
                 } else {
-                    char *m = (char *)mHeadModels[i];
-                    char* dst = *(char**)(m + 0x14);
-                    char* src = *(char**)(bodyMdl + 0x14) + 0x2d0;
+                    Matrix4x3 *dst = mHeadModels[i]->data.transforms;
+                    Matrix4x3 *src = &((ModelAnim *)bodyMdl)->data.transforms[15];
                     *(M34*)dst = *(M34*)src;
                     ((VObj *)(char *)mHeadModels[i])->m14((char *)&mScaleX);
                 }
@@ -25953,9 +24048,6 @@ int Player::Render()
 #undef AT
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 596 -- func_ov002_020e3e00, 0x020e3e00, size 0x190 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e3e00
 /* recovered: shared common types */
 //
@@ -26006,7 +24098,7 @@ extern "C" void func_ov002_020e3e00(Model *obj, Vector3 *vec, unsigned int opaci
     }
 
     Mat tmp;
-    Mat *src = (Mat*)((char*)obj + 0x1c);
+    Mat *src = (Mat *)&obj->mat4x3;
     tmp = *src;
 
     int r0;
@@ -26033,9 +24125,6 @@ extern "C" void func_ov002_020e3e00(Model *obj, Vector3 *vec, unsigned int opaci
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 597 -- func_ov002_020e3f90, 0x020e3f90, size 0x3e4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e3f90
 extern "C" {
 int func_ov002_020e3f90(char* self) {
@@ -26129,23 +24218,20 @@ int func_ov002_020e3f90(char* self) {
     player->mPosZ = s.v[2] << 3;
     player->mPrevAngleY = ((dActor_c *)player->mGrabbedByActor)->mAngleY;
     n = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    m = *(char**)((self + (n << 2)) + 0xdc);
-    *(struct M48*)(m + 0x1c) = data_020a0e68;
-    *(struct M48*)(self + 0x190) = data_020a0e68;
+    m = (char *)player->mBodyModels[n];
+    *(struct M48 *)&((Model *)m)->mat4x3 = data_020a0e68;
+    *(struct M48 *)&player->mModelAnim4.mat4x3 = data_020a0e68;
     n = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
     if (n != 9 && n != 8) {
-        m = *(char**)((self + (n << 2)) + 0x154);
+        m = (char *)player->mHeadModels[n];
         if (m != 0) {
-            *(struct M48*)(m + 0x1c) = data_020a0e68;
+            *(struct M48 *)&((Model *)m)->mat4x3 = data_020a0e68;
         }
     }
     return 1;
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 598 -- func_ov002_020e4374, 0x020e4374, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e4374
 extern "C" {
 void func_ov002_020e4374(char* c, int* p1, int* p2)
@@ -26170,9 +24256,6 @@ void func_ov002_020e4374(char* c, int* p1, int* p2)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 599 -- func_ov002_020e444c, 0x020e444c, size 0x31c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e444c
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -26222,19 +24305,18 @@ void func_ov002_020e444c(char *c)
 
         if (player->mIsBalloon == 0) {
             int bodyID = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-            char *p = *(char **)(c + bodyID * 4 + 0xdc);
-            *(struct Matrix4x3 *)(p + 0x1c) = data_020a0e68;
-            *(struct Matrix4x3 *)(c + 0x190) = data_020a0e68;
+            player->mBodyModels[bodyID]->mat4x3 = data_020a0e68;
+            player->mModelAnim4.mat4x3 = data_020a0e68;
         } else {
-            *(struct Matrix4x3 *)(c + 0x10c) = data_020a0e68;
+            player->mModelAnim3.mat4x3 = data_020a0e68;
         }
 
         {
             int r0 = _ZN6Player19func_ov002_020becf4Eii(c, player->param1 & 0xff, 0);
             if (r0 != 9 && r0 != 8) {
-                char *q = *(char **)(c + r0 * 4 + 0x154);
+                ModelAnim *q = player->mHeadModels[r0];
                 if (q != 0) {
-                    *(struct Matrix4x3 *)(q + 0x1c) = data_020a0e68;
+                    q->mat4x3 = data_020a0e68;
                 }
             }
         }
@@ -26273,9 +24355,6 @@ void func_ov002_020e444c(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 600 -- func_ov002_020e4768, 0x020e4768, size 0x204 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e4768
 // local extern: include-free shard, the call passes the object as an untyped pointer so it cannot use the header member
 extern "C" {
@@ -26302,20 +24381,20 @@ extern "C" void func_ov002_020e4768(char* self)
     int idx;
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = *(void**)(self + mid*4 + 0xdc);
+    comp = player->mBodyModels[mid];
     func_020167a4(comp);
 
     func_ov002_020e640c(self);
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = *(void**)(self + mid*4 + 0xdc);
-    _ZN15ModelComponents21UpdateVertsUsingBonesEv((char*)comp + 8);
+    comp = player->mBodyModels[mid];
+    _ZN15ModelComponents21UpdateVertsUsingBonesEv(&((ModelAnim *)comp)->data);
 
     idx = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
 
     if (idx == 3) {
         unsigned int m2 = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-        int a1 = *(int*)((char*)(*(void**)(self + m2*4 + 0xdc)) + 0x14) + 0x2d0;
+        int a1 = (int)&player->mBodyModels[m2]->data.transforms[15];
         a1 = idx ? a1 : a1;
         ((VTable4 **)player->mHeadModels)[idx]->DoThing(a1);
     }
@@ -26324,33 +24403,31 @@ extern "C" void func_ov002_020e4768(char* self)
         int hasFlag = (player->mHeldObj != 0);
         if (hasFlag) {
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-            comp = *(void**)(self + mid*4 + 0xdc);
-            *(Mat43*)data_020a0e68 = *(Mat43*)((char*)comp + 0x1c);
+            comp = player->mBodyModels[mid];
+            *(Mat43 *)data_020a0e68 = *(Mat43 *)&((ModelAnim *)comp)->mat4x3;
 
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-            comp = *(void**)(self + mid*4 + 0xdc);
-            MulMat4x3Mat4x3((char*)*(int*)((char*)comp + 0x14) + 0x2a0, data_020a0e68, data_020a0e68);
+            comp = player->mBodyModels[mid];
+            MulMat4x3Mat4x3(&((ModelAnim *)comp)->data.transforms[14], data_020a0e68,
+                            data_020a0e68);
 
-            *(Mat43*)(self + 0x58c) = *(Mat43*)data_020a0e68;
-            *(void**)(self + 0xc8) = self + 0x58c;
+            *(Mat43 *)player->pad_58c = *(Mat43 *)data_020a0e68;
+            player->mCarryMatrix = (Matrix4x3 *)player->pad_58c;
         }
     }
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = *(void**)(self + mid*4 + 0xdc);
-    *(Mat43*)data_020a0e68 = *(Mat43*)((char*)comp + 0x1c);
+    comp = player->mBodyModels[mid];
+    *(Mat43 *)data_020a0e68 = *(Mat43 *)&((ModelAnim *)comp)->mat4x3;
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = *(void**)(self + mid*4 + 0xdc);
-    MulMat4x3Mat4x3((char*)*(int*)((char*)comp + 0x14) + 0x2d0, data_020a0e68, data_020a0e68);
+    comp = player->mBodyModels[mid];
+    MulMat4x3Mat4x3(&((ModelAnim *)comp)->data.transforms[15], data_020a0e68, data_020a0e68);
 
     *(Mat43*)(self + 0x5ec) = *(Mat43*)data_020a0e68;
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 601 -- func_ov002_020e496c, 0x020e496c, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e496c
 extern "C" {
 int func_ov002_020e496c(char* c)
@@ -26362,9 +24439,6 @@ int func_ov002_020e496c(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 602 -- func_ov002_020e4990, 0x020e4990, size 0x228 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e4990
 extern "C" {
 int func_ov002_020e4990(char* c)
@@ -26399,9 +24473,6 @@ int func_ov002_020e4990(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 603 -- func_ov002_020e4bb8, 0x020e4bb8, size 0x16c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e4bb8
 extern "C" {
 void func_ov002_020e4bb8(char* self)
@@ -26446,7 +24517,7 @@ void func_ov002_020e4bb8(char* self)
                 player->mIsMetal = 0;
                 v = player->param1;
                 id = _ZNK6Player14GetBodyModelIDEjb(self, (u8)v, 0);
-                dst = *(void**)(self + id * 4 + 0xdc);
+                dst = player->mBodyModels[id];
                 src = player->mBodyModels[4];
                 poolEntry = data_ov002_020ff480[player->mCharFileBase + v];
                 p = *(char**)((char*)poolEntry + 4);
@@ -26485,9 +24556,6 @@ void func_ov002_020e4bb8(char* self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 604 -- _ZN6Player8BehaviorEv, 0x020e4d24, size 0x868 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -26774,10 +24842,10 @@ after_player_slot:
         s32 r2 = mTongueHitDist;
         if (r2 != 0) {
             u8 ch = mUseAltBodyModel;
-            char *t4 = (char *)&mHeadModels[(ch << 2) + 3]->data.transforms[3];
+            Matrix4x3 *t4 = &mHeadModels[(ch << 2) + 3]->data.transforms[3];
             if (r2 < 0)
                 r2 = -r2;
-            *(s32 *)(t4 + 0x2c) = r2 >> 3;
+            t4->m[11] = r2 >> 3;
         }
     }
 
@@ -26793,9 +24861,6 @@ after_player_slot:
 }
 #undef LAU
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 605 -- _ZN6Player13InitResourcesEv, 0x020e558c, size 0x3bc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN6Player13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
 // Match: Player::InitResources (ov002:0x020e558c).
@@ -26949,7 +25014,7 @@ Ld0:
     pos.x = tx;
     pos.y = td;
     pos.z = tz;
-    *(int*)(rc + 0x4c) = td * 2;
+    ((dBgCh_Gnd *)rc)->mProbeHeight = td * 2;
     _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rc, &pos, c);
     _ZN5dBgCh19StartDetectingWaterEv(rc);
     if (data_0209f2f8 == 0x1d) {
@@ -26963,9 +25028,6 @@ Ld0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 606 -- func_ov002_020e5948, 0x020e5948, size 0x9e8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e5948
 /* defined in src/game/actors/d_a_obj1up_logo.cpp */
 #pragma push
@@ -27245,10 +25307,13 @@ void func_ov002_020e5948(void* arg0)
         if (p != 0) {
             p = _ZN10ModelAnim2C1Ev(p);
         }
-        *(void**)(c + 0xDC + i * 4) = p;
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(*(void**)(c + 0xDC + i * 4), _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1, 1);
-        _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(*(void**)(c + 0xDC + i * 4), ((s32*)data_ov002_020ff480[i + 0xC4])[1], 0, 0x1000, 0);
-        player->mBodyTexParams[i] = func_ov002_020e6bb0(*(void **)(c + 0xDC + i * 4));
+        player->mBodyModels[i] = (ModelAnim *)p;
+        _ZN9ModelBase7SetFileEP8BMD_Fileii(
+            player->mBodyModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
+            1);
+        _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
+            player->mBodyModels[i], ((s32 *)data_ov002_020ff480[i + 0xC4])[1], 0, 0x1000, 0);
+        player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
         i++;
     } while (i < 4);
 
@@ -27261,18 +25326,23 @@ void func_ov002_020e5948(void* arg0)
             if (p != 0) {
                 p = _ZN9ModelAnimC1Ev(p);
             }
-            *(void**)(c + 0x154 + i * 4) = p;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(*(void**)(c + 0x154 + i * 4), _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(*(void**)(c + 0x154 + i * 4), (void*)data_ov002_0210eb88[1], 0, 0x1000, 0);
+            player->mHeadModels[i] = (ModelAnim *)p;
+            _ZN9ModelBase7SetFileEP8BMD_Fileii(
+                player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
+                1, 1);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                player->mHeadModels[i], (void *)data_ov002_0210eb88[1], 0, 0x1000, 0);
         } else {
             p = _Znwj(0x50);
             if (p != 0) {
                 p = _ZN5ModelC1Ev(p);
             }
-            *(void**)(c + 0x154 + i * 4) = p;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(*(void**)(c + 0x154 + i * 4), _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
+            player->mHeadModels[i] = (ModelAnim *)p;
+            _ZN9ModelBase7SetFileEP8BMD_Fileii(
+                player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
+                1, 1);
         }
-        player->mHeadTexParams[i] = func_ov002_020e6bb0(*(void **)(c + 0x154 + i * 4));
+        player->mHeadTexParams[i] = func_ov002_020e6bb0(player->mHeadModels[i]);
         i++;
     } while (i < 4);
 
@@ -27284,9 +25354,11 @@ void func_ov002_020e5948(void* arg0)
         }
         {
             s32 idx = j + 4;
-            *(void**)(c + 0x154 + idx * 4) = p;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(*(void**)(c + 0x154 + idx * 4), _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a6ac[j]), 1, 1);
-            player->mHeadTexParams[idx] = func_ov002_020e6bb0(*(void **)(c + 0x154 + idx * 4));
+            player->mHeadModels[idx] = (ModelAnim *)p;
+            _ZN9ModelBase7SetFileEP8BMD_Fileii(
+                player->mHeadModels[idx],
+                _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a6ac[j]), 1, 1);
+            player->mHeadTexParams[idx] = func_ov002_020e6bb0(player->mHeadModels[idx]);
         }
         j++;
     } while (j < 4);
@@ -27309,7 +25381,7 @@ void func_ov002_020e5948(void* arg0)
                 if (p != 0) {
                     p = _ZN10ModelAnim2C1Ev(p);
                 }
-                *(void**)(c + 0xEC) = p;
+                player->mBodyModels[4] = (ModelAnim *)p;
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     player->mBodyModels[4],
                     _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);
@@ -27338,10 +25410,10 @@ void func_ov002_020e5948(void* arg0)
     _ZN17dExtShadowModel_c12InitCylinderEv(&player->mShadowModel);
 
     bodyId = _ZNK6Player14GetBodyModelIDEjb(c, 3, 0);
-    ma = *(void**)(c + 0xDC + bodyId * 4);
+    ma = player->mBodyModels[bodyId];
     {
         u8 pid = player->mPlayerNo;
-        t = *(void**)((char*)ma + 0xC);
+        t = ((ModelAnim *)ma)->data.materials;
         t2 = *(s32*)((char*)t + 0x20);
         player->mVsYoshiMaterialParam = t2 + (pid << 1);
     }
@@ -27359,7 +25431,7 @@ void func_ov002_020e5948(void* arg0)
         outer = n * 4;
         do {
             k = 0;
-            texseq = c + 0x1DC;
+            texseq = player->mTexSeqBody;
             do {
                 entry = data_ov002_020ff2f0[outer + k];
                 _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File((void*)((s32*)data_ov002_0210a69c[k])[1], (void*)((s32*)entry)[1]);
@@ -27367,7 +25439,7 @@ void func_ov002_020e5948(void* arg0)
                     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(texseq, (void*)((s32*)entry)[1], 0, 0x1000, 0);
                 }
                 k++;
-                texseq = (char*)texseq + 0x14;
+                texseq = (TextureSequence *)texseq + 1;
             } while (k < 4);
             n++;
             outer += 4;
@@ -27378,14 +25450,12 @@ void func_ov002_020e5948(void* arg0)
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
         player->mTexSeqPlayer, (void *)data_ov002_0210e8d0[1], 0, 0x1000, 0);
     _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File((void*)data_ov002_0210eb20[1], (void*)data_ov002_0210ebd8[1]);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x268, (void*)data_ov002_0210ebd8[1], 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &player->mTexSeqPlayer[1], (void *)data_ov002_0210ebd8[1], 0, 0x1000, 0);
 }
 }
 #pragma pop
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 607 -- func_ov002_020e6330, 0x020e6330, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e6330
 extern "C" {
 void func_ov002_020e6330(unsigned char *self) {
@@ -27395,9 +25465,6 @@ void func_ov002_020e6330(unsigned char *self) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 608 -- func_ov002_020e6350, 0x020e6350, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e6350
 extern "C" {
 void func_ov002_020e6350(char* c){
@@ -27410,9 +25477,6 @@ void func_ov002_020e6350(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 609 -- func_ov002_020e63a4, 0x020e63a4, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e63a4
 extern "C" {
 void func_ov002_020e63a4(char* c){
@@ -27428,9 +25492,6 @@ void func_ov002_020e63a4(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 610 -- func_ov002_020e640c, 0x020e640c, size 0x374 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e640c
 extern "C" {
 void func_ov002_020e640c(char *c)
@@ -27448,11 +25509,11 @@ void func_ov002_020e640c(char *c)
 
     id = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
     {
-        int *p = (int *)(int)(*(s32 *)(c + 0xdc + id * 4) + 8);
+        int *p = (int *)(int)&player->mBodyModels[id]->data;
         md = (char *)p[2];
         mp = (char *)p[0];
     }
-    r4p = *(char **)(mp + 8);
+    r4p = (char *)((BMD_File *)mp)->bones;
 
     *(u16 *)(int)(md + 0x1bc) += player->mSpineRot[1];
     *(u16 *)(int)(md + 0x1be) += player->mSpineRot[2];
@@ -27546,9 +25607,6 @@ void func_ov002_020e640c(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 611 -- func_ov002_020e6780, 0x020e6780, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e6780
 extern "C" {
 void func_ov002_020e6780(char *raw)
@@ -27595,20 +25653,25 @@ void *_ZN17dExtShadowModel_cC1Ev(void*);
 void *_ZN10dCcAcPos_cC1Ev(void*);
 void *_ZN10dBgCh_ActrC1Ev(void*);
 void* _ZN6PlayerC1Ev(void* c){
-  char* p=(char*)c;
-  _ZN8dActor_cC2Ev(c);
-  char* r4=p+0xdc;
-  *(int*)p=(int)data_ov002_0210a83c;
-  _ZN9ModelAnimC1Ev(r4+0x14);
-  _ZN9ModelAnimC1Ev(r4+0x98);
-  __cxa_vec_ctor(r4+0x100,4,0x14,(void*)_ZN15TextureSequenceC1Ev,(void*)_ZN15TextureSequenceD1Ev);
-  __cxa_vec_ctor(r4+0x150,2,0x14,(void*)_ZN15MaterialChangerC1Ev,(void*)_ZN15MaterialChangerD1Ev);
-  __cxa_vec_ctor(r4+0x178,2,0x14,(void*)_ZN15TextureSequenceC1Ev,(void*)_ZN15TextureSequenceD1Ev);
-  _ZN17dExtShadowModel_cC1Ev(p+0x2ac);
-  _ZN10dCcAcPos_cC1Ev(p+0x2d4);
-  _ZN10dCcAcPos_cC1Ev(p+0x314);
-  _ZN10dBgCh_ActrC1Ev(p+0x380);
-  return c;
+    Player *p = (Player *)c;
+    _ZN8dActor_cC2Ev(c);
+    /* r4 anchors the model/texture block at 0xdc: spelling these five as
+     &p->member drops the anchoring add and the constructor comes out 4 bytes short. */
+    char *r4 = (char *)p->mBodyModels;
+    *(int *)p = (int)data_ov002_0210a83c;
+    _ZN9ModelAnimC1Ev(r4 + 0x14);
+    _ZN9ModelAnimC1Ev(r4 + 0x98);
+    __cxa_vec_ctor(r4 + 0x100, 4, 0x14, (void *)_ZN15TextureSequenceC1Ev,
+                   (void *)_ZN15TextureSequenceD1Ev);
+    __cxa_vec_ctor(r4 + 0x150, 2, 0x14, (void *)_ZN15MaterialChangerC1Ev,
+                   (void *)_ZN15MaterialChangerD1Ev);
+    __cxa_vec_ctor(r4 + 0x178, 2, 0x14, (void *)_ZN15TextureSequenceC1Ev,
+                   (void *)_ZN15TextureSequenceD1Ev);
+    _ZN17dExtShadowModel_cC1Ev(&p->mShadowModel);
+    _ZN10dCcAcPos_cC1Ev(&p->mdCcAcPos_c);
+    _ZN10dCcAcPos_cC1Ev(&p->mAttackClsn);
+    _ZN10dBgCh_ActrC1Ev(&p->mMeshClsn);
+    return c;
 }
 }
 

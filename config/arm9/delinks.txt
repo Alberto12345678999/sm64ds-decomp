@@ -18,7 +18,7 @@ src/AutoloadCallback.c:
     complete
     .text start:0x020049ec end:0x020049f0
 
-src/_ZN4CP1511SystemSetupEv.cpp:
+src/engine/cp15/CP15_SystemSetup.cpp:
     complete
     .text start:0x020049f0 end:0x02004ad8
 
@@ -1644,7 +1644,7 @@ src/runtime/actor/ActorBase_SceneNode.cpp:
     complete
     .text start:0x0203b3c0 end:0x0203b4dc
 
-src/_ZN4cstd5atan2E5Fix12IiES1_.c:
+src/cstd_atan2.c:
     complete
     .text start:0x0203b4dc end:0x0203b684
 
@@ -1937,7 +1937,7 @@ src/unnamed/arm9/0203/func_0203d740.c:
     complete
     .text start:0x0203d740 end:0x0203d744
 
-src/_ZN4cstd4sqrtEy.cpp:
+src/cstd_sqrt.cpp:
     complete
     .text start:0x0203d744 end:0x0203d7b8
 
@@ -2509,11 +2509,11 @@ src/engine/model/Model4.cpp:
     complete
     .text start:0x020458e0 end:0x020468a0
 
-src/_ZN15TextureSequence17UpdateFileOffsetsER8BTP_File.cpp:
+src/engine/model/TextureSequence_UpdateFileOffsets.cpp:
     complete
     .text start:0x020468a0 end:0x020469ac
 
-src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp:
+src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp:
     complete
     .text start:0x020469ac end:0x020469e0
 
@@ -3310,7 +3310,7 @@ src/engine/cp15/CP15_ProtectionUnit.cpp:
     complete
     .text start:0x020593cc end:0x020593ec
 
-src/_ZN4CP1514MPUDataRegion1Ej.cpp:
+src/engine/cp15/CP15_MPUDataRegion1.cpp:
     complete
     .text start:0x020593ec end:0x020593f4
 

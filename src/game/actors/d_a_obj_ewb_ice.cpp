@@ -197,16 +197,13 @@ extern "C" int func_ov073_021220c0(daObjEwbIce_c *ice)
 {
     ice->mWobbleAmp = kWobbleAmp;
     if (DecIfAbove0_Short(&ice->mTimer) != 0) {
-        /* mWobblePhase += 0x800 collapses both accesses to this+0x300 and
-           shrinks this function 0x120 -> 0x114. The increment is an add of
-           the pooled offset 0x332; the sine index sign-extends a second load. */
-        unsigned short *phase = (unsigned short *)((int)ice + 0x332);
+        /* The sine index sign-extends a second load of mWobblePhase. */
         s16 angle;
         s32 amp;
         int sine;
 
-        *phase = (unsigned short)(*phase + kWobbleStep);
-        angle = *(s16 *)((char *)((char *)ice + 0x300) + 0x32);
+        ice->mWobblePhase += kWobbleStep;
+        angle = ice->mWobblePhase;
         amp = ice->mWobbleAmp;
         sine = data_02082214[(((int)((unsigned)(angle << 16) >> 16)) >> 4) * 2];
         ice->mAngleX = (s16)(amp + FX_MUL(amp, sine));
@@ -280,26 +277,26 @@ extern "C" int func_ov073_021222ec(daObjEwbIce_c *ice)
 {
     if (DecIfAbove0_Short(&ice->mTimer) == 1) {
         /* mWaypointsA/B[mSpawnIndex] = pos recomputes the address per
-           component (0xb0 -> 0xc8). One scaled pointer, then +0x3e8 / +0x448,
-           is what the cartridge stores. uniqueID is boss+4. */
+           component (0xb0 -> 0xc8). The cartridge steps one scaled pointer
+           (boss + mSpawnIndex * 0xc) and stores through its slot [0]. */
         char *boss = (char *)dActor_c::FindWithActorID(ACTOR_KING_DONKETU, 0);
         if (boss != 0) {
             switch (ice->actorID) {
             case ACTOR_EWB_ICE_A:
-                ice->mBossID = *(s32 *)(boss + 4);
+                ice->mBossID = ((dActor_c *)boss)->uniqueID;
                 break;
             case ACTOR_EWB_ICE_B: {
                 char *slot = boss + ice->mSpawnIndex * 0xc;
-                *(s32 *)(slot + 0x3e8) = ice->mPosX;
-                *(s32 *)(slot + 0x3ec) = ice->mPosY;
-                *(s32 *)(slot + 0x3f0) = ice->mPosZ;
+                ((daKing_Donketu_c *)slot)->mWaypointsA[0].x = ice->mPosX;
+                ((daKing_Donketu_c *)slot)->mWaypointsA[0].y = ice->mPosY;
+                ((daKing_Donketu_c *)slot)->mWaypointsA[0].z = ice->mPosZ;
                 break;
             }
             case ACTOR_EWB_ICE_C: {
                 char *slot = boss + ice->mSpawnIndex * 0xc;
-                *(s32 *)(slot + 0x448) = ice->mPosX;
-                *(s32 *)(slot + 0x44c) = ice->mPosY;
-                *(s32 *)(slot + 0x450) = ice->mPosZ;
+                ((daKing_Donketu_c *)slot)->mWaypointsB[0].x = ice->mPosX;
+                ((daKing_Donketu_c *)slot)->mWaypointsB[0].y = ice->mPosY;
+                ((daKing_Donketu_c *)slot)->mWaypointsB[0].z = ice->mPosZ;
                 break;
             }
             }
@@ -436,7 +433,7 @@ extern "C" void func_ov073_02122730(daObjEwbIce_c *ice, dActor_c *other)
     if (ice->mState != &data_ov073_021234b0)
         return;
     boss->mWaypointCursor = ice->mSpawnIndex;
-    if (ice->mSpawnIndex != boss->unk_4c5)
+    if (ice->mSpawnIndex != boss->mLandedWaypoint)
         return;
     if (ice->mVariant != 0)
         func_ov073_021223a4(ice, &data_ov073_021234c0);
