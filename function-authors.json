@@ -39907,7 +39907,7 @@
     },
     "ov075:0x02116c8c": {
       "author": "tangosdev",
-      "name": "func_ov075_02116c8c"
+      "name": "_ZN10dScEntry_c10StartMatchEv"
     },
     "ov075:0x02116ce4": {
       "author": "tangosdev",
@@ -39915,7 +39915,7 @@
     },
     "ov075:0x02116d40": {
       "author": "tangosdev",
-      "name": "func_ov075_02116d40"
+      "name": "_ZN10dScEntry_c15ArePlayersReadyEv"
     },
     "ov075:0x02116d9c": {
       "author": "tangosdev",
@@ -40015,27 +40015,27 @@
     },
     "ov075:0x02118a84": {
       "author": "tangosdev",
-      "name": "func_ov075_02118a84"
+      "name": "_ZN10dScEntry_c18UpdateMatchLoadingEv"
     },
     "ov075:0x02118bf8": {
       "author": "tangosdev",
-      "name": "func_ov075_02118bf8"
+      "name": "_ZN10dScEntry_c19LoadCourseResourcesEi"
     },
     "ov075:0x02118c80": {
       "author": "tangosdev",
-      "name": "func_ov075_02118c80"
+      "name": "_ZN10dScEntry_c17EnterMatchLoadingEv"
     },
     "ov075:0x02118cd0": {
       "author": "tangosdev",
-      "name": "func_ov075_02118cd0"
+      "name": "_ZN10dScEntry_c23RenderCourseSelectTitleEv"
     },
     "ov075:0x02118d1c": {
       "author": "aitddlabs",
-      "name": "func_ov075_02118d1c"
+      "name": "_ZN10dScEntry_c18UpdateCourseSelectEv"
     },
     "ov075:0x02118f38": {
       "author": "tangosdev",
-      "name": "func_ov075_02118f38"
+      "name": "_ZN10dScEntry_c17EnterCourseSelectEv"
     },
     "ov075:0x021190a4": {
       "author": "lunavyqo",
@@ -40095,15 +40095,15 @@
     },
     "ov075:0x02119cc0": {
       "author": "ruspecial",
-      "name": "func_ov075_02119cc0"
+      "name": "_ZN10dScEntry_c17UpdateStepFadeOutEv"
     },
     "ov075:0x02119d3c": {
       "author": "tangosdev",
-      "name": "func_ov075_02119d3c"
+      "name": "_ZN10dScEntry_c16EnterStepFadeOutEv"
     },
     "ov075:0x02119d78": {
       "author": "tangosdev",
-      "name": "func_ov075_02119d78"
+      "name": "_ZN10dScEntry_c15UpdateStepDelayEv"
     },
     "ov075:0x02119dc4": {
       "author": "tangosdev",
@@ -40111,15 +40111,15 @@
     },
     "ov075:0x0211a100": {
       "author": "tangosdev",
-      "name": "func_ov075_0211a100"
+      "name": "_ZN10dScEntry_c19ChangeStepsWithFadeEPKNS_7StepSetE"
     },
     "ov075:0x0211a148": {
       "author": "tangosdev",
-      "name": "func_ov075_0211a148"
+      "name": "_ZN10dScEntry_c21ChangeStepsAfterDelayEPKNS_7StepSetEi"
     },
     "ov075:0x0211a194": {
       "author": "tangosdev",
-      "name": "func_ov075_0211a194"
+      "name": "_ZN10dScEntry_c8SetStepsEPKNS_7StepSetE"
     },
     "ov075:0x0211a210": {
       "author": "tangosdev",

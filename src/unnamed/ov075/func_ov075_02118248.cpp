@@ -1,15 +1,19 @@
+//cpp
+#include "dScEntry_c.h"
 #include "types.h"
+
+extern int data_ov075_0211d870[];
+extern dScEntry_c::StepSet data_ov075_0211d8b8;
+
+extern "C" {
 extern u8 data_0209fc58;
-extern int data_ov075_0211d810;
-extern int data_ov075_0211d870;
-extern int data_ov075_0211d8b8;
+extern dScEntry_c::StepSet data_ov075_0211d810;
 
 extern void func_ov075_02119dc4(int a, int* data);
 extern int func_0203da9c(void);
 extern int TouchArea_Update(void* c, int id);
 extern int func_ov075_02116d9c(int unused, int id);
 extern void func_ov001_020ab41c(void* c);
-extern void func_ov075_0211a148(char* c, int a, int b);
 extern void func_02012790(int x);
 
 /* dScEntry_c as this step reads it; mIcons follows dScEntry_c.h. An icon's
@@ -37,7 +41,7 @@ void func_ov075_02118248(char* self)
     EntryScene *scene = (EntryScene *)self;
     int id;
     if (data_0209fc58 != 0) {
-        func_ov075_02119dc4((int)self, &data_ov075_0211d810);
+        func_ov075_02119dc4((int)self, reinterpret_cast<int *>(&data_ov075_0211d810));
         return;
     }
     id = func_0203da9c();
@@ -45,7 +49,8 @@ void func_ov075_02118248(char* self)
         (func_ov075_02116d9c((int)self, id) != 0 && scene->mSelectedIcon == 0)) {
         scene->mIcons[1].mOn = 0;
         func_ov001_020ab41c(&scene->mIcons[0]);
-        func_ov075_0211a148(self, (int)&data_ov075_0211d870, 0x14);
+        reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
+            reinterpret_cast<const dScEntry_c::StepSet *>(data_ov075_0211d870), 0x14);
         func_02012790(0x126);
         return;
     }
@@ -57,6 +62,7 @@ void func_ov075_02118248(char* self)
     }
     scene->mIcons[0].mOn = 0;
     func_ov001_020ab41c(&scene->mIcons[1]);
-    func_ov075_0211a148(self, (int)&data_ov075_0211d8b8, 0x14);
+    reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d8b8, 0x14);
     func_02012790(0x119);
+}
 }

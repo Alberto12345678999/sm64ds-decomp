@@ -5,19 +5,15 @@
  *   run.
  * - This is the upper part of dScEntry_c's translation unit. The
  *   lower part is d_s_entry.cpp (0x02115ab8..0x021165b0). The hole
- *   that still separates them is 0x021165b0..0x021190a4, unnamed
- *   func_ov075_* helpers, each still its own file. No other class's
+ *   that still separates them is 0x021165b0..0x021190a4: 37 functions
+ *   still in separate sources, including course selection and readiness. No other class's
  *   code reaches them. They are called from InitResources, Behavior
  *   or one another, or reached through the step tables that
  *   __sinit_ov075_0211bb00 copies into .bss. That initializer also
  *   builds the graphCallback_c, so it is this unit's. 37 of those
  *   helpers remain. A delinks entry is one contiguous .text claim,
  *   so the two parts join only once that remaining hole is folded.
- * - func_ov075_0211a100 and func_ov075_0211a148 are compiled as C
- *   (`#pragma cplusplus off`). The volatile struct copy in 0211a148
- *   is ill-formed in C++, and 0211a100's two-word save around the
- *   call spills to the stack only in C; C++ keeps those words in
- *   callee-saved registers once it can see func_ov075_0211a194.
+ * - The transition helpers use native Step member-pointer copies.
  * - The destructor, the key function, is in d_s_entry.cpp. This file
  *   defines no virtual the class declares first, so it emits no
  *   dScEntry_c vtable or typeinfo.
@@ -31,8 +27,8 @@
  *   Its __cxa_vec_ctor calls take the icon_c and OamAnimation
  *   structors by address, which C++ cannot spell.
  * - The header names the entry object and shared step workspace; older
- *   callbacks still access that storage through offsets. 0x6c..0x70 remains
- *   opaque pending recovery of the transition step-set pointer.
+ *   callbacks still access some of that storage through offsets. The transition
+ *   helpers use the typed pending StepSet pointer at 0x6c.
  * - InitResources keeps its `int isResult = (actorID == 7)' flag locals.
  *   Folding the first one into its condition rewrites the function
  *   (999 words, measured).
@@ -41,7 +37,7 @@
  *
  * dScEntry_c, the course-entry / results scene. ov075 .text
  * 0x021190a4..0x0211a854: the player-select and sync steps, the
- * waiting-text render, the helpers through func_ov075_0211a194, the
+ * waiting-text render, the helpers through SetSteps, the
  * six scene methods, the RESULT factory, then the OamAnimation and
  * icon_c constructors. The ENTRY factory at 0x0211a854 is not in
  * this file. It sits past the constructor tail that closes this
@@ -149,32 +145,21 @@ int TouchArea_Update(char *, int);
 int func_ov075_02116d9c(int, int);
 void func_ov001_020ab41c(void *);
 void func_ov001_020ab3f0(void *);
-void func_ov075_0211a194(char *, int *);
-void func_ov075_0211a148(char *, int, int);
-void func_ov075_0211a100(char *, int);
 
-/* The helper takes no argument. The call still passes the scene: dropping
- * it removes the retail r0 setup. local extern: definition is
- * func_ov075_02116d40(void). */
-int func_ov075_02116d40(char *);
 
-extern int data_ov075_0211d780[];
 extern u8 data_0208f274;
-extern u8 data_ov075_0211d768[];
 extern OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
-extern int data_ov075_0211d918;
-extern char data_ov075_0211d900[];
-extern int data_ov075_0211d8b8;
+extern dScEntry_c::StepSet data_ov075_0211d918;
+extern dScEntry_c::StepSet data_ov075_0211d900;
+extern dScEntry_c::StepSet data_ov075_0211d8b8;
 extern OamAttr *data_ov075_0211c968[];
 extern u8 data_0209fc58;
 extern u8 data_0209fc5c[];
 extern u8 data_0209fc5d[];
 extern int data_ov075_0211d920[];
-extern int data_ov075_0211d858[];
-extern int data_ov075_0211d840[];
-extern int data_ov075_0211d8a0;
-extern int data_ov075_0211d8d0;
+extern dScEntry_c::StepSet data_ov075_0211d8a0;
+extern dScEntry_c::StepSet data_ov075_0211d8d0;
 
 void _ZN9dEntObj_c19func_ov075_02115134Ev(char *);
 int _ZN9dEntObj_c19func_ov075_02115098Ei(void *, int);
@@ -183,9 +168,6 @@ void _ZN9dEntObj_c19func_ov075_0211505cEv(void *);
 /* local extern: OAM.h excludes this Fix12-by-value overload. */
 OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr *, int, int, int, int, int, int);
 
-/* 4th argument is caller setup the 3-arg definition ignores. */
-void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *, unsigned short, unsigned short,
-                                       volatile unsigned short *);
 }
 
 // @symbol _ZN10dScEntry_c23UpdatePlayerSelectIntroEv
@@ -203,8 +185,7 @@ void dScEntry_c::UpdatePlayerSelectIntro() {
     if (func_02020168()) {
         func_02020304();
         func_020200e0();
-        func_ov075_0211a148(reinterpret_cast<char *>(this),
-                            reinterpret_cast<int>(data_ov075_0211d780), 5);
+        ChangeStepsAfterDelay(&EntryCourseSelectSteps, 5);
         return;
     }
 
@@ -217,7 +198,7 @@ void dScEntry_c::UpdatePlayerSelectIntro() {
     func_02020334();
     if (!func_0203d9b4())
         return;
-    if (!func_ov075_02116d40(reinterpret_cast<char *>(this)))
+    if (!ArePlayersReady())
         return;
     func_02020124();
 }
@@ -288,7 +269,7 @@ void dScEntry_c::UpdatePlayerSync() {
     }
     case 3:
         if (func_020308a8()) {
-            func_ov075_0211a100((char *)this, (int)data_ov075_0211d768);
+            ChangeStepsWithFade(&EntryPlayerSelectIntroSteps);
             u8 observedPlayers = data_0208f274;
             int sessionPlayers = func_0203d890();
             if (observedPlayers == sessionPlayers) {
@@ -374,7 +355,7 @@ extern "C" void func_ov075_02119640(char *r4) {
     LoadArchive(0);
     LoadArchive(1);
     func_02030aa4(1);
-    func_ov075_0211a194(r4, &data_ov075_0211d918);
+    reinterpret_cast<dScEntry_c *>(r4)->SetSteps(&data_ov075_0211d918);
 }
 
 // @symbol func_ov075_021196d0
@@ -394,16 +375,16 @@ extern "C" void func_ov075_021196d0(char *c) {
 }
 
 // @symbol func_ov075_0211977c
-extern "C" int func_ov075_0211977c(char *c) {
+extern "C" void func_ov075_0211977c(char *c) {
     int r = func_0203da3c();
     if (r != 0)
-        return r;
+        return;
     Deallocate(data_0209b2e8);
     data_0209b2e8 = 0;
     LoadTextNarcs();
     LoadArchive(0);
     LoadArchive(1);
-    func_ov075_0211a194(c, data_ov075_0211d780);
+    reinterpret_cast<dScEntry_c *>(c)->SetSteps(&EntryCourseSelectSteps);
 }
 
 // @symbol func_ov075_021197dc
@@ -425,7 +406,7 @@ extern "C" void func_ov075_021197e8(char *c) {
         *(unsigned char *)(c + 0xa4) = 0;
         func_ov001_020ab41c(c + 0x70);
         SetNumPlayers(1);
-        func_ov075_0211a148(c, (int)data_ov075_0211d900, 0x14);
+        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d900, 0x14);
         func_02012790(0x118);
         return;
     }
@@ -437,7 +418,7 @@ extern "C" void func_ov075_021197e8(char *c) {
     }
     *(unsigned char *)(c + 0x80) = 0;
     func_ov001_020ab41c(c + 0x94);
-    func_ov075_0211a148(c, (int)&data_ov075_0211d8b8, 0x14);
+    reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8b8, 0x14);
     _ZN9dEntObj_c19func_ov075_0211505cEv(*(void **)(c + 0x50));
     func_02012790(0x119);
 }
@@ -539,10 +520,10 @@ extern "C" void func_ov075_02119b34(char *c) {
     }
     func_ov001_020ab3f0(c + 0x70);
     if (r4 <= 1) {
-        func_ov075_0211a148(c, (int)&data_ov075_0211d8a0, 0x14);
+        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8a0, 0x14);
     } else {
         func_02030a6c();
-        func_ov075_0211a148(c, (int)&data_ov075_0211d8d0, 0x14);
+        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8d0, 0x14);
     }
     func_02012790(0x117);
 }
@@ -560,35 +541,33 @@ extern "C" void func_ov075_02119c38(char *c) {
     *(int *)(c + 0x270) = 0x78;
 }
 
-// @symbol func_ov075_02119cc0
-extern "C" void func_ov075_02119cc0(char *self) {
-    *(unsigned char *)(self + 0x284) += 1;
-    if (*(unsigned char *)(self + 0x284) & 1)
+// @symbol _ZN10dScEntry_c17UpdateStepFadeOutEv
+void dScEntry_c::UpdateStepFadeOut() {
+    ++mFadeTick;
+    if (mFadeTick & 1)
         return;
-    *(unsigned char *)(self + 0x283) += 1;
-    func_020551f0((void *)0x4001050, *(unsigned char *)(self + 0x283));
-    if (*(unsigned char *)(self + 0x283) < 0x10)
+    ++mFadeBrightness;
+    func_020551f0((void *)0x4001050, mFadeBrightness);
+    if (mFadeBrightness < 16)
         return;
-    *(unsigned char *)(self + 0x285) = 1;
-    func_ov075_0211a194(self, *(int **)(self + 0x6c));
+    mIsFading = 1;
+    SetSteps(mPendingSteps);
 }
 
-// @symbol func_ov075_02119d3c
-extern "C" void func_ov075_02119d3c(void *c) {
-    volatile unsigned short *reg = (volatile unsigned short *)0x4000050;
-    *reg = 0;
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short *)0x4001050, 0x1d, 0, reg);
-    *(unsigned char *)((char *)c + 0x283) = 0;
-    *(unsigned char *)((char *)c + 0x284) = 0;
+// @symbol _ZN10dScEntry_c16EnterStepFadeOutEv
+void dScEntry_c::EnterStepFadeOut() {
+    *(volatile u16 *)0x4000050 = 0;
+    G2x::SetBlendBrightness((volatile u16 *)0x4001050, 0x1d, 0);
+    mFadeBrightness = 0;
+    mFadeTick = 0;
 }
 
-// @symbol func_ov075_02119d78
-extern "C" void func_ov075_02119d78(char *c) {
-    int *p = (int *)(((int)c + 0x264));
-    *p = *p - data_0208ee44;
-    if (*(int *)(c + 0x264) > 0)
+// @symbol _ZN10dScEntry_c15UpdateStepDelayEv
+void dScEntry_c::UpdateStepDelay() {
+    mStepDelay -= data_0208ee44;
+    if (mStepDelay > 0)
         return;
-    func_ov075_0211a194(c, *(int **)(c + 0x6c));
+    SetSteps(mPendingSteps);
 }
 
 /* recovered: dScEntry_c wireless/VS teardown.
@@ -597,7 +576,7 @@ extern "C" void func_ov075_02119d78(char *c) {
  * data_0209fc5d into a bitmask, then splits on whether the pending scene is
  * the VS one (6) or not. Both arms fade the top screen to black
  * (SetBlendBrightness with a negative amount) and hand off through
- * func_ov075_0211a148 or the sound/scene helpers.
+ * ChangeStepsAfterDelay or the sound/scene helpers.
  *
  * The materialized bool at the split (cmp/moveq/movne/cmp/beq) is the tell
  * that this TU is C++: in C mode mwccarm folds that away under every spelling.
@@ -679,7 +658,8 @@ extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
             else
                 func_020338b0(0x125, 0xb0, 0x1a, -1);
             func_02030a78();
-            func_ov075_0211a148((char *)self, (int)&data_ov075_0211d930, 0xb4);
+            reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
+                reinterpret_cast<const dScEntry_c::StepSet *>(&data_ov075_0211d930), 0xb4);
             data_0209d45c = data_0209d45c & ~self->mExitMask;
             if (self->mExitMask)
                 *(struct P2Copy *)&self->mRenderStep = *(struct P2Copy *)data_02086b58;
@@ -691,7 +671,8 @@ extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
                 if (st & bit) {
                     func_020338b0(0x125, 0xb0, 0x1c, (s8)(u8)i);
                     data_0209fc58 = data_0209fc58 & ~bit;
-                    func_ov075_0211a148((char *)self, arg, 0x78);
+                    reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
+                        reinterpret_cast<const dScEntry_c::StepSet *>(arg), 0x78);
                     func_02012790(0x12a);
                     break;
                 }
@@ -702,63 +683,30 @@ extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
     self->mIconCount = 0;
 }
 
-/* C: the two-word save around the call spills to the stack. C++ keeps it in
- * callee-saved registers once it can see func_ov075_0211a194. */
-#pragma cplusplus off
-// @symbol func_ov075_0211a100
-void func_ov075_0211a100(char *c, int r1) {
-    struct P2 t;
-    *(int *)(c + 0x6c) = r1;
-    t = *(struct P2 *)(c + 0x64);
-    func_ov075_0211a194(c, data_ov075_0211d858);
-    *(struct P2 *)(c + 0x64) = t;
+// @symbol _ZN10dScEntry_c19ChangeStepsWithFadeEPKNS_7StepSetE
+void dScEntry_c::ChangeStepsWithFade(const StepSet *steps) {
+    mPendingSteps = steps;
+    Step render = mRenderStep;
+    SetSteps(&EntryFadeOutSteps);
+    mRenderStep = render;
 }
-#pragma cplusplus on
 
-/* C: a volatile struct copy is ill-formed in C++ and is what this body matched. */
-#pragma cplusplus off
-// @symbol func_ov075_0211a148
-void func_ov075_0211a148(char *c, int a, int b) {
-    volatile struct P2 s;
-    *(int *)(c + 0x6c) = a;
-    *(int *)(c + 0x264) = b;
-    s = *(volatile struct P2 *)(c + 0x64);
-    func_ov075_0211a194(c, data_ov075_0211d840);
-    *(struct P2 *)(c + 0x64) = *(struct P2 *)&s;
+// @symbol _ZN10dScEntry_c21ChangeStepsAfterDelayEPKNS_7StepSetEi
+void dScEntry_c::ChangeStepsAfterDelay(const StepSet *steps, s32 delay) {
+    mPendingSteps = steps;
+    mStepDelay = delay;
+    Step render = mRenderStep;
+    SetSteps(&EntryDelaySteps);
+    mRenderStep = render;
 }
-#pragma cplusplus on
 
-// @symbol func_ov075_0211a194
-extern "C" void func_ov075_0211a194(char *self, int *src) {
-    struct C;
-    typedef void (C::*PMF)();
-    struct StepSet {
-        char pad_00[0x54];
-        int mEnterStep[2];
-        int mBehaviorStep[2];
-        int mRenderStep[2];
-    };
-    StepSet *s = (StepSet *)self;
-    int a0 = src[0];
-    int a1 = src[1];
-    a1 = a1 ? a1 : a1;
-    s->mEnterStep[0] = a0;
-    s->mEnterStep[1] = a1;
-    int a2 = src[2];
-    int a3 = src[3];
-    a3 = a3 ? a3 : a3;
-    s->mBehaviorStep[0] = a2;
-    s->mBehaviorStep[1] = a3;
-    int a4 = src[4];
-    int a5 = src[5];
-    a5 = a5 ? a5 : a5;
-    s->mRenderStep[0] = a4;
-    s->mRenderStep[1] = a5;
-    if (s->mEnterStep[0] != 0) {
-        PMF *p = (PMF *)s->mEnterStep;
-        C *o = (C *)self;
-        (o->**p)();
-    }
+// @symbol _ZN10dScEntry_c8SetStepsEPKNS_7StepSetE
+void dScEntry_c::SetSteps(const StepSet *steps) {
+    mEnterStep = steps->enter;
+    mBehaviorStep = steps->behavior;
+    mRenderStep = steps->render;
+    if (mEnterStep != 0)
+        (this->*mEnterStep)();
 }
 
 /* Slot 3. Releases the level-entry scratch buffer, unregisters the
@@ -790,7 +738,7 @@ s32 dScEntry_c::Render() {
     return 1;
 }
 
-/* Slot 6. Runs the sub-screen fade-out if one is in flight, then the
+/* Slot 6. Restores the sub-screen brightness after a step change, then the
  * per-frame step, then every live icon. */
 // @symbol _ZN10dScEntry_c8BehaviorEv
 s32 dScEntry_c::Behavior() {

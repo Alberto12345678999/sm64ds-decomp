@@ -644,14 +644,6 @@
     {
       "path": "src/game/stages/d_s_entry_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN3G2x18SetBlendBrightnessEPVtts",
-      "count": 2,
-      "reason": "func_ov075_02119d3c passes a fourth argument that G2x::SetBlendBrightness, whose definition takes three, ignores. The header call would drop the retail r3 setup. The shard spelling stays. Follow-up: widen the callee only if its own body starts reading that argument.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi",
       "count": 3,
       "reason": "Scalar ABI bridge for the Fix12-by-value OAM overload. include/OAM.h excludes it because a by-value Fix12 parameter homes r0-r3 to the stack. Carried from RenderWaitingText and func_ov075_021199d8. Follow-up: retire the bridge when a Fix12 spelling that passes in registers exists.",
@@ -700,30 +692,6 @@
     {
       "path": "src/game/stages/d_s_entry_methods.cpp",
       "rule": "raw-offset",
-      "match": "(char*)c+0x283",
-      "count": 1,
-      "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "raw-offset",
-      "match": "(char*)c+0x284",
-      "count": 1,
-      "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "raw-offset",
-      "match": "(int*)(c+0x264",
-      "count": 2,
-      "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "raw-offset",
       "match": "(int*)(c+0x26c",
       "count": 5,
       "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
@@ -741,14 +709,6 @@
       "path": "src/game/stages/d_s_entry_methods.cpp",
       "rule": "raw-offset",
       "match": "(int*)(c+0x278",
-      "count": 2,
-      "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "raw-offset",
-      "match": "(int*)(c+0x6c",
       "count": 2,
       "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
       "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
@@ -834,36 +794,20 @@
       "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
     },
     {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "raw-offset",
-      "match": "(unsignedchar*)(self+0x283",
-      "count": 3,
-      "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "raw-offset",
-      "match": "(unsignedchar*)(self+0x284",
-      "count": 2,
-      "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "raw-offset",
-      "match": "(unsignedchar*)(self+0x285",
-      "count": 1,
-      "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
-      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
       "path": "src/runtime/actor/d_actor.cpp",
       "rule": "handspelled-member",
       "match": "_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_",
       "count": 3,
       "reason": "SetRanges takes four Fix12<int> by value. A decl-only member does not accept the constructor's scalar words (mwcc rejects the call as not matching SetRanges(Fix12<int>, Fix12<int>, Fix12<int>, Fix12<int>)), and defining the body as a method homes each used parameter. The extern \"C\" spelling passes them as ints. These three occurrences are the local declaration, the constructor call, and the definition.",
       "evidence": "include/dActor_c.h does not declare SetRanges; notes/mwccarm-codegen.md 6az measured +0x14 on this function at 0x02010e08; _ZN8dActor_cC2Ev 0x0201150c size 0x148 MATCH under 2004/b56 with the scalar call."
+    },
+    {
+      "path": "src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
+      "count": 2,
+      "reason": "Retained scalar ABI bridge from the former course-title renderer. OAM.h deliberately excludes this Fix12-by-value overload, and its enrolled definition still uses the scalar extern C interface. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching caller and callee ABI.",
+      "evidence": "include/OAM.h; src/engine/oam/OAM.cpp; notes/mwccarm-codegen.md section 6az; former func_ov075_02118cd0.c at ov075 0x02118cd0 size 0x4c. The declaration and single call are inherited, not newly introduced interfaces."
     }
   ]
 }

@@ -56,10 +56,10 @@
  * ancestor copies retain their separately configured homes.
  *
  * .text 0x02115ab8..0x021165b0. The unit goes on to 0x0211a854.
- * 37 func_ov075_* helpers still sit in the hole 0x021165b0..0x021190a4,
+ * 37 separately owned functions still sit in the hole 0x021165b0..0x021190a4,
  * each its own file. d_s_entry_methods.cpp now owns 0x021190a4..0x0211a854
  * (the player-select and sync steps, the helpers through
- * func_ov075_0211a194, the six scene methods, the RESULT factory and the
+ * SetSteps, the six scene methods, the RESULT factory and the
  * OamAnimation and icon_c constructors). A licensed range cannot step
  * over the remaining helpers. The code past the ENTRY factory is
  * dEntObj_c, not this class.

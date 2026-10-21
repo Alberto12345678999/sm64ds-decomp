@@ -1,19 +1,21 @@
+//cpp
+#include "dScEntry_c.h"
 #include "types.h"
 #include "PlayerInput.h"
+
+extern dScEntry_c::StepSet data_ov075_0211d810;
+
+extern "C" {
 
 extern int func_0203da9c(void);
 extern int func_02020168(void);
 extern void func_02020304(void);
 extern void func_020200e0(void);
-extern void func_ov075_0211a148(char *c, int a, int b);
 extern void func_02012790(int id);
 extern int func_0203d9b4(void);
-extern int func_ov075_02116d40(char *c);
 extern void func_02020124(void);
 extern void func_02020334(void);
 extern void func_02020768(char *thiz);
-
-extern int data_ov075_0211d810;
 extern u8 data_0209fc5c[];
 extern u8 data_020a0e58[];
 extern int data_0208ee44;
@@ -38,7 +40,7 @@ void func_ov075_0211867c(char *self)
     if (func_02020168() != 0) {
         func_02020304();
         func_020200e0();
-        func_ov075_0211a148(self, (int)&data_ov075_0211d810, 5);
+        reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d810, 5);
         func_02012790(0x124);
     } else {
         if (func_0203d9b4() != 0) {
@@ -72,7 +74,7 @@ void func_ov075_0211867c(char *self)
                     }
                 }
             } else {
-                if (func_ov075_02116d40(self) != 0)
+                if (reinterpret_cast<dScEntry_c *>(self)->ArePlayersReady() != 0)
                     func_02020124();
             }
         } else if (*(int *)(self + 0x274) == 0) {
@@ -107,4 +109,5 @@ void func_ov075_0211867c(char *self)
             }
         }
     }
+}
 }

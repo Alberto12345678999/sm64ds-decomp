@@ -667,7 +667,7 @@
       "src/ui/hud/d_meter.cpp": [
         "param:#2 int"
       ],
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "param:#2 int"
       ]
     },
@@ -1155,10 +1155,10 @@
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "param:#1 unsigned int"
       ],
-      "src/unnamed/ov075/func_ov075_02116818.c": [
+      "src/unnamed/ov075/func_ov075_02116818.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "param:#1 int"
       ]
     },
@@ -1214,10 +1214,10 @@
         "param:#1 unsigned short",
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02116818.c": [
+      "src/unnamed/ov075/func_ov075_02116818.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "return:void *"
       ]
     },
@@ -1241,7 +1241,7 @@
       "src/ProcessKuppaScript.cpp": [
         "param:#1 unsigned int"
       ],
-      "src/unnamed/ov075/func_ov075_02116c8c.c": [
+      "src/_ZN10dScEntry_c10StartMatchEv.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -3123,7 +3123,7 @@
       ]
     },
     "TouchArea_Update": {
-      "src/unnamed/ov075/func_ov075_02118d1c.c": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "return:unsigned char"
       ]
     },
@@ -6550,7 +6550,7 @@
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "return:char *"
       ],
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "return:void *"
       ],
       "src/unnamed/ov075/func_ov075_0211705c.c": [
@@ -6585,7 +6585,7 @@
       "src/unnamed/ov075/func_ov075_021188b4.c": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02118f38.c": [
+      "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "return:void *"
       ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
@@ -7371,7 +7371,7 @@
       "src/game/stages/d_s_mb.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02118bf8.c": [
+      "src/_ZN10dScEntry_c19LoadCourseResourcesEi.cpp": [
         "return:int"
       ]
     },
@@ -11593,11 +11593,6 @@
         "return:unsigned char []"
       ]
     },
-    "data_0208a0e0": {
-      "src/unnamed/ov075/func_ov075_02118c80.cpp": [
-        "return:char []"
-      ]
-    },
     "data_0208a178": {
       "include/decl_common.h": [
         "return:unsigned char []"
@@ -11727,7 +11722,7 @@
       ]
     },
     "data_02092778": {
-      "src/unnamed/ov075/func_ov075_02116c8c.c": [
+      "src/_ZN10dScEntry_c10StartMatchEv.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -11819,7 +11814,7 @@
       ]
     },
     "data_0209b2e4": {
-      "src/unnamed/ov075/func_ov075_02116c8c.c": [
+      "src/_ZN10dScEntry_c10StartMatchEv.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov075/func_ov075_02116e00.c": [
@@ -12793,10 +12788,10 @@
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:GObj *"
       ],
-      "src/unnamed/ov075/func_ov075_02116818.c": [
+      "src/unnamed/ov075/func_ov075_02116818.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "return:void *"
       ]
     },
@@ -12879,10 +12874,10 @@
       "src/unnamed/arm9/0203/func_0203083c.c": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02116c38.c": [
+      "src/unnamed/ov075/func_ov075_02116c38.cpp": [
         "return:int []"
       ],
-      "src/unnamed/ov075/func_ov075_02118c80.cpp": [
+      "src/_ZN10dScEntry_c17EnterMatchLoadingEv.cpp": [
         "return:int *"
       ]
     },
@@ -13008,7 +13003,7 @@
       "src/unnamed/arm9/0203/func_0203bc7c.c": [
         "return:InputPair []"
       ],
-      "src/unnamed/ov075/func_ov075_0211867c.c": [
+      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -18497,7 +18492,7 @@
       "src/unnamed/ov075/func_ov075_02118378.c": [
         "return:int"
       ],
-      "src/unnamed/ov075/func_ov075_02118f38.c": [
+      "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_0211944c.c": [
@@ -18522,13 +18517,13 @@
         "return:int"
       ]
     },
-    "data_ov075_0211d768": {
+    "EntryPlayerSelectIntroSteps": {
       "src/unnamed/ov075/func_ov075_021192bc.c": [
         "return:int []"
       ]
     },
-    "data_ov075_0211d780": {
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+    "EntryCourseSelectSteps": {
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov075/func_ov075_021190a4.c": [
@@ -18541,12 +18536,12 @@
       ]
     },
     "data_ov075_0211d870": {
-      "src/unnamed/ov075/func_ov075_02118248.c": [
+      "src/unnamed/ov075/func_ov075_02118248.cpp": [
         "return:int"
       ]
     },
     "data_ov075_0211d888": {
-      "src/unnamed/ov075/func_ov075_02117c0c.c": [
+      "src/unnamed/ov075/func_ov075_02117c0c.cpp": [
         "return:int"
       ]
     },
@@ -20360,7 +20355,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_02117c0c.c": [
+      "src/unnamed/ov075/func_ov075_02117c0c.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -20368,7 +20363,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_02118248.c": [
+      "src/unnamed/ov075/func_ov075_02118248.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -20376,11 +20371,11 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_0211867c.c": [
+      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_02118d1c.c": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "return:void"
       ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
@@ -22354,7 +22349,7 @@
       ]
     },
     "func_0201a244": {
-      "src/unnamed/ov075/func_ov075_02118a84.c": [
+      "src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp": [
         "param:#1 void *",
         "return:void"
       ]
@@ -22509,18 +22504,18 @@
       ]
     },
     "func_02020124": {
-      "src/unnamed/ov075/func_ov075_02116e44.c": [
+      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
         "return:int"
       ]
     },
     "func_02020168": {
-      "src/unnamed/ov075/func_ov075_02116e44.c": [
+      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_02117e84.c": [
         "return:int"
       ],
-      "src/unnamed/ov075/func_ov075_0211867c.c": [
+      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
         "return:int"
       ]
     },
@@ -22535,12 +22530,12 @@
       ]
     },
     "func_020202dc": {
-      "src/unnamed/ov075/func_ov075_02118d1c.c": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "arity:0"
       ]
     },
     "func_02020364": {
-      "src/unnamed/ov075/func_ov075_02116d40.c": [
+      "src/_ZN10dScEntry_c15ArePlayersReadyEv.cpp": [
         "return:int"
       ]
     },
@@ -22656,7 +22651,7 @@
       ]
     },
     "func_02033464": {
-      "src/unnamed/ov075/func_ov075_02116818.c": [
+      "src/unnamed/ov075/func_ov075_02116818.cpp": [
         "param:#1 unsigned short",
         "param:#2 signed char"
       ],
@@ -22676,7 +22671,7 @@
       "src/unnamed/ov075/func_ov075_02117f5c.c": [
         "param:#3 int"
       ],
-      "src/unnamed/ov075/func_ov075_02118f38.c": [
+      "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "param:#3 int"
       ],
       "src/unnamed/ov075/func_ov075_0211944c.c": [
@@ -29437,7 +29432,7 @@
       ]
     },
     "func_ov075_02116128": {
-      "src/unnamed/ov075/func_ov075_02116818.c": [
+      "src/unnamed/ov075/func_ov075_02116818.cpp": [
         "param:#1 char *"
       ],
       "src/unnamed/ov075/func_ov075_02117fe4.c": [
@@ -29450,7 +29445,7 @@
       ]
     },
     "func_ov075_02116c8c": {
-      "src/unnamed/ov075/func_ov075_02118a84.c": [
+      "src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp": [
         "arity:1"
       ]
     },
@@ -29460,13 +29455,13 @@
       ]
     },
     "func_ov075_02116d40": {
-      "src/unnamed/ov075/func_ov075_02116e44.c": [
+      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
         "arity:1"
       ],
-      "src/unnamed/ov075/func_ov075_0211867c.c": [
+      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
         "arity:1"
       ],
-      "src/unnamed/ov075/func_ov075_02118d1c.c": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "arity:1"
       ],
       "src/_ZN10dScEntry_c23UpdatePlayerSelectIntroEv.cpp": [
@@ -29485,12 +29480,12 @@
       ]
     },
     "func_ov075_02116e00": {
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "arity:1"
       ]
     },
     "func_ov075_02118bf8": {
-      "src/unnamed/ov075/func_ov075_02118a84.c": [
+      "src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp": [
         "arity:0"
       ]
     },
@@ -29503,7 +29498,7 @@
         "param:#2 void *",
         "return:int"
       ],
-      "src/unnamed/ov075/func_ov075_02118248.c": [
+      "src/unnamed/ov075/func_ov075_02118248.cpp": [
         "param:#1 int",
         "param:#2 int *"
       ]
@@ -29514,16 +29509,16 @@
       ]
     },
     "func_ov075_0211a148": {
-      "src/unnamed/ov075/func_ov075_02116c38.c": [
+      "src/unnamed/ov075/func_ov075_02116c38.cpp": [
         "param:#2 void *"
       ],
-      "src/unnamed/ov075/func_ov075_02116e44.c": [
+      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
         "param:#2 void *",
         "return:int"
       ]
     },
     "func_ov075_0211a194": {
-      "src/unnamed/ov075/func_ov075_02116ad4.c": [
+      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "param:#2 const void *"
       ],
       "src/unnamed/ov075/func_ov075_02119cc0.c": [
