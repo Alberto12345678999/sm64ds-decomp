@@ -10,12 +10,11 @@
  *
  * The travel heading lives in mPrevAngleY. Lateral velocity is mSpeedX /
  * mSpeedZ around mVertSpeed.
- * The rolling Sound::PlayLong handle is the s32 at 0x3b8 (pad_3b8) and the
- * rolling Particle::System::New handle is the s32 at 0x3c4 (pad_3c3).
- * unk_3b4 is the other rock's uniqueID (spawner on the child, and the
- * child clears the spawner's unk_3c2 when it falls). unk_3c0 is the signed
- * star slot. unk_3c1 is the star index, 0xff when there is none. unk_3c2
- * is set once the star rock has been spawned.
+ * The rolling sound handle (mRollSoundID) and the rolling dust handle
+ * (mDustParticleID) are renewed every frame the rock rolls. A star rock
+ * keeps its spawner's uniqueID in mSpawnerID and clears the spawner's
+ * mStarRockOut when it falls. mTrackStarID is the signed TrackStar slot,
+ * mStarID the star index (0xff when there is none).
  *
  * #pragma defer_codegen off stays above the includes. The out-of-line
  * destructor is the key function, so this TU emits _ZTV/_ZTI/_ZTS, and the
@@ -104,12 +103,6 @@ struct Vec3 {
  * store; an unsigned array keeps the ROM's LDRH load-load-store. */
 struct AngleWords { u16 w[3]; };
 
-/* 0x3b8 / 0x3c4 are inside the class pads. Naming them on daGrock_c is a
- * header change; these are the words this TU actually stores. */
-#define grock_roll_sound(rock) (*(s32 *)&(rock)->pad_3b8[0])
-#define grock_dust(rock)       (*(s32 *)&(rock)->pad_3c3[1])
-#define grock_star_slot(rock)  (*(s8 *)&(rock)->unk_3c0)
-
 extern "C" {
 /* dBgCh_Actr::Init's header takes Fix12i (= s32), so the method form
    mangles the two radii as `i` and names
@@ -171,12 +164,12 @@ extern "C" void func_ov021_02112294(void *raw)
 {
     daGrock_c *rock = (daGrock_c *)raw;
 
-    if (rock->unk_3c1 == 0xff)
+    if (rock->mStarID == 0xff)
         return;
     if (rock->mType == kGrockStill) {
-        rock->UntrackAndSpawnStar(grock_star_slot(rock), rock->unk_3c1, rock->mPos, 2);
+        rock->UntrackAndSpawnStar(rock->mTrackStarID, rock->mStarID, rock->mPos, 2);
     } else {
-        rock->UntrackAndSpawnStar(grock_star_slot(rock), rock->unk_3c1, rock->mPos, 4);
+        rock->UntrackAndSpawnStar(rock->mTrackStarID, rock->mStarID, rock->mPos, 4);
     }
 }
 
@@ -286,10 +279,10 @@ extern "C" void func_ov021_02112544(char *raw)
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x68, pos.x, pos.y, pos.z);
             func_0201267c(0x48, &rock->mCamSpacePosX);
         } else {
-            grock_dust(rock) = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                grock_dust(rock), 0x69, pos.x, pos.y, pos.z, 0, 0);
-            grock_roll_sound(rock) =
-                Sound::PlayLong(grock_roll_sound(rock), 3, 0x8a, rock->mCamSpacePos, 0);
+            rock->mDustParticleID = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                rock->mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);
+            rock->mRollSoundID =
+                Sound::PlayLong(rock->mRollSoundID, 3, 0x8a, rock->mCamSpacePos, 0);
         }
         {
             int *vx = (int *)(int)&rock->mSpeedX;
@@ -391,12 +384,12 @@ int daGrock_c::Behavior()
                 daGrock_c *spawner;
 
                 MarkForDestruction();
-                if (unk_3b4 != 0) {
-                    spawner = (daGrock_c *)dActor_c::FindWithID(unk_3b4);
+                if (mSpawnerID != 0) {
+                    spawner = (daGrock_c *)dActor_c::FindWithID(mSpawnerID);
                     if (spawner)
-                        spawner->unk_3c2 = 0;
+                        spawner->mStarRockOut = 0;
                 }
-                UntrackStar(grock_star_slot(this));
+                UntrackStar(mTrackStarID);
                 TriplePoofDust();
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x67, mPosX, mPosY, mPosZ);
                 func_02012694(0x17a, &mCamSpacePosX);
@@ -407,7 +400,7 @@ int daGrock_c::Behavior()
         if (dist > 0x5dc000) {
             u32 threshold = (dist < 0x1770000) ? 0x70 : 0xe0;
             if (*(u16 *)&mStateTimer >= threshold) {
-                u8 *spawned = (u8 *)(int)&unk_3bf;
+                u8 *spawned = (u8 *)(int)&mSpawnCount;
                 Vector3_16 rot;
                 u32 rnd;
 
@@ -416,15 +409,15 @@ int daGrock_c::Behavior()
                 *(AngleWords *)&rot = *(AngleWords *)&mPrevAngleX;
                 rnd = (u32)RandomIntInternal(&data_0209e650);
                 rot.y = rot.y + (rnd >> 16) % 0xc00;
-                if (mType == kGrockStarSpawner && unk_3bf >= 5 && unk_3c2 == 0) {
+                if (mType == kGrockStarSpawner && mSpawnCount >= 5 && mStarRockOut == 0) {
                     daGrock_c *child;
 
-                    unk_3c2 = 1;
-                    child = (daGrock_c *)dActor_c::Spawn(0xdd, (unk_3c1 << 8) | kGrockStar, mPos,
+                    mStarRockOut = 1;
+                    child = (daGrock_c *)dActor_c::Spawn(0xdd, (mStarID << 8) | kGrockStar, mPos,
                                                          &rot, mAreaId, -1);
-                    unk_3bf = 0;
+                    mSpawnCount = 0;
                     if (child)
-                        child->unk_3b4 = uniqueID;
+                        child->mSpawnerID = uniqueID;
                 } else {
                     dActor_c::Spawn(0xdd, kGrockRolling, mPos, &rot, mAreaId, -1);
                 }
@@ -444,9 +437,9 @@ int daGrock_c::InitResources()
     struct Vec3 { s32 x, y, z; };
 
     mType = (u8)(param1 & 0xf);
-    unk_3c1 = 0xff;
-    grock_star_slot(this) = -1;
-    unk_3bf = 0;
+    mStarID = 0xff;
+    mTrackStarID = -1;
+    mSpawnCount = 0;
 
     Model::LoadFile(data_ov021_02114a50);
 
@@ -458,11 +451,11 @@ int daGrock_c::InitResources()
 
         _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, 0x12c000, 0, 0, 0);
         mWithMeshClsn.SetLimMovFlag();
-        grock_roll_sound(this) = 0;
+        mRollSoundID = 0;
 
         if (mType == kGrockStill) {
             Vec3 offset;
-            unk_3c1 = (u8)((param1 >> 8) & 0xf);
+            mStarID = (u8)((param1 >> 8) & 0xf);
             offset.x = 0;
             offset.y = 0;
             offset.z = 0;
@@ -477,7 +470,7 @@ int daGrock_c::InitResources()
                 &mdCcAcPos_c, this, &offset, 0xf3000, 0x226000, 0x200004, 0x3c0);
 
             if (mType == kGrockStar)
-                unk_3c1 = (u8)((param1 >> 8) & 0xf);
+                mStarID = (u8)((param1 >> 8) & 0xf);
             mVertAccel = -0x4000;
             mTerminalVelocity = -0x28000;
             mHorzSpeed = 0x1e000;
@@ -485,15 +478,15 @@ int daGrock_c::InitResources()
             mSpeedZ = data_02082214[((*(u16 *)&mPrevAngleY >> 4) << 1) + 1] * 0x1e;
         }
     } else if (mType == kGrockStarSpawner) {
-        unk_3c1 = (u8)((param1 >> 8) & 0xf);
+        mStarID = (u8)((param1 >> 8) & 0xf);
     }
 
-    if (mType != kGrockStarSpawner && unk_3c1 != 0xff)
-        unk_3c0 = (u8)TrackStar(unk_3c1, 2);
-    grock_dust(this) = 0;
+    if (mType != kGrockStarSpawner && mStarID != 0xff)
+        mTrackStarID = TrackStar(mStarID, 2);
+    mDustParticleID = 0;
     mDeathState = 0;
-    unk_3b4 = 0;
-    unk_3c2 = 0;
+    mSpawnerID = 0;
+    mStarRockOut = 0;
     return 1;
 }
 
