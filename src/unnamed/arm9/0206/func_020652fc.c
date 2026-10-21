@@ -43,6 +43,7 @@ void func_020652fc(int send_packet_size, int recv_packet_size, int callback) {
     ((WBTWork *)p)->system_cmd.callback = (void (*)(char *))callback;
     i = 0;
     do {
+        /* p advances one WBTPeerRecord per pass: this walks peer[0..15]. */
         ((WBTWork *)p)->peer[0].last_cmd_counter = 0;
         i++;
         p += sizeof(WBTPeerRecord);

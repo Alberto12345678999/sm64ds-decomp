@@ -42,6 +42,7 @@ void func_02065170(void)
     ((WBTWork *)p)->system_cmd.callback = 0;
     i = 0;
     do {
+        /* p advances one WBTPeerRecord per pass: this walks peer[0..15]. */
         ((WBTWork *)p)->peer[0].last_cmd_counter = (unsigned char)0;
         i++;
         p += sizeof(WBTPeerRecord);

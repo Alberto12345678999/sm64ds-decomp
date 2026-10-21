@@ -1,6 +1,7 @@
 /* NitroSDK FSi_OpenFileFastCommand (entry 6, FS_COMMAND_OPENFILEFAST, of the
  * default command table data_02086758): look up arg.openfilefast.id.file_id
- * in the archive's FAT. An index past fat_size fails (1, FS_RESULT_FAILURE);
+ * in the archive's FAT. An index at or past the FAT's entry count
+ * (fat_size / 8) fails (1, FS_RESULT_FAILURE);
  * otherwise func_0205c528 (FSi_ReadTable) reads the 8-byte FAT entry at
  * fat + index * 8, its top and bottom go to arg.openfiledirect with the index,
  * and the file is handed on as FS_COMMAND_OPENFILEDIRECT (7) through
