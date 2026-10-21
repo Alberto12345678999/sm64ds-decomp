@@ -48,8 +48,7 @@
  *   02130ce0/ce8/cf0/cc0/cc8/cd0 are BCA handles (SetAnim reads [1]).
  *   0213089c / 0213088c are BMA. The 021302xx words are the per-type
  *   tables. Render keeps a volatile Vector3 backup of the scale.
- * - GetCapState is called as the dCapEnemy_c.h member (the old "no header
- *   member" note was stale; d_a_trs.cpp already calls it that way).
+ * - GetCapState is the dCapEnemy_c.h member.
  * - What dCcAc_c bits 0x4 and 0x20000 mean, the king's mState 4 that
  *   unk_475 watches, sounds 0xd0 / 0xe0 / 0xd6 / 0x110 / 0x111 / 0x118 /
  *   0x13a / 0x13b, mFlags bits 0x8 and 0x10000000, and data_0209f2f8
@@ -1100,7 +1099,7 @@ block_68:
  * unless mFlags bit 0x40000 is set. Then the cap is attached (UpdateCapPos)
  * 108.0 above the origin, offset horizontally (x, z) by 10 * the sine/cosine
  * pair read from data_02082214 at (mAngleY >> 4). */
-void daKrb_c::func_ov084_0212a580(){
+void daKrb_c::func_ov084_0212a580() {
     Vector3_16 rotation;
     Vector3 pos;
     Vector3 arg;

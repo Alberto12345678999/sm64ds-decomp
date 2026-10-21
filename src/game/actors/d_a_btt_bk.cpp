@@ -18,6 +18,10 @@
 //   array, not a Matrix4x3.
 // - func_ov080_02124e60 stores 0 through *(int *)pad_0d0, the pad in front of
 //   mModel.
+// - func_ov080_02124e60 keeps `goto done` and func_ov080_02124edc keeps
+//   `goto clear`: early returns reschedule the tail (+48 bytes) and a
+//   keepCrate flag reschedules the break block (+16 bytes), both measured
+//   against the ROM-matching spelling.
 // - func_02010304, Matrix4x3_ApplyInPlaceToTranslation, Vec3_LslInPlace,
 //   Matrix4x3_FromRotationY and dBgCh_Actr_UpdateDiscreteNoLava_veneer stay
 //   free calls defined outside this TU.
@@ -302,7 +306,7 @@ int daBttBk_c::func_ov080_0212500c()
 // @symbol _ZN9daBttBk_c19func_ov080_0212509cEv
 int daBttBk_c::func_ov080_0212509c()
 {
-    mVertSpeed = 49152;
+    mVertSpeed = 0xc000;
     mWithMeshClsn.SetLimMovFlag();
     mState = 0;
     return 1;

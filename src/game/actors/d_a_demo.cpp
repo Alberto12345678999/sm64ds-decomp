@@ -41,8 +41,8 @@
  * _ZTV8daDemo_c at 0x0210bd60. The nested model helpers read as
  * _ZTSN8daDemo_c10anmModel_cE / _ZTSN8daDemo_c13simpleModel_cE over the
  * shared _ZTIN8daDemo_c7param_cE tail base at 0x0210b888. The run is
- * 0x020f1f70..0x020f8838; it ends with the registry factory
- * daDemo_c_classInit.
+ * 0x020f1f70..0x020f8858. The registry factory daDemo_c_classInit ends
+ * at 0x020f8838; the two `_ZThn80_` thunks close the run.
  *
  * daDemo_c's out-of-line destructor is the key function. Under
  * `#pragma defer_codegen off` it emits D1 at 0x020f1f70 and D0 at
@@ -50,13 +50,15 @@
  * simpleModel_c emit the same D1/D0/D2 shape. Source order is
  * ROM-ascending so emission order stays ROM-ascending; the compiler
  * places simpleModel_c's D0/D1 pair out of order on its own. The
- * `_ZThn80_` frame-controller-base thunks live in their own sources at
- * ov002:0x020f8838/0x020f8848; this TU's copies are discarded.
+ * `_ZThn80_` frame-controller-base thunks are not written out: mwccarm
+ * emits them with the vtables, after this factory, at
+ * ov002:0x020f8838 (D0) and 0x020f8848 (D1).
  *
  * The model bases are declared in daDemo_c.h under the cartridge's RTTI
  * spellings, so the vague-linkage typeinfo copies this object emits are
  * _ZTI14dExtAnmModel_c, _ZTI17dExtSimpleModel_c, _ZTI11dExtModel_c and
- * _ZTI15dExtFrameCtrl_c. See notes/model-rtti-names.md.
+ * _ZTI15dExtFrameCtrl_c. Each is a canonical import of the arm9 record
+ * (notes/model-rtti-names.md); this TU does not emit a homeless _ZTI.
  *
  * deslop leftovers:
  *   func_ov002_020f20f4 compiles to the ROM's loop only as C++ (every
@@ -4861,3 +4863,8 @@ extern "C" daDemo_c *daDemo_c_classInit(void)
 {
     return new daDemo_c;
 }
+
+/* _ZThn80_N8daDemo_c10anmModel_cD0Ev / D1Ev have no source body. They are
+ * the non-virtual this-adjustments ~anmModel_c emits for the
+ * dExtFrameCtrl_c base at +0x50, and they sort after the vtables so they
+ * close .text at 0x020f8838 and 0x020f8848. */
