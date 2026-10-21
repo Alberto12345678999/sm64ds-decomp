@@ -25498,6 +25498,26 @@ void func_ov002_020e63a4(char* c){
 }
 }
 
+/* One runtime bone of a body model: ModelComponents::bones points at
+   0x34-byte records, not the file's 0x40-byte BMD_Bone. Same shape as
+   d_a_cnn.cpp's CnnBone, except that the rotations are unsigned: the ROM
+   reads them with ldrh. func_ov002_020e640c writes the head (bone 15) and
+   spine (bone 8) rotations, reads bone 1's translation as root motion, and
+   resets every other bone's translation from the file bone's +0x24..+0x2c. */
+struct PlayerBone {
+    u8 pad_00[0x1a];
+    u16 rotX;   /* 0x1a */
+    u16 rotY;   /* 0x1c */
+    u16 rotZ;   /* 0x1e */
+    s32 transX; /* 0x20 */
+    s32 transY; /* 0x24 */
+    s32 transZ; /* 0x28 */
+    u8 pad_2c[0x8];
+};
+#ifndef SM64DS_PLATFORM_PC
+typedef char PlayerBone_size_must_be_0x34[sizeof(PlayerBone) == 0x34 ? 1 : -1];
+#endif
+
 // @symbol func_ov002_020e640c
 extern "C" {
 void func_ov002_020e640c(char *c)
@@ -25521,77 +25541,77 @@ void func_ov002_020e640c(char *c)
     }
     r4p = (char *)((BMD_File *)mp)->bones;
 
-    *(u16 *)(int)(md + 0x1bc) += player->mSpineRot[1];
-    *(u16 *)(int)(md + 0x1be) += player->mSpineRot[2];
+    ((PlayerBone *)md)[8].rotY += player->mSpineRot[1];
+    ((PlayerBone *)md)[8].rotZ += player->mSpineRot[2];
 
     {
         int b = player->mHeadRotMode;
         if (b == 0) {
         } else if (b == 1) {
-            *(u16 *)(int)(md + 0x326) += *(u16 *)player->mHeadRot;
-            *(u16 *)(int)(md + 0x328) += (u16)player->mHeadRot[1];
-            *(u16 *)(int)(md + 0x32a) += (u16)player->mHeadRot[2];
+            ((PlayerBone *)md)[15].rotX += *(u16 *)player->mHeadRot;
+            ((PlayerBone *)md)[15].rotY += (u16)player->mHeadRot[1];
+            ((PlayerBone *)md)[15].rotZ += (u16)player->mHeadRot[2];
         } else if (b == 2) {
-            *(s16 *)(md + 0x326) = *player->mHeadRot;
-            *(s16 *)(md + 0x328) = player->mHeadRot[1];
-            *(s16 *)(md + 0x32a) = player->mHeadRot[2];
+            ((PlayerBone *)md)[15].rotX = *player->mHeadRot;
+            ((PlayerBone *)md)[15].rotY = player->mHeadRot[1];
+            ((PlayerBone *)md)[15].rotZ = player->mHeadRot[2];
         } else if (b == 3) {
-            *(s16 *)(md + 0x32a) = (s16)(*player->mHeadRot + 0x4000);
-            *(s16 *)(md + 0x328) = player->mHeadRot[1];
-            *(s16 *)(md + 0x326) = player->mHeadRot[2];
-            *(s16 *)(md + 0x1be) = *player->mSpineRot;
-            *(s16 *)(md + 0x1ba) = player->mSpineRot[1];
-            *(s16 *)(md + 0x1bc) = player->mSpineRot[2];
+            ((PlayerBone *)md)[15].rotZ = (s16)(*player->mHeadRot + 0x4000);
+            ((PlayerBone *)md)[15].rotY = player->mHeadRot[1];
+            ((PlayerBone *)md)[15].rotX = player->mHeadRot[2];
+            ((PlayerBone *)md)[8].rotZ = *player->mSpineRot;
+            ((PlayerBone *)md)[8].rotX = player->mSpineRot[1];
+            ((PlayerBone *)md)[8].rotY = player->mSpineRot[2];
         } else if (b == 4) {
-            _Z15ApproachLinear2Rsss(player->mHeadRot, (s16)(*(u16 *)(md + 0x32a) - 0x4000), 0x400);
-            _Z15ApproachLinear2Rsss(&player->mHeadRot[1], *(s16 *)(md + 0x328), 0x400);
-            _Z15ApproachLinear2Rsss(&player->mHeadRot[2], *(s16 *)(md + 0x326), 0x400);
-            *(s16 *)(md + 0x32a) = (s16)(*player->mHeadRot + 0x4000);
-            *(s16 *)(md + 0x328) = player->mHeadRot[1];
-            *(s16 *)(md + 0x326) = player->mHeadRot[2];
+            _Z15ApproachLinear2Rsss(player->mHeadRot, (s16)(((PlayerBone *)md)[15].rotZ - 0x4000), 0x400);
+            _Z15ApproachLinear2Rsss(&player->mHeadRot[1], ((PlayerBone *)md)[15].rotY, 0x400);
+            _Z15ApproachLinear2Rsss(&player->mHeadRot[2], ((PlayerBone *)md)[15].rotX, 0x400);
+            ((PlayerBone *)md)[15].rotZ = (s16)(*player->mHeadRot + 0x4000);
+            ((PlayerBone *)md)[15].rotY = player->mHeadRot[1];
+            ((PlayerBone *)md)[15].rotX = player->mHeadRot[2];
         }
     }
 
-    *(u16 *)(c + 0x580) = *(u16 *)(md + 0x326);
-    *(u16 *)(c + 0x582) = *(u16 *)(md + 0x328);
-    *(u16 *)(c + 0x584) = *(u16 *)(md + 0x32a);
+    *(u16 *)(c + 0x580) = ((PlayerBone *)md)[15].rotX;
+    *(u16 *)(c + 0x582) = ((PlayerBone *)md)[15].rotY;
+    *(u16 *)(c + 0x584) = ((PlayerBone *)md)[15].rotZ;
 
-    *(s32 *)(md + 0x20) = *(s32 *)(r4p + 0x24);
-    *(s32 *)(md + 0x24) = *(s32 *)(r4p + 0x28);
-    *(s32 *)(md + 0x28) = *(s32 *)(r4p + 0x2c);
+    ((PlayerBone *)md)->transX = *(s32 *)(r4p + 0x24);
+    ((PlayerBone *)md)->transY = *(s32 *)(r4p + 0x28);
+    ((PlayerBone *)md)->transZ = *(s32 *)(r4p + 0x2c);
 
     {
         int b = ((Player *)c)->mRootMotionMode;
         if (b != 0) {
             if ((b & 1) == 1) {
-                ((Player *)c)->mStateTargetX = *(s32 *)(md + 0x54);
+                ((Player *)c)->mStateTargetX = ((PlayerBone *)md)[1].transX;
                 if (((Player *)c)->mRootMotionMode < 3)
                     ((Player *)c)->mStateTargetY = 0;
                 else
-                    ((Player *)c)->mStateTargetY = *(s32 *)(md + 0x58);
-                ((Player *)c)->mStateTargetZ = *(s32 *)(md + 0x5c);
+                    ((Player *)c)->mStateTargetY = ((PlayerBone *)md)[1].transY;
+                ((Player *)c)->mStateTargetZ = ((PlayerBone *)md)[1].transZ;
                 ((Player *)c)->mStateAnchorX = ((Player *)c)->mStateTargetX;
                 ((Player *)c)->mStateAnchorY = ((Player *)c)->mStateTargetY;
                 ((Player *)c)->mStateAnchorZ = ((Player *)c)->mStateTargetZ;
                 ((Player *)c)->mRootMotionMode++;
             } else {
-                d.x = (*(s32 *)(md + 0x54) - ((Player *)c)->mStateTargetX) << 3;
+                d.x = (((PlayerBone *)md)[1].transX - ((Player *)c)->mStateTargetX) << 3;
                 if (((Player *)c)->mRootMotionMode < 3)
                     d.y = 0;
                 else
-                    d.y = (*(s32 *)(md + 0x58) - ((Player *)c)->mStateTargetY) << 3;
-                d.z = (*(s32 *)(md + 0x5c) - ((Player *)c)->mStateTargetZ) << 3;
+                    d.y = (((PlayerBone *)md)[1].transY - ((Player *)c)->mStateTargetY) << 3;
+                d.z = (((PlayerBone *)md)[1].transZ - ((Player *)c)->mStateTargetZ) << 3;
                 Vec3_RotateYAndTranslate((Vector3 *)&player->mPosX, (Vector3 *)&player->mPosX,
                                          player->mAngleY, &d);
-                ((Player *)c)->mStateTargetX = *(s32 *)(md + 0x54);
+                ((Player *)c)->mStateTargetX = ((PlayerBone *)md)[1].transX;
                 if (((Player *)c)->mRootMotionMode >= 3)
-                    ((Player *)c)->mStateTargetY = *(s32 *)(md + 0x58);
-                ((Player *)c)->mStateTargetZ = *(s32 *)(md + 0x5c);
+                    ((Player *)c)->mStateTargetY = ((PlayerBone *)md)[1].transY;
+                ((Player *)c)->mStateTargetZ = ((PlayerBone *)md)[1].transZ;
             }
-            *(s32 *)(md + 0x54) = 0;
+            ((PlayerBone *)md)[1].transX = 0;
             if (((Player *)c)->mRootMotionMode >= 3)
-                *(s32 *)(md + 0x58) = 0;
-            *(s32 *)(md + 0x5c) = 0;
+                ((PlayerBone *)md)[1].transY = 0;
+            ((PlayerBone *)md)[1].transZ = 0;
         }
     }
 
@@ -25599,15 +25619,15 @@ void func_ov002_020e640c(char *c)
     r4p += 0x80;
     {
         s16 i = 2;
-        if (*(u32 *)(mp + 4) > 2) {
+        if (((BMD_File *)mp)->numBones > 2) {
             do {
-            *(s32 *)(md + 0x20) = *(s32 *)(r4p + 0x24);
-            *(s32 *)(md + 0x24) = *(s32 *)(r4p + 0x28);
-            *(s32 *)(md + 0x28) = *(s32 *)(r4p + 0x2c);
+            ((PlayerBone *)md)->transX = *(s32 *)(r4p + 0x24);
+            ((PlayerBone *)md)->transY = *(s32 *)(r4p + 0x28);
+            ((PlayerBone *)md)->transZ = *(s32 *)(r4p + 0x2c);
                 i = (s16)(i + 1);
                 md += 0x34;
                 r4p += 0x40;
-            } while ((u32)i < *(u32 *)(mp + 4));
+            } while ((u32)i < ((BMD_File *)mp)->numBones);
         }
     }
 }
