@@ -1,28 +1,27 @@
 //cpp
 /* dActor_c translation unit -- arm9.  Nintendo's dActor_c.
  *
- * This file owns 0x0200f658..0x020112c8 (91 functions); see the worked
+ * This file owns 0x0200f658..0x02011654 (97 functions); see the worked
  * example in notes/tu-reconstruction-pilot-report.md and the boundary
  * evidence in config/tu_manifest.d/arm9/Actor.json.
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S. mwccarm 2004/b56
  * emits one .text section per function, in the REVERSE of source order, so the
- * highest-address ROM function is written FIRST -- BeforeInitResources tops
- * the file and the leaf helpers sit at the bottom, the natural shape of a
+ * highest-address ROM function is written FIRST -- the constructor tops the
+ * file and the leaf helpers sit at the bottom, the natural shape of a
  * hand-written .cpp.
  *
- * THE DESTRUCTOR TRIPLE IS NOT HERE, deliberately. include/dActor_c.h declares
- * ~dActor_c() first precisely so that it is the key function, and a single TU
- * that defines it out-of-line emits D0, D1 and D2 together in emission order --
- * but the ROM runs D2, then D0, then D1, which no source form produces. The
- * three destructor variants therefore keep their own files
- * (src/_ZN8dActor_cD2Ev.cpp, _ZN8dActor_cD0Ev.cpp, _ZN8dActor_cD1Ev.cpp); each
- * carries the one member definition, and their objects are what emit
- * _ZTV8dActor_c, _ZTI8dActor_c and _ZTS8dActor_c. The functions ABOVE the dtor
- * span are likewise their own sources: _ZN8dActor_cC1Ev.cpp, _ZN8Vector3sD1Ev.cpp
- * and _ZN8dActor_cC2Ev.cpp hold 0x020113c0..0x02011654, because a member
- * constructor emits C1 and C2 adjacently and cannot sandwich Vector3sD1
- * between them.
+ * THE TAIL IS IN THIS FILE. One out-of-line ~dActor_c(), written after the
+ * constructor, emits D2, D0, D1 under default codegen (defer_codegen left
+ * on). That is the cartridge order 0x020112c8, 0x02011314, 0x02011374.
+ * ~dActor_c is still the key function, so this object also emits
+ * _ZTV8dActor_c, _ZTI8dActor_c and _ZTS8dActor_c; those stay the ROM's
+ * copies (deadstrip-data at their symbols.txt homes), not a second table.
+ * One dActor_c::dActor_c() emits C1 then C2. The ROM keeps Vector3s::~Vector3s
+ * (four bytes, bx lr) between them. An unreachable Vector3s array in the
+ * constructor odr-uses that destructor into the slot and adds no
+ * instructions; the union and base dtors mwcc drops in the same slot are
+ * compiler-only and are deadstripped, so the kept run is C1, Vector3sD1, C2.
  *
  * Declarations are reconciled IN PLACE: each member carries whatever it needs
  * that no earlier member already supplied. Nothing is hoisted but the includes.
@@ -72,6 +71,7 @@
  * came later, for the classes SpawnFireball, SpawnNumber and
  * GivePlayerCoins spawn. */
 #include "types.h"
+#include "SpawnInfo.h"
 #include "decl_common.h"
 #include "dActor_c.h"
 #include "Player.h"
@@ -90,6 +90,104 @@
 #include "daObjNumber_c.h"
 #include "daCoin_c.h"
 #include "daFPknBall_c.h"
+
+/* Spawn globals the constructor reads. The s16* spellings are the ones
+   func_02010e78 already uses; a second void* declaration in this TU is
+   rejected. */
+extern "C" {
+extern void *data_0209b468;
+extern s16 *data_0209b460;
+extern s16 *data_0209b45c;
+extern s16 data_0208e378;
+/* local extern: no header declares it. List link, same call the shard proved. */
+int func_0203b244(void *list, void *node);
+/* local extern: no header declares it. Actor info table, indexed by actorID. */
+extern void *data_020a4bb8;
+/* local extern: no header declares it. Game mode; 2 pushes the clip distance. */
+extern unsigned char data_0209f2d8;
+/* Defined below as extern "C". Fix12-by-value, so it is not a method. */
+void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, s32 clipOffsetY, s32 clipRadius,
+                                               s32 clipDistance, s32 farDistance);
+}
+
+#ifdef _MSC_VER
+/* The host has one ~dActor_c(). These are the ROM's flat D2 and D0 names. */
+extern "C" dActor_c *_ZN8dActor_cD2Ev(dActor_c *thiz) {
+    thiz->dActor_c::~dActor_c();
+    return thiz;
+}
+extern "C" dActor_c *_ZN8dActor_cD0Ev(dActor_c *thiz) {
+    thiz->dActor_c::~dActor_c();
+    dActor_c::operator delete(thiz);
+    return thiz;
+}
+#endif
+
+/* Constructor first in source so reverse emission puts C1/C2 above the
+   destructor. Both variants are this one body. */
+// @symbol _ZN8dActor_cC1Ev
+// @symbol _ZN8dActor_cC2Ev
+dActor_c::dActor_c() : mActorListNode(this) {
+    func_0203b244(&data_0209b468, &mActorListNode);
+    {
+        int *spawnPos = (int *)data_0209b460;
+        if (spawnPos) {
+            mPosX = spawnPos[0];
+            mPosY = spawnPos[1];
+            mPosZ = spawnPos[2];
+        }
+    }
+    {
+        short *spawnRot = (short *)data_0209b45c;
+        if (spawnRot) {
+            mAngleX = spawnRot[0];
+            mAngleY = spawnRot[1];
+            mAngleZ = spawnRot[2];
+            /* The ROM reloads the global. Folding the two reads drops an ldr. */
+            spawnRot = (short *)data_0209b45c;
+            mPrevAngleX = spawnRot[0];
+            mPrevAngleY = spawnRot[1];
+            mPrevAngleZ = spawnRot[2];
+        }
+    }
+    mAreaId = data_0209b44c;
+    mDeathTableID = data_0208e378;
+    {
+        void **table = *(void ***)&data_020a4bb8;
+        int actorID = this->actorID;
+        SpawnInfo<void> *info = (SpawnInfo<void> *)table[actorID];
+        mFlags = info->actorFlags;
+        {
+            int isMode2 = (data_0209f2d8 == 2);
+            int clipDistance;
+            int farDistance = info->farDistance;
+            if (isMode2)
+                clipDistance = info->clipDistance + 0x7d0000;
+            else
+                clipDistance = info->clipDistance;
+            _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, info->clipOffsetY, info->clipRadius,
+                                                      clipDistance, farDistance);
+        }
+    }
+    /* Unreachable. Vector3s's empty destructor inlines at a direct call, but
+       an array cleanup has to pass its address to __cxa_vec_cleanup, so mwcc
+       emits _ZN8Vector3sD1Ev in the constructor's helper slot, between C1 and
+       C2. -O4 deletes the cleanup itself: both variants stay 0x148. The marker
+       names that emitted symbol; its body is the inline destructor in
+       include/types.h. */
+    // @symbol _ZN8Vector3sD1Ev
+    if (0) {
+        Vector3s tmp[2];
+        (void)tmp;
+    }
+}
+
+// @symbol _ZN8dActor_cD2Ev
+// @symbol _ZN8dActor_cD0Ev
+// @symbol _ZN8dActor_cD1Ev
+dActor_c::~dActor_c() {
+    func_0203b27c((int)&data_0209b468, (int)&mActorListNode);
+}
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c19BeforeInitResourcesEv

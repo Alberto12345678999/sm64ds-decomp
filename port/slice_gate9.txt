@@ -10,12 +10,10 @@ src/game/actors/d_a_obj_yajirusi.cpp
 # UpdateClsnPosAndRot, UpdateModelPosAndRotY and IsClsnInRangeOnScreen
 # this slice used to name separately all live in it.
 src/runtime/actor/d_bg_actor.cpp
-# dActor_c is one production translation unit; SetRanges and ClosestPlayer
-# this slice used to name separately all live in it. The constructor keeps
-# its own files: the ROM's C1/C2 variant pair brackets Vector3s' vague-linkage
-# D1, so one member definition cannot tile the run.
+# dActor_c is one production translation unit; SetRanges, ClosestPlayer,
+# the destructor triple and both constructors live in it. Vector3s::~Vector3s
+# is the four-byte vague-linkage body the constructor emits between C1 and C2.
 src/runtime/actor/d_actor.cpp
-src/_ZN8dActor_cC2Ev.cpp
 # SceneNode's constructor and Reset now share their production translation unit.
 src/runtime/actor/ActorBase_SceneNode.cpp
 # fBase_c is one production translation unit; operator new, the framework
