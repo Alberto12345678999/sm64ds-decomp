@@ -32,7 +32,8 @@ typedef struct Ov007Work {
     int selectedSlot; /* 0x58: -1 = none (func_ov007_020b0244) */
 } Ov007Work;
 
-typedef char Ov007Work_selectedSlot_must_be_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
+typedef char
+    Ov007Work_selectedSlot_must_be_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
@@ -50,7 +51,8 @@ void func_ov007_020ae070(char *self)
     Ov007Work *g = WORK;
     short idx = g->states[2]->currentState;
 
-    if (id != 1) return;
+    if (id != 1)
+        return;
     if (ip2 != 0) return;
 
     switch (idx) {

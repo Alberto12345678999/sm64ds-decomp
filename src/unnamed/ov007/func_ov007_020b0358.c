@@ -25,7 +25,8 @@ typedef struct Ov007Work {
                          * tap, 0 for a button */
 } Ov007Work;
 
-typedef char Ov007Work_transitionMode_must_be_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20 ? 1 : -1];
+typedef char
+    Ov007Work_transitionMode_must_be_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20 ? 1 : -1];
 
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */

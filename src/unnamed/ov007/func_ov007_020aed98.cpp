@@ -36,8 +36,8 @@ struct Ov007Work {
     void *touch; /* 0x50: Ov007Touch, func_ov007_020c2068 */
     void *pad;   /* 0x54: Ov007Pad, func_ov007_020c2304 */
     char pad_58[0x4c];
-    void *itemNodes[9];   /* 0xa4: func_ov007_020b6d40, one per func_ov007_020ade58 */
-    void *layerSlots[8];  /* 0xc8: func_ov007_020b6d40, one per func_ov007_020adc08 */
+    void *itemNodes[9];  /* 0xa4: func_ov007_020b6d40, one per func_ov007_020ade58 */
+    void *layerSlots[8]; /* 0xc8: func_ov007_020b6d40, one per func_ov007_020adc08 */
     char pad_e8[0x2c];
     void *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
     char pad_174[0xc];
@@ -47,7 +47,8 @@ struct Ov007Work {
     int chosenItemId;
 };
 
-typedef char Ov007Work_chosenItemId_must_be_0x180[(int)&((Ov007Work *)0)->chosenItemId == 0x180 ? 1 : -1];
+typedef char
+    Ov007Work_chosenItemId_must_be_0x180[(int)&((Ov007Work *)0)->chosenItemId == 0x180 ? 1 : -1];
 
 #pragma opt_strength_reduction off
 void func_ov007_020aed98(void)

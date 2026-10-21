@@ -7,12 +7,13 @@ typedef struct Ov007Transition {
     char pad_00[4];
     unsigned int screens; /* 0x04: bit 0 main engine, bit 1 sub */
     char pad_08[0xc];
-    int t;        /* 0x14: Q12 progress */
+    int t; /* 0x14: Q12 progress */
     char pad_18[4];
     int reversed; /* 0x1c: 1 runs the curve backwards (func_ov007_020c8688) */
 } Ov007Transition;
 
-typedef char Ov007Transition_reversed_must_be_0x1c[(int)&((Ov007Transition *)0)->reversed == 0x1c ? 1 : -1];
+typedef char
+    Ov007Transition_reversed_must_be_0x1c[(int)&((Ov007Transition *)0)->reversed == 0x1c ? 1 : -1];
 
 /* Starts the transition forwards on screens v (func_ov007_020c8688 is the
  * backwards twin). c keeps the callers' void * spelling; `tr` is the typed

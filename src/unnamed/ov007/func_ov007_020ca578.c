@@ -43,13 +43,14 @@ typedef char Ov007Mesh_pushMax_must_be_0x1c[(int)&((Ov007Mesh *)0)->pushMax == 0
 void func_ov007_020ca578(char* self, int i, int j, int t)
 {
     Ov007Mesh *mesh = (Ov007Mesh *)self;
-    Ov007Follower* lr;
+    Ov007Follower *lr;
     int lo, hi;
     int val;
 
     lr = mesh->grid->rowLists[j]->items[i];
 
-    if (lr->flags & 1) return;
+    if (lr->flags & 1)
+        return;
 
     hi = mesh->pushMax;
     lo = mesh->pushMin;

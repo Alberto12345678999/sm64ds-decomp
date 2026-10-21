@@ -62,7 +62,8 @@ typedef struct Ov007Work {
 
 typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
 typedef char Ov007Sprite_scaleY_must_be_0x40[(int)&((Ov007Sprite *)0)->scaleY == 0x40 ? 1 : -1];
-typedef char Ov007Work_selectedSlot_must_be_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
+typedef char
+    Ov007Work_selectedSlot_must_be_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
 
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 

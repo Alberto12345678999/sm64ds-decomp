@@ -48,7 +48,8 @@ typedef struct TrackingRecord {
     void *particle; /* 0x08: the tracked particle, 0 = free */
 } TrackingRecord;
 
-typedef char Ov007OamNode_affineIndex_must_be_0x15[(int)&((Ov007OamNode *)0)->affineIndex == 0x15 ? 1 : -1];
+typedef char
+    Ov007OamNode_affineIndex_must_be_0x15[(int)&((Ov007OamNode *)0)->affineIndex == 0x15 ? 1 : -1];
 typedef char TrackingRecord_size_must_be_0xc[sizeof(TrackingRecord) == 0xc ? 1 : -1];
 
 /* Moves each item's node onto the particle it tracks: func_0204dab4 updates
@@ -71,8 +72,8 @@ void func_ov007_020be684(void *a0, char *ctx)
     else
         r3 = 4;
     r3 = r3 & 0xff;
-    func_0204dab4(a0, (void*)data_ov007_02104bc0[1],
-                  (void*)*grp->layout, r3, (void*)&func_ov007_020be7a8);
+    func_0204dab4(a0, (void *)data_ov007_02104bc0[1], (void *)*grp->layout, r3,
+                  (void *)&func_ov007_020be7a8);
 
     for (i = 0; i < *grp->layout; i++) {
         o = grp->items[i];
@@ -82,6 +83,7 @@ void func_ov007_020be684(void *a0, char *ctx)
         o->node->y = e->screenY << 12;
         o->node->priority = e->priority;
         o->node->affineIndex = (e->lifeScale << 4) >> 0xc;
-        if (e->particle != 0) func_ov007_020c3fe4(o);
+        if (e->particle != 0)
+            func_ov007_020c3fe4(o);
     }
 }
