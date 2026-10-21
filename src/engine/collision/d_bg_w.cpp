@@ -28,26 +28,25 @@ extern int SurfaceInfo_TestFlag0x20(int *clpsWords);
 extern int func_02037e38(unsigned int *clpsWords);
 }
 
-/* Preserve the address-based helper ABI while using the declared callback types. */
-typedef void (*BeforeClsnCallback)(dBgW *, dActor_c *, dBgPi *, Vector3 *, Vector3_16 *,
-                                   Vector3_16 *);
+/* Preserve the address-based helper ABI while using the declared callback
+   type; BeforeClsnCallback is dBgW.h's. */
 typedef void (*StoodOnCallback)(dBgW *, dActor_c *, dActor_c *);
 
 // @symbol func_020396d0
 
-/* Stores dBgW_Kc::unk_44 (+0x44), the sphere query's face-dot threshold. */
+/* Stores dBgW_Kc::depthDirMinDot (+0x44), the sphere query's face-dot threshold. */
 extern "C" void func_020396d0(int *collider, int faceDotThreshold) {
-    reinterpret_cast<dBgW_Kc *>(collider)->unk_44 = faceDotThreshold;
+    reinterpret_cast<dBgW_Kc *>(collider)->depthDirMinDot = faceDotThreshold;
 }
 
 // @symbol func_020396c0
 
-/* Stores dBgW_Kc::unk_48 (+0x48), the edge-tolerance shift, clamped at 0. */
+/* Stores dBgW_Kc::edgeToleranceShift (+0x48), clamped at 0. */
 extern "C" void func_020396c0(void *collider, int edgeToleranceShift) {
     dBgW_Kc *mesh = static_cast<dBgW_Kc *>(collider);
     if (edgeToleranceShift < 0)
         edgeToleranceShift = 0;
-    mesh->unk_48 = edgeToleranceShift;
+    mesh->edgeToleranceShift = edgeToleranceShift;
 }
 
 // @symbol _ZN4dBgWC2Ev
