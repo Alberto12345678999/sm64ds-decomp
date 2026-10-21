@@ -607,8 +607,13 @@ struct Player : dActor_c {
     /* While set, St_Wait_Main skips the two sleep voices (0x2a in step 2,
        0x2b in step 4). daC_Jugem_c::StateArriveMain sets it on the closest
        player at its first tick and clears it at tick 0x82. */
-    u8 mMuteSleepVoice;     /* 0x723 */
-    u8  unk_724;            /* 0x724 */
+    u8 mMuteSleepVoice; /* 0x723 */
+    /* St_Owl_Main sets it in step 1 once mPosY is below mAttachOffsetY -
+       0xed8000, calls func_0201f32c(0xa3) and hands the camera to
+       func_0200d3f8 with no look target; it clears it in step 3 once camera
+       flag 0x8000 is clear. That camera state's main, func_02005110, pulls
+       the eye out to 0xd0000 instead of 0x48000 while it is set. */
+    u8 mOwlFarCamera; /* 0x724 */
     /* func_ov002_020c44c4 sets it when it opens the one-time message 0x177;
        St_Talk_Cleanup then calls Sound::LoadAndSetMusic_Layer1(0x39) and
        clears it. */

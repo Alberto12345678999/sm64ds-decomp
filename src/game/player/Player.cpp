@@ -21152,7 +21152,7 @@ int Player::St_Owl_Main()
         }
         if (mStateStep == 1) {
             if (mAttachOffsetY - 0xed8000 > mPosY) {
-                unk_724 = 1;
+                mOwlFarCamera = 1;
                 func_0201f32c(0xa3);
                 func_0200d3f8(data_0209f318, mPlayerNo, 0);
                 mVertAccel = 0;
@@ -21182,7 +21182,7 @@ int Player::St_Owl_Main()
             mStateStep = 4;
             mStateTimer = 0x3c;
             func_ov002_020c9e18();
-            unk_724 = 0;
+            mOwlFarCamera = 0;
         }
         break;
     }
