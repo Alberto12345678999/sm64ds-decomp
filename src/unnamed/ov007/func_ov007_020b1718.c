@@ -12,10 +12,7 @@
  * advances the counter and fades the target through func_ov007_020b2764.
  *
  * Left raw: the manager's +0xec (0 or 1; picks the sound and, in
- * func_ov007_020b1fa4, the camera preset), +0xf4 (the model
- * func_ov007_020b2bd4 builds; +0x18 is one of the animation records
- * func_ov007_020b257c starts) and +0xf8 (a Q12 value func_ov007_020b1b74 and
- * this file ease; no reader found), none with a role to name.
+ * func_ov007_020b1fa4, the camera preset), with no role to name.
  *
  * Codegen note: `r7val = v - 2; divisor = 0x28;` must be assigned BEFORE the
  * Fix12 store block (the compiler sinks both defs to the block exit, ahead of
@@ -46,6 +43,24 @@ typedef struct Ov007Camera {
     Ov007Tween *distanceTween;  /* 0x40: bound to distance */
 } Ov007Camera;
 
+/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as in
+ * func_ov007_020bc02c, only the slots this file touches. */
+typedef struct Ov007AnimPlayer {
+    s32 state; /* 0x00: 0 playing; func_ov007_020c9110 sets 2 when a one-shot ends */
+    char pad_04[8];
+    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
+    char pad_0e[2];
+    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
+    u16 frameCount; /* 0x12 */
+} Ov007AnimPlayer;
+
+/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; only the slot
+ * this file reads. */
+typedef struct Ov007Model {
+    char pad_00[0x18];
+    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020b257c starts it */
+} Ov007Model;
+
 /* The 0x28-byte light func_ov007_020c241c allocates; func_ov007_020c232c
  * writes +0x22 to LIGHT_COLOR. Only that slot is spelled. */
 typedef struct Ov007Light {
@@ -69,7 +84,14 @@ typedef struct Ov007Work {
     Ov007Light *lights[2];        /* 0x38: func_ov007_020c241c(0/1) */
     Ov007MenuState *paletteState; /* 0x40: func_ov007_020bce70 requests palette n on
                                    * it and blends over its stateTicks */
+    char pad_44[0xb0];
+    Ov007Model *model; /* 0xf4: func_ov007_020b2bd4 builds it */
+    /* 0xf8: Q12; func_ov007_020b2370 scales the model from 1/16 (0) up to 1
+     * (0x1000) by it; func_ov007_020b1b74 and this file ease it */
+    int modelGrowth;
 } Ov007Work;
+
+typedef char Ov007Work_size_must_be_0xfc[sizeof(Ov007Work) == 0xfc ? 1 : -1];
 
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020bdeb0(int a);
@@ -86,7 +108,7 @@ extern char* data_ov007_0210342c;
 
 void func_ov007_020b1718(void)
 {
-    char* F = *(char**)(data_ov007_0210342c + 0xf4);
+    Ov007Model *F = WORK->model;
     int r7val;
     int v;
     int flag = 0;
@@ -106,12 +128,12 @@ void func_ov007_020b1718(void)
     mode = WORK->transitionMode;
     switch (mode) {
     case 1: {
-        char* F18 = *(char**)(F + 0x18);
+        Ov007AnimPlayer *F18 = F->boneAnim;
         int q, r3, s;
-        char* F18b;
+        Ov007AnimPlayer *F18b;
 
         divisor = 0x1e;
-        r7val = (int)*(u16*)(F18 + 0x10) - ((int)*(u16*)(F18 + 0x12) - 0x12);
+        r7val = (int)F18->frame - ((int)F18->frameCount - 0x12);
 
         if (v < 0xc) {
             if (v <= 0) q = 0;
@@ -126,16 +148,16 @@ void func_ov007_020b1718(void)
             else
                 s = (int)((((s64)1 - (r3 - 0x3000)) * 0x800) >> 12) + 0x800;
 
-            *(int*)(data_ov007_0210342c + 0xf8) = 0x1000 - (s >> 2);
+            WORK->modelGrowth = 0x1000 - (s >> 2);
         } else {
-            *(int*)(data_ov007_0210342c + 0xf8) = 0x1000;
+            WORK->modelGrowth = 0x1000;
         }
 
-        F18b = *(char**)(F + 0x18);
-        if (*(s16*)(F18b + 0xc) != -1) {
-            if ((int)*(u16*)(F18b + 0x10) == (int)*(u16*)(F18b + 0x12) - 2) {
-                if (*(int*)F18b == 0)
-                    *(int*)F18b = 1;
+        F18b = F->boneAnim;
+        if (F18b->anim != -1) {
+            if ((int)F18b->frame == (int)F18b->frameCount - 2) {
+                if (F18b->state == 0)
+                    F18b->state = 1;
                 flag = 1;
             }
         }
