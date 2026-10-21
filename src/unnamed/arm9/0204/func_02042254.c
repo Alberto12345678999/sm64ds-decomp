@@ -19,10 +19,11 @@ extern void func_02041a94(char *base, void *node);
 /* The parent's loader thread: while the share is up (mState), take each node
  * off the busy list; a loading one (state 1) has its region's file opened
  * from the ROM archive (func_0205d5e8 = FS_OpenFileDirect over
- * [mFileOffset, mFileOffset + mFileSize), by mFileId), its first three 0x400-byte pages read into the
- * cache, and is handed to func_02041d28; a releasing one has its file closed
- * and goes back to the free list (func_02041a94). The arc local is the
- * archive func_0205d23c finds (by name, 3 characters). */
+ * [mFileOffset, mFileOffset + mFileSize), by mFileId), its first three
+ * 0x400-byte pages read into the cache, and is handed to func_02041d28; a
+ * releasing one has its file closed and goes back to the free list
+ * (func_02041a94). The arc local is the archive func_0205d23c finds (by name,
+ * 3 characters). */
 void func_02042254(void) {
     int i;
     FileShareNode *node;
