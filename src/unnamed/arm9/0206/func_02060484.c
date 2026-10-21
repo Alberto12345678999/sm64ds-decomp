@@ -23,8 +23,8 @@ typedef struct CardCommon {
     int mDst;       /* 0x1c -- backup address */
     int mRemaining; /* 0x20 -- bytes left */
     unsigned char pad_24[4];
-    /* 0x28 / 0x2c -- the completion callback and its argument; zeroed by
-     * func_02060890 (CARD_Init) */
+    /* 0x28 / 0x2c -- the completion callback and its argument (func_0206081c
+     * calls it when a request ends; func_02060890 = CARD_Init zeroes both) */
     int mCallback;
     int mCallbackArg;
     unsigned char pad_30[4];
