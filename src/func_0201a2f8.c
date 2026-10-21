@@ -1,3 +1,4 @@
+#include "AsyncJob.h"
 /* func_0201a2f8 at 0x0201a2f8
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
@@ -23,7 +24,7 @@ extern int OVERLAY_0_ID;
 extern int OVERLAY_1_ID;
 extern int data_0208ee5c;
 
-void func_0201a2f8(void) {
+void func_0201a2f8(int unused) {
     int cond = (*(unsigned short*)0x27ffc40 == 2);
     void* ptr;
     if (cond) {

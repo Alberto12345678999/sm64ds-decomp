@@ -1,9 +1,8 @@
 //cpp
 #include "dScEntry_c.h"
+#include "AsyncJob.h"
 extern "C" {
 extern int func_0203d8fc(void);
-// Scheduler still accepts callback bits; its typed interface is a separate migration.
-extern int func_0201a244(int callback, int arg, int priority, int stack, int stackSize);
 extern int func_0201a1bc(void);
 extern void func_0203d930(void);
 
@@ -20,8 +19,7 @@ void dScEntry_c::UpdateMatchLoading() {
     if (mStepPhase == MATCH_LOAD_RESOURCES) {
         if (data_0209fc68 != 0) {
             if (EntryCourseLoadStarted == 0) {
-                func_0201a244(reinterpret_cast<int>(&dScEntry_c::LoadCourseResources),
-                              data_0209b2e4, 0xf, 0, 0x1000);
+                func_0201a244(&dScEntry_c::LoadCourseResources, data_0209b2e4, 0xf, 0, 0x1000);
                 EntryCourseLoadStarted = 1;
             }
             if (EntryCourseLoadStarted != 0 && func_0201a1bc() != 0) {
