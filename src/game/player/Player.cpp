@@ -1962,7 +1962,7 @@ int Player::func_ov002_020bf40c() {
         }
         _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos, this);
         if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
-            mGroundY = *(int *)((char *)&rg + 0x44);
+            mGroundY = ((::dBgCh_Gnd *)&rg)->clsnY;
         }
         _ZN9dBgCh_GndD1Ev(&rg);
         return 1;
@@ -3883,7 +3883,7 @@ int Player::func_ov002_020c25a8(int arg1)
             _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
             if (v.y != 0) {
                 int t = _ZN4cstd4fdivEii(
-                    FX_MUL(v.x, *(int *)(c + 0xa4)) + FX_MUL(v.z, *(int *)(c + 0xac)), v.y);
+                    FX_MUL(v.x, mSpeedX) + FX_MUL(v.z, mSpeedZ), v.y);
                 t = -(t + 0x8000);
                 if (t < 0)
                     mVertSpeed = t;
@@ -9617,7 +9617,7 @@ state_check:
         if (func_ov002_020e3078(self, &data_ov002_021106dc) != 0) return 0;
     }
 
-    if (*(int *)((char *)arg + 0x18) & 0x400000) return 0;
+    if (((dCc_c *)arg)->flags & 0x400000) return 0;
 
     {
         Ret *r = arg->m2();
@@ -9809,8 +9809,8 @@ void func_ov002_020cb474(char *c) {
         id = 0xb9;
         break;
     }
-    *(void **)(c + 0x628) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(volatile unsigned int *)(c + 0x628), id, v[0], v[1], v[2], 0, 0);
+    self->mParticle1 = (s32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        *(volatile unsigned int *)&self->mParticle1, id, v[0], v[1], v[2], 0, 0);
 }
 }
 
@@ -20221,7 +20221,7 @@ extern "C" void func_ov002_020db54c(unsigned char *self, int a, int b, short c)
     if (node != 0) {
         int bb = (int)(((dActor_c *)node)->actorID == 0xbf);
         if (bb != 0) {
-            struct Vector3 *src = (struct Vector3 *)(((int)node + 0x5c));
+            struct Vector3 *src = (struct Vector3 *)((int)&((dActor_c *)node)->mPos);
             struct Vector3 v;
             int ty;
             v.x = src->x;
@@ -26003,7 +26003,7 @@ extern "C" void func_ov002_020e3e00(Model *obj, Vector3 *vec, unsigned int opaci
     }
 
     Mat tmp;
-    Mat *src = (Mat*)((char*)obj + 0x1c);
+    Mat *src = (Mat*)&obj->mat4x3;
     tmp = *src;
 
     int r0;
