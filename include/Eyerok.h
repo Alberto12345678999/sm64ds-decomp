@@ -129,10 +129,10 @@ struct Eyerok : dBgActor_c {
     u8  pad_4da[0x2];
     /* The ROM destroys this with __cxa_vec_cleanup(this + 0x4dc, 0x14, 0xc,
        _ZN7Vector3D1Ev) -- 0x14 elements, 0xc == sizeof(Vector3), same
-       evidence shape as include/daMoray_c.h's mStarUniqueID. Only raw
-       `this + 0x4dc` / `+ 0x4e0` / `+ 0x4e4` offsets are read elsewhere
-       (one Vector3), so the count is trusted from the destructor call, not
-       from any indexed access. */
+       evidence shape as include/daMoray_c.h's mStarUniqueID. The three
+       loops in d_a_iwante.cpp walk it with a stepping char * and read
+       mDustPos[0] through it, so the count is trusted from the destructor
+       call and the 0x14-iteration loops, not from any indexed access. */
     Vector3 mDustPos[0x14];                                 /* 0x4dc */
     /* One recycled Particle::System handle per mDustPos slot, per effect id.
        Behavior reissues both for each slot with a nonzero position
