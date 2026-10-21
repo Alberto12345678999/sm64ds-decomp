@@ -11,10 +11,33 @@ extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
  * mesh func_ov007_020cbbb0 builds (func_ov007_020caeac/020ca86c emit it);
  * a2 is data_ov007_02104bd4[1] or [2], a 0x34-byte material record
  * func_ov007_020cbf8c copies from a template (see func_ov007_020bee14). */
+
+/* The 0x10-byte grid func_ov007_020c73f0 builds; names as in
+ * func_ov007_020cbb04 (#4241), only the slots this file reads. */
+typedef struct Ov007Grid {
+    int columns; /* 0x00 */
+    int rows;    /* 0x04 */
+} Ov007Grid;
+
+/* The 0x2c-byte texture record func_ov007_020c15ec fills; names as in that
+ * file (#4237), only the slots this file reads. */
+typedef struct Ov007Texture {
+    char pad_00[0x14];
+    int sizeS; /* 0x14: log2(width / 8); func_ov007_020c1448's name */
+    int sizeT; /* 0x18: log2(height / 8) */
+} Ov007Texture;
+
 typedef struct Ov007Mesh {
-    void *verts;         /* 0x00: Vector3 per grid point (func_ov007_020cbbb0) */
-    int *grid;           /* 0x04: func_ov007_020c73f0's grid; [0]/[1] are the point columns/rows */
-    char pad_08[0x1c];   /* 0x08 */
+    void *verts;     /* 0x00: Vector3 per grid point (func_ov007_020cbbb0) */
+    Ov007Grid *grid; /* 0x04: func_ov007_020c73f0 */
+    /* 0x08: one func_ov007_020c80a4 link per cell (#4241's
+     * func_ov007_020cba78); 0x0c..0x23 hold func_ov007_020cbbb0's template
+     * copy, with the spring's stiffness/damping at 0x10/0x14 */
+    void **cellLinks;
+    char pad_0c[4];
+    int stiffness; /* 0x10 */
+    int damping;   /* 0x14 */
+    char pad_18[0xc];
     s16 cellWidth;       /* 0x24: func_ov007_020cbbb0's column spacing */
     s16 cellHeight;      /* 0x26: row spacing */
     void *faceNormals;   /* 0x28: s16 triple per triangle, two per cell (func_ov007_020cb7c0) */
@@ -24,7 +47,7 @@ typedef struct Ov007Mesh {
 } Ov007Mesh;
 
 typedef struct Ov007MeshMaterial {
-    int *texture;    /* 0x00: a manager texture record; [5]/[6] are log2(size / 8) */
+    Ov007Texture *texture; /* 0x00: a manager texture record */
     s32 texS;        /* 0x04: func_ov007_020caeac u0 */
     s32 texT;        /* 0x08: v0 */
     s32 warpS;       /* 0x0c: Q12; times cellWidth, how far a normal's x shifts the texcoord */
@@ -48,17 +71,17 @@ typedef char Ov007MeshMaterial_size_must_be_0x34[sizeof(Ov007MeshMaterial) == 0x
 void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5) {
     Ov007Mesh *mesh = (Ov007Mesh *)a1;
     Ov007MeshMaterial *mat = (Ov007MeshMaterial *)a2;
-    int *r7 = mat->texture;
-    int *pdim = mesh->grid;
-    int d0 = pdim[0] - 1;
-    int d1 = pdim[1] - 1;
+    Ov007Texture *r7 = mat->texture;
+    Ov007Grid *pdim = mesh->grid;
+    int d0 = pdim->columns - 1;
+    int d1 = pdim->rows - 1;
     int tw = 0;
     int th = 0;
     *((volatile u32 *)0x40004c0) = (((u32)mat->diffuse) | (((u32)mat->ambient) << 16)) | 0x8000;
     *((volatile u32 *)0x40004c4) = 0;
     if (r7 != 0) {
-        tw = 8 << r7[0x14 / 4];
-        th = 8 << r7[0x18 / 4];
+        tw = 8 << r7->sizeS;
+        th = 8 << r7->sizeT;
     }
     func_ov007_020c1448(r7, 1, mat->texRepeat, 0, mat->texColor0);
     func_ov007_020c1404(r7);
