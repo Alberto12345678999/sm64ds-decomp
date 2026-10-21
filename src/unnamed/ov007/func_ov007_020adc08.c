@@ -41,9 +41,9 @@ typedef struct Ov007LayerSlot {
 } Ov007LayerSlot;
 
 typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
-typedef char Ov007Work_display_at_0x74[sizeof(Ov007Work) == 0x78 ? 1 : -1];
-typedef char Ov007Display_lists_at_0x08[sizeof(Ov007Display) == 0x10 ? 1 : -1];
-typedef char Ov007BgLayer_screens_at_0x10[sizeof(Ov007BgLayer) == 0x18 ? 1 : -1];
+typedef char Ov007Work_size_must_be_0x78[sizeof(Ov007Work) == 0x78 ? 1 : -1];
+typedef char Ov007Display_size_must_be_0x10[sizeof(Ov007Display) == 0x10 ? 1 : -1];
+typedef char Ov007BgLayer_size_must_be_0x18[sizeof(Ov007BgLayer) == 0x18 ? 1 : -1];
 
 /* Builds layer slot `type` around `obj` and links obj into the main or sub
  * BG list: 6/7 take prebuilt screen pairs, 1 keeps the loaded screen as its

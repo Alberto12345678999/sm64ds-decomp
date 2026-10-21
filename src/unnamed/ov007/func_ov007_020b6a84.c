@@ -34,7 +34,7 @@ typedef struct Ov007Work {
     void *tweens[2]; /* 0x6c: func_ov007_020c908c */
 } Ov007Work;
 
-typedef char Ov007Work_tweens_end_at_0x74[sizeof(Ov007Work) == 0x74 ? 1 : -1];
+typedef char Ov007Work_size_must_be_0x74[sizeof(Ov007Work) == 0x74 ? 1 : -1];
 
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
