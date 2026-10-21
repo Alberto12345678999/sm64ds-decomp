@@ -6553,7 +6553,7 @@
       "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_0211705c.c": [
+      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
         "return:unsigned short *"
       ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
@@ -20339,7 +20339,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_02116d9c.c": [
+      "src/_ZN10dScEntry_c16CheckMenuConfirmEi.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -20347,11 +20347,11 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_0211705c.c": [
+      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_0211763c.c": [
+      "src/unnamed/ov075/func_ov075_0211763c.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -22499,7 +22499,7 @@
       ]
     },
     "func_02020028": {
-      "src/unnamed/ov075/func_ov075_0211763c.c": [
+      "src/unnamed/ov075/func_ov075_0211763c.cpp": [
         "param:#2 unsigned char"
       ]
     },
@@ -22685,7 +22685,7 @@
       ]
     },
     "func_02033ae0": {
-      "src/unnamed/ov075/func_ov075_0211705c.c": [
+      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_021173a8.c": [
@@ -29452,10 +29452,10 @@
       ]
     },
     "func_ov075_02116d9c": {
-      "src/unnamed/ov075/func_ov075_0211705c.c": [
+      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
         "param:#1 void *"
       ],
-      "src/unnamed/ov075/func_ov075_0211763c.c": [
+      "src/unnamed/ov075/func_ov075_0211763c.cpp": [
         "param:#1 void *"
       ]
     },

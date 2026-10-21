@@ -80,6 +80,7 @@ struct dScEntry_c : dScene_c {
     void UpdateMatchLoading();
     static void LoadCourseResources(int course);
     void StartMatch();
+    int CheckMenuConfirm(int player);
     int ArePlayersReady();
     void EnterCourseSelect();
     void UpdateCourseSelect();

@@ -11,7 +11,6 @@ extern "C" {
 
 extern int func_0203da9c(void);
 extern int TouchArea_Update(void* c, int id);
-extern int func_ov075_02116d9c(int unused, int id);
 extern void func_ov001_020ab41c(void* c);
 extern int func_0203d9b4(void);
 extern void func_02030a78(void);
@@ -30,7 +29,8 @@ void func_ov075_02117c0c(char* self)
 
     id = func_0203da9c();
     if (TouchArea_Update(self + 0x70, id) != 0 ||
-        (func_ov075_02116d9c((int)self, id) != 0 && *(u8*)(self + 0x281) == 0)) {
+        (reinterpret_cast<dScEntry_c *>(self)->CheckMenuConfirm(id) != 0 &&
+         *(u8 *)(self + 0x281) == 0)) {
         *(u8*)(self + 0xa4) = 0;
         func_ov001_020ab41c(self + 0x70);
         if (func_0203d9b4() != 0 && IsMode6(self)) {
@@ -44,7 +44,7 @@ void func_ov075_02117c0c(char* self)
         return;
     }
     if (TouchArea_Update(self + 0x94, id) == 0) {
-        if (func_ov075_02116d9c((int)self, id) == 0)
+        if (reinterpret_cast<dScEntry_c *>(self)->CheckMenuConfirm(id) == 0)
             return;
         if (*(u8*)(self + 0x281) != 1)
             return;
