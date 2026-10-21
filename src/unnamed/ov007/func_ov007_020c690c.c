@@ -87,7 +87,7 @@ void* func_ov007_020c690c(int a0, int a1, int a2, int a3, int a4, int a5)
     }
 
     p->posPoint = func_ov007_020c844c(&p->pos, 0xa000);
-    *(void**)(o + 0x94) = func_ov007_020c844c(&p->anchorPos, 0x1000);
+    *(void **)(o + 0x94) = func_ov007_020c844c(&p->anchorPos, 0x1000);
     p->link = func_ov007_020c80a4();
     func_ov007_020c8010(p->link, *(void **)(o + 0x94), p->posPoint);
 

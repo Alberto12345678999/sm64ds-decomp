@@ -10,11 +10,12 @@ extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in that
  * file and func_ov007_020c684c, only the slots this function touches. The
- * a5 table at +0x18 (spring constants, read as six ints) and the per-group
- * links at +0x40/+0x44 have no name yet and stay raw on `sb`. */
+ * a5 table at +0x18 (six ints, handed in pairs to func_ov007_020c7560 and
+ * func_ov007_020c7b2c) and the per-group links at +0x40/+0x44 have no name
+ * yet and stay raw on `sb`. */
 typedef struct Ov007Picker {
     char pad_00[4];
-    int mode;       /* 0x04: 2 = link mode, the anchor spring is stepped too */
+    int mode;       /* 0x04: 2 = link mode, posPoint and link are stepped too */
     int groupCount; /* 0x08 */
     char pad_0c[0x10];
     char *params; /* 0x1c: a4 of func_ov007_020c690c; +4 is the step stride */
@@ -87,13 +88,23 @@ void func_ov007_020c5188(char *sb, int arg1)
                             func_ov007_020c81a0(node, stride, p);
                             {
                                 int *pt = (int *)node[0];
-                                if (min[0] > pt[0]) { pt[0] = min[0]; node[1] = DIVR(node[1]); }
-                                else if (max[0] < pt[0]) { pt[0] = max[0]; node[1] = DIVR(node[1]); }
+                                if (min[0] > pt[0]) {
+                                    pt[0] = min[0];
+                                    node[1] = DIVR(node[1]);
+                                } else if (max[0] < pt[0]) {
+                                    pt[0] = max[0];
+                                    node[1] = DIVR(node[1]);
+                                }
                             }
                             {
                                 int *pt = (int *)node[0];
-                                if (min[1] > pt[1]) { pt[1] = min[1]; node[2] = DIVR(node[2]); }
-                                else if (max[1] < pt[1]) { pt[1] = max[1]; node[2] = DIVR(node[2]); }
+                                if (min[1] > pt[1]) {
+                                    pt[1] = min[1];
+                                    node[2] = DIVR(node[2]);
+                                } else if (max[1] < pt[1]) {
+                                    pt[1] = max[1];
+                                    node[2] = DIVR(node[2]);
+                                }
                             }
                             r8++;
                         } while (r8 < r5[1]);

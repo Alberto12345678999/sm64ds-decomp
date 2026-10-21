@@ -49,7 +49,8 @@ int func_ov007_020ba368(int t)
         }
     }
 
-    if (((Ov007Picker *)s)->groupCount == 0 || *(int *)(*(char **)data_ov007_02104ba0 + 0x14) == 0) {
+    if (((Ov007Picker *)s)->groupCount == 0 ||
+        *(int *)(*(char **)data_ov007_02104ba0 + 0x14) == 0) {
         int ratio;
         if (t <= 0) {
             ratio = 0;
@@ -67,8 +68,10 @@ int func_ov007_020ba368(int t)
     case 0:
     case 3:
     {
-        int *p1 = (state == 0) ? &((Ov007Picker *)s)->boundsMin.x : &((Ov007Picker *)s)->boundsMin.y;
-        int *p2 = (state == 0) ? &((Ov007Picker *)s)->boundsMax.x : &((Ov007Picker *)s)->boundsMax.y;
+        int *p1 =
+            (state == 0) ? &((Ov007Picker *)s)->boundsMin.x : &((Ov007Picker *)s)->boundsMin.y;
+        int *p2 =
+            (state == 0) ? &((Ov007Picker *)s)->boundsMax.x : &((Ov007Picker *)s)->boundsMax.y;
         int d, ratio, ease, v1, v2;
         v1 = *p1;
         v2 = *p2;

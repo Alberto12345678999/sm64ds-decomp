@@ -4,12 +4,12 @@
 
 /* A point and a spring between two points, as func_ov007_020c5a6c spells them. */
 typedef struct Ov007Point {
-    struct Vector3* pos; /* 0x0 */
+    struct Vector3 *pos; /* 0x0 */
 } Ov007Point;
 
 typedef struct Ov007Link {
-    Ov007Point* from;   /* 0x0 */
-    Ov007Point* to;     /* 0x4 */
+    Ov007Point *from;   /* 0x0 */
+    Ov007Point *to;     /* 0x4 */
     int length;         /* 0x8 */
     struct Vector3 dir; /* 0xc */
 } Ov007Link;
@@ -24,11 +24,11 @@ typedef struct Ov007StrokePath {
  * file and func_ov007_020c684c, only the slots this function touches. */
 typedef struct Ov007Picker {
     char pad_00[0x28];
-    struct Vector3** groupPoints;      /* 0x28 */
-    struct Vector3** groupPointCopies; /* 0x2c */
+    struct Vector3 **groupPoints;      /* 0x28 */
+    struct Vector3 **groupPointCopies; /* 0x2c */
     char pad_30[4];
-    Ov007Link*** groupLinks;   /* 0x34: per group, one link per point from posPoint */
-    Ov007StrokePath** groups; /* 0x38 */
+    Ov007Link ***groupLinks;  /* 0x34: per group, one link per point from posPoint */
+    Ov007StrokePath **groups; /* 0x38 */
     char pad_3c[0x40];
     struct Vector3 restPos; /* 0x7c */
 } Ov007Picker;
@@ -42,9 +42,9 @@ extern int LenVec3(struct Vector3* v);
  * declaration-agreement gate); the typed view is a local. */
 void func_ov007_020c6314(char* t, int idx, int flag)
 {
-    Ov007Picker* self = (Ov007Picker*)t;
+    Ov007Picker *self = (Ov007Picker *)t;
     int i;
-    Ov007Link* e;
+    Ov007Link *e;
 
     switch (flag) {
     case 0:

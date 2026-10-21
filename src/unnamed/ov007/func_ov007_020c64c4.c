@@ -37,12 +37,13 @@ typedef struct Ov007Picker {
  * gate); the typed view is a local. */
 void func_ov007_020c64c4(char* c, int b) {
     Ov007Picker *self = (Ov007Picker *)c;
-    Ov007Link* link;
+    Ov007Link *link;
     int i;
     for (i = 0; i < self->groupCount; i++) {
         func_ov007_020c6314(c, i, b);
     }
-    if (self->mode != 2) return;
+    if (self->mode != 2)
+        return;
     self->anchorPos = self->pos;
     link = self->link;
     SubVec3(link->from->pos, link->to->pos, &link->dir);

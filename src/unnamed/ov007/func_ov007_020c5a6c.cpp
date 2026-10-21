@@ -67,8 +67,8 @@ extern "C" void func_ov007_020c5a6c(Ov007Picker *self, void *target, int flag) {
     int carry = -1;
     int out;
     for (i = 0; i < self->groupCount; i++) {
-        int best =
-            func_ov007_020c30ac(self->groupPoints[i], self->groups[i]->pointCount, target, carry, &out);
+        int best = func_ov007_020c30ac(self->groupPoints[i], self->groups[i]->pointCount, target,
+                                       carry, &out);
         /* The ROM tests flag twice (cmp r7,#0 / beq twice), so the
            redundant `flag != 0` stays. */
         if (best != -1 &&

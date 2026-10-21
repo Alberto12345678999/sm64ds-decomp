@@ -1,6 +1,8 @@
 /* data_ov007_02104ba0: the picker scene func_ov007_020b9880 allocates;
  * slot 0 is the touch picker. */
-struct S { char *picker; };
+struct S {
+    char *picker;
+};
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in
  * func_ov007_020c684c, only the slots this function touches. */

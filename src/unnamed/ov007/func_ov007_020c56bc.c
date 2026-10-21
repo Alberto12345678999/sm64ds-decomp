@@ -11,11 +11,11 @@ typedef struct Ov007Picker {
     char pad_00[8];
     int groupCount; /* 0x08 */
     char pad_0c[0x20];
-    int** groupPointCopies; /* 0x2c */
+    int **groupPointCopies; /* 0x2c */
     char pad_30[4];
-    int** groupLinks; /* 0x34: per group, one link per point; +0xc is its dir */
+    int **groupLinks; /* 0x34: per group, one link per point; +0xc is its dir */
     char pad_38[4];
-    int** pointLists; /* 0x3c: per group; +4 is the point count */
+    int **pointLists; /* 0x3c: per group; +4 is the point count */
     char pad_40[0x3c];
     Vec3 restPos; /* 0x7c */
 } Ov007Picker;
@@ -25,7 +25,7 @@ typedef struct Ov007Picker {
  * from restPos. */
 void func_ov007_020c56bc(char* sl, int sb, int r2, int r3, int p4, int fp)
 {
-    Ov007Picker* self = (Ov007Picker*)sl;
+    Ov007Picker *self = (Ov007Picker *)sl;
     int i, j;
     int lim, neg3, d1, negp4, d2, jinit, base3e8;
     int* r6;
@@ -33,7 +33,8 @@ void func_ov007_020c56bc(char* sl, int sb, int r2, int r3, int p4, int fp)
     int r4;
 
     i = 0;
-    if (self->groupCount <= 0) return;
+    if (self->groupCount <= 0)
+        return;
 
     r4 = r2 * 10;
     neg3 = -r3;
@@ -52,7 +53,7 @@ void func_ov007_020c56bc(char* sl, int sb, int r2, int r3, int p4, int fp)
                 int r0v;
 
                 if (func_ov007_020c3ba8(base3e8) <= lim) {
-                    r6 = (int*)(self->groupLinks[i][j]) + 3;
+                    r6 = (int *)(self->groupLinks[i][j]) + 3;
                     r5 = fp * (neg3 + func_ov007_020c3ba8(d1));
                     r0v = fp * (negp4 + func_ov007_020c3ba8(d2));
 
@@ -71,9 +72,9 @@ void func_ov007_020c56bc(char* sl, int sb, int r2, int r3, int p4, int fp)
                         break;
                     case 2:
                         r6[0] = r5 + (self->restPos.x -
-                                      *(int*)((char*)(self->groupPointCopies[i]) + r4));
+                                      *(int *)((char *)(self->groupPointCopies[i]) + r4));
                         r6[1] = r0v + (self->restPos.y -
-                                       *(int*)((char*)(self->groupPointCopies[i]) + r4 + 4));
+                                       *(int *)((char *)(self->groupPointCopies[i]) + r4 + 4));
                         break;
                     }
                 }

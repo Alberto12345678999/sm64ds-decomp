@@ -8,9 +8,9 @@ struct Ov007PointList {
 
 /* A spring between two points, as func_ov007_020c5a6c spells it. */
 struct Link {
-    int from;   /* 0x0 */
-    int to;     /* 0x4 */
-    int length; /* 0x8 */
+    int from;    /* 0x0 */
+    int to;      /* 0x4 */
+    int length;  /* 0x8 */
     Vector3 dir; /* 0xc */
 };
 
@@ -31,8 +31,7 @@ struct Ov007Picker {
 
 /* Sets each point's link direction to its rest offset from restPos, scaled
  * by m1 on x and m2 on y (Q12). */
-void func_ov007_020c55bc(struct Ov007Picker *self, int m1, int m2)
-{
+void func_ov007_020c55bc(struct Ov007Picker *self, int m1, int m2) {
     int i;
     int j;
     int restX, restY;

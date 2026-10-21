@@ -13,9 +13,9 @@ typedef struct Ov007Picker {
     char pad_00[8];
     int groupCount; /* 0x08 */
     char pad_0c[0x20];
-    int** groupPointCopies; /* 0x2c */
+    int **groupPointCopies; /* 0x2c */
     char pad_30[8];
-    Ov007StrokePath** groups; /* 0x38 */
+    Ov007StrokePath **groups; /* 0x38 */
     char pad_3c[0x40];
     Vector3 restPos; /* 0x7c */
 } Ov007Picker;
@@ -23,7 +23,7 @@ typedef struct Ov007Picker {
 /* Applies the 2x2 Q12 matrix m to every rest point's x/y about restPos. */
 void func_ov007_020c5490(char* obj, int* m)
 {
-    Ov007Picker* self = (Ov007Picker*)obj;
+    Ov007Picker *self = (Ov007Picker *)obj;
     int i;
     int j;
     int k;

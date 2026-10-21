@@ -5,11 +5,19 @@ typedef struct {
 /* A point; +0 is its position (func_ov007_020c5a6c), the six words after it
  * are cleared together here and in func_ov007_020c5948 but have no reader
  * that names them. */
-struct Obj { int f0; int f4; int f8; int fc; int f10; int f14; int f18; };
+struct Obj {
+    int f0;
+    int f4;
+    int f8;
+    int fc;
+    int f10;
+    int f14;
+    int f18;
+};
 
 /* A point list as func_ov007_020c798c builds it. */
 struct Ov007PointList {
-    struct Obj** items; /* 0x0 */
+    struct Obj **items; /* 0x0 */
     int count;          /* 0x4 */
 };
 
@@ -20,27 +28,26 @@ struct Ov007Picker {
     char pad0[8];
     int groupCount; /* 0x8 */
     char pad_c[0x30];
-    struct Ov007PointList** pointLists; /* 0x3c: per group (func_ov007_020c798c) */
+    struct Ov007PointList **pointLists; /* 0x3c: per group (func_ov007_020c798c) */
     char pad_40[0x48];
     Vec3 posOffset; /* 0x88: func_ov007_020c5188 adds it to pos for one step */
 };
 
-extern void func_ov007_020c6af0(struct Ov007Picker* c);
-extern void func_ov007_020c6b58(struct Ov007Picker* c);
-extern void func_ov007_020c64c4(struct Ov007Picker* c, int b);
-extern void func_ov007_020c62cc(struct Ov007Picker* c, int b);
+extern void func_ov007_020c6af0(struct Ov007Picker *c);
+extern void func_ov007_020c6b58(struct Ov007Picker *c);
+extern void func_ov007_020c64c4(struct Ov007Picker *c, int b);
+extern void func_ov007_020c62cc(struct Ov007Picker *c, int b);
 
-void func_ov007_020c5ef0(struct Ov007Picker* c)
-{
+void func_ov007_020c5ef0(struct Ov007Picker *c) {
     int i, j;
     func_ov007_020c6af0(c);
     func_ov007_020c6b58(c);
     func_ov007_020c64c4(c, 0);
     func_ov007_020c62cc(c, 1);
     for (i = 0; i < c->groupCount; i++) {
-        struct Ov007PointList* in = c->pointLists[i];
+        struct Ov007PointList *in = c->pointLists[i];
         for (j = 0; j < in->count; j++) {
-            struct Obj* o = in->items[j];
+            struct Obj *o = in->items[j];
             o->f18 = 0;
             o->f14 = o->f18;
             o->f10 = o->f14;
