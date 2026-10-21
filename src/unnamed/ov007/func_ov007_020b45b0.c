@@ -22,7 +22,10 @@ typedef struct Ov007ItemView {
 /* One 0xc-byte entry per item id; only the flags word is read (as in
  * func_ov007_020b46b0): bit 0 never selectable, bit 1 selectable before
  * the fade-in ends. */
-struct DataEntry { int flags; char pad_04[8]; };
+struct DataEntry {
+    int flags;
+    char pad_04[8];
+};
 extern struct DataEntry data_ov007_020d77dc[];
 extern int func_ov007_020b79e4(void);
 extern int func_ov007_020b63e4(void *t);
@@ -37,8 +40,7 @@ void func_ov007_020b45b0(void *t) {
     int b6 = 0;
 
     if (p->state->currentState == 0) {
-        if (p->fade >= 0x1000 ||
-            (data_ov007_020d77dc[view->item->id].flags & 2))
+        if (p->fade >= 0x1000 || (data_ov007_020d77dc[view->item->id].flags & 2))
             b6 = 1;
     }
     if (b6) {

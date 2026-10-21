@@ -97,8 +97,7 @@ int func_ov007_020ba368(int t)
         }
     }
 
-    if (((Ov007Picker *)s)->groupCount == 0 ||
-        SCENE->totalPoints == 0) {
+    if (((Ov007Picker *)s)->groupCount == 0 || SCENE->totalPoints == 0) {
         int ratio;
         if (t <= 0) {
             ratio = 0;

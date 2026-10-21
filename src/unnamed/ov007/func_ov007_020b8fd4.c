@@ -89,47 +89,45 @@ void func_ov007_020b8fd4(int param)
   v = SPRITES->slideProgress;
   if (v <= 0x1000)
   {
-    SPRITES->sprites[1]->screenX = 0x80000;
-    b = SPRITES->sprites[1];
-    b->screenY = 0x60000;
-    mode = SCENE->introVariant;
-    switch (mode)
-    {
+      SPRITES->sprites[1]->screenX = 0x80000;
+      b = SPRITES->sprites[1];
+      b->screenY = 0x60000;
+      mode = SCENE->introVariant;
+      switch (mode) {
       case 0:
-        b = SPRITES->sprites[1];
-        b->screenX += (0x1000 - v) << 8;
-        break;
+          b = SPRITES->sprites[1];
+          b->screenX += (0x1000 - v) << 8;
+          break;
       case 3:
         d = 0x1000 - v;
         b = SPRITES->sprites[1];
         b->screenY += (-d) << 8;
         break;
     }
-    func_ov007_020c4388((char *) SPRITES->sprites[1], (int) WORK->cameras[1]);
+    func_ov007_020c4388((char *)SPRITES->sprites[1], (int)WORK->cameras[1]);
   }
-  func_ov007_020c421c((char *) SPRITES->sprites[0]);
-  func_ov007_020c421c((char *) SPRITES->sprites[1]);
+  func_ov007_020c421c((char *)SPRITES->sprites[0]);
+  func_ov007_020c421c((char *)SPRITES->sprites[1]);
 
   {
-    Ov007PickerScene *c;
-    Ov007Work *g;
-    f8 = (int) data_ov007_02104b9c;
-    c = *((Ov007PickerScene * volatile *) &data_ov007_02104ba0);
-    g = *((Ov007Work * volatile *) &data_ov007_0210342c);
-    flag = c->awaitingTap;
-    p5 = g->itemViews[5];
-    inner = c->picker;
-    node = p5->item;
-    ps = node->state;
-    p_c = ((Ov007PickerSprites *) f8)->sprites[2];
-    p_10 = ((Ov007PickerSprites *) f8)->sprites[3];
-    f8 = inner->groupCount;
-    sh = ps->currentState;
-    f14 = inner->totalPoints;
-    if (flag)
-    {
-      f8 = 0;
-      f14 = f8;
+      Ov007PickerScene *c;
+      Ov007Work *g;
+      f8 = (int)data_ov007_02104b9c;
+      c = *((Ov007PickerScene *volatile *)&data_ov007_02104ba0);
+      g = *((Ov007Work *volatile *)&data_ov007_0210342c);
+      flag = c->awaitingTap;
+      p5 = g->itemViews[5];
+      inner = c->picker;
+      node = p5->item;
+      ps = node->state;
+      p_c = ((Ov007PickerSprites *)f8)->sprites[2];
+      p_10 = ((Ov007PickerSprites *)f8)->sprites[3];
+      f8 = inner->groupCount;
+      sh = ps->currentState;
+      f14 = inner->totalPoints;
+      if (flag) {
+          f8 = 0;
+          f14 = f8;
     }
   }
 
@@ -143,13 +141,13 @@ void func_ov007_020b8fd4(int param)
   {
     scale = other;
   }
-  p_c->screenX = p5->item->posX + (((int) (p_c->width * scale)) / 2);
+  p_c->screenX = p5->item->posX + (((int)(p_c->width * scale)) / 2);
   p_c->screenY = p5->item->posY;
   p_c->scaleX = 0x1000 - scale;
   p_10->screenX = p5->item->posX;
   p_10->screenY = p5->item->posY;
-  func_ov007_020c4388((char *) p_c, param);
-  func_ov007_020c4388((char *) p_10, param);
-  func_ov007_020c421c((char *) p_c);
-  func_ov007_020c421c((char *) p_10);
+  func_ov007_020c4388((char *)p_c, param);
+  func_ov007_020c4388((char *)p_10, param);
+  func_ov007_020c421c((char *)p_c);
+  func_ov007_020c421c((char *)p_10);
 }
