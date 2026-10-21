@@ -1,29 +1,10 @@
+#include "private/ov075_entry_mesh.h"
+
 typedef struct { int x, y, z; } Vec3;
 
 extern void SubVec3(Vec3* a, Vec3* b, Vec3* out);
 extern void CrossVec3(Vec3* a, Vec3* b, Vec3* out);
 extern void NormalizeVec3(Vec3* a, Vec3* out);
-
-/* The entry-menu grid mesh, in func_ov075_0211afb0.c's EntryMesh view with
- * its names; only the fields this file reads. mGridDim[0] is the length of
- * a run of adjacent vertices and mGridDim[1] the run count and row stride. */
-typedef struct EntryMeshVertex {
-    int x, y, z; /* 0x00 */
-    int dist;    /* 0x0c -- func_ov075_0211af0c: distance from 0x74 */
-    /* 0x10: the packed 10-bit x/y/z normal this file builds;
-       func_ov075_0211afb0 sends it to G3_NORMAL (0x4000484). */
-    unsigned int normal;
-    unsigned int texCoord; /* 0x14 -- sent to G3_TEXCOORD (0x4000488) */
-} EntryMeshVertex;
-
-typedef struct EntryMesh {
-    unsigned char pad_00[0x80];
-    EntryMeshVertex *mVertices; /* 0x80 */
-    unsigned char pad_84[0x22];
-    unsigned char mGridDim[2]; /* 0xa6 */
-} EntryMesh;
-
-typedef char EntryMeshVertex_size_must_be_0x18[sizeof(EntryMeshVertex) == 0x18 ? 1 : -1];
 
 void func_ov075_0211abb0(char* self)
 {

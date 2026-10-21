@@ -1,26 +1,9 @@
 #include "BMD_File.h"
+#include "private/ov075_entry_mesh.h"
 
 void *_ZN5Model27LoadCompressedTextureToVramEPcjS0_(char *a, unsigned int b, char *c);
 int func_02045ad8(void *p);
 unsigned int func_02045a50(const void *src, unsigned int size);
-
-/* The mesh's material block: the same five words, in the same order, as
- * daPicGate_c's record (include/private/Ov080Mat.h), with that header's
- * names. func_ov075_0211a948 pushes it to the geometry engine. */
-typedef struct EntryMeshMaterial {
-    u32 texAddr; /* 0x00 */
-    u32 pltAddr; /* 0x04 */
-    u32 difAmb;  /* 0x08 */
-    u32 speEmi;  /* 0x0c */
-    u32 param;   /* 0x10 -- TEXIMAGE_PARAM format, size and pltt0 bits */
-} EntryMeshMaterial;
-
-/* func_ov075_0211afb0.c's EntryMesh view, extended by the material block;
- * only the field this file writes. */
-typedef struct EntryMesh {
-    u8 pad_00[0x88];
-    EntryMeshMaterial mMaterial; /* 0x88 */
-} EntryMesh;
 
 /* Load the mesh's texture and palette from its BMD file into VRAM and keep
  * the addresses with the first material's colours and the texture's

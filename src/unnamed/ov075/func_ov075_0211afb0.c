@@ -20,37 +20,12 @@
  * the value it consumes, which is where the ROM's compiler puts it.
  */
 #include "types.h"
+#include "private/ov075_entry_mesh.h"
 
 extern void MulMat4x3Mat4x3(const void *m1, const void *m0, void *mF);
 extern void func_020553a4(void *m);
 extern void func_ov075_0211a948(void *self);
 extern int data_0209b3ec;
-
-/* One grid vertex, in func_ov075_0211abb0.c's EntryMeshVertex view with
- * its names. func_ov075_0211b260 lays the grid out and
- * func_ov075_0211abb0 packs the normals. */
-typedef struct EntryMeshVertex {
-    int x, y, z; /* 0x00 -- 1.19.12, sent here as VTX_16 */
-    int dist;    /* 0x0c -- func_ov075_0211af0c: distance from the ripple centre at 0x74 */
-    unsigned int normal;   /* 0x10 -- sent to G3_NORMAL (0x4000484) */
-    unsigned int texCoord; /* 0x14 -- sent to G3_TEXCOORD (0x4000488) */
-} EntryMeshVertex;
-
-typedef char EntryMeshVertex_size_must_be_0x18[sizeof(EntryMeshVertex) == 0x18 ? 1 : -1];
-
-/* The mesh fields this file reads. func_ov075_0211b458 sets both grid
- * dimensions to 0x14, sizes the vertex count at 0xa4 as their product and
- * allocates mVertices to match; func_ov075_0211b3b8 frees it. The grid is
- * square, and this file and func_ov075_0211abb0 both use mGridDim[1] as the
- * row stride, so the two bytes are not split into named axes. */
-typedef struct EntryMesh {
-    u8 pad_00[0x14];
-    int mMtx[12]; /* 0x14 -- model matrix, concatenated with the camera */
-    u8 pad_44[0x3c];
-    EntryMeshVertex *mVertices; /* 0x80 -- 0x18-byte vertices, mGridDim[0] * mGridDim[1] */
-    u8 pad_84[0x22];
-    u8 mGridDim[2]; /* 0xa6 */
-} EntryMesh;
 
 void func_ov075_0211afb0(char *self)
 {
@@ -69,7 +44,7 @@ void func_ov075_0211afb0(char *self)
     int sz;
 
     *(int *)0x4000444 = 0;
-    MulMat4x3Mat4x3(mesh->mMtx, &data_0209b3ec, tmp);
+    MulMat4x3Mat4x3(&mesh->mMtx, &data_0209b3ec, tmp);
     *(int *)0x4000440 = 2;
     func_020553a4(tmp);
     *(int *)0x4000440 = 1;
