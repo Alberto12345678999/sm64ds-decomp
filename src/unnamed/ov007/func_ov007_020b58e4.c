@@ -1,23 +1,67 @@
 #include "types.h"
+#include "Ov007MenuState.h"
+#include "Ov007Sprite.h"
 extern u8 data_ov007_0210342c[];
-inline char *inline_fn(char *arg0)
+
+/* The 10-byte layout row func_ov007_020aea6c's item points at; names as in
+ * func_ov007_020b5bf0, only the slot this file reads. */
+typedef struct Ov007ItemLayout {
+  u16 kind; /* 0x0 */
+} Ov007ItemLayout;
+
+/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
+ * func_ov007_020b46b0 and func_ov007_020ae834, only the slots this file
+ * touches. */
+typedef struct Ov007Item {
+  u16 id; /* 0x00 */
+  char pad_02[2];
+  Ov007MenuState *state; /* 0x04: func_ov007_020c9388 */
+  char pad_08[8];
+  s32 fade; /* 0x10: Q12; selectable once fully faded in (>= 0x1000) */
+  char pad_14[0x10];
+  Ov007ItemLayout *layout; /* 0x24 */
+} Ov007Item;
+
+typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
+
+/* One of the manager's itemViews (func_ov007_020b4c04); names as there. */
+typedef struct Ov007ItemView {
+  Ov007Item *item;     /* 0x00 */
+  Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
+} Ov007ItemView;
+
+/* data_ov007_0210342c: the overlay's manager; names as in
+ * func_ov007_020b1718, only the slots this file reads. +0xf0 stays raw: no
+ * reader names it. */
+typedef struct Ov007Work {
+  char pad_00[4];
+  Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
+  char pad_10[0x10];
+  int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus tap, 0 for a button */
+} Ov007Work;
+
+typedef char Ov007Work_transitionMode_must_be_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20 ? 1 : -1];
+
+#define WORK (*(Ov007Work **)data_ov007_0210342c)
+
+inline Ov007Item *inline_fn(char *arg0)
 {
-  return *((char **) arg0);
+  return ((Ov007ItemView *) arg0)->item;
 }
 
 int func_ov007_020b58e4(char *self)
 {
   char *g = *((char **) data_ov007_0210342c);
-  char *b = *((char **) ((*((char **) data_ov007_0210342c)) + 0xc));
-  int flag = *((int *) (b + 0xc));
-  char *a = inline_fn(self);
-  int sel = *((short *) b);
-  char *r3ptr = *((char **) (a + 0x24));
+  Ov007MenuState *b = WORK->states[2];
+  int flag = b->stateTicks;
+  Ov007Item *a = inline_fn(self);
+  int sel = b->currentState;
+  Ov007ItemLayout *r3ptr = a->layout;
   int r7 = flag == 0;
-  short *c = *((short **) (a + 4));
-  int lr_v = *((u16 *) r3ptr);
-  int ip_v = *((u16 *) a);
-  int ret = c[1];
+  Ov007MenuState *c = a->state;
+  int lr_v = r3ptr->kind;
+  int ip_v = a->id;
+  int ret = c->requestedState;
   switch (sel)
   {
     case 0:
@@ -30,7 +74,7 @@ int func_ov007_020b58e4(char *self)
     case 1:
       if (r7)
     {
-      int d = *((short *) (((char *) b) + 0xa));
+      int d = b->previousState;
       if (d == 0xe)
       {
         if (lr_v == 0)
@@ -70,7 +114,7 @@ int func_ov007_020b58e4(char *self)
       else
         if (lr_v == 6)
       {
-        *((int *) (((char *) a) + 0x10)) = 0;
+        a->fade = 0;
         ret = 5;
       }
       else
@@ -96,7 +140,7 @@ int func_ov007_020b58e4(char *self)
     {
       if (lr_v == 2)
       {
-        int e = *((int *) (((char *) (*((char **) data_ov007_0210342c))) + 0x20));
+        int e = WORK->transitionMode;
         if (((e == 1) && (ip_v == 4)) || ((e == 0) && ((ip_v == 3) || (ip_v == 5))))
         {
           ret = 3;
@@ -107,11 +151,11 @@ int func_ov007_020b58e4(char *self)
           ret = 3;
           if (f == 1)
           {
-            *((short *) (((char *) (*((int **) (self + 4)))) + 0x70)) = 0;
+            ((Ov007ItemView *) self)->sprite->texS = 0;
           }
           else
           {
-            *((short *) (((char *) (*((int **) (self + 4)))) + 0x70)) = 0x28;
+            ((Ov007ItemView *) self)->sprite->texS = 0x28;
           }
         }
       }
@@ -176,7 +220,7 @@ int func_ov007_020b58e4(char *self)
     case 8:
       if (r7)
     {
-      int t = *((short *) (((char *) (*((int **) (((char *) (*((char **) data_ov007_0210342c))) + 8)))) + 0xa));
+      int t = WORK->states[1]->previousState;
       if (t < 0)
       {
         if (lr_v == 3)
@@ -219,14 +263,14 @@ int func_ov007_020b58e4(char *self)
     {
       if (lr_v == 4)
       {
-        int t = *((short *) (((char *) b) + 0xa));
+        int t = b->previousState;
         if (t == 8)
         {
           ret = 3;
         }
         else
         {
-          *((int *) (((char *) a) + 0x10)) = 0;
+          a->fade = 0;
           ret = 5;
         }
       }
