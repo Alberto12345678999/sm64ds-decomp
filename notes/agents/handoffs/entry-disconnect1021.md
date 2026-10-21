@@ -1,6 +1,6 @@
 # Entry disconnect interface
 
-Task `entry-disconnect1021` continues accepted `entry-async-compose1021` from main `5ca03d53816f20996724ef053628b6d6dcf214fa`. The deliverable is a verified PR; no merge is authorized.
+Task `entry-disconnect-publish1021` preserves `entry-disconnect1021` and its inherited findings from accepted `entry-async-compose1021`. The original task incorrectly required the retired .c caller as an output; its coordinator cancelled it with the source and proof preserved, then registered this explicit continuation with the actual .cpp output. The source was composed without conflicts against main `9a00a8b60053a0788fa504cb4221432e92b1d71d`. The deliverable is a verified PR; no merge is authorized.
 
 ## Recovered behavior
 
@@ -26,4 +26,4 @@ The rename ledger is reserved by `issue2410-sound-playsub1015`. The user authori
 
 ## Proof and publication
 
-The producer's initial native function check verifies all 828 bytes and 32 strict destinations with zero blind or missing relocations. Both external callers independently pass their linked-byte check. Final evidence must cover the complete changed-header consumer set, every owned function and emitted passenger, full production ROM, declarations, formatting, enrollment and references. The queue evidence binds final terminal counts and hashes to an immutable candidate/base. Shared metadata authorization, independent acceptance and PR publication remain distinct from local byte proof.
+The producer's initial native function check verifies all 828 bytes and 32 strict destinations with zero blind or missing relocations. Both external callers independently pass their linked-byte check. Final evidence must cover the complete changed-header consumer set, every owned function and emitted passenger, full production ROM, declarations, formatting, enrollment and references. The queue evidence binds final terminal counts and hashes to an immutable candidate/base. The single-row metadata exception is authorized and applied. Fresh composition proof, independent acceptance and PR publication remain distinct from the original local byte proof.
