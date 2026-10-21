@@ -63,16 +63,22 @@ extern void SDK_SYS_STACKSIZE(void);
 extern void SDK_IRQ_STACKSIZE(void);
 
 extern int data_020a6130;
-extern OSThreadInfo data_020a6134;
-extern OSThread data_020a621c;
+extern int data_020a6134[];
+extern char data_020a621c[];
 extern char data_020a613c[];
 extern void *data_020a612c;
 extern char data_023c0000;
-extern OSThread data_020a6188;
+extern char data_020a6188[];
 extern void func_02057e34(void);
 extern char data_020a6378[];
 extern u32 func_02057e48(u32 newVal);
 extern void func_02058200(char *self, int a1, int a2, int end, int arg4, int arg5);
+
+/* Typed through casts: the other files declare these symbols with their own
+ * spellings, so the externs keep theirs. */
+#define THREAD_INFO (*(OSThreadInfo *)data_020a6134)
+#define LAUNCHER_THREAD (*(OSThread *)data_020a621c)
+#define IDLE_THREAD (*(OSThread *)data_020a6188)
 
 void func_02058308(void)
 {
@@ -87,20 +93,20 @@ void func_02058308(void)
     data_020a6130 = 1;
 
     for (i = 0; i < 16; i++) {
-        data_020a6134.entry[i] = 0;
+        THREAD_INFO.entry[i] = 0;
     }
 
     data_020a612c = data_020a613c;
 
-    data_020a621c.priority = 0x10;
-    data_020a621c.id = 0;
-    data_020a621c.state = 1;
-    data_020a621c.next = 0;
-    data_020a621c.profiler = 0;
+    LAUNCHER_THREAD.priority = 0x10;
+    LAUNCHER_THREAD.id = 0;
+    LAUNCHER_THREAD.state = 1;
+    LAUNCHER_THREAD.next = 0;
+    LAUNCHER_THREAD.profiler = 0;
 
-    data_020a6134.entry[0] = &data_020a621c;
-    data_020a6134.list = &data_020a621c;
-    data_020a6134.current = &data_020a621c;
+    THREAD_INFO.entry[0] = &LAUNCHER_THREAD;
+    THREAD_INFO.list = &LAUNCHER_THREAD;
+    THREAD_INFO.current = &LAUNCHER_THREAD;
 
     ovr = (s32)SDK_SYS_STACKSIZE;
     if (ovr == 0) {
@@ -111,21 +117,21 @@ void func_02058308(void)
 
     end = (u32)&data_023c0000 + 0x3fc0 - (s32)SDK_IRQ_STACKSIZE;
 
-    data_020a621c.stackBottom = end;
-    data_020a621c.stackTop = base;
-    data_020a621c.stackWarningOffset = 0;
+    LAUNCHER_THREAD.stackBottom = end;
+    LAUNCHER_THREAD.stackTop = base;
+    LAUNCHER_THREAD.stackWarningOffset = 0;
     *(int *)(end - 4) = (int)0xfddb597d;
-    *(int *)(data_020a621c.stackTop) = 0x7bf9dd5b;
-    data_020a621c.joinQueue = 0;
-    data_020a6134.max_entry = 0x10;
-    data_020a6134.isNeedRescheduling = 0;
-    data_020a6134.irqDepth = 0;
-    *(OSThreadInfo **)0x027fffa0 = &data_020a6134;
+    *(int *)(LAUNCHER_THREAD.stackTop) = 0x7bf9dd5b;
+    LAUNCHER_THREAD.joinQueue = 0;
+    THREAD_INFO.max_entry = 0x10;
+    THREAD_INFO.isNeedRescheduling = 0;
+    THREAD_INFO.irqDepth = 0;
+    *(OSThreadInfo **)0x027fffa0 = &THREAD_INFO;
 
     func_02057e48(0);
 
-    func_02058200((char *)&data_020a6188, (int)&func_02057e34, 0, (int)data_020a6378, 0xc8, 0x1f);
+    func_02058200(data_020a6188, (int)&func_02057e34, 0, (int)data_020a6378, 0xc8, 0x1f);
 
-    data_020a6188.priority = 0x20;
-    data_020a6188.state = 1;
+    IDLE_THREAD.priority = 0x20;
+    IDLE_THREAD.state = 1;
 }
