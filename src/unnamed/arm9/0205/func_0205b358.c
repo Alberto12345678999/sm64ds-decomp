@@ -1,7 +1,7 @@
 struct Node5b1a4;
 
 /* NitroSDK SND_CommandInit. SNDCommand is the SDK's command record: the
-   pool is data_020a6760[256] (sCommandArray), threaded onto the free list
+   pool is the 256 records at data_020a6760 (sCommandArray), threaded onto the free list
    data_020a6484; func_0205b554 is SNDi_InitSharedWork. The first command
    sent is id 0x19 (SND_COMMAND_SHARED_WORK) with the shared work block as
    arg[0]. */
@@ -11,8 +11,11 @@ typedef struct SNDCommand {
     unsigned int arg[4];     /* 0x08 */
 } SNDCommand;
 
-extern SNDCommand data_020a6760[256];
-extern SNDCommand *data_020a6484;
+/* The other files declare these as int / void *; reach them through casts
+   rather than retyping the externs. */
+extern int data_020a6760;
+extern void *data_020a6484;
+#define COMMAND_ARRAY ((SNDCommand *)&data_020a6760)
 extern unsigned char data_020a7760[];
 extern int data_020a648c;
 extern int data_020a6490;
@@ -39,11 +42,11 @@ void func_0205b358(void)
 
     func_0205ae64();
 
-    data_020a6484 = data_020a6760;
+    data_020a6484 = COMMAND_ARRAY;
     for (i = 0; i < 0xff; i++)
-        data_020a6760[i].next = &data_020a6760[i + 1];
+        COMMAND_ARRAY[i].next = &COMMAND_ARRAY[i + 1];
 
-    /* data_020a6760[255].next (the free list's tail): the ROM reaches it
+    /* COMMAND_ARRAY[255].next (the free list's tail): the ROM reaches it
        through the data_020a7760 label 0x1000 into the pool. */
     *(int *)(data_020a7760 + 0x7e8) = 0;
     data_020a6494 = &data_020a7f48;

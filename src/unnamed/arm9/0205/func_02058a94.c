@@ -20,12 +20,15 @@ typedef struct OSThreadInfo {
     struct OSThread *current; /* 0x08 */
 } OSThreadInfo;
 
-extern OSThreadInfo data_020a6134;
+/* Declared int [] elsewhere (func_02058308.c's THREAD_INFO): reached
+   through a cast rather than a retyped extern. */
+extern int data_020a6134[];
+#define THREAD_INFO (*(OSThreadInfo *)data_020a6134)
 
 void func_02058a94(char *obj) {
     OSMutex *mutex = (OSMutex *)obj;
     unsigned int saved = _ZN3IRQ7DisableEv();
-    struct OSThread *current = data_020a6134.current;
+    struct OSThread *current = THREAD_INFO.current;
     if (mutex->thread == current) {
         if (--mutex->count == 0) {
             func_02058988(current, obj);
