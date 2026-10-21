@@ -83,9 +83,9 @@ typedef struct EntryMesh {
 typedef char EntryMeshVertex_size_must_be_0x18[sizeof(EntryMeshVertex) == 0x18 ? 1 : -1];
 typedef char EntryMeshMaterial_size_must_be_0x14[sizeof(EntryMeshMaterial) == 0x14 ? 1 : -1];
 typedef char EntryMesh_size_must_be_0xa8[sizeof(EntryMesh) == 0xa8 ? 1 : -1];
-typedef char EntryMesh_mMtx_at_0x14[(int)&((EntryMesh *)0)->mMtx == 0x14 ? 1 : -1];
-typedef char EntryMesh_mVertices_at_0x80[(int)&((EntryMesh *)0)->mVertices == 0x80 ? 1 : -1];
-typedef char EntryMesh_mRippleTimer_at_0xa2[(int)&((EntryMesh *)0)->mRippleTimer == 0xa2 ? 1 : -1];
+typedef char EntryMesh_mMtx_must_be_at_0x14[(int)&((EntryMesh *)0)->mMtx == 0x14 ? 1 : -1];
+typedef char EntryMesh_mVertices_must_be_at_0x80[(int)&((EntryMesh *)0)->mVertices == 0x80 ? 1 : -1];
+typedef char EntryMesh_mRippleTimer_must_be_at_0xa2[(int)&((EntryMesh *)0)->mRippleTimer == 0xa2 ? 1 : -1];
 #endif
 
 #endif
