@@ -217,9 +217,10 @@ void func_ov002_020f1578(daObjBC_Switch_c *c, char *arg){
  * membership.
  *
  * THE ODD SPELLINGS ARE LOAD-BEARING and are kept exactly: `p` is hoisted out
- * of the branch, and the 0x32a write is reached once through
- * `(u16*)(c + 0x300)[0x15]` and once through a masked direct address. Named
- * mCoinTimerSeed CSE's the field address and size-DIFFs.
+ * of the branch, and the 0x32a write (mCoinTimerSeed) is reached once through
+ * `(u16*)(c + 0x300)[0x15]` and once through an integer-cast &mCoinTimerSeed.
+ * A plain mCoinTimerSeed = mCoinTimerSeed * 0xa CSE's the field address and
+ * shrinks the function by 16 bytes (measured).
  */
 /* The name comes from vtable slot identity, not from the image. */
 int daObjBC_Switch_c::InitResources()
@@ -267,7 +268,7 @@ int daObjBC_Switch_c::InitResources()
         p = (unsigned short *)(c + 0x300);
         p[0x15] = 0xfa;
     } else {
-        *(unsigned short *)((int)c + 0x32a) = *(unsigned short *)((int)c + 0x32a) * 0xa;
+        *(unsigned short *)((int)&mCoinTimerSeed) = *(unsigned short *)((int)&mCoinTimerSeed) * 0xa;
     }
     return 1;
 }
