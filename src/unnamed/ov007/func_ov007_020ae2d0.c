@@ -102,9 +102,11 @@ void func_ov007_020ae2d0(char *c)
         Ov007Item *s = r->item;
         short t = s->state->currentState;
         if (t == 0) {
-            if (p->ready == 0) p->ready = 1;
+            if (p->ready == 0)
+                p->ready = 1;
         } else {
-            if (p->ready != 0) p->ready = 0;
+            if (p->ready != 0)
+                p->ready = 0;
         }
         return;
     }

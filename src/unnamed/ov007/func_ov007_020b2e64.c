@@ -78,10 +78,11 @@ void func_ov007_020b2e64(char* self)
 
     r4v = 0;
     if (func_ov007_020c1da0(0) == 0) {
-        Ov007Pad* p = WORK->pad;
+        Ov007Pad *p = WORK->pad;
         int flag = 1;
         if (p->heldFrames[4] != 1) {
-            if (p->heldFrames[10] != 1) flag = r4v;
+            if (p->heldFrames[10] != 1)
+                flag = r4v;
         }
         if (flag != 0) r4v = 1;
     }

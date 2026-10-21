@@ -45,9 +45,10 @@ typedef char Ov007Model_visible_must_be_0x94[(int)&((Ov007Model *)0)->visible ==
  * view. */
 extern "C" void func_ov007_020bfaf0(char* c)
 {
-    Ov007Camera* cam = (Ov007Camera*)c;
-    Ov007Model* r4 = (*(Ov007Data02104bd8**)&data_ov007_02104bd8)->model;
-    if (r4->visible == 0) return;
+    Ov007Camera *cam = (Ov007Camera *)c;
+    Ov007Model *r4 = (*(Ov007Data02104bd8 **)&data_ov007_02104bd8)->model;
+    if (r4->visible == 0)
+        return;
     unsigned int idx = cam->fovy >> 4;
     Fix12i t1 = FX_MUL(data_02082214[idx * 2], 0x1064);
     Fix12i base = r4->scale.x * 0xd800 + 0x12c000;

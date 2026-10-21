@@ -29,8 +29,7 @@ typedef char Ov007Link_dir_must_end_at_0x18[sizeof(Ov007Link) == 0x18 ? 1 : -1];
  * past dir.z, times stiffness (Q12), pushes the two ends apart, and each end
  * is damped by its own z velocity times damping. p keeps the char * spelling
  * of the definition; `link` is the typed view. */
-void func_ov007_020c7a84(char *p, int stiffness, int damping)
-{
+void func_ov007_020c7a84(char *p, int stiffness, int damping) {
     Ov007Link *link = (Ov007Link *)p;
     Ov007Follower *a = link->from;
     int t = a->target[2] - link->to->target[2] - link->dir.z;

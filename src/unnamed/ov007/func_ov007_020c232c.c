@@ -23,12 +23,13 @@ typedef char Ov007Light_size_must_be_0x28[sizeof(Ov007Light) == 0x28 ? 1 : -1];
  * LIGHT_COLOR (0x040004cc), each tagged with the light number in bits 30-31.
  * o keeps the char * spelling of the definition; `light` is the typed view. */
 void func_ov007_020c232c(char* o) {
-    Ov007Light* light = (Ov007Light*)o;
+    Ov007Light *light = (Ov007Light *)o;
     int a, b, c;
-    if (light->enabled == 0) return;
+    if (light->enabled == 0)
+        return;
     a = (light->dirX >> 3) & 0x3ff;
     b = (light->dirY >> 3) & 0x3ff;
     c = (light->dirZ >> 3) & 0x3ff;
-    *(volatile unsigned*)0x40004c8 = a | (b << 10) | (c << 20) | (light->id << 30);
-    *(volatile unsigned*)0x40004cc = (light->id << 30) | light->color;
+    *(volatile unsigned *)0x40004c8 = a | (b << 10) | (c << 20) | (light->id << 30);
+    *(volatile unsigned *)0x40004cc = (light->id << 30) | light->color;
 }

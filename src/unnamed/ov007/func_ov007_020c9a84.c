@@ -62,9 +62,11 @@ void func_ov007_020c9a84(char *o, int *w, short *ox, short *oy)
         int n = p->count - 1;
         w[1] = base[n].y;
     }
-    SubVec3((struct Vec3 *)&self->xPointPos[0], (struct Vec3 *)&self->xPointPos[1], (struct Vec3 *)&d);
+    SubVec3((struct Vec3 *)&self->xPointPos[0], (struct Vec3 *)&self->xPointPos[1],
+            (struct Vec3 *)&d);
     ra = func_020538b8(d.x, d.z);
-    SubVec3((struct Vec3 *)&self->yPointPos[0], (struct Vec3 *)&self->yPointPos[1], (struct Vec3 *)&d);
+    SubVec3((struct Vec3 *)&self->yPointPos[0], (struct Vec3 *)&self->yPointPos[1],
+            (struct Vec3 *)&d);
     rb = func_020538b8(d.z, d.y);
     a1 = (unsigned short)(ra + 0x3fff);
     a2 = (unsigned short)(rb + 0x7fff);

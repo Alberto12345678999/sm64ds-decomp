@@ -69,11 +69,11 @@ typedef char Ov007Work_figure_must_end_at_0x104[sizeof(Ov007Work) == 0x104 ? 1 :
  * void * spelling of the definition; `figure` is the typed view. */
 #pragma opt_common_subs off
 void func_ov007_020b0da0(void* arg0) {
-    Ov007Figure* figure = (Ov007Figure*)arg0;
-    Ov007Model* obj = figure->model;
-    Ov007MenuState* st = WORK->state;
+    Ov007Figure *figure = (Ov007Figure *)arg0;
+    Ov007Model *obj = figure->model;
+    Ov007MenuState *st = WORK->state;
     int counter = st->stateTicks;
-    Matrix4x3* mat = obj->model->transforms;
+    Matrix4x3 *mat = obj->model->transforms;
     void* ret = func_ov007_020aebac();
 
     if (counter == 1) {
@@ -92,21 +92,21 @@ void func_ov007_020b0da0(void* arg0) {
         out.x = 0;
         out.z = 0;
 
-        if (!(*(volatile int*)&st->stateWork & OV007_FIGURE_TOUCHED) && counter >= 4) {
-            Ov007Touch* rp = WORK->touch;
+        if (!(*(volatile int *)&st->stateWork & OV007_FIGURE_TOUCHED) && counter >= 4) {
+            Ov007Touch *rp = WORK->touch;
             if (rp->cur.touch != 0) {
                 int a = rp->cur.x;
                 if (a >= 0x60 && a <= 0xa0) {
                     int b = rp->cur.y;
                     if (b >= 0x40 && b <= 0x80) {
-                        int* pflag = (int*)&st->stateWork;
+                        int *pflag = (int *)&st->stateWork;
                         *pflag |= OV007_FIGURE_TOUCHED;
                         data_ov007_02103340 = counter;
                         func_ov007_020bdeb0(0x34);
                         {
-                            char* t0 = *(char**)(WORK->pad_c4 + 0);
-                            char* t1 = *(char**)(t0 + 4);
-                            *(short*)(t1 + 2) = 4;
+                            char *t0 = *(char **)(WORK->pad_c4 + 0);
+                            char *t1 = *(char **)(t0 + 4);
+                            *(short *)(t1 + 2) = 4;
                         }
                     }
                 }

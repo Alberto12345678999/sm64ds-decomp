@@ -28,11 +28,10 @@ typedef char Ov007Texture_size_must_be_0x2c[sizeof(Ov007Texture) == 0x2c ? 1 : -
  * colours at plttSrc; func_ov007_020c16dc works out the texel and palette
  * byte sizes. The record keeps the void * spelling of the definition; `tex`
  * is the typed view. */
-void* func_ov007_020c162c(void* fmt, int texSrc, int sizeS, int sizeT, int plttSrc,
-                          unsigned short plttColorCount)
-{
+void *func_ov007_020c162c(void *fmt, int texSrc, int sizeS, int sizeT, int plttSrc,
+                          unsigned short plttColorCount) {
     char* r6 = func_ov007_020c3df4(0, 0x2c);
-    Ov007Texture* tex = (Ov007Texture*)r6;
+    Ov007Texture *tex = (Ov007Texture *)r6;
     int width = 8 << sizeS;
     int height = 8 << sizeT;
     func_ov007_020c15ec(r6);
@@ -42,8 +41,10 @@ void* func_ov007_020c162c(void* fmt, int texSrc, int sizeS, int sizeT, int plttS
     tex->sizeT = sizeT;
     tex->plttSrc = plttSrc;
     tex->plttColorCount = plttColorCount;
-    if (texSrc != 0) tex->flags |= 1;
-    if (plttSrc != 0) tex->flags |= 2;
+    if (texSrc != 0)
+        tex->flags |= 1;
+    if (plttSrc != 0)
+        tex->flags |= 2;
     func_ov007_020c16dc(fmt, width, height, plttColorCount, &tex->texSize, &tex->plttSize);
     return r6;
 }
