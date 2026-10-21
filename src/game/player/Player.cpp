@@ -24331,7 +24331,7 @@ void func_ov002_020e444c(char *c)
             int z = FX_MUL((*(int *)(c + 0x574)), 0x2400) + 0xc000;
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x7000, z);
             char *p = *(char **)(c + 0x1d8);
-            *(struct Matrix4x3 *)(p + 0x1c) = data_020a0e68;
+            ((Model *)p)->mat4x3 = data_020a0e68;
         }
     }
 
