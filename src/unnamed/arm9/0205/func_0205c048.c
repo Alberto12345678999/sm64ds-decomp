@@ -75,9 +75,11 @@ static inline int IsNameChar(int c) {
 
 int func_0205c048(unsigned char *self) {
     FSFile *p_dir = (FSFile *)self;
-    int is_dir = p_dir->arg.findpath.find_directory;
+    int find_dir = p_dir->arg.findpath.find_directory;
     unsigned char *path = p_dir->arg.findpath.path;
     unsigned char c;
+    /* First the character that ended the component (nonzero: a separator
+     * follows, so a directory is wanted), then the 0/1 the entry must match. */
     int want_dir;
     int len;
 
@@ -90,7 +92,7 @@ int func_0205c048(unsigned char *self) {
         while (IsNameChar(want_dir = path[len]))
             len = len + 1;
 
-        if (want_dir != 0 || is_dir != 0)
+        if (want_dir != 0 || find_dir != 0)
             want_dir = 1;
 
         if (len == 0)
@@ -135,7 +137,7 @@ int func_0205c048(unsigned char *self) {
             continue;
         }
 
-        if (is_dir != 0)
+        if (find_dir != 0)
             return 1;
         {
             *p_dir->arg.findpath.result.file = entry.id.file_id;
@@ -143,7 +145,7 @@ int func_0205c048(unsigned char *self) {
         return 0;
     }
 
-    if (is_dir == 0)
+    if (find_dir == 0)
         return 1;
     *p_dir->arg.findpath.result.dir = p_dir->prop.dir.pos;
     return 0;
