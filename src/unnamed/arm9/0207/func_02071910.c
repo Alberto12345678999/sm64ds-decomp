@@ -4,7 +4,12 @@
  * top of its save area, step mSP past the frame, and return the restored
  * return address (mGPR[14]) for func_02072dac to look up the caller's
  * action table. The view extends func_02072168.c's ThrowContext with the
- * frame-header fields func_02071864 fills. */
+ * frame-header fields func_02071864 fills.
+ *
+ * func_02071910 at 0x02071910, size 0x64
+ * Matched byte-for-byte with mwccarm 1.2/sp2p3
+ * flags: -O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
+ */
 typedef struct ThrowContext {
     char pad_00[0x14];
     char *mSP;    /* 0x14 */
