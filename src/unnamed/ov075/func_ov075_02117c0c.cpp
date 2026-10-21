@@ -30,8 +30,7 @@ void func_ov075_02117c0c(char* self)
 
     id = func_0203da9c();
     if (TouchArea_Update(&scene->mIcons[0], id) != 0 ||
-        (scene->CheckMenuConfirm(id) != 0 &&
-         scene->mSelectedIcon == 0)) {
+        (scene->CheckMenuConfirm(id) != 0 && scene->mSelectedIcon == 0)) {
         scene->mIcons[1].mOn = 0;
         func_ov001_020ab41c(&scene->mIcons[0]);
         if (func_0203d9b4() != 0 && IsMode6(scene)) {

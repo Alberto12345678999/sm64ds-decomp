@@ -32,12 +32,12 @@ typedef struct dScEntry_c {
     u8 pad_000[0x70];
     dThIcon_c mIcons[9]; /* 0x070 */
     u8 pad_1b4[0xb4];
-    s32 mStepWork[4];   /* 0x268 */
+    s32 mStepWork[4]; /* 0x268 */
     u8 pad_278[8];
-    u8 mIconCount;      /* 0x280 */
-    u8 mSelectedIcon;   /* 0x281 */
+    u8 mIconCount;    /* 0x280 */
+    u8 mSelectedIcon; /* 0x281 */
     u8 pad_282[5];
-    u8 mExitMask;       /* 0x287 */
+    u8 mExitMask; /* 0x287 */
 } dScEntry_c;
 
 typedef char dScEntry_c_size_must_be_0x288[sizeof(dScEntry_c) == 0x288 ? 1 : -1];

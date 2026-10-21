@@ -60,8 +60,8 @@ void func_ov075_0211a948(char *c)
     reg_G3_DIF_AMB = mesh->mMaterial.difAmb;
     reg_G3_SPE_EMI = mesh->mMaterial.speEmi;
     G3_TexImageParam(mesh->mMaterial.texAddr, (mesh->mMaterial.param >> 0x1a) & 7, 0,
-                     (mesh->mMaterial.param >> 0x14) & 7, (mesh->mMaterial.param >> 0x17) & 7,
-                     0, 0, (mesh->mMaterial.param >> 0x1d) & 1);
+                     (mesh->mMaterial.param >> 0x14) & 7, (mesh->mMaterial.param >> 0x17) & 7, 0, 0,
+                     (mesh->mMaterial.param >> 0x1d) & 1);
     {
         u32 fmt = (mesh->mMaterial.param >> 0x1a) & 7;
         u32 sub = (fmt == 2) ? 1 : 0;

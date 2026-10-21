@@ -49,8 +49,10 @@ void func_ov075_021173a8(char *c) {
 
     scene->mSelectedIcon = 0;
 
-    func_ov075_02115e8c((char *)&scene->mIcons[6], 5, 0, (s16)(SH(data_ov075_0211d72c, func_0200f0bc()) + 8), 0x38);
-    func_ov075_02115e8c((char *)&scene->mIcons[7], 6, 0, (s16)(SH(data_ov075_0211d740, func_0200f0bc()) + 8), 0x68);
+    func_ov075_02115e8c((char *)&scene->mIcons[6], 5, 0,
+                        (s16)(SH(data_ov075_0211d72c, func_0200f0bc()) + 8), 0x38);
+    func_ov075_02115e8c((char *)&scene->mIcons[7], 6, 0,
+                        (s16)(SH(data_ov075_0211d740, func_0200f0bc()) + 8), 0x68);
     func_ov075_02115e8c((char *)&scene->mIcons[8], 0xc, 0, 0x56, 0xa8);
     func_ov075_02115e8c((char *)&scene->mIcons[2], 1, 0, 0xac, 0x38);
     func_ov075_02115e8c((char *)&scene->mIcons[0], 3, 0, 0x64, 0x38);

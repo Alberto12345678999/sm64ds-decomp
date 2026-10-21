@@ -47,26 +47,23 @@ void func_ov075_0211abb0(char* self)
             q = (int*)&n;  q[0] = z; q[1] = z; q[2] = z;
 
             if (j == 0)
-                SubVec3((Vec3*)p, (Vec3*)(p + 1), &ej);
+                SubVec3((Vec3 *)p, (Vec3 *)(p + 1), &ej);
             else if (j == mesh->mGridDim[0] - 1)
-                SubVec3((Vec3*)(p - 1), (Vec3*)p, &ej);
+                SubVec3((Vec3 *)(p - 1), (Vec3 *)p, &ej);
             else
-                SubVec3((Vec3*)(p - 1), (Vec3*)(p + 1), &ej);
+                SubVec3((Vec3 *)(p - 1), (Vec3 *)(p + 1), &ej);
 
             if (i == 0)
-                SubVec3((Vec3*)p, (Vec3*)(p + mesh->mGridDim[1]), &ei);
+                SubVec3((Vec3 *)p, (Vec3 *)(p + mesh->mGridDim[1]), &ei);
             else if (i == mesh->mGridDim[1] - 1)
-                SubVec3((Vec3*)(p - mesh->mGridDim[1]), (Vec3*)p, &ei);
+                SubVec3((Vec3 *)(p - mesh->mGridDim[1]), (Vec3 *)p, &ei);
             else
-                SubVec3((Vec3*)(p - mesh->mGridDim[1]),
-                        (Vec3*)(p + mesh->mGridDim[1]), &ei);
+                SubVec3((Vec3 *)(p - mesh->mGridDim[1]), (Vec3 *)(p + mesh->mGridDim[1]), &ei);
 
             CrossVec3(&ej, &ei, &n);
             n.z >>= 1;
             NormalizeVec3(&n, &n);
-            p->normal = (n.x >> 3 & mask)
-                | ((n.y >> 3 & mask) << 10)
-                | ((n.z >> 3 & mask) << 20);
+            p->normal = (n.x >> 3 & mask) | ((n.y >> 3 & mask) << 10) | ((n.z >> 3 & mask) << 20);
             p++;
         }
     }

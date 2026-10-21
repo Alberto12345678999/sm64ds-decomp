@@ -30,10 +30,10 @@ typedef struct dScEntry_c {
     unsigned char pad_000[0x70];
     dThIcon_c mIcons[9]; /* 0x070 */
     unsigned char pad_1b4[0xb4];
-    int mStepWork[4];             /* 0x268 */
+    int mStepWork[4]; /* 0x268 */
     unsigned char pad_278[8];
-    unsigned char mIconCount;     /* 0x280 */
-    unsigned char mSelectedIcon;  /* 0x281 */
+    unsigned char mIconCount;    /* 0x280 */
+    unsigned char mSelectedIcon; /* 0x281 */
     unsigned char pad_282[6];
 } dScEntry_c;
 

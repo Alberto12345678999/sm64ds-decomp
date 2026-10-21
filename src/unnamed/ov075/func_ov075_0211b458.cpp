@@ -21,12 +21,12 @@ extern PMF data_ov075_0211d994;
  * picture mesh has the same shape (a State row of init/behavior/render
  * handlers, a u16 vertex count beside the two u8 grid dimensions). */
 struct EntryMesh {
-    s32 mPos[3];      /* 0x00 -- func_ov075_0211aa00 translates mMtx by it */
-    s16 mAngleX;      /* 0x0c -- only zeroed here (medium confidence) */
-    s16 mAngleY;      /* 0x0e -- func_ov075_0211aa00 rotates mMtx by it */
-    s16 mAngleZ;      /* 0x10 -- only zeroed here (medium confidence) */
+    s32 mPos[3]; /* 0x00 -- func_ov075_0211aa00 translates mMtx by it */
+    s16 mAngleX; /* 0x0c -- only zeroed here (medium confidence) */
+    s16 mAngleY; /* 0x0e -- func_ov075_0211aa00 rotates mMtx by it */
+    s16 mAngleZ; /* 0x10 -- only zeroed here (medium confidence) */
     u8 pad_12[0x6e];
-    char *mVertices;  /* 0x80 -- 0x18-byte vertices, mNumVertices of them */
+    char *mVertices; /* 0x80 -- 0x18-byte vertices, mNumVertices of them */
     /* 0x84: a {init, behavior, render} row of handlers. Init runs here;
        dEntObj_c::Behavior runs +0x8 (func_ov075_0211b418) and
        dEntObj_c::Render +0x10 (func_ov075_0211b3d8). */
