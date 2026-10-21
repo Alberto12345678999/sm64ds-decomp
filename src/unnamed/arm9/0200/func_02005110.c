@@ -19,126 +19,112 @@ extern int func_02009138(int *thiz, int arg);
 extern void func_020089d8(void *p);
 /* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
  * state touches, with the header's names. */
-typedef struct
-{
-  u8 pad_000[0x110];
-  char *mTargetPlayer; /* 0x110 */
-  u8 pad_114[0x8];
-  /* LookAtExit points it at an actor's position. */
-  struct Vec3 *mLookTarget; /* 0x11c */
-  u8 pad_120[0x5c];
-  s16 mAngleY; /* 0x17c */
+typedef struct {
+    u8 pad_000[0x110];
+    char *mTargetPlayer; /* 0x110 */
+    u8 pad_114[0x8];
+    /* LookAtExit points it at an actor's position. */
+    struct Vec3 *mLookTarget; /* 0x11c */
+    u8 pad_120[0x5c];
+    s16 mAngleY; /* 0x17c */
 } CameraView;
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char CameraView_angle_y_must_be_at_0x17c[(((int) (&((CameraView *) 0)->mAngleY)) == 0x17c) ? (1) : (-1)];
+typedef char CameraView_angle_y_must_be_at_0x17c[(((int)(&((CameraView *)0)->mAngleY)) == 0x17c)
+                                                     ? (1)
+                                                     : (-1)];
 #endif
 
 /* The target player's position and facing, as include/dActor_c.h's C view
  * places them. Its u8 at 0x724 (Player.h's unk_724) stays raw: Player.cpp
  * sets it at one state step and clears it at a later one, which does not
  * yet name it. */
-typedef struct
-{
-  u8 pad_000[0x5c];
-  struct Vec3 mPos; /* 0x05c */
-  u8 pad_068[0x26];
-  s16 mAngleY; /* 0x08e */
+typedef struct {
+    u8 pad_000[0x5c];
+    struct Vec3 mPos; /* 0x05c */
+    u8 pad_068[0x26];
+    s16 mAngleY; /* 0x08e */
 } ActorView;
 
-int func_02005110(char *self)
-{
-  CameraView *cam = (CameraView *) self;
-  struct Vec3 eye;
-  struct Vec3 aim;
-  struct Vec3 *target;
-  s32 horzAngle;
-  s32 mode;
-  {
-    struct Vec3 *p = &((ActorView *) cam->mTargetPlayer)->mPos;
-    eye.x = p->x;
-    eye.y = p->y;
-    eye.z = p->z;
-    eye.y += 0x64000;
-  }
-  mode = 0x48000;
-  target = cam->mLookTarget;
-  if (target == 0)
-  {
-    aim.x = eye.x;
-    aim.y = eye.y;
-    aim.z = eye.z;
-    if ((*((u8 *) (cam->mTargetPlayer + 0x724))) != 0)
+int func_02005110(char *self) {
+    CameraView *cam = (CameraView *)self;
+    struct Vec3 eye;
+    struct Vec3 aim;
+    struct Vec3 *target;
+    s32 horzAngle;
+    s32 mode;
     {
-      mode = 0xd0000;
+        struct Vec3 *p = &((ActorView *)cam->mTargetPlayer)->mPos;
+        eye.x = p->x;
+        eye.y = p->y;
+        eye.z = p->z;
+        eye.y += 0x64000;
     }
-    horzAngle = ((ActorView *) cam->mTargetPlayer)->mAngleY;
-  }
-  else
-  {
-    struct Vec3 diff;
-    struct Vec3 sum;
-    struct Vec3 newAim;
-    s32 dist;
-    s32 scale;
-    s16 fall;
-    Vec3_Add(&sum, target, &eye);
-    aim.x = sum.x;
-    aim.y = sum.y;
-    aim.z = sum.z;
-    Vec3_AsrInPlace((int *) (&aim), 1);
-    dist = Vec3_Dist(&eye, &aim);
-    if (dist > 0x30000)
-    {
-      Vec3_Sub(&diff, &aim, &eye);
-      scale = _ZN4cstd4fdivEii(0x30000, dist);
-      Vec3_MulScalarInPlace((int *) (&diff), scale);
-      Vec3_Add(&newAim, &eye, &diff);
-      aim.x = newAim.x;
-      aim.y = newAim.y;
-      aim.z = newAim.z;
-    }
-    fall = 0x2000;
-    {
-      struct Vec3 *playerPos = &((ActorView *) cam->mTargetPlayer)->mPos;
-      s32 fallDist = Vec3_Dist(cam->mLookTarget, playerPos);
-      s32 t = fallDist - 0x200000;
-      if (t > 0)
-      {
-        s16 scaled = (s16) (((((s64) t) << 2) + 0x800) >> 12);
-        if (scaled > fall)
-        {
-          scaled = fall;
+    mode = 0x48000;
+    target = cam->mLookTarget;
+    if (target == 0) {
+        aim.x = eye.x;
+        aim.y = eye.y;
+        aim.z = eye.z;
+        if ((*((u8 *)(cam->mTargetPlayer + 0x724))) != 0) {
+            mode = 0xd0000;
         }
-        fall -= scaled;
-      }
+        horzAngle = ((ActorView *)cam->mTargetPlayer)->mAngleY;
+    } else {
+        struct Vec3 diff;
+        struct Vec3 sum;
+        struct Vec3 newAim;
+        s32 dist;
+        s32 scale;
+        s16 fall;
+        Vec3_Add(&sum, target, &eye);
+        aim.x = sum.x;
+        aim.y = sum.y;
+        aim.z = sum.z;
+        Vec3_AsrInPlace((int *)(&aim), 1);
+        dist = Vec3_Dist(&eye, &aim);
+        if (dist > 0x30000) {
+            Vec3_Sub(&diff, &aim, &eye);
+            scale = _ZN4cstd4fdivEii(0x30000, dist);
+            Vec3_MulScalarInPlace((int *)(&diff), scale);
+            Vec3_Add(&newAim, &eye, &diff);
+            aim.x = newAim.x;
+            aim.y = newAim.y;
+            aim.z = newAim.z;
+        }
+        fall = 0x2000;
+        {
+            struct Vec3 *playerPos = &((ActorView *)cam->mTargetPlayer)->mPos;
+            s32 fallDist = Vec3_Dist(cam->mLookTarget, playerPos);
+            s32 t = fallDist - 0x200000;
+            if (t > 0) {
+                s16 scaled = (s16)(((((s64)t) << 2) + 0x800) >> 12);
+                if (scaled > fall) {
+                    scaled = fall;
+                }
+                fall -= scaled;
+            }
+        }
+        s16 diffAngle = Vec3_HorzAngle(cam->mLookTarget, &eye) - cam->mAngleY;
+        fall = (diffAngle >= 0) ? (-fall) : (fall);
+        if ((!newAim.x) && (!newAim.x)) {
+        }
+        horzAngle = (s16)(Vec3_HorzAngle(cam->mLookTarget, &eye) + fall);
     }
-    s16 diffAngle = Vec3_HorzAngle(cam->mLookTarget, &eye) - cam->mAngleY;
-    fall = (diffAngle >= 0) ? (-fall) : (fall);
-    if ((!newAim.x) && (!newAim.x))
     {
+        s32 vert = Vec3_VertAngle(&aim, &eye);
+        if (vert < (-0x2800)) {
+            vert = -0x2800;
+        } else if (vert > 0x2800) {
+            vert = 0x2800;
+        }
+        func_020091f8(self, &aim, horzAngle, vert);
     }
-    horzAngle = (s16) (Vec3_HorzAngle(cam->mLookTarget, &eye) + fall);
-  }
-  {
-    s32 vert = Vec3_VertAngle(&aim, &eye);
-    if (vert < (-0x2800))
     {
-      vert = -0x2800;
+        u32 r = func_020093f4((void *)self, mode);
+        if (func_02009138((int *)self, r) == 0) {
+            func_020089d8((void *)self);
+        }
     }
-    else
-      if (vert > 0x2800)
-    {
-      vert = 0x2800;
-    }
-    func_020091f8(self, &aim, horzAngle, vert);
-  }
-  {
-    u32 r = func_020093f4((void *) self, mode);
-    if (func_02009138((int *) self, r) == 0)
-    {
-      func_020089d8((void *) self);
-    }
-  }
-  return 1;
+    return 1;
 }

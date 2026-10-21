@@ -10,7 +10,7 @@ extern int func_0201aad4(void *p);
  * current tick; func_0201a96c sets suspended, cancelling the alarm while set
  * and re-arming it for limit when cleared. 0x2c stays raw: no reader found. */
 typedef struct WatchdogAlarm {
-    char alarm[0x2c];         /* 0x00 -- OSAlarm */
+    char alarm[0x2c]; /* 0x00 -- OSAlarm */
     char pad_2c[4];
     unsigned long long limit; /* 0x30 */
     unsigned long long base;  /* 0x38 */
@@ -18,7 +18,8 @@ typedef struct WatchdogAlarm {
 } WatchdogAlarm;
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char WatchdogAlarm_suspended_must_be_at_0x40[(int)&((WatchdogAlarm *)0)->suspended == 0x40 ? 1 : -1];
+typedef char
+    WatchdogAlarm_suspended_must_be_at_0x40[(int)&((WatchdogAlarm *)0)->suspended == 0x40 ? 1 : -1];
 #endif
 
 void *func_0201aa18(char *c) {

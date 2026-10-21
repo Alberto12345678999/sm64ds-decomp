@@ -13,7 +13,8 @@ typedef struct {
 } CameraView;
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char CameraView_ramp_speed_must_be_at_0x174[(int)&((CameraView *)0)->mRampSpeed == 0x174 ? 1 : -1];
+typedef char
+    CameraView_ramp_speed_must_be_at_0x174[(int)&((CameraView *)0)->mRampSpeed == 0x174 ? 1 : -1];
 #endif
 
 int func_020072c4(char *self)

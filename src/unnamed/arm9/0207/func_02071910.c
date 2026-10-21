@@ -7,9 +7,9 @@
  * frame-header fields func_02071864 fills. */
 typedef struct ThrowContext {
     char pad_00[0x14];
-    char *mSP;     /* 0x14 */
-    char *mFP;     /* 0x18 */
-    int mGPR[16];  /* 0x1c -- r0..r15 */
+    char *mSP;    /* 0x14 */
+    char *mFP;    /* 0x18 */
+    int mGPR[16]; /* 0x1c -- r0..r15 */
     char pad_5c[4];
     /* 0x60 -- frame size, an unsigned LEB128 from the header; the save area
      * ends at mFP + mFrameSize */
@@ -24,7 +24,9 @@ typedef struct ThrowContext {
 } ThrowContext;
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char ThrowContext_args_pushed_must_be_at_0x6a[(int)&((ThrowContext *)0)->mArgsPushed == 0x6a ? 1 : -1];
+typedef char ThrowContext_args_pushed_must_be_at_0x6a[(int)&((ThrowContext *)0)->mArgsPushed == 0x6a
+                                                          ? 1
+                                                          : -1];
 #endif
 
 #pragma opt_strength_reduction off
@@ -33,17 +35,17 @@ void* func_02071910(char* self)
     ThrowContext *c = (ThrowContext *)self;
     int off = (c->mArgsPushed != 0) ? 0x10 : 0;
     int frameSize = c->mFrameSize;
-    char* save = (char*)((int)c->mFP + frameSize - off);
+    char *save = (char *)((int)c->mFP + frameSize - off);
     int i;
 
     for (i = 15; i >= 0; i--) {
         u16 flags = c->mSavedRegMask;
         if (flags & (1 << i)) {
             save -= 4;
-            c->mGPR[i] = *(int*)save;
+            c->mGPR[i] = *(int *)save;
         }
     }
 
     c->mSP = c->mFP + frameSize;
-    return (void*)c->mGPR[14];
+    return (void *)c->mGPR[14];
 }

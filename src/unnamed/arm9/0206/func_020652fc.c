@@ -19,8 +19,7 @@ extern void func_02065bb0(int v);
  * bytes into queued_cmd), and set the two packet sizes less the 0xe-byte
  * header (func_02065ba0, func_02065bb0). func_02040c34 passes the file-share
  * packet sizes and func_020412f0, the file-share parent's callback. */
-void func_020652fc(int send_packet_size, int recv_packet_size, int callback)
-{
+void func_020652fc(int send_packet_size, int recv_packet_size, int callback) {
     unsigned int saved = _ZN3IRQ7DisableEv();
     int i;
     char *p;

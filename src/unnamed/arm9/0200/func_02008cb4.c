@@ -56,7 +56,9 @@ typedef struct {
 } CameraView;
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char CameraView_turning_must_be_at_0x1a6[(int)&((CameraView *)0)->mTurningToTarget == 0x1a6 ? 1 : -1];
+typedef char CameraView_turning_must_be_at_0x1a6[(int)&((CameraView *)0)->mTurningToTarget == 0x1a6
+                                                     ? 1
+                                                     : -1];
 #endif
 
 /* The target player's actor ID, as include/dActor_c.h's C view places it. */
@@ -123,7 +125,7 @@ int func_02008cb4(char* c)
                     return 0;
                 }
                 cp1 = _ZN9dBgCh_Lin10GetClsnPosEv(&rc1);
-                if (Vec3_Dist(&cam->mWallPos, (Vec3*)&cp1) < 0x80000) {
+                if (Vec3_Dist(&cam->mWallPos, (Vec3 *)&cp1) < 0x80000) {
                     cam->mFlags &= ~0x80000;
                     _ZN9dBgCh_LinD1Ev(&rc1);
                     return 0;
@@ -132,7 +134,8 @@ int func_02008cb4(char* c)
                     u32 f = cam->mFlags;
                     if ((f & 0x40000) && cam->mTurningToTarget != 0 && !(f & 0x80100)) {
                         int a = _ZN4cstd5atan2E5Fix12IiES1_(n1.x, n1.z);
-                        if (AngleDiff(a, _ZN4cstd5atan2E5Fix12IiES1_(cam->mWallNormal.x, cam->mWallNormal.z)) > 0x6000) {
+                        if (AngleDiff(a, _ZN4cstd5atan2E5Fix12IiES1_(
+                                             cam->mWallNormal.x, cam->mWallNormal.z)) > 0x6000) {
                             cam->mTargetAngleY += 0x8000;
                             cam->mFlags |= 0x80000;
                         }

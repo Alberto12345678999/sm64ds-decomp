@@ -9,7 +9,7 @@ typedef void (*CB)(void*);
  * mThread. */
 typedef struct CardCommon {
     unsigned char pad_00[0x28];
-    CB mCallback;      /* 0x28 */
+    CB mCallback;       /* 0x28 */
     void *mCallbackArg; /* 0x2c */
     unsigned char pad_30[4];
     /* 0x34 -- CARD_STAT_* bits: 4 busy, 8 a task for the card thread (set by
@@ -26,7 +26,8 @@ typedef struct CardCommon {
 } CardCommon;
 
 #ifndef SM64DS_PLATFORM_PC
-typedef char CardCommon_busy_queue_must_be_at_0xd4[(int)&((CardCommon *)0)->mBusyQueue == 0xd4 ? 1 : -1];
+typedef char
+    CardCommon_busy_queue_must_be_at_0xd4[(int)&((CardCommon *)0)->mBusyQueue == 0xd4 ? 1 : -1];
 #endif
 
 /* NitroSDK CARDi_EndTask: take the callback, clear the busy and task bits,
@@ -36,7 +37,7 @@ typedef char CardCommon_busy_queue_must_be_at_0xd4[(int)&((CardCommon *)0)->mBus
 void func_0206081c(char* obj) {
     CardCommon *p = (CardCommon *)obj;
     CB cb = p->mCallback;
-    void* arg = p->mCallbackArg;
+    void *arg = p->mCallbackArg;
     unsigned int saved = _ZN3IRQ7DisableEv();
     p->mFlags &= ~0xc;
     OS_WakeupThread(p->mBusyQueue);

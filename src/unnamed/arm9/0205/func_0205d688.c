@@ -34,45 +34,37 @@ typedef struct FSFile {
 
 extern int func_0205cdf4(void *self, int a);
 extern int func_0205d3f4(void *self);
-int func_0205d688(char *self, int dst, int len, int async)
-{
-  FSFile *p_file = (FSFile *) self;
-  int n;
-  int is_async;
-  int oldpos;
-  oldpos = p_file->prop.file.pos;
-  /* The (long long) launders are load-bearing: plain copies change .text. */
-  n =(int) (((long long) len));
-  is_async = (int) (((long long) async));
-  {
-    int avail = p_file->prop.file.bottom - oldpos;
-    if (n > avail)
+int func_0205d688(char *self, int dst, int len, int async) {
+    FSFile *p_file = (FSFile *)self;
+    int n;
+    int is_async;
+    int oldpos;
+    oldpos = p_file->prop.file.pos;
+    /* The (long long) launders are load-bearing: plain copies change .text. */
+    n = (int)(((long long)len));
+    is_async = (int)(((long long)async));
     {
-      n = avail;
+        int avail = p_file->prop.file.bottom - oldpos;
+        if (n > avail) {
+            n = avail;
+        }
     }
-  }
-  p_file->arg.readfile.dst = (void *) dst;
-  if (n < 0)
-  {
-    n = 0;
-  }
-  p_file->arg.readfile.len_org = len;
-  p_file->arg.readfile.len = n;
-  if (is_async == 0)
-  {
-    p_file->stat |= 4;
-  }
-  func_0205cdf4(self, 0);
-  if (is_async == 0)
-  {
-    if (func_0205d3f4(self))
-    {
-      n = p_file->prop.file.pos - oldpos;
+    p_file->arg.readfile.dst = (void *)dst;
+    if (n < 0) {
+        n = 0;
     }
-    else
-    {
-      n = -1;
+    p_file->arg.readfile.len_org = len;
+    p_file->arg.readfile.len = n;
+    if (is_async == 0) {
+        p_file->stat |= 4;
     }
-  }
-  return n;
+    func_0205cdf4(self, 0);
+    if (is_async == 0) {
+        if (func_0205d3f4(self)) {
+            n = p_file->prop.file.pos - oldpos;
+        } else {
+            n = -1;
+        }
+    }
+    return n;
 }
