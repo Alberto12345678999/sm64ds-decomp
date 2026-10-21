@@ -318,9 +318,9 @@ extern "C" void *dScMgSound_c_classInit(void) {
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
         *(void **)p = _ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(p + 0x471c);
+        _ZN8Particle10SysTrackerC1Ev(&((dScMgSound_c *)p)->mSysTracker);
         *(void **)p = _ZTV12dScMgSound_c + 2;
-        Presenter_Construct(p + 0x4f38);
+        Presenter_Construct(&((dScMgSound_c *)p)->mTable);
     }
     return p;
 }
