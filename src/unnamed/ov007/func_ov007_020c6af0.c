@@ -25,7 +25,7 @@ typedef struct Ov007Picker {
     int restPos[3]; /* 0x7c */
 } Ov007Picker;
 
-/* Copies every group's rest points between groupPointCopies and groupPoints
+/* Copies every group's rest points from groupPointCopies into groupPoints
  * and snapshots pos as restPos. */
 void func_ov007_020c6af0(Ov007Picker *c) {
     int i;

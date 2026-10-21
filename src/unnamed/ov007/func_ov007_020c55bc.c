@@ -7,7 +7,7 @@ struct Ov007PointList {
 };
 
 /* A spring between two points, as func_ov007_020c5a6c spells it. */
-struct Link {
+struct Ov007Link {
     int from;    /* 0x0 */
     int to;      /* 0x4 */
     int length;  /* 0x8 */
@@ -22,7 +22,7 @@ struct Ov007Picker {
     int _c[8];
     Vector3 **groupPointCopies; /* 0x2c */
     int _30;
-    struct Link ***groupLinks; /* 0x34: per group, one link per point from posPoint */
+    struct Ov007Link ***groupLinks; /* 0x34: per group, one link per point from posPoint */
     int _38;
     struct Ov007PointList **pointLists; /* 0x3c */
     int _40[15];
@@ -37,7 +37,7 @@ void func_ov007_020c55bc(struct Ov007Picker *self, int m1, int m2) {
     int restX, restY;
     int x, y;
     int dx, dy;
-    struct Link *p;
+    struct Ov007Link *p;
     int *q;
     long long M1, M2;
 
