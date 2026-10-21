@@ -841,7 +841,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         if (!contactKind) contactKind = k2;
 
                     face:
-                        if (sphere.mScale < sn.y) continue;
+                        if (sphere.mMaxNormalY < sn.y)
+                            continue;
 
                         /* Walls only, and only once the cheap tests have accepted
                            the prism. Rebuild the triangle's three real vertices --
@@ -851,14 +852,14 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                            along the collider's axis.
 
                            The slab is NOT symmetric: the bounds are
-                           -(unk_ec + radius) and (unk_ec - radius), built at
+                           -(ext + radius) and (ext - radius), built at
                            0x01ffcfa8 by `add r1,r6,r3` then `rsb r2,r1,#0` and
                            then re-formed by `sub r1,r6,r3`. And the sense is
                            wholly-INSIDE rejects -- the last compare is
                            `ble 0x1ffd314`, the reject -- so a triangle that
                            escapes the slab in any component keeps its hit. */
-                        if (sphere.unk_0ec > 0 && cls == 1
-                                && !(tri->length & 0xf0000000)) {
+                        if (sphere.mWallRejectHalfExtent > 0 && cls == 1 &&
+                            !(tri->length & 0xf0000000)) {
 
                             tp.x = vtx[0] << 6;
                             tp.y = vtx[1] << 6;
@@ -900,12 +901,12 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                             vc.z -= c->z;
                             dc = AXIS_DOT0(vc);
                             /* The two loads and the add have to be spelled apart.  The cartridge
-                               loads unk_0ec first and radius second, then adds them in that same
+                               loads the extent first and radius second, then adds them in that same
                                order; written as one expression those two orders are welded together
                                and mwcc picks the operand order from the source, so flipping the sum
                                re-orders the LOADS instead and costs three.  Naming the two reads
                                makes them independent knobs, and then both land. */
-                            s32 ext = sphere.unk_0ec;
+                            s32 ext = sphere.mWallRejectHalfExtent;
                             s32 rad = sphere.radius;
                             if (da >= -(ext + rad) && da <= ext - rad
                              && db >= -(ext + rad) && db <= ext - rad
@@ -927,7 +928,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                             sphere.flags |= 4;
                             v = (s32)(((s64)depth * sn.y) >> 14) >> 2;
                             if (v > hiPY) hiPY = v; else if (v < loPY) loPY = v;
-                            if (sn.y > sphere.unk_100) sphere.func_0203794c((const s32 *)&sn);
+                            if (sn.y > sphere.mFloorNormal.y)
+                                sphere.func_0203794c((const s32 *)&sn);
                         } else if (cls == 1) {
                             sphere.flags |= 8;
                             sphere.func_020379c0(triID, &data_020a0cec);
@@ -967,10 +969,9 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
         z += stepZ;
     } while (z <= hiZ);
 
-    /* The accumulated extent goes back as two corners; the flags word is the
-       return value. func_02037a6c (0x02037a6c, 0xb0) is still unnamed. */
+    /* Merge the accumulated push-out range into the query; return the hit flags. */
     if (!hitFlags && !hitFlags2) goto ret0;
-    sphere.func_02037a6c(loPX, loPY, loPZ, hiPX, hiPY, hiPZ);
+    sphere.ExpandPushOutBounds(loPX, loPY, loPZ, hiPX, hiPY, hiPZ);
     return hitFlags;
 ret0:
     return 0;

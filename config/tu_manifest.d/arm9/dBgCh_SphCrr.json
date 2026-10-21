@@ -187,14 +187,14 @@
       "ordinal": 15
     },
     {
-      "symbol": "_ZN12dBgCh_SphCrr13func_02037a6cEiiiiii",
+      "symbol": "_ZN12dBgCh_SphCrr19ExpandPushOutBoundsEiiiiii",
       "address": "0x02037a6c",
       "size": "0x000000b0",
       "legacy_source": "src/func_02037a6c.c",
       "ordinal": 16
     },
     {
-      "symbol": "_ZN12dBgCh_SphCrr13func_02037b1cEv",
+      "symbol": "_ZN12dBgCh_SphCrr17ResetDisplacementEv",
       "address": "0x02037b1c",
       "size": "0x00000040",
       "legacy_source": "src/func_02037b1c.c",

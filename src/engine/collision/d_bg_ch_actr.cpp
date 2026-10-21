@@ -106,7 +106,7 @@ extern "C" void func_02037318(dBgCh_Actr *clsn) {
     if (((Player *)clsn->mActor)->IsInAir())
         return;
     clsn->mFlags |= 0x100;
-    src = &clsn->mSphereClsn.unk_0fc;
+    src = &clsn->mSphereClsn.mFloorNormal.x;
     clsn->mGroundNormal.x = src[0];
     clsn->mGroundNormal.y = src[1];
     clsn->mGroundNormal.z = src[2];
@@ -183,7 +183,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
     sphere.y = y + mHeight;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
                                                                      mActor);
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (pos->y - prev->y > 0) {
         mSphereClsn.flags |= 0x20;
     }
@@ -226,7 +226,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava_2()
     sphere.y = y + mHeight;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
                                                                      mActor);
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (pos->y - actor->mPrevPosY > 0) {
         mSphereClsn.flags |= 0x20;
     }
@@ -352,7 +352,7 @@ extern "C" void func_02036acc(dBgCh_Actr *self) {
                                                                      self->mRadius, self->mActor);
     if (func_0203553c(self) == 0)
         self->mSphereClsn.flags |= 0x40;
-    self->mSphereClsn.mScale = self->mScale;
+    self->mSphereClsn.mMaxNormalY = self->mScale;
     if (pos->y - prev->y > 0)
         self->mSphereClsn.flags |= 0x20;
     if (hitFloor) {
@@ -484,7 +484,7 @@ void dBgCh_Actr::UpdateContinuous()
                                                                      mActor);
     if (func_0203553c(this) == 0)
         mSphereClsn.flags |= 0x40;
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (pos->y - prev->y > 0)
         mSphereClsn.flags |= 0x20;
     if (hitFloor) {
@@ -608,7 +608,7 @@ void dBgCh_Actr::UpdateContinuousNoLava()
     sphere.y += height;
     _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
                                                                      mActor);
-    mSphereClsn.mScale = mScale;
+    mSphereClsn.mMaxNormalY = mScale;
     if (pos->y - prev->y > 0)
         mSphereClsn.flags |= 0x20;
     if (hitFloor) {
@@ -784,7 +784,7 @@ void dBgCh_Actr::UpdateExtraContinous()
         _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere,
                                                                          mRadius, mActor);
 
-        mSphereClsn.mScale = mScale;
+        mSphereClsn.mMaxNormalY = mScale;
         if (func_02035764(this))
             mSphereClsn.flags |= 2;
         if (pos->y - prev->y > 0)
@@ -891,7 +891,7 @@ void dBgCh_Actr::UpdateExtraContinous()
                         pos->z = hit->z + (normal->z >> 2);
                     }
                 }
-            } else if (mSphereClsn.aabbMin.y <= -height) {
+            } else if (mSphereClsn.mPushOutMin.y <= -height) {
                 Vector3 prevCentre;
                 V3D(prevCentre, prev, height)
                 Vector3 newCentre;
