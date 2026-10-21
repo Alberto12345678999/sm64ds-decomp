@@ -90,12 +90,12 @@ int func_ov007_020c0b78(struct E8* p, void* s, int x, int y, int a4, unsigned ch
                 func_ov007_020c0d70(s, r8);
             }
         }
-  }
+    }
 
-  if (sp->next)
-      sb = func_ov007_020c0b78(p, sp->next, x, y, a4, a5, a6, sb);
-  if (sp->head)
-      sb = func_ov007_020c0b78(p, sp->head, sum24, sum28, u, b5, t, sb);
+    if (sp->next)
+        sb = func_ov007_020c0b78(p, sp->next, x, y, a4, a5, a6, sb);
+    if (sp->head)
+        sb = func_ov007_020c0b78(p, sp->head, sum24, sum28, u, b5, t, sb);
 
-  return sb;
+    return sb;
 }
