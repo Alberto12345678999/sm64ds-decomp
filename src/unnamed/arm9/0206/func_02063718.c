@@ -90,8 +90,10 @@ int func_02063718(char *p, char *q)
     int b;
     int i;
     char *ptr;
-    if (work->cmd.command != 0) return ret;
-    if (st->command == 0) return ret;
+    if (work->cmd.command != 0)
+        return ret;
+    if (st->command == 0)
+        return ret;
     func_02065bf4();
     t = func_02065c1c();
     switch (st->command) {
@@ -113,9 +115,11 @@ int func_02063718(char *p, char *q)
                               (int)work->cmd.u.get.recv_buf_table[i]);
         }
         if (((WBTCommand *)((long long)(unsigned int)&work->queued_cmd))->command == 4)
-            ret = func_02064e18(q, work->cmd.target_bmp, work->cmd.my_cmd_counter, work->cmd.u.get.block_id, 0);
+            ret = func_02064e18(q, work->cmd.target_bmp, work->cmd.my_cmd_counter,
+                                work->cmd.u.get.block_id, 0);
         else
-            ret = func_02064cd8(q, work->cmd.target_bmp, work->cmd.my_cmd_counter, work->cmd.u.get.block_id, 0);
+            ret = func_02064cd8(q, work->cmd.target_bmp, work->cmd.my_cmd_counter,
+                                work->cmd.u.get.block_id, 0);
         break;
     case 4:
         MultiCopy_Int(st, &work->cmd, sizeof(WBTCommand));
@@ -127,15 +131,17 @@ int func_02063718(char *p, char *q)
                               (int)work->cmd.u.get.recv_buf_table[i]);
         }
         if (((WBTCommand *)((long long)(unsigned int)&work->queued_cmd))->command == 4)
-            ret = func_02064e18(q, work->cmd.target_bmp, work->cmd.my_cmd_counter, work->cmd.u.get.block_id, 0);
+            ret = func_02064e18(q, work->cmd.target_bmp, work->cmd.my_cmd_counter,
+                                work->cmd.u.get.block_id, 0);
         else
-            ret = func_02064cd8(q, work->cmd.target_bmp, work->cmd.my_cmd_counter, work->cmd.u.get.block_id, 0);
+            ret = func_02064cd8(q, work->cmd.target_bmp, work->cmd.my_cmd_counter,
+                                work->cmd.u.get.block_id, 0);
         break;
     case 0xa:
         MultiCopy_Int(st, &work->cmd, sizeof(WBTCommand));
         work->cmd.my_cmd_counter = t;
-        ret = func_02064a94(q, work->cmd.target_bmp, work->cmd.my_cmd_counter, (char *)work->cmd.u.user_data.data,
-                            work->cmd.u.user_data.size);
+        ret = func_02064a94(q, work->cmd.target_bmp, work->cmd.my_cmd_counter,
+                            (char *)work->cmd.u.user_data.data, work->cmd.u.user_data.size);
         break;
     }
     ((WBTCommand *)((long long)(unsigned int)&work->queued_cmd))->command = 0;

@@ -81,12 +81,11 @@ extern int func_0205c5e4(void* self, int x);
 extern void CpuCopy8(const void* src, void* dst, unsigned int size);
 extern const unsigned char data_0209a044[];
 
-int func_0205bc88(FSFile* p_file)
-{
-    FSArchive* p_arc;
+int func_0205bc88(FSFile *p_file) {
+    FSArchive *p_arc;
     FSDirEntry entry;
     FSFile tmp;
-    FSGetPathArg* m;
+    FSGetPathArg *m;
     register int dir_id;
     register int file_id;
     unsigned int i;
@@ -95,7 +94,7 @@ int func_0205bc88(FSFile* p_file)
 
     p_arc = p_file->arc;
     m = &p_file->arg.getpath;
-    FS_InitFile((int*)&tmp);
+    FS_InitFile((int *)&tmp);
     tmp.arc = p_file->arc;
 
     is_dir = (p_file->stat & 0x20) ? 1 : 0;
@@ -118,8 +117,7 @@ int func_0205bc88(FSFile* p_file)
                 tmp.arg.readdir.skip_string = 1;
                 if (func_0205c5e4(&tmp, 3) == 0) {
                     for (;;) {
-                        if (entry.is_directory == 0 &&
-                            entry.id.file_id.file_id == file_id) {
+                        if (entry.is_directory == 0 && entry.id.file_id.file_id == file_id) {
                             dir_id = tmp.prop.dir.pos.own_id;
                             break;
                         }
@@ -160,8 +158,7 @@ int func_0205bc88(FSFile* p_file)
                 tmp.arg.readdir.skip_string = 1;
                 if (func_0205c5e4(&tmp, 3) == 0) {
                     for (;;) {
-                        if (entry.is_directory != 0 &&
-                            entry.id.dir_id.own_id == i) {
+                        if (entry.is_directory != 0 && entry.id.dir_id.own_id == i) {
                             cnt += entry.name_len + 1;
                             break;
                         }
@@ -177,7 +174,7 @@ int func_0205bc88(FSFile* p_file)
     }
 
     {
-        char* buf = (char*)m->buf;
+        char *buf = (char *)m->buf;
         int count;
 
         if (buf == 0)
@@ -209,8 +206,7 @@ int func_0205bc88(FSFile* p_file)
             tmp.arg.readdir.skip_string = 0;
             if (func_0205c5e4(&tmp, 3) == 0) {
                 for (;;) {
-                    if (entry.is_directory == 0 &&
-                        entry.id.file_id.file_id == file_id)
+                    if (entry.is_directory == 0 && entry.id.file_id.file_id == file_id)
                         break;
                     if (func_0205c5e4(&tmp, 3) != 0)
                         break;
@@ -235,11 +231,9 @@ int func_0205bc88(FSFile* p_file)
                 count--;
                 if (func_0205c5e4(&tmp, 3) == 0) {
                     for (;;) {
-                        if (entry.is_directory != 0 &&
-                            entry.id.dir_id.own_id == dir_id) {
+                        if (entry.is_directory != 0 && entry.id.dir_id.own_id == dir_id) {
                             int ln = entry.name_len;
-                            CpuCopy8(entry.name,
-                                          (buf + count) - ln, ln);
+                            CpuCopy8(entry.name, (buf + count) - ln, ln);
                             count -= ln;
                             break;
                         }

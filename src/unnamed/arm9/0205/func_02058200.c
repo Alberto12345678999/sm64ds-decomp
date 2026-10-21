@@ -11,12 +11,12 @@
  * fills the same fields for the launcher thread. Only the fields set here are
  * spelled out. */
 typedef struct OSContext {
-    u32 cpsr;        /* 0x00 */
-    u32 r[13];       /* 0x04 */
-    u32 sp;          /* 0x38 */
-    u32 lr;          /* 0x3c */
-    u32 pc_plus4;    /* 0x40 */
-    u32 sp_svc;      /* 0x44 */
+    u32 cpsr;            /* 0x00 */
+    u32 r[13];           /* 0x04 */
+    u32 sp;              /* 0x38 */
+    u32 lr;              /* 0x3c */
+    u32 pc_plus4;        /* 0x40 */
+    u32 sp_svc;          /* 0x44 */
     u8 cp_context[0x1c]; /* 0x48 -- divider / sqrt state */
 } OSContext;
 
@@ -26,18 +26,18 @@ typedef struct OSMutexQueue {
 } OSMutexQueue;
 
 typedef struct OSThread {
-    OSContext context;      /* 0x00 */
-    s32 state;              /* 0x64 -- 0 WAITING, 1 READY */
-    struct OSThread *next;  /* 0x68 */
-    u32 id;                 /* 0x6c */
-    u32 priority;           /* 0x70 */
-    void *profiler;         /* 0x74 */
-    void *mutex;            /* 0x78 */
+    OSContext context;       /* 0x00 */
+    s32 state;               /* 0x64 -- 0 WAITING, 1 READY */
+    struct OSThread *next;   /* 0x68 */
+    u32 id;                  /* 0x6c */
+    u32 priority;            /* 0x70 */
+    void *profiler;          /* 0x74 */
+    void *mutex;             /* 0x78 */
     OSMutexQueue mutexQueue; /* 0x7c */
-    u32 stackTop;           /* 0x84 */
-    u32 stackBottom;        /* 0x88 */
-    u32 stackWarningOffset; /* 0x8c */
-    u16 joinQueue;          /* 0x90 */
+    u32 stackTop;            /* 0x84 */
+    u32 stackBottom;         /* 0x88 */
+    u32 stackWarningOffset;  /* 0x8c */
+    u16 joinQueue;           /* 0x90 */
 } OSThread;
 
 #ifndef SM64DS_PLATFORM_PC
@@ -78,8 +78,8 @@ void func_02058200(char *self, int a1, int a2, int end, int arg4, int arg5)
     thread->stackBottom = end;
     thread->stackTop = (u32)base;
     thread->stackWarningOffset = 0;
-    *(int*)(thread->stackBottom - 4) = (int)0xfddb597d;
-    *(int*)(thread->stackTop) = 0x7bf9dd5b;
+    *(int *)(thread->stackBottom - 4) = (int)0xfddb597d;
+    *(int *)(thread->stackTop) = 0x7bf9dd5b;
     thread->joinQueue = 0;
     func_02058568(self, a1, end - 4);
     thread->context.r[0] = a2;

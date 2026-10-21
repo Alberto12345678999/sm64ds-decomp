@@ -19,28 +19,29 @@ extern short data_02082214[];
  * for it, so it stays raw here. */
 extern "C" void func_0202048c(char* a0, int a1, int a2)
 {
-    OamAnimation* anim = (OamAnimation*)a0;
+    OamAnimation *anim = (OamAnimation *)a0;
 
-    if (anim->affine == 0) return;
-    if (anim->tile == 0) return;
+    if (anim->affine == 0)
+        return;
+    if (anim->tile == 0)
+        return;
 
     int f08 = anim->scaleX;
     if (f08 == 0x1000 && anim->scaleY == 0x1000 && (u16)anim->rotation == 0) {
         int mode = *(int*)(a0 + 0x28);
         if (mode == 2) {
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)anim->tile, a1, a2 + 0xc0,
-                anim->palette, anim->priority, 0x1000, 0x1000, 0, -1);
-            OAM::RenderSub((OamAttr *)anim->tile, a1, a2, anim->palette,
-                           anim->priority);
+                                                        anim->palette, anim->priority, 0x1000,
+                                                        0x1000, 0, -1);
+            OAM::RenderSub((OamAttr *)anim->tile, a1, a2, anim->palette, anim->priority);
             return;
         }
         if (mode == 1) {
-            OAM::RenderSub((OamAttr *)anim->tile, a1, a2, anim->palette,
-                           anim->priority);
+            OAM::RenderSub((OamAttr *)anim->tile, a1, a2, anim->palette, anim->priority);
             return;
         }
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)anim->tile, a1, a2,
-            anim->palette, anim->priority, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)anim->tile, a1, a2, anim->palette,
+                                                    anim->priority, 0x1000, 0x1000, 0, -1);
         return;
     }
 
@@ -56,28 +57,28 @@ extern "C" void func_0202048c(char* a0, int a1, int a2)
     m[2] = -((ta * f0c + 0x800) >> 12);
     m[3] = (tb * f0c + 0x800) >> 12;
 
-    if (*(int*)anim->tile & 0x10000000) {
+    if (*(int *)anim->tile & 0x10000000) {
         m[0] = -m[0];
         m[1] = -m[1];
     }
-    if (*(int*)anim->tile & 0x20000000) {
+    if (*(int *)anim->tile & 0x20000000) {
         m[2] = -m[2];
         m[3] = -m[3];
     }
 
     int mode = *(int*)(a0 + 0x28);
     if (mode == 2) {
-        OAM::Render(false, (OamAttr *)anim->tile, a1, a2 + 0xc0,
-                    anim->palette, anim->priority, (Matrix2x2 *)m);
-        OAM::Render(true, (OamAttr *)anim->tile, a1, a2, anim->palette,
-                    anim->priority, (Matrix2x2 *)m);
+        OAM::Render(false, (OamAttr *)anim->tile, a1, a2 + 0xc0, anim->palette, anim->priority,
+                    (Matrix2x2 *)m);
+        OAM::Render(true, (OamAttr *)anim->tile, a1, a2, anim->palette, anim->priority,
+                    (Matrix2x2 *)m);
         return;
     }
     if (mode == 1) {
-        OAM::Render(true, (OamAttr *)anim->tile, a1, a2, anim->palette,
-                    anim->priority, (Matrix2x2 *)m);
+        OAM::Render(true, (OamAttr *)anim->tile, a1, a2, anim->palette, anim->priority,
+                    (Matrix2x2 *)m);
         return;
     }
-    OAM::Render(false, (OamAttr *)anim->tile, a1, a2, anim->palette,
-                anim->priority, (Matrix2x2 *)m);
+    OAM::Render(false, (OamAttr *)anim->tile, a1, a2, anim->palette, anim->priority,
+                (Matrix2x2 *)m);
 }

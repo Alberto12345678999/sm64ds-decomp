@@ -270,10 +270,9 @@ int func_02063ea8(char *arg0, int arg1, int arg2, int arg3)
                     int st;
                     peer->user_data = r8;
                     st = work->cmd.command;
-                    if ((st == 4 || st == 6)
-                        && peer->block_id == work->cmd.u.get.block_id
-                        && (work->cmd.target_bmp & (u16)(1 << arg1))
-                        && func_020647d8(sp4, peer->seq_no) == 0) {
+                    if ((st == 4 || st == 6) && peer->block_id == work->cmd.u.get.block_id &&
+                        (work->cmd.target_bmp & (u16)(1 << arg1)) &&
+                        func_020647d8(sp4, peer->seq_no) == 0) {
                         if (func_02064674(sp4, peer->seq_no, peer->user_data) == 1) {
                             func_020647a4(sp4, peer->seq_no);
                         } else {

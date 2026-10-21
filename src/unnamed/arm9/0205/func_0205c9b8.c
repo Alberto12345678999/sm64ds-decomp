@@ -8,14 +8,14 @@
  * this function touches are spelled out. */
 typedef struct FSArchive {
     char pad_00[0x10];
-    unsigned int flag;     /* 0x10 */
+    unsigned int flag; /* 0x10 */
     char pad_14[0xc];
     int fat;      /* 0x20 */
     int fat_size; /* 0x24 */
     int fnt;      /* 0x28 */
     int fnt_size; /* 0x2c */
     char pad_30[8];
-    void *load_mem;        /* 0x38 */
+    void *load_mem; /* 0x38 */
     char pad_3c[8];
     int (*table_func)(void); /* 0x44 */
 } FSArchive;
