@@ -99,15 +99,13 @@ extern void func_ov007_020c1d78(int i);
  * `inline` is required, not stylistic: plain `static` is not inlined at -O4 and
  * emits a separate symbol, which breaks the size. Byte-identical to hand
  * duplication either way, so this costs nothing at the gate. */
-static inline int elem_selectable(Ov007ItemView* elem)
-{
-    Ov007Item* obj = elem->item;
+static inline int elem_selectable(Ov007ItemView *elem) {
+    Ov007Item *obj = elem->item;
     int sel = 0;
     int gate2 = 0;
     int gate1 = 0;
     if (obj->state->currentState == 0) {
-        if (obj->fade >= 0x1000
-            || (data_ov007_020d77dc[elem->item->id].f0 & 2))
+        if (obj->fade >= 0x1000 || (data_ov007_020d77dc[elem->item->id].f0 & 2))
             gate1 = 1;
     }
     if (gate1) {
@@ -135,8 +133,8 @@ static inline int elem_selectable(Ov007ItemView* elem)
 
 void func_ov007_020b46b0(void* arg0, void* arg1)
 {
-    Ov007ItemView* elem = (Ov007ItemView*)arg0;
-    Ov007Touch* tp = (Ov007Touch*)arg1;
+    Ov007ItemView *elem = (Ov007ItemView *)arg0;
+    Ov007Touch *tp = (Ov007Touch *)arg1;
     int held = 0;
 
     {
@@ -159,16 +157,13 @@ void func_ov007_020b46b0(void* arg0, void* arg1)
                 int min_y = elem->item->hitBox->minY + pos_y;
                 int max_x = elem->item->hitBox->maxX + pos_x;
                 int min_x = elem->item->hitBox->minX + pos_x;
-                if (touching != 0
-                    && (s32)tp->cur.x >= min_x && (s32)tp->cur.x <= max_x
-                    && (s32)tp->cur.y >= min_y && (s32)tp->cur.y <= max_y) {
+                if (touching != 0 && (s32)tp->cur.x >= min_x && (s32)tp->cur.x <= max_x &&
+                    (s32)tp->cur.y >= min_y && (s32)tp->cur.y <= max_y) {
                     func_ov007_020b63e4((char**)arg0);
                 } else {
                     u16 t = elem->item->id;
-                    if ((t == 0xc
-                         && (*(u8**)WORK->settings)[9] == 0)
-                        || (t == 0xd
-                            && (*(u8**)WORK->settings)[9] != 0)) {
+                    if ((t == 0xc && (*(u8 **)WORK->settings)[9] == 0) ||
+                        (t == 0xd && (*(u8 **)WORK->settings)[9] != 0)) {
                         if (touching != 0) {
                             s32 x = tp->cur.x;
                             if (x >= 8 && x <= 0x66) {
@@ -196,22 +191,19 @@ void func_ov007_020b46b0(void* arg0, void* arg1)
     if (WORK->states[0]->currentState == 3) {
         /* Through arg0, not elem: reading it through elem lets the compiler
          * keep the item in a register for elem_selectable and drops 12 bytes. */
-        u16 t0 = ((Ov007ItemView*)arg0)->item->id;
+        u16 t0 = ((Ov007ItemView *)arg0)->item->id;
         if (t0 == 3 || t0 == 6) {
-            if (elem_selectable(elem) && func_ov007_020c1da0(0) == 0
-                && tp->cur.touch != 0
-                && *(s16*)func_ov007_020b8f78() == 5
-                && func_ov007_020b8fa0() == 0) {
+            if (elem_selectable(elem) && func_ov007_020c1da0(0) == 0 && tp->cur.touch != 0 &&
+                *(s16 *)func_ov007_020b8f78() == 5 && func_ov007_020b8fa0() == 0) {
                 int pos_y = elem->sprite->screenY >> 12;
                 int pos_x = elem->sprite->screenX >> 12;
                 int max_y = elem->item->hitBox->maxY + pos_y;
                 int min_y = elem->item->hitBox->minY + pos_y;
                 int max_x = elem->item->hitBox->maxX + pos_x;
                 int min_x = elem->item->hitBox->minX + pos_x;
-                if (tp->cur.touch != 0
-                    && (s32)tp->cur.x >= min_x && (s32)tp->cur.x <= max_x
-                    && (s32)tp->cur.y >= min_y && (s32)tp->cur.y <= max_y) {
-                    Ov007MenuState* state = elem->item->state;
+                if (tp->cur.touch != 0 && (s32)tp->cur.x >= min_x && (s32)tp->cur.x <= max_x &&
+                    (s32)tp->cur.y >= min_y && (s32)tp->cur.y <= max_y) {
+                    Ov007MenuState *state = elem->item->state;
                     held = 1;
                     state->stateWork += 1;
                     /* Re-dereferences the element rather than reusing `state`
@@ -228,7 +220,7 @@ done:
     if (held == 0)
         elem->item->state->stateWork = 0;
     {
-        Ov007MenuState* st = elem->item->state;
+        Ov007MenuState *st = elem->item->state;
         if (st->currentState != 2)
             return;
         if (st->requestedState == -1)

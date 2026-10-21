@@ -35,9 +35,9 @@ typedef struct Ov007Work {
 /* The 0xc-byte record this function returns; func_ov007_020b6d40 keeps the
  * eight of them from the manager's +0xc8. */
 typedef struct Ov007LayerSlot {
-    int state;          /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
+    int state;           /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
     Ov007BgLayer *layer; /* 0x04 */
-    char kind;          /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
+    char kind;           /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
 } Ov007LayerSlot;
 
 typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
@@ -50,27 +50,27 @@ typedef char Ov007BgLayer_screens_at_0x10[sizeof(Ov007BgLayer) == 0x18 ? 1 : -1]
  * source behind a fresh buffer, 5 starts from a blank (tile 0x300) screen. */
 int func_ov007_020adc08(int type, char* obj) {
     int r5 = func_ov007_020c3df4(0, 0xc);
-    Ov007LayerSlot* slot = (Ov007LayerSlot*)r5;
-    Ov007BgLayer* layer = (Ov007BgLayer*)obj;
+    Ov007LayerSlot *slot = (Ov007LayerSlot *)r5;
+    Ov007BgLayer *layer = (Ov007BgLayer *)obj;
     int* g = data_ov007_0210342c;
-    Ov007Display* display = ((Ov007Work*)g)->display;
+    Ov007Display *display = ((Ov007Work *)g)->display;
     slot->kind = (char)type;
     slot->layer = layer;
     slot->state = func_ov007_020c9388(0);
     switch (type) {
     case 6:
-        layer->screen = (void*)func_ov007_020b8500();
-        layer->source = (void*)func_ov007_020b84e8();
+        layer->screen = (void *)func_ov007_020b8500();
+        layer->source = (void *)func_ov007_020b84e8();
         func_ov007_020c0384(display->bgListMain, obj);
         break;
     case 7:
-        layer->screen = (void*)func_ov007_020b84f4();
-        layer->source = (void*)func_ov007_020b84e8();
+        layer->screen = (void *)func_ov007_020b84f4();
+        layer->source = (void *)func_ov007_020b84e8();
         func_ov007_020c0384(display->bgListSub, obj);
         break;
     case 1:
         layer->source = layer->screen;
-        layer->screen = (void*)func_ov007_020c3df4(0, 0x800);
+        layer->screen = (void *)func_ov007_020c3df4(0, 0x800);
         func_ov007_020c0384(display->bgListMain, obj);
         break;
     case 2:
@@ -81,7 +81,7 @@ int func_ov007_020adc08(int type, char* obj) {
         func_ov007_020c0384(display->bgListSub, obj);
         break;
     case 5:
-        layer->screen = (void*)func_ov007_020c3df4(0, 0x800);
+        layer->screen = (void *)func_ov007_020c3df4(0, 0x800);
         func_ov007_020c02d8((int)layer->screen, 0x18, 0x300);
         func_ov007_020c0384(display->bgListSub, obj);
         break;
