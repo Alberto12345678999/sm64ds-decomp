@@ -1,15 +1,19 @@
+//cpp
+#include "dScEntry_c.h"
 #include "types.h"
-extern int data_ov075_0211d8e8;
+
+extern dScEntry_c::StepSet data_ov075_0211d810;
+extern dScEntry_c::StepSet data_ov075_0211d888;
+extern dScEntry_c::StepSet data_ov075_0211d8e8;
 extern int data_ov075_0211d930;
-extern int data_ov075_0211d888;
-extern int data_ov075_0211d810;
+
+extern "C" {
 
 extern int func_0203da9c(void);
 extern int TouchArea_Update(void* c, int id);
 extern int func_ov075_02116d9c(int unused, int id);
 extern void func_ov001_020ab41c(void* c);
 extern int func_0203d9b4(void);
-extern void func_ov075_0211a148(char* c, int a, int b);
 extern void func_02030a78(void);
 extern void func_02012790(int x);
 extern void func_02030aa4(int arg);
@@ -30,10 +34,11 @@ void func_ov075_02117c0c(char* self)
         *(u8*)(self + 0xa4) = 0;
         func_ov001_020ab41c(self + 0x70);
         if (func_0203d9b4() != 0 && IsMode6(self)) {
-            func_ov075_0211a148(self, (int)&data_ov075_0211d8e8, 0x14);
+            reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d8e8, 0x14);
         } else {
             func_02030a78();
-            func_ov075_0211a148(self, (int)&data_ov075_0211d930, 0x14);
+            reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
+                reinterpret_cast<const dScEntry_c::StepSet *>(&data_ov075_0211d930), 0x14);
         }
         func_02012790(0x63);
         return;
@@ -47,10 +52,11 @@ void func_ov075_02117c0c(char* self)
     *(u8*)(self + 0x80) = 0;
     func_ov001_020ab41c(self + 0x94);
     if (IsMode6(self)) {
-        func_ov075_0211a148(self, (int)&data_ov075_0211d888, 0x14);
+        reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d888, 0x14);
         func_02030aa4(3);
     } else {
-        func_ov075_0211a148(self, (int)&data_ov075_0211d810, 0x14);
+        reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d810, 0x14);
     }
     func_02012790(0x98);
+}
 }

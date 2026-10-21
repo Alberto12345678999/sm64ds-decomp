@@ -40095,15 +40095,15 @@
     },
     "ov075:0x02119cc0": {
       "author": "ruspecial",
-      "name": "func_ov075_02119cc0"
+      "name": "_ZN10dScEntry_c17UpdateStepFadeOutEv"
     },
     "ov075:0x02119d3c": {
       "author": "tangosdev",
-      "name": "func_ov075_02119d3c"
+      "name": "_ZN10dScEntry_c16EnterStepFadeOutEv"
     },
     "ov075:0x02119d78": {
       "author": "tangosdev",
-      "name": "func_ov075_02119d78"
+      "name": "_ZN10dScEntry_c15UpdateStepDelayEv"
     },
     "ov075:0x02119dc4": {
       "author": "tangosdev",
@@ -40111,15 +40111,15 @@
     },
     "ov075:0x0211a100": {
       "author": "tangosdev",
-      "name": "func_ov075_0211a100"
+      "name": "_ZN10dScEntry_c19ChangeStepsWithFadeEPKNS_7StepSetE"
     },
     "ov075:0x0211a148": {
       "author": "tangosdev",
-      "name": "func_ov075_0211a148"
+      "name": "_ZN10dScEntry_c21ChangeStepsAfterDelayEPKNS_7StepSetEi"
     },
     "ov075:0x0211a194": {
       "author": "tangosdev",
-      "name": "func_ov075_0211a194"
+      "name": "_ZN10dScEntry_c8SetStepsEPKNS_7StepSetE"
     },
     "ov075:0x0211a210": {
       "author": "tangosdev",

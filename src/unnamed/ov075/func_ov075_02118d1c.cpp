@@ -1,5 +1,13 @@
+//cpp
+#include "dScEntry_c.h"
 #include "types.h"
 #include "PlayerInput.h"
+
+extern dScEntry_c::StepSet data_ov075_0211d798;
+extern dScEntry_c::StepSet data_ov075_0211d7b0;
+extern dScEntry_c::StepSet data_ov075_0211d7f8;
+
+extern "C" {
 extern int func_0203d974(void);
 extern u8 func_020202dc(void);
 extern u8 func_02020168(void);
@@ -7,7 +15,6 @@ extern void func_02020304(void);
 extern void func_020200e0(void);
 extern u8 func_020200b8(void);
 extern void func_ov001_020ab3f0(void* r0);
-extern void func_ov075_0211a194(void* c, void* d);
 extern void func_02012790(u32 a);
 extern int func_0203d9b4(void);
 extern int func_ov075_02116d40(void* c);
@@ -17,9 +24,6 @@ extern void func_02020124(void);
 extern void func_0202029c(u32 idx);
 extern int func_0203da9c(void);
 extern u8 data_0209b2e4;
-extern u8 data_ov075_0211d7b0[];
-extern u8 data_ov075_0211d798[];
-extern u8 data_ov075_0211d7f8[];
 extern u16 data_020a0e5a[];
 
 void func_ov075_02118d1c(char* c){
@@ -44,17 +48,17 @@ void func_ov075_02118d1c(char* c){
                 if(r5 != data_0209b2e4) *(u8*)(r3+0x80)=v;
                 r3+=0x24;
             }
-            func_ov075_0211a194(c, data_ov075_0211d7b0);
+            reinterpret_cast<dScEntry_c *>(c)->SetSteps(&data_ov075_0211d7b0);
             func_02012790(0xa0);
             func_02012790(0x128);
             return;
         }
         if(st==1){
-            func_ov075_0211a194(c, data_ov075_0211d798);
+            reinterpret_cast<dScEntry_c *>(c)->SetSteps(&data_ov075_0211d798);
             func_02012790(0x9e);
             return;
         }
-        func_ov075_0211a194(c, data_ov075_0211d7f8);
+        reinterpret_cast<dScEntry_c *>(c)->SetSteps(&data_ov075_0211d7f8);
         func_02012790(0x9f);
         return;
     }
@@ -91,4 +95,5 @@ void func_ov075_02118d1c(char* c){
     if(data_020a0e5a[func_0203da9c()*2] & ~0xc){
         func_02012790(0xe);
     }
+}
 }

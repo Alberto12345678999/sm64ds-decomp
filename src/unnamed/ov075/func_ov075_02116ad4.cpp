@@ -1,9 +1,17 @@
+//cpp
+#include "dScEntry_c.h"
+#include "types.h"
+
+extern dScEntry_c::StepSet data_ov075_0211d768;
+extern dScEntry_c::StepSet data_ov075_0211d780;
+extern dScEntry_c::StepSet data_ov075_0211d888;
+
+extern "C" {
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum func_ov075_02116ad4_AssetId {
     ASSET_D_2D_BATTLE_FRAMEWORK_GAMESTART_P_NSC_BIN = 0x025e
 };
 
-#include "types.h"
 extern int func_0203d9b4(void);
 extern void func_0200f13c(void);
 extern void *_ZN3G2S12GetBG2ScrPtrEv(void);
@@ -16,15 +24,11 @@ extern void Deallocate(void *ptr);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
 extern int func_0203da3c(void);
 extern void func_02030aa4(int arg);
-extern void func_ov075_0211a194(void *p, const void *data);
 extern void func_ov075_02116e00(void *p);
 extern struct fBase_c *_ZN7dBase_c5SpawnEjP7fBase_cii(u32 a, void *b, int c, int d);
 
 extern void *data_0208a0e4[];
 extern int data_ov075_0211c9a4[];
-extern const unsigned char data_ov075_0211d888[];
-extern const unsigned char data_ov075_0211d768[];
-extern const unsigned char data_ov075_0211d780[];
 extern void *data_0209f5c0;
 
 int func_ov075_02116ad4(void *arg) {
@@ -54,17 +58,18 @@ int func_ov075_02116ad4(void *arg) {
     if (*(int *)((char *)arg + 8) == 0) {
         if (func_0203da3c() == 0) {
             func_02030aa4(0);
-            func_ov075_0211a194(arg, data_ov075_0211d888);
+            reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&data_ov075_0211d888);
         } else {
-            func_ov075_0211a194(arg, data_ov075_0211d768);
+            reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&data_ov075_0211d768);
         }
         func_ov075_02116e00(arg);
         mode = 0;
     } else {
-        func_ov075_0211a194(arg, data_ov075_0211d780);
+        reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&data_ov075_0211d780);
         mode = 2;
     }
 
     *(void **)((char *)arg + 0x50) = _ZN7dBase_c5SpawnEjP7fBase_cii(0x15a, data_0209f5c0, mode, 0);
     return 1;
+}
 }

@@ -6,7 +6,7 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "UPPER PART OF dScEntry_c's UNIT. tools/tu_map.py puts dScEntry_c and OamAnimation in one linker run, ov075 0x02115ab8..0x0211a854. src/game/stages/d_s_entry.cpp licenses 0x02115ab8..0x021165b0. This entry now licenses 0x021190a4..0x0211a854: the five player-select and sync steps, the unnamed helpers through func_ov075_0211a194, then the six scene methods, the RESULT factory and the OamAnimation and icon_c constructors. The hole that still separates the two parts is 0x021165b0..0x021190a4 (37 func_ov075_* files). A delinks entry carries exactly one contiguous .text claim, so the two parts cannot be one source until that remainder is folded too.",
+    "UPPER PART OF dScEntry_c's UNIT. tools/tu_map.py puts dScEntry_c and OamAnimation in one linker run, ov075 0x02115ab8..0x0211a854. src/game/stages/d_s_entry.cpp licenses 0x02115ab8..0x021165b0. This entry now licenses 0x021190a4..0x0211a854: the five player-select and sync steps, the unnamed helpers through SetSteps, then the six scene methods, the RESULT factory and the OamAnimation and icon_c constructors. The hole that still separates the two parts is 0x021165b0..0x021190a4 (37 func_ov075_* files). A delinks entry carries exactly one contiguous .text claim, so the two parts cannot be one source until that remainder is folded too.",
     "THE HOLE IS THIS CLASS's CODE. Referrer census over every relocs.txt under config/arm9, each relocating word resolved to its owning symbol in its own module: every inbound reference to 0x02116128..0x0211a210 comes from dScEntry_c::InitResources (func_ov075_02116818, func_ov075_02116ad4), dScEntry_c::Behavior (func_ov075_02119dc4), one another, or the step tables at ov075 0x0211c6f8..0x0211c8d8. Every reference into that .data range comes from this run's own functions (icon_c::Render, the hole helpers), from neighbouring ov075 .data, or from __sinit_ov075_0211bb00, which copies the step tables into .bss and also constructs dScEntry_c::graphCallback_c (0x021160b4) and the callback object data_ov075_0211d71c that InitResources registers. No other class's code reaches the hole.",
     "LEFT EDGE 0x021190a4: dScEntry_c::UpdatePlayerSelectIntro, the first of the five named steps. The helpers 0x02119640..0x0211a210 are folded with them because a delinks entry cannot jump the gap to CleanupResources. The edge below, 0x021190a4, is func_ov075_02118f38's end, still its own file.",
     "RIGHT EDGE 0x0211a854: dScEntry_c_classInit_RESULT (referenced only by g_profile_RESULT) is followed by _ZN12OamAnimationC1Ev and _ZN10dScEntry_c6icon_cC1Ev, which only the two factories reference (__cxa_vec_ctor arguments). That is d_ent_obj.cpp's unit tail exactly -- vtable methods, classInit, then the constructor the factory hands to __cxa_vec_ctor -- and the two constructors are empty, the shape of inline copies a factory forces out at the end of its unit. dScEntry_c_classInit_ENTRY at 0x0211a854 is past that tail. The code after it, 0x0211a948..0x0211b524, is reached from dEntObj_c's methods and through the tables at 0x0211d34c..0x0211d35c that __sinit_ov075_0211c51c reads, never from dScEntry_c. tu_map starts its third run at 0x0211a854. src/game/stages/d_s_entry_entry.cpp therefore stays out of this entry.",
@@ -21,67 +21,214 @@
   ],
   "functions": [
     {
+      "legacy_source": "src/_ZN10dScEntry_c23UpdatePlayerSelectIntroEv.cpp",
+      "symbol": "_ZN10dScEntry_c23UpdatePlayerSelectIntroEv",
+      "address": "0x021190a4",
+      "size": "0x000000f8",
+      "ordinal": 0
+    },
+    {
+      "legacy_source": "src/_ZN10dScEntry_c22EnterPlayerSelectIntroEv.cpp",
+      "symbol": "_ZN10dScEntry_c22EnterPlayerSelectIntroEv",
+      "address": "0x0211919c",
+      "size": "0x00000120",
+      "ordinal": 1
+    },
+    {
+      "legacy_source": "src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp",
+      "symbol": "_ZN10dScEntry_c16UpdatePlayerSyncEv",
+      "address": "0x021192bc",
+      "size": "0x00000190",
+      "ordinal": 2
+    },
+    {
+      "legacy_source": "src/_ZN10dScEntry_c15EnterPlayerSyncEv.cpp",
+      "symbol": "_ZN10dScEntry_c15EnterPlayerSyncEv",
+      "address": "0x0211944c",
+      "size": "0x00000098",
+      "ordinal": 3
+    },
+    {
+      "legacy_source": "src/_ZN10dScEntry_c17RenderWaitingTextEv.cpp",
+      "symbol": "_ZN10dScEntry_c17RenderWaitingTextEv",
+      "address": "0x021194e4",
+      "size": "0x0000015c",
+      "ordinal": 4
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119640.c",
+      "symbol": "func_ov075_02119640",
+      "address": "0x02119640",
+      "size": "0x00000090",
+      "ordinal": 5
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_021196d0.c",
+      "symbol": "func_ov075_021196d0",
+      "address": "0x021196d0",
+      "size": "0x000000ac",
+      "ordinal": 6
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_0211977c.c",
+      "symbol": "func_ov075_0211977c",
+      "address": "0x0211977c",
+      "size": "0x00000060",
+      "ordinal": 7
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_021197dc.c",
+      "symbol": "func_ov075_021197dc",
+      "address": "0x021197dc",
+      "size": "0x0000000c",
+      "ordinal": 8
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_021197e8.c",
+      "symbol": "func_ov075_021197e8",
+      "address": "0x021197e8",
+      "size": "0x00000130",
+      "ordinal": 9
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119918.c",
+      "symbol": "func_ov075_02119918",
+      "address": "0x02119918",
+      "size": "0x000000c0",
+      "ordinal": 10
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_021199d8.cpp",
+      "symbol": "func_ov075_021199d8",
+      "address": "0x021199d8",
+      "size": "0x0000015c",
+      "ordinal": 11
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119b34.c",
+      "symbol": "func_ov075_02119b34",
+      "address": "0x02119b34",
+      "size": "0x00000104",
+      "ordinal": 12
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119c38.c",
+      "symbol": "func_ov075_02119c38",
+      "address": "0x02119c38",
+      "size": "0x00000088",
+      "ordinal": 13
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119cc0.c",
+      "symbol": "_ZN10dScEntry_c17UpdateStepFadeOutEv",
+      "address": "0x02119cc0",
+      "size": "0x0000007c",
+      "ordinal": 14
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119d3c.c",
+      "symbol": "_ZN10dScEntry_c16EnterStepFadeOutEv",
+      "address": "0x02119d3c",
+      "size": "0x0000003c",
+      "ordinal": 15
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119d78.c",
+      "symbol": "_ZN10dScEntry_c15UpdateStepDelayEv",
+      "address": "0x02119d78",
+      "size": "0x0000004c",
+      "ordinal": 16
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_02119dc4.cpp",
+      "symbol": "func_ov075_02119dc4",
+      "address": "0x02119dc4",
+      "size": "0x0000033c",
+      "ordinal": 17
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_0211a100.c",
+      "symbol": "_ZN10dScEntry_c19ChangeStepsWithFadeEPKNS_7StepSetE",
+      "address": "0x0211a100",
+      "size": "0x00000048",
+      "ordinal": 18
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_0211a148.c",
+      "symbol": "_ZN10dScEntry_c21ChangeStepsAfterDelayEPKNS_7StepSetEi",
+      "address": "0x0211a148",
+      "size": "0x0000004c",
+      "ordinal": 19
+    },
+    {
+      "legacy_source": "src/unnamed/ov075/func_ov075_0211a194.cpp",
+      "symbol": "_ZN10dScEntry_c8SetStepsEPKNS_7StepSetE",
+      "address": "0x0211a194",
+      "size": "0x0000007c",
+      "ordinal": 20
+    },
+    {
       "symbol": "_ZN10dScEntry_c16CleanupResourcesEv",
       "address": "0x0211a210",
       "size": "0x00000058",
       "legacy_source": "src/_ZN10dScEntry_c16CleanupResourcesEv.cpp",
-      "ordinal": 0
+      "ordinal": 21
     },
     {
       "symbol": "_ZN10dScEntry_c16OnPendingDestroyEv",
       "address": "0x0211a268",
       "size": "0x00000004",
       "legacy_source": "src/_ZN10dScEntry_c16OnPendingDestroyEv.cpp",
-      "ordinal": 1
+      "ordinal": 22
     },
     {
       "symbol": "_ZN10dScEntry_c6RenderEv",
       "address": "0x0211a26c",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN10dScEntry_c6RenderEv.cpp",
-      "ordinal": 2
+      "ordinal": 23
     },
     {
       "symbol": "_ZN10dScEntry_c8BehaviorEv",
       "address": "0x0211a2b8",
       "size": "0x00000158",
       "legacy_source": "src/_ZN10dScEntry_c8BehaviorEv.cpp",
-      "ordinal": 3
+      "ordinal": 24
     },
     {
       "symbol": "_ZN10dScEntry_c13InitResourcesEv",
       "address": "0x0211a410",
       "size": "0x00000324",
       "legacy_source": "src/_ZN10dScEntry_c13InitResourcesEv.cpp",
-      "ordinal": 4
+      "ordinal": 25
     },
     {
       "symbol": "_ZN10dScEntry_c19BeforeInitResourcesEv",
       "address": "0x0211a734",
       "size": "0x0000000c",
       "legacy_source": "src/_ZN10dScEntry_c19BeforeInitResourcesEv.cpp",
-      "ordinal": 5
+      "ordinal": 26
     },
     {
       "symbol": "dScEntry_c_classInit_RESULT",
       "address": "0x0211a740",
       "size": "0x000000f4",
       "legacy_source": "src/game/stages/d_s_entry_result.cpp",
-      "ordinal": 6
+      "ordinal": 27
     },
     {
       "symbol": "_ZN12OamAnimationC1Ev",
       "address": "0x0211a834",
       "size": "0x00000004",
       "legacy_source": "src/_ZN12OamAnimationC1Ev.cpp",
-      "ordinal": 7
+      "ordinal": 28
     },
     {
       "symbol": "_ZN10dScEntry_c6icon_cC1Ev",
       "address": "0x0211a838",
       "size": "0x0000001c",
       "legacy_source": "src/_ZN10dScEntry_c6icon_cC1Ev.cpp",
-      "ordinal": 8
+      "ordinal": 29
     }
   ],
   "compiler_only_output": [
@@ -103,18 +250,19 @@
   ],
   "notes": [
     "Absorbed sources (all retired): src/_ZN10dScEntry_c16CleanupResourcesEv.cpp, src/_ZN10dScEntry_c16OnPendingDestroyEv.cpp, src/_ZN10dScEntry_c6RenderEv.cpp, src/_ZN10dScEntry_c8BehaviorEv.cpp, src/_ZN10dScEntry_c13InitResourcesEv.cpp, src/_ZN10dScEntry_c19BeforeInitResourcesEv.cpp, src/game/stages/d_s_entry_result.cpp, src/_ZN12OamAnimationC1Ev.cpp, src/_ZN10dScEntry_c6icon_cC1Ev.cpp. Credit stays by address in function-authors.json.",
-    "Form: `#pragma defer_codegen off` and ROM-ascending source, the same form as d_s_entry.cpp, so the two parts join by concatenation once the remaining hole 0x021165b0..0x021190a4 is folded. func_ov075_0211a100 and func_ov075_0211a148 stay under `#pragma cplusplus off`: the volatile struct copy is ill-formed in C++, and 0211a100's two-word save spills to the stack only in C.",
+    "Form: `#pragma defer_codegen off` and ROM-ascending source, the same form as d_s_entry.cpp. The six transition helpers now use native dScEntry_c::Step and StepSet copies, including the saved render callback; no C-language islands or volatile copy scaffolding remain in these helpers. The remaining hole is 0x021165b0..0x021190a4.",
     "SUFFIX FOLD (2026-10-20): absorbed 0x021190a4..0x0211a210 into this file. Retired the five step shards and the sixteen unnamed helpers through func_ov075_0211a194. 30/30 .text functions byte-match the ROM with relocation destinations checked, including the nine functions this file already owned. The ENTRY factory and the code after 0x0211a948 stay out: that tail is reached from dEntObj_c.",
-    "Render and Behavior now share one this-relative view, dScEntryStepView, in place of the per-file `C` and `Self` shadows. It names only what the header still holds as opaque storage: the two pointer-to-member steps at 0x5c (Behavior) and 0x64 (Render) and the icon count at 0x280. Behavior's fade bytes are the header's mFadeBrightness/mFadeTick/mIsFading, its icon loop calls icon_c::Behavior through an icon_c pointer over mIcons (the shard's one-slot `Poly0` view is gone), and InitResources reads fBase_c::param1 instead of `*(s32 *)(c + 8)`. All byte-identical.",
+    "Render and Behavior use the real dScEntry_c member pointers at 0x5c and 0x64 and the named icon count at 0x280. The header also names the pending StepSet at 0x6c. Behavior restores brightness after a step change before invoking the new behavior, and its icon loop calls icon_c::Behavior. InitResources reads fBase_c::param1. Legacy teardown retains its separate two-word PMF view pending reconstruction.",
     "InitResources' GXS palette loads and Sound calls are real namespace/member calls now (GXS declared in the preamble as d_s_star_sel_methods.cpp does; Sound from Sound.h). The factory moves over verbatim except `_ZTV8dScene_c`, which decl_common.h declares as int[], so the factory casts it rather than redeclaring it as char[].",
-    "OamAnimation() and icon_c() stay out-of-line definitions. Inline class-body forms would not be emitted, because the factory names the constructors by their linker names for __cxa_vec_ctor and nothing in C++ uses them."
+    "OamAnimation() and icon_c() stay out-of-line definitions. Inline class-body forms would not be emitted, because the factory names the constructors by their linker names for __cxa_vec_ctor and nothing in C++ uses them.",
+    "FLOW RECOVERY (2026-10-20): six inferred transition method identities replace the unnamed helpers at 0x02119cc0, 0x02119d3c, 0x02119d78, 0x0211a100, 0x0211a148 and 0x0211a194 inside this existing production owner. The 30-entry function census now covers the complete licensed range. Folded callers use the typed API; external callers retain their separate ownership. Original matched-function authors are preserved by address."
   ],
   "verification": {
-    "round": "mwccarm 2004/b56 compile of the production TU, extract_func+compare against extracted/overlays/overlay_0075.bin at base 0x02113ee0, plus reloc_audit.check_destinations for every owned function",
+    "round": "Focused mwccarm 2004/b56 compile of the complete production source; all 30 owned functions match masked ROM bytes and all 244 relocation destinations are OK. Final normalized production-object and full-ROM proof is recorded in the flow handoff.",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "production compile of src/game/stages/d_s_entry_methods.cpp",
-    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/reloc_audit.py check_destinations() (relocation target identity). Section order in the object is ROM-ascending under defer_codegen off.",
+    "comparison": "Focused build_pin flags, match.extract_func+compare and reloc_audit.check_destinations. Raw object C1 vtable addends require the normal production vtable normalization before linked-byte comparison; see the flow handoff for that final check.",
     "functions_matched": 30,
     "functions_declared": 30,
     "compilerOnlyOutput": {
@@ -127,13 +275,6 @@
         "_ZN10dScEntry_c6icon_cC2Ev",
         "_ZN12OamAnimationC2Ev",
         "_ZN9dThIcon_cD2Ev"
-      ],
-      "droppedSections": [
-        18,
-        20,
-        21,
-        24,
-        25
       ],
       "data": [],
       "dataExternalized": [],
