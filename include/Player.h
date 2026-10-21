@@ -359,7 +359,17 @@ struct Player : dActor_c {
      * whether a slope speeds you up or slows you down. */
     s16 mFloorAngle;            /* 0x69a */
     s16 mAngleYSpeed;            /* 0x69c */
-    s16 unk_69e;            /* 0x69e */
+    /* X-axis counterpart of mAngleYSpeed. St_Fly_Init zeroes both, and
+       func_ov002_020df8f0 eases this one toward a stick-times-speed target
+       and adds it to mPrevAngleX (clamped to +-0x2aaa) as mAngleYSpeed is
+       added to mPrevAngleY. St_Balloon_Init sets both to 0x100, and
+       St_Balloon_Main runs (mAngleX, mAngleXSpeed) and (mAngleZ,
+       mAngleYSpeed) through func_ov002_020de3d0. Other code borrows the
+       slot: St_Swim_Main loads it from mAngleZ, func_ov002_020cd448 eases
+       it toward mAngleZ by 0x200 and writes it back, and TryEnterStarDoor
+       stores its `kind` here as the yaw func_ov002_020c8a4c rotates the
+       approach offset by. */
+    s16 mAngleXSpeed;                /* 0x69e */
     u16 mInvincibleTimer;            /* 0x6a0 */
     u16 mPrevAreaId;            /* 0x6a2 */
     u16 mStateTimer;            /* 0x6a4 */
