@@ -23,7 +23,7 @@ typedef struct FSFile {
     char pad_1a[0x2a];     /* 0x1a -- prop and arg, unused here */
 } FSFile;
 
-typedef void (*FS_ARCHIVE_PROC_FUNC)(void *p_file, int command);
+typedef int (*FS_ARCHIVE_PROC_FUNC)(FSFile *p_file, int command);
 
 typedef struct FSArchive {
     char pad_00[0xe];
