@@ -35,7 +35,7 @@ void func_ov007_020c55bc(struct Ov007Picker *self, int m1, int m2)
 {
     int i;
     int j;
-    int b7c, b80;
+    int restX, restY;
     int x, y;
     int dx, dy;
     struct Link *p;
@@ -55,12 +55,12 @@ void func_ov007_020c55bc(struct Ov007Picker *self, int m1, int m2)
             do {
                 p = self->groupLinks[i][j];
                 q = &p->dir.x;
-                b7c = self->restPos.x;
-                b80 = self->restPos.y;
+                restX = self->restPos.x;
+                restY = self->restPos.y;
                 x = self->groupPointCopies[i][j].x;
                 y = self->groupPointCopies[i][j].y;
-                dx = b7c - x;
-                dy = b80 - y;
+                dx = restX - x;
+                dy = restY - y;
 
                 /* Not FX_MUL: its (fx64) recast of the s64 M1/M2 moves a register (6 words differ). */
                 q[0] = (int)((M1 * dx + 0x800) >> 12);
