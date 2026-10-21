@@ -139,6 +139,23 @@ extern char sAmidaPatternGoalShuffle[];
 extern char sAmidaPatternSpeeds[];
 extern char sAmidaPatternRungSkip[];
 extern char sAmidaPatternExtraRungs[];
+
+/* File-local view of one 0x1c-byte pattern record, indexed by
+   mPatternIndex. Each field but walkerStagger has its own symbol above
+   (sAmidaPatterns is the record's first word, the walker count), and the
+   readers keep those symbols. walkerStagger (+0x14) has none: the round
+   setup multiplies it by 0x3c and the walker index into mWalkerDelay, so
+   it is the seconds between walkers. */
+struct AmidaPattern {
+    s32 walkerCount;   /* 0x00 sAmidaPatterns */
+    s32 goalShuffle;   /* 0x04 sAmidaPatternGoalShuffle */
+    s32 speed;         /* 0x08 sAmidaPatternSpeeds */
+    s32 rungSkip;      /* 0x0c sAmidaPatternRungSkip */
+    s32 extraRungs;    /* 0x10 sAmidaPatternExtraRungs */
+    s32 walkerStagger; /* 0x14 */
+    s32 speedUp;       /* 0x18 sAmidaPatternSpeedUp */
+};
+typedef char AmidaPattern_size_must_be_0x1c[sizeof(AmidaPattern) == 0x1c ? 1 : -1];
 extern void *data_ov006_0213a32c;
 extern void *sAmidaSideSprite;
 extern int data_ov006_0213a338[];
@@ -1509,7 +1526,7 @@ void dScMgAmida_c::InitWalkers() {
             this->mWalkerDelay[i] = 0;
         } else {
             this->mWalkerDelay[i] =
-                i * *(s32 *)(sAmidaPatterns + this->mPatternIndex * 0x1c + 0x14) * 0x3c;
+                i * ((AmidaPattern *)sAmidaPatterns)[this->mPatternIndex].walkerStagger * 0x3c;
         }
         this->mWalkerCell[i][0] = (this->mLanePerm[i] << 6) + 0x20;
         if (this->IsVariant2() != 0) {

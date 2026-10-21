@@ -19,9 +19,9 @@ enum d_s_mg_trampoline2_AssetId {
  *
  * leftovers:
  * - 0x7acc has no matched read.
- * - The factory's camera loop and InitResources' two Camera_UpdateMatrices
- *   calls stay raw: the camera elements at 0x466c/0x4728 are pad in
- *   dScMgD3DBase_c.h (camera 1 does not even start on a field).
+ * - Camera 0 is passed as dScMgD3DBase_c.h's pad_466c. Camera 1 (0x4728,
+ *   mid-pad_4726) and the factory loop's end (0x47e4) stay raw: their
+ *   member spellings move bytes (measured).
  * - Model / TextureTransformer / SysTracker C1/D1 stay mangled (built on
  *   raw storage); NewUnkCallback818 takes Fix12 by value, which costs the
  *   caller bytes (notes/mwccarm-codegen.md 6az); the G2 BG getters stay
@@ -32,7 +32,7 @@ enum d_s_mg_trampoline2_AssetId {
  *   pointer locals (Init's p1..p3, Update's p), StatePlay's level pointer
  *   and its unread raw hold the pinned @1110: folding any of them into a
  *   direct member expression renumbers it (measured).
- * - TrmpItem's +0x1a8 array is TrmpItem.h's pad_1a8 and stays raw.
+ * - TrmpItem's +0x1a8 array is TrmpItem.h's pad_1a8; its role is unknown.
  */
 
 #include "common.h"
@@ -319,8 +319,9 @@ extern "C" void *TrmpItem_Construct(char *raw) {
     _ZN5ModelC1Ev(((TrmpItem *)raw)->mModels[1]);
     _ZN5ModelC1Ev(((TrmpItem *)raw)->mModels[2]);
     _ZN18TextureTransformerC1Ev(((TrmpItem *)raw)->mTexAnim);
-    /* +0x1a8 is TrmpItem.h's pad_1a8: five 8-byte elements, role unknown. */
-    __cxa_vec_ctor(raw + 0x1a8, 5, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
+    /* TrmpItem.h's pad_1a8: five 8-byte elements, role unknown. */
+    __cxa_vec_ctor(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)func_0203d738,
+                   (void *)NullDestructor_0203d47c);
     return raw;
 }
 
@@ -332,8 +333,10 @@ extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)_ZTV14dScMgD3DBase_c;
         ((dScMgTrampoline2_c *)scene)->mDrawSubScreen = 0;
-        it = scene + 0x466c;
+        it = (char *)((dScMgTrampoline2_c *)scene)->pad_466c;
         {
+            /* 0x47e4 is mSysTracker, two cameras on; `end = (char *)&mSysTracker`
+               builds the factory 8 bytes shorter. */
             char *end = scene;
             end += 0x47e4;
             do {
@@ -419,7 +422,7 @@ s32 dScMgTrampoline2_c::InitResources() {
     this->mCamera0TargetY = 0;
     this->mCamera0TargetZ = fov;
     this->mCamera0Angle = 0x400;
-    Camera_UpdateMatrices(raw + 0x466c);
+    Camera_UpdateMatrices((char *)pad_466c);
     this->mCamera1EyeX = 0;
     this->mCamera1EyeY = 0x82000;
     this->mCamera1EyeZ = 0;
@@ -427,6 +430,8 @@ s32 dScMgTrampoline2_c::InitResources() {
     this->mCamera1TargetY = 0;
     this->mCamera1TargetZ = fov;
     this->mCamera1Angle = 0x400;
+    /* Camera 1 starts at 0x4728, pad_466c + 0xbc, mid-pad_4726: both member
+       spellings build InitResources 4 bytes longer. */
     Camera_UpdateMatrices(raw + 0x4728);
     if (Trmp2Mario_InitPool(mArray1, 5) == 0)
         return 0;
@@ -1380,7 +1385,7 @@ extern void _ZN18TextureTransformerD1Ev(void *);
 extern void _ZN5ModelD1Ev(void *);
 // @symbol Trmp2_DestructJumperModels
 int Trmp2_DestructJumperModels(char *raw) {
-    __cxa_vec_cleanup(raw + 0x1a8, 5, 8, (void *)NullDestructor_0203d47c); /* pad_1a8 */
+    __cxa_vec_cleanup(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)NullDestructor_0203d47c);
     _ZN18TextureTransformerD1Ev(((TrmpItem *)raw)->mTexAnim);
     _ZN5ModelD1Ev(((TrmpItem *)raw)->mModels[2]);
     _ZN5ModelD1Ev(((TrmpItem *)raw)->mModels[1]);
