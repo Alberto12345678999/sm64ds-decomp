@@ -1868,7 +1868,7 @@ int daKing_Donketu_c::Behavior()
     ((dCamera_c *)data_0209f318)->mFramedActor = this;
     DecIfAbove0_Short(&mStateTimer);
 
-    if (*(void **)((char *)c->pp + 8) != 0) {
+    if (c->pp[1] != 0) {
         PMF *p = c->pp + 1;
         (c->**p)();
     }

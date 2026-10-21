@@ -19,10 +19,9 @@
  * zeroes mStateTimer to move on.
  *
  * 0x080..0x0a8 IS dActor_c's OWN LAYOUT, not this class's; real inheritance
- * now supplies those fields directly. 0x0a4 and 0x0ac stay unk_ because
- * dActor_c leaves them unnamed too; this class writes the three of them as an (x,
- * vert, z) velocity triple, which is a lead for a later pass on the base, not
- * a licence to name a shadow field something its own base contradicts.
+ * now supplies those fields directly. This class writes 0x0a4/0x0a8/0x0ac as
+ * an (x, vert, z) velocity triple, through dActor_c's mSpeedX, mVertSpeed and
+ * mSpeedZ.
  *
  * Provenance table: notes/butterfly-tornado-provenance.md. */
 #ifndef DABTFLY_C_H
