@@ -94,7 +94,9 @@ struct SharedFilePtrFields {
     u8 numRefs;    /* 0x02 */
     void *filePtr; /* 0x04 */
 };
+#ifndef SM64DS_PLATFORM_PC
 typedef char SharedFilePtrFields_size_must_be_0x8[sizeof(SharedFilePtrFields) == 0x8 ? 1 : -1];
+#endif
 /* The rest of this block is the same hoist for the same reason, and the tags
  * are unique in the same way.  A body may not declare `extern` with a
  * function-local class type: a local class has no linkage, so the declaration
@@ -7108,6 +7110,8 @@ int Player::func_ov002_020c8714()
         v[0] = this->mPosX;
         v[1] = this->mPosY;
         v[2] = this->mPosZ;
+        /* mPosY (+0x60), re-read by index: this->mPosY lets the compiler reuse the
+           load above and drops the ROM's second load (one word short, measured). */
         v[1] = ((int *)this)[0x18] + 0x3c000;
         mParticle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
             *(volatile int *)&this->mParticle1, 0x27, v[0], v[1], this->mPosZ, 0, 0);
@@ -16694,7 +16698,7 @@ extern "C" int func_ov002_020d85fc(char* self, char* arg, int flags){
     extern char data_ov002_0211034c;
     extern char data_ov002_02110094;
     Player *player = (Player *)self;
-    if ((flags & 0x1000) && *(int *)(arg + 8) == 2 &&
+    if ((flags & 0x1000) && ((Player *)arg)->param1 == 2 &&
         (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211034c) ||
          (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110094) &&
           player->mStateTimer != 0)) &&
@@ -18317,7 +18321,7 @@ int func_ov002_020dacb4(char *p, char *actor)
             int player_var = ((Player *)p)->param1;
             int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
             void *self = ((Player *)p)->mBodyModels[model_idx];
-            int j = *(int *)(data_ov002_020ff480[offset + player_var] + 4);
+            int j = (int)((SharedFilePtrFields *)data_ov002_020ff480[offset + player_var])->filePtr;
             _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(self, j, 0, 0x1000, 0);
         }
     }
@@ -23884,7 +23888,7 @@ int Player::Render()
             _ZN5Model6RenderEPK7Vector3(bodyMdl, &mScale);
             if (param1 == 1) {
                 _ZN15TextureSequence6UpdateER15ModelComponents(&mTexSeqPlayer[0],
-                                                               (char *)mBodyModels[1] + 8);
+                                                               &mBodyModels[1]->data);
                 mTexSeqPlayer[0].currFrame = mPlayerTexFrame << 12;
             }
             func_ov002_020e3e00(bodyMdl, &mScale, mOpacity);
@@ -24015,8 +24019,8 @@ extern "C" void func_ov002_020e3e00(Model *obj, Vector3 *vec, unsigned int opaci
         r0 = 0x1086000;
     int t = r0 >> 3;
     t <<= 1;
-    int diff = t - ((int*)src)[9];
-    ((int*)src)[9] = diff;
+    int diff = t - src->m[9];
+    src->m[9] = diff;
 
     func_0203c178(data_020a0e68, -0x1000, 0x1000, 0x1000);
     MulMat3x3Mat3x3((int*)src, data_020a0e68, (int*)src);
@@ -24066,10 +24070,9 @@ int func_ov002_020e3f90(char* self) {
     s.v[1] = 0;
     s.v[2] = 0;
     data_020a0e68 =
-        *(struct M48 *)(*(char *volatile *)(*(char *volatile *)(&player->mGrabbedByActor) + 0xc8));
+        *(struct M48 *)*(char *volatile *)&((dActor_c *)*(char *volatile *)&player->mGrabbedByActor)->mCarryMatrix;
     p = (char *)player->mGrabbedByActor;
-    /* raw: ((dActor_c *)p)->actorID and *(unsigned short *)&...->actorID both move bytes */
-    if (*(unsigned short*)(p + 0xc) == 0xbf) b = 1;
+    if (((dActor_c *)p)->actorID == 0xbf) b = 1;
     if (b != 0) {
         t = (unsigned int)(((Player *)p)->mHeldObj != 0);
         if (t == 0) return 0;
@@ -24103,8 +24106,7 @@ int func_ov002_020e3f90(char* self) {
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, player->mAngleX);
         Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, player->mAngleZ);
     } else {
-        /* raw: ((dActor_c *)p)->actorID moves bytes here */
-        t = (unsigned int)(*(unsigned short*)(p + 0xc) == 0xbd);
+        t = (unsigned int)(((dActor_c *)p)->actorID == 0xbd);
         if (t != 0) {
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0x5800, -0x6800, -0x2000);
             Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, 0x3c71, 0x38e, -0x4e38);
@@ -24427,7 +24429,7 @@ void func_ov002_020e4bb8(char* self)
                 dst = player->mBodyModels[id];
                 src = player->mBodyModels[4];
                 poolEntry = data_ov002_020ff480[player->mCharFileBase + v];
-                p = *(char**)((char*)poolEntry + 4);
+                p = (char *)((SharedFilePtrFields *)poolEntry)->filePtr;
                 _ZN10ModelAnim24CopyERKS_Pcj(dst, src, p, 0);
             }
         }
@@ -25219,7 +25221,7 @@ void func_ov002_020e5948(void* arg0)
             player->mBodyModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
             1);
         _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-            player->mBodyModels[i], ((s32 *)data_ov002_020ff480[i + 0xC4])[1], 0, 0x1000, 0);
+            player->mBodyModels[i], (s32)((SharedFilePtrFields *)data_ov002_020ff480[i + 0xC4])->filePtr, 0, 0x1000, 0);
         player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
         i++;
     } while (i < 4);
@@ -25293,7 +25295,7 @@ void func_ov002_020e5948(void* arg0)
                     player->mBodyModels[4],
                     _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);
                 _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-                    player->mBodyModels[4], ((s32 *)data_ov002_020ff480[0xC6])[1], 0, 0x1000, 0);
+                    player->mBodyModels[4], (s32)((SharedFilePtrFields *)data_ov002_020ff480[0xC6])->filePtr, 0, 0x1000, 0);
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     &player->mModelAnim3, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e6f8),
                     1, 1);
@@ -25341,9 +25343,9 @@ void func_ov002_020e5948(void* arg0)
             texseq = player->mTexSeqBody;
             do {
                 entry = data_ov002_020ff2f0[outer + k];
-                _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File((void*)((s32*)data_ov002_0210a69c[k])[1], (void*)((s32*)entry)[1]);
+                _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(((SharedFilePtrFields *)data_ov002_0210a69c[k])->filePtr, ((SharedFilePtrFields *)entry)->filePtr);
                 if (n == 0x18) {
-                    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(texseq, (void*)((s32*)entry)[1], 0, 0x1000, 0);
+                    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(texseq, ((SharedFilePtrFields *)entry)->filePtr, 0, 0x1000, 0);
                 }
                 k++;
                 texseq = (TextureSequence *)texseq + 1;
@@ -25419,6 +25421,19 @@ struct PlayerBone {
 typedef char PlayerBone_size_must_be_0x34[sizeof(PlayerBone) == 0x34 ? 1 : -1];
 #endif
 
+/* One of the file's 0x40-byte bone records (BMD_File::bones). Its rest-pose
+   translation sits at +0x24; func_ov002_020e640c copies it into the runtime
+   PlayerBone. d_ent_obj.cpp's VsBoneFileRecord reads the same three words in
+   UnknownVsPlayer::func_ov075_02114b60. */
+struct PlayerFileBone {
+    u8 pad_00[0x24];
+    s32 transX; /* 0x24 */
+    s32 transY; /* 0x28 */
+    s32 transZ; /* 0x2c */
+    u8 pad_30[0x10];
+};
+typedef char PlayerFileBone_size_must_be_0x40[sizeof(PlayerFileBone) == 0x40 ? 1 : -1];
+
 // @symbol func_ov002_020e640c
 extern "C" {
 void func_ov002_020e640c(char *c)
@@ -25478,9 +25493,9 @@ void func_ov002_020e640c(char *c)
     *(u16 *)(c + 0x582) = ((PlayerBone *)md)[15].rotY;
     *(u16 *)(c + 0x584) = ((PlayerBone *)md)[15].rotZ;
 
-    ((PlayerBone *)md)->transX = *(s32 *)(r4p + 0x24);
-    ((PlayerBone *)md)->transY = *(s32 *)(r4p + 0x28);
-    ((PlayerBone *)md)->transZ = *(s32 *)(r4p + 0x2c);
+    ((PlayerBone *)md)->transX = ((PlayerFileBone *)r4p)->transX;
+    ((PlayerBone *)md)->transY = ((PlayerFileBone *)r4p)->transY;
+    ((PlayerBone *)md)->transZ = ((PlayerFileBone *)r4p)->transZ;
 
     {
         int b = ((Player *)c)->mRootMotionMode;
@@ -25523,9 +25538,9 @@ void func_ov002_020e640c(char *c)
         s16 i = 2;
         if (((BMD_File *)mp)->numBones > 2) {
             do {
-                ((PlayerBone *)md)->transX = *(s32 *)(r4p + 0x24);
-                ((PlayerBone *)md)->transY = *(s32 *)(r4p + 0x28);
-                ((PlayerBone *)md)->transZ = *(s32 *)(r4p + 0x2c);
+                ((PlayerBone *)md)->transX = ((PlayerFileBone *)r4p)->transX;
+                ((PlayerBone *)md)->transY = ((PlayerFileBone *)r4p)->transY;
+                ((PlayerBone *)md)->transZ = ((PlayerFileBone *)r4p)->transZ;
                 i = (s16)(i + 1);
                 md += 0x34;
                 r4p += 0x40;
@@ -25619,6 +25634,7 @@ void func_ov002_020e69c0(void *unused)
     unsigned short *dst = data_ov002_0210a760;
     unsigned short a = *dst;
     unsigned short b = dst[1];
+    /* byte +4 kept: &dst[2] adds a word (measured). */
     unsigned short *src = (unsigned short *)((char *)dst + 4);
     int i;
     for (i = 2; i < 0x20; i++) {
