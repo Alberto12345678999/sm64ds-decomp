@@ -18,7 +18,7 @@ typedef struct Ov007Camera {
     unsigned short fovy;
 } Ov007Camera;
 
-typedef char Ov007Camera_fovy_must_be_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
+typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
 
 /* Unprojects the screen point (a, b), in 20.12 pixels, at depth c through
  * the camera's fovy and inverse view matrix. thiz keeps the char * spelling

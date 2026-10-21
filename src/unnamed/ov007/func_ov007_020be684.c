@@ -48,8 +48,9 @@ typedef struct TrackingRecord {
     void *particle; /* 0x08: the tracked particle, 0 = free */
 } TrackingRecord;
 
-typedef char
-    Ov007OamNode_affineIndex_must_be_0x15[(int)&((Ov007OamNode *)0)->affineIndex == 0x15 ? 1 : -1];
+typedef char Ov007OamNode_affineIndex_must_be_at_0x15[(int)&((Ov007OamNode *)0)->affineIndex == 0x15
+                                                          ? 1
+                                                          : -1];
 typedef char TrackingRecord_size_must_be_0xc[sizeof(TrackingRecord) == 0xc ? 1 : -1];
 
 /* Moves each item's node onto the particle it tracks: func_0204dab4 updates

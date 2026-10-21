@@ -18,7 +18,7 @@ typedef struct Ov007Transition {
     int to;   /* 0x30: fx.brightness.to */
 } Ov007Transition;
 
-typedef char Ov007Transition_to_must_be_0x30[(int)&((Ov007Transition *)0)->to == 0x30 ? 1 : -1];
+typedef char Ov007Transition_to_must_be_at_0x30[(int)&((Ov007Transition *)0)->to == 0x30 ? 1 : -1];
 
 /* Eases the master brightness from `from` to `to` by t (Q12) on the
  * transition's screens. c keeps the caller's char * spelling; `tr` is the

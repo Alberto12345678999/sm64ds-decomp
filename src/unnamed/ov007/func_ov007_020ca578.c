@@ -3,7 +3,7 @@ typedef long long s64;
 extern void func_ov007_020ca578(char* self, int i, int j, int t);
 
 /* Reconstructed layouts, not recovered class identity; names as in
- * func_ov007_020c83fc and func_ov007_020ca308 (#4241), only the slots this
+ * func_ov007_020c83fc and func_ov007_020ca308, only the slots this
  * file touches. */
 typedef struct Ov007Follower {
     char pad_00[0x10];
@@ -12,7 +12,8 @@ typedef struct Ov007Follower {
     int flags; /* 0x20: bit 0 skips the step (target held) */
 } Ov007Follower;
 
-typedef char Ov007Follower_flags_must_be_0x20[(int)&((Ov007Follower *)0)->flags == 0x20 ? 1 : -1];
+typedef char
+    Ov007Follower_flags_must_be_at_0x20[(int)&((Ov007Follower *)0)->flags == 0x20 ? 1 : -1];
 
 typedef struct Ov007PointList {
     Ov007Follower **items; /* 0x0 */
@@ -35,7 +36,7 @@ typedef struct Ov007Mesh {
     int pushMax;
 } Ov007Mesh;
 
-typedef char Ov007Mesh_pushMax_must_be_0x1c[(int)&((Ov007Mesh *)0)->pushMax == 0x1c ? 1 : -1];
+typedef char Ov007Mesh_pushMax_must_be_at_0x1c[(int)&((Ov007Mesh *)0)->pushMax == 0x1c ? 1 : -1];
 
 /* Pushes grid point (i, j) along z, lerping pushMin..pushMax by t (Q12),
  * unless the point is held. self keeps the callers' char * spelling; `mesh`

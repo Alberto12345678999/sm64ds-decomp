@@ -16,7 +16,7 @@ typedef struct Ov007Item {
     Ov007ItemLayout *layout; /* 0x24 */
 } Ov007Item;
 
-typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
+typedef char Ov007Item_layout_must_be_at_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
 
 /* Puts the item at its layout row's home position. c keeps the char *
  * spelling of the callers; `item` is the typed view. */

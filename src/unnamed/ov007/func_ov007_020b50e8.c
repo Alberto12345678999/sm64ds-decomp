@@ -1,6 +1,7 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
+#include "Ov007Sprite.h"
 extern char *data_ov007_0210342c;
 extern int data_ov007_02103428;
 
@@ -33,13 +34,6 @@ typedef struct Ov007Item {
     Ov007ItemLayout *layout; /* 0x24 */
 } Ov007Item;
 
-/* The 0x88-byte sprite of include/Ov007Sprite.h; only its scale here. */
-typedef struct Ov007Sprite {
-    char pad_00[0x3c];
-    s32 scaleX; /* 0x3c: func_ov007_020c42f8 MTX_SCALE */
-    s32 scaleY; /* 0x40 */
-} Ov007Sprite;
-
 /* The 0x1c record func_ov007_020b4c04 returns; names as in that file. */
 typedef struct Ov007ItemView {
     Ov007Item *item;     /* 0x00 */
@@ -60,10 +54,10 @@ typedef struct Ov007Work {
     int selectedSlot; /* 0x58: -1 = none (func_ov007_020b0244) */
 } Ov007Work;
 
-typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
-typedef char Ov007Sprite_scaleY_must_be_0x40[(int)&((Ov007Sprite *)0)->scaleY == 0x40 ? 1 : -1];
+typedef char Ov007Item_layout_must_be_at_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
+typedef char Ov007Sprite_scaleY_must_be_at_0x40[(int)&((Ov007Sprite *)0)->scaleY == 0x40 ? 1 : -1];
 typedef char
-    Ov007Work_selectedSlot_must_be_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
+    Ov007Work_selectedSlot_must_be_at_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
 
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 

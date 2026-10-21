@@ -26,7 +26,7 @@ extern void func_ov007_020ad660(int a);
 extern char *data_ov007_0210342c;
 
 /* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1cf0, func_ov007_020b131c (#4237) and #4241's Ov007Work,
+ * func_ov007_020b1cf0 and func_ov007_020b131c,
  * only the slots this file touches. The records stay void *: this file
  * only hands them on. */
 struct Ov007Work {
@@ -48,7 +48,7 @@ struct Ov007Work {
 };
 
 typedef char
-    Ov007Work_chosenItemId_must_be_0x180[(int)&((Ov007Work *)0)->chosenItemId == 0x180 ? 1 : -1];
+    Ov007Work_chosenItemId_must_be_at_0x180[(int)&((Ov007Work *)0)->chosenItemId == 0x180 ? 1 : -1];
 
 #pragma opt_strength_reduction off
 void func_ov007_020aed98(void)

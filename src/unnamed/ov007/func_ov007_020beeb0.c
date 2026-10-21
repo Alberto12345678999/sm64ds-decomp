@@ -115,7 +115,7 @@ void func_ov007_020beeb0(void)
         base = WORK->touch;
         func_ov007_020bed60(base->cur.x, base->cur.y, r6);
     } else {
-        /* the menu cursor's state (func_ov007_020b2cdc returns #4239's
+        /* the menu cursor's state (func_ov007_020b2cdc returns
          * Ov007Cursor::state) */
         Ov007MenuState *p = (Ov007MenuState *)func_ov007_020b2cdc();
         int a;

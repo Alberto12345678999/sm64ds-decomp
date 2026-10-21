@@ -11,7 +11,8 @@ typedef struct Ov007Item {
     Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
 } Ov007Item;
 
-/* The 8-byte record func_ov007_020ade58 returns (#4241's Ov007ItemNode):
+/* The 8-byte record func_ov007_020ade58 returns (Ov007ItemNode, as in
+ * func_ov007_020ae558):
  * an item and the OAM node drawn for it. func_ov007_020add3c passes it
  * here. */
 typedef struct Ov007ItemNode {
@@ -33,7 +34,7 @@ typedef struct Ov007Work {
 } Ov007Work;
 
 typedef char
-    Ov007Work_selectedSlot_must_be_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
+    Ov007Work_selectedSlot_must_be_at_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)

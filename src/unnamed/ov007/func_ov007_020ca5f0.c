@@ -13,14 +13,14 @@ extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
  * func_ov007_020cbf8c copies from a template (see func_ov007_020bee14). */
 
 /* The 0x10-byte grid func_ov007_020c73f0 builds; names as in
- * func_ov007_020cbb04 (#4241), only the slots this file reads. */
+ * func_ov007_020cbb04, only the slots this file reads. */
 typedef struct Ov007Grid {
     int columns; /* 0x00 */
     int rows;    /* 0x04 */
 } Ov007Grid;
 
 /* The 0x2c-byte texture record func_ov007_020c15ec fills; names as in that
- * file (#4237), only the slots this file reads. */
+ * file, only the slots this file reads. */
 typedef struct Ov007Texture {
     char pad_00[0x14];
     int sizeS; /* 0x14: log2(width / 8); func_ov007_020c1448's name */
@@ -30,8 +30,8 @@ typedef struct Ov007Texture {
 typedef struct Ov007Mesh {
     void *verts;     /* 0x00: Vector3 per grid point (func_ov007_020cbbb0) */
     Ov007Grid *grid; /* 0x04: func_ov007_020c73f0 */
-    /* 0x08: one func_ov007_020c80a4 link per cell (#4241's
-     * func_ov007_020cba78); 0x0c..0x23 hold func_ov007_020cbbb0's template
+    /* 0x08: one func_ov007_020c80a4 link per cell
+     * (func_ov007_020cba78); 0x0c..0x23 hold func_ov007_020cbbb0's template
      * copy, with the spring's stiffness/damping at 0x10/0x14 */
     void **cellLinks;
     char pad_0c[4];

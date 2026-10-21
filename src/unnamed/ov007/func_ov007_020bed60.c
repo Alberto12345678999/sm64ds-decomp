@@ -6,7 +6,7 @@ extern int *data_ov007_02104bd4;
 extern int *data_ov007_0210342c;
 
 /* Reconstructed layouts, not recovered class identity; names as in
- * func_ov007_020ca5f0 and func_ov007_020ca308 (#4241), only the slots this
+ * func_ov007_020ca5f0 and func_ov007_020ca308, only the slots this
  * file reads. */
 typedef struct Ov007Grid {
     int columns; /* 0x00 */
@@ -25,7 +25,7 @@ typedef struct Ov007MeshWave {
 } Ov007MeshWave;
 
 /* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020c023c (#4236), only the slot this file reads. */
+ * func_ov007_020c023c, only the slot this file reads. */
 typedef struct Ov007Work {
     char pad_00[0x30];
     int *cameras[2]; /* 0x30: func_ov007_020bfe4c's Ov007Camera */
