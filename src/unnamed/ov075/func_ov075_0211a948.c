@@ -47,7 +47,8 @@ typedef struct EntryMeshMaterial {
 
 typedef char EntryMeshMaterial_size_must_be_0x14[sizeof(EntryMeshMaterial) == 0x14 ? 1 : -1];
 
-/* func_ov075_0211afb0.c's EntryMesh view; only the field this file reads. */
+/* func_ov075_0211afb0.c's EntryMesh view, extended by the material block;
+ * only the field this file reads. */
 typedef struct EntryMesh {
     u8 pad_00[0x88];
     EntryMeshMaterial mMaterial; /* 0x88 */

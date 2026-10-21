@@ -15,7 +15,8 @@ typedef struct EntryMeshMaterial {
     u32 param;   /* 0x10 -- TEXIMAGE_PARAM format, size and pltt0 bits */
 } EntryMeshMaterial;
 
-/* func_ov075_0211afb0.c's EntryMesh view; only the field this file writes. */
+/* func_ov075_0211afb0.c's EntryMesh view, extended by the material block;
+ * only the field this file writes. */
 typedef struct EntryMesh {
     u8 pad_00[0x88];
     EntryMeshMaterial mMaterial; /* 0x88 */

@@ -16,10 +16,11 @@ extern char data_ov075_0211d980;
 extern PMF data_ov075_0211d994;
 
 /* The entry-menu grid mesh dEntObj_c keeps at +0xe80, in
- * func_ov075_0211afb0.c's EntryMesh view with its names; only the fields
- * this file sets. mState and mNumVertices follow daPicGate_c, whose
- * picture mesh has the same shape (a State row of init/behavior/render
- * handlers, a u16 vertex count beside the two u8 grid dimensions). */
+ * func_ov075_0211afb0.c's EntryMesh view (mVertices, mGridDim) extended
+ * by the fields this file sets. mState and mNumVertices follow
+ * daPicGate_c, whose picture mesh has the same shape (a State row of
+ * init/behavior/render handlers, a u16 vertex count beside the two u8
+ * grid dimensions). */
 struct EntryMesh {
     s32 mPos[3]; /* 0x00 -- func_ov075_0211aa00 translates mMtx by it */
     s16 mAngleX; /* 0x0c -- only zeroed here (medium confidence) */
