@@ -53,10 +53,11 @@
  * - Wiggler_StepSegmentsA, Wiggler_StepSegmentsB, Wiggler_StepSegmentsC,
  *   Wiggler_MoveBounce, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
- * - Wiggler_DrawField's seg[i] reads and Wiggler_StartPathB's seg[i] / ang[i]
- *   loop stay raw; their member spellings renumber the pinned @NNN labels.
- *   Wiggler_GetFlag reads the four colour fields at +0x74 through the B72
- *   view.
+ * - Wiggler_DrawField's seg reads and Wiggler_StartPathB's seg / ang loop
+ *   step the base pointer (`((Wiggler *)(raw + i * 8))->seg[0]`); direct
+ *   seg[i] / ang[i] renumbers six pinned @NNN labels in each.
+ *   Wiggler_GetFlag reads the four 2-bit colours in color (+0x74) through
+ *   the B72 bitfield view.
  * - Wiggler_DrawField, OAM::Render(int, OamAttr*, int, int, int,
  *   int, int, int), does not typecheck (the sprite table is void*). The
  *   ROM symbol's scale parameter is Fix12<int>, which this tree cannot spell.
@@ -337,7 +338,7 @@ extern "C" void StarPopup_Draw(void) {
     y = ((HanaStarPopup *)new_var)->y >> 12;
     r = GetGameLanguage();
     Mg_RenderSubSpriteMtx(((void **)sHanaTextSpritesByLanguage[r])[13], x - 8, y, 0);
-    Mg_RenderSubSpriteMtx(*((void **)(sMgDigitSprites + 0x64)), x + 8, y, 0);
+    Mg_RenderSubSpriteMtx(((void **)sMgDigitSprites)[25], x + 8, y, 0);
 }
 
 // @symbol StarPopup_Update
@@ -465,8 +466,8 @@ extern "C" void HanaPopup_DrawAll(void) {
             int idx = GetGameLanguage();
             void *obj = sHanaTextSpritesByLanguage[idx];
             Mg_RenderSubSpriteMtx(((void **)obj)[14], sb - 0x10, r8, a);
-            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa4), sb, r8, b);
-            Mg_RenderSubSpriteMtx(*(void **)(sMgDigitSprites + 0xa0), sb + 0x10, r8, c);
+            Mg_RenderSubSpriteMtx(((void **)sMgDigitSprites)[41], sb, r8, b);
+            Mg_RenderSubSpriteMtx(((void **)sMgDigitSprites)[40], sb + 0x10, r8, c);
         }
     }
 }
@@ -683,9 +684,9 @@ void Wiggler_DrawField(void *arg) {
     t.va0x = 0;
     for (; i < 5; i++) {
         rot = ((Wiggler *)raw)->ang[i];
-        /* seg[i]: ((Wiggler *)raw)->seg[i].x/.y renumbers the pinned @NNN labels. */
-        s.pos.x = *(int *)(raw + i * 8 + 0x18);
-        s.pos.y = *(int *)(raw + i * 8 + 0x1c);
+        /* Stepped base: the direct seg[i].x/.y spelling renumbers six @NNN labels. */
+        s.pos.x = ((Wiggler *)(raw + i * 8))->seg[0].x;
+        s.pos.y = ((Wiggler *)(raw + i * 8))->seg[0].y;
         s.va.x = t.va0x;
         s.va.y = 0x1000;
         ang = (short)(((Wiggler *)raw)->bob - t.A);
@@ -1153,13 +1154,13 @@ int Wiggler_GetFlag(char *raw, int n) {
     case 0:
         return ((Wiggler *)raw)->face;
     case 1:
-        return ((struct B72 *)(raw + 0x74))->f0 + 7;
+        return ((struct B72 *)&((Wiggler *)raw)->color)->f0 + 7;
     case 2:
-        return ((struct B72 *)(raw + 0x74))->f1 + 7;
+        return ((struct B72 *)&((Wiggler *)raw)->color)->f1 + 7;
     case 3:
-        return ((struct B72 *)(raw + 0x74))->f2 + 7;
+        return ((struct B72 *)&((Wiggler *)raw)->color)->f2 + 7;
     default:
-        return ((struct B72 *)(raw + 0x74))->f3 + 7;
+        return ((struct B72 *)&((Wiggler *)raw)->color)->f3 + 7;
     }
 }
 }
@@ -1663,15 +1664,15 @@ void Wiggler_StartPathB(char *raw, int idx) {
         pos[0] -= ((unsigned int)(RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 19) << 7;
     }
 
-    /* seg[i] and ang[i] stay raw: the member spelling renumbers the pinned @NNN labels. */
+    /* seg and ang through a stepped base: direct seg[i] / ang[i] renumbers six @NNN labels. */
     for (i = 0, off = 0; i < 5; i++) {
-        *(int *)(raw + i * 8 + 0x18) = pos[0];
-        *(int *)(raw + i * 8 + 0x1c) = pos[1];
+        ((Wiggler *)(raw + i * 8))->seg[0].x = pos[0];
+        ((Wiggler *)(raw + i * 8))->seg[0].y = pos[1];
         if (((Wiggler *)raw)->aim < 0)
-            *(int *)(raw + i * 8 + 0x18) += off;
+            ((Wiggler *)(raw + i * 8))->seg[0].x += off;
         else
-            *(int *)(raw + i * 8 + 0x18) -= off;
-        *(short *)(raw + i * 2 + 0x7a) = ((Wiggler *)raw)->aim;
+            ((Wiggler *)(raw + i * 8))->seg[0].x -= off;
+        ((Wiggler *)(raw + i * 2))->ang[0] = ((Wiggler *)raw)->aim;
         off += 0x20000;
     }
 
@@ -1819,7 +1820,7 @@ s32 dScMgHanachan_c::Render() {
             if (mPhase == &dScMgHanachan_c::Phase_Play) {
                 i = 0;
                 if (sHanaFieldWigglerCount > 0) {
-                    arr = raw + 0x4678;
+                    arr = (char *)mWiggler;
                     do {
                         Wiggler_DrawField(arr);
                         i++;
@@ -1850,7 +1851,7 @@ s32 dScMgHanachan_c::Render() {
             count_loop:
                 i = 0;
                 if (sHanaFieldWigglerCount > 0) {
-                    arr = raw + 0x4678;
+                    arr = (char *)mWiggler;
                     do {
                         Wiggler_DrawField(arr);
                         i++;
