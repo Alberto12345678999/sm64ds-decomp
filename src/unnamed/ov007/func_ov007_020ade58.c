@@ -134,13 +134,12 @@ void *func_ov007_020ade58(int self)
             if (state == 1 && sb >= 4) {
                 r7 = one;
             } else if (state == 0) {
-                r4->head->anims[sb] = (void *)(
-                    *(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
+                r4->head->anims[sb] =
+                    (void *)(*(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
                 Sprite_SetAnimation(r4->head, zero, zero, zero, zero);
             }
 
-            r4->anims[sb] = (void *)(
-                *(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
+            r4->anims[sb] = (void *)(*(int *)(sl[r7] + 0xc) + (entry->animIndices[sb] << 4));
             sb++;
         } while (sb < r4->animCount);
     }

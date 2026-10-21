@@ -62,8 +62,7 @@ typedef char Ov007PickerScene_size_must_be_0x20[sizeof(Ov007PickerScene) == 0x20
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 #define SCENE (*(Ov007PickerScene **)data_ov007_02104ba0)
 
-static inline int pressed(Ov007Pad *pad, u16 h, int m1, int m2)
-{
+static inline int pressed(Ov007Pad *pad, u16 h, int m1, int m2) {
     int ok, n3, n2, n5;
     n3 = 0;
     ok = 1;

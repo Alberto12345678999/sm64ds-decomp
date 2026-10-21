@@ -62,7 +62,7 @@ typedef char Ov007Work_size_must_be_0x78[sizeof(Ov007Work) == 0x78 ? 1 : -1];
 void func_ov007_020bcba8(int idx)
 {
     char* g = data_ov007_0210342c;
-    Ov007Display* s = ((Ov007Work*)g)->display;
+    Ov007Display *s = ((Ov007Work *)g)->display;
 
     switch (idx) {
     case 0:
@@ -72,7 +72,7 @@ void func_ov007_020bcba8(int idx)
             void* a1 = func_ov007_020b3f20(0x25);
             void* a3 = func_02054ea8();
             unsigned int a4 = _ZN3G2S13GetBG1CharPtrEv();
-            int a6 = *(int*)(*(char**)((Ov007Work*)g)->settings + 0x9c);
+            int a6 = *(int *)(*(char **)((Ov007Work *)g)->settings + 0x9c);
             int idx2;
             func_ov007_020b8548(0, a1, 0, a3, a4, 0, a6);
 
@@ -83,14 +83,14 @@ void func_ov007_020bcba8(int idx)
             func_ov007_020b3edc(0x2c);
             func_ov007_020b3edc(0x2d);
 
-            idx2 = ((Ov007Work*)data_ov007_0210342c)->settings->language + 0x25;
+            idx2 = ((Ov007Work *)data_ov007_0210342c)->settings->language + 0x25;
             func_02056014(func_ov007_020b3f20(idx2), 0, 0x4000);
             _ZN2GX10LoadBGPlttEPKvjj(func_ov007_020b3f20(0x2b), 0, 0x200);
             func_ov007_020b3edc(idx2);
             func_ov007_020b3edc(0x2b);
 
             func_ov007_020bcdb8(1);
-            func_ov007_020c33d0((char*)s->characters[0], 8, 0);
+            func_ov007_020c33d0((char *)s->characters[0], 8, 0);
             func_ov007_020c32e8(s->palettes[0], 3, 0, 0);
             func_ov007_020b850c();
         }
@@ -101,11 +101,11 @@ void func_ov007_020bcba8(int idx)
             void* a3 = func_02054ea8();
             unsigned int a4 = _ZN3G2S13GetBG1CharPtrEv();
             int a5 = func_02054d88();
-            int a6 = *(int*)(*(char**)((Ov007Work*)g)->settings + 0x9c);
+            int a6 = *(int *)(*(char **)((Ov007Work *)g)->settings + 0x9c);
             func_ov007_020b8548(0, a1, 0, a3, a4, a5, a6);
 
             func_ov007_020bcdb8(2);
-            func_ov007_020c33d0((char*)s->characters[3], 9, 0);
+            func_ov007_020c33d0((char *)s->characters[3], 9, 0);
             func_ov007_020c32e8(s->palettes[2], 3, 0, 0);
             func_ov007_020b850c();
         }

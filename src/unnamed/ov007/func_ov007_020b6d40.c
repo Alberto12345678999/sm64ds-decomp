@@ -51,9 +51,9 @@ typedef struct Ov007Display {
  * slots this function fills. */
 typedef struct Ov007Work {
     char pad_00[0x74];
-    Ov007Display *display;           /* 0x74 */
+    Ov007Display *display; /* 0x74 */
     char pad_78[0x2c];
-    void *itemNodes[9];              /* 0xa4: func_ov007_020ade58 */
+    void *itemNodes[9];                   /* 0xa4: func_ov007_020ade58 */
     struct Ov007LayerSlot *layerSlots[8]; /* 0xc8: func_ov007_020adc08 */
 } Ov007Work;
 
@@ -103,8 +103,7 @@ void func_ov007_020b6d40(void)
 
     for (i = 0; i < 8; i++) {
         c->bgLayers[i] =
-            func_ov007_020c95fc((void *)data_ov007_020d7ec8[i],
-                                (&data_ov007_020d7a24[i * 2])[0],
+            func_ov007_020c95fc((void *)data_ov007_020d7ec8[i], (&data_ov007_020d7a24[i * 2])[0],
                                 (&data_ov007_020d7a24[i * 2])[1]);
         WORK->layerSlots[i] =
             (struct Ov007LayerSlot *)func_ov007_020adc08(i, (char *)c->bgLayers[i]);

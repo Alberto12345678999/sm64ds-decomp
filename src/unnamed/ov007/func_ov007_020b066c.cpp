@@ -78,8 +78,8 @@ extern "C" void func_ov007_020b066c(void)
         (*(FP*)(G + 0x2c))(0x11);
         break;
     default:
-        *((unsigned char *)WORK->settings + 0x38) = (unsigned char)(*(FP*)(G + 0x2c))(0x15);
-        *((unsigned char *)WORK->settings + 0x37) = (unsigned char)(*(FP*)(G + 0x2c))(0x14);
+        *((unsigned char *)WORK->settings + 0x38) = (unsigned char)(*(FP *)(G + 0x2c))(0x15);
+        *((unsigned char *)WORK->settings + 0x37) = (unsigned char)(*(FP *)(G + 0x2c))(0x14);
         WORK->settings->dialogKind = 0;
         break;
     }

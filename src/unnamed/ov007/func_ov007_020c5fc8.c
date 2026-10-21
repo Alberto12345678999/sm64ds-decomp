@@ -31,8 +31,8 @@ typedef struct Ov007Picker {
     struct Vector3 **groupPoints;      /* 0x28: func_ov007_020c6e68, per group */
     struct Vector3 **groupPointCopies; /* 0x2c: func_ov007_020c6e68 copies groupPoints */
     char pad_30[8];
-    Ov007StrokePath **groups;     /* 0x38: committed strokes (func_ov007_020c6d20) */
-    Ov007PointList **pointLists;  /* 0x3c: func_ov007_020c798c, per group */
+    Ov007StrokePath **groups;    /* 0x38: committed strokes (func_ov007_020c6d20) */
+    Ov007PointList **pointLists; /* 0x3c: func_ov007_020c798c, per group */
 } Ov007Picker;
 
 typedef char Ov007Link_size_must_be_0x18[sizeof(Ov007Link) == 0x18 ? 1 : -1];
