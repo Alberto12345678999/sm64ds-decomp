@@ -115,13 +115,13 @@ extern "C" dScDSMT_c *dScDSMT_c_classInit(void) {
         _ZN7fBase_cC2Ev(p);
         p[0] = (int)data_0208e4b8;
         p[0] = (int)_ZTV8dScene_c;
-        f = (unsigned char *)((char *)p + 0x13);
+        f = &((dScDSMT_c *)p)->pauseFlags;
         *f |= 1;
         *f |= 4;
         p[0] = (int)data_ov007_021032e8;
         p[0x50 / 4] = (int)data_0208ee14;
         p[0x50 / 4] = (int)data_ov007_021032b0;
-        _ZN10dFdDummy_cC1Ev((struct dFdDummy_c *)((char *)p + 0x54));
+        _ZN10dFdDummy_cC1Ev(&((dScDSMT_c *)p)->fader);
     }
     return (dScDSMT_c *)p;
 }
