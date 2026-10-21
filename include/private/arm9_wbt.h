@@ -58,7 +58,12 @@ typedef struct WBTCommand {
 typedef struct WBTPacketBitmap {
     int length; /* 0x00 */
     int count;  /* 0x04 */
-    int pad_08[3];
+    int pad_08;
+    /* 0x0c -- the packet func_020647a4 marked last (medium: zeroed by
+     * func_020647fc, not read back in the WBT files) */
+    int current;
+    /* 0x10 -- packets marked so far: func_020647a4 counts each one */
+    int recv_count;
     unsigned int *bitmap;  /* 0x14 */
     unsigned char *buffer; /* 0x18 */
 } WBTPacketBitmap;
