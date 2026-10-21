@@ -1,4 +1,7 @@
 #include "types.h"
+#include "ModelBase.h"
+#include "Ov007MenuState.h"
+#include "Ov007Touch.h"
 // @symbol func_ov007_020b0da0
 /* recovered: shared common types, declarations from a shared header */
 #include "decl_common.h"
@@ -10,24 +13,76 @@ extern short data_02082214[];
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Matrix4x3_LoadIdentity(void* mat);
 
+/* Reconstructed layouts and names, not recovered class identity; only the
+ * slots this file touches.
+ *
+ * Ov007Model is the 0xa0-byte model record func_ov007_020bc6d4 allocates
+ * (names as in func_ov007_020bc47c). */
+typedef struct Ov007Model {
+    struct ModelComponents *model; /* 0x00 */
+    char pad_04[0x90];
+    int visible; /* 0x94: func_ov007_020bbff0 renders only while it is nonzero */
+} Ov007Model;
 
+/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
+ * medium-confidence name. */
+typedef struct Ov007Figure {
+    char pad_00[4];
+    Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
+    char pad_08[0x10];
+    /* 0x18: the per-frame hook; func_ov007_020b0a20 installs this function
+     * there and waits for it to read 0 again */
+    void *update;
+} Ov007Figure;
 
+/* data_ov007_0210342c: the overlay's manager; only its slots here. */
+typedef struct Ov007Work {
+    char pad_00[8];
+    Ov007MenuState *state; /* 0x08: func_ov007_020c9388 */
+    char pad_0c[0x44];
+    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
+    char pad_54[0x70];
+    char *pad_c4; /* 0xc4: read raw below; no reader names it */
+    char pad_c8[0x38];
+    Ov007Figure *figure; /* 0x100: func_ov007_020beaa0 */
+} Ov007Work;
+
+typedef char Ov007Model_visible_must_end_at_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
+typedef char Ov007Figure_update_must_end_at_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
+typedef char Ov007Work_figure_must_end_at_0x104[sizeof(Ov007Work) == 0x104 ? 1 : -1];
+
+/* The extern keeps decl_common.h's void * spelling; the typed view is
+ * reached through a cast macro. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+
+/* stateWork bits, by what this file does with them; medium confidence */
+#define OV007_FIGURE_SWAY 1    /* rock the model and bob it (periods 160 and 40 ticks) */
+#define OV007_FIGURE_TOUCHED 2 /* a touch landed in the box below; stop at the next rest */
+#define OV007_FIGURE_RISE 4    /* lift it 30 units over the 80 ticks after data_ov007_02103344 */
+
+/* The figure's update hook (func_ov007_020b0a20 installs it): on the first
+ * tick shows the model and starts it swaying; a touch inside (0x60..0xa0,
+ * 0x40..0x80) after tick 4 marks it touched and plays sound 0x34. While it
+ * sways it rocks about z and bobs in y, clearing the hook at a rest once
+ * touched; while it rises it lifts quadratically to 30 units and clears the
+ * hook at the top. The offset lands in bone 0's translation. arg0 keeps the
+ * void * spelling of the definition; `figure` is the typed view. */
 #pragma opt_common_subs off
 void func_ov007_020b0da0(void* arg0) {
-    char* self = (char*)arg0;
-    char* obj = *(char**)(self + 4);
-    char* st = *(char**)((char*)data_ov007_0210342c + 8);
-    int counter = *(int*)(st + 0xc);
-    char* mat = *(char**)(*(char**)(obj + 0) + 0xc);
+    Ov007Figure* figure = (Ov007Figure*)arg0;
+    Ov007Model* obj = figure->model;
+    Ov007MenuState* st = WORK->state;
+    int counter = st->stateTicks;
+    Matrix4x3* mat = obj->model->transforms;
     void* ret = func_ov007_020aebac();
 
     if (counter == 1) {
-        *(int*)(obj + 0x94) = 1;
-        *(int*)(st + 4) = 1;
+        obj->visible = 1;
+        st->stateWork = OV007_FIGURE_SWAY;
         data_ov007_02103340 = 0;
         data_ov007_02103344 = 0;
         if (ret == 0) {
-            *(int*)(*(char**)((char*)data_ov007_0210342c + 0x100) + 0x18) = 0;
+            WORK->figure->update = 0;
         }
     }
 
@@ -37,29 +92,28 @@ void func_ov007_020b0da0(void* arg0) {
         out.x = 0;
         out.z = 0;
 
-        if (!(*(volatile int*)(st + 4) & 2) && counter >= 4) {
-            char* rp = *(char**)((char*)data_ov007_0210342c + 0x50);
-            if (*(u16*)(rp + 0xc) != 0) {
-                int a = *(u16*)(rp + 8);
+        if (!(*(volatile int*)&st->stateWork & OV007_FIGURE_TOUCHED) && counter >= 4) {
+            Ov007Touch* rp = WORK->touch;
+            if (rp->cur.touch != 0) {
+                int a = rp->cur.x;
                 if (a >= 0x60 && a <= 0xa0) {
-                    int b = *(u16*)(rp + 0xa);
+                    int b = rp->cur.y;
                     if (b >= 0x40 && b <= 0x80) {
-                        int* pflag = (int*)(st + 4);
-                        *pflag |= 2;
+                        int* pflag = (int*)&st->stateWork;
+                        *pflag |= OV007_FIGURE_TOUCHED;
                         data_ov007_02103340 = counter;
                         func_ov007_020bdeb0(0x34);
                         {
-                            char* t0 = *(char**)((char*)data_ov007_0210342c + 0xc4);
-                            char* t1 = *(char**)(t0 + 0);
-                            char* t2 = *(char**)(t1 + 4);
-                            *(short*)(t2 + 2) = 4;
+                            char* t0 = *(char**)(WORK->pad_c4 + 0);
+                            char* t1 = *(char**)(t0 + 4);
+                            *(short*)(t1 + 2) = 4;
                         }
                     }
                 }
             }
         }
 
-        if (*(int*)(st + 4) & 1) {
+        if (st->stateWork & OV007_FIGURE_SWAY) {
             int var_r4;
             _ZN4cstd3modEii(counter, 0x28);
             {
@@ -104,13 +158,13 @@ void func_ov007_020b0da0(void* arg0) {
                     func_ov007_020c39f8(mat, 0, 0, (u16)rzS);
                 }
 
-                if ((*(int*)(st + 4) & 2) && (var_r4 == 0 || var_r4 == 0x800)) {
-                    *(int*)(*(char**)((char*)data_ov007_0210342c + 0x100) + 0x18) = 0;
+                if ((st->stateWork & OV007_FIGURE_TOUCHED) && (var_r4 == 0 || var_r4 == 0x800)) {
+                    WORK->figure->update = 0;
                 }
             }
         }
 
-        if (*(int*)(st + 4) & 4) {
+        if (st->stateWork & OV007_FIGURE_RISE) {
             int diff = counter - data_ov007_02103344;
             int ratio;
             int sq;
@@ -124,10 +178,10 @@ void func_ov007_020b0da0(void* arg0) {
             sq = (int)(((s64)ratio * ratio) >> 12);
             out.y = sq * 30;
             if (ratio >= 0x1000) {
-                *(int*)(*(char**)((char*)data_ov007_0210342c + 0x100) + 0x18) = 0;
+                WORK->figure->update = 0;
             }
         }
 
-        *(struct Vector3*)(mat + 0x24) = out;
+        mat->t = out;
     }
 }
