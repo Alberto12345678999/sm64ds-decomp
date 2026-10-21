@@ -13,7 +13,6 @@ extern void func_02020304(void);
 extern void func_020200e0(void);
 extern void func_02012790(int id);
 extern int func_0203d9b4(void);
-extern int func_ov075_02116d40(char *c);
 extern void func_02020124(void);
 extern void func_02020334(void);
 extern void func_02020768(char *thiz);
@@ -75,7 +74,7 @@ void func_ov075_0211867c(char *self)
                     }
                 }
             } else {
-                if (func_ov075_02116d40(self) != 0)
+                if (reinterpret_cast<dScEntry_c *>(self)->ArePlayersReady() != 0)
                     func_02020124();
             }
         } else if (*(int *)(self + 0x274) == 0) {

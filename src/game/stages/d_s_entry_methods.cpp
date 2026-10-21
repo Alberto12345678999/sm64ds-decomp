@@ -5,8 +5,8 @@
  *   run.
  * - This is the upper part of dScEntry_c's translation unit. The
  *   lower part is d_s_entry.cpp (0x02115ab8..0x021165b0). The hole
- *   that still separates them is 0x021165b0..0x021190a4, unnamed
- *   func_ov075_* helpers, each still its own file. No other class's
+ *   that still separates them is 0x021165b0..0x021190a4: 37 functions
+ *   still in separate sources, including course selection and readiness. No other class's
  *   code reaches them. They are called from InitResources, Behavior
  *   or one another, or reached through the step tables that
  *   __sinit_ov075_0211bb00 copies into .bss. That initializer also
@@ -146,14 +146,8 @@ int func_ov075_02116d9c(int, int);
 void func_ov001_020ab41c(void *);
 void func_ov001_020ab3f0(void *);
 
-/* The helper takes no argument. The call still passes the scene: dropping
- * it removes the retail r0 setup. local extern: definition is
- * func_ov075_02116d40(void). */
-int func_ov075_02116d40(char *);
 
-extern dScEntry_c::StepSet data_ov075_0211d780;
 extern u8 data_0208f274;
-extern dScEntry_c::StepSet data_ov075_0211d768;
 extern OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
 extern dScEntry_c::StepSet data_ov075_0211d918;
@@ -164,8 +158,6 @@ extern u8 data_0209fc58;
 extern u8 data_0209fc5c[];
 extern u8 data_0209fc5d[];
 extern int data_ov075_0211d920[];
-extern dScEntry_c::StepSet data_ov075_0211d858;
-extern dScEntry_c::StepSet data_ov075_0211d840;
 extern dScEntry_c::StepSet data_ov075_0211d8a0;
 extern dScEntry_c::StepSet data_ov075_0211d8d0;
 
@@ -193,7 +185,7 @@ void dScEntry_c::UpdatePlayerSelectIntro() {
     if (func_02020168()) {
         func_02020304();
         func_020200e0();
-        ChangeStepsAfterDelay(&data_ov075_0211d780, 5);
+        ChangeStepsAfterDelay(&EntryCourseSelectSteps, 5);
         return;
     }
 
@@ -206,7 +198,7 @@ void dScEntry_c::UpdatePlayerSelectIntro() {
     func_02020334();
     if (!func_0203d9b4())
         return;
-    if (!func_ov075_02116d40(reinterpret_cast<char *>(this)))
+    if (!ArePlayersReady())
         return;
     func_02020124();
 }
@@ -277,7 +269,7 @@ void dScEntry_c::UpdatePlayerSync() {
     }
     case 3:
         if (func_020308a8()) {
-            ChangeStepsWithFade(&data_ov075_0211d768);
+            ChangeStepsWithFade(&EntryPlayerSelectIntroSteps);
             u8 observedPlayers = data_0208f274;
             int sessionPlayers = func_0203d890();
             if (observedPlayers == sessionPlayers) {
@@ -392,7 +384,7 @@ extern "C" void func_ov075_0211977c(char *c) {
     LoadTextNarcs();
     LoadArchive(0);
     LoadArchive(1);
-    reinterpret_cast<dScEntry_c *>(c)->SetSteps(&data_ov075_0211d780);
+    reinterpret_cast<dScEntry_c *>(c)->SetSteps(&EntryCourseSelectSteps);
 }
 
 // @symbol func_ov075_021197dc
@@ -695,7 +687,7 @@ extern "C" void func_ov075_02119dc4(EntryScene *self, int arg) {
 void dScEntry_c::ChangeStepsWithFade(const StepSet *steps) {
     mPendingSteps = steps;
     Step render = mRenderStep;
-    SetSteps(&data_ov075_0211d858);
+    SetSteps(&EntryFadeOutSteps);
     mRenderStep = render;
 }
 
@@ -704,7 +696,7 @@ void dScEntry_c::ChangeStepsAfterDelay(const StepSet *steps, s32 delay) {
     mPendingSteps = steps;
     mStepDelay = delay;
     Step render = mRenderStep;
-    SetSteps(&data_ov075_0211d840);
+    SetSteps(&EntryDelaySteps);
     mRenderStep = render;
 }
 

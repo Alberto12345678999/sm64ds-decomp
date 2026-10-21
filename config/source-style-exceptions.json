@@ -800,6 +800,14 @@
       "count": 3,
       "reason": "SetRanges takes four Fix12<int> by value. A decl-only member does not accept the constructor's scalar words (mwcc rejects the call as not matching SetRanges(Fix12<int>, Fix12<int>, Fix12<int>, Fix12<int>)), and defining the body as a method homes each used parameter. The extern \"C\" spelling passes them as ints. These three occurrences are the local declaration, the constructor call, and the definition.",
       "evidence": "include/dActor_c.h does not declare SetRanges; notes/mwccarm-codegen.md 6az measured +0x14 on this function at 0x02010e08; _ZN8dActor_cC2Ev 0x0201150c size 0x148 MATCH under 2004/b56 with the scalar call."
+    },
+    {
+      "path": "src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
+      "count": 2,
+      "reason": "Retained scalar ABI bridge from the former course-title renderer. OAM.h deliberately excludes this Fix12-by-value overload, and its enrolled definition still uses the scalar extern C interface. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching caller and callee ABI.",
+      "evidence": "include/OAM.h; src/engine/oam/OAM.cpp; notes/mwccarm-codegen.md section 6az; former func_ov075_02118cd0.c at ov075 0x02118cd0 size 0x4c. The declaration and single call are inherited, not newly introduced interfaces."
     }
   ]
 }

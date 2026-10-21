@@ -2,8 +2,6 @@
 #include "dScEntry_c.h"
 #include "types.h"
 
-extern dScEntry_c::StepSet data_ov075_0211d768;
-extern dScEntry_c::StepSet data_ov075_0211d780;
 extern dScEntry_c::StepSet data_ov075_0211d888;
 
 extern "C" {
@@ -60,12 +58,12 @@ int func_ov075_02116ad4(void *arg) {
             func_02030aa4(0);
             reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&data_ov075_0211d888);
         } else {
-            reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&data_ov075_0211d768);
+            reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&EntryPlayerSelectIntroSteps);
         }
         func_ov075_02116e00(arg);
         mode = 0;
     } else {
-        reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&data_ov075_0211d780);
+        reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&EntryCourseSelectSteps);
         mode = 2;
     }
 

@@ -1241,7 +1241,7 @@
       "src/ProcessKuppaScript.cpp": [
         "param:#1 unsigned int"
       ],
-      "src/unnamed/ov075/func_ov075_02116c8c.c": [
+      "src/_ZN10dScEntry_c10StartMatchEv.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -3123,7 +3123,7 @@
       ]
     },
     "TouchArea_Update": {
-      "src/unnamed/ov075/func_ov075_02118d1c.cpp": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "return:unsigned char"
       ]
     },
@@ -6585,7 +6585,7 @@
       "src/unnamed/ov075/func_ov075_021188b4.c": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02118f38.c": [
+      "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "return:void *"
       ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
@@ -7371,7 +7371,7 @@
       "src/game/stages/d_s_mb.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02118bf8.c": [
+      "src/_ZN10dScEntry_c19LoadCourseResourcesEi.cpp": [
         "return:int"
       ]
     },
@@ -11593,11 +11593,6 @@
         "return:unsigned char []"
       ]
     },
-    "data_0208a0e0": {
-      "src/unnamed/ov075/func_ov075_02118c80.cpp": [
-        "return:char []"
-      ]
-    },
     "data_0208a178": {
       "include/decl_common.h": [
         "return:unsigned char []"
@@ -11727,7 +11722,7 @@
       ]
     },
     "data_02092778": {
-      "src/unnamed/ov075/func_ov075_02116c8c.c": [
+      "src/_ZN10dScEntry_c10StartMatchEv.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -11819,7 +11814,7 @@
       ]
     },
     "data_0209b2e4": {
-      "src/unnamed/ov075/func_ov075_02116c8c.c": [
+      "src/_ZN10dScEntry_c10StartMatchEv.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov075/func_ov075_02116e00.c": [
@@ -12882,7 +12877,7 @@
       "src/unnamed/ov075/func_ov075_02116c38.cpp": [
         "return:int []"
       ],
-      "src/unnamed/ov075/func_ov075_02118c80.cpp": [
+      "src/_ZN10dScEntry_c17EnterMatchLoadingEv.cpp": [
         "return:int *"
       ]
     },
@@ -18497,7 +18492,7 @@
       "src/unnamed/ov075/func_ov075_02118378.c": [
         "return:int"
       ],
-      "src/unnamed/ov075/func_ov075_02118f38.c": [
+      "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_0211944c.c": [
@@ -18522,12 +18517,12 @@
         "return:int"
       ]
     },
-    "data_ov075_0211d768": {
+    "EntryPlayerSelectIntroSteps": {
       "src/unnamed/ov075/func_ov075_021192bc.c": [
         "return:int []"
       ]
     },
-    "data_ov075_0211d780": {
+    "EntryCourseSelectSteps": {
       "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "return:unsigned char []"
       ],
@@ -20380,7 +20375,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_02118d1c.cpp": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "return:void"
       ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
@@ -22354,7 +22349,7 @@
       ]
     },
     "func_0201a244": {
-      "src/unnamed/ov075/func_ov075_02118a84.c": [
+      "src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp": [
         "param:#1 void *",
         "return:void"
       ]
@@ -22535,12 +22530,12 @@
       ]
     },
     "func_020202dc": {
-      "src/unnamed/ov075/func_ov075_02118d1c.cpp": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "arity:0"
       ]
     },
     "func_02020364": {
-      "src/unnamed/ov075/func_ov075_02116d40.c": [
+      "src/_ZN10dScEntry_c15ArePlayersReadyEv.cpp": [
         "return:int"
       ]
     },
@@ -22676,7 +22671,7 @@
       "src/unnamed/ov075/func_ov075_02117f5c.c": [
         "param:#3 int"
       ],
-      "src/unnamed/ov075/func_ov075_02118f38.c": [
+      "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "param:#3 int"
       ],
       "src/unnamed/ov075/func_ov075_0211944c.c": [
@@ -29430,7 +29425,7 @@
       ]
     },
     "func_ov075_02116c8c": {
-      "src/unnamed/ov075/func_ov075_02118a84.c": [
+      "src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp": [
         "arity:1"
       ]
     },
@@ -29446,7 +29441,7 @@
       "src/unnamed/ov075/func_ov075_0211867c.cpp": [
         "arity:1"
       ],
-      "src/unnamed/ov075/func_ov075_02118d1c.cpp": [
+      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "arity:1"
       ],
       "src/_ZN10dScEntry_c23UpdatePlayerSelectIntroEv.cpp": [
@@ -29470,7 +29465,7 @@
       ]
     },
     "func_ov075_02118bf8": {
-      "src/unnamed/ov075/func_ov075_02118a84.c": [
+      "src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp": [
         "arity:0"
       ]
     },

@@ -50,6 +50,7 @@ struct dScEntry_c : dScene_c {
     union {
         s32 mStepWork[4]; /* 0x268 -- reused by each step */
         WaitingWork mWaiting;
+        s32 mSawLoadSignal;     /* loading: observed the asserted peer signal */
         s32 mPlayerSelectReady; /* selection intro: figures reached their slots */
     };
     s32 mSoundHandle;         /* 0x278 */
@@ -70,6 +71,19 @@ struct dScEntry_c : dScene_c {
     void UpdateStepDelay();
     void EnterStepFadeOut();
     void UpdateStepFadeOut();
+    enum MatchLoadPhase {
+        MATCH_LOAD_RESOURCES,
+        MATCH_LOAD_WAIT_FOR_SIGNAL_CLEAR,
+        MATCH_LOAD_READY
+    };
+    void EnterMatchLoading();
+    void UpdateMatchLoading();
+    static void LoadCourseResources(int course);
+    void StartMatch();
+    int ArePlayersReady();
+    void EnterCourseSelect();
+    void UpdateCourseSelect();
+    void RenderCourseSelectTitle();
     void EnterPlayerSync();
     void UpdatePlayerSync();
     void RenderWaitingText();
@@ -86,6 +100,13 @@ struct dScEntry_c : dScene_c {
     virtual s32 Render();               /* slot  9 */
     virtual void OnPendingDestroy();    /* slot 12 */
 };
+
+// Inferred step-set names; storage remains in the overlay's existing BSS.
+extern dScEntry_c::StepSet EntryPlayerSelectIntroSteps;
+extern dScEntry_c::StepSet EntryCourseSelectSteps;
+extern dScEntry_c::StepSet EntryMatchLoadingSteps;
+extern dScEntry_c::StepSet EntryDelaySteps;
+extern dScEntry_c::StepSet EntryFadeOutSteps;
 
 struct dScEntry_c::graphCallback_c : dGraph_c::callback_c {
     void *compressedBg2Screen; /* 0x04 */
