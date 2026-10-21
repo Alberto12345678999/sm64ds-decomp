@@ -618,7 +618,13 @@ struct Player : dActor_c {
        St_Talk_Cleanup then calls Sound::LoadAndSetMusic_Layer1(0x39) and
        clears it. */
     u8 mPlayMusicAfterTalk; /* 0x725 */
-    s8  unk_726;            /* 0x726 */
+    /* Set on both players when their attacks meet: func_ov002_020d8944
+       (two facing players, actor 0xbf) knocks both back and spawns clash
+       particles 0x12a/0x12b, and func_ov002_020d8360/func_ov002_020d8854
+       latch it on both sides. While it is set, func_ov002_020d8360 ignores
+       that player's hit and func_ov002_020d8a50 skips the attack update.
+       St_PunchKick_Init, St_SweepKick_Init and ChangeState clear it. */
+    s8 mAttackClashed; /* 0x726 */
     /* The scripted animation sequence the Kuppa script started. Command
        func_ov002_020bd20c stores its parameter byte here (1-based, 0 for
        none) and zeroes mAnimScriptStep, after func_ov002_020bd06c has

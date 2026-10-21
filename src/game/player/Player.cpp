@@ -16606,7 +16606,7 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
     }
 
     {
-        unsigned char t = *(unsigned char *)(o + 0x726);
+        unsigned char t = ((Player *)o)->mAttackClashed;
         if (t) return t;
     }
 
@@ -16618,8 +16618,8 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
             int r = func_ov002_020d8944(c, o, c);
             if (r != 0) {
                 r = 1;
-                *(unsigned char *)(o + 0x726) = r;
-                *(unsigned char *)(c + 0x726) = r;
+                ((Player *)o)->mAttackClashed = r;
+                player->mAttackClashed = r;
             }
             return r;
         }
@@ -16818,8 +16818,8 @@ void func_ov002_020d8854(char *self) {
             if ((p->mAttackClsn.hitFlags & 0x3c0) == 0)
                 return;
             if (func_ov002_020d8944(self, self, other) != 0) {
-                *(unsigned char *)(other + 0x726) = 1;
-                *(unsigned char *)(self + 0x726) = 1;
+                ((Player *)other)->mAttackClashed = 1;
+                p->mAttackClashed = 1;
             }
             return;
         }
@@ -16877,8 +16877,8 @@ int func_ov002_020d8944(void *self, char *enemy, char *v1) {
         p.y += 0x50000;
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12a, p.x, p.y, p.z);
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12b, p.x, p.y, p.z);
-        *(unsigned char *)(enemy + 0x726) = 1;
-        *(unsigned char *)(v1 + 0x726) = 1;
+        ((Player *)enemy)->mAttackClashed = 1;
+        ((Player *)v1)->mAttackClashed = 1;
         return 1;
     }
     return 0;
@@ -16925,7 +16925,7 @@ void func_ov002_020d8a50(char* self, int which)
         player->mAttackClsn.Clear();
     }
 
-    if (*(u8*)(self + 0x726) != 0)
+    if ((u8)player->mAttackClashed != 0)
         return;
 
     switch (which) {
@@ -19358,7 +19358,7 @@ int Player::St_SweepKick_Init()
     extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
     _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x68, 0x40000000, 0x1000, 0);
     mHorzSpeed = 0;
-    unk_726 = 0;
+    mAttackClashed = 0;
     /* mCamSpacePosX/Y/Z are three consecutive words; dActor_c.h declares them
        individually rather than as one Vector3. */
     Sound::PlayCharVoice(mCharacter, 0xa, mCamSpacePos);
@@ -20037,7 +20037,7 @@ int Player::St_PunchKick_Init()
     extern int _ZN6Player15IsCollectingCapEv(void*);
     extern void func_ov002_020dc020(void*);
   *(int*)((char*)&mPeakY)=*(int*)((char*)&mPosY);
-  *(char*)((char*)&unk_726)=0;
+  mAttackClashed = 0;
   *(short*)((char*)&mStateTimer)=2;
   *(char*)((char*)&mStatePhase)=0;
   if(*(unsigned char*)((char*)&mPunchKickStep)==2 || _ZN6Player15IsCollectingCapEv(((void*)this))) return 1;
@@ -23475,7 +23475,7 @@ int Player::ChangeState(Player::State &state) {
 
     mIsControlDisabled = 0;
     mDetectWater = 0;
-    unk_726 = 0;
+    mAttackClashed = 0;
 
     mStateFlags &= ~0x200;
 
