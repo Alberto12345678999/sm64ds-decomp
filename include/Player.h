@@ -261,6 +261,10 @@ struct Player : dActor_c {
     u8  pad_580[0x8];
     s32 mHeldObjQueue;            /* 0x588 */
     u8  pad_58c[0x74];
+    /* Not a field of its own: byte 0x14 of the head Matrix4x3 at 0x5ec..0x61c
+       that func_ov002_020e4768 stores (body matrix times bone 15) and
+       d_a_bmb.cpp's func_ov102_0214b53c copies out. Nothing reads 0x600 alone;
+       the matrix still straddles pad_58c, this byte and pad_601. */
     u8  unk_600;            /* 0x600 */
     u8  pad_601[0x1b];
     /* Yoshi's per-player material word for VS mode. func_ov002_020e5948 sets it
@@ -437,6 +441,7 @@ struct Player : dActor_c {
        costs 0x100 health on reaching 0xf0 (0x50 in those levels); reset to
        0 otherwise. */
     u16 mAirDrainCounter;   /* 0x6ca */
+    /* St_Jump_Init zeroes it; no reader in the matched code. */
     u16 unk_6cc;            /* 0x6cc */
     u16 mStateFlags;            /* 0x6ce */
     u16 mMegaKillCount;            /* 0x6d0 */
@@ -482,6 +487,8 @@ struct Player : dActor_c {
        0x1e000, and clears it when the flag drops. While it is nonzero,
        St_Walk_Init and St_Crouch_Init play a voice. */
     u8 mDashBoostTimer;     /* 0x6ed */
+    /* St_YoshiPower_Main sets it to 1 when the swallowed object's v18() is
+       4 or 2, St_YoshiPower_Init clears it; no reader in the matched code. */
     u8  unk_6ee;            /* 0x6ee */
     u8 pad_6ef[0x1];
     /* Turn ramp in func_ov002_020d3b9c's walk turning (input mode byte
