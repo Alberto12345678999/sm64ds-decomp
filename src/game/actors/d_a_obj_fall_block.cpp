@@ -304,7 +304,6 @@ s32 daObjFallBlock_c::Render()
    notes/mwccarm-codegen.md 6az. */
 s32 daObjFallBlock_c::Behavior()
 {
-    char *c = (char *)this;
     int all;
     daObjFallBlock_c *p;
     daObjFallBlock_c *q;
@@ -407,13 +406,13 @@ s32 daObjFallBlock_c::Behavior()
             }
         }
         {
-            /* Integer-cast address form: named mAngleX / mAngleZ stores
-               change the code size of Behavior. */
-            s16 t = *(s16 *)(((int)c + 0x8c) & U64);
+            /* Integer-cast address form: plain mAngleX / mAngleZ
+               read-modify-writes shrink Behavior by 8 bytes. */
+            s16 t = *(s16 *)((int)&mAngleX & U64);
             t = (s16)(t + mShakeX);
-            *(s16 *)(((int)c + 0x8c) & U64) = t;
-            t = (s16)(*(s16 *)(((int)c + 0x90) & U64) + mTiltVelZ);
-            *(s16 *)(((int)c + 0x90) & U64) = t;
+            *(s16 *)((int)&mAngleX & U64) = t;
+            t = (s16)(*(s16 *)((int)&mAngleZ & U64) + mTiltVelZ);
+            *(s16 *)((int)&mAngleZ & U64) = t;
             UpdatePos(0);
         }
         if (DecIfAbove0_Short(&mStateTimer) == 0) {
