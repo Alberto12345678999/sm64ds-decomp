@@ -18,7 +18,7 @@ typedef struct Ov007Model {
     s32 matrix[12];
 } Ov007Model;
 
-typedef char Ov007Model_matrix_must_end_at_0x84[sizeof(Ov007Model) == 0x84 ? 1 : -1];
+typedef char Ov007Model_size_must_be_0x84[sizeof(Ov007Model) == 0x84 ? 1 : -1];
 
 /* Builds the model's matrix: rotation, then pos as the translation, then
  * combined with `other` through MulMat4x3Mat4x3. */

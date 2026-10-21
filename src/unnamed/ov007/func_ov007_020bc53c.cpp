@@ -22,7 +22,7 @@ struct Ov007Model {
     void *blendAnim; /* 0x88: flags & 4 only */
 };
 
-typedef char Ov007Model_blendAnim_must_end_at_0x8c[sizeof(Ov007Model) == 0x8c ? 1 : -1];
+typedef char Ov007Model_size_must_be_0x8c[sizeof(Ov007Model) == 0x8c ? 1 : -1];
 
 extern "C" void func_ov007_020bc53c(int r0) {
     int *r4 = (int *)r0;

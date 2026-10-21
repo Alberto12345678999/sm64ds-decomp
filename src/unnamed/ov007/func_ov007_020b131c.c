@@ -29,8 +29,8 @@ typedef struct Ov007Work {
     Ov007LayerSlot *layerSlots[8];
 } Ov007Work;
 
-typedef char Ov007BgLayer_scroll_ends_at_0x30[sizeof(Ov007BgLayer) == 0x30 ? 1 : -1];
-typedef char Ov007Work_layerSlots_end_at_0xe8[sizeof(Ov007Work) == 0xe8 ? 1 : -1];
+typedef char Ov007BgLayer_size_must_be_0x30[sizeof(Ov007BgLayer) == 0x30 ? 1 : -1];
+typedef char Ov007Work_size_must_be_0xe8[sizeof(Ov007Work) == 0xe8 ? 1 : -1];
 
 /* Resets the scroll of layer slots 6 and 1 and rebuilds both screens from
  * their sources at a y offset of -0xc0 pixels (func_ov007_020c0638). */

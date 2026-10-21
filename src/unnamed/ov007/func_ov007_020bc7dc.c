@@ -30,7 +30,7 @@ typedef struct Ov007Model {
     int animTick; /* 0x98: 1 on the frames that step the animations */
 } Ov007Model;
 
-typedef char Ov007Model_animTick_must_be_0x98[sizeof(Ov007Model) == 0x9c ? 1 : -1];
+typedef char Ov007Model_size_must_be_0x9c[sizeof(Ov007Model) == 0x9c ? 1 : -1];
 
 /* Poses the model from blendAnim's current frame and blends it in with
  * weight blendFrames / blendFrameCount, counting blendFrames down on the

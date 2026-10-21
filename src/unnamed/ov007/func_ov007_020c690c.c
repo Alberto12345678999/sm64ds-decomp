@@ -55,7 +55,7 @@ typedef struct Ov007Picker {
     void *camera; /* 0xa8: a3; func_ov007_020c65bc unprojects through it */
 } Ov007Picker;
 
-typedef char Ov007Picker_camera_must_be_0xa8[(int)&((Ov007Picker *)0)->camera == 0xa8 ? 1 : -1];
+typedef char Ov007Picker_camera_must_be_at_0xa8[(int)&((Ov007Picker *)0)->camera == 0xa8 ? 1 : -1];
 
 extern void* func_ov007_020c3df4(int a, int size);
 extern void func_ov007_020c684c(void* self);

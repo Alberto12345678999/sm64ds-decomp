@@ -20,9 +20,9 @@ typedef struct Ov007Picker {
     s16 limitFraction;
 } Ov007Picker;
 
-typedef char Ov007Picker_limitFraction_must_be_0xb4[(int)&((Ov007Picker *)0)->limitFraction == 0xb4
-                                                        ? 1
-                                                        : -1];
+typedef char
+    Ov007Picker_limitFraction_must_be_at_0xb4[(int)&((Ov007Picker *)0)->limitFraction == 0xb4 ? 1
+                                                                                              : -1];
 
 /* Advances the draw limit along the committed strokes' progress
  * thresholds to progress x: 0 inside a stroke, 1 when it steps on to the

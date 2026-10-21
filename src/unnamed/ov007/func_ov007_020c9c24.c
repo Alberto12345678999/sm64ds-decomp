@@ -48,8 +48,7 @@ typedef struct Ov007SwingParams {
     s16 maxNormalY; /* 0x2e */
 } Ov007SwingParams;
 
-typedef char
-    Ov007SwingParams_maxNormalY_must_end_at_0x30[sizeof(Ov007SwingParams) == 0x30 ? 1 : -1];
+typedef char Ov007SwingParams_size_must_be_0x30[sizeof(Ov007SwingParams) == 0x30 ? 1 : -1];
 
 /* The 0x70-byte record func_ov007_020ca010 builds and func_ov007_020c9fa0
  * frees, one per menu item (data_ov007_02104bd4[4..11]); medium-confidence
