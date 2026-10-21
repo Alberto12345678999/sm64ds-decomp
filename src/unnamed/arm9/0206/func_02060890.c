@@ -10,7 +10,7 @@ typedef struct CardCommon {
     unsigned char pad_00[0x18];
     int mSrc;       /* 0x18 */
     int mDst;       /* 0x1c */
-    int mRemaining; /* 0x20 */
+    unsigned int mRemaining; /* 0x20 */
     /* 0x24 -- the DMA channel transfers use (func_02060d1c indexes the DMA
      * registers by it); -1 for none */
     int mDma;

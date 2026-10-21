@@ -21,7 +21,7 @@ typedef struct CardCommon {
     unsigned char pad_04[0x14];
     int mSrc;       /* 0x18 -- RAM source of the write */
     int mDst;       /* 0x1c -- backup address */
-    int mRemaining; /* 0x20 -- bytes left */
+    unsigned int mRemaining; /* 0x20 -- bytes left */
     unsigned char pad_24[4];
     /* 0x28 / 0x2c -- the completion callback and its argument (func_0206081c
      * calls it when a request ends; func_02060890 = CARD_Init zeroes both) */
