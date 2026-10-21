@@ -26,9 +26,10 @@
  *   would need the class constructor, which is not reconstructed.
  *   Its __cxa_vec_ctor calls take the icon_c and OamAnimation
  *   structors by address, which C++ cannot spell.
- * - The header names the entry object and shared step workspace; older
- *   callbacks still access some of that storage through offsets. The transition
- *   helpers use the typed pending StepSet pointer at 0x6c.
+ * - The header names the entry object and shared step workspace. The
+ *   extern "C" step callbacks take the scene as a dScEntry_c pointer and
+ *   reach it through those members. The transition helpers use the
+ *   typed pending StepSet pointer at 0x6c.
  * - InitResources keeps its `int isResult = (actorID == 7)' flag locals.
  *   Folding the first one into its condition rewrites the function
  *   (999 words, measured).
@@ -154,10 +155,6 @@ extern u8 data_0209fc5c[];
 extern u8 data_0209fc5d[];
 extern dScEntry_c::StepSet data_ov075_0211d8a0;
 extern dScEntry_c::StepSet data_ov075_0211d8d0;
-
-void _ZN9dEntObj_c19func_ov075_02115134Ev(char *);
-int _ZN9dEntObj_c19func_ov075_02115098Ei(void *, int);
-void _ZN9dEntObj_c19func_ov075_0211505cEv(void *);
 
 /* local extern: OAM.h excludes this Fix12-by-value overload. */
 OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr *, int, int, int, int, int, int);
@@ -336,12 +333,11 @@ void dScEntry_c::RenderWaitingText() {
 }
 
 // @symbol func_ov075_02119640
-extern "C" void func_ov075_02119640(char *r4) {
-    *(int *)(r4 + 0x278) = Sound_PlayIfNotActive(*(int *)(r4 + 0x278), 2, 0x11d, 0);
-    if (*(unsigned char *)(r4 + 0x282) == 0) {
-        _ZN9dEntObj_c19func_ov075_02115134Ev(*(char **)(r4 + 0x50));
-        *(unsigned char *)(r4 + 0x282) = (unsigned char)_ZN9dEntObj_c19func_ov075_02115098Ei(
-            *(char **)(r4 + 0x50), func_0203da9c());
+extern "C" void func_ov075_02119640(dScEntry_c *self) {
+    self->mSoundHandle = Sound_PlayIfNotActive(self->mSoundHandle, 2, 0x11d, 0);
+    if (self->mStepPhase == 0) {
+        self->mEntObj->func_ov075_02115134();
+        self->mStepPhase = (unsigned char)self->mEntObj->func_ov075_02115098(func_0203da9c());
     }
     if (func_0203da3c() != 0)
         return;
@@ -349,27 +345,26 @@ extern "C" void func_ov075_02119640(char *r4) {
     LoadArchive(0);
     LoadArchive(1);
     func_02030aa4(1);
-    reinterpret_cast<dScEntry_c *>(r4)->SetSteps(&data_ov075_0211d918);
+    self->SetSteps(&data_ov075_0211d918);
 }
 
 // @symbol func_ov075_021196d0
-extern "C" void func_ov075_021196d0(char *c) {
-    _ZN9dEntObj_c19func_ov075_02115134Ev(*(char **)(c + 0x50));
+extern "C" void func_ov075_021196d0(dScEntry_c *self) {
+    self->mEntObj->func_ov075_02115134();
     data_0209d454 &= ~5;
     func_ov075_02116030((void *)&data_ov075_0211d71c, (int)data_0209b2e8);
     data_0209b2e8 = 0;
     func_020338b0(0x225, 0xb0, 0x1d, -1);
     data_0209d454 |= 5;
-    *(unsigned char *)(c + 0x280) = 0;
-    *(int *)(c + 0x26c) = 0;
-    *(int *)(c + 0x270) = 0x78;
+    self->mIconCount = 0;
+    self->mWaiting.wavePhase = 0;
+    self->mWaiting.waveDelay = 0x78;
     func_02012790(0x11e);
-    *(unsigned char *)(c + 0x282) =
-        _ZN9dEntObj_c19func_ov075_02115098Ei(*(char **)(c + 0x50), func_0203da9c());
+    self->mStepPhase = self->mEntObj->func_ov075_02115098(func_0203da9c());
 }
 
 // @symbol func_ov075_0211977c
-extern "C" void func_ov075_0211977c(char *c) {
+extern "C" void func_ov075_0211977c(dScEntry_c *self) {
     int r = func_0203da3c();
     if (r != 0)
         return;
@@ -378,65 +373,58 @@ extern "C" void func_ov075_0211977c(char *c) {
     LoadTextNarcs();
     LoadArchive(0);
     LoadArchive(1);
-    reinterpret_cast<dScEntry_c *>(c)->SetSteps(&EntryCourseSelectSteps);
+    self->SetSteps(&EntryCourseSelectSteps);
 }
 
 // @symbol func_ov075_021197dc
-extern "C" void func_ov075_021197dc(char *p) {
-    p[640] = 0;
+extern "C" void func_ov075_021197dc(dScEntry_c *self) {
+    self->mIconCount = 0;
 }
 
 // @symbol func_ov075_021197e8
-extern "C" void func_ov075_021197e8(char *c) {
-    if (*(unsigned char *)(c + 0x282) == 0) {
-        *(unsigned char *)(c + 0x282) =
-            (unsigned char)(_ZN9dEntObj_c19func_ov075_02115098Ei(*(void **)(c + 0x50),
-                                                                 func_0203da9c()) != 0);
-    }
-    if (*(unsigned char *)(c + 0x282) == 0)
+extern "C" void func_ov075_021197e8(dScEntry_c *self) {
+    if (self->mStepPhase == 0)
+        self->mStepPhase = self->mEntObj->func_ov075_02115098(func_0203da9c()) != 0;
+    if (self->mStepPhase == 0)
         return;
-    if (TouchArea_Update(c + 0x70, -1) != 0 ||
-        (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) != 0 &&
-         *(unsigned char *)(c + 0x281) == 0)) {
-        *(unsigned char *)(c + 0xa4) = 0;
-        func_ov001_020ab41c(c + 0x70);
+    if (TouchArea_Update((char *)&self->mIcons[0], -1) != 0 ||
+        (self->CheckMenuConfirm(-1) != 0 && self->mSelectedIcon == 0)) {
+        self->mIcons[1].mOn = 0;
+        func_ov001_020ab41c(&self->mIcons[0]);
         SetNumPlayers(1);
-        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d900, 0x14);
+        self->ChangeStepsAfterDelay(&data_ov075_0211d900, 0x14);
         func_02012790(0x118);
         return;
     }
-    if (TouchArea_Update(c + 0x94, -1) == 0) {
-        if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(-1) == 0)
+    if (TouchArea_Update((char *)&self->mIcons[1], -1) == 0) {
+        if (self->CheckMenuConfirm(-1) == 0)
             return;
-        if (*(unsigned char *)(c + 0x281) != 1)
+        if (self->mSelectedIcon != 1)
             return;
     }
-    *(unsigned char *)(c + 0x80) = 0;
-    func_ov001_020ab41c(c + 0x94);
-    reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8b8, 0x14);
-    _ZN9dEntObj_c19func_ov075_0211505cEv(*(void **)(c + 0x50));
+    self->mIcons[0].mOn = 0;
+    func_ov001_020ab41c(&self->mIcons[1]);
+    self->ChangeStepsAfterDelay(&data_ov075_0211d8b8, 0x14);
+    self->mEntObj->func_ov075_0211505c();
     func_02012790(0x119);
 }
 
 // @symbol func_ov075_02119918
-extern "C" void func_ov075_02119918(void *thiz) {
-    unsigned char *c = (unsigned char *)thiz;
-
+extern "C" void func_ov075_02119918(dScEntry_c *self) {
     data_0209d454 = data_0209d454 & ~1;
     func_ov075_02116028((int *)&data_ov075_0211d71c, 2);
     func_02034414(0x11);
 
     data_0209d454 = data_0209d454 | 5;
-    *(u8 *)(c + 0x281) = 1;
-    func_ov075_02115e8c((char *)(c + 0x70), 8, 0, 0x50, 0xa8);
-    func_ov075_02115e8c((char *)(c + 0x94), 8, 0, 0xb0, 0xa8);
+    self->mSelectedIcon = 1;
+    func_ov075_02115e8c((char *)&self->mIcons[0], 8, 0, 0x50, 0xa8);
+    func_ov075_02115e8c((char *)&self->mIcons[1], 8, 0, 0xb0, 0xa8);
 
-    *(u8 *)(c + 0x280) = 2;
+    self->mIconCount = 2;
     func_02030a38();
     {
         int r = func_0203da9c();
-        *(u8 *)(c + 0x282) =
-            (u8)(_ZN9dEntObj_c19func_ov075_02115098Ei(*(char **)(c + 0x50), r) != 0);
+        self->mStepPhase = self->mEntObj->func_ov075_02115098(r) != 0;
     }
 }
 
@@ -445,12 +433,12 @@ struct SinePair {
 };
 
 // @symbol func_ov075_021199d8
-extern "C" void func_ov075_021199d8(char *c) {
+extern "C" void func_ov075_021199d8(dScEntry_c *self) {
     OamAttr *attr;
 
     attr = data_ov075_0211c968[func_0200f0bc()];
 
-    if (*(int *)(c + 0x270) <= 0) {
+    if (self->mWaiting.waveDelay <= 0) {
         int ang;
         int flag;
         int fallback = 0x1c;
@@ -460,7 +448,7 @@ extern "C" void func_ov075_021199d8(char *c) {
         int fx = 0x1000;
         int x = 0x80;
 
-        ang = *(int *)(c + 0x26c);
+        ang = self->mWaiting.wavePhase;
         flag = 0;
 
         do {
@@ -485,55 +473,55 @@ extern "C" void func_ov075_021199d8(char *c) {
             ang -= 0x2000;
         } while (1);
 
-        *(int *)(c + 0x26c) += 0x800;
+        self->mWaiting.wavePhase += 0x800;
 
         if (flag == zero)
-            *(int *)(c + 0x270) = 0x78;
+            self->mWaiting.waveDelay = 0x78;
     } else {
         OAM::RenderSub(attr, 0x80, 0x1c);
-        *(int *)(c + 0x270) -= data_0208ee44;
-        *(int *)(c + 0x26c) = 0;
+        self->mWaiting.waveDelay -= data_0208ee44;
+        self->mWaiting.wavePhase = 0;
     }
 }
 
 // @symbol func_ov075_02119b34
-extern "C" void func_ov075_02119b34(char *c) {
+extern "C" void func_ov075_02119b34(dScEntry_c *self) {
     int r5 = func_0203da9c();
     int r4 = data_0209fc50;
     for (int i = 1; i < 4; i++) {
         func_02033464((unsigned char)i, (signed char)i, 0);
     }
-    _ZN9dEntObj_c19func_ov075_02115134Ev(*(char **)(c + 0x50));
-    *(int *)(c + 0x278) = Sound_PlayIfNotActive(*(int *)(c + 0x278), 2, 0x11c, 0);
+    self->mEntObj->func_ov075_02115134();
+    self->mSoundHandle = Sound_PlayIfNotActive(self->mSoundHandle, 2, 0x11c, 0);
     if (data_0209fc5c[r5] == 0)
         return;
     if (r4 < 4) {
-        if (TouchArea_Update(c + 0x70, 0) == 0) {
-            if (reinterpret_cast<dScEntry_c *>(c)->CheckMenuConfirm(0) == 0)
+        if (TouchArea_Update((char *)&self->mIcons[0], 0) == 0) {
+            if (self->CheckMenuConfirm(0) == 0)
                 return;
         }
     }
-    func_ov001_020ab3f0(c + 0x70);
+    func_ov001_020ab3f0(&self->mIcons[0]);
     if (r4 <= 1) {
-        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8a0, 0x14);
+        self->ChangeStepsAfterDelay(&data_ov075_0211d8a0, 0x14);
     } else {
         func_02030a6c();
-        reinterpret_cast<dScEntry_c *>(c)->ChangeStepsAfterDelay(&data_ov075_0211d8d0, 0x14);
+        self->ChangeStepsAfterDelay(&data_ov075_0211d8d0, 0x14);
     }
     func_02012790(0x117);
 }
 
 // @symbol func_ov075_02119c38
-extern "C" void func_ov075_02119c38(char *c) {
+extern "C" void func_ov075_02119c38(dScEntry_c *self) {
     data_0209d454 &= ~1;
     func_ov075_02116028((int *)&data_ov075_0211d71c, 1);
     func_020337ec();
     data_0209d454 |= 5;
-    func_ov075_02115e8c(c + 0x70, 0xa, 0, 0x80, 0xa8);
-    *(unsigned char *)(c + 0x280) = 1;
-    *(unsigned char *)(c + 0x282) = 0;
-    *(int *)(c + 0x26c) = 0;
-    *(int *)(c + 0x270) = 0x78;
+    func_ov075_02115e8c((char *)&self->mIcons[0], 0xa, 0, 0x80, 0xa8);
+    self->mIconCount = 1;
+    self->mStepPhase = 0;
+    self->mWaiting.wavePhase = 0;
+    self->mWaiting.waveDelay = 0x78;
 }
 
 // @symbol _ZN10dScEntry_c17UpdateStepFadeOutEv
