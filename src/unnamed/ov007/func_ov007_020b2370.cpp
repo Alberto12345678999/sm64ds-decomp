@@ -48,7 +48,7 @@ typedef char Ov007Work_size_must_be_0x108[sizeof(Ov007Work) == 0x108 ? 1 : -1];
 
 /* Poses the manager model and both figures against camera 0's view matrix,
  * scales the model by modelGrowth, then renders all three. */
-extern "C" void func_ov007_020b2370(void){
+extern "C" void func_ov007_020b2370(void) {
     Ov007Work *g = *(Ov007Work **)&data_ov007_0210342c;
     Ov007Model *f4 = g->model;
     Ov007Figure **arr = (Ov007Figure **)LAUNDER(&g->figure);
@@ -56,21 +56,21 @@ extern "C" void func_ov007_020b2370(void){
     {
         Ov007Work *g2 = *(Ov007Work **)&data_ov007_0210342c;
         func_ov007_020be9ac(arr[0], g2->model, g2->cameras[0]->viewMatrix);
-  }
-  {
-      Ov007Work *g2 = *(Ov007Work **)&data_ov007_0210342c;
-      func_ov007_020be9ac(arr[1], g2->model, g2->cameras[0]->viewMatrix);
-  }
-  {
-      Ov007Work *g2 = *(Ov007Work **)&data_ov007_0210342c;
-      int t = g2->modelGrowth;
-      long long v = ((long long)(0x1000 - t) << 8) + ((long long)t << 12);
-      int res = (int)(v >> 12);
-      f4->scale.z = res;
-      f4->scale.y = f4->scale.z;
-      f4->scale.x = f4->scale.y;
-  }
-  func_ov007_020bbff0(f4);
-  func_ov007_020bbff0(arr[0]->model);
-  func_ov007_020bbff0(arr[1]->model);
+    }
+    {
+        Ov007Work *g2 = *(Ov007Work **)&data_ov007_0210342c;
+        func_ov007_020be9ac(arr[1], g2->model, g2->cameras[0]->viewMatrix);
+    }
+    {
+        Ov007Work *g2 = *(Ov007Work **)&data_ov007_0210342c;
+        int t = g2->modelGrowth;
+        long long v = ((long long)(0x1000 - t) << 8) + ((long long)t << 12);
+        int res = (int)(v >> 12);
+        f4->scale.z = res;
+        f4->scale.y = f4->scale.z;
+        f4->scale.x = f4->scale.y;
+    }
+    func_ov007_020bbff0(f4);
+    func_ov007_020bbff0(arr[0]->model);
+    func_ov007_020bbff0(arr[1]->model);
 }
