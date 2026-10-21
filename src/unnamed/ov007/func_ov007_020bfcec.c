@@ -13,11 +13,13 @@ typedef struct Ov007Model {
 
 /* The 0x14-byte screen-fade record at data_ov007_02104bd8. */
 typedef struct Ov007Fade {
-    void *transition;  /* 0x00: func_ov007_020c8498's Ov007Transition, built by func_ov007_020c8b10 */
+    void
+        *transition; /* 0x00: func_ov007_020c8498's Ov007Transition, built by func_ov007_020c8b10 */
     Ov007Model *model; /* 0x04: freed by func_ov007_020bfc54 through func_ov007_020bc53c */
     int flags;         /* 0x08: RequestScreenFade's second argument */
-    void *onEnd;       /* 0x0c: RequestScreenFade's third; func_ov007_020bf790 copies it to Ov007Transition::onEnd */
-    int request;       /* 0x10: RequestScreenFade's first; func_ov007_020bf690 runs func_ov007_020bf790 while it is set */
+    void *
+        onEnd; /* 0x0c: RequestScreenFade's third; func_ov007_020bf790 copies it to Ov007Transition::onEnd */
+    int request; /* 0x10: RequestScreenFade's first; func_ov007_020bf690 runs func_ov007_020bf790 while it is set */
 } Ov007Fade;
 
 typedef char Ov007Fade_size_must_be_0x14[sizeof(Ov007Fade) == 0x14 ? 1 : -1];

@@ -6,7 +6,7 @@ extern int _ZN4cstd3divEii(int a, int b);
  * against v's binary angle squared. self keeps its char * spelling; `path`
  * is the typed view. */
 int func_ov007_020c2dfc(char* self, int idx, int v) {
-    Ov007StrokePath* path = (Ov007StrokePath*)self;
+    Ov007StrokePath *path = (Ov007StrokePath *)self;
     int q;
     unsigned short* s;
     int d;

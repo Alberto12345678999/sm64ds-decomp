@@ -30,7 +30,7 @@ int* func_ov007_020c95fc(void* a, int b, int c)
 {
     Ov007ScreenBlock f;
     Ctx ctx;
-    Ov007ScreenBlock* p;
+    Ov007ScreenBlock *p;
 
     if (a == 0) {
         return func_ov007_020c0aa8(0, b, c, 0x20, 0x18);
