@@ -8,11 +8,9 @@
  *
  * Leftover: DrawNotes reads mState as the raw word at 0x5608.
  *   The member spelling in the note draw loop grows it by 8 bytes.
- * Leftover: DealNotes's deal loop reaches mPairUses and
- *   mPairNotes as q + 0x561a and q + 0x561f, with q = this + pair.
+ * Leftover: DealNotes's deal loop reaches mPairUses[0] and
+ *   mPairNotes[0] through the stepped (dScMgSound_c *)q, q = this + pair.
  *   Indexing the members by pair grows the function by 8 bytes.
- * Leftover: InitResources passes raw + 0x4660, the camera that
- *   dScMgSingle3DBase_c.h still leaves as padding.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */

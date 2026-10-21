@@ -1086,8 +1086,7 @@ struct SlotBetIcon {
     s32 mBetCount;    /* 0x1c */
     s32 mPayoutTicks; /* 0x20 */
 };
-typedef char
-    SlotBetIcon_size_must_match_dThIcon_c[sizeof(SlotBetIcon) == sizeof(dThIcon_c) ? 1 : -1];
+typedef char SlotBetIcon_size_must_be_0x24[sizeof(SlotBetIcon) == 0x24 ? 1 : -1];
 #define BET_ICON(p) ((SlotBetIcon *)(p))
 
 // @symbol SlotReel_SetSpeed
