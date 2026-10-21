@@ -2,7 +2,9 @@ extern void func_02072168(void *a, void *b, int d);
 extern void func_02071790(void *a, void *b, int x);
 
 /* File-local views of CodeWarrior's exception runtime, with the names
- * func_02072168.c gives them. */
+ * func_02072168.c gives them. CatchInfo's last three fields and the
+ * ExSpecification fields follow the runtime's own CatchInfo and
+ * ex_specification records, not a reader in this image (medium). */
 typedef struct ThrowContext {
     int mThrowType; /* 0x00 -- type string */
     int mLocation;  /* 0x04 -- thrown object */
