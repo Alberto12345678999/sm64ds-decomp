@@ -17,32 +17,62 @@ extern int func_020091f8(void *a, void *b, int c, int d);
 extern u32 func_020093f4(void *p, int x);
 extern int func_02009138(int *thiz, int arg);
 extern void func_020089d8(void *p);
+/* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
+ * state touches, with the header's names. */
+typedef struct
+{
+  u8 pad_000[0x110];
+  char *mTargetPlayer; /* 0x110 */
+  u8 pad_114[0x8];
+  /* LookAtExit points it at an actor's position. */
+  struct Vec3 *mLookTarget; /* 0x11c */
+  u8 pad_120[0x5c];
+  s16 mAngleY; /* 0x17c */
+} CameraView;
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char CameraView_angle_y_must_be_at_0x17c[(((int) (&((CameraView *) 0)->mAngleY)) == 0x17c) ? (1) : (-1)];
+#endif
+
+/* The target player's position and facing, as include/dActor_c.h's C view
+ * places them. Its u8 at 0x724 (Player.h's unk_724) stays raw: Player.cpp
+ * sets it at one state step and clears it at a later one, which does not
+ * yet name it. */
+typedef struct
+{
+  u8 pad_000[0x5c];
+  struct Vec3 mPos; /* 0x05c */
+  u8 pad_068[0x26];
+  s16 mAngleY; /* 0x08e */
+} ActorView;
+
 int func_02005110(char *self)
 {
+  CameraView *cam = (CameraView *) self;
   struct Vec3 eye;
   struct Vec3 aim;
   struct Vec3 *target;
   s32 horzAngle;
   s32 mode;
   {
-    struct Vec3 *p = (struct Vec3 *) (((long long) ((int) ((*((char **) (self + 0x110))) + 0x5c))));
+    struct Vec3 *p = &((ActorView *) cam->mTargetPlayer)->mPos;
     eye.x = p->x;
     eye.y = p->y;
     eye.z = p->z;
     eye.y += 0x64000;
   }
   mode = 0x48000;
-  target = *((struct Vec3 **) (self + 0x11c));
+  target = cam->mLookTarget;
   if (target == 0)
   {
     aim.x = eye.x;
     aim.y = eye.y;
     aim.z = eye.z;
-    if ((*((u8 *) ((*((char **) (self + 0x110))) + 0x724))) != 0)
+    if ((*((u8 *) (cam->mTargetPlayer + 0x724))) != 0)
     {
       mode = 0xd0000;
     }
-    horzAngle = *((s16 *) ((*((char **) (self + 0x110))) + 0x8e));
+    horzAngle = ((ActorView *) cam->mTargetPlayer)->mAngleY;
   }
   else
   {
@@ -70,8 +100,8 @@ int func_02005110(char *self)
     }
     fall = 0x2000;
     {
-      struct Vec3 *rawpos = (struct Vec3 *) (((long long) ((int) ((*((char **) (self + 0x110))) + 0x5c))));
-      s32 fallDist = Vec3_Dist(*((struct Vec3 **) (self + 0x11c)), rawpos);
+      struct Vec3 *playerPos = &((ActorView *) cam->mTargetPlayer)->mPos;
+      s32 fallDist = Vec3_Dist(cam->mLookTarget, playerPos);
       s32 t = fallDist - 0x200000;
       if (t > 0)
       {
@@ -83,12 +113,12 @@ int func_02005110(char *self)
         fall -= scaled;
       }
     }
-    s16 diffAngle = Vec3_HorzAngle(*((struct Vec3 **) (self + 0x11c)), &eye) - (*((s16 *) (self + 0x17c)));
+    s16 diffAngle = Vec3_HorzAngle(cam->mLookTarget, &eye) - cam->mAngleY;
     fall = (diffAngle >= 0) ? (-fall) : (fall);
     if ((!newAim.x) && (!newAim.x))
     {
     }
-    horzAngle = (s16) (Vec3_HorzAngle(*((struct Vec3 **) (self + 0x11c)), &eye) + fall);
+    horzAngle = (s16) (Vec3_HorzAngle(cam->mLookTarget, &eye) + fall);
   }
   {
     s32 vert = Vec3_VertAngle(&aim, &eye);
