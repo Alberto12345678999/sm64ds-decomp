@@ -17,11 +17,13 @@
 // - func_ov065_021180d4, func_ov065_02118c4c and func_ov065_02119210 take
 //   daDossyCap_c, so they stay free functions. decl_common.h still
 //   declares those forms.
-// - func_ov065_02118838 keeps `(i << 9)` platform addressing. A typed
-//   DorriePlatform walk, or mPlatforms[i], changes that function and the
-//   char* walks in CleanupResources and InitResources. Casting
-//   `c + (i << 9) + 0x150` to DorriePlatform * is 4 bytes longer, and
-//   `(char *)mPlatforms + (i << 9)` is 12 bytes longer.
+// - func_ov065_02118838 keeps `(i << 9)` platform addressing, spelled
+//   `((daDossy_c *)(c + (i << 9)))->mPlatforms[0].field`. A typed
+//   DorriePlatform walk, a DorriePlatform * local over that address, or
+//   mPlatforms[i], changes that function and the char* walks in
+//   CleanupResources and InitResources. Casting `c + (i << 9) + 0x150` to
+//   DorriePlatform * is 4 bytes longer, and `(char *)mPlatforms + (i << 9)`
+//   is 12 bytes longer.
 // - The seven parameter names on the prototypes of Matrix4x3_FromRotationY,
 //   DecIfAbove0_Short and the two mangled method externs hold the @NNN
 //   count: removing the gotos from func_ov065_021183c8 and
@@ -67,6 +69,29 @@ enum daDossy_c_AssetId {
 #include "nitro/fx/fx.h"
 
 typedef enum { FALSE = 0, TRUE = 1 } BOOL;
+
+/* One 0x34-byte runtime pose record of mModelAnim.data.bones, filled by
+   UpdateBones (not BMD_Bone, 0x40, as the header types it). Same shape as
+   d_a_trs.cpp's file-local TrsBone, but the rotation is u16: the ROM reads
+   it with ldrh, and with s16 members func_ov065_02118838 stops matching. */
+struct DossyBone {
+    u8 pad_00[0x1a];
+    u16 rotX; /* 0x1a */
+    u16 rotY; /* 0x1c */
+    u16 rotZ; /* 0x1e */
+    u8 pad_20[0x14];
+};
+/* The spawned daObjMarioCap_c (actor 0x10d) seen only as far as
+   dEnemyBase_c::mEatingPlayer, which daDossyCap_c::Behavior hands over.
+   Including dEnemyBase_c.h instead renumbers this TU's @NNN pins by 26. */
+struct MarioCapEatView : dActor_c {
+    s32 mEatingPlayer; /* 0x0d0 */
+};
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char DossyBone_size_must_be_0x34[sizeof(DossyBone) == 0x34 ? 1 : -1];
+typedef char MarioCapEatView_size_must_be_0xd4[sizeof(MarioCapEatView) == 0xd4 ? 1 : -1];
+#endif
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
    model handle constructs through func_02017acc and destroys through
@@ -333,9 +358,7 @@ int daDossyCap_c::Behavior()
     if (eaten != 0) {
         dActor_c *spit = dActor_c::Spawn(0x10d, 0x1210, mPos, &mAngle, mAreaId, -1);
         if (spit != 0) {
-            /* dEnemyBase_c::mEatingPlayer of the spawned daObjMarioCap_c;
-               including dEnemyBase_c.h renumbers the pins by 26. */
-            *(s32 *)((char *)spit + 0xd0) = mEatingPlayer;
+            ((MarioCapEatView *)spit)->mEatingPlayer = mEatingPlayer;
             ((Player *)mEatingPlayer)->mObjInMouth = (s32)spit;
             spit->mFlags |= 0x20000;
             mFlags &= ~0x20000;
@@ -502,23 +525,20 @@ void daDossy_c::func_ov065_02118838()
     three = 3;
     tbl = data_ov065_0211c078;
     for (i = 0; i < 7; i++) {
-        /* data.bones holds 0x34-byte runtime pose records filled by
-           UpdateBones, not BMD_Bone (0x40) as the header types it; the
-           rotation sits at +0x1a/+0x1c/+0x1e. */
         char *ent = (char *)mModelAnim.data.bones + *tbl * 0x34;
         {
-            u16 tz = *(u16 *)(ent + 0x1e);
-            u16 ty = *(u16 *)(ent + 0x1c);
-            u16 tx = *(u16 *)(ent + 0x1a);
+            u16 tz = ((DossyBone *)ent)->rotZ;
+            u16 ty = ((DossyBone *)ent)->rotY;
+            u16 tx = ((DossyBone *)ent)->rotX;
             rot.x = tx;
             rot.y = ty;
             rot.z = tz;
         }
-        *(Vector3s *)(c + (i << 9) + 0x348) = rot;
+        *(Vector3s *)&((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot = rot;
         if (i == 2) {
-            *(s16 *)(c + (i << 9) + 0x348) += mPlatforms[1].mRot.x;
-            *(s16 *)(c + (i << 9) + 0x34a) += mPlatforms[1].mRot.y;
-            *(s16 *)(c + (i << 9) + 0x34c) += mPlatforms[1].mRot.z;
+            ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.x += mPlatforms[1].mRot.x;
+            ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.y += mPlatforms[1].mRot.y;
+            ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.z += mPlatforms[1].mRot.z;
         }
         v.x = zero;
         v.y = zero;
@@ -562,10 +582,10 @@ void daDossy_c::func_ov065_02118838()
             *hz += data_02082214[((u16)mAngleY >> 4) * 2 + 1] * k82;
         }
         Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, (s16)(mAngleY + *(s16 *)(c + (i << 9) + 0x34a)));
-        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, *(s16 *)(c + (i << 9) + 0x348));
-        Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, *(s16 *)(c + (i << 9) + 0x34c));
-        *(Matrix4x3 *)(c + (i << 9) + 0x150) = data_020a0e68;
+        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, (s16)(mAngleY + ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.y));
+        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.x);
+        Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.z);
+        ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mClsnNextMat = data_020a0e68;
         ((dBgW_KcMbg *)pk)->Transform(*(Matrix4x3 *)pm, mAngleY);
         pm += 0x200;
         pk += 0x200;
