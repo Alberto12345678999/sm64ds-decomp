@@ -15,9 +15,8 @@
  * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mModelAnim
  *   explicitly. The qualified base call preserves the ROM entry point
  *   without a byte-offset pointer or a ModelAnim forwarding call.
- * - The word after mClipResult (dActor_c pad, 0xc8) is a Matrix4x3* while
- *   mVariant is 2. Naming it would be a field on dActor_c. Player+0xc8 is
- *   that same pad on the carrier, tested as a nonzero int.
+ * - dActor_c::mCarryMatrix (0xc8) is the matrix 0214b53c copies into the
+ *   model while mVariant is 2; on the carrier it is only tested nonzero.
  * - func_ov102_0214bf64 keeps its existing free-function label over daBmb_c.
  *   func_ov102_0214bd90 and func_ov102_0214b03c are methods:
  *   the first argument is this Bob-omb. Both methods call func_0200fc44 and
@@ -28,9 +27,10 @@
  *   has no fields, so the loaded BCA is still the word at +4.
  * - func_0203568c / func_02035684 are the out-of-line stores of
  *   mWithMeshClsn.mRadius / mHeight. Inlining them drops the call.
- * - func_ov102_0214b53c keeps the volatile stack pins, and the carrier's
- *   angles at +0x8c/+0x8e/+0x90, the matrix at +0x5ec, and the halfwords at
- *   +0x580/+0x582/+0x584. Those player slots are not named on Player.
+ * - func_ov102_0214b53c keeps the volatile stack pins and reads the eating
+ *   player (mEatingPlayer, not the carrier): mPos, mAngleX/Y/Z, the matrix at
+ *   +0x5ec and the halfwords at +0x580/+0x582/+0x584, which Player.cpp fills
+ *   from bone 15's rotX/rotY/rotZ. Those two slots are still pad on Player.
  * - ov078/daBombking_c writes mHurtDamage and mDetonate by those names.
  */
 
@@ -805,7 +805,7 @@ void func_ov102_0214b53c(char *c)
   char *src;
   /* Plain short-circuit.  A chain of `& 0xFFFFFFFFu` masks is C-only: under
      -lang c++ the `&&` is a bool and the mask costs three instructions. */
-  if ((self->mVariant == 2) && ((src = *((char **) ((char *)&self->mClipResult + 4))) != 0))
+  if ((self->mVariant == 2) && ((src = (char *)self->mCarryMatrix) != 0))
   {
     self->mModelAnim.mat4x3 = *((Matrix4x3 *) src);
   }
@@ -813,7 +813,7 @@ void func_ov102_0214b53c(char *c)
   {
     int haveMtx = (int) ((self->mFlags & 0x4000) != 0);
     Player *player0;
-    if (((haveMtx != 0) && ((player0 = self->mCarrier) != 0)) && ((*((int *) ((char *)&player0->mClipResult + 4))) != 0))
+    if (((haveMtx != 0) && ((player0 = self->mCarrier) != 0)) && (player0->mCarryMatrix != 0))
     {
       char *ret = (char *) func_ov002_020e496c((char *)player0);
       u8 idx = 0;
@@ -821,7 +821,7 @@ void func_ov102_0214b53c(char *c)
       {
         idx = 1;
       }
-      if ((self->mCarrier->LostGrabbedObject() != 0) && (((u32) (((u32) ((*((int *) (ret + 0x58))) << 4)) >> 0x10)) < 0xe))
+      if ((self->mCarrier->LostGrabbedObject() != 0) && (((u32) (((u32) (((ModelAnim *)ret)->currFrame << 4)) >> 0x10)) < 0xe))
       {
         idx = 1;
       }
@@ -858,7 +858,7 @@ void func_ov102_0214b53c(char *c)
       p.z = 0;
       *g = *m;
     }
-    MulMat4x3Mat4x3((char *)self->mModelAnim.data.transforms + 0x60, &data_020a0e68, &data_020a0e68);
+    MulMat4x3Mat4x3(&self->mModelAnim.data.transforms[2], &data_020a0e68, &data_020a0e68);
     {
       int ty = *((int *) (((char *) (&data_020a0e68)) + 0x28));
       int tx = *((int *) (((char *) (&data_020a0e68)) + 0x24));
@@ -890,7 +890,7 @@ void func_ov102_0214b53c(char *c)
         char *obj = (char *)self->mEatingPlayer;
         if (obj != 0)
         {
-          char *pos = obj + 0x5c;
+          char *pos = (char *)&((Player *)obj)->mPos;
           int dx = *((int *) pos);
           int gbase = (int) &data_020a0e68;
           dead.x = dx;
@@ -911,12 +911,13 @@ void func_ov102_0214b53c(char *c)
             Vec3_LslInPlace((Vector3 *) pPos, 3);
           }
           char *p2 = (char *)self->mEatingPlayer;
-          u16 a8c = *((volatile u16 *) (p2 + 0x8c)); /* pin angle loads */
-          u16 a8e = *((volatile u16 *) (p2 + 0x8e));
+          Player *eater = (Player *)p2;
+          u16 a8c = *((volatile u16 *) &eater->mAngleX); /* pin angle loads */
+          u16 a8e = *((volatile u16 *) &eater->mAngleY);
           tmp[1] = a8e;
           tmp[0] = a8c;
           xSaved = p.x;
-          x0 = *((volatile u16 *) (p2 + 0x90));
+          x0 = *((volatile u16 *) &eater->mAngleZ);
           s16 angY = (s16) tmp[1];
           tmp[2] = (u16) x0;
           u16 v580 = *((volatile u16 *) (p2 + 0x580));
@@ -1158,8 +1159,8 @@ void func_ov102_0214b128(void *cv) {
 // @symbol _ZN7daBmb_c19func_ov102_0214b03cEv
 void daBmb_c::func_ov102_0214b03c() {
     if (mState < 2 && mModelAnim.file == *((BCA_File **)((char *)&data_ov102_0214e9c0 + 4))) {
-        if (((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0) != 0 ||
-            ((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0x10) != 0) {
+        if (mModelAnim.WillHitFrame(0) != 0 ||
+            mModelAnim.WillHitFrame(0x10) != 0) {
             func_0201267c(0x132, &mCamSpacePos);
         }
     }
