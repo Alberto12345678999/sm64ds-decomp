@@ -45,6 +45,12 @@
 #include "decl_Animation.h"
 #include "Sound.h"
 #include "dCamera_c.h"
+#include "daObj1UpLogo_c.h"
+#include "daOwl_c.h"
+#include "daShl_c.h"
+#include "daSoundObj_c.h"
+#include "daTor_c.h"
+#include "daYegg_c.h"
 #include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -858,7 +864,7 @@ void Player::IncMegaKillCount() {
     if (a == 0) {
         return;
     }
-    *((unsigned short *)((a + 0x100) + 0x4c)) = 0;
+    ((daObj1UpLogo_c *)a)->mDelay = 0;
     func_ov002_020f0e54(a, 0);
 }
 }
@@ -9429,7 +9435,7 @@ int Player::St_Shell_Cleanup()
 {
   char* p = *(char**)((char*)&mRidingShell);
   if (p != 0) {
-    *(int*)(p + 0x3c0) = 0;
+    ((daShl_c *)p)->mCarrier = 0;
     mRidingShell = 0;
     mPosY += 0x46000;
     mIsAirborne = 1;
@@ -15009,7 +15015,7 @@ int func_ov002_020d5ab4(char *self)
     p->mPosZ = pos.z;
 
     spawned = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(9, 2, &pos, 0, p->mAreaId, -1);
-    *(char **)((char *)spawned + 0x38c) = self;
+    ((daYegg_c *)spawned)->mPlayer = (Player *)self;
     p->mOpacity = 0;
     p->mStateTimer = 0xd2;
     p->mdCcAcPos_c.flags &= ~2;
@@ -15389,7 +15395,7 @@ void func_ov002_020d6368(char *self)
 
     spawned = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(9, p->mEggParams << 4, &pos,
                                                               (void *)&rot, p->mAreaId, -1);
-    *(char **)((char *)spawned + 0x38c) = self;
+    ((daYegg_c *)spawned)->mPlayer = (Player *)self;
     func_ov002_020d6334(self, (int)spawned);
     p->mEggParams = zero;
 }
@@ -17414,7 +17420,7 @@ int Player::func_ov002_020d94cc()
     sndobj = _ZN8dActor_c13SpawnSoundObjEj(self, 3);
     b = (data_0209f2d8 == 1);
     if (b) {
-        if (sndobj != 0) *(int *)(sndobj + 0xd4) = 0x50;
+        if (sndobj != 0) ((daSoundObj_c *)sndobj)->mSoundID = 0x50;
     }
 
     GiveVsStars(this->mPlayerNo, -1);
@@ -20447,9 +20453,9 @@ int Player::St_TornadoSpin_Main()
     mAttachOffsetY += mVertSpeed;
     if (mAttachOffsetY < 0)
         mAttachOffsetY = 0;
-    /* +0xdc on the tornado is past sizeof(dActor_c); it belongs to whatever
-       concrete actor class this is, which nothing here evidences. */
-    if (mAttachOffsetY > *(int*)((char*)mAttachedActor + 0xdc) || (mClsnFlags & 4) != 0) {
+    /* The attached actor is the tornado: func_ov002_020de33c, the only way
+       into this state, is called only by daTor_c with itself. */
+    if (mAttachOffsetY > ((daTor_c *)mAttachedActor)->mdCcAc_c.height || (mClsnFlags & 4) != 0) {
         mStatePhase = 0;
         this->ChangeState(data_ov002_02110454);
         if (mVertSpeed < 0x14000)
@@ -21196,7 +21202,7 @@ int Player::St_Owl_Main()
         short ang;
         int i;
         short mag = 10;
-        x = *(int*)(x + 0x364);
+        x = ((daOwl_c *)x)->mModelAnim.currFrame;
         x = (unsigned short)((unsigned int)x >> 12);
         x += 0xb;
         ang = x * 0xccc;
@@ -24853,7 +24859,7 @@ after_player_slot:
     if (param1 == 3) {
         void *p = *(void **)(*(void **)((char *)&mHeldObjQueue));
         if (p != 0)
-            data_0209f254 = *(u8 *)((char *)p + 0x428);
+            data_0209f254 = ((daYegg_c *)p)->mParamHigh;
     }
 
     return 1;
