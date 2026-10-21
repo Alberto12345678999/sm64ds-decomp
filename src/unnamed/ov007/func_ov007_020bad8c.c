@@ -1,6 +1,26 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "Ov007MenuState.h"
 extern u8 data_ov007_02104ba0[];
+
+/* data_ov007_02104ba0: the 0x4c record func_ov007_020b9880 allocates; names
+ * as in func_ov007_020ba05c and func_ov007_020bb4b0, only the slots this
+ * function touches. */
+typedef struct Ov007PickerScene {
+    void *picker;              /* 0x00: func_ov007_020c690c */
+    Ov007MenuState *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
+    char pad_14[8];
+    /* 0x1c: which six-int row of data_ov007_020d7b80 func_ov007_020ba9bc
+     * installs as the picker's springConstants; this function picks 0, 2
+     * or 4 */
+    int springSet;
+} Ov007PickerScene;
+
+typedef char Ov007PickerScene_size_must_be_0x20[sizeof(Ov007PickerScene) == 0x20 ? 1 : -1];
+
+/* The extern keeps the tree's u8[] spelling; the typed view is reached
+ * through a cast macro. */
+#define SCENE (*(Ov007PickerScene **)data_ov007_02104ba0)
 extern u16 data_ov007_020d7b54[];
 extern short data_02082214[];
 
@@ -12,8 +32,8 @@ extern void func_ov007_020c55bc(int a, int b, int c);
 
 void func_ov007_020bad8c(void)
 {
-    char *mgr;
-    char *obj;
+    Ov007PickerScene *mgr;
+    Ov007MenuState *obj;
     int r6;
     int r5;
     u16 period;
@@ -21,13 +41,13 @@ void func_ov007_020bad8c(void)
     int t;
     s16 sw;
 
-    mgr = *(char **)data_ov007_02104ba0;
-    r6 = *(int *)mgr;
-    func_ov007_020c92d0(*(char **)(mgr + 0xc));
+    mgr = SCENE;
+    r6 = (int)mgr->picker;
+    func_ov007_020c92d0(mgr->states[2]);
 
-    obj = *(char **)(*(char **)data_ov007_02104ba0 + 0xc);
-    r5 = *(int *)(obj + 0xc);
-    period = data_ov007_020d7b54[*(s16 *)obj];
+    obj = SCENE->states[2];
+    r5 = obj->stateTicks;
+    period = data_ov007_020d7b54[obj->currentState];
     t = _ZN4cstd3modEii(r5, period);
     if (t <= 0) {
         var_r4 = 0;
@@ -37,9 +57,9 @@ void func_ov007_020bad8c(void)
         var_r4 = _ZN4cstd3divEii(t << 0xc, period);
     }
 
-    mgr = *(char **)data_ov007_02104ba0;
-    obj = *(char **)(mgr + 0xc);
-    sw = *(s16 *)obj;
+    mgr = SCENE;
+    obj = mgr->states[2];
+    sw = obj->currentState;
 
     switch (sw) {
     case 0:
@@ -49,7 +69,7 @@ void func_ov007_020bad8c(void)
         func_ov007_020bbc08(1, 0, 0);
         return;
     case 1:
-        *(int *)(mgr + 0x1c) = 0;
+        mgr->springSet = 0;
         if (_ZN4cstd3modEii(r5, 6) != 0) {
             return;
         }
@@ -74,14 +94,14 @@ void func_ov007_020bad8c(void)
         }
         amt = (int)(((long long)v * (0x2000 - v)) >> 0xc) + 0x1000;
         func_ov007_020c55bc(r6, amt, amt);
-        obj = *(char **)(*(char **)data_ov007_02104ba0 + 0xc);
-        if (r5 >= data_ov007_020d7b54[*(s16 *)obj]) {
-            *(s16 *)(obj + 2) = 0;
+        obj = SCENE->states[2];
+        if (r5 >= data_ov007_020d7b54[obj->currentState]) {
+            obj->requestedState = 0;
         }
         if (var_r4 <= 0x800) {
-            *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 4;
+            SCENE->springSet = 4;
         } else {
-            *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 0;
+            SCENE->springSet = 0;
         }
         return;
     }
@@ -120,13 +140,13 @@ void func_ov007_020bad8c(void)
             amt = FX_MUL(tblval, 0x258);
             func_ov007_020c55bc(r6, amt + 0x1000, 0x1000 - amt);
         }
-        *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 2;
+        SCENE->springSet = 2;
         return;
     }
     case 4:
     {
         int m = _ZN4cstd3modEii(r5, 0x3c);
-        *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 2;
+        SCENE->springSet = 2;
         if (m == 0) {
             func_ov007_020bbc08(1, 0, 0);
             return;
