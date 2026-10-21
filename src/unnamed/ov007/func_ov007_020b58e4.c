@@ -83,16 +83,11 @@ int func_ov007_020b58e4(char *self)
               } else if (lr_v == 6) {
                   ret = 5;
               }
-      }
-      else
-        if ((lr_v == 0) || (lr_v == 6))
-      {
-        ret = 0;
-      }
-      else
-      {
-        ret = 1;
-      }
+          } else if ((lr_v == 0) || (lr_v == 6)) {
+              ret = 0;
+          } else {
+              ret = 1;
+          }
     }
       break;
 
@@ -135,7 +130,7 @@ int func_ov007_020b58e4(char *self)
           int e = WORK->transitionMode;
           if (((e == 1) && (ip_v == 4)) || ((e == 0) && ((ip_v == 3) || (ip_v == 5)))) {
               ret = 3;
-        }
+          }
         if (ip_v == 6)
         {
           int f = *((int *) (((char *) g) + 0xf0));
@@ -218,17 +213,11 @@ int func_ov007_020b58e4(char *self)
               } else {
                   ret = 1;
               }
-      }
-      else
-        if (lr_v == 3)
-      {
-        ret = (ip_v != 0x15) ? (5) : (3);
-      }
-      else
-        if (lr_v == 4)
-      {
-        ret = 4;
-      }
+          } else if (lr_v == 3) {
+              ret = (ip_v != 0x15) ? (5) : (3);
+          } else if (lr_v == 4) {
+              ret = 4;
+          }
     }
       break;
 
@@ -253,12 +242,10 @@ int func_ov007_020b58e4(char *self)
           int t = b->previousState;
           if (t == 8) {
               ret = 3;
-        }
-        else
-        {
-            a->fade = 0;
-            ret = 5;
-        }
+          } else {
+              a->fade = 0;
+              ret = 5;
+          }
       }
     }
       break;

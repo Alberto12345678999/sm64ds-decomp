@@ -70,5 +70,5 @@ extern "C" void func_ov007_020be3bc(void){
             d->PD = (short)(s[3] >> 4);
             doff += 4;
         } while (count < 0x10);
-  }
+    }
 }

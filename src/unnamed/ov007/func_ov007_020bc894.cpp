@@ -50,24 +50,24 @@ void func_ov007_020bc894(char* c){
         if (idx != -1) {
             ((ModelComponents *)model)->UpdateBones(m->boneAnims[idx], p->frame);
         }
-  }
-  p = m->texSeqAnim;
-  if(p){
-    func_ov007_020c9110(p);
+    }
     p = m->texSeqAnim;
-    idx = p->anim;
-    if(idx!=-1){
-        func_02046bbc(model, m->texSeqAnims[idx], p->frame);
+    if (p) {
+        func_ov007_020c9110(p);
+        p = m->texSeqAnim;
+        idx = p->anim;
+        if (idx != -1) {
+            func_02046bbc(model, m->texSeqAnims[idx], p->frame);
+        }
     }
-  }
-  p = m->texSrtAnim;
-  if(p){
-    func_ov007_020c9110(p);
     p = m->texSrtAnim;
-    idx = p->anim;
-    if(idx!=-1){
-        func_020469e8(model, m->texSrtAnims[idx], p->frame);
+    if (p) {
+        func_ov007_020c9110(p);
+        p = m->texSrtAnim;
+        idx = p->anim;
+        if (idx != -1) {
+            func_020469e8(model, m->texSrtAnims[idx], p->frame);
+        }
     }
-  }
 }
 }
