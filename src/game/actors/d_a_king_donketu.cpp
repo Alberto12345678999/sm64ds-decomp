@@ -337,7 +337,8 @@ void daKing_Donketu_c::func_ov073_0211f2c0(int strength)
   int z;
   func_0200d8c8(data_0209f318, &c->mPosX, strength);
   data_020a0e68 = c->mBlendModelAnim.mat4x3;
-  MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[c->mStepBoneIdx], &data_020a0e68, &data_020a0e68);
+  MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[c->mStepBoneIdx], &data_020a0e68,
+                  &data_020a0e68);
   c->mStepBoneIdx ^= 1;
   ty = *((int *) (((char *) (&data_020a0e68)) + 0x28));
   tx = *((int *) (((char *) (&data_020a0e68)) + 0x24));

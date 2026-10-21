@@ -773,7 +773,7 @@ int daKpaTail_c::Behavior()
     if (!a) return 1;
 
     int ang = a->mPrevAngleY;
-    a = (dActor_c*)&a->mPos;
+    a = (dActor_c *)&a->mPos;
     int x = ((Vector3 *)a)->x;
     volatile int v[3];
     v[0] = x;

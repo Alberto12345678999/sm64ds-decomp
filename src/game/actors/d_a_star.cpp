@@ -2601,7 +2601,8 @@ void daStar_c::func_ov002_020e8398() {
     mShadowMtx.ty = mPosY >> 3;
     mShadowMtx.tz = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, (struct dExtShadowModel_c *)&mShadowModel, (struct Matrix4x3 *)&mShadowMtx, r8, t, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        c, (struct dExtShadowModel_c *)&mShadowModel, (struct Matrix4x3 *)&mShadowMtx, r8, t, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */

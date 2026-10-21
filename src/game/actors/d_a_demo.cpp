@@ -178,7 +178,11 @@ struct Entry37 { PMF37 pmf; };
 
 /* dispatch receiver of func_ov002_020f2dd4: the StaffRoll block seen through
    credit[0]'s control bytes (StaffRoll::Credit active, step). */
-struct C2dd4 { unsigned char pad[0x1c8]; unsigned char active; unsigned char step; };
+struct C2dd4 {
+    unsigned char pad[0x1c8];
+    unsigned char active;
+    unsigned char step;
+};
 typedef void (C2dd4::*PMF2dd4)(int);
 struct Entry2dd4 { PMF2dd4 pmf; };
 
@@ -747,52 +751,43 @@ extern "C" struct OamAttr *data_ov002_0210be1c[];
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 
-void daDemo_c::func_ov002_020f20f4()
-{
-  int i = 0;
-  int zpos = 0;
-  int zneg = 0;
-  int two = 2;
-  int m1 = -1;
-  for (; i < 3; i++)
-  {
-    char *d = (char *)this->mScroll;
-    if ((((ScrollState *)d)->spriteActive[i]) != 0)
-    {
-      if ((data_020a0db0 & 1) == 0)
-      {
-        /* q is &spriteX[i] through a base stepped by i * 2: q = &spriteX[i]
-           builds 4 bytes long, and reading spriteX[i] directly builds 4
-           bytes short. */
-        s16 *q = ((ScrollState *) (d + i * 2))->spriteX;
-        s16 vel = ((ScrollState *)d)->spriteVelX[i];
-        s16 pos = *q;
-        int *seed = &data_0209e650;
-        *q = (s16) (pos + vel);
-        RandomIntInternal(seed);
-        d = (char *)this->mScroll;
-        if (((ScrollState *)d)->spriteVelX[i] >= 0)
-        {
-          if (((ScrollState *)d)->spriteX[i] >= 0x140)
-          {
-            ((ScrollState *)d)->spriteActive[i] = (u8) zpos;
+void daDemo_c::func_ov002_020f20f4() {
+    int i = 0;
+    int zpos = 0;
+    int zneg = 0;
+    int two = 2;
+    int m1 = -1;
+    for (; i < 3; i++) {
+        char *d = (char *)this->mScroll;
+        if ((((ScrollState *)d)->spriteActive[i]) != 0) {
+            if ((data_020a0db0 & 1) == 0) {
+                /* q is &spriteX[i] through a base stepped by i * 2:
+                   q = &spriteX[i] builds 4 bytes long, and reading
+                   spriteX[i] directly builds 4 bytes short. */
+                s16 *q = ((ScrollState *)(d + i * 2))->spriteX;
+                s16 vel = ((ScrollState *)d)->spriteVelX[i];
+                s16 pos = *q;
+                int *seed = &data_0209e650;
+                *q = (s16)(pos + vel);
+                RandomIntInternal(seed);
+                d = (char *)this->mScroll;
+                if (((ScrollState *)d)->spriteVelX[i] >= 0) {
+                    if (((ScrollState *)d)->spriteX[i] >= 0x140) {
+                        ((ScrollState *)d)->spriteActive[i] = (u8)zpos;
+                        d = (char *)this->mScroll;
+                        ((ScrollState *)d)->spriteDelay[i] = (s16)((i + 1) << 5);
+                    }
+                } else if (((ScrollState *)d)->spriteX[i] <= (-0x40)) {
+                    ((ScrollState *)d)->spriteActive[i] = (u8)zneg;
+                    d = (char *)this->mScroll;
+                    ((ScrollState *)d)->spriteDelay[i] = (s16)((i + 1) << 5);
+                }
+            }
             d = (char *)this->mScroll;
-            ((ScrollState *)d)->spriteDelay[i] = (s16) ((i + 1) << 5);
-          }
+            OAM::RenderSub(data_ov002_0210be1c[i], ((ScrollState *)d)->spriteX[i],
+                           ((ScrollState *)d)->spriteY[i], m1, two);
         }
-        else
-          if (((ScrollState *)d)->spriteX[i] <= (-0x40))
-        {
-          ((ScrollState *)d)->spriteActive[i] = (u8) zneg;
-          d = (char *)this->mScroll;
-          ((ScrollState *)d)->spriteDelay[i] = (s16) ((i + 1) << 5);
-        }
-      }
-      d = (char *)this->mScroll;
-      OAM::RenderSub(data_ov002_0210be1c[i], ((ScrollState *)d)->spriteX[i],
-                     ((ScrollState *)d)->spriteY[i], m1, two);
     }
-  }
 }
 #pragma opt_strength_reduction on
 #pragma opt_loop_invariants on
@@ -1328,8 +1323,9 @@ void func_ov002_020f2d70(char *c, int i) {
 // @symbol func_ov002_020f2dd4
 extern Entry2dd4 data_ov002_02110ebc[];
 extern "C" void func_ov002_020f2dd4(C2dd4* c){
-  if(c->active==0) return;
-  (c->*data_ov002_02110ebc[c->step].pmf)(0);
+    if (c->active == 0)
+        return;
+    (c->*data_ov002_02110ebc[c->step].pmf)(0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1738,26 +1734,35 @@ void func_ov002_020f37fc(char *c)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f3828(int *c)
 {
-  ((StaffRoll *)c)->window[0].left = 0x80000;
-  ((StaffRoll *)c)->window[0].top = 0x66000;
-  ((StaffRoll *)c)->window[0].right = 0xfc000;
-  ((StaffRoll *)c)->window[0].bottom = 0xbc000;
-  *((volatile unsigned int *) 0x4001000) = ((*((volatile unsigned int *) 0x4001000)) & (~0xe000)) | 0x4000;
-  *((volatile unsigned short *) 0x4001048) = (unsigned short) (((((*((volatile unsigned short *) 0x4001048)) & (~0x3f00)) | 0x1700) & 0xFFFFFFFFFFFFFFFFull) | 0x2000);
-  *((volatile unsigned short *) 0x400104a) = (unsigned short) (((((*((volatile unsigned short *) 0x400104a)) & (~0x3f)) | 1) & 0xFFFFFFFFFFFFFFFFull) | 0x20);
-  {
-    int a = ((StaffRoll *)c)->window[0].left >> 12;
-    int d = ((StaffRoll *)c)->window[0].right >> 12;
-    int e = ((StaffRoll *)c)->window[0].bottom >> 12;
-    int b = ((StaffRoll *)c)->window[0].top >> 12;
-    *((volatile unsigned short *) 0x4001042) = (unsigned short) (((a << 8) & 0xff00) | (d & 0xff));
-    *((volatile unsigned short *) 0x4001046) = (unsigned short) (((b << 8) & 0xff00) | (e & 0xff));
-  }
-  ((StaffRoll *)c)->window[0].bgX = -0x60000;
-  ((StaffRoll *)c)->window[0].bgY = -0x38000;
-  SetSubBg1Offset(((StaffRoll *)c)->window[0].bgX >> 12, ((StaffRoll *)c)->window[0].bgY >> 12);
-  SetSubBg2Offset(((StaffRoll *)c)->window[0].bgX >> 12, ((StaffRoll *)c)->window[0].bgY >> 12);
-  data_0209d454 |= 6;
+    ((StaffRoll *)c)->window[0].left = 0x80000;
+    ((StaffRoll *)c)->window[0].top = 0x66000;
+    ((StaffRoll *)c)->window[0].right = 0xfc000;
+    ((StaffRoll *)c)->window[0].bottom = 0xbc000;
+    *((volatile unsigned int *)0x4001000) =
+        ((*((volatile unsigned int *)0x4001000)) & (~0xe000)) | 0x4000;
+    *((volatile unsigned short *)0x4001048) =
+        (unsigned short)(((((*((volatile unsigned short *)0x4001048)) & (~0x3f00)) | 0x1700) &
+                          0xFFFFFFFFFFFFFFFFull) |
+                         0x2000);
+    *((volatile unsigned short *)0x400104a) =
+        (unsigned short)(((((*((volatile unsigned short *)0x400104a)) & (~0x3f)) | 1) &
+                          0xFFFFFFFFFFFFFFFFull) |
+                         0x20);
+    {
+        int a = ((StaffRoll *)c)->window[0].left >> 12;
+        int d = ((StaffRoll *)c)->window[0].right >> 12;
+        int e = ((StaffRoll *)c)->window[0].bottom >> 12;
+        int b = ((StaffRoll *)c)->window[0].top >> 12;
+        *((volatile unsigned short *)0x4001042) =
+            (unsigned short)(((a << 8) & 0xff00) | (d & 0xff));
+        *((volatile unsigned short *)0x4001046) =
+            (unsigned short)(((b << 8) & 0xff00) | (e & 0xff));
+    }
+    ((StaffRoll *)c)->window[0].bgX = -0x60000;
+    ((StaffRoll *)c)->window[0].bgY = -0x38000;
+    SetSubBg1Offset(((StaffRoll *)c)->window[0].bgX >> 12, ((StaffRoll *)c)->window[0].bgY >> 12);
+    SetSubBg2Offset(((StaffRoll *)c)->window[0].bgX >> 12, ((StaffRoll *)c)->window[0].bgY >> 12);
+    data_0209d454 |= 6;
 }
 }
 
