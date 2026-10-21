@@ -14,7 +14,7 @@
  * are the flat 2x2 quad; their other handlers are outside this run.
  *
  * The grid is square (mCols is copied from mRows) and indexed with mRows
- * as the stride. Vertex::color is the packed GX normal, not a color: the
+ * as the stride. Vertex::normal is the packed GX normal (10 bits per axis): the
  * strip writer stores it at 0x04000484.
  *
  * The five handlers are daPicGate_c members bound through the four
@@ -164,7 +164,7 @@ struct PicGateFilePtr : SharedFilePtr {
  * as two VTX_16 writes. vx/vy/vz/s0/s1/s2 are the caller's locals. */
 #define EMIT_VTX(v) \
     G3_TEXCOORD = (v)->texCoord; \
-    G3_NORMAL = (v)->color; \
+    G3_NORMAL = (v)->normal; \
     vx = (v)->x; \
     vy = (v)->y; \
     vz = (v)->z; \
@@ -204,7 +204,7 @@ void daPicGate_c::func_ov080_021265ec()
     int n = this->mRows;
     int rows;
     if (n > 0) {
-        int color = kFlatNormal;
+        int normal = kFlatNormal;
         do {
             int col = 0;
             int m = this->mCols;
@@ -212,7 +212,7 @@ void daPicGate_c::func_ov080_021265ec()
                 do {
                     daPicGate_c::Vertex *v = &this->mCells[row * this->mRows + col];
                     int cols;
-                    v->x = x; v->y = y; v->z = z; v->color = color;
+                    v->x = x; v->y = y; v->z = z; v->normal = normal;
                     cols = this->mCols;
                     if (col == cols - 2) x = ((u8)(this->param1 & 0xf) + 1) * kCell;
                     else x += ((u8)(this->param1 & 0xf) + 1) * kCell / (cols - 1);
@@ -333,7 +333,7 @@ void daPicGate_c::func_ov080_02126a54()
                     v->x = x;
                     v->y = y;
                     v->z = 0;
-                    v->color = kFlatNormal;
+                    v->normal = kFlatNormal;
                     int du = kTexSpan / ((int)this->mCols - 1);
                     int dv = kTexSpan / ((int)this->mRows - 1);
                     int s = du * col;
