@@ -2,8 +2,8 @@
 extern int func_ov007_020c0128(void* c);
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020bffb8(void* c);
-extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void *camPos, void *camUp, void *target,
-                                                         int mult, void *m);
+extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void *camPos, void *up, void *target,
+                                                         int draw, void *m);
 extern void func_ov007_020c0078(void* c);
 extern char* data_ov007_0210342c;
 
