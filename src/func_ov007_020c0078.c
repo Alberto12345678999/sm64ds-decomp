@@ -19,7 +19,7 @@ extern short data_02082214[];
 typedef struct Ov007Camera {
     char pad_00[0x74];
     int projMatrix[16]; /* 0x74: Matrix4x4 */
-    int scaleW;         /* 0xb4 */
+    char pad_b4[4];
     /* 0xb8..0xbb: the screen rectangle in pixels; the viewport register
      * takes minX | minY << 8 | maxX << 16 | maxY << 24 */
     unsigned char viewportMinX;
