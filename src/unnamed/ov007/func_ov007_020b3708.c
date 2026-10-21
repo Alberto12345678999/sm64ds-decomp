@@ -4,8 +4,41 @@ extern void func_ov007_020bdeb0(int a);
 extern char* data_ov007_02103360;
 extern char* data_ov007_0210342c;
 
-/* data_ov007_02103360 has no class or header; only its slot 0, an Ov007MenuState
- * (func_ov007_020b2e64 ticks it with func_ov007_020c92d0), is typed here. */
+/* data_ov007_02103360: the 0x1c-byte menu cursor func_ov007_020b30b0
+ * allocates. Only the slots this file touches are spelled; +0x18 (-1 at
+ * init) is not read here. */
+typedef struct Ov007Cursor {
+    Ov007MenuState *state; /* 0x00: func_ov007_020c9388(0xff); func_ov007_020b2e64 ticks it */
+    void *sprite;          /* 0x04: func_ov007_020c44e4 */
+    int mode;              /* 0x08: func_ov007_020b2cf0's name; 2 picks the second move sound */
+    /* 0x0c/0x0e: the last move's direction, -1/0/1 per axis;
+     * func_ov007_020b2cf0 eases the sprite back from it */
+    s16 nudgeX;
+    s16 nudgeY;
+    /* 0x10, medium confidence: func_ov007_020b2e64 sets it on a fresh confirm
+     * press; states 9 and 0xc/0xd here take it as a step and clear it */
+    int confirm;
+    /* 0x14: func_ov007_020b2e64's key-repeat direction this frame: -1 none,
+     * 0 up, 1 down, 2 right, 3 left */
+    int dirPressed;
+} Ov007Cursor;
+
+/* data_ov007_0210342c: the overlay's manager; names as in
+ * func_ov007_020afc44, only the slots this file reads. */
+typedef struct Ov007Work {
+    char pad_00[4];
+    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
+    char pad_10[0x18];
+    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates; its first word
+     * points at a record with no layout yet, so that read stays raw */
+    struct Ov007Settings *settings;
+} Ov007Work;
+
+/* The externs keep the tree's char * spelling (the declaration-agreement
+ * gate); the typed views are reached through cast macros. */
+#define CURSOR ((Ov007Cursor *)data_ov007_02103360)
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+
 int func_ov007_020b3708(void)
 {
     int ip;
@@ -14,8 +47,8 @@ int func_ov007_020b3708(void)
     Ov007MenuState *p;
     int r4;
 
-    p = *(Ov007MenuState **)data_ov007_02103360;
-    r2 = *(int*)(data_ov007_02103360 + 0x14);
+    p = CURSOR->state;
+    r2 = CURSOR->dirPressed;
     ip = p->currentState;
     r4 = p->requestedState;
 
@@ -51,20 +84,20 @@ int func_ov007_020b3708(void)
     case 9:
         if (r2 == 1) {
             r4 = 0xfd;
-        } else if (r2 == 2 || *(int*)(data_ov007_02103360 + 0x10) != 0) {
+        } else if (r2 == 2 || CURSOR->confirm != 0) {
             r3 = 0;
-            *(int*)(data_ov007_02103360 + 0x10) = 0;
+            CURSOR->confirm = 0;
             r4 = 0xb;
         } else if (r2 == 3) {
             r3 = 0;
-            *(int*)(data_ov007_02103360 + 0x10) = 0;
+            CURSOR->confirm = 0;
             r4 = 0xa;
         }
         break;
     case 0xa:
     case 0xb:
         if (p->stateTicks == 0) {
-            *(int*)(data_ov007_02103360 + 0x10) = 1;
+            CURSOR->confirm = 1;
             r4 = 9;
         }
         break;
@@ -75,18 +108,18 @@ int func_ov007_020b3708(void)
         } else if (r2 == 1) {
             r4 = 8;
         } else if (p->stateTicks == 0 && (u16)(s16)(p->previousState - 0xc) <= 1) {
-            *(int*)(data_ov007_02103360 + 0x10) = 1;
+            CURSOR->confirm = 1;
         } else {
             int t;
-            if (r2 == 2 || ((t = *(int *)(data_ov007_02103360 + 0x10)) != 0 && ip == 0xc)) {
+            if (r2 == 2 || ((t = CURSOR->confirm) != 0 && ip == 0xc)) {
                 p->currentState = 0xc;
                 r3 = 0;
-                *(int *)(data_ov007_02103360 + 0x10) = 0;
+                CURSOR->confirm = 0;
                 r4 = 0xd;
             } else if (r2 == 3 || (t != 0 && ip == 0xd)) {
                 p->currentState = 0xd;
                 r3 = 0;
-                *(int *)(data_ov007_02103360 + 0x10) = 0;
+                CURSOR->confirm = 0;
                 r4 = 0xc;
             }
         }
@@ -125,10 +158,10 @@ int func_ov007_020b3708(void)
         else if (r2 == 1) r4 = 0x14;
         break;
     case 0x14:
-        if (r2 == 3 && (*(Ov007MenuState **)(data_ov007_0210342c + 8))->currentState == 0) {
+        if (r2 == 3 && WORK->states[1]->currentState == 0) {
             r4 = 0x15;
         } else if (r2 == 0) {
-            if ((*(Ov007MenuState **)(data_ov007_0210342c + 8))->currentState == 1) {
+            if (WORK->states[1]->currentState == 1) {
                 r4 = 0x13;
             } else {
                 r4 = p->previousState;
@@ -162,7 +195,7 @@ int func_ov007_020b3708(void)
 
     if (r4 != 0xfd) {
         if (r4 == 0xfe) {
-            int st = (*(Ov007MenuState **)(data_ov007_0210342c + 8))->currentState;
+            int st = WORK->states[1]->currentState;
             switch (st) {
             case 0:
                 r4 = (ip == 0x10) ? 0x14 : 0x15;
@@ -180,26 +213,26 @@ int func_ov007_020b3708(void)
             }
         }
     } else {
-        u8 b = *(u8*)(*(char**)(*(char**)(data_ov007_0210342c + 0x28)) + 9);
+        u8 b = *(u8*)(*(char**)WORK->settings + 9);
         r4 = (b != 0) ? 0xc : 0xd;
     }
 
-    if ((*(Ov007MenuState **)data_ov007_02103360)->requestedState != r4) {
+    if (CURSOR->state->requestedState != r4) {
         if (r2 == 2) {
-            *(short*)(data_ov007_02103360 + 0xc) = 1;
-            *(short*)(data_ov007_02103360 + 0xe) = 0;
+            CURSOR->nudgeX = 1;
+            CURSOR->nudgeY = 0;
         } else if (r2 == 3) {
-            *(short*)(data_ov007_02103360 + 0xc) = -1;
-            *(short*)(data_ov007_02103360 + 0xe) = 0;
+            CURSOR->nudgeX = -1;
+            CURSOR->nudgeY = 0;
         } else if (r2 == 0) {
-            *(short*)(data_ov007_02103360 + 0xc) = 0;
-            *(short*)(data_ov007_02103360 + 0xe) = -1;
+            CURSOR->nudgeX = 0;
+            CURSOR->nudgeY = -1;
         } else if (r2 == 1) {
-            *(short*)(data_ov007_02103360 + 0xc) = 0;
-            *(short*)(data_ov007_02103360 + 0xe) = 1;
+            CURSOR->nudgeX = 0;
+            CURSOR->nudgeY = 1;
         }
         if (r3 != 0) {
-            func_ov007_020bdeb0((*(int*)(data_ov007_02103360 + 8) != 2) ? 4 : 5);
+            func_ov007_020bdeb0((CURSOR->mode != 2) ? 4 : 5);
         }
     }
     return r4;
