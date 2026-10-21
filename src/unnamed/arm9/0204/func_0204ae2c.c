@@ -50,7 +50,7 @@ struct ParticleSystem {
     struct Vector3 position;       /* 0x20 */
     struct Vector3 velocity;       /* 0x2c */
     u16 age;                       /* 0x38 */
-    u16 callbackValue;             /* 0x3a */
+    s16 callbackValue;             /* 0x3a */
     s16 direction[3];              /* 0x3c */
     char pad42[2];
     int emitRadius;       /* 0x44 */

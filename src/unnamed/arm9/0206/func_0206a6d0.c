@@ -13,8 +13,9 @@ extern void func_0206a318(void *arg);
 extern void WaitByLoop(int n);
 
 /* NitroSDK CTRDGHeader: the GBA cartridge header at 0x08000000. data_020a9e00
- * is a 0xc0-byte copy of it; the DMA below fills its second half from the
- * cartridge, and the BIOS logo goes into nintendoLogo (data_020a9e04). */
+ * is a 0xc0-byte copy of it; the DMA below fills its last 0x40 bytes (+0x80)
+ * from the cartridge, and the BIOS logo goes into nintendoLogo
+ * (data_020a9e04). */
 typedef struct {
     unsigned int startAddress; /* 0x00 */
     u8 nintendoLogo[0x9c];     /* 0x04 */
