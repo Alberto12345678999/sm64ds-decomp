@@ -9,19 +9,20 @@ typedef struct Ov007Model {
 
 typedef char Ov007Model_animTick_must_be_0x98[(int)&((Ov007Model *)0)->animTick == 0x98 ? 1 : -1];
 
-/* data_ov007_0210342c: the overlay's manager; names as in #4241
- * (func_ov007_020b2370), only the slots this file reads. */
-typedef struct Ov007Work {
+/* data_ov007_0210342c: the overlay's manager (G keeps the extern's old
+ * spelling); names as in #4241 (func_ov007_020b2370), only the slots this
+ * file reads. */
+typedef struct G {
     char pad[0xf4];
     Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
     char pad2[0x100 - 0xf4 - 4];
     char *figure;    /* 0x100: func_ov007_020beaa0 */
     char *altFigure; /* 0x104: func_ov007_020be850 returns it when +0xec is 1 */
-} Ov007Work;
+} G;
 
-typedef char Ov007Work_altFigure_must_be_0x104[(int)&((Ov007Work *)0)->altFigure == 0x104 ? 1 : -1];
+typedef char G_altFigure_must_be_0x104[(int)&((G *)0)->altFigure == 0x104 ? 1 : -1];
 
-extern Ov007Work *data_ov007_0210342c;
+extern G* data_ov007_0210342c;
 
 extern void func_ov007_020bc374(char* self, int b, int c, int d);
 extern void func_ov007_020bc3dc(char* self, int b, int c, int d);
