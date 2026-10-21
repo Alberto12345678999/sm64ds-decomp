@@ -36,8 +36,8 @@
  *     The held-cap byte uses daObjMarioCap_c::unk_403 after the star branch.
  *   - the two matrix members are 12-word arrays, not Matrix4x3; see the
  *     header.
- *   - unk_43c, unk_440, unk_446 and unk_460 stay unk_ names (behaviour
- *     described at the header); sound ids 0xa / 0xee / 0xef and particle 0x7e
+ *   - mStateParam, mLeaveDelay, mRiseToFarNode and mPathPickTick are named
+ *     from the behaviour described at the header; sound ids 0xa / 0xee / 0xef and particle 0x7e
  *     are named only by where they are played; Player::Hurt's last three
  *     arguments are not decoded; the level ids 0x10, 0x18 and 0x19 are not
  *     named.
@@ -655,7 +655,7 @@ int daJango_c::func_ov062_0211c658(void *p) { StateRecord *qq = (StateRecord *)p
 
 // @symbol _ZN9daJango_c19func_ov062_0211c594Ev
 /* FLY_PATH enter. Clears the three velocity words (mSpeedX, mVertSpeed, mSpeedZ).
-   If unk_446 is 1 -- func_ov062_0211b3ac set it because the node it
+   If mRiseToFarNode is 1 -- func_ov062_0211b3ac set it because the node it
    picked is index ^ 2 (assumed to be the far side of the square) -- the vector (0, 0, 20.0) is turned by mAngleY and
    then by a pitch of -0x4000 (a quarter turn), and its Y becomes mVertSpeed
    (magnitude 20 units per frame), with mStateTimer = 60 frames. Then starts
@@ -669,7 +669,7 @@ int daJango_c::func_ov062_0211c594() {
     mVertSpeed = 0;
     mSpeedZ = 0;
 
-    if (unk_446 == 1) {
+    if (mRiseToFarNode == 1) {
         in.x = 0; in.y = 0; in.z = 0;
         out.x = 0; out.y = 0; out.z = 0;
         in.z = 0x14000;
@@ -691,10 +691,10 @@ int daJango_c::func_ov062_0211c594() {
    levels the roll. While more than 20 units from the node it is pulled toward
    it by 20 units per frame (diff * (20.0 / len) is subtracted from mPos), but
    only once mAngleY is within 0x2000 (45 degrees) of the node's direction.
-   While unk_446 is 1 the pull leaves mPosY alone (the vertical motion comes
+   While mRiseToFarNode is 1 the pull leaves mPosY alone (the vertical motion comes
    from mVertSpeed, set by c594), and when mStateTimer has run out the vertical
    speed is cleared and the flag dropped. Within 20 units (or exactly on it) it
-   has arrived: unk_460 = 7 so the next b3ac call runs at once, the node index advances (the next node in order
+   has arrived: mPathPickTick = 7 so the next b3ac call runs at once, the node index advances (the next node in order
    for the silver-star variant and level ids 0x18/0x19, else b3ac's choice, else a
    random one that differs from the current), mPos is snapped to the node and
    copied to mPathNodePos, the velocity words (mSpeedX, mVertSpeed, mSpeedZ) are
@@ -726,7 +726,7 @@ int daJango_c::func_ov062_0211c2f4() {
     /* len == 0 is already covered by len <= 0x14000, but the ROM keeps
        it as a test of its own. */
     if (len == 0 || len <= 0x14000) {
-        unk_460 = 7;
+        mPathPickTick = 7;
         if (mSilverStarFlag == 2 || (u8)(s8)(data_0209f2f8 - 0x18) <= 1) {
             mPathNodeIndex++;
             if (mPathNodeIndex >= 4)
@@ -763,11 +763,11 @@ int daJango_c::func_ov062_0211c2f4() {
         s = _ZN4cstd4fdivEii(0x14000, len);
         Vec3_MulScalar(&scaled, &diff, s);
         SubVec3(&mPosX, &scaled, &mPosX);
-        if (unk_446 == 1) {
+        if (mRiseToFarNode == 1) {
             mPosY = zero[1];
             if (*(u16 *)&mStateTimer == 0) {
                 mVertSpeed = 0;
-                unk_446 = 0;
+                mRiseToFarNode = 0;
             }
         }
     }
@@ -776,9 +776,9 @@ int daJango_c::func_ov062_0211c2f4() {
 
 // @symbol _ZN9daJango_c19func_ov062_0211c218Ev
 /* CIRCLE enter. Takes the current yaw as the steering target, restarts the
-   phase counter (unk_43c = 0) and sets mStateTimer to 300, 400, 500 or 600 frames
+   phase counter (mStateParam = 0) and sets mStateTimer to 300, 400, 500 or 600 frames
    (random, 100 apart) before the actor may leave along the path. If the last thing that happened was a hit on the player
-   (mHitPlayer) the timer is zeroed instead and the flag cleared. unk_440
+   (mHitPlayer) the timer is zeroed instead and the flag cleared. mLeaveDelay
    starts at 0, or at 2 with a zero timer for the silver-star variant and on
    level ids 0x18 / 0x19 (data_0209f2f8 is LEVEL_ID in symbols/verified.tsv). Plays
    jango_fly.bca (4 blend frames, flags 0, speed 1.0). */
@@ -786,17 +786,17 @@ extern "C" {
 int daJango_c::func_ov062_0211c218()
 {
     mTargetAngleY = mAngleY;
-    unk_43c = 0;
+    mStateParam = 0;
     mStateTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 3) * 0x64 + 0x12c;
     if (mHitPlayer == 1) {
         mStateTimer = 0;
         mHitPlayer = 0;
     }
-    unk_440 = 0;
+    mLeaveDelay = 0;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     if (mSilverStarFlag == 2 ||
         (unsigned char)(signed char)((signed char)data_0209f2f8 - 0x18) <= 1) {
-        unk_440 = 2;
+        mLeaveDelay = 2;
         mStateTimer = 0;
     }
     return 1;
@@ -821,12 +821,12 @@ int daJango_c::func_ov062_0211c218()
       1000 units horizontally (700 outside level 0x10), not in a no-control
       state and not vanished, enter SWOOP. Outside level 0x10 it does not attack
       a player who is more than 40 units above it or who is underwater.
-   4. Carrying or holding something: unk_43c is the animation phase (see the
+   4. Carrying or holding something: mStateParam is the animation phase (see the
       header): a shallow turn (yaw error / 3 below 0x300) returns to jango_fly.bca,
       a sharp one starts jango_attack.bca.
    5. If the node picked by func_ov062_0211b3ac differs (and the actor is not the
       silver-star variant or in level 0x18 / 0x19) the timer is cancelled; once
-      mStateTimer and unk_440 are both 0, it carries or holds something and mAngleY is within 0x2000 (45 degrees) of the
+      mStateTimer and mLeaveDelay are both 0, it carries or holds something and mAngleY is within 0x2000 (45 degrees) of the
       path node's direction, it enters FLY_PATH.
 
    mStateTimer is declared s16, but the ROM tests it with ldrh in this function
@@ -924,31 +924,31 @@ int daJango_c::func_ov062_0211bd10()
     }
 
     if (angD < 0x300) {
-        if (unk_43c == 1) {
+        if (mStateParam == 1) {
             _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
                 &mBlendModelAnim, *data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
             if (mSilverStarFlag == 2 ||
                 (unsigned)(u8)(s8)((s8)data_0209f2f8 - 0x18) <= 1u) {
-                p43c = &unk_440;
+                p43c = &mLeaveDelay;
                 *p43c = *p43c - 1;
-                if (unk_440 <= 0) {
-                    unk_440 = 0;
+                if (mLeaveDelay <= 0) {
+                    mLeaveDelay = 0;
                 }
             }
-            unk_43c = 2;
+            mStateParam = 2;
         }
-    } else if (unk_43c == 0) {
+    } else if (mStateParam == 0) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
             &mBlendModelAnim, *data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
-        p43c = &unk_43c;
+        p43c = &mStateParam;
         *p43c = *p43c + 1;
     }
 
-    if (unk_43c >= 2) {
-        p43c = &unk_43c;
+    if (mStateParam >= 2) {
+        p43c = &mStateParam;
         *p43c = *p43c + 1;
-        if (unk_43c > 0x18) {
-            unk_43c = 0;
+        if (mStateParam > 0x18) {
+            mStateParam = 0;
         }
     }
 
@@ -960,7 +960,7 @@ int daJango_c::func_ov062_0211bd10()
 
     func_ov062_0211b2fc();
 
-    if (*(u16 *)&mStateTimer == 0 && unk_440 == 0) {
+    if (*(u16 *)&mStateTimer == 0 && mLeaveDelay == 0) {
         _ZN7PathPtrC1Ev(path);
         ((PathPtr *)path)->FromID(mPathId);
         ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
@@ -977,7 +977,7 @@ int daJango_c::func_ov062_0211bd10()
 /* SWOOP enter. mStateTimer is the swoop length: 50 frames in level 0x10 (the
    LEVEL_ID in data_0209f2f8), else a random 20 to 35. Clears the velocity words,
    plays sound 0xee at the actor's camera-space position, picks the turn rate in
-   unk_43c (0x300, 0x400, 0x500 or 0x600, random) that func_ov062_0211ba84 uses as
+   mStateParam (0x300, 0x400, 0x500 or 0x600, random) that func_ov062_0211ba84 uses as
    the ApproachLinear step, and starts jango_attack.bca (4 blend frames, flags 0,
    speed 1.0). */
 /* Signature deliberately copied from the local declaration above: the
@@ -996,7 +996,7 @@ int daJango_c::func_ov062_0211bc54()
     mVertSpeed = 0;
     mSpeedZ = 0;
     func_02012694(SND_AT_SWOOP_ENTER, &mCamSpacePosX);
-    unk_43c =
+    mStateParam =
         ((((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 3) << 8) + 0x300;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
     return 1;
@@ -1010,7 +1010,7 @@ int daJango_c::func_ov062_0211bc54()
    If a player exists: a vanished player ends the swoop (mTimer = 30, back to
    CIRCLE). Otherwise the target is the player's position with Y = mGroundY + 40
    units; mTargetAngleY and the pitch are the direction to it, and mPrevAngleY /
-   mPrevAngleX step toward them by unk_43c (level 0x10) or unk_43c + 0x500. The velocity is
+   mPrevAngleX step toward them by mStateParam (level 0x10) or mStateParam + 0x500. The velocity is
    (0, 0, 30.0) turned by mAngleY then mAngleX. After func_ov062_0211b51c (the hit
    and cap-steal tests) the swoop ends (mTimer = 30, CIRCLE) when mStateTimer
    has run out or the wall collider reports a wall. */
@@ -1055,11 +1055,11 @@ int func_ov062_0211ba84(char *c)
         pitch = Vec3_VertAngle(&actor.mPos, &vv);
     }
     if (data_0209f2f8 == 0x10) {
-        ApproachLinear(actor.mPrevAngleY, actor.mTargetAngleY, (s16)actor.unk_43c);
-        ApproachLinear(actor.mPrevAngleX, pitch, (s16)actor.unk_43c);
+        ApproachLinear(actor.mPrevAngleY, actor.mTargetAngleY, (s16)actor.mStateParam);
+        ApproachLinear(actor.mPrevAngleX, pitch, (s16)actor.mStateParam);
     } else {
-        ApproachLinear(actor.mPrevAngleY, actor.mTargetAngleY, (s16)(actor.unk_43c + 0x500));
-        ApproachLinear(actor.mPrevAngleX, pitch, (s16)(actor.unk_43c + 0x500));
+        ApproachLinear(actor.mPrevAngleY, actor.mTargetAngleY, (s16)(actor.mStateParam + 0x500));
+        ApproachLinear(actor.mPrevAngleX, pitch, (s16)(actor.mStateParam + 0x500));
     }
     v.z = 0x1e000;
     Matrix4x3_FromRotationY(data_020a0e68, actor.mAngleY);
@@ -1079,14 +1079,14 @@ int func_ov062_0211ba84(char *c)
 // @symbol _ZN9daJango_c19func_ov062_0211b930Ev
 /* HURT enter. Starts jango_damage.bca (4 blend frames, flags 0x40000000, speed
    1.0, from frame 0; the animations that run continuously pass flags 0,
-   this one passes 0x40000000 and func_ov062_0211b8d8 waits for its last frame). unk_43c = 1.
+   this one passes 0x40000000 and func_ov062_0211b8d8 waits for its last frame). mStateParam = 1.
    If a held actor still exists it is let go: its gravity is set to -2 units per
    frame squared, its fall speed cap to -50 units per frame, and its word at +0xc8
    (the matrix pointer c6a8 gave it) is cleared. A star is then destroyed and a
    loose star spawned in its place (ACTOR_SILVER_STAR with parameter 0x10, and
    mCarriedItem cleared, for the silver-star variant; ACTOR_STAR with
    mHeldItemParam | 0x40 otherwise); anything else (the cap) just plays the
-   release sound. Either way mHeldActorID = 0, unk_43c = 0 and mTimer = 30. Finally plays sound 0xef
+   release sound. Either way mHeldActorID = 0, mStateParam = 0 and mTimer = 30. Finally plays sound 0xef
    at the actor's camera-space position, spawns particle 0x7e at mPos and zeroes
    the velocity words and mVertAccel. */
 /* Signature deliberately copied from the local declaration above: the
@@ -1097,7 +1097,7 @@ int daJango_c::func_ov062_0211b930()
 {
     dActor_c* found;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&(mBlendModelAnim), *data_ov062_0211e10c.filePtr, 4, 0x40000000, 0x1000, 0);
-    unk_43c = 1;
+    mStateParam = 1;
     if (mHeldActorID != 0 && (found = dActor_c::FindWithID(mHeldActorID)) != 0) {
         found->mVertAccel = -0x2000;
         found->mTerminalVelocity = -0x32000;
@@ -1113,7 +1113,7 @@ int daJango_c::func_ov062_0211b930()
         } else {
             func_02012790(SND_HELD_RELEASED);
         }
-        unk_43c = 0;
+        mStateParam = 0;
         mHeldActorID = 0;
         mTimer = 0x1e;
     }
@@ -1312,10 +1312,10 @@ int daJango_c::func_ov062_0211b51c()
 // @symbol _ZN9daJango_c19func_ov062_0211b3acEv
 /* Pick which of the four path nodes to fly to next, based on where the player is.
    Called from the circling and path states; does its work on every eighth call
-   (unk_460 counts 1..7 and wraps; c2f4 sets it to 7 so the next call runs).
+   (mPathPickTick counts 1..7 and wraps; c2f4 sets it to 7 so the next call runs).
    Finds the node nearest the player horizontally; returns 0, changing nothing,
    if there is no change (that node is where mPathNodePos already is). Otherwise,
-   in level 0x10 (LEVEL_ID in data_0209f2f8), sets unk_446 when the node
+   in level 0x10 (LEVEL_ID in data_0209f2f8), sets mRiseToFarNode when the node
    chosen is index ^ 2 of the current one, stores the chosen index in
    mPathNodeIndex and returns 1. */
 int daJango_c::func_ov062_0211b3ac()
@@ -1331,11 +1331,11 @@ int daJango_c::func_ov062_0211b3ac()
     int bestDist;
 
     {
-        int *ctr = &unk_460;
+        int *ctr = &mPathPickTick;
         *ctr = *ctr + 1;
         *ctr = *ctr & 7;
     }
-    if (unk_460 != 0)
+    if (mPathPickTick != 0)
         return 0;
 
     player = ClosestPlayer();
@@ -1368,9 +1368,9 @@ int daJango_c::func_ov062_0211b3ac()
         return 0;
 
     if (data_0209f2f8 == 0x10) {
-        unk_446 = 0;
+        mRiseToFarNode = 0;
         if (mPathNodeIndex == (bestIdx ^ 2))
-            unk_446 = 1;
+            mRiseToFarNode = 1;
     }
     mPathNodeIndex = bestIdx;
     return 1;
