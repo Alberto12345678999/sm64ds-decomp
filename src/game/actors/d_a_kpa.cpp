@@ -240,7 +240,9 @@ enum Bowser_Anim {
 
 /* The opaque view of the object that Bowser_IsAnimAtLastFrame walks: the
  * dExtFrameCtrl_c at 0x124 (the frame controller inside mModelAnim), typed
- * with the real class from dExtFrameCtrl_c.h. */
+ * with the real class from dExtFrameCtrl_c.h. Calling through mModelAnim
+ * instead reproduces the function but draws one @NNN fewer, renumbering
+ * every pinned @NNN in this TU (measured). */
 struct Obj {
     char pad[0x124];
     dExtFrameCtrl_c anim;
@@ -760,23 +762,23 @@ mPrevAngleY + 0x8000, Y copied as is -- run func_ov060_02115b84, return 1. */
  * data_02082214 is a sin/cos table indexed by angle>>4, two shorts per entry.
  *
  * THE POINTER BUMP AND THE volatile ARE LOAD-BEARING, both measured. Reading
- * daKpa_c's fields the obvious way -- `bowser->mPrevAngleY`, `bowser->mPosX` and so
- * on -- compiles and does not reproduce the ROM; the bump to +0x5c and the three
- * loads off it do. The offsets are dActor_c's: 0x94 is mPrevAngleY, 0x5c..0x64 are
- * mPosX/mPosY/mPosZ.
+ * the position the obvious way -- `a->mPosX` and so on -- does not reproduce the
+ * ROM; reusing `a` as a pointer to mPos and loading the three words off it does.
+ * A separate `Vector3 *` local instead of reusing `a` moves this function's
+ * bytes and renumbers every @NNN after it.
  */
 int daKpaTail_c::Behavior()
 {
     dActor_c* a = dActor_c::FindWithID(mBowserUniqueID);
     if (!a) return 1;
 
-    int ang = *(short*)((char*)a + 0x94);        /* dActor_c::mPrevAngleY */
-    a = (dActor_c*)((int)a + 0x5c);                 /* dActor_c::mPosX */
-    int x = *(int*)a;
+    int ang = a->mPrevAngleY;
+    a = (dActor_c*)&a->mPos;
+    int x = ((Vector3 *)a)->x;
     volatile int v[3];
     v[0] = x;
-    v[1] = ((int*)a)[1];                         /* mPosY */
-    v[2] = ((int*)a)[2];                         /* mPosZ */
+    v[1] = ((Vector3 *)a)->y;
+    v[2] = ((Vector3 *)a)->z;
     int j = 2 * (((unsigned short)(short)(ang + 0x8000)) >> 4);
     mPosX = (short)data_02082214[j] * 0x8c + x;
     mPosY = v[1];
@@ -3171,7 +3173,7 @@ void daKpa_c::func_ov060_021128c0(){
 
     if (this->mWithMeshClsn.IsOnGround()) {
         void* fr = this->mWithMeshClsn.GetFloorResult();
-        ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(*(Vector3 *)&this->mGroundNormalX);
+        ((dBgPi *)fr)->surface.CopyNormalTo(*(Vector3 *)&this->mGroundNormalX);
         this->mLastGroundPosX = this->mPosX;
         this->mLastGroundPosY = this->mPosY;
         this->mLastGroundPosZ = this->mPosZ;
