@@ -1,5 +1,6 @@
 //cpp
 #include "types.h"
+#include "dScEntry_c.h"
 #include "OamAttr.h"
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, OamAttr*, int, int, int, int, int, int, int, int);
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr*, int, int, int, int, int, int);
@@ -12,10 +13,9 @@ extern OamAttr data_ov075_0211cb84;
 extern OamAttr *data_ov075_0211c9f4[];
 extern OamAttr *data_ov075_0211c9e0[];
 
-#define LADR(p) ((int *)(unsigned int)(p))
-
 extern "C" void func_ov075_021184b0(char *sl)
 {
+    dScEntry_c *scene = (dScEntry_c *)sl;
     int id = func_0203da9c();
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, &data_ov075_0211cb84, 0x80, 0x20, -1, -1, 0x1000, 0x1000, 0, -1);
     func_ov075_0211621c(sl);
@@ -32,7 +32,7 @@ extern "C" void func_ov075_021184b0(char *sl)
         int x = 0x80;
         int y = 0x60;
         do {
-            int fix = (i == *(int *)(sl + 0x26c)) ? 0xe00 : 0x1000;
+            int fix = (i == scene->mStepWork[1]) ? 0xe00 : 0x1000;
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(true, sb, x, y, -1, -1, fix, 0);
             if (sb->attr3 == 0xffff)
                 break;
@@ -40,28 +40,24 @@ extern "C" void func_ov075_021184b0(char *sl)
             i++;
         } while (1);
 
-        {
-            int *q = LADR(sl + 0x268);
-            *q = *q + 1;
-            if (*(int *)(sl + 0x268) >= 3) {
-                *(int *)(sl + 0x268) = 0;
-                {
-                    int *r = LADR(sl + 0x26c);
-                    *r = *r + 1;
-                    if (*(int *)(sl + 0x26c) > i)
-                        *(int *)(sl + 0x26c) = 0;
-                }
-            }
+        /* mStepWork[1] is the sprite drawn at 0xe00 scale; every third
+           frame (mStepWork[0]) it moves one along the string and wraps. */
+        scene->mStepWork[0]++;
+        if (scene->mStepWork[0] >= 3) {
+            scene->mStepWork[0] = 0;
+            scene->mStepWork[1]++;
+            if (scene->mStepWork[1] > i)
+                scene->mStepWork[1] = 0;
         }
     }
 
     if (*p != 0) {
-        func_0202048c(sl + 0x20c, 0x80, 0x88);
-        func_0202048c(sl + 0x1b4, 0x80, 0x88);
+        func_0202048c(&scene->mOamAnimations[2], 0x80, 0x88);
+        func_0202048c(&scene->mOamAnimations[0], 0x80, 0x88);
     } else {
-        func_0202048c(sl + 0x1b4, 0x80, 0x88);
-        func_0202048c(sl + 0x238, 0x6c, 0x6e);
-        func_0202048c(sl + 0x20c, 0xa6, 0x6e);
+        func_0202048c(&scene->mOamAnimations[0], 0x80, 0x88);
+        func_0202048c(&scene->mOamAnimations[3], 0x6c, 0x6e);
+        func_0202048c(&scene->mOamAnimations[2], 0xa6, 0x6e);
     }
-    func_0202048c(sl + 0x1e0, 0x80, 0x88);
+    func_0202048c(&scene->mOamAnimations[1], 0x80, 0x88);
 }

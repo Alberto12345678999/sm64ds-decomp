@@ -12,6 +12,7 @@
  * lives in its own statement.
  */
 #include "types.h"
+#include "private/ov075_entry_mesh.h"
 
 // 6f: keep constant live / flip coloring
 #pragma opt_propagation off
@@ -33,26 +34,6 @@ static inline void G3_TexPlttBase(u32 addr, u32 texFmt)
 {
     reg_G3_TEXPLTT_BASE = addr >> (4 - (texFmt == 2 ? 1 : 0));
 }
-
-/* The mesh's material block, filled by func_ov075_0211aa94: the same
- * five words, in the same order, as daPicGate_c's record
- * (include/private/Ov080Mat.h), with that header's names. */
-typedef struct EntryMeshMaterial {
-    u32 texAddr; /* 0x00 */
-    u32 pltAddr; /* 0x04 */
-    u32 difAmb;  /* 0x08 */
-    u32 speEmi;  /* 0x0c */
-    u32 param;   /* 0x10 -- TEXIMAGE_PARAM format, size and pltt0 bits */
-} EntryMeshMaterial;
-
-typedef char EntryMeshMaterial_size_must_be_0x14[sizeof(EntryMeshMaterial) == 0x14 ? 1 : -1];
-
-/* func_ov075_0211afb0.c's EntryMesh view, extended by the material block;
- * only the field this file reads. */
-typedef struct EntryMesh {
-    u8 pad_00[0x88];
-    EntryMeshMaterial mMaterial; /* 0x88 */
-} EntryMesh;
 
 void func_ov075_0211a948(char *c)
 {

@@ -20,25 +20,12 @@
  * the value it consumes, which is where the ROM's compiler puts it.
  */
 #include "types.h"
+#include "private/ov075_entry_mesh.h"
 
 extern void MulMat4x3Mat4x3(const void *m1, const void *m0, void *mF);
 extern void func_020553a4(void *m);
 extern void func_ov075_0211a948(void *self);
 extern int data_0209b3ec;
-
-/* The mesh fields this file reads. func_ov075_0211b458 sets both grid
- * dimensions to 0x14, sizes the vertex count at 0xa4 as their product and
- * allocates mVertices to match; func_ov075_0211b3b8 frees it. The grid is
- * square, and this file and func_ov075_0211abb0 both use mGridDim[1] as the
- * row stride, so the two bytes are not split into named axes. */
-typedef struct EntryMesh {
-    u8 pad_00[0x14];
-    int mMtx[12]; /* 0x14 -- model matrix, concatenated with the camera */
-    u8 pad_44[0x3c];
-    char *mVertices; /* 0x80 -- 0x18-byte vertices, mGridDim[0] * mGridDim[1] */
-    u8 pad_84[0x22];
-    u8 mGridDim[2]; /* 0xa6 */
-} EntryMesh;
 
 void func_ov075_0211afb0(char *self)
 {
@@ -49,18 +36,15 @@ void func_ov075_0211afb0(char *self)
     int i;
     int j;
     int cols;
-    char *base;
-    char *p0;
-    char *p1;
-    int off0;
-    int off1;
+    EntryMeshVertex *p0;
+    EntryMeshVertex *p1;
     int vx;
     int vy;
     int sx;
     int sz;
 
     *(int *)0x4000444 = 0;
-    MulMat4x3Mat4x3(mesh->mMtx, &data_0209b3ec, tmp);
+    MulMat4x3Mat4x3(&mesh->mMtx, &data_0209b3ec, tmp);
     *(int *)0x4000440 = 2;
     func_020553a4(tmp);
     *(int *)0x4000440 = 1;
@@ -83,30 +67,27 @@ void func_ov075_0211afb0(char *self)
             cols = mesh->mGridDim[1];
             if (cols > 0) {
                 do {
-                    base = mesh->mVertices;
-                    off0 = (i + j * cols) * 0x18;
-                    off1 = (i + 1 + j * cols) * 0x18;
-                    p0 = base + off0;
-                    p1 = base + off1;
-                    *(int *)0x4000488 = *(int *)(p0 + 0x14);
+                    p0 = &mesh->mVertices[i + j * cols];
+                    p1 = &mesh->mVertices[i + 1 + j * cols];
+                    *(int *)0x4000488 = p0->texCoord;
                     j = j + 1;
-                    *(int *)0x4000484 = *(int *)(p0 + 0x10);
-                    vx = *(int *)(base + off0);
-                    sz = *(int *)(p0 + 8);
+                    *(int *)0x4000484 = p0->normal;
+                    vx = p0->x;
+                    sz = p0->z;
                     cols = vx << 9;
                     sx = cols >> 16;
                     sz = (sz << 9) >> 16;
-                    vy = *(int *)(p0 + 4);
+                    vy = p0->y;
                     *(int *)0x400048c = (u16)sx | ((u16)((vy << 9) >> 16) << 16);
                     *(int *)0x400048c = (u16)sz;
-                    *(int *)0x4000488 = *(int *)(p1 + 0x14);
-                    *(int *)0x4000484 = *(int *)(p1 + 0x10);
-                    vx = *(int *)(base + off1);
-                    sz = *(int *)(p1 + 8);
+                    *(int *)0x4000488 = p1->texCoord;
+                    *(int *)0x4000484 = p1->normal;
+                    vx = p1->x;
+                    sz = p1->z;
                     cols = vx << 9;
                     sx = cols >> 16;
                     sz = (sz << 9) >> 16;
-                    vy = *(int *)(p1 + 4);
+                    vy = p1->y;
                     *(int *)0x400048c = (u16)sx | ((u16)((vy << 9) >> 16) << 16);
                     *(int *)0x400048c = (u16)sz;
                     cols = mesh->mGridDim[1];
