@@ -70,7 +70,7 @@ typedef char WBTPeerRecord_size_must_be_0x68[sizeof(WBTPeerRecord) == 0x68 ? 1 :
 typedef char WBTWork_peer_must_be_at_0x1d4[(int)&((WBTWork *)0)->peer == 0x1d4 ? 1 : -1];
 #endif
 
-extern void MultiCopy_Int(void *dst, void *src, int n);
+extern void MultiCopy_Int(void *src, void *dst, int n); /* loads through r0, stores through r1 */
 extern void func_02065bf4(void);
 extern int func_02065c1c(void);
 extern int func_02065bc0(void);
