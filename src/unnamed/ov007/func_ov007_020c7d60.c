@@ -24,7 +24,8 @@ typedef struct Ov007Link {
     int length;          /* 0x8: the rest length */
 } Ov007Link;
 
-typedef char Ov007Follower_force_must_be_at_0x10[(int)&((Ov007Follower *)0)->force == 0x10 ? 1 : -1];
+typedef char
+    Ov007Follower_force_must_be_at_0x10[(int)&((Ov007Follower *)0)->force == 0x10 ? 1 : -1];
 
 /* func_ov007_020c7560's spring step that holds the link's rest length: adds
  * -r5 times the stretch along the unit from - to direction into each end's

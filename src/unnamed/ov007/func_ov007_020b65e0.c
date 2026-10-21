@@ -34,7 +34,7 @@ typedef struct Ov007Work {
     char pad_44[0xc];
     void *touch; /* 0x50: func_ov007_020c2068's 0x44-byte touch-panel record,
                        * updated by func_ov007_020c1db0, read by func_ov007_020b46b0 */
-    void *pad; /* 0x54: Ov007Pad, func_ov007_020c2304's 0x70-byte key record */
+    void *pad;   /* 0x54: Ov007Pad, func_ov007_020c2304's 0x70-byte key record */
     char pad_58[0xc];
     int tweenOut[2];              /* 0x64: bound as tweens[i]->out */
     struct Ov007Tween *tweens[2]; /* 0x6c: func_ov007_020c908c */

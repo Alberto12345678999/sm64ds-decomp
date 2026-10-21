@@ -39,17 +39,19 @@ typedef char Ov007Work_size_must_be_0x108[sizeof(Ov007Work) == 0x108 ? 1 : -1];
  * the second figure); otherwise the figure only in main state 0xb. */
 int func_ov007_020be850(void) {
     char* g = data_ov007_0210342c;
-    Ov007Work* work = (Ov007Work*)g;
-    Ov007AnimPlayer* r2;
+    Ov007Work *work = (Ov007Work *)g;
+    Ov007AnimPlayer *r2;
     int res = 0;
     if (*(int*)(g + 0xe8) == 0) return res;
     r2 = work->model->boneAnim;
     if (r2->anim == 0) {
         if (r2->frame >= 0x7c) {
-            if (*(int*)(g + 0xec) == 1) return (int)work->altFigure;
+            if (*(int *)(g + 0xec) == 1)
+                return (int)work->altFigure;
         }
         return (int)work->figure;
     }
-    if (work->states[1]->currentState == 0xb) res = (int)work->figure;
+    if (work->states[1]->currentState == 0xb)
+        res = (int)work->figure;
     return res;
 }

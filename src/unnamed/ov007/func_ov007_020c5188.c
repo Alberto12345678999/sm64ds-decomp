@@ -77,8 +77,10 @@ void func_ov007_020c5188(char *sb, int arg1)
                     int *r5 = self->pointLists[fp];
                     func_ov007_020c7560(r5, self->springConstants[0], self->springConstants[1]);
                     if (fp >= 1) {
-                        func_ov007_020c7b2c((int)self->headLinks[fp], self->springConstants[4], self->springConstants[5]);
-                        func_ov007_020c7b2c((int)self->tailLinks[fp], self->springConstants[4], self->springConstants[5]);
+                        func_ov007_020c7b2c((int)self->headLinks[fp], self->springConstants[4],
+                                            self->springConstants[5]);
+                        func_ov007_020c7b2c((int)self->tailLinks[fp], self->springConstants[4],
+                                            self->springConstants[5]);
                     }
                     r8 = start_r8;
                     if (r5[1] > 0) {
