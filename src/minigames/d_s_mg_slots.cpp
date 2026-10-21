@@ -724,7 +724,8 @@ s32 dScMgSlot3_c::Render() {
                     Hud_RenderSprite(
                         sSlot3FaceSprites[((dScMgSlot3_c *)(p + j2))->mResultSymbols[0][0] * 3 +
                                           i2],
-                        y - (*(int *)((int)c + i2 * 4 + SLOT3_OFF(mReelWinPos)) >> 12), 0x60, -1, -1);
+                        y - (*(int *)((int)c + i2 * 4 + SLOT3_OFF(mReelWinPos)) >> 12), 0x60, -1,
+                        -1);
                     y += 0x50;
                 }
                 p += 3;

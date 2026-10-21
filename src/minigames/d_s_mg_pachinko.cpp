@@ -62,12 +62,21 @@ struct C;
 typedef void (C::*PMF)(int);
 struct Entry { PMF pmf; };
 /* C is the scene from mBg[0].active (0x5c0e) and mBg[0].state (0x5c0f). */
-struct C { char pad[0x5c0e]; unsigned char active; unsigned char state; };
+struct C {
+    char pad[0x5c0e];
+    unsigned char active;
+    unsigned char state;
+};
 
 struct C2;
 typedef void (C2::*PMF2)(int);
 /* C2 is the scene from mFlyer[0].active (0x5bc6) to mFlyer[0].state (0x5bc8). */
-struct C2 { char pad[0x5bc6]; unsigned char active; char visible; unsigned char state; };
+struct C2 {
+    char pad[0x5bc6];
+    unsigned char active;
+    char visible;
+    unsigned char state;
+};
 
 /* PachinkoFlyer_StateDescend's typed view of mFlyer from its y (0x5bb4).
    `volatile` on y is needed: the ROM reloads it after the store. */
@@ -803,9 +812,10 @@ void PachinkoFlyer_StateWaiting(char *raw, int idx) {
 // @symbol PachinkoFlyer_Update
 /* Dispatches through the ov006 pointer-to-member table at 0x0214266c. */
 void PachinkoFlyer_Update(C2 *c){
-  if (c->active == 0) return;
-  (c->*sPachinkoFlyerStateTable[c->state])(0);
-  PachinkoFlyer_CheckHits((char *)c, 0);
+    if (c->active == 0)
+        return;
+    (c->*sPachinkoFlyerStateTable[c->state])(0);
+    PachinkoFlyer_CheckHits((char *)c, 0);
 }
 
 // @symbol PachinkoTarget_Choose
@@ -1021,7 +1031,8 @@ void PachinkoPopup_SpawnScore(char *raw, int idx, unsigned short points)
 void Pachinko_ClearAimLine(char* raw)
 {
     volatile unsigned short zero;
-    int shotNo = *(unsigned char *)(raw + SCENE_OFF(mAimShot)); /* PACHINKO(raw)->mAimShot is 8 bytes longer */
+    /* By offset: PACHINKO(raw)->mAimShot is 8 bytes longer. */
+    int shotNo = *(unsigned char *)(raw + SCENE_OFF(mAimShot));
     int dx, dy;
     char* shot;
 

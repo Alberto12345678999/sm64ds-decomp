@@ -411,7 +411,8 @@ void dScMgMemory2_c::CardFlyAway(int cardIndex) {
         if (scanLimit > 1) {
             do {
                 currentX = (s32 *)((u8 *)&view->raw[cardIndex] + MEMORY2_OFF(mCards[0].x));
-                flyAwayStarted = (u8 *)&view->raw[cardIndex] + MEMORY2_OFF(mCards[0].flyAwayStarted);
+                flyAwayStarted =
+                    (u8 *)&view->raw[cardIndex] + MEMORY2_OFF(mCards[0].flyAwayStarted);
                 if (view->cards[cardIndex - precedingOffset].active != 0) {
                     if (((*currentX - view->cards[cardIndex - precedingOffset].x) >> 12) <= 4) {
                         *flyAwayStarted = 1;
@@ -662,7 +663,8 @@ void dScMgMemory2_c::ResultWait() {
     /* mResultTimer, decremented through raw: mResultTimer--, the
      * `= mResultTimer - 1` form and both again through MEMORY2(raw) all
      * change the object (the first renumbers @NNN by 3). */
-    *(unsigned short *)(((int)raw + MEMORY2_OFF(mResultTimer))) = *(unsigned short *)(((int)raw + MEMORY2_OFF(mResultTimer))) - 1;
+    *(unsigned short *)(((int)raw + MEMORY2_OFF(mResultTimer))) =
+        *(unsigned short *)(((int)raw + MEMORY2_OFF(mResultTimer))) - 1;
     if ((short)mResultTimer > 0)
         return;
 

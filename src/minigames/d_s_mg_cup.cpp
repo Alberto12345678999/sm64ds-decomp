@@ -887,8 +887,7 @@ s32 dScMgCup_c::Render() {
         cup = order[drawIndex];
         CupFx_DrawForCup((char *)mFx, (char)cup);
         Cup_DrawOamList((int)raw, (void *)sCupAnimTable[mAnim[cup]][mFrame[drawIndex]].list,
-                        mCup[cup].x, mCup[cup].y, mCupScale[cup],
-                        mCupContents[cup]);
+                        mCup[cup].x, mCup[cup].y, mCupScale[cup], mCupContents[cup]);
     }
 
     if (mState == 4 || mState == 5) {
