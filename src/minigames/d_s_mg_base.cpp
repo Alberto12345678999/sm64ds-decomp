@@ -1422,6 +1422,9 @@ void Mg_UpdateMenu(char* c)
         if (b < 0x18) {
             func_02012790(0x62);
             self->mMenuCursor = 0;
+            /* +0x4644 is the header's pad_4644, a select delay: 0x10 for item
+               0 and 0 for the others, counted down by the ApproachLinear2
+               below before the pick acts. Raw until the header names it. */
             *(short*)(c + 0x4644) = 0x10;
             goto after;
         }
@@ -1521,6 +1524,9 @@ extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 
 void dScMgBase_c::RestoreScreenFromMenu()
 { using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
+    /* +0x2228 and +0x4228 lie in the header's unnamed pad_228: the 0x2000
+       bytes of sub-screen OBJ VRAM and the 0x400 bytes of BG palette (main,
+       then sub at +0x200) that SaveScreenForMenu copies out. */
     char *c = (char *)this;
 
     data_0209d45c = 0;
