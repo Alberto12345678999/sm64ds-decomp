@@ -4,8 +4,8 @@
  * only has func_02034414 draw sub-screen message 0x19; the RESULT scene
  * loads file 0x9802, draws message 0x16 and takes data_ov075_0211d810's
  * render step. The predicate was
- * called IsEntryScene, but both scenes are VS scenes; actorID 6 is ENTRY (as
- * d_s_entry_methods.cpp's isEntry test reads it).
+ * called IsVsMode, but both scenes are VS scenes; it tests actorID 6, ENTRY
+ * (as d_s_entry_methods.cpp's isEntry test reads it), so it is IsEntryScene.
  *
  * Logic first recovered by andrewboudreau as a non-matching body against
  * mwccarm 1.2/sp2p3; byte-matched here at 2004/b56 without changing what it
