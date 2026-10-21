@@ -7,7 +7,7 @@ extern u8 data_0208f174[];
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 extern void *_ZN3G2S13GetBG0CharPtrEv(void);
 extern int func_02054d88(void);
-extern void MultiCopy_Int(int *dst, int *src, int len);
+extern void MultiCopy_Int(int *src, int *dst, int len);
 
 void func_020316d8(int screen, int c, u32 x, void *buf)
 {
