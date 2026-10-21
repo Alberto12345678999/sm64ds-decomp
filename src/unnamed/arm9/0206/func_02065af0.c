@@ -1,7 +1,7 @@
 extern int _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(unsigned int);
 extern int *func_02065b88(void);
-extern void MultiCopy_Int(int *dst, int *src, int len);
+extern void MultiCopy_Int(int *src, int *dst, int len);
 extern int data_020a94c0;
 extern int data_020a9570;
 

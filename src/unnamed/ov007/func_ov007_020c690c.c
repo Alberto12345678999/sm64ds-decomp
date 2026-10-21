@@ -8,8 +8,7 @@
  * Left raw, no reader found to name them: +0x18 (a5), +0x30 (cleared),
  * +0x40/+0x44 (per-group links func_ov007_020c6e68 appends after the
  * per-point ones), the four u16 arrays at +0x48..+0x54 (0xffff = unset) and
- * the Point at +0x94 that anchors `link`'s from end (its position at +0x98
- * has no name in func_ov007_020c5a6c either). Those stay on the char *
+ * the Point at +0x94 that anchors `link`'s from end. Those stay on the char *
  * alias `o` of the allocation; the named slots go through `p`. */
 typedef struct Ov007Picker {
     char pad_00[0xc];
@@ -33,7 +32,8 @@ typedef struct Ov007Picker {
     char pad_40[0x2c];
     void *posPoint; /* 0x6c: func_ov007_020c844c's Point over pos */
     Vector3 pos;    /* 0x70 */
-    char pad_7c[0x28];
+    char pad_7c[0x1c];
+    Vector3 anchorPos; /* 0x98: the +0x94 Point's position (func_ov007_020c5a6c) */
     void *link;   /* 0xa4: func_ov007_020c80a4; from +0x94 to posPoint */
     void *camera; /* 0xa8: a3; func_ov007_020c65bc unprojects through it */
 } Ov007Picker;
@@ -87,7 +87,7 @@ void* func_ov007_020c690c(int a0, int a1, int a2, int a3, int a4, int a5)
     }
 
     p->posPoint = func_ov007_020c844c(&p->pos, 0xa000);
-    *(void**)(o + 0x94) = func_ov007_020c844c(o + 0x98, 0x1000);
+    *(void **)(o + 0x94) = func_ov007_020c844c(&p->anchorPos, 0x1000);
     p->link = func_ov007_020c80a4();
     func_ov007_020c8010(p->link, *(void **)(o + 0x94), p->posPoint);
 

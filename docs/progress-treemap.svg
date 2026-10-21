@@ -39617,7 +39617,7 @@ matched: yes</title></rect><rect x="1201.01" y="619.37" width="11.23" height="3.
 module: ov075
 addr: 0x02116c38
 size: 84 bytes
-matched: yes</title></rect><rect x="1201.01" y="623.18" width="11.23" height="3.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02116c8c
+matched: yes</title></rect><rect x="1201.01" y="623.18" width="11.23" height="3.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c10StartMatchEv
 module: ov075
 addr: 0x02116c8c
 size: 88 bytes
@@ -39625,11 +39625,11 @@ matched: yes</title></rect><rect x="1201.01" y="627.16" width="11.23" height="4.
 module: ov075
 addr: 0x02116ce4
 size: 92 bytes
-matched: yes</title></rect><rect x="1201.01" y="631.33" width="11.23" height="4.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02116d40
+matched: yes</title></rect><rect x="1201.01" y="631.33" width="11.23" height="4.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c15ArePlayersReadyEv
 module: ov075
 addr: 0x02116d40
 size: 92 bytes
-matched: yes</title></rect><rect x="1201.01" y="635.49" width="11.23" height="4.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02116d9c
+matched: yes</title></rect><rect x="1201.01" y="635.49" width="11.23" height="4.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c16CheckMenuConfirmEi
 module: ov075
 addr: 0x02116d9c
 size: 100 bytes
@@ -39725,27 +39725,27 @@ matched: yes</title></rect><rect x="1234.55" y="639.03" width="6.14" height="0.9
 module: ov075
 addr: 0x02118a78
 size: 12 bytes
-matched: yes</title></rect><rect x="1240.70" y="554.57" width="10.81" height="17.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02118a84
+matched: yes</title></rect><rect x="1240.70" y="554.57" width="10.81" height="17.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c18UpdateMatchLoadingEv
 module: ov075
 addr: 0x02118a84
 size: 372 bytes
-matched: yes</title></rect><rect x="1240.70" y="572.07" width="10.81" height="6.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02118bf8
+matched: yes</title></rect><rect x="1240.70" y="572.07" width="10.81" height="6.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c19LoadCourseResourcesEi
 module: ov075
 addr: 0x02118bf8
 size: 136 bytes
-matched: yes</title></rect><rect x="1240.70" y="578.47" width="10.81" height="3.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02118c80
+matched: yes</title></rect><rect x="1240.70" y="578.47" width="10.81" height="3.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c17EnterMatchLoadingEv
 module: ov075
 addr: 0x02118c80
 size: 80 bytes
-matched: yes</title></rect><rect x="1240.70" y="582.24" width="10.81" height="3.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02118cd0
+matched: yes</title></rect><rect x="1240.70" y="582.24" width="10.81" height="3.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c23RenderCourseSelectTitleEv
 module: ov075
 addr: 0x02118cd0
 size: 76 bytes
-matched: yes</title></rect><rect x="1240.70" y="585.81" width="10.81" height="25.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02118d1c
+matched: yes</title></rect><rect x="1240.70" y="585.81" width="10.81" height="25.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c18UpdateCourseSelectEv
 module: ov075
 addr: 0x02118d1c
 size: 540 bytes
-matched: yes</title></rect><rect x="1240.70" y="611.22" width="10.81" height="17.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02118f38
+matched: yes</title></rect><rect x="1240.70" y="611.22" width="10.81" height="17.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c17EnterCourseSelectEv
 module: ov075
 addr: 0x02118f38
 size: 364 bytes
@@ -39805,15 +39805,15 @@ matched: yes</title></rect><rect x="1270.47" y="564.36" width="6.58" height="10.
 module: ov075
 addr: 0x02119c38
 size: 136 bytes
-matched: yes</title></rect><rect x="1277.05" y="564.36" width="6.00" height="10.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02119cc0
+matched: yes</title></rect><rect x="1277.05" y="564.36" width="6.00" height="10.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c17UpdateStepFadeOutEv
 module: ov075
 addr: 0x02119cc0
 size: 124 bytes
-matched: yes</title></rect><rect x="1283.05" y="564.36" width="2.90" height="10.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02119d3c
+matched: yes</title></rect><rect x="1283.05" y="564.36" width="2.90" height="10.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c16EnterStepFadeOutEv
 module: ov075
 addr: 0x02119d3c
 size: 60 bytes
-matched: yes</title></rect><rect x="1285.95" y="564.36" width="3.67" height="10.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02119d78
+matched: yes</title></rect><rect x="1285.95" y="564.36" width="3.67" height="10.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c15UpdateStepDelayEv
 module: ov075
 addr: 0x02119d78
 size: 76 bytes
@@ -39821,15 +39821,15 @@ matched: yes</title></rect><rect x="1289.62" y="564.36" width="40.04" height="10
 module: ov075
 addr: 0x02119dc4
 size: 828 bytes
-matched: yes</title></rect><rect x="1257.90" y="574.87" width="3.43" height="10.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_0211a100
+matched: yes</title></rect><rect x="1257.90" y="574.87" width="3.43" height="10.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c19ChangeStepsWithFadeEPKNS_7StepSetE
 module: ov075
 addr: 0x0211a100
 size: 72 bytes
-matched: yes</title></rect><rect x="1257.90" y="585.53" width="3.43" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_0211a148
+matched: yes</title></rect><rect x="1257.90" y="585.53" width="3.43" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c21ChangeStepsAfterDelayEPKNS_7StepSetEi
 module: ov075
 addr: 0x0211a148
 size: 76 bytes
-matched: yes</title></rect><rect x="1257.90" y="596.79" width="3.43" height="18.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_0211a194
+matched: yes</title></rect><rect x="1257.90" y="596.79" width="3.43" height="18.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c8SetStepsEPKNS_7StepSetE
 module: ov075
 addr: 0x0211a194
 size: 124 bytes
