@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "Ov007MenuState.h"
 extern char *data_ov007_0210342c;
 extern int data_ov007_02103428;
 
@@ -13,52 +14,109 @@ extern void func_ov007_020aec94(int a);
 extern void func_ov007_020b6134(int a);
 extern void func_ov007_020b7a44(void);
 
+/* The 10-byte layout row func_ov007_020aea6c's item points at; names as in
+ * func_ov007_020b5bf0, only the slots this file reads. */
+typedef struct Ov007ItemLayout {
+    u16 kind;  /* 0x0 */
+    s16 homeX; /* 0x2: func_ov007_020ae810 seeds posX from it */
+} Ov007ItemLayout;
 
+/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
+ * func_ov007_020b5bf0 and func_ov007_020b5f64, only the slots this file
+ * touches. */
+typedef struct Ov007Item {
+    u16 id; /* 0x00 */
+    char pad_02[2];
+    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
+    s32 posX;              /* 0x08: Q12 */
+    char pad_0c[0x18];
+    Ov007ItemLayout *layout; /* 0x24 */
+} Ov007Item;
+
+/* The 0x88-byte sprite of include/Ov007Sprite.h; only its scale here. */
+typedef struct Ov007Sprite {
+    char pad_00[0x3c];
+    s32 scaleX; /* 0x3c: func_ov007_020c42f8 MTX_SCALE */
+    s32 scaleY; /* 0x40 */
+} Ov007Sprite;
+
+/* The 0x1c record func_ov007_020b4c04 returns; names as in that file. */
+typedef struct Ov007ItemView {
+    Ov007Item *item;     /* 0x00 */
+    Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
+} Ov007ItemView;
+
+/* data_ov007_0210342c: the overlay's manager; names as in
+ * func_ov007_020afc44 and func_ov007_020b3360, only the slots this file
+ * reads. The callback at +0x2c and +0x16c/+0x170 stay raw. */
+typedef struct Ov007Work {
+    char pad_00[4];
+    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388; [1] is the main one */
+    char pad_10[0x18];
+    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates; its first
+     * word points at a record with no layout yet, so `gp` stays raw */
+    struct Ov007Settings *settings;
+    char pad_2c[0x2c];
+    int selectedSlot; /* 0x58: -1 = none (func_ov007_020b0244) */
+} Ov007Work;
+
+typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
+typedef char Ov007Sprite_scaleY_must_be_0x40[(int)&((Ov007Sprite *)0)->scaleY == 0x40 ? 1 : -1];
+typedef char Ov007Work_selectedSlot_must_be_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
+
+#define WORK ((Ov007Work *)data_ov007_0210342c)
+
+/* The item's state-2 step: on the state's first tick, sends the follow-up
+ * state requests for this item, then over `thresh` ticks pops (ids 3/4),
+ * nudges sideways (ids 10/11) or squashes its sprite; when the ticks run out
+ * it resets the scale and requests the item's next state. arg keeps the
+ * char * spelling of the definition; `view` is the typed view. */
 void func_ov007_020b50e8(char *arg)
 {
-    char *st;
+    Ov007ItemView *view = (Ov007ItemView *)arg;
+    Ov007Item *st;
     u16 state;
     int t;
     int result;
     int is34;
     int thresh;
-    short *pv;
+    Ov007MenuState *pv;
     char *gp;
     int v4;
-    int angle;
-    char *r3p;
+    int posX;
+    Ov007ItemLayout *r3p;
 
-    st = *(char **)arg;
-    state = *(u16 *)st;
-    r3p = *(char **)(st + 0x24);
-    gp = *(char **)*(char **)(data_ov007_0210342c + 0x28);
-    t = *(int *)(*(char **)(st + 4) + 0xc);
-    v4 = *(u16 *)r3p;
+    st = view->item;
+    state = st->id;
+    r3p = st->layout;
+    gp = *(char **)WORK->settings;
+    t = st->state->stateTicks;
+    v4 = r3p->kind;
     is34 = (state == 3 || state == 4);
     thresh = is34 ? 0x18 : 8;
-    pv = *(short **)(data_ov007_0210342c + 8);
-    angle = *(s16 *)(r3p + 2) << 12;
+    pv = WORK->states[1];
+    posX = r3p->homeX << 12;
     result = 0x1000;
 
     if (t == 0) {
         func_ov007_020c1d8c(0);
         if (v4 == 0) {
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 0, 6);
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 1, 6);
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 2, 6);
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 7, 6);
-        } else if ((u32)(state - 0xe) <= 2 && *pv == 0) {
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 0xe, 4);
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 0xf, 4);
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 0x10, 4);
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 0x15, 4);
-            func_ov007_020b647c(*(u16 *)*(char **)arg, 0x14, 4);
+            func_ov007_020b647c(view->item->id, 0, 6);
+            func_ov007_020b647c(view->item->id, 1, 6);
+            func_ov007_020b647c(view->item->id, 2, 6);
+            func_ov007_020b647c(view->item->id, 7, 6);
+        } else if ((u32)(state - 0xe) <= 2 && pv->currentState == 0) {
+            func_ov007_020b647c(view->item->id, 0xe, 4);
+            func_ov007_020b647c(view->item->id, 0xf, 4);
+            func_ov007_020b647c(view->item->id, 0x10, 4);
+            func_ov007_020b647c(view->item->id, 0x15, 4);
+            func_ov007_020b647c(view->item->id, 0x14, 4);
         }
         {
             int flag;
             flag = 1;
             func_ov007_020b6208(state);
-            switch (*(u16 *)st) {
+            switch (st->id) {
             case 9:
                 break;
             case 11:
@@ -82,7 +140,7 @@ void func_ov007_020b50e8(char *arg)
                 break;
             }
             if (flag != 0) {
-                func_ov007_020b7eec(*(char **)*(char **)(data_ov007_0210342c + 0x28));
+                func_ov007_020b7eec(*(char **)WORK->settings);
             }
         }
     }
@@ -125,7 +183,7 @@ void func_ov007_020b50e8(char *arg)
             }
         } else {
             u16 s2;
-            s2 = *(u16 *)st;
+            s2 = st->id;
             if ((u16)(s2 + 0xfff6) <= 1) {
                 int dir;
                 int w;
@@ -136,7 +194,7 @@ void func_ov007_020b50e8(char *arg)
                     w = -(w - 0x2000);
                 }
                 d8 = dir * 8;
-                angle += d8 * w;
+                posX += d8 * w;
             } else {
                 int c;
                 int w;
@@ -152,14 +210,14 @@ void func_ov007_020b50e8(char *arg)
             }
         }
     } else {
-        char *p;
+        Ov007Sprite *p;
         int next;
         u16 s;
-        p = *(char **)(arg + 4);
+        p = view->sprite;
         next = 0;
-        *(int *)(p + 0x40) = 0x1000;
-        *(int *)(p + 0x3c) = *(int *)(p + 0x40);
-        s = *(u16 *)st;
+        p->scaleY = 0x1000;
+        p->scaleX = p->scaleY;
+        s = st->id;
         switch (s) {
         case 0:
             func_ov007_020aec94(9);
@@ -171,22 +229,22 @@ void func_ov007_020b50e8(char *arg)
             func_ov007_020aec94(7);
             break;
         case 7:
-            pv[1] = 8;
+            pv->requestedState = 8;
             next = 6;
             break;
         case 3:
             next = 1;
-            *(s16 *)(*(char **)(data_ov007_0210342c + 4) + 2) = 2;
+            WORK->states[0]->requestedState = 2;
             break;
         case 4:
             next = 1;
-            *(s16 *)(*(char **)(data_ov007_0210342c + 4) + 2) = 3;
+            WORK->states[0]->requestedState = 3;
             break;
         case 6:
-            *(s16 *)(*(char **)(data_ov007_0210342c + 4) + 2) = 4;
+            WORK->states[0]->requestedState = 4;
             break;
         case 8:
-            pv[1] = next;
+            pv->requestedState = next;
             break;
         case 14:
         case 15:
@@ -194,39 +252,39 @@ void func_ov007_020b50e8(char *arg)
             func_ov007_020b6134(s - 0xe);
             break;
         case 21:
-            pv[1] = 1;
+            pv->requestedState = 1;
             break;
         case 17:
-            pv[1] = 3;
+            pv->requestedState = 3;
             break;
         case 18:
-            pv[1] = 7;
+            pv->requestedState = 7;
             break;
         case 19:
-            pv[1] = 9;
+            pv->requestedState = 9;
             break;
         case 20:
-            switch (*pv) {
+            switch (pv->currentState) {
             case 0:
-                pv[1] = 0xb;
+                pv->requestedState = 0xb;
                 break;
             case 1:
-                pv[1] = next;
+                pv->requestedState = next;
                 break;
             case 2:
-                pv[1] = 6;
+                pv->requestedState = 6;
                 break;
             case 3:
             case 9:
-                pv[1] = 1;
+                pv->requestedState = 1;
                 break;
             case 7: {
-                char *d;
-                d = data_ov007_0210342c;
-                if (*(int *)(d + 0x58) != -1) {
-                    *(int *)(d + 0x58) = -1;
+                Ov007Work *d;
+                d = WORK;
+                if (d->selectedSlot != -1) {
+                    d->selectedSlot = -1;
                 } else {
-                    pv[1] = 1;
+                    pv->requestedState = 1;
                 }
                 break;
             }
@@ -247,10 +305,10 @@ void func_ov007_020b50e8(char *arg)
             next = 4;
             break;
         }
-        *(s16 *)(*(char **)(st + 4) + 2) = next;
+        st->state->requestedState = next;
     }
 
-    *(int *)(*(char **)(arg + 4) + 0x40) = result;
-    *(int *)(*(char **)(arg + 4) + 0x3c) = *(int *)(*(char **)(arg + 4) + 0x40);
-    *(int *)(*(char **)arg + 8) = angle;
+    view->sprite->scaleY = result;
+    view->sprite->scaleX = view->sprite->scaleY;
+    view->item->posX = posX;
 }
