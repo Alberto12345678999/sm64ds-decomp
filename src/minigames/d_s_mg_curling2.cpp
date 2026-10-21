@@ -1262,8 +1262,10 @@ void dScMgCurling2_c::StoneRest(int i) {
  * sound from speed and position.
  *
  * The speed decay keeps the ROM's order of adding the field offset to
- * `this` before the stone offset, spelled `&mStone[0].speed + stoneOffset`;
- * the other fields take mStone[stoneIndex] directly. */
+ * `this` before the stone offset, spelled `&mStone[0].speed + stoneOffset`,
+ * and the stop's `state = 2` keeps the stepped
+ * `((dScMgCurling2_c *)(c + stoneIndex * 0x30))` cast; the other fields take
+ * mStone[stoneIndex] directly. */
 void dScMgCurling2_c::StoneSlide(int stoneIndex) {
     char *c = (char *)this;
     int stoneOffset;
