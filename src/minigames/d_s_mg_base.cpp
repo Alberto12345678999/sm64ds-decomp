@@ -30,6 +30,7 @@
  */
 
 #include "dScMgBase_c.h"
+#include "MgMenuRow.h"
 #include "dWipe_c.h"
 #include "decl_common.h"
 #include "Sound.h"
@@ -106,7 +107,7 @@ extern void func_0203cbc0(void *ptr);
 extern void func_02012e1c(void);
 void Mg_InitMusic();
 extern void Enable3dEngines(void);
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 extern dWipe_c data_0209f61c;
 extern unsigned char data_0209d460[];
 extern unsigned char data_0209d458[];
@@ -201,15 +202,15 @@ int Mg_GetLastRecordRank(dScMgBase_c *scene)
 // @symbol Mg_FindRecordRank
 namespace s20ad6fc {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 /* Returns the index (0..4) at which `value` would enter the scene's five
-   saved records, or -1. Scoring mode 5 (word 2 of the menu row) is
+   saved records, or -1. Scoring mode 5 (gMgMenuRow.scoringMode) is
    lower-is-better and never places a value <= 0; every other mode is
    higher-is-better. The `(unsigned)` casts make the compares unsigned. */
 int Mg_FindRecordRank(void *scene, int value)
 {
     int i;
-    if (gMgMenuRow[2] == 5) {
+    if (gMgMenuRow.scoringMode == 5) {
         if (value <= 0) return -1;
         for (i = 0; i < 5; i++) {
             if (func_02013580(Mg_GetSaveTable(scene), i) > (unsigned)value) return i;
@@ -227,25 +228,25 @@ int Mg_FindRecordRank(void *scene, int value)
 // @symbol Mg_SaveRecordPair
 namespace s20ad79c {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 extern int gMgSaveDirty[];
 
 /* Saves a two-value result into saved records 0 and 1 of the current scene.
-   A first value <= 0 replaces both with the menu row's defaults (words 5
-   and 6); a second value <= 0 alone falls back to word 6. A positive value
+   A first value <= 0 replaces both with the menu row's record defaults 0
+   and 1; a second value <= 0 alone falls back to default 1. A positive value
    is capped at 9999. Nothing is written when both already match;
    otherwise gMgSaveDirty is set to 1. */
 void Mg_SaveRecordPair(int first, int second) {
     int v0 = first, v1 = second;
     if (gMgScene == 0) return;
     if (v0 <= 0) {
-        v0 = gMgMenuRow[5];
-        v1 = gMgMenuRow[6];
+        v0 = gMgMenuRow.recordDefaults.v[0];
+        v1 = gMgMenuRow.recordDefaults.v[1];
     } else {
         if (v0 > 9999) v0 = 9999;
     }
     if (v1 <= 0) {
-        v1 = gMgMenuRow[6];
+        v1 = gMgMenuRow.recordDefaults.v[1];
     } else {
         if (v1 > 9999) v1 = 9999;
     }
@@ -274,13 +275,14 @@ int Mg_GetSavedRecord1(void) {
 // @symbol Mg_GetSavedRecord0
 namespace s20ad8b8 {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 /* Saved record 0 of the current scene; an empty record reads as the menu
-   row's word 5. 0 with no scene. */
+   row's record default 0. 0 with no scene. */
 int Mg_GetSavedRecord0(void) {
     if (gMgScene != 0) {
         int r = func_02013580(Mg_GetSaveTable(gMgScene), 0);
-        if (r == 0) return gMgMenuRow[5];
+        if (r == 0)
+            return gMgMenuRow.recordDefaults.v[0];
         return r;
     }
     return 0;
@@ -362,7 +364,7 @@ void Mg_ClearNewRecordFlag(void) {
 // @symbol Mg_SetSessionBest
 namespace s20ada40 {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 extern int Mg_GetTopRecord(void);
 
 /* Stores `score` as the session best (mSessionBest). If it beats the saved
@@ -374,7 +376,7 @@ void Mg_SetSessionBest(int score)
     dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     scene->mSessionBest = score;
-    if (gMgMenuRow[2] == 5) {
+    if (gMgMenuRow.scoringMode == 5) {
         if (score == 0) return;
         if (Mg_GetTopRecord() != 0) {
             if ((unsigned)score >= (unsigned)Mg_GetTopRecord()) return;
@@ -409,21 +411,21 @@ namespace s20adb1c {
 extern "C" {
 extern int Mg_GetSessionBest(void);
 extern int Mg_SetSessionBest(int);
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 /* Submits a score: stores it in mSubmittedScore (outside scoring mode 5, capped
-   at the menu row's word 3 when that is nonzero) and passes it to
+   at the menu row's scoreCap when that is nonzero) and passes it to
    Mg_SetSessionBest when it beats the session best. */
 void Mg_SubmitScore(int score) {
     dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
-    if (gMgMenuRow[2] == 5) {
+    if (gMgMenuRow.scoringMode == 5) {
         scene->mSubmittedScore = score;
         if (Mg_GetSessionBest() != 0) {
             if ((unsigned)score >= (unsigned)Mg_GetSessionBest()) return;
         }
         Mg_SetSessionBest(score);
     } else {
-        int cap = gMgMenuRow[3];
+        int cap = gMgMenuRow.scoreCap;
         if (cap != 0) {
             if ((unsigned)score > (unsigned)cap) score = cap;
         }
@@ -862,11 +864,11 @@ int dScMgBase_c::OnGraphCallback0()
 // @symbol Mg_GetScoringMode
 namespace s20ae1a8 {
 extern "C" {
-extern int gMgMenuRow[];
-/* The menu row's scoring mode (word 2), or -1 with no scene. */
+extern MgEntry gMgMenuRow;
+/* The menu row's scoring mode, or -1 with no scene. */
 int Mg_GetScoringMode(void) {
     if (gMgScene != 0) {
-        return gMgMenuRow[2];
+        return gMgMenuRow.scoringMode;
     }
     return -1;
 }
@@ -876,14 +878,14 @@ int Mg_GetScoringMode(void) {
 // @symbol Mg_GetMusicMode
 namespace s20ae1cc {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 
-/* The menu row's music mode (word 11, +0x2c), or 0 with no scene. The
+/* The menu row's music mode, or 0 with no scene. The
    music helpers below treat 0 as "stop the music" and 1 as "play
    Mg_GetMusicTrack's track". */
 int Mg_GetMusicMode(void) {
     if (gMgScene != 0) {
-        return gMgMenuRow[11];
+        return gMgMenuRow.musicMode;
     }
     return 0;
 }
@@ -967,16 +969,18 @@ namespace s20ae330 {
 extern "C" {
 extern int Mg_GetMusicMode(void);
 extern int Mg_GetMusicTrack(void);
-extern unsigned short gMgMenuRow;
+extern MgEntry gMgMenuRow;
 
 /* Music mode 0 stops the music, and replays the scene's track only when
-   the menu row's first halfword is 0x16f; any nonzero mode plays the
+   the menu row's scene ID is 0x16f; any nonzero mode plays the
    track. */
-void Mg_InitMusic(void){
-    if(gMgScene==0) return;
-    if(Mg_GetMusicMode()==0){
+void Mg_InitMusic(void) {
+    if (gMgScene == 0)
+        return;
+    if (Mg_GetMusicMode() == 0) {
         Sound::StopLoadedMusic_Layer1(1);
-        if(gMgMenuRow != 0x16f) return;
+        if (gMgMenuRow.id != 0x16f)
+            return;
         Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
         return;
     }
@@ -1418,6 +1422,9 @@ void Mg_UpdateMenu(char* c)
         if (b < 0x18) {
             func_02012790(0x62);
             self->mMenuCursor = 0;
+            /* +0x4644 is the header's pad_4644, a select delay: 0x10 for item
+               0 and 0 for the others, counted down by the ApproachLinear2
+               below before the pick acts. Raw until the header names it. */
             *(short*)(c + 0x4644) = 0x10;
             goto after;
         }
@@ -1517,6 +1524,9 @@ extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 
 void dScMgBase_c::RestoreScreenFromMenu()
 { using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
+    /* +0x2228 and +0x4228 lie in the header's unnamed pad_228: the 0x2000
+       bytes of sub-screen OBJ VRAM and the 0x400 bytes of BG palette (main,
+       then sub at +0x200) that SaveScreenForMenu copies out. */
     char *c = (char *)this;
 
     data_0209d45c = 0;
@@ -2447,7 +2457,7 @@ int dScMgBase_c::BeforeBehavior()
 void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
 {
     if (vfSuccess == 2) {
-        if (gMgMenuRow[4] == 0)
+        if (gMgMenuRow.ownRecords == 0)
             Mg_CommitRecords();
         data_0209d4a8 = 0;
         sMgGraphCallback.mScene = 0;
@@ -2496,7 +2506,7 @@ bool dScMgBase_c::BeforeInitResources()
         func_02019028();
     else
         Enable3dEngines();
-    mMusicTrack = gMgMenuRow[10]; /* the menu row's music track, +0x28 */
+    mMusicTrack = gMgMenuRow.musicTrack;
     if (sMgWorkBuffer == 0)
         sMgWorkBuffer = _ZN6Memory13operator_new2Ej(0x4000);
     /* +0xb0 is the header's pad_0b0. Scanning ov004 and ov006 turns up no
@@ -3053,9 +3063,9 @@ extern "C" {
 extern int GetGameLanguage(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 
-/* Draws one record row at y. In scoring mode 5 (word 2 of the menu row)
+/* Draws one record row at y. In scoring mode 5 (gMgMenuRow.scoringMode)
    `val` is a time in frames, drawn as seconds, sprite word 7, tenths and
    hundredths ending at x, and a negative val draws nothing. Otherwise
    modes 1, 2 and 4 draw two label sprites at x 0x58 and 0x68 first; mode
@@ -3064,7 +3074,7 @@ extern int gMgMenuRow[];
 void Mg_DrawRecordRow(int a0, int x, int y, int val)
 {
     int idx = GetGameLanguage();
-    int mode = gMgMenuRow[2];
+    int mode = gMgMenuRow.scoringMode;
     int *tbl = sMgSpriteTables[idx];
     int flag = 0;
 
@@ -3877,7 +3887,7 @@ dScMgBase_c::dScMgBase_c() : mRunDuringFade(0), unk_0c2(1) {
     mQuitFadeStarted = 0;
 
     gMgScene = this;
-    mLevel = gMgMenuRow[12]; /* dScMiniGm_c::mStartLevel, +0x30 */
+    mLevel = gMgMenuRow.level; /* dScMiniGm_c::mStartLevel */
 
     mSceneKind = sMgSceneKindByGame[(param1 >> 16) & 0xff];
     /* param1 &= 0xffff, stored through an s32 lvalue. Spelled as a plain

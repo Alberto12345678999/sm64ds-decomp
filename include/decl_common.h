@@ -1539,7 +1539,6 @@ extern void func_0203083c(void);
 extern void func_02030aa4(int);
 extern void func_020341a8(int, int);
 extern void func_02034b1c(void*, int);
-extern void func_02034fbc(void);
 extern void func_020354d0(void*);
 extern void func_02035550(void*);
 extern void func_020371b0(void*, int);

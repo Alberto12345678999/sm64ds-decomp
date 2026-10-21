@@ -18,7 +18,7 @@ src/AutoloadCallback.c:
     complete
     .text start:0x020049ec end:0x020049f0
 
-src/_ZN4CP1511SystemSetupEv.cpp:
+src/engine/cp15/CP15_SystemSetup.cpp:
     complete
     .text start:0x020049f0 end:0x02004ad8
 
@@ -541,31 +541,7 @@ src/engine/view/Graphics3D.cpp:
 
 src/runtime/actor/d_actor.cpp:
     complete
-    .text start:0x0200f658 end:0x020112c8
-
-src/_ZN8dActor_cD2Ev.cpp:
-    complete
-    .text start:0x020112c8 end:0x02011314
-
-src/_ZN8dActor_cD0Ev.cpp:
-    complete
-    .text start:0x02011314 end:0x02011374
-
-src/_ZN8dActor_cD1Ev.cpp:
-    complete
-    .text start:0x02011374 end:0x020113c0
-
-src/_ZN8dActor_cC1Ev.cpp:
-    complete
-    .text start:0x020113c0 end:0x02011508
-
-src/_ZN8Vector3sD1Ev.cpp:
-    complete
-    .text start:0x02011508 end:0x0201150c
-
-src/_ZN8dActor_cC2Ev.cpp:
-    complete
-    .text start:0x0201150c end:0x02011654
+    .text start:0x0200f658 end:0x02011654
 
 src/engine/sound/Sound.cpp:
     complete
@@ -686,179 +662,23 @@ src/engine/model/d_ext_common_model.cpp:
 
 src/engine/model/ModelAnim2.cpp:
     complete
-    .text start:0x02016254 end:0x02016320
-
-src/_ZN10ModelAnim2D0Ev.cpp:
-    complete
-    .text start:0x02016320 end:0x02016364
-
-src/_ZN10ModelAnim2D1Ev.cpp:
-    complete
-    .text start:0x02016364 end:0x020163a0
-
-src/_ZN10ModelAnim2C1Ev.cpp:
-    complete
-    .text start:0x020163a0 end:0x020163e0
+    .text start:0x02016254 end:0x020163e0
 
 src/engine/model/BlendModelAnim.cpp:
     complete
-    .text start:0x020163e0 end:0x02016644
-
-src/_ZN14BlendModelAnimD0Ev.cpp:
-    complete
-    .text start:0x02016644 end:0x02016690
-
-src/_ZN14BlendModelAnimD1Ev.cpp:
-    complete
-    .text start:0x02016690 end:0x020166d4
-
-src/_ZN14BlendModelAnimC1Ev.cpp:
-    complete
-    .text start:0x020166d4 end:0x02016714
+    .text start:0x020163e0 end:0x02016714
 
 src/engine/model/ModelAnim.cpp:
     complete
-    .text start:0x02016714 end:0x0201689c
-
-src/_ZN9ModelAnimD2Ev.cpp:
-    complete
-    .text start:0x0201689c end:0x020168d8
-
-src/_ZN9ModelAnimD0Ev.cpp:
-    complete
-    .text start:0x020168d8 end:0x0201691c
-
-src/_ZN9ModelAnimD1Ev.cpp:
-    complete
-    .text start:0x0201691c end:0x02016958
-
-src/_ZN9ModelAnimC1Ev.cpp:
-    complete
-    .text start:0x02016958 end:0x02016998
-
-src/_ZN9ModelAnimC2Ev.cpp:
-    complete
-    .text start:0x02016998 end:0x020169d8
-
-src/unnamed/arm9/0201/func_020169d8.c:
-    complete
-    .text start:0x020169d8 end:0x020169f4
-
-src/unnamed/arm9/0201/func_020169f4.c:
-    complete
-    .text start:0x020169f4 end:0x02016a04
-
-src/unnamed/arm9/0201/func_02016a04.c:
-    complete
-    .text start:0x02016a04 end:0x02016a14
-
-src/unnamed/arm9/0201/func_02016a14.c:
-    complete
-    .text start:0x02016a14 end:0x02016a24
-
-src/_ZN5Model12ShowMaterialEii.cpp:
-    complete
-    .text start:0x02016a24 end:0x02016a58
-
-src/_ZN5Model12HideMaterialEii.cpp:
-    complete
-    .text start:0x02016a58 end:0x02016a8c
-
-src/_ZN5Model14SetPolygonModeEi.cpp:
-    complete
-    .text start:0x02016a8c end:0x02016a9c
-
-src/_ZN9ModelBase12ApplyOpacityEjj.cpp:
-    complete
-    .text start:0x02016a9c end:0x02016aac
-
-src/unnamed/arm9/0201/func_02016aac.c:
-    complete
-    .text start:0x02016aac end:0x02016abc
-
-src/_ZN5Model12SetPolygonIDEi.cpp:
-    complete
-    .text start:0x02016abc end:0x02016acc
-
-src/unnamed/arm9/0201/func_02016acc.c:
-    complete
-    .text start:0x02016acc end:0x02016b24
-
-src/func_02016b24.c:
-    complete
-    .text start:0x02016b24 end:0x02016b78
+    .text start:0x02016714 end:0x020169d8
 
 src/engine/model/Model.cpp:
     complete
-    .text start:0x02016b78 end:0x02016df8
+    .text start:0x020169d8 end:0x02017168
 
-src/CleanCommonModelDataArr.c:
+src/engine/model/ModelAnimThunks.cpp:
     complete
-    .text start:0x02016df8 end:0x02016e70
-
-src/unnamed/arm9/0201/func_02016e70.c:
-    complete
-    .text start:0x02016e70 end:0x02016f08
-
-src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp:
-    complete
-    .text start:0x02016f08 end:0x02016f9c
-
-src/_ZN5Model14LoadAndSetFileEtii.cpp:
-    complete
-    .text start:0x02016f9c end:0x02016fd4
-
-src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp:
-    complete
-    .text start:0x02016fd4 end:0x02016ff4
-
-src/unnamed/arm9/0201/func_02016ff4.cpp:
-    complete
-    .text start:0x02016ff4 end:0x02017060
-
-src/unnamed/arm9/0201/func_02017060.c:
-    complete
-    .text start:0x02017060 end:0x020170b8
-
-src/_ZN9ModelBaseD2Ev.cpp:
-    complete
-    .text start:0x020170b8 end:0x020170e8
-
-src/_ZN9ModelBaseD0Ev.cpp:
-    complete
-    .text start:0x020170e8 end:0x02017120
-
-src/_ZN9ModelBaseD1Ev.cpp:
-    complete
-    .text start:0x02017120 end:0x02017150
-
-src/_ZN9ModelBaseC2Ev.cpp:
-    complete
-    .text start:0x02017150 end:0x02017168
-
-src/_ZThn80_N9ModelAnimD0Ev.cpp:
-    complete
-    .text start:0x02017168 end:0x02017178
-
-src/_ZThn80_N9ModelAnimD1Ev.cpp:
-    complete
-    .text start:0x02017178 end:0x02017188
-
-src/_ZThn80_N14BlendModelAnimD0Ev.cpp:
-    complete
-    .text start:0x02017188 end:0x02017198
-
-src/_ZThn80_N14BlendModelAnimD1Ev.cpp:
-    complete
-    .text start:0x02017198 end:0x020171a8
-
-src/_ZThn80_N10ModelAnim2D0Ev.cpp:
-    complete
-    .text start:0x020171a8 end:0x020171b8
-
-src/_ZThn80_N10ModelAnim2D1Ev.cpp:
-    complete
-    .text start:0x020171b8 end:0x020171c8
+    .text start:0x02017168 end:0x020171c8
 
 src/runtime/graphics/fader/d_fader.cpp:
     complete
@@ -1824,7 +1644,7 @@ src/runtime/actor/ActorBase_SceneNode.cpp:
     complete
     .text start:0x0203b3c0 end:0x0203b4dc
 
-src/_ZN4cstd5atan2E5Fix12IiES1_.c:
+src/cstd_atan2.c:
     complete
     .text start:0x0203b4dc end:0x0203b684
 
@@ -2117,7 +1937,7 @@ src/unnamed/arm9/0203/func_0203d740.c:
     complete
     .text start:0x0203d740 end:0x0203d744
 
-src/_ZN4cstd4sqrtEy.cpp:
+src/cstd_sqrt.cpp:
     complete
     .text start:0x0203d744 end:0x0203d7b8
 
@@ -2689,11 +2509,11 @@ src/engine/model/Model4.cpp:
     complete
     .text start:0x020458e0 end:0x020468a0
 
-src/_ZN15TextureSequence17UpdateFileOffsetsER8BTP_File.cpp:
+src/engine/model/TextureSequence_UpdateFileOffsets.cpp:
     complete
     .text start:0x020468a0 end:0x020469ac
 
-src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp:
+src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp:
     complete
     .text start:0x020469ac end:0x020469e0
 
@@ -3490,7 +3310,7 @@ src/engine/cp15/CP15_ProtectionUnit.cpp:
     complete
     .text start:0x020593cc end:0x020593ec
 
-src/_ZN4CP1514MPUDataRegion1Ej.cpp:
+src/engine/cp15/CP15_MPUDataRegion1.cpp:
     complete
     .text start:0x020593ec end:0x020593f4
 

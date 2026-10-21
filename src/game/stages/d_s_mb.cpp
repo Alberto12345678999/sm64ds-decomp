@@ -22,6 +22,7 @@
 // (`return new` inlines a different fader
 // constructor).
 #include "dScMB_c.h"
+#include "AsyncJob.h"
 #include "decl_common.h"
 #include "Heap.h"
 #include "OAM.h"
@@ -31,7 +32,6 @@ void MultiStore16(u16 val, char *dst, int nbytes);
 void DecompressLZ16(int src, void *dst);
 void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-int func_0201a244(int a0, int a1, int a2, int a3, int a4);
 void func_020308b4(void);
 void func_02012790(int x);
 
@@ -54,7 +54,6 @@ extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern void *data_0209d4a8;
 extern int data_0208ee44;
-extern u8 func_0201a2f8[];
 
 void *_ZN7fBase_cC2Ev(void *);
 extern int data_0208e4b8[];
@@ -205,7 +204,7 @@ s32 dScMB_c::Behavior() {
         mStep++;
         /* fallthrough */
     case 4:
-        func_0201a244((int)&func_02034fbc, 0, 0xf, 0, 0x1000);
+        func_0201a244(func_02034fbc, 0, 0xf, 0, 0x1000);
         mStep++;
         /* fallthrough */
     case 5:
@@ -242,7 +241,7 @@ s32 dScMB_c::Behavior() {
 }
 
 // @symbol func_02034fbc
-void func_02034fbc(void) {
+void func_02034fbc(int unused) {
     void *h;
 
     LoadArchive(0);
@@ -314,7 +313,7 @@ s32 dScMB_c::InitResources() {
 
     fader.color = 0x7fff;
     *(int *)&data_0208ee44 = 1;
-    *(int *)&data_020a0c64 = func_0201a244((int)&func_0201a2f8, 0, 0xf, 0, 0x1000);
+    *(int *)&data_020a0c64 = func_0201a244(func_0201a2f8, 0, 0xf, 0, 0x1000);
 
     return 1;
 }

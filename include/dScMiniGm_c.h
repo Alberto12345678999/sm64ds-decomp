@@ -12,7 +12,7 @@ struct dScMiniGm_c : dScene_c {
     s32 mGroupBase;              /* 0x058 */
     s32 mStartLevel;             /* 0x05c -- level the picked game starts at.
                                     UpdateGameSelect stores it to
-                                    gMgMenuRow+0x30, which dScMgBase_c's
+                                    gMgMenuRow.level, which dScMgBase_c's
                                     constructor loads into mLevel.
                                     InitResources zeroes it and nothing else
                                     writes it, so every game starts at 0. */

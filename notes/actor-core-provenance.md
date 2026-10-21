@@ -92,16 +92,21 @@ data. An override takes its base's slot wherever it is declared, so putting
 virtuals still take 18..30 from their declaration order, because new slots append
 after the inherited table.
 
-What makes that safe is NOT that the destructor lives in a C translation unit --
-`src/_ZN8dActor_cD1Ev.cpp` and `_ZN8dActor_cD2Ev.cpp` are C++ and do include the
-header; only `_ZN8dActor_cD0Ev.cpp` is C. The invariant is that all three define
-`extern "C"` free functions under the mangled names and none defines
-`dActor_c::~dActor_c`, so no TU is ever the key function's definition.
+What makes that safe for `dActor_c` is where the destructor is defined.
+`src/runtime/actor/d_actor.cpp` defines one out-of-line `~dActor_c()`, which is
+the key function, so that object also emits `_ZTV8dActor_c`, `_ZTI8dActor_c`
+and `_ZTS8dActor_c`. Those copies are deadstrip-data at their symbols.txt
+homes; the link keeps the retail table. The same definition emits D2, then D0,
+then D1, the cartridge order. The constructor in that file emits C1 and C2,
+and an unreachable `Vector3s` array places `Vector3s::~Vector3s` between them.
 
-Stated precisely: the key function -- the first non-inline virtual declared --
-must never be defined as a real method in any translation unit. Declaring the
-destructor first pins that role to TUs which by construction never will.
-`include/fBase_c.h` reaches the same end differently: it does declare
+The retired per-variant shards defined `extern "C"` free functions under the
+mangled names and never a real `dActor_c::~dActor_c`, so no TU was the key
+function then. That split is gone. Defining the real destructor in a second
+TU, or dropping the deadstrip, would publish another vtable on top of the
+module's gap object.
+
+`include/fBase_c.h` still reaches the old end differently: it does declare
 `InitResources` (slot 0) in-class, but `src/runtime/actor/ActorBase.cpp`
 deliberately defines it as an `extern "C"` free function rather than a method. Do
 not "fix" that file into a real method, and do not remove the declaration from

@@ -15,6 +15,19 @@ extern void func_ov007_020ba9bc(void);
 extern int func_ov007_020c5854(int s, void *v, int a, int b, int c, int d);
 extern void func_ov007_020c55bc(int a, int b, int c);
 
+/* The 0xd0-byte touch picker func_ov007_020c690c builds (the scene's slot 0);
+ * names as in func_ov007_020c684c, only the slots this function touches. */
+typedef struct {
+    int x, y, z;
+} Vec3;
+typedef struct Ov007Picker {
+    char pad_00[8];
+    int groupCount; /* 0x08 */
+    char pad_0c[0xac];
+    Vec3 boundsMin; /* 0xb8: the clamp rectangle (func_ov007_020c510c) */
+    Vec3 boundsMax; /* 0xc4 */
+} Ov007Picker;
+
 int func_ov007_020ba368(int t)
 {
     int s;
@@ -36,7 +49,8 @@ int func_ov007_020ba368(int t)
         }
     }
 
-    if (*(int *)(s + 8) == 0 || *(int *)(*(char **)data_ov007_02104ba0 + 0x14) == 0) {
+    if (((Ov007Picker *)s)->groupCount == 0 ||
+        *(int *)(*(char **)data_ov007_02104ba0 + 0x14) == 0) {
         int ratio;
         if (t <= 0) {
             ratio = 0;
@@ -54,8 +68,10 @@ int func_ov007_020ba368(int t)
     case 0:
     case 3:
     {
-        int *p1 = (state == 0) ? (int *)(s + 0xb8) : (int *)(s + 0xbc);
-        int *p2 = (state == 0) ? (int *)(s + 0xc4) : (int *)(s + 0xc8);
+        int *p1 =
+            (state == 0) ? &((Ov007Picker *)s)->boundsMin.x : &((Ov007Picker *)s)->boundsMin.y;
+        int *p2 =
+            (state == 0) ? &((Ov007Picker *)s)->boundsMax.x : &((Ov007Picker *)s)->boundsMax.y;
         int d, ratio, ease, v1, v2;
         v1 = *p1;
         v2 = *p2;

@@ -1,104 +1,5 @@
 #include "types.h"
-/* Parent area at +0x440: a pool of three 0xcc0-byte nodes, each holding one
- * registered region. A node moves free -> busy (state 1, loading; func_02041b60)
- * -> ready (state 2; func_02041b24) -> busy (state 3, releasing; func_02041ae8)
- * -> free (state 0; func_02041a94). */
-enum { FILE_SHARE_NODE_SIZE = 0xcc0 }; /* node slot stride; FileShareNode is its head */
-
-typedef struct FileShareNode {
-    struct FileShareNode *mNext; /* 0x00 -- list link (func_02041bbc moves nodes) */
-    /* 0x04 -- func_020658c0 registers it (offset, size, 0x20-byte name,
-     * data); func_02041c2c finds a node by its offset */
-    u8 mRegion[0x34];
-    /* 0x38 -- FS_InitFile here; func_02042254 opens, reads and closes the
-     * region's file through it */
-    u8 mFile[0x44];
-    int mState; /* 0x7c -- 0 free, 1 loading, 2 ready, 3 releasing */
-    /* 0x80 -- func_020412f0: +1 per child reading the region, -1 when it is
-     * done; at 0 the node is released */
-    int mRefCount;
-    /* 0x84 -- func_020412f0: children asking for a region that is still
-     * loading, by AID bit */
-    int mWaitingChildren;
-    /* 0x88 -- func_02042254 opens the file by it; func_020412f0 hands it to
-     * the requesting child. Seeded per node below */
-    int mFileId;
-} FileShareNode;
-
-typedef struct FileShareParentArea {
-    /* 0x0000 -- one reply per AID: func_020412f0 fills it, func_02041d28 sets
-     * its file id, func_02041e14 sends it */
-    u8 mReplies[0x10][0xc];
-    u8 mNodes[3][FILE_SHARE_NODE_SIZE]; /* 0x00c0 */
-    FileShareNode *mFreeList;           /* 0x2700 */
-    FileShareNode *mReadyList;          /* 0x2704 -- func_02041c2c searches it */
-    FileShareNode *mBusyList;           /* 0x2708 -- func_02042254 loads its state-1 nodes */
-    /* 0x270c -- children owed a reply, by AID bit (func_020412f0,
-     * func_02041d28 set; func_02041e14 sends and clears) */
-    int mReplyPending;
-    u8 pad_2710[0x4];
-    /* 0x2714 -- func_02041e14 sets it after a send and waits; the send
-     * callback func_02042160 clears it */
-    int mReplySending;
-    /* 0x2718 -- by AID; bit 0 is the parent itself. func_020417d0 sets a
-     * child's bit on connect and clears it on disconnect */
-    int mConnectedBitmap;
-    u8 pad_271c[0x4];
-    /* 0x2720 -- func_020412f0: a request named another packet size;
-     * func_02041e14 applies mNewPacketSize once mBusyCount is 0 */
-    int mResizePending;
-    /* 0x2724 -- nodes off the free list (func_02041b60 +1, func_02041a94 -1) */
-    int mBusyCount;
-    /* 0x2728 -- children to tell the new size, by AID bit (func_020412f0
-     * sets, func_02041e14 sends) */
-    int mResizeChildren;
-    int mNewPacketSize; /* 0x272c -- func_02041e14 copies it to mParentPacketSize */
-} FileShareParentArea;
-
-/* Child area at +0x440. */
-typedef struct FileShareChildArea {
-    int ptrs[0x10];
-    int zeros1[0x10];
-    int zeros2[0x10];
-    u8 pad_0c0[0xbb0];
-    /* 0xc70 -- func_02041224 allocates it (about four bytes per packet of
-     * mMaxReadSize); func_02040aa4 frees it */
-    int mRecvWork;
-    int mMaxReadSize; /* 0xc74 -- func_02041224 grows it to the largest read */
-    /* 0xc78 -- func_02040f30: offset of the region being read, as the parent
-     * registered it (the tables are 0x20000) */
-    int mReadRegion;
-} FileShareChildArea;
-
-/* File-local view of the wireless file-sharing work block at data_020a1fc0
- * (0x0204 cluster, func_02040aa4 .. func_02042668). */
-typedef struct FileShareWork {
-    int mIsParent;         /* 0x00 -- a0; the parent builds the node pool at +0x440,
-                              the child the receive tables; func_02041930 picks the
-                              parent or child send from it */
-    int mSendRequest;      /* 0x04 -- set by func_02040bb0/func_020418f0 before
-                              func_02041930, which sends only while it is set */
-    int mSendBusy;         /* 0x08 -- func_02041930: the port send returned 2 */
-    int mState;            /* 0x0c -- 1 here, 2 once ready (func_02040bb0,
-                              func_02040f30), 0 at shutdown (func_02040aa4) */
-    int mStateCallback;    /* 0x10 -- a2; called with 0 when mState becomes 2 */
-    int mAllocFunc;        /* 0x14 -- a3; (arg, size, 0) allocates, (arg, 0, ptr)
-                              frees (func_02041224, func_02040aa4) */
-    int mAllocArg;         /* 0x18 -- a4; first argument to mAllocFunc */
-    int mReadRequest;      /* 0x1c -- child read in flight: func_02041a00 sets it,
-                              func_02040f30 completes and clears it */
-    int mTable;            /* 0x20 -- func_020424c0: the card header's FNT, FAT and
-                              overlay tables, read into one allocation */
-    int mTableSize;        /* 0x24 -- that allocation's size */
-    int mParentPacketSize; /* 0x28 -- parent MP send size; func_02040f30 sets it
-                              from the MP callback's parent size + 0xe */
-    int mChildPacketSize;  /* 0x2c -- child MP send size, likewise */
-    u16 mPort;             /* 0x30 -- a1; func_02061c88 registers the port
-                              callback on it, func_02041930 sends on it */
-    u8 pad_032[0x40e];
-    u8 mArea[sizeof(FileShareParentArea)]; /* 0x440 -- FileShareParentArea or
-                                              FileShareChildArea, by mIsParent */
-} FileShareWork;
+#include "private/arm9_a1fc0_file_share.h"
 
 extern int _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(int);
@@ -191,7 +92,7 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
                 ((FileShareParentArea *)base)->mBusyList = 0;
                 G->mParentPacketSize = 0x200;
                 ((FileShareParentArea *)base)->mConnectedBitmap = 1;
-                *(int*)(base + 0x271c) = 0;
+                ((FileShareParentArea *)base)->mOpenChildren = 0;
                 ((FileShareParentArea *)base)->mResizePending = 0;
                 ((FileShareParentArea *)base)->mResizeChildren = 0;
                 ((FileShareParentArea *)base)->mBusyCount = 0;
@@ -225,9 +126,9 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
             _ZN4CP1516DrainWriteBufferEv();
             p = base + 0xc0;
             for (i = 0; i < 0x10; i++) {
-                arr->ptrs[i] = (int)p;
-                arr->zeros1[i] = 0;
-                arr->zeros2[i] = 0;
+                arr->mBlockInfoTable[i] = (int)p;
+                arr->mRecvBufTable[i] = 0;
+                arr->mPacketBitmapTable[i] = 0;
                 p += 0x28;
             }
             arr->mRecvWork = 0;

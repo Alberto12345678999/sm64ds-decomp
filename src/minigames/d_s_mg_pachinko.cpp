@@ -61,24 +61,35 @@
 struct C;
 typedef void (C::*PMF)(int);
 struct Entry { PMF pmf; };
-struct C { char pad[0x5c0e]; unsigned char guard; unsigned char idx; };
+/* C is the scene from mBg[0].active (0x5c0e) and mBg[0].state (0x5c0f). */
+struct C {
+    char pad[0x5c0e];
+    unsigned char active;
+    unsigned char state;
+};
 
 struct C2;
 typedef void (C2::*PMF2)(int);
-struct C2 { char pad[0x5bc6]; unsigned char g; char gap; unsigned char idx; };
+/* C2 is the scene from mFlyer[0].active (0x5bc6) to mFlyer[0].state (0x5bc8). */
+struct C2 {
+    char pad[0x5bc6];
+    unsigned char active;
+    char visible;
+    unsigned char state;
+};
 
-/* PachinkoFlyer_StateDescend's typed view of the rows at 0x5bb4. `volatile` on the
-   position is needed: the ROM reloads it after the store. */
+/* PachinkoFlyer_StateDescend's typed view of mFlyer from its y (0x5bb4).
+   `volatile` on y is needed: the ROM reloads it after the store. */
 typedef struct Ent {
-    volatile int a; /* 0x00 position (20.12) */
-    int unk4;       /* 0x04 */
-    int b;          /* 0x08 velocity (20.12) */
+    volatile int y; /* 0x00 mFlyer[i].y (20.12) */
+    int vx;         /* 0x04 mFlyer[i].vx */
+    int vy;         /* 0x08 mFlyer[i].vy (20.12) */
     char _padC[0x10];
 } Ent;
 
 typedef struct Obj {
     char _pad0[0x5bb4]; /* 0x0000 */
-    Ent entries[8];     /* 0x5bb4 */
+    Ent entries[8];     /* 0x5bb4 mFlyer[0].y */
 } Obj;
 
 /* The {code pointer, adjustment} records PachinkoPipe_UpdateAll,
@@ -102,14 +113,15 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 #define M1(a) (a)
 #define M2(a) (a)
 
-/* Pipe row accessors for PachinkoPipe_StateSink. */
-#define PIPE_PHASE(c, b)  (*(u8*)((c) + 0x4eb4 + (b)))
-#define PIPE_TIMER(c, b)  (*(u16*)((c) + 0x4eb0 + (b)))
-#define PIPE_FRAME(c, b)  (*(u8*)((c) + 0x4eb6 + (b)))
-#define PIPE_SPRITE(c, b) (*(u8*)((c) + 0x4eb5 + (b)))
-#define PIPE_STATE(c, b)  (*(u8*)((c) + 0x4eb3 + (b)))
-#define PIPE_X(c, b)      (*(s32*)((c) + 0x4ea0 + (b)))
-#define PIPE_VEL(c, b)    (*(s32*)((c) + 0x4ea8 + (b)))
+/* Pipe row accessors for PachinkoPipe_StateSink: mPipe[0]'s field, then the
+   pre-scaled index b. */
+#define PIPE_PHASE(c, b)  (*(u8*)((c) + REC_OFF(mPipe, phase) + (b)))
+#define PIPE_TIMER(c, b)  (*(u16*)((c) + REC_OFF(mPipe, timer) + (b)))
+#define PIPE_FRAME(c, b)  (*(u8*)((c) + REC_OFF(mPipe, frame) + (b)))
+#define PIPE_SPRITE(c, b) (*(u8*)((c) + REC_OFF(mPipe, sprite) + (b)))
+#define PIPE_STATE(c, b)  (*(u8*)((c) + REC_OFF(mPipe, state) + (b)))
+#define PIPE_X(c, b)      (*(s32*)((c) + REC_OFF(mPipe, x) + (b)))
+#define PIPE_VEL(c, b)    (*(s32*)((c) + REC_OFF(mPipe, vel) + (b)))
 
 /* The scene seen through a char pointer, for the free helpers below. */
 #define PACHINKO(p) ((dScMgPachinko_c *)(p))
@@ -127,6 +139,8 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 /* The same for the other arrays: a field of element 0, as a byte offset into
  * the scene, for the handlers that add their pre-scaled index after it. */
 #define REC_OFF(arr, member) ((int)&((dScMgPachinko_c *)0)->arr[0].member)
+/* A scalar scene field as a byte offset, for a read off the char pointer. */
+#define SCENE_OFF(member) ((int)&((dScMgPachinko_c *)0)->member)
 
 namespace G2 {
     void *GetBG2CharPtr();
@@ -530,8 +544,8 @@ void PachinkoBg_StateWaiting(char *raw, int idx) {
 // @symbol PachinkoBg_Update
 /* Dispatches through the ov006 pointer-to-member table at 0x02142604. */
 void PachinkoBg_Update(C* c) {
-    if (c->guard) {
-        (c->*(sPachinkoBgStateTable[c->idx].pmf))(0);
+    if (c->active) {
+        (c->*(sPachinkoBgStateTable[c->state].pmf))(0);
     }
     PachinkoDeco_UpdateAll((char *)c);
 }
@@ -746,16 +760,16 @@ void PachinkoFlyer_StateCross(char *raw, int i) {
 }
 
 // @symbol PachinkoFlyer_StateDescend
-/* Moves row i: pos += vel. While below -0xc0 it keeps accelerating
-   (vel -= 0x60); once it reaches -0xc0 it snaps to -0xc0000 and stops.
+/* Moves flyer i down: y += vy. While y is still below -0xc0 it slows
+   (vy -= 0x60); once it reaches -0xc0 it snaps to -0xc0000 and stops.
    Then hands on to PachinkoFlyer_StateCross. */
 void PachinkoFlyer_StateDescend(Obj *self, int i) {
-    self->entries[i].a += self->entries[i].b;
-    if (self->entries[i].a >> 12 >= -0xc0) {
-        self->entries[i].a = -0xc0000;
-        self->entries[i].b = 0;
+    self->entries[i].y += self->entries[i].vy;
+    if (self->entries[i].y >> 12 >= -0xc0) {
+        self->entries[i].y = -0xc0000;
+        self->entries[i].vy = 0;
     } else {
-        self->entries[i].b -= 0x60;
+        self->entries[i].vy -= 0x60;
     }
     PachinkoFlyer_StateCross((char *)self, i);
 }
@@ -798,9 +812,10 @@ void PachinkoFlyer_StateWaiting(char *raw, int idx) {
 // @symbol PachinkoFlyer_Update
 /* Dispatches through the ov006 pointer-to-member table at 0x0214266c. */
 void PachinkoFlyer_Update(C2 *c){
-  if (c->g == 0) return;
-  (c->*sPachinkoFlyerStateTable[c->idx])(0);
-  PachinkoFlyer_CheckHits((char *)c, 0);
+    if (c->active == 0)
+        return;
+    (c->*sPachinkoFlyerStateTable[c->state])(0);
+    PachinkoFlyer_CheckHits((char *)c, 0);
 }
 
 // @symbol PachinkoTarget_Choose
@@ -1016,7 +1031,8 @@ void PachinkoPopup_SpawnScore(char *raw, int idx, unsigned short points)
 void Pachinko_ClearAimLine(char* raw)
 {
     volatile unsigned short zero;
-    int shotNo = *(unsigned char *)(raw + 0x5c2f); /* mAimShot; member read grows it */
+    /* By offset: PACHINKO(raw)->mAimShot is 8 bytes longer. */
+    int shotNo = *(unsigned char *)(raw + SCENE_OFF(mAimShot));
     int dx, dy;
     char* shot;
 

@@ -143,7 +143,7 @@ extern void *func_02054efc(void);
 extern void *func_02054ea8(void);
 extern char *_ZN2G213GetBG2CharPtrEv(void);
 extern int func_02054d88(void);
-extern void MultiCopy_Int(int *dst, int *src, int len);
+extern void MultiCopy_Int(int *src, int *dst, int len);
 extern char *_ZN2G212GetBG0ScrPtrEv(void);
 extern char *_ZN2G212GetBG2ScrPtrEv(void);
 extern char *_ZN2G212GetBG3ScrPtrEv(void);
