@@ -2,7 +2,8 @@
 extern int func_ov007_020c0128(void* c);
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020bffb8(void* c);
-extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void* camPos, void* camUp, void* target, int mult, void* m);
+extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void *camPos, void *camUp, void *target,
+                                                         int mult, void *m);
 extern void func_ov007_020c0078(void* c);
 extern char* data_ov007_0210342c;
 
@@ -36,12 +37,10 @@ typedef struct Ov007Work {
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* preset: 1 (func_ov007_020b10dc), 4 (func_ov007_020b0a20), 2 and 3. */
-void func_ov007_020b1fa4(int preset)
-{
-    Ov007Camera* cam = WORK->cameras[0];
+void func_ov007_020b1fa4(int preset) {
+    Ov007Camera *cam = WORK->cameras[0];
     func_ov007_020c0128(cam);
-    switch (preset)
-    {
+    switch (preset) {
     case 1:
         switch (*(int*)((char*)data_ov007_0210342c + 0xec))
         {
@@ -71,7 +70,8 @@ void func_ov007_020b1fa4(int preset)
         break;
     }
     func_ov007_020bffb8(cam);
-    _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(&cam->eye, &cam->up, &cam->target, 1, cam->viewMatrix);
+    _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(&cam->eye, &cam->up, &cam->target, 1,
+                                                 cam->viewMatrix);
     func_ov007_020c0078(cam);
     WORK->cameraPreset = preset;
 }

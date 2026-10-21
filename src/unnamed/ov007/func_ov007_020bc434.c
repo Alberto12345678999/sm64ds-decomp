@@ -12,14 +12,14 @@ typedef struct Ov007Model {
 } Ov007Model;
 
 void func_ov007_020bc434(void* c){
-  Ov007Model* m = (Ov007Model*)c;
-  m->pos.z = 0;
-  m->pos.y = m->pos.z;
-  m->pos.x = m->pos.y;
-  m->scale.z = 0x1000;
-  m->scale.y = m->scale.z;
-  m->scale.x = m->scale.y;
-  m->rotZ = 0;
-  m->rotY = m->rotZ;
-  m->rotX = m->rotY;
+    Ov007Model *m = (Ov007Model *)c;
+    m->pos.z = 0;
+    m->pos.y = m->pos.z;
+    m->pos.x = m->pos.y;
+    m->scale.z = 0x1000;
+    m->scale.y = m->scale.z;
+    m->scale.x = m->scale.y;
+    m->rotZ = 0;
+    m->rotY = m->rotZ;
+    m->rotX = m->rotY;
 }

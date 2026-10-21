@@ -16,20 +16,20 @@ typedef struct Ov007Model {
     struct ModelComponents *model; /* 0x00 */
     void *transforms;              /* 0x04: func_02046564-sized, as Model's transformsBuf */
     void *nextTransforms;          /* 0x08: flags & 2 only */
-    void *blendBuffer;   /* 0x0c: flags & 4 only; func_020462bc-sized, as BlendModelAnim's */
-    int numBoneAnims;    /* 0x10 */
-    void *boneAnims;     /* 0x14: BCA_File table (UpdateBones) */
-    void *boneAnim;      /* 0x18 */
-    int numTexSrtAnims;  /* 0x1c */
-    void *texSrtAnims;   /* 0x20: BTA_File table (func_020469e8, TextureTransformer) */
-    void *texSrtAnim;    /* 0x24 */
-    int numTexSeqAnims;  /* 0x28 */
-    void *texSeqAnims;   /* 0x2c: BTP_File table (func_02046bbc, TextureSequence) */
-    void *texSeqAnim;    /* 0x30 */
+    void *blendBuffer;  /* 0x0c: flags & 4 only; func_020462bc-sized, as BlendModelAnim's */
+    int numBoneAnims;   /* 0x10 */
+    void *boneAnims;    /* 0x14: BCA_File table (UpdateBones) */
+    void *boneAnim;     /* 0x18 */
+    int numTexSrtAnims; /* 0x1c */
+    void *texSrtAnims;  /* 0x20: BTA_File table (func_020469e8, TextureTransformer) */
+    void *texSrtAnim;   /* 0x24 */
+    int numTexSeqAnims; /* 0x28 */
+    void *texSeqAnims;  /* 0x2c: BTP_File table (func_02046bbc, TextureSequence) */
+    void *texSeqAnim;   /* 0x30 */
     char pad_34[0x54];
-    void *blendAnim;     /* 0x88: flags & 4 only; func_ov007_020bc7dc's cross-fade source */
+    void *blendAnim; /* 0x88: flags & 4 only; func_ov007_020bc7dc's cross-fade source */
     char pad_8c[0x10];
-    int flags;           /* 0x9c: 1/2 half-rate animation, 4 cross-fade, 8 no LoadTexAndPal */
+    int flags; /* 0x9c: 1/2 half-rate animation, 4 cross-fade, 8 no LoadTexAndPal */
 } Ov007Model;
 
 typedef char Ov007Model_size_must_be_0xa0[sizeof(Ov007Model) == 0xa0 ? 1 : -1];

@@ -36,24 +36,25 @@ typedef struct Ov007Transition {
 /* r5 keeps the char * spelling of the extern; `tr` is the typed view. */
 void func_ov007_020c8498(char* r5)
 {
-    Ov007Transition* tr = (Ov007Transition*)r5;
+    Ov007Transition *tr = (Ov007Transition *)r5;
     int r4 = 0;
     VFN r6;
 
-    if(tr->request == 1){
+    if (tr->request == 1) {
         func_ov007_020c86c4(r5);
-    }else if(tr->request == 2){
+    } else if (tr->request == 2) {
         func_ov007_020c897c(r5);
     }
 
-    if(tr->state == 0) return;
+    if (tr->state == 0)
+        return;
 
-    if(tr->state == 1){
-        int* v14 = &tr->t;
+    if (tr->state == 1) {
+        int *v14 = &tr->t;
         *v14 += tr->step;
-        if(tr->t > 0x1000){
+        if (tr->t > 0x1000) {
             tr->t = 0x1000;
-            switch(tr->endAction){
+            switch (tr->endAction) {
             case 0:
                 func_ov007_020c8970(r5);
                 break;
@@ -61,12 +62,16 @@ void func_ov007_020c8498(char* r5)
                 tr->state = 3;
                 break;
             case 2:
-                if(tr->reversed == 1) func_ov007_020c8688(r5, tr->screens);
-                else func_ov007_020c86a8(r5, tr->screens);
+                if (tr->reversed == 1)
+                    func_ov007_020c8688(r5, tr->screens);
+                else
+                    func_ov007_020c86a8(r5, tr->screens);
                 break;
             case 3:
-                if(tr->reversed == 1) func_ov007_020c86a8(r5, tr->screens);
-                else func_ov007_020c8688(r5, tr->screens);
+                if (tr->reversed == 1)
+                    func_ov007_020c86a8(r5, tr->screens);
+                else
+                    func_ov007_020c8688(r5, tr->screens);
                 break;
             }
 
@@ -79,9 +84,10 @@ void func_ov007_020c8498(char* r5)
         }
     }
 
-    if(tr->state == 0) return;
+    if (tr->state == 0)
+        return;
 
-    switch(tr->curve){
+    switch (tr->curve) {
     case 0:
         r4 = tr->t;
         break;
@@ -96,9 +102,10 @@ void func_ov007_020c8498(char* r5)
         break;
     }
 
-    if(tr->reversed == 1) r4 = 0x1000 - r4;
+    if (tr->reversed == 1)
+        r4 = 0x1000 - r4;
 
-    switch(tr->effect){
+    switch (tr->effect) {
     case 1:
         func_ov007_020c8c88(r5, r4);
         break;

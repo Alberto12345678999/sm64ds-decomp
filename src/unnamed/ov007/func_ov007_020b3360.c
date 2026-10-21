@@ -61,7 +61,7 @@ typedef struct Ov007Work {
 
 void func_ov007_020b3360(void)
 {
-    Ov007MenuState* p0 = CURSOR->state;
+    Ov007MenuState *p0 = CURSOR->state;
 
     if (p0->stateTicks == 0) {
         if (p0->previousState == 0xff) {
@@ -76,7 +76,7 @@ void func_ov007_020b3360(void)
 
         switch (state1) {
         case 0: {
-            Ov007MenuState* s2 = WORK->states[1];
+            Ov007MenuState *s2 = WORK->states[1];
             int state2 = s2->currentState;
             switch (state2) {
             case 0:
@@ -90,9 +90,9 @@ void func_ov007_020b3360(void)
                     {
                         Ov007Pad *o = WORK->pad;
                         /* the const re-read is codegen: `|= 1` is 4 bytes longer */
-                        o->inputLock = *(const int*)&o->inputLock | 1;
+                        o->inputLock = *(const int *)&o->inputLock | 1;
                     }
-                    func_ov007_020c2090((char*)WORK->pad);
+                    func_ov007_020c2090((char *)WORK->pad);
                 }
                 if (WORK->states[1]->requestedState == -1)
                     CURSOR->state->requestedState = func_ov007_020b3708();
@@ -106,19 +106,19 @@ void func_ov007_020b3360(void)
             break;
         }
         case 5: {
-            Ov007MenuState* s2 = WORK->states[1];
+            Ov007MenuState *s2 = WORK->states[1];
             if (s2->stateTicks == 0) {
                 int state3 = s2->currentState;
                 switch (state3) {
                 case 0: {
-                    Ov007MenuState* p = CURSOR->state;
+                    Ov007MenuState *p = CURSOR->state;
                     int cur = p->currentState;
                     if ((u16)(s16)(cur - 0x11) <= 2)
                         p->requestedState = 0x15;
                     break;
                 }
                 case 1: {
-                    Ov007MenuState* p = CURSOR->state;
+                    Ov007MenuState *p = CURSOR->state;
                     if (p->currentState == 0x15)
                         p->requestedState = 0x11;
                     break;
@@ -126,7 +126,7 @@ void func_ov007_020b3360(void)
                 case 3:
                 case 7:
                 case 9: {
-                    Ov007MenuState* p = CURSOR->state;
+                    Ov007MenuState *p = CURSOR->state;
                     int cur = p->currentState;
                     if ((u16)(s16)(cur - 0x11) <= 2)
                         p->requestedState = 0xe;
@@ -144,7 +144,7 @@ void func_ov007_020b3360(void)
             {
                 int a;
                 int b;
-                Ov007MenuState* p;
+                Ov007MenuState *p;
                 int cur;
                 CURSOR->state->requestedState = func_ov007_020b3708();
                 p = CURSOR->state;
@@ -177,7 +177,7 @@ void func_ov007_020b3360(void)
     }
 
     {
-        Ov007MenuState* p = CURSOR->state;
+        Ov007MenuState *p = CURSOR->state;
         int cur = p->currentState;
         if ((u16)(s16)(cur - 0xe) <= 2)
             CURSOR->returnState = cur;
