@@ -2557,16 +2557,17 @@ int Eyerok::Behavior()
             u32 id1 = 0x13b;
             int z0 = 0;
             for (; i < 0x14; i++) {
-                if (((Eyerok *)cur)->mDustPos[0].x != 0 || ((Eyerok *)cur)->mDustPos[0].y != 0 || ((Eyerok *)cur)->mDustPos[0].z != 0) {
+                if (((Eyerok *)cur)->mDustPos[0].x != 0 || ((Eyerok *)cur)->mDustPos[0].y != 0 ||
+                    ((Eyerok *)cur)->mDustPos[0].z != 0) {
                     mDustParticle1[i] =
                         _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                            mDustParticle1[i], id0,
-                            ((Eyerok *)cur)->mDustPos[0].x, ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
+                            mDustParticle1[i], id0, ((Eyerok *)cur)->mDustPos[0].x,
+                            ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
                             (void *)z0, (void *)z0);
                     mDustParticle2[i] =
                         _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                            mDustParticle2[i], id1,
-                            ((Eyerok *)cur)->mDustPos[0].x, ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
+                            mDustParticle2[i], id1, ((Eyerok *)cur)->mDustPos[0].x,
+                            ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
                             (void *)z0, (void *)z0);
                 }
                 cur += 0xc;

@@ -77,7 +77,7 @@ struct daBmb_c : dEnemyBase_c {
     /* Hurt damage: the third argument of the Player::Hurt calls in
        func_ov102_0214ae1c. InitResources stores 2. ov078/daBombking_c
        writes 0 for its own bob-ombs. */
-    s32                          mHurtDamage;           /* 0x3e0 */
+    s32 mHurtDamage; /* 0x3e0 */
     /* Sound::PlayLong handle for the fuse tick. */
     u32                          mFuseSound;            /* 0x3e4 */
     u16                          mTurnTimer;            /* 0x3e8 */
@@ -99,7 +99,7 @@ struct daBmb_c : dEnemyBase_c {
     u8                           mVariant;              /* 0x3f5 */
     /* Non-zero: Behavior detonates (func_ov102_0214ae1c) and returns.
        InitResources stores 0; ov078/daBombking_c sets 1. */
-    u8                           mDetonate;             /* 0x3f6 */
+    u8 mDetonate;                                       /* 0x3f6 */
     u8                           pad_3f7;               /* 0x3f7 */
     u32                          mCarryParticle;        /* 0x3f8 -- effect 0x13 while carried */
     u32                          mFuseParticle;         /* 0x3fc -- effect 0x19 while the fuse is lit */

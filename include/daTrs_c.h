@@ -249,7 +249,7 @@ struct daTrs_c : dCapEnemy_c {
        >> 4 as a sine-table index and moves mScaleX / mScaleY by opposite
        amounts. Only zero is ever stored (InitResources, twice), so the name
        rests on that one reader. Medium confidence. */
-    u16 mWobblePhase;          /* 0x5b8 */
+    u16 mWobblePhase; /* 0x5b8 */
     /* Carried-item yaw: 021166ac adds 0xc00 a frame unless mCarriedID is
        T_BASKET, so a coin spins and the cage does not. */
     s16 mCarriedAngleY;        /* 0x5ba */

@@ -279,8 +279,9 @@ extern "C" void func_ov021_02112544(char *raw)
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x68, pos.x, pos.y, pos.z);
             func_0201267c(0x48, &rock->mCamSpacePosX);
         } else {
-            rock->mDustParticleID = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                rock->mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);
+            rock->mDustParticleID =
+                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                    rock->mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);
             rock->mRollSoundID =
                 Sound::PlayLong(rock->mRollSoundID, 3, 0x8a, rock->mCamSpacePos, 0);
         }

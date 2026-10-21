@@ -48,30 +48,30 @@ struct daGrock_c : dEnemyBase_c {
        stores it into the child right after Spawn); 0 on everything else.
        When the star rock falls out of the level it looks the spawner up by
        this id and clears its mStarRockOut. */
-    u32                          mSpawnerID;            /* 0x3b4 */
+    u32 mSpawnerID; /* 0x3b4 */
     /* The rolling sound's Sound::PlayLong handle, passed back in each frame
        the rock rolls on the ground; InitResources zeroes it. */
-    s32                          mRollSoundID;          /* 0x3b8 */
-    u8  pad_3bc[0x2];
+    s32 mRollSoundID; /* 0x3b8 */
+    u8 pad_3bc[0x2];
     u8                           mType;                 /* 0x3be */
     /* Spawner only: rocks spawned since the last star rock. Kind 1 spawns
        the star rock once this reaches 5, then zeroes it. */
-    u8                           mSpawnCount;           /* 0x3bf */
+    u8 mSpawnCount; /* 0x3bf */
     /* The slot dActor_c::TrackStar returned for mStarID (-1 when none);
        UntrackStar / UntrackAndSpawnStar take it back (s8 &trackStarID). */
-    s8                           mTrackStarID;          /* 0x3c0 */
+    s8 mTrackStarID; /* 0x3c0 */
     /* The star index from param1's second nibble, 0xff when the rock
        carries none; handed to TrackStar, UntrackAndSpawnStar and passed on
        in the star rock's spawn parameter. */
-    u8                           mStarID;               /* 0x3c1 */
+    u8 mStarID; /* 0x3c1 */
     /* Spawner only: 1 while its star rock is alive (set on the spawn,
        cleared by the star rock when it falls). No second star rock is
        spawned while it is set. */
-    u8                           mStarRockOut;          /* 0x3c2 */
-    u8  pad_3c3[0x1];
+    u8 mStarRockOut; /* 0x3c2 */
+    u8 pad_3c3[0x1];
     /* The rolling dust's Particle::System::New handle, renewed each frame
        the rock rolls on the ground; InitResources zeroes it. */
-    s32                          mDustParticleID;       /* 0x3c4 */
+    s32 mDustParticleID; /* 0x3c4 */
 
     /* --- vtable --- */
     virtual ~daGrock_c();

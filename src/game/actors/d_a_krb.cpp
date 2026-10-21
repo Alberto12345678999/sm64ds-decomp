@@ -495,27 +495,27 @@ void daKrb_c::func_ov084_021294d0() {
     char *floorResult = (char *)goomba->mWithMeshClsn.GetFloorResult();
     int surfaceType;
     {
-    /* obj + 4 is &((dBgPi *)obj)->surface; that spelling here or in the
-     * func_02037e84 argument below adds an instruction, so both stay. */
-    char* surface = obj + 4;
-    int clpsLo = ((dBgPi *)floorResult)->surface.clps.w0;
-    int clpsHi = ((dBgPi *)floorResult)->surface.clps.w1;
-    /* `clpsHi ? clpsLo : clpsLo` is not a typo and not dead: both arms are the
-     * same value, and the ternary is what makes mwccarm materialize clpsLo after
-     * the load of clpsHi instead of before it. Collapsing it to a plain store
-     * reorders the pair and the function stops reproducing. */
-    ((SurfaceInfo *)surface)->clps.w0 = clpsHi ? clpsLo : clpsLo;
-    ((SurfaceInfo *)surface)->clps.w1 = clpsHi;
-    ((SurfaceInfo *)surface)->normal.x = ((dBgPi *)floorResult)->surface.normal.x;
-    ((SurfaceInfo *)surface)->normal.y = ((dBgPi *)floorResult)->surface.normal.y;
-    ((SurfaceInfo *)surface)->normal.z = ((dBgPi *)floorResult)->surface.normal.z;
-    *(int*)(obj) = (int)data_02099368;
-    ((dBgPi *)obj)->triangleID = ((dBgPi *)floorResult)->triangleID;
-    ((dBgPi *)obj)->colliderIdx = ((dBgPi *)floorResult)->colliderIdx;
-    ((dBgPi *)obj)->clsnID = ((dBgPi *)floorResult)->clsnID;
-    ((dBgPi *)obj)->owner = ((dBgPi *)floorResult)->owner;
-    ((dBgPi *)obj)->collider = ((dBgPi *)floorResult)->collider;
-    surfaceType = func_02037e38((unsigned int*)surface);
+        /* obj + 4 is &((dBgPi *)obj)->surface; that spelling here or in the
+         * func_02037e84 argument below adds an instruction, so both stay. */
+        char *surface = obj + 4;
+        int clpsLo = ((dBgPi *)floorResult)->surface.clps.w0;
+        int clpsHi = ((dBgPi *)floorResult)->surface.clps.w1;
+        /* `clpsHi ? clpsLo : clpsLo` is not a typo and not dead: both arms are the
+         * same value, and the ternary is what makes mwccarm materialize clpsLo after
+         * the load of clpsHi instead of before it. Collapsing it to a plain store
+         * reorders the pair and the function stops reproducing. */
+        ((SurfaceInfo *)surface)->clps.w0 = clpsHi ? clpsLo : clpsLo;
+        ((SurfaceInfo *)surface)->clps.w1 = clpsHi;
+        ((SurfaceInfo *)surface)->normal.x = ((dBgPi *)floorResult)->surface.normal.x;
+        ((SurfaceInfo *)surface)->normal.y = ((dBgPi *)floorResult)->surface.normal.y;
+        ((SurfaceInfo *)surface)->normal.z = ((dBgPi *)floorResult)->surface.normal.z;
+        *(int *)(obj) = (int)data_02099368;
+        ((dBgPi *)obj)->triangleID = ((dBgPi *)floorResult)->triangleID;
+        ((dBgPi *)obj)->colliderIdx = ((dBgPi *)floorResult)->colliderIdx;
+        ((dBgPi *)obj)->clsnID = ((dBgPi *)floorResult)->clsnID;
+        ((dBgPi *)obj)->owner = ((dBgPi *)floorResult)->owner;
+        ((dBgPi *)obj)->collider = ((dBgPi *)floorResult)->collider;
+        surfaceType = func_02037e38((unsigned int *)surface);
     }
     if (func_02037e84((int*)(obj + 4)) == 8) {
         if (surfaceType == 6 || surfaceType == 7 || surfaceType == 8 || surfaceType == 9)
@@ -1483,9 +1483,7 @@ void daKrb_c::func_ov084_0212af74() {
         dist = Vec3_HorzDist(&goomba->mPosX, &targetPos);
 
         if ((king->mState == 4 && king->mWalkSpeed == 0) ||
-            DecIfAbove0_Byte(&goomba->mFreeRoamTimer) != 0 ||
-            dist > 0x3e8000)
-        {
+            DecIfAbove0_Byte(&goomba->mFreeRoamTimer) != 0 || dist > 0x3e8000) {
             ang = goomba->HorzAngleToCPlayer();
             flag = 1;
             if (goomba->DistToCPlayer() < 0x3e8000 &&

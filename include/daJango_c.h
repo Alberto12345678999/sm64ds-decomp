@@ -83,14 +83,14 @@ struct daJango_c : dEnemyBase_c {
        ApproachLinear step for pitch and yaw. func_ov062_0211c218 stores 0;
        func_ov062_0211b930 stores 1, then 0 again when it found a held actor.
        Named for the states that own it, since the two jobs share no role. */
-    s32                          mStateParam;           /* 0x43c */
+    s32 mStateParam; /* 0x43c */
     /* Countdown that holds the circling state back from leaving along the path:
        func_ov062_0211c218 stores 0, or 2 for the silver-star variant and level ids
        0x18 and 0x19, and func_ov062_0211bd10 takes one off whenever the phase
        counter above moves from 1 to 2 (again only for those variants). The actor
        leaves for the path only when this and mStateTimer are both 0 and mAngleY
        is within 45 degrees of the node's direction. */
-    s32                          mLeaveDelay;           /* 0x440 */
+    s32 mLeaveDelay; /* 0x440 */
     /* Counted down by DecIfAbove0_Short at the top of every frame. While it is
        non-zero the circling state flies the actor back toward mSpawnPos; it is
        reloaded with 0x1e (30 frames) whenever the actor has just lost its
@@ -105,7 +105,7 @@ struct daJango_c : dEnemyBase_c {
        mStateTimer, and func_ov062_0211c2f4 clears it when that timer runs out.
        The 20.0 vector is turned by a -0x4000 pitch, so the leg to the far node
        starts as a climb. */
-    u8                           mRiseToFarNode;        /* 0x446 */
+    u8 mRiseToFarNode; /* 0x446 */
     /* Set to 1 just before func_ov062_0211b51c calls Player::Hurt; the next
        func_ov062_0211c218 (circling state entry) zeroes mStateTimer and clears
        it. Set even if Hurt does nothing. */
@@ -135,7 +135,7 @@ struct daJango_c : dEnemyBase_c {
     /* Ticked (+1, & 7) at the top of func_ov062_0211b3ac, which only does its
        work when it wraps to 0; func_ov062_0211c2f4 stores 7 so the very next
        call runs. */
-    s32                          mPathPickTick;         /* 0x460 */
+    s32 mPathPickTick;                                  /* 0x460 */
     s32                          mPathId;               /* 0x464 */
     /* 0 (CARRIES_NO_STAR): no star; starts out empty-handed and goes for the
        player's cap, after which mHeldActorID is the cap. 1 (CARRIES_STAR):

@@ -191,19 +191,17 @@ int daBombking_c::func_ov078_02123804()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_c19func_ov078_02123864Ev
 
-void daBombking_c::func_ov078_02123864()
-{
-  int i = 0;
-  do {
-    daBmb_c *bmb = (daBmb_c *)dActor_c::FindWithID(this->mSpawnedId[i]);
-    if (bmb) {
-      bmb->mHurtDamage = 0;
-      bmb->mDetonate = 1;
-    }
-    i++;
-  } while (i < 2);
+void daBombking_c::func_ov078_02123864() {
+    int i = 0;
+    do {
+        daBmb_c *bmb = (daBmb_c *)dActor_c::FindWithID(this->mSpawnedId[i]);
+        if (bmb) {
+            bmb->mHurtDamage = 0;
+            bmb->mDetonate = 1;
+        }
+        i++;
+    } while (i < 2);
 }
-
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_c19func_ov078_021238acEv

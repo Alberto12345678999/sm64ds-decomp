@@ -1248,7 +1248,8 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)self->mEatingPlayer, &w, self->mHurtDamage, 0xc000, 1, 0, 1);
+        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)self->mEatingPlayer, &w,
+                                                self->mHurtDamage, 0xc000, 1, 0, 1);
         ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }

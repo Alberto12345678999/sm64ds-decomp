@@ -77,9 +77,9 @@ struct daKing_Donketu_c : dEnemyBase_c {
        horizontally toward a point 120.0 from it along mAngleY + 0x8000.
        mGroundMissPos is where the forward ground ray found no floor, so
        this is the arena edge the boss teeters at in that state. */
-    s32 mEdgePosX;                                         /* 0x4a8 */
-    s32 mEdgePosY;                                         /* 0x4ac */
-    s32 mEdgePosZ;                                         /* 0x4b0 */
+    s32 mEdgePosX; /* 0x4a8 */
+    s32 mEdgePosY; /* 0x4ac */
+    s32 mEdgePosZ; /* 0x4b0 */
     /* Scratch word the states use for themselves (most enter handlers that
        rely on it zero it; ..3360 zeroes it from its update instead): a 0/1 latch in several, a frame count that
        runs up to 0x82 in the state at data_ov073_02123340, and in the state
@@ -112,7 +112,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
        ice piece touched by the boss moves on to its next state only when
        its spawn index equals this, i.e. the waypoint he just landed on
        (0xff: none). */
-    u8  mLandedWaypoint;                                   /* 0x4c5 */
+    u8 mLandedWaypoint; /* 0x4c5 */
     /* The heading (angle, 0x10000 = a full turn) the chase and
        return-to-arena states turn mPrevAngleY toward: the angle to the
        player, or to mSpawnPos. */
@@ -131,7 +131,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
        landing runs only while it is clear. func_ov073_02120910 is the
        teeter-at-the-edge state (see mEdgePos), so the flag marks the leap
        back from the edge. Medium confidence. */
-    u8  mEdgeRecovered;                                    /* 0x4ca */
+    u8 mEdgeRecovered; /* 0x4ca */
     /* A counter that starts at 3 (InitResources). func_ov073_02120c7c, the
        hit-reaction state, decrements it when mNoGroundAhead is 1 and takes the
        state at data_ov073_021233d0 when it reaches 0; func_ov073_02120910
@@ -151,14 +151,14 @@ struct daKing_Donketu_c : dEnemyBase_c {
        state at data_ov073_021233d0 multiplies its sine by to rock
        mAngleX (its enter handler stores -0x1000). Named for the state that
        sets it, like mStateScratch, since the two jobs share no one role. */
-    s32 mStateParam;                                       /* 0x4d0 */
+    s32 mStateParam; /* 0x4d0 */
     /* Positions of bones 2 and 3, rebuilt each frame by func_ov073_021215cc
        (the model matrix times the bone matrix, shifted left by 3);
        func_ov073_02120c7c and func_ov073_02120ed0 pass both to
        RunningSlidingDustAt while the boss is sliding. Bones 2 and 3 are
        also the pair mStepBoneIdx alternates between for the landing/step
        particles, which places them at the feet. */
-    Vector3 mFootPos[2];                                   /* 0x4d4 */
+    Vector3 mFootPos[2]; /* 0x4d4 */
     /* Where the boss WAS when the ground ray missed: Behavior stores the live
        position here and then, except in the state at data_ov073_021233a0,
        rewinds mPos to mPrevPos. The enter handler of the
