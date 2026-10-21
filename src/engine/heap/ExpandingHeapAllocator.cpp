@@ -22,7 +22,7 @@
  * deslop leftovers:
  * - SetNodeID keeps its documented two-step addressing: `Inner* p = this+0x24`
  *   then `p->id` is load-bearing -- flattening to this+0x34 diffs by three
- *   words (the shard's own measurement, #1221; re-measured: `mNodeID` read and
+ *   words (the shard's own measurement; re-measured: `mNodeID` read and
  *   written directly still diffs by three).
  * - The constructor writes mNodeID/mFlags2 and the two list pairs through
  *   its `nodeList` NodeList view of this+0x24: spelling those stores as

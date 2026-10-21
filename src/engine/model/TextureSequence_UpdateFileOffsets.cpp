@@ -21,7 +21,7 @@
    BMD's texture (func_020471ac) or palette (func_02047144) table and stores
    the index in resourceId. */
 struct BTPNameRecord {
-    s16 resourceId; /* 0x00 */
+    u16 resourceId; /* 0x00 */
     u16 pad_02;
     char *name; /* 0x04 - rebased here */
 };
@@ -29,7 +29,7 @@ struct BTPNameRecord {
 /* A seqRecords entry: func_02046d50 resolves name against the BMD's
    material table (func_02046590) and stores the index at 0. */
 struct BTPSeqRecord {
-    s16 materialId; /* 0x00 */
+    u16 materialId; /* 0x00 */
     u16 pad_02;
     char *name; /* 0x04 - rebased here */
     u8 pad_08[4];

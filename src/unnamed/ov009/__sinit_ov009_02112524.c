@@ -1,3 +1,5 @@
+#include "types.h"
+
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov009_02112524_AssetId {
     ASSET_MC_WATER_BMD = 0x0693,
@@ -7,9 +9,6 @@ enum sinit_ov009_02112524_AssetId {
 /* These ov009 globals are Vector3s (x, y, z in fx32): each one is registered
  * for destruction with Vector3's destructor below. Most blocks keep their `p`
  * local: spelling them through VEC3() like the others changes the .text bytes. */
-typedef struct Vector3 {
-    int x, y, z;
-} Vector3;
 #define VEC3(v) ((Vector3 *)(v))
 
 extern void func_02017acc(void*, int);

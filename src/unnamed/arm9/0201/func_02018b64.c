@@ -28,7 +28,7 @@ typedef struct FSFile {
     char pad_2c[0x1c];
 } FSFile;
 
-typedef char FSFile_size_check[(sizeof(FSFile) == 0x48) ? 1 : -1];
+typedef char FSFile_size_must_be_0x48[sizeof(FSFile) == 0x48 ? 1 : -1];
 
 typedef struct Pair { int a; int b; } Pair;
 
