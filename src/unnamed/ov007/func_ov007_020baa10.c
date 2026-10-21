@@ -8,13 +8,33 @@
 #include "Ov007MenuState.h"
 extern s16 data_02082214[];
 
-/* The _02104ba0 record has no class or header; its +0x10 slot is an Ov007MenuState
- * (func_ov007_020b9880 allocates it with func_ov007_020c9388). The record in slot 0
- * (built by func_ov007_020c690c, reset by func_ov007_020c684c) has no header either,
- * so `a` stays raw. */
+/* The 0xd0-byte touch picker (func_ov007_020c690c); names as in
+ * func_ov007_020c684c, only the slots this file touches. */
+typedef struct Ov007Picker {
+    char pad_00[0x70];
+    Vector3 pos;       /* 0x70 */
+    Vector3 restPos;   /* 0x7c: func_ov007_020c6af0 snapshots pos here */
+    Vector3 posOffset; /* 0x88: func_ov007_020c5188 adds it to pos for one step */
+    char pad_94[0x24];
+    Vector3 boundsMin; /* 0xb8: func_ov007_020c510c, the clamp rectangle */
+    Vector3 boundsMax; /* 0xc4 */
+} Ov007Picker;
+
+/* data_ov007_02104ba0: the picker scene func_ov007_020b9880 allocates. */
+typedef struct Ov007PickerScene {
+    Ov007Picker *picker;       /* 0x00: func_ov007_020c690c */
+    Ov007MenuState *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
+} Ov007PickerScene;
+
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
+#define SCENE ((Ov007PickerScene *)data_ov007_02104ba0)
+
+/* Each menu state drives the picker's per-step offset across the clamp
+ * rectangle; state 5 puts pos back at its rest position. */
 void func_ov007_020baa10(void)
 {
-    char* a;
+    Ov007Picker *a;
     s16 state;
     int dx;
     int dy;
@@ -22,20 +42,20 @@ void func_ov007_020baa10(void)
     Ov007MenuState *menu;
     int counter;
 
-    a = *(char**)data_ov007_02104ba0;
-    menu = *(Ov007MenuState **)(data_ov007_02104ba0 + 0x10);
-    dx = *(int*)(a + 0xc4) - *(int*)(a + 0xb8);
-    dy = *(int*)(a + 0xc8) - *(int*)(a + 0xbc);
+    a = SCENE->picker;
+    menu = SCENE->states[3];
+    dx = a->boundsMax.x - a->boundsMin.x;
+    dy = a->boundsMax.y - a->boundsMin.y;
     func_ov007_020c92d0((char *)menu);
-    menu = *(Ov007MenuState **)(data_ov007_02104ba0 + 0x10);
+    menu = SCENE->states[3];
     state = menu->currentState;
     counter = menu->stateTicks;
 
     switch (state) {
     case 0:
         if (counter == 0) {
-            *(int*)(a + 0x8c) = 0;
-            *(int*)(a + 0x88) = *(int*)(a + 0x8c);
+            a->posOffset.y = 0;
+            a->posOffset.x = a->posOffset.y;
         }
         return;
     case 1:
@@ -47,11 +67,11 @@ void func_ov007_020baa10(void)
         else v = _ZN4cstd3divEii(m << 12, 0x3c);
         s = data_02082214[((u16)((v * 0xffff) >> 12) >> 4) * 2];
         if (state == 2) {
-            *(int*)(a + 0x88) = -dx / 48 + func_ov007_020c3ba8(dx / 48 - -dx / 48);
-            *(int *)(a + 0x8c) = FX_MUL(s, (dy / 2 - dy / 8));
+            a->posOffset.x = -dx / 48 + func_ov007_020c3ba8(dx / 48 - -dx / 48);
+            a->posOffset.y = FX_MUL(s, (dy / 2 - dy / 8));
         } else if (state == 1) {
-            *(int *)(a + 0x88) = FX_MUL(s, (dx / 3));
-            *(int*)(a + 0x8c) = -dy / 32 + func_ov007_020c3ba8(dy / 32 - -dy / 32);
+            a->posOffset.x = FX_MUL(s, (dx / 3));
+            a->posOffset.y = -dy / 32 + func_ov007_020c3ba8(dy / 32 - -dy / 32);
         }
         return;
     }
@@ -63,29 +83,29 @@ void func_ov007_020baa10(void)
         if (m <= 0) v = 0;
         else if (m >= 0x3c) v = 0x1000;
         else v = _ZN4cstd3divEii(m << 12, 0x3c);
-        if ((*(Ov007MenuState **)(data_ov007_02104ba0 + 0x10))->currentState == 4)
+        if (SCENE->states[3]->currentState == 4)
             v = 0x1000 - v;
         idx = ((u16)((v * 0xffff) >> 12) >> 4) * 2;
-        *(int *)(a + 0x88) = FX_MUL((dx / 4), data_02082214[idx + 1]);
-        *(int *)(a + 0x8c) = FX_MUL((dy / 4), data_02082214[idx]);
+        a->posOffset.x = FX_MUL((dx / 4), data_02082214[idx + 1]);
+        a->posOffset.y = FX_MUL((dy / 4), data_02082214[idx]);
         return;
     }
     case 5:
         if (counter == 0) {
-            *(struct Vector3*)(a + 0x70) = *(struct Vector3*)(a + 0x7c);
-            *(int*)(a + 0x8c) = 0;
-            *(int*)(a + 0x88) = *(int*)(a + 0x8c);
+            a->pos = a->restPos;
+            a->posOffset.y = 0;
+            a->posOffset.x = a->posOffset.y;
         }
         return;
     case 6:
         if (counter == 0) {
             int t;
             t = -dx / 2 + func_ov007_020c3ba8(dx / 2 - -dx / 2);
-            *(int *)(a + 0x70) = FX_MUL(t, 0x5dcLL);
+            a->pos.x = FX_MUL(t, 0x5dcLL);
             t = -dy / 2 + func_ov007_020c3ba8(dy / 2 - -dy / 2);
-            *(int *)(a + 0x74) = FX_MUL(t, 0x5dcLL);
-            *(int*)(a + 0x8c) = 0;
-            *(int*)(a + 0x88) = *(int*)(a + 0x8c);
+            a->pos.y = FX_MUL(t, 0x5dcLL);
+            a->posOffset.y = 0;
+            a->posOffset.x = a->posOffset.y;
         }
         return;
     }
