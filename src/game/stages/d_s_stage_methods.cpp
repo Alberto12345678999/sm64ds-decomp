@@ -1038,7 +1038,8 @@ void dScStage_c::CheckCameraInput() {
                 {
                     u8 state2 = ((CamInput *)data_0209f498)[i].mode;
                     if (state2 != 0) {
-                        if (((((TouchInfo *)gTouchHeld)[i].held && ((TouchInfo *)gTouchHeld)[i].edge)
+                        if (((((TouchInfo *)gTouchHeld)[i].held &&
+                              ((TouchInfo *)gTouchHeld)[i].edge)
                                  ? 1
                                  : 0) &&
                             ((state2 == 1 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd7 &&

@@ -140,7 +140,6 @@ int TouchArea_Update(char *, int);
 void func_ov001_020ab41c(void *);
 void func_ov001_020ab3f0(void *);
 
-
 extern u8 data_0208f274;
 extern OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
@@ -158,7 +157,6 @@ extern dScEntry_c::StepSet data_ov075_0211d8d0;
 
 /* local extern: OAM.h excludes this Fix12-by-value overload. */
 OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr *, int, int, int, int, int, int);
-
 }
 
 // @symbol _ZN10dScEntry_c23UpdatePlayerSelectIntroEv

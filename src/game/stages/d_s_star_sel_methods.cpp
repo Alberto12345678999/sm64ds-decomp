@@ -780,8 +780,8 @@ s32 dScStarSel_c::Behavior() {
                     rec = gTouchHeld[idx];
                     tx = rec[2];
                     do {
-                        if ((u8)(tx - PLATE_X(this, i) + 8) < 0x10 &&
-                            gTouchHeld[idx][3] < 0x28 && ((PLATE_MASK(this) >> i) & 1)) {
+                        if ((u8)(tx - PLATE_X(this, i) + 8) < 0x10 && gTouchHeld[idx][3] < 0x28 &&
+                            ((PLATE_MASK(this) >> i) & 1)) {
                             hit = (val != 0 && gTouchEdge[idx][0] != 0);
                             if (hit != 0 || cur != i) {
                                 FB(this, 0x117) = data_0208ee44 * 3;
