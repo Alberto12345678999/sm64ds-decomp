@@ -15,8 +15,7 @@ typedef char Ov007Model_size_must_be_0x34[sizeof(Ov007Model) == 0x34 ? 1 : -1];
 
 /* Binds the model's texture-sequence animations: n BTP files in arr, a
  * fresh func_ov007_020c92ac player, and each nonzero file prepared against
- * the model's BMD file. o keeps the char * spelling of the callers'
- * declarations; `m` is the typed view. */
+ * the model's BMD file. `m` is the typed view of o. */
 void func_ov007_020bc5fc(char *o, int *arr, int n)
 {
     Ov007Model *m = (Ov007Model *)o;
