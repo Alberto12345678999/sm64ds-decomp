@@ -80,7 +80,10 @@ typedef struct MbParentWork {
     /* 0x14a8 -- the game id the child asked for; matched against its file's
      * mGameRegistry +0x14 */
     u32 mChildGameId[15];
-    u8 pad_14e4[0x4];
+    /* 0x14e4 -- NitroSDK parent_callback: func_020672a4 stores it,
+     * func_02066fb0 calls it with (child, state, arg) when it is set, and
+     * func_02068ae8 saves it across its clear of the work */
+    u32 mParentCallback;
     /* 0x14e8 -- per-child state: func_02066fec sets it, func_02067250
      * returns it */
     s32 mChildState[15];

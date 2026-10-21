@@ -1,26 +1,46 @@
 #include "types.h"
 extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 addr, u32 size);
 
+/* NitroSDK SNDSharedWork, the ARM9/ARM7 shared sound status block
+ * (data_020a64e0, which func_0205b358 = SND_CommandInit hands here and
+ * points data_020a7fc0 at; func_0205b5d4 and func_0205b608 read its first two
+ * words back after invalidating all 0x280 bytes). SDK names. */
+typedef struct SNDSharedPlayer {
+    s16 variable[16]; /* 0x00 */
+    u32 tickCounter;  /* 0x20 */
+} SNDSharedPlayer;
+
+typedef struct SNDSharedWork {
+    u32 finishCommandTag;       /* 0x000 */
+    u32 playerStatus;           /* 0x004 */
+    u16 channelStatus;          /* 0x008 */
+    u16 captureStatus;          /* 0x00a */
+    u32 padding[5];             /* 0x00c */
+    SNDSharedPlayer player[16]; /* 0x020 */
+    s16 globalVariable[16];     /* 0x260 */
+} SNDSharedWork;
+
+/* NitroSDK SNDi_InitSharedWork(work): clear the status words and tick
+ * counters, set every player and global variable to SND_DEFAULT_VARIABLE
+ * (-1) and flush the block for ARM7. */
 void func_0205b554(char *p)
 {
+    SNDSharedWork *work = (SNDSharedWork *)p;
     int i, j;
-    char *q;
 
-    *(int *)(p + 4) = 0;
-    *(short *)(p + 8) = 0;
-    *(short *)(p + 0xa) = 0;
-    *(int *)p = 0;
+    work->playerStatus = 0;
+    work->channelStatus = 0;
+    work->captureStatus = 0;
+    work->finishCommandTag = 0;
 
-    q = p;
     for (i = 0; i < 16; i++) {
-        *(int *)(q + 0x40) = 0;
+        work->player[i].tickCounter = 0;
         for (j = 0; j < 16; j++)
-            ((short *)(q + 0x20))[j] = -1;
-        q += 0x24;
+            work->player[i].variable[j] = -1;
     }
 
     for (j = 0; j < 16; j++)
-        ((short *)(p + 0x260))[j] = -1;
+        work->globalVariable[j] = -1;
 
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)p, 0x280);
+    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)work, sizeof(SNDSharedWork));
 }
