@@ -35,8 +35,13 @@ struct Ov007PickerSprites {
 typedef char Ov007PickerScene_replayFrames_must_be_at_0x38
     [(int)&((Ov007PickerScene *)0)->replayFrames == 0x38 ? 1 : -1];
 
-extern Ov007PickerScene *data_ov007_02104ba0;
-extern Ov007PickerSprites *data_ov007_02104b9c;
+/* The externs take the tree's char * spelling (include/decl_common.h); the
+ * typed views are reached through cast macros. */
+extern char *data_ov007_02104ba0;
+extern char *data_ov007_02104b9c;
+
+#define SCENE ((Ov007PickerScene *)data_ov007_02104ba0)
+#define SPRITES ((Ov007PickerSprites *)data_ov007_02104b9c)
 
 /* Replays the drawing one frame: strokeTime advances so that it covers
  * totalStrokeTime in replayFrames frames (param 0) or 0x168 frames, by at
@@ -51,20 +56,19 @@ extern "C" int func_ov007_020bbd24(int param)
     int r5;
 
     if (param == 0)
-        r4 = data_ov007_02104ba0->replayFrames;
+        r4 = SCENE->replayFrames;
     else
         r4 = 0x168;
 
-    r4 = cstd::div(data_ov007_02104ba0->totalStrokeTime << 0xc, r4);
+    r4 = cstd::div(SCENE->totalStrokeTime << 0xc, r4);
     if (r4 < 0x1000)
         r4 = 0x1000;
 
-    r5 = func_ov007_020c5014((void *)data_ov007_02104ba0->picker,
-                             data_ov007_02104ba0->strokeTime >> 0xc);
+    r5 = func_ov007_020c5014((void *)SCENE->picker, SCENE->strokeTime >> 0xc);
     if (r5 == 1) {
-        data_ov007_02104ba0->strokeTime = 0;
+        SCENE->strokeTime = 0;
     } else if (r5 == 0) {
-        int *fp = (int *)(((int)&data_ov007_02104ba0->strokeTime));
+        int *fp = (int *)(((int)&SCENE->strokeTime));
         *fp += r4;
     }
 
@@ -72,7 +76,7 @@ extern "C" int func_ov007_020bbd24(int param)
 
     switch (param) {
     case 0: {
-        int *q = (int *)(((int)&data_ov007_02104b9c->sprites[0]->alpha));
+        int *q = (int *)(((int)&SPRITES->sprites[0]->alpha));
         int v = *q;
         if (v <= 0x5000) {
             *q = v + 0x7d0;
