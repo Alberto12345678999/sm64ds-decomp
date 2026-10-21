@@ -4,7 +4,31 @@ extern u8 *func_02065d5c(void *src, void *dst);
 extern void CpuCopy8(void *dst, void *src, int len);
 extern int func_02067f2c(u32 a, u32 b, u32 c);
 
-extern char *data_020a9db8;
+/* File-local mirror of include/private/arm9_a9db8_mb_parent.h (the multiboot
+ * parent work data_020a9db8 points at): same names and offsets, with the
+ * parts this function does not touch left as padding. */
+typedef struct MbParentFile {
+    u8 mHeader[0x59c]; /* 0x000 */
+    u8 pad_59c[0x5c2 - 0x59c];
+    u8 mActive; /* 0x5c2 */
+    u8 pad_5c3[0x1];
+} MbParentFile;
+
+typedef struct MbParentWork {
+    u8 pad_0000[0x14e8];
+    s32 mChildState[15]; /* 0x14e8 */
+    u8 mFileCount;       /* 0x1524 */
+    u8 mCurrentFile;     /* 0x1525 */
+    s8 mChildFile[15];   /* 0x1526 */
+    u8 pad_1535[0x1788 - 0x1535];
+    MbParentFile mFiles[16]; /* 0x1788 */
+} MbParentWork;
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char MbParentFile_size_must_be_0x5c4[sizeof(MbParentFile) == 0x5c4 ? 1 : -1];
+#endif
+
+extern MbParentWork *data_020a9db8;
 extern u8 data_0209a078;
 
 typedef struct { u8 a; u8 pad; s16 b; s16 pad2; } Rec;
@@ -23,8 +47,8 @@ int func_020662c0(void)
     func_0205a588(buf, mask, 16);
 
     for (n = 1; n <= 15; n++) {
-        if (*(int *)((char *)data_020a9db8 + (n - 1) * 4 + 0x14e8) == 5) {
-            s8 t = *(s8 *)((char *)data_020a9db8 + (n - 1) + 0x1526);
+        if (data_020a9db8->mChildState[n - 1] == 5) {
+            s8 t = data_020a9db8->mChildFile[n - 1];
             buf[t]++;
         }
     }
@@ -32,7 +56,7 @@ int func_020662c0(void)
     c = data_0209a078;
     for (k = 0; k < 16; k++) {
         c = (c + 1) % 16;
-        if (*(u8 *)((char *)data_020a9db8 + c * 0x5c4 + 0x1d4a) != 0) {
+        if (data_020a9db8->mFiles[c].mActive != 0) {
             if (buf[c] != 0) {
                 found = c;
                 break;
@@ -45,8 +69,8 @@ int func_020662c0(void)
 
     data_0209a078 = found;
     for (n = 1; n <= 15; n++) {
-        if (*(int *)((char *)data_020a9db8 + (n - 1) * 4 + 0x14e8) == 5) {
-            if (found == *(s8 *)((char *)data_020a9db8 + (n - 1) + 0x1526))
+        if (data_020a9db8->mChildState[n - 1] == 5) {
+            if (found == data_020a9db8->mChildFile[n - 1])
                 mask |= 1 << n;
         }
     }
@@ -55,7 +79,7 @@ int func_020662c0(void)
     local.b = found;
     ret = func_02065d5c(&local, data_020a9db8);
     if (ret != 0)
-        CpuCopy8((char *)data_020a9db8 + 0x1788 + found * 0x5c4, ret, 0xe4);
+        CpuCopy8(data_020a9db8->mFiles[found].mHeader, ret, 0xe4);
 
     return func_02067f2c(0xea, mask, (u32)data_020a9db8);
 }
