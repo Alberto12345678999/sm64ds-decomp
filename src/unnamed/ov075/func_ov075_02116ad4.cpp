@@ -30,10 +30,11 @@ extern int data_ov075_0211c9a4[];
 extern void *data_0209f5c0;
 
 int func_ov075_02116ad4(void *arg) {
+    dScEntry_c *scene = reinterpret_cast<dScEntry_c *>(arg);
     void *tmp;
     int mode;
 
-    if (*(int *)((char *)arg + 8) != 0 || func_0203d9b4() != 0) {
+    if (scene->param1 != 0 || func_0203d9b4() != 0) {
         func_0200f13c();
         if (func_0203d9b4() != 0) {
             LoadCompressedFileAt(ASSET_D_2D_BATTLE_FRAMEWORK_GAMESTART_P_NSC_BIN, _ZN3G2S12GetBG2ScrPtrEv());
@@ -50,24 +51,24 @@ int func_ov075_02116ad4(void *arg) {
     _ZN2GX10LoadBGPlttEPKvjj(tmp, 0, 0xc0);
     Deallocate(tmp);
 
-    *(int *)((char *)arg + 0x264) = 0;
-    *(unsigned char *)((char *)arg + 0x280) = 0;
+    scene->mStepDelay = 0;
+    scene->mIconCount = 0;
 
-    if (*(int *)((char *)arg + 8) == 0) {
+    if (scene->param1 == 0) {
         if (func_0203da3c() == 0) {
             func_02030aa4(0);
-            reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&data_ov075_0211d888);
+            scene->SetSteps(&data_ov075_0211d888);
         } else {
-            reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&EntryPlayerSelectIntroSteps);
+            scene->SetSteps(&EntryPlayerSelectIntroSteps);
         }
         func_ov075_02116e00(arg);
         mode = 0;
     } else {
-        reinterpret_cast<dScEntry_c *>(arg)->SetSteps(&EntryCourseSelectSteps);
+        scene->SetSteps(&EntryCourseSelectSteps);
         mode = 2;
     }
 
-    *(void **)((char *)arg + 0x50) = _ZN7dBase_c5SpawnEjP7fBase_cii(0x15a, data_0209f5c0, mode, 0);
+    scene->mEntObj = (dEntObj_c *)_ZN7dBase_c5SpawnEjP7fBase_cii(0x15a, data_0209f5c0, mode, 0);
     return 1;
 }
 }

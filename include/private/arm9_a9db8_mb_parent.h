@@ -15,11 +15,16 @@ typedef struct MbParentFile {
     u8  mHeader[0x59c];   /* 0x000 -- download info; func_020662c0 sends 0xe4 of
                              it, func_02067530 reads three 16-byte segment rows
                              at +0xc */
-    u8  mBlockTable[0x14];/* 0x59c -- 3 segment addresses, 3 head block numbers,
-                             block count (func_02067530) */
-    u8 *mGameInfo;        /* 0x5b0 -- the game record func_02067928 registers
-                             (and refuses twice); func_0206655c checks a child's
-                             game id (+0x14) and player limit (+0x18) in it */
+    u8 mBlockTable[0x14]; /* 0x59c -- NitroSDK MB_BlockInfoTable: 3 segment
+                             byte offsets (running sums of the segment sizes),
+                             3 head block numbers, block count; built by
+                             func_02067604, read by func_02067530 */
+    u8 *mGameRegistry;    /* 0x5b0 -- the NitroSDK MBGameRegistry the file was
+                             registered with: func_02067928 stores its first
+                             argument here (and refuses it twice) and builds
+                             the MBGameInfo from it at +0xe4 (func_02068680);
+                             func_0206655c checks a child's ggid (+0x14) and
+                             maxPlayerNum (+0x18) in it */
     s32 mSrcAddr;         /* 0x5b4 -- added to a block's offset before CpuCopy8 */
     u16 mCurrentBlock;    /* 0x5b8 -- block number being sent */
     u16 mRequestedBlock;  /* 0x5ba -- highest block a child asked for this
@@ -59,7 +64,12 @@ typedef char MbChildRequest_size_must_be_0x20[sizeof(MbChildRequest) == 0x20 ? 1
 #endif
 
 typedef struct MbParentWork {
-    u8 pad_0000[0x1340];
+    u8 pad_0000[0x1318];
+    /* 0x1318 -- bytes of a file carried per block: func_02068ae8 sets it to
+     * the MP parent size less 6; func_02067604 divides each segment by it
+     * and func_02067530 turns a block number back into an offset with it */
+    u32 mBlockSize;
+    u8 pad_131c[0x1340 - 0x131c];
     /* 0x1340 -- per child (AID - 1): the user record from its entry request,
      * AID in the high nibble of byte 0 (func_0206655c); func_02066a94 hands
      * the table to func_0206853c */
@@ -68,7 +78,7 @@ typedef struct MbParentWork {
      * read back in this cluster (medium) */
     u16 mChildVersion[15];
     /* 0x14a8 -- the game id the child asked for; matched against its file's
-     * mGameInfo +0x14 */
+     * mGameRegistry +0x14 */
     u32 mChildGameId[15];
     u8 pad_14e4[0x4];
     /* 0x14e8 -- per-child state: func_02066fec sets it, func_02067250

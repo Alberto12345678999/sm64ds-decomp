@@ -40,8 +40,8 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     Vector3 disp;           /* 0x04c */
     /* Per-axis range of the push-out vectors the contacts produce, not a
        spatial box: dBgW_Kc's sphere query tracks the lowest and highest push
-       per axis and hands both to func_02037a6c, which widens this range to
-       cover them. func_02037b1c clears all six words, func_02037a04 reads
+       per axis and hands both to ExpandPushOutBounds, which widens this range to
+       cover them. ResetDisplacement clears all six words, func_02037a04 reads
        them out, and func_02037a38 sums min + max into disp, so opposing
        pushes on one axis cancel and same-sign ones keep the largest. */
     Vector3 aabbMin;        /* 0x058 */
@@ -122,6 +122,10 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     void SetWallResult(const dBgPi &result);
     void SetUnderResult(const dBgPi &result);
 
+    /* Inferred names for the accumulated collision push-out range. */
+    void ResetDisplacement();
+    void ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ);
+
     /* Members the ROM keeps unnamed; each takes the SphCrr object as its
        first argument in the cartridge call graph and drives the evidenced
        fields above. */
@@ -135,8 +139,6 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     void func_020379f4(int triID, void *src);
     void func_02037a04(Vector3 *outMin, Vector3 *outMax);
     void func_02037a38();
-    void func_02037a6c(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ);
-    void func_02037b1c();
     void func_02037b5c();
     int  func_02038824();
     int  func_02038a38();

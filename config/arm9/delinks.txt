@@ -1507,7 +1507,7 @@ src/unnamed/arm9/0203/func_02035394.c:
     complete
     .text start:0x02035394 end:0x020353b0
 
-src/unnamed/arm9/0203/func_020353b0.c:
+src/_ZN5dBgCh8SetActorEP8dActor_c.cpp:
     complete
     .text start:0x020353b0 end:0x020353d4
 
