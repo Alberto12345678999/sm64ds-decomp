@@ -14311,8 +14311,8 @@ extern "C" void func_ov002_020d4c30(Player *self)
     extern unsigned int func_02022d00(unsigned int, unsigned int, Fix12i, Fix12i, Fix12i, void*);
     int id;
     if (self->mIsInShallowWater) {
-        self->mParticle1 = func_02022d00(self->mParticle1, 0xde, self->mPosX, data_0209f32c,
-                                   self->mPosZ, 0);
+        self->mParticle1 =
+            func_02022d00(self->mParticle1, 0xde, self->mPosX, data_0209f32c, self->mPosZ, 0);
     }
     if (self->mSinkDepth > 0x32000) {
         Sound::PlayBank0(0xb3, self->mCamSpacePos);
@@ -14324,7 +14324,8 @@ extern "C" void func_ov002_020d4c30(Player *self)
         }
     } else {
         if (self->mIsMetal == 0) {
-            func_0201251c(0, self->mGroundSoundType + 0x20, (int)&self->mCamSpacePos, self->mHorzSpeed);
+            func_0201251c(0, self->mGroundSoundType + 0x20, (int)&self->mCamSpacePos,
+                          self->mHorzSpeed);
         } else {
             func_0201251c(0, 0xaa, (int)&self->mCamSpacePos, self->mHorzSpeed);
         }
@@ -17360,7 +17361,8 @@ int Player::func_ov002_020d94cc()
     sndobj = _ZN8dActor_c13SpawnSoundObjEj(self, 3);
     b = (data_0209f2d8 == 1);
     if (b) {
-        if (sndobj != 0) ((daSoundObj_c *)sndobj)->mSoundID = 0x50;
+        if (sndobj != 0)
+            ((daSoundObj_c *)sndobj)->mSoundID = 0x50;
     }
 
     GiveVsStars(this->mPlayerNo, -1);
@@ -25485,7 +25487,8 @@ void func_ov002_020e640c(char *c)
             ((PlayerBone *)md)[8].rotX = player->mSpineRot[1];
             ((PlayerBone *)md)[8].rotY = player->mSpineRot[2];
         } else if (b == 4) {
-            _Z15ApproachLinear2Rsss(player->mHeadRot, (s16)(((PlayerBone *)md)[15].rotZ - 0x4000), 0x400);
+            _Z15ApproachLinear2Rsss(player->mHeadRot, (s16)(((PlayerBone *)md)[15].rotZ - 0x4000),
+                                    0x400);
             _Z15ApproachLinear2Rsss(&player->mHeadRot[1], ((PlayerBone *)md)[15].rotY, 0x400);
             _Z15ApproachLinear2Rsss(&player->mHeadRot[2], ((PlayerBone *)md)[15].rotX, 0x400);
             ((PlayerBone *)md)[15].rotZ = (s16)(*player->mHeadRot + 0x4000);
@@ -25543,9 +25546,9 @@ void func_ov002_020e640c(char *c)
         s16 i = 2;
         if (((BMD_File *)mp)->numBones > 2) {
             do {
-            ((PlayerBone *)md)->transX = *(s32 *)(r4p + 0x24);
-            ((PlayerBone *)md)->transY = *(s32 *)(r4p + 0x28);
-            ((PlayerBone *)md)->transZ = *(s32 *)(r4p + 0x2c);
+                ((PlayerBone *)md)->transX = *(s32 *)(r4p + 0x24);
+                ((PlayerBone *)md)->transY = *(s32 *)(r4p + 0x28);
+                ((PlayerBone *)md)->transZ = *(s32 *)(r4p + 0x2c);
                 i = (s16)(i + 1);
                 md += 0x34;
                 r4p += 0x40;
