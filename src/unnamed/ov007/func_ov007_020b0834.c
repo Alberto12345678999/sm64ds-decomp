@@ -75,9 +75,9 @@ void func_ov007_020b0834(void)
             return;
         G = data_ov007_0210342c;
         {
-            Ov007Pad* p54 = ((Ov007Work *)G)->pad;
+            Ov007Pad *p54 = ((Ov007Work *)G)->pad;
             if ((p54->keys & ~p54->prevKeys) == 0) {
-                Ov007Touch* p50 = ((Ov007Work *)G)->touch;
+                Ov007Touch *p50 = ((Ov007Work *)G)->touch;
                 if (p50->cur.touch == 0)
                     return;
                 if (p50->prev.touch != 0)
@@ -87,7 +87,7 @@ void func_ov007_020b0834(void)
             }
         }
         {
-            char* pB = (char*)((Ov007Work *)G)->settings;
+            char *pB = (char *)((Ov007Work *)G)->settings;
             int r5 = (*(unsigned char*)(pB + 0x37) == 1);
             int r4 = (*(unsigned char*)(pB + 0x38) == 1);
             func_ov007_020bdeb0(0xc);

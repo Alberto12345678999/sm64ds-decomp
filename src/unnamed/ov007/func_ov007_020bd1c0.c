@@ -72,7 +72,7 @@ void func_ov007_020bd1c0(int n)
 
     h = func_ov007_020b3f20(0x16);
     for (i = 0; i < 11; i++) {
-        func_ov007_020b22e0((int *)WORK->textures[i], (int*)h, i);
+        func_ov007_020b22e0((int *)WORK->textures[i], (int *)h, i);
     }
 
     {
@@ -81,8 +81,8 @@ void func_ov007_020bd1c0(int n)
             void* h2;
             res = t + 0x20;
             h2 = func_ov007_020b3f20(res);
-            func_ov007_020b22e0((int *)WORK->textures[2], (int*)h2, 0);
-            func_ov007_020b22e0((int *)WORK->textures[6], (int*)h2, 1);
+            func_ov007_020b22e0((int *)WORK->textures[2], (int *)h2, 0);
+            func_ov007_020b22e0((int *)WORK->textures[6], (int *)h2, 1);
         }
     }
 
@@ -115,7 +115,7 @@ void func_ov007_020bd1c0(int n)
         func_ov007_020c14b8(WORK->textures[1]);
         func_ov007_020c14b8(WORK->textures[3]);
         func_ov007_020c14b8(WORK->textures[4]);
-        func_ov007_020b9880(WORK->transitionMode, *(int*)(data_ov007_0210342c + 0xec));
+        func_ov007_020b9880(WORK->transitionMode, *(int *)(data_ov007_0210342c + 0xec));
         break;
     case 2:
         {

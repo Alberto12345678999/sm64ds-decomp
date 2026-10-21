@@ -125,9 +125,7 @@ void func_ov007_020af84c(void)
             if (func_ov007_020b79c8() == 0)
                 return;
             r = (*(pfn *)(data_ov007_0210342c + 0x2c))(
-                ((int (*)[3])data_ov007_020ccc20)
-                    [WORK->selectedSlot]
-                    [WORK->targetSlot]);
+                ((int(*)[3])data_ov007_020ccc20)[WORK->selectedSlot][WORK->targetSlot]);
             func_ov007_020aec00();
             switch (r) {
             case 0:

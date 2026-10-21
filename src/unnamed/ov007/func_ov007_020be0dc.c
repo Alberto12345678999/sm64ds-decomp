@@ -79,8 +79,7 @@ void func_ov007_020c3fe4(void *p);
 /* bone 0's transform */
 #define BONE0 (fig->model->model->transforms)
 
-int func_ov007_020be0dc(void)
-{
+int func_ov007_020be0dc(void) {
     int modelVisible = 0;
     char *actor;
     Ov007OamNode *node;
@@ -106,19 +105,17 @@ int func_ov007_020be0dc(void)
             if (node->animIndex != 0)
                 Sprite_SetAnimation(node, 0, 1, 0, 0);
             break;
-        case 1:
-            {
-                Ov007AnimPlayer *y = fig->model->boneAnim;
-                int idv = y->frame;
-                if (idv >= 0x226) {
-                    if (node->animIndex != 1)
-                        Sprite_SetAnimation(node, 1, 1, 0, 0);
-                } else {
-                    if (node->animIndex != 0)
-                        Sprite_SetAnimation(node, 0, 1, 0, 0);
-                }
+        case 1: {
+            Ov007AnimPlayer *y = fig->model->boneAnim;
+            int idv = y->frame;
+            if (idv >= 0x226) {
+                if (node->animIndex != 1)
+                    Sprite_SetAnimation(node, 1, 1, 0, 0);
+            } else {
+                if (node->animIndex != 0)
+                    Sprite_SetAnimation(node, 0, 1, 0, 0);
             }
-            break;
+        } break;
         }
 
         pos = &BONE0->t;
