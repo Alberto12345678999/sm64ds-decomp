@@ -24,17 +24,35 @@ struct Ov007Model {
 
 typedef char Ov007Model_blendAnim_must_end_at_0x8c[sizeof(Ov007Model) == 0x8c ? 1 : -1];
 
-extern "C" void func_ov007_020bc53c(int r0){
-  int* r4 = (int*)r0;
-  Ov007Model *m = (Ov007Model *)r0;
-  if (m->boneAnim) { func_ov007_020c92a0((int)m->boneAnim); m->boneAnim = 0; }
-  if (m->texSrtAnim) { func_ov007_020c92a0((int)m->texSrtAnim); m->texSrtAnim = 0; }
-  if (m->texSeqAnim) { func_ov007_020c92a0((int)m->texSeqAnim); m->texSeqAnim = 0; }
-  if (m->blendAnim) { func_ov007_020c92a0((int)m->blendAnim); m->blendAnim = 0; }
-  if (m->blendBuffer) { func_ov007_020c3d1c((int)m->blendBuffer); m->blendBuffer = 0; }
-  if (m->nextTransforms) { func_ov007_020c3d1c((int)m->nextTransforms); m->nextTransforms = 0; }
-  func_ov007_020c3d1c(r4[0x84/4]);
-  func_ov007_020c3d1c((int)m->transforms);
-  func_ov007_020c3d1c((int)m->model);
-  func_ov007_020c3d1c((int)m);
+extern "C" void func_ov007_020bc53c(int r0) {
+    int *r4 = (int *)r0;
+    Ov007Model *m = (Ov007Model *)r0;
+    if (m->boneAnim) {
+        func_ov007_020c92a0((int)m->boneAnim);
+        m->boneAnim = 0;
+    }
+    if (m->texSrtAnim) {
+        func_ov007_020c92a0((int)m->texSrtAnim);
+        m->texSrtAnim = 0;
+    }
+    if (m->texSeqAnim) {
+        func_ov007_020c92a0((int)m->texSeqAnim);
+        m->texSeqAnim = 0;
+    }
+    if (m->blendAnim) {
+        func_ov007_020c92a0((int)m->blendAnim);
+        m->blendAnim = 0;
+    }
+    if (m->blendBuffer) {
+        func_ov007_020c3d1c((int)m->blendBuffer);
+        m->blendBuffer = 0;
+    }
+    if (m->nextTransforms) {
+        func_ov007_020c3d1c((int)m->nextTransforms);
+        m->nextTransforms = 0;
+    }
+    func_ov007_020c3d1c(r4[0x84 / 4]);
+    func_ov007_020c3d1c((int)m->transforms);
+    func_ov007_020c3d1c((int)m->model);
+    func_ov007_020c3d1c((int)m);
 }

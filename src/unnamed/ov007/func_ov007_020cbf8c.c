@@ -26,9 +26,9 @@ typedef char Ov007MeshMaterial_size_must_be_0x34[sizeof(Ov007MeshMaterial) == 0x
  * opaque, white diffuse, no texture. */
 void* func_ov007_020cbf8c(void* src)
 {
-    Ov007MeshMaterial *mat = (Ov007MeshMaterial*)func_ov007_020c3df4(0, 0x34);
+    Ov007MeshMaterial *mat = (Ov007MeshMaterial *)func_ov007_020c3df4(0, 0x34);
     if (src != 0) {
-        *mat = *(Ov007MeshMaterial*)src;
+        *mat = *(Ov007MeshMaterial *)src;
     } else {
         mat->texture = 0;
         mat->texT = 0;

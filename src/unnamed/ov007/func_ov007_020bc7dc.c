@@ -39,9 +39,9 @@ typedef char Ov007Model_animTick_must_be_0x98[sizeof(Ov007Model) == 0x9c ? 1 : -
 void func_ov007_020bc7dc(char* c)
 {
     Ov007Model *m = (Ov007Model *)c;
-    void* model = m->model;
-    Ov007AnimPlayer* p = m->blendAnim;
-    void* entry = m->boneAnims[p->anim];
+    void *model = m->model;
+    Ov007AnimPlayer *p = m->blendAnim;
+    void *entry = m->boneAnims[p->anim];
     int quot = _ZN4cstd3divEii(m->blendFrames << 12, m->blendFrameCount);
 
     if (m->animTick != 0)

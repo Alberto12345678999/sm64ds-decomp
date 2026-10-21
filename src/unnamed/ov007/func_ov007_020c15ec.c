@@ -17,7 +17,8 @@ typedef struct Ov007Texture {
     short plttColorCount;
 } Ov007Texture;
 
-typedef char Ov007Texture_color_count_at_0x28[(int)&((Ov007Texture *)0)->plttColorCount == 0x28 ? 1 : -1];
+typedef char
+    Ov007Texture_color_count_at_0x28[(int)&((Ov007Texture *)0)->plttColorCount == 0x28 ? 1 : -1];
 
 void func_ov007_020c15ec(char *p)
 {

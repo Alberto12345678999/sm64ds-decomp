@@ -48,7 +48,8 @@ typedef struct Ov007SwingParams {
     s16 maxNormalY; /* 0x2e */
 } Ov007SwingParams;
 
-typedef char Ov007SwingParams_maxNormalY_must_end_at_0x30[sizeof(Ov007SwingParams) == 0x30 ? 1 : -1];
+typedef char
+    Ov007SwingParams_maxNormalY_must_end_at_0x30[sizeof(Ov007SwingParams) == 0x30 ? 1 : -1];
 
 /* The 0x70-byte record func_ov007_020ca010 builds and func_ov007_020c9fa0
  * frees, one per menu item (data_ov007_02104bd4[4..11]); medium-confidence
@@ -59,7 +60,7 @@ typedef char Ov007SwingParams_maxNormalY_must_end_at_0x30[sizeof(Ov007SwingParam
 typedef struct Ov007Swing {
     Ov007Mesh *mesh;          /* 0x00: func_ov007_020c9d90 binds it */
     Ov007SwingParams *params; /* 0x04 */
-    int meshPoint; /* 0x08: the mesh point nearest the anchor (func_ov007_020c9d90) */
+    int meshPoint;            /* 0x08: the mesh point nearest the anchor (func_ov007_020c9d90) */
     char pad_0c[0x10];
     /* 0x1c: func_ov007_020c798c point list; its first Point is pinned
      * (func_ov007_020ca010) and this file moves it */
@@ -77,8 +78,7 @@ typedef char Ov007Swing_size_must_be_0x70[sizeof(Ov007Swing) == 0x70 ? 1 : -1];
  * first point follows the mesh normal under it, then the chain springs and
  * integrates. o keeps the int * spelling of the definition; `self` is the
  * typed view. */
-void func_ov007_020c9c24(int *o, int arg1)
-{
+void func_ov007_020c9c24(int *o, int arg1) {
     Ov007Swing *self = (Ov007Swing *)o;
     int i;
     int bnd;

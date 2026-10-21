@@ -35,11 +35,17 @@ typedef char Ov007Work_layerSlots_end_at_0xe8[sizeof(Ov007Work) == 0xe8 ? 1 : -1
 /* Resets the scroll of layer slots 6 and 1 and rebuilds both screens from
  * their sources at a y offset of -0xc0 pixels (func_ov007_020c0638). */
 void func_ov007_020b131c(void){
-  Ov007Work* work = (Ov007Work*)data_ov007_0210342c[0];
-  Ov007BgLayer* a = work->layerSlots[6]->layer;
-  Ov007BgLayer* b = work->layerSlots[1]->layer;
-  a->scrollX=0; a->scrollY=0; a->fineScrollY=0; a->fineScrollX=a->fineScrollY;
-  b->scrollX=0; b->scrollY=0; b->fineScrollY=0; b->fineScrollX=b->fineScrollY;
-  func_ov007_020c0638(a, 0, -0xc0, 0);
-  func_ov007_020c0638(b, 0, -0xc0, 0);
+    Ov007Work *work = (Ov007Work *)data_ov007_0210342c[0];
+    Ov007BgLayer *a = work->layerSlots[6]->layer;
+    Ov007BgLayer *b = work->layerSlots[1]->layer;
+    a->scrollX = 0;
+    a->scrollY = 0;
+    a->fineScrollY = 0;
+    a->fineScrollX = a->fineScrollY;
+    b->scrollX = 0;
+    b->scrollY = 0;
+    b->fineScrollY = 0;
+    b->fineScrollX = b->fineScrollY;
+    func_ov007_020c0638(a, 0, -0xc0, 0);
+    func_ov007_020c0638(b, 0, -0xc0, 0);
 }

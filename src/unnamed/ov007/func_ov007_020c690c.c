@@ -51,7 +51,7 @@ typedef struct Ov007Picker {
      * pos; `link`'s from end, freed by func_ov007_020c6684 */
     void *anchorPoint;
     Vector3 anchorPos; /* 0x98: func_ov007_020c5a6c mode 2 moves it to the hit point */
-    void *link;   /* 0xa4: func_ov007_020c80a4; from anchorPoint to posPoint */
+    void *link;        /* 0xa4: func_ov007_020c80a4; from anchorPoint to posPoint */
     void *camera; /* 0xa8: a3; func_ov007_020c65bc unprojects through it */
 } Ov007Picker;
 
