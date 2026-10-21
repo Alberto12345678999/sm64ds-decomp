@@ -32,10 +32,26 @@ typedef struct Ov007Pad {
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
 
+/* The 0x1c-byte animation player func_ov007_020c92ac allocates; names as
+ * in func_ov007_020bc02c, only the slots read here. */
+typedef struct Ov007AnimPlayer {
+    char pad_00[0xc];
+    s16 anim; /* 0x0c: index into the owner's animation table; -1 none */
+    char pad_0e[2];
+    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
+    u16 frameCount; /* 0x12 */
+} Ov007AnimPlayer;
+
+/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
+ * func_ov007_020bc02c, only the slot read here. */
+typedef struct Ov007Model {
+    char pad_00[0x18];
+    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
+} Ov007Model;
+
 /* data_ov007_0210342c: the overlay's manager. No class or header names it;
  * only the slots this file touches are spelled. +0xec (0 or 1; picks the
- * sound) and +0xf4 (the model func_ov007_020b2bd4 builds) stay raw, as in
- * func_ov007_020b1718. */
+ * sound) stays raw, as in func_ov007_020b1718. */
 typedef struct Ov007Work {
     char pad_00[4];
     Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
@@ -47,7 +63,9 @@ typedef struct Ov007Work {
     Ov007Pad *pad;     /* 0x54: func_ov007_020c2304 */
     char pad_58[0x4c];
     Ov007ItemView *itemNodes[9]; /* 0xa4: func_ov007_020b6d40, one per func_ov007_020ade58 */
-    char pad_c8[0x4c];
+    char pad_c8[0x2c];
+    Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
+    char pad_f8[0x1c];
     Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
 } Ov007Work;
 
@@ -58,7 +76,7 @@ extern char *data_ov007_0210342c;
 
 void func_ov007_020b1cf0(void)
 {
-    char *r6 = *(char **)(data_ov007_0210342c + 0xf4);
+    Ov007Model *model = WORK->model;
     Ov007MenuState *menu = WORK->states[1];
     int hi = menu->previousState;
     int r5 = menu->stateTicks;
@@ -121,10 +139,10 @@ void func_ov007_020b1cf0(void)
     }
 
     {
-        char *r2b = *(char **)(r6 + 0x18);
-        if (*(s16 *)(r2b + 0xc) == -1)
+        Ov007AnimPlayer *anim = model->boneAnim;
+        if (anim->anim == -1)
             return;
-        if ((int)*(u16 *)(r2b + 0x10) != (int)*(u16 *)(r2b + 0x12) - 0x22)
+        if ((int)anim->frame != (int)anim->frameCount - 0x22)
             return;
         func_ov007_020aec94(8);
     }
