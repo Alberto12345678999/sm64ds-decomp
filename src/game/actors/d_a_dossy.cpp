@@ -682,10 +682,10 @@ void daDossy_c::func_ov065_021183c8()
         return;
 
     mStateTimer++;
-    DecIfAbove0_Short(&mUnkTimer);
+    DecIfAbove0_Short(&mRideCooldown);
 
     if (mClsnPlayer != 0) {
-        if (mClsnState == 2 && mUnkTimer == 0) {
+        if (mClsnState == 2 && mRideCooldown == 0) {
             if (mCap == 0 || func_ov065_02119210((unsigned char *)mCap) == 0) {
                 playerPos = mClsnPlayer->mPos;
                 if (playerPos.y >= mHomePosY
@@ -797,7 +797,7 @@ extern "C" int func_ov065_021180d4(char *self)
                     if (dActor_c::Spawn(0x10d, 0x1210, pos, &cap->mAngle, cap->mAreaId, -1) != 0) {
                         cap->mCapIcon.Unlink();
                         cap->mCapIcon.func_ov001_020ab228(self, 2, 0, 0);
-                        ((daDossy_c *)cap->mCarrier)->mUnkTimer = 0x1e;
+                        ((daDossy_c *)cap->mCarrier)->mRideCooldown = 0x1e;
                     }
                 }
                 return 1;
