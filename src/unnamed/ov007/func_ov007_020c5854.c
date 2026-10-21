@@ -3,7 +3,7 @@
 extern int func_ov007_020c704c(int elem, void *sb, void *fp, void *r7, void *r8);
 
 /* A group's point list; names as in func_ov007_020c6e68 and
- * func_ov007_020c5188 (items, count). */
+ * func_ov007_020c5ef0 (items, count). */
 typedef struct Ov007PointList {
     int *items; /* 0x0: the group's points */
     int count;  /* 0x4 */

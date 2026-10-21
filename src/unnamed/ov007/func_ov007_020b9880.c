@@ -25,8 +25,8 @@ typedef struct Ov007Work {
 
 /* data_ov007_02104ba0: the 0x4c record this function allocates and
  * func_ov007_020b9770 frees. It owns the touch picker func_ov007_020c690c
- * builds (fields named in func_ov007_020c5a6c). springSet as in
- * func_ov007_020ba9bc, introVariant as in func_ov007_020ba368,
+ * builds (fields named in func_ov007_020c5a6c). springSet and
+ * introVariant as in func_ov007_020ba368,
  * restartCount/idleFrames as in func_ov007_020b9ca8, and
  * strokeCount/awaitingTap/strokeTime as in func_ov007_020ba05c. +0x38 stays
  * raw: only this file and func_ov007_020bbe60 (0x78, or 1.5x that for one
