@@ -19,6 +19,7 @@
 enum dScBoot_c_AssetId { ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN = 0x022d };
 
 #include "dScBoot_c.h"
+#include "AsyncJob.h"
 
 #include "dCamera_c.h"
 #include "Sound.h"
@@ -47,7 +48,6 @@ int LoadFile(int handle);
 void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
 u32 _ZN3G2S12GetBG1ScrPtrEv(void);
 u32 func_02012790(u32 a);
-void func_0201a2f8(void);
 void _ZN2GX12SetBankForBGEt(u16 bank);
 void _ZN2GX13SetBankForOBJEt(u16 bank);
 void _ZN2GX15SetBankForSubBGEt(u16 bank);
@@ -57,7 +57,6 @@ void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 offset, u32 size);
 void *_ZN2G212GetBG0ScrPtrEv(void);
 u32 _ZN3G2S13GetBG2CharPtrEv(void);
 u32 _ZN3G2S12GetBG2ScrPtrEv(void);
-int func_0201a244(int fn, int a, int b, int c, int d);
 }
 
 /* These names describe the observed transitions; original state names are unknown. */
@@ -151,7 +150,7 @@ s32 dScBoot_c::InitResources() {
 
     data_0209f5e8.color = 0x7fff;
     Sound::Play2D(4, 0);
-    data_0209f1e8 = (u8)func_0201a244((int)func_0201a2f8, 0, 0xf, 0, 0x1000);
+    data_0209f1e8 = (u8)func_0201a244(func_0201a2f8, 0, 0xf, 0, 0x1000);
     return 1;
 }
 
