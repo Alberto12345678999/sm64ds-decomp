@@ -2,13 +2,14 @@
  * header names it; this view's names come from its two steppers, which read
  * every slot: func_ov007_020c81a0 (2D) and func_ov007_020c831c (3D). */
 typedef struct Ov007Follower {
-    int *target;            /* 0x00: the Q12 position each step moves (func_ov007_020c844c's p) */
-    int velocity[3];        /* 0x04: added to target[] every step, >> shift */
-    int force[3];           /* 0x10: accumulated per frame, cleared at the end of each step */
-    unsigned short invMass; /* 0x1c: func_ov007_020c844c stores the reciprocal
-                             * (func_02053200) of its q, 0x1000 for q = 1.0; both
-                             * steppers take a direct path at 0x1000 and otherwise
-                             * scale force by it into velocity */
+    int *target;     /* 0x00: the Q12 position each step moves (func_ov007_020c844c's p) */
+    int velocity[3]; /* 0x04: added to target[] every step, >> shift */
+    int force[3];    /* 0x10: accumulated per frame, cleared at the end of each step */
+    short invMass;   /* 0x1c: func_ov007_020c844c stores the reciprocal
+                      * (func_02053200) of its q, 0x1000 for q = 1.0; both
+                      * steppers take a direct path at 0x1000 and otherwise
+                      * scale force by it into velocity; signed, as
+                      * func_ov007_020c80c8 reads it (asr) */
     unsigned short pad_1e;
     int flags; /* 0x20: bit 0 skips the step (target held) */
 } Ov007Follower;
