@@ -3,7 +3,7 @@
 extern void func_ov007_020c0638(int a, int b, int c, int d);
 extern char* data_ov007_0210342c;
 
-/* The 0x14-byte item func_ov007_020aea6c builds; names as in
+/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020ae070, only the slot this file touches. */
 typedef struct Ov007Item {
     u16 id; /* 0x00: aea6c's first argument */

@@ -11,7 +11,7 @@ extern void func_ov007_020c10b0(void *a, void *b);
 extern void func_ov007_020c0af4(void *c, void *x);
 extern void Sprite_SetAnimation(void *c, int r1, int r2, int r3, int sp0);
 
-/* The 0x14-byte item func_ov007_020aea6c builds; names as in
+/* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020ae070, only the slot this file reads. */
 typedef struct Ov007Item {
     u16 id; /* 0x00: aea6c's first argument */
@@ -39,7 +39,7 @@ typedef struct Ov007NodeSprites {
     u8 *animIndices; /* 0x04: per animation, its index in the bank */
 } Ov007NodeSprites;
 
-typedef char Ov007NodeSprites_size_must_be_8[sizeof(Ov007NodeSprites) == 8 ? 1 : -1];
+typedef char Ov007NodeSprites_size_must_be_0x8[sizeof(Ov007NodeSprites) == 0x8 ? 1 : -1];
 
 /* The 8-byte record this function returns (names as in
  * func_ov007_020ae558); func_ov007_020b6d40 keeps nine of them in the
@@ -50,8 +50,7 @@ typedef struct Ov007ItemNode {
 } Ov007ItemNode;
 
 /* The manager's +0x74: the 0x48-byte 2D display record func_ov007_020b7594
- * allocates; names as in func_ov007_020adc08, only the slots this file
- * reads. */
+ * allocates (as in func_ov007_020adc08); only the slots this file reads. */
 typedef struct Ov007Display {
     /* 0x00/0x04: the OAM node lists (func_ov007_020c1068) that
      * func_ov007_020bc9c8 draws into the main (+0x10) and sub (+0x14) OAM

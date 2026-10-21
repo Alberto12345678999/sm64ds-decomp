@@ -42,7 +42,7 @@ struct Ov007Settings {
 };
 
 /* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020aec94, func_ov007_020b0da0 and func_ov007_020c0078, only the
+ * func_ov007_020aec94, func_ov007_020b0da0 and func_ov007_020b2370, only the
  * slots this file touches. The callback at +0x2c and the 0/1 pair at
  * +0xec/+0xf0 stay raw on G. */
 struct Ov007Work {

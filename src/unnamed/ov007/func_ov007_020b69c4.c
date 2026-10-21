@@ -2,7 +2,7 @@
 extern u8 *data_ov007_0210342c;
 
 /* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020ada70, func_ov007_020b0da0 and func_ov007_020c0078, only the
+ * func_ov007_020ada70, func_ov007_020b0da0 and func_ov007_020b2370, only the
  * slots this file touches. Left raw: the 0/1 pair at +0xec/+0xf0, the two
  * bytes at +0xfc and the three func_ov007_020c946c records at +0x44..+0x4f
  * (no reader names them). */
