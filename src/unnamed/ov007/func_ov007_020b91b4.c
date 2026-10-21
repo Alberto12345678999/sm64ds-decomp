@@ -216,6 +216,8 @@ void func_ov007_020b91b4(void)
             SCENE->states[1]->requestedState = 5;
             {
                 Ov007Touch *o = WORK->touch;
+                /* the read through a const view is load-bearing: `o->flags |= 1`
+                 * builds 4 bytes longer */
                 o->flags = ((const Ov007Touch *)o)->flags | 1;
             }
             return;
