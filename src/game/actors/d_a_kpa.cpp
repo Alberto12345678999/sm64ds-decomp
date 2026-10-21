@@ -1122,7 +1122,8 @@ TU (measured). */
 // Bowser_IsAnimAtLastFrame at 0x02115a30 -- matched byte-for-byte with mwccarm 1.2/sp2p3 (ov060).
 bool daKpa_c::Bowser_IsAnimAtLastFrame(){
     daKpa_c *obj = this;
-    return obj->mModelAnim.Finished() || obj->mModelAnim.WillHitFrame((unsigned short)(obj->mModelAnim.GetFrameCount() - 1));
+    return obj->mModelAnim.Finished() ||
+           obj->mModelAnim.WillHitFrame((unsigned short)(obj->mModelAnim.GetFrameCount() - 1));
 }
 
 /* -------------------------------------------------------------------------- */

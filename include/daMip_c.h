@@ -73,7 +73,7 @@ struct daMip_c : dEnemyBase_c {
        Caught; Behavior forces it back into Caught and zeroes mHorzSpeed;
        StateCaughtMain turns it to face the player, and at 2 it talks
        without being held. */
-    u8                           mCatchState;           /* 0x426 */
+    u8 mCatchState; /* 0x426 */
     /* The talk sequence: 0 offers the message, 1 waits for the player's talk
        state to end, 2 is done. Behavior walks it in exactly that order. */
     u8                           mTalkState;            /* 0x427 */

@@ -569,10 +569,8 @@ void daShl_c::func_ov102_0214c84c()
     pos.trail.y = mPosY;
     pos.trail.z = mPosZ;
 
-    if (mState == &data_ov102_0214ea48
-        && mCarrier != 0
-        && ((ShlCarrierView *)mCarrier)->mIsAirborne == 0)
-    {
+    if (mState == &data_ov102_0214ea48 && mCarrier != 0 &&
+        ((ShlCarrierView *)mCarrier)->mIsAirborne == 0) {
         dBgCh_Gnd ground;
         ground.StartDetectingWater();
         {

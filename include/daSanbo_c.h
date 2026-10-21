@@ -74,7 +74,7 @@ struct daSanbo_c : dActor_c {
        instead of a 90-frame wait, so the initial stack sprouts at once.
        func_ov096_021365d4 clears it once three segments exist, so later
        regrowth waits. */
-    u8  mInstantSprout;     /* 0x3a8 */
+    u8 mInstantSprout; /* 0x3a8 */
     u8  pad_3a9[0x1];
     /* Heading copied from the previous segment + 0x13000; feeds the sin table
        that fills mOffset*. */

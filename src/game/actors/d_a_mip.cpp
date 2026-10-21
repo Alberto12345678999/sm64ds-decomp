@@ -1231,7 +1231,7 @@ int daMip_c::Render()
            +0x20 of each 0x30-byte material is still pad in BMD_Material;
            walking it as BMD_Material:: does not match this loop. */
         int** base = (int**)&mModelAnim.data;
-        BMD_File* modelData = (BMD_File*)base[0];
+        BMD_File *modelData = (BMD_File *)base[0];
         char* mat = (char*)base[1];
         for (unsigned int i = 0; i < modelData->numMaterials; i++) {
             *(int*)(mat + 0x20) = mMaterialColor;
