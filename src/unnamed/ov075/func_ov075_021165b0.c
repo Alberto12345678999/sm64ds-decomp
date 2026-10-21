@@ -8,8 +8,20 @@ extern u8 data_0209b2ed[];
 extern u8 data_0209fc5c[];
 extern u8 data_0209fc5d[];
 
+/* C view of include/dScEntry_c.h's dScEntry_c (a C++ class this C file
+ * cannot include), with the header's names; only the field this file
+ * writes. */
+typedef struct dScEntry_c {
+    u8 pad_000[0x27c];
+    u8 mResultLeaderFlags[4]; /* 0x27c */
+    u8 pad_280[8];
+} dScEntry_c;
+
+typedef char dScEntry_c_size_must_be_0x288[sizeof(dScEntry_c) == 0x288 ? 1 : -1];
+
 void func_ov075_021165b0(char *self)
 {
+    dScEntry_c *scene = (dScEntry_c *)self;
     int max;
     u8 b;
     int t;
@@ -117,9 +129,9 @@ void func_ov075_021165b0(char *self)
     i = 0;
     do {
         if (*pc != 0 && *pb >= b && b != 0) {
-            *(u8 *)(self + i + 0x27c) = 1;
+            scene->mResultLeaderFlags[i] = 1;
         } else {
-            *(u8 *)(self + i + 0x27c) = 0;
+            scene->mResultLeaderFlags[i] = 0;
         }
         i = i + 1;
         pc = pc + 1;
