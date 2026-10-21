@@ -23,22 +23,23 @@ struct Ov007PointList {
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds (func_ov007_020b9f0c
  * passes it); names as in that file and func_ov007_020c684c, only the slots
- * this function touches. */
-struct Ov007Picker {
+ * this function touches. The tag stays O: three declarations below keep
+ * their banked struct O * spelling (the declaration-agreement gate). */
+typedef struct O {
     char pad0[8];
     int groupCount; /* 0x8 */
     char pad_c[0x30];
     struct Ov007PointList **pointLists; /* 0x3c: per group (func_ov007_020c798c) */
     char pad_40[0x48];
     Vec3 posOffset; /* 0x88: func_ov007_020c5188 adds it to pos for one step */
-};
+} Ov007Picker;
 
-extern void func_ov007_020c6af0(struct Ov007Picker *c);
-extern void func_ov007_020c6b58(struct Ov007Picker *c);
-extern void func_ov007_020c64c4(struct Ov007Picker *c, int b);
-extern void func_ov007_020c62cc(struct Ov007Picker *c, int b);
+extern void func_ov007_020c6af0(Ov007Picker *c);
+extern void func_ov007_020c6b58(struct O *c);
+extern void func_ov007_020c64c4(struct O *c, int b);
+extern void func_ov007_020c62cc(struct O *c, int b);
 
-void func_ov007_020c5ef0(struct Ov007Picker *c) {
+void func_ov007_020c5ef0(Ov007Picker *c) {
     int i, j;
     func_ov007_020c6af0(c);
     func_ov007_020c6b58(c);

@@ -12,7 +12,7 @@ struct Ov007StrokePath {
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in that
  * file and func_ov007_020c684c, only the slots this function touches. */
-struct Ov007Picker {
+typedef struct Ov007Picker {
     char pad8[8];
     int groupCount; /* 0x8 */
     char pad[0x1c];
@@ -23,11 +23,11 @@ struct Ov007Picker {
     char pad3[0x34];
     int pos[3];     /* 0x70 */
     int restPos[3]; /* 0x7c */
-};
+} Ov007Picker;
 
 /* Copies every group's rest points between groupPointCopies and groupPoints
  * and snapshots pos as restPos. */
-void func_ov007_020c6af0(struct Ov007Picker *c) {
+void func_ov007_020c6af0(Ov007Picker *c) {
     int i;
     for (i = 0; i < c->groupCount; i++) {
         MultiCopy_Int(c->groupPoints[i], c->groupPointCopies[i], c->groups[i]->pointCount * 0xc);
