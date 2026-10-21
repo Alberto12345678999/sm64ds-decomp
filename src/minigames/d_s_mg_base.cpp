@@ -24,8 +24,9 @@
  * file emits both classes' vtables and RTTI.
  *
  * Still unnamed: the header's unk_ fields, and the bytes it leaves as
- * padding that this file reaches by offset (+0xb0, +0x4644; the menu
- * save buffers in pad_228 go through MgMenuSaveArea); the func_ov004 and data_ov004 helpers are unnamed in
+ * padding that this file reaches by offset (+0xb0; the menu pick delay
+ * and save buffers go through the file-local MgMenuPickView and
+ * MgMenuSaveArea); the func_ov004 and data_ov004 helpers are unnamed in
  * symbols.txt.
  */
 
@@ -1364,6 +1365,14 @@ extern "C" void Mg_DrawSpriteListEntry(S* self, int a1, int a2, struct M* a3)
 }
 }
 
+/* The header's pad_4644 as Mg_UpdateMenu uses it: the pick delay a touched
+   item counts down (ApproachLinear2) before the pick acts. A file-local
+   view, like MgMenuSaveArea below; this function is its only user. */
+struct MgMenuPickView {
+    u8 pad_000[0x4644];  /* 0x000 -- the dScMgBase_c members before it */
+    s16 pickDelay;       /* 0x4644 */
+};
+
 // @symbol Mg_UpdateMenu
 namespace s20aeb24 {
 extern "C" {
@@ -1378,7 +1387,7 @@ extern dWipe_c data_0209f61c;
 /* The overlay menu's frame while it is open: slides the items in and, on
    a new touch with nothing highlighted, highlights the touched item in
    mMenuCursor (within 0x60 x 0x18 of item 0, 0x40 x 0x13 of the others, by
-   func_0203b958's offsets) and sets the s16 timer at +0x4644 (0x10 for
+   func_0203b958's offsets) and sets the pick delay (0x10 for
    item 0, else 0). Once mMenuCursorPhase reaches 0x10000 and that timer
    reaches 0, item 0 (and any other value) calls CloseMenu
    (slot 28), item 1 starts a scene fade, and item 2 calls
@@ -1422,10 +1431,8 @@ void Mg_UpdateMenu(char* c)
         if (b < 0x18) {
             func_02012790(0x62);
             self->mMenuCursor = 0;
-            /* +0x4644 is the header's pad_4644, a select delay: 0x10 for item
-               0 and 0 for the others, counted down by the ApproachLinear2
-               below before the pick acts. Raw until the header names it. */
-            *(short*)(c + 0x4644) = 0x10;
+            /* 0x10 for item 0 and 0 for the others */
+            ((MgMenuPickView *)c)->pickDelay = 0x10;
             goto after;
         }
     }
@@ -1435,7 +1442,7 @@ void Mg_UpdateMenu(char* c)
         if (b < 0x13) {
             func_02012790(0x63);
             self->mMenuCursor = 1;
-            *(short*)(c + 0x4644) = 0;
+            ((MgMenuPickView *)c)->pickDelay = 0;
             goto after;
         }
     }
@@ -1445,14 +1452,14 @@ void Mg_UpdateMenu(char* c)
         if (b < 0x13) {
             func_02012790(0x62);
             self->mMenuCursor = 2;
-            *(short*)(c + 0x4644) = 0;
+            ((MgMenuPickView *)c)->pickDelay = 0;
         }
     }
 
 after:
     if (self->mMenuCursor < 0) return;
     if (ApproachLinear(self->mMenuCursorPhase, 0x10000, 0x1000) == 0) return;
-    if (ApproachLinear2(*(short*)(c + 0x4644), 0, 1) == 0) return;
+    if (ApproachLinear2(((MgMenuPickView *)c)->pickDelay, 0, 1) == 0) return;
 
     switch (self->mMenuCursor) {
     case 0:
