@@ -28,13 +28,13 @@ int func_ov075_0211aa94(char *c, char *b)
 {
     EntryMesh *mesh = (EntryMesh *)c;
     struct BMD_File *file = (struct BMD_File *)b;
-    struct BMD_Material *mat;
+    char *d;
     struct BMD_Texture *tex;
     struct BMD_Palette *pal;
     int sz;
 
     tex = file->textures;
-    mat = file->materials;
+    d = (char *)file->materials;
     pal = file->palettes;
 
     mesh->mMaterial.texAddr = (u32)_ZN5Model27LoadCompressedTextureToVramEPcjS0_(
@@ -44,9 +44,11 @@ int func_ov075_0211aa94(char *c, char *b)
         mesh->mMaterial.pltAddr = func_02045ad8(pal->data);
     else
         mesh->mMaterial.pltAddr = func_02045a50(pal->data, (unsigned int)sz);
-    /* 0x28/0x2c of BMD_Material are still pad_28 in BMD_File.h. */
-    mesh->mMaterial.difAmb = *(u32 *)((char *)mat + 0x28);
-    mesh->mMaterial.speEmi = *(u32 *)((char *)mat + 0x2c);
+    /* d is the first BMD_Material. Its words at 0x28/0x2c are the colours
+       func_ov075_0211a948 pushes to DIF_AMB/SPE_EMI, but BMD_File.h still
+       has them as pad_28 (317 consumers), so they stay raw here. */
+    mesh->mMaterial.difAmb = *(int *)(d + 0x28);
+    mesh->mMaterial.speEmi = *(int *)(d + 0x2c);
     mesh->mMaterial.param = tex->flags;
     if (mesh->mMaterial.texAddr == 0 || mesh->mMaterial.pltAddr == 0)
         return 0;
