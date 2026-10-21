@@ -24,8 +24,8 @@
  * file emits both classes' vtables and RTTI.
  *
  * Still unnamed: the header's unk_ fields, and the bytes it leaves as
- * padding that this file reaches by offset (+0xb0, +0x2228/+0x4228,
- * +0x4644); the func_ov004 and data_ov004 helpers are unnamed in
+ * padding that this file reaches by offset (+0xb0, +0x4644; the menu
+ * save buffers in pad_228 go through MgMenuSaveArea); the func_ov004 and data_ov004 helpers are unnamed in
  * symbols.txt.
  */
 
@@ -1480,6 +1480,18 @@ after:
 }
 }
 
+/* What SaveScreenForMenu and RestoreScreenFromMenu keep in the header's
+   pad_228 while the menu is up. A file-local view: dScMgBase_c.h is shared
+   by 36 sources, and only these two bodies touch the buffers. It overlays
+   the whole object from `this`; a view cast from pad_228 moves the literal
+   pool. */
+struct MgMenuSaveArea {
+    u8 pad_000[0x2228];     /* 0x000 -- the dScMgBase_c members before them */
+    u8 subObjChars[0x2000]; /* 0x2228 -- sub-screen OBJ VRAM at 0x06606000 */
+    u8 mainBgPltt[0x200];   /* 0x4228 -- main BG palette from colour 16 on */
+    u8 subBgPltt[0x200];    /* 0x4428 -- first 0x80 bytes of the sub BG palette */
+};
+
 namespace s20aeed8 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c21RestoreScreenFromMenuEv
@@ -1524,10 +1536,7 @@ extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 
 void dScMgBase_c::RestoreScreenFromMenu()
 { using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
-    /* +0x2228 and +0x4228 lie in the header's unnamed pad_228: the 0x2000
-       bytes of sub-screen OBJ VRAM and the 0x400 bytes of BG palette (main,
-       then sub at +0x200) that SaveScreenForMenu copies out. */
-    char *c = (char *)this;
+    MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
     data_0209d45c = 0;
     data_0209d454 = 0;
@@ -1538,16 +1547,17 @@ void dScMgBase_c::RestoreScreenFromMenu()
     *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0xe000) | ((u32)data_0209d460 << 13);
     *(u32*)0x4001000 = (*(u32*)0x4001000 & ~0xe000) | ((u32)data_0209d458 << 13);
 
-    _ZN2GX10LoadBGPlttEPKvjj(c + 0x4228, 0x20, 0x1e0);
+    _ZN2GX10LoadBGPlttEPKvjj(save->mainBgPltt, 0x20, 0x1e0);
     {
-        char *p = c + 0x4228; p += 0x200;
+        /* stepped from mainBgPltt: save->subBgPltt moves the literal pool */
+        char *p = (char *)save->mainBgPltt; p += 0x200;
         _ZN3GXS10LoadBGPlttEPKvjj(p, 0, 0x80);
     }
 
     if (GetDisplayMode() != 2)
     {
         char *src = (char*)0x6600000; src += 0x6000;
-        MultiCopy_Int((int*)(c + 0x2228), (int*)src, 0x2000);
+        MultiCopy_Int((int*)save->subObjChars, (int*)src, 0x2000);
     }
 
     data_0209d45c = (u8)mSavedMainBgBits;
@@ -1598,8 +1608,8 @@ extern "C" {
 // @symbol _ZN11dScMgBase_c17SaveScreenForMenuEv
 /* dScMgBase_c::SaveScreenForMenu - slot 29.
 
-   The two buffers at +0x2228 and +0x4228 stay as raw offsets: they are
-   inside pad_228, and this body is the only evidence for their extent.
+   The two buffers at +0x2228 and +0x4228 sit inside the header's pad_228;
+   this body and RestoreScreenFromMenu reach them through MgMenuSaveArea.
 
    WHAT IT DOES.  The name is coined from this body; until 2026-10-14 the
    slot carried `OnAimedAtWithEgg`, transplanted from include/dActor_c.h at
@@ -1637,7 +1647,7 @@ extern "C" unsigned char data_0209d454;
 
 int dScMgBase_c::SaveScreenForMenu()
 { using s20af094::DecompressLZ16; using s20af094::GetGameLanguage; using s20af094::MultiStore16; using s20af094::_ZN2GX10LoadBGPlttEPKvjj; using s20af094::_ZN3GXS10LoadBGPlttEPKvjj; using s20af094::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20af094::data_0209d454; using s20af094::data_0209d45c; using s20af094::func_0201f32c;
-    char *c = (char *)this;
+    MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
     if (GetDisplayMode() != 0)
         func_02019028();
@@ -1656,12 +1666,13 @@ int dScMgBase_c::SaveScreenForMenu()
     *(volatile int *)0x4000000 &= ~0xe000;
     *(volatile int *)0x4001000 &= ~0xe000;
 
-    MultiCopy_Int((int *)0x5000020, (int *)(c + 0x4228), 0x1e0);
+    MultiCopy_Int((int *)0x5000020, (int *)save->mainBgPltt, 0x1e0);
     {
-        int *ip4228 = (int *)(c + 0x4228);
-        MultiCopy_Int((int *)0x5000400, ip4228 + 0x80, 0x80);
+        /* stepped from mainBgPltt: save->subBgPltt moves the literal pool */
+        int *pltt = (int *)save->mainBgPltt;
+        MultiCopy_Int((int *)0x5000400, pltt + 0x80, 0x80);
     }
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((void *)(c + 0x4228), 0x400);
+    _ZN4CP1527FlushAndInvalidateDataCacheEjj(save->mainBgPltt, 0x400);
 
     _ZN2GX10LoadBGPlttEPKvjj((const void *)sMgMenuBgPltt, 0x20, 0xa0);
     _ZN3GXS10LoadBGPlttEPKvjj((const void *)sMgMenuSubBgPltt, 0, 0x80);
@@ -1683,10 +1694,10 @@ int dScMgBase_c::SaveScreenForMenu()
     if (GetDisplayMode() != 2) {
         int *vbase = (int *)0x6600000;
         int *vram = vbase + 0x1800;
-        MultiCopy_Int(vram, (int *)(c + 0x2228), 0x2000);
+        MultiCopy_Int(vram, (int *)save->subObjChars, 0x2000);
         int idx = GetGameLanguage();
         DecompressLZ16(sMgMenuScreenByLanguage[idx], vram);
-        _ZN4CP1527FlushAndInvalidateDataCacheEjj((void *)(c + 0x2228), 0x2000);
+        _ZN4CP1527FlushAndInvalidateDataCacheEjj(save->subObjChars, 0x2000);
     }
 }
 
