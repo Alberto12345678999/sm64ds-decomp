@@ -185,7 +185,7 @@ void func_ov007_020ad660(char *arg0)
                 slot->layer->priority = 2;
                 slot->state->requestedState = 1;
             }
-            if (*(int *)((char *)WORK + 0xec) != 1) {
+            if (*(int *)(*(char **)data_ov007_0210342c + 0xec) != 1) {
                 return;
             }
             {
