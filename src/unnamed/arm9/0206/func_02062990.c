@@ -51,9 +51,11 @@ void func_02062990(char *c, int bit, void *arg2)
 
     idx = info->writeIndex;
     if ((mask & info->ds[idx].aidHeader) == 0) {
-        if (info->doubleMode != 1) return;
+        if (info->doubleMode != 1)
+            return;
         idx = (idx + 1) % 4;
-        if ((mask & info->ds[idx].aidHeader) == 0) return;
+        if ((mask & info->ds[idx].aidHeader) == 0)
+            return;
     }
 
     r = func_02062734(c, v40e, info->ds[idx].data, bit);

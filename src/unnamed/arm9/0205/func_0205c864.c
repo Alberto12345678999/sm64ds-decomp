@@ -15,18 +15,15 @@ typedef struct FSArchive {
     int flag;              /* 0x10 */
 } FSArchive;
 
-static inline int FS_IsArchiveSuspended(volatile const FSArchive *p_arc)
-{
+static inline int FS_IsArchiveSuspended(volatile const FSArchive *p_arc) {
     return (p_arc->flag & 8) ? 1 : 0;
 }
 
-static inline int FS_IsArchiveRunning(volatile const FSArchive *p_arc)
-{
+static inline int FS_IsArchiveRunning(volatile const FSArchive *p_arc) {
     return (p_arc->flag & 0x10) ? 1 : 0;
 }
 
-static inline int FS_IsArchiveSuspending(volatile const FSArchive *p_arc)
-{
+static inline int FS_IsArchiveSuspending(volatile const FSArchive *p_arc) {
     return (p_arc->flag & 0x40) ? 1 : 0;
 }
 

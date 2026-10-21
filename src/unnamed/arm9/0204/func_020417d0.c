@@ -15,10 +15,10 @@ extern void func_02065050(int a, int b);
 /* NitroSDK WMPortRecvCallback, the fields read here: the offsets agree with
  * func_02062aa4.cpp's and func_02062bdc.cpp's view. */
 typedef struct WMPortRecvCallback {
-    u16 apiid;   /* 0x00 */
-    u16 errcode; /* 0x02 */
-    u16 state;   /* 0x04 -- 7 CONNECTED, 9 DISCONNECTED, 0x15 PORT_RECV */
-    u16 port;    /* 0x06 */
+    u16 apiid;     /* 0x00 */
+    u16 errcode;   /* 0x02 */
+    u16 state;     /* 0x04 -- 7 CONNECTED, 9 DISCONNECTED, 0x15 PORT_RECV */
+    u16 port;      /* 0x06 */
     void *recvBuf; /* 0x08 */
     u16 *data;     /* 0x0c */
     u16 length;    /* 0x10 -- bytes at data */
@@ -31,29 +31,30 @@ void func_020417d0(char *p)
     FileShareWork *g = FILE_SHARE_WORK;
     FileShareParentArea *base = (FileShareParentArea *)g->mArea;
 
-    if (g->mState == 0) return;
+    if (g->mState == 0)
+        return;
 
     switch (cb->state) {
     case 7:
-        if (g->mIsParent == 0) return;
-        if (g->mSendBusy != 0) return;
+        if (g->mIsParent == 0)
+            return;
+        if (g->mSendBusy != 0)
+            return;
         func_02041930();
         return;
     case 9:
-        if (g->mIsParent == 0) return;
+        if (g->mIsParent == 0)
+            return;
         base->mConnectedBitmap &= ~(1 << cb->aid);
         return;
     case 0x15: {
         s32 r0 = (s32)cb->data;
         u32 arg2 = cb->length;
-        if (g->mIsParent != 0)
-        {
+        if (g->mIsParent != 0) {
             u32 bit = cb->aid;
             base->mConnectedBitmap |= (1 << bit);
             func_020650d8(r0, arg2, bit);
-        }
-        else
-        {
+        } else {
             func_02065050(r0, arg2);
         }
         return;

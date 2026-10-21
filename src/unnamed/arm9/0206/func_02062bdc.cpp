@@ -52,8 +52,7 @@ struct WMDataSharingInfo {
     unsigned short reserved[1];   /* 0x41e */
 };
 
-extern "C" void func_02062bdc(WMPortRecvCallback *m)
-{
+extern "C" void func_02062bdc(WMPortRecvCallback *m) {
     WMDataSharingInfo *base = (WMDataSharingInfo *)m->arg;
     if (m->errcode == 0) {
         switch (m->state) {

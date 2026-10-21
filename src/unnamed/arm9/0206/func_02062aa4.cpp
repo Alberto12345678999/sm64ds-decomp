@@ -15,17 +15,17 @@ extern "C" void MultiCopyHalf(const void *src, void *dst, u32 count);
 /* NitroSDK WMPortRecvCallback, the leading fields: the offsets agree with every
  * port receive callback in this cluster (func_02062bdc, func_020417d0). */
 struct WMPortRecvCallback {
-    u16 apiid;          /* 0x00 */
-    u16 errcode;        /* 0x02 */
-    u16 state;          /* 0x04 -- 7 CONNECTED, 9 DISCONNECTED, 0x15 PORT_RECV */
-    u16 port;           /* 0x06 */
-    void *recvBuf;      /* 0x08 */
-    u16 *data;          /* 0x0c */
-    u16 length;         /* 0x10 -- bytes at data */
-    u16 aid;            /* 0x12 -- the sender */
-    u8 macAddress[6];   /* 0x14 */
-    u16 seqNo;          /* 0x1a */
-    void *arg;          /* 0x1c -- WM_SetPortCallback's argument */
+    u16 apiid;        /* 0x00 */
+    u16 errcode;      /* 0x02 */
+    u16 state;        /* 0x04 -- 7 CONNECTED, 9 DISCONNECTED, 0x15 PORT_RECV */
+    u16 port;         /* 0x06 */
+    void *recvBuf;    /* 0x08 */
+    u16 *data;        /* 0x0c */
+    u16 length;       /* 0x10 -- bytes at data */
+    u16 aid;          /* 0x12 -- the sender */
+    u8 macAddress[6]; /* 0x14 */
+    u16 seqNo;        /* 0x1a */
+    void *arg;        /* 0x1c -- WM_SetPortCallback's argument */
 };
 
 /* NitroSDK WMDataSet / WMDataSharingInfo (0x420; WM_StartDataSharing clears
@@ -38,20 +38,20 @@ struct WMDataSet {
 };
 
 struct WMDataSharingInfo {
-    WMDataSet ds[4];    /* 0x000 */
-    u16 seqNum[4];      /* 0x400 -- each set's MP sequence number */
-    u16 writeIndex;     /* 0x408 */
-    u16 sendIndex;      /* 0x40a */
-    u16 readIndex;      /* 0x40c */
-    u16 aidBitmap;      /* 0x40e -- the members, this station included */
-    u16 dataLength;     /* 0x410 -- per member */
-    u16 stationNumber;  /* 0x412 */
-    u16 dataSetLength;  /* 0x414 -- dataLength * stationNumber + 4 */
-    u16 port;           /* 0x416 */
-    u16 doubleMode;     /* 0x418 */
-    u16 currentSeqNum;  /* 0x41a */
-    u16 state;          /* 0x41c -- 1 running, 2 retry the send, 3 error */
-    u16 reserved[1];    /* 0x41e */
+    WMDataSet ds[4];   /* 0x000 */
+    u16 seqNum[4];     /* 0x400 -- each set's MP sequence number */
+    u16 writeIndex;    /* 0x408 */
+    u16 sendIndex;     /* 0x40a */
+    u16 readIndex;     /* 0x40c */
+    u16 aidBitmap;     /* 0x40e -- the members, this station included */
+    u16 dataLength;    /* 0x410 -- per member */
+    u16 stationNumber; /* 0x412 */
+    u16 dataSetLength; /* 0x414 -- dataLength * stationNumber + 4 */
+    u16 port;          /* 0x416 */
+    u16 doubleMode;    /* 0x418 */
+    u16 currentSeqNum; /* 0x41a */
+    u16 state;         /* 0x41c -- 1 running, 2 retry the send, 3 error */
+    u16 reserved[1];   /* 0x41e */
 };
 
 /* WM_GetSystemWork's WMArm9Buf and its WMStatus, as func_02061ab0 views them. */
