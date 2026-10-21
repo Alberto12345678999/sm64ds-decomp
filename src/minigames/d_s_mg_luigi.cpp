@@ -331,8 +331,7 @@ void dScMgLuigi_c::DrawReward() {
     if (y >= 0xb8)
         y = 0xb8;
     s32 language = GetGameLanguage();
-    Mg_RenderSubSpriteMtx(((void **)sLuigiTextSpritesByLanguage[language])[13], x - 8,
-                          y, 0);
+    Mg_RenderSubSpriteMtx(((void **)sLuigiTextSpritesByLanguage[language])[13], x - 8, y, 0);
     Mg_RenderSubSpriteMtx(((void **)sMgDigitSprites)[25], x + 8, y, 0);
 }
 
@@ -432,8 +431,7 @@ void dScMgLuigi_c::DrawCurtains() {
                     int palette = (int)((unsigned int)(*(int *)(sprite + 4) << 0x10) >> 0x1c);
                     *(int *)sprite = (*(int *)sprite & ~0xc00) | 0x800;
                     ((OamAttr *)sprite)->attr2 =
-                        (unsigned short)((((OamAttr *)sprite)->attr2 & ~0xf000) |
-                                         (palette << 12));
+                        (unsigned short)((((OamAttr *)sprite)->attr2 & ~0xf000) | (palette << 12));
                 }
                 if (((OamAttr *)entry)->attr3 == 0xffff)
                     break;
@@ -761,8 +759,8 @@ void dScMgLuigi_c::DrawPenalties() {
             if (y >= 0xb8)
                 y = 0xb8;
             language = GetGameLanguage();
-            Mg_RenderSubSpriteMtx(((void **)sLuigiTextSpritesByLanguage[language])[14],
-                                  x - 0x10, y, 0);
+            Mg_RenderSubSpriteMtx(((void **)sLuigiTextSpritesByLanguage[language])[14], x - 0x10, y,
+                                  0);
             Mg_RenderSubSpriteMtx(((void **)sMgDigitSprites)[41], x, y, 0);
             Mg_RenderSubSpriteMtx(((void **)sMgDigitSprites)[40], x + 0x10, y, 0);
         }
