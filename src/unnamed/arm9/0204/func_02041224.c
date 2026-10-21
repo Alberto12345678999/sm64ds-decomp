@@ -41,5 +41,5 @@ void func_02041224(char *thiz, int n)
     r5 = ((FnT)((FileShareWork *)g)->mAllocFunc)(((FileShareWork *)g)->mAllocArg, r5, 0);
     _ZN3IRQ7RestoreEj(saved);
     child->mRecvWork = r5;
-    child->zeros2[0] = child->mRecvWork;
+    child->mPacketBitmapTable[0] = child->mRecvWork;
 }

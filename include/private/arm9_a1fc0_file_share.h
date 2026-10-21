@@ -89,16 +89,16 @@ typedef struct FileShareParentArea {
 
 /* Child area at +0x440. */
 typedef struct FileShareChildArea {
-    /* 0x000 -- WBTBlockInfoTable: func_02040c34 points entry i at the 0x28-byte
+    /* 0x000 -- a WBTBlockInfoTable: func_02040c34 points entry i at the 0x28-byte
      * WBTBlockInfo at 0xc0 + i * 0x28; func_02040f30 passes the table to
      * WBT_GetBlockInfo (func_02065788) */
-    int ptrs[0x10];
-    /* 0x040 -- WBTRecvBufTable: func_02040f30 sets the peer's entry to the
+    int mBlockInfoTable[0x10];
+    /* 0x040 -- a WBTRecvBufTable: func_02040f30 sets the peer's entry to the
      * receive buffer before WBT_GetBlock (func_02065730) */
-    int zeros1[0x10];
-    /* 0x080 -- WBTPacketBitmapTable, WBT_GetBlock's last table: func_02041224
+    int mRecvBufTable[0x10];
+    /* 0x080 -- a WBTPacketBitmapTable, WBT_GetBlock's last table: func_02041224
      * points entry 0 at mRecvWork */
-    int zeros2[0x10];
+    int mPacketBitmapTable[0x10];
     unsigned char pad_0c0[0xbb0];
     /* 0xc70 -- func_02041224 allocates it (about four bytes per packet of
      * mMaxReadSize); func_02040aa4 frees it */

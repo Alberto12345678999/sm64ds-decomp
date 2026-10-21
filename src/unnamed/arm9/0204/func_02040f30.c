@@ -76,7 +76,7 @@ void func_02040f30(void *arg0) {
         FILE_SHARE_WORK->mParentPacketSize = cmdp->u.sync.peer_packet_size + 0xe;
         FILE_SHARE_WORK->mChildPacketSize = cmdp->u.sync.my_packet_size + 0xe;
         if (FILE_SHARE_WORK->mState != 2) {
-            func_02065788((u16)1, 0, (const void *)child->ptrs, (u32)func_02040f30);
+            func_02065788((u16)1, 0, (const void *)child->mBlockInfoTable, (u32)func_02040f30);
             return;
         }
         {
@@ -88,9 +88,9 @@ void func_02040f30(void *arg0) {
         return;
 
     case 6:
-        child->zeros1[idx] = FILE_SHARE_WORK->mTable;
-        func_02065730((u16)1, 0x20000, (const void *)child->zeros1,
-                      (u32)FILE_SHARE_WORK->mTableSize, (const void *)child->zeros2,
+        child->mRecvBufTable[idx] = FILE_SHARE_WORK->mTable;
+        func_02065730((u16)1, 0x20000, (const void *)child->mRecvBufTable,
+                      (u32)FILE_SHARE_WORK->mTableSize, (const void *)child->mPacketBitmapTable,
                       (u32)func_02040f30);
         return;
 
@@ -141,10 +141,10 @@ void func_02040f30(void *arg0) {
                 return;
             }
             child->mReadRegion = m->word4;
-            child->zeros1[idx] = ((FSFile *)FILE_SHARE_WORK->mReadRequest)->dst;
-            func_02065730((u16)1, child->mReadRegion, (const void *)child->zeros1,
+            child->mRecvBufTable[idx] = ((FSFile *)FILE_SHARE_WORK->mReadRequest)->dst;
+            func_02065730((u16)1, child->mReadRegion, (const void *)child->mRecvBufTable,
                           ((FSFile *)FILE_SHARE_WORK->mReadRequest)->len,
-                          (const void *)child->zeros2, (u32)func_02040f30);
+                          (const void *)child->mPacketBitmapTable, (u32)func_02040f30);
             return;
 
         case 3: {

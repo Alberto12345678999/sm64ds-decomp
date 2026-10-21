@@ -126,9 +126,9 @@ void func_02040c34(int a0, int a1, int a2, int a3, int a4)
             _ZN4CP1516DrainWriteBufferEv();
             p = base + 0xc0;
             for (i = 0; i < 0x10; i++) {
-                arr->ptrs[i] = (int)p;
-                arr->zeros1[i] = 0;
-                arr->zeros2[i] = 0;
+                arr->mBlockInfoTable[i] = (int)p;
+                arr->mRecvBufTable[i] = 0;
+                arr->mPacketBitmapTable[i] = 0;
                 p += 0x28;
             }
             arr->mRecvWork = 0;
