@@ -13,7 +13,7 @@ typedef struct Ov007Camera {
     unsigned short azimuth;   /* 0x32 */
 } Ov007Camera;
 
-typedef char Ov007Camera_azimuth_must_end_at_0x34[sizeof(Ov007Camera) == 0x34 ? 1 : -1];
+typedef char Ov007Camera_size_must_be_0x34[sizeof(Ov007Camera) == 0x34 ? 1 : -1];
 
 /* Places the eye on the orbit around the target: distance away, at the
  * camera's elevation and azimuth. c keeps the char * spelling of the

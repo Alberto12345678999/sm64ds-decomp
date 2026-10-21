@@ -36,8 +36,8 @@ struct Ov007Data02104bd8 {
     Ov007Model *model; /* 0x04 */
 };
 
-typedef char Ov007Camera_fovy_must_be_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
-typedef char Ov007Model_visible_must_be_0x94[(int)&((Ov007Model *)0)->visible == 0x94 ? 1 : -1];
+typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
+typedef char Ov007Model_visible_must_be_at_0x94[(int)&((Ov007Model *)0)->visible == 0x94 ? 1 : -1];
 
 /* While the model is visible, scales it in x and z to fill the camera's view
  * at its fovy, then updates it under the camera's view matrix and renders

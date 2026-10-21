@@ -21,7 +21,7 @@ typedef struct Ov007Mesh {
     Ov007Normal *vertexNormals; /* 0x2c: one per point (func_ov007_020cb4b0) */
 } Ov007Mesh;
 
-typedef char Ov007Mesh_vertexNormals_must_end_at_0x30[sizeof(Ov007Mesh) == 0x30 ? 1 : -1];
+typedef char Ov007Mesh_size_must_be_0x30[sizeof(Ov007Mesh) == 0x30 ? 1 : -1];
 
 /* Recomputes the mesh's normals: the face normals of every cell
  * (func_ov007_020cb7c0), then each point's normal from the faces around it

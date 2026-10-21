@@ -22,9 +22,9 @@ typedef struct Ov007Picker {
     s16 limitFraction;
 } Ov007Picker;
 
-typedef char Ov007Picker_limitFraction_must_be_0xb4[(int)&((Ov007Picker *)0)->limitFraction == 0xb4
-                                                        ? 1
-                                                        : -1];
+typedef char
+    Ov007Picker_limitFraction_must_be_at_0xb4[(int)&((Ov007Picker *)0)->limitFraction == 0xb4 ? 1
+                                                                                              : -1];
 
 /* Draws the committed strokes up to the draw limit through
  * func_ov007_020c19cc: each whole group before limitGroup at full progress,

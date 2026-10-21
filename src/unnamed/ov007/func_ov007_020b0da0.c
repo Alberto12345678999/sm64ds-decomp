@@ -37,9 +37,9 @@ typedef struct Ov007Figure {
 
 /* data_ov007_0210342c: the overlay's manager; only its slots here. */
 typedef struct Ov007Work {
-    char pad_00[8];
-    Ov007MenuState *state; /* 0x08: func_ov007_020c9388 */
-    char pad_0c[0x44];
+    char pad_00[4];
+    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
+    char pad_10[0x40];
     Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
     char pad_54[0x70];
     char *pad_c4; /* 0xc4: read raw below; no reader names it */
@@ -47,9 +47,9 @@ typedef struct Ov007Work {
     Ov007Figure *figure; /* 0x100: func_ov007_020beaa0 */
 } Ov007Work;
 
-typedef char Ov007Model_visible_must_end_at_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
-typedef char Ov007Figure_update_must_end_at_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
-typedef char Ov007Work_figure_must_end_at_0x104[sizeof(Ov007Work) == 0x104 ? 1 : -1];
+typedef char Ov007Model_size_must_be_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
+typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
+typedef char Ov007Work_size_must_be_0x104[sizeof(Ov007Work) == 0x104 ? 1 : -1];
 
 /* The extern keeps decl_common.h's void * spelling; the typed view is
  * reached through a cast macro. */
@@ -71,7 +71,7 @@ typedef char Ov007Work_figure_must_end_at_0x104[sizeof(Ov007Work) == 0x104 ? 1 :
 void func_ov007_020b0da0(void* arg0) {
     Ov007Figure *figure = (Ov007Figure *)arg0;
     Ov007Model *obj = figure->model;
-    Ov007MenuState *st = WORK->state;
+    Ov007MenuState *st = WORK->states[1];
     int counter = st->stateTicks;
     Matrix4x3 *mat = obj->model->transforms;
     void* ret = func_ov007_020aebac();

@@ -40,8 +40,8 @@ typedef struct Ov007Swing {
     Vector3 yPointPos[2]; /* 0x38: yPoints[i]'s, i << 12 apart along y */
 } Ov007Swing;
 
-typedef char Ov007Swing_yPointPos_must_end_at_0x50[sizeof(Ov007Swing) == 0x50 ? 1 : -1];
-typedef char Ov007SwingParams_maxRotY_must_end_at_0x2c[sizeof(Ov007SwingParams) == 0x2c ? 1 : -1];
+typedef char Ov007Swing_size_must_be_0x50[sizeof(Ov007Swing) == 0x50 ? 1 : -1];
+typedef char Ov007SwingParams_size_must_be_0x2c[sizeof(Ov007SwingParams) == 0x2c ? 1 : -1];
 
 /* Turns the swing into the item sprite's pose: w gets the chain's last
  * point (x, y), and *ox/*oy the x and y side pairs' slopes, eased and capped

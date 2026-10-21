@@ -38,8 +38,8 @@ typedef struct Ov007Work {
     Ov007Pad *pad; /* 0x54: func_ov007_020c2304 */
 } Ov007Work;
 
-typedef char Ov007Cursor_dirPressed_must_end_at_0x18[sizeof(Ov007Cursor) == 0x18 ? 1 : -1];
-typedef char Ov007Pad_heldFrames_must_end_at_0x34[sizeof(Ov007Pad) == 0x34 ? 1 : -1];
+typedef char Ov007Cursor_size_must_be_0x18[sizeof(Ov007Cursor) == 0x18 ? 1 : -1];
+typedef char Ov007Pad_size_must_be_0x34[sizeof(Ov007Pad) == 0x34 ? 1 : -1];
 
 /* The externs keep the tree's int * spelling (the declaration-agreement
  * gate); the typed views are reached through cast macros. */

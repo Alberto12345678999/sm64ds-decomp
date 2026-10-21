@@ -44,8 +44,9 @@ typedef struct Ov007Work {
     Ov007ItemView *itemViews[0x18];
 } Ov007Work;
 
-typedef char Ov007Work_itemViews_must_be_0x114[(int)&((Ov007Work *)0)->itemViews == 0x114 ? 1 : -1];
-typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
+typedef char
+    Ov007Work_itemViews_must_be_at_0x114[(int)&((Ov007Work *)0)->itemViews == 0x114 ? 1 : -1];
+typedef char Ov007Item_layout_must_be_at_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)

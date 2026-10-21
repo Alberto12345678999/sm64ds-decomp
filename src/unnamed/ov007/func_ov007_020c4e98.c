@@ -16,7 +16,7 @@ typedef struct Ov007Picker {
     Ov007StrokePath **groups; /* 0x38: committed strokes */
 } Ov007Picker;
 
-typedef char Ov007Picker_groups_must_end_at_0x3c[sizeof(Ov007Picker) == 0x3c ? 1 : -1];
+typedef char Ov007Picker_size_must_be_0x3c[sizeof(Ov007Picker) == 0x3c ? 1 : -1];
 
 /* Draws every committed stroke but group idx, and the stroke being drawn,
  * in full under the first style (func_ov007_020c4fcc(a2, a3)); then group

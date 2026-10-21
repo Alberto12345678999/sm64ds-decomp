@@ -22,8 +22,8 @@ typedef struct Ov007Link {
     struct Vector3 dir;  /* 0xc */
 } Ov007Link;
 
-typedef char Ov007Follower_force_must_end_at_0x1c[sizeof(Ov007Follower) == 0x1c ? 1 : -1];
-typedef char Ov007Link_dir_must_end_at_0x18[sizeof(Ov007Link) == 0x18 ? 1 : -1];
+typedef char Ov007Follower_size_must_be_0x1c[sizeof(Ov007Follower) == 0x1c ? 1 : -1];
+typedef char Ov007Link_size_must_be_0x18[sizeof(Ov007Link) == 0x18 ? 1 : -1];
 
 /* func_ov007_020c7560's mode 3: a damped spring along z only. The stretch
  * past dir.z, times stiffness (Q12), pushes the two ends apart, and each end
