@@ -74,7 +74,15 @@ typedef struct MbParentWork {
      * the MP parent size less 6; func_02067604 divides each segment by it
      * and func_02067530 turns a block number back into an offset with it */
     u32 mBlockSize;
-    u8 pad_131c[0x1340 - 0x131c];
+    /* 0x131c -- bytes of the child's entry request carried per piece:
+     * func_02068ae8 sets it to the MP child size less 2, and
+     * func_02065de4 copies each received piece at piece * mReqPieceSize */
+    s32 mReqPieceSize;
+    /* 0x1320 -- pieces a whole request takes, 30 / mReqPieceSize
+     * (func_02068ae8): func_02065de4 refuses a piece number above it and
+     * counts the received bits up to it */
+    s32 mReqPieceCount;
+    u8 pad_1324[0x1340 - 0x1324];
     /* 0x1340 -- per child (AID - 1): the user record from its entry request,
      * AID in the high nibble of byte 0 (func_0206655c); func_02066a94 hands
      * the table to func_0206853c */
