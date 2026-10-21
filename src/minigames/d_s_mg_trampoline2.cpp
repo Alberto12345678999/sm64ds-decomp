@@ -320,7 +320,8 @@ extern "C" void *TrmpItem_Construct(char *raw) {
     _ZN5ModelC1Ev(((TrmpItem *)raw)->mModels[2]);
     _ZN18TextureTransformerC1Ev(((TrmpItem *)raw)->mTexAnim);
     /* TrmpItem.h's pad_1a8: five 8-byte elements, role unknown. */
-    __cxa_vec_ctor(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
+    __cxa_vec_ctor(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)func_0203d738,
+                   (void *)NullDestructor_0203d47c);
     return raw;
 }
 

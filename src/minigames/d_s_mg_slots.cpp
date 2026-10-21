@@ -1086,7 +1086,8 @@ struct SlotBetIcon {
     s32 mBetCount;    /* 0x1c */
     s32 mPayoutTicks; /* 0x20 */
 };
-typedef char SlotBetIcon_size_must_match_dThIcon_c[sizeof(SlotBetIcon) == sizeof(dThIcon_c) ? 1 : -1];
+typedef char
+    SlotBetIcon_size_must_match_dThIcon_c[sizeof(SlotBetIcon) == sizeof(dThIcon_c) ? 1 : -1];
 #define BET_ICON(p) ((SlotBetIcon *)(p))
 
 // @symbol SlotReel_SetSpeed
@@ -1422,7 +1423,8 @@ s32 dScMgSlot1_c::Behavior() {
                 if (mWildCount != 0 && mWildCount < 3) {
                     mPayoutMultiplier += mWildCount << 1;
                 }
-                Mg_SaveRecordPair(mCredits + mPayoutMultiplier * BET_ICON(&mBetIcon)->mBetCount, mHudScore);
+                Mg_SaveRecordPair(mCredits + mPayoutMultiplier * BET_ICON(&mBetIcon)->mBetCount,
+                                  mHudScore);
                 mState = 4;
                 mStateTimer = 0x3c;
             }
