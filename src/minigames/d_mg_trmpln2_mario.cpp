@@ -35,8 +35,10 @@
 // their genuine API headers. Every Trmp2Mario_* / Trmp3DMario_* record access
 // spells a MARIO2 / MARIO3D member except Trmp2 +0x68 and Trmp3D +0x5c, which
 // stay raw: each is only ever stored 0 (BounceOffLineA, EnterBounce), and no
-// reader gives it a role. The three TrmpRingObjAdapter / TrmpObjAdapter stores
-// at the end stay raw because those classes have no layout header.
+// reader gives it a role. The TrmpRingObjAdapter / TrmpObjAdapter stores at the
+// end have no layout header of their own and go through the Mario views: the
+// ring adapter's +0x20 is dMgTrmpln2Mario_c::mItemHitCount, the base adapter's
+// +0x18 the mContact both Marios share.
 #pragma defer_codegen off
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -1143,7 +1145,7 @@ namespace ns_020ca39c {
 extern "C" {
 // @symbol Trmp2Mario_StateHidden
 void Trmp2Mario_StateHidden(int *p) {
-    p[10] = 0;
+    MARIO2(p)->mPos.y = 0;
 }
 }
 }
@@ -1357,8 +1359,7 @@ extern "C" {
 // (y-mismatch tolerated when x is 0), else 1. Leaf, no callees.
 typedef struct Ent {
     char _pad0[0x70];  // 0x00
-    int x;             // 0x70
-    int y;             // 0x74
+    int mState[2];     // 0x70, dMgTrmpln2Mario_c::mState
     char _pad78[0x64]; // 0x78 (stride 0xdc)
 } Ent;
 
@@ -1370,9 +1371,9 @@ extern "C" int pmf_Trmp2Mario_StateHidden_2[2];
 int Trmp2Mario_Hide(void) {
     int i;
     for (i = 0; i < sTrmp2MarioCount; i++) {
-        int *v = (int *)(&sTrmp2Marios[i].x);
+        int *v = sTrmp2Marios[i].mState;
         volatile int *q = (volatile int *)pmf_Trmp2Mario_StateHidden_2;
-        if (v[0] != pmf_Trmp2Mario_StateHidden_2[0] || (v[1] != q[1] && sTrmp2Marios[i].x != 0))
+        if (v[0] != pmf_Trmp2Mario_StateHidden_2[0] || (v[1] != q[1] && sTrmp2Marios[i].mState[0] != 0))
             return 0;
     }
     return 1;
@@ -1686,11 +1687,11 @@ extern "C" {
 extern "C" int pmf_Trmp3DMario_StateMissed[];
 // @symbol Trmp3DMario_IsMissed
 int Trmp3DMario_IsMissed(int *r0) {
-    int *p = (int *)(((int)r0 + 0x64));
+    int *p = MARIO3D(r0)->mState;
     int *g = pmf_Trmp3DMario_StateMissed;
     int lr = 1;
     if (p[0] == g[0]) {
-        if (p[1] == g[1] || r0[0x19] == 0)
+        if (p[1] == g[1] || MARIO3D(r0)->mState[0] == 0)
             lr = 0;
     }
     return lr;
@@ -3168,13 +3169,13 @@ extern "C" {
 extern "C" int pmf_Trmp3DMario_StateOffstage_3[];
 // @symbol Trmp3DMario_IsOffstage
 int Trmp3DMario_IsOffstage(int *r0) {
-    int *p = (int *)(((int)r0 + 0x64));
+    int *p = MARIO3D(r0)->mState;
     int *g = pmf_Trmp3DMario_StateOffstage_3;
     int ret = 1;
     if (p[0] == g[0]) {
         if (p[1] == g[1])
             goto zero;
-        if (r0[0x19] != 0)
+        if (MARIO3D(r0)->mState[0] != 0)
             goto out;
     zero:
         ret = 0;
@@ -3610,8 +3611,11 @@ extern void TrmpObjAdapter_Clear(short *p);
 // @symbol TrmpRingObjAdapter_Clear
 void TrmpRingObjAdapter_Clear(short *c) {
     TrmpObjAdapter_Clear(c);
-    /* dMgTrmpRingObjAdapter_c has no layout header; its +0x20 has no established role. */
-    *(short *)((char *)c + 0x20) = 0;
+    /* dMgTrmpRingObjAdapter_c has no layout header. dMgTrmpln2Mario_c, the
+       one class built on it (Trmp2Mario_Construct), keeps its item-hit
+       count at +0x20, so the Clear slot each bounce runs restarts the combo
+       TrmpItem_UpdateWithJumper scores from. */
+    MARIO2(c)->mItemHitCount = 0;
 }
 }
 }
@@ -3624,8 +3628,9 @@ extern "C" int data_ov006_0213b3e0[];
 int *TrmpRingObjAdapter_Construct(int *c) {
     TrmpObjAdapter_Construct(c);
     *c = (int)data_ov006_0213b3e0;
-    /* dMgTrmpRingObjAdapter_c has no layout header; its +0x20 has no established role. */
-    *(short *)((char *)c + 0x20) = 0;
+    /* The item-hit count, through the dMgTrmpln2Mario_c view (see
+       TrmpRingObjAdapter_Clear). */
+    MARIO2(c)->mItemHitCount = 0;
     return c;
 }
 }
@@ -3635,7 +3640,8 @@ namespace ns_020cd720 {
 extern "C" {
 // @symbol TrmpObjAdapter_Clear
 void TrmpObjAdapter_Clear(short *p) {
-    p[12] = 0;
+    /* The jumper contact (see TrmpObjAdapter_Construct). */
+    MARIO3D(p)->mContact = 0;
 }
 }
 }
@@ -3646,9 +3652,11 @@ extern "C" int data_ov006_0213b3c4[];
 // @symbol TrmpObjAdapter_Construct
 void TrmpObjAdapter_Construct(int *c) {
     *c = (int)data_ov006_0213b3c4;
-    /* The jumper contact both Mario headers call mContact; dMgTrmpObjAdapter_c,
-       the base this constructs, has no layout header of its own. */
-    *(short *)((char *)c + 0x18) = 0;
+    /* The jumper contact both Mario headers call mContact at +0x18;
+       dMgTrmpObjAdapter_c, the base this constructs, has no layout header of
+       its own, so it goes through the dMgTrmpln3DMario_c view
+       (Trmp3DMario_Construct builds on this adapter directly). */
+    MARIO3D(c)->mContact = 0;
 }
 }
 }
