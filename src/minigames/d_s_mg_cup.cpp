@@ -116,11 +116,6 @@ struct CupShuffleOffset {
 extern CupShuffleOffset sCupShuffleOffsets[];
 extern void Cup_PickShuffleSpeed(char *o);
 extern void Presenter_ResetPose(char *c);
-/* Render spells cup y as this view. mCup[cup].y changes that call. */
-struct P8 {
-    int a;
-    int b;
-};
 void CupFx_DrawForCup(char *a, int b);
 void Cup_DrawOamList(int a0, void *a1, int a2, int a3, int a4, int a5);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
@@ -250,10 +245,8 @@ extern "C" void CupFx_Update(int sprite) {
     if (DecIfAbove0_Byte(&fx->delay))
         return;
     fx->delay = 3;
-    /* Keep the frame reload through the byte view: using fx->frame again
-       reuses the decrement address and changes the emitted instructions. */
     fx->frame -= 1;
-    if (*((signed char *)sprite + 0x12) < 0)
+    if (fx->frame < 0)
         fx->active = 0;
 }
 
@@ -327,34 +320,40 @@ extern "C" void Cup_DrawOamList(int scene, void *list, int x, int y, int scale, 
     }
 }
 
+/* Cup_UpdateAnim adds 0x5000 to the scene (plus the cup's index) first and
+   then the rest of the field's offset, as the ROM does; CUP_HI(m) is that
+   rest. Spelling the members directly folds the two adds and grows the
+   function by 12 bytes. */
+#define CUP_HI(member) ((int)&((dScMgCup_c *)0)->member - 0x5000)
+
 extern "C" void Cup_UpdateAnim(char *raw, int cupIndex) {
     unsigned char flag;
     char *row = raw + cupIndex;
     int resetCupIndex;
     row += 0x5000;
-    flag = *((unsigned char *)(row + 0x465));
+    flag = *((unsigned char *)(row + CUP_HI(mRevealRequested)));
     if (flag == 0) {
-        flag = *((unsigned char *)(row + 0x462));
+        flag = *((unsigned char *)(row + CUP_HI(mCupContents)));
         if (flag != 0) {
             char *out = raw + (cupIndex << 2);
             out += 0x5000;
-            *((int *)(out + 0x434)) = 4;
+            *((int *)(out + CUP_HI(mAnim))) = 4;
         } else {
             char *out = raw + (cupIndex << 2);
             out += 0x5000;
-            *((int *)(out + 0x434)) = 1;
+            *((int *)(out + CUP_HI(mAnim))) = 1;
         }
         resetCupIndex = cupIndex;
         goto epilogue;
     }
-    flag = *((unsigned char *)(row + 0x462));
+    flag = *((unsigned char *)(row + CUP_HI(mCupContents)));
     if (flag != 0) {
         char *out = raw + (cupIndex << 2);
         out += 0x5000;
-        *((int *)(out + 0x434)) = 5;
-        if ((*((unsigned char *)((raw + 0x5000) + 0x46d))) == 0xff) {
-            if ((*((unsigned char *)((raw + 0x5000) + 0x469))) != 1) {
-                *((unsigned char *)((raw + 0x5000) + 0x46d)) = (unsigned char)cupIndex;
+        *((int *)(out + CUP_HI(mAnim))) = 5;
+        if ((*((unsigned char *)((raw + 0x5000) + CUP_HI(mRevealCup)))) == 0xff) {
+            if ((*((unsigned char *)((raw + 0x5000) + CUP_HI(mCorrect)))) != 1) {
+                *((unsigned char *)((raw + 0x5000) + CUP_HI(mRevealCup))) = (unsigned char)cupIndex;
             }
         }
         resetCupIndex = cupIndex;
@@ -363,7 +362,7 @@ extern "C" void Cup_UpdateAnim(char *raw, int cupIndex) {
     {
         char *out = raw + (cupIndex << 2);
         out += 0x5000;
-        *((int *)(out + 0x434)) = 2;
+        *((int *)(out + CUP_HI(mAnim))) = 2;
     }
     resetCupIndex = cupIndex;
 
@@ -372,8 +371,8 @@ extern "C" void Cup_UpdateAnim(char *raw, int cupIndex) {
 epilogue: {
     char *out = raw + (resetCupIndex << 2);
     out += 0x5000;
-    *((int *)(out + 0x440)) = 0;
-    *((int *)(out + 0x44c)) = 0;
+    *((int *)(out + CUP_HI(mFrame))) = 0;
+    *((int *)(out + CUP_HI(mTick))) = 0;
 }
 }
 
@@ -726,7 +725,7 @@ void dScMgCup_c::StatePrepareShuffle() {
         return;
     Cup_PickShuffleSpeed(raw);
     if (mSparkleShuffles != 0) {
-        unsigned char *pending = (unsigned char *)(raw + 0x546b);
+        unsigned char *pending = &mSparkleShuffles;
         *pending = *pending - 1;
     }
     mState = 2;
@@ -888,7 +887,7 @@ s32 dScMgCup_c::Render() {
         cup = order[drawIndex];
         CupFx_DrawForCup((char *)mFx, (char)cup);
         Cup_DrawOamList((int)raw, (void *)sCupAnimTable[mAnim[cup]][mFrame[drawIndex]].list,
-                        mCup[cup].x, ((struct P8 *)raw + cup)[0xa7d].b, mCupScale[cup],
+                        mCup[cup].x, mCup[cup].y, mCupScale[cup],
                         mCupContents[cup]);
     }
 
