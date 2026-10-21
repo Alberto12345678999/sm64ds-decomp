@@ -1,4 +1,5 @@
 #include "types.h"
+#include "private/arm9_a9db8_mb_parent.h"
 extern char* data_020a9db8;
 
 /* NitroSDK MBi_get_blockinfo(bi, table, block, dlinfo): find the segment
@@ -7,10 +8,10 @@ extern char* data_020a9db8;
  * capped at mBlockSize), source offset and segment number. func_0206610c
  * calls it for the block it is about to send.
  *
- * The views are func_02067604's MbSegmentInfo, MbDownloadFileInfoHeader,
- * MB_BlockInfoTable and MbParentWork mirror. The result keeps
- * func_0206610c's struct Out tag (its declaration names the parameter
- * type) with the SDK's MB_BlockInfo field names. */
+ * The views are func_02067604's MbSegmentInfo, MbDownloadFileInfoHeader
+ * and MB_BlockInfoTable. The result keeps func_0206610c's struct Out tag
+ * (its declaration names the parameter type) with the SDK's MB_BlockInfo
+ * field names. */
 typedef struct MbSegmentInfo {
     unsigned int recv_addr;  /* 0x00 */
     unsigned int load_addr;  /* 0x04 */
@@ -31,13 +32,6 @@ typedef struct MB_BlockInfoTable {
     unsigned short block_head[3];    /* 0x0c */
     unsigned short block_num;        /* 0x12 */
 } MB_BlockInfoTable;
-
-/* File-local mirror of include/private/arm9_a9db8_mb_parent.h's
- * MbParentWork, the one field read here. */
-typedef struct MbParentWork {
-    unsigned char pad_0000[0x1318];
-    unsigned int mBlockSize; /* 0x1318 */
-} MbParentWork;
 
 struct Out {
     int child_recv_buff_addr; /* 0x0 */

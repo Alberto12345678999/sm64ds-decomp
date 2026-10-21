@@ -60,7 +60,7 @@ typedef struct MbBeacon {
 
 #ifndef SM64DS_PLATFORM_PC
 typedef char MBGameInfo_size_must_be_0x4b8[sizeof(MBGameInfo) == 0x4b8 ? 1 : -1];
-typedef char MbBeacon_volat_at_0x10[sizeof(MbBeacon) == 0x10 ? 1 : -1];
+typedef char MbBeacon_size_must_be_0x10[sizeof(MbBeacon) == 0x10 ? 1 : -1];
 #endif
 
 /* data_020a9d2c keeps the u8[] spelling the other MB files use and is read

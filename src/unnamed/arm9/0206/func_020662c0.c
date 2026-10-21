@@ -1,32 +1,9 @@
 #include "types.h"
+#include "private/arm9_a9db8_mb_parent.h"
 extern void func_0205a588(void *dst, int val, int len);
 extern u8 *func_02065d5c(void *src, void *dst);
 extern void CpuCopy8(void *dst, void *src, int len);
 extern int func_02067f2c(u32 a, u32 b, u32 c);
-
-/* File-local mirror of include/private/arm9_a9db8_mb_parent.h (the multiboot
- * parent work data_020a9db8 points at): same names and offsets, with the
- * parts this function does not touch left as padding. */
-typedef struct MbParentFile {
-    u8 mHeader[0x59c]; /* 0x000 */
-    u8 pad_59c[0x5c2 - 0x59c];
-    u8 mActive; /* 0x5c2 */
-    u8 pad_5c3[0x1];
-} MbParentFile;
-
-typedef struct MbParentWork {
-    u8 pad_0000[0x14e8];
-    s32 mChildState[15]; /* 0x14e8 */
-    u8 mFileCount;       /* 0x1524 */
-    u8 mCurrentFile;     /* 0x1525 */
-    s8 mChildFile[15];   /* 0x1526 */
-    u8 pad_1535[0x1788 - 0x1535];
-    MbParentFile mFiles[16]; /* 0x1788 */
-} MbParentWork;
-
-#ifndef SM64DS_PLATFORM_PC
-typedef char MbParentFile_size_must_be_0x5c4[sizeof(MbParentFile) == 0x5c4 ? 1 : -1];
-#endif
 
 extern char *data_020a9db8;
 extern u8 data_0209a078;

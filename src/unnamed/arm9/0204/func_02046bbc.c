@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ModelBase.h"
 
 /* Texture-pattern (BTP) step: for each sequence of the BTP file, find the
  * last key whose frame is <= the requested frame, then point the material
@@ -6,10 +7,10 @@
  * (src/engine/model/TextureSequence.cpp) calls it with the model's
  * ModelComponents, its BTP_File and the integer frame.
  *
- * The views keep the names of ModelComponents (ModelBase.h), BMD_File,
- * BMD_Texture and BMD_Palette (BMD_File.h) and BTP_File (TextureSequence.h,
- * which a C file can't include) where those headers have them. They extend
- * them with what this function shows:
+ * ModelComponents and the BMD views come from ModelBase.h and BMD_File.h.
+ * BTP_File is a view of TextureSequence.h's (which a C file can't include)
+ * with the same names where that header has them, extended with what this
+ * function shows:
  *   - BTP_File +0x00 (unk_ in the header) is numFrames, the frame count
  *     TextureSequence.cpp hands to SetAnimation; a frame past it crashes.
  *   - BTP_File +0x10/+0x14/+0x18 (unk_ in the header) are three parallel
@@ -19,8 +20,6 @@
  *     it by name; 0xffff is unresolved), name, numKeys, firstKey }.
  *   - texRecords/palRecords are func_02046d50's 8-byte { resourceId, name }
  *     records; resourceId is the BMD texture or palette index.
- *   - the file's BMD_Material carries texImageParam at 0x20 (padding in
- *     BMD_File.h).
  *   - the 0x30-byte runtime material (MaterialState here; ModelBase.h types
  *     ModelComponents::materials as BMD_Material, but its builder in
  *     Model4.cpp lays it out differently) gets texImageParam at 0x1c (the
@@ -41,43 +40,18 @@ struct BtpResRecord {
     u16 pad2;
     char *name; /* 0x4 */
 };
-struct BMD_Texture {
-    char pad_00[0x10];
-    u32 flags; /* 0x10 */
-};
-struct BMD_Palette {
-    char pad_00[0xc];
-    u32 vramOffset; /* 0xc */
-};
-struct BMD_Material {
-    char pad_00[0x20];
-    u32 texImageParam; /* 0x20 */
-    char pad_24[0xc];
-};
 struct MaterialState {
     char pad_00[0x1c];
     u32 texImageParam; /* 0x1c */
     u32 texPlttBase;   /* 0x20 */
     char pad_24[0xc];
 };
-struct BMD_File {
-    char pad_00[0x18];
-    struct BMD_Texture *textures;   /* 0x18 */
-    u32 numPalettes;                /* 0x1c */
-    struct BMD_Palette *palettes;   /* 0x20 */
-    u32 numMaterials;               /* 0x24 */
-    struct BMD_Material *materials; /* 0x28 */
-};
-struct ModelComponents {
-    struct BMD_File *modelFile;      /* 0x0 */
-    struct MaterialState *materials; /* 0x4 */
-};
 struct BTP_File {
-    u16 numFrames; /* 0x00 */
-    u16 pad2;
+    u16 numFrames;                   /* 0x00 */
+    u16 numTexRecords;               /* 0x02 */
     struct BtpResRecord *texRecords; /* 0x04 */
     u16 numPalRecords;               /* 0x08 */
-    u16 padA;
+    u16 pad_0a;
     struct BtpResRecord *palRecords; /* 0x0c */
     u16 *keyFrames;                  /* 0x10 */
     u16 *keyTexIndices;              /* 0x14 */
@@ -89,8 +63,7 @@ struct BTP_File {
 #ifndef SM64DS_PLATFORM_PC
 typedef char BtpSeqRecord_size_must_be_0xc[sizeof(struct BtpSeqRecord) == 0xc ? 1 : -1];
 typedef char MaterialState_size_must_be_0x30[sizeof(struct MaterialState) == 0x30 ? 1 : -1];
-typedef char BMD_Material_size_must_be_0x30[sizeof(struct BMD_Material) == 0x30 ? 1 : -1];
-typedef char BTP_File_seqRecords_at_0x20[sizeof(struct BTP_File) == 0x24 ? 1 : -1];
+typedef char BTP_File_size_must_be_0x24[sizeof(struct BTP_File) == 0x24 ? 1 : -1];
 #endif
 
 extern void Crash(void);
@@ -113,7 +86,7 @@ void func_02046bbc(struct ModelComponents *model, struct BTP_File *file, unsigne
         if (e->materialId == 0xffff) {
             Crash();
         }
-        mat = &model->materials[e->materialId];
+        mat = &((struct MaterialState *)model->materials)[e->materialId];
         j = e->numKeys - 1;
         p = ((&file->keyFrames[e->firstKey]) + e->numKeys) - 1;
         for (;;) {

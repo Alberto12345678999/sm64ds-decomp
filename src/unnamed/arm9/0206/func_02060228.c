@@ -9,10 +9,10 @@ typedef void (*CardTask)(struct CardCommon *p);
 
 /* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
  * fields this function touches. mFlags, mThread and mCurThread follow
- * func_0206081c.c and func_02060484.c; mTaskFunc and mPriority are the
- * SDK's task_func and priority, which sit between the callback argument
- * and the flags in CARDiCommon (func_020602bc runs mTaskFunc on the card
- * thread). */
+ * func_0206081c.c and func_02060484.c. mTaskFunc (0x30, the SDK's
+ * task_func) sits just before the flags and mPriority (0x38, the SDK's
+ * priority) just after them; func_020602bc runs mTaskFunc on the card
+ * thread. */
 typedef struct CardCommon {
     unsigned char pad_00[0x30];
     CardTask mTaskFunc; /* 0x30 */
@@ -27,7 +27,7 @@ typedef struct CardCommon {
 
 #ifndef SM64DS_PLATFORM_PC
 typedef char
-    CardCommon_cur_thread_must_be_at_0xd0[(int)&((CardCommon *)0)->mCurThread == 0xd0 ? 1 : -1];
+    CardCommon_mCurThread_must_be_at_0xd0[(int)&((CardCommon *)0)->mCurThread == 0xd0 ? 1 : -1];
 #endif
 
 /* NitroSDK CARDi_SetTask: set the card thread to mPriority (relative to
