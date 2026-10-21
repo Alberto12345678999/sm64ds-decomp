@@ -2807,10 +2807,10 @@ void daTrs_c::func_ov063_0211a964(int arg1) {
         if (arg1 == 0)
             return;
     }
-    t = this->unk_5b8 >> 4;
+    t = this->mWobblePhase >> 4;
     this->mScaleX = this->mClsnScale +
         ((*(short *)((char *)data_02082214 + t * 4) << 3) / 100);
-    t = this->unk_5b8 >> 4;
+    t = this->mWobblePhase >> 4;
     this->mScaleY = this->mClsnScale +
         ((-(*(short *)((char *)data_02082214 + t * 4) << 3)) / 100);
     this->mScaleZ = this->mScaleX;
@@ -3536,14 +3536,14 @@ int daTrs_c::InitResources()
     func_02035800(&mWithMeshClsn);
     mState = 0;
     unk_5b2 = mPrevAngleY;
-    unk_5b8 = 0;
+    mWobblePhase = 0;
     mBooFlags.followHeading = 1;
     mBigBooID = 0;
     mSpawnerID = 0;
     mCachedActorID = 0;
     mTalkPlayer = 0;
     mChildDeaths = 0;
-    unk_5b8 = 0;
+    mWobblePhase = 0;
     mDeathMode = data_ov063_0211e22c[mVariant];
     mHurtDamage = data_ov063_0211e1ec[mVariant];
     unk_5a8 = 0;

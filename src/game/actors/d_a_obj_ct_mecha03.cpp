@@ -1,20 +1,18 @@
 //cpp
-/* daObjCtMecha03_c -- the swinging pendulum of Tick Tock Clock (CT_MECHA03),
- * ov065.
- *
+/* daObjCtMecha03_c -- TTC swinging pendulum (CT_MECHA03, ov065).
  * It swings under mSwingAccel; in clock mode 2 (data_0209f2c0) each stop
- * rolls a new push strength and an occasional pause. Its shadow follows the
- * bob, not the pivot (func_ov065_02119fe8).
+ * rolls a new push strength and an occasional pause. Shadow follows the
+ * bob (func_ov065_02119fe8); model matrix helper func_ov065_0211a114.
  *
- * mwccarm emits ordinary functions in reverse source order, so the factory
- * stays first and the inline destructor stays last in the header. `return new`
- * emits a homeless _ZN10dBgActor_cD2Ev; the compiler-only policy deadstrips it.
- *
+ * The destructor pair comes off the inline header destructor (D1 then D0,
+ * no D2). Source order is reverse ROM order (2004/b56 emits .text back to
+ * front); the factory stays first and the inline destructor stays in the
+ * header. `return new` emits a homeless _ZN10dBgActor_cD2Ev (compiler-only
+ * deadstrip).
  * common.h stays first. Shadow and model matrices are the flat 12-word
  * Matrix4x3; translation is m[9], m[10], m[11].
- *
- * func_ov065_02119fe8 and func_ov065_0211a114 are methods. The ROM address is
- * the method name. No other TU calls the old free-function spelling.
+ * func_ov065_02119fe8 / func_ov065_0211a114 are methods (S33); the ROM
+ * address is the method name.
  *
  * leftovers:
  * - dBgW_KcMbg::SetFile with a Fix12<int> local sizes InitResources

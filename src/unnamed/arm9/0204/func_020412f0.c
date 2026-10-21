@@ -11,6 +11,9 @@
  * Also improves 1.2/base|sp2|sp2p3 from 12 divergences to 7, so it is a better source
  * shape rather than a b56 accident. Link-verified: VERIFIED, 0 diffs, 0 blind.
  */
+#include "private/arm9_a1fc0_file_share.h"
+#include "private/arm9_wbt.h"
+
 typedef unsigned int u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
@@ -54,14 +57,15 @@ void func_020412f0(char *thiz)
     int sb;
     int type;
     u32 r6;
-    char *p;
-    char *n;
+    FileShareNode *p;
+    WBTPrepareSendDataCallback *n;
+    WBTCommand *cmd = (WBTCommand *)thiz;
 
-    sb = func_02065a4c(*(u16 *)(thiz + 0xa));
-    if (*(int *)thiz != 0xc)
+    sb = func_02065a4c(cmd->peer_bmp);
+    if (cmd->command != 0xc)
         return;
 
-    type = *(int *)(thiz + 4);
+    type = cmd->event;
 
     switch (type) {
     case 2:
@@ -72,8 +76,9 @@ void func_020412f0(char *thiz)
 
     case 0xa: {
         r6 = sb * 0xc;
-        Msg *m = (Msg *)(thiz + 0x14);
+        Msg *m = (Msg *)cmd->u.user_data.data;
         char *base = data_020a2400;
+        FileShareParentArea *area = (FileShareParentArea *)base;
         int kind;
 
         *(int *)(base + r6) = *(int *)((Msg *)((int)m));
@@ -98,38 +103,37 @@ void func_020412f0(char *thiz)
             u32 unk18v = m->w1;
             int val = (m->f4 << 8) | m->b8;
 
-            if (*(int *)(base + 0x2720) != 0 ||
-                val != *(int *)(data_020a1fc0 + 0x28)) {
-                *(int *)(base + 0x2720) = 1;
-                *(int *)((int)base + 0x2728) |= (1 << sb);
-                *(int *)((int)base + 0x271c) |= (1 << sb);
+            if (area->mResizePending != 0 || val != FILE_SHARE_WORK->mParentPacketSize) {
+                area->mResizePending = 1;
+                area->mResizeChildren |= (1 << sb);
+                area->mOpenChildren |= (1 << sb);
             } else {
-                void *p = func_02041ce0(base, unk18v, nib1);
+                FileShareNode *p = (FileShareNode *)func_02041ce0(base, unk18v, nib1);
 
                 if (p != 0) {
-                    *(int *)((int)base + 0x270c) |= (1 << sb);
-                    *(int *)(base + r6 + 4) = *(int *)((char *)p + 0x88);
-                    *(int *)((int)p + 0x80) += 1;
+                    area->mReplyPending |= (1 << sb);
+                    *(int *)(base + r6 + 4) = p->mFileId;
+                    p->mRefCount += 1;
                 } else {
-                    void *q = func_02041c64(base, unk18v, nib1);
-                    *(int *)((int)q + 0x84) |= (1 << sb);
+                    FileShareNode *q = (FileShareNode *)func_02041c64(base, unk18v, nib1);
+                    q->mWaitingChildren |= (1 << sb);
                 }
 
-                *(int *)((int)base + 0x271c) |= (1 << sb);
+                area->mOpenChildren |= (1 << sb);
             }
             break;
         }
         case 2: {
             u32 saved = _ZN3IRQ7DisableEv();
-            void *p;
+            FileShareNode *p;
 
-            *(int *)((int)base + 0x270c) |= (1 << sb);
-            p = func_02041c2c(base, m->w1);
+            area->mReplyPending |= (1 << sb);
+            p = (FileShareNode *)func_02041c2c(base, m->w1);
 
             if (p != 0) {
-                *(int *)((int)p + 0x80) -= 1;
-                if (*(int *)((char *)p + 0x80) <= 0) {
-                    *(int *)((char *)p + 0x84) = 0;
+                p->mRefCount -= 1;
+                if (p->mRefCount <= 0) {
+                    p->mWaitingChildren = 0;
                     func_020657fc(m->w1);
                     func_02041ae8(base, p);
                     func_020423c8();
@@ -148,8 +152,8 @@ void func_020412f0(char *thiz)
         char *base = data_020a2400;
         int key;
 
-        n = thiz + 0x14;
-        key = *(int *)n;
+        n = &cmd->u.prepare_send_data;
+        key = n->block_id;
         int shortVal, p94, unk18v;
         int i;
 
@@ -159,34 +163,35 @@ void func_020412f0(char *thiz)
             data_020a0f8c = 0;
         }
 
-        *(int *)(n + 8) = 0;
-        p = (char *)func_02041c2c(base, key);
+        n->data_ptr = 0;
+        p = (FileShareNode *)func_02041c2c(base, key);
         if (p == 0)
             break;
 
-        shortVal = *(s16 *)(n + 0xc);
-        p94 = *(int *)(p + 0x94);
-        unk18v = *(int *)(n + 4);
+        shortVal = n->own_packet_size;
+        p94 = p->mPrevSeqNo;
+        unk18v = n->block_seq_no;
 
-        if (*(int *)(p + 0x98) != 3) {
-            int t = (*(int *)(p + 0x44) & 1) ? 1 : 0;
+        if (p->mLoadingPage != 3) {
+            /* mFile's FSFile stat, bit 0: its read is still in flight */
+            int t = (*(int *)(p->mFile + 0xc) & 1) ? 1 : 0;
             if (t == 0)
-                *(int *)(p + 0x98) = 3;
+                p->mLoadingPage = 3;
         }
 
         {
             int prod = shortVal * p94;
             int cnt2;
 
-            *(int *)(p + 0x94) = unk18v;
-            cnt2 = *(int *)(p + 0x98);
+            p->mPrevSeqNo = unk18v;
+            cnt2 = p->mLoadingPage;
 
             for (i = 0; i < 3; i++) {
                 if (i != cnt2) {
-                    int rem = prod - ((int *)p + i)[0x28];
+                    int rem = prod - p->mPageOffset[i];
                     if (rem >= 0 && rem + shortVal <= 0x400) {
-                        *(int *)(n + 4) = p94;
-                        *(int *)(n + 8) = (int)(p + 0xc0 + (i << 0xa) + rem);
+                        n->block_seq_no = p94;
+                        n->data_ptr = p->mPages[i] + rem;
                         data_020a0f8c = 0;
                         break;
                     }
@@ -194,7 +199,7 @@ void func_020412f0(char *thiz)
             }
         }
 
-        if (*(int *)(p + 0x98) != 3)
+        if (p->mLoadingPage != 3)
             break;
 
         {
@@ -202,7 +207,7 @@ void func_020412f0(char *thiz)
             int prod2 = shortVal * unk18v;
 
             for (j = 0; j < 3; j++) {
-                int rem = prod2 - ((int *)p + j)[0x28];
+                int rem = prod2 - p->mPageOffset[j];
 
                 if (rem >= 0 && rem + shortVal <= 0x400)
                     break;
@@ -212,7 +217,7 @@ void func_020412f0(char *thiz)
                 break;
 
             {
-                int nxt = *(int *)(p + 0x9c);
+                int nxt = p->mLastRefillPage;
                 int masked;
 
                 do {
@@ -221,12 +226,12 @@ void func_020412f0(char *thiz)
                         nxt = 0;
                 } while (nxt == i);
 
-                *(int *)(p + 0x9c) = nxt;
-                *(int *)(p + 0x98) = nxt;
+                p->mLastRefillPage = nxt;
+                p->mLoadingPage = nxt;
                 masked = prod2 & -0x200;
-                ((int *)p + nxt)[0x28] = masked;
-                func_0205d368(p + 0x38, masked, 0);
-                func_0205d3e4(p + 0x38, (int)(p + 0xc0 + (nxt << 0xa)), 0x400);
+                p->mPageOffset[nxt] = masked;
+                func_0205d368(p->mFile, masked, 0);
+                func_0205d3e4(p->mFile, (int)p->mPages[nxt], 0x400);
             }
         }
 

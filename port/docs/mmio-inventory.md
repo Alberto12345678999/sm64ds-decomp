@@ -69,7 +69,7 @@ or used as a DMA destination — it cannot be redirected by redefining an lvalue
 - `src/_ZN4cstd3divEii.c:5` — `while(*(volatile unsigned short*)0x4000280 & 0x8000);`
 - `src/_ZN4cstd3modEii.c:5` — `while(*(volatile unsigned short*)0x4000280 & 0x8000);`
 - `src/_ZN4cstd4ldivEii.c:4` — `while(*(volatile unsigned short*)0x4000280 & 0x8000);`
-- `src/_ZN4cstd4sqrtEy.c:9` — `while(*(volatile unsigned short*)0x40002b0 & 0x8000);`
+- `src/cstd_sqrt.cpp:9` — `while(*(volatile unsigned short*)0x40002b0 & 0x8000);`
 - `src/func_02013f4c.c:89` — `while ((int)*(volatile u16*)0x4000006 >= 0xc0) {}`
 - `src/func_02013f4c.c:90` — `while ((int)*(volatile u16*)0x4000006 < 0xc0) {}`
 - `src/func_02049018.c:17` — `while (*(volatile unsigned short *)0x40002b0 & 0x8000);`

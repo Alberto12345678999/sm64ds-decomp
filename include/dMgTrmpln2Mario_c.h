@@ -12,14 +12,17 @@
  * through its MARIO2() cast. The fields are named from those functions; the
  * first five are the jumper fields the drawn line writes (TrmpLine_PushJumper in
  * unit020cd744.cpp, whose `Cannon` view has the same prefix). Unnamed regions are
- * read or written by one site at most, or sit inside an embedded object. */
+ * read or written by one site at most, or sit inside an embedded object; pad_68
+ * is only ever stored 0 (two sites, no reader). */
 struct dMgTrmpln2Mario_c {
     void *mVtable;          /* 0x00 */
     Vector3 mContactNormal; /* 0x04 -- the drawn line's normal */
     s32 mContactOffset;     /* 0x10 -- signed distance from the line's centre */
     s32 mContactHalfWidth;  /* 0x14 -- the line's half width */
     u16 mContact;           /* 0x18 -- 0 none, 1 hit, 2 hard hit, 3 the line's end */
-    u8 pad_1a[0xa];         /* 0x1a */
+    u8 pad_1a[0x6];         /* 0x1a */
+    u16 mItemHitCount;      /* 0x20 -- items hit; doubles the score (TrmpItem_UpdateWithJumper) */
+    s16 mItemPushCount;     /* 0x22 -- item-end pushes this frame (TrmpItem_ReflectOffLine) */
     Vector3 mPos;           /* 0x24 */
     Vector3 mPrevPos;       /* 0x30 -- mPos before this frame's move */
     Vector3 mVel;           /* 0x3c */

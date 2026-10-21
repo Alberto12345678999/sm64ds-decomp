@@ -54,6 +54,11 @@ void PlayBank2_2D(unsigned int id);
 
 /* The pointer-to-member tables dispatch on this class. */
 typedef void (dScMgPachinko2_c::*PMF)(int);
+
+/* mBalls[0]'s field as a byte offset into the scene, and the same less the
+   0x4600 split base some ball handlers add first. */
+#define BALL2_OFF(member) ((int)&((dScMgPachinko2_c *)0)->mBalls[0].member)
+#define BALL2_HI(member) (BALL2_OFF(member) - 0x4600)
 struct Entry {
     PMF pmf;
 };
@@ -2299,13 +2304,14 @@ void dScMgPachinko2_c::Ball_StateHop(int i) {
 #pragma push
 #pragma opt_common_subs off
 void dScMgPachinko2_c::Ball_StateWalkOff(int i) {
-    /* mBalls[i].timer stays a byte offset here and in Ball_StateScored: the
-       member spelling folds the split 0x4600 + 0x96 address and moves bytes. */
+    /* mBalls[i].timer stays a byte offset here and in Ball_StateScored, some
+       reads through the split 0x4600 base (BALL2_HI): the member spelling
+       folds those adds and moves bytes. */
     char *c = (char *)this;
-    *(unsigned short *)(c + 0x4696 + (i << 6)) += 1;
+    *(unsigned short *)(c + BALL2_OFF(timer) + (i << 6)) += 1;
 
-    if (*(unsigned short *)(c + (i << 6) + 0x4600 + 0x96) >= 4) {
-        *(unsigned short *)(c + (i << 6) + 0x4600 + 0x96) = 0;
+    if (*(unsigned short *)(c + (i << 6) + 0x4600 + BALL2_HI(timer)) >= 4) {
+        *(unsigned short *)(c + (i << 6) + 0x4600 + BALL2_HI(timer)) = 0;
         mBalls[i].animStep += 1;
         if (mBalls[i].animStep >= 4)
             mBalls[i].animStep = 0;
@@ -2349,10 +2355,10 @@ void dScMgPachinko2_c::Ball_StateScored(int i) {
     if (mBalls[i].vy >= 0x8000)
         mBalls[i].vy = 0x8000;
 
-    if (*(unsigned short *)(c + i * 0x40 + 0x4600 + 0x96) != 0) {
-        *(unsigned short *)(c + 0x4696 + i * 0x40) -= 1;
+    if (*(unsigned short *)(c + i * 0x40 + 0x4600 + BALL2_HI(timer)) != 0) {
+        *(unsigned short *)(c + BALL2_OFF(timer) + i * 0x40) -= 1;
 
-        if (*(unsigned short *)(c + i * 0x40 + 0x4600 + 0x96) == 0x20) {
+        if (*(unsigned short *)(c + i * 0x40 + 0x4600 + BALL2_HI(timer)) == 0x20) {
             int r3 = Mg_GetSubmittedScore();
             int f660 = mBalls[i].x;
             int f664 = mBalls[i].y;

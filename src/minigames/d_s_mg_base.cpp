@@ -25,11 +25,12 @@
  *
  * Still unnamed: the header's unk_ fields, and the bytes it leaves as
  * padding that this file reaches by offset (+0xb0, +0x2228/+0x4228,
- * +0x4000, +0x4644); the func_ov004 and data_ov004 helpers are unnamed in
+ * +0x4644); the func_ov004 and data_ov004 helpers are unnamed in
  * symbols.txt.
  */
 
 #include "dScMgBase_c.h"
+#include "MgMenuRow.h"
 #include "dWipe_c.h"
 #include "decl_common.h"
 #include "Sound.h"
@@ -45,14 +46,19 @@
    mVecA into mPos each frame; state 1 (UpdateFlyTo /
    DrawFlyTo) interpolates mPos between the two vectors as the timer
    runs down. The class is not recovered, so the type stays a local view.
-   The three s32 pairs stay raw offsets: declaring them as s32 members makes
-   the struct 4-aligned, and the pool's .bss section goes from 2-byte to
-   4-byte alignment. */
+   The s32 members make the struct 4-aligned, so the pool's .bss section is
+   4-aligned where the old byte-pad view left it 2-aligned. The ROM cannot
+   tell the two apart: sMgFxPool sits at 0x020bebe8, right after the 0x40
+   bytes of sMgSparkleSprites, and every function and the link are
+   unchanged. */
 struct MgFx {
-    char pad[0x1a];                     /* 0x00 mPos, 0x08 mVecA, 0x10 mVecB */
-    s16 mTimer;                         /* 0x1a -- counts down to 0; 0 = free */
-    s16 mDuration;                      /* 0x1c -- mTimer's starting value */
-    s16 mState;                         /* 0x1e -- index into both PMF tables */
+    s32 mPos[2];  /* 0x00 */
+    s32 mVecA[2]; /* 0x08 */
+    s32 mVecB[2]; /* 0x10 */
+    u8 pad_18[2];
+    s16 mTimer;    /* 0x1a -- counts down to 0; 0 = free */
+    s16 mDuration; /* 0x1c -- mTimer's starting value */
+    s16 mState;    /* 0x1e -- index into both PMF tables */
     MgFx() {}
     ~MgFx() {}
     void DrawFlyTo();
@@ -101,7 +107,7 @@ extern void func_0203cbc0(void *ptr);
 extern void func_02012e1c(void);
 void Mg_InitMusic();
 extern void Enable3dEngines(void);
-extern char gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 extern dWipe_c data_0209f61c;
 extern unsigned char data_0209d460[];
 extern unsigned char data_0209d458[];
@@ -196,15 +202,15 @@ int Mg_GetLastRecordRank(dScMgBase_c *scene)
 // @symbol Mg_FindRecordRank
 namespace s20ad6fc {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 /* Returns the index (0..4) at which `value` would enter the scene's five
-   saved records, or -1. Scoring mode 5 (word 2 of the menu row) is
+   saved records, or -1. Scoring mode 5 (gMgMenuRow.scoringMode) is
    lower-is-better and never places a value <= 0; every other mode is
    higher-is-better. The `(unsigned)` casts make the compares unsigned. */
 int Mg_FindRecordRank(void *scene, int value)
 {
     int i;
-    if (gMgMenuRow[2] == 5) {
+    if (gMgMenuRow.scoringMode == 5) {
         if (value <= 0) return -1;
         for (i = 0; i < 5; i++) {
             if (func_02013580(Mg_GetSaveTable(scene), i) > (unsigned)value) return i;
@@ -222,25 +228,25 @@ int Mg_FindRecordRank(void *scene, int value)
 // @symbol Mg_SaveRecordPair
 namespace s20ad79c {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 extern int gMgSaveDirty[];
 
 /* Saves a two-value result into saved records 0 and 1 of the current scene.
-   A first value <= 0 replaces both with the menu row's defaults (words 5
-   and 6); a second value <= 0 alone falls back to word 6. A positive value
+   A first value <= 0 replaces both with the menu row's record defaults 0
+   and 1; a second value <= 0 alone falls back to default 1. A positive value
    is capped at 9999. Nothing is written when both already match;
    otherwise gMgSaveDirty is set to 1. */
 void Mg_SaveRecordPair(int first, int second) {
     int v0 = first, v1 = second;
     if (gMgScene == 0) return;
     if (v0 <= 0) {
-        v0 = gMgMenuRow[5];
-        v1 = gMgMenuRow[6];
+        v0 = gMgMenuRow.recordDefaults.v[0];
+        v1 = gMgMenuRow.recordDefaults.v[1];
     } else {
         if (v0 > 9999) v0 = 9999;
     }
     if (v1 <= 0) {
-        v1 = gMgMenuRow[6];
+        v1 = gMgMenuRow.recordDefaults.v[1];
     } else {
         if (v1 > 9999) v1 = 9999;
     }
@@ -269,13 +275,14 @@ int Mg_GetSavedRecord1(void) {
 // @symbol Mg_GetSavedRecord0
 namespace s20ad8b8 {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 /* Saved record 0 of the current scene; an empty record reads as the menu
-   row's word 5. 0 with no scene. */
+   row's record default 0. 0 with no scene. */
 int Mg_GetSavedRecord0(void) {
     if (gMgScene != 0) {
         int r = func_02013580(Mg_GetSaveTable(gMgScene), 0);
-        if (r == 0) return gMgMenuRow[5];
+        if (r == 0)
+            return gMgMenuRow.recordDefaults.v[0];
         return r;
     }
     return 0;
@@ -357,7 +364,7 @@ void Mg_ClearNewRecordFlag(void) {
 // @symbol Mg_SetSessionBest
 namespace s20ada40 {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 extern int Mg_GetTopRecord(void);
 
 /* Stores `score` as the session best (mSessionBest). If it beats the saved
@@ -369,7 +376,7 @@ void Mg_SetSessionBest(int score)
     dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     scene->mSessionBest = score;
-    if (gMgMenuRow[2] == 5) {
+    if (gMgMenuRow.scoringMode == 5) {
         if (score == 0) return;
         if (Mg_GetTopRecord() != 0) {
             if ((unsigned)score >= (unsigned)Mg_GetTopRecord()) return;
@@ -404,21 +411,21 @@ namespace s20adb1c {
 extern "C" {
 extern int Mg_GetSessionBest(void);
 extern int Mg_SetSessionBest(int);
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 /* Submits a score: stores it in mSubmittedScore (outside scoring mode 5, capped
-   at the menu row's word 3 when that is nonzero) and passes it to
+   at the menu row's scoreCap when that is nonzero) and passes it to
    Mg_SetSessionBest when it beats the session best. */
 void Mg_SubmitScore(int score) {
     dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
-    if (gMgMenuRow[2] == 5) {
+    if (gMgMenuRow.scoringMode == 5) {
         scene->mSubmittedScore = score;
         if (Mg_GetSessionBest() != 0) {
             if ((unsigned)score >= (unsigned)Mg_GetSessionBest()) return;
         }
         Mg_SetSessionBest(score);
     } else {
-        int cap = gMgMenuRow[3];
+        int cap = gMgMenuRow.scoreCap;
         if (cap != 0) {
             if ((unsigned)score > (unsigned)cap) score = cap;
         }
@@ -545,7 +552,7 @@ extern int Mg_RenderSpriteOnNoMtx(int,int,int,long long);
 void MgFx::DrawFlyTo() {
     int idx=s20adc80::GetGameLanguage();
     int *t=sMgSpriteTables[idx];
-    s20adc80::Mg_RenderSpriteOnNoMtx(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
+    s20adc80::Mg_RenderSpriteOnNoMtx(t[2], mPos[0] >> 0xc, mPos[1] >> 0xc, -1);
 }
 
 // @symbol _ZN4MgFx11DrawSparkleEv
@@ -585,8 +592,8 @@ void MgFx::DrawSparkle() {
     }
     {
         int idx = ((int)mTimer) & 0xf;
-        int x = *(int *)this >> 0xc;
-        int y = *(int *)((char *)this + 4) >> 0xc;
+        int x = mPos[0] >> 0xc;
+        int y = mPos[1] >> 0xc;
         s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::sMgSparkleSprites[idx], x, y, -1, -1);
     }
 }
@@ -617,7 +624,6 @@ inline long long inline_fn(int arg0)
    remaining fraction s = mTimer / mDuration: x = mVecA.x * s + mVecB.x * (1 - s),
    y = mVecB.y + s * s * (mVecA.y - mVecB.y), all Fix12. */
 void MgFx::UpdateFlyTo() {
-    char *r5 = (char *)this;
     using namespace s20addcc;
     {
         if (ApproachLinear2(mTimer, 0, 1)) {
@@ -629,15 +635,14 @@ void MgFx::UpdateFlyTo() {
         int c3 = mDuration;
         int c2 = mTimer;
         int t = cstd::fdiv((c3 - c2) << 0xc, c3 << 0xc);
-        int v8 = *((int *)(r5 + 8));
-        int v10 = *((int *)(r5 + 0x10));
+        int v8 = mVecA[0];
+        int v10 = mVecB[0];
         long long m1 = inline_fn(v8) * inline_fn(s);
         long long m2 = inline_fn(v10) * inline_fn(t);
         long long m3 = inline_fn(s) * inline_fn(s);
-        long long m4 = inline_fn((int)((m3 + 0x800) >> 0xc)) *
-                       inline_fn((*((int *)(r5 + 0xc))) - (*((int *)(r5 + 0x14))));
-        *((int *)r5) = ((int)((m1 + 0x800) >> 0xc)) + ((int)((m2 + 0x800) >> 0xc));
-        *((int *)(r5 + 4)) = (*((int *)(r5 + 0x14))) + ((int)((m4 + 0x800) >> 0xc));
+        long long m4 = inline_fn((int)((m3 + 0x800) >> 0xc)) * inline_fn(mVecA[1] - mVecB[1]);
+        mPos[0] = ((int)((m1 + 0x800) >> 0xc)) + ((int)((m2 + 0x800) >> 0xc));
+        mPos[1] = mVecB[1] + ((int)((m4 + 0x800) >> 0xc));
     }
 }
 
@@ -645,16 +650,12 @@ void MgFx::UpdateFlyTo() {
 /* State 0's update: counts mTimer down, passes mVecA to func_0203d630 with
    0xff8, then adds mVecB into mVecA and mVecA into mPos. */
 void MgFx::UpdateDrift() {
-    char* c = (char*)this;
     ApproachLinear2(mTimer, 0, 1);
-    func_0203d630((int*)(c + 8), 0xff8);
-    int *p = (int*)(((int)c + 8));
-    int *p2 = (int*)(((int)c + 0xc));
-    *p += *(int*)(c + 0x10);
-    *p2 += *(int*)(c + 0x14);
-    p = (int*)(((int)c + 4));
-    *(int*)c += *(int*)(c + 8);
-    *p += *(int*)(c + 0xc);
+    func_0203d630(mVecA, 0xff8);
+    mVecA[0] += mVecB[0];
+    mVecA[1] += mVecB[1];
+    mPos[0] += mVecA[0];
+    mPos[1] += mVecA[1];
 }
 
 // @symbol Mg_UpdateFx
@@ -678,16 +679,16 @@ void Mg_InitFx(char *c, short state, short timer, int *pos, int *vecA, int *vecB
     e->mState = state;
     e->mTimer = timer;
     e->mDuration = e->mTimer;
-    *(int *)(c) = pos[0];
-    *(int *)(c + 4) = pos[1];
+    e->mPos[0] = pos[0];
+    e->mPos[1] = pos[1];
     if (vecA) {
-        *(int *)(c + 8) = vecA[0];
-        *(int *)(c + 0xc) = vecA[1];
+        e->mVecA[0] = vecA[0];
+        e->mVecA[1] = vecA[1];
     }
-  if(vecB){
-    *(int*)(c+0x10)=vecB[0];
-    *(int*)(c+0x14)=vecB[1];
-  }
+    if (vecB) {
+        e->mVecB[0] = vecB[0];
+        e->mVecB[1] = vecB[1];
+    }
 }
 }
 }
@@ -863,11 +864,11 @@ int dScMgBase_c::OnGraphCallback0()
 // @symbol Mg_GetScoringMode
 namespace s20ae1a8 {
 extern "C" {
-extern int gMgMenuRow[];
-/* The menu row's scoring mode (word 2), or -1 with no scene. */
+extern MgEntry gMgMenuRow;
+/* The menu row's scoring mode, or -1 with no scene. */
 int Mg_GetScoringMode(void) {
     if (gMgScene != 0) {
-        return gMgMenuRow[2];
+        return gMgMenuRow.scoringMode;
     }
     return -1;
 }
@@ -877,14 +878,14 @@ int Mg_GetScoringMode(void) {
 // @symbol Mg_GetMusicMode
 namespace s20ae1cc {
 extern "C" {
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 
-/* The menu row's music mode (word 11, +0x2c), or 0 with no scene. The
+/* The menu row's music mode, or 0 with no scene. The
    music helpers below treat 0 as "stop the music" and 1 as "play
    Mg_GetMusicTrack's track". */
 int Mg_GetMusicMode(void) {
     if (gMgScene != 0) {
-        return gMgMenuRow[11];
+        return gMgMenuRow.musicMode;
     }
     return 0;
 }
@@ -968,16 +969,18 @@ namespace s20ae330 {
 extern "C" {
 extern int Mg_GetMusicMode(void);
 extern int Mg_GetMusicTrack(void);
-extern unsigned short gMgMenuRow;
+extern MgEntry gMgMenuRow;
 
 /* Music mode 0 stops the music, and replays the scene's track only when
-   the menu row's first halfword is 0x16f; any nonzero mode plays the
+   the menu row's scene ID is 0x16f; any nonzero mode plays the
    track. */
-void Mg_InitMusic(void){
-    if(gMgScene==0) return;
-    if(Mg_GetMusicMode()==0){
+void Mg_InitMusic(void) {
+    if (gMgScene == 0)
+        return;
+    if (Mg_GetMusicMode() == 0) {
         Sound::StopLoadedMusic_Layer1(1);
-        if(gMgMenuRow != 0x16f) return;
+        if (gMgMenuRow.id != 0x16f)
+            return;
         Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
         return;
     }
@@ -1419,6 +1422,9 @@ void Mg_UpdateMenu(char* c)
         if (b < 0x18) {
             func_02012790(0x62);
             self->mMenuCursor = 0;
+            /* +0x4644 is the header's pad_4644, a select delay: 0x10 for item
+               0 and 0 for the others, counted down by the ApproachLinear2
+               below before the pick acts. Raw until the header names it. */
             *(short*)(c + 0x4644) = 0x10;
             goto after;
         }
@@ -1518,6 +1524,9 @@ extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 
 void dScMgBase_c::RestoreScreenFromMenu()
 { using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
+    /* +0x2228 and +0x4228 lie in the header's unnamed pad_228: the 0x2000
+       bytes of sub-screen OBJ VRAM and the 0x400 bytes of BG palette (main,
+       then sub at +0x200) that SaveScreenForMenu copies out. */
     char *c = (char *)this;
 
     data_0209d45c = 0;
@@ -2448,7 +2457,7 @@ int dScMgBase_c::BeforeBehavior()
 void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
 {
     if (vfSuccess == 2) {
-        if (((int *)gMgMenuRow)[4] == 0)
+        if (gMgMenuRow.ownRecords == 0)
             Mg_CommitRecords();
         data_0209d4a8 = 0;
         sMgGraphCallback.mScene = 0;
@@ -2477,9 +2486,19 @@ void dScMgBase_c::AfterInitResources(u32 vfSuccess)
 }
 
 // @symbol _ZN11dScMgBase_c19BeforeInitResourcesEv
+namespace s20b0930 {
+extern "C" {
+/* local extern: decl_common.h declares this `(char *)`, but the definition
+   in src/minigames/d_mg_state.cpp takes no parameter and only resets the
+   sMg*Banner position globals. The `add r0, r4, #0x4000` the cartridge has
+   just before the call is the base of the mNewRecord store
+   (`strb r1, [r0, #0x65c]`), left in r0, not an argument. */
+void Mg_ResetBannerLayout(void);
+}
+}
+
 /* Sets up the scene and both displays. Slots 26, 31 and 33 must stay
- * virtual calls so derived scenes can override them. The block at 0x4000 is
- * padding in the header, so it is still passed by offset. */
+ * virtual calls so derived scenes can override them. */
 bool dScMgBase_c::BeforeInitResources()
 {
     if (dScene_c::BeforeInitResources() == 0) return 0;
@@ -2487,7 +2506,7 @@ bool dScMgBase_c::BeforeInitResources()
         func_02019028();
     else
         Enable3dEngines();
-    mMusicTrack = *(int*)(gMgMenuRow + 0x28);
+    mMusicTrack = gMgMenuRow.musicTrack;
     if (sMgWorkBuffer == 0)
         sMgWorkBuffer = _ZN6Memory13operator_new2Ej(0x4000);
     /* +0xb0 is the header's pad_0b0. Scanning ov004 and ov006 turns up no
@@ -2498,7 +2517,7 @@ bool dScMgBase_c::BeforeInitResources()
     mHudScore = 0;
     mBestHudScore = 0;
     mNewRecord = 0;
-    Mg_ResetBannerLayout((char *)this + 0x4000);
+    s20b0930::Mg_ResetBannerLayout();
     InitEngines();
     Mg_LoadBannerFiles();
     dScene_c::SetFaders(&data_0209f61c);
@@ -3044,9 +3063,9 @@ extern "C" {
 extern int GetGameLanguage(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 
-extern int gMgMenuRow[];
+extern MgEntry gMgMenuRow;
 
-/* Draws one record row at y. In scoring mode 5 (word 2 of the menu row)
+/* Draws one record row at y. In scoring mode 5 (gMgMenuRow.scoringMode)
    `val` is a time in frames, drawn as seconds, sprite word 7, tenths and
    hundredths ending at x, and a negative val draws nothing. Otherwise
    modes 1, 2 and 4 draw two label sprites at x 0x58 and 0x68 first; mode
@@ -3055,7 +3074,7 @@ extern int gMgMenuRow[];
 void Mg_DrawRecordRow(int a0, int x, int y, int val)
 {
     int idx = GetGameLanguage();
-    int mode = gMgMenuRow[2];
+    int mode = gMgMenuRow.scoringMode;
     int *tbl = sMgSpriteTables[idx];
     int flag = 0;
 
@@ -3868,14 +3887,14 @@ dScMgBase_c::dScMgBase_c() : mRunDuringFade(0), unk_0c2(1) {
     mQuitFadeStarted = 0;
 
     gMgScene = this;
-    mLevel = *(u32 *)(gMgMenuRow + 0x30);
+    mLevel = gMgMenuRow.level; /* dScMiniGm_c::mStartLevel */
 
     mSceneKind = sMgSceneKindByGame[(param1 >> 16) & 0xff];
-    /* param1 &= 0xffff, through a char *: spelled with the member, either
-       as &= or as a plain assignment, mwccarm forms the address this + 8
-       in ip first and the constructor grows by 4 bytes. */
-    *(s32 *)((char *)this + 8) =
-        *(u32 *)((char *)this + 8) & 0xffff;
+    /* param1 &= 0xffff, stored through an s32 lvalue. Spelled as a plain
+       u32 `param1 &= 0xffff` (or `param1 = param1 & 0xffff`), mwccarm forms
+       the address this + 8 in ip first and the constructor grows by 4
+       bytes; `param1 = (u16)param1` shrinks it by 4. */
+    *(s32 *)&param1 = param1 & 0xffff;
     mTallyShown = 0;
     mTallyAnimTimer = 0;
 

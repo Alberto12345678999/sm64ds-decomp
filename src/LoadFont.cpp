@@ -10,7 +10,7 @@ extern "C" int LoadFileAt(int handle, int dest);
 extern "C" void Deallocate(void *ptr);
 extern "C" unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
 extern "C" int func_02054d88(void);
-extern "C" void MultiCopy_Int(int *dst, int *src, int len);
+extern "C" void MultiCopy_Int(int *src, int *dst, int len);
 extern "C" void DecompressLZ16(void *dst, void *src);
 
 struct GX  { static void LoadBGPltt(void const *p, unsigned a, unsigned b); };

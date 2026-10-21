@@ -190,27 +190,8 @@ src/game/actors/d_a_obj_cannon_shutter.cpp:
 
 src/game/player/Player.cpp:
     complete
-    .text start:0x020bccfc end:0x020e67a8
-
-src/_ZN6PlayerD0Ev.cpp:
-    complete
-    .text start:0x020e67a8 end:0x020e6858
-
-src/_ZN6PlayerD1Ev.cpp:
-    complete
-    .text start:0x020e6858 end:0x020e68f4
-
-src/_ZN6PlayerC1Ev.cpp:
-    complete
-    .text start:0x020e68f4 end:0x020e69b8
-
-src/_ZN6Player13OnYoshiTryEatEv.cpp:
-    complete
-    .text start:0x020e69b8 end:0x020e69c0
-
-src/unnamed/ov002/func_ov002_020e69c0.c:
-    complete
-    .text start:0x020e69c0 end:0x020e6a08
+    .text start:0x020bccfc end:0x020e6a08
+    .init start:0x021019d0 end:0x02106e40
 
 src/Color_Interp.c:
     complete
@@ -344,16 +325,8 @@ src/game/actors/d_a_mugen_bgm.cpp:
 
 src/game/actors/d_a_demo.cpp:
     complete
-    .text start:0x020f1f70 end:0x020f8838
+    .text start:0x020f1f70 end:0x020f8858
     .data start:0x0210b940 end:0x0210b958
-
-src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp:
-    complete
-    .text start:0x020f8838 end:0x020f8848
-
-src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp:
-    complete
-    .text start:0x020f8848 end:0x020f8858
 
 src/game/actors/d_a_f_pkn_ball.cpp:
     complete
@@ -395,9 +368,6 @@ src/unnamed/ov002/__sinit_ov002_02100f84.c:
     complete
     .init start:0x02100f84 end:0x02101064
 
-src/unnamed/ov002/__sinit_ov002_021019d0.c:
-    complete
-    .init start:0x021019d0 end:0x02106e40
 
 src/unnamed/ov002/__sinit_ov002_02107370.c:
     complete

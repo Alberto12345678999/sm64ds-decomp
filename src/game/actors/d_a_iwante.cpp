@@ -2557,16 +2557,17 @@ int Eyerok::Behavior()
             u32 id1 = 0x13b;
             int z0 = 0;
             for (; i < 0x14; i++) {
-                if (*(int *)(cur + 0x4dc) != 0 || *(int *)(cur + 0x4e0) != 0 || *(int *)(cur + 0x4e4) != 0) {
+                if (((Eyerok *)cur)->mDustPos[0].x != 0 || ((Eyerok *)cur)->mDustPos[0].y != 0 ||
+                    ((Eyerok *)cur)->mDustPos[0].z != 0) {
                     mDustParticle1[i] =
                         _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                            mDustParticle1[i], id0,
-                            *(int *)(cur + 0x4dc), *(int *)(cur + 0x4e0), *(int *)(cur + 0x4e4),
+                            mDustParticle1[i], id0, ((Eyerok *)cur)->mDustPos[0].x,
+                            ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
                             (void *)z0, (void *)z0);
                     mDustParticle2[i] =
                         _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                            mDustParticle2[i], id1,
-                            *(int *)(cur + 0x4dc), *(int *)(cur + 0x4e0), *(int *)(cur + 0x4e4),
+                            mDustParticle2[i], id1, ((Eyerok *)cur)->mDustPos[0].x,
+                            ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
                             (void *)z0, (void *)z0);
                 }
                 cur += 0xc;
@@ -2581,9 +2582,9 @@ int Eyerok::Behavior()
                 char *q = c;
                 mDustCounter = (u16)j;
                 for (; j < 0x14; j++) {
-                    *(int *)(q + 0x4dc) = 0;
-                    *(int *)(q + 0x4e0) = 0;
-                    *(int *)(q + 0x4e4) = 0;
+                    ((Eyerok *)q)->mDustPos[0].x = 0;
+                    ((Eyerok *)q)->mDustPos[0].y = 0;
+                    ((Eyerok *)q)->mDustPos[0].z = 0;
                     q += 0xc;
                 }
             }
@@ -2710,10 +2711,10 @@ int Eyerok::InitResources()
         int i = 0;
         char *p = c;
         do {
-            *(s32 *)(p + 0x4DC) = 0;
-            *(s32 *)(p + 0x4E0) = 0;
+            ((Eyerok *)p)->mDustPos[0].x = 0;
+            ((Eyerok *)p)->mDustPos[0].y = 0;
             i += 1;
-            *(s32 *)(p + 0x4E4) = 0;
+            ((Eyerok *)p)->mDustPos[0].z = 0;
             p += 0xC;
         } while (i < 0x14);
     }
