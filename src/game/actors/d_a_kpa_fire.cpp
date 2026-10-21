@@ -43,8 +43,7 @@
  * - Particle::System::callbackScale and callbackVelocity are named.
  *   The word at +0x44 sits in pad_042 and stays a raw store.
  * - DropShadowRadHeight's matrix is `mShadowMat`, raw `u8[0x30]` storage.
- *   daKpaFire_c.h has no
- *   Matrix4x3 member there.
+ *   daKpaFire_c.h has no Matrix4x3 member there.
  * - Sound 0x180, player param1 == 3, and the particle kind pairs are
  *   named only by the use-site enums below.
  * - data_ov060_0211af74 and data_ov060_0211afb4 are this TU's owned
