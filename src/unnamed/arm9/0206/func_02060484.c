@@ -7,29 +7,64 @@ int func_0206062c(void* g);
 extern unsigned int _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(unsigned int flags);
 
-#define AT(p, off) ((void*)(int)((char*)(p) + (off)))
+/* The request block a chunk is handed over in (NitroSDK CARDiCommandArg);
+ * names as func_0206062c.cpp spells them. */
+typedef struct ChunkRequest {
+    int mResult; /* 0x00 -- 0 (CARD_RESULT_SUCCESS) when the request went through */
+} ChunkRequest;
 
-int func_02060484(int a, int b, int c, int d, int e, int f)
+/* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
+ * fields this function touches. mSrc / mDst / mRemaining and mRequest follow
+ * func_0206062c.cpp, the write task started here. */
+typedef struct CardCommon {
+    ChunkRequest *mRequest; /* 0x00 */
+    unsigned char pad_04[0x14];
+    int mSrc;       /* 0x18 -- RAM source of the write */
+    int mDst;       /* 0x1c -- backup address */
+    int mRemaining; /* 0x20 -- bytes left */
+    unsigned char pad_24[4];
+    /* 0x28 / 0x2c -- the completion callback and its argument; zeroed by
+     * func_02060890 (CARD_Init) */
+    int mCallback;
+    int mCallbackArg;
+    unsigned char pad_30[4];
+    /* 0x34 -- CARD_STAT_* bits: 4 (busy) is held for one request at a time
+     * (func_020603c8, func_02060558 take it the same way) */
+    u32 mFlags;
+    unsigned char pad_38[0x98];
+    /* 0xd0 -- the thread the request runs on: the caller's for a synchronous
+     * request, the card task thread (func_02060228) otherwise */
+    int mCurThread;
+    /* 0xd4 -- callers wait here while another request holds the busy bit */
+    char mBusyQueue[4];
+} CardCommon;
+
+/* Write len bytes from RAM src to backup address dst: wait for the
+ * card to be free, take it, store the request, and run the write task
+ * (func_0206062c) here or, when is_async, on the card thread. Synchronous
+ * calls return whether the request succeeded. */
+int func_02060484(int dst, int src, int len, int callback, int arg, int is_async)
 {
-    char* g = (char*)AT(data_020a8180, 0);
+    CardCommon* g = (CardCommon*)data_020a8180;
     unsigned int irq = _ZN3IRQ7DisableEv();
-    if (*(u32*)(g + 0x34) & 4) {
+    if (g->mFlags & 4) {
         do {
-            OS_SleepThread(g + 0xd4);
-        } while (*(u32*)(g + 0x34) & 4);
+            OS_SleepThread(g->mBusyQueue);
+        } while (g->mFlags & 4);
     }
-    *(u32*)AT(g, 0x34) |= 4;
+    g->mFlags |= 4;
     _ZN3IRQ7RestoreEj(irq);
-    *(int*)(g + 0x18) = b;
-    *(int*)(g + 0x1c) = a;
-    *(int*)(g + 0x20) = c;
-    *(int*)(g + 0x28) = d;
-    *(int*)(g + 0x2c) = e;
-    if (f != 0) {
+    g->mSrc = src;
+    g->mDst = dst;
+    g->mRemaining = len;
+    g->mCallback = callback;
+    g->mCallbackArg = arg;
+    if (is_async != 0) {
         func_02060228((void*)func_0206062c);
         return 1;
     }
-    *(int*)(data_020a8180 + 0xd0) = data_020a6134[2];
+    /* through the symbol, not g: the ROM reloads its address (via g, 4 bytes shorter) */
+    ((CardCommon*)data_020a8180)->mCurThread = data_020a6134[2];
     func_0206062c(g);
-    return (*(int**)g)[0] == 0;
+    return g->mRequest->mResult == 0;
 }
