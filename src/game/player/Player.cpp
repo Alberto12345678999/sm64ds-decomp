@@ -12886,9 +12886,9 @@ void func_ov002_020d228c(char* c)
     ((Player *)c)->ChangeState(data_ov002_02110154);
     _ZN6Player7SetAnimEji5Fix12IiEj(c, 9, 0, 0x1000, 0);
     player->mStateStep = 4;
-    *(int *)(c + 0x56c) = 0;
-    *(int *)(c + 0x570) = 0;
-    *(int *)(c + 0x574) = 0;
+    player->mSleepBubbleScaleX = 0;
+    player->mSleepBubbleScaleY = 0;
+    player->mSleepBubbleScaleZ = 0;
     player->mSleepStage = 2;
     player->mStateArg = 0;
 }
@@ -13161,9 +13161,9 @@ int Player::St_Wait_Main()
         if (this->FinishedAnim()) {
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 9, 0, 0x1000, 0);
             mStateStep = 4;
-            unk_56c = 0;
-            unk_570 = 0;
-            unk_574 = 0;
+            mSleepBubbleScaleX = 0;
+            mSleepBubbleScaleY = 0;
+            mSleepBubbleScaleZ = 0;
             mSleepStage = 2;
             mStateArg = 1;
         }
@@ -13199,8 +13199,8 @@ int Player::St_Wait_Main()
                 int b4b = (f2d8_4 == 2);
                 if (b4b != false) break;
             }
-            if (func_ov002_020d2da0(((char*)this))==1 || unk_56c >= 0x3000 || mIsInShallowWater!=0 ||
-                (unsigned short)(mStateFlags&4)) {
+            if (func_ov002_020d2da0(((char *)this)) == 1 || mSleepBubbleScaleX >= 0x3000 ||
+                mIsInShallowWater != 0 || (unsigned short)(mStateFlags & 4)) {
                 func_ov002_020d2e74(((char*)this));
                 mSleepStage = 0;
                 _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 8, 0x40000000, 0x1000, 0);
@@ -13311,7 +13311,7 @@ void func_ov002_020d2f24(char* thiz)
     id = player->param1;
     if (id != 3) return;
 
-    r4 = *(int*)(thiz + 0x56c);
+    r4 = player->mSleepBubbleScaleX;
     id = _ZNK6Player14GetBodyModelIDEjb(thiz, id & 0xff, 0);
     {
         /* q is the frame controller; m->currFrame would fold the split +0x50. */
@@ -13338,9 +13338,9 @@ void func_ov002_020d2f24(char* thiz)
 store:
     if (r4 < 0x400) r4 = 0x400;
     if (r4 > 0x4000) r4 = 0x4000;
-    *(int*)(thiz + 0x56c) = r4;
-    *(int*)(thiz + 0x570) = r4;
-    *(int*)(thiz + 0x574) = r4;
+    player->mSleepBubbleScaleX = r4;
+    player->mSleepBubbleScaleY = r4;
+    player->mSleepBubbleScaleZ = r4;
 }
 }
 
@@ -23666,7 +23666,7 @@ int Player::CleanupResources()
             if (p != 0)
                 p->v1();
         }
-        p = *(VB **)((char *)&unk_1d8);
+        p = *(VB **)((char *)&mSleepBubbleModel);
         if (p != 0) {
             if (p != 0)
                 p->v1();
@@ -23958,7 +23958,8 @@ int Player::Render()
                 }
                 func_ov002_020e3e00((char *)mHeadModels[i], &mScale, mOpacity);
                 if (func_ov002_020d225c(((char*)this))) {
-                    ((VObj*)*(char**)((char*)&unk_1d8))->m14((char*)&unk_56c);
+                    ((VObj *)*(char **)((char *)&mSleepBubbleModel))
+                        ->m14((char *)&mSleepBubbleScaleX);
                 }
             }
         }
@@ -24243,9 +24244,9 @@ void func_ov002_020e444c(char *c)
         }
 
         if (func_ov002_020d225c(c) != 0) {
-            int z = FX_MUL((*(int *)(c + 0x574)), 0x2400) + 0xc000;
+            int z = FX_MUL(player->mSleepBubbleScaleZ, 0x2400) + 0xc000;
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x7000, z);
-            char *p = *(char **)(c + 0x1d8);
+            char *p = *(char **)&player->mSleepBubbleModel;
             ((Model *)p)->mat4x3 = data_020a0e68;
         }
     }
@@ -25294,8 +25295,10 @@ void func_ov002_020e5948(void* arg0)
             if (p != 0) {
                 p = _ZN5ModelC1Ev(p);
             }
-            *(void**)(c + 0x1D8) = p;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(*(void**)(c + 0x1D8), _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
+            *(void **)&player->mSleepBubbleModel = p;
+            _ZN9ModelBase7SetFileEP8BMD_Fileii(
+                *(void **)&player->mSleepBubbleModel,
+                _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;

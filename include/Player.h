@@ -140,9 +140,15 @@ struct Player : dActor_c {
        bone 15 (face_1). */
     ModelAnim *mHeadModels[8]; /* 0x154 */
     /* The other ModelAnim, destroyed FIRST of the two. 0x174..0x1d8, closing
-       exactly at unk_1d8; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
+       exactly at mSleepBubbleModel; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
     ModelAnim mModelAnim4;            /* 0x174 */
-    u8  unk_1d8;            /* 0x1d8 */
+    /* A Model *, though still declared u8 (every site reads the word through a
+       cast). func_ov002_020e5948 news a 0x50-byte Model here and SetFiles it
+       from data_ov002_0210da38 (file 0x8004, the bubble d_a_pkn also sleeps
+       with); func_ov002_020e444c places it in front of the face, Render draws
+       it at mSleepBubbleScale while func_ov002_020d225c (Yoshi, sleep stage 2)
+       holds, and CleanupResources deletes it. */
+    u8 mSleepBubbleModel; /* 0x1d8 */
     u8  pad_1d9[0x3];
     /* The three __cxa_vec_cleanup calls in ~Player, in the order it makes them
        (last array first). Both element types assert 0x14, which is exactly
@@ -238,9 +244,15 @@ struct Player : dActor_c {
     s32 mWallNormalX;            /* 0x560 */
     s32 mWallNormalY;            /* 0x564 */
     s32 mWallNormalZ;            /* 0x568 */
-    s32 unk_56c;            /* 0x56c */
-    s32 unk_570;            /* 0x570 */
-    s32 unk_574;            /* 0x574 */
+    /* The sleep bubble's scale, fx12, the Vector3 Render passes to the bubble
+       model's draw. func_ov002_020d228c and St_Wait_Main zero all three as
+       they enter sleep stage 2; func_ov002_020d2f24 (Yoshi only) shrinks it by 0x180
+       over breath frames 6..0x1c and grows it over 0x24..0x3a, clamped to
+       0x400..0x4000. St_Wait_Main wakes the player once X reaches 0x3000, and
+       func_ov002_020e444c pushes the bubble out by Z * 0x2400. */
+    s32 mSleepBubbleScaleX; /* 0x56c */
+    s32 mSleepBubbleScaleY; /* 0x570 */
+    s32 mSleepBubbleScaleZ; /* 0x574 */
     /* A 50-entry trail buffer, built by InitResources (new Vector3[50], new
        u8[50]). func_ov002_020bf13c writes entry 0 for Yoshi only: a point 0x78
        behind him, and speed/airborne/moving flags. No other reader in the ROM. */
