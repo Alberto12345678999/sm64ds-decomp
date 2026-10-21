@@ -745,6 +745,7 @@ void Snowball_UpdateCamera(char *scene) {
     int t = cstd::fdiv(0xc0000, data_02082314);
     struct V3 v;
     int x, y;
+    /* pad_4660 is the head of the base's 0xbc camera (dScMgSingle3DBase_c.h). */
     if (self->mScreensSwapped == 0) {
         self->mCameraEyeX = 0;
         self->mCameraEyeY = 0xd0000;
@@ -753,7 +754,7 @@ void Snowball_UpdateCamera(char *scene) {
         self->mCameraTargetY = 0;
         self->mCameraTargetZ = t;
         self->mCameraAngle = 0x200;
-        Camera_UpdateMatrices(scene + 0x4660);
+        Camera_UpdateMatrices((char *)self->pad_4660);
     } else {
         self->mCameraEyeX = 0;
         self->mCameraEyeY = -0x60000;
@@ -762,7 +763,7 @@ void Snowball_UpdateCamera(char *scene) {
         self->mCameraTargetY = 0;
         self->mCameraTargetZ = t;
         self->mCameraAngle = 0x200;
-        Camera_UpdateMatrices(scene + 0x4660);
+        Camera_UpdateMatrices((char *)self->pad_4660);
     }
     y = self->mScrollY - self->mPosY + 0x110000;
     x = self->mPosX - 0x80000;
