@@ -2649,7 +2649,7 @@ src/engine/model/TextureSequence_UpdateFileOffsets.cpp:
     complete
     .text start:0x020468a0 end:0x020469ac
 
-src/engine/animation/d_ext_frame_ctrl_UpdateFileOffsets.cpp:
+src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp:
     complete
     .text start:0x020469ac end:0x020469e0
 

@@ -44,7 +44,7 @@ src/func_020456a0.c
 # links this slice links heap_globals.cpp as well.
 # dExtFrameCtrl_c::LoadFile lives in src/SharedFilePtr.cpp (slice 3b),
 # compiled under SM64DS_PORT_GATE4B.
-src/engine/animation/d_ext_frame_ctrl_UpdateFileOffsets.cpp
+src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp
 
 # Whole-class slice. Once a constructor is a real C++ constructor its TU
 # becomes the vtable's key function on MSVC as well, and the host emits the
