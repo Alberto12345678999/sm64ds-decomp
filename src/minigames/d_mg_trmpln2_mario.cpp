@@ -1373,7 +1373,8 @@ int Trmp2Mario_Hide(void) {
     for (i = 0; i < sTrmp2MarioCount; i++) {
         int *v = sTrmp2Marios[i].mState;
         volatile int *q = (volatile int *)pmf_Trmp2Mario_StateHidden_2;
-        if (v[0] != pmf_Trmp2Mario_StateHidden_2[0] || (v[1] != q[1] && sTrmp2Marios[i].mState[0] != 0))
+        if (v[0] != pmf_Trmp2Mario_StateHidden_2[0] ||
+            (v[1] != q[1] && sTrmp2Marios[i].mState[0] != 0))
             return 0;
     }
     return 1;

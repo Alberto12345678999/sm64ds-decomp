@@ -25,7 +25,7 @@ extern int _ZTV14dScMgD3DBase_c[];
 extern int _ZTV11dScMgJump_c[];
 extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cD1Ev(dMgJump3DMario_c *object);
 extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cC1Ev(dMgJump3DMario_c *object);
-extern int Heyho_Construct(char *object);  /* local extern: no header declares it */
+extern int Heyho_Construct(char *object); /* local extern: no header declares it */
 }
 
 /* Reconstructed source-style name: SM64DS proves dScMgJump_c through RTTI,
@@ -52,11 +52,10 @@ extern "C" void *dScMgJump_c_classInit(void)
         *(int *)p = (int)_ZTV11dScMgJump_c;
         _ZN5ModelC1Ev(&((dScMgJump_c *)p)->mModel);
         __cxa_vec_ctor(((dScMgJump_c *)p)->mPlayers, 3, 0xb8,
-                      (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev,
-                      (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
-        __cxa_vec_ctor(((dScMgJump_c *)p)->mArray2, 6, 0xf0,
-                      (void (*)(void *))Heyho_Construct,
-                      (void (*)(void *))Heyho_Destruct);
+                       (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev,
+                       (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
+        __cxa_vec_ctor(((dScMgJump_c *)p)->mArray2, 6, 0xf0, (void (*)(void *))Heyho_Construct,
+                       (void (*)(void *))Heyho_Destruct);
     }
     return p;
 }

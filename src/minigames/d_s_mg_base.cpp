@@ -1369,8 +1369,8 @@ extern "C" void Mg_DrawSpriteListEntry(S* self, int a1, int a2, struct M* a3)
    item counts down (ApproachLinear2) before the pick acts. A file-local
    view, like MgMenuSaveArea below; this function is its only user. */
 struct MgMenuPickView {
-    u8 pad_000[0x4644];  /* 0x000 -- the dScMgBase_c members before it */
-    s16 pickDelay;       /* 0x4644 */
+    u8 pad_000[0x4644]; /* 0x000 -- the dScMgBase_c members before it */
+    s16 pickDelay;      /* 0x4644 */
 };
 
 // @symbol Mg_UpdateMenu
@@ -1459,7 +1459,8 @@ void Mg_UpdateMenu(char* c)
 after:
     if (self->mMenuCursor < 0) return;
     if (ApproachLinear(self->mMenuCursorPhase, 0x10000, 0x1000) == 0) return;
-    if (ApproachLinear2(((MgMenuPickView *)c)->pickDelay, 0, 1) == 0) return;
+    if (ApproachLinear2(((MgMenuPickView *)c)->pickDelay, 0, 1) == 0)
+        return;
 
     switch (self->mMenuCursor) {
     case 0:
@@ -1557,14 +1558,15 @@ void dScMgBase_c::RestoreScreenFromMenu()
     _ZN2GX10LoadBGPlttEPKvjj(save->mainBgPltt, 0x20, 0x1e0);
     {
         /* stepped from mainBgPltt: save->subBgPltt moves the literal pool */
-        char *p = (char *)save->mainBgPltt; p += 0x200;
+        char *p = (char *)save->mainBgPltt;
+        p += 0x200;
         _ZN3GXS10LoadBGPlttEPKvjj(p, 0, 0x80);
     }
 
     if (GetDisplayMode() != 2)
     {
         char *src = (char*)0x6600000; src += 0x6000;
-        MultiCopy_Int((int*)save->subObjChars, (int*)src, 0x2000);
+        MultiCopy_Int((int *)save->subObjChars, (int *)src, 0x2000);
     }
 
     data_0209d45c = (u8)mSavedMainBgBits;
