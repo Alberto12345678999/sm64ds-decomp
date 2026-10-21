@@ -89,13 +89,13 @@ struct CameraRaw;
  * these are the names its own TU, src/SharedFilePtr.cpp, gives them (Load
  * stores the loaded buffer in filePtr). data_ov002_020ff480's handles are read
  * through filePtr to reach the BCA/BTP file they hold. */
-struct SharedFilePtrFields {
+struct SharedFileView {
     u16 fileID;    /* 0x00 */
     u8 numRefs;    /* 0x02 */
     void *filePtr; /* 0x04 */
 };
 #ifndef SM64DS_PLATFORM_PC
-typedef char SharedFilePtrFields_size_must_be_0x8[sizeof(SharedFilePtrFields) == 0x8 ? 1 : -1];
+typedef char SharedFileView_size_must_be_0x8[sizeof(SharedFileView) == 0x8 ? 1 : -1];
 #endif
 /* The rest of this block is the same hoist for the same reason, and the tags
  * are unique in the same way.  A body may not declare `extern` with a
@@ -887,7 +887,7 @@ void Player::func_ov002_020bdd9c(){
   int id = this->GetBodyModelID(v & 0xff, 0);
   char* t = data_ov002_020ff480[mCharFileBase + v];
   _ZN10ModelAnim24CopyERKS_Pcj(mBodyModels[id], mBodyModels[4],
-                               (char *)((SharedFilePtrFields *)t)->filePtr, 0);
+                               (char *)((SharedFileView *)t)->filePtr, 0);
   func_ov002_020bd984(0x34);
 }
 }
@@ -922,7 +922,7 @@ void Player::InitMetalWario()
     id = this->GetBodyModelID(v & 0xff, 0);
     _ZN10ModelAnim24CopyERKS_Pcj(
         mBodyModels[id], mBodyModels[v],
-        (char *)((SharedFilePtrFields *)data_ov002_020ff480[mCharFileBase + v])->filePtr, 0);
+        (char *)((SharedFileView *)data_ov002_020ff480[mCharFileBase + v])->filePtr, 0);
 
     mPowerupTimer = 0x258;
     func_ov002_020bd9ec(0x34);
@@ -1085,10 +1085,10 @@ void Player::SetRealCharacter(unsigned int chr_)
     m2 = this->GetBodyModelID(param1 & 0xff, 0);
     _ZN10ModelAnim24CopyERKS_Pcj(
         mBodyModels[m1], mBodyModels[m2],
-        (char *)((SharedFilePtrFields *)data_ov002_020ff480[mCharFileBase + chr])->filePtr, 0);
+        (char *)((SharedFileView *)data_ov002_020ff480[mCharFileBase + chr])->filePtr, 0);
     m1 = this->GetBodyModelID(chr, 0);
     _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-        mBodyModels[m1], (int)((SharedFilePtrFields *)data_ov002_020ff480[chr + 0xc4])->filePtr, 0,
+        mBodyModels[m1], (int)((SharedFileView *)data_ov002_020ff480[chr + 0xc4])->filePtr, 0,
         0x1000, 0);
 }
 }
@@ -1561,7 +1561,7 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
 
             id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                player->mBodyModels[id], ((SharedFilePtrFields *)sfp)->filePtr, b, c, d);
+                player->mBodyModels[id], ((SharedFileView *)sfp)->filePtr, b, c, d);
             {
                 u16 *g = LAUNDER16(&player->mCapTimer);
                 *g = (u16)(*g + 1);
@@ -1574,7 +1574,7 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         player->mBodyModels[id],
-        ((SharedFilePtrFields *)data_ov002_020ff480[(field8 & 3) + (a * 4)])->filePtr, b, c, d);
+        ((SharedFileView *)data_ov002_020ff480[(field8 & 3) + (a * 4)])->filePtr, b, c, d);
 
     field8 = player->param1;
     if ((int)sl >= 0x60) sl = 0x60;
@@ -1582,7 +1582,7 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
     param2 = 0;
     if (((int)sl >> 2) == 1) param2 = 0x40000000;
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &player->mTexSeqBody[field8], ((SharedFilePtrFields *)data_ov002_020ff2f0[sl])->filePtr,
+        &player->mTexSeqBody[field8], ((SharedFileView *)data_ov002_020ff2f0[sl])->filePtr,
         param2, 0x1000, 0);
 
     player->mCharFileBase = newVal;
@@ -18331,7 +18331,7 @@ int func_ov002_020dacb4(char *p, char *actor)
             int player_var = ((Player *)p)->param1;
             int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
             void *self = ((Player *)p)->mBodyModels[model_idx];
-            int j = (int)((SharedFilePtrFields *)data_ov002_020ff480[offset + player_var])->filePtr;
+            int j = (int)((SharedFileView *)data_ov002_020ff480[offset + player_var])->filePtr;
             _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(self, j, 0, 0x1000, 0);
         }
     }
@@ -24441,7 +24441,7 @@ void func_ov002_020e4bb8(char* self)
                 dst = player->mBodyModels[id];
                 src = player->mBodyModels[4];
                 poolEntry = data_ov002_020ff480[player->mCharFileBase + v];
-                p = (char *)((SharedFilePtrFields *)poolEntry)->filePtr;
+                p = (char *)((SharedFileView *)poolEntry)->filePtr;
                 _ZN10ModelAnim24CopyERKS_Pcj(dst, src, p, 0);
             }
         }
@@ -25234,7 +25234,7 @@ void func_ov002_020e5948(void* arg0)
             1);
         _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
             player->mBodyModels[i],
-            (s32)((SharedFilePtrFields *)data_ov002_020ff480[i + 0xC4])->filePtr, 0, 0x1000, 0);
+            (s32)((SharedFileView *)data_ov002_020ff480[i + 0xC4])->filePtr, 0, 0x1000, 0);
         player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
         i++;
     } while (i < 4);
@@ -25309,7 +25309,7 @@ void func_ov002_020e5948(void* arg0)
                     _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);
                 _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
                     player->mBodyModels[4],
-                    (s32)((SharedFilePtrFields *)data_ov002_020ff480[0xC6])->filePtr, 0, 0x1000, 0);
+                    (s32)((SharedFileView *)data_ov002_020ff480[0xC6])->filePtr, 0, 0x1000, 0);
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     &player->mModelAnim3, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e6f8),
                     1, 1);
@@ -25358,11 +25358,11 @@ void func_ov002_020e5948(void* arg0)
             do {
                 entry = data_ov002_020ff2f0[outer + k];
                 _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(
-                    ((SharedFilePtrFields *)data_ov002_0210a69c[k])->filePtr,
-                    ((SharedFilePtrFields *)entry)->filePtr);
+                    ((SharedFileView *)data_ov002_0210a69c[k])->filePtr,
+                    ((SharedFileView *)entry)->filePtr);
                 if (n == 0x18) {
                     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                        texseq, ((SharedFilePtrFields *)entry)->filePtr, 0, 0x1000, 0);
+                        texseq, ((SharedFileView *)entry)->filePtr, 0, 0x1000, 0);
                 }
                 k++;
                 texseq = (TextureSequence *)texseq + 1;
