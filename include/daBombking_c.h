@@ -90,8 +90,15 @@ struct daBombking_c : dEnemyBase_c {
     s16 mTargetAngY;                  /* 0x4fa */
     s32 mAnimSpeed;                   /* 0x4fc */
     s32 mHealth;                      /* 0x500 */
-    u8  unk_504;                      /* 0x504 -- DecIfAbove0_Byte; armed to 0x64 */
-    u8  unk_505;                      /* 0x505 -- DecIfAbove0_Byte; armed to 5 / 0xf / 0x14 */
+    /* Frames before the next bob-omb throw. Behavior counts it down with
+       DecIfAbove0_Byte; the throw update (func_ov078_021250f8) arms it to
+       0x64 when its animation ends, and func_ov078_02125448 only goes to
+       the throw state while it is 0. */
+    u8  mThrowCooldown;               /* 0x504 */
+    /* Repeat gap for the walking sounds: Behavior counts it down with
+       DecIfAbove0_Byte, and each site plays 0x12d or 0x12f only at 0 and
+       then re-arms it (5 / 0xf / 0x14). */
+    u8  mSoundCooldown;               /* 0x505 */
     /* 1 while fight BGM layer 3 is up. */
     u8  mMusicLayer3;                 /* 0x506 */
     u8  mStarTracked;                 /* 0x507 */

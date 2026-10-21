@@ -31,7 +31,7 @@
  * - func_ov102_0214b53c keeps the volatile stack pins, and the carrier's
  *   angles at +0x8c/+0x8e/+0x90, the matrix at +0x5ec, and the halfwords at
  *   +0x580/+0x582/+0x584. Those player slots are not named on Player.
- * - unk_3e0 and unk_3f6 stay. ov078/daBombking_c writes them by those names.
+ * - ov078/daBombking_c writes mHurtDamage and mDetonate by those names.
  */
 
 #include "common.h"
@@ -213,8 +213,8 @@ int daBmb_c::InitResources()
     /* Matrix4x3* while mVariant is 2. It lives in dActor_c's pad, the word
        after mClipResult. */
     *(int *)((char *)&mClipResult + 4) = 0;
-    unk_3e0 = 2;
-    unk_3f6 = 0;
+    mHurtDamage = 2;
+    mDetonate = 0;
     mHomeAngleY = mAngleY;
     return 1;
 }
@@ -230,7 +230,7 @@ int daBmb_c::Behavior()
     int killResult;
     void *other;
 
-    if (unk_3f6 != 0) {
+    if (mDetonate != 0) {
         func_ov102_0214ae1c(this);
         return 1;
     }
@@ -1239,7 +1239,7 @@ void func_ov102_0214ae1c(void *cv) {
                 w.x = self->mPosX;
                 w.y = self->mPosY;
                 w.z = self->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &w, self->unk_3e0, 0xc000, 1, 0, 1);
+                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &w, self->mHurtDamage, 0xc000, 1, 0, 1);
             }
         }
     }
@@ -1248,7 +1248,7 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)self->mEatingPlayer, &w, self->unk_3e0, 0xc000, 1, 0, 1);
+        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)self->mEatingPlayer, &w, self->mHurtDamage, 0xc000, 1, 0, 1);
         ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }
