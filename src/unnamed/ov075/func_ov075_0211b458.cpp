@@ -20,7 +20,8 @@ extern "C" int func_ov075_0211b458(char* c, int* src, int a2) {
     mesh->mGridDim[0] = 0x14;
     mesh->mGridDim[1] = 0x14;
     mesh->mNumVertices = mesh->mGridDim[0] * mesh->mGridDim[1];
-    mesh->mVertices = (EntryMeshVertex *)_ZN6Memory13operator_new2Ej(mesh->mNumVertices * sizeof(EntryMeshVertex));
+    mesh->mVertices = (EntryMeshVertex *)_ZN6Memory13operator_new2Ej(mesh->mNumVertices *
+                                                                     sizeof(EntryMeshVertex));
     func_ov075_0211aa94(c, func_0201787c(&data_ov075_0211d980));
     ((SharedFilePtr *)(&data_ov075_0211d980))->Release();
     mesh->mState = &data_ov075_0211d994;

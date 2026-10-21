@@ -15,8 +15,8 @@ extern char data_0209ee90[];
 extern char data_ov075_0211c8b0[];
 
 extern int func_02030958(int idx);
-extern int *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int a, void *attr, int x, int y,
-                                                    int c4, int c5, int c6, int c7);
+extern int *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int a, void *attr, int x, int y, int c4, int c5,
+                                                    int c6, int c7);
 extern void func_ov075_02116128(char *c, int idx, int flag);
 
 /* C view of include/dScEntry_c.h's dScEntry_c (a C++ class this C file

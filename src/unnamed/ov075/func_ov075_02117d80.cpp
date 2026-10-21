@@ -30,7 +30,9 @@ extern unsigned char data_0209d454;
 extern int data_ov075_0211d71c;
 extern dScEntry_c::StepSet data_ov075_0211d810;
 
-static inline int IsEntryScene(const dScEntry_c *scene) { return scene->actorID == 6; }
+static inline int IsEntryScene(const dScEntry_c *scene) {
+    return scene->actorID == 6;
+}
 
 extern "C" void func_ov075_02117d80(char *c)
 {
@@ -39,12 +41,9 @@ extern "C" void func_ov075_02117d80(char *c)
     int v0, v1;
 
     data_0209d454 = data_0209d454 & ~1;
-    if (IsEntryScene(scene))
-    {
+    if (IsEntryScene(scene)) {
         func_02034414(0x19);
-    }
-    else
-    {
+    } else {
         data_0209d454 = data_0209d454 & ~4;
         fh = LoadFile(0x9802);
         func_ov075_02116030(&data_ov075_0211d71c, fh);

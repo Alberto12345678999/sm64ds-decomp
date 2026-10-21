@@ -24,7 +24,8 @@ void func_ov075_0211705c(void *thiz) {
     int dir;
     u16 flags;
 
-    if (TouchArea_Update(&scene->mIcons[5], -1) != 0 || TouchArea_Update(&scene->mIcons[8], -1) != 0 ||
+    if (TouchArea_Update(&scene->mIcons[5], -1) != 0 ||
+        TouchArea_Update(&scene->mIcons[8], -1) != 0 ||
         ((flags = data_020a0e5a[w << 1]) & 8) != 0 || (flags & 4) != 0 ||
         (scene->CheckMenuConfirm(-1) != 0 && scene->mSelectedIcon == 2)) {
         func_ov001_020ab41c(&scene->mIcons[5]);
@@ -34,7 +35,8 @@ void func_ov075_0211705c(void *thiz) {
     } else {
         dir = 0;
         if (scene->mIcons[2].mReady != 0) {
-            if (TouchArea_Update(&scene->mIcons[2], -1) != 0 || TouchArea_Update(&scene->mIcons[1], -1) != 0 ||
+            if (TouchArea_Update(&scene->mIcons[2], -1) != 0 ||
+                TouchArea_Update(&scene->mIcons[1], -1) != 0 ||
                 TouchArea_Update(&scene->mIcons[6], -1) != 0) {
                 scene->mSelectedIcon = 0;
                 dir = 1;
@@ -77,13 +79,15 @@ void func_ov075_0211705c(void *thiz) {
                 if (scene->mIcons[3].mOn == 0)
                     dir = -1;
             }
-            if (TouchArea_Update(&scene->mIcons[3], -1) != 0 || (dir < 0 && scene->mSelectedIcon == 1)) {
+            if (TouchArea_Update(&scene->mIcons[3], -1) != 0 ||
+                (dir < 0 && scene->mSelectedIcon == 1)) {
                 TurnBacklightOn();
                 func_ov001_020ab41c(&scene->mIcons[3]);
                 scene->mIcons[4].mOn = 0;
                 scene->mSelectedIcon = 1;
                 func_02012790(0x66);
-            } else if (TouchArea_Update(&scene->mIcons[4], -1) != 0 || (dir > 0 && scene->mSelectedIcon == 1)) {
+            } else if (TouchArea_Update(&scene->mIcons[4], -1) != 0 ||
+                       (dir > 0 && scene->mSelectedIcon == 1)) {
                 TurnBacklightOff();
                 scene->mIcons[3].mOn = 0;
                 func_ov001_020ab41c(&scene->mIcons[4]);

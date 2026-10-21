@@ -15,8 +15,9 @@ void func_ov075_0211763c(void *thiz) {
     dScEntry_c *scene = reinterpret_cast<dScEntry_c *>(thiz);
     int w = func_0203da9c();
 
-    if (TouchArea_Update(&scene->mIcons[3], -1) != 0 || TouchArea_Update(&scene->mIcons[4], -1) != 0 ||
-        (data_020a0e5a[w << 1] & 8) != 0 || (data_020a0e5a[w << 1] & 4) != 0 ||
+    if (TouchArea_Update(&scene->mIcons[3], -1) != 0 ||
+        TouchArea_Update(&scene->mIcons[4], -1) != 0 || (data_020a0e5a[w << 1] & 8) != 0 ||
+        (data_020a0e5a[w << 1] & 4) != 0 ||
         (scene->CheckMenuConfirm(-1) != 0 && scene->mSelectedIcon == 3)) {
         int i;
         for (i = 0; i <= 2; i++) {

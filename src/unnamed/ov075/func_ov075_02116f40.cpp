@@ -37,10 +37,10 @@ extern "C" void func_ov075_02116f40(char* c)
     /* mStepWork[1] counts frames; its bit 3 bobs the three arrows. */
     scene->mStepWork[1] += 1;
     int arrowY = (scene->mStepWork[1] & 8) ? 0xac : 0xae;
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        false, (OamAttr*)_ZN3OAM14BOUNCING_ARROWE, 0x40, arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        false, (OamAttr*)_ZN3OAM14BOUNCING_ARROWE, 0x80, arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        false, (OamAttr*)_ZN3OAM14BOUNCING_ARROWE, 0xc0, arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0x40,
+                                                arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0x80,
+                                                arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0xc0,
+                                                arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
 }
