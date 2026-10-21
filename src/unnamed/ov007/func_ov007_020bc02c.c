@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ModelBase.h"
 typedef struct { int f[12]; } Blk;
 
 #define LS(a) (*(short*)(((long long)(int)(a))))
@@ -10,16 +11,54 @@ extern void _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(void *self, void *bca,
 extern void func_ov007_020bc7dc(char *c);
 extern void func_02044dc4(void *self);
 
+/* The 0x1c-byte animation player func_ov007_020c92ac allocates and
+ * func_ov007_020c9110 ticks; only the slots this file reads. */
+typedef struct Ov007AnimPlayer {
+    s32 state; /* 0x00: 0 playing; func_ov007_020c9110 sets 2 when a one-shot ends */
+    char pad_04[8];
+    s16 anim;       /* 0x0c: index into the owner's animation table; -1 none */
+    char pad_0e[2];
+    u16 frame;      /* 0x10: the whole frame func_ov007_020c9110 last reached */
+    u16 frameCount; /* 0x12 */
+} Ov007AnimPlayer;
+
+/* The 0xa0-byte model record func_ov007_020bc6d4 allocates; only the slots
+ * this file touches. */
+typedef struct Ov007Model {
+    struct ModelComponents *model; /* 0x00 */
+    void *transforms;       /* 0x04: the pose model->transforms points at
+                             * (func_ov007_020bc47c binds it) */
+    /* 0x08: flags & 2 only: the next frame's pose; on in-between frames this
+     * file averages it into transforms */
+    void *nextTransforms;
+    char pad_0c[8];
+    struct BCA_File **boneAnims;      /* 0x14: boneAnim->anim indexes it */
+    Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
+    char pad_1c[0x70];
+    s16 blendFrames; /* 0x8c: frames left of func_ov007_020bc7dc's cross-fade */
+    char pad_8e[0xa];
+    /* 0x98: 1 on the frames that step the animations; with flags & 3 it
+     * alternates, so they run at half rate (func_ov007_020bc47c seeds 1) */
+    int animTick;
+    /* 0x9c: func_ov007_020bc6d4's second argument. 1/2 half-rate animation
+     * (2 also fills the in-between frames), 4 cross-fade buffers, 8 skips
+     * Model::LoadTexAndPal (func_ov007_020bc47c) */
+    int flags;
+} Ov007Model;
+
+/* c keeps the char * spelling of the callers' declarations; `m` is the
+ * typed view. */
 void func_ov007_020bc02c(char *c, void *other) {
-    void *r5 = *(void**)c;
+    Ov007Model *m = (Ov007Model *)c;
+    struct ModelComponents *r5 = m->model;
     int r4 = 0;
 
-    if (*(int*)(c + 0x9c) & 2) {
-        char *r3 = *(char**)(c + 0x18);
+    if (m->flags & 2) {
+        Ov007AnimPlayer *r3 = m->boneAnim;
         if (r3 != 0) {
-            if (LS(r3 + 0xc) != -1) {
-                if (*(int*)(r3) == 0) {
-                    if (*(s16 *)(r3 + 0xc) == -1 || *(u16 *)(r3 + 0x10) != *(u16 *)(r3 + 0x12) - 1)
+            if (LS(&r3->anim) != -1) {
+                if (r3->state == 0) {
+                    if (r3->anim == -1 || r3->frame != r3->frameCount - 1)
                         r4 = 1;
                 }
             }
@@ -27,21 +66,21 @@ void func_ov007_020bc02c(char *c, void *other) {
     }
 
     func_ov007_020bc968(c, other);
-    if (*(int*)(c + 0x98) != 0) {
+    if (m->animTick != 0) {
         func_ov007_020bc894(c);
         _ZN15ModelComponents21UpdateVertsUsingBonesEv(r5);
     } else if (r4 != 0) {
-        char *o = *(char**)(c + 0x18);
-        char *bones = *(char**)(c + 0x14);
+        Ov007AnimPlayer *o = m->boneAnim;
+        struct BCA_File **bones = m->boneAnims;
         _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(
-            r5, *(void**)(bones + *(s16*)(o + 0xc) * 4), (u16)(*(u16*)(o + 0x10) + 1));
-        *(int*)((char*)r5 + 0xc) = *(int*)(c + 8);
+            r5, bones[o->anim], (u16)(o->frame + 1));
+        r5->transforms = m->nextTransforms;
         _ZN15ModelComponents21UpdateVertsUsingBonesEv(r5);
         unsigned int i = 0;
-        *(int*)((char*)r5 + 0xc) = *(int*)(c + 4);
-        while (i < (unsigned int)(*(int*)(*(int*)r5 + 4))) {
-            Blk *a = (Blk*)(*(char**)(c + 4) + i * 0x30);
-            Blk *b = (Blk*)(*(char**)(c + 8) + i * 0x30);
+        r5->transforms = m->transforms;
+        while (i < r5->modelFile->numBones) {
+            Blk *a = (Blk*)((char *)m->transforms + i * 0x30);
+            Blk *b = (Blk*)((char *)m->nextTransforms + i * 0x30);
             a->f[0] = (a->f[0] + b->f[0]) / 2;
             a->f[1] = (a->f[1] + b->f[1]) / 2;
             a->f[2] = (a->f[2] + b->f[2]) / 2;
@@ -58,19 +97,19 @@ void func_ov007_020bc02c(char *c, void *other) {
         }
     }
 
-    if (*(int*)(c + 0x98) != 0 || r4 != 0) {
-        if (*(s16*)(c + 0x8c) > 0)
+    if (m->animTick != 0 || r4 != 0) {
+        if (m->blendFrames > 0)
             func_ov007_020bc7dc(c);
-        if (*(int*)(*(int*)r5 + 0x30) != 0)
+        if (*(int*)((char *)r5->modelFile + 0x30) != 0)
             func_02044dc4(r5);
     }
 
     {
-        int flags = *(int*)(c + 0x9c);
+        int flags = m->flags;
         if ((flags & 1) == 0) {
             if ((flags & 2) == 0)
                 return;
         }
-        *(int*)(c + 0x98) = (*(int*)(c + 0x98) == 0) ? 1 : 0;
+        m->animTick = (m->animTick == 0) ? 1 : 0;
     }
 }
