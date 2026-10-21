@@ -87,13 +87,30 @@ void EndLoadOBJExtPltt();
 #define ICON_SCALE_X(p)   FW(p, 0x58)   /* scale of the icon under CHAR_CURSOR */
 #define ICON_SCALE_Y(p)   FW(p, 0x5c)
 #define IDLE_ICON_SCALE(p) FW(p, 0x60)  /* scale of the other character icons */
+/* D-pad auto-repeat on the star plates: Behavior reloads it with 0x10 on a
+   press and 8 while held, and counts it down every frame. */
+#define PLATE_REPEAT_TIMER(p) FU(p, 0x104)
 #define REPEAT_TIMER(p)   (*(u16 *)((u8 *)(p) + 0x106))   /* D-pad auto-repeat */
+/* The bottom sprite's bounce in Behavior: BOUNCE_DELAY frames (0x78) pass,
+   then BOUNCE_VELOCITY is launched at BOUNCE_LAUNCH (first -0x400) and
+   steps BOTTOM_Y_OFFSET until it lands; each landing raises BOUNCE_LAUNCH
+   by 0x80 until it reaches -0x180 and the delay restarts. BOUNCE_PHASE is
+   1 rising, 2 or 3 the later half-bounces. */
+#define BOUNCE_DELAY(p)    FU(p, 0x108)
+#define BOUNCE_VELOCITY(p) FH(p, 0x10c)
+#define BOUNCE_LAUNCH(p)   FH(p, 0x10e)
+#define BOUNCE_PHASE(p)    FB(p, 0x136)
 #define BOTTOM_Y_OFFSET(p) FH(p, 0x10a) /* 8.8 offset of the bottom sprite's y */
 #define SPIN_ANGLE(p)     FH(p, 0x110)
 #define PULSE_ANGLE(p)    FH(p, 0x112)
 #define PLATE_COUNT(p)    FB(p, 0x114)  /* star plates drawn by Render */
 #define SELECTED_PLATE(p) FB(p, 0x115)
 #define LIFE_ICON(p)      FB(p, 0x116)  /* index into OAM::LIFE_ICONS */
+/* Frames the picked character's icon is drawn pressed (Render's pressY). */
+#define PICK_PRESS_TIMER(p) FB(p, 0x118)
+/* Set to 0x10 when a choice is made; Behavior counts it down and fades the
+   scene out at zero. */
+#define EXIT_DELAY(p)     FB(p, 0x119)
 #define PLATE_X(p, i)     FB((u8 *)(p) + (i), 0x11a)
 #define DIGIT(p, i)       (*(s8 *)((u8 *)(p) + (i) + 0x121))  /* 3 digits, -1 = blank */
 #define CHAR_X(p, i)      FB((u8 *)(p) + (i), 0x124)          /* per character */
@@ -108,6 +125,8 @@ void EndLoadOBJExtPltt();
 #define CURSOR_ON(p)      FB(p, 0x135)
 #define ANIM_MODE(p)      FB(p, 0x139)  /* 1 or 2 selects the animation below */
 #define ANIM_FLIP(p)      FB(p, 0x13a)
+/* Step of the panel's ANIM_MODE 1 grow, shrink, wait and spin sequence. */
+#define PANEL_ANIM_STEP(p) FB(p, 0x137)
 
 extern "C" {
 extern unsigned char sStarSelectCharacterOrder[];
@@ -378,9 +397,9 @@ void dScStarSel_c::func_ov003_020ae358() {
             (((unsigned char)((gTouchY[idx][0] - PANEL_Y(this)) + 0x28)) < 0x50)) {
             CURSOR_MODE(this) = 2;
             PICKED_CHAR(this) = 3;
-            FB(this, 0x118) = (unsigned char)(data_0208ee44 * 6);
+            PICK_PRESS_TIMER(this) = (unsigned char)(data_0208ee44 * 6);
             ANIM_MODE(this) = 1;
-            FB(this, 0x119) = 0x10;
+            EXIT_DELAY(this) = 0x10;
             func_02012790(data_0209caa0[0x41] + 0x3c);
             return;
         }
@@ -401,9 +420,9 @@ void dScStarSel_c::func_ov003_020ae358() {
                         data_02092128 = (unsigned char)i;
                         data_02092114 = (unsigned char)i;
                         PICKED_CHAR(this) = (unsigned char)i;
-                        FB(this, 0x118) = (unsigned char)(data_0208ee44 * 3);
+                        PICK_PRESS_TIMER(this) = (unsigned char)(data_0208ee44 * 3);
                         ANIM_MODE(this) = 2;
-                        FB(this, 0x119) = 0x10;
+                        EXIT_DELAY(this) = 0x10;
                         func_02012790(data_0209caa0[0x41] + 0x3c);
                         return;
                     }
@@ -541,9 +560,9 @@ s32 dScStarSel_c::Render() {
                 OAM::RenderSub((OamAttr *)&data_ov001_020abd78, PLATE_X(this, SELECTED_PLATE(this)),
                                6);
             } else if (CURSOR_MODE(this) == 1) {
-                u8 *sel = (u8 *)this + func_ov003_020adf50();
-                OAM::RenderSub((OamAttr *)&data_ov001_020abd80, FB(sel, 0x124) - 0x24,
-                               FB(sel, 0x128) - 8);
+                int slot = func_ov003_020adf50();
+                OAM::RenderSub((OamAttr *)&data_ov001_020abd80, CHAR_X(this, slot) - 0x24,
+                               CHAR_Y(this, slot) - 8);
             } else {
                 OAM::RenderSub((OamAttr *)&data_ov001_020abd80, 0x50, PANEL_Y(this) + 8);
             }
@@ -551,25 +570,25 @@ s32 dScStarSel_c::Render() {
 
         if (ANIM_MODE(this) != 0) {
             if (ANIM_MODE(this) == 1) {
-                switch (FB(this, 0x137)) {
+                switch (PANEL_ANIM_STEP(this)) {
                 case 0:
                     SCALE_X(this) += 0x400;
                     if (SCALE_X(this) >= 0x1800) {
                         SCALE_X(this) = 0x1800;
-                        FB(this, 0x137) = 1;
+                        PANEL_ANIM_STEP(this) = 1;
                     }
                     break;
                 case 1:
                     SCALE_X(this) -= 0x400;
                     if (SCALE_X(this) <= 0x1000) {
                         SCALE_X(this) = 0x1000;
-                        FB(this, 0x137) = 2;
+                        PANEL_ANIM_STEP(this) = 2;
                     }
                     break;
                 case 2:
                     SCALE_X(this) -= 0x80;
-                    if (FB(this, 0x119) == 0) {
-                        FB(this, 0x137) = 3;
+                    if (EXIT_DELAY(this) == 0) {
+                        PANEL_ANIM_STEP(this) = 3;
                     }
                     break;
                 case 3:
@@ -617,7 +636,7 @@ s32 dScStarSel_c::Render() {
                                                         SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
             for (i = 0; i < 3; i++) {
                 pressY = 0;
-                if (PICKED_CHAR(this) == i && FB(this, 0x118) != 0) {
+                if (PICKED_CHAR(this) == i && PICK_PRESS_TIMER(this) != 0) {
                     pressY = 3;
                 }
                 if (SaveData::IsCharacterUnlocked(i) != 0) {
@@ -711,58 +730,58 @@ s32 dScStarSel_c::Behavior() {
 
     if (data_0209f5bc->IsAtStart() != 0) {
         DecIfAbove0_Byte(&FB(this, 0x117));
-        DecIfAbove0_Byte(&FB(this, 0x118));
-        if (FB(this, 0x119) != 0 ||
+        DecIfAbove0_Byte(&PICK_PRESS_TIMER(this));
+        if (EXIT_DELAY(this) != 0 ||
             (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
-            if (FB(this, 0x119) != 0) {
-                FB(this, 0x119) -= data_0208ee44;
+            if (EXIT_DELAY(this) != 0) {
+                EXIT_DELAY(this) -= data_0208ee44;
             }
-            if (FB(this, 0x119) == 0 ||
+            if (EXIT_DELAY(this) == 0 ||
                 (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
                 StartSceneFade(3, 0, 0);
                 data_0209f5e8[6] = 0x7fff;
                 if (SublevelToLevel(data_02092110) <= 0xe) {
-                    data_0209f1f0 = FB(this, 0x115) + 1;
+                    data_0209f1f0 = SELECTED_PLATE(this) + 1;
                 } else {
                     data_0209f1f0 = 1;
                 }
             }
-        } else if (FB(this, 0x135) != 0 && IsButtonInputValid() != 0) {
-            val = FB(this, 0x133);
-            if (val == 0 && FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
-                FB(this, 0x133) = 2;
+        } else if (CURSOR_ON(this) != 0 && IsButtonInputValid() != 0) {
+            val = CURSOR_MODE(this);
+            if (val == 0 && STRIP_MODE(this) > 1 && data_0209caa0[0x41] == 3) {
+                CURSOR_MODE(this) = 2;
                 func_02012790(0x12e);
-            } else if (FB(this, 0x139) == 0) {
+            } else if (ANIM_MODE(this) == 0) {
                 if (val == 1) {
                     num = func_ov003_020adf50();
                     data_02092128 = num;
                     data_02092114 = num;
-                    FB(this, 0x132) = num;
-                    FB(this, 0x118) = data_0208ee44 * 3;
-                    FB(this, 0x139) = 2;
+                    PICKED_CHAR(this) = num;
+                    PICK_PRESS_TIMER(this) = data_0208ee44 * 3;
+                    ANIM_MODE(this) = 2;
                 } else {
-                    FB(this, 0x133) = 2;
-                    FB(this, 0x132) = 3;
-                    FB(this, 0x118) = data_0208ee44 * 6;
-                    FB(this, 0x139) = 1;
+                    CURSOR_MODE(this) = 2;
+                    PICKED_CHAR(this) = 3;
+                    PICK_PRESS_TIMER(this) = data_0208ee44 * 6;
+                    ANIM_MODE(this) = 1;
                 }
-                FB(this, 0x119) = 0x10;
+                EXIT_DELAY(this) = 0x10;
                 func_02012790(data_0209caa0[0x41] + 0x3c);
             }
         } else if (SublevelToLevel(data_02092110) <= 0xe) {
             idx = gActivePlayerSlot;
-            cur = FB(this, 0x115);
+            cur = SELECTED_PLATE(this);
             found = 0;
             val = gTouchHeld[idx][0];
             if (val != 0) {
-                num = FB(this, 0x114);
+                num = PLATE_COUNT(this);
                 i = 0;
                 if (num > 0) {
                     rec = gTouchHeld[idx];
                     tx = rec[2];
                     do {
-                        if ((u8)(tx - FB((u8 *)this + i, 0x11a) + 8) < 0x10 &&
-                            gTouchHeld[idx][3] < 0x28 && ((FB(this, 0x131) >> i) & 1)) {
+                        if ((u8)(tx - PLATE_X(this, i) + 8) < 0x10 &&
+                            gTouchHeld[idx][3] < 0x28 && ((PLATE_MASK(this) >> i) & 1)) {
                             hit = (val != 0 && gTouchEdge[idx][0] != 0);
                             if (hit != 0 || cur != i) {
                                 FB(this, 0x117) = data_0208ee44 * 3;
@@ -771,7 +790,7 @@ s32 dScStarSel_c::Behavior() {
                                 cur = i;
                                 func_02012790(0x12e);
                             }
-                            FB(this, 0x133) = 0;
+                            CURSOR_MODE(this) = 0;
                             found = 1;
                             break;
                         }
@@ -779,14 +798,14 @@ s32 dScStarSel_c::Behavior() {
                     } while (i < num);
                 }
             }
-            if (found == 0 && FB(this, 0x135) == 2 && FB(this, 0x133) == 0 &&
+            if (found == 0 && CURSOR_ON(this) == 2 && CURSOR_MODE(this) == 0 &&
                 data_0209caa0[0x42] == 0) {
                 if (data_020a0e58[0] & 0x20) {
                     pressed = data_020a0e58[1] & 0x20;
-                    if (pressed != 0 || FU(this, 0x104) == 0) {
-                        FU(this, 0x104) = pressed ? 0x10 : 8;
+                    if (pressed != 0 || PLATE_REPEAT_TIMER(this) == 0) {
+                        PLATE_REPEAT_TIMER(this) = pressed ? 0x10 : 8;
                         if (cur != 0) {
-                            u8 mask = FB(this, 0x131);
+                            u8 mask = PLATE_MASK(this);
                             cur--;
                             while (!((mask >> cur) & 1)) {
                                 cur--;
@@ -796,10 +815,10 @@ s32 dScStarSel_c::Behavior() {
                     }
                 } else if (data_020a0e58[0] & 0x10) {
                     pressed = data_020a0e58[1] & 0x10;
-                    if (pressed != 0 || FU(this, 0x104) == 0) {
-                        FU(this, 0x104) = pressed ? 0x10 : 8;
-                        if (cur < FB(this, 0x114) - 1) {
-                            u8 mask = FB(this, 0x131);
+                    if (pressed != 0 || PLATE_REPEAT_TIMER(this) == 0) {
+                        PLATE_REPEAT_TIMER(this) = pressed ? 0x10 : 8;
+                        if (cur < PLATE_COUNT(this) - 1) {
+                            u8 mask = PLATE_MASK(this);
                             cur++;
                             while (!((mask >> cur) & 1)) {
                                 cur++;
@@ -809,73 +828,73 @@ s32 dScStarSel_c::Behavior() {
                     }
                 }
             }
-            if (FB(this, 0x115) != cur) {
-                FB(this, 0x115) = cur;
+            if (SELECTED_PLATE(this) != cur) {
+                SELECTED_PLATE(this) = cur;
                 Message::DisplayStarNameForStarSelect((s16)cur);
                 FB(this, 0x117) = data_0208ee44 * 3;
             }
-            if (FB(this, 0x139) == 0) {
+            if (ANIM_MODE(this) == 0) {
                 func_ov003_020ae358();
             }
         }
 
         if (SublevelToLevel(data_02092110) <= 0xe) {
-            if (FB(this, 0x135) == 0) {
+            if (CURSOR_ON(this) == 0) {
                 if (IsButtonInputValid() != 0 ||
                     (data_0209caa0[0x42] == 0 && (data_020a0e5a[gActivePlayerSlot][0] & 0xf0))) {
                     func_02012790(0x12e);
                     if (data_0209caa0[0x42] == 0 && (data_020a0e58[1] & 0x30)) {
-                        FB(this, 0x135) = 1;
+                        CURSOR_ON(this) = 1;
                     } else {
-                        FB(this, 0x135) = 2;
+                        CURSOR_ON(this) = 2;
                     }
                     if (SublevelToLevel(data_02092110) <= 0xe) {
-                        FB(this, 0x133) = 0;
-                    } else if (FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
-                        FB(this, 0x133) = 1;
-                        if (FB(this, 0x130) != 4) {
-                            FB(this, 0x134) = 0;
+                        CURSOR_MODE(this) = 0;
+                    } else if (STRIP_MODE(this) > 1 && data_0209caa0[0x41] == 3) {
+                        CURSOR_MODE(this) = 1;
+                        if (STRIP_MODE(this) != 4) {
+                            CHAR_CURSOR(this) = 0;
                         } else {
-                            FB(this, 0x134) = 1;
+                            CHAR_CURSOR(this) = 1;
                         }
                     } else {
-                        FB(this, 0x133) = 2;
+                        CURSOR_MODE(this) = 2;
                     }
                 }
-            } else if (FB(this, 0x135) == 1) {
+            } else if (CURSOR_ON(this) == 1) {
                 if (data_020a0e58[1] != 0) {
-                    FB(this, 0x135) = 2;
+                    CURSOR_ON(this) = 2;
                 }
             } else if (data_0209caa0[0x42] == 0 && (data_020a0e58[0] & 0xc0)) {
                 u16 keys = data_020a0e58[1];
                 if (keys & 0x40) {
-                    if (FB(this, 0x133) != 0) {
-                        FB(this, 0x133) -= 1;
-                        if (FB(this, 0x133) == 1) {
-                            if (FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
-                                if (FB(this, 0x130) != 4) {
-                                    FB(this, 0x134) = 0;
+                    if (CURSOR_MODE(this) != 0) {
+                        CURSOR_MODE(this) -= 1;
+                        if (CURSOR_MODE(this) == 1) {
+                            if (STRIP_MODE(this) > 1 && data_0209caa0[0x41] == 3) {
+                                if (STRIP_MODE(this) != 4) {
+                                    CHAR_CURSOR(this) = 0;
                                 } else {
-                                    FB(this, 0x134) = 1;
+                                    CHAR_CURSOR(this) = 1;
                                 }
                             } else {
-                                FB(this, 0x133) = 0;
+                                CURSOR_MODE(this) = 0;
                             }
                         }
                         func_02012790(0x12e);
                     }
                 } else if (keys & 0x80) {
-                    if (FB(this, 0x133) != 2) {
-                        FB(this, 0x133) += 1;
-                        if (FB(this, 0x133) == 1) {
-                            if (FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
-                                if (FB(this, 0x130) != 4) {
-                                    FB(this, 0x134) = 0;
+                    if (CURSOR_MODE(this) != 2) {
+                        CURSOR_MODE(this) += 1;
+                        if (CURSOR_MODE(this) == 1) {
+                            if (STRIP_MODE(this) > 1 && data_0209caa0[0x41] == 3) {
+                                if (STRIP_MODE(this) != 4) {
+                                    CHAR_CURSOR(this) = 0;
                                 } else {
-                                    FB(this, 0x134) = 1;
+                                    CHAR_CURSOR(this) = 1;
                                 }
                             } else {
-                                FB(this, 0x133) = 2;
+                                CURSOR_MODE(this) = 2;
                             }
                         }
                         func_02012790(0x12e);
@@ -883,45 +902,45 @@ s32 dScStarSel_c::Behavior() {
                 }
             }
 
-            if (FB(this, 0x130) <= 1 || data_0209caa0[0x41] != 3) {
-                if (FU(this, 0x108) != 0) {
-                    FU(this, 0x108) -= 1;
-                    if (FU(this, 0x108) == 0) {
-                        FH(this, 0x10a) = 0;
-                        FH(this, 0x10e) = -0x400;
-                        FH(this, 0x10c) = FH(this, 0x10e);
-                        FB(this, 0x136) = 1;
+            if (STRIP_MODE(this) <= 1 || data_0209caa0[0x41] != 3) {
+                if (BOUNCE_DELAY(this) != 0) {
+                    BOUNCE_DELAY(this) -= 1;
+                    if (BOUNCE_DELAY(this) == 0) {
+                        BOTTOM_Y_OFFSET(this) = 0;
+                        BOUNCE_LAUNCH(this) = -0x400;
+                        BOUNCE_VELOCITY(this) = BOUNCE_LAUNCH(this);
+                        BOUNCE_PHASE(this) = 1;
                     }
                 } else {
-                    if (!(FB(this, 0x136) & 2)) {
-                        FH(this, 0x10c) += 0x100;
-                        if (FH(this, 0x10c) >= 0) {
-                            FB(this, 0x136) = 1;
+                    if (!(BOUNCE_PHASE(this) & 2)) {
+                        BOUNCE_VELOCITY(this) += 0x100;
+                        if (BOUNCE_VELOCITY(this) >= 0) {
+                            BOUNCE_PHASE(this) = 1;
                         }
                     } else {
-                        FH(this, 0x10c) -= 0x100;
-                        if (FH(this, 0x10c) >= 0) {
-                            FB(this, 0x136) = 3;
+                        BOUNCE_VELOCITY(this) -= 0x100;
+                        if (BOUNCE_VELOCITY(this) >= 0) {
+                            BOUNCE_PHASE(this) = 3;
                         }
                     }
-                    FH(this, 0x10a) += FH(this, 0x10c);
-                    if (FB(this, 0x136) == 1 && FH(this, 0x10a) >= 0) {
-                        FB(this, 0x136) = 2;
-                    } else if (FB(this, 0x136) == 3 && FH(this, 0x10a) <= 0) {
-                        FH(this, 0x10e) += 0x80;
-                        if (FH(this, 0x10e) >= -0x180) {
-                            FU(this, 0x108) = 0x78;
-                            FH(this, 0x10a) = 0;
+                    BOTTOM_Y_OFFSET(this) += BOUNCE_VELOCITY(this);
+                    if (BOUNCE_PHASE(this) == 1 && BOTTOM_Y_OFFSET(this) >= 0) {
+                        BOUNCE_PHASE(this) = 2;
+                    } else if (BOUNCE_PHASE(this) == 3 && BOTTOM_Y_OFFSET(this) <= 0) {
+                        BOUNCE_LAUNCH(this) += 0x80;
+                        if (BOUNCE_LAUNCH(this) >= -0x180) {
+                            BOUNCE_DELAY(this) = 0x78;
+                            BOTTOM_Y_OFFSET(this) = 0;
                         } else {
-                            FH(this, 0x10c) = FH(this, 0x10e);
-                            FB(this, 0x136) = 1;
+                            BOUNCE_VELOCITY(this) = BOUNCE_LAUNCH(this);
+                            BOUNCE_PHASE(this) = 1;
                         }
                     }
                 }
             }
         }
     }
-    DecIfAbove0_Short(&FU(this, 0x104));
+    DecIfAbove0_Short(&PLATE_REPEAT_TIMER(this));
     return 1;
 }
 
@@ -975,11 +994,10 @@ enum ZN12dScStarSel_c13InitResourcesEv_AssetId {
  *
  * Loads the star-select screen: sound group, VRAM banks, the two Model members
  * (models[0]/models[1]), the per-language BG/OBJ graphics, the per-character
- * palette set, then derives the star row (collected bitmask at +0x131, first
- * uncollected slot at +0x115, count at +0x114, per-star x positions at +0x11A)
- * and the character row (+0x124/+0x128/+0x12C, count at +0x130). Those offsets
- * fall inside dScStarSel_c::unk_104, which the header still holds as opaque
- * storage, so they stay raw; the Model pair is named.
+ * palette set, then derives the star row (PLATE_MASK, SELECTED_PLATE,
+ * PLATE_COUNT, PLATE_X) and the character row (CHAR_X/CHAR_Y/CHAR_SPRITE,
+ * STRIP_MODE). Those fields fall inside dScStarSel_c::unk_104, which the header
+ * still holds as opaque storage, so they are reached through the views above.
  *
  * The star x positions are a u8 running value: the row is centred, so it starts
  * at 0x80 (odd count) or 0x92 (even count) minus half the count times the 0x23
@@ -1234,8 +1252,8 @@ s32 dScStarSel_c::InitResources() {
         if (IsStarCollected(level, 0) != 0) {
             totalStars = (u32)(u8)(totalStars - 1);
         }
-        FB(this, 0x115) = 0xFF;
-        FB(this, 0x131) = 0;
+        SELECTED_PLATE(this) = 0xFF;
+        PLATE_MASK(this) = 0;
         loopI = 1;
         if ((u32)accB < totalStars) {
             sp8 = 1;
@@ -1245,11 +1263,11 @@ s32 dScStarSel_c::InitResources() {
             bitsPtr += 0x131;
             do {
                 if (IsStarCollected(level, loopI) != 0) {
-                    FB(this, 0x131) |= (u8)(varOne << bitPos);
+                    PLATE_MASK(this) |= (u8)(varOne << bitPos);
                     accB += 1;
                 } else {
-                    if (FB(this, 0x115) == 0xFF) {
-                        FB(this, 0x115) = bitPos;
+                    if (SELECTED_PLATE(this) == 0xFF) {
+                        SELECTED_PLATE(this) = bitPos;
                         *bitsPtr |= (u8)(sp8 << bitPos);
                     }
                     anyUnfilled = spC;
@@ -1258,25 +1276,25 @@ s32 dScStarSel_c::InitResources() {
                 loopI += 1;
             } while ((u32)accB < totalStars);
         }
-        FB(this, 0x114) = bitPos;
+        PLATE_COUNT(this) = bitPos;
         if ((anyUnfilled == 0) && (totalStars != 7)) {
-            FB(this, 0x114) += 1;
-            if (FB(this, 0x115) == 0xFF) {
-                FB(this, 0x115) = bitPos;
-                FB(this, 0x131) |= (u8)(1 << bitPos);
+            PLATE_COUNT(this) += 1;
+            if (SELECTED_PLATE(this) == 0xFF) {
+                SELECTED_PLATE(this) = bitPos;
+                PLATE_MASK(this) |= (u8)(1 << bitPos);
             }
         }
-        if (FB(this, 0x115) == 0xFF) {
-            FB(this, 0x115) = 0;
+        if (SELECTED_PLATE(this) == 0xFF) {
+            SELECTED_PLATE(this) = 0;
         }
-        tmpU8 = FB(this, 0x114);
+        tmpU8 = PLATE_COUNT(this);
         if (tmpU8 & 1)
             colorVal = 0x80;
         else
             colorVal = 0x92;
         colorVal -= ((s32)tmpU8 >> 1) * 0x23;
-        for (idx2 = 0; idx2 < (s32)FB(this, 0x114); idx2++) {
-            FB((u8 *)this + idx2, 0x11A) = colorVal;
+        for (idx2 = 0; idx2 < (s32)PLATE_COUNT(this); idx2++) {
+            PLATE_X(this, idx2) = colorVal;
             colorVal += 0x23;
         }
     }
@@ -1284,7 +1302,7 @@ s32 dScStarSel_c::InitResources() {
     if (SublevelToLevel(data_02092110) <= 0x14) {
         Message::DisplayCourseNameForStarSelect((u32)(s16)SublevelToLevel(data_02092110));
         if (SublevelToLevel(data_02092110) <= 0xE) {
-            Message::DisplayStarNameForStarSelect(FB(this, 0x115));
+            Message::DisplayStarNameForStarSelect(SELECTED_PLATE(this));
         }
         SetBg3Offset(0, -4);
     } else {
@@ -1292,23 +1310,23 @@ s32 dScStarSel_c::InitResources() {
     }
 
     charIdx = 0;
-    FB(this, 0x130) = 0;
+    STRIP_MODE(this) = 0;
     do {
         if (SaveData::IsCharacterUnlocked(charIdx) != 0) {
-            FB(this, 0x130)++;
+            STRIP_MODE(this)++;
         }
         charIdx += 1;
     } while (charIdx < 4);
 
     if (SublevelToLevel(data_02092110) <= 0xE) {
-        if ((FB(this, 0x130) != 1) && (data_0209caa0[0x41] == 3)) {
-            FB(this, 0x12B) = 0x88;
-            FU(this, 0x108) = 0;
+        if ((STRIP_MODE(this) != 1) && (data_0209caa0[0x41] == 3)) {
+            PANEL_Y(this) = 0x88;
+            BOUNCE_DELAY(this) = 0;
         } else {
-            FB(this, 0x12B) = 0x60;
-            FU(this, 0x108) = 0;
+            PANEL_Y(this) = 0x60;
+            BOUNCE_DELAY(this) = 0;
         }
-        charCount = FB(this, 0x130);
+        charCount = STRIP_MODE(this);
         charCountM1 = charCount - 1;
         tabR5 = data_ov003_020b16a8[charCountM1];
         tabSL = data_ov003_020b16a0[charCountM1];
@@ -1321,9 +1339,9 @@ s32 dScStarSel_c::InitResources() {
                 tablePtr = &data_ov003_020b16c8[idx8];
                 do {
                     if (SaveData::IsCharacterUnlocked(varR6) != 0) {
-                        FB((u8 *)this + varR6, 0x124) = tabR5;
-                        FB((u8 *)this + varR6, 0x128) = tabSL;
-                        FB((u8 *)this + varR6, 0x12C) = tabSB;
+                        CHAR_X(this, varR6) = tabR5;
+                        CHAR_Y(this, varR6) = tabSL;
+                        CHAR_SPRITE(this, varR6) = tabSB;
                         varFp += 1;
                         tabR5 = (u8)(tabR5 + data_ov003_020b16e4[idx8]);
                         tabSL = (u8)(tabSL + *tablePtr);
@@ -1332,27 +1350,27 @@ s32 dScStarSel_c::InitResources() {
                         idx8 += 1;
                     }
                     varR6 += 1;
-                } while (varFp < (s32)(FB(this, 0x130) - 1));
+                } while (varFp < (s32)(STRIP_MODE(this) - 1));
             }
         }
     }
 
-    FB(this, 0x132) = 0xFF;
-    FB(this, 0x135) = 0;
-    FB(this, 0x133) = 0;
-    FW(this, 0x50) = 0x1000;
-    FW(this, 0x54) = 0x1000;
-    FW(this, 0x60) = 0x1000;
-    FU(this, 0x110) = 0;
-    FB(this, 0x139) = 0;
-    FB(this, 0x137) = 0;
-    FU(this, 0x110) = 0;
-    FU(this, 0x108) = 0x78;
-    FB(this, 0x13A) = 0;
+    PICKED_CHAR(this) = 0xFF;
+    CURSOR_ON(this) = 0;
+    CURSOR_MODE(this) = 0;
+    SCALE_X(this) = 0x1000;
+    SCALE_Y(this) = 0x1000;
+    IDLE_ICON_SCALE(this) = 0x1000;
+    SPIN_ANGLE(this) = 0;
+    ANIM_MODE(this) = 0;
+    PANEL_ANIM_STEP(this) = 0;
+    SPIN_ANGLE(this) = 0;
+    BOUNCE_DELAY(this) = 0x78;
+    ANIM_FLIP(this) = 0;
     data_0209d454 = 0x10;
     REG32(0x4000000) = (REG32(0x4000000) & ~0x1F00) | (data_0209d45c << 8);
     REG32(0x4001000) = (REG32(0x4001000) & ~0x1F00) | 0x1000;
-    FB(this, 0x116) = data_0209caa0[0x41];
+    LIFE_ICON(this) = data_0209caa0[0x41];
     data_0208ee44 = 1;
     return 1;
 }
@@ -1378,11 +1396,12 @@ dScStarSel_c *dScStarSel_c_classInit(void) {
         _ZN7fBase_cC2Ev(p);
         *(void ***)p = (void **)data_0208e4b8;
         *(void ***)p = (void **)_ZTV8dScene_c;
-        unsigned char *fl = (unsigned char *)(((int)p + 0x13));
+        unsigned char *fl = &((dScStarSel_c *)p)->pauseFlags;
         *fl |= 1;
         *fl |= 4;
         *(void ***)p = (void **)data_ov003_020b1704;
-        __cxa_vec_ctor(p + 0x64, 2, 0x50, (void (*)(void *))_ZN5ModelC1Ev, _ZN5ModelD1Ev);
+        __cxa_vec_ctor(((dScStarSel_c *)p)->models, 2, sizeof(Model),
+                       (void (*)(void *))_ZN5ModelC1Ev, _ZN5ModelD1Ev);
     }
     return (dScStarSel_c *)p;
 }
