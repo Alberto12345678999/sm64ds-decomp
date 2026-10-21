@@ -95,7 +95,6 @@ struct CameraRaw;
 struct Entry18 { s16 val; /* 0x0 */ char _pad[0x16]; };
 struct Anim2fec { short a; short x; short y; short z; };
 struct ObjTeleport { s16 x, y, z; u16 param; };
-struct ObjLE { char pad[0x118]; void *f118; };
 struct State2i { int a; int b; };
 struct S18a { short f0; char pad[0x16]; };
 struct S18b { u16 f0; char pad[0x16]; };
@@ -6191,18 +6190,18 @@ s32 Player::St_LevelEnter_Cleanup()
  * Level-entry cutscene, per frame. mStateWork indexes a table of
  * POINTERS TO MEMBER FUNCTION -- the same ARM/Itanium pmf representation
  * Player::State uses -- and the selected step runs against the player. Six of
- * the mStateStep values additionally publish the player to the global at
- * data_0209f318+0x118, presumably as the camera's focus.
+ * the mStateStep values additionally make the player the camera's focus
+ * actor (dCamera_c::mFocusActor, through the camera pointer data_0209f318).
  */
 extern "C" {
 int Player::St_LevelEnter_Main()
 {
     extern void (Player::*data_ov002_0211075c[])();
-    extern ObjLE *data_0209f318;
+    extern dCamera_c *data_0209f318;
     extern void Player_AdvanceAnims(void*);
     switch (mStateStep) {
     case 8: case 9: case 11: case 12: case 16: case 18:
-        data_0209f318->f118 = this;
+        data_0209f318->mFocusActor = this;
         break;
     case 10: case 13: case 14: case 15: case 17:
     default:
@@ -21515,8 +21514,7 @@ skip:
             if (mStateArg == 0) {
                 _ZN5Sound9PlayBank0EjRK7Vector3(0xb9, &mCamSpacePos);
                 func_ov002_020e25f0(c, 2);
-                /* mStateArg += 1 through an int-cast address; the member spelling is 12 bytes short. */
-                *(u8 *)(((int)c + 0x70c)) = *(u8 *)(((int)c + 0x70c)) + 1;
+                mStateArg++;
             }
             {
                 Matrix4x3 *bone =
