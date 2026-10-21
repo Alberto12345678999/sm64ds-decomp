@@ -19,8 +19,8 @@ typedef struct ChunkRequest {
 typedef struct CardCommon {
     ChunkRequest *mRequest; /* 0x00 */
     unsigned char pad_04[0x14];
-    int mSrc;       /* 0x18 -- RAM source of the write */
-    int mDst;       /* 0x1c -- backup address */
+    int mSrc;                /* 0x18 -- RAM source of the write */
+    int mDst;                /* 0x1c -- backup address */
     unsigned int mRemaining; /* 0x20 -- bytes left */
     unsigned char pad_24[4];
     /* 0x28 / 0x2c -- the completion callback and its argument (func_0206081c
@@ -43,9 +43,8 @@ typedef struct CardCommon {
  * card to be free, take it, store the request, and run the write task
  * (func_0206062c) here or, when is_async, on the card thread. Synchronous
  * calls return whether the request succeeded. */
-int func_02060484(int dst, int src, int len, int callback, int arg, int is_async)
-{
-    CardCommon* g = (CardCommon*)data_020a8180;
+int func_02060484(int dst, int src, int len, int callback, int arg, int is_async) {
+    CardCommon *g = (CardCommon *)data_020a8180;
     unsigned int irq = _ZN3IRQ7DisableEv();
     if (g->mFlags & 4) {
         do {
@@ -60,11 +59,11 @@ int func_02060484(int dst, int src, int len, int callback, int arg, int is_async
     g->mCallback = callback;
     g->mCallbackArg = arg;
     if (is_async != 0) {
-        func_02060228((void*)func_0206062c);
+        func_02060228((void *)func_0206062c);
         return 1;
     }
     /* through the symbol, not g: the ROM reloads its address (via g, 4 bytes shorter) */
-    ((CardCommon*)data_020a8180)->mCurThread = data_020a6134[2];
+    ((CardCommon *)data_020a8180)->mCurThread = data_020a6134[2];
     func_0206062c(g);
     return g->mRequest->mResult == 0;
 }

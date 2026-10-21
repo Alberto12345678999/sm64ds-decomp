@@ -38,9 +38,9 @@ extern void OS_SleepThread(unsigned short*);
 extern void func_0205c788(char*, int);
 extern unsigned int (*data_02086758[])(char*);
 
-int func_0205c5e4(char* self, int idx) {
-    FSFile* p_file = (FSFile*)self;
-    FSArchive* r;
+int func_0205c5e4(char *self, int idx) {
+    FSFile *p_file = (FSFile *)self;
+    FSArchive *r;
     unsigned int flags;
     int ret;
     int mask;
@@ -87,7 +87,7 @@ int func_0205c5e4(char* self, int idx) {
     if (ret == 6) {
         int t = (p_file->stat & 4) ? 1 : 0;
         if (t != 0) {
-            unsigned short* p;
+            unsigned short *p;
             irq = _ZN3IRQ7DisableEv();
             p = &r->sync_q;
             while ((busy = (r->flag & 0x200) ? 1 : 0) != 0)

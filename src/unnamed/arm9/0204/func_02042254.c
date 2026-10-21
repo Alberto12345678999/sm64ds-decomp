@@ -26,8 +26,7 @@ extern void func_02041a94(char *base, void *node);
  * region's file offset and size; func_02041c64 matches a node by them) stay
  * raw: they fall in the header's pad_08c, and the header is not edited while
  * its consumers func_02040f30 / func_020412f0 are in an open PR. */
-void func_02042254(void)
-{
+void func_02042254(void) {
     int i;
     FileShareNode *node;
     int arc = (int)func_0205d23c(data_02099e6c, 3);
@@ -52,9 +51,9 @@ void func_02042254(void)
         _ZN3IRQ7RestoreEj(irq);
 
         if (node->mState == 1) {
-            func_0205d5e8((char *)node->mFile, arc, *(int *)((char *)node + 0x8c),
-                          *(int *)((char *)node + 0x8c) + *(int *)((char *)node + 0x90),
-                          node->mFileId);
+            char *sb = (char *)node; /* for 0x8c / 0x90, which have no header name */
+            func_0205d5e8((char *)node->mFile, arc, *(int *)(sb + 0x8c),
+                          *(int *)(sb + 0x8c) + *(int *)(sb + 0x90), node->mFileId);
             i = 0;
             {
                 int val = 0;

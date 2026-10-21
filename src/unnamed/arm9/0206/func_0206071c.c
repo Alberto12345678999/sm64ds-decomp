@@ -30,29 +30,28 @@ typedef struct CardCommon {
  * up to 0x100 bytes from backup address mSrc into mBuffer (request 6), copy
  * them out to mDst, and advance until mRemaining is 0 or a request fails;
  * then end the task (func_0206081c). */
-void func_0206071c(char *thiz)
-{
-  CardCommon *p = (CardCommon *)thiz;
-  unsigned int n;
-  char *e0;
+void func_0206071c(char *thiz) {
+    CardCommon *p = (CardCommon *)thiz;
+    unsigned int n;
+    char *e0;
 
-  e0 = p->mBuffer;
+    e0 = p->mBuffer;
 
-  do
-  {
-    n = p->mRemaining;
-    if (n > 0x100) n = 0x100;
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)p->mBuffer, 0x100);
-    p->mRequest->mSrc = p->mSrc;
-    p->mRequest->mDst = (int)p->mBuffer;
-    p->mRequest->mLen = n;
-    if (func_02060f60(thiz, 6, 1) == 0) break;
-    CpuCopy8(e0, p->mDst, n);
-    p->mSrc += n;
-    p->mDst += n;
-    p->mRemaining -= n;
-  }
-  while (p->mRemaining != 0);
+    do {
+        n = p->mRemaining;
+        if (n > 0x100)
+            n = 0x100;
+        _ZN4CP1519InvalidateDataCacheEjj((unsigned int)p->mBuffer, 0x100);
+        p->mRequest->mSrc = p->mSrc;
+        p->mRequest->mDst = (int)p->mBuffer;
+        p->mRequest->mLen = n;
+        if (func_02060f60(thiz, 6, 1) == 0)
+            break;
+        CpuCopy8(e0, p->mDst, n);
+        p->mSrc += n;
+        p->mDst += n;
+        p->mRemaining -= n;
+    } while (p->mRemaining != 0);
 
-  func_0206081c(thiz);
+    func_0206081c(thiz);
 }

@@ -31,18 +31,19 @@ typedef struct WMArm9Buf {
     WMStatus *status; /* 0x04 */
 } WMArm9Buf;
 
-int func_02061ab0(void)
-{
+int func_02061ab0(void) {
     WMArm9Buf *h = (WMArm9Buf *)WM_GetSystemWork();
     WMStatus *p;
     int flag;
     int v;
 
-    if (WM_CheckStateEx(2, 7, 8) != 0) return 0;
+    if (WM_CheckStateEx(2, 7, 8) != 0)
+        return 0;
 
     _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&h->status->mp_flag, 4);
     p = h->status;
-    if (p->mp_flag == 1) return 0;
+    if (p->mp_flag == 1)
+        return 0;
 
     _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&h->status->aid, 2);
     p = h->status;
@@ -51,7 +52,8 @@ int func_02061ab0(void)
     _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&p->mp_maxRecvSize, 2);
     p = h->status;
     v = p->mp_maxRecvSize;
-    if (flag != 1) return (((v + 0x51) & ~0x1f) << 1);
+    if (flag != 1)
+        return (((v + 0x51) & ~0x1f) << 1);
 
     _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&p->pparam.maxEntry, 2);
     p = h->status;

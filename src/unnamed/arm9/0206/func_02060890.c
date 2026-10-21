@@ -8,8 +8,8 @@ extern void *data_020a8780;
  * fields this function touches; names as func_02060484.c spells them. */
 typedef struct CardCommon {
     unsigned char pad_00[0x18];
-    int mSrc;       /* 0x18 */
-    int mDst;       /* 0x1c */
+    int mSrc;                /* 0x18 */
+    int mDst;                /* 0x1c */
     unsigned int mRemaining; /* 0x20 */
     /* 0x24 -- the DMA channel transfers use (func_02060d1c indexes the DMA
      * registers by it); -1 for none */

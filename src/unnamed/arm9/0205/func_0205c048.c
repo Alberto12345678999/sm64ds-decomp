@@ -18,20 +18,20 @@ typedef struct FSFileID {
 } FSFileID;
 
 typedef struct FSDirPos {
-    void *arc;              /* 0x00 */
-    unsigned short own_id;  /* 0x04 */
-    unsigned short index;   /* 0x06 */
-    unsigned int pos;       /* 0x08 */
+    void *arc;             /* 0x00 */
+    unsigned short own_id; /* 0x04 */
+    unsigned short index;  /* 0x06 */
+    unsigned int pos;      /* 0x08 */
 } FSDirPos;
 
 typedef struct FSDirEntry {
     union {
         FSFileID file_id;
         FSDirPos dir_id;
-    } id;                      /* 0x00 */
-    int is_directory;          /* 0x0c */
-    int name_len;              /* 0x10 */
-    unsigned char name[128];   /* 0x14 -- FS_FILE_NAME_MAX */
+    } id;                    /* 0x00 */
+    int is_directory;        /* 0x0c */
+    int name_len;            /* 0x10 */
+    unsigned char name[128]; /* 0x14 -- FS_FILE_NAME_MAX */
 } FSDirEntry;
 
 typedef struct FSFile {
@@ -51,13 +51,13 @@ typedef struct FSFile {
             int skip_string;     /* 0x30 */
         } readdir;
         struct {
-            FSDirPos pos;       /* 0x2c -- where the search starts */
+            FSDirPos pos;        /* 0x2c -- where the search starts */
             unsigned char *path; /* 0x38 */
             int find_directory;  /* 0x3c */
             union {
                 FSFileID *file;
                 FSDirPos *dir;
-            } result;            /* 0x40 */
+            } result; /* 0x40 */
         } findpath;
     } arg; /* 0x2c */
 } FSFile;
@@ -73,8 +73,7 @@ static inline int IsNameChar(int c) {
     return f;
 }
 
-int func_0205c048(unsigned char *self)
-{
+int func_0205c048(unsigned char *self) {
     FSFile *p_dir = (FSFile *)self;
     int is_dir = p_dir->arg.findpath.find_directory;
     unsigned char *path = p_dir->arg.findpath.path;
