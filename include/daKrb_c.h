@@ -103,7 +103,7 @@ struct daKrb_c : dCapEnemy_c {
     s8  mStarTracked;            /* 0x465 */
     u8  mStarID;            /* 0x466 */
     /* Bounce counter in STATE_TUMBLE (sound chosen by it); cleared on entry. */
-    u8  unk_467;            /* 0x467 */
+    u8 mBounceCount;  /* 0x467 */
     u8  mMoveFlags;   /* 0x468 -- MoveFlags */
     u8  pad_469[0x3];
     /* hitFlags of the last hit reaction, saved by func_ov084_02129ed4. */
@@ -112,8 +112,12 @@ struct daKrb_c : dCapEnemy_c {
     /* Slot among the king's minions; daKuriKing_c stores its running spawn
        count here and the Goomba hands it to func_ov074_0212087c. */
     u8  mMinionIndex;       /* 0x474 */
-    /* Reloaded with 30 while the king's mState is 4 and mWalkSpeed is 0. */
-    u8  unk_475;            /* 0x475 */
+    /* Reloaded with 30 while the king's mState is 4 and mWalkSpeed is 0.
+       While func_ov084_0212af74's DecIfAbove0_Byte finds it nonzero the
+       minion leaves its spot beside the king and acts for itself (faces or
+       hops at the player, or wanders), so it outlasts the king's stop by
+       30 frames. */
+    u8 mFreeRoamTimer; /* 0x475 */
     u8  pad_476[0x2];
 
     /* OUT OF LINE, DECLARED FIRST. `#pragma defer_codegen off` in the TU
