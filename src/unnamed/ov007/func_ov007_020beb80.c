@@ -1,27 +1,12 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "ModelBase.h"
 
 extern int func_020538b8(int a, int b);
 extern void *func_ov007_020b7690(int i);
 extern int func_02053644(s16 *v);
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern void func_02053380(s16 *in, s16 *out);
-
-/* Matrix4x3 as in include/math/Matrix.h: rotation rows, then translation. */
-typedef struct Matrix3x3 {
-    int m[9];
-} Matrix3x3;
-
-typedef struct Matrix4x3 {
-    Matrix3x3 r; /* 0x00 */
-    Vector3 t;   /* 0x24 */
-} Matrix4x3;
-
-/* ModelComponents as in include/ModelBase.h; only the slot read here. */
-typedef struct ModelComponents {
-    char pad_00[0xc];
-    Matrix4x3 *transforms; /* 0x0c: one per bone */
-} ModelComponents;
 
 /* The 0x1c-byte animation player; names as in func_ov007_020bc02c. */
 typedef struct Ov007AnimPlayer {
@@ -32,7 +17,7 @@ typedef struct Ov007AnimPlayer {
 /* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
  * func_ov007_020bc02c and func_ov007_020be0dc, only the slots read here. */
 typedef struct Ov007Model {
-    ModelComponents *model; /* 0x00 */
+    struct ModelComponents *model; /* 0x00 */
     char pad_04[0x14];
     Ov007AnimPlayer *boneAnim; /* 0x18 */
     char pad_1c[0x78];
@@ -75,7 +60,7 @@ typedef struct TrackElem {
 
 void func_ov007_020beb80(char *self) {
     Ov007Figure *f = (Ov007Figure *)self;
-    ModelComponents *B = f->model->model;
+    struct ModelComponents *B = f->model->model;
     Matrix4x3 *P = B->transforms;
     int *q = (int *)(int)&P->r.m[6];
     int r;

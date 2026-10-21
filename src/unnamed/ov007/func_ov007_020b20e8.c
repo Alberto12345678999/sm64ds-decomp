@@ -13,7 +13,7 @@ typedef struct Ov007Camera {
     char pad_74[0x40];
     int scaleW; /* 0xb4: PerspectiveW_'s scale (func_ov007_020b2160) */
     char pad_b8[0x1c];
-    short fovy; /* 0xd4 */
+    unsigned short fovy; /* 0xd4 */
 } Ov007Camera;
 
 typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
