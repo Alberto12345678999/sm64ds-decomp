@@ -59,8 +59,8 @@ typedef struct FileShareParentArea {
     unsigned char mReplies[0x10][0xc];
     unsigned char mNodes[3][FILE_SHARE_NODE_SIZE]; /* 0x00c0 */
     FileShareNode *mFreeList;                      /* 0x2700 */
-    FileShareNode *mReadyList; /* 0x2704 -- func_02041c2c searches it */
-    FileShareNode *mBusyList;  /* 0x2708 -- func_02042254 loads its state-1 nodes */
+    FileShareNode *mReadyList;                     /* 0x2704 -- func_02041c2c searches it */
+    FileShareNode *mBusyList; /* 0x2708 -- func_02042254 loads its state-1 nodes */
     /* 0x270c -- children owed a reply, by AID bit (func_020412f0,
      * func_02041d28 set; func_02041e14 sends and clears) */
     int mReplyPending;
@@ -139,8 +139,10 @@ typedef struct FileShareWork {
                                                          mIsParent */
 } FileShareWork;
 
-typedef char FileShareNode_size_must_be_0xcc0[sizeof(FileShareNode) == FILE_SHARE_NODE_SIZE ? 1 : -1];
-typedef char FileShareParentArea_size_must_be_0x2730[sizeof(FileShareParentArea) == 0x2730 ? 1 : -1];
+typedef char
+    FileShareNode_size_must_be_0xcc0[sizeof(FileShareNode) == FILE_SHARE_NODE_SIZE ? 1 : -1];
+typedef char
+    FileShareParentArea_size_must_be_0x2730[sizeof(FileShareParentArea) == 0x2730 ? 1 : -1];
 typedef char FileShareChildArea_size_must_be_0xc7c[sizeof(FileShareChildArea) == 0xc7c ? 1 : -1];
 typedef char FileShareWork_size_must_be_0x2b70[sizeof(FileShareWork) == 0x2b70 ? 1 : -1];
 

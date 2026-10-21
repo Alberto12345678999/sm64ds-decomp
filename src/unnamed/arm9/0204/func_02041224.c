@@ -21,7 +21,8 @@ void func_02041224(char *thiz, int n)
         n = child->mMaxReadSize;
         child->mMaxReadSize = 0;
     }
-    if ((unsigned int)child->mMaxReadSize >= (unsigned int)n) return;
+    if ((unsigned int)child->mMaxReadSize >= (unsigned int)n)
+        return;
     child->mMaxReadSize = n;
     r6 = child->mRecvWork;
     if (r6 != 0) {
