@@ -38,10 +38,10 @@ typedef struct Ov007Mesh {
 
 /* data_ov007_020d7c9c, the wave template; chances are per mille. */
 typedef struct Ov007MeshWaveParams {
-    int speed;     /* 0x00: phase advance per tick of the wave's state */
-    int spread;    /* 0x04: phase across one whole row or column */
-    int amplitude; /* 0x08: Q12, times the sine */
-    u16 minIdle;   /* 0x0c: ticks a wave stays idle (-1) before it may re-roll */
+    int speed;      /* 0x00: phase advance per tick of the wave's state */
+    int spread;     /* 0x04: phase across one whole row or column */
+    int amplitude;  /* 0x08: Q12, times the sine */
+    u16 minIdle;    /* 0x0c: ticks a wave stays idle (-1) before it may re-roll */
     u16 keepChance; /* 0x0e: chance each tick a running wave keeps pushing */
     u16 idleChance; /* 0x10: chance a re-roll goes idle instead of picking a line */
 } Ov007MeshWaveParams;
@@ -51,9 +51,9 @@ typedef struct Ov007MeshWaveParams {
  * are ticked but drive nothing). Each wave's currentState is its column or
  * row, -1 when idle, and its stateTicks the sine's time. */
 typedef struct Ov007MeshWave {
-    int frame;                  /* 0x00: func_ov007_020ca1d4 counts it up every call */
-    int delay;                  /* 0x04: no wave runs until it counts down to 0 */
-    Ov007MenuState *waves[4];   /* 0x08: func_ov007_020c9388(-2) */
+    int frame;                   /* 0x00: func_ov007_020ca1d4 counts it up every call */
+    int delay;                   /* 0x04: no wave runs until it counts down to 0 */
+    Ov007MenuState *waves[4];    /* 0x08: func_ov007_020c9388(-2) */
     Ov007MeshWaveParams *params; /* 0x18: func_ov007_020ca2a8's argument */
 } Ov007MeshWave;
 

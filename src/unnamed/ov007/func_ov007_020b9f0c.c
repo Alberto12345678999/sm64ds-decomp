@@ -44,7 +44,7 @@ void func_ov007_020b9f0c(void)
     }
     func_ov007_020c5c14(SCENE->picker, &SCENE->picker->pos);
     func_ov007_020c5ef0(SCENE->picker);
-    func_ov007_020c510c((char*)SCENE->picker);
+    func_ov007_020c510c((char *)SCENE->picker);
 
     SCENE->idleFrames = 0;
     SCENE->states[2]->requestedState = 0;

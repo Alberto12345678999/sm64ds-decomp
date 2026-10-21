@@ -31,20 +31,20 @@ typedef char Ov007SpriteGroup_size_must_be_0xc[sizeof(Ov007SpriteGroup) == 0xc ?
 void* func_ov007_020c3f00(int* r6, void* r4)
 {
     char* r5 = (char*)func_ov007_020c3df4(0, (void*)0x18);
-    Ov007SpriteGroup* grp = (Ov007SpriteGroup*)r5;
+    Ov007SpriteGroup *grp = (Ov007SpriteGroup *)r5;
     grp->layout = r6;
     grp->root = func_ov007_020c11ac(0);
     grp->root->priority = 4;
     grp->root->visible = 0;
     *(void**)(r5 + 0xc) = func_ov007_020c40d4(r4);
-    func_ov007_020c10b0(grp->root, *(int*)*(void**)(r5 + 0xc));
-    grp->items = (void**)func_ov007_020c3df4(0, (void*)(*r6 << 2));
+    func_ov007_020c10b0(grp->root, *(int *)*(void **)(r5 + 0xc));
+    grp->items = (void **)func_ov007_020c3df4(0, (void *)(*r6 << 2));
     int i = 0;
     while (i < *r6) {
-        grp->items[i] = func_ov007_020c40d4((void*)r6[2]);
-        char* r7 = (char*)grp->items[i];
+        grp->items[i] = func_ov007_020c40d4((void *)r6[2]);
+        char *r7 = (char *)grp->items[i];
         func_ov007_020c4090(r7);
-        func_ov007_020c10b0(grp->root, *(int*)r7);
+        func_ov007_020c10b0(grp->root, *(int *)r7);
         i++;
     }
     *(int*)(r5 + 0x14) = 0;

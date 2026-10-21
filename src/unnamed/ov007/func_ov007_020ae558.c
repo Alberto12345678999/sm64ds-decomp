@@ -52,8 +52,7 @@ typedef char Ov007Work_size_must_be_0xc8[sizeof(Ov007Work) == 0xc8 ? 1 : -1];
 /* Picks the next state for one item node from the menu state and the item's
  * own state. The parameter keeps the char * spelling of its caller
  * (func_ov007_020add3c); `self` is the typed view. */
-int func_ov007_020ae558(char *node)
-{
+int func_ov007_020ae558(char *node) {
     Ov007ItemNode *self = (Ov007ItemNode *)node;
     Ov007Work *g = *(Ov007Work **)data_ov007_0210342c;
     Ov007MenuState *b = g->states[2];
@@ -70,7 +69,12 @@ int func_ov007_020ae558(char *node)
 
     switch (sel) {
     case 0:  if (r6) ret = 1; break;
-    case 1:  if (r6) { if (ip_v == 1) Sprite_SetAnimation((char *)self->node, 0, 0, 0, 0); } break;
+    case 1:
+        if (r6) {
+            if (ip_v == 1)
+                Sprite_SetAnimation((char *)self->node, 0, 0, 0, 0);
+        }
+        break;
     case 3:  if (r6) { if (lr_v == 1) ret = 7; else if (ip_v == 7) ret = 1; } break;
     case 2:  if (r6) { if (lr_v == 1) { if (ip_v != 2) ret = 4; } } break;
     case 4:  if (r6) { if (lr_v == 1) ret = 7; } break;
@@ -83,8 +87,12 @@ int func_ov007_020ae558(char *node)
             int t = (d == 1 || d == 3);
             if (lr_v == 1) {
                 if (t) {
-                    if (ip_v != 2) { ret = 0; if (ip_v == 1) Sprite_SetAnimation((char *)self->node, 4, 0, 0, 0); }
-                    else ret = 1;
+                    if (ip_v != 2) {
+                        ret = 0;
+                        if (ip_v == 1)
+                            Sprite_SetAnimation((char *)self->node, 4, 0, 0, 0);
+                    } else
+                        ret = 1;
                 } else ret = 7;
             } else if (lr_v == 5) {
                 ret = 0;
@@ -98,7 +106,7 @@ int func_ov007_020ae558(char *node)
         if (lr_v == 1) {
             if (r6) ret = 7;
             else {
-                Ov007Work *g2 = *(Ov007Work * volatile *)data_ov007_0210342c;
+                Ov007Work *g2 = *(Ov007Work *volatile *)data_ov007_0210342c;
                 short v = g2->states[1]->currentState;
                 u8 flag2 = g2->itemNodes[1]->node->animIndex;
                 int x;

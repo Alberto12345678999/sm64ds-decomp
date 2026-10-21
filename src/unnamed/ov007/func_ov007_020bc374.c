@@ -28,8 +28,8 @@ typedef char Ov007Model_size_must_be_0x90[sizeof(Ov007Model) == 0x90 ? 1 : -1];
 /* Starts bone animation b: when one is already playing, snapshots its player
  * into blendAnim and cross-fades out of it over d frames. */
 void func_ov007_020bc374(char* self, int b, int c, int d) {
-    Ov007Model* m = (Ov007Model*)self;
-    Ov007AnimPlayer* src = m->boneAnim;
+    Ov007Model *m = (Ov007Model *)self;
+    Ov007AnimPlayer *src = m->boneAnim;
     if (src->anim != -1) {
         *m->blendAnim = *src;
         m->blendFrames = (s16)d;

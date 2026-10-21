@@ -41,7 +41,7 @@ typedef char Ov007Work_size_must_be_0x78[sizeof(Ov007Work) == 0x78 ? 1 : -1];
  * copies row 0xc..0xf (0xc by default) of palette 1 into sub OBJ palette
  * row 0xc and starts a screen fade into func_ov007_020adb84. */
 void func_ov007_020ada70(void) {
-    Ov007Work *g = (Ov007Work*)*(void**)&data_ov007_0210342c;
+    Ov007Work *g = (Ov007Work *)*(void **)&data_ov007_0210342c;
     short st = g->paletteState->currentState;
     Ov007Display *r5 = g->display;
     int n = 0xc;

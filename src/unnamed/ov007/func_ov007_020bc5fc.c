@@ -4,7 +4,7 @@ extern void func_02046d50(void *a, int b);
 /* The 0xa0-byte model record func_ov007_020bc6d4 allocates; names as in
  * func_ov007_020bc6d4, only the slots this file touches. */
 typedef struct Ov007Model {
-    void **model;       /* 0x00: the ModelComponents; its first word is the BMD file */
+    void **model; /* 0x00: the ModelComponents; its first word is the BMD file */
     char pad_04[0x24];
     int numTexSeqAnims; /* 0x28 */
     int *texSeqAnims;   /* 0x2c: BTP_File table (func_02046bbc, TextureSequence) */

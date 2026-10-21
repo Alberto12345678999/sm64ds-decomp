@@ -25,8 +25,7 @@ int func_ov007_020c6550(char *c)
     int status = 1;
     Ov007StrokePath *obj = self->path;
     int left;
-    if (obj->pointCount == 0 ||
-        (left = *(volatile int *)&self->groupCount) >= self->maxGroups) {
+    if (obj->pointCount == 0 || (left = *(volatile int *)&self->groupCount) >= self->maxGroups) {
         status = 0;
     } else {
         func_ov007_020c6d20(c, left);

@@ -36,8 +36,7 @@ typedef char Ov007Picker_size_must_be_0x3c[sizeof(Ov007Picker) == 0x3c ? 1 : -1]
  * and recomputes its extrema before building the group's points
  * (func_ov007_020c6e68). The parameter keeps the char * spelling of the
  * callers' declarations; `self` is the typed view. */
-void func_ov007_020c6d20(char* picker, int idx)
-{
+void func_ov007_020c6d20(char *picker, int idx) {
     Ov007Picker *self = (Ov007Picker *)picker;
     Ov007StrokePath *src;
     Ov007StrokePath *d;
@@ -46,7 +45,8 @@ void func_ov007_020c6d20(char* picker, int idx)
     func_ov007_020c6d90(picker, idx);
 
     src = self->path;
-    self->groups[idx] = (Ov007StrokePath *)func_ov007_020c2a04((struct S *)src, 0, src->pointCount - 1);
+    self->groups[idx] =
+        (Ov007StrokePath *)func_ov007_020c2a04((struct S *)src, 0, src->pointCount - 1);
 
     d = self->groups[idx];
     check = self->params->mergeAngle;

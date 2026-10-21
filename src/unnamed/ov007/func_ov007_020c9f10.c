@@ -23,8 +23,8 @@ void func_ov007_020c9f10(Ov007Swing *self, Vector3 *pos, int w, int h) {
     Vector3 *pe = &self->yPointPos[1];
     Vector3 *pd = &self->yPointPos[0];
     Vector3 *pc = &self->xPointPos[1];
-    int* qd = &self->yPointPos[0].y;
-    int* qe = &self->yPointPos[1].y;
+    int *qd = &self->yPointPos[0].y;
+    int *qe = &self->yPointPos[1].y;
     *pe = *pos;
     *pd = *pe;
     *pc = *pd;

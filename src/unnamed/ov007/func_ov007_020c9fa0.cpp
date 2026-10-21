@@ -27,13 +27,13 @@ typedef char Ov007Swing_size_must_be_0x70[sizeof(Ov007Swing) == 0x70 ? 1 : -1];
  * positions and the swing itself. c keeps its char * spelling; `self` is the
  * typed view. */
 void func_ov007_020c9fa0(char *c){
-  Ov007Swing *self = (Ov007Swing *)c;
-  int i;
-  for(i = 0; i < 2; i++){
-    func_ov007_020c8440(self->xPoints[i]);
-    func_ov007_020c8440(self->yPoints[i]);
-    func_ov007_020c8098(self->xLinks[i]);
-    func_ov007_020c8098(self->yLinks[i]);
+    Ov007Swing *self = (Ov007Swing *)c;
+    int i;
+    for (i = 0; i < 2; i++) {
+        func_ov007_020c8440(self->xPoints[i]);
+        func_ov007_020c8440(self->yPoints[i]);
+        func_ov007_020c8098(self->xLinks[i]);
+        func_ov007_020c8098(self->yLinks[i]);
   }
   func_ov007_020c78dc(self->chain);
   func_ov007_020c3d1c(self->chainPositions);
