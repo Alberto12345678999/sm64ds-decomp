@@ -56,6 +56,7 @@
  */
 
 #include "dScMiniGm_c.h"
+#include "MgMenuRow.h"
 #include "dWipe_c.h"
 #include "types.h"
 #include "Sound.h"
@@ -74,38 +75,12 @@ struct TouchOwner {
     virtual int v0(); virtual int v1(); virtual int v2();
     virtual int v3(); virtual int v4(); virtual int IsActive();
 };
-struct TouchRec { u8 held; u8 edge; u8 x; u8 y; };
-struct MgMid { s32 v[5]; };
-/* One menu entry (sMiniGmRows, 36 of them: rows 0-23 are the first page of
-   each tab, 24-35 the second). StartSceneFade(id, sceneParam, 0) opens the
-   game, so sceneParam becomes the scene's fBase_c param1. Its low byte is the
-   variant that dScMgBase_c::IsAltVariant tests. Six games are listed twice:
-   Amida (rows 0/24), Snowball (6/34), Smartball (10/22), Coin (14/30), Panel
-   (15/35) and Slot1 (17/33). Each first entry has low byte 0 and each second
-   1, except Amida's row 24 with 2 (Amida's override asks for exactly 1).
-   Sound's only entry (row 19) has 0, so its IsAltVariant branch is not
-   reached from this menu. Seen in play: the two Snowballs start with param1
-   0x0a00 and 0x2201. Bytes 1 and 2 each give every row a distinct number
-   0..35. */
-struct MgEntry {
-    u16 id; u16 pad;
-    s32 sceneParam, unk8, unkc, unk10;
-    MgMid mid;
-    s32 unk28, unk2c;
-    s32 level; /* +0x30, dScMgBase_c's constructor loads it into mLevel */
+struct TouchRec {
+    u8 held;
+    u8 edge;
+    u8 x;
+    u8 y;
 };
-typedef char MgEntry_size_must_be_0x34[sizeof(MgEntry) == 0x34 ? 1 : -1];
-typedef struct Entry {
-    int pad0;
-    int sceneParam;
-    int unk8;
-    int unkC;
-    int unk10;
-    int arr[5];
-    int unk28;
-    int unk2c;
-    int unk30;
-} Entry;
 typedef struct Pair { int x, y; } Pair;
 struct Off9 { int v[9]; };
 
@@ -117,7 +92,7 @@ extern "C" {
 extern u8 gMgSaveDirty;
 extern u8 gMgMenuPage;
 extern MgEntry gMgMenuRow;
-extern MgMid gMgMenuRowMid;
+extern MgRecordDefaults gMgMenuRowMid;
 extern MinigameSaveData data_0209cae4;
 extern u32 data_0209caa0[];
 extern u8 data_0209d454;
@@ -148,6 +123,17 @@ extern Pair sMiniGmBadgePos[];
 extern u32 sMiniGmIconPalettes[];
 extern int sMiniGmIconChars[];
 extern struct Off9 sMiniGmIconScreenOffsets; /* 9-entry screen-offset table, not a matrix */
+/* The menu rows (MgEntry, MgMenuRow.h), 36 of them: rows 0-23 are the first
+   page of each tab, 24-35 the second. StartSceneFade(id, sceneParam, 0) opens the
+   game, so sceneParam becomes the scene's fBase_c param1. Its low byte is the
+   variant that dScMgBase_c::IsAltVariant tests. Six games are listed twice:
+   Amida (rows 0/24), Snowball (6/34), Smartball (10/22), Coin (14/30), Panel
+   (15/35) and Slot1 (17/33). Each first entry has low byte 0 and each second
+   1, except Amida's row 24 with 2 (Amida's override asks for exactly 1).
+   Sound's only entry (row 19) has 0, so its IsAltVariant branch is not
+   reached from this menu. Seen in play: the two Snowballs start with param1
+   0x0a00 and 0x2201. Bytes 1 and 2 each give every row a distinct number
+   0..35. */
 extern const MgEntry sMiniGmRows[];
 extern int sMiniGmSaveTable[];
 extern int sMiniGmDigits[];
@@ -202,11 +188,11 @@ extern "C" dScMiniGm_c *dScMiniGm_c_classInit()
 s32 dScMiniGm_c::InitResources()
 {
     int i, j;
-    Entry *tbl;
+    const MgEntry *tbl;
     int i2;
     int flag;
     int j2, j3;
-    Entry *tbl2;
+    const MgEntry *tbl2;
     volatile u16 sp0;
     volatile u16 sp2;
     char *dst;
@@ -219,10 +205,10 @@ s32 dScMiniGm_c::InitResources()
     func_02019028();
 
     if (!(data_0209caa0[0x48 / 4] & 0x80000000)) {
-        tbl = (Entry *)sMiniGmRows;
+        tbl = sMiniGmRows;
         for (i = 0; i < 0x24; i++) {
             for (j = 0; j < 5; j++) {
-                MiniGm_SetRecord((char *)this, i, j, tbl->arr[j]);
+                MiniGm_SetRecord((char *)this, i, j, tbl->recordDefaults.v[j]);
             }
             tbl++;
         }
@@ -230,17 +216,17 @@ s32 dScMiniGm_c::InitResources()
         gMgSaveDirty = 1;
     }
 
-    tbl2 = (Entry *)sMiniGmRows;
+    tbl2 = sMiniGmRows;
     for (i2 = 0; i2 < 0x24; i2++) {
         flag = 0;
-        if (tbl2->unkC != 0) {
-            if (tbl2->unk10 == 1) {
-                if ((u32)MiniGm_GetRecord((char *)this, i2, 0) > (u32)tbl2->unkC) {
+        if (tbl2->scoreCap != 0) {
+            if (tbl2->ownRecords == 1) {
+                if ((u32)MiniGm_GetRecord((char *)this, i2, 0) > (u32)tbl2->scoreCap) {
                     flag = 1;
                 }
             } else {
                 for (j2 = 0; j2 < 5; j2++) {
-                    if ((u32)MiniGm_GetRecord((char *)this, i2, j2) > (u32)tbl2->unkC) {
+                    if ((u32)MiniGm_GetRecord((char *)this, i2, j2) > (u32)tbl2->scoreCap) {
                         flag = 1;
                     }
                 }
@@ -248,7 +234,7 @@ s32 dScMiniGm_c::InitResources()
         }
         if (flag != 0) {
             for (j3 = 0; j3 < 5; j3++) {
-                MiniGm_SetRecord((char *)this, i2, j3, tbl2->arr[j3]);
+                MiniGm_SetRecord((char *)this, i2, j3, tbl2->recordDefaults.v[j3]);
             }
             gMgSaveDirty = 1;
         }
@@ -669,7 +655,7 @@ void MiniGm_DrawRecords(void *selfv)
     r8 = i * 4;
     do {
         if (MiniGm_IsUnlocked(self, gMgGroupBase + r8) != 0) {
-            type = ((Entry *)sMiniGmRows)[gMgGroupBase + r8].unk8;
+            type = sMiniGmRows[gMgGroupBase + r8].scoringMode;
             if (type != 0) {
                 if (type == 1) {
                     y = sMiniGmRecordPos[i].y;
@@ -1054,12 +1040,12 @@ void dScMiniGm_c::UpdateGameSelect()
         gMgLastSelected[0] = sel;
         gMgMenuRow.id = src->id;
         gMgMenuRow.sceneParam = src->sceneParam;
-        gMgMenuRow.unk8 = src->unk8;
-        gMgMenuRow.unkc = src->unkc;
-        gMgMenuRow.unk10 = src->unk10;
-        gMgMenuRowMid = src->mid;
-        gMgMenuRow.unk28 = src->unk28;
-        gMgMenuRow.unk2c = src->unk2c;
+        gMgMenuRow.scoringMode = src->scoringMode;
+        gMgMenuRow.scoreCap = src->scoreCap;
+        gMgMenuRow.ownRecords = src->ownRecords;
+        gMgMenuRowMid = src->recordDefaults;
+        gMgMenuRow.musicTrack = src->musicTrack;
+        gMgMenuRow.musicMode = src->musicMode;
         gMgMenuRow.level = src->level;
     }
     MiniGm_LoadIconPalette((char *)this, sel);
