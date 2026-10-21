@@ -33,9 +33,10 @@ typedef struct Ov007ItemView {
  * the state-0 or state-2 handler, then func_ov007_020b5bf0 once the item is
  * ready. */
 void func_ov007_020b44ec(void* self) {
-    Ov007Item* o = ((Ov007ItemView*)self)->item;
-    Ov007ItemLayout* p24 = o->layout;
-    if (p24->kind == 0xa) return;
+    Ov007Item *o = ((Ov007ItemView *)self)->item;
+    Ov007ItemLayout *p24 = o->layout;
+    if (p24->kind == 0xa)
+        return;
     Ov007MenuState *menu = o->state;
     if (menu->stateWork == 0xff)
         return;
@@ -59,6 +60,7 @@ void func_ov007_020b44ec(void* self) {
     case 7:
         break;
     }
-    if (o->ready == 0) return;
+    if (o->ready == 0)
+        return;
     func_ov007_020b5bf0(self);
 }

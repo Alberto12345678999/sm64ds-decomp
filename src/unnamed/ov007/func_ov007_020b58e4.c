@@ -6,47 +6,47 @@ extern u8 data_ov007_0210342c[];
 /* The 10-byte layout row func_ov007_020aea6c's item points at; names as in
  * func_ov007_020b5bf0, only the slot this file reads. */
 typedef struct Ov007ItemLayout {
-  u16 kind; /* 0x0 */
+    u16 kind; /* 0x0 */
 } Ov007ItemLayout;
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020b46b0 and func_ov007_020ae834, only the slots this file
  * touches. */
 typedef struct Ov007Item {
-  u16 id; /* 0x00 */
-  char pad_02[2];
-  Ov007MenuState *state; /* 0x04: func_ov007_020c9388 */
-  char pad_08[8];
-  s32 fade; /* 0x10: Q12; selectable once fully faded in (>= 0x1000) */
-  char pad_14[0x10];
-  Ov007ItemLayout *layout; /* 0x24 */
+    u16 id; /* 0x00 */
+    char pad_02[2];
+    Ov007MenuState *state; /* 0x04: func_ov007_020c9388 */
+    char pad_08[8];
+    s32 fade; /* 0x10: Q12; selectable once fully faded in (>= 0x1000) */
+    char pad_14[0x10];
+    Ov007ItemLayout *layout; /* 0x24 */
 } Ov007Item;
 
 typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
 
 /* One of the manager's itemViews (func_ov007_020b4c04); names as there. */
 typedef struct Ov007ItemView {
-  Ov007Item *item;     /* 0x00 */
-  Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
+    Ov007Item *item;     /* 0x00 */
+    Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
 } Ov007ItemView;
 
 /* data_ov007_0210342c: the overlay's manager; names as in
  * func_ov007_020b1718, only the slots this file reads. +0xf0 stays raw: no
  * reader names it. */
 typedef struct Ov007Work {
-  char pad_00[4];
-  Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-  char pad_10[0x10];
-  int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus tap, 0 for a button */
+    char pad_00[4];
+    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
+    char pad_10[0x10];
+    int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus tap, 0 for a button */
 } Ov007Work;
 
-typedef char Ov007Work_transitionMode_must_be_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20 ? 1 : -1];
+typedef char
+    Ov007Work_transitionMode_must_be_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20 ? 1 : -1];
 
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
-inline Ov007Item *inline_fn(char *arg0)
-{
-  return ((Ov007ItemView *) arg0)->item;
+inline Ov007Item *inline_fn(char *arg0) {
+    return ((Ov007ItemView *)arg0)->item;
 }
 
 int func_ov007_020b58e4(char *self)
@@ -74,23 +74,15 @@ int func_ov007_020b58e4(char *self)
     case 1:
       if (r7)
     {
-      int d = b->previousState;
-      if (d == 0xe)
-      {
-        if (lr_v == 0)
-        {
-          ret = 3;
-        }
-        else
-          if (lr_v == 7)
-        {
-          ret = 4;
-        }
-        else
-          if (lr_v == 6)
-        {
-          ret = 5;
-        }
+          int d = b->previousState;
+          if (d == 0xe) {
+              if (lr_v == 0) {
+                  ret = 3;
+              } else if (lr_v == 7) {
+                  ret = 4;
+              } else if (lr_v == 6) {
+                  ret = 5;
+              }
       }
       else
         if ((lr_v == 0) || (lr_v == 6))
@@ -114,8 +106,8 @@ int func_ov007_020b58e4(char *self)
       else
         if (lr_v == 6)
       {
-        a->fade = 0;
-        ret = 5;
+          a->fade = 0;
+          ret = 5;
       }
       else
         if (lr_v == 7)
@@ -140,10 +132,9 @@ int func_ov007_020b58e4(char *self)
     {
       if (lr_v == 2)
       {
-        int e = WORK->transitionMode;
-        if (((e == 1) && (ip_v == 4)) || ((e == 0) && ((ip_v == 3) || (ip_v == 5))))
-        {
-          ret = 3;
+          int e = WORK->transitionMode;
+          if (((e == 1) && (ip_v == 4)) || ((e == 0) && ((ip_v == 3) || (ip_v == 5)))) {
+              ret = 3;
         }
         if (ip_v == 6)
         {
@@ -151,11 +142,11 @@ int func_ov007_020b58e4(char *self)
           ret = 3;
           if (f == 1)
           {
-            ((Ov007ItemView *) self)->sprite->texS = 0;
+              ((Ov007ItemView *)self)->sprite->texS = 0;
           }
           else
           {
-            ((Ov007ItemView *) self)->sprite->texS = 0x28;
+              ((Ov007ItemView *)self)->sprite->texS = 0x28;
           }
         }
       }
@@ -220,17 +211,13 @@ int func_ov007_020b58e4(char *self)
     case 8:
       if (r7)
     {
-      int t = WORK->states[1]->previousState;
-      if (t < 0)
-      {
-        if (lr_v == 3)
-        {
-          ret = 0;
-        }
-        else
-        {
-          ret = 1;
-        }
+          int t = WORK->states[1]->previousState;
+          if (t < 0) {
+              if (lr_v == 3) {
+                  ret = 0;
+              } else {
+                  ret = 1;
+              }
       }
       else
         if (lr_v == 3)
@@ -263,15 +250,14 @@ int func_ov007_020b58e4(char *self)
     {
       if (lr_v == 4)
       {
-        int t = b->previousState;
-        if (t == 8)
-        {
-          ret = 3;
+          int t = b->previousState;
+          if (t == 8) {
+              ret = 3;
         }
         else
         {
-          a->fade = 0;
-          ret = 5;
+            a->fade = 0;
+            ret = 5;
         }
       }
     }

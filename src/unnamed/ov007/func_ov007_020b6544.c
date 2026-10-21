@@ -30,7 +30,9 @@ struct Ov007Work {
     int chosenItemId;
 };
 
-typedef char Ov007Work_chosenItemId_must_be_0x180[(int)&((struct Ov007Work *)0)->chosenItemId == 0x180 ? 1 : -1];
+typedef char
+    Ov007Work_chosenItemId_must_be_0x180[(int)&((struct Ov007Work *)0)->chosenItemId == 0x180 ? 1
+                                                                                              : -1];
 
 extern struct Ov007Work *data_ov007_0210342c;
 
@@ -51,6 +53,7 @@ void func_ov007_020b6544(void)
     func_ov007_020b20e8();
     int i;
     for (i = 0; i < 0x18; i++) {
-        func_ov007_020b4b5c(data_ov007_0210342c->itemViews[i], (int)data_ov007_0210342c->cameras[1]);
+        func_ov007_020b4b5c(data_ov007_0210342c->itemViews[i],
+                            (int)data_ov007_0210342c->cameras[1]);
     }
 }

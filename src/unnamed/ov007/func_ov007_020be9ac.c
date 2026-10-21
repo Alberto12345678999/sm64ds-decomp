@@ -53,7 +53,8 @@ void func_ov007_020be9ac(Ov007Figure *a, char *b, int c) {
     case 2:
     {
         Ov007Model *pp = a->model;
-        if (pp->visible != 0) pp->visible = 0;
+        if (pp->visible != 0)
+            pp->visible = 0;
         break;
     }
     }
@@ -66,6 +67,7 @@ void func_ov007_020be9ac(Ov007Figure *a, char *b, int c) {
     }
 
     func_ov007_020bc02c(a->model, c);
-    if (a->update != 0) a->update(a);
+    if (a->update != 0)
+        a->update(a);
     func_ov007_020beb80(a);
 }

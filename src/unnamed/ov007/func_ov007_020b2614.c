@@ -13,15 +13,15 @@ typedef char Ov007Model_animTick_must_be_0x98[(int)&((Ov007Model *)0)->animTick 
  * (func_ov007_020b2370), only the slots this file reads. */
 typedef struct Ov007Work {
     char pad[0xf4];
-    Ov007Model* model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
+    Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
     char pad2[0x100 - 0xf4 - 4];
-    char* figure;    /* 0x100: func_ov007_020beaa0 */
-    char* altFigure; /* 0x104: func_ov007_020be850 returns it when +0xec is 1 */
+    char *figure;    /* 0x100: func_ov007_020beaa0 */
+    char *altFigure; /* 0x104: func_ov007_020be850 returns it when +0xec is 1 */
 } Ov007Work;
 
 typedef char Ov007Work_altFigure_must_be_0x104[(int)&((Ov007Work *)0)->altFigure == 0x104 ? 1 : -1];
 
-extern Ov007Work* data_ov007_0210342c;
+extern Ov007Work *data_ov007_0210342c;
 
 extern void func_ov007_020bc374(char* self, int b, int c, int d);
 extern void func_ov007_020bc3dc(char* self, int b, int c, int d);
@@ -32,9 +32,9 @@ extern void func_ov007_020be964(void* p);
 
 void func_ov007_020b2614(int self, int b, int c) {
     if (c > 0) {
-        func_ov007_020bc374((char*)data_ov007_0210342c->model, self, b, c);
+        func_ov007_020bc374((char *)data_ov007_0210342c->model, self, b, c);
     } else {
-        func_ov007_020bc3dc((char*)data_ov007_0210342c->model, self, b, c);
+        func_ov007_020bc3dc((char *)data_ov007_0210342c->model, self, b, c);
         data_ov007_0210342c->model->visible = 1;
         data_ov007_0210342c->model->animTick = 1;
     }

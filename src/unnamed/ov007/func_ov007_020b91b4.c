@@ -114,13 +114,117 @@ void func_ov007_020b91b4(void)
   {
     case 0:
 
- do { case 1: if ((SCENE->states[1]->stateTicks) == 0) { Ov007Picker *a0 = SCENE->picker; a0->limitGroup = 0; a0->limitIndex = 0; SCENE->strokeTime = 0; SCENE->totalStrokeTime = func_ov007_020c5d5c(SCENE->picker); SPRITES->slideProgress = 0; } { int b = func_ov007_020bbd24((int)(((SCENE->states[1]->currentState) == 0) ? ((char *)0) : ((char *)1))); func_ov007_020c4dfc(r6, r7, r5, 0x1f); if (b == 0) { return; } } SCENE->awaitingTap = 0; SCENE->states[1]->requestedState = 8; return; case 2: if (r4 == 0) { SPRITES->sprites[0]->alpha = 0; SPRITES->sprites[1]->alpha = 0; SPRITES->slideProgress = 0x1000; } { int q; if (r4 <= 0) { q = 0; } else if (r4 >= 0x28) { q = 0x1000; } else { q = _ZN4cstd3divEii(r4 << 0xc, 0x28); } SPRITES->sprites[1]->alpha = q * 0xc; if (q < 0x1000) { return; } } SCENE->states[1]->requestedState = 5; return; case 3: case 4: case 5: { int *p = &SPRITES->sprites[1]->alpha; if (st == 4) { *p += 0x1000; if ((*p) >= 0x1f000) { *p = 0x1f000; SPRITES->sprites[0]->alpha = 0x1f000; SCENE->states[1]->requestedState = 5; } } else if (st == 3) { if (r4 == 0) { SPRITES->sprites[0]->alpha = 0; } *p -= 0x1000; if ((*p) <= 0xc000) { *p = 0xc000; SCENE->states[1]->requestedState = 5; } } } if ((SCENE->awaitingTap) != 0) { return; } func_ov007_020c4f50(r6, r7, r5, 0x1f, 1); return; case 6: case 7: { int r8v; int sb; int q; if (st == 6) { r8v = r6->groupCount; } else { r8v = (r6->groupCount) - 1; } if (r4 <= 0) { q = 0; } else if (r4 >= 0xf) { q = 0x1000; } else { q = _ZN4cstd3divEii(r4 << 0xc, 0xf); } if ((SCENE->states[1]->currentState) == 6) { q = 0x1000 - q; } sb = (q * 0x1f) >> 0xc; if (sb <= 0) { sb = 1; } func_ov007_020c4e98(r6, r7, r5, 0x1f, r8v, func_ov007_020c3be0(q, 0x18df, r5), sb); if (r4 < 0xf) { return; } } SCENE->states[1]->requestedState = 5; { Ov007Touch *o = WORK->touch; o->flags = ((const Ov007Touch *)o)->flags | 1; } return; } while (0);
+        do {
+        case 1:
+            if ((SCENE->states[1]->stateTicks) == 0) {
+                Ov007Picker *a0 = SCENE->picker;
+                a0->limitGroup = 0;
+                a0->limitIndex = 0;
+                SCENE->strokeTime = 0;
+                SCENE->totalStrokeTime = func_ov007_020c5d5c(SCENE->picker);
+                SPRITES->slideProgress = 0;
+            }
+            {
+                int b = func_ov007_020bbd24(
+                    (int)(((SCENE->states[1]->currentState) == 0) ? ((char *)0) : ((char *)1)));
+                func_ov007_020c4dfc(r6, r7, r5, 0x1f);
+                if (b == 0) {
+                    return;
+                }
+            }
+            SCENE->awaitingTap = 0;
+            SCENE->states[1]->requestedState = 8;
+            return;
+        case 2:
+            if (r4 == 0) {
+                SPRITES->sprites[0]->alpha = 0;
+                SPRITES->sprites[1]->alpha = 0;
+                SPRITES->slideProgress = 0x1000;
+            }
+            {
+                int q;
+                if (r4 <= 0) {
+                    q = 0;
+                } else if (r4 >= 0x28) {
+                    q = 0x1000;
+                } else {
+                    q = _ZN4cstd3divEii(r4 << 0xc, 0x28);
+                }
+                SPRITES->sprites[1]->alpha = q * 0xc;
+                if (q < 0x1000) {
+                    return;
+                }
+            }
+            SCENE->states[1]->requestedState = 5;
+            return;
+        case 3:
+        case 4:
+        case 5: {
+            int *p = &SPRITES->sprites[1]->alpha;
+            if (st == 4) {
+                *p += 0x1000;
+                if ((*p) >= 0x1f000) {
+                    *p = 0x1f000;
+                    SPRITES->sprites[0]->alpha = 0x1f000;
+                    SCENE->states[1]->requestedState = 5;
+                }
+            } else if (st == 3) {
+                if (r4 == 0) {
+                    SPRITES->sprites[0]->alpha = 0;
+                }
+                *p -= 0x1000;
+                if ((*p) <= 0xc000) {
+                    *p = 0xc000;
+                    SCENE->states[1]->requestedState = 5;
+                }
+            }
+        }
+            if ((SCENE->awaitingTap) != 0) {
+                return;
+            }
+            func_ov007_020c4f50(r6, r7, r5, 0x1f, 1);
+            return;
+        case 6:
+        case 7: {
+            int r8v;
+            int sb;
+            int q;
+            if (st == 6) {
+                r8v = r6->groupCount;
+            } else {
+                r8v = (r6->groupCount) - 1;
+            }
+            if (r4 <= 0) {
+                q = 0;
+            } else if (r4 >= 0xf) {
+                q = 0x1000;
+            } else {
+                q = _ZN4cstd3divEii(r4 << 0xc, 0xf);
+            }
+            if ((SCENE->states[1]->currentState) == 6) {
+                q = 0x1000 - q;
+            }
+            sb = (q * 0x1f) >> 0xc;
+            if (sb <= 0) {
+                sb = 1;
+            }
+            func_ov007_020c4e98(r6, r7, r5, 0x1f, r8v, func_ov007_020c3be0(q, 0x18df, r5), sb);
+            if (r4 < 0xf) {
+                return;
+            }
+        }
+            SCENE->states[1]->requestedState = 5;
+            {
+                Ov007Touch *o = WORK->touch;
+                o->flags = ((const Ov007Touch *)o)->flags | 1;
+            }
+            return;
+        } while (0);
     case 8:
-      if ((SCENE->awaitingTap) != 0)
-    {
-      SCENE->states[1]->requestedState = 1;
-      return;
-    }
+        if ((SCENE->awaitingTap) != 0) {
+            SCENE->states[1]->requestedState = 1;
+            return;
+        }
       func_ov007_020c4f50(r6, r7, r5, 0x1f, 1);
       return;
 

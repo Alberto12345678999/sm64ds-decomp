@@ -35,29 +35,21 @@ typedef struct Ov007Camera {
 } Ov007Camera;
 
 /* aspect at 0xbc relies on long long taking 4-byte alignment here. */
-typedef char Ov007Camera_aspect_must_be_at_0xbc[(int)&((Ov007Camera*)0)->aspect == 0xbc ? 1 : -1];
-typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera*)0)->fovy == 0xd4 ? 1 : -1];
+typedef char Ov007Camera_aspect_must_be_at_0xbc[(int)&((Ov007Camera *)0)->aspect == 0xbc ? 1 : -1];
+typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
 
 /* c keeps the char * spelling of the definition; `cam` is the typed view. */
 void func_ov007_020c0078(char* c)
 {
-    Ov007Camera* cam = (Ov007Camera*)c;
+    Ov007Camera *cam = (Ov007Camera *)c;
     int a;
-    *(int*)0x4000580 = cam->viewportMinX
-                     | (cam->viewportMinY << 8)
-                     | (cam->viewportMaxX << 16)
-                     | (cam->viewportMaxY << 24);
+    *(int *)0x4000580 = cam->viewportMinX | (cam->viewportMinY << 8) | (cam->viewportMaxX << 16) |
+                        (cam->viewportMaxY << 24);
 
     a = (int)cam->fovy >> 4;
     _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
-        data_02082214[a * 2],
-        data_02082214[a * 2 + 1],
-        (int)(cam->aspect >> 0x14),
-        cam->nearZ,
-        cam->farZ,
-        0x1000,
-        1,
-        (struct Matrix4x3*)cam->projMatrix);
+        data_02082214[a * 2], data_02082214[a * 2 + 1], (int)(cam->aspect >> 0x14), cam->nearZ,
+        cam->farZ, 0x1000, 1, (struct Matrix4x3 *)cam->projMatrix);
 
     *(int*)0x400044c = 0;
 }
