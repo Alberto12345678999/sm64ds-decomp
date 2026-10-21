@@ -8983,12 +8983,11 @@ int Player::St_Climb_Cleanup()
  * keeps the data_0209f49c load live in r1 through both call sites, which is
  * the ROM's coloring.
  *
- * SetAnim retains its scalar Fix12 ABI declaration. The object at +0x37c
- * still uses a raw slot-2 virtual call for its position vector; its class
- * interface is not recovered here. Player fields and state changes use
- * the shared class interface where their types are established.
+ * SetAnim retains its scalar Fix12 ABI declaration. The climbed object's
+ * position comes from mClimbClsn->GetPos() (dCc_c's slot 2). Player fields
+ * and state changes use the shared class interface where their types are
+ * established.
  */
-/* slot 2 of the ground node's vtable: s32* GetPos(void) thiscall */
 extern "C" {
 int Player::St_Climb_Main() {
     extern void Vec3_RotateYAndTranslate(void*, void*, s16 angle, void*);
