@@ -1560,8 +1560,8 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(sfp);
 
             id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                player->mBodyModels[id], ((SharedFileView *)sfp)->filePtr, b, c, d);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(player->mBodyModels[id],
+                                                        ((SharedFileView *)sfp)->filePtr, b, c, d);
             {
                 u16 *g = LAUNDER16(&player->mCapTimer);
                 *g = (u16)(*g + 1);
@@ -1582,8 +1582,8 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
     param2 = 0;
     if (((int)sl >> 2) == 1) param2 = 0x40000000;
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &player->mTexSeqBody[field8], ((SharedFileView *)data_ov002_020ff2f0[sl])->filePtr,
-        param2, 0x1000, 0);
+        &player->mTexSeqBody[field8], ((SharedFileView *)data_ov002_020ff2f0[sl])->filePtr, param2,
+        0x1000, 0);
 
     player->mCharFileBase = newVal;
 }
@@ -25233,8 +25233,8 @@ void func_ov002_020e5948(void* arg0)
             player->mBodyModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
             1);
         _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-            player->mBodyModels[i],
-            (s32)((SharedFileView *)data_ov002_020ff480[i + 0xC4])->filePtr, 0, 0x1000, 0);
+            player->mBodyModels[i], (s32)((SharedFileView *)data_ov002_020ff480[i + 0xC4])->filePtr,
+            0, 0x1000, 0);
         player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
         i++;
     } while (i < 4);
