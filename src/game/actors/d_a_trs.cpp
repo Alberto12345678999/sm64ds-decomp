@@ -32,8 +32,6 @@
  *   retain scalar or opaque boundaries. UpdateCapPos has a shared reference
  *   declaration, but the direct call currently changes two argument-address
  *   setup instructions in 021166ac; that source-shape reconstruction remains open.
- * - func_02012694's `((char *)this + 0x500)` argument is an opaque state
- *   pointer into mShadowMtx2's tail word, not a field.
  * - `*(u16 *)&member` puns stay on mStateTimer and the angle fields: the
  *   header declares s16 but the retail code loads those sites unsigned
  *   (ldrh), and the signed member spelling emits ldrsh.
@@ -91,6 +89,20 @@ struct daFPknBallView { /* daFPknBall_c.h: SpawnFireball's result */
     u8 pad_368[0x6];
     u8 mMirrored; /* 0x36e */
 };
+/* One 0x34-byte runtime bone of mModelAnim.data.bones (ModelComponents types
+   the array as BMD_Bone). Same rotX/rotY/rotZ at 0x1a as d_a_moray.cpp's
+   MorayBone and d_a_cnn.cpp's CnnBone; the two render paths pose bone 0
+   with the Boo's angles. */
+struct TrsBone {
+    u8 pad_00[0x1a];
+    s16 rotX; /* 0x1a */
+    s16 rotY; /* 0x1c */
+    s16 rotZ; /* 0x1e */
+    u8 pad_20[0x14];
+};
+#ifndef SM64DS_PLATFORM_PC
+typedef char TrsBone_size_must_be_0x34[sizeof(TrsBone) == 0x34 ? 1 : -1];
+#endif
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -420,10 +432,10 @@ void daTrs_c::func_ov063_0211640c() {
         this->mModelAnim.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
         func_020167a4(&this->mModelAnim);
         {
-            char *m = (char *)this->mModelAnim.data.bones;
-            *(s16 *)(m + 0x1a) = this->mAngleX;
-            *(s16 *)(m + 0x1c) = (s16)(ang - 0x4000);
-            *(s16 *)(m + 0x1e) = this->mAngleZ;
+            TrsBone *m = (TrsBone *)this->mModelAnim.data.bones;
+            m->rotX = this->mAngleX;
+            m->rotY = (s16)(ang - 0x4000);
+            m->rotZ = this->mAngleZ;
         }
         this->mModelAnim.data.UpdateVertsUsingBones();
     } else {
@@ -491,10 +503,10 @@ void daTrs_c::func_ov063_021166ac() {
         this->mModelAnim.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
         func_020167a4(&this->mModelAnim);
         {
-            char *p = (char *)this->mModelAnim.data.bones;
-            *(s16 *)(p + 0x1a) = this->mAngleX;
-            *(s16 *)(p + 0x1c) = this->mAngleY - 0x4000;
-            *(s16 *)(p + 0x1e) = this->mAngleZ;
+            TrsBone *p = (TrsBone *)this->mModelAnim.data.bones;
+            p->rotX = this->mAngleX;
+            p->rotY = this->mAngleY - 0x4000;
+            p->rotZ = this->mAngleZ;
         }
         this->mModelAnim.data.UpdateVertsUsingBones();
     } else {
@@ -914,7 +926,7 @@ void daTrs_c::func_ov063_02117364() {
             this->mParticle1 = 0;
             this->mParticle0 = this->mParticle1;
             this->mRelocateTimer = 0x78;
-            func_02012694(0x154, &this->mCamSpacePosX, ((char *)this + 0x500), 0x78);
+            func_02012694(0x154, &this->mCamSpacePosX);
             return;
         }
         pos.y += this->mClsnScale * 0xaf;

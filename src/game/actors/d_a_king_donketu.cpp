@@ -337,7 +337,8 @@ void daKing_Donketu_c::func_ov073_0211f2c0(int strength)
   int z;
   func_0200d8c8(data_0209f318, &c->mPosX, strength);
   data_020a0e68 = c->mBlendModelAnim.mat4x3;
-  MulMat4x3Mat4x3(((char *) c->mBlendModelAnim.data.transforms) + (c->mStepBoneIdx * 0x30), &data_020a0e68, &data_020a0e68);
+  MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[c->mStepBoneIdx], &data_020a0e68,
+                  &data_020a0e68);
   c->mStepBoneIdx ^= 1;
   ty = *((int *) (((char *) (&data_020a0e68)) + 0x28));
   tx = *((int *) (((char *) (&data_020a0e68)) + 0x24));
@@ -1761,7 +1762,7 @@ void daKing_Donketu_c::func_ov073_021215cc()
     i = 0;
     for (; i < 2; i++) {
         data_020a0e68 = *(struct Matrix4x3 *)saved;
-        MulMat4x3Mat4x3(*(Mtx43**)&c->mBlendModelAnim.data.transforms + (i + 2), &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[i + 2], &data_020a0e68, &data_020a0e68);
         p->x = data_020a0e68.m[9];
         p->y = data_020a0e68.m[10];
         p->z = data_020a0e68.m[11];
@@ -1889,7 +1890,7 @@ int daKing_Donketu_c::Behavior()
     if (((char *)c->pp == (char *)&data_ov073_02123330 || (char *)c->pp == (char *)&data_ov073_02123350)
         && mBlendModelAnim.WillHitFrame(7) != 0) {
         data_020a0e68 = mBlendModelAnim.mat4x3;
-        MulMat4x3Mat4x3((char *)mBlendModelAnim.data.transforms + 0x60, &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3(&mBlendModelAnim.data.transforms[2], &data_020a0e68, &data_020a0e68);
         v0.x = data_020a0e68.m[9];
         v0.y = data_020a0e68.m[10];
         v0.z = data_020a0e68.m[11];
