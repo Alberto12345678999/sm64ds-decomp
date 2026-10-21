@@ -11,7 +11,7 @@ typedef struct Ov007Settings {
     unsigned char dialogKind;
 } Ov007Settings;
 
-/* The BG layer behind a layer slot; func_ov007_020c0638 rebuilds it. */
+/* func_ov007_020adc08's 0xc-byte layer slot; func_ov007_020c0638 rebuilds its layer. */
 typedef struct Ov007LayerSlot {
     int state;   /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
     void *layer; /* 0x04 */
