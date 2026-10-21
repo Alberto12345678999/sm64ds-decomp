@@ -33,7 +33,14 @@ typedef struct FileShareNode {
     /* 0x88 -- func_02042254 opens the file by it; func_020412f0 hands it to
      * the requesting child. Seeded per node in func_02040c34 */
     int mFileId;
-    unsigned char pad_08c[0x8];
+    /* 0x8c / 0x90 -- the region's extent in the ROM archive: a child's request
+     * (offset, length) is stored here when no ready node holds it
+     * (func_02041c64, which also matches loading nodes by the pair), and
+     * func_02042254 opens [mFileOffset, mFileOffset + mFileSize) with
+     * FS_OpenFileDirect. func_02041ce0 matches a ready node by the same pair
+     * through mFile's top and bottom - top */
+    int mFileOffset;
+    int mFileSize;
     /* 0x94 -- the block sequence number the previous WBT prepare-send asked
      * for: func_020412f0 serves that one when its bytes are cached, then
      * stores the new request's number. func_02042254 zeroes it on load */
