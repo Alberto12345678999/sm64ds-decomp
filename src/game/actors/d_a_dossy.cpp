@@ -582,9 +582,12 @@ void daDossy_c::func_ov065_02118838()
             *hz += data_02082214[((u16)mAngleY >> 4) * 2 + 1] * k82;
         }
         Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, (s16)(mAngleY + ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.y));
-        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.x);
-        Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.z);
+        Matrix4x3_ApplyInPlaceToRotationY(
+            &data_020a0e68, (s16)(mAngleY + ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.y));
+        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68,
+                                          ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.x);
+        Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68,
+                                          ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mRot.z);
         ((daDossy_c *)(c + (i << 9)))->mPlatforms[0].mClsnNextMat = data_020a0e68;
         ((dBgW_KcMbg *)pk)->Transform(*(Matrix4x3 *)pm, mAngleY);
         pm += 0x200;
