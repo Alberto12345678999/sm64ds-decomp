@@ -24,12 +24,7 @@ extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
 extern int AngleDiff(int a, int b);
 
 /* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
- * collision step touches. 0xe0, 0xec and 0xf4 stay raw: they sit in the
- * header's unnamed gap, and this function only reads them. 0x1a0 stays raw
- * too: cleared here beside 0x1a6, with no reader here to show its role.
- * 0x1a6 (the header's unk_1a6) stays raw: set on entering a state
- * (func_02009d30) and cleared once func_020091f8 reports arrival, which is
- * not yet enough to name it. */
+ * collision step touches, with the header's names. */
 typedef struct {
     u8 pad_000[0x80];
     Vec3 lookAt; /* 0x080 */
@@ -39,15 +34,36 @@ typedef struct {
     u8 pad_0a4[0x30];
     /* Last frame's pos (Behavior copies it here before moving). */
     Vec3 mPrevPos; /* 0x0d4 */
-    u8 pad_0e0[0x30];
-    /* + 0xc is the player's actor ID (include/dActor_c.h). */
+    /* The wall func_02009e70's line last hit: this function ignores a new
+       hit whose normal faces the same way as mWallNormal or which lies
+       within 0x80000 of mWallPos. */
+    Vec3 mWallPos;    /* 0x0e0 */
+    Vec3 mWallNormal; /* 0x0ec */
+    u8 pad_0f8[0x18];
     char *mTargetPlayer; /* 0x110 */
     u8 pad_114[0x40];
     u32 mFlags; /* 0x154 */
     u8 pad_158[0x2e];
     /* The yaw func_020091f8 eases mAngleY toward. */
     s16 mTargetAngleY; /* 0x186 */
+    u8 pad_188[0x18];
+    /* Nonzero while the camera swings to the yaw behind the player. */
+    u16 mRecentering; /* 0x1a0 */
+    u8 pad_1a2[4];
+    /* Set when a new mTargetAngleY is chosen, cleared on arrival; the
+       push-in below clears it too. */
+    u8 mTurningToTarget; /* 0x1a6 */
 } CameraView;
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char CameraView_turning_must_be_at_0x1a6[(int)&((CameraView *)0)->mTurningToTarget == 0x1a6 ? 1 : -1];
+#endif
+
+/* The target player's actor ID, as include/dActor_c.h's C view places it. */
+typedef struct {
+    u8 pad_000[0xc];
+    u16 actorID; /* 0x00c */
+} ActorView;
 
 int func_02008cb4(char* c)
 {
@@ -75,7 +91,7 @@ int func_02008cb4(char* c)
 
     {
         char *p = cam->mTargetPlayer;
-        int b = *(u16*)(p + 0xc);
+        int b = ((ActorView *)p)->actorID;
         b = b == 0xbf;
         if (b != false) {
             if (func_ov002_020ca270(p) != 0)
@@ -101,22 +117,22 @@ int func_02008cb4(char* c)
             _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rc1, &end1, &v0, 0);
             if (_ZN9dBgCh_Lin10DetectClsnEv(&rc1) != 0) {
                 _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rc1.surf, &n1);
-                if (DotVec3((Vec3*)(c + 0xec), &n1) > 0) {
+                if (DotVec3(&cam->mWallNormal, &n1) > 0) {
                     cam->mFlags &= ~0x80000;
                     _ZN9dBgCh_LinD1Ev(&rc1);
                     return 0;
                 }
                 cp1 = _ZN9dBgCh_Lin10GetClsnPosEv(&rc1);
-                if (Vec3_Dist((Vec3*)(c + 0xe0), (Vec3*)&cp1) < 0x80000) {
+                if (Vec3_Dist(&cam->mWallPos, (Vec3*)&cp1) < 0x80000) {
                     cam->mFlags &= ~0x80000;
                     _ZN9dBgCh_LinD1Ev(&rc1);
                     return 0;
                 }
                 {
                     u32 f = cam->mFlags;
-                    if ((f & 0x40000) && *(u8 *)(c + 0x1a6) != 0 && !(f & 0x80100)) {
+                    if ((f & 0x40000) && cam->mTurningToTarget != 0 && !(f & 0x80100)) {
                         int a = _ZN4cstd5atan2E5Fix12IiES1_(n1.x, n1.z);
-                        if (AngleDiff(a, _ZN4cstd5atan2E5Fix12IiES1_(*(int*)(c + 0xec), *(int*)(c + 0xf4))) > 0x6000) {
+                        if (AngleDiff(a, _ZN4cstd5atan2E5Fix12IiES1_(cam->mWallNormal.x, cam->mWallNormal.z)) > 0x6000) {
                             cam->mTargetAngleY += 0x8000;
                             cam->mFlags |= 0x80000;
                         }
@@ -186,9 +202,9 @@ int func_02008cb4(char* c)
         cam->pos.y = cl.y;
         cam->pos.z = cl.z;
     }
-    if (*(u8 *)(c + 0x1a6) != 0 || *(u16 *)(c + 0x1a0) != 0) {
-        *(u8 *)(c + 0x1a6) = 0;
-        *(u16*)(c + 0x1a0) = 0;
+    if (cam->mTurningToTarget != 0 || cam->mRecentering != 0) {
+        cam->mTurningToTarget = 0;
+        cam->mRecentering = 0;
     }
     cam->mFlags &= ~0x80000;
     _ZN9dBgCh_LinD1Ev(&rc2);
