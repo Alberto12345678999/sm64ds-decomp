@@ -5,26 +5,65 @@ extern void func_ov007_020c1404(void *c);
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020caeac(int a0, int a1, int a2, int a3, int s0, int s1, int s2, int s3, int s4, int s5, int s6, int s7, int s8);
 extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
-/* a1/a2: data_ov007_02104bd4 entries (see func_ov007_020bee14); no class or header names
- * them, so raw. */
+/* Reconstructed layouts and names, not recovered class identity; only the
+ * slots this file reads. a1 is data_ov007_02104bd4[0], the 0x38-byte grid
+ * mesh func_ov007_020cbbb0 builds (func_ov007_020caeac/020ca86c emit it);
+ * a2 is data_ov007_02104bd4[1] or [2], a 0x34-byte material record
+ * func_ov007_020cbf8c copies from a template (see func_ov007_020bee14). */
+typedef struct Ov007Mesh {
+  void *verts;         /* 0x00: Vector3 per grid point (func_ov007_020cbbb0) */
+  int *grid;           /* 0x04: func_ov007_020c73f0's grid; [0]/[1] are the point columns/rows */
+  char pad_08[0x1c];   /* 0x08 */
+  s16 cellWidth;       /* 0x24: func_ov007_020cbbb0's column spacing */
+  s16 cellHeight;      /* 0x26: row spacing */
+  void *faceNormals;   /* 0x28: s16 triple per triangle, two per cell (func_ov007_020cb7c0) */
+  void *vertexNormals; /* 0x2c: s16 triple per point (func_ov007_020cb4b0) */
+  void *texOffsetS;    /* 0x30: func_ov007_020caeac's per-column tu scratch */
+  void *texOffsetT;    /* 0x34: its tv scratch */
+} Ov007Mesh;
+
+typedef struct Ov007MeshMaterial {
+  int *texture;    /* 0x00: a manager texture record; [5]/[6] are log2(size / 8) */
+  s32 texS;        /* 0x04: func_ov007_020caeac u0 */
+  s32 texT;        /* 0x08: v0 */
+  s32 warpS;       /* 0x0c: Q12; times cellWidth, how far a normal's x shifts the texcoord */
+  s32 warpT;       /* 0x10: likewise for y and cellHeight */
+  s32 tilesS;      /* 0x14: texture widths across the mesh */
+  s32 tilesT;      /* 0x18: texture heights down it */
+  s32 texRepeat;   /* 0x1c: func_ov007_020c1448 `repeat` (Ov007Sprite's name) */
+  s32 texColor0;   /* 0x20: func_ov007_020c1448 `color0` */
+  s32 alpha;       /* 0x24: POLYGON_ATTR bits 16-20; func_ov007_020cbf8c defaults it to 0x1f */
+  u16 diffuse;     /* 0x28: DIF_AMB low half; defaults to 0x7fff */
+  u16 ambient;     /* 0x2a: DIF_AMB high half */
+  s32 polygonMode; /* 0x2c: POLYGON_ATTR bits 4-5 */
+  s32 polygonId;   /* 0x30: POLYGON_ATTR bits 24-29 */
+} Ov007MeshMaterial;
+
+typedef char Ov007Mesh_size_must_be_0x38[sizeof(Ov007Mesh) == 0x38 ? 1 : -1];
+typedef char Ov007MeshMaterial_size_must_be_0x34[sizeof(Ov007MeshMaterial) == 0x34 ? 1 : -1];
+
+/* a1/a2 keep the char * spelling of the callers' declarations; mesh/mat are
+ * the typed views. */
 void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5)
 {
-  int *r7 = *((int **) a2);
-  int *pdim = *((int **) (a1 + 4));
+  Ov007Mesh *mesh = (Ov007Mesh *) a1;
+  Ov007MeshMaterial *mat = (Ov007MeshMaterial *) a2;
+  int *r7 = mat->texture;
+  int *pdim = mesh->grid;
   int d0 = pdim[0] - 1;
   int d1 = pdim[1] - 1;
   int tw = 0;
   int th = 0;
-  *((volatile u32 *) 0x40004c0) = (((u32) (*((u16 *) (a2 + 0x28)))) | (((u32) (*((u16 *) (a2 + 0x2a)))) << 16)) | 0x8000;
+  *((volatile u32 *) 0x40004c0) = (((u32) mat->diffuse) | (((u32) mat->ambient) << 16)) | 0x8000;
   *((volatile u32 *) 0x40004c4) = 0;
   if (r7 != 0)
   {
     tw = 8 << r7[0x14 / 4];
     th = 8 << r7[0x18 / 4];
   }
-  func_ov007_020c1448(r7, 1, *((int *) (a2 + 0x1c)), 0, *((int *) (a2 + 0x20)));
+  func_ov007_020c1448(r7, 1, mat->texRepeat, 0, mat->texColor0);
   func_ov007_020c1404(r7);
-  *((volatile u32 *) 0x40004a4) = ((0x8c1 | ((*((int *) (a2 + 0x2c))) << 4)) | ((*((int *) (a2 + 0x30))) << 24)) | ((*((int *) (a2 + 0x24))) << 16);
+  *((volatile u32 *) 0x40004a4) = ((0x8c1 | (mat->polygonMode << 4)) | (mat->polygonId << 24)) | (mat->alpha << 16);
   *((volatile u32 *) 0x4000444) = 0;
   {
     int t2 = a3[2];
@@ -43,11 +82,11 @@ void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5)
   *((volatile u32 *) 0x400046c) = 0x40000;
   if (a5 != 0)
   {
-    int q1 = _ZN4cstd3divEii(tw * (*((int *) (a2 + 0x14))), d0);
-    int q2 = _ZN4cstd3divEii(th * (*((int *) (a2 + 0x18))), d1);
-    int fx1 = FX_MUL((*((s16 *)(a1 + 0x24))), (*((int *)(a2 + 0xc))));
-    int fx2 = FX_MUL((*((s16 *)(a1 + 0x26))), (*((int *)(a2 + 0x10))));
-    func_ov007_020caeac(*((int *) a1), *((int *) (a1 + 0x2c)), *((int *) (a1 + 0x30)), *((int *) (a1 + 0x34)), d0, d1, *((int *) (a2 + 4)), *((int *) (a2 + 8)), q1, q2, fx1, fx2, 6);
+    int q1 = _ZN4cstd3divEii(tw * mat->tilesS, d0);
+    int q2 = _ZN4cstd3divEii(th * mat->tilesT, d1);
+    int fx1 = FX_MUL(mesh->cellWidth, mat->warpS);
+    int fx2 = FX_MUL(mesh->cellHeight, mat->warpT);
+    func_ov007_020caeac((int) mesh->verts, (int) mesh->vertexNormals, (int) mesh->texOffsetS, (int) mesh->texOffsetT, d0, d1, mat->texS, mat->texT, q1, q2, fx1, fx2, 6);
   }
   else
   {
@@ -60,17 +99,17 @@ void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5)
       do
       {
         s16 *p;
-        p = (s16 *) ((*((int *) (a1 + 0x28))) + off);
+        p = (s16 *) ((char *) mesh->faceNormals + off);
         if ((*p) > 0xfff)
         {
           *p = 0xfff;
         }
-        p = (s16 *) ((*((int *) (a1 + 0x28))) + off);
+        p = (s16 *) ((char *) mesh->faceNormals + off);
         if (p[1] > 0xfff)
         {
           p[1] = 0xfff;
         }
-        p = (s16 *) ((*((int *) (a1 + 0x28))) + off);
+        p = (s16 *) ((char *) mesh->faceNormals + off);
         if (p[2] > 0xfff)
         {
           p[2] = 0xfff;
@@ -80,7 +119,7 @@ void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5)
       }
       while (i < tw);
     }
-    func_ov007_020ca86c(*((int *) a1), *((int *) (a1 + 0x28)), d0, d1, 6);
+    func_ov007_020ca86c((int) mesh->verts, (int) mesh->faceNormals, d0, d1, 6);
   }
   *((volatile u32 *) 0x4000448) = 2;
 }
