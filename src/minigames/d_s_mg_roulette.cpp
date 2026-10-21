@@ -10,7 +10,7 @@
  * - The factory still builds the object by hand: allocation, the base C2
  *   call and the vptr stores stay explicit because the ROM has no
  *   dScMgRoulette_c C1, so a native `new` expression cannot link.
- * - mModel1/mModel2 stay addressed off the mSlider base: naming them
+ * - mModel1/mModel2 stay addressed off the mBoard base: naming them
  *   directly costs bytes (measured).
  * - The table constructor Dealer_Construct is still unnamed in
  *   symbols.txt; dScMgCard_c.h declares it.
@@ -20,7 +20,7 @@
 #include "dScMgCard_c.h"
 
 /* The constructors run on raw bytes of the new scene, so they are called by
- * their mangled names. Dealer_Construct (the mTable constructor) is still
+ * their mangled names. Dealer_Construct (the mDealer constructor) is still
  * unnamed in symbols.txt. */
 extern "C" {
 void *_ZN11dScMgBase_cC2Ev(void *scene);
@@ -43,7 +43,7 @@ void Roulette_ConstructElement(void)
 // @symbol dScMgRoulette_c_classInit
 /* The name is reconstructed; the ROM proves the class, not the spelling.
  * Still raw: the header keeps both Models as raw bytes, addressed off the
- * mSlider member. Naming them directly costs bytes, so the offsets stay. */
+ * mBoard member. Naming them directly costs bytes, so the offsets stay. */
 extern "C" void* dScMgRoulette_c_classInit(void){
   dScMgRoulette_c *scene = (dScMgRoulette_c *)_ZN7fBase_cnwEj(sizeof(dScMgRoulette_c));
   if (scene) {
@@ -52,9 +52,9 @@ extern "C" void* dScMgRoulette_c_classInit(void){
     *(int*)raw = (int)_ZTV19dScMgSingle3DBase_c;
     _ZN8Particle10SysTrackerC1Ev((char *)&scene->mSysTracker);
     *(int*)raw = (int)_ZTV15dScMgRoulette_c;
-    Dealer_Construct((char *)scene->mTable);
+    Dealer_Construct((char *)scene->mDealer);
     __cxa_vec_ctor(scene->mArray, 5, 0x34, Roulette_ConstructElement, Roulette_Nothing);
-    char *models = (char *)scene->mSlider;
+    char *models = (char *)scene->mBoard;
     _ZN5ModelC1Ev(models + 0x10);   /* mModel1 */
     _ZN5ModelC1Ev(models + 0x60);   /* mModel2 */
   }

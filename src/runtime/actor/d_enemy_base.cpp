@@ -845,7 +845,9 @@ void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, 
    two-bit selector, not a boolean: bit 0 drops a coin, bit 1 books the kill in
    the death table. Both reference parameters are null-checked -- the compiler
    emits the test rather than folding it away, so `&ref == 0` is how the ROM's
-   check is spelled. */
+   check is spelled. The model spins about the height OnAimedAtWithEgg (vtable
+   slot 29) reports, the point Yoshi's egg aims at: it is lifted to that height,
+   rotated, and dropped back. */
 extern "C" {
 extern void Vec3_Asr(void *dst, const void *src, int sh);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -899,7 +901,7 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, ModelAnim &anim,
 
 /* The death-state-8 sibling of UpdateKillByInvincibleChar above: the same
    vtable-slot-29 spin over data_020a0e68, but reached as a free helper taking
-   the enemy, its collision and its model anim as raw pointers plus the
+   the enemy, its collision and its Model as raw pointers plus the
    coin/death-table flags, and running the wall-reflect variant of the
    collision update. Lowest address in the TU, so it is defined last: this
    file runs highest ROM address first. */
@@ -908,10 +910,10 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, ModelAnim &anim,
    callers' declarations spell them as void * and char *. */
 
 // @symbol func_ov002_020ad660
-extern "C" int func_ov002_020ad660(void *enemy, void *clsnArg, void *animArg, int flags) {
+extern "C" int func_ov002_020ad660(void *enemy, void *clsnArg, void *modelArg, int flags) {
     dEnemyBase_c *c = (dEnemyBase_c *)enemy;
     dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
-    ModelAnim *anim = (ModelAnim *)animArg;
+    Model *model = (Model *)modelArg;
     int v[3];
 
     if (c->mDeathState != 8)
@@ -931,7 +933,7 @@ extern "C" int func_ov002_020ad660(void *enemy, void *clsnArg, void *animArg, in
     if (clsn != 0)
         c->UpdateWMClsn(*clsn, 0);
 
-    if (anim != 0) {
+    if (model != 0) {
         c->mAngleX += c->mSpinRateX;
         c->mAngleY += c->mSpinRateY;
         c->mAngleZ += c->mSpinRateZ;
@@ -940,7 +942,7 @@ extern "C" int func_ov002_020ad660(void *enemy, void *clsnArg, void *animArg, in
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, c->OnAimedAtWithEgg() >> 3, 0);
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, (-c->OnAimedAtWithEgg()) >> 3, 0);
-        anim->mat4x3 = *(Matrix4x3 *)&data_020a0e68;
+        model->mat4x3 = *(Matrix4x3 *)&data_020a0e68;
     }
     return 1;
 }

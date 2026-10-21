@@ -110,7 +110,7 @@ struct CameraView {
     s32 mFocusDist;         /* 0x12c */
     s32 mFocusBlend;        /* 0x130 */
     u8 pad_134[0x8];
-    struct CamMode *mState_13c; /* 0x13c */
+    struct CamMode *mMode; /* 0x13c */
     u8 pad_140[0x14];
     u32 mFlags;     /* 0x154 */
     s32 mTurnSound; /* 0x158 */
@@ -216,7 +216,7 @@ s32 func_02009e70(char *self)
     if (cam->mTargetPlayer == 0) {
         cam->mAngleY = Vec3_HorzAngle(&cam->lookAt, &cam->pos);
     } else {
-        sp1c = (cam->mFlags & 0x100) ? &data_0208747c : cam->mState_13c;
+        sp1c = (cam->mFlags & 0x100) ? &data_0208747c : cam->mMode;
         Vec3_Sub(&sp34, &cam->mTargetPlayer->mPos, &cam->mTargetPos);
         {
             struct Vector3 *q = &cam->mTargetPlayer->mPos;
@@ -467,7 +467,8 @@ s32 func_02009e70(char *self)
                                 t0 = _ZN4cstd4fdivEii(r7, Vec3_HorzLen(&sp40));
                                 sp40.x = FX_MUL(sp40.x, t0);
                                 sp40.z = FX_MUL(sp40.z, t0);
-                                /* 0x188 is still padding in dCamera_c.h. */
+                                /* 0x188 is dCamera_c::mInputYawLag (this file sees the camera through
+                                   local views, not dCamera_c.h). */
                                 *(s16 *)L0(self + 0x188) -= cam->mAngleY - sb;
                             }
                             t0 = Vec3_HorzLen(&sp40);

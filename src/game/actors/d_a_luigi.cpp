@@ -120,8 +120,8 @@ int func_ov002_020e496c(char *player);
 void func_0203c178(Matrix4x3 *m, int sx, int sy, int sz);
 void MulMat3x3Mat3x3(const int *a, const int *b, int *dst);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
-void func_02016acc(char *model, unsigned int mask);
-void func_02016b24(Obj *model, unsigned int mask);
+void func_02016acc(Model *model, unsigned int mask);
+void func_02016b24(Model *model, u32 mask);
 void Vec3_Asr(Vec3 *dst, Vec3 *src, int shift);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 
@@ -147,12 +147,12 @@ int daLuigi_c::InitResources()
     Vec3 t;
 
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov002_0210ebb8), 1, -1);
-    func_02016acc((char *)&mModelAnim, kMatClear);
-    func_02016b24((Obj *)&mModelAnim, kMatSet);
+    func_02016acc(&mModelAnim, kMatClear);
+    func_02016b24(&mModelAnim, kMatSet);
 
     mModel.SetFile((BMD_File *)Model::LoadFile(data_ov002_0210eb20), 1, -1);
-    func_02016acc((char *)&mModel, kMatClear);
-    func_02016b24((Obj *)&mModel, kMatSet);
+    func_02016acc(&mModel, kMatClear);
+    func_02016b24(&mModel, kMatSet);
 
     TextureSequence::Prepare(*FileOf(data_ov002_0210ebb8, BMD_File),
                              *FileOf(data_ov002_0210e8d0, BTP_File));

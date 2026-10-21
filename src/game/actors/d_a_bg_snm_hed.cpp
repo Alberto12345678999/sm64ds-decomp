@@ -265,11 +265,11 @@ void daBgSnmHed_c::SetState(int state)
 int daBgSnmHed_c::CleanupResources()
 {
     ((SharedFilePtr *)&data_ov072_02122bc4)->Release();
-    int r5 = 0;
+    int i = 0;
     do {
-        ((SharedFilePtr **)&data_ov072_02121ffc)[r5]->Release();
-        r5++;
-    } while (r5 < 2);
+        ((SharedFilePtr **)&data_ov072_02121ffc)[i]->Release();
+        i++;
+    } while (i < 2);
     return 1;
 }
 

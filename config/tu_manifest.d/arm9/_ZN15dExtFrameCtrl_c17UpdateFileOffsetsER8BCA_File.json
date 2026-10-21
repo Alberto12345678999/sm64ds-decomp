@@ -12,7 +12,7 @@
   "functions": [
     {
       "address": "0x020469ac",
-      "legacy_source": "src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp",
+      "legacy_source": "src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp",
       "ordinal": 0,
       "size": "0x00000034",
       "symbol": "_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File"
@@ -21,7 +21,7 @@
   "id": "arm9/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File",
   "module": "arm9",
   "notes": [],
-  "promoted_source": "src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp",
+  "promoted_source": "src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp",
   "sections": [
     {
       "end": "0x020469e0",
@@ -29,7 +29,7 @@
       "start": "0x020469ac"
     }
   ],
-  "source": "src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp",
+  "source": "src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp",
   "status": "promoted",
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

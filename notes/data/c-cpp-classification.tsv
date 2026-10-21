@@ -901,7 +901,7 @@ src/_ZN4ViewD1Ev.cpp	DTOR-ONLY	arm9	dView_c	View/dView_c	_ZN4ViewD1Ev	1		False	_
 src/_ZN11daWarpkun_cD0Ev.c	DTOR-ONLY	ov002	daWarpkun_c	daWarpkun_c/daWarpkun_c	_ZN11daWarpkun_cD0Ev	1		True	_ZTV11daWarpkun_c	-
 src/_ZN4cstd10fdiv_asyncE5Fix12IiE5Fix12IiE.c	P3-mangled-method-only	arm9		cstd	_ZN4cstd10fdiv_asyncE5Fix12IiE5Fix12IiE	1		False		by-value-class-param;no-header:cstd
 src/_ZN4cstd16reciprocal_asyncE5Fix12IiE.c	P3-mangled-method-only	arm9		cstd	_ZN4cstd16reciprocal_asyncE5Fix12IiE	1		False		by-value-class-param;no-header:cstd
-src/_ZN4cstd5atan2E5Fix12IiES1_.c	P3-mangled-method-only	arm9		cstd	_ZN4cstd5atan2E5Fix12IiES1_	1		False		by-value-class-param;no-header:cstd
+src/cstd_atan2.c	P3-mangled-method-only	arm9		cstd	_ZN4cstd5atan2E5Fix12IiES1_	1		False		by-value-class-param;no-header:cstd
 src/_ZN11daDonketu_cD0Ev.c	DTOR-ONLY	ov064	daDonketu_c	daDonketu_c/daDonketu_c	_ZN11daDonketu_cD0Ev	1		True	_ZTV11daDonketu_c	-
 src/_ZN11daObjKumo_cD0Ev.c	DTOR-ONLY	ov039	daObjKumo_c	daObjKumo_c/daObjKumo_c	_ZN11daObjKumo_cD0Ev	1		True		-
 src/_ZN5Crate13OnTurnIntoEggER6Player.c	P1-vtable+mangled	ov098	daObjBlockS_c	Crate/daObjBlockS_c	vtable daObjBlockS_c slot 19 @0x2139e78 | _ZN5Crate13OnTurnIntoEggER6Player	1		True		-

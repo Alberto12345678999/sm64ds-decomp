@@ -21,8 +21,8 @@ struct Matrix4x3;
 struct G3i {
 #ifdef __cplusplus
     /* All static -- see the header note. */
-    static void LookAt_(const Vector3 *at, const Vector3 *up,
-                        const Vector3 *eye, bool draw, Matrix4x3 *mat);
+    static void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
+                        Matrix4x3 *mat);
 #endif
 };
 

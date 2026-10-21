@@ -152,8 +152,8 @@ struct dEnemyBase_c : dActor_c {
        is dEnemyBase_c's key function; ~dEnemyBase_c is still the first virtual declared. The
        second parameter is the dCc_c the caller was handed, passed as raw
        bytes because that class has no header here. */
-    void SpawnMegaCharParticles(dActor_c & a, char * p);
-    int UpdateKillByInvincibleChar(dBgCh_Actr & ww_, ModelAnim & mm_, unsigned int flags);
+    void SpawnMegaCharParticles(dActor_c &other_, char *p_);
+    int UpdateKillByInvincibleChar(dBgCh_Actr &clsn_, ModelAnim &anim_, unsigned int flags_);
     /* RESOLVED 2026-08-27. Both halves of the old PROVISIONAL note held up, and
        both are now fixed in config rather than carried as a caveat here.
 
@@ -190,7 +190,7 @@ struct dEnemyBase_c : dActor_c {
            background-actor form of the same operation and ends in the same
            parameter. The mangled name below is the compiler's own answer for the
            declaration, not a hand-mangle. */
-    void KillByInvincibleChar(const Vector3_16 & vel_, Player & player_, Fix12<int> unused_);
+    void KillByInvincibleChar(const Vector3_16 &spin_, Player &player_, Fix12<int> unused_);
 };
 
 /* Makes dEnemyBase_c's size a claim the compiler enforces, and makes every header

@@ -75,6 +75,30 @@
   },
   {
    "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src/_ZN8Vector3sD1Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src/_ZN8dActor_cC1Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src/_ZN8dActor_cC2Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src/_ZN8dActor_cD0Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src/_ZN8dActor_cD1Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src/_ZN8dActor_cD2Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
    "ref": "src_tu/actors/Actor.cpp"
   },
   {
@@ -308,6 +332,10 @@
   {
    "file": "notes/agents/handoffs/ov078-daBombking_c-recovery.md",
    "ref": "tools/tiers_ratchet.py"
+  },
+  {
+   "file": "notes/agents/handoffs/pr-2445-source-review-fixes.md",
+   "ref": "src/_ZN8dActor_cC2Ev.cpp"
   },
   {
    "file": "notes/agents/handoffs/pr-2708-source-review-fixes.md",
@@ -1364,10 +1392,6 @@
   {
    "file": "port/docs/mmio-inventory.md",
    "ref": "src/_ZN4cstd4ldivEii.c"
-  },
-  {
-   "file": "port/docs/mmio-inventory.md",
-   "ref": "src/_ZN4cstd4sqrtEy.c"
   },
   {
    "file": "port/docs/opie-assessment.md",

@@ -11,7 +11,9 @@
  * from those helpers; the unnamed regions are written or read in one place at
  * most, or sit inside an embedded object. */
 struct Heyho {
-    void *mVtable;       /* 0x00 */
+    s32 mBaseSize;       /* 0x00 -- word 0 of the path record a Heyho_StartMotion copies in: 0x1000,
+                          * 0x1998 in sHeyhoLayoutFlyInPaths; read only to seed mSize (was mVtable:
+                          * no vtable is stored or called through here) */
     Vector3 mStartVel;   /* 0x04 -- the velocity a Heyho_StartMotion copies in */
     s32 mRangeLeft;      /* 0x10 -- move limits around mGoal */
     s32 mRangeRight;     /* 0x14 */
@@ -26,11 +28,17 @@ struct Heyho {
     u8 mFrameCtrl[0x14]; /* 0x88 -- a dExtFrameCtrl_c */
     Vector3 mPos;        /* 0x9c */
     Vector3 mVel;        /* 0xa8 */
-    u8 pad_b4[0x18];     /* 0xb4 */
+    Vector3 mWaypoint;   /* 0xb4 -- the point VShape/Diagonal/Chase step mPos to and Leave flies to;
+                          * picked by the VShape/Diagonal/Chase StartMotion* and Motion* functions
+                          * and by Heyho_React */
+    u8 pad_c0[0xc];      /* 0xc0 */
     Vector3 mScale;      /* 0xcc -- 0x1400 on each axis at rest */
-    u8 pad_d8[0x4];      /* 0xd8 */
+    s32 mSize;           /* 0xd8 -- copied from mBaseSize; scales the drawn model (Heyho_Draw), the
+                          * hit radius (Heyho_CheckHitA/B) and the settle particles (Heyho_Settle) */
     s32 mSpeed;          /* 0xdc -- LenVec3(mVel) before mVel is normalised */
-    u8 pad_e0[0x6];      /* 0xe0 */
+    s32 mSeparated;      /* 0xe0 -- 1 once Heyho_SeparateAll pushed this Heyho off a neighbour this
+                          * frame; Heyho_MotionChase then pulls mWaypoint back toward mPos */
+    u8 pad_e4[0x2];      /* 0xe4 */
     s16 mLean;           /* 0xe6 -- leans toward the direction of travel, +/-0x3000 */
     u8 pad_e8[0x2];      /* 0xe8 */
     s16 mPhase;          /* 0xea -- motion phase, stepped by 0x200 */

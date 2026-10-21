@@ -6,123 +6,308 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED, so there is no tu_map boundary or `tubuild.py create` candidate id here; every line below is hand-derived and independently checkable.",
-    "contiguous linker run 0x02016b78..0x02016df8: the nine delinks entries tile the span exactly with no hole (config/arm9/delinks.txt, config/arm9/symbols.txt).",
-    "class-label homogeneity: every symbol in the run is a member of Model (the concrete model class of include/Model.h, `struct Model : ModelBase`; _ZTV5Model at 0x0208e90c names the class, and the cartridge RTTI spells it _ZTI17dExtSimpleModel_c at 0x0208e794).",
-    "neighbour below: func_02016b24 ends at 0x02016b78, a free helper DoSetFile also calls. Neighbour above: CleanCommonModelDataArr at 0x02016df8, an unenrolled free function (include/decl_common.h) whose bytes the ROM supplies."
+    "NOT FROM tu_map. tools/tu_map.py reports the arm9 main module as UNDER-SEGMENTED, so there is no tu_map boundary or tubuild.py create candidate id here; every line below is hand-derived and independently checkable.",
+    "contiguous linker run 0x020169d8..0x02017168: the former per-function delinks entries tile the span exactly with no hole (config/arm9/delinks.txt, config/arm9/symbols.txt). The run starts at the first function after ModelAnim C2 (0x02016998..0x020169d8).",
+    "class-family homogeneity: every named symbol is a member of Model (cartridge dExtSimpleModel_c, _ZTV5Model at 0x0208e90c) or its root ModelBase (_ZTV9ModelBase at 0x0208e87c), or an unnamed helper those members call. notes/model-rtti-names.md records the cartridge class name.",
+    "neighbour above: the six _ZThn80_ destructor-thunk shards at 0x02017168..0x020171c8. A member destructor of ModelAnim, BlendModelAnim or ModelAnim2 is what emits them, and that definition also emits those classes D-variants, which already have homes below 0x020169d8. Defining them here also emitted .exceptix for the whole TU, so the thunks stay enrolled on their own shards."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x02016b78",
-      "end": "0x02016df8"
+      "start": "0x020169d8",
+      "end": "0x02017168"
     }
   ],
   "functions": [
+    {
+      "symbol": "func_020169d8",
+      "address": "0x020169d8",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0201/func_020169d8.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_020169f4",
+      "address": "0x020169f4",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0201/func_020169f4.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "func_02016a04",
+      "address": "0x02016a04",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0201/func_02016a04.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "func_02016a14",
+      "address": "0x02016a14",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0201/func_02016a14.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN5Model12ShowMaterialEii",
+      "address": "0x02016a24",
+      "size": "0x00000034",
+      "legacy_source": "src/_ZN5Model12ShowMaterialEii.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZN5Model12HideMaterialEii",
+      "address": "0x02016a58",
+      "size": "0x00000034",
+      "legacy_source": "src/_ZN5Model12HideMaterialEii.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "_ZN5Model14SetPolygonModeEi",
+      "address": "0x02016a8c",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN5Model14SetPolygonModeEi.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "_ZN9ModelBase12ApplyOpacityEjj",
+      "address": "0x02016a9c",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN9ModelBase12ApplyOpacityEjj.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "func_02016aac",
+      "address": "0x02016aac",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0201/func_02016aac.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "_ZN5Model12SetPolygonIDEi",
+      "address": "0x02016abc",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN5Model12SetPolygonIDEi.cpp",
+      "ordinal": 9
+    },
+    {
+      "symbol": "func_02016acc",
+      "address": "0x02016acc",
+      "size": "0x00000058",
+      "legacy_source": "src/unnamed/arm9/0201/func_02016acc.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "func_02016b24",
+      "address": "0x02016b24",
+      "size": "0x00000054",
+      "legacy_source": "src/func_02016b24.c",
+      "ordinal": 11
+    },
     {
       "symbol": "_ZN5Model6RenderEPK7Vector3",
       "address": "0x02016b78",
       "size": "0x00000040",
       "legacy_source": "src/_ZN5Model6RenderEPK7Vector3.cpp",
-      "ordinal": 0
+      "ordinal": 12
     },
     {
       "symbol": "_ZN5Model9Virtual10ER9Matrix4x3",
       "address": "0x02016bb8",
       "size": "0x00000040",
       "legacy_source": "src/_ZN5Model9Virtual10ER9Matrix4x3.cpp",
-      "ordinal": 1
+      "ordinal": 13
     },
     {
       "symbol": "_ZN5Model9DoSetFileEPcii",
       "address": "0x02016bf8",
       "size": "0x000000a0",
       "legacy_source": "src/_ZN5Model9DoSetFileEPcii.cpp",
-      "ordinal": 2
+      "ordinal": 14
     },
     {
       "symbol": "_ZN5Model11UpdateVertsEv",
       "address": "0x02016c98",
       "size": "0x00000010",
       "legacy_source": "src/_ZN5Model11UpdateVertsEv.cpp",
-      "ordinal": 3
+      "ordinal": 15
     },
     {
       "symbol": "_ZN5ModelD2Ev",
       "address": "0x02016ca8",
       "size": "0x00000038",
       "legacy_source": "src/_ZN5ModelD2Ev.cpp",
-      "ordinal": 4
+      "ordinal": 16
     },
     {
       "symbol": "_ZN5ModelD0Ev",
       "address": "0x02016ce0",
       "size": "0x00000040",
       "legacy_source": "src/_ZN5ModelD0Ev.cpp",
-      "ordinal": 5
+      "ordinal": 17
     },
     {
       "symbol": "_ZN5ModelD1Ev",
       "address": "0x02016d20",
       "size": "0x00000038",
       "legacy_source": "src/_ZN5ModelD1Ev.cpp",
-      "ordinal": 6
+      "ordinal": 18
     },
     {
       "symbol": "_ZN5ModelC1Ev",
       "address": "0x02016d58",
       "size": "0x00000050",
       "legacy_source": "src/_ZN5ModelC1Ev.cpp",
-      "ordinal": 7
+      "ordinal": 19
     },
     {
       "symbol": "_ZN5ModelC2Ev",
       "address": "0x02016da8",
       "size": "0x00000050",
       "legacy_source": "src/_ZN5ModelC2Ev.cpp",
-      "ordinal": 8
+      "ordinal": 20
+    },
+    {
+      "symbol": "CleanCommonModelDataArr",
+      "address": "0x02016df8",
+      "size": "0x00000078",
+      "legacy_source": "src/CleanCommonModelDataArr.c",
+      "ordinal": 21
+    },
+    {
+      "symbol": "func_02016e70",
+      "address": "0x02016e70",
+      "size": "0x00000098",
+      "legacy_source": "src/unnamed/arm9/0201/func_02016e70.c",
+      "ordinal": 22
+    },
+    {
+      "symbol": "_ZN5Model23AddToCommonModelDataArrER8BMD_File",
+      "address": "0x02016f08",
+      "size": "0x00000094",
+      "legacy_source": "src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp",
+      "ordinal": 23
+    },
+    {
+      "symbol": "_ZN5Model14LoadAndSetFileEtii",
+      "address": "0x02016f9c",
+      "size": "0x00000038",
+      "legacy_source": "src/_ZN5Model14LoadAndSetFileEtii.cpp",
+      "ordinal": 24
+    },
+    {
+      "symbol": "_ZN9ModelBase7SetFileEP8BMD_Fileii",
+      "address": "0x02016fd4",
+      "size": "0x00000020",
+      "legacy_source": "src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp",
+      "ordinal": 25
+    },
+    {
+      "symbol": "func_02016ff4",
+      "address": "0x02016ff4",
+      "size": "0x0000006c",
+      "legacy_source": "src/unnamed/arm9/0201/func_02016ff4.cpp",
+      "ordinal": 26
+    },
+    {
+      "symbol": "func_02017060",
+      "address": "0x02017060",
+      "size": "0x00000058",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017060.c",
+      "ordinal": 27
+    },
+    {
+      "symbol": "_ZN9ModelBaseD2Ev",
+      "address": "0x020170b8",
+      "size": "0x00000030",
+      "legacy_source": "src/_ZN9ModelBaseD2Ev.cpp",
+      "ordinal": 28
+    },
+    {
+      "symbol": "_ZN9ModelBaseD0Ev",
+      "address": "0x020170e8",
+      "size": "0x00000038",
+      "legacy_source": "src/_ZN9ModelBaseD0Ev.cpp",
+      "ordinal": 29
+    },
+    {
+      "symbol": "_ZN9ModelBaseD1Ev",
+      "address": "0x02017120",
+      "size": "0x00000030",
+      "legacy_source": "src/_ZN9ModelBaseD1Ev.cpp",
+      "ordinal": 30
+    },
+    {
+      "symbol": "_ZN9ModelBaseC2Ev",
+      "address": "0x02017150",
+      "size": "0x00000018",
+      "legacy_source": "src/_ZN9ModelBaseC2Ev.cpp",
+      "ordinal": 31
     }
   ],
   "data": [],
   "bss": [],
   "compiler_only_output": [
     {
+      "symbol": "_ZN9ModelBaseC1Ev",
+      "disposition": "deadstrip",
+      "reason": "one ModelBase() emits the complete-object C1 beside the licensed base-object C2; the ROM has no configured C1 home (nothing constructs a complete ModelBase) and no surviving function references it. The C2 shard objisolate kept only C2."
+    },
+    {
+      "symbol": "_ZTV9ModelBase",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e87c",
+      "reason": "compiler-emitted vtable (two-word ABI preamble + slots D1 D0 pure-virtual), produced because this TU defines the key function ~ModelBase(); RTTI is off because the family cartridge _ZTS/_ZTI records use coined dExt* names, so no ZTI/ZTS records accompany it; canonical bytes verified, contribution is gap data"
+    },
+    {
       "symbol": "_ZTV5Model",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x0208e90c",
-      "reason": "compiler-emitted vtable (two-word ABI preamble + slots D1 D0 DoSetFile UpdateVerts Virtual10 Render), produced because this TU defines the key function ~Model(); this TU compiles with RTTI off because the class's cartridge _ZTS/_ZTI records spell the coined name dExtSimpleModel_c and would be homeless under the project spelling, so no ZTI/ZTS records accompany it; canonical bytes verified, contribution is gap data"
+      "reason": "compiler-emitted vtable (two-word ABI preamble + slots D1 D0 DoSetFile UpdateVerts Virtual10 Render), produced because this TU defines the key function ~Model(); this TU compiles with RTTI off because the class cartridge _ZTS/_ZTI records spell the coined name dExtSimpleModel_c and would be homeless under the project spelling, so no ZTI/ZTS records accompany it; canonical bytes verified, contribution is gap data"
     }
   ],
   "notes": [
-    "Hand-assembled, not generated by `tubuild.py create`: tu_map cannot segment arm9/main, so there was no candidate id to create from. The schema follows the arm9/MaterialChanger and arm9/dCcAc_c entries, which took the same route.",
-    "Model is the concrete model class (cartridge dExtSimpleModel_c): an embedded ModelComponents plus a mat4x3 it multiplies into a stack temp for Render, a transformsBuf it sizes from the BMD file, and the four virtuals the vtable lists.",
-    "This run carries the class's complete lifecycle: the cartridge homes D2, D0, D1 AND C1, C2, the exact five-variant order one ~Model() plus one Model() emits under deferred codegen, so every emitted function enrols and nothing deadstrips.",
-    "The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen; the emitted object carries the nine functions ascending 0x02016b78..0x02016df8.",
-    "The cartridge spells this class dExtSimpleModel_c and its vtable is homed under the project spelling _ZTV5Model at 0x0208e90c, so _ZTS/_ZTI records emitted under the project's Model spelling would have no configured ROM home. This TU therefore compiles with #pragma RTTI off, the same lever the merged ShadowModel and MaterialChanger folds use for the identical dExt* coined-name situation: no RTTI records are emitted, and the vtable preamble's typeinfo word deadstrips with the rest of the .data output.",
-    "common.h precedes Model.h so this TU sees the flat Matrix4x3 { s32 m[12]; } spelling: the ctor's `mat4x3 = IDENTITY_MATRIX4X3` block-moves twelve words under it, where the structured Matrix3x3+Vector3 spelling scalarizes into a longer sequence. Virtual10 keeps the same flat view for its twelve-word copy into data.transforms."
+    "Hand-assembled, not generated by tubuild.py create: tu_map cannot segment arm9/main, so there was no candidate id to create from.",
+    "The licensed span is 0x020169d8..0x02017168, 32 functions. One ~Model() emits D2, D0, D1 and one Model() emits C1, C2, and the cartridge homes all five in that order. One ~ModelBase() emits D2, D0, D1 in the cartridge order. One ModelBase() emits C1 beside C2; C1 is deadstripped because the cartridge homes only C2, which is the variant objisolate kept from the C2 shard.",
+    "The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen.",
+    "RTTI is off. _ZTS/_ZTI under the project spelling Model / ModelBase would be homeless against the cartridge dExtSimpleModel_c / dExtModel_c records. The two vtables deadstrip-data onto _ZTV5Model and _ZTV9ModelBase.",
+    "The six _ZThn80_ thunks at 0x02017168..0x020171c8 are not claimed. Including the MI member destructors that emit them also emitted an .exceptix section per function in this TU.",
+    "common.h precedes Model.h so this TU sees the flat Matrix4x3 { s32 m[12]; } spelling."
   ],
   "relocations": [],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-Model/Model.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 9,
-    "functions_declared": 9,
+    "functions_matched": 32,
+    "functions_declared": 32,
     "compilerOnlyOutput": {
-      "requested": [],
-      "deadstripped": [],
+      "requested": [
+        "_ZN9ModelBaseC1Ev"
+      ],
+      "deadstripped": [
+        "_ZN9ModelBaseC1Ev"
+      ],
       "droppedSections": [
         5,
-        6
+        6,
+        7,
+        8,
+        66,
+        67
       ],
       "data": [
+        "_ZTV9ModelBase",
         "_ZTV5Model"
       ],
       "dataExternalized": [
-        "_ZTV5Model"
-      ]
+        "_ZTV5Model",
+        "_ZTV9ModelBase"
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -130,7 +315,6 @@
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
-    },
-    "object": "build/tu/arm9-Model/Model.o (gitignored)"
+    }
   }
 }

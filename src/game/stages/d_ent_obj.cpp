@@ -58,7 +58,8 @@ namespace Particle {
 void RenderAll();
 }
 namespace G3i {
-void LookAt_(const Vector3 *eye, const Vector3 *at, const Vector3 *up, bool b, Matrix4x3 *m);
+void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
+             Matrix4x3 *m);
 }
 bool ApproachLinear(short &value, short target, short step);
 void CopyToViewMat(const Matrix4x3 *m);
