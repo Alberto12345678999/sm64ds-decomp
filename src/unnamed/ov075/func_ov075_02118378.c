@@ -19,12 +19,10 @@ extern int data_0209fc68;
 /* C view of include/dScEntry_c.h's dScEntry_c (a C++ class this C file
  * cannot include), with the header's names; only the fields used here.
  * Each mIcons entry is a dScEntry_c::icon_c, a 0x24-byte dThIcon_c.
- * 0x287 is still unk_287 in the header (which this change does not
- * edit); it takes the name #4228 gives it there. This step sets
- * data_0209d45c bits 0xe and records them here; on a player disconnect
- * func_ov075_02119dc4 (#4228's dScEntry_c::HandlePlayerDisconnect)
- * clears data_0209d45c by ~mDisconnectHideMask, and func_ov075_02117e84
- * clears both on its own. */
+ * This step sets data_0209d45c bits 0xe and records them in
+ * mDisconnectHideMask; on a player disconnect
+ * dScEntry_c::HandlePlayerDisconnect clears data_0209d45c by
+ * ~mDisconnectHideMask, and func_ov075_02117e84 clears both on its own. */
 typedef struct dThIcon_c {
     u8 pad_00[0x24];
 } dThIcon_c;
