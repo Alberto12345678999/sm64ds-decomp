@@ -5,8 +5,8 @@ typedef struct Ov007PickerScene {
     int idleFrames; /* 0x28: frames with no touch and no key (func_ov007_020b9ca8) */
 } Ov007PickerScene;
 
-extern int* data_ov007_02104ba0[];
-int func_ov007_020b8fb4(void){
+extern int *data_ov007_02104ba0[];
+int func_ov007_020b8fb4(void) {
     Ov007PickerScene *p = (Ov007PickerScene *)data_ov007_02104ba0[0];
     return p->idleFrames >= 0xf0;
 }
