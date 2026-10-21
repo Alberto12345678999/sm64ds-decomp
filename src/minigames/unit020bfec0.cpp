@@ -2899,8 +2899,8 @@ struct dCamera_c {
     struct Matrix4x3_local projMat; /* 0x60 */
     char pad90[0x10];               /* 0x90 */
     /* Camera_UpdateMatrices hands 0xac to G3i::LookAt_ as the camera
-     * position and 0xa0 as the point it looks at; every preset puts 0xac
-     * above 0xa0, looking down at it. */
+     * position and 0xa0 as the point it looks at. The flower, slots and
+     * dealer presets put 0xac above 0xa0; the presenter view is level. */
     struct Vector3 target; /* 0xa0 */
     struct Vector3 eye;    /* 0xac */
     short angle;           /* 0xb8 */
