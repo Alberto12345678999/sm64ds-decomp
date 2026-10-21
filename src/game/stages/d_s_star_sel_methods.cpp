@@ -93,9 +93,9 @@ void EndLoadOBJExtPltt();
 #define REPEAT_TIMER(p)   (*(u16 *)((u8 *)(p) + 0x106))   /* D-pad auto-repeat */
 /* The bottom sprite's bounce in Behavior: BOUNCE_DELAY frames (0x78) pass,
    then BOUNCE_VELOCITY is launched at BOUNCE_LAUNCH (first -0x400) and
-   steps BOTTOM_Y_OFFSET until it lands; each landing raises BOUNCE_LAUNCH
+   steps BOTTOM_Y_OFFSET until it lands; each phase-3 landing raises BOUNCE_LAUNCH
    by 0x80 until it reaches -0x180 and the delay restarts. BOUNCE_PHASE is
-   1 rising, 2 or 3 the later half-bounces. */
+   1 for the arc above the rest line, 2 or 3 for the rebound below it. */
 #define BOUNCE_DELAY(p)    FU(p, 0x108)
 #define BOUNCE_VELOCITY(p) FH(p, 0x10c)
 #define BOUNCE_LAUNCH(p)   FH(p, 0x10e)
