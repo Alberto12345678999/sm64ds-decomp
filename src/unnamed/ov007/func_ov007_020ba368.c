@@ -30,7 +30,8 @@ typedef struct Ov007Picker {
 } Ov007Picker;
 
 /* data_ov007_02104ba0: the 0x4c record func_ov007_020b9880 allocates; names
- * as in func_ov007_020b91b4, only the slots this function touches. */
+ * as in func_ov007_020b91b4 (springSet and introVariant are named here), only
+ * the slots this function touches. */
 typedef struct Ov007PickerScene {
     Ov007Picker *picker; /* 0x00: func_ov007_020c690c */
     char pad_04[0x10];
