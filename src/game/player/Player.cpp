@@ -3180,8 +3180,7 @@ int func_ov002_020c1e44(void* a, int x) {
 // @symbol _ZN6Player19func_ov002_020c1eb4Ei
 /* recovered: shared common types */
 extern "C" {
-void Player::func_ov002_020c1eb4(int dmg)
-{
+void Player::func_ov002_020c1eb4(int dmg) {
     typedef int Fx12;
     extern void Vec3_RotateYAndTranslate(void*, const Vector3 *origin, int angle, const Vector3 *offset);
     extern short data_02082214[];
@@ -9411,16 +9410,16 @@ void func_ov002_020cc1f4(char *c) {
 /* recovered: named members + shared header, real C++ method */
 int Player::St_Shell_Cleanup()
 {
-  char* p = *(char**)((char*)&mRidingShell);
-  if (p != 0) {
-    ((daShl_c *)p)->mCarrier = 0;
-    mRidingShell = 0;
-    mPosY += 0x46000;
-    mIsAirborne = 1;
-    mLandSoundPlayed = 0;
-    func_ov002_020bd8c0(0x33);
-  }
-  return 1;
+    char *p = *(char **)((char *)&mRidingShell);
+    if (p != 0) {
+        ((daShl_c *)p)->mCarrier = 0;
+        mRidingShell = 0;
+        mPosY += 0x46000;
+        mIsAirborne = 1;
+        mLandSoundPlayed = 0;
+        func_ov002_020bd8c0(0x33);
+    }
+    return 1;
 }
 
 // @symbol _ZN6Player13St_Shell_MainEv
@@ -13281,8 +13280,7 @@ int func_ov002_020d2da0(char *c) {
 // @symbol func_ov002_020d2e74
 /* recovered: shared common types */
 extern "C" {
-void func_ov002_020d2e74(Player *p)
-{
+void func_ov002_020d2e74(Player *p) {
     extern void Vec3_RotateYAndTranslate(struct Vector3 *out, const struct Vector3 *base, s16 ang, const struct Vector3 *off);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 a, int b, int c, int d);
 
@@ -14302,8 +14300,7 @@ void Player::func_ov002_020d4748()
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" {
-extern "C" void func_ov002_020d4c30(Player *self)
-{
+extern "C" void func_ov002_020d4c30(Player *self) {
     extern void func_0201251c(int a, int b, int c, int d);
     extern int data_0209f32c;
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
@@ -14334,9 +14331,12 @@ extern "C" void func_ov002_020d4c30(Player *self)
     id = -1;
     if (self->mGroundSoundType != 6) {
         if (self->mGroundSoundType != 8) {
-            if (self->mGroundSoundType == 9) id = 0xe6;
-        } else id = 0xe4;
-    } else id = 0xe5;
+            if (self->mGroundSoundType == 9)
+                id = 0xe6;
+        } else
+            id = 0xe4;
+    } else
+        id = 0xe5;
     if (id == -1) return;
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(id, self->mPosX, self->mPosY, self->mPosZ);
 }
@@ -15282,8 +15282,7 @@ int Player::St_InYoshiMouth_Init()
 
 // @symbol func_ov002_020d6334
 extern "C" {
-int func_ov002_020d6334(Player *o, int val)
-{
+int func_ov002_020d6334(Player *o, int val) {
     int i;
     int *arr;
     arr = (int *)o->mHeldObjQueue;
@@ -21249,8 +21248,7 @@ int func_ov002_020df7f4(char* c) {
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {
-int func_ov002_020df840(Player *thiz, void *arg1, struct Vector3 *arg2)
-{
+int func_ov002_020df840(Player *thiz, void *arg1, struct Vector3 *arg2) {
     extern u16 data_0209f49c[];
     extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
     extern Player::State data_ov002_02110244;
