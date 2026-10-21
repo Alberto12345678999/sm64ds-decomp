@@ -28,7 +28,7 @@ typedef struct MbParentWork {
 typedef char MbParentFile_size_must_be_0x5c4[sizeof(MbParentFile) == 0x5c4 ? 1 : -1];
 #endif
 
-extern MbParentWork *data_020a9db8;
+extern char *data_020a9db8;
 extern u8 data_0209a078;
 
 typedef struct { u8 a; u8 pad; s16 b; s16 pad2; } Rec;
@@ -47,8 +47,8 @@ int func_020662c0(void)
     func_0205a588(buf, mask, 16);
 
     for (n = 1; n <= 15; n++) {
-        if (data_020a9db8->mChildState[n - 1] == 5) {
-            s8 t = data_020a9db8->mChildFile[n - 1];
+        if (((MbParentWork *)data_020a9db8)->mChildState[n - 1] == 5) {
+            s8 t = ((MbParentWork *)data_020a9db8)->mChildFile[n - 1];
             buf[t]++;
         }
     }
@@ -56,7 +56,7 @@ int func_020662c0(void)
     c = data_0209a078;
     for (k = 0; k < 16; k++) {
         c = (c + 1) % 16;
-        if (data_020a9db8->mFiles[c].mActive != 0) {
+        if (((MbParentWork *)data_020a9db8)->mFiles[c].mActive != 0) {
             if (buf[c] != 0) {
                 found = c;
                 break;
@@ -69,8 +69,8 @@ int func_020662c0(void)
 
     data_0209a078 = found;
     for (n = 1; n <= 15; n++) {
-        if (data_020a9db8->mChildState[n - 1] == 5) {
-            if (found == data_020a9db8->mChildFile[n - 1])
+        if (((MbParentWork *)data_020a9db8)->mChildState[n - 1] == 5) {
+            if (found == ((MbParentWork *)data_020a9db8)->mChildFile[n - 1])
                 mask |= 1 << n;
         }
     }
@@ -79,7 +79,7 @@ int func_020662c0(void)
     local.b = found;
     ret = func_02065d5c(&local, data_020a9db8);
     if (ret != 0)
-        CpuCopy8(data_020a9db8->mFiles[found].mHeader, ret, 0xe4);
+        CpuCopy8(((MbParentWork *)data_020a9db8)->mFiles[found].mHeader, ret, 0xe4);
 
     return func_02067f2c(0xea, mask, (u32)data_020a9db8);
 }

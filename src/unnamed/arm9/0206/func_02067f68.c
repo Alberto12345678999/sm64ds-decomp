@@ -63,7 +63,10 @@ typedef char MBGameInfo_size_must_be_0x4b8[sizeof(MBGameInfo) == 0x4b8 ? 1 : -1]
 typedef char MbBeacon_volat_at_0x10[sizeof(MbBeacon) == 0x10 ? 1 : -1];
 #endif
 
-extern MbBeaconSendStatus data_020a9d2c;
+/* data_020a9d2c keeps the u8[] spelling the other MB files use and is read
+ * through casts; data_020a9d40 must be the struct object itself: reached
+ * through a cast (or a local pointer) the beacon stores reorder. */
+extern u8 data_020a9d2c[];
 extern MbBeacon data_020a9d40;
 extern u16 data_020a9d48[];
 extern u8 data_020a9d50[];
@@ -91,18 +94,19 @@ void func_02067f68(void)
     int c;
     u8 seq;
 
-    if (data_020a9d2c.seqNoVolat != data_020a9d2c.nowGameInfop->seqNoVolat) {
+    if (((MbBeaconSendStatus *)data_020a9d2c)->seqNoVolat !=
+        ((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop->seqNoVolat) {
         func_02068188();
     }
 
-    ptr = data_020a9d2c.nowGameInfop;
+    ptr = ((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop;
     data_020a9d40.dataAttr = 2;
     data_020a9d40.seqNoFixed = ptr->seqNoFixed;
-    data_020a9d40.seqNoVolat = data_020a9d2c.seqNoVolat;
+    data_020a9d40.seqNoVolat = ((MbBeaconSendStatus *)data_020a9d2c)->seqNoVolat;
     data_020a9d40.ggid = ptr->ggid;
     data_020a9d40.fileNo = ptr->fileNo;
-    seq = data_020a9d2c.beaconNo;
-    data_020a9d2c.beaconNo = seq + 1;
+    seq = ((MbBeaconSendStatus *)data_020a9d2c)->beaconNo;
+    ((MbBeaconSendStatus *)data_020a9d2c)->beaconNo = seq + 1;
     data_020a9d40.beaconNo = seq;
     data_020a9d40.nowPlayerNum = ptr->nowPlayerNum;
     data_020a9d40.nowPlayerFlag = ptr->nowPlayerFlag;
@@ -111,16 +115,17 @@ void func_02067f68(void)
     zero = 0;
     MultiStore16(zero, (char *)data_020a9d50, 0x58);
 
-    ptr = data_020a9d2c.nowGameInfop;
+    ptr = ((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop;
     mask = ptr->broadcastedPlayerFlag ^ ptr->nowPlayerFlag;
     count = 0;
     dst = data_020a9d50;
     for (i = 0; i < 15; i++) {
         if (mask & (2 << i)) {
-            MultiCopyHalf(data_020a9d2c.nowGameInfop->member[i], dst, 0x16);
+            MultiCopyHalf(((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop->member[i], dst,
+                          0x16);
             count++;
             dst += 0x16;
-            data_020a9d2c.nowGameInfop->broadcastedPlayerFlag |= 2 << i;
+            ((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop->broadcastedPlayerFlag |= 2 << i;
             if (count == 4) {
                 break;
             }
@@ -134,9 +139,9 @@ void func_02067f68(void)
     data_020a9d40.sum = 0;
     data_020a9d40.sum = func_02067ee4(data_020a9d48, 0x68);
 
-    ptr = data_020a9d2c.nowGameInfop;
+    ptr = ((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop;
     if (ptr->broadcastedPlayerFlag == ptr->nowPlayerFlag) {
-        data_020a9d2c.state = 1;
+        ((MbBeaconSendStatus *)data_020a9d2c)->state = 1;
     }
 
     a = func_020688e4();
