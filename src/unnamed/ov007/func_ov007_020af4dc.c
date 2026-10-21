@@ -38,5 +38,5 @@ void func_ov007_020af4dc(void) {
     } else {
         RequestScreenFade(1, 0, func_ov007_020af580);
     }
-    (*(void(**)(int))(*(char**)data_ov007_0210342c + 0x2c))(0x13);
+    (*(void (**)(int))(*(char **)data_ov007_0210342c + 0x2c))(0x13);
 }
