@@ -17,45 +17,46 @@ extern void func_02030a78(void);
 extern void func_02012790(int x);
 extern void func_02030aa4(int arg);
 
-static inline unsigned IsMode6(char *self) {
+static inline unsigned IsMode6(dScEntry_c *scene) {
     /* materialized: returning the comparison directly shrinks the caller (0x15c) */
-    unsigned dok = (*(u16 *)(self + 0xc) == 6);
+    unsigned dok = (scene->actorID == 6);
     return dok;
 }
 
 void func_ov075_02117c0c(char* self)
 {
     int id;
+    dScEntry_c *scene = reinterpret_cast<dScEntry_c *>(self);
 
     id = func_0203da9c();
-    if (TouchArea_Update(self + 0x70, id) != 0 ||
-        (reinterpret_cast<dScEntry_c *>(self)->CheckMenuConfirm(id) != 0 &&
-         *(u8 *)(self + 0x281) == 0)) {
-        *(u8*)(self + 0xa4) = 0;
-        func_ov001_020ab41c(self + 0x70);
-        if (func_0203d9b4() != 0 && IsMode6(self)) {
-            reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d8e8, 0x14);
+    if (TouchArea_Update(&scene->mIcons[0], id) != 0 ||
+        (scene->CheckMenuConfirm(id) != 0 &&
+         scene->mSelectedIcon == 0)) {
+        scene->mIcons[1].mOn = 0;
+        func_ov001_020ab41c(&scene->mIcons[0]);
+        if (func_0203d9b4() != 0 && IsMode6(scene)) {
+            scene->ChangeStepsAfterDelay(&data_ov075_0211d8e8, 0x14);
         } else {
             func_02030a78();
-            reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(
+            scene->ChangeStepsAfterDelay(
                 reinterpret_cast<const dScEntry_c::StepSet *>(&data_ov075_0211d930), 0x14);
         }
         func_02012790(0x63);
         return;
     }
-    if (TouchArea_Update(self + 0x94, id) == 0) {
-        if (reinterpret_cast<dScEntry_c *>(self)->CheckMenuConfirm(id) == 0)
+    if (TouchArea_Update(&scene->mIcons[1], id) == 0) {
+        if (scene->CheckMenuConfirm(id) == 0)
             return;
-        if (*(u8*)(self + 0x281) != 1)
+        if (scene->mSelectedIcon != 1)
             return;
     }
-    *(u8*)(self + 0x80) = 0;
-    func_ov001_020ab41c(self + 0x94);
-    if (IsMode6(self)) {
-        reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d888, 0x14);
+    scene->mIcons[0].mOn = 0;
+    func_ov001_020ab41c(&scene->mIcons[1]);
+    if (IsMode6(scene)) {
+        scene->ChangeStepsAfterDelay(&data_ov075_0211d888, 0x14);
         func_02030aa4(3);
     } else {
-        reinterpret_cast<dScEntry_c *>(self)->ChangeStepsAfterDelay(&data_ov075_0211d810, 0x14);
+        scene->ChangeStepsAfterDelay(&data_ov075_0211d810, 0x14);
     }
     func_02012790(0x98);
 }
