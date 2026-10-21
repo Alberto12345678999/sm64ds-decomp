@@ -22,7 +22,7 @@ The 0x02117e84 caller is compiled as C++ with its existing C linkage; it uses th
 
 The RESULT factory now initializes its local native Step to zero, eliminating the last raw null-global declaration; its three existing aggregate stores and the remaining manual construction stay separate. Other callbacks, callback-table initialization and the scalar declaration of `data_ov075_0211d930` remain unreconstructed; the existing typed read cast at that boundary stays. The inferred method, exact argument spelling and retained table alias are disclosed in the header and production manifest.
 
-The rename ledger is reserved by `issue2410-sound-playsub1015`. One proposed append-only row is prepared privately for ov075:0x02119dc4; applying it requires a bounded coordination exception. The reserved source-style exception file is unchanged: its old one-use `unk_287` allowance is now unused. Removing that allowance is deferred cleanup, not a new source-pattern exemption.
+The rename ledger is reserved by `issue2410-sound-playsub1015`. The user authorized the prepared single-row append for ov075:0x02119dc4 by instructing continuation in response to the explicit exception request. Only that row was appended; existing rows and the other task reservation remain unchanged. The reserved source-style exception file is unchanged: its old one-use `unk_287` allowance is now unused. Removing that allowance is deferred cleanup, not a new source-pattern exemption.
 
 ## Proof and publication
 
