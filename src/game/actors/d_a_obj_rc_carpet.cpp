@@ -166,7 +166,7 @@ int daObjRcCarpet_c::InitResources()
     mHorzSpeed = mPathSpeed;
     BaseInitResources();
     mPathDirection = 1;
-    unk_42c = 1;
+    mRespawnAfterFall = 1;
     return 1;
 }
 
