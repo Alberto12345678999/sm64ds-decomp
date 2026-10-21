@@ -28,7 +28,7 @@ typedef struct Ov007PickerScene {
     Ov007Picker *picker;       /* 0x00: func_ov007_020c690c */
     Ov007MenuState *states[4]; /* 0x04: func_ov007_020c9388; [1] is the main one */
     /* 0x14: func_ov007_020c5db0's point total over the stroke and every
-     * group; func_ov007_020ba368 divides the drawn progress by it */
+     * group (the picker keeps the same total at its own +0x14) */
     int totalPoints;
     /* 0x18, medium confidence: func_ov007_020c5d5c's sum of each group's
      * last progressThresholds entry (strokeTime >> 12 when the point was
@@ -58,7 +58,7 @@ typedef struct Ov007Work {
     Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
 } Ov007Work;
 
-typedef char Ov007Picker_limitIndex_must_end_at_0xb4[sizeof(Ov007Picker) == 0xb4 ? 1 : -1];
+typedef char Ov007Picker_size_must_be_0xb4[sizeof(Ov007Picker) == 0xb4 ? 1 : -1];
 typedef char Ov007PickerScene_size_must_be_0x4c[sizeof(Ov007PickerScene) == 0x4c ? 1 : -1];
 
 extern char *data_ov007_02104ba0;

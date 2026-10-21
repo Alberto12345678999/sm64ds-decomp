@@ -35,7 +35,7 @@ typedef struct Ov007Figure {
     void (*update)(struct Ov007Figure *);
 } Ov007Figure;
 
-typedef char Ov007Model_visible_must_be_0x94[(int)&((Ov007Model *)0)->visible == 0x94 ? 1 : -1];
+typedef char Ov007Model_visible_must_be_at_0x94[(int)&((Ov007Model *)0)->visible == 0x94 ? 1 : -1];
 typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
 
 /* Poses a figure for the frame: hides its model while the manager model

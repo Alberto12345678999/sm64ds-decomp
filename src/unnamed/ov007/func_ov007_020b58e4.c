@@ -22,7 +22,7 @@ typedef struct Ov007Item {
     Ov007ItemLayout *layout; /* 0x24 */
 } Ov007Item;
 
-typedef char Ov007Item_layout_must_be_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
+typedef char Ov007Item_layout_must_be_at_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
 
 /* One of the manager's itemViews (func_ov007_020b4c04); names as there. */
 typedef struct Ov007ItemView {
@@ -40,8 +40,9 @@ typedef struct Ov007Work {
     int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus tap, 0 for a button */
 } Ov007Work;
 
-typedef char
-    Ov007Work_transitionMode_must_be_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20 ? 1 : -1];
+typedef char Ov007Work_transitionMode_must_be_at_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20
+                                                          ? 1
+                                                          : -1];
 
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 

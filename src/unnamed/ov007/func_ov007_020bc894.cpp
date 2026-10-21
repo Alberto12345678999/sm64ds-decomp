@@ -32,7 +32,7 @@ struct Ov007Model {
     Ov007AnimPlayer *texSeqAnim; /* 0x30 */
 };
 
-typedef char Ov007Model_texSeqAnim_must_end_at_0x34[sizeof(Ov007Model) == 0x34 ? 1 : -1];
+typedef char Ov007Model_size_must_be_0x34[sizeof(Ov007Model) == 0x34 ? 1 : -1];
 
 /* Ticks the model's bone, texture-sequence and texture-SRT players and
  * applies each one's current frame of its animation. c keeps the char *

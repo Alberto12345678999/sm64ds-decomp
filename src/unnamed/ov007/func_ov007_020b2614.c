@@ -7,10 +7,11 @@ typedef struct Ov007Model {
     int animTick; /* 0x98: 1 on the frames that step the animations */
 } Ov007Model;
 
-typedef char Ov007Model_animTick_must_be_0x98[(int)&((Ov007Model *)0)->animTick == 0x98 ? 1 : -1];
+typedef char
+    Ov007Model_animTick_must_be_at_0x98[(int)&((Ov007Model *)0)->animTick == 0x98 ? 1 : -1];
 
 /* data_ov007_0210342c: the overlay's manager (G keeps the extern's old
- * spelling); names as in #4241 (func_ov007_020b2370), only the slots this
+ * spelling); names as in func_ov007_020b2370, only the slots this
  * file reads. */
 typedef struct G {
     char pad[0xf4];
@@ -20,7 +21,7 @@ typedef struct G {
     char *altFigure; /* 0x104: func_ov007_020be850 returns it when +0xec is 1 */
 } G;
 
-typedef char G_altFigure_must_be_0x104[(int)&((G *)0)->altFigure == 0x104 ? 1 : -1];
+typedef char G_altFigure_must_be_at_0x104[(int)&((G *)0)->altFigure == 0x104 ? 1 : -1];
 
 extern G* data_ov007_0210342c;
 

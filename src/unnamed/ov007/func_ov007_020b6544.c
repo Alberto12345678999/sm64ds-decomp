@@ -3,10 +3,10 @@ extern void func_ov007_020b20e8(void);
 extern void func_ov007_020b4b5c(int a, int b);
 
 /* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1718, func_ov007_020b1cf0, func_ov007_020b1fa4 and
- * func_ov007_020b3360, and in #4241 (func_ov007_020aec94: pendingChoice)
- * and #4242 (func_ov007_020b0358: pendingCapture; func_ov007_020aed98:
- * chosenItemId). S keeps the extern's old spelling. Only the slots this
+ * func_ov007_020b1718, func_ov007_020b1cf0, func_ov007_020b1fa4,
+ * func_ov007_020b3360, func_ov007_020aec94 (pendingChoice),
+ * func_ov007_020b0358 (pendingCapture) and func_ov007_020aed98
+ * (chosenItemId). S keeps the extern's old spelling. Only the slots this
  * file touches. f0 and f14 keep their old names: no reader names them. */
 struct S {
     int f0; /* 0x00 */
@@ -30,7 +30,7 @@ struct S {
     int chosenItemId;
 };
 
-typedef char S_chosenItemId_must_be_0x180[(int)&((struct S *)0)->chosenItemId == 0x180 ? 1 : -1];
+typedef char S_chosenItemId_must_be_at_0x180[(int)&((struct S *)0)->chosenItemId == 0x180 ? 1 : -1];
 
 extern struct S *data_ov007_0210342c;
 
