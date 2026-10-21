@@ -36,6 +36,8 @@ typedef struct Ov007Picker {
     Vec3 boundsMax;
 } Ov007Picker;
 
+typedef char Ov007Picker_size_must_be_0xd0[sizeof(Ov007Picker) == 0xd0 ? 1 : -1];
+
 void func_ov007_020c684c(char *o)
 {
     Ov007Picker *p = (Ov007Picker *)o;
