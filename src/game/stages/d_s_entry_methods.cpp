@@ -6,7 +6,8 @@
  * - This is the upper part of dScEntry_c's translation unit. The
  *   lower part is d_s_entry.cpp (0x02115ab8..0x021165b0). The hole
  *   that still separates them is 0x021165b0..0x02118a84: 31 functions
- *   still in separate sources, including readiness. No other class's
+ *   still in separate sources, including the d_s_entry_readiness.cpp
+ *   slice (0x02116c8c..0x02116e00). No other class's
  *   code reaches them. They are called from InitResources, Behavior
  *   or one another, or reached through the step tables that
  *   __sinit_ov075_0211bb00 copies into .bss. That initializer also
