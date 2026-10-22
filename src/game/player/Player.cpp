@@ -1598,8 +1598,8 @@ void Player::func_ov002_020bf13c()
        all three components in registers -- the frame here is 0x10, which is just
        the volatile pad[4] below. Vector3 declares a destructor, so the object
        must have an address, and that pushes v onto the stack and grows the frame
-       to 0x20. No other instruction in the function changes. This is the case
-       include/types.h means by "those sites use a local POD twin instead". */
+       to 0x20. No other instruction in the function changes. This is a second
+       reason for a twin, besides the copy lowering include/types.h describes. */
     typedef struct { int x, y, z; } Vec3b;
     extern short data_02082214[];
     volatile int pad[4];
@@ -11993,8 +11993,8 @@ int Player::St_LedgeHang_Main()
 extern "C" {
 int Player::St_LedgeHang_Init() {
     /* Stays a POD twin of Vector3, measured: `Vec3 z3 = {0, 0, 0}` on a POD
-       lowers to `add r1, sp, #4` plus three stores through that pointer and a
-       reload, which is what the ROM does. Vector3 has a constructor, so every
+       lowers to `add r1, sp, #4` plus three stores through that pointer and
+       two reloads, which is what the ROM does. Vector3 has a constructor, so every
        non-POD spelling constant-folds the zeros into the later stores and the
        function loses 12 bytes. Tested as Vector3(0,0,0), default plus three
        stores, copy-assignment, member-wise construction, Vector3(), and stores
