@@ -326,19 +326,19 @@ extern "C" void *dScMB_c_classInit(void) {
         *(int **)p = data_0208e4b8;
         *(int **)p = _ZTV8dScene_c;
         {
-            u8 *bp = (u8 *)((int)p + 0x13);
+            u8 *bp = &((dScMB_c *)p)->pauseFlags;
             *bp |= 1;
             *bp |= 4;
         }
         *(int **)p = data_020943c4;
         {
-            int *fp = (int *)((int)p + 0x50);
-            fp[0] = (int)_ZTV8dFader_c;
-            fp[0] = (int)_ZTV15dFdBrightness_c;
-            fp[1] = 0x1000;
-            fp[2] = 0;
-            fp[0] = (int)_ZTV10dFdColor_c;
-            *(short *)(fp + 3) = 0;
+            dFdColor_c *fader = &((dScMB_c *)p)->fader;
+            *(int **)fader = _ZTV8dFader_c;
+            *(int **)fader = _ZTV15dFdBrightness_c;
+            fader->currInterp = 0x1000;
+            fader->speed = 0;
+            *(int **)fader = _ZTV10dFdColor_c;
+            fader->color = 0;
         }
     }
     return p;
