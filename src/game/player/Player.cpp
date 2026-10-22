@@ -57,26 +57,23 @@
 bool ApproachLinear(short &value, short target, short step);
 
 /* ---------------------------------------------------------------------------
- * Shadow types that cannot live inside a function body.
+ * Shadow types and ABI stand-ins that cannot live inside a function body.
+ *
+ * Everything here is either hoisted for the C++ rule spelled out further down
+ * or load-bearing for codegen, and each one says which.  It is NOT a parking
+ * lot for POD twins of real types: Vector3 is usable directly, including its
+ * (x, y, z) constructor, as long as the locals keep the ROM's declaration
+ * order.
  * ------------------------------------------------------------------------- */
-struct Ret;
 struct V3Quad { Vector3 a; Vector3 d; Vector3 e; Vector3 b; };
+/* A stand-in for Fix12<int>, and load-bearing as a CLASS rather than as a
+ * name: func_ov002_020bf800 passes three of these by value, and the ROM
+ * stores them to sp+0xc..0x14 and reloads them for the call. Plain Fix12i
+ * locals -- or passing xv/yv/zv straight to the callee -- keep all three in
+ * registers and shrink that function from 140 bytes to 120. Measured both
+ * ways; it stays until Fix12<int> itself is reconstructed. */
 struct Fix12v { int v; Fix12v(int a) : v(a) {} };
 namespace Sound { void PlayBank0(unsigned int, const Vector3 &); }
-struct V3a {
- int x, y, z;
- void set(int x_, int y_, int z_) { x = x_; y = y_; z = z_; }
-};
-namespace Particle { extern "C" void _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void *, void *); }
-typedef struct {
- int unk0, unk4, unk8, unkC;
-} Arg1;
-struct State3i { int a, b, c; };
-struct V3 {
- int x, y, z;
- V3(int x, int y, int z) : x(x), y(y), z(z) {}
- V3() {}
-};
 struct Ret { int pad; int y; };
 /* A shadow scaffold, and the one hoist C++ requires even without the extern
  * rule below: every virtual of a LOCAL class must be defined in the same body,
@@ -3033,17 +3030,15 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
     char* self = (char*)this;
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern s16 data_02082214[];
-    V3a v1;
-    V3a v2;
-    V3a nrm;
     int angle = (unsigned short)mAngleY;
     dBgCh_Lin line;
     int k = angle >> 4;
     int cs = data_02082214[k * 2];
     int sn = data_02082214[k * 2 + 1];
-    v1.set(this->mPosX, this->mPosY + (arg2 << 12), this->mPosZ);
-    v2.set(arg1 * cs + this->mPosX, this->mPosY + (arg2 << 12), arg1 * sn + this->mPosZ);
-    line.SetObjAndLine(*(Vector3*)&v1, *(Vector3*)&v2, (dActor_c*)self);
+    Vector3 v1(this->mPosX, this->mPosY + (arg2 << 12), this->mPosZ);
+    Vector3 v2(arg1 * cs + this->mPosX, this->mPosY + (arg2 << 12), arg1 * sn + this->mPosZ);
+    Vector3 nrm;
+    line.SetObjAndLine(v1, v2, (dActor_c*)self);
     if (!line.DetectClsn()) {
         return 0;
     }
@@ -3177,6 +3172,8 @@ void Player::func_ov002_020c1eb4(int dmg) {
     extern short data_02082214[];
     extern Player::State data_ov002_02110094;
     extern int func_ov002_020d91e0(void*, int damage, int doPre);
+    extern void _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        unsigned int handle, unsigned int type, int x, int y, int z, const void *dir, void *cb);
     Vector3 out;
     Vector3 offset;
     Vector3_16 vec;
@@ -3206,7 +3203,7 @@ void Player::func_ov002_020c1eb4(int dmg) {
         vec.x = data_02082214[idx * 2];
         vec.z = data_02082214[idx * 2 + 1];
         vec.y = 0;
-        Particle::_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(0, 0xc8, out.x, out.y, out.z, &vec, 0);
+        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(0, 0xc8, out.x, out.y, out.z, &vec, 0);
     }
     func_ov002_020d91e0((char *)this, 0, 1);
 }
@@ -3850,8 +3847,8 @@ extern "C" {
 int Player::func_ov002_020c2fec(int *out)
 {
     extern struct Anim2fec data_ov002_0210a8b8[];
-    extern void func_ov002_020c3160(void*, void*);
-    int tmp[4];
+    extern void func_ov002_020c3160(Player *, Fix12i *);
+    Fix12i tmp[4];
     int i;
     int ret;
     struct Anim2fec *row;
@@ -3905,7 +3902,10 @@ static inline int FX(int a, int b) {
     return FX_MUL((a), (b));
 }
 
-void func_ov002_020c3160(Player *self, Arg1 *out) {
+/* The uniform cubic B-spline basis at mSplineT, four weights for the four
+   control points func_ov002_020c2fec then blends; mSplineSpan picks the
+   clamped-end variant. The caller passes a Fix12i[4]. */
+void func_ov002_020c3160(Player *self, Fix12i *out) {
     typedef long long s64;
     int t = self->mSplineT;
     int u = 0x1000 - t;
@@ -3920,46 +3920,46 @@ void func_ov002_020c3160(Player *self, Arg1 *out) {
         int a = FX(t, 0x3000);
         int b = FX(t3, 0x1c00);
         int c = FX(t2, 0x4800);
-        out->unk0 = u3;
-        out->unk4 = a + (b - c);
-        out->unk8 = FX(t2, 0x1800) - FX(t3, 0xeaa);
-        out->unkC = FX(t3, 0x2aa);
+        out[0] = u3;
+        out[1] = a + (b - c);
+        out[2] = FX(t2, 0x1800) - FX(t3, 0xeaa);
+        out[3] = FX(t3, 0x2aa);
         break;
     }
     case 2: {
         int k1400 = 0x1400;
         s64 p955 = (s64)t3 * 0x955;
         s64 p1400 = (s64)t2 * k1400;
-        out->unk0 = FX(u3, 0x400);
+        out[0] = FX(u3, 0x400);
         {
             int b = FX(t, 0x400);
             int c = (int)((p955 + 0x800) >> 12);
             int d = (int)((p1400 + 0x800) >> 12);
-            out->unk4 = b + (c - d) + 0x955;
+            out[1] = b + (c - d) + 0x955;
         }
-        out->unk8 = FX(t, 0x800) + (FX(t2, 0x800) - FX(t3, 0x800)) + 0x2aa;
-        out->unkC = FX(t3, 0x2aa);
+        out[2] = FX(t, 0x800) + (FX(t2, 0x800) - FX(t3, 0x800)) + 0x2aa;
+        out[3] = FX(t3, 0x2aa);
         break;
     }
     case 3: {
-        out->unk0 = FX(u3, 0x2aa);
-        out->unk4 = FX(t3, 0x800) - t2 + 0xaaa;
-        out->unk8 = FX(t, 0x800) + (FX(t2, 0x800) - FX(t3, 0x800)) + 0x2aa;
-        out->unkC = FX(t3, 0x2aa);
+        out[0] = FX(u3, 0x2aa);
+        out[1] = FX(t3, 0x800) - t2 + 0xaaa;
+        out[2] = FX(t, 0x800) + (FX(t2, 0x800) - FX(t3, 0x800)) + 0x2aa;
+        out[3] = FX(t3, 0x2aa);
         break;
     }
     case 4: {
-        out->unk0 = FX(u3, 0x2aa);
-        out->unk4 = FX(u, 0x800) + (FX(u2, 0x800) - FX(u3, 0x800)) + 0x2aa;
-        out->unk8 = FX(u, 0x400) + (FX(u3, 0x955) - FX(u2, 0x1400)) + 0x955;
-        out->unkC = FX(t3, 0x400);
+        out[0] = FX(u3, 0x2aa);
+        out[1] = FX(u, 0x800) + (FX(u2, 0x800) - FX(u3, 0x800)) + 0x2aa;
+        out[2] = FX(u, 0x400) + (FX(u3, 0x955) - FX(u2, 0x1400)) + 0x955;
+        out[3] = FX(t3, 0x400);
         break;
     }
     case 5: {
-        out->unk0 = FX(u3, 0x2aa);
-        out->unk4 = FX(u2, 0x1800) - FX(u3, 0xeaa);
-        out->unk8 = FX(u, 0x3000) + (FX(u3, 0x1c00) - FX(u2, 0x4800));
-        out->unkC = t3;
+        out[0] = FX(u3, 0x2aa);
+        out[1] = FX(u2, 0x1800) - FX(u3, 0xeaa);
+        out[2] = FX(u, 0x3000) + (FX(u3, 0x1c00) - FX(u2, 0x4800));
+        out[3] = t3;
         break;
     }
     }
@@ -5044,16 +5044,19 @@ ret0:
 
 // @symbol func_ov002_020c51d0
 extern "C" {
-int func_ov002_020c51d0(char* c, State3i* st){
+/* The look-at target: daTrs_c fills the argument from its own mPos before
+   calling, and daHanachan_c passes the segment it wants Mario to face. */
+int func_ov002_020c51d0(char* c, Vector3* st){
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern State3i data_ov002_0211046c;
-    extern int func_ov002_020c51d0(void*, void*);
+    extern Player::State data_ov002_0211046c;
     Player *player = (Player *)c;
     if (!_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0211046c))
         return 0;
     if (player->mStateStep != 0)
         return 0;
-    *(State3i *)&((Player *)c)->mStateTargetX = *st;
+    player->mStateTargetX = st->x;
+    player->mStateTargetY = st->y;
+    player->mStateTargetZ = st->z;
     player->mStateWork = 1;
     return 1;
 }
@@ -5617,11 +5620,11 @@ int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
 
     dBgCh_Lin rc;
 
-    V3 a(this->mPosX, p1, this->mPosZ);
-    V3 b(this->mPosX, p2, this->mPosZ);
-    rc.SetObjAndLine(*(Vector3*)&a, *(Vector3*)&b, (dActor_c *)self);
+    Vector3 a(this->mPosX, p1, this->mPosZ);
+    Vector3 b(this->mPosX, p2, this->mPosZ);
+    rc.SetObjAndLine(a, b, (dActor_c *)self);
     if (rc.DetectClsn() != 0) {
-        ::Vector3 pos = rc.GetClsnPos();
+        Vector3 pos = rc.GetClsnPos();
         *outptr = pos.y;
         if (rc.GetClsnID() != -1) {
             dActor_c *found = dActor_c::FindWithID((u32)rc.GetClsnID());
