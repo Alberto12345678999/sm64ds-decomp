@@ -287,7 +287,7 @@ void Player::func_ov002_020bd06c(unsigned int state2)
 {
     extern void _ZN7fBase_c18MarkForDestructionEv(void *thiz);
     extern dActor_c *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-        u32 actorID, u32 param1, const struct Vector3 *pos, const struct Vector3_16 *rot, s8 areaID,
+        u32 actorID, u32 param1, const Vector3 *pos, const Vector3_16 *rot, s8 areaID,
         s16 deathTableID);
 
     extern Player::State data_ov002_02110154;
@@ -818,16 +818,11 @@ void Player::func_ov002_020bdc18() {
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
 void Player::IncMegaKillCount() {
-    struct Vec3 {
-        int x;
-        int y;
-        int z;
-    };
     extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int id, unsigned int p,
                                                                  void *, void *, int a, int b);
     extern void GiveLives(int);
     extern void func_ov002_020f0e54(void *, void *);
-    struct Vec3 v;
+    Vector3 v;
     char *new_var2;
     int new_var3;
     char *a;
@@ -1599,6 +1594,12 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
 extern "C" {
 void Player::func_ov002_020bf13c()
 {
+    /* Stays a POD twin of Vector3, measured: v never escapes, and the ROM keeps
+       all three components in registers -- the frame here is 0x10, which is just
+       the volatile pad[4] below. Vector3 declares a destructor, so the object
+       must have an address, and that pushes v onto the stack and grows the frame
+       to 0x20. No other instruction in the function changes. This is the case
+       include/types.h means by "those sites use a local POD twin instead". */
     typedef struct { int x, y, z; } Vec3b;
     extern short data_02082214[];
     volatile int pad[4];
@@ -1742,10 +1743,10 @@ int Player::func_ov002_020bf40c() {
     extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *);
     extern void _ZN9dBgCh_GndD1Ev(void *);
     extern void *data_0209f318;
-    extern struct Vector3 data_ov002_0210a590;
-    extern void func_0200d858(void *, const struct Vector3 *);
-    struct Vector3 pos;
-    struct Vector3 off;
+    extern Vector3 data_ov002_0210a590;
+    extern void func_0200d858(void *, const Vector3 *);
+    Vector3 pos;
+    Vector3 off;
     struct dBgCh_Gnd rg;
     if (NumStars() < 0x50 || param1 != 0) {
         AddVec3(&mPos, &data_ov002_0210a590, &mPos);
@@ -1832,17 +1833,14 @@ int func_ov002_020bf56c(void* a, int b){
 extern "C" {
 void Player::func_ov002_020bf5e0()
 {
-    typedef struct {
-        int x, y, z;
-    } V3b;
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, int x, int y, int z, void*);
     extern int data_0209f32c;
     int flag;
     int id;
-    V3b out;
-    V3b src;
+    Vector3 out;
+    Vector3 src;
     int target;
     int newId;
     int state;
@@ -2181,15 +2179,14 @@ int Player::func_ov002_020c0108(int p1)
     typedef short s16;
     typedef unsigned int u32;
     typedef int s32;
-    typedef struct { s32 x, y, z; } Vec3i;
     typedef struct { void *a; u32 b; } PathPtr;
     extern void *_ZN7PathPtrC1Ev(void*);
     extern void _ZN7PathPtr6FromIDEj(void*, u32 id);
     extern int _ZNK7PathPtr8NumNodesEv(void*);
     extern void _ZNK7PathPtr7GetNodeER7Vector3j(void*, void*, u32 idx);
     extern u32 _ZNK7PathPtr9GetUnk004Ev(void*);
-    extern int Vec3_HorzAngle(const Vec3i *v0, const Vec3i *v1);
-    extern int Vec3_VertAngle(const Vec3i *v1, const Vec3i *v0);
+    extern int Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
+    extern int Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
     extern Player::State data_ov002_02110304;
     extern Player::State data_ov002_0211025c;
     extern s32 data_ov002_020ff200[];
@@ -2208,7 +2205,7 @@ int Player::func_ov002_020c0108(int p1)
         int numNodes;
         int i;
         int aH, aV;
-        Vec3i nodes[3];
+        Vector3 nodes[3];
         PathPtr path;
 
         _ZN7PathPtrC1Ev(&path);
@@ -2410,6 +2407,13 @@ extern "C" {
 int Player::func_ov002_020c06fc(int arg)
 {
     char *c = (char *)this;
+    /* Stays a POD twin of Vector3, and this is the strongest case in the file:
+       Vec3 is a MEMBER of the local struct Frame below, so a non-POD element
+       gives Frame an implicit destructor, and mwccarm emits that as a new
+       compiler-numbered local-class symbol -- measured as
+       _ZN6Player20Frame$2583Player_cppD1Ev. This TU emits no @NNNN/$NNN symbols
+       at all today, and such a name depends on declaration order (compare
+       Bundle$902d_a_mky_cpp in AGENTS.md). Frame has to stay POD. */
     struct Vec3 { s32 x, y, z; };
     extern int func_ov002_020f030c(unsigned int sel);
     extern int func_ov002_020f02c8(unsigned int sel);
@@ -2643,18 +2647,13 @@ int Player::func_ov002_020c0d90(int y)
 extern "C" {
 int Player::func_ov002_020c0fb4() {
     char *c = (char *)this;
-    typedef struct Vec3i {
-        int x;
-        int y;
-        int z;
-    } Vec3i;
     extern int func_ov002_020dec70(void *);
     extern void _ZN5Timer10ResetTimerEv(void *);
     extern void _ZN5Timer10StartTimerEv(void *);
     extern void _ZN5Timer9StopTimerEv(void *);
     extern unsigned long long _ZN5Timer7GetTimeEv(void *);
     extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-        unsigned int, unsigned int, const Vec3i *, const void *, int, int);
+        unsigned int, unsigned int, const Vector3 *, const void *, int, int);
     extern int func_ov002_020d06c0(void *);
     extern unsigned char data_ov002_02111184[];
     extern unsigned char data_0209d4c8[];
@@ -2705,7 +2704,7 @@ int Player::func_ov002_020c0fb4() {
             }
         }
         {
-            Vec3i pos;
+            Vector3 pos;
             int px;
             int py;
             int pz;
@@ -2801,10 +2800,12 @@ extern "C" {
 void Player::func_ov002_020c133c()
 {
     typedef unsigned char u8;
-    typedef struct Vec3i { int x, y, z; } Vec3i;
     extern int func_ov002_020d82f0(void*);
-    extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, Vec3i const *v, unsigned int d);
-    extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void*, Vec3i const *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
+    extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(
+        unsigned int a, unsigned int b, unsigned int c, Vector3 const *v, unsigned int d);
+    extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *, Vector3 const *v, unsigned int b,
+                                                       int c, unsigned int d, unsigned int e,
+                                                       unsigned int f);
     extern int func_ov002_020d91e0(void*, int damage, int doPre);
     if (mIsMetal != 0) return;
     {
@@ -2815,14 +2816,14 @@ void Player::func_ov002_020c133c()
     if (!func_ov002_020d82f0(this)) return;
     if (mIsAirborne != 0) return;
     if (this->GetHealth() <= 2)
-        mSurfaceSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSurfaceSoundHandle, 2, 0x27,
-                                                                (Vec3i *)&mCamSpacePos, 0);
+        mSurfaceSoundHandle =
+            _ZN5Sound8PlayLongEjjjRK7Vector3s(mSurfaceSoundHandle, 2, 0x27, &mCamSpacePos, 0);
     if (mDamageTickTimer != 0) {
         mDamageTickTimer--;
         return;
     }
     {
-        Vec3i v;
+        Vector3 v;
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
@@ -2937,7 +2938,7 @@ void Player::func_ov002_020c14b8()
 extern "C" {
 void Player::SetFloorSurfaceInfo(const dBgPi &hit) {
     extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-    struct Vector3 v;
+    Vector3 v;
     mClpsWord1Lo = hit.surface.clps.func_02037e90();
     mSurfaceType = hit.surface.clps.GetSurfaceType();
     mClpsBits15_18 = hit.surface.clps.func_02037e48();
@@ -3005,7 +3006,6 @@ int func_ov002_020c179c(char* self, int angle) {
 extern "C" {
 void func_ov002_020c18b0(char *self, int p1)
 {
-    typedef struct { int x, y, z; } Vec3i;
     extern int func_ov002_020c179c(void*, int angle);
     extern int func_02010844(void*, void*, short angle);
     extern int Player_ScaleByCharFactor(void*, int a);
@@ -3022,7 +3022,7 @@ void func_ov002_020c18b0(char *self, int p1)
         int sinv = data_02082214[idx * 2 + 1];
         int f554 = p->mFloorNormalX;
         int f55c = p->mFloorNormalZ;
-        Vec3i v;
+        Vector3 v;
         v.x = f554;
         v.y = sinv;
         v.z = f55c;
@@ -3323,8 +3323,8 @@ int Player::func_ov002_020c231c()
     extern s16 data_02082214[];
     extern Player::State data_ov002_02110184;
     extern int func_ov002_020c2270(void*, void*, void*);
-    struct Vector3 tmp;
-    struct Vector3 pos;
+    Vector3 tmp;
+    Vector3 pos;
     u8 f70f;
     s32 p60;
     s32 d;
@@ -3339,11 +3339,11 @@ int Player::func_ov002_020c231c()
         if (f70f == 0)
             return 0;
 
-        SubVec3(&mPos, (struct Vector3 *)&mPreClsnPosX, &tmp);
+        SubVec3(&mPos, (Vector3 *)&mPreClsnPosX, &tmp);
         tmp.x >>= 1;
         tmp.y >>= 1;
         tmp.z >>= 1;
-        AddVec3((struct Vector3 *)&mPreClsnPosX, &tmp, &mPos);
+        AddVec3((Vector3 *)&mPreClsnPosX, &tmp, &mPos);
         func_ov002_020c14b8();
 
         if (mGroundY == (s32)0x80000000)
@@ -3397,9 +3397,6 @@ int Player::func_ov002_020c25a8(int arg1)
 {
     void *arg0 = (void *)this;
     typedef struct {
-        int x, y, z;
-    } Vector3i;
-    typedef struct {
         int a, b;
     } Pair2i;
     typedef struct {
@@ -3450,8 +3447,8 @@ int Player::func_ov002_020c25a8(int arg1)
     extern int data_02099368;
     char *c = (char*)arg0;
     int ret;
-    Vector3i v;
-    Vector3i wn;
+    Vector3 v;
+    Vector3 wn;
     ClsnResultTmp tmp;
     dBgPi *fr;
     int *dst;
@@ -3994,8 +3991,8 @@ void Player::func_ov002_020c37a4(char *arg) {
     unsigned int id = this->GetBodyModelID(param1 & 0xff, 0);
     Matrix4x3 *bone = &mBodyModels[id]->data.transforms[8];
     unsigned int id2 = this->GetBodyModelID(param1 & 0xff, 0);
-    struct Vector3 v;
-    struct Vector3 s;
+    Vector3 v;
+    Vector3 s;
     MulVec3Mat4x3(&bone->m[9], &mBodyModels[id2]->mat4x3, &v);
     Vec3_MulScalar(&s, &v, 0x8000);
     v = s;
@@ -4542,17 +4539,17 @@ int Player::func_ov002_020c44c4()
     extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
     extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void*, void*, unsigned int id, const void* pos, unsigned int a, unsigned int b);
-    extern void func_02012694(unsigned int id, const struct Vector3* v);
+    extern void func_02012694(unsigned int id, const Vector3 *v);
     extern unsigned int func_02012790(unsigned int a);
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int a, int b, int fix, unsigned int d);
     extern unsigned int _ZN8SaveData26CountStarsCollectedInLevelEj(unsigned int);
     extern int SublevelToLevel(int);
     extern u32 data_ov002_0210e14c;
-    extern struct Vector3 data_ov002_0210f3b0;
+    extern Vector3 data_ov002_0210f3b0;
     extern void*data_ov002_0210f350;
     extern void func_ov100_02145070(int);
     extern int func_ov100_02145014(void);
-    struct Vector3 pos;
+    Vector3 pos;
     int state;
     int r4val;
     u8 f2d8;
@@ -6359,8 +6356,6 @@ void Player::func_ov002_020c7350()
     typedef unsigned short u16;
     typedef unsigned int u32;
     typedef signed char s8;
-    typedef struct { int x, y, z; } Vec3i;
-    typedef struct { short x, y, z; } Vector3_16;
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int anim, int a, int b, unsigned int d);
     extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, void*, void*, int e, int f);
     extern void _ZN10daObjKey_c19func_ov089_0213115cEi(void*, int i);
@@ -6408,8 +6403,8 @@ void Player::func_ov002_020c7350()
         if (st == 0x10 || st == 0x12) {
             void *actor;
             _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x94, 0x40000000, 0x1000, 0);
-            actor = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-                0x11a, mKeyModelId, (Vec3i *)&mPos, &mAngle, this->mAreaId, -1);
+            actor = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x11a, mKeyModelId, &mPos,
+                                                                    &mAngle, this->mAreaId, -1);
             if (param1 == 2) {
                 _ZN10daObjKey_c19func_ov089_0213115cEi(actor, 4);
             } else {
@@ -6983,21 +6978,16 @@ int Player::St_NoControl_Main()
 extern "C" {
 unsigned char Player::func_ov002_020c84b0() {
     char *c = (char *)this;
-    typedef struct {
-        int x;
-        int y;
-        int z;
-    } Vec3i;
-    extern short Vec3_VertAngle(const Vec3i *v1, const Vec3i *v0);
+    extern short Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
     extern void _Z15ApproachLinear2Rsss(void *, short t, short s);
-    Vec3i v;
+    Vector3 v;
     short ang;
 dummy_label_675641:;
     v.x = this->mPosX;
     v.y = this->mPosY;
     v.z = this->mPosZ;
     v.y += 0x64000;
-    ang = Vec3_VertAngle((Vec3i *)&mStateTargetX, &v);
+    ang = Vec3_VertAngle((Vector3 *)&mStateTargetX, &v);
     _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, -ang, 0x400);
     mHeadRot[0] = 0;
     mHeadRot[1] = 0;
@@ -7309,7 +7299,7 @@ int Player::func_ov002_020c8d14()
     extern int func_ov002_020d22ec(void*, int arg);
     extern Player::State data_ov002_021106ac;
     extern Player::State data_ov002_0211013c;
-    struct Vector3 v;
+    Vector3 v;
     int val;
     int id;
     char *anim;
@@ -7424,11 +7414,6 @@ int Player::func_ov002_020c904c() {
     typedef unsigned int u32;
     typedef int s32;
     typedef unsigned char u8;
-    struct Vector3 {
-        s32 x;
-        s32 y;
-        s32 z;
-    };
     extern void _Z14ApproachLinearRiii(void *, int target, int step);
     extern int Math_Function_0203b14c(void *, int a, int b, int c, int d);
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *, u32 anim, int a, int fix, u32 b);
@@ -7801,7 +7786,8 @@ extern "C" {
 void func_ov002_020c9998(void* c) {
     typedef int Fix12i;
     extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, Fix12i, unsigned int);
-    extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int, unsigned int, const struct Vector3*, const struct Vector3_16*, int, int);
+    extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
+        unsigned int, unsigned int, const Vector3 *, const Vector3_16 *, int, int);
     Player *p = (Player *)c;
     p->mStateStep = 0x12;
     _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x92, 0x40000000, 0x1000, 0);
@@ -7819,7 +7805,7 @@ void Player::func_ov002_020c9a04()
 {
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int a, int b, int f, unsigned int g);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-    struct Vector3 v;
+    Vector3 v;
 
     mStateStep = 0x11;
     _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x9a, 0x40000000, 0x1000, 0);
@@ -10462,7 +10448,6 @@ int func_ov002_020ce324(char* c)
     Player *player = (Player *)c;
     typedef unsigned char u8;
     typedef unsigned short u16;
-    typedef struct Vec3i { int x, y, z; } Vec3i;
     typedef struct dActor_c dActor_c;
     extern struct S18b data_0209f49e[];
     extern struct S18a data_0209f4a4[];
@@ -10471,13 +10456,14 @@ int func_ov002_020ce324(char* c)
     extern int func_ov002_020ceb54(void*);
     extern void *_ZN9dBgCh_LinC1Ev(void*);
     extern void _ZN9dBgCh_LinD1Ev(void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void*, const Vec3i* a, const Vec3i* b, void*);
+    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *a,
+                                                                     const Vector3 *b, void *);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void* self, void*);
     extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
     extern int AngleDiff(int a, int b);
     extern int func_ov002_020ce324(void*);
-    Vec3i a1, a2, b1, b2, nrm;
+    Vector3 a1, a2, b1, b2, nrm;
     char rl1[0x78];
     int ok;
 
@@ -10586,7 +10572,7 @@ int func_ov002_020ce5f8(char* c) {
     extern Player::State data_ov002_0211013c;
     extern int func_ov002_020ce5f8(void*);
     int y, threshold;
-    struct Vector3 pos;
+    Vector3 pos;
 
     threshold = data_0209f32c - 0x50000;
     y = self->mPosY;
@@ -10648,15 +10634,15 @@ int func_ov002_020ce5f8(char* c) {
 extern "C" {
 void func_ov002_020ce798(char* c)
 {
-    typedef struct Vec3i { int x, y, z; } Vec3i;
     typedef struct dActor_c dActor_c;
     extern int data_0209f32c;
     extern char data_ov002_0211067c;
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void*, const Vec3i* a, const Vec3i* b, void*);
+    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *a,
+                                                                     const Vector3 *b, void *);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
     Player *player = (Player *)c;
-    Vec3i v1, v2;
+    Vector3 v1, v2;
 
     if (!_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0211067c)) return;
 
@@ -10824,7 +10810,8 @@ void func_ov002_020ceb7c(struct CameraRaw *c)
 extern "C" {
 int func_ov002_020cec2c(char *self)
 {
-    extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, const struct Vector3 *v, unsigned int d);
+    extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(
+        unsigned int a, unsigned int b, unsigned int c, const Vector3 *v, unsigned int d);
     extern int func_ov002_020d91e0(void*, int damage, int doPre);
     extern void func_ov002_020da9d4(void*);
     extern s8 data_0209f2f8;
@@ -11510,7 +11497,6 @@ extern "C" {
 int func_ov002_020cfea4(char *self)
 {
     Player *p = (Player *)self;
-    struct Vector3 { int x, y, z; };
     extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
     extern int _ZNK5dBgPi9GetClsnIDEv(void *self);
     extern int AngleDiff(int a, int b);
@@ -11621,22 +11607,21 @@ int func_ov002_020cfea4(char *self)
 extern "C" {
 int func_ov002_020d0178(char* c, int arg1, int flag)
 {
-    typedef struct Vec3 {
-        int x, y, z;
-    } Vec3;
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void* self, Vec3* pos, void* actor);
+    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, Vector3 *pos,
+                                                                 void *actor);
     extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void* self, Vec3* a, Vec3* b, void* actor);
+    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *self, Vector3 *a,
+                                                                     Vector3 *b, void *actor);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(void* self);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vec3* out);
+    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
     extern int _ZN4cstd5atan2E5Fix12IiES1_(int x, int z);
     extern int AngleDiff(int a, int b);
     extern s16 data_02082214[];
     Player *p = (Player *)c;
 
-    Vec3 normal;
-    Vec3 pos1;
-    Vec3 lineStart;
+    Vector3 normal;
+    Vector3 pos1;
+    Vector3 lineStart;
     dBgCh_Gnd rg;
     int ang;
     int gy;
@@ -11736,7 +11721,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
         return 0;
     }
     lineStart.y = p->mPosY;
-    Vec3 line2;
+    Vector3 line2;
     line2.x = p->mPosX;
     line2.y = p->mPosY;
     line2.z = p->mPosZ;
@@ -12007,6 +11992,13 @@ int Player::St_LedgeHang_Main()
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
 int Player::St_LedgeHang_Init() {
+    /* Stays a POD twin of Vector3, measured: `Vec3 z3 = {0, 0, 0}` on a POD
+       lowers to `add r1, sp, #4` plus three stores through that pointer and a
+       reload, which is what the ROM does. Vector3 has a constructor, so every
+       non-POD spelling constant-folds the zeros into the later stores and the
+       function loses 12 bytes. Tested as Vector3(0,0,0), default plus three
+       stores, copy-assignment, member-wise construction, Vector3(), and stores
+       through a plain and a volatile pointer -- none reproduce it. */
     struct Vec3 {
         int x, y, z;
     };
@@ -13271,11 +13263,12 @@ int func_ov002_020d2da0(char *c) {
 /* recovered: shared common types */
 extern "C" {
 void func_ov002_020d2e74(Player *p) {
-    extern void Vec3_RotateYAndTranslate(struct Vector3 *out, const struct Vector3 *base, s16 ang, const struct Vector3 *off);
+    extern void Vec3_RotateYAndTranslate(Vector3 * out, const Vector3 *base, s16 ang,
+                                         const Vector3 *off);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 a, int b, int c, int d);
 
-    struct Vector3 v;
-    struct Vector3 off;
+    Vector3 v;
+    Vector3 off;
     if (p->mIsInShallowWater != 0)
         return;
     if (p->param1 != 3)
@@ -14358,7 +14351,7 @@ int Player::St_Bonk_Main()
     struct dCamera_c;
     extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void Player_AdvanceAnims(void* c);
-    extern void func_0200d8c8(struct dCamera_c* cam, const struct Vector3* v, int strength);
+    extern void func_0200d8c8(struct dCamera_c * cam, const Vector3 *v, int strength);
     extern struct dCamera_c* data_0209f318;
     extern Player::State data_ov002_0211013c;
     int rate;
@@ -14906,13 +14899,13 @@ extern "C" {
 int func_ov002_020d5ab4(char *self)
 {
     typedef long long s64;
-    typedef struct { int x, y, z; } Vec3;
     extern int _ZN6Player7IsStateERNS_5StateE(char *self, void *state);
-    extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, Vec3 *pos, void *rot, int e, int f);
+    extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
+        unsigned int a, unsigned int b, Vector3 *pos, void *rot, int e, int f);
     extern char data_ov002_02110064;
     extern short data_02082214[];
     Player *p = (Player *)self;
-    Vec3 pos;
+    Vector3 pos;
     void *spawned;
     short *rp;
     int *pp;
@@ -15293,14 +15286,14 @@ extern "C" {
 void func_ov002_020d6368(char *self)
 {
     typedef long long s64;
-    typedef struct { int x, y, z; } Vec3;
-    extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, Vec3 *pos, void *rot, int e, int f);
+    extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
+        unsigned int a, unsigned int b, Vector3 *pos, void *rot, int e, int f);
     extern short data_02082214[];
     extern int func_ov002_020d6334(void*, int);
     extern void func_ov002_020d6368(char*);
     Player *p = (Player *)self;
-    volatile struct Vector3_16 rot;
-    Vec3 pos;
+    volatile Vector3_16 rot;
+    Vector3 pos;
     void *spawned;
     int a;
     int zero = 0;
@@ -15537,7 +15530,7 @@ int Player::func_ov002_020d6998()
     extern int func_ov002_020d6dac(char* self);
     extern void func_ov002_020d71ec(char* self, int arg1);
     extern int func_ov002_020d6c60(char* self, void* other);
-    extern s16 Vec3_HorzAngle(const struct Vector3* v0, const struct Vector3* v1);
+    extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern void Vec3_RotateYAndTranslate(int* out, int* in, s16 angle, int* src);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
@@ -15589,9 +15582,9 @@ int Player::func_ov002_020d6998()
                 if (func_ov002_020d6c60(self, other) == 0) goto react;
                 return 1;
             } else {
-                struct Vector3 out;
-                struct Vector3_16 pos16;
-                struct Vector3 rotSrc;
+                Vector3 out;
+                Vector3_16 pos16;
+                Vector3 rotSrc;
                 s16 angle;
                 int idx;
 
@@ -15708,12 +15701,8 @@ extern "C" {
 int func_ov002_020d6dac(char *self)
 {
     Player *player = (Player *)self;
-    struct Vector3 { int x, y, z; };
     typedef struct P2 { int w[2]; } P2;
     typedef struct dBgPi { void *vtb; int s0, s1, s2, s3, s4; u16 f, g; int h, i, j; } dBgPi;
-    typedef struct Vec3_16 {
-        s16 x, y, z;
-    } Vec3_16;
     extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
     extern void MulVec3Mat4x3(void *v, void *m, void *dst);
     extern void Vec3_MulScalarInPlace(int *v, int s);
@@ -15728,9 +15717,9 @@ int func_ov002_020d6dac(char *self)
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern short data_02082214[];
     extern void *data_02099368[];
-    Vec3_16 dir;
-    struct Vector3 p1;
-    struct Vector3 p2;
+    Vector3_16f dir;
+    Vector3 p1;
+    Vector3 p2;
     dBgPi res;
     dBgCh_Lin rl;
     int *d;
@@ -15787,7 +15776,7 @@ int func_ov002_020d6dac(char *self)
 
     ::Vector3 clsnPos = rl.GetClsnPos();
     player->mTongueHitDist = func_02053274((int *)&p1, (int *)&clsnPos);
-    struct Vector3 normal;
+    Vector3 normal;
     _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
     ang = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
     idx = (u16)ang >> 4;
@@ -16033,8 +16022,6 @@ struct PVec { int x, y, z; PVec() {} ~PVec() {} };
 extern "C" {
 int Player::St_YoshiPower_Main()
 {
-    struct Vec3 { int x, y, z; };
-    struct Vec3s { short x, y, z; };
     extern void _Z14ApproachLinearRiii(int*, int, int);
     extern void func_ov002_020d71ec(char*, int);
     extern void _Z15ApproachLinear2Rsss(short*, short, short);
@@ -16060,8 +16047,8 @@ int Player::St_YoshiPower_Main()
        thirty-odd call sites. One alias keeps them untouched; the field
        accesses below are the part that needed recovering. */
     char* c = (char*)this;
-    Vec3s dir;
-    Vec3 tmp;
+    Vector3_16f dir;
+    Vector3 tmp;
     PVec pos;
     dActor_c *obj0;
     char* dp;
@@ -16114,7 +16101,7 @@ int Player::St_YoshiPower_Main()
             }
             int id2 = this->GetBodyModelID(this->param1 & 0xff, 0);
             if (mBodyModels[id2]->WillHitFrame(0xa) != 0) {
-                Vec3 *src = (Vec3 *)&mPosX;
+                Vector3 *src = &mPos;
                 dp = (char*)*(void**)(&mObjInMouth);
                 ((dActor_c *)dp)->mPosX = src->x;
                 ((dActor_c *)dp)->mPosY = src->y;
@@ -16528,7 +16515,6 @@ ret1:
 extern "C" {
 int func_ov002_020d8360(void *self, void *other, unsigned int flags)
 {
-    typedef struct Vector3 { int x, y, z; } Vector3;
     extern int func_ov002_020d82f0(void *c);
     extern int func_ov002_020d853c(char *c, char *o);
     extern int func_ov002_020d8944(void *self, char *enemy, char *v1);
@@ -16743,10 +16729,9 @@ void func_ov002_020d8838(char *self)
 /* recovered: shared common types */
 extern "C" {
 void func_ov002_020d8854(char *self) {
-    extern void Vec3_RotateYAndTranslate(struct Vector3 * out, struct Vector3 * in, int ang,
-                                         struct Vector3 *tr);
+    extern void Vec3_RotateYAndTranslate(Vector3 * out, Vector3 * in, int ang, Vector3 *tr);
     extern int func_ov002_020d8944(char *a, char *b, char *other);
-    extern void func_ov002_020d8d10(char *self, struct Vector3 *v);
+    extern void func_ov002_020d8d10(char *self, Vector3 *v);
     Player *p = (Player *)self;
     char *other = (char *)dActor_c::FindWithID(p->mAttackClsn.otherOwner);
     if (other == 0)
@@ -16766,13 +16751,13 @@ void func_ov002_020d8854(char *self) {
         }
     }
     {
-        struct Vector3 out;
-        struct Vector3 tr;
-        struct Vector3 cp;
+        Vector3 out;
+        Vector3 tr;
+        Vector3 cp;
         tr.x = 0;
         tr.y = 0x50000;
         tr.z = 0x64000;
-        Vec3_RotateYAndTranslate(&out, (struct Vector3 *)(&p->mPosX), p->mAngleY, &tr);
+        Vec3_RotateYAndTranslate(&out, (Vector3 *)(&p->mPosX), p->mAngleY, &tr);
         cp = out;
         func_ov002_020d8d10(self, &cp);
     }
@@ -16788,10 +16773,10 @@ struct PVec8944 {
 };
 extern "C" {
 int func_ov002_020d8944(void *self, char *enemy, char *v1) {
-    s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
+    s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     int AngleDiff(int a, int b);
-    void Vec3_Add(struct Vector3 * out, struct Vector3 * a, struct Vector3 * b);
-    void Vec3_Asr(struct Vector3 * d, struct Vector3 * s, int sh);
+    void Vec3_Add(Vector3 * out, Vector3 * a, Vector3 * b);
+    void Vec3_Asr(Vector3 * d, Vector3 * s, int sh);
     void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
     extern int func_ov002_020d8944(void *self, char *enemy, char *v1);
     PVec8944 p;
@@ -16837,14 +16822,15 @@ void func_ov002_020d8a50(char* self, int which)
     extern int _ZNK6Player14GetBodyModelIDEjb(char* p, unsigned int j, int b);
     extern void func_ov002_020dbf4c(char* c);
     extern void *_ZN9dBgCh_LinC1Ev(struct dBgCh_Lin* r);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(struct dBgCh_Lin* r, struct Vector3* a, struct Vector3* b, void* actor);
+    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
+        struct dBgCh_Lin * r, Vector3 * a, Vector3 * b, void *actor);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(struct dBgCh_Lin* r);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* s, struct Vector3* n);
+    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, Vector3 *n);
     extern void _ZN9dBgCh_LinD1Ev(struct dBgCh_Lin* r);
     extern s16 data_02082214[];
     extern u16 data_ov002_0210a5cc[];
     extern void func_ov002_020d8854(char*);
-    extern void func_ov002_020d8d10(char*, struct Vector3*);
+    extern void func_ov002_020d8d10(char *, Vector3 *);
     extern void func_ov002_020dbbc0(char*);
     extern void func_ov002_020dbd94(char*);
     extern void func_ov002_020dbe70(char*);
@@ -16913,9 +16899,9 @@ void func_ov002_020d8a50(char* self, int which)
     {
         u16 ang = (u16)player->mAngleY;
         struct dBgCh_Lin ray;
-        struct Vector3 v1;
-        struct Vector3 v2;
-        struct Vector3 normal;
+        Vector3 v1;
+        Vector3 v2;
+        Vector3 normal;
         int idx;
 
         _ZN9dBgCh_LinC1Ev(&ray);
@@ -16952,13 +16938,12 @@ void func_ov002_020d8a50(char* self, int which)
  */
 struct Self { char pad0[8]; int state; char pad2[0x82]; s16 angle; };
 extern "C" {
-void func_ov002_020d8d10(struct Self* self, struct Vector3* pos)
-{
+void func_ov002_020d8d10(struct Self *self, Vector3 *pos) {
     struct Callback;
     extern s16 data_02082214[];
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
-    struct Vector3_16 vec;
+    Vector3_16 vec;
 
     vec.x = data_02082214[((unsigned short)(short)(self->angle + 0x8000) >> 4) * 2];
     vec.y = 0;
@@ -17458,8 +17443,8 @@ int Player::St_Hurt_Main()
 /* recovered: shared common types */
 extern "C" {
 void Player::func_ov002_020d98b4() {
-    extern void MulVec3Mat4x3(void *a, void *b, struct Vector3 *out);
-    extern void Vec3_MulScalar(struct Vector3 * out, struct Vector3 * in, int s);
+    extern void MulVec3Mat4x3(void *a, void *b, Vector3 *out);
+    extern void Vec3_MulScalar(Vector3 * out, Vector3 * in, int s);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     int t = this->func_ov002_020beb38();
@@ -17472,8 +17457,8 @@ void Player::func_ov002_020d98b4() {
         unsigned int id = this->GetBodyModelID(param1 & 0xff, 0);
         Matrix4x3 *bone = &mBodyModels[id]->data.transforms[15];
         unsigned int id2 = this->GetBodyModelID(param1 & 0xff, 0);
-        struct Vector3 v;
-        struct Vector3 s;
+        Vector3 v;
+        Vector3 s;
         MulVec3Mat4x3(&bone->m[9], &mBodyModels[id2]->mat4x3, &v);
         Vec3_MulScalar(&s, &v, 0x8000);
         s.y += 0x50000;
@@ -17757,7 +17742,6 @@ int Player::St_SwingPlayer_Main()
 {
     char* c = (char*)this;
     typedef s32 Fix12;
-    struct Vec3 { int x, y, z; };
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(char* c, u32 anim, int a, s32 b, u16 d);
     extern void func_ov002_020d9c70(char* c);
     extern int func_ov002_020da95c(char* c);
@@ -17781,7 +17765,7 @@ int Player::St_SwingPlayer_Main()
         break;
     case 1: {
         int arr[3];
-        Vec3 v;
+        Vector3 v;
         if ((*(u16*)((char*)data_0209f49e + gActivePlayerSlot * 0x18) & 1) != 0) {
             char *p = (char *)mHeldObj;
             if (p != 0) {
@@ -18592,7 +18576,7 @@ int Player::St_Grabbed_Init()
 extern "C" {
 extern "C" void func_ov002_020db54c(unsigned char *self, int a, int b, short c)
 {
-    extern void func_02035860(void *a, struct Vector3 *v);
+    extern void func_02035860(void *a, Vector3 *v);
     extern Player::State data_ov002_021101cc;
     Player *p = (Player *)self;
     void *node;
@@ -18603,8 +18587,8 @@ extern "C" void func_ov002_020db54c(unsigned char *self, int a, int b, short c)
     if (node != 0) {
         int bb = (int)(((dActor_c *)node)->actorID == 0xbf);
         if (bb != 0) {
-            struct Vector3 *src = (struct Vector3 *)((int)&((dActor_c *)node)->mPos);
-            struct Vector3 v;
+            Vector3 *src = (Vector3 *)((int)&((dActor_c *)node)->mPos);
+            Vector3 v;
             int ty;
             v.x = src->x;
             ty = src->y;
@@ -18910,7 +18894,7 @@ void func_ov002_020dbc94(char* c) {
     extern unsigned char data_0209f2d8;
     extern void func_ov002_020dc174(char*, void*, int, int, unsigned int, unsigned int);
     Player *player = (Player *)c;
-    struct Vector3 v;
+    Vector3 v;
     int b = (int)(data_0209f2d8 == 1);
     if (b) {
         int r2 = 0x82000;
@@ -20015,13 +19999,13 @@ void func_ov002_020dd8f4(void* player) {
 /* recovered: shared common types */
 extern "C" {
 void func_ov002_020dd908(char *sb) {
-    extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
+    extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
     extern unsigned char data_0209f2d8;
     extern unsigned char data_0209f21c;
     extern char *data_0209f394[];
     extern void func_ov002_020dd8f4(char *);
     int i;
-    struct Vector3 v;
+    Vector3 v;
     if ((int)(data_0209f2d8 == 1) == 0)
         return;
     for (i = 0; i < data_0209f21c; i++) {
@@ -20428,7 +20412,7 @@ void func_ov002_020de3d0(int a0, short* r1, short* r2){
 /* recovered: shared common types */
 struct dActor_ce428 {
     char pad74[0x74];
-    struct Vector3 vec; /* 0x74 */
+    Vector3 vec; /* 0x74 */
     char pad[0x70c - 0x80];
     unsigned char flag; /* 0x70c */
 };
@@ -20727,8 +20711,6 @@ extern "C" {
 extern "C" int func_ov002_020dec70(char *c)
 {
     Player *p = (Player *)c;
-    struct Vector3_16f { s16 x, y, z; };
-    struct Vector3 { int x, y, z; };
     void func_ov002_020bf800(char *c, Vector3_16f v);
     u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, Vector3 *v, u32 d);
     int _ZN6Player7IsStateERNS_5StateE(char *c, void *st);
@@ -20747,7 +20729,7 @@ extern "C" int func_ov002_020dec70(char *c)
         func_ov002_020bf800(c, v);
     }
     p->mSurfaceSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s((u32)p->mSurfaceSoundHandle, 3, 0x90,
-                                                               (Vector3 *)&p->mCamSpacePosX, 0);
+                                                               &p->mCamSpacePos, 0);
     if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110274) ||
         _ZN6Player7IsStateERNS_5StateE(c, &data_ov002_021102d4) ||
         _ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110244) || p->mIsMetal || p->mIsMega ||
@@ -21162,9 +21144,9 @@ int func_ov002_020df7f4(char* c) {
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {
-int func_ov002_020df840(Player *thiz, void *arg1, struct Vector3 *arg2) {
+int func_ov002_020df840(Player *thiz, void *arg1, Vector3 *arg2) {
     extern u16 data_0209f49c[];
-    extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
+    extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern Player::State data_ov002_02110244;
     if (thiz->mIsMega != 0 || thiz->mIsBalloon != 0)
         return 0;
@@ -21339,8 +21321,6 @@ void func_ov002_020df8f0(char* c)
 extern "C" {
 int Player::St_Fly_Main()
 {
-    struct Vec16 { s16 x, y, z; };
-    struct Vec32 { s32 x, y, z; };
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, unsigned int);
     extern int func_ov002_020d674c(char *);
     extern void func_ov002_020df8f0(void *);
@@ -21409,8 +21389,8 @@ skip:
         func_ov002_020df8f0(c);
     }
 
-    Vec16 vec16;
-    Vec32 vec32;
+    Vector3_16f vec16;
+    Vector3 vec32;
 #define spC vec16.x
 #define spE vec16.y
 #define sp10 vec16.z
@@ -22541,8 +22521,8 @@ void func_ov002_020e1c20(char *c) {
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *p, unsigned int a, int b, Fix12i c,
                                                 unsigned int d);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *p, unsigned int a, int b);
-    extern int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2,
-                             const struct Vector3 *p3, short p4);
+    extern int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2, const Vector3 *p3,
+                             short p4);
     extern int func_ov002_020bf27c(char *c, int r1);
     extern unsigned char data_0209f49c[];
     extern int data_ov002_021101b4;
@@ -22559,7 +22539,7 @@ void func_ov002_020e1c20(char *c) {
             }
             player->mLoopingSoundHandle =
                 func_02012120(player->mLoopingSoundHandle, player->mCharacter, 0x18,
-                              (const struct Vector3 *)(&player->mCamSpacePosX), 0);
+                              (const Vector3 *)(&player->mCamSpacePosX), 0);
             player->mHorzSpeed = FX_MUL(player->mHorzSpeed, 0xf00);
             if ((player->mVertSpeed) < 0) {
                 int *p = (int *)(((long long)(&player->mVertSpeed)));
@@ -22610,8 +22590,8 @@ void func_ov002_020e1e70(char *c) {
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *p, unsigned int a, int b, Fix12i c,
                                                 unsigned int d);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *p, unsigned int a, int b);
-    extern int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2,
-                             const struct Vector3 *p3, short p4);
+    extern int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2, const Vector3 *p3,
+                             short p4);
     extern int func_ov002_020bf27c(char *c, int r1);
     extern int _ZN6Player6IsAnimEj(void *p, unsigned int a);
     extern unsigned char data_0209f49c[];
@@ -22634,7 +22614,7 @@ void func_ov002_020e1e70(char *c) {
         anim.speed = 0x4000;
         player->mLoopingSoundHandle =
             func_02012120(player->mLoopingSoundHandle, player->mCharacter, 0x18,
-                          (const struct Vector3 *)(&player->mCamSpacePosX), 0);
+                          (const Vector3 *)(&player->mCamSpacePosX), 0);
         if ((player->mHasWings) != 0) {
             player->mVertAccel = func_ov002_020bf27c(c, -0x4000) >> 1;
             player->mTerminalVelocity = -0x25800;
@@ -23131,7 +23111,7 @@ int func_ov002_020e2c84(char *self)
     extern int func_ov002_020e2ea0(char *self);
     extern void _ZN6Player11ChangeStateERNS_5StateE(char *self, void *state);
     extern int func_ov002_020d91e0(char *thiz, int damage, int doPre);
-    extern void func_0200d8c8(struct dCamera_c *cam, const struct Vector3 *v, int strength);
+    extern void func_0200d8c8(struct dCamera_c * cam, const Vector3 *v, int strength);
     extern int _ZN6Player7IsStateERNS_5StateE(char *self, void *state);
     extern int _ZN6Player19func_ov002_020c5decEi(char *c, int r1);
     extern void func_ov002_020db8bc(unsigned char *p, unsigned char val);
@@ -23168,7 +23148,7 @@ int func_ov002_020e2c84(char *self)
             return 1;
         }
 
-        func_0200d8c8(data_0209f318, (struct Vector3 *)(&player->mPosX), 0x7d0000);
+        func_0200d8c8(data_0209f318, (Vector3 *)(&player->mPosX), 0x7d0000);
         player->mIsFallScreaming = 0;
         Sound::PlayCharVoice(player->mCharacter, 7, player->mCamSpacePos);
     } else if (diff > 0x47e000) {
@@ -23188,7 +23168,7 @@ int func_ov002_020e2c84(char *self)
 
             func_ov002_020db8bc((unsigned char *)self, 1);
             player->mVertSpeed = 0;
-            func_0200d8c8(data_0209f318, (struct Vector3 *)(&player->mPosX), 0x7d0000);
+            func_0200d8c8(data_0209f318, (Vector3 *)(&player->mPosX), 0x7d0000);
             player->mIsFallScreaming = 0;
             Sound::PlayCharVoice(player->mCharacter, 7, player->mCamSpacePos);
         }
@@ -25386,7 +25366,6 @@ typedef char PlayerFileBone_size_must_be_0x40[sizeof(PlayerFileBone) == 0x40 ? 1
 extern "C" {
 void func_ov002_020e640c(char *c)
 {
-    typedef struct { s32 x, y, z; } Vector3;
     extern int _ZNK6Player14GetBodyModelIDEjb(void *p, u32 a, int b);
     extern int _Z15ApproachLinear2Rsss(s16 *p, s16 t, s16 step);
     extern void Vec3_RotateYAndTranslate(Vector3 *dst, const Vector3 *src, s16 ang, const Vector3 *t);
@@ -25466,8 +25445,7 @@ void func_ov002_020e640c(char *c)
                 else
                     d.y = (((PlayerBone *)md)[1].transY - ((Player *)c)->mStateTargetY) << 3;
                 d.z = (((PlayerBone *)md)[1].transZ - ((Player *)c)->mStateTargetZ) << 3;
-                Vec3_RotateYAndTranslate((Vector3 *)&player->mPosX, (Vector3 *)&player->mPosX,
-                                         player->mAngleY, &d);
+                Vec3_RotateYAndTranslate(&player->mPos, &player->mPos, player->mAngleY, &d);
                 ((Player *)c)->mStateTargetX = ((PlayerBone *)md)[1].transX;
                 if (((Player *)c)->mRootMotionMode >= 3)
                     ((Player *)c)->mStateTargetY = ((PlayerBone *)md)[1].transY;
