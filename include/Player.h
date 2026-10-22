@@ -231,7 +231,7 @@ struct Player : dActor_c {
     s32 mPreClsnPosZ;            /* 0x550 */
     /* Floor normal, fx12 (1.0 == 0x1000 -- already rescaled from KCL's 0x400).
      * Stored as three consecutive words by Player::SetFloorSurfaceInfo
-     * (func_ov002_020c16ec) at 0x020c1768 / 0x020c1770 / 0x020c1778, sourced
+     * (0x020c16ec) at 0x020c1768 / 0x020c1770 / 0x020c1778, sourced
      * from SurfaceInfo::CopyNormalTo (func_02037dcc). 0x554 and 0x55c were
      * marked padding until those stores were disassembled.
      * mFloorNormalY is the slope-test input: func_ov002_020f035c compares it
@@ -317,7 +317,7 @@ struct Player : dActor_c {
        |dist| >> 3 while it is nonzero, and ChangeState zeroes it. */
     s32 mTongueHitDist; /* 0x654 */
     /* --- Unpacked CLPS (collision property) fields ---------------------
-     * Player::SetFloorSurfaceInfo (func_ov002_020c16ec) calls one bitfield
+     * Player::SetFloorSurfaceInfo (0x020c16ec) calls one bitfield
      * getter per field on the floor's CLPS and stores each result here. The
      * getters are 3-instruction accessors at 0x02037e14..0x02037e90; the
      * bit extents below are read off those instructions, so the mapping is
@@ -331,16 +331,16 @@ struct Player : dActor_c {
      * triangle in the collision data rather than derived from a surface ID.
      * NOTE the latch at 0x020c1738: if mFloorClass is already 1 the function
      * returns early, refreshing neither the class nor the floor normal. */
-    s32 mFloorClass;            /* 0x658  CLPS bits 12-14, getter func_02037e58 */
-    s32 mClpsBits15_18;            /* 0x65c  getter func_02037e48 */
-    s32 mClpsBits6_11;            /* 0x660  getter func_02037e68 */
-    s32 mSurfaceType;            /* 0x664  CLPS bits 19-23, getter func_02037e38; values 6..9 are the quicksand tiers */
+    s32 mFloorClass;    /* 0x658  CLPS bits 12-14, getter CLPS::GetFloorClass */
+    s32 mClpsBits15_18; /* 0x65c  CLPS bits 15-18, getter CLPS::func_02037e48 */
+    s32 mClpsBits6_11;  /* 0x660  CLPS bits 6-11, getter CLPS::func_02037e68 */
+    s32 mSurfaceType; /* 0x664  CLPS bits 19-23, getter CLPS::GetSurfaceType; values 6..9 are the quicksand tiers */
     /* mSurfaceType as func_ov002_020c14b8's floor probe left it (0 on a
        miss), kept beside mProbedGroundY. func_ov002_020c0fb4 tests it == 1,
        the lava floor: within 0x2000 of mProbedGroundY it starts St_BurnLava. */
     s32 mProbedSurfaceType;          /* 0x668 */
-    s32 mGroundSoundType;            /* 0x66c  CLPS bits 0-4, getter func_02037e84 */
-    s32 mClpsWord1Lo;            /* 0x670  CLPS word1 bits 0-7, getter func_02037e90 */
+    s32 mGroundSoundType;            /* 0x66c  CLPS bits 0-4, getter CLPS::func_02037e84 */
+    s32 mClpsWord1Lo;                /* 0x670  CLPS word1 bits 0-7, getter CLPS::func_02037e90 */
     s32 mHurtDamage;            /* 0x674 */
     /* Two music layers over the level music, both Sound::SetMusic ids.
        func_ov002_020bd9ec(id) starts a power-up's music in mPowerupMusic
@@ -1089,6 +1089,8 @@ struct Player : dActor_c {
     void func_ov002_020c1234();
     void func_ov002_020c133c();
     void func_ov002_020c14b8();
+    /* Unnamed parameter on purpose; see the Kuppa note above. */
+    void SetFloorSurfaceInfo(const dBgPi &);
     int func_ov002_020c19d0(int, int);
     int func_ov002_020c1ad8(int);
     int func_ov002_020c1c84(int);
