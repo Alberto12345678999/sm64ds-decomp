@@ -37,7 +37,7 @@
 extern SharedFilePtr data_ov084_02130dfc;   /* the plant's own model */
 extern SharedFilePtr data_ov002_0210da38;   /* BUBBLE_MODEL_PTR -- sleep bubble, shared out of ov002 */
 extern SharedFilePtr data_ov084_02130df4;   /* idle animation */
-extern SharedFilePtr data_ov084_02130e0c;   /* recoil animation */
+extern int *data_ov084_02130e0c;            /* recoil animation; decl_common.h's spelling */
 extern SharedFilePtr data_ov084_02130e14;   /* lunge animation */
 extern SharedFilePtr data_ov084_02130e24;   /* death animation */
 
@@ -307,7 +307,7 @@ void daPkn_c::StateSleep()
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     int thr = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
     if (mPlayerDist < thr && PlayerMovingFast()) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e0c.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0x40000000, 0x1000, 0);
         mState = 3;
         func_02012694(0x175, &mCamSpacePosX);
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xfe, mBubblePos.x, mBubblePos.y, mBubblePos.z);
@@ -479,7 +479,7 @@ void daPkn_c::StateDoze()
 {
     mClsnEnabled = 1;
     if (mModelAnim.Finished()) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e0c.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0x40000000, 0x1000, 0);
         mState = 1;
     } else {
         int thresh = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
@@ -562,7 +562,7 @@ void daPkn_c::StateGone()
     mState = 8;
     mParticleHandle2 = 0;
     mParticleHandle = mParticleHandle2;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e0c.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0, 0x1000, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -658,7 +658,7 @@ int daPkn_c::CheckHits()
                     v.y = mPosY;
                     v.z = mPosZ;
                     _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &v, 3, 0xc000, 1, 0, 1);
-                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e0c.filePtr, 0, 0x1000, 0);
+                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0, 0x1000, 0);
                     mModelAnim.SetFlags(0x40000000);
                     mState = 3;
                     func_02012694(0x175, &mCamSpacePosX);

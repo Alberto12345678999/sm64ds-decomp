@@ -142,7 +142,7 @@ extern SharedFilePtr data_ov002_0210da38;   /* the sleep-bubble model, out of ov
 extern SharedFilePtr data_ov084_02130df4;   /* idle animation */
 extern SharedFilePtr data_ov084_02130e04;   /* spit animation */
 extern SharedFilePtr data_ov084_02130e14;   /* grow-in lunge animation */
-extern SharedFilePtr data_ov084_02130e1c;   /* post-spit animation */
+extern void *data_ov084_02130e1c[];         /* post-spit animation; decl_common.h's spelling */
 extern SharedFilePtr data_ov084_02130e24;   /* death animation */
 extern int data_ov084_0213029c[];           /* SpawnDeathBurst reach per frame */
 extern int data_ov084_021302c4[];           /* SpawnDeathBurst height per frame */
@@ -480,7 +480,7 @@ void daFPkn_c::StateSpit()
         else
             func_0201267c(SND_SPIT_END, &mCamSpacePos);
         mState = STATE_WAIT;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e1c.filePtr, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((SharedFilePtr *)data_ov084_02130e1c)->filePtr, 0, 0x1000, 0);
     } else {
         if ((u16)mStateTimer < 0x3a) {
             targetAngle = mAngleY;

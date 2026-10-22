@@ -49,10 +49,12 @@
 
 struct Quaternion;
 
-extern SharedFilePtr data_ov021_021149a0;
-extern SharedFilePtr data_ov021_021149a8;
-extern SharedFilePtr data_ov021_021149b0;
-extern SharedFilePtr data_ov021_021149b8;
+/* Four SharedFilePtr handles, declared the way include/decl_common.h
+ * declares them and read through a SharedFilePtr cast. */
+extern int data_ov021_021149a0[];
+extern int data_ov021_021149a8[];
+extern int data_ov021_021149b0[];
+extern int data_ov021_021149b8[];
 extern CLPS_Block data_ov021_02113a60;
 extern CLPS_Block data_ov021_02113a80;
 
@@ -199,21 +201,21 @@ void daObjCvNewsLift_c::OnPlatform3Ride(dActor_c *player)
 // @symbol _ZN17daObjCvNewsLift_c13InitResourcesEv
 s32 daObjCvNewsLift_c::InitResources()
 {
-    Model::LoadFile(data_ov021_021149a0);
-    dBgW_Kc::LoadFile(data_ov021_021149a8);
-    Model::LoadFile(data_ov021_021149b0);
-    dBgW_Kc::LoadFile(data_ov021_021149b8);
+    Model::LoadFile(*(SharedFilePtr *)data_ov021_021149a0);
+    dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov021_021149a8);
+    Model::LoadFile(*(SharedFilePtr *)data_ov021_021149b0);
+    dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov021_021149b8);
 
-    mModel.SetFile((BMD_File *)data_ov021_021149a0.filePtr, 1, -1);
+    mModel.SetFile((BMD_File *)((SharedFilePtr *)data_ov021_021149a0)->filePtr, 1, -1);
     for (int i = 0; i < 4; i++)
-        mPlatformModels[i].SetFile((BMD_File *)data_ov021_021149b0.filePtr, 1, -1);
+        mPlatformModels[i].SetFile((BMD_File *)((SharedFilePtr *)data_ov021_021149b0)->filePtr, 1, -1);
 
     mLoweredPlatform = -1;
     UpdateModelTransforms();
     UpdateClsnTransforms();
 
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)data_ov021_021149a8.filePtr, &mClsnMat,
+        &mMeshCollider, (KCL_File *)((SharedFilePtr *)data_ov021_021149a8)->filePtr, &mClsnMat,
         0x199, mAngleY, &data_ov021_02113a60);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&MainMeshCallback);
@@ -221,7 +223,7 @@ s32 daObjCvNewsLift_c::InitResources()
 
     for (int i = 0; i < 4; i++) {
         _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mPlatformColliders[i], (KCL_File *)data_ov021_021149b8.filePtr,
+            &mPlatformColliders[i], (KCL_File *)((SharedFilePtr *)data_ov021_021149b8)->filePtr,
             &mPlatformMats[i], 0x199, mAngleY, &data_ov021_02113a80);
         func_020393d4(&mPlatformColliders[i], (void *)&dBgW::UpdatePosWithTransform);
     }
@@ -425,10 +427,10 @@ s32 daObjCvNewsLift_c::CleanupResources()
     mMeshCollider.Disable();
     for (int i = 0; i < 4; i++)
         mPlatformColliders[i].Disable();
-    data_ov021_021149b0.Release();
-    data_ov021_021149b8.Release();
-    data_ov021_021149a0.Release();
-    data_ov021_021149a8.Release();
+    ((SharedFilePtr *)data_ov021_021149b0)->Release();
+    ((SharedFilePtr *)data_ov021_021149b8)->Release();
+    ((SharedFilePtr *)data_ov021_021149a0)->Release();
+    ((SharedFilePtr *)data_ov021_021149a8)->Release();
     return 1;
 }
 

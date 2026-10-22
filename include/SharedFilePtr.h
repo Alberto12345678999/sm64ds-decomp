@@ -20,8 +20,7 @@
  * buffer in the word at +4; LoadFile counts holders in the byte at +2; Release frees
  * the buffer when that count reaches zero. Eight bytes, word-aligned.
  */
-struct SharedFilePtr
-{
+struct SharedFilePtr {
     u16 fileID;    /* 0x00: FAT file ID, resolved from the overlay-0 ID */
     u8 numRefs;    /* 0x02: holders that have loaded the file */
     void *filePtr; /* 0x04: the loaded file, or null */
@@ -37,8 +36,7 @@ struct SharedFilePtr
     void *LoadFile();
     /* Load's return type comes from its DEFINITION, not from a caller:
        src/SharedFilePtr.cpp's Load returns the buffer it just stashed in
-       filePtr. The
-       host seam in port/hal/fs.cpp returns the same pointer. LoadFile only
+       filePtr. The host seam in port/hal/fs.cpp returns the same pointer. LoadFile only
        tests it (`if (!Load()) return 0;`), which is why a wrong `int` here
        went unnoticed. A return type is not part of an Itanium mangled name,
        so this changes no symbol. */
