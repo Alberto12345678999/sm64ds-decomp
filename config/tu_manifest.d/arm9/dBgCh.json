@@ -6,107 +6,177 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "CONTIGUOUS AND EXHAUSTIVE: 0x02035448..0x0203553c is twelve complete .text entries in config/arm9/delinks.txt with no gap and no other section. The low edge is func_0203543c (0x0203543c..0x02035448), which is not a dBgCh member. The high edge is src/engine/collision/d_bg_ch_actr.cpp, which starts at 0x0203553c.",
+    "CONTIGUOUS AND EXHAUSTIVE: 0x02035354..0x0203553c is twenty-two complete .text entries in config/arm9/delinks.txt with no gap and no other section. The low edge is src/game/stages/d_s_mb.cpp, which ends at 0x02035354. The high edge is src/engine/collision/d_bg_ch_actr.cpp, which starts at 0x0203553c.",
     "CLASS IDENTITY FROM ROM RTTI: _ZTS5dBgCh at arm9 0x020991c0 names this class dBgCh. The tree already spells that name in include/dBgCh.h. This is the class's only run and it had no home TU.",
     "EMISSION ORDER: mwccarm 2004/b56 emits plain members in reverse source order and the lifecycle group in fixed order at the tail. One constructor and one destructor, defined first, land as D2 0x020354d0, D0 0x020354e0, D1 0x02035504, C2 0x02035514. C1 is emitted and deadstripped."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x02035448",
+      "start": "0x02035354",
       "end": "0x0203553c"
     }
   ],
   "functions": [
     {
+      "symbol": "_ZNK5dBgCh9IsOwnedByEP8dActor_c",
+      "address": "0x02035354",
+      "size": "0x00000040",
+      "legacy_source": "src/_ZNK5dBgCh9IsOwnedByEP8dActor_c.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN5dBgChaSERKS_",
+      "address": "0x02035394",
+      "size": "0x0000001c",
+      "legacy_source": "src/_ZN5dBgChaSERKS_.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZN5dBgCh8SetActorEP8dActor_c",
+      "address": "0x020353b0",
+      "size": "0x00000024",
+      "legacy_source": "src/_ZN5dBgCh8SetActorEP8dActor_c.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZNK5dBgCh21IsIgnoringType14WallsEv",
+      "address": "0x020353d4",
+      "size": "0x0000000c",
+      "legacy_source": "src/_ZNK5dBgCh21IsIgnoringType14WallsEv.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN5dBgCh23StopIgnoringType14WallsEv",
+      "address": "0x020353e0",
+      "size": "0x00000014",
+      "legacy_source": "src/_ZN5dBgCh23StopIgnoringType14WallsEv.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZN5dBgCh24StartIgnoringType14WallsEv",
+      "address": "0x020353f4",
+      "size": "0x00000014",
+      "legacy_source": "src/_ZN5dBgCh24StartIgnoringType14WallsEv.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "_ZNK5dBgCh24IsIgnoringVanishSurfacesEv",
+      "address": "0x02035408",
+      "size": "0x0000000c",
+      "legacy_source": "src/_ZNK5dBgCh24IsIgnoringVanishSurfacesEv.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "_ZN5dBgCh26StopIgnoringVanishSurfacesEv",
+      "address": "0x02035414",
+      "size": "0x00000014",
+      "legacy_source": "src/_ZN5dBgCh26StopIgnoringVanishSurfacesEv.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "_ZN5dBgCh27StartIgnoringVanishSurfacesEv",
+      "address": "0x02035428",
+      "size": "0x00000014",
+      "legacy_source": "src/_ZN5dBgCh27StartIgnoringVanishSurfacesEv.cpp",
+      "ordinal": 8
+    },
+    {
+      "symbol": "func_0203543c",
+      "address": "0x0203543c",
+      "size": "0x0000000c",
+      "legacy_source": "src/func_0203543c.c",
+      "ordinal": 9
+    },
+    {
       "symbol": "_ZN5dBgCh19StartDetectingToxicEv",
       "address": "0x02035448",
       "size": "0x00000014",
       "legacy_source": "src/_ZN5dBgCh19StartDetectingToxicEv.cpp",
-      "ordinal": 0
+      "ordinal": 10
     },
     {
       "symbol": "func_0203545c",
       "address": "0x0203545c",
       "size": "0x0000000c",
       "legacy_source": "src/func_0203545c.c",
-      "ordinal": 1
+      "ordinal": 11
     },
     {
       "symbol": "func_02035468",
       "address": "0x02035468",
       "size": "0x00000014",
       "legacy_source": "src/unnamed/arm9/0203/func_02035468.c",
-      "ordinal": 2
+      "ordinal": 12
     },
     {
       "symbol": "func_0203547c",
       "address": "0x0203547c",
       "size": "0x0000000c",
       "legacy_source": "src/func_0203547c.c",
-      "ordinal": 3
+      "ordinal": 13
     },
     {
       "symbol": "_ZN5dBgCh18StopDetectingWaterEv",
       "address": "0x02035488",
       "size": "0x00000014",
       "legacy_source": "src/_ZN5dBgCh18StopDetectingWaterEv.cpp",
-      "ordinal": 4
+      "ordinal": 14
     },
     {
       "symbol": "_ZN5dBgCh19StartDetectingWaterEv",
       "address": "0x0203549c",
       "size": "0x00000014",
       "legacy_source": "src/_ZN5dBgCh19StartDetectingWaterEv.cpp",
-      "ordinal": 5
+      "ordinal": 15
     },
     {
       "symbol": "func_020354b0",
       "address": "0x020354b0",
       "size": "0x0000000c",
       "legacy_source": "src/func_020354b0.c",
-      "ordinal": 6
+      "ordinal": 16
     },
     {
       "symbol": "_ZN5dBgCh21StopDetectingOrdinaryEv",
       "address": "0x020354bc",
       "size": "0x00000014",
       "legacy_source": "src/_ZN5dBgCh21StopDetectingOrdinaryEv.cpp",
-      "ordinal": 7
+      "ordinal": 17
     },
     {
       "symbol": "_ZN5dBgChD2Ev",
       "address": "0x020354d0",
       "size": "0x00000010",
       "legacy_source": "src/_ZN5dBgChD2Ev.cpp",
-      "ordinal": 8
+      "ordinal": 18
     },
     {
       "symbol": "_ZN5dBgChD0Ev",
       "address": "0x020354e0",
       "size": "0x00000024",
       "legacy_source": "src/_ZN5dBgChD0Ev.cpp",
-      "ordinal": 9
+      "ordinal": 19
     },
     {
       "symbol": "_ZN5dBgChD1Ev",
       "address": "0x02035504",
       "size": "0x00000010",
       "legacy_source": "src/_ZN5dBgChD1Ev.cpp",
-      "ordinal": 10
+      "ordinal": 20
     },
     {
       "symbol": "_ZN5dBgChC2Ev",
       "address": "0x02035514",
       "size": "0x00000028",
       "legacy_source": "src/_ZN5dBgChC2Ev.cpp",
-      "ordinal": 11
+      "ordinal": 21
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "The file name is the class name already used in include/dBgCh.h and in the ROM RTTI string _ZTS5dBgCh. Twelve contiguous functions, written with the lifecycle pair first because this compiler emits that group at the tail and plain functions in reverse source order. The four C helpers stay extern C under their existing names. C1 is compiler-only and is not part of the run."
+    "The file name is the class name already used in include/dBgCh.h and in the ROM RTTI string _ZTS5dBgCh. Twenty-two contiguous functions, written with the lifecycle pair first because this compiler emits that group at the tail and plain functions in reverse source order. The 2026-10-22 fold absorbed the ten 0x02035354..0x02035448 shards below the old floor (IsOwnedBy, operator=, SetActor, the Type14 and Vanish flag readers, and the toxic-flag reader func_0203543c as the fifth free helper); their single-function sources are deleted and their symbols live on only as legacy_source rows. The five C helpers stay extern C under their existing names. C1 is compiler-only and is not part of the run."
   ],
   "compiler_only_output": [
     {
@@ -134,10 +204,10 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/arm9-dBgCh/dBgCh.o (gitignored)",
+    "object": "build/tu/arm9-dBgCh/d_bg_ch.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 12,
-    "functions_declared": 12,
+    "functions_matched": 22,
+    "functions_declared": 22,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN5dBgChC1Ev"
@@ -151,8 +221,8 @@
         7,
         8,
         9,
-        24,
-        25
+        34,
+        35
       ],
       "data": [
         "_ZTV5dBgCh",
@@ -163,7 +233,8 @@
         "_ZTI5dBgCh",
         "_ZTS5dBgCh",
         "_ZTV5dBgCh"
-      ]
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
