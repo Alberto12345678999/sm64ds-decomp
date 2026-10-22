@@ -104,8 +104,8 @@
  *   Unrecovered meaning: most mType values (only 4, 6..9 and 19 are named in
  *   the header), what the animations behind the 0210de* handles contain (the
  *   file ids 0x8012 / 0x8013 and 0x476..0x480 are in __sinit_ov002_02101064), what func_ov002_020f030c's result (unused here) is, and the
- *   field unk_408, which is written and never read in this file (mTaken,
- *   the other write-only byte here, is read by daJango_c).
+ *   field unk_408, which is written and never read in this file (mTaken is
+ *   likewise only written here; daJango_c reads it).
  *   mStateEntry stays an s32 because the member-pointer record is spelled by
  *   the file-local CapStateRec / CapEnterSelf stand-ins.
  *   The SharedFilePtr header has no fields; CleanupResources still casts the
