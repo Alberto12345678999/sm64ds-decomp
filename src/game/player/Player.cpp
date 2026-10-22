@@ -34,6 +34,7 @@
 #include "types.h"
 #include "common.h"
 #include "Player.h"
+#include "ModelAnim2.h"
 #include "PlayerInput.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
@@ -25223,7 +25224,7 @@ void func_ov002_020e5948(void* arg0)
         if (p != 0) {
             p = _ZN10ModelAnim2C1Ev(p);
         }
-        player->mBodyModels[i] = (ModelAnim *)p;
+        player->mBodyModels[i] = (ModelAnim2 *)p;
         _ZN9ModelBase7SetFileEP8BMD_Fileii(
             player->mBodyModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
             1);
@@ -25298,7 +25299,7 @@ void func_ov002_020e5948(void* arg0)
                 if (p != 0) {
                     p = _ZN10ModelAnim2C1Ev(p);
                 }
-                player->mBodyModels[4] = (ModelAnim *)p;
+                player->mBodyModels[4] = (ModelAnim2 *)p;
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     player->mBodyModels[4],
                     _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);

@@ -39,6 +39,10 @@
 struct dActor_c;
 struct fBase_c;
 struct Vector3;
+/* Declared, not included: ModelAnim2.h carries an inline operator delete, and
+   any function body in a header this widely consumed renumbers every
+   consumer's compiler temporaries. mBodyModels only needs the name. */
+struct ModelAnim2;
 
 struct Player : dActor_c {
     /* 0x000..0x0cf is dActor_c's, inherited rather than duplicated. It used to be
@@ -113,14 +117,18 @@ struct Player : dActor_c {
        walks this run as `*(this + i * 4 + 0xdc)` for `i < 4` and calls each
        element's deleting destructor; Player::Render indexes it with
        GetBodyModelID(mBodyModelId, 1) and TurnOffToonShading with
-       GetBodyModelID(j, 0). The element type is ModelAnim, and the matched
-       bodies pin every part of it: they reach +0x08 (Model's ModelComponents),
-       +0x14 (Model::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
-       currFrame), and they call vtable slots 5 (Render) and 6 (Virtual18).
+       GetBodyModelID(j, 0). The element type is ModelAnim2, not ModelAnim:
+       func_ov002_020e5948 allocates every slot with operator new(0x78), which
+       is sizeof(ModelAnim2), and builds it with _ZN10ModelAnim2C1Ev, and the
+       only methods called on the elements by their own class are ModelAnim2's
+       (Func_020162C4, Copy). The matched bodies' other accesses all land in
+       the ModelAnim base: +0x08 (Model's ModelComponents), +0x14
+       (Model::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
+       currFrame), and vtable slots 5 (Render) and 6 (Virtual18).
        FIVE slots: GetBodyModelID returns 4 while mIsMetal is set, and
        func_ov002_020e5948 builds [4] from wario_metal_model.bmd (arc0 0x54c).
        CleanupResources deletes [4] on its own after the `i < 4` loop. */
-    ModelAnim *mBodyModels[5]; /* 0x0dc */
+    ModelAnim2 *mBodyModels[5]; /* 0x0dc */
     /* ~Player calls _ZN9ModelAnimD1Ev on this LAST of the two, and ModelAnim
        asserts 0x64 -- 0x0f0..0x154, closing exactly at mHeadModels. The markers
        this replaces are its own sub-objects: mAnimation1 at 0x140 was the
