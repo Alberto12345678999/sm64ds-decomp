@@ -94,11 +94,11 @@ s32 daObjNumber_c::InitResources()
         if (mModel.SetFile((BMD_File *)m, 1, 1) == 0)
             return 0;
         TextureSequence::Prepare(
-            **(BMD_File **)((char *)&data_ov002_0210da28 + 4),
-            **(BTP_File **)((char *)&data_ov002_0210da08 + 4));
+            *(BMD_File *)data_ov002_0210da28.filePtr,
+            *(BTP_File *)data_ov002_0210da08.filePtr);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence,
-            *(void **)((char *)&data_ov002_0210da08 + 4),
+            data_ov002_0210da08.filePtr,
             0x40000000, 0, 0);
         mTextureSequence.currFrame =
             (int)((((unsigned int)(param1 & 0xf) % 10) << 16) >> 4);
@@ -108,11 +108,11 @@ s32 daObjNumber_c::InitResources()
         if (mModel.SetFile((BMD_File *)m, 1, 1) == 0)
             return 0;
         TextureSequence::Prepare(
-            **(BMD_File **)((char *)&data_ov002_0210d9a8 + 4),
-            **(BTP_File **)((char *)&data_ov002_0210d9e8 + 4));
+            *(BMD_File *)data_ov002_0210d9a8.filePtr,
+            *(BTP_File *)data_ov002_0210d9e8.filePtr);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence,
-            *(void **)((char *)&data_ov002_0210d9e8 + 4),
+            data_ov002_0210d9e8.filePtr,
             0x40000000, 0, 0);
         mTextureSequence.currFrame =
             (int)((((unsigned int)(param1 & 0xf) % 10) << 16) >> 4);

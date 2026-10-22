@@ -399,8 +399,6 @@ typedef char SharedFileView_size_must_be_0x8[sizeof(SharedFileView) == 8 ? 1 : -
 /* Lakitu's model-file handle, owned and constructed by d_a_c_jugem.cpp's
  * static init. Same TU-local wrapper spelling as the owning TU. */
 struct JugemModelFile : SharedFilePtr {
-    u32 words[2];
-
     JugemModelFile(u32 fileID);
     ~JugemModelFile();
 };

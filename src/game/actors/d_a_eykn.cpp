@@ -42,9 +42,7 @@
  *   eyekun_dead.bca. gEyknCloseTextureSequenceFile and
  *   gEyknOpenTextureSequenceFile load the close/open BTP animations.
  *   gEyknDeathAnimationFilePtr and gEyknTextureSequenceFiles hold the
- *   readonly resource pointers. LoadedFile supplies the measured local
- *   file ID, reference count and loaded-pointer layout; SharedFilePtr
- *   remains fieldless. data_ov002_0210da38 is ov002's shared
+ *   readonly resource pointers. data_ov002_0210da38 is ov002's shared
  *   sleep-bubble model.
  * - data_0209f2f8 is the current sublevel. 0x2e maps through
  *   SUBLEVEL_LEVEL_TABLE to course 19, which is not BBH's entrance
@@ -87,12 +85,7 @@ struct MatrixWords {
 /* Local eight-byte handle view: the constructor resolves a runtime asset ID
  * into a u16 NitroFS file ID, clears the reference count and loaded pointer.
  * The shared header still lacks this measured layout. */
-struct LoadedFile : SharedFilePtr {
-    u16 fileID;
-    u8 numRefs;
-    u8 padding;
-    void *file;
-};
+struct LoadedFile : SharedFilePtr {};
 
 /* Inferred local resource-family ABI views; these type names are not ROM
  * names. The manifest binds each constructor/destructor to its existing
@@ -262,7 +255,7 @@ int daEykn_c::UpdateEyeAnim()
     case 1:
     case 4:
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, gEyknCloseTextureSequenceFile.file, 0, 0x1000, 0);
+            &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
         mTextureSequence.SetFlags(0x40000000);
         mTextureSequence.speed = 0x1000;
         mTextureSequence.currFrame = 0;
@@ -272,7 +265,7 @@ int daEykn_c::UpdateEyeAnim()
     case 5:
         if (mTextureSequence.Finished() != 0) {
             _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, gEyknOpenTextureSequenceFile.file, 0, 0x1000, 0);
+                &mTextureSequence, gEyknOpenTextureSequenceFile.filePtr, 0, 0x1000, 0);
             mTextureSequence.SetFlags(0x40000000);
             mTextureSequence.speed = 0x1000;
             mTextureSequence.currFrame = 0;
@@ -299,7 +292,7 @@ int daEykn_c::UpdateEyeAnim()
 void daEykn_c::ResetEyeAnim()
 {
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, gEyknCloseTextureSequenceFile.file, 0, 0x1000, 0);
+        &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
     mTextureSequence.SetFlags(0x40000000);
     mTextureSequence.speed = 0x1000;
     mTextureSequence.currFrame = 0;
@@ -531,7 +524,7 @@ int daEykn_c::St_Die_Init()
         mDeathSpinSpeed = 0x2500;
     else
         mDeathSpinSpeed = -0x2500;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gEyknDeathAnimationFile.file, 0,
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gEyknDeathAnimationFile.filePtr, 0,
                                                 0x1000, 0);
     mModelAnim.SetFlags(0x40000000);
     mModelAnim.speed = 0x2800;
@@ -808,8 +801,8 @@ s32 daEykn_c::InitResources()
     for (i = 0; i < 2; i++) {
         SharedFilePtr *seq = gEyknTextureSequenceFiles[i];
         TextureSequence::LoadFile(*seq);
-        BMD_File *bmd2 = (BMD_File *)((LoadedFile *)&gEyknModelFile)->file;
-        BTP_File *btp = (BTP_File *)((LoadedFile *)seq)->file;
+        BMD_File *bmd2 = (BMD_File *)((LoadedFile *)&gEyknModelFile)->filePtr;
+        BTP_File *btp = (BTP_File *)((LoadedFile *)seq)->filePtr;
         TextureSequence::Prepare(*bmd2, *btp);
     }
 
@@ -853,12 +846,12 @@ s32 daEykn_c::InitResources()
     mTerminalVelocity = 0;
     SetState(0);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gEyknDeathAnimationFile.file, 0,
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gEyknDeathAnimationFile.filePtr, 0,
                                                 0x1000, 0);
 
     mModelAnim.speed = 0x1000;
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, gEyknCloseTextureSequenceFile.file, 0, 0x1000, 0);
+        &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
 
     mTextureSequence.speed = 0x1000;
     mTarget = 0;

@@ -127,15 +127,11 @@ extern PMF data_ov063_0211ef38[];
  * collision files func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
  * are local; the manifest aliases the generated names to those ROM symbols. */
 struct TrsTrapModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     TrsTrapModelFilePtr(u32 fileID);
     ~TrsTrapModelFilePtr();
 };
 
 struct TrsTrapCollisionFilePtr : SharedFilePtr {
-    u32 words[2];
-
     TrsTrapCollisionFilePtr(u32 fileID);
     ~TrsTrapCollisionFilePtr();
 };

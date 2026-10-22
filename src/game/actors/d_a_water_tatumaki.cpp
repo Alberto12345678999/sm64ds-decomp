@@ -93,15 +93,11 @@ struct SharedFileBytes {
 };
 
 struct TatumakiModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     TatumakiModelFilePtr(u32 fileID);
     ~TatumakiModelFilePtr();
 };
 
 struct TatumakiAnimFileHandle : SharedFilePtr {
-    u32 words[2];
-
     TatumakiAnimFileHandle(u32 fileID);
     ~TatumakiAnimFileHandle();
 };

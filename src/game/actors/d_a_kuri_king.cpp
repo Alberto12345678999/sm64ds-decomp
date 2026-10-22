@@ -112,22 +112,16 @@ struct LoadedSharedFile {
  * spellings are reconstructed; constructor and destructor addresses, file
  * IDs, widths, and BSS order are the ROM's. */
 struct KuriKingModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     KuriKingModelFilePtr(u32 fileID);
     ~KuriKingModelFilePtr();
 };
 
 struct KuriKingTexSeqFilePtr : SharedFilePtr {
-    u32 words[2];
-
     KuriKingTexSeqFilePtr(u32 fileID);
     ~KuriKingTexSeqFilePtr();
 };
 
 struct KuriKingAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     KuriKingAnimationFilePtr(u32 fileID);
     ~KuriKingAnimationFilePtr();
 };

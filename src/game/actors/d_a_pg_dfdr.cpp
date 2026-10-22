@@ -101,29 +101,21 @@ int func_ov027_02111ca8(daPgDfdr_c *self);
  * local; the handle constructors and destructors are the ROM resource-family
  * functions, aliased in the manifest. */
 struct PgDfdrModelFile : SharedFilePtr {
-    u32 words[2];
-
     PgDfdrModelFile(u32 fileID);
     ~PgDfdrModelFile();
 };
 
 struct PgDfdrAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     PgDfdrAnimationFilePtr(u32 fileID);
     ~PgDfdrAnimationFilePtr();
 };
 
 struct PgDfdrTexSequenceFilePtr : SharedFilePtr {
-    u32 words[2];
-
     PgDfdrTexSequenceFilePtr(u32 fileID);
     ~PgDfdrTexSequenceFilePtr();
 };
 
 struct PgDfdrCollisionFilePtr : SharedFilePtr {
-    u32 words[2];
-
     PgDfdrCollisionFilePtr(u32 fileID);
     ~PgDfdrCollisionFilePtr();
 };

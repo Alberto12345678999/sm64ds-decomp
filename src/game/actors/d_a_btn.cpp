@@ -183,22 +183,18 @@ extern int data_ov079_02127cfc[];
    declared-only subclasses so the static initializer names the real
    entry points. */
 struct BtnModelFilePtr : SharedFilePtr {
-    int unk0; void *file;
     BtnModelFilePtr(u32 fileID);
     ~BtnModelFilePtr();
 };
 struct BtnTextureSeqFileHandle : SharedFilePtr {
-    int unk0; void *file;
     BtnTextureSeqFileHandle(u32 fileID);
     ~BtnTextureSeqFileHandle();
 };
 struct BtnAnimationFileHandle : SharedFilePtr {
-    int unk0; void *file;
     BtnAnimationFileHandle(u32 fileID);
     ~BtnAnimationFileHandle();
 };
 struct BtnCollisionFilePtr : SharedFilePtr {
-    int unk0; void *file;
     BtnCollisionFilePtr(u32 fileID);
     ~BtnCollisionFilePtr();
 };
@@ -313,10 +309,10 @@ int daBtn_c::InitResources()
 
     if (mIsKing != 0) {
         mHitPoints = 3;
-        TextureSequence::Prepare(*(BMD_File *)data_ov079_02128168.file,
-                                 *(BTP_File *)data_ov079_02128178.file);
+        TextureSequence::Prepare(*(BMD_File *)data_ov079_02128168.filePtr,
+                                 *(BTP_File *)data_ov079_02128178.filePtr);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov079_02128178.file, 0, 0x1000, 0);
+            &mTextureSequence, data_ov079_02128178.filePtr, 0, 0x1000, 0);
         mTextureSequence.SetFlags(0x40000000);
         mTextureSequence.speed = 0x1000;
         mTextureSequence.currFrame = 0;
@@ -1042,10 +1038,10 @@ void daBtn_c::func_ov079_02124ed4()
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(3, p[0], p[1], p[2]);
             }
             if (mHitPoints == 0) {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov079_021281b0.file, 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
                 mState = 8;
             } else {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov079_021281b0.file, 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
                 mPounder = 0;
                 mTextureSequence.Advance();
                 mSubState++;

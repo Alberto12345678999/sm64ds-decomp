@@ -12,7 +12,6 @@
  *   InitResources walk segment rows through char* bases. Indexing
  *   mSegmentPos[seg] / &mModelAnims[i].mat4x3 changes those sizes, and
  *   UpdateSegments' NormalizeVec3IfNonZero relocation moves with them.
- * - SharedFilePtr has no fields, so the loaded BCA/BTP stays the word at +4.
  * - func_ov002_020c51d0 is ov002's. ModelAnim::SetAnim, TextureSequence::SetFile,
  *   dCcAcPos_c::Init, dBgCh_Actr::Init, Player::Hurt and Particle::System::New
  *   stay mangled (Fix12<int> by value).
@@ -79,17 +78,14 @@ bool ApproachLinear(short &value, short target, short step);
  * sequence five use SharedFilePtr_Construct_TexSeq /
  * SharedFilePtr_Destruct_TexSeq. */
 struct HanachanModelFilePtr : SharedFilePtr {
-    u32 words[2];
     HanachanModelFilePtr(u32 fileID);
     ~HanachanModelFilePtr();
 };
 struct HanachanAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
     HanachanAnimationFileHandle(u32 fileID);
     ~HanachanAnimationFileHandle();
 };
 struct HanachanTextureSeqFileHandle : SharedFilePtr {
-    u32 words[2];
     HanachanTextureSeqFileHandle(u32 fileID);
     ~HanachanTextureSeqFileHandle();
 };

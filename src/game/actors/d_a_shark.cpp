@@ -98,15 +98,11 @@ struct SharkState {
  * handles (model file 0x325, animation file 0x326) and fill the two-entry
  * state table. mwcc emits __sinit_d_a_shark.cpp from those definitions. */
 struct SharkModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     SharkModelFilePtr(u32 fileID);
     ~SharkModelFilePtr();
 };
 
 struct SharkAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     SharkAnimationFilePtr(u32 fileID);
     ~SharkAnimationFilePtr();
 };

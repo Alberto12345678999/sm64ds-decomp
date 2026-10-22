@@ -102,12 +102,10 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
  * declared-only subclasses so the static initializer names the real entry
  * points. */
 struct HyuhyuModelFilePtr : SharedFilePtr {
-    u32 words[2];
     HyuhyuModelFilePtr(u32 fileID);
     ~HyuhyuModelFilePtr();
 };
 struct HyuhyuAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
     HyuhyuAnimationFileHandle(u32 fileID);
     ~HyuhyuAnimationFileHandle();
 };
@@ -305,7 +303,7 @@ int daHyuhyu_c::func_ov091_02134044(daHyuhyu_c_State *state)
 int daHyuhyu_c::func_ov091_0213400c()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-        ((BCA_File **)&data_ov091_02135684)[1], 0, 0x1000, 0);
+        (BCA_File *)data_ov091_02135684.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -340,7 +338,7 @@ int daHyuhyu_c::func_ov091_02133f60()
 int daHyuhyu_c::func_ov091_02133f24()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-        ((BCA_File **)&data_ov091_0213567c)[1], 0x40000000, 0x1000, 0);
+        (BCA_File *)data_ov091_0213567c.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 

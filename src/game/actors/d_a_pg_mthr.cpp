@@ -81,27 +81,21 @@ struct PgLoadedFile {
      02113be8  file 0x407  BTP   stand/talk
      02112c04 = { &02113bf8, &02113be8 }
      02112c0c = { &02113bf0, &02113c08 }   (decl_common spells this int[])
-   SharedFilePtr declares no fields and no constructor of its own, so the
+   SharedFilePtr declares no constructor of its own, so the
    model handle gets the func_02017acc/func_02017ab4 pair, the animation
    handles get SharedFilePtr::Construct/Destruct_Anim and the texture
    sequences get SharedFilePtr_Construct_TexSeq/Destruct_TexSeq through
    thin declaration-only wrappers; the manifest aliases those mangled
    spellings to the arm9 destinations the retail initializer calls. */
 struct PgMthrModelFileHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
     PgMthrModelFileHandle(unsigned int fileID);
     ~PgMthrModelFileHandle();
 };
 struct PgMthrAnimFileResHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
     PgMthrAnimFileResHandle(unsigned int fileID);
     ~PgMthrAnimFileResHandle();
 };
 struct PgMthrTexSeqFileHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
     PgMthrTexSeqFileHandle(unsigned int fileID);
     ~PgMthrTexSeqFileHandle();
 };
