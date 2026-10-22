@@ -118,13 +118,13 @@ void StopLoadedMusic_Layer2();
    two of these (mStateMusic and mPowerupMusic) and lets whichever survives
    restart when the other ends.
 
-   EndMusic is NOT declared here on purpose. Its ROM symbol is
-   _ZN5Sound8EndMusicEjj, two parameters, and Sound.cpp defines it that way --
-   but the second is never read and every ROM call site passes one argument, so
-   a truthful one-parameter declaration would mangle to _ZN5Sound8EndMusicEj and
-   match nothing. Correcting that is a symbol rename, not a declaration. Until
-   then its callers hand-spell the mangled name and say why. */
+   EndMusic took a second parameter it never read, which left its symbol spelled
+   _ZN5Sound8EndMusicEjj -- two `j`s for a function every ROM call site passes a
+   single argument to. A truthful declaration mangled to ...Ej and matched
+   nothing, so callers hand-spelled the two-parameter name and passed one
+   argument. The symbol is now ...Ej and both are declared here. */
 void SetMusic(u32 playerNo, u32 music);
+void EndMusic(u32 playerNo);
 
 void UnsetPlayerVoiceGroup();
 
