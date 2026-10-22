@@ -78,6 +78,12 @@ struct V3 {
  V3() {}
 };
 struct Ret { int pad; int y; };
+/* A shadow scaffold, and the one hoist C++ requires even without the extern
+ * rule below: every virtual of a LOCAL class must be defined in the same body,
+ * because a local class vtable can have nowhere else to come from.  Arg is
+ * never constructed -- it exists only to give the call in
+ * func_ov002_020caf98 the ROM vtable-slot shape -- so at file scope the
+ * declarations are enough and no vtable is emitted on either compiler. */
 struct Arg {
  virtual void *m0();
  virtual void *m1();
@@ -112,21 +118,6 @@ struct State2i { int a; int b; };
 struct S18a { short f0; char pad[0x16]; };
 struct S18b { u16 f0; char pad[0x16]; };
 struct S18b2 { short a; short b; int c[5]; };
-/* Two shadow scaffolds, hoisted for the same reason as the block above and one
- * more: C++ requires every virtual of a LOCAL class to be defined in the same
- * body, because a local class's vtable can have nowhere else to come from.
- * Neither scaffold is ever constructed -- each exists only to give a call
- * through a pointer the ROM's vtable-slot shape (see the note on
- * Player::CanEnterDoor) -- so at file scope the declarations are enough and
- * no vtable is emitted on either compiler. */
-struct StarDoor {
- virtual int v00(); virtual int v01(); virtual int v02(); virtual int v03();
- virtual int v04(); virtual int v05(); virtual int v06(); virtual int v07();
- virtual int v08(); virtual int v09(); virtual int v10(); virtual int v11();
- virtual int v12(); virtual int v13(); virtual int v14(); virtual int v15();
- virtual int v16(); virtual int v17();
- virtual int GetType();
-};
 /* The Kuppa-script command table at the head of the file holds pointers to
  * members of one signature. */
 typedef int (Player::*ScriptCommand)(unsigned char *, int, int);
@@ -8296,10 +8287,10 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
 // @symbol _ZN6Player12CanEnterDoorEh
 /* recovered: named members + shared header, real C++ method */
 // Player::CanEnterDoor(unsigned char door)
-// The +0x48 vcall must be spelled as a real C++ virtual call (dummy-virtual
-// struct, slot 18): the C function-pointer cast perturbs callee-saved homing
-// rank to this=r4/door=r5, while virtual dispatch keeps the natural
-// reverse-arg homing (door=r4, this=r5) the ROM has. See
+// The +0x48 vcall on the held actor is dActor_c::OnYoshiTryEat (slot 18), and
+// it must be spelled as a real C++ virtual call: the C function-pointer cast
+// perturbs callee-saved homing rank to this=r4/door=r5, while virtual dispatch
+// keeps the natural reverse-arg homing (door=r4, this=r5) the ROM has. See
 // notes/mwccarm-codegen.md 6bc.
 extern "C" {
 int Player::CanEnterDoor(unsigned char door)
@@ -8315,8 +8306,12 @@ int Player::CanEnterDoor(unsigned char door)
       return 0;
   }
   if (IsState(*(State *)data_ov002_0211013c) || IsState(*(State *)data_ov002_02110154) || IsState(*(State *)data_ov002_0211022c) || IsState(*(State *)data_ov002_0211043c)) {
-    if (*(struct StarDoor **)&mObjInMouth != 0) {
-      if ((*(struct StarDoor **)&mObjInMouth)->GetType() == 6 || (*(struct StarDoor **)&mObjInMouth)->GetType() == 1) {
+    /* Yoshi with something in his mouth cannot take a door. The two codes
+       that make him spit it out first are 6 (the enemies -- daGmch_c,
+       daHuwa_c, daJgm_c, daSpd_c, daTgz_c) and 1 (daBttBk_c, the crate);
+       4 -- a coin, a cap, a key, a star -- is swallowed and does not block. */
+    if (mObjInMouth != 0) {
+      if (((dActor_c *)mObjInMouth)->OnYoshiTryEat() == 6 || ((dActor_c *)mObjInMouth)->OnYoshiTryEat() == 1) {
         this->ChangeState(data_ov002_0211004c);
       }
       return 0;
@@ -15424,13 +15419,10 @@ void Player::RegisterEggCoinCount(unsigned int count, bool b2, bool b3)
 extern "C" {
 int func_ov002_020d674c(char* c){
     Player *player = (Player *)c;
-    struct O;
-    typedef int (*VFN)(struct O*);
-    struct O { VFN* vt; };
-    struct O *o = (struct O *)player->mObjInMouth;
+    dActor_c *o = (dActor_c *)player->mObjInMouth;
     if (o == 0)
         return 0;
-    return o->vt[0x12](o) == 6;
+    return o->OnYoshiTryEat() == 6;
 }
 }
 
@@ -15439,13 +15431,6 @@ extern "C" {
 int func_ov002_020d6790(char* self)
 {
     Player *p = (Player *)self;
-    struct Obj {
-      virtual int v0(); virtual int v1(); virtual int v2(); virtual int v3();
-      virtual int v4(); virtual int v5(); virtual int v6(); virtual int v7();
-      virtual int v8(); virtual int v9(); virtual int v10(); virtual int v11();
-      virtual int v12(); virtual int v13(); virtual int v14(); virtual int v15();
-      virtual int v16(); virtual int v17(); virtual int v18(); virtual void v19(char* c);
-    };
     extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
     extern int _ZN6Player7IsStateERNS_5StateE(char* c, void* s);
     extern void Player_DisableInteraction(char* c);
@@ -15459,10 +15444,10 @@ int func_ov002_020d6790(char* self)
     if (p->mMouthHoldTimer != 0)
         return 0;
 
-    Obj *o = (Obj *)p->mObjInMouth;
+    dActor_c *o = (dActor_c *)p->mObjInMouth;
     if (o == 0) return 0;
 
-    int isbf = (((dActor_c *)o)->actorID == 0xbf);
+    int isbf = (o->actorID == 0xbf);
     if (isbf) {
         if (p->mIsNoControl != 0)
             goto isbf_ret0;
@@ -15481,8 +15466,8 @@ isbf_ret0:
         }
     }
 
-    o = (Obj *)p->mObjInMouth;
-    switch (o->v18()) {
+    o = (dActor_c *)p->mObjInMouth;
+    switch (o->OnYoshiTryEat()) {
     case 2:
     case 4:
         func_ov002_020d7430(*reinterpret_cast<Player*>(self));
@@ -15492,7 +15477,7 @@ isbf_ret0:
         if (eq132) {
             func_ov002_020d8118(self);
         }
-        ((Obj *)p->mObjInMouth)->v19(self);
+        ((dActor_c *)p->mObjInMouth)->OnTurnIntoEgg(*(Player *)self);
         p->mObjInMouth = 0;
         p->mFireBreaths = 1;
         goto ret0;
@@ -15524,27 +15509,6 @@ ret0:
 extern "C" {
 int Player::func_ov002_020d6998()
 {
-    struct VObj {
-        virtual void f00();
-        virtual void f01();
-        virtual void f02();
-        virtual void f03();
-        virtual void f04();
-        virtual void f05();
-        virtual void f06();
-        virtual void f07();
-        virtual void f08();
-        virtual void f09();
-        virtual void f10();
-        virtual void f11();
-        virtual void f12();
-        virtual void f13();
-        virtual void f14();
-        virtual void f15();
-        virtual void f16();
-        virtual void f17();
-        virtual int V18();
-    };
     typedef int (*VFunc)(void*);
     extern int func_ov002_020d6dac(char* self);
     extern void func_ov002_020d71ec(char* self, int arg1);
@@ -15590,7 +15554,7 @@ int Player::func_ov002_020d6998()
     if (other == this) goto fail;
 
     if (IsCollectingCap() != 0) goto react;
-    if (((VObj*)other)->V18() == 0) goto react;
+    if (((dActor_c *)other)->OnYoshiTryEat() == 0) goto react;
 
     {
         u8 isType = (((dActor_c *)other)->actorID == 0xbf);
@@ -15625,7 +15589,7 @@ int Player::func_ov002_020d6998()
         } else {
             int r;
             if (func_ov002_020d7030(self, other) == 0) goto react;
-            r = ((VObj*)other)->V18();
+            r = ((dActor_c *)other)->OnYoshiTryEat();
             if (r == 4) Player_DisableInteraction(self);
             return 1;
         }
@@ -15832,27 +15796,6 @@ int func_ov002_020d7030(char* a, char* b) {
 // @symbol _ZN6Player19func_ov002_020d708cEv
 extern "C" {
 char* Player::func_ov002_020d708c() {
-    struct VObj {
-        virtual void f00();
-        virtual void f01();
-        virtual void f02();
-        virtual void f03();
-        virtual void f04();
-        virtual void f05();
-        virtual void f06();
-        virtual void f07();
-        virtual void f08();
-        virtual void f09();
-        virtual void f10();
-        virtual void f11();
-        virtual void f12();
-        virtual void f13();
-        virtual void f14();
-        virtual void f15();
-        virtual void f16();
-        virtual void f17();
-        virtual int IsTargetable();
-    };
     extern char* _ZN8dActor_c4NextEPKS_(const char* a);
     extern int Vec3_Dist(const void* a, const void* b);
     extern short Vec3_HorzAngle(const void* a, const void* b);
@@ -15866,7 +15809,7 @@ char* Player::func_ov002_020d708c() {
         int thresh = bestAng;
         do {
             if (a != self) {
-                if (((VObj*)a)->IsTargetable()) {
+                if (((dActor_c *)a)->OnYoshiTryEat()) {
                     if (Vec3_Dist(&mPos, &((dActor_c *)a)->mPos) < 0x15e000) {
                         int diff =
                             (short)(this->mAngleY - Vec3_HorzAngle(&mPos, &((dActor_c *)a)->mPos));
@@ -16066,13 +16009,6 @@ int Player::St_YoshiPower_Main()
 {
     struct Vec3 { int x, y, z; };
     struct Vec3s { short x, y, z; };
-    struct Obj {
-      virtual int v0(); virtual int v1(); virtual int v2(); virtual int v3();
-      virtual int v4(); virtual int v5(); virtual int v6(); virtual int v7();
-      virtual int v8(); virtual int v9(); virtual int v10(); virtual int v11();
-      virtual int v12(); virtual int v13(); virtual int v14(); virtual int v15();
-      virtual int v16(); virtual int v17(); virtual int v18(); virtual void v19(char* c);
-    };
     extern void _Z14ApproachLinearRiii(int*, int, int);
     extern void func_ov002_020d71ec(char*, int);
     extern void _Z15ApproachLinear2Rsss(short*, short, short);
@@ -16100,7 +16036,7 @@ int Player::St_YoshiPower_Main()
     Vec3s dir;
     Vec3 tmp;
     PVec pos;
-    Obj* obj0;
+    dActor_c* obj0;
     char* dp;
 
     if (mIsAirborne == 0) {
@@ -16156,17 +16092,17 @@ int Player::St_YoshiPower_Main()
                 ((dActor_c *)dp)->mPosX = src->x;
                 ((dActor_c *)dp)->mPosY = src->y;
                 ((dActor_c *)dp)->mPosZ = src->z;
-                Obj* o = *(Obj**)(&mObjInMouth);
-                int cond = (((dActor_c *)o)->actorID == 0xbf);
+                dActor_c* o = *(dActor_c**)(&mObjInMouth);
+                int cond = (o->actorID == 0xbf);
                 if (cond != 0) {
-                    ((dActor_c *)o)->mFlags &= ~0x20000;
+                    o->mFlags &= ~0x20000;
                     if (((Player*)(*(void**)(&mObjInMouth)))->func_ov002_020d5ed0() == 0) {
                         func_ov002_020d718c();
                     }
                 } else {
                     ((dActor_c *)o)->mFlags |= 0x40000;
                     ((dActor_c *)mObjInMouth)->mFlags &= ~0x20000;
-                    if ((*(Obj**)(&mObjInMouth))->v18() == 4 || (*(Obj**)(&mObjInMouth))->v18() == 2) {
+                    if ((*(dActor_c**)(&mObjInMouth))->OnYoshiTryEat() == 4 || (*(dActor_c**)(&mObjInMouth))->OnYoshiTryEat() == 2) {
                         mStateStep = 3;
                         int f2 = 1;
                         mUseAltBodyModel = f2;
@@ -16182,12 +16118,12 @@ int Player::St_YoshiPower_Main()
                 int id3 = this->GetBodyModelID(this->param1 & 0xff, 0);
                 if (mBodyModels[id3]->WillHitFrame(0xc) != 0) {
                     mUseAltBodyModel = 1;
-                    if ((*(Obj**)(&mObjInMouth))->v18() == 5) {
+                    if ((*(dActor_c**)(&mObjInMouth))->OnYoshiTryEat() == 5) {
                         int cond2 = (((dActor_c *)mObjInMouth)->actorID == 0x132);
                         if (cond2 != 0) {
                             func_ov002_020d8118(c);
                         }
-                        (*(Obj**)(&mObjInMouth))->v19(c);
+                        (*(dActor_c**)(&mObjInMouth))->OnTurnIntoEgg(*(Player *)c);
                         *(void**)(&mObjInMouth) = 0;
                         mFireBreaths = 1;
                     }
@@ -16195,9 +16131,9 @@ int Player::St_YoshiPower_Main()
             }
         }
         if (this->FinishedAnim() != 0) {
-            obj0 = *(Obj**)(&mObjInMouth);
+            obj0 = *(dActor_c**)(&mObjInMouth);
             if (obj0 != 0) {
-                if (obj0->v18() == 3) {
+                if (obj0->OnYoshiTryEat() == 3) {
                     this->ChangeState(data_ov002_02110034);
                     return 1;
                 }
@@ -16267,9 +16203,9 @@ int Player::St_YoshiPower_Main()
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
         if (mBodyModels[id7]->WillHitFrame(4) != 0) {
-            obj0 = *(Obj**)(&mObjInMouth);
+            obj0 = *(dActor_c**)(&mObjInMouth);
             if (obj0 != 0) {
-                int cond3 = (((dActor_c *)obj0)->actorID == 0xbf);
+                int cond3 = (obj0->actorID == 0xbf);
                 if (cond3 != 0) {
                     func_ov002_020d5cec(obj0);
                     mStateFlags &= ~2;
