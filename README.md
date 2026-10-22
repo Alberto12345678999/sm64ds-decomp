@@ -34,33 +34,6 @@ size, and status, see the [progress treemap on GitHub Pages](https://tangosdev.g
 The [recovered TU treemap](https://tangosdev.github.io/sm64ds-decomp/tu-treemap.html)
 groups code by reconstructed translation unit, with links to each source file and TU manifest.
 
-## Where things stand
-
-Matching is close to finished. Nearly every function in the game now has source that
-compiles to the cartridge's exact bytes. The few left are the biggest, most call-heavy
-functions in the game, the ones everything else was matched around, plus a handful that
-sit at documented floors where every spelling we have tried lands on the same small
-difference. Those are written down rather than ground on again.
-
-Most of the work now goes into the other bar. The readable source push turns matched
-files into real C++ class by class. The actor tree (`fBase_c`, `dBase_c`, `dActor_c`,
-`dBgActor_c`, `dEnemyBase_c` and every `daObj*_c` scene actor) is declared in `include/`
-as actual C++, named from the ROM's own RTTI, and finished classes get merged back into
-the translation units the original EAD team most likely wrote. Every one of those steps
-passes the same byte check as a fresh match, so readability never costs a match. See
-[AGENTS.md](AGENTS.md) for what a conversion looks like.
-
-The PC port is built from this same source. It runs natively on Windows from your own
-cartridge dump, with higher resolutions, texture filtering, anti-aliasing and smoothed
-models on top of the original game. The more of the game that is LINKED, the less of the
-port depends on stand-ins. Get it at [tangos.dev/downloads](https://tangos.dev/downloads).
-
-There is still an open question about the original toolchain behind some of the residue.
-The linker signature in the ROM points at a CodeWarrior for NITRO revision we do not have
-a copy of, though as
-[notes/mwccarm-version-archive-search.md](notes/mwccarm-version-archive-search.md)
-records, that does not prove the whole game was built with one revision.
-
 ## What "matching" means
 
 The goal is source code that, when compiled with the original toolchain, produces a
