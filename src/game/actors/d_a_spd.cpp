@@ -689,7 +689,8 @@ int Scuttlebug::func_ov071_0211f7d4()
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
     mAngleX = mAngleX + 0x1000;
     if (mWithMeshClsn.JustHitGround()) {
-        if (((SurfaceInfo *)((char *)mWithMeshClsn.GetFloorResult() + 4))->clps.GetSurfaceType() == 4) {
+        if (((SurfaceInfo *)((char *)mWithMeshClsn.GetFloorResult() + 4))->clps.GetSurfaceType() ==
+            4) {
             func_ov071_0211f498();
         } else {
             mVertSpeed = (mVertSpeed * -0x3c) / 0x64;

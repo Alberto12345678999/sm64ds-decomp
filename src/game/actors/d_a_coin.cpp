@@ -671,7 +671,7 @@ void daCoin_c::func_ov002_020b1cc0()
         return;
 
     floor = (char *)mWithMeshClsn.GetFloorResult();
-    floorClass = ((SurfaceInfo*)(floor + 4))->clps.GetFloorClass();
+    floorClass = ((SurfaceInfo *)(floor + 4))->clps.GetFloorClass();
     ((SurfaceInfo*)(floor + 4))->CopyNormalTo(normal);
 
     if (mWithMeshClsn.JustHitGround() != 0) {

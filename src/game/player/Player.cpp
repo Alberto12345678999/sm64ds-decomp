@@ -2932,8 +2932,7 @@ void Player::func_ov002_020c14b8()
 
 // @symbol _ZN6Player19SetFloorSurfaceInfoERK5dBgPi
 extern "C" {
-void Player::SetFloorSurfaceInfo(const dBgPi &hit)
-{
+void Player::SetFloorSurfaceInfo(const dBgPi &hit) {
     extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
     struct Vector3 v;
     mClpsWord1Lo = hit.surface.clps.func_02037e90();
@@ -3627,8 +3626,7 @@ void Player::func_ov002_020c29d4()
         mQuicksandRunFlags = 0x80;
     } else if (flags & 0x80) {
         if (mMeshClsn.IsOnGround()) {
-            int r = _ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn)
-                        ->surface.clps.GetSurfaceType();
+            int r = _ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn)->surface.clps.GetSurfaceType();
             if (r >= 6 && r <= 9) return;
             mQuicksandRunFlags = 0;
             mQuicksandRunTimer = 0;

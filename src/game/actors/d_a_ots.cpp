@@ -788,39 +788,39 @@ void daOts_c::PlayDeathSound()
  * (CLPS::GetSurfaceType): types 4, 5 and 0x13 send it to STATE_REMOVE; type 1 sends it to
  * STATE_DYING -- death animation, clip test off, PlayDeathSound, and mHomePos
  * overwritten with the spot it died at, 5 units above the floor. */
-void daOts_c::func_ov064_02116220(){
-  dBgCh_Gnd rg;
-  Vector3 v;
-  int y = this->mPosY;
-  int yoff = tail().mModelYOffset;
-  int z = this->mPosZ;
-  int x = this->mPosX;
-  int sum = y + yoff;
-  int yv = sum + 0x96000;
-  v.x = x;
-  v.y = yv;
-  v.z = z;
+void daOts_c::func_ov064_02116220() {
+    dBgCh_Gnd rg;
+    Vector3 v;
+    int y = this->mPosY;
+    int yoff = tail().mModelYOffset;
+    int z = this->mPosZ;
+    int x = this->mPosX;
+    int sum = y + yoff;
+    int yv = sum + 0x96000;
+    v.x = x;
+    v.y = yv;
+    v.z = z;
 
-  rg.SetObjAndPos(v, this);
-  if (rg.DetectClsn() != 0) {
-    tail().mFloorY = rg.clsnY;
-    if (this->mPosY <= rg.clsnY + 0x14000) {
-      int r = rg.surface.clps.GetSurfaceType();
-      if (r == 4 || r == 5 || r == 0x13) {
-        tail().mState = STATE_REMOVE;
-      } else if (r == 1) {
-        tail().mState = STATE_DYING;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-            CONFIG_BCA(this, kAnimDeath), 0, kAnimSpeedNormal, 0);
-        this->mFlags &= ~1u;
-        this->PlayDeathSound();
-        tail().mHomePosX = this->mPosX;
-        tail().mHomePosY = this->mPosY;
-        tail().mHomePosZ = this->mPosZ;
-        tail().mHomePosY = rg.clsnY + 0x5000;
-      }
+    rg.SetObjAndPos(v, this);
+    if (rg.DetectClsn() != 0) {
+        tail().mFloorY = rg.clsnY;
+        if (this->mPosY <= rg.clsnY + 0x14000) {
+            int r = rg.surface.clps.GetSurfaceType();
+            if (r == 4 || r == 5 || r == 0x13) {
+                tail().mState = STATE_REMOVE;
+            } else if (r == 1) {
+                tail().mState = STATE_DYING;
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                    &this->mModelAnim, CONFIG_BCA(this, kAnimDeath), 0, kAnimSpeedNormal, 0);
+                this->mFlags &= ~1u;
+                this->PlayDeathSound();
+                tail().mHomePosX = this->mPosX;
+                tail().mHomePosY = this->mPosY;
+                tail().mHomePosZ = this->mPosZ;
+                tail().mHomePosY = rg.clsnY + 0x5000;
+            }
+        }
     }
-  }
 }
 
 /* -------------------------------------------------------------------------- */

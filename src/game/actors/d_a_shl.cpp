@@ -597,10 +597,8 @@ void daShl_c::func_ov102_0214c84c()
                     _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 0, mSoundID, mCamSpacePos, 0);
                 return;
             }
-            if (ground.surface.clps.GetSurfaceType() == 1)
-            {
-                if (ground.surface.clps.func_02037e84() == 7)
-                {
+            if (ground.surface.clps.GetSurfaceType() == 1) {
+                if (ground.surface.clps.func_02037e84() == 7) {
                     pos.trail.y = ground.clsnY + 0x3c000;
                     mParticleHandle_3d4 = 0;
                     mParticleHandle_3c8 = mParticleHandle_3d4;
@@ -612,9 +610,7 @@ void daShl_c::func_ov102_0214c84c()
                     mSoundID = ground.surface.clps.func_02037e84() + 0xf2;
                     mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 0, mSoundID,
                                                                      mCamSpacePos, 0);
-                }
-                else
-                {
+                } else {
                     pos.trail.y = ground.clsnY + 0xa000;
                     mParticleHandle_3d0 = 0;
                     mParticleHandle_3cc = mParticleHandle_3d0;
