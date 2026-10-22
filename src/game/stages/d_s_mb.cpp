@@ -3,8 +3,8 @@
  *
  * .text 0x02034a78..0x02035354. Twelve class functions plus the factory
  * dScMB_c_classInit, which abuts InitResources and stores this class's
- * vtable. The next symbol, func_02035354, is a list-node compare and is
- * not part of the scene.
+ * vtable. The next symbol, dBgCh::IsOwnedBy, opens the collision-query
+ * run and is not part of the scene.
  *
  * _ZTS7dScMB_c 0x02094364. _ZTI7dScMB_c 0x02094370, base word _ZTI8dScene_c.
  * Nested _ZTIN7dScMB_c15graphCallback_cE 0x0209437c,

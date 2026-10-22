@@ -10961,8 +10961,6 @@ int func_ov002_020cef84(char *self)
     extern int _ZN6Player7IsInAirEv(void*);
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-    extern void func_02035414(void*);
-    extern void func_02035428(void*);
     extern int func_02037e38(void*);
     extern unsigned _ZNK5dBgPi9GetClsnIDEv(void*);
     extern void _ZN5dBgPiD1Ev(void*);
@@ -10998,9 +10996,9 @@ int func_ov002_020cef84(char *self)
             }
         }
     }
-    func_02035414(&line);
+    line.StopIgnoringVanishSurfaces();
     if (p->mIsVanish != 0)
-        func_02035428(&line);
+        line.StartIgnoringVanishSurfaces();
     line.SetObjAndLine(v1, v2, (dActor_c*)self);
     if (line.DetectClsn()) {
         ::Vector3 cp = line.GetClsnPos();
