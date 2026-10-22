@@ -171,33 +171,9 @@ src/unnamed/ov075/func_ov075_02118a78.c:
     complete
     .text start:0x02118a78 end:0x02118a84
 
-src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp:
-    complete
-    .text start:0x02118a84 end:0x02118bf8
-
-src/_ZN10dScEntry_c19LoadCourseResourcesEi.cpp:
-    complete
-    .text start:0x02118bf8 end:0x02118c80
-
-src/_ZN10dScEntry_c17EnterMatchLoadingEv.cpp:
-    complete
-    .text start:0x02118c80 end:0x02118cd0
-
-src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp:
-    complete
-    .text start:0x02118cd0 end:0x02118d1c
-
-src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp:
-    complete
-    .text start:0x02118d1c end:0x02118f38
-
-src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp:
-    complete
-    .text start:0x02118f38 end:0x021190a4
-
 src/game/stages/d_s_entry_methods.cpp:
     complete
-    .text start:0x021190a4 end:0x0211a854
+    .text start:0x02118a84 end:0x0211a854
 
 src/game/stages/d_s_entry_entry.cpp:
     complete
