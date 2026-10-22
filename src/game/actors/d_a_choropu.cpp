@@ -36,7 +36,6 @@
 //   (leap and emerge cylinder heights) are read as int arrays. The
 //   hit-flag mask 0x66fe0 stays a literal.
 
-
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daChoropu_c_AssetId {
     ASSET_CHOROPU_BMD = 0x02d1,

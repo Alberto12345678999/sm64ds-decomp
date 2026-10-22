@@ -147,9 +147,7 @@ int daPgMthr_c::InitResources()
     for (int i = 0; i < 2; i++) {
         SharedFilePtr *t = data_ov018_02112c04[i];
         TextureSequence::LoadFile(*t);
-        TextureSequence::Prepare(
-            *(BMD_File *)data_ov018_02113c00.filePtr,
-            *(BTP_File *)t->filePtr);
+        TextureSequence::Prepare(*(BMD_File *)data_ov018_02113c00.filePtr, *(BTP_File *)t->filePtr);
     }
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -243,9 +241,11 @@ extern "C" void func_ov018_0211235c(daPgMthr_c *self)
 /* State 0 enter. Idle anim, stopped, not talking. */
 int daPgMthr_c::func_ov018_021122ec()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, *(BTP_File *)gPenguinWait1TextureSequenceFile.filePtr, 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &mTextureSequence, *(BTP_File *)gPenguinWait1TextureSequenceFile.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0;
     mPlayer = 0;
     unk_37c = 0;
@@ -284,7 +284,8 @@ int daPgMthr_c::func_ov018_02112234()
 // @symbol _ZN10daPgMthr_c19func_ov018_021121dcEv
 int daPgMthr_c::func_ov018_021121dc()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mTalkStep = 0;
     mTalkTimer = 0x3c;
@@ -363,9 +364,11 @@ int daPgMthr_c::func_ov018_02111f1c()
     if (mPlayer == 0 && mGaveStar == 0)
         func_ov018_021123d0(0);
     mHorzSpeed = 0x5000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)gPenguinWalkAnimationFile.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)gPenguinWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, *(BTP_File *)gPenguinAngryTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &mTextureSequence, *(BTP_File *)gPenguinAngryTextureSequenceFile.filePtr, 0, 0x1000, 0);
     unk_37c = 2;
     return 1;
 }

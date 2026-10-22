@@ -677,8 +677,8 @@ int daKpa_c::InitResources()
     TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                              *(BTP_File *)data_ov060_0211ac28.filePtr);
 
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &this->mTextureSequence, data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence,
+                                                       data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
 
     this->mTextureSequence.SetFlags(0x40000000);
 
@@ -1827,8 +1827,9 @@ mStep: 0 starts animation 0x16 (once) with sound 0xb5, 1 starts 0x15 (looping),
 void daKpa_c::func_ov060_02114858(){
     int new_var2;
     s32 v134 = (s32)this->mModelAnim.file;
-    if ((v134 == (int)data_ov060_0211acd8.filePtr) || ((v134 == (int)data_ov060_0211acf0.filePtr) && ((((u32) (((u32) (this->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a)))
-    {
+    if ((v134 == (int)data_ov060_0211acd8.filePtr) ||
+        ((v134 == (int)data_ov060_0211acf0.filePtr) &&
+         ((((u32)(((u32)(this->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a))) {
         s32 v12c = this->mModelAnim.currFrame;
         s32 v450 = *(volatile s32 *)&this->mSoundID;
         s32 r4 = ((u32) (v12c << 4)) >> 16;
@@ -3438,7 +3439,8 @@ is entry 5 of the animation table), start animation 3 (looping). */
 void daKpa_c::func_ov060_02112350(){
     int finished = this->mModelAnim.Finished();
     if (!finished) return;
-    if ((int)this->mModelAnim.file != (int)data_ov060_0211acd0.filePtr) return;
+    if ((int)this->mModelAnim.file != (int)data_ov060_0211acd0.filePtr)
+        return;
     func_ov060_02111cc0(3, 0);
 }
 
@@ -3568,38 +3570,51 @@ with texture-sequence flags 0x40000000); 3 and 5 use ac10, 0xe uses abf0, and
 every other idx (0 included) uses ac28 (these three with flags 0). */
 void daKpa_c::func_ov060_02111cc0(int idx, int animFlags){
     int a;  /* deliberately never assigned: it is animFlags, still in r2 (see above) */
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov060_021192dc[idx]->filePtr, a, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
+                                                data_ov060_021192dc[idx]->filePtr, a, 0x1000, 0);
     switch (idx) {
     case 1:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr, *(BTP_File *)data_ov060_0211ac40.filePtr);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, data_ov060_0211ac40.filePtr, 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac40.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac40.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 2:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr, *(BTP_File *)data_ov060_0211acb8.filePtr);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, data_ov060_0211acb8.filePtr, 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211acb8.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211acb8.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 3:
     case 5:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr, *(BTP_File *)data_ov060_0211ac10.filePtr);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, data_ov060_0211ac10.filePtr, 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac10.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac10.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 14:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr, *(BTP_File *)data_ov060_0211abf0.filePtr);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, data_ov060_0211abf0.filePtr, 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211abf0.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211abf0.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 10:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr, *(BTP_File *)data_ov060_0211ac30.filePtr);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, data_ov060_0211ac30.filePtr, 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac30.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac30.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 0:
     default:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr, *(BTP_File *)data_ov060_0211ac28.filePtr);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac28.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     }

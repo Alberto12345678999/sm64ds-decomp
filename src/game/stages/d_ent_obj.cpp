@@ -236,8 +236,8 @@ UnknownVsPlayer::~UnknownVsPlayer() {}
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114010Ev
 void UnknownVsPlayer::func_ov075_02114010() {
     if (mSpeed < mMaxSpeed / 2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d424.filePtr,
-                                                           4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mModel, (void *)data_ov075_0211d424.filePtr, 4, 0, 0x1000, 0);
         mAnimState = ANIM_SLOW_GAIT;
     }
     mModel.speed = cstd::fdiv(mSpeed, mMaxSpeed) + 0x1000;
@@ -255,8 +255,8 @@ void UnknownVsPlayer::func_ov075_02114010() {
 // @symbol _ZN15UnknownVsPlayer19func_ov075_021140e4Ev
 void UnknownVsPlayer::func_ov075_021140e4() {
     if (mSpeed >= mMaxSpeed / 2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d42c.filePtr,
-                                                           4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mModel, (void *)data_ov075_0211d42c.filePtr, 4, 0, 0x1000, 0);
         mAnimState = ANIM_FAST_GAIT;
     }
     mModel.speed = cstd::fdiv(mSpeed, mMaxSpeed) + 0x1000;
@@ -276,8 +276,8 @@ int UnknownVsPlayer::func_ov075_021141b8() {
     int finished = mModel.Finished();
     if (!finished)
         return finished;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3ec.filePtr, 4,
-                                                       0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3ec.filePtr,
+                                                       4, 0, 0x1000, 0);
     mAnimState = ANIM_NONE;
     return 0;
 }
@@ -289,8 +289,8 @@ int UnknownVsPlayer::func_ov075_02114218() {
     int finished = mModel.Finished();
     if (!finished)
         return finished;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3a4.filePtr, 4,
-                                                       0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3a4.filePtr,
+                                                       4, 0x40000000, 0x1000, 0);
     mAnimState = ANIM_WAIT_FOR_IDLE;
     return 3;
 }
@@ -356,8 +356,8 @@ void UnknownVsPlayer::func_ov075_021143e4() {
             data_ov075_0211b524[((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 6];
     }
     if (data_0209b2f0[mPlayerNo] != 0) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3ac.filePtr,
-                                                           0, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mModel, (void *)data_ov075_0211d3ac.filePtr, 0, 0, 0x1000, 0);
         textureFile = (void *)data_ov075_0211d40c.filePtr;
         mMoveState = MOVE_WAIT_FOR_POSE_SOUND;
     } else {
@@ -388,8 +388,8 @@ void UnknownVsPlayer::func_ov075_02114560() {
     if (mPosition.z < sVsPlayerTakeoffZ[mPlayerNo] && mInAir == 0) {
         mVertSpeed = 0x2a000;
         mInAir = 1;
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d41c.filePtr,
-                                                           4, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mModel, (void *)data_ov075_0211d41c.filePtr, 4, 0x40000000, 0x1000, 0);
         mAnimState = ANIM_NONE;
     }
 
@@ -483,8 +483,8 @@ void UnknownVsPlayer::func_ov075_02114890() {}
 void UnknownVsPlayer::func_ov075_02114894() {
     mSpeed = 0;
     mVertSpeed = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d424.filePtr, 4,
-                                                       0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d424.filePtr,
+                                                       4, 0, 0x1000, 0);
     mMoveState = MOVE_RUN_OFF_STAGE;
     mAnimState = ANIM_SLOW_GAIT;
     mInAir = 0;
@@ -500,8 +500,8 @@ int UnknownVsPlayer::func_ov075_021148f0() {
  * (movement state 2). */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114904Ei
 void UnknownVsPlayer::func_ov075_02114904(int exitX) {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d384.filePtr, 8,
-                                                       0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d384.filePtr,
+                                                       8, 0x40000000, 0x1000, 0);
     mWaitTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) + 0x1e) & 0xf;
     mExitPos.x = exitX;
     mExitPos.y = 0;
@@ -513,8 +513,8 @@ void UnknownVsPlayer::func_ov075_02114904(int exitX) {
 /* The selected figure's one-shot, followed by animation state 3. */
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114988Ev
 int UnknownVsPlayer::func_ov075_02114988() {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3a4.filePtr, 8,
-                                                       0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3a4.filePtr,
+                                                       8, 0x40000000, 0x1000, 0);
     mAnimState = ANIM_WAIT_FOR_IDLE;
     return 3;
 }
@@ -531,8 +531,8 @@ void UnknownVsPlayer::func_ov075_021149d0(int targetX) {
         mSpeed = -0x8000;
     mMoveState = MOVE_TO_SLOT;
     mAnimState = ANIM_WALK_SOUNDS;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d42c.filePtr, 4,
-                                                       0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d42c.filePtr,
+                                                       4, 0, 0x1000, 0);
     mModel.speed = 0x1000;
 }
 
@@ -701,8 +701,8 @@ int UnknownVsPlayer::func_ov075_02114ddc(unsigned char kind, unsigned char playe
         textureFile = (void *)data_ov075_0211d40c.filePtr;
         mMoveState = MOVE_IDLE;
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mModel, (void *)data_ov075_0211d3ac.filePtr,
-                                                           0, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mModel, (void *)data_ov075_0211d3ac.filePtr, 0, 0, 0x1000, 0);
         textureFile = (void *)data_ov075_0211d40c.filePtr;
         mMoveState = MOVE_CHOOSE_POSE;
     }
@@ -1049,8 +1049,8 @@ int dEntObj_c::InitResources() {
 
     if (param1 != 1) {
         mModelAnim.SetFile((BMD_File *)data_ov075_0211d3bc.filePtr, 1, -1);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov075_0211d3e4.filePtr, 0,
-                                                    0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            &mModelAnim, (void *)data_ov075_0211d3e4.filePtr, 0, 0x1000, 0);
     }
 
     func_ov075_0211b458((char *)&mMesh, (int *)&data_ov075_0211c654, 0);

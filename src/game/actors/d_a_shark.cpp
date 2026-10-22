@@ -188,10 +188,8 @@ extern "C" int func_ov090_02133830(daShark_c *self)
 // @symbol func_ov090_0213387c
 extern "C" int func_ov090_0213387c(daShark_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        (char *)&self->mModelAnim,
-        data_ov090_021345ac.filePtr,
-        0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&self->mModelAnim,
+                                                data_ov090_021345ac.filePtr, 0, 0x1000, 0);
     return 1;
 }
 

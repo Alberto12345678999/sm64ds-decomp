@@ -304,7 +304,8 @@ int daTor_c::InitResources()
     func_02016aac(&mModelAnim, 0x16, 1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, (void *)gSandTornadoAnimationFile.filePtr, 0, 0x1000, 0);
-    TextureTransformer::Prepare(*(BMD_File *)gSandTornadoModelFile.filePtr, *(BTA_File *)data_ov024_02112968);
+    TextureTransformer::Prepare(*(BMD_File *)gSandTornadoModelFile.filePtr,
+                                *(BTA_File *)data_ov024_02112968);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &mTextureTransformer, data_ov024_02112968, 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0, 0, 0x200002, 0);

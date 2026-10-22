@@ -300,8 +300,8 @@ int daHyuhyu_c::func_ov091_02134044(daHyuhyu_c_State *state)
 /* Cloud, waiting: enter. Loop the wait animation. */
 int daHyuhyu_c::func_ov091_0213400c()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-        (BCA_File *)data_ov091_02135684.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &this->mModelAnim, (BCA_File *)data_ov091_02135684.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -335,8 +335,8 @@ int daHyuhyu_c::func_ov091_02133f60()
 /* Cloud, blowing: enter. Play the blow animation once. */
 int daHyuhyu_c::func_ov091_02133f24()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-        (BCA_File *)data_ov091_0213567c.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &this->mModelAnim, (BCA_File *)data_ov091_0213567c.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 

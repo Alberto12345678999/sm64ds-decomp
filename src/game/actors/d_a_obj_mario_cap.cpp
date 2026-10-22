@@ -1187,7 +1187,8 @@ int daObjMarioCap_c::Taken() {
         if (mPlayer->SetNoControlState(0xf, -1, 0) == 1) {
             mPlayer->SetNewHatCharacter(mModelIndex & 0xff, 0, 0);
             func_02013a88();
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_0210de38.filePtr, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_0210de38.filePtr,
+                                                        0x40000000, 0x1000, 0);
             mTakenStep = 2;
         }
         break;
@@ -1204,7 +1205,8 @@ int daObjMarioCap_c::Taken() {
 
     if (mAnimStarted == 0) {
         if (mPlayer->Unk_020c9e5c(8) == 1) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_0210de30.filePtr,
+                                                        0x40000000, 0x1000, 0);
             mAnimStarted = 1;
         }
     }
@@ -1254,8 +1256,8 @@ int daObjMarioCap_c::InitAnim()
 
     switch (mType) {
     case 0xa:
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_0210de30.filePtr,
+                                                    0x40000000, 0x1000, 0);
         break;
     case 0xf:
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
@@ -1266,12 +1268,12 @@ int daObjMarioCap_c::InitAnim()
             &mModelAnim, data_ov002_020ff0b8[mModelIndex]->filePtr, 0x40000000, 0x1000, 0);
         break;
     case 0x15:
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, data_ov002_0210de58.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_0210de58.filePtr,
+                                                    0x40000000, 0x1000, 0);
         break;
     case 0x16:
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, data_ov002_0210de18.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_0210de18.filePtr,
+                                                    0x40000000, 0x1000, 0);
         break;
     }
 

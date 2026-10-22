@@ -368,7 +368,8 @@ int daMip_c::StateSaveTalkInit()
 
     mActionStep = 0;
     func_02013944();
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c0.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c0.filePtr, 0, 0x1000,
+                                                0);
     return 1;
 }
 
@@ -506,7 +507,8 @@ int daMip_c::StateReleasedInit()
     mdCcAc_c.flags |= 0x4000000;
     mdCcAc_c.radius = 0x78000;
     mdCcAc_c.vulnFlags &= ~0x8000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c0.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c0.filePtr, 0, 0x1000,
+                                                0);
     return 1;
 }
 
@@ -738,7 +740,8 @@ int daMip_c::StateCaughtInit()
     mActionStep = 0;
     mHorzSpeed = 0;
     mdCcAc_c.radius = 0x28000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b8.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b8.filePtr, 0, 0x1000,
+                                                0);
     return 1;
 }
 
@@ -758,7 +761,8 @@ int daMip_c::StateRestInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305b0;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b0.filePtr,
+                                                0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -927,7 +931,8 @@ int daMip_c::StateFleeInit()
       mPathDir = -1;
   }
 
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gMipRunAnimationFile.filePtr, 0, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gMipRunAnimationFile.filePtr, 0, 0x1000,
+                                              0);
   return 1;
 }
 
@@ -946,7 +951,8 @@ int daMip_c::StateStartleInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305c8;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c8.filePtr,
+                                                0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -1021,17 +1027,20 @@ int daMip_c::StateIdleMain()
         switch (mActionStep) {
         case 1:
             mHorzSpeed = 0x4000;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gMipRunAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gMipRunAnimationFile.filePtr,
+                                                        0x40000000, 0x1000, 0);
             (mActionStep)++;
             break;
         case 2:
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b0.filePtr,
+                                                        0x40000000, 0x1000, 0);
             mHorzSpeed = 0;
             (mActionStep)++;
             break;
         case 3:
             mStateTimer = (s16)((r & 0x1f) + 0x1e);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c0.filePtr, 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c0.filePtr, 0,
+                                                        0x1000, 0);
             mActionStep = 0;
             break;
         }
@@ -1043,7 +1052,8 @@ int daMip_c::StateIdleMain()
             s16 *ang = &mTargetAngY;
             *ang = *ang + (0x1800 - ((r & 3) << 12));
         }
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c8.filePtr,
+                                                    0x40000000, 0x1000, 0);
         mActionStep = 1;
     }
 

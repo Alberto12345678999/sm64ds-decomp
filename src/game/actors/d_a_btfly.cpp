@@ -553,8 +553,8 @@ int daBtfly_c::InitResources()
 
     if (mModelAnim.SetFile((BMD_File *)bmd, 1, 1) == 0)
         return 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, gButterflyFlyAnimationFile.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gButterflyFlyAnimationFile.filePtr, 0,
+                                                0x1000, 0);
     if (mShadowModel1.InitCylinder() == 0)
         return 0;
     if (mModel.SetFile((BMD_File *)data_ov100_02148668.filePtr, 1, 1) == 0)

@@ -525,9 +525,8 @@ void daBtn_c::func_ov079_02125b44()
 
     if (mModelAnim.Finished() != 0) {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim,
-            ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr,
-            0, 0x1000, 0);
+            &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr, 0,
+            0x1000, 0);
     }
 
     if (mIsKing != 0) {
@@ -600,9 +599,8 @@ void daBtn_c::func_ov079_02125b44()
         case 6:
             mState = 2;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim,
-                ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr,
-                0, 0x1000, 0);
+                &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr, 0,
+                0x1000, 0);
             break;
         }
         func_ov079_02125504();
@@ -610,9 +608,8 @@ void daBtn_c::func_ov079_02125b44()
         if (mNearestDist < 0x3e8000) {
             mState = 1;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim,
-                ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr,
-                0, 0x1000, 0);
+                &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr, 0,
+                0x1000, 0);
         }
         mModelAnim.Advance();
     }
@@ -651,9 +648,8 @@ void daBtn_c::func_ov079_021258fc()
         }
         if (mModelAnim.Finished() != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim,
-                ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr,
-                0, 0x1000, 0);
+                &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr, 0,
+                0x1000, 0);
         }
     } else {
         king = idx;
@@ -668,9 +664,8 @@ void daBtn_c::func_ov079_021258fc()
     if (Vec3_HorzDist(&mPosX, &mSpawnPosX) > lim) {
         mState = 7;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim,
-            ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr,
-            0, 0x1000, 0);
+            &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr, 0,
+            0x1000, 0);
         mFlags &= ~0x2000000;
     } else {
         if (mFrontDist < 0x5dc000) {
@@ -681,8 +676,7 @@ void daBtn_c::func_ov079_021258fc()
             if (mFrontDist < 0xc8000) {
                 mState = 3;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &mModelAnim,
-                    ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr,
+                    &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr,
                     0x40000000, 0x1000, 0);
             }
         }
@@ -716,9 +710,8 @@ void daBtn_c::func_ov079_021256d4()
     if (mModelAnim.file != ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr) {
         if (mModelAnim.Finished() != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim,
-                ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr,
-                0, 0x1000, 0);
+                &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr, 0,
+                0x1000, 0);
         }
     }
 
@@ -738,8 +731,7 @@ void daBtn_c::func_ov079_021256d4()
         if (r->mIsMega == 0) {
             if (mFrontDist < 0x190000) {
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &mModelAnim,
-                    ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr,
+                    &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr,
                     0x40000000, 0x1000, 0);
                 mState = 3;
             }
@@ -930,7 +922,9 @@ void daBtn_c::func_ov079_02125240(){
   func_01ffb098(&mMovingMeshCollider);
   func_01ffb0bc(&mMovingMeshCollider);
   mSubState++;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing*5+1])->filePtr, 0x40000000, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+      &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 1])->filePtr, 0x40000000,
+      0x1000, 0);
   v.x = mPosX;
   v.y = mPosY;
   v.z = mPosZ;
@@ -1035,10 +1029,12 @@ void daBtn_c::func_ov079_02124ed4()
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(3, p[0], p[1], p[2]);
             }
             if (mHitPoints == 0) {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                    &mModelAnim, data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
                 mState = 8;
             } else {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                    &mModelAnim, data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
                 mPounder = 0;
                 mTextureSequence.Advance();
                 mSubState++;
@@ -1138,8 +1134,7 @@ void daBtn_c::func_ov079_02124b08()
             unk_407 = 0;
             mSubState = 0xb;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim,
-                ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 2])->filePtr,
+                &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 2])->filePtr,
                 0x40000000, 0x1000, 0);
             mSubTimer = 0;
             return;
@@ -1155,8 +1150,7 @@ void daBtn_c::func_ov079_02124b08()
         unk_407 = 0;
         mSubState++;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim,
-            ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 2])->filePtr,
+            &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 2])->filePtr,
             0x40000000, 0x1000, 0);
         mSubTimer = 0;
         return;
@@ -1173,8 +1167,7 @@ void daBtn_c::func_ov079_02124b08()
         mAngleX = 0;
         if (mModelAnim.Finished() != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim,
-                ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 4])->filePtr,
+                &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 4])->filePtr,
                 0x40000000, 0x1000, 0);
 
             if (mIsKing == 0) {
@@ -1234,9 +1227,8 @@ void daBtn_c::func_ov079_021249f0()
         if ((u16)mStateTimer > 0x2a) {
             mState = 1;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim,
-                ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr,
-                0, 0x1000, 0);
+                &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr, 0,
+                0x1000, 0);
         }
     }
     mModelAnim.Advance();
@@ -1803,9 +1795,8 @@ void daBtn_c::func_ov079_02123804(dActor_c *other)
         }
         mHorzSpeed = 0;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim,
-            ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr,
-            0x40000000, 0x1000, 0);
+            &mModelAnim, ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr, 0x40000000,
+            0x1000, 0);
         mModelAnim.speed = 0x4000;
         mState = 0xb;
         mResumePending = 1;

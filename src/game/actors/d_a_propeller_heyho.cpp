@@ -420,7 +420,8 @@ extern int data_0209e650[];
 int func_ov070_0211ffa8(daPropeller_Heyho_c* c){
   c->mTargetAngY = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0xf) << 0xc);
   c->mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123520.filePtr, 0, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123520.filePtr, 0,
+                                              0x1000, 0);
   return 1;
 }
 }
@@ -645,7 +646,8 @@ int func_ov070_0211fa80(daPropeller_Heyho_c *c) {
     c->mStateTimer = 0x3f;
     c->mStateStep = 0;
     c->mTargetAngY = c->HorzAngleToCPlayerOrAng();
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123518.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123518.filePtr,
+                                                0x40000000, 0x1000, 0);
     return 1;
 }
 }
@@ -719,7 +721,8 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
 
     if (mModelAnim.dExtFrameCtrl_c::Finished()) {
         if (mStateStep == 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov070_02123510.filePtr, 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov070_02123510.filePtr, 0,
+                                                        0x1000, 0);
             mStateStep = 1;
         }
         if (mHitDuringAttack == 1) {
@@ -820,7 +823,8 @@ extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, i
 int func_ov070_0211f694(daPropeller_Heyho_c *c) {
     c->mStateStep = 0;
     if (c->mHitDuringAttack == 0) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123508.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123508.filePtr,
+                                                    0x40000000, 0x1000, 0);
     }
     return 1;
 }
@@ -1086,7 +1090,8 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
     if (c->mCurrentState != &data_ov070_021235cc)
         return;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123528.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123528.filePtr,
+                                                0x40000000, 0x1000, 0);
     c->mStateStep = 1;
     c->mHitDuringAttack = 1;
 }

@@ -324,7 +324,8 @@ void daFPkn_c::CheckClsnHits()
             mSpinSpeed = 0x1f40;
             mdCcAc_c.flags |= 1;
             mFlags &= ~0x10000000;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e24.filePtr,
+                                                        0x40000000, 0x1000, 0);
             mSuppressDeathReward = 0;
             mParticleHandle1 = 0;
         }
@@ -395,7 +396,8 @@ second:
         mSpinSpeed = 0x1f40;
         mdCcAc_c.flags |= 1;
         mFlags &= ~0x10000000;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e24.filePtr,
+                                                    0x40000000, 0x1000, 0);
         mSuppressDeathReward = 0;
         mParticleHandle1 = 0;
         return;
@@ -480,7 +482,8 @@ void daFPkn_c::StateSpit()
         else
             func_0201267c(SND_SPIT_END, &mCamSpacePos);
         mState = STATE_WAIT;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((SharedFilePtr *)data_ov084_02130e1c)->filePtr, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            &mModelAnim, ((SharedFilePtr *)data_ov084_02130e1c)->filePtr, 0, 0x1000, 0);
     } else {
         if ((u16)mStateTimer < 0x3a) {
             targetAngle = mAngleY;
@@ -630,10 +633,12 @@ void daFPkn_c::StateWait()
     cmp = actorID == ACTOR_PAKUN2;
     if (cmp != false) {
         mState = STATE_GROW;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e14.filePtr,
+                                                    0x40000000, 0x1000, 0);
     } else {
         mState = STATE_SPIT;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e04.filePtr, 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e04.filePtr,
+                                                    0x40000000, 0x1000, 0);
         mModelAnim.currFrame = 0;
     }
     cmp = actorID == ACTOR_FIREPAKUN;
@@ -774,8 +779,8 @@ int daFPkn_c::InitResources()
     LoadBlueCoinModel(this);
 
     /* A real SetAnim call with a Fix12<int> speed DIFFs; see the file header. */
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, data_ov084_02130df4.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130df4.filePtr,
+                                                0x40000000, 0x1000, 0);
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0, 0, 0x200001, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);

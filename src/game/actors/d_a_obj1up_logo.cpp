@@ -170,15 +170,12 @@ s32 daObj1UpLogo_c::InitResources()
     TextureSequence::LoadFile(data_ov002_02110a9c);
     if (mModel.SetFile((BMD_File *)Model::LoadFile(data_ov002_02110aa4), 1, -1) == 0)
         return 0;
-    TextureSequence::Prepare(
-        *(BMD_File *)data_ov002_02110aa4.filePtr,
-        *(BTP_File *)data_ov002_02110a9c.filePtr);
+    TextureSequence::Prepare(*(BMD_File *)data_ov002_02110aa4.filePtr,
+                             *(BTP_File *)data_ov002_02110a9c.filePtr);
     /* InitResources: SetFile's Fix12<int> parameter. A braced method call
        does not compile, so this stays the scalar extern. */
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence,
-        data_ov002_02110a9c.filePtr,
-        kBtpFlags, 0, frame);
+        &mTextureSequence, data_ov002_02110a9c.filePtr, kBtpFlags, 0, frame);
     mState = 0;
     mStartPos.x = mPosX;
     mStartPos.y = mPosY;

@@ -626,7 +626,9 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
     }
     func_02012694(SND_REVERSE_AFTER_HURT, &c->mCamSpacePosX);
     ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, (BCA_File *)gKingIceDonketuHitAnimationFile.filePtr, 4, 0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuHitAnimationFile.filePtr, 4, 0x40000000,
+        0x1000, 0);
     c->mBlendModelAnim.speed = 0x1000;
     c->mPhase = 2;
     c->mStateParam = 0x2000;
@@ -873,7 +875,8 @@ int daKing_Donketu_c::func_ov073_0211fe8c() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212000cEv
 short daKing_Donketu_c::func_ov073_0212000c() {
     daKing_Donketu_c *c = this;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDeadAnimationFile.filePtr, 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDeadAnimationFile.filePtr, 4, 0, 0x1000, 0);
     c->mStateTimer = 0x32;
     return 1;
 }
@@ -898,7 +901,8 @@ int daKing_Donketu_c::func_ov073_02120098() {
     daKing_Donketu_c *c = this;
     c->mEdgeRecovered = 0;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr, 4, 0x40000000, 0x1000, 0);
+        &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr, 4, 0x40000000,
+        0x1000, 0);
     return 1;
 }
 
@@ -922,7 +926,9 @@ int daKing_Donketu_c::func_ov073_021200e0()
     u16 state = thiz->mStateTimer;
     if (state != 0) {
         if (state == 1) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, (BCA_File *)gKingIceDonketuJumpStAnimationFile.filePtr, 4, 0x40000000, 0x1000, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                &thiz->mBlendModelAnim, (BCA_File *)gKingIceDonketuJumpStAnimationFile.filePtr, 4,
+                0x40000000, 0x1000, 0);
             thiz->mBlendModelAnim.speed = 0x1000;
             thiz->mVertSpeed = 0x46000;
             thiz->mLandedWaypoint = 0xff;
@@ -985,7 +991,9 @@ int daKing_Donketu_c::func_ov073_021200e0()
         if (thiz->mHitsRemaining == 1 && thiz->mEdgeRecovered == 0) {
             thiz->mLandedWaypoint = 0;
             if (thiz->mStateScratch == 0) {
-                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, (BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr, 4, 0x40000000, 0x1000, 0);
+                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+                    &thiz->mBlendModelAnim, (BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr,
+                    4, 0x40000000, 0x1000, 0);
             }
             thiz->mStateScratch += 1;
             if (thiz->mStateScratch < 0x82) {
@@ -1038,7 +1046,9 @@ int daKing_Donketu_c::func_ov073_021203ac()
             *p = *p & 7;
         }
 
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0,
+            0x1000, 0);
         c->mBlendModelAnim.speed = 0x2000;
     }
     return 1;
@@ -1122,7 +1132,8 @@ int daKing_Donketu_c::func_ov073_02120610() {
     if ((unsigned short)c->mStateTimer == 1) {
         c->mVertSpeed = 0x5a000;
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0, 0x1000, 0);
+            &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0,
+            0x1000, 0);
         c->mBlendModelAnim.speed = 0x2000;
     }
     return 1;
@@ -1289,7 +1300,8 @@ int daKing_Donketu_c::func_ov073_02120910()
 int daKing_Donketu_c::func_ov073_02120ad8()
 {
     daKing_Donketu_c *t = this;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &t->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x4000;
     t->mAngleX = 0;
     t->mStateScratch = 0;
@@ -1335,7 +1347,8 @@ int daKing_Donketu_c::func_ov073_02120b78() {
 int daKing_Donketu_c::func_ov073_02120c08()
 {
     daKing_Donketu_c *t = this;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &t->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x4000;
     t->mHorzSpeed = 0x14000;
     t->mVertSpeed = 0x1e000;
@@ -1384,7 +1397,6 @@ int daKing_Donketu_c::func_ov073_02120c7c()
     return 1;
 }
 
-
 /* ..33a0 enter: animation gKingIceDonketuDamageAnimationFile.filePtr at speed 0x1000; mPrevAngleY
    = the angle to the player + 0x8000. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120d80Ev
@@ -1397,7 +1409,9 @@ int daKing_Donketu_c::func_ov073_02120d80()
 
     fix = 0x1000;
     t = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0x40000000, fix, t);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr, 4, 0x40000000,
+        fix, t);
     c->mBlendModelAnim.speed = fix;
     ang = c->HorzAngleToCPlayer();
     short *py = &c->mPrevAngleY;
@@ -1430,12 +1444,13 @@ int daKing_Donketu_c::func_ov073_02120dec() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120e60Ev
 int daKing_Donketu_c::func_ov073_02120e60() {
     daKing_Donketu_c *c = this;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
-  c->mBlendModelAnim.speed = 0x2000;
-  c->mTargetAngle = Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->mSpawnPosX);
-  c->mStateScratch = 0;
-  c->mPrevAngleY = c->mAngleY;
-  return 1;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
+    c->mBlendModelAnim.speed = 0x2000;
+    c->mTargetAngle = Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->mSpawnPosX);
+    c->mStateScratch = 0;
+    c->mPrevAngleY = c->mAngleY;
+    return 1;
 }
 
 /* ..3360 update, the chase, in legs selected by mPhase. mNoGroundAhead being
@@ -1556,7 +1571,8 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
         c->mPrevAngleY = c->mAngleY;
         c->mStateTimer = 0x1e;
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
+            &c->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000,
+            0);
         c->mBlendModelAnim.speed = 0x2000;
         c->mStateScratch = 0;
         c->mPhase = 0;
@@ -1582,7 +1598,8 @@ int daKing_Donketu_c::func_ov073_0212122c()
     t->mStateTimer = 0;
     t->mPhase = 0;
     t->mStateParam = 0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+        &t->mBlendModelAnim, (BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr, 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x2000;
     return 1;
 }

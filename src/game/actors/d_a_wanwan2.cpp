@@ -510,8 +510,8 @@ extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
    animation from data_ov100_021486ac. Was a C source. */
 extern "C" int func_ov100_02143ae0(daWanwan2_c *c)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&c->mModelAnim,
-        data_ov100_021486ac.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&c->mModelAnim, data_ov100_021486ac.filePtr,
+                                                0, 0x1000, 0);
     return 1;
 }
 

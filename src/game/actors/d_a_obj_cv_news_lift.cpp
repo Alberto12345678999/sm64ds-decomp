@@ -208,7 +208,8 @@ s32 daObjCvNewsLift_c::InitResources()
 
     mModel.SetFile((BMD_File *)((SharedFilePtr *)data_ov021_021149a0)->filePtr, 1, -1);
     for (int i = 0; i < 4; i++)
-        mPlatformModels[i].SetFile((BMD_File *)((SharedFilePtr *)data_ov021_021149b0)->filePtr, 1, -1);
+        mPlatformModels[i].SetFile((BMD_File *)((SharedFilePtr *)data_ov021_021149b0)->filePtr, 1,
+                                   -1);
 
     mLoweredPlatform = -1;
     UpdateModelTransforms();

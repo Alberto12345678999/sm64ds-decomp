@@ -191,8 +191,8 @@ void daPgBby_c::func_ov072_02121cdc()
 int daPgBby_c::func_ov072_02121c94()
 {
     mSubState = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)gPenguinBabyWaitAnimationFile.filePtr,
-                                                0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)gPenguinBabyWaitAnimationFile.filePtr, 0, 0x1000, 0);
     mStateId = 0;
     return 1;
 }
@@ -273,8 +273,8 @@ int daPgBby_c::func_ov072_02121a28()
 {
     mHorzSpeed = 0x19000;
     mVertSpeed = 0xc000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)gPenguinBabyDiveAnimationFile.filePtr,
-                                                0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)gPenguinBabyDiveAnimationFile.filePtr, 0x40000000, 0x1000, 0);
     mSubState = 0;
     mStateId = 1;
     return 1;
@@ -297,7 +297,8 @@ int daPgBby_c::func_ov072_021218dc()
         mHorzSpeed -= 0x3000;
         if (mHorzSpeed < 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim, (BCA_File *)gPenguinBabyStandUpAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+                &mModelAnim, (BCA_File *)gPenguinBabyStandUpAnimationFile.filePtr, 0x40000000,
+                0x1000, 0);
             mHorzSpeed = 0;
             mSubState++;
         }
@@ -322,8 +323,8 @@ int daPgBby_c::func_ov072_021218dc()
 /* State 2, enter: picked up. */
 int daPgBby_c::func_ov072_02121890()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)gPenguinBabyWaitAnimationFile.filePtr,
-                                                0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)gPenguinBabyWaitAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mStateId = 2;
     return 1;
@@ -373,8 +374,8 @@ animate:
 /* State 3, enter. */
 int daPgBby_c::func_ov072_02121758()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)gPenguinBabyWalkAnimationFile.filePtr,
-                                                0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)gPenguinBabyWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0x5000;
     mStateId = 3;

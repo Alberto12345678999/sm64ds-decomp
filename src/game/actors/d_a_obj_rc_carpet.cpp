@@ -145,8 +145,7 @@ int daObjRcCarpet_c::InitResources()
     mModelAnim.SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gRcCarpetWaitAnimationFile);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)gRcCarpetWaitAnimationFile.filePtr,
-        0, 0x1000, 0);
+        &mModelAnim, (BCA_File *)gRcCarpetWaitAnimationFile.filePtr, 0, 0x1000, 0);
     func_ov036_021122c0(this);
     UpdateClsnPosAndRot();
     KCL_File *collisionFile =

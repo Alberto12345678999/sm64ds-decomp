@@ -396,14 +396,12 @@ s32 daDsnBase_c::Init()
     if (texAnim != 0) {
         TextureSequence::LoadFile(*texAnim);
         files = (DsnBaseFileTable *)mFileTable;
-        TextureSequence::Prepare(
-            *(BMD_File *)files->model->filePtr,
-            *(BTP_File *)files->texAnim->filePtr);
+        TextureSequence::Prepare(*(BMD_File *)files->model->filePtr,
+                                 *(BTP_File *)files->texAnim->filePtr);
         files = (DsnBaseFileTable *)mFileTable;
         texAnim = files->texAnim;
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, (BTP_File *)texAnim->filePtr,
-            0x40000000, 0x1000, 0);
+            &mTextureSequence, (BTP_File *)texAnim->filePtr, 0x40000000, 0x1000, 0);
     }
 
     if (!mShadowModel.InitCuboid())

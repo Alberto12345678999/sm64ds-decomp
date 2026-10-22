@@ -574,7 +574,8 @@ void daBook_c::func_ov020_02111c30()
     }
 
     if (mModelAnim.Finished()) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File*)data_ov020_02114ab0.filePtr, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+            &mModelAnim, (BCA_File *)data_ov020_02114ab0.filePtr, 0, 0x1000, 0);
         mState = STATE_FLY;
         mHorzSpeed = 0;
         func_ov020_021112b0();
@@ -634,10 +635,11 @@ void daBook_c::func_ov020_02111ee0()
   if(ApproachLinear(mAngleX, -0x2000, 0x200)){
     int s;
     mHorzSpeed = 0;
-    s = mModelAnim.SetFile((BMD_File*)data_ov020_02114aa0.filePtr, 1, -1);
+    s = mModelAnim.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
     if(s == 0) return;
     mState = STATE_WIND_UP;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File*)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim, (BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
     mUsesModelAnim = 1;
     mStateTimer = 0;
     {
@@ -863,7 +865,7 @@ int daBook_c::InitResources()
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
 
-    if (mModel.SetFile((BMD_File*)data_ov020_02114ab8.filePtr, 1, -1) == 0)
+    if (mModel.SetFile((BMD_File *)data_ov020_02114ab8.filePtr, 1, -1) == 0)
         return 0;
 
     mShadowMat = IDENTITY_MATRIX4X3;

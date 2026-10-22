@@ -370,8 +370,8 @@ int daYurei_Mucho_c::func_ov065_021168a8()
 {
     mTargetAngle = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
-        data_ov065_0211d600.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d600.filePtr, 0, 0x1000,
+                                                0);
     return 1;
 }
 
@@ -491,8 +491,8 @@ int daYurei_Mucho_c::func_ov065_021165d8()
 short daYurei_Mucho_c::func_ov065_02116588()
 {
     mShotCount = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
-        data_ov065_0211d608.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d608.filePtr,
+                                                0x40000000, 0x1000, 0);
     mStateTimer = 0;
     return 1;
 }
@@ -546,8 +546,8 @@ int daYurei_Mucho_c::func_ov065_02116364()
                 func_ov065_0211691c((State *)data_ov065_0211d670);
             } else {
                 mStateTimer = 0x32;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
-                    data_ov065_0211d600.filePtr, 0, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                    &mModelAnim, data_ov065_0211d600.filePtr, 0, 0x1000, 0);
                 func_ov065_0211691c((State *)&data_ov065_0211d680);
             }
         } else {

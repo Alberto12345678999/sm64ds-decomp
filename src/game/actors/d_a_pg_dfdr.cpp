@@ -164,8 +164,8 @@ s32 daPgDfdr_c::InitResources()
     TextureSequence::LoadFile(*(SharedFilePtr *)&data_ov027_02113c94);
     TextureSequence::Prepare(*(BMD_File *)data_ov027_02113c7c.filePtr,
                              *(BTP_File *)data_ov027_02113c94.filePtr);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, data_ov027_02113c94.filePtr, 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence,
+                                                       data_ov027_02113c94.filePtr, 0, 0x1000, 0);
 
     mAngleY = (short)0xdd30;
     mPrevAngleY = mAngleY;
@@ -275,7 +275,8 @@ void daPgDfdr_c::func_ov027_02111cfc()
 /* State 0 enter: pause-and-turn clip, 20 frames, unk_3d0 = 0. */
 extern "C" int func_ov027_02111ca8(daPgDfdr_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c84.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c84.filePtr, 0,
+                                                0x1000, 0);
     self->mModelAnim.speed = 0x1000;
     self->mTimer = 20;
     self->unk_3d0 = 0;
@@ -305,10 +306,12 @@ extern "C" void func_ov027_02111b2c(daPgDfdr_c *self)
     self->mHorzSpeed = data_ov027_02113a1c[self->mStepIndex].speed;
     self->mPrevAngleY = data_ov027_02113a1c[self->mStepIndex].startHeading;
     if (data_ov027_02113a1c[self->mStepIndex].startHeading != data_ov027_02113a1c[self->mStepIndex].endHeading) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c8c.filePtr, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c8c.filePtr,
+                                                    0, 0x1000, 0);
         self->mModelAnim.speed = 0x1000;
     } else {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c74.filePtr, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c74.filePtr,
+                                                    0, 0x1000, 0);
         self->mModelAnim.speed = FX_MUL(data_ov027_02113a1c[self->mStepIndex].speed, 0x5000);
     }
     self->unk_3d0 = 1;

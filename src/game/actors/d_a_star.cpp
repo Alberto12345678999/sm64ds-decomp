@@ -548,8 +548,10 @@ s32 daStar_c::InitResources()
         mMarkerType = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110964.filePtr, 0x40000000, 0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov002_02110964.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110964.filePtr,
+                                                0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov002_02110964.filePtr,
+                                                0x40000000, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
 
@@ -1439,9 +1441,11 @@ void daStar_c::func_ov002_020ea100() {
         func_ov002_020e9464();
 
         if (common->mIsUnderwater != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110924.filePtr, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110924.filePtr,
+                                                        0x40000000, 0x1000, 0);
         } else {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.filePtr,
+                                                        0x40000000, 0x1000, 0);
         }
 
         {
@@ -3328,8 +3332,10 @@ void daStar_c::func_ov002_020e6fbc(int arg) {
 void daStar_c::func_ov002_020e6edc() {
     struct Vector3 v;
     mKind = KIND_8;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, (struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, (struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim1, (struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim2, (struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
     v.x = data_ov002_0210aa0c[0];
     v.y = data_ov002_0210aa0c[1];
     v.z = data_ov002_0210aa0c[2];
@@ -3347,8 +3353,10 @@ void daStar_c::func_ov002_020e6edc() {
  * in STATE_COLLECT_HOLD. */
 void daStar_c::func_ov002_020e6df8() {
   mKind = KIND_9;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.filePtr, 0x40000000,
+                                              0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov002_02110944.filePtr, 0x40000000,
+                                              0x1000, 0);
   {
     Vector3 v;
     v.x = data_ov002_0210aa0c[0];

@@ -92,8 +92,7 @@ int daObjC0Water_c::InitResources()
     Model::LoadFile(data_ov012_021124d0);
     dBgW_Kc::LoadFile(data_ov012_021124c8);
     mModel.SetFile((BMD_File *)data_ov012_021124d0.filePtr, 1, 0x14);
-    TextureTransformer::Prepare(*(BMD_File *)data_ov012_021124d0.filePtr,
-                                data_ov012_02111c24);
+    TextureTransformer::Prepare(*(BMD_File *)data_ov012_021124d0.filePtr, data_ov012_02111c24);
     /* 6az: header SetFile takes Fix12<int> by value. */
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &mTextureTransformer, &data_ov012_02111c24, 0, 0x1000, 0);
@@ -101,9 +100,8 @@ int daObjC0Water_c::InitResources()
     UpdateClsnPosAndRot();
     /* 6az: header SetFile takes Fix12<int> by value. */
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        (KCL_File *)data_ov012_021124c8.filePtr,
-        &mClsnMat, 0x1000, mAngleY, &data_ov012_02111c90);
+        &mMeshCollider, (KCL_File *)data_ov012_021124c8.filePtr, &mClsnMat, 0x1000, mAngleY,
+        &data_ov012_02111c90);
     mMeshCollider.Enable(this);
     mLoweredY = mPosY - 0x4b0000;
     if (data_0209caa0[2] & 0x80000) {

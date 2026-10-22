@@ -116,7 +116,8 @@ int daObjWc_Mizu_c::InitResources()
 
     m = Model::LoadFile(daObjWc_Obj07_c_ModelFile);
     mModel.SetFile((BMD_File *)m, 1, -1);
-    TextureTransformer::Prepare(*(BMD_File *)daObjWc_Obj07_c_ModelFile.filePtr, data_ov029_02112fb8);
+    TextureTransformer::Prepare(*(BMD_File *)daObjWc_Obj07_c_ModelFile.filePtr,
+                                data_ov029_02112fb8);
     /* 6az: header SetFile takes Fix12<int> by value. */
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &mTextureTransformer, &data_ov029_02112fb8, 0, 0x1000, 0);

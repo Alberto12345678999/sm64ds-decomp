@@ -538,12 +538,12 @@ int daTrsTrap_c::InitResources()
         int m = mIndex;
         if (m == 3) {
             _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMovingMeshCollider, data_ov063_0211e28c[m]->filePtr,
-                &mClsnMat, 0x1000, mAngleY, data_ov063_0211e9e8[m]);
+                &mMovingMeshCollider, data_ov063_0211e28c[m]->filePtr, &mClsnMat, 0x1000, mAngleY,
+                data_ov063_0211e9e8[m]);
         } else {
             _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMovingMeshCollider, data_ov063_0211e28c[m]->filePtr,
-                &mClsnMat, 0x199, mAngleY, data_ov063_0211e9e8[m]);
+                &mMovingMeshCollider, data_ov063_0211e28c[m]->filePtr, &mClsnMat, 0x199, mAngleY,
+                data_ov063_0211e9e8[m]);
         }
     }
 

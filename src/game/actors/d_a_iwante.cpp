@@ -502,18 +502,14 @@ int Eyerok::func_ov066_0211603c()
             if (mHitPoints > 0) {
                 if (mPartIdx == PART_HAND_2) {
                     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                        &mBlendModelAnim, data_ov066_0211ae5c.filePtr, 4, 0x40000000,
-                        0x1000, 0);
+                        &mBlendModelAnim, data_ov066_0211ae5c.filePtr, 4, 0x40000000, 0x1000, 0);
                     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                        &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000,
-                        0);
+                        &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
                 } else {
                     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                        &mBlendModelAnim, data_ov066_0211ae84.filePtr, 4, 0x40000000,
-                        0x1000, 0);
+                        &mBlendModelAnim, data_ov066_0211ae84.filePtr, 4, 0x40000000, 0x1000, 0);
                     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                        &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000,
-                        0);
+                        &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
                 }
                 func_02012694(SE_HAND_HIT, &mCamSpacePosX);
                 return 1;
@@ -581,15 +577,19 @@ void Eyerok::func_ov066_02116390()
         return;
     if (mTexPhase == 0) {
         if (mPartIdx == PART_HAND_2)
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+                &mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
         else
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+                &mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
         mTexTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 0xf) * 2 + 0x32;
     } else {
         if (mPartIdx == PART_HAND_2)
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+                &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
         else
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+                &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
         mTexTimer = 8;
     }
     mTexPhase ^= 1;
@@ -611,9 +611,11 @@ void Eyerok::func_ov066_021164ec()
     mFlags = 0x10000000;
     mdCcAcPos_c.flags |= 2;
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211ae64.filePtr, 4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211ae64.filePtr, 4, 0, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211ae44.filePtr, 4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211ae44.filePtr, 4, 0, 0x1000, 0);
     }
     mStateWork1 = 1;
 }
@@ -658,22 +660,28 @@ void Eyerok::func_ov066_021166c8()
 {
 
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
     }
 
     if (mMeshCollider2.IsEnabled() != 0)
         mMeshCollider2.Disable();
 
     if (mPartIdx == PART_HAND_1) {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae34.filePtr, &mClsnMat2, 0x199,
-                                   mAngleY, &data_ov025_02112cc8);
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+            &mMeshCollider2, data_ov066_0211ae34.filePtr, &mClsnMat2, 0x199, mAngleY,
+            &data_ov025_02112cc8);
     } else {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae1c.filePtr, &mClsnMat2, 0x199,
-                                   mAngleY, &data_ov025_02112c88);
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+            &mMeshCollider2, data_ov066_0211ae1c.filePtr, &mClsnMat2, 0x199, mAngleY,
+            &data_ov025_02112c88);
     }
 
     func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
@@ -867,9 +875,11 @@ int Eyerok::func_ov066_02116d14()
     mSubState = 0;
     mHorzSpeed = -0xa000;
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211aea4.filePtr, 4, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211aea4.filePtr, 4, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211ae8c.filePtr, 4, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211ae8c.filePtr, 4, 0x40000000, 0x1000, 0);
     }
     return 1;
 }
@@ -963,12 +973,12 @@ int Eyerok::func_ov066_02116db0()
                 mMeshCollider2.Disable();
             if (mPartIdx == PART_HAND_1)
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199,
-                    mAngleY, &data_ov025_02112c08);
+                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
+                    &data_ov025_02112c08);
             else
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199,
-                    mAngleY, &data_ov025_02112d48);
+                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
+                    &data_ov025_02112d48);
             func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
@@ -1330,12 +1340,12 @@ int Eyerok::func_ov066_021175e8()
                 mMeshCollider2.Disable();
             if (mPartIdx == PART_HAND_1)
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199,
-                    mAngleY, &data_ov025_02112c08);
+                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
+                    &data_ov025_02112c08);
             else
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199,
-                    mAngleY, &data_ov025_02112d48);
+                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
+                    &data_ov025_02112d48);
             func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
@@ -1512,12 +1522,12 @@ int Eyerok::func_ov066_02117bf0()
                 mMeshCollider2.Disable();
             if (mPartIdx == PART_HAND_1)
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199,
-                    mAngleY, &data_ov025_02112c08);
+                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
+                    &data_ov025_02112c08);
             else
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199,
-                    mAngleY, &data_ov025_02112d48);
+                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
+                    &data_ov025_02112d48);
             func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
@@ -1656,12 +1666,12 @@ int Eyerok::func_ov066_02118188()
 
         if (mPartIdx == PART_HAND_1) {
             _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199,
-                mAngleY, &data_ov025_02112c08);
+                &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
+                &data_ov025_02112c08);
         } else {
             _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199,
-                mAngleY, &data_ov025_02112d48);
+                &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
+                &data_ov025_02112d48);
         }
 
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
@@ -1838,11 +1848,15 @@ int Eyerok::func_ov066_02118678()
 int Eyerok::func_ov066_021187c8()
 {
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211ae74.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211ae74.filePtr, 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov066_0211ae7c.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
+            &mBlendModelAnim, data_ov066_0211ae7c.filePtr, 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
     }
     mBlendModelAnim.speed = 0;
     mStateWork0 = 0;
@@ -2679,14 +2693,18 @@ int Eyerok::InitResources()
     case 1:
         if (mBlendModelAnim.SetFile((BMD_File *)data_ov066_0211ae4c.filePtr, 1, -1) == 0)
             return 0;
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.filePtr, *(BTP_File *)data_ov066_0211aebc.filePtr);
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.filePtr, *(BTP_File *)data_ov066_0211ae9c.filePtr);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.filePtr,
+                                 *(BTP_File *)data_ov066_0211aebc.filePtr);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.filePtr,
+                                 *(BTP_File *)data_ov066_0211ae9c.filePtr);
         break;
     case 2:
         if (mBlendModelAnim.SetFile((BMD_File *)data_ov066_0211aeb4.filePtr, 1, -1) == 0)
             return 0;
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.filePtr, *(BTP_File *)data_ov066_0211ae3c.filePtr);
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.filePtr, *(BTP_File *)data_ov066_0211ae2c.filePtr);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.filePtr,
+                                 *(BTP_File *)data_ov066_0211ae3c.filePtr);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.filePtr,
+                                 *(BTP_File *)data_ov066_0211ae2c.filePtr);
         break;
     }
 
@@ -2741,7 +2759,9 @@ int Eyerok::InitResources()
         data_ov066_0211abe4 = 1;
         data_ov066_0211ae04 = PHASE_DORMANT;
         data_ov066_0211abe0 = HANDS_BOTH;
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae24.filePtr, &mClsnMat2, 0x199, mAngleY, &data_ov025_02112ca8);
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+            &mMeshCollider2, data_ov066_0211ae24.filePtr, &mClsnMat2, 0x199, mAngleY,
+            &data_ov025_02112ca8);
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
         func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
         mMeshCollider2.Enable(this);
@@ -2755,10 +2775,14 @@ int Eyerok::InitResources()
         mSpawnPosY = mPosY;
         mSpawnPosZ = mPosZ;
         if (mPartIdx == PART_HAND_1) {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY, &data_ov025_02112c08);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+                &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
+                &data_ov025_02112c08);
             mRestPosX -= 0x31F000;
         } else {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY, &data_ov025_02112d48);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+                &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
+                &data_ov025_02112d48);
             mRestPosX += 0x31F000;
         }
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);

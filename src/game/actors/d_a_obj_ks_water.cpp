@@ -99,8 +99,7 @@ extern "C" daObjKsWater_c *daObjKsWater_c_classInit()
 int daObjKsWater_c::InitResources()
 {
     mModel.SetFile((BMD_File *)Model::LoadFile(data_ov017_02111c88), 1, -1);
-    TextureTransformer::Prepare(*(BMD_File *)data_ov017_02111c88.filePtr,
-                                data_ov017_02111a60);
+    TextureTransformer::Prepare(*(BMD_File *)data_ov017_02111c88.filePtr, data_ov017_02111a60);
     /* 6az: header SetFile takes Fix12<int> by value. */
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &mTextureTransformer, &data_ov017_02111a60, 0, 0x1000, 0);

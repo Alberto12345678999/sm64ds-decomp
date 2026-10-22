@@ -390,7 +390,8 @@ int daWater_Tatumaki_c::InitResources()
     mCenter.z = mPosZ;
     mCenter.y -= kFunnelDepth;
 
-    ModelAnim_SetAnim(&mModelAnim, (BCA_File *)gWaterTatumakiAnimationFile.filePtr, 0, kAnimSpeed, 0);
+    ModelAnim_SetAnim(&mModelAnim, (BCA_File *)gWaterTatumakiAnimationFile.filePtr, 0, kAnimSpeed,
+                      0);
 
     func_ov026_02111ee0(this, STATE_SPIN);
     return 1;

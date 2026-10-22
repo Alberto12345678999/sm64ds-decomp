@@ -147,13 +147,19 @@ s32 daFRing_c::InitResources()
     func_02016b24(&mModelAnim1, 0x4000);
     func_02016b24(&mModelAnim2, 0x4000);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, (BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, (BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim1, (BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        &mModelAnim2, (BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
 
-    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, *(BTP_File *)data_ov060_0211b200.filePtr);
-    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, *(BTP_File *)data_ov060_0211b200.filePtr);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence1, (BTP_File *)data_ov060_0211b200.filePtr, 0x40000000, 0x1000, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence2, (BTP_File *)data_ov060_0211b200.filePtr, 0x40000000, 0x1000, 0);
+    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr,
+                             *(BTP_File *)data_ov060_0211b200.filePtr);
+    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr,
+                             *(BTP_File *)data_ov060_0211b200.filePtr);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &mTextureSequence1, (BTP_File *)data_ov060_0211b200.filePtr, 0x40000000, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &mTextureSequence2, (BTP_File *)data_ov060_0211b200.filePtr, 0x40000000, 0x1000, 0);
 
     MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115e4);
     MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115e4);

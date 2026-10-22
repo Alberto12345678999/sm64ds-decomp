@@ -421,7 +421,8 @@ int daGmch_c::EnterState8()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.filePtr, 0, 0x1000,
+                                                0);
     mModelAnim.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, mPosX, mPosY + yOffset1, mPosZ);
@@ -582,7 +583,8 @@ int daGmch_c::EnterState5()
     extern GmchAnimationFileHandle data_ov081_02128edc;
 
     mHorzSpeed = 0xa000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.filePtr, 0, 0x1000,
+                                                0);
     mModelAnim.speed = 0x1000;
     mStateIndex = 5;
     return 1;
@@ -607,7 +609,8 @@ int daGmch_c::EnterState4()
 {
     extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpEndAnimationFile.filePtr,
+                                                0x40000000, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 4;
@@ -649,7 +652,8 @@ int daGmch_c::EnterState3()
     extern int data_0209e650[];
 
     mFlags &= ~1;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpAnimationFile.filePtr,
+                                                0x40000000, 0x1000, 0);
     mModelAnim.currFrame = 0;
     mAngleY = (short)RandomIntInternal(data_0209e650);
     mPrevAngleY = mAngleY;
@@ -677,7 +681,8 @@ int daGmch_c::EnterState2()
 {
     extern GmchAnimationFileHandle gGamaguchiWalkEndAnimationFile;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiWalkEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiWalkEndAnimationFile.filePtr,
+                                                0x40000000, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 2;
@@ -707,7 +712,8 @@ void daGmch_c::EnterState1()
     extern GmchAnimationFileHandle data_ov081_02128edc;
     extern int data_0209e650[];
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.filePtr, 0, 0x1000,
+                                                0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0xa000;
     mTargetAngleY = (short)RandomIntInternal(data_0209e650);
@@ -758,7 +764,8 @@ int daGmch_c::EnterState0()
 {
     extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpEndAnimationFile.filePtr, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpEndAnimationFile.filePtr,
+                                                0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mModelAnim.currFrame = 0x6000;
     mPhase = 0;

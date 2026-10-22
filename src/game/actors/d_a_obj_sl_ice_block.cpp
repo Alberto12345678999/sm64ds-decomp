@@ -157,8 +157,8 @@ int daObjSlIceBlock_c::InitResources()
         UpdateModelPosAndRotY();
         UpdateClsnPosAndRot();
         _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, *(int *)&data_ov027_02113be0.filePtr, &mClsnMat,
-            0x1000, mAngleY, data_ov027_02113108);
+            &mMeshCollider, *(int *)&data_ov027_02113be0.filePtr, &mClsnMat, 0x1000, mAngleY,
+            data_ov027_02113108);
         func_020393d4((int *)&mMeshCollider,
             (int)&dBgW::UpdatePosWithVelocity);
         mMeshCollider.edgeContacts = false;
