@@ -19,13 +19,6 @@ A lot of people have put real time into this. Thank you to everyone in [CREDITS.
 
 ## Progress
 
-<!-- progress:start -->
-```
-Functions  ██████████████████████████████  100.0%   11,389 / 11,389
-Code size  ██████████████████████████████  100.0%   2,238,108 / 2,238,108 bytes
-```
-<!-- progress:end -->
-
 <!-- tiers:start -->
 ```
 MATCHED    ██████████████████████████████  100.0%   11,389 / 11,389 functions
