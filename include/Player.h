@@ -1031,11 +1031,12 @@ struct Player : dActor_c {
 
     /* The two music layers documented at mPowerupMusic. The argument is the
        layer id being started, or the one being ended -- ending only acts when
-       that id is the one currently playing. */
-    void EndStateMusic(u32 music);
-    void StartStateMusic(u32 music);
-    void EndPowerupMusic(u32 music);
-    void StartPowerupMusic(u32 music);
+       that id is the one currently playing. Unnamed, like the declarations
+       below, so Player.h consumers keep their @NNN numbering. */
+    void EndStateMusic(u32);
+    void StartStateMusic(u32);
+    void EndPowerupMusic(u32);
+    void StartPowerupMusic(u32);
     /* Player state helpers in the 0x020d2f24..0x020db8d8 span (method review
        020d2f24-020db8d8). Address-named Player methods, verified against the
        ROM bodies; parameters stay unnamed so the 258 Player.h consumers keep
