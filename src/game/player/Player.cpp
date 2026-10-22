@@ -70,15 +70,18 @@ bool ApproachLinear(short &value, short target, short step);
  * Shadow types and ABI stand-ins that cannot live inside a function body.
  *
  * Everything here is either hoisted for the C++ rule spelled out further down
- * or load-bearing for codegen, and each one says which.  It is NOT a parking
- * lot for POD twins of real types: Vector3 is usable directly, including its
- * (x, y, z) constructor, as long as the locals keep the ROM's declaration
- * order.
+ * or load-bearing for codegen.  It is NOT a parking lot for POD twins of real
+ * types: Vector3 is usable directly, including its (x, y, z) constructor, as
+ * long as the locals keep the ROM's declaration order.  The exception is the
+ * one include/types.h records at Vector3's constructors: a whole-struct copy
+ * can lower memberwise instead of as a block move, and there a twin can still
+ * be load-bearing.
  * ------------------------------------------------------------------------- */
 struct V3Quad { Vector3 a; Vector3 d; Vector3 e; Vector3 b; };
 /* A stand-in for Fix12<int>, and load-bearing as a CLASS rather than as a
- * name: func_ov002_020bf800 passes three of these by value, and the ROM
- * stores them to sp+0xc..0x14 and reloads them for the call. Plain Fix12i
+ * name: func_ov002_020bf800 builds three of these and passes each as an int
+ * read through its address. The ROM stores x, y and z to sp+0xc..0x14 and
+ * reloads x and y from there for the call (z goes out from a register). Plain Fix12i
  * locals -- or passing xv/yv/zv straight to the callee -- keep all three in
  * registers and shrink that function from 140 bytes to 120. Measured both
  * ways; it stays until Fix12<int> itself is reconstructed. */
@@ -5057,8 +5060,8 @@ ret0:
 
 // @symbol func_ov002_020c51d0
 extern "C" {
-/* The look-at target: daTrs_c fills the argument from its own mPos before
-   calling, and daHanachan_c passes the segment it wants Mario to face. */
+/* The look-at target: daTrs_c passes its own mPos with x negated and y raised
+   by 0xc8000, and daHanachan_c passes the segment it wants Mario to face. */
 int func_ov002_020c51d0(char *c, Vector3 *st) {
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern Player::State data_ov002_0211046c;
