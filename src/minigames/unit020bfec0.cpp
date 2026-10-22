@@ -390,11 +390,11 @@ extern int data_ov006_0213aee8[12];
    function keeps its own. Shapes and parameter spellings are unchanged -- the
    TU's generated-name counter runs on declaration order. */
 struct Obj {
-    virtual void Destructor1() = 0;              /* slot 0 */
-    virtual void Destructor0() = 0;              /* slot 1 */
-    virtual void DoSetFile() = 0;                /* slot 2 */
-    virtual void UpdateVerts() = 0;              /* slot 3 */
-    virtual void Virtual10() = 0;                /* slot 4 */
+    virtual void Destructor1() = 0; /* slot 0 */
+    virtual void Destructor0() = 0; /* slot 1 */
+    virtual void DoSetFile() = 0;   /* slot 2 */
+    virtual void UpdateVerts() = 0; /* slot 3 */
+    virtual void Virtual10() = 0;   /* slot 4 */
     /* slot 5. The null scale is spelled as an int here, not Vector3 *. */
     virtual void Render(int a) = 0;
 };
@@ -769,12 +769,12 @@ extern "C" {}
    function keeps its own. Shapes and parameter spellings are unchanged -- the
    TU's generated-name counter runs on declaration order. */
 struct Obj {
-    virtual void Destructor1();                  /* slot 0 */
-    virtual void Destructor0();                  /* slot 1 */
-    virtual void DoSetFile();                    /* slot 2 */
-    virtual void UpdateVerts();                  /* slot 3 */
-    virtual void Virtual10();                    /* slot 4 */
-    virtual void Render(Vector3 *v);             /* slot 5 */
+    virtual void Destructor1();      /* slot 0 */
+    virtual void Destructor0();      /* slot 1 */
+    virtual void DoSetFile();        /* slot 2 */
+    virtual void UpdateVerts();      /* slot 3 */
+    virtual void Virtual10();        /* slot 4 */
+    virtual void Render(Vector3 *v); /* slot 5 */
 };
 extern "C" void FallingPetal_Draw(char *c) {
     FallingPetal_UpdateMatrix(c);
@@ -1060,11 +1060,11 @@ extern char sPresenterScale;
    TU's generated-name counter runs on declaration order. */
 struct Obj {
     void *vt;
-    virtual void Destructor1();                  /* slot 0 */
-    virtual void Destructor0();                  /* slot 1 */
-    virtual void DoSetFile();                    /* slot 2 */
-    virtual void UpdateVerts();                  /* slot 3 */
-    virtual void Virtual10();                    /* slot 4 */
+    virtual void Destructor1(); /* slot 0 */
+    virtual void Destructor0(); /* slot 1 */
+    virtual void DoSetFile();   /* slot 2 */
+    virtual void UpdateVerts(); /* slot 3 */
+    virtual void Virtual10();   /* slot 4 */
     /* slot 5; the scale argument stays void * here. */
     virtual void Render(void *arg);
 };
@@ -1594,10 +1594,10 @@ extern Matrix4x3 data_020a0e68;
    function keeps its own. Shapes and parameter spellings are unchanged -- the
    TU's generated-name counter runs on declaration order. */
 struct Vtbl {
-    virtual void Destructor1();                  /* slot 0 */
-    virtual void Destructor0();                  /* slot 1 */
-    virtual void DoSetFile();                    /* slot 2 */
-    virtual void UpdateVerts();                  /* slot 3 -> offset 0xc */
+    virtual void Destructor1(); /* slot 0 */
+    virtual void Destructor0(); /* slot 1 */
+    virtual void DoSetFile();   /* slot 2 */
+    virtual void UpdateVerts(); /* slot 3 -> offset 0xc */
 };
 
 /* The bone matrices, read at bone 6 (0x120 = 6 * 0x30), the head. */
@@ -1858,11 +1858,11 @@ extern "C" {}
    function keeps its own. Shapes and parameter spellings are unchanged -- the
    TU's generated-name counter runs on declaration order. */
 struct Obj {
-    virtual void Destructor1() = 0;              /* slot 0 */
-    virtual void Destructor0() = 0;              /* slot 1 */
-    virtual void DoSetFile() = 0;                /* slot 2 */
-    virtual void UpdateVerts() = 0;              /* slot 3 */
-    virtual void Virtual10() = 0;                /* slot 4 */
+    virtual void Destructor1() = 0; /* slot 0 */
+    virtual void Destructor0() = 0; /* slot 1 */
+    virtual void DoSetFile() = 0;   /* slot 2 */
+    virtual void UpdateVerts() = 0; /* slot 3 */
+    virtual void Virtual10() = 0;   /* slot 4 */
     /* slot 5. The null scale is spelled as an int here, not Vector3 *. */
     virtual void Render(int a) = 0;
 };
@@ -2049,7 +2049,7 @@ struct V {
     virtual void v18();
     virtual void v19();
     virtual void v20();
-    virtual void OnDealDone();  /* slot 21 */
+    virtual void OnDealDone(); /* slot 21 */
 };
 
 /* local extern: only slot 21, dScMgBase_c::OnDealDone, is called, through
@@ -2689,10 +2689,10 @@ extern Matrix4x3 data_020a0e68;
    function keeps its own. Shapes and parameter spellings are unchanged -- the
    TU's generated-name counter runs on declaration order. */
 struct Base {
-    virtual void Destructor1();                  /* slot 0 */
-    virtual void Destructor0();                  /* slot 1 */
-    virtual void DoSetFile();                    /* slot 2 */
-    virtual void UpdateVerts();                  /* slot 3 -> offset 0xc */
+    virtual void Destructor1(); /* slot 0 */
+    virtual void Destructor0(); /* slot 1 */
+    virtual void DoSetFile();   /* slot 2 */
+    virtual void UpdateVerts(); /* slot 3 -> offset 0xc */
 };
 
 extern "C" void MascotWalker_UpdateMatrix(char *thiz) {

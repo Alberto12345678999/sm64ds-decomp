@@ -8293,34 +8293,35 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
 // keeps the natural reverse-arg homing (door=r4, this=r5) the ROM has. See
 // notes/mwccarm-codegen.md 6bc.
 extern "C" {
-int Player::CanEnterDoor(unsigned char door)
-{
-    extern int _ZN6Player17SetNoControlStateEhih(void*, unsigned char, int, unsigned char);
+int Player::CanEnterDoor(unsigned char door) {
+    extern int _ZN6Player17SetNoControlStateEhih(void *, unsigned char, int, unsigned char);
     extern int data_ov002_0211022c[];
     extern int data_ov002_0211013c[];
     extern int data_ov002_02110154[];
     extern int data_ov002_0211043c[];
     extern Player::State data_ov002_0211004c;
-  if (IsState(*(State *)data_ov002_0211022c)) {
-    if (!(mStateStep == 0x13 && mIsOpeningBigDoor != 0))
-      return 0;
-  }
-  if (IsState(*(State *)data_ov002_0211013c) || IsState(*(State *)data_ov002_02110154) || IsState(*(State *)data_ov002_0211022c) || IsState(*(State *)data_ov002_0211043c)) {
-    /* Yoshi with something in his mouth cannot take a door. The two codes
+    if (IsState(*(State *)data_ov002_0211022c)) {
+        if (!(mStateStep == 0x13 && mIsOpeningBigDoor != 0))
+            return 0;
+    }
+    if (IsState(*(State *)data_ov002_0211013c) || IsState(*(State *)data_ov002_02110154) ||
+        IsState(*(State *)data_ov002_0211022c) || IsState(*(State *)data_ov002_0211043c)) {
+        /* Yoshi with something in his mouth cannot take a door. The two codes
        that make him spit it out first are 6 (the enemies -- daGmch_c,
        daHuwa_c, daJgm_c, daSpd_c, daTgz_c) and 1 (daBttBk_c, the crate);
        4 -- a coin, a cap, a key, a star -- is swallowed and does not block. */
-    if (mObjInMouth != 0) {
-      if (((dActor_c *)mObjInMouth)->OnYoshiTryEat() == 6 || ((dActor_c *)mObjInMouth)->OnYoshiTryEat() == 1) {
-        this->ChangeState(data_ov002_0211004c);
-      }
-      return 0;
+        if (mObjInMouth != 0) {
+            if (((dActor_c *)mObjInMouth)->OnYoshiTryEat() == 6 ||
+                ((dActor_c *)mObjInMouth)->OnYoshiTryEat() == 1) {
+                this->ChangeState(data_ov002_0211004c);
+            }
+            return 0;
+        }
+        mStateStep = door;
+        if (_ZN6Player17SetNoControlStateEhih(this, 7, -1, 1) != 0)
+            return 1;
     }
-    mStateStep = door;
-    if (_ZN6Player17SetNoControlStateEhih(this, 7, -1, 1) != 0)
-      return 1;
-  }
-  return 0;
+    return 0;
 }
 }
 
@@ -15554,7 +15555,8 @@ int Player::func_ov002_020d6998()
     if (other == this) goto fail;
 
     if (IsCollectingCap() != 0) goto react;
-    if (((dActor_c *)other)->OnYoshiTryEat() == 0) goto react;
+    if (((dActor_c *)other)->OnYoshiTryEat() == 0)
+        goto react;
 
     {
         u8 isType = (((dActor_c *)other)->actorID == 0xbf);
@@ -16036,7 +16038,7 @@ int Player::St_YoshiPower_Main()
     Vec3s dir;
     Vec3 tmp;
     PVec pos;
-    dActor_c* obj0;
+    dActor_c *obj0;
     char* dp;
 
     if (mIsAirborne == 0) {
@@ -16092,7 +16094,7 @@ int Player::St_YoshiPower_Main()
                 ((dActor_c *)dp)->mPosX = src->x;
                 ((dActor_c *)dp)->mPosY = src->y;
                 ((dActor_c *)dp)->mPosZ = src->z;
-                dActor_c* o = *(dActor_c**)(&mObjInMouth);
+                dActor_c *o = *(dActor_c **)(&mObjInMouth);
                 int cond = (o->actorID == 0xbf);
                 if (cond != 0) {
                     o->mFlags &= ~0x20000;
@@ -16102,7 +16104,8 @@ int Player::St_YoshiPower_Main()
                 } else {
                     ((dActor_c *)o)->mFlags |= 0x40000;
                     ((dActor_c *)mObjInMouth)->mFlags &= ~0x20000;
-                    if ((*(dActor_c**)(&mObjInMouth))->OnYoshiTryEat() == 4 || (*(dActor_c**)(&mObjInMouth))->OnYoshiTryEat() == 2) {
+                    if ((*(dActor_c **)(&mObjInMouth))->OnYoshiTryEat() == 4 ||
+                        (*(dActor_c **)(&mObjInMouth))->OnYoshiTryEat() == 2) {
                         mStateStep = 3;
                         int f2 = 1;
                         mUseAltBodyModel = f2;
@@ -16118,12 +16121,12 @@ int Player::St_YoshiPower_Main()
                 int id3 = this->GetBodyModelID(this->param1 & 0xff, 0);
                 if (mBodyModels[id3]->WillHitFrame(0xc) != 0) {
                     mUseAltBodyModel = 1;
-                    if ((*(dActor_c**)(&mObjInMouth))->OnYoshiTryEat() == 5) {
+                    if ((*(dActor_c **)(&mObjInMouth))->OnYoshiTryEat() == 5) {
                         int cond2 = (((dActor_c *)mObjInMouth)->actorID == 0x132);
                         if (cond2 != 0) {
                             func_ov002_020d8118(c);
                         }
-                        (*(dActor_c**)(&mObjInMouth))->OnTurnIntoEgg(*(Player *)c);
+                        (*(dActor_c **)(&mObjInMouth))->OnTurnIntoEgg(*(Player *)c);
                         *(void**)(&mObjInMouth) = 0;
                         mFireBreaths = 1;
                     }
@@ -16131,7 +16134,7 @@ int Player::St_YoshiPower_Main()
             }
         }
         if (this->FinishedAnim() != 0) {
-            obj0 = *(dActor_c**)(&mObjInMouth);
+            obj0 = *(dActor_c **)(&mObjInMouth);
             if (obj0 != 0) {
                 if (obj0->OnYoshiTryEat() == 3) {
                     this->ChangeState(data_ov002_02110034);
@@ -16203,7 +16206,7 @@ int Player::St_YoshiPower_Main()
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
         if (mBodyModels[id7]->WillHitFrame(4) != 0) {
-            obj0 = *(dActor_c**)(&mObjInMouth);
+            obj0 = *(dActor_c **)(&mObjInMouth);
             if (obj0 != 0) {
                 int cond3 = (obj0->actorID == 0xbf);
                 if (cond3 != 0) {
