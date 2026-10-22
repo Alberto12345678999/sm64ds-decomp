@@ -113,6 +113,23 @@ void LoadAndSetMusic_Layer1(int);
 void StopLoadedMusic_Layer1(u32);
 void StopLoadedMusic_Layer2();
 
+/* The override layer Player drives: SetMusic(playerNo, music) installs a track
+   (Sound.cpp ignores any player but the local one), and Sound::EndMusic takes
+   it back off again. Player keeps two of these (mStateMusic and mPowerupMusic)
+   and lets whichever survives restart when the other ends.
+
+   The parameters are unnamed on purpose: a named parameter in this declaration
+   takes one of the compiler's @NNN numbers in every file that includes
+   Sound.h, which shifts the tu_manifest defined_symbol_renames keyed to them.
+
+   EndMusic is NOT declared here on purpose. Its ROM symbol is
+   _ZN5Sound8EndMusicEjj, two parameters, and Sound.cpp defines it that way --
+   but the second is never read and every ROM call site passes one argument, so
+   a truthful one-parameter declaration would mangle to _ZN5Sound8EndMusicEj and
+   match nothing. Correcting that is a symbol rename, not a declaration. Until
+   then its callers hand-spell the mangled name and say why. */
+void SetMusic(u32, u32);
+
 void UnsetPlayerVoiceGroup();
 
 }
