@@ -840,7 +840,9 @@ void dScMgCoin_c::Coin_StateWaitTouch(int idx) {
         return;
 
     n = idx * 0x18;
-    p1 = (int *)(self + 0x4ac4 + n);
+    /* mCoins[idx].y as `&mCoins[0].y + n`, the ROM's this + field + record
+       order; the landY copy below must use the same spelling to CSE it. */
+    p1 = (int *)((char *)&mCoins[0].y + n);
     p0 = &mCoins[idx].x;
     q1 = *p1;
     ax = gTouchX[gActivePlayerSlot * 4];
@@ -861,7 +863,7 @@ void dScMgCoin_c::Coin_StateWaitTouch(int idx) {
     ((dScMgCoin_c *)(self + n))->mCoins[0].collected = 1;
     if (((dScMgCoin_c *)(self + n))->mCoins[0].value != 0) {
         ((dScMgCoin_c *)(self + n))->mCoins[0].state = 1;
-        ((dScMgCoin_c *)(self + n))->mCoins[0].landY = *(int *)(self + 0x4ac4 + n);
+        ((dScMgCoin_c *)(self + n))->mCoins[0].landY = *(int *)((char *)&mCoins[0].y + n);
         ((dScMgCoin_c *)(self + n))->mCoins[0].vy = -0x3000;
         ((dScMgCoin_c *)(self + n))->mCoins[0].bounces = 0;
         this->KickBlockUnderCoin(idx);
@@ -882,7 +884,7 @@ void dScMgCoin_c::Coin_StateWaitTouch(int idx) {
     func_020127a4(2, 0xee, 0xffff, ang);
     Sound::PlayBank2_2D(0xf2);
 
-    *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
+    *((u8 *)&mCoins[0].state + idx * 0x18) = 2;
     stars = (gMgScene != 0) ? gMgScene->mCredits : 0;
     need = mPlayerScore;
     if (stars > need)
@@ -1067,9 +1069,10 @@ void dScMgCoin_c::Block_StateDropOnCoin(int index) {
     int new_var;
     int *pa = &mBlocks[index].vy;
     int *pb = &mBlocks[index].y;
-    /* mBlocks[index].vy; the member spelling moves bytes */
-    *pb = (*pb) + (*((int *)((thiz + 0x466c) + off)));
-    *((int *)((thiz + 0x466c) + off)) = (*pa) + 0x400;
+    /* mBlocks[index].vy as `&mBlocks[0].vy + off`, the ROM's this + field +
+       record order; mBlocks[index].vy moves bytes */
+    *pb = (*pb) + (*(int *)((char *)&mBlocks[0].vy + off));
+    *(int *)((char *)&mBlocks[0].vy + off) = (*pa) + 0x400;
     int look = sCoinBlockDropRowY[((dScMgCoin_c *)(thiz + off))->mBlocks[0].row];
     if (((*pb) >> 12) <= look) {
         return;
@@ -1103,12 +1106,13 @@ void dScMgCoin_c::Block_StateWander(int i) {
     int *pD;
 
     mBlocks[i].x += mBlocks[i].vx;
-    /* mBlocks[i].vy, here and in pD; the member spelling moves bytes */
-    mBlocks[i].y += *(int *)(c + 0x466c + n);
+    /* mBlocks[i].vy, here and in pD, as `&mBlocks[0].vy + n` (this + field
+       + record); mBlocks[i].vy builds 8 bytes longer */
+    mBlocks[i].y += *(int *)((char *)&mBlocks[0].vy + n);
     mBlocks[i].vy += 0x400;
     this->Block_ClampToWalls(i);
 
-    pD = (int *)(c + 0x466c + n);
+    pD = (int *)((char *)&mBlocks[0].vy + n);
     idxb = ((dScMgCoin_c *)(c + n))->mBlocks[0].row;
     diff = sCoinBlockWanderRowY[idxb] - sCoinBlockWanderRowHeight[idxb];
     if ((mBlocks[i].y >> 12) > diff) {

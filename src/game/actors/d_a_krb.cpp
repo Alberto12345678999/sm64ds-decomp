@@ -31,8 +31,9 @@
  * - func_ov084_021290d4 recomputes the chase radius at each store.
  *   A named temporary DIFFs, and spelling mUnstickTimer on both
  *   sides of the decrement folds the halfword.
- * - OnTurnIntoEgg and the reward helper load param1 through a raw
- *   word. Spelling both sides as the member folds +8.
+ * - OnTurnIntoEgg, the reward helper and InitResources mask param1
+ *   in place as `param1 = (int)param1 & mask`. Without the cast the
+ *   read-modify-write CSEs the +8 address and DIFFs.
  * - mInitAngleY is the spawn heading, but func_ov084_02129cf4
  *   overwrites it with the chase heading. mWanderRerollTimer is s16
  *   in the header and this TU loads it unsigned.
@@ -48,10 +49,9 @@
  *   02130ce0/ce8/cf0/cc0/cc8/cd0 are BCA handles (SetAnim reads [1]).
  *   0213089c / 0213088c are BMA. The 021302xx words are the per-type
  *   tables. Render keeps a volatile Vector3 backup of the scale.
- * - GetCapState is called as the dCapEnemy_c.h member (the old "no header
- *   member" note was stale; d_a_trs.cpp already calls it that way).
+ * - GetCapState is the dCapEnemy_c.h member.
  * - What dCcAc_c bits 0x4 and 0x20000 mean, the king's mState 4 that
- *   unk_475 watches, sounds 0xd0 / 0xe0 / 0xd6 / 0x110 / 0x111 / 0x118 /
+ *   mFreeRoamTimer watches, sounds 0xd0 / 0xe0 / 0xd6 / 0x110 / 0x111 / 0x118 /
  *   0x13a / 0x13b, mFlags bits 0x8 and 0x10000000, and data_0209f2f8
  *   values 6 and 0x1b are not named here.
  *   Nothing in this TU enters STATE_PAUSE except through the table.
@@ -84,6 +84,14 @@ enum daKrb_c_AssetId {
 #include "MaterialChanger.h"
 #include "Player.h"
 #include "daKuriKing_c.h"
+
+/* daStar_c::mMarkerID (daStar_c.h, 0x434), seen through a local view:
+   including daStar_c.h renumbers this TU's @NNN labels. */
+struct SilverStarView {
+    u8 head[0x434];
+    u32 mMarkerID;
+};
+typedef char SilverStarView_size_must_be_0x438[sizeof(SilverStarView) == 0x438 ? 1 : -1];
 
 namespace cstd { int fdiv(int a, int b); }
 
@@ -292,7 +300,9 @@ void daKrb_c::func_ov084_021290d4() {
         }
         else
         {
-            /* timerOff is the offset of mUnstickTimer (0x458). */
+            /* timerOff is the offset of mUnstickTimer (0x458). The plain
+               `c->mUnstickTimer--` builds the same .text but drops nine
+               @NNN numbers that daKrb_c.json pins, so this stays raw. */
             *((unsigned short *)((((int)c) + timerOff))) = (*((unsigned short *)((((int)c) + 0x458)))) - 1;
         }
         return;
@@ -341,7 +351,7 @@ void daKrb_c::func_ov084_02129168(dActor_c *actor) {
     goomba->mWithMeshClsn.ClearJustHitGroundFlag();
     goomba->mWithMeshClsn.ClearGroundFlag();
     func_02012694(SND_TUMBLE_BOUNCE_FIRST, &goomba->mCamSpacePos);
-    goomba->unk_467 = 0;
+    goomba->mBounceCount = 0;
 }
 
 // @symbol _ZN7daKrb_c19func_ov084_02129238Ev
@@ -477,7 +487,7 @@ void daKrb_c::func_ov084_021294d0() {
         return;
 
     char *fr = (char *)goomba->mWithMeshClsn.GetFloorResult();
-    if (SurfaceInfo_TestFlag0x20((int*)(fr + 4))) {
+    if (SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)fr)->surface)) {
         goomba->func_ov084_021296cc();
         goomba->SpawnCoin();
         goomba->func_ov084_02129498();
@@ -496,25 +506,27 @@ void daKrb_c::func_ov084_021294d0() {
     char *floorResult = (char *)goomba->mWithMeshClsn.GetFloorResult();
     int surfaceType;
     {
-    char* surface = obj + 4;
-    int normalX = *(int*)(floorResult + 4);
-    int normalY = *(int*)(floorResult + 8);
-    /* `normalY ? normalX : normalX` is not a typo and not dead: both arms are the
-     * same value, and the ternary is what makes mwccarm materialize normalX after
-     * the load of normalY instead of before it. Collapsing it to a plain store
-     * reorders the pair and the function stops reproducing. */
-    *(int*)(surface) = normalY ? normalX : normalX;
-    *(int*)(surface + 4) = normalY;
-    *(int*)(surface + 8) = *(int*)(floorResult + 0xc);
-    *(int*)(surface + 0xc) = *(int*)(floorResult + 0x10);
-    *(int*)(surface + 0x10) = *(int*)(floorResult + 0x14);
-    *(int*)(obj) = (int)data_02099368;
-    *(unsigned short*)(obj + 0x18) = *(unsigned short*)(floorResult + 0x18);
-    *(unsigned short*)(obj + 0x1a) = *(unsigned short*)(floorResult + 0x1a);
-    *(int*)(obj + 0x1c) = *(int*)(floorResult + 0x1c);
-    *(int*)(obj + 0x20) = *(int*)(floorResult + 0x20);
-    *(int*)(obj + 0x24) = *(int*)(floorResult + 0x24);
-    surfaceType = func_02037e38((unsigned int*)surface);
+        /* obj + 4 is &((dBgPi *)obj)->surface; that spelling here or in the
+         * func_02037e84 argument below adds an instruction, so both stay. */
+        char *surface = obj + 4;
+        int clpsLo = ((dBgPi *)floorResult)->surface.clps.w0;
+        int clpsHi = ((dBgPi *)floorResult)->surface.clps.w1;
+        /* `clpsHi ? clpsLo : clpsLo` is not a typo and not dead: both arms are the
+         * same value, and the ternary is what makes mwccarm materialize clpsLo after
+         * the load of clpsHi instead of before it. Collapsing it to a plain store
+         * reorders the pair and the function stops reproducing. */
+        ((SurfaceInfo *)surface)->clps.w0 = clpsHi ? clpsLo : clpsLo;
+        ((SurfaceInfo *)surface)->clps.w1 = clpsHi;
+        ((SurfaceInfo *)surface)->normal.x = ((dBgPi *)floorResult)->surface.normal.x;
+        ((SurfaceInfo *)surface)->normal.y = ((dBgPi *)floorResult)->surface.normal.y;
+        ((SurfaceInfo *)surface)->normal.z = ((dBgPi *)floorResult)->surface.normal.z;
+        *(int *)(obj) = (int)data_02099368;
+        ((dBgPi *)obj)->triangleID = ((dBgPi *)floorResult)->triangleID;
+        ((dBgPi *)obj)->colliderIdx = ((dBgPi *)floorResult)->colliderIdx;
+        ((dBgPi *)obj)->clsnID = ((dBgPi *)floorResult)->clsnID;
+        ((dBgPi *)obj)->owner = ((dBgPi *)floorResult)->owner;
+        ((dBgPi *)obj)->collider = ((dBgPi *)floorResult)->collider;
+        surfaceType = func_02037e38((unsigned int *)surface);
     }
     if (func_02037e84((int*)(obj + 4)) == 8) {
         if (surfaceType == 6 || surfaceType == 7 || surfaceType == 8 || surfaceType == 9)
@@ -577,13 +589,13 @@ void daKrb_c::func_ov084_021296cc() {
         silverStar =
             (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, goomba->mPos, 0, goomba->mAreaId, -1);
         if (starMarker != 0 && silverStar != 0) {
-            /* the silver star's +0x434 holds the marker's uniqueID (+4) */
-            *(int *)(silverStar + 0x434) = *(int *)(starMarker + 4);
+            ((SilverStarView *)silverStar)->mMarkerID = ((dActor_c *)starMarker)->uniqueID;
             _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(starMarker, silverStar);
             goomba->SpawnSoundObj(1);
         }
-        /* Load side stays a raw word: spelling both sides as param1 CSEs +8. */
-        goomba->param1 = *(const int *)((const char *)goomba + 8) & 0xff0f;
+        /* The (int) cast on the load is load-bearing: a plain
+           `param1 & 0xff0f` CSEs the +8 address and builds one word longer. */
+        goomba->param1 = (int)goomba->param1 & 0xff0f;
         return;
     }
     if (goomba->mRewardType != daKrb_c::REWARD_SILVER_STAR_IF_CURRENT)
@@ -595,7 +607,7 @@ void daKrb_c::func_ov084_021296cc() {
     dActor_c::Spawn(ACTOR_SILVER_STAR, goomba->mStarID | 0x30, goomba->mPos, 0, goomba->mAreaId,
                     -1);
     goomba->mRewardType = daKrb_c::REWARD_SPENT;
-    goomba->param1 = *(const int *)((const char *)goomba + 8) & 0xff0f;
+    goomba->param1 = (int)goomba->param1 & 0xff0f;
     goomba->SpawnSoundObj(1);
 }
 
@@ -777,8 +789,7 @@ void daKrb_c::func_ov084_02129c9c() {
     goomba->mHorzSpeed = 0;
     goomba->mVertSpeed = data_ov084_02130248[goomba->mGoombaType];
     goomba->mWithMeshClsn.ClearGroundFlag();
-    /* Integer cast keeps the orr on a freshly formed flags address, not a CSE of it. */
-    *((int *)((char *)(((int)((char *)&goomba->mdCcAc_c.flags)) + 0))) |= 4;
+    goomba->mdCcAc_c.flags |= 4;
 }
 
 // @symbol _ZN7daKrb_c19func_ov084_02129cf4Ei
@@ -1100,7 +1111,7 @@ block_68:
  * unless mFlags bit 0x40000 is set. Then the cap is attached (UpdateCapPos)
  * 108.0 above the origin, offset horizontally (x, z) by 10 * the sine/cosine
  * pair read from data_02082214 at (mAngleY >> 4). */
-void daKrb_c::func_ov084_0212a580(){
+void daKrb_c::func_ov084_0212a580() {
     Vector3_16 rotation;
     Vector3 pos;
     Vector3 arg;
@@ -1168,8 +1179,8 @@ void daKrb_c::func_ov084_0212a6f8() {
  * becomes (countdown << 10) - mVertAccel when the old speed is no more than
  * countdown * 0x500, else 80 percent of the old one reversed; the horizontal
  * speed is halved but kept at 5.0 or more in magnitude; and a sound plays,
- * SND_TUMBLE_BOUNCE_FIRST when unk_467 is 0, SND_TUMBLE_BOUNCE_LATER for 1
- * and 2. unk_467 counts the landings. Staying on the ground clamps the
+ * SND_TUMBLE_BOUNCE_FIRST when mBounceCount is 0, SND_TUMBLE_BOUNCE_LATER for 1
+ * and 2. mBounceCount counts the landings. Staying on the ground clamps the
  * countdown the same way.
  * Last, mEatenByYoshi is 1 around a SpawnParticlesIfHitOtherObj call (which
  * reports hits differently while it is set, per dEnemyBase_c.h); a hit sets
@@ -1242,12 +1253,12 @@ void daKrb_c::func_ov084_0212a774() {
             }
         }
 
-        if (goomba->unk_467 == 0) {
+        if (goomba->mBounceCount == 0) {
             func_02012694(SND_TUMBLE_BOUNCE_FIRST, &goomba->mCamSpacePos);
-        } else if (goomba->unk_467 <= 2) {
+        } else if (goomba->mBounceCount <= 2) {
             func_02012694(SND_TUMBLE_BOUNCE_LATER, &goomba->mCamSpacePos);
         }
-        goomba->unk_467 += 1;
+        goomba->mBounceCount += 1;
     } else {
         if (goomba->mWithMeshClsn.IsOnGround() != 0) {
             goomba->mWithMeshClsn.ClearLimMovFlag();
@@ -1429,7 +1440,7 @@ void daKrb_c::func_ov084_0212abd4() {
  * mMinionIndex into the spot (targetPos) this minion should stand at. When
  * ApproachAngle (mPrevAngleY toward mInitAngleY) returns 0 and the Goomba is
  * on the ground:
- *  - If the king's mState is 4 with mWalkSpeed 0, or the unk_475 countdown
+ *  - If the king's mState is 4 with mWalkSpeed 0, or the mFreeRoamTimer countdown
  *    (DecIfAbove0_Byte) is nonzero, or the spot is more than 1000.0 away, the
  *    minion acts for itself: if the player is within 1000.0 and the angle
  *    difference to the player is below 0x3000 (67.5 degrees) it faces the
@@ -1443,7 +1454,7 @@ void daKrb_c::func_ov084_0212abd4() {
  *    mGoombaTargetSpeed: a quarter, a half or all of it when the spot is under
  *    50.0, 100.0 or 150.0 away, and the run speed plus all of it beyond that.
  * A minion that falls more than 1000.0 below mHomePos is removed, and while
- * the king is in state 4 with mWalkSpeed 0 unk_475 is reloaded with 30. */
+ * the king is in state 4 with mWalkSpeed 0 mFreeRoamTimer is reloaded with 30. */
 void daKrb_c::func_ov084_0212af74() {
     daKrb_c *goomba = this;
     Vector3 targetPos;
@@ -1481,9 +1492,7 @@ void daKrb_c::func_ov084_0212af74() {
         dist = Vec3_HorzDist(&goomba->mPosX, &targetPos);
 
         if ((king->mState == 4 && king->mWalkSpeed == 0) ||
-            DecIfAbove0_Byte(&goomba->unk_475) != 0 ||
-            dist > 0x3e8000)
-        {
+            DecIfAbove0_Byte(&goomba->mFreeRoamTimer) != 0 || dist > 0x3e8000) {
             ang = goomba->HorzAngleToCPlayer();
             flag = 1;
             if (goomba->DistToCPlayer() < 0x3e8000 &&
@@ -1540,7 +1549,7 @@ void daKrb_c::func_ov084_0212af74() {
     if (king->mState != 4)
         return;
     if (king->mWalkSpeed == 0)
-        goomba->unk_475 = 0x1e;
+        goomba->mFreeRoamTimer = 0x1e;
 }
 
 // @symbol _ZN7daKrb_c19func_ov084_0212b2dcEv
@@ -1579,6 +1588,7 @@ int daKrb_c::OnAimedAtWithEgg()
  * Goomba is removed (func_ov084_02129498). */
 void daKrb_c::OnTurnIntoEgg(Player &playerRef)
 {
+    /* self is unused; deleting it drops @NNN numbers daKrb_c.json pins. */
     char *self = (char *)this;
     Player *player = &playerRef;
     int b5;
@@ -1605,9 +1615,9 @@ void daKrb_c::OnTurnIntoEgg(Player &playerRef)
                 UntrackStar(mStarTracked);
                 b4 = 1;
                 dActor_c::Spawn(ACTOR_STARBASE, 0x50, mHomePos, 0, mAreaId, -1);
-                /* unsigned on the load side only: spelling both sides as param1
-                   lets mwccarm CSE the field address. The ROM wants [rN,#8]. */
-                *(int *)(self + 8) = *(unsigned int *)(self + 8) & 0xff0f;
+                /* The (int) cast keeps [rN,#8] on the load: a plain
+                   `param1 & 0xff0f` lets mwccarm CSE the field address. */
+                param1 = (int)param1 & 0xff0f;
             } else if (mRewardType == REWARD_SILVER_STAR_IF_CURRENT) {
                 if (mStarID == data_0209f344[data_0209f208[0]]) {
                     UntrackStar(mStarTracked);
@@ -1886,23 +1896,19 @@ done:
  * dCc_c.h's best-effort table); dBgCh_Actr::Init gets 60 * scale for its two
  * Fix12 size arguments. mSavedParam keeps the original param1 for the end of
  * STATE_TUMBLE. */
-int daKrb_c::InitResources()
-{
+int daKrb_c::InitResources() {
     char *c = (char *)this;
     int i;
 
-    mRewardType = (*(unsigned int*)(c + 8) >> 4) & 0xf;
+    mRewardType = (param1 >> 4) & 0xf;
     mStarTracked = -1;
-    mHadBank1Cap = (*(unsigned int*)(c + 8) >> 8) & 0xf;
-    mStarID = (*(unsigned int*)(c + 8) >> 0xc) & 0xf;
+    mHadBank1Cap = (param1 >> 8) & 0xf;
+    mStarID = (param1 >> 0xc) & 0xf;
 
-    if (mRewardType == REWARD_SILVER_STAR)
-    {
+    if (mRewardType == REWARD_SILVER_STAR) {
         mStarTracked = TrackStar(mStarID, 1);
         LoadSilverStarAndNumber();
-    }
-    else if (mRewardType == REWARD_SILVER_STAR_IF_CURRENT)
-    {
+    } else if (mRewardType == REWARD_SILVER_STAR_IF_CURRENT) {
         LoadSilverStarAndNumber();
     }
 
@@ -1910,13 +1916,13 @@ int daKrb_c::InitResources()
     for (i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*sKuriboAnimationFiles[i]);
 
-    AddCap((unsigned char)(*(int *)(c + 8) & 0xf));
+    AddCap((unsigned char)(param1 & 0xf));
 
     if ((mCapId & 0xf) < 6)
-        /* The load and the store must not be spelled the same way: mwcc CSEs the
-           field address across an RMW and the ROM re-issues it. See
+        /* The (int) cast is load-bearing: a plain `param1 & 0xf0ff` lets mwcc
+           CSE the field address across the RMW, and the ROM re-issues it. See
            notes/mwccarm-codegen.md. */
-        ((int*)c)[2] = *(int*)(c + 8) & 0xf0ff;
+        param1 = (int)param1 & 0xf0ff;
 
     if (DestroyIfCapNotNeeded() == 0)
         return 0;
@@ -1927,37 +1933,30 @@ int daKrb_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
 
-    MaterialChanger::Prepare(*(BMD_File*)data_ov084_02130cf8.ptr, *(BMA_File*)&data_ov084_0213089c);
-    _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov084_0213089c, 0x40000000, 0x1000, 0);
+    MaterialChanger::Prepare(*(BMD_File *)data_ov084_02130cf8.ptr,
+                             *(BMA_File *)&data_ov084_0213089c);
+    _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov084_0213089c,
+                                                       0x40000000, 0x1000, 0);
 
     mCoinType = COIN_PLAIN;
 
     {
         int id = actorID;
         int cond = (id == ACTOR_KURIBO_S);
-        if (cond != false)
-        {
+        if (cond != false) {
             mGoombaType = GOOMBA_SMALL;
-        }
-        else
-        {
+        } else {
             cond = (id == ACTOR_KURIBO);
-            if (cond != false)
-            {
-                if (*(int*)(c + 8) == 0xeeee || *(int*)(c + 8) == 0xeeef)
-                {
+            if (cond != false) {
+                if (param1 == 0xeeee || param1 == 0xeeef) {
                     mGoombaType = GOOMBA_KING_MINION;
-                    *(int*)(((int)&mFlags) & 0xFFFFFFFFFFFFFFFF) &= ~2;
-                    if (*(int*)(c + 8) == 0xeeee)
+                    mFlags &= ~2;
+                    if (param1 == 0xeeee)
                         mCoinType = COIN_NONE;
-                }
-                else
-                {
+                } else {
                     mGoombaType = GOOMBA_NORMAL;
                 }
-            }
-            else
-            {
+            } else {
                 mGoombaType = GOOMBA_LARGE;
                 LoadBlueCoinModel(c);
             }
@@ -1970,12 +1969,14 @@ int daKrb_c::InitResources()
         mScaleY = scale;
         mScaleZ = scale;
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, c, mScaleX * 0x3c, data_ov084_02130208[mGoombaType], 0x200000, 0xa6efe0);
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, c, mScaleX * 0x3c,
+                                              data_ov084_02130208[mGoombaType], 0x200000, 0xa6efe0);
 
     if (mGoombaType == GOOMBA_LARGE)
-        *(int*)(((int)&mdCcAc_c.vulnFlags) & 0xFFFFFFFFFFFFFFFF) &= ~HIT_YOSHI_TONGUE;
+        *(int *)(((int)&mdCcAc_c.vulnFlags) & 0xFFFFFFFFFFFFFFFF) &= ~HIT_YOSHI_TONGUE;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, c, mScaleX * 0x3c, mScaleX * 0x3c, 0, 0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, c, mScaleX * 0x3c,
+                                                                mScaleX * 0x3c, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 
     mMoveFlags = 0;
@@ -1999,11 +2000,11 @@ int daKrb_c::InitResources()
     mHomePos.y = mPosY;
     mHomePos.z = mPosZ;
     mVertAccel = data_ov084_02130238[mGoombaType];
-    mTerminalVelocity = -0x32000;     /* -50.0 */
+    mTerminalVelocity = -0x32000; /* -50.0 */
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
 
-    unk_467 = 0;
-    mSavedParam = *(int*)(c + 8);
+    mBounceCount = 0;
+    mSavedParam = param1;
     return 1;
 }
 

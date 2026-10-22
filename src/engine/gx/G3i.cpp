@@ -106,9 +106,8 @@ void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
 #pragma cplusplus on
 
 // @symbol _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3
-void G3i::LookAt_(const Vector3 *at, const Vector3 *up, const Vector3 *eye,
-                  bool draw, Matrix4x3 *mat)
-{
+void G3i::LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
+                  Matrix4x3 *mat) {
     Vector3 forward;
     Vector3 right;
     Vector3 up2;
@@ -117,9 +116,11 @@ void G3i::LookAt_(const Vector3 *at, const Vector3 *up, const Vector3 *eye,
     Fix12i tz;
     volatile int *mtx;
 
-    forward.x = at->x - eye->x;
-    forward.y = at->y - eye->y;
-    forward.z = at->z - eye->z;
+    /* The view's z axis, from the target back toward the camera (the
+     * camera looks down -z). */
+    forward.x = camPos->x - target->x;
+    forward.y = camPos->y - target->y;
+    forward.z = camPos->z - target->z;
     NormalizeVec3(&forward, &forward);
 
     CrossVec3(up, &forward, &right);
@@ -141,9 +142,9 @@ void G3i::LookAt_(const Vector3 *at, const Vector3 *up, const Vector3 *eye,
         *mtx = forward.z;
     }
 
-    tx = -DotVec3(at, &right);
-    ty = -DotVec3(at, &up2);
-    tz = -DotVec3(at, &forward);
+    tx = -DotVec3(camPos, &right);
+    ty = -DotVec3(camPos, &up2);
+    tz = -DotVec3(camPos, &forward);
 
     if (draw) {
         *mtx = tx;

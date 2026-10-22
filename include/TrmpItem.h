@@ -15,7 +15,7 @@ struct TrmpItem {
     s32 mState[2];        /* 0x000 -- the current motion's member-pointer record */
     Vector3 mPos;         /* 0x008 */
     Vector3 mPrevPos;     /* 0x014 -- mPos before this frame's move */
-    u8 pad_020[0xc];      /* 0x020 */
+    Vector3 mSpawnPos;    /* 0x020 -- written once, in TrmpItem_Init, from the spawn position */
     Vector3 mVel;         /* 0x02c -- added to mPos every frame */
     Vector3 mForward;     /* 0x038 -- facing; the spin motions turn it */
     Vector3 mSide;        /* 0x044 -- mForward x the spin axis */

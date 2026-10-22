@@ -1,25 +1,28 @@
+#include "private/arm9_a1fc0_file_share.h"
 struct ListNode;
 extern struct ListNode *func_02041b60(char *base);
 extern void func_020423c8(void);
 
+/* The parent's node for a child's request (offset, length): a loading node
+ * already holding that extent, or a fresh one off the free list
+ * (func_02041b60) with the extent stored and the loader thread woken
+ * (func_020423c8). */
 struct ListNode *func_02041c64(char *base, int a, int b)
 {
-    struct ListNode *node;
-    node = *(struct ListNode **)((base + 0x2000) + 0x708);
+    FileShareNode *node;
+    node = ((FileShareParentArea *)base)->mBusyList;
     while (node != 0) {
-        if (*(int *)((char *)node + 0x7c) == 1
-            && *(int *)((char *)node + 0x8c) == a
-            && *(int *)((char *)node + 0x90) == b) {
+        if (node->mState == 1 && node->mFileOffset == a && node->mFileSize == b) {
             break;
         }
-        node = *(struct ListNode **)node;
+        node = node->mNext;
     }
     if (node == 0) {
-        node = func_02041b60(base);
-        *(int *)((char *)node + 0x80) = 0;
-        *(int *)((char *)node + 0x8c) = a;
-        *(int *)((char *)node + 0x90) = b;
+        node = (FileShareNode *)func_02041b60(base);
+        node->mRefCount = 0;
+        node->mFileOffset = a;
+        node->mFileSize = b;
         func_020423c8();
     }
-    return node;
+    return (struct ListNode *)node;
 }

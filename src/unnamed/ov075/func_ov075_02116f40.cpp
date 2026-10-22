@@ -1,4 +1,6 @@
 //cpp
+#include "dScEntry_c.h"
+
 struct OamAttr;
 struct OAM {
     static void RenderSub(OamAttr*, int, int);
@@ -19,7 +21,8 @@ extern "C" char _ZN3OAM14BOUNCING_ARROWE[];
 
 extern "C" void func_ov075_02116f40(char* c)
 {
-    unsigned char idx = *(unsigned char*)(c + 0x281);
+    dScEntry_c *scene = reinterpret_cast<dScEntry_c *>(c);
+    unsigned char idx = scene->mSelectedIcon;
     int a1, a2;
     if (idx < 2) {
         a2 = (short)(idx * 0x30 + 0x38);
@@ -31,12 +34,13 @@ extern "C" void func_ov075_02116f40(char* c)
     }
     OAM::RenderSub((OamAttr*)data_ov075_0211c790, a1, a2);
 
-    *(int*)(c + 0x26c) += 1;
-    int r5 = (*(int*)(c + 0x26c) & 8) ? 0xac : 0xae;
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        false, (OamAttr*)_ZN3OAM14BOUNCING_ARROWE, 0x40, r5, -1, -1, 0x1000, 0x1000, 0, -1);
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        false, (OamAttr*)_ZN3OAM14BOUNCING_ARROWE, 0x80, r5, -1, -1, 0x1000, 0x1000, 0, -1);
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-        false, (OamAttr*)_ZN3OAM14BOUNCING_ARROWE, 0xc0, r5, -1, -1, 0x1000, 0x1000, 0, -1);
+    /* mStepWork[1] counts frames; its bit 3 bobs the three arrows. */
+    scene->mStepWork[1] += 1;
+    int arrowY = (scene->mStepWork[1] & 8) ? 0xac : 0xae;
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0x40,
+                                                arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0x80,
+                                                arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(false, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0xc0,
+                                                arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
 }

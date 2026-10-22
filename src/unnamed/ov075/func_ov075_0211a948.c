@@ -1,7 +1,10 @@
 // @symbol func_ov075_0211a948
-/* recovered: dScEntry_c material setup for the entry-menu 3D mesh.
+/* recovered: material setup for the entry-menu grid mesh, the sub-object
+ * dEntObj_c keeps at +0xe80 (func_ov075_0211afb0 calls this before it
+ * draws the strips). An older banner credited this to dScEntry_c; the
+ * offsets below are inside that class's icon array, not a material.
  *
- * Pushes the object's cached diffuse/ambient, specular/emission, texture
+ * Pushes the mesh's cached diffuse/ambient, specular/emission, texture
  * image param and palette base into the geometry engine, then a fixed
  * polygon attribute. Same Nitro G3 inline shape as func_ov080_02125460;
  * the palette shift is 3 for GX_TEXFMT_PLTT4 (2) and 4 otherwise, and the
@@ -9,6 +12,7 @@
  * lives in its own statement.
  */
 #include "types.h"
+#include "private/ov075_entry_mesh.h"
 
 // 6f: keep constant live / flip coloring
 #pragma opt_propagation off
@@ -33,15 +37,17 @@ static inline void G3_TexPlttBase(u32 addr, u32 texFmt)
 
 void func_ov075_0211a948(char *c)
 {
-    reg_G3_DIF_AMB = *(u32 *)(c + 0x90);
-    reg_G3_SPE_EMI = *(u32 *)(c + 0x94);
-    G3_TexImageParam(*(u32 *)(c + 0x88), (*(u32 *)(c + 0x98) >> 0x1a) & 7, 0,
-                     (*(u32 *)(c + 0x98) >> 0x14) & 7, (*(u32 *)(c + 0x98) >> 0x17) & 7,
-                     0, 0, (*(u32 *)(c + 0x98) >> 0x1d) & 1);
+    EntryMesh *mesh = (EntryMesh *)c;
+
+    reg_G3_DIF_AMB = mesh->mMaterial.difAmb;
+    reg_G3_SPE_EMI = mesh->mMaterial.speEmi;
+    G3_TexImageParam(mesh->mMaterial.texAddr, (mesh->mMaterial.param >> 0x1a) & 7, 0,
+                     (mesh->mMaterial.param >> 0x14) & 7, (mesh->mMaterial.param >> 0x17) & 7, 0, 0,
+                     (mesh->mMaterial.param >> 0x1d) & 1);
     {
-        u32 fmt = (*(u32 *)(c + 0x98) >> 0x1a) & 7;
+        u32 fmt = (mesh->mMaterial.param >> 0x1a) & 7;
         u32 sub = (fmt == 2) ? 1 : 0;
-        reg_G3_TEXPLTT_BASE = *(u32 *)(c + 0x8c) >> (4 - sub);
+        reg_G3_TEXPLTT_BASE = mesh->mMaterial.pltAddr >> (4 - sub);
     }
     reg_G3_POLYGON_ATTR = 0x11f0088;
 }

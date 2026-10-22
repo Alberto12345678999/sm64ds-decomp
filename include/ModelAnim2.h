@@ -11,8 +11,10 @@
  * destructor pair; every other slot still points at the ModelAnim or
  * Model implementation.
  *
- * THE DESTRUCTOR IS DECLARED FIRST AND NEVER DEFINED AS A METHOD -- see
- * include/ModelAnim.h.
+ * THE DESTRUCTOR IS DECLARED FIRST. It is defined out of line in
+ * src/engine/model/ModelAnim2.cpp, which makes that file the key function
+ * and emits the MI vtable group. RTTI is off there; the retail table stays
+ * externalized. See include/ModelAnim.h for why the declaration stays first.
  *
  * Func_020162C4 keeps its placeholder name, but its body is SetAnim for
  * the second animation, fast path and all; its definition stays a
@@ -42,7 +44,7 @@ struct ModelAnim2 : ModelAnim {
     virtual ~ModelAnim2();                     /* slots 0 (D1), 1 (D0) */
 #endif
 
-    /* DECLARED, defined out of line in src/_ZN10ModelAnim2C1Ev.cpp as real
+    /* DECLARED, defined out of line in src/engine/model/ModelAnim2.cpp as real
      * C++ -- complete-object context, hence C1. Init list `: otherFile(0)`
      * puts the scalar store BEFORE otherAnim's implicit construction, which
      * is the ROM's schedule; a body statement would come one call too late

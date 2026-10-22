@@ -27,6 +27,9 @@
 //   MATRIX_SCRATCH_PAPER; deleting its definition shifts the same @NNN
 //   temps by three (code bytes otherwise identical).
 // Inline definitions in Koopa.h, emitted here by the two factories:
+// - the `goto tail` chain in func_ov062_02117c98 keeps one shared tail call
+//   (func_ov002_020aea30 with &mWithMeshClsn) plus the conditional yaw flip;
+//   a structured duplicate of the tail was not verified byte-identical.
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_nknk_AssetId {
     ASSET_NOKONOKO_BMD = 0x03ba,
@@ -505,9 +508,8 @@ void daNknk_c::func_ov062_02118b4c() {
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118a50Ev
-/* ldrh cannot encode 0x3c6, so the state helpers test mTimer and mTurnTimer
- * from mModelAnim (byte offsets 0xc6 and 0xc8) and decrement through &mTimer /
- * &mTurnTimer. A single member expression folds that reload. */
+/* The state helpers decrement mTimer and mTurnTimer through a pointer
+ * (&mTimer / &mTurnTimer). */
 void daNknk_c::func_ov062_02118a50()
 {
     if (mHorzSpeed != 0) {
@@ -522,10 +524,11 @@ void daNknk_c::func_ov062_02118a50()
     }
 
     {
-        if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) {
+        if (mTimer != 0) {
             u16 *p = &mTimer;
             *p = (u16)(*p - 1);
-            if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) return;
+            if (mTimer != 0)
+                return;
             func_ov062_02117994(8); return;
         }
     }
@@ -553,7 +556,6 @@ void daNknk_c::func_ov062_02118a00() {
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118718Ev
-/* See the ldrh note at func_ov062_02118a50 for the mModelAnim + 0xc6/0xc8 reads. */
 void daNknk_c::func_ov062_02118718()
 {
     int dist = 0x7fffffff;
@@ -577,7 +579,7 @@ void daNknk_c::func_ov062_02118718()
             mTurning =
                 AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
             if (!mTurning) {
-                if (*(u16 *)((char *)&mModelAnim + 0xc8) != 0) {
+                if (mTurnTimer != 0) {
                     u16 *turn = &mTurnTimer;
                     *turn = (u16)(*turn - 1);
                 } else {
@@ -620,7 +622,6 @@ void daNknk_c::func_ov062_02118718()
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118588Ev
-/* See the ldrh note at func_ov062_02118a50 for the mModelAnim + 0xc6/0xc8 reads. */
 void daNknk_c::func_ov062_02118588()
 {
     dActor_c *found = 0;
@@ -649,10 +650,10 @@ void daNknk_c::func_ov062_02118588()
     }
 
     {
-        if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) {
+        if (mTimer != 0) {
             u16 *q = &mTimer;
             *q = (u16)(*q - 1);
-            if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0)
+            if (mTimer != 0)
                 return;
             func_ov062_02117994(8);
             return;
@@ -779,9 +780,8 @@ void daNknk_c::func_ov062_021181a0() {
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_0211811cEv
-/* See the ldrh note at func_ov062_02118a50 for the mModelAnim + 0xc6/0xc8 reads. */
 void daNknk_c::func_ov062_0211811c() {
-    if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) {
+    if (mTimer != 0) {
         u16 *p = &mTimer;
         *p = (u16)(*p - 1);
         return;

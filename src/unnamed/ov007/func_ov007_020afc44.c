@@ -11,21 +11,56 @@ extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020b8188(int a, int b, int c);
 extern void func_ov007_020c0638(int a, int b, int c, int d);
 extern void func_ov007_020b8070(int n);
-extern char* data_ov007_0210342c;
 
+/* The 0xc-byte record func_ov007_020adc08 returns; names as in
+ * func_ov007_020adc08, only the layer read here. */
+typedef struct Ov007LayerSlot {
+    int state; /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
+    int layer; /* 0x04: the Ov007BgLayer func_ov007_020c0638 scrolls */
+} Ov007LayerSlot;
+
+/* data_ov007_0210342c: the overlay's manager. No class or header names it;
+ * only the slots this file touches are spelled. Left raw: +0x60 (handed to
+ * func_ov007_020b8188, cleared by func_ov007_020b0244) and the record the
+ * settings' first word points at (a byte per slot from +0xb). */
+typedef struct Ov007Work {
+    char pad_00[4];
+    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
+    char pad_10[0x18];
+    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates;
+     * func_ov007_020b8188 draws the record board from it */
+    struct Ov007Settings *settings;
+    char pad_2c[0x2c];
+    /* 0x58/0x5c, medium confidence: func_ov007_020b6134 stores the tapped
+     * slot item (ids 0xe..0x10) in one or the other by menu state;
+     * func_ov007_020af84c indexes data_ov007_020ccc20[selectedSlot][targetSlot];
+     * -1 = none (func_ov007_020b0244) */
+    int selectedSlot;
+    int targetSlot;
+    char pad_60[4];
+    int tweenOut[2];       /* 0x64: bound as tweens[i]->out (func_ov007_020b6a84) */
+    Ov007Tween *tweens[2]; /* 0x6c: func_ov007_020c908c */
+    char pad_74[0x54];
+    /* 0xc8: func_ov007_020b6d40 stores func_ov007_020adc08(i, ...) for
+     * i = 0..7 */
+    Ov007LayerSlot *layerSlots[8];
+} Ov007Work;
+
+typedef char Ov007Work_size_must_be_0xe8[sizeof(Ov007Work) == 0xe8 ? 1 : -1];
+
+extern char *data_ov007_0210342c;
+/* The extern keeps the tree's char * spelling (the declaration-agreement
+ * gate); the typed view is reached through a cast macro. */
 #define G data_ov007_0210342c
-
-/* G has no class or header: its +0x8 and +0xc slots hold Ov007MenuStates (freed by
- * func_ov007_020b65e0 like the other menu states); +0x6c/+0x70 are the Ov007Tweens
- * func_ov007_020b6a84 binds to +0x64/+0x68. */
+#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 void func_ov007_020afc44(void)
 {
-    Ov007MenuState *menu = *(Ov007MenuState **)(G + 8);
-    unsigned char* r7 = (unsigned char*)(*(int*)(*(char**)(G + 0x28))) + 0xb;
+    Ov007MenuState *menu = WORK->states[1];
+    unsigned char *r7 = (unsigned char *)(*(int *)WORK->settings) + 0xb;
     int r6 = menu->stateTicks;
-    Ov007Tween *r5 = *(Ov007Tween **)(G + 0x6c);
-    Ov007Tween *r4 = *(Ov007Tween **)(G + 0x70);
+    Ov007Tween *r5 = WORK->tweens[0];
+    Ov007Tween *r4 = WORK->tweens[1];
     int v0 = func_ov007_020c8f98(r5);
     int v1 = func_ov007_020c8f98(r4);
     int sb = (v0 == 0);
@@ -37,16 +72,16 @@ void func_ov007_020afc44(void)
         if (r6 == 0) {
             func_ov007_020c1d78(0);
             func_ov007_020b0244();
-            (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xa;
+            WORK->states[2]->requestedState = 0xa;
         }
         switch (menu->stateWork) {
         case 0: {
-            int idx = *(int*)(G + 0x58);
+            int idx = WORK->selectedSlot;
             if (idx != -1) {
                 if (r7[idx] != 0) {
                     menu->requestedState = 4;
                 } else {
-                    *(int*)(G + 0x58) = -1;
+                    WORK->selectedSlot = -1;
                     func_ov007_020b7d94(3);
                     menu->stateWork = 1;
                 }
@@ -64,8 +99,8 @@ void func_ov007_020afc44(void)
         if (r6 == 0) {
             func_ov007_020c1d8c(0);
             RequestScreenFade(8, 0xa, 0);
-            (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xb;
-            func_ov007_020b8188(*(int*)(G + 0x58), *(int*)(G + 0x28), *(int*)(G + 0x60));
+            WORK->states[2]->requestedState = 0xb;
+            func_ov007_020b8188(WORK->selectedSlot, (int)WORK->settings, *(int *)(G + 0x60));
             r5->state = 1;
             r5->mode = 1;
             r5->t = 0;
@@ -89,9 +124,9 @@ void func_ov007_020afc44(void)
             func_ov007_020c1d78(0);
         }
         {
-            int prev = *(int*)(G + 0x5c);
-            if (prev != -1) {
-                if (prev != *(int*)(G + 0x58)) {
+            int target = WORK->targetSlot;
+            if (target != -1) {
+                if (target != WORK->selectedSlot) {
                     menu->requestedState = 5;
                 }
             }
@@ -99,9 +134,9 @@ void func_ov007_020afc44(void)
         break;
     case 5: {
         int sl = 0x20000;
-        int prev = *(int*)(G + 0x5c);
+        int target = WORK->targetSlot;
         int sp4 = -0x20000;
-        if (prev < *(int*)(G + 0x58)) {
+        if (target < WORK->selectedSlot) {
             sp4 = 0x20000;
             sl = -0x20000;
         }
@@ -117,20 +152,21 @@ void func_ov007_020afc44(void)
         } else if (v0 != 0) {
             switch (menu->stateWork) {
             case 1:
-                *(int*)(G + 0x58) = prev;
-                *(int*)(G + 0x5c) = -1;
+                WORK->selectedSlot = target;
+                WORK->targetSlot = -1;
                 menu->requestedState = 2;
                 break;
             case 0:
             case 2:
-                if (r7[prev] != 0) {
+                if (r7[target] != 0) {
                     if (func_ov007_020b79e4() == 0) {
                         func_ov007_020c1d8c(0);
                         if (menu->stateWork == 2) {
                             RequestScreenFade(8, 0xa, 0);
-                            (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xb;
+                            WORK->states[2]->requestedState = 0xb;
                         }
-                        func_ov007_020b8188(*(int*)(G + 0x5c), *(int*)(G + 0x28), *(int*)(G + 0x60));
+                        func_ov007_020b8188(WORK->targetSlot, (int)WORK->settings,
+                                            *(int *)(G + 0x60));
                         sb = 1;
                         r5->state = 1;
                         r5->mode = 1;
@@ -151,12 +187,12 @@ void func_ov007_020afc44(void)
                 } else {
                     int t;
                     RequestScreenFade(8, 8, 0);
-                    (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xa;
-                    t = *(int*)(G + 0x58);
-                    *(int*)(G + 0x58) = *(int*)(G + 0x5c);
-                    *(int*)(G + 0x5c) = t;
+                    WORK->states[2]->requestedState = 0xa;
+                    t = WORK->selectedSlot;
+                    WORK->selectedSlot = WORK->targetSlot;
+                    WORK->targetSlot = t;
                     func_ov007_020b7d94(3);
-                    func_ov007_020c0638(*(int*)(*(char**)(G + 0xe0) + 4), 0, 0, 0);
+                    func_ov007_020c0638(WORK->layerSlots[6]->layer, 0, 0, 0);
                     menu->stateWork = 2;
                 }
                 break;
@@ -171,7 +207,7 @@ void func_ov007_020afc44(void)
                 menu->requestedState = 0;
             } else {
                 RequestScreenFade(8, 8, 0);
-                (*(Ov007MenuState **)(G + 0xc))->requestedState = 0xa;
+                WORK->states[2]->requestedState = 0xa;
                 r4->state = 1;
                 r4->mode = 1;
                 r4->t = 0;
@@ -194,9 +230,9 @@ void func_ov007_020afc44(void)
         return;
     if (func_ov007_020b79e4() != 0) return;
     if (sb != 0) {
-        func_ov007_020c0638(*(int*)(*(char**)(G + 0xe0) + 4), (*(int*)(G + 0x64) >> 0xc) * 8, 0, 0);
-        func_ov007_020c0638(*(int*)(*(char**)(G + 0xe4) + 4), (*(int*)(G + 0x64) >> 0xc) * 8, 0, 0);
+        func_ov007_020c0638(WORK->layerSlots[6]->layer, (WORK->tweenOut[0] >> 0xc) * 8, 0, 0);
+        func_ov007_020c0638(WORK->layerSlots[7]->layer, (WORK->tweenOut[0] >> 0xc) * 8, 0, 0);
     }
     if (fp == 0) return;
-    func_ov007_020b8070(*(int*)(G + 0x68) >> 0xc);
+    func_ov007_020b8070(WORK->tweenOut[1] >> 0xc);
 }

@@ -1,17 +1,18 @@
 //cpp
-/* dCapEnemy_c, the arm9 half (0x02005d94..0x0200651c): the cap attach,
- * release, respawn and state helpers. src/runtime/actor/d_cap_enemy.cpp is the
- * ov002 half and already owns that path, so this file is the other module.
- * rombuild refuses one complete path in two modules; D2 and D0 stay in the
- * ov002 TU.
+/* dCapEnemy_c, the arm9 half (0x02005d94..0x02006588): the cap attach,
+ * release, respawn and state helpers, then D1 and C2.
+ * src/runtime/actor/d_cap_enemy.cpp is the ov002 half and already owns that
+ * path, so this file is the other module. rombuild refuses one complete path
+ * in two modules; D2 and D0 stay in the ov002 TU.
  *
- * D1 (0x0200651c) and C2 (0x02006554) keep their single-function files. The
- * destructor is this class's key function -- a member ~dCapEnemy_c() is the
- * only definition that emits _ZTV11dCapEnemy_c -- and a member dtor or ctor
- * in this multi-function object would also emit D0/D2/C1 as STB_GLOBAL,
- * homed to the ov002 TU, which plan_many cannot deadstrip.
+ * The constructor and the destructor are the real members. The destructor is
+ * inline, so D1 and D0 come out vague and D2 is not emitted. D0 duplicates
+ * the ov002 body and is discarded; C1, emitted beside C2, has no ROM home
+ * and is discarded. PinD1 is the use that places D1 before C2 -- without it
+ * the vague destructor trails the constructor. That destructor is also what
+ * emits _ZTV11dCapEnemy_c.
  *
- * Source order is reverse ROM order.
+ * Source order is reverse ROM order. The constructor is written before D1.
  *
  * leftovers:
  *  - ModelBase::SetFile has no header member, so AddCap keeps the mangled
@@ -30,6 +31,11 @@
 #include "dCapEnemy_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "decl_Enemy.h"
+#include "decl_Model.h"
+/* _ZTV11dCapEnemy_c is already declared here. A local extern would be a new
+ * extern-vtable site; the ov002 half includes this header for the same store. */
+#include "decl_common.h"
 
 extern "C" {
 extern int _ZN13SharedFilePtr7ReleaseEv(void *sfp);
@@ -50,6 +56,20 @@ extern void Matrix4x3_FromTranslation(CapMtx *mF, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(CapMtx *mF, short x, short y, short z);
 extern CapMtx data_020a0e68;
 }
+
+// @symbol _ZN11dCapEnemy_cC2Ev
+dCapEnemy_c::dCapEnemy_c() {}
+
+/* The call is not in the ROM. It is the odr-use that makes mwcc emit the
+ * inline destructor's D1 section here, ahead of C2, instead of trailing it. */
+void PinD1(dCapEnemy_c *self) {
+    self->~dCapEnemy_c();
+}
+
+// @symbol _ZN11dCapEnemy_cD1Ev
+#pragma never_inline on
+inline dCapEnemy_c::~dCapEnemy_c() {}
+#pragma never_inline off
 
 // @symbol _ZN11dCapEnemy_c14UnloadCapModelEv
 void dCapEnemy_c::UnloadCapModel()
@@ -99,9 +119,8 @@ int dCapEnemy_c::AddCap(unsigned int param)
 // @symbol _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16
 void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
 {
-    char* self = (char*)this;
-    /* The flags byte is read through an inline cast on each access. A local
-       CapFlags* at +0x17f makes mwcc materialize the (non-immediate) offset
+    /* mCapIcon.mFlags (+0x17f) is read through an inline cast on each
+       access. A local CapFlags* there makes mwcc materialize the (non-immediate) offset
        through the literal pool (ldr r3,[pc] / ldrb r0,[r5,r3]) and the
        function grows a word; the cartridge folds it (ldrb r0,[r5,#0x17f]). */
     struct CapFlags {
@@ -110,7 +129,7 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
         unsigned char b2 : 1;
         unsigned char b3to7 : 5;
     };
-    if (((CapFlags*)(self + 0x17f))->b2 != 0 || ((CapFlags*)(self + 0x17f))->b1 == 0) {
+    if (((CapFlags *)&mCapIcon.mFlags)->b2 != 0 || ((CapFlags *)&mCapIcon.mFlags)->b1 == 0) {
         if ((mCapId & 0xf) < 6) {
             mCapId |= 0x80;
         }

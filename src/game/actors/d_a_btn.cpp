@@ -271,7 +271,7 @@ extern "C" daBtn_c *daBtn_c_classInit_BATANKING()
 int daBtn_c::InitResources()
 {
     u16 id;
-    int r6;
+    int animIdx;
     u8 idx;
     void *bmd;
     void *kcl;
@@ -284,23 +284,23 @@ int daBtn_c::InitResources()
         mIsKing = 1;
         bmd = Model::LoadFile(data_ov079_02128168);
         mModelAnim.SetFile((BMD_File *)bmd, 1, -1);
-        r6 = 0;
+        animIdx = 0;
         do {
-            anim = data_ov079_02127600[r6];
+            anim = data_ov079_02127600[animIdx];
             dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)anim);
-            r6 += 1;
-        } while (r6 < 6);
+            animIdx += 1;
+        } while (animIdx < 6);
         TextureSequence::LoadFile(data_ov079_02128178);
     } else {
         mIsKing = 0;
         bmd = Model::LoadFile(data_ov079_02128170);
         mModelAnim.SetFile((BMD_File *)bmd, 1, -1);
-        r6 = 0;
+        animIdx = 0;
         do {
-            anim = data_ov079_021275ec[r6];
+            anim = data_ov079_021275ec[animIdx];
             dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)anim);
-            r6 += 1;
-        } while (r6 < 5);
+            animIdx += 1;
+        } while (animIdx < 5);
     }
 
     idx = mIsKing;

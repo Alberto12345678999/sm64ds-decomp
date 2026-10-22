@@ -4,7 +4,6 @@
 // reused local's later live ranges by the order the local was first assigned,
 // so the near limit reuses the mode-flags local and the far limit reuses the
 // rate/near-distance local; that reuse is what places them in fp and sl.
-// L0 preserves the earlier compiler-eliminated pointer-mask spelling.
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Lin.h"
 #include "PlayerInput.h"
@@ -110,7 +109,7 @@ struct CameraView {
     s32 mFocusDist;         /* 0x12c */
     s32 mFocusBlend;        /* 0x130 */
     u8 pad_134[0x8];
-    struct CamMode *mState_13c; /* 0x13c */
+    struct CamMode *mMode; /* 0x13c */
     u8 pad_140[0x14];
     u32 mFlags;     /* 0x154 */
     s32 mTurnSound; /* 0x158 */
@@ -120,7 +119,8 @@ struct CameraView {
     u8 pad_180[0x4];
     s16 mBaseAngleOffset; /* 0x184 */
     s16 mTargetAngleY;    /* 0x186 */
-    u8 pad_188[0x16];
+    s16 mInputYawLag;     /* 0x188 -- dCamera_c::mInputYawLag */
+    u8 pad_18a[0x14];
     s16 mBehindAngleY; /* 0x19e */
     u16 mRecentering;  /* 0x1a0 */
     u8 pad_1a2[0x4];
@@ -140,8 +140,6 @@ struct CamViewObj {
 };
 
 static inline int CheckMode(void) { return data_0209f2d8 == 1; }
-
-#define L0(p) (p)
 
 static inline s32 CollisionCeiling(dBgCh_Lin &line, s32 floorHeight)
 {
@@ -216,7 +214,7 @@ s32 func_02009e70(char *self)
     if (cam->mTargetPlayer == 0) {
         cam->mAngleY = Vec3_HorzAngle(&cam->lookAt, &cam->pos);
     } else {
-        sp1c = (cam->mFlags & 0x100) ? &data_0208747c : cam->mState_13c;
+        sp1c = (cam->mFlags & 0x100) ? &data_0208747c : cam->mMode;
         Vec3_Sub(&sp34, &cam->mTargetPlayer->mPos, &cam->mTargetPos);
         {
             struct Vector3 *q = &cam->mTargetPlayer->mPos;
@@ -467,8 +465,7 @@ s32 func_02009e70(char *self)
                                 t0 = _ZN4cstd4fdivEii(r7, Vec3_HorzLen(&sp40));
                                 sp40.x = FX_MUL(sp40.x, t0);
                                 sp40.z = FX_MUL(sp40.z, t0);
-                                /* 0x188 is still padding in dCamera_c.h. */
-                                *(s16 *)L0(self + 0x188) -= cam->mAngleY - sb;
+                                cam->mInputYawLag -= cam->mAngleY - sb;
                             }
                             t0 = Vec3_HorzLen(&sp40);
                             if (t0 < 0x1000)

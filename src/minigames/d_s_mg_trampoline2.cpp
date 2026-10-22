@@ -18,18 +18,21 @@ enum d_s_mg_trampoline2_AssetId {
  * stay; the manifest pairs them.
  *
  * leftovers:
- * - dScMgTrampoline2_c::StatePlay keeps raw int offsets for mTimer,
- *   mPattern, mScoreGate, mScriptDone and mWaveStep: member form DIFFs
- *   there (code shifts; the function grows). Its mRamp access matches.
- * - 0x7acc has no matched read. The factory still builds the arrays by
- *   offset.
+ * - 0x7acc has no matched read.
+ * - Camera 0 is passed as dScMgD3DBase_c.h's pad_466c. Camera 1 (0x4728,
+ *   mid-pad_4726) and the factory loop's end (0x47e4) stay raw: their
+ *   member spellings move bytes (measured).
  * - Model / TextureTransformer / SysTracker C1/D1 stay mangled (built on
  *   raw storage); NewUnkCallback818 takes Fix12 by value, which costs the
  *   caller bytes (notes/mwccarm-codegen.md 6az); the G2 BG getters stay
  *   mangled because decl_common.h's global G2 hides the namespace;
  *   SetBlendAlpha keeps a local declaration.
- * - The 0x78-element pool helpers stay free; their element type is not
- *   recovered.
+ * - The 0x78-element pool helpers stay free functions over char *; they
+ *   read the record through the file-local Trmp2Spinner view. Their
+ *   pointer locals (Init's p1..p3, Update's p), StatePlay's level pointer
+ *   and its unread raw hold the pinned @1110: folding any of them into a
+ *   direct member expression renumbers it (measured).
+ * - TrmpItem's +0x1a8 array is TrmpItem.h's pad_1a8; its role is unknown.
  */
 
 #include "common.h"
@@ -38,6 +41,7 @@ enum d_s_mg_trampoline2_AssetId {
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "Particle__System.h"
+#include "TrmpItem.h"
 #define Trmp2_DestructJumperModels func_ov006_021227c8_decl_common_shadow
 #define Trmp2Spinner_Destruct func_ov006_02122c68_decl_common_shadow
 #define _ZTV18dScMgTrampoline2_c _ZTV18dScMgTrampoline2_c_decl_common_shadow
@@ -53,8 +57,10 @@ enum d_s_mg_trampoline2_AssetId {
 
 extern int _ZTV18dScMgTrampoline2_c[];
 
-/* C, Obj, P2, S2, T and the forward declarations below are
- * local stand-ins for types that have no header yet (issue #2497). */
+/* P2, S2 and the forward declarations below are local stand-ins for types
+ * that have no header yet (issue #2497). C has no reader left (the spinner
+ * calls Model::Render now), but deleting it renumbers the manifest-pinned
+ * @1110 to @1109, so it stays. */
 struct C {
     virtual void v0();
     virtual void v1();
@@ -74,15 +80,6 @@ struct Trampoline2ModelFilePtr : SharedFilePtr {
 };
 
 struct BMD_File;
-
-/* Shadow of the scene's +0x68/+0x6c, in dScMgBase_c padding.
-   The brush layer. */
-struct Obj {
-    unsigned char pad0[0x68];
-    unsigned char brushOn;
-    unsigned char pad1[3];
-    int bgLayer;
-};
 
 struct Vector3_16f;
 
@@ -146,7 +143,7 @@ extern void *func_02054efc(void);
 extern void *func_02054ea8(void);
 extern char *_ZN2G213GetBG2CharPtrEv(void);
 extern int func_02054d88(void);
-extern void MultiCopy_Int(int *dst, int *src, int len);
+extern void MultiCopy_Int(int *src, int *dst, int len);
 extern char *_ZN2G212GetBG0ScrPtrEv(void);
 extern char *_ZN2G212GetBG2ScrPtrEv(void);
 extern char *_ZN2G212GetBG3ScrPtrEv(void);
@@ -318,11 +315,13 @@ void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 
 // @symbol TrmpItem_Construct
 extern "C" void *TrmpItem_Construct(char *raw) {
-    _ZN5ModelC1Ev(raw + 0xa0);
-    _ZN5ModelC1Ev(raw + 0xf0);
-    _ZN5ModelC1Ev(raw + 0x140);
-    _ZN18TextureTransformerC1Ev(raw + 0x194);
-    __cxa_vec_ctor(raw + 0x1a8, 5, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
+    _ZN5ModelC1Ev(((TrmpItem *)raw)->mModels[0]);
+    _ZN5ModelC1Ev(((TrmpItem *)raw)->mModels[1]);
+    _ZN5ModelC1Ev(((TrmpItem *)raw)->mModels[2]);
+    _ZN18TextureTransformerC1Ev(((TrmpItem *)raw)->mTexAnim);
+    /* TrmpItem.h's pad_1a8: five 8-byte elements, role unknown. */
+    __cxa_vec_ctor(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)func_0203d738,
+                   (void *)NullDestructor_0203d47c);
     return raw;
 }
 
@@ -333,27 +332,31 @@ extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
         char *it;
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)_ZTV14dScMgD3DBase_c;
-        *(short *)(scene + 0x4664) = 0;
-        it = scene + 0x466c;
+        ((dScMgTrampoline2_c *)scene)->mDrawSubScreen = 0;
+        it = (char *)((dScMgTrampoline2_c *)scene)->pad_466c;
         {
+            /* 0x47e4 is mSysTracker, two cameras on; `end = (char *)&mSysTracker`
+               builds the factory 8 bytes shorter. */
             char *end = scene;
             end += 0x47e4;
             do {
                 it += 0xbc;
             } while (it != end);
         }
-        _ZN8Particle10SysTrackerC1Ev(scene + 0x47e4);
+        _ZN8Particle10SysTrackerC1Ev(&((dScMgTrampoline2_c *)scene)->mSysTracker);
         *(int *)scene = (int)&_ZTV18dScMgTrampoline2_c[2];
-        __cxa_vec_ctor(scene + 0x500c, 5, 0xdc, (void *)Trmp2Mario_Construct,
-                       (void *)Trmp2Mario_Destruct);
-        __cxa_vec_ctor(scene + 0x5458, 3, 0x32c, (void *)TrmpLine_Reset, (void *)TrmpLine_Destroy);
-        __cxa_vec_ctor(scene + 0x5ddc, 0xa, 0x1d0, (void *)TrmpItem_Construct,
-                       (void *)Trmp2_DestructJumperModels);
-        __cxa_vec_ctor(scene + 0x6ffc, 0xa, 0x24, (void *)Jump2Popup_ElemCtor,
-                       (void *)Jump2Popup_ElemDtor);
-        __cxa_vec_ctor(scene + 0x7164, 0x14, 0x78, (void *)Trmp2Spinner_Construct,
-                       (void *)Trmp2Spinner_Destruct);
-        __cxa_vec_ctor(scene + 0x7ad0, 5, 0x24, (void *)Trmp_Nothing2, (void *)Trmp_Nothing);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray1, 5, 0xdc,
+                       (void *)Trmp2Mario_Construct, (void *)Trmp2Mario_Destruct);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray2, 3, 0x32c, (void *)TrmpLine_Reset,
+                       (void *)TrmpLine_Destroy);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray3, 0xa, 0x1d0,
+                       (void *)TrmpItem_Construct, (void *)Trmp2_DestructJumperModels);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray4, 0xa, 0x24,
+                       (void *)Jump2Popup_ElemCtor, (void *)Jump2Popup_ElemDtor);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray5, 0x14, 0x78,
+                       (void *)Trmp2Spinner_Construct, (void *)Trmp2Spinner_Destruct);
+        __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray6, 5, 0x24, (void *)Trmp_Nothing2,
+                       (void *)Trmp_Nothing);
     }
     return (dScMgTrampoline2_c *)scene;
 }
@@ -419,7 +422,7 @@ s32 dScMgTrampoline2_c::InitResources() {
     this->mCamera0TargetY = 0;
     this->mCamera0TargetZ = fov;
     this->mCamera0Angle = 0x400;
-    Camera_UpdateMatrices(raw + 0x466c);
+    Camera_UpdateMatrices((char *)pad_466c);
     this->mCamera1EyeX = 0;
     this->mCamera1EyeY = 0x82000;
     this->mCamera1EyeZ = 0;
@@ -427,15 +430,17 @@ s32 dScMgTrampoline2_c::InitResources() {
     this->mCamera1TargetY = 0;
     this->mCamera1TargetZ = fov;
     this->mCamera1Angle = 0x400;
+    /* Camera 1 starts at 0x4728, pad_466c + 0xbc, mid-pad_4726: both member
+       spellings build InitResources 4 bytes longer. */
     Camera_UpdateMatrices(raw + 0x4728);
-    if (Trmp2Mario_InitPool(raw + 0x500c, 5) == 0)
+    if (Trmp2Mario_InitPool(mArray1, 5) == 0)
         return 0;
-    TrmpFx_InitPool(raw + 0x7ad0, 5);
+    TrmpFx_InitPool(mArray6, 5);
     TrmpLine_LoadTextures();
     TrmpItem_LoadAll((char *)mArray3, 10);
-    Jump2Popup_InitPool((int)(raw + 0x6ffc), 10);
+    Jump2Popup_InitPool((int)mArray4, 10);
     data_ov006_021421b4 = 0;
-    Trmp2Spinner_LoadAll((int)(raw + 0x7164), 0x14);
+    Trmp2Spinner_LoadAll((int)mArray5, 0x14);
     Mg_SetTopScreenYOffset(0x10);
     StartRound(-1);
     return 1;
@@ -562,7 +567,7 @@ void dScMgTrampoline2_c::BeginPlay() {
 
 // @symbol _ZN18dScMgTrampoline2_c9StatePlayEv
 void dScMgTrampoline2_c::StatePlay() {
-    char *raw = (char *)this;
+    char *raw = (char *)this; /* unread; deleting it renumbers the pinned @1110 */
     int old;
 
     old = sTrmpItemsHit;
@@ -587,7 +592,7 @@ void dScMgTrampoline2_c::StatePlay() {
         unsigned int v;
         Trmp2Mario_MoveToStart();
         {
-            int *p = (int *)((int)raw + 0xbc);
+            u32 *p = &mLevel;
             *p = *p + 1;
         }
         if (mLevel > 0x270e)
@@ -601,8 +606,6 @@ void dScMgTrampoline2_c::StatePlay() {
     }
     if (sTrmpItemsActive != 0)
         return;
-    /* Member form DIFFs here (bytes, not relocations): these are mTimer,
-       mScoreGate, mPattern, mScriptDone and mWaveStep. */
     if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
     if (mScriptDone == 0) {
@@ -1083,7 +1086,7 @@ int dScMgTrampoline2_c::OnGraphCallback0() {
 
 // @symbol _ZN18dScMgTrampoline2_c9InitBrushEi
 void dScMgTrampoline2_c::InitBrush(int layer) {
-    struct Obj *self = (struct Obj *)this;
+    dScMgTrampoline2_c *self = this;
     volatile unsigned short t0;
     volatile unsigned short t1;
     int v = 0x7000;
@@ -1091,10 +1094,10 @@ void dScMgTrampoline2_c::InitBrush(int layer) {
     char *charPtr;
     int i;
 
-    self->brushOn = 1;
-    self->bgLayer = layer;
+    self->mBrushOnMain = 1;
+    self->mBrushLayer = layer;
 
-    switch (self->bgLayer) {
+    switch (self->mBrushLayer) {
     case 0:
         scrPtr = _ZN2G212GetBG0ScrPtrEv();
         charPtr = (char *)func_02054efc();
@@ -1154,7 +1157,7 @@ void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n) {
                 if (x >= 0 && x < 0x100) {
                     if (yy >= 0 && yy < 0xc0) {
                         void *ret;
-                        int mode = ((Obj *)obj)->bgLayer;
+                        int mode = ((dScMgTrampoline2_c *)obj)->mBrushLayer;
 
                         switch (mode) {
                         case 0:
@@ -1188,11 +1191,25 @@ void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n) {
     }
 }
 
+/* One of the 0x14 stars in mArray5 (0x78 bytes; the name is coined). The
+ * factory's element ctor builds the Model at +0 and clears mLifeTimer;
+ * Trmp2Spinner_Init fills the rest. A layout view only: the helpers below
+ * still take the record as char *. */
+struct Trmp2Spinner : Model {
+    Vector3 mScale; /* 0x50 -- Render's scale: 0x4000 plus 0xa00 per Init arg, capped at 0x8000 */
+    Vector3 mPos;   /* 0x5c -- UpdateMatrix's translation */
+    Vector3 mVel;   /* 0x68 -- added to mPos every frame */
+    s16 mAngleZ;    /* 0x74 -- UpdateMatrix's Z rotation; +0x400 a frame */
+    s16 mLifeTimer; /* 0x76 -- 0xf0 at Init, counts down to 0; the pool skips
+                       a 0 slot and reuses it */
+};
+#define SPINNER(p) ((Trmp2Spinner *)(p))
+
 // @symbol Trmp2Spinner_Construct
 extern "C" {
 int Trmp2Spinner_Construct(char *raw) {
     _ZN5ModelC1Ev(raw);
-    *(short *)(raw + 0x76) = 0;
+    ((Trmp2Spinner *)raw)->mLifeTimer = 0;
     return (int)raw;
 }
 }
@@ -1229,7 +1246,7 @@ void Trmp2Spinner_InitAll(unsigned char *c) {
     base = sTrmp2Spinners;
     p = base;
     do {
-        if ((*((short *)(p + 0x76))) == 0) {
+        if (((Trmp2Spinner *)p)->mLifeTimer == 0) {
             Trmp2Spinner_Init(base + (i * 0x78), c);
             return;
         }
@@ -1246,7 +1263,7 @@ void Trmp2Spinner_HideAll(void) {
     if (sTrmp2SpinnerCount > 0) {
         int off = 0;
         do {
-            *(short *)(sTrmp2Spinners + off + 0x76) = 0;
+            ((Trmp2Spinner *)(sTrmp2Spinners + off))->mLifeTimer = 0;
             i++;
             off += 0x78;
         } while (i < sTrmp2SpinnerCount);
@@ -1260,7 +1277,7 @@ void Trmp2Spinner_UpdateAll(void) {
     int i;
     for (i = 0; i < sTrmp2SpinnerCount; i++) {
         char *obj = (char *)sTrmp2Spinners + i * 0x78;
-        if (*(short *)(obj + 0x76) != 0) {
+        if (((Trmp2Spinner *)obj)->mLifeTimer != 0) {
             Trmp2Spinner_Update(obj);
         }
     }
@@ -1273,7 +1290,7 @@ void Trmp2Spinner_UpdateMatricesAll(void) {
     int i;
     for (i = 0; i < sTrmp2SpinnerCount; i++) {
         char *obj = (char *)sTrmp2Spinners + i * 0x78;
-        if (*(short *)(obj + 0x76) != 0) {
+        if (((Trmp2Spinner *)obj)->mLifeTimer != 0) {
             Trmp2Spinner_UpdateMatrix(obj);
         }
     }
@@ -1294,7 +1311,7 @@ extern void func_020169f4(char *self, int kind);
 
 // @symbol Trmp2Spinner_Init
 void Trmp2Spinner_Init(void *r0, void *r1) {
-    char *raw = (char *)r0;
+    Trmp2Spinner *spinner = (Trmp2Spinner *)r0;
     int value = (int)r1;
     struct Tbl t = sTrmp2SpinnerSpeeds;
     unsigned int rnd = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
@@ -1308,58 +1325,57 @@ void Trmp2Spinner_Init(void *r0, void *r1) {
     } else {
         idx = 3;
     }
-    func_020169f4(raw, sTrmp2SpinnerColors[idx]);
+    func_020169f4((char *)spinner, sTrmp2SpinnerColors[idx]);
     int scale = value * 0xA00;
-    *(short *)(raw + 0x76) = 0xF0;
+    spinner->mLifeTimer = 0xF0;
     if (scale > 0x4000) {
         scale = 0x4000;
     }
     int size = scale + 0x4000;
-    *(int *)(raw + 0x50) = size;
-    *(int *)(raw + 0x54) = size;
-    *(int *)(raw + 0x58) = size;
-    *(int *)(raw + 0x5c) = 0x60000;
-    *(int *)(raw + 0x60) = 0x100000;
-    *(int *)(raw + 0x64) = 0x18000;
+    spinner->mScale.x = size;
+    spinner->mScale.y = size;
+    spinner->mScale.z = size;
+    spinner->mPos.x = 0x60000;
+    spinner->mPos.y = 0x100000;
+    spinner->mPos.z = 0x18000;
     int drop = -0x1C00;
-    *(int *)(raw + 0x68) = drop;
-    *(int *)(raw + 0x6c) = drop;
-    *(int *)(raw + 0x70) = 0;
+    spinner->mVel.x = drop;
+    spinner->mVel.y = drop;
+    spinner->mVel.z = 0;
     unsigned int rnd2 = (unsigned int)RandomIntInternal(&data_0209e650);
-    int *p1 = (int *)(raw + 0x5c);
+    int *p1 = &spinner->mPos.x;
     int v1 = *p1 + ((((rnd2 & 0x7fffffff) >> 0x13) - 0x800) * 0x40);
     *p1 = v1;
     int rnd3 = RandomIntInternal(&data_0209e650);
-    int *p2 = (int *)(raw + 0x68);
+    int *p2 = &spinner->mVel.x;
     int adj3 = (int)(((unsigned int)rnd3 & 0x7fffffff) >> 0x13);
     *p2 -= adj3 >> 1;
     int rnd4 = RandomIntInternal(&data_0209e650);
-    int *p3 = (int *)(raw + 0x6c);
+    int *p3 = &spinner->mVel.y;
     int adj4 = (int)(((unsigned int)rnd4 & 0x7fffffff) >> 0x13);
     *p3 -= adj4 >> 1;
-    func_02016a14(raw, 0);
-    func_02016a04(raw, 0);
+    func_02016a14(spinner, 0);
+    func_02016a04(spinner, 0);
 }
 }
 
 // @symbol Trmp2Spinner_Update
 extern "C" {
 void Trmp2Spinner_Update(char *raw) {
-    ApproachLinear2(*(short *)(raw + 0x76), 0, 1);
-    short *p = (short *)((int)raw + 0x74);
+    ApproachLinear2(SPINNER(raw)->mLifeTimer, 0, 1);
+    short *p = &SPINNER(raw)->mAngleZ;
     *p = *p + 0x400;
-    AddVec3((struct Vector3 *)(raw + 0x5c), (struct Vector3 *)(raw + 0x68),
-            (struct Vector3 *)(raw + 0x5c));
+    AddVec3(&SPINNER(raw)->mPos, &SPINNER(raw)->mVel, &SPINNER(raw)->mPos);
 }
 }
 
 // @symbol Trmp2Spinner_UpdateMatrix
 extern "C" void Trmp2Spinner_UpdateMatrix(char *raw) {
-    Matrix4x3_FromTranslation(&data_020a0e68, *(int *)(raw + 0x5c), *(int *)(raw + 0x60),
-                              *(int *)(raw + 0x64));
-    Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, *(short *)(raw + 0x74));
-    *(Matrix4x3 *)(raw + 0x1c) = data_020a0e68;
-    ((C *)raw)->v5(raw + 0x50);
+    Matrix4x3_FromTranslation(&data_020a0e68, SPINNER(raw)->mPos.x, SPINNER(raw)->mPos.y,
+                              SPINNER(raw)->mPos.z);
+    Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, SPINNER(raw)->mAngleZ);
+    SPINNER(raw)->mat4x3 = data_020a0e68;
+    SPINNER(raw)->Render(&SPINNER(raw)->mScale);
 }
 
 extern "C" {
@@ -1369,11 +1385,11 @@ extern void _ZN18TextureTransformerD1Ev(void *);
 extern void _ZN5ModelD1Ev(void *);
 // @symbol Trmp2_DestructJumperModels
 int Trmp2_DestructJumperModels(char *raw) {
-    __cxa_vec_cleanup(raw + 0x1a8, 5, 8, (void *)NullDestructor_0203d47c);
-    _ZN18TextureTransformerD1Ev(raw + 0x194);
-    _ZN5ModelD1Ev(raw + 0x140);
-    _ZN5ModelD1Ev(raw + 0xf0);
-    _ZN5ModelD1Ev(raw + 0xa0);
+    __cxa_vec_cleanup(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)NullDestructor_0203d47c);
+    _ZN18TextureTransformerD1Ev(((TrmpItem *)raw)->mTexAnim);
+    _ZN5ModelD1Ev(((TrmpItem *)raw)->mModels[2]);
+    _ZN5ModelD1Ev(((TrmpItem *)raw)->mModels[1]);
+    _ZN5ModelD1Ev(((TrmpItem *)raw)->mModels[0]);
     return (int)raw;
 }
 }

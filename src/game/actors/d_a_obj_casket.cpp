@@ -1,29 +1,18 @@
 //cpp
 /* daObjCasket_c -- CASKET, a dBgActor_c in ov071, .text 0x02121fe4..0x021226a0
- * (14 functions). It lies flat until a player comes near, swings up on end for
- * a moment, and swings back down. Behavior runs one of two states out of a
- * table of { init, exec, name } entries at data_ov071_02122ecc, which
- * __sinit_ov071_02122a64 fills:
- *
+ * (14 functions). Lies flat until a player comes near, swings up on end,
+ * swings back down. Behavior runs one of two states out of the table at
+ * data_ov071_02122ecc (filled by __sinit_ov071_02122a64):
  *   0 "WAIT"     init St_Wait_Init     exec St_Wait_Main
  *   1 "STANDUP"  init St_StandUp_Init  exec St_StandUp_Main
  *
- * NAME: daObjCasket_c is the cartridge's RTTI spelling. _ZTS at ov071
- * 0x02122ea0 is the string "13daObjCasket_c", and the _ZTI at 0x02122e94
- * names the vtable at 0x02122efc as this class's. The tree called the class
- * Coffin until then.
+ * The tree called the class Coffin until then.
+ * Key function InitResources (inline empty dtor in daObjCasket_c.h); this TU
+ * emits _ZTV/_ZTI/_ZTS13daObjCasket_c (0x02122efc/0x02122e94/0x02122ea0).
+ * Source order is reverse ROM order (2004/b56 emits .text back to front).
  *
- * THE DESTRUCTOR IS INLINE AND EMPTY in the class header, so InitResources is
- * the key function and this TU emits _ZTV13daObjCasket_c, _ZTI13daObjCasket_c
- * and _ZTS13daObjCasket_c with the inherited bases' RTTI records. D1 and D0 are
- * emitted from the header, so there is no destructor text here to mark.
- *
- * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S. mwccarm 2004/b56
- * emits one .text section per function in the REVERSE of source order, so
- * the highest-address ROM function is written FIRST here. Do not reorder.
- *
- * leftovers: each cleaner spelling below was measured with mwccarm
- * 2004/b56 and reverted.
+ * leftovers (each measured with mwccarm 2004/b56; the cleaner spelling
+ * below was reverted):
  * - assigning mMeshCollider.beforeClsnCallback instead of calling
  *   func_020393d4 sizes InitResources 0x110 against the ROM's 0x114.
  *   func_020393d4 is that store (p[6] = v), into dBgW::beforeClsnCallback

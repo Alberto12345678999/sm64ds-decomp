@@ -81,6 +81,18 @@ struct Vec3 { int x, y, z; };
  * has to carry its definition's name to agree. */
 typedef struct { int x, y, z; } Vec3_Fix12;
 
+/* One 0x30-byte BMD material, seen only as far as its DIF_AMB/SPE_EMI pair:
+   LoadTexture copies both into the Ov080Mat record that LoadMaterial pushes
+   to the G3 DIF_AMB/SPE_EMI ports. BMD_File.h still spells them pad_28. */
+struct PicGateMaterial {
+    u8 pad_00[0x28];
+    u32 difAmb; /* 0x28 */
+    u32 speEmi; /* 0x2c */
+};
+#ifndef SM64DS_PLATFORM_PC
+typedef char PicGateMaterial_size_must_be_0x30[sizeof(PicGateMaterial) == 0x30 ? 1 : -1];
+#endif
+
 extern "C" {
 void  Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
@@ -178,33 +190,31 @@ void daPicGate_c::func_ov080_0212555c()
 u8 *daPicGate_c::func_ov080_02125630(s32 i)
 {
     int off = 0x18 * i;
-    unsigned char *e = &data_ov080_02128688[off];
+    Ov080Mat *e = (Ov080Mat *)&data_ov080_02128688[off];
     unsigned char *fl = &data_ov080_0212869c[off];
     if (data_ov080_0212869c[off] == 0) {
-        char *a;
-        char *b;
-        char *c;
+        BMD_Texture *a;
+        PicGateMaterial *b;
+        BMD_Palette *c;
         SharedFilePtr *sfp = data_ov080_0212775c[i];
-        char *o = (char *)func_0201787c(sfp);
-        a = *(char **)(o + 0x18);
-        b = *(char **)(o + 0x28);
-        c = *(char **)(o + 0x20);
+        BMD_File *o = (BMD_File *)func_0201787c(sfp);
+        a = o->textures;
+        b = (PicGateMaterial *)o->materials;
+        c = o->palettes;
         int sz;
-        *(int *)(e + 0) = (int)Model::LoadCompressedTextureToVram(
-            *(char **)(a + 4), *(unsigned int *)(a + 8),
-            *(char **)(a + 4) + *(unsigned int *)(a + 8));
-        sz = *(int *)(c + 8);
+        e->texAddr = (int)Model::LoadCompressedTextureToVram(a->data, a->size, a->data + a->size);
+        sz = c->size;
         if (sz <= 8)
-            *(int *)(e + 4) = (int)func_02045ad8(*(const void **)(c + 4), (unsigned int)sz);
+            e->pltAddr = (int)func_02045ad8(c->data, (unsigned int)sz);
         else
-            *(int *)(e + 4) = (int)func_02045a50(*(const void **)(c + 4), (unsigned int)sz);
-        *(int *)(e + 8) = *(int *)(b + 0x28);
-        *(int *)(e + 0xc) = *(int *)(b + 0x2c);
-        *(int *)(e + 0x10) = *(int *)(a + 0x10);
+            e->pltAddr = (int)func_02045a50(c->data, (unsigned int)sz);
+        e->difAmb = b->difAmb;
+        e->speEmi = b->speEmi;
+        e->param = a->flags;
         *fl = 1;
         sfp->Release();
     }
-    return e;
+    return (u8 *)e;
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_021256f8Ev
@@ -286,7 +296,7 @@ void daPicGate_c::func_ov080_021256f8()
 // @symbol _ZN11daPicGate_c19func_ov080_02125940Ev
 /* BuildNormals: each cell's normal is the cross product of its column and
  * row neighbours (edge cells take the one-sided edge), halved in z, then
- * normalized and packed 10 bits per axis into Vertex::color. */
+ * normalized and packed 10 bits per axis into Vertex::normal. */
 void daPicGate_c::func_ov080_02125940()
 {
     Vec3 ej;
@@ -324,9 +334,7 @@ void daPicGate_c::func_ov080_02125940()
             CrossVec3((const Vec3_Fix12 *)&ej, (const Vec3_Fix12 *)&ei, (Vec3_Fix12 *)&n);
             n.z >>= 1;
             NormalizeVec3((int *)&n, (int *)&n);
-            p->color = (n.x >> 3 & mask)
-                | ((n.y >> 3 & mask) << 10)
-                | ((n.z >> 3 & mask) << 20);
+            p->normal = (n.x >> 3 & mask) | ((n.y >> 3 & mask) << 10) | ((n.z >> 3 & mask) << 20);
             p += 1;
         }
     }
@@ -343,7 +351,7 @@ void daPicGate_c::func_ov080_02125af0()
         if (e->x == 0 || e->x == ((unsigned char)(param1 & 0xf) + 1) * 0x64000 || e->y == 0 ||
             e->y == ((unsigned char)((param1 >> 4) & 0xf) + 1) * 0x64000) {
             e->z = 0;
-            mCells[i].color = 0x1ff00000;
+            mCells[i].normal = 0x1ff00000;
         }
     }
 }
@@ -475,22 +483,22 @@ void daPicGate_c::func_ov080_02125f00()
     mCorners[0].x = 0;
     mCorners[0].y = 0;
     mCorners[0].z = 0;
-    mCorners[0].color = 0x20000000;
+    mCorners[0].normal = 0x20000000;
     mCorners[0].texCoord = 0x8000800;
     mCorners[1].x = (u8)(param1 & 0xf) * 0x64000 + 0x64000;
     mCorners[1].y = 0;
     mCorners[1].z = 0;
-    mCorners[1].color = 0x20000000;
+    mCorners[1].normal = 0x20000000;
     mCorners[1].texCoord = 0x8000000;
     mCorners[2].x = (u8)(param1 & 0xf) * 0x64000 + 0x64000;
     mCorners[2].y = (u8)((param1 >> 4) & 0xf) * 0x64000 + 0x64000;
     mCorners[2].z = 0;
-    mCorners[2].color = 0x20000000;
+    mCorners[2].normal = 0x20000000;
     mCorners[2].texCoord = 0;
     mCorners[3].x = 0;
     mCorners[3].y = (u8)((param1 >> 4) & 0xf) * 0x64000 + 0x64000;
     mCorners[3].z = 0;
-    mCorners[3].color = 0x20000000;
+    mCorners[3].normal = 0x20000000;
     mCorners[3].texCoord = 0x800;
 }
 
@@ -502,7 +510,7 @@ void daPicGate_c::func_ov080_02125fd0()
 {
     int tmp[13];
     int i;
-    int *p;
+    Vertex *p;
 
     G3_MTX_PUSH = 0;
     MulMat4x3Mat4x3(mMtx, (const int *)&data_0209b3ec, tmp);
@@ -518,22 +526,22 @@ void daPicGate_c::func_ov080_02125fd0()
     G3_BEGIN = 1;
 
     i = 0;
-    p = (int *)mCorners;
+    p = mCorners;
     do {
         int v0, v1, v2;
         s16 s0, s1, s2;
-        G3_TEXCOORD = p[5];
-        G3_NORMAL = p[4];
-        v0 = p[0];
-        v1 = p[1];
-        v2 = p[2];
+        G3_TEXCOORD = p->texCoord;
+        G3_NORMAL = p->normal;
+        v0 = p->x;
+        v1 = p->y;
+        v2 = p->z;
         s0 = (s16)(v0 >> 8);
         s1 = (s16)(v1 >> 8);
         s2 = (s16)(v2 >> 8);
         G3_VTX_16 = (u16)s0 | ((u16)s1 << 16);
         G3_VTX_16 = (u16)s2;
         i++;
-        p += 6;
+        p++;
     } while (i < 4);
 
     G3_END = 0;
@@ -554,22 +562,22 @@ void daPicGate_c::func_ov080_02126124()
     mCorners[0].x = 0;
     mCorners[0].y = 0;
     mCorners[0].z = 0;
-    mCorners[0].color = 0x20000000;
+    mCorners[0].normal = 0x20000000;
     mCorners[0].texCoord = 0x8000000;
     mCorners[1].x = (u8)(param1 & 0xf) * 0x64000 + 0x64000;
     mCorners[1].y = 0;
     mCorners[1].z = 0;
-    mCorners[1].color = 0x20000000;
+    mCorners[1].normal = 0x20000000;
     mCorners[1].texCoord = 0x8000800;
     mCorners[2].x = (u8)(param1 & 0xf) * 0x64000 + 0x64000;
     mCorners[2].y = (u8)((param1 >> 4) & 0xf) * 0x64000 + 0x64000;
     mCorners[2].z = 0;
-    mCorners[2].color = 0x20000000;
+    mCorners[2].normal = 0x20000000;
     mCorners[2].texCoord = 0x800;
     mCorners[3].x = 0;
     mCorners[3].y = (u8)((param1 >> 4) & 0xf) * 0x64000 + 0x64000;
     mCorners[3].z = 0;
-    mCorners[3].color = 0x20000000;
+    mCorners[3].normal = 0x20000000;
     mCorners[3].texCoord = 0;
 }
 
@@ -586,7 +594,7 @@ extern int data_ov080_0212771c[];
 }
 /* texgen=NORMAL variant: no per-vertex TEXCOORD, positions at >>7. */
 #define EMIT_VTX7(v) \
-    G3_NORMAL = (v)->color; \
+    G3_NORMAL = (v)->normal; \
     vz = (v)->z; \
     s2 = (s16)(vz >> 7); \
     vx = (v)->x; \

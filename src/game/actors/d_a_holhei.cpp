@@ -290,7 +290,7 @@ int daHolhei_c::CleanupResources()
 /* Home the carry offset toward the param1-selected Vector3, then publish
    the carried matrix onto the model. */
 // @symbol func_ov062_02116edc
-extern "C" void func_ov062_02116edc(daHolhei_c *self){
+extern "C" void func_ov062_02116edc(daHolhei_c *self) {
     int idx = 0;
     if (self->mHeld->param1 == 2)
         idx = 1;
@@ -361,7 +361,7 @@ extern "C" int daHolhei_c_ChangeState(daHolhei_c *self, HolheiState *p)
 
 /* Face home, on the walk animation, and wait before turning. */
 // @symbol _ZN10daHolhei_c19func_ov062_02116c78Ev
-int daHolhei_c::func_ov062_02116c78(){
+int daHolhei_c::func_ov062_02116c78() {
     mTurnWait = 0x3c;
     mChargeStep = 0;
     mModel.speed = 0x1000;
@@ -372,7 +372,7 @@ int daHolhei_c::func_ov062_02116c78(){
 
 /* Brake, then turn onto mTargetAngY and go back to the walk state. */
 // @symbol _ZN10daHolhei_c19func_ov062_02116bf8Ev
-int daHolhei_c::func_ov062_02116bf8(){
+int daHolhei_c::func_ov062_02116bf8() {
     ApproachLinear(mHorzSpeed, 0, 0x2000);
     if (mTurnWait == 0) {
         ApproachAngle(&mPrevAngleY, mTargetAngY, 0xa, 0x200, 0x100);
@@ -384,7 +384,7 @@ int daHolhei_c::func_ov062_02116bf8(){
 
 /* Pick a random facing and a random time on the walk animation. */
 // @symbol func_ov062_02116b80
-extern "C" int func_ov062_02116b80(daHolhei_c *self){
+extern "C" int func_ov062_02116b80(daHolhei_c *self) {
     self->mTargetAngY = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     self->mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0x64);
     self->mModel.speed = 0x1000;
@@ -459,7 +459,7 @@ int daHolhei_c::func_ov062_02116980() {
 
 /* After the timer, either commit the turn into a walk or keep steering. */
 // @symbol _ZN10daHolhei_c19func_ov062_02116894Ev
-int daHolhei_c::func_ov062_02116894(){
+int daHolhei_c::func_ov062_02116894() {
     if (*(unsigned short *)&mStateTimer != 0)
         return 1;
     if (mHorzSpeed != 0) {
@@ -492,7 +492,7 @@ extern "C" s16 func_ov062_02116850(daHolhei_c *self) {
 /* Turn toward mTargetAngY. Facing it starts the walk; otherwise the timer
    is refreshed. When the timer expires, cool down and return to the walk. */
 // @symbol _ZN10daHolhei_c19func_ov062_021167c0Ev
-int daHolhei_c::func_ov062_021167c0(){
+int daHolhei_c::func_ov062_021167c0() {
     ApproachAngle(&mPrevAngleY, mTargetAngY, 0xa, 0x200, 0x100);
     if (AngleDiff(mTargetAngY, mAngleY) < 0x100)
         mHorzSpeed = 0xa000;
@@ -602,7 +602,7 @@ int daHolhei_c::func_ov062_021164e8()
 
 /* Pop off: gravity, a launch, and a clear of the runtime flags. */
 // @symbol func_ov062_02116498
-extern "C" int func_ov062_02116498(daHolhei_c *self){
+extern "C" int func_ov062_02116498(daHolhei_c *self) {
     self->mVertAccel = -0x4000;
     self->mVertSpeed = 0x3c000;
     self->mHorzSpeed = 0xa000;
@@ -648,7 +648,7 @@ extern "C" int func_ov062_02116368(daHolhei_c *self) {
 
 /* When the animation finishes, leave this state. */
 // @symbol func_ov062_0211632c
-extern "C" int func_ov062_0211632c(daHolhei_c *self){
+extern "C" int func_ov062_0211632c(daHolhei_c *self) {
     if (self->mModel.Finished()) {
         self->mChargeStep = 0;
         ::daHolhei_c_ChangeState(self, (HolheiState *)data_ov062_0211de80);
@@ -658,7 +658,7 @@ extern "C" int func_ov062_0211632c(daHolhei_c *self){
 
 /* Start an animation, then wait a random few frames facing a random way. */
 // @symbol func_ov062_021162b8
-extern "C" int func_ov062_021162b8(daHolhei_c *self){
+extern "C" int func_ov062_021162b8(daHolhei_c *self) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModel, ((HolheiFile *)&gHoruheiLiftLoopAnimationFile)->file, 0, 0x1000, 0);
     self->mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x14);
     self->mTargetAngY = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
@@ -676,7 +676,7 @@ extern "C" int func_ov062_02116274(daHolhei_c *self)
 }
 
 // @symbol func_ov062_02116238
-extern "C" int func_ov062_02116238(daHolhei_c *self){
+extern "C" int func_ov062_02116238(daHolhei_c *self) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModel, ((HolheiFile *)data_ov062_0211de08)->file, 0x40000000, 0x1000, 0);
     return 1;
 }

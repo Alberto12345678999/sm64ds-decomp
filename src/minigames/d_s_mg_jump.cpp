@@ -5,12 +5,13 @@
  *  6 ctor/dtor/op-new call(s)    C1/C2/D0/D1/D2 is not expressible
  *                                in C++ source; only a real ctor emits it.
  *  2 _ZTV vptr store(s)          stands in for the ctor that would emit it.
- *  ~1 *(T *)(p + 0x..)           class layout does not name these offsets.
+ * The members it builds are spelled through dScMgJump_c.h; the empty loop
+ * steps over the two 0xbc-byte cameras at 0x466c, which have no constructor.
+ * Its end stays `p + 0x47e4`: &mSysTracker builds 8 bytes shorter.
  */
 
 #include "fBase_c.h"
-
-struct dMgJump3DMario_c;
+#include "dScMgJump_c.h"
 
 /* The array runtime passes each element address and ignores callback results.
  * The casts below adapt the existing lifecycle entries at that ABI boundary. */
@@ -24,8 +25,7 @@ extern int _ZTV14dScMgD3DBase_c[];
 extern int _ZTV11dScMgJump_c[];
 extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cD1Ev(dMgJump3DMario_c *object);
 extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cC1Ev(dMgJump3DMario_c *object);
-extern int Heyho_Construct(char *object);  /* local extern: this factory includes no scene header */
-extern int Heyho_Destruct(int *object);  /* local extern: see above */
+extern int Heyho_Construct(char *object); /* local extern: no header declares it */
 }
 
 /* Reconstructed source-style name: SM64DS proves dScMgJump_c through RTTI,
@@ -39,7 +39,7 @@ extern "C" void *dScMgJump_c_classInit(void)
         char *it;
         _ZN11dScMgBase_cC2Ev(p);
         *(int *)p = (int)_ZTV14dScMgD3DBase_c;
-        *(short *)(p + 0x4664) = 0;
+        ((dScMgJump_c *)p)->mDrawSubScreen = 0;
         it = p + 0x466c;
         {
             char *end = p;
@@ -48,15 +48,14 @@ extern "C" void *dScMgJump_c_classInit(void)
                 it += 0xbc;
             } while (it != end);
         }
-        _ZN8Particle10SysTrackerC1Ev(p + 0x47e4);
+        _ZN8Particle10SysTrackerC1Ev(&((dScMgJump_c *)p)->mSysTracker);
         *(int *)p = (int)_ZTV11dScMgJump_c;
-        _ZN5ModelC1Ev(p + 0x501c);
-        __cxa_vec_ctor(p + 0x506c, 3, 0xb8,
-                      (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev,
-                      (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
-        __cxa_vec_ctor(p + 0x5294, 6, 0xf0,
-                      (void (*)(void *))Heyho_Construct,
-                      (void (*)(void *))Heyho_Destruct);
+        _ZN5ModelC1Ev(&((dScMgJump_c *)p)->mModel);
+        __cxa_vec_ctor(((dScMgJump_c *)p)->mPlayers, 3, 0xb8,
+                       (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev,
+                       (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
+        __cxa_vec_ctor(((dScMgJump_c *)p)->mArray2, 6, 0xf0, (void (*)(void *))Heyho_Construct,
+                       (void (*)(void *))Heyho_Destruct);
     }
     return p;
 }

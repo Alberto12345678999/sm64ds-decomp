@@ -30,10 +30,9 @@
  * which is the order the cartridge has (0x021111a0, then 0x021111e4).
  *
  * daObjCtMecha10_c_classInit_CT_MECHA10/_CT_MECHA12L/_CT_MECHA12S are
- * reconstructed names (RTTI daObjCtMecha10_c, the three registry profiles);
- * retail does not store them. Historical aliases: RotatingClockHand_Spawn
- * (CT_MECHA10) and func_ov035_0211168c (CT_MECHA12L); CT_MECHA12S has none
- * on record.
+ * reconstructed factory names (RTTI daObjCtMecha10_c, three registry
+ * profiles); historical aliases: RotatingClockHand_Spawn (CT_MECHA10),
+ * func_ov035_0211168c (CT_MECHA12L).
  */
 
 // leftovers (each measured; the noted form size-DIFFs or breaks relocs):

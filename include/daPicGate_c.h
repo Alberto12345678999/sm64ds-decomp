@@ -27,7 +27,9 @@ struct daPicGate_c : dActor_c {
     struct Vertex {
         s32 x, y, z;             /* 0x00 -- z is the ripple height */
         s32 dist;                /* 0x0c -- ripple phase input */
-        u32 color;               /* 0x10 -- written straight to GXCOLOR */
+        u32 normal;              /* 0x10 -- packed 10-bit-per-axis normal: BuildNormals
+                                    packs it, and both strip writers store it to
+                                    G3_NORMAL (0x04000484) */
         u32 texCoord;            /* 0x14 -- written straight to GXTEXCOORD */
     };
 

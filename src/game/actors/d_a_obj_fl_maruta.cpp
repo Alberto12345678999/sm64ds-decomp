@@ -4,10 +4,11 @@
  * cannon's flame (daObj_volcanoCannon_c), in the one translation unit
  * the linker says they came from.
  *
- * One file because the runs overlap: daObjFlMaruta_c's vtable claims
- * two slots whose code sits in the middle of daObj_volcanoCannon_c's
- * address run (slot 32 -> 0x021126ac, slot 34 -> 0x02112710). The
- * merged run is 0x02112498..0x02112950.
+ * The merged run is 0x02112498..0x02112950. 0x021126ac and 0x02112710
+ * are the volcano cannon's state behavior and init handlers: the {fn, 0}
+ * member-pointer constants data_ov022_02114424 and data_ov022_0211442c
+ * that name them sit right after daObjFlMaruta_c's 0x80-byte vtable, which
+ * is why older notes read them as that vtable's slots 32 and 34.
  *
  * Emission order is ROM order: functions stay ROM-ascending under
  * `#pragma defer_codegen off`. Do not reorder. Both destructors are
@@ -28,7 +29,6 @@
 //   this TU).
 // - dBgW_KcMbg::SetFile keeps its mangled spelling (by-value Fix12<int>
 //   parameters, wall 6az).
-// - c + 0xf8 is the flame's tracked-actor ID, unnamed in any header.
 // - Both factories stay hand-spelled (`new` would call the unavailable
 //   global `_Znwm`); the vptr stores keep the [2] form objisolate requires.
 
@@ -40,6 +40,7 @@
 
 #include "daObjFlMaruta_c.h"
 #include "daObj_volcanoCannon_c.h"
+#include "daObjFl_Ring_c.h"
 #include "Player.h"
 
 struct Vector3_16f;
@@ -63,7 +64,7 @@ extern int data_ov022_02112c98[];
 /* Shared by the two flame helpers below. */
 int RandomIntInternal(int *seed);
 extern int data_0209e650;
-void func_ov022_02112654(char *c);
+void func_ov022_02112654(daObj_volcanoCannon_c *c);
 
 /* The volcano cannon's state table, ov022 .bss; the definition at
    the end of this file fills it from the two .data handler constants.
@@ -139,33 +140,33 @@ daObj_volcanoCannon_c::~daObj_volcanoCannon_c()
 }
 
 // @symbol func_ov022_02112654
-/* Burns Mario (actor type 0xbf) if the tracked actor is Mario, then
- * retires itself. */
-extern "C" void func_ov022_02112654(char *c)
-{
-    if (*(unsigned int *)(c + 0xf8) == 0) return;
-    void *a = dActor_c::FindWithID(*(unsigned int *)(c + 0xf8));
+/* Burns Mario (actor type 0xbf) if the actor the flame's cylinder last hit
+ * is Mario, then retires itself. */
+extern "C" void func_ov022_02112654(daObj_volcanoCannon_c *c) {
+    if (c->mCylinderClsn.otherOwner == 0)
+        return;
+    void *a = dActor_c::FindWithID(c->mCylinderClsn.otherOwner);
     if (a == 0) return;
     unsigned int b = ((dActor_c *)a)->actorID == 0xbf;
     if (b == 0) return;
     ((Player *)a)->Burn();
-    ((fBase_c *)c)->MarkForDestruction();
+    c->MarkForDestruction();
 }
 
 // @symbol func_ov022_021126ac
-/* daObjFlMaruta_c vtable slot 32. Historical alias:
- * daObjFlMaruta_c_AfterClsn. */
-extern "C" int func_ov022_021126ac(char *c)
-{
-    int a = *(int *)(c + 0x60);
-    int b = *(int *)(c + 0x118);
+/* The volcano cannon state's behavior handler, bound through
+ * data_ov022_02114424. The flame dies once it falls below mKillPosY or
+ * mKillTimer runs out. Historical alias: daObjFlMaruta_c_AfterClsn. */
+extern "C" int func_ov022_021126ac(daObj_volcanoCannon_c *c) {
+    int a = c->mPosY;
+    int b = c->mKillPosY;
     if (a < b) {
-        ((fBase_c *)c)->MarkForDestruction();
+        c->MarkForDestruction();
         return 1;
     }
-    unsigned short h = *(unsigned short *)(c + 0x100 + 0x10);
+    unsigned short h = c->mKillTimer;
     if (h == 0) {
-        ((fBase_c *)c)->MarkForDestruction();
+        c->MarkForDestruction();
         return 1;
     }
     func_ov022_02112654(c);
@@ -173,23 +174,19 @@ extern "C" int func_ov022_021126ac(char *c)
 }
 
 // @symbol func_ov022_02112710
-/* daObjFlMaruta_c vtable slot 34. Rolls the log back to a randomised
- * start: a 0x3c timer, a random facing, and randomised speed and range
- * in 12-bit fixed point. */
-extern "C" int func_ov022_02112710(char *c)
-{
+/* The volcano cannon state's init handler, bound through
+ * data_ov022_0211442c. Launches the flame: a 0x3c kill timer, a random
+ * heading, and randomised horizontal and vertical speed in 12-bit fixed
+ * point, under a -4.0 gravity. */
+extern "C" int func_ov022_02112710(daObj_volcanoCannon_c *c) {
     unsigned int r = (unsigned int)RandomIntInternal(&data_0209e650) >> 8;
-    int *p98;
-    int *pa8;
-    *(short *)(c + 0x110) = 0x3c;
-    *(short *)(c + 0x94) = (short)((r & 0xf) << 0xc);
-    *(int *)(c + 0x98) = (r & 0x1f) + 0x14;
-    p98 = (int *)((int)c + 0x98);
-    *p98 = *p98 << 0xc;
-    *(int *)(c + 0x9c) = -0x4000;
-    *(int *)(c + 0xa8) = (r & 0x3f) + 0x28;
-    pa8 = (int *)((int)c + 0xa8);
-    *pa8 = *pa8 << 0xc;
+    c->mKillTimer = 0x3c;
+    c->mPrevAngleY = (short)((r & 0xf) << 0xc);
+    c->mHorzSpeed = (r & 0x1f) + 0x14;
+    c->mHorzSpeed <<= 0xc;
+    c->mVertAccel = -0x4000;
+    c->mVertSpeed = (r & 0x3f) + 0x28;
+    c->mVertSpeed <<= 0xc;
     return 1;
 }
 
@@ -205,13 +202,13 @@ int daObj_volcanoCannon_c::ChangeState(State *state)
 }
 
 // @symbol _ZN21daObj_volcanoCannon_c16CleanupResourcesEv
-/* Vtable slot 3. Hands its slot back to the spawner that made it, by
- * decrementing the live-flame count the spawner keeps at +0x324.
+/* Vtable slot 3. Hands its slot back to the daObjFl_Ring_c that spawned
+ * it, by decrementing the ring's live-flame count.
  * mSpawner is null for a flame that was never registered. */
 int daObj_volcanoCannon_c::CleanupResources()
 {
     if (mSpawner)
-        *(u16 *)((char *)mSpawner + 0x324) -= 1;
+        ((daObjFl_Ring_c *)mSpawner)->mSpawnCount -= 1;
     return 1;
 }
 
@@ -247,7 +244,7 @@ extern "C" int *daObj_volcanoCannon_c_classInit(void)
     if (p) {
         _ZN8dActor_cC2Ev(p);
         p[0] = (int)&_ZTV21daObj_volcanoCannon_c[2];
-        _ZN7dCcAc_cC1Ev((char *)p + 0xd4);
+        _ZN7dCcAc_cC1Ev(&((daObj_volcanoCannon_c *)p)->mCylinderClsn);
     }
     return p;
 }

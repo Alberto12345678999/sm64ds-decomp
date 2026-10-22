@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "Ov007Sprite.h"
 extern u8 data_ov007_02104ba0[];
 extern u8 data_ov007_02104b9c[];
 extern s16 data_ov007_02104b98[];
@@ -15,6 +16,67 @@ extern void func_ov007_020ba9bc(void);
 extern int func_ov007_020c5854(int s, void *v, int a, int b, int c, int d);
 extern void func_ov007_020c55bc(int a, int b, int c);
 
+/* The 0xd0-byte touch picker func_ov007_020c690c builds (the scene's slot 0);
+ * names as in func_ov007_020c684c, only the slots this function touches. */
+typedef struct {
+    int x, y, z;
+} Vec3;
+typedef struct Ov007Picker {
+    char pad_00[8];
+    int groupCount; /* 0x08 */
+    char pad_0c[0xac];
+    Vec3 boundsMin; /* 0xb8: the clamp rectangle (func_ov007_020c510c) */
+    Vec3 boundsMax; /* 0xc4 */
+} Ov007Picker;
+
+/* data_ov007_02104ba0: the 0x4c record func_ov007_020b9880 allocates; names
+ * as in func_ov007_020b91b4 (springSet and introVariant are named here), only
+ * the slots this function touches. */
+typedef struct Ov007PickerScene {
+    Ov007Picker *picker; /* 0x00: func_ov007_020c690c */
+    char pad_04[0x10];
+    /* 0x14: func_ov007_020c5db0's point total over the stroke and every
+     * group */
+    int totalPoints;
+    char pad_18[4];
+    /* 0x1c: which 0x18-byte set of data_ov007_020d7b80 func_ov007_020ba9bc
+     * binds as picker->springConstants (func_ov007_020c690c's a5); this
+     * function picks 0/1/2/5/6 per phase */
+    int springSet;
+    /* 0x20: steps 0..4 each time this intro starts (t == 0) and picks its
+     * shape: 0/3 squash along x/y, 1/4 spring pull, 2 wobble;
+     * func_ov007_020b8fd4 slides sprites[1] in along x for 0, y for 3 */
+    int introVariant;
+} Ov007PickerScene;
+
+/* data_ov007_02104b9c: the 0x14 record of the scene's sprites
+ * (func_ov007_020b9880); names as in func_ov007_020b91b4. */
+typedef struct Ov007PickerSprites {
+    /* 0x00, medium confidence: Q12; func_ov007_020b8fd4 slides sprites[1]
+     * in while it is <= 0x1000 */
+    s32 slideProgress;
+    Ov007Sprite *sprites[4]; /* 0x04: func_ov007_020c44e4 */
+} Ov007PickerSprites;
+
+/* The overlay's camera (func_ov007_020c023c); names as in
+ * func_ov007_020b9ca8, only the slot this function reads. */
+typedef struct Ov007Camera {
+    char pad_00[0x2c];
+    int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
+} Ov007Camera;
+
+/* data_ov007_0210342c: the overlay's manager; only its cameras here. */
+typedef struct Ov007Work {
+    char pad_00[0x30];
+    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
+} Ov007Work;
+
+/* The externs keep the tree's array spelling (the declaration-agreement
+ * gate); the typed views are reached through cast macros. */
+#define SCENE (*(Ov007PickerScene **)data_ov007_02104ba0)
+#define SPRITES (*(Ov007PickerSprites **)data_ov007_02104b9c)
+#define WORK (*(Ov007Work **)data_ov007_0210342c)
+
 int func_ov007_020ba368(int t)
 {
     int s;
@@ -23,20 +85,20 @@ int func_ov007_020ba368(int t)
     int local[3];
 
     {
-        char *m = *(char **)data_ov007_02104ba0;
-        s = *(int *)m;
-        *(int *)(m + 0x1c) = 0;
+        Ov007PickerScene *m = SCENE;
+        s = (int)m->picker;
+        m->springSet = 0;
     }
 
     if (t == 0) {
-        int *p = (int *)(*(char **)data_ov007_02104ba0 + 0x20);
+        int *p = &SCENE->introVariant;
         *p += 1;
-        if (*(int *)(*(char **)data_ov007_02104ba0 + 0x20) >= 5) {
-            *(int *)(*(char **)data_ov007_02104ba0 + 0x20) = 0;
+        if (SCENE->introVariant >= 5) {
+            SCENE->introVariant = 0;
         }
     }
 
-    if (*(int *)(s + 8) == 0 || *(int *)(*(char **)data_ov007_02104ba0 + 0x14) == 0) {
+    if (((Ov007Picker *)s)->groupCount == 0 || SCENE->totalPoints == 0) {
         int ratio;
         if (t <= 0) {
             ratio = 0;
@@ -45,17 +107,19 @@ int func_ov007_020ba368(int t)
         } else {
             ratio = _ZN4cstd3divEii(t << 0xc, 0x1e);
         }
-        *(int *)(*(char **)(*(char **)data_ov007_02104b9c + 8) + 0x50) = ratio * 0x1f;
+        SPRITES->sprites[1]->alpha = ratio * 0x1f;
         return ratio >= 0x1000;
     }
 
-    state = *(int *)(*(char **)data_ov007_02104ba0 + 0x20);
+    state = SCENE->introVariant;
     switch (state) {
     case 0:
     case 3:
     {
-        int *p1 = (state == 0) ? (int *)(s + 0xb8) : (int *)(s + 0xbc);
-        int *p2 = (state == 0) ? (int *)(s + 0xc4) : (int *)(s + 0xc8);
+        int *p1 =
+            (state == 0) ? &((Ov007Picker *)s)->boundsMin.x : &((Ov007Picker *)s)->boundsMin.y;
+        int *p2 =
+            (state == 0) ? &((Ov007Picker *)s)->boundsMax.x : &((Ov007Picker *)s)->boundsMax.y;
         int d, ratio, ease, v1, v2;
         v1 = *p1;
         v2 = *p2;
@@ -68,9 +132,9 @@ int func_ov007_020ba368(int t)
             ratio = _ZN4cstd3divEii(t << 0xc, 0x28);
         }
         ease = (int)(((s64)ratio * (0x2000 - ratio)) >> 0xc);
-        *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 1;
+        SCENE->springSet = 1;
         if (t == 0) {
-            *(int *)(*(char **)(*(char **)data_ov007_02104b9c + 8) + 0x50) = 0x1f000;
+            SPRITES->sprites[1]->alpha = 0x1f000;
             func_ov007_020bdeb0(0x1b);
         }
         *p2 = d / 2 - FX_MUL(ease, d);
@@ -78,7 +142,7 @@ int func_ov007_020ba368(int t)
         func_ov007_020ba9bc();
         *p1 = v1;
         *p2 = v2;
-        *(int *)(*(char **)data_ov007_02104b9c) = ease;
+        SPRITES->slideProgress = ease;
         done = ratio >= 0x1000;
         break;
     }
@@ -94,17 +158,17 @@ int func_ov007_020ba368(int t)
             ratio = _ZN4cstd3divEii(t << 0xc, 0x78);
         }
         if (t == 0) {
-            *(int *)(*(char **)data_ov007_02104b9c) = 0x1000;
+            SPRITES->slideProgress = 0x1000;
             *(s16 *)data_ov007_02104b98 = -1;
         }
         if (t >= 0x96) {
-            *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 6;
+            SCENE->springSet = 6;
         } else {
-            *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 0;
+            SCENE->springSet = 0;
         }
         {
-            char *o = *(char **)(*(char **)data_ov007_0210342c + 0x30);
-            func_ov007_020bfe4c(o, 0xe8000, 0xa8000, -*(int *)(o + 0x2c), local);
+            Ov007Camera *o = WORK->cameras[0];
+            func_ov007_020bfe4c(o, 0xe8000, 0xa8000, -o->distance, local);
         }
         func_ov007_020ba9bc();
         if (t <= 0xc8) {
@@ -116,7 +180,7 @@ int func_ov007_020ba368(int t)
         }
         ratio += FX_MUL(v, 0x1e000);
         r8arg = 0x1000;
-        if (*(int *)(*(char **)data_ov007_02104ba0 + 0x20) == 4) {
+        if (SCENE->introVariant == 4) {
             if (t <= 0xc8) {
                 if (t <= 0x64) {
                     ratio = FX_MUL(ratio, 0x258);
@@ -131,8 +195,8 @@ int func_ov007_020ba368(int t)
         }
         {
             int ret = func_ov007_020c5854(s, local, (ratio * 0xc8) >> 0xc, 0x2000, ratio * 0x12c, r8arg);
-            int dv = _ZN4cstd3divEii(ret << 0xc, *(int *)(*(char **)data_ov007_02104ba0 + 0x14));
-            *(int *)(*(char **)(*(char **)data_ov007_02104b9c + 8) + 0x50) = dv * 0x1f;
+            int dv = _ZN4cstd3divEii(ret << 0xc, SCENE->totalPoints);
+            SPRITES->sprites[1]->alpha = dv * 0x1f;
             if (dv >= 0x1000) {
                 s16 c = *(s16 *)data_ov007_02104b98;
                 if (c < 0) {
@@ -156,7 +220,7 @@ int func_ov007_020ba368(int t)
         int a = 0x1000;
         int b = 0x1000;
         if (t == 0) {
-            *(int *)(*(char **)data_ov007_02104b9c) = 0x1000;
+            SPRITES->slideProgress = 0x1000;
         }
         if (t <= 0x50) {
             int ratio, m, mc, r2c, ease1, ease2, term, sinval;
@@ -202,7 +266,7 @@ int func_ov007_020ba368(int t)
                 a = 0x2000;
                 b = 0x2000;
             }
-            *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 2;
+            SCENE->springSet = 2;
         } else {
             int v;
             if (t <= 0x50) {
@@ -217,8 +281,8 @@ int func_ov007_020ba368(int t)
             if (t == 0x51) {
                 func_ov007_020bdeb0(0x1f);
             }
-            *(int *)(*(char **)data_ov007_02104ba0 + 0x1c) = 5;
-            *(int *)(*(char **)(*(char **)data_ov007_02104b9c + 8) + 0x50) = v * 0x1f;
+            SCENE->springSet = 5;
+            SPRITES->sprites[1]->alpha = v * 0x1f;
             if (v >= 0x1000) {
                 done = 1;
             }

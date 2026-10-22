@@ -68,6 +68,25 @@ typedef void (daCnn_c::*State)();
 
 bool ApproachLinear(short &value, short target, short step);
 
+/* One 0x34-byte runtime bone of mModel.data.bones (ModelComponents types the
+   array as BMD_Bone, but the pose pass fills these). Extends
+   d_a_moray.cpp's MorayBone view (rotX/rotY/rotZ at 0x1a) with the
+   translation at 0x20: InitResources keeps the barrel bone's transY as its
+   rest height, and the barrel's recoil slides transY/transZ. */
+struct CnnBone {
+    u8 pad_00[0x1a];
+    s16 rotX;   /* 0x1a */
+    s16 rotY;   /* 0x1c */
+    s16 rotZ;   /* 0x1e */
+    s32 transX; /* 0x20 */
+    s32 transY; /* 0x24 */
+    s32 transZ; /* 0x28 */
+    u8 pad_2c[0x8];
+};
+#ifndef SM64DS_PLATFORM_PC
+typedef char CnnBone_size_must_be_0x34[sizeof(CnnBone) == 0x34 ? 1 : -1];
+#endif
+
 extern "C" {
 /* The cannon's model, and the water bomb's two (bomb and fragment), which
    InitResources preloads for the bombs it fires. */
@@ -153,7 +172,7 @@ int daCnn_c::InitResources()
 {
     BMD_File *file = (BMD_File *)Model::LoadFile(data_ov098_0213c8e8);
     mModel.SetFile(file, 1, -1);
-    mBarrelRestY = *(s32 *)((u8 *)mModel.data.bones + 0x58);
+    mBarrelRestY = ((CnnBone *)mModel.data.bones)[1].transY;
     mVariant = param1 & 3;
     mTimer = 0;
     mPosY -= 0x50000;
@@ -534,20 +553,20 @@ void daCnn_c::func_ov098_0213a984()
 {
     u16 pitch = mAngleX;
     s16 yaw = mAngleY;
-    u8 *bones;
+    CnnBone *bones;
     int idx;
 
     Matrix4x3_FromTranslation(&mModel.mat4x3,
         mPosX >> 3, mPosY >> 3, mPosZ >> 3);
 
-    bones = (u8 *)mModel.data.bones;
+    bones = (CnnBone *)mModel.data.bones;
     idx = pitch >> 4;
 
-    *(s16 *)(bones + 0x1c) = yaw;
-    *(u16 *)(bones + 0x4e) = pitch;
-    *(s32 *)(bones + 0x54) = 0;
-    *(s32 *)(bones + 0x58) = mBarrelRestY + (mRecoil * data_02082214[idx * 2 + 1]) / 4096;
-    *(s32 *)(bones + 0x5c) = (mRecoil * data_02082214[idx * 2]) / 4096;
+    bones[0].rotY = yaw;
+    bones[1].rotX = pitch;
+    bones[1].transX = 0;
+    bones[1].transY = mBarrelRestY + (mRecoil * data_02082214[idx * 2 + 1]) / 0x1000;
+    bones[1].transZ = (mRecoil * data_02082214[idx * 2]) / 0x1000;
 }
 
 // @symbol _ZN7daCnn_cD0Ev

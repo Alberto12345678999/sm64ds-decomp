@@ -4,10 +4,10 @@
  * _ZTS11daKpaFire_c at ov060 0x0211a7c0, _ZTI at 0x0211a7b4 (base
  * _ZTI12dEnemyBase_c), _ZTV at 0x0211a7f4. The tree used to call this
  * class BowserFire. The out-of-line destructor is the key function:
- * D1 at 0x02116484, D0 at 0x021164c4, then a D2 the cartridge does not
- * keep. Codegen is deferred, so .text is the reverse of source order.
- * The destructor alone sits under defer_codegen off, which is what
- * emits D1 before D0.
+ * D1 at 0x02116484, D0 at 0x021164c4, then a D2 the
+ * cartridge does not keep. Codegen is deferred, so .text is the reverse
+ * of source order. The destructor alone sits under defer_codegen off,
+ * which is what emits D1 before D0.
  *
  * Eight variants, param1 & 7. Behavior runs data_ov060_0211afb4.
  * InitResources runs data_ov060_0211af74, then finishes setup.
@@ -22,10 +22,10 @@
  *   7  same handler as 6, tossed straight up
  * FIRE_PARAM packs variant in bits 0..2 and the sub-variant in bits 4..5.
  *
- * Actor creation, lookup, movement and destruction use the existing native
- * interfaces, as do the ground predicate and Player::Burn. Spawn still views
- * the base actor's contiguous scalar position/angle fields as vectors; that
- * inherited flat-field layout is not reconstructed here.
+ * Actor creation, lookup, movement and destruction use the native
+ * interfaces, as do the ground predicate and Player::Burn. Spawn still
+ * views the base actor's contiguous scalar position/angle fields as
+ * vectors; that inherited flat-field layout is not reconstructed here.
  *
  * leftovers:
  * - func_ov060_02116740, 02117624 stay free functions with
@@ -42,8 +42,8 @@
  *   that symbol's spelling at this site.
  * - Particle::System::callbackScale and callbackVelocity are named.
  *   The word at +0x44 sits in pad_042 and stays a raw store.
- * - DropShadowRadHeight's matrix is pad_32c. daKpaFire_c.h has no
- *   Matrix4x3 member there.
+ * - DropShadowRadHeight's matrix is `mShadowMat`, raw `u8[0x30]` storage.
+ *   daKpaFire_c.h has no Matrix4x3 member there.
  * - Sound 0x180, player param1 == 3, and the particle kind pairs are
  *   named only by the use-site enums below.
  * - data_ov060_0211af74 and data_ov060_0211afb4 are this TU's owned
@@ -239,8 +239,8 @@ int daKpaFire_c::Behavior()
             }
         }
     }
-    func_ov060_02116740((char *)this);
-    func_ov060_02117624((char *)this);
+    func_ov060_02116740();
+    func_ov060_02117624();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;
@@ -260,7 +260,7 @@ int daKpaFire_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov060_02117624
+// @symbol _ZN11daKpaFire_c19func_ov060_02117624Ev
 /* Per-frame drop shadow. Does nothing when mDropsShadow is 0. Otherwise it
  * builds a translation matrix in the shared scratch matrix data_020a0e68 at
  * the fire's x, its mGroundY and its z (each >> 3), copies it into the
@@ -268,14 +268,15 @@ int daKpaFire_c::CleanupResources()
  * radius mShadowRadiusMul * mFireScale, the second Fix12 argument (dActor_c.h
  * calls it `depth`) 30 units (0x1e000), and the `opacity` argument 0xf (what
  * that value means is not decoded; every caller passes 0xf).
- * The Matrix4x3 at 0x32c remains the header's pad_32c storage; copying it
+ * The Matrix4x3 at 0x32c remains the header's `mShadowMat` storage; copying it
  * through the RawMatrix4x3 view keeps the block copy intact in C++. */
-extern "C" void func_ov060_02117624(char *c) {
-    struct daKpaFire_c *self = (struct daKpaFire_c *)c;
-    if (self->mDropsShadow == 0) return;
-    Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX>>3, self->mGroundY>>3, self->mPosZ>>3);
-    *(RawMatrix4x3*)self->pad_32c = *(RawMatrix4x3*)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, self->pad_32c, self->mShadowRadiusMul * self->mFireScale, 0x1e000, 0xf);
+void daKpaFire_c::func_ov060_02117624() {
+    if (mDropsShadow == 0)
+        return;
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, mGroundY >> 3, mPosZ >> 3);
+    *(RawMatrix4x3 *)mShadowMat = *(RawMatrix4x3 *)&data_020a0e68;
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        this, &mShadowModel, mShadowMat, mShadowRadiusMul * mFireScale, 0x1e000, 0xf);
 }
 
 // @symbol _ZN11daKpaFire_c19func_ov060_0211747cEv
@@ -810,19 +811,17 @@ void daKpaFire_c::func_ov060_021167c8() {
     this->mShadowRadiusMul = 0x10;
 }
 
-// @symbol func_ov060_02116740
+// @symbol _ZN11daKpaFire_c19func_ov060_02116740Ev
 /* Burn the player the fire's cylinder touched. Reads mdCcAc_c.otherOwner (the
  * dCc_c field Clear zeroes; here it is used as an actor uniqueID, 0 for none)
  * and looks that actor up; if it is the Player (actor id 0xbf = ACTOR_PLAYER)
  * and neither Player::mIsMetal nor Player::mIsVanish is set it calls
- * Player::Burn.
- * Keeps the char * parameter decl_common.h declares. */
-extern "C" {
-void func_ov060_02116740(char* c)
-{
-    unsigned int id = ((daKpaFire_c *)c)->mdCcAc_c.otherOwner;
-    if (id == 0) return;
-    Player* player = (Player *)dActor_c::FindWithID(id);
+ * Player::Burn. */
+void daKpaFire_c::func_ov060_02116740() {
+    unsigned int id = ((daKpaFire_c *)this)->mdCcAc_c.otherOwner;
+    if (id == 0)
+        return;
+    Player *player = (Player *)dActor_c::FindWithID(id);
     if (player == 0) return;
     /* Measured: folding this temp into `if (player->actorID != ACTOR_PLAYER)`
        makes the function 12 bytes shorter than the ROM size, 0x88. */
@@ -831,7 +830,6 @@ void func_ov060_02116740(char* c)
     if (player->mIsMetal != 0) return;
     if (player->mIsVanish != 0) return;
     player->Burn();
-}
 }
 
 // @symbol _ZN11daKpaFire_c19func_ov060_02116518Ejii

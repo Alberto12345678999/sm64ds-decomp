@@ -6,7 +6,7 @@
  * established by the address names. Definitions retain their source order.
  * ShouldPassThroughImpl keeps the int* view of CLPS and the unsigned char*
  * view of the query for the flag tests that are still free functions.
- * data_020a0c80 is the 0x18-entry enabled-collider
+ * data_020a0c80 (declared in dBgW.h) is the 0x18-entry enabled-collider
  * table Enable fills and dScStage_c::ResetMeshColliders clears.
  */
 /* dBgW: root of the KCL collider family. Type name 0x02099370, typeinfo
@@ -21,13 +21,16 @@
 #include "decl_common.h"
 
 extern "C" {
-
-/* The enabled-collider table: Enable puts a collider in the first free
-   entry and records the index in slotIdx. The query TUs walk it. */
-extern dBgW *data_020a0c80[];
-extern int SurfaceInfo_TestFlag0x20(int *p);
-extern int func_02037e38(unsigned int *p);
+/* local extern: no header declares the CLPS word accessors (CLPS.h only
+   documents them); d_bg_ch_sph_crr_query.cpp defines both with these
+   signatures. */
+extern int SurfaceInfo_TestFlag0x20(int *clpsWords);
+extern int func_02037e38(unsigned int *clpsWords);
 }
+
+/* Preserve the address-based helper ABI while using the declared callback
+   type; BeforeClsnCallback is dBgW.h's. */
+typedef void (*StoodOnCallback)(dBgW *, dActor_c *, dActor_c *);
 
 // @symbol func_020396d0
 
@@ -211,14 +214,14 @@ extern "C" int func_020393cc(int *collider) {
 /* Sets stoodOnCallback (+0x1c). */
 extern "C" void func_020393c4(int *collider, int callbackAddress) {
     reinterpret_cast<dBgW *>(collider)->stoodOnCallback =
-        (void (*)(dBgW *, dActor_c *, dActor_c *))callbackAddress;
+        reinterpret_cast<StoodOnCallback>(callbackAddress);
 }
 
 // @symbol func_020393bc
 
 /* Reads stoodOnCallback (+0x1c). */
 extern "C" int func_020393bc(int *collider) {
-    return (int)reinterpret_cast<dBgW *>(collider)->stoodOnCallback;
+    return reinterpret_cast<int>(reinterpret_cast<dBgW *>(collider)->stoodOnCallback);
 }
 
 // @symbol func_020393b4

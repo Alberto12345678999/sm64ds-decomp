@@ -1,47 +1,73 @@
+#include "Ov007StrokePath.h"
+
 extern int _ZN4cstd3divEii(int, int);
 
-#define AMAT(p) (*(int*)(p))
+/* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in that
+ * file and func_ov007_020c684c, only the slots this function touches. */
+typedef struct Ov007Picker {
+    char pad_00[8];
+    int groupCount; /* 0x08 */
+    char pad_0c[0x2c];
+    Ov007StrokePath **groups; /* 0x38: committed strokes */
+    char pad_3c[0x70];
+    /* 0xac/0xb0: the draw limit; func_ov007_020c5a6c's flagged picks stop
+     * before it, func_ov007_020c4dfc draws whole groups up to limitGroup and
+     * that group's first limitIndex points */
+    int limitGroup;
+    int limitIndex;
+    /* 0xb4: Q12 progress past point limitIndex - 1 toward limitIndex, which
+     * func_ov007_020c4dfc hands to func_ov007_020c19cc as its `t` */
+    s16 limitFraction;
+} Ov007Picker;
 
+typedef char
+    Ov007Picker_limitFraction_must_be_at_0xb4[(int)&((Ov007Picker *)0)->limitFraction == 0xb4 ? 1
+                                                                                              : -1];
+
+/* Advances the draw limit along the committed strokes' progress
+ * thresholds to progress x: 0 inside a stroke, 1 when it steps on to the
+ * next stroke, 2 once it passes the last stroke. */
 #pragma opt_common_subs off
 int func_ov007_020c5014(char *c, int x) {
-    char *obj;
+    Ov007Picker *self = (Ov007Picker *)c;
+    Ov007StrokePath *obj;
     int i;
     int j;
     int *arr;
     int d, den;
-    *(unsigned short *)(c + 0xb4) = 0x1000;
-    i = *(int *)(c + 0xac);
-    if (i < *(int *)(c + 8)) {
-        obj = (*(char ***)(c + 0x38))[i];
-        j = *(int *)(c + 0xb0);
-        if (x >= (*(int **)(obj + 0x20))[j]) {
+    self->limitFraction = 0x1000;
+    i = self->limitGroup;
+    if (i < self->groupCount) {
+        obj = self->groups[i];
+        j = self->limitIndex;
+        if (x >= obj->progressThresholds[j]) {
             for (;;) {
-                AMAT(c + 0xb0) += 1;
-                j = *(int *)(c + 0xb0);
-                if (j >= *(unsigned short *)(obj + 8)) {
-                    AMAT(c + 0xac) += 1;
+                self->limitIndex += 1;
+                j = self->limitIndex;
+                if (j >= obj->pointCount) {
+                    self->limitGroup += 1;
                     {
-                        int cnt = *(int *)(c + 8);
-                        if (*(int *)(c + 0xac) >= cnt) {
-                            *(int *)(c + 0xac) = cnt;
-                            *(int *)(c + 0xb0) = *(unsigned short *)(obj + 8);
+                        int cnt = self->groupCount;
+                        if (self->limitGroup >= cnt) {
+                            self->limitGroup = cnt;
+                            self->limitIndex = obj->pointCount;
                             return 2;
                         }
                     }
-                    *(int *)(c + 0xb0) = 0;
+                    self->limitIndex = 0;
                     return 1;
                 }
-                if (x < (*(int **)(obj + 0x20))[j])
+                if (x < obj->progressThresholds[j])
                     break;
             }
         }
         if (j > 0) {
-            arr = *(int **)(obj + 0x20);
+            arr = obj->progressThresholds;
             d = arr[j] - x;
             den = arr[j] - arr[j - 1];
             if (den == 0)
                 den = 1;
-            *(unsigned short *)(c + 0xb4) = 0x1000 - _ZN4cstd3divEii(d << 12, den);
+            self->limitFraction = 0x1000 - _ZN4cstd3divEii(d << 12, den);
         }
         return 0;
     }

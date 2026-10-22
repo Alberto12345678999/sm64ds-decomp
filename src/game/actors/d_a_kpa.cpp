@@ -38,7 +38,7 @@
  *    func_ov060_021140c0; the new_var2 temp in func_ov060_02114858; the volatile locals in func_ov060_021135fc,
  *    func_ov060_021132a4, func_ov060_02112ee0 and func_ov060_02112bfc; the gotos
  *    in func_ov060_02115c1c; the data_ov060_02119294/6/8 + offset reads; and the
- *    opaque Obj view in Bowser_IsAnimAtLastFrame.
+ *    `obj` copy of this in Bowser_IsAnimAtLastFrame.
  *  - Callees known only by address, whose purpose this file does not establish:
  *    func_020092c4, func_0200fa04, func_ov002_020c56f0, func_ov060_02117a3c,
  *    func_02038408, func_02011d50, func_02011cfc. Likewise the trailing arguments
@@ -236,14 +236,6 @@ enum Bowser_CcFlag {
  *   0x18, 0x19, 0x1a charge      0x1b PLAY_ANIM_1B */
 enum Bowser_Anim {
     BOWSER_ANIM_IDLE = 0x10
-};
-
-/* The opaque view of the object that Bowser_IsAnimAtLastFrame walks: the
- * dExtFrameCtrl_c at 0x124 (the frame controller inside mModelAnim), typed
- * with the real class from dExtFrameCtrl_c.h. */
-struct Obj {
-    char pad[0x124];
-    dExtFrameCtrl_c anim;
 };
 
 /* Remaining local views and scalar ABI bridges from the legacy shards.
@@ -760,23 +752,23 @@ mPrevAngleY + 0x8000, Y copied as is -- run func_ov060_02115b84, return 1. */
  * data_02082214 is a sin/cos table indexed by angle>>4, two shorts per entry.
  *
  * THE POINTER BUMP AND THE volatile ARE LOAD-BEARING, both measured. Reading
- * daKpa_c's fields the obvious way -- `bowser->mPrevAngleY`, `bowser->mPosX` and so
- * on -- compiles and does not reproduce the ROM; the bump to +0x5c and the three
- * loads off it do. The offsets are dActor_c's: 0x94 is mPrevAngleY, 0x5c..0x64 are
- * mPosX/mPosY/mPosZ.
+ * the position the obvious way -- `a->mPosX` and so on -- does not reproduce the
+ * ROM; reusing `a` as a pointer to mPos and loading the three words off it does.
+ * A separate `Vector3 *` local instead of reusing `a` moves this function's
+ * bytes and renumbers every @NNN after it.
  */
 int daKpaTail_c::Behavior()
 {
     dActor_c* a = dActor_c::FindWithID(mBowserUniqueID);
     if (!a) return 1;
 
-    int ang = *(short*)((char*)a + 0x94);        /* dActor_c::mPrevAngleY */
-    a = (dActor_c*)((int)a + 0x5c);                 /* dActor_c::mPosX */
-    int x = *(int*)a;
+    int ang = a->mPrevAngleY;
+    a = (dActor_c *)&a->mPos;
+    int x = ((Vector3 *)a)->x;
     volatile int v[3];
     v[0] = x;
-    v[1] = ((int*)a)[1];                         /* mPosY */
-    v[2] = ((int*)a)[2];                         /* mPosZ */
+    v[1] = ((Vector3 *)a)->y;
+    v[2] = ((Vector3 *)a)->z;
     int j = 2 * (((unsigned short)(short)(ang + 0x8000)) >> 4);
     mPosX = (short)data_02082214[j] * 0x8c + x;
     mPosY = v[1];
@@ -1124,11 +1116,14 @@ void daKpa_c::func_ov060_02115a84(char* counter){
 /*
 True once the model's animation has reached its last frame or will reach it on
 the coming advance (dExtFrameCtrl_c::Finished, or WillHitFrame(frame count - 1)).
-Takes the actor as the opaque Obj view; the dExtFrameCtrl_c sits at +0x124. */
+Reads mModelAnim through a copy of this: the plain this->mModelAnim form builds
+the same code but draws one @NNN fewer, renumbering every pinned @NNN in this
+TU (measured). */
 // Bowser_IsAnimAtLastFrame at 0x02115a30 -- matched byte-for-byte with mwccarm 1.2/sp2p3 (ov060).
 bool daKpa_c::Bowser_IsAnimAtLastFrame(){
-    Obj *obj = (Obj *)this;
-    return obj->anim.Finished() || obj->anim.WillHitFrame((unsigned short)(obj->anim.GetFrameCount() - 1));
+    daKpa_c *obj = this;
+    return obj->mModelAnim.Finished() ||
+           obj->mModelAnim.WillHitFrame((unsigned short)(obj->mModelAnim.GetFrameCount() - 1));
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3171,7 +3166,7 @@ void daKpa_c::func_ov060_021128c0(){
 
     if (this->mWithMeshClsn.IsOnGround()) {
         void* fr = this->mWithMeshClsn.GetFloorResult();
-        ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(*(Vector3 *)&this->mGroundNormalX);
+        ((dBgPi *)fr)->surface.CopyNormalTo(*(Vector3 *)&this->mGroundNormalX);
         this->mLastGroundPosX = this->mPosX;
         this->mLastGroundPosY = this->mPosY;
         this->mLastGroundPosZ = this->mPosZ;
