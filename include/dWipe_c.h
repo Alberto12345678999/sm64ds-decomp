@@ -37,7 +37,7 @@ struct dWipe_c : dFdColor_c {
     /* 0x28 -- 1 while pendingType waits to be committed: func_0202ec9c sets
        it beside pendingType and clears it otherwise; func_0202fb30 tests it
        for 1 and clears it. Was unk_028. */
-    u8  typePending;
+    u8 typePending;
 
     /* Its own ctor starts the interpolator at 0, not the family default
        0x1000 -- 0x0202fc40's chain writes `currInterp = 0; speed = 0`

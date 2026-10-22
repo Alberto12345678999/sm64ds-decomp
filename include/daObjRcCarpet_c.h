@@ -29,7 +29,7 @@ struct daObjRcCarpet_c : dPathLiftActor_c {
        set and back toward 0 otherwise; func_ov036_021122c0 and
        func_ov036_0211224c add it to mPosY for the model and collision
        matrices. Was unk_4bc. */
-    s32 mRideDipY;             /* 0x4bc */
+    s32 mRideDipY; /* 0x4bc */
 
     /* Inline plus vtable instantiation is load-bearing: mwcc emits
        retail's D1 then D0 pair, with no homeless D2. */

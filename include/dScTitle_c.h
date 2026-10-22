@@ -46,7 +46,7 @@ struct dScTitle_c : dScene_c {
        fresh press, or on a held one once this is 0, reloading it with 8
        (press) or 2 (held), and counts it down with DecIfAbove0_Short.
        Was unk_050. */
-    u16 mRepeatDelay;              /* 0x050 */
+    u16 mRepeatDelay; /* 0x050 */
 
     /* Declared first and DEFINED INLINE, both deliberately -- the same form
        dScene_c.h and dBase_c.h use one and two levels up. Inline-in-class is

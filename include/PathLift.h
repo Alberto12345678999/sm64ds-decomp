@@ -36,7 +36,7 @@ struct dPathLiftActor_c : dBgActor_c {
        InitResources, and StateFall then puts the lift back at the start of
        its path (ResetPath) instead of destroying it. IsUnk42cSet reads it
        and keeps its symbol-bound name. Was unk_42c. */
-    u8  mRespawnAfterFall;                /* 0x42c */
+    u8 mRespawnAfterFall; /* 0x42c */
     u8  pad_42d[0x3];
     PathPtr mPath;                        /* 0x430 */
     s32 mCurrPathNode;                    /* 0x438 */
@@ -113,7 +113,7 @@ struct dPathLiftActor_c {
     u16 mWaitTimer;         /* 0x428 */
     u8  mAfterClsnRan;            /* 0x42a */
     u8  mTriggerDelay;            /* 0x42b */
-    u8  mRespawnAfterFall;  /* 0x42c */
+    u8 mRespawnAfterFall;         /* 0x42c */
     u8  pad_42d[0x3];
     struct PathPtr mPath;    /* 0x430 */
     s32 mCurrPathNode;      /* 0x438 */

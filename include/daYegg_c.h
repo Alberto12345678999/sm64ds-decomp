@@ -119,7 +119,7 @@ struct daYegg_c : dEnemyBase_c {
        only while DecIfAbove0_Byte finds this at 0, so a nonzero count holds
        them frozen; the rebuild clears it. Nothing in the tree loads it
        nonzero (medium confidence). Was unk_41e. */
-    u8  mHoldFreezeTimer;                       /* 0x41e */
+    u8 mHoldFreezeTimer; /* 0x41e */
     /* func_ov002_020ed6cc reloads this to 0xf whenever the egg moved 50 units or
        more since its last call, and counts it down otherwise. */
     u8  mStallTimer;                            /* 0x41f */

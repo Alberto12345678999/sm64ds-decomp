@@ -68,7 +68,7 @@ struct dScDSMT_c : dScene_c {
        vptr pair here and touches nothing else below 0x54 (see the note
        above), and InitResources publishes its address as the active graph
        callback, data_0209d4a8. Was unk_050. */
-    u8  mGraphCallback[0x4];
+    u8 mGraphCallback[0x4];
     dFdDummy_c fader;  /* 0x054 -- member. The cartridge's own ~dScDSMT_c
                                     calls _ZN10dFdDummy_cD1Ev at +0x054
                                     (D0/D1), a relocation the ROM build

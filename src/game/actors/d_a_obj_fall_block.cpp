@@ -133,7 +133,8 @@ void daObjFallBlock_c_EmitDestructor(daObjFallBlock_c *p)
    mPrevInGroup otherwise. Vec3_HorzAngle / Vec3_Dist / AngleDiff. */
 void daObjFallBlock_c_LinkGroup(daObjFallBlock_c *c)
 {
-    if (c->mGroupLinked != 0) return;
+    if (c->mGroupLinked != 0)
+        return;
     dActor_c *r = dActor_c::FindWithActorID(c->actorID, 0);
     while (r) {
         if (r != (dActor_c *)c) {
