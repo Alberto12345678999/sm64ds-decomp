@@ -17750,7 +17750,8 @@ int Player::St_SwingPlayer_Main()
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 h, u32 a, u32 b, void* v, u32 d);
-    extern void func_ov002_020dc174(char* c, void* p, int a, int b, u32 e, u32 f);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     extern void Player_AdvanceAnims(char* c);
     extern u16 data_0209f49e[];
     extern s16 data_0209f4a0[];
@@ -17764,7 +17765,7 @@ int Player::St_SwingPlayer_Main()
         this->mAngleY += this->mAngleYSpeed;
         break;
     case 1: {
-        int arr[3];
+        Vector3 offset;
         Vector3 v;
         if ((*(u16*)((char*)data_0209f49e + gActivePlayerSlot * 0x18) & 1) != 0) {
             char *p = (char *)mHeldObj;
@@ -17828,10 +17829,10 @@ int Player::St_SwingPlayer_Main()
                 (this->mAngleYSpeed >= 0x100 && before > this->mAngleY))
                 Sound::PlayBank0(0x1b, mCamSpacePos);
         }
-        arr[0] = 0;
-        arr[1] = 0x32000;
-        arr[2] = 0x64000;
-        func_ov002_020dc174(c, arr, 0x32000, 0x32000, 0x80, 0);
+        offset.x = 0;
+        offset.y = 0x32000;
+        offset.z = 0x64000;
+        func_ov002_020dc174(c, &offset, 0x32000, 0x32000, 0x80, 0);
         mAttackClsn.Clear();
         mAttackClsn.Update();
         break;
@@ -18732,7 +18733,8 @@ void Player::func_ov002_020db8d8()
     extern unsigned char data_0209f2d8;
     extern void MulVec3Mat4x3(void *out, void *mtx, void *vec);
     extern void Vec3_MulScalar(void *out, void *vec, int s);
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5, unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     char *self = (char*)this;
     volatile Vector3 backup;
     Vector3 tmp;
@@ -18773,8 +18775,8 @@ extern "C" {
 void func_ov002_020dba0c(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     unsigned int a5;
@@ -18815,8 +18817,8 @@ extern "C" {
 void func_ov002_020dbaec(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18853,8 +18855,8 @@ extern "C" {
 void func_ov002_020dbbc0(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18892,7 +18894,8 @@ void func_ov002_020dbbc0(char *c) {
 extern "C" {
 void func_ov002_020dbc94(char* c) {
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char*, void*, int, int, unsigned int, unsigned int);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Player *player = (Player *)c;
     Vector3 v;
     int b = (int)(data_0209f2d8 == 1);
@@ -18923,8 +18926,8 @@ extern "C" {
 void func_ov002_020dbd94(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18960,8 +18963,8 @@ extern "C" {
 void func_ov002_020dbe70(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18997,8 +19000,8 @@ extern "C" {
 void func_ov002_020dbf4c(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -19032,8 +19035,8 @@ void func_ov002_020dbf4c(char *c) {
 extern "C" {
 void func_ov002_020dc020(char *c) {
     Player *player = (Player *)c;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if (player->mIsMega == 0) {
@@ -19061,8 +19064,8 @@ void func_ov002_020dc020(char *c) {
 extern "C" {
 void func_ov002_020dc09c(char *c) {
     Player *player = (Player *)c;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if (player->mIsMega == 0) {
@@ -19099,12 +19102,19 @@ void func_ov002_020dc09c(char *c) {
 
 // @symbol func_ov002_020dc174
 extern "C" {
-void func_ov002_020dc174(char* c, void* r1, int r2, int r3, unsigned int a5, unsigned int a6){
-    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void*,void*,void*,int,int,int,int);
+/* The attack collision's offset, reach and height. pos is a const Vector3 *: it
+   goes straight to dCcAcPos_c::Init, whose ROM symbol is
+   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj -- RK7Vector3, a
+   const Vector3 &. Eleven callers in this file each used to spell it void *. */
+void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
+                         u32 a6) {
+    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
+        void *thiz, void *actor, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
+        u32 a6);
     Player *player = (Player *)c;
     int f = player->mIsMega ? 0x10 : 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mAttackClsn, c, r1, r2, r3,
-                                                            a5 | 2 | f, a6);
+    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mAttackClsn, c, pos, reach,
+                                                            height, flags | 2 | f, a6);
 }
 }
 
