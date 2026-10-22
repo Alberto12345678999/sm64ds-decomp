@@ -122,7 +122,7 @@ typedef dScMgHanachan_c::Wiggler Wiggler;
 /* Nothing uses this shim: InitResources reaches slot 18 as StartRound and
    0xa8/0xac as dScMgBase_c's mCredits/mCreditsShown, which is the same
    dispatch and the same bytes.  The DECLARATION still has to stay.  mwccarm
-   numbers the TU's compiler-local symbols in declaration order, and the 27
+   numbers the TU's compiler-local symbols in declaration order, and the 35
    native pointer-to-member constants this file emits land on the @NNNN names
    that dScMgHanachan_c.json's defined_symbol_renames rows are keyed to.
    Dropping the struct shifts every one of them down by one, which silently
