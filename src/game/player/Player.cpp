@@ -636,77 +636,69 @@ int func_ov002_020bd8ac(unsigned char *p)
 }
 }
 
-// @symbol _ZN6Player19func_ov002_020bd8c0Ej
+// @symbol _ZN6Player13EndStateMusicEj
 extern "C" {
-void Player::func_ov002_020bd8c0(unsigned int r1) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mPowerupMusic;
-    if (r2 == 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+void Player::EndStateMusic(u32 music) {
+    u32 other = mPowerupMusic;
+    if (other == 0) {
+        Sound::EndMusic(mPlayerNo);
         mPlayingMusic = 0;
-    } else if (mPlayingMusic == r1 && r2 != r1) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
-        _ZN5Sound8SetMusicEjj(this->mPlayerNo, mPowerupMusic);
+    } else if (mPlayingMusic == music && other != music) {
+        Sound::EndMusic(mPlayerNo);
+        Sound::SetMusic(mPlayerNo, mPowerupMusic);
         mPlayingMusic = mPowerupMusic;
     }
     mStateMusic = 0;
 }
 }
 
-// @symbol _ZN6Player19func_ov002_020bd928Ej
+// @symbol _ZN6Player15StartStateMusicEj
 extern "C" {
-void Player::func_ov002_020bd928(unsigned int r4) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mPowerupMusic;
-    if (r2 == r4) {
-        mStateMusic = r4;
+void Player::StartStateMusic(u32 music) {
+    u32 other = mPowerupMusic;
+    if (other == music) {
+        mStateMusic = music;
         return;
     }
-    if ((r2 | mStateMusic) != 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+    if ((other | mStateMusic) != 0) {
+        Sound::EndMusic(mPlayerNo);
     }
-    mStateMusic = r4;
-    mPlayingMusic = r4;
-    _ZN5Sound8SetMusicEjj(this->mPlayerNo, r4);
+    mStateMusic = music;
+    mPlayingMusic = music;
+    Sound::SetMusic(mPlayerNo, music);
 }
 }
 
-// @symbol _ZN6Player19func_ov002_020bd984Ej
+// @symbol _ZN6Player15EndPowerupMusicEj
 extern "C" {
-void Player::func_ov002_020bd984(unsigned int r1) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mStateMusic;
-    if (r2 == 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+void Player::EndPowerupMusic(u32 music) {
+    u32 other = mStateMusic;
+    if (other == 0) {
+        Sound::EndMusic(mPlayerNo);
         mPlayingMusic = 0;
-    } else if (mPlayingMusic == r1 && r2 != r1) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
-        _ZN5Sound8SetMusicEjj(this->mPlayerNo, mStateMusic);
+    } else if (mPlayingMusic == music && other != music) {
+        Sound::EndMusic(mPlayerNo);
+        Sound::SetMusic(mPlayerNo, mStateMusic);
         mPlayingMusic = mStateMusic;
     }
     mPowerupMusic = 0;
 }
 }
 
-// @symbol _ZN6Player19func_ov002_020bd9ecEj
+// @symbol _ZN6Player17StartPowerupMusicEj
 extern "C" {
-void Player::func_ov002_020bd9ec(unsigned int r4) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mStateMusic;
-    if (r2 == r4) {
-        mPowerupMusic = r4;
+void Player::StartPowerupMusic(u32 music) {
+    u32 other = mStateMusic;
+    if (other == music) {
+        mPowerupMusic = music;
         return;
     }
-    if ((mPowerupMusic | r2) != 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+    if ((mPowerupMusic | other) != 0) {
+        Sound::EndMusic(mPlayerNo);
     }
-    mPowerupMusic = r4;
-    mPlayingMusic = r4;
-    _ZN5Sound8SetMusicEjj(this->mPlayerNo, r4);
+    mPowerupMusic = music;
+    mPlayingMusic = music;
+    Sound::SetMusic(mPlayerNo, music);
 }
 }
 
@@ -852,7 +844,7 @@ void Player::func_ov002_020bdd2c() {
         {
             ((dCamera_c *)data_0209f318)->mFlags &= ~0x80;
         }
-        this->func_ov002_020bd984(0x31);
+        this->EndPowerupMusic(0x31);
         this->mWaterStillParticle = 0;
         this->mWaterMoveParticle = this->mWaterStillParticle;
         this->mParticle1 = 0;
@@ -874,7 +866,7 @@ void Player::func_ov002_020bdd9c(){
   char* t = data_ov002_020ff480[mCharFileBase + v];
   _ZN10ModelAnim24CopyERKS_Pcj(mBodyModels[id], mBodyModels[4],
                                (char *)((SharedFilePtr *)t)->filePtr, 0);
-  func_ov002_020bd984(0x34);
+  EndPowerupMusic(0x34);
 }
 }
 
@@ -911,7 +903,7 @@ void Player::InitMetalWario()
         (char *)((SharedFilePtr *)data_ov002_020ff480[mCharFileBase + v])->filePtr, 0);
 
     mPowerupTimer = 0x258;
-    func_ov002_020bd9ec(0x34);
+    StartPowerupMusic(0x34);
     func_ov002_020c43c4(4);
 }
 }
@@ -926,7 +918,7 @@ void Player::func_ov002_020bdef0(){
   mTexSeqPlayer[0].currFrame = 0;
   mTexSeqPlayer[1].currFrame = 0;
   mIsVanish=0;
-  func_ov002_020bd984(0x33);
+  EndPowerupMusic(0x33);
 }
 }
 
@@ -944,7 +936,7 @@ void Player::InitVanishLuigi()
     func_ov002_020bda48();
     mIsVanish = 1;
     mPowerupTimer = 0x258;
-    func_ov002_020bd9ec(0x33);
+    StartPowerupMusic(0x33);
     func_ov002_020c43c4(3);
 }
 
@@ -963,7 +955,7 @@ void Player::func_ov002_020bdf8c(){
   mIsMega = 1;
   mMegaTimer = 0x258;
   ((dCamera_c *)data_0209f318)->mFlags |= 0x80;
-  func_ov002_020bd9ec(0x31);
+  StartPowerupMusic(0x31);
 }
 }
 
@@ -9392,7 +9384,7 @@ int Player::St_Shell_Cleanup()
         mPosY += 0x46000;
         mIsAirborne = 1;
         mLandSoundPlayed = 0;
-        func_ov002_020bd8c0(0x33);
+        EndStateMusic(0x33);
     }
     return 1;
 }
@@ -9575,7 +9567,7 @@ int Player::St_Shell_Init()
   Player_ReleaseHeldActor(((char*)this));
   _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this),0x35,0x40000000,0x1000,0);
   mStateStep=0;
-  func_ov002_020bd928(0x33);
+  StartStateMusic(0x33);
   return 1;
 }
 }
@@ -9908,7 +9900,7 @@ int Player::St_Swim_Cleanup()
 {
   if(mSwimMusicPushed!=0){
     mSwimMusicPushed=0;
-    func_ov002_020bd8c0(0x33);
+    EndStateMusic(0x33);
   }
   return 1;
 }
@@ -10383,7 +10375,7 @@ int Player::St_Swim_Main()
             _ZN6Player7SetAnimEji5Fix12IiEj(this, 0xb0, 0, 0x1000, 0);
             p = (int *)&((dActor_c *)mHeldObj)->mFlags;
             *p |= 0x4000;
-            func_ov002_020bd928(0x33);
+            StartStateMusic(0x33);
             mSwimMusicPushed = 1;
         }
         break;
@@ -10392,7 +10384,7 @@ int Player::St_Swim_Main()
         if ((*(unsigned short*)((char*)&data_0209f49e + gActivePlayerSlot * 0x18)) & 1) {
             _ZN6Player7SetAnimEji5Fix12IiEj(this, 0xb1, 0x40000000, 0x1000, 0);
             mStateStep = 9;
-            func_ov002_020bd8c0(0x33);
+            EndStateMusic(0x33);
         }
         if (mStateTimer != 0) {
             has = (mHeldObj != 0) ? 1 : 0;
@@ -10401,7 +10393,7 @@ int Player::St_Swim_Main()
         case8_block107:
             Player_ReleaseHeldActor(this);
             func_ov002_020cd2c4(this);
-            func_ov002_020bd8c0(0x33);
+            EndStateMusic(0x33);
             mSwimMusicPushed = 0;
         }
         if (mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(0) != 0) {
@@ -16365,7 +16357,6 @@ int Player::St_YoshiPower_Init()
 // @symbol func_ov002_020d80d0
 extern "C" {
 void func_ov002_020d80d0(char* c){
-    extern void _ZN6Player19func_ov002_020bd984Ej(char* c, unsigned int a);
     Player *player = (Player *)c;
     if (player->mIsFire != 1)
         return;
@@ -16373,7 +16364,7 @@ void func_ov002_020d80d0(char* c){
     player->mIsFire = 0;
     player->mFireBreaths = 0;
     player->mUseAltBodyModel = 0;
-    _ZN6Player19func_ov002_020bd984Ej(c, 0x32);
+    player->EndPowerupMusic(0x32);
 }
 }
 
@@ -16382,12 +16373,11 @@ extern "C" {
 void func_ov002_020d8118(char* c)
 {
     extern void _ZN6Player19func_ov002_020bda48Ev(char* c);
-    extern void _ZN6Player19func_ov002_020bd9ecEj(char* c, unsigned int v);
     extern void _ZN6Player19func_ov002_020c43c4Ej(char* c, int v);
     Player *player = (Player *)c;
     _ZN6Player19func_ov002_020bda48Ev(c);
     player->mFireTimer = 0x258;
-    _ZN6Player19func_ov002_020bd9ecEj(c, 0x32);
+    player->StartPowerupMusic(0x32);
     _ZN6Player19func_ov002_020c43c4Ej(c, 5);
     player->mIsFire = 1;
 }
@@ -17738,7 +17728,8 @@ int Player::St_SwingPlayer_Main()
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 h, u32 a, u32 b, void* v, u32 d);
-    extern void func_ov002_020dc174(char* c, void* p, int a, int b, u32 e, u32 f);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     extern void Player_AdvanceAnims(char* c);
     extern u16 data_0209f49e[];
     extern s16 data_0209f4a0[];
@@ -17752,7 +17743,7 @@ int Player::St_SwingPlayer_Main()
         this->mAngleY += this->mAngleYSpeed;
         break;
     case 1: {
-        int arr[3];
+        Vector3 offset;
         Vector3 v;
         if ((*(u16*)((char*)data_0209f49e + gActivePlayerSlot * 0x18) & 1) != 0) {
             char *p = (char *)mHeldObj;
@@ -17816,10 +17807,10 @@ int Player::St_SwingPlayer_Main()
                 (this->mAngleYSpeed >= 0x100 && before > this->mAngleY))
                 Sound::PlayBank0(0x1b, mCamSpacePos);
         }
-        arr[0] = 0;
-        arr[1] = 0x32000;
-        arr[2] = 0x64000;
-        func_ov002_020dc174(c, arr, 0x32000, 0x32000, 0x80, 0);
+        offset.x = 0;
+        offset.y = 0x32000;
+        offset.z = 0x64000;
+        func_ov002_020dc174(c, &offset, 0x32000, 0x32000, 0x80, 0);
         mAttackClsn.Clear();
         mAttackClsn.Update();
         break;
@@ -18720,7 +18711,8 @@ void Player::func_ov002_020db8d8()
     extern unsigned char data_0209f2d8;
     extern void MulVec3Mat4x3(void *out, void *mtx, void *vec);
     extern void Vec3_MulScalar(void *out, void *vec, int s);
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5, unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     char *self = (char*)this;
     volatile Vector3 backup;
     Vector3 tmp;
@@ -18761,8 +18753,8 @@ extern "C" {
 void func_ov002_020dba0c(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     unsigned int a5;
@@ -18803,8 +18795,8 @@ extern "C" {
 void func_ov002_020dbaec(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18841,8 +18833,8 @@ extern "C" {
 void func_ov002_020dbbc0(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18880,7 +18872,8 @@ void func_ov002_020dbbc0(char *c) {
 extern "C" {
 void func_ov002_020dbc94(char* c) {
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char*, void*, int, int, unsigned int, unsigned int);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Player *player = (Player *)c;
     Vector3 v;
     int b = (int)(data_0209f2d8 == 1);
@@ -18911,8 +18904,8 @@ extern "C" {
 void func_ov002_020dbd94(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18948,8 +18941,8 @@ extern "C" {
 void func_ov002_020dbe70(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -18985,8 +18978,8 @@ extern "C" {
 void func_ov002_020dbf4c(char *c) {
     Player *player = (Player *)c;
     extern unsigned char data_0209f2d8;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if ((int)(data_0209f2d8 == 1) != 0) {
@@ -19020,8 +19013,8 @@ void func_ov002_020dbf4c(char *c) {
 extern "C" {
 void func_ov002_020dc020(char *c) {
     Player *player = (Player *)c;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if (player->mIsMega == 0) {
@@ -19049,8 +19042,8 @@ void func_ov002_020dc020(char *c) {
 extern "C" {
 void func_ov002_020dc09c(char *c) {
     Player *player = (Player *)c;
-    extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5,
-                                    unsigned int a6);
+    extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
+                                    u32 flags, u32 a6);
     Vector3 v;
     int r2, r3;
     if (player->mIsMega == 0) {
@@ -19087,12 +19080,19 @@ void func_ov002_020dc09c(char *c) {
 
 // @symbol func_ov002_020dc174
 extern "C" {
-void func_ov002_020dc174(char* c, void* r1, int r2, int r3, unsigned int a5, unsigned int a6){
-    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void*,void*,void*,int,int,int,int);
+/* The attack collision's offset, reach and height. pos is a const Vector3 *: it
+   goes straight to dCcAcPos_c::Init, whose ROM symbol is
+   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj -- RK7Vector3, a
+   const Vector3 &. Eleven callers in this file each used to spell it void *. */
+void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
+                         u32 a6) {
+    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
+        void *thiz, void *actor, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
+        u32 a6);
     Player *player = (Player *)c;
     int f = player->mIsMega ? 0x10 : 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mAttackClsn, c, r1, r2, r3,
-                                                            a5 | 2 | f, a6);
+    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mAttackClsn, c, pos, reach,
+                                                            height, flags | 2 | f, a6);
 }
 }
 
@@ -20573,7 +20573,6 @@ struct Vector3e968 { int x, y, z; ~Vector3e968(){} };
 }
 extern "C" {
 void func_ov002_020de968(char* c){
-    extern void _ZN6Player19func_ov002_020bd984Ej(char* c, unsigned int r1);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i d);
     Player *p = (Player *)c;
     p->mBalloonTimer = 0;
@@ -20581,7 +20580,7 @@ void func_ov002_020de968(char* c){
         return;
     p->mIsBalloon = 0;
     p->mOpacity = 0x1f;
-    _ZN6Player19func_ov002_020bd984Ej(c, 0x30);
+    p->EndPowerupMusic(0x30);
     Vector3e968 v;
     v.x = p->mPosX;
     v.y = p->mPosY;
@@ -20608,7 +20607,7 @@ void Player::InitBalloonMario()
     mIsBalloon = 1;
     mBalloonTimer = 0x258;
     this->ChangeState(data_ov002_0211028c);
-    func_ov002_020bd9ec(0x30);
+    StartPowerupMusic(0x30);
     func_ov002_020c43c4(2);
 
     v.x = mPosX;
@@ -20963,9 +20962,9 @@ extern "C" int func_ov002_020df34c(Player* self) {
 /* recovered: named members + shared header, real C++ method */
 int Player::St_Owl_Cleanup()
 {
-  func_ov002_020bd8c0(0x2f);
-  mHeldObj=0;
-  return 1;
+    EndStateMusic(0x2f);
+    mHeldObj = 0;
+    return 1;
 }
 
 // @symbol _ZN6Player11St_Owl_MainEv
@@ -21098,7 +21097,7 @@ int Player::St_Owl_Init()
   mHorzSpeed=0;
   _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this),0x5b,0x40000000,0x1000,0);
   func_0200d6b4((void*)data_0209f318[0], mPlayerNo);
-  func_ov002_020bd928(0x2f);
+  StartStateMusic(0x2f);
   return 1;
 }
 }
@@ -21482,7 +21481,6 @@ int Player::St_Fly_Init() {
 extern "C" {
 void func_ov002_020e032c(unsigned char* c)
 {
-    extern void _ZN6Player19func_ov002_020bd984Ej(char* c, unsigned int r1);
     extern unsigned char data_0209f2d8;
     extern int data_0209caa0;
     unsigned char st;
@@ -21493,7 +21491,7 @@ void func_ov002_020e032c(unsigned char* c)
         if (((&data_0209caa0)[2] & 0x80) == 0) return;
         if ((int)(st == 2) != 0) return;
     }
-    _ZN6Player19func_ov002_020bd984Ej((char*)c, 0x33);
+    ((Player *)c)->EndPowerupMusic(0x33);
 }
 }
 
@@ -21515,8 +21513,10 @@ void Player::InitWingFeathers(bool b_)
     mPowerupTimer = 0x708;
     {
         int t1 = (data_0209f2d8[0] == 1);
-        if (!t1) func_ov002_020bd9ec(0x33);
-        else func_ov002_020bd9ec(0x4e);
+        if (!t1)
+            StartPowerupMusic(0x33);
+        else
+            StartPowerupMusic(0x4e);
     }
     if (b == 0) return;
     func_ov002_020c43c4(1);
