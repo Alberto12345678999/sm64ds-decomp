@@ -34,13 +34,6 @@ size, and status, see the [progress treemap on GitHub Pages](https://tangosdev.g
 The [recovered TU treemap](https://tangosdev.github.io/sm64ds-decomp/tu-treemap.html)
 groups code by reconstructed translation unit, with links to each source file and TU manifest.
 
-The two bars measure different things:
-
-- **MATCHED** means the source compiles to the cartridge's exact bytes. This is the
-  classic decomp number.
-- **LINKED** means the function's matched file is compiled straight into the PC port,
-  replacing the stand-in the port used before. Both bars count functions.
-
 ## Where things stand
 
 Matching is close to finished. Nearly every function in the game now has source that
