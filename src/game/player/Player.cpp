@@ -4591,7 +4591,7 @@ cont:
             func_ov100_02145070(0x1e);
             func_ov100_02145014();
             func_02012694(0xb8, &mCamSpacePos);
-            unk_725 = 1;
+            mPlayMusicAfterTalk = 1;
             return 1;
         }
         break;
@@ -4660,9 +4660,9 @@ int Player::St_Talk_Cleanup()
     mFlags &= ~0x800000;
     data_0209b454 &= ~0x800000;
     ((dCamera_c *)data_0209f318)->mFlags &= ~8;
-    if (unk_725) {
+    if (mPlayMusicAfterTalk) {
         Sound::LoadAndSetMusic_Layer1(0x39);
-        unk_725 = 0;
+        mPlayMusicAfterTalk = 0;
     }
     return 1;
 }
@@ -4723,9 +4723,9 @@ int Player::St_Talk_Main()
     extern void func_0201fc88(s16);
     extern void func_0200d7a4(void*, u8);
     extern int func_ov100_02144fcc(void);
-    if (unk_722 != 0) {
+    if (mRestoreMusicVolume != 0) {
         if (_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222) != 0)
-            unk_722 = 0;
+            mRestoreMusicVolume = 0;
     }
 
     if (mNoCtrlKind == 0) {
@@ -7205,8 +7205,8 @@ int Player::func_ov002_020c8a4c() {
                 func_020731dc(data_ov002_0210f8cc, (void*)_ZN7Vector3D1Ev, &data_ov002_0210f89c);
                 data_ov002_0210e150 |= 1;
             }
-            Vec3_RotateYAndTranslate((Vector3 *)&mStateTargetX, (Vector3 *)&mStateAnchorX, unk_69e,
-                                     (Vector3 *)data_ov002_0210f8cc);
+            Vec3_RotateYAndTranslate((Vector3 *)&mStateTargetX, (Vector3 *)&mStateAnchorX,
+                                     mAngleXSpeed, (Vector3 *)data_ov002_0210f8cc);
         } else {
             func_ov002_020ca108();
         }
@@ -7255,7 +7255,7 @@ int Player::func_ov002_020c8b78() {
             data_ov002_0210e154 |= 1;
         }
         Vec3_RotateYAndTranslate(&v, &mPos, this->mAngleY, data_ov002_0210f824);
-        unk_722 = 1;
+        mRestoreMusicVolume = 1;
         {
             u16 *fl = &this->mStateFlags;
             *fl |= 0x400;
@@ -8275,7 +8275,7 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
             mStateAnchorX = pos[0];
             mStateAnchorY = pos[1];
             mStateAnchorZ = pos[2];
-            unk_69e = kind;
+            mAngleXSpeed = kind;
             mStateArg = 0;
             if (!(data_ov002_0210e164 & 1)) {
                 data_ov002_0210f344[0] = 0;
@@ -8284,7 +8284,8 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
                 func_020731dc(data_ov002_0210f344, (void *)_ZN7Vector3D1Ev, (void **)&data_ov002_0210f308);
                 data_ov002_0210e164 |= 1;
             }
-            Vec3_RotateYAndTranslate(&mStateTargetX, &mStateAnchorX, unk_69e, data_ov002_0210f344);
+            Vec3_RotateYAndTranslate(&mStateTargetX, &mStateAnchorX, mAngleXSpeed,
+                                     data_ov002_0210f344);
             mAngleY = Vec3_HorzAngle(pos, &mPosX) + 0x8000;
             return 1;
         }
@@ -10042,8 +10043,8 @@ void func_ov002_020cd448(char* self) {
         }
     }
 tail:
-    _Z15ApproachLinear2Rsss(player->unk_69e, player->mAngleZ, 0x200);
-    player->mAngleZ = player->unk_69e;
+    _Z15ApproachLinear2Rsss(player->mAngleXSpeed, player->mAngleZ, 0x200);
+    player->mAngleZ = player->mAngleXSpeed;
 }
 }
 
@@ -10221,7 +10222,7 @@ int Player::St_Swim_Main()
     if (func_ov002_020cec2c(this) != 0) return 1;
 
     t4 = (*(unsigned short*)((char*)&data_0209f49c + gActivePlayerSlot * 0x18)) & 0x802;
-    unk_69e = mAngleZ;
+    mAngleXSpeed = mAngleZ;
     func_ov002_020cd71c(this);
     func_ov002_020cd550(this);
 
@@ -10943,8 +10944,6 @@ int func_ov002_020cef84(char *self)
     extern int _ZN6Player7IsInAirEv(void*);
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-    extern void func_02035414(void*);
-    extern void func_02035428(void*);
     extern unsigned _ZNK5dBgPi9GetClsnIDEv(void*);
     extern void _ZN5dBgPiD1Ev(void*);
     extern char data_ov002_0211001c;
@@ -10979,9 +10978,9 @@ int func_ov002_020cef84(char *self)
             }
         }
     }
-    func_02035414(&line);
+    line.StopIgnoringVanishSurfaces();
     if (p->mIsVanish != 0)
-        func_02035428(&line);
+        line.StartIgnoringVanishSurfaces();
     line.SetObjAndLine(v1, v2, (dActor_c*)self);
     if (line.DetectClsn()) {
         ::Vector3 cp = line.GetClsnPos();
@@ -12864,9 +12863,9 @@ void func_ov002_020d228c(char* c)
     ((Player *)c)->ChangeState(data_ov002_02110154);
     _ZN6Player7SetAnimEji5Fix12IiEj(c, 9, 0, 0x1000, 0);
     player->mStateStep = 4;
-    *(int *)(c + 0x56c) = 0;
-    *(int *)(c + 0x570) = 0;
-    *(int *)(c + 0x574) = 0;
+    player->mSleepBubbleScaleX = 0;
+    player->mSleepBubbleScaleY = 0;
+    player->mSleepBubbleScaleZ = 0;
     player->mSleepStage = 2;
     player->mStateArg = 0;
 }
@@ -13104,7 +13103,8 @@ int Player::St_Wait_Main()
     }
 
     case 2: {
-        if (unk_723 == 0 && mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(1)) {
+        if (mMuteSleepVoice == 0 &&
+            mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(1)) {
             Sound::PlayCharVoice(mCharacter, 0x2a, mCamSpacePos);
         }
         {
@@ -13139,9 +13139,9 @@ int Player::St_Wait_Main()
         if (this->FinishedAnim()) {
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 9, 0, 0x1000, 0);
             mStateStep = 4;
-            unk_56c = 0;
-            unk_570 = 0;
-            unk_574 = 0;
+            mSleepBubbleScaleX = 0;
+            mSleepBubbleScaleY = 0;
+            mSleepBubbleScaleZ = 0;
             mSleepStage = 2;
             mStateArg = 1;
         }
@@ -13164,7 +13164,7 @@ int Player::St_Wait_Main()
     case 4: {
         if (mStatePhase == 0) {
             func_ov002_020d2f24(((char*)this));
-            if (unk_723 == 0 &&
+            if (mMuteSleepVoice == 0 &&
                 mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0xd)) {
                 Sound::PlayCharVoice(mCharacter, 0x2b, mCamSpacePos);
             }
@@ -13177,8 +13177,8 @@ int Player::St_Wait_Main()
                 int b4b = (f2d8_4 == 2);
                 if (b4b != false) break;
             }
-            if (func_ov002_020d2da0(((char*)this))==1 || unk_56c >= 0x3000 || mIsInShallowWater!=0 ||
-                (unsigned short)(mStateFlags&4)) {
+            if (func_ov002_020d2da0(((char *)this)) == 1 || mSleepBubbleScaleX >= 0x3000 ||
+                mIsInShallowWater != 0 || (unsigned short)(mStateFlags & 4)) {
                 func_ov002_020d2e74(((char*)this));
                 mSleepStage = 0;
                 _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 8, 0x40000000, 0x1000, 0);
@@ -13289,7 +13289,7 @@ void func_ov002_020d2f24(char* thiz)
     id = player->param1;
     if (id != 3) return;
 
-    r4 = *(int*)(thiz + 0x56c);
+    r4 = player->mSleepBubbleScaleX;
     id = _ZNK6Player14GetBodyModelIDEjb(thiz, id & 0xff, 0);
     {
         /* q is the frame controller; m->currFrame would fold the split +0x50. */
@@ -13316,9 +13316,9 @@ void func_ov002_020d2f24(char* thiz)
 store:
     if (r4 < 0x400) r4 = 0x400;
     if (r4 > 0x4000) r4 = 0x4000;
-    *(int*)(thiz + 0x56c) = r4;
-    *(int*)(thiz + 0x570) = r4;
-    *(int*)(thiz + 0x574) = r4;
+    player->mSleepBubbleScaleX = r4;
+    player->mSleepBubbleScaleY = r4;
+    player->mSleepBubbleScaleZ = r4;
 }
 }
 
@@ -16582,7 +16582,7 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
     }
 
     {
-        unsigned char t = *(unsigned char *)(o + 0x726);
+        unsigned char t = ((Player *)o)->mAttackClashed;
         if (t) return t;
     }
 
@@ -16594,8 +16594,8 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
             int r = func_ov002_020d8944(c, o, c);
             if (r != 0) {
                 r = 1;
-                *(unsigned char *)(o + 0x726) = r;
-                *(unsigned char *)(c + 0x726) = r;
+                ((Player *)o)->mAttackClashed = r;
+                player->mAttackClashed = r;
             }
             return r;
         }
@@ -16794,8 +16794,8 @@ void func_ov002_020d8854(char *self) {
             if ((p->mAttackClsn.hitFlags & 0x3c0) == 0)
                 return;
             if (func_ov002_020d8944(self, self, other) != 0) {
-                *(unsigned char *)(other + 0x726) = 1;
-                *(unsigned char *)(self + 0x726) = 1;
+                ((Player *)other)->mAttackClashed = 1;
+                p->mAttackClashed = 1;
             }
             return;
         }
@@ -16853,8 +16853,8 @@ int func_ov002_020d8944(void *self, char *enemy, char *v1) {
         p.y += 0x50000;
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12a, p.x, p.y, p.z);
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12b, p.x, p.y, p.z);
-        *(unsigned char *)(enemy + 0x726) = 1;
-        *(unsigned char *)(v1 + 0x726) = 1;
+        ((Player *)enemy)->mAttackClashed = 1;
+        ((Player *)v1)->mAttackClashed = 1;
         return 1;
     }
     return 0;
@@ -16901,7 +16901,7 @@ void func_ov002_020d8a50(char* self, int which)
         player->mAttackClsn.Clear();
     }
 
-    if (*(u8*)(self + 0x726) != 0)
+    if ((u8)player->mAttackClashed != 0)
         return;
 
     switch (which) {
@@ -19334,7 +19334,7 @@ int Player::St_SweepKick_Init()
     extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
     _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x68, 0x40000000, 0x1000, 0);
     mHorzSpeed = 0;
-    unk_726 = 0;
+    mAttackClashed = 0;
     /* mCamSpacePosX/Y/Z are three consecutive words; dActor_c.h declares them
        individually rather than as one Vector3. */
     Sound::PlayCharVoice(mCharacter, 0xa, mCamSpacePos);
@@ -20013,7 +20013,7 @@ int Player::St_PunchKick_Init()
     extern int _ZN6Player15IsCollectingCapEv(void*);
     extern void func_ov002_020dc020(void*);
   *(int*)((char*)&mPeakY)=*(int*)((char*)&mPosY);
-  *(char*)((char*)&unk_726)=0;
+  mAttackClashed = 0;
   *(short*)((char*)&mStateTimer)=2;
   *(char*)((char*)&mStatePhase)=0;
   if(*(unsigned char*)((char*)&mPunchKickStep)==2 || _ZN6Player15IsCollectingCapEv(((void*)this))) return 1;
@@ -20584,7 +20584,7 @@ s32 Player::St_Balloon_Main()
             s32 v = FX_MUL(v1, 0xa0);
             s16 t1 = data_02082214[idx];
             mAngleYSpeed = (s16)FX_MUL(t1, v);
-            unk_69e = (s16)FX_MUL(t0, v);
+            mAngleXSpeed = (s16)FX_MUL(t0, v);
         }
     }
 
@@ -20615,7 +20615,7 @@ s32 Player::St_Balloon_Main()
     _Z15ApproachLinear2Rsss(mAngleY, mPrevAngleY, 0x200);
     _Z14ApproachLinearRiii(mHorzSpeed, func_ov002_020bf224(this, r4, 0), 0x100);
     func_ov002_020de3d0(this, &mAngleZ, &mAngleYSpeed);
-    func_ov002_020de3d0(this, &mAngleX, &unk_69e);
+    func_ov002_020de3d0(this, &mAngleX, &mAngleXSpeed);
     mPrevVertSpeed = mVertSpeed;
     mModelAnim3.Advance();
     return 1;
@@ -20626,27 +20626,29 @@ s32 Player::St_Balloon_Main()
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_Balloon_Init()
-{
-    extern int Player_ReleaseHeldActor(void*);
+int Player::St_Balloon_Init() {
+    extern int Player_ReleaseHeldActor(void *);
     extern int data_0209f318[];
     extern int data_ov002_0210e750[];
-    extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*,void*,int,int,unsigned int);
-    extern void func_0200d63c(void*, unsigned char);
-  Player_ReleaseHeldActor(((char*)this));
-  mIsInAirState=1;
-  mIsFallScreaming=0;
-  if(mVertSpeed >= 0x10000) mVertSpeed=0x10000;
-  if(mVertSpeed <= -0x10000) mVertSpeed=-0x10000;
-  mHorzSpeed=0;
-  mModelOffsetY = 0x64000;
-  func_0200d63c((void*)data_0209f318[0], mPlayerNo);
-  mAngleYSpeed=0x100;
-  unk_69e=0x100;
-  mPrevVertSpeed=mVertSpeed;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void*)((char*)&mModelAnim3), (void*)data_ov002_0210e750[1], 0x40000000, 0x1000, 0);
-  mModelAnim3.currFrame = 0;
-  return 1;
+    extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+    extern void func_0200d63c(void *, unsigned char);
+    Player_ReleaseHeldActor(((char *)this));
+    mIsInAirState = 1;
+    mIsFallScreaming = 0;
+    if (mVertSpeed >= 0x10000)
+        mVertSpeed = 0x10000;
+    if (mVertSpeed <= -0x10000)
+        mVertSpeed = -0x10000;
+    mHorzSpeed = 0;
+    mModelOffsetY = 0x64000;
+    func_0200d63c((void *)data_0209f318[0], mPlayerNo);
+    mAngleYSpeed = 0x100;
+    mAngleXSpeed = 0x100;
+    mPrevVertSpeed = mVertSpeed;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+        (void *)((char *)&mModelAnim3), (void *)data_ov002_0210e750[1], 0x40000000, 0x1000, 0);
+    mModelAnim3.currFrame = 0;
+    return 1;
 }
 }
 
@@ -21126,7 +21128,7 @@ int Player::St_Owl_Main()
         }
         if (mStateStep == 1) {
             if (mAttachOffsetY - 0xed8000 > mPosY) {
-                unk_724 = 1;
+                mOwlFarCamera = 1;
                 func_0201f32c(0xa3);
                 func_0200d3f8(data_0209f318, mPlayerNo, 0);
                 mVertAccel = 0;
@@ -21156,7 +21158,7 @@ int Player::St_Owl_Main()
             mStateStep = 4;
             mStateTimer = 0x3c;
             func_ov002_020c9e18();
-            unk_724 = 0;
+            mOwlFarCamera = 0;
         }
         break;
     }
@@ -21267,25 +21269,33 @@ void func_ov002_020df8f0(char* c)
         if (v >= 0x8000) v = 0x7fff;
 
         if (v > 0) {
-            if (*(s16*)(c + 0x69e) < 0) {
-                *(s16*)(c + 0x69e) += 0x40;
-                if (*(s16*)(c + 0x69e) > 0x20) *(s16*)(c + 0x69e) = 0x20;
+            if (player->mAngleXSpeed < 0) {
+                player->mAngleXSpeed += 0x40;
+                if (player->mAngleXSpeed > 0x20)
+                    player->mAngleXSpeed = 0x20;
             } else {
                 s16 step;
-                if (*(s16*)(c + 0x69e) < v) step = 0x20; else step = 0x40;
-                _Z15ApproachLinear2Rsss((s16*)(c + 0x69e), (s16)v, step);
+                if (player->mAngleXSpeed < v)
+                    step = 0x20;
+                else
+                    step = 0x40;
+                _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, (s16)v, step);
             }
         } else if (v < 0) {
-            if (*(s16*)(c + 0x69e) > 0) {
-                *(s16*)(c + 0x69e) -= 0x40;
-                if (*(s16*)(c + 0x69e) < -0x20) *(s16*)(c + 0x69e) = -0x20;
+            if (player->mAngleXSpeed > 0) {
+                player->mAngleXSpeed -= 0x40;
+                if (player->mAngleXSpeed < -0x20)
+                    player->mAngleXSpeed = -0x20;
             } else {
                 s16 step;
-                if (*(s16*)(c + 0x69e) < v) step = 0x40; else step = 0x20;
-                _Z15ApproachLinear2Rsss((s16*)(c + 0x69e), (s16)v, step);
+                if (player->mAngleXSpeed < v)
+                    step = 0x40;
+                else
+                    step = 0x20;
+                _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, (s16)v, step);
             }
         } else {
-            _Z15ApproachLinear2Rsss((s16*)(c + 0x69e), 0, 0x40);
+            _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, 0, 0x40);
         }
     }
 
@@ -21351,7 +21361,7 @@ void func_ov002_020df8f0(char* c)
         player->mPrevAngleX += ((player->mPrevVertSpeed - 0x20000) * 0xa) >> 12;
     }
 
-    player->mPrevAngleX += *(s16 *)(c + 0x69e);
+    player->mPrevAngleX += player->mAngleXSpeed;
     if (player->mPrevAngleX > 0x2aaa)
         player->mPrevAngleX = 0x2aaa;
     if (player->mPrevAngleX < (s16)0xd556)
@@ -21534,28 +21544,27 @@ skip:
 // @symbol _ZN6Player11St_Fly_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_Fly_Init()
-{
+int Player::St_Fly_Init() {
     extern int data_0209f318[];
-    extern void Player_ReleaseHeldActor(char*);
-    extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
-    extern void func_0200d6f0(void*,unsigned char);
-  unk_69e=0;
-  mAngleYSpeed=0;
-  mPrevAngleX=0;
-  mPrevAngleZ=0;
-  mPrevAngleY=mAngleY;
-  Player_ReleaseHeldActor(((char*)this));
-  if(mStateStep==0){
-    mVertSpeed=0x5d000;
-    _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this),0x4a,0x40000000,0x1000,0);
-    mTerminalVelocity=-0x4000;
-  } else {
-    mVertAccel=0;
-    _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this),0x49,0,0x1000,0);
-  }
-  func_0200d6f0((void*)data_0209f318[0], mPlayerNo);
-  return 1;
+    extern void Player_ReleaseHeldActor(char *);
+    extern int _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, unsigned int);
+    extern void func_0200d6f0(void *, unsigned char);
+    mAngleXSpeed = 0;
+    mAngleYSpeed = 0;
+    mPrevAngleX = 0;
+    mPrevAngleZ = 0;
+    mPrevAngleY = mAngleY;
+    Player_ReleaseHeldActor(((char *)this));
+    if (mStateStep == 0) {
+        mVertSpeed = 0x5d000;
+        _ZN6Player7SetAnimEji5Fix12IiEj(((char *)this), 0x4a, 0x40000000, 0x1000, 0);
+        mTerminalVelocity = -0x4000;
+    } else {
+        mVertAccel = 0;
+        _ZN6Player7SetAnimEji5Fix12IiEj(((char *)this), 0x49, 0, 0x1000, 0);
+    }
+    func_0200d6f0((void *)data_0209f318[0], mPlayerNo);
+    return 1;
 }
 }
 
@@ -23442,7 +23451,7 @@ int Player::ChangeState(Player::State &state) {
 
     mIsControlDisabled = 0;
     mDetectWater = 0;
-    unk_726 = 0;
+    mAttackClashed = 0;
 
     mStateFlags &= ~0x200;
 
@@ -23644,7 +23653,7 @@ int Player::CleanupResources()
             if (p != 0)
                 p->v1();
         }
-        p = *(VB **)((char *)&unk_1d8);
+        p = *(VB **)((char *)&mSleepBubbleModel);
         if (p != 0) {
             if (p != 0)
                 p->v1();
@@ -23936,7 +23945,8 @@ int Player::Render()
                 }
                 func_ov002_020e3e00((char *)mHeadModels[i], &mScale, mOpacity);
                 if (func_ov002_020d225c(((char*)this))) {
-                    ((VObj*)*(char**)((char*)&unk_1d8))->m14((char*)&unk_56c);
+                    ((VObj *)*(char **)((char *)&mSleepBubbleModel))
+                        ->m14((char *)&mSleepBubbleScaleX);
                 }
             }
         }
@@ -24221,9 +24231,9 @@ void func_ov002_020e444c(char *c)
         }
 
         if (func_ov002_020d225c(c) != 0) {
-            int z = FX_MUL((*(int *)(c + 0x574)), 0x2400) + 0xc000;
+            int z = FX_MUL(player->mSleepBubbleScaleZ, 0x2400) + 0xc000;
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x7000, z);
-            char *p = *(char **)(c + 0x1d8);
+            char *p = *(char **)&player->mSleepBubbleModel;
             ((Model *)p)->mat4x3 = data_020a0e68;
         }
     }
@@ -25272,8 +25282,10 @@ void func_ov002_020e5948(void* arg0)
             if (p != 0) {
                 p = _ZN5ModelC1Ev(p);
             }
-            *(void**)(c + 0x1D8) = p;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(*(void**)(c + 0x1D8), _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
+            *(void **)&player->mSleepBubbleModel = p;
+            _ZN9ModelBase7SetFileEP8BMD_Fileii(
+                *(void **)&player->mSleepBubbleModel,
+                _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
