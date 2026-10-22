@@ -41,7 +41,6 @@ void func_02037e9c(CLPS *clps);
 void func_02037de8(SurfaceInfo *dst, const SurfaceInfo *src);
 int func_02038298(void *arg);
 void func_02036acc(void);
-extern dBgW *data_020a0c80[];
 extern CLPS data_020a0c78;
 }
 
