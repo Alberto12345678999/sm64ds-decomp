@@ -650,16 +650,22 @@ int func_ov002_020bd8ac(unsigned char *p)
 
 // @symbol _ZN6Player19func_ov002_020bd8c0Ej
 extern "C" {
-void Player::func_ov002_020bd8c0(unsigned int r1) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mPowerupMusic;
-    if (r2 == 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+void Player::func_ov002_020bd8c0(u32 music) {
+    /* Sound::EndMusic takes ONE argument, although the ROM symbol is
+       _ZN5Sound8EndMusicEjj and src/engine/sound/Sound.cpp defines it with two.
+       Its second parameter is never read, and the ROM's call sites set only r0
+       (`LDRB r0, [r4, #0x6d8]; BL`). A correct one-parameter C++ declaration
+       mangles to _ZN5Sound8EndMusicEj, which no ROM symbol matches, so this one
+       name stays hand-spelled. Sound::SetMusic below needs no such shim.
+       local extern: the symbol's own arity contradicts its name. */
+    extern void _ZN5Sound8EndMusicEjj(u32 playerNo);
+    u32 other = mPowerupMusic;
+    if (other == 0) {
+        _ZN5Sound8EndMusicEjj(mPlayerNo);
         mPlayingMusic = 0;
-    } else if (mPlayingMusic == r1 && r2 != r1) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
-        _ZN5Sound8SetMusicEjj(this->mPlayerNo, mPowerupMusic);
+    } else if (mPlayingMusic == music && other != music) {
+        _ZN5Sound8EndMusicEjj(mPlayerNo);
+        Sound::SetMusic(mPlayerNo, mPowerupMusic);
         mPlayingMusic = mPowerupMusic;
     }
     mStateMusic = 0;
@@ -668,35 +674,37 @@ void Player::func_ov002_020bd8c0(unsigned int r1) {
 
 // @symbol _ZN6Player19func_ov002_020bd928Ej
 extern "C" {
-void Player::func_ov002_020bd928(unsigned int r4) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mPowerupMusic;
-    if (r2 == r4) {
-        mStateMusic = r4;
+void Player::func_ov002_020bd928(u32 music) {
+    /* local extern: EndMusic's symbol carries two parameters and the ROM passes
+       one -- see func_ov002_020bd8c0 above for why the name stays mangled. */
+    extern void _ZN5Sound8EndMusicEjj(u32 playerNo);
+    u32 other = mPowerupMusic;
+    if (other == music) {
+        mStateMusic = music;
         return;
     }
-    if ((r2 | mStateMusic) != 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+    if ((other | mStateMusic) != 0) {
+        _ZN5Sound8EndMusicEjj(mPlayerNo);
     }
-    mStateMusic = r4;
-    mPlayingMusic = r4;
-    _ZN5Sound8SetMusicEjj(this->mPlayerNo, r4);
+    mStateMusic = music;
+    mPlayingMusic = music;
+    Sound::SetMusic(mPlayerNo, music);
 }
 }
 
 // @symbol _ZN6Player19func_ov002_020bd984Ej
 extern "C" {
-void Player::func_ov002_020bd984(unsigned int r1) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mStateMusic;
-    if (r2 == 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+void Player::func_ov002_020bd984(u32 music) {
+    /* local extern: EndMusic's symbol carries two parameters and the ROM passes
+       one -- see func_ov002_020bd8c0 above for why the name stays mangled. */
+    extern void _ZN5Sound8EndMusicEjj(u32 playerNo);
+    u32 other = mStateMusic;
+    if (other == 0) {
+        _ZN5Sound8EndMusicEjj(mPlayerNo);
         mPlayingMusic = 0;
-    } else if (mPlayingMusic == r1 && r2 != r1) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
-        _ZN5Sound8SetMusicEjj(this->mPlayerNo, mStateMusic);
+    } else if (mPlayingMusic == music && other != music) {
+        _ZN5Sound8EndMusicEjj(mPlayerNo);
+        Sound::SetMusic(mPlayerNo, mStateMusic);
         mPlayingMusic = mStateMusic;
     }
     mPowerupMusic = 0;
@@ -705,20 +713,21 @@ void Player::func_ov002_020bd984(unsigned int r1) {
 
 // @symbol _ZN6Player19func_ov002_020bd9ecEj
 extern "C" {
-void Player::func_ov002_020bd9ec(unsigned int r4) {
-    extern int _ZN5Sound8EndMusicEjj(unsigned char);
-    extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
-    unsigned int r2 = mStateMusic;
-    if (r2 == r4) {
-        mPowerupMusic = r4;
+void Player::func_ov002_020bd9ec(u32 music) {
+    /* local extern: EndMusic's symbol carries two parameters and the ROM passes
+       one -- see func_ov002_020bd8c0 above for why the name stays mangled. */
+    extern void _ZN5Sound8EndMusicEjj(u32 playerNo);
+    u32 other = mStateMusic;
+    if (other == music) {
+        mPowerupMusic = music;
         return;
     }
-    if ((mPowerupMusic | r2) != 0) {
-        _ZN5Sound8EndMusicEjj(this->mPlayerNo);
+    if ((mPowerupMusic | other) != 0) {
+        _ZN5Sound8EndMusicEjj(mPlayerNo);
     }
-    mPowerupMusic = r4;
-    mPlayingMusic = r4;
-    _ZN5Sound8SetMusicEjj(this->mPlayerNo, r4);
+    mPowerupMusic = music;
+    mPlayingMusic = music;
+    Sound::SetMusic(mPlayerNo, music);
 }
 }
 
