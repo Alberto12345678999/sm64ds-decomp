@@ -1030,9 +1030,11 @@ struct Player : dActor_c {
     int func_ov002_020bd664(unsigned char *, int, int);
 
     /* The two music layers documented at mPowerupMusic. The argument is the
-       layer id being started, or the one being ended -- ending only acts when
-       that id is the one currently playing. Unnamed, like the declarations
-       below, so Player.h consumers keep their @NNN numbering. */
+       layer id being started or ended. Ending always clears the layer; with
+       the other layer empty it stops the music outright, otherwise it switches
+       to the other layer only if the id is the one playing and differs from
+       it. Unnamed, like the declarations below, so Player.h consumers keep
+       their @NNN numbering. */
     void EndStateMusic(u32);
     void StartStateMusic(u32);
     void EndPowerupMusic(u32);
