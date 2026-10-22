@@ -11,7 +11,7 @@ typedef struct FSFile {
     unsigned int stat;     /* 0x0c */
     int command;           /* 0x10 */
 } FSFile;
-typedef char FSFile_head_size_must_be_0x14[sizeof(FSFile) == 0x14 ? 1 : -1];
+typedef char FSFile_size_must_be_0x14[sizeof(FSFile) == 0x14 ? 1 : -1];
 
 int FS_CloseFile(char *self)
 {

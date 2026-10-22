@@ -11,7 +11,7 @@ typedef struct Ov007OamNode {
     short frame; /* 0x2c */
     short tick;  /* 0x2e: ticks into the frame */
 } Ov007OamNode;
-typedef char Ov007OamNode_tick_at_0x2e[(int)&((Ov007OamNode *)0)->tick == 0x2e ? 1 : -1];
+typedef char Ov007OamNode_tick_must_be_at_0x2e[(int)&((Ov007OamNode *)0)->tick == 0x2e ? 1 : -1];
 
 void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0) {
     Ov007OamNode *n = (Ov007OamNode *)c;

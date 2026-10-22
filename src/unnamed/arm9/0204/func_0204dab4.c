@@ -37,8 +37,8 @@ struct TrackingRecord {
     /* 0x06: bits 0-1 the mask the record was claimed with, bit 2 set while
      * this pass sees the particle */
     unsigned char flags;
-    char pad;
-    ParticleNode *node; /* 0x08 -- the tracked particle, 0 = free */
+    unsigned char pad_07;
+    ParticleNode *particle; /* 0x08 -- the tracked particle, 0 = free */
 };
 
 typedef char ParticleNode_size_must_be_0x30[sizeof(ParticleNode) == 0x30 ? 1 : -1];
@@ -69,7 +69,7 @@ void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned int mask,
         empty = -1;
 
         for (i = 0; i < count; i++) {
-            ParticleNode *n = buf[i].node;
+            ParticleNode *n = buf[i].particle;
 
             if (n != 0) {
                 if (walk == n) {
@@ -83,7 +83,7 @@ void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned int mask,
 
         if (slot == 0 && empty != -1 && mask < 4) {
             slot = &buf[empty];
-            slot->node = walk;
+            slot->particle = walk;
             fp6 = &slot->flags;
             *fp6 = (unsigned char)((*fp6 & ~3u) | (mask & 3u));
         }
@@ -115,8 +115,8 @@ void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned int mask,
 
     do {
         if ((((unsigned int)p->flags << 29) >> 31) == 0) {
-            if (p->node != 0)
-                p->node = 0;
+            if (p->particle != 0)
+                p->particle = 0;
         }
 
         fp6 = &p->flags;

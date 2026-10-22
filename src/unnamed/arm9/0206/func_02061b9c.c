@@ -16,7 +16,7 @@ typedef struct WMStatus {
     u16 mp_maxRecvSize; /* 0x190 */
 } WMStatus;
 
-typedef char WMStatus_view_size_must_be_0x194[sizeof(WMStatus) == 0x194 ? 1 : -1];
+typedef char WMStatus_size_must_be_0x194[sizeof(WMStatus) == 0x194 ? 1 : -1];
 
 typedef struct WMArm9Buf {
     char pad_00[4];

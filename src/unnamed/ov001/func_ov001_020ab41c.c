@@ -11,7 +11,7 @@ typedef struct dThIconView {
     int mPressTimer;   /* 0x0c */
     unsigned char mOn; /* 0x10 */
 } dThIconView;
-typedef char dThIconView_mOn_at_0x10[(int)&((dThIconView *)0)->mOn == 0x10 ? 1 : -1];
+typedef char dThIconView_mOn_must_be_at_0x10[(int)&((dThIconView *)0)->mOn == 0x10 ? 1 : -1];
 
 void func_ov001_020ab41c(void *c) {
     if (((dThIconView *)c)->mOn == 0) {

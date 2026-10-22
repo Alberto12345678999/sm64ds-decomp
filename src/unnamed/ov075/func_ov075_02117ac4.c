@@ -16,7 +16,8 @@ typedef struct dScEntry_c {
     unsigned char mResultLeaderFlags[4]; /* 0x27c */
     unsigned char mIconCount;            /* 0x280 */
 } dScEntry_c;
-typedef char dScEntry_c_mIconCount_at_0x280[(int)&((dScEntry_c *)0)->mIconCount == 0x280 ? 1 : -1];
+typedef char
+    dScEntry_c_mIconCount_must_be_at_0x280[(int)&((dScEntry_c *)0)->mIconCount == 0x280 ? 1 : -1];
 
 void func_ov075_02117ac4(char *r4)
 {
