@@ -409,7 +409,6 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 #pragma defer_codegen off
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinals 0-1 -- _ZN8daStar_cD1Ev, 0x020e6c40 / _ZN8daStar_cD0Ev, 0x020e6c90 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_cD1Ev
 // @symbol _ZN8daStar_cD0Ev
@@ -457,7 +456,6 @@ daStar_c::~daStar_c()
 #pragma defer_codegen on
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 76 -- _ZN8daStar_c13InitResourcesEv, 0x020eb63c, size 0x820 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13InitResourcesEv
 /* Spawn-time set-up for the Power Star (actor 0xb2) and the silver star
@@ -681,7 +679,6 @@ s32 daStar_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 75 -- _ZN12daStarBase_c13InitResourcesEv, 0x020eb204, size 0x438 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c13InitResourcesEv
 /* Spawn-time set-up for the marker that shows where a star will appear. param1
@@ -802,7 +799,6 @@ int daStarBase_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 74 -- _ZN8daStar_c8BehaviorEv, 0x020eb05c, size 0x1a8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c8BehaviorEv
 /* Per-frame update. Looks once for an ice block, clears the cached centre, and
@@ -860,7 +856,6 @@ int daStar_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 73 -- _ZN12daStarBase_c8BehaviorEv, 0x020ead90, size 0x2cc */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c8BehaviorEv
 /* Per-frame update of the marker. mAppearTimer counts down while this marker's
@@ -943,7 +938,6 @@ int daStarBase_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 72 -- _ZN8daStar_c6RenderEv, 0x020eacf4, size 0x9c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c6RenderEv
 /* Draws mModelAnim2 (collected, translucent) or mModelAnim1, unless the star
@@ -966,7 +960,6 @@ callit:
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 71 -- _ZN12daStarBase_c6RenderEv, 0x020eacb8, size 0x3c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c6RenderEv
 /* Draws the marker's model while it is visible. */
@@ -978,7 +971,6 @@ int daStarBase_c::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 70 -- _ZN8daStar_c16CleanupResourcesEv, 0x020eac18, size 0xa0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c16CleanupResourcesEv
 /* Gives up the map marker slot (kind 8 never had one), unloads the silver star
@@ -1006,7 +998,6 @@ int daStar_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 69 -- _ZN12daStarBase_c16CleanupResourcesEv, 0x020eabcc, size 0x4c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c16CleanupResourcesEv
 /* Releases the model files that InitResources loaded for this marker's
@@ -1023,7 +1014,6 @@ int daStarBase_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 68 -- _ZN12daStarBase_c16OnPendingDestroyEv, 0x020eab8c, size 0x40 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c16OnPendingDestroyEv
 /* If the linked star exists but has no death-table slot of its own
@@ -2141,7 +2131,6 @@ ret0:
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 45 -- _ZN8daStar_c13OnYoshiTryEatEv, 0x020e8ee8, size 0x8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13OnYoshiTryEatEv
 s32 daStar_c::OnYoshiTryEat() {
@@ -2149,7 +2138,6 @@ s32 daStar_c::OnYoshiTryEat() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 44 -- _ZN8daStar_c13OnTurnIntoEggER6Player, 0x020e8edc, size 0xc */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13OnTurnIntoEggER6Player
 /* daStar_c::OnTurnIntoEgg -- vtable slot 19, verified against ov002 relocs.txt:
@@ -2215,7 +2203,6 @@ int daStar_c::func_ov002_020e8dd8() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 41 -- _ZN8daStar_c13AddStarMarkerEv, 0x020e8ca0, size 0x138 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13AddStarMarkerEv
 /* Claims a free slot of the map-marker table (data_0209f40c, 12 entries) for
@@ -2808,7 +2795,6 @@ int daStar_c::func_ov002_020e7e14() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 23 -- _ZN12daStarBase_c7CollectEv, 0x020e7d84, size 0x90 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c7CollectEv
 /* The marker was touched: plays sound 3/0x53, puts the marker on hold and
@@ -3149,7 +3135,6 @@ ret0:
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv, 0x020e72d8, size 0xd4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv
 /* Once the eighth red coin is in (NumRedCoins() == 8) spawns this marker's

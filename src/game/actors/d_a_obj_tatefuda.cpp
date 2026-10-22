@@ -206,7 +206,6 @@ extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 27 --_ZN15daObjTatefuda_c13InitResourcesEv, 0x020bc240, size 0x188 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
@@ -284,7 +283,6 @@ int daObjTatefuda_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- _ZN15daObjTatefuda_c8BehaviorEv, 0x020bbea4, size 0x39c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8BehaviorEv
 /* daObjTatefuda_c::Behavior -- vtable slot 6. Real C++ method over the shared header.
@@ -426,7 +424,6 @@ int daObjTatefuda_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 25 -- _ZN15daObjTatefuda_c6RenderEv, 0x020bbe30, size 0x74 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c6RenderEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
@@ -451,7 +448,6 @@ int daObjTatefuda_c::Render() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 24 -- _ZN15daObjTatefuda_c16CleanupResourcesEv, 0x020bbdec, size 0x44 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
@@ -467,7 +463,6 @@ int daObjTatefuda_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 23 -- _ZN15daObjTatefuda_c11UpdateStateEv, 0x020bbda4, size 0x48 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11UpdateStateEv
 /* Runs the current state's UPDATE routine: row mState of the table, member 1.
@@ -479,7 +474,6 @@ extern Entry data_ov002_0210e084[];
 void daObjTatefuda_c::UpdateState() { int j = mState; (this->*data_ov002_0210e084[j].pmf[1])(); }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 22 -- _ZN15daObjTatefuda_c8SetStateEi, 0x020bbd5c, size 0x48 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8SetStateEi
 /* Switches to state `state` and runs that state's ENTER routine (row state,
@@ -487,7 +481,6 @@ void daObjTatefuda_c::UpdateState() { int j = mState; (this->*data_ov002_0210e08
 void daObjTatefuda_c::SetState(int state) { mState = state; int j = mState; (this->*data_ov002_0210e084[j].pmf[0])(); }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- _ZN15daObjTatefuda_c11InitCarriedEv, 0x020bbd50, size 0xc */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11InitCarriedEv
 /* CARRIED, enter: stop the sign's horizontal speed. */
@@ -497,7 +490,6 @@ void daObjTatefuda_c::InitCarried()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- _ZN15daObjTatefuda_c7CarriedEv, 0x020bbcb8, size 0x98 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c7CarriedEv
 // Carried at 0x020bbcb8
@@ -533,7 +525,6 @@ void daObjTatefuda_c::Carried()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 19 -- _ZN15daObjTatefuda_c10InitThrownEv, 0x020bbc78, size 0x40 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c10InitThrownEv
 /* THROWN, enter: launch with horizontal speed 0x50000 (80 units/frame) and
@@ -554,7 +545,6 @@ void daObjTatefuda_c::InitThrown()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 18 -- _ZN15daObjTatefuda_c6ThrownEv, 0x020bbb14, size 0x164 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c6ThrownEv
 /* recovered: shared common types */
@@ -621,7 +611,6 @@ void daObjTatefuda_c::Thrown()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 17 -- _ZN15daObjTatefuda_c11InitDroppedEv, 0x020bbac8, size 0x4c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11InitDroppedEv
 /* DROPPED, enter: zero the horizontal and vertical speeds, move the sign to
@@ -646,7 +635,6 @@ void daObjTatefuda_c::InitDropped()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 16 -- _ZN15daObjTatefuda_c7DroppedEv, 0x020bba28, size 0xa0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c7DroppedEv
 bool ApproachLinear(short &value, short target, short step);
@@ -670,7 +658,6 @@ void daObjTatefuda_c::Dropped(){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- _ZN15daObjTatefuda_c8InitIdleEv, 0x020bba24, size 0x4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8InitIdleEv
 /* IDLE, enter: nothing to do. The PMF record binds a member, so this
@@ -680,7 +667,6 @@ void daObjTatefuda_c::InitIdle()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- _ZN15daObjTatefuda_c4IdleEv, 0x020bb9fc, size 0x28 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c4IdleEv
 /* IDLE, update: let a player start talking to the sign (TryStartTalk);
@@ -691,7 +677,6 @@ void daObjTatefuda_c::Idle(){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- _ZN15daObjTatefuda_c8InitTalkEv, 0x020bb9f0, size 0xc */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8InitTalkEv
 /* TALK, enter: restart the talk walk-up at step 0. */
@@ -701,7 +686,6 @@ void daObjTatefuda_c::InitTalk()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN15daObjTatefuda_c4TalkEv, 0x020bb614, size 0x3dc */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c4TalkEv
 /* recovered: shared common types */
@@ -881,7 +865,6 @@ void daObjTatefuda_c::Talk()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN15daObjTatefuda_c12TryStartTalkEv, 0x020bb520, size 0xf4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c12TryStartTalkEv
 /* recovered: shared common types, declarations from a shared header */
@@ -927,7 +910,6 @@ int daObjTatefuda_c::TryStartTalk() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- _ZN15daObjTatefuda_c16CheckGrabOrBreakEv, 0x020bb42c, size 0xf4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c16CheckGrabOrBreakEv
 /* recovered: shared common types, declarations from a shared header */
@@ -974,7 +956,6 @@ void daObjTatefuda_c::CheckGrabOrBreak() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN15daObjTatefuda_c4KillEv, 0x020bb3b8, size 0x74 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c4KillEv
 /* daObjTatefuda_c::Kill() at ov002 0x020bb3b8, 0x74 bytes -- vtable slot 31.
@@ -1021,7 +1002,6 @@ void daObjTatefuda_c::Kill()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN15daObjTatefuda_c15OnHitByMegaCharER6Player, 0x020bb374, size 0x44 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c15OnHitByMegaCharER6Player
 /* daObjTatefuda_c::OnHitByMegaChar -- vtable slot 27, ov002 0x020bb374.
@@ -1044,7 +1024,6 @@ void daObjTatefuda_c::OnHitByMegaChar(Player &player)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN15daObjTatefuda_c15OnGroundPoundedER8dActor_c, 0x020bb27c, size 0xf8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c15OnGroundPoundedER8dActor_c
 /* daObjTatefuda_c::OnGroundPounded -- vtable slot 21, ov002 0x020bb27c.
@@ -1086,7 +1065,6 @@ void daObjTatefuda_c::OnGroundPounded(dActor_c &other)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN15daObjTatefuda_c11OnAttacked1ER8dActor_c, 0x020bb23c, size 0x40 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11OnAttacked1ER8dActor_c
 /* daObjTatefuda_c::OnAttacked1 -- vtable slot 22, ov002 0x020bb23c.
@@ -1192,7 +1170,6 @@ void RebuildModelMatrix(struct daObjTatefuda_c* self){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN15daObjTatefuda_c18UpdateShadowMatrixEv, 0x020baf80, size 0x40 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c18UpdateShadowMatrixEv
 /* Rebuild the drop shadow's matrix: a rotation about Y by the sign's angle,
@@ -1207,7 +1184,6 @@ void daObjTatefuda_c::UpdateShadowMatrix()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN15daObjTatefuda_c5ResetEv, 0x020bae9c, size 0xe4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c5ResetEv
 /* The reset: the sign goes back where it was spawned and hides. Sets mHidden
@@ -1246,7 +1222,6 @@ void daObjTatefuda_c::Reset()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN15daObjTatefuda_cD0Ev, 0x020bae2c, size 0x70 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_cD0Ev
 /* The deleting destructor comes from the key function: Kill is defined in
@@ -1254,7 +1229,6 @@ void daObjTatefuda_c::Reset()
  * and the destructor variants alongside it. No shard tricks remain. */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN15daObjTatefuda_cD1Ev, 0x020badd0, size 0x5c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_cD1Ev
 /* The complete-object destructor comes from the key function (see D0). */

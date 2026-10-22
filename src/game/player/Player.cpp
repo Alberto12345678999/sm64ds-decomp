@@ -3243,7 +3243,6 @@ int Player::func_ov002_020c200c(int arg)
 }
 
 // @symbol _ZN6Player19func_ov002_020c2138Ev
-// _ZN6Player19func_ov002_020c2138Ev at 0x020c2138
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
 int Player::func_ov002_020c2138(){
@@ -5726,7 +5725,6 @@ int Player::func_ov002_020c61ac() {
 
 // @symbol _ZN6Player19func_ov002_020c647cEi
 /* recovered: shared common types */
-// _ZN6Player19func_ov002_020c647cEi at 0x020c647c
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 int Player::func_ov002_020c647c(int arg1) {
     char* c = (char*)this;
@@ -18249,7 +18247,6 @@ int func_ov002_020dacb4(char *p, char *actor)
 // @symbol _ZN6Player13St_Throw_MainEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-// _ZN6Player13St_Throw_MainEv at 0x020dae6c
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
 int Player::St_Throw_Main() {

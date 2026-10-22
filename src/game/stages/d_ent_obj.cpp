@@ -879,7 +879,6 @@ void dEntObj_c::func_ov075_021152d4() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 0x02115388 _ZN9dEntObj_c16CleanupResourcesEv                               */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c16CleanupResourcesEv
 int dEntObj_c::CleanupResources() {
@@ -916,7 +915,6 @@ int dEntObj_c::CleanupResources() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 0x021154cc _ZN9dEntObj_c6RenderEv                                          */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c6RenderEv
 int dEntObj_c::Render() {
@@ -939,7 +937,6 @@ int dEntObj_c::Render() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 0x0211555c _ZN9dEntObj_c8BehaviorEv                                        */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c8BehaviorEv
 int dEntObj_c::Behavior() {
@@ -998,7 +995,6 @@ int dEntObj_c::Behavior() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 0x021156e0 _ZN9dEntObj_c13InitResourcesEv                                  */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c13InitResourcesEv
 int dEntObj_c::InitResources() {

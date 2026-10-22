@@ -660,7 +660,6 @@ extern JugemModelFile data_ov085_0213074c;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN8daDemo_cD1Ev, 0x020f1f70, size 0x24 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_cD1Ev
 daDemo_c::~daDemo_c()
@@ -668,7 +667,6 @@ daDemo_c::~daDemo_c()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN8daDemo_cD0Ev, 0x020f1f94, size 0x38 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_cD0Ev
 #ifdef _MSC_VER
@@ -3741,7 +3739,6 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 112 -- _ZN8daDemo_c10anmModel_cD0Ev, 0x020f6778, size 0xf8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_cD0Ev
 /* D0, the deleting destructor. Same class shape as the D1 file beside this one;
@@ -3752,7 +3749,6 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
  * The D0 variant here emits from the ~anmModel_c definition at ordinal 113. */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 113 -- _ZN8daDemo_c10anmModel_cD1Ev, 0x020f6870, size 0xf0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_cD1Ev
 /* D1, the complete-object destructor.
@@ -3805,7 +3801,6 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 115 -- _ZN8daDemo_c13simpleModel_cD0Ev, 0x020f69a8, size 0x58 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13simpleModel_cD0Ev
 /* D0, the deleting destructor. Same class shape as the D1 file beside this one;
@@ -3816,7 +3811,6 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
  * The D0 variant here emits from the ~simpleModel_c definition at ordinal 116. */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 116 -- _ZN8daDemo_c13simpleModel_cD1Ev, 0x020f6a00, size 0x50 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13simpleModel_cD1Ev
 /* D1, the complete-object destructor.
@@ -4613,7 +4607,6 @@ extern "C" void func_ov002_020f7d74(daDemo_c* self, unsigned char* p, int a2, in
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 140 -- _ZN8daDemo_c16CleanupResourcesEv, 0x020f8028, size 0x80 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c16CleanupResourcesEv
 int daDemo_c::CleanupResources()
@@ -4628,7 +4621,6 @@ int daDemo_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 141 -- _ZN8daDemo_c16OnPendingDestroyEv, 0x020f80a8, size 0x4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c16OnPendingDestroyEv
 /* daDemo_c::OnPendingDestroy -- vtable slot 12. The ROM body is empty: the
@@ -4638,7 +4630,6 @@ void daDemo_c::OnPendingDestroy()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 142 -- _ZN8daDemo_c6RenderEv, 0x020f80ac, size 0x118 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c6RenderEv
 int daDemo_c::Render() {
@@ -4684,7 +4675,6 @@ int daDemo_c::Render() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 143 -- _ZN8daDemo_c8BehaviorEv, 0x020f81c4, size 0x1e0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c8BehaviorEv
 int daDemo_c::Behavior()
@@ -4758,7 +4748,6 @@ int daDemo_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 144 -- _ZN8daDemo_c13InitResourcesEv, 0x020f83a4, size 0x464 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13InitResourcesEv
 /* Each model branch spells the nested class's construction out: param_c's
