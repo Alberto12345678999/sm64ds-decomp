@@ -52,10 +52,10 @@ being correct in the first place. Run it against a tree-green base.
 USAGE
 -----
     python tools/tu_object_diff.py src/game/player/Player.cpp
-    python tools/tu_object_diff.py src/x.cpp --base origin/main
-    python tools/tu_object_diff.py src/a.cpp src/b.cpp --quiet
-    python tools/tu_object_diff.py src/x.cpp --symbol _ZN6Player3FooEv
-    python tools/tu_object_diff.py src/x.cpp --numbered
+    python tools/tu_object_diff.py src/game/player/Player.cpp --base origin/main
+    python tools/tu_object_diff.py src/game/player/Player.cpp src/fListNode.cpp --quiet
+    python tools/tu_object_diff.py src/game/player/Player.cpp --symbol _ZN6Player12CanEnterDoorEh
+    python tools/tu_object_diff.py src/game/player/Player.cpp --numbered
 
 Exit 0 when every file's object is identical, 1 when one differs, 2 on error.
 """
