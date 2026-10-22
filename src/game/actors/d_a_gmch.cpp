@@ -23,9 +23,8 @@
  * - ApproachLinear2 takes &mState as int* because mState, mPhase and
  *   mTimer share one word. State numbers, mFlags bit 0x80000 and hit
  *   mask 0x66fe0 stay numeric.
- * - ModelCache stays file-local; da1up_c reads the same second word.
- *   The loaded BCA is data_ov081_02128edc[1]. GmchDrawReg is the one-slot
- *   init sentinel the folded sinit needs.
+ * - The loaded BCA is data_ov081_02128edc.filePtr. GmchDrawReg is the
+ *   one-slot init sentinel the folded sinit needs.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -76,11 +75,6 @@ enum {
 enum {
     HIT_MEGA_CHARACTER = 0x10
 };
-
-/* Cached model handle: the loaded BMD file is the second word (da1up_c
- * reads the same home the same way). Wants a shared home with da1up_c's
- * ModelCache; kept file-local until then. */
-struct ModelCache { int pad0; BMD_File *file; };
 
 /* Non-virtual state handlers. daGmch_c is already complete here; the
    pointer-to-member call through mStatePmfPair still matches. */
@@ -863,13 +857,13 @@ int daGmch_c::InitResources()
 {
     extern GmchModelFileHandle data_ov081_02128ed4;
     extern void *data_ov081_021280d8[];
-    extern ModelCache data_ov002_0210d9b8;
+    extern SharedFilePtr data_ov002_0210d9b8;
     extern Matrix4x3 IDENTITY_MATRIX4X3;
 
     Vector3 pos;
     void *modelFile = Model::LoadFile(*(SharedFilePtr *)&data_ov081_02128ed4);
     mModelAnim.SetFile((BMD_File *)modelFile, 1, 1);
-    if (mModel.SetFile(data_ov002_0210d9b8.file, 1, 1) == 0)
+    if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
         return 0;
     for (int i = 0; i < 4; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);

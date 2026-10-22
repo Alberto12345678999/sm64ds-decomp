@@ -19,7 +19,7 @@
  *   0x254 against 0x258. func_020393c4 and func_020393d4 stay.
  * - InitResources: probePos.y = mPosY - 0x14000 is 0x254 against 0x258.
  * - InitResources: Model::LoadFile's return in place of filePtr differs
- *   by 20 words. NewsLiftFile stays; SharedFilePtr has no fields.
+ *   by 20 words.
  * - OnMainMeshRide: copying mTargetRotation in a loop is 0x100 against
  *   0x104.
  * - Behavior: reset reads of data_02092768 without volatile are 0x594
@@ -49,19 +49,10 @@
 
 struct Quaternion;
 
-/* A SharedFilePtr seen from outside: SharedFilePtr.h deliberately declares
- * no fields, and these reads need the loaded buffer. The fields follow the
- * layout that _ZN13SharedFilePtr4LoadEv's definition uses. */
-struct NewsLiftFile {
-    u16 fileID;
-    u8 numRefs;
-    void *filePtr;
-};
-
-extern NewsLiftFile data_ov021_021149a0;
-extern NewsLiftFile data_ov021_021149a8;
-extern NewsLiftFile data_ov021_021149b0;
-extern NewsLiftFile data_ov021_021149b8;
+extern SharedFilePtr data_ov021_021149a0;
+extern SharedFilePtr data_ov021_021149a8;
+extern SharedFilePtr data_ov021_021149b0;
+extern SharedFilePtr data_ov021_021149b8;
 extern CLPS_Block data_ov021_02113a60;
 extern CLPS_Block data_ov021_02113a80;
 
@@ -208,10 +199,10 @@ void daObjCvNewsLift_c::OnPlatform3Ride(dActor_c *player)
 // @symbol _ZN17daObjCvNewsLift_c13InitResourcesEv
 s32 daObjCvNewsLift_c::InitResources()
 {
-    Model::LoadFile(*(SharedFilePtr *)&data_ov021_021149a0);
-    dBgW_Kc::LoadFile(*(SharedFilePtr *)&data_ov021_021149a8);
-    Model::LoadFile(*(SharedFilePtr *)&data_ov021_021149b0);
-    dBgW_Kc::LoadFile(*(SharedFilePtr *)&data_ov021_021149b8);
+    Model::LoadFile(data_ov021_021149a0);
+    dBgW_Kc::LoadFile(data_ov021_021149a8);
+    Model::LoadFile(data_ov021_021149b0);
+    dBgW_Kc::LoadFile(data_ov021_021149b8);
 
     mModel.SetFile((BMD_File *)data_ov021_021149a0.filePtr, 1, -1);
     for (int i = 0; i < 4; i++)
@@ -434,10 +425,10 @@ s32 daObjCvNewsLift_c::CleanupResources()
     mMeshCollider.Disable();
     for (int i = 0; i < 4; i++)
         mPlatformColliders[i].Disable();
-    ((SharedFilePtr *)&data_ov021_021149b0)->Release();
-    ((SharedFilePtr *)&data_ov021_021149b8)->Release();
-    ((SharedFilePtr *)&data_ov021_021149a0)->Release();
-    ((SharedFilePtr *)&data_ov021_021149a8)->Release();
+    data_ov021_021149b0.Release();
+    data_ov021_021149b8.Release();
+    data_ov021_021149a0.Release();
+    data_ov021_021149a8.Release();
     return 1;
 }
 

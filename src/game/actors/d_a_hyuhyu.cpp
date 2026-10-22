@@ -40,8 +40,6 @@
  * - func_ov002_020aea30 (fire hit), func_02012694 (sound at a
  *   camera-space position), data_02082214 (sin/cos pairs) and
  *   data_0209e650 (random seed) keep linker names.
- * - The SharedFilePtr subclasses and the loaded-file word at [1] stay
- *   spelled through handles: SharedFilePtr has no recovered fields.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */

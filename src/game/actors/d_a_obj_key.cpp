@@ -83,23 +83,15 @@ namespace Sound {
 void LoadAndSetMusic_Layer3(unsigned int musicId);
 }
 
-/* {file id, loaded file}. Same two words daStar_c reads as id/ptr, and the
- * words this TU passes to SetAnim / SetFile / compares with mModelAnim.file.
- * SharedFilePtr itself has no fields; Release and LoadFile go through it. */
-struct ObjKeyFile {
-    u32 id;
-    void *ptr;
-};
-
 /* File-scope objects at the end of this file construct the eight resource
  * handles and fill the eight-entry state table. mwcc emits
  * __sinit_d_a_obj_key.cpp from those definitions. */
-struct ObjKeyModelFile : ObjKeyFile {
+struct ObjKeyModelFile : SharedFilePtr {
     ObjKeyModelFile(u32 fileID);
     ~ObjKeyModelFile();
 };
 
-struct ObjKeyAnimationFilePtr : ObjKeyFile {
+struct ObjKeyAnimationFilePtr : SharedFilePtr {
     ObjKeyAnimationFilePtr(u32 fileID);
     ~ObjKeyAnimationFilePtr();
 };
@@ -210,7 +202,7 @@ void Matrix4x3_FromRotationY(void *m, short angle);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *a, void *sm, void *mtx, int rad, int h, unsigned int x);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void *data_ov089_021328b4[];
-extern ObjKeyFile data_ov002_02110964;
+extern SharedFilePtr data_ov002_02110964;
 extern ObjKeyAnimationFilePtr data_ov089_02132c60;
 extern ObjKeyAnimationFilePtr data_ov089_02132c40;
 extern ObjKeyAnimationFilePtr data_ov089_02132c70;
@@ -232,14 +224,14 @@ extern void LoadKeyModels(int idx);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int a, int fx, unsigned int f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *thiz, void *actor, void *pos, int r, int s, unsigned int a, unsigned int b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, int a, int b, void *v, void *w);
-/* An ObjKeyFile in layout, but daDemo_c::InitResources declares it `char`;
+/* A SharedFilePtr in layout, but daDemo_c::InitResources declares it `char`;
    keep that spelling so the declarations of this symbol stay in agreement. */
 extern char data_ov002_0211094c;
 extern int data_0209cef0;
 extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 /* The collect animations, by mAnimID. */
-extern ObjKeyFile *data_ov089_02132880[];
+extern SharedFilePtr *data_ov089_02132880[];
 /* Fix12<int> by value: called by symbol. */
 extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int id, int vol);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
@@ -333,7 +325,7 @@ void daObjKey_c::func_ov089_0213115c(int anim)
         return;
     }
     mAnimID = anim;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov089_02132880[anim]->ptr,
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov089_02132880[anim]->filePtr,
                                                  ANIM_FLAGS, ANIM_SPEED, 0);
 }
 
@@ -781,7 +773,7 @@ void daObjKey_c::UpdateModelTransform()
     mShadowMatrix.m[10] = mPosY >> 3;
     mShadowMatrix.m[11] = mPosZ >> 3;
     /* Shadow only while the idle anim (file 0x801b) is showing. */
-    if (mModelAnim.file == (BCA_File *)data_ov002_02110964.ptr)
+    if (mModelAnim.file == (BCA_File *)data_ov002_02110964.filePtr)
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
@@ -863,7 +855,7 @@ int daObjKey_c::Behavior()
             int isKey = (actorID == ACTOR_OBJ_KEY);
             if (isKey != 0) {
                 /* Anim 3's file (data_ov089_02132c40, id 0x44f) stays; the others die. */
-                if (mModelAnim.file != (BCA_File *)data_ov089_02132c40.ptr)
+                if (mModelAnim.file != (BCA_File *)data_ov089_02132c40.filePtr)
                     MarkForDestruction();
             }
         }
@@ -911,9 +903,9 @@ int daObjKey_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
 
     if (mState == KEY_KIND_STAR) {
-        if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->ptr, 1, 1) == 0)
+        if (mModelAnim.SetFile((BMD_File *)((SharedFilePtr *)&data_ov002_0211094c)->filePtr, 1, 1) == 0)
             return 0;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_02110964.ptr, ANIM_FLAGS, ANIM_SPEED, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_02110964.filePtr, ANIM_FLAGS, ANIM_SPEED, 0);
         mScaleX = SCALE_STAR;
         mScaleY = SCALE_STAR;
         mScaleZ = SCALE_STAR;
@@ -930,16 +922,16 @@ int daObjKey_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
-        if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)data_ov089_02132894[mState])->ptr, 1, 1) == 0)
+        if (mModelAnim.SetFile((BMD_File *)((SharedFilePtr *)data_ov089_02132894[mState])->filePtr, 1, 1) == 0)
             return 0;
         {
             void *extra = data_ov089_021328b4[mState];
             if (extra != 0) {
-                if (mModel.SetFile((BMD_File *)((ObjKeyFile *)extra)->ptr, 1, -1) == 0)
+                if (mModel.SetFile((BMD_File *)((SharedFilePtr *)extra)->filePtr, 1, -1) == 0)
                     return 0;
             }
         }
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_02110964.ptr, ANIM_FLAGS, ANIM_SPEED, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov002_02110964.filePtr, ANIM_FLAGS, ANIM_SPEED, 0);
         mScaleX = SCALE_KEY;
         mScaleY = SCALE_KEY;
         mScaleZ = SCALE_KEY;

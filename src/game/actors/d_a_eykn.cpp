@@ -82,30 +82,23 @@ struct MatrixWords {
     s32 m[12];
 };
 
-/* Local eight-byte handle view: the constructor resolves a runtime asset ID
- * into a u16 NitroFS file ID, clears the reference count and loaded pointer.
- * The shared header still lacks this measured layout. */
-struct LoadedFile : SharedFilePtr {};
-
 /* Inferred local resource-family ABI views; these type names are not ROM
  * names. The manifest binds each constructor/destructor to its existing
  * model, texture-sequence or animation helper at the original address. */
-struct EyknModelFile : LoadedFile {
+struct EyknModelFile : SharedFilePtr {
     EyknModelFile(u32 fileID);
     ~EyknModelFile();
 };
 
-struct EyknTextureSequenceFile : LoadedFile {
+struct EyknTextureSequenceFile : SharedFilePtr {
     EyknTextureSequenceFile(u32 fileID);
     ~EyknTextureSequenceFile();
 };
 
-struct EyknAnimationFileHandle : LoadedFile {
+struct EyknAnimationFileHandle : SharedFilePtr {
     EyknAnimationFileHandle(u32 fileID);
     ~EyknAnimationFileHandle();
 };
-
-typedef char EyknFileHandle_size_must_be_8[sizeof(LoadedFile) == 8 ? 1 : -1];
 
 EyknModelFile gEyknModelFile(0x02f7);                          // EYEKUN_BMD
 EyknTextureSequenceFile gEyknCloseTextureSequenceFile(0x02f8); // EYEKUN_CLOSE_BTP
@@ -801,8 +794,8 @@ s32 daEykn_c::InitResources()
     for (i = 0; i < 2; i++) {
         SharedFilePtr *seq = gEyknTextureSequenceFiles[i];
         TextureSequence::LoadFile(*seq);
-        BMD_File *bmd2 = (BMD_File *)((LoadedFile *)&gEyknModelFile)->filePtr;
-        BTP_File *btp = (BTP_File *)((LoadedFile *)seq)->filePtr;
+        BMD_File *bmd2 = (BMD_File *)gEyknModelFile.filePtr;
+        BTP_File *btp = (BTP_File *)seq->filePtr;
         TextureSequence::Prepare(*bmd2, *btp);
     }
 

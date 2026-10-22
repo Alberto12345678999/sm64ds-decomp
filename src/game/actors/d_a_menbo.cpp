@@ -61,9 +61,9 @@ struct BCA_File;
 typedef int (daMenbo_c::*MenboStateFn)();
 struct MenboState { char pad[0x370]; MenboStateFn *mState; };
 
-/* 8-byte file handles: word[0] is the file id/refcount record, word[1] the
- * loaded file pointer. The model constructs with func_02017acc and destroys
- * with func_02017ab4; the anims use SharedFilePtr::Construct and
+/* 8-byte file handles: filePtr is the loaded file. The model constructs
+ * with func_02017acc and destroys with func_02017ab4; the anims use
+ * SharedFilePtr::Construct and
  * SharedFilePtr_Destruct_Anim. Manifest aliases carry the spellings. */
 struct MenboModelFilePtr : SharedFilePtr {
     MenboModelFilePtr(u32 fileID);

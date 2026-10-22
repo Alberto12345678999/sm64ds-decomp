@@ -214,7 +214,7 @@ struct EyerokCollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 /* ---- ov066 .bss: 8-byte SharedFilePtr slots (0x0211ae14..0x0211aebc) ----
- * Word [1] of each is the loaded file, which the states pass to SetAnim /
+ * Each one's filePtr is the loaded file, which the states pass to SetAnim /
  * SetFile. Roles, from InitResources and the order __sinit_d_a_iwante.cpp
  * constructs them (the number in brackets is the id each is built with):
  *   models:           ae6c [0x339] body, ae4c [0x33f] hand 1, aeb4 [0x33a] hand 2

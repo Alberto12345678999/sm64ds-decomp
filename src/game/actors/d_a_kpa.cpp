@@ -3557,7 +3557,7 @@ int daKpa_c::func_ov060_02111f08(){
 // @symbol _ZN7daKpa_c19func_ov060_02111cc0Eii
 /*
 Switch the model to animation idx (entries 0..0x1b of the table at
-data_ov060_021192dc; entry [1] of each handle is the file) and pick the texture
+data_ov060_021192dc; each handle's filePtr is the file) and pick the texture
 pattern that goes with it. The third parameter reaches ModelAnim::SetAnim
 unchanged as its flags word: the local `a` below is never assigned, and the ROM
 passes the caller's third argument (still in r2) straight through. Callers pass
@@ -3568,7 +3568,7 @@ with texture-sequence flags 0x40000000); 3 and 5 use ac10, 0xe uses abf0, and
 every other idx (0 included) uses ac28 (these three with flags 0). */
 void daKpa_c::func_ov060_02111cc0(int idx, int animFlags){
     int a;  /* deliberately never assigned: it is animFlags, still in r2 (see above) */
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void *)((int *)data_ov060_021192dc[idx])[1], a, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov060_021192dc[idx]->filePtr, a, 0x1000, 0);
     switch (idx) {
     case 1:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr, *(BTP_File *)data_ov060_0211ac40.filePtr);

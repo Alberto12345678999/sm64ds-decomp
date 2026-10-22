@@ -85,10 +85,6 @@ typedef struct Mtx { int m[12]; } Mtx; /* IDENTITY_MATRIX4X3 */
    daStar_c::State. */
 typedef void (daStar_c::*StateHandler)();
 
-/* A resource handle as the ROM lays it out: {id, loaded file}. The files the
-   star loads are read through .ptr. */
-struct SharedFilePtrRaw { u32 id; void *ptr; };
-
 /* Model handles construct through func_02017acc and destroy through
    func_02017ab4. Animation handles construct through SharedFilePtr::Construct
    and destroy through SharedFilePtr_Destruct_Anim. The manifest aliases those

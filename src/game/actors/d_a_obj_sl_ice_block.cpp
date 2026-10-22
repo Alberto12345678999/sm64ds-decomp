@@ -16,8 +16,7 @@
  *   const Vector3 &, which V3 is not.
  * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
  *   Fix12<int> parameters, wall 6az).
- * Leftover: the data homes and the +4 loaded-file words stay
- *   address-named with casts at the use site.
+ * Leftover: the data homes stay address-named.
  * Leftover: func_020393d4's second argument is the address of
  *   dBgW::UpdatePosWithVelocity, stored as a callback -- kept verbatim.
  */

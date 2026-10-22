@@ -82,11 +82,6 @@ extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
 
 bool ApproachLinear(short &value, short target, short step);
 
-struct SharkLoadedFile {
-    u32 id;
-    void *file;
-};
-
 typedef int (daShark_c::*SharkFn)();
 
 struct SharkState {
@@ -195,7 +190,7 @@ extern "C" int func_ov090_0213387c(daShark_c *self)
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         (char *)&self->mModelAnim,
-        ((SharkLoadedFile *)&data_ov090_021345ac)->file,
+        data_ov090_021345ac.filePtr,
         0, 0x1000, 0);
     return 1;
 }

@@ -108,8 +108,6 @@
  *   likewise only written here; daJango_c reads it).
  *   mStateEntry stays an s32 because the member-pointer record is spelled by
  *   the file-local CapStateRec / CapEnterSelf stand-ins.
- *   The SharedFilePtr header has no fields; CleanupResources still casts the
- *   AnimRec tables.
  *   dBgCh_Gnd stays a 0x50 stack blob: its C1/D1 only run on the airborne
  *   path (UpdateMatrix).
  *   The carrier's matrix is dActor_c::mCarryMatrix; this file never sets it.
@@ -145,13 +143,6 @@ enum daObjMarioCap_c_AssetId {
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
  * ------------------------------------------------------------------------ */
-
-/* The animation descriptor pairs these tables hold: a header word and the
- * BCA file pointer read at +4. Spelled as a struct because three members
- * reach the second word by name and two more take the address of the whole
- * record. SharedFilePtr.h commits to no fields, so CleanupResources still
- * casts these to SharedFilePtr*. */
-struct AnimRec { void *f0; void *file; };
 
 /* The static initializer's own types. __sinit_ov002_02101064 constructs the 13
  * file handles with SharedFilePtr's constructor and registers each for
@@ -309,8 +300,8 @@ extern McapStatePmf data_ov002_0210957c, data_ov002_02109584;
 extern McapStatePmf data_ov002_0210958c, data_ov002_02109594;
 extern McapStatePmf data_ov002_0210959c, data_ov002_021095a4;
 
-extern struct AnimRec *data_ov002_020ff0a0[];
-extern struct AnimRec *data_ov002_020ff0b8[];
+extern SharedFilePtr *data_ov002_020ff0a0[];
+extern SharedFilePtr *data_ov002_020ff0b8[];
 extern int            *data_ov002_020ff0c4[];
 
 }
@@ -1268,11 +1259,11 @@ int daObjMarioCap_c::InitAnim()
         break;
     case 0xf:
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, data_ov002_020ff0a0[mModelIndex]->file, 0x40000000, 0x1000, 0);
+            &mModelAnim, data_ov002_020ff0a0[mModelIndex]->filePtr, 0x40000000, 0x1000, 0);
         break;
     case 0x14:
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, data_ov002_020ff0b8[mModelIndex]->file, 0x40000000, 0x1000, 0);
+            &mModelAnim, data_ov002_020ff0b8[mModelIndex]->filePtr, 0x40000000, 0x1000, 0);
         break;
     case 0x15:
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
