@@ -216,7 +216,6 @@ extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned effect, int x, int y, int z);
 extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* pos, struct Callback* cb);
 extern void func_0201267c(u32 soundID, const Vector3 *pos);
-extern int func_02037e38(unsigned int* p);
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
@@ -786,7 +785,7 @@ void daOts_c::PlayDeathSound()
  * collision query from 150 units above the actor's (mPos + model Y offset), and
  * if it finds a floor records its height in Tail::mFloorY. When the actor is no
  * more than 20 units above that floor it looks at the floor's surface type
- * (func_02037e38): types 4, 5 and 0x13 send it to STATE_REMOVE; type 1 sends it to
+ * (CLPS::GetSurfaceType): types 4, 5 and 0x13 send it to STATE_REMOVE; type 1 sends it to
  * STATE_DYING -- death animation, clip test off, PlayDeathSound, and mHomePos
  * overwritten with the spot it died at, 5 units above the floor. */
 void daOts_c::func_ov064_02116220(){
@@ -806,7 +805,7 @@ void daOts_c::func_ov064_02116220(){
   if (rg.DetectClsn() != 0) {
     tail().mFloorY = rg.clsnY;
     if (this->mPosY <= rg.clsnY + 0x14000) {
-      int r = func_02037e38((unsigned int*)&rg.surface);
+      int r = rg.surface.clps.GetSurfaceType();
       if (r == 4 || r == 5 || r == 0x13) {
         tail().mState = STATE_REMOVE;
       } else if (r == 1) {

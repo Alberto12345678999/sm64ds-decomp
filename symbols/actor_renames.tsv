@@ -6702,3 +6702,10 @@ arm9	0x020379d0	_ZN12dBgCh_SphCrr13func_020379d0EiiP8dActor_cP4dBgW	_ZN12dBgCh_S
 arm9	0x020379f4	_ZN12dBgCh_SphCrr13func_020379f4EiPv	_ZN12dBgCh_SphCrr14RecordFloorHitEiPv	inferred name: forwards to mClsnResult1 (GetFloorResult) RecordHit
 arm9	0x02037a04	_ZN12dBgCh_SphCrr13func_02037a04EP7Vector3S1_	_ZN12dBgCh_SphCrr16GetPushOutBoundsEP7Vector3S1_	inferred name: copies mPushOutMin/mPushOutMax out
 arm9	0x02037a38	_ZN12dBgCh_SphCrr13func_02037a38Ev	_ZN12dBgCh_SphCrr18UpdateDisplacementEv	inferred name: sets disp to mPushOutMin + mPushOutMax after a scan
+arm9	0x02037e38	func_02037e38	_ZNK4CLPS14GetSurfaceTypeEv	inferred name: (w0 >> 19) & 0x1f is the surface type dBgCh::ShouldPassThroughImpl and Player test
+arm9	0x02037e48	func_02037e48	_ZNK4CLPS13func_02037e48Ev	CLPS const member; meaning of (w0 >> 15) & 0xf not yet known
+arm9	0x02037e58	func_02037e58	_ZNK4CLPS13GetFloorClassEv	inferred name: (w0 >> 12) & 0x7 is the floor class include/Player.h traces through five slope/slide tables
+arm9	0x02037e68	func_02037e68	_ZNK4CLPS13func_02037e68Ev	CLPS const member; meaning of (w0 >> 6) & 0x3f not yet known
+arm9	0x02037e84	func_02037e84	_ZNK4CLPS13func_02037e84Ev	CLPS const member; meaning of w0 & 0x1f not yet settled
+arm9	0x02037e90	func_02037e90	_ZNK4CLPS13func_02037e90Ev	CLPS const member; meaning of w1 & 0xff not yet known
+ov002	0x020c16ec	func_ov002_020c16ec	_ZN6Player19SetFloorSurfaceInfoERK5dBgPi	inferred name: unpacks the floor dBgPi CLPS fields and normal into Player (include/Player.h)

@@ -2847,7 +2847,6 @@ void Player::func_ov002_020c14b8()
         int f1c, f20, f24;
     } ClsnResultTmp;
     extern int _ZN6Player12Unk_020c9e5cEh(void *, unsigned char state);
-    extern void func_ov002_020c16ec(Player *player, const dBgPi *hit);
     extern void _ZN5dBgPiD1Ev(void *);
     extern int SurfaceInfo_TestFlag0x20(void*);
     extern int func_02037e20(void *);
@@ -2899,7 +2898,7 @@ void Player::func_ov002_020c14b8()
         tmp.f1c = rg.clsnID;
         tmp.f20 = (int)rg.owner;
         tmp.f24 = (int)rg.collider;
-        func_ov002_020c16ec(this, (const dBgPi *)&tmp);
+        SetFloorSurfaceInfo((const dBgPi &)tmp);
         _ZN5dBgPiD1Ev(&tmp);
         mProbedGroundY = rg.clsnY;
         mGroundY = mProbedGroundY;
@@ -2930,34 +2929,25 @@ void Player::func_ov002_020c14b8()
 }
 }
 
-// @symbol func_ov002_020c16ec
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
+// @symbol _ZN6Player19SetFloorSurfaceInfoERK5dBgPi
 extern "C" {
-void func_ov002_020c16ec(Player *player, const dBgPi *hit)
+void Player::SetFloorSurfaceInfo(const dBgPi &hit)
 {
-    extern int func_02037e38(const void*);
-    extern int func_02037e58(const void*);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void*, void*);
     extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-    extern int func_02037e90(const void*);
-    extern int func_02037e48(const void*);
-    extern int func_02037e68(const void*);
-    extern int func_02037e84(const void*);
     struct Vector3 v;
-    player->mClpsWord1Lo = func_02037e90(&hit->surface.clps);
-    player->mSurfaceType = func_02037e38(&hit->surface.clps);
-    player->mClpsBits15_18 = func_02037e48(&hit->surface.clps);
-    player->mClpsBits6_11 = func_02037e68(&hit->surface.clps);
-    player->mGroundSoundType = func_02037e84(&hit->surface.clps);
-    if (player->mFloorClass == 1)
+    mClpsWord1Lo = hit.surface.clps.func_02037e90();
+    mSurfaceType = hit.surface.clps.GetSurfaceType();
+    mClpsBits15_18 = hit.surface.clps.func_02037e48();
+    mClpsBits6_11 = hit.surface.clps.func_02037e68();
+    mGroundSoundType = hit.surface.clps.func_02037e84();
+    if (mFloorClass == 1)
         return;
-    player->mFloorClass = func_02037e58(&hit->surface.clps);
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&hit->surface, &v);
-    player->mFloorNormalX = v.x;
-    player->mFloorNormalY = v.y;
-    player->mFloorNormalZ = v.z;
-    player->mFloorAngle = _ZN4cstd5atan2E5Fix12IiES1_(player->mFloorNormalX, player->mFloorNormalZ);
+    mFloorClass = hit.surface.clps.GetFloorClass();
+    hit.surface.CopyNormalTo(v);
+    mFloorNormalX = v.x;
+    mFloorNormalY = v.y;
+    mFloorNormalZ = v.z;
+    mFloorAngle = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
 }
 }
 
@@ -3295,12 +3285,11 @@ return this->func_ov002_020c1ad8(ang);
 /* recovered: shared common types */
 extern "C" {
 int func_ov002_020c2270(void* c, void* p1, void* p2) {
-    extern int func_02037e58(void*);
     extern int func_ov002_020c2270(void*, void*, void*);
     dBgCh_Lin line;
     line.SetObjAndLine(*(Vector3*)p1, *(Vector3*)p2, (dActor_c*)c);
     if (line.DetectClsn()) {
-        if (func_02037e58((unsigned int*)&line.surface) == 1) {
+        if (line.surface.clps.GetFloorClass() == 1) {
             ::Vector3 clsnPos = line.GetClsnPos();
             ((Player *)c)->mPosX = clsnPos.x;
             ((Player *)c)->mPosY = clsnPos.y;
@@ -3444,9 +3433,7 @@ int Player::func_ov002_020c25a8(int arg1)
     extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int func_02035638(void*);
     extern void func_020371fc(void *);
-    extern void func_ov002_020c16ec(Player *player, const dBgPi *hit);
     extern void _ZN5dBgPiD1Ev(void*);
-    extern int func_02037e58(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern int _ZN4cstd4fdivEii(int a, int b);
     extern int func_020356c8(void*);
@@ -3551,11 +3538,11 @@ int Player::func_ov002_020c25a8(int arg1)
         tmp.f20 = (int)fr->owner;
         tmp.f24 = (int)fr->collider;
 
-        func_ov002_020c16ec(this, (const dBgPi *)&tmp);
+        SetFloorSurfaceInfo((const dBgPi &)tmp);
         _ZN5dBgPiD1Ev(&tmp);
 
         mGroundY = mPosY;
-        ret = func_02037e58(&fr->surface);
+        ret = fr->surface.clps.GetFloorClass();
 
         if (mIsUnderwater == 0 && ret != 1) {
             _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
@@ -3620,7 +3607,6 @@ extern "C" {
 void Player::func_ov002_020c29d4()
 {
     extern int Player_ScaleByCharFactor(void*, int a);
-    extern int func_02037e38(void*);
     extern dBgPi *_ZNK10dBgCh_Actr14GetFloorResultEv(const dBgCh_Actr *self);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_021101b4;
@@ -3640,9 +3626,8 @@ void Player::func_ov002_020c29d4()
         mQuicksandRunFlags = 0x80;
     } else if (flags & 0x80) {
         if (mMeshClsn.IsOnGround()) {
-            int r = func_02037e38(
-                (unsigned int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))
-                    ->surface.clps);
+            int r = _ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn)
+                        ->surface.clps.GetSurfaceType();
             if (r >= 6 && r <= 9) return;
             mQuicksandRunFlags = 0;
             mQuicksandRunTimer = 0;
@@ -9430,7 +9415,6 @@ int Player::St_Shell_Main()
     extern void func_ov002_020eeca8(void*, int arg);
     extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
-    extern int func_02037e58(void*);
     extern void ApproachAngle(void*, short target, int divisor, int band, int maxStep);
     extern void _Z14ApproachLinearRiii(void*, int b, int c);
     extern void func_ov002_020e25f0(void*, int a);
@@ -9470,9 +9454,8 @@ int Player::St_Shell_Main()
     if (_ZNK10dBgCh_Actr8IsOnWallEv((void*)((char*)&mMeshClsn))) {
         int ang = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
-            if (func_02037e58((u32 *)&((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(
-                                           (void *)((char *)&mMeshClsn)))
-                                  ->surface.clps) != 1) {
+            if (((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv((void *)((char *)&mMeshClsn)))
+                    ->surface.clps.GetFloorClass() != 1) {
                 flag = 1;
             }
         }
@@ -10962,7 +10945,6 @@ int func_ov002_020cef84(char *self)
     extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
     extern void func_02035414(void*);
     extern void func_02035428(void*);
-    extern int func_02037e38(void*);
     extern unsigned _ZNK5dBgPi9GetClsnIDEv(void*);
     extern void _ZN5dBgPiD1Ev(void*);
     extern char data_ov002_0211001c;
@@ -11003,7 +10985,7 @@ int func_ov002_020cef84(char *self)
     line.SetObjAndLine(v1, v2, (dActor_c*)self);
     if (line.DetectClsn()) {
         ::Vector3 cp = line.GetClsnPos();
-        if (func_02037e38((unsigned int *)&line.surface) == 3) {
+        if (line.surface.clps.GetSurfaceType() == 3) {
             int t2 = p->mHeldObj != 0;
             if (t2 == false) {
                 _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_0211001c);
@@ -11052,8 +11034,6 @@ int func_ov002_020cef84(char *self)
 extern "C" {
 int func_ov002_020cf20c(char* c) {
     Player *self = (Player *)c;
-    extern int func_02037e38(void*);
-    extern int func_02037e48(void*);
     extern void func_0200ca14(void*, unsigned char b, int c);
     extern void* data_0209f318[];
     extern int func_ov002_020cf20c(void*);
@@ -11072,10 +11052,10 @@ int func_ov002_020cf20c(char* c) {
     v2.y = y2 + 0xb4000;
     line.SetObjAndLine(v1, v2, (dActor_c*)c);
     if (line.DetectClsn()) {
-        if (func_02037e38((unsigned int*)&line.surface) == 3) {
+        if (line.surface.clps.GetSurfaceType() == 3) {
             ::Vector3 clsnPos = line.GetClsnPos();
             void* cam = data_0209f318[0];
-            int t = func_02037e48((unsigned int*)&line.surface);
+            int t = line.surface.clps.func_02037e48();
             func_0200ca14(cam, self->mPlayerNo, t);
             int ret = clsnPos.y;
             return ret;
