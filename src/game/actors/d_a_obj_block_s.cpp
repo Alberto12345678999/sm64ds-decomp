@@ -83,6 +83,7 @@ enum daObjBlockS_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
+#include "Sound.h"
 
 struct Vector3_16f;
 
@@ -157,7 +158,6 @@ extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
 
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, struct Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
 
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(u32 id, const struct Vector3 *pos);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
 
 extern int _Z14ApproachLinearRiii(int *a, int b, int c);
@@ -343,7 +343,7 @@ void daObjBlockS_c::func_ov098_02138344()
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
     if (mWithMeshClsn.IsOnGround() != 0) {
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
+        Sound::PlayBank3(0x51, mCamSpacePos);
         DecIfAbove0_Byte(&mBounceCount);
         mVertSpeed = mBounceCount * 0xa000;
         mHorzSpeed = mBounceCount * 0x5000;
@@ -881,7 +881,7 @@ void daObjBlockS_c::Kill()
     ((int *)&vec2)[1] = ((int *)&vec)[1];
     ((int *)&vec2)[2] = ((int *)&vec)[2];
     _ZN8dActor_c19DisappearPoofDustAtERK7Vector3((char *)this, &vec2);
-    _ZN5Sound9PlayBank3EjRK7Vector3(0x41, &mCamSpacePos);
+    Sound::PlayBank3(0x41, mCamSpacePos);
     Crate_SetState(this, STATE_BROKEN);
 }
 
@@ -1069,7 +1069,7 @@ int daObjBlockS_c::func_ov098_02139228()
                 sd = _ZN4cstd4fdivEii(FX_MUL(v, 8), 0xa);
                 if (sd < 0) sd = -sd;
                 if (mVertSpeed > 0xa000)
-                    _ZN5Sound9PlayBank3EjRK7Vector3(0x51, &mCamSpacePos);
+                    Sound::PlayBank3(0x51, mCamSpacePos);
                 if (mVertSpeed > sd)
                     mVertSpeed = sd;
             }
