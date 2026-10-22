@@ -7,8 +7,7 @@
 
 > **Looking for the PC port?** [Download it here.](https://tangos.dev/downloads)
 
-A decompilation of Super Mario 64 DS: C and C++ source that compiles back into the exact
-bytes on the retail cartridge.
+A decompilation of Super Mario 64 DS
 
 This repo holds source code and tooling. It contains no ROM and no Nintendo assets.
 Everything here runs against a cartridge dump you supply yourself, which stays on your
