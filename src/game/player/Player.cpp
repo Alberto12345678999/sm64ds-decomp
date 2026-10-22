@@ -189,8 +189,7 @@ void func_ov002_020bcdf0(char *self)
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *self, unsigned int id, int val, int fix, unsigned int flags);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     AnimEntry27 *base;
     AnimEntry27 cur;
     int id;
@@ -1920,8 +1919,7 @@ void func_ov002_020bf800(char *c, Vector3_16f v)
     typedef unsigned int u32;
     typedef short s16;
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     Player *player = (Player *)c;
     int xv = player->mPosX - v.x * 0x2bc;
     int zv = player->mPosZ - v.z * 0x2bc;
@@ -3052,7 +3050,7 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
     Vector3 v1(this->mPosX, this->mPosY + (arg2 << 12), this->mPosZ);
     Vector3 v2(arg1 * cs + this->mPosX, this->mPosY + (arg2 << 12), arg1 * sn + this->mPosZ);
     Vector3 nrm;
-    line.SetObjAndLine(v1, v2, (dActor_c*)self);
+    line.SetObjAndLine(v1, v2, (dActor_c *)self);
     if (!line.DetectClsn()) {
         return 0;
     }
@@ -3187,8 +3185,7 @@ void Player::func_ov002_020c1eb4(int dmg) {
     extern Player::State data_ov002_02110094;
     extern int func_ov002_020d91e0(void*, int damage, int doPre);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     Vector3 out;
     Vector3 offset;
     Vector3_16 vec;
@@ -3218,7 +3215,8 @@ void Player::func_ov002_020c1eb4(int dmg) {
         vec.x = data_02082214[idx * 2];
         vec.z = data_02082214[idx * 2 + 1];
         vec.y = 0;
-        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(0, 0xc8, out.x, out.y, out.z, &vec, 0);
+        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            0, 0xc8, out.x, out.y, out.z, &vec, 0);
     }
     func_ov002_020d91e0((char *)this, 0, 1);
 }
@@ -3989,8 +3987,7 @@ void Player::func_ov002_020c37a4(char *arg) {
     extern void Vec3_MulScalar(void *, void *, int s);
     extern void Vec3_RotateYAndTranslate(void *, void *, int ang, void *);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     unsigned int id = this->GetBodyModelID(param1 & 0xff, 0);
     Matrix4x3 *bone = &mBodyModels[id]->data.transforms[8];
     unsigned int id2 = this->GetBodyModelID(param1 & 0xff, 0);
@@ -5062,7 +5059,7 @@ ret0:
 extern "C" {
 /* The look-at target: daTrs_c fills the argument from its own mPos before
    calling, and daHanachan_c passes the segment it wants Mario to face. */
-int func_ov002_020c51d0(char* c, Vector3* st){
+int func_ov002_020c51d0(char *c, Vector3 *st) {
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern Player::State data_ov002_0211046c;
     Player *player = (Player *)c;
@@ -7085,8 +7082,7 @@ int Player::func_ov002_020c8714()
     extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(int, int);
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(int, int, void*, int, int, int);
     extern void _ZN8daStar_c19func_ov002_020e7090Ei(int, void*);
     volatile int v[3];
@@ -8922,8 +8918,7 @@ extern "C" {
 void func_ov002_020cb474(char *c) {
     Player *self = (Player *)c;
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern signed char data_0209f2f8;
     dCc_c *r1 = self->mClimbClsn;
     if ((r1->flags & 0x1000000) == 0)
@@ -14483,8 +14478,7 @@ int Player::St_BurnLava_Main()
     extern Player::State data_ov002_0211013c;
     extern void KillPlayer(void);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(int, unsigned int, unsigned int, void *, unsigned int);
     extern void func_ov002_020e28d4(void *, int, int);
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, unsigned int);
@@ -14627,8 +14621,7 @@ int Player::St_BurnFire_Main()
     extern void func_02012694(unsigned int id, const void *v);
     extern int func_ov002_020d91e0(void *thiz, int damage, int doPre);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int handle, unsigned int id, unsigned int vol, const void *vec, unsigned int flags);
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *c, unsigned int anim, int a, int b, unsigned int d);
     extern void ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
@@ -14805,8 +14798,7 @@ int Player::St_Electrocute_Main()
 {
     extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, Vector3* v, u32 d);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern void Player_AdvanceAnims(void* self);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_0211067c;
@@ -15545,8 +15537,7 @@ int Player::func_ov002_020d6998()
     extern s16 Vec3_HorzAngle(const struct Vector3* v0, const struct Vector3* v1);
     extern void Vec3_RotateYAndTranslate(int* out, int* in, s16 angle, int* src);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern int func_ov002_020d7030(char* self, void* other);
     extern void Player_DisableInteraction(char* self);
     extern s16 data_02082214[];
@@ -15731,8 +15722,7 @@ int func_ov002_020d6dac(char *self)
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *thiz, void *out);
     extern short _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern short data_02082214[];
     extern void *data_02099368[];
     Vec3_16 dir;
@@ -16053,8 +16043,7 @@ int Player::St_YoshiPower_Main()
     extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
     extern void func_ov002_020d5cec(void*);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern void func_ov002_020dc09c(char*);
     extern void ApproachAngle(void*, short, int, int, int);
     extern void Player_AdvanceAnims(char *);
@@ -16275,8 +16264,10 @@ int Player::St_YoshiPower_Main()
                 dir.x = data_02082214[(*(unsigned short*)&mAngleY >> 4) * 2];
                 dir.y = 0;
                 dir.z = data_02082214[(*(unsigned short*)&mAngleY >> 4) * 2 + 1];
-                mParticle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(mParticle1, 0x13c, pos.x, pos.y, pos.z, &dir, 0);
-                mParticle2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(mParticle2, 0x13d, pos.x, pos.y, pos.z, &dir, 0);
+                mParticle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                    mParticle1, 0x13c, pos.x, pos.y, pos.z, &dir, 0);
+                mParticle2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                    mParticle2, 0x13d, pos.x, pos.y, pos.z, &dir, 0);
                 func_ov002_020dc09c(c);
                 mAttackClsn.Clear();
                 mAttackClsn.Update();
@@ -16963,8 +16954,7 @@ void func_ov002_020d8d10(struct Self* self, struct Vector3* pos)
     struct Callback;
     extern s16 data_02082214[];
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     struct Vector3_16 vec;
 
     vec.x = data_02082214[((unsigned short)(short)(self->angle + 0x8000) >> 4) * 2];
@@ -17468,8 +17458,7 @@ void Player::func_ov002_020d98b4() {
     extern void MulVec3Mat4x3(void *a, void *b, struct Vector3 *out);
     extern void Vec3_MulScalar(struct Vector3 * out, struct Vector3 * in, int s);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     int t = this->func_ov002_020beb38();
     this->mStateTimer -= t;
     {
@@ -17772,8 +17761,7 @@ int Player::St_SwingPlayer_Main()
     extern int func_ov002_020da9d4(char* c);
     extern int _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 h, u32 a, u32 b, void* v, u32 d);
     extern void func_ov002_020dc174(char* c, void* p, int a, int b, u32 e, u32 f);
     extern void Player_AdvanceAnims(char* c);
@@ -21354,8 +21342,7 @@ int Player::St_Fly_Main()
     extern int func_ov002_020d674c(char *);
     extern void func_ov002_020df8f0(void *);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
-        void *callback);
+        u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32, void *);
     extern void func_ov002_020e25f0(char *, int a);
     extern void MulVec3Mat4x3(void *dst, void *src, void *out);
