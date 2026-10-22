@@ -75,21 +75,9 @@ src/unnamed/ov075/func_ov075_02116c38.cpp:
     complete
     .text start:0x02116c38 end:0x02116c8c
 
-src/_ZN10dScEntry_c10StartMatchEv.cpp:
+src/game/stages/d_s_entry_readiness.cpp:
     complete
-    .text start:0x02116c8c end:0x02116ce4
-
-src/unnamed/ov075/func_ov075_02116ce4.c:
-    complete
-    .text start:0x02116ce4 end:0x02116d40
-
-src/_ZN10dScEntry_c15ArePlayersReadyEv.cpp:
-    complete
-    .text start:0x02116d40 end:0x02116d9c
-
-src/_ZN10dScEntry_c16CheckMenuConfirmEi.cpp:
-    complete
-    .text start:0x02116d9c end:0x02116e00
+    .text start:0x02116c8c end:0x02116e00
 
 src/unnamed/ov075/func_ov075_02116e00.c:
     complete
