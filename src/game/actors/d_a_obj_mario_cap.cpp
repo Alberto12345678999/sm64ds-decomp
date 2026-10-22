@@ -104,7 +104,8 @@
  *   Unrecovered meaning: most mType values (only 4, 6..9 and 19 are named in
  *   the header), what the animations behind the 0210de* handles contain (the
  *   file ids 0x8012 / 0x8013 and 0x476..0x480 are in __sinit_ov002_02101064), what func_ov002_020f030c's result (unused here) is, and the
- *   fields unk_403 and unk_408, which are written and never read in this file.
+ *   field unk_408, which is written and never read in this file (mTaken is
+ *   likewise only written here; daJango_c reads it).
  *   mStateEntry stays an s32 because the member-pointer record is spelled by
  *   the file-local CapStateRec / CapEnterSelf stand-ins.
  *   The SharedFilePtr header has no fields; CleanupResources still casts the
@@ -240,7 +241,6 @@ extern "C" {
 void  func_02013a88(void);
 short func_02010844(void *self, void *v, short angle);
 void  func_020167a4(void *p);
-int   func_02037e58(void *p);
 void  func_ov002_020f030c(int x);
 
 unsigned short DecIfAbove0_Short(unsigned short *p);
@@ -1006,7 +1006,7 @@ int daObjMarioCap_c::InitSlide()
  * and drives the blink (mBlinkHidden) from the low bits of the timer: bit 2
  * while the timer is under half of mStartTimer, bit 1 once it is under a
  * quarter. Type 18 then stops (speed 0). The rest slide: the floor surface
- * (func_02037e58 on the floor result's surface info, which sits 4 bytes into the result) picks a push of
+ * (CLPS::GetFloorClass on the floor result's surface info, which sits 4 bytes into the result) picks a push of
  * 0x5000..0xa000 (5..10 units a frame; func_ov002_020f02c8, which maps the
  * surface value to it), aimed along mSlopeAngle and scaled by the horizontal
  * length of the floor normal. That is added to the cap's own velocity
@@ -1064,7 +1064,7 @@ int daObjMarioCap_c::Slide()
     }
     fr = (char *)mWithMeshClsn.GetFloorResult();
     ((SurfaceInfo *)(fr + 4))->CopyNormalTo(*(Vector3 *)&mFloorNormalX);
-    surface = func_02037e58(fr + 4);
+    surface = ((SurfaceInfo *)(fr + 4))->clps.GetFloorClass();
     mSlopeAngle = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
     slopePush = func_ov002_020f02c8(surface);
     func_ov002_020f030c(surface);
@@ -1103,7 +1103,7 @@ int daObjMarioCap_c::Slide()
 
 /* df54's enter function: the taken state. Zeroes the velocity words and
  * mVertAccel, clears mTakenStep, mBlinkHidden and the override matrix, sets
- * unk_403, drops the Yoshi-mouth bit 0x40000 from mFlags and the 0x8000 bit
+ * mTaken, drops the Yoshi-mouth bit 0x40000 from mFlags and the 0x8000 bit
  * from vulnFlags, and binds the nearest player if none is bound yet. In
  * modes other than 1 (CURRENT_GAMEMODE), when that player's mCharacter is 3
  * and mModelIndex equals the player's param1, plays the 1-up sound, gives one
@@ -1119,7 +1119,7 @@ int daObjMarioCap_c::InitTaken()
     mTakenStep = 0;
     mBlinkHidden = 0;
     mCarryMatrix = 0;
-    unk_403 = 1;
+    mTaken = 1;
 
     /* (int)self + off is the MATCH form; mFlags &= / vulnFlags &= CSE. */
     *(u32 *)(((int)&mFlags)) &= ~0x40000u;

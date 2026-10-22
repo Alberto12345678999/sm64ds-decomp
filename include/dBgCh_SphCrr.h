@@ -41,8 +41,8 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     /* Per-axis range of the push-out vectors the contacts produce, not a
        spatial box: dBgW_Kc's sphere query tracks the lowest and highest push
        per axis and hands both to ExpandPushOutBounds, which widens this range to
-       cover them. ResetDisplacement clears all six words, func_02037a04 reads
-       them out, and func_02037a38 sums min + max into disp, so opposing
+       cover them. ResetDisplacement clears all six words, GetPushOutBounds reads
+       them out, and UpdateDisplacement sums min + max into disp, so opposing
        pushes on one axis cancel and same-sign ones keep the largest. */
     Vector3 mPushOutMin; /* 0x058 */
     Vector3 mPushOutMax; /* 0x064 */
@@ -64,7 +64,7 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     /* Normal of the floor contact with the greatest Y component. The retail
        KCL query copies SurfaceInfo's normal at 0x01ffbe6c, then compares its
        Y against mFloorNormal.y before saving all three words at
-       0x01ffd094..0x01ffd0a8 through func_0203794c. Reset (func_02037b5c)
+       0x01ffd094..0x01ffd0a8 through SetFloorNormal. Reset (func_02037b5c)
        uses (0, -0x1000, 0), so the first accepted floor replaces it;
        dBgCh_Actr copies it into its mGroundNormal on a grounded frame. */
     Vector3 mFloorNormal; /* 0x0fc */
@@ -121,20 +121,24 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     /* Inferred names for the accumulated collision push-out range. */
     void ResetDisplacement();
     void ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s32 maxY, s32 maxZ);
+    void GetPushOutBounds(Vector3 *outMin, Vector3 *outMax);
+    void UpdateDisplacement();
+
+    /* Inferred names for the per-class result writers. SetFloorNormal saves
+       mFloorNormal; the rest forward to the floor, wall or under dBgPi
+       (mClsnResult1/2/3). */
+    void SetFloorNormal(const s32 *normal);
+    void SetFloorCollider(int i, int clsnID, dActor_c *owner, dBgW *collider);
+    void RecordFloorHit(int triID, void *src);
+    void SetWallCollider(int i, int clsnID, dActor_c *owner, dBgW *collider);
+    void RecordWallHit(int triID, void *src);
+    void SetUnderCollider(int i, int clsnID, dActor_c *owner, dBgW *collider);
+    void RecordUnderHit(int triID, void *src);
 
     /* Members the ROM keeps unnamed; each takes the SphCrr object as its
        first argument in the cartridge call graph and drives the evidenced
        fields above. */
     void func_02037940(u8 flags_);
-    void func_0203794c(const s32 *normal);
-    void func_02037968(int i, int clsnID, dActor_c *owner, dBgW *collider);
-    void func_0203798c(int triID, void *src);
-    void func_0203799c(int i, int clsnID, dActor_c *owner, dBgW *collider);
-    void func_020379c0(int triID, void *src);
-    void func_020379d0(int i, int clsnID, dActor_c *owner, dBgW *collider);
-    void func_020379f4(int triID, void *src);
-    void func_02037a04(Vector3 *outMin, Vector3 *outMax);
-    void func_02037a38();
     void func_02037b5c();
     int  func_02038824();
     int  func_02038a38();

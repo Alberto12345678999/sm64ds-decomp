@@ -24,14 +24,14 @@ void func_0203aa10(dBgW_KcMbgSclY *self, Vector3 *v, Vector3 *res);
 void func_0203aa74(dBgW_KcMbgSclY *self, Vector3 *v, Vector3 *res);
 s32 func_0203aad0(dBgW_KcMbgSclY *self);
 
-/* Shared math workers. */
+/* Shared math workers.
+   local extern: no header in include/ declares them. */
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
 void NormalizeVec3(Vector3 *src, Vector3 *dst);
-void func_02039db8(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 int func_02053200(int v);
-
-/* Collision-query plumbing shared with the KcMbg checkers. */
-void func_02035394(void *dst, void *src);
+/* local extern: dBgW_KcMbg's direction rotate, a free function of
+   d_bg_w_kc_mbg.cpp that no header declares. */
+void func_02039db8(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 
 /* local extern: the radius is Fix12 by value, so the call spells the symbol. */
 void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(dBgCh_SphCrr *sphere,
@@ -45,6 +45,7 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void 
                                                                            int scale, short angY,
                                                                            void *clps);
 
+/* local extern: no header in include/ declares these three. */
 extern dBgCh_Lin data_020a0d0c; /* the scratch line, in collider space */
 extern Vector3 data_020a0d60;   /* == data_020a0d0c.lineEnd  (+0x54) */
 extern dBgPi data_020a0d1c;     /* == data_020a0d0c's dBgPi   (+0x10) */
@@ -132,7 +133,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_Gnd &ground) {
 
     dBgCh_Lin ray;
     ray.SetObjAndLine(localStart, localEnd, 0);
-    func_02035394(&ray, &ground);
+    (dBgCh &)ray = ground;
 
     int hit = dBgW_Kc::DetectClsn(ray);
     if (hit != 0) {
@@ -178,10 +179,10 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
                                                                      localRadius, 0);
     localSphere.mWallRejectHalfExtent = localExtraExtent;
     localSphere.func_02037940(sphere.flags);
-    func_02035394(&localSphere, &sphere);
+    (dBgCh &)localSphere = sphere;
     hit = dBgW_Kc::DetectClsn(localSphere);
     if (hit) {
-        localSphere.func_02037a04((Vector3 *)&bounds.localMin, (Vector3 *)&bounds.localMax);
+        localSphere.GetPushOutBounds((Vector3 *)&bounds.localMin, (Vector3 *)&bounds.localMax);
         bounds.scaledMin.x = FX_MUL(bounds.localMin.x, scale);
         bounds.scaledMin.y = FX_MUL(bounds.localMin.y, scale);
         bounds.scaledMin.z = FX_MUL(bounds.localMin.z, scale);
@@ -200,7 +201,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
             }
             sphere.flags |= 4;
             if (sphere.mFloorNormal.y < localSphere.mFloorNormal.y) {
-                sphere.func_0203794c(&localSphere.mFloorNormal.x);
+                sphere.SetFloorNormal(&localSphere.mFloorNormal.x);
             }
         }
         if (localSphere.flags & 8) {
@@ -233,7 +234,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_Lin &ray) {
     data_020a0d0c.SetObjAndLine(start, end, 0);
     if (hadClsn != 0)
         data_020a0d0c.hasClsn = 1;
-    func_02035394(&data_020a0d0c, &ray);
+    (dBgCh &)data_020a0d0c = ray;
 
     int hit = dBgW_Kc::DetectClsn(data_020a0d0c);
     if (hit != 0) {

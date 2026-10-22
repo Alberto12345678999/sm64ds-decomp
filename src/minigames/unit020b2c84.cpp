@@ -197,6 +197,13 @@ extern int pmf_Banner_DrawSpin[];
 extern int pmf_Banner_UpdateSpin[];
 extern int pmf_Banner_UpdatePressed_2[];
 extern unsigned char sMgBannerGfxSlotUsed[];
+/* Where Banner_Init decompresses a banner for each graphics slot: the byte
+   offset into the OBJ character VRAM of each screen it draws on. */
+enum MgBannerCharOffset {
+    MG_BANNER_SLOT0_CHARS = 0x7000,
+    MG_BANNER_SLOT1_CHARS = 0x6000,
+    MG_BANNER_SLOT2_CHARS = 0x6800
+};
 extern int sBannerWaveFxPosGuard;
 extern int sBannerZoomFxPosGuard;
 extern int sBannerWaveFxPos[2];
@@ -404,25 +411,25 @@ extern "C" void Banner_Init(MgBanner *e, int file, short x, short y, int screen,
     case 14: case 16: case 17: case 18: case 19: case 20: case 21:
         if (sMgBannerGfxSlotUsed[0] != 0)
             return;
-        DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + 0x7000));
+        DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + MG_BANNER_SLOT0_CHARS));
         if (b != 0)
-            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + 0x7000));
+            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + MG_BANNER_SLOT0_CHARS));
         e->mGfxSlot = 0;
         sMgBannerGfxSlotUsed[0] = 1;
         break;
     default:
         if (sMgBannerGfxSlotUsed[1] == 0) {
-            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + 0x6000));
+            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + MG_BANNER_SLOT1_CHARS));
             if (b != 0)
-                DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + 0x6000));
+                DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + MG_BANNER_SLOT1_CHARS));
             e->mGfxSlot = 1;
             sMgBannerGfxSlotUsed[1] = 1;
             break;
         }
         if (sMgBannerGfxSlotUsed[2] == 0) {
-            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + 0x6800));
+            DecompressLZ16((void *)sMgBannerFiles[file], (void *)(a + MG_BANNER_SLOT2_CHARS));
             if (b != 0)
-                DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + 0x6800));
+                DecompressLZ16((void *)sMgBannerFiles[file], (void *)(b + MG_BANNER_SLOT2_CHARS));
             e->mGfxSlot = 2;
             sMgBannerGfxSlotUsed[2] = 1;
             break;

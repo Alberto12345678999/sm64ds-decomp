@@ -31,8 +31,8 @@ struct dBgCh_Lin {
 };
 
 extern "C" {
-int  func_020397dc(s32 x);
-int  func_020397b8(s32 x);
+bool func_020397dc(s32 x);
+bool func_020397b8(s32 x);
 void _ZN5dBgPcC1Ev(SurfaceInfo *info);
 void _ZN5dBgPcD1Ev(SurfaceInfo *info);
 void func_02037fd4(dBgPi *res, s16 triIdx, SurfaceInfo *info);
@@ -129,7 +129,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
             rowStep = 0;
             for (x = loX; x <= hiX; x += stepX) {
                 u32 shift = this->kclFile->coordShift;
-                u32 *node = (u32 *)this->kclFile->unk_0c;
+                u32 *node = (u32 *)this->kclFile->octree;
                 s32 v = node[(z >> shift) << this->kclFile->zShift
                            | (y >> shift) << this->kclFile->yShift
                            | (x >> shift)];

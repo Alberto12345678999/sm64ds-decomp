@@ -1275,16 +1275,16 @@ void daTrs_c::func_ov063_02117cdc() {
             this->mStateTimer = 0;
         }
         {
-            char *d = (char *)this->mTalkPlayer;
-            ((Player *)d)->mAngleX = v[0];
-            ((Player *)d)->mAngleY = v[1];
-            ((Player *)d)->mAngleZ = v[2];
+            Player *d = this->mTalkPlayer;
+            d->mAngleX = v[0];
+            d->mAngleY = v[1];
+            d->mAngleZ = v[2];
         }
         {
-            char *d = (char *)this->mTalkPlayer;
-            ((Player *)d)->mPrevAngleX = v[0];
-            ((Player *)d)->mPrevAngleY = v[1];
-            ((Player *)d)->mPrevAngleZ = v[2];
+            Player *d = this->mTalkPlayer;
+            d->mPrevAngleX = v[0];
+            d->mPrevAngleY = v[1];
+            d->mPrevAngleZ = v[2];
         }
         return;
     }
@@ -1399,9 +1399,9 @@ void daTrs_c::func_ov063_02117cdc() {
             w[1] = y;
             w[2] = z;
             if (fl)
-                msg = data_ov063_0211e1e4[*(int *)(*(int *)&this->mTalkPlayer + 8)];
+                msg = data_ov063_0211e1e4[this->mTalkPlayer->param1];
             else
-                msg = data_ov063_0211e1dc[*(int *)(*(int *)&this->mTalkPlayer + 8)];
+                msg = data_ov063_0211e1dc[this->mTalkPlayer->param1];
         }
         if (this->mClosestPlayer->ShowMessage(*(fBase_c *)(this), (u32)msg, (const Vector3 *)(w), 0, 2) == 0) {
             return;

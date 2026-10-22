@@ -59,11 +59,32 @@ typedef struct Ov007Work {
     Ov007ItemView *itemViews[0x18]; /* 0x114: one per func_ov007_020b4c04 */
 } Ov007Work;
 
+/* The 0x34-byte mesh material func_ov007_020bee14 hands to
+ * func_ov007_020ca5f0; names as in that file, only the slots this file
+ * blends. */
+typedef struct Ov007MeshMaterial {
+    char pad_00[0x28];
+    u16 diffuse; /* 0x28: DIF_AMB low half */
+    u16 ambient; /* 0x2a: DIF_AMB high half */
+} Ov007MeshMaterial;
+
+/* *data_ov007_02104bd4: the 0x30-byte record func_ov007_020bf428 allocates
+ * and fills; medium-confidence name. The slot names follow their builders. */
+typedef struct Ov007MeshScene {
+    void *mesh;                      /* 0x00: func_ov007_020cbbb0's Ov007Mesh */
+    Ov007MeshMaterial *materials[2]; /* 0x04: func_ov007_020bee14 draws the mesh with each */
+    void *wave;                      /* 0x0c: func_ov007_020ca2a8's Ov007MeshWave */
+    void *swings[8];                 /* 0x10: func_ov007_020ca010's Ov007Swing, one per item */
+} Ov007MeshScene;
+
+typedef char Ov007MeshScene_size_must_be_0x30[sizeof(Ov007MeshScene) == 0x30 ? 1 : -1];
+
 extern u8 data_ov007_0210342c[];
 extern u8 data_ov007_02104bd4[];
-/* The extern keeps the tree's u8[] spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
+/* The externs keep the tree's u8[] spelling (the declaration-agreement
+ * gate); the typed views are reached through cast macros. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
+#define SCENE (*(Ov007MeshScene **)data_ov007_02104bd4)
 
 void func_ov007_020beeb0(void)
 {
@@ -72,7 +93,7 @@ void func_ov007_020beeb0(void)
     int sp8;
     int r4;
 
-    r4 = *(int *)(*(char **)data_ov007_02104bd4);
+    r4 = (int)SCENE->mesh;
 
     if (WORK->touch->cur.touch != 0) {
         int r6;
@@ -94,12 +115,14 @@ void func_ov007_020beeb0(void)
         base = WORK->touch;
         func_ov007_020bed60(base->cur.x, base->cur.y, r6);
     } else {
-        char *p = func_ov007_020b2cdc();
+        /* the menu cursor's state (func_ov007_020b2cdc returns
+         * Ov007Cursor::state) */
+        Ov007MenuState *p = (Ov007MenuState *)func_ov007_020b2cdc();
         int a;
-        if (*(int *)(p + 0xc) == 0) {
-            a = *(short *)p;
+        if (p->stateTicks == 0) {
+            a = p->currentState;
             if (a >= 0 && a < 0x18) {
-                a = *(short *)(p + 0xa);
+                a = p->previousState;
                 if (a >= 0 && a < 0x18) {
                     Ov007ItemView *q = WORK->itemViews[a];
                     Ov007Item *v = q->item;
@@ -109,11 +132,11 @@ void func_ov007_020beeb0(void)
         }
     }
 
-    func_ov007_020ca1d4(*(char **)(*(char **)data_ov007_02104bd4 + 0xc), r4);
+    func_ov007_020ca1d4((char *)SCENE->wave, r4);
     func_ov007_020cba78((char *)r4, 2);
 
     for (int i = 0; i < 8; i++) {
-        char *r8p = *(char **)(*(char **)data_ov007_02104bd4 + i * 4 + 0x10);
+        char *r8p = (char *)SCENE->swings[i];
         Ov007ItemView *r6p = WORK->itemViews[i + 0xe];
         Ov007Sprite *w;
         int t;
@@ -174,10 +197,10 @@ void func_ov007_020beeb0(void)
     func_ov007_020bce70(sp0, r5);
 
     {
-        char *o8 = *(char **)(*(char **)data_ov007_02104bd4 + 8);
+        Ov007MeshMaterial *o8 = SCENE->materials[1];
         int n = WORK->paletteState->stateTicks;
-        u16 *p7 = (u16 *)(o8 + 0x28);
-        u16 *p6 = (u16 *)(o8 + 0x2a);
+        u16 *p7 = &o8->diffuse;
+        u16 *p6 = &o8->ambient;
         int ratio;
         if (n <= 0)
             ratio = 0;

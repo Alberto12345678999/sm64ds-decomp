@@ -6693,3 +6693,27 @@ ov075	0x0211d7b0	data_ov075_0211d7b0	EntryMatchLoadingSteps	inferred Entry match
 ov075	0x0211d5bc	data_ov075_0211d5bc	EntryCourseLoadStarted	inferred Entry match-loading role from initializer/unique consumers; existing storage unchanged
 ov075	0x02116d9c	func_ov075_02116d9c	_ZN10dScEntry_c16CheckMenuConfirmEi	inferred Entry menu-confirm input member from scene/slot caller ABI, pressed-key mask and menu actions; returns int and may play rejection sound; original spelling unknown; bytes unchanged
 ov075	0x02119dc4	func_ov075_02119dc4	_ZN10dScEntry_c22HandlePlayerDisconnectEPKNS_7StepSetE	object-as-this; Behavior and two Entry callbacks pass the scene plus a StepSet address; disconnect handling name and const qualifier are inferred. Native PMF comparison/null assignments, dEntObj_c::mSuspended and display-layer hide mask preserve the 0x33c retail body.
+arm9	0x0203794c	_ZN12dBgCh_SphCrr13func_0203794cEPKi	_ZN12dBgCh_SphCrr14SetFloorNormalEPKi	inferred name: stores the three-word floor normal into mFloorNormal
+arm9	0x02037968	_ZN12dBgCh_SphCrr13func_02037968EiiP8dActor_cP4dBgW	_ZN12dBgCh_SphCrr16SetUnderColliderEiiP8dActor_cP4dBgW	inferred name: forwards to mClsnResult3 (GetUnderResult) SetCollider
+arm9	0x0203798c	_ZN12dBgCh_SphCrr13func_0203798cEiPv	_ZN12dBgCh_SphCrr14RecordUnderHitEiPv	inferred name: forwards to mClsnResult3 (GetUnderResult) RecordHit
+arm9	0x0203799c	_ZN12dBgCh_SphCrr13func_0203799cEiiP8dActor_cP4dBgW	_ZN12dBgCh_SphCrr15SetWallColliderEiiP8dActor_cP4dBgW	inferred name: forwards to mClsnResult2 (GetWallResult) SetCollider
+arm9	0x020379c0	_ZN12dBgCh_SphCrr13func_020379c0EiPv	_ZN12dBgCh_SphCrr13RecordWallHitEiPv	inferred name: forwards to mClsnResult2 (GetWallResult) RecordHit
+arm9	0x020379d0	_ZN12dBgCh_SphCrr13func_020379d0EiiP8dActor_cP4dBgW	_ZN12dBgCh_SphCrr16SetFloorColliderEiiP8dActor_cP4dBgW	inferred name: forwards to mClsnResult1 (GetFloorResult) SetCollider
+arm9	0x020379f4	_ZN12dBgCh_SphCrr13func_020379f4EiPv	_ZN12dBgCh_SphCrr14RecordFloorHitEiPv	inferred name: forwards to mClsnResult1 (GetFloorResult) RecordHit
+arm9	0x02037a04	_ZN12dBgCh_SphCrr13func_02037a04EP7Vector3S1_	_ZN12dBgCh_SphCrr16GetPushOutBoundsEP7Vector3S1_	inferred name: copies mPushOutMin/mPushOutMax out
+arm9	0x02037a38	_ZN12dBgCh_SphCrr13func_02037a38Ev	_ZN12dBgCh_SphCrr18UpdateDisplacementEv	inferred name: sets disp to mPushOutMin + mPushOutMax after a scan
+arm9	0x02035354	func_02035354	_ZNK5dBgCh9IsOwnedByEP8dActor_c	inferred name: true when the actor matches the query's own mOwner pointer and mOwnerUniqueID; every collider-table scan skips such colliders
+arm9	0x02035394	func_02035394	_ZN5dBgChaSERKS_	copies mDetectFlags, mOwnerUniqueID and mOwner but not the vptr; called through a base cast like dBgPi::operator= by the dBgW_KcMbg local-space queries
+arm9	0x020353d4	func_020353d4	_ZNK5dBgCh21IsIgnoringType14WallsEv	inferred name: tests mDetectFlags 0x40, which ShouldPassThroughImpl reads to pass through CLPS surface type 0x14 on wall-facing hits
+arm9	0x020353e0	func_020353e0	_ZN5dBgCh23StopIgnoringType14WallsEv	inferred name: clears mDetectFlags 0x40 (the type-0x14 wall pass-through bit)
+arm9	0x020353f4	func_020353f4	_ZN5dBgCh24StartIgnoringType14WallsEv	inferred name: sets mDetectFlags 0x40 (the type-0x14 wall pass-through bit)
+arm9	0x02035408	func_02035408	_ZNK5dBgCh24IsIgnoringVanishSurfacesEv	inferred name: tests mDetectFlags 0x20, which ShouldPassThroughImpl reads to pass through CLPS surface type 0x11; set only for a vanished Player and Boos
+arm9	0x02035414	func_02035414	_ZN5dBgCh26StopIgnoringVanishSurfacesEv	inferred name: clears mDetectFlags 0x20 (the vanish-surface pass-through bit)
+arm9	0x02035428	func_02035428	_ZN5dBgCh27StartIgnoringVanishSurfacesEv	inferred name: sets mDetectFlags 0x20 (the vanish-surface pass-through bit); callers gate it on Player::mIsVanish, and daTrs_c sets it always
+arm9	0x02037e38	func_02037e38	_ZNK4CLPS14GetSurfaceTypeEv	inferred name: (w0 >> 19) & 0x1f is the surface type dBgCh::ShouldPassThroughImpl and Player test
+arm9	0x02037e48	func_02037e48	_ZNK4CLPS13func_02037e48Ev	CLPS const member; meaning of (w0 >> 15) & 0xf not yet known
+arm9	0x02037e58	func_02037e58	_ZNK4CLPS13GetFloorClassEv	inferred name: (w0 >> 12) & 0x7 is the floor class include/Player.h traces through five slope/slide tables
+arm9	0x02037e68	func_02037e68	_ZNK4CLPS13func_02037e68Ev	CLPS const member; meaning of (w0 >> 6) & 0x3f not yet known
+arm9	0x02037e84	func_02037e84	_ZNK4CLPS13func_02037e84Ev	CLPS const member; meaning of w0 & 0x1f not yet settled
+arm9	0x02037e90	func_02037e90	_ZNK4CLPS13func_02037e90Ev	CLPS const member; meaning of w1 & 0xff not yet known
+ov002	0x020c16ec	func_ov002_020c16ec	_ZN6Player19SetFloorSurfaceInfoERK5dBgPi	inferred name: unpacks the floor dBgPi CLPS fields and normal into Player (include/Player.h)

@@ -28,7 +28,6 @@
 #include "common.h"
 
 extern "C" {
-int func_02035354(void *a, void *b);
 Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 int func_020393b4(void *p);
@@ -42,7 +41,6 @@ void func_02037e9c(CLPS *clps);
 void func_02037de8(SurfaceInfo *dst, const SurfaceInfo *src);
 int func_02038298(void *arg);
 void func_02036acc(void);
-extern dBgW *data_020a0c80[];
 extern CLPS data_020a0c78;
 }
 
@@ -62,7 +60,7 @@ int dBgCh_Gnd::DetectClsn()
     int ret = 0;
     func_02037464(this);
     dBgW *o = data_020a0c80[0];
-    if (o != 0 && func_02035354(this, (void *)func_020393b4(o)) == 0 && o->DetectClsn(*this) != 0) {
+    if (o != 0 && !IsOwnedBy((dActor_c *)func_020393b4(o)) && o->DetectClsn(*this) != 0) {
         dBgPi::SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
         ret = 1;
     }
@@ -73,7 +71,8 @@ int dBgCh_Gnd::DetectClsn()
         dBgW *obj = data_020a0c80[i];
         if (obj == 0) continue;
         dActor_c* p = (dActor_c *)func_020393b4(obj);
-        if (func_02035354(this, p) != 0) continue;
+        if (IsOwnedBy(p))
+            continue;
         if (p != 0 && ((p->mFlags & 2) ? flag : 0) != 0) {
             const char *position = (const char *)p + 0x5c;
             pos.x = *(const s32 *)(position + 0);
@@ -107,7 +106,7 @@ int dBgCh_Gnd::DetectClsnSlot0() {
     func_02037464(this);
     o = data_020a0c80[0];
     if (o != 0) {
-        if (func_02035354(this, (void *)func_020393b4(o)) == 0) {
+        if (!IsOwnedBy((dActor_c *)func_020393b4(o))) {
             if (o->DetectClsn(*this) != 0) {
                 int a = func_020393ac(o);
                 int b = func_020393b4(o);
@@ -129,16 +128,16 @@ int dBgCh_SphCrr::DetectClsn()
        centre below -- the one local keeps the compiler's register shape */
     char *e = (char *)data_020a0c80[0];
     if (e != 0) {
-        if (func_02035354(this, (void *)func_020393b4(e)) == 0) {
+        if (!IsOwnedBy((dActor_c *)func_020393b4(e))) {
             hits = ((dBgW *)e)->DetectClsn(*this);
             if (hits != 0) {
                 dBgPi::SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
                 if (hits & 1)
-                    func_020379d0(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                    SetFloorCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
                 if (hits & 2)
-                    func_0203799c(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                    SetWallCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
                 if (hits & 4)
-                    func_02037968(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                    SetUnderCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
                 result = 1;
             }
         }
@@ -150,7 +149,8 @@ int dBgCh_SphCrr::DetectClsn()
         dBgW *o = data_020a0c80[i];
         if (o == 0) continue;
         dActor_c *owner = (dActor_c *)func_020393b4(o);
-        if (func_02035354(this, owner) != 0) continue;
+        if (IsOwnedBy(owner))
+            continue;
         if (owner != 0) {
             int active = (owner->mFlags & 2) ? 1 : 0;
             if (active != 0) {
@@ -180,15 +180,15 @@ int dBgCh_SphCrr::DetectClsn()
         if (hits != 0) {
             dBgPi::SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
             if (hits & 1)
-                func_020379d0(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                SetFloorCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
             if (hits & 2)
-                func_0203799c(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                SetWallCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
             if (hits & 4)
-                func_02037968(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+                SetUnderCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
             result = 1;
         }
     }
-    this->func_02037a38();
+    this->UpdateDisplacement();
     return result;
 }
 
@@ -199,18 +199,17 @@ int dBgCh_SphCrr::func_02038a38()
     dBgW *o = data_020a0c80[0];
     int result = 0;
     int hits;
-    if (o != 0 && func_02035354(this, (void *)func_020393b4(o)) == 0
-        && (hits = o->DetectClsn(*this)) != 0) {
+    if (o != 0 && !IsOwnedBy((dActor_c *)func_020393b4(o)) && (hits = o->DetectClsn(*this)) != 0) {
         dBgPi::SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
         if (hits & 1)
-            func_020379d0(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetFloorCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
         if (hits & 2)
-            func_0203799c(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetWallCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
         if (hits & 4)
-            func_02037968(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+            SetUnderCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
         result = 1;
     }
-    this->func_02037a38();
+    this->UpdateDisplacement();
     return result;
 }
 
@@ -227,7 +226,8 @@ int dBgCh_SphCrr::func_02038824()
         dBgW *o = data_020a0c80[i];
         if (o == 0) continue;
         dActor_c *owner = (dActor_c *)func_020393b4(o);
-        if (func_02035354(this, owner) != 0) continue;
+        if (IsOwnedBy(owner))
+            continue;
         if (owner != 0 && ((owner->mFlags & 2) ? one : zero)) {
             /* The address local must stay declared int -- a pointer local
                diffs. Its value is the dM3dGSph base's centre. */
@@ -251,12 +251,15 @@ int dBgCh_SphCrr::func_02038824()
         int hits = o->DetectClsn(*this);
         if (hits == 0) continue;
         dBgPi::SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
-        if (hits & 1) func_020379d0(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
-        if (hits & 2) func_0203799c(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
-        if (hits & 4) func_02037968(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+        if (hits & 1)
+            SetFloorCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+        if (hits & 2)
+            SetWallCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
+        if (hits & 4)
+            SetUnderCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
         result = one;
     }
-    this->func_02037a38();
+    this->UpdateDisplacement();
     return result;
 }
 
@@ -273,7 +276,7 @@ bool dBgCh_Lin::DetectClsn()
     int threshold;
     e = (char *)data_020a0c80[0];
     if (e != 0) {
-        if (func_02035354(this, (void *)func_020393b4(e)) == 0) {
+        if (!IsOwnedBy((dActor_c *)func_020393b4(e))) {
             int mask = ((dBgW *)e)->DetectClsn(*this);
             if (mask != 0) {
                 dBgPi::SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
@@ -289,7 +292,8 @@ bool dBgCh_Lin::DetectClsn()
         o = data_020a0c80[i];
         if (o == 0) continue;
         info = (dActor_c *)func_020393b4(o);
-        if (func_02035354(this, info) != 0) continue;
+        if (IsOwnedBy(info))
+            continue;
         if (info != 0) {
             int active = (info->mFlags & 2) ? 1 : 0;
             if (active != 0) {
@@ -330,7 +334,7 @@ extern "C" int func_0203859c(void *obj)
     dBgW *e = data_020a0c80[0];
     int result = 0;
     if (e != 0) {
-        if (func_02035354(obj, (void *)func_020393b4(e)) == 0) {
+        if (!((dBgCh_Lin *)obj)->IsOwnedBy((dActor_c *)func_020393b4(e))) {
             if (e->DetectClsn(*(dBgCh_Lin *)obj) != 0) {
                 int a = func_020393ac(e);
                 int b = func_020393b4(e);
@@ -362,7 +366,8 @@ extern "C" int func_0203842c(char *self)
         o = data_020a0c80[i];
         if (o == 0) continue;
         info = (dActor_c *)func_020393b4(o);
-        if (func_02035354(self, info) != 0) continue;
+        if (((dBgCh_Lin *)self)->IsOwnedBy(info))
+            continue;
         if (info != 0) {
             int active = (info->mFlags & 2) ? 1 : 0;
             if (active != 0) {
@@ -682,14 +687,14 @@ extern "C" void func_02037e9c(CLPS *clps) {
     clps->w1 = 0xff;
 }
 
-// @symbol func_02037e90
-extern "C" int func_02037e90(int *p) {
-    return p[1] & 0xff;
+// @symbol _ZNK4CLPS13func_02037e90Ev
+int CLPS::func_02037e90() const {
+    return w1 & 0xff;
 }
 
-// @symbol func_02037e84
-extern "C" int func_02037e84(int *p) {
-    return p[0] & 0x1f;
+// @symbol _ZNK4CLPS13func_02037e84Ev
+int CLPS::func_02037e84() const {
+    return w0 & 0x1f;
 }
 
 // @symbol SurfaceInfo_TestFlag0x20
@@ -697,24 +702,24 @@ extern "C" int SurfaceInfo_TestFlag0x20(int *p) {
     return p[0] & 0x20;
 }
 
-// @symbol func_02037e68
-extern "C" int func_02037e68(unsigned int *p) {
-    return (p[0] >> 6) & 0x3f;
+// @symbol _ZNK4CLPS13func_02037e68Ev
+int CLPS::func_02037e68() const {
+    return (w0 >> 6) & 0x3f;
 }
 
-// @symbol func_02037e58
-extern "C" int func_02037e58(unsigned int *p) {
-    return (p[0] >> 12) & 0x7;
+// @symbol _ZNK4CLPS13GetFloorClassEv
+int CLPS::GetFloorClass() const {
+    return (w0 >> 12) & 0x7;
 }
 
-// @symbol func_02037e48
-extern "C" int func_02037e48(unsigned int *p) {
-    return (p[0] >> 15) & 0xf;
+// @symbol _ZNK4CLPS13func_02037e48Ev
+int CLPS::func_02037e48() const {
+    return (w0 >> 15) & 0xf;
 }
 
-// @symbol func_02037e38
-extern "C" int func_02037e38(unsigned int *p) {
-    return (p[0] >> 19) & 0x1f;
+// @symbol _ZNK4CLPS14GetSurfaceTypeEv
+int CLPS::GetSurfaceType() const {
+    return (w0 >> 19) & 0x1f;
 }
 
 // @symbol func_02037e2c

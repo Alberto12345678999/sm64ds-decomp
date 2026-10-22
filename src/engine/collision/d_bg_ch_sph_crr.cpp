@@ -103,17 +103,15 @@ void dBgCh_SphCrr::ExpandPushOutBounds(s32 minX, s32 minY, s32 minZ, s32 maxX, s
 }
 
 /* Commit the accumulated range into the displacement the actor moves by. */
-// @symbol _ZN12dBgCh_SphCrr13func_02037a38Ev
-void dBgCh_SphCrr::func_02037a38()
-{
+// @symbol _ZN12dBgCh_SphCrr18UpdateDisplacementEv
+void dBgCh_SphCrr::UpdateDisplacement() {
     disp.x = mPushOutMin.x + mPushOutMax.x;
     disp.y = mPushOutMin.y + mPushOutMax.y;
     disp.z = mPushOutMin.z + mPushOutMax.z;
 }
 
-// @symbol _ZN12dBgCh_SphCrr13func_02037a04EP7Vector3S1_
-void dBgCh_SphCrr::func_02037a04(Vector3 *outMin, Vector3 *outMax)
-{
+// @symbol _ZN12dBgCh_SphCrr16GetPushOutBoundsEP7Vector3S1_
+void dBgCh_SphCrr::GetPushOutBounds(Vector3 *outMin, Vector3 *outMax) {
     outMin->x = mPushOutMin.x;
     outMin->y = mPushOutMin.y;
     outMin->z = mPushOutMin.z;
@@ -124,45 +122,39 @@ void dBgCh_SphCrr::func_02037a04(Vector3 *outMin, Vector3 *outMax)
 
 /* Hit-record forwarders for the three result slots (1 = floor, 2 = wall,
    3 = underneath): one copies the surface hit, one the collider identity. */
-// @symbol _ZN12dBgCh_SphCrr13func_020379f4EiPv
-void dBgCh_SphCrr::func_020379f4(int triID, void *src)
-{
+// @symbol _ZN12dBgCh_SphCrr14RecordFloorHitEiPv
+void dBgCh_SphCrr::RecordFloorHit(int triID, void *src) {
     _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult1, triID, src);
 }
 
-// @symbol _ZN12dBgCh_SphCrr13func_020379d0EiiP8dActor_cP4dBgW
-void dBgCh_SphCrr::func_020379d0(int i, int clsnID, dActor_c *owner, dBgW *collider)
-{
+// @symbol _ZN12dBgCh_SphCrr16SetFloorColliderEiiP8dActor_cP4dBgW
+void dBgCh_SphCrr::SetFloorCollider(int i, int clsnID, dActor_c *owner, dBgW *collider) {
     mClsnResult1.SetCollider(i, clsnID, owner, collider);
 }
 
-// @symbol _ZN12dBgCh_SphCrr13func_020379c0EiPv
-void dBgCh_SphCrr::func_020379c0(int triID, void *src)
-{
+// @symbol _ZN12dBgCh_SphCrr13RecordWallHitEiPv
+void dBgCh_SphCrr::RecordWallHit(int triID, void *src) {
     _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult2, triID, src);
 }
 
-// @symbol _ZN12dBgCh_SphCrr13func_0203799cEiiP8dActor_cP4dBgW
-void dBgCh_SphCrr::func_0203799c(int i, int clsnID, dActor_c *owner, dBgW *collider)
-{
+// @symbol _ZN12dBgCh_SphCrr15SetWallColliderEiiP8dActor_cP4dBgW
+void dBgCh_SphCrr::SetWallCollider(int i, int clsnID, dActor_c *owner, dBgW *collider) {
     mClsnResult2.SetCollider(i, clsnID, owner, collider);
 }
 
-// @symbol _ZN12dBgCh_SphCrr13func_0203798cEiPv
-void dBgCh_SphCrr::func_0203798c(int triID, void *src)
-{
+// @symbol _ZN12dBgCh_SphCrr14RecordUnderHitEiPv
+void dBgCh_SphCrr::RecordUnderHit(int triID, void *src) {
     _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult3, triID, src);
 }
 
-// @symbol _ZN12dBgCh_SphCrr13func_02037968EiiP8dActor_cP4dBgW
-void dBgCh_SphCrr::func_02037968(int i, int clsnID, dActor_c *owner, dBgW *collider)
-{
+// @symbol _ZN12dBgCh_SphCrr16SetUnderColliderEiiP8dActor_cP4dBgW
+void dBgCh_SphCrr::SetUnderCollider(int i, int clsnID, dActor_c *owner, dBgW *collider) {
     mClsnResult3.SetCollider(i, clsnID, owner, collider);
 }
 
 /* Save the selected floor normal; the collision scan compares Y first. */
-// @symbol _ZN12dBgCh_SphCrr13func_0203794cEPKi
-void dBgCh_SphCrr::func_0203794c(const s32 *normal) {
+// @symbol _ZN12dBgCh_SphCrr14SetFloorNormalEPKi
+void dBgCh_SphCrr::SetFloorNormal(const s32 *normal) {
     mFloorNormal.x = normal[0];
     mFloorNormal.y = normal[1];
     mFloorNormal.z = normal[2];

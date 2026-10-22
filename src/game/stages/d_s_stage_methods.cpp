@@ -275,15 +275,19 @@ extern OamAttr _ZN3OAM5TIMESE;
 struct MinimapDesc {
     u32 w[4];
 };
+/* data_0209f3c4 is the stage's graph callback object (InitResources hands
+   it to data_0209d4a8). Its last four words are StageGraphCallbackView's
+   BG3 affine origin and target, which GraphCallback2 passes to SetBGyAffine
+   and UpdateMinimap sets. */
 struct MinimapState {
     char _pad[0x14];
-    volatile u32 f14, f18, f1c, f20;
+    volatile u32 originX, originY, targetX, targetY;
 };
 /* SetNextLevel's return table: level, return level, entrance. */
 struct LevelReturnEntry {
-    s8 a;
-    s8 b;
-    u8 c;
+    s8 level;
+    s8 returnLevel;
+    u8 entrance;
 };
 struct OvTbl {
     unsigned int t[7];
@@ -294,17 +298,28 @@ struct PadData {
 };
 /* The object at data_0209f5bc; only its slot-5 and slot-7 queries are called
    from this file. */
-/* The level record data_0209f340 points at, as far as the texture-animation
-   passes read it: the animation table at +0x10 and its count at +0x14. */
+/* The level record data_0209f340 points at, as far as this file and dMap_c
+   read it: the per-area table at +0x10 and its count at +0x14. Each area
+   entry carries its texture animation and the minimap GetMinimapID falls
+   back to when no minimap-change record applies. */
 struct LevelTexAnim {
     int x;
     void *bta;
-    char pad[4];
+    s8 minimapId; /* 0x08 */
+    char pad[3];
 };
 struct LevelInfo {
-    char pad[0x10];
-    LevelTexAnim *entries;
-    unsigned char count;
+    char pad[0xc];
+    /* func_0202a980; dMap_c decompresses it into the minimap BG3 characters. */
+    u16 minimapTilesFile; /* 0x0c */
+    /* func_0202a96c; dMap_c loads it as the minimap BG extended palette. */
+    u16 minimapPaletteFile; /* 0x0e */
+    LevelTexAnim *entries;  /* 0x10 */
+    unsigned char count;    /* 0x14 */
+    /* Bit 0: StartWithFarCamera. */
+    u8 cameraFlags; /* 0x15 */
+    /* func_0202a958; dMap_c stores it as mScale. */
+    s16 minimapScale; /* 0x16 */
 };
 
 extern "C" {
@@ -519,7 +534,8 @@ void SetMusic(u32 player, u32 music);
 
 #define REG16(a) (*(volatile u16 *)(a))
 #define REG32(a) (*(volatile u32 *)(a))
-#define TOUCHP(off) ((u8 *)(gTouchHeld + (off)))
+/* The TouchInfo record at byte offset off (slot * 4) from gTouchHeld. */
+#define TOUCHP(off) ((TouchInfo *)(gTouchHeld + (off)))
 
 #pragma defer_codegen off
 
@@ -970,8 +986,9 @@ void dScStage_c::CheckCameraInput() {
                 cam->pressed = 0;
                 cam->held = 0;
                 if (((TouchInfo *)gTouchHeld)[i].held != 0) {
-                    if (*(int *)((u8 *)data_0209f318 + 0x154) & 0x1000) {
-                        u8 state = *((u8 *)data_0209f498 + i * 0x18 + 0x16);
+                    if (((dCamera_c *)data_0209f318)->mFlags & 0x1000) {
+                        // cam->mode here builds 32 bytes shorter; the indexed read is the ROM shape.
+                        u8 state = ((CamInput *)data_0209f498)[i].mode;
                         if ((state == 0 && ((((TouchInfo *)gTouchHeld)[i].x <= 0x58 &&
                                              ((TouchInfo *)gTouchHeld)[i].y >= 0x8a) ||
                                             (((TouchInfo *)gTouchHeld)[i].x >= 0xa7 &&
@@ -1001,11 +1018,11 @@ void dScStage_c::CheckCameraInput() {
                                      ((TouchInfo *)gTouchHeld)[i].edge)
                                         ? 1
                                         : 0)
-                                    *(u16 *)(((int)cam + 6)) |= mask;
+                                    cam->pressed |= mask;
                                 else
-                                    *(u16 *)(((int)cam + 6)) |= mask & (mask ^ data_0209f368[i]);
+                                    cam->pressed |= mask & (mask ^ data_0209f368[i]);
                                 data_0209f368[i] = mask;
-                                *(u16 *)(((int)cam + 4)) |= mask;
+                                cam->held |= mask;
                                 *st = 1;
                             }
                         } else if (*st == 1) {
@@ -1019,9 +1036,10 @@ void dScStage_c::CheckCameraInput() {
                     data_0209f368[i] = 0;
                 }
                 {
-                    u8 state2 = *((u8 *)data_0209f498 + i * 0x18 + 0x16);
+                    u8 state2 = ((CamInput *)data_0209f498)[i].mode;
                     if (state2 != 0) {
-                        if (((*((u8 *)gTouchHeld + i * 4) && ((TouchInfo *)gTouchHeld)[i].edge)
+                        if (((((TouchInfo *)gTouchHeld)[i].held &&
+                              ((TouchInfo *)gTouchHeld)[i].edge)
                                  ? 1
                                  : 0) &&
                             ((state2 == 1 && ((TouchInfo *)gTouchHeld)[i].x >= 0xd7 &&
@@ -1030,7 +1048,7 @@ void dScStage_c::CheckCameraInput() {
                               ((TouchInfo *)gTouchHeld)[i].y >= 0x73 &&
                               ((TouchInfo *)gTouchHeld)[i].y < 0x97))) {
                             data_ov002_02111180 = 0x10;
-                            *(u16 *)(((int)cam + 6)) |= 0x8000;
+                            cam->pressed |= 0x8000;
                             *st = 2;
                             cam->touching = 0;
                         } else if (*st == 2) {
@@ -1671,11 +1689,11 @@ void dScStage_c::PS_Update() {
                     }
                     de_off = sl2 * 4;
                 }
-                if ((a != 0) && (TOUCHP(de_off)[1] != 0)) {
+                if ((a != 0) && (TOUCHP(de_off)->edge != 0)) {
                     var_r0 = 1;
                 }
-                if ((var_r0 != 0) && ((u32)(vx = TOUCHP(sl2 * 4)[2]) < 0x38U) &&
-                    ((u32)TOUCHP(sl2 * 4)[3] < 0x20U)) {
+                if ((var_r0 != 0) && ((u32)(vx = TOUCHP(sl2 * 4)->x) < 0x38U) &&
+                    ((u32)TOUCHP(sl2 * 4)->y < 0x20U)) {
                     u8 t;
                     data_0209f2c8 = (u8)(data_0209f2c8 - 1);
                     var_fp = 1;
@@ -1691,14 +1709,14 @@ void dScStage_c::PS_Update() {
                     }
                 } else {
                     s32 var_r0_2;
-                    if ((a != 0) && (TOUCHP(sl2 * 4)[1] != 0)) {
+                    if ((a != 0) && (TOUCHP(sl2 * 4)->edge != 0)) {
                         var_r0_2 = 1;
                     } else {
                         var_r0_2 = sp4;
                     }
                     if (var_r0_2 != 0) {
-                        if (((u32)(u8)(TOUCHP(sl2 * 4)[2] - 0xC8) < 0x38U) &&
-                            ((u32)TOUCHP(sl2 * 4)[3] < 0x20U)) {
+                        if (((u32)(u8)(TOUCHP(sl2 * 4)->x - 0xC8) < 0x38U) &&
+                            ((u32)TOUCHP(sl2 * 4)->y < 0x20U)) {
                             data_0209f2c8 = (u8)(data_0209f2c8 + 1);
                             data_0209f238 = 2;
                             var_fp = 1;
@@ -2786,18 +2804,7 @@ int IsButtonInputValid(void) {
 /* The callback object GraphCallback2 reads through `this`: vptr at +0 (never
    touched as data), a fixed-point 2x2 matrix at +0x4 that the object's
    static-init constructor at 0x02074edc seeds with 0x1000 (1.0), and the four
-   affine words after it. */
-struct SceneRelated {
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    s32 unkc;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1c;
-    s32 unk20;
-};
+   affine words after it (StageGraphCallbackView). */
 
 /* Nullary, and a member: vtable slot 2 of dScStage_c::graphCallback_c (RTTI
    si-child of dGraph_c::callback_c). Every dispatcher -- func_02018ec0,
@@ -2823,10 +2830,10 @@ int dScStage_c::GraphCallback1() {
    params into data_0209f3c4 (+0x14..+0x20). */
 extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
     *(MinimapDesc *)(((long long)(int)&data_0209f3c8)) = *desc;
-    data_0209f3c4.f14 = a;
-    data_0209f3c4.f18 = b;
-    data_0209f3c4.f1c = c;
-    data_0209f3c4.f20 = d;
+    data_0209f3c4.originX = a;
+    data_0209f3c4.originY = b;
+    data_0209f3c4.targetX = c;
+    data_0209f3c4.targetY = d;
 }
 
 // @symbol StartEntranceFaderWipe
@@ -2974,9 +2981,9 @@ extern "C" void SetNextLevel(int arg) {
     } else {
         p = data_02075638;
         for (i = 0; i < 8; i++) {
-            if (v == p->a) {
-                data_0209211c = p->b;
-                data_0209f200 = p->c;
+            if (v == p->level) {
+                data_0209211c = p->returnLevel;
+                data_0209f200 = p->entrance;
                 break;
             }
             p++;
@@ -3384,17 +3391,17 @@ int dScStage_c::GetSkyboxID() {
 
 // @symbol func_0202a958
 extern "C" int func_0202a958(void) {
-    return ((short *)data_0209f340)[11];
+    return ((LevelInfo *)data_0209f340)->minimapScale;
 }
 
 // @symbol func_0202a96c
 extern "C" int func_0202a96c(void) {
-    return ((unsigned short *)data_0209f340)[7];
+    return ((LevelInfo *)data_0209f340)->minimapPaletteFile;
 }
 
 // @symbol func_0202a980
 extern "C" int func_0202a980(void) {
-    return ((unsigned short *)data_0209f340)[6];
+    return ((LevelInfo *)data_0209f340)->minimapTilesFile;
 }
 
 // @symbol _Z23LoadMinimapChangeObjecti5Fix12IiEh
@@ -3402,13 +3409,16 @@ extern "C" int func_0202a980(void) {
    0xc-byte slot doubles as the per-area record: HideArea/ShowArea toggle its
    mActive byte, and mBlockList heads a sorted list of these minimap-change
    records, threshold at +0, next at +0xc (the link CleanupResources walks
-   when it frees them). */
+   when it frees them). GetMinimapID walks next from the head and answers
+   minimapId for the first record whose height an actor is above. */
 struct MinimapChangeNode {
-    int f0; /* 0x00 value */
-    s8 f4;  /* 0x04 */
+    int height; /* 0x00 */
+    /* 0xf from the loader becomes -1. */
+    s8 minimapId; /* 0x04 */
     char pad5[3];
-    struct MinimapChangeNode *f8; /* 0x08 */
-    struct MinimapChangeNode *fc; /* 0x0c */
+    /* Only LoadMinimapChangeObject reads it, to find the new list head. */
+    struct MinimapChangeNode *prev; /* 0x08 */
+    struct MinimapChangeNode *next; /* 0x0c */
 };
 
 /* The cartridge's global operator new is _Znwj, operator new(unsigned int);
@@ -3418,34 +3428,34 @@ extern "C" void *_Znwj(u32 size);
 
 extern "C" void _Z23LoadMinimapChangeObjecti5Fix12IiEh(int idx, Fix12i val, u8 h) {
     struct MinimapChangeNode *nn = (MinimapChangeNode *)_Znwj(sizeof(MinimapChangeNode));
-    StageTexAnimSlot *e = (StageTexAnimSlot *)((char *)data_0209f314 + idx * 0xc);
+    StageTexAnimSlot *e = &((StageTexAnimSlot *)data_0209f314)[idx];
     struct MinimapChangeNode *cur = (MinimapChangeNode *)e->mBlockList;
     struct MinimapChangeNode *prev = cur;
     if (cur != 0) {
         for (;;) {
             prev = cur;
-            if (val > cur->f0)
+            if (val > cur->height)
                 break;
-            cur = cur->fc;
+            cur = cur->next;
             if (cur == 0)
                 break;
         }
     }
-    nn->fc = prev;
+    nn->next = prev;
     if (prev == 0) {
-        nn->f8 = 0;
+        nn->prev = 0;
     } else {
-        nn->f8 = prev->f8;
-        prev->f8 = nn;
+        nn->prev = prev->prev;
+        prev->prev = nn;
     }
-    if (nn->f8 == 0)
+    if (nn->prev == 0)
         e->mBlockList = nn;
     {
         int hh = h;
-        nn->f0 = val;
+        nn->height = val;
         if (hh == 0xf)
             hh = -1;
-        nn->f4 = (u8)hh;
+        nn->minimapId = (u8)hh;
     }
 }
 
@@ -3607,7 +3617,7 @@ extern "C" void StartFile(s8 levelID, u8 entranceID) {
 
 // @symbol StartWithFarCamera
 extern "C" int StartWithFarCamera(void) {
-    return (((unsigned char *)data_0209f340)[0x15] & 1) != 0;
+    return (((LevelInfo *)data_0209f340)->cameraFlags & 1) != 0;
 }
 
 // @symbol GetStarCameraSetting
@@ -3632,16 +3642,17 @@ extern "C" void func_0202af80(int a, int b) {
 }
 
 // @symbol GetMinimapID
-/* The object GetMinimapID places: its height at +0x60, its area at +0xcc. */
+/* The actor GetMinimapID places, with dActor_c's names: its height at
+   +0x60, its area at +0xcc. */
 struct Obj {
     char pad0[0x60];
-    int f60;
+    int mPosY; /* 0x60 */
     char pad64[0xcc - 0x64];
-    s8 fcc;
+    s8 mAreaId; /* 0xcc */
 };
 
 extern "C" int GetMinimapID(struct Obj *obj, int arg) {
-    int idx = obj->fcc;
+    int idx = obj->mAreaId;
     char *g;
     int val;
     struct MinimapChangeNode *node;
@@ -3649,23 +3660,23 @@ extern "C" int GetMinimapID(struct Obj *obj, int arg) {
         idx = data_02092120;
     g = (char *)data_0209f314;
     if (g != 0) {
-        node = (MinimapChangeNode *)((StageTexAnimSlot *)(g + idx * 0xc))->mBlockList;
+        node = (MinimapChangeNode *)((StageTexAnimSlot *)g)[idx].mBlockList;
         if (node != 0) {
-            val = obj->f60;
+            val = obj->mPosY;
             while (node != 0) {
-                int d = val - node->f0;
+                int d = val - node->height;
                 if (d > 0) {
                     if (arg >= 0 && d < 0xc8000)
                         return arg;
                     break;
                 }
-                node = node->fc;
+                node = node->next;
             }
             if (node != 0)
-                return node->f4;
+                return node->minimapId;
         }
     }
-    return *(s8 *)(*(char **)(data_0209f340 + 0x10) + idx * 0xc + 8);
+    return ((LevelInfo *)data_0209f340)->entries[idx].minimapId;
 }
 
 // @symbol func_0202b044
@@ -4595,9 +4606,9 @@ int dScStage_c::CleanupResources() {
             if (transformer)
                 delete transformer;
             {
-                char *block = (char *)slot->mBlockList;
+                MinimapChangeNode *block = (MinimapChangeNode *)slot->mBlockList;
                 while (block) {
-                    char *next = *(char **)(block + 0xc);
+                    MinimapChangeNode *next = block->next;
                     Memory::operator_delete2(block);
                     block = next;
                 }

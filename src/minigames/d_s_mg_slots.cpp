@@ -1071,17 +1071,30 @@ void SlotBlink_Clear(char *sprite) {
 }
 }
 
+/* dThIcon_c.h keeps its words at 0x1c and 0x20 as unk_01c/unk_020 because
+ * each derived icon gives them its own role. This file-local view names
+ * dScMgSlot1_c::betIcon_c's:
+ * - mBetCount: SlotBet_OnTouch adds one per touch, up to 3; betIcon_c::Render
+ *   draws that many bet coins; Behavior state 3 records mCredits plus
+ *   mPayoutMultiplier per bet.
+ * - mPayoutTicks: SlotReel_SetSpeed loads mBetCount * multiplier * 4;
+ *   betIcon_c::Behavior counts it down, paying a credit every 4 ticks, and
+ *   Behavior state 6 waits for it to reach 0.
+ * SlotBet_Reset clears both. */
+struct SlotBetIcon {
+    u8 mIcon[0x1c];   /* 0x00 -- dThIcon_c's vptr and named fields */
+    s32 mBetCount;    /* 0x1c */
+    s32 mPayoutTicks; /* 0x20 */
+};
+typedef char SlotBetIcon_size_must_be_0x24[sizeof(SlotBetIcon) == 0x24 ? 1 : -1];
+#define BET_ICON(p) ((SlotBetIcon *)(p))
+
 // @symbol SlotReel_SetSpeed
 extern "C" { /* .c-derived member: C linkage for the whole block */
 /* The symbol name is a misreading: Behavior state 5 passes &mBetIcon and
- * the payout multiplier, and this arms the bet icon's payout countdown --
- * bet count (icon word 7, +0x1c) * multiplier * 4 ticks into word 8
- * (+0x20), which betIcon_c::Behavior drains one credit per 4 ticks. The
- * two dThIcon_c fields have per-derived roles, so they keep their
- * placeholder names in the shared header and are indexed here. */
+ * the payout multiplier, and this arms the bet icon's payout countdown. */
 void SlotReel_SetSpeed(void *raw, int value) {
-    int *words = (int *)raw;
-    words[8] = (words[7] * value) << 2;
+    BET_ICON(raw)->mPayoutTicks = (BET_ICON(raw)->mBetCount * value) << 2;
 }
 }
 
@@ -1093,7 +1106,7 @@ void SlotBet_OnTouch(void *c_) {
     int count;
     unsigned int sid;
 
-    if (icon->unk_01c >= 3) {
+    if (BET_ICON(icon)->mBetCount >= 3) {
         return;
     }
     if (icon->mOn != 0) {
@@ -1104,7 +1117,7 @@ void SlotBet_OnTouch(void *c_) {
     if (count <= 0) {
         return;
     }
-    icon->unk_01c += 1;
+    BET_ICON(icon)->mBetCount += 1;
     Mg_LoseCredits((void *)1);
     func_ov001_020ab3f0(icon);
     sid = 0x163;
@@ -1116,8 +1129,8 @@ void SlotBet_OnTouch(void *c_) {
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void SlotBet_Reset(void *raw) {
     dThIcon_c *icon = (dThIcon_c *)raw;
-    icon->unk_01c = 0;
-    icon->unk_020 = 0;
+    BET_ICON(icon)->mBetCount = 0;
+    BET_ICON(icon)->mPayoutTicks = 0;
     if (icon->mTouchKind >= 1)
         icon->mReady = 1;
 }
@@ -1129,7 +1142,7 @@ void dScMgSlot1_c::betIcon_c::Render() {
     int i;
     int y = 0xb0;
     int zero = 0;
-    for (i = 0; i < unk_01c; i++) {
+    for (i = 0; i < BET_ICON(this)->mBetCount; i++) {
         Mg_RenderSubSpriteMtx(sSlotLangSprites[GetGameLanguage()][2], 0xb0 + i * 0x10, y,
                               (void *)zero);
     }
@@ -1140,13 +1153,13 @@ void dScMgSlot1_c::betIcon_c::Behavior() {
     int val;
     if (TouchArea_Update(this, -1))
         SlotBet_OnTouch(this);
-    val = unk_020;
+    val = BET_ICON(this)->mPayoutTicks;
     if (val != 0) {
         if ((val & 3) == 0) {
             Mg_GainCredits(1);
             Sound::PlayBank2_2D(0x149);
         }
-        unk_020 -= 1;
+        BET_ICON(this)->mPayoutTicks -= 1;
     }
     dThIcon_c::Behavior();
 }
@@ -1409,7 +1422,8 @@ s32 dScMgSlot1_c::Behavior() {
                 if (mWildCount != 0 && mWildCount < 3) {
                     mPayoutMultiplier += mWildCount << 1;
                 }
-                Mg_SaveRecordPair(mCredits + mPayoutMultiplier * mBetIcon.unk_01c, mHudScore);
+                Mg_SaveRecordPair(mCredits + mPayoutMultiplier * BET_ICON(&mBetIcon)->mBetCount,
+                                  mHudScore);
                 mState = 4;
                 mStateTimer = 0x3c;
             }
@@ -1447,7 +1461,7 @@ s32 dScMgSlot1_c::Behavior() {
         }
         break;
     case 6: {
-        int done = (mBetIcon.unk_020 == 0) ? 1 : 0;
+        int done = (BET_ICON(&mBetIcon)->mPayoutTicks == 0) ? 1 : 0;
         if (done != 0) {
             Mg_SubmitScore(mCredits);
             if (DecIfAbove0_Byte(&mStateTimer) == 0) {

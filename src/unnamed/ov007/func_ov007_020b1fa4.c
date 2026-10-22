@@ -27,8 +27,8 @@ typedef struct Ov007Camera {
  * func_ov007_020b1718) stays raw: no role to name. */
 typedef struct Ov007Work {
     char pad_00[0x24];
-    /* 0x24, medium confidence: the preset this function last applied; no
-     * reader found */
+    /* 0x24, medium confidence: the preset this function last applied;
+     * func_ov007_020be0dc reads it (preset 4 moves its sprite down 0x14b) */
     int cameraPreset;
     char pad_28[8];
     Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
