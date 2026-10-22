@@ -2847,7 +2847,7 @@ void Player::func_ov002_020c14b8()
         int f1c, f20, f24;
     } ClsnResultTmp;
     extern int _ZN6Player12Unk_020c9e5cEh(void *, unsigned char state);
-    extern void func_ov002_020c16ec(void*, void*);
+    extern void func_ov002_020c16ec(Player *player, const dBgPi *hit);
     extern void _ZN5dBgPiD1Ev(void *);
     extern int SurfaceInfo_TestFlag0x20(void*);
     extern int func_02037e20(void *);
@@ -2899,7 +2899,7 @@ void Player::func_ov002_020c14b8()
         tmp.f1c = rg.clsnID;
         tmp.f20 = (int)rg.owner;
         tmp.f24 = (int)rg.collider;
-        func_ov002_020c16ec(c, &tmp);
+        func_ov002_020c16ec(this, (const dBgPi *)&tmp);
         _ZN5dBgPiD1Ev(&tmp);
         mProbedGroundY = rg.clsnY;
         mGroundY = mProbedGroundY;
@@ -2934,27 +2934,26 @@ void Player::func_ov002_020c14b8()
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {
-void func_ov002_020c16ec(char *o, char *s)
+void func_ov002_020c16ec(Player *player, const dBgPi *hit)
 {
-    Player *player = (Player *)o;
-    extern int func_02037e38(void*);
-    extern int func_02037e58(void*);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
+    extern int func_02037e38(const void*);
+    extern int func_02037e58(const void*);
+    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void*, void*);
     extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-    extern int func_02037e90(void*);
-    extern int func_02037e48(void*);
-    extern int func_02037e68(void*);
-    extern int func_02037e84(void*);
+    extern int func_02037e90(const void*);
+    extern int func_02037e48(const void*);
+    extern int func_02037e68(const void*);
+    extern int func_02037e84(const void*);
     struct Vector3 v;
-    player->mClpsWord1Lo = func_02037e90((int *)&((dBgPi *)s)->surface.clps);
-    player->mSurfaceType = func_02037e38((unsigned int *)&((dBgPi *)s)->surface.clps);
-    player->mClpsBits15_18 = func_02037e48((unsigned int *)&((dBgPi *)s)->surface.clps);
-    player->mClpsBits6_11 = func_02037e68((unsigned int *)&((dBgPi *)s)->surface.clps);
-    player->mGroundSoundType = func_02037e84((int *)&((dBgPi *)s)->surface.clps);
+    player->mClpsWord1Lo = func_02037e90(&hit->surface.clps);
+    player->mSurfaceType = func_02037e38(&hit->surface.clps);
+    player->mClpsBits15_18 = func_02037e48(&hit->surface.clps);
+    player->mClpsBits6_11 = func_02037e68(&hit->surface.clps);
+    player->mGroundSoundType = func_02037e84(&hit->surface.clps);
     if (player->mFloorClass == 1)
         return;
-    player->mFloorClass = func_02037e58((unsigned int *)&((dBgPi *)s)->surface.clps);
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&((dBgPi *)s)->surface, &v);
+    player->mFloorClass = func_02037e58(&hit->surface.clps);
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&hit->surface, &v);
     player->mFloorNormalX = v.x;
     player->mFloorNormalY = v.y;
     player->mFloorNormalZ = v.z;
@@ -3445,7 +3444,7 @@ int Player::func_ov002_020c25a8(int arg1)
     extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int func_02035638(void*);
     extern void func_020371fc(void *);
-    extern void func_ov002_020c16ec(void*, void*);
+    extern void func_ov002_020c16ec(Player *player, const dBgPi *hit);
     extern void _ZN5dBgPiD1Ev(void*);
     extern int func_02037e58(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
@@ -3552,7 +3551,7 @@ int Player::func_ov002_020c25a8(int arg1)
         tmp.f20 = (int)fr->owner;
         tmp.f24 = (int)fr->collider;
 
-        func_ov002_020c16ec(c, &tmp);
+        func_ov002_020c16ec(this, (const dBgPi *)&tmp);
         _ZN5dBgPiD1Ev(&tmp);
 
         mGroundY = mPosY;
