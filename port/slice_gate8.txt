@@ -22,7 +22,7 @@ src/engine/collision/d_bg_ch_lin.cpp
 # to name separately all live in it.
 src/engine/collision/d_bg_w.cpp
 src/Vec3_Dist.c
-# all five func_020354xx flag readers live in d_bg_ch.cpp now.
+# all five func_020354xx flag helpers live in d_bg_ch.cpp now.
 src/engine/collision/d_bg_ch.cpp
 
 # Virtuals the host now needs as real methods: migrating a constructor to
