@@ -174,6 +174,62 @@ Two things follow, and both are general, not specific to these two symbols:
   in arm9 and all 105 overlays. Those names are ours; they cannot be evidence for
   the type they contain.
 
+### THE CALLER DOES NOT PAY EITHER, once the parameter is scalar (2026-10-23)
+
+The 2026-09-23 correction above says the caller pays for a by-value `Fix12<int>`
+independent of what the callee does. True -- but it is the same naming artifact,
+and it dissolves the same way. `d_a_obj_km2_nobiru.cpp` carried two comments
+saying so in as many words: "SetScaleY takes Fix12<int> by value, so it stays
+mangled; the method call makes Behavior differ", and the same for
+`dBgW_KcMbgSclY::SetFile` in `InitResources`. Both were measured against the
+HEADER's `Fix12<int>` spelling. With the declaration changed to the scalar
+`Fix12i`, the method call is free: `daObjKm2_Nobiru_c::Behavior` (ov045
+0x021119c0/0x70) and `InitResources` (0x02111a30/0xa4) both reproduce with
+`mCollider.SetScaleY(...)` and `mCollider.SetFile(...)` and the local externs
+deleted.
+
+So "the caller pays" is a statement about a class-typed parameter, never about
+reaching a `5Fix12IiE` callee. A comment that says a method call cannot be used
+at a call site is evidence only about the spelling it was measured with.
+
+### BATCH 3: five more symbols (2026-10-23)
+
+All five reproduce as real methods/functions under scalar mangling, all
+`--module` (strict relocs), with 158/158 functions in the six changed sources
+matching:
+
+| old symbol | new symbol | addr/size |
+|---|---|---|
+| `_ZN4cstd10fdiv_asyncE5Fix12IiE5Fix12IiE` | `_ZN4cstd10fdiv_asyncEii` | 0x02052fa4/0x38 |
+| `_ZN4cstd16reciprocal_asyncE5Fix12IiE` | `_ZN4cstd16reciprocal_asyncEi` | 0x02053090/0x3c |
+| `_ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE` | `_ZN14dBgW_KcMbgSclY9SetScaleYEi` | 0x0203aad8/0x2c |
+| `_ZN14dBgW_KcMbgSclY7SetFileE...5Fix12IiEs...` | `..._ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x3isR10CLPS_Block` | 0x0203ab04/0x38 |
+| `_ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i` | `_ZN8dActor_c15IsPlayerInRangeEiiii` | 0x02010498/0x44 |
+
+Three things this batch adds to the recipe:
+
+- **A namespaced function is the same job as a method.** `cstd::fdiv_async` and
+  `cstd::reciprocal_async` become real `namespace cstd` functions. Watch the
+  lookup: `func_02053200` and `func_02053130` are `extern "C"` blocks OUTSIDE
+  the namespace, so their calls need `cstd::` qualification -- an unqualified
+  call compiles nowhere and the error (`undefined identifier`) is the only
+  symptom.
+- **A `.c` caller cannot follow at all.** `src/InvMat4x3.c` is C and cannot name
+  a C++ namespaced function, so it keeps a mangled extern under the new spelling
+  with a `local extern:` reason. This is a third category alongside shadow
+  scaffolds and raw-offset TUs.
+- **The scalar name can FIX a recorded name defect.** `fdiv_async`'s old name
+  was in `config/name-roundtrip-baseline.json` as a MISMATCH, because a
+  hand-derived name spelled the second `Fix12<int>` out in full where the
+  Itanium ABI requires the `S1_` back-reference. `...Eii` has no substitution to
+  get wrong, so it round-trips and the exemption was deleted. Any symbol with
+  repeated `5Fix12IiE` parameters is likely carrying the same defect -- check
+  that baseline before and after.
+
+Also worth knowing: `tools/name_roundtrip.py --symbol X` prints a SUMMARY, so
+the word MISMATCH appears in its output even when the count is 0. Read the
+`ROUND-TRIPS n 100.0%` line, not a grep for the word.
+
 ### DONE for both SetAnim symbols (2026-10-22/23)
 
 `_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj` is now

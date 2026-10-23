@@ -5866,17 +5866,6 @@
         "return:void"
       ]
     },
-    "_ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block": {
-      "src/game/actors/d_a_obj_km2_nobiru.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ]
-    },
-    "_ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE": {
-      "include/decl_dBgW_KcMbgSclY.h": [
-        "return:int"
-      ]
-    },
     "_ZN14dBgW_KcMbgSclYD1Ev": {
       "include/decl_dBgW_KcMbgSclY.h": [
         "return:void"

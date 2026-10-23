@@ -231,8 +231,7 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(ModelAnim *, BCA_File *, int, Fix12i, u16);
 int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
-int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void* self, int fix12);
-int _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i(void*,int,int,int,int);
+int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int fix12);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
 int _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* player, s32 flag);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
@@ -668,7 +667,7 @@ int daOts_c::UpdateRunState()
  * result, or SetAnim's when it gave up the chase. */
 int daOts_c::func_ov064_02116560(){
   this->UpdateRunState();
-  int r=_ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i(this,tail().mHomePosX,this->mPosY,tail().mHomePosZ,kKeepChaseRange);
+  int r = IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange);
   if(r) return r;
   tail().mState=STATE_RETURN_HOME;
   return _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
