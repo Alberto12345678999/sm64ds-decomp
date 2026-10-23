@@ -138,10 +138,8 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
 u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     u32 uniqueID, u32 effectID, int x, int y, int z, const Vector3_16f *dir);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 effectID, int x, int y, int z);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, void *source, u32 damage, int speed, u8 a, u8 b, u8 c);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *anim, void *file, int flags, int speed, u32 startFrame);
+int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *player, void *source, u32 damage, int speed,
+                                            u8 a, u8 b, u8 c);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     TextureSequence *seq, void *file, int flags, int speed, u32 startFrame);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -517,8 +515,7 @@ int daEykn_c::St_Die_Init()
         mDeathSpinSpeed = 0x2500;
     else
         mDeathSpinSpeed = -0x2500;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gEyknDeathAnimationFile.filePtr, 0,
-                                                0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.SetFlags(0x40000000);
     mModelAnim.speed = 0x2800;
     mModelAnim.currFrame = 0;
@@ -839,8 +836,7 @@ s32 daEykn_c::InitResources()
     mTerminalVelocity = 0;
     SetState(0);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gEyknDeathAnimationFile.filePtr, 0,
-                                                0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
 
     mModelAnim.speed = 0x1000;
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(

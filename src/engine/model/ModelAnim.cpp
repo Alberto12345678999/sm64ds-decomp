@@ -18,14 +18,10 @@
 #include "ModelAnim.h"
 
 extern "C" {
-/* SetAnim keeps its mangled spelling because of the NAME, not wall 6az:
-   measured 2026-10-22, it reproduces as a real method under the scalar
-   mangling _ZN9ModelAnim7SetAnimEP8BCA_Fileiit, and only the class-typed
-   `5Fix12IiE` spelling costs (+0x18, since the body reads `speed`). The
-   rename is a campaign, not a local edit -- notes/mwccarm-codegen.md 6az,
-   MEASURED 2026-10-22. ModelAnim.h's declaration is the one callers use,
-   but the measured method takes Fix12i and a u16 startFrame (retail
-   reads it with `ldrh`), not Fix12<int> and u32.
+/* SetAnimation keeps its mangled spelling: its symbol really does carry a
+   by-value Fix12<int>, and this body reads the argument, so wall 6az applies
+   here even though it did NOT apply to SetAnim below (see ModelAnim.h and
+   notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22).
    local extern: Fix12 by-value speed. */
 void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames,
                                                      s32 flags, s32 speed, u16 startFrame);
@@ -88,16 +84,15 @@ extern "C" void func_020167a4(ModelAnim *self) {
     self->data.UpdateBones(self->file, (u32)(frame << 4) >> 0x10);
 }
 
-// @symbol _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *thiz, BCA_File *animFile,
-                                                            s32 flags, s32 speed, u16 startFrame) {
-    if (animFile == thiz->file) {
-        thiz->SetFlags(flags);
-        thiz->speed = speed;
+// @symbol _ZN9ModelAnim7SetAnimEP8BCA_Fileiit
+void ModelAnim::SetAnim(BCA_File *animFile, int flags, Fix12i speed, u16 startFrame) {
+    if (animFile == file) {
+        SetFlags(flags);
+        this->speed = speed;
     } else {
-        thiz->file = animFile;
+        file = animFile;
         _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(
-            &static_cast<dExtFrameCtrl_c &>(*thiz), animFile->numFrames, flags, speed, startFrame);
+            &static_cast<dExtFrameCtrl_c &>(*this), animFile->numFrames, flags, speed, startFrame);
     }
 }
 

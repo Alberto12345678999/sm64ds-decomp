@@ -11,9 +11,10 @@
      record they operate on (0xf0 stride) is laid out in include/Heyho.h and read
      through the HEYHO() cast; the per-file typedef/extern universes disagree, so
      the helpers keep their char* parameters rather than a shared typed one.
-   - _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj keeps scalar parameter spellings:
-     it takes Fix12<int> by value and a natural typed declaration homes the
-     arguments differently under mwccarm (the Fix12 wall, notes/mwccarm-codegen.md 6az).
+   - ModelAnim::SetAnim is called as a real method. Its old name claimed a
+     by-value Fix12<int>, but that spelling was ours, not the ROM's; the symbol
+     is _ZN9ModelAnim7SetAnimEP8BCA_Fileiit (notes/mwccarm-codegen.md 6az,
+     MEASURED 2026-10-22).
    - _ZN9ModelAnimC1Ev/_ZN9ModelAnimD1Ev/_ZN7Vector3D1Ev and
      __register_global_object are ctor/dtor/atexit ABI calls, spelled as free
      functions because the bodies are the compiler's own sinit glue.
@@ -97,8 +98,6 @@ namespace n020c6e4c {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, int b,
-                                                           unsigned int u);
 
 extern "C" void func_02016acc(Model *m, unsigned int a);
 extern "C" void func_02016b24(char *m, int a);
@@ -113,7 +112,7 @@ extern "C" int Heyho_LoadResources(char *c) {
     if (((ModelBase *)HEYHO(c)->mModelAnim)->SetFile(m, 1, -1) == 0) {
         return 0;
     }
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)HEYHO(c)->mModelAnim, a, 0, 0x800, 0);
+    ((ModelAnim *)HEYHO(c)->mModelAnim)->SetAnim((BCA_File *)a, 0, 0x800, 0);
     func_02016acc((Model *)HEYHO(c)->mModelAnim, 1u);
     func_02016b24((char *)HEYHO(c)->mModelAnim, 2);
     int b = (((fBaseView *)data_0209f5c0)->actorID == 0x175);

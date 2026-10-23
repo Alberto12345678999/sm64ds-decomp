@@ -65,7 +65,6 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
 
 /* model / animation */
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *self, void *bca, int frame, int speed, unsigned int flags);
 
 /* ov085 statics. data_ov085_0212f280 and data_ov085_021304f4 keep
  * include/decl_common.h's spelling, so this file adds no new reading of
@@ -219,7 +218,7 @@ int daPeach_c::InitState0()
 // @symbol _ZN9daPeach_c6State0Ev
 int daPeach_c::State0()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&mModelAnim, data_ov085_021304ec[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_021304ec[1], 0, 0x1000, 0);
     ((dExtFrameCtrl_c *)&mModelAnim)->SetFlags(0x40000000);
     mHorzSpeed = 0x4000;
     mVertSpeed = 0xa000;
@@ -236,7 +235,7 @@ int daPeach_c::State2()
 // @symbol _ZN9daPeach_c10InitState2Ev
 int daPeach_c::InitState2()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&mModelAnim, (void *)data_ov085_021304e4[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304e4[1]), 0, 0x1000, 0);
     mHorzSpeed = 0x4000;
     mStateValue = 3;
     return 1;
@@ -256,7 +255,7 @@ int daPeach_c::InitState4()
 // @symbol _ZN9daPeach_c6State1Ev
 int daPeach_c::State1()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&mModelAnim, (void *)data_ov085_021304c4[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304c4[1]), 0, 0x1000, 0);
     mHorzSpeed = 0x1800;
     mStateValue = 2;
     return 1;
@@ -295,7 +294,7 @@ int daPeach_c::State3()
 // @symbol _ZN9daPeach_c10InitState1Ev
 int daPeach_c::InitState1()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&mModelAnim, data_ov085_021304d4[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_021304d4[1], 0, 0x1000, 0);
     ((dExtFrameCtrl_c *)&mModelAnim)->currFrame = 0;
     ((dExtFrameCtrl_c *)&mModelAnim)->Advance();
     mTalkState = 1;
@@ -326,7 +325,7 @@ int daPeach_c::InitState3()
 // @symbol _ZN9daPeach_c6State4Ev
 int daPeach_c::State4()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&mModelAnim, (void *)data_ov085_021304bc[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304bc[1]), 0, 0x1000, 0);
     mStateValue = 0;
     return 1;
 }

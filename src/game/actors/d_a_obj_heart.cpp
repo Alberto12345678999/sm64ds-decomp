@@ -54,8 +54,6 @@ void Matrix4x3_FromRotationY(void *m, int angleY);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 int Math_Function_0203b14c(int *ptr, int target, int rate, int limit, int step);
 
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, BCA_File *file, int flags, int speed, unsigned short start);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *actor, int radius, int height,
     unsigned int flags, unsigned int vuln);
@@ -137,9 +135,7 @@ s32 daObjHeart_c::Behavior()
 s32 daObjHeart_c::InitResources()
 {
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov002_0210e104), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210e0fc),
-        0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210e0fc), 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x3c000, 0x78000, 0x100002, 0x8000);
     mAnimSpeed = 0x1000;

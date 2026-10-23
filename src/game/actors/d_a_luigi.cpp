@@ -116,8 +116,9 @@ void Vec3_Asr(Vec3 *dst, Vec3 *src, int shift);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 
 /* Fix12<int> by value. The method form homes that argument on the stack. */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth, unsigned char opacity);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *model, BCA_File *file, int flags, int speed, unsigned short start);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth,
+    unsigned char opacity);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequence *seq, BTP_File *file, int flags, int speed, unsigned short start);
 }
 
@@ -155,7 +156,7 @@ int daLuigi_c::InitResources()
 
     mShadowModel.InitCylinder();
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
+    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
 
     Vec3_Asr(&t, (Vec3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);

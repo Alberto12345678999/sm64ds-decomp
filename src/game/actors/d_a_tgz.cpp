@@ -98,7 +98,6 @@ void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 extern Matrix4x3 data_020a0e68;
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int depth, u8 opacity);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int flags, int speed, u16 startFrame);
 void * _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 extern s16 data_02082214[];
 void func_02035684(int *p, int v);
@@ -423,7 +422,7 @@ extern "C" int func_ov077_02125480(daTgz_c *self)
     self->mAngleX = 0;
     self->mAngleZ = 0;
     self->mActionTimer = 0x2d;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, TGZ_BCA, 0, 0x1000, 0);
+    self->mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
     self->mModelAnim.speed = 0x4000;
     int aimHeight = self->OnAimedAtWithEgg();
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, self->mPosX, self->mPosY + aimHeight, self->mPosZ);
@@ -658,7 +657,7 @@ extern "C" void func_ov077_02125b1c(daTgz_c *self)
 {
     self->mVertAccel = -0x2000;
     self->mTerminalVelocity = -0x3c000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, TGZ_BCA, 0, 0x1000, 0);
+    self->mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
     self->mModelAnim.speed = 0x1000;
     func_02035684((int *)&self->mWithMeshClsn, 0x28000);
     self->mHorzSpeed = 0x1b33;
@@ -836,7 +835,7 @@ int daTgz_c::InitResources()
     bmd = (BMD_File *)Model::LoadFile(data_ov077_02127b38);
     mModelAnim.SetFile(bmd, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov077_02127c14);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, TGZ_BCA, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
     if (!mShadowModel.InitCylinder())
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x2d000, 0x3c000, 0x200000, 0x4a3d0);

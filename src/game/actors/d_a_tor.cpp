@@ -50,11 +50,10 @@ s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *collision);
 s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
-u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
-    void *callback);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    void *self, void *file, int flags, int speed, unsigned int start);
+u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 effect,
+                                                                           s32 x, s32 y, s32 z,
+                                                                           const void *direction,
+                                                                           void *callback);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
     void *self, void *file, int flags, int speed, unsigned int start);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -302,8 +301,7 @@ int daTor_c::InitResources()
                        1, 0x15);
     dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
     func_02016aac(&mModelAnim, 0x16, 1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (void *)gSandTornadoAnimationFile.filePtr, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);
     TextureTransformer::Prepare(*(BMD_File *)gSandTornadoModelFile.filePtr,
                                 *(BTA_File *)data_ov024_02112968);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(

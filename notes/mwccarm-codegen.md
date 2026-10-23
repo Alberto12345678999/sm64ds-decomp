@@ -174,14 +174,45 @@ Two things follow, and both are general, not specific to these two symbols:
   in arm9 and all 105 overlays. Those names are ours; they cannot be evidence for
   the type they contain.
 
-**NOT done here.** Landing either rename is a source campaign, not a comment fix:
-801 references across 114 files, plus `config/arm9/symbols.txt`, ~30
-`config/tu_manifest.d/` manifests and `config/decl-agreement-baseline.json`.
-Renaming a symbol re-keys every local `extern` of it, so each must be retyped to
-agree with the new definition -- including `unsigned int` -> `u16` on
-`startFrame`, which is itself an instruction-selection risk at ~100 call sites.
-A symbol rename cannot partially land, so it needs a full `tools/rombuild.py`
-run, not a sampled one.
+### DONE for ModelAnim::SetAnim (2026-10-22); BlendModelAnim::SetAnim still pending
+
+`_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj` is now
+`_ZN9ModelAnim7SetAnimEP8BCA_Fileiit`, a real method, and the 612 references
+across 79 files were converted: 394 call sites became `obj.SetAnim(...)` and 120
+local `extern` declarations were deleted outright. What the campaign actually
+cost, for whoever does the other 53 symbols:
+
+- **Four sites could not follow, and each needs a scalar `local extern:`.**
+  `d_mg_trmpln2_mario.cpp` (61 refs) and `unit020bfec0.cpp` (5) never see the
+  real class -- trmpln2 declares a never-defined `struct ModelAnim` scaffold in
+  every `ns_*` namespace, and unit020bfec0 reaches its anim through raw record
+  offsets -- so a method call cannot bind and only the symbol name changed there.
+  `d_a_ots.cpp` tail-forwards SetAnim's r0 as `func_ov064_02116560`'s own `int`
+  result, which needs the int-returning spelling. One `Player.cpp` body
+  (`St_YoshiPower_Main`) passes a NON-CONSTANT startFrame, and narrowing
+  `(currFrame << 4) >> 0x10` to the real `u16` costs +0x10 there.
+- **The `u16` startFrame is the one real codegen risk, and it is rare.** 383 of
+  394 sites pass a constant 0, where it is free. Only the non-constant ones pay.
+- **Two `#define` aliases hid call sites from a textual sweep** (`SET_ANIM` in
+  `d_a_r_nk.cpp`, `SetChompAnim` in `d_a_wanwan.cpp`), and a third file reached
+  the symbol through a macro that a sweep must not join across its
+  line-continuation backslash.
+- **Casts must be scope-qualified.** `d_mg_trmpln2_mario.cpp` has per-function
+  `ns_*::BCA_File` types, so an unqualified `(BCA_File *)` binds the wrong one.
+- **The config side is `config/arm9/symbols.txt` plus
+  `config/decl-agreement-baseline.json`.** The `config/tu_manifest.d/` hits are
+  historical `tubuild create warning (RESOLVED)` narrative strings and must NOT
+  be rewritten -- they record what happened under the old name. Deleting the 120
+  local externs removes their banked disagreements, so the baseline shrinks; the
+  remaining deliberate ones are re-banked with `--update`.
+- **`source_style` reports the surviving `handspelled-member` debt as new,**
+  because it keys debt on the exact spelling and the spelling changed. For this
+  symbol the count went 612 -> 71, and the 71 are the same occurrences in the
+  four files above (61 -> 61 and 5 -> 5 unchanged; 15 -> 2 and 18 -> 3).
+
+`_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt` is measured (it reproduces
+0x020163e0/0x9c as `BlendModelAnim::SetAnim(BCA_File &, int, int, Fix12i, u16)`)
+but NOT converted; it has 189 references of its own.
 
 ## 1. Ground rules of the build
 

@@ -103,7 +103,6 @@ int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *anim, BCA_File *bca, int frame, int speed, u16 flags);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
@@ -302,8 +301,7 @@ void dMg3DEspAnimSet_c::InitResources()
     w2 = (char *)mMaterialChangers;
     for (i = 0; i < 3; i++) {
         ((ModelBase *)w)->SetFile((BMD_File *)bmd, 1, m1);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)w, (BCA_File *)bca, 0x40000000,
-                                                    mSpeed, z1);
+        ((ModelAnim *)w)->SetAnim((BCA_File *)bca, 0x40000000, mSpeed, z1);
         _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
                                                            mSpeed, z2);
         ((Model *)w)->SetPolygonID((i + 1) & 0xff);
@@ -387,8 +385,7 @@ void dMg3DEspModel_c::Behavior()
 void dMg3DEspModel_c::Hit()
 {
     if (mModelAnim.Finished() != 0 && mModelAnim.file == (BCA_File *)gEspCardOpenAnimFile.filePtr) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, (BCA_File *)gEspCardOpenWaitAnimFile.filePtr, 0, 0x800, 0);
+        mModelAnim.SetAnim((BCA_File *)gEspCardOpenWaitAnimFile.filePtr, 0, 0x800, 0);
         return;
     }
     if (mModelAnim.WillHitFrame(0x10) == 0 && mModelAnim.WillHitFrame(0x50) == 0)
@@ -401,8 +398,7 @@ void dMg3DEspModel_c::Hit()
 // @symbol _ZN15dMg3DEspModel_c8StartHitEv
 void dMg3DEspModel_c::StartHit()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)gEspCardOpenAnimFile.filePtr, 0x40000000, 0x800, 0);
+    mModelAnim.SetAnim((BCA_File *)gEspCardOpenAnimFile.filePtr, 0x40000000, 0x800, 0);
     if (mMuted == 0)
         Sound::PlayBank2_2D(0x191);
     mState = pmf_dMg3DEspModel_c_Hit;
@@ -428,8 +424,7 @@ void dMg3DEspModel_c::Intro()
 // @symbol _ZN15dMg3DEspModel_c10StartIntroEv
 void dMg3DEspModel_c::StartIntro()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)gEspCardStartAnimFile.filePtr, 0x40000000, 0x800, 0);
+    mModelAnim.SetAnim((BCA_File *)gEspCardStartAnimFile.filePtr, 0x40000000, 0x800, 0);
     mAnimSet.SetPeriod(0xf);
     mAnimSet.SetSpeed(0x1000);
     mAnimSet.SetRepeats(3);
@@ -456,8 +451,7 @@ void dMg3DEspModel_c::Wait()
 // @symbol _ZN15dMg3DEspModel_c9StartWaitEv
 void dMg3DEspModel_c::StartWait()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)gEspCardWaitAnimFile.filePtr, 0, 0x800, 0);
+    mModelAnim.SetAnim((BCA_File *)gEspCardWaitAnimFile.filePtr, 0, 0x800, 0);
     mState = pmf_dMg3DEspModel_c_Wait;
 }
 
@@ -489,8 +483,7 @@ int dMg3DEspModel_c::InitResources()
                              **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
         (char *)&mTextureSequence, *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, *((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
+    mModelAnim.SetAnim(*((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
     mAnimSet.InitResources();
     ResetTransform();
     Reset();
