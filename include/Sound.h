@@ -11,10 +11,10 @@
  * _ZN5Sound6Player... is identical either way. Namespace is what the existing
  * sources chose, and this header keeps that choice rather than reopening it.
  *
- * NO FIELDS, deliberately, in the SharedFilePtr.h sense. Sound::Player's only
- * recovered method is static and reaches a file-scope table, so nothing here
- * evidences an instance layout -- and inventing one would silently retype
- * whatever else turns out to live at those addresses.
+ * NO FIELDS, deliberately. Sound::Player's only recovered method is static
+ * and reaches a file-scope table, so nothing here evidences an instance
+ * layout -- and inventing one would silently retype whatever else turns out
+ * to live at those addresses.
  */
 
 #ifdef __cplusplus
