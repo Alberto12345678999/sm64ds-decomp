@@ -259,7 +259,7 @@ endif()
 
 # Gate 8: collision -- the octree walk over real KCL data. cstd::sqrt
 # drives the hardware sqrt unit through literal MMIO -> hostgen.
-set(GATE8_SYMS _ZN4cstd4sqrtEy _ZN4cstd11fdiv_resultEv _ZN4cstd16reciprocal_asyncE5Fix12IiE
+set(GATE8_SYMS _ZN4cstd4sqrtEy _ZN4cstd11fdiv_resultEv _ZN4cstd16reciprocal_asyncEi
     Matrix4x3_ApplyInPlaceToScale)
 sm64ds_hostgen_symbols(GATE8_GEN ${GATE8_SYMS})
 

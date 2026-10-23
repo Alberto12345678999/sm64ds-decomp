@@ -58,22 +58,21 @@ dBgW_KcMbgSclY::dBgW_KcMbgSclY() {}
 // @symbol _ZN14dBgW_KcMbgSclYD1Ev
 dBgW_KcMbgSclY::~dBgW_KcMbgSclY() {}
 
-// @symbol _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
-extern "C" void _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbgSclY *self, KCL_File *file, const Matrix4x3 *mtx, Fix12i scale, s16 angY,
-    CLPS_Block *clps) {
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(self, file, mtx, scale,
-                                                                          angY, clps);
-    self->scaleY = 0x1000;
-    self->invScaleY = 0x1000;
+// @symbol _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x3isR10CLPS_Block
+void dBgW_KcMbgSclY::SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12i scale, s16 angY,
+                             CLPS_Block &clps) {
+    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(this, file, &mat, scale,
+                                                                          angY, &clps);
+    scaleY = 0x1000;
+    invScaleY = 0x1000;
 }
 
-// @symbol _ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE
-extern "C" void _ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE(dBgW_KcMbgSclY *self, Fix12i newScaleY) {
-    self->scaleY = newScaleY;
-    if (self->scaleY == 0)
+// @symbol _ZN14dBgW_KcMbgSclY9SetScaleYEi
+void dBgW_KcMbgSclY::SetScaleY(Fix12i newScaleY) {
+    scaleY = newScaleY;
+    if (scaleY == 0)
         return;
-    self->invScaleY = func_02053200(self->scaleY);
+    invScaleY = func_02053200(scaleY);
 }
 
 // @symbol func_0203aad0
