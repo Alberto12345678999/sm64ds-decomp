@@ -524,9 +524,6 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
  * ends the object. */
 #pragma defer_codegen off
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0-1 -- _ZN7daKpa_cD1Ev, 0x02111900 / _ZN7daKpa_cD0Ev, 0x02111950 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_cD1Ev
 // @symbol _ZN7daKpa_cD0Ev
 /*
@@ -553,9 +550,6 @@ daKpa_c::~daKpa_c()
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 2-3 -- _ZN11daKpaTail_cD1Ev, 0x021119b4 / _ZN11daKpaTail_cD0Ev, 0x021119e4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_cD1Ev
 // @symbol _ZN11daKpaTail_cD0Ev
 /*
@@ -610,9 +604,6 @@ extern "C" daKpaTail_c *daKpaTail_c_classInit(void)
     return new daKpaTail_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 78 -- _ZN11daKpaTail_c13InitResourcesEv, 0x021163b4, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c13InitResourcesEv
 /*
 Tail setup: a single cylinder collider (dCcAc_c::Init) with radius 0x32000 (50
@@ -625,9 +616,6 @@ int daKpaTail_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 77 -- _ZN7daKpa_c13InitResourcesEv, 0x02116130, size 0x284 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c13InitResourcesEv
 /*
 Bowser's setup, in order: load the model file and hand it to ModelBase::SetFile,
@@ -737,9 +725,6 @@ int daKpa_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 76 -- _ZN11daKpaTail_c8BehaviorEv, 0x02116078, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c8BehaviorEv
 /*
 Per frame: find Bowser by mBowserUniqueID (return 1 if he is gone), put the tail
@@ -775,9 +760,6 @@ int daKpaTail_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 75 -- _ZN7daKpa_c8BehaviorEv, 0x02115f64, size 0x114 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c8BehaviorEv
 /*
 One frame of Bowser, in order: advance the random state once (result unused);
@@ -830,9 +812,6 @@ int daKpa_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 74 -- _ZN11daKpaTail_c6RenderEv, 0x02115f5c, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c6RenderEv
 /*
 Draws nothing; returns 1. */
@@ -841,9 +820,6 @@ int daKpaTail_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 73 -- _ZN7daKpa_c6RenderEv, 0x02115f0c, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c6RenderEv
 /*
 Draw Bowser. Skipped while mOpacity < 8, where the opacity handed to the model
@@ -860,9 +836,6 @@ int daKpa_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 72 -- _ZN7daKpa_c16OnPendingDestroyEv, 0x02115f08, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16OnPendingDestroyEv
 /*
 Empty override: the ROM body is a single `bx lr`. */
@@ -870,9 +843,6 @@ void daKpa_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 71 -- _ZN11daKpaTail_c16CleanupResourcesEv, 0x02115f00, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c16CleanupResourcesEv
 /*
 Releases nothing; returns 1. The tail loads no files of its own:
@@ -882,9 +852,6 @@ int daKpaTail_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 70 -- _ZN7daKpa_c16CleanupResourcesEv, 0x02115e80, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16CleanupResourcesEv
 /*
 Release every handle InitResources loaded (the model, the 0x1c animations, the six

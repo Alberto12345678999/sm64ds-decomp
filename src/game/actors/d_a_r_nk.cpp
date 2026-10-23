@@ -39,6 +39,7 @@ enum daRNk_c_AssetId {
 #include "Timer.h"
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 /* Actor IDs (symbols/actor_debug_names.tsv). */
 enum {
@@ -171,7 +172,6 @@ extern short data_02082214[];   /* SINE_TABLE: {sin, cos} pairs in fix12, indexe
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, u16);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
-extern void _ZN5Sound22StopLoadedMusic_Layer2Ev(void);
 /* Play2D(3, id): a sound with no position. */
 extern unsigned int func_0201277c(unsigned int id);
 extern signed char data_0209f2f8;   /* LEVEL_ID */
@@ -285,7 +285,8 @@ int daRNk_c::CleanupResources()
     ((SharedFilePtr *)&gdaRNkNokonokoWait2AnimationFile)->Release();
     ((SharedFilePtr *)&data_ov062_0211e02c)->Release();
     ((SharedFilePtr *)&data_ov062_0211e004)->Release();
-    if (mIsRacing) _ZN5Sound22StopLoadedMusic_Layer2Ev();
+    if (mIsRacing)
+        Sound::StopLoadedMusic_Layer2();
     return 1;
 }
 
@@ -702,7 +703,7 @@ void daRNk_c::func_ov062_02119be0() {
         this->mStep++;
         SET_ANIM(this, ANIM_TALK, kAnimLoop);
         if (this->mHasFinished == 0) {
-            _ZN5Sound22StopLoadedMusic_Layer2Ev();
+            Sound::StopLoadedMusic_Layer2();
             func_0201277c(kSfx4D);
             this->mIsRacing = 0;
             this->mHasFinished = 1;

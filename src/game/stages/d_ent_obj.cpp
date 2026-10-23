@@ -878,9 +878,6 @@ void dEntObj_c::func_ov075_021152d4() {
     data_0209f43c.Func_020156DC(0x1555, 0x105b, 0x1000, 0x1388000);
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x02115388 _ZN9dEntObj_c16CleanupResourcesEv                               */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c16CleanupResourcesEv
 int dEntObj_c::CleanupResources() {
     CleanCommonModelDataArr();
@@ -915,9 +912,6 @@ int dEntObj_c::CleanupResources() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x021154cc _ZN9dEntObj_c6RenderEv                                          */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c6RenderEv
 int dEntObj_c::Render() {
     mModel.Render(0);
@@ -938,9 +932,6 @@ int dEntObj_c::Render() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x0211555c _ZN9dEntObj_c8BehaviorEv                                        */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c8BehaviorEv
 int dEntObj_c::Behavior() {
     if (mSuspended == 0) {
@@ -997,9 +988,6 @@ int dEntObj_c::Behavior() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x021156e0 _ZN9dEntObj_c13InitResourcesEv                                  */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN9dEntObj_c13InitResourcesEv
 int dEntObj_c::InitResources() {
     int i;

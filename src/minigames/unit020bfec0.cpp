@@ -101,8 +101,6 @@ void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *
                                                                   unsigned int);
 void *_ZN17dExtShadowModel_cC1Ev(void *);
 void _ZN17dExtShadowModel_cD1Ev(void *);
-void _ZN13SharedFilePtr7ReleaseEv(void *);
-void _ZN13SharedFilePtr9ConstructEj(void *, unsigned int);
 void *_ZN14BlendModelAnimC1Ev(void *);
 void _ZN14BlendModelAnimD1Ev(void *);
 void _ZN14BlendModelAnim7AdvanceEv(void *);
@@ -277,10 +275,10 @@ extern "C" void *FlowerFace_Construct(char *c) {
     _ZN9ModelAnimC1Ev(FLOWERFACE(c)->mModel);
     func_02017acc(&FLOWERFACE(c)->mModelFile, 0x222);
     func_02017acc(&FLOWERFACE(c)->mPetalFile, 0x201);
-    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mWaitAnim, 0x224);
-    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mPickAnim, 0x223);
-    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mLikeAnim, 0x221);
-    _ZN13SharedFilePtr9ConstructEj(&FLOWERFACE(c)->mHateAnim, 0x220);
+    ((SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim)->Construct(0x224);
+    ((SharedFilePtr *)&FLOWERFACE(c)->mPickAnim)->Construct(0x223);
+    ((SharedFilePtr *)&FLOWERFACE(c)->mLikeAnim)->Construct(0x221);
+    ((SharedFilePtr *)&FLOWERFACE(c)->mHateAnim)->Construct(0x220);
     return c;
 }
 }
@@ -819,14 +817,14 @@ int Presenter_Construct(char *t) {
     _ZN18TextureTransformerC1Ev(PRESENTER(t)->mTexAnim);
     func_02017acc(&PRESENTER(t)->mFaceModel, 0x286);
     func_02017acc(&PRESENTER(t)->mBackModel, 0x200);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[0], 0x1fc);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[1], 0x1f6);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[2], 0x1fe);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[3], 0x1f0);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[4], 0x1f4);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[5], 0x1f2);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[6], 0x1f8);
-    _ZN13SharedFilePtr9ConstructEj(&PRESENTER(t)->mAnims[7], 0x1fa);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[0])->Construct(0x1fc);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[1])->Construct(0x1f6);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[2])->Construct(0x1fe);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[3])->Construct(0x1f0);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[4])->Construct(0x1f4);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[5])->Construct(0x1f2);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[6])->Construct(0x1f8);
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[7])->Construct(0x1fa);
     SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[0], 0x1fd);
     SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[1], 0x1f7);
     SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[2], 0x1ff);
@@ -845,24 +843,24 @@ int Presenter_Construct(char *t) {
 namespace s020c3288 {
 extern "C" {
 int Presenter_Destruct(char *t) {
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mFaceModel);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mBackModel);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[0]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[1]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[2]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[3]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[4]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[5]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[6]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mAnims[7]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[0]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[1]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[2]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[3]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[4]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[5]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[6]);
-    _ZN13SharedFilePtr7ReleaseEv(&PRESENTER(t)->mTexSeqs[7]);
+    ((SharedFilePtr *)&PRESENTER(t)->mFaceModel)->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mBackModel)->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[0])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[1])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[2])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[3])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[4])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[5])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[6])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mAnims[7])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[0])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[1])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[2])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[3])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[4])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[5])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[6])->Release();
+    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[7])->Release();
     SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[7]);
     SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[6]);
     SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[5]);
@@ -1481,7 +1479,7 @@ namespace s020c221c {
 extern "C" {
 int Mascot_Construct(char *t) {
     func_02017acc(MASCOT(t)->mModelFile, 0x205);
-    _ZN13SharedFilePtr9ConstructEj(MASCOT(t)->mWaitAnimFile, 0x206);
+    ((SharedFilePtr *)MASCOT(t)->mWaitAnimFile)->Construct(0x206);
     _ZN14BlendModelAnimC1Ev(MASCOT(t)->mModel);
     MASCOT(t)->mLooking = 0;
     return (int)t;
@@ -1492,8 +1490,8 @@ int Mascot_Construct(char *t) {
 namespace s020c21e4 {
 extern "C" {
 int Mascot_Destruct(char *t) {
-    _ZN13SharedFilePtr7ReleaseEv(MASCOT(t)->mModelFile);
-    _ZN13SharedFilePtr7ReleaseEv(MASCOT(t)->mWaitAnimFile);
+    ((SharedFilePtr *)MASCOT(t)->mModelFile)->Release();
+    ((SharedFilePtr *)MASCOT(t)->mWaitAnimFile)->Release();
     _ZN14BlendModelAnimD1Ev(MASCOT(t)->mModel);
     SharedFilePtr_Destruct_Anim(MASCOT(t)->mWaitAnimFile);
     func_02017ab4(MASCOT(t)->mModelFile);
@@ -1691,19 +1689,19 @@ int Dealer_Construct(char *t) {
     DEALER(t)->mReserved = 0;
     func_02017acc(&DEALER(t)->mModelFile, 0x208);
     func_02017acc(&DEALER(t)->mTableFile, 0);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[0], 0x212);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[1], 0x210);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[2], 0x20f);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[3], 0x20c);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[4], 0x209);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[5], 0x20a);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[6], 0x20b);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[7], 0x20d);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[8], 0x211);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[9], 0x215);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[10], 0x213);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[11], 0x214);
-    _ZN13SharedFilePtr9ConstructEj(&DEALER(t)->mAnims[12], 0x20e);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[0])->Construct(0x212);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[1])->Construct(0x210);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[2])->Construct(0x20f);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[3])->Construct(0x20c);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[4])->Construct(0x209);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[5])->Construct(0x20a);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[6])->Construct(0x20b);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[7])->Construct(0x20d);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[8])->Construct(0x211);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[9])->Construct(0x215);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[10])->Construct(0x213);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[11])->Construct(0x214);
+    ((SharedFilePtr *)&DEALER(t)->mAnims[12])->Construct(0x20e);
     DEALER(t)->mModelData = 0;
     DEALER(t)->mTableData = 0;
     DEALER(t)->mShuffleSoundPlayed = 0;
@@ -1716,21 +1714,21 @@ int Dealer_Construct(char *t) {
 namespace s020c1c64 {
 extern "C" {
 int Dealer_Destruct(char *t) {
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mModelFile);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mTableFile);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[0]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[1]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[2]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[3]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[4]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[5]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[6]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[7]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[8]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[9]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[10]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[11]);
-    _ZN13SharedFilePtr7ReleaseEv(&DEALER(t)->mAnims[12]);
+    ((SharedFilePtr *)&DEALER(t)->mModelFile)->Release();
+    ((SharedFilePtr *)&DEALER(t)->mTableFile)->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[0])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[1])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[2])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[3])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[4])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[5])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[6])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[7])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[8])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[9])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[10])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[11])->Release();
+    ((SharedFilePtr *)&DEALER(t)->mAnims[12])->Release();
     SharedFilePtr_Destruct_Anim(&DEALER(t)->mAnims[12]);
     SharedFilePtr_Destruct_Anim(&DEALER(t)->mAnims[11]);
     SharedFilePtr_Destruct_Anim(&DEALER(t)->mAnims[10]);
@@ -2519,8 +2517,8 @@ namespace s020c0a48 {
 extern "C" {
 int MascotWalker_Construct(char *t) {
     func_02017acc(WALKER(t)->mModelFile, 0x205);
-    _ZN13SharedFilePtr9ConstructEj(WALKER(t)->mPauseAnimFile, 0x206);
-    _ZN13SharedFilePtr9ConstructEj(WALKER(t)->mWalkAnimFile, 0x207);
+    ((SharedFilePtr *)WALKER(t)->mPauseAnimFile)->Construct(0x206);
+    ((SharedFilePtr *)WALKER(t)->mWalkAnimFile)->Construct(0x207);
     _ZN14BlendModelAnimC1Ev(WALKER(t)->mModel);
     _ZN17dExtShadowModel_cC1Ev(WALKER(t)->mShadow);
     WALKER(t)->mPathIndex = 0;
@@ -2534,9 +2532,9 @@ int MascotWalker_Construct(char *t) {
 namespace s020c09f8 {
 extern "C" {
 int MascotWalker_Destruct(char *t) {
-    _ZN13SharedFilePtr7ReleaseEv(WALKER(t)->mModelFile);
-    _ZN13SharedFilePtr7ReleaseEv(WALKER(t)->mWalkAnimFile);
-    _ZN13SharedFilePtr7ReleaseEv(WALKER(t)->mPauseAnimFile);
+    ((SharedFilePtr *)WALKER(t)->mModelFile)->Release();
+    ((SharedFilePtr *)WALKER(t)->mWalkAnimFile)->Release();
+    ((SharedFilePtr *)WALKER(t)->mPauseAnimFile)->Release();
     _ZN17dExtShadowModel_cD1Ev(WALKER(t)->mShadow);
     _ZN14BlendModelAnimD1Ev(WALKER(t)->mModel);
     SharedFilePtr_Destruct_Anim(WALKER(t)->mWalkAnimFile);

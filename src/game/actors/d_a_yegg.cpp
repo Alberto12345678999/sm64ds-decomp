@@ -195,10 +195,6 @@ extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0 and 1 -- _ZN8daYegg_cD1Ev, 0x020ec56c, size 0x48;
- *                         _ZN8daYegg_cD0Ev, 0x020ec5b4, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_cD1Ev
 // @symbol _ZN8daYegg_cD0Ev
 /* One native destructor definition emits both ROM variants. D1 is one vtable
@@ -1339,9 +1335,6 @@ fail:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 28 -- _ZN8daYegg_c16CleanupResourcesEv, 0x020edf54, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method */
 /* Releases the two shared animation files and, if the egg pays a blue coin,
@@ -1355,9 +1348,6 @@ int daYegg_c::CleanupResources()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 29 -- _ZN8daYegg_c6RenderEv, 0x020edf98, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c6RenderEv
 /* recovered: named members + shared header, real C++ method -- vtable slot 9 */
 /* Draws the egg's model unless it is hidden: skipped when mFlags has 0x40000,
@@ -1378,9 +1368,6 @@ int daYegg_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 30 -- _ZN8daYegg_c8BehaviorEv, 0x020ee010, size 0x134 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -1439,9 +1426,6 @@ int daYegg_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 31 -- _ZN8daYegg_c13InitResourcesEv, 0x020ee144, size 0x294 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *

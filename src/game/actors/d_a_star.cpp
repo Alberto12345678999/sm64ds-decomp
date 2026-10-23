@@ -408,9 +408,6 @@ extern s32 IsStarCollected(s32 level, s32 idx);
  * ends the object. (d_a_kpa.cpp precedent.) */
 #pragma defer_codegen off
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0-1 -- _ZN8daStar_cD1Ev, 0x020e6c40 / _ZN8daStar_cD0Ev, 0x020e6c90 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_cD1Ev
 // @symbol _ZN8daStar_cD0Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
@@ -456,9 +453,6 @@ daStar_c::~daStar_c()
 
 #pragma defer_codegen on
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 76 -- _ZN8daStar_c13InitResourcesEv, 0x020eb63c, size 0x820 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13InitResourcesEv
 /* Spawn-time set-up for the Power Star (actor 0xb2) and the silver star
  * (0xb3). Loads the shared animation files and the star models, then picks the
@@ -680,9 +674,6 @@ s32 daStar_c::InitResources()
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 75 -- _ZN12daStarBase_c13InitResourcesEv, 0x020eb204, size 0x438 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c13InitResourcesEv
 /* Spawn-time set-up for the marker that shows where a star will appear. param1
  * bits 4..7 pick the flavour: kind 6 only spawns the switch star (actor 0xb2,
@@ -801,9 +792,6 @@ int daStarBase_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 74 -- _ZN8daStar_c8BehaviorEv, 0x020eb05c, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c8BehaviorEv
 /* Per-frame update. Looks once for an ice block, clears the cached centre, and
  * while a Yoshi has the star in its mouth only rebuilds the matrices.
@@ -859,9 +847,6 @@ int daStar_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 73 -- _ZN12daStarBase_c8BehaviorEv, 0x020ead90, size 0x2cc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c8BehaviorEv
 /* Per-frame update of the marker. mAppearTimer counts down while this marker's
  * star id is the next one in data_0209f344[data_0209f208], and the marker
@@ -942,9 +927,6 @@ int daStarBase_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 72 -- _ZN8daStar_c6RenderEv, 0x020eacf4, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c6RenderEv
 /* Draws mModelAnim2 (collected, translucent) or mModelAnim1, unless the star
  * is scaled to nothing, hidden by mFlags & 0x40000, or not visible. */
@@ -965,9 +947,6 @@ callit:
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 71 -- _ZN12daStarBase_c6RenderEv, 0x020eacb8, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c6RenderEv
 /* Draws the marker's model while it is visible. */
 int daStarBase_c::Render()
@@ -977,9 +956,6 @@ int daStarBase_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 70 -- _ZN8daStar_c16CleanupResourcesEv, 0x020eac18, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c16CleanupResourcesEv
 /* Gives up the map marker slot (kind 8 never had one), unloads the silver star
  * and number models when InitResources loaded them (silver star, or kind 6),
@@ -1005,9 +981,6 @@ int daStar_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 69 -- _ZN12daStarBase_c16CleanupResourcesEv, 0x020eabcc, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c16CleanupResourcesEv
 /* Releases the model files that InitResources loaded for this marker's
  * flavour. */
@@ -1022,9 +995,6 @@ int daStarBase_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 68 -- _ZN12daStarBase_c16OnPendingDestroyEv, 0x020eab8c, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c16OnPendingDestroyEv
 /* If the linked star exists but has no death-table slot of its own
  * (mDeathTableID < 0), clears the death-table bit this marker remembered for
@@ -2140,17 +2110,11 @@ ret0:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 45 -- _ZN8daStar_c13OnYoshiTryEatEv, 0x020e8ee8, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13OnYoshiTryEatEv
 s32 daStar_c::OnYoshiTryEat() {
     return 4;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 44 -- _ZN8daStar_c13OnTurnIntoEggER6Player, 0x020e8edc, size 0xc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13OnTurnIntoEggER6Player
 /* daStar_c::OnTurnIntoEgg -- vtable slot 19, verified against ov002 relocs.txt:
  * _ZTV8daStar_c (0x0210ab3c) + 0x4c -> 0x020e8edc, exactly this placeholder's
@@ -2214,9 +2178,6 @@ int daStar_c::func_ov002_020e8dd8() {
     AddStarMarker();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 41 -- _ZN8daStar_c13AddStarMarkerEv, 0x020e8ca0, size 0x138 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13AddStarMarkerEv
 /* Claims a free slot of the map-marker table (data_0209f40c, 12 entries) for
  * this star. The marker type is 1 for the silver star, 2 for the Power Star
@@ -2807,9 +2768,6 @@ int daStar_c::func_ov002_020e7e14() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 23 -- _ZN12daStarBase_c7CollectEv, 0x020e7d84, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c7CollectEv
 /* The marker was touched: plays sound 3/0x53, puts the marker on hold and
  * hides it, clears its touch volume and bursts effects 0x12c, 0x12d and 0x12e. */
@@ -3148,9 +3106,6 @@ ret0:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv, 0x020e72d8, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv
 /* Once the eighth red coin is in (NumRedCoins() == 8) spawns this marker's
  * Power Star 120.0 above it. The star takes the map marker, remembers this

@@ -122,9 +122,6 @@ void daObjMaruta_c_EmitDestructor(daObjMaruta_c *p)
     p->~daObjMaruta_c();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN13daObjMaruta_c15OnHitByMegaCharER6Player, 0x02127058 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN13daObjMaruta_c15OnHitByMegaCharER6Player
 /* Vtable slot 27, and this class's KEY FUNCTION: the destructor is inline in
    the class body, so the first out-of-line virtual declared anchors
@@ -164,9 +161,6 @@ extern "C" int func_ov080_021270dc(daObjMaruta_c *self, ResourceDescriptor *arg)
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN13daObjMaruta_c6RenderEv, 0x02127124, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN13daObjMaruta_c6RenderEv
 /* Dispatches through the Model at 0xd4 (dBgActor_c's mModel, inherited) --
    Model::Render(const Vector3 *) with a null scale, matching the ROM's
