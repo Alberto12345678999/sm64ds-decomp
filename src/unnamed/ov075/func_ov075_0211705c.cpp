@@ -3,9 +3,8 @@
 #pragma opt_strength_reduction off
 #include "common.h"
 
-
 namespace G2S {
-u16 * GetBG2ScrPtr(void);
+u16 *GetBG2ScrPtr(void);
 }
 extern "C" {
 

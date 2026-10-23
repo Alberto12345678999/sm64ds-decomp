@@ -48,7 +48,6 @@ enum dScMgPachinko2_c_AssetId {
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 
-
 namespace G2S {
 unsigned GetBG2CharPtr(void);
 unsigned GetBG2ScrPtr(void);
@@ -112,7 +111,6 @@ extern int func_02054d88(void);
 extern void func_02056314(void *, u32, u32);
 extern void func_020562b4(const void *, u32, u32);
 extern void func_020564f4(const void *, int, int);
-
 
 extern void *_ZN11dScMgBase_cC2Ev(void *);
 

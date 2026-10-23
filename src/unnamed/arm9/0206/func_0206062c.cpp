@@ -1,13 +1,11 @@
 //cpp
 
-
 namespace CP15 {
 void DrainWriteBuffer(void);
 void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
 }
 extern "C" {
 extern void CpuCopy8(int src, int dst, unsigned int n);
-
 
 extern int func_02060f60(void *o, int a, int b);
 extern void func_0206081c(void *o);

@@ -59,18 +59,17 @@ enum dScMgSlots_AssetId {
 #include "dWipe_c.h"
 #include "G2x.h"
 
-
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 a, u32 b);
 }
 
 namespace G2S {
-char * GetBG0CharPtr(void);
-char * GetBG0ScrPtr(void);
-char * GetBG1ScrPtr(void);
-void * GetBG2CharPtr(void);
-void * GetBG2ScrPtr(void);
-char * GetBG3ScrPtr(void);
+char *GetBG0CharPtr(void);
+char *GetBG0ScrPtr(void);
+char *GetBG1ScrPtr(void);
+void *GetBG2CharPtr(void);
+void *GetBG2ScrPtr(void);
+char *GetBG3ScrPtr(void);
 }
 
 namespace GX {
@@ -150,9 +149,7 @@ extern SlotState pmf_Slot3_StateGameOver;
 extern SlotState pmf_Slot3_StateDone;
 extern int LoadFile(int handle);
 
-
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
-
 
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 extern u8 data_0209d454;
@@ -198,7 +195,6 @@ extern int _ZTVN12dScMgSlot1_c9betIcon_cE[];
 extern int _ZTV9dThIcon_c[];
 extern char *_ZN2G213GetBG2CharPtrEv(void);
 extern char *_ZN2G212GetBG3ScrPtrEv(void);
-
 
 extern void Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5,
                                      unsigned short a6);

@@ -1,6 +1,5 @@
 //cpp
 
-
 namespace CP15 {
 void FlushDataCache(unsigned int a, unsigned int b);
 }

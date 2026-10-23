@@ -1,7 +1,6 @@
 //cpp
 #include "types.h"
 
-
 namespace IRQ {
 u32 Disable(void);
 void Restore(u32 state);

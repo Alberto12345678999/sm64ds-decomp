@@ -56,7 +56,6 @@ enum dScMgCoin_c_AssetId {
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 
-
 namespace GX {
 void LoadBGPltt(const void *p, u32 a, u32 b);
 void LoadOBJPltt(const void *p, u32 a, u32 b);
@@ -169,7 +168,6 @@ extern void Mg_PlayJingle(void *c);
 extern int Mg_GetTopRecord(void);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
-
 
 extern u8 data_0209d45c;
 extern u8 data_0209d454;

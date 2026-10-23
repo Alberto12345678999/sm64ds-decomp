@@ -86,10 +86,9 @@ enum dScMgAmida_c_AssetId {
 #include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
 
-
 namespace G2S {
 unsigned int GetBG1CharPtr(void);
-void * GetBG1ScrPtr(void);
+void *GetBG1ScrPtr(void);
 }
 
 extern "C" {
@@ -115,7 +114,6 @@ extern void func_020126ac(int a0, int a1, int a2, int a3, int a4);
 extern int func_02012468(int handle, int a, int sfx, int b, int c, int d, int pan, short e);
 extern void func_02012790(int sfx);
 extern int GetGameLanguage(void);
-
 
 /* --- the class's own functions defined below --- */
 extern void Amida_RestoreBgChars(void *);

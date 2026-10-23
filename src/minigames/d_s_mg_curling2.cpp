@@ -47,10 +47,9 @@ enum dScMgCurling2_c_AssetId {
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 
-
 namespace G2 {
-void * GetBG0ScrPtr(void);
-void * GetBG2ScrPtr(void);
+void *GetBG0ScrPtr(void);
+void *GetBG2ScrPtr(void);
 }
 
 namespace G2S {
@@ -114,7 +113,6 @@ extern void func_02056314(void *a, u32 b, u32 c);
 extern void func_020563d4(const void *a, u32 b, u32 c);
 extern void func_02056374(const void *a, u32 b, u32 c);
 extern int func_02054d88(void);
-
 
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u32 d);
 

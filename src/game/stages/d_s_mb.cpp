@@ -27,7 +27,6 @@
 #include "Heap.h"
 #include "OAM.h"
 
-
 namespace GX {
 void LoadOBJPltt(const void *p, u32 a, u32 b);
 }
@@ -39,7 +38,6 @@ void LoadOBJPltt(const void *p, u32 a, u32 b);
 extern "C" {
 void MultiStore16(u16 val, char *dst, int nbytes);
 void DecompressLZ16(int src, void *dst);
-
 
 void func_020308b4(void);
 void func_02012790(int x);

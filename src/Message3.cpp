@@ -23,7 +23,6 @@
 #include "PlayerInput.h"
 #include "Message.h"
 
-
 namespace G2S {
 u32 GetBG0CharPtr(void);
 u32 GetBG0ScrPtr(void);
@@ -99,7 +98,6 @@ extern int data_0209325c;
 extern int data_020937bc;
 extern int data_02093d7c;
 
-
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 extern void *_ZN2G212GetBG3ScrPtrEv(void);
@@ -159,7 +157,7 @@ extern "C" void func_02031b84(int c)
   else
     if (sh == 1)
   {
-    ip = (int *) (((char *) G2S::GetBG1CharPtr()) + (((c & 0x1f) + ((c & 0xe0) << 1)) << 5));
+      ip = (int *)(((char *)G2S::GetBG1CharPtr()) + (((c & 0x1f) + ((c & 0xe0) << 1)) << 5));
   }
   else
   {
@@ -822,10 +820,10 @@ extern "C" void func_02033390(int sub)
     } else {
         volatile u16 fill;
         volatile s32 v;
-        int *dst = (int*)((int)G2S::GetBG0CharPtr() + 0x4000);
+        int *dst = (int *)((int)G2S::GetBG0CharPtr() + 0x4000);
         v = 0;
         MultiStore_Int(v, dst, 0x2000);
-        MultiStore16(fill = 0x2ff, (char*)G2S::GetBG0ScrPtr(), 0x800);
+        MultiStore16(fill = 0x2ff, (char *)G2S::GetBG0ScrPtr(), 0x800);
     }
 }
 
@@ -864,7 +862,7 @@ extern "C" void func_02033464(int arg0, int arg1, int arg2)
         x = (arg0 * 2 + 8) << 0x15;
         data_0209fc94 = 1;
         t = x >> 16;
-        d = (char*)(G2S::GetBG0ScrPtr() + (((x >> 16) & 0xffe0) << 1));
+        d = (char *)(G2S::GetBG0ScrPtr() + (((x >> 16) & 0xffe0) << 1));
         sv0 = 0x2ff;
         MultiStore16(sv0, d, 0x80);
         if (arg1 < 0)
@@ -891,7 +889,7 @@ extern "C" void func_02033464(int arg0, int arg1, int arg2)
             li8 = 0;
             MultiStore_Int(li8, dst, 0x300);
         }
-        base = (volatile u16*)(G2S::GetBG0ScrPtr() + ((t + (data_0209fc7c >> 3)) << 1));
+        base = (volatile u16 *)(G2S::GetBG0ScrPtr() + ((t + (data_0209fc7c >> 3)) << 1));
         { u32 ch = data_0209fc78;
         x = ch + 0x200;
         v1 = ch + 0x20c; }
@@ -1201,7 +1199,7 @@ extern "C" void func_02033e50(int p0, int p1)
                 MultiStore_Int(li, (int*)(cp + (data_0209fc78 << 6)), n << 6);
             }
             {
-                short *scr = (short*)(G2S::GetBG0ScrPtr() + p0 * 2);
+                short *scr = (short *)(G2S::GetBG0ScrPtr() + p0 * 2);
                 i = 0;
                 if (n > 0) {
                     int v1 = (data_0209fc78 << 1) + 0x200;
@@ -1230,7 +1228,7 @@ extern "C" void func_02033e50(int p0, int p1)
             }
             {
                 int v1, v2;
-                short *scr = (short*)(G2S::GetBG0ScrPtr() + p0 * 2);
+                short *scr = (short *)(G2S::GetBG0ScrPtr() + p0 * 2);
                 i = 0;
                 if (n > 0) {
                     v1 = (data_0209fc78 << 1) + 0x200;

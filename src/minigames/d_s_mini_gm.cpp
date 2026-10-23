@@ -64,17 +64,16 @@
 #include "decl_Scene.h"
 #include "decl_common.h"
 
-
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 a, u32 b);
 }
 
 namespace G2S {
-void * GetBG0CharPtr(void);
-void * GetBG0ScrPtr(void);
-void * GetBG2CharPtr(void);
-void * GetBG2ScrPtr(void);
-void * GetBG3ScrPtr(void);
+void *GetBG0CharPtr(void);
+void *GetBG0ScrPtr(void);
+void *GetBG2CharPtr(void);
+void *GetBG2ScrPtr(void);
+void *GetBG3ScrPtr(void);
 }
 
 namespace GX {
@@ -90,7 +89,6 @@ namespace GXS {
 void LoadBGPltt(const void *p, u32 a, u32 b);
 void LoadOBJPltt(const void *p, u32 a, u32 b);
 }
-
 
 struct MinigameSaveData;
 struct OamAttr;
@@ -189,7 +187,6 @@ extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, OamAttr *attr, 
 extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, OamAttr *attr, int x, int y, int pal, int prio, int s, int c);
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
-
 
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(u32 n);
 }

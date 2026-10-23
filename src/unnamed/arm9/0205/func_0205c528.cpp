@@ -1,12 +1,10 @@
 //cpp
 
-
 namespace IRQ {
 int Disable(void);
 void Restore(unsigned int);
 }
 extern "C" {
-
 
     void OS_SleepThread(void *p);
 }

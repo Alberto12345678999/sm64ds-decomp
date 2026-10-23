@@ -29,12 +29,11 @@
 #include "SaveData.h"
 #include "dScStage_c.h"
 
-
 namespace G2 {
-void * GetBG1ScrPtr(void);
-void * GetBG2CharPtr(void);
-void * GetBG2ScrPtr(void);
-void * GetBG3ScrPtr(void);
+void *GetBG1ScrPtr(void);
+void *GetBG2CharPtr(void);
+void *GetBG2ScrPtr(void);
+void *GetBG3ScrPtr(void);
 }
 
 namespace G2S {
@@ -108,7 +107,6 @@ extern s32 data_0209fc48;
 extern s8 data_02092110;
 extern u32 data_0209b454;
 extern s32 data_0208ee44;
-
 
 extern void MultiStore_Int(int val, int *dst, int len);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
@@ -447,7 +445,7 @@ extern "C" void func_0201d418(int p0, int p1) {
             MultiStore_Int(li, (int*)(cp + (data_0209d6a8 << 6)), n << 6);
         }
         {
-            short *scr = (short*)(G2S::GetBG0ScrPtr() + p0 * 2);
+            short *scr = (short *)(G2S::GetBG0ScrPtr() + p0 * 2);
             i = 0;
             if (n > 0) {
                 int v1 = (data_0209d6a8 << 1) + 0x200;
@@ -525,7 +523,7 @@ extern "C" void Message_DrawCenteredLine(int a, int b)
     MultiStore_Int(li, (int*)p, n);
     col = (u16) (new_var2 >> 1);
     old = old;
-    ptr = ((u16 *) (G2S::GetBG0ScrPtr() + (a * 2))) + col;
+    ptr = ((u16 *)(G2S::GetBG0ScrPtr() + (a * 2))) + col;
     cnt = data_0209d6b0;
     cnt = (cnt + 7) / 8;
     for (i = 0; i < cnt; i++)
@@ -768,8 +766,7 @@ L_r4_else:
 
         n = (u8)((data_0209d6b0 + 7) / 8);
         func_0201b388(n);
-        p = (u16 *)G2::GetBG3ScrPtr() +
-            ((u16)(var_r4 + 0x40) + ((0x20 - n) >> 1));
+        p = (u16 *)G2::GetBG3ScrPtr() + ((u16)(var_r4 + 0x40) + ((0x20 - n) >> 1));
         i = 0;
         if (i < n) {
             tile = var_r5;
@@ -918,7 +915,7 @@ void Message::DisplayText(unsigned short t)
         div = 0x105;
     }
 
-    q = (u16*)((char*)G2::GetBG3ScrPtr() + div * 2);
+    q = (u16 *)((char *)G2::GetBG3ScrPtr() + div * 2);
     cnt = data_0209d6a8;
     for (i = 0; i < cnt; i++) {
         u16* q2 = q + 0x20;
@@ -993,7 +990,7 @@ void Message::DisplayStarNameForStarSelect(unsigned int msg)
     li = 0;
     MultiStore_Int(li, (int*)p, 0x800);
 
-    q = (u16*)((char*)G2::GetBG3ScrPtr() + 0x180);
+    q = (u16 *)((char *)G2::GetBG3ScrPtr() + 0x180);
     for (i = 0; i < 0x40; i++) {
         q[i] = (u16)(i + 0x280);
     }
@@ -1042,10 +1039,10 @@ void Message::DisplayCourseNameForStarSelect(u32 base)
 
     if (data_0209d6d4 >= 0x1a5) {
         data_0209d6c4 = 0;
-        q = (u16*)((char*)G2::GetBG3ScrPtr() + 0x400);
+        q = (u16 *)((char *)G2::GetBG3ScrPtr() + 0x400);
     } else {
         data_0209d6c4 = 1;
-        q = (u16*)((char*)G2::GetBG3ScrPtr() + 0x4c0);
+        q = (u16 *)((char *)G2::GetBG3ScrPtr() + 0x4c0);
     }
     div = 0;
     do {
@@ -1081,7 +1078,7 @@ void Message::DisplayCourseNameForStarSelect(u32 base)
         MultiStore_Int(li2, (int*)p2, 0x800);
     }
 
-    q = (u16*)((char*)G2::GetBG3ScrPtr() + 0x240);
+    q = (u16 *)((char *)G2::GetBG3ScrPtr() + 0x240);
     div2 = 0;
     do {
         q[div2] = (u16)(div2 + 0x240);
@@ -1175,7 +1172,7 @@ void Message::DisplaySaving(unsigned short n)
     ls = 0x2ff;
     MultiStore16(ls, (char*)s, 0x800);
 
-    scr = (u8*)((char*)G2::GetBG3ScrPtr() + 0x42);
+    scr = (u8 *)((char *)G2::GetBG3ScrPtr() + 0x42);
     SetBg3Offset(-(int)data_0209d650, 4 - (int)data_0209d6cc);
 
     cols = data_0209d6a8;
@@ -1277,7 +1274,7 @@ extern "C" void func_0201ef50(int arg)
 
 // @symbol func_0201f108
 extern "C" void func_0201f108(void) {
-    u16* scr = (u16*)G2S::GetBG0ScrPtr();
+    u16 *scr = (u16 *)G2S::GetBG0ScrPtr();
     int i = 0;
     do {
         scr[i] = (u16)i;
@@ -1319,7 +1316,7 @@ extern "C" void func_0201f138(void)
     ls = 0x2ff;
     MultiStore16(ls, (char*)s, 0x800);
 
-    q = (u16*)((char*)G2::GetBG3ScrPtr() + 0x42);
+    q = (u16 *)((char *)G2::GetBG3ScrPtr() + 0x42);
     div = data_0209d6a8;
     cnt = div * ((StarEntry*)data_0209d6f0)->m6 * 2;
     for (i = 0; i < cnt; i++) {

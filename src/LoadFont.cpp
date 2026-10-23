@@ -1,7 +1,6 @@
 //cpp
 /* Runtime asset handles resolved through the overlay 0 file table. */
 
-
 namespace G2S {
 unsigned int GetBG1CharPtr(void);
 }

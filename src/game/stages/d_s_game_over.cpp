@@ -60,11 +60,10 @@ enum dScGameOver_c_AssetId {
 #include "PlayerInput.h"
 #include "dFdBrightness_c.h"
 
-
 namespace G2S {
 u32 GetBG1CharPtr(void);
-unsigned short * GetBG1ScrPtr(void);
-void * GetBG2ScrPtr(void);
+unsigned short *GetBG1ScrPtr(void);
+void *GetBG2ScrPtr(void);
 }
 
 namespace GX {
@@ -145,7 +144,6 @@ extern u8 data_0209f204;
 void *_ZN2G213GetBG2CharPtrEv(void);
 void *_ZN2G212GetBG2ScrPtrEv(void);
 void *_ZN2G212GetBG0ScrPtrEv(void);
-
 
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette,
                                                  s32 priority, Fix12i scaleX, Fix12i scaleY,

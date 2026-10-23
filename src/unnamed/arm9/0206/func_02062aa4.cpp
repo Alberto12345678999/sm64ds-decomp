@@ -1,7 +1,6 @@
 //cpp
 #include "types.h"
 
-
 namespace CP15 {
 void InvalidateDataCache(u32 addr, u32 sz);
 }

@@ -2,11 +2,10 @@
 #include "dScEntry_c.h"
 #include "types.h"
 
-
 namespace G2 {
-void * GetBG1ScrPtr(void);
-void * GetBG2CharPtr(void);
-void * GetBG2ScrPtr(void);
+void *GetBG1ScrPtr(void);
+void *GetBG2CharPtr(void);
+void *GetBG2ScrPtr(void);
 }
 
 namespace GX {
@@ -22,9 +21,7 @@ extern dScEntry_c::StepSet data_ov075_0211d7e0;
 
 extern "C" {
 
-
 extern u32 LoadCompressedFileAt(int fileID, void *target);
-
 
 extern void *LoadFile(int handle);
 extern void Deallocate(void *ptr);

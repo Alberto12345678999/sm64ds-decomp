@@ -51,7 +51,6 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 
-
 namespace CP15 {
 void FlushDataCache(void);
 }

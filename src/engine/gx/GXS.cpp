@@ -14,13 +14,12 @@
 
 #include "types.h"
 
-
 namespace G2 {
-void * GetBG0ScrPtr(void);
-void * GetBG1ScrPtr(void);
-void * GetBG2CharPtr(void);
-void * GetBG2ScrPtr(void);
-void * GetBG3ScrPtr(void);
+void *GetBG0ScrPtr(void);
+void *GetBG1ScrPtr(void);
+void *GetBG2CharPtr(void);
+void *GetBG2ScrPtr(void);
+void *GetBG3ScrPtr(void);
 }
 
 namespace G2S {
@@ -60,7 +59,6 @@ extern void MultiCopy_Int(int *src, int *dst, int len);
 extern int func_02054d88(void);
 extern void *func_02054ea8(void);
 extern void *func_02054efc(void);
-
 
 // local extern: u16 parameter per the definition inserts narrowing shifts at the call
 extern void _ZN2GX22SetBankForSubBGExtPlttEt(u32 bank);

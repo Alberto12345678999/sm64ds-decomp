@@ -24,7 +24,6 @@
 #include "dFdColor_c.h"
 #include "G2x.h"
 
-
 namespace GX {
 void SetBankForBG(u16);
 void SetBankForOBJ(u16);

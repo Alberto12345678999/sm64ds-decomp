@@ -13,7 +13,6 @@
 #include "Model.h"
 #include "G3X.h"
 
-
 namespace CP15 {
 void EnableDTCM(void);
 }
@@ -27,7 +26,6 @@ extern u32 data_020a4be0;
 extern u32 data_020a4be4;
 extern u32 data_020a4be8;
 void Crash();
-
 
 int func_02053e34(void);
 int func_02053e1c(void);
@@ -497,7 +495,6 @@ extern "C" void func_02045e2c(int obj, int i, int a, short b)
     e->a = a;
     e->b = b;
 }
-
 
 extern "C" u16 func_02053ed0(void);
 extern "C" u16 func_02053ec0(void);

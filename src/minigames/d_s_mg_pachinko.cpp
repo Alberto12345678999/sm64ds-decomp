@@ -54,7 +54,6 @@
 #include "nitro/fx/fx.h"
 #include "dScMgPachinko_c.h"
 
-
 namespace GX {
 void LoadBGPltt(const void *p, u32 a, u32 b);
 void LoadOBJPltt(const void *p, u32 a, u32 b);
@@ -206,7 +205,6 @@ extern void func_02056314(void *dst, u32 offset, u32 len);
 extern void func_020563d4(const void *src, u32 offset, u32 count);
 extern void func_020562b4(const void *src, u32 offset, u32 count);
 extern void func_020564f4(const void *src, int offset, int count);
-
 
 /* --- ROM data this TU reads --- */
 extern int   data_0209d4b8;

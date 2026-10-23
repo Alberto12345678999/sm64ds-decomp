@@ -1,7 +1,6 @@
 //cpp
 #include "IRQ.h"
 
-
 namespace IRQ {
 int Disable(void);
 }

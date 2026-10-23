@@ -1,6 +1,5 @@
 //cpp
 
-
 namespace GX {
 void SetBankForSubBG(unsigned short a);
 void SetBankForSubOBJ(unsigned short a);

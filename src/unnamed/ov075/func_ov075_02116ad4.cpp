@@ -2,9 +2,8 @@
 #include "dScEntry_c.h"
 #include "types.h"
 
-
 namespace G2S {
-void * GetBG2ScrPtr(void);
+void *GetBG2ScrPtr(void);
 }
 
 namespace GX {
@@ -47,7 +46,8 @@ int func_ov075_02116ad4(void *arg) {
     if (scene->param1 != 0 || func_0203d9b4() != 0) {
         func_0200f13c();
         if (func_0203d9b4() != 0) {
-            LoadCompressedFileAt(ASSET_D_2D_BATTLE_FRAMEWORK_GAMESTART_P_NSC_BIN, G2S::GetBG2ScrPtr());
+            LoadCompressedFileAt(ASSET_D_2D_BATTLE_FRAMEWORK_GAMESTART_P_NSC_BIN,
+                                 G2S::GetBG2ScrPtr());
         }
         DecompressLZ16(data_0208a0e4[func_0200f0bc()], 0x6600000);
     }

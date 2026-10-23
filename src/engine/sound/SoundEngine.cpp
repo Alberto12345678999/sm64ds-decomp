@@ -21,7 +21,6 @@
 #include "SolidHeapAllocator.h"
 #include "Heap.h"
 
-
 namespace CP15 {
 void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
 void FlushDataCache(unsigned int a, unsigned int b);
@@ -406,7 +405,6 @@ extern struct NestedHeapIterator;
 extern struct Obj;
 extern struct Obj1;
 extern int _ZN18NestedHeapIteratorC1Ej(int a, int b);
-
 
 extern unsigned int _ZN4cstd6strlenEPKc(const char *s);
 extern int __aeabi_idiv(int a, int b);
@@ -1706,8 +1704,8 @@ extern "C" int func_020503a4(int a, int b, int c, int d, int p5, int p6, int p7,
 
     handle = -1;
     g = ((G_20503a4*)&data_020a5634);
-    ((void(*)(int a, int b))CP15::FlushAndInvalidateDataCache)(b, dd);
-    ((void(*)(int a, int b))CP15::FlushAndInvalidateDataCache)(c, dd);
+    ((void (*)(int a, int b))CP15::FlushAndInvalidateDataCache)(b, dd);
+    ((void (*)(int a, int b))CP15::FlushAndInvalidateDataCache)(c, dd);
     stereo = (p5 == 1) ? 1 : 0;
     align = 0xffb0ff / p9;
     if (p14 != 0) {
@@ -1826,8 +1824,10 @@ extern "C" void func_020501b8(void)
     ((extern void(*)(int val, int *dst, int len))MultiStore_Int)(a, g->dstc, g->len);
     b = 0;
     ((extern void(*)(int val, int *dst, int len))MultiStore_Int)(b, g->dst10, g->len);
-    ((extern void(*)(unsigned int a, unsigned int b))CP15::FlushAndInvalidateDataCache)((unsigned int)g->dstc, g->len);
-    ((extern void(*)(unsigned int a, unsigned int b))CP15::FlushAndInvalidateDataCache)((unsigned int)g->dst10, g->len);
+    ((extern void (*)(unsigned int a, unsigned int b))CP15::FlushAndInvalidateDataCache)(
+        (unsigned int)g->dstc, g->len);
+    ((extern void (*)(unsigned int a, unsigned int b))CP15::FlushAndInvalidateDataCache)(
+        (unsigned int)g->dst10, g->len);
     {
         int sh = g->f28;
         int mask = (sh >= 0) ? (1 << sh) : 0;
@@ -1873,8 +1873,10 @@ extern "C" void func_02050038(void)
     for (;;) {
         ((void(*)(void *a, void **out, int c))func_020587e4)(&data_020a5600, &out, 1);
         r = (struct Outer *)out;
-        ((void(*)(unsigned int a, unsigned int b))CP15::InvalidateDataCache)((unsigned int)r->hc, (unsigned int)r->h4);
-        ((void(*)(unsigned int a, unsigned int b))CP15::InvalidateDataCache)((unsigned int)r->h10, (unsigned int)r->h4);
+        ((void (*)(unsigned int a, unsigned int b))CP15::InvalidateDataCache)((unsigned int)r->hc,
+                                                                              (unsigned int)r->h4);
+        ((void (*)(unsigned int a, unsigned int b))CP15::InvalidateDataCache)((unsigned int)r->h10,
+                                                                              (unsigned int)r->h4);
         r->p0->h30((unsigned int)r->hc, (unsigned int)r->h10, (unsigned int)r->h4, r->p0->h8, r->p0->h34);
     }
 }

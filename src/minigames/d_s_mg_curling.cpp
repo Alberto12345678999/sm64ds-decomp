@@ -43,9 +43,8 @@ enum dScMgCurling_c_AssetId {
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 
-
 namespace G2 {
-void * GetBG2CharPtr(void);
+void *GetBG2CharPtr(void);
 }
 
 namespace G2S {
@@ -111,14 +110,12 @@ extern int Mg_DrawTopLeftCounter(int self);
 extern char *Ov004_LoadFileByPath(void *p);
 extern void Mg_SetTopScreenYOffset(int a);
 
-
 extern void DecompressLZ16(const void *src, void *dst);
 extern void *LoadFile(int handle);
 extern void Deallocate(void *ptr);
 extern void Ov004_Deallocate(void *p);
 extern void func_020563d4(const void *src, u32 offset, u32 count);
 extern void func_02056374(const void *src, u32 offset, u32 count);
-
 
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 

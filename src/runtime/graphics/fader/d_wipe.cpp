@@ -28,7 +28,6 @@
 #include "IRQ.h"
 #include "decl_common.h"
 
-
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 len);
 }
@@ -50,7 +49,6 @@ int  _ZN15dFdBrightness_c15SetBackwardTimeEj(dFdBrightness_c *self, u32 time, u3
 /* local extern: the ROM passes the blend target in r2 with no sign-extend;
    the header's s16 parameter emits sxth at this call site. */
 void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, u16 a, int b);
-
 
 void MultiStore_Int(int val, int *dst, int len);
 void func_0202f2c4(void);

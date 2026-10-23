@@ -41,7 +41,6 @@
 #include "G2x.h"
 #include "nitro/fx/fx.h"
 
-
 namespace GX {
 void LoadBGPltt(const void *p, u32 a, u32 b);
 void LoadOBJPltt(const void *p, u32 a, u32 b);
@@ -89,7 +88,6 @@ extern void DecompressLZ16(void *src, void *dst);
 
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
-
 
 extern void func_02056554(const void *src, int offset, int count);
 extern u8 data_0209d45c;

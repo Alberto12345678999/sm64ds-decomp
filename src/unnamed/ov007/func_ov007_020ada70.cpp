@@ -1,7 +1,6 @@
 //cpp
 #include "Ov007MenuState.h"
 
-
 namespace CP15 {
 void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
 }
@@ -11,7 +10,6 @@ void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
 }
 extern "C" {
 extern void func_ov007_020c32e8(void *a, int b, int c, int d);
-
 
 extern void RequestScreenFade(int a, int b, int c);
 extern void *data_ov007_0210342c;

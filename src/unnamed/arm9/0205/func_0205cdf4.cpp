@@ -1,12 +1,10 @@
 //cpp
 
-
 namespace IRQ {
 unsigned int Disable(void);
 void Restore(unsigned int saved);
 }
 extern "C" {
-
 
 extern void func_0205c788(char *self, int arg);
 extern void func_0205d8d8(void *node, void *list);

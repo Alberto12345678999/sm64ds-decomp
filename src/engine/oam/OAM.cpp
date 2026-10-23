@@ -43,7 +43,6 @@
 #include "OamAttr.h"
 #include "OamAnimation.h"
 
-
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 size);
 }

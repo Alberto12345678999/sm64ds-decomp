@@ -71,9 +71,8 @@
 #include "OAM.h"
 #include "OamAttr.h"
 
-
 namespace G2 {
-void * GetBG1ScrPtr();
+void *GetBG1ScrPtr();
 }
 
 namespace G2S {

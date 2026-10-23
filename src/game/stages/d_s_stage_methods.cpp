@@ -80,7 +80,6 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "Memory.h"
 #include "Heap.h"
 
-
 namespace GX {
 void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
 }
@@ -705,8 +704,8 @@ void dScStage_c::LC_Render() {
 
     {
         void *p = (void *)LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
-        GX::LoadOBJPltt((void *)((char *)p + (((unsigned int)data_0209f2a8 >> 2) << 5)),
-                                  0x1c0, 0x10);
+        GX::LoadOBJPltt((void *)((char *)p + (((unsigned int)data_0209f2a8 >> 2) << 5)), 0x1c0,
+                        0x10);
         Deallocate(p);
     }
 

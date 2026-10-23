@@ -43,16 +43,15 @@
 #include "dCamera_c.h"
 #include "OAM.h"
 
-
 namespace G2S {
-void* GetBG3ScrPtr(void);
+void *GetBG3ScrPtr(void);
 }
 
 namespace GXS {
 void BeginLoadBGExtPltt(void);
 void EndLoadBGExtPltt(void);
-void LoadBGExtPltt(const void* p, u32 a, u32 b);
-void LoadBGPltt(const void* p, u32 a, u32 b);
+void LoadBGExtPltt(const void *p, u32 a, u32 b);
+void LoadBGPltt(const void *p, u32 a, u32 b);
 }
 
 #pragma defer_codegen off
@@ -907,7 +906,6 @@ void DecompressLZ16(int src, void* dst);
 void Deallocate(void* ptr);
 int func_0202a96c(void);
 
-
 int func_0202a958(void);
 extern u8 data_0209f2e8;
 extern u16* data_0209f334;
@@ -939,9 +937,9 @@ int dMap_c::InitResources()
         if (id2 != 0) {
             int f2 = LoadFile(id2);
             GXS::BeginLoadBGExtPltt();
-            GXS::LoadBGExtPltt((void*)f2, 0x6000, 0x200);
+            GXS::LoadBGExtPltt((void *)f2, 0x6000, 0x200);
             GXS::EndLoadBGExtPltt();
-            GXS::LoadBGPltt((void*)f2, 0, 2);
+            GXS::LoadBGPltt((void *)f2, 0, 2);
             Deallocate((void*)f2);
         }
     }
@@ -950,7 +948,7 @@ int dMap_c::InitResources()
     for (i = 0; i < data_0209f2e8; i++) {
         if (*p != 0) {
             int f3 = LoadFile(*p);
-            DecompressLZ16(f3, (char*)G2S::GetBG3ScrPtr() - (i << 11));
+            DecompressLZ16(f3, (char *)G2S::GetBG3ScrPtr() - (i << 11));
             Deallocate((void*)f3);
         }
         p++;

@@ -30,7 +30,6 @@ enum dScBoot_c_AssetId { ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN = 0x022d };
 #include "MessageBank.h"
 #include "PlayerInput.h"
 
-
 namespace G2S {
 u32 GetBG1CharPtr(void);
 u32 GetBG1ScrPtr(void);
@@ -62,19 +61,14 @@ extern u8 data_0209d454;
 extern u8 data_0209d45c;
 extern dFdColor_c data_0209f5e8;
 
-
 u32 LoadCompressedFileAt(u16 fileID, void *target);
 int LoadFile(int handle);
 
-
 u32 func_02012790(u32 a);
-
 
 void DecompressLZ16(const void *src, void *dst);
 
 void *_ZN2G212GetBG0ScrPtrEv(void);
-
-
 }
 
 /* These names describe the observed transitions; original state names are unknown. */

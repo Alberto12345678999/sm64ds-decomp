@@ -72,22 +72,21 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 #include "Memory.h"
 #include "nitro/fx/fx.h"
 
-
 namespace G2 {
-void * GetBG2CharPtr(void);
-u16 * GetBG2ScrPtr(void);
-void * GetBG3ScrPtr(void);
+void *GetBG2CharPtr(void);
+u16 *GetBG2ScrPtr(void);
+void *GetBG3ScrPtr(void);
 }
 
 namespace G2S {
-void * GetBG0CharPtr(void);
-void * GetBG0ScrPtr(void);
+void *GetBG0CharPtr(void);
+void *GetBG0ScrPtr(void);
 unsigned int GetBG1CharPtr(void);
-void * GetBG1ScrPtr(void);
-void * GetBG2CharPtr(void);
-u16 * GetBG2ScrPtr(void);
-char * GetBG3CharPtr(void);
-char * GetBG3ScrPtr(void);
+void *GetBG1ScrPtr(void);
+void *GetBG2CharPtr(void);
+u16 *GetBG2ScrPtr(void);
+char *GetBG3CharPtr(void);
+char *GetBG3ScrPtr(void);
 }
 
 namespace GX {
@@ -256,7 +255,6 @@ extern void *Ov004_LoadFileByPath(void *p);
 extern void DecompressLZ16(void *src, void *dst);
 extern void Ov004_Deallocate(void *p);
 
-
 extern void __cxa_vec_ctor(void *p, int a, int b, void *cb1, void *cb2);
 extern void *_Znwj(u32 size);
 extern void SetSubBg0Offset(int x, int y);
@@ -304,7 +302,6 @@ extern unsigned char data_0209d454[];
 extern u8 data_0209d45c;
 extern s32 data_0208ee44;
 void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *p, u32 n);
-
 
 void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, u16 a, u16 b, u16 c, u16 d);
 extern void *sSmartballResultBgNcgPath;
