@@ -3,8 +3,8 @@
  * cartridge home. func_0203aa10, func_0203aa74 and func_0203aad0 retain
  * their address names and C linkage; DetectClsn and GetNormal call them
  * by address, and daObjKm2_Nobiru_c reads scaleY through func_0203aad0.
- * SetFile and SetScaleY stay mangled: the scale arguments are Fix12 by
- * value. func_0203aa74 multiplies y by invScaleY after the parent's inverse
+ * SetFile and SetScaleY are real methods taking the scale as a scalar
+ * Fix12i, which is what the bytes pass. func_0203aa74 multiplies y by invScaleY after the parent's inverse
  * matrix; func_0203aa10 applies scaleY before the parent's scaled matrix.
  */
 /* dBgW_KcMbgSclY: mesh collider stretched in y (Snowman's body, lift

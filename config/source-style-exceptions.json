@@ -872,6 +872,14 @@
       "count": 37,
       "reason": "This TU never sees the BlendModelAnim class. It reaches its animation through raw record offsets (*(void **)(c + 0x104)), so the header member cannot bind. This is a rename of the 37 pre-existing occurrences of the retired _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt spelling, not new debt. Follow-up: type the record, then convert to member calls.",
       "evidence": "src/engine/model/BlendModelAnim.cpp: void BlendModelAnim::SetAnim(BCA_File &, int, int, Fix12i, u16) at 0x020163e0 size 0x9c MATCH under 2004/b56; the 37 occurrences replace 37 of the old Fix12<int> spelling one-for-one (PR #4292)."
+    },
+    {
+      "path": "src/InvMat4x3.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd16reciprocal_asyncEi",
+      "count": 2,
+      "reason": "InvMat4x3.c is C and cannot name the C++ namespaced cstd::reciprocal_async, so it declares and calls the mangled symbol directly. This renames the file's two pre-existing occurrences of the retired _ZN4cstd16reciprocal_asyncE5Fix12IiE spelling and is not new debt. The two occurrences are the local extern and its single call.",
+      "evidence": "src/cstd.cpp: cstd::reciprocal_async(int) at 0x02053090 size 0x3c MATCH under 2004/b56; InvMat4x3 MATCH with the renamed extern (PR #4293); the local extern carries a 'local extern:' reason at InvMat4x3.c:4."
     }
   ]
 }

@@ -20,7 +20,6 @@
 extern "C" {
 #endif
 
-extern void _ZN14dBgW_KcMbgSclY9SetScaleYEi(void *, int);
 extern void *_ZN14dBgW_KcMbgSclYC1Ev(void*);
 extern void _ZN14dBgW_KcMbgSclYD1Ev(void*);
 

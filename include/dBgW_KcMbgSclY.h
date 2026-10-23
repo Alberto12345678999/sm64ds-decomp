@@ -47,8 +47,7 @@ struct dBgW_KcMbgSclY : dBgW_KcMbg {
     dBgW_KcMbgSclY();
 
     /* --- non-virtual --- */
-    void SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12i scale, s16 angY,
-                 CLPS_Block &clps); /* free def, wall 6az */
+    void SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12i scale, s16 angY, CLPS_Block &clps);
     void SetScaleY(Fix12i scaleY);
 };
 
