@@ -84,7 +84,6 @@ extern int Vec3_HorzDist(const void* a, const void* b);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_02038414(void *p);
 void UnloadBlueCoinModel(void *);
-extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *c, int d);
 void LoadBlueCoinModel(void* actor);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* actor, int r, int h, unsigned int d, unsigned int e);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, void* actor, int b, int c, void* v, int e);
@@ -197,7 +196,8 @@ int daSanbo_c::Behavior()
 {
     int s = mState;
     if (s != 2 && s != 5) {
-        if (_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x5dc000)) return 1;
+        if (IsTooFarAwayFromPlayer(0x5dc000))
+            return 1;
     }
     func_ov096_021368b4();
     MakeVanishLuigiWork(mdCcAc_c);

@@ -183,7 +183,6 @@ extern int data_020a0e68[];
 extern "C" void *_ZN7PathPtrC1Ev(void *self);
 extern "C" int Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern signed char data_0209f2f8;
-extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *a, int b, int c, int d, int e);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b,
                                                    unsigned int c, unsigned int d, unsigned int e);
 extern "C" void func_02012790(int);
@@ -249,7 +248,6 @@ extern void *data_0209f394;
 /* TUBUILD CONFLICT -- alternate declaration of _ZN7PathPtrC1Ev, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern void _ZN7PathPtrC1Ev(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN7PathPtr6FromIDEj, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern void _ZN7PathPtr6FromIDEj(void *self, unsigned int id); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZNK7PathPtr7GetNodeER7Vector3j, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, Fix12i a, Fix12i b, Fix12i c, Fix12i d); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern void func_ov062_0211c658(void *c, void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov062_0211e114, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern SharedFilePtr data_ov062_0211e114; */
@@ -397,7 +395,7 @@ int daJango_c::InitResources()
             mHeldActorID = spawned->uniqueID;
             /* SetRanges(100, 600, 8000, 8000) units: the four clip-volume fields of
                dActor_c.h. The cap below gets the same four numbers. */
-            _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(spawned, 0x64000, 0x258000, 0x1f40000, 0x1f40000);
+            spawned->SetRanges(0x64000, 0x258000, 0x1f40000, 0x1f40000);
         }
         /* Start on the path node, already holding the star. */
         mPosX = mPathNodePosX;
@@ -419,7 +417,7 @@ int daJango_c::InitResources()
                 spawned = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, mPos, 0, area, -1);
             }
             if (spawned != 0) {
-                _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(spawned, 0x64000, 0x258000, 0x1f40000, 0x1f40000);
+                spawned->SetRanges(0x64000, 0x258000, 0x1f40000, 0x1f40000);
                 mHeldActorID = spawned->uniqueID;
             }
         }
@@ -1268,8 +1266,7 @@ int daJango_c::func_ov062_0211b51c()
             sp = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, mPos, 0, area, -1);
         }
         if (sp != 0) {
-            _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(
-                sp, 0x64000, 0x258000, 0x1f40000, 0x1f40000);
+            sp->SetRanges(0x64000, 0x258000, 0x1f40000, 0x1f40000);
             mHeldActorID = sp->uniqueID;
             func_ov062_0211c658(JANGO_STATE_CIRCLE);
         }

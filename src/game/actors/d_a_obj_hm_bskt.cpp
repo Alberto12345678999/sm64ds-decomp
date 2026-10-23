@@ -64,8 +64,6 @@ extern CLPS_Block data_ov030_02114ee4;
 
 int func_ov030_0211124c(char *c, char *mc);
 
-int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(
-    dBgActor_c *self, s32 range, s32 offsetY);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
     Fix12i scale, s16 angle, CLPS_Block *clps);
@@ -124,7 +122,7 @@ s32 daObjHmBskt_c::Behavior()
     volatile int dummy[4];
     (void)&dummy;
 
-    _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRangeOnScreen(0, 0);
     mAngleY = mAngleY + mHorzSpeed;
 
     if (mVertAccel != 0) {

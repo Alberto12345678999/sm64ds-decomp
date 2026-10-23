@@ -44,7 +44,6 @@ extern "C" {
 int func_ov002_020bad10(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
 int func_ov002_020baba8(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
 int func_ov002_020bac18(daObjSwdoor_c *self);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 extern ResourceDescriptor data_ov021_021148d0;
 }
 
@@ -78,7 +77,7 @@ s32 daObjCvShutter_c::InitResources()
 s32 daObjCvShutter_c::Behavior()
 {
     s32 r = func_ov002_020bac18(this);
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateClsnPosAndRot();
     return r;
 }

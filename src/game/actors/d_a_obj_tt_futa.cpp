@@ -45,7 +45,6 @@ extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int x
 extern int data_ov033_02111bfc[];
 extern int _ZN5Event6GetBitEj(unsigned int);
 extern void _ZN5Event6SetBitEj(unsigned int b);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, int, short, void*);
 }
 
@@ -94,7 +93,7 @@ s32 daObjTtFuta_c::Render() {
 
 // @symbol _ZN13daObjTtFuta_c8BehaviorEv
 s32 daObjTtFuta_c::Behavior() {
-    _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRange(0, 0);
     return 1;
 }
 

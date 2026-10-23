@@ -77,7 +77,6 @@ extern SharedFilePtr *data_ov065_0211d198[][3];
 extern CLPS_Block *data_ov065_0211d19c[][3];
 extern void func_020393c4(dBgW *collider, void *callback);
 extern int func_020393bc(dBgW *collider);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
 extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(
@@ -227,7 +226,7 @@ int daObjCtMecha04_c::Behavior()
 {
     if (data_0209f2c0 == CLOCK_SETTING_STOPPED) {
         func_020393c4(&mMeshCollider, 0);
-        _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+        IsClsnInRange(0, 0);
     } else {
         if (!IsOffScreen(this)) {
             if (!func_020393bc(&mMeshCollider)) {
@@ -260,7 +259,7 @@ int daObjCtMecha04_c::Behavior()
             }
         }
 
-        _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+        IsClsnInRange(0, 0);
     }
 
     UpdateShadow();

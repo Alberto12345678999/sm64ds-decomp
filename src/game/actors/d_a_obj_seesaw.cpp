@@ -110,7 +110,6 @@ extern int data_ov095_02136f58[];
 extern s16 data_02082214[];
 int Vec3_Dist(void *a, void *b);
 s16 Vec3_HorzAngle(void *a, void *b);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int radius, int yOffset);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *thiz, void *file, const Matrix4x3 *mat, int scale, short angY, void *clps);
 void func_020393d4(void *clsn, void *callback);
@@ -265,7 +264,7 @@ int daObjSeesaw_c::Behavior()
     if (mAngleX < -kMaxPitch)
         mAngleX = -kMaxPitch;
     func_ov095_0213597c((char *)this);
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateClsnPosAndRot();
     mPoundedThisFrame = 0;
     return 1;

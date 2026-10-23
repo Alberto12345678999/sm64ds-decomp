@@ -75,7 +75,6 @@ extern BigBrickBlockFileRow data_ov002_02108ab4[];
 extern Vector3 data_ov002_021089e0;
 void func_020393a4(dBgW_KcMbg *p, int v);
 void func_02039394(dBgW_KcMbg *p, int v);
-void _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int a, int b);
 extern ClpsRow data_ov002_02108ab8[];         /* CLPS blocks,       0xc stride */
 extern s8 data_0209f2f8;              /* current level */
 extern u8 data_0209f220;
@@ -384,7 +383,7 @@ int daObjBlockL_c::Behavior()
         } else {
             func_020393a4(&mMeshCollider, 0x15e000);
             func_02039394(&mMeshCollider, 0x64000);
-            _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x150000, 0);
+            IsClsnInRangeOnScreen(0x150000, 0);
         }
 
         mPrevEventBit = Event::GetBit(mEventID);
@@ -397,7 +396,7 @@ int daObjBlockL_c::Behavior()
         }
         func_020393a4(&mMeshCollider, v1);
         func_02039394(&mMeshCollider, v5);
-        _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x600000, 0);
+        IsClsnInRangeOnScreen(0x600000, 0);
     }
     return 1;
 }

@@ -109,7 +109,6 @@ extern int data_0209f32c;
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *a, Vector3_16 *b);
 extern char IDENTITY_MATRIX4X3;
-int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int dist);
 extern signed char data_0209f2f8;
 }
 
@@ -805,7 +804,7 @@ int daTgz_c::Behavior()
     int s = mState;
     if (s != 1 || mWithMeshClsn.IsOnGround()) {
         s = mState;
-        if (s != 4 && s != 5 && _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x5dc000)) {
+        if (s != 4 && s != 5 && IsTooFarAwayFromPlayer(0x5dc000)) {
             if (DecIfAbove0_Byte(&mDespawnTimer) == 0) {
                 MarkForDestruction();
                 return 1;

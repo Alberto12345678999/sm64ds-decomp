@@ -81,7 +81,6 @@ extern DgrCollisionFilePtr data_ov025_02113a60;
 extern s16 data_02082214[];
 extern CLPS_Block data_ov025_02112c28;
 
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(daDgr_c *self, s32 a, s32 b);
 void func_02012694(s32 soundId, void *pos);
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(daDgr_c *self, Vec3 *pos, s32 magnitude);
 u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -141,7 +140,7 @@ s32 daDgr_c::Behavior()
             mSpeedZ = 0;
             mAngleXSpeed = 0;
             func_ov025_02111344();
-            if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+            if (IsClsnInRange(0, 0))
                 func_ov025_021112e0();
             return 1;
         }
@@ -238,7 +237,7 @@ s32 daDgr_c::Behavior()
     }
 
     func_ov025_02111344();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) || func_ov025_0211123c())
+    if (IsClsnInRange(0, 0) || func_ov025_0211123c())
         func_ov025_021112e0();
 
     mPhaseTimer++;

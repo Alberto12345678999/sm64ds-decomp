@@ -422,70 +422,64 @@ dBgActor_c::dBgActor_c()
 /* Same enable/disable-by-distance as IsClsnInRange, except an off-screen actor
  * (mFlags & 8) always drops its collider, and radius 0 unconditionally enables
  * instead of falling back to the clip volume. */
-// @symbol _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_
-extern "C" {
-int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(dBgActor_c *self, int radius, int yOffset)
-{
-    int offScreen = (self->mFlags & 8) != 0;
+// @symbol _ZN10dBgActor_c21IsClsnInRangeOnScreenEii
+int dBgActor_c::IsClsnInRangeOnScreen(Fix12i radius, Fix12i yOffset) {
+    int offScreen = (mFlags & 8) != 0;
     if (offScreen) {
-        if (self->mMeshCollider.IsEnabled())
-            self->mMeshCollider.Disable();
+        if (mMeshCollider.IsEnabled())
+            mMeshCollider.Disable();
         return 0;
     }
     if (radius == 0) {
-        if (!self->mMeshCollider.IsEnabled())
-            self->mMeshCollider.Enable(self);
+        if (!mMeshCollider.IsEnabled())
+            mMeshCollider.Enable(this);
     } else {
         Vector3 center;
-        center.x = self->mPosX;
-        center.y = self->mPosY;
-        center.z = self->mPosZ;
+        center.x = mPosX;
+        center.y = mPosY;
+        center.z = mPosZ;
         if (yOffset == 0)
-            center.y += self->mClipOffsetY;
+            center.y += mClipOffsetY;
         else
             center.y += yOffset;
-        Player *player = self->ClosestPlayer();
+        Player *player = ClosestPlayer();
         int dist = Vec3_Dist(&center, &((dActor_c *)player)->mPos);
         if (dist > radius) {
-            if (self->mMeshCollider.IsEnabled())
-                self->mMeshCollider.Disable();
+            if (mMeshCollider.IsEnabled())
+                mMeshCollider.Disable();
             return 0;
         }
-        if (!self->mMeshCollider.IsEnabled())
-            self->mMeshCollider.Enable(self);
+        if (!mMeshCollider.IsEnabled())
+            mMeshCollider.Enable(this);
     }
     return 1;
-}
 }
 
 /* Keeps the mesh collider in the world only while the closest player is within
  * radius of (pos + yOffset). Zero radius falls back to the clip volume
  * (mClipRadius, shifted into fix12); zero yOffset to mClipOffsetY. */
-// @symbol _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_
-extern "C" {
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int radius, int yOffset)
-{
+// @symbol _ZN10dBgActor_c13IsClsnInRangeEii
+int dBgActor_c::IsClsnInRange(Fix12i radius, Fix12i yOffset) {
     Vector3 center;
-    center.x = self->mPosX;
-    center.y = self->mPosY;
-    center.z = self->mPosZ;
+    center.x = mPosX;
+    center.y = mPosY;
+    center.z = mPosZ;
     if (radius == 0)
-        radius = self->mClipRadius << 3;
+        radius = mClipRadius << 3;
     if (yOffset == 0)
-        center.y += self->mClipOffsetY;
+        center.y += mClipOffsetY;
     else
         center.y += yOffset;
-    Player *player = self->ClosestPlayer();
+    Player *player = ClosestPlayer();
     int dist = Vec3_Dist(&center, &((dActor_c *)player)->mPos);
     if (dist > radius) {
-        if (self->mMeshCollider.IsEnabled())
-            self->mMeshCollider.Disable();
+        if (mMeshCollider.IsEnabled())
+            mMeshCollider.Disable();
         return 0;
     }
-    if (!self->mMeshCollider.IsEnabled())
-        self->mMeshCollider.Enable(self);
+    if (!mMeshCollider.IsEnabled())
+        mMeshCollider.Enable(this);
     return 1;
-}
 }
 
 /* Rebuilds the model matrix from the yaw and drops the position into its

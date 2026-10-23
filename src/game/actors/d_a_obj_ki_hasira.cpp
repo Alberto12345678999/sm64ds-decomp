@@ -90,9 +90,9 @@ extern HasiraModelFile RockPillar_ModelFile;
 extern HasiraCollisionFile RockPillar_ClsnFile;
 extern char data_ov016_02113cac[];
 
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *kcl, void *mtx, int scale, s16 angleY, void *clps);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl,
+                                                                           void *mtx, int scale,
+                                                                           s16 angleY, void *clps);
 
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
@@ -220,7 +220,7 @@ s32 daObjKi_Hasira_c::Behavior()
     }
 
     func_ov016_02112a9c();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+    if (IsClsnInRange(0, 0) != 0)
         UpdateClsnPosAndRot();
     return 1;
 }

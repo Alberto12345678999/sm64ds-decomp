@@ -240,6 +240,13 @@ struct dActor_c : dBase_c {
     s16  HorzAngleToCPlayer();
     s16  HorzAngleToFPlayer();
     s16  HorzAngleToCPlayerOrAng();
+    /* Both took a by-value Fix12<int> in their old mangled names; measured
+       2026-10-23, the honest parameter is the scalar Fix12i and both reproduce
+       as real methods (0x02010e08/0x24 and 0x0200f70c/0x54).
+       notes/mwccarm-codegen.md 6az. */
+    void SetRanges(Fix12i clipOffsetY, Fix12i clipRadius, Fix12i clipDistance, Fix12i farDistance);
+    int IsTooFarAwayFromPlayer(Fix12i threshold);
+
     bool IsPlayerInRange(s32 maxDist);
     bool IsPlayerInRange(const Vector3 &pos, s32 maxDist);
 

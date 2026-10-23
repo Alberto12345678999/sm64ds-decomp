@@ -107,7 +107,6 @@ extern "C" {
 extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int n, const struct Vector3 *v);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern Entry data_ov064_0211c904[];
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void* c, Fix12i a, Fix12i b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, KCL_File*, const Matrix4x3&, int fix, short s, CLPS_Block&);
 void func_020393c4(int* p, int v);
 extern SharedFilePtr *data_ov064_0211adc8[];
@@ -247,7 +246,7 @@ int daObjFl_Puzzle_c::Behavior() {
         *ctr = *ctr + 1;
     }
     func_ov064_02119010();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+    if (IsClsnInRange(0, 0) != 0)
         func_ov064_02118fa4();
     return 1;
 }

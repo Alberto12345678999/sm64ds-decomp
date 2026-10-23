@@ -60,10 +60,18 @@ struct dBgActor_c : dActor_c {
     void UpdateClsnPosAndRot();
     void UpdateModelPosAndRotY();
 
-    /* MEASURED: the by-value Fix12<int> is confirmed by the body at ov002
-       0x020ee674, not inferred from the mangled name. The two IsClsnInRange*
-       symbols make the same claim and their bytes refuse it -- see
-       include/dActor_c.h and notes/platform-provenance.md. */
+    /* The two IsClsnInRange* symbols used to spell a by-value Fix12<int>, and
+       this header already recorded that "their bytes refuse it". Acted on
+       2026-10-23: both are real methods taking the scalar Fix12i, under
+       _ZN10dBgActor_c13IsClsnInRangeEii and
+       _ZN10dBgActor_c21IsClsnInRangeOnScreenEii, reproducing ov002
+       0x020ee870/0xc4 and 0x020ee934/0x11c. notes/mwccarm-codegen.md 6az. */
+    int IsClsnInRange(Fix12i radius, Fix12i yOffset);
+    int IsClsnInRangeOnScreen(Fix12i radius, Fix12i yOffset);
+
+    /* MEASURED, AND STILL TRUE: the by-value Fix12<int> here is confirmed by
+       the body at ov002 0x020ee674, not inferred from the mangled name, so
+       this one is a genuine wall-6az symbol and keeps its spelling. */
     int UpdateKillByMegaChar(s16 a, s16 b, s16 c, Fix12<int> d);
 };
 

@@ -88,11 +88,10 @@ int _ZN4cstd4fdivEii(int num, int den);
 
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
     u32 effectID, int x, int y, int z);
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32 handle, u32 effectID, int x, int y, int z, const Vector3_16f *dir,
-    void *callback);
-int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(
-    dBgActor_c *self, int a, int b);
+int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 effectID,
+                                                                           int x, int y, int z,
+                                                                           const Vector3_16f *dir,
+                                                                           void *callback);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *owner, int radius, int height, u32 flags,
     u32 vulnFlags);
@@ -136,7 +135,7 @@ s32 daObjIceBlock_c::InitResources()
 // @symbol _ZN15daObjIceBlock_c8BehaviorEv
 s32 daObjIceBlock_c::Behavior()
 {
-    _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRangeOnScreen(0, 0);
 
     if (mMeltTimer != 0) {
         mScale = _ZN4cstd4fdivEii(mMeltTimer << 12, kMeltFrames << 12);

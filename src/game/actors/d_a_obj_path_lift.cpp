@@ -53,10 +53,7 @@ extern void func_020393d4(dBgW_KcMbg *p, void *v);
 /* By-value Fix12<int> is wall 6az: constructing wrapper arguments adds stack
    traffic the ROM does not have. Keep the register-level spelling. */
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale, short angY,
-    CLPS_Block *clps);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
-    dBgActor_c *self, int a, int b);
+    dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale, short angY, CLPS_Block *clps);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *mtx, int a, int b, int d,
     unsigned int e);
@@ -181,7 +178,7 @@ int daObjPathLift_c::Behavior()
             mMeshCollider.Enable(this);
         }
     } else {
-        _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+        IsClsnInRange(0, 0);
     }
     return 1;
 }

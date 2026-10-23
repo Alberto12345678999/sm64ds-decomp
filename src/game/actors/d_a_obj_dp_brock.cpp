@@ -65,10 +65,11 @@ extern BrockCollisionFilePtr data_ov025_02113ab0;
 extern CLPS_Block data_ov025_02112ce8;
 
 void Matrix4x3_FromRotationY(void *m, int angleY);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
-    s16 angleY, CLPS_Block *clps);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(dBgW_KcMbg *self,
+                                                                           KCL_File *file,
+                                                                           const Matrix4x3 *mat,
+                                                                           int scale, s16 angleY,
+                                                                           CLPS_Block *clps);
 void func_020393d4(int *p, int v);
 }
 
@@ -154,7 +155,7 @@ int daObjDpBrock_c::Behavior()
     mStateTimer++;
     mPosY += mVertSpeed;
     UpdateStepModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateStepClsnPosAndRot();
     return 1;
 }

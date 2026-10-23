@@ -129,7 +129,6 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, u32 a, int 
 /* Header methods take Fix12<int> by value. Brace-init compiles and homes
    the argument (see Known limits). These scalars are the calls that
    match. */
-void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, int offsetY, int radius, int clipDistance, int farDistance);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
 int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &cur, const Vector3 &target, int step);
 }
@@ -826,8 +825,7 @@ s32 daMoray_c::InitResources()
             if (spawned != 0) {
                 mStarUniqueID = spawned->uniqueID;
                 spawned->mFlags = 0;
-                _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(spawned, 0, 0x3e8000, 0x1f40000,
-                                                          0x1f40000);
+                spawned->SetRanges(0, 0x3e8000, 0x1f40000, 0x1f40000);
             }
             func_ov016_02111bf0(&data_ov016_02114d8c);
         } else {

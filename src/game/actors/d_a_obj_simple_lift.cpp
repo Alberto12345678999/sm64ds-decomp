@@ -87,7 +87,6 @@ struct SimpleLiftClsnFileHandle : SharedFilePtr {
 extern "C" {
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 unsigned short DecIfAbove0_Short(unsigned short *p);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int scale, s16 angY, void *clps);
 void func_020393d4(void *collider, void *callback);
@@ -151,7 +150,7 @@ int daObjSimpleLift_c::Behavior()
         }
     }
     UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+    if (IsClsnInRange(0, 0) != 0)
         UpdateClsnPosAndRot();
     return 1;
 }

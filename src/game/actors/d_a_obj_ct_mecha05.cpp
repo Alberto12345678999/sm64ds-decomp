@@ -67,10 +67,8 @@ extern void MulVec3Mat4x3(const Vector3 *src, const Matrix4x3 *matrix,
                           Vector3 *dst);
 extern void AddVec3(const Vector3 *left, const Vector3 *right, Vector3 *dst);
 extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    int scaleX, int scaleY, int scaleZ, u32 opacity);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
-    dBgActor_c *actor, int radius, int verticalOffset);
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int scaleX, int scaleY,
+    int scaleZ, u32 opacity);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *collider, KCL_File *file, Matrix4x3 *matrix,
     int scale, s16 angle, CLPS_Block *clps);
@@ -167,7 +165,7 @@ int daObjCtMecha05_c::Behavior()
         mPosZ = mHomePosZ + FX_MUL(data_02082214[((ang >> 4) << 1) + 1], 0xfa000);
         UpdateModelPosAndRotY();
         func_ov065_0211ac0c(this);
-        if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+        if (IsClsnInRange(0, 0) != 0)
             UpdateClsnPosAndRot();
         return 1;
     }
@@ -247,8 +245,7 @@ Lend:
     UpdatePos(0);
     UpdateModelPosAndRotY();
     func_ov065_0211ac0c(this);
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
-            this, 0x1c0000, 0x1000) != 0)
+    if (IsClsnInRange(0x1c0000, 0x1000) != 0)
         UpdateClsnPosAndRot();
     return 1;
 }
