@@ -484,6 +484,14 @@
     {
       "path": "src/game/player/Player.cpp",
       "rule": "handspelled-member",
+      "match": "_ZN6Player7SetAnimEjiit",
+      "count": 9,
+      "reason": "Six call sites stay on the scalar symbol. func_ov002_020bec9c tail-forwards the callee's r0 as its own int result, so the call cannot be a void method return. func_ov002_020d1f78 passes (w << 4) >> 16, and narrowing that to u16 grew the function by 8 bytes. func_ov002_020d4748 passes AnimSpeed() three times and s5 once; each narrowing cost 8 bytes (0x4e8 to 0x508). The other three occurrences are the local externs those calls need. The definition itself is Player::SetAnim.",
+      "evidence": "ov002/Player 618/618 TEXT-VERIFIED on cpp/player-setanim-1023; SetAnim remains 0x020bef2c size 0x210"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
       "match": "_ZN6PlayerC1Ev",
       "count": 1,
       "reason": "Player's C1 stays the enrolled free function. Its body addresses mModelAnim3, mModelAnim4, mTexSeqBody, mMatChanger and mTexSeqPlayer from one base at this+0xdc, and a Player::Player() definition changes that addressing. Follow-up: rewrite it as the real constructor once that base is preserved.",
