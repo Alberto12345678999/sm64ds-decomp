@@ -65,9 +65,11 @@ struct dBgActor_c : dActor_c {
        2026-10-23: both are real methods taking the scalar Fix12i, under
        _ZN10dBgActor_c13IsClsnInRangeEii and
        _ZN10dBgActor_c21IsClsnInRangeOnScreenEii, reproducing ov002
-       0x020ee870/0xc4 and 0x020ee934/0x11c. notes/mwccarm-codegen.md 6az. */
-    int IsClsnInRange(Fix12i radius, Fix12i yOffset);
-    int IsClsnInRangeOnScreen(Fix12i radius, Fix12i yOffset);
+       0x020ee870/0xc4 and 0x020ee934/0x11c. notes/mwccarm-codegen.md 6az.
+       Parameters (radius, yOffset) are unnamed on purpose: a named
+       class-scope parameter consumes an @NNN number in every consumer. */
+    int IsClsnInRange(Fix12i, Fix12i);
+    int IsClsnInRangeOnScreen(Fix12i, Fix12i);
 
     /* MEASURED, AND STILL TRUE: the by-value Fix12<int> here is confirmed by
        the body at ov002 0x020ee674, not inferred from the mangled name, so

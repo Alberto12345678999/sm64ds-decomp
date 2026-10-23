@@ -740,22 +740,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@676",
+      "from": "@673",
       "to": "@931",
       "evidence": "Compiler-local destructor-registration node at 0x0213c820; retain its original ROM address under the fleet-unique short label @931."
     },
     {
-      "from": "@677",
+      "from": "@674",
       "to": "@932",
       "evidence": "Compiler-local destructor-registration node at 0x0213c844; retain its original ROM address under the fleet-unique short label @932."
     },
     {
-      "from": "@678",
+      "from": "@675",
       "to": "@933",
       "evidence": "Compiler-local destructor-registration node at 0x0213c838; retain its original ROM address under the fleet-unique short label @933."
     },
     {
-      "from": "@679",
+      "from": "@676",
       "to": "@937",
       "evidence": "Compiler-local destructor-registration node at 0x0213c82c; retain its original ROM address under the fleet-unique short label @937."
     }
