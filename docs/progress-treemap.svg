@@ -2073,7 +2073,7 @@ matched: yes</title></rect><rect x="220.48" y="162.45" width="1.51" height="8.88
 module: arm9
 addr: 0x02015c0c
 size: 20 bytes
-matched: yes</title></rect><rect x="221.99" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt
+matched: yes</title></rect><rect x="221.99" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dExtFrameCtrl_c12SetAnimationEtiit
 module: arm9
 addr: 0x02015c20
 size: 28 bytes
