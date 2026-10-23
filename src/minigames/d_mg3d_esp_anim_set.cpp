@@ -101,8 +101,6 @@ void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
@@ -295,7 +293,7 @@ void dMg3DEspAnimSet_c::InitResources()
     char *w2;
     mSpeed = 0x800;
     bmd = (int)Model::LoadFile(gEspHamonModelFile);
-    bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspHamonAnimFile);
+    bca = (int)dExtFrameCtrl_c::LoadFile(gEspHamonAnimFile);
     MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&sEsp3DMaterialAnim);
     w = o;
     w2 = (char *)mMaterialChangers;
@@ -475,10 +473,10 @@ int dMg3DEspModel_c::InitResources()
     if (func_020179b4(&gEspCardModelFile, (char *)&mModelAnim, 1) == 0)
         return 0;
     TextureSequence::LoadFile(gEspCardTexSeqFile);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardStartAnimFile);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardWaitAnimFile);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardOpenAnimFile);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&gEspCardOpenWaitAnimFile);
+    dExtFrameCtrl_c::LoadFile(gEspCardStartAnimFile);
+    dExtFrameCtrl_c::LoadFile(gEspCardWaitAnimFile);
+    dExtFrameCtrl_c::LoadFile(gEspCardOpenAnimFile);
+    dExtFrameCtrl_c::LoadFile(gEspCardOpenWaitAnimFile);
     TextureSequence::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
                              **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(

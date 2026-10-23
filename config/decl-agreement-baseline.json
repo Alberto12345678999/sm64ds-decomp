@@ -6021,9 +6021,6 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#1 void *"
-      ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "param:#1 void *",
         "return:void"
@@ -6066,13 +6063,6 @@
         "param:#1 void *",
         "return:void *"
       ],
-      "src/game/actors/d_a_demo.cpp": [
-        "return:void *"
-      ],
-      "src/game/actors/d_a_door.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/game/actors/d_a_iwante.cpp": [
         "param:#1 void *",
         "return:void"
@@ -6084,22 +6074,6 @@
       "src/game/actors/d_a_kpa.cpp": [
         "param:#1 void *",
         "return:void"
-      ],
-      "src/game/actors/d_a_star.cpp": [
-        "param:#1 void *",
-        "return:void"
-      ],
-      "src/minigames/d_mg3d_esp_anim_set.cpp": [
-        "param:#1 void *",
-        "return:int"
-      ],
-      "src/minigames/d_mg_trmpln2_mario.cpp": [
-        "param:#1 SharedFilePtr *",
-        "return:void *"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#1 void *",
-        "return:void *"
       ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "param:#1 void *",
@@ -7551,13 +7525,6 @@
       "src/minigames/d_mg3d_esp_anim_set.cpp": [
         "param:#1 void *",
         "return:int"
-      ],
-      "src/minigames/d_mg_trmpln2_mario.cpp": [
-        "param:#1 SharedFilePtr *",
-        "return:struct BMD_File *"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#1 void *"
       ],
       "src/minigames/unit020cd744.cpp": [
         "param:#1 void *"
