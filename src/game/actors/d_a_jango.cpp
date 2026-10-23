@@ -184,8 +184,8 @@ extern "C" void *_ZN7PathPtrC1Ev(void *self);
 extern "C" int Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern signed char data_0209f2f8;
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *a, int b, int c, int d, int e);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
-extern "C" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *, BCA_File& f, int a, int b, int d, unsigned short e);
+extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b,
+                                                   unsigned int c, unsigned int d, unsigned int e);
 extern "C" void func_02012790(int);
 extern "C" void func_02012694(unsigned int, void*);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -214,27 +214,23 @@ extern void *data_0209f394;
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for func_ov062_0211b800, NOT applied: extern void func_ov062_0211c658(void *c, void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov062_0211e17c, from the legacy file for func_ov062_0211b8d8, NOT applied: extern void* data_ov062_0211e17c; */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for func_ov062_0211b8d8, NOT applied: extern "C" int func_ov062_0211c658(unsigned char* c, void* p); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt, from the legacy file for func_ov062_0211b930, NOT applied: extern "C" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *, BCA_File& f, int a, int b, Fix12 spd, unsigned short t); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c13ClosestPlayerEv, from the legacy file for func_ov062_0211ba84, NOT applied: extern char *_ZN8dActor_c13ClosestPlayerEv(char *self); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for func_ov062_0211ba84, NOT applied: extern int func_ov062_0211c658(char *c, void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromRotationY, from the legacy file for func_ov062_0211ba84, NOT applied: extern void Matrix4x3_FromRotationY(void *m, int angle); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_ApplyInPlaceToRotationX, from the legacy file for func_ov062_0211ba84, NOT applied: extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX); */
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov062_0211ba84, NOT applied: extern void MulVec3Mat4x3(const Vector3 *v, void *m, Vector3 *out); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov062_0211e17c, from the legacy file for func_ov062_0211ba84, NOT applied: extern void *data_ov062_0211e17c; */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt, from the legacy file for func_ov062_0211bc54, NOT applied: extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *, BCA_File &a, int b, int c, int d, unsigned short e); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f2f8, from the legacy file for func_ov062_0211bc54, NOT applied: extern "C" signed char data_0209f2f8; */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov062_0211bc54, NOT applied: extern "C" void func_02012694(int a0, void *a1); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZNK10dBgCh_Actr8IsOnWallEv, from the legacy file for func_ov062_0211bd10, NOT applied: extern int _ZNK10dBgCh_Actr8IsOnWallEv(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov062_0211bd10, NOT applied: extern s16 Vec3_HorzAngle(const void *a, const void *b); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_VertAngle, from the legacy file for func_ov062_0211bd10, NOT applied: extern s16 Vec3_VertAngle(const void *a, const void *b); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c13ClosestPlayerEv, from the legacy file for func_ov062_0211bd10, NOT applied: extern void *_ZN8dActor_c13ClosestPlayerEv(void *self); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt, from the legacy file for func_ov062_0211bd10, NOT applied: extern int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt( void *anim, void *file, int a, int b, int speed, unsigned short flags); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov062_0211c658, from the legacy file for func_ov062_0211bd10, NOT applied: extern int func_ov062_0211c658(void *self, void *state); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN7PathPtrC1Ev, from the legacy file for func_ov062_0211bd10, NOT applied: extern void _ZN7PathPtrC1Ev(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN7PathPtr6FromIDEj, from the legacy file for func_ov062_0211bd10, NOT applied: extern void _ZN7PathPtr6FromIDEj(void *self, unsigned int id); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZNK7PathPtr7GetNodeER7Vector3j, from the legacy file for func_ov062_0211bd10, NOT applied: extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, Vector3 *v, unsigned int i); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f2f8, from the legacy file for func_ov062_0211bd10, NOT applied: extern s8 data_0209f2f8; */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt, from the legacy file for func_ov062_0211c218, NOT applied: extern int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *anim, void *file, int a, int b, int c, unsigned short u); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov062_0211c218, NOT applied: extern int RandomIntInternal(int *seed); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209e650, from the legacy file for func_ov062_0211c218, NOT applied: extern int data_0209e650; */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov062_0211c2f4, NOT applied: extern s16 Vec3_HorzAngle(const void *a, const void *b); */
@@ -248,7 +244,6 @@ extern void *data_0209f394;
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromRotationY, from the legacy file for func_ov062_0211c594, NOT applied: extern void Matrix4x3_FromRotationY(struct Matrix4x3 *m, short angY); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_ApplyInPlaceToRotationX, from the legacy file for func_ov062_0211c594, NOT applied: extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *m, short angX); */
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov062_0211c594, NOT applied: extern void MulVec3Mat4x3(const Vector3 *v, const struct Matrix4x3 *m, Vector3 *out); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt, from the legacy file for func_ov062_0211c594, NOT applied: extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void*, void*, int, int, int, unsigned short); */
 /* TUBUILD CONFLICT -- alternate declaration of data_020a0e68, from the legacy file for func_ov062_0211c594, NOT applied: extern struct Matrix4x3 data_020a0e68; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov062_0211c6a8, NOT applied: extern unsigned int _ZN8dActor_c10FindWithIDEj(unsigned int id); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN7PathPtrC1Ev, from the legacy file for _ZN9daJango_c13InitResourcesEv, NOT applied: extern void _ZN7PathPtrC1Ev(void *self); */
@@ -669,8 +664,7 @@ int daJango_c::func_ov062_0211c594() {
         mStateTimer = 0x3c;
     }
 
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mBlendModelAnim, *(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 }
@@ -783,8 +777,7 @@ int daJango_c::func_ov062_0211c218()
         mHitPlayer = 0;
     }
     mLeaveDelay = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mBlendModelAnim, *(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     if (mSilverStarFlag == 2 ||
         (unsigned char)(signed char)((signed char)data_0209f2f8 - 0x18) <= 1) {
         mLeaveDelay = 2;
@@ -916,8 +909,7 @@ int daJango_c::func_ov062_0211bd10()
 
     if (angD < 0x300) {
         if (mStateParam == 1) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &mBlendModelAnim, *(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+            mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
             if (mSilverStarFlag == 2 ||
                 (unsigned)(u8)(s8)((s8)data_0209f2f8 - 0x18) <= 1u) {
                 p43c = &mLeaveDelay;
@@ -929,8 +921,7 @@ int daJango_c::func_ov062_0211bd10()
             mStateParam = 2;
         }
     } else if (mStateParam == 0) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, *(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
         p43c = &mStateParam;
         *p43c = *p43c + 1;
     }
@@ -988,8 +979,7 @@ int daJango_c::func_ov062_0211bc54()
     mSpeedZ = 0;
     func_02012694(SND_AT_SWOOP_ENTER, &mCamSpacePosX);
     mStateParam = ((((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 3) << 8) + 0x300;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mBlendModelAnim, *(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
+    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 
@@ -1087,8 +1077,8 @@ int func_ov062_0211ba84(char *c)
 int daJango_c::func_ov062_0211b930()
 {
     dActor_c* found;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &(mBlendModelAnim), *(BCA_File *)data_ov062_0211e10c.filePtr, 4, 0x40000000, 0x1000, 0);
+    ((BlendModelAnim *)&(mBlendModelAnim))
+        ->SetAnim(*(BCA_File *)data_ov062_0211e10c.filePtr, 4, 0x40000000, 0x1000, 0);
     mStateParam = 1;
     if (mHeldActorID != 0 && (found = dActor_c::FindWithID(mHeldActorID)) != 0) {
         found->mVertAccel = -0x2000;
@@ -1147,8 +1137,7 @@ int daJango_c::func_ov062_0211b880() {
     mVertSpeed = 0;
     mSpeedZ = 0;
     mVertAccel = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mBlendModelAnim, *(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 

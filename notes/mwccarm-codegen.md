@@ -174,7 +174,7 @@ Two things follow, and both are general, not specific to these two symbols:
   in arm9 and all 105 overlays. Those names are ours; they cannot be evidence for
   the type they contain.
 
-### DONE for ModelAnim::SetAnim (2026-10-22); BlendModelAnim::SetAnim still pending
+### DONE for both SetAnim symbols (2026-10-22/23)
 
 `_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj` is now
 `_ZN9ModelAnim7SetAnimEP8BCA_Fileiit`, a real method, and the 612 references
@@ -210,9 +210,27 @@ cost, for whoever does the other 53 symbols:
   symbol the count went 612 -> 71, and the 71 are the same occurrences in the
   four files above (61 -> 61 and 5 -> 5 unchanged; 15 -> 2 and 18 -> 3).
 
-`_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt` is measured (it reproduces
-0x020163e0/0x9c as `BlendModelAnim::SetAnim(BCA_File &, int, int, Fix12i, u16)`)
-but NOT converted; it has 189 references of its own.
+`_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt` followed as
+`_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit`: 191 references across 8 files, 68
+call sites converted and 11 local declarations deleted. Only
+`unit020bfec0.cpp` (37 refs) could not follow, for the same reason as above.
+Two things that differ from the ModelAnim pass, both from parameter 2 being
+`BCA_File &` rather than a pointer:
+
+- **A reference parameter needs an lvalue, so call sites gain a dereference**
+  (`*(BCA_File *)x.filePtr`). Where a file's old local extern ALREADY declared
+  `BCA_File &`, its call site was already passing a dereferenced lvalue, and a
+  sweep that adds its own `*(BCA_File *)` double-wraps it --
+  `illegal explicit conversion from 'BCA_File' to 'BCA_File *'`, 7 sites in
+  `d_a_jango.cpp`. Check what the old declaration said before casting.
+- **An incomplete `BCA_File` is fine.** No header defines it; most callers only
+  forward-declare it, and mwccarm still binds `*(BCA_File *)p` to the reference.
+  That was not the jango failure, despite looking like it.
+
+`d_a_jango.cpp` also carried five `TUBUILD CONFLICT` markers that quoted the old
+declaration; removing the declaration leaves the marker recording nothing, so
+those were dropped. That is different from the `config/tu_manifest.d/` strings,
+which stay.
 
 ## 1. Ground rules of the build
 

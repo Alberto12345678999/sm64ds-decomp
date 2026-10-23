@@ -41,14 +41,12 @@ void func_0203cbc0(void *ptr);
 /* defined below -- DoSetFile's tail; it sits between UpdateVerts and
    DoSetFile in the ROM and DoSetFile is its only caller here */
 int func_020165c4(BlendModelAnim *self, char *file);
-/* SetAnim below and its SetAnimation call keep their mangled spellings
-   because of the NAMES, not wall 6az. Measured 2026-10-22: SetAnim
-   reproduces 0x020163e0/0x9c as a real method under the scalar mangling
-   _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit; only the class-typed
-   `5Fix12IiE` spelling costs. The rename is a campaign, not a local edit --
-   notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22. The declarations in
-   BlendModelAnim.h and dExtFrameCtrl_c.h are the ones callers use; the
-   measured method takes Fix12i where they say Fix12<int>. */
+/* SetAnimation keeps its mangled spelling: its symbol really does carry a
+   by-value Fix12<int>, and this body reads the argument, so wall 6az applies
+   here even though it did NOT apply to SetAnim below -- that one is a real
+   method now (see BlendModelAnim.h and notes/mwccarm-codegen.md 6az,
+   MEASURED 2026-10-22).
+   local extern: Fix12 by-value speed. */
 void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
 }
 
@@ -148,30 +146,24 @@ void BlendModelAnim::Advance()
     }
 }
 
-// @symbol _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt
-extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-    BlendModelAnim *thiz, BCA_File &file, s32 numBlendFrames, s32 flags,
-    s32 speed, u16 startFrame)
-{
-    if (&file == thiz->file)
-    {
-        thiz->SetFlags(flags);
-        thiz->speed = speed;
-    }
-    else
-    {
-        thiz->file = &file;
+// @symbol _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit
+void BlendModelAnim::SetAnim(BCA_File &animFile, int numBlendFrames, int flags, Fix12i speed,
+                             u16 startFrame) {
+    if (&animFile == file) {
+        SetFlags(flags);
+        this->speed = speed;
+    } else {
+        file = &animFile;
         _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(
-            &static_cast<dExtFrameCtrl_c &>(*thiz), file.numFrames, flags, speed,
-            startFrame);
+            &static_cast<dExtFrameCtrl_c &>(*this), animFile.numFrames, flags, speed, startFrame);
         if (numBlendFrames <= 0)
         {
-            thiz->blendWeight = 0x1000;
+            blendWeight = 0x1000;
         }
         else
         {
-            thiz->blendWeight = 0;
-            thiz->blendStep = cstd::fdiv(0x1000, (numBlendFrames + 1) << 12);
+            blendWeight = 0;
+            blendStep = cstd::fdiv(0x1000, (numBlendFrames + 1) << 12);
         }
     }
 }
