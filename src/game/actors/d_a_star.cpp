@@ -68,6 +68,7 @@ enum daStar_c_AssetId {
 #include "Message.h"
 #include "SaveData.h"
 #include "SharedFilePtr.h"
+#include "dExtFrameCtrl_c.h"
 #include "dCamera_c.h"
 #include "fBase_c.h"
 #include "daSoundObj_c.h"
@@ -254,8 +255,6 @@ extern s32 data_02092138;
 extern StarModelFilePtr data_ov002_0211094c;
 extern StarModelFilePtr data_ov002_02110954;
 extern StarModelFilePtr data_ov002_0211095c;
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *f);
 extern void LoadSilverStarAndNumber(void);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
@@ -497,10 +496,10 @@ s32 daStar_c::InitResources()
     mInitPosY = mPosY;
     mInitPosZ = mPosZ;
     mMusicTimer = 0;
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110944);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110924);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110964);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110934);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110944);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110924);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110964);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110934);
 
     b = (s32)(actorID == ACTOR_STAR);
     if (b != 0) {

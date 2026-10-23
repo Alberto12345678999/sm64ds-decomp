@@ -1209,9 +1209,6 @@ extern "C" void Trmp2Mario_EnterHidden(char *c) {
 // ---- Trmp2Mario_Load
 namespace ns_020ca430 {
 extern "C" {
-typedef struct {
-    int w[2];
-} SharedFilePtr;
 typedef struct BMD_File BMD_File;
 
 extern "C" SharedFilePtr sTrmpMarioModelFile;
@@ -1245,9 +1242,6 @@ extern "C" void *sTrmpAnimSdown;
 
 extern "C" char *sMgMainCamera;
 
-extern BMD_File *_ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr *f);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr *f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, BMD_File *f, int a, int b);
 extern void Camera_ProjectToScreen16(char *p, void *q, short *s);
 extern void func_02016a14(void *self, int a, int b);
@@ -1259,23 +1253,20 @@ int Trmp2Mario_Load(char *c) {
     BMD_File *f;
     int ret;
 
-    f = _ZN5Model8LoadFileER13SharedFilePtr(&sTrmpMarioModelFile);
-    sTrmpAnimJump = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioJumpAnimFile);
-    sTrmpAnimDoubleJump1 =
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioDoubleJump1AnimFile);
-    sTrmpAnimWallJump = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioWallJumpAnimFile);
-    sTrmpAnimHangUp = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioHangUpAnimFile);
-    sTrmpAnimRollJumpEnd =
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioRollJumpEndAnimFile);
-    sTrmpAnimWalk = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioWalkAnimFile);
-    sTrmpAnimDoubleJump2 =
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioDoubleJump2AnimFile);
-    sTrmpAnimJumpEnd = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioJumpEndAnimFile);
-    sTrmpAnimTurn = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioTurnAnimFile);
-    sTrmpAnimTurnEnd = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioTurnEndAnimFile);
-    sTrmpAnimBounce = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioRollJumpAnimFile);
-    sTrmpAnimStruggle = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioStruggleAnimFile);
-    sTrmpAnimSdown = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioSdownAnimFile);
+    f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
+    sTrmpAnimJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
+    sTrmpAnimDoubleJump1 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
+    sTrmpAnimWallJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
+    sTrmpAnimHangUp = dExtFrameCtrl_c::LoadFile(sTrmpMarioHangUpAnimFile);
+    sTrmpAnimRollJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpEndAnimFile);
+    sTrmpAnimWalk = dExtFrameCtrl_c::LoadFile(sTrmpMarioWalkAnimFile);
+    sTrmpAnimDoubleJump2 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump2AnimFile);
+    sTrmpAnimJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpEndAnimFile);
+    sTrmpAnimTurn = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnAnimFile);
+    sTrmpAnimTurnEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnEndAnimFile);
+    sTrmpAnimBounce = dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpAnimFile);
+    sTrmpAnimStruggle = dExtFrameCtrl_c::LoadFile(sTrmpMarioStruggleAnimFile);
+    sTrmpAnimSdown = dExtFrameCtrl_c::LoadFile(sTrmpMarioSdownAnimFile);
     ret = _ZN9ModelBase7SetFileEP8BMD_Fileii(MARIO2(c)->mModelAnim, f, 1, -1);
     MARIO2(c)->mAnim = 0;
     if (sMgMainCamera != 0)
@@ -3266,9 +3257,6 @@ void Trmp3DMario_EnterOffstage(char *c) {
 // ---- Trmp3DMario_Load
 namespace ns_020cce0c {
 extern "C" {
-typedef struct {
-    int w[2];
-} SharedFilePtr;
 typedef struct BMD_File BMD_File;
 
 extern "C" SharedFilePtr sTrmpMarioModelFile;
@@ -3300,9 +3288,6 @@ extern "C" void *sTrmpAnimStruggle;
 
 extern "C" char *sMgMainCamera;
 
-extern BMD_File *_ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr *f);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr *f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, BMD_File *f, int a, int b);
 extern void Camera_ProjectToScreen16(char *p, void *q, short *s);
 extern void func_02016a14(void *self, int a, int b);
@@ -3314,22 +3299,19 @@ int Trmp3DMario_Load(char *c) {
     BMD_File *f;
     int ret;
 
-    f = _ZN5Model8LoadFileER13SharedFilePtr(&sTrmpMarioModelFile);
-    sTrmpAnimJump = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioJumpAnimFile);
-    sTrmpAnimDoubleJump1 =
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioDoubleJump1AnimFile);
-    sTrmpAnimWallJump = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioWallJumpAnimFile);
-    sTrmpAnimHangUp = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioHangUpAnimFile);
-    sTrmpAnimRollJumpEnd =
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioRollJumpEndAnimFile);
-    sTrmpAnimWalk = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioWalkAnimFile);
-    sTrmpAnimDoubleJump2 =
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioDoubleJump2AnimFile);
-    sTrmpAnimJumpEnd = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioJumpEndAnimFile);
-    sTrmpAnimTurn = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioTurnAnimFile);
-    sTrmpAnimTurnEnd = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioTurnEndAnimFile);
-    sTrmpAnimBounce = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioRollJumpAnimFile);
-    sTrmpAnimStruggle = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&sTrmpMarioStruggleAnimFile);
+    f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
+    sTrmpAnimJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
+    sTrmpAnimDoubleJump1 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
+    sTrmpAnimWallJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
+    sTrmpAnimHangUp = dExtFrameCtrl_c::LoadFile(sTrmpMarioHangUpAnimFile);
+    sTrmpAnimRollJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpEndAnimFile);
+    sTrmpAnimWalk = dExtFrameCtrl_c::LoadFile(sTrmpMarioWalkAnimFile);
+    sTrmpAnimDoubleJump2 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump2AnimFile);
+    sTrmpAnimJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpEndAnimFile);
+    sTrmpAnimTurn = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnAnimFile);
+    sTrmpAnimTurnEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnEndAnimFile);
+    sTrmpAnimBounce = dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpAnimFile);
+    sTrmpAnimStruggle = dExtFrameCtrl_c::LoadFile(sTrmpMarioStruggleAnimFile);
     ret = _ZN9ModelBase7SetFileEP8BMD_Fileii(MARIO3D(c)->mModelAnim, f, 1, -1);
     MARIO3D(c)->mAnim = 0;
     if (sMgMainCamera != 0)

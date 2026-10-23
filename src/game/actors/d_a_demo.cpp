@@ -3691,8 +3691,6 @@ int daDemo_c::anmModel_c::func_ov002_020f65ec()
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f6618EP13SharedFilePtriPS2_ihS3_i
 struct BTP_File;
 extern "C" {
-void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(
-    SharedFilePtr &f); /* local extern: untyped file pointer. */
 void* _Znwj(unsigned int sz);
 void* _ZN15TextureSequenceC1Ev(void* self);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int fx, unsigned int e);
@@ -3710,7 +3708,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     mNumAnimFiles = (u8)nAnims;
     mAnimFiles = anims;
     for (i = 0; i < mNumAnimFiles; i++) {
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(*mAnimFiles[i]);
+        dExtFrameCtrl_c::LoadFile(*mAnimFiles[i]);
     }
     ((ModelAnim *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
     if (texByte) {

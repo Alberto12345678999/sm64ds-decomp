@@ -40,16 +40,23 @@
 struct Sound {
     static void PlayBank2_2D(unsigned int);
 };
+/* LoadFile is static, so it mangles the same on these stubs as on the real
+   classes. The stubs stay: Model::Render is virtual on the real class. */
 struct Model {
     int d;
     void HideMaterial(int, int);
     void ShowMaterial(int, int);
     void Render(const Vector3 *);
+    static void *LoadFile(SharedFilePtr &ptr);
 };
 struct dExtFrameCtrl_c {
     int d;
     int Finished();
     int WillHitFrame(int f) const;
+    static char *LoadFile(SharedFilePtr &ptr);
+};
+struct TextureSequence {
+    static void *LoadFile(SharedFilePtr &ptr);
 };
 namespace dExtShadowModel_c {
 void RenderAll();
@@ -109,7 +116,6 @@ void _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit(void *, void *, int, int, int, u
 void _ZN15TextureSequence6UpdateER15ModelComponents(void *, void *);
 void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *, void *);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
-void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *);
 void *_ZN15TextureSequenceC1Ev(void *);
 void _ZN15TextureSequenceD1Ev(void *);
 void _ZN18TextureTransformer6UpdateER15ModelComponents(void *, void *);
@@ -123,7 +129,6 @@ void _ZN5Model12HideMaterialEii(void *, int, int);
 void _ZN5Model12ShowMaterialEii(void *, int, int);
 void _ZN5Model12SetPolygonIDEi(void *, int);
 void _ZN5Model6RenderEPK7Vector3(void *, void *);
-void *_ZN5Model8LoadFileER13SharedFilePtr(void *);
 void *_ZN5ModelC1Ev(void *);
 void _ZN5ModelD1Ev(void *);
 void _ZN5Sound12PlayBank2_2DEj(unsigned int);
@@ -134,8 +139,6 @@ void *_ZN7Vector3D1Ev(void *);
 int _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8FinishedEv(void *);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *);
 /* NOT CONVERTED TO THE REAL METHODS. This TU never sees the ModelAnim or
    BlendModelAnim class -- its anim pointers are raw offsets into the minigame
    record (e.g. *(void **)(c + 0x104)) -- and a method call needs a complete
@@ -330,15 +333,15 @@ struct ModelBase {
 };
 extern "C" int FlowerFace_Load(char *c) {
     {
-        void *bmd = _ZN5Model8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mModelFile);
+        void *bmd = Model::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mModelFile);
         _ZN9ModelBase7SetFileEP8BMD_Fileii((ModelBase *)FLOWERFACE(c)->mModel, bmd, 1, -1);
     }
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mWaitAnim);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mPickAnim);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mLikeAnim);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mHateAnim);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mPickAnim);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mLikeAnim);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mHateAnim);
     FlowerFace_PlayIdle(c);
-    int m = (int)_ZN5Model8LoadFileER13SharedFilePtr(&FLOWERFACE(c)->mPetalFile);
+    int m = (int)Model::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mPetalFile);
     int i = 0;
     int z = i;
     char *p = (char *)FLOWERFACE(c)->mPetals;
@@ -918,24 +921,24 @@ int Presenter_Load(char *c) {
     void *r5;
     void *r4;
 
-    r5 = _ZN5Model8LoadFileER13SharedFilePtr(&PRESENTER(c)->mFaceModel);
-    r4 = _ZN5Model8LoadFileER13SharedFilePtr(&PRESENTER(c)->mBackModel);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[0]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[1]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[2]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[3]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[4]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[5]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[6]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&PRESENTER(c)->mAnims[7]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[0]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[1]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[2]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[3]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[4]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[5]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[6]);
-    _ZN15TextureSequence8LoadFileER13SharedFilePtr(&PRESENTER(c)->mTexSeqs[7]);
+    r5 = Model::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mFaceModel);
+    r4 = Model::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mBackModel);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[0]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[1]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[2]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[3]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[4]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[5]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[6]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[7]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[0]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[1]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[2]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[3]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[4]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[5]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[6]);
+    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[7]);
 
     if (!_ZN9ModelBase7SetFileEP8BMD_Fileii(PRESENTER(c)->mFace, r5, 1, -1))
         return 0;
@@ -1513,9 +1516,9 @@ namespace s020c2154 {
 extern "C" {
 void Mascot_Load(char *c) {
     void *f;
-    f = _ZN5Model8LoadFileER13SharedFilePtr(MASCOT(c)->mModelFile);
+    f = Model::LoadFile(*(::SharedFilePtr *)MASCOT(c)->mModelFile);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(MASCOT(c)->mModel, f, 1, -1);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(MASCOT(c)->mWaitAnimFile);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)MASCOT(c)->mWaitAnimFile);
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit(
         MASCOT(c)->mModel, ((void *)MASCOT(c)->mWaitAnimFile[1]), 0, 0, 0x800, 0);
     _ZN5Model12HideMaterialEii(MASCOT(c)->mModel, 7, 0);
@@ -1776,25 +1779,25 @@ int Dealer_Load(char *c) {
     void *ip;
 
     _ZN17dExtShadowModel_c8CleanAllEv();
-    DEALER(c)->mModelData = (int)_ZN5Model8LoadFileER13SharedFilePtr(&DEALER(c)->mModelFile);
-    DEALER(c)->mTableData = (int)_ZN5Model8LoadFileER13SharedFilePtr(&DEALER(c)->mTableFile);
+    DEALER(c)->mModelData = (int)Model::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mModelFile);
+    DEALER(c)->mTableData = (int)Model::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mTableFile);
     f = ((void *)DEALER(c)->mModelData);
     if (f == 0 || _ZN9ModelBase7SetFileEP8BMD_Fileii(DEALER(c)->mModel, f, 1, -1) == 0) {
         return 0;
     }
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[0]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[1]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[2]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[3]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[4]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[5]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[6]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[7]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[8]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[9]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[10]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[11]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&DEALER(c)->mAnims[12]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[0]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[1]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[2]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[3]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[4]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[5]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[6]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[7]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[8]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[9]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[10]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[11]);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mAnims[12]);
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit(DEALER(c)->mModel,
                                                ((void *)DEALER(c)->mAnims[0].file), 0, 0, 0x800, 0);
     Dealer_ResetMatrices(c);
@@ -2581,11 +2584,11 @@ extern Vector3_16 data_020a0edc;
 extern "C" void MascotWalker_Load(char *thiz) {
     char *c = thiz;
     {
-        void *bmd = _ZN5Model8LoadFileER13SharedFilePtr(WALKER(c)->mModelFile);
+        void *bmd = Model::LoadFile(*(::SharedFilePtr *)WALKER(c)->mModelFile);
         _ZN9ModelBase7SetFileEP8BMD_Fileii((ModelBase *)WALKER(c)->mModel, bmd, 1, -1);
     }
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(WALKER(c)->mWalkAnimFile);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(WALKER(c)->mPauseAnimFile);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)WALKER(c)->mWalkAnimFile);
+    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)WALKER(c)->mPauseAnimFile);
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit((BlendModelAnim *)WALKER(c)->mModel,
                                                *(BCA_File *)WALKER(c)->mPauseAnimFile[1], 0, 0,
                                                0x800, 0);

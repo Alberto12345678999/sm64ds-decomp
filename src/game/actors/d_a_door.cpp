@@ -108,6 +108,7 @@ enum daDoor_c_AssetId {
 #include "dCamera_c.h"
 #include "daObjKey_c.h"
 #include "Model.h"
+#include "dExtFrameCtrl_c.h"
 #include "dActor_c.h"
 
 /* Three plain words: the stack and static vectors of the helpers that were
@@ -210,8 +211,6 @@ void func_ov100_02145070(int v);
 void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *fp);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
@@ -1226,7 +1225,7 @@ s32 daDoor_c::InitResources()
             Model::LoadFile(*(SharedFilePtr *)mKeyFile);
     }
 
-    an = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov100_02148744);
+    an = dExtFrameCtrl_c::LoadFile(data_ov100_02148744);
     mModel.SetAnim((BCA_File *)an, 0x40000000, 0x1000, 0);
 
     /* The model matrix takes the position >> 3. */
