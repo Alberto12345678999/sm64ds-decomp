@@ -195,8 +195,6 @@ extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_cD1Ev
 // @symbol _ZN8daYegg_cD0Ev
 /* One native destructor definition emits both ROM variants. D1 is one vtable
@@ -1337,8 +1335,6 @@ fail:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method */
 /* Releases the two shared animation files and, if the egg pays a blue coin,
@@ -1352,8 +1348,6 @@ int daYegg_c::CleanupResources()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c6RenderEv
 /* recovered: named members + shared header, real C++ method -- vtable slot 9 */
 /* Draws the egg's model unless it is hidden: skipped when mFlags has 0x40000,
@@ -1374,8 +1368,6 @@ int daYegg_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -1434,8 +1426,6 @@ int daYegg_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *

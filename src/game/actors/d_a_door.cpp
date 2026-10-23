@@ -378,8 +378,6 @@ daDoor_StateRecord data_ov100_02148914 = {data_ov100_02148144, data_ov100_021480
 daDoor_StateRecord data_ov100_02148924 = {data_02086b58, data_ov100_02148134};
 daDoor_StateRecord data_ov100_021488a4 = {data_02086b58, data_ov100_02148114};
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDoor_cD1Ev
 // @symbol _ZN8daDoor_cD0Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body.
@@ -1056,8 +1054,6 @@ int daDoor_c::func_ov100_021453d8(void *p, int a2)
     return (this->*q->enter)(a2);
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDoor_c16CleanupResourcesEv
 /* vtable slot 3. `delete key` IS the ROM's `ldr r1,[r0]; ldr r1,[r1,#4];
  * blx r1` -- vtable slot 1, Model's deleting destructor -- and it is also
@@ -1082,8 +1078,6 @@ s32 daDoor_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDoor_c16OnPendingDestroyEv
 /* vtable slot 12. The ROM body is empty: the override exists only to
    occupy the slot. */
@@ -1091,8 +1085,6 @@ void daDoor_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDoor_c6RenderEv
 /* vtable slot 9. Draw the door if either area it joins is showing, then
  * hand the door's bone transforms to the key model hanging off 0x138
@@ -1130,8 +1122,6 @@ done:
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDoor_c8BehaviorEv
 /* vtable slot 6. Run the current state's execute member with the player.
  *
@@ -1151,8 +1141,6 @@ s32 daDoor_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDoor_c13InitResourcesEv
 /* vtable slot 0. Was a C source taking the object explicitly.
  *

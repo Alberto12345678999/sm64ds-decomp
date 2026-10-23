@@ -408,8 +408,6 @@ extern s32 IsStarCollected(s32 level, s32 idx);
  * ends the object. (d_a_kpa.cpp precedent.) */
 #pragma defer_codegen off
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_cD1Ev
 // @symbol _ZN8daStar_cD0Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
@@ -455,8 +453,6 @@ daStar_c::~daStar_c()
 
 #pragma defer_codegen on
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13InitResourcesEv
 /* Spawn-time set-up for the Power Star (actor 0xb2) and the silver star
  * (0xb3). Loads the shared animation files and the star models, then picks the
@@ -678,8 +674,6 @@ s32 daStar_c::InitResources()
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c13InitResourcesEv
 /* Spawn-time set-up for the marker that shows where a star will appear. param1
  * bits 4..7 pick the flavour: kind 6 only spawns the switch star (actor 0xb2,
@@ -798,8 +792,6 @@ int daStarBase_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c8BehaviorEv
 /* Per-frame update. Looks once for an ice block, clears the cached centre, and
  * while a Yoshi has the star in its mouth only rebuilds the matrices.
@@ -855,8 +847,6 @@ int daStar_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c8BehaviorEv
 /* Per-frame update of the marker. mAppearTimer counts down while this marker's
  * star id is the next one in data_0209f344[data_0209f208], and the marker
@@ -937,8 +927,6 @@ int daStarBase_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c6RenderEv
 /* Draws mModelAnim2 (collected, translucent) or mModelAnim1, unless the star
  * is scaled to nothing, hidden by mFlags & 0x40000, or not visible. */
@@ -959,8 +947,6 @@ callit:
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c6RenderEv
 /* Draws the marker's model while it is visible. */
 int daStarBase_c::Render()
@@ -970,8 +956,6 @@ int daStarBase_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c16CleanupResourcesEv
 /* Gives up the map marker slot (kind 8 never had one), unloads the silver star
  * and number models when InitResources loaded them (silver star, or kind 6),
@@ -997,8 +981,6 @@ int daStar_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c16CleanupResourcesEv
 /* Releases the model files that InitResources loaded for this marker's
  * flavour. */
@@ -1013,8 +995,6 @@ int daStarBase_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c16OnPendingDestroyEv
 /* If the linked star exists but has no death-table slot of its own
  * (mDeathTableID < 0), clears the death-table bit this marker remembered for
@@ -2130,15 +2110,11 @@ ret0:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13OnYoshiTryEatEv
 s32 daStar_c::OnYoshiTryEat() {
     return 4;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13OnTurnIntoEggER6Player
 /* daStar_c::OnTurnIntoEgg -- vtable slot 19, verified against ov002 relocs.txt:
  * _ZTV8daStar_c (0x0210ab3c) + 0x4c -> 0x020e8edc, exactly this placeholder's
@@ -2202,8 +2178,6 @@ int daStar_c::func_ov002_020e8dd8() {
     AddStarMarker();
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c13AddStarMarkerEv
 /* Claims a free slot of the map-marker table (data_0209f40c, 12 entries) for
  * this star. The marker type is 1 for the silver star, 2 for the Power Star
@@ -2794,8 +2768,6 @@ int daStar_c::func_ov002_020e7e14() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c7CollectEv
 /* The marker was touched: plays sound 3/0x53, puts the marker on hold and
  * hides it, clears its touch volume and bursts effects 0x12c, 0x12d and 0x12e. */
@@ -3134,8 +3106,6 @@ ret0:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv
 /* Once the eighth red coin is in (NumRedCoins() == 8) spawns this marker's
  * Power Star 120.0 above it. The star takes the map marker, remembers this

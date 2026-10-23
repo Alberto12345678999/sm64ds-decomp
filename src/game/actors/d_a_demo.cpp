@@ -659,15 +659,11 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of _Znwj, from the legacy file for _ZN8daDemo_c13InitResourcesEv, NOT applied: extern "C" void *_Znwj(int sz); */
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_cD1Ev
 daDemo_c::~daDemo_c()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_cD0Ev
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
@@ -3738,8 +3734,6 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_cD0Ev
 /* D0, the deleting destructor. Same class shape as the D1 file beside this one;
  * one destructor definition emits D0/D1/D2 and objisolate keeps the variant this
@@ -3748,8 +3742,6 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
  * without it the bytes still match and only the relocation destination differs.
  * The D0 variant here emits from the ~anmModel_c definition at ordinal 113. */
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_cD1Ev
 /* D1, the complete-object destructor.
  *
@@ -3800,8 +3792,6 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
     return ((ModelBase *)this)->SetFile(f, 1, n) != 0 ? 1 : 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13simpleModel_cD0Ev
 /* D0, the deleting destructor. Same class shape as the D1 file beside this one;
  * one destructor definition emits D0/D1/D2 and objisolate keeps the variant this
@@ -3810,8 +3800,6 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
  * without it the bytes still match and only the relocation destination differs.
  * The D0 variant here emits from the ~simpleModel_c definition at ordinal 116. */
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13simpleModel_cD1Ev
 /* D1, the complete-object destructor.
  *
@@ -4606,8 +4594,6 @@ extern "C" void func_ov002_020f7d74(daDemo_c* self, unsigned char* p, int a2, in
     (self->*data_ov002_0211104c[p[6]])(p + 7, a2, a3);
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c16CleanupResourcesEv
 int daDemo_c::CleanupResources()
 {
@@ -4620,8 +4606,6 @@ int daDemo_c::CleanupResources()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c16OnPendingDestroyEv
 /* daDemo_c::OnPendingDestroy -- vtable slot 12. The ROM body is empty: the
  * override exists only to occupy the slot. */
@@ -4629,8 +4613,6 @@ void daDemo_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c6RenderEv
 int daDemo_c::Render() {
     if (param1 == 0x19) {
@@ -4674,8 +4656,6 @@ int daDemo_c::Render() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c8BehaviorEv
 int daDemo_c::Behavior()
 {
@@ -4747,8 +4727,6 @@ int daDemo_c::Behavior()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13InitResourcesEv
 /* Each model branch spells the nested class's construction out: param_c's
  * constructor on the tail base, the model base's C2, then the class vptr

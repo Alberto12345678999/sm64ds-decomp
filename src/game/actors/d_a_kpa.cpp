@@ -524,8 +524,6 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
  * ends the object. */
 #pragma defer_codegen off
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_cD1Ev
 // @symbol _ZN7daKpa_cD0Ev
 /*
@@ -552,8 +550,6 @@ daKpa_c::~daKpa_c()
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_cD1Ev
 // @symbol _ZN11daKpaTail_cD0Ev
 /*
@@ -608,8 +604,6 @@ extern "C" daKpaTail_c *daKpaTail_c_classInit(void)
     return new daKpaTail_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c13InitResourcesEv
 /*
 Tail setup: a single cylinder collider (dCcAc_c::Init) with radius 0x32000 (50
@@ -622,8 +616,6 @@ int daKpaTail_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c13InitResourcesEv
 /*
 Bowser's setup, in order: load the model file and hand it to ModelBase::SetFile,
@@ -733,8 +725,6 @@ int daKpa_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c8BehaviorEv
 /*
 Per frame: find Bowser by mBowserUniqueID (return 1 if he is gone), put the tail
@@ -770,8 +760,6 @@ int daKpaTail_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c8BehaviorEv
 /*
 One frame of Bowser, in order: advance the random state once (result unused);
@@ -824,8 +812,6 @@ int daKpa_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c6RenderEv
 /*
 Draws nothing; returns 1. */
@@ -834,8 +820,6 @@ int daKpaTail_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c6RenderEv
 /*
 Draw Bowser. Skipped while mOpacity < 8, where the opacity handed to the model
@@ -852,8 +836,6 @@ int daKpa_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16OnPendingDestroyEv
 /*
 Empty override: the ROM body is a single `bx lr`. */
@@ -861,8 +843,6 @@ void daKpa_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c16CleanupResourcesEv
 /*
 Releases nothing; returns 1. The tail loads no files of its own:
@@ -872,8 +852,6 @@ int daKpaTail_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16CleanupResourcesEv
 /*
 Release every handle InitResources loaded (the model, the 0x1c animations, the six

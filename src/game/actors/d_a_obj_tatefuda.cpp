@@ -205,8 +205,6 @@ extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
     return new daObjTatefuda_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -282,8 +280,6 @@ int daObjTatefuda_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8BehaviorEv
 /* daObjTatefuda_c::Behavior -- vtable slot 6. Real C++ method over the shared header.
  *
@@ -423,8 +419,6 @@ int daObjTatefuda_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c6RenderEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -447,8 +441,6 @@ int daObjTatefuda_c::Render() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -462,8 +454,6 @@ int daObjTatefuda_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11UpdateStateEv
 /* Runs the current state's UPDATE routine: row mState of the table, member 1.
    The rows are copied into data_ov002_0210e084 by this overlay's static
@@ -473,15 +463,11 @@ struct Entry { PMF pmf[2]; };
 extern Entry data_ov002_0210e084[];
 void daObjTatefuda_c::UpdateState() { int j = mState; (this->*data_ov002_0210e084[j].pmf[1])(); }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8SetStateEi
 /* Switches to state `state` and runs that state's ENTER routine (row state,
    member 0). */
 void daObjTatefuda_c::SetState(int state) { mState = state; int j = mState; (this->*data_ov002_0210e084[j].pmf[0])(); }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11InitCarriedEv
 /* CARRIED, enter: stop the sign's horizontal speed. */
 void daObjTatefuda_c::InitCarried()
@@ -489,8 +475,6 @@ void daObjTatefuda_c::InitCarried()
     mHorzSpeed = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c7CarriedEv
 // Carried at 0x020bbcb8
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
@@ -524,8 +508,6 @@ void daObjTatefuda_c::Carried()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c10InitThrownEv
 /* THROWN, enter: launch with horizontal speed 0x50000 (80 units/frame) and
  * vertical speed 0xa000 (10 units/frame), remember the holder as the last
@@ -544,8 +526,6 @@ void daObjTatefuda_c::InitThrown()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c6ThrownEv
 /* recovered: shared common types */
 /* THROWN, update. Each frame: tumble the sign about X by 0x2000 (one
@@ -610,8 +590,6 @@ void daObjTatefuda_c::Thrown()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11InitDroppedEv
 /* DROPPED, enter: zero the horizontal and vertical speeds, move the sign to
  * the holder's position raised by 0x64000 (100 units), and hand the holder
@@ -634,8 +612,6 @@ void daObjTatefuda_c::InitDropped()
     mHoldingPlayer = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c7DroppedEv
 bool ApproachLinear(short &value, short target, short step);
 extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
@@ -657,8 +633,6 @@ void daObjTatefuda_c::Dropped(){
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8InitIdleEv
 /* IDLE, enter: nothing to do. The PMF record binds a member, so this
    receives `this` and ignores it. */
@@ -666,8 +640,6 @@ void daObjTatefuda_c::InitIdle()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c4IdleEv
 /* IDLE, update: let a player start talking to the sign (TryStartTalk);
  * only if that did not happen, check for a grab or a break (CheckGrabOrBreak). */
@@ -676,8 +648,6 @@ void daObjTatefuda_c::Idle(){
   CheckGrabOrBreak();
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c8InitTalkEv
 /* TALK, enter: restart the talk walk-up at step 0. */
 void daObjTatefuda_c::InitTalk()
@@ -685,8 +655,6 @@ void daObjTatefuda_c::InitTalk()
     mTalkStep = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c4TalkEv
 /* recovered: shared common types */
 /* TALK, update: daObjTatefuda_c's talk routine, ov002 0x020bb614, 0x3dc bytes.
@@ -864,8 +832,6 @@ void daObjTatefuda_c::Talk()
     mFlagSeen = data_0209f284;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c12TryStartTalkEv
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -909,8 +875,6 @@ int daObjTatefuda_c::TryStartTalk() {
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c16CheckGrabOrBreakEv
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
@@ -955,8 +919,6 @@ void daObjTatefuda_c::CheckGrabOrBreak() {
     SetState(STATE_CARRIED);
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c4KillEv
 /* daObjTatefuda_c::Kill() at ov002 0x020bb3b8, 0x74 bytes -- vtable slot 31.
  *
@@ -1001,8 +963,6 @@ void daObjTatefuda_c::Kill()
     Reset();
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c15OnHitByMegaCharER6Player
 /* daObjTatefuda_c::OnHitByMegaChar -- vtable slot 27, ov002 0x020bb374.
  * reloc: _ZTV15daObjTatefuda_c+0x6c -> 0x020bb374, _ZTV10dBgActor_c+0x6c ->
@@ -1023,8 +983,6 @@ void daObjTatefuda_c::OnHitByMegaChar(Player &player)
     mAngleY = mPrevAngleY;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c15OnGroundPoundedER8dActor_c
 /* daObjTatefuda_c::OnGroundPounded -- vtable slot 21, ov002 0x020bb27c.
  * reloc: _ZTV15daObjTatefuda_c+0x54 -> 0x020bb27c, _ZTV10dBgActor_c+0x54 ->
@@ -1064,8 +1022,6 @@ void daObjTatefuda_c::OnGroundPounded(dActor_c &other)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c11OnAttacked1ER8dActor_c
 /* daObjTatefuda_c::OnAttacked1 -- vtable slot 22, ov002 0x020bb23c.
  * reloc: _ZTV15daObjTatefuda_c+0x58 -> 0x020bb23c, _ZTV10dBgActor_c+0x58 ->
@@ -1169,8 +1125,6 @@ void RebuildModelMatrix(struct daObjTatefuda_c* self){
     *(struct RawMatrix4x3 *)&self->mModel.mat4x3 = *(struct RawMatrix4x3 *)&data_020a0e68;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c18UpdateShadowMatrixEv
 /* Rebuild the drop shadow's matrix: a rotation about Y by the sign's angle,
  * with the translation set to the position >> 3 (the matrix's 0x24..0x2f is
@@ -1183,8 +1137,6 @@ void daObjTatefuda_c::UpdateShadowMatrix()
     mShadowMat.t.z = mPosZ >> 3;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c5ResetEv
 /* The reset: the sign goes back where it was spawned and hides. Sets mHidden
  * and mRespawnDelay = 0x1e (30 frames), clears the break countdown and both
@@ -1221,15 +1173,11 @@ void daObjTatefuda_c::Reset()
   mdCcAc_c.Clear();
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_cD0Ev
 /* The deleting destructor comes from the key function: Kill is defined in
  * this TU (real body, vtable slot 31), so mwcc emits the vtable, the RTTI
  * and the destructor variants alongside it. No shard tricks remain. */
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_cD1Ev
 /* The complete-object destructor comes from the key function (see D0). */
 
