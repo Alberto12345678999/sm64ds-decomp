@@ -1384,8 +1384,8 @@ extern "C" {
 int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
     extern int data_ov002_020ff220[];
     /* local extern: tail-forwards SetAnim's r0 as this function's int result. */
-    extern int _ZN6Player7SetAnimEjiit(void*, unsigned int, int, int, unsigned short);
-  return _ZN6Player7SetAnimEjiit(c,data_ov002_020ff220[a],b,d,e);
+    extern int _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned short);
+    return _ZN6Player7SetAnimEjiit(c, data_ov002_020ff220[a], b, d, e);
 }
 }
 
@@ -1491,8 +1491,7 @@ int Player::IsAnim(unsigned int a)
    itself still mangles as _ZN6Player7SetAnimEjiit. */
 extern "C" {
 #pragma opt_propagation off
-void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame)
-{
+void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *, u32 a, int b);
     extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void*, void*, int b, Fix12i c, u32 d);
@@ -1554,9 +1553,9 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame)
     sl = animId * 4;
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
     ((ModelAnim *)player->mBodyModels[id])
-        ->SetAnim(
-            (BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (animId * 4)])->filePtr),
-            flags, speed, startFrame);
+        ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (animId * 4)])
+                                   ->filePtr),
+                  flags, speed, startFrame);
 
     field8 = player->param1;
     if ((int)sl >= 0x60) sl = 0x60;
@@ -4116,8 +4115,8 @@ void Player::func_ov002_020c3bdc(){
     this->mHorzSpeed = 0;
     this->mVertAccel = -0x2000;
     if (mIsAirborne == 0){
-      this->SetAnim(0x55, 0x40000000, 0x1000, 0);
-      this->mStateWork += 1;
+        this->SetAnim(0x55, 0x40000000, 0x1000, 0);
+        this->mStateWork += 1;
     }
   } else {
     if (this->FinishedAnim()){
@@ -4187,7 +4186,7 @@ int Player::St_EndingFly_Init()
   mIsControlDisabled=1;
   mStatePhase=0;
   mStateWork=mStatePhase;
-  this->SetAnim(0x54,0x40000000,0x1000,0);
+  this->SetAnim(0x54, 0x40000000, 0x1000, 0);
   return 1;
 }
 }
@@ -4240,9 +4239,9 @@ void func_ov002_020c3e8c(void* player) {
 // @symbol _ZN6Player19func_ov002_020c3ea0Ev
 extern "C" {
 int Player::func_ov002_020c3ea0(){
-  this->SetAnim(0xb3,0x40000000,0x1000,0);
-  mStateStep=2;
-  return 2;
+    this->SetAnim(0xb3, 0x40000000, 0x1000, 0);
+    mStateStep = 2;
+    return 2;
 }
 }
 
@@ -4252,7 +4251,7 @@ extern "C" {
 int Player::St_OpeningWakeUp_Init()
 {
   mSleepStage=0;
-  this->SetAnim(0xb2,0x40000000,0x1000,0);
+  this->SetAnim(0xb2, 0x40000000, 0x1000, 0);
   mStateStep=0;
   return 1;
 }
@@ -4805,7 +4804,7 @@ int Player::St_Talk_Init()
     extern int Player_DisableInteraction(void*);
   mIsControlDisabled=1;
   Player_DisableInteraction(((char*)this));
-  this->SetAnim(0x47,0,0x1000,0);
+  this->SetAnim(0x47, 0, 0x1000, 0);
   mAngleYSpeed=0;
   mHorzSpeed=0;
   mNoCtrlKind=0;
@@ -5214,10 +5213,10 @@ extern "C" {
 int Player::St_BowserEarthquake_Init()
 {
   if(mStateStep==0){
-    this->SetAnim(0x12,0x40000000,0x1000,0);
+      this->SetAnim(0x12, 0x40000000, 0x1000, 0);
   } else {
-    this->SetAnim(0x47,0,0x1000,0);
-    mStateTimer=0x30;
+      this->SetAnim(0x47, 0, 0x1000, 0);
+      mStateTimer = 0x30;
   }
   return 1;
 }
@@ -5582,7 +5581,7 @@ int Player::St_DeadHit_Init()
   Player_DisableInteraction(((char*)this));
   mIsBodyClsnEnabled=0;
   int idx=mStateStep&1;
-  this->SetAnim(data_ov002_0210a424[idx],0x40000000,0x1000,0);
+  this->SetAnim(data_ov002_0210a424[idx], 0x40000000, 0x1000, 0);
   mStateArg=0;
   mStateWork=0;
   func_0200d89c(data_0209f318);
@@ -6090,7 +6089,7 @@ int Player::St_Teleport_Init()
   mStateWork=0;
   mStateStep=0;
   mHorzSpeed=0;
-  this->SetAnim(0x47,0,0x1000,0);
+  this->SetAnim(0x47, 0, 0x1000, 0);
   Sound::PlayBank0(0x19, mCamSpacePos);
   return 1;
 }
@@ -7778,7 +7777,7 @@ void Player::func_ov002_020c9ac0(){
 extern "C" {
 int Player::func_ov002_020c9b10(){
     mStateStep=0xe;
-    this->SetAnim(0x47,0,0x1000,0);
+    this->SetAnim(0x47, 0, 0x1000, 0);
     mStateTimer=0x14;
     this->mHorzSpeed=0;
     this->mVertSpeed=0;
@@ -7819,7 +7818,7 @@ void func_ov002_020c9b7c(void* c) {
 extern "C" {
 int Player::func_ov002_020c9c00(){
     if(mIsAirborne!=0){
-        this->SetAnim(0x54,0x40000000,0x1000,0);
+        this->SetAnim(0x54, 0x40000000, 0x1000, 0);
     }
     mStateStep=0;
     this->mHorzSpeed=0;
@@ -7862,7 +7861,7 @@ extern "C" {
 int Player::func_ov002_020c9d1c(){
     mStateStep=4;
     mAngleYSpeed=0x4000;
-    this->SetAnim(0x47,0,0x1000,0);
+    this->SetAnim(0x47, 0, 0x1000, 0);
     this->mHorzSpeed=0;
     this->mVertSpeed=0;
     return 0;
@@ -8631,7 +8630,7 @@ int Player::St_CameraZoom_Init()
   int pid = *(unsigned char*)((char*)&mPlayerNo);
   func_0200d064(cam, pid);
   func_0200d7e0(cam, *(unsigned char*)((char*)&mPlayerNo));
-  this->SetAnim(0x47,0,0x1000,0);
+  this->SetAnim(0x47, 0, 0x1000, 0);
   data_0209f28c=0;
   return 1;
 }
@@ -8770,14 +8769,14 @@ int Player::St_Headstand_Init()
 {
     extern void func_0200d580(void*, int playerID);
     extern struct CameraRaw *data_0209f318;
-  this->SetAnim(0x1e, 0x40000000, 0x1000, 0);
-  *(unsigned char*)((char*)&mStateStep)=2;
-  *(int*)((char*)&mVertAccel)=0;
-  *(int*)((char*)&mHorzSpeed)=0;
-  *(int*)((char*)&mVertSpeed)=0;
-  func_0200d580(data_0209f318, *(unsigned char*)((char*)&mPlayerNo));
-  *(unsigned char *)((char *)&mHideShadow) = 1;
-  return 1;
+    this->SetAnim(0x1e, 0x40000000, 0x1000, 0);
+    *(unsigned char *)((char *)&mStateStep) = 2;
+    *(int *)((char *)&mVertAccel) = 0;
+    *(int *)((char *)&mHorzSpeed) = 0;
+    *(int *)((char *)&mVertSpeed) = 0;
+    func_0200d580(data_0209f318, *(unsigned char *)((char *)&mPlayerNo));
+    *(unsigned char *)((char *)&mHideShadow) = 1;
+    return 1;
 }
 }
 
@@ -9507,7 +9506,7 @@ int Player::St_Shell_Init()
 {
     extern int Player_ReleaseHeldActor(void*);
   Player_ReleaseHeldActor(((char*)this));
-  this->SetAnim(0x35,0x40000000,0x1000,0);
+  this->SetAnim(0x35, 0x40000000, 0x1000, 0);
   mStateStep=0;
   StartStateMusic(0x33);
   return 1;
@@ -9572,7 +9571,7 @@ int Player::St_HurtWater_Init()
     extern int data_ov002_02109fe4[];
     extern void func_0200d89c(void*);
   unsigned a=data_ov002_02109fe4[mStateStep&1];
-  this->SetAnim(a,0x40000000,0x1000,0);
+  this->SetAnim(a, 0x40000000, 0x1000, 0);
   mStateWork=0;
   mStateArg=0;
   mVertAccel=0;
@@ -9699,9 +9698,9 @@ int Player::St_MetalWaterWater_Init()
   mLandSoundPlayed=0;
   if(mStateStep==0){
     func_ov002_020bf2d8(0x20000);
-    this->SetAnim(0x53,0x40000000,0x1000,0);
+    this->SetAnim(0x53, 0x40000000, 0x1000, 0);
   }else{
-    this->SetAnim(0x54,0x40000000,0x1000,0);
+      this->SetAnim(0x54, 0x40000000, 0x1000, 0);
   }
   Sound::PlayBank0(0xa8, mCamSpacePos);
   mStateWork=0;
@@ -9764,7 +9763,8 @@ int Player::St_MetalWaterGround_Main()
             this->SetAnim(0x9f, 0x40000000, 0x1000, 0);
         }else if(this->IsAnim(0x9f) != 0){
             if(this->FinishedAnim() != 0){
-                this->SetAnim(0x9e, 0, *(short*)((char*)&data_0209f4a0 + gActivePlayerSlot * 0x18) * 2, 0);
+                this->SetAnim(0x9e, 0,
+                              *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18) * 2, 0);
             }
         }else if(this->IsAnim(0x9f) == 0){
             int v = *(short*)((char*)&data_0209f4a0 + gActivePlayerSlot * 0x18);
@@ -9858,9 +9858,9 @@ void func_ov002_020cd218(char* c, int v, int* out1, int* out2){
 extern "C" {
 int func_ov002_020cd28c(char* c){
     Player *self = (Player *)c;
-  ((Player *)c)->SetAnim(0xaf,0x40000000,0x1000,0);
-  self->mStateStep=7;
-  return 7;
+    ((Player *)c)->SetAnim(0xaf, 0x40000000, 0x1000, 0);
+    self->mStateStep = 7;
+    return 7;
 }
 }
 
@@ -9869,9 +9869,9 @@ extern "C" {
 void func_ov002_020cd2c4(char* c){
     Player *self = (Player *)c;
     extern void func_ov002_020cd2c4(void*);
-  ((Player *)c)->SetAnim(0xab,0x40000000,0x1000,0);
-  self->mStateStep=1;
-  self->mStateTimer=0;
+    ((Player *)c)->SetAnim(0xab, 0x40000000, 0x1000, 0);
+    self->mStateStep = 1;
+    self->mStateTimer = 0;
 }
 }
 
@@ -9880,10 +9880,10 @@ extern "C" {
 void func_ov002_020cd308(char* c){
     Player *self = (Player *)c;
     extern void func_ov002_020cd308(void*);
-  ((Player *)c)->SetAnim(0xae,0x40000000,0x1000,0);
-  self->mStateStep=6;
-  self->mStateTimer=0x10;
-  self->mStateWork&=0xa;
+    ((Player *)c)->SetAnim(0xae, 0x40000000, 0x1000, 0);
+    self->mStateStep = 6;
+    self->mStateTimer = 0x10;
+    self->mStateWork &= 0xa;
 }
 }
 
@@ -9906,9 +9906,9 @@ extern "C" {
 void func_ov002_020cd39c(char* c){
     Player *self = (Player *)c;
     extern void func_ov002_020cd39c(void*);
-  ((Player *)c)->SetAnim(0xaa,0x40000000,0x1000,0);
-  self->mStateStep=4;
-  self->mStateTimer=7;
+    ((Player *)c)->SetAnim(0xaa, 0x40000000, 0x1000, 0);
+    self->mStateStep = 4;
+    self->mStateTimer = 7;
 }
 }
 
@@ -10451,7 +10451,7 @@ int Player::St_Swim_Init()
     extern void func_0200d768(void*, unsigned char);
   Player_ReleaseHeldActor(((char*)this));
   Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
-  this->SetAnim(0xa7,0x40000000,0x1000,0);
+  this->SetAnim(0xa7, 0x40000000, 0x1000, 0);
   mStateStep=0;
   mVertAccel=0;
   mTerminalVelocity=-0xc000;
@@ -11117,7 +11117,7 @@ int Player::St_CeilingGrate_Init()
   func_ov002_020cf384(((char*)this));
   mStateStep=0;
   mStateWork=0;
-  this->SetAnim(0x5b,0x40000000,0x1000,0);
+  this->SetAnim(0x5b, 0x40000000, 0x1000, 0);
   return 1;
 }
 }
@@ -11764,11 +11764,11 @@ int Player::St_LedgeGrab_Init()
 {
 
   if(mStateStep){
-    this->SetAnim(0x20,0x40000000,0x1000,0);
-    Sound::PlayCharVoice(mCharacter, 0x1a, mCamSpacePos);
+      this->SetAnim(0x20, 0x40000000, 0x1000, 0);
+      Sound::PlayCharVoice(mCharacter, 0x1a, mCamSpacePos);
   } else {
-    this->SetAnim(0x23,0x40000000,0x1000,0);
-    Sound::PlayCharVoice(mCharacter, 0x17, mCamSpacePos);
+      this->SetAnim(0x23, 0x40000000, 0x1000, 0);
+      Sound::PlayCharVoice(mCharacter, 0x17, mCamSpacePos);
   }
   return 1;
 }
@@ -12010,11 +12010,12 @@ extern "C" {
 int Player::St_WallSlide_Init()
 {
 
-  this->SetAnim(0x29,0x40000000,0x1000,0);
-  mHorzSpeed=0;
-  if(mVertSpeed >= 0) mVertSpeed=0;
-  mStateTimer=7;
-  return 1;
+    this->SetAnim(0x29, 0x40000000, 0x1000, 0);
+    mHorzSpeed = 0;
+    if (mVertSpeed >= 0)
+        mVertSpeed = 0;
+    mStateTimer = 7;
+    return 1;
 }
 }
 
@@ -12100,7 +12101,7 @@ int Player::St_Crawl_Init()
 {
 
   mStateStep=3;
-  this->SetAnim(0x64,0x40000000,0x1000,0);
+  this->SetAnim(0x64, 0x40000000, 0x1000, 0);
   return 1;
 }
 }
@@ -12627,7 +12628,8 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
     extern int data_0209f32c;
     extern int _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned int a, int b);
     /* local extern: non-constant startFrame (w << 4) >> 16 narrows to u16 and costs +8. */
-    extern void _ZN6Player7SetAnimEjiit(void *self, unsigned int a, int b, Fix12i c, unsigned int d);
+    extern void _ZN6Player7SetAnimEjiit(void *self, unsigned int a, int b, Fix12i c,
+                                        unsigned int d);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir);
     extern void func_0201251c(int a, int b, int c, int d);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
@@ -12717,7 +12719,7 @@ int Player::St_WaitQuicksand_Main()
     return 1;
   }
   if(v>=0x46000){
-    this->SetAnim(0x82,0,0x1000,0);
+      this->SetAnim(0x82, 0, 0x1000, 0);
   }
   if(mSinkDepth>=0xb4000){
     if(func_ov002_020c5dec(3)) return 1;
@@ -12734,9 +12736,9 @@ extern "C" {
 int Player::St_WaitQuicksand_Init()
 {
 
-  this->SetAnim(0x47,0,0x1000,0);
-  mStateWork=0;
-  return 1;
+    this->SetAnim(0x47, 0, 0x1000, 0);
+    mStateWork = 0;
+    return 1;
 }
 }
 
@@ -13444,9 +13446,9 @@ extern "C" {
 int Player::St_TurnAround_Init()
 {
 
-  this->SetAnim(0x46,0x40000000,0x1000,0);
-  mStateStep=0;
-  return 1;
+    this->SetAnim(0x46, 0x40000000, 0x1000, 0);
+    mStateStep = 0;
+    return 1;
 }
 }
 
@@ -14044,7 +14046,7 @@ void Player::func_ov002_020d4748()
 {
     int _ZN6Player6IsAnimEj(void*, unsigned int);
     /* local extern: AnimSpeed/s5 are wider than u16; each narrowed call costs +8. */
-    void _ZN6Player7SetAnimEjiit(void*, unsigned int, int, int, unsigned int);
+    void _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned int);
     int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
     void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int, int, int);
     int Player_ScaleByCharFactor(void*, int);
@@ -14124,7 +14126,8 @@ void Player::func_ov002_020d4748()
 
         if (this->mSinkDepth > 0x32000) {
             _ZN6Player7SetAnimEjiit(c, 0x7e, 0,
-                *(short*)((char*)&data_0209f4a0 + gActivePlayerSlot * 0x18), AnimSpeed(c));
+                                    *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18),
+                                    AnimSpeed(c));
         } else if (this->mStateStep >= 0x17) {
             this->mStateStep = 0x17;
             _ZN6Player7SetAnimEjiit(c, 0x61, 0, 0x1000, AnimSpeed(c));
@@ -14309,12 +14312,12 @@ ret1:
 extern "C" {
 int Player::St_Bonk_Init()
 {
-  this->SetAnim(0x13,0x40000000,0x1000,0);
-  mStateTimer=0x10;
-  mHorzSpeed=0x40;
-  mVertSpeed=0xa000;
-  mStateWork=0;
-  return 1;
+    this->SetAnim(0x13, 0x40000000, 0x1000, 0);
+    mStateTimer = 0x10;
+    mHorzSpeed = 0x40;
+    mVertSpeed = 0xa000;
+    mStateWork = 0;
+    return 1;
 }
 }
 
@@ -14446,7 +14449,7 @@ int Player::St_BurnLava_Init()
   mIsAirborne=1;
   mLandSoundPlayed=0;
   mIsTakingDamage=1;
-  this->SetAnim(0x16,0,0x1000,0);
+  this->SetAnim(0x16, 0, 0x1000, 0);
   mHorzSpeed=0;
   mVertSpeed=0x64000;
   mStateWork=0;
@@ -14737,7 +14740,7 @@ int Player::St_Electrocute_Init()
   *(int*)((char*)&mHorzSpeed)=0;
   *(int*)((char*)&mVertSpeed)=0;
   *(int*)((char*)&mVertAccel)=0;
-  this->SetAnim(0x11,0,0x1000,0);
+  this->SetAnim(0x11, 0, 0x1000, 0);
   Sound::PlayCharVoice(*(unsigned char *)((char *)&mCharacter), 7, mCamSpacePos);
   return 1;
 }
@@ -17353,8 +17356,9 @@ void func_ov002_020d99a4(unsigned char *self)
         return;
     idx = player->mStateStep;
     if (idx > 1) return;
-    ((Player *)self)->SetAnim(data_ov002_0210a6ec[idx & 7], 0x40000000, 0x1000,
-                                    (u16)(data_ov002_02109dcc[idx] + 1));
+    ((Player *)self)
+        ->SetAnim(data_ov002_0210a6ec[idx & 7], 0x40000000, 0x1000,
+                  (u16)(data_ov002_02109dcc[idx] + 1));
     player->mStateStep += 2;
     player->mStateWork |= 1;
 }
@@ -17847,13 +17851,13 @@ int Player::St_GrabBowserTail_Init()
 {
     extern int* data_0209f318;
     extern void func_0200d10c(void*, unsigned char);
-  this->SetAnim(0x81,0x40000000,0x1000,0);
-  mStateStep=0;
-  mAngleYSpeed=0;
-  mStateWork=0;
-  mStateArg=0;
-  func_0200d10c((void*)data_0209f318, mPlayerNo);
-  return 1;
+    this->SetAnim(0x81, 0x40000000, 0x1000, 0);
+    mStateStep = 0;
+    mAngleYSpeed = 0;
+    mStateWork = 0;
+    mStateArg = 0;
+    func_0200d10c((void *)data_0209f318, mPlayerNo);
+    return 1;
 }
 }
 
@@ -19302,21 +19306,20 @@ int Player::St_ButtSlide_Main()
 // @symbol _ZN6Player17St_ButtSlide_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_ButtSlide_Init()
-{
+int Player::St_ButtSlide_Init() {
     struct dCamera_c;
-    extern struct dCamera_c* data_0209f318;
-    extern void func_0200d544(struct dCamera_c* thiz, unsigned char playerID);
-  this->SetAnim(0x41, 0x40000000, 0x1000, 0);
-  mStateStep=0;
-  if(mSlideType){
-    func_0200d544(data_0209f318, mPlayerNo);
-  }
-  mStatePhase=0;
-  mStateArg=mSlideType;
-  mStateWaitTimer = 6;
-  mIsSlidingOnGround=0;
-  return 1;
+    extern struct dCamera_c *data_0209f318;
+    extern void func_0200d544(struct dCamera_c * thiz, unsigned char playerID);
+    this->SetAnim(0x41, 0x40000000, 0x1000, 0);
+    mStateStep = 0;
+    if (mSlideType) {
+        func_0200d544(data_0209f318, mPlayerNo);
+    }
+    mStatePhase = 0;
+    mStateArg = mSlideType;
+    mStateWaitTimer = 6;
+    mIsSlidingOnGround = 0;
+    return 1;
 }
 }
 
@@ -19534,22 +19537,21 @@ end:
 // @symbol _ZN6Player20St_StomachSlide_InitEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_StomachSlide_Init()
-{
+int Player::St_StomachSlide_Init() {
     struct dCamera_c;
-    extern struct dCamera_c* data_0209f318;
-    extern void func_0200d544(struct dCamera_c* thiz, unsigned char playerID);
-  this->SetAnim(0x40, 0x40000000, 0x1000, 0);
-  mStateStep=0;
-  if(mSlideType){
-    func_0200d544(data_0209f318, mPlayerNo);
-  }
-  mStateWork=0;
-  mStatePhase=0;
-  mSlideStoppedTimer=0;
-  mStateArg=mSlideType;
-  mIsSlidingOnGround=0;
-  return 1;
+    extern struct dCamera_c *data_0209f318;
+    extern void func_0200d544(struct dCamera_c * thiz, unsigned char playerID);
+    this->SetAnim(0x40, 0x40000000, 0x1000, 0);
+    mStateStep = 0;
+    if (mSlideType) {
+        func_0200d544(data_0209f318, mPlayerNo);
+    }
+    mStateWork = 0;
+    mStatePhase = 0;
+    mSlideStoppedTimer = 0;
+    mStateArg = mSlideType;
+    mIsSlidingOnGround = 0;
+    return 1;
 }
 }
 
@@ -19745,8 +19747,7 @@ void func_ov002_020dd5ec(char *c) {
     if ((*((u16 *)(((char *)data_0209f49c) + (gActivePlayerSlot * 0x18)))) & 2) {
         player->mPunchKickStep = 2;
     }
-    ((Player *)c)->SetAnim(data_ov002_0210a5c0[player->mPunchKickStep], 0x40000000,
-                                    0x1000, 0);
+    ((Player *)c)->SetAnim(data_ov002_0210a5c0[player->mPunchKickStep], 0x40000000, 0x1000, 0);
     model = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
     new_var2 = -0x4000;
     new_var = (int *)&player->mBodyModels[model];
@@ -20546,7 +20547,7 @@ int Player::St_WindCarry_Init()
     extern int data_0209f318[];
     extern void func_0200d63c(void*, unsigned char);
   func_ov002_020da9d4(((char*)this));
-  this->SetAnim(0x4a,0x40000000,0x1000,0);
+  this->SetAnim(0x4a, 0x40000000, 0x1000, 0);
   mVertSpeed=0;
   mIsAirborne=1;
   mLandSoundPlayed=0;
@@ -20622,7 +20623,7 @@ extern "C" {
 int Player::St_JumpQuicksand_Init()
 {
   mJumpedFromQuicksand=1;
-  this->SetAnim(0x53,0x40000000,0x1000,0);
+  this->SetAnim(0x53, 0x40000000, 0x1000, 0);
   mStateWork=0;
   mVertSpeed=0;
   mIsAirborne=1;
@@ -20744,7 +20745,7 @@ int Player::St_Cannon_Init()
   mLandSoundPlayed=0;
   Player_ReleaseHeldActor(((char*)this));
   mStateStep=0;
-  this->SetAnim(0x73,0,0x1000,0);
+  this->SetAnim(0x73, 0, 0x1000, 0);
   mVertAccel=-0x1200;
   mOpacity=0;
   mIsBodyClsnEnabled=0;
@@ -20952,7 +20953,7 @@ int Player::St_Owl_Init()
   mVertAccel=0;
   mStateStep=0;
   mHorzSpeed=0;
-  this->SetAnim(0x5b,0x40000000,0x1000,0);
+  this->SetAnim(0x5b, 0x40000000, 0x1000, 0);
   func_0200d6b4((void*)data_0209f318[0], mPlayerNo);
   StartStateMusic(0x2f);
   return 1;
@@ -21633,7 +21634,7 @@ int Player::St_SmallLaunchUp_Init()
   mJumpComboStage=0;
   mIsAirborne=1;
   mLandSoundPlayed=0;
-  this->SetAnim(0x56,0,0x1000,0);
+  this->SetAnim(0x56, 0, 0x1000, 0);
   mVertSpeed=0x2a000;
   mHorzSpeed=0;
   mAngleX=mPrevAngleX;
@@ -21688,7 +21689,7 @@ int Player::St_SlopeJump_Init()
   mJumpComboStage=0;
   mIsAirborne=1;
   mLandSoundPlayed=0;
-  this->SetAnim(0x53,0x40000000,0x1000,0);
+  this->SetAnim(0x53, 0x40000000, 0x1000, 0);
   mVertSpeed=0x2a000;
   func_ov002_020e2ad0(((char*)this));
   if(mHorzSpeed>0){
@@ -22099,7 +22100,7 @@ int Player::St_WaterJump_Init()
   mJumpComboStage=0;
   mIsAirborne=1;
   mLandSoundPlayed=0;
-  this->SetAnim(0x53,0x40000000,0x1000,0);
+  this->SetAnim(0x53, 0x40000000, 0x1000, 0);
   mVertSpeed=0x2a000;
   mHorzSpeed=0x12000;
   Sound::PlayBank0(0x18, mCamSpacePos);
@@ -22119,7 +22120,7 @@ int Player::St_HeadstandJump_Init()
   mJumpComboStage=0;
   mIsAirborne=1;
   mLandSoundPlayed=0;
-  this->SetAnim(0x1c,0x40000000,0x1000,0);
+  this->SetAnim(0x1c, 0x40000000, 0x1000, 0);
   mVertSpeed=0x3e000;
   mHorzSpeed=0x18000;
   Sound::PlayCharVoice(mCharacter, 0xc, mCamSpacePos);
@@ -22328,11 +22329,11 @@ int Player::St_Fall_Init()
   *(char*)((char*)&mIsAirborne)=1;
   *(char*)((char*)&mLandSoundPlayed)=0;
   if (this->IsAnim(0x41)) {
-    this->SetAnim(0x44, 0x40000000, 0x1000, 0);
-    *(char*)((char*)&mStateStep)=1;
+      this->SetAnim(0x44, 0x40000000, 0x1000, 0);
+      *(char *)((char *)&mStateStep) = 1;
   } else {
-    this->SetAnim(0x54, 0x40000000, 0x1000, 0);
-    *(char*)((char*)&mStateStep)=0;
+      this->SetAnim(0x54, 0x40000000, 0x1000, 0);
+      *(char *)((char *)&mStateStep) = 0;
   }
   *(int*)((char*)&mPeakY) = *(int*)((char*)&mPosY);
   return 1;
