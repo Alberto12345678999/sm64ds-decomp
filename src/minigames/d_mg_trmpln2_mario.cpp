@@ -963,6 +963,8 @@ extern "C" void Trmp2Mario_StateMissed(char *c) {
 namespace ns_020c9fe4 {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
+/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
+   (definition returns unsigned int); params match, caller ignores r0. */
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 /* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
@@ -2724,6 +2726,8 @@ extern "C" {
 typedef short s16;
 extern void Puff_Spawn(int a, int b);
 extern void _Z14ApproachLinearRiii(int *ref, int target, int step);
+/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
+   (definition returns unsigned int); params match, caller ignores r0. */
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int x);
 extern void Trmp3DMario_EnterOffstage(char *c);
 extern "C" int sTrmpMariosInPlay;
@@ -2758,6 +2762,8 @@ void Trmp3DMario_StateMissed(char *c) {
 namespace ns_020cc37c {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
+/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
+   (definition returns unsigned int); params match, caller ignores r0. */
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 /* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);

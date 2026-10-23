@@ -6,6 +6,9 @@
  * Function order is the reverse of the ROM's: mwccarm 2004/b56 emits one
  * .text section per function in reverse source order.
  *
+ * S41: RTTI ov002:0x0210b000 names daSCoin_c; D1 0x020f03c4 size 0x30,
+ * D0 0x020f03f4 size 0x44; no destructor body in this TU (@symbol only).
+ *
  * deslop leftovers:
  * - dCcAc_c::Init stays a scalar extern: it takes Fix12<int> by value and
  *   the member form size-DIFFs (mwccarm-codegen wall 6az).
@@ -198,9 +201,6 @@ void daSCoin_c::Collect()
     if (mGroupRole != 2) return;
     MarkForDestruction();
 }
-
-/*   _ZN9daSCoin_cD1Ev  0x020f03c4  size 0x30  (complete-object destructor)   */
-/*   _ZN9daSCoin_cD0Ev  0x020f03f4  size 0x44  (deleting destructor)          */
 
 // @symbol _ZN9daSCoin_cD0Ev
 // @symbol _ZN9daSCoin_cD1Ev

@@ -50,7 +50,8 @@
  *    unnamed: the first two are written here and never read.
  *  - Remaining TUBUILD CONFLICT blocks are the legacy alternates tubuild
  *    create commented out; the ones whose kept side has since been deleted
- *    are noted RESOLVED in the manifest and their blocks removed. */
+ *    are noted RESOLVED in the manifest and their blocks removed.
+ *  - Sound::ChangeMusicVolume keeps its mangled free-function decl (Fix12<int> by value, S13 wall); no Sound.h spelling mangles to it. */
 
 /* TUBUILD NOTE -- codegen is deferred, so .text emits in reverse source
  * order and the function bodies below are ROM-descending. The exception is

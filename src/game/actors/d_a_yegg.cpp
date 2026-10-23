@@ -71,6 +71,7 @@
  *   egg it takes from the held-object queue); who sets 0x400 and 0x2000 is not
  *   recovered. The "idle" and "moving" animation names say when the code
  *   picks each file, not recovered names.
+ * - Sound::PlayLong keeps its u32-last-param local decl (Sound.h declares s16) and PlayCharVoice keeps its void-returning one (Sound.h declares u32): width/return walls, do not convert.
  */
 
 #pragma defer_codegen off
