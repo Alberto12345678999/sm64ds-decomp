@@ -50,7 +50,6 @@ extern Matrix4x3 data_020a0e68;
 extern s16 data_02082214[];
 
 int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, s16 a, s16 b, s16 c, int d);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *th, void *kf, void *mtx, int fx, short s, void *clps);
 void func_020393d4(int *p, int v);
@@ -248,7 +247,7 @@ int daObjSm_Lift_c::Behavior()
 
     func_ov018_02111278();
 
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(self, 0, 0) != 0) {
+    if (((dBgActor_c *)self)->IsClsnInRange(0, 0) != 0) {
         UpdateClsnPosAndRot();
     }
     *(int *)(self + 0x320) = 0;

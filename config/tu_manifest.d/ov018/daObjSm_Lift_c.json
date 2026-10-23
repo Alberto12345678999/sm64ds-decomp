@@ -676,12 +676,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@819",
+      "from": "@816",
       "to": "@772",
       "evidence": "compiler-local destructor-registration node for the model handle (0x02113bdc); the classInit fold advances mwcc's label counter by 28 and ov063 daPiano_c defines a global @800, so the compiled name is mapped back to the configured one"
     },
     {
-      "from": "@820",
+      "from": "@817",
       "to": "@773",
       "evidence": "compiler-local destructor-registration node for the collision handle (0x02113bd0); renumbered by the same classInit fold, mapped back to the configured name"
     }

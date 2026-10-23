@@ -112,7 +112,6 @@ extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 extern struct Matrix4x3 data_020a0e68;
-extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
@@ -981,7 +980,7 @@ int daSnowman_c::Behavior()
             param = param | (p->mCharacter << 8);
             cap = dActor_c::Spawn(kMarioCapId, param, mPos, 0, mAreaId, -1);
             if (cap != 0) {
-                _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(cap, 0x64000, 0xc8000, 0x1000000, 0x1000000);
+                cap->SetRanges(0x64000, 0xc8000, 0x1000000, 0x1000000);
                 mCapUniqueID = cap->uniqueID;
             }
         }

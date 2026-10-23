@@ -420,7 +420,7 @@
     "tubuild create warning: CONFLICT: extern declaration '_ZN7PathPtrC1Ev' differs between the legacy file that used to hold func_ov062_0211b3ac and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN7PathPtr6FromIDEj' differs between the legacy file that used to hold func_ov062_0211b3ac and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZNK7PathPtr7GetNodeER7Vector3j' differs between the legacy file that used to hold func_ov062_0211b3ac and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_' differs between the legacy file that used to hold func_ov062_0211b51c and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_' differs between the legacy file that used to hold func_ov062_0211b51c and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review; resolved 2026-10-23: dActor_c::SetRanges is a real method (_ZN8dActor_c9SetRangesEiiii) and both legacy externs are deleted, so the conflict has nothing left to reconcile and no TUBUILD CONFLICT marker survives in the source.",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov062_0211c658' differs between the legacy file that used to hold func_ov062_0211b51c and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzAngle' differs between the legacy file that used to hold func_ov062_0211ba84 and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov062_0211e114' differs between the legacy file that used to hold func_ov062_0211bc54 and the one that held _ZN9daJango_c13InitResourcesEv; kept the first, the other is commented out for review",
@@ -1457,42 +1457,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1150",
+      "from": "@1145",
       "to": "@1115",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1151",
+      "from": "@1146",
       "to": "@1116",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1152",
+      "from": "@1147",
       "to": "@1117",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1153",
+      "from": "@1148",
       "to": "@1118",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1155",
+      "from": "@1150",
       "to": "@1120",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1157",
+      "from": "@1152",
       "to": "@1122",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1159",
+      "from": "@1154",
       "to": "@1124",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1161",
+      "from": "@1156",
       "to": "@1126",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
@@ -1502,22 +1502,22 @@
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1163",
+      "from": "@1158",
       "to": "@690",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1165",
+      "from": "@1160",
       "to": "@189",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1167",
+      "from": "@1162",
       "to": "@197",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1169",
+      "from": "@1164",
       "to": "@198",
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     }

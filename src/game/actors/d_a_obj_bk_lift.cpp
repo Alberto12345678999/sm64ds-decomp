@@ -97,7 +97,6 @@ void func_020393c4(dBgW *collider, void *callback);
 void func_020393d4(dBgW *collider, void *callback);
 int  func_ov015_021128f8(void *collider, daObjBk_Lift_c *lift, void *unused);
 
-int  _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 unsigned _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned handle, unsigned a,
                                            unsigned id, void *pos, s16 f);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y,
@@ -218,7 +217,7 @@ int daObjBk_Lift_c::Behavior()
         }
         UpdatePos(0);
         UpdateModelPosAndRotY();
-        if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x150000, 0x1000) != 0)
+        if (IsClsnInRange(0x150000, 0x1000) != 0)
             UpdateClsnPosAndRot();
     } else if (kind == 2) {
         if (DecIfAbove0_Byte(&mMoveTimer) == 0) {
@@ -250,7 +249,7 @@ int daObjBk_Lift_c::Behavior()
             }
         }
         UpdateModelPosAndRotY();
-        if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x150000, 0x1000) != 0)
+        if (IsClsnInRange(0x150000, 0x1000) != 0)
             UpdateClsnPosAndRot();
         if (Vec3_Dist(&mPosX, &mPrevPosX) != 0) {
             unsigned z = 0;
@@ -260,7 +259,7 @@ int daObjBk_Lift_c::Behavior()
         }
         mJustSteppedOn = 0;
     } else {
-        _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x150000, 0x1000);
+        IsClsnInRange(0x150000, 0x1000);
     }
 
     func_020393a4(&mMeshCollider, 0x150000);

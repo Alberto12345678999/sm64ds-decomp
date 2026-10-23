@@ -106,8 +106,6 @@ extern void *data_020a4bb8;
 /* local extern: no header declares it. Game mode; 2 pushes the clip distance. */
 extern unsigned char data_0209f2d8;
 /* Defined below as extern "C". Fix12-by-value, so it is not a method. */
-void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, s32 clipOffsetY, s32 clipRadius,
-                                               s32 clipDistance, s32 farDistance);
 }
 
 #ifdef _MSC_VER
@@ -165,8 +163,7 @@ dActor_c::dActor_c() : mActorListNode(this) {
                 clipDistance = info->clipDistance + 0x7d0000;
             else
                 clipDistance = info->clipDistance;
-            _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, info->clipOffsetY, info->clipRadius,
-                                                      clipDistance, farDistance);
+            SetRanges(info->clipOffsetY, info->clipRadius, clipDistance, farDistance);
         }
     }
     /* Unreachable. Vector3s's empty destructor inlines at a direct call, but
@@ -432,18 +429,17 @@ dActor_c *dActor_c::Spawn(u32 actorID, u32 spawnParam, const Vector3 &pos,
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
-/* ROM ordinal 77 -- _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
+// @symbol _ZN8dActor_c9SetRangesEiiii
+/* ROM ordinal 77 -- _ZN8dActor_c9SetRangesEiiii
  * 0x02010e08  size 0x24 */
-/* Fix12<int> by value: defined by its symbol, see the header. The three
-   ranges are stored at 1/8 scale, the scale BeforeBehavior projects into. */
-extern "C" void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, s32 clipOffsetY,
-                                                          s32 clipRadius, s32 clipDistance,
-                                                          s32 farDistance) {
-    self->mClipOffsetY = clipOffsetY;
-    self->mClipRadius = clipRadius >> 3;
-    self->mClipDistance = clipDistance >> 3;
-    self->mFarDistance = farDistance >> 3;
+/* The three ranges are stored at 1/8 scale, the scale BeforeBehavior projects
+   into. */
+void dActor_c::SetRanges(Fix12i clipOffsetY, Fix12i clipRadius, Fix12i clipDistance,
+                         Fix12i farDistance) {
+    mClipOffsetY = clipOffsetY;
+    mClipRadius = clipRadius >> 3;
+    mClipDistance = clipDistance >> 3;
+    mFarDistance = farDistance >> 3;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1697,18 +1693,16 @@ extern "C" void func_0200f760(dActor_c *actor, dCc_c *clsn) {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
-/* ROM ordinal 1 -- _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
+// @symbol _ZN8dActor_c22IsTooFarAwayFromPlayerEi
+/* ROM ordinal 1 -- _ZN8dActor_c22IsTooFarAwayFromPlayerEi
  * 0x0200f70c  size 0x54 */
-/* Fix12<int> by value: defined by its symbol. True only while the actor is
-   off screen (mFlags 0x08), nothing forces it to think, and the closest
-   player is at least threshold away. */
-extern "C" int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(dActor_c *self, int threshold)
-{
+/* True only while the actor is off screen (mFlags 0x08), nothing forces it to
+   think, and the closest player is at least threshold away. */
+int dActor_c::IsTooFarAwayFromPlayer(Fix12i threshold) {
     if (data_0209fc68 == 0) {
-        int offScreen = (self->mFlags & 8) != 0;
+        int offScreen = (mFlags & 8) != 0;
         if (offScreen != 0) {
-            if (self->DistToCPlayer() >= threshold)
+            if (DistToCPlayer() >= threshold)
                 return 1;
         }
     }

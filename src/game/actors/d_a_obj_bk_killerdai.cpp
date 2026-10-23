@@ -54,8 +54,8 @@ extern void *data_ov079_02127f64[];
 
 extern "C" {
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
-extern int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int d);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+extern int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c,
+                                                              int d);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *kcl, const void *mtx, int scale, short angY, void *clps);
 extern int IsStarCollectedInCurLevel(int starID);
@@ -150,7 +150,7 @@ s32 daObjBkKillerdai_c::Behavior()
             *(u32 *)((char *)spawned + 0x3dc) = (u32)this;
         }
     }
-    _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRange(0, 0);
     return 1;
 }
 

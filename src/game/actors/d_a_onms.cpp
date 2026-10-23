@@ -115,7 +115,6 @@ void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int b, int 
 s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s16 data_02082214[];
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int range, int offset);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *self, int a1, int a2, int a3, int sp0, int sp1);
 void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
@@ -558,7 +557,7 @@ int daOnms_c::Behavior()
         mStateTimer = 0;
 
     UpdateModelMtx();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+    if (IsClsnInRange(0, 0) != 0)
         func_ov092_02131a88((char *)this);
 
     if (mRollDone == 1) {

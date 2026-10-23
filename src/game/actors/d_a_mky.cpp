@@ -1468,8 +1468,8 @@ void daMky_c::func_ov030_021141a8(int idx)
 extern "C" {
 
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, u32 c, u32 d);
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, void *v1);
-int   _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int d);
+void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a,
+                                                                 int b, void *v0, void *v1);
 
 extern SharedFilePtr  data_ov002_0210da40;
 extern SharedFilePtr  data_ov002_0210d9a0;
@@ -1517,8 +1517,7 @@ s32 daMky_c::Render()
 /* Vtable slot 6. */
 s32 daMky_c::Behavior()
 {
-    if (_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x5dc000) != 0 &&
-        mState != 8) {
+    if (IsTooFarAwayFromPlayer(0x5dc000) != 0 && mState != 8) {
         if (IsUkikiThief(this) && mHasSpawnedCap == 0 && SaveData::HasPlayerLostCap() != 0) {
             Player *pl = ClosestPlayer();
             unsigned cp = pl->param1;

@@ -71,7 +71,6 @@ extern TikuwaModelFilePtr gRcTikuwaModelFile;
 extern TikuwaCollisionFilePtr gRcTikuwaCollisionFile;
 
 void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, void *kcl, Matrix4x3 *mat, int scale, s16 angY, void *clps);
 void func_020393d4(dBgW *bgw, void *fn);
@@ -153,7 +152,7 @@ s32 daObjRc_Tikuwa_c::Behavior()
     }
     UpdateModelPosAndRotY();
     if (mState != 2) {
-        if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x5dc000, 0) != 0)
+        if (IsClsnInRange(0x5dc000, 0) != 0)
             UpdateClsnPosAndRot();
     }
     return 1;

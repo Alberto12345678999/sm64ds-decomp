@@ -45,8 +45,6 @@ extern CLPS_Block data_ov045_021125d0;
 
 void func_020393d4(int *collider, int callback);
 void func_020393c4(int *collider, int callback);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
-    dBgActor_c *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
@@ -141,7 +139,7 @@ s32 daObjKm2_Agaru_c::Behavior()
         break;
     }
     UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x1f4000, 0))
+    if (IsClsnInRange(0x1f4000, 0))
         UpdateClsnPosAndRot();
     mStoodOn = false;
     return 1;

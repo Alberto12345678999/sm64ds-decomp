@@ -45,7 +45,6 @@ extern "C" {
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- reached through the
    mangled name because the two by-value Fix12<int> parameters are wall 6az
    on ov014/daObjWanwanShutter_c::Behavior. */
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 
 /* dBgW_KcMbg::SetFile -- same wall on ov014/daObjWanwanShutter_c::InitResources:
    its by-value Fix12<int> scale makes a member call cost stack the ROM does
@@ -107,7 +106,7 @@ int daObjWanwanShutter_c::Behavior()
         return 1;
     /* MEASURED on ov014/daObjWanwanShutter_c::Behavior: the two by-value
        Fix12<int> parameters are wall 6az. */
-    _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRange(0, 0);
     return 1;
 }
 

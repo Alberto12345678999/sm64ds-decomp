@@ -52,7 +52,6 @@ extern CLPS_Block data_ov032_02112f98;
 
 /* dBgActor_c::IsClsnInRange takes two Fix12<int> by value. A real member
  * call homes those arguments to the stack under mwccarm 2004/b56 (wall 6az). */
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 
 /* dBgW_KcMbg::SetFile likewise takes Fix12<int> by value. A real member
  * call on this TU's InitResources DIFFs. */
@@ -92,7 +91,7 @@ s32 daObjTdFuta_c::InitResources()
 // @symbol _ZN13daObjTdFuta_c8BehaviorEv
 s32 daObjTdFuta_c::Behavior()
 {
-    _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRange(0, 0);
     return 1;
 }
 

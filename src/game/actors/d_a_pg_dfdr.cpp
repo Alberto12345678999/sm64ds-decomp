@@ -78,8 +78,8 @@ void func_0201267c(int id, char *pos);
 void func_020393d4(int *collider, int callback);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *file, int flags, int speed, unsigned startFrame);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int radius, int height, unsigned flags, unsigned vuln);
-void _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int x, int z);
+void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int radius, int height,
+                                               unsigned flags, unsigned vuln);
 
 void func_ov027_02111994(daPgDfdr_c *self);
 void func_ov027_02111b2c(daPgDfdr_c *self);
@@ -202,7 +202,7 @@ s32 daPgDfdr_c::InitResources()
 // @symbol _ZN10daPgDfdr_c8BehaviorEv
 s32 daPgDfdr_c::Behavior()
 {
-    _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRangeOnScreen(0, 0);
     func_ov027_02111cfc();
     if (ClosestPlayer()->IsInsideOfCannon()) {
         mFlags &= ~kSkipRender;

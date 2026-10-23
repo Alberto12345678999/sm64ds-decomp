@@ -79,7 +79,6 @@ void Matrix4x3_FromRotationXYZExt(void *, int, int, int);
 int DecIfAbove0_Byte(u8 *p);
 int DecIfAbove0_Short(u16 *p);
 int Vec3_HorzDist(void *a, void *b);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int yOffset);
 void daObjFallBlock_c_PollLinkedStar(daObjFallBlock_c *c);
 void daObjFallBlock_c_FindLinkedStar(daObjFallBlock_c *c);
 void daObjFallBlock_c_ResetMotion(daObjFallBlock_c *c);
@@ -97,7 +96,6 @@ extern signed char data_0209f2f8; /* current level id */
 /* Free definitions take ints. SetFile's header method takes Fix12<int>
    by value; IsClsnInRange and NewSimple have no int method. */
 #define dBgW_KcMbg_SetFile _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
-#define dBgActor_c_IsClsnInRange _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_
 #define Particle_System_NewSimple _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_
 
 // @symbol _ZN16daObjFallBlock_cD0Ev
@@ -458,7 +456,7 @@ s32 daObjFallBlock_c::Behavior() {
 
     daObjFallBlock_c_ApplyModelXyz(this);
     if (mState <= 1) {
-        if (dBgActor_c_IsClsnInRange(this, 0, 0) != 0)
+        if (IsClsnInRange(0, 0) != 0)
             UpdateClsnPosAndRot();
     }
     mShakeRequested = 0;

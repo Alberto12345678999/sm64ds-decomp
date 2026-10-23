@@ -77,7 +77,6 @@ extern void MulVec3Mat4x3(void *src, void *mtx, void *dst);
 extern void AddVec3(void *a, void *b, void *c);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -211,7 +210,7 @@ int daObjCtRotateBlock_c::Behavior()
     }
     UpdateModel();
     UpdateShadow();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateClsn();
     return 1;
 }

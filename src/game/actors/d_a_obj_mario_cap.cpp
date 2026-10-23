@@ -258,8 +258,6 @@ void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
 
 /* SetRanges carries Fix12<int> by value; dActor_c.h deliberately omits it
    (notes/mwccarm-codegen.md 6az). A call is unaffected. */
-void  _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int offsetY, int radius,
-                                                int clipDistance, int farDistance);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           void *self, void *shadow, void *matrix, int radius, int depth, int opacity);
 short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int nx, int nz, short ang);
@@ -832,7 +830,7 @@ int daObjMarioCap_c::Wait() {
         return 1;
     }
     if (mCarryMatrix == 0) {
-        _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, 0x32000, 0x32000, kClipFar, kClipFar);
+        SetRanges(0x32000, 0x32000, kClipFar, kClipFar);
     }
     CheckTouch();
     if (data_02092138 > mPosY) {
@@ -930,7 +928,7 @@ int daObjMarioCap_c::Fall() {
     if (mWithMeshClsn.IsOnGround()) {
       mHorzSpeed = 0;
       CheckTouch();
-      _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, 0x32000, 0x32000, kClipFar, kClipFar);
+      SetRanges(0x32000, 0x32000, kClipFar, kClipFar);
     }
   }
   if (data_02092138 > mPosY) {

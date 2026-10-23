@@ -56,9 +56,7 @@ struct WcObj02CollisionFilePtr : SharedFilePtr {
 extern "C" {
 void func_02012694(int a, void *p);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
-    short angY, CLPS_Block &clps);
-int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int a, int b);
+    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale, short angY, CLPS_Block &clps);
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
 extern WcObj02ModelFilePtr data_ov029_02114250;
@@ -181,7 +179,7 @@ int daObjWc_Obj02_c::Behavior()
     }
 
     UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x100000, 0) != 0) {
+    if (IsClsnInRangeOnScreen(0x100000, 0) != 0) {
         UpdateClsnPosAndRot();
     }
     mTriggered = 0;

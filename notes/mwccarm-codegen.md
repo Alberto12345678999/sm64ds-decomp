@@ -59,6 +59,11 @@ aggregate a `union` rather than a `struct`, or copying each parameter to a local
 before use -- re-measured on Actor::SetRanges (0x02010e08, target 0x24), where every
 aggregate form costs the same +0x14 and only a scalar parameter reproduces.
 
+**That last example is no longer a wall, and it was the flagship one.**
+`dActor_c::SetRanges` is a real method as of 2026-10-23 -- see BATCH 4 below.
+Everything in this paragraph is still true of a CLASS-TYPED parameter; what it
+was taken to prove, that the symbol could not be a method, does not follow.
+
 ### CORRECTED 2026-08-27: the cost is per USE, and the wall was partly self-inflicted
 
 The paragraph above used to end "The cost is in the parameter passing, not in how
@@ -229,6 +234,57 @@ Three things this batch adds to the recipe:
 Also worth knowing: `tools/name_roundtrip.py --symbol X` prints a SUMMARY, so
 the word MISMATCH appears in its output even when the count is 0. Read the
 `ROUND-TRIPS n 100.0%` line, not a grep for the word.
+### BATCH 4: the range-check family, and the wall's own flagship example (2026-10-23)
+
+| old symbol | new symbol | addr/size |
+|---|---|---|
+| `_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_` | `_ZN10dBgActor_c13IsClsnInRangeEii` | ov002 0x020ee870/0xc4 |
+| `_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_` | `_ZN10dBgActor_c21IsClsnInRangeOnScreenEii` | ov002 0x020ee934/0x11c |
+| `_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_` | `_ZN8dActor_c9SetRangesEiiii` | 0x02010e08/0x24 |
+| `_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE` | `_ZN8dActor_c22IsTooFarAwayFromPlayerEi` | 0x0200f70c/0x54 |
+
+237 references across 101 files: 120 call sites became method calls and 102 local
+`extern` declarations were deleted. **Zero residual handspelled debt** -- no file
+keeps a mangled extern for any of the four, and `source_style` reports 0 findings.
+
+- **`SetRanges` was this section's own headline example** ("only a scalar
+  parameter reproduces"), and the conclusion drawn from it -- that the symbol
+  therefore stays mangled -- was the error. The measurement was right; it
+  measured the parameter, not the name.
+- **`include/dBgActor_c.h` had already written down the answer** for the two
+  `IsClsnInRange*` symbols: "The two IsClsnInRange* symbols make the same claim
+  and their bytes refuse it". Nobody had acted on it. Grep the headers for that
+  kind of sentence before re-deriving anything.
+- **`UpdateKillByMegaChar` is a GENUINE wall and is left alone.** Its header
+  says the by-value `Fix12<int>` "is confirmed by the body at ov002 0x020ee674,
+  not inferred from the mangled name". That is the distinction that matters: a
+  claim measured FROM THE BYTES stands; a claim inferred from a name we wrote
+  does not.
+- **Batch 3's `S1_` theory does NOT generalise.** #4293 suggested symbols with
+  repeated `5Fix12IiE` parameters likely carried `fdiv_async`'s Itanium
+  substitution defect. These four all spell `S1_` correctly and none was in
+  `config/name-roundtrip-baseline.json`. The defect was specific to that one
+  hand-derived name.
+- **`SetRanges` and `IsTooFarAwayFromPlayer` were not declared in
+  `include/dActor_c.h` at all**, so this adds two declarations to a 295-consumer
+  header. Adding a NON-VIRTUAL member declaration changes no layout and no
+  vtable, but it does mean the whole consumer set is in `validate`'s scope.
+- **A `char *` receiver still needs a cast.** `d_a_obj_sm_lift.cpp` holds its
+  actor as `char *self` and does arithmetic on it (`*(int *)(self + 0x320)`), so
+  `self->IsClsnInRange(...)` does not compile -- `expression syntax error`, which
+  names the line but not the cause. It became
+  `((dBgActor_c *)self)->IsClsnInRange(...)`.
+- **A `config/source-style-exceptions.json` entry had to go.** It banked three
+  `handspelled-member` occurrences for `SetRanges` with the reason "defining the
+  body as a method homes each [argument]" -- the thing this branch disproves.
+  Exceptions files carry stale reasoning the same way comments do.
+
+Verification shape for a change this wide: every `@symbol` in all 101 changed
+sources, 1,492 functions, not just the call-site holders. 1,486 match; the other
+6 are `__sinit_*` glue that reports WRONG-DEST reloc destinations IDENTICALLY on
+`origin/main`, checked one by one by swapping each file for its base copy. Expect
+that noise on any wide actor-file change and check it against base rather than
+assuming it is yours.
 
 ### DONE for both SetAnim symbols (2026-10-22/23)
 

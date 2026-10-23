@@ -58,9 +58,7 @@ struct WcObj05CollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
-    short angY, CLPS_Block &clps);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale, short angY, CLPS_Block &clps);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
 void func_020393a4(int *p, int v);
@@ -196,7 +194,7 @@ s32 daObjWc_Obj05_c::Behavior()
     }
 
     UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0)) {
+    if (IsClsnInRange(0, 0)) {
         UpdateClsnPosAndRot();
     }
     mMeshCollider.Transform(mClsnMat, mAngleY);

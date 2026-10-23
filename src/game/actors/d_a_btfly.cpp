@@ -124,7 +124,6 @@ extern ButterflyState data_ov100_02148628[];
 
 /* Fix12<int> by value. The header method form homes those arguments on the
  * stack; these scalar entries are the ROM calls. */
-void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *c, int oy, int rad, int clip, int far);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *actor, void *shadow, void *mtx, int radius, int height, unsigned int opacity);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -238,7 +237,7 @@ void daBtfly_c::State6()
     mScale += 0x40;
     if (mScale < 0x800)
         return;
-    _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, 0x32000, 0x32000, 0x1000000, 0x320000);
+    SetRanges(0x32000, 0x32000, 0x1000000, 0x320000);
     mFlutterPhase = 0;
     mStateTimer = 0;
     mState = 7;

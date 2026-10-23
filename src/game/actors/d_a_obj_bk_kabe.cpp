@@ -92,7 +92,6 @@ void func_020393a4(int *mesh, int range);
 
 /* Scalar ABI. These members take Fix12<int> by value, and that spelling
  * does not compile against the ints this file actually passes. */
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int radius, int yOffset);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale, short angY,
     CLPS_Block *clps);
@@ -177,7 +176,7 @@ int daObjBk_Kabe_c::Behavior()
         return 1;
     }
     func_020393a4((int *)&mMeshCollider, kClsnRange);
-    _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, kClsnRange, 0);
+    IsClsnInRange(kClsnRange, 0);
     return 1;
 }
 

@@ -80,7 +80,6 @@ extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
-extern int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *thiz, int a, int b);
 extern int Vec3_Dist(Vector3 *a, Vector3 *b);
 extern int Vec3_HorzDist(Vector3 *a, Vector3 *b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -200,7 +199,7 @@ int daObjPushblock_c::Behavior()
 
     func_020393a4((int *)&mMeshCollider, 0x12c000);
     func_02039394((int *)&mMeshCollider, 0x96000);
-    _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x3e8000, 0x96000);
+    IsClsnInRangeOnScreen(0x3e8000, 0x96000);
 
     if (mHorzSpeed != 0 && Vec3_Dist(&mPos, &mPrevPos) != 0) {
         mSlideSound = Sound::PlayLong(mSlideSound, 3, 0x97, mCamSpacePos, 0);

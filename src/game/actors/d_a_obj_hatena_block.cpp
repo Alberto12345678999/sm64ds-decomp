@@ -217,8 +217,8 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, void *pos, s32 radius);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void func_ov102_0214ad14(void *actor);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, int y, int z);
@@ -515,12 +515,12 @@ int daObjHatenaBlock_c::Behavior()
         }
     }
     if (data_0209f2f8 == 0x1c) {   /* LEVEL_ID 0x1c */
-        if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x460000, 0x46000) != 0) {
+        if (IsClsnInRange(0x460000, 0x46000) != 0) {
             func_ov102_02149e38();
         }
         goto end;
     }
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x118000, 0x46000) != 0) {
+    if (IsClsnInRange(0x118000, 0x46000) != 0) {
         func_ov102_02149e38();
     }
 end:

@@ -81,7 +81,6 @@ extern int data_ov012_02111cd0[];
 extern int data_0209caa0[];
 
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 /* dBgW_KcMbg::SetFile -- wall 6az on InitResources. */
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
@@ -144,7 +143,7 @@ int daObjC0_Switch_c::InitResources()
 // @symbol _ZN16daObjC0_Switch_c8BehaviorEv
 s32 daObjC0_Switch_c::Behavior()
 {
-    _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+    IsClsnInRange(0, 0);
     return 1;
 }
 

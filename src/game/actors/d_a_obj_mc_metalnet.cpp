@@ -52,7 +52,6 @@ unsigned char NumStars(void);
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- reached through the
    mangled name because the two by-value Fix12<int> parameters are wall 6az
    on ov009/daObjMc_Metalnet_c::Behavior. */
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 
 /* dBgW_KcMbg::SetFile -- same wall on ov009/daObjMc_Metalnet_c::InitResources:
    its by-value Fix12<int> scale makes a member call cost stack the ROM does
@@ -135,7 +134,7 @@ s32 daObjMc_Metalnet_c::Behavior()
     } else {
         /* MEASURED on ov009/daObjMc_Metalnet_c::Behavior: the two by-value
            Fix12<int> parameters are wall 6az. */
-        _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0);
+        IsClsnInRange(0, 0);
     }
     return 1;
 }

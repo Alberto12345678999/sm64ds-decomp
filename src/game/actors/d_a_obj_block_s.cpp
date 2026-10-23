@@ -144,7 +144,6 @@ extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
 extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int a, int b);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
 
@@ -363,7 +362,7 @@ void daObjBlockS_c::func_ov098_02138344()
     if (mWithMeshClsn.IsOnGround() == 0) {
         func_ov098_021396a4();
     }
-    if (_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0, 0) != 0) {
+    if (IsClsnInRangeOnScreen(0, 0) != 0) {
         func_ov098_021397c8();
     }
 }
@@ -632,7 +631,7 @@ void daObjBlockS_c::func_ov098_021389f8()
     if (!mWithMeshClsn.IsOnGround()) {
         func_ov098_021396a4();
     }
-    if (!_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x600000, 0)) {
+    if (!IsClsnInRangeOnScreen(0x600000, 0)) {
         return;
     }
     func_ov098_021397c8();

@@ -102,9 +102,8 @@ void func_ov015_02111414(daObjBk_Botaosi_c *plank, dActor_c *other);
 void func_ov015_021114f0(daObjBk_Botaosi_c *plank);
 void func_ov015_0211166c(daObjBk_Botaosi_c *plank);
 
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-    dActor_c *self, const Vector3 *pos, Fix12i strength);
-int  _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(dActor_c *self, const Vector3 *pos,
+                                                  Fix12i strength);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *file, void *mat, int scale, s16 angle, void *clps);
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
@@ -340,7 +339,7 @@ int daObjBk_Botaosi_c::Behavior()
     }
 
     func_ov015_0211166c(this);
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateClsnPosAndRot();
     func_ov015_021114f0(this);
     return 1;

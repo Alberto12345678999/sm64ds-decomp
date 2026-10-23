@@ -56,7 +56,6 @@ extern "C" {
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 void func_020393d4(void *p, void *v);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *t, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, void *kcl, Matrix4x3 *mtx, int fix, short s, void *clps);
 void func_ov022_02111a1c(daObjFl_London_c *t);
@@ -130,7 +129,7 @@ s32 daObjFl_London_c::Behavior()
     mAngleZ = mPrevAngleZ;
     func_ov022_02111a1c(this);
     /* MATCH: header method form of IsClsnInRange is Undefined (wall 6az). */
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateClsnPosAndRot();
     return 1;
 }

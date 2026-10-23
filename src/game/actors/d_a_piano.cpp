@@ -77,7 +77,6 @@ int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
 void func_0203568c(int *clsn, int radius);
 void func_02035684(int *clsn, int height);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *, int, int);
 void func_ov063_0211ddf4(daPiano_c *self);
 }
 
@@ -151,7 +150,7 @@ int daPiano_c::Behavior()
         if (mMeshCollider.IsEnabled())
             mMeshCollider.Disable();
     } else {
-        _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x1f4000, 0);
+        IsClsnInRange(0x1f4000, 0);
     }
     func_ov063_0211d88c(this);
     func_ov063_0211d828(this);

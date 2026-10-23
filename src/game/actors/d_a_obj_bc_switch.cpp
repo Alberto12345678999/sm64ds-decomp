@@ -137,7 +137,6 @@ extern s32 _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, s32 vol);
 extern void _ZN5Event6SetBitEj(u32 bit);
 extern u16 DecIfAbove0_Short(u16 *p);
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
-extern s32 _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, s32 a, s32 b);
 /* dBgW_KcMbg::SetFile -- wall 6az on InitResources. */
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
@@ -337,7 +336,7 @@ s32 daObjBC_Switch_c::Behavior()
     UpdateModelPosAndRotY();
     /* MEASURED on ov002/daObjBC_Switch_c::Behavior: the two by-value
        Fix12<int> parameters are wall 6az. */
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x1f4000, 0) != 0)
+    if (IsClsnInRange(0x1f4000, 0) != 0)
         UpdateClsnPosAndRot();
     return 1;
 }
