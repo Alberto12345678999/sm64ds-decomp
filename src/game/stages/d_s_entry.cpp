@@ -71,8 +71,17 @@
 #include "OAM.h"
 #include "OamAttr.h"
 
+
+namespace G2 {
+void * GetBG1ScrPtr();
+}
+
+namespace G2S {
+unsigned int GetBG2ScrPtr();
+}
+
 extern "C" {
-unsigned int _ZN3G2S12GetBG2ScrPtrEv();
+
 void DecompressLZ16(void *, void *);
 void Deallocate(void *);
 
@@ -185,7 +194,7 @@ void dScEntry_c::icon_c::Render() {
         paletteBits = (mOn != 0) ? 0x2000 : 0x1000;
     fill:
         halfWidth = mHalfW;
-        screenMap = (u16 *)_ZN3G2S12GetBG2ScrPtrEv();
+        screenMap = (u16 *)G2S::GetBG2ScrPtr();
         x = mX;
         halfHeight = mHalfH;
         x -= halfWidth;
@@ -303,7 +312,7 @@ int dScEntry_c::graphCallback_c::GraphCallback2() {
     *reg = value | (bg2ScreenBase << 8);
 
     if (compressedBg2Screen != 0) {
-        unsigned short *screen = (unsigned short *)_ZN3G2S12GetBG2ScrPtrEv();
+        unsigned short *screen = (unsigned short *)G2S::GetBG2ScrPtr();
         DecompressLZ16(compressedBg2Screen, screen);
         Deallocate(compressedBg2Screen);
         compressedBg2Screen = 0;
@@ -356,7 +365,7 @@ extern "C" void func_ov075_021160dc(char *rawScene) {
  */
 
 extern "C" {
-void *_ZN2G212GetBG1ScrPtrEv();
+
 int func_02030958(int val);
 }
 extern u8 data_0209fc50;
@@ -367,7 +376,7 @@ static inline void SetPalette(u16 *entry, u16 pal) {
 
 extern "C" void func_ov075_02116128(int unused, int slot, int dim) {
     int players = data_0209fc50;
-    u16 *map = (u16 *)_ZN2G212GetBG1ScrPtrEv();
+    u16 *map = (u16 *)G2::GetBG1ScrPtr();
     u16 pal = func_02030958(slot) + 10;
     u16 *p;
     int i;

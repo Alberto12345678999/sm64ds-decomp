@@ -51,6 +51,11 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 
+
+namespace CP15 {
+void FlushDataCache(void);
+}
+
 struct Sub {
     unsigned char *bytes;
     unsigned short *halfs;
@@ -136,7 +141,7 @@ struct RenderModule {
 extern "C" {
 void Matrix4x3_LoadIdentity(Matrix4x3 *mat);
 int InvMat4x3(int *a, int *b);
-void _ZN4CP1514FlushDataCacheEv(void);
+
 void func_02048234(int *out, int sa, int sb, int sc, int ax, int ay, int az, int tx, int ty, int tz);
 void MulMat4x3Mat4x3(const int *A, const int *B, int *dst);
 void func_02047218(void *a, void *b, void *out, fx32 c);
@@ -343,7 +348,7 @@ void func_02044efc(Obj *self) {
             byteOff += 0x30;
         } while (i < count);
     }
-    _ZN4CP1514FlushDataCacheEv();
+    CP15::FlushDataCache();
 }
 }
 

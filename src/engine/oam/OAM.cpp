@@ -43,6 +43,11 @@
 #include "OamAttr.h"
 #include "OamAnimation.h"
 
+
+namespace CP15 {
+void FlushAndInvalidateDataCache(u32 addr, u32 size);
+}
+
 struct Matrix2x2 { s32 m00, m01, m10, m11; };
 
 /* The hardware entry as Render(Matrix2x2*) decomposes it. */
@@ -94,7 +99,7 @@ void func_020566dc(const void *src, unsigned int offset, unsigned int count);
 void func_02056674(const void *src, unsigned int offset, unsigned int count);
 void MultiCopy_Int(int *dst, int *src, int len);
 void MultiCopy32Bytes(int *src, int *dst, int len);
-void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 addr, u32 size);
+
 int _ZN4cstd4fdivEii(int num, int den);
 /* Render stays an `extern "C"` free function -- by-value `Fix12<int>` scale
  * parameters (runbook section 7, the note in include/OAM.h). */
@@ -769,8 +774,8 @@ void OAM::Flush()
     /* Flush the two 0x400-byte staging buffers out of the data cache so the
      * DMA that follows reads what the CPU just wrote. 0x400 is 128 entries
      * of 8 bytes, the full hardware OAM. */
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)data_0209e674, 0x400);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)data_0209ea74, 0x400);
+    CP15::FlushAndInvalidateDataCache((u32)data_0209e674, 0x400);
+    CP15::FlushAndInvalidateDataCache((u32)data_0209ea74, 0x400);
 }
 
 /* -------------------------------------------------------------------------- */

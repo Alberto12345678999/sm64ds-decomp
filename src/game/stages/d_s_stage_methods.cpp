@@ -80,6 +80,11 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "Memory.h"
 #include "Heap.h"
 
+
+namespace GX {
+void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
+}
+
 struct OamAttr;
 struct Matrix2x2 {
     int m[4];
@@ -164,7 +169,7 @@ void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a);
 // local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
 void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
 void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
-void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, unsigned int a, unsigned int b);
+
 void _ZN3OAM14BOUNCING_ARROWE(void);
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc,
                                                  int fx, int fy, int rot, int mode);
@@ -700,7 +705,7 @@ void dScStage_c::LC_Render() {
 
     {
         void *p = (void *)LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
-        _ZN2GX11LoadOBJPlttEPKvjj((void *)((char *)p + (((unsigned int)data_0209f2a8 >> 2) << 5)),
+        GX::LoadOBJPltt((void *)((char *)p + (((unsigned int)data_0209f2a8 >> 2) << 5)),
                                   0x1c0, 0x10);
         Deallocate(p);
     }
