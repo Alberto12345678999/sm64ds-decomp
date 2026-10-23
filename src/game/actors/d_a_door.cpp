@@ -215,7 +215,6 @@ void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void 
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
 void *_ZN5ModelC1Ev(void *self);
-void *_Znwj(unsigned int sz);
 /* func_0201277c(id) and func_02012790(id) play a sound id with no position
    (d_a_jango.cpp says the same of func_02012790); func_02012694(id, pos)
    plays it at a position. */
@@ -1235,7 +1234,7 @@ s32 daDoor_c::InitResources()
     *(M48 *)&mModel.mat4x3 = data_020a0e68;
 
     if (e->keyFile != 0) {
-        m = _Znwj(0x50);                     /* sizeof(Model) */
+        m = ::operator new(0x50);                     /* sizeof(Model) */
         if (m != 0)
             m = _ZN5ModelC1Ev(m);
         mKeyModel = (Model *)m;

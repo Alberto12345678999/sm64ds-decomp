@@ -49,8 +49,13 @@ void func_020462d0(ModelComponents *data, BMD_File *file, void *buffer);
 void func_02016b24(Model *model, u32 mask);
 /* local extern: no header declares it; delete veneer for the transforms buffer */
 void func_0203cbc0(void *ptr);
-/* local extern: no header declares it; global new veneer func_02016e70 uses */
-void *_Znwj(u32 size);
+#ifdef _MSC_VER
+/* local extern: host only. ::operator new is the CRT's on the PC port, but
+   Memory::operator_delete2 hands this block back to the DS default heap, so
+   the host allocates it from that heap directly (src/engine/heap/Heap.cpp
+   defines this veneer for the host). */
+void *func_0203cc0c(u32 size);
+#endif
 /* local extern: LoadFile.c defines int(int). This is the spelling
    LoadAndSetFile's shard matched (banked return and parameter rows). */
 void *LoadFile(u16 ov0ID);
@@ -184,7 +189,11 @@ extern "C" void *func_02016e70(void *file) {
 
     e = (CommonModelData *)Model::AddToCommonModelDataArr(*(BMD_File *)file);
     if (e->components == 0) {
-        e->components = (ModelComponents *)_Znwj(0x14);
+#ifdef _MSC_VER
+        e->components = (ModelComponents *)func_0203cc0c(0x14);
+#else
+        e->components = (ModelComponents *)::operator new(0x14);
+#endif
         if (e->components == 0)
             return 0;
         e->buffer = Memory::operator_new2(func_02046564((BMD_File *)file));

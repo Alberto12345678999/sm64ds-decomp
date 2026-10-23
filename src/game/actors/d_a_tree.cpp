@@ -21,9 +21,6 @@
  *   one. C++ has no syntax for a qualified constructor call on storage that
  *   already exists, and the alternative -- placement new -- needs a leaf
  *   `operator new(size_t, void *)` this tree has no precedent for.
- * - _Znwj stays spelled: also a language limit. `::operator new` mangles
- *   _Znwm here (sizeof is unsigned long), which has no ROM home; the
- *   cartridge calls _Znwj.
  * - data_ov002_02110a48 / data_ov002_0210abb8 / g_profile_TREE: overlay
  *   bss/data owns them (S14); this TU's delinks span is .text-only.
  * - data_0209f43c / data_0209b3ec: arm9 bss, the dClipper singleton and the
@@ -38,7 +35,7 @@
 
 /* One tree instance's list node: the billboard/clip center in
  * matrix-shifted units (>> 3, y lifted by kCanopyLift), its cylinder
- * collision, and the list link. _Znwj allocates 0x4c = sizeof(this). */
+ * collision, and the list link. operator new allocates 0x4c = sizeof(this). */
 struct TreeNode {
     Vector3 pos;      /* 0x00 */
     dCcPos_c clsn;    /* 0x0c */
@@ -83,10 +80,6 @@ void Matrix4x3_FromRotationY(Matrix4x3 *m, short ang);
  * other. The disagreement is nominal, not a contract difference, and int * is
  * the slop spelling this cleanup exists to retire. */
 int *Vec3_AsrInPlace(Vector3 *v, int shift);
-/* The global scalar operator new. Spelled, not `::operator new`:
- * sizeof is unsigned long here, so the `new` expression mangles _Znwm,
- * which has no ROM home; the cartridge calls _Znwj. */
-void *_Znwj(unsigned int size);
 /* The shared opacity method preserves the second scalar argument observed at
  * every retail caller. It is unused by this implementation; its source name
  * and unsigned type are reconstruction choices, not recovered ROM spelling.
@@ -123,7 +116,7 @@ int daTree_c::InitResources()
     slot = &data_ov002_02110a48[variant];
     if (*slot == 0)
         mModel[variant].LoadAndSetFile(data_ov002_0210abb8[variant], 1, 1);
-    node = (TreeNode *)_Znwj(sizeof(TreeNode));
+    node = (TreeNode *)::operator new(sizeof(TreeNode));
     if (node != 0)
         _ZN8dCcPos_cC1Ev(&node->clsn);
     node->pos.x = mPosX;
