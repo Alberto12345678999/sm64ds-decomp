@@ -18,10 +18,12 @@
 #include "ModelAnim.h"
 
 extern "C" {
-/* SetAnim keeps its mangled spelling: wall 6az (notes/mwccarm-codegen.md)
-   homes class-typed by-value parameters that a body reads, and the real
-   signature carries Fix12<int> -- the same wall its BlendModelAnim
-   sibling records. The declaration in ModelAnim.h is the real one.
+/* SetAnim keeps its mangled spelling because of the NAME, not wall 6az:
+   measured 2026-10-22, it reproduces as a real method under the scalar
+   mangling _ZN9ModelAnim7SetAnimEP8BCA_Fileiit, and only the class-typed
+   `5Fix12IiE` spelling costs (+0x18, since the body reads `speed`). The
+   rename is a campaign, not a local edit -- notes/mwccarm-codegen.md 6az,
+   MEASURED 2026-10-22. The declaration in ModelAnim.h is the real one.
    local extern: Fix12 by-value speed. */
 void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames,
                                                      s32 flags, s32 speed, u16 startFrame);
