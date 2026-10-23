@@ -2,7 +2,7 @@
 #include "IRQ.h"
 
 namespace IRQ {
-int Disable(void);
+u32 Disable(void);
 }
 
 extern "C" {
