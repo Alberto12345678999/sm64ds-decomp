@@ -29,6 +29,7 @@
  * member spelling reschedules the clamp under opt_propagation off.
  * Resource handles are initialized by the separate __sinit_ov078_02126660.
  * State records stay data_ov078_021270*.
+ * Sound::ChangeMusicVolume keeps its mangled decl (Fix12<int> by value, S13 wall); the Layer3 pair stays on decl_common.h / the local mangled decl because Sound.h declares only Layer1/Layer2.
  */
 
 /* common.h FIRST: daBombking_c.h reaches math/Matrix.h through BlendModelAnim.h,

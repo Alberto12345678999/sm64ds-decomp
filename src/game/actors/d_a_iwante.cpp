@@ -52,6 +52,7 @@
  *  - EVec3 and M48 are plain word structs standing in for Vector3 and
  *    Matrix4x3. Vec4 is an unused stack object with a destructor.
  *  - Handler descriptions come from reading the code, not from play-testing.
+ *  - Sound::ChangeMusicVolume keeps its mangled decl (Fix12<int> by value, S13 wall); the Layer3 pair keeps file-local mangled decls because Sound.h declares only Layer1/Layer2 (this file excludes decl_common.h).
  */
 
 /* Turns off deferred codegen, which does two things at once here: it makes
