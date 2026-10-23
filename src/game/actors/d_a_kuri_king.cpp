@@ -171,7 +171,6 @@ extern "C" void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern "C" void Vec3_LslInPlace(void* v, int n);
 extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* anim, void* file, int a, int b, unsigned int u);
 extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* tt, void* file, int a, int b, unsigned int u);
 extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int a, s32 fix, u32 c);
 extern "C" void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(void *self, void *f, int a, s32 fix, u32 c);
@@ -1571,7 +1570,7 @@ extern "C" void func_ov074_02121a4c(char* c, int idx)
     int off = idx * 0xc;
     void* file1 = data_ov074_02122f34[idx].anim->filePtr;
     int arg2 = *(int*)(data_ov074_02122f3c + off);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&((daKuriKing_c *)c)->mModelAnim, file1, arg2, 0x1000, 0);
+    ((ModelAnim *)&((daKuriKing_c *)c)->mModelAnim)->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &((daKuriKing_c *)c)->mTextureTransformer, *(void**)(data_ov074_02122f38 + off), 0, 0x1000, 0);
 }
@@ -1762,8 +1761,7 @@ int daKuriKing_c::InitResources()
         k++;
     } while (k < 4);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov074_02123030.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov074_02123030.filePtr, 0, 0x1000, 0);
     TextureSequence::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
                              *(BTP_File *)gKurikingAngerTextureSequenceFile.filePtr);
     MaterialChanger::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
@@ -1965,8 +1963,7 @@ int daKuriKing_c::func_ov074_02122634()
         (void *)&data_ov084_0213089c,
         0x40000000, 0x1000, 0);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &this->mModelAnim, (BCA_File *)data_ov084_02130cc8.filePtr, 0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov084_02130cc8.filePtr, 0, 0x1000, 0);
 
     this->mPrevAngleX = this->mAngleX;
     this->mPrevAngleY = this->mAngleY;

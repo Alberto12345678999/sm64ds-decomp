@@ -84,8 +84,6 @@ void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
 /* The positional-sound entry point; takes the actor's camera-space position. */
 void func_0201267c(int soundId, Fix12i *camSpacePos);
 int _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, int y, int z);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, BCA_File *file, int flags, int speed, u32 startFrame);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *actor, int radius, int height,
     u32 flags, u32 vulnFlags);
@@ -141,8 +139,7 @@ int daObjShell_c::InitResources()
     dExtFrameCtrl_c::LoadFile(data_ov064_0211c9bc);
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov064_0211c9c4);
     mModelAnim.SetFile(modelFile, 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
     func_ov064_0211a9b4();
@@ -209,8 +206,7 @@ int daObjShell_c::Behavior()
                     u.lungePuff[0], u.lungePuff[1], u.lungePuff[2]);
                 mStateTimer = 0;
                 mState = STATE_LUNGE;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &mModelAnim, (BCA_File *)data_ov064_0211c9cc.filePtr, 0x40000000, 0x1000, 0);
+                mModelAnim.SetAnim((BCA_File *)data_ov064_0211c9cc.filePtr, 0x40000000, 0x1000, 0);
             } else {
                 if (mShutTimer != 0)
                     mShutTimer--;
@@ -220,8 +216,7 @@ int daObjShell_c::Behavior()
     case STATE_LUNGE:
         if (mStateTimer > 0x96) {
             mState = STATE_SHUT;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &mModelAnim, (BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
+            mModelAnim.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
             mStateTimer = 0;
         } else {
             if (!mModelAnim.WillHitFrame(8)) {

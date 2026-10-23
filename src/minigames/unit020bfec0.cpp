@@ -136,7 +136,15 @@ int _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
 int _ZN15dExtFrameCtrl_c8FinishedEv(void *);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+/* NOT CONVERTED TO THE REAL METHOD. This TU never sees the ModelAnim class --
+   its anim pointers are raw offsets into the minigame record (e.g.
+   *(void **)(c + 0x104)) -- and a method call needs a complete type. The symbol
+   rename IS applied: ModelAnim::SetAnim is a real method now
+   (notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22). Giving this file the real
+   class is separate work; the scalar spelling below disagrees with the real
+   definition on purpose, and that disagreement is byte-proved and banked. */
+/* local extern: this TU never sees the ModelAnim class (raw record offsets), so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
 void *_ZN9ModelAnimC1Ev(void *);
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *, void *, int, int);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
@@ -510,8 +518,8 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateIdle;
 }
 void FlowerFace_PlayIdle(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        FLOWERFACE(p)->mModel, ((void *)FLOWERFACE(p)->mWaitAnim.file), 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(FLOWERFACE(p)->mModel,
+                                        ((void *)FLOWERFACE(p)->mWaitAnim.file), 0, 0x800, 0);
     *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateIdle;
 }
 }
@@ -546,7 +554,7 @@ void FlowerFace_PlayPetalPulled(char *c) {
         Vec3 pos, vel, pos2, vel2;
     } b;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
         FLOWERFACE(c)->mModel, ((void *)FLOWERFACE(c)->mPickAnim.file), 0x40000000, 0x800, 0);
 
     FLOWERFACE(c)->mFrame[2] = 0; /* rewind: the current frame */
@@ -604,7 +612,7 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateLike;
 }
 void FlowerFace_PlayLike(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
         FLOWERFACE(p)->mModel, ((void *)FLOWERFACE(p)->mLikeAnim.file), 0x40000000, 0x800, 0);
     *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateLike;
 }
@@ -626,7 +634,7 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateHate;
 }
 void FlowerFace_PlayHate(char *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
         FLOWERFACE(p)->mModel, ((void *)FLOWERFACE(p)->mHateAnim.file), 0x40000000, 0x800, 0);
     *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateHate;
 }

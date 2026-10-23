@@ -373,9 +373,7 @@ int daBmb_c::CleanupResources()
 extern "C" {
 
 // @symbol func_ov102_0214c0b8
-void func_ov102_0214c0b8(void *cv)
-{
-    extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
+void func_ov102_0214c0b8(void *cv) {
     daBmb_c *self = (daBmb_c *)cv;
 
     self->mState = 0;
@@ -383,13 +381,11 @@ void func_ov102_0214c0b8(void *cv)
         self->mHorzSpeed = 0;
     else
         self->mHorzSpeed = 0x5000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&self->mModelAnim,
-                                                data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+    self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
     self->mTurnTimer = 0x200;
     self->mVertAccel = -0x2000;
     self->mCarrier = 0;
 }
-
 }
 
 /* State 0: the dispatch passes this Bob-omb. Use its actual fields and
@@ -537,21 +533,17 @@ void daBmb_c::func_ov102_0214bd90(){
 extern "C" {
 
 // @symbol func_ov102_0214bd20
-void func_ov102_0214bd20(char* c)
-{
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* anim, void* file, int a, int b, unsigned int u);
+void func_ov102_0214bd20(char *c) {
     daBmb_c *self = (daBmb_c *)c;
 
     self->mState = 3;
     self->mVertAccel = 0;
     self->mHorzSpeed = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov102_0214e9c8.filePtr, 0,
-                                                0x1000, 0);
+    self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c8.filePtr, 0, 0x1000, 0);
     func_ov102_0214b384(c, 0x96);
     self->mdCc_c.flags |= 2;
     self->mdCc_c.flags &= ~4;
 }
-
 }
 
 /* ==========================================================================
@@ -610,9 +602,7 @@ extern "C" Quad data_ov102_0214e514 = {{0x28000, 0x28000, 0x50000, 0x28000}};
 extern "C" Quad data_ov102_0214e524 = {{0xa000, 0xa000, 0x1a000, 0xa000}};
 
 // @symbol func_ov102_0214bc20
-void func_ov102_0214bc20(char* c)
-{
-    extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
+void func_ov102_0214bc20(char *c) {
     daBmb_c *self = (daBmb_c *)c;
 
     Quad a1 = data_ov102_0214e514;
@@ -626,11 +616,9 @@ void func_ov102_0214bc20(char* c)
     self->mHorzSpeed = a1.v[idx];
     self->mVertSpeed = a2.v[idx];
     self->mState = 4;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&self->mModelAnim,
-                                                data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+    self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
     self->mVertAccel = -0x2000;
 }
-
 }
 
 /* ==========================================================================
@@ -1327,9 +1315,7 @@ void func_ov102_0214ad14(void *c)
 extern "C" {
 
 // @symbol func_ov102_0214ab1c
-int func_ov102_0214ab1c(void *selfv)
-{
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *m, void *f, int i, int fx, unsigned int j);
+int func_ov102_0214ab1c(void *selfv) {
 
     daBmb_c *self = (daBmb_c *)selfv;
     Player *player;
@@ -1363,8 +1349,7 @@ after_cannon:
     if (self->mVariant == 2) {
         self->mVariant = 3;
         self->mState = 0;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov102_0214e9c0.filePtr,
-                                                    0, 0x1000, 0);
+        self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
         self->mTurnTimer = 0x200;
         self->mVertAccel = -0x2000;
         self->mdCc_c.flags &= ~2u;
@@ -1411,7 +1396,6 @@ skip_hit:
 ret0:
     return 0;
 }
-
 }
 
 /* ==========================================================================

@@ -100,9 +100,10 @@ u16   DecIfAbove0_Short(u16 *p);
 int   RandomIntInternal(int *seed);
 void  func_02012694(int id, const Vector3 *pos);
 
-int   _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-          unsigned int a0, unsigned int a1, int a2, int a3, int a4, int a5, int a6);
-int   _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, BCA_File *f, int a, LocFix12 rate, unsigned int n);
+int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a0,
+                                                                           unsigned int a1, int a2,
+                                                                           int a3, int a4, int a5,
+                                                                           int a6);
 
 void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, const Vector3 *v, LocFix12 r, LocFix12 h, unsigned int e, unsigned int g);
 /* Not dBgCh_Actr::Init: the header method mangles with int, the ROM symbol with Fix12<int>. */
@@ -396,8 +397,7 @@ int daMenbo_c::func_ov090_02131608()
 {
     mAnimLoops = 0;
     mAnimSpeed = 0x1000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)data_ov090_02134498.filePtr, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov090_02134498.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -556,8 +556,7 @@ int daMenbo_c::func_ov090_02131a74()
     mSpeedHoldTimer = 0;
     mWanderTimer = 0x32;
     mAnimLoops = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)data_ov090_02134480.filePtr, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov090_02134480.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -599,8 +598,7 @@ int daMenbo_c::func_ov090_02131b94()
     r = (unsigned)RandomIntInternal(&data_0209e650);
     mStateTimer = (short)(((r >> 8) & 0x1f) + 0x96);
     mAnimSpeed = 0x1000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)data_ov090_02134490.filePtr, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov090_02134490.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -649,8 +647,7 @@ int daMenbo_c::func_ov090_02131c48()
 /* Water-chase entry. The 0x40000000 flag is passed straight through. */
 int daMenbo_c::func_ov090_02131db0()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)data_ov090_02134488.filePtr, 0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov090_02134488.filePtr, 0x40000000, 0x1000, 0);
     mAnimSpeed = 0x1000;
     mAnimLoops = 0;
     return 1;

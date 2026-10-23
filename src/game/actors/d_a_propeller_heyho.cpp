@@ -411,7 +411,6 @@ extern "C" int FlyGuy_ChangeState(daPropeller_Heyho_c *c, daPropeller_Heyho_c::S
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov070_0211ffa8
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 extern unsigned int RandomIntInternal(void* s);
 extern int data_0209e650[];
 /* Wander init: heading = a random multiple of 0x1000 (one of 16 directions,
@@ -420,8 +419,7 @@ extern int data_0209e650[];
 int func_ov070_0211ffa8(daPropeller_Heyho_c* c){
   c->mTargetAngY = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0xf) << 0xc);
   c->mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123520.filePtr, 0,
-                                              0x1000, 0);
+  c->mModelAnim.SetAnim((BCA_File *)data_ov070_02123520.filePtr, 0, 0x1000, 0);
   return 1;
 }
 }
@@ -510,11 +508,10 @@ int func_ov070_0211fd98(daPropeller_Heyho_c *c)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov070_0211fd60
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 /* (data_ov070_02123520: SharedFilePtr view declared earlier in this TU) */
 /* Chase init: plays the file-02123520 animation (the wander one) at speed 1.0. */
 int func_ov070_0211fd60(daPropeller_Heyho_c *p) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&p->mModelAnim, ((void**)&data_ov070_02123520)[1], 0, 0x1000, 0);
+    p->mModelAnim.SetAnim((BCA_File *)(((void **)&data_ov070_02123520)[1]), 0, 0x1000, 0);
     return 1;
 }
 }
@@ -637,7 +634,6 @@ int func_ov070_0211fae4(daPropeller_Heyho_c *c)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov070_0211fa80
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 /* Dive init: clears mHitDuringAttack and mStateStep, timer = 63 frames, heading
  * from HorzAngleToCPlayerOrAng, plays the file-02123518 animation (flags
  * 0x40000000) at speed 1.0. */
@@ -646,8 +642,7 @@ int func_ov070_0211fa80(daPropeller_Heyho_c *c) {
     c->mStateTimer = 0x3f;
     c->mStateStep = 0;
     c->mTargetAngY = c->HorzAngleToCPlayerOrAng();
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123518.filePtr,
-                                                0x40000000, 0x1000, 0);
+    c->mModelAnim.SetAnim((BCA_File *)data_ov070_02123518.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 }
@@ -679,7 +674,6 @@ extern s32 data_0209f32c;
 extern int data_020a0e68[];
 
 /* (ApproachAngle: this file's own int-target view, namespace ApproachAngleInt above) */
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
 extern short Vec3_VertAngle(void* v1, void* v0);
 extern int Vec3_Dist(void* a, void* b);
@@ -721,8 +715,7 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
 
     if (mModelAnim.dExtFrameCtrl_c::Finished()) {
         if (mStateStep == 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov070_02123510.filePtr, 0,
-                                                        0x1000, 0);
+            mModelAnim.SetAnim((BCA_File *)data_ov070_02123510.filePtr, 0, 0x1000, 0);
             mStateStep = 1;
         }
         if (mHitDuringAttack == 1) {
@@ -817,14 +810,12 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov070_0211f694
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 /* Settle init: mStateStep = 0; plays the file-02123508 animation (flags
  * 0x40000000) unless mHitDuringAttack is set. */
 int func_ov070_0211f694(daPropeller_Heyho_c *c) {
     c->mStateStep = 0;
     if (c->mHitDuringAttack == 0) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123508.filePtr,
-                                                    0x40000000, 0x1000, 0);
+        c->mModelAnim.SetAnim((BCA_File *)data_ov070_02123508.filePtr, 0x40000000, 0x1000, 0);
     }
     return 1;
 }
@@ -858,8 +849,6 @@ int daPropeller_Heyho_c::func_ov070_0211f62c()
 struct BCA_File;
 /* (ModelAnim: real header type in scope) */
 /* SetAnim takes Fix12<int> by value, so this call stays the mangled extern. */
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
-
 
 /* (data_ov070_02123500: SharedFilePtr view declared earlier in this TU) */
 
@@ -867,7 +856,7 @@ extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, i
 extern "C" int func_ov070_0211f5f0(daPropeller_Heyho_c *c) {
     unsigned int flags = 0;
     BCA_File *file = (BCA_File *)data_ov070_02123500.filePtr;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, file, 0x40000000, 0x1000, flags);
+    c->mModelAnim.SetAnim((BCA_File *)file, 0x40000000, 0x1000, flags);
     return 1;
 }
 
@@ -1007,8 +996,8 @@ extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 extern void _ZN6Player10SpinBounceE5Fix12IiE(void* p, s32 f);
 extern void func_02012694(int a, void* b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
+extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u32 a, s32 f, u32 b,
+                                                    u32 c, u32 d);
 }
 
 /* Hit reaction, run once per frame outside the knocked state. Takes the colliding
@@ -1090,8 +1079,7 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
     if (c->mCurrentState != &data_ov070_021235cc)
         return;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&c->mModelAnim, data_ov070_02123528.filePtr,
-                                                0x40000000, 0x1000, 0);
+    c->mModelAnim.SetAnim((BCA_File *)data_ov070_02123528.filePtr, 0x40000000, 0x1000, 0);
     c->mStateStep = 1;
     c->mHitDuringAttack = 1;
 }

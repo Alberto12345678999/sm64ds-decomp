@@ -123,14 +123,14 @@ extern Matrix4x3 data_020a0e68;
 extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int uniqueID, unsigned int effectID, int x, int y, int z, void *dir, void *callback);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
-extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self, BTA_File &file, int flags, int speed, u32 startFrame);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *self, BCA_File *file, int flags, int speed, u32 startFrame);
+extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self,
+                                                                  BTA_File &file, int flags,
+                                                                  int speed, u32 startFrame);
 }
 
 #define Particle_System_New _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE
 #define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
 #define TextureTransformer_SetFile _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj
-#define ModelAnim_SetAnim _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj
 
 void ApproachLinear2(s16 &value, s16 target, s16 step);
 void ApproachLinear(int &value, int target, int step);
@@ -390,8 +390,7 @@ int daWater_Tatumaki_c::InitResources()
     mCenter.z = mPosZ;
     mCenter.y -= kFunnelDepth;
 
-    ModelAnim_SetAnim(&mModelAnim, (BCA_File *)gWaterTatumakiAnimationFile.filePtr, 0, kAnimSpeed,
-                      0);
+    mModelAnim.SetAnim((BCA_File *)gWaterTatumakiAnimationFile.filePtr, 0, kAnimSpeed, 0);
 
     func_ov026_02111ee0(this, STATE_SPIN);
     return 1;

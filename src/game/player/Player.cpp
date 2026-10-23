@@ -1491,8 +1491,7 @@ extern "C" {
 void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
 {
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
-    extern int _ZNK6Player14GetBodyModelIDEjb(void*, u32 a, int b);
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int b, Fix12i c, u32 d);
+    extern int _ZNK6Player14GetBodyModelIDEjb(void *, u32 a, int b);
     extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void*, void*, int b, Fix12i c, u32 d);
     extern u8 data_0209f2d8;
     extern void *data_ov002_020ff480[];
@@ -1538,8 +1537,8 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(sfp);
 
             id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(player->mBodyModels[id],
-                                                        ((SharedFilePtr *)sfp)->filePtr, b, c, d);
+            ((ModelAnim *)player->mBodyModels[id])
+                ->SetAnim((BCA_File *)(((SharedFilePtr *)sfp)->filePtr), b, c, d);
             {
                 u16 *g = LAUNDER16(&player->mCapTimer);
                 *g = (u16)(*g + 1);
@@ -1550,9 +1549,10 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(char *self, u32 a, int b, Fix12i c, u16 d)
     field8 = player->param1;
     sl = a * 4;
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        player->mBodyModels[id],
-        ((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (a * 4)])->filePtr, b, c, d);
+    ((ModelAnim *)player->mBodyModels[id])
+        ->SetAnim(
+            (BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (a * 4)])->filePtr),
+            b, c, d);
 
     field8 = player->param1;
     if ((int)sl >= 0x60) sl = 0x60;
@@ -15841,13 +15841,14 @@ void Player::func_ov002_020d718c() {
 // @symbol _ZN6Player19func_ov002_020d71a0Ev
 extern "C" {
 void Player::func_ov002_020d71a0() {
-    struct G { int w[2]; };
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int b, unsigned short u);
+    struct G {
+        int w[2];
+    };
     extern struct G data_ov002_0210eb88;
     char *p = (char*)this;
     this->mUseAltBodyModel = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(mHeadModels[3], (void *)data_ov002_0210eb88.w[1],
-                                                0x40000000, 0x1000, 0);
+    ((ModelAnim *)mHeadModels[3])
+        ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88.w[1]), 0x40000000, 0x1000, 0);
     *(int *)((char *)mHeadModels[3] + 0x58) = 0;
 }
 }
@@ -15866,8 +15867,7 @@ void func_ov002_020d71ec(char* p, int arg1)
     Player *player = (Player *)p;
     struct P2 { int w[2]; };
     extern int _ZNK6Player14GetBodyModelIDEjb(void* self, u32 a, int b);
-    extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, int b, u32 d);
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* ma, void* file, int a, int b, u32 d);
+    extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *c, u32 anim, int a, int b, u32 d);
     extern struct P2 data_ov002_0210a34c;
     extern struct P2 data_ov002_0210a084;
     extern struct P2 data_ov002_0210eb88;
@@ -15885,9 +15885,9 @@ void func_ov002_020d71ec(char* p, int arg1)
         _ZN6Player7SetAnimEji5Fix12IiEj(p, arr[arg1], 0x40000000, 0x1000, 0);
 
         if (player->mUseAltBodyModel == 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(player->mHeadModels[3],
-                                                        *(void **)((char *)(&arr[2])[arg1] + 4),
-                                                        0x40000000, 0x1000, 0);
+            ((ModelAnim *)player->mHeadModels[3])
+                ->SetAnim((BCA_File *)(*(void **)((char *)(&arr[2])[arg1] + 4)), 0x40000000, 0x1000,
+                          0);
         }
 
         if (arg1 == 1) {
@@ -15904,9 +15904,9 @@ void func_ov002_020d71ec(char* p, int arg1)
     }
 
     _ZN6Player7SetAnimEji5Fix12IiEj(p, 0x6c, 0x40000000, -0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(player->mHeadModels[3],
-                                                *(void **)((char *)&data_ov002_0210eb88 + 4),
-                                                0x40000000, -0x1000, 0);
+    ((ModelAnim *)player->mHeadModels[3])
+        ->SetAnim((BCA_File *)(*(void **)((char *)&data_ov002_0210eb88 + 4)), 0x40000000, -0x1000,
+                  0);
     player->mStateStep = 2;
     player->mStateTimer = 0xa;
 }
@@ -16000,6 +16000,12 @@ struct PVec { int x, y, z; PVec() {} ~PVec() {} };
 extern "C" {
 int Player::St_YoshiPower_Main()
 {
+    /* local extern: this body is the only caller that passes a NON-CONSTANT
+       startFrame. ModelAnim::SetAnim's real parameter is u16, and narrowing
+       `(currFrame << 4) >> 0x10` to it costs +0x10 here, so this body keeps the
+       scalar unsigned-int spelling the ROM call uses -- the per-body declaration
+       policy this file's header states. */
+    extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
     extern void _Z14ApproachLinearRiii(int*, int, int);
     extern void func_ov002_020d71ec(char*, int);
     extern void _Z15ApproachLinear2Rsss(short*, short, short);
@@ -16007,8 +16013,7 @@ int Player::St_YoshiPower_Main()
     extern void Vec3_MulScalarInPlace(void*, int);
     extern void func_ov002_020d8118(char*);
     extern int func_ov002_020e0ccc(char*, void*);
-    extern void func_ov002_020d7430(Player& player);
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
+    extern void func_ov002_020d7430(Player & player);
     extern void func_ov002_020d5cec(void*);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
@@ -16189,7 +16194,7 @@ int Player::St_YoshiPower_Main()
                 int id6 = this->GetBodyModelID(this->param1 & 0xff, z);
                 int *a50c =
                     (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id6]));
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
                     mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                     (unsigned int)(((dExtFrameCtrl_c *)a50c)->currFrame << 4) >> 0x10);
             }
@@ -16245,7 +16250,7 @@ int Player::St_YoshiPower_Main()
                     int id9 = this->GetBodyModelID(this->param1 & 0xff, z2);
                     int *a50e =
                         (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id9]));
-                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
+                    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
                         mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                         (unsigned int)(((dExtFrameCtrl_c *)a50e)->currFrame << 4) >> 0x10);
                 }
@@ -20541,7 +20546,6 @@ int Player::St_Balloon_Init() {
     extern int Player_ReleaseHeldActor(void *);
     extern int data_0209f318[];
     extern int data_ov002_0210e750[];
-    extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
     extern void func_0200d63c(void *, unsigned char);
     Player_ReleaseHeldActor(((char *)this));
     mIsInAirState = 1;
@@ -20556,8 +20560,8 @@ int Player::St_Balloon_Init() {
     mAngleYSpeed = 0x100;
     mAngleXSpeed = 0x100;
     mPrevVertSpeed = mVertSpeed;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        (void *)((char *)&mModelAnim3), (void *)data_ov002_0210e750[1], 0x40000000, 0x1000, 0);
+    ((ModelAnim *)((char *)&mModelAnim3))
+        ->SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0x40000000, 0x1000, 0);
     mModelAnim3.currFrame = 0;
     return 1;
 }
@@ -24865,8 +24869,7 @@ void func_ov002_020e5948(void* arg0)
     extern void _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(void* thiz, u32 a, s32 b, Fix12i c, u16 d);
     extern s32 func_ov002_020e6bb0(void* p);
     extern void func_ov002_020e6780(void* p);
-    extern void* _ZN9ModelAnimC1Ev(void* thiz);
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, s32 i, Fix12i fx, u32 j);
+    extern void *_ZN9ModelAnimC1Ev(void *thiz);
     extern void* _ZN5ModelC1Ev(void* thiz);
     extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
     extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
@@ -25146,8 +25149,8 @@ void func_ov002_020e5948(void* arg0)
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
                 player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
                 1, 1);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                player->mHeadModels[i], (void *)data_ov002_0210eb88[1], 0, 0x1000, 0);
+            ((ModelAnim *)player->mHeadModels[i])
+                ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88[1]), 0, 0x1000, 0);
         } else {
             p = _Znwj(0x50);
             if (p != 0) {
@@ -25209,20 +25212,19 @@ void func_ov002_020e5948(void* arg0)
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     &player->mModelAnim3, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e6f8),
                     1, 1);
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &player->mModelAnim3, (void *)data_ov002_0210e750[1], 0, 0x1000, 0);
+                player->mModelAnim3.SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0, 0x1000,
+                                            0);
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     &player->mModelAnim4, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e7b0),
                     1, 1);
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &player->mModelAnim4, (void *)data_ov002_0210e4c0[1], 0, 0x1000, 0);
+                player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000,
+                                            0);
             }
         } else {
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
                 &player->mModelAnim4, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1,
                 1);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &player->mModelAnim4, (void *)data_ov002_0210e4c0[1], 0, 0x1000, 0);
+            player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000, 0);
         }
     }
 

@@ -59,8 +59,6 @@ extern char data_020a0e68[];
 
 extern "C" {
 extern int func_02012694(int, void *);
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    char *anim, void *file, int a, int b, unsigned int u);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(
@@ -188,8 +186,7 @@ extern "C" int func_ov090_02133830(daShark_c *self)
 // @symbol func_ov090_0213387c
 extern "C" int func_ov090_0213387c(daShark_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&self->mModelAnim,
-                                                data_ov090_021345ac.filePtr, 0, 0x1000, 0);
+    self->mModelAnim.SetAnim((BCA_File *)data_ov090_021345ac.filePtr, 0, 0x1000, 0);
     return 1;
 }
 

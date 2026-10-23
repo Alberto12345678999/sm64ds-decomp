@@ -81,7 +81,6 @@ int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const void *pos, u32
    an unresolved symbol.  These results do not establish the original Fix12
    parameter types or a different caller ABI.  Exact alternatives and results:
    notes/agents/handoffs/pr-2450-source-review-fixes.md, compiler experiments. */
-void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *anim, int flags, int speed, u32 startFrame);
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, u32 e, u32 g);
 void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, u32 e, u32 g);
 void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *a, int b, int c, void *d, void *e);
@@ -188,8 +187,7 @@ int daPkn_c::InitResources()
     mParticleHandle2 = 0;
     mParticleHandle = mParticleHandle2;
     mLoopSoundHandle = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130df4.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -294,8 +292,7 @@ void daPkn_c::StateWait()
     mScaleZ = 0x1000;
     mClsnEnabled = 1;
     mFlags |= 0x10000000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130df4.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     if (mPlayerDist < 0x4b0000)
         mState = 1;
     CheckHits();
@@ -307,12 +304,11 @@ void daPkn_c::StateSleep()
 {
     mClsnEnabled = 1;
     if (mModelAnim.Finished() || mModelAnim.WillHitFrame(0))
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130df4.filePtr, 0,
-                                                    0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     int thr = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
     if (mPlayerDist < thr && PlayerMovingFast()) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0x40000000, 0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
+                           0x40000000, 0x1000, 0);
         mState = 3;
         func_02012694(0x175, &mCamSpacePosX);
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xfe, mBubblePos.x, mBubblePos.y, mBubblePos.z);
@@ -474,8 +470,7 @@ void daPkn_c::StateWake()
     /* mStateTimer is s16; the ROM compares it as a u16 (ldrh). */
     if ((u16)mStateTimer <= 0xb) return;
     if (!mModelAnim.Finished()) return;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e14.filePtr,
-                                                0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
     mState = 2;
 }
 
@@ -485,8 +480,8 @@ void daPkn_c::StateDoze()
 {
     mClsnEnabled = 1;
     if (mModelAnim.Finished()) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0x40000000, 0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
+                           0x40000000, 0x1000, 0);
         mState = 1;
     } else {
         int thresh = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
@@ -569,8 +564,8 @@ void daPkn_c::StateGone()
     mState = 8;
     mParticleHandle2 = 0;
     mParticleHandle = mParticleHandle2;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
+                       0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -666,8 +661,8 @@ int daPkn_c::CheckHits()
                     v.y = mPosY;
                     v.z = mPosZ;
                     _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &v, 3, 0xc000, 1, 0, 1);
-                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                        &mModelAnim, ((SharedFilePtr *)&data_ov084_02130e0c)->filePtr, 0, 0x1000,
+                    mModelAnim.SetAnim(
+                        (BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
                         0);
                     mModelAnim.SetFlags(0x40000000);
                     mState = 3;
@@ -803,8 +798,7 @@ s32 daPkn_c::OnAimedAtWithEgg()
 void daPkn_c::EnterLunge(int frame)
 {
     mState = 2;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e14.filePtr,
-                                                0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
     mModelAnim.currFrame = (u16)frame << 12;
 }
 
@@ -815,6 +809,5 @@ void daPkn_c::Die()
 {
     func_0201267c(0xc1, &mCamSpacePosX);
     mState = 5;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e24.filePtr,
-                                                0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
 }

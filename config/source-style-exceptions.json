@@ -832,6 +832,38 @@
       "count": 2,
       "reason": "Retained scalar ABI bridge from the former course-title renderer. OAM.h deliberately excludes this Fix12-by-value overload, and its enrolled definition still uses the scalar extern C interface. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching caller and callee ABI.",
       "evidence": "include/OAM.h; src/engine/oam/OAM.cpp; notes/mwccarm-codegen.md section 6az; former func_ov075_02118cd0.c at ov075 0x02118cd0 size 0x4c. The declaration and single call are inherited, not newly introduced interfaces."
+    },
+    {
+      "path": "src/game/actors/d_a_ots.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
+      "count": 2,
+      "reason": "func_ov064_02116560 tail-forwards SetAnim's r0 as its own int result. A return on the void member does not compile, and splitting it into call-then-return loses the tail call. The two occurrences are the int-returning local extern and its single call.",
+      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; func_ov064_02116560 byte-matched with the int-returning spelling; the local extern carries a 'local extern:' reason at d_a_ots.cpp:230."
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
+      "count": 3,
+      "reason": "St_YoshiPower_Main is the only caller that passes a non-constant startFrame ((currFrame << 4) >> 0x10). Narrowing it to the member's real u16 costs +0x10, so this body keeps the scalar unsigned int spelling, per this file's per-body declaration policy. The three occurrences are the block-scope declaration and its two calls.",
+      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
+    },
+    {
+      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
+      "count": 61,
+      "reason": "Every ns_* namespace in this file declares its own never-defined struct ModelAnim scaffold, so mModelAnim is not the real class and the header member cannot bind. This is a rename of the 61 pre-existing occurrences of the retired _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj spelling, not new debt. Follow-up: deslop the scaffolds onto the real ModelAnim, then convert to member calls.",
+      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; the 61 occurrences replace 61 of the old Fix12<int> spelling one-for-one (PR #4290); every function in the file still matches."
+    },
+    {
+      "path": "src/minigames/unit020bfec0.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
+      "count": 5,
+      "reason": "This TU never sees the ModelAnim class. It reaches its animation through raw record offsets (*(void **)(c + 0x104)), so the header member cannot bind. This is a rename of the 5 pre-existing occurrences of the retired _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj spelling, not new debt. Follow-up: type the record, then convert to member calls.",
+      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; the 5 occurrences replace 5 of the old Fix12<int> spelling one-for-one (PR #4290)."
     }
   ]
 }

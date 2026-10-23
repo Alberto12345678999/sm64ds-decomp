@@ -70,8 +70,6 @@ static inline int IsOffScreen(dActor_c *actor) {
 /* SetAnim / SetFile / PlaySub / NewSimple are measured Fix12-by-value seams
  * (wall 6az). func_020393c4 is the dBgW+0x1c store; naming belongs with dBgW. */
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *model, BCA_File *file, s32 mode, Fix12i speed, u32 flags);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *collider, KCL_File *file, Matrix4x3 *matrix,
     Fix12i scale, s16 angleY, CLPS_Block *clps);
@@ -170,8 +168,7 @@ s32 daObjHatenaSwitch_c::InitResources()
     mModelAnim.SetFile((BMD_File *)file, 1, -1);
 
     file = dExtFrameCtrl_c::LoadFile(data_ov002_0210dd68);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)file, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)file, 0, 0x1000, 0);
     mModelAnim.SetFlags(0x40000000);
     mModelAnim.speed = 0x1000;
     UpdateModelTransform();

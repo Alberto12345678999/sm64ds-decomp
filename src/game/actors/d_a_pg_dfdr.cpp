@@ -76,7 +76,6 @@ int DecIfAbove0_Byte(void *p);
 void func_0201267c(int id, char *pos);
 /* Stores dBgW::beforeClsnCallback (p[6]). dBgW.h has no setter. */
 void func_020393d4(int *collider, int callback);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int flags, int speed, unsigned startFrame);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *file, int flags, int speed, unsigned startFrame);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int radius, int height, unsigned flags, unsigned vuln);
@@ -275,8 +274,7 @@ void daPgDfdr_c::func_ov027_02111cfc()
 /* State 0 enter: pause-and-turn clip, 20 frames, unk_3d0 = 0. */
 extern "C" int func_ov027_02111ca8(daPgDfdr_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c84.filePtr, 0,
-                                                0x1000, 0);
+    self->mModelAnim.SetAnim((BCA_File *)data_ov027_02113c84.filePtr, 0, 0x1000, 0);
     self->mModelAnim.speed = 0x1000;
     self->mTimer = 20;
     self->unk_3d0 = 0;
@@ -306,12 +304,10 @@ extern "C" void func_ov027_02111b2c(daPgDfdr_c *self)
     self->mHorzSpeed = data_ov027_02113a1c[self->mStepIndex].speed;
     self->mPrevAngleY = data_ov027_02113a1c[self->mStepIndex].startHeading;
     if (data_ov027_02113a1c[self->mStepIndex].startHeading != data_ov027_02113a1c[self->mStepIndex].endHeading) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c8c.filePtr,
-                                                    0, 0x1000, 0);
+        self->mModelAnim.SetAnim((BCA_File *)data_ov027_02113c8c.filePtr, 0, 0x1000, 0);
         self->mModelAnim.speed = 0x1000;
     } else {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c74.filePtr,
-                                                    0, 0x1000, 0);
+        self->mModelAnim.SetAnim((BCA_File *)data_ov027_02113c74.filePtr, 0, 0x1000, 0);
         self->mModelAnim.speed = FX_MUL(data_ov027_02113a1c[self->mStepIndex].speed, 0x5000);
     }
     self->unk_3d0 = 1;

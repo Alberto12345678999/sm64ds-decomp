@@ -115,8 +115,6 @@ extern int func_0201267c(unsigned int a, void *b);
 extern void func_ov009_0211145c(daSBird_c *bird);
 
 /* ModelAnim::SetAnim -- wall 6az. */
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, BCA_File *animFile, int flags, int speed, u32 startFrame);
 
 /* dActor_c::DropShadowRadHeight -- wall 6az. */
 int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -137,8 +135,7 @@ s32 daSBird_c::InitResources()
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov009_02113c20);
     mModelAnim.SetFile(modelFile, 1, 1);
     BCA_File *animFile = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113c28);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, animFile, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)animFile, 0, 0x1000, 0);
     mShadowModel.InitCylinder();
     {
         int *p60 = &mPosY;

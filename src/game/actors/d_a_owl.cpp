@@ -156,7 +156,6 @@ extern Matrix4x3 data_020a0e68;
 
 int func_ov002_020df840(void *a, void *b, void *d);
 void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *a, const Vector3 *b, Fix12i f);
-int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fix, unsigned int b);
 int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int cc, void *pos, unsigned int d);
 int func_ov002_020df7f4(void *c);
 int func_ov002_020df7ac(void *thiz);
@@ -282,8 +281,7 @@ int daOwl_c::func_ov094_0213598c()
     unk_3e8 = 0;
     mStateTimer = 0;
     mAnimSpeed = 0x2000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov094_02136af8.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -297,8 +295,7 @@ int daOwl_c::func_ov094_021359d8()
     Player *rider;
 
     if (OWL_TIMER(this) == 1) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov094_02136ae8.filePtr, 0,
-                                                    0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)data_ov094_02136ae8.filePtr, 0, 0x1000, 0);
         mAnimSpeed = 0x1000;
     }
 
@@ -319,8 +316,7 @@ int daOwl_c::func_ov094_021359d8()
     rider = mRider;
     if (rider != 0 && func_ov002_020df7f4(rider) == 1) {
         OWL_TIMER(this) = 0xa;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov094_02136af8.filePtr, 0,
-                                                    0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
     }
 
     ApproachAngle(&mPrevAngleX, 0, 0xa, 0x200, 0x100);
@@ -354,8 +350,7 @@ int daOwl_c::func_ov094_02135bd4()
 {
     mStateTimer = 0x1e;
     unk_3e8 = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov094_02136af8.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
     mAnimSpeed = 0x2000;
     return 1;
 }
@@ -429,8 +424,7 @@ int daOwl_c::func_ov094_02135c28()
  * 50..113 frame wander timer. */
 int daOwl_c::func_ov094_02135e64()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov094_02136af0.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
     mWanderAngleY = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0x32);
     mAnimSpeed = 0x1000;
@@ -473,8 +467,7 @@ int daOwl_c::func_ov094_02135fe0()
     mSpeedX = 0;
     mVertSpeed = 0;
     mSpeedZ = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov094_02136af0.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -527,8 +520,7 @@ int daOwl_c::func_ov094_02136024()
 /* Enter of the dormant state: animation data_ov094_02136af0[1]. */
 int daOwl_c::func_ov094_02136150()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov094_02136af0.filePtr, 0, 0x1000,
-                                                0);
+    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 

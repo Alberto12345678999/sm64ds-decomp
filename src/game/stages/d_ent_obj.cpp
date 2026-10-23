@@ -94,8 +94,6 @@ extern "C" {
 void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *anim, void *file, int numBlendFrames,
                                                         int flags, int speed,
                                                         unsigned short startFrame);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int flags, int speed,
-                                                 unsigned short startFrame);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *seq, void *file, int flags, int speed,
                                                         unsigned short startFrame);
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *shadow, Matrix4x3 *mat,
@@ -692,8 +690,7 @@ int UnknownVsPlayer::func_ov075_02114ddc(unsigned char kind, unsigned char playe
     mModel.SetFile((BMD_File *)data_ov075_0211d404.filePtr, 1, 1);
     mMaterialColor = *(int *)((char *)mModel.data.materials + 0x20) + (playerNo << 1);
     mAnimation.SetFile((BMD_File *)data_ov075_0211d3c4.filePtr, 1, 1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mAnimation, (void *)data_ov075_0211d414.filePtr, 0,
-                                                0x1000, 0);
+    mAnimation.SetAnim((BCA_File *)((void *)data_ov075_0211d414.filePtr), 0, 0x1000, 0);
 
     if (kind == 0 || kind == 2) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
@@ -1037,8 +1034,7 @@ int dEntObj_c::InitResources() {
 
     if (param1 != 1) {
         mModelAnim.SetFile((BMD_File *)data_ov075_0211d3bc.filePtr, 1, -1);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, (void *)data_ov075_0211d3e4.filePtr, 0, 0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)((void *)data_ov075_0211d3e4.filePtr), 0, 0x1000, 0);
     }
 
     func_ov075_0211b458((char *)&mMesh, (int *)&data_ov075_0211c654, 0);

@@ -123,8 +123,6 @@ extern void Matrix4x3_FromRotationY(void *m, int ang);
 extern int Vec3_HorzLen(void *v);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
 extern void MulVec3Mat4x3(void *a, void *m, void *b);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    void *self, void *bca, int a, int fix, unsigned int b);
 }
 
 /* File handles the static initializer constructs. The two models use
@@ -525,8 +523,7 @@ int daSnowman_c::func_ov081_02124b08()
     this->mVertSpeed = 0xa000;
     this->mVertAccel = -0x4000;
     this->mInitAngleY = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov081_02128da8.filePtr, 0,
-                                                0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov081_02128da8.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -583,8 +580,7 @@ int daSnowman_c::func_ov081_02124b98()
 /* State "throw", enter. */
 int daSnowman_c::func_ov081_02124d14()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov081_02128db8.filePtr,
-                                                0x40000000, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov081_02128db8.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -639,8 +635,7 @@ int daSnowman_c::func_ov081_02124e64()
 /* State "face the player", enter. */
 int daSnowman_c::func_ov081_02124ec0()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                                                gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
     if (this->mType == 2)
         this->mFlags = 0x18000002;
     else
@@ -708,8 +703,7 @@ int daSnowman_c::func_ov081_02125068()
     } else if (v == 2) {
         this->mFlags = 0x8000002;
     }
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                                                gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -725,8 +719,8 @@ int daSnowman_c::func_ov081_021250c8()
     if (this->mWithMeshClsn.IsOnGround()) {
         func_02012694(0xe5, &this->mCamSpacePosX);
         func_ov081_02125488(&data_ov081_02128e54);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &this->mModelAnim, gSnowmanJumpEdAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+        this->mModelAnim.SetAnim((BCA_File *)gSnowmanJumpEdAnimationFile.filePtr, 0x40000000,
+                                 0x1000, 0);
         return 1;
     }
 
@@ -786,8 +780,8 @@ int daSnowman_c::func_ov081_02125208()
             this->mStep = 0;
             this->mVertSpeed = 0x3a000;
             this->mVertAccel = -0x4000;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                &this->mModelAnim, gSnowmanJumpStAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+            this->mModelAnim.SetAnim((BCA_File *)gSnowmanJumpStAnimationFile.filePtr, 0x40000000,
+                                     0x1000, 0);
             func_02012694(0xdd, &this->mCamSpacePosX);
             func_ov081_02125488(&data_ov081_02128e74);
         }
@@ -821,8 +815,7 @@ int daSnowman_c::func_ov081_0212538c()
         this->mStep = 1;
     }
     this->mStateTimer = 0xa;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                                                gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
     return 1;
 }
 

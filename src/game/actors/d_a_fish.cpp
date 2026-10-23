@@ -109,10 +109,6 @@ s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 void Vec3_Asr(Vector3 *dst, Vector3 *src, int shift);
 void Matrix4x3_FromTranslation(Matrix4x3 *matrix, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *matrix, s16 angle);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, BCA_File *file, int flags, int speed,
-    unsigned int startFrame);
-
 }
 
 enum {
@@ -160,10 +156,8 @@ s32 daFish_c::InitResources()
     }
     mModelAnim.SetFile(
         (BMD_File *)Model::LoadFile(*data_ov100_021473a4[mModelIndex]), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim,
-        (BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]),
-        0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]), 0,
+                       0x1000, 0);
     mIsSpawner = 1;
     mSpawnerID = uniqueID;
     mState = 0;
@@ -339,8 +333,8 @@ void daFish_c::func_ov100_02146640()
         s16 ang = Vec3_HorzAngle(&this->mPos, &p->mPos);
         if (ApproachLinear(this->mPrevAngleY, ang, 0x400) != 0) {
             if (this->mModelIndex == 0) {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &this->mModelAnim, LoadedBCA(&data_ov100_021489cc), 0, 0x1000, 0);
+                this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(&data_ov100_021489cc)), 0, 0x1000,
+                                         0);
             }
         }
         Vec3_Sub(&d, &this->mPos, &p->mPos);
@@ -348,13 +342,13 @@ void daFish_c::func_ov100_02146640()
             return;
         this->mStateTimer = -1;
         this->mState = 4;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &this->mModelAnim, LoadedBCA(data_ov100_021473b0[this->mModelIndex]), 0, 0x1000, 0);
+        this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
+                                 0x1000, 0);
     } else {
         this->mStateTimer = -1;
         this->mState = 4;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &this->mModelAnim, LoadedBCA(data_ov100_021473b0[this->mModelIndex]), 0, 0x1000, 0);
+        this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
+                                 0x1000, 0);
     }
 }
 

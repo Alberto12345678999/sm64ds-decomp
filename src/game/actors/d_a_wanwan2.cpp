@@ -166,7 +166,6 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, in
 int func_02012694(int, void *);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
-int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
 void *_ZN7PathPtrC1Ev(void *thiz);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);
@@ -510,8 +509,7 @@ extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
    animation from data_ov100_021486ac. Was a C source. */
 extern "C" int func_ov100_02143ae0(daWanwan2_c *c)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&c->mModelAnim, data_ov100_021486ac.filePtr,
-                                                0, 0x1000, 0);
+    c->mModelAnim.SetAnim((BCA_File *)data_ov100_021486ac.filePtr, 0, 0x1000, 0);
     return 1;
 }
 

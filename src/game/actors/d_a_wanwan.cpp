@@ -88,8 +88,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
     unsigned opacity);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, void *bca, int flags, int speed, unsigned start);
 /* local extern: Fix12<int> by value; this scalar bridge follows the definition. */
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, void *pos, unsigned kind, int power, u8 a, u8 b, u8 c);
@@ -125,10 +123,8 @@ namespace call3_267c {
 extern "C" int func_0201267c(int id, void *pos, int unused);
 }
 
-/* SetAnim takes Fix12<int> by value. The scalar extern stays. */
 #define SetChompAnim(self, bca) \
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj( \
-        &(self)->mModelAnim, (BCA_File *)(bca).filePtr, 0, 0x1000, 0)
+    (self)->mModelAnim.SetAnim((BCA_File *)(bca).filePtr, 0, 0x1000, 0)
 
 // @symbol daWanwan_c_classInit
 extern "C" daWanwan_c *daWanwan_c_classInit()

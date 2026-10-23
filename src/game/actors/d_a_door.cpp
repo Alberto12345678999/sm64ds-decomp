@@ -215,7 +215,6 @@ void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *fp);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int a, int fix, unsigned int j);
 void *_ZN5ModelC1Ev(void *self);
 void *_Znwj(unsigned int sz);
 /* func_0201277c(id) and func_02012790(id) play a sound id with no position
@@ -1228,7 +1227,7 @@ s32 daDoor_c::InitResources()
     }
 
     an = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov100_02148744);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModel, an, 0x40000000, 0x1000, 0);
+    mModel.SetAnim((BCA_File *)an, 0x40000000, 0x1000, 0);
 
     /* The model matrix takes the position >> 3. */
     Vec3_Asr(&tmp, &mPosX, 3);

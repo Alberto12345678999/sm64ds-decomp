@@ -261,6 +261,13 @@ void Trmp2Mario_StateKnockedOut(char *o) {
 namespace ns_020c9098 {
 typedef int Fix12;
 struct BCA_File;
+/* NOT CONVERTED TO THE REAL METHOD. Every ns_* namespace in this file declares
+   its own never-defined `struct ModelAnim` scaffold, so `mModelAnim` here is not
+   the real class and a method call cannot bind to it. The symbol rename IS applied
+   -- ModelAnim::SetAnim is a real method now (notes/mwccarm-codegen.md 6az,
+   MEASURED 2026-10-22) -- but replacing these scaffolds with the real class is
+   separate deslop work. The local spellings below therefore disagree with the real
+   definition on purpose; those disagreements are byte-proved and banked. */
 struct ModelAnim {
     void SetAnim(BCA_File *f, int a, Fix12 b, unsigned int c);
 };
@@ -268,8 +275,9 @@ struct ModelAnim {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, Fix12 b,
-                                                            unsigned int c);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, BCA_File *f, int a, Fix12 b,
+                                                    unsigned int c);
 
 extern "C" {
 extern int pmf_Trmp2Mario_StateHidden_5[2];
@@ -310,8 +318,8 @@ body:
     MARIO2(c)->mVel.x = 0;
     MARIO2(c)->mVel.y = 0x2000;
     D3D_PlaySeAtX(0x1c9, MARIO2(c)->mPos.x);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO2(c)->mModelAnim,
-                                                (BCA_File *)sTrmpAnimStruggle[0], 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((ModelAnim *)MARIO2(c)->mModelAnim,
+                                        (BCA_File *)sTrmpAnimStruggle[0], 0, 0x800, 0);
     ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     {
         int a = pmf_Trmp2Mario_StateKnockedOut[0];
@@ -331,8 +339,9 @@ int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *thisPtr, int frame);
 void D3D_PlaySeAtX(int a0, int a1);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 }
 
@@ -391,9 +400,9 @@ L70: {
         int t;
 
         MARIO2(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)MARIO2(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
-            0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO2(c)->mModelAnim,
+                                            *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+                                            0x40000000, 0x800, 0);
 
         ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -474,8 +483,9 @@ void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
 void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int fx1, int fx2, int fx3, const void *vec, void *cb);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
 void Trmp2Mario_StateBounce(char *c);
@@ -558,8 +568,8 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
     MARIO2(c)->mBounceVy = MARIO2(c)->mVel.y;
     ((TrampolineObjectCallbacks *)c)->Clear();
     MARIO2(c)->mWallBumpTimer = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO2(c)->mModelAnim, sTrmpAnimBounce,
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO2(c)->mModelAnim, sTrmpAnimBounce, 0x40000000,
+                                        0x800, 0);
     ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, 4, MARIO2(c)->mPos.x);
     D3D_PlaySeAtX(0x1b5, MARIO2(c)->mPos.x);
@@ -581,8 +591,9 @@ extern "C" {
 void Trmp2Mario_EnterFall(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 }
 
@@ -647,9 +658,9 @@ L70: {
         MARIO2(c)->mVel.y = v40;
 
         MARIO2(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)MARIO2(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
-            0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO2(c)->mModelAnim,
+                                            *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+                                            0x40000000, 0x800, 0);
 
         ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -715,8 +726,9 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void Trmp2Mario_StateWallBounce(char *c);
 }
@@ -779,9 +791,9 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c) {
         MARIO2(c)->mAnim = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO2(c)->mModelAnim,
-                                                *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO2(c)->mModelAnim,
+                                        *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+                                        0x40000000, 0x800, 0);
 
     ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -807,8 +819,9 @@ struct ModelAnim {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, Fix12 b,
-                                                            unsigned int c);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, BCA_File *f, int a, Fix12 b,
+                                                    unsigned int c);
 
 struct Pair {
     int a, b;
@@ -833,8 +846,8 @@ extern "C" void Trmp2Mario_EnterBounce(char *c) {
     callbacks->Clear();
     MARIO2(c)->mWallBumpTimer = 0;
     MARIO2(c)->mAnim = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO2(c)->mModelAnim, sTrmpAnimBounce,
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((ModelAnim *)MARIO2(c)->mModelAnim, sTrmpAnimBounce,
+                                        0x40000000, 0x800, 0);
     ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
     D3D_PlaySeAtX(0x110, MARIO2(c)->mPos.x);
     D3D_PlaySeAtX(0x1b5, MARIO2(c)->mPos.x);
@@ -851,8 +864,9 @@ namespace ns_020c9d7c {
 extern "C" {
 /* best near-miss div=2 @ mwccarm 1.2/sp2p3 */
 extern int RandomIntInternal(int *seed);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int a, int fix,
-                                                        unsigned int b);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thiz, void *bca, int a, int fix,
+                                                unsigned int b);
 extern void Trmp2Mario_EnterFall(void *c);
 extern "C" int data_0209e650;
 extern "C" int sTrmp2DriftScale;
@@ -871,8 +885,8 @@ void Trmp2Mario_StateRespawnWait(char *c) {
         tbl = sTrmp2DriftScale;
         r = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
         MARIO2(c)->mVel.x = FX_MUL(((int)r - 0x800) << 1, tbl);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO2(c)->mModelAnim, sTrmpAnimWallJump,
-                                                    0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO2(c)->mModelAnim, sTrmpAnimWallJump, 0x40000000,
+                                            0x800, 0);
         MARIO2(c)->mPrevPos.x = MARIO2(c)->mPos.x;
         MARIO2(c)->mPrevPos.y = MARIO2(c)->mPos.y;
         MARIO2(c)->mPrevPos.z = MARIO2(c)->mPos.z;
@@ -888,7 +902,8 @@ void Trmp2Mario_StateRespawnWait(char *c) {
 namespace ns_020c9e7c {
 extern "C" {
 
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, unsigned int, int);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, unsigned int, int);
 extern "C" void *sTrmpAnimWallJump;
 struct Vec2i {
     int x;
@@ -903,8 +918,8 @@ void Trmp2Mario_EnterRespawnWait(unsigned char *c) {
     MARIO2(c)->mPrevPos.y = MARIO2(c)->mPos.y;
     MARIO2(c)->mPrevPos.z = MARIO2(c)->mPos.z;
     MARIO2(c)->mVel.y = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO2(c)->mModelAnim, sTrmpAnimWallJump,
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO2(c)->mModelAnim, sTrmpAnimWallJump, 0x40000000, 0x800,
+                                        0);
     *(W2 *)MARIO2(c)->mState = *(W2 *)&pmf_Trmp2Mario_StateRespawnWait_2;
 }
 }
@@ -949,7 +964,8 @@ namespace ns_020c9fe4 {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
 extern int sTrmp2Lives[];
 extern void *sTrmpAnimStruggle;
 extern double pmf_Trmp2Mario_StateMissed_2;
@@ -960,8 +976,8 @@ void Trmp2Mario_EnterMissed(char *c) {
         D3D_PlaySeAtX(0x1ca, MARIO2(c)->mPos.x);
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO2(c)->mModelAnim, *(void **)&sTrmpAnimStruggle,
-                                                0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO2(c)->mModelAnim, *(void **)&sTrmpAnimStruggle, 0,
+                                        0x800, 0);
     MARIO2(c)->mTimer = 0x28;
     *(double *)MARIO2(c)->mState = pmf_Trmp2Mario_StateMissed_2;
 }
@@ -975,8 +991,9 @@ void Trmp2Mario_BounceOffLineB(char *c);
 void Trmp2Mario_BounceOffLineA(char *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void Trmp2Mario_EnterMissed(char *c);
 }
@@ -1038,9 +1055,9 @@ L70: {
     {
         MARIO2(c)->mVel.y = 0x800;
         MARIO2(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)MARIO2(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
-            0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO2(c)->mModelAnim,
+                                            *(void **)sTrmpBounceAnimTable[MARIO2(c)->mAnim],
+                                            0x40000000, 0x800, 0);
 
         ((dExtFrameCtrl_c *)MARIO2(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -1161,8 +1178,9 @@ struct ModelAnim {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, Fix12 b,
-                                                            unsigned int c);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, BCA_File *f, int a, Fix12 b,
+                                                    unsigned int c);
 
 extern "C" {
 extern int data_020a0ebc[];
@@ -1181,8 +1199,8 @@ extern "C" void Trmp2Mario_EnterHidden(char *c) {
     MARIO2(c)->mVel.z = data_020a0ebc[2];
     MARIO2(c)->mGravityStep = 0;
     MARIO2(c)->mWallBumpTimer = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO2(c)->mModelAnim,
-                                                (BCA_File *)sTrmpAnimWalk[0], 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((ModelAnim *)MARIO2(c)->mModelAnim,
+                                        (BCA_File *)sTrmpAnimWalk[0], 0, 0x800, 0);
     *(double *)MARIO2(c)->mState = pmf_Trmp2Mario_StateHidden_3;
 }
 }
@@ -1842,8 +1860,9 @@ struct ModelAnim {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, Fix12 b,
-                                                            unsigned int c);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, BCA_File *f, int a, Fix12 b,
+                                                    unsigned int c);
 
 extern "C" {
 extern int pmf_Trmp3DMario_StateOffstage_4[2];
@@ -1881,8 +1900,8 @@ body:
     MARIO3D(c)->mVel.x = 0;
     MARIO3D(c)->mVel.y = 0x2000;
     Sound::PlayBank2_2D(0x1c9);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO3D(c)->mModelAnim,
-                                                (BCA_File *)sTrmpAnimStruggle[0], 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((ModelAnim *)MARIO3D(c)->mModelAnim,
+                                        (BCA_File *)sTrmpAnimStruggle[0], 0, 0x800, 0);
     ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     {
         int a = pmf_Trmp3DMario_StateKnockedOut[0];
@@ -1914,7 +1933,8 @@ extern "C" Triple data_020a0ebc;
 extern void _Z11UpdateAngleRssis(short *, short, int, short);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
 extern void _Z14ApproachLinearRiii(int *, int, int);
 extern void _Z15ApproachLinear2Rsss(short *, short, short);
 extern void func_02012718(int, int);
@@ -1943,8 +1963,7 @@ void Trmp3DMario_StateGoal(void *self) {
         _Z11UpdateAngleRssis(&MARIO3D(c)->mRotY, 0, 2, 0x1000);
         if (((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->Finished() == 0)
             return;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0, 0x800,
-                                                    0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0, 0x800, 0);
         return;
     }
 
@@ -2004,8 +2023,9 @@ struct ModelAnim {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *bca, int b, Fix12 c,
-                                                            unsigned int d);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *bca, int b, Fix12 c,
+                                                    unsigned int d);
 
 extern "C" {
 void Sound_PlayBank1Panned(int a0, char *a1, void *a2);
@@ -2022,8 +2042,8 @@ extern "C" void Trmp3DMario_EnterGoal(char *c) {
     MARIO3D(c)->mVel.x = 0;
     MARIO3D(c)->mVel.y = 0;
     Sound_PlayBank1Panned(0, (char *)0x10, (void *)MARIO3D(c)->mPos.x);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO3D(c)->mModelAnim,
-                                                sTrmpAnimRollJumpEnd, 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((ModelAnim *)MARIO3D(c)->mModelAnim, sTrmpAnimRollJumpEnd,
+                                        0x40000000, 0x800, 0);
     sTrmpMariosOnLedges[0] = sTrmpMariosOnLedges[0] + 1;
     a = pmf_Trmp3DMario_StateGoal[0];
     b = pmf_Trmp3DMario_StateGoal[1];
@@ -2074,8 +2094,9 @@ struct ModelAnim {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *bca, int b, int c,
-                                                            unsigned int d);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *bca, int b, int c,
+                                                    unsigned int d);
 
 extern "C" {
 void Sound_PlayBank1Panned(int a0, char *a1, void *a2);
@@ -2093,8 +2114,8 @@ void Trmp3DMario_EnterLand(char *c) {
     MARIO3D(c)->mVel.x = data_020a0ebc[0];
     MARIO3D(c)->mVel.y = data_020a0ebc[1];
     MARIO3D(c)->mVel.z = data_020a0ebc[2];
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)MARIO3D(c)->mModelAnim,
-                                                (void *)sTrmpAnimHangUp, 0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((ModelAnim *)MARIO3D(c)->mModelAnim,
+                                        (void *)sTrmpAnimHangUp, 0x40000000, 0x800, 0);
     Sound_PlayBank1Panned(0, (char *)0x17, (void *)MARIO3D(c)->mPos.x);
     {
         int a = pmf_Trmp3DMario_StateLand.a;
@@ -2183,8 +2204,9 @@ void Trmp3DMario_EnterFall(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 void Trmp3DMario_EnterFallToLedge(void *c);
 void Trmp3DMario_EnterLand(void *c);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void func_02012718(int a, int b);
 int D3D_PlaySeAtX(int a, int b);
@@ -2273,9 +2295,9 @@ Ld0:
 L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)MARIO3D(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
-            0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO3D(c)->mModelAnim,
+                                            *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+                                            0x40000000, 0x800, 0);
 
         ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2317,8 +2339,9 @@ void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
 void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *g);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
 void Trmp3DMario_StateHardBounce(char *c);
@@ -2404,8 +2427,8 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
         MARIO3D(c)->mAnim = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO3D(c)->mModelAnim, sTrmpAnimBounce,
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO3D(c)->mModelAnim, sTrmpAnimBounce, 0x40000000,
+                                        0x800, 0);
 
     ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, 4, MARIO3D(c)->mPos.x);
@@ -2431,8 +2454,9 @@ void Trmp3DMario_EnterFall(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 void Trmp3DMario_EnterFallToLedge(void *c);
 void Trmp3DMario_EnterLand(void *c);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void func_02012718(int a, int b);
 }
@@ -2512,9 +2536,9 @@ Ld0:
 L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            (void *)MARIO3D(c)->mModelAnim, *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
-            0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO3D(c)->mModelAnim,
+                                            *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+                                            0x40000000, 0x800, 0);
 
         ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2553,8 +2577,9 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void Trmp3DMario_StateBounce(char *c);
 }
@@ -2618,9 +2643,9 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c) {
         MARIO3D(c)->mAnim = 1;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO3D(c)->mModelAnim,
-                                                *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO3D(c)->mModelAnim,
+                                        *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+                                        0x40000000, 0x800, 0);
 
     ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2640,8 +2665,9 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c) {
 namespace ns_020cc198 {
 extern "C" {
 int RandomIntInternal(int *seed);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thisPtr, void *file, int i, int fix,
+                                         unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void Trmp3DMario_StateBounce(char *c);
 }
@@ -2674,9 +2700,9 @@ extern "C" void Trmp3DMario_JumpOff(char *c) {
 
     MARIO3D(c)->mAnim = 0;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)MARIO3D(c)->mModelAnim,
-                                                *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((void *)MARIO3D(c)->mModelAnim,
+                                        *(void **)sTrmpBounceAnimTable[MARIO3D(c)->mAnim],
+                                        0x40000000, 0x800, 0);
 
     ((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->currFrame = 0;
     Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2733,7 +2759,8 @@ namespace ns_020cc37c {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
 extern int sTrmp3DLives[];
 extern void *sTrmpAnimStruggle;
 extern double pmf_Trmp3DMario_StateMissed_2;
@@ -2744,8 +2771,8 @@ void Trmp3DMario_EnterMissed(char *c) {
         D3D_PlaySeAtX(0x1ca, MARIO3D(c)->mPos.x);
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim,
-                                                *(void **)&sTrmpAnimStruggle, 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, *(void **)&sTrmpAnimStruggle, 0,
+                                        0x800, 0);
     MARIO3D(c)->mTimer = 0x28;
     *(double *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateMissed_2;
 }
@@ -2905,7 +2932,8 @@ void Trmp3DMario_StateWalkBack(int *c) {
 // ---- Trmp3DMario_EnterWalkBack
 namespace ns_020cc698 {
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
 extern int sTrmpRowHeights[];
 extern void *sTrmpAnimWalk;
 extern double pmf_Trmp3DMario_StateWalkBack;
@@ -2919,8 +2947,8 @@ void Trmp3DMario_EnterWalkBack(char *c) {
     MARIO3D(c)->mVel.y = 0;
     MARIO3D(c)->mVel.z = 0;
     MARIO3D(c)->mRotY = -0x4000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, *(void **)&sTrmpAnimWalk, 0,
-                                                0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, *(void **)&sTrmpAnimWalk, 0, 0x800,
+                                        0);
     *(double *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateWalkBack;
 }
 }
@@ -2930,8 +2958,8 @@ namespace ns_020cc724 {
 extern "C" {
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix,
-                                                        u32 j);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Trmp3DMario_EnterWalkBack(char *c);
 
@@ -2947,8 +2975,7 @@ void Trmp3DMario_StateOnLedge(char *c) {
 
     if ((void *)((::ModelAnim *)MARIO3D(c)->mModelAnim)->file == sTrmpAnimJumpEnd) {
         if (((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->Finished() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0,
-                                                        0x800, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0, 0x800, 0);
             return;
         }
     }
@@ -2958,8 +2985,8 @@ void Trmp3DMario_StateOnLedge(char *c) {
             if (MARIO3D(c)->mPos.x > 0x70000) {
                 MARIO3D(c)->mPos.x = 0x70000;
                 MARIO3D(c)->mVel.x = 0;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimTurn,
-                                                            0x40000000, 0x800, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimTurn,
+                                                    0x40000000, 0x800, 0);
             }
             return;
         }
@@ -2970,8 +2997,8 @@ void Trmp3DMario_StateOnLedge(char *c) {
 
     if ((void *)((::ModelAnim *)MARIO3D(c)->mModelAnim)->file == sTrmpAnimTurn) {
         if (((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->Finished() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimTurnEnd,
-                                                        0x40000000, 0x800, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimTurnEnd,
+                                                0x40000000, 0x800, 0);
             return;
         }
     }
@@ -2991,8 +3018,9 @@ typedef short s16;
 typedef struct {
     int x, y;
 } G2;
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int a, int b,
-                                                        unsigned int u);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *self, void *file, int a, int b,
+                                                unsigned int u);
 extern "C" int pmf_Trmp3DMario_StateFallToLedge_2[2];
 extern "C" G2 pmf_Trmp3DMario_StateOnLedge;
 extern "C" void *sTrmpRowHeights[];
@@ -3014,11 +3042,10 @@ void Trmp3DMario_EnterOnLedge(char *p) {
     cur = MARIO3D(p)->mState;
     want = pmf_Trmp3DMario_StateFallToLedge_2;
     if (cur[0] == want[0] && (cur[1] == want[1] || MARIO3D(p)->mState[0] == 0)) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(p)->mModelAnim, sTrmpAnimJumpEnd,
-                                                    0x40000000, 0x800, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(p)->mModelAnim, sTrmpAnimJumpEnd, 0x40000000,
+                                            0x800, 0);
     } else {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(p)->mModelAnim, sTrmpAnimWalk, 0, 0x800,
-                                                    0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(p)->mModelAnim, sTrmpAnimWalk, 0, 0x800, 0);
     }
     {
         int *ctr = &sTrmpMariosOnLedges;
@@ -3048,8 +3075,9 @@ void Trmp3DMario_StateWalkIn(int *c) {
 // ---- Trmp3DMario_EnterWalkIn
 namespace ns_020cc9fc {
 extern "C" {
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b,
-                                                       unsigned int u);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern int _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(char *anim, void *file, int a, int b,
+                                               unsigned int u);
 }
 struct G2 {
     int w[2];
@@ -3072,8 +3100,8 @@ extern "C" void Trmp3DMario_EnterWalkIn(char *c) {
     MARIO3D(c)->mVel.y = 0;
     MARIO3D(c)->mVel.z = 0;
     MARIO3D(c)->mRotY = 0x4000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)MARIO3D(c)->mModelAnim,
-                                                (void *)sTrmpAnimWalk.w[0], 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit((char *)MARIO3D(c)->mModelAnim, (void *)sTrmpAnimWalk.w[0],
+                                        0, 0x800, 0);
     int *s = MARIO3D(c)->mState;
     struct G2 *d = &pmf_Trmp3DMario_StateOnGround;
     if (s[0] != d->w[0] || (s[1] != d->w[1] && MARIO3D(c)->mState[0] != 0)) {
@@ -3088,8 +3116,8 @@ namespace ns_020ccae0 {
 extern "C" {
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix,
-                                                        u32 j);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Trmp3DMario_EnterWalkIn(char *c);
 
@@ -3105,8 +3133,7 @@ void Trmp3DMario_StateOnGround(char *c) {
 
     if ((void *)((::ModelAnim *)MARIO3D(c)->mModelAnim)->file == sTrmpAnimJumpEnd) {
         if (((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->Finished() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0,
-                                                        0x800, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0, 0x800, 0);
             return;
         }
     }
@@ -3116,8 +3143,8 @@ void Trmp3DMario_StateOnGround(char *c) {
             if (MARIO3D(c)->mPos.x < -0x70000) {
                 MARIO3D(c)->mPos.x = -0x70000;
                 MARIO3D(c)->mVel.x = 0;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimTurn,
-                                                            0x40000000, 0x800, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimTurn,
+                                                    0x40000000, 0x800, 0);
             }
             return;
         }
@@ -3128,8 +3155,8 @@ void Trmp3DMario_StateOnGround(char *c) {
 
     if ((void *)((::ModelAnim *)MARIO3D(c)->mModelAnim)->file == sTrmpAnimTurn) {
         if (((dExtFrameCtrl_c *)MARIO3D(c)->mFrameCtrl)->Finished() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimTurnEnd,
-                                                        0x40000000, 0x800, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimTurnEnd,
+                                                0x40000000, 0x800, 0);
             return;
         }
     }
@@ -3149,8 +3176,9 @@ extern int sTrmpRowHeights;
 extern struct BCA_File *sTrmpAnimJumpEnd;
 extern double pmf_Trmp3DMario_StateOnGround_2;
 }
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, struct BCA_File *f,
-                                                            int frame, int speed, unsigned mode);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thiz, struct BCA_File *f, int frame,
+                                                    int speed, unsigned mode);
 // @symbol Trmp3DMario_EnterOnGround
 extern "C" void Trmp3DMario_EnterOnGround(char *c) {
     MARIO3D(c)->mGravityStep = 0;
@@ -3159,8 +3187,8 @@ extern "C" void Trmp3DMario_EnterOnGround(char *c) {
     MARIO3D(c)->mVel.x = 0;
     MARIO3D(c)->mVel.y = 0;
     MARIO3D(c)->mVel.z = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimJumpEnd,
-                                                0x40000000, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimJumpEnd, 0x40000000, 0x800,
+                                        0);
     *(double *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateOnGround_2;
 }
 }
@@ -3212,8 +3240,9 @@ struct G2 {
     int w[2];
 };
 extern struct G2 pmf_Trmp3DMario_StateOffstage_2;
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int frame, int speed,
-                                                 unsigned int flags);
+/* local extern: every ns_* namespace here declares its own never-defined `struct ModelAnim` scaffold, so the header method cannot bind; scalar spelling kept, byte-proved */
+void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *thiz, void *bca, int frame, int speed,
+                                         unsigned int flags);
 // @symbol Trmp3DMario_EnterOffstage
 void Trmp3DMario_EnterOffstage(char *c) {
     MARIO3D(c)->mPos.y = sTrmpRowHeights;
@@ -3223,7 +3252,7 @@ void Trmp3DMario_EnterOffstage(char *c) {
     MARIO3D(c)->mVel.y = data_020a0ebc.b;
     MARIO3D(c)->mVel.z = data_020a0ebc.c;
     MARIO3D(c)->mGravityStep = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0, 0x800, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(MARIO3D(c)->mModelAnim, sTrmpAnimWalk, 0, 0x800, 0);
     *(struct G2 *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateOffstage_2;
 }
 }
