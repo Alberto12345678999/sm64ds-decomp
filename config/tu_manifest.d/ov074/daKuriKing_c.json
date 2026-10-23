@@ -854,147 +854,147 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@678",
+      "from": "@673",
       "to": "@661",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@679",
+      "from": "@674",
       "to": "@662",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@680",
+      "from": "@675",
       "to": "@663",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@681",
+      "from": "@676",
       "to": "@664",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@682",
+      "from": "@677",
       "to": "@665",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@683",
+      "from": "@678",
       "to": "@666",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@684",
+      "from": "@679",
       "to": "@667",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@685",
+      "from": "@680",
       "to": "@668",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@686",
+      "from": "@681",
       "to": "@669",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@687",
+      "from": "@682",
       "to": "@670",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@690",
+      "from": "@685",
       "to": "@673",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@691",
+      "from": "@686",
       "to": "@674",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@692",
+      "from": "@687",
       "to": "@79",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@688",
+      "from": "@683",
       "to": "@988",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@689",
+      "from": "@684",
       "to": "@989",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2116",
+      "from": "@2111",
       "to": "@2061",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2117",
+      "from": "@2112",
       "to": "@2062",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2118",
+      "from": "@2113",
       "to": "@2063",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2119",
+      "from": "@2114",
       "to": "@2064",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2120",
+      "from": "@2115",
       "to": "@2065",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2121",
+      "from": "@2116",
       "to": "@2066",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2122",
+      "from": "@2117",
       "to": "@2067",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2123",
+      "from": "@2118",
       "to": "@2068",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2124",
+      "from": "@2119",
       "to": "@2069",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2125",
+      "from": "@2120",
       "to": "@2070",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2126",
+      "from": "@2121",
       "to": "@2071",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2127",
+      "from": "@2122",
       "to": "@2072",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2128",
+      "from": "@2123",
       "to": "@2073",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
-      "from": "@2129",
+      "from": "@2124",
       "to": "@2074",
       "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     }
