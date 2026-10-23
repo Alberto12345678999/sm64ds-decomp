@@ -234,6 +234,60 @@ Three things this batch adds to the recipe:
 Also worth knowing: `tools/name_roundtrip.py --symbol X` prints a SUMMARY, so
 the word MISMATCH appears in its output even when the count is 0. Read the
 `ROUND-TRIPS n 100.0%` line, not a grep for the word.
+### THE COMPILER'S NUMBERED LOCAL LABELS COUNT *NAMED* PARAMETERS (2026-10-23)
+
+AGENTS.md says a FILE RENAME moves compiler-numbered local symbols
+(`Bundle$902d_a_mky_cpp`, the `@NNN` .bss/.data labels, `__sinit_<file>`). It is
+broader than that, and the mechanism is specific: **the counter advances per
+NAMED PARAMETER the TU has seen before the local class or label.** That gives a
+rename two separate ways to break the ROM build, both of which show up as
+
+    isolate: defined symbol rename refused: defined rename source @N has 0 symbols
+
+**1. A shared header gaining a declaration renumbers labels in EVERY consumer,
+including files the branch never edited.** Declaring `dActor_c::SetRanges` (four
+`Fix12i`) and `dActor_c::IsTooFarAwayFromPlayer` (one) moved `d_a_mky.cpp`'s
+`Bundle$976` to `$981` -- an untouched file -- and shifted every other
+consumer's `@NNN` labels by the same five. 227 TU manifests record such labels,
+so this is a ~200-file failure from a two-line header edit.
+
+**THE LEVER: dropping the parameter NAMES costs nothing.** Declared types-only,
+`void SetRanges(Fix12i, Fix12i, Fix12i, Fix12i);`, every counter stays put --
+`d_a_mky.cpp` is back to `Bundle$976` and `ov002/da1up_c` reports no EXTRA
+labels. A header declaration added for a rename should omit its parameter
+names; put the names on the definition, where they document the code and cost
+nothing. Do this FIRST and the 227-TU blast radius never exists.
+
+**2. Deleting a local `extern` that HAD named parameters frees numbers in that
+TU.** Unavoidable, but bounded by the files actually edited. Those manifests'
+`defined_symbol_renames[].from` are remapped ascending-to-ascending against the
+labels the object now emits (68 of them in #4296).
+
+**Ten TUs could not be remapped, and removing the cause was correct.** Four
+report `rename destination @N already exists in object` -- the block shifted
+onto itself, so a per-label map collides -- and six report only the FIRST stale
+source, because isolate stops there, so one run never yields a complete list.
+`defined_symbol_renames` has no regenerator: it is written by hand against
+private fixtures (`tools/test_canonical_duplicates.py` reads a `proof.json`
+absent from the tree) and encodes measured boundary evidence, so a guessed map
+corrupts that silently -- deriving the subset from the object's symbol table
+picked up `@0`/`@2`/`@5` and proposed `@1393 -> @6`. Instead those ten sources
+keep their scalar `extern` and take only the SYMBOL RENAME: the named
+parameters stay, the labels do not move, and the manifest stays correct
+untouched. **A TU that records `defined_symbol_renames` should keep its
+named-parameter externs.**
+
+**How to check any of this.** `tubuild verify <tu>`'s verdict is NOT the signal:
+`ov002/da1up_c` reports `38/38 MATCH ... TEXT-VERIFIED` with every label wrong,
+because the verdict covers function bytes. The signal is the `EXTRA .data/.bss
+@NNN` lines in the same output -- once a rename source matches what the object
+emits, isolate renames it and it stops being EXTRA. **A TU is clean when EXTRA
+is empty.** Sweep every manifest carrying an `@NNN` rename source, not just the
+TUs whose sources changed, because cause 1 hits files the branch never touched.
+And when `PR validation` shows a wall of "N blocking relocation verdict(s)" that
+all read `validation error (not verified)` with `Slots checked: 1`, the check
+never ran -- find the single real failure in the full-ROM build output instead.
+
 ### BATCH 4: the range-check family, and the wall's own flagship example (2026-10-23)
 
 | old symbol | new symbol | addr/size |
