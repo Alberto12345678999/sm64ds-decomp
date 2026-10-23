@@ -54,6 +54,16 @@
 #include "nitro/fx/fx.h"
 #include "dScMgPachinko_c.h"
 
+namespace GX {
+void LoadBGPltt(const void *p, u32 a, u32 b);
+void LoadOBJPltt(const void *p, u32 a, u32 b);
+}
+
+namespace GXS {
+void LoadBGPltt(const void *p, u32 a, u32 b);
+void LoadOBJPltt(const void *p, u32 a, u32 b);
+}
+
 /* Two helpers dispatch through the ov006 pointer-to-member tables, each on
    its own view of the scene. Both pointer-to-member types are formed while
    the view is still incomplete: the compiler picks the pointer-to-member
@@ -195,10 +205,6 @@ extern void func_02056314(void *dst, u32 offset, u32 len);
 extern void func_020563d4(const void *src, u32 offset, u32 count);
 extern void func_020562b4(const void *src, u32 offset, u32 count);
 extern void func_020564f4(const void *src, int offset, int count);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 
 /* --- ROM data this TU reads --- */
 extern int   data_0209d4b8;
@@ -2781,7 +2787,7 @@ s32 dScMgPachinko_c::InitResources()
     Deallocate((void *)f);
 
     f = LoadFile(0x60);
-    _ZN2GX10LoadBGPlttEPKvjj((const void *)f, 0x60, 0x1a0);
+    GX::LoadBGPltt((const void *)f, 0x60, 0x1a0);
     Deallocate((void *)f);
 
     f = LoadFile(0x61);
@@ -2807,7 +2813,7 @@ s32 dScMgPachinko_c::InitResources()
     objChar = LoadFile(0xe0);
     objPltt = LoadFile(0xe1);
     DecompressLZ16((void *)objChar, (void *)0x6400000);
-    _ZN2GX11LoadOBJPlttEPKvjj((const void *)objPltt, 0, 0x100);
+    GX::LoadOBJPltt((const void *)objPltt, 0, 0x100);
 
     data_0209d454 |= 0xd;
     *(volatile u16 *)0x400100c &= ~3;
@@ -2841,7 +2847,7 @@ s32 dScMgPachinko_c::InitResources()
     Deallocate((void *)f);
 
     f = LoadFile(0x5d);
-    _ZN3GXS10LoadBGPlttEPKvjj((const void *)f, 0x60, 0x1a0);
+    GXS::LoadBGPltt((const void *)f, 0x60, 0x1a0);
     Deallocate((void *)f);
 
     f = LoadFile(0x5e);
@@ -2858,7 +2864,7 @@ s32 dScMgPachinko_c::InitResources()
     Deallocate((void *)f);
 
     DecompressLZ16((void *)objChar, (void *)0x6600000);
-    _ZN3GXS11LoadOBJPlttEPKvjj((const void *)objPltt, 0, 0x100);
+    GXS::LoadOBJPltt((const void *)objPltt, 0, 0x100);
     Deallocate((void *)objChar);
     Deallocate((void *)objPltt);
 
