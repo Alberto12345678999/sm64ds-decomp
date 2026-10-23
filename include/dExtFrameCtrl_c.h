@@ -28,10 +28,11 @@
  * frame count in the low 30 bits of +0x4 with the loop flags in the top
  * two, current frame at +0x8 as 20.12, playback speed at +0xc.
  *
- * SetAnimation's definition stays a mangled free function: its true
- * signature carries Fix12<int> and wall 6az (notes/mwccarm-codegen.md)
- * homes class-typed by-value parameters. The declaration below is the
- * real one and callers may use it.
+ * SetAnimation is a real method. Its symbol is
+ * _ZN15dExtFrameCtrl_c12SetAnimationEtiit: speed is the scalar Fix12i,
+ * which mangles as i, not the by-value Fix12<int> the old name invented.
+ * The body reads it straight from a register (notes/mwccarm-codegen.md
+ * 6az, MEASURED 2026-10-22; the caller does not pay either, 2026-10-23).
  *
  * ModelAnim and its children carry an dExtFrameCtrl_c as a SECOND base at
  * +0x50, reached through the ROM's _ZThn80_ thunks; that is the next
@@ -62,8 +63,7 @@ struct dExtFrameCtrl_c {
     dExtFrameCtrl_c();
 
     /* --- non-virtual --- */
-    void SetAnimation(u16 numFrames, int flags, Fix12<int> speed,
-                      u16 startFrame);   /* defined as a free function, wall 6az */
+    void SetAnimation(u16 numFrames, int flags, Fix12i speed, u16 startFrame);
     void Copy(const dExtFrameCtrl_c &anim);
     void Advance();
     int Finished();
