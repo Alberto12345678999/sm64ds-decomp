@@ -1255,15 +1255,12 @@ int Trmp2Mario_Load(char *c) {
 
     f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
     sTrmpAnimJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
-    sTrmpAnimDoubleJump1 =
-        dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
+    sTrmpAnimDoubleJump1 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
     sTrmpAnimWallJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
     sTrmpAnimHangUp = dExtFrameCtrl_c::LoadFile(sTrmpMarioHangUpAnimFile);
-    sTrmpAnimRollJumpEnd =
-        dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpEndAnimFile);
+    sTrmpAnimRollJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpEndAnimFile);
     sTrmpAnimWalk = dExtFrameCtrl_c::LoadFile(sTrmpMarioWalkAnimFile);
-    sTrmpAnimDoubleJump2 =
-        dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump2AnimFile);
+    sTrmpAnimDoubleJump2 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump2AnimFile);
     sTrmpAnimJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpEndAnimFile);
     sTrmpAnimTurn = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnAnimFile);
     sTrmpAnimTurnEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnEndAnimFile);
@@ -3304,15 +3301,12 @@ int Trmp3DMario_Load(char *c) {
 
     f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
     sTrmpAnimJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
-    sTrmpAnimDoubleJump1 =
-        dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
+    sTrmpAnimDoubleJump1 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
     sTrmpAnimWallJump = dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
     sTrmpAnimHangUp = dExtFrameCtrl_c::LoadFile(sTrmpMarioHangUpAnimFile);
-    sTrmpAnimRollJumpEnd =
-        dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpEndAnimFile);
+    sTrmpAnimRollJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioRollJumpEndAnimFile);
     sTrmpAnimWalk = dExtFrameCtrl_c::LoadFile(sTrmpMarioWalkAnimFile);
-    sTrmpAnimDoubleJump2 =
-        dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump2AnimFile);
+    sTrmpAnimDoubleJump2 = dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump2AnimFile);
     sTrmpAnimJumpEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpEndAnimFile);
     sTrmpAnimTurn = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnAnimFile);
     sTrmpAnimTurnEnd = dExtFrameCtrl_c::LoadFile(sTrmpMarioTurnEndAnimFile);
