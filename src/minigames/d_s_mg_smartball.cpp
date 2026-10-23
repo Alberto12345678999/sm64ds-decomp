@@ -155,6 +155,10 @@ void PlayBank2_2D(u32 id);
 }
 
 extern "C" {
+/* S4 WALL (wave-2): kept: this void extern and the namespace Sound shadow
+   above disagree with Sound.h u32 return (definition returns unsigned int);
+   including Sound.h would illegally overload the shadow, so both stay.
+   Params match; all callers ignore r0. */
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void func_0203d388(V2 *p, int angle);
 extern long long func_0203d5bc(int *p);

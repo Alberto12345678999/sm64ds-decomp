@@ -22,6 +22,9 @@
  * toward the compiler-owned destructor group. Keep the factory first.
  *
  * The factory is `return new` in this file.
+ *
+ * S41: D1 0x0211ab60 size 0x4c, D0 0x0211abac size 0x60; no separate body,
+ * inline virtual destructor + vtable emits D1 then D0, no D2.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -332,8 +335,6 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
 // @symbol _ZN16daObjCtMecha05_cD1Ev
 // @symbol _ZN16daObjCtMecha05_cD0Ev
 /* -------------------------------------------------------------------------- */
-/*   _ZN16daObjCtMecha05_cD1Ev  0x0211ab60  size 0x4c  (complete-object)      */
-/*   _ZN16daObjCtMecha05_cD0Ev  0x0211abac  size 0x60  (deleting)            */
 /* -------------------------------------------------------------------------- */
 /* No separate body lives here. The inline virtual destructor in the class
  * declaration and this TU's vtable instantiation make mwccarm emit retail's
