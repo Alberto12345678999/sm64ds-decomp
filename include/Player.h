@@ -998,6 +998,8 @@ struct Player : dActor_c {
     void OpenBigDoor();
     void PlayMammaMiaSound();
     void RegisterEggCoinCount(unsigned int count, bool b2, bool b3);
+    /* Unnamed parameters: a named one advances @NNN in every Player.h consumer. */
+    void SetAnim(u32, int, Fix12i, u16);
     void SetNewHatCharacter(unsigned int p1, unsigned int p2, bool p3);
     void SetRealCharacter(unsigned int chr_);
     void TurnOffToonShading(unsigned int j);
