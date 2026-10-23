@@ -285,7 +285,8 @@ int daRNk_c::CleanupResources()
     ((SharedFilePtr *)&gdaRNkNokonokoWait2AnimationFile)->Release();
     ((SharedFilePtr *)&data_ov062_0211e02c)->Release();
     ((SharedFilePtr *)&data_ov062_0211e004)->Release();
-    if (mIsRacing) Sound::StopLoadedMusic_Layer2();
+    if (mIsRacing)
+        Sound::StopLoadedMusic_Layer2();
     return 1;
 }
 
